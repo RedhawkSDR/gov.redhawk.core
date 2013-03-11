@@ -8,9 +8,9 @@ This is the core set of plug-ins that make up the REDHAWK IDE and the REDHAWK Ex
 
 REDHAWK Website: [www.redhawkSDR.org](http://www.redhawksdr.org)
 
-Overview and Getting Started Guide: [PDF](LINK_TBD "PDF") [HTML](Link_TBD "HTML")
+Overview and Getting Started Guide: [PDF](REDHAWK_Getting_Started_Guide_pdf_webaddress "PDF") [HTML](REDHAWK_Getting_Started_Guide_html_webaddress "HTML")
 
-Full REDHAWK Manual: [PDF](LINK_TBD "PDF") [HTML](Link_TBD "HTML")
+Full REDHAWK Manual: [PDF](REDHAWK_Manual_pdf_webaddress "PDF") [HTML](REDHAWK_Manual_html_webaddress "HTML")
  
 ## Copyrights
 
