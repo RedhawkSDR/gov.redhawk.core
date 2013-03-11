@@ -13,7 +13,8 @@
       id="gov.redhawk.rcp.sdk"
       label="RCP SDK"
       version="1.8.3.qualifier"
-      provider-name="United States Government">
+      provider-name="%providerName"
+      plugin="mil.jpeojtrs.sca.util">
 
    <description url="http://redhawksdr.org">
       %description

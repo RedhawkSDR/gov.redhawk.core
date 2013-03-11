@@ -13,17 +13,20 @@
       id="gov.redhawk.apps.sdk"
       label="%featureName"
       version="1.8.3.qualifier"
-      provider-name="%featureProvider">
+      provider-name="%providerName"
+      plugin="mil.jpeojtrs.sca.util">
 
-    <description url="http://redhawksdr.org">
+   <description url="http://redhawksdr.org">
       %description
-    </description>
-    <copyright url="http://redhawksdr.org">
+   </description>
+
+   <copyright url="http://redhawksdr.org">
       %copyright
-    </copyright>
-    <license url="http://redhawksdr.org">
+   </copyright>
+
+   <license url="http://redhawksdr.org">
       %license
-    </license>
+   </license>
 
    <includes
          id="gov.redhawk.apps"

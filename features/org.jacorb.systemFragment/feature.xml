@@ -13,17 +13,17 @@
       id="org.jacorb.systemFragment"
       label="%featureName"
       version="3.1.0.qualifier"
-      provider-name="%featureProvider">
+      provider-name="%providerName">
 
-   <description url="http://redhawksdr.org">
+   <description url="http://www.jacorb.org/">
       %description
    </description>
 
-   <copyright url="http://redhawksdr.org">
+   <copyright url="http://www.jacorb.org/">
       %copyright
    </copyright>
 
-   <license url="http://redhawksdr.org">
+   <license url="http://www.jacorb.org/">
       %license
    </license>
 
@@ -32,7 +32,6 @@
          download-size="0"
          install-size="0"
          version="0.0.0"
-         fragment="true"
-         unpack="true"/>
+         fragment="true"/>
 
 </feature>

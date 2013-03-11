@@ -14,8 +14,8 @@
       id="gov.redhawk.ui.feature"
       label="%featureName"
       version="1.8.3.qualifier"
-      provider-name="%featureProvider"
-      plugin="gov.redhawk.ui">
+      provider-name="%providerName"
+      plugin="mil.jpeojtrs.sca.util">
 
    <description url="http://redhawksdr.org">
       %description
