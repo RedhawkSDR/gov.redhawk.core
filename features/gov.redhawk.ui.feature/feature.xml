@@ -17,15 +17,15 @@
       provider-name="%featureProvider"
       plugin="gov.redhawk.ui">
 
-   <description url="http://redhawksdr.org/description">
+   <description url="http://redhawksdr.org">
       %description
    </description>
 
-   <copyright url="http://redhawksdr.org/copyright">
+   <copyright url="http://redhawksdr.org">
       %copyright
    </copyright>
 
-   <license url="http://redhawksdr.org/license">
+   <license url="http://redhawksdr.org">
       %license
    </license>
 

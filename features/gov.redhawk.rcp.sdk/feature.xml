@@ -15,16 +15,16 @@
       version="1.8.3.qualifier"
       provider-name="United States Government">
 
-   <description url="http://www.example.com/description">
-      [Enter Feature Description here.]
+   <description url="http://redhawksdr.org">
+      %description
    </description>
 
-   <copyright url="http://www.example.com/copyright">
-      [Enter Copyright Description here.]
+   <copyright url="http://redhawksdr.org">
+      %copyright
    </copyright>
 
-   <license url="http://www.example.com/license">
-      [Enter License Description here.]
+   <license url="http://redhawksdr.org">
+      %license
    </license>
 
    <includes

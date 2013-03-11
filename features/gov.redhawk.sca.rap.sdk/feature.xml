@@ -5,15 +5,15 @@
       version="1.8.3.qualifier"
       provider-name="%featureProvider">
 
-   <description url="http://redhawksdr.org/description">
+   <description url="http://redhawksdr.org">
       %description
    </description>
 
-   <copyright url="http://redhawksdr.org/copyright">
+   <copyright url="http://redhawksdr.org">
       %copyright
    </copyright>
 
-   <license url="http://redhawksdr.org/license">
+   <license url="http://redhawksdr.org">
       %license
    </license>
 
