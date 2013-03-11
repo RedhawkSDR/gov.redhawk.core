@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+    This file is protected by Copyright.
+    Please refer to the COPYRIGHT file distributed with this source distribution.
+
+    This file is part of REDHAWK IDE.
+
+    All rights reserved.  This program and the accompanying materials are made available under
+    the terms of the Eclipse Public License v1.0 which accompanies this distribution, and is available at
+    http://www.eclipse.org/legal/epl-v10.html.
+ 
+-->
+<deviceconfiguration id="DCE:ddba96fd-1f97-4524-a393-116ede2668c2" name="REDHAWK_DevMgr">
+    <devicemanagersoftpkg>
+        <localfile name="/mgr/DeviceManager.spd.xml"></localfile>
+    </devicemanagersoftpkg>
+    <componentfiles>
+        <componentfile type="SPD" id="GPP_731e6b96-de6c-49ae-b90f-69e1a663d778">
+            <localfile name="/devices/GPP/GPP.spd.xml"></localfile>
+        </componentfile>
+    </componentfiles>
+    <partitioning>
+        <componentplacement>
+            <componentfileref refid="GPP_731e6b96-de6c-49ae-b90f-69e1a663d778"></componentfileref>
+            <componentinstantiation id="DCE:0dba299a-c79a-4c35-bdc5-5f417b02df32">
+                <usagename>GPP1</usagename>
+            </componentinstantiation>
+        </componentplacement>
+    </partitioning>
+    <domainmanager>
+        <namingservice name="REDHAWK_DEV/REDHAWK_DEV"></namingservice>
+    </domainmanager>
+</deviceconfiguration>

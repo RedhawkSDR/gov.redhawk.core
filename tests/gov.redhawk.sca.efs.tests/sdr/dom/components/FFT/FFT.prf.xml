@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+    This file is protected by Copyright.
+    Please refer to the COPYRIGHT file distributed with this source distribution.
+
+    This file is part of REDHAWK IDE.
+
+    All rights reserved.  This program and the accompanying materials are made available under
+    the terms of the Eclipse Public License v1.0 which accompanies this distribution, and is available at
+    http://www.eclipse.org/legal/epl-v10.html.
+ 
+-->
+<!DOCTYPE properties SYSTEM "../dtd/properties.dtd">
+<properties>
+  <simple id="DCE:76da7a8c-c500-4b45-a95b-8288630703a7" mode="readwrite" name="fft_size" type="long">
+    <description>Size of the FFT that is to be made on the incoming data</description>
+    <value>1024</value>
+    <kind kindtype="configure"/>
+  </simple>
+  <simple id="DCE:38300987-cf36-40fa-b7db-9c576854283e" mode="readwrite" name="batch" type="string">
+    <description>single, series, or average. Single means do a single FFT on the incoming set. Series means do a series of FFTs over the whole data set. Average means take an average FFT for the whole set</description>
+    <value>single</value>
+    <kind kindtype="configure"/>
+  </simple>
+</properties>

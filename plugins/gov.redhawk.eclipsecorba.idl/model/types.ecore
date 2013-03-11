@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ecore:EPackage xmi:version="2.0"
+    xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" name="types"
+    nsURI="http:///gov/redhawk/eclipsecorba/idl.types.ecore" nsPrefix="types">
+  <eClassifiers xsi:type="ecore:EClass" name="TypeDef" eSuperTypes="idl.ecore#//TypedElement idl.ecore#//IdlTypeDcl"/>
+  <eClassifiers xsi:type="ecore:EClass" name="VoidType" eSuperTypes="idl.ecore#//IdlType"/>
+  <eClassifiers xsi:type="ecore:EClass" name="UnionType" eSuperTypes="idl.ecore#//IdlTypeDcl">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="forwardDcl" eType="#//UnionForwardDcl"
+        eOpposite="#//UnionForwardDcl/implementation"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="idlSwitch" eType="#//Switch"
+        containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Switch" eSuperTypes="idl.ecore#//FileRegion">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="type" eType="ecore:EClass idl.ecore#//IdlType"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="cases" upperBound="-1"
+        eType="#//Case" containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Case" eSuperTypes="idl.ecore#//FileRegion">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="labels" upperBound="-1"
+        eType="#//CaseLabel" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="spec" eType="#//ElementSpec"
+        containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="CaseLabel" abstract="true" eSuperTypes="idl.ecore#//FileRegion"/>
+  <eClassifiers xsi:type="ecore:EClass" name="DefaultCaseLabel" eSuperTypes="#//CaseLabel"/>
+  <eClassifiers xsi:type="ecore:EClass" name="ExprCaseLabel" eSuperTypes="#//CaseLabel">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="expr" eType="ecore:EClass expressions.ecore#//Expression"
+        containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="ElementSpec" eSuperTypes="idl.ecore#//FileRegion">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="type" eType="ecore:EClass idl.ecore#//IdlType"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="declarator" eType="ecore:EClass idl.ecore#//Declarator"
+        containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="EnumType" eSuperTypes="idl.ecore#//IdlTypeDcl">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="enumerators" upperBound="-1"
+        eType="#//Enumeration" containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="StructType" eSuperTypes="idl.ecore#//IdlTypeDcl idl.ecore#//MemberContainer">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="forwardDeclaration" eType="ecore:EClass idl.ecore#//ForwardDcl"
+        containment="true" resolveProxies="false"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="forwardDcl" eType="#//StructForwardDcl"
+        eOpposite="#//StructForwardDcl/implementation"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="TemplateType" abstract="true" eSuperTypes="idl.ecore#//IdlType">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="size" eType="ecore:EClass expressions.ecore#//Expression"
+        containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="SequenceType" eSuperTypes="#//TemplateType idl.ecore#//Typed"/>
+  <eClassifiers xsi:type="ecore:EClass" name="IdlString" eSuperTypes="#//TemplateType"/>
+  <eClassifiers xsi:type="ecore:EClass" name="WString" eSuperTypes="#//TemplateType"/>
+  <eClassifiers xsi:type="ecore:EClass" name="PrimitiveType" eSuperTypes="idl.ecore#//IdlType"/>
+  <eClassifiers xsi:type="ecore:EClass" name="Short" eSuperTypes="#//PrimitiveType"/>
+  <eClassifiers xsi:type="ecore:EClass" name="Long" eSuperTypes="#//PrimitiveType"/>
+  <eClassifiers xsi:type="ecore:EClass" name="Octet" eSuperTypes="#//PrimitiveType"/>
+  <eClassifiers xsi:type="ecore:EClass" name="Float" eSuperTypes="#//PrimitiveType"/>
+  <eClassifiers xsi:type="ecore:EClass" name="Double" eSuperTypes="#//PrimitiveType"/>
+  <eClassifiers xsi:type="ecore:EClass" name="IdlChar" eSuperTypes="#//PrimitiveType"/>
+  <eClassifiers xsi:type="ecore:EClass" name="IdlWChar" eSuperTypes="#//PrimitiveType"/>
+  <eClassifiers xsi:type="ecore:EClass" name="WChar" eSuperTypes="#//PrimitiveType"/>
+  <eClassifiers xsi:type="ecore:EClass" name="Boolean" eSuperTypes="#//PrimitiveType"/>
+  <eClassifiers xsi:type="ecore:EClass" name="LongLong" eSuperTypes="#//PrimitiveType"/>
+  <eClassifiers xsi:type="ecore:EClass" name="LongDouble" eSuperTypes="#//PrimitiveType"/>
+  <eClassifiers xsi:type="ecore:EClass" name="UShort" eSuperTypes="#//PrimitiveType"/>
+  <eClassifiers xsi:type="ecore:EClass" name="ULong" eSuperTypes="#//PrimitiveType"/>
+  <eClassifiers xsi:type="ecore:EClass" name="ULongLong" eSuperTypes="#//PrimitiveType"/>
+  <eClassifiers xsi:type="ecore:EClass" name="Any" eSuperTypes="#//PrimitiveType"/>
+  <eClassifiers xsi:type="ecore:EClass" name="IdlObject" eSuperTypes="#//PrimitiveType"/>
+  <eClassifiers xsi:type="ecore:EClass" name="UnionForwardDcl" eSuperTypes="idl.ecore#//IdlTypeDcl">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="implementation" eType="#//UnionType"
+        eOpposite="#//UnionType/forwardDcl"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="StructForwardDcl" eSuperTypes="idl.ecore#//IdlTypeDcl">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="implementation" eType="#//StructType"
+        eOpposite="#//StructType/forwardDcl"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="FixedPtType" eSuperTypes="#//TemplateType">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="expr1" eType="ecore:EClass expressions.ecore#//Expression"
+        containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="expr2" eType="ecore:EClass expressions.ecore#//Expression"
+        containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="ValueBaseType" eSuperTypes="#//PrimitiveType"/>
+  <eClassifiers xsi:type="ecore:EClass" name="Enumeration" eSuperTypes="idl.ecore#//Declarator idl.ecore#//IdlTypeDcl"/>
+</ecore:EPackage>

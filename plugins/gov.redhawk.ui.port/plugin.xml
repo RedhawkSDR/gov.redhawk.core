@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+   REDHAWK HEADER
+
+   Identification: $Revision: 7629 $
+ -->
+<?eclipse version="3.4"?>
+<plugin>
+   <extension-point id="gov.redhawk.ui.portHandler" name="Port Handler" schema="schema/gov.redhawk.ui.portHandler.exsd"/>
+   <extension
+         point="org.eclipse.ui.commands">
+      <command
+            categoryId="gov.redhawk.ui.commands.category.sca"
+            defaultHandler="gov.redhawk.ui.port.handlers.PlotUsesPortHandler"
+            id="gov.redhawk.ui.port.command.plot"
+            name="Plot Port">
+         <commandParameter
+               id="gov.redhawk.ui.port.command.plot.filterparam"
+               name="gov.redhawk.ui.port.command.plot.filterparam"
+               optional="false">
+         </commandParameter>
+         <commandParameter
+               id="gov.redhawk.ui.port.command.plot.listparam"
+               name="gov.redhawk.ui.port.command.plot.listparam"
+               optional="true">
+         </commandParameter>
+      </command>
+      <command
+            categoryId="gov.redhawk.ui.commands.category.sca"
+            defaultHandler="gov.redhawk.ui.port.handlers.PlayUsesPortHandler"
+            id="gov.redhawk.ui.port.command.play"
+            name="Play Port">
+         <commandParameter
+               id="gov.redhawk.ui.port.command.play.filterparam"
+               name="gov.redhawk.ui.port.command.play.filterparam"
+               optional="false">
+         </commandParameter>
+         <commandParameter
+               id="gov.redhawk.ui.port.command.play.listparam"
+               name="gov.redhawk.ui.port.command.play.listparam"
+               optional="true">
+         </commandParameter>
+      </command>
+   </extension>
+   <extension
+         point="org.eclipse.ui.menus">
+      <menuContribution
+            locationURI="popup:org.eclipse.ui.popup.any?after=additions">
+         <command
+               commandId="gov.redhawk.ui.port.command.plot"
+               label="Plot Port Data"
+               style="push">
+            <visibleWhen
+                  checkEnabled="false">
+               <iterate
+                     ifEmpty="false"
+                     operator="and">
+                  <or>
+                     <instanceof
+                           value="gov.redhawk.model.sca.ScaUsesPort">
+                     </instanceof>
+                     <adapt
+                           type="gov.redhawk.model.sca.ScaUsesPort">
+                     </adapt>
+                  </or>
+               </iterate>
+            </visibleWhen>
+            <parameter
+                  name="gov.redhawk.ui.port.command.plot.filterparam"
+                  value="plot">
+            </parameter>
+         </command>
+         <command
+               commandId="gov.redhawk.ui.port.command.plot"
+               label="Plot Port FFT"
+               style="push">
+            <visibleWhen
+                  checkEnabled="false">
+               <iterate
+                     ifEmpty="false"
+                     operator="and">
+                  <or>
+                     <instanceof
+                           value="gov.redhawk.model.sca.ScaUsesPort">
+                     </instanceof>
+                     <adapt
+                           type="gov.redhawk.model.sca.ScaUsesPort">
+                     </adapt>
+                  </or>
+               </iterate>
+            </visibleWhen>
+            <parameter
+                  name="gov.redhawk.ui.port.command.plot.filterparam"
+                  value="fft">
+            </parameter>
+         </command>
+         <command
+               commandId="gov.redhawk.ui.port.command.play"
+               label="Play Port"
+               style="push">
+            <visibleWhen
+                  checkEnabled="false">
+               <iterate
+                     ifEmpty="false"
+                     operator="and">
+                  <or>
+                     <instanceof
+                           value="gov.redhawk.model.sca.ScaUsesPort">
+                     </instanceof>
+                     <adapt
+                           type="gov.redhawk.model.sca.ScaUsesPort">
+                     </adapt>
+                  </or>
+               </iterate>
+            </visibleWhen>
+            <parameter
+                  name="gov.redhawk.ui.port.command.play.filterparam"
+                  value="play">
+            </parameter>
+         </command>
+      </menuContribution>
+   </extension>
+
+</plugin>

@@ -1,0 +1,4 @@
+gov.redhawk.sca.util/debug=false
+gov.redhawk.sca.util/debug/showTag=false
+gov.redhawk.sca.util/debug/showDate=false
+gov.redhawk.sca.util/debug/silentErrors=false

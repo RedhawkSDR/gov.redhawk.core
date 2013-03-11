@@ -1,0 +1,23 @@
+!*************
+!
+!   Dictionary definition file for NeXtMidas
+!
+!   @version $Id: commands.template,v 1.1 2001/07/16 15:35:51 newcastlek Exp $
+!
+!   FORMAT
+!   Name  Support,#parameters   key=default1,...,key=defaultN
+!
+!   Support Keys:
+!   M-Macro I-Intrinsic, P-Primitive, N-Native	(NeXtMidas)
+!   H-Host					(Xmidas)
+!
+!*************
+BULKIO2M*IDAS   M,4     ,CORBRAARGS=,FFTARGS=,THINARGS=,OUTPUT=,
+CORBARECEIVER*  P,7     ,FILE=,HOST=,PORT=9000,RESOURCE=,PORT_NAME=,IDL=,FORCE2000=false
+DISPTHIN*       P,4     ,INFILE=,OUTFILE=,REFRESHRATE=,FRAMELENGTH=
+FFTFILTER*      P,3     ,INPUT=,FILTER=,RANGES=
+LOCALP*LOT      M,4     ,PLOTARGS=,
+RHPLOTMAC*      M,5     ,HOST=,PORT=,RESOURCE=,PORT_NAME=,XFER_SIZE=,
+RMIFP*LOT       M,1     ,PORT=9000,
+SDDS2M*IDAS     M,4     ,SDDSARGS=,FFTARGS=,THINARGS=,OUTPUT=,
+SOURCENIC*      P,2     ,OUT=

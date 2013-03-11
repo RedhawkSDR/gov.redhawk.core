@@ -1,0 +1,182 @@
+/**
+ * This file is protected by Copyright. 
+ * Please refer to the COPYRIGHT file distributed with this source distribution.
+ * 
+ * This file is part of REDHAWK IDE.
+ * 
+ * All rights reserved.  This program and the accompanying materials are made available under 
+ * the terms of the Eclipse Public License v1.0 which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html.
+ *
+ */
+package gov.redhawk.sca.internal.ui.wizards;
+
+import gov.redhawk.model.sca.ScaAbstractComponent;
+import gov.redhawk.model.sca.ScaAbstractProperty;
+import gov.redhawk.model.sca.ScaComponent;
+import gov.redhawk.model.sca.ScaFactory;
+import gov.redhawk.sca.ui.ScaComponentFactory;
+import gov.redhawk.sca.ui.properties.ScaPropertiesAdapterFactory;
+import gov.redhawk.sca.ui.wizards.ScaPropertyUtil;
+
+import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
+import java.util.List;
+
+import mil.jpeojtrs.sca.partitioning.PartitioningPackage;
+import mil.jpeojtrs.sca.sad.SadPackage;
+import mil.jpeojtrs.sca.sad.SoftwareAssembly;
+import mil.jpeojtrs.sca.spd.SoftPkg;
+import mil.jpeojtrs.sca.util.ScaEcoreUtils;
+
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.emf.common.notify.AdapterFactory;
+import org.eclipse.emf.ecore.EStructuralFeature;
+import org.eclipse.jface.dialogs.IDialogSettings;
+import org.eclipse.jface.layout.GridDataFactory;
+import org.eclipse.jface.operation.IRunnableWithProgress;
+import org.eclipse.jface.viewers.TreeViewer;
+import org.eclipse.jface.wizard.WizardPage;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.widgets.Button;
+import org.eclipse.swt.widgets.Composite;
+
+import CF.DataType;
+
+public class ApplicationCreationPropertyEditWizardPage extends WizardPage {
+
+	private static final EStructuralFeature[] ASSEMBLY_SPD_PATH = new EStructuralFeature[] {
+	        SadPackage.Literals.SOFTWARE_ASSEMBLY__ASSEMBLY_CONTROLLER,
+	        SadPackage.Literals.ASSEMBLY_CONTROLLER__COMPONENT_INSTANTIATION_REF,
+	        PartitioningPackage.Literals.COMPONENT_INSTANTIATION_REF__INSTANTIATION,
+	        PartitioningPackage.Literals.COMPONENT_INSTANTIATION__PLACEMENT,
+	        PartitioningPackage.Literals.COMPONENT_PLACEMENT__COMPONENT_FILE_REF,
+	        PartitioningPackage.Literals.COMPONENT_FILE_REF__FILE,
+	        PartitioningPackage.Literals.COMPONENT_FILE__SOFT_PKG,
+	};
+	private final AdapterFactory adapterFactory;
+	private ScaComponent assemblyController = null;
+	private String waveformId;
+	private TreeViewer viewer;
+
+	public ApplicationCreationPropertyEditWizardPage(final String pageName) {
+		super(pageName);
+		setTitle("Assign initial properties");
+		this.setDescription("Provide the initial configuration for the waveform");
+		this.adapterFactory = new ScaPropertiesAdapterFactory();
+	}
+
+	public void createControl(final Composite parent) {
+		final Composite main = new Composite(parent, SWT.None);
+		main.setLayout(new GridLayout());
+		final Composite propComposite = new Composite(main, SWT.BORDER);
+		propComposite.setLayoutData(GridDataFactory.fillDefaults().grab(true, true).create());
+		this.viewer = ScaComponentFactory.createPropertyTable(propComposite, SWT.BORDER | SWT.FULL_SELECTION | SWT.SINGLE, this.adapterFactory);
+
+		final Button resetButton = new Button(main, SWT.PUSH);
+		resetButton.setText("Reset");
+		resetButton.setToolTipText("Reset all the property values to default");
+		resetButton.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(final SelectionEvent e) {
+				for (final ScaAbstractProperty< ? > prop : ApplicationCreationPropertyEditWizardPage.this.assemblyController.getProperties()) {
+					prop.restoreDefaultValue();
+				}
+			}
+		});
+		resetButton.setLayoutData(GridDataFactory.swtDefaults().align(SWT.END, SWT.FILL).create());
+
+		setControl(main);
+	}
+
+	public DataType[] getCreationProperties() {
+		final List<DataType> retVal = new ArrayList<DataType>();
+		if (this.assemblyController != null) {
+			for (final ScaAbstractProperty< ? > prop : this.assemblyController.getProperties()) {
+				if (!prop.isDefaultValue()) {
+					retVal.add(prop.getProperty());
+				}
+			}
+		}
+		storeProperties(retVal.isEmpty());
+		return retVal.toArray(new DataType[retVal.size()]);
+	}
+
+	public void init(final SoftwareAssembly sad) {
+		if (sad != null) {
+			this.waveformId = sad.getId();
+		} else {
+			this.waveformId = null;
+		}
+		if (this.assemblyController != null) {
+			this.assemblyController.dispose();
+			this.assemblyController = null;
+		}
+		final SoftPkg spd = ScaEcoreUtils.getFeature(sad, ApplicationCreationPropertyEditWizardPage.ASSEMBLY_SPD_PATH);
+		if (spd == null) {
+			this.assemblyController = null;
+			this.viewer.setInput(null);
+		} else {
+			this.assemblyController = ScaFactory.eINSTANCE.createScaComponent();
+			this.assemblyController.setDataProvidersEnabled(false);
+			this.assemblyController.setProfileObj(spd);
+			try {
+				getWizard().getContainer().run(true, false, new IRunnableWithProgress() {
+
+					public void run(final IProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
+						monitor.beginTask("Fetching properties of assembly controller.", IProgressMonitor.UNKNOWN);
+						ApplicationCreationPropertyEditWizardPage.this.assemblyController.fetchProperties(null);
+						for (final ScaAbstractProperty< ? > prop : ApplicationCreationPropertyEditWizardPage.this.assemblyController.getProperties()) {
+							prop.setIgnoreRemoteSet(true);
+						}
+						restoreProperties();
+						monitor.done();
+					}
+				});
+			} catch (final InvocationTargetException e) {
+				// PASS
+			} catch (final InterruptedException e) {
+				// PASS
+			}
+			this.viewer.setInput(this.assemblyController);
+		}
+	}
+
+	private void storeProperties(final boolean empty) {
+		IDialogSettings propertySettings = getDialogSettings().getSection(getName());
+		if (propertySettings == null) {
+			propertySettings = getDialogSettings().addNewSection(getName());
+		}
+		final IDialogSettings waveformSettings = propertySettings.addNewSection(this.waveformId);
+		if (!empty && this.assemblyController != null) {
+			ScaPropertyUtil.save(this.assemblyController, waveformSettings);
+		}
+	}
+
+	private void restoreProperties() {
+		if (this.assemblyController != null) {
+			final IDialogSettings propertySettings = getDialogSettings().getSection(getName());
+			if (this.waveformId != null && propertySettings != null) {
+				final IDialogSettings waveformSettings = propertySettings.getSection(this.waveformId);
+				if (waveformSettings != null) {
+					ScaPropertyUtil.load(this.assemblyController, waveformSettings);
+				}
+			}
+		}
+	}
+
+	public ScaAbstractComponent< ? > getAssemblyController() {
+		return this.assemblyController;
+	}
+
+	@Override
+	public void dispose() {
+		if (this.assemblyController != null) {
+			this.assemblyController.dispose();
+		}
+		super.dispose();
+	}
+}

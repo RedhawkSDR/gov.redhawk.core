@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+    This file is protected by Copyright.
+    Please refer to the COPYRIGHT file distributed with this source distribution.
+
+    This file is part of REDHAWK IDE.
+
+    All rights reserved.  This program and the accompanying materials are made available under
+    the terms of the Eclipse Public License v1.0 which accompanies this distribution, and is available at
+    http://www.eclipse.org/legal/epl-v10.html.
+ 
+-->
+<?eclipse version="3.4"?>
+<plugin>
+
+   <extension
+         point="org.eclipse.ui.views">
+      <view
+            allowMultiple="false"
+            category="gov.redhawk.ui.category.sca"
+            class="gov.redhawk.ui.views.monitor.ports.PortMonitorView"
+            fastViewWidthRatio="0.33"
+            icon="icons/sample.gif"
+            id="gov.redhawk.ui.views.monitor.ports.PortMonitorView"
+            name="Port Monitor"
+            restorable="true">
+      </view>
+   </extension>
+   <extension
+         point="org.eclipse.ui.menus">
+      <menuContribution
+            locationURI="popup:gov.redhawk.ui.views.monitor.ports.PortMonitorView">
+         <command
+               commandId="org.eclipse.ui.edit.delete"
+               label="Stop Monitoring"
+               style="push">
+            <visibleWhen
+                  checkEnabled="false">
+               <iterate>
+                  <or>
+                     <instanceof
+                           value="gov.redhawk.ui.views.monitor.model.ports.Monitor">
+                     </instanceof>
+                  </or>
+               </iterate>
+            </visibleWhen>
+         </command>
+         <command
+               commandId="org.eclipse.ui.file.refresh"
+               style="push">
+            <visibleWhen
+                  checkEnabled="false">
+               <iterate>
+                  <or>
+                     <instanceof
+                           value="gov.redhawk.ui.views.monitor.model.ports.Monitor">
+                     </instanceof>
+                  </or>
+               </iterate>
+            </visibleWhen>
+         </command>
+      </menuContribution>
+      <menuContribution
+            allPopups="true"
+            locationURI="popup:org.eclipse.ui.popup.any?after=org.eclipse.ui.file.refresh">
+         <command
+               commandId="gov.redhawk.ui.views.monitor.command"
+               style="push">
+            <visibleWhen
+                  checkEnabled="false">
+               <iterate
+                     ifEmpty="false"
+                     operator="and">
+                  <or>
+                     <adapt
+                           type="gov.redhawk.model.sca.ScaPort">
+                     </adapt>
+                     <adapt
+                           type="gov.redhawk.model.sca.ScaPortContainer">
+                     </adapt>
+                  </or>
+               </iterate>
+            </visibleWhen>
+         </command>
+      </menuContribution>
+   </extension>
+   <extension
+         point="org.eclipse.ui.commands">
+      <command
+            categoryId="gov.redhawk.ui.commands.category.sca"
+            description="Monitor the statistics of the ports"
+            id="gov.redhawk.ui.views.monitor.command"
+            name="Monitor Ports">
+      </command>
+   </extension>
+   <extension
+         point="org.eclipse.ui.handlers">
+      <handler
+            class="gov.redhawk.ui.views.internal.monitor.handler.StopMonitorHandler"
+            commandId="org.eclipse.ui.edit.delete">
+         <activeWhen>
+            <iterate
+                  ifEmpty="false"
+                  operator="or">
+               <or>
+                  <instanceof
+                        value="gov.redhawk.ui.views.monitor.model.ports.Monitor">
+                  </instanceof>
+               </or>
+            </iterate>
+         </activeWhen>
+      </handler>
+      <handler
+            class="gov.redhawk.ui.views.internal.monitor.handler.RefreshHandler"
+            commandId="org.eclipse.ui.file.refresh">
+         <activeWhen>
+            <iterate
+                  ifEmpty="false"
+                  operator="or">
+               <or>
+                  <instanceof
+                        value="gov.redhawk.ui.views.monitor.model.ports.Monitor">
+                  </instanceof>
+               </or>
+            </iterate>
+         </activeWhen>
+      </handler>
+      <handler
+            class="gov.redhawk.ui.views.internal.monitor.handler.MonitorPortHandler"
+            commandId="gov.redhawk.ui.views.monitor.command">
+         <activeWhen>
+            <iterate
+                  ifEmpty="false"
+                  operator="and">
+               <adapt
+                     type="gov.redhawk.model.sca.ScaPort">
+               </adapt>
+            </iterate></activeWhen>
+         <enabledWhen>
+            <iterate
+                  ifEmpty="false"
+                  operator="and">
+               <test
+                     forcePluginActivation="true"
+                     property="gov.redhawk.ui.views.monitor.canMonitorPort">
+               </test>
+            </iterate>
+         </enabledWhen>
+      </handler>
+      <handler
+            class="gov.redhawk.ui.views.internal.monitor.handler.MonitorPortSupplierHandler"
+            commandId="gov.redhawk.ui.views.monitor.command">
+         <activeWhen>
+            <iterate
+                  ifEmpty="false"
+                  operator="and">
+               <adapt
+                     type="gov.redhawk.model.sca.ScaPortContainer">
+               </adapt>
+            </iterate>
+         </activeWhen>
+         <enabledWhen>
+            <iterate
+                  ifEmpty="false"
+                  operator="and">
+               <adapt
+                     type="gov.redhawk.model.sca.ScaPortContainer">
+               </adapt>
+            </iterate></enabledWhen>
+      </handler>
+   </extension>
+   <extension
+         point="org.eclipse.core.expressions.propertyTesters">
+      <propertyTester
+            class="gov.redhawk.ui.views.internal.monitor.tester.MonitorPortTester"
+            id="gov.redhawk.ui.views.monitor.tester.MonitorPortTester"
+            namespace="gov.redhawk.ui.views.monitor"
+            properties="canMonitorPort"
+            type="java.lang.Object">
+      </propertyTester>
+   </extension>
+
+</plugin>

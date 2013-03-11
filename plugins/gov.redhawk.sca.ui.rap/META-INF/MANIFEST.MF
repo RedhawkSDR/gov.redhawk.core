@@ -1,0 +1,10 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Sca Rap UI Fragement
+Bundle-SymbolicName: gov.redhawk.sca.ui.rap;singleton:=true
+Bundle-Version: 1.0.0.qualifier
+Bundle-Vendor: United States Government
+Fragment-Host: gov.redhawk.sca.ui;bundle-version="8.0.0"
+Bundle-RequiredExecutionEnvironment: J2SE-1.5
+Bundle-ClassPath: library.jar
+Export-Package: gov.redhawk.sca.ui.compatibility

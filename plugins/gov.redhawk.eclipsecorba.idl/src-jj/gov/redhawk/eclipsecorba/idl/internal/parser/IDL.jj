@@ -1,0 +1,3474 @@
+/**
+ * REDHAWK HEADER
+ *
+ * Identification: $Revision: 8500 $
+ */
+options
+{
+  LOOKAHEAD= 1;
+
+  JDK_VERSION="1.5";
+  STATIC = false;
+  CACHE_TOKENS = true;
+  ERROR_REPORTING = true;
+  JAVA_UNICODE_ESCAPE = true;
+  DEBUG_PARSER = false;
+  DEBUG_LOOKAHEAD = false;
+  DEBUG_TOKEN_MANAGER = false;
+  COMMON_TOKEN_ACTION = true;
+}
+
+PARSER_BEGIN(IDLParser)
+package gov.redhawk.eclipsecorba.idl.internal.parser;
+import java.io.*;
+import java.util.*;
+import gov.redhawk.eclipsecorba.idl.*;
+import gov.redhawk.eclipsecorba.idl.expressions.*;
+import gov.redhawk.eclipsecorba.idl.types.*;
+import gov.redhawk.eclipsecorba.idl.types.Enumeration;
+import gov.redhawk.eclipsecorba.idl.operations.*;
+import org.eclipse.emf.ecore.resource.Resource;
+
+public class IDLParser
+{
+
+  private Resource resource;
+
+  private Scope root;
+
+  public static Specification parse(InputStream in, String encoding, Resource resource, Scope rootScope) throws ParseException
+  {
+    IDLParser parser = new IDLParser(in, encoding);
+    parser.resource = resource;
+    parser.root = rootScope;
+    return parser.idlFile();
+  }
+
+  public static Specification parse(InputStream in, Resource resource, Scope rootScope) throws ParseException
+  {
+    return parse(in, null, resource, rootScope);
+  }
+
+  public static Specification parse(File file, String encoding, Resource resource, Scope rootScope) throws ParseException
+  {
+    try
+    {
+      FileInputStream in = new FileInputStream(file);
+      try
+      {
+        return parse(in, encoding, resource, rootScope);
+      }
+      finally
+      {
+        in.close();
+      }
+    }
+    catch (IOException e)
+    {
+      throw new RuntimeException(e);
+    }
+  }
+
+  public static Specification parse(File file, Resource resource, Scope rootScope) throws ParseException
+  {
+    return parse(file, null, resource, rootScope);
+  }
+
+  private BlockComment popComment()
+  {
+    return token_source.popComment();
+  }
+  
+  List < Comment > getComments()
+  {
+    return token_source.getComments();
+  }
+ 
+  Resource getResource()
+  {
+    return resource;
+  }
+  
+   String getPrefix()
+  {
+	return token_source.getPrefix();
+  }
+}
+
+PARSER_END(IDLParser)
+
+/* WHITE SPACE */
+SKIP :
+{
+  " "
+| "\t"
+| "\n"
+| "\r"
+| "\f"
+}
+
+/* COMMENTS */
+TOKEN_MGR_DECLS :
+{
+  private final List < Comment > comments = new ArrayList < Comment > ();
+
+  private final List < String > includes = new ArrayList < String > ();
+  
+  private String prefix;
+  private Scope currentScope;
+
+  private BlockComment lastBlock;
+  BlockComment popComment()
+  {
+    BlockComment retVal = lastBlock;
+    if (lastBlock != null)
+    {
+      lastBlock = null;
+    }
+    return retVal;
+  }
+  String getPrefix()
+  {
+	return prefix;
+  }
+  List < Comment > getComments()
+  {
+    return comments;
+  }
+  List < String > getIncludes()
+  {
+    return includes;
+  }
+
+  void clearComments()
+  {
+    comments.clear();
+    lastBlock = null;
+  }
+  void setCurrentScope(Scope scope)
+  {
+	currentScope = scope;
+  }
+
+  private void CommonTokenAction(Token token)
+  {
+    //    lastBlock = null;
+    if (token.specialToken != null)
+    {
+      Token special = token.specialToken;
+      while (special.specialToken != null) special = special.specialToken;
+      // The above line walks back the special token chain until it
+      // reaches the first special token after the previous regular
+      // token.
+      while (special != null)
+      {
+        // Now walk down the tree handling each special token
+        switch (special.kind)
+        {
+          case SINGLE_LINE_COMMENT :
+          {
+            LineComment comment = IdlFactory.eINSTANCE.createLineComment();
+            comment.setStartLine(special.beginLine);
+            comment.setEndLine(special.endLine);
+            comment.setStartColumn(special.beginColumn);
+            comment.setEndColumn(special.endColumn);
+            comment.setContent(special.image.substring(2));
+            comments.add(comment);
+            break;
+          }
+          case MULTI_LINE_COMMENT :
+          {
+            lastBlock = IdlFactory.eINSTANCE.createBlockComment();
+            lastBlock.setStartLine(special.beginLine);
+            lastBlock.setEndLine(special.endLine);
+            lastBlock.setStartColumn(special.beginColumn);
+            lastBlock.setEndColumn(special.endColumn);
+            lastBlock.setContent(special.image.substring(2, special.image.length() - 2));
+            comments.add(lastBlock);
+            break;
+          }
+          case PREPROCESSOR_OUTPUT :
+          {
+           	if (special.image.startsWith("#pragma"))
+           	{
+            	String[] array = special.image.split(" ");
+            	if (array.length == 3) {
+            		if (array[1].equals("prefix")) {
+            			this.prefix = array[2].replace("\"", "").trim(); 
+            		}
+            	}
+            	if (array.length == 4 && currentScope != null)
+            	{
+            	  	Identifiable identifiable = currentScope.findIdentifiableNull(array[2]);
+            	  	
+            	  	if (identifiable instanceof Definition)
+            	  	{
+            	  	  Definition def = (Definition)identifiable;
+						if (array[1].equalsIgnoreCase("ID"))
+						{
+						  def.setFullId(array[3].replace("\"","").trim()); 
+	            		}
+	            		if (array[1].equalsIgnoreCase("VERSION"))
+	            		{
+	            		  def.setVersion(array[3].replace("\"","").trim());
+	            		}
+            		}
+            	}
+           }
+            break;
+          }
+        }
+        special = special.next;
+      }
+    }
+  }
+}
+
+SPECIAL_TOKEN :
+{
+  < PREPROCESSOR_OUTPUT :
+    "#" (~[ "\n", "\r" ])*
+    (
+      "\n"
+    | "\r"
+    | "\r\n"
+    )? >
+}
+
+SPECIAL_TOKEN :
+{
+  < SINGLE_LINE_COMMENT :
+    "//" (~[ "\n", "\r" ])*
+    (
+      "\n"
+    | "\r"
+    | "\r\n"
+    )? >
+}
+
+MORE :
+{
+  < "/*" > : IN_MULTI_LINE_COMMENT
+}
+
+< IN_MULTI_LINE_COMMENT >
+SPECIAL_TOKEN :
+{
+  < MULTI_LINE_COMMENT : "*/" > : DEFAULT
+}
+
+< IN_MULTI_LINE_COMMENT >
+MORE :
+{
+  < ~[ ] >
+}
+
+TOKEN :
+{
+  < ABSTRACT : "abstract" >
+| < EXCEPTION : "exception" >
+| < INOUT : "inout" >
+| < PROVIDES : "provides" >
+| < TRUNCATABLE : "truncatable" >
+| < ANY : "any" >
+| < EMITS : "emits" >
+| < INTERFACE : "interface" >
+| < PUBLIC : "public" >
+| < TYPEDEF : "typedef" >
+| < ATTRIBUTE : "attribute" >
+| < ENUM : "enum" >
+| < LOCAL : "local" >
+| < PUBLISHES : "publishes" >
+| < TYPEID : "typeid" >
+| < BOOLEAN : "boolean" >
+| < EVENTTYPE : "eventtype" >
+| < LONG : "long" >
+| < RAISES : "raises" >
+| < TYPEPREFIX : "typeprefix" >
+| < CASE : "case" >
+| < FACTORY : "factory" >
+| < MODULE : "module" >
+| < READONLY : "readonly" >
+| < UNSIGNED : "unsigned" >
+| < CHAR : "char" >
+| < FALSE : "FALSE" >
+| < MULTIPLE : "multiple" >
+| < SET_RAISES : "setraises" >
+| < UNION : "union" >
+| < COMPONENT : "component" >
+| < FINDER : "finder" >
+| < NATIVE : "native" >
+| < SEQUENCE : "sequence" >
+| < USES : "uses" >
+| < CONST : "const" >
+| < FIXED : "fixed" >
+| < SHORT : "short" >
+| < VALUE_BASE : "ValueBase" >
+| < CONSUMES : "consumes" >
+| < FLOAT : "float" >
+| < OCTET : "octet" >
+| < IDL_STRING : "string" >
+| < VALUETYPE : "valuetype" >
+| < CONTEXT : "context" >
+| < GET_RAISES : "getraises" >
+| < ONEWAY : "oneway" >
+| < STRUCT : "struct" >
+| < VOID : "void" >
+| < CUSTOM : "custom" >
+| < HOME : "home" >
+| < OUT : "out" >
+| < SUPPORTS : "supports" >
+| < WCHAR : "wchar" >
+| < _DEFAULT : "default" >
+| < IMPORT : "import" >
+| < PRIMARYKEY : "primarykey" >
+| < SWITCH : "switch" >
+| < WSTRING : "wstring" >
+| < DOUBLE : "double" >
+| < IN : "in" >
+| < PRIVATE : "private" >
+| < TRUE : "TRUE" >
+| < OBJECT : "Object" >
+| < MANAGES : "manages" >
+}
+
+Specification idlFile() :
+{
+  Specification retVal = null;
+}
+{
+  [ retVal = specification() ] < EOF >
+  {
+    return retVal;
+  }
+}
+
+/* Production 1 */
+Specification specification() :
+{
+  Specification spec = IdlFactory.eINSTANCE.createSpecification();
+  List <? extends Definition > defs = null;
+  int startLine = 0;
+  int startColumn = 0;
+  int endLine = 0;
+  int endColumn = 0;
+  token_source.setCurrentScope(root);
+}
+{
+  (
+    defs = definition(root)
+    {
+      spec.getDefinitions().addAll(defs);
+    }
+  )+
+  < EOF >
+  {
+    endLine = token.endLine;
+    endColumn = token.endColumn;
+    spec.setStartLine(startLine);
+    spec.setStartColumn(startColumn);
+    spec.setEndLine(endLine);
+    spec.setEndColumn(endColumn);
+    spec.setName(resource.getURI().lastSegment());
+    spec.setPrefix(getPrefix());
+    return spec;
+  }
+}
+
+/* Production 2 */
+List <? extends Definition > definition(Scope scope) :
+{
+  List <? extends Definition > retVal = null;
+  Definition def = null;
+}
+{
+  (
+    retVal = type_dcl(scope) ";"
+  | def = const_dcl(scope) ";"
+  | def = except_dcl(scope) ";"
+  | LOOKAHEAD(2)
+    def = interfacex(scope) ";"
+  |
+    (
+      // TODO
+      LOOKAHEAD(value())
+      def = value(scope) ";"
+    | def = event(scope) ";"
+    )
+  | def = module(scope) ";"
+  | def = type_id_dcl(scope) ";"
+  | def = type_prefix_dcl(scope) ";"
+  | def = component(scope) ";"
+  | def = home_dcl(scope) ";"
+  )
+  {
+    if (retVal == null && def != null)
+    {
+      retVal = Collections.singletonList(def);
+    }
+    return retVal;
+  }
+}
+
+/* Production 3 */
+Module module(Scope scope) :
+{
+  Module module = IdlFactory.eINSTANCE.createModule();
+  Scope moduleScope = null;
+  List <? extends Definition > defs = null;
+  int startLine = 0;
+  int startColumn = 0;
+  int endLine = 0;
+  int endColumn = 0;
+  Comment comment = popComment();
+}
+{
+  < MODULE >
+  {
+    startLine = token.beginLine;
+    startColumn = token.beginColumn;
+  }
+  identifiableElement(module)
+  {
+    Identifiable tmp = scope.findIdentifiableNull(module.getName());
+    if (tmp instanceof Module)
+    {
+      moduleScope = scope.getScope(tmp);
+    }
+    else
+    {
+      moduleScope = new Scope(module, scope, token);
+    }
+    token_source.setCurrentScope(moduleScope);
+  }
+  "{"
+  (
+    defs = definition(moduleScope)
+    {
+      module.getDefinitions().addAll(defs);
+    }
+  )+
+  "}"
+  {
+    endLine = token.endLine;
+    endColumn = token.endColumn;
+    module.setStartLine(startLine);
+    module.setStartColumn(startColumn);
+    module.setEndLine(endLine);
+    module.setEndColumn(endColumn);
+    module.setPrefix(getPrefix());
+  }
+  {
+    module.setComment(comment);
+    token_source.setCurrentScope(scope);
+    return module;
+  }
+}
+
+/* Production 4 */
+IdlTypeDcl interfacex(Scope parent) :
+{
+  IdlTypeDcl retVal = null;
+}
+{
+  (
+    LOOKAHEAD(3)
+    retVal = interface_dcl(parent)
+  | retVal = forward_dcl(parent)
+  )
+  {
+    return retVal;
+  }
+}
+
+/* Production 5 */
+IdlInterfaceDcl interface_dcl(Scope parent) :
+{
+  IdlInterfaceDcl retVal = null;
+  Scope myScope = null;
+  int endLine = 0;
+  int endColumn = 0;
+  Comment comment = popComment();
+}
+{
+  retVal = interface_header(parent)
+  {
+    IdlInterfaceDcl type = parent.findInterfaceDclStub(retVal.getName());
+    if (type != null)
+    {
+      IdlInterfaceDcl tmp = (IdlInterfaceDcl) type;
+      tmp.getInheritedInterfaces().addAll(retVal.getInheritedInterfaces());
+      tmp.setStartLine(retVal.getStartLine());
+      tmp.setStartColumn(retVal.getStartColumn());
+      retVal = tmp;
+      myScope = parent.getScope(retVal);
+    }
+    else
+    {
+      myScope = new Scope(retVal, parent, token);
+    }
+  }
+  "{" interface_body(retVal, myScope) "}"
+  {
+    endLine = token.endLine;
+    endColumn = token.endColumn;
+    retVal.setEndLine(endLine);
+    retVal.setEndColumn(endColumn);
+  }
+  {
+    retVal.setComment(comment);
+    retVal.setPrefix(getPrefix());
+    return retVal;
+  }
+}
+
+/* Production 6 */
+ForwardDcl forward_dcl(Scope parent) :
+{
+  ForwardDcl retVal = IdlFactory.eINSTANCE.createForwardDcl();
+  int startLine = 0;
+  int startColumn = 0;
+  int endLine = 0;
+  int endColumn = 0;
+  Comment comment = popComment();
+}
+{
+  [
+    < ABSTRACT >
+    {
+      retVal.setAbstract(true);
+    }
+  | < LOCAL >
+    {
+      retVal.setLocal(true);
+    }
+  ]
+  < INTERFACE >
+  {
+    startLine = token.beginLine;
+    startColumn = token.beginColumn;
+  }
+  identifiableElement(retVal)
+  {
+    endLine = token.endLine;
+    endColumn = token.endColumn;
+    retVal.setStartLine(startLine);
+    retVal.setStartColumn(startColumn);
+    retVal.setEndLine(endLine);
+    retVal.setEndColumn(endColumn);
+  }
+  {
+    IdlInterfaceDcl interfaceStub = IdlFactory.eINSTANCE.createIdlInterfaceDcl();
+    interfaceStub.setName(retVal.getName());
+    interfaceStub.setForwardDcl(retVal);
+    retVal.setImplementation(interfaceStub);
+    retVal.setComment(comment);
+    parent.addScope(interfaceStub, token);
+    return retVal;
+  }
+}
+
+/* Production 7 */
+IdlInterfaceDcl interface_header(Scope scope) :
+{
+  IdlInterfaceDcl retVal = IdlFactory.eINSTANCE.createIdlInterfaceDcl();
+  List < IdlInterfaceDcl > inherits = null;
+  int startLine = 1;
+  int startColumn = 0;
+}
+{
+  [
+    < ABSTRACT >
+    {
+      retVal.setAbstract(true);
+    }
+  | < LOCAL >
+    {
+      retVal.setLocal(true);
+    }
+  ]
+  < INTERFACE >
+  {
+    startLine = token.beginLine;
+    startColumn = token.beginColumn;
+  }
+  identifiableElement(retVal)
+  [
+    inherits = inheritance_spec(scope)
+    {
+      retVal.getInheritedInterfaces().addAll(inherits);
+    }
+  ]
+  {
+    retVal.setStartLine(startLine);
+    retVal.setStartColumn(startColumn);
+    return retVal;
+  }
+}
+
+/* Production 8 */
+void interface_body(IdlInterfaceDcl val, Scope scope) :
+{
+  List <? extends Element > elements = null;
+}
+{
+  (
+    elements = export(scope)
+    {
+      for (Element e : elements)
+      {
+        if (e instanceof Export)
+        {
+          val.getBody().add((Export) e);
+        }
+        else if (e instanceof Definition)
+        {
+          val.getDefinitions().add((Definition) e);
+        }
+      }
+    }
+  )*
+}
+
+/* Production 9 */
+List <? extends Element > export(Scope scope) :
+{
+  List <? extends Element > retVal = null;
+  Element element = null;
+}
+{
+  (
+    retVal = type_dcl(scope) ";"
+  | element = const_dcl(scope) ";"
+  | element = except_dcl(scope) ";"
+  | retVal = attr_dcl(scope) ";"
+  | element = op_dcl(scope) ";"
+  | element = type_id_dcl(scope) ";"
+  | element = type_prefix_dcl(scope) ";"
+  )
+  {
+    if (retVal == null)
+    {
+      retVal = Collections.singletonList(element);
+    }
+    return retVal;
+  }
+}
+
+/* Production 10 */
+List < IdlInterfaceDcl > inheritance_spec(Scope scope) :
+{
+  String scopedName = null;
+  List < IdlInterfaceDcl > retVal = new ArrayList < IdlInterfaceDcl > ();
+}
+{
+  ":" scopedName = interface_name()
+  {
+    retVal.add((IdlInterfaceDcl) scope.findType(scopedName, token));
+  }
+  (
+    "," scopedName = interface_name()
+    {
+      retVal.add((IdlInterfaceDcl) scope.findType(scopedName, token));
+    }
+  )*
+  {
+    return retVal;
+  }
+}
+
+/* Production 11 */
+String interface_name() :
+{
+  String retVal = null;
+}
+{
+  retVal = scoped_name()
+  {
+    return retVal;
+  }
+}
+
+/* Production 12 */
+String scoped_name() :
+{
+  StringBuilder builder = new StringBuilder();
+  String id = null;
+}
+{
+  [
+    "::"
+    {
+      builder.append("::");
+    }
+  ]
+  id = identifier()
+  {
+    builder.append(id);
+  }
+  (
+    "::"
+    {
+      builder.append("::");
+    }
+    id = identifier()
+    {
+      builder.append(id);
+    }
+  )*
+  {
+    return builder.toString();
+  }
+}
+
+/* Production 13 */
+Definition value(Scope scope) :
+{
+  Definition retVal = null;
+}
+{
+  (
+    LOOKAHEAD(3)
+    (
+      LOOKAHEAD(3)
+      retVal = value_dcl(scope)
+    | retVal = value_abs_dcl(scope)
+    )
+  |
+    (
+      LOOKAHEAD(3)
+      retVal = value_box_dcl(scope)
+    | retVal = value_forward_dcl()
+    )
+  )
+  {
+    return retVal;
+  }
+}
+
+/* Production 14 */
+ValueForwardDcl value_forward_dcl() :
+{
+  ValueForwardDcl retVal = null;
+}
+{
+  [ < ABSTRACT > ] < VALUETYPE > identifier()
+  {
+    throw new UnsupportedOperationException();
+  }
+}
+
+/* Production 15 */
+ValueBoxDcl value_box_dcl(Scope scope) :
+{
+  ValueBoxDcl retVal = IdlFactory.eINSTANCE.createValueBoxDcl();
+  IdlType typeSpec = null;
+  Comment comment = popComment();
+}
+{
+  < VALUETYPE >
+  {
+	retVal.setStartLine(token.beginLine);
+	retVal.setStartColumn(token.beginColumn);
+  } identifiableElement(retVal) typeSpec = type_spec(scope)
+  {
+    retVal.setTypeSpec(typeSpec);
+    retVal.setComment(comment);
+    retVal.setEndLine(token.endLine);
+    retVal.setEndColumn(token.endColumn);
+    return retVal;
+  }
+}
+
+/* Production 16 */
+Definition value_abs_dcl(Scope scope) :
+{}
+{
+  < ABSTRACT > < VALUETYPE > identifier() [ value_inheritance_spec(scope) ] "{"
+  (
+    export(scope)
+  )*
+  "}"
+  {
+    throw new UnsupportedOperationException();
+  }
+}
+
+/* Production 17 */
+ValueDcl value_dcl(Scope scope) :
+{}
+{
+  value_header(scope) "{"
+  (
+    value_element(scope)
+  )*
+  "}"
+  {
+    throw new UnsupportedOperationException();
+  }
+}
+
+/* Production 18 */
+ValueDcl value_header(Scope parent) :
+{}
+{
+  [ < CUSTOM > ] < VALUETYPE > identifier() [ value_inheritance_spec(parent) ]
+  {
+    throw new UnsupportedOperationException();
+  }
+}
+
+/* Production 19 */
+void value_inheritance_spec(Scope scope) :
+{}
+{
+  ":" [ < TRUNCATABLE > ] value_name()
+  (
+    "," value_name()
+  )*
+  [
+    < SUPPORTS > interface_name()
+    (
+      "," interface_name()
+    )*
+  ]
+  {
+    throw new UnsupportedOperationException();
+  }
+}
+
+/* Production 20 */
+void value_name() :
+{}
+{
+  scoped_name()
+}
+
+/* Production 21 */
+void value_element(Scope scope) :
+{}
+{
+  export(scope)
+| state_member(scope)
+| init_dcl(scope)
+}
+
+/* Production 22 */
+void state_member(Scope scope) :
+{}
+{
+  (
+    < PUBLIC >
+  | < PRIVATE >
+  )
+  type_spec(scope) declarators(scope) ";"
+}
+
+/* Production 23 */
+void init_dcl(Scope scope) :
+{}
+{
+  < FACTORY > identifier() "(" [ init_param_decls(scope) ] ")" [ raises_expr(scope) ] ";"
+  {
+    throw new UnsupportedOperationException();
+  }
+}
+
+/* Production 24 */
+void init_param_decls(Scope scope) :
+{}
+{
+  init_param_decl(scope)
+  (
+    "," init_param_decl(scope)
+  )*
+}
+
+/* Production 25 */
+void init_param_decl(Scope scope) :
+{}
+{
+  init_param_attribute() param_type_spec(scope) simple_declarator()
+}
+
+/* Production 26 */
+void init_param_attribute() :
+{}
+{
+  < IN >
+}
+
+/* Production 27 */
+IdlConstDcl const_dcl(Scope parent) :
+{
+  IdlConstDcl constDcl = IdlFactory.eINSTANCE.createIdlConstDcl();
+  IdlType type = null;
+  int startLine = 0;
+  int startColumn = 0;
+  int endLine = 0;
+  int endColumn = 0;
+  Comment comment = popComment();
+}
+{
+  < CONST >
+  {
+    startLine = token.beginLine;
+    startColumn = token.beginColumn;
+  }
+  type = const_type(parent)
+  {
+    constDcl.setType(type);
+  }
+  identifiableElement(constDcl) "=" const_exp(parent)
+  {
+    endLine = token.endLine;
+    endColumn = token.endColumn;
+    constDcl.setStartLine(startLine);
+    constDcl.setStartColumn(startColumn);
+    constDcl.setEndLine(endLine);
+    constDcl.setEndColumn(endColumn);
+    constDcl.setComment(comment);
+    parent.addMember(constDcl, token);
+    return constDcl;
+  }
+}
+
+/* Production 28 */
+IdlType const_type(Scope scope) :
+{
+  IdlType retVal = null;
+  String scopedName = null;
+}
+{
+  (
+    LOOKAHEAD(2)
+    retVal = integer_type()
+  | retVal = floating_pt_type()
+  | retVal = char_type()
+  | retVal = wide_char_type()
+  | retVal = boolean_type()
+  | retVal = string_type(scope)
+  | retVal = wide_string_type(scope)
+  | retVal = fixed_pt_const_type(scope)
+  | retVal = octet_type()
+  | scopedName = scoped_name()
+    {
+      retVal = scope.findType(scopedName, token);
+    }
+  )
+  {
+    return retVal;
+  }
+}
+
+/* Production 29 */
+Expression const_exp(Scope scope) :
+{
+  Expression retVal = null;
+}
+{
+  retVal = or_expr(scope)
+  {
+    return retVal;
+  }
+}
+
+/* Production 30 */
+Expression or_expr(Scope scope) :
+{
+  Expression left = null;
+  Expression right = null;
+}
+{
+  left = xor_expr(scope)
+  //  (
+  //    "|" right = xor_expr()
+  //  )*
+  [
+    "|" right = or_expr(scope)
+    {
+      OrExpression retVal = ExpressionsFactory.eINSTANCE.createOrExpression();
+      retVal.setStartLine(left.getStartLine());
+      retVal.setStartColumn(left.getStartColumn());
+      retVal.setEndLine(right.getEndLine());
+      retVal.setEndColumn(right.getEndColumn());
+      retVal.setLeft(left);
+      retVal.setRight(right);
+      return retVal;
+    }
+  ]
+  {
+    return left;
+  }
+}
+
+/* Production 31 */
+Expression xor_expr(Scope scope) :
+{
+  Expression left = null;
+  Expression right = null;
+}
+{
+  left = and_expr(scope)
+  //  (
+  //    "^" and_expr()
+  //  )*
+  [
+    "^" right = xor_expr(scope)
+    {
+      XOrExpression retVal = ExpressionsFactory.eINSTANCE.createXOrExpression();
+      retVal.setStartLine(left.getStartLine());
+      retVal.setStartColumn(left.getStartColumn());
+      retVal.setEndLine(right.getEndLine());
+      retVal.setEndColumn(right.getEndColumn());
+      retVal.setLeft(left);
+      retVal.setRight(right);
+      return retVal;
+    }
+  ]
+  {
+    return left;
+  }
+}
+
+/* Production 32 */
+Expression and_expr(Scope scope) :
+{
+  Expression left = null;
+  Expression right = null;
+}
+{
+  left = shift_expr(scope)
+  //  (
+  //    "&" shift_expr()
+  //  )*
+  [
+    "&" right = and_expr(scope)
+    {
+      AndExpression retVal = ExpressionsFactory.eINSTANCE.createAndExpression();
+      retVal.setStartLine(left.getStartLine());
+      retVal.setStartColumn(left.getStartColumn());
+      retVal.setEndLine(right.getEndLine());
+      retVal.setEndColumn(right.getEndColumn());
+      retVal.setLeft(left);
+      retVal.setRight(right);
+      return retVal;
+    }
+  ]
+  {
+    return left;
+  }
+}
+
+/* Production 33 */
+Expression shift_expr(Scope scope) :
+{
+  Expression left = null;
+  Expression right = null;
+  ShiftType shiftType = null;
+}
+{
+  left = add_expr(scope)
+  //  (
+  //    (
+  //      ">>"
+  //    | "<<"
+  //    )
+  //    add_expr()
+  //  )*
+  [
+    (
+      ">>"
+      {
+        shiftType = ShiftType.RIGHT;
+      }
+    | "<<"
+      {
+        shiftType = ShiftType.LEFT;
+      }
+    )
+    right = shift_expr(scope)
+    {
+      ShiftExpression retVal = ExpressionsFactory.eINSTANCE.createShiftExpression();
+      retVal.setStartLine(left.getStartLine());
+      retVal.setStartColumn(left.getStartColumn());
+      retVal.setEndLine(right.getEndLine());
+      retVal.setEndColumn(right.getEndColumn());
+      retVal.setLeft(left);
+      retVal.setRight(right);
+      retVal.setType(shiftType);
+      return retVal;
+    }
+  ]
+  {
+    return left;
+  }
+}
+
+/* Production 34 */
+Expression add_expr(Scope scope) :
+{
+  Expression left = null;
+  Expression right = null;
+  AddType type = null;
+}
+{
+  left = mult_expr(scope)
+  //  (
+  //    (
+  //      "+"
+  //    | "-"
+  //    )
+  //    mult_expr()
+  //  )*
+  [
+    (
+      "+"
+      {
+        type = AddType.ADDITION;
+      }
+    | "-"
+      {
+        type = AddType.SUBTRACTION;
+      }
+    )
+    right = add_expr(scope)
+    {
+      AddExpression retVal = ExpressionsFactory.eINSTANCE.createAddExpression();
+      retVal.setStartLine(left.getStartLine());
+      retVal.setStartColumn(left.getStartColumn());
+      retVal.setEndLine(right.getEndLine());
+      retVal.setEndColumn(right.getEndColumn());
+      retVal.setLeft(left);
+      retVal.setRight(right);
+      retVal.setType(type);
+      return retVal;
+    }
+  ]
+  {
+    return left;
+  }
+}
+
+/* Production 35 */
+Expression mult_expr(Scope scope) :
+{
+  Expression left = null;
+  Expression right = null;
+  MultiType type = null;
+}
+{
+  left = unary_expr(scope)
+  //  (
+  //    (
+  //      "*"
+  //    | "/"
+  //    | "%"
+  //    )
+  //    unary_expr()
+  //  )*
+  [
+    (
+      "*"
+      {
+        type = MultiType.MULTIPLICATION;
+      }
+    | "/"
+      {
+        type = MultiType.DIVISION;
+      }
+    | "%"
+      {
+        type = MultiType.MODULATION;
+      }
+    )
+    right = mult_expr(scope)
+    {
+      MultExpression retVal = ExpressionsFactory.eINSTANCE.createMultExpression();
+      retVal.setStartLine(left.getStartLine());
+      retVal.setStartColumn(left.getStartColumn());
+      retVal.setEndLine(right.getEndLine());
+      retVal.setEndColumn(right.getEndColumn());
+      retVal.setLeft(left);
+      retVal.setRight(right);
+      retVal.setType(type);
+      return retVal;
+    }
+  ]
+  {
+    return left;
+  }
+}
+
+/* Production 36 */
+Expression unary_expr(Scope scope) :
+{
+  UnaryType type = null;
+  Expression retVal = null;
+  int startLine = 0;
+  int startColumn = 0;
+}
+{
+  [
+    type = unary_operator()
+    {
+      startLine = token.beginLine;
+      startColumn = token.beginColumn;
+    }
+  ]
+  retVal = primary_expr(scope)
+  {
+    if (type != null)
+    {
+      UnaryExpression uRetVal = ExpressionsFactory.eINSTANCE.createUnaryExpression();
+      uRetVal.setStartLine(startLine);
+      uRetVal.setStartColumn(startColumn);
+      uRetVal.setEndLine(retVal.getEndLine());
+      uRetVal.setEndColumn(retVal.getEndColumn());
+      uRetVal.setType(type);
+      uRetVal.setExpr(retVal);
+      retVal = uRetVal;
+    }
+    return retVal;
+  }
+}
+
+/* Production 37 */
+UnaryType unary_operator() :
+{}
+{
+  "-"
+  {
+    return UnaryType.NEGATIVE;
+  }
+| "+"
+  {
+    return UnaryType.POSITIVE;
+  }
+| "~"
+  {
+    return UnaryType.TILDE;
+  }
+}
+
+/* Production 38 */
+Expression primary_expr(Scope scope) :
+{
+  Expression retVal;
+  String scopedName = null;
+  int startLine = 0;
+  int startColumn = 0;
+}
+{
+  (
+    scopedName = scoped_name()
+    {
+      ScopeLiteral literal = ExpressionsFactory.eINSTANCE.createScopeLiteral();
+      literal.setValue(scope.findType(scopedName, token));
+      retVal = literal;
+      retVal.setStartLine(token.beginLine);
+      retVal.setStartColumn(token.beginColumn);
+      retVal.setEndLine(token.endLine);
+      retVal.setEndColumn(token.endColumn);
+    }
+  | retVal = literal()
+  | "("
+    {
+      startLine = token.beginLine;
+      startColumn = token.beginColumn;
+    }
+    retVal = const_exp(scope) ")"
+    {
+      retVal.setStartLine(startLine);
+      retVal.setStartColumn(startColumn);
+      retVal.setEndLine(token.endLine);
+      retVal.setEndColumn(token.endColumn);
+    }
+  )
+  {
+    return retVal;
+  }
+}
+
+/* Production 39 */
+Expression literal() :
+{
+  Expression retVal = null;
+}
+{
+  (
+    retVal = integer_literal()
+  | retVal = string_literal()
+  | retVal = character_literal()
+  | retVal = wide_string_literal()
+  | retVal = wide_character_literal()
+  | retVal = fixed_pt_literal()
+  | retVal = floating_pt_literal()
+  | retVal = boolean_literal()
+  )
+  {
+    return retVal;
+  }
+}
+
+/* Production 40 */
+BooleanLiteral boolean_literal() :
+{
+  BooleanLiteral literal = ExpressionsFactory.eINSTANCE.createBooleanLiteral();
+}
+{
+  (
+    < TRUE >
+    {
+      literal.setStartLine(token.beginLine);
+      literal.setStartColumn(token.beginColumn);
+      literal.setEndLine(token.endLine);
+      literal.setEndColumn(token.endColumn);
+      literal.setValue(true);
+    }
+  | < FALSE >
+    {
+      literal.setStartLine(token.beginLine);
+      literal.setStartColumn(token.beginColumn);
+      literal.setEndLine(token.endLine);
+      literal.setEndColumn(token.endColumn);
+      literal.setValue(false);
+    }
+  )
+  {
+    return literal;
+  }
+}
+
+/* Production 41 */
+Expression positive_int_const(Scope scope) :
+{
+  Expression retVal = null;
+}
+{
+  retVal = const_exp(scope)
+  {
+    return retVal;
+  }
+}
+
+/* Production 42 */
+List <? extends IdlTypeDcl > type_dcl(Scope scope) :
+{
+  List <? extends IdlTypeDcl > retVal = null;
+  IdlTypeDcl typeDcl = null;
+}
+{
+  (
+    < TYPEDEF > retVal = type_declarator(scope)
+  | typeDcl = structx(scope)
+  | typeDcl = unionx(scope)
+  | typeDcl = enum_type(scope)
+  | typeDcl = native_type_declarator(scope)
+  )
+  {
+    if (retVal == null)
+    {
+      retVal = Collections.singletonList(typeDcl);
+    }
+    return retVal;
+  }
+}
+
+NativeTypeDcl native_type_declarator(Scope scope) :
+{
+  Declarator nativeDeclarator = null;
+  NativeTypeDcl retVal = IdlFactory.eINSTANCE.createNativeTypeDcl();
+}
+{
+  < NATIVE > nativeDeclarator = simple_declarator()
+  {
+    retVal.setDeclarator(nativeDeclarator);
+    return retVal;
+  }
+}
+
+/* Production 43 */
+List < TypeDef > type_declarator(Scope scope) :
+{
+  IdlType type = null;
+  List < Declarator > declarators = null;
+  Comment comment = popComment();
+}
+{
+  type = type_spec(scope) declarators = declarators(scope)
+  {
+    List < TypeDef > retVal = new ArrayList < TypeDef > ();
+    for (Declarator declarator : declarators)
+    {
+      TypeDef def = TypesFactory.eINSTANCE.createTypeDef();
+      def.setType(type);
+      def.setName(declarator.getName());
+      def.setComment(comment);
+      def.setStartLine(declarator.getStartLine());
+      def.setStartColumn(declarator.getStartColumn());
+      def.setEndLine(declarator.getEndLine());
+      def.setEndColumn(declarator.getEndColumn());
+      scope.addMember(def, token);
+      retVal.add(def);
+    }
+    return retVal;
+  }
+}
+
+/* Production 44 */
+IdlType type_spec(Scope scope) :
+{
+  IdlType retVal = null;
+}
+{
+  (
+    retVal = simple_type_spec(scope)
+  | retVal = constr_type_spec(scope)
+  )
+  {
+    return retVal;
+  }
+}
+
+/* Production 45 */
+IdlType simple_type_spec(Scope scope) :
+{
+  IdlType retVal = null;
+  String scopedName = null;
+}
+{
+  (
+    retVal = base_type_spec()
+  | retVal = template_type_spec(scope)
+  | scopedName = scoped_name()
+    {
+      retVal = scope.findType(scopedName, token);
+    }
+  )
+  {
+    return retVal;
+  }
+}
+
+/* Production 46 */
+PrimitiveType base_type_spec() :
+{
+  PrimitiveType retVal = null;
+}
+{
+  (
+    LOOKAHEAD(2)
+    retVal = floating_pt_type()
+  | retVal = integer_type()
+  | retVal = char_type()
+  | retVal = wide_char_type()
+  | retVal = boolean_type()
+  | retVal = octet_type()
+  | retVal = any_type()
+  | retVal = object_type()
+  | retVal = value_base_type()
+  )
+  {
+    return retVal;
+  }
+}
+
+/* Production 47 */
+TemplateType template_type_spec(Scope scope) :
+{
+  TemplateType retVal = null;
+}
+{
+  (
+    retVal = sequence_type(scope)
+  | retVal = string_type(scope)
+  | retVal = wide_string_type(scope)
+  | retVal = fixed_pt_type(scope)
+  )
+  {
+    return retVal;
+  }
+}
+
+/* Production 48 */
+IdlTypeDcl constr_type_spec(Scope scope) :
+{
+  IdlTypeDcl retVal = null;
+}
+{
+  (
+    retVal = struct_type(scope)
+  | retVal = union_type(scope)
+  | retVal = enum_type(scope)
+  )
+  {
+    return retVal;
+  }
+}
+
+/* Production 49 */
+List < Declarator > declarators(Scope scope) :
+{
+  List < Declarator > retVal = new ArrayList < Declarator > ();
+  Declarator declarator = null;
+}
+{
+  declarator = declarator(scope)
+  {
+    retVal.add(declarator);
+  }
+  (
+    "," declarator = declarator(scope)
+    {
+      retVal.add(declarator);
+    }
+  )*
+  {
+    return retVal;
+  }
+}
+
+/* Production 50 */
+Declarator declarator(Scope scope) :
+{
+  Declarator retVal = null;
+}
+{
+  (
+    LOOKAHEAD(2)
+    retVal = complex_declarator(scope)
+  | retVal = simple_declarator()
+  )
+  {
+    return retVal;
+  }
+}
+
+/* Production 51 */
+Declarator simple_declarator() :
+{
+  Declarator retVal = IdlFactory.eINSTANCE.createDeclarator();
+  int startLine = 0;
+  int startColumn = 0;
+  int endLine = 0;
+  int endColumn = 0;
+}
+{
+  {
+    startLine = token.endLine;
+    startColumn = token.endColumn;
+  }
+  identifiableElement(retVal)
+  {
+    endLine = token.endLine;
+    endColumn = token.endColumn;
+    retVal.setStartLine(startLine);
+    retVal.setStartColumn(startColumn);
+    retVal.setEndLine(endLine);
+    retVal.setEndColumn(endColumn);
+  }
+  {
+    return retVal;
+  }
+}
+
+/* Production 52 */
+Declarator complex_declarator(Scope scope) :
+{
+  Declarator retVal = null;
+}
+{
+  retVal = array_declarator(scope)
+  {
+    return retVal;
+  }
+}
+
+/* Production 53 */
+PrimitiveType floating_pt_type() :
+{
+  PrimitiveType retVal = null;
+}
+{
+  (
+    < FLOAT >
+    {
+      retVal = TypesFactory.eINSTANCE.createFloat();
+    }
+  | < DOUBLE >
+    {
+      retVal = TypesFactory.eINSTANCE.createDouble();
+    }
+  | < LONG > < DOUBLE >
+    {
+      retVal = TypesFactory.eINSTANCE.createLongDouble();
+    }
+  )
+  {
+    return retVal;
+  }
+}
+
+/* Production 54 */
+PrimitiveType integer_type() :
+{
+  PrimitiveType retVal = null;
+}
+{
+  (
+    retVal = signed_int()
+  | retVal = unsigned_int()
+  )
+  {
+    return retVal;
+  }
+}
+
+/* Production 55 */
+PrimitiveType signed_int() :
+{
+  PrimitiveType retVal = null;
+}
+{
+  (
+    LOOKAHEAD(2)
+    retVal = signed_long_long()
+  | retVal = signed_long_int()
+  | retVal = signed_short_int()
+  )
+  {
+    return retVal;
+  }
+}
+
+/* Production 56 */
+gov.redhawk.eclipsecorba.idl.types.Short signed_short_int() :
+{}
+{
+  < SHORT >
+  {
+    return TypesFactory.eINSTANCE.createShort();
+  }
+}
+
+/* Production 57 */
+gov.redhawk.eclipsecorba.idl.types.Long signed_long_int() :
+{}
+{
+  < LONG >
+  {
+    return TypesFactory.eINSTANCE.createLong();
+  }
+}
+
+/* Production 58 */
+gov.redhawk.eclipsecorba.idl.types.LongLong signed_long_long() :
+{}
+{
+  < LONG > < LONG >
+  {
+    return TypesFactory.eINSTANCE.createLongLong();
+  }
+}
+
+/* Production 59 */
+PrimitiveType unsigned_int() :
+{
+  PrimitiveType retVal = null;
+}
+{
+  (
+    LOOKAHEAD(3)
+    retVal = unsigned_long_long_int()
+  | LOOKAHEAD(2)
+    retVal = unsigned_long_int()
+  | retVal = unsigned_short_int()
+  )
+  {
+    return retVal;
+  }
+}
+
+/* Production 60 */
+UShort unsigned_short_int() :
+{}
+{
+  < UNSIGNED > < SHORT >
+  {
+    return TypesFactory.eINSTANCE.createUShort();
+  }
+}
+
+/* Production 61 */
+ULong unsigned_long_int() :
+{}
+{
+  < UNSIGNED > < LONG >
+  {
+    return TypesFactory.eINSTANCE.createULong();
+  }
+}
+
+/* Production 62 */
+ULongLong unsigned_long_long_int() :
+{}
+{
+  < UNSIGNED > < LONG > < LONG >
+  {
+    return TypesFactory.eINSTANCE.createULongLong();
+  }
+}
+
+/* Production 63 */
+IdlChar char_type() :
+{}
+{
+  < CHAR >
+  {
+    return TypesFactory.eINSTANCE.createIdlChar();
+  }
+}
+
+/* Production 64 */
+IdlWChar wide_char_type() :
+{}
+{
+  < WCHAR >
+  {
+    return TypesFactory.eINSTANCE.createIdlWChar();
+  }
+}
+
+/* Production 65 */
+gov.redhawk.eclipsecorba.idl.types.Boolean boolean_type() :
+{}
+{
+  < BOOLEAN >
+  {
+    return TypesFactory.eINSTANCE.createBoolean();
+  }
+}
+
+/* Production 66 */
+Octet octet_type() :
+{}
+{
+  < OCTET >
+  {
+    return TypesFactory.eINSTANCE.createOctet();
+  }
+}
+
+/* Production 67 */
+Any any_type() :
+{}
+{
+  < ANY >
+  {
+    return TypesFactory.eINSTANCE.createAny();
+  }
+}
+
+/* Production 68 */
+IdlObject object_type() :
+{}
+{
+  < OBJECT >
+  {
+    return TypesFactory.eINSTANCE.createIdlObject();
+  }
+}
+
+/* Production 69 */
+StructType struct_type(Scope parent) :
+{
+  StructType retVal = TypesFactory.eINSTANCE.createStructType();
+  Scope structScope = null;
+  List < Member > members = null;
+  int startLine = 0;
+  int startColumn = 0;
+  int endLine = 0;
+  int endColumn = 0;
+  Comment comment = popComment();
+}
+{
+  < STRUCT >
+  {
+    startLine = token.beginLine;
+    startColumn = token.beginColumn;
+  }
+  identifiableElement(retVal)
+  {
+    StructType stub = parent.findStructTypeStub(retVal.getName());
+    if (stub != null)
+    {
+      retVal = stub;
+      structScope = parent.getScope(retVal);
+    }
+    else
+    {
+      structScope = new Scope(retVal, parent, token);
+    }
+  }
+  "{" members = member_list(structScope) "}"
+  {
+    endLine = token.endLine;
+    endColumn = token.endColumn;
+    retVal.setStartLine(startLine);
+    retVal.setStartColumn(startColumn);
+    retVal.setEndLine(endLine);
+    retVal.setEndColumn(endColumn);
+  }
+  {
+    retVal.setComment(comment);
+    retVal.getMembers().addAll(members);
+    return retVal;
+  }
+}
+
+/* Production 70 */
+List < Member > member_list(Scope scope) :
+{
+  List < Member > retVal = new ArrayList < Member > ();
+  Member member = null;
+}
+{
+  (
+    member = member(scope)
+    {
+      retVal.add(member);
+    }
+  )+
+  {
+    return retVal;
+  }
+}
+
+/* Production 71 */
+Member member(Scope scope) :
+{
+  Member retVal = IdlFactory.eINSTANCE.createMember();
+  IdlType type = null;
+  List < Declarator > declarators = null;
+  int startLine = 0;
+  int startColumn = 0;
+  int endLine = 0;
+  int endColumn = 0;
+  Comment comment = popComment();
+}
+{
+  type = type_spec(scope)
+  {
+    startLine = token.beginLine;
+    startColumn = token.beginColumn;
+  }
+  {
+    retVal.setType(type);
+  }
+  declarators = declarators(scope) ";"
+  {
+    endLine = token.endLine;
+    endColumn = token.endColumn;
+    retVal.setStartLine(startLine);
+    retVal.setStartColumn(startColumn);
+    retVal.setEndLine(endLine);
+    retVal.setEndColumn(endColumn);
+  }
+  {
+    retVal.getDeclarators().addAll(declarators);
+    retVal.setComment(comment);
+    return retVal;
+  }
+}
+
+/* Production 72 */
+UnionType union_type(Scope parent) :
+{
+  UnionType retVal = TypesFactory.eINSTANCE.createUnionType();
+  Scope unionScope = null;
+  int startLine = 0;
+  int startColumn = 0;
+  int endLine = 0;
+  int endColumn = 0;
+  Comment comment = popComment();
+  Switch idlSwitch = null;
+}
+{
+  < UNION >
+  {
+    startLine = token.beginLine;
+    startColumn = token.beginColumn;
+  }
+  identifiableElement(retVal)
+  {
+    UnionType stub = parent.findUnionTypeStub(retVal.getName());
+    if (stub != null)
+    {
+      retVal = stub;
+      unionScope = parent.getScope(retVal);
+    }
+    else
+    {
+      unionScope = new Scope(retVal, parent, token);
+    }
+  }
+  idlSwitch = idl_switch(unionScope)
+  {
+    endLine = idlSwitch.getEndLine();
+    endColumn = idlSwitch.getEndColumn();
+    retVal.setStartLine(startLine);
+    retVal.setStartColumn(startColumn);
+    retVal.setEndLine(endLine);
+    retVal.setEndColumn(endColumn);
+  }
+  {
+    retVal.setIdlSwitch(idlSwitch);
+    retVal.setComment(comment);
+    return retVal;
+  }
+}
+
+Switch idl_switch(Scope scope) :
+{
+  Switch idlSwitch = TypesFactory.eINSTANCE.createSwitch();
+  IdlType switchType = null;
+  List < Case > cases = null;
+  int startLine = 0;
+  int startColumn = 0;
+  int endLine = 0;
+  int endColumn = 0;
+  Scope localScope = null;
+}
+{
+  < SWITCH >
+  {
+    startLine = token.beginLine;
+    startColumn = token.beginColumn;
+  }
+  "(" switchType = switch_type_spec(scope) 
+  	{
+  		if (switchType instanceof Identifiable) {
+			localScope = scope.getScope((Identifiable) switchType);
+		} else {
+			localScope = scope;
+		}
+  	} 
+  ")" "{" cases = switch_body(localScope) "}"
+  {
+    endLine = token.endLine;
+    endColumn = token.endColumn;
+  }
+  {
+    idlSwitch.setStartLine(startLine);
+    idlSwitch.setStartColumn(startColumn);
+    idlSwitch.setEndLine(endLine);
+    idlSwitch.setEndColumn(endColumn);
+    idlSwitch.setType(switchType);
+    idlSwitch.getCases().addAll(cases);
+    return idlSwitch;
+  }
+}
+
+/* Production 73 */
+IdlType switch_type_spec(Scope scope) :
+{
+  IdlType retVal = null;
+  String scopedName = null;
+}
+{
+  (
+    retVal = integer_type()
+  | retVal = char_type()
+  | retVal = boolean_type()
+  | retVal = enum_type(scope)
+  | scopedName = scoped_name()
+    {
+      retVal = scope.findType(scopedName, token);
+    }
+  )
+  {
+    return retVal;
+  }
+}
+
+/* Production 74 */
+List < Case > switch_body(Scope scope) :
+{
+  List < Case > retVal = new ArrayList < Case > ();
+  Case c = null;
+}
+{
+  (
+    c = casex(scope)
+    {
+      retVal.add(c);
+    }
+  )+
+  {
+    return retVal;
+  }
+}
+
+/* Production 75 */
+Case casex(Scope scope) :
+{
+  Case c = TypesFactory.eINSTANCE.createCase();
+  CaseLabel label = null;
+  ElementSpec spec = null;
+}
+{
+  (
+    label = case_label(scope)
+    {
+      c.getLabels().add(label);
+    }
+  )+
+  spec = element_spec(scope) ";"
+  {
+    c.setSpec(spec);
+    return c;
+  }
+}
+
+/* Production 76 */
+CaseLabel case_label(Scope scope) :
+{
+  CaseLabel retVal = null;
+  Expression expr = null;
+}
+{
+  (
+    < CASE > expr = const_exp(scope) ":"
+    {
+      ExprCaseLabel excl = TypesFactory.eINSTANCE.createExprCaseLabel();
+      excl.setExpr(expr);
+      retVal = excl;
+    }
+  | < _DEFAULT > ":"
+    {
+      retVal = TypesFactory.eINSTANCE.createDefaultCaseLabel();
+    }
+  )
+  {
+    return retVal;
+  }
+}
+
+/* Production 77 */
+ElementSpec element_spec(Scope scope) :
+{
+  ElementSpec spec = TypesFactory.eINSTANCE.createElementSpec();
+  IdlType type = null;
+  Declarator dec = null;
+}
+{
+  type = type_spec(scope) dec = declarator(scope)
+  {
+    spec.setType(type);
+    spec.setDeclarator(dec);
+    return spec;
+  }
+}
+
+/* Production 78 */
+EnumType enum_type(Scope parent) :
+{
+  EnumType type = TypesFactory.eINSTANCE.createEnumType();
+  Scope enumScope = null;
+  int startLine = 0;
+  int startColumn = 0;
+  int endLine = 0;
+  int endColumn = 0;
+  Comment comment = popComment();
+}
+{
+  < ENUM >
+  {
+    startLine = token.beginLine;
+    startColumn = token.beginColumn;
+  }
+  identifiableElement(type) 
+  {
+  	enumScope = new Scope(type, parent, token);
+  }"{" enumerator(type, enumScope)
+  (
+    "," enumerator(type, enumScope)
+  )*
+  "}"
+  {
+    endLine = token.endLine;
+    endColumn = token.endColumn;
+    type.setStartLine(startLine);
+    type.setStartColumn(startColumn);
+    type.setEndLine(endLine);
+    type.setEndColumn(endColumn);
+  }
+  {
+    type.setComment(comment);
+    return type;
+  }
+}
+
+/* Production 79 */
+void enumerator(EnumType type, Scope scope) :
+{
+  Enumeration retVal = TypesFactory.eINSTANCE.createEnumeration();
+   int startLine = 0;
+  int startColumn = 0;
+  int endLine = 0;
+  int endColumn = 0;
+  Comment comment = popComment();
+}
+{
+  identifiableElement(retVal)
+  {
+    startLine = token.beginLine;
+    startColumn = token.beginColumn;
+    endLine = token.endLine;
+    endColumn = token.endColumn;
+    retVal.setStartLine(startLine);
+    retVal.setStartColumn(startColumn);
+    retVal.setEndLine(endLine);
+    retVal.setEndColumn(endColumn);
+    retVal.setComment(comment);
+    scope.addMember(retVal, token);
+    type.getEnumerators().add(retVal);
+  }
+}
+
+/* Production 80 */
+SequenceType sequence_type(Scope scope) :
+{
+  SequenceType retVal = TypesFactory.eINSTANCE.createSequenceType();
+  IdlType type = null;
+  int startLine = 0;
+  int startColumn = 0;
+  int endLine = 0;
+  int endColumn = 0;
+}
+{
+  < SEQUENCE >
+  {
+    startLine = token.beginLine;
+    startColumn = token.beginColumn;
+  }
+  "<" type = simple_type_spec(scope)
+  {
+    retVal.setType(type);
+  }
+  [ "," positive_int_const(scope) ] ">"
+  {
+    endLine = token.endLine;
+    endColumn = token.endColumn;
+    retVal.setStartLine(startLine);
+    retVal.setStartColumn(startColumn);
+    retVal.setEndLine(endLine);
+    retVal.setEndColumn(endColumn);
+  }
+  {
+    return retVal;
+  }
+}
+
+/* Production 81 */
+IdlString string_type(Scope scope) :
+{
+  IdlString retVal = TypesFactory.eINSTANCE.createIdlString();
+  Expression size = null;
+}
+{
+  (
+    < IDL_STRING >
+    [
+      "<" size = positive_int_const(scope)
+      {
+        retVal.setSize(size);
+      }
+      ">"
+    ]
+  )
+  {
+    return retVal;
+  }
+}
+
+/* Production 82 */
+WString wide_string_type(Scope scope) :
+{
+  WString retVal = TypesFactory.eINSTANCE.createWString();
+  int startLine = 0;
+  int startColumn = 0;
+  int endLine = 0;
+  int endColumn = 0;
+}
+{
+  < WSTRING >
+  {
+    startLine = token.beginLine;
+    startColumn = token.beginColumn;
+  }
+  [ "<" positive_int_const(scope) ">" ]
+  {
+    endLine = token.endLine;
+    endColumn = token.endColumn;
+    retVal.setStartLine(startLine);
+    retVal.setStartColumn(startColumn);
+    retVal.setEndLine(endLine);
+    retVal.setEndColumn(endColumn);
+  }
+  {
+    return retVal;
+  }
+}
+
+/* Production 83 */
+ArrayDeclarator array_declarator(Scope scope) :
+{
+  ArrayDeclarator retVal = IdlFactory.eINSTANCE.createArrayDeclarator();
+  Expression arraySize = null;
+}
+{
+  identifiableElement(retVal)
+  (
+    arraySize = fixed_array_size(scope)
+    {
+      retVal.getArraySizeExpressions().add(arraySize);
+    }
+  )+
+  {
+    return retVal;
+  }
+}
+
+/* Production 84 */
+Expression fixed_array_size(Scope scope) :
+{
+  Expression retVal = null;
+}
+{
+  "[" retVal = positive_int_const(scope) "]"
+  {
+    return retVal;
+  }
+}
+
+/* Production 85 */
+List < Attribute > attr_dcl(Scope scope) :
+{
+  List < Attribute > retVal = new ArrayList < Attribute > ();
+  IdlType type = null;
+  Declarator dec = null;
+  boolean readOnly = false;
+  Attribute att = null;
+  int startLine =-1;
+  int startColumn = 0;
+  int endLine = 0;
+  int endColumn = 0;
+}
+{
+  [
+    < READONLY >
+    {
+      startLine = token.beginLine;
+      startColumn = token.beginColumn;
+    }
+    {
+      readOnly = true;
+    }
+  ]
+  < ATTRIBUTE >
+  {
+    if (startLine == - 1)
+    {
+      startLine = token.beginLine;
+      startColumn = token.beginColumn;
+    }
+  }
+  type = param_type_spec(scope) dec = simple_declarator()
+  {
+    att = OperationsFactory.eINSTANCE.createAttribute();
+    att.setReadOnly(readOnly);
+    att.setType(type);
+    att.setName(dec.getName());
+    endLine = token.endLine;
+    endColumn = token.endColumn;
+    att.setStartLine(startLine);
+    att.setStartColumn(startColumn);
+    att.setEndLine(endLine);
+    att.setEndColumn(endColumn);
+    retVal.add(att);
+    scope.addMember(att, token);
+  }
+  (
+    "," dec = simple_declarator()
+    {
+      att = OperationsFactory.eINSTANCE.createAttribute();
+      att.setReadOnly(readOnly);
+      att.setType(type);
+      att.setName(dec.getName());
+      endLine = token.endLine;
+      endColumn = token.endColumn;
+      att.setStartLine(startLine);
+      att.setStartColumn(startColumn);
+      att.setEndLine(endLine);
+      att.setEndColumn(endColumn);
+      retVal.add(att);
+      scope.addMember(att, token);
+    }
+  )*
+  {
+    return retVal;
+  }
+}
+
+/* Production 86 */
+IdlException except_dcl(Scope parent) :
+{
+  IdlException exception = IdlFactory.eINSTANCE.createIdlException();
+  Member member = null;
+  int startLine = 0;
+  int startColumn = 0;
+  int endLine = 0;
+  int endColumn = 0;
+  Comment comment = popComment();
+}
+{
+  < EXCEPTION >
+  {
+    startLine = token.beginLine;
+    startColumn = token.beginColumn;
+  }
+  identifiableElement(exception)
+  {
+    parent.addMember(exception, token);
+  }
+  "{"
+  (
+    member = member(parent)
+    {
+      exception.getMembers().add(member);
+    }
+  )*
+  "}"
+  {
+    endLine = token.endLine;
+    endColumn = token.endColumn;
+    exception.setStartLine(startLine);
+    exception.setStartColumn(startColumn);
+    exception.setEndLine(endLine);
+    exception.setEndColumn(endColumn);
+  }
+  {
+    exception.setComment(comment);
+    return exception;
+  }
+}
+
+/* Production 87 */
+Operation op_dcl(Scope parent) :
+{
+  Operation retVal = OperationsFactory.eINSTANCE.createOperation();
+  IdlType type = null;
+  List < Parameter > parameters = null;
+  List < IdlException > exceptions = null;
+  List < StringLiteral > context = null;
+  Scope myScope = null;
+  int startLine =-1;
+  int startColumn = 0;
+  int endLine = 0;
+  int endColumn = 0;
+  Comment comment = popComment();
+}
+{
+  [
+    op_attribute(retVal)
+    {
+      startLine = token.beginLine;
+      startColumn = token.beginColumn;
+    }
+  ]
+  type = op_type_spec(parent)
+  {
+    if (startLine == - 1)
+    {
+      startLine = token.endLine;
+      startColumn = token.endColumn;
+    }
+  }
+  identifiableElement(retVal)
+  {
+    myScope = new Scope(retVal, parent, token);
+  }
+  parameters = parameter_dcls(myScope) [ exceptions = raises_expr(myScope) ] [ context = context_expr() ]
+  {
+    endLine = token.endLine;
+    endColumn = token.endColumn;
+    retVal.setStartLine(startLine);
+    retVal.setStartColumn(startColumn);
+    retVal.setEndLine(endLine);
+    retVal.setEndColumn(endColumn);
+  }
+  {
+    retVal.setComment(comment);
+    retVal.setType(type);
+    retVal.getParameters().addAll(parameters);
+    if (exceptions != null)
+    {
+      retVal.getExceptions().addAll(exceptions);
+    }
+    if (context != null)
+    {
+      retVal.getContext().addAll(context);
+    }
+    return retVal;
+  }
+}
+
+/* Production 88 */
+void op_attribute(Operation op) :
+{}
+{
+  < ONEWAY >
+  {
+    op.setOneway(true);
+  }
+}
+
+/* Production 89 */
+IdlType op_type_spec(Scope scope) :
+{
+  IdlType retVal = null;
+}
+{
+  (
+    retVal = param_type_spec(scope)
+  | < VOID >
+    {
+      retVal = TypesFactory.eINSTANCE.createVoidType();
+    }
+  )
+  {
+    return retVal;
+  }
+}
+
+/* Production 90 */
+List < Parameter > parameter_dcls(Scope scope) :
+{
+  List < Parameter > params = new ArrayList < Parameter > ();
+  Parameter param = null;
+}
+{
+  "("
+  [
+    param = param_dcl(scope)
+    {
+      params.add(param);
+    }
+    (
+      "," param = param_dcl(scope)
+      {
+        params.add(param);
+      }
+    )*
+  ]
+  ")"
+  {
+    return params;
+  }
+}
+
+/* Production 91 */
+Parameter param_dcl(Scope scope) :
+{
+  Parameter retVal = OperationsFactory.eINSTANCE.createParameter();
+  IdlType type = null;
+  Direction direction = null;
+  Declarator dec = null;
+  int startLine = 0;
+  int startColumn = 0;
+  int endLine = 0;
+  int endColumn = 0;
+}
+{
+  {
+    startLine = token.endLine;
+    startColumn = token.endColumn;
+  }
+  direction = param_attribute() type = param_type_spec(scope) dec = simple_declarator()
+  {
+    endLine = token.endLine;
+    endColumn = token.endColumn;
+    retVal.setStartLine(startLine);
+    retVal.setStartColumn(startColumn);
+    retVal.setEndLine(endLine);
+    retVal.setEndColumn(endColumn);
+  }
+  {
+    retVal.setName(dec.getName());
+    retVal.setType(type);
+    retVal.setDirection(direction);
+    return retVal;
+  }
+}
+
+/* Production 92 */
+Direction param_attribute() :
+{}
+{
+  < IN >
+  {
+    return Direction.IN;
+  }
+| < OUT >
+  {
+    return Direction.OUT;
+  }
+| < INOUT >
+  {
+    return Direction.INOUT;
+  }
+}
+
+/* Production 93 */
+List < IdlException > raises_expr(Scope scope) :
+{
+  List < IdlException > exceptions = new ArrayList < IdlException > ();
+  String name = null;
+  IdlException type = null;
+}
+{
+  < RAISES > "(" name = scoped_name()
+  {
+    type = scope.findException(name, token);
+    exceptions.add(type);
+  }
+  (
+    "," name = scoped_name()
+    {
+      type = scope.findException(name, token);
+      exceptions.add(type);
+    }
+  )*
+  ")"
+  {
+    return exceptions;
+  }
+}
+
+/* Production 94 */
+List < StringLiteral > context_expr() :
+{
+  List < StringLiteral > context = new ArrayList < StringLiteral > ();
+  StringLiteral str = null;
+}
+{
+  < CONTEXT > "(" str = string_literal()
+  {
+    context.add(str);
+  }
+  (
+    "," str = string_literal()
+    {
+      context.add(str);
+    }
+  )*
+  ")"
+  {
+    return context;
+  }
+}
+
+/* Production 95 */
+IdlType param_type_spec(Scope scope) :
+{
+  IdlType retVal = null;
+  String scopeName = null;
+}
+{
+  (
+    retVal = base_type_spec()
+  | retVal = string_type(scope)
+  | scopeName = scoped_name()
+    {
+      retVal = scope.findType(scopeName, token);
+    }
+  )
+  {
+    return retVal;
+  }
+}
+
+/* Production 96 */
+FixedPtType fixed_pt_type(Scope scope) :
+{
+  FixedPtType type = TypesFactory.eINSTANCE.createFixedPtType();
+  Expression expr1 = null;
+  Expression expr2 = null;
+  int startLine = 0;
+  int startColumn = 0;
+}
+{
+  < FIXED >
+  {
+    startLine = token.beginLine;
+    startColumn = token.beginColumn;
+  }
+  "<" expr1 = positive_int_const(scope) "," expr2 = positive_int_const(scope) ">"
+  {
+    type.setStartLine(startLine);
+    type.setStartColumn(startColumn);
+    type.setEndLine(token.endLine);
+    type.setEndColumn(token.endColumn);
+    type.setExpr1(expr1);
+    type.setExpr2(expr2);
+    return type;
+  }
+}
+
+/* Production 97 */
+FixedPtType fixed_pt_const_type(Scope scope) :
+{
+  FixedPtType type = TypesFactory.eINSTANCE.createFixedPtType();
+  int startLine = 0;
+  int startColumn = 0;
+}
+{
+  < FIXED >
+  {
+    startLine = token.beginLine;
+    startColumn = token.beginColumn;
+  }
+  {
+    type.setStartLine(startLine);
+    type.setStartColumn(startColumn);
+    type.setEndLine(token.endLine);
+    type.setEndColumn(token.endColumn);
+    return type;
+  }
+}
+
+/* Production 98 */
+ValueBaseType value_base_type() :
+{}
+{
+  < VALUE_BASE >
+  {
+    return TypesFactory.eINSTANCE.createValueBaseType();
+  }
+}
+
+IdlTypeDcl structx(Scope parent) :
+{
+  IdlTypeDcl retVal = null;
+}
+{
+  (
+    LOOKAHEAD(3)
+    retVal = struct_type(parent)
+  | retVal = struct_forward_dcl(parent)
+  )
+  {
+    return retVal;
+  }
+}
+
+IdlTypeDcl unionx(Scope parent) :
+{
+  IdlTypeDcl retVal = null;
+}
+{
+  (
+    LOOKAHEAD(3)
+    retVal = union_type(parent)
+  | retVal = union_forward_dcl(parent)
+  )
+  {
+    return retVal;
+  }
+}
+
+/* Production 100 */
+/**
+IdlImport idl_import() :
+{
+  IdlImport idlImport = IdlFactory.eINSTANCE.createIdlImport();
+  String scope = null;
+  int startLine = 0;
+  int startColumn = 0;
+  int endLine = 0;
+  int endColumn = 0;
+}
+{
+  < IMPORT >
+  {
+    startLine = token.beginLine;
+    startColumn = token.beginColumn;
+  }
+  scope = imported_scope() ";"
+  {
+    endLine = token.endLine;
+    endColumn = token.endColumn;
+    idlImport.setStartLine(startLine);
+    idlImport.setStartColumn(startColumn);
+    idlImport.setEndLine(endLine);
+    idlImport.setEndColumn(endColumn);
+    idlImport.setImportedScope(scope);
+    return idlImport;
+  }
+}
+*/
+
+/* Production 101 */
+String imported_scope() :
+{
+  String scope = null;
+}
+{
+  (
+    scope = scoped_name()
+  | < STRING >
+    {
+      scope = token.image;
+    }
+  )
+  {
+    return scope;
+  }
+}
+
+/* Production 102 */
+Definition type_id_dcl(Scope scope) :
+{
+  Definition retVal = null;
+}
+{
+  < TYPEID > scoped_name() string_literal()
+  {
+    return retVal;
+  }
+}
+
+/* Production 103 */
+Definition type_prefix_dcl(Scope scope) :
+{
+  Definition retVal = null;
+}
+{
+  < TYPEPREFIX > scoped_name() string_literal()
+  {
+    return retVal;
+  }
+}
+
+/* Production 104 */
+void readonly_attr_spec(Scope scope) :
+{}
+{
+  < READONLY > < ATTRIBUTE > param_type_spec(scope) readonly_attr_declarator(scope)
+}
+
+/* Production 105 */
+void readonly_attr_declarator(Scope scope) :
+{}
+{
+  simple_declarator()
+  (
+    raises_expr(scope)
+  |
+    (
+      "," simple_declarator()
+    )*
+  )
+}
+
+/* Production 106 */
+void attr_spec(Scope scope) :
+{}
+{
+  < ATTRIBUTE > param_type_spec(scope) attr_declarator(scope)
+}
+
+/* Production 107 */
+void attr_declarator(Scope scope) :
+{}
+{
+  simple_declarator()
+  (
+    raises_expr(scope)
+  |
+    (
+      "," simple_declarator()
+    )*
+  )
+}
+
+/* Production 108 */
+void attr_raises_expr() :
+{}
+{
+  get_excep_expr() [ set_excep_expr() ]
+| set_excep_expr()
+}
+
+/* Production 109 */
+void get_excep_expr() :
+{}
+{
+  < GET_RAISES > exception_list()
+}
+
+/* Production 110 */
+void set_excep_expr() :
+{}
+{
+  < SET_RAISES > exception_list()
+}
+
+/* Production 111 */
+void exception_list() :
+{}
+{
+  "(" scoped_name()
+  (
+    "," scoped_name()
+  )*
+  ")"
+}
+
+/* Production 112 */
+Definition component(Scope scope) :
+{
+  Definition retVal = null;
+}
+{
+  (
+    LOOKAHEAD(3)
+    component_forward_dcl()
+  | component_dcl(scope)
+  )
+  {
+    return retVal;
+  }
+}
+
+/* Production 113 */
+void component_forward_dcl() :
+{}
+{
+  < COMPONENT > identifier()
+  {
+    throw new UnsupportedOperationException();
+  }
+}
+
+/* Production 114 */
+void component_dcl(Scope scope) :
+{}
+{
+  component_header() "{" component_body(scope) "}"
+}
+
+/* Production 115 */
+void component_header() :
+{}
+{
+  < COMPONENT > identifier() [ component_inheritance_spec() ] [ supported_interface_spec() ]
+  {
+    throw new UnsupportedOperationException();
+  }
+}
+
+/* Production 116 */
+void supported_interface_spec() :
+{}
+{
+  < SUPPORTS > scoped_name()
+  (
+    "," scoped_name()
+  )*
+}
+
+/* Production 117 */
+void component_inheritance_spec() :
+{}
+{
+  ":" scoped_name()
+}
+
+/* Production 118 */
+void component_body(Scope scope) :
+{}
+{
+  (
+    component_export(scope)
+  )*
+}
+
+/* Production 119 */
+void component_export(Scope scope) :
+{}
+{
+  provides_dcl() ";"
+| uses_dcl() ";"
+| emits_dcl() ";"
+| publishes_dcl() ";"
+| consumes_dcl() ";"
+| attr_dcl(scope) ";"
+}
+
+/* Production 120 */
+void provides_dcl() :
+{}
+{
+  < PROVIDES > interface_type() identifier()
+  {
+	throw new UnsupportedOperationException();
+  }
+}
+
+/* Production 121 */
+void interface_type() :
+{}
+{
+  (
+  scoped_name()
+| < OBJECT >
+)
+  {
+	throw new UnsupportedOperationException();
+  }
+
+}
+
+/* Production 122 */
+void uses_dcl() :
+{}
+{
+  < USES > [ < MULTIPLE > ] interface_type() identifier()
+  {
+	throw new UnsupportedOperationException();
+  }
+}
+
+/* Production 123 */
+void emits_dcl() :
+{}
+{
+  < EMITS > scoped_name() identifier()
+  {
+	throw new UnsupportedOperationException();
+  }
+}
+
+/* Production 124 */
+void publishes_dcl() :
+{}
+{
+  < PUBLISHES > scoped_name() identifier()
+  {
+	throw new UnsupportedOperationException();
+  }
+}
+
+/* Production 125 */
+void consumes_dcl() :
+{}
+{
+  < CONSUMES > scoped_name() identifier()
+  {
+	throw new UnsupportedOperationException();
+  }
+}
+
+/* Production 126 */
+Definition home_dcl(Scope scope) :
+{
+  Definition retVal = null;
+}
+{
+  home_header() home_body(scope)
+  {
+    return retVal;
+  }
+}
+
+/* Production 127 */
+void home_header() :
+{}
+{
+  < HOME > identifier() [ home_inheritance_spec() ] [ supported_interface_spec() ] < MANAGES > scoped_name() [ primary_key_spec() ]
+  {
+	throw new UnsupportedOperationException();
+  }
+}
+
+/* Production 128 */
+void home_inheritance_spec() :
+{}
+{
+  ":" scoped_name()
+  {
+	throw new UnsupportedOperationException();
+  }
+}
+
+/* Production 129 */
+void primary_key_spec() :
+{}
+{
+  < PRIMARYKEY > scoped_name()
+  {
+	throw new UnsupportedOperationException();
+  }
+}
+
+/* Production 130 */
+void home_body(Scope scope) :
+{}
+{
+  "{"
+  (
+    home_export(scope)
+  )*
+  "}"
+}
+
+/* Production 131 */
+void home_export(Scope scope) :
+{}
+{
+  export(scope)
+| factory_dcl(scope) ";"
+| finder_dcl(scope) ";"
+}
+
+/* Production 132 */
+void factory_dcl(Scope scope) :
+{}
+{
+  < FACTORY > identifier() "(" [ init_param_decls(scope) ] ")" [ raises_expr(scope) ]
+  {
+	throw new UnsupportedOperationException();
+  }
+}
+
+/* Production 133 */
+void finder_dcl(Scope scope) :
+{}
+{
+  < FINDER > identifier() "(" [ init_param_decls(scope) ] ")" [ raises_expr(scope) ]
+  {
+	throw new UnsupportedOperationException();
+  }
+}
+
+/* Production 134 */
+Definition event(Scope scope) :
+{
+  Definition retVal = null;
+}
+{
+  (
+    LOOKAHEAD(3)
+    (
+      LOOKAHEAD(3)
+      event_dcl(scope)
+    | event_abs_dcl(scope)
+    )
+  | event_forward_dcl()
+  )
+  {
+    return retVal;
+  }
+}
+
+/* Production 135 */
+void event_forward_dcl() :
+{}
+{
+  [ < ABSTRACT > ] < EVENTTYPE > identifier()
+  {
+	throw new UnsupportedOperationException();
+  }
+}
+
+/* Production 136 */
+void event_abs_dcl(Scope scope) :
+{}
+{
+  < ABSTRACT > < EVENTTYPE > identifier() [ value_inheritance_spec(scope) ] "{"
+  (
+    export(scope)
+  )*
+  "}"
+  {
+	throw new UnsupportedOperationException();
+  }
+}
+
+/* Production 137 */
+void event_dcl(Scope scope) :
+{}
+{
+  event_header(scope) "{"
+  (
+    value_element(scope)
+  )*
+  "}"
+}
+
+/* Production 138 */
+void event_header(Scope scope) :
+{}
+{
+  [ < CUSTOM > ] < EVENTTYPE > identifier() [ value_inheritance_spec(scope) ]
+  {
+	throw new UnsupportedOperationException();
+  }
+}
+
+void identifiableElement(Identifiable element) :
+{}
+{
+  < ID >
+  {
+    element.setName(token.image);
+    if (element instanceof Definition)
+    {
+    	((Definition)element).setPrefix(getPrefix());
+    }
+  }
+}
+
+String identifier() :
+{}
+{
+  < ID >
+  {
+  	String id = token.image;
+  	for (String str : IDLParserConstants.tokenImage) {
+  		if (str.equalsIgnoreCase(id)) {
+  			throw new ParseException("Identifier matches reserved word: " + str);
+  		}
+  	}
+  }
+  {
+    return token.image;
+  }
+}
+
+IntegerLiteral integer_literal() :
+{
+  IntegerLiteral retVal = ExpressionsFactory.eINSTANCE.createIntegerLiteral();
+}
+{
+  (
+    < OCTALINT >
+    {
+      retVal.setValue(Integer.valueOf(token.image, 8));
+    }
+  | < DECIMALINT >
+    {
+      retVal.setValue(Integer.valueOf(token.image, 10));
+    }
+  | < HEXADECIMALINT >
+    {
+      retVal.setValue(Integer.valueOf(token.image.substring(2), 15));
+    }
+  )
+  {
+    retVal.setStartLine(token.beginLine);
+    retVal.setStartColumn(token.beginColumn);
+    retVal.setEndLine(token.endLine);
+    retVal.setEndColumn(token.endColumn);
+    return retVal;
+  }
+}
+
+StringLiteral string_literal() :
+{
+  StringLiteral retVal = ExpressionsFactory.eINSTANCE.createStringLiteral();
+}
+{
+  < STRING >
+  {
+    retVal.setStartLine(token.beginLine);
+    retVal.setStartColumn(token.beginColumn);
+    retVal.setEndLine(token.endLine);
+    retVal.setEndColumn(token.endColumn);
+    retVal.setValue(token.image.substring(1, token.image.length() - 1));
+    return retVal;
+  }
+}
+
+WideStringLiteral wide_string_literal() :
+{
+  WideStringLiteral retVal = ExpressionsFactory.eINSTANCE.createWideStringLiteral();
+}
+{
+  < WSTRING_LITERAL >
+  {
+    retVal.setStartLine(token.beginLine);
+    retVal.setStartColumn(token.beginColumn);
+    retVal.setEndLine(token.endLine);
+    retVal.setEndColumn(token.endColumn);
+    retVal.setValue(token.image.substring(2, token.image.length() - 1));
+    return retVal;
+  }
+}
+
+CharacterLiteral character_literal() :
+{
+  CharacterLiteral retVal = ExpressionsFactory.eINSTANCE.createCharacterLiteral();
+}
+{
+  < CHARACTER >
+  {
+    retVal.setStartLine(token.beginLine);
+    retVal.setStartColumn(token.beginColumn);
+    retVal.setEndLine(token.endLine);
+    retVal.setEndColumn(token.endColumn);
+    retVal.setValue(token.image.charAt(1));
+    return retVal;
+  }
+}
+
+WideCharacterLiteral wide_character_literal() :
+{
+  WideCharacterLiteral retVal = ExpressionsFactory.eINSTANCE.createWideCharacterLiteral();
+}
+{
+  < WCHARACTER >
+  {
+    retVal.setStartLine(token.beginLine);
+    retVal.setStartColumn(token.beginColumn);
+    retVal.setEndLine(token.endLine);
+    retVal.setEndColumn(token.endColumn);
+    retVal.setValue(token.image.charAt(2));
+    return retVal;
+  }
+}
+
+FixedPtLiteral fixed_pt_literal() :
+{
+  FixedPtLiteral retVal = ExpressionsFactory.eINSTANCE.createFixedPtLiteral();
+}
+{
+  < FIXED_PT >
+  {
+    retVal.setStartLine(token.beginLine);
+    retVal.setStartColumn(token.beginColumn);
+    retVal.setEndLine(token.endLine);
+    retVal.setEndColumn(token.endColumn);
+    retVal.setValue(token.image);
+    return retVal;
+  }
+}
+
+FloatingPointLiteral floating_pt_literal() :
+{
+  FloatingPointLiteral retVal = ExpressionsFactory.eINSTANCE.createFloatingPointLiteral();
+}
+{
+  (
+    < FLOATONE >
+    {
+      retVal.setValue(java.lang.Float.valueOf(token.image));
+    }
+  | < FLOATTWO >
+    {
+      retVal.setValue(java.lang.Float.valueOf(token.image));
+    }
+  )
+  {
+    retVal.setStartLine(token.beginLine);
+    retVal.setStartColumn(token.beginColumn);
+    retVal.setEndLine(token.endLine);
+    retVal.setEndColumn(token.endColumn);
+    return retVal;
+  }
+}
+
+UnionForwardDcl union_forward_dcl(Scope parent) :
+{
+  UnionForwardDcl retVal = TypesFactory.eINSTANCE.createUnionForwardDcl();
+  int startLine = 0;
+  int startColumn = 0;
+  int endLine = 0;
+  int endColumn = 0;
+  Comment comment = popComment();
+}
+{
+  < UNION >
+  {
+    startLine = token.beginLine;
+    startColumn = token.beginColumn;
+  }
+  identifiableElement(retVal)
+  {
+    endLine = token.endLine;
+    endColumn = token.endColumn;
+    retVal.setStartLine(startLine);
+    retVal.setStartColumn(startColumn);
+    retVal.setEndLine(endLine);
+    retVal.setEndColumn(endColumn);
+    UnionType unionStub = TypesFactory.eINSTANCE.createUnionType();
+    unionStub.setName(retVal.getName());
+    unionStub.setForwardDcl(retVal);
+    retVal.setImplementation(unionStub);
+    retVal.setComment(comment);
+    Scope interfaceScope = new Scope(unionStub, parent, token);
+    return retVal;
+  }
+}
+
+StructForwardDcl struct_forward_dcl(Scope parent) :
+{
+  StructForwardDcl retVal = TypesFactory.eINSTANCE.createStructForwardDcl();
+  int startLine = 0;
+  int startColumn = 0;
+  int endLine = 0;
+  int endColumn = 0;
+  Comment comment = popComment();
+}
+{
+  < STRUCT >
+  {
+    startLine = token.beginLine;
+    startColumn = token.beginColumn;
+  }
+  identifiableElement(retVal)
+  {
+    endLine = token.endLine;
+    endColumn = token.endColumn;
+    retVal.setStartLine(startLine);
+    retVal.setStartColumn(startColumn);
+    retVal.setEndLine(endLine);
+    retVal.setEndColumn(endColumn);
+    StructType structStub = TypesFactory.eINSTANCE.createStructType();
+    structStub.setName(retVal.getName());
+    structStub.setForwardDcl(retVal);
+    retVal.setComment(comment);
+    retVal.setImplementation(structStub);
+    Scope interfaceScope = new Scope(structStub, parent, token);
+    return retVal;
+  }
+}
+
+/* Definitions of complex regular expressions follow */
+TOKEN :
+{
+  < ID : [ "a"-"z", "A"-"Z", "_" ] ([ "a"-"z", "A"-"Z", "0"-"9", "_" ])* >
+| < OCTALINT : "0" ([ "0"-"7" ])* ([ "u", "U", "l", "L" ])? >
+| < DECIMALINT : [ "1"-"9" ] ([ "0"-"9" ])* ([ "u", "U", "l", "L" ])? >
+| < FIXED_PT :
+    (
+      [ "1"-"9" ] ([ "0"-"9" ])*
+    )
+    (
+      "." [ "1"-"9" ] ([ "0"-"9" ])*
+    )?
+    ([ "d", "D" ]) >
+| < HEXADECIMALINT :
+    (
+      "0x"
+    | "0X"
+    )
+    ([ "0"-"9", "a"-"f", "A"-"F" ])+ ([ "u", "U", "l", "L" ])? >
+| < FLOATONE :
+    (
+      ([ "0"-"9" ])+ "." ([ "0"-"9" ])*
+    | ([ "0"-"9" ])* "." ([ "0"-"9" ])+
+    )
+    (
+      [ "e", "E" ] ([ "-", "+" ])? ([ "0"-"9" ])+
+    )?
+    ([ "f", "F", "l", "L" ])? >
+| < FLOATTWO : ([ "0"-"9" ])+ [ "e", "E" ] ([ "-", "+" ])? ([ "0"-"9" ])+ ([ "f", "F", "l", "L" ])? >
+| < CHARACTER :
+    "'"
+    (
+      (~[ "'", "\\", "\n", "\r" ])
+    |
+      (
+        "\\"
+        (
+          [ "n", "t", "v", "b", "r", "f", "a", "\\", "?", "'", "\"" ]
+        | "0" ([ "0"-"7" ])*
+        | [ "1"-"9" ] ([ "0"-"9" ])*
+        |
+          (
+            "0x"
+          | "0X"
+          )
+          ([ "0"-"9", "a"-"f", "A"-"F" ])+
+        )
+      )
+    )
+    "'" >
+| < WCHARACTER :
+    "L" "'"
+    (
+      (~[ "'", "\\", "\n", "\r" ])
+    |
+      (
+        "\\"
+        (
+          [ "n", "t", "v", "b", "r", "f", "a", "\\", "?", "'", "\"" ]
+        | "0" ([ "0"-"7" ])*
+        | [ "1"-"9" ] ([ "0"-"9" ])*
+        |
+          (
+            "0x"
+          | "0X"
+          )
+          ([ "0"-"9", "a"-"f", "A"-"F" ])+
+        )
+      )
+    )
+    "'" >
+| < STRING :
+    "\""
+    (
+      (~[ "\"", "\\", "\n", "\r" ])
+    |
+      (
+        "\\"
+        (
+          [ "n", "t", "v", "b", "r", "f", "a", "\\", "?", "'", "\"" ]
+        | "0" ([ "0"-"7" ])*
+        | [ "1"-"9" ] ([ "0"-"9" ])*
+        |
+          (
+            "0x"
+          | "0X"
+          )
+          ([ "0"-"9", "a"-"f", "A"-"F" ])+
+        )
+      )
+    )*
+    "\"" >
+| < WSTRING_LITERAL :
+    "L" "\""
+    (
+      (~[ "\"", "\\", "\n", "\r" ])
+    |
+      (
+        "\\"
+        (
+          [ "n", "t", "v", "b", "r", "f", "a", "\\", "?", "'", "\"" ]
+        | "0" ([ "0"-"7" ])*
+        | [ "1"-"9" ] ([ "0"-"9" ])*
+        |
+          (
+            "0x"
+          | "0X"
+          )
+          ([ "0"-"9", "a"-"f", "A"-"F" ])+
+        )
+      )
+    )*
+    "\"" >
+}

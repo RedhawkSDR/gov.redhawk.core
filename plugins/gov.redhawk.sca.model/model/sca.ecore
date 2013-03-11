@@ -1,0 +1,1246 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ecore:EPackage xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" name="sca" nsURI="http://www.redhawk.gov/model/sca/2.0.0" nsPrefix="sca">
+  <eClassifiers xsi:type="ecore:EDataType" name="AdminType" instanceClassName="CF.DevicePackage.AdminType">
+    <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+      <details key="name" value="AdminType"/>
+      <details key="enumeration" value="LOCKED SHUTTING%20DOWN UNLOCKED"/>
+    </eAnnotations>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="CorbaObjWrapper" abstract="true" eSuperTypes="#//DataProviderObject">
+    <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+      <details key="name" value="CorbaObjWrapper"/>
+      <details key="kind" value="empty"/>
+    </eAnnotations>
+    <eTypeParameters name="T">
+      <eBounds eClassifier="#//Object"/>
+    </eTypeParameters>
+    <eOperations name="exists" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//Boolean"/>
+    <eOperations name="fetchAttributes">
+      <eParameters name="monitor" eType="#//IProgressMonitor"/>
+    </eOperations>
+    <eOperations name="fetchNarrowedObject">
+      <eGenericType eTypeParameter="#//CorbaObjWrapper/T"/>
+      <eParameters name="monitor" eType="#//IProgressMonitor"/>
+    </eOperations>
+    <eOperations name="_is_a" eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EBoolean">
+      <eParameters name="repId" eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EString"/>
+    </eOperations>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="ior" eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EString"
+        transient="true" unsettable="true" derived="true">
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="attribute"/>
+        <details key="name" value="ior"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="obj" transient="true" unsettable="true">
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="attribute"/>
+        <details key="name" value="obj"/>
+      </eAnnotations>
+      <eGenericType eTypeParameter="#//CorbaObjWrapper/T"/>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="corbaObj" eType="#//Object"
+        transient="true" unsettable="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="DataProviderObject" abstract="true"
+      eSuperTypes="#//IStatusProvider #//IDisposable #//IRefreshable">
+    <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+      <details key="name" value="DataProviderObject"/>
+      <details key="kind" value="empty"/>
+    </eAnnotations>
+    <eOperations name="attachDataProviders"/>
+    <eOperations name="detachDataProviders"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="dataProviders" upperBound="-1"
+        eType="#//IScaDataProvider" transient="true" unsettable="true">
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="attribute"/>
+        <details key="name" value="dataProviders"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="dataProvidersEnabled" eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EBoolean"
+        defaultValueLiteral="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EEnum" name="DomainConnectionState">
+    <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+      <details key="name" value="DomainConnectionState"/>
+    </eAnnotations>
+    <eLiterals name="disconnected" value="1"/>
+    <eLiterals name="connecting" value="2"/>
+    <eLiterals name="connected" value="3"/>
+    <eLiterals name="disconnecting" value="4"/>
+    <eLiterals name="failed" value="-1"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EDataType" name="DomainConnectionException" instanceClassName="gov.redhawk.model.sca.DomainConnectionException"/>
+  <eClassifiers xsi:type="ecore:EDataType" name="DomainConnectionStateObject" instanceClassName="org.eclipse.emf.common.util.Enumerator">
+    <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+      <details key="name" value="DomainConnectionState:Object"/>
+      <details key="baseType" value="DomainConnectionState"/>
+    </eAnnotations>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="IDisposable" abstract="true" interface="true">
+    <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+      <details key="name" value="IDisposable"/>
+      <details key="kind" value="empty"/>
+    </eAnnotations>
+    <eOperations name="dispose"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="disposed" eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EBoolean"
+        changeable="false" transient="true">
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="attribute"/>
+        <details key="name" value="disposed"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EDataType" name="IFileStore" instanceClassName="org.eclipse.core.filesystem.IFileStore">
+    <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+      <details key="name" value="IFileStore"/>
+    </eAnnotations>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EDataType" name="IProgressMonitor" instanceClassName="org.eclipse.core.runtime.IProgressMonitor"
+      serializable="false">
+    <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+      <details key="name" value="IProgressMonitor"/>
+    </eAnnotations>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EDataType" name="IScaDataProvider" instanceClassName="gov.redhawk.model.sca.services.IScaDataProvider"
+      serializable="false">
+    <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+      <details key="name" value="dataProvider"/>
+    </eAnnotations>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EDataType" name="IScaDataProviderService" instanceClassName="gov.redhawk.model.sca.services.IScaDataProviderService"
+      serializable="false">
+    <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+      <details key="name" value="dataProviderService"/>
+    </eAnnotations>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EDataType" name="IStatus" instanceClassName="org.eclipse.core.runtime.IStatus"
+      serializable="false">
+    <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+      <details key="name" value="IStatus"/>
+    </eAnnotations>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EDataType" name="Object" instanceClassName="org.omg.CORBA.Object">
+    <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+      <details key="name" value="Object"/>
+    </eAnnotations>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EDataType" name="ObjectArray" instanceClassName="java.lang.Object[]"
+      serializable="false">
+    <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+      <details key="name" value="ObjectArray"/>
+    </eAnnotations>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EDataType" name="OperationalType" instanceClassName="CF.DevicePackage.OperationalType">
+    <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+      <details key="name" value="OperationalType"/>
+      <details key="enumeration" value="ENABLED DISABLED"/>
+    </eAnnotations>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="ProfileObjectWrapper" abstract="true"
+      interface="true" eSuperTypes="#//IStatusProvider">
+    <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+      <details key="name" value="ProfileObjectWrapper"/>
+      <details key="kind" value="empty"/>
+    </eAnnotations>
+    <eTypeParameters name="O">
+      <eBounds eClassifier="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EJavaObject"/>
+    </eTypeParameters>
+    <eOperations name="fetchProfileObject">
+      <eGenericType eTypeParameter="#//ProfileObjectWrapper/O"/>
+      <eParameters name="monitor" eType="#//IProgressMonitor"/>
+    </eOperations>
+    <eOperations name="fetchProfileURI" eType="ecore:EDataType platform:/plugin/mil.jpeojtrs.sca.spd/model/spd.ecore#//URI">
+      <eParameters name="monitor" eType="#//IProgressMonitor"/>
+    </eOperations>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="profileURI" eType="ecore:EDataType platform:/plugin/mil.jpeojtrs.sca.spd/model/spd.ecore#//URI"
+        transient="true" unsettable="true" derived="true">
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="attribute"/>
+        <details key="name" value="profile"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="profileObj" transient="true"
+        unsettable="true" derived="true">
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="attribute"/>
+        <details key="name" value="profileObj"/>
+      </eAnnotations>
+      <eGenericType eTypeParameter="#//ProfileObjectWrapper/O"/>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="rootFileStore" eType="#//IFileStore"
+        changeable="false" volatile="true" transient="true" derived="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Properties">
+    <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+      <details key="name" value="Properties"/>
+      <details key="kind" value="elementOnly"/>
+    </eAnnotations>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="property" upperBound="-1"
+        eType="#//StringToStringMap" containment="true">
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="element"/>
+        <details key="name" value="property"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EEnum" name="RefreshDepth">
+    <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+      <details key="name" value="RefreshDepth"/>
+    </eAnnotations>
+    <eLiterals name="NONE"/>
+    <eLiterals name="SELF" value="1"/>
+    <eLiterals name="CHILDREN" value="2"/>
+    <eLiterals name="FULL" value="3"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EDataType" name="RefreshDepthObject" instanceClassName="org.eclipse.emf.common.util.Enumerator">
+    <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+      <details key="name" value="RefreshDepth:Object"/>
+      <details key="baseType" value="RefreshDepth"/>
+    </eAnnotations>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="ScaAbstractComponent" abstract="true">
+    <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+      <details key="name" value="ScaAbstractComponent"/>
+      <details key="kind" value="elementOnly"/>
+    </eAnnotations>
+    <eTypeParameters name="R">
+      <eBounds eClassifier="ecore:EClass platform:/plugin/mil.jpeojtrs.sca.cf/model/cf.ecore#//Resource"/>
+    </eTypeParameters>
+    <eOperations name="fetchIdentifier" eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EString">
+      <eParameters name="monitor" eType="#//IProgressMonitor"/>
+    </eOperations>
+    <eOperations name="fetchStarted" eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EBooleanObject">
+      <eParameters name="monitor" eType="#//IProgressMonitor"/>
+    </eOperations>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="identifier" eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EString"
+        unsettable="true" derived="true" iD="true">
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="attribute"/>
+        <details key="name" value="identifier"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="started" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//BooleanObject"
+        transient="true" unsettable="true"/>
+    <eGenericSuperTypes eClassifier="#//ScaPropertyContainer">
+      <eTypeArguments eTypeParameter="#//ScaAbstractComponent/R"/>
+      <eTypeArguments eClassifier="ecore:EClass platform:/plugin/mil.jpeojtrs.sca.spd/model/spd.ecore#//SoftPkg"/>
+    </eGenericSuperTypes>
+    <eGenericSuperTypes eClassifier="ecore:EClass platform:/plugin/mil.jpeojtrs.sca.cf/model/cf.ecore#//ResourceOperations"/>
+    <eGenericSuperTypes eClassifier="#//ScaPortContainer"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="ScaPropertyContainer" abstract="true">
+    <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+      <details key="name" value="ScaPropertyContainer"/>
+      <details key="kind" value="elementOnly"/>
+    </eAnnotations>
+    <eTypeParameters name="P">
+      <eBounds eClassifier="#//Object"/>
+    </eTypeParameters>
+    <eTypeParameters name="E">
+      <eBounds eClassifier="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EJavaObject"/>
+    </eTypeParameters>
+    <eOperations name="fetchProperties" upperBound="-1">
+      <eGenericType eClassifier="#//ScaAbstractProperty">
+        <eTypeArguments/>
+      </eGenericType>
+      <eParameters name="monitor" eType="#//IProgressMonitor"/>
+    </eOperations>
+    <eOperations name="getProperty">
+      <eGenericType eClassifier="#//ScaAbstractProperty">
+        <eTypeArguments/>
+      </eGenericType>
+      <eParameters name="identifier" eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EString"/>
+    </eOperations>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="properties" upperBound="-1"
+        transient="true" unsettable="true" containment="true" resolveProxies="false">
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="element"/>
+        <details key="name" value="properties"/>
+      </eAnnotations>
+      <eGenericType eClassifier="#//ScaAbstractProperty">
+        <eTypeArguments/>
+      </eGenericType>
+    </eStructuralFeatures>
+    <eGenericSuperTypes eClassifier="#//CorbaObjWrapper">
+      <eTypeArguments eTypeParameter="#//ScaPropertyContainer/P"/>
+    </eGenericSuperTypes>
+    <eGenericSuperTypes eClassifier="#//ProfileObjectWrapper">
+      <eTypeArguments eTypeParameter="#//ScaPropertyContainer/E"/>
+    </eGenericSuperTypes>
+    <eGenericSuperTypes eClassifier="ecore:EClass platform:/plugin/mil.jpeojtrs.sca.cf/model/cf.ecore#//PropertySetOperations"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="ScaPortContainer" abstract="true" interface="true"
+      eSuperTypes="#//IRefreshable #//IStatusProvider">
+    <eOperations name="getScaPort">
+      <eGenericType eClassifier="#//ScaPort">
+        <eTypeArguments/>
+        <eTypeArguments/>
+      </eGenericType>
+      <eParameters name="name" eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EString"/>
+    </eOperations>
+    <eOperations name="fetchPorts" upperBound="-1">
+      <eGenericType eClassifier="#//ScaPort">
+        <eTypeArguments/>
+        <eTypeArguments/>
+      </eGenericType>
+      <eParameters name="monitor" eType="#//IProgressMonitor"/>
+    </eOperations>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="ports" upperBound="-1"
+        transient="true" unsettable="true" containment="true" resolveProxies="false"
+        eOpposite="#//ScaPort/portContainer">
+      <eGenericType eClassifier="#//ScaPort">
+        <eTypeArguments/>
+        <eTypeArguments/>
+      </eGenericType>
+    </eStructuralFeatures>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="ScaAbstractProperty" abstract="true"
+      eSuperTypes="#//IStatusProvider">
+    <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+      <details key="name" value="ScaProperty"/>
+      <details key="kind" value="empty"/>
+    </eAnnotations>
+    <eTypeParameters name="T">
+      <eBounds eClassifier="ecore:EClass platform:/plugin/mil.jpeojtrs.sca.prf/model/prf.ecore#//AbstractProperty"/>
+    </eTypeParameters>
+    <eOperations name="toAny" eType="#//Any"/>
+    <eOperations name="fromAny">
+      <eParameters name="any" eType="#//Any"/>
+    </eOperations>
+    <eOperations name="setRemoteValue" eExceptions="ecore:EDataType platform:/plugin/mil.jpeojtrs.sca.cf/model/cf.ecore#//PartialConfiguration ecore:EDataType platform:/plugin/mil.jpeojtrs.sca.cf/model/cf.ecore#//InvalidConfiguration">
+      <eParameters name="any" eType="#//Any"/>
+    </eOperations>
+    <eOperations name="getProperty" eType="ecore:EDataType platform:/plugin/mil.jpeojtrs.sca.cf/model/cf.ecore#//DataType"/>
+    <eOperations name="isDefaultValue" eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EBoolean"/>
+    <eOperations name="restoreDefaultValue"/>
+    <eOperations name="valueEquals" eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EBoolean">
+      <eParameters name="any" eType="ecore:EDataType platform:/plugin/mil.jpeojtrs.sca.prf/model/prf.ecore#//Any"/>
+    </eOperations>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="definition" transient="true">
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="attribute"/>
+        <details key="name" value="definition"/>
+      </eAnnotations>
+      <eGenericType eTypeParameter="#//ScaAbstractProperty/T"/>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="description" eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EString"
+        transient="true">
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="attribute"/>
+        <details key="name" value="description"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="id" eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EString"
+        transient="true">
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="attribute"/>
+        <details key="name" value="id"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="mode" eType="ecore:EEnum platform:/plugin/mil.jpeojtrs.sca.prf/model/prf.ecore#//AccessType"
+        transient="true">
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="attribute"/>
+        <details key="name" value="mode"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EString"
+        transient="true">
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="attribute"/>
+        <details key="name" value="name"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="ignoreRemoteSet" eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EBoolean"
+        volatile="true" transient="true" derived="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="ScaComponent">
+    <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+      <details key="name" value="ScaComponent"/>
+      <details key="kind" value="elementOnly"/>
+    </eAnnotations>
+    <eOperations name="fetchDevices" upperBound="-1">
+      <eGenericType eClassifier="#//ScaDevice">
+        <eTypeArguments/>
+      </eGenericType>
+      <eParameters name="monitor" eType="#//IProgressMonitor"/>
+    </eOperations>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="componentInstantiation"
+        lowerBound="1" eType="ecore:EClass platform:/plugin/mil.jpeojtrs.sca.sad/model/sad.ecore#//SadComponentInstantiation"
+        transient="true" unsettable="true">
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="attribute"/>
+        <details key="name" value="componentInstantiation"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="devices" upperBound="-1"
+        transient="true" unsettable="true">
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="attribute"/>
+        <details key="name" value="devices"/>
+      </eAnnotations>
+      <eGenericType eClassifier="#//ScaDevice">
+        <eTypeArguments/>
+      </eGenericType>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="instantiationIdentifier"
+        eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EString"
+        changeable="false" volatile="true" transient="true" unsettable="true" derived="true">
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="attribute"/>
+        <details key="name" value="instantiationIdentifier"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="waveform" eType="#//ScaWaveform"
+        transient="true" eOpposite="#//ScaWaveform/components">
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="attribute"/>
+        <details key="name" value="waveform"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EString"/>
+    <eGenericSuperTypes eClassifier="#//ScaAbstractComponent">
+      <eTypeArguments eClassifier="ecore:EClass platform:/plugin/mil.jpeojtrs.sca.cf/model/cf.ecore#//Resource"/>
+    </eGenericSuperTypes>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="ScaDevice">
+    <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+      <details key="name" value="ScaDevice"/>
+      <details key="kind" value="elementOnly"/>
+    </eAnnotations>
+    <eTypeParameters name="D">
+      <eBounds eClassifier="ecore:EClass platform:/plugin/mil.jpeojtrs.sca.cf/model/cf.ecore#//Device"/>
+    </eTypeParameters>
+    <eOperations name="fetchAggregateDevices" upperBound="-1">
+      <eGenericType eClassifier="#//ScaDevice">
+        <eTypeArguments/>
+      </eGenericType>
+      <eParameters name="monitor" eType="#//IProgressMonitor"/>
+    </eOperations>
+    <eOperations name="fetchAdminState" eType="#//AdminType">
+      <eParameters name="monitor" eType="#//IProgressMonitor"/>
+    </eOperations>
+    <eOperations name="fetchLabel" eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EString">
+      <eParameters name="monitor" eType="#//IProgressMonitor"/>
+    </eOperations>
+    <eOperations name="fetchOperationalState" eType="#//OperationalType">
+      <eParameters name="monitor" eType="#//IProgressMonitor"/>
+    </eOperations>
+    <eOperations name="fetchUsageState" eType="#//UsageType">
+      <eParameters name="monitor" eType="#//IProgressMonitor"/>
+    </eOperations>
+    <eOperations name="fetchProfile" eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EString">
+      <eParameters name="monitor" eType="#//IProgressMonitor"/>
+    </eOperations>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="childDevices" upperBound="-1"
+        transient="true" unsettable="true" resolveProxies="false" eOpposite="#//ScaDevice/parentDevice">
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="element"/>
+        <details key="name" value="childDevices"/>
+      </eAnnotations>
+      <eGenericType eClassifier="#//ScaDevice">
+        <eTypeArguments/>
+      </eGenericType>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="adminState" eType="#//AdminType"
+        transient="true" unsettable="true" derived="true">
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="attribute"/>
+        <details key="name" value="adminState"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="label" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//String"
+        transient="true" unsettable="true" derived="true">
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="attribute"/>
+        <details key="name" value="label"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="operationalState" eType="#//OperationalType"
+        transient="true" unsettable="true" derived="true">
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="attribute"/>
+        <details key="name" value="operationalState"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="usageState" eType="#//UsageType"
+        transient="true" unsettable="true" derived="true">
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="attribute"/>
+        <details key="name" value="usageState"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="parentDevice" transient="true"
+        eOpposite="#//ScaDevice/childDevices">
+      <eGenericType eClassifier="#//ScaDevice">
+        <eTypeArguments/>
+      </eGenericType>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="devMgr" eType="#//ScaDeviceManager"
+        changeable="false" volatile="true" transient="true" derived="true"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="profile" eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EString"
+        transient="true" unsettable="true"/>
+    <eGenericSuperTypes eClassifier="#//ScaAbstractComponent">
+      <eTypeArguments eTypeParameter="#//ScaDevice/D"/>
+    </eGenericSuperTypes>
+    <eGenericSuperTypes eClassifier="ecore:EClass platform:/plugin/mil.jpeojtrs.sca.cf/model/cf.ecore#//DeviceOperations"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="ScaDeviceManager">
+    <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+      <details key="name" value="ScaDeviceManager"/>
+      <details key="kind" value="elementOnly"/>
+    </eAnnotations>
+    <eOperations name="getDevice">
+      <eGenericType eClassifier="#//ScaDevice">
+        <eTypeArguments/>
+      </eGenericType>
+      <eParameters name="deviceId" eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EString"/>
+    </eOperations>
+    <eOperations name="fetchDevices" upperBound="-1">
+      <eGenericType eClassifier="#//ScaDevice">
+        <eTypeArguments/>
+      </eGenericType>
+      <eParameters name="monitor" eType="#//IProgressMonitor"/>
+    </eOperations>
+    <eOperations name="fetchFileSystem" eType="#//ScaDeviceManagerFileSystem">
+      <eParameters name="monitor" eType="#//IProgressMonitor"/>
+    </eOperations>
+    <eOperations name="fetchIdentifier" eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EString">
+      <eParameters name="monitor" eType="#//IProgressMonitor"/>
+    </eOperations>
+    <eOperations name="fetchLabel" eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EString">
+      <eParameters name="monitor" eType="#//IProgressMonitor"/>
+    </eOperations>
+    <eOperations name="fetchServices" upperBound="-1" eType="#//ScaService">
+      <eParameters name="monitor" eType="#//IProgressMonitor"/>
+    </eOperations>
+    <eOperations name="registerScaService" eType="#//ScaService" eExceptions="ecore:EDataType platform:/plugin/mil.jpeojtrs.sca.cf/model/cf.ecore#//InvalidObjectReference">
+      <eParameters name="registeringService" eType="#//Object"/>
+      <eParameters name="name" eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EString"/>
+    </eOperations>
+    <eOperations name="getScaService" eType="#//ScaService">
+      <eParameters name="name" eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EString"/>
+    </eOperations>
+    <eOperations name="fetchProfile" eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EString">
+      <eParameters name="monitor" eType="#//IProgressMonitor"/>
+    </eOperations>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="devices" unique="false"
+        upperBound="-1" eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EFeatureMapEntry"
+        transient="true" unsettable="true">
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="group"/>
+        <details key="name" value="devices:1"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="rootDevices" upperBound="-1"
+        volatile="true" transient="true" derived="true" containment="true" resolveProxies="false">
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="group" value="#devices:1"/>
+      </eAnnotations>
+      <eGenericType eClassifier="#//ScaDevice">
+        <eTypeArguments/>
+      </eGenericType>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="childDevices" upperBound="-1"
+        volatile="true" transient="true" derived="true" containment="true" resolveProxies="false">
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="group" value="#devices:1"/>
+      </eAnnotations>
+      <eGenericType eClassifier="#//ScaDevice">
+        <eTypeArguments/>
+      </eGenericType>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="allDevices" upperBound="-1"
+        volatile="true" transient="true" unsettable="true" derived="true" containment="true">
+      <eGenericType eClassifier="#//ScaDevice">
+        <eTypeArguments/>
+      </eGenericType>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="fileSystem" eType="#//ScaDeviceManagerFileSystem"
+        transient="true" unsettable="true" containment="true" resolveProxies="false"
+        eOpposite="#//ScaDeviceManagerFileSystem/deviceManager">
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="element"/>
+        <details key="name" value="fileSystem"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="domMgr" eType="#//ScaDomainManager"
+        transient="true" eOpposite="#//ScaDomainManager/deviceManagers">
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="attribute"/>
+        <details key="name" value="domMgr"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="identifier" eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EString"
+        unsettable="true" derived="true" iD="true">
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="attribute"/>
+        <details key="name" value="identifier"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="label" eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EString"
+        transient="true" unsettable="true" derived="true">
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="attribute"/>
+        <details key="name" value="label"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="services" upperBound="-1"
+        eType="#//ScaService" transient="true" unsettable="true" containment="true"
+        resolveProxies="false"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="profile" eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EString"
+        transient="true" unsettable="true"/>
+    <eGenericSuperTypes eClassifier="#//ScaPropertyContainer">
+      <eTypeArguments eClassifier="ecore:EClass platform:/plugin/mil.jpeojtrs.sca.cf/model/cf.ecore#//DeviceManager"/>
+      <eTypeArguments eClassifier="ecore:EClass platform:/plugin/mil.jpeojtrs.sca.dcd/model/dcd.ecore#//DeviceConfiguration"/>
+    </eGenericSuperTypes>
+    <eGenericSuperTypes eClassifier="ecore:EClass platform:/plugin/mil.jpeojtrs.sca.cf/model/cf.ecore#//DeviceManagerOperations"/>
+    <eGenericSuperTypes eClassifier="#//ScaPortContainer"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="ScaService">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EString"/>
+    <eGenericSuperTypes eClassifier="#//CorbaObjWrapper">
+      <eTypeArguments eClassifier="#//Object"/>
+    </eGenericSuperTypes>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="ScaDeviceManagerFileSystem">
+    <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+      <details key="name" value="ScaDeviceManagerFileSystem"/>
+      <details key="kind" value="empty"/>
+    </eAnnotations>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="deviceManager" eType="#//ScaDeviceManager"
+        transient="true" unsettable="true" eOpposite="#//ScaDeviceManager/fileSystem"/>
+    <eGenericSuperTypes eClassifier="#//ScaFileSystem">
+      <eTypeArguments eClassifier="ecore:EClass platform:/plugin/mil.jpeojtrs.sca.cf/model/cf.ecore#//FileSystem"/>
+    </eGenericSuperTypes>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="ScaDocumentRoot">
+    <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+      <details key="name" value=""/>
+      <details key="kind" value="mixed"/>
+    </eAnnotations>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="mixed" unique="false" upperBound="-1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EFeatureMapEntry">
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="elementWildcard"/>
+        <details key="name" value=":mixed"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="xMLNSPrefixMap" upperBound="-1"
+        eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EStringToStringMapEntry"
+        transient="true" containment="true" resolveProxies="false">
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="attribute"/>
+        <details key="name" value="xmlns:prefix"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="xSISchemaLocation" upperBound="-1"
+        eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EStringToStringMapEntry"
+        transient="true" containment="true" resolveProxies="false">
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="attribute"/>
+        <details key="name" value="xsi:schemaLocation"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="domainManagerRegistry"
+        upperBound="-2" eType="#//ScaDomainManagerRegistry" volatile="true" transient="true"
+        derived="true" containment="true" resolveProxies="false">
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="element"/>
+        <details key="name" value="domainManagerRegistry"/>
+        <details key="namespace" value="##targetNamespace"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="ScaDomainManager">
+    <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+      <details key="name" value="ScaDomainManager"/>
+      <details key="kind" value="elementOnly"/>
+    </eAnnotations>
+    <eOperations name="getDevice">
+      <eGenericType eClassifier="#//ScaDevice">
+        <eTypeArguments/>
+      </eGenericType>
+      <eParameters name="deviceId" eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EString"/>
+    </eOperations>
+    <eOperations name="connect" eExceptions="#//DomainConnectionException">
+      <eParameters name="monitor" eType="#//IProgressMonitor"/>
+    </eOperations>
+    <eOperations name="connect" eExceptions="#//DomainConnectionException">
+      <eParameters name="monitor" eType="#//IProgressMonitor"/>
+      <eParameters name="refreshDepth" eType="#//RefreshDepth"/>
+    </eOperations>
+    <eOperations name="disconnect"/>
+    <eOperations name="fetchDeviceManagers" upperBound="-1" eType="#//ScaDeviceManager">
+      <eParameters name="monitor" eType="#//IProgressMonitor"/>
+    </eOperations>
+    <eOperations name="fetchWaveformFactories" upperBound="-1" eType="#//ScaWaveformFactory">
+      <eParameters name="monitor" eType="#//IProgressMonitor"/>
+    </eOperations>
+    <eOperations name="fetchWaveforms" upperBound="-1" eType="#//ScaWaveform">
+      <eParameters name="monitor" eType="#//IProgressMonitor"/>
+    </eOperations>
+    <eOperations name="fetchFileManager" eType="#//ScaDomainManagerFileSystem">
+      <eParameters name="monitor" eType="#//IProgressMonitor"/>
+    </eOperations>
+    <eOperations name="fetchIdentifier" eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EString">
+      <eParameters name="monitor" eType="#//IProgressMonitor"/>
+    </eOperations>
+    <eOperations name="installScaWaveformFactory" eType="#//ScaWaveformFactory" eExceptions="ecore:EDataType platform:/plugin/mil.jpeojtrs.sca.cf/model/cf.ecore#//InvalidProfile ecore:EDataType platform:/plugin/mil.jpeojtrs.sca.cf/model/cf.ecore#//InvalidFileName ecore:EDataType platform:/plugin/mil.jpeojtrs.sca.cf/model/cf.ecore#//ApplicationInstallationError ecore:EDataType platform:/plugin/mil.jpeojtrs.sca.cf/model/cf.ecore#//ApplicationAlreadyInstalled">
+      <eParameters name="profilePath" eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EString"/>
+    </eOperations>
+    <eOperations name="uninstallScaWaveformFactory" eExceptions="ecore:EDataType platform:/plugin/mil.jpeojtrs.sca.cf/model/cf.ecore#//ApplicationUninstallationError ecore:EDataType platform:/plugin/mil.jpeojtrs.sca.cf/model/cf.ecore#//InvalidIdentifier">
+      <eParameters name="factory" eType="#//ScaWaveformFactory"/>
+    </eOperations>
+    <eOperations name="fetchProfile" eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EString">
+      <eParameters name="monitor" eType="#//IProgressMonitor"/>
+    </eOperations>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="waveformFactories" upperBound="-1"
+        eType="#//ScaWaveformFactory" transient="true" unsettable="true" containment="true"
+        resolveProxies="false" eOpposite="#//ScaWaveformFactory/domMgr">
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="element"/>
+        <details key="name" value="waveformFactories"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="waveforms" upperBound="-1"
+        eType="#//ScaWaveform" transient="true" unsettable="true" containment="true"
+        resolveProxies="false" eOpposite="#//ScaWaveform/domMgr">
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="element"/>
+        <details key="name" value="waveforms"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="deviceManagers" upperBound="-1"
+        eType="#//ScaDeviceManager" transient="true" unsettable="true" containment="true"
+        resolveProxies="false" eOpposite="#//ScaDeviceManager/domMgr">
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="element"/>
+        <details key="name" value="deviceManagers"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="fileManager" eType="#//ScaDomainManagerFileSystem"
+        transient="true" unsettable="true" containment="true" resolveProxies="false"
+        eOpposite="#//ScaDomainManagerFileSystem/domMgr">
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="element"/>
+        <details key="name" value="fileManager"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="connectionPropertiesContainer"
+        lowerBound="1" eType="#//Properties" containment="true">
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="element"/>
+        <details key="name" value="connectionProperties"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="connectionProperties" upperBound="-1"
+        eType="#//StringToStringMap" volatile="true" transient="true" derived="true"
+        containment="true">
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="element"/>
+        <details key="name" value="connectionPropertiesTransient"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="autoConnect" eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EBoolean">
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="attribute"/>
+        <details key="name" value="autoConnect"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="connected" lowerBound="1"
+        eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EBoolean"
+        changeable="false" volatile="true" transient="true" derived="true">
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="attribute"/>
+        <details key="name" value="connected"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="identifier" eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EString"
+        transient="true" unsettable="true">
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="attribute"/>
+        <details key="name" value="identifier"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" lowerBound="1" eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EString"
+        iD="true">
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="attribute"/>
+        <details key="name" value="name"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="rootContext" lowerBound="1"
+        eType="ecore:EDataType platform:/plugin/mil.jpeojtrs.sca.cf/model/cf.ecore#//NamingContextExt"
+        transient="true" unsettable="true">
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="attribute"/>
+        <details key="name" value="rootContext"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="state" lowerBound="1" eType="#//DomainConnectionState"
+        transient="true">
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="attribute"/>
+        <details key="name" value="state"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="profile" eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EString"
+        transient="true" unsettable="true"/>
+    <eGenericSuperTypes eClassifier="#//ScaPropertyContainer">
+      <eTypeArguments eClassifier="ecore:EClass platform:/plugin/mil.jpeojtrs.sca.cf/model/cf.ecore#//DomainManager"/>
+      <eTypeArguments eClassifier="ecore:EClass platform:/plugin/mil.jpeojtrs.sca.dmd/model/dmd.ecore#//DomainManagerConfiguration"/>
+    </eGenericSuperTypes>
+    <eGenericSuperTypes eClassifier="ecore:EClass platform:/plugin/mil.jpeojtrs.sca.cf/model/cf.ecore#//DomainManagerOperations"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EDataType" name="POA" instanceClassName="org.omg.PortableServer.POA"
+      serializable="false"/>
+  <eClassifiers xsi:type="ecore:EClass" name="ScaDomainManagerFileSystem" eSuperTypes="#//ScaFileManager">
+    <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+      <details key="name" value="ScaDomainManagerFileSystem"/>
+      <details key="kind" value="empty"/>
+    </eAnnotations>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="domMgr" eType="#//ScaDomainManager"
+        transient="true" eOpposite="#//ScaDomainManager/fileManager">
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="attribute"/>
+        <details key="name" value="domMgr"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="ScaDomainManagerRegistry" eSuperTypes="#//IDisposable">
+    <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+      <details key="name" value="ScaDomainManagerRegistry"/>
+      <details key="kind" value="elementOnly"/>
+    </eAnnotations>
+    <eOperations name="findDomain" eType="#//ScaDomainManager">
+      <eParameters name="domainName" eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EString"/>
+    </eOperations>
+    <eOperations name="createDomain" eType="#//ScaDomainManager">
+      <eParameters name="name" eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EString"/>
+      <eParameters name="autoConnect" eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EBoolean"/>
+      <eParameters name="connectionProperties">
+        <eGenericType eClassifier="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EMap">
+          <eTypeArguments eClassifier="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EString"/>
+          <eTypeArguments eClassifier="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EString"/>
+        </eGenericType>
+      </eParameters>
+    </eOperations>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="domains" upperBound="-1"
+        eType="#//ScaDomainManager" containment="true">
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="element"/>
+        <details key="name" value="domain"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="ScaExecutableDevice">
+    <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+      <details key="name" value="ScaExecutableDevice"/>
+      <details key="kind" value="elementOnly"/>
+    </eAnnotations>
+    <eGenericSuperTypes eClassifier="#//ScaLoadableDevice">
+      <eTypeArguments eClassifier="ecore:EClass platform:/plugin/mil.jpeojtrs.sca.cf/model/cf.ecore#//ExecutableDevice"/>
+    </eGenericSuperTypes>
+    <eGenericSuperTypes eClassifier="ecore:EClass platform:/plugin/mil.jpeojtrs.sca.cf/model/cf.ecore#//ExecutableDeviceOperations"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="ScaFileManager" abstract="true">
+    <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+      <details key="name" value="ScaFileManager"/>
+      <details key="kind" value="empty"/>
+    </eAnnotations>
+    <eGenericSuperTypes eClassifier="#//ScaFileSystem">
+      <eTypeArguments eClassifier="ecore:EClass platform:/plugin/mil.jpeojtrs.sca.cf/model/cf.ecore#//FileManager"/>
+    </eGenericSuperTypes>
+    <eGenericSuperTypes eClassifier="ecore:EClass platform:/plugin/mil.jpeojtrs.sca.cf/model/cf.ecore#//FileManagerOperations"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="ScaFileStore" eSuperTypes="#//IStatusProvider #//IRefreshable">
+    <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+      <details key="name" value="ScaFileStore"/>
+      <details key="kind" value="empty"/>
+    </eAnnotations>
+    <eOperations name="fetchChildren" upperBound="-1" eType="#//ScaFileStore">
+      <eParameters name="monitor" eType="#//IProgressMonitor"/>
+    </eOperations>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="fileStore" eType="#//IFileStore"
+        transient="true">
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="attribute"/>
+        <details key="name" value="fileStore"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="children" upperBound="-1"
+        eType="#//ScaFileStore" transient="true" unsettable="true" containment="true">
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="attribute"/>
+        <details key="name" value="children"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="imageDesc" eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EJavaObject"
+        unsettable="true"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="directory" unique="false"
+        eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EBoolean"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EString"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="ScaFileSystem" abstract="true">
+    <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+      <details key="name" value="ScaFileSystem"/>
+      <details key="kind" value="empty"/>
+    </eAnnotations>
+    <eTypeParameters name="F">
+      <eBounds eClassifier="ecore:EClass platform:/plugin/mil.jpeojtrs.sca.cf/model/cf.ecore#//FileSystem"/>
+    </eTypeParameters>
+    <eOperations name="createURI" eType="ecore:EDataType platform:/plugin/mil.jpeojtrs.sca.spd/model/spd.ecore#//URI">
+      <eParameters name="path" eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EString"/>
+    </eOperations>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="fileSystemURI" lowerBound="1"
+        eType="#//URI" transient="true" defaultValueLiteral="" derived="true">
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="attribute"/>
+        <details key="name" value="fileSystemURI"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eGenericSuperTypes eClassifier="#//CorbaObjWrapper">
+      <eTypeArguments eTypeParameter="#//ScaFileSystem/F"/>
+    </eGenericSuperTypes>
+    <eGenericSuperTypes eClassifier="ecore:EClass platform:/plugin/mil.jpeojtrs.sca.cf/model/cf.ecore#//FileSystemOperations"/>
+    <eGenericSuperTypes eClassifier="#//ScaFileStore"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="ScaLoadableDevice">
+    <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+      <details key="name" value="ScaLoadableDevice"/>
+      <details key="kind" value="elementOnly"/>
+    </eAnnotations>
+    <eTypeParameters name="L">
+      <eBounds eClassifier="ecore:EClass platform:/plugin/mil.jpeojtrs.sca.cf/model/cf.ecore#//LoadableDevice"/>
+    </eTypeParameters>
+    <eGenericSuperTypes eClassifier="#//ScaDevice">
+      <eTypeArguments eTypeParameter="#//ScaLoadableDevice/L"/>
+    </eGenericSuperTypes>
+    <eGenericSuperTypes eClassifier="ecore:EClass platform:/plugin/mil.jpeojtrs.sca.cf/model/cf.ecore#//LoadableDeviceOperations"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="ScaPort" abstract="true">
+    <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+      <details key="name" value="ScaPort"/>
+      <details key="kind" value="empty"/>
+    </eAnnotations>
+    <eTypeParameters name="P">
+      <eBounds eClassifier="ecore:EClass platform:/plugin/mil.jpeojtrs.sca.scd/model/scd.ecore#//AbstractPort"/>
+    </eTypeParameters>
+    <eTypeParameters name="P2">
+      <eBounds eClassifier="ecore:EClass platform:/plugin/mil.jpeojtrs.sca.cf/model/cf.ecore#//Object"/>
+    </eTypeParameters>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" lowerBound="1" eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EString"
+        changeable="false" volatile="true" transient="true" derived="true">
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="attribute"/>
+        <details key="name" value="name"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="profileObj" transient="true">
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="attribute"/>
+        <details key="name" value="profileObj"/>
+      </eAnnotations>
+      <eGenericType eTypeParameter="#//ScaPort/P"/>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="repid" lowerBound="1" eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EString"
+        changeable="false" volatile="true" transient="true" derived="true">
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="attribute"/>
+        <details key="name" value="repid"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="portContainer" lowerBound="1"
+        eType="#//ScaPortContainer" transient="true" eOpposite="#//ScaPortContainer/ports"/>
+    <eGenericSuperTypes eClassifier="#//CorbaObjWrapper">
+      <eTypeArguments eTypeParameter="#//ScaPort/P2"/>
+    </eGenericSuperTypes>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="ScaProvidesPort">
+    <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+      <details key="name" value="ScaProvidesPort"/>
+      <details key="kind" value="empty"/>
+    </eAnnotations>
+    <eGenericSuperTypes eClassifier="#//ScaPort">
+      <eTypeArguments eClassifier="ecore:EClass platform:/plugin/mil.jpeojtrs.sca.scd/model/scd.ecore#//Provides"/>
+      <eTypeArguments eClassifier="ecore:EClass platform:/plugin/mil.jpeojtrs.sca.cf/model/cf.ecore#//Object"/>
+    </eGenericSuperTypes>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="ScaSimpleProperty">
+    <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+      <details key="name" value="ScaSimpleProperty"/>
+      <details key="kind" value="empty"/>
+    </eAnnotations>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="value" eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EJavaObject"
+        transient="true">
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="attribute"/>
+        <details key="name" value="currentValue"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eGenericSuperTypes eClassifier="#//ScaAbstractProperty">
+      <eTypeArguments eClassifier="ecore:EClass platform:/plugin/mil.jpeojtrs.sca.prf/model/prf.ecore#//Simple"/>
+    </eGenericSuperTypes>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="ScaSimpleSequenceProperty">
+    <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+      <details key="name" value="ScaSimpleSequenceProperty"/>
+      <details key="kind" value="empty"/>
+    </eAnnotations>
+    <eOperations name="setValue">
+      <eParameters name="newValue" eType="#//ObjectArray"/>
+    </eOperations>
+    <eOperations name="getValue" eType="#//ObjectArray"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="values" unique="false"
+        upperBound="-1" eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EJavaObject"
+        transient="true">
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="attribute"/>
+        <details key="name" value="currentValue"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eGenericSuperTypes eClassifier="#//ScaAbstractProperty">
+      <eTypeArguments eClassifier="ecore:EClass platform:/plugin/mil.jpeojtrs.sca.prf/model/prf.ecore#//SimpleSequence"/>
+    </eGenericSuperTypes>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="ScaStructProperty">
+    <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+      <details key="name" value="ScaStructProperty"/>
+      <details key="kind" value="empty"/>
+    </eAnnotations>
+    <eOperations name="getSimple" eType="#//ScaSimpleProperty">
+      <eParameters name="id" eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EString"/>
+    </eOperations>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="simples" upperBound="-1"
+        eType="#//ScaSimpleProperty" transient="true" containment="true">
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="attribute"/>
+        <details key="name" value="simples"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eGenericSuperTypes eClassifier="#//ScaAbstractProperty">
+      <eTypeArguments eClassifier="ecore:EClass platform:/plugin/mil.jpeojtrs.sca.prf/model/prf.ecore#//Struct"/>
+    </eGenericSuperTypes>
+    <eGenericSuperTypes eClassifier="ecore:EClass platform:/plugin/mil.jpeojtrs.sca.cf/model/cf.ecore#//PropertySetOperations"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="ScaUsesPort">
+    <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+      <details key="name" value="ScaUsesPort"/>
+      <details key="kind" value="empty"/>
+    </eAnnotations>
+    <eOperations name="fetchConnections" upperBound="-1" eType="#//ScaConnection">
+      <eParameters name="monitor" eType="#//IProgressMonitor"/>
+    </eOperations>
+    <eOperations name="disconnectPort" eExceptions="ecore:EDataType platform:/plugin/mil.jpeojtrs.sca.cf/model/cf.ecore#//InvalidPort">
+      <eParameters name="connection" eType="#//ScaConnection"/>
+    </eOperations>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="connections" upperBound="-1"
+        eType="#//ScaConnection" transient="true" unsettable="true" containment="true"
+        eOpposite="#//ScaConnection/port"/>
+    <eGenericSuperTypes eClassifier="#//ScaPort">
+      <eTypeArguments eClassifier="ecore:EClass platform:/plugin/mil.jpeojtrs.sca.scd/model/scd.ecore#//Uses"/>
+      <eTypeArguments eClassifier="ecore:EClass platform:/plugin/mil.jpeojtrs.sca.cf/model/cf.ecore#//Port"/>
+    </eGenericSuperTypes>
+    <eGenericSuperTypes eClassifier="ecore:EClass platform:/plugin/mil.jpeojtrs.sca.cf/model/cf.ecore#//PortOperations"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="ScaConnection">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="data" eType="ecore:EDataType platform:/plugin/mil.jpeojtrs.sca.cf/model/extended.ecore#//UsesConnection"
+        transient="true"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="id" eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EString"
+        changeable="false" volatile="true" transient="true" derived="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="port" lowerBound="1" eType="#//ScaUsesPort"
+        transient="true" eOpposite="#//ScaUsesPort/connections"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="ScaWaveform">
+    <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+      <details key="name" value="ScaWaveform"/>
+      <details key="kind" value="elementOnly"/>
+    </eAnnotations>
+    <eOperations name="fetchComponents" upperBound="-1" eType="#//ScaComponent">
+      <eParameters name="monitor" eType="#//IProgressMonitor"/>
+    </eOperations>
+    <eOperations name="fetchIdentifier" eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EString">
+      <eParameters name="monitor" eType="#//IProgressMonitor"/>
+    </eOperations>
+    <eOperations name="fetchName" eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EString">
+      <eParameters name="monitor" eType="#//IProgressMonitor"/>
+    </eOperations>
+    <eOperations name="fetchStarted" eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EBooleanObject">
+      <eParameters name="monitor" eType="#//IProgressMonitor"/>
+    </eOperations>
+    <eOperations name="findComponent" eType="#//ScaComponent">
+      <eParameters name="instantiationId" eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EString"/>
+    </eOperations>
+    <eOperations name="getScaComponent" eType="#//ScaComponent">
+      <eParameters name="instantiationId" eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EString"/>
+    </eOperations>
+    <eOperations name="fetchProfile" eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EString">
+      <eParameters name="monitor" eType="#//IProgressMonitor"/>
+    </eOperations>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="components" upperBound="-1"
+        eType="#//ScaComponent" transient="true" unsettable="true" containment="true"
+        resolveProxies="false" eOpposite="#//ScaComponent/waveform" eKeys="#//ScaAbstractComponent/identifier">
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="element"/>
+        <details key="name" value="components"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="assemblyController" eType="#//ScaComponent"
+        transient="true" unsettable="true" derived="true">
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="attribute"/>
+        <details key="name" value="assemblyController"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="domMgr" eType="#//ScaDomainManager"
+        transient="true" eOpposite="#//ScaDomainManager/waveforms">
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="attribute"/>
+        <details key="name" value="domMgr"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="identifier" eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EString"
+        unsettable="true" derived="true" iD="true">
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="attribute"/>
+        <details key="name" value="identifier"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EString"
+        unsettable="true" derived="true">
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="attribute"/>
+        <details key="name" value="name"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="started" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//BooleanObject"
+        transient="true" unsettable="true"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="profile" eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EString"
+        transient="true" unsettable="true"/>
+    <eGenericSuperTypes eClassifier="#//ScaPropertyContainer">
+      <eTypeArguments eClassifier="ecore:EClass platform:/plugin/mil.jpeojtrs.sca.cf/model/cf.ecore#//Application"/>
+      <eTypeArguments eClassifier="ecore:EClass platform:/plugin/mil.jpeojtrs.sca.sad/model/sad.ecore#//SoftwareAssembly"/>
+    </eGenericSuperTypes>
+    <eGenericSuperTypes eClassifier="ecore:EClass platform:/plugin/mil.jpeojtrs.sca.cf/model/cf.ecore#//ApplicationOperations"/>
+    <eGenericSuperTypes eClassifier="#//ScaPortContainer"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="ScaWaveformFactory">
+    <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+      <details key="name" value="ScaWaveformFactory"/>
+      <details key="kind" value="empty"/>
+    </eAnnotations>
+    <eOperations name="createWaveform" eType="#//ScaWaveform" eExceptions="ecore:EDataType platform:/plugin/mil.jpeojtrs.sca.cf/model/cf.ecore#//CreateApplicationError ecore:EDataType platform:/plugin/mil.jpeojtrs.sca.cf/model/cf.ecore#//CreateApplicationRequestError ecore:EDataType platform:/plugin/mil.jpeojtrs.sca.cf/model/cf.ecore#//InvalidInitConfiguration ecore:EDataType platform:/plugin/mil.jpeojtrs.sca.cf/model/cf.ecore#//CreateApplicationInsufficientCapacityError">
+      <eParameters name="monitor" eType="#//IProgressMonitor"/>
+      <eParameters name="name" eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EString"/>
+      <eParameters name="initConfiguration" eType="ecore:EDataType platform:/plugin/mil.jpeojtrs.sca.cf/model/cf.ecore#//DataTypeArray"/>
+      <eParameters name="deviceAssignments" eType="ecore:EDataType platform:/plugin/mil.jpeojtrs.sca.cf/model/cf.ecore#//DeviceAssignmentTypeArray"/>
+    </eOperations>
+    <eOperations name="fetchIdentifier" eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EString">
+      <eParameters name="monitor" eType="#//IProgressMonitor"/>
+    </eOperations>
+    <eOperations name="fetchName" eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EString">
+      <eParameters name="monitor" eType="#//IProgressMonitor"/>
+    </eOperations>
+    <eOperations name="fetchProfile" eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EString">
+      <eParameters name="monitor" eType="#//IProgressMonitor"/>
+    </eOperations>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="domMgr" lowerBound="1"
+        eType="#//ScaDomainManager" transient="true" eOpposite="#//ScaDomainManager/waveformFactories">
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="attribute"/>
+        <details key="name" value="domMgr"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="identifier" eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EString"
+        unsettable="true" derived="true" iD="true">
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="attribute"/>
+        <details key="name" value="identifier"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EString"
+        unsettable="true" derived="true">
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="attribute"/>
+        <details key="name" value="name"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="profile" eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EString"
+        transient="true" unsettable="true"/>
+    <eGenericSuperTypes eClassifier="#//CorbaObjWrapper">
+      <eTypeArguments eClassifier="ecore:EClass platform:/plugin/mil.jpeojtrs.sca.cf/model/cf.ecore#//ApplicationFactory"/>
+    </eGenericSuperTypes>
+    <eGenericSuperTypes eClassifier="ecore:EClass platform:/plugin/mil.jpeojtrs.sca.cf/model/cf.ecore#//ApplicationFactoryOperations"/>
+    <eGenericSuperTypes eClassifier="#//ProfileObjectWrapper">
+      <eTypeArguments eClassifier="ecore:EClass platform:/plugin/mil.jpeojtrs.sca.sad/model/sad.ecore#//SoftwareAssembly"/>
+    </eGenericSuperTypes>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="StringToStringMap" instanceClassName="java.util.Map$Entry">
+    <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+      <details key="name" value="StringToStringMap"/>
+      <details key="kind" value="empty"/>
+    </eAnnotations>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="key" lowerBound="1" eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EString">
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="attribute"/>
+        <details key="name" value="key"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="value" lowerBound="1" eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EString">
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="attribute"/>
+        <details key="name" value="value"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EDataType" name="URI" instanceClassName="java.net.URI">
+    <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+      <details key="name" value="URI"/>
+    </eAnnotations>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EDataType" name="UsageType" instanceClassName="CF.DevicePackage.UsageType">
+    <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+      <details key="name" value="UsageType"/>
+      <details key="enumeration" value="ACTIVE BUSY IDLE"/>
+    </eAnnotations>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="ScaStructSequenceProperty">
+    <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+      <details key="name" value="ScaStructSequenceProperty"/>
+      <details key="kind" value="empty"/>
+    </eAnnotations>
+    <eOperations name="createScaStructProperty" eType="#//ScaStructProperty"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="structs" upperBound="-1"
+        eType="#//ScaStructProperty" transient="true" containment="true">
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="attribute"/>
+        <details key="name" value="simples"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eGenericSuperTypes eClassifier="#//ScaAbstractProperty">
+      <eTypeArguments eClassifier="ecore:EClass platform:/plugin/mil.jpeojtrs.sca.prf/model/prf.ecore#//StructSequence"/>
+    </eGenericSuperTypes>
+    <eGenericSuperTypes eClassifier="ecore:EClass platform:/plugin/mil.jpeojtrs.sca.cf/model/cf.ecore#//PropertySetOperations"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="IStatusProvider" abstract="true">
+    <eOperations name="setStatus">
+      <eParameters name="feature" eType="ecore:EClass platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EStructuralFeature"/>
+      <eParameters name="status" eType="#//IStatus"/>
+    </eOperations>
+    <eOperations name="clearAllStatus"/>
+    <eOperations name="getStatus" eType="#//IStatus">
+      <eParameters name="feature" eType="ecore:EClass platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EStructuralFeature"/>
+    </eOperations>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="status" eType="#//IStatus"
+        changeable="false" volatile="true" transient="true" derived="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EDataType" name="DataTypeArray" instanceClassName="CF.DataType[]"
+      serializable="false"/>
+  <eClassifiers xsi:type="ecore:EDataType" name="Any" instanceClassName="org.omg.CORBA.Any"
+      serializable="false"/>
+  <eClassifiers xsi:type="ecore:EClass" name="IRefreshable" instanceClassName="gov.redhawk.model.sca.IRefreshable"
+      abstract="true" interface="true"/>
+</ecore:EPackage>

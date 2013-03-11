@@ -1,0 +1,12 @@
+#ifndef _LAB_TASKING_IDL
+#define _LAB_TASKING_IDL
+
+module LAB
+{
+	interface lab_tasking {
+		boolean setComponentMode ( in long mode );
+		long getComponentMode ();
+	};
+};
+
+#endif

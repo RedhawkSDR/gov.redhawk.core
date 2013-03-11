@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  REDHAWK HEADER
+  
+  Identification: $Revision: 8005 $
+-->
+<?eclipse version="3.0"?>
+<plugin
+>
+   <extension
+         point="gov.redhawk.sca.model.dataProviderService">
+      <provider
+            class="gov.redhawk.sca.model.provider.refresh.internal.ScaRefreshableDataProviderService"
+            id="gov.redhawk.sca.model.provider.refresh"
+            name="Polling Data Provider">
+      </provider>
+   </extension>
+   <extension
+         point="org.eclipse.core.runtime.preferences">
+      <initializer
+            class="gov.redhawk.sca.model.provider.refresh.preferences.RefreshPreferenceInitializer">
+      </initializer>
+   </extension>
+</plugin>

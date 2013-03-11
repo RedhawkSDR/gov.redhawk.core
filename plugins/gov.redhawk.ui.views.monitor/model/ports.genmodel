@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<genmodel:GenModel xmi:version="2.0"
+    xmlns:xmi="http://www.omg.org/XMI" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore"
+    xmlns:genmodel="http://www.eclipse.org/emf/2002/GenModel" modelDirectory="/gov.redhawk.ui.views.monitor/src-gen"
+    editDirectory="/gov.redhawk.ui.views.monitor/src-gen-edit" editorDirectory=""
+    modelPluginID="gov.redhawk.ui.views.monitor" templateDirectory="/mil.jpeojtrs.sca.templates/templates"
+    dynamicTemplates="true" redirection="" modelName="ports" editPluginClass="gov.redhawk.ui.views.monitor.provider.PortsEditPlugin"
+    importerID="org.eclipse.emf.importer.ecore" complianceLevel="5.0" copyrightFields="false"
+    providerRootExtendsClass="" editPluginID="gov.redhawk.ui.views.monitor" tableProviders="true"
+    runtimeVersion="2.6" usedGenPackages="platform:/plugin/mil.jpeojtrs.sca.cf/model/cf.genmodel#//cf platform:/plugin/mil.jpeojtrs.sca.dcd/model/dcd.genmodel#//dcd platform:/plugin/mil.jpeojtrs.sca.dmd/model/dmd.genmodel#//dmd platform:/plugin/mil.jpeojtrs.sca.dpd/model/dpd.genmodel#//dpd platform:/plugin/org.eclipse.emf.ecore/model/Ecore.genmodel#//ecore platform:/plugin/mil.jpeojtrs.sca.partitioning/model/partitioning.genmodel#//partitioning platform:/plugin/mil.jpeojtrs.sca.prf/model/prf.genmodel#//prf platform:/plugin/mil.jpeojtrs.sca.sad/model/sad.genmodel#//sad platform:/plugin/gov.redhawk.sca.model/model/sca.genmodel#//sca platform:/plugin/mil.jpeojtrs.sca.scd/model/scd.genmodel#//scd platform:/plugin/mil.jpeojtrs.sca.spd/model/spd.genmodel#//spd platform:/plugin/mil.jpeojtrs.sca.cf/model/cf.genmodel#//extended">
+  <foreignModel>ports.ecore</foreignModel>
+  <genPackages prefix="Ports" basePackage="gov.redhawk.ui.views.monitor.model" disposableProviderFactory="true"
+      ecorePackage="ports.ecore#/">
+    <genDataTypes ecoreDataType="ports.ecore#//PortUsageType"/>
+    <genDataTypes ecoreDataType="ports.ecore#//PortStatistics"/>
+    <genDataTypes ecoreDataType="ports.ecore#//PortStatisticsArray"/>
+    <genDataTypes ecoreDataType="ports.ecore#//CellLabelProvider"/>
+    <genDataTypes ecoreDataType="ports.ecore#//TreeColumn"/>
+    <genClasses image="false" ecoreClass="ports.ecore#//PortMonitor">
+      <genFeatures property="None" notify="false" createChild="false" propertySortChoices="true"
+          ecoreFeature="ecore:EReference ports.ecore#//PortMonitor/port"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference ports.ecore#//PortMonitor/connections"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ports.ecore#//PortMonitor/state"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ports.ecore#//PortMonitor/data"/>
+    </genClasses>
+    <genClasses ecoreClass="ports.ecore#//PortConnectionMonitor">
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference ports.ecore#//PortConnectionMonitor/port"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ports.ecore#//PortConnectionMonitor/connectionId"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ports.ecore#//PortConnectionMonitor/data"/>
+    </genClasses>
+    <genClasses ecoreClass="ports.ecore#//MonitorRegistry">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference ports.ecore#//MonitorRegistry/monitors"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference ports.ecore#//MonitorRegistry/columns"/>
+    </genClasses>
+    <genClasses ecoreClass="ports.ecore#//PortSupplierMonitor">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference ports.ecore#//PortSupplierMonitor/portContainer"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference ports.ecore#//PortSupplierMonitor/monitors"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="ports.ecore#//StatisticColumn"/>
+    <genClasses image="false" ecoreClass="ports.ecore#//KeywordColumn"/>
+    <genClasses image="false" ecoreClass="ports.ecore#//Column">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ports.ecore#//Column/name"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ports.ecore#//Column/column"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ports.ecore#//Column/labelProvider"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ports.ecore#//Column/description"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ports.ecore#//Column/active"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="ports.ecore#//Monitor">
+      <genOperations ecoreOperation="ports.ecore#//Monitor/fetchStats"/>
+    </genClasses>
+  </genPackages>
+</genmodel:GenModel>

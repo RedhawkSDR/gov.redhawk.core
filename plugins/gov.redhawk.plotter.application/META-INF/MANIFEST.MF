@@ -1,0 +1,14 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: REDHAWK Plotter Application
+Bundle-SymbolicName: gov.redhawk.plotter.application;singleton:=true
+Bundle-Version: 1.0.0.qualifier
+Bundle-Activator: gov.redhawk.plotter.application.PlotterApplicationPlugin
+Require-Bundle: org.eclipse.ui;bundle-version="3.6.1",
+ org.eclipse.core.runtime;bundle-version="3.6.0",
+ gov.redhawk.ui.port.nxmplot;bundle-version="2.1.0",
+ gov.redhawk.ui.port;bundle-version="5.0.0",
+ gov.redhawk.sca.model;bundle-version="14.0.0"
+Bundle-ActivationPolicy: lazy
+Bundle-RequiredExecutionEnvironment: J2SE-1.5
+Bundle-Vendor: United States Government

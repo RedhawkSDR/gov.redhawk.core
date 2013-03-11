@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  REDHAWK HEADER
+  
+  Identification: $Revision: 8057 $
+-->
+<?eclipse version="3.4"?>
+<plugin>
+<extension
+         point="org.eclipse.emf.validation.constraintProviders">
+      <constraintProvider
+            cache="true">
+         <package
+               namespaceUri="http://sca.jpeojtrs.mil/prf">
+         </package>
+         <constraints
+               categories="gov.redhawk.validation.category">
+            <constraint
+                  class="gov.redhawk.validation.prf.DuplicatePropertyNameConstraint"
+                  id="gov.redhawk.validation.constraint.prf.dupName"
+                  isEnabledByDefault="true"
+                  lang="java"
+                  mode="Live"
+                  name="Duplicate Property Name"
+                  severity="WARNING"
+                  statusCode="2">
+               <message>
+                  A property of the name: &quot;{0}&quot; already exists.  It is recommended that properties name be unique.
+               </message>
+               <target
+                     class="Simple">
+                  <event
+                        name="Set">
+                     <feature
+                           name="name">
+                     </feature>
+                  </event>
+               </target>
+               <target
+                     class="SimpleSequence">
+                  <event
+                        name="Set">
+                     <feature
+                           name="name">
+                     </feature>
+                  </event>
+               </target>
+               <target
+                     class="Struct">
+                  <event
+                        name="Set">
+                     <feature
+                           name="name">
+                     </feature>
+                  </event>
+               </target>
+               <target
+                     class="StructSequence">
+                  <event
+                        name="Set">
+                     <feature
+                           name="name">
+                     </feature>
+                  </event>
+               </target>
+            </constraint>
+            <constraint
+                  class="gov.redhawk.validation.prf.ValidValueTypeConstraint"
+                  id="gov.redhawk.prf.validation.constraint.ValueType"
+                  isEnabledByDefault="true"
+                  lang="java"
+                  mode="Live"
+                  name="Valid Value Type"
+                  severity="ERROR"
+                  statusCode="1">
+               <message>
+                  The value&quot;{0}&quot; is not of type &quot;{1}&quot;.
+               </message>
+               <target
+                     class="Simple">
+                  <event
+                        name="Set">
+                     <feature
+                           name="value">
+                     </feature>
+                  </event>
+               </target>
+               <target
+                     class="Values">
+                  <event
+                        name="Add">
+                     <feature
+                           name="value">
+                     </feature>
+                  </event>
+                  <event
+                        name="Add Many">
+                     <feature
+                           name="value">
+                     </feature>
+                  </event>
+                  <event
+                        name="Remove">
+                     <feature
+                           name="value">
+                     </feature>
+                  </event>
+                  <event
+                        name="Remove Many">
+                     <feature
+                           name="value">
+                     </feature>
+                  </event>
+               </target>
+               <target
+                     class="SimpleRef">
+                  <event
+                        name="Set">
+                     <feature
+                           name="value">
+                     </feature>
+                  </event>
+               </target>
+            </constraint>
+            <constraint
+                  class="gov.redhawk.validation.prf.ValidEnumValueConstraint"
+                  id="gov.redhawk.prf.validation.constraint.ValidEnumValue"
+                  isEnabledByDefault="true"
+                  lang="java"
+                  mode="Live"
+                  name="Valid Enumerated Value"
+                  severity="ERROR"
+                  statusCode="1">
+               <message>
+                  The value &quot;{0}&quot; is not found in any of the listed Enumeration types.
+               </message>
+               <target
+                     class="Simple">
+                  <event
+                        name="Set">
+                     <feature
+                           name="value">
+                     </feature>
+                  </event>
+               </target>
+            </constraint>
+         </constraints>
+      </constraintProvider>
+   </extension>
+</plugin>

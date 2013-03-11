@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+    This file is protected by Copyright.
+    Please refer to the COPYRIGHT file distributed with this source distribution.
+
+    This file is part of REDHAWK IDE.
+
+    All rights reserved.  This program and the accompanying materials are made available under
+    the terms of the Eclipse Public License v1.0 which accompanies this distribution, and is available at
+    http://www.eclipse.org/legal/epl-v10.html.
+ 
+-->
+<!DOCTYPE properties SYSTEM "../dtd/properties.dtd">
+<properties>
+    <simple id="DCE:6b01889f-6614-4964-824e-cdfb79a38513" mode="readwrite" name="frequency" type="float">
+        <value>1000</value>
+        <description>frequency for the sinusoid</description> 
+        <kind kindtype="configure"/>
+    </simple>
+    <simple id="DCE:805a4e3b-71fb-41e6-8b3b-4965e4c76ecb" mode="readwrite" name="magnitude" type="float">
+        <value>1</value>
+        <description>Magnitude for the sinusoid</description> 
+        <kind kindtype="configure"/>
+    </simple>
+    <simple id="DCE:6d6b9f74-f7df-42dd-96a2-a63562a3a999" mode="readwrite" name="shape" type="string">
+        <value>sine</value>
+        <description>Shape for the generated signal (sine, square)</description> 
+        <kind kindtype="configure"/>
+    </simple>
+    <simple id="DCE:b9de9134-ba65-4fd9-9e94-35449d018e04" mode="readonly" name="testprop" type="string">
+        <value>no writing please</value>
+        <description>Test property</description> 
+        <kind kindtype="configure"/>
+    </simple>
+</properties>

@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+    This file is protected by Copyright.
+    Please refer to the COPYRIGHT file distributed with this source distribution.
+
+    This file is part of REDHAWK IDE.
+
+    All rights reserved.  This program and the accompanying materials are made available under
+    the terms of the Eclipse Public License v1.0 which accompanies this distribution, and is available at
+    http://www.eclipse.org/legal/epl-v10.html.
+ 
+-->
+<!DOCTYPE softpkg SYSTEM "../../xml/dtd/softpkg.dtd">
+<softpkg name="OssieDeviceManager" id="DCE:82f6515a-de05-47f0-8e7a-1c9f621c00ee">
+    <author>
+        <name>OSSIE</name>
+    </author>
+    <descriptor>
+        <localfile name="DeviceManager.scd.xml"/>
+    </descriptor>
+    <implementation id="DCE:d3e8aba5-4421-45c5-9be6-372b763883e7">
+        <description>x86 Implementation of a Device Manager</description>
+        <propertyfile>
+            <localfile name="DeviceManager.Linux.x86.prf.xml"/>
+        </propertyfile>
+        <code type="Executable">
+            <localfile name="nodeBooter"/>
+            <entrypoint>nodeBooter</entrypoint>
+        </code>
+        <os name="Linux" />
+        <processor name="x86"/>
+    </implementation>
+    <implementation id="DCE:5fbef908-52fa-4fd8-ad88-2a72a6b8b5d4">
+        <description>x86_64 Implementation of a Device Manager</description>
+        <propertyfile>
+            <localfile name="DeviceManager.Linux.x86_64.prf.xml"/>
+        </propertyfile>
+        <code type="Executable">
+            <localfile name="nodeBooter"/>
+            <entrypoint>nodeBooter</entrypoint>
+        </code>
+        <os name="Linux" />
+        <processor name="x86_64"/>
+    </implementation>
+</softpkg>

@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  REDHAWK HEADER
+ 
+  Identification: $Revision: 7432 $
+-->
+<?eclipse version="3.4"?>
+<plugin>
+   <extension
+         point="org.eclipse.ui.decorators">
+      <decorator
+            class="gov.redhawk.internal.ui.editor.validation.EmfValidatorLabelDecorator"
+            id="gov.redhawk.emfValidatorLabelDecorator"
+            label="EMF trees warning and errors"
+            lightweight="true"
+            location="BOTTOM_LEFT"
+            state="true">
+         <enablement>
+            <or>
+               <objectClass
+                     name="org.eclipse.emf.ecore.EObject">
+               </objectClass>
+               <objectClass
+                     name="org.eclipse.emf.ecore.util.FeatureMap$Entry">
+               </objectClass>
+               <objectClass
+                     name="org.eclipse.emf.edit.provider.IWrapperItemProvider">
+               </objectClass>
+            </or>
+         </enablement>
+      </decorator>
+   </extension>
+  <extension
+        point="org.eclipse.ui.menus">
+     <menuContribution
+           locationURI="toolbar:gov.redhawk.ide.ui.targetplatform?after=additions">
+        <command
+              commandId="org.eclipse.ui.navigate.collapseAll"
+              style="push">
+        </command>
+     </menuContribution>
+  </extension>
+  <extension
+        point="org.eclipse.ui.splashHandlers">
+     <splashHandler
+           class="gov.redhawk.ui.splashHandlers.FeatureIconSplashHandler"
+           id="gov.redhawk.ui.splashHandler.featureIcon">
+     </splashHandler>
+  </extension>
+</plugin>

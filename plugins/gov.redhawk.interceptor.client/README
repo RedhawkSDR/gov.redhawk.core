@@ -1,0 +1,11 @@
+gov.redhawk.interceptor.client:
+Contains a CORBA Client interceptor (gov.redhawk.interceptor.client.ClientInterceptor) that verifies that any corba calls are invoked 
+outside the of a UI thread.  This ensure the application will always be responsive even if any CORBA calls take a long time.
+
+In order to enable the CORBA UI Interceptor you need to initialize it within the orb :
+Add the following to the Connection Properties of the SCADomainManager you would like to test within: 
+     Name 	/ 	Value
+ - org.omg.PortableInterceptor.ORBInitializerClass.gov.redhawk.interceptor.client.ClientOrbInitializer / ""
+ 
+Or add it to the java system properties. For example on the command line do:
+-Dorg.omg.PortableInterceptor.ORBInitializerClass.gov.redhawk.interceptor.client.ClientOrbInitializer  

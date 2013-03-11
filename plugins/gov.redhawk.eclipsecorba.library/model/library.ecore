@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ecore:EPackage xmi:version="2.0"
+    xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" name="library"
+    nsURI="http:///gov/redhawk/eclipsecorba/library" nsPrefix="library">
+  <eClassifiers xsi:type="ecore:EClass" name="IdlLibrary" eSuperTypes="#//RepositoryModule">
+    <eOperations name="load" eType="#//IStatus" eExceptions="#//CoreExceptoin">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="Loads the IDL Library based on the current state of the Path.&#xA;&#xA;Overwrites any existing entries in the library and reloads those"/>
+      </eAnnotations>
+      <eParameters name="monitor" eType="#//IProgressMonitor"/>
+    </eOperations>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="specifications" upperBound="-1"
+        eType="ecore:EClass platform:/plugin/gov.redhawk.eclipsecorba.idl/model/idl.ecore#//Specification"
+        transient="true" derived="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="paths" upperBound="-1"
+        eType="#//Path" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="loadStatus" eType="#//IStatus"
+        transient="true">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="suppressedSetVisibility" value="true"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="RepositoryModule" eSuperTypes="platform:/plugin/gov.redhawk.eclipsecorba.idl/model/idl.ecore#//Definition">
+    <eOperations name="find" eType="ecore:EClass platform:/plugin/gov.redhawk.eclipsecorba.idl/model/idl.ecore#//Identifiable">
+      <eParameters name="repId" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    </eOperations>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="moduleDefinitions" upperBound="-1"
+        eType="ecore:EClass platform:/plugin/gov.redhawk.eclipsecorba.idl/model/idl.ecore#//Module"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="definitions" upperBound="-1"
+        eType="ecore:EClass platform:/plugin/gov.redhawk.eclipsecorba.idl/model/idl.ecore#//Definition"
+        transient="true" derived="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EDataType" name="URI" instanceClassName="org.eclipse.emf.common.util.URI"/>
+  <eClassifiers xsi:type="ecore:EDataType" name="IProgressMonitor" instanceClassName="org.eclipse.core.runtime.IProgressMonitor"
+      serializable="false">
+    <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+      <details key="documentation" value="@since 3.0"/>
+    </eAnnotations>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EDataType" name="CoreExceptoin" instanceClassName="org.eclipse.core.runtime.CoreException"
+      serializable="false">
+    <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+      <details key="documentation" value="@since 3.0"/>
+    </eAnnotations>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Path" abstract="true">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="derivedPath" upperBound="-1"
+        eType="#//URI" changeable="false" transient="true" derived="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="PreferenceNodePathSet" eSuperTypes="#//Path">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="qualifier" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="key" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="delimiter" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="fileUri" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="replaceEnv" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="URIPathSet" eSuperTypes="#//Path">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="dirs" upperBound="-1" eType="#//URI"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="LocalFilePath" eSuperTypes="#//Path">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="localPaths" upperBound="-1"
+        eType="#//IPath"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EDataType" name="IPath" instanceClassName="org.eclipse.core.runtime.IPath"/>
+  <eClassifiers xsi:type="ecore:EDataType" name="IStatus" instanceClassName="org.eclipse.core.runtime.IStatus"
+      serializable="false"/>
+</ecore:EPackage>

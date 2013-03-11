@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+    This file is protected by Copyright.
+    Please refer to the COPYRIGHT file distributed with this source distribution.
+
+    This file is part of REDHAWK IDE.
+
+    All rights reserved.  This program and the accompanying materials are made available under
+    the terms of the Eclipse Public License v1.0 which accompanies this distribution, and is available at
+    http://www.eclipse.org/legal/epl-v10.html.
+ 
+-->
+<!DOCTYPE softpkg SYSTEM "../dtd/softpkg.dtd">
+<softpkg id="DCE:61049984-c35e-4c88-8091-9ba879b1aafa" name="FFT">
+  <title></title>
+  <author>
+    <name>OSSIE Project</name>
+    <company>Mobile and Portable Radio Research Group</company>
+    <webpage>http://www.mprg.org</webpage>
+  </author>
+  <description>FFT calculation</description>
+  <propertyfile type="PRF">
+    <localfile name="FFT.prf.xml"/>
+  </propertyfile>
+  <descriptor>
+    <localfile name="FFT.scd.xml"/>
+  </descriptor>
+  <implementation id="DCE:17b14cd3-6522-466c-9321-a4fda9ff98c8">
+    <description>FFT calculation</description>
+    <code type="Executable">
+      <localfile name="./"/>
+      <entrypoint>FFT.py</entrypoint>
+    </code>
+    <os name="Linux"/>
+    <processor name="x86"/>
+    <dependency type="device_matching">
+      <propertyref refid="DCE:7f36cdfb-f828-4e4f-b84f-446e17f1a85b" value="BasicTestDevice"/>
+    </dependency>
+    <dependency type="device_matching">
+      <propertyref refid="DCE:021f10cf-7a05-46ec-a507-04b513b84bd4" value="true"/>
+    </dependency>
+    <dependency type="device_matching">
+      <propertyref refid="DCE:64303822-4c67-4c04-9a5c-bf670f27cf39" value="ossie"/>
+    </dependency>
+    <dependency type="device_matching">
+      <propertyref refid="DCE:ac73446e-f935-40b6-8b8d-4d9adb6b403f" value="4"/>
+    </dependency>
+    <dependency type="device_matching">
+      <propertyref refid="DCE:dd339b67-b387-4018-94d2-9a72955d85b9" value="4.0"/>
+    </dependency>
+    <dependency type="runtime_requirements">
+      <propertyref refid="DCE:8dcef419-b440-4bcf-b893-cab79b6024fb" value="100000"/>
+    </dependency>
+    <dependency type="runtime_requirements">
+      <propertyref refid="DCE:5636c210-0346-4df7-a5a3-8fd34c5540a8" value="1000"/>
+    </dependency>
+  </implementation>
+</softpkg>

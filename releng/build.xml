@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<project default="buildAll">
+    <property name="commondir" value="${basedir}/pdebuild"/>
+
+    <import file="${commondir}/pdebuild.xml"/>
+
+    <target name="buildAll" depends="clean">
+        <buildFeature featureId="gov.redhawk.core.sdk"/>
+        <!--<buildFeature featureId="org.jacorb.systemFragment"/>-->
+    </target>
+
+</project>

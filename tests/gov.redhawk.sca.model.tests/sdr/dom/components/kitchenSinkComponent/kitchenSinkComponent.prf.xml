@@ -1,0 +1,332 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+    This file is protected by Copyright.
+    Please refer to the COPYRIGHT file distributed with this source distribution.
+
+    This file is part of REDHAWK IDE.
+
+    All rights reserved.  This program and the accompanying materials are made available under
+    the terms of the Eclipse Public License v1.0 which accompanies this distribution, and is available at
+    http://www.eclipse.org/legal/epl-v10.html.
+ 
+-->
+<!DOCTYPE properties PUBLIC "-//JTRS//DTD SCA V2.2.2 PRF//EN" "properties.dtd">
+<properties>
+  <simple id="DCE:2413dca0-ddd7-4be6-9d39-cfbae210f2fd" mode="readwrite" name="stringProp" type="string">
+    <description>My Description</description>
+    <value>defaultStringValue</value>
+    <kind kindtype="configure"/>
+    <action type="external"/>
+  </simple>
+  <simple id="DCE:7e951611-dbc5-45e9-acbb-82366eb38fff" mode="readwrite" name="booleanProp" type="boolean">
+    <description>My Description</description>
+    <value>true</value>
+    <kind kindtype="configure"/>
+    <action type="external"/>
+  </simple>
+  <simple id="DCE:37d64150-a679-45ce-ac06-32825a3455f5" mode="readwrite" name="ulongProp" type="ulong">
+   <description>My Description</description>
+    <value>1000000000</value>
+    <kind kindtype="configure"/>
+    <action type="external"/>
+  </simple>
+  <!-- 
+  <simple id="DCE:4f4f325d-dec2-4219-a8cd-7595b6bd5a3c" mode="readwrite" name="objrefProp" type="objref">
+   <description>My Description</description>
+    <kind kindtype="configure"/>
+    <action type="external"/>
+  </simple>
+   -->
+  <simple id="DCE:e4d63120-f72a-430f-86f8-18ea9b6e9f37" mode="readwrite" name="shortProp" type="short">
+   <description>My Description</description>
+    <value>-10000</value>
+    <kind kindtype="configure"/>
+    <action type="external"/>
+  </simple>
+  <simple id="DCE:0e26ba48-1ee9-41e5-9a4b-80841ba5244e" mode="readwrite" name="floatProp" type="float">
+   <description>My Description</description>
+    <value>100.123456e123</value>
+    <kind kindtype="configure"/>
+    <action type="external"/>
+  </simple>
+  <simple id="DCE:b5c3d31d-dca9-45a6-972e-b7a852ef2198" mode="readwrite" name="octetProp" type="octet">
+   <description>My Description</description>
+    <value>123</value>
+    <kind kindtype="configure"/>
+    <action type="external"/>
+  </simple>
+  <simple id="DCE:a96f7e42-a223-40c9-9651-fba2fd1c7736" mode="readwrite" name="charProp" type="char">
+   <description>My Description</description>
+    <value>a</value>
+    <kind kindtype="configure"/>
+    <action type="external"/>
+  </simple>
+  <simple id="DCE:cb88b15a-92a3-47ab-acbe-a021237b1bbd" mode="readwrite" name="ushortProp" type="ushort">
+   <description>My Description</description>
+    <value>10000</value>
+    <kind kindtype="configure"/>
+    <action type="external"/>
+  </simple>
+  <simple id="DCE:4dbea6ec-0ddb-4c70-b54b-78e85e995e08" mode="readwrite" name="doubleProp" type="double">
+   <description>My Description</description>
+    <value>12345.123151e123</value>
+    <kind kindtype="configure"/>
+    <action type="external"/>
+  </simple>
+  <simple id="DCE:7fb3cecd-b229-4b6b-92ba-5968a962c7fc" mode="readwrite" name="longProp" type="long">
+   <description>My Description</description>
+    <value>999999999</value>
+    <kind kindtype="configure"/>
+    <action type="external"/>
+  </simple>
+  <simple id="DCE:c365be23-f963-4dc2-bf44-cea7f20c1a8b" mode="readwrite" name="longlongProp" type="longlong">
+   <description>My Description</description>
+    <value>999999999999999999</value>
+    <kind kindtype="configure"/>
+    <action type="external"/>
+  </simple>
+  <simplesequence id="DCE:e4a63886-8bb7-403d-bdd7-3bc79717f5b5" mode="readwrite" name="stringSequence" type="string">
+   <description>My Description</description>
+    <values>
+      <value>str1</value>
+      <value>str2</value>
+      <value>str3</value>
+    </values>
+    <kind kindtype="configure"/>
+    <action type="external"/>
+  </simplesequence>
+  <simplesequence id="DCE:3566d9bb-e691-4ab8-9323-fff5d8a8cfb5" mode="readwrite" name="booleanSequence" type="boolean">
+   <description>My Description</description>
+    <values>
+      <value>true</value>
+      <value>false</value>
+      <value>true</value>
+    </values>
+    <kind kindtype="configure"/>
+    <action type="external"/>
+  </simplesequence>
+  <simplesequence id="DCE:737f2e6c-7534-4af2-ad72-1a13fd6565de" mode="readwrite" name="ulongSequence" type="ulong">
+   <description>My Description</description>
+    <values>
+      <value>1000000000</value>
+      <value>1000000001</value>
+      <value>1000000002</value>
+    </values>
+    <kind kindtype="configure"/>
+    <action type="external"/>
+  </simplesequence>
+  <!-- 
+  <simplesequence id="DCE:ebb5c8c0-7f7e-46f4-8fb2-c645d14dbc27" mode="readwrite" name="objRefSequence" type="objref">
+   <description>My Description</description>
+    <kind kindtype="configure"/>
+    <action type="external"/>
+  </simplesequence>
+   -->
+  <simplesequence id="DCE:14bce25f-f779-4a94-bb1d-47a387af9fd9" mode="readwrite" name="shortSequence" type="short">
+   <description>My Description</description>
+    <values>
+      <value>10000</value>
+      <value>-10000</value>
+      <value>10003</value>
+    </values>
+    <kind kindtype="configure"/>
+    <action type="external"/>
+  </simplesequence>
+  <simplesequence id="DCE:9653815f-c422-43c0-8e1e-e567dfcea833" mode="readwrite" name="floatSequence" type="float">
+   <description>My Description</description>
+    <values>
+      <value>1.23e4</value>
+      <value>0.12e-2</value>
+      <value>1.246</value>
+      <value>1234</value>
+    </values>
+    <kind kindtype="configure"/>
+    <action type="external"/>
+  </simplesequence>
+  <simplesequence id="DCE:10cd1587-31b2-406c-84e1-34bb405ab982" mode="readwrite" name="octetSequence" type="octet">
+   <description>My Description</description>
+    <values>
+      <value>12</value>
+      <value>22</value>
+      <value>127</value>
+    </values>
+    <kind kindtype="configure"/>
+    <action type="external"/>
+  </simplesequence>
+  <simplesequence id="DCE:599598f1-e3ee-4c5d-aa0e-e03beaf3d1b7" mode="readwrite" name="charSequence" type="char">
+   <description>My Description</description>
+    <values>
+      <value>a</value>
+      <value>b</value>
+      <value>c</value>
+    </values>
+    <kind kindtype="configure"/>
+    <action type="external"/>
+  </simplesequence>
+  <simplesequence id="DCE:a7dd9e6b-03c9-4fe5-82a1-ce884b409efe" mode="readwrite" name="ushortSequence" type="ushort">
+   <description>My Description</description>
+    <values>
+      <value>10000</value>
+      <value>10001</value>
+      <value>10002</value>
+    </values>
+    <kind kindtype="configure"/>
+    <action type="external"/>
+  </simplesequence>
+  <simplesequence id="DCE:64f35c44-175b-4145-ad59-39c777520be7" mode="readwrite" name="doubleSequence" type="double">
+   <description>My Description</description>
+    <values>
+      <value>100e99</value>
+      <value>1.2345e-199</value>
+      <value>12345</value>
+    </values>
+    <kind kindtype="configure"/>
+    <action type="external"/>
+  </simplesequence>
+  <simplesequence id="DCE:c47fd56f-71d8-4ec2-9918-9ef88cf57552" mode="readwrite" name="longSequence" type="long">
+   <description>My Description</description>
+    <values>
+      <value>1000000000</value>
+      <value>-1000000000</value>
+    </values>
+    <kind kindtype="configure"/>
+    <action type="external"/>
+  </simplesequence>
+  <simplesequence id="DCE:e7dc3478-8d74-459a-a25c-93726b0728b6" mode="readwrite" name="longlongSequence" type="longlong">
+   <description>My Description</description>
+    <values>
+      <value>1000000000000000000</value>
+      <value>-1000000000000000000</value>
+    </values>
+    <kind kindtype="configure"/>
+    <action type="external"/>
+  </simplesequence>
+  <struct id="DCE:5e410c54-750b-41ea-9fd4-176ce624d849" mode="readwrite" name="testStruct">
+   <description>My Description</description>
+    <simple id="DCE:e0a68e78-a562-416e-8ce1-27c9c622083c" mode="readwrite" name="structSimpleString" type="string">
+     <description>My Description</description>
+      <value>string</value>
+      <kind kindtype="configure"/>
+      <action type="external"/>
+    </simple>
+    <simple id="DCE:5a839b6d-6246-49b6-ae9d-5c184e0360ca" mode="readwrite" name="structSimpleBoolean" type="boolean">
+     <description>My Description</description>
+      <value>true</value>
+      <kind kindtype="configure"/>
+      <action type="external"/>
+    </simple>
+    <simple id="DCE:a00dd5e7-1956-4a81-8f4e-d98ef11e635a" mode="readwrite" name="structSimpleUlong" type="ulong">
+     <description>My Description</description>
+      <value>1000000000</value>
+      <kind kindtype="configure"/>
+      <action type="external"/>
+    </simple>
+    <!-- 
+    <simple id="DCE:bdc931c6-2e6f-40b2-82fb-bceed611b7dd" mode="readwrite" name="structSimpleObjRef" type="objref">
+     <description>My Description</description>
+      <kind kindtype="configure"/>
+      <action type="external"/>
+    </simple>
+     -->
+    <simple id="DCE:6ae08109-9a03-4f5f-8ffa-543b67b2b324" mode="readwrite" name="structSimpleShort" type="short">
+     <description>My Description</description>
+      <value>-10000</value>
+      <kind kindtype="configure"/>
+      <action type="external"/>
+    </simple>
+    <simple id="DCE:6f11e90a-40ba-414b-915d-d2eb6e6dc82c" mode="readwrite" name="structSimpleFloat" type="float">
+     <description>My Description</description>
+      <value>12e78</value>
+      <kind kindtype="configure"/>
+      <action type="external"/>
+    </simple>
+    <simple id="DCE:a128bcc3-d867-49b9-b699-fc69efdd653e" mode="readwrite" name="structSimpleOctet" type="octet">
+     <description>My Description</description>
+      <value>100</value>
+      <kind kindtype="configure"/>
+      <action type="external"/>
+    </simple>
+    <simple id="DCE:3cf6feef-b4ed-42b0-b89a-234c16feb573" mode="readwrite" name="structSimpleChar" type="char">
+     <description>My Description</description>
+      <value>a</value>
+      <kind kindtype="configure"/>
+      <action type="external"/>
+    </simple>
+    <simple id="DCE:c3bb82aa-45b3-40e0-878b-f066e353fad0" mode="readwrite" name="structSimpleUShort" type="ushort">
+     <description>My Description</description>
+      <value>10000</value>
+      <kind kindtype="configure"/>
+      <action type="external"/>
+    </simple>
+    <simple id="DCE:bf73d0d7-7a72-4bfa-be29-8ef05e3fe490" mode="readwrite" name="structSimpleDouble" type="double">
+     <description>My Description</description>
+      <value>123.225e199</value>
+      <kind kindtype="configure"/>
+      <action type="external"/>
+    </simple>
+    <simple id="DCE:76f0f577-d15a-4898-bf7b-0283bb857e57" mode="readwrite" name="structSimpleLong" type="long">
+     <description>My Description</description>
+      <value>-1000000000</value>
+      <kind kindtype="configure"/>
+      <action type="external"/>
+    </simple>
+    <simple id="DCE:a57188bd-b1d7-4320-928f-b48ff1928b12" mode="readwrite" name="structSimpleLongLong" type="longlong">
+     <description>My Description</description>
+      <value>-1000000000000000000</value>
+      <kind kindtype="configure"/>
+      <action type="external"/>
+    </simple>
+    <simple id="DCE:89739802-cffc-4d5e-bf09-ca85057a9823" mode="readwrite" name="structEnum" type="string">
+     <description>My Description</description>
+      <value>155</value>
+      <enumerations>
+        <enumeration label="StructEnum1" value="0"/>
+        <enumeration label="StructEnum2" value="155"/>
+        <enumeration label="StructEnum3" value="25"/>
+      </enumerations>
+      <kind kindtype="configure"/>
+      <action type="external"/>
+    </simple>
+    <configurationkind kindtype="configure"/>
+  </struct>
+  <simple id="DCE:5dfb6a5f-0378-4586-aecd-a5a5faed98f7" mode="readwrite" name="simpleEnum" type="string">
+   <description>My Description</description>
+    <value>2</value>
+    <enumerations>
+      <enumeration label="Enum1" value="1"/>
+      <enumeration label="Enum2" value="2"/>
+      <enumeration label="Enum3" value="3"/>
+    </enumerations>
+    <kind kindtype="configure"/>
+    <action type="external"/>
+  </simple>
+  <simple id="DCE:817c355e-ee14-4587-a436-5387b97bfd10" mode="readwrite" name="simpleEnum2" type="string">
+   <description>My Description</description>
+    <enumerations>
+      <enumeration label="Test1" value="0"/>
+      <enumeration label="Test2" value="2"/>
+      <enumeration label="Test3" value="155"/>
+    </enumerations>
+    <kind kindtype="configure"/>
+    <action type="external"/>
+  </simple>
+   <structsequence id="DCE:7fb68ed6-2d60-4652-8e78-ac0974659350" mode="readwrite" name="testStructSequence">
+    <description>My Description</description>
+    <struct id="DCE:9347e452-fa82-4da1-9b43-056933c77dba" mode="readwrite" name="testStruct">
+      <simple id="DCE:b34d9204-46fa-43ea-9ef2-189674bfc366" mode="readwrite" name="structSeqString" type="string">
+        <kind kindtype="configure"/>
+        <action type="external"/>
+      </simple>
+      <simple id="DCE:29948519-5c45-4732-86e1-b8815f4647d1" mode="readwrite" name="structSeqBoolean" type="string">
+        <kind kindtype="configure"/>
+        <action type="external"/>
+      </simple>
+      <configurationkind kindtype="configure"/>
+    </struct>
+    <structvalue>
+      <simpleref refid="DCE:b34d9204-46fa-43ea-9ef2-189674bfc366" value="string"/>
+      <simpleref refid="DCE:29948519-5c45-4732-86e1-b8815f4647d1" value="true"/>
+    </structvalue>
+    <configurationkind kindtype="configure"/>
+  </structsequence>
+</properties>

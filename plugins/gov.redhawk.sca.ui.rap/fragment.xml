@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<fragment>
+   <extension
+         point="org.eclipse.ui.views">
+      <view
+            category="gov.redhawk.ui.category.sca"
+            class="gov.redhawk.sca.ui.views.ScaExplorer"
+            icon="icons/obj16/sca_explorer.png"
+            id="gov.redhawk.ui.sca_explorer"
+            name="SCA Explorer"
+            restorable="true">
+      </view>
+   </extension>
+</fragment>

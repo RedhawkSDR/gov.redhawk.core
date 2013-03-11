@@ -1,0 +1,16 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: %Bundle-Name.0
+Bundle-SymbolicName: gov.redhawk.validation;singleton:=true
+Bundle-Version: 2.1.0.qualifier
+Bundle-RequiredExecutionEnvironment: J2SE-1.5
+Require-Bundle: org.eclipse.core.runtime;bundle-version="3.6.0",
+ mil.jpeojtrs.sca.prf;bundle-version="2.2.2",
+ mil.jpeojtrs.sca.spd;bundle-version="2.2.2",
+ mil.jpeojtrs.sca.validator;bundle-version="1.0.0";visibility:=reexport,
+ org.eclipse.emf.validation;bundle-version="1.2.0";visibility:=reexport,
+ mil.jpeojtrs.sca.partitioning;bundle-version="1.0.0"
+Export-Package: gov.redhawk.validation,
+ gov.redhawk.validation.util
+Bundle-Localization: plugin
+Bundle-Vendor: %Bundle-Provider.0

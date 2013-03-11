@@ -1,0 +1,18 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Implementation-Version: 3.2.0
+Bundle-Name: Redhawk Nxm Option Tree Plug-in
+Bundle-SymbolicName: nxm.redhawk;singleton:=true
+Bundle-Version: 8.0.0.qualifier
+Bundle-Vendor: United States Government
+Bundle-Localization: plugin
+Require-Bundle: mil.jpeojtrs.sca.cf;bundle-version="2.2.2",
+ idl.bulkio;bundle-version="1.7.0",
+ mil.jpeojtrs.sca.util;bundle-version="3.0.0",
+ nxm.sys;bundle-version="3.0.1";visibility:=reexport
+DynamicImport-Package: *
+Bundle-ActivationPolicy: lazy
+Eclipse-RegisterBuddy: nxm.sys
+Bundle-RequiredExecutionEnvironment: J2SE-1.5
+Bundle-ClassPath: .
+Export-Package: nxm.redhawk.prim

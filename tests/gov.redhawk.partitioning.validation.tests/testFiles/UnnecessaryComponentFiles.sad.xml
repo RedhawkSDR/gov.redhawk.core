@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+    This file is protected by Copyright.
+    Please refer to the COPYRIGHT file distributed with this source distribution.
+
+    This file is part of REDHAWK IDE.
+
+    All rights reserved.  This program and the accompanying materials are made available under
+    the terms of the Eclipse Public License v1.0 which accompanies this distribution, and is available at
+    http://www.eclipse.org/legal/epl-v10.html.
+ 
+-->
+<!DOCTYPE softwareassembly PUBLIC "-//JTRS//DTD SCA SAD V2.2.2//EN" "softwareassembly.dtd">
+<softwareassembly id="DCE:4c9056d4-68e5-42d9-ab28-8629faa6c4bf" name="sample_waveform">
+  <componentfiles>
+    <componentfile id="start_comp_cff817cf-d036-4ef4-a7c6-2026463284b2" type="SPD">
+      <localfile name="/components/start_comp/start_comp.spd.xml"/>
+    </componentfile>
+    <componentfile id="stop_comp_f4592ea7-cfee-4097-8aa8-3455ae3ecc00" type="SPD">
+      <localfile name="/components/stop_comp/stop_comp.spd.xml"/>
+    </componentfile>
+  </componentfiles>
+  <partitioning>
+    <componentplacement>
+      <componentfileref refid="stop_comp_f4592ea7-cfee-4097-8aa8-3455ae3ecc00"/>
+      <componentinstantiation id="DCE:6fda1c2e-403a-488e-be3c-766b5ac68206">
+        <usagename>stop_comp_1</usagename>
+        <findcomponent>
+          <namingservice name="stop_comp_1"/>
+        </findcomponent>
+      </componentinstantiation>
+    </componentplacement>
+  </partitioning>
+  <assemblycontroller>
+    <componentinstantiationref refid="DCE:0937467d-fab1-4f92-9503-76e223698f61"/>
+  </assemblycontroller>
+  <connections>
+    <connectinterface id="DCE:d259d7b3-c720-4785-b88f-a580c26b8ab0">
+      <usesport>
+        <usesidentifier>uses</usesidentifier>
+        <componentinstantiationref refid="DCE:0937467d-fab1-4f92-9503-76e223698f61"/>
+      </usesport>
+      <providesport>
+        <providesidentifier>provides</providesidentifier>
+        <componentinstantiationref refid="DCE:6fda1c2e-403a-488e-be3c-766b5ac68206"/>
+      </providesport>
+    </connectinterface>
+  </connections>
+</softwareassembly>

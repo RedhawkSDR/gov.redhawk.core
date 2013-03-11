@@ -1,0 +1,45 @@
+//Source file: ExtendedEvent.idl
+#ifndef __EXTENDEDEVENT_DEFINED
+#define __EXTENDEDEVENT_DEFINED
+
+#include <COS/CosEventComm.idl>
+#include <COS/CosEventChannelAdmin.idl>
+#include "ossie/CF/cf.idl"
+
+module ExtendedEvent {
+
+    enum ResourceStateChangeType {
+        STOPPED,
+        STARTED
+    };
+
+    struct ResourceStateChangeEventType {
+        string sourceId;
+        string sourceName;
+        ExtendedEvent::ResourceStateChangeType stateChangeFrom;
+        ExtendedEvent::ResourceStateChangeType stateChangeTo;
+    };
+
+    /* Type PropertySetChangeEventType is a structure used to indicate that the
+       event source (which must be a CF::PropertySet) has had a change in one of
+       it's property values.  This can be due to a CF::PropertySet::configure()
+       call or due to an internal change.  A component shall only send
+       PropertySetChangeEvents for 'queryable' properties.
+    */
+    struct PropertySetChangeEventType {
+        string sourceId;
+        string sourceName;
+        CF::Properties properties;
+    };
+
+    /* Intended to allow a port to act as a PushConsumer for point-to-point
+       connections and over the event service */
+    interface MessageEvent : CosEventChannelAdmin::EventChannel, CF::Port {
+    
+    };
+    /*interface MessageReceiver : CosEventComm::PushConsumer, CF::Port {
+
+    };*/
+
+};
+#endif

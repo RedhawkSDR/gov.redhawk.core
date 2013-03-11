@@ -1,0 +1,11 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: REDHAWK Validation Tests
+Bundle-SymbolicName: gov.redhawk.validation.tests
+Bundle-Version: 1.0.0.qualifier
+Bundle-Vendor: United States Government
+Bundle-RequiredExecutionEnvironment: J2SE-1.5
+Require-Bundle: org.junit4;bundle-version="4.5.0",
+ gov.redhawk.validation;bundle-version="2.0.0",
+ org.eclipse.core.runtime;bundle-version="3.5.0"
+Export-Package: gov.redhawk.validation.tests

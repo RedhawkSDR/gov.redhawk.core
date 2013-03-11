@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+    This file is protected by Copyright.
+    Please refer to the COPYRIGHT file distributed with this source distribution.
+
+    This file is part of REDHAWK IDE.
+
+    All rights reserved.  This program and the accompanying materials are made available under
+    the terms of the Eclipse Public License v1.0 which accompanies this distribution, and is available at
+    http://www.eclipse.org/legal/epl-v10.html.
+ 
+-->
+<!DOCTYPE softwarecomponent SYSTEM "../xml/dtd/softwarecomponent.dtd">
+<softwarecomponent>
+	<corbaversion>2.2</corbaversion>
+	<componentrepid repid="IDL:CF/DomainManager:1.0"/>
+	<componenttype>domainmanager</componenttype>
+	<componentfeatures>
+		<supportsinterface repid="IDL:CF/DomainManager:1.0" supportsname="DomainManager"/>
+		<supportsinterface repid="IDL:CF/PropertySet:1.0" supportsname="PropertySet"/>
+	</componentfeatures>
+	<interfaces>
+		<interface repid="IDL:CF/DomainManager:1.0" name="DomainManager">
+			<inheritsinterface repid="IDL:CF/PropertySet:1.0"/>
+		</interface>
+		<interface repid="IDL:CF/PropertySet:1.0" name="PropertySet"/>
+	</interfaces>
+</softwarecomponent>

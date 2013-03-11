@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+    This file is protected by Copyright.
+    Please refer to the COPYRIGHT file distributed with this source distribution.
+
+    This file is part of REDHAWK IDE.
+
+    All rights reserved.  This program and the accompanying materials are made available under
+    the terms of the Eclipse Public License v1.0 which accompanies this distribution, and is available at
+    http://www.eclipse.org/legal/epl-v10.html.
+ 
+-->
+
+<project name="testSuite" default="suite" basedir=".">
+    <property name="eclipse-home" value="${basedir}/../.."/>
+    <property name="plugin" value="gov.redhawk.sca.model.tests"/>
+    <property name="testLibrary" value="${eclipse-home}/plugins/org.eclipse.test_3.3.0/library.xml" />
+
+    <target name="init">
+      <tstamp/>
+      <delete>
+        <fileset dir="${eclipse-home}" includes="mil*.xml"/>
+      </delete>
+    </target>
+
+    <target name="suite">
+      <property name="data.dir" value="${eclipse-home}/${plugin}"/>
+      <delete dir="${data.dir}"/>
+      <ant target="core-test" antfile="${testLibrary}">
+        <property name="data-dir" value="${data.dir}"/>
+        <property name="plugin-name" value="${plugin}"/>
+        <property name="classname" value="gov.redhawk.model.sca.tests.ScaAllTests"/>
+      </ant>
+    </target>
+  
+    <target name="run" depends="init,suite">
+      <ant target="collect" antfile="${testLibrary}" dir="${eclipse-home}">
+        <property name="includes" value="mil*.xml"/>
+        <property name="output-file" value="test-results/${plugin}.xml"/>
+      </ant>
+    </target>
+
+</project>
+

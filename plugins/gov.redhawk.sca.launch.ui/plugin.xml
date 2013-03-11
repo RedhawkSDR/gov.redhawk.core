@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+    This file is protected by Copyright.
+    Please refer to the COPYRIGHT file distributed with this source distribution.
+
+    This file is part of REDHAWK IDE.
+
+    All rights reserved.  This program and the accompanying materials are made available under
+    the terms of the Eclipse Public License v1.0 which accompanies this distribution, and is available at
+    http://www.eclipse.org/legal/epl-v10.html.
+ 
+-->
+<?eclipse version="3.4"?>
+<plugin>
+   <extension
+         point="org.eclipse.debug.core.launchConfigurationTypes">
+      <launchConfigurationType
+            delegate="gov.redhawk.sca.launch.ui.WaveformLaunchConfigurationDelegate"
+            id="gov.redhawk.sca.ui.launchConfigurationType.waveform"
+            modes="run"
+            name="SCA Waveform">
+      </launchConfigurationType>
+   </extension>
+   <extension
+         point="org.eclipse.debug.ui.launchConfigurationTabGroups">
+      <launchConfigurationTabGroup
+            class="gov.redhawk.sca.launch.ui.WaveformLaunchConfigurationTabGroup"
+            id="gov.redhawk.sca.ui.launchConfigurationTabGroup.waveform"
+            type="gov.redhawk.sca.ui.launchConfigurationType.waveform">
+         <launchMode
+               description="Run an SCA Waveform"
+               mode="run">
+         </launchMode>
+      </launchConfigurationTabGroup>
+   </extension>
+   <extension
+         point="org.eclipse.debug.ui.launchConfigurationTypeImages">
+      <launchConfigurationTypeImage
+            configTypeID="gov.redhawk.sca.ui.launchConfigurationType.waveform"
+            icon="icons/obj16/ScaWaveform.gif"
+            id="gov.redhawk.sca.ui.launchConfigurationType.waveform.image">
+      </launchConfigurationTypeImage>
+   </extension>
+</plugin>

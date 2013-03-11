@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+    This file is protected by Copyright.
+    Please refer to the COPYRIGHT file distributed with this source distribution.
+
+    This file is part of REDHAWK IDE.
+
+    All rights reserved.  This program and the accompanying materials are made available under
+    the terms of the Eclipse Public License v1.0 which accompanies this distribution, and is available at
+    http://www.eclipse.org/legal/epl-v10.html.
+ 
+-->
+<?eclipse version="3.4"?>
+<plugin>
+<extension
+         point="org.eclipse.emf.validation.constraintProviders">
+      <constraintProvider
+            cache="true">
+         <package
+               namespaceUri="http://sca.jpeojtrs.mil/scd">
+         </package>
+         <constraints
+               categories="gov.redhawk.validation.category">
+            <constraint
+                  class="gov.redhawk.scd.validation.ResolveRefIdConstraint"
+                  id="gov.redhawk.validation.constraint.scd.validRefId"
+                  lang="java"
+                  mode="Batch"
+                  name="Validate refid"
+                  severity="ERROR"
+                  statusCode="1000">
+               <message>
+                  {0} does not reference any known interface.
+               </message>
+               <target
+                     class="ComponentRepId">
+               </target>
+               <target
+                     class="SupportsInterface"></target>
+               <target
+                     class="InheritsInterface"></target>
+               <target
+                     class="Provides">
+               </target>
+               <target
+                     class="Uses">
+               </target>
+            </constraint>
+            <constraint
+                  class="gov.redhawk.scd.validation.UnnecessaryInterfaceDeclaration"
+                  id="gov.redhawk.scd.validation.unnecessaryInterfaceDeclaration"
+                  lang="java"
+                  mode="Batch"
+                  name="Unnecessary Interface Declaration"
+                  severity="WARNING"
+                  statusCode="1001">
+               <message>
+                  The interface {0} is never used.
+               </message>
+               <target
+                     class="Interface">
+               </target>
+            </constraint>
+         </constraints>
+      </constraintProvider>
+   </extension>
+</plugin>

@@ -1,0 +1,16 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Core Resource Factory
+Bundle-SymbolicName: gov.redhawk.core.resourceFactory;singleton:=true
+Bundle-Version: 1.0.0.qualifier
+Bundle-Activator: gov.redhawk.core.resourcefactory.ResourceFactoryPlugin
+Bundle-Vendor: United States Government
+Require-Bundle: org.eclipse.core.runtime;bundle-version="3.6.0",
+ gov.redhawk.sandbox;bundle-version="1.0.0",
+ idl.cf;bundle-version="2.2.2";visibility:=reexport,
+ gov.redhawk.core.filemanager;bundle-version="1.0.0";visibility:=reexport,
+ gov.redhawk.sca.util;bundle-version="3.0.0",
+ org.eclipse.emf.ecore;bundle-version="2.6.1";visibility:=reexport
+Bundle-RequiredExecutionEnvironment: J2SE-1.5
+Bundle-ActivationPolicy: lazy
+Export-Package: gov.redhawk.core.resourcefactory

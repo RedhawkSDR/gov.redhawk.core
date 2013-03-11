@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="ASCII"?>
+<sca:domainManagerRegistry xmlns:sca="http://www.redhawk.gov/model/sca/2.0.0">
+    <domain name="REDHAWK_DEV">
+      <connectionProperties>
+        <property key="org.omg.CORBA.ORBInitRef.NameService" value="corbaname::localhost:2809"/>
+      </connectionProperties>
+    </domain>
+</sca:domainManagerRegistry>

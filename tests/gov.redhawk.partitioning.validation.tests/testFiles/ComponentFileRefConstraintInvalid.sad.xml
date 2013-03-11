@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+    This file is protected by Copyright.
+    Please refer to the COPYRIGHT file distributed with this source distribution.
+
+    This file is part of REDHAWK IDE.
+
+    All rights reserved.  This program and the accompanying materials are made available under
+    the terms of the Eclipse Public License v1.0 which accompanies this distribution, and is available at
+    http://www.eclipse.org/legal/epl-v10.html.
+ 
+-->
+<!DOCTYPE softwareassembly PUBLIC "-//JTRS//DTD SCA SAD V2.2.2//EN" "softwareassembly.dtd">
+<softwareassembly id="DCE:cdb044b2-8be6-4bd2-8b96-96f365e5a1c2" name="waveform">
+  <componentfiles>
+    <componentfile id="Reader_614aade5-494f-4427-9d44-f2401704b45b" type="SPD">
+      <localfile name="/components/Reader/Reader.spd.xml"/>
+    </componentfile>
+    <componentfile id="Writer_711a4515-e8de-4a6a-a118-756f3e76b628" type="SPD">
+      <localfile name="/components/Writer/Writer.spd.xml"/>
+    </componentfile>
+  </componentfiles>
+  <partitioning>
+    <componentplacement>
+      <componentfileref refid="Reader_614aade5-494f-4427-9d44-cccccccccccc"/>
+      <componentinstantiation id="DCE:6e34f86c-9f39-4cf5-a5e7-8ee34794c04f">
+        <usagename>Reader_1</usagename>
+        <findcomponent>
+          <namingservice name="Reader_1"/>
+        </findcomponent>
+      </componentinstantiation>
+    </componentplacement>
+    <componentplacement>
+      <componentfileref refid="Writer_711a4515-e8de-4a6a-a118-756f3e76b627"/>
+      <componentinstantiation id="DCE:c25f90a3-714c-4470-a423-e4e6f96d0300">
+        <usagename>Writer_1</usagename>
+        <findcomponent>
+          <namingservice name="Writer_1"/>
+        </findcomponent>
+      </componentinstantiation>
+    </componentplacement>
+  </partitioning>
+  <assemblycontroller>
+    <componentinstantiationref refid="DCE:6e34f86c-9f39-4cf5-a5e7-8ee34794c04f"/>
+  </assemblycontroller>
+  <connections>
+    <connectinterface id="DCE:fb4c52fa-08c6-4f40-8e90-315ee257b0bb">
+      <usesport>
+        <usesidentifier>dataFloatOut_port</usesidentifier>
+        <componentinstantiationref refid="DCE:6e34f86c-9f39-4cf5-a5e7-8ee34794c04f"/>
+      </usesport>
+      <providesport>
+        <providesidentifier>dataFloatIn_port</providesidentifier>
+        <componentinstantiationref refid="DCE:c25f90a3-714c-4470-a423-e4e6f96d0300"/>
+      </providesport>
+    </connectinterface>
+  </connections>
+</softwareassembly>

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+    This file is protected by Copyright.
+    Please refer to the COPYRIGHT file distributed with this source distribution.
+
+    This file is part of REDHAWK IDE.
+
+    All rights reserved.  This program and the accompanying materials are made available under
+    the terms of the Eclipse Public License v1.0 which accompanies this distribution, and is available at
+    http://www.eclipse.org/legal/epl-v10.html.
+-->
+<feature
+      id="org.jacorb.systemFragment"
+      label="%featureName"
+      version="3.1.0.qualifier"
+      provider-name="%featureProvider">
+
+   <description url="http://redhawksdr.org/description">
+      %description
+   </description>
+
+   <copyright url="http://redhawksdr.org/copyright">
+      %copyright
+   </copyright>
+
+   <license url="http://redhawksdr.org/license">
+      %license
+   </license>
+
+   <plugin
+         id="org.jacorb.systemFragment"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         fragment="true"
+         unpack="true"/>
+
+</feature>

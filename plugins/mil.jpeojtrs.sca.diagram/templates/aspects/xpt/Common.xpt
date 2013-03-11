@@ -1,0 +1,26 @@
+«IMPORT 'http://www.eclipse.org/gmf/2009/GenModel'»
+«EXTENSION xpt::NonNLSUtils»
+«EXTENSION xpt::StringOperations»
+
+«AROUND copyright FOR gmfgen::GenEditorGenerator-»
+/**
+ * REDHAWK HEADER
+ *
+ * Identification: $Revision$
+ */
+// BEGIN GENERATED CODE
+«targetDef.proceed()»
+«ENDAROUND»
+
+«AROUND xcopyright FOR gmfgen::GenEditorGenerator-»
+<!--
+  REDHAWK HEADER
+  
+  Identification: $Revision$
+  
+  BEGIN GENERATED CODE
+-->
+
+«targetDef.proceed()»
+
+«ENDAROUND»

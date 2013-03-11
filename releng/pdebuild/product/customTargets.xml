@@ -1,0 +1,68 @@
+<project name="customTargets overrides" >
+    <import file="${eclipse.pdebuild.templates}/headless-build/customTargets.xml"/>
+
+    <target name="postSetup">
+        <copy todir="${buildDirectory}/plugins">
+            <fileset dir="${basedir}/../plugins">
+                <exclude name="**/*.class"/>
+            </fileset>
+        </copy>
+        <copy todir="${buildDirectory}/features">
+            <fileset dir="${basedir}/../features"/>
+        </copy>
+    </target>
+
+    <!-- ===================================================================== -->
+    <!--  Steps to do after the repositories have been processed -->
+    <!-- ===================================================================== -->
+    <target name="postProcessRepos">
+        <mkdir dir="${buildDirectory}/${buildLabel}"/>
+        <symlink link="${buildDirectory}/output" resource="${buildDirectory}/${buildLabel}" overwrite="true"/>
+        <unzip src="${buildDirectory}/${deltapack}" dest="${buildDirectory}/target"/>
+        <exec executable="/bin/bash" dir="${buildDirectory}/target">
+            <arg value="-c"/>
+            <arg value="patch -p0 ${buildDirectory}/target/eclipse/features/org.eclipse.rcp_3.6.1.r361_v20100827-9OArFLdFjY-ThSQXmKvKz0_T/feature.xml ${basebuilder}/redhawk-patches/org.eclipse.rcp.patch"/>
+        </exec>
+        <exec executable="/bin/bash" dir="${buildDirectory}/target">
+            <arg value="-c"/>
+            <arg value="patch -p0  ${buildDirectory}/target/eclipse/features/org.eclipse.rcp.source_3.6.1.r361_v20100827-9OArFLdFjY-ThSQXmKvKz0_T/feature.xml ${basebuilder}/redhawk-patches/org.eclipse.rcp.source.patch"/>
+        </exec>
+        <exec executable="/bin/bash" dir="${buildDirectory}/target">
+            <arg value="-c"/>
+            <arg value="patch -p0  ${buildDirectory}/target/eclipse/plugins/org.python.pydev.debug_1.6.4.2011010200/pysrc/pydevd.py ${basebuilder}/redhawk-patches/omniORB_debug.patch"/>
+        </exec>
+        <replace dir="${buildDirectory}/product" value="${buildLabel}" token="@buildId@"/>
+        <replace dir="${buildDirectory}/plugins" value="${qualifier}" token="@buildId@"/>
+        <replace dir="${buildDirectory}/plugins" value="${buildLabel}" token="@buildLabel@"/>
+        <replace dir="${buildDirectory}/features" value="${qualifier}" token="@buildId@"/>
+        <replace dir="${buildDirectory}/features" value="${buildLabel}" token="@buildLabel@"/>
+    </target>
+
+    <!-- ===================================================================== -->
+    <!-- Steps to do after the build is done. -->
+    <!-- ===================================================================== -->
+    <target name="postBuild" depends="gatherLogs,publish,test">
+    </target>
+
+    <!-- ===================================================================== -->
+    <!-- Steps to do to publish the build results -->
+    <!-- ===================================================================== -->
+    <target name="publish" depends="shouldPublish" if="p2.should.publish">
+        <p2.mirror>
+            <source location="file:${buildDirectory}/${buildLabel}/p2/${productBundle}"/>
+            <destination location="file:${publishBase}/${buildLabel}.${qualifier}"/>
+            <iu query="property[@name='org.eclipse.equinox.p2.type.category']"/>
+        </p2.mirror>
+        <symlink resource="${publishBase}/${buildLabel}.${qualifier}" link="${publishBase}/latest" overwrite="true"/>
+    </target>
+
+    <target name="shouldPublish">
+        <condition property="p2.should.publish">
+            <or>
+                <equals arg1="${publishP2}" arg2="true" casesensitive="false"/>
+                <equals arg1="${publishP2}" arg2="1" casesensitive="false"/>
+            </or>
+        </condition>
+    </target>
+
+</project>

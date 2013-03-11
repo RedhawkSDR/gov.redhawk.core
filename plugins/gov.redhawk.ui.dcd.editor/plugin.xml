@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  REDHAWK HEADER
+ 
+  Identification: $Revision: 7870 $
+-->
+<?eclipse version="3.4"?>
+<plugin>
+   <extension
+         point="org.eclipse.ui.editors">
+      <editor
+            class="gov.redhawk.ui.dcd.editor.presentation.NodeEditor"
+            contributorClass="gov.redhawk.ui.dcd.editor.presentation.NodeMultipageEditorActionBarContributor"
+            default="false"
+            icon="icons/obj16/DcdExplorer.gif"
+            id="gov.redhawk.ui.dcd.editor.presentation.NodeEditorID"
+            matchingStrategy="gov.redhawk.ui.dcd.editor.presentation.NodeEditorMatchingStrategy"
+            name="Node Explorer">
+         <contentTypeBinding contentTypeId="mil.jpeojtrs.sca.dcd.content-type"/>
+      </editor>
+   </extension>
+    <extension
+         point="gov.redhawk.sca.ui.scaContentTypes">
+         <contentTypeBinding
+            contentTypeId="gov.redhawk.ui.dcd.contentType"
+            editorId="gov.redhawk.ui.dcd.editor.presentation.NodeEditorID"
+            priority="LOW">
+      </contentTypeBinding>
+   </extension>
+
+</plugin>

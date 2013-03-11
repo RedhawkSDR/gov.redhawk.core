@@ -1,0 +1,352 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+   REDHAWK HEADER
+
+   Identification: $Revision: 2234 $
+ -->
+<?eclipse version="3.2"?>
+<plugin>
+   <extension
+         point="org.eclipse.ui.views">
+      <view
+            category="gov.redhawk.ui.category.sca"
+            class="gov.redhawk.waveformviewer.ui.views.WaveformView"
+            icon="icons/dlcl16/hierarchicalLayout.gif"
+            id="gov.redhawk.ui.waveform.view.available"
+            name="Available Waveforms"
+            restorable="true">
+      </view>
+      <view
+            category="gov.redhawk.ui.category.sca"
+            class="gov.redhawk.waveformviewer.ui.views.RunWaveformView"
+            icon="icons/dtool16/defcon_wiz.gif"
+            id="gov.redhawk.ui.waveform.view.running"
+            name="Running Waveforms"
+            restorable="true">
+      </view>
+   </extension>
+   <extension
+         point="org.eclipse.ui.commands">
+      <command
+            description="Install the selected Waveform"
+            id="gov.redhawk.ui.waveform.commands.install"
+            name="Install Waveform">
+      </command>
+      <command
+            description="Runs the selected Waveform"
+            id="gov.redhawk.ui.waveform.commands.run"
+            name="Run Waveform">
+      </command>
+      <command
+            description="Stops the selected Waveform"
+            id="gov.redhawk.ui.waveform.commands.stop"
+            name="Stop Waveform">
+      </command>
+      <command
+            description="Uninstall the selected Waveform"
+            id="gov.redhawk.ui.waveform.commands.uninstall"
+            name="Uninstall Waveform">
+      </command>
+      <command
+            description="View the selected Waveform"
+            id="gov.redhawk.ui.waveform.commands.view"
+            name="View Waveform">
+      </command>
+   </extension>
+   <extension
+         point="org.eclipse.ui.menus">
+      <menuContribution
+            locationURI="popup:gov.redhawk.ui.waveform.view.available">
+         <command
+               commandId="gov.redhawk.ui.waveform.commands.view"
+               disabledIcon="icons/dlcl16/find_obj.gif"
+               icon="icons/elcl16/find_obj.gif"
+               label="View Waveform"
+               style="push"
+               tooltip="View Waveform">
+            <visibleWhen
+                  checkEnabled="false">
+               <or>
+                  <iterate>
+                     <instanceof
+                           value="gov.redhawk.model.sca.ScaWaveform">
+                     </instanceof>
+                  </iterate>
+                  <iterate>
+                     <instanceof
+                           value="mil.jpeojtrs.sca.sad.SoftwareAssembly">
+                     </instanceof>
+                  </iterate>
+               </or>
+            </visibleWhen>
+         </command>
+         <command
+               commandId="gov.redhawk.ui.waveform.commands.install"
+               disabledIcon="icons/dlcl16/add_att.gif"
+               icon="icons/elcl16/add_att.gif"
+               label="Install Waveform"
+               style="push"
+               tooltip="Install Waveform">
+            <visibleWhen
+                  checkEnabled="false">
+               <or>
+                  <iterate>
+                     <instanceof
+                           value="gov.redhawk.model.sca.ScaWaveform">
+                     </instanceof>
+                  </iterate>
+                  <iterate>
+                     <instanceof
+                           value="mil.jpeojtrs.sca.sad.SoftwareAssembly">
+                     </instanceof>
+                  </iterate>
+               </or>
+            </visibleWhen>
+         </command>
+         <command
+               commandId="gov.redhawk.ui.waveform.commands.run"
+               disabledIcon="icons/dlcl16/goto_obj.gif"
+               icon="icons/elcl16/goto_obj.gif"
+               label="Run Waveform"
+               style="push"
+               tooltip="Run Waveform">
+            <visibleWhen
+                  checkEnabled="false">
+               <or>
+                  <iterate>
+                     <instanceof
+                           value="gov.redhawk.model.sca.ScaWaveform">
+                     </instanceof>
+                  </iterate>
+                  <iterate>
+                     <instanceof
+                           value="mil.jpeojtrs.sca.sad.SoftwareAssembly">
+                     </instanceof>
+                  </iterate>
+               </or>
+            </visibleWhen>
+         </command>
+      </menuContribution>
+      <menuContribution
+            locationURI="popup:gov.redhawk.ui.waveform.view.running">
+         <command
+               commandId="gov.redhawk.ui.waveform.commands.view"
+               disabledIcon="icons/dlcl16/find_obj.gif"
+               icon="icons/elcl16/find_obj.gif"
+               label="View Waveform"
+               style="push"
+               tooltip="View Waveform">
+            <visibleWhen
+                  checkEnabled="false">
+               <or>
+                  <iterate>
+                     <instanceof
+                           value="gov.redhawk.model.sca.ScaWaveform">
+                     </instanceof>
+                  </iterate>
+                  <iterate>
+                     <instanceof
+                           value="mil.jpeojtrs.sca.sad.SoftwareAssembly">
+                     </instanceof>
+                  </iterate>
+               </or>
+            </visibleWhen>
+         </command>
+         <command
+               commandId="gov.redhawk.ui.waveform.commands.run"
+               disabledIcon="icons/dlcl16/goto_obj.gif"
+               icon="icons/elcl16/goto_obj.gif"
+               label="Run Waveform"
+               style="push"
+               tooltip="Run Waveform">
+            <visibleWhen
+                  checkEnabled="false">
+               <or>
+                  <iterate>
+                     <instanceof
+                           value="gov.redhawk.model.sca.ScaWaveform">
+                     </instanceof>
+                  </iterate>
+                  <iterate>
+                     <instanceof
+                           value="mil.jpeojtrs.sca.sad.SoftwareAssembly">
+                     </instanceof>
+                  </iterate>
+               </or>
+            </visibleWhen>
+         </command>
+         <command
+               commandId="gov.redhawk.ui.waveform.commands.stop"
+               disabledIcon="icons/dlcl16/clear.gif"
+               icon="icons/elcl16/clear.gif"
+               label="Stop Waveform"
+               style="push"
+               tooltip="Stop Waveform">
+            <visibleWhen
+                  checkEnabled="false">
+               <or>
+                  <iterate>
+                     <instanceof
+                           value="gov.redhawk.model.sca.ScaWaveform">
+                     </instanceof>
+                  </iterate>
+                  <iterate>
+                     <instanceof
+                           value="mil.jpeojtrs.sca.sad.SoftwareAssembly">
+                     </instanceof>
+                  </iterate>
+               </or>
+            </visibleWhen>
+         </command>
+         <command
+               commandId="gov.redhawk.ui.waveform.commands.uninstall"
+               icon="icons/dlcl16/remove_att.gif"
+               label="Uninstall Waveform"
+               style="push"
+               tooltip="Uninstall Waveform">
+            <visibleWhen
+                  checkEnabled="false">
+               <or>
+                  <iterate>
+                     <instanceof
+                           value="gov.redhawk.model.sca.ScaWaveform">
+                     </instanceof>
+                  </iterate>
+                  <iterate>
+                     <instanceof
+                           value="mil.jpeojtrs.sca.sad.SoftwareAssembly">
+                     </instanceof>
+                  </iterate>
+               </or>
+            </visibleWhen>
+         </command>
+      </menuContribution>
+      <menuContribution
+            locationURI="toolbar:gov.redhawk.ui.waveform.view.available">
+         <command
+               commandId="gov.redhawk.ui.waveform.commands.view"
+               disabledIcon="icons/dlcl16/find_obj.gif"
+               icon="icons/elcl16/find_obj.gif"
+               label="View"
+               style="push"
+               tooltip="View Waveform">
+         </command>
+         <command
+               commandId="gov.redhawk.ui.waveform.commands.install"
+               disabledIcon="icons/dlcl16/add_att.gif"
+               icon="icons/elcl16/add_att.gif"
+               label="Install"
+               style="push"
+               tooltip="Install Waveform">
+         </command>
+         <command
+               commandId="gov.redhawk.ui.waveform.commands.run"
+               disabledIcon="icons/dlcl16/goto_obj.gif"
+               icon="icons/elcl16/goto_obj.gif"
+               label="Run"
+               style="push"
+               tooltip="Run Waveform">
+         </command>
+      </menuContribution>
+      <menuContribution
+            locationURI="toolbar:gov.redhawk.ui.waveform.view.running">
+         <command
+               commandId="gov.redhawk.ui.waveform.commands.view"
+               disabledIcon="icons/dlcl16/find_obj.gif"
+               icon="icons/elcl16/find_obj.gif"
+               label="View"
+               style="push"
+               tooltip="View Waveform">
+         </command>
+         <command
+               commandId="gov.redhawk.ui.waveform.commands.run"
+               disabledIcon="icons/dlcl16/goto_obj.gif"
+               icon="icons/elcl16/goto_obj.gif"
+               label="Run"
+               style="push"
+               tooltip="Run Waveform">
+         </command>
+         <command
+               commandId="gov.redhawk.ui.waveform.commands.stop"
+               disabledIcon="icons/dlcl16/clear.gif"
+               icon="icons/elcl16/clear.gif"
+               label="Stop"
+               style="push"
+               tooltip="Stop Waveform">
+         </command>
+         <command
+               commandId="gov.redhawk.ui.waveform.commands.uninstall"
+               icon="icons/dlcl16/remove_att.gif"
+               label="Uninstall"
+               style="push"
+               tooltip="Uninstall Waveform">
+         </command>
+      </menuContribution>
+   </extension>
+   <extension
+         point="org.eclipse.ui.handlers">
+      <handler
+            class="gov.redhawk.waveformviewer.ui.handler.InstallWaveform"
+            commandId="gov.redhawk.ui.waveform.commands.install">
+         <activeWhen>
+            <or>
+               <iterate>
+                  <instanceof
+                        value="gov.redhawk.model.sca.ScaWaveform">
+                  </instanceof>
+               </iterate>
+               <iterate>
+                  <instanceof
+                        value="mil.jpeojtrs.sca.sad.SoftwareAssembly">
+                  </instanceof>
+               </iterate>
+            </or>
+         </activeWhen>
+      </handler>
+      <handler
+            class="gov.redhawk.waveformviewer.ui.handler.RunWaveform"
+            commandId="gov.redhawk.ui.waveform.commands.run">
+         <activeWhen>
+            <or>
+               <iterate>
+                  <instanceof
+                        value="gov.redhawk.model.sca.ScaWaveform">
+                  </instanceof>
+               </iterate>
+               <iterate>
+                  <instanceof
+                        value="mil.jpeojtrs.sca.sad.SoftwareAssembly">
+                  </instanceof>
+               </iterate>
+            </or>
+         </activeWhen>
+      </handler>
+      <handler
+            class="gov.redhawk.waveformviewer.ui.handler.UninstallWaveform"
+            commandId="gov.redhawk.ui.waveform.commands.uninstall">
+         <enabledWhen>
+            <iterate>
+               <instanceof
+                     value="gov.redhawk.model.sca.ScaWaveform">
+               </instanceof>
+            </iterate>
+         </enabledWhen>
+      </handler>
+      <handler
+            class="gov.redhawk.waveformviewer.ui.handler.StopWaveform"
+            commandId="gov.redhawk.ui.waveform.commands.stop">
+         <activeWhen>
+            <iterate>
+               <instanceof
+                     value="gov.redhawk.model.sca.ScaWaveform">
+               </instanceof>
+            </iterate>
+         </activeWhen>
+      </handler>
+      <handler
+            class="gov.redhawk.waveformviewer.ui.handler.ViewWaveform"
+            commandId="gov.redhawk.ui.waveform.commands.view">
+      </handler>
+   </extension>
+
+</plugin>

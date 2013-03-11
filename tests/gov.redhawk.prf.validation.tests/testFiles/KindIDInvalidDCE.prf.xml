@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+    This file is protected by Copyright.
+    Please refer to the COPYRIGHT file distributed with this source distribution.
+
+    This file is part of REDHAWK IDE.
+
+    All rights reserved.  This program and the accompanying materials are made available under
+    the terms of the Eclipse Public License v1.0 which accompanies this distribution, and is available at
+    http://www.eclipse.org/legal/epl-v10.html.
+ 
+-->
+<!DOCTYPE properties PUBLIC "-//JTRS//DTD SCA PRF V2.2.2//EN" "properties.dtd">
+<properties>
+  <simple id="DCE:5d0df921-1911-4341-b008" mode="readwrite" name="simple property" type="string">
+    <value>some value</value>
+    <kind kindtype="configure"/>
+    <kind kindtype="allocation"/>
+    <action type="external"/>
+  </simple>
+  <simplesequence id="DCE:9468a55e-b65d-45a7" mode="readwrite" name="simple sequence" type="string">
+    <values>
+      <value>simple value</value>
+    </values>
+    <kind kindtype="configure"/>
+    <kind kindtype="allocation"/>
+    <action type="external"/>
+  </simplesequence>
+</properties>

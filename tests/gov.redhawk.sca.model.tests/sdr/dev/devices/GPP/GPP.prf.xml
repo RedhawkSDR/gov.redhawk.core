@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+    This file is protected by Copyright.
+    Please refer to the COPYRIGHT file distributed with this source distribution.
+
+    This file is part of REDHAWK IDE.
+
+    All rights reserved.  This program and the accompanying materials are made available under
+    the terms of the Eclipse Public License v1.0 which accompanies this distribution, and is available at
+    http://www.eclipse.org/legal/epl-v10.html.
+ 
+-->
+<properties>
+    <simple type="string" id="DCE:4a23ad60-0b25-4121-a630-68803a498f75" name="os_name" mode="readonly">
+        <description>SCA required property describing the Operating System Name</description>
+        <value>Linux</value>
+        <kind kindtype="allocation"></kind>
+        <action type="eq"></action>
+    </simple>
+    <simple type="string" id="DCE:0f3a9a37-a342-43d8-9b7f-78dc6da74192" name="os_version" mode="readonly">
+        <description>SCA required property describing the Operating System Version</description>
+        <value>2.6.18-194.el5</value>
+        <kind kindtype="allocation"></kind>
+        <action type="eq"></action>
+    </simple>
+    <simple type="long" id="DCE:329d9304-839e-4fec-a36f-989e3b4d311d" name="memTotal" mode="readonly">
+        <description>Total amount of RAM installed in the GPP</description>
+        <units>megabytes</units>
+        <kind kindtype="configure"></kind>
+        <action type="external"></action>
+    </simple>
+    <simple type="long" id="DCE:6565bffd-cb09-4927-9385-2ecac68035c7" name="memFree" mode="readonly">
+        <description>Amount of RAM in the GPP not in use (measured)</description>
+        <units>megabytes</units>
+        <kind kindtype="configure"></kind>
+        <action type="external"></action>
+    </simple>
+    <simple type="long" id="DCE:8dcef419-b440-4bcf-b893-cab79b6024fb" name="memCapacity" mode="readwrite">
+        <description>Amount of RAM in the GPP not allocated to an application</description>
+        <units>megabytes</units>
+        <kind kindtype="allocation"></kind>
+        <action type="external"></action>
+    </simple>
+    <simple type="long" id="DCE:fc24e19d-eda9-4200-ae96-8ba2ed953128" name="memThreshold" mode="readwrite">
+        <description>Percentage of total system memory this GPP can use for capacity management.</description>
+        <value>80</value>
+        <units>percentage</units>
+        <kind kindtype="configure"></kind>
+        <action type="external"></action>
+    </simple>
+    <simple type="string" id="DCE:fefb9c66-d14a-438d-ad59-2cfd1adb272b" name="processor_name" mode="readonly">
+        <description>SCA required property describing the CPU type</description>
+        <value>x86</value>
+        <kind kindtype="allocation"></kind>
+        <action type="eq"></action>
+    </simple>
+    <simple type="long" id="DCE:0592a90e-9ffe-4aaa-83a2-11627259a1b8" name="bogomipsPerCPU" mode="readonly">
+        <description>
+          Bogomips on an individual processor in this machine.
+      </description>
+        <units>bogomips</units>
+        <kind kindtype="configure"></kind>
+        <kind kindtype="allocation"></kind>
+        <action type="external"></action>
+    </simple>
+    <simple type="long" id="DCE:5f41fd25-a8ae-49b4-b13c-ebc3812dc0ea" name="bogomipsTotal" mode="readonly">
+        <description>Total CPU capacity of the GPP</description>
+        <units>bogomips</units>
+        <kind kindtype="configure"></kind>
+        <action type="external"></action>
+    </simple>
+    <simple type="long" id="DCE:5636c210-0346-4df7-a5a3-8fd34c5540a8" name="bogomipsCapacity" mode="readwrite">
+        <description>Amount of CPU capacity in the GPP not allocated to an application</description>
+        <units>bogomips</units>
+        <kind kindtype="allocation"></kind>
+        <action type="external"></action>
+    </simple>
+    <simple type="long" id="DCE:65be2582-b95d-45b5-8486-546286f421c4" name="bogomipsThreshold" mode="readwrite">
+        <description>Percentage of total bogomips this GPP can use for capacity management.</description>
+        <value>80</value>
+        <units>percentage</units>
+        <kind kindtype="configure"></kind>
+        <action type="external"></action>
+    </simple>
+    <simple type="long" id="DCE:5a41c2d3-5b68-4530-b0c4-ae98c26c77ec" name="mcastnicTotal" mode="readwrite">
+        <description>Total Multicast NIC bandwidth capacity of the GPP (assumes only 1 NIC)</description>
+        <value>0</value>
+        <units>mbps</units>
+        <kind kindtype="execparam"></kind>
+        <action type="external"></action>
+    </simple>
+    <simple type="string" id="DCE:4e416acc-3144-47eb-9e38-97f1d24f7700" name="mcastnicInterface" mode="readonly">
+        <description>The Multicast NIC interface associated with this GPP (ex: eth1).</description>
+        <value></value>
+        <kind kindtype="configure"></kind>
+        <action type="external"></action>
+    </simple>
+    <simple type="long" id="DCE:506102d6-04a9-4532-9420-a323d818ddec" name="mcastnicCapacity" mode="readwrite">
+        <description>Amount of Multicast NIC capacity in the GPP not allocated to an application</description>
+        <units>mbps</units>
+        <kind kindtype="allocation"></kind>
+        <action type="external"></action>
+    </simple>
+    <simple type="long" id="DCE:b2582bde-859a-4407-ba26-18ccec9b26f1" name="mcastnicHasVLAN" mode="readonly">
+        <description>Check whether Multicast NIC has access to a particular VLAN</description>
+        <kind kindtype="allocation"></kind>
+        <action type="external"></action>
+    </simple>
+    <simple type="long" id="DCE:89be90ae-6a83-4399-a87d-5f4ae30ef7b1" name="mcastnicThreshold" mode="readwrite">
+        <description>Percentage of total Multicast NIC this GPP can use for capacity management.</description>
+        <value>80</value>
+        <units>percentage</units>
+        <kind kindtype="configure"></kind>
+        <action type="external"></action>
+    </simple>
+    <simple type="long" id="DCE:901776c6-5708-40d7-8e2e-6e0c8d020d19" name="diskTotal" mode="readonly">
+        <description>Total disk capacity of /data on the GPP</description>
+        <units>Mbytes</units>
+        <kind kindtype="configure"></kind>
+        <action type="external"></action>
+    </simple>
+    <simple type="long" id="DCE:5b584d54-2f20-4db3-ac95-33006933eceb" name="diskFree" mode="readonly">
+        <description>Unconsumed disk capacity of /data on the GPP (measured)</description>
+        <units>Mbytes</units>
+        <kind kindtype="configure"></kind>
+        <action type="external"></action>
+    </simple>
+    <simple type="long" id="DCE:56b2eda0-1dea-47c3-8392-93e496a8a9b5" name="diskCapacity" mode="readwrite">
+        <description>Amount of disk capacity in the GPP not allocated to an application</description>
+        <units>Mbytes</units>
+        <kind kindtype="allocation"></kind>
+        <action type="external"></action>
+    </simple>
+    <simple type="long" id="DCE:b911fa00-e411-4eb6-93d4-fff12dcf03bc" name="diskThreshold" mode="readwrite">
+        <description>Percentage of total disk this GPP can use for capacity management.</description>
+        <value>80</value>
+        <units>percentage</units>
+        <kind kindtype="configure"></kind>
+        <action type="external"></action>
+    </simple>
+    <simple type="long" id="DCE:708b0ab0-b953-433d-9040-0ab9a5359c7f" name="diskrateCapacity" mode="readonly">
+        <description>Amount of disk rate available to applications</description>
+        <value>0</value>
+        <units>MBps</units>
+        <kind kindtype="allocation"></kind>
+        <action type="ge"></action>
+    </simple>
+    <simple type="string" id="DCE:ab2e3139-e933-45f6-8144-cf3e0a02bda5" name="diskHasMountPoint" mode="readonly">
+        <description>Mount point dependency. Query is of the form - server:mount_point</description>
+        <kind kindtype="allocation"></kind>
+        <action type="external"></action>
+    </simple>
+    <simple type="string" id="DCE:9190eb70-bd1e-4556-87ee-5a259dcfee39" name="hostName" mode="readwrite">
+        <description>Host name on which the device is deployed</description>
+        <value>localhost</value>
+        <kind kindtype="configure"></kind>
+        <action type="external"></action>
+    </simple>
+    <simple type="string" id="DCE:7f36cdfb-f828-4e4f-b84f-446e17f1a85b" name="DeviceKind" mode="readonly">
+        <description>The type of this device</description>
+        <value>GPP</value>
+        <kind kindtype="configure"></kind>
+        <kind kindtype="allocation"></kind>
+        <action type="eq"></action>
+    </simple>
+</properties>

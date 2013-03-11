@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+    This file is protected by Copyright.
+    Please refer to the COPYRIGHT file distributed with this source distribution.
+
+    This file is part of REDHAWK IDE.
+
+    All rights reserved.  This program and the accompanying materials are made available under
+    the terms of the Eclipse Public License v1.0 which accompanies this distribution, and is available at
+    http://www.eclipse.org/legal/epl-v10.html.
+ 
+-->
+<softpkg type="sca_compliant" id="DCE:363ada33-0721-46be-800f-2d83e174f505" name="GPP">
+    <title></title>
+    <author>
+        <name></name>
+    </author>
+    <description>General purpose processor device</description>
+    <propertyfile type="PRF">
+        <localfile name="GPP.prf.xml"></localfile>
+    </propertyfile>
+    <descriptor>
+        <localfile name="GPP.scd.xml"></localfile>
+    </descriptor>
+    <implementation id="DCE:6ca942b4-0e39-4092-9c4d-7f1c8d306567">
+        <description>Basic Python implementation of GPP</description>
+        <code type="Executable">
+            <localfile name="/devices/GPP"></localfile>
+            <entrypoint>/devices/GPP/GPP.py</entrypoint>
+        </code>
+        <programminglanguage name="Python"></programminglanguage>
+        <humanlanguage name="EN"></humanlanguage>
+        <runtime version="2.4.4" name="python"></runtime>
+        <os name="Linux"></os>
+        <processor name="x86"></processor>
+    </implementation>
+</softpkg>

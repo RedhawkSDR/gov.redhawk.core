@@ -1,0 +1,236 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- Schema file written by PDE -->
+<schema targetNamespace="gov.redhawk.sca.ui" xmlns="http://www.w3.org/2001/XMLSchema">
+<annotation>
+      <appinfo>
+         <meta.schema plugin="gov.redhawk.sca.ui" id="scaContentTypes" name="SCA Content Types"/>
+      </appinfo>
+      <documentation>
+         The content types extension point allows plug-ins to contribute to the SCA Platform content type catalog. A content type represents an Sca Object. Content types can be defined from scratch, or can inherit from existing ones, specializing them.
+      </documentation>
+   </annotation>
+
+   <element name="extension">
+      <annotation>
+         <appinfo>
+            <meta.element />
+         </appinfo>
+      </annotation>
+      <complexType>
+         <choice minOccurs="1" maxOccurs="unbounded">
+            <element ref="contentType"/>
+            <element ref="contentTypeBinding"/>
+         </choice>
+         <attribute name="point" type="string" use="required">
+            <annotation>
+               <documentation>
+                  
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="id" type="string">
+            <annotation>
+               <documentation>
+                  
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="name" type="string">
+            <annotation>
+               <documentation>
+                  
+               </documentation>
+               <appinfo>
+                  <meta.attribute translatable="true"/>
+               </appinfo>
+            </annotation>
+         </attribute>
+      </complexType>
+   </element>
+
+   <element name="contentTypeBinding">
+      <complexType>
+         <attribute name="editorId" type="string" use="required">
+            <annotation>
+               <documentation>
+                  the id of the editor the content type should be bound to
+               </documentation>
+               <appinfo>
+                  <meta.attribute kind="identifier" basedOn="org.eclipse.ui.editors/editor/@id"/>
+               </appinfo>
+            </annotation>
+         </attribute>
+         <attribute name="contentTypeId" type="string" use="required">
+            <annotation>
+               <documentation>
+                  The content type identifier.
+               </documentation>
+               <appinfo>
+                  <meta.attribute kind="identifier" basedOn="gov.redhawk.sca.ui.scaContentTypes/contentType/@id"/>
+               </appinfo>
+            </annotation>
+         </attribute>
+         <attribute name="priority" use="default" value="NORMAL">
+            <annotation>
+               <documentation>
+                  the priority for this content type. Priorities are used to solve conflicts (when two content types are associated to the same Object
+               </documentation>
+            </annotation>
+            <simpleType>
+               <restriction base="string">
+                  <enumeration value="LOWEST">
+                  </enumeration>
+                  <enumeration value="LOW">
+                  </enumeration>
+                  <enumeration value="NORMAL">
+                  </enumeration>
+                  <enumeration value="HIGH">
+                  </enumeration>
+                  <enumeration value="HIGHEST">
+                  </enumeration>
+               </restriction>
+            </simpleType>
+         </attribute>
+      </complexType>
+   </element>
+
+   <element name="contentType">
+      <complexType>
+         <sequence minOccurs="0" maxOccurs="1">
+            <element ref="describer"/>
+         </sequence>
+         <attribute name="id" type="string" use="required">
+            <annotation>
+               <documentation>
+                  the fully qualified identifier for this content type. Note that using a simple id unique for content types within the extension namespace works for backwards compatibility but is discouraged for new extensions. The token cannot contain whitespace.
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="name" type="string" use="required">
+            <annotation>
+               <documentation>
+                  the human-readable name of this content type
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="describer" type="string">
+            <annotation>
+               <documentation>
+                  The fully qualified name of a class that implements &lt;code&gt;gov.redhawk.sca.ui.editors.IScaContentDescriber&lt;/code&gt; , or an empty string.
+               </documentation>
+               <appinfo>
+                  <meta.attribute kind="java" basedOn=":gov.redhawk.sca.ui.editors.IScaContentDescriber"/>
+               </appinfo>
+            </annotation>
+         </attribute>
+         <attribute name="priority" use="default" value="NORMAL">
+            <annotation>
+               <documentation>
+                  the priority for this content type. Priorities are used to solve conflicts (when two content types are associated to the same Object
+               </documentation>
+            </annotation>
+            <simpleType>
+               <restriction base="string">
+                  <enumeration value="LOWEST">
+                  </enumeration>
+                  <enumeration value="LOW">
+                  </enumeration>
+                  <enumeration value="NORMAL">
+                  </enumeration>
+                  <enumeration value="HIGH">
+                  </enumeration>
+                  <enumeration value="HIGHEST">
+                  </enumeration>
+               </restriction>
+            </simpleType>
+         </attribute>
+      </complexType>
+   </element>
+
+   <element name="describer">
+      <annotation>
+         <documentation>
+            If the describer attribute is used in the content-type element, this element is ignored.
+         </documentation>
+      </annotation>
+      <complexType>
+         <sequence minOccurs="0" maxOccurs="unbounded">
+            <element ref="parameter"/>
+         </sequence>
+         <attribute name="class" type="string" use="required">
+            <annotation>
+               <documentation>
+                  the fully qualified name of a class that implements &lt;code&gt;gov.redhawk.sca.ui.editors.IScaContentDescriber&lt;/code&gt;, or an empty string.
+               </documentation>
+               <appinfo>
+                  <meta.attribute kind="java" basedOn=":gov.redhawk.sca.ui.editors.IScaContentDescriber"/>
+               </appinfo>
+            </annotation>
+         </attribute>
+         <attribute name="plugin" type="string">
+            <annotation>
+               <documentation>
+                  the id for the plug-in providing the describer class
+               </documentation>
+            </annotation>
+         </attribute>
+      </complexType>
+   </element>
+
+   <element name="parameter">
+      <complexType>
+         <attribute name="name" type="string">
+            <annotation>
+               <documentation>
+                  the name of this parameter made available to instances of the specified content describer class
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="value" type="string">
+            <annotation>
+               <documentation>
+                  an arbitrary value associated with the given name and made available to instances of the specified content describer class
+               </documentation>
+            </annotation>
+         </attribute>
+      </complexType>
+   </element>
+
+   <annotation>
+      <appinfo>
+         <meta.section type="since"/>
+      </appinfo>
+      <documentation>
+         4.0
+      </documentation>
+   </annotation>
+
+   <annotation>
+      <appinfo>
+         <meta.section type="examples"/>
+      </appinfo>
+      <documentation>
+         [Enter extension point usage example here.]
+      </documentation>
+   </annotation>
+
+   <annotation>
+      <appinfo>
+         <meta.section type="apiinfo"/>
+      </appinfo>
+      <documentation>
+         [Enter API information here.]
+      </documentation>
+   </annotation>
+
+   <annotation>
+      <appinfo>
+         <meta.section type="implementation"/>
+      </appinfo>
+      <documentation>
+         [Enter information about supplied implementation of this extension point.]
+      </documentation>
+   </annotation>
+
+
+</schema>

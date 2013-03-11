@@ -1,0 +1,294 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+    This file is protected by Copyright.
+    Please refer to the COPYRIGHT file distributed with this source distribution.
+
+    This file is part of REDHAWK IDE.
+
+    All rights reserved.  This program and the accompanying materials are made available under
+    the terms of the Eclipse Public License v1.0 which accompanies this distribution, and is available at
+    http://www.eclipse.org/legal/epl-v10.html.
+ 
+-->
+<?eclipse version="3.4"?>
+<plugin>
+ <extension
+         point="org.eclipse.gmf.runtime.diagram.ui.editpolicyProviders">
+      <editpolicyProvider
+            class="gov.redhawk.sca.dcd.diagram.providers.DcdEditPolicyProvider">
+         <Priority
+               name="Low">
+         </Priority>
+      </editpolicyProvider>
+   </extension>
+   <extension
+         point="org.eclipse.gmf.runtime.diagram.ui.editpartProviders">
+      <editpartProvider
+            class="gov.redhawk.sca.dcd.diagram.providers.DcdEditPartProvider">
+         <Priority
+               name="Low">
+         </Priority>
+      </editpartProvider>
+   </extension>
+      <extension
+         point="org.eclipse.ui.preferencePages">
+      <page
+            category="mil.jpeojtrs.sca.dcd.diagram.general"
+            class="gov.redhawk.sca.dcd.diagram.preferences.DcdFiltersPreferencePage"
+            id="gov.redhawk.sca.dcd.diagram.DcdFiltersPreferencePage"
+            name="Interface Filters">
+      </page>
+   </extension>
+   <extension
+         point="org.eclipse.gmf.runtime.diagram.core.viewProviders">
+      <viewProvider
+            class="gov.redhawk.sca.dcd.diagram.providers.DcdViewProvider">
+         <Priority
+               name="Low">
+         </Priority>
+         <context
+               semanticHints="4001"
+               viewClass="org.eclipse.gmf.runtime.notation.Edge">
+         </context>
+         <context
+               semanticHints="3001,3003,3004,3005,3006,3007"
+               viewClass="org.eclipse.gmf.runtime.notation.Node">
+         </context>
+         <context
+               semanticHints="12002,13011,13012"
+               viewClass="org.eclipse.gmf.runtime.notation.Node">
+         </context>
+         <context
+               semanticHints="Dcd"
+               viewClass="org.eclipse.gmf.runtime.notation.Diagram">
+         </context>
+      </viewProvider>
+   </extension>
+   <extension
+         point="org.eclipse.gmf.runtime.emf.type.core.elementTypes">
+      <metamodel
+            nsURI="http://sca.jpeojtrs.mil/dcd">
+         <adviceBinding
+               class="gov.redhawk.sca.dcd.diagram.edit.helpers.DcdConnectInterfaceEditHelperAdvice"
+               id="gov.redhawk.sca.dcd.diagram.edit.helpers.DcdConnectInterface"
+               inheritance="none"
+               typeId="mil.jpeojtrs.sca.dcd.diagram.DcdConnectInterface_4001">
+         </adviceBinding>
+         <adviceBinding
+               class="gov.redhawk.sca.dcd.diagram.edit.helpers.DcdComponentInstantiationEditHelperAdvice"
+               id="gov.redhawk.sca.dcd.diagram.edit.helpers.DcdComponentInstantiation"
+               inheritance="none"
+               typeId="mil.jpeojtrs.sca.dcd.diagram.DcdComponentInstantiation_3002">
+         </adviceBinding>
+         <adviceBinding
+               class="gov.redhawk.sca.dcd.diagram.edit.helpers.DeviceConfigurationEditHelperAdvice"
+               id="gov.redhawk.sca.dcd.diagram.edit.helpers.DeviceConfiguration_1000"
+               inheritance="none"
+               typeId="mil.jpeojtrs.sca.dcd.diagram.DeviceConfiguration_1000">
+         </adviceBinding>
+         <adviceBinding
+               class="gov.redhawk.sca.dcd.diagram.edit.helpers.DcdComponentPlacementEditHelperAdvice"
+               id="gov.redhawk.sca.dcd.diagram.edit.helpers.DcdComponentPlacement"
+               inheritance="none"
+               typeId="mil.jpeojtrs.sca.dcd.diagram.DcdComponentPlacement_3001">
+         </adviceBinding>
+      </metamodel>
+   </extension>
+   <extension
+         point="org.eclipse.gmf.runtime.emf.type.core.elementTypeBindings">
+      <binding
+            context="mil.jpeojtrs.sca.dcd.diagram.TypeContext">
+         <advice
+               pattern="gov.redhawk.sca.dcd.diagram.edit.helpers.*">
+         </advice>
+         <elementType
+               ref="mil.jpeojtrs.sca.partitioning.diagram.FindByStub_12002">
+         </elementType>
+         <elementType
+               ref="mil.jpeojtrs.sca.partitioning.diagram.NamingService_13011">
+         </elementType>
+         <elementType
+               ref="mil.jpeojtrs.sca.partitioning.diagram.DomainFinder_13012">
+         </elementType>
+      </binding>
+      <clientContext
+            id="mil.jpeojtrs.sca.dcd.diagram.TypeContext">
+         <enablement>
+            <test
+                  property="org.eclipse.gmf.runtime.emf.core.editingDomain"
+                  value="mil.jpeojtrs.sca.dcd.diagram.EditingDomain">
+            </test>
+         </enablement>
+      </clientContext>
+   </extension>
+   <extension
+         point="org.eclipse.gmf.runtime.diagram.ui.layoutProviders">
+      <layoutProvider
+            class="gov.redhawk.sca.dcd.diagram.providers.DcdLayoutProvider">
+         <Priority
+               name="Medium">
+         </Priority>
+      </layoutProvider>
+   </extension>
+   <extension
+         point="org.eclipse.gmf.runtime.diagram.ui.paletteProviders">
+      <paletteProvider
+            class="gov.redhawk.sca.dcd.diagram.providers.DcdPaletteProvider">
+         <Priority
+               name="Low">
+         </Priority>
+         <editor
+               class="mil.jpeojtrs.sca.dcd.diagram.part.DcdDiagramEditor(mil.jpeojtrs.sca.dcd.diagram)">
+         </editor>
+      </paletteProvider>
+   </extension>
+   <extension
+         point="org.eclipse.gmf.runtime.common.ui.services.parserProviders">
+      <ParserProvider
+            class="gov.redhawk.sca.dcd.diagram.providers.DcdParserProvider">
+         <Priority
+               name="Low">
+         </Priority>
+      </ParserProvider>
+   </extension>
+   <extension
+         point="org.eclipse.ui.views.properties.tabbed.propertyTabs">
+      <propertyTabs
+            contributorId="mil.jpeojtrs.sca.dcd.diagram">
+         <propertyTab
+               category="domain"
+               id="property.tab.ComponentProperties"
+               label="Component Properties">
+         </propertyTab>
+      </propertyTabs>
+   </extension>
+   <extension
+         point="org.eclipse.ui.views.properties.tabbed.propertySections">
+      <propertySections
+            contributorId="mil.jpeojtrs.sca.dcd.diagram">
+         <propertySection
+               class="gov.redhawk.diagram.sheet.properties.ComponentPropertiesPropertySection"
+               filter="gov.redhawk.sca.dcd.diagram.sheet.properties.DcdPropertyTabFilter"
+               id="property.section.ComponentProperties"
+               tab="property.tab.ComponentProperties">
+         </propertySection>
+      </propertySections>
+   </extension>
+   <extension
+         point="org.eclipse.core.runtime.adapters">
+      <factory
+            adaptableType="mil.jpeojtrs.sca.dcd.diagram.edit.parts.DcdComponentInstantiationEditPart"
+            class="gov.redhawk.sca.dcd.diagram.adapters.DcdComponentInstantiationEditPartAdapterFactory">
+         <adapter
+               type="gov.redhawk.model.sca.ScaDevice">
+         </adapter>
+         <adapter
+               type="gov.redhawk.model.sca.ScaAbstractComponent">
+         </adapter>
+         <adapter
+               type="gov.redhawk.model.sca.ScaPropertyContainer">
+         </adapter>
+      </factory>
+	  <factory
+            adaptableType="mil.jpeojtrs.sca.dcd.DcdComponentInstantiation"
+            class="gov.redhawk.sca.dcd.diagram.adapters.DcdComponentInstantiationEditPartAdapterFactory">
+         <adapter
+               type="gov.redhawk.model.sca.ScaDevice">
+         </adapter>
+      </factory>
+   </extension>
+   <extension
+         point="org.eclipse.gmf.runtime.emf.ui.modelingAssistantProviders">
+      <modelingAssistantProvider
+            class="gov.redhawk.sca.dcd.diagram.providers.DcdModelingAssistantProvider">
+         <Priority
+               name="Low">
+         </Priority>
+      </modelingAssistantProvider>
+   </extension>
+   <extension
+         point="org.eclipse.gmf.runtime.common.ui.services.action.contributionItemProviders">
+      <contributionItemProvider
+            checkPluginLoaded="false"
+            class="org.eclipse.gmf.runtime.diagram.ui.providers.DiagramContributionItemProvider">
+         <Priority
+               name="Low">
+         </Priority>
+         <popupContribution class="org.eclipse.gmf.runtime.diagram.ui.providers.DiagramContextMenuProvider">
+         	<popupStructuredContributionCriteria objectClass="mil.jpeojtrs.sca.dcd.diagram.edit.parts.DcdComponentPlacementEditPart"/>
+         	<popupStructuredContributionCriteria objectClass="mil.jpeojtrs.sca.dcd.diagram.edit.parts.DcdComponentPlacementNameEditPart"/>
+         	<popupStructuredContributionCriteria objectClass="gov.redhawk.sca.dcd.diagram.edit.parts.ProvidesPortStubEditPart"/>
+         	<popupStructuredContributionCriteria objectClass="gov.redhawk.sca.dcd.diagram.edit.parts.ComponentSupportedInterfaceStubEditPart"/>
+         	<popupStructuredContributionCriteria objectClass="gov.redhawk.sca.dcd.diagram.edit.parts.UsesPortStubEditPart"/>
+         	<popupStructuredContributionCriteria objectClass="mil.jpeojtrs.sca.dcd.diagram.edit.parts.DcdComponentInstantiationUsageNameEditPart"/>
+         	<popupStructuredContributionCriteria objectClass="gov.redhawk.sca.dcd.diagram.edit.parts.DcdComponentInstantiationEditPart"/>
+         	<popupStructuredContributionCriteria objectClass="gov.redhawk.sca.dcd.diagram.edit.parts.DcdConnectInterfaceEditPart"/>
+         	<popupPredefinedItem
+                id="deleteFromDiagramAction"
+                remove="true">
+         	</popupPredefinedItem>
+         </popupContribution>
+      </contributionItemProvider>
+   </extension>
+   <extension
+   		 id="gov.redhawk.sca.dcd.diagram.serviceDecorator"
+   		 name="Service Decorator"
+         point="org.eclipse.gmf.runtime.diagram.ui.decoratorProviders">
+      <decoratorProvider
+            class="gov.redhawk.sca.dcd.diagram.providers.ServiceDecoratorProvider">
+      <Priority name="Lowest"/>
+         <object class="org.eclipse.gmf.runtime.diagram.ui.editparts.IPrimaryEditPart(org.eclipse.gmf.runtime.diagram.ui)" id="PRIMARY_VIEW"/>
+         <context decoratorTargets="PRIMARY_VIEW"/>
+      </decoratorProvider>
+   </extension>
+   <extension
+         id="gov.redhawk.sca.dcd.diagram.missingSoftPkgDecorator"
+         name="Missing SoftPkg Decorator"
+         point="org.eclipse.gmf.runtime.diagram.ui.decoratorProviders">
+      <decoratorProvider
+            class="gov.redhawk.sca.dcd.diagram.providers.MissingSoftPkgDecoratorProvider">
+         <Priority
+               name="Low">
+         </Priority>
+         <object
+               class="org.eclipse.gmf.runtime.diagram.ui.editparts.IPrimaryEditPart(org.eclipse.gmf.runtime.diagram.ui)"
+               id="PRIMARY_VIEW">
+         </object>
+         <context
+               decoratorTargets="PRIMARY_VIEW">
+         </context>
+      </decoratorProvider>
+   </extension>
+   <extension
+         point="org.eclipse.gmf.runtime.diagram.ui.decoratorProviders">
+      <decoratorProvider
+            class="gov.redhawk.sca.dcd.diagram.providers.InvalidConnectionProvider">
+         <Priority
+               name="Low">
+         </Priority>
+         <object
+               class="org.eclipse.gmf.runtime.diagram.ui.editparts.IPrimaryEditPart(org.eclipse.gmf.runtime.diagram.ui)"
+               id="PRIMARY_VIEW">
+         </object>
+         <context
+               decoratorTargets="PRIMARY_VIEW">
+         </context>
+      </decoratorProvider>
+   </extension>
+   <extension
+         point="org.eclipse.gmf.runtime.diagram.ui.decoratorProviders">
+      <decoratorProvider
+            class="gov.redhawk.sca.dcd.diagram.providers.RedundantConnectionsProvider">
+         <Priority
+               name="Low">
+         </Priority>
+         <object
+               class="org.eclipse.gmf.runtime.diagram.ui.editparts.IPrimaryEditPart(org.eclipse.gmf.runtime.diagram.ui)"
+               id="PRIMARY_VIEW">
+         </object>
+         <context
+               decoratorTargets="PRIMARY_VIEW">
+         </context>
+      </decoratorProvider>
+   </extension>
+</plugin>

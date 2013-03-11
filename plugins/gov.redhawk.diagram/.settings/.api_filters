@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<component id="gov.redhawk.diagram" version="2">
+    <resource path="src/gov/redhawk/diagram/ui/tools/internal/ComboCellEditorEx.java" type="gov.redhawk.diagram.ui.tools.internal.ComboCellEditorEx">
+        <filter id="571473929">
+            <message_arguments>
+                <message_argument value="ComboBoxCellEditor"/>
+                <message_argument value="ComboCellEditorEx"/>
+            </message_arguments>
+        </filter>
+    </resource>
+</component>

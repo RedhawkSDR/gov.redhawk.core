@@ -1,0 +1,7 @@
+# Tracing options for the mil.jpeojtrs.sca.dcd.diagram plug-in
+
+# Common issues
+mil.jpeojtrs.sca.dcd.diagram/debug=false
+
+# Visual IDs
+mil.jpeojtrs.sca.dcd.diagram/debug/visualID=false

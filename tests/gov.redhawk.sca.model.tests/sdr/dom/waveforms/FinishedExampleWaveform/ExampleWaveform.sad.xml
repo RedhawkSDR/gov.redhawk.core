@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+    This file is protected by Copyright.
+    Please refer to the COPYRIGHT file distributed with this source distribution.
+
+    This file is part of REDHAWK IDE.
+
+    All rights reserved.  This program and the accompanying materials are made available under
+    the terms of the Eclipse Public License v1.0 which accompanies this distribution, and is available at
+    http://www.eclipse.org/legal/epl-v10.html.
+ 
+-->
+<!DOCTYPE softwareassembly PUBLIC "-//JTRS//DTD SCA V2.2.2 SAD//EN" "softwareassembly.dtd">
+<softwareassembly id="DCE:4c5d6060-7b03-47c6-8fed-56cf0991273a" name="ExampleWaveform">
+  <componentfiles>
+    <componentfile id="BasicAC_5ce0fa58-a2b1-49fa-9dd9-ebd12e59c1cc" type="SPD">
+      <localfile name="/components/BasicAC/BasicAC.spd.xml"/>
+    </componentfile>
+    <componentfile id="SigGen_6c8e9829-b476-4383-b94c-97a7f7242061" type="SPD">
+      <localfile name="/components/SigGen/SigGen.spd.xml"/>
+    </componentfile>
+    <componentfile id="HardLimit_86701450-f9c4-44f1-98b1-c66c5026a91a" type="SPD">
+      <localfile name="/components/HardLimit/HardLimit.spd.xml"/>
+    </componentfile>
+    <componentfile id="kitchenSinkComponent_2f693190-af1c-471a-8ebb-8940690c530c" type="SPD">
+      <localfile name="/components/kitchenSinkComponent/kitchenSinkComponent.spd.xml"/>
+    </componentfile>
+  </componentfiles>
+  <partitioning>
+    <componentplacement>
+      <componentfileref refid="BasicAC_5ce0fa58-a2b1-49fa-9dd9-ebd12e59c1cc"/>
+      <componentinstantiation id="DCE:2a254209-cb6b-4de3-b465-4b26ba4e3ba9">
+        <usagename>BasicAC_1</usagename>
+        <findcomponent>
+          <namingservice name="BasicAC_1"/>
+        </findcomponent>
+      </componentinstantiation>
+    </componentplacement>
+    <componentplacement>
+      <componentfileref refid="SigGen_6c8e9829-b476-4383-b94c-97a7f7242061"/>
+      <componentinstantiation id="DCE:7264cd85-6985-4903-92e1-c30982197dbd">
+        <usagename>SigGen_1</usagename>
+        <findcomponent>
+          <namingservice name="SigGen_1"/>
+        </findcomponent>
+      </componentinstantiation>
+    </componentplacement>
+    <componentplacement>
+      <componentfileref refid="HardLimit_86701450-f9c4-44f1-98b1-c66c5026a91a"/>
+      <componentinstantiation id="DCE:24494fb3-7220-45d7-97b9-2efe64a538df">
+        <usagename>HardLimit_1</usagename>
+        <findcomponent>
+          <namingservice name="HardLimit_1"/>
+        </findcomponent>
+      </componentinstantiation>
+    </componentplacement>
+    <componentplacement>
+      <componentfileref refid="kitchenSinkComponent_2f693190-af1c-471a-8ebb-8940690c530c"/>
+      <componentinstantiation id="DCE:fedf7667-b838-47b5-b90b-73e5e2e93f76">
+        <usagename>kitchenSinkComponent_1</usagename>
+        <findcomponent>
+          <namingservice name="kitchenSinkComponent_1"/>
+        </findcomponent>
+      </componentinstantiation>
+    </componentplacement>
+  </partitioning>
+  <assemblycontroller>
+    <componentinstantiationref refid="DCE:2a254209-cb6b-4de3-b465-4b26ba4e3ba9"/>
+  </assemblycontroller>
+  <connections>
+    <connectinterface id="DCE:998ff2a3-356f-4f58-9fbe-c6a39c14cabf">
+      <usesport>
+        <usesidentifier>resourceOut</usesidentifier>
+        <componentinstantiationref refid="DCE:2a254209-cb6b-4de3-b465-4b26ba4e3ba9"/>
+      </usesport>
+      <componentsupportedinterface>
+        <supportedidentifier>IDL:CF/Resource:1.0</supportedidentifier>
+        <componentinstantiationref refid="DCE:7264cd85-6985-4903-92e1-c30982197dbd"/>
+      </componentsupportedinterface>
+    </connectinterface>
+    <connectinterface id="DCE:c2bb3132-3c10-4037-a091-d755c697e2da">
+      <usesport>
+        <usesidentifier>resourceOut</usesidentifier>
+        <componentinstantiationref refid="DCE:2a254209-cb6b-4de3-b465-4b26ba4e3ba9"/>
+      </usesport>
+      <componentsupportedinterface>
+        <supportedidentifier>IDL:CF/Resource:1.0</supportedidentifier>
+        <componentinstantiationref refid="DCE:24494fb3-7220-45d7-97b9-2efe64a538df"/>
+      </componentsupportedinterface>
+    </connectinterface>
+    <connectinterface id="DCE:223f0573-772d-44ad-ae36-18ddffaa0ffe">
+      <usesport>
+        <usesidentifier>out</usesidentifier>
+        <componentinstantiationref refid="DCE:7264cd85-6985-4903-92e1-c30982197dbd"/>
+      </usesport>
+      <providesport>
+        <providesidentifier>dataDouble_in</providesidentifier>
+        <componentinstantiationref refid="DCE:24494fb3-7220-45d7-97b9-2efe64a538df"/>
+      </providesport>
+    </connectinterface>
+  </connections>
+</softwareassembly>

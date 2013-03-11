@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+    This file is protected by Copyright.
+    Please refer to the COPYRIGHT file distributed with this source distribution.
+
+    This file is part of REDHAWK IDE.
+
+    All rights reserved.  This program and the accompanying materials are made available under
+    the terms of the Eclipse Public License v1.0 which accompanies this distribution, and is available at
+    http://www.eclipse.org/legal/epl-v10.html.
+ 
+-->
+<!DOCTYPE softpkg PUBLIC "-//JTRS//DTD SCA SPD V2.2.2//EN" "softpkg.dtd">
+<softpkg id="DCE:f0aee6d1-198f-4dd9-9691-c4d9a0d205c5" name="testDevice" type="sca_compliant">
+  <title></title>
+  <author>
+    <name></name>
+  </author>
+  <propertyfile type="PRF">
+    <localfile name="testDevice.prf.xml"/>
+  </propertyfile>
+  <descriptor>
+    <localfile name="testDevice.scd.xml"/>
+  </descriptor>
+  <implementation id="DCE:f3382058-4732-4840-b4f1-b0e51a246e93">
+    <description>The implementation contains descriptive information about the template for a software component.</description>
+    <code type="Executable">
+      <localfile name="testDevice_cpp_impl1/testDevice_cpp_impl1"/>
+      <entrypoint>testDevice_cpp_impl1/testDevice_cpp_impl1</entrypoint>
+    </code>
+    <compiler name="/usr/bin/gcc" version="4.1.2"/>
+    <programminglanguage name="C++"/>
+    <humanlanguage name="EN"/>
+    <os name="Linux"/>
+    <processor name="x86"/>
+  </implementation>
+</softpkg>

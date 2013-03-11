@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  REDHAWK HEADER
+  
+  Identification: $Revision: 7367 $
+-->
+<?eclipse version="3.4"?>
+<plugin>
+   <extension
+         point="org.eclipse.core.filesystem.filesystems">
+      <filesystem
+            scheme="sca">
+         <run
+               class="gov.redhawk.efs.sca.internal.ScaFileSystem">
+         </run>
+      </filesystem>
+   </extension>
+
+</plugin>

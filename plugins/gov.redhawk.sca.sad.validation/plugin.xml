@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+    This file is protected by Copyright.
+    Please refer to the COPYRIGHT file distributed with this source distribution.
+
+    This file is part of REDHAWK IDE.
+
+    All rights reserved.  This program and the accompanying materials are made available under
+    the terms of the Eclipse Public License v1.0 which accompanies this distribution, and is available at
+    http://www.eclipse.org/legal/epl-v10.html.
+ 
+-->
+<?eclipse version="3.4"?>
+<plugin>
+   <extension
+         point="org.eclipse.emf.validation.constraintProviders">
+      <constraintProvider
+            cache="false">
+         <package
+               namespaceUri="http://sca.jpeojtrs.mil/sad">
+         </package>
+         <constraints
+               categories="gov.redhawk.validation.category">
+            <constraint
+                  class="gov.redhawk.sca.sad.validation.FindComponentConstraint"
+                  id="gov.redhawk.sca.sad.validation.FindComponent"
+                  isEnabledByDefault="true"
+                  lang="java"
+                  mode="Batch"
+                  name="Invalid FindComponent"
+                  severity="ERROR"
+                  statusCode="1001">
+               <message>
+                  {0}
+               </message>
+               <target
+                     class="FindComponent">
+               </target>
+            </constraint>
+            <constraint
+                  class="gov.redhawk.sca.sad.validation.ConnectInterfaceConstraint"
+                  id="gov.redhawk.sca.sad.validation.ConnectInterface"
+                  isEnabledByDefault="true"
+                  lang="java"
+                  mode="Batch"
+                  name="Invalid Connect Interface"
+                  severity="ERROR"
+                  statusCode="1002">
+               <message>
+                  {0}
+               </message>
+               <target
+                     class="SadConnectInterface">
+               </target>
+            </constraint>
+            <constraint
+                  class="gov.redhawk.sca.sad.validation.ConnectionsConstraint"
+                  id="gov.redhawk.sca.sad.validation.SadConnections"
+                  isEnabledByDefault="true"
+                  lang="java"
+                  mode="Batch"
+                  name="Invalid Connections"
+                  severity="WARNING"
+                  statusCode="1003">
+               <message>
+                  {0}
+               </message>
+               <target
+                     class="SadConnections">
+               </target>
+            </constraint>
+            <constraint
+                  class="gov.redhawk.sca.sad.validation.VersionConstraint"
+                  id="gov.redhawk.sca.sad.validation.SoftwareAssembly.Versionconstraint1"
+                  isEnabledByDefault="true"
+                  lang="java"
+                  mode="Live"
+                  name="Valid Version Constraint"
+                  severity="WARNING"
+                  statusCode="1004">
+               <message>
+                  The specified version &quot;{0}&quot; is non-standard.
+               </message>
+               <target
+                     class="SoftwareAssembly">
+                  <event
+                        name="Set">
+                     <feature
+                           name="version">
+                     </feature>
+                  </event>
+               </target>
+            </constraint>
+         </constraints>
+      </constraintProvider>
+   </extension>
+
+</plugin>

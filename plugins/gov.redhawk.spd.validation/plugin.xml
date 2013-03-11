@@ -1,0 +1,207 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+    This file is protected by Copyright.
+    Please refer to the COPYRIGHT file distributed with this source distribution.
+
+    This file is part of REDHAWK IDE.
+
+    All rights reserved.  This program and the accompanying materials are made available under
+    the terms of the Eclipse Public License v1.0 which accompanies this distribution, and is available at
+    http://www.eclipse.org/legal/epl-v10.html.
+ 
+-->
+<?eclipse version="3.4"?>
+<plugin>
+<extension
+         point="org.eclipse.emf.validation.constraintProviders">
+      <constraintProvider
+            cache="true">
+         <package
+               namespaceUri="http://sca.jpeojtrs.mil/spd">
+         </package>
+         <constraints
+               categories="gov.redhawk.validation.category">
+            <constraint
+                  class="gov.redhawk.spd.internal.validation.DependencyConstraint"
+                  id="dependency"
+                  lang="java"
+                  mode="Live"
+                  name="%constraint.name.requireDependency"
+                  severity="ERROR"
+                  statusCode="1">
+               <message>
+                  %constraint.message.requireDependency
+               </message>
+               <target
+                     class="Implementation">
+                  <event
+                        name="Set">
+                     <feature
+                           name="os">
+                     </feature>
+                     <feature
+                           name="processor">
+                     </feature>
+                     <feature
+                           name="dependency">
+                     </feature>
+                  </event>
+                  <event
+                        name="Unset">
+                     <feature
+                           name="os">
+                     </feature>
+                     <feature
+                           name="processor">
+                     </feature>
+                     <feature
+                           name="dependency">
+                     </feature>
+                  </event>
+               </target>
+            </constraint>
+            <constraint
+                  class="gov.redhawk.spd.internal.validation.LocalFileConstraint"
+                  id="propertyfile_constraint"
+                  lang="java"
+                  mode="Live"
+                  name="%constraint.name.validPropertyFile"
+                  severity="ERROR"
+                  statusCode="1">
+               <message>
+                  %constraint.message.validPropertyFile
+               </message>
+               <target
+                     class="Implementation">
+                  <event
+                        name="Unset">
+                     <feature
+                           name="propertyFile">
+                     </feature>
+                  </event>
+               </target>
+               <target
+                     class="SoftPkg">
+                  <event
+                        name="Unset">
+                     <feature
+                           name="propertyFile">
+                     </feature>
+                  </event>
+               </target>
+            </constraint>
+            <constraint
+                  class="gov.redhawk.spd.internal.validation.LocalFileConstraint"
+                  id="scdfile_constraint"
+                  lang="java"
+                  mode="Live"
+                  name="%constraint.name.validScdFile"
+                  severity="ERROR"
+                  statusCode="1">
+               <message>
+                  %constraint.message.validScdFile
+               </message>
+               <target
+                     class="SoftPkg">
+                  <event
+                        name="Unset">
+                     <feature
+                           name="descriptor">
+                     </feature>
+                  </event>
+               </target>
+            </constraint>
+            <constraint
+                  class="gov.redhawk.spd.internal.validation.LocalFileConstraint"
+                  id="codelocalfile_constraint"
+                  lang="java"
+                  mode="Live"
+                  name="%constraint.name.validCodeFile"
+                  severity="WARNING"
+                  statusCode="1">
+               <message>
+                  %constraint.message.validCodeFile
+               </message>
+               <target
+                     class="Code">
+                  <event
+                        name="Unset">
+                     <feature
+                           name="localFile">
+                     </feature>
+                  </event>
+               </target>
+            </constraint>
+            <constraint
+                  class="gov.redhawk.spd.internal.validation.EntryPointConstraint"
+                  id="codeentrypoint_constraint"
+                  lang="java"
+                  mode="Live"
+                  name="%constraint.name.validCodeEntryPoint"
+                  severity="WARNING"
+                  statusCode="1">
+              
+               <target
+                     class="Code">
+                  <event
+                        name="Unset">
+                     <feature
+                           name="entryPoint">
+                     </feature>
+                  </event>
+               </target> <message>
+                  %constraint.message.validCodeEntryPoint
+               </message>
+               <target
+                     class="Code">
+                  <event
+                        name="Unset">
+                     <feature
+                           name="localFile">
+                     </feature>
+                  </event>
+               </target>
+            </constraint>
+            <constraint
+                  class="gov.redhawk.spd.internal.validation.VersionConstraint"
+                  id="version_constraint"
+                  isEnabledByDefault="true"
+                  lang="java"
+                  mode="Live"
+                  name="%constraint.name.validVersion"
+                  severity="WARNING"
+                  statusCode="1">
+               <message>
+                  %constraint.message.validVersion
+               </message>
+               <target
+                     class="SoftPkg">
+                  <event
+                        name="Set">
+                     <feature
+                           name="version">
+                     </feature>
+                  </event>
+               </target>
+            </constraint>
+            <constraint
+                  class="gov.redhawk.spd.internal.validation.EventPortConstraint"
+                  id="event_constraint"
+                  isEnabledByDefault="true"
+                  lang="java"
+                  mode="Live"
+                  name="Valid Event Constraint"
+                  severity="ERROR"
+                  statusCode="1002">
+               <message>
+                  Missing event port.  Property events will not work.
+               </message>
+               <target
+                     class="SoftPkg">
+               </target>
+            </constraint>
+         </constraints>
+      </constraintProvider>
+   </extension>
+
+</plugin>

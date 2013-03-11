@@ -1,0 +1,298 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<genmodel:GenModel xmi:version="2.0"
+    xmlns:xmi="http://www.omg.org/XMI" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore"
+    xmlns:genmodel="http://www.eclipse.org/emf/2002/GenModel" modelDirectory="/gov.redhawk.eclipsecorba.idl/src"
+    editorDirectory="" modelPluginID="gov.redhawk.eclipsecorba.idl" templateDirectory="/mil.jpeojtrs.sca.templates/templates"
+    dynamicTemplates="true" redirection="" modelName="Idl" modelPluginClass="gov.redhawk.eclipsecorba.idl.IdlPlugin"
+    editorPluginClass="" importerID="org.eclipse.emf.importer.java" complianceLevel="5.0"
+    copyrightFields="false" editorPluginID="gov.redhawk.eclipsecorba.idl.editor" runtimeVersion="2.4"
+    classNamePattern="">
+  <foreignModel>@model</foreignModel>
+  <modelPluginVariables>VARIABLE=org.anarres.cpp</modelPluginVariables>
+  <modelPluginVariables>VARIABLE=org.eclipse.core.filesystem</modelPluginVariables>
+  <genPackages prefix="Idl" basePackage="gov.redhawk.eclipsecorba" resource="Basic"
+      disposableProviderFactory="true" generateExampleClass="false" ecorePackage="idl.ecore#/">
+    <genClasses image="false" ecoreClass="idl.ecore#//FileRegion">
+      <genFeatures property="Readonly" createChild="false" ecoreFeature="ecore:EAttribute idl.ecore#//FileRegion/startLine"/>
+      <genFeatures property="Readonly" createChild="false" ecoreFeature="ecore:EAttribute idl.ecore#//FileRegion/startColumn"/>
+      <genFeatures property="Readonly" createChild="false" ecoreFeature="ecore:EAttribute idl.ecore#//FileRegion/endLine"/>
+      <genFeatures property="Readonly" createChild="false" ecoreFeature="ecore:EAttribute idl.ecore#//FileRegion/endColumn"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="idl.ecore#//Identifiable">
+      <genFeatures property="Readonly" createChild="false" ecoreFeature="ecore:EAttribute idl.ecore#//Identifiable/name"/>
+      <genFeatures property="Readonly" createChild="false" ecoreFeature="ecore:EAttribute idl.ecore#//Identifiable/scopedName"/>
+      <genFeatures property="Readonly" createChild="false" ecoreFeature="ecore:EAttribute idl.ecore#//Identifiable/repId"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute idl.ecore#//Identifiable/prefix"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute idl.ecore#//Identifiable/version"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute idl.ecore#//Identifiable/id"/>
+      <genOperations ecoreOperation="idl.ecore#//Identifiable/setFullId">
+        <genParameters ecoreParameter="idl.ecore#//Identifiable/setFullId/id"/>
+      </genOperations>
+    </genClasses>
+    <genClasses ecoreClass="idl.ecore#//Specification">
+      <genFeatures property="Readonly" createChild="false" ecoreFeature="ecore:EAttribute idl.ecore#//Specification/name"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute idl.ecore#//Specification/prefix"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="idl.ecore#//Definition"/>
+    <genClasses image="false" ecoreClass="idl.ecore#//DefinitionContainer">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference idl.ecore#//DefinitionContainer/definitions"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="idl.ecore#//Element"/>
+    <genClasses ecoreClass="idl.ecore#//Declarator"/>
+    <genClasses ecoreClass="idl.ecore#//ArrayDeclarator">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference idl.ecore#//ArrayDeclarator/arraySizeExpressions"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="idl.ecore#//TypedElement"/>
+    <genClasses image="false" ecoreClass="idl.ecore#//Typed">
+      <genFeatures property="Readonly" notify="false" createChild="false" propertySortChoices="true"
+          ecoreFeature="ecore:EReference idl.ecore#//Typed/type"/>
+    </genClasses>
+    <genClasses ecoreClass="idl.ecore#//Module">
+      <genFeatures property="Readonly" notify="false" createChild="false" propertySortChoices="true"
+          ecoreFeature="ecore:EReference idl.ecore#//Module/extends"/>
+    </genClasses>
+    <genClasses ecoreClass="idl.ecore#//IdlConstDcl">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference idl.ecore#//IdlConstDcl/expression"/>
+    </genClasses>
+    <genClasses ecoreClass="idl.ecore#//IdlException"/>
+    <genClasses ecoreClass="idl.ecore#//Member">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference idl.ecore#//Member/declarators"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="idl.ecore#//MemberContainer">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference idl.ecore#//MemberContainer/members"/>
+    </genClasses>
+    <genClasses ecoreClass="idl.ecore#//ForwardDcl">
+      <genFeatures property="Readonly" notify="false" createChild="false" propertySortChoices="true"
+          ecoreFeature="ecore:EReference idl.ecore#//ForwardDcl/implementation"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute idl.ecore#//ForwardDcl/abstract"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute idl.ecore#//ForwardDcl/local"/>
+    </genClasses>
+    <genClasses ecoreClass="idl.ecore#//IdlInterfaceDcl">
+      <genFeatures property="Readonly" notify="false" createChild="false" propertySortChoices="true"
+          ecoreFeature="ecore:EReference idl.ecore#//IdlInterfaceDcl/inheritedInterfaces"/>
+      <genFeatures property="Readonly" createChild="false" ecoreFeature="ecore:EAttribute idl.ecore#//IdlInterfaceDcl/abstract"/>
+      <genFeatures property="Readonly" createChild="false" ecoreFeature="ecore:EAttribute idl.ecore#//IdlInterfaceDcl/local"/>
+      <genFeatures property="Readonly" notify="false" createChild="false" propertySortChoices="true"
+          ecoreFeature="ecore:EReference idl.ecore#//IdlInterfaceDcl/forwardDcl"/>
+      <genOperations ecoreOperation="idl.ecore#//IdlInterfaceDcl/isInstance">
+        <genParameters ecoreParameter="idl.ecore#//IdlInterfaceDcl/isInstance/obj"/>
+      </genOperations>
+    </genClasses>
+    <genClasses image="false" ecoreClass="idl.ecore#//Export"/>
+    <genClasses image="false" ecoreClass="idl.ecore#//IdlType"/>
+    <genClasses image="false" ecoreClass="idl.ecore#//IdlTypeDcl"/>
+    <genClasses ecoreClass="idl.ecore#//Commentable">
+      <genFeatures property="Readonly" createChild="false" propertyMultiLine="true"
+          ecoreFeature="ecore:EReference idl.ecore#//Commentable/comment"/>
+    </genClasses>
+    <genClasses ecoreClass="idl.ecore#//ExportContainer">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference idl.ecore#//ExportContainer/body"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="idl.ecore#//Comment">
+      <genFeatures property="Readonly" createChild="false" propertyMultiLine="true"
+          ecoreFeature="ecore:EAttribute idl.ecore#//Comment/content"/>
+    </genClasses>
+    <genClasses ecoreClass="idl.ecore#//BlockComment"/>
+    <genClasses ecoreClass="idl.ecore#//LineComment"/>
+    <genClasses ecoreClass="idl.ecore#//NativeTypeDcl">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference idl.ecore#//NativeTypeDcl/declarator"/>
+    </genClasses>
+    <genClasses ecoreClass="idl.ecore#//ValueType"/>
+    <genClasses ecoreClass="idl.ecore#//ValueTypeDcl"/>
+    <genClasses ecoreClass="idl.ecore#//ValueForwardDcl">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference idl.ecore#//ValueForwardDcl/value"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute idl.ecore#//ValueForwardDcl/abstract"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute idl.ecore#//ValueForwardDcl/local"/>
+    </genClasses>
+    <genClasses ecoreClass="idl.ecore#//ValueDcl">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference idl.ecore#//ValueDcl/inheritedValues"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference idl.ecore#//ValueDcl/supportsInterface"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute idl.ecore#//ValueDcl/custom"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference idl.ecore#//ValueDcl/forwardDcl"/>
+    </genClasses>
+    <genClasses ecoreClass="idl.ecore#//ValueBoxDcl">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference idl.ecore#//ValueBoxDcl/typeSpec"/>
+    </genClasses>
+  </genPackages>
+  <genPackages prefix="Operations" basePackage="gov.redhawk.eclipsecorba.idl" disposableProviderFactory="true"
+      generateExampleClass="false" ecorePackage="operations.ecore#/">
+    <genEnums typeSafeEnumCompatible="false" ecoreEnum="operations.ecore#//Direction">
+      <genEnumLiterals ecoreEnumLiteral="operations.ecore#//Direction/in"/>
+      <genEnumLiterals ecoreEnumLiteral="operations.ecore#//Direction/out"/>
+      <genEnumLiterals ecoreEnumLiteral="operations.ecore#//Direction/inout"/>
+    </genEnums>
+    <genClasses ecoreClass="operations.ecore#//Operation">
+      <genFeatures property="Readonly" createChild="false" ecoreFeature="ecore:EAttribute operations.ecore#//Operation/oneway"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference operations.ecore#//Operation/parameters"/>
+      <genFeatures property="Readonly" notify="false" createChild="false" propertySortChoices="true"
+          ecoreFeature="ecore:EReference operations.ecore#//Operation/exceptions"/>
+      <genFeatures property="Readonly" createChild="false" ecoreFeature="ecore:EReference operations.ecore#//Operation/context"/>
+    </genClasses>
+    <genClasses ecoreClass="operations.ecore#//Parameter">
+      <genFeatures property="Readonly" createChild="false" ecoreFeature="ecore:EAttribute operations.ecore#//Parameter/direction"/>
+    </genClasses>
+    <genClasses ecoreClass="operations.ecore#//Attribute">
+      <genFeatures property="Readonly" createChild="false" ecoreFeature="ecore:EAttribute operations.ecore#//Attribute/readOnly"/>
+    </genClasses>
+  </genPackages>
+  <genPackages prefix="Types" basePackage="gov.redhawk.eclipsecorba.idl" disposableProviderFactory="true"
+      generateExampleClass="false" ecorePackage="types.ecore#/">
+    <genClasses ecoreClass="types.ecore#//TypeDef"/>
+    <genClasses ecoreClass="types.ecore#//VoidType"/>
+    <genClasses ecoreClass="types.ecore#//UnionType">
+      <genFeatures property="Readonly" notify="false" createChild="false" propertySortChoices="true"
+          ecoreFeature="ecore:EReference types.ecore#//UnionType/forwardDcl"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference types.ecore#//UnionType/idlSwitch"/>
+    </genClasses>
+    <genClasses ecoreClass="types.ecore#//Switch">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference types.ecore#//Switch/type"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference types.ecore#//Switch/cases"/>
+    </genClasses>
+    <genClasses ecoreClass="types.ecore#//Case">
+      <genFeatures createChild="false" ecoreFeature="ecore:EReference types.ecore#//Case/labels"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference types.ecore#//Case/spec"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="types.ecore#//CaseLabel"/>
+    <genClasses ecoreClass="types.ecore#//DefaultCaseLabel"/>
+    <genClasses ecoreClass="types.ecore#//ExprCaseLabel">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference types.ecore#//ExprCaseLabel/expr"/>
+    </genClasses>
+    <genClasses ecoreClass="types.ecore#//ElementSpec">
+      <genFeatures createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference types.ecore#//ElementSpec/type"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EReference types.ecore#//ElementSpec/declarator"/>
+    </genClasses>
+    <genClasses ecoreClass="types.ecore#//EnumType">
+      <genFeatures property="Readonly" children="true" createChild="false" ecoreFeature="ecore:EReference types.ecore#//EnumType/enumerators"/>
+    </genClasses>
+    <genClasses ecoreClass="types.ecore#//StructType">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference types.ecore#//StructType/forwardDeclaration"/>
+      <genFeatures property="Readonly" notify="false" createChild="false" propertySortChoices="true"
+          ecoreFeature="ecore:EReference types.ecore#//StructType/forwardDcl"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="types.ecore#//TemplateType">
+      <genFeatures property="Readonly" createChild="false" ecoreFeature="ecore:EReference types.ecore#//TemplateType/size"/>
+    </genClasses>
+    <genClasses ecoreClass="types.ecore#//SequenceType"/>
+    <genClasses ecoreClass="types.ecore#//IdlString"/>
+    <genClasses ecoreClass="types.ecore#//WString"/>
+    <genClasses ecoreClass="types.ecore#//PrimitiveType"/>
+    <genClasses ecoreClass="types.ecore#//Short"/>
+    <genClasses ecoreClass="types.ecore#//Long"/>
+    <genClasses ecoreClass="types.ecore#//Octet"/>
+    <genClasses ecoreClass="types.ecore#//Float"/>
+    <genClasses ecoreClass="types.ecore#//Double"/>
+    <genClasses ecoreClass="types.ecore#//IdlChar"/>
+    <genClasses ecoreClass="types.ecore#//IdlWChar"/>
+    <genClasses ecoreClass="types.ecore#//WChar"/>
+    <genClasses ecoreClass="types.ecore#//Boolean"/>
+    <genClasses ecoreClass="types.ecore#//LongLong"/>
+    <genClasses ecoreClass="types.ecore#//LongDouble"/>
+    <genClasses ecoreClass="types.ecore#//UShort"/>
+    <genClasses ecoreClass="types.ecore#//ULong"/>
+    <genClasses ecoreClass="types.ecore#//ULongLong"/>
+    <genClasses ecoreClass="types.ecore#//Any"/>
+    <genClasses ecoreClass="types.ecore#//IdlObject"/>
+    <genClasses ecoreClass="types.ecore#//UnionForwardDcl">
+      <genFeatures property="Readonly" notify="false" createChild="false" propertySortChoices="true"
+          ecoreFeature="ecore:EReference types.ecore#//UnionForwardDcl/implementation"/>
+    </genClasses>
+    <genClasses ecoreClass="types.ecore#//StructForwardDcl">
+      <genFeatures property="Readonly" notify="false" createChild="false" propertySortChoices="true"
+          ecoreFeature="ecore:EReference types.ecore#//StructForwardDcl/implementation"/>
+    </genClasses>
+    <genClasses ecoreClass="types.ecore#//FixedPtType">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference types.ecore#//FixedPtType/expr1"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference types.ecore#//FixedPtType/expr2"/>
+    </genClasses>
+    <genClasses ecoreClass="types.ecore#//ValueBaseType"/>
+    <genClasses ecoreClass="types.ecore#//Enumeration"/>
+  </genPackages>
+  <genPackages prefix="Expressions" basePackage="gov.redhawk.eclipsecorba.idl" generateExampleClass="false"
+      ecorePackage="expressions.ecore#/">
+    <genEnums typeSafeEnumCompatible="false" ecoreEnum="expressions.ecore#//ShiftType">
+      <genEnumLiterals ecoreEnumLiteral="expressions.ecore#//ShiftType/LEFT"/>
+      <genEnumLiterals ecoreEnumLiteral="expressions.ecore#//ShiftType/RIGHT"/>
+    </genEnums>
+    <genEnums typeSafeEnumCompatible="false" ecoreEnum="expressions.ecore#//AddType">
+      <genEnumLiterals ecoreEnumLiteral="expressions.ecore#//AddType/ADDITION"/>
+      <genEnumLiterals ecoreEnumLiteral="expressions.ecore#//AddType/SUBTRACTION"/>
+    </genEnums>
+    <genEnums typeSafeEnumCompatible="false" ecoreEnum="expressions.ecore#//MultiType">
+      <genEnumLiterals ecoreEnumLiteral="expressions.ecore#//MultiType/MULTIPLICATION"/>
+      <genEnumLiterals ecoreEnumLiteral="expressions.ecore#//MultiType/DIVISION"/>
+      <genEnumLiterals ecoreEnumLiteral="expressions.ecore#//MultiType/MODULATION"/>
+    </genEnums>
+    <genEnums typeSafeEnumCompatible="false" ecoreEnum="expressions.ecore#//UnaryType">
+      <genEnumLiterals ecoreEnumLiteral="expressions.ecore#//UnaryType/NEGATIVE"/>
+      <genEnumLiterals ecoreEnumLiteral="expressions.ecore#//UnaryType/POSITIVE"/>
+      <genEnumLiterals ecoreEnumLiteral="expressions.ecore#//UnaryType/TILDE"/>
+    </genEnums>
+    <genClasses image="false" ecoreClass="expressions.ecore#//Expression"/>
+    <genClasses ecoreClass="expressions.ecore#//ConstExpression">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference expressions.ecore#//ConstExpression/expression"/>
+    </genClasses>
+    <genClasses ecoreClass="expressions.ecore#//OrExpression">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference expressions.ecore#//OrExpression/left"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference expressions.ecore#//OrExpression/right"/>
+    </genClasses>
+    <genClasses ecoreClass="expressions.ecore#//XOrExpression">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference expressions.ecore#//XOrExpression/left"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference expressions.ecore#//XOrExpression/right"/>
+    </genClasses>
+    <genClasses ecoreClass="expressions.ecore#//AndExpression">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference expressions.ecore#//AndExpression/left"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference expressions.ecore#//AndExpression/right"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="expressions.ecore#//ShiftExpression">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference expressions.ecore#//ShiftExpression/left"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference expressions.ecore#//ShiftExpression/right"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute expressions.ecore#//ShiftExpression/type"/>
+    </genClasses>
+    <genClasses ecoreClass="expressions.ecore#//AddExpression">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference expressions.ecore#//AddExpression/left"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference expressions.ecore#//AddExpression/right"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute expressions.ecore#//AddExpression/type"/>
+    </genClasses>
+    <genClasses ecoreClass="expressions.ecore#//MultExpression">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference expressions.ecore#//MultExpression/left"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference expressions.ecore#//MultExpression/right"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute expressions.ecore#//MultExpression/type"/>
+    </genClasses>
+    <genClasses ecoreClass="expressions.ecore#//UnaryExpression">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference expressions.ecore#//UnaryExpression/expr"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute expressions.ecore#//UnaryExpression/type"/>
+    </genClasses>
+    <genClasses ecoreClass="expressions.ecore#//ScopeLiteral">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference expressions.ecore#//ScopeLiteral/value"/>
+    </genClasses>
+    <genClasses ecoreClass="expressions.ecore#//IntegerLiteral">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute expressions.ecore#//IntegerLiteral/value"/>
+    </genClasses>
+    <genClasses ecoreClass="expressions.ecore#//StringLiteral">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute expressions.ecore#//StringLiteral/value"/>
+    </genClasses>
+    <genClasses ecoreClass="expressions.ecore#//CharacterLiteral">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute expressions.ecore#//CharacterLiteral/value"/>
+    </genClasses>
+    <genClasses ecoreClass="expressions.ecore#//FloatingPointLiteral">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute expressions.ecore#//FloatingPointLiteral/value"/>
+    </genClasses>
+    <genClasses ecoreClass="expressions.ecore#//DoubleLiteral">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute expressions.ecore#//DoubleLiteral/value"/>
+    </genClasses>
+    <genClasses ecoreClass="expressions.ecore#//BooleanLiteral">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute expressions.ecore#//BooleanLiteral/value"/>
+    </genClasses>
+    <genClasses ecoreClass="expressions.ecore#//FixedPtLiteral">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute expressions.ecore#//FixedPtLiteral/integerPart"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute expressions.ecore#//FixedPtLiteral/decimalPart"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute expressions.ecore#//FixedPtLiteral/value"/>
+    </genClasses>
+    <genClasses ecoreClass="expressions.ecore#//WideStringLiteral">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute expressions.ecore#//WideStringLiteral/value"/>
+    </genClasses>
+    <genClasses ecoreClass="expressions.ecore#//WideCharacterLiteral">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute expressions.ecore#//WideCharacterLiteral/value"/>
+    </genClasses>
+  </genPackages>
+</genmodel:GenModel>

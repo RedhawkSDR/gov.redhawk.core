@@ -1,0 +1,23 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: SCA Launcher UI
+Bundle-SymbolicName: gov.redhawk.sca.launch.ui;singleton:=true
+Bundle-Version: 1.0.0.qualifier
+Bundle-Activator: gov.redhawk.sca.launch.ui.ScaLauncherActivator
+Bundle-Vendor: United States Government
+Require-Bundle: org.eclipse.ui;bundle-version="3.6.1",
+ org.eclipse.core.runtime;bundle-version="3.6.0",
+ org.eclipse.debug.ui;bundle-version="3.6.1",
+ gov.redhawk.sca.model;bundle-version="14.0.0",
+ gov.redhawk.sca.model.edit;bundle-version="11.0.0",
+ org.eclipse.ui.views.properties.tabbed;bundle-version="3.5.100",
+ org.eclipse.emf.edit.ui;bundle-version="2.6.0",
+ gov.redhawk.sca;bundle-version="6.0.0",
+ gov.redhawk.ui;bundle-version="6.0.0",
+ gov.redhawk.sca.ui;bundle-version="8.0.0",
+ gov.redhawk.sca.launch;bundle-version="1.0.0";visibility:=reexport
+Bundle-RequiredExecutionEnvironment: J2SE-1.5
+Bundle-ActivationPolicy: lazy
+Export-Package: gov.redhawk.sca.launch.ui,
+ gov.redhawk.sca.launch.ui.tabs
+

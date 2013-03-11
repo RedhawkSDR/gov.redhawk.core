@@ -1,0 +1,281 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+    This file is protected by Copyright.
+    Please refer to the COPYRIGHT file distributed with this source distribution.
+
+    This file is part of REDHAWK IDE.
+
+    All rights reserved.  This program and the accompanying materials are made available under
+    the terms of the Eclipse Public License v1.0 which accompanies this distribution, and is available at
+    http://www.eclipse.org/legal/epl-v10.html.
+ 
+-->
+<?eclipse version="3.4"?>
+<plugin>
+   <extension
+         point="org.eclipse.ui.preferencePages">
+      <page
+            category="gov.redhawk.ui.preferences.sca"
+            class="gov.redhawk.sca.ui.singledomain.preferences.ActiveDomainPreferencePage"
+            id="gov.redhawk.sca.ui.activeDomain"
+            name="Single Domain">
+      </page>
+   </extension>
+   <extension
+         point="org.eclipse.ui.views">
+      <view
+            category="gov.redhawk.ui.category.sca"
+            class="gov.redhawk.sca.ui.singledomain.views.ScaExplorerSingleDomain"
+            icon="icons/obj16/sca_explorer.png"
+            id="gov.redhawk.ui.sca_explorer_sd"
+            name="Sca Explorer (Singe Domain)"
+            restorable="true">
+      </view>
+   </extension>
+   <extension
+         point="org.eclipse.ui.navigator.navigatorContent">
+      <navigatorContent
+            activeByDefault="true"
+            contentProvider="gov.redhawk.sca.ui.singledomain.providers.ScaSingleDomainContentProvider"
+            icon="icons/obj16/sca_explorer.png"
+            id="gov.redhawk.ui.navigatorContentSD"
+            labelProvider="gov.redhawk.sca.ui.ScaLabelProvider"
+            name="SCA (SD)"
+            priority="lower"
+            providesSaveables="false"
+            sortOnly="false">
+         <actionProvider
+               class="gov.redhawk.sca.ui.singledomain.actions.OpenWithActionProviderSingleDomain"
+               id="gov.redhawk.ui.commonActionProvider.singledomain">
+            <enablement>
+                  <or>
+                     <and>
+                        <instanceof
+                              value="org.eclipse.emf.ecore.EObject">
+                        </instanceof>
+                        <test
+                              forcePluginActivation="true"
+                              property="org.eclipse.emf.ecore.namespace"
+                              value="http://www.redhawk.gov/model/sca/2.0.0">
+                        </test>
+                     </and>
+                     <instanceof
+                           value="gov.redhawk.model.sca.provider.ScaWaveformsContainerItemProvider">
+                     </instanceof>
+                     <instanceof
+                           value="gov.redhawk.model.sca.provider.ScaWaveformFactoriesContainerItemProvider">
+                     </instanceof>
+                     <instanceof
+                           value="gov.redhawk.model.sca.provider.ScaDeviceManagersContainerItemProvider">
+                     </instanceof>
+                  </or>
+            </enablement>
+         </actionProvider>
+         <triggerPoints>
+            <or>
+            	<instanceof
+                  	value="gov.redhawk.model.sca.ScaDomainManager">
+            	</instanceof>
+           		<instanceof
+                  	value="org.eclipse.emf.ecore.EObject">
+            	</instanceof>
+             <instanceof
+                   value="java.lang.Object">
+             </instanceof>
+            </or>
+         </triggerPoints>
+         <possibleChildren>
+            <or>
+               <and>
+                  <instanceof
+                        value="org.eclipse.emf.ecore.EObject">
+                  </instanceof>
+                  <test
+                        forcePluginActivation="true"
+                        property="org.eclipse.emf.ecore.namespace"
+                        value="http://www.redhawk.gov/model/sca">
+                  </test></and>
+               <instanceof
+                     value="gov.redhawk.model.sca.provider.ScaWaveformsContainerItemProvider">
+               </instanceof>
+               <instanceof
+                     value="gov.redhawk.model.sca.provider.ScaWaveformFactoriesContainerItemProvider">
+               </instanceof>
+               <instanceof
+                     value="gov.redhawk.model.sca.provider.ScaDeviceManagersContainerItemProvider">
+               </instanceof>
+               <adapt
+                     type="org.eclipse.core.resources.IResource">
+               </adapt>
+            </or>
+         </possibleChildren>
+         <commonSorter
+               class="gov.redhawk.sca.internal.ui.ScaViewerSorter">
+         </commonSorter>
+         <dropAssistant
+               class="gov.redhawk.sca.internal.ui.actions.ResourceDropAdapterAssistant"
+               id="gov.redhawk.sca.ui.dropAssistant.resource">
+            <possibleDropTargets>
+               <or>
+                  <instanceof
+                        value="gov.redhawk.model.sca.ScaFileStore">
+                  </instanceof>
+                  <instanceof
+                        value="org.eclipse.core.resources.IResource">
+                  </instanceof>
+               </or></possibleDropTargets>
+         </dropAssistant>
+      </navigatorContent>
+      <commonFilter
+            activeByDefault="true"
+            description="Hides waveform factories"
+            id="gov.redhawk.ui.filter.waveform_factories"
+            name="Waveform Factories">
+         <filterExpression>
+            <instanceof
+                  value="gov.redhawk.model.sca.provider.ScaWaveformFactoriesContainerItemProvider">
+            </instanceof>
+         </filterExpression>
+      </commonFilter>
+      <commonFilter
+            activeByDefault="false"
+            description="Hides Waveform Components"
+            id="gov.redhawk.ui.filter.waveform_components"
+            name="Waveform Components">
+         <filterExpression>
+            <instanceof
+                  value="gov.redhawk.model.sca.provider.ScaWaveformsContainerItemProvider">
+            </instanceof>
+         </filterExpression>
+      </commonFilter>
+      <commonFilter
+            activeByDefault="false"
+            description="Hides device managers"
+            id="gov.redhawk.ui.filter.device_managers"
+            name="Device Managers">
+         <filterExpression>
+            <instanceof
+                  value="gov.redhawk.model.sca.provider.ScaDeviceManagersContainerItemProvider">
+            </instanceof>
+         </filterExpression>
+      </commonFilter>
+      <commonFilter
+            activeByDefault="false"
+            description="Hides domain file managers"
+            id="gov.redhawk.ui.filter.domain_file_managers"
+            name="Domain File Managers">
+         <filterExpression>
+            <instanceof
+                  value="gov.redhawk.model.sca.ScaFileManager">
+            </instanceof>
+         </filterExpression>
+      </commonFilter>
+      <commonFilter
+            activeByDefault="false"
+            class="gov.redhawk.sca.internal.ui.filters.DeviceManagerChildDevicesFilter"
+            description="Hides child devices from being displayed under the device manager."
+            id="gov.redhawk.ui.filter.child_devices"
+            name="Device Manager Child Devices">
+      </commonFilter>
+   </extension>
+   <extension
+         point="org.eclipse.ui.navigator.viewer">
+      <viewerContentBinding
+            viewerId="gov.redhawk.ui.sca_explorer_sd">
+         <includes>
+            <contentExtension
+                  isRoot="true"
+                  pattern="gov.redhawk.ui.navigatorContentSD">
+            </contentExtension>
+            <contentExtension
+                  pattern="gov.redhawk.ui.filter.*">
+            </contentExtension>
+            <contentExtension
+                  pattern="gov.redhawk.ui.drop.*">
+            </contentExtension>
+		</includes>
+      </viewerContentBinding>
+      <viewer
+            viewerId="gov.redhawk.ui.sca_explorer_sd">
+            <popupMenu
+                allowsPlatformContributions="true"
+                id="gov.redhawk.ui.sca_explorer#PopupMenu">  
+             <insertionPoint name="group.new"/>
+             <insertionPoint
+                   name="group.open"
+                   separator="true"/>
+             <insertionPoint name="group.openWith"/>
+             <insertionPoint
+                   name="group.control"
+                   separator="true">
+             </insertionPoint>   
+             <insertionPoint name="group.edit"
+                   separator="true"/>   
+             <insertionPoint name="group.reorganize" />         
+             <insertionPoint
+                   name="group.port"
+                   separator="true"/>     
+             <insertionPoint
+                   name="group.build"
+                   separator="true"/> 
+             <insertionPoint
+                   name="group.generate"
+                   separator="true"/> 
+             <insertionPoint
+                   name="group.search"
+                   separator="true"/>              
+             <insertionPoint
+                   name="additions"
+                   separator="true"/>              
+             <insertionPoint
+                   name="group.properties"
+                   separator="true"/>
+                     </popupMenu>
+            <options>
+               <property
+                     name="org.eclipse.ui.navigator.hideLinkWithEditorAction"
+                     value="true">
+               </property>
+               <property
+                     name="org.eclipse.ui.navigator.hideAvailableExtensionsTab"
+                     value="true">
+               </property>
+            </options>
+      </viewer>
+      <viewerContentBinding
+            viewerId="org.eclipse.ui.navigator.ProjectExplorer">
+         <includes>
+            <contentExtension
+                  pattern="gov.redhawk.ui.navigatorContentSD">
+            </contentExtension>
+         </includes>
+      </viewerContentBinding>
+   </extension>
+ 
+   <extension
+         point="org.eclipse.ui.views.properties.tabbed.propertyContributor">
+      <propertyContributor
+            contributorId="gov.redhawk.ui.sca_explorer_sd"
+            labelProvider="gov.redhawk.sca.ui.TabbedPropertySheetTitleProvider">
+         <propertyCategory
+               category="general"></propertyCategory>
+         <propertyCategory
+               category="core">
+         </propertyCategory>
+         <propertyCategory
+               category="appearance">
+         </propertyCategory>
+         <propertyCategory
+               category="advanced">
+         </propertyCategory>
+      </propertyContributor>
+   </extension>
+   <extension
+         point="org.eclipse.ui.perspectives">
+      <perspective
+            class="gov.redhawk.sca.ui.singledomain.ScaExplorerSdPerspective"
+            id="gov.redhawk.sca.ui.singledomain.perspective"
+            name="SCA Explorer Single Domain">
+      </perspective>
+   </extension>
+</plugin>

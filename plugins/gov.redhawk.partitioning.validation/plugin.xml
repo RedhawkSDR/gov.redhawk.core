@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  REDHAWK HEADER
+  
+  Identification: $Revision: 6584 $
+-->
+<?eclipse version="3.4"?>
+<plugin>
+<extension
+         point="org.eclipse.emf.validation.constraintProviders">
+      <constraintProvider
+            cache="false"
+            mode="Batch">
+         <package
+               namespaceUri="http://sca.jpeojtrs.mil/partitioning">
+         </package>
+         <constraints
+               categories="gov.redhawk.validation.category">
+            <constraint
+                  class="gov.redhawk.partitioning.validation.UnnecessaryComponentFilesConstraint"
+                  id="gov.redhawk.validation.constraint.partitioning.unusedComponentFiles"
+                  lang="java"
+                  mode="Batch"
+                  name="%constraint.name.unnecessaryFiles"
+                  severity="WARNING"
+                  statusCode="1001">
+               <message>
+                  %constraint.message.unnecessaryFiles
+               </message>
+               <target
+                     class="ComponentFile">
+               </target>
+            </constraint>
+            <constraint
+                  class="gov.redhawk.partitioning.validation.InvalidComponentInstantiationRefConstraint"
+                  id="gov.redhawk.validation.constraint.partitioning.ComponentInstantiationRef"
+                  lang="java"
+                  mode="Batch"
+                  name="Invalid Component Reference"
+                  severity="ERROR"
+                  statusCode="1002">
+               <message>
+                  {0} does not reference any known component.
+               </message>
+               <target
+                     class="ComponentInstantiationRef"></target>
+            </constraint>
+            <constraint
+                  class="gov.redhawk.partitioning.validation.ComponentFileRefConstraint"
+                  id="gov.redhawk.validation.constraint.partitioning.ComponentFileRef"
+                  lang="java"
+                  mode="Batch"
+                  name="Invalid Component File Reference"
+                  severity="ERROR"
+                  statusCode="1003">
+               <message>
+                  {0} does not reference any known component file.
+               </message>
+               <target
+                     class="ComponentFileRef">
+               </target>
+            </constraint>
+         </constraints>
+      </constraintProvider>
+   </extension>
+</plugin>

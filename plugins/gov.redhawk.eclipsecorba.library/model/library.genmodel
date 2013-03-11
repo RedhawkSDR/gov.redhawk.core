@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<genmodel:GenModel xmi:version="2.0"
+    xmlns:xmi="http://www.omg.org/XMI" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore"
+    xmlns:genmodel="http://www.eclipse.org/emf/2002/GenModel" modelDirectory="/gov.redhawk.eclipsecorba.library/src"
+    editorDirectory="/gov.redhawk.eclipsecorba.library.editor/src" modelPluginID="gov.redhawk.eclipsecorba.library"
+    templateDirectory="/mil.jpeojtrs.sca.templates/templates" dynamicTemplates="true"
+    modelName="Library" modelPluginClass="gov.redhawk.eclipsecorba.library.LibraryPlugin"
+    testsDirectory="/gov.redhawk.eclipsecorba.library.tests/src" importerID="org.eclipse.emf.importer.ecore"
+    complianceLevel="5.0" copyrightFields="false" runtimeVersion="2.6" usedGenPackages="platform:/plugin/gov.redhawk.eclipsecorba.idl/model/idl.genmodel#//idl platform:/plugin/gov.redhawk.eclipsecorba.idl/model/idl.genmodel#//expressions">
+  <foreignModel>library.ecore</foreignModel>
+  <genPackages prefix="Library" basePackage="gov.redhawk.eclipsecorba" resource="XML"
+      disposableProviderFactory="true" generateExampleClass="false" contentTypeIdentifier=""
+      fileExtensions="library" ecorePackage="library.ecore#/">
+    <genDataTypes ecoreDataType="library.ecore#//URI"/>
+    <genDataTypes ecoreDataType="library.ecore#//IProgressMonitor"/>
+    <genDataTypes ecoreDataType="library.ecore#//CoreExceptoin"/>
+    <genDataTypes ecoreDataType="library.ecore#//IPath"/>
+    <genDataTypes ecoreDataType="library.ecore#//IStatus"/>
+    <genClasses ecoreClass="library.ecore#//IdlLibrary">
+      <genFeatures property="None" children="true" createChild="false" propertySortChoices="true"
+          ecoreFeature="ecore:EReference library.ecore#//IdlLibrary/specifications"/>
+      <genFeatures property="None" children="true" createChild="true" propertySortChoices="true"
+          ecoreFeature="ecore:EReference library.ecore#//IdlLibrary/paths"/>
+      <genFeatures property="Readonly" createChild="false" propertyMultiLine="true"
+          ecoreFeature="ecore:EAttribute library.ecore#//IdlLibrary/loadStatus"/>
+      <genOperations ecoreOperation="library.ecore#//IdlLibrary/load">
+        <genParameters ecoreParameter="library.ecore#//IdlLibrary/load/monitor"/>
+      </genOperations>
+    </genClasses>
+    <genClasses ecoreClass="library.ecore#//RepositoryModule">
+      <genFeatures property="Readonly" createChild="false" propertySortChoices="true"
+          ecoreFeature="ecore:EReference library.ecore#//RepositoryModule/moduleDefinitions"/>
+      <genFeatures property="None" children="true" createChild="false" propertySortChoices="true"
+          ecoreFeature="ecore:EReference library.ecore#//RepositoryModule/definitions"/>
+      <genFeatures property="None" notify="false" createChild="false" propertySortChoices="true"
+          ecoreFeature="ecore:EReference library.ecore#//RepositoryModule/repository"/>
+      <genOperations ecoreOperation="library.ecore#//RepositoryModule/find">
+        <genParameters ecoreParameter="library.ecore#//RepositoryModule/find/repId"/>
+      </genOperations>
+    </genClasses>
+    <genClasses image="false" ecoreClass="library.ecore#//Path">
+      <genFeatures property="Readonly" createChild="false" ecoreFeature="ecore:EAttribute library.ecore#//Path/derivedPath"/>
+    </genClasses>
+    <genClasses ecoreClass="library.ecore#//PreferenceNodePathSet">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute library.ecore#//PreferenceNodePathSet/qualifier"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute library.ecore#//PreferenceNodePathSet/key"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute library.ecore#//PreferenceNodePathSet/delimiter"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute library.ecore#//PreferenceNodePathSet/fileUri"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute library.ecore#//PreferenceNodePathSet/replaceEnv"/>
+    </genClasses>
+    <genClasses ecoreClass="library.ecore#//URIPathSet">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute library.ecore#//URIPathSet/dirs"/>
+    </genClasses>
+    <genClasses ecoreClass="library.ecore#//LocalFilePath">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute library.ecore#//LocalFilePath/localPaths"/>
+    </genClasses>
+  </genPackages>
+</genmodel:GenModel>

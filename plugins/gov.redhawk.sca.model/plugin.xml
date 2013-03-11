@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  REDHAWK HEADER
+  
+  Identification: $Revision: 7396 $
+-->
+<?eclipse version="3.0"?>
+<plugin>
+   <extension-point id="dataProviderService" name="SCA Data Provider Service" schema="schema/dataProviderService.exsd"/>
+
+   <extension
+         point="org.eclipse.emf.ecore.generated_package">
+      <package
+            class="gov.redhawk.model.sca.ScaPackage"
+            genModel="model/sca.genmodel"
+            uri="http://www.redhawk.gov/model/sca">
+      </package>
+      <package
+            class="gov.redhawk.model.sca.ScaPackage"
+            genModel="model/sca.genmodel"
+            uri="http://www.redhawk.gov/model/sca/2.0.0">
+      </package>
+   </extension>
+   <extension
+         point="org.eclipse.emf.ecore.content_parser">
+      <parser
+            class="gov.redhawk.model.sca.util.ScaResourceFactoryImpl_100"
+            contentTypeIdentifier="http://www.redhawk.gov/model/sca">
+      </parser>
+      <parser
+            class="gov.redhawk.model.sca.util.ScaResourceFactoryImpl"
+            contentTypeIdentifier="http://www.redhawk.gov/model/sca/2.0.0">
+      </parser>
+   </extension>
+    <extension point="org.eclipse.core.contenttype.contentTypes">
+      <content-type
+            base-type="org.eclipse.core.runtime.xml"
+            file-extensions="xml,sca"
+            id="http://www.redhawk.gov/model/sca"
+            name="SCA 1.0.0"
+            priority="low">
+         <describer
+               class="org.eclipse.emf.ecore.xmi.impl.RootXMLContentHandlerImpl$Describer">
+            <parameter
+                  name="namespace"
+                  value="http://www.redhawk.gov/model/sca">
+            </parameter>
+         </describer>
+      </content-type>
+      <content-type
+            base-type="org.eclipse.core.runtime.xml"
+            file-extensions="xml,sca"
+            id="http://www.redhawk.gov/model/sca/2.0.0"
+            name="SCA 2.0.0"
+            priority="normal">
+         <describer
+               class="org.eclipse.emf.ecore.xmi.impl.RootXMLContentHandlerImpl$Describer">
+            <parameter
+                  name="namespace"
+                  value="http://www.redhawk.gov/model/sca/2.0.0">
+            </parameter>
+         </describer>
+      </content-type>
+   </extension>
+
+   
+      <extension
+         point="org.eclipse.core.runtime.adapters">
+      <factory
+            adaptableType="gov.redhawk.model.sca.CorbaObjWrapper"
+            class="gov.redhawk.sca.model.internal.CorbaObjWrapperAdapterFactory">
+         <adapter
+               type="gov.redhawk.model.sca.ICorbaObjectDescriptorAdapter">
+         </adapter>
+      </factory>
+      <factory
+            adaptableType="gov.redhawk.model.sca.ProfileObjectWrapper"
+            class="gov.redhawk.sca.model.internal.ScaObjectWrapperAdapterFactory">
+         <adapter
+               type="gov.redhawk.model.sca.IScaObjectIdentifierAdapter">
+         </adapter>
+      </factory>
+      <factory
+            adaptableType="gov.redhawk.model.sca.ScaFileStore"
+            class="gov.redhawk.sca.model.internal.ScaFileStoreAdapterFactory">
+         <adapter
+               type="org.eclipse.core.filesystem.IFileStore">
+         </adapter>
+      </factory>
+   </extension>
+      <extension
+            point="org.eclipse.core.expressions.propertyTesters">
+         <propertyTester
+               class="gov.redhawk.sca.model.internal.EmfPropertyTester"
+               id="gov.redhawk.sca.model.EMFTester"
+               namespace="org.eclipse.emf.ecore"
+               properties="namespace"
+               type="org.eclipse.emf.ecore.EObject">
+         </propertyTester>
+      </extension>
+
+</plugin>
+

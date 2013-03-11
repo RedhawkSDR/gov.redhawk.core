@@ -1,0 +1,8 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Rcp
+Bundle-SymbolicName: mil.jpeojtrs.sca.sad.rcp;singleton:=true
+Bundle-Version: 1.0.0.qualifier
+Bundle-Vendor: United States Government
+Fragment-Host: mil.jpeojtrs.sca.sad;bundle-version="2.2.2"
+Bundle-RequiredExecutionEnvironment: J2SE-1.5

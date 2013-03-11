@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  REDHAWK HEADER
+ 
+  Identification: $Revision: 3327 $
+-->
+<?eclipse version="3.4"?>
+<plugin>
+<extension
+         point="org.eclipse.ui.editors">
+      <editor
+            class="gov.redhawk.prf.internal.ui.editor.PropertiesEditor"
+            contributorClass="gov.redhawk.prf.internal.ui.editor.PropertiesEditorActionBarContributor"
+            default="true"
+            id="gov.redhawk.ide.ui.editor.properties"
+            name="SCA Properties Editor">
+         <contentTypeBinding
+               contentTypeId="mil.jpeojtrs.sca.prf.content-type">
+         </contentTypeBinding>
+      </editor>
+   </extension>
+</plugin>

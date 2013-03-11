@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+    This file is protected by Copyright.
+    Please refer to the COPYRIGHT file distributed with this source distribution.
+
+    This file is part of REDHAWK IDE.
+
+    All rights reserved.  This program and the accompanying materials are made available under
+    the terms of the Eclipse Public License v1.0 which accompanies this distribution, and is available at
+    http://www.eclipse.org/legal/epl-v10.html.
+ 
+-->
+<!DOCTYPE domainmanagerconfiguration SYSTEM "../xml/dtd/domainmanagerconfiguration.dtd">
+<!--
+  To configure your own domain, copy this file to $SDRROOT/dom/domain/DomainManager.dmd.xml
+  and make the following changes:
+
+    Replace @UUID@ with a the output from the uuidgen command.
+
+    Replace @NAME@ with the domain name you wish to use.  It must be unique relative to
+    other SCA domains that share the same CORBA NameServer.
+
+    Replace @DESCRIPTION@ with a brief description of your domain.
+-->
+<domainmanagerconfiguration id="DCE:6ea4adff-cbfc-45d4-8ce4-5b424543044b" name="localDomain">
+<description>Domain running locally</description>
+<domainmanagersoftpkg >
+	<localfile name="/mgr/DomainManager.spd.xml"/>
+</domainmanagersoftpkg>
+</domainmanagerconfiguration>
+
+
