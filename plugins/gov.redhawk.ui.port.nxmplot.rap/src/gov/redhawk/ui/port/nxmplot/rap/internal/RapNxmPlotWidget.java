@@ -1,4 +1,4 @@
-/** 
+/**
  * This file is protected by Copyright. 
  * Please refer to the COPYRIGHT file distributed with this source distribution.
  * 
@@ -28,12 +28,12 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 
 /**
- * 
+ *
  */
 public class RapNxmPlotWidget extends AbstractNxmPlotWidget {
 
 	/**
-	 * 
+	 *
 	 */
     private static final long serialVersionUID = -3610272766732782615L;
     private static final String PLOT_ID = "PLOT";
@@ -63,13 +63,13 @@ public class RapNxmPlotWidget extends AbstractNxmPlotWidget {
 		}
 		nxmComp.runClientCommand("plot" + plotSwitches + "/bg/ID=" + PLOT_ID + " " + plotArgs);
 	}
-	
+
 	@Override
 	public void dispose() {
 	    super.dispose();
 	    nxmComp = null;
 	}
-	
+
 	private void assertNotDisposed() {
 		Assert.isTrue(!isDisposed(), "Widget is disposed");
 	}
@@ -101,10 +101,10 @@ public class RapNxmPlotWidget extends AbstractNxmPlotWidget {
 		// From Client openFile
 		nxmComp.runClientCommand("sendto RMIF_SESSION ADDC {" + sourcePipeId + "=" + sourcePipeId + "} INFO=-1");
 		nxmComp.runClientCommand("sendto " + " " + PLOT_ID + " OPENFILE " + sourcePipeId);
-		
+
 		this.sources.add(sourcePipeId);
 	}
-	
+
 	@Override
 	public void addSource(String sourcePipeId, String plotQualifiers) {
 		assertNotDisposed();
@@ -117,14 +117,14 @@ public class RapNxmPlotWidget extends AbstractNxmPlotWidget {
 		// From Client openFile
 		nxmComp.runClientCommand("sendto RMIF_SESSION ADDC {" + sourcePipeId + "=" + sourcePipeId + "} INFO=-1");
 		nxmComp.runClientCommand("sendto " + " " + PLOT_ID + " OPENFILE " + sourcePipeId + (plotQualifiers == null ? "" : plotQualifiers));
-		
+
 		this.sources.add(sourcePipeId);
 	}
 
 	@Override
 	public void removeSource(String sourcePipeId) {
 		assertNotDisposed();
-		// From Client closeFIle 
+		// From Client closeFIle
 		nxmComp.runClientCommand("sendto " + PLOT_ID + " CLOSEFIE " + sourcePipeId);
 
 		// From Client via RMIF disconnect pipe
@@ -135,7 +135,7 @@ public class RapNxmPlotWidget extends AbstractNxmPlotWidget {
 
 		// From Server remove reference from global registry
 		nxmComp.runServerCommand("remove/global RAM." + sourcePipeId);
-		
+
 		this.sources.remove(sourcePipeId);
 	}
 
@@ -152,10 +152,11 @@ public class RapNxmPlotWidget extends AbstractNxmPlotWidget {
 			nxmComp.runClientCommand("set " + "REG." + PLOT_ID + "." + entry.getKey() + " " + entry.getValue());
 		}
 	}
-	
+
 	@Override
 	public String addDataFeature(Number xStart, Number xEnd, String color) {
 		String featureId = AbstractNxmPlotWidget.createUniqueName(false);
+                double dx = xEnd.doubleValue() - xStart.doubleValue();
 		final String cmd = "FEATURE LABEL=" + featureId + " PLOT=" + PLOT_ID + " TABEL={NAME=\"" +
 		featureId + "\",TYPE=\"DATA\",X=" + (xStart.doubleValue() + (dx/2)) + ",DX=" + dx + ",COLOR=\"" + color + "\"}";
 		this.runClientCommand(cmd);
