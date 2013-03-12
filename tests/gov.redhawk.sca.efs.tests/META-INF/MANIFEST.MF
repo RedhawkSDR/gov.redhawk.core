@@ -14,4 +14,4 @@ Require-Bundle: org.junit4;bundle-version="4.8.1",
  mil.jpeojtrs.sca.cf;bundle-version="2.2.2"
 Export-Package: gov.redhawk.sca.efs.server.tests,
  gov.redhawk.sca.efs.tests
-Bundle-Vendor: United States Government
+Bundle-Vendor: REDHAWK

@@ -4,7 +4,7 @@ Bundle-Name: Singledomain
 Bundle-SymbolicName: gov.redhawk.sca.ui.singledomain;singleton:=true
 Bundle-Version: 1.0.0.qualifier
 Bundle-RequiredExecutionEnvironment: J2SE-1.5
-Bundle-Vendor: United States Government
+Bundle-Vendor: REDHAWK
 Bundle-ClassPath: .
 Require-Bundle: gov.redhawk.sca.ui;bundle-version="8.0.0",
  gov.redhawk.sca;bundle-version="6.0.0",

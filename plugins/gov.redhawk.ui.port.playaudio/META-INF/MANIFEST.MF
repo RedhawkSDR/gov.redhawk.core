@@ -13,7 +13,7 @@ Require-Bundle: org.eclipse.ui;bundle-version="3.6.1",
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: J2SE-1.5
 Bundle-ClassPath: .
-Bundle-Vendor: United States Government
+Bundle-Vendor: REDHAWK
 Export-Package: gov.redhawk.ui.port.playaudio.controller,
  gov.redhawk.ui.port.playaudio.controls,
  gov.redhawk.ui.port.playaudio.views

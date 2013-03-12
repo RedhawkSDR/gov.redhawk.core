@@ -42,4 +42,4 @@ Export-Package: gov.redhawk.internal.ui;x-internal:=true,
  gov.redhawk.ui.util,
  gov.redhawk.ui.validation,
  gov.redhawk.ui.wizards
-Bundle-Vendor: United States Government
+Bundle-Vendor: REDHAWK

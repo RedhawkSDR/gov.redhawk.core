@@ -8,4 +8,4 @@ Bundle-ClassPath: lib/gnu.getopt.jar,
  .
 Export-Package: org.anarres.cpp
 Require-Bundle: org.apache.ant;bundle-version="1.7.1";resolution:=optional
-Bundle-Vendor: United States Government
+Bundle-Vendor: REDHAWK

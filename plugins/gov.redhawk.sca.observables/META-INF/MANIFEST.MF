@@ -17,4 +17,4 @@ Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: J2SE-1.5
 Export-Package: gov.redhawk.sca.observables,
  gov.redhawk.sca.observables.strategy
-Bundle-Vendor: United States Government
+Bundle-Vendor: REDHAWK

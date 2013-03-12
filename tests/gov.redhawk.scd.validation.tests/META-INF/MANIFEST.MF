@@ -3,7 +3,7 @@ Bundle-ManifestVersion: 2
 Bundle-Name: SCD Validation Tests
 Bundle-SymbolicName: gov.redhawk.scd.validation.tests
 Bundle-Version: 1.0.0.qualifier
-Bundle-Vendor: United States Government
+Bundle-Vendor: REDHAWK
 Bundle-RequiredExecutionEnvironment: J2SE-1.5
 Require-Bundle: org.junit4;bundle-version="4.8.1",
  gov.redhawk.scd.validation;bundle-version="1.1.0",

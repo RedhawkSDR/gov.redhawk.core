@@ -7,5 +7,5 @@ Bundle-RequiredExecutionEnvironment: J2SE-1.5
 Require-Bundle: mil.jpeojtrs.sca.sad;bundle-version="2.2.2",
  org.eclipse.core.runtime;bundle-version="3.6.0",
  gov.redhawk.validation;bundle-version="2.0.0"
-Bundle-Vendor: United States Government
+Bundle-Vendor: REDHAWK
 Export-Package: gov.redhawk.sca.sad.validation

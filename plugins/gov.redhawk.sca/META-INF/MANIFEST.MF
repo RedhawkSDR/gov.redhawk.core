@@ -4,7 +4,7 @@ Bundle-Name: REDHAWK SCA
 Bundle-SymbolicName: gov.redhawk.sca;singleton:=true
 Bundle-Version: 6.0.0.qualifier
 Bundle-Activator: gov.redhawk.sca.ScaPlugin
-Bundle-Vendor: United States Government
+Bundle-Vendor: REDHAWK
 Require-Bundle: org.eclipse.core.runtime;bundle-version="3.6.0",
  org.eclipse.core.resources;bundle-version="3.4.2",
  gov.redhawk.sca.model;bundle-version="1.0.0";visibility:=reexport,

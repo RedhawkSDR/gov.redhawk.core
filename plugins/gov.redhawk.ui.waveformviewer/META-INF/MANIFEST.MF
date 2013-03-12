@@ -20,5 +20,5 @@ Require-Bundle: mil.jpeojtrs.sca.dmd;bundle-version="1.0.0",
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: J2SE-1.5
 Plugin-Class: gov.redhawk.waveformviewer.ui.WaveformProjectPlugin
-Bundle-Vendor: United States Government
+Bundle-Vendor: REDHAWK
 

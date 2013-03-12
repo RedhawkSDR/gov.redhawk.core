@@ -4,7 +4,7 @@ Implementation-Version: 3.2.0
 Bundle-Name: Redhawk Nxm Option Tree Plug-in
 Bundle-SymbolicName: nxm.redhawk;singleton:=true
 Bundle-Version: 8.0.0.qualifier
-Bundle-Vendor: United States Government
+Bundle-Vendor: REDHAWK
 Bundle-Localization: plugin
 Require-Bundle: mil.jpeojtrs.sca.cf;bundle-version="2.2.2",
  idl.bulkio;bundle-version="1.7.0",

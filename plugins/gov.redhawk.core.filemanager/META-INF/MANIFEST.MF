@@ -4,7 +4,7 @@ Bundle-Name: File Manager
 Bundle-SymbolicName: gov.redhawk.core.filemanager
 Bundle-Version: 1.0.0.qualifier
 Bundle-Activator: gov.redhawk.core.filemanager.FileManagerPlugin
-Bundle-Vendor: United States Government
+Bundle-Vendor: REDHAWK
 Require-Bundle: org.eclipse.core.runtime;bundle-version="3.6.0",
  idl.cf;bundle-version="2.2.2",
  org.eclipse.core.filesystem;bundle-version="1.3.1",

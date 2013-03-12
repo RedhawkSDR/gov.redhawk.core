@@ -3,6 +3,6 @@ Bundle-ManifestVersion: 2
 Bundle-Name: Rcp
 Bundle-SymbolicName: mil.jpeojtrs.sca.profile.rcp;singleton:=true
 Bundle-Version: 1.0.0.qualifier
-Bundle-Vendor: United States Government
+Bundle-Vendor: REDHAWK
 Fragment-Host: mil.jpeojtrs.sca.profile;bundle-version="2.2.2"
 Bundle-RequiredExecutionEnvironment: J2SE-1.5

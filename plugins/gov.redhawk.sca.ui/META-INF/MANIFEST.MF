@@ -53,7 +53,7 @@ Export-Package: gov.redhawk.sca.internal.ui;x-internal:=true,
  gov.redhawk.sca.ui.properties,
  gov.redhawk.sca.ui.views,
  gov.redhawk.sca.ui.wizards
-Bundle-Vendor: United States Government
+Bundle-Vendor: REDHAWK
 Bundle-ClassPath: library.jar,
  .
 Import-Package: gov.redhawk.ui.parts,

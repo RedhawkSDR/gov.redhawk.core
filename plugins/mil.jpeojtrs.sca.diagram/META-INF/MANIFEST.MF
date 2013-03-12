@@ -18,4 +18,4 @@ Export-Package: mil.jpeojtrs.sca.diagram,
  mil.jpeojtrs.sca.diagram.figures,
  mil.jpeojtrs.sca.diagram.impl,
  mil.jpeojtrs.sca.diagram.util
-Bundle-Vendor: United States Government
+Bundle-Vendor: REDHAWK

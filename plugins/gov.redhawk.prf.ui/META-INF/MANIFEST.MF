@@ -20,4 +20,4 @@ Bundle-RequiredExecutionEnvironment: J2SE-1.5
 Export-Package: gov.redhawk.prf.ui,
  gov.redhawk.prf.ui.editor.page,
  gov.redhawk.prf.ui.provider
-Bundle-Vendor: United States Government
+Bundle-Vendor: REDHAWK

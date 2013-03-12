@@ -15,4 +15,4 @@ Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: J2SE-1.5
 Export-Package: gov.redhawk.ui.port,
  gov.redhawk.ui.port.handlers
-Bundle-Vendor: United States Government
+Bundle-Vendor: REDHAWK
