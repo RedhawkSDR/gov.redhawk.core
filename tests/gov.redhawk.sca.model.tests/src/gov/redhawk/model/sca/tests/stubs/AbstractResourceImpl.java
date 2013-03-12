@@ -1,3 +1,14 @@
+/** 
+ * This file is protected by Copyright. 
+ * Please refer to the COPYRIGHT file distributed with this source distribution.
+ * 
+ * This file is part of REDHAWK IDE.
+ * 
+ * All rights reserved.  This program and the accompanying materials are made available under 
+ * the terms of the Eclipse Public License v1.0 which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html.
+ *
+ */
 package gov.redhawk.model.sca.tests.stubs;
 
 import java.util.ArrayList;
@@ -24,7 +35,6 @@ import org.omg.CORBA.ORB;
 import org.omg.PortableServer.POA;
 import org.omg.PortableServer.POAPackage.ServantNotActive;
 import org.omg.PortableServer.POAPackage.WrongPolicy;
-import org.ossie.component.Resource;
 import org.ossie.properties.IProperty;
 import org.ossie.properties.SimpleProperty;
 import org.ossie.properties.SimpleSequenceProperty;
