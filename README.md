@@ -18,4 +18,4 @@ This work is protected by Copyright. Please refer to the [Copyright File](COPYRI
 
 ## License
 
-REDHAWK Core is licensed under a combination of the GNU Lesser General Public License (LGPL) and the Apache (v.2.0) License.
+REDHAWK IDE is licensed under the Eclipse Public License (EPL).
