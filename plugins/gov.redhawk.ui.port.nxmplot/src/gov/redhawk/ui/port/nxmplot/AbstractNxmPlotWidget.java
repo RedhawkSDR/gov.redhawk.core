@@ -171,6 +171,8 @@ public abstract class AbstractNxmPlotWidget extends Composite {
 	
 	public abstract String addDataFeature(Number xStart, Number xEnd, String color);
 	
+	public abstract String addDragboxFeature(Number xmin, Number ymin, Number xmax, Number ymax, String color);
+	
 	public abstract void removeFeature(String featureid);
 
 	/**

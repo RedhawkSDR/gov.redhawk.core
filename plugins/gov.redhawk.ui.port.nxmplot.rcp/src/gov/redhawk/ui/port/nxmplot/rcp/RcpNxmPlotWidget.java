@@ -155,6 +155,19 @@ public class RcpNxmPlotWidget extends AbstractNxmPlotWidget {
 	}
 	
 	@Override
+	public String addDragboxFeature(Number xmin, Number ymin, Number xmax, Number ymax, String color) {
+		String featureId = AbstractNxmPlotWidget.createUniqueName(false);
+		final double x = (xmax.doubleValue() + xmin.doubleValue()) / 2d;
+		final double y = (ymax.doubleValue() + ymin.doubleValue()) / 2d;
+		final double dx = xmax.doubleValue() - xmin.doubleValue();
+		final double dy = ymax.doubleValue() - ymin.doubleValue();
+		final String command = "FEATURE LABEL=" + featureId + " PLOT=" + plotCommand.id + " TABLE={NAME=\"" + featureId
+				+ "\",TYPE=\"BOX\",X=" + x + ",DX=" + dx + ",Y=" + y + ",DY=" + dy + ",COLOR=\"" + color + "\"}";
+		this.runClientCommand(command);
+		return featureId;
+	}
+	
+	@Override
 	public void removeFeature(String featureId) {
 		final String command = "invoke junk reg." + plotCommand.id + ".removeFeature(\"" + featureId + "\")";
 		this.runClientCommand(command);
