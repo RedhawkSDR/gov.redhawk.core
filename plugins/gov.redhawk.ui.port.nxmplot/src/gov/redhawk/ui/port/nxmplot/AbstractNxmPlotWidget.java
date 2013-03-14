@@ -60,7 +60,7 @@ public abstract class AbstractNxmPlotWidget extends Composite {
 					final IPlotWidgetListener pl = (IPlotWidgetListener) obj;
 					pl.motion(p.x, p.y, p.t);
 				}
-			} else if ("ZOOM".equals(msg.name)) { //left-click drag
+			} else if ("ZOOM".equals(msg.name) || "ZOOMIN".equals(msg.name)) { //left-click drag
 				Double[] values = getValues(msg.data);
 				if (values != null) {
 					final Object[] listeners = this.plotListeners.getListeners();
@@ -76,7 +76,7 @@ public abstract class AbstractNxmPlotWidget extends Composite {
 					final IPlotWidgetListener pl = (IPlotWidgetListener) obj;
 					pl.dragBox(d.getXMin(), d.getYMin(), d.getXMax(), d.getYMax());
 				}
-			} else if ("UNZOOM".equals(msg.name)) { //right-click
+			} else if ("UNZOOM".equals(msg.name) || "ZOOMOUT".equals(msg.name)) { //right-click
 				Double[] values = getValues(msg.data);
 				if (values != null) {
 					final Object[] listeners = this.plotListeners.getListeners();
