@@ -162,6 +162,12 @@ public class RapNxmPlotWidget extends AbstractNxmPlotWidget {
 		this.runClientCommand(cmd);
 		return featureId;
 	}
+	
+	@Override
+	public void removeFeature(String featureId) {
+		final String command = "invoke junk reg." + PLOT_ID + ".removeFeature(\"" + featureId + "\")";
+		this.runClientCommand(command);
+	}
 
 	@Override
     public Set<String> getSources() {

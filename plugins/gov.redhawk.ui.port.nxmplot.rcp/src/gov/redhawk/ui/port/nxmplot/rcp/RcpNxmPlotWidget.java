@@ -153,6 +153,12 @@ public class RcpNxmPlotWidget extends AbstractNxmPlotWidget {
 		this.runClientCommand(cmd);
 		return featureId;
 	}
+	
+	@Override
+	public void removeFeature(String featureId) {
+		final String command = "invoke junk reg." + plotCommand.id + ".removeFeature(\"" + featureId + "\")";
+		this.runClientCommand(command);
+	}
 
 	@Override
     public void configurePlot(Map<String, String> configuration) {

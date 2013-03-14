@@ -170,6 +170,8 @@ public abstract class AbstractNxmPlotWidget extends Composite {
 	}
 	
 	public abstract String addDataFeature(Number xStart, Number xEnd, String color);
+	
+	public abstract void removeFeature(String featureid);
 
 	/**
 	 * This method initializes the plot by calling the plot command and any other NextMidas commands necessary for plotting.
