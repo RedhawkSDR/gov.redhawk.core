@@ -35,7 +35,7 @@ public interface IPlotWidgetListener {
 	void click(double x, double y, double t);
 
 	/**
-	 * Called when a zoom takes place.
+	 * Called when a zoomIn takes place.
 	 * 
 	 * @param xmin min x position of the zoom box
 	 * @param ymin min y position of the zoom box
@@ -44,6 +44,17 @@ public interface IPlotWidgetListener {
 	 * @param data the data object from the message, used for forwarding messages to other plots
 	 */
 	void zoomIn(double xmin, double ymin, double xmax, double ymax, Object data);
+	
+	/**
+	 * Called when a zoomX takes place.
+	 * 
+	 * @param xmin min x position of the zoom box
+	 * @param ymin min y position of the zoom box
+	 * @param xmax max x position of the zoom box
+	 * @param ymax max y position of the zoom box
+	 * @param data the data object from the message, used for forwarding messages to other plots
+	 */
+	void zoomX(double xmin, double ymin, double xmax, double ymax, Object data);
 
 	/**
 	 * Called when a box is dragged on the plot.
@@ -66,6 +77,18 @@ public interface IPlotWidgetListener {
 
 	 */
 	void zoomOut(double x1, double y1, double x2, double y2, Object data);
+	
+	/**
+	 * Called when an unzoom is requested.
+	 * 
+	 * @param x1 x position 1 of the resulting unzoom
+	 * @param y1 y position 1 of the resulting unzoom
+	 * @param x2 x position 2 of the resulting unzoom
+	 * @param y2 y position 2 of the resulting unzoom
+	 * @param data the data object from the message, used for forwarding messages to other plots
+
+	 */
+	void unzoom(double x1, double y1, double x2, double y2, Object data);
 
 	/**
 	 * Called when the plot is panned.
