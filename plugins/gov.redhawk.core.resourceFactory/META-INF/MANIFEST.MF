@@ -6,7 +6,6 @@ Bundle-Version: 1.0.0.qualifier
 Bundle-Activator: gov.redhawk.core.resourcefactory.ResourceFactoryPlugin
 Bundle-Vendor: REDHAWK
 Require-Bundle: org.eclipse.core.runtime;bundle-version="3.6.0",
- gov.redhawk.sandbox;bundle-version="1.0.0",
  idl.cf;bundle-version="2.2.2";visibility:=reexport,
  gov.redhawk.core.filemanager;bundle-version="1.0.0";visibility:=reexport,
  gov.redhawk.sca.util;bundle-version="3.0.0",

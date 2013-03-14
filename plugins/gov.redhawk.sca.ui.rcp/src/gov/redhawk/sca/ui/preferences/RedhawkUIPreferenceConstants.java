@@ -12,7 +12,7 @@
 package gov.redhawk.sca.ui.preferences;
 
 /**
- * @since 8.0
+ * @since 10.0
  * 
  */
 public final class RedhawkUIPreferenceConstants {

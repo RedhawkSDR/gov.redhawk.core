@@ -80,7 +80,9 @@ public class ComponentPropertiesPropertySection extends AbstractPropertySection 
 
 		if (oldInput != newInput) {
 			this.input = newInput;
-			this.viewer.setInput(newInput);
+			if (this.viewer != null) {
+				this.viewer.setInput(newInput);
+			}
 		}
 	}
 

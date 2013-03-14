@@ -15,8 +15,10 @@
 			<arguments>
 			</arguments>
 		</buildCommand>
+
 	</buildSpec>
 	<natures>
+		
 		<nature>org.eclipse.pde.FeatureNature</nature>
 		<nature>net.sf.eclipsecs.core.CheckstyleNature</nature>
 	</natures>

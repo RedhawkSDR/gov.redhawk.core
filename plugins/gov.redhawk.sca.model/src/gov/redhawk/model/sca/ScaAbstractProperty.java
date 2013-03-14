@@ -95,6 +95,7 @@ public interface ScaAbstractProperty< T extends AbstractProperty > extends IStat
 	/**
 	 * Sets the value of the '{@link gov.redhawk.model.sca.ScaAbstractProperty#getDescription <em>Description</em>}' attribute.
 	 * <!-- begin-user-doc -->
+	 * @since 16.0
 	 * <!-- end-user-doc -->
 	 * @param value the new value of the '<em>Description</em>' attribute.
 	 * @see #getDescription()
@@ -122,6 +123,7 @@ public interface ScaAbstractProperty< T extends AbstractProperty > extends IStat
 	/**
 	 * Sets the value of the '{@link gov.redhawk.model.sca.ScaAbstractProperty#getId <em>Id</em>}' attribute.
 	 * <!-- begin-user-doc -->
+	 * @since 16.0
 	 * <!-- end-user-doc -->
 	 * @param value the new value of the '<em>Id</em>' attribute.
 	 * @see #getId()
@@ -151,6 +153,7 @@ public interface ScaAbstractProperty< T extends AbstractProperty > extends IStat
 	/**
 	 * Sets the value of the '{@link gov.redhawk.model.sca.ScaAbstractProperty#getMode <em>Mode</em>}' attribute.
 	 * <!-- begin-user-doc -->
+	 * @since 16.0
 	 * <!-- end-user-doc -->
 	 * @param value the new value of the '<em>Mode</em>' attribute.
 	 * @see mil.jpeojtrs.sca.prf.AccessType
@@ -179,6 +182,7 @@ public interface ScaAbstractProperty< T extends AbstractProperty > extends IStat
 	/**
 	 * Sets the value of the '{@link gov.redhawk.model.sca.ScaAbstractProperty#getName <em>Name</em>}' attribute.
 	 * <!-- begin-user-doc -->
+	 * @since 16.0
 	 * <!-- end-user-doc -->
 	 * @param value the new value of the '<em>Name</em>' attribute.
 	 * @see #getName()

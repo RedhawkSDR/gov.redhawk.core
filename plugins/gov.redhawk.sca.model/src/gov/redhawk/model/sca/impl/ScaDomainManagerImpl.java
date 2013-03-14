@@ -1062,6 +1062,10 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 		// BEGIN GENERATED CODE
 	}
 
+	/**
+	 * @since 16.0
+	 * @param newOrb
+	 */
 	public void setORB(ORB newOrb) {
 		destroyOrb(orb);
 		orb = newOrb;

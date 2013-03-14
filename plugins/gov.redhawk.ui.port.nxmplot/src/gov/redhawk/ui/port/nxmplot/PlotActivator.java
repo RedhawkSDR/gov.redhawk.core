@@ -46,7 +46,7 @@ public class PlotActivator extends AbstractUIPlugin {
 
 	private final ISchedulingRule plotRule;
 
-	private ServiceTracker plotFactory;
+	private ServiceTracker<INxmPlotWidgetFactory, INxmPlotWidgetFactory> plotFactory;
 
 	/**
 	 * The constructor.
@@ -64,7 +64,7 @@ public class PlotActivator extends AbstractUIPlugin {
 	public void start(final BundleContext context) throws Exception {
 		super.start(context);
 		PlotActivator.plugin = this;
-		plotFactory = new ServiceTracker(getBundle().getBundleContext(), INxmPlotWidgetFactory.class.getName(), null);
+		plotFactory = new ServiceTracker<INxmPlotWidgetFactory, INxmPlotWidgetFactory>(getBundle().getBundleContext(), INxmPlotWidgetFactory.class, null);
 		plotFactory.open(true);
 	}
 	
@@ -72,7 +72,7 @@ public class PlotActivator extends AbstractUIPlugin {
      * @since 3.0
      */
 	public INxmPlotWidgetFactory getPlotFactory() {
-		INxmPlotWidgetFactory retVal = (INxmPlotWidgetFactory) plotFactory.getService();
+		INxmPlotWidgetFactory retVal = plotFactory.getService();
 		if (retVal == null) {
 			throw new IllegalStateException("No Nxm Plot Widget Factory");
 		}

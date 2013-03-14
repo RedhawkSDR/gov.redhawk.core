@@ -30,6 +30,7 @@ import org.eclipse.ui.navigator.INavigatorContentExtension;
  * Extends the Common Navigator framework to support extensiable tooltips
  * 
  * @see gov.redhawk.sca.ui.ITooltipProvider
+ * @since 10.0
  */
 @SuppressWarnings("restriction")
 public class ScaCommonViewer extends CommonViewer {
@@ -145,6 +146,9 @@ public class ScaCommonViewer extends CommonViewer {
 		}
 	}
 
+	/**
+     * @since 10.0
+     */
 	public ScaCommonViewer(final String aViewerId, final Composite aParent, final int aStyle) {
 		super(aViewerId, aParent, aStyle);
 	}

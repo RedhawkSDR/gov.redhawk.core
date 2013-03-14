@@ -63,6 +63,7 @@ public interface ScaFileSystem< F extends FileSystem > extends CorbaObjWrapper<F
 	/**
 	 * Sets the value of the '{@link gov.redhawk.model.sca.ScaFileSystem#getFileSystemURI <em>File System URI</em>}' attribute.
 	 * <!-- begin-user-doc -->
+	 * @since 16.0
 	 * <!-- end-user-doc -->
 	 * @param value the new value of the '<em>File System URI</em>' attribute.
 	 * @see #getFileSystemURI()

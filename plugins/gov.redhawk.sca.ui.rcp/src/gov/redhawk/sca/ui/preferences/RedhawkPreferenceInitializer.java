@@ -17,6 +17,7 @@ import org.eclipse.core.runtime.preferences.AbstractPreferenceInitializer;
 import org.eclipse.jface.dialogs.MessageDialogWithToggle;
 
 /**
+ * @since 10.0
  * 
  */
 public class RedhawkPreferenceInitializer extends AbstractPreferenceInitializer {

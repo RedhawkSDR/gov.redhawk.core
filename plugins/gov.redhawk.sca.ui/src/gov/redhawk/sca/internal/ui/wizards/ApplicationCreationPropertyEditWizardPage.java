@@ -24,6 +24,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import mil.jpeojtrs.sca.partitioning.PartitioningPackage;
+import mil.jpeojtrs.sca.prf.util.PropertiesUtil;
 import mil.jpeojtrs.sca.sad.SadPackage;
 import mil.jpeojtrs.sca.sad.SoftwareAssembly;
 import mil.jpeojtrs.sca.spd.SoftPkg;
@@ -36,6 +37,8 @@ import org.eclipse.jface.dialogs.IDialogSettings;
 import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.jface.viewers.TreeViewer;
+import org.eclipse.jface.viewers.Viewer;
+import org.eclipse.jface.viewers.ViewerFilter;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -75,6 +78,17 @@ public class ApplicationCreationPropertyEditWizardPage extends WizardPage {
 		final Composite propComposite = new Composite(main, SWT.BORDER);
 		propComposite.setLayoutData(GridDataFactory.fillDefaults().grab(true, true).create());
 		this.viewer = ScaComponentFactory.createPropertyTable(propComposite, SWT.BORDER | SWT.FULL_SELECTION | SWT.SINGLE, this.adapterFactory);
+		this.viewer.addFilter(new ViewerFilter() {
+			
+			@Override
+			public boolean select(Viewer viewer, Object parentElement, Object element) {
+				if (element instanceof ScaAbstractProperty<?>) {
+					ScaAbstractProperty<?> prop = (ScaAbstractProperty< ? >) element;
+					return PropertiesUtil.canOverride(prop.getDefinition());
+				}
+				return false;
+			}
+		});
 
 		final Button resetButton = new Button(main, SWT.PUSH);
 		resetButton.setText("Reset");

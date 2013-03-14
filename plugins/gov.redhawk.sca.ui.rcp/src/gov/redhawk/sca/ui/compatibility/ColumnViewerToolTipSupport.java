@@ -14,7 +14,7 @@ package gov.redhawk.sca.ui.compatibility;
 import org.eclipse.jface.viewers.ColumnViewer;
 
 /**
- * @since 1.1
+ * @since 10.0
  * 
  */
 public final class ColumnViewerToolTipSupport {
@@ -22,6 +22,9 @@ public final class ColumnViewerToolTipSupport {
 
 	}
 
+	/**
+     * @since 10.0
+     */
 	public static void enableFor(final ColumnViewer viewer) {
 		org.eclipse.jface.viewers.ColumnViewerToolTipSupport.enableFor(viewer);
 	}

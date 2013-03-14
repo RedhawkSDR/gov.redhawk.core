@@ -180,6 +180,7 @@ public interface ScaFileStore extends IStatusProvider, IRefreshable {
 	/**
 	 * Sets the value of the '{@link gov.redhawk.model.sca.ScaFileStore#isDirectory <em>Directory</em>}' attribute.
 	 * <!-- begin-user-doc -->
+	 * @since 16.0
 	 * <!-- end-user-doc -->
 	 * @param value the new value of the '<em>Directory</em>' attribute.
 	 * @see #isDirectory()
@@ -206,6 +207,7 @@ public interface ScaFileStore extends IStatusProvider, IRefreshable {
 	/**
 	 * Sets the value of the '{@link gov.redhawk.model.sca.ScaFileStore#getName <em>Name</em>}' attribute.
 	 * <!-- begin-user-doc -->
+	 * @since 16.0
 	 * <!-- end-user-doc -->
 	 * @param value the new value of the '<em>Name</em>' attribute.
 	 * @see #getName()

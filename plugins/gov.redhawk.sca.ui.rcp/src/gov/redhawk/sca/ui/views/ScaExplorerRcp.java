@@ -22,11 +22,17 @@ import org.eclipse.ui.navigator.CommonViewer;
  */
 public class ScaExplorerRcp extends ScaExplorer {
 
+	/**
+     * @since 10.0
+     */
 	@Override
 	protected CommonViewer createCommonViewerObject(final Composite aParent) {
 		return new ScaCommonViewer(getViewSite().getId(), aParent, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL);
 	}
 
+	/**
+     * @since 10.0
+     */
 	@Override
 	protected CommonViewer createCommonViewer(final Composite aParent) {
 		final CommonViewer retVal = super.createCommonViewer(aParent);

@@ -32,17 +32,18 @@ import org.omg.CORBA.Any;
 import org.omg.CORBA.ORB;
 import org.omg.CORBA.SystemException;
 import org.omg.CORBA.UserException;
+import org.omg.CosEventComm.Disconnected;
+import org.omg.CosEventComm.PushConsumer;
+import org.omg.CosEventComm.PushConsumerHelper;
+import org.omg.CosEventComm.PushConsumerOperations;
+import org.omg.CosEventComm.PushConsumerPOATie;
 import org.omg.PortableServer.POA;
 import org.omg.PortableServer.POAHelper;
 
 import CF.DomainManager;
 import CF.DomainManagerPackage.InvalidEventChannelName;
 import CF.DomainManagerPackage.NotConnected;
-import COS.CosEventComm.Disconnected;
-import COS.CosEventComm.PushConsumer;
-import COS.CosEventComm.PushConsumerHelper;
-import COS.CosEventComm.PushConsumerOperations;
-import COS.CosEventComm.PushConsumerPOATie;
+
 
 /**
  * 
@@ -86,8 +87,9 @@ public class EventJob extends SilentJob implements PushConsumerOperations {
 		//		final ConsumerAdmin consumerAdmin = eventChannel.for_consumers();
 		//		this.proxySupplier = consumerAdmin.obtain_push_supplier();
 		//		this.proxySupplier.connect_push_consumer(this.stub);
-
-		this.domMgr.registerWithEventChannel(this.stub, this.id.toString(), channelName);
+		if (domMgr != null) {
+			this.domMgr.registerWithEventChannel(this.stub, this.id.toString(), channelName);
+		}
 		setSystem(true);
 
 	}

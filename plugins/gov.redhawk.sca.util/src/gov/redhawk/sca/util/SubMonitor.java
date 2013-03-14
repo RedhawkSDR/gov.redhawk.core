@@ -8,6 +8,7 @@ import org.eclipse.core.runtime.NullProgressMonitor;
 /**
  * A class with the same functionality of {@link org.eclipse.core.runtime.SubMonitor}, but with a handy function to
  * give back work you realized you won't perform. See {@link #notWorked(int)}.
+ * @since 3.2
  */
 public class SubMonitor implements IProgressMonitorWithBlocking {
 	

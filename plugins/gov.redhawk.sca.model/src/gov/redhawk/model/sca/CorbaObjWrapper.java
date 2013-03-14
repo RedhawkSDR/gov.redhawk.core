@@ -60,6 +60,7 @@ public interface CorbaObjWrapper< T extends org.omg.CORBA.Object > extends DataP
 	/**
 	 * Sets the value of the '{@link gov.redhawk.model.sca.CorbaObjWrapper#getIor <em>Ior</em>}' attribute.
 	 * <!-- begin-user-doc -->
+	 * @since 16.0
 	 * <!-- end-user-doc -->
 	 * @param value the new value of the '<em>Ior</em>' attribute.
 	 * @see #isSetIor()
@@ -72,6 +73,7 @@ public interface CorbaObjWrapper< T extends org.omg.CORBA.Object > extends DataP
 	/**
 	 * Unsets the value of the '{@link gov.redhawk.model.sca.CorbaObjWrapper#getIor <em>Ior</em>}' attribute.
 	 * <!-- begin-user-doc -->
+	 * @since 16.0
 	 * <!-- end-user-doc -->
 	 * @see #isSetIor()
 	 * @see #getIor()

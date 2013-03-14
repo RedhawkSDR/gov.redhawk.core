@@ -19,6 +19,9 @@ import org.eclipse.jface.preference.RadioGroupFieldEditor;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPreferencePage;
 
+/**
+ * @since 10.0
+ */
 public class RedhawkPreferencePage extends FieldEditorPreferencePage implements IWorkbenchPreferencePage {
 	public static final String PREFERENCES_PAGE_ID = "gov.redhawk.ui.preferences";
 

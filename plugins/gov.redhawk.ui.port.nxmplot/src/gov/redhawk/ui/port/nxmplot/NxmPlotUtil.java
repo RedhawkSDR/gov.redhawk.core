@@ -249,6 +249,7 @@ public final class NxmPlotUtil {
 		return addSource(port, fft, plotWidget, null).getSourceId();
 	}
 
+
 	public static IPlotSession addSource(final ScaUsesPort port, final AbstractNxmPlotWidget plotWidget, final String qualifers) {
 		return addSource(port, null, plotWidget, qualifers);
 	}

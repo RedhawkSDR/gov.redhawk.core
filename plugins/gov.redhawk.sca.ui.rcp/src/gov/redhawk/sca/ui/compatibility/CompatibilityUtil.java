@@ -14,7 +14,7 @@ package gov.redhawk.sca.ui.compatibility;
 import org.eclipse.swt.graphics.FontData;
 
 /**
- * @since 1.1
+ * @since 10.0
  */
 public class CompatibilityUtil {
 
@@ -22,6 +22,9 @@ public class CompatibilityUtil {
 		//Prevent instantiation
 	}
 
+	/**
+     * @since 10.0
+     */
 	public static void setFontDataStyle(FontData fontData, int style) {
 		fontData.setStyle(style);
 	}

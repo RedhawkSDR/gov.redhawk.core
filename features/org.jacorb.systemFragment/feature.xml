@@ -13,17 +13,18 @@
       id="org.jacorb.systemFragment"
       label="%featureName"
       version="3.1.0.qualifier"
-      provider-name="%providerName">
+      provider-name="%providerName"
+      plugin="mil.jpeojtrs.sca.util">
 
-   <description url="http://www.jacorb.org/">
+   <description url="http://redhawksdr.org">
       %description
    </description>
 
-   <copyright url="http://www.jacorb.org/">
+   <copyright url="http://redhawksdr.org">
       %copyright
    </copyright>
 
-   <license url="http://www.jacorb.org/">
+   <license url="http://redhawksdr.org">
       %license
    </license>
 
@@ -32,6 +33,7 @@
          download-size="0"
          install-size="0"
          version="0.0.0"
-         fragment="true"/>
+         fragment="true"
+         unpack="true"/>
 
 </feature>

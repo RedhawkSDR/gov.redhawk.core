@@ -211,6 +211,7 @@ public interface ScaDomainManager extends ScaPropertyContainer<DomainManager, Do
 	/**
 	 * Sets the value of the '{@link gov.redhawk.model.sca.ScaDomainManager#getFileManager <em>File Manager</em>}' containment reference.
 	 * <!-- begin-user-doc -->
+	 * @since 16.0
 	 * <!-- end-user-doc -->
 	 * @param value the new value of the '<em>File Manager</em>' containment reference.
 	 * @see #isSetFileManager()
@@ -223,6 +224,7 @@ public interface ScaDomainManager extends ScaPropertyContainer<DomainManager, Do
 	/**
 	 * Unsets the value of the '{@link gov.redhawk.model.sca.ScaDomainManager#getFileManager <em>File Manager</em>}' containment reference.
 	 * <!-- begin-user-doc -->
+	 * @since 16.0
 	 * <!-- end-user-doc -->
 	 * @see #isSetFileManager()
 	 * @see #getFileManager()
@@ -246,10 +248,7 @@ public interface ScaDomainManager extends ScaPropertyContainer<DomainManager, Do
 	/**
 	 * Returns the value of the '<em><b>Connection Properties Container</b></em>' containment reference.
 	 * <!-- begin-user-doc -->
-	 * <p>
-	 * If the meaning of the '<em>Connection Properties Container</em>' containment reference isn't clear,
-	 * there really should be more of a description here...
-	 * </p>
+	 * @since 16.0
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Connection Properties Container</em>' containment reference.
 	 * @see #setConnectionPropertiesContainer(Properties)
@@ -263,6 +262,7 @@ public interface ScaDomainManager extends ScaPropertyContainer<DomainManager, Do
 	/**
 	 * Sets the value of the '{@link gov.redhawk.model.sca.ScaDomainManager#getConnectionPropertiesContainer <em>Connection Properties Container</em>}' containment reference.
 	 * <!-- begin-user-doc -->
+	 * @since 16.0
 	 * <!-- end-user-doc -->
 	 * @param value the new value of the '<em>Connection Properties Container</em>' containment reference.
 	 * @see #getConnectionPropertiesContainer()
@@ -352,6 +352,7 @@ public interface ScaDomainManager extends ScaPropertyContainer<DomainManager, Do
 	/**
 	 * Sets the value of the '{@link gov.redhawk.model.sca.ScaDomainManager#getIdentifier <em>Identifier</em>}' attribute.
 	 * <!-- begin-user-doc -->
+	 * @since 16.0
 	 * <!-- end-user-doc -->
 	 * @param value the new value of the '<em>Identifier</em>' attribute.
 	 * @see #isSetIdentifier()
@@ -364,6 +365,7 @@ public interface ScaDomainManager extends ScaPropertyContainer<DomainManager, Do
 	/**
 	 * Unsets the value of the '{@link gov.redhawk.model.sca.ScaDomainManager#getIdentifier <em>Identifier</em>}' attribute.
 	 * <!-- begin-user-doc -->
+	 * @since 16.0
 	 * <!-- end-user-doc -->
 	 * @see #isSetIdentifier()
 	 * @see #getIdentifier()
@@ -433,6 +435,7 @@ public interface ScaDomainManager extends ScaPropertyContainer<DomainManager, Do
 	/**
 	 * Sets the value of the '{@link gov.redhawk.model.sca.ScaDomainManager#getRootContext <em>Root Context</em>}' attribute.
 	 * <!-- begin-user-doc -->
+	 * @since 16.0
 	 * <!-- end-user-doc -->
 	 * @param value the new value of the '<em>Root Context</em>' attribute.
 	 * @see #isSetRootContext()
@@ -445,6 +448,7 @@ public interface ScaDomainManager extends ScaPropertyContainer<DomainManager, Do
 	/**
 	 * Unsets the value of the '{@link gov.redhawk.model.sca.ScaDomainManager#getRootContext <em>Root Context</em>}' attribute.
 	 * <!-- begin-user-doc -->
+	 * @since 16.0
 	 * <!-- end-user-doc -->
 	 * @see #isSetRootContext()
 	 * @see #getRootContext()
@@ -487,6 +491,7 @@ public interface ScaDomainManager extends ScaPropertyContainer<DomainManager, Do
 	/**
 	 * Sets the value of the '{@link gov.redhawk.model.sca.ScaDomainManager#getState <em>State</em>}' attribute.
 	 * <!-- begin-user-doc -->
+	 * @since 16.0
 	 * <!-- end-user-doc -->
 	 * @param value the new value of the '<em>State</em>' attribute.
 	 * @see gov.redhawk.model.sca.DomainConnectionState

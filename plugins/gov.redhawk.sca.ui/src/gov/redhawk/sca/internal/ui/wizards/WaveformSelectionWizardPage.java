@@ -13,9 +13,9 @@ package gov.redhawk.sca.internal.ui.wizards;
 
 import gov.redhawk.model.sca.ScaDomainManager;
 import gov.redhawk.sca.ui.ScaUiPlugin;
+import gov.redhawk.sca.ui.parts.FormFilteredTree;
 import gov.redhawk.sca.ui.wizards.InstallApplicationContentProvider;
 import gov.redhawk.sca.ui.wizards.WizardSadItemProviderAdapterFactory;
-import gov.redhawk.ui.parts.FormFilteredTree;
 
 import java.text.SimpleDateFormat;
 import java.util.Comparator;

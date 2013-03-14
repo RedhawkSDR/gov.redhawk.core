@@ -11,6 +11,9 @@
  */
 package gov.redhawk.sca.ui.singledomain;
 
+import gov.redhawk.sca.ui.views.ScaExplorer;
+import gov.redhawk.ui.views.namebrowser.view.NameBrowserView;
+
 import org.eclipse.ui.IFolderLayout;
 import org.eclipse.ui.IPageLayout;
 import org.eclipse.ui.IPerspectiveFactory;
@@ -28,9 +31,9 @@ import org.eclipse.ui.IPerspectiveFactory;
  */
 public class ScaExplorerSdPerspective implements IPerspectiveFactory {
 
-	private static final String SCA_EXPLORER_VIEW_ID = "gov.redhawk.ui.sca_explorer_sd";
+	private static final String SCA_EXPLORER_VIEW_ID = ScaExplorer.VIEW_ID;
 
-	private static final String NAMEBROWSER_VIEW_ID = "gov.redhawk.ui.views.namebrowserview";
+	private static final String NAMEBROWSER_VIEW_ID = NameBrowserView.ID;
 
 	/** The PDE Error Log view ID. */ //not available in RAP 1.3 Investigate porting, or see if available in 1.4 or 1.5
 	//private static final String PDE_ERROR_LOG_VIEW_ID = "org.eclipse.pde.runtime.LogView";

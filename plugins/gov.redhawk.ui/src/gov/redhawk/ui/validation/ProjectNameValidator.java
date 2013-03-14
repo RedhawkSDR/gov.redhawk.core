@@ -39,11 +39,12 @@ public class ProjectNameValidator implements IValidator {
 	// A project name must not be ''
 	// A project name must not start with a number
 	// A project name must not contain spaces
-
+	// Project names may contain '.'  to allow for name spacing. 
+	
 	/**
 	 * @since 5.1
 	 */
-	public static final String VALID_IMPL_NAME_REGEX = "^[A-Za-z][A-Za-z0-9_-]*";
+	public static final String VALID_IMPL_NAME_REGEX = "^[A-Za-z][\\.A-Za-z0-9_-]*";
 
 	/**
 	 * {@inheritDoc}

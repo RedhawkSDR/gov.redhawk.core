@@ -71,6 +71,7 @@ public interface ScaWaveformFactory extends CorbaObjWrapper<ApplicationFactory>,
 	/**
 	 * Sets the value of the '{@link gov.redhawk.model.sca.ScaWaveformFactory#getDomMgr <em>Dom Mgr</em>}' container reference.
 	 * <!-- begin-user-doc -->
+	 * @since 16.0
 	 * <!-- end-user-doc -->
 	 * @param value the new value of the '<em>Dom Mgr</em>' container reference.
 	 * @see #getDomMgr()

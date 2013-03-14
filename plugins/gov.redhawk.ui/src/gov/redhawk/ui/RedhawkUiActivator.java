@@ -49,6 +49,9 @@ public class RedhawkUiActivator extends AbstractUIPlugin {
 	/** The Constant IMG_PRF_NEW_WIZBAN. */
 	public static final String IMG_PRF_NEW_WIZBAN = "icons/wizban/NewPrf.gif";
 
+	/**
+     * @since 7.0
+     */
 	public static final String PLUGIN_ID = "gov.redhawk.ui";
 
 	// The shared instance

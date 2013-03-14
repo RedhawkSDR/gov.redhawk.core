@@ -194,6 +194,7 @@ public interface ScaWaveform extends ScaPropertyContainer<Application, SoftwareA
 	/**
 	 * Sets the value of the '{@link gov.redhawk.model.sca.ScaWaveform#getIdentifier <em>Identifier</em>}' attribute.
 	 * <!-- begin-user-doc -->
+	 * @since 16.0
 	 * <!-- end-user-doc -->
 	 * @param value the new value of the '<em>Identifier</em>' attribute.
 	 * @see #isSetIdentifier()
@@ -206,6 +207,7 @@ public interface ScaWaveform extends ScaPropertyContainer<Application, SoftwareA
 	/**
 	 * Unsets the value of the '{@link gov.redhawk.model.sca.ScaWaveform#getIdentifier <em>Identifier</em>}' attribute.
 	 * <!-- begin-user-doc -->
+	 * @since 16.0
 	 * <!-- end-user-doc -->
 	 * @see #isSetIdentifier()
 	 * @see #getIdentifier()
@@ -248,6 +250,7 @@ public interface ScaWaveform extends ScaPropertyContainer<Application, SoftwareA
 	/**
 	 * Sets the value of the '{@link gov.redhawk.model.sca.ScaWaveform#getName <em>Name</em>}' attribute.
 	 * <!-- begin-user-doc -->
+	 * @since 16.0
 	 * <!-- end-user-doc -->
 	 * @param value the new value of the '<em>Name</em>' attribute.
 	 * @see #isSetName()
@@ -260,6 +263,7 @@ public interface ScaWaveform extends ScaPropertyContainer<Application, SoftwareA
 	/**
 	 * Unsets the value of the '{@link gov.redhawk.model.sca.ScaWaveform#getName <em>Name</em>}' attribute.
 	 * <!-- begin-user-doc -->
+	 * @since 16.0
 	 * <!-- end-user-doc -->
 	 * @see #isSetName()
 	 * @see #getName()
@@ -301,6 +305,7 @@ public interface ScaWaveform extends ScaPropertyContainer<Application, SoftwareA
 	/**
 	 * Sets the value of the '{@link gov.redhawk.model.sca.ScaWaveform#getStarted <em>Started</em>}' attribute.
 	 * <!-- begin-user-doc -->
+	 * @since 16.0
 	 * <!-- end-user-doc -->
 	 * @param value the new value of the '<em>Started</em>' attribute.
 	 * @see #isSetStarted()
@@ -313,6 +318,7 @@ public interface ScaWaveform extends ScaPropertyContainer<Application, SoftwareA
 	/**
 	 * Unsets the value of the '{@link gov.redhawk.model.sca.ScaWaveform#getStarted <em>Started</em>}' attribute.
 	 * <!-- begin-user-doc -->
+	 * @since 16.0
 	 * <!-- end-user-doc -->
 	 * @see #isSetStarted()
 	 * @see #getStarted()

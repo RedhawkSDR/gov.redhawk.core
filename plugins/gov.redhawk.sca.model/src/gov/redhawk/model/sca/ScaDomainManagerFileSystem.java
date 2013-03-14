@@ -56,6 +56,7 @@ public interface ScaDomainManagerFileSystem extends ScaFileManager {
 	/**
 	 * Sets the value of the '{@link gov.redhawk.model.sca.ScaDomainManagerFileSystem#getDomMgr <em>Dom Mgr</em>}' container reference.
 	 * <!-- begin-user-doc -->
+	 * @since 16.0
 	 * <!-- end-user-doc -->
 	 * @param value the new value of the '<em>Dom Mgr</em>' container reference.
 	 * @see #getDomMgr()

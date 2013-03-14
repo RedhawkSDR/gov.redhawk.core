@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: SCA Ui
 Bundle-SymbolicName: gov.redhawk.sca.ui;singleton:=true
-Bundle-Version: 9.0.0.qualifier
+Bundle-Version: 10.0.0.qualifier
 Bundle-Activator: gov.redhawk.sca.ui.ScaUiPlugin
 Require-Bundle: gov.redhawk.sca;bundle-version="1.0.0",
  org.eclipse.core.resources;bundle-version="3.4.0",
@@ -49,6 +49,7 @@ Export-Package: gov.redhawk.sca.internal.ui;x-internal:=true,
  gov.redhawk.sca.ui.actions,
  gov.redhawk.sca.ui.compatibility,
  gov.redhawk.sca.ui.editors,
+ gov.redhawk.sca.ui.parts,
  gov.redhawk.sca.ui.preferences,
  gov.redhawk.sca.ui.properties,
  gov.redhawk.sca.ui.views,
@@ -56,5 +57,4 @@ Export-Package: gov.redhawk.sca.internal.ui;x-internal:=true,
 Bundle-Vendor: REDHAWK
 Bundle-ClassPath: library.jar,
  .
-Import-Package: gov.redhawk.ui.parts,
- org.eclipse.ui.ide
+Import-Package: org.eclipse.ui.ide

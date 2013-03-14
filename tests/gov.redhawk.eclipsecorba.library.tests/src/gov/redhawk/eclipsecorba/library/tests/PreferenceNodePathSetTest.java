@@ -18,8 +18,12 @@ import gov.redhawk.eclipsecorba.library.PreferenceNodePathSet;
 import junit.framework.Assert;
 import junit.textui.TestRunner;
 
+import org.eclipse.core.runtime.Platform;
+import org.eclipse.core.runtime.preferences.IPreferencesService;
+import org.eclipse.core.runtime.preferences.InstanceScope;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.URI;
+import org.osgi.framework.ServiceReference;
 
 /**
  * <!-- begin-user-doc -->
@@ -83,13 +87,14 @@ public class PreferenceNodePathSetTest extends PathTest {
 
 	@Override
 	public void testGetDerivedPath() {
+		new InstanceScope().getNode("gov.redhawk.eclipsecorba.library.tests").put("IdlIncludePath", "helloWorld");
+		
 		final PreferenceNodePathSet pathSet = this.getFixture();
 		pathSet.setDelimiter(";");
 		pathSet.setFileUri(true);
 		pathSet.setKey("IdlIncludePath");
 		pathSet.setQualifier("gov.redhawk.eclipsecorba.library.tests");
 		pathSet.setReplaceEnv(true);
-
 		final EList<URI> derrivedPath = pathSet.getDerivedPath();
 		Assert.assertTrue(derrivedPath.size() > 0);
 

@@ -11,8 +11,8 @@
 -->
 <feature
       id="gov.redhawk.rcp.sdk"
-      label="RCP SDK"
-      version="1.8.3.qualifier"
+      label="REDHAWK RCP SDK"
+      version="1.9.0.qualifier"
       provider-name="%providerName"
       plugin="mil.jpeojtrs.sca.util">
 
@@ -29,11 +29,11 @@
    </license>
 
    <includes
-         id="gov.redhawk.rcp.feature"
+         id="gov.redhawk.rcp"
          version="0.0.0"/>
 
    <includes
-         id="gov.redhawk.rcp.feature.source"
+         id="gov.redhawk.rcp.source"
          version="0.0.0"/>
 
 </feature>

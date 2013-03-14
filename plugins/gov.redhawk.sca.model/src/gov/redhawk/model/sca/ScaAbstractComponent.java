@@ -117,6 +117,7 @@ public interface ScaAbstractComponent< R extends Resource > extends ScaPropertyC
 	/**
 	 * Sets the value of the '{@link gov.redhawk.model.sca.ScaAbstractComponent#getStarted <em>Started</em>}' attribute.
 	 * <!-- begin-user-doc -->
+	 * @since 16.0
 	 * <!-- end-user-doc -->
 	 * @param value the new value of the '<em>Started</em>' attribute.
 	 * @see #isSetStarted()
@@ -129,6 +130,7 @@ public interface ScaAbstractComponent< R extends Resource > extends ScaPropertyC
 	/**
 	 * Unsets the value of the '{@link gov.redhawk.model.sca.ScaAbstractComponent#getStarted <em>Started</em>}' attribute.
 	 * <!-- begin-user-doc -->
+	 * @since 16.0
 	 * <!-- end-user-doc -->
 	 * @see #isSetStarted()
 	 * @see #getStarted()

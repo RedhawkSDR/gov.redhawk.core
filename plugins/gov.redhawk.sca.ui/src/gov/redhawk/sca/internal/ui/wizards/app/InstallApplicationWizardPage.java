@@ -12,9 +12,9 @@
 package gov.redhawk.sca.internal.ui.wizards.app;
 
 import gov.redhawk.model.sca.ScaDomainManager;
+import gov.redhawk.sca.ui.parts.FormFilteredTree;
 import gov.redhawk.sca.ui.wizards.InstallApplicationContentProvider;
 import gov.redhawk.sca.ui.wizards.WizardSadItemProviderAdapterFactory;
-import gov.redhawk.ui.parts.FormFilteredTree;
 
 import org.eclipse.emf.edit.ui.provider.AdapterFactoryLabelProvider;
 import org.eclipse.jface.viewers.CheckStateChangedEvent;

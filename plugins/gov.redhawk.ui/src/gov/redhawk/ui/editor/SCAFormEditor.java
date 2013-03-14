@@ -846,6 +846,36 @@ public abstract class SCAFormEditor extends FormEditor implements IEditingDomain
 					}
 				}
 			}
+
+			/**
+			 * Checks to see if the given resource is within the same project as the SCAFormEditor.
+			 * This fixes bug # 266
+			 * @param resource The resource to be checked
+			 * @return 
+			 */
+			private boolean isLocal(final Resource resource) {
+				// If the resource isn't located in the workspace it isn't local
+				if (!resource.getURI().isPlatformResource()) {
+					return false;
+				}
+				
+				// Get the file for the referenced resource
+				IPath pathToResource = new Path(resource.getURI().toPlatformString(true));
+	            IFile resourceFile = ResourcesPlugin.getWorkspace().getRoot().getFile(pathToResource);
+	            
+	            // Check the file's project against the SCA Form Editor's scd file's project.
+	            if (resourceFile != null && resourceFile.getProject() != null) {
+	            	if (SCAFormEditor.this.getEditorInput() instanceof IFileEditorInput) {
+	            		IFile localFile = ((IFileEditorInput) SCAFormEditor.this.getEditorInput()).getFile();
+	            		if (localFile != null) {
+	            			if (localFile.getProject().equals(resourceFile.getProject())) {
+	            				return true;
+	            			}
+	            		}
+	            	}
+	            }
+				return false;
+            }
 		};
 
 		try {

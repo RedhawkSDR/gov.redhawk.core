@@ -113,6 +113,7 @@ public interface ScaDevice< D extends Device > extends ScaAbstractComponent<D>, 
 	/**
 	 * Sets the value of the '{@link gov.redhawk.model.sca.ScaDevice#getAdminState <em>Admin State</em>}' attribute.
 	 * <!-- begin-user-doc -->
+	 * @since 16.0
 	 * <!-- end-user-doc -->
 	 * @param value the new value of the '<em>Admin State</em>' attribute.
 	 * @see #isSetAdminState()
@@ -125,6 +126,7 @@ public interface ScaDevice< D extends Device > extends ScaAbstractComponent<D>, 
 	/**
 	 * Unsets the value of the '{@link gov.redhawk.model.sca.ScaDevice#getAdminState <em>Admin State</em>}' attribute.
 	 * <!-- begin-user-doc -->
+	 * @since 16.0
 	 * <!-- end-user-doc -->
 	 * @see #isSetAdminState()
 	 * @see #getAdminState()
@@ -167,6 +169,7 @@ public interface ScaDevice< D extends Device > extends ScaAbstractComponent<D>, 
 	/**
 	 * Sets the value of the '{@link gov.redhawk.model.sca.ScaDevice#getLabel <em>Label</em>}' attribute.
 	 * <!-- begin-user-doc -->
+	 * @since 16.0
 	 * <!-- end-user-doc -->
 	 * @param value the new value of the '<em>Label</em>' attribute.
 	 * @see #isSetLabel()
@@ -179,6 +182,7 @@ public interface ScaDevice< D extends Device > extends ScaAbstractComponent<D>, 
 	/**
 	 * Unsets the value of the '{@link gov.redhawk.model.sca.ScaDevice#getLabel <em>Label</em>}' attribute.
 	 * <!-- begin-user-doc -->
+	 * @since 16.0
 	 * <!-- end-user-doc -->
 	 * @see #isSetLabel()
 	 * @see #getLabel()
@@ -221,6 +225,7 @@ public interface ScaDevice< D extends Device > extends ScaAbstractComponent<D>, 
 	/**
 	 * Sets the value of the '{@link gov.redhawk.model.sca.ScaDevice#getOperationalState <em>Operational State</em>}' attribute.
 	 * <!-- begin-user-doc -->
+	 * @since 16.0
 	 * <!-- end-user-doc -->
 	 * @param value the new value of the '<em>Operational State</em>' attribute.
 	 * @see #isSetOperationalState()
@@ -233,6 +238,7 @@ public interface ScaDevice< D extends Device > extends ScaAbstractComponent<D>, 
 	/**
 	 * Unsets the value of the '{@link gov.redhawk.model.sca.ScaDevice#getOperationalState <em>Operational State</em>}' attribute.
 	 * <!-- begin-user-doc -->
+	 * @since 16.0
 	 * <!-- end-user-doc -->
 	 * @see #isSetOperationalState()
 	 * @see #getOperationalState()
@@ -275,6 +281,7 @@ public interface ScaDevice< D extends Device > extends ScaAbstractComponent<D>, 
 	/**
 	 * Sets the value of the '{@link gov.redhawk.model.sca.ScaDevice#getUsageState <em>Usage State</em>}' attribute.
 	 * <!-- begin-user-doc -->
+	 * @since 16.0
 	 * <!-- end-user-doc -->
 	 * @param value the new value of the '<em>Usage State</em>' attribute.
 	 * @see #isSetUsageState()
@@ -287,6 +294,7 @@ public interface ScaDevice< D extends Device > extends ScaAbstractComponent<D>, 
 	/**
 	 * Unsets the value of the '{@link gov.redhawk.model.sca.ScaDevice#getUsageState <em>Usage State</em>}' attribute.
 	 * <!-- begin-user-doc -->
+	 * @since 16.0
 	 * <!-- end-user-doc -->
 	 * @see #isSetUsageState()
 	 * @see #getUsageState()

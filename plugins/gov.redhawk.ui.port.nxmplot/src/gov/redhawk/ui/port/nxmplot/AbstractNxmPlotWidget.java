@@ -28,12 +28,10 @@ import org.eclipse.jface.util.SafeRunnable;
 import org.eclipse.swt.widgets.Composite;
 
 import BULKIO.StreamSRI;
-
 /**
  * @since 3.0
  */
 public abstract class AbstractNxmPlotWidget extends Composite {
-	
 	private StreamSRI activeSRI;
 
 	/**
