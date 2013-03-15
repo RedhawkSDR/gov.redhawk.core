@@ -3,6 +3,7 @@ Bundle-ManifestVersion: 2
 Bundle-Name: Tests
 Bundle-SymbolicName: gov.redhawk.prf.validation.tests
 Bundle-Version: 1.0.0.qualifier
+Eclipse-BundleShape: dir
 Require-Bundle: org.eclipse.core.runtime;bundle-version="3.6.0",
  gov.redhawk.validation;bundle-version="2.0.0",
  mil.jpeojtrs.sca.prf;bundle-version="2.2.2",
