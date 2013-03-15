@@ -19,7 +19,7 @@
 		<mil.jpeojtrs.sca-p2-url>http://pinkman.villains.techma.com/p2/tycho/mil.jpeojtrs.sca/SNAPSHOT</mil.jpeojtrs.sca-p2-url>
 		<redhawk-core-p2-url>http://pinkman.villains.techma.com/p2/tycho/core</redhawk-core-p2-url>
 		<bulkioInterfaces-p2-url>http://pinkman.villains.techma.com/p2/tycho/bulkioInterfaces</bulkioInterfaces-p2-url>
-		<nxm-p2-url>http://pinkman.villains.techma.com/p2/nxm-3.3.0/</nxm-p2-url>
+		<nxm-p2-url>http://pinkman.villains.techma.com/p2/nxm/latest/</nxm-p2-url>
 		<juno-3.8>http://pinkman.villains.techma.com/p2/eclipse/juno-3.8</juno-3.8>
 		<juno>http://download.eclipse.org/releases/juno</juno>
 		<orbit>http://pinkman.villains.techma.com/p2/eclipse/orbit/</orbit>
