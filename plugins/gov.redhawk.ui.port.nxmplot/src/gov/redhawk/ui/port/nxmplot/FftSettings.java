@@ -19,6 +19,7 @@ public class FftSettings {
 		BARTLETT { public String toString() { return "Bartlett"; } public String toWindowString() { return "BART"; } },
 		HANNING { public String toString() { return "Hanning"; } public String toWindowString() { return "HANN"; } },
 		HAMMING { public String toString() { return "Hamming"; } public String toWindowString() { return "HAMM"; } },
+		BH92 { public String toString() { return "Blackman-Harris"; } public String toWindowString() { return "BH92"; } },
 		BLACKMAN { public String toString() { return "Blackman"; } public String toWindowString() { return "BLAC"; } };
 		
 		public abstract String toWindowString();
