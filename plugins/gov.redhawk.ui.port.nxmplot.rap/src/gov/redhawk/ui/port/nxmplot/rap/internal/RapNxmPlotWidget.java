@@ -157,7 +157,7 @@ public class RapNxmPlotWidget extends AbstractNxmPlotWidget {
 	public String addDataFeature(Number xStart, Number xEnd, String color) {
 		String featureId = AbstractNxmPlotWidget.createUniqueName(false);
                 double dx = xEnd.doubleValue() - xStart.doubleValue();
-		final String cmd = "FEATURE LABEL=" + featureId + " PLOT=" + PLOT_ID + " TABEL={NAME=\"" +
+		final String cmd = "FEATURE LABEL=" + featureId + " PLOT=" + PLOT_ID + " TABLE={NAME=\"" +
 		featureId + "\",TYPE=\"DATA\",X=" + (xStart.doubleValue() + (dx/2)) + ",DX=" + dx + ",COLOR=\"" + color + "\"}";
 		this.runClientCommand(cmd);
 		return featureId;

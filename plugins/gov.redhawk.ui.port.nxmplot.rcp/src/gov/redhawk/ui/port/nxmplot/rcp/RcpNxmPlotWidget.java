@@ -148,7 +148,7 @@ public class RcpNxmPlotWidget extends AbstractNxmPlotWidget {
 	public String addDataFeature(Number xStart, Number xEnd, String color) {
 		String featureId = AbstractNxmPlotWidget.createUniqueName(false);
 		final double dx = xEnd.doubleValue() - xStart.doubleValue();
-		final String cmd = "FEATURE LABEL=" + featureId + " PLOT=" + plotCommand.id + " TABEL={NAME=\"" +
+		final String cmd = "FEATURE LABEL=" + featureId + " PLOT=" + plotCommand.id + " TABLE={NAME=\"" +
 		featureId + "\",TYPE=\"DATA\",X=" + (xStart.doubleValue() + (dx/2)) + ",DX=" + dx + ",COLOR=\"" + color + "\"}";
 		this.runClientCommand(cmd);
 		return featureId;
