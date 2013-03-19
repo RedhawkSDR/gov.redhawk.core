@@ -313,7 +313,7 @@ public enum ResourceFactoryRegistry implements IResourceFactoryRegistry, IExtens
 	}
 
 	public String getProfilePath(final ResourceDesc desc) {
-		return getMountPoint(desc) + "/" + desc.getProfile();
+		return desc.getProfile();
 	}
 
 	public ResourceDesc getDescByProfile(final String profile) {
