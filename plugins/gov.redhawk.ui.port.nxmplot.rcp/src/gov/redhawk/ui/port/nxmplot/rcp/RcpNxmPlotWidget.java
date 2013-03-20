@@ -13,6 +13,7 @@ package gov.redhawk.ui.port.nxmplot.rcp;
 
 import gov.redhawk.ui.port.nxmplot.AbstractNxmPlotWidget;
 
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Map;
@@ -89,7 +90,7 @@ public class RcpNxmPlotWidget extends AbstractNxmPlotWidget {
 	
 	@Override
 	public void dispose() {
-		Set<String> sourcesCopy = Collections.unmodifiableSet(sources);
+		String[] sourcesCopy = Arrays.copyOf(sources.toArray(new String[0]), sources.size());
 		for (String source : sourcesCopy) {
 			removeSource(source);
 		}
