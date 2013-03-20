@@ -89,7 +89,8 @@ public class RcpNxmPlotWidget extends AbstractNxmPlotWidget {
 	
 	@Override
 	public void dispose() {
-		for (String source : sources) {
+		Set<String> sourcesCopy = Collections.unmodifiableSet(sources);
+		for (String source : sourcesCopy) {
 			removeSource(source);
 		}
 		this.sources.clear();

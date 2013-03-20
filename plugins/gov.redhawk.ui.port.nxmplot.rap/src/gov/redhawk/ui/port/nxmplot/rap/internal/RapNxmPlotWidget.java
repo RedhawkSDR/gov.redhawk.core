@@ -66,6 +66,10 @@ public class RapNxmPlotWidget extends AbstractNxmPlotWidget {
 
 	@Override
 	public void dispose() {
+		Set<String> sourcesCopy = Collections.unmodifiableSet(sources);
+		for (String source : sourcesCopy) {
+			removeSource(source);
+		}
 	    super.dispose();
 	    nxmComp = null;
 	}
