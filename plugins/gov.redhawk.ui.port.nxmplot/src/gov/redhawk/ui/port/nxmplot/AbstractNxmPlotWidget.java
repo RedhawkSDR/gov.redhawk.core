@@ -261,7 +261,7 @@ public abstract class AbstractNxmPlotWidget extends Composite {
 	 * Creates a unique name to be used for pipes or commands for variables within the shared Nextmidas session
 	 * @return A new unique name
 	 */
-	protected static String createUniqueName(boolean pipe) {
+	public static String createUniqueName(boolean pipe) {
 		final String prefix = (pipe ? "_" : "");
 		return prefix + "UNIQUE_NAME" + NAME_INDEX.incrementAndGet();
 	}
