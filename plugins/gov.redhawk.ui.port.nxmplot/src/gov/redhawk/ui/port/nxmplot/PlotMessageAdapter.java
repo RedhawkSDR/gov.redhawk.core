@@ -53,6 +53,11 @@ public class PlotMessageAdapter implements MessageHandler {
 		else if ("ZOOM".equals(msg.name)) { // leftclick-drag
 			if (msg.data instanceof DragBox) {
 				final DragBox d = (DragBox) msg.data; 
+				this.listener.zoomX(d.getXMin(), d.getYMin(), d.getXMax(), d.getYMax(), d);
+			}
+		} else if ("ZOOMIN".equals(msg.name)) { // mousewheel
+			if (msg.data instanceof DragBox) {
+				final DragBox d = (DragBox) msg.data; 
 				this.listener.zoomIn(d.getXMin(), d.getYMin(), d.getXMax(), d.getYMax(), d);
 			}
 		} else if ("DRAGBOX".equals(msg.name)) { // Rightclick-drag
@@ -71,6 +76,11 @@ public class PlotMessageAdapter implements MessageHandler {
 			}
 			this.listener.dragBox(d.getXMin(), d.getYMin(), d.getXMax(), d.getYMax());
 		} else if ("UNZOOM".equals(msg.name)) { // rightclick
+			if (msg.data instanceof DragBox) {
+				final DragBox d = (DragBox) msg.data; 
+				this.listener.unzoom(d.getXMin(), d.getYMin(), d.getXMax(), d.getYMax(), d);
+			}
+		}  else if ("ZOOMOUT".equals(msg.name)) { // mousewheel
 			if (msg.data instanceof DragBox) {
 				final DragBox d = (DragBox) msg.data; 
 				this.listener.zoomOut(d.getXMin(), d.getYMin(), d.getXMax(), d.getYMax(), d);
