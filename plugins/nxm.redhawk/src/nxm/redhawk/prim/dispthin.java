@@ -29,14 +29,11 @@ public class dispthin extends Primitive { // SUPPRESS CHECKSTYLE ClassName
 	private Data dataBuffer;
 
 	private double refreshRate;
-	private boolean firstTime = true;
-	private boolean update;
-	private long nextUpdate;
+	private long lastUpdate;
 	private int frameLen;
 	private int pipeClass;
 	private int lps;
 	private String outputFileName;
-	private boolean isDone;
 
 	@Override
 	public int open() {
@@ -99,72 +96,47 @@ public class dispthin extends Primitive { // SUPPRESS CHECKSTYLE ClassName
 
 	@Override
 	public int process() {
-		if (this.isDone || this.hin == null || !this.hin.isOpen()) {
+		DataFile localhin = this.hin;
+		DataFile localhout = this.hout;
+		if (localhin == null || !localhin.isOpen()) {
 			return Commandable.FINISH;
-		} else if (this.hin.getXferLength() < 0) {
+		} else if (localhin.getXferLength() < 0) {
 			return Commandable.NOOP;
-		} else if (this.firstTime) {
-			this.firstTime = false;
-
-			// Prepare for the first update
-			this.update = true;
-			this.nextUpdate = System.currentTimeMillis();
-
-			int inbufsize = (int) (this.hin.getXferLength() * this.hin.getBPE());
-			if (this.hin.getFormat().charAt(0) == 'C') {
-				inbufsize = inbufsize * 2;
-			}
 		}
 
-		int status = Commandable.NORMAL;
 		// The next line may not be necessary
-		final int numRead = this.hin.read(this.dataBuffer);
+		final int numRead = localhin.read(this.dataBuffer);
 
 		// Check if we need to update
 		final long current_time = System.currentTimeMillis();
-		if (current_time > this.nextUpdate) {
-			this.update = true;
-		}
-
-		// If we read < 0, the pipe is closed so finish
-		if (numRead < 0) {
-			status = Commandable.FINISH;
-
-			// If we read 0, nothing was in the pipe, continue unless we need to
-			// write the data
-		} else if ((numRead == 0) && !this.update) {
-			status = Commandable.NOOP;
-
-			// Process the data we read
-		} else {
-			if (this.update) {
-				
-				// Drop packet if write is blocking
-				if (this.hout.avail() >= this.dataBuffer.getSize()) {
-					this.hout.write(this.dataBuffer);
-				}
-
-				if (this.refreshRate > 0.0) {
-					this.nextUpdate = current_time;
-					this.nextUpdate = (long) (this.nextUpdate + (((1.0 / this.refreshRate) * dispthin.MILLIS_PER_SEC)));
-					this.update = false;
-				} else {
-					this.update = true;
-				}
+		if (this.refreshRate > 0) {
+			final long nextUpdate = (long) (this.lastUpdate + (((1.0 / this.refreshRate) * dispthin.MILLIS_PER_SEC)));
+			if (current_time < nextUpdate) {
+				// SKIP Update
+				return Commandable.NOOP;
 			}
+		} 
+
+		final int status;
+
+		if (numRead < 0) {
+			// If we read < 0, the pipe is closed so finish
+			status = Commandable.FINISH;
+		} else if (numRead == 0) {
+			// If we read 0, nothing was in the pipe
+			status = Commandable.NOOP;
+		} else {
+			// Process the data we read
+			this.lastUpdate = current_time;
+			// Drop packet if write is blocking
+			if (localhout !=null) {
+				localhout.write(this.dataBuffer, Math.min((int)localhout.avail(), dataBuffer.size));
+			}
+			status = Commandable.NORMAL;
 		}
 		return status;
 	}
 
-	/** {@inheritDoc} 
-	 * @since 8.0*/
-	@Override
-	public int processMessage(final Message msg) {
-		if (msg.getName().equalsIgnoreCase("EXIT")) {
-			this.isDone = true;
-		}
-		return super.processMessage(msg);
-	}
 
 	@Override
 	public int close() {

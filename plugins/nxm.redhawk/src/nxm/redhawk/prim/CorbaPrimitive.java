@@ -187,19 +187,16 @@ public class CorbaPrimitive extends Primitive {
 	/** {@inheritDoc} */
 	@Override
 	public int close() {
-		shutdown();
-
+		shutdownNonBlocking();
 		return super.close();
 	}
-
-	/** {@inheritDoc} 
-	 * @since 8.0*/
-	@Override
-	public int processMessage(final Message msg) {
-		if ("EXIT".equalsIgnoreCase(msg.getName())) {
-			shutdown();
-		}
-		return super.processMessage(msg);
+	
+	protected void shutdownNonBlocking() {
+		new Thread("Corba Shutdown") {
+			public void run() {
+				shutdown();
+			}
+		}.start();
 	}
 
 	/**
