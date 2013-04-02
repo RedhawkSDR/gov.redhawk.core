@@ -5,7 +5,7 @@
     <import file="${commondir}/pdebuild.xml"/>
 
     <target name="buildAll" depends="clean">
-        <buildFeature featureId="gov.redhawk.rap.sdk"/>
+        <buildFeature featureId="org.jacorb.systemFragment"/>
     </target>
 
 </project>
