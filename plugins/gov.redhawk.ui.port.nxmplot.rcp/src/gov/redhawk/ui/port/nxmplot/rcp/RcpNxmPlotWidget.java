@@ -55,7 +55,6 @@ public class RcpNxmPlotWidget extends AbstractNxmPlotWidget {
 		super(parent, style);
 		parent.addDisposeListener(disposeListener);
 		setLayout(new FillLayout());
-		RedhawkNxmUtil.initializeRedhawkOptionTrees();
 		nxmComp = new NeXtMidasComposite(this, SWT.None);
 	}
 
