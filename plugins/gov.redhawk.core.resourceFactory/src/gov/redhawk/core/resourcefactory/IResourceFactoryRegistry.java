@@ -23,10 +23,6 @@ public interface IResourceFactoryRegistry {
 
 	IFileManager getFileManager();
 
-	String getMountPoint(ResourceDesc desc);
-
-	String getProfilePath(ResourceDesc desc);
-
 	ResourceDesc getDescByID(String refID);
 
 	ResourceDesc getDescByProfile(String profile);

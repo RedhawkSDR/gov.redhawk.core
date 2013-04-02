@@ -17,7 +17,6 @@ import gov.redhawk.core.filemanager.filesystem.BundleFileSystem;
 import gov.redhawk.core.resourcefactory.IResourceFactoryProvider;
 import gov.redhawk.core.resourcefactory.IResourceFactoryRegistry;
 import gov.redhawk.core.resourcefactory.ResourceDesc;
-import gov.redhawk.core.resourcefactory.ResourceDesc.Type;
 import gov.redhawk.core.resourcefactory.ResourceFactoryPlugin;
 import gov.redhawk.sca.util.ORBUtil;
 
@@ -104,9 +103,9 @@ public enum ResourceFactoryRegistry implements IResourceFactoryRegistry, IExtens
 	private final POA poa;
 
 	private ResourceFactoryRegistry() {
-		for (final Type t : Type.values()) {
+		for (final String s : new String[]{"components","waveforms","devices","services"}) {
 			try {
-				this.fileManager.mkdir(t.getDir());
+				this.fileManager.mkdir(s);
 			} catch (final InvalidFileName e) {
 				// PASS
 			} catch (final FileException e) {
@@ -193,10 +192,8 @@ public enum ResourceFactoryRegistry implements IResourceFactoryRegistry, IExtens
 
 			final ResourceFactory factoryRef = ResourceFactoryHelper.narrow(this.poa.servant_to_reference(new ResourceFactoryPOATie(factory)));
 
-			// TODO Support other types?
-			Type type = Type.COMPONENT;
 
-			final ResourceDesc desc = new ResourceDesc(FileSystemHelper.narrow(ref), profilePath.lastSegment(), factory.identifier(), type, factoryRef, -1);
+			final ResourceDesc desc = new ResourceDesc(FileSystemHelper.narrow(ref), profilePath.lastSegment(), factory.identifier(), factoryRef, -1);
 			addResourceFactory(desc);
 			this.tracker.registerObject(extension, desc, IExtensionTracker.REF_SOFT);
 		} catch (final ServantNotActive e) {
@@ -249,7 +246,7 @@ public enum ResourceFactoryRegistry implements IResourceFactoryRegistry, IExtens
 		this.fileManager.unmount(getMountPoint(desc));
 	}
 
-	public String getMountPoint(final ResourceDesc desc) {
+	private String getMountPoint(final ResourceDesc desc) {
 		int index = desc.getProfile().lastIndexOf(File.separatorChar);
 		if (index > 0) {
 			return desc.getProfile().substring(0, index);
@@ -312,10 +309,6 @@ public enum ResourceFactoryRegistry implements IResourceFactoryRegistry, IExtens
 		return retVal.toArray(new ResourceDesc[retVal.size()]);
 	}
 
-	public String getProfilePath(final ResourceDesc desc) {
-		return desc.getProfile();
-	}
-
 	public ResourceDesc getDescByProfile(final String profile) {
 		if (profile == null) {
 			return null;
@@ -323,7 +316,7 @@ public enum ResourceFactoryRegistry implements IResourceFactoryRegistry, IExtens
 		synchronized (this.registry) {
 			for (final SortedSet<ResourceDesc> descSet : this.registry.values()) {
 				for (final ResourceDesc desc : descSet) {
-					if (profile.equals(getProfilePath(desc))) {
+					if (profile.equals(desc.getProfile())) {
 						return desc;
 					}
 				}

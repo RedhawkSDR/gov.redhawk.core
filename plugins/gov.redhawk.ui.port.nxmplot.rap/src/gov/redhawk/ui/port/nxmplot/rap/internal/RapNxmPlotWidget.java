@@ -13,6 +13,7 @@ package gov.redhawk.ui.port.nxmplot.rap.internal;
 
 import gov.redhawk.ui.port.nxmplot.AbstractNxmPlotWidget;
 
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Map;
@@ -66,6 +67,10 @@ public class RapNxmPlotWidget extends AbstractNxmPlotWidget {
 
 	@Override
 	public void dispose() {
+		String[] sourcesCopy = Arrays.copyOf(sources.toArray(new String[0]), sources.size());
+		for (String source : sourcesCopy) {
+			removeSource(source);
+		}
 	    super.dispose();
 	    nxmComp = null;
 	}
@@ -157,9 +162,22 @@ public class RapNxmPlotWidget extends AbstractNxmPlotWidget {
 	public String addDataFeature(Number xStart, Number xEnd, String color) {
 		String featureId = AbstractNxmPlotWidget.createUniqueName(false);
                 double dx = xEnd.doubleValue() - xStart.doubleValue();
-		final String cmd = "FEATURE LABEL=" + featureId + " PLOT=" + PLOT_ID + " TABEL={NAME=\"" +
+		final String cmd = "FEATURE LABEL=" + featureId + " PLOT=" + PLOT_ID + " TABLE={NAME=\"" +
 		featureId + "\",TYPE=\"DATA\",X=" + (xStart.doubleValue() + (dx/2)) + ",DX=" + dx + ",COLOR=\"" + color + "\"}";
 		this.runClientCommand(cmd);
+		return featureId;
+	}
+	
+	@Override
+	public String addDragboxFeature(Number xmin, Number ymin, Number xmax, Number ymax, String color) {
+		String featureId = AbstractNxmPlotWidget.createUniqueName(false);
+		final double x = (xmax.doubleValue() + xmin.doubleValue()) / 2d;
+		final double y = (ymax.doubleValue() + ymin.doubleValue()) / 2d;
+		final double dx = xmax.doubleValue() - xmin.doubleValue();
+		final double dy = ymax.doubleValue() - ymin.doubleValue();
+		final String command = "FEATURE LABEL=" + featureId + " PLOT=" + PLOT_ID + " TABLE={NAME=\"" + featureId
+				+ "\",TYPE=\"BOX\",X=" + x + ",DX=" + dx + ",Y=" + y + ",DY=" + dy + ",COLOR=\"" + color + "\"}";
+		this.runClientCommand(command);
 		return featureId;
 	}
 	

@@ -182,7 +182,7 @@ public final class NxmPlotUtil {
 				plotWidget.runHeadlessCommand(command.toString());
 			}
 		}
-		plotWidget.runHeadlessCommand("PIPE OFF");
+		plotWidget.runHeadlessCommand("PIPE RUN");
 		Map<String, String> map = new HashMap<String, String>();
 		map.put(KEY_COMMAND, sourceId);
 		map.put(KEY_FILE, outName);

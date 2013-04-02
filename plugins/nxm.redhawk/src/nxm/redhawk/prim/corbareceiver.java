@@ -134,12 +134,7 @@ public class corbareceiver extends CorbaPrimitive { //SUPPRESS CHECKSTYLE ClassN
 	public synchronized int close() {
 		if (this.state != Commandable.RESTART) {
 			//Avoid hanging the UI if the CORBA call to the component fails to return
-			Thread t = new Thread() {
-				public void run() {
-					corbareceiver.super.close();
-				};
-			};
-			t.start();
+			super.close();
 			if (this.outputFile != null) {
 				this.outputFile.close();
 				this.outputFile = null;

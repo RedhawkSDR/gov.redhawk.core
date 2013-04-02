@@ -843,21 +843,24 @@ public class CorbaReceiver implements dataShortOperations, dataCharOperations, d
 				return;
 			}
 			
-			this.audioFormat = new AudioFormat(enc,
-			        1.0f / (float) sri.xdelta,
-			        this.sampleSize,
-			        channels,
-			        frameSize,
-			        frameRate,
-			        (ByteOrder.nativeOrder() == ByteOrder.BIG_ENDIAN));
-			this.parent.newFormat(this.audioFormat);
-			final DataLine.Info dataLineInfo = new DataLine.Info(SourceDataLine.class, this.audioFormat);
 			try {
+				this.audioFormat = new AudioFormat(enc,
+				        1.0f / (float) sri.xdelta,
+				        this.sampleSize,
+				        channels,
+				        frameSize,
+				        frameRate,
+				        (ByteOrder.nativeOrder() == ByteOrder.BIG_ENDIAN));
+				this.parent.newFormat(this.audioFormat);
+				final DataLine.Info dataLineInfo = new DataLine.Info(SourceDataLine.class, this.audioFormat);
 				this.sourceDataLine = (SourceDataLine) AudioSystem.getLine(dataLineInfo);
 			} catch (final NullPointerException e) {
 				Activator.logError("No Audio keywords in SRI", e);
 				this.sourceDataLine = null;
 			} catch (final LineUnavailableException e) {
+				Activator.logError("Error getting audio line for playback", e);
+				this.sourceDataLine = null;
+			} catch(Exception e) {
 				Activator.logError("Error getting audio line for playback", e);
 				this.sourceDataLine = null;
 			}
@@ -959,6 +962,8 @@ public class CorbaReceiver implements dataShortOperations, dataCharOperations, d
 				Activator.logError("Error opening Audio Playback line. Playback unavailable.", e);
 			} catch (final InterruptedException e) {
 				// PASS
+			} catch(Exception e) {
+				Activator.logError("Error opening Audio Playback line. Playback unavailable.", e);
 			} finally {
 				CorbaReceiver.this.configured = false;
 				CorbaReceiver.this.audioFormat = null;
