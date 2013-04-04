@@ -76,9 +76,16 @@ public class RcpNxmPlotWidget extends AbstractNxmPlotWidget {
 		plotCommand = (plot) nxmComp.runCommand("plot/bg" + plotSwitches + " " + plotArgs);
 		plotCommand.setMessageHandler(plotMessageHandler);
 	}
+	
+	public boolean isInitialized() {
+		return initialized;
+	}
 
 	@Override
 	public void runHeadlessCommand(String command) {
+		if (!isInitialized()) {
+			throw new IllegalStateException("Plot not initialized");
+		}
 		nxmComp.runCommand(command + " /MSGID_TMP=" + MSG_HANDLER_ID, false);
 	}
 
@@ -109,6 +116,9 @@ public class RcpNxmPlotWidget extends AbstractNxmPlotWidget {
 	
 	@Override
 	public void addSource(String sourcePipeId, String pipeQualifiers) {
+		if (!isInitialized()) {
+			throw new IllegalStateException("Plot not initialized");
+		}
 		nxmComp.runCommand("sendto " + plotCommand.id + " OPENFILE " + sourcePipeId + (pipeQualifiers == null ? "" : pipeQualifiers));
 		this.sources.add(sourcePipeId);
     }
@@ -119,6 +129,9 @@ public class RcpNxmPlotWidget extends AbstractNxmPlotWidget {
 
 	@Override
 	public void removeSource(String sourcePipeId) {
+		if (!isInitialized()) {
+			throw new IllegalStateException("Plot not initialized");
+		}
 		nxmComp.runCommand("sendto " + plotCommand.id + " CLOSEFILE " + sourcePipeId);
 		this.sources.remove(sourcePipeId);
     }
@@ -126,6 +139,9 @@ public class RcpNxmPlotWidget extends AbstractNxmPlotWidget {
 
 	@Override
 	public void sendPlotMessage(String msgName, int info, Object data) {
+		if (!isInitialized()) {
+			throw new IllegalStateException("Plot not initialized");
+		}
 		//	    this.plotCommand.processMessage(msgName, info, data);
 		// XXX We need to rethink this for RAP support
 		String tempResName = createUniqueResName();
@@ -176,6 +192,9 @@ public class RcpNxmPlotWidget extends AbstractNxmPlotWidget {
 
 	@Override
     public void configurePlot(Map<String, String> configuration) {
+		if (!isInitialized()) {
+			throw new IllegalStateException("Plot not initialized");
+		}
 	    for (Map.Entry<String, String> entry: configuration.entrySet()) {
 	    	nxmComp.runCommand("set " + "REG." + plotCommand.id + "." + entry.getKey() + " " + entry.getValue());
 	    }
