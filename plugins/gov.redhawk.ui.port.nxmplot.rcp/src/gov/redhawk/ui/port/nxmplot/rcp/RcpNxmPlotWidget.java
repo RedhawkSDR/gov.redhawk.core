@@ -39,12 +39,6 @@ public class RcpNxmPlotWidget extends AbstractNxmPlotWidget {
 
 	private NeXtMidasComposite nxmComp;
 	private plot plotCommand;
-	private DisposeListener disposeListener = new DisposeListener() {
-
-		public void widgetDisposed(DisposeEvent e) {
-			dispose();
-		}
-	};
 	
 	private static final String MSG_HANDLER_ID = "MAIN_MSG_HANLDER";
 	
@@ -53,7 +47,13 @@ public class RcpNxmPlotWidget extends AbstractNxmPlotWidget {
 
 	public RcpNxmPlotWidget(final Composite parent, int style) {
 		super(parent, style);
-		parent.addDisposeListener(disposeListener);
+		parent.addDisposeListener(new DisposeListener() {
+			
+			@Override
+			public void widgetDisposed(DisposeEvent e) {
+				dispose();
+			}
+		});
 		setLayout(new FillLayout());
 		nxmComp = new NeXtMidasComposite(this, SWT.None);
 	}

@@ -2,10 +2,7 @@ package gov.redhawk.ui.port.nxmplot;
 
 import gov.redhawk.model.sca.ScaUsesPort;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.UUID;
 
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -39,8 +36,6 @@ public class PlotPageBook extends Composite {
 	/** The current state of the raster being visible. */
 	private boolean rasterShowing;
 
-	private DisposeListener disposeListener;
-
 	private List<CorbaConnectionSettings> connectionSettings;
 
 	private List< ? extends ScaUsesPort> ports;
@@ -62,13 +57,13 @@ public class PlotPageBook extends Composite {
 		adapter = new PlotMessageAdapter(listenerAdapter);
 		this.pageBook = new PageBook(this, SWT.NONE);
 		this.rasterShowing = false;
-		this.disposeListener = new DisposeListener() {
+		parent.addDisposeListener(new DisposeListener() {
 
 			public void widgetDisposed(DisposeEvent e) {
-				PlotPageBook.this.dispose();
+				dispose();
 			}
 
-		};
+		});
 
 		plotPorts(connList, fft, ports, sessionId, check2d(connList));
 
@@ -104,9 +99,10 @@ public class PlotPageBook extends Composite {
 	 */
 	public void plotPorts(final List<CorbaConnectionSettings> inputConnList, final FftSettings fft, final List< ? extends ScaUsesPort> ports, final UUID sessionId,
 			final boolean createRaster) {
-		this.disposeNxmResources();
+		disposeNxmResources();
 		final String linePlotArgs = "TYPE=LINE AUTOL=16 AXIS=~GRID OPTIONS=DBuffer|BStore SCALE=AutoMIN|AutoMAX";
 		final String linePlotSwitches = "/RT/NICE";
+
 		this.nxmPlotWidgetLine = PlotActivator.getDefault().getPlotFactory().createPlotWidget(this.pageBook, SWT.None);
 		this.nxmPlotWidgetLine.addMessageHandler(this.adapter);
 
@@ -128,7 +124,6 @@ public class PlotPageBook extends Composite {
 		}
 
 		this.pageBook.showPage(this.pageBook.getTabList()[this.rasterShowing ? 1 : 0]); // SUPPRESS CHECKSTYLE AvoidInline
-		this.pageBook.addDisposeListener(this.disposeListener);
 
 		final Job job = new Job("Starting plot") {
 
@@ -138,10 +133,7 @@ public class PlotPageBook extends Composite {
 				PlotPageBook.this.linePlotSessions = NxmPlotUtil.addSource(connList, fft, PlotPageBook.this.nxmPlotWidgetLine, plotQualifiers);
 				if (nxmPlotWidgetRaster != null) {
 					nxmPlotWidgetRaster.initPlot(rasterPlotSwitches, rasterPlotArgs);
-					if (nxmPlotWidgetRaster != null) {
-						nxmPlotWidgetRaster.initPlot(rasterPlotSwitches, rasterPlotArgs);
-						PlotPageBook.this.rasterPlotSessions = NxmPlotUtil.addSource(connList, fft, PlotPageBook.this.nxmPlotWidgetRaster, plotQualifiers);
-					}
+					PlotPageBook.this.rasterPlotSessions = NxmPlotUtil.addSource(connList, fft, PlotPageBook.this.nxmPlotWidgetRaster, plotQualifiers);
 				}
 				return Status.OK_STATUS;
 			}
@@ -177,28 +169,39 @@ public class PlotPageBook extends Composite {
 		return (this.nxmPlotWidgetRaster != null) && this.rasterShowing;
 	}
 
-	/**
-	 * @deprecated Does nothing
-	 */
-	@Deprecated
-	public synchronized void disposeNxmResources() {
-
-	}
-
-	@Override
-	public void dispose() {
+	public void disposeNxmResources() {
+		if (nxmPlotWidgetLine != null) {
+			nxmPlotWidgetLine.dispose();
+			nxmPlotWidgetLine = null;
+		}
+		
+		if (nxmPlotWidgetRaster != null) {
+			nxmPlotWidgetRaster.dispose();
+			nxmPlotWidgetRaster = null;
+		}
+		
 		if (linePlotSessions != null) {
 			for (IPlotSession session : linePlotSessions) {
 				session.dispose();
 			}
+			linePlotSessions = null;
 		}
 		if (rasterPlotSessions != null) {
 			for (IPlotSession session : rasterPlotSessions) {
 				session.dispose();
 			}
+			rasterPlotSessions=null;
 		}
+	}
+
+	@Override
+	public void dispose() {
+		if (isDisposed()) {
+			return;
+		}
+		
+		disposeNxmResources();
 		if (this.pageBook != null) {
-			this.pageBook.removeDisposeListener(this.disposeListener);
 			this.pageBook = null;
 		}
 

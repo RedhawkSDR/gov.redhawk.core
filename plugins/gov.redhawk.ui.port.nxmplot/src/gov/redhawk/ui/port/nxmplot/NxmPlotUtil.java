@@ -57,11 +57,16 @@ public final class NxmPlotUtil {
 
 	}
 
-	private static Map<String, String> launchInputMacro(final CorbaConnectionSettings settings, final FftSettings fft, final AbstractNxmPlotWidget plotWidget) {
+	private static Map<String, String> launchInputMacro(final CorbaConnectionSettings settings, final FftSettings fft, final AbstractNxmPlotWidget plotWidget, String pipeSize) {
 		final String outName = AbstractNxmPlotWidget.createUniqueName(true);
 
 		final Table corbaArgs = new Table();
-		corbaArgs.put("PIPESIZE", "16m");
+		if (pipeSize == null) {
+			// Default size
+			pipeSize = "128k";
+		} 
+
+		corbaArgs.put("PIPESIZE", pipeSize);
 		if (settings.getHost() != null && !"".equals(settings.getHost())) {
 			corbaArgs.put("HOST", settings.getHost());
 			corbaArgs.put("PORT", settings.getPort());
@@ -91,7 +96,7 @@ public final class NxmPlotUtil {
 		}
 
 		final Table thinArgs = new Table();
-		thinArgs.put("PIPESIZE", "16m");
+		thinArgs.put("PIPESIZE", pipeSize);
 		// Plot at different speeds depending on platform
 		if (SWT.getPlatform().startsWith("rap")) {
 			thinArgs.put("REFRESHRATE", 10);
@@ -120,7 +125,7 @@ public final class NxmPlotUtil {
 	}
 
 	private static Map<String, String> launchInputMacro(final SddsSource sdds, final Integer magExponent, final FftSettings fft,
-	        final AbstractNxmPlotWidget plotWidget) {
+	        final AbstractNxmPlotWidget plotWidget, String pipeSize) {
 		final String outName = AbstractNxmPlotWidget.createUniqueName(true);
 		final String transformIn = AbstractNxmPlotWidget.createUniqueName(true);
 		final String fftIn = AbstractNxmPlotWidget.createUniqueName(true);
@@ -129,7 +134,11 @@ public final class NxmPlotUtil {
 
 		final StringBuilder command = new StringBuilder();
 		final String sourceId = AbstractNxmPlotWidget.createUniqueName(false);
-		command.append("SOURCENIC/PS=16m/ID=" + sourceId);
+		if (pipeSize == null) {
+			// Default size
+			pipeSize = "128k";
+		} 
+		command.append("SOURCENIC/PS=" + pipeSize + "/ID=" + sourceId);
 		command.append("/fc=" + sdds.format);
 		if (sdds.mcastAddress != null) {
 			command.append("/mgrp=" + sdds.mcastAddress);
@@ -199,11 +208,11 @@ public final class NxmPlotUtil {
 	 * @return a list of sources created to be plotted
 	 */
 	private static List<Map<String, String>> launchInputMacros(final List<CorbaConnectionSettings> connList, final FftSettings fft,
-	        final AbstractNxmPlotWidget plotWidget) {
+	        final AbstractNxmPlotWidget plotWidget, String pipeSize) {
 		final List<Map<String, String>> outputList = new ArrayList<Map<String, String>>();
 
 		for (final CorbaConnectionSettings settings : connList) {
-			outputList.add(launchInputMacro(settings, fft, plotWidget));
+			outputList.add(launchInputMacro(settings, fft, plotWidget, pipeSize));
 		}
 
 		return outputList;
@@ -254,7 +263,7 @@ public final class NxmPlotUtil {
 	}
 
 	public static IPlotSession addSource(final ScaUsesPort port, final FftSettings fft, final AbstractNxmPlotWidget plotWidget, final String qualifiers) {
-		final Map<String, String> outputIds = launchInputMacro(createConnectionSettings(port), fft, plotWidget);
+		final Map<String, String> outputIds = launchInputMacro(createConnectionSettings(port), fft, plotWidget, null);
 		PlotSession session = new PlotSession(plotWidget, outputIds.get(KEY_COMMAND), outputIds.get(KEY_FILE));
 		plotWidget.addSource(session.getSourceId(), (qualifiers == null ? "" : qualifiers));
 		return session;
@@ -267,7 +276,7 @@ public final class NxmPlotUtil {
 	 */
 	@Deprecated
 	public static void plot(final List<CorbaConnectionSettings> connList, final FftSettings fft, final AbstractNxmPlotWidget plotWidget) {
-		final List<Map<String, String>> outputIds = launchInputMacros(connList, fft, plotWidget);
+		final List<Map<String, String>> outputIds = launchInputMacros(connList, fft, plotWidget, null);
 		setPlotToReal(fft != null, plotWidget);
 
 		for (Map<String, String> map : outputIds) {
@@ -277,7 +286,7 @@ public final class NxmPlotUtil {
 
 	public static List<IPlotSession> addSource(final List<CorbaConnectionSettings> connList, final FftSettings fft, final AbstractNxmPlotWidget plotWidget,
 	        final String qualifiers) {
-		List<Map<String, String>> outputIds = launchInputMacros(connList, fft, plotWidget);
+		List<Map<String, String>> outputIds = launchInputMacros(connList, fft, plotWidget, null);
 		setPlotToReal(fft != null, plotWidget);
 		List<IPlotSession> sessions = new ArrayList<IPlotSession>();
 		for (Map<String, String> map : outputIds) {
@@ -297,7 +306,7 @@ public final class NxmPlotUtil {
 
 	public static IPlotSession addSource(final SddsSource sdds, final Integer magExponent, final FftSettings fft, final AbstractNxmPlotWidget plotWidget,
 	        final String qualifiers) {
-		final Map<String, String> outputIds = launchInputMacro(sdds, magExponent, fft, plotWidget);
+		final Map<String, String> outputIds = launchInputMacro(sdds, magExponent, fft, plotWidget, "1m");
 		PlotSession session = new PlotSession(plotWidget, outputIds.get(KEY_COMMAND), outputIds.get(KEY_FILE));
 		plotWidget.addSource(session.getSourceId(), (qualifiers == null ? "" : qualifiers));
 		return session;
