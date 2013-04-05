@@ -118,7 +118,7 @@ public class PlotView extends ViewPart {
 	private Map<String, Composite> plotMap;
 
 	/** Map of ports to their corresponding CTabItems */
-	private HashMap<ScaUsesPort, CTabItem> portToTabMap;
+	private HashMap<ScaUsesPort, List<CTabItem>> portToTabMap;
 
 	/** Map of spectral plots to plot sessions */
 	private Map<Composite, List<IPlotSession>> plotSessionMap = new HashMap<Composite, List<IPlotSession>>();
@@ -141,12 +141,13 @@ public class PlotView extends ViewPart {
 							if (msg.getNotifier() instanceof ScaUsesPort) {
 								final ScaUsesPort usesPort = (ScaUsesPort) msg.getNotifier();
 
-								final CTabItem tab = PlotView.this.portToTabMap.get(usesPort);
-
-								if (tab.isDisposed()) {
-									return Status.CANCEL_STATUS;
+								final List<CTabItem> tabs = PlotView.this.portToTabMap.get(usesPort);
+								for (CTabItem tab : tabs) {
+									if (tab.isDisposed()) {
+										return Status.CANCEL_STATUS;
+									}
+									tab.dispose();
 								}
-								tab.dispose();
 
 								if (PlotView.this.plotFolder.getTabList().length == 0) {
 									PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().hideView(PlotView.this);
@@ -201,11 +202,6 @@ public class PlotView extends ViewPart {
 	}
 
 	private final PlotSelectionProvider selectionProvider = new PlotSelectionProvider();
-
-	private Composite spectralPlots;
-
-	private boolean pageBook;
-
 	private Map<String, PlotListenerAdapter> listenerMap = Collections.synchronizedMap(new HashMap<String, PlotListenerAdapter>());
 
 	/**
@@ -216,7 +212,7 @@ public class PlotView extends ViewPart {
 		this.plotFolder = new CTabFolder(parent, SWT.BOTTOM | SWT.CLOSE);
 		this.plotFolder.setUnselectedCloseVisible(false);
 		this.plotMap = new HashMap<String, Composite>();
-		this.portToTabMap = new HashMap<ScaUsesPort, CTabItem>();
+		this.portToTabMap = new HashMap<ScaUsesPort, List<CTabItem>>();
 
 		createActions();
 		createToolBars();
@@ -237,29 +233,27 @@ public class PlotView extends ViewPart {
 	}
 
 	private void updateRasterButton() {
-		if (pageBook) {
-			final CTabItem selectedTab;
-			if (this.plotFolder.isDisposed() || this.plotFolder.getItemCount() == 0) {
-				selectedTab = null;
-			} else {
-				selectedTab = this.plotFolder.getSelection();
-			}
-			PlotPageBook currentPageBook = null;
-			if (selectedTab != null && !selectedTab.isDisposed()) {
-				if (selectedTab.getControl() instanceof PlotPageBook) {
-					currentPageBook = (PlotPageBook) selectedTab.getControl();
-				}
-			}
-			if ((currentPageBook != null) && !currentPageBook.isDisposed() && currentPageBook instanceof PlotPageBook) {
-				this.rasterToggleAction.setChecked(((PlotPageBook) currentPageBook).isRasterShowing());
-				this.rasterToggleAction.setEnabled(((PlotPageBook) currentPageBook).isRasterable());
-			} else {
-				this.rasterToggleAction.setChecked(false);
-				this.rasterToggleAction.setEnabled(false);
-			}
-
-			this.selectionProvider.fireSelectionChanged();
+		if (plotFolder != null && plotFolder.isDisposed()) {
+			return;
 		}
+		boolean checked = false;
+		boolean enabled = false;
+		CTabItem selectedTab = plotFolder.getSelection();
+		if (selectedTab != null) {
+			Control control = selectedTab.getControl();
+			if (control instanceof PlotPageBook) {
+				PlotPageBook currentPageBook = (PlotPageBook) selectedTab.getControl();
+				if ((currentPageBook != null) && !currentPageBook.isDisposed() && currentPageBook instanceof PlotPageBook) {
+					checked = ((PlotPageBook) currentPageBook).isRasterShowing();
+					enabled = ((PlotPageBook) currentPageBook).isRasterable();
+				} 
+			} 
+		}
+
+		this.rasterToggleAction.setChecked(checked);
+		this.rasterToggleAction.setEnabled(enabled);
+		this.selectionProvider.fireSelectionChanged();
+		
 	}
 
 	/**
@@ -326,9 +320,6 @@ public class PlotView extends ViewPart {
 	 */
 	private String createPlot(final List<CorbaConnectionSettings> connList, final FftSettings fft, final List< ? extends ScaUsesPort> ports, final UUID sessionId,
 			boolean pageBook, PlotType plotType) {
-		
-		this.pageBook = pageBook;
-		
 		if (plotType == null) {
 			plotType = PlotType.LINE;
 		}
@@ -352,6 +343,7 @@ public class PlotView extends ViewPart {
 		newTab.setText(connList.get(0).getPortString());
 		newTab.setToolTipText(tooltip);
 
+		final Composite spectralPlots;
 		// Create the holder for the plots.
 		if (pageBook) {
 			spectralPlots = new PlotPageBook(this.plotFolder, SWT.NONE, connList, fft, ports, sessionId);
@@ -375,6 +367,7 @@ public class PlotView extends ViewPart {
 			} else {
 				plotSwitches = null;
 				plotArgs = null;
+				spectralPlots = null;
 			}
 			if (spectralPlots instanceof AbstractNxmPlotWidget) {
 				spectralPlots.setData("connList", connList);
@@ -448,7 +441,11 @@ public class PlotView extends ViewPart {
 		// addition and removal
 		//final String id = spectralPlots.getIdentifier();
 		this.plotMap.put(sessionId.toString(), spectralPlots);
-		this.portToTabMap.put(port, newTab);
+		List<CTabItem> tabList = this.portToTabMap.get(port);
+		if (tabList == null) {
+			this.portToTabMap.put(port, tabList = new ArrayList<CTabItem>());
+		}
+		tabList.add(newTab);
 
 		return sessionId.toString();
 	}
@@ -603,11 +600,15 @@ public class PlotView extends ViewPart {
 
 	private StreamSRI[] getActiveSRI() {
 		StreamSRI retVal = null;
-		if (this.spectralPlots instanceof AbstractNxmPlotWidget) {
-			retVal = ((AbstractNxmPlotWidget) this.spectralPlots).getActiveSRI();
-		} else if (this.spectralPlots instanceof PlotPageBook) {
-			retVal = ((PlotPageBook) this.spectralPlots).getActivePlotWidget().getActiveSRI();
-		} 
+		CTabItem selection = plotFolder.getSelection();
+		if (selection != null) {
+			Control control = selection.getControl();
+			if (control instanceof AbstractNxmPlotWidget) {
+				retVal = ((AbstractNxmPlotWidget) control).getActiveSRI();
+			} else if (control instanceof PlotPageBook) {
+				retVal = ((PlotPageBook) control).getActivePlotWidget().getActiveSRI();
+			} 
+		}
 		if (retVal != null) {
 			return new StreamSRI[]{retVal};
 		} else {

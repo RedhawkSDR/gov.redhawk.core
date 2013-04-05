@@ -29,7 +29,10 @@ import gov.redhawk.sca.ui.singledomain.dialogs.DomainsDialog;
 import gov.redhawk.sca.ui.singledomain.dialogs.DomainsDialog.LinkType;
 import gov.redhawk.sca.ui.views.ScaExplorer;
 
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.NullProgressMonitor;
+import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.impl.AdapterImpl;
 import org.eclipse.jface.action.ToolBarManager;
@@ -40,11 +43,15 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.MouseTrackListener;
 import org.eclipse.swt.graphics.Point;
+import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.ToolItem;
 import org.eclipse.ui.IViewSite;
 import org.eclipse.ui.PartInitException;
+import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.navigator.CommonViewer;
+import org.eclipse.ui.progress.UIJob;
 
 public class ScaExplorerSingleDomain extends ScaExplorer {
 
@@ -181,7 +188,7 @@ public class ScaExplorerSingleDomain extends ScaExplorer {
 			Point mouseLoc = getViewSite().getShell().getDisplay().getCursorLocation();
 			ToolItem item = mgr.getControl().getItem(mgr.getControl().toControl(mouseLoc));
 			if (item != null) {
-				doMouseEnter(item);
+				doMouseEnter(domains.getControl());
 			}
 		}
 
@@ -198,7 +205,7 @@ public class ScaExplorerSingleDomain extends ScaExplorer {
 			Point mouseLoc = getViewSite().getShell().getDisplay().getCursorLocation();
 			ToolItem item = mgr.getControl().getItem(mgr.getControl().toControl(mouseLoc));
 			if (item != null) {
-				doMouseEnter(item);
+				doMouseEnter(domains.getControl());
 			}
 		}
 
@@ -222,6 +229,8 @@ public class ScaExplorerSingleDomain extends ScaExplorer {
 	private ToolBarManager mgr;
 
 	private CustomControlItem domains;
+
+	private UIJob mouseMoveListenerJob;
 
 	@Override
 	protected Object getInitialInput() {
@@ -265,8 +274,34 @@ public class ScaExplorerSingleDomain extends ScaExplorer {
 		fillToolBar("");
 	}
 
+	//BEGIN WORKAROUND CODE
+	private void createMouseMoveListener() {
+		/** remove after Juno bug 402593 is fixed, wherein listeners on toolbar don't work */
+		this.mouseMoveListenerJob = new UIJob("MouseMoveListener Job") {
+
+			@Override
+			public IStatus runInUIThread(IProgressMonitor monitor) {
+				final Display display = getViewSite().getShell().getDisplay();
+				while (!monitor.isCanceled()) {
+					final Point mouseLoc = display.getCursorLocation();
+					final Rectangle toolbarItemLoc = domains.getControl().getBounds();
+					if (toolbarItemLoc.contains(domains.getControl().getParent().toControl(mouseLoc))) {
+						if (dialog.getShell() == null || !dialog.getShell().isVisible()) {
+							doMouseEnter(domains.getControl());
+						}
+					}
+				}
+				return null;
+			}
+
+		};
+		this.mouseMoveListenerJob.setSystem(true);
+	}
+	//END WORKAROUND CODE
+
 
 	private void fillToolBar(String label) {
+		System.err.println("SWT VERSION: " + SWT.getVersion());
 		mgr = (ToolBarManager) getViewSite().getActionBars().getToolBarManager();
 		if (domains != null) {
 			mgr.remove(domains);
@@ -287,6 +322,14 @@ public class ScaExplorerSingleDomain extends ScaExplorer {
 		} else {
 			domains.addMouseTrackListener(rcpMouseTrackListener);
 		}
+		//BEGIN WORKAROUND CODE
+		if (this.mouseMoveListenerJob == null) {
+			createMouseMoveListener();
+		}
+		if (this.mouseMoveListenerJob.getState() != Job.RUNNING) {
+			//this.mouseMoveListenerJob.schedule();
+		}
+		//END WORKAROUND CODE
 	}
 
 	@Override
@@ -309,16 +352,19 @@ public class ScaExplorerSingleDomain extends ScaExplorer {
 		dialog.dispose();
 		prefs.removePropertyChangeListener(activeDomainListener);
 		ScaPlugin.getDefault().getDomainManagerRegistry().eAdapters().remove(domainChangeAdapter);
+		//BEGIN WORKAROUND CODE
+		if (this.mouseMoveListenerJob != null) {
+			this.mouseMoveListenerJob.cancel();
+		}
+		//END WORKAROUND CODE
 		super.dispose();
 	}
 
-	private void doMouseEnter(ToolItem item) {
-		if (item.getControl() instanceof TrackableLabel) {
-			int x = item.getBounds().x;
-			int y = item.getBounds().y;
-			DialogCloseJob dialogCloseJob = new DialogCloseJob(dialog);
-			dialog.show(item.getParent().toDisplay(new Point(x, y)), dialogCloseJob);
-		}
+	private void doMouseEnter(TrackableLabel control) {
+		final int x = control.getBounds().x;
+		final int y = control.getBounds().y;
+		DialogCloseJob dialogCloseJob = new DialogCloseJob(dialog);
+		dialog.show(control.getParent().toDisplay(new Point(x, y)), dialogCloseJob);
 	}
 
 	private void doMouseHover(ToolItem item) {

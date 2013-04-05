@@ -60,7 +60,16 @@ public abstract class AbstractNxmPlotWidget extends Composite {
 					final IPlotWidgetListener pl = (IPlotWidgetListener) obj;
 					pl.motion(p.x, p.y, p.t);
 				}
-			} else if ("ZOOM".equals(msg.name) || "ZOOMIN".equals(msg.name)) { //left-click drag
+			} else if ("ZOOM".equals(msg.name)) { //left-click drag
+				Double[] values = getValues(msg.data);
+				if (values != null) {
+					final Object[] listeners = this.plotListeners.getListeners();
+					for (final Object obj : listeners) {
+						final IPlotWidgetListener pl = (IPlotWidgetListener) obj;
+						pl.zoomX(values[0], values[1], values[2], values[3], msg.data);
+					}
+				}
+			} else if ("ZOOMIN".equals(msg.name)) { //mousewheel
 				Double[] values = getValues(msg.data);
 				if (values != null) {
 					final Object[] listeners = this.plotListeners.getListeners();
@@ -76,7 +85,16 @@ public abstract class AbstractNxmPlotWidget extends Composite {
 					final IPlotWidgetListener pl = (IPlotWidgetListener) obj;
 					pl.dragBox(d.getXMin(), d.getYMin(), d.getXMax(), d.getYMax());
 				}
-			} else if ("UNZOOM".equals(msg.name) || "ZOOMOUT".equals(msg.name)) { //right-click
+			} else if ("UNZOOM".equals(msg.name)) { //right-click
+				Double[] values = getValues(msg.data);
+				if (values != null) {
+					final Object[] listeners = this.plotListeners.getListeners();
+					for (final Object obj : listeners) {
+						final IPlotWidgetListener pl = (IPlotWidgetListener) obj;
+						pl.unzoom(values[0], values[1], values[2], values[3], msg.data); //SUPPRSS CHECKSTYLE MagicNumber
+					}
+				}
+			} else if ("ZOOMOUT".equals(msg.name)) { //mousewheel
 				Double[] values = getValues(msg.data);
 				if (values != null) {
 					final Object[] listeners = this.plotListeners.getListeners();

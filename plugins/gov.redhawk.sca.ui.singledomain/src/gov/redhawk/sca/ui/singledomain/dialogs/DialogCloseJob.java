@@ -37,7 +37,13 @@ public class DialogCloseJob extends Job {
 	public IStatus run(IProgressMonitor monitor) {
 		done = false;
 		while (!monitor.isCanceled() && !done) {
+			System.err.println("DIALOG CLOSE JOB RUN");
 			if (dialog != null && dialog.getShell() != null && !dialog.getShell().isDisposed()) {
+				/**
+				 * Job is hanging here. It's not used when the toolbars listeners are active,
+				 * since they track mouseExit. But it works on the high side. See what's different
+				 * there.
+				 */
 				dialog.getShell().getDisplay().syncExec(new Runnable() {
 
 					public void run() {
@@ -52,6 +58,7 @@ public class DialogCloseJob extends Job {
 					dialog.getShell().getDisplay().asyncExec(new Runnable() {
 
 						public void run() {
+							System.err.println("HIDE DIALOG");
 							dialog.hide();
 						}
 
