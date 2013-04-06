@@ -18,6 +18,7 @@ public final class RedhawkNxmUtil {
 		NeXtMidas.getGlobalInstance().runCommand("OPTION REDHAWK CLASSPATH");
 		NeXtMidas.getGlobalInstance().runCommand("OPTION DSP CLASSPATH");
 		NeXtMidas.getGlobalInstance().runCommand("PATH ADD DSP REDHAWK");
+		NeXtMidas.getGlobalInstance().runCommand("DEBUG ON TRACE");
 	}
 
 }
