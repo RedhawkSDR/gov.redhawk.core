@@ -8,8 +8,7 @@
         <nxm-rap>http://download.redhawksdr.org/nxm-rap/releases/1.0</nxm-rcp>
         <gov.redhawk.common>http://download.redhawksdr.org/gov.redhawk.core/releases/1.8</gov.redhawk.core>
         <rap-transaction-ui>http://download.redhawksdr.org/rap-transaction.ui/releases/1.4.1</rap-transaction-ui>
-        <rap-cnf>http://download.eclipse.org/rt/rap/incubator/nightly/cnf/</rap-cnf>
-        <rap-tabbed-properties>http://pinkman.villains.techma.com/p2/eclipse/rap-tabbed-properties</rap-tabbed-properties>
+        <rap-incubator-nightly>http://download.eclipse.org/rt/rap/incubator/nightly</rap-cnf>
     </properties>
 
     <parent>
@@ -26,15 +25,9 @@
         </repository>
         
         <repository>
-            <id>rap-cnf</id>
+            <id>rap-incubator-nightly</id>
             <layout>p2</layout>
-            <url>${rap-cnf}</url>
-        </repository>
-        
-        <repository>
-            <id>rap-tabbed-properties</id>
-            <layout>p2</layout>
-            <url>${rap-tabbed-properties}</url>
+            <url>${rap-incubator-nightly}</url>
         </repository>
         
         <repository>

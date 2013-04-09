@@ -1,9 +1,3 @@
-The root pom lives within the 'config' submodule.
-
-To build you first need to from the root of the repository run:
-1. git submodule init
-2. git submodule update
-
 To build:
 mvn clean install
 
