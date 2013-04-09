@@ -1,0 +1,65 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<artifactId>releng-rap</artifactId>
+	<packaging>pom</packaging>
+	
+	<properties>
+		<gov.redhawk.common-p2-url>http://pinkman.villains.techma.com/p2/tycho/gov.redhawk.common/SNAPSHOT/</gov.redhawk.common-p2-url>
+		<nxm-rap-p2-url>http://pinkman.villains.techma.com/p2/nxm-ui-build/nxm.rap.ui/develop/latest/</nxm-rap-p2-url>
+		<rap-transaction-ui>http://pinkman.villains.techma.com/p2/eclipse/rap-transaction.ui</rap-transaction-ui>
+		<rap-cnf>http://pinkman.villains.techma.com/p2/eclipse/rap-cnf/</rap-cnf>
+		<rap-tabbed-properties>http://pinkman.villains.techma.com/p2/eclipse/rap-tabbed-properties</rap-tabbed-properties>
+	</properties>
+
+	<parent>
+		<groupId>gov.redhawk.core</groupId>
+		<artifactId>releng</artifactId>
+		<version>0.0.1-SNAPSHOT</version>
+	</parent>
+
+	<repositories>
+		<repository>
+			<id>rap-transaction-ui</id>
+			<layout>p2</layout>
+			<url>${rap-transaction-ui}</url>
+		</repository>
+		
+		<repository>
+			<id>rap-cnf</id>
+			<layout>p2</layout>
+			<url>${rap-cnf}</url>
+		</repository>
+		
+		<repository>
+			<id>rap-tabbed-properties</id>
+			<layout>p2</layout>
+			<url>${rap-tabbed-properties}</url>
+		</repository>
+		
+		<repository>
+			<id>gov.redhawk.common</id>
+			<layout>p2</layout>
+			<url>${gov.redhawk.common-p2-url}</url>
+		</repository>
+			
+		<repository>
+			<id>nxm-rap</id>
+			<layout>p2</layout>
+			<url>${nxm-rap-p2-url}</url>
+		</repository>
+		
+	</repositories>
+
+	<modules>
+		<module>../../features/gov.redhawk.rap.feature</module>
+		<module>../../features/gov.redhawk.rap.sdk</module>
+		<module>../../plugins/gov.redhawk.rap</module>
+		<module>../../plugins/gov.redhawk.sca.rap.supplement</module>
+		<module>../../plugins/gov.redhawk.sca.ui.rap</module>
+		<module>../../plugins/gov.redhawk.sca.ui.singledomain.rap</module>
+		<module>../../plugins/gov.redhawk.sca.waveform.controlpanel.rap</module>
+		<module>../../plugins/gov.redhawk.ui.port.nxmplot.rap</module>
+		<module>p2</module>
+	</modules>
+</project>

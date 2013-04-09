@@ -1,0 +1,44 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <artifactId>gov.redhawk.rcp.feature</artifactId>
+    <packaging>eclipse-feature</packaging>
+    <parent>
+        <groupId>gov.redhawk.core</groupId>
+        <artifactId>core</artifactId>
+        <version>0.0.1-SNAPSHOT</version>
+        <relativePath>../../releng/core/</relativePath>
+    </parent>
+    <version>1.8.4-SNAPSHOT</version>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.eclipse.tycho.extras</groupId>
+                <artifactId>tycho-source-feature-plugin</artifactId>
+                <version>${tycho-extras-version}</version>
+                <executions>
+                    <execution>
+                        <id>source-feature</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>source-feature</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <excludes>
+                        <plugin id="mil.jpeojtrs.sca.dcd.rcp" />
+                        <plugin id="mil.jpeojtrs.sca.dmd.rcp" />
+                        <plugin id="mil.jpeojtrs.sca.dpd.rcp" />
+                        <plugin id="mil.jpeojtrs.sca.prf.rcp" />
+                        <plugin id="mil.jpeojtrs.sca.profile.rcp" />
+                        <plugin id="mil.jpeojtrs.sca.sad.rcp" />
+                        <plugin id="mil.jpeojtrs.sca.scd.rcp" />
+                        <plugin id="mil.jpeojtrs.sca.spd.rcp" />
+                    </excludes>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+</project>

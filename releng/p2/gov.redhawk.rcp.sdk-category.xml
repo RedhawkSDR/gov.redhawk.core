@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<site>
+   <feature url="features/gov.redhawk.validation_1.9.0.qualifier.jar" id="gov.redhawk.validation" version="1.9.0.qualifier">
+      <category name="gov.redhawk.rcp"/>
+   </feature>
+   <feature url="features/gov.redhawk.idl_1.9.0.qualifier.jar" id="gov.redhawk.idl" version="1.9.0.qualifier">
+      <category name="gov.redhawk.rcp"/>
+   </feature>
+   <feature url="features/gov.redhawk.rcp_1.9.0.qualifier.jar" id="gov.redhawk.rcp" version="1.9.0.qualifier">
+      <category name="gov.redhawk.rcp"/>
+   </feature>
+   <feature url="features/gov.redhawk.rcp.sdk_1.9.0.qualifier.jar" id="gov.redhawk.rcp.sdk" version="1.9.0.qualifier">
+      <category name="gov.redhawk.rcp"/>
+   </feature>
+   <category-def name="gov.redhawk.rcp" label="REDHAWK Core"/>
+</site>

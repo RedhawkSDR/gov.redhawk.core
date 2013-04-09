@@ -14,7 +14,7 @@
 <!-- Custom targets called from a project's generated build.xml            -->
 <!-- Set customBuildCallbacks=<path/to/this/file> in your build.properties.-->
 <!-- ===================================================================== -->
-<project name="Build specific targets and properties" default="noDefault">
+<project name="Build specific targets and properties" default="pre.@dot">
 	<property name="idl" value="idl" />
 
 	<!-- ===================================================================== -->

@@ -12,7 +12,7 @@
 <feature
       id="gov.redhawk.ui.sdk"
       label="%featureName"
-      version="1.8.3.qualifier"
+      version="1.8.4.qualifier"
       provider-name="%providerName"
       plugin="mil.jpeojtrs.sca.util">
 
@@ -33,7 +33,7 @@
          version="0.0.0"/>
 
    <includes
-         id="gov.redhawk.ui.source"
+         id="gov.redhawk.ui.feature.source"
          version="0.0.0"/>
 
 </feature>

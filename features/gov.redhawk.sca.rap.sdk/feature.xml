@@ -2,7 +2,7 @@
 <feature
       id="gov.redhawk.sca.rap.sdk"
       label="%featureName"
-      version="1.8.3.qualifier"
+      version="1.8.4.qualifier"
       provider-name="%featureProvider"
       plugin="mil.jpeojtrs.sca.util">
 
