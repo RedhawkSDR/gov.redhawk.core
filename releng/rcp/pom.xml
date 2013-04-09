@@ -1,79 +1,79 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-	<modelVersion>4.0.0</modelVersion>
-	<artifactId>releng-rcp</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
-	<packaging>pom</packaging>
-	
-	<properties>
-		<gov.redhawk.common-p2-url>http://pinkman.villains.techma.com/p2/tycho/gov.redhawk.common/SNAPSHOT/</gov.redhawk.common-p2-url>
-		<nxm-rcp-p2-url>http://pinkman.villains.techma.com/p2/nxm-ui-build/nxm.rcp.ui/develop/latest/</nxm-rcp-p2-url>
-	</properties>
-	
-	<parent>
-		<groupId>gov.redhawk.core</groupId>
-		<artifactId>releng</artifactId>
-		<version>0.0.1-SNAPSHOT</version>
-	</parent>
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <artifactId>releng-rcp</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+    <packaging>pom</packaging>
+    
+    <properties>
+        <gov.redhawk.common>http://download.redhawksdr.org/gov.redhawk.core/releases/1.9</gov.redhawk.common>
+        <nxm-rcp>http://download.redhawksdr.org/nxm-rcp/releases/1.0</nxm-rcp>
+    </properties>
+    
+    <parent>
+        <groupId>gov.redhawk.core</groupId>
+        <artifactId>releng</artifactId>
+        <version>0.0.1-SNAPSHOT</version>
+    </parent>
 
-	<repositories>
-		<repository>
-			<id>gov.redhawk.common</id>
-			<layout>p2</layout>
-			<url>${gov.redhawk.common-p2-url}</url>
-		</repository>
-		
-		<repository>
-			<id>nxm-rcp</id>
-			<layout>p2</layout>
-			<url>${nxm-rcp-p2-url}</url>
-		</repository>
-	</repositories>
+    <repositories>
+        <repository>
+            <id>gov.redhawk.common</id>
+            <layout>p2</layout>
+            <url>${gov.redhawk.common}</url>
+        </repository>
+        
+        <repository>
+            <id>nxm-rcp</id>
+            <layout>p2</layout>
+            <url>${nxm-rcp}</url>
+        </repository>
+    </repositories>
 
-	<modules>
-		<module>../../features/gov.redhawk.rcp.feature</module>
-		<module>../../features/gov.redhawk.validation.feature</module>
-		<module>../../features/gov.redhawk.idl.feature</module>
-		<module>../../features/gov.redhawk.rcp.sdk</module>
-		<module>../../plugins/gov.redhawk.diagram</module>
-		<module>../../plugins/gov.redhawk.eclipsecorba.idl</module>
-		<module>../../plugins/gov.redhawk.eclipsecorba.idl.edit</module>
-		<module>../../plugins/gov.redhawk.eclipsecorba.library</module>
-		<module>../../plugins/gov.redhawk.eclipsecorba.library.edit</module>
-		<module>../../plugins/gov.redhawk.partitioning.validation</module>
-		<module>../../plugins/gov.redhawk.prf.ui</module>
-		<module>../../plugins/gov.redhawk.prf.validation</module>
-		<module>../../plugins/gov.redhawk.sca.dcd.diagram</module>
-		<module>../../plugins/gov.redhawk.sca.dcd.validation</module>
-		<module>../../plugins/gov.redhawk.sca.launch</module>
-		<module>../../plugins/gov.redhawk.sca.launch.ui</module>
-		<module>../../plugins/gov.redhawk.sca.sad.diagram</module>
-		<module>../../plugins/gov.redhawk.sca.sad.validation</module>
-		<module>../../plugins/gov.redhawk.sca.ui.rcp</module>
-		<module>../../plugins/gov.redhawk.scd.validation</module>
-		<module>../../plugins/gov.redhawk.spd.validation</module>
-		<module>../../plugins/gov.redhawk.ui</module>
-		<module>../../plugins/gov.redhawk.ui.dcd.editor</module>
-		<module>../../plugins/gov.redhawk.ui.sad.editor</module>
-		<module>../../plugins/gov.redhawk.ui.port.nxmplot.rcp</module>
-		<module>../../plugins/gov.redhawk.ui.port.playaudio</module>
-		<module>../../plugins/gov.redhawk.ui.views.domainbrowser</module>
-		<module>../../plugins/gov.redhawk.validation</module>
-		<module>../../plugins/mil.jpeojtrs.sca.dcd.rcp</module>
-		<module>../../plugins/mil.jpeojtrs.sca.dcd.diagram</module>
-		<module>../../plugins/mil.jpeojtrs.sca.diagram</module>
-		<module>../../plugins/mil.jpeojtrs.sca.dmd.rcp</module>
-		<module>../../plugins/mil.jpeojtrs.sca.dpd.rcp</module>
-		<module>../../plugins/mil.jpeojtrs.sca.prf.rcp</module>
-		<module>../../plugins/mil.jpeojtrs.sca.profile.rcp</module>
-		<module>../../plugins/mil.jpeojtrs.sca.sad.rcp</module>
-		<module>../../plugins/mil.jpeojtrs.sca.sad.diagram</module>
-		<module>../../plugins/mil.jpeojtrs.sca.scd.rcp</module>
-		<module>../../plugins/mil.jpeojtrs.sca.spd.rcp</module>
-		<module>../../plugins/org.anarres.cpp</module>
-		<module>../../tests/gov.redhawk.eclipsecorba.idl.tests</module>
-		<module>../../tests/gov.redhawk.eclipsecorba.library.tests</module>
-		<module>p2</module>
-	</modules>
-	
+    <modules>
+        <module>../../features/gov.redhawk.rcp.feature</module>
+        <module>../../features/gov.redhawk.validation.feature</module>
+        <module>../../features/gov.redhawk.idl.feature</module>
+        <module>../../features/gov.redhawk.rcp.sdk</module>
+        <module>../../plugins/gov.redhawk.diagram</module>
+        <module>../../plugins/gov.redhawk.eclipsecorba.idl</module>
+        <module>../../plugins/gov.redhawk.eclipsecorba.idl.edit</module>
+        <module>../../plugins/gov.redhawk.eclipsecorba.library</module>
+        <module>../../plugins/gov.redhawk.eclipsecorba.library.edit</module>
+        <module>../../plugins/gov.redhawk.partitioning.validation</module>
+        <module>../../plugins/gov.redhawk.prf.ui</module>
+        <module>../../plugins/gov.redhawk.prf.validation</module>
+        <module>../../plugins/gov.redhawk.sca.dcd.diagram</module>
+        <module>../../plugins/gov.redhawk.sca.dcd.validation</module>
+        <module>../../plugins/gov.redhawk.sca.launch</module>
+        <module>../../plugins/gov.redhawk.sca.launch.ui</module>
+        <module>../../plugins/gov.redhawk.sca.sad.diagram</module>
+        <module>../../plugins/gov.redhawk.sca.sad.validation</module>
+        <module>../../plugins/gov.redhawk.sca.ui.rcp</module>
+        <module>../../plugins/gov.redhawk.scd.validation</module>
+        <module>../../plugins/gov.redhawk.spd.validation</module>
+        <module>../../plugins/gov.redhawk.ui</module>
+        <module>../../plugins/gov.redhawk.ui.dcd.editor</module>
+        <module>../../plugins/gov.redhawk.ui.sad.editor</module>
+        <module>../../plugins/gov.redhawk.ui.port.nxmplot.rcp</module>
+        <module>../../plugins/gov.redhawk.ui.port.playaudio</module>
+        <module>../../plugins/gov.redhawk.ui.views.domainbrowser</module>
+        <module>../../plugins/gov.redhawk.validation</module>
+        <module>../../plugins/mil.jpeojtrs.sca.dcd.rcp</module>
+        <module>../../plugins/mil.jpeojtrs.sca.dcd.diagram</module>
+        <module>../../plugins/mil.jpeojtrs.sca.diagram</module>
+        <module>../../plugins/mil.jpeojtrs.sca.dmd.rcp</module>
+        <module>../../plugins/mil.jpeojtrs.sca.dpd.rcp</module>
+        <module>../../plugins/mil.jpeojtrs.sca.prf.rcp</module>
+        <module>../../plugins/mil.jpeojtrs.sca.profile.rcp</module>
+        <module>../../plugins/mil.jpeojtrs.sca.sad.rcp</module>
+        <module>../../plugins/mil.jpeojtrs.sca.sad.diagram</module>
+        <module>../../plugins/mil.jpeojtrs.sca.scd.rcp</module>
+        <module>../../plugins/mil.jpeojtrs.sca.spd.rcp</module>
+        <module>../../plugins/org.anarres.cpp</module>
+        <module>../../tests/gov.redhawk.eclipsecorba.idl.tests</module>
+        <module>../../tests/gov.redhawk.eclipsecorba.library.tests</module>
+        <module>p2</module>
+    </modules>
+    
 </project>
