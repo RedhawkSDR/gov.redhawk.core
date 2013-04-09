@@ -163,7 +163,13 @@
                 <groupId>org.eclipse.tycho</groupId>
                 <artifactId>target-platform-configuration</artifactId>
                 <version>${tycho-version}</version>
+                <!-- work around Equinox bug 348045 -->
                 <configuration>
+                    <filters>
+                        <type>p2-installable-unit</type>
+                        <id>org.eclipse.equinox.servletbridge.extensionbundle</id>
+                        <removeAll />    
+                    </filter>
                     <environments>
                         <environment>
                             <os>linux</os>
