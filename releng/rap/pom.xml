@@ -5,7 +5,7 @@
     <packaging>pom</packaging>
     
     <properties>
-        <nxm-rap>http://download.redhawksdr.org/nxm-rap/releases/1.0</nxm-rcp>
+        <nxm-rap>http://download.redhawksdr.org/nxm-rap/releases/1.0</nxm-rap>
         <gov.redhawk.common>http://download.redhawksdr.org/gov.redhawk.core/releases/1.8</gov.redhawk.core>
         <rap-transaction-ui>http://download.redhawksdr.org/rap-transaction.ui/releases/1.4.1</rap-transaction-ui>
         <rap-incubator-nightly>http://download.eclipse.org/rt/rap/incubator/nightly</rap-cnf>
