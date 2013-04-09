@@ -166,10 +166,12 @@
                 <!-- work around Equinox bug 348045 -->
                 <configuration>
                     <filters>
-                        <type>p2-installable-unit</type>
-                        <id>org.eclipse.equinox.servletbridge.extensionbundle</id>
-                        <removeAll />    
-                    </filter>
+                        <filter>
+                            <type>p2-installable-unit</type>
+                            <id>org.eclipse.equinox.servletbridge.extensionbundle</id>
+                            <removeAll />    
+                        </filter>
+                    </filters>
                     <environments>
                         <environment>
                             <os>linux</os>
