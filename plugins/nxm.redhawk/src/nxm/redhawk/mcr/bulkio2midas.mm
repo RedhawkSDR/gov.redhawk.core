@@ -1,36 +1,32 @@
 STARTMACRO t:corbaargs t:fftargs t:thinargs s:output
-	switch MSGID_TMP msgHandlerID get def=null
+    switch MSGID_TMP msgHandlerID GET DEF=null
     PIPE INIT
-        corbareceiver/MSGID=MAIN/TLL=200/PS=corbaargs.PIPESIZE FILE=_corbaOut HOST="^corbaargs.HOST" PORT=corbaargs.PORT RESOURCE=corbaargs.RESORUCE PORT_NAME=^corbaargs.PORT_NAME IDL="^corbaargs.IDL" FORCE2000=^corbaargs.FORCE2000
-        if thinargs isNULL then
-        	if fftargs isNULL then 
-	           ! put output pipe into parent macro's PIPE table (aka RAM table)
-	        	set/parent ram.^{output} ram._corbaOut
-	        else  
-	           fft _corbaOut _thinIn nfft=fftargs.fftsize win=fftargs.window over=fftargs.over navg=fftargs.numAvg
-	           ! put output pipe into parent macro's PIPE table (aka RAM table)
-	        	set/parent ram.^{output} ram._thinIn
-	        endif 
+        corbareceiver/MSGID=MAIN/TLL=200/PS=^corbaargs.PIPESIZE FILE=_CORBA_OUT HOST="^corbaargs.HOST" PORT=^corbaargs.PORT &
+            RESOURCE=^corbaargs.RESOURCE PORT_NAME=^corbaargs.PORT_NAME IDL="^corbaargs.IDL" FORCE2000=^corbaargs.FORCE2000
+        if fftargs isNULL then
+            set fftout _CORBA_OUT
         else
-	        if fftargs isNULL then 
-	           dispthin/ps=thinargs.pipesize/tl=1 _corbaOut _dispout thinargs.refreshrate
-	        else  
-	           fft _corbaOut _thinIn nfft=fftargs.fftsize win=fftargs.window over=fftargs.over navg=fftargs.numAvg
-	           dispthin/ps=thinargs.pipesize/tl=1 _thinIn _dispout thinargs.refreshrate
-	        endif
-	         
-	        ! put output pipe into parent macro's PIPE table (aka RAM table)
-	        set/parent ram.^{output} ram._dispout
+            set fftout _FFT_OUT
+            FFT _CORBA_OUT ^fftout NFFT=^fftargs.fftsize WIN=^fftargs.window OVER=^fftargs.over NAVG=^fftargs.numAvg ! /NEXP=^fftargs.numAvg
         endif
-        !plot _dispout
+        if thinargs isNULL then
+            set thinout ^fftout
+        else
+            set thinout _DISPTHIN_OUT
+            dispthin/PS=^{thinargs.pipesize}/TL=1 ^fftout ^thinout ^thinargs.refreshrate
+        endif
+        ! put output pipe into parent macro's PIPE/RAM results table so that PLOT can see it
+        set/parent RAM.^{output} RAM.^{thinout}
+
     PIPE OFF
-    
-    remove/parent ram.^{output}
+
+    ! cleanup entry that we added in parent macro's PIPE/RAM results table
+    remove/parent RAM.^{output}
 ENDMACRO
 
 PROCEDURE processMessage m:msg
-	if msgHandlerID nisnull then
-		!say "Forwarind msg: ^msg"
-		message send PARENT.^{msgHandlerID} msg
-	endif
+    if msgHandlerID nIsNULL then
+        !say "Forwarding msg: ^msg"
+        message send PARENT.^{msgHandlerID} msg
+    endif
 RETURN
