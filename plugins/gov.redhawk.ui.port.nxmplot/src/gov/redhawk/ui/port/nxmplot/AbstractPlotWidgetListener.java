@@ -30,9 +30,9 @@ public class AbstractPlotWidgetListener implements IPlotWidgetListener {
 		
 	}
 	
-	/* (non-Javadoc)
-	 * @see gov.redhawk.ui.port.nxmplot.IPlotWidgetListener#zoomX(double, double, double, double, java.lang.Object)
-	 */
+	/**
+     * @since 4.0
+     */
 	public void zoomX(double xmin, double ymin, double xmax, double ymax, Object data) {
 		
 	}
@@ -51,9 +51,9 @@ public class AbstractPlotWidgetListener implements IPlotWidgetListener {
 
 	}
 	
-	/* (non-Javadoc)
-	 * @see gov.redhawk.ui.port.nxmplot.IPlotWidgetListener#unzoom(double, double, double, double, java.lang.Object)
-	 */
+	/**
+     * @since 4.0
+     */
 	public void unzoom(double x1, double y1, double x2, double y2, Object data) {
 
 	}

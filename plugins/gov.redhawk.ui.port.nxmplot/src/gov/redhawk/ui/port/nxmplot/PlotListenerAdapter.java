@@ -40,6 +40,9 @@ public class PlotListenerAdapter implements IPlotWidgetListener {
 			}
 		}
 		
+		/**
+         * @since 4.0
+         */
 		public void zoomX(double xmin, double ymin, double xmax, double ymax, Object data) {
 			for (IPlotWidgetListener obj : listenerList) {
 				((IPlotWidgetListener) obj).zoomX(xmin, ymin, xmax, ymax, data);
@@ -52,12 +55,18 @@ public class PlotListenerAdapter implements IPlotWidgetListener {
 			}
 		}
 
+		/**
+         * @since 3.0
+         */
 		public void zoomOut(double x1, double y1, double x2, double y2, Object data) {
 			for (IPlotWidgetListener obj : listenerList) {
 				((IPlotWidgetListener) obj).zoomOut(x1, y1, x2, y2, data);
 			}
 		}
 		
+		/**
+         * @since 4.0
+         */
 		public void unzoom(double x1, double y1, double x2, double y2, Object data) {
 			for (IPlotWidgetListener obj : listenerList) {
 				((IPlotWidgetListener) obj).unzoom(x1, y1, x2, y2, data);
