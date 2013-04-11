@@ -11,9 +11,11 @@
  */
 package gov.redhawk.sca.ui;
 
+import gov.redhawk.model.sca.commands.ScaModelCommandWithResult;
 import gov.redhawk.model.sca.provider.ScaItemProviderAdapterFactory;
 
 import org.eclipse.core.runtime.IAdapterFactory;
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.edit.domain.AdapterFactoryEditingDomain;
 import org.eclipse.emf.edit.provider.ComposedAdapterFactory;
@@ -22,6 +24,7 @@ import org.eclipse.emf.edit.provider.ItemPropertyDescriptor.PropertyValueWrapper
 import org.eclipse.emf.edit.provider.ReflectiveItemProviderAdapterFactory;
 import org.eclipse.emf.edit.provider.resource.ResourceItemProviderAdapterFactory;
 import org.eclipse.emf.edit.ui.provider.PropertySource;
+import org.eclipse.emf.transaction.RunnableWithResult;
 import org.eclipse.emf.transaction.TransactionalEditingDomain;
 import org.eclipse.emf.transaction.ui.provider.TransactionalPropertySource;
 import org.eclipse.emf.transaction.util.TransactionUtil;
@@ -76,14 +79,25 @@ public class RedhawkUiAdapterFactory implements IAdapterFactory {
 		final Object adaptableObject = AdapterFactoryEditingDomain.unwrap(input);
 		if (adaptableObject instanceof EObject) {
 			final TransactionalEditingDomain editingDomain = TransactionUtil.getEditingDomain(adaptableObject);
+			if (editingDomain != null) {
+				try {
+	                return TransactionUtil.runExclusive(editingDomain,  new RunnableWithResult.Impl<Object>(){
+
+						public void run() {
+							final IItemPropertySource itemPropertySource = getItemPropertySource(adaptableObject);
+							final IPropertySource propertySource = createPropertySource(adaptableObject, itemPropertySource);
+							setResult(new TransactionalPropertySource(editingDomain, propertySource));
+                        } 
+	                	
+	                });
+                } catch (InterruptedException e) {
+	                return null;
+                }
+			}
 			if (adapterType == IPropertySource.class || adapterType == IPropertySource2.class) {
 				final IItemPropertySource itemPropertySource = getItemPropertySource(adaptableObject);
 				final IPropertySource propertySource = createPropertySource(adaptableObject, itemPropertySource);
-				if (editingDomain != null) {
-					return new TransactionalPropertySource(editingDomain, propertySource);
-				} else {
-					return propertySource;
-				}
+				return propertySource;
 			}
 		}
 		return null;
