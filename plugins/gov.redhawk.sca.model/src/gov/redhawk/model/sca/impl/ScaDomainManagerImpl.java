@@ -49,6 +49,7 @@ import java.util.concurrent.Executors;
 import mil.jpeojtrs.sca.dmd.DmdPackage;
 import mil.jpeojtrs.sca.dmd.DomainManagerConfiguration;
 import mil.jpeojtrs.sca.spd.SpdPackage;
+import mil.jpeojtrs.sca.util.NamedThreadFactory;
 
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
@@ -602,7 +603,7 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 			eNotify(new ENotificationImpl(this, Notification.SET, ScaPackage.SCA_DOMAIN_MANAGER__CONNECTION_PROPERTIES_CONTAINER, newConnectionPropertiesContainer, newConnectionPropertiesContainer));
 	}
 
-	private static final ExecutorService EXECUTOR_POOL = Executors.newFixedThreadPool(5);
+	private static final ExecutorService EXECUTOR_POOL = Executors.newFixedThreadPool(5, new NamedThreadFactory(ScaDomainManagerImpl.class.getName()));
 
 	/**
 	 * @since 14.0

@@ -21,8 +21,8 @@ import gov.redhawk.sca.model.provider.refresh.preferences.RefreshPreferenceIniti
 
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.ThreadFactory;
-import java.util.concurrent.atomic.AtomicInteger;
+
+import mil.jpeojtrs.sca.util.NamedThreadFactory;
 
 import org.eclipse.emf.ecore.EObject;
 
@@ -30,40 +30,11 @@ import org.eclipse.emf.ecore.EObject;
  * 
  */
 public class ScaRefreshableDataProviderService extends AbstractDataProviderService {
-	/**
-	* The default thread factory
-	*/
-	private static class RefreshThreadFactory implements ThreadFactory {
-		private final ThreadGroup group;
-		private final AtomicInteger threadNumber = new AtomicInteger(1);
-		private final String namePrefix;
-
-		RefreshThreadFactory() {
-			final SecurityManager s = System.getSecurityManager();
-			if (s != null) {
-				this.group = s.getThreadGroup();
-			} else {
-				this.group = Thread.currentThread().getThreadGroup();
-			}
-			this.namePrefix = "refreshDataProviderPool-thread-";
-		}
-
-		public Thread newThread(final Runnable r) {
-			final Thread t = new Thread(this.group, r, this.namePrefix + this.threadNumber.getAndIncrement(), 0);
-			if (t.isDaemon()) {
-				t.setDaemon(false);
-			}
-			if (t.getPriority() != Thread.NORM_PRIORITY) {
-				t.setPriority(Thread.NORM_PRIORITY);
-			}
-			return t;
-		}
-	}
 
 	private static final RefresherSwitch SWITCH = new RefresherSwitch();
 
 	public static final ScheduledExecutorService REFRESH_POOL = Executors.newScheduledThreadPool(ScaRefreshableDataProviderService.getPoolSize(),
-	        new RefreshThreadFactory());
+			new NamedThreadFactory(ScaRefreshableDataProviderService.class.getName()));
 
 	/**
 	 * {@inheritDoc}
