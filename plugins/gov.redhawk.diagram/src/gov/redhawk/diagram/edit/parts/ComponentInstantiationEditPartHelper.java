@@ -116,7 +116,15 @@ public class ComponentInstantiationEditPartHelper {
 	 */
 	private int getAdjustedWidth(final ComponentInstantiation ci) {
 		int left = 0, right = 0;
-		final int name = ci.getUsageName().length();
+		if (ci == null) {
+			return 0;
+		}
+		String usageName = ci.getUsageName();
+		if (usageName == null) {
+			return 0;
+		}
+		
+		final int name = usageName.length();
 
 		for (final UsesPortStub uses : ci.getUses()) {
 			if (uses.getName().length() > left) {
