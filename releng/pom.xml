@@ -20,7 +20,6 @@
         <orbit>http://download.eclipse.org/tools/orbit/downloads/drops/R20130118183705/repository</orbit>
         <mil.jpeojtrs.sca>http://download.redhawksdr.org/mil.jpeojtrs.sca/releases/1.8</mil.jpeojtrs.sca>
         <redhawk-core-framework>http://download.redhawksdr.org/redhawk-core-framework/releases/1.8</redhawk-core-framework>
-        <bulkioInterfaces>http://download.redhawksdr.org/bulkioInterfaces/releases/1.8</bulkioInterfaces>
         <nxm>http://download.redhawksdr.org/nxm/releases/3.3.1</nxm>
         <nxm-rcp>http://download.redhawksdr.org/nxm-rcp/releases/1.0</nxm-rcp>
     </properties>
@@ -54,12 +53,6 @@
             <id>redhawk-core-framework</id>
             <layout>p2</layout>
             <url>${redhawk-core-framework}</url>
-        </repository>
-
-        <repository>
-            <id>bulkioInterfaces</id>
-            <layout>p2</layout>
-            <url>${bulkioInterfaces}</url>
         </repository>
 
         <repository>
