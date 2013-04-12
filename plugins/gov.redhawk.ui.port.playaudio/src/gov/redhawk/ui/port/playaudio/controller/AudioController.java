@@ -30,6 +30,7 @@ import java.util.Map.Entry;
 
 import javax.sound.sampled.AudioFormat;
 
+import mil.jpeojtrs.sca.sad.SadComponentInstantiation;
 import mil.jpeojtrs.sca.util.ScaEcoreUtils;
 
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -76,7 +77,7 @@ public class AudioController {
 
 	/**
 	 * Adds a listener to the list for changes.
-	 * 
+	 *
 	 * @param listener the listener to add
 	 */
 	public void addListener(final IControllerListener listener) {
@@ -87,7 +88,7 @@ public class AudioController {
 
 	/**
 	 * Removes a listener.
-	 * 
+	 *
 	 * @param listener the listener to remove
 	 */
 	public void removeListener(final IControllerListener listener) {
@@ -96,7 +97,7 @@ public class AudioController {
 
 	/**
 	 * Selects a Collection of new ports to connect to.
-	 * 
+	 *
 	 * @param ports the new ports to connect
 	 */
 	public void portsSelected(final Collection<ScaUsesPort> ports) {
@@ -123,7 +124,7 @@ public class AudioController {
 
 	/**
 	 * This method pauses and resumes audio playback.
-	 * 
+	 *
 	 * @param paused true to pause playback, false to resume
 	 */
 	public void pause(final boolean paused) {
@@ -134,7 +135,7 @@ public class AudioController {
 
 	/**
 	 * This converts the BULKIO interface type to a Midassy format.
-	 * 
+	 *
 	 * @param portType the IDL rep of the port
 	 * @return string form of the Midas type similar to this
 	 */
@@ -169,7 +170,7 @@ public class AudioController {
 
 	/**
 	 * This returns a map of the currently connect audio ports.
-	 * 
+	 *
 	 * @return Map of the currently connect audio ports
 	 */
 	public Map<ScaUsesPort, String> getConnectedPorts() {
@@ -179,7 +180,7 @@ public class AudioController {
 	/**
 	 * The AudioFormat of the currently selected audio port, or null if 0 or > 1
 	 * ports are selected.
-	 * 
+	 *
 	 * @return format of the selected audio port, or null if 0 or > 1 are selected
 	 */
 	public AudioFormat getFormat() {
@@ -189,7 +190,7 @@ public class AudioController {
 	/**
 	 * This method is used to indicate a new AudioFormat was connected and
 	 * updates the text boxes to display the stats on it
-	 * 
+	 *
 	 * @param fmt the new AudioFormat that's being played
 	 */
 	public void newFormat(final AudioFormat fmt) {
@@ -203,7 +204,7 @@ public class AudioController {
 
 	/**
 	 * This disconnects all selected ports.
-	 * @param portName 
+	 * @param portName
 	 */
 	public void disconnectPorts(String portName) {
 		if (portName != null) {
@@ -224,7 +225,7 @@ public class AudioController {
 				this.formatMap.remove(port);
 				this.connectedPorts.remove(port);
 			}
-			
+
 		} else {
 			for (final ScaUsesPort port : this.curPorts) {
 				if (this.audioReceiver != null) {
@@ -261,7 +262,7 @@ public class AudioController {
 
 	/**
 	 * This selects, listens to waveform changes and plays the passed in ports.
-	 * 
+	 *
 	 * @param portMap Map of ports to play
 	 */
 	public void playPort(final Map<ScaUsesPort, String> portMap) {
@@ -281,7 +282,12 @@ public class AudioController {
 						if ((comp != null) && (comp.getProfileObj() != null)) {
 							String res = comp.getProfileObj().getName();
 							if (comp instanceof ScaComponent) {
-								res = ((ScaComponent) comp).getComponentInstantiation().getUsageName();
+								SadComponentInstantiation compInstantiation = ((ScaComponent) comp).getComponentInstantiation();
+								if (compInstantiation != null) {
+									res = compInstantiation.getUsageName();
+								} else { // fall-back to SCA Component's name
+									res = ((ScaComponent) comp).getName();
+								}
 							} else if (comp instanceof ScaDevice< ? >) {
 								res = ((ScaDevice< ? >) comp).getLabel();
 							}
@@ -360,7 +366,7 @@ public class AudioController {
 
 	/**
 	 * This returns the name of the specified port.
-	 * 
+	 *
 	 * @param port the port to get the name for
 	 * @return the String name of the port
 	 */
