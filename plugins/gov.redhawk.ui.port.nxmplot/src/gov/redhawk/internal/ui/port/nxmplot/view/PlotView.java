@@ -47,7 +47,6 @@ import org.eclipse.core.runtime.Assert;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
-import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.notify.Notifier;
 import org.eclipse.emf.common.notify.impl.AdapterImpl;
@@ -374,19 +373,10 @@ public class PlotView extends ViewPart {
 				spectralPlots.setData("fft", fft);
 				spectralPlots.setData("ports", ports);
 				spectralPlots.setData("plotType", plotType);
-				Job nxmJob = new Job("NextMidas Plot Startup") {
-
-					@Override
-					protected IStatus run(IProgressMonitor monitor) {
-						((AbstractNxmPlotWidget) spectralPlots).initPlot(plotSwitches, plotArgs);
-						List<IPlotSession> plotSessions = NxmPlotUtil.addSource(
-								connList, fft, (AbstractNxmPlotWidget) spectralPlots, plotQualifiers);
-						plotSessionMap.put(spectralPlots, plotSessions);
-						return Status.OK_STATUS;
-					}
-
-				};
-				nxmJob.schedule();
+				((AbstractNxmPlotWidget) spectralPlots).initPlot(plotSwitches, plotArgs);
+				List<IPlotSession> plotSessions = NxmPlotUtil.addSource(
+						connList, fft, (AbstractNxmPlotWidget) spectralPlots, plotQualifiers);
+				plotSessionMap.put(spectralPlots, plotSessions);
 			}
 		}
 

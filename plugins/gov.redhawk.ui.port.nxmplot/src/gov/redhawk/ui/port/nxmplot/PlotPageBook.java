@@ -5,10 +5,6 @@ import gov.redhawk.model.sca.ScaUsesPort;
 import java.util.List;
 import java.util.UUID;
 
-import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.core.runtime.IStatus;
-import org.eclipse.core.runtime.Status;
-import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.DisposeEvent;
 import org.eclipse.swt.events.DisposeListener;
@@ -124,23 +120,12 @@ public class PlotPageBook extends Composite {
 		}
 
 		this.pageBook.showPage(this.pageBook.getTabList()[this.rasterShowing ? 1 : 0]); // SUPPRESS CHECKSTYLE AvoidInline
-
-		final Job job = new Job("Starting plot") {
-
-			@Override
-			protected IStatus run(final IProgressMonitor monitor) {
-				nxmPlotWidgetLine.initPlot(linePlotSwitches, linePlotArgs);
-				PlotPageBook.this.linePlotSessions = NxmPlotUtil.addSource(connList, fft, PlotPageBook.this.nxmPlotWidgetLine, plotQualifiers);
-				if (nxmPlotWidgetRaster != null) {
-					nxmPlotWidgetRaster.initPlot(rasterPlotSwitches, rasterPlotArgs);
-					PlotPageBook.this.rasterPlotSessions = NxmPlotUtil.addSource(connList, fft, PlotPageBook.this.nxmPlotWidgetRaster, plotQualifiers);
-				}
-				return Status.OK_STATUS;
-			}
-
-		};
-		job.setSystem(true);
-		job.schedule();
+		nxmPlotWidgetLine.initPlot(linePlotSwitches, linePlotArgs);
+		PlotPageBook.this.linePlotSessions = NxmPlotUtil.addSource(connList, fft, PlotPageBook.this.nxmPlotWidgetLine, plotQualifiers);
+		if (nxmPlotWidgetRaster != null) {
+			nxmPlotWidgetRaster.initPlot(rasterPlotSwitches, rasterPlotArgs);
+			PlotPageBook.this.rasterPlotSessions = NxmPlotUtil.addSource(connList, fft, PlotPageBook.this.nxmPlotWidgetRaster, plotQualifiers);
+		}
 
 	}
 

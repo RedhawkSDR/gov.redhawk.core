@@ -24,13 +24,11 @@ import nxm.rcp.ui.core.NeXtMidasComposite;
 import nxm.redhawk.lib.RedhawkNxmUtil;
 import nxm.sys.prim.plot;
 
-import org.eclipse.core.runtime.Assert;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.DisposeEvent;
 import org.eclipse.swt.events.DisposeListener;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Display;
 
 /**
  * 
@@ -56,17 +54,17 @@ public class RcpNxmPlotWidget extends AbstractNxmPlotWidget {
 		});
 		setLayout(new FillLayout());
 		nxmComp = new NeXtMidasComposite(this, SWT.None);
+		
+		RedhawkNxmUtil.initializeRedhawkOptionTrees();
+		nxmComp.getLocalShell().M.registry.put(MSG_HANDLER_ID, this.plotMessageHandler);
 	}
 
-	public synchronized void initPlot(String plotSwitches, String plotArgs) {
-		Assert.isTrue(Display.getCurrent() == null, "Do not call initPlot from the UI thread.");
+	public void initPlot(String plotSwitches, String plotArgs) {
 		if (this.initialized) {
-			return;
+			throw new IllegalStateException("Plot already initialized.");
 		}
 		this.initialized = true;
-		RedhawkNxmUtil.initializeRedhawkOptionTrees();
-		nxmComp.initNxm();
-		nxmComp.getLocalShell().M.registry.put(MSG_HANDLER_ID, this.plotMessageHandler);
+		
 		if (plotArgs==null) {
 			plotArgs = "";
 		}
