@@ -313,7 +313,7 @@ public class AudioController {
 							switch (notification.getFeatureID(ScaDomainManager.class)) {
 							case ScaPackage.SCA_DOMAIN_MANAGER__WAVEFORMS:
 								if ((notification.getOldValue() == wave) && (notification.getNewValue() == null)) {
-									final WorkbenchJob job = new WorkbenchJob("Remove Plot tab") {
+									final WorkbenchJob job = new WorkbenchJob("Remove Play Port tab") {
 
 										@Override
 										public IStatus runInUIThread(final IProgressMonitor monitor) {

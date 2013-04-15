@@ -96,7 +96,7 @@ public class TrackableLabel extends Composite {
 
 	@Override
 	public Point getSize() {
-		resize();
+		//resize();
 		return computeSize(SWT.DEFAULT, SWT.DEFAULT);
 	}
 
