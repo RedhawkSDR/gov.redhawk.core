@@ -1,4 +1,0 @@
-To build:
-mvn clean install
-
-Build results are located within the target directories.

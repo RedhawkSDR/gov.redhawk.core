@@ -53,6 +53,7 @@ public interface IPlotWidgetListener {
 	 * @param xmax max x position of the zoom box
 	 * @param ymax max y position of the zoom box
 	 * @param data the data object from the message, used for forwarding messages to other plots
+	 * @since 4.0
 	 */
 	void zoomX(double xmin, double ymin, double xmax, double ymax, Object data);
 
@@ -86,7 +87,7 @@ public interface IPlotWidgetListener {
 	 * @param x2 x position 2 of the resulting unzoom
 	 * @param y2 y position 2 of the resulting unzoom
 	 * @param data the data object from the message, used for forwarding messages to other plots
-
+	 * @since 4.0
 	 */
 	void unzoom(double x1, double y1, double x2, double y2, Object data);
 

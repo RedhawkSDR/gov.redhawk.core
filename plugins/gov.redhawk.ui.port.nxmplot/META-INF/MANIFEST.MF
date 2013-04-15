@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: NeXtMidas CORBA Plot Plug-in
 Bundle-SymbolicName: gov.redhawk.ui.port.nxmplot;singleton:=true
-Bundle-Version: 3.0.0.qualifier
+Bundle-Version: 4.0.0.qualifier
 Bundle-Activator: gov.redhawk.ui.port.nxmplot.PlotActivator
 Bundle-Vendor: REDHAWK
 Require-Bundle: org.eclipse.ui;bundle-version="3.6.1";resolution:=optional,

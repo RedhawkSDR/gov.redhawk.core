@@ -13,6 +13,7 @@ package gov.redhawk.ui.editor;
 
 import gov.redhawk.eclipsecorba.library.IdlLibrary;
 import gov.redhawk.eclipsecorba.library.LibraryFactory;
+import gov.redhawk.eclipsecorba.library.util.RefreshIdlLibraryJob;
 import gov.redhawk.internal.ui.ScaIdeConstants;
 import gov.redhawk.internal.ui.editor.validation.ValidatingEContentAdapter;
 import gov.redhawk.ui.RedhawkUiActivator;
@@ -438,6 +439,8 @@ public abstract class SCAFormEditor extends FormEditor implements IEditingDomain
 	private final Map<Resource, IDocument> resourceToDocumentMap = new HashMap<Resource, IDocument>();
 
 	private boolean editorSaving;
+
+	private RefreshIdlLibraryJob reloadLibraryJob;
 
 	/**
 	 * The Class SCAMultiPageEditorSite.
@@ -1808,20 +1811,10 @@ public abstract class SCAFormEditor extends FormEditor implements IEditingDomain
 	 * @since 6.0
 	 */
 	public void reloadIdlLibrary() {
-		final Job reloadJob = new Job("Reload Idl Library") {
-			@Override
-			protected IStatus run(final IProgressMonitor monitor) {
-				if (getIdlLibrary() != null) {
-					try {
-						getIdlLibrary().load(monitor);
-					} catch (final CoreException e) {
-						RedhawkUiActivator.log("Error reloading IDL library", e.getStatus());
-					}
-				}
-				return Status.OK_STATUS;
-			}
-		};
-		reloadJob.schedule();
+		if (reloadLibraryJob == null) {
+			reloadLibraryJob = new RefreshIdlLibraryJob(getIdlLibrary());
+		}
+		reloadLibraryJob.schedule();
 	}
 
 	/**

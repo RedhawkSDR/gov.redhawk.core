@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<site>
-   <feature url="features/gov.redhawk.sca.rap.sdk_1.8.3.qualifier.jar" id="gov.redhawk.sca.rap.sdk" version="1.8.3.qualifier">
-      <category name="gov.redhawk.sca.rap"/>
-   </feature>
-   <category-def name="gov.redhawk.sca.rap" label="REDHAWK RAP Core"/>
-</site>

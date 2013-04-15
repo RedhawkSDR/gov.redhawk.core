@@ -4,9 +4,9 @@
   <modelVersion>4.0.0</modelVersion>
   <parent>
     <groupId>gov.redhawk.core</groupId>
-    <artifactId>common</artifactId>
+    <artifactId>core</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <relativePath>../../releng/common/</relativePath>
+    <relativePath>../../releng/core/</relativePath>
   </parent>
   <groupId>gov.redhawk.core</groupId>
   <artifactId>gov.redhawk.configurator</artifactId>

@@ -16,8 +16,9 @@
     </parent>
 
     <properties>
-        <juno-3.8>http://download.eclipse.org/eclipse/updates/3.8</juno-3.8>
-        <juno>http://download.eclipse.org/releases/juno</juno>
+        <eclipse-support>http://download.eclipse.org/eclipse/updates/3.8</eclipse-support>
+        <eclipse>http://download.eclipse.org/releases/juno</eclipse>
+        <eclipse-updates>http://download.eclipse.org/updates/4.2</eclipse-updates>
         <orbit>http://download.eclipse.org/tools/orbit/downloads/drops/R20130118183705/repository</orbit>
         <mil.jpeojtrs.sca>http://download.redhawksdr.org/mil.jpeojtrs.sca/releases/1.9</mil.jpeojtrs.sca>
         <redhawk-core-framework>http://download.redhawksdr.org/redhawk-core-framework/releases/1.9/</redhawk-core-framework>
@@ -27,15 +28,21 @@
 
     <repositories>
         <repository>
-            <id>juno-3.8</id>
+            <id>eclipse-support</id>
             <layout>p2</layout>
-            <url>${juno-3.8}</url>
+            <url>${eclipse-support}</url>
         </repository>
 
         <repository>
-            <id>juno</id>
+            <id>eclipse-updates</id>
             <layout>p2</layout>
-            <url>${juno}</url>
+            <url>${eclipse-updates}</url>
+        </repository>
+
+        <repository>
+            <id>eclipse</id>
+            <layout>p2</layout>
+            <url>${eclipse}</url>
         </repository>
 
         <repository>

@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<site>
-   <feature url="features/org.jacorb.systemFragment_3.1.0.qualifier.jar" id="org.jacorb.systemFragment" version="3.1.0.qualifier">
-      <category name="org.jacorb.systemFragment"/>
-   </feature>
-   <category-def name="org.jacorb.systemFragment" label="JacORB System Fragment"/>
-</site>

@@ -26,10 +26,10 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
-import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
-import java.util.concurrent.atomic.AtomicInteger;
+
+import mil.jpeojtrs.sca.util.NamedThreadFactory;
 
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
@@ -45,34 +45,7 @@ import org.eclipse.emf.ecore.EObject;
  */
 public class RefreshTask extends AbstractDataProvider implements Runnable {
 
-	private static class ExecutorThreadFactory implements ThreadFactory {
-		private final ThreadGroup group;
-		private final AtomicInteger threadNumber = new AtomicInteger(1);
-		private final String namePrefix;
-
-		ExecutorThreadFactory() {
-			final SecurityManager s = System.getSecurityManager();
-			if (s != null) {
-				this.group = s.getThreadGroup();
-			} else {
-				this.group = Thread.currentThread().getThreadGroup();
-			}
-			this.namePrefix = "refreshDataProviderPoolExecutor-thread-";
-		}
-
-		public Thread newThread(final Runnable r) {
-			final Thread t = new Thread(this.group, r, this.namePrefix + this.threadNumber.getAndIncrement(), 0);
-			if (t.isDaemon()) {
-				t.setDaemon(false);
-			}
-			if (t.getPriority() != Thread.NORM_PRIORITY) {
-				t.setPriority(Thread.NORM_PRIORITY);
-			}
-			return t;
-		}
-	}
-
-	private static final ExecutorService EXECUTOR_POOL = Executors.newSingleThreadExecutor(new ExecutorThreadFactory());
+	private static final ExecutorService EXECUTOR_POOL = Executors.newSingleThreadExecutor(new NamedThreadFactory(RefreshTask.class.getName()));
 
 	/**
 	 * @since 4.0

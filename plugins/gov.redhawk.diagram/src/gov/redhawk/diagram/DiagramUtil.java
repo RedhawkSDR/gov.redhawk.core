@@ -131,8 +131,8 @@ public final class DiagramUtil {
 	 */
 	private static URI getTemporaryDiagramResourceURI(final IDiagramUtilHelper options, final URI uri) throws IOException {
 		final String name = uri.lastSegment();
-		final File tempFile = File.createTempFile(name.substring(0, name.length() - options.getSemanticFileExtension().length()),
-		        options.getDiagramFileExtension());
+		String tmpName = "rh_" + name.substring(0, name.length() - options.getSemanticFileExtension().length());
+		final File tempFile = File.createTempFile(tmpName, options.getDiagramFileExtension());
 		tempFile.deleteOnExit();
 
 		final URI retVal = URI.createURI(tempFile.toURI().toString());

@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feature
+      id="gov.redhawk.core.sdk"
+      label="%featureName"
+      version="1.9.0.qualifier"
+      provider-name="%providerName"
+      plugin="mil.jpeojtrs.sca.util">
+
+   <description url="http://redhawksdr.org">
+      %description
+   </description>
+
+   <copyright url="http://redhawksdr.org">
+      %copyright
+   </copyright>
+
+   <license url="http://redhawksdr.org">
+      %license
+   </license>
+
+   <includes
+         id="gov.redhawk.core"
+         version="0.0.0"/>
+
+   <includes
+         id="gov.redhawk.core.source"
+         version="0.0.0"/>
+
+   <includes
+         id="gov.redhawk.core.ui"
+         version="0.0.0"/>
+
+   <includes
+         id="gov.redhawk.core.ui.source"
+         version="0.0.0"/>
+
+</feature>

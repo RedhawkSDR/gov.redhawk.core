@@ -1,24 +1,26 @@
 package nxm.redhawk.lib;
 
+import java.util.concurrent.atomic.AtomicBoolean;
+
 import nxm.sys.lib.NeXtMidas;
 
 public final class RedhawkNxmUtil {
 	
-	private static boolean added = false;
+	private static final AtomicBoolean added = new AtomicBoolean(false);
 
 	private RedhawkNxmUtil() {
 
 	}
 	
-	public static synchronized void initializeRedhawkOptionTrees() {
-		if (added) {
+	public static void initializeRedhawkOptionTrees() {
+		if (!added.compareAndSet(false, true)) {
 			return;
 		}
-		added = true;
-		NeXtMidas.getGlobalInstance().runCommand("OPTION REDHAWK CLASSPATH");
-		NeXtMidas.getGlobalInstance().runCommand("OPTION DSP CLASSPATH");
-		NeXtMidas.getGlobalInstance().runCommand("PATH ADD DSP REDHAWK");
-		NeXtMidas.getGlobalInstance().runCommand("DEBUG ON TRACE");
+		NeXtMidas instance = NeXtMidas.getGlobalInstance();
+		instance.runCommand("OPTION REDHAWK CLASSPATH");
+		instance.runCommand("OPTION DSP CLASSPATH");
+		instance.runCommand("PATH ADD DSP REDHAWK");
+		instance.runCommand("DEBUG ON TRACE");
 	}
 
 }
