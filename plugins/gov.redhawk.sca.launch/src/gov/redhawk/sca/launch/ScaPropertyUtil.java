@@ -51,29 +51,30 @@ class ScaPropertyUtil {
 
 	public static String save(final ScaAbstractComponent< ? > component) {
 		if (component != null) {
+			final Map< ? , ? > propMap = ScaPropertyUtil.storeProperties(component);
+			
+			if (propMap.isEmpty()) {
+				return null;
+			}
+			
 			ByteArrayOutputStream buffer = null;
 			XMLEncoder encoder = null;
-			try {
-				buffer = new ByteArrayOutputStream();
-				encoder = new XMLEncoder(buffer);
-				final Map< ? , ? > propMap = ScaPropertyUtil.storeProperties(component);
-				if (propMap.isEmpty()) {
-					return null;
-				}
-				encoder.writeObject(propMap);
-				return new String(buffer.toByteArray());
-			} finally {
-				if (encoder != null) {
-					encoder.close();
-				}
-				if (buffer != null) {
-					try {
-	                    buffer.close();
-                    } catch (IOException e) {
-                    	// PASS
-                    }
+			buffer = new ByteArrayOutputStream();
+			encoder = new XMLEncoder(buffer);
+			encoder.writeObject(propMap);
+
+			if (encoder != null) {
+				encoder.close();
+			}
+			if (buffer != null) {
+				try {
+					buffer.close();
+				} catch (IOException e) {
+					// PASS
 				}
 			}
+			
+			return buffer.toString();
 		} else {
 			return null;
 		}
