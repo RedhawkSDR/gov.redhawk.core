@@ -9,6 +9,6 @@
     <relativePath>../../releng/rcp/</relativePath>
   </parent>
   <artifactId>gov.redhawk.prf.ui</artifactId>
-  <version>3.0.0-SNAPSHOT</version>
+  <version>3.0.1-SNAPSHOT</version>
   <packaging>eclipse-plugin</packaging>
 </project>
