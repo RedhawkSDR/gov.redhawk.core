@@ -267,7 +267,9 @@ public abstract class ScaPropertyContainerTest extends CorbaObjWrapperTest {
 	 * @throws InterruptedException 
 	 * @see gov.redhawk.model.sca.ScaAbstractComponent#fetchPropertyValues(org.eclipse.core.runtime.IProgressMonitor)
 	 * @generated NOT
+	 * @deprecated
 	 */
+	@Deprecated
 	public void testFetchPropertyValues__IProgressMonitor() throws InterruptedException {
 		// END GENERATED CODE
 		getFixture().fetchPropertyValues(null);

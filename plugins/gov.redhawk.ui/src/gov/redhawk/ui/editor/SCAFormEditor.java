@@ -20,7 +20,6 @@ import gov.redhawk.ui.RedhawkUiActivator;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -1184,7 +1183,7 @@ public abstract class SCAFormEditor extends FormEditor implements IEditingDomain
 		this.disposed = true;
 		storeDefaultPage();
 
-		new InstanceScope().getNode(SCAFormEditor.IDL_PREFERENCE_NODE_ID).removePreferenceChangeListener(this.idlPreferenceListener);
+		InstanceScope.INSTANCE.getNode(SCAFormEditor.IDL_PREFERENCE_NODE_ID).removePreferenceChangeListener(this.idlPreferenceListener);
 		if (this.fEditorSelectionChangedListener != null) {
 			this.fEditorSelectionChangedListener.uninstall(getSite().getSelectionProvider());
 			this.fEditorSelectionChangedListener = null;
@@ -1392,7 +1391,7 @@ public abstract class SCAFormEditor extends FormEditor implements IEditingDomain
 		super.init(site, input);
 
 		//		ResourcesPlugin.getWorkspace().addResourceChangeListener(this.resourceChangeListener, IResourceChangeEvent.POST_CHANGE);
-		new InstanceScope().getNode(SCAFormEditor.IDL_PREFERENCE_NODE_ID).addPreferenceChangeListener(this.idlPreferenceListener);
+		InstanceScope.INSTANCE.getNode(SCAFormEditor.IDL_PREFERENCE_NODE_ID).addPreferenceChangeListener(this.idlPreferenceListener);
 	}
 
 	@Override

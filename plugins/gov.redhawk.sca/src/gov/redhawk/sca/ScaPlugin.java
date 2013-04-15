@@ -316,7 +316,7 @@ public class ScaPlugin extends Plugin {
 	 */
 	public IPreferenceAccessor getScaPreferenceAccessor() {
 		if (this.scaPreferenceStore == null) {
-			this.scaPreferenceStore = new ScopedPreferenceAccessor(new InstanceScope(), ScaPlugin.getPluginId());
+			this.scaPreferenceStore = new ScopedPreferenceAccessor(InstanceScope.INSTANCE, ScaPlugin.getPluginId());
 		}
 		return this.scaPreferenceStore;
 	}

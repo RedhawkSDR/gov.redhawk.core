@@ -17,9 +17,9 @@ import gov.redhawk.prf.ui.editor.page.PropertiesFormPage;
 import gov.redhawk.prf.ui.provider.PropertiesEditorPrfItemProviderAdapterFactory;
 import gov.redhawk.prf.ui.wizard.BrowsePropertiesWizard;
 import gov.redhawk.sca.ScaPlugin;
+import gov.redhawk.sca.ui.parts.FormFilteredTree;
 import gov.redhawk.ui.actions.SortAction;
 import gov.redhawk.ui.editor.TreeSection;
-import gov.redhawk.sca.ui.parts.FormFilteredTree;
 import gov.redhawk.ui.parts.TreePart;
 import gov.redhawk.ui.util.SCAEditorUtil;
 

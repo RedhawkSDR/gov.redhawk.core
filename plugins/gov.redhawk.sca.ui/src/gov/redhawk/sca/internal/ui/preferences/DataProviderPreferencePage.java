@@ -61,7 +61,7 @@ public class DataProviderPreferencePage extends PreferencePage implements IWorkb
 	 * 
 	 */
 	public DataProviderPreferencePage() {
-		setPreferenceStore(new ScopedPreferenceStore(new InstanceScope(), ScaModelPlugin.getDefault().getBundle().getSymbolicName()));
+		setPreferenceStore(new ScopedPreferenceStore(InstanceScope.INSTANCE, ScaModelPlugin.getDefault().getBundle().getSymbolicName()));
 		final String str = getPreferenceStore().getString(ScaModelPreferenceContants.DISABLED_DATA_PROVIDERS);
 		final List<String> disabledProviders = Arrays.asList(str.split(","));
 		for (final IScaDataProviderServiceDescriptor desc : ScaModelPlugin.getDataProviderRegistry().getDataProvidersDescriptors()) {

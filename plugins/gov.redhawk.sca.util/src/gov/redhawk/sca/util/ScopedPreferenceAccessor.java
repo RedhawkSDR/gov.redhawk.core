@@ -60,7 +60,7 @@ public class ScopedPreferenceAccessor implements IPreferenceAccessor {
 	 * The default context is the context where getDefault and setDefault
 	 * methods will search. This context is also used in the search.
 	 */
-	private final IScopeContext defaultContext = new DefaultScope();
+	private final IScopeContext defaultContext = DefaultScope.INSTANCE;
 
 	/**
 	 * The nodeQualifer is the string used to look up the node in the contexts.

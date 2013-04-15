@@ -27,7 +27,6 @@ import java.util.concurrent.LinkedBlockingQueue;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
-import org.eclipse.emf.common.notify.impl.AdapterImpl;
 import org.omg.CORBA.Any;
 import org.omg.CORBA.ORB;
 import org.omg.CORBA.SystemException;

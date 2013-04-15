@@ -430,7 +430,7 @@ public class PreferenceNodePathSetImpl extends PathImpl implements PreferenceNod
 	 */
 	private void removeQualifierPreferenceChangeListener(final String oldQualifier) {
 		Assert.isNotNull(this.qualifterPreferenceChangeListener);
-		final ScopedPreferenceAccessor accessor = new ScopedPreferenceAccessor(new InstanceScope(), oldQualifier);
+		final ScopedPreferenceAccessor accessor = new ScopedPreferenceAccessor(InstanceScope.INSTANCE, oldQualifier);
 		accessor.removePreferenceChangeListener(this.qualifterPreferenceChangeListener);
 		this.qualifterPreferenceChangeListener = null;
 	}
@@ -442,7 +442,7 @@ public class PreferenceNodePathSetImpl extends PathImpl implements PreferenceNod
 	 */
 	private void addQualifierPreferenceChangeListener(final String newQualifier) {
 		Assert.isTrue(this.qualifterPreferenceChangeListener == null);
-		final ScopedPreferenceAccessor accessor = new ScopedPreferenceAccessor(new InstanceScope(), newQualifier);
+		final ScopedPreferenceAccessor accessor = new ScopedPreferenceAccessor(InstanceScope.INSTANCE, newQualifier);
 		this.qualifterPreferenceChangeListener = new IPreferenceChangeListener() {
 			public void preferenceChange(final PreferenceChangeEvent event) {
 				if (event.getKey().equals(getKey())) {
@@ -471,7 +471,7 @@ public class PreferenceNodePathSetImpl extends PathImpl implements PreferenceNod
 	private void updateDerivedPaths() {
 		getDerivedPath().clear();
 		if (getKey() != null && getDelimiter() != null && getQualifier() != null) {
-			final ScopedPreferenceAccessor accessor = new ScopedPreferenceAccessor(new InstanceScope(), getQualifier());
+			final ScopedPreferenceAccessor accessor = new ScopedPreferenceAccessor(InstanceScope.INSTANCE, getQualifier());
 			final String value = accessor.getString(getKey());
 			final String[] values = value.split(getDelimiter());
 			for (String v : values) {

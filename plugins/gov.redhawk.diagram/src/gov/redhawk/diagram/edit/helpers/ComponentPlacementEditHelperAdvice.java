@@ -13,7 +13,6 @@
 // BEGIN GENERATED CODE
 package gov.redhawk.diagram.edit.helpers;
 
-import gov.redhawk.sca.util.PluginUtil;
 import mil.jpeojtrs.sca.partitioning.ComponentFile;
 import mil.jpeojtrs.sca.partitioning.ComponentFileRef;
 import mil.jpeojtrs.sca.partitioning.ComponentFiles;

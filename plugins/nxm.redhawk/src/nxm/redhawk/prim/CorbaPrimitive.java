@@ -17,7 +17,6 @@ import java.util.List;
 
 import mil.jpeojtrs.sca.util.DceUuidUtil;
 import nxm.sys.inc.Commandable;
-import nxm.sys.lib.Message;
 import nxm.sys.lib.Primitive;
 
 import org.omg.CORBA.ORB;

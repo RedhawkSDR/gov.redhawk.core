@@ -10,9 +10,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import org.eclipse.swt.SWT;
-
 import nxm.sys.lib.Table;
+
+import org.eclipse.swt.SWT;
 
 /**
  * @since 3.0

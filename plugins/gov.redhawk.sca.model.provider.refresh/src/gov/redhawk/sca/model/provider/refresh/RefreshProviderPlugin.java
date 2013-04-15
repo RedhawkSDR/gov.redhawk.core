@@ -24,7 +24,7 @@ public class RefreshProviderPlugin extends Plugin {
 	public static final String PLUGIN_ID = "gov.redhawk.sca.model.provider.refresh";
 
 	private static RefreshProviderPlugin instance;
-	private final ScopedPreferenceAccessor refreshPreferenceStore = new ScopedPreferenceAccessor(new InstanceScope(), RefreshProviderPlugin.getPluginId());
+	private final ScopedPreferenceAccessor refreshPreferenceStore = new ScopedPreferenceAccessor(InstanceScope.INSTANCE, RefreshProviderPlugin.getPluginId());
 
 	@Override
 	public void start(final BundleContext context) throws Exception {

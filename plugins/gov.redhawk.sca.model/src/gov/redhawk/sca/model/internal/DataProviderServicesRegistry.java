@@ -83,7 +83,7 @@ public enum DataProviderServicesRegistry implements IExtensionChangeHandler, IDa
 			}
 		}
 
-		node = new InstanceScope().getNode(ScaModelPlugin.ID);
+		node = InstanceScope.INSTANCE.getNode(ScaModelPlugin.ID);
 		node.addPreferenceChangeListener(listener);
 	}
 

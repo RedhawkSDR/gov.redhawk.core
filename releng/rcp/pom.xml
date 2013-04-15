@@ -4,23 +4,23 @@
     <artifactId>releng-rcp</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <packaging>pom</packaging>
-    
-    <properties>
-        <gov.redhawk.common>http://download.redhawksdr.org/gov.redhawk.core/releases/1.9</gov.redhawk.common>
-        <nxm-rcp>http://download.redhawksdr.org/nxm-rcp/releases/1.0</nxm-rcp>
-    </properties>
-    
+   
     <parent>
         <groupId>gov.redhawk.core</groupId>
         <artifactId>releng</artifactId>
         <version>0.0.1-SNAPSHOT</version>
     </parent>
+    
+    <properties>
+        <gov.redhawk.core>http://download.redhawksdr.org/gov.redhawk.core/releases/1.9</gov.redhawk.core>
+        <nxm-rcp>http://download.redhawksdr.org/nxm-ui/releases/1.0</nxm-rcp>
+    </properties>
 
     <repositories>
         <repository>
-            <id>gov.redhawk.common</id>
+            <id>gov.redhawk.core</id>
             <layout>p2</layout>
-            <url>${gov.redhawk.common}</url>
+            <url>${gov.redhawk.core}</url>
         </repository>
         
         <repository>

@@ -11,11 +11,9 @@
  */
 package gov.redhawk.sca.ui;
 
-import gov.redhawk.model.sca.commands.ScaModelCommandWithResult;
 import gov.redhawk.model.sca.provider.ScaItemProviderAdapterFactory;
 
 import org.eclipse.core.runtime.IAdapterFactory;
-import org.eclipse.core.runtime.IStatus;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.edit.domain.AdapterFactoryEditingDomain;
 import org.eclipse.emf.edit.provider.ComposedAdapterFactory;

@@ -73,7 +73,7 @@ public class RefreshProviderUIActivator extends AbstractUIPlugin {
 	 */
 	public IPreferenceStore getRefreshProviderPreferenceStore() {
 		if (this.providerPreferenceStore == null) {
-			this.providerPreferenceStore = new ScopedPreferenceStore(new InstanceScope(), RefreshProviderPlugin.getInstance().getBundle().getSymbolicName());
+			this.providerPreferenceStore = new ScopedPreferenceStore(InstanceScope.INSTANCE, RefreshProviderPlugin.getInstance().getBundle().getSymbolicName());
 		}
 		return this.providerPreferenceStore;
 	}

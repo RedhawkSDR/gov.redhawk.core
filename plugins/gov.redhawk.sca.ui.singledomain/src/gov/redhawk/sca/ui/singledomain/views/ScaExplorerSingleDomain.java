@@ -26,7 +26,6 @@ import gov.redhawk.sca.ui.singledomain.ScaSingleDomainPreferenceConstants;
 import gov.redhawk.sca.ui.singledomain.TrackableLabel;
 import gov.redhawk.sca.ui.singledomain.dialogs.DialogCloseJob;
 import gov.redhawk.sca.ui.singledomain.dialogs.DomainsDialog;
-import gov.redhawk.sca.ui.singledomain.dialogs.DomainsDialog.LinkType;
 import gov.redhawk.sca.ui.views.ScaExplorer;
 
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -49,7 +48,6 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.ToolItem;
 import org.eclipse.ui.IViewSite;
 import org.eclipse.ui.PartInitException;
-import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.navigator.CommonViewer;
 import org.eclipse.ui.progress.UIJob;
 

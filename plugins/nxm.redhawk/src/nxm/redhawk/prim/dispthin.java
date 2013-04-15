@@ -15,7 +15,6 @@ import nxm.sys.inc.Commandable;
 import nxm.sys.lib.BaseFile;
 import nxm.sys.lib.Data;
 import nxm.sys.lib.DataFile;
-import nxm.sys.lib.Message;
 import nxm.sys.lib.Primitive;
 
 /**
