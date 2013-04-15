@@ -30,6 +30,7 @@ import org.eclipse.jface.viewers.CheckboxTableViewer;
 import org.eclipse.jface.viewers.ComboViewer;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.viewers.ViewerComparator;
+import org.eclipse.jface.viewers.ViewerSorter;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Button;
@@ -41,7 +42,7 @@ import org.eclipse.ui.forms.IFormColors;
 import org.eclipse.ui.forms.widgets.FormToolkit;
 
 /**
- * 
+ *
  */
 public abstract class BasicSimplePropertyComposite extends AbstractPropertyComposite {
 	private static final int NUM_COLUMNS = 3;
@@ -186,6 +187,7 @@ public abstract class BasicSimplePropertyComposite extends AbstractPropertyCompo
 		this.typeViewer.setContentProvider(new ArrayContentProvider());
 		this.typeViewer.setLabelProvider(new LabelProvider());
 		this.typeViewer.setInput(PropertyValueType.values());
+		this.typeViewer.setSorter(new ViewerSorter());
 		toolkit.adapt(this.typeViewer.getCombo());
 		this.typeViewer.getControl().setLayoutData(BasicSimplePropertyComposite.FACTORY.create());
 		assignTooltip(this.typeViewer.getControl(), HelpConstants.prf_properties_simple_type);
@@ -193,7 +195,7 @@ public abstract class BasicSimplePropertyComposite extends AbstractPropertyCompo
 
 	/**
 	 * Creates the min entry field.
-	 * 
+	 *
 	 * @param toolkit the toolkit
 	 * @param client the client
 	 */
@@ -203,7 +205,7 @@ public abstract class BasicSimplePropertyComposite extends AbstractPropertyCompo
 
 	/**
 	 * Creates the min entry field.
-	 * 
+	 *
 	 * @param toolkit the toolkit
 	 * @param client the client
 	 */
