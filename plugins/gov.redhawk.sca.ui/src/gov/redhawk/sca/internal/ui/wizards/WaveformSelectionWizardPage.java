@@ -215,14 +215,13 @@ public class WaveformSelectionWizardPage extends WizardPage {
 		this.waveformSelectionList.getViewer().addSelectionChangedListener(new ISelectionChangedListener() {
 
 			public void selectionChanged(final SelectionChangedEvent event) {
-				if (WaveformSelectionWizardPage.this.defaultNameChanged) {
-					return;
-				}
 				final Object selected = ((StructuredSelection) event.getSelection()).getFirstElement();
 				if (selected instanceof SoftwareAssembly) {
 					WaveformSelectionWizardPage.this.sad = (SoftwareAssembly) selected;
-
-					if (WaveformSelectionWizardPage.this.sad == null) {
+					if (WaveformSelectionWizardPage.this.defaultNameChanged) {
+						// PASS since user had explicitly set the Waveform name
+					}
+					else if (WaveformSelectionWizardPage.this.sad == null) {
 						waveformNameTextBox.setText("");
 						WaveformSelectionWizardPage.this.defaultNameChanged = false;
 					} else {
