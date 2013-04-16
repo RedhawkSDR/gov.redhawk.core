@@ -1,0 +1,19 @@
+#!/bin/bash
+MY_DIR=`dirname $0`
+PROVIDED_WORKSPACE=0
+for ARG in "$@"; do
+    if [ "$ARG" = "-data" ]; then
+        PROVIDED_WORKSPACE=1
+    fi
+done
+
+EXTRA_ARGS=""
+TEMP_DIR=
+if [ $PROVIDED_WORKSPACE -eq 0 ]; then
+    TEMP_DIR=`mktemp -t -d rhgen.XXXXXX`
+    EXTRA_ARGS="-data $TEMP_DIR"
+fi
+$MY_DIR/../eclipse -nosplash -consoleLog -application gov.redhawk.ide.codegen.application.codegen "$@" $EXTRA_ARGS
+if [ $TEMP_DIR ]; then
+    rm -rf $TEMP_DIR
+fi
