@@ -24,6 +24,7 @@ import mil.jpeojtrs.sca.prf.Enumeration;
 import mil.jpeojtrs.sca.prf.PrfPackage;
 import mil.jpeojtrs.sca.prf.Simple;
 import mil.jpeojtrs.sca.prf.Struct;
+import mil.jpeojtrs.sca.prf.StructSequence;
 import mil.jpeojtrs.sca.prf.provider.PrfItemProviderAdapterFactory;
 import mil.jpeojtrs.sca.util.AnyUtils;
 
@@ -74,6 +75,8 @@ public class SimplePropertyComposite extends BasicSimplePropertyComposite {
 	private Text valueText;
 	private boolean hiddenViewers;
 
+	private Label valueLabel;
+
 	/**
 	 * @param parent
 	 * @param style
@@ -113,8 +116,8 @@ public class SimplePropertyComposite extends BasicSimplePropertyComposite {
 
 	private void createValue(final Composite parent, final FormToolkit toolkit) {
 		// Value
-		final Label label = toolkit.createLabel(parent, "Value:");
-		label.setForeground(toolkit.getColors().getColor(IFormColors.TITLE));
+		valueLabel = toolkit.createLabel(parent, "Value:");
+		valueLabel.setForeground(toolkit.getColors().getColor(IFormColors.TITLE));
 		this.valueText = toolkit.createText(parent, "", SWT.SINGLE);
 		this.valueText.setLayoutData(GridDataFactory.fillDefaults().grab(true, false).span(2, 1).create());
 		HelpUtil.assignTooltip(this.valueText, HelpConstants.prf_properties_simple_value);
@@ -249,6 +252,16 @@ public class SimplePropertyComposite extends BasicSimplePropertyComposite {
 		return this.valueText;
 	}
 
+	/**
+	 * Used to override the standard "Value:" text displayed
+	 * In the case of struct sequences, the text is "Default Value:"
+	 * This method must be run in the UI thread.
+	 * @param labelText The desired displayed text
+	 */
+	public void setValueLabelText(String labelText) {
+		this.valueLabel.setText(labelText);
+	}
+	
 	@Override
 	public void setEditable(final boolean canEdit) {
 		this.valueText.setEditable(canEdit);
@@ -362,6 +375,13 @@ public class SimplePropertyComposite extends BasicSimplePropertyComposite {
 			}
 			this.hiddenViewers = true;
 		}
+		
+		if (simple.eContainer() instanceof Struct && simple.eContainer().eContainer() instanceof StructSequence) {
+			setValueLabelText("Default Value:");
+		} else {
+			setValueLabelText("Value:");
+		}
+		
 		this.layout();
 		// If you don't recompute size with the correct width the section get's resized to be narrow
 		this.getParent().setSize(this.getParent().computeSize(this.getParent().getSize().x, SWT.DEFAULT, true));
