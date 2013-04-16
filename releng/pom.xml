@@ -21,9 +21,8 @@
         <eclipse-updates>http://download.eclipse.org/eclipse/updates/4.2</eclipse-updates>
         <orbit>http://download.eclipse.org/tools/orbit/downloads/drops/R20130118183705/repository</orbit>
         <mil.jpeojtrs.sca>http://download.redhawksdr.org/mil.jpeojtrs.sca/releases/1.9</mil.jpeojtrs.sca>
-        <redhawk-core-framework>http://download.redhawksdr.org/redhawk-core-framework/releases/1.9/</redhawk-core-framework>
-        <bulkioInterfaces>http://download.redhawksdr.org/bulkioInterfaces/releases/1.9/</bulkioInterfaces>
         <nxm>http://download.redhawksdr.org/nxm/releases/3.3.1</nxm>
+        <jacorb>http://download.redhawksdr.org/jacorb/releases/3.1.0</jacorb>
     </properties>
 
     <repositories>
@@ -58,21 +57,15 @@
         </repository>
 
         <repository>
-            <id>redhawk-core-framework</id>
-            <layout>p2</layout>
-            <url>${redhawk-core-framework}</url>
-        </repository>
-
-        <repository>
-            <id>bulkioInterfaces</id>
-            <layout>p2</layout>
-            <url>${bulkioInterfaces}</url>
-        </repository>
-
-        <repository>
             <id>mil.jpeojtrs.sca</id>
             <layout>p2</layout>
             <url>${mil.jpeojtrs.sca}</url>
+        </repository>
+
+        <repository>
+            <id>jacorb</id>
+            <layout>p2</layout>
+            <url>${jacorb}</url>
         </repository>
     </repositories>
 
@@ -181,7 +174,7 @@
                                     </requirement>
                                     <requirement>
                                         <type>eclipse-plugin</type>
-                                        <id>org.omg.cos</id>
+                                        <id>org.jacorb</id>
                                         <versionRange>0.0.0</versionRange>
                                     </requirement>
                                 </extraRequirements>

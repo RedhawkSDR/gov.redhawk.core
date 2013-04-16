@@ -19,7 +19,6 @@
         <module>../../features/gov.redhawk.core.feature</module>
         <module>../../features/gov.redhawk.core.ui.feature</module>
         <module>../../features/gov.redhawk.core.sdk</module>
-        <module>../../features/org.jacorb.feature</module>
         <module>../../plugins/gov.redhawk.common.ui</module>
         <module>../../plugins/gov.redhawk.configurator</module>
         <module>../../plugins/gov.redhawk.core.filemanager</module>
@@ -42,8 +41,6 @@
         <module>../../plugins/gov.redhawk.ui.views.monitor</module>
         <module>../../plugins/gov.redhawk.ui.views.namebrowser</module>
         <module>../../plugins/nxm.redhawk</module>
-        <module>../../plugins/org.jacorb</module>
-        <module>../../plugins/org.jacorb.systemFragment</module>
         <module>../../tests/gov.redhawk.sca.efs.tests</module>
         <module>../../tests/gov.redhawk.sca.model.tests</module>
         <module>p2</module>
