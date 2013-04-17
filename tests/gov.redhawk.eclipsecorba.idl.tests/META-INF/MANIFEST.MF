@@ -7,6 +7,7 @@ Bundle-ClassPath: .
 Bundle-Vendor: %providerName
 Bundle-Localization: plugin
 Bundle-RequiredExecutionEnvironment: J2SE-1.5
+Eclipse-BundleShape: dir
 Export-Package: gov.redhawk.eclipsecorba.idl.expressions.tests,
  gov.redhawk.eclipsecorba.idl.operations.tests,
  gov.redhawk.eclipsecorba.idl.tests,
@@ -14,6 +15,6 @@ Export-Package: gov.redhawk.eclipsecorba.idl.expressions.tests,
 Require-Bundle: org.eclipse.core.runtime;bundle-version="3.6.0",
  gov.redhawk.eclipsecorba.idl;bundle-version="6.0.0";visibility:=reexport,
  org.eclipse.emf.ecore.xmi;bundle-version="2.5.0";visibility:=reexport,
- org.junit4;bundle-version="4.5.0";visibility:=reexport
+ org.junit;bundle-version="4.8.1"
 Bundle-ActivationPolicy: lazy
 Bundle-Activator: gov.redhawk.eclipsecorba.idl.tests.IdlTestPlugin

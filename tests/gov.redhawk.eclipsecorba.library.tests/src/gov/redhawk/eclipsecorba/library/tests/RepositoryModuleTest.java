@@ -14,6 +14,7 @@
 package gov.redhawk.eclipsecorba.library.tests;
 
 import gov.redhawk.eclipsecorba.idl.Definition;
+import gov.redhawk.eclipsecorba.idl.Identifiable;
 import gov.redhawk.eclipsecorba.library.IdlLibrary;
 import gov.redhawk.eclipsecorba.library.LibraryFactory;
 import gov.redhawk.eclipsecorba.library.RepositoryModule;
@@ -27,9 +28,12 @@ import junit.framework.Assert;
 import junit.framework.TestCase;
 import junit.textui.TestRunner;
 
+import org.eclipse.emf.common.util.TreeIterator;
 import org.eclipse.emf.common.util.URI;
+import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
+import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.emf.edit.command.AddCommand;
 import org.eclipse.emf.transaction.TransactionalEditingDomain;
 
@@ -177,7 +181,15 @@ public class RepositoryModuleTest extends TestCase {
 	 */
     public void testFind__String() {
 		// END GENERATED CODE
-		Assert.assertNotNull(this.fixture.find("IDL:CF/File:1.0"));
+    	TreeIterator<EObject> iterator = EcoreUtil.getAllContents(this.fixture, false);
+    	while (iterator.hasNext()) {
+    		EObject obj = iterator.next();
+    		if (obj instanceof Identifiable) {
+    			Identifiable iObj = (Identifiable) obj;
+    			Assert.assertNotNull(this.fixture.find(iObj.getId()));
+    		}
+    	}
+		
 		// BEGIN GENERATED CODE
 	}
 
