@@ -16,12 +16,15 @@ import gov.redhawk.sca.dcd.diagram.part.DcdDiagramEditor;
 import mil.jpeojtrs.sca.dcd.DcdComponentPlacement;
 import mil.jpeojtrs.sca.dcd.diagram.part.DcdVisualIDRegistry;
 import mil.jpeojtrs.sca.partitioning.ComponentPlacement;
+import mil.jpeojtrs.sca.partitioning.PartitioningPackage;
 import mil.jpeojtrs.sca.scd.ComponentType;
 import mil.jpeojtrs.sca.scd.SoftwareComponent;
 import mil.jpeojtrs.sca.spd.Descriptor;
 import mil.jpeojtrs.sca.spd.SoftPkg;
+import mil.jpeojtrs.sca.util.ScaEcoreUtils;
 
 import org.eclipse.draw2d.Label;
+import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.gef.EditDomain;
 import org.eclipse.gef.EditPart;
 import org.eclipse.gef.editparts.AbstractConnectionEditPart;
@@ -42,6 +45,12 @@ import org.eclipse.swt.graphics.Image;
  * @since 2.0
  */
 public class ServiceDecoratorProvider extends AbstractProvider implements IDecoratorProvider {
+	
+	private static final EStructuralFeature [] PATH = new EStructuralFeature[]{
+		PartitioningPackage.Literals.COMPONENT_PLACEMENT__COMPONENT_FILE_REF,
+		PartitioningPackage.Literals.COMPONENT_FILE_REF__FILE,
+		PartitioningPackage.Literals.COMPONENT_FILE__SOFT_PKG
+	};
 
 	private static class ServiceDecorator extends AbstractDecorator {
 
@@ -67,7 +76,7 @@ public class ServiceDecoratorProvider extends AbstractProvider implements IDecor
 
 			final DcdComponentPlacement cp = (DcdComponentPlacement) view.getElement();
 
-			if (ServiceDecoratorProvider.isService(cp.getComponentFileRef().getFile().getSoftPkg()) && editPart instanceof org.eclipse.gef.GraphicalEditPart) {
+			if (ServiceDecoratorProvider.isService((SoftPkg)ScaEcoreUtils.getFeature(cp, PATH)) && editPart instanceof org.eclipse.gef.GraphicalEditPart) {
 				int margin = -12;
 				if (editPart instanceof org.eclipse.gef.GraphicalEditPart) {
 					margin = MapModeUtil.getMapMode(((org.eclipse.gef.GraphicalEditPart) editPart).getFigure()).DPtoLP(margin);

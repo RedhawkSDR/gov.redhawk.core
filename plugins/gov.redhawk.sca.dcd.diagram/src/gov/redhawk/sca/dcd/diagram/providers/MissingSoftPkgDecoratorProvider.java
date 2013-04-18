@@ -121,8 +121,11 @@ public class MissingSoftPkgDecoratorProvider extends AbstractProvider implements
 			final EditPart editPart = (EditPart) getDecoratorTarget().getAdapter(EditPart.class);
 			if (editPart instanceof DcdComponentPlacementEditPart) {
 				final DcdComponentPlacementEditPart compPart = (DcdComponentPlacementEditPart) editPart;
-
-				if (compPart == null || compPart.getViewer() == null) {
+				try {
+					if (compPart == null || compPart.getViewer() == null) {
+						return;
+					}
+				} catch (NullPointerException e) {
 					return;
 				}
 

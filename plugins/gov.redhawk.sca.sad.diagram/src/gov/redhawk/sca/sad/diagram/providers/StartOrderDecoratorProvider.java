@@ -162,7 +162,11 @@ public class StartOrderDecoratorProvider extends AbstractProvider implements IDe
 				return;
 			}
 			final EditPart editPart = (EditPart) getDecoratorTarget().getAdapter(EditPart.class);
-			if (editPart == null || editPart.getViewer() == null) {
+			try {
+				if (editPart == null || editPart.getViewer() == null) {
+					return;
+				}
+			} catch (NullPointerException e) {
 				return;
 			}
 
