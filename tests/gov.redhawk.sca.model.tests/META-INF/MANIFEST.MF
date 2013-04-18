@@ -7,7 +7,7 @@ Bundle-ClassPath: .,
  lib/ossie.jar
 Bundle-Vendor: %providerName
 Bundle-Localization: plugin
-Bundle-RequiredExecutionEnvironment: J2SE-1.5
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Eclipse-BundleShape: dir
 Export-Package: gov.redhawk.model.sca.tests,
  gov.redhawk.model.sca.tests.stubs;x-internal:=true,
