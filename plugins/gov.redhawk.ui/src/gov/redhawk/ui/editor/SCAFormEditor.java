@@ -463,6 +463,12 @@ public abstract class SCAFormEditor extends FormEditor implements IEditingDomain
 		public IWorkbenchPart getPart() {
 			return getMultiPageEditor();
 		}
+		
+		@Override
+		protected void handleSelectionChanged(SelectionChangedEvent event) {
+		    super.handleSelectionChanged(event);
+		    super.handlePostSelectionChanged(event);
+		}
 	}
 
 	/**
