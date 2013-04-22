@@ -785,10 +785,11 @@ public class CorbaReceiver implements dataShortOperations, dataCharOperations, d
 		}
 
 		if (!oldStop && (this.playThread == null)) {
-			AudioFormat.Encoding enc = null;
-			int channels = 1;
-			int frameSize = 1;
-			float frameRate = 0.0f;
+			AudioFormat.Encoding enc = AudioFormat.Encoding.PCM_SIGNED; // Default for BULKIO is just linear data, although we should check the port type to see if signed or unsigned is appropriate.
+			int channels = 1; // by default for BULKIO everything is mono
+			int frameSize = (this.sampleSize / 8) * channels; // By default for PCM_SIGNED the frameSize is always equals to number of bytes * number of channels
+			float sampleRate = Math.round(1.0f / (float) sri.xdelta);
+			float frameRate = sampleRate; // By default, for PCM frameRate equals sampleRate
 
 			for (final DataType word : sri.keywords) {
 				final int tkValue = word.value.type().kind().value();
@@ -823,10 +824,10 @@ public class CorbaReceiver implements dataShortOperations, dataCharOperations, d
 			if (enc == null) {
 				return;
 			}
-			
+
 			try {
 				this.audioFormat = new AudioFormat(enc,
-				        1.0f / (float) sri.xdelta,
+						sampleRate,
 				        this.sampleSize,
 				        channels,
 				        frameSize,
