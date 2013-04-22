@@ -911,7 +911,7 @@ public class CorbaReceiver implements dataShortOperations, dataCharOperations, d
 
 			try {
 				CorbaReceiver.this.configured = true;
-				CorbaReceiver.this.sourceDataLine.open(CorbaReceiver.this.audioFormat, CorbaReceiver.SOURCE_BUFFER_SIZE);
+				CorbaReceiver.this.sourceDataLine.open(CorbaReceiver.this.audioFormat);
 				CorbaReceiver.this.sourceDataLine.start();
 
 				while (!CorbaReceiver.this.stopPlayback) {
