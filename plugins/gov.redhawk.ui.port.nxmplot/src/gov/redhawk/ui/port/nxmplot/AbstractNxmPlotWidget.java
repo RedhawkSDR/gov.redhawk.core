@@ -1,4 +1,4 @@
-/** 
+/**
  * This file is protected by Copyright. 
  * Please refer to the COPYRIGHT file distributed with this source distribution.
  * 
@@ -32,6 +32,7 @@ import BULKIO.StreamSRI;
  * @since 3.0
  */
 public abstract class AbstractNxmPlotWidget extends Composite {
+
 	private StreamSRI activeSRI;
 
 	/**
@@ -113,10 +114,10 @@ public abstract class AbstractNxmPlotWidget extends Composite {
 			} else {
 				retVal = Commandable.NOOP;
 			}
-			
+
 			return retVal;
 		}
-		
+
 		private Double[] getValues(Object obj) {
 			if (obj instanceof DragBox) {
 				DragBox box = (DragBox) obj;
@@ -132,11 +133,11 @@ public abstract class AbstractNxmPlotWidget extends Composite {
 			}
 			return null;
 		}
-		
+
 		public void addPlotListener(final IPlotWidgetListener listener) {
 			this.plotListeners.add(listener);
 		}
-		
+
 		public void removePlotListener(final IPlotWidgetListener listener) {
 			this.plotListeners.remove(listener);
 		}
@@ -150,11 +151,11 @@ public abstract class AbstractNxmPlotWidget extends Composite {
 		super(parent, style);
 		addMessageHandler(this.plotMessageHandler);
 	}
-	
+
 	public void addPlotListener(final IPlotWidgetListener listener) {
 		this.plotMessageHandler.addPlotListener(listener);
 	}
-	
+
 	public void removePlotListener(final IPlotWidgetListener listener) {
 		this.plotMessageHandler.removePlotListener(listener);
 	}
@@ -184,21 +185,21 @@ public abstract class AbstractNxmPlotWidget extends Composite {
 		}
 		return retVal[0];
 	}
-	
+
 	public abstract String addDataFeature(Number xStart, Number xEnd, String color);
-	
+
 	/**
      * @since 4.0
      */
 	public String addDragboxFeature(Number xmin, Number ymin, Number xmax, Number ymax, String color) {
 		return null;
 	}
-	
+
 	/**
      * @since 4.0
      */
 	public void removeFeature(String featureid) {
-		
+
 	}
 
 	/**
@@ -211,21 +212,21 @@ public abstract class AbstractNxmPlotWidget extends Composite {
 	public abstract void initPlot(String plotSwtiches, String plotArgs);
 
 	/**
-	 * Runs a command headlessly within the NmSession. TODO: renamed runServerCommand(..) 
+	 * Runs a command headlessly within the NmSession. TODO: renamed runServerCommand(..)
 	 * <p>
 	 * <b> DO NOT RUN PLOT OR SEND PLOT MESSAGES HERE</b>
 	 * <p>
-	 * This should be used to run source commands and additional filtering or processing commands before plotting. 
+	 * This should be used to run source commands and additional filtering or processing commands before plotting.
 	 * @param command headless nm command to run
 	 */
 	public abstract void runHeadlessCommand(String command);
 
 	/**
-	 * Runs a command on the client's NeXtMidas session. 
+	 * Runs a command on the client's NeXtMidas session.
 	 * <p>
 	 * <b> DO NOT RUN PLOT OR SEND PLOT MESSAGES HERE</b>
 	 * <p>
-	 * This should be used to run source commands and additional filtering or processing commands before plotting. 
+	 * This should be used to run source commands and additional filtering or processing commands before plotting.
 	 * @param command nm command to run on client machine
 	 */
 	public abstract void runClientCommand(String command);
@@ -237,19 +238,19 @@ public abstract class AbstractNxmPlotWidget extends Composite {
 	 * @param sourcePipeId the pipe ID to add to this plot
 	 */
 	public abstract void addSource(String sourcePipeId);
-	
+
 	/**
 	 * Add a source to the plot
 	 * @param sourcePipeId the pipe ID to add to this plot
 	 * @param qualifiers plot qualifiers. Can be null.
 	 */
 	public abstract void addSource(String sourcePipeId, String qualifiers);
-	
+
 	/**
 	 * @return An unmodifiable list of the current plot sources
 	 */
 	public abstract Set<String> getSources();
-	
+
 	/**
 	 * Removes all plot sources
 	 */
@@ -260,7 +261,7 @@ public abstract class AbstractNxmPlotWidget extends Composite {
 	 * @param sourcePipeId remove a piped source from being plotted
 	 */
 	public abstract void removeSource(String sourcePipeId);
-	
+
 	/**
 	 * Send the plot a message
 	 * @param msgName
@@ -274,9 +275,9 @@ public abstract class AbstractNxmPlotWidget extends Composite {
 	public abstract void configurePlot(Map<String, String> configuration);
 
 	private static final AtomicInteger NAME_INDEX = new AtomicInteger();
-	
+
 	/**
-	 * Creates a unique name to be used for pipes for variables within the shared Nextmidas session
+	 * Creates a unique name to be used for pipes for variables within the shared NeXtMidas session
 	 * @return A new unique name
 	 * @since 4.0
 	 */
@@ -285,13 +286,16 @@ public abstract class AbstractNxmPlotWidget extends Composite {
 	}
 
 	/**
-	 * Creates a unique name to be used for pipes or commands for variables within the shared Nextmidas session
+	 * Creates a unique name to be used for pipes or commands for variables within the shared NeXtMidas session
 	 * @return A new unique name
 	 * @since 4.0
 	 */
 	public static String createUniqueName(boolean pipe) {
-		final String prefix = (pipe ? "_" : "");
-		return prefix + "UNIQUE_NAME" + NAME_INDEX.incrementAndGet();
+		if (pipe) {
+			return "_UNIQUE_PIPE" + NAME_INDEX.incrementAndGet();
+		} else {
+			return "UNIQUE_NAME" + NAME_INDEX.incrementAndGet();
+		}
 	}
 
 	public StreamSRI getActiveSRI() {
