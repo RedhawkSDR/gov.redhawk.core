@@ -64,7 +64,7 @@ public final class NxmPlotUtil {
 		if (pipeSize == null) {
 			// Default size
 			pipeSize = "128k";
-		} 
+		}
 
 		corbaArgs.put("PIPESIZE", pipeSize);
 		if (settings.getHost() != null && !"".equals(settings.getHost())) {
@@ -114,7 +114,7 @@ public final class NxmPlotUtil {
 		final String thinArgsStr = " THINARGS=" + thinArgs;
 
 		final String outputStr = " OUTPUT=" + outName;
-		final String b2mId = AbstractNxmPlotWidget.createUniqueName(false);
+		final String b2mId = "B2M_" + AbstractNxmPlotWidget.createUniqueName(false);
 		final String command = "bulkio2midas/bg/id=" + b2mId + " " + corbaArgsStr + fftArgsStr + thinArgsStr + outputStr;
 		plotWidget.runHeadlessCommand(command);
 
@@ -133,11 +133,11 @@ public final class NxmPlotUtil {
 		plotWidget.runHeadlessCommand("PIPE ON");
 
 		final StringBuilder command = new StringBuilder();
-		final String sourceId = AbstractNxmPlotWidget.createUniqueName(false);
+		final String sourceId = "SOURCENIC_" + AbstractNxmPlotWidget.createUniqueName(false);
 		if (pipeSize == null) {
 			// Default size
 			pipeSize = "128k";
-		} 
+		}
 		command.append("SOURCENIC/PS=" + pipeSize + "/ID=" + sourceId);
 		command.append("/fc=" + sdds.format);
 		if (sdds.mcastAddress != null) {
@@ -204,7 +204,7 @@ public final class NxmPlotUtil {
 	 * @param connList the list of connections to set up
 	 * @param fft2 the settings for the FFT to run, null if no FFT
 	 * @param commandSources list to store the commands created so they can be
-	 *        started later 
+	 *        started later
 	 * @return a list of sources created to be plotted
 	 */
 	private static List<Map<String, String>> launchInputMacros(final List<CorbaConnectionSettings> connList, final FftSettings fft,

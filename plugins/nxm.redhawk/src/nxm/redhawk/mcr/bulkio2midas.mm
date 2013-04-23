@@ -1,13 +1,12 @@
 STARTMACRO t:corbaargs t:fftargs t:thinargs s:output
-    switch MSGID_TMP msgHandlerID GET DEF=null
     PIPE INIT
-        corbareceiver/MSGID=MAIN/TLL=200/PS=^corbaargs.PIPESIZE FILE=_CORBA_OUT HOST="^corbaargs.HOST" PORT=^corbaargs.PORT &
+        corbareceiver/MSGID=MAIN/TLL=200/PS=^corbaargs.PIPESIZE/POLL=0.25 FILE=_CORBA_OUT HOSgit sT="^corbaargs.HOST" PORT=^corbaargs.PORT &
             RESOURCE=^corbaargs.RESOURCE PORT_NAME=^corbaargs.PORT_NAME IDL="^corbaargs.IDL" FORCE2000=^corbaargs.FORCE2000
         if fftargs isNULL then
             set fftout _CORBA_OUT
         else
             set fftout _FFT_OUT
-            FFT _CORBA_OUT ^fftout NFFT=^fftargs.fftsize WIN=^fftargs.window OVER=^fftargs.over NAVG=^fftargs.numAvg ! /NEXP=^fftargs.numAvg
+            FFT/NEXP=^fftargs.numAvg _CORBA_OUT ^fftout NFFT=^fftargs.fftsize WIN=^fftargs.window OVER=^fftargs.over NAVG=2
         endif
         if thinargs isNULL then
             set thinout ^fftout
@@ -15,18 +14,16 @@ STARTMACRO t:corbaargs t:fftargs t:thinargs s:output
             set thinout _DISPTHIN_OUT
             dispthin/PS=^{thinargs.pipesize}/TL=1 ^fftout ^thinout ^thinargs.refreshrate
         endif
-        ! put output pipe into parent macro's PIPE/RAM results table so that PLOT can see it
-        set/parent RAM.^{output} RAM.^{thinout}
 
+        ! put output pipe into parent macro's PIPE/RAM results table so that PLOT can see it
+        SET/PARENT RAM.^{output} RAM.^{thinout}
     PIPE OFF
 
     ! cleanup entry that we added in parent macro's PIPE/RAM results table
-    remove/parent RAM.^{output}
+    REMOVE/PARENT RAM.^{output}
 ENDMACRO
 
 PROCEDURE processMessage m:msg
-    if msgHandlerID nIsNULL then
-        !say "Forwarding msg: ^msg"
-        message send PARENT.^{msgHandlerID} msg
-    endif
+    ! forward messages (e.g. from corbareceiver) to registered message handler for this macro (requires NeXtMidas 3.3.1+)
+    MESSAGE SEND THIS.MSGID msg
 RETURN
