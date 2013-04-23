@@ -1,4 +1,4 @@
-/** 
+/**
  * This file is protected by Copyright. 
  * Please refer to the COPYRIGHT file distributed with this source distribution.
  * 
@@ -31,22 +31,22 @@ import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Composite;
 
 /**
- * 
+ *
  */
 public class RcpNxmPlotWidget extends AbstractNxmPlotWidget {
 
 	private NeXtMidasComposite nxmComp;
 	private plot plotCommand;
-	
+
 	private static final String MSG_HANDLER_ID = "MAIN_MSG_HANLDER";
-	
+
 	private Set<String> sources = new HashSet<String>();
 	private boolean initialized;
 
 	public RcpNxmPlotWidget(final Composite parent, int style) {
 		super(parent, style);
 		parent.addDisposeListener(new DisposeListener() {
-			
+
 			@Override
 			public void widgetDisposed(DisposeEvent e) {
 				dispose();
@@ -54,7 +54,7 @@ public class RcpNxmPlotWidget extends AbstractNxmPlotWidget {
 		});
 		setLayout(new FillLayout());
 		nxmComp = new NeXtMidasComposite(this, SWT.None);
-		
+
 		RedhawkNxmUtil.initializeRedhawkOptionTrees();
 		nxmComp.getLocalShell().M.registry.put(MSG_HANDLER_ID, this.plotMessageHandler);
 	}
@@ -64,27 +64,27 @@ public class RcpNxmPlotWidget extends AbstractNxmPlotWidget {
 			throw new IllegalStateException("Plot already initialized.");
 		}
 		this.initialized = true;
-		
+
 		if (plotArgs==null) {
 			plotArgs = "";
 		}
 		if (plotSwitches == null) {
 			plotSwitches = "";
 		}
-		plotCommand = (plot) nxmComp.runCommand("plot/bg" + plotSwitches + " " + plotArgs);
+		plotCommand = (plot) nxmComp.runCommand("PLOT/BG/VERBOSE=FALSE" + plotSwitches + " " + plotArgs);
 		plotCommand.setMessageHandler(plotMessageHandler);
 	}
 
 	@Override
 	public void runHeadlessCommand(String command) {
-		nxmComp.runCommand(command + " /MSGID_TMP=" + MSG_HANDLER_ID, false);
+		nxmComp.runCommand(command + " /MSGID=" + MSG_HANDLER_ID, false);
 	}
 
 	@Override
 	public void runClientCommand(String command) {
-		runHeadlessCommand(command); 
+		runHeadlessCommand(command);
     }
-	
+
 	@Override
 	public void dispose() {
 		String[] sourcesCopy = Arrays.copyOf(sources.toArray(new String[0]), sources.size());
@@ -104,20 +104,20 @@ public class RcpNxmPlotWidget extends AbstractNxmPlotWidget {
 	public void addSource(String sourcePipeId) {
 		addSource(sourcePipeId, null);
     }
-	
+
 	@Override
 	public void addSource(String sourcePipeId, String pipeQualifiers) {
-		nxmComp.runCommand("sendto " + plotCommand.id + " OPENFILE " + sourcePipeId + (pipeQualifiers == null ? "" : pipeQualifiers));
+		nxmComp.runCommand("SENDTO " + plotCommand.id + " OPENFILE " + sourcePipeId + (pipeQualifiers == null ? "" : pipeQualifiers));
 		this.sources.add(sourcePipeId);
     }
-	
+
 	public Set<String> getSources() {
 		return Collections.unmodifiableSet(this.sources);
 	}
 
 	@Override
 	public void removeSource(String sourcePipeId) {
-		nxmComp.runCommand("sendto " + plotCommand.id + " CLOSEFILE " + sourcePipeId);
+		nxmComp.runCommand("SENDTO " + plotCommand.id + " CLOSEFILE " + sourcePipeId);
 		this.sources.remove(sourcePipeId);
     }
 
@@ -128,21 +128,21 @@ public class RcpNxmPlotWidget extends AbstractNxmPlotWidget {
 		// XXX We need to rethink this for RAP support
 		String tempResName = createUniqueResName();
 		nxmComp.getLocalShell().M.results.put(tempResName, data); //to pass object reference for data= in the SENDTO command
-		nxmComp.runCommand("sendto " + plotCommand.id + " "+ msgName + " " + tempResName + " INFO=" + info);
+		nxmComp.runCommand("SENDTO " + plotCommand.id + " "+ msgName + " " + tempResName + " INFO=" + info);
 		nxmComp.getLocalShell().M.results.remove(tempResName); // cleanup
 	}
-	
+
 	private static AtomicInteger uniqueCounter = new AtomicInteger();
-	
+
 	private static String createUniqueResName() {
 		return "_TEMPRES_" + uniqueCounter.incrementAndGet();
 	}
-	
+
 	//This method available only in the RCP plot widget
 	public plot getPlot() {
 		return this.plotCommand;
 	}
-	
+
 	@Override
 	public String addDataFeature(Number xStart, Number xEnd, String color) {
 		String featureId = AbstractNxmPlotWidget.createUniqueName(false);
@@ -152,7 +152,7 @@ public class RcpNxmPlotWidget extends AbstractNxmPlotWidget {
 		this.runClientCommand(cmd);
 		return featureId;
 	}
-	
+
 	@Override
 	public String addDragboxFeature(Number xmin, Number ymin, Number xmax, Number ymax, String color) {
 		String featureId = AbstractNxmPlotWidget.createUniqueName(false);
@@ -165,17 +165,17 @@ public class RcpNxmPlotWidget extends AbstractNxmPlotWidget {
 		this.runClientCommand(command);
 		return featureId;
 	}
-	
+
 	@Override
 	public void removeFeature(String featureId) {
-		final String command = "invoke junk reg." + plotCommand.id + ".removeFeature(\"" + featureId + "\")";
+		final String command = "INVOKE junk reg." + plotCommand.id + ".removeFeature(\"" + featureId + "\")";
 		this.runClientCommand(command);
 	}
 
 	@Override
     public void configurePlot(Map<String, String> configuration) {
 	    for (Map.Entry<String, String> entry: configuration.entrySet()) {
-	    	nxmComp.runCommand("set " + "REG." + plotCommand.id + "." + entry.getKey() + " " + entry.getValue());
+	    	nxmComp.runCommand("SET " + "REG." + plotCommand.id + "." + entry.getKey() + " " + entry.getValue());
 	    }
     }
 
