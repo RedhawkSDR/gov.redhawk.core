@@ -6,7 +6,7 @@ STARTMACRO t:corbaargs t:fftargs t:thinargs s:output
             set fftout _CORBA_OUT
         else
             set fftout _FFT_OUT
-            FFT _CORBA_OUT ^fftout NFFT=^fftargs.fftsize WIN=^fftargs.window OVER=^fftargs.over NAVG=^fftargs.numAvg ! /NEXP=^fftargs.numAvg
+            FFT/NEXP=^fftargs.numAvg _CORBA_OUT ^fftout NFFT=^fftargs.fftsize WIN=^fftargs.window OVER=^fftargs.over NAVG=2
         endif
         if thinargs isNULL then
             set thinout ^fftout
@@ -14,9 +14,9 @@ STARTMACRO t:corbaargs t:fftargs t:thinargs s:output
             set thinout _DISPTHIN_OUT
             dispthin/PS=^{thinargs.pipesize}/TL=1 ^fftout ^thinout ^thinargs.refreshrate
         endif
+
         ! put output pipe into parent macro's PIPE/RAM results table so that PLOT can see it
         SET/PARENT RAM.^{output} RAM.^{thinout}
-
     PIPE OFF
 
     ! cleanup entry that we added in parent macro's PIPE/RAM results table

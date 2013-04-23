@@ -3,13 +3,13 @@ Bundle-ManifestVersion: 2
 Implementation-Version: 3.2.0
 Bundle-Name: REDHAWK NeXtMidas Option Tree Plug-in
 Bundle-SymbolicName: nxm.redhawk;singleton:=true
-Bundle-Version: 8.1.0.qualifier
+Bundle-Version: 8.1.1.qualifier
 Bundle-Vendor: REDHAWK
 Bundle-Localization: plugin
 Require-Bundle: mil.jpeojtrs.sca.cf;bundle-version="2.2.2",
  idl.bulkio;bundle-version="1.7.0",
  mil.jpeojtrs.sca.util;bundle-version="3.0.0",
- nxm.sys;bundle-version="3.3.1";visibility:=reexport,
+ nxm.sys;bundle-version="3.3.2";visibility:=reexport,
  nxm.dsp;bundle-version="3.3.1"
 DynamicImport-Package: *
 Bundle-ActivationPolicy: lazy
