@@ -90,7 +90,7 @@ import CF.DataType;
 
 /**
  * The spectral view provides multi-tab view that displays spectral data.
- * 
+ *
  * @since 2.0
  */
 public class PlotView extends ViewPart {
@@ -165,7 +165,7 @@ public class PlotView extends ViewPart {
 			}
 		}
 	};
-	
+
 	public PlotView() {
 		plotQualifiers = "{CL=8}"; /** provide plot display thinning */
 	}
@@ -245,19 +245,19 @@ public class PlotView extends ViewPart {
 				if ((currentPageBook != null) && !currentPageBook.isDisposed() && currentPageBook instanceof PlotPageBook) {
 					checked = ((PlotPageBook) currentPageBook).isRasterShowing();
 					enabled = ((PlotPageBook) currentPageBook).isRasterable();
-				} 
-			} 
+				}
+			}
 		}
 
 		this.rasterToggleAction.setChecked(checked);
 		this.rasterToggleAction.setEnabled(enabled);
 		this.selectionProvider.fireSelectionChanged();
-		
+
 	}
 
 	/**
 	 * Creates a new spectral plot.
-	 * 
+	 *
 	 * @param connList list of connections to draw on the plot
 	 * @param fft settings to use if an FFT is to be displayed
 	 * @param sessionId the unique ID of this plot instance - used for listeners
@@ -270,7 +270,7 @@ public class PlotView extends ViewPart {
 
 	/**
 	 * Creates a new spectral plot.
-	 * 
+	 *
 	 * @param portList list of ScaPort object to plot the output from.
 	 * @param fft settings to use if an FFT is to be displayed
 	 * @param sessionId the unique ID of this plot instance - used for listeners
@@ -309,13 +309,13 @@ public class PlotView extends ViewPart {
 	/**
 	 * This creates a plot widget that wraps either a Line or Raster plot, or it wraps a PageBook with Line and Raster plots,
 	 * and puts the plot widget in the specified tab
-	 * 
+	 *
 	 * @param connList a list of the settings for acquiring the data
 	 * @param fft settings to use if an FFT is to be displayed
 	 * @param ports list of ScaPort object to plot the output from.
 	 * @param sessionId the unique ID of this plot instance - used for listeners
 	 * @param pageBook if true, create a PlotPageBook instance, otherwise create a PlotComposite instance
-	 * @return String unique identifier for this plot instance 
+	 * @return String unique identifier for this plot instance
 	 */
 	private String createPlot(final List<CorbaConnectionSettings> connList, final FftSettings fft, final List< ? extends ScaUsesPort> ports, final UUID sessionId,
 			boolean pageBook, PlotType plotType) {
@@ -356,7 +356,7 @@ public class PlotView extends ViewPart {
 			final String plotSwitches;
 
 			if (plotType == PlotType.LINE) {
-				plotArgs = "TYPE=LINE AUTOL=16 AXIS=~GRID OPTIONS=DBuffer|BStore SCALE=AutoMIN|AutoMAX";
+				plotArgs = "TYPE=LINE AUTOL=16 AXIS=~GRID OPTIONS=DBuffer|BStore SCALE=AutoMin|AutoMax";
 				plotSwitches = "/RT/NICE";
 				spectralPlots = plotFactory.createPlotWidget(this.plotFolder, SWT.NONE);
 			} else if (plotType == PlotType.RASTER) {
@@ -522,7 +522,7 @@ public class PlotView extends ViewPart {
 						for (final Control c : PlotView.this.plotFolder.getTabList()) {
 							if (c instanceof PlotPageBook || c instanceof AbstractNxmPlotWidget) {
 								Widget plotContainer = (Widget) c;
-								
+
 								newPlot.createPlot((List<CorbaConnectionSettings>) plotContainer.getData("connList"), (FftSettings) plotContainer.getData("fft"),
 										(List< ? extends ScaUsesPort>) plotContainer.getData("ports"), UUID.randomUUID(), true, (PlotType) plotContainer.getData("plotType"));
 							}
@@ -577,7 +577,7 @@ public class PlotView extends ViewPart {
 						builder.append("keywords: " + getText(sri.keywords));
 					}
 				} else {
-					builder.append("No sri information available");
+					builder.append("No SRI information available");
 				}
 
 				MessageDialog.openInformation(getSite().getShell(), "SRI", builder.toString());
@@ -597,7 +597,7 @@ public class PlotView extends ViewPart {
 				retVal = ((AbstractNxmPlotWidget) control).getActiveSRI();
 			} else if (control instanceof PlotPageBook) {
 				retVal = ((PlotPageBook) control).getActivePlotWidget().getActiveSRI();
-			} 
+			}
 		}
 		if (retVal != null) {
 			return new StreamSRI[]{retVal};
@@ -608,7 +608,7 @@ public class PlotView extends ViewPart {
 
 	/**
 	 * Adds a plot click listener to this plot.
-	 * 
+	 *
 	 * @param listener the listener to add
 	 * @param sessionId the unique ID of this plot instance - used for listeners
 	 */
@@ -632,7 +632,7 @@ public class PlotView extends ViewPart {
 
 	/**
 	 * Removes a plot click listener.
-	 * 
+	 *
 	 * @param listener the listener to remove
 	 * @param sessionId the unique ID of this plot instance - used for listeners
 	 */
