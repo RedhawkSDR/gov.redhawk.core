@@ -27,6 +27,8 @@ import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
+import org.eclipse.swt.events.VerifyEvent;
+import org.eclipse.swt.events.VerifyListener;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
@@ -44,9 +46,8 @@ public class FftParameterEntryDialog extends Dialog {
 		public String isValid(final String newText) {
 			String status = "Percent Overlap must be between 0 and 100.";
 			if ((newText != null) && !"".equals(newText.trim())) {
-				Double d = 0.0;
 				try {
-					d = Double.parseDouble(newText);
+					double d = Double.parseDouble(newText);
 					if ((d <= 100.0) && (d >= 0.0)) { // SUPPRESS CHECKSTYLE MagicNumber
 						status = null;
 					}
@@ -75,7 +76,7 @@ public class FftParameterEntryDialog extends Dialog {
 
 	/**
 	 * Instantiates a new manual stream parameter entry dialog.
-	 * 
+	 *
 	 * @param parentShell the parent shell
 	 */
 	public FftParameterEntryDialog(final Shell parentShell, final FftSettings settings) {
@@ -143,9 +144,28 @@ public class FftParameterEntryDialog extends Dialog {
 		this.numAveragesField = new Text(container, SWT.BORDER);
 		this.numAveragesField.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false, 1, 1));
 		this.numAveragesField.setText(this.fftSettings.getNumAverages());
+		this.numAveragesField.setToolTipText("Must be an integer greater than 0. Avoid using large value as it will cause highlighted energy to remain longer.");
+		this.numAveragesField.addVerifyListener(new VerifyListener() {
+			public void verifyText(VerifyEvent e) {
+				// Notice how we combine the existing text and new (changed text) below
+				String currentText = ((Text)e.widget).getText();
+				String text =  currentText.substring(0, e.start) + e.text + currentText.substring(e.end);
+				try {
+					int val = Integer.parseInt(text.trim());
+					if (val < 1) {
+						e.doit = false;     // disallowed invalid user input
+					}
+				}
+				catch (NumberFormatException nfe) {
+					if (!text.equals("")) { // allow empty string
+						e.doit = false;     // all other invalid user input is not allowed
+					}
+				}
+			}
+		});
 		this.numAveragesField.addModifyListener(new ModifyListener() {
 			public void modifyText(final ModifyEvent e) {
-				FftParameterEntryDialog.this.fftSettings.setNumAverages(FftParameterEntryDialog.this.numAveragesField.getText());
+				FftParameterEntryDialog.this.fftSettings.setNumAverages(FftParameterEntryDialog.this.numAveragesField.getText().trim());
 			}
 		});
 
@@ -193,7 +213,7 @@ public class FftParameterEntryDialog extends Dialog {
 
 	/**
 	 * Gets the FFT settings created by this dialog.
-	 * 
+	 *
 	 * @return the FFT settings
 	 */
 	public FftSettings getFFTSettings() {
@@ -220,10 +240,11 @@ public class FftParameterEntryDialog extends Dialog {
 		return errorMsg == null;
 	}
 
+
 	/**
 	 * Sets or clears the error message. If not <code>null</code>, the OK button
 	 * is disabled.
-	 * 
+	 *
 	 * @param errorMessage the error message, or <code>null</code> to clear
 	 * @since 3.0
 	 */
