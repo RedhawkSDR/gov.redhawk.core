@@ -24,6 +24,7 @@ import java.util.UUID;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
+import org.eclipse.core.runtime.Assert;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
@@ -75,6 +76,7 @@ public class EventJob extends SilentJob implements PushConsumerOperations {
 		this.dp = dp;
 		
 		this.domMgr = domain.fetchNarrowedObject(null);
+		Assert.isNotNull(this.domMgr, "Domain Manager must not be null");
 		this.id = UUID.randomUUID();
 
 		
