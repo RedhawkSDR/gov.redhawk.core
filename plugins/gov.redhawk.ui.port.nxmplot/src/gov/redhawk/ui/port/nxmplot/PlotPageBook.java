@@ -75,7 +75,7 @@ public class PlotPageBook extends Composite {
 		}
 		return is2d;
 	}
-	
+
 	/**
      * @since 3.0
      */
@@ -86,7 +86,7 @@ public class PlotPageBook extends Composite {
 	/**
 	 * This method clears any existing plots and plots the passed in ports or
 	 * connections.
-	 * 
+	 *
 	 * @param connList a list of the settings for acquiring the data - may be null
 	 * @param fft settings to use if an FFT is to be displayed
 	 * @param ports list of ScaPort object to plot the output from.
@@ -96,7 +96,7 @@ public class PlotPageBook extends Composite {
 	public void plotPorts(final List<CorbaConnectionSettings> inputConnList, final FftSettings fft, final List< ? extends ScaUsesPort> ports, final UUID sessionId,
 			final boolean createRaster) {
 		disposeNxmResources();
-		final String linePlotArgs = "TYPE=LINE AUTOL=16 AXIS=~GRID OPTIONS=DBuffer|BStore SCALE=AutoMIN|AutoMAX";
+		final String linePlotArgs = "TYPE=LINE AXIS=+GRID OPTIONS=BStore SCALE=AutoMin|AutoMax AUTOL=16";
 		final String linePlotSwitches = "/RT/NICE";
 
 		this.nxmPlotWidgetLine = PlotActivator.getDefault().getPlotFactory().createPlotWidget(this.pageBook, SWT.None);
@@ -109,7 +109,7 @@ public class PlotPageBook extends Composite {
 			connList = inputConnList;
 		}
 		final boolean is2d = createRaster || check2d(connList);
-		final String rasterPlotArgs = "TYPE=RASTER AUTOL=16 View=iYX SCALE=AutoMIN|AutoMAX";
+		final String rasterPlotArgs = "TYPE=RASTER View=iYX SCALE=AutoMin|AutoMax AUTOL=16";
 		final String rasterPlotSwitches = "/LPS=200/RT/NICE";
 		if (is2d) {
 			this.nxmPlotWidgetRaster = PlotActivator.getDefault().getPlotFactory().createPlotWidget(this.pageBook, SWT.None);
@@ -131,7 +131,7 @@ public class PlotPageBook extends Composite {
 
 	/**
 	 * Toggle if the raster is visible or not.
-	 * 
+	 *
 	 * @param enable true if the raster should be shown
 	 */
 	public void showRaster(final boolean enable) {
@@ -147,7 +147,7 @@ public class PlotPageBook extends Composite {
 
 	/**
 	 * Detect if the raster is currently displayed.
-	 * 
+	 *
 	 * @return true if the raster is showing
 	 */
 	public boolean isRasterShowing() {
@@ -159,12 +159,12 @@ public class PlotPageBook extends Composite {
 			nxmPlotWidgetLine.dispose();
 			nxmPlotWidgetLine = null;
 		}
-		
+
 		if (nxmPlotWidgetRaster != null) {
 			nxmPlotWidgetRaster.dispose();
 			nxmPlotWidgetRaster = null;
 		}
-		
+
 		if (linePlotSessions != null) {
 			for (IPlotSession session : linePlotSessions) {
 				session.dispose();
@@ -184,7 +184,7 @@ public class PlotPageBook extends Composite {
 		if (isDisposed()) {
 			return;
 		}
-		
+
 		disposeNxmResources();
 		if (this.pageBook != null) {
 			this.pageBook = null;
@@ -195,7 +195,7 @@ public class PlotPageBook extends Composite {
 
 	/**
 	 * This method is used to check if the plot page contains a Raster plot.
-	 * 
+	 *
 	 * @return true if this page plots a raster
 	 */
 	public boolean isRasterable() {

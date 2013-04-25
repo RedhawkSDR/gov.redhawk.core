@@ -356,11 +356,11 @@ public class PlotView extends ViewPart {
 			final String plotSwitches;
 
 			if (plotType == PlotType.LINE) {
-				plotArgs = "TYPE=LINE AUTOL=16 AXIS=~GRID OPTIONS=DBuffer|BStore SCALE=AutoMin|AutoMax";
+				plotArgs = "TYPE=LINE AXIS=+GRID OPTIONS=BStore SCALE=AutoMin|AutoMax AUTOL=16";
 				plotSwitches = "/RT/NICE";
 				spectralPlots = plotFactory.createPlotWidget(this.plotFolder, SWT.NONE);
 			} else if (plotType == PlotType.RASTER) {
-				plotArgs = "TYPE=RASTER AUTOL=16 View=iYX SCALE=AutoMIN|AutoMAX";
+				plotArgs = "TYPE=RASTER View=iYX SCALE=AutoMIN|AutoMAX AUTOL=16";
 				plotSwitches = "/LPS=200/RT/NICE";
 				spectralPlots = plotFactory.createPlotWidget(this.plotFolder, SWT.NONE);
 			} else {
