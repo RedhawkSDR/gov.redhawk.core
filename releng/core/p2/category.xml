@@ -3,8 +3,5 @@
    <feature url="features/gov.redhawk.core.sdk_1.8.4.qualifier.jar" id="gov.redhawk.core.sdk" version="1.8.4.qualifier">
       <category name="gov.redhawk.core"/>
    </feature>
-   <feature url="features/org.jacorb.systemFragment_3.1.0.qualifier.jar" id="org.jacorb.systemFragment" version="3.1.0.qualifier">
-      <category name="gov.redhawk.core"/>
-   </feature>
    <category-def name="gov.redhawk.core" label="REDHAWK Core"/>
 </site>

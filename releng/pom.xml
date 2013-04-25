@@ -22,6 +22,7 @@
         <redhawk-core-framework>http://download.redhawksdr.org/redhawk-core-framework/releases/1.8</redhawk-core-framework>
         <nxm>http://download.redhawksdr.org/nxm/releases/3.3.1</nxm>
         <nxm-rcp>http://download.redhawksdr.org/nxm-rcp/releases/1.0</nxm-rcp>
+        <jacorb>http://download.redhawksdr.org/jacorb/releases/3.1</jacorb>
     </properties>
 
     <repositories>
@@ -60,6 +61,12 @@
             <layout>p2</layout>
             <url>${mil.jpeojtrs.sca}</url>
         </repository>
+
+        <repository>
+            <id>org.omg.jacorb</id>
+            <layout>p2</layout>
+            <url>${jacorb}</url>
+        </repository>
     </repositories>
 
 
@@ -75,6 +82,22 @@
             </activation>
             <build>
                 <plugins>
+                    <plugin>
+                        <groupId>org.eclipse.tycho</groupId>
+                        <artifactId>tycho-surefire-plugin</artifactId>
+                        <version>${tycho-version}</version>
+                        <configuration>
+                            <argLine>-Xmx512m -Djava.net.preferIPv4Stack=true -Dorg.omg.CORBA.ORBClass=org.jacorb.orb.ORB -Dorg.omg.CORBA.ORBSingletonClass=org.jacorb.orb.ORBSingleton -Dorg.omg.PortableInterceptor.ORBInitializerClass.standard_init=org.jacorb.orb.standardInterceptors.IORInterceptorInitializer</argLine>
+                            <appArgLine>-nl en</appArgLine>
+                            <dependencies>
+                                <dependency>
+                                    <type>eclipse-feature</type>
+                                    <artifactId>org.jacorb</artifactId>
+                                    <version>0.0.0</version>
+                                </dependency>
+                            </dependencies>
+                        </configuration>
+                    </plugin>
                     <plugin>
                         <groupId>org.eclipse.tycho</groupId>
                         <artifactId>target-platform-configuration</artifactId>
