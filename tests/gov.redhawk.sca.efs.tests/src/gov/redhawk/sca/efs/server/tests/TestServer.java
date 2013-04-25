@@ -12,68 +12,45 @@
 package gov.redhawk.sca.efs.server.tests;
 
 import gov.redhawk.efs.sca.server.internal.FileSystemImpl;
-import gov.redhawk.sca.util.ORBUtil;
+import gov.redhawk.sca.util.OrbSession;
 
 import java.io.File;
-import java.util.Properties;
 
 import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Platform;
 import org.omg.CORBA.ORB;
-import org.omg.PortableServer.POA;
-import org.omg.PortableServer.POAHelper;
 import org.osgi.framework.Bundle;
 
 import CF.FileSystem;
+import CF.FileSystemHelper;
 import CF.FileSystemOperations;
+import CF.FileSystemPOATie;
 
-public class OrbSession {
+public class TestServer {
 
 	public static final Bundle BUNDLE = Platform.getBundle("gov.redhawk.sca.efs.tests");
-	private ORB orb;
+	private OrbSession session;
 	private FileSystemOperations orbFileSystem;
 	private FileSystem fs;
 	private final String initName = "TestFileSystem";
-	private Thread orbThread;
-	private final Properties properties;
 	private File rootFile;
 
-	public OrbSession() {
-		this.properties = new Properties();
-		this.properties.putAll(System.getProperties());
+	public TestServer() {
+
 	}
 
 	public synchronized void initOrb() throws Exception {
-		this.orb = ORBUtil.init(this.properties);
+		this.session = OrbSession.createSession();
 
-		final POA rootpoa = POAHelper.narrow(this.orb.resolve_initial_references("RootPOA"));
-		rootpoa.the_POAManager().activate();
-
-		this.rootFile = new File(FileLocator.toFileURL(FileLocator.find(OrbSession.BUNDLE, new Path("sdr"), null)).toURI());
-		this.orbFileSystem = new FileSystemImpl(this.rootFile, this.orb, rootpoa);
-
-		this.fs = ((FileSystemImpl) this.orbFileSystem)._this(this.orb);
-
-		this.orbThread = new Thread("ORB Thread") {
-			@Override
-			public void run() {
-				OrbSession.this.orb.run();
-			}
-		};
-
-		this.orbThread.start();
+		this.rootFile = new File(FileLocator.toFileURL(FileLocator.find(TestServer.BUNDLE, new Path("sdr"), null)).toURI());
+		this.orbFileSystem = new FileSystemImpl(this.rootFile, session.getOrb(), session.getPOA());
+		
+		this.fs = FileSystemHelper.narrow(session.getPOA().servant_to_reference(new FileSystemPOATie(orbFileSystem)));
 	}
 
 	public synchronized void shutdownOrb() throws Exception {
-		if (this.orb != null) {
-			this.orb.shutdown(true);
-			this.orb = null;
-		}
-		if (this.orbThread != null) {
-			this.orbThread.interrupt();
-			this.orbThread = null;
-		}
+		session.dispose();
 		this.orbFileSystem = null;
 	}
 
@@ -82,11 +59,7 @@ public class OrbSession {
 	}
 
 	public ORB getOrb() {
-		return this.orb;
-	}
-
-	public void setOrb(final ORB orb) {
-		this.orb = orb;
+		return session.getOrb();
 	}
 
 	public FileSystemOperations getOrbFileSystem() {
@@ -105,19 +78,7 @@ public class OrbSession {
 		this.fs = fs;
 	}
 
-	public Thread getOrbThread() {
-		return this.orbThread;
-	}
-
-	public void setOrbThread(final Thread orbThread) {
-		this.orbThread = orbThread;
-	}
-
 	public String getInitName() {
 		return this.initName;
-	}
-
-	public Properties getProperties() {
-		return this.properties;
 	}
 }

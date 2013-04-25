@@ -14,7 +14,7 @@ package gov.redhawk.sca.model.provider.event.internal.listener;
 import gov.redhawk.model.sca.ScaDomainManager;
 import gov.redhawk.sca.model.provider.event.AbstractEventChannelDataProvider;
 import gov.redhawk.sca.model.provider.event.DataProviderActivator;
-import gov.redhawk.sca.util.ORBUtil;
+import gov.redhawk.sca.util.OrbSession;
 import gov.redhawk.sca.util.SilentJob;
 
 import java.util.ArrayList;
@@ -24,11 +24,12 @@ import java.util.UUID;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
+import org.eclipse.core.runtime.Assert;
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.omg.CORBA.Any;
-import org.omg.CORBA.ORB;
 import org.omg.CORBA.SystemException;
 import org.omg.CORBA.UserException;
 import org.omg.CosEventComm.Disconnected;
@@ -37,9 +38,12 @@ import org.omg.CosEventComm.PushConsumerHelper;
 import org.omg.CosEventComm.PushConsumerOperations;
 import org.omg.CosEventComm.PushConsumerPOATie;
 import org.omg.PortableServer.POA;
-import org.omg.PortableServer.POAHelper;
+import org.omg.PortableServer.POAPackage.ServantNotActive;
+import org.omg.PortableServer.POAPackage.WrongPolicy;
 
 import CF.DomainManager;
+import CF.InvalidObjectReference;
+import CF.DomainManagerPackage.AlreadyConnected;
 import CF.DomainManagerPackage.InvalidEventChannelName;
 import CF.DomainManagerPackage.NotConnected;
 
@@ -50,6 +54,8 @@ import CF.DomainManagerPackage.NotConnected;
 public class EventJob extends SilentJob implements PushConsumerOperations {
 
 	public static final String EVENT_DATA_PROVIDER_FAMILY = DataProviderActivator.ID + ".jobFamily";
+	
+	private OrbSession session = OrbSession.createSession();
 
 	private final BlockingQueue<Any> eventQueue = new LinkedBlockingQueue<Any>();
 	private final String channelName;
@@ -60,37 +66,38 @@ public class EventJob extends SilentJob implements PushConsumerOperations {
 
 	private final UUID id;
 
-	private PushConsumer stub;
-
 	private boolean disposed;
 
-	private ORB orb;
+	private PushConsumer stub;
 
-	public EventJob(final String channelName, final AbstractEventChannelDataProvider< ? > dp, final ScaDomainManager domain) throws UserException {
+
+	public EventJob(final String channelName, final AbstractEventChannelDataProvider< ? > dp, final ScaDomainManager domain) throws CoreException {
 		super(channelName + " event queue");
 		this.channelName = channelName;
 		this.dp = dp;
 		
 		this.domMgr = domain.fetchNarrowedObject(null);
+		Assert.isNotNull(this.domMgr, "Domain Manager must not be null");
 		this.id = UUID.randomUUID();
-		this.orb = ORBUtil.init(null);
 
-		final POA poa = POAHelper.narrow(orb.resolve_initial_references("RootPOA"));
-		poa.the_POAManager().activate();
+		POA poa = session.getPOA();
+		try {
+	        this.stub = PushConsumerHelper.narrow(poa.servant_to_reference(new PushConsumerPOATie(this)));
+	        this.domMgr.registerWithEventChannel(stub, this.id.toString(), channelName);
+        } catch (ServantNotActive e) {
+	        throw new CoreException(new Status(Status.ERROR, DataProviderActivator.ID, "Failed to register with event channel.", e));
+        } catch (WrongPolicy e) {
+        	throw new CoreException(new Status(Status.ERROR, DataProviderActivator.ID, "Failed to register with event channel.", e));
+        } catch (InvalidObjectReference e) {
+        	throw new CoreException(new Status(Status.ERROR, DataProviderActivator.ID, "Failed to register with event channel.", e));
+        } catch (InvalidEventChannelName e) {
+        	throw new CoreException(new Status(Status.ERROR, DataProviderActivator.ID, "Failed to register with event channel.", e));
+        } catch (AlreadyConnected e) {
+        	throw new CoreException(new Status(Status.ERROR, DataProviderActivator.ID, "Failed to register with event channel.", e));
+        }
 		
-		this.stub = PushConsumerHelper.narrow(poa.servant_to_reference(new PushConsumerPOATie(this)));
-
-		// Use this to work with 1.7
-		//		final org.omg.CORBA.Object obj = domain.getRootContext().resolve_str(domain.getName() + "/" + channelName);
-		//		final EventChannel eventChannel = EventChannelHelper.narrow(obj);
-		//		final ConsumerAdmin consumerAdmin = eventChannel.for_consumers();
-		//		this.proxySupplier = consumerAdmin.obtain_push_supplier();
-		//		this.proxySupplier.connect_push_consumer(this.stub);
-		if (domMgr != null) {
-			this.domMgr.registerWithEventChannel(this.stub, this.id.toString(), channelName);
-		}
+		
 		setSystem(true);
-
 	}
 
 	public void addEvent(final Any event) {
@@ -175,12 +182,16 @@ public class EventJob extends SilentJob implements PushConsumerOperations {
 					this.domMgr = null;
 				}
 			}
+		}
+		
+		if (this.stub != null) {
+			this.stub._release();
 			this.stub = null;
 		}
 		this.disposed = true;
-		if (this.orb != null) {
-			orb.destroy();
-			orb = null;
+		if (this.session != null) {
+			session.dispose();
+			session = null;
 		}
 		cancel();
 	}

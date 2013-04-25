@@ -36,6 +36,7 @@ import org.eclipse.osgi.util.NLS;
 import org.omg.CORBA.SystemException;
 
 import CF.FileException;
+import CF.FileSystem;
 import CF.InvalidFileName;
 
 /**
@@ -101,8 +102,10 @@ public class ScaFileCache {
 
 		private static InputStream createScaInputStream(final ScaFileStore store) throws CoreException {
 			final String path = store.getEntry().getAbsolutePath();
+			FileSystem fs = null;
 			try {
-				return new ScaFileInputStream(store.getScaFileSystem().open(path, true));
+				fs = store.createScaFileSystem();
+				return new ScaFileInputStream(fs.open(path, true));
 			} catch (final InvalidFileName e) {
 				throw new CoreException(new Status(IStatus.ERROR,
 				        ScaFileSystemPlugin.ID,
@@ -115,6 +118,10 @@ public class ScaFileCache {
 				        e));
 			} catch (final SystemException e) {
 				throw new CoreException(new Status(IStatus.ERROR, ScaFileSystemPlugin.ID, NLS.bind(Messages.ScaFileStore__Open_Input_Stream_Error, path), e));
+			} finally {
+				if (fs != null) {
+					fs._release();
+				}
 			}
 		}
 	}

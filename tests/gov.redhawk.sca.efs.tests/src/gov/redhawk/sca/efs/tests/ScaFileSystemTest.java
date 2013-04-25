@@ -12,7 +12,7 @@
 package gov.redhawk.sca.efs.tests;
 
 import gov.redhawk.efs.sca.internal.ScaFileSystem;
-import gov.redhawk.sca.efs.server.tests.OrbSession;
+import gov.redhawk.sca.efs.server.tests.TestServer;
 
 import java.net.URI;
 import java.util.HashMap;
@@ -35,18 +35,17 @@ import org.junit.Test;
  */
 public class ScaFileSystemTest {
 
-	private static OrbSession session;
+	private static TestServer session;
 
 	@BeforeClass
 	public static void initOrb() throws Exception {
-		ScaFileSystemTest.session = new OrbSession();
-		ScaFileSystemTest.session.initOrb();
-
+		session = new TestServer();
+		session.initOrb();
 	}
 
 	@AfterClass
 	public static void shutdownOrb() throws Exception {
-		ScaFileSystemTest.session.shutdownOrb();
+		session.shutdownOrb();
 	}
 
 	private ScaFileSystem fileSystem;

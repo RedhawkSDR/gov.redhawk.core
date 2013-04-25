@@ -13,6 +13,7 @@ package gov.redhawk.sca.efs.server.tests;
 
 import gov.redhawk.efs.sca.server.internal.FileSystemImpl;
 import gov.redhawk.sca.util.ORBUtil;
+import gov.redhawk.sca.util.OrbSession;
 
 import java.io.File;
 import java.io.FilenameFilter;
@@ -26,6 +27,7 @@ import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Platform;
 import org.junit.After;
+import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -46,19 +48,14 @@ import CF.FileSystemPackage.UnknownFileSystemProperties;
 public class FileSystemImplTest {
 	private static final String TEMP_FILE_NAME = "tempFile";
 	private static final String TEMP_DIR_NAME = "tempDir";
-	private static ORB orb;
+	private static OrbSession session;
 
 	private FileSystemImpl fileSystem;
 	private static File root;
-	private static POA rootpoa;
 
 	@BeforeClass
 	public static void onlyOnce() throws Exception {
-		final String[] args = Platform.getApplicationArgs();
-		FileSystemImplTest.orb = ORBUtil.init(null);
-		FileSystemImplTest.rootpoa = POAHelper.narrow(FileSystemImplTest.orb.resolve_initial_references("RootPOA"));
-
-		FileSystemImplTest.rootpoa.the_POAManager().activate();
+		FileSystemImplTest.session = OrbSession.createSession();
 
 		final Bundle bundle = Platform.getBundle("gov.redhawk.sca.efs.tests");
 		FileSystemImplTest.root = null;
@@ -70,13 +67,21 @@ public class FileSystemImplTest {
 			FileSystemImplTest.root = null;
 		}
 	}
+	
+	@AfterClass
+	public static void shutdown() throws Exception {
+		if (session != null) {
+			session.dispose();
+			session = null;
+		}
+	}
 
 	/**
 	 * @throws java.lang.Exception
 	 */
 	@Before
 	public void setUp() throws Exception {
-		this.fileSystem = new FileSystemImpl(FileSystemImplTest.root, FileSystemImplTest.orb, FileSystemImplTest.rootpoa);
+		this.fileSystem = new FileSystemImpl(FileSystemImplTest.root, session.getOrb(), session.getPOA());
 	}
 
 	/**

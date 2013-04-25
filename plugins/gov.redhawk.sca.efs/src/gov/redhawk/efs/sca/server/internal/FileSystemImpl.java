@@ -35,7 +35,7 @@ import CF.DataType;
 import CF.ErrorNumberType;
 import CF.FileException;
 import CF.FileHelper;
-import CF.FileSystemPOA;
+import CF.FileSystemOperations;
 import CF.InvalidFileName;
 import CF.PropertiesHolder;
 import CF.FileSystemPackage.FileInformationType;
@@ -46,7 +46,7 @@ import CF.FileSystemPackage.UnknownFileSystemProperties;
  * 
  *
  */
-public class FileSystemImpl extends FileSystemPOA {
+public class FileSystemImpl implements FileSystemOperations {
 
 	private static final int MILLIS_PER_SEC = 1000;
 	private final File root;
@@ -59,7 +59,6 @@ public class FileSystemImpl extends FileSystemPOA {
 		this.root = root;
 		this.orb = orb;
 		this.poa = rootpoa;
-		rootpoa.activate_object(this);
 	}
 
 	public void copy(final String sourceFileName, final String destinationFileName) throws InvalidFileName, FileException {

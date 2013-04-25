@@ -12,6 +12,7 @@
 package gov.redhawk.ui.port.playaudio.internal.corba;
 
 import gov.redhawk.sca.util.ORBUtil;
+import gov.redhawk.sca.util.OrbSession;
 import gov.redhawk.ui.port.playaudio.controller.AudioController;
 import gov.redhawk.ui.port.playaudio.internal.Activator;
 
@@ -87,14 +88,13 @@ public class CorbaReceiver implements dataShortOperations, dataCharOperations, d
 	/** Time to sleep when waiting */
 	private static final long EMPTY_QUEUE_TIME = 10;
 	private static final int DOUBLE_BYTE_SIZE = 8;
-	/**
-	 * The CORBA ORB to use for servicing requests
-	 */
-	private org.omg.CORBA.ORB globalOrb = null;
+
+	private OrbSession session = OrbSession.createSession();
+	private POA rootpoa;
+	
 	/** flag if we're done processing */
 	private boolean isDone = false;
-	/** The root POA object */
-	private POA rootpoa = null;
+	
 	/** The list of port connections */
 	private final Map<Port, String> connections = new HashMap<Port, String>();
 	/** The list of ior to ports */
@@ -134,6 +134,7 @@ public class CorbaReceiver implements dataShortOperations, dataCharOperations, d
 	/** The pipe for queueing data for playback */
 	private PipedOutputStream pipeOut;
 
+
 	/**
 	 * The constructor to connect to ports and playback data.
 	 * 
@@ -145,21 +146,7 @@ public class CorbaReceiver implements dataShortOperations, dataCharOperations, d
 		this.isDone = false;
 
 		this.createPipes();
-
-		try {
-			final Properties props = new Properties();
-			props.put("com.sun.CORBA.giop.ORBFragmentSize", "16536");
-			this.globalOrb = ORBUtil.init(props);
-
-			// get reference to RootPOA & activate the POAManager
-			final org.omg.CORBA.Object poa = this.globalOrb.resolve_initial_references("RootPOA");
-			this.rootpoa = POAHelper.narrow(poa);
-			this.rootpoa.the_POAManager().activate();
-		} catch (final InvalidName e) {
-			// PASS
-		} catch (final AdapterInactive e) {
-			// PASS
-		}
+		rootpoa = session.getPOA();
 
 		this.parent = audioController;
 		this.format = format;
@@ -176,14 +163,6 @@ public class CorbaReceiver implements dataShortOperations, dataCharOperations, d
 		default:
 			break;
 		}
-
-		// Check if we were able to connect to the port
-		new Thread(new Runnable() {
-			public void run() {
-				CorbaReceiver.this.globalOrb.run();
-				CorbaReceiver.this.globalOrb.destroy();
-			}
-		}, "Audio ORB Runner").start();
 	}
 
 	private void createPipes() throws CoreException {
@@ -231,7 +210,7 @@ public class CorbaReceiver implements dataShortOperations, dataCharOperations, d
 
 		this.disconnect(null, false);
 
-		return connectPort(TieFactory.getTie(this.format, this.globalOrb, this.rootpoa, this), port);
+		return connectPort(TieFactory.getTie(this.format, session.getOrb(), this.rootpoa, this), port);
 	}
 
 	/**
@@ -252,7 +231,8 @@ public class CorbaReceiver implements dataShortOperations, dataCharOperations, d
 		disconnect(null, false);
 
 		// Shutdown the ORB connection
-		this.globalOrb.shutdown(true);
+		session.dispose();
+		rootpoa = null;
 		this.isDone = true;
 	}
 
@@ -286,7 +266,7 @@ public class CorbaReceiver implements dataShortOperations, dataCharOperations, d
 			try {
 				// If ncRef was null, we were passed an IOR for the
 				// port. Use this to directly resolve the port.
-				final org.omg.CORBA.Object portRef = this.globalOrb.string_to_object(ior);
+				final org.omg.CORBA.Object portRef = session.getOrb().string_to_object(ior);
 				final Port port = PortHelper.narrow(portRef);
 
 				// Make a new connection from the port to the given object
@@ -360,6 +340,7 @@ public class CorbaReceiver implements dataShortOperations, dataCharOperations, d
 				} catch (final WrongAdapter e) {
 					// PASS
 				}
+				port._release();
 			}
 		} else {
 			// loop through all the ports and disconnect/release

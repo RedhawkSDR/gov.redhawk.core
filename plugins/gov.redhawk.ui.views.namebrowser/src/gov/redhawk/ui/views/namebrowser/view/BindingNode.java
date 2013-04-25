@@ -14,6 +14,7 @@ package gov.redhawk.ui.views.namebrowser.view;
 import gov.redhawk.sca.util.CorbaURIUtil;
 import gov.redhawk.sca.util.Debug;
 import gov.redhawk.sca.util.ORBUtil;
+import gov.redhawk.sca.util.OrbSession;
 import gov.redhawk.ui.views.namebrowser.NameBrowserPlugin;
 
 import java.util.ArrayList;
@@ -91,7 +92,7 @@ public class BindingNode implements IPropertySource {
 
 		private NamingContextExt namingContext;
 		private final String host;
-		private ORB orb;
+		private OrbSession session;
 	}
 
 	private final Binding binding;
@@ -128,11 +129,10 @@ public class BindingNode implements IPropertySource {
 		}
 
 		final String nameRef = CorbaURIUtil.addDefaultPort(this.info.host);
-		this.info.orb = ORBUtil.init(null);
+		this.info.session = OrbSession.createSession();
 		
 		// Lookup the NameService
-		final org.omg.CORBA.Object objRef = this.info.orb.string_to_object(nameRef);
-		this.info.namingContext = NamingContextExtHelper.narrow(objRef);
+		this.info.namingContext = NamingContextExtHelper.narrow(this.info.session.getOrb().string_to_object(nameRef));
 		this.contents = null;
 		if (DEBUG.enabled) {
 			DEBUG.exitingMethod();
@@ -140,15 +140,18 @@ public class BindingNode implements IPropertySource {
 	}
 
 	public void dispose() {
-		if (this.info.orb != null) {
-			this.info.orb.destroy();
-			this.info.orb = null;
+		if (this.info.session != null) {
+			this.info.session.dispose();
+			this.info.session = null;
 		}
-		this.info.namingContext = null;
+		if (this.info.namingContext != null) {
+			this.info.namingContext._release();
+			this.info.namingContext = null;
+		}
 	}
 
 	public ORB getOrb() {
-		return this.info.orb;
+		return this.info.session.getOrb();
 	}
 
 	public BindingNode getRoot() {
@@ -261,18 +264,25 @@ public class BindingNode implements IPropertySource {
 			// Loop through the resolved names and add a node for each
 			for (final Binding b : children) {
 				String childIor = null;
+				org.omg.CORBA.Object objRef = null;
 				try {
 					String ref = str;
 					if (ref.length() > 0) {
 						ref = ref + "/";
 					}
 					ref = ref + b.binding_name[0].id;
-					childIor = getNamingContext().resolve_str(ref).toString();
+					objRef = getNamingContext().resolve_str(ref);
+					childIor = objRef.toString();
 					retVal.add(new BindingNode(this, b, childIor));
 				} catch (final UserException e) {
 					continue;
 				} catch (final SystemException e) {
 					continue;
+				} finally {
+					if (objRef != null) {
+						objRef._release();
+						objRef = null;
+					}
 				}
 			}
 			this.contents = retVal.toArray(new BindingNode[retVal.size()]);

@@ -28,6 +28,7 @@ import gov.redhawk.model.sca.tests.stubs.DeviceManagerImpl;
 import gov.redhawk.model.sca.tests.stubs.DomainManagerImpl;
 import gov.redhawk.model.sca.tests.stubs.ScaTestConstaints;
 import gov.redhawk.sca.model.internal.DataProviderServicesRegistry;
+import gov.redhawk.sca.util.OrbSession;
 
 import java.io.File;
 import java.net.URL;
@@ -69,8 +70,7 @@ public class TestEnvirornment {
 	private final TransactionalEditingDomain editingDomain;
 	private final DeviceManager devMgrRef;
 	private DomainManager dmdRef;
-	private ORB orb;
-	private NamingContextExt context;
+	private OrbSession session;
 	private DeviceManagerImpl devMgrImpl;
 	private DomainManagerImpl domainMgrImpl;
 	
@@ -86,29 +86,25 @@ public class TestEnvirornment {
 		final ScaDocumentRoot root = (ScaDocumentRoot) resource.getEObject("/");
 		this.domMgr = (ScaDomainManagerImpl) root.getDomainManagerRegistry().getDomains().get(0);
 
-		orb = ORB.init((String[]) null, null);
-		final POA poa = POAHelper.narrow(orb.resolve_initial_references("RootPOA"));
-		poa.the_POAManager().activate();
-//		context = NamingContextExtHelper.narrow(orb.resolve_initial_references("NamingContext"));
-		context = null;
+		session = OrbSession.createSession();
 
 		URL domFileUrl = FileLocator.toFileURL(FileLocator.find(Platform.getBundle("gov.redhawk.sca.model.tests"), new Path("sdr/dom"), null));
 		File domRoot = new File(domFileUrl.toURI());
 		Assert.assertTrue(domRoot.exists());
-		domainMgrImpl = new DomainManagerImpl(domRoot, "/domain/DomainManager.dmd.xml", null, null, orb, poa);
-		dmdRef = DomainManagerHelper.narrow(poa.servant_to_reference(new DomainManagerPOATie(domainMgrImpl)));
+		domainMgrImpl = new DomainManagerImpl(domRoot, "/domain/DomainManager.dmd.xml", null, null, session.getOrb(), session.getPOA());
+		dmdRef = DomainManagerHelper.narrow(session.getPOA().servant_to_reference(new DomainManagerPOATie(domainMgrImpl)));
 
 		URL devFileUrl = FileLocator.toFileURL(FileLocator.find(Platform.getBundle("gov.redhawk.sca.model.tests"), new Path("sdr/dev"),
 				null));
 		File devRoot = new File(devFileUrl.toURI());
 		Assert.assertTrue(devRoot.exists());
-		devMgrImpl = new DeviceManagerImpl(devRoot, "/nodes/REDHAWK_DevMgr/DeviceManager.dcd.xml", null, null, poa,	orb);
-		devMgrRef = DeviceManagerHelper.narrow(poa.servant_to_reference(new DeviceManagerPOATie(devMgrImpl)));
+		devMgrImpl = new DeviceManagerImpl(devRoot, "/nodes/REDHAWK_DevMgr/DeviceManager.dcd.xml", null, null, session.getPOA(),	session.getOrb());
+		devMgrRef = DeviceManagerHelper.narrow(session.getPOA().servant_to_reference(new DeviceManagerPOATie(devMgrImpl)));
 		
 		execute(new ScaModelCommand() {
 
 			public void execute() {
-				((ScaDomainManagerImpl) domMgr).setORB(orb);
+				((ScaDomainManagerImpl) domMgr).setOrbSession(session);
 			}
 		});
 	}
@@ -141,7 +137,6 @@ public class TestEnvirornment {
 				domMgr.unsetFileManager();
 				domMgr.clearAllStatus();
 				domMgr.setCorbaObj(dmdRef);
-				domMgr.setRootContext(context);
 				domMgr.setState(DomainConnectionState.CONNECTED);
 			}
 

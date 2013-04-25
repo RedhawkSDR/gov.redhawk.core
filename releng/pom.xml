@@ -22,7 +22,8 @@
         <orbit>http://download.eclipse.org/tools/orbit/downloads/drops/R20130118183705/repository</orbit>
         <mil.jpeojtrs.sca>http://download.redhawksdr.org/mil.jpeojtrs.sca/releases/1.9</mil.jpeojtrs.sca>
         <nxm>http://download.redhawksdr.org/nxm/releases/3.3.1</nxm>
-        <jacorb>http://download.redhawksdr.org/jacorb/releases/3.1.0</jacorb>
+        <nxm-rcp>http://download.redhawksdr.org/nxm-rcp/releases/1.0</nxm-rcp>
+        <jacorb>http://download.redhawksdr.org/jacorb/releases/3.1</jacorb>
     </properties>
 
     <repositories>
@@ -63,7 +64,7 @@
         </repository>
 
         <repository>
-            <id>jacorb</id>
+            <id>org.omg.jacorb</id>
             <layout>p2</layout>
             <url>${jacorb}</url>
         </repository>
@@ -82,6 +83,22 @@
             </activation>
             <build>
                 <plugins>
+                    <plugin>
+                        <groupId>org.eclipse.tycho</groupId>
+                        <artifactId>tycho-surefire-plugin</artifactId>
+                        <version>${tycho-version}</version>
+                        <configuration>
+                            <argLine>-Xmx512m -Djava.net.preferIPv4Stack=true -Dorg.omg.CORBA.ORBClass=org.jacorb.orb.ORB -Dorg.omg.CORBA.ORBSingletonClass=org.jacorb.orb.ORBSingleton -Dorg.omg.PortableInterceptor.ORBInitializerClass.standard_init=org.jacorb.orb.standardInterceptors.IORInterceptorInitializer</argLine>
+                            <appArgLine>-nl en</appArgLine>
+                            <dependencies>
+                                <dependency>
+                                    <type>eclipse-feature</type>
+                                    <artifactId>org.jacorb</artifactId>
+                                    <version>0.0.0</version>
+                                </dependency>
+                            </dependencies>
+                        </configuration>
+                    </plugin>
                     <plugin>
                         <groupId>org.eclipse.tycho</groupId>
                         <artifactId>target-platform-configuration</artifactId>

@@ -16,6 +16,7 @@ import gov.redhawk.model.sca.services.AbstractDataProvider;
 import gov.redhawk.sca.model.provider.event.internal.listener.EventJob;
 import gov.redhawk.sca.util.MutexRule;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -45,7 +46,7 @@ public abstract class AbstractEventChannelDataProvider< T > extends AbstractData
 
 	private final T container;
 	private final ScaDomainManager domain;
-	private final Map<String, EventJob> connectedChannels = new HashMap<String, EventJob>();
+	private final Map<String, EventJob> connectedChannels = Collections.synchronizedMap(new HashMap<String, EventJob>());
 	private final MutexRule rule = new MutexRule(this);
 	private final Job connectJob = new Job("Connect Job") {
 		{

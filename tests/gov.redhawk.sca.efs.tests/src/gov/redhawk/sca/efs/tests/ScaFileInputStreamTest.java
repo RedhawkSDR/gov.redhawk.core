@@ -13,7 +13,7 @@ package gov.redhawk.sca.efs.tests;
 
 import gov.redhawk.efs.sca.internal.ScaFileCache.FileSystemCache;
 import gov.redhawk.efs.sca.internal.ScaFileSystemPlugin;
-import gov.redhawk.sca.efs.server.tests.OrbSession;
+import gov.redhawk.sca.efs.server.tests.TestServer;
 
 import java.io.InputStream;
 import java.net.URI;
@@ -38,11 +38,11 @@ import org.junit.Test;
  * 
  */
 public class ScaFileInputStreamTest {
-	private static OrbSession session;
+	private static TestServer session;
 
 	@BeforeClass
 	public static void initOrb() throws Exception {
-		ScaFileInputStreamTest.session = new OrbSession();
+		ScaFileInputStreamTest.session = new TestServer();
 		ScaFileInputStreamTest.session.initOrb();
 	}
 

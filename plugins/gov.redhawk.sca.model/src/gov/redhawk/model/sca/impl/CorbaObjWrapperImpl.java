@@ -314,6 +314,9 @@ public abstract class CorbaObjWrapperImpl< T extends org.omg.CORBA.Object > exte
 				} else {
 					detachDataProviders();
 				}
+				if (msg.getOldValue() instanceof org.omg.CORBA.Object) {
+					((org.omg.CORBA.Object)msg.getOldValue())._release();
+				}
 				break;
 			default:
 				break;
@@ -588,6 +591,13 @@ public abstract class CorbaObjWrapperImpl< T extends org.omg.CORBA.Object > exte
 		} finally {
 			subMonitor.done();
 		}
+	}
+	
+	@Override
+	protected void finalize() throws Throwable {
+	    super.finalize();
+	    dispose();
+	    eAdapters().clear();
 	}
 
 } // CorbaObjWrapperImpl

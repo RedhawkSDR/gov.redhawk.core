@@ -38,6 +38,7 @@ import gov.redhawk.model.sca.commands.VersionedFeature;
 import gov.redhawk.model.sca.commands.VersionedFeature.Transaction;
 import gov.redhawk.sca.util.Debug;
 import gov.redhawk.sca.util.ORBUtil;
+import gov.redhawk.sca.util.OrbSession;
 import gov.redhawk.sca.util.PluginUtil;
 import gov.redhawk.sca.util.SilentJob;
 
@@ -53,6 +54,7 @@ import mil.jpeojtrs.sca.util.NamedThreadFactory;
 
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.SubMonitor;
 import org.eclipse.emf.common.command.CompoundCommand;
@@ -632,15 +634,15 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 		// BEGIN GENERATED CODE
 	}
 	
-	private static void destroyOrb(final ORB orb) {
-		if (orb == null) {
+	private static void destroyOrbSession(final OrbSession session) {
+		if (session == null) {
 			return;
 		}
 		EXECUTOR_POOL.submit(new Runnable() {
 
 			public void run() {
 				try {
-					orb.destroy();
+					session.dispose();
 				} catch (Exception e) {
 					// PASS Ignore Exception on close
 				}
@@ -839,7 +841,7 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 		}
 
 	};
-	private ORB orb;
+	private OrbSession session;
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -973,13 +975,15 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 			final int INIT_ORB_WORK = 5;
 			final int RESOLVE_NAMINGCONTEXT_WORK = 5;
 			final int SET_NAMINGCONTEXT_WORK = 5;
-			final int POA_WORK = 5;
 			final int DOMAIN_MGR_WORK = 5;
 			final int REFRESH_DOMAIN_WORK = 75;
 			final SubMonitor monitor = SubMonitor.convert(parentMonitor, "Connecting to domain: " + getName(), 100);
 			monitor.subTask("Initializing ORB...");
-			final ORB newOrb = ORBUtil.init(createProperties());
-			setORB(newOrb);
+			java.util.Properties orbProperties = createProperties();
+			java.util.Properties systemProps = System.getProperties();
+			systemProps.putAll(orbProperties);
+			final OrbSession session = OrbSession.createSession(getName(), Platform.getApplicationArgs(), systemProps);
+			setOrbSession(session);
 			CompoundCommand command = new CompoundCommand();
 
 			command.append(new ScaModelCommand() {
@@ -997,7 +1001,9 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 			final String domMgrName = getDomMgrName();
 
 			monitor.subTask("Resolving Naming Service...");
-			org.omg.CORBA.Object objRef = newOrb.resolve_initial_references("NameService");
+//			String nameService = orbProperties.getProperty("ORBInitRef.NameService");
+			ORB orb = session.getOrb();
+			org.omg.CORBA.Object objRef = orb.resolve_initial_references("NameService");
 			monitor.worked(RESOLVE_NAMINGCONTEXT_WORK);
 
 			final NamingContextExt newNamingContext = NamingContextExtHelper.narrow(objRef);
@@ -1010,12 +1016,6 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 			});
 			monitor.worked(SET_NAMINGCONTEXT_WORK);
 
-			// Since we don't share the POA any more don't create it since we don't need it
-//			monitor.subTask("Resolving POA...");
-//			final org.omg.CORBA.Object poa = newOrb.resolve_initial_references("RootPOA");
-//			final POA newPoa = POAHelper.narrow(poa);
-//			newPoa.the_POAManager().activate();
-			monitor.worked(POA_WORK);
 
 			monitor.subTask("Resolving Domain " + domMgrName);
 			final org.omg.CORBA.Object newCorbaObj = newNamingContext.resolve_str(domMgrName);
@@ -1064,12 +1064,11 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 	}
 
 	/**
-	 * @since 16.0
-	 * @param newOrb
-	 */
-	public void setORB(ORB newOrb) {
-		destroyOrb(orb);
-		orb = newOrb;
+     * @since 17.0
+     */
+	public void setOrbSession(OrbSession session) {
+		destroyOrbSession(this.session);
+		this.session = session;
 	}
 
 	/**
@@ -1411,7 +1410,7 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 		// END GENERATED CODE
 		unsetCorbaObj();
 		unsetRootContext();
-		setORB(null);
+		setOrbSession(null);
 		clearAllStatus();
 		// BEGIN GENERATED CODE
 	}
