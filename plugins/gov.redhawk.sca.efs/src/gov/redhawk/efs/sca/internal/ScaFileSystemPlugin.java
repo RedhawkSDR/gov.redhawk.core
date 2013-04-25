@@ -40,7 +40,6 @@ public class ScaFileSystemPlugin extends Plugin {
 	@Override
 	public void stop(final BundleContext context) throws Exception {
 		super.stop(context);
-		ScaFileStore.disposeORB();
 		this.fileCache.clear();
 		ScaFileSystemPlugin.instance = null;
 	}

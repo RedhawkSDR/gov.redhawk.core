@@ -14,6 +14,7 @@ package gov.redhawk.plotter.application;
 import gov.redhawk.model.sca.ScaFactory;
 import gov.redhawk.model.sca.ScaUsesPort;
 import gov.redhawk.sca.util.ORBUtil;
+import gov.redhawk.sca.util.OrbSession;
 import gov.redhawk.ui.port.Activator;
 import gov.redhawk.ui.port.IPortHandler;
 import gov.redhawk.ui.port.IPortHandlerRegistry;
@@ -36,6 +37,8 @@ import org.eclipse.ui.application.WorkbenchWindowAdvisor;
 
 public class ApplicationWorkbenchWindowAdvisor extends WorkbenchWindowAdvisor {
 
+	private OrbSession session;
+
 	public ApplicationWorkbenchWindowAdvisor(final IWorkbenchWindowConfigurer configurer) {
 		super(configurer);
 	}
@@ -50,6 +53,15 @@ public class ApplicationWorkbenchWindowAdvisor extends WorkbenchWindowAdvisor {
 		configurer.setShowFastViewBars(true);
 		configurer.setShowProgressIndicator(true);
 		configurer.setTitle("REDHAWK Plotter");
+	}
+	
+	@Override
+	public void dispose() {
+	    super.dispose();
+	    if (session != null) {
+	    	session.dispose();
+	    	session = null;
+	    }
 	}
 
 	@Override
@@ -101,7 +113,8 @@ public class ApplicationWorkbenchWindowAdvisor extends WorkbenchWindowAdvisor {
 
 		if ((ior != null) && (repId != null) && (handlerid != null) && (name != null)) {
 			// Create the ORB
-			final org.omg.CORBA.ORB orb = ORBUtil.init(System.getProperties());
+			session = OrbSession.createSession();
+			final org.omg.CORBA.ORB orb = session.getOrb();
 			final org.omg.CORBA.Object obj = orb.string_to_object(ior);
 
 			gov.redhawk.ui.port.Activator.getDefault();

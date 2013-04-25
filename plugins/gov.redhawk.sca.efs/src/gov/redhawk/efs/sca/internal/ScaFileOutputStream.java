@@ -59,6 +59,9 @@ public class ScaFileOutputStream extends OutputStream {
 			ex.initCause(e);
 			throw ex;
 		} finally {
+			if (this.file != null) {
+				this.file._release();
+			}
 			this.file = null;
 		}
 	}

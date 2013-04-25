@@ -28,6 +28,7 @@ import gov.redhawk.sca.properties.PropertiesProviderRegistry;
 import gov.redhawk.sca.util.CorbaURIUtil;
 import gov.redhawk.sca.util.IPreferenceAccessor;
 import gov.redhawk.sca.util.ORBUtil;
+import gov.redhawk.sca.util.OrbSession;
 import gov.redhawk.sca.util.ScopedPreferenceAccessor;
 
 import java.io.IOException;
@@ -412,7 +413,7 @@ public class ScaPlugin extends Plugin {
 	 */
 	public static boolean nameServiceObjectExists(final String name, final String nameServiceInitRef) {
 		final String nameServiceRef = CorbaURIUtil.addDefaultPort(nameServiceInitRef);
-		final ORB orb = ORBUtil.init(null);
+		OrbSession session = OrbSession.createSession();
 
 		// Allow the user to specify the DomainManager. If there is no '/'
 		// then the user did not specify it(Use the SCA 2.2.2 specific
@@ -424,20 +425,25 @@ public class ScaPlugin extends Plugin {
 			orbName = name;
 		}
 
-		org.omg.CORBA.Object objRef;
+		 NamingContextExt rootContext = null;
+		 org.omg.CORBA.Object object = null;
 
 		try {
-			objRef = orb.string_to_object(nameServiceRef);
-
-			final NamingContextExt rootContext = NamingContextExtHelper.narrow(objRef);
-
-			final org.omg.CORBA.Object object = rootContext.resolve_str(orbName);
-
+			rootContext = NamingContextExtHelper.narrow(session.getOrb().string_to_object(nameServiceRef));
+			object = rootContext.resolve_str(orbName);
 			return (!object._non_existent());
 		} catch (final Exception e) {
 			return false;
 		} finally {
-			orb.destroy();
+			if (rootContext != null) {
+				rootContext._release();
+				rootContext = null;
+			}
+			if (object != null) {
+				object._release();
+				object = null;
+			}
+			session.dispose();
 		}
 	}
 
@@ -461,14 +467,11 @@ public class ScaPlugin extends Plugin {
 		final ArrayList<String> retVal = new ArrayList<String>();
 
 		final String nameServiceRef = CorbaURIUtil.addDefaultPort(nameServiceInitRef);
-		final ORB orb = ORBUtil.init(null);
-
-		org.omg.CORBA.Object objRef;
-
+		OrbSession session = OrbSession.createSession();
+		NamingContextExt rootContext = null;
 		try {
-			objRef = orb.string_to_object(nameServiceRef);
 
-			final NamingContextExt rootContext = NamingContextExtHelper.narrow(objRef);
+			rootContext = NamingContextExtHelper.narrow(session.getOrb().string_to_object(nameServiceRef));
 
 			final BindingListHolder bl = new BindingListHolder();
 			// Get a listing of root names
@@ -477,13 +480,19 @@ public class ScaPlugin extends Plugin {
 				// Domains are always bound in a context with the same name as the domain
 				if (b.binding_type.value() == BindingType._ncontext) {
 					String guessedDomainName = b.binding_name[0].id + "/" + b.binding_name[0].id;
+					org.omg.CORBA.Object object = null;
 					try {
-						final org.omg.CORBA.Object object = rootContext.resolve_str(guessedDomainName);
+						object = rootContext.resolve_str(guessedDomainName);
 						if ((!object._non_existent()) && (object._is_a(DomainManagerHelper.id()))) {
 							retVal.add(b.binding_name[0].id);
 						}
 					} catch (final Exception e) {
 						continue;
+					} finally {
+						if (object != null) {
+							object._release();
+							object = null;
+						}
 					}
 				}
 			}
@@ -492,7 +501,10 @@ public class ScaPlugin extends Plugin {
 			ScaPlugin.getDefault().getLog().log(new Status(IStatus.WARNING, ScaPlugin.PLUGIN_ID, "Failed to find domain names", e));
 			return new String[0];
 		} finally {
-			orb.destroy();
+			if (rootContext != null) {
+				rootContext._release();
+			}
+			session.dispose();
 		}
 	}
 }

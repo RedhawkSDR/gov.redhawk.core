@@ -11,7 +11,7 @@
  */
 package gov.redhawk.sca.efs.tests;
 
-import gov.redhawk.sca.efs.server.tests.OrbSession;
+import gov.redhawk.sca.efs.server.tests.TestServer;
 
 import java.io.File;
 import java.io.InputStream;
@@ -42,17 +42,17 @@ import org.junit.Test;
  */
 public class ScaFileStoreTest {
 
-	private static OrbSession session;
+	private static TestServer session;
 
 	@BeforeClass
 	public static void initOrb() throws Exception {
-		ScaFileStoreTest.session = new OrbSession();
-		ScaFileStoreTest.session.initOrb();
+		session = new TestServer();
+		session.initOrb();
 	}
 
 	@AfterClass
 	public static void shutdownOrb() throws Exception {
-		ScaFileStoreTest.session.shutdownOrb();
+		session.shutdownOrb();
 	}
 
 	private IFileSystem fileSystem;

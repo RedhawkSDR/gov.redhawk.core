@@ -19,6 +19,7 @@ import gov.redhawk.core.resourcefactory.IResourceFactoryRegistry;
 import gov.redhawk.core.resourcefactory.ResourceDesc;
 import gov.redhawk.core.resourcefactory.ResourceFactoryPlugin;
 import gov.redhawk.sca.util.ORBUtil;
+import gov.redhawk.sca.util.OrbSession;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -99,8 +100,7 @@ public enum ResourceFactoryRegistry implements IResourceFactoryRegistry, IExtens
 	private final Map<String, SortedSet<ResourceDesc>> registry = Collections.synchronizedMap(new HashMap<String, SortedSet<ResourceDesc>>());
 	private final List<IResourceFactoryProvider> providerRegistry = Collections.synchronizedList(new ArrayList<IResourceFactoryProvider>());
 	private final FileManagerImpl fileManager = new FileManagerImpl();
-	private final ORB orb;
-	private final POA poa;
+	private final OrbSession session = OrbSession.createSession();
 
 	private ResourceFactoryRegistry() {
 		for (final String s : new String[]{"components","waveforms","devices","services"}) {
@@ -111,15 +111,6 @@ public enum ResourceFactoryRegistry implements IResourceFactoryRegistry, IExtens
 			} catch (final FileException e) {
 				// PASS
 			}
-		}
-		this.orb = ORBUtil.init(null);
-		try {
-			this.poa = POAHelper.narrow(this.orb.resolve_initial_references("RootPOA"));
-			this.poa.the_POAManager().activate();
-		} catch (final InvalidName e) {
-			throw new RuntimeException(e);
-		} catch (final AdapterInactive e) {
-			throw new RuntimeException(e);
 		}
 
 		final IExtensionRegistry reg = Platform.getExtensionRegistry();
@@ -166,7 +157,7 @@ public enum ResourceFactoryRegistry implements IResourceFactoryRegistry, IExtens
 		SafeRunner.run(new ISafeRunnable() {
 
 			public void run() throws Exception {
-				provider.init(ResourceFactoryRegistry.this, ResourceFactoryRegistry.this.orb, ResourceFactoryRegistry.this.poa);
+				provider.init(ResourceFactoryRegistry.this, session.getOrb(), session.getPOA());
 			}
 
 			public void handleException(final Throwable exception) {
@@ -187,10 +178,11 @@ public enum ResourceFactoryRegistry implements IResourceFactoryRegistry, IExtens
 		final Path profilePath = new Path(profilePathStr);
 		org.omg.CORBA.Object ref;
 		try {
-			final BundleFileSystem bundleFs = new BundleFileSystem(this.orb, this.poa, bundle, profilePath);
-			ref = this.poa.servant_to_reference(new FileSystemPOATie(bundleFs));
+			POA poa = session.getPOA();
+			final BundleFileSystem bundleFs = new BundleFileSystem(session.getOrb(), poa, bundle, profilePath);
+			ref = poa.servant_to_reference(new FileSystemPOATie(bundleFs));
 
-			final ResourceFactory factoryRef = ResourceFactoryHelper.narrow(this.poa.servant_to_reference(new ResourceFactoryPOATie(factory)));
+			final ResourceFactory factoryRef = ResourceFactoryHelper.narrow(poa.servant_to_reference(new ResourceFactoryPOATie(factory)));
 
 
 			final ResourceDesc desc = new ResourceDesc(FileSystemHelper.narrow(ref), profilePath.lastSegment(), factory.identifier(), factoryRef, -1);
