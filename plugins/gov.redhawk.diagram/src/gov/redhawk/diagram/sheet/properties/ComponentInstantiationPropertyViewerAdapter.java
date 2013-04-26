@@ -91,7 +91,7 @@ public class ComponentInstantiationPropertyViewerAdapter {
 			cp = null;
 		}
 
-		if (!EcoreUtil.equals(cp, input.getComponentProperties())) {
+		if (!EcoreUtil.equals(cp, input.getComponentProperties()) && getEditingDomain() != null && getEditingDomain().getCommandStack() != null) {
 			getEditingDomain().getCommandStack().execute(
 			        SetCommand.create(getEditingDomain(), input, PartitioningPackage.Literals.COMPONENT_INSTANTIATION__COMPONENT_PROPERTIES, cp));
 		}
