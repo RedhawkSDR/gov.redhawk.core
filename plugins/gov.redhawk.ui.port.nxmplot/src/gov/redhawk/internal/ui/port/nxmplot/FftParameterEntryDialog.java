@@ -38,7 +38,7 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 
 /**
- * The Class ManualCORBAParameterEntryDialog.
+ * FFT parameters/settings user entry dialog.
  */
 public class FftParameterEntryDialog extends Dialog {
 
@@ -173,7 +173,7 @@ public class FftParameterEntryDialog extends Dialog {
 		typeLabel.setLayoutData(new GridData(GridData.BEGINNING, GridData.CENTER, false, false));
 		typeLabel.setText("Plot Type:");
 
-		final ComboViewer type = new ComboViewer(container, SWT.BORDER);
+		final ComboViewer type = new ComboViewer(container, SWT.READ_ONLY);
 		type.getCombo().setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false, 1, 1));
 		type.setContentProvider(new ArrayContentProvider());
 		type.setLabelProvider(new LabelProvider());
@@ -192,7 +192,7 @@ public class FftParameterEntryDialog extends Dialog {
 		windowLabel.setLayoutData(new GridData(GridData.BEGINNING, GridData.CENTER, false, false));
 		windowLabel.setText("Window:");
 
-		final ComboViewer window = new ComboViewer(container, SWT.BORDER);
+		final ComboViewer window = new ComboViewer(container, SWT.READ_ONLY);
 		window.getCombo().setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false, 1, 1));
 		window.setContentProvider(new ArrayContentProvider());
 		window.setLabelProvider(new LabelProvider());
