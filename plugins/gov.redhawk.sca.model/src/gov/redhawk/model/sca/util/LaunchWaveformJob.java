@@ -88,15 +88,21 @@ public class LaunchWaveformJob extends SilentJob {
 		ScaWaveformFactory factory = null;
 		boolean installed = false;
 		try {
+			final String profile = this.waveformPath.toPortableString();
+			for (final ScaWaveformFactory temp : LaunchWaveformJob.this.domMgr.fetchWaveformFactories(null)) {
+				if (temp.getProfile().equals(profile)) {
+					factory = temp;
+				}
+			}
+			
 			////////////////////
 			// INSTALL WAVEFORM
-			final String profile = this.waveformPath.toPortableString();
 			subMonitor.subTask("Installing SCA Waveform: " + profile);
 			while (factory == null) {
 				if (subMonitor.isCanceled()) {
 					throw new CancellationException();
 				}
-
+				
 				try {
 					factory = this.domMgr.installScaWaveformFactory(profile);
 					installed = true;
@@ -105,7 +111,7 @@ public class LaunchWaveformJob extends SilentJob {
 						factory = ScaModelCommand.runExclusive(this.domMgr, new RunnableWithResult.Impl<ScaWaveformFactory>() {
 
 							public void run() {
-								for (final ScaWaveformFactory factory : LaunchWaveformJob.this.domMgr.getWaveformFactories()) {
+								for (final ScaWaveformFactory factory : LaunchWaveformJob.this.domMgr.fetchWaveformFactories(null)) {
 									if (factory.getProfile().equals(profile)) {
 										setResult(factory);
 									}

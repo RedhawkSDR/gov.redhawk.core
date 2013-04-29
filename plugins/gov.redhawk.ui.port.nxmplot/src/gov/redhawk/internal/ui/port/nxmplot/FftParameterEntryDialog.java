@@ -27,8 +27,6 @@ import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
-import org.eclipse.swt.events.VerifyEvent;
-import org.eclipse.swt.events.VerifyListener;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
@@ -47,12 +45,35 @@ public class FftParameterEntryDialog extends Dialog {
 			String status = "Percent Overlap must be between 0 and 100.";
 			if ((newText != null) && !"".equals(newText.trim())) {
 				try {
-					double d = Double.parseDouble(newText);
+					double d = Double.parseDouble(newText.trim());
 					if ((d <= 100.0) && (d >= 0.0)) { // SUPPRESS CHECKSTYLE MagicNumber
 						status = null;
 					}
 				} catch (final NumberFormatException n) {
 					status = "Invalid character in Percent Overlap.";
+				}
+			}
+			return status;
+		}
+	}
+
+	private static class MinIntegerValidator implements IInputValidator {
+		private int minAllowed = Integer.MIN_VALUE; // inclusive
+		private String errMsg;
+		public MinIntegerValidator(String fieldName, int minVal) {
+			this.minAllowed = minVal;
+			this.errMsg = fieldName + " must be an integer >= " + minVal + ".";
+        }
+		public String isValid(final String newText) {
+			String status = errMsg; // assume error until passes validation check
+			if ((newText != null) && !"".equals(newText.trim())) {
+				try {
+					int val = Integer.parseInt(newText.trim());
+					if (val >= minAllowed) {
+						status = null; // valid user input
+					} // else invalid input (minAllowed)
+				} catch (final NumberFormatException nfe) {
+					// not integer, already initialized with validation error msg
 				}
 			}
 			return status;
@@ -68,7 +89,11 @@ public class FftParameterEntryDialog extends Dialog {
 	/** The number of averages for FFTing */
 	private Text numAveragesField;
 	/** The validator for the overlapField */
-	private final OverlapValidator validator = new OverlapValidator();
+	private static final OverlapValidator overlapValidator = new OverlapValidator();
+	/** The validator for the {@link #transformSizeField}. */
+	private static final MinIntegerValidator transformSizeValidator = new MinIntegerValidator("Transform Size", 2);
+	/** The validator for the {@link #numAveragesField}. */
+	private static final MinIntegerValidator numAveragesValidator = new MinIntegerValidator("Num Averages", 1);
 	/** Error message label widget. */
 	private Text errorMessageText;
 	/** Error message string. */
@@ -117,7 +142,8 @@ public class FftParameterEntryDialog extends Dialog {
 		this.transformSizeField.setToolTipText("Performance is best if factorable by 2, 3, 4 and 5.");
 		this.transformSizeField.addModifyListener(new ModifyListener() {
 			public void modifyText(final ModifyEvent e) {
-				FftParameterEntryDialog.this.fftSettings.setTransformSize(FftParameterEntryDialog.this.transformSizeField.getText());
+				FftParameterEntryDialog.this.fftSettings.setTransformSize(FftParameterEntryDialog.this.transformSizeField.getText().trim());
+				validateInputs();
 			}
 		});
 
@@ -131,9 +157,8 @@ public class FftParameterEntryDialog extends Dialog {
 		this.overlapField.addModifyListener(new ModifyListener() {
 			public void modifyText(final ModifyEvent e) {
 				final String newText = FftParameterEntryDialog.this.overlapField.getText();
-				if (validateInput(newText)) {
-					FftParameterEntryDialog.this.fftSettings.setOverlap(newText);
-				}
+				FftParameterEntryDialog.this.fftSettings.setOverlap(newText.trim());
+				validateInputs();
 			}
 		});
 
@@ -144,28 +169,11 @@ public class FftParameterEntryDialog extends Dialog {
 		this.numAveragesField = new Text(container, SWT.BORDER);
 		this.numAveragesField.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false, 1, 1));
 		this.numAveragesField.setText(this.fftSettings.getNumAverages());
-		this.numAveragesField.setToolTipText("Must be an integer greater than 0. Avoid using large value as it will cause highlighted energy to remain longer.");
-		this.numAveragesField.addVerifyListener(new VerifyListener() {
-			public void verifyText(VerifyEvent e) {
-				// Notice how we combine the existing text and new (changed text) below
-				String currentText = ((Text)e.widget).getText();
-				String text =  currentText.substring(0, e.start) + e.text + currentText.substring(e.end);
-				try {
-					int val = Integer.parseInt(text.trim());
-					if (val < 1) {
-						e.doit = false;     // disallowed invalid user input
-					}
-				}
-				catch (NumberFormatException nfe) {
-					if (!text.equals("")) { // allow empty string
-						e.doit = false;     // all other invalid user input is not allowed
-					}
-				}
-			}
-		});
+		this.numAveragesField.setToolTipText("Avoid using large value as it will cause highlighted energy to remain longer.");
 		this.numAveragesField.addModifyListener(new ModifyListener() {
 			public void modifyText(final ModifyEvent e) {
 				FftParameterEntryDialog.this.fftSettings.setNumAverages(FftParameterEntryDialog.this.numAveragesField.getText().trim());
+				validateInputs();
 			}
 		});
 
@@ -180,12 +188,10 @@ public class FftParameterEntryDialog extends Dialog {
 		type.setInput(FftSettings.OutputType.values());
 		type.setSelection(new StructuredSelection(FftSettings.OutputType.PSD));
 		type.addSelectionChangedListener(new ISelectionChangedListener() {
-
 			public void selectionChanged(final SelectionChangedEvent event) {
 				FftParameterEntryDialog.this.fftSettings
 				        .setOutputType((FftSettings.OutputType) ((IStructuredSelection) event.getSelection()).getFirstElement());
 			}
-
 		});
 
 		final Label windowLabel = new Label(container, SWT.NONE);
@@ -199,11 +205,9 @@ public class FftParameterEntryDialog extends Dialog {
 		window.setInput(FftSettings.WindowType.values());
 		window.setSelection(new StructuredSelection(FftSettings.WindowType.HANNING));
 		window.addSelectionChangedListener(new ISelectionChangedListener() {
-
 			public void selectionChanged(final SelectionChangedEvent event) {
 				FftParameterEntryDialog.this.fftSettings.setWindow((FftSettings.WindowType) ((IStructuredSelection) event.getSelection()).getFirstElement());
 			}
-
 		});
 
 		Dialog.applyDialogFont(container);
@@ -221,29 +225,33 @@ public class FftParameterEntryDialog extends Dialog {
 	}
 
 	/**
-	 * Validates the input.
-	 * <p>
-	 * The default implementation of this framework method delegates the request
-	 * to the supplied input validator object; if it finds the input invalid,
-	 * the error message is displayed in the dialog's message line. This hook
-	 * method is called whenever the text changes in the input field.
-	 * </p>
+	 * Validates user input fields (overlap, transform size, num averages) and
+	 * calls {@link #setErrorMessage(String)} with combined error messages for those input fields.
 	 */
-	protected boolean validateInput(final String text) {
-		String errorMsg = null;
-		if (this.validator != null) {
-			errorMsg = this.validator.isValid(text);
+	private void validateInputs() {
+		String overlapErrMsg = overlapValidator.isValid(overlapField.getText());
+		String fftSizeErrmsg = transformSizeValidator.isValid(transformSizeField.getText());
+		String numAvgErrMsg  = numAveragesValidator.isValid(numAveragesField.getText());
+		String errorMsg      = overlapErrMsg;
+		if (fftSizeErrmsg != null) {
+			if (errorMsg == null) {
+				errorMsg = fftSizeErrmsg;
+			} else {
+				errorMsg += "\n" + fftSizeErrmsg;
+			}
 		}
-		// Bug 16256: important not to treat "" (blank error) the same as null
-		// (no error)
+		if (numAvgErrMsg != null) {
+			if (errorMsg == null) {
+				errorMsg = numAvgErrMsg;
+			} else {
+				errorMsg += "\n" + numAvgErrMsg;
+			}
+		}
 		setErrorMessage(errorMsg);
-		return errorMsg == null;
 	}
 
-
 	/**
-	 * Sets or clears the error message. If not <code>null</code>, the OK button
-	 * is disabled.
+	 * Sets or clears the error message. If not <code>null</code>, the OK button is disabled.
 	 *
 	 * @param errorMessage the error message, or <code>null</code> to clear
 	 * @since 3.0
