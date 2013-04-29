@@ -68,8 +68,6 @@ import CF.PortPackage.InvalidPort;
 public class CorbaReceiver implements dataShortOperations, dataCharOperations, dataOctetOperations, dataUlongOperations, dataFloatOperations,
         dataDoubleOperations {
 
-	private static final int SOURCE_BUFFER_SIZE = 10000000;
-	private static final int PLAYBACK_SIZE = 10240;
 	private static final int PIPE_SIZE = 1024000;
 	// Keyword Constants
 	//private static final String BIGENDIAN = "BigEndian";
@@ -785,10 +783,11 @@ public class CorbaReceiver implements dataShortOperations, dataCharOperations, d
 		}
 
 		if (!oldStop && (this.playThread == null)) {
-			AudioFormat.Encoding enc = null;
-			int channels = 1;
-			int frameSize = 1;
-			float frameRate = 0.0f;
+			AudioFormat.Encoding enc = AudioFormat.Encoding.PCM_SIGNED; // Default for BULKIO is just linear data, although we should check the port type to see if signed or unsigned is appropriate.
+			int channels = 1; // by default for BULKIO everything is mono
+			int frameSize = (this.sampleSize / 8) * channels; // By default for PCM_SIGNED the frameSize is always equals to number of bytes * number of channels
+			float sampleRate = Math.round(1.0f / (float) sri.xdelta);
+			float frameRate = sampleRate; // By default, for PCM frameRate equals sampleRate
 
 			for (final DataType word : sri.keywords) {
 				final int tkValue = word.value.type().kind().value();
@@ -823,10 +822,10 @@ public class CorbaReceiver implements dataShortOperations, dataCharOperations, d
 			if (enc == null) {
 				return;
 			}
-			
+
 			try {
 				this.audioFormat = new AudioFormat(enc,
-				        1.0f / (float) sri.xdelta,
+						sampleRate,
 				        this.sampleSize,
 				        channels,
 				        frameSize,
@@ -905,12 +904,17 @@ public class CorbaReceiver implements dataShortOperations, dataCharOperations, d
 
 		@Override
 		public void run() {
-			final byte[] buf = new byte[CorbaReceiver.PLAYBACK_SIZE];
+			// Have a buffer of ~ .5 sec.  Basically, it will take 0.5 seconds before the audio
+			// starts to play...but this ensures that the incoming stream can have a bit of
+			// jitter and still play continously
 			final int frameSize = CorbaReceiver.this.audioFormat.getFrameSize();
+			final int PLAYBACK_SIZE = (int) ((0.5 * CorbaReceiver.this.audioFormat.getFrameRate()) * frameSize);
+			final byte[] buf = new byte[PLAYBACK_SIZE];
+			
 
 			try {
 				CorbaReceiver.this.configured = true;
-				CorbaReceiver.this.sourceDataLine.open(CorbaReceiver.this.audioFormat, CorbaReceiver.SOURCE_BUFFER_SIZE);
+				CorbaReceiver.this.sourceDataLine.open(CorbaReceiver.this.audioFormat, PLAYBACK_SIZE);
 				CorbaReceiver.this.sourceDataLine.start();
 
 				while (!CorbaReceiver.this.stopPlayback) {
@@ -921,7 +925,7 @@ public class CorbaReceiver implements dataShortOperations, dataCharOperations, d
 								final int read;
 								synchronized (CorbaReceiver.this.pipeLock) {
 									avail = CorbaReceiver.this.pipeIn.available();
-									avail = Math.min(avail, CorbaReceiver.PLAYBACK_SIZE);
+									avail = Math.min(avail, PLAYBACK_SIZE);
 									read = CorbaReceiver.this.pipeIn.read(buf, 0, (avail - (avail % frameSize)));
 								}
 								if (read == -1) {
