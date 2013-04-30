@@ -69,6 +69,7 @@
 		<module>../../plugins/gov.redhawk.ui.views.domainbrowser</module>
 		<module>../../plugins/gov.redhawk.ui.views.monitor</module>
 		<module>../../plugins/gov.redhawk.ui.views.namebrowser</module>
+		<module>../../plugins/gov.redhawk.ui.waveformviewer</module>
 		<module>../../plugins/nxm.redhawk</module>
 		<module>p2</module>
 	</modules>
