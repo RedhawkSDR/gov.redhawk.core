@@ -55,9 +55,9 @@ public final class ResourceDesc implements Comparable<ResourceDesc> {
 	}
 
 	public void dispose() {
-		this.root = null;
 		if (this.root != null) {
 			this.root._release();
+			this.root = null;
 		}
 		
 		if (this.factory != null) {
