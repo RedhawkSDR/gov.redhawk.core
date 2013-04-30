@@ -77,10 +77,7 @@
 				<artifactId>tycho-surefire-plugin</artifactId>
 				<version>${tycho-version}</version>
 				<configuration>
-					<argLine>-Xmx512m -Djava.net.preferIPv4Stack=true
-						-Dorg.omg.CORBA.ORBClass=org.jacorb.orb.ORB
-						-Dorg.omg.CORBA.ORBSingletonClass=org.jacorb.orb.ORBSingleton
-						-Dorg.omg.PortableInterceptor.ORBInitializerClass.standard_init=org.jacorb.orb.standardInterceptors.IORInterceptorInitializer</argLine>
+					<argLine>-Xmx512m -Djava.net.preferIPv4Stack=true -Dorg.omg.CORBA.ORBClass=org.jacorb.orb.ORB -Dorg.omg.CORBA.ORBSingletonClass=org.jacorb.orb.ORBSingleton -Dorg.omg.PortableInterceptor.ORBInitializerClass.standard_init=org.jacorb.orb.standardInterceptors.IORInterceptorInitializer</argLine>
 					<appArgLine>-nl en</appArgLine>
 					<dependencies>
 						<dependency>
