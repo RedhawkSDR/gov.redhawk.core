@@ -10,11 +10,10 @@
     http://www.eclipse.org/legal/epl-v10.html.
 -->
 <feature
-      id="gov.redhawk.sca.rap.feature"
+      id="gov.redhawk.rap.feature"
       label="%featureName"
       version="1.8.4.qualifier"
-      provider-name="%featureProvider"
-      plugin="mil.jpeojtrs.sca.util">
+      provider-name="%featureProvider">
 
    <description url="http://redhawksdr.org">
       %description
@@ -186,20 +185,6 @@
          unpack="false"/>
 
    <plugin
-         id="gov.redhawk.ui.port.nxmplot"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="gov.redhawk.ui.port.nxmplot.rap"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
          id="gov.redhawk.rap"
          download-size="0"
          install-size="0"
@@ -208,6 +193,20 @@
 
    <plugin
          id="nxm.redhawk"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="gov.redhawk.ui.views.domainbrowser"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="gov.redhawk.ui.waveformviewer"
          download-size="0"
          install-size="0"
          version="0.0.0"

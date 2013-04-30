@@ -1,4 +1,0 @@
-**** March 11, 2013 *****
-Due to issues with submodules across multiple branches and remotes, the common PDE Build submodule has been removed.
-In order to perform a PDE build in this repository with minimal effort, please also clone the master branch of the
-"gov.redhawk.pdebuild.common" repository into the releng/pdebuild path inside this repository.

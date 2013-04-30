@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <site>
-   <feature url="features/gov.redhawk.rap_1.9.0.qualifier.jar" id="gov.redhawk.rap" version="1.9.0.qualifier">
+   <feature url="features/gov.redhawk.rap.feature_1.8.4.qualifier.jar" id="gov.redhawk.rap.feature" version="1.8.4.qualifier">
       <category name="gov.redhawk.core"/>
    </feature>
-   <feature url="features/gov.redhawk.rap.sdk_1.9.0.qualifier.jar" id="gov.redhawk.rap.sdk" version="1.9.0.qualifier">
+   <feature url="features/gov.redhawk.rap.sdk_1.8.4.qualifier.jar" id="gov.redhawk.rap.sdk" version="1.8.4.qualifier">
       <category name="gov.redhawk.core"/>
    </feature>
-   <category-def name="gov.redhawk.core" label="REDHAWK Core"/>
+      <category-def name="gov.redhawk.core.rap" label="REDHAWK RAP Core"/>
 </site>

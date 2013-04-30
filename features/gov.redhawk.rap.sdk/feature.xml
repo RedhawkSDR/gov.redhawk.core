@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <feature
-      id="gov.redhawk.sca.rap.sdk"
+      id="gov.redhawk.rap.sdk"
       label="%featureName"
       version="1.8.4.qualifier"
       provider-name="%featureProvider"
@@ -19,11 +19,11 @@
    </license>
 
    <includes
-         id="gov.redhawk.sca.rap.feature"
+         id="gov.redhawk.rap.feature"
          version="0.0.0"/>
 
    <includes
-         id="gov.redhawk.sca.rap.source"
+         id="gov.redhawk.rap.feature.source"
          version="0.0.0"/>
 
 </feature>

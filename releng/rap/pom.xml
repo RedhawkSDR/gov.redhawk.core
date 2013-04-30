@@ -1,16 +1,12 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<?xml version="1.0" encoding="UTF-8"?>
+<project
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
+	xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 	<modelVersion>4.0.0</modelVersion>
+	<groupId>gov.redhawk.core</groupId>
 	<artifactId>releng-rap</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
 	<packaging>pom</packaging>
-	
-	<properties>
-		<gov.redhawk.common-p2-url>http://pinkman.villains.techma.com/p2/tycho/gov.redhawk.common/SNAPSHOT/</gov.redhawk.common-p2-url>
-		<nxm-rap-p2-url>http://pinkman.villains.techma.com/p2/nxm-ui-build/nxm.rap.ui/develop/latest/</nxm-rap-p2-url>
-		<rap-transaction-ui>http://pinkman.villains.techma.com/p2/eclipse/rap-transaction.ui</rap-transaction-ui>
-		<rap-cnf>http://pinkman.villains.techma.com/p2/eclipse/rap-cnf/</rap-cnf>
-		<rap-tabbed-properties>http://pinkman.villains.techma.com/p2/eclipse/rap-tabbed-properties</rap-tabbed-properties>
-	</properties>
 
 	<parent>
 		<groupId>gov.redhawk.core</groupId>
@@ -18,48 +14,134 @@
 		<version>0.0.1-SNAPSHOT</version>
 	</parent>
 
+	<properties>
+		<rap>http://download.eclipse.org/rt/rap/1.5/runtime</rap>
+		<rap-cnf>http://download.eclipse.org/rt/rap/incubator/nightly/cnf/</rap-cnf>
+		<rap-tab>http://download.eclipse.org/rt/rap/incubator/nightly/tabbed-properties/</rap-tab>
+	</properties>
+
 	<repositories>
 		<repository>
-			<id>rap-transaction-ui</id>
+			<id>rap</id>
 			<layout>p2</layout>
-			<url>${rap-transaction-ui}</url>
+			<url>${rap}</url>
 		</repository>
-		
+	
 		<repository>
 			<id>rap-cnf</id>
 			<layout>p2</layout>
 			<url>${rap-cnf}</url>
 		</repository>
-		
+
 		<repository>
-			<id>rap-tabbed-properties</id>
+			<id>rap-tab</id>
 			<layout>p2</layout>
-			<url>${rap-tabbed-properties}</url>
+			<url>${rap-tab}</url>
 		</repository>
-		
-		<repository>
-			<id>gov.redhawk.common</id>
-			<layout>p2</layout>
-			<url>${gov.redhawk.common-p2-url}</url>
-		</repository>
-			
-		<repository>
-			<id>nxm-rap</id>
-			<layout>p2</layout>
-			<url>${nxm-rap-p2-url}</url>
-		</repository>
-		
 	</repositories>
 
 	<modules>
+		<module>../../features/gov.redhawk.interfaces</module>
+		<module>../../features/gov.redhawk.interfaces.sdk</module>
 		<module>../../features/gov.redhawk.rap.feature</module>
 		<module>../../features/gov.redhawk.rap.sdk</module>
+		<module>../../plugins/gov.redhawk.common.ui</module>
 		<module>../../plugins/gov.redhawk.rap</module>
+		<module>../../plugins/gov.redhawk.sca</module>
+		<module>../../plugins/gov.redhawk.sca.model.provider.event</module>
+		<module>../../plugins/gov.redhawk.sca.model.provider.refresh</module>
+		<module>../../plugins/gov.redhawk.sca.model.provider.refresh.ui</module>
+		<module>../../plugins/gov.redhawk.sca.observables</module>
+		<module>../../plugins/gov.redhawk.sca.efs</module>
+		<module>../../plugins/gov.redhawk.sca.model</module>
+		<module>../../plugins/gov.redhawk.sca.model.edit</module>
 		<module>../../plugins/gov.redhawk.sca.rap.supplement</module>
+		<module>../../plugins/gov.redhawk.sca.ui</module>
 		<module>../../plugins/gov.redhawk.sca.ui.rap</module>
+		<module>../../plugins/gov.redhawk.sca.ui.singledomain</module>
 		<module>../../plugins/gov.redhawk.sca.ui.singledomain.rap</module>
+		<module>../../plugins/gov.redhawk.sca.util</module>
+		<module>../../plugins/gov.redhawk.sca.waveform.controlpanel</module>
 		<module>../../plugins/gov.redhawk.sca.waveform.controlpanel.rap</module>
+		<module>../../plugins/gov.redhawk.ui.port</module>
+		<module>../../plugins/gov.redhawk.ui.port.nxmplot</module>
 		<module>../../plugins/gov.redhawk.ui.port.nxmplot.rap</module>
+		<module>../../plugins/gov.redhawk.ui.views.domainbrowser</module>
+		<module>../../plugins/gov.redhawk.ui.views.monitor</module>
+		<module>../../plugins/gov.redhawk.ui.views.namebrowser</module>
+		<module>../../plugins/nxm.redhawk</module>
 		<module>p2</module>
 	</modules>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.eclipse.tycho</groupId>
+				<artifactId>target-platform-configuration</artifactId>
+				<version>${tycho-version}</version>
+				<configuration>
+					<dependency-resolution>
+						<optionalDependencies>ignore</optionalDependencies>
+						<extraRequirements>
+							<requirement>
+								<type>eclipse-plugin</type>
+								<id>org.eclipse.rap.ui</id>
+								<versionRange>0.0.0</versionRange>
+							</requirement>
+							<requirement>
+								<type>eclipse-plugin</type>
+								<id>org.eclipse.rap.ui.views</id>
+								<versionRange>0.0.0</versionRange>
+							</requirement>
+							<requirement>
+								<type>eclipse-plugin</type>
+								<id>org.eclipse.rap.ui.workbench</id>
+								<versionRange>0.0.0</versionRange>
+							</requirement>
+							<requirement>
+								<type>eclipse-plugin</type>
+								<id>org.eclipse.rap.ui.navigator</id>
+								<versionRange>0.0.0</versionRange>
+							</requirement>
+							<requirement>
+								<type>eclipse-plugin</type>
+								<id>org.eclipse.rap.ui.forms</id>
+								<versionRange>0.0.0</versionRange>
+							</requirement>
+							<requirement>
+								<type>eclipse-plugin</type>
+								<id>org.eclipse.rap.ui.views.properties.tabbed</id>
+								<versionRange>0.0.0</versionRange>
+							</requirement>
+							<requirement>
+								<type>eclipse-plugin</type>
+								<id>org.eclipse.rap.jface.databinding</id>
+								<versionRange>0.0.0</versionRange>
+							</requirement>
+							<requirement>
+								<type>eclipse-plugin</type>
+								<id>org.eclipse.emf.rap.common.ui</id>
+								<versionRange>0.0.0</versionRange>
+							</requirement>
+							<requirement>
+								<type>eclipse-plugin</type>
+								<id>org.eclipse.emf.rap.edit.ui</id>
+								<versionRange>0.0.0</versionRange>
+							</requirement>
+							<requirement>
+								<type>eclipse-plugin</type>
+								<id>org.eclipse.emf.rap</id>
+								<versionRange>0.0.0</versionRange>
+							</requirement>
+							<requirement>
+								<type>eclipse-plugin</type>
+								<id>javax.servlet</id>
+								<versionRange>0.0.0</versionRange>
+							</requirement>
+						</extraRequirements>
+					</dependency-resolution>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
 </project>
