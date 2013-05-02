@@ -13,7 +13,6 @@
     
     <properties>
         <gov.redhawk.core>http://download.redhawksdr.org/gov.redhawk.core/releases/1.9</gov.redhawk.core>
-        <nxm-rcp>http://download.redhawksdr.org/nxm-ui/releases/1.0</nxm-rcp>
     </properties>
 
     <repositories>
@@ -21,12 +20,6 @@
             <id>gov.redhawk.core</id>
             <layout>p2</layout>
             <url>${gov.redhawk.core}</url>
-        </repository>
-        
-        <repository>
-            <id>nxm-rcp</id>
-            <layout>p2</layout>
-            <url>${nxm-rcp}</url>
         </repository>
     </repositories>
 
@@ -75,5 +68,124 @@
         <module>../../tests/gov.redhawk.eclipsecorba.library.tests</module>
         <module>p2</module>
     </modules>
-    
+
+              <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.eclipse.tycho</groupId>
+                        <artifactId>tycho-surefire-plugin</artifactId>
+                        <version>${tycho-version}</version>
+                        <configuration>
+                            <argLine>-Xmx512m -Djava.net.preferIPv4Stack=true -Dorg.omg.CORBA.ORBClass=org.jacorb.orb.ORB -Dorg.omg.CORBA.ORBSingletonClass=org.jacorb.orb.ORBSingleton -Dorg.omg.PortableInterceptor.ORBInitializerClass.standard_init=org.jacorb.orb.standardInterceptors.IORInterceptorInitializer</argLine>
+                            <appArgLine>-nl en</appArgLine>
+                            <dependencies>
+                                <dependency>
+                                    <type>eclipse-feature</type>
+                                    <artifactId>org.jacorb</artifactId>
+                                    <version>0.0.0</version>
+                                </dependency>
+                            </dependencies>
+                        </configuration>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.eclipse.tycho</groupId>
+                        <artifactId>target-platform-configuration</artifactId>
+                        <version>${tycho-version}</version>
+                        <configuration>
+                            <environments>
+                                <environment>
+                                    <os>linux</os>
+                                    <ws>gtk</ws>
+                                    <arch>x86</arch>
+                                </environment>
+                                <environment>
+                                    <os>linux</os>
+                                    <ws>gtk</ws>
+                                    <arch>x86_64</arch>
+                                </environment>
+                                <environment>
+                                    <os>win32</os>
+                                    <ws>win32</ws>
+                                    <arch>x86</arch>
+                                </environment>
+                                <environment>
+                                    <os>win32</os>
+                                    <ws>win32</ws>
+                                    <arch>x86_64</arch>
+                                </environment>
+                                <environment>
+                                    <os>macosx</os>
+                                    <ws>cocoa</ws>
+                                    <arch>x86_64</arch>
+                                </environment>
+                            </environments>
+                            <dependency-resolution>
+                                <optionalDependencies>ignore</optionalDependencies>
+                                <extraRequirements>
+                                    <requirement>
+                                        <type>eclipse-plugin</type>
+                                        <id>org.eclipse.ui</id>
+                                        <versionRange>0.0.0</versionRange>
+                                    </requirement>
+                                    <requirement>
+                                        <type>eclipse-plugin</type>
+                                        <id>org.eclipse.ui.views</id>
+                                        <versionRange>0.0.0</versionRange>
+                                    </requirement>
+                                    <requirement>
+                                        <type>eclipse-plugin</type>
+                                        <id>org.eclipse.ui.workbench</id>
+                                        <versionRange>0.0.0</versionRange>
+                                    </requirement>
+                                    <requirement>
+                                        <type>eclipse-plugin</type>
+                                        <id>org.eclipse.ui.navigator</id>
+                                        <versionRange>0.0.0</versionRange>
+                                    </requirement>
+                                    <requirement>
+                                        <type>eclipse-plugin</type>
+                                        <id>org.eclipse.jface.databinding</id>
+                                        <versionRange>0.0.0</versionRange>
+                                    </requirement>
+                                    <requirement>
+                                        <type>eclipse-plugin</type>
+                                        <id>org.eclipse.ui.ide</id>
+                                        <versionRange>0.0.0</versionRange>
+                                    </requirement>
+                                    <requirement>
+                                        <type>eclipse-plugin</type>
+                                        <id>org.eclipse.ui.forms</id>
+                                        <versionRange>0.0.0</versionRange>
+                                    </requirement>
+                                    <requirement>
+                                        <type>eclipse-plugin</type>
+                                        <id>org.eclipse.emf.edit.ui</id>
+                                        <versionRange>0.0.0</versionRange>
+                                    </requirement>
+                                    <requirement>
+                                        <type>eclipse-plugin</type>
+                                        <id>org.eclipse.wst.sse.ui</id>
+                                        <versionRange>0.0.0</versionRange>
+                                    </requirement>
+                                    <requirement>
+                                        <type>eclipse-plugin</type>
+                                        <id>org.eclipse.draw2d</id>
+                                        <versionRange>0.0.0</versionRange>
+                                    </requirement>
+                                    <requirement>
+                                        <type>eclipse-plugin</type>
+                                        <id>org.eclipse.ui.views.properties.tabbed</id>
+                                        <versionRange>0.0.0</versionRange>
+                                    </requirement>
+                                    <requirement>
+                                        <type>eclipse-plugin</type>
+                                        <id>org.jacorb</id>
+                                        <versionRange>0.0.0</versionRange>
+                                    </requirement>
+                                </extraRequirements>
+                            </dependency-resolution>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>  
 </project>
