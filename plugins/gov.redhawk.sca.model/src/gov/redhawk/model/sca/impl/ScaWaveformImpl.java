@@ -840,16 +840,14 @@ public class ScaWaveformImpl extends ScaPropertyContainerImpl<Application, Softw
 			final SoftwareAssembly localSad = fetchProfileObject(subMonitor.newChild(1));
 			if (localSad != null) {
 				// New Components
-				ComponentType[] compTypes = null;
 				IStatus status = null;
 				try {
-					compTypes = app.registeredComponents();
+					ComponentType[] compTypes = app.registeredComponents();
+					transaction.addCommand(createMergeComponentsCommand(compTypes, status));
 				} catch (SystemException e) {
 					status = new Status(Status.ERROR, ScaModelPlugin.ID, "Failed to fetch components.", e);
 				}
-				subMonitor.worked(1);
-
-				transaction.addCommand(createMergeComponentsCommand(compTypes, status));
+				subMonitor.worked(1);	
 			} else {
 				transaction.addCommand(new UnsetLocalAttributeCommand(this, Status.OK_STATUS, ScaPackage.Literals.SCA_WAVEFORM__ASSEMBLY_CONTROLLER));
 				transaction.addCommand(new UnsetLocalAttributeCommand(this, Status.OK_STATUS, ScaPackage.Literals.SCA_WAVEFORM__COMPONENTS));

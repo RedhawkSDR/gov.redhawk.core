@@ -15,24 +15,50 @@ import gov.redhawk.model.sca.ScaAbstractComponent;
 import gov.redhawk.model.sca.ScaAbstractProperty;
 import gov.redhawk.model.sca.ScaComponent;
 import gov.redhawk.model.sca.ScaFactory;
+import gov.redhawk.model.sca.ScaSimpleProperty;
+import gov.redhawk.model.sca.ScaSimpleSequenceProperty;
+import gov.redhawk.model.sca.ScaStructProperty;
+import gov.redhawk.model.sca.ScaStructSequenceProperty;
 import gov.redhawk.sca.ui.ScaComponentFactory;
 import gov.redhawk.sca.ui.properties.ScaPropertiesAdapterFactory;
 import gov.redhawk.sca.ui.wizards.ScaPropertyUtil;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
+import mil.jpeojtrs.sca.partitioning.ComponentProperties;
 import mil.jpeojtrs.sca.partitioning.PartitioningPackage;
+<<<<<<< HEAD
 import mil.jpeojtrs.sca.prf.util.PropertiesUtil;
+=======
+import mil.jpeojtrs.sca.prf.AbstractProperty;
+import mil.jpeojtrs.sca.prf.AbstractPropertyRef;
+import mil.jpeojtrs.sca.prf.Properties;
+import mil.jpeojtrs.sca.prf.PropertyConfigurationType;
+import mil.jpeojtrs.sca.prf.Simple;
+import mil.jpeojtrs.sca.prf.SimpleRef;
+import mil.jpeojtrs.sca.prf.SimpleSequence;
+import mil.jpeojtrs.sca.prf.SimpleSequenceRef;
+import mil.jpeojtrs.sca.prf.Struct;
+import mil.jpeojtrs.sca.prf.StructRef;
+import mil.jpeojtrs.sca.prf.StructSequence;
+import mil.jpeojtrs.sca.prf.StructSequenceRef;
+import mil.jpeojtrs.sca.prf.StructValue;
+>>>>>>> develop-1_8
 import mil.jpeojtrs.sca.sad.SadPackage;
 import mil.jpeojtrs.sca.sad.SoftwareAssembly;
 import mil.jpeojtrs.sca.spd.SoftPkg;
+import mil.jpeojtrs.sca.util.AnyUtils;
 import mil.jpeojtrs.sca.util.ScaEcoreUtils;
 
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.emf.common.notify.AdapterFactory;
+import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EStructuralFeature;
+import org.eclipse.emf.ecore.util.FeatureMap;
+import org.eclipse.emf.ecore.util.FeatureMap.Entry;
 import org.eclipse.jface.dialogs.IDialogSettings;
 import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.jface.operation.IRunnableWithProgress;
@@ -135,18 +161,36 @@ public class ApplicationCreationPropertyEditWizardPage extends WizardPage {
 			this.viewer.setInput(null);
 		} else {
 			this.assemblyController = ScaFactory.eINSTANCE.createScaComponent();
-			this.assemblyController.setDataProvidersEnabled(false);
+			this.assemblyController.setDataProvidersEnabled(false);		
 			this.assemblyController.setProfileObj(spd);
 			try {
 				getWizard().getContainer().run(true, false, new IRunnableWithProgress() {
 
+					private EStructuralFeature [] PATH = new EStructuralFeature [] {
+							SadPackage.Literals.SOFTWARE_ASSEMBLY__ASSEMBLY_CONTROLLER,
+							SadPackage.Literals.ASSEMBLY_CONTROLLER__COMPONENT_INSTANTIATION_REF,
+							PartitioningPackage.Literals.COMPONENT_INSTANTIATION_REF__INSTANTIATION,
+							PartitioningPackage.Literals.COMPONENT_INSTANTIATION__COMPONENT_PROPERTIES
+					};
 					public void run(final IProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
 						monitor.beginTask("Fetching properties of assembly controller.", IProgressMonitor.UNKNOWN);
 						ApplicationCreationPropertyEditWizardPage.this.assemblyController.fetchProperties(null);
 						for (final ScaAbstractProperty< ? > prop : ApplicationCreationPropertyEditWizardPage.this.assemblyController.getProperties()) {
 							prop.setIgnoreRemoteSet(true);
 						}
-						restoreProperties();
+						ComponentProperties compProperties = ScaEcoreUtils.getFeature(sad, PATH);
+						if (compProperties != null) {
+							FeatureMap properties = sad.getAssemblyController().getComponentInstantiationRef().getInstantiation().getComponentProperties().getProperties();
+							for (Iterator<Entry> i = properties.iterator(); i.hasNext();) {
+								Entry entry = i.next();
+								Object obj = entry.getValue();
+								if (obj instanceof AbstractPropertyRef<?>) {
+									AbstractPropertyRef<?> prop = (AbstractPropertyRef<?>) obj;
+									setValue(assemblyController.getProperty(prop.getRefID()), prop);
+								}
+							}
+							restoreProperties();
+						}
 						monitor.done();
 					}
 				});
@@ -157,6 +201,51 @@ public class ApplicationCreationPropertyEditWizardPage extends WizardPage {
 			}
 			this.viewer.setInput(this.assemblyController);
 		}
+	}
+
+	protected void setValue(ScaAbstractProperty< ? > property, AbstractPropertyRef<?> prop) {
+		if (property instanceof ScaSimpleProperty) {
+			setValue((ScaSimpleProperty)property, (SimpleRef)prop);
+		} else if (property instanceof ScaSimpleSequenceProperty) {
+			setValue((ScaSimpleSequenceProperty)property, (SimpleSequenceRef)prop);
+		} else if (property instanceof ScaStructProperty) {
+			setValue((ScaStructProperty)property, (StructRef)prop);
+		} else if (property instanceof ScaStructSequenceProperty) {
+			setValue((ScaStructSequenceProperty)property, (StructSequenceRef)prop);
+		}
+    }
+	
+	protected void setValue(ScaStructSequenceProperty scaProp, StructSequenceRef prop) {
+		scaProp.getStructs().clear();
+		for (StructValue value : prop.getStructValue()) {
+			EList<SimpleRef> refs = value.getSimpleRef();
+			ScaStructProperty struct = ScaFactory.eINSTANCE.createScaStructProperty();
+			scaProp.getStructs().add(struct);
+			struct.setDefinition(prop.getProperty().getStruct());
+			for (SimpleRef ref : refs) {
+				ScaSimpleProperty simple = struct.getSimple(ref.getRefID());
+				simple.setValue(AnyUtils.convertString(ref.getValue(), simple.getDefinition().getType().getLiteral()));
+			}
+		}
+	}
+	
+	protected void setValue(ScaStructProperty scaProp, StructRef prop) {
+		for (SimpleRef simple : prop.getSimpleRef()) {
+			setValue(scaProp.getSimple(simple.getRefID()), simple);
+		}
+	}
+	
+	protected void setValue(ScaSimpleSequenceProperty property, SimpleSequenceRef prop) {
+		Object [] newValue = new Object[prop.getValues().getValue().size()];
+		for (int i=0; i<newValue.length; i++ ){
+			String value = prop.getValues().getValue().get(i);
+			newValue[i] = AnyUtils.convertString(value, prop.getProperty().getType().getLiteral());
+		}
+		property.setValue(newValue);
+	}
+	
+	protected void setValue(ScaSimpleProperty property, SimpleRef prop) {
+		property.setValue(AnyUtils.convertString(prop.getValue(), prop.getProperty().getType().getLiteral()));
 	}
 
 	private void storeProperties(final boolean empty) {
