@@ -5,8 +5,10 @@
     <packaging>pom</packaging>
     
     <properties>
-	<rap-cnf>http://download.eclipse.org/rt/rap/incubator/nightly/cnf/</rap-cnf>
-	<rap-tab>http://download.eclipse.org/rt/rap/incubator/nightly/tabbed-properties/</rap-tab>
+        <nxm-rap>http://download.redhawksdr.org/nxm-rap/releases/1.0</nxm-rap>
+        <gov.redhawk.core>http://download.redhawksdr.org/gov.redhawk.core/releases/1.9</gov.redhawk.core>
+        <rap-transaction-ui>http://download.redhawksdr.org/rap-transaction.ui/releases/1.4.1</rap-transaction-ui>
+        <rap-incubator-nightly>http://download.eclipse.org/rt/rap/incubator/nightly</rap-incubator-nightly>
     </properties>
 
     <parent>
@@ -16,24 +18,29 @@
     </parent>
 
     <repositories>
-
+        <repository>
+            <id>rap-transaction-ui</id>
+            <layout>p2</layout>
+            <url>${rap-transaction-ui}</url>
+        </repository>
+        
+        <repository>
+            <id>rap-incubator-nightly</id>
+            <layout>p2</layout>
+            <url>${rap-incubator-nightly}</url>
+        </repository>
+        
         <repository>
             <id>gov.redhawk.common</id>
             <layout>p2</layout>
             <url>${gov.redhawk.common}</url>
         </repository>
             
-		<repository>
-			<id>rap-cnf</id>
-			<layout>p2</layout>
-			<url>${rap-cnf}</url>
-		</repository>
-
-		<repository>
-			<id>rap-tab</id>
-			<layout>p2</layout>
-			<url>${rap-tab}</url>
-		</repository>
+        <repository>
+            <id>nxm-rap</id>
+            <layout>p2</layout>
+            <url>${nxm-rap}</url>
+        </repository>
         
     </repositories>
 
@@ -48,76 +55,4 @@
         <module>../../plugins/gov.redhawk.ui.port.nxmplot.rap</module>
         <module>p2</module>
     </modules>
-
-	<build>
-		<plugins>
-			<plugin>
-				<groupId>org.eclipse.tycho</groupId>
-				<artifactId>target-platform-configuration</artifactId>
-				<version>${tycho-version}</version>
-				<configuration>
-					<dependency-resolution>
-						<optionalDependencies>ignore</optionalDependencies>
-						<extraRequirements>
-							<requirement>
-								<type>eclipse-plugin</type>
-								<id>org.eclipse.rap.ui</id>
-								<versionRange>0.0.0</versionRange>
-							</requirement>
-							<requirement>
-								<type>eclipse-plugin</type>
-								<id>org.eclipse.rap.ui.views</id>
-								<versionRange>0.0.0</versionRange>
-							</requirement>
-							<requirement>
-								<type>eclipse-plugin</type>
-								<id>org.eclipse.rap.ui.workbench</id>
-								<versionRange>0.0.0</versionRange>
-							</requirement>
-							<requirement>
-								<type>eclipse-plugin</type>
-								<id>org.eclipse.rap.ui.navigator</id>
-								<versionRange>0.0.0</versionRange>
-							</requirement>
-							<requirement>
-								<type>eclipse-plugin</type>
-								<id>org.eclipse.rap.ui.forms</id>
-								<versionRange>0.0.0</versionRange>
-							</requirement>
-							<requirement>
-								<type>eclipse-plugin</type>
-								<id>org.eclipse.rap.ui.views.properties.tabbed</id>
-								<versionRange>0.0.0</versionRange>
-							</requirement>
-							<requirement>
-								<type>eclipse-plugin</type>
-								<id>org.eclipse.rap.jface.databinding</id>
-								<versionRange>0.0.0</versionRange>
-							</requirement>
-							<requirement>
-								<type>eclipse-plugin</type>
-								<id>org.eclipse.emf.rap.common.ui</id>
-								<versionRange>0.0.0</versionRange>
-							</requirement>
-							<requirement>
-								<type>eclipse-plugin</type>
-								<id>org.eclipse.emf.rap.edit.ui</id>
-								<versionRange>0.0.0</versionRange>
-							</requirement>
-							<requirement>
-								<type>eclipse-plugin</type>
-								<id>org.eclipse.emf.rap</id>
-								<versionRange>0.0.0</versionRange>
-							</requirement>
-							<requirement>
-								<type>eclipse-plugin</type>
-								<id>javax.servlet</id>
-								<versionRange>0.0.0</versionRange>
-							</requirement>
-						</extraRequirements>
-					</dependency-resolution>
-				</configuration>
-			</plugin>
-		</plugins>
-	</build>
 </project>

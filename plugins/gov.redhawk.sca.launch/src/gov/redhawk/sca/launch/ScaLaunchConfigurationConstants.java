@@ -26,7 +26,6 @@ public interface ScaLaunchConfigurationConstants { // SUPPRESS CHECKSTYLE Ignore
 	 * Attribute to indicate the path to the profile xml
 	 */
 	public static final String ATT_PROFILE = ScaLaunchActivator.ID + ".profile";
-	public static final String ATT_WORKSPACE = ScaLaunchActivator.ID + ".workspace";
 	/**
 	 * Attribute to indicate the resource should be started after launching
 	 */
