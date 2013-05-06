@@ -12,7 +12,6 @@
 package gov.redhawk.sca.efs.server.tests;
 
 import gov.redhawk.efs.sca.server.internal.FileSystemImpl;
-import gov.redhawk.sca.util.ORBUtil;
 import gov.redhawk.sca.util.OrbSession;
 
 import java.io.File;
@@ -32,9 +31,6 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import org.omg.CORBA.ORB;
-import org.omg.PortableServer.POA;
-import org.omg.PortableServer.POAHelper;
 import org.osgi.framework.Bundle;
 
 import CF.DataType;

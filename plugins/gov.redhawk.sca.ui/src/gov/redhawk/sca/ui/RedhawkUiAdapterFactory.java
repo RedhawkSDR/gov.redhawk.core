@@ -79,7 +79,7 @@ public class RedhawkUiAdapterFactory implements IAdapterFactory {
 			final TransactionalEditingDomain editingDomain = TransactionUtil.getEditingDomain(adaptableObject);
 			if (editingDomain != null) {
 				try {
-	                return TransactionUtil.runExclusive(editingDomain,  new RunnableWithResult.Impl<Object>(){
+	                return TransactionUtil.runExclusive(editingDomain,  new RunnableWithResult.Impl<Object>() {
 
 						public void run() {
 							final IItemPropertySource itemPropertySource = getItemPropertySource(adaptableObject);

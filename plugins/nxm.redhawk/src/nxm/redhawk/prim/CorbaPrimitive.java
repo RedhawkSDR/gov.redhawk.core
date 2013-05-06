@@ -191,14 +191,14 @@ public class CorbaPrimitive extends Primitive {
 	}
 	
 	/**
-     * @since 8.1
+     * @since 9.0
      */
 	protected void shutdownNonBlocking() {
 		new Thread("Corba Shutdown") {
 			public void run() {
 				shutdown();
 			}
-		}.start();
+		} .start();
 	}
 
 	/**

@@ -11,7 +11,6 @@
  */
 package gov.redhawk.ui.port.playaudio.internal.corba;
 
-import gov.redhawk.sca.util.ORBUtil;
 import gov.redhawk.sca.util.OrbSession;
 import gov.redhawk.ui.port.playaudio.controller.AudioController;
 import gov.redhawk.ui.port.playaudio.internal.Activator;
@@ -23,7 +22,6 @@ import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Properties;
 import java.util.UUID;
 
 import javax.sound.sampled.AudioFormat;
@@ -37,10 +35,7 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.omg.CORBA.SystemException;
 import org.omg.CORBA.TCKind;
-import org.omg.CORBA.ORBPackage.InvalidName;
 import org.omg.PortableServer.POA;
-import org.omg.PortableServer.POAHelper;
-import org.omg.PortableServer.POAManagerPackage.AdapterInactive;
 import org.omg.PortableServer.POAPackage.ObjectNotActive;
 import org.omg.PortableServer.POAPackage.WrongAdapter;
 import org.omg.PortableServer.POAPackage.WrongPolicy;
@@ -840,7 +835,7 @@ public class CorbaReceiver implements dataShortOperations, dataCharOperations, d
 			} catch (final LineUnavailableException e) {
 				Activator.logError("Error getting audio line for playback", e);
 				this.sourceDataLine = null;
-			} catch(Exception e) {
+			} catch (Exception e) {
 				Activator.logError("Error getting audio line for playback", e);
 				this.sourceDataLine = null;
 			}
@@ -947,7 +942,7 @@ public class CorbaReceiver implements dataShortOperations, dataCharOperations, d
 				Activator.logError("Error opening Audio Playback line. Playback unavailable.", e);
 			} catch (final InterruptedException e) {
 				// PASS
-			} catch(Exception e) {
+			} catch (Exception e) {
 				Activator.logError("Error opening Audio Playback line. Playback unavailable.", e);
 			} finally {
 				CorbaReceiver.this.configured = false;

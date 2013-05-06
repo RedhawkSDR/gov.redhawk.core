@@ -76,7 +76,7 @@ public class ServiceDecoratorProvider extends AbstractProvider implements IDecor
 
 			final DcdComponentPlacement cp = (DcdComponentPlacement) view.getElement();
 
-			if (ServiceDecoratorProvider.isService((SoftPkg)ScaEcoreUtils.getFeature(cp, PATH)) && editPart instanceof org.eclipse.gef.GraphicalEditPart) {
+			if (ServiceDecoratorProvider.isService((SoftPkg) ScaEcoreUtils.getFeature(cp, PATH)) && editPart instanceof org.eclipse.gef.GraphicalEditPart) {
 				int margin = -12;
 				if (editPart instanceof org.eclipse.gef.GraphicalEditPart) {
 					margin = MapModeUtil.getMapMode(((org.eclipse.gef.GraphicalEditPart) editPart).getFigure()).DPtoLP(margin);

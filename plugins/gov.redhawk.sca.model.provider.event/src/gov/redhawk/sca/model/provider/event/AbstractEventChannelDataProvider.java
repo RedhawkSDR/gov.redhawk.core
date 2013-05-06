@@ -22,7 +22,6 @@ import java.util.Iterator;
 import java.util.Map;
 
 import org.eclipse.core.runtime.Assert;
-import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.MultiStatus;
@@ -32,10 +31,6 @@ import org.eclipse.core.runtime.SubProgressMonitor;
 import org.eclipse.core.runtime.jobs.Job;
 import org.omg.CORBA.Any;
 import org.omg.CORBA.SystemException;
-import org.omg.PortableServer.POAPackage.ServantNotActive;
-import org.omg.PortableServer.POAPackage.WrongPolicy;
-
-import CF.InvalidObjectReference;
 import CF.DomainManagerPackage.InvalidEventChannelName;
 import CF.DomainManagerPackage.NotConnected;
 

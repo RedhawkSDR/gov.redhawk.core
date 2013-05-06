@@ -3,7 +3,6 @@ package gov.redhawk.sca.util;
 import gov.redhawk.sca.util.internal.ScaUtilPluginActivator;
 
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
 import java.util.WeakHashMap;
@@ -20,7 +19,7 @@ import org.omg.PortableServer.POAHelper;
 import org.omg.PortableServer.POAManagerPackage.AdapterInactive;
 
 /**
- * @since 3.1
+ * @since 3.2
  */
 public class OrbSession {
 
@@ -113,7 +112,7 @@ public class OrbSession {
 			}
         }
 		
-		if (destroy){
+		if (destroy) {
 			if (orb != null) {
 				orb.destroy();
 			}

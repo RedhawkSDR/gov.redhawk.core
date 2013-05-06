@@ -72,7 +72,7 @@ public class FftParameterEntryDialog extends Dialog {
 					if (val >= minAllowed) {
 						status = null; // valid user input
 					} // else invalid input (minAllowed)
-				} catch (final NumberFormatException nfe) {
+				} catch (final NumberFormatException nfe) { // SUPPRESS CHECKSTYLE Inline
 					// not integer, already initialized with validation error msg
 				}
 			}
@@ -89,11 +89,11 @@ public class FftParameterEntryDialog extends Dialog {
 	/** The number of averages for FFTing */
 	private Text numAveragesField;
 	/** The validator for the overlapField */
-	private static final OverlapValidator overlapValidator = new OverlapValidator();
+	private static final OverlapValidator OVERLAP_VALIDATOR = new OverlapValidator();
 	/** The validator for the {@link #transformSizeField}. */
-	private static final MinIntegerValidator transformSizeValidator = new MinIntegerValidator("Transform Size", 2);
+	private static final MinIntegerValidator TRANSFORM_SIZE_VALIDATOR = new MinIntegerValidator("Transform Size", 2);
 	/** The validator for the {@link #numAveragesField}. */
-	private static final MinIntegerValidator numAveragesValidator = new MinIntegerValidator("Num Averages", 1);
+	private static final MinIntegerValidator NUM_AVERAGES_VALIDATOR = new MinIntegerValidator("Num Averages", 1);
 	/** Error message label widget. */
 	private Text errorMessageText;
 	/** Error message string. */
@@ -229,9 +229,9 @@ public class FftParameterEntryDialog extends Dialog {
 	 * calls {@link #setErrorMessage(String)} with combined error messages for those input fields.
 	 */
 	private void validateInputs() {
-		String overlapErrMsg = overlapValidator.isValid(overlapField.getText());
-		String fftSizeErrmsg = transformSizeValidator.isValid(transformSizeField.getText());
-		String numAvgErrMsg  = numAveragesValidator.isValid(numAveragesField.getText());
+		String overlapErrMsg = OVERLAP_VALIDATOR.isValid(overlapField.getText());
+		String fftSizeErrmsg = TRANSFORM_SIZE_VALIDATOR.isValid(transformSizeField.getText());
+		String numAvgErrMsg  = NUM_AVERAGES_VALIDATOR.isValid(numAveragesField.getText());
 		String errorMsg      = overlapErrMsg;
 		if (fftSizeErrmsg != null) {
 			if (errorMsg == null) {

@@ -51,9 +51,9 @@ public class CustomControlItem  extends ControlContribution {
 		this.control.resize();
 		parent.layout(true);
 		for (Object listener : deferredListeners.getListeners()) {
-			if (listener instanceof CustomMouseTrackListener) {//RAP Listener
+			if (listener instanceof CustomMouseTrackListener) { //RAP Listener
 				control.addMouseTrackListener((CustomMouseTrackListener) listener);
-			} else if (listener instanceof MouseTrackListener) {//RCP Listener
+			} else if (listener instanceof MouseTrackListener) { //RCP Listener
 				/*Control#addMouseTrackListener does not exist in RAP. So we use reflection to keep
 				the RAP compiler happy */
 				addMouseTrackListenerToControl(control.getLabel(), (MouseTrackListener) listener);
@@ -69,17 +69,17 @@ public class CustomControlItem  extends ControlContribution {
 			Method m = clazz.getMethod(METHOD_ADD_MOUSETRACK_LISTENER, Class.forName(MOUSE_TRACK_LISTENER_CLASS_NAME));
 			m.invoke(control, listener);
 		} catch (SecurityException e) {
-			e.printStackTrace();
+			ScaSingleDomainPlugin.logError("SecuarityException thrown while adding mouse track listner", e);
 		} catch (NoSuchMethodException e) {
-			e.printStackTrace();
+			ScaSingleDomainPlugin.logError("NoSuchMethodException thrown while adding mouse track listner", e);
 		} catch (IllegalArgumentException e) {
-			e.printStackTrace();
+			ScaSingleDomainPlugin.logError("IllegalArgumentExceptionthrown while adding mouse track listner", e);
 		} catch (IllegalAccessException e) {
-			e.printStackTrace();
+			ScaSingleDomainPlugin.logError("IllegalAccessException thrown while adding mouse track listner", e);
 		} catch (InvocationTargetException e) {
-			e.printStackTrace();
+			ScaSingleDomainPlugin.logError("InvocationTargetException thrown while adding mouse track listner", e);
 		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
+			ScaSingleDomainPlugin.logError("ClassNotFoundException thrown while adding mouse track listner", e);
 		}
 	}
 	
@@ -89,17 +89,17 @@ public class CustomControlItem  extends ControlContribution {
 			Method m = clazz.getMethod(METHOD_REMOVE_MOUSETRACK_LISTENER,  Class.forName(MOUSE_TRACK_LISTENER_CLASS_NAME));
 			m.invoke(control, listener);
 		} catch (SecurityException e) {
-			e.printStackTrace();
+			ScaSingleDomainPlugin.logError("SecuarityException thrown while adding mouse track listner", e);
 		} catch (NoSuchMethodException e) {
-			e.printStackTrace();
+			ScaSingleDomainPlugin.logError("NoSuchMethodException thrown while adding mouse track listner", e);
 		} catch (IllegalArgumentException e) {
-			e.printStackTrace();
+			ScaSingleDomainPlugin.logError("IllegalArgumentException thrown while adding mouse track listner", e);
 		} catch (IllegalAccessException e) {
-			e.printStackTrace();
+			ScaSingleDomainPlugin.logError("IllegalAccessException thrown while adding mouse track listner", e);
 		} catch (InvocationTargetException e) {
-			e.printStackTrace();
+			ScaSingleDomainPlugin.logError("InvocationTargetException thrown while adding mouse track listner", e);
 		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
+			ScaSingleDomainPlugin.logError("ClassNotFoundException thrown while adding mouse track listner", e);
 		}
 	}
 

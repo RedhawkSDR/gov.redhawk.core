@@ -175,7 +175,7 @@ public class PlotPageBook extends Composite {
 			for (IPlotSession session : rasterPlotSessions) {
 				session.dispose();
 			}
-			rasterPlotSessions=null;
+			rasterPlotSessions = null;
 		}
 	}
 

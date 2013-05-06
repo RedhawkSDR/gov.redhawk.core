@@ -47,10 +47,6 @@ import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.emf.transaction.RunnableWithResult;
 import org.eclipse.emf.transaction.TransactionalEditingDomain;
 import org.eclipse.emf.transaction.util.TransactionUtil;
-import org.omg.CORBA.ORB;
-import org.omg.CosNaming.NamingContextExt;
-import org.omg.PortableServer.POA;
-import org.omg.PortableServer.POAHelper;
 
 import CF.DataType;
 import CF.DeviceAssignmentType;

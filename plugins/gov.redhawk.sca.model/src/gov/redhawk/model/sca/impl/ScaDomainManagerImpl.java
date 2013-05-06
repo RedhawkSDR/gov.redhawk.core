@@ -37,7 +37,6 @@ import gov.redhawk.model.sca.commands.UnsetLocalAttributeCommand;
 import gov.redhawk.model.sca.commands.VersionedFeature;
 import gov.redhawk.model.sca.commands.VersionedFeature.Transaction;
 import gov.redhawk.sca.util.Debug;
-import gov.redhawk.sca.util.ORBUtil;
 import gov.redhawk.sca.util.OrbSession;
 import gov.redhawk.sca.util.PluginUtil;
 import gov.redhawk.sca.util.SilentJob;
@@ -982,8 +981,8 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 			java.util.Properties orbProperties = createProperties();
 			java.util.Properties systemProps = System.getProperties();
 			systemProps.putAll(orbProperties);
-			final OrbSession session = OrbSession.createSession(getName(), Platform.getApplicationArgs(), systemProps);
-			setOrbSession(session);
+			final OrbSession orbSession = OrbSession.createSession(getName(), Platform.getApplicationArgs(), systemProps);
+			setOrbSession(orbSession);
 			CompoundCommand command = new CompoundCommand();
 
 			command.append(new ScaModelCommand() {
@@ -1002,7 +1001,7 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 
 			monitor.subTask("Resolving Naming Service...");
 //			String nameService = orbProperties.getProperty("ORBInitRef.NameService");
-			ORB orb = session.getOrb();
+			ORB orb = orbSession.getOrb();
 			org.omg.CORBA.Object objRef = orb.resolve_initial_references("NameService");
 			monitor.worked(RESOLVE_NAMINGCONTEXT_WORK);
 
@@ -1064,7 +1063,7 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 	}
 
 	/**
-     * @since 17.0
+     * @since 18.0
      */
 	public void setOrbSession(OrbSession session) {
 		destroyOrbSession(this.session);
@@ -2022,7 +2021,6 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 						if (fileManager == null) {
 							setFileManager(ScaFactory.eINSTANCE.createScaDomainManagerFileSystem());
 						}
-						FileManager tmpNewValue = newFileMgr;
 						fileManager.setCorbaObj(newFileMgr);
 
 						setStatus(ScaPackage.Literals.SCA_DOMAIN_MANAGER__FILE_MANAGER, null);

@@ -27,7 +27,6 @@ import gov.redhawk.sca.properties.IPropertiesProviderRegistry;
 import gov.redhawk.sca.properties.PropertiesProviderRegistry;
 import gov.redhawk.sca.util.CorbaURIUtil;
 import gov.redhawk.sca.util.IPreferenceAccessor;
-import gov.redhawk.sca.util.ORBUtil;
 import gov.redhawk.sca.util.OrbSession;
 import gov.redhawk.sca.util.ScopedPreferenceAccessor;
 
@@ -47,7 +46,6 @@ import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.emf.transaction.RunnableWithResult;
 import org.eclipse.emf.transaction.TransactionalEditingDomain;
 import org.eclipse.emf.transaction.util.TransactionUtil;
-import org.omg.CORBA.ORB;
 import org.omg.CosNaming.Binding;
 import org.omg.CosNaming.BindingIteratorHolder;
 import org.omg.CosNaming.BindingListHolder;

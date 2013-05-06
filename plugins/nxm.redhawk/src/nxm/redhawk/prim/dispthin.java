@@ -128,8 +128,8 @@ public class dispthin extends Primitive { // SUPPRESS CHECKSTYLE ClassName
 			// Process the data we read
 			this.lastUpdate = current_time;
 			// Drop packet if write is blocking
-			if (localhout !=null) {
-				localhout.write(this.dataBuffer, Math.min((int)localhout.avail(), dataBuffer.size));
+			if (localhout != null) {
+				localhout.write(this.dataBuffer, Math.min((int) localhout.avail(), dataBuffer.size));
 			}
 			status = Commandable.NORMAL;
 		}

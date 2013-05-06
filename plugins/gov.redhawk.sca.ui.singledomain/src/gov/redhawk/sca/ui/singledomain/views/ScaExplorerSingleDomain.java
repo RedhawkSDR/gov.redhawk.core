@@ -31,7 +31,6 @@ import gov.redhawk.sca.ui.views.ScaExplorer;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.NullProgressMonitor;
-import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.impl.AdapterImpl;
 import org.eclipse.jface.action.ToolBarManager;
@@ -145,7 +144,7 @@ public class ScaExplorerSingleDomain extends ScaExplorer {
 					viewer.getControl().getDisplay().asyncExec(new Runnable() {
 
 						public void run() {
-							fillToolBar(activeDomain.getName().trim().equals("") ? "NO ACTIVE DOMAIN": activeDomain.getName());
+							fillToolBar(activeDomain.getName().trim().equals("") ? "NO ACTIVE DOMAIN" : activeDomain.getName());
 							viewer.setInput(activeDomain);
 							getViewSite().getActionBars().updateActionBars();
 						}
@@ -299,7 +298,6 @@ public class ScaExplorerSingleDomain extends ScaExplorer {
 
 
 	private void fillToolBar(String label) {
-		System.err.println("SWT VERSION: " + SWT.getVersion());
 		mgr = (ToolBarManager) getViewSite().getActionBars().getToolBarManager();
 		if (domains != null) {
 			mgr.remove(domains);
@@ -324,9 +322,11 @@ public class ScaExplorerSingleDomain extends ScaExplorer {
 		if (this.mouseMoveListenerJob == null) {
 			createMouseMoveListener();
 		}
-		if (this.mouseMoveListenerJob.getState() != Job.RUNNING) {
+
+		//if (this.mouseMoveListenerJob.getState() != Job.RUNNING) {
 			//this.mouseMoveListenerJob.schedule();
-		}
+		//}
+		
 		//END WORKAROUND CODE
 	}
 
