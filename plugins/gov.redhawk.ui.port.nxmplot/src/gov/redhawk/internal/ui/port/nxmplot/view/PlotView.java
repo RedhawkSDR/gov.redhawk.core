@@ -238,7 +238,7 @@ public class PlotView extends ViewPart {
 		boolean checked = false;
 		boolean enabled = false;
 		CTabItem selectedTab = plotFolder.getSelection();
-		if (selectedTab != null) {
+		if (selectedTab != null && !selectedTab.isDisposed()) {
 			Control control = selectedTab.getControl();
 			if (control instanceof PlotPageBook) {
 				PlotPageBook currentPageBook = (PlotPageBook) selectedTab.getControl();
@@ -591,7 +591,7 @@ public class PlotView extends ViewPart {
 	private StreamSRI[] getActiveSRI() {
 		StreamSRI retVal = null;
 		CTabItem selection = plotFolder.getSelection();
-		if (selection != null) {
+		if (selection != null && !selection.isDisposed()) {
 			Control control = selection.getControl();
 			if (control instanceof AbstractNxmPlotWidget) {
 				retVal = ((AbstractNxmPlotWidget) control).getActiveSRI();

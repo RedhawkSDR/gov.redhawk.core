@@ -46,16 +46,15 @@ public class RapNxmPlotWidget extends AbstractNxmPlotWidget {
 		super(parent, style);
 		setLayout(new FillLayout());
 		this.nxmComp = new NxmRapComposite(this, SWT.NONE);
+		RedhawkNxmUtil.initializeRedhawkOptionTrees();
+		nxmComp.initNxm();
     }
 
 	public synchronized void initPlot(String plotSwitches, String plotArgs) {
-		Assert.isTrue(Display.getCurrent() == null, "Do not call initPlot from the UI thread.");
 		if (initialized) {
 			return;
 		}
 		initialized = true;
-		RedhawkNxmUtil.initializeRedhawkOptionTrees();
-		nxmComp.initNxm();
 		if (plotArgs==null) {
 			plotArgs = "";
 		}
@@ -167,7 +166,7 @@ public class RapNxmPlotWidget extends AbstractNxmPlotWidget {
 		this.runClientCommand(cmd);
 		return featureId;
 	}
-	
+
 	@Override
 	public String addDragboxFeature(Number xmin, Number ymin, Number xmax, Number ymax, String color) {
 		String featureId = AbstractNxmPlotWidget.createUniqueName(false);
@@ -180,7 +179,7 @@ public class RapNxmPlotWidget extends AbstractNxmPlotWidget {
 		this.runClientCommand(command);
 		return featureId;
 	}
-	
+
 	@Override
 	public void removeFeature(String featureId) {
 		final String command = "invoke junk reg." + PLOT_ID + ".removeFeature(\"" + featureId + "\")";

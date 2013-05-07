@@ -292,7 +292,7 @@ public abstract class CorbaObjWrapperImpl< T extends org.omg.CORBA.Object > exte
 	 * @since 14.0
 	 */
 	@Override
-	protected void notifyChanged(Notification msg) {
+	protected void notifyChanged(final Notification msg) {
 		super.notifyChanged(msg);
 		if (!msg.isTouch()) {
 			switch (msg.getFeatureID(CorbaObjWrapper.class)) {
@@ -315,7 +315,24 @@ public abstract class CorbaObjWrapperImpl< T extends org.omg.CORBA.Object > exte
 					detachDataProviders();
 				}
 				if (msg.getOldValue() instanceof org.omg.CORBA.Object) {
-					((org.omg.CORBA.Object)msg.getOldValue())._release();
+					Callable<Void> callable = new Callable<Void>() {
+
+						public Void call() {
+							((org.omg.CORBA.Object)msg.getOldValue())._release();
+							return null;
+						}
+					};
+					
+                    try {
+                        ProtectedThreadExecutor.submit(callable);
+                    } catch (InterruptedException e) {
+                    	ScaModelPlugin.getDefault().getLog().log(new Status(IStatus.ERROR, ScaModelPlugin.ID, "Failed to release CORBA Object", e));
+                    } catch (ExecutionException e) {
+                    	ScaModelPlugin.getDefault().getLog().log(new Status(IStatus.ERROR, ScaModelPlugin.ID, "Failed to release CORBA Object", e));
+                    } catch (TimeoutException e) {
+                    	ScaModelPlugin.getDefault().getLog().log(new Status(IStatus.ERROR, ScaModelPlugin.ID, "Failed to release CORBA Object", e));
+                    }
+					
 				}
 				break;
 			default:
