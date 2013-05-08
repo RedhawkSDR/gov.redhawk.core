@@ -20,7 +20,7 @@
 		<orbit>http://download.eclipse.org/tools/orbit/downloads/drops/R20130118183705/repository</orbit>
 		<mil.jpeojtrs.sca>http://download.redhawksdr.org/mil.jpeojtrs.sca/releases/1.8</mil.jpeojtrs.sca>
 		<redhawk-core-framework>http://download.redhawksdr.org/redhawk-core-framework/releases/1.8</redhawk-core-framework>
-		<nxm>http://download.redhawksdr.org/nxm/releases/3.3.1</nxm>
+		<nxm>http://nextmidas.techma.com/p2/nxm/updates/stable</nxm>
 		<nxm-ui>http://download.redhawksdr.org/nxm-ui/releases/1.0</nxm-ui>
 		<jacorb>http://download.redhawksdr.org/jacorb/releases/3.1</jacorb>
 	</properties>
