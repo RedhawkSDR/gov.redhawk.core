@@ -28,6 +28,9 @@ public class PropertyEditorFactory {
 		if (name == null) {
 			name = prop.getId();
 		}
+		if (name == null) {
+			name = "(Invalid Property)";
+		}
 		PropertyValueType type = null;
 		if (prop instanceof ScaSimpleProperty) {
 			ScaSimpleProperty simpleProp = (ScaSimpleProperty) prop;
