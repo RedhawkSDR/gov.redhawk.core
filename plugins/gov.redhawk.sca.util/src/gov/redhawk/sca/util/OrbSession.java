@@ -3,7 +3,6 @@ package gov.redhawk.sca.util;
 import gov.redhawk.sca.util.internal.ScaUtilPluginActivator;
 
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
 import java.util.WeakHashMap;
@@ -20,12 +19,12 @@ import org.omg.PortableServer.POAHelper;
 import org.omg.PortableServer.POAManagerPackage.AdapterInactive;
 
 /**
- * @since 3.1
+ * @since 3.2
  */
 public class OrbSession {
 
 	private static Map<String, OrbSession> sessionMap = Collections.synchronizedMap(new WeakHashMap<String, OrbSession>());
-	
+
 	/**
 	 * Returns a "global" orb session
 	 * @return Session
@@ -91,7 +90,7 @@ public class OrbSession {
 	public String getId() {
 		return id;
 	}
-	
+
 	public ORB getOrb() {
 	    return orb;
     }
@@ -112,7 +111,7 @@ public class OrbSession {
 				destroy = true;
 			}
         }
-		
+
 		if (destroy){
 			if (orb != null) {
 				orb.destroy();
@@ -135,7 +134,7 @@ public class OrbSession {
 		}
 		return this.poa;
 	}
-	
+
 	@Override
 	protected synchronized void finalize() throws Throwable {
 	    super.finalize();
