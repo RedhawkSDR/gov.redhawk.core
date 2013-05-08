@@ -189,6 +189,7 @@ public class StructSequencePropertyDetailsPage extends BasicStructPropertyDetail
 
 			}
 		}));
+		
 		return bindings;
 	}
 }

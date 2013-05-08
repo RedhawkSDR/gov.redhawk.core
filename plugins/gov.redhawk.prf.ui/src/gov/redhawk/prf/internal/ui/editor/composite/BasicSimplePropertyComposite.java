@@ -29,7 +29,9 @@ import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.CheckboxTableViewer;
 import org.eclipse.jface.viewers.ComboViewer;
 import org.eclipse.jface.viewers.LabelProvider;
+import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.viewers.ViewerComparator;
+import org.eclipse.jface.viewers.ViewerFilter;
 import org.eclipse.jface.viewers.ViewerSorter;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
@@ -57,6 +59,10 @@ public abstract class BasicSimplePropertyComposite extends AbstractPropertyCompo
 	private Button rangeButton;
 	private FormEntry minText;
 	private FormEntry maxText;
+
+	private Label messageLabel;
+
+	private Button messageButton;
 
 	private static final String DEFAULT_ACTION = "external";
 
@@ -129,6 +135,15 @@ public abstract class BasicSimplePropertyComposite extends AbstractPropertyCompo
 
 		this.actionViewer = viewer;
 	}
+	
+	protected void createMessage(final Composite parent, final FormToolkit toolkit) {
+		// Message checkbox
+		this.messageLabel = toolkit.createLabel(parent, "Message:");
+		this.messageLabel.setForeground(toolkit.getColors().getColor(IFormColors.TITLE));
+		this.messageLabel.setLayoutData(GridDataFactory.fillDefaults().align(SWT.BEGINNING, SWT.BEGINNING).create());
+		this.messageButton = toolkit.createButton(parent,  "Enable", SWT.CHECK);
+		this.messageButton.setLayoutData(BasicSimplePropertyComposite.FACTORY.create());
+	}
 
 	/**
 	 * @param propertyComposite
@@ -159,6 +174,22 @@ public abstract class BasicSimplePropertyComposite extends AbstractPropertyCompo
 		viewer.setInput(PropertyConfigurationType.values());
 		viewer.getControl().setLayoutData(BasicSimplePropertyComposite.FACTORY.create());
 		assignTooltip(viewer.getControl(), HelpConstants.prf_properties_simple_kind);
+		
+		// In response to Bug 289 the Message property type was moved from the viewer into a stand alone checkbox so the Message type
+		// must be filtered out of the viewer.
+		viewer.addFilter(new ViewerFilter() {
+			
+			@Override
+			public boolean select(Viewer viewer, Object parentElement, Object element) {
+				if (element instanceof PropertyConfigurationType 
+						&& ((PropertyConfigurationType) element).equals(PropertyConfigurationType.MESSAGE)) {
+					
+					return false;
+				}
+				return true;
+			}
+		});
+		
 		this.kindViewer = viewer;
 	}
 
@@ -247,6 +278,20 @@ public abstract class BasicSimplePropertyComposite extends AbstractPropertyCompo
 	public Button getRangeButton() {
 		return this.rangeButton;
 	}
+	
+	/**
+	 * @return the Message Checkbox Button
+	 */
+	public Label getMessageLabel() {
+		return this.messageLabel;
+	}
+	
+	/**
+	 * @return the Message Checkbox Button
+	 */
+	public Button getMessageButton() {
+		return this.messageButton;
+	}
 
 	/**
 	 * @return the minText
@@ -270,6 +315,7 @@ public abstract class BasicSimplePropertyComposite extends AbstractPropertyCompo
 		super.setEditable(canEdit);
 		this.actionViewer.getCombo().setEnabled(canEdit);
 		this.kindViewer.getTable().setEnabled(canEdit);
+		this.messageButton.setEnabled(canEdit);
 		this.typeViewer.getCombo().setEnabled(canEdit);
 		this.unitsText.setEditable(canEdit);
 		this.rangeButton.setEnabled(canEdit);

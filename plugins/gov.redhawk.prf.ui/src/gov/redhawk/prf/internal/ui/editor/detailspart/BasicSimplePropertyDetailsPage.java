@@ -18,9 +18,7 @@ import gov.redhawk.ui.util.EMFEmptyStringToNullUpdateValueStrategy;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import mil.jpeojtrs.sca.prf.Action;
 import mil.jpeojtrs.sca.prf.ActionType;
@@ -36,11 +34,11 @@ import org.eclipse.core.databinding.Binding;
 import org.eclipse.core.databinding.DataBindingContext;
 import org.eclipse.core.databinding.UpdateValueStrategy;
 import org.eclipse.core.databinding.conversion.Converter;
-import org.eclipse.core.databinding.observable.set.ISetChangeListener;
-import org.eclipse.core.databinding.observable.set.SetChangeEvent;
-import org.eclipse.core.databinding.observable.set.WritableSet;
+import org.eclipse.core.databinding.observable.list.IListChangeListener;
+import org.eclipse.core.databinding.observable.list.ListChangeEvent;
+import org.eclipse.core.databinding.observable.list.WritableList;
 import org.eclipse.core.databinding.observable.value.IObservableValue;
-import org.eclipse.emf.common.command.Command;
+import org.eclipse.emf.common.util.BasicEList;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.databinding.EMFUpdateValueStrategy;
 import org.eclipse.emf.databinding.FeaturePath;
@@ -48,17 +46,18 @@ import org.eclipse.emf.databinding.edit.EMFEditObservables;
 import org.eclipse.emf.databinding.edit.EMFEditProperties;
 import org.eclipse.emf.databinding.edit.IEMFEditValueProperty;
 import org.eclipse.emf.ecore.EObject;
-import org.eclipse.emf.edit.command.AddCommand;
-import org.eclipse.emf.edit.command.RemoveCommand;
 import org.eclipse.emf.edit.domain.EditingDomain;
 import org.eclipse.jface.databinding.swt.SWTObservables;
 import org.eclipse.jface.databinding.swt.WidgetProperties;
 import org.eclipse.jface.databinding.viewers.ViewersObservables;
+import org.eclipse.jface.viewers.CheckStateChangedEvent;
+import org.eclipse.jface.viewers.ICheckStateListener;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.widgets.Button;
+import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Text;
 
 /**
@@ -67,7 +66,6 @@ import org.eclipse.swt.widgets.Text;
 public abstract class BasicSimplePropertyDetailsPage extends AbstractPropertyDetailsPage {
 
 	private EObject input;
-	private Map<EObject, WritableSet> setMap;
 	private Property property;
 	private Binding minBinding;
 	private Binding maxBinding;
@@ -89,6 +87,30 @@ public abstract class BasicSimplePropertyDetailsPage extends AbstractPropertyDet
 			}
 		}
 	};
+	private WritableList kindList = new WritableList();
+	{
+		kindList.addListChangeListener(new IListChangeListener() {
+			
+			public void handleListChange(ListChangeEvent event) {	
+				List<PropertyConfigurationType> newChecked = new ArrayList<PropertyConfigurationType>();
+				for (Object obj : kindList) {
+					if (obj instanceof Kind) {
+						newChecked.add(((Kind) obj).getType());
+					} else if (obj instanceof PropertyConfigurationType) {
+						newChecked.add((PropertyConfigurationType) obj);
+					}
+				}
+				((BasicSimplePropertyComposite) getComposite()).getKindViewer().setCheckedElements(newChecked.toArray());
+			}
+		});
+	}
+	
+	@Override
+	public void dispose() {
+	    super.dispose();
+	    kindList.dispose();
+	    kindList = null;
+	}
 
 	public BasicSimplePropertyDetailsPage(final PropertiesSection section) {
 		super(section);
@@ -127,6 +149,9 @@ public abstract class BasicSimplePropertyDetailsPage extends AbstractPropertyDet
 
 		// Kind
 		createKindBinding(dataBindingContext, input, domain, retVal);
+		
+		// Message Checkbox
+		createMessageBinding(dataBindingContext, input, domain, retVal);
 
 		// Action
 		retVal.add(dataBindingContext.bindValue(ViewersObservables.observeSingleSelection(composite.getActionViewer()),
@@ -208,55 +233,126 @@ public abstract class BasicSimplePropertyDetailsPage extends AbstractPropertyDet
 		return retVal;
 	}
 
+	private void createMessageBinding(final DataBindingContext context, final EObject input, final EditingDomain domain, final List<Binding> retVal) {
+		EMFUpdateValueStrategy modelToTargetStrategy = new EMFUpdateValueStrategy();
+		EMFUpdateValueStrategy targetToModelStrategy = new EMFUpdateValueStrategy();
+		
+		// Goes from the EMF Model object of EList<Kind> to the checkbox
+		modelToTargetStrategy.setConverter(new Converter(Object.class, Boolean.class) {
+
+			public Object convert(final Object fromObject) {
+				if (fromObject instanceof EList<?>) {
+					EList<?> rxKindList = (EList<?>) fromObject;
+					
+					for (Object obj : rxKindList) {
+						if (obj instanceof Kind) {
+							Kind kind = (Kind) obj;
+							if (kind.getType() == PropertyConfigurationType.MESSAGE) {
+								return true;
+							}
+						}
+					}
+				}
+				return false;
+			}
+		});
+		
+		// Goes from the Boolean based checkbox to the EMF Model object of EList<Kind> 		
+		targetToModelStrategy.setConverter(new Converter(Boolean.class, EList.class) {
+
+				public Object convert(final Object fromObject) {
+					if (fromObject instanceof Boolean) {
+						Boolean checked = (Boolean) fromObject;
+						
+						EList<Kind> rxKindList = new BasicEList<Kind>();
+						Kind messageKind = PrfFactory.eINSTANCE.createKind();
+						
+						if (checked) {
+							messageKind.setType(PropertyConfigurationType.MESSAGE);
+						} else {
+							messageKind.setType(PropertyConfigurationType.CONFIGURE);
+						}
+						
+						rxKindList.add(messageKind);
+						return rxKindList;
+					}
+					return Collections.EMPTY_LIST;
+				}
+			});
+		// Bind the checkbox to the model
+		retVal.add(context.bindValue(
+			WidgetProperties.selection().observe(((BasicSimplePropertyComposite) getComposite()).getMessageButton()), // Selection of Message Checkbox 
+			EMFEditObservables.observeValue(domain, input, this.property.getKind()), 								  // Kind property of input 
+			targetToModelStrategy,																					  // Target to model (checkbox -> EMF)
+			modelToTargetStrategy));																				  // Model to target (EMF -> checkbox)
+		
+		
+		
+		UpdateValueStrategy enabledToTargetStrategy = new UpdateValueStrategy();
+		
+		// Goes from the checkbox to the enabled state of the viewer
+		enabledToTargetStrategy.setConverter(new Converter(Boolean.class, Boolean.class) {
+			public Object convert(final Object fromObject) {
+				if (fromObject instanceof Boolean) {
+					boolean editable = getComposite().isEditable();
+					if (editable) {
+						return !((Boolean) fromObject);
+					} else {
+						return editable;
+					}
+				}
+				throw new IllegalArgumentException();
+			}
+		});
+		
+		// Bind the model to the checkbox
+		retVal.add(context.bindValue(
+				WidgetProperties.enabled().observe((((BasicSimplePropertyComposite) getComposite()).getKindViewer().getControl())), // Kind Viewer Control
+				WidgetProperties.selection().observe(((BasicSimplePropertyComposite) getComposite()).getMessageButton()),			// Checkbox Message Button
+				new UpdateValueStrategy(UpdateValueStrategy.POLICY_NEVER),															// Target to model (Kind Viewer -> Checkbox)
+				enabledToTargetStrategy));																							// Model to target (Checkbox -> Kind Viewer)
+	}
+	
 	/**
 	 * Creates the kind binding.
 	 * 
 	 * @param context
 	 * @param retVal
 	 */
-	private void createKindBinding(final DataBindingContext context, final EObject input, final EditingDomain domain, final List<Binding> retVal) {
-		final EList<Kind> kindList = getKindList(input);
-
-		if (this.setMap == null) {
-			this.setMap = new HashMap<EObject, WritableSet>();
-		}
-		if (!this.setMap.containsKey(input)) {
-			final WritableSet mySet = new WritableSet();
-			for (final Kind kind : kindList) {
-				mySet.add(kind.getType());
-			}
-			mySet.addSetChangeListener(new ISetChangeListener() {
-				public void handleSetChange(final SetChangeEvent event) {
-					for (final Kind k : kindList) {
-						if (event.diff.getRemovals().contains(k.getType())) {
-							final Command command = RemoveCommand.create(domain, input, BasicSimplePropertyDetailsPage.this.property.getKind(), k);
-							execute(command);
+	private void createKindBinding(final DataBindingContext context, final EObject input, final EditingDomain domain, final List<Binding> retVal) {	
+		retVal.add(context.bindList(kindList, EMFEditObservables.observeList(getEditingDomain(), input, BasicSimplePropertyDetailsPage.this.property.getKind())));
+	}
+	
+	@Override
+	protected void createSpecificContent(Composite parent) {
+	    super.createSpecificContent(parent);
+	    ((BasicSimplePropertyComposite) getComposite()).getKindViewer().addCheckStateListener(new ICheckStateListener() {
+			
+			public void checkStateChanged(CheckStateChangedEvent event) {
+				if (event.getChecked()) {
+					Kind kind = PrfFactory.eINSTANCE.createKind();
+					kind.setType((PropertyConfigurationType) event.getElement());
+					kindList.add(kind);
+				} else {
+					for (Object obj : kindList) {
+						if (obj instanceof Kind && ((Kind) obj).getType() == event.getElement()) {
+							kindList.remove(obj);
+							break;
 						}
 					}
-					for (final Object obj : event.diff.getAdditions()) {
-						final Kind kind = PrfFactory.eINSTANCE.createKind();
-						kind.setType((PropertyConfigurationType) obj);
-						final Command command = AddCommand.create(domain, input, BasicSimplePropertyDetailsPage.this.property.getKind(), kind);
-						execute(command);
-					}
 				}
-
-			});
-			this.setMap.put(input, mySet);
-		}
-
-		retVal.add(context.bindSet(ViewersObservables.observeCheckedElements((((BasicSimplePropertyComposite) getComposite()).getKindViewer()),
-		        PropertyConfigurationType.class), this.setMap.get(input), null, null));
+			}
+		});
 	}
 
 	private EList<Kind> getKindList(final EObject input) {
-		EList<Kind> kindList = null;
+		EList<Kind> retValKindList = null;
 		if (input instanceof Simple) {
-			kindList = ((Simple) input).getKind();
+			retValKindList = ((Simple) input).getKind();
 		} else if (input instanceof SimpleSequence) {
-			kindList = ((SimpleSequence) input).getKind();
+			retValKindList = ((SimpleSequence) input).getKind();
 		}
-		return kindList;
+		return retValKindList;
 	}
 
 	public List<Binding> bindButton(final DataBindingContext context, final Button rangeButton, final Text minText, final Text maxText) {

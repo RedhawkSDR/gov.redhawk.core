@@ -19,7 +19,10 @@ import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.CheckboxTableViewer;
 import org.eclipse.jface.viewers.LabelProvider;
+import org.eclipse.jface.viewers.Viewer;
+import org.eclipse.jface.viewers.ViewerFilter;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.ui.forms.IFormColors;
@@ -28,11 +31,30 @@ import org.eclipse.ui.forms.widgets.FormToolkit;
 public abstract class BasicStructPropertyComposite extends AbstractPropertyComposite {
 	private CheckboxTableViewer configurationKindViewer;
 	private Label kindLabel;
-
+	private Label messageLabel;
+	private Button messageButton;
 	public BasicStructPropertyComposite(final Composite parent, final int style, final FormToolkit toolkit) {
 		super(parent, style, toolkit);
 	}
 
+	
+	protected void createMessage(final Composite parent, final FormToolkit toolkit) {
+		// Message checkbox
+		this.messageLabel = toolkit.createLabel(parent, "Message:");
+		this.messageLabel.setForeground(toolkit.getColors().getColor(IFormColors.TITLE));
+		this.messageLabel.setLayoutData(GridDataFactory.fillDefaults().align(SWT.BEGINNING, SWT.BEGINNING).create());
+		this.messageButton = toolkit.createButton(parent,  "Enable", SWT.CHECK);
+		this.messageButton.setLayoutData(AbstractPropertyComposite.FACTORY.create());
+	}
+
+	protected Label getMessageLabel() {
+		return this.messageLabel;
+	}
+	
+	public Button getMessageButton() {
+		return this.messageButton;
+	}
+	
 	/**
 	 * @param propertyComposite
 	 * @param toolkit
@@ -61,6 +83,22 @@ public abstract class BasicStructPropertyComposite extends AbstractPropertyCompo
 		});
 		viewer.setInput(StructPropertyConfigurationType.values());
 		viewer.getControl().setLayoutData(GridDataFactory.fillDefaults().span(2, 1).grab(true, false).create());
+		
+		// In response to Bug 289 the Message property type was moved from the viewer into a stand alone checkbox so the Message type
+		// must be filtered out of the viewer.
+		viewer.addFilter(new ViewerFilter() {
+			
+			@Override
+			public boolean select(Viewer viewer, Object parentElement, Object element) {
+				if (element instanceof StructPropertyConfigurationType 
+						&& ((StructPropertyConfigurationType) element).equals(StructPropertyConfigurationType.MESSAGE)) {
+					
+					return false;
+				}
+				return true;
+			}
+		});
+		
 		this.configurationKindViewer = viewer;
 		HelpUtil.assignTooltip(this.configurationKindViewer.getControl(), HelpConstants.prf_properties_simple_type);
 	}
@@ -79,6 +117,7 @@ public abstract class BasicStructPropertyComposite extends AbstractPropertyCompo
 	@Override
 	public void setEditable(final boolean canEdit) {
 		this.configurationKindViewer.getControl().setEnabled(canEdit);
+		this.messageButton.setEnabled(canEdit);
 		super.setEditable(canEdit);
 	}
 

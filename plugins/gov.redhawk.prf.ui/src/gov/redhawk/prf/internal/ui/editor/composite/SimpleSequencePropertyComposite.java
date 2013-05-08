@@ -80,6 +80,8 @@ public class SimpleSequencePropertyComposite extends BasicSimplePropertyComposit
 		createValues(this, toolkit);
 
 		createUnits(this, toolkit);
+		
+		createMessage(this, toolkit);
 
 		createKind(this, toolkit);
 

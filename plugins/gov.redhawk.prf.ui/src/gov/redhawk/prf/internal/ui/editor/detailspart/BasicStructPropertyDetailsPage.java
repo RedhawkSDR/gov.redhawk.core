@@ -14,34 +14,37 @@ package gov.redhawk.prf.internal.ui.editor.detailspart;
 import gov.redhawk.prf.internal.ui.editor.PropertiesSection;
 import gov.redhawk.prf.internal.ui.editor.composite.BasicStructPropertyComposite;
 
+import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import mil.jpeojtrs.sca.prf.ConfigurationKind;
 import mil.jpeojtrs.sca.prf.PrfFactory;
+import mil.jpeojtrs.sca.prf.PrfPackage;
 import mil.jpeojtrs.sca.prf.Struct;
 import mil.jpeojtrs.sca.prf.StructPropertyConfigurationType;
 import mil.jpeojtrs.sca.prf.StructSequence;
 
 import org.eclipse.core.databinding.Binding;
 import org.eclipse.core.databinding.DataBindingContext;
-import org.eclipse.core.databinding.observable.set.ISetChangeListener;
-import org.eclipse.core.databinding.observable.set.SetChangeEvent;
-import org.eclipse.core.databinding.observable.set.WritableSet;
-import org.eclipse.emf.common.command.Command;
+import org.eclipse.core.databinding.UpdateValueStrategy;
+import org.eclipse.core.databinding.conversion.Converter;
+import org.eclipse.core.databinding.observable.list.IListChangeListener;
+import org.eclipse.core.databinding.observable.list.ListChangeEvent;
+import org.eclipse.core.databinding.observable.list.WritableList;
+import org.eclipse.emf.common.util.BasicEList;
 import org.eclipse.emf.common.util.EList;
+import org.eclipse.emf.databinding.EMFUpdateValueStrategy;
+import org.eclipse.emf.databinding.edit.EMFEditObservables;
 import org.eclipse.emf.ecore.EObject;
-import org.eclipse.emf.edit.command.AddCommand;
-import org.eclipse.emf.edit.command.RemoveCommand;
+import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.edit.domain.EditingDomain;
-import org.eclipse.jface.databinding.viewers.ViewersObservables;
+import org.eclipse.jface.databinding.swt.WidgetProperties;
+import org.eclipse.jface.viewers.CheckStateChangedEvent;
+import org.eclipse.jface.viewers.ICheckStateListener;
 
 public abstract class BasicStructPropertyDetailsPage extends AbstractPropertyDetailsPage {
 
-	private Map<EObject, WritableSet> setMap;
-	private Property property;
 	private EObject input;
 
 	public BasicStructPropertyDetailsPage(final PropertiesSection section) {
@@ -58,51 +61,154 @@ public abstract class BasicStructPropertyDetailsPage extends AbstractPropertyDet
 
 		final EditingDomain domain = getEditingDomain();
 		this.input = input;
-		this.property = getProperty(this.input);
 
 		final List<Binding> retVal = super.bind(context, input);
 
 		// Configuration Kind
 		createKindBinding(context, input, domain, retVal);
-
+		createMessageBinding(context, input, domain, retVal);
 		return retVal;
 	}
 
-	private void createKindBinding(final DataBindingContext context, final EObject input, final EditingDomain domain, final List<Binding> retVal) {
-		final EList<ConfigurationKind> kindList = getKindList(input);
+private void createMessageBinding(final DataBindingContext context, final EObject input, final EditingDomain domain, final List<Binding> retVal) {
+		
+		EMFUpdateValueStrategy modelToTargetStrategy = new EMFUpdateValueStrategy();
+		EMFUpdateValueStrategy targetToModelStrategy = new EMFUpdateValueStrategy();
+		
+		// Goes from the EMF Model object of EList<ConfigurationKind> to the checkbox
+		modelToTargetStrategy.setConverter(new Converter(Object.class, Boolean.class) {
 
-		if (this.setMap == null) {
-			this.setMap = new HashMap<EObject, WritableSet>();
-		}
-		if (!this.setMap.containsKey(input)) {
-			final WritableSet mySet = new WritableSet();
-			for (final ConfigurationKind kind : kindList) {
-				mySet.add(kind.getType());
-			}
-			mySet.addSetChangeListener(new ISetChangeListener() {
-				public void handleSetChange(final SetChangeEvent event) {
-					for (final ConfigurationKind k : kindList) {
-						if (event.diff.getRemovals().contains(k.getType())) {
-							final Command command = RemoveCommand.create(domain, input, BasicStructPropertyDetailsPage.this.property.getConfigurationKind(), k);
-							execute(command);
+			public Object convert(final Object fromObject) {
+				if (fromObject instanceof EList<?>) {
+					EList<ConfigurationKind> kindList = (EList<ConfigurationKind>) fromObject;
+					
+					for (ConfigurationKind kind : kindList) {
+						if (kind.getType() == StructPropertyConfigurationType.MESSAGE) {
+							return true;
 						}
 					}
-					for (final Object obj : event.diff.getAdditions()) {
-						final ConfigurationKind kind = PrfFactory.eINSTANCE.createConfigurationKind();
-						kind.setType((StructPropertyConfigurationType) obj);
-						final Command command = AddCommand.create(domain, input, BasicStructPropertyDetailsPage.this.property.getConfigurationKind(), kind);
-						execute(command);
+					return false;
+				}
+				throw new IllegalArgumentException();
+			}
+		});
+		
+		// Goes from the Boolean based checkbox to the EMF Model object of EList<Kind> 		
+		targetToModelStrategy.setConverter(new Converter(Boolean.class, Object.class) {
+
+				public Object convert(final Object fromObject) {
+					if (fromObject instanceof Boolean) {
+						Boolean checked = (Boolean) fromObject;
+						
+						EList<ConfigurationKind> kindList = new BasicEList<ConfigurationKind>();
+						ConfigurationKind messageKind = PrfFactory.eINSTANCE.createConfigurationKind();
+						
+						if (checked) {
+							messageKind.setType(StructPropertyConfigurationType.MESSAGE);
+						} else {
+							messageKind.setType(StructPropertyConfigurationType.CONFIGURE);
+						}
+						
+						kindList.add(messageKind);
+						return kindList;
+					}
+
+					throw new IllegalArgumentException();
+				}
+			});
+		EReference literal = null;
+		if (input instanceof StructSequence) {
+			literal = PrfPackage.Literals.STRUCT_SEQUENCE__CONFIGURATION_KIND;
+		} else if (input instanceof Struct) {
+			literal = PrfPackage.Literals.STRUCT__CONFIGURATION_KIND;
+		}
+		
+		// Bind the checkbox to the model
+		retVal.add(context.bindValue(
+			WidgetProperties.selection().observe(((BasicStructPropertyComposite) getComposite()).getMessageButton()), 
+			EMFEditObservables.observeValue(domain, input, literal), 
+			targetToModelStrategy, modelToTargetStrategy));
+		
+		
+		
+		EMFUpdateValueStrategy enabledToTargetStrategy = new EMFUpdateValueStrategy();
+		
+		// Goes from the checkbox to the enabled state of the viewer
+		enabledToTargetStrategy.setConverter(new Converter(Boolean.class, Boolean.class) {
+			public Object convert(final Object fromObject) {
+				if (fromObject instanceof Boolean) {
+					boolean editable = getComposite().isEditable();
+					if (editable) {
+						return !((Boolean) fromObject);
+					} else {
+						return editable;
 					}
 				}
-
-			});
-			this.setMap.put(input, mySet);
-		}
-
-		retVal.add(context.bindSet(ViewersObservables.observeCheckedElements((((BasicStructPropertyComposite) getComposite()).getConfigurationKindViewer()),
-		        StructPropertyConfigurationType.class), this.setMap.get(input), null, null));
+				throw new IllegalArgumentException();
+			}
+		});
+		
+		retVal.add(context.bindValue(
+				WidgetProperties.enabled().observe((((BasicStructPropertyComposite) getComposite()).getConfigurationKindViewer().getControl())), 
+				WidgetProperties.selection().observe(((BasicStructPropertyComposite) getComposite()).getMessageButton()),
+				new UpdateValueStrategy(UpdateValueStrategy.POLICY_NEVER), 
+				enabledToTargetStrategy));
 	}
-
+	
+	/**
+	 * Creates the kind binding.
+	 * 
+	 * @param context
+	 * @param retVal
+	 */
+	private void createKindBinding(final DataBindingContext context, final EObject input, final EditingDomain domain, final List<Binding> retVal) {
+		final WritableList myList = new WritableList();
+		myList.addListChangeListener(new IListChangeListener() {
+			
+			public void handleListChange(ListChangeEvent event) {	
+				List<StructPropertyConfigurationType> newChecked = new ArrayList<StructPropertyConfigurationType>();
+				for (Object obj : myList) {
+					if (obj instanceof ConfigurationKind) {
+						newChecked.add(((ConfigurationKind) obj).getType());
+					} else if (obj instanceof StructPropertyConfigurationType) {
+						newChecked.add(((ConfigurationKind) obj).getType());
+					}
+				}
+				((BasicStructPropertyComposite) getComposite()).getConfigurationKindViewer().setCheckedElements(newChecked.toArray());
+			}
+		});
+		
+		((BasicStructPropertyComposite) getComposite()).getConfigurationKindViewer().addCheckStateListener(new ICheckStateListener() {
+			
+			public void checkStateChanged(CheckStateChangedEvent event) {
+				if (event.getChecked()) {
+					ConfigurationKind kind = PrfFactory.eINSTANCE.createConfigurationKind();
+					kind.setType(((StructPropertyConfigurationType) event.getElement()));
+					myList.add(kind);
+				} else {
+					for (Object obj : myList) {
+						if (obj instanceof ConfigurationKind && ((ConfigurationKind) obj).getType() == event.getElement()) {
+							myList.remove(obj);
+							break;
+						}
+					}
+				}
+			}
+		});
+		
+		EReference literal = null;
+		if (input instanceof StructSequence) {
+			literal = PrfPackage.Literals.STRUCT_SEQUENCE__CONFIGURATION_KIND;
+		} else if (input instanceof Struct) {
+			literal = PrfPackage.Literals.STRUCT__CONFIGURATION_KIND;
+		}
+		
+		retVal.add(
+				context.bindList(
+						myList, 
+						EMFEditObservables.observeList(getEditingDomain(), input, literal)));
+	}
+	
 	private EList<ConfigurationKind> getKindList(final EObject input) {
 		EList<ConfigurationKind> kindList = null;
 		if (input instanceof Struct) {

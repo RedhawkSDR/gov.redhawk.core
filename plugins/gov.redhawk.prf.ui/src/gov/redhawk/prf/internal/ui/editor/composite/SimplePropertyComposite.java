@@ -99,6 +99,8 @@ public class SimplePropertyComposite extends BasicSimplePropertyComposite {
 
 		createUnits(this, toolkit);
 
+		createMessage(this, toolkit);
+
 		createKind(this, toolkit);
 
 		createMode(this, toolkit);
@@ -336,6 +338,7 @@ public class SimplePropertyComposite extends BasicSimplePropertyComposite {
 		this.tabList.add(getTypeViewer().getControl());
 		this.tabList.add(getValueText());
 		this.tabList.add(getUnitsText());
+		this.tabList.add(getMessageButton());
 		this.tabList.add(getKindViewer().getControl());
 		this.tabList.add(getModeViewer().getControl());
 		this.tabList.add(getActionViewer().getControl());
@@ -351,6 +354,8 @@ public class SimplePropertyComposite extends BasicSimplePropertyComposite {
 		controls.add(this.getModeLabel());
 		controls.add(this.getModeViewer().getControl());
 		controls.add(this.getKindLabel());
+		controls.add(this.getMessageLabel());
+		controls.add(this.getMessageButton());
 		controls.add(this.getKindViewer().getControl());
 		controls.add(this.getActionLabel());
 		controls.add(this.getActionViewer().getControl());

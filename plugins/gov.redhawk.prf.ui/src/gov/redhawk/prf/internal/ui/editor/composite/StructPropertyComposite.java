@@ -47,6 +47,8 @@ public class StructPropertyComposite extends BasicStructPropertyComposite {
 		createIDEntryField(toolkit, this);
 
 		createNameEntryField(toolkit, this);
+		
+		createMessage(this, toolkit);
 
 		createConfigurationKindViewer(this, toolkit);
 
@@ -71,6 +73,8 @@ public class StructPropertyComposite extends BasicStructPropertyComposite {
 			hideableControls = new ArrayList<Control>();
 			hideableControls.add(this.getModeLabel());
 			hideableControls.add(this.getModeViewer().getControl());
+			hideableControls.add(this.getMessageLabel());
+			hideableControls.add(this.getMessageButton());
 			hideableControls.add(this.getKindLabel());
 			hideableControls.add(this.getConfigurationKindViewer().getControl());
 		}

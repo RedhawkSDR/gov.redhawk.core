@@ -66,7 +66,9 @@ public class StructSequencePropertyComposite extends BasicStructPropertyComposit
 		createNameEntryField(toolkit, this);
 
 		createStructValueViewer(toolkit);
-
+		
+		createMessage(this, toolkit);
+		
 		createConfigurationKindViewer(this, toolkit);
 
 		createMode(this, toolkit);

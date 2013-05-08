@@ -40,13 +40,15 @@ public abstract class AbstractPropertyComposite extends Composite implements ISc
 
 	public static final int NUM_COLUMNS = 3;
 
-	private static final GridDataFactory FACTORY = GridDataFactory.fillDefaults().span(2, 1).grab(true, false);
+	protected static final GridDataFactory FACTORY = GridDataFactory.fillDefaults().span(2, 1).grab(true, false);
 	private ComboViewer modeViewer;
 	private Label modeLabel;
 	private Text descriptionText;
 	private FormEntry idEntry;
 	private FormEntry nameEntry;
 	protected List<Control> tabList = new ArrayList<Control>();
+
+	private boolean canEdit;
 
 	/**
 	 * @param parent
@@ -151,11 +153,18 @@ public abstract class AbstractPropertyComposite extends Composite implements ISc
 	public FormEntry getNameEntry() {
 		return this.nameEntry;
 	}
+	/**
+	 * @return If this is an editable composite.
+	 */
+	public boolean isEditable() {
+		return this.canEdit;
+	}
 
 	/**
 	 * {@inheritDoc}
 	 */
 	public void setEditable(final boolean canEdit) {
+		this.canEdit = canEdit;
 		this.descriptionText.setEditable(canEdit);
 		this.idEntry.setEditable(canEdit);
 		this.modeViewer.getCombo().setEnabled(canEdit);
