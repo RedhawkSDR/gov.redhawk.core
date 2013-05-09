@@ -17,6 +17,7 @@ import gov.redhawk.ui.doc.HelpUtil;
 import gov.redhawk.ui.editor.IScaComposite;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import mil.jpeojtrs.sca.prf.AccessType;
@@ -48,7 +49,6 @@ public abstract class AbstractPropertyComposite extends Composite implements ISc
 	private Text descriptionText;
 	private FormEntry idEntry;
 	private FormEntry nameEntry;
-	protected List<Control> tabList = new ArrayList<Control>();
 
 	private boolean canEdit;
 
@@ -68,7 +68,7 @@ public abstract class AbstractPropertyComposite extends Composite implements ISc
 	 * @param propertyComposite
 	 * @param toolkit
 	 */
-	protected void createDescription(final Composite parent, final FormToolkit toolkit) {
+	protected Text createDescription(final Composite parent, final FormToolkit toolkit) {
 		// Description
 		final Label label = toolkit.createLabel(parent, "Description:");
 		label.setForeground(toolkit.getColors().getColor(IFormColors.TITLE));
@@ -77,13 +77,14 @@ public abstract class AbstractPropertyComposite extends Composite implements ISc
 		text.setLayoutData(AbstractPropertyComposite.FACTORY.copy().hint(SWT.DEFAULT, 75).create()); // SUPPRESS CHECKSTYLE MagicNumber
 		assignTooltip(text, HelpConstants.prf_properties_simple_description);
 		this.descriptionText = text;
+		return this.descriptionText;
 	}
 
 	/**
 	 * @param propertyComposite
 	 * @param toolkit
 	 */
-	protected void createMode(final Composite parent, final FormToolkit toolkit) {
+	protected ComboViewer createModeViewer(final Composite parent, final FormToolkit toolkit) {
 		// Mode
 		this.modeLabel = toolkit.createLabel(parent, "Mode:");
 		this.modeLabel.setForeground(toolkit.getColors().getColor(IFormColors.TITLE));
@@ -104,6 +105,7 @@ public abstract class AbstractPropertyComposite extends Composite implements ISc
 		viewer.setInput(AccessType.values());
 		assignTooltip(viewer.getControl(), HelpConstants.prf_properties_simple_mode);
 		this.modeViewer = viewer;
+		return this.modeViewer;
 	}
 
 	/**
@@ -112,10 +114,11 @@ public abstract class AbstractPropertyComposite extends Composite implements ISc
 	 * @param toolkit the toolkit
 	 * @param client the client
 	 */
-	protected void createIDEntryField(final FormToolkit toolkit, final Composite client) {
-		final FormEntry id = new FormEntry(client, toolkit, "ID*:", SWT.SINGLE);
+	protected FormEntry createIDEntryField(final FormToolkit toolkit, final Composite parent) {
+		final FormEntry id = new FormEntry(parent, toolkit, "ID*:", SWT.SINGLE);
 		assignTooltip(id.getText(), HelpConstants.prf_properties_simple_id);
 		this.idEntry = id;
+		return id;
 	}
 
 	/**
@@ -124,9 +127,10 @@ public abstract class AbstractPropertyComposite extends Composite implements ISc
 	 * @param toolkit the toolkit
 	 * @param client the client
 	 */
-	protected void createNameEntryField(final FormToolkit toolkit, final Composite client) {
+	protected FormEntry createNameEntryField(final FormToolkit toolkit, final Composite client) {
 		this.nameEntry = new FormEntry(client, toolkit, "Name:", SWT.SINGLE);
 		assignTooltip(this.nameEntry.getText(), HelpConstants.prf_properties_simple_name);
+		return this.nameEntry;
 	}
 
 	/**
@@ -175,28 +179,38 @@ public abstract class AbstractPropertyComposite extends Composite implements ISc
 	 */
 	public void setEditable(final boolean canEdit) {
 		this.canEdit = canEdit;
-		this.descriptionText.setEditable(canEdit);
-		this.idEntry.setEditable(canEdit);
-		this.modeViewer.getCombo().setEnabled(canEdit);
-		this.nameEntry.setEditable(canEdit);
+		if (this.descriptionText != null) {
+			this.descriptionText.setEditable(canEdit);
+		}
+		if (this.idEntry != null) {
+			this.idEntry.setEditable(canEdit);
+		}
+		if (this.modeViewer != null) {
+			this.modeViewer.getCombo().setEnabled(canEdit);
+		}
+		if (this.nameEntry != null) {
+			this.nameEntry.setEditable(canEdit);
+		}
 	}
 
 	public void addNameToTabList() {
-		this.createTabList();
-		this.tabList.add(1, getNameEntry().getText());
-		this.setTabList(this.tabList.toArray(new Control[this.tabList.size()]));
+		List<Control> currentTabList = new ArrayList<Control>(Arrays.asList(getTabList()));
+		
+		if (getNameEntry() != null && getNameEntry().getText() != null && !currentTabList.contains(getNameEntry().getText())) {
+			currentTabList.add(getNameEntry().getText());
+			setTabList(currentTabList.toArray(new Control[currentTabList.size()]));
+		}
 	}
 
 	/**
 	 * Remove
 	 */
 	public void removeNameFromTabList() {
-		this.createTabList();
-		this.setTabList(this.tabList.toArray(new Control[this.tabList.size()]));
+		List<Control> currentTabList = new ArrayList<Control>(Arrays.asList(getTabList()));
+		
+		if (getNameEntry() != null && getNameEntry().getText() != null && currentTabList.remove(getNameEntry().getText())) {
+			setTabList(currentTabList.toArray(new Control[currentTabList.size()]));
+		}
 	}
 
-	/**
-	 * Create a tablist for the composite that omits the Name control.
-	 */
-	public abstract void createTabList();
 }

@@ -22,40 +22,46 @@ import org.eclipse.ui.forms.widgets.FormToolkit;
 /**
  * 
  */
-public class StructPropertyComposite extends BasicStructPropertyComposite {
+public class StructSimplePropertyComposite extends SimplePropertyComposite {
 	/**
 	 * @param parent
 	 * @param style
 	 * @param toolkit
 	 */
-	public StructPropertyComposite(final Composite parent, final int style, final FormToolkit toolkit) {
-		super(parent, style, toolkit);
-
-		createControls(this, toolkit);
-
+	public StructSimplePropertyComposite(final Composite parent, final int style, final FormToolkit toolkit) {
+		super(parent, style, toolkit);	
 	}
 	
+	@Override
 	protected void createControls(Composite parent, FormToolkit toolkit) {
-		parent.setLayout(FormLayoutFactory.createSectionClientGridLayout(false, AbstractPropertyComposite.NUM_COLUMNS));
+		parent.setLayout(FormLayoutFactory.createSectionClientGridLayout(false, NUM_COLUMNS));
+
 		
 		ArrayList<Control> tabList = new ArrayList<Control>();
-
-		createIDEntryField(toolkit, parent);
+		
+		createIDEntryField(toolkit, parent).getText();
 		createNameEntryField(toolkit, parent);
-		createMessage(parent, toolkit);
-		createConfigurationKindViewer(parent, toolkit);
-		createModeViewer(parent, toolkit);
+		createTypeViewer(parent, toolkit);
+		createValueEntry(parent, toolkit);
+		createUnitsEntry(parent, toolkit);
+		createEnumerationsViewer(parent, toolkit);
+		createRange(parent, toolkit);
 		createDescription(parent, toolkit);
 		
+		toolkit.paintBordersFor(parent);
+		
 		tabList.add(getIdEntry().getText());
-		tabList.add(getMessageButton());
-		tabList.add(getConfigurationKindViewer().getControl());
-		tabList.add(getModeViewer().getControl());
+		tabList.add(getTypeViewer().getControl());
+		tabList.add(getValueEntry().getText());
+		tabList.add(getUnitsEntry().getText());
+		tabList.add(getEnumerationViewer().getControl().getParent());
+		tabList.add(getRangeButton());
+		tabList.add(getMinText().getText().getParent());
+		tabList.add(getMaxText().getText().getParent());
 		tabList.add(getDescriptionText());
 		
 		parent.setTabList(tabList.toArray(new Control[tabList.size()]));
-
-		toolkit.paintBordersFor(parent);
 	}
+
 
 }

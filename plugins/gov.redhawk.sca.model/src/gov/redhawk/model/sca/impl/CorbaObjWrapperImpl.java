@@ -36,6 +36,7 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.SubMonitor;
+import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
@@ -315,24 +316,15 @@ public abstract class CorbaObjWrapperImpl< T extends org.omg.CORBA.Object > exte
 					detachDataProviders();
 				}
 				if (msg.getOldValue() instanceof org.omg.CORBA.Object) {
-					Callable<Void> callable = new Callable<Void>() {
-
-						public Void call() {
+					Job job = new SilentModelJob("Release Object Job") {
+						
+						@Override
+						protected IStatus runSilent(IProgressMonitor monitor) {
 							((org.omg.CORBA.Object)msg.getOldValue())._release();
-							return null;
+							return Status.OK_STATUS;
 						}
 					};
-					
-                    try {
-                        ProtectedThreadExecutor.submit(callable);
-                    } catch (InterruptedException e) {
-                    	ScaModelPlugin.getDefault().getLog().log(new Status(IStatus.ERROR, ScaModelPlugin.ID, "Failed to release CORBA Object", e));
-                    } catch (ExecutionException e) {
-                    	ScaModelPlugin.getDefault().getLog().log(new Status(IStatus.ERROR, ScaModelPlugin.ID, "Failed to release CORBA Object", e));
-                    } catch (TimeoutException e) {
-                    	ScaModelPlugin.getDefault().getLog().log(new Status(IStatus.ERROR, ScaModelPlugin.ID, "Failed to release CORBA Object", e));
-                    }
-					
+					job.schedule();
 				}
 				break;
 			default:

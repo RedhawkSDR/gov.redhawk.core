@@ -37,12 +37,12 @@ import org.eclipse.emf.edit.command.SetCommand;
 import org.eclipse.jface.databinding.viewers.ViewersObservables;
 import org.eclipse.jface.dialogs.IInputValidator;
 import org.eclipse.jface.dialogs.InputDialog;
+import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.window.Window;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.forms.widgets.ExpandableComposite;
@@ -149,12 +149,10 @@ public class SimpleSequencePropertyDetailsPage extends BasicSimplePropertyDetail
 	 */
 	@Override
 	protected BasicSimplePropertyComposite createSection(final Composite parent, final FormToolkit toolkit) {
-		final Section newSection = toolkit.createSection(parent, Section.DESCRIPTION | ExpandableComposite.TITLE_BAR);
+		final Section newSection = toolkit.createSection(parent,  Section.EXPANDED | ExpandableComposite.TITLE_BAR);
 		newSection.clientVerticalSpacing = FormLayoutFactory.SECTION_HEADER_VERTICAL_SPACING;
 		newSection.setText("Simple Sequence Property");
-		newSection.setDescription("");
-		newSection.setLayout(FormLayoutFactory.createClearGridLayout(false, 1));
-		newSection.setLayoutData(new GridData(GridData.FILL_HORIZONTAL | GridData.VERTICAL_ALIGN_BEGINNING));
+		newSection.setLayoutData(GridDataFactory.fillDefaults().grab(true, true).create());
 
 		// Align the master and details section headers (misalignment caused
 		// by section toolbar icons)

@@ -14,36 +14,58 @@ package gov.redhawk.prf.internal.ui.editor.composite;
 import gov.redhawk.common.ui.doc.HelpConstants;
 import gov.redhawk.common.ui.editor.FormLayoutFactory;
 import gov.redhawk.common.ui.parts.FormEntry;
+import gov.redhawk.model.sca.commands.ScaModelCommand;
 import gov.redhawk.ui.doc.HelpUtil;
+import gov.redhawk.ui.util.SWTUtil;
 
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
 import mil.jpeojtrs.sca.prf.ActionType;
+import mil.jpeojtrs.sca.prf.Enumeration;
+import mil.jpeojtrs.sca.prf.PrfPackage;
 import mil.jpeojtrs.sca.prf.PropertyConfigurationType;
 import mil.jpeojtrs.sca.prf.PropertyValueType;
+import mil.jpeojtrs.sca.prf.Simple;
+import mil.jpeojtrs.sca.prf.provider.PrfItemProviderAdapterFactory;
+import mil.jpeojtrs.sca.util.AnyUtils;
 
+import org.eclipse.emf.common.notify.AdapterFactory;
+import org.eclipse.emf.edit.provider.ComposedAdapterFactory;
+import org.eclipse.emf.edit.provider.ReflectiveItemProviderAdapterFactory;
+import org.eclipse.emf.edit.provider.resource.ResourceItemProviderAdapterFactory;
+import org.eclipse.emf.edit.ui.provider.AdapterFactoryContentProvider;
+import org.eclipse.emf.edit.ui.provider.AdapterFactoryLabelProvider;
 import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.jface.viewers.ArrayContentProvider;
+import org.eclipse.jface.viewers.CellEditor;
 import org.eclipse.jface.viewers.CheckboxTableViewer;
+import org.eclipse.jface.viewers.ColumnWeightData;
 import org.eclipse.jface.viewers.ComboViewer;
+import org.eclipse.jface.viewers.EditingSupport;
+import org.eclipse.jface.viewers.ICellEditorValidator;
+import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.LabelProvider;
+import org.eclipse.jface.viewers.SelectionChangedEvent;
+import org.eclipse.jface.viewers.TableLayout;
+import org.eclipse.jface.viewers.TableViewer;
+import org.eclipse.jface.viewers.TableViewerColumn;
+import org.eclipse.jface.viewers.TextCellEditor;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.viewers.ViewerComparator;
 import org.eclipse.jface.viewers.ViewerFilter;
 import org.eclipse.jface.viewers.ViewerSorter;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.MouseEvent;
-import org.eclipse.swt.events.MouseWheelListener;
 import org.eclipse.swt.layout.GridData;
+import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Listener;
-import org.eclipse.swt.widgets.Text;
+import org.eclipse.swt.widgets.Table;
 import org.eclipse.ui.forms.IFormColors;
 import org.eclipse.ui.forms.widgets.FormToolkit;
 
@@ -51,11 +73,11 @@ import org.eclipse.ui.forms.widgets.FormToolkit;
  *
  */
 public abstract class BasicSimplePropertyComposite extends AbstractPropertyComposite {
-	private static final int NUM_COLUMNS = 3;
+	protected static final int NUM_COLUMNS = 3;
 
 	private static final GridDataFactory FACTORY = GridDataFactory.fillDefaults().span(2, 1).grab(true, false);
 	private ComboViewer typeViewer;
-	private Text unitsText;
+	private FormEntry unitsEntry;
 	private Label kindLabel;
 	private CheckboxTableViewer kindViewer;
 	private Label actionLabel;
@@ -68,6 +90,19 @@ public abstract class BasicSimplePropertyComposite extends AbstractPropertyCompo
 
 	private Button messageButton;
 
+	private Button editEnumButton;
+
+	private Button removeEnumButton;
+
+	private Button addEnumButton;
+
+	private TableViewer enumViewer;
+
+	private ComposedAdapterFactory adapterFactory;
+
+	private FormToolkit toolkit;
+
+
 	private static final String DEFAULT_ACTION = "external";
 
 	/**
@@ -76,6 +111,7 @@ public abstract class BasicSimplePropertyComposite extends AbstractPropertyCompo
 	 */
 	public BasicSimplePropertyComposite(final Composite parent, final int style, final FormToolkit toolkit) {
 		super(parent, style, toolkit);
+		this.toolkit = toolkit;
 	}
 
 	private void assignTooltip(final Control control, final String contextId) {
@@ -86,7 +122,7 @@ public abstract class BasicSimplePropertyComposite extends AbstractPropertyCompo
 	 * @param propertyComposite
 	 * @param toolkit
 	 */
-	protected void createRange(final Composite parent, final FormToolkit toolkit) {
+	protected Button createRange(final Composite parent, final FormToolkit toolkit) {
 		final Label label = toolkit.createLabel(parent, "Range:");
 		label.setForeground(toolkit.getColors().getColor(IFormColors.TITLE));
 		this.rangeButton = toolkit.createButton(parent, "Enable", SWT.CHECK);
@@ -101,13 +137,14 @@ public abstract class BasicSimplePropertyComposite extends AbstractPropertyCompo
 		createMinEntryField(toolkit, rangeGroup);
 		createMaxEntryField(toolkit, rangeGroup);
 		toolkit.paintBordersFor(rangeGroup);
+		return this.rangeButton;
 	}
 
 	/**
 	 * @param propertyComposite
 	 * @param toolkit
 	 */
-	protected void createAction(final Composite parent, final FormToolkit toolkit) {
+	protected ComboViewer createActionViewer(final Composite parent, final FormToolkit toolkit) {
 		// Action
 		this.actionLabel = toolkit.createLabel(parent, "Action:");
 		this.actionLabel.setForeground(toolkit.getColors().getColor(IFormColors.TITLE));
@@ -146,6 +183,7 @@ public abstract class BasicSimplePropertyComposite extends AbstractPropertyCompo
 		assignTooltip(viewer.getControl(), HelpConstants.prf_properties_simple_action);
 
 		this.actionViewer = viewer;
+		return viewer;
 	}
 	
 	protected void createMessage(final Composite parent, final FormToolkit toolkit) {
@@ -160,8 +198,9 @@ public abstract class BasicSimplePropertyComposite extends AbstractPropertyCompo
 	/**
 	 * @param propertyComposite
 	 * @param toolkit
+	 * @return 
 	 */
-	protected void createKind(final Composite parent, final FormToolkit toolkit) {
+	protected CheckboxTableViewer createKindViewer(final Composite parent, final FormToolkit toolkit) {
 		// Kind
 		this.kindLabel = toolkit.createLabel(parent, "Kind:");
 		this.kindLabel.setForeground(toolkit.getColors().getColor(IFormColors.TITLE));
@@ -203,26 +242,26 @@ public abstract class BasicSimplePropertyComposite extends AbstractPropertyCompo
 		});
 		
 		this.kindViewer = viewer;
+		return this.kindViewer;
 	}
 
 	/**
 	 * @param propertyComposite
 	 * @param toolkit
 	 */
-	protected void createUnits(final Composite parent, final FormToolkit toolkit) {
+	protected FormEntry createUnitsEntry(final Composite parent, final FormToolkit toolkit) {
 		// Units
-		final Label label = toolkit.createLabel(parent, "Units:");
-		label.setForeground(toolkit.getColors().getColor(IFormColors.TITLE));
-		this.unitsText = toolkit.createText(parent, "", SWT.SINGLE);
-		assignTooltip(this.unitsText, HelpConstants.prf_properties_simple_units);
-		this.unitsText.setLayoutData(BasicSimplePropertyComposite.FACTORY.create());
+		this.unitsEntry = new FormEntry(parent, toolkit, "Units:", SWT.SINGLE);
+		assignTooltip(this.unitsEntry.getText(), HelpConstants.prf_properties_simple_units);
+		this.unitsEntry.getText().setLayoutData(BasicSimplePropertyComposite.FACTORY.create());
+		return unitsEntry;
 	}
 
 	/**
 	 * @param propertyComposite
 	 * @param toolkit
 	 */
-	protected void createTypeViewer(final Composite parent, final FormToolkit toolkit) {
+	protected ComboViewer createTypeViewer(final Composite parent, final FormToolkit toolkit) {
 		// Type
 		final Label label = toolkit.createLabel(parent, "Type*:");
 		label.setForeground(toolkit.getColors().getColor(IFormColors.TITLE));
@@ -242,6 +281,7 @@ public abstract class BasicSimplePropertyComposite extends AbstractPropertyCompo
 		toolkit.adapt(this.typeViewer.getCombo());
 		this.typeViewer.getControl().setLayoutData(BasicSimplePropertyComposite.FACTORY.create());
 		assignTooltip(this.typeViewer.getControl(), HelpConstants.prf_properties_simple_type);
+		return this.typeViewer;
 	}
 
 	/**
@@ -274,8 +314,8 @@ public abstract class BasicSimplePropertyComposite extends AbstractPropertyCompo
 	/**
 	 * @return the unitsText
 	 */
-	public Text getUnitsText() {
-		return this.unitsText;
+	public FormEntry getUnitsEntry() {
+		return this.unitsEntry;
 	}
 
 	/**
@@ -333,12 +373,37 @@ public abstract class BasicSimplePropertyComposite extends AbstractPropertyCompo
 	@Override
 	public void setEditable(final boolean canEdit) {
 		super.setEditable(canEdit);
-		this.actionViewer.getCombo().setEnabled(canEdit);
-		this.kindViewer.getTable().setEnabled(canEdit);
-		this.messageButton.setEnabled(canEdit);
-		this.typeViewer.getCombo().setEnabled(canEdit);
-		this.unitsText.setEditable(canEdit);
-		this.rangeButton.setEnabled(canEdit);
+
+		if (this.actionViewer != null) {
+			this.actionViewer.getCombo().setEnabled(canEdit);
+		}
+		if (this.kindViewer != null) {
+			this.kindViewer.getTable().setEnabled(canEdit);
+		}
+		if (this.messageButton != null) {
+			this.messageButton.setEnabled(canEdit);
+		}
+		if (this.typeViewer != null) {
+			this.typeViewer.getCombo().setEnabled(canEdit);
+		}
+		if (this.unitsEntry != null) {
+			this.unitsEntry.setEditable(canEdit);
+		}
+		if (this.rangeButton != null) {
+			this.rangeButton.setEnabled(canEdit);
+		}
+		if (this.enumViewer != null) {
+			this.enumViewer.getControl().setEnabled(canEdit);
+		}
+		if (this.addEnumButton != null) {
+			this.addEnumButton.setEnabled(canEdit);
+		}
+		if (this.removeEnumButton != null) {
+			this.removeEnumButton.setEnabled(canEdit);
+		}
+		if (this.editEnumButton != null) {
+			this.editEnumButton.setEnabled(canEdit);
+		}
 	}
 
 	/**
@@ -353,5 +418,184 @@ public abstract class BasicSimplePropertyComposite extends AbstractPropertyCompo
 	 */
 	public Label getActionLabel() {
 		return actionLabel;
+	}
+	
+	protected void createEnumerationsViewer(final Composite parent, final FormToolkit toolkit) {
+		final Label label = toolkit.createLabel(parent, "Enumerations:");
+		label.setForeground(toolkit.getColors().getColor(IFormColors.TITLE));
+		label.setLayoutData(GridDataFactory.fillDefaults().align(SWT.LEFT, SWT.TOP).create());
+		final Composite tableComp = toolkit.createComposite(parent, SWT.NULL);
+		final GridLayout layout = SWTUtil.TABLE_ENTRY_LAYOUT_FACTORY.create();
+		tableComp.setLayout(layout);
+		tableComp.setLayoutData(GridDataFactory.fillDefaults().span(NUM_COLUMNS - 1, 1).grab(true, true).create());
+		final Table table = new Table(tableComp, SWT.SINGLE | SWT.BORDER | SWT.FULL_SELECTION);
+		table.setLinesVisible(true);
+		table.setHeaderVisible(true);
+		final TableLayout tableLayout = new TableLayout();
+		tableLayout.addColumnData(new ColumnWeightData(20, 100, true)); // SUPPRESS CHECKSTYLE MagicNumber
+		tableLayout.addColumnData(new ColumnWeightData(30, 40, true)); // SUPPRESS CHECKSTYLE MagicNumber
+		table.setLayout(tableLayout);
+		table.setLayoutData(GridDataFactory.fillDefaults().span(1, 3).hint(SWT.DEFAULT, 100).grab(true, true).create()); // SUPPRESS CHECKSTYLE MagicNumber
+
+		this.enumViewer = new TableViewer(table);
+		this.enumViewer.setContentProvider(new AdapterFactoryContentProvider(getAdapterFactory()));
+
+		final TableViewerColumn enumLabelColumn = new TableViewerColumn(this.enumViewer, SWT.NULL);
+		enumLabelColumn.getColumn().setText("Label");
+		enumLabelColumn.setEditingSupport(new EditingSupport(this.enumViewer) {
+
+			@Override
+			protected void setValue(final Object element, final Object value) {
+				final Enumeration e = (Enumeration) element;
+				ScaModelCommand.execute(e, new ScaModelCommand() {
+
+					public void execute() {
+						e.setLabel((value == null) ? null : value.toString());
+					}
+				});
+			}
+
+			@Override
+			protected Object getValue(final Object element) {
+				final Enumeration e = (Enumeration) element;
+				return (e.getLabel() == null) ? "" : e.getLabel();
+			}
+
+			@Override
+			protected CellEditor getCellEditor(final Object element) {
+				return new TextCellEditor(enumViewer.getTable());
+			}
+
+			@Override
+			protected boolean canEdit(final Object element) {
+				return true;
+			}
+		});
+
+		final TableViewerColumn enumValueColumn = new TableViewerColumn(this.enumViewer, SWT.NULL);
+		enumValueColumn.getColumn().setText("Value");
+		enumValueColumn.setEditingSupport(new EditingSupport(this.enumViewer) {
+
+			@Override
+			protected void setValue(final Object element, final Object value) {
+				final Enumeration e = (Enumeration) element;
+				ScaModelCommand.execute(e, new ScaModelCommand() {
+
+					public void execute() {
+						e.setValue((value == null) ? null : value.toString());
+					}
+				});
+			}
+
+			@Override
+			protected Object getValue(final Object element) {
+				final Enumeration e = (Enumeration) element;
+				return (e.getValue() == null) ? "" : e.getValue();
+			}
+
+			@Override
+			protected CellEditor getCellEditor(final Object obj) {
+				final TextCellEditor retVal = new TextCellEditor(enumViewer.getTable());
+				retVal.setValidator(new ICellEditorValidator() {
+
+					public String isValid(final Object value) {
+						final Enumeration element = (Enumeration) obj;
+						final Simple simple = (Simple) element.eContainer().eContainer();
+						try {
+							AnyUtils.convertString(value.toString(), simple.getType().getLiteral());
+							return null;
+						} catch (final Exception e) {
+							return "Invalid value";
+						}
+					}
+				});
+				return retVal;
+			}
+
+			@Override
+			protected boolean canEdit(final Object element) {
+				return true;
+			}
+		});
+
+		this.enumViewer.setLabelProvider(new AdapterFactoryLabelProvider(getAdapterFactory()));
+		this.enumViewer
+		        .setColumnProperties(new String[] { PrfPackage.Literals.ENUMERATION__LABEL.getName(), PrfPackage.Literals.ENUMERATION__VALUE.getName() });
+
+		this.enumViewer.setFilters(createEnumerationViewerFilter());
+		table.setLayoutData(GridDataFactory.fillDefaults().span(1, NUM_COLUMNS).hint(SWT.DEFAULT, 50).grab(true, true).create()); // SUPPRESS CHECKSTYLE MagicNumber
+		this.addEnumButton = this.toolkit.createButton(tableComp, "Add...", SWT.PUSH);
+		this.addEnumButton.setLayoutData(GridDataFactory.fillDefaults().align(SWT.FILL, SWT.TOP).create());
+		this.editEnumButton = this.toolkit.createButton(tableComp, "Edit", SWT.PUSH);
+		this.editEnumButton.setLayoutData(GridDataFactory.fillDefaults().align(SWT.FILL, SWT.TOP).create());
+		this.editEnumButton.setEnabled(false);
+		this.removeEnumButton = this.toolkit.createButton(tableComp, "Remove", SWT.PUSH);
+		this.removeEnumButton.setLayoutData(GridDataFactory.fillDefaults().align(SWT.FILL, SWT.TOP).create());
+		this.removeEnumButton.setEnabled(!this.enumViewer.getSelection().isEmpty());
+		this.enumViewer.addSelectionChangedListener(new ISelectionChangedListener() {
+
+			public void selectionChanged(final SelectionChangedEvent event) {
+				removeEnumButton.setEnabled(!event.getSelection().isEmpty());
+				editEnumButton.setEnabled(!event.getSelection().isEmpty());
+			}
+		});
+		HelpUtil.assignTooltip(this.enumViewer.getControl(), HelpConstants.prf_properties_simple_value);
+	}
+	
+	/**
+	 * Gets the adapter factory.
+	 * 
+	 * @return the adapter factory
+	 */
+	protected AdapterFactory getAdapterFactory() {
+		if (this.adapterFactory == null) {
+			this.adapterFactory = new ComposedAdapterFactory(ComposedAdapterFactory.Descriptor.Registry.INSTANCE);
+			this.adapterFactory.addAdapterFactory(new PrfItemProviderAdapterFactory());
+			this.adapterFactory.addAdapterFactory(new ResourceItemProviderAdapterFactory());
+			this.adapterFactory.addAdapterFactory(new ReflectiveItemProviderAdapterFactory());
+		}
+		return this.adapterFactory;
+	}
+
+	/**
+	 * @return the propertiesViewer
+	 */
+	public TableViewer getEnumerationViewer() {
+		return this.enumViewer;
+	}
+
+	/**
+	 * @return the addPropertyButton
+	 */
+	public Button getAddEnumButton() {
+		return this.addEnumButton;
+	}
+
+	/**
+	 * @return the editPropertyButton
+	 */
+	public Button getEditEnumButton() {
+		return this.editEnumButton;
+	}
+
+	/**
+	 * @return the removePropertyButton
+	 */
+	public Button getRemoveEnumButton() {
+		return this.removeEnumButton;
+	}
+
+	/**
+	 * Creates the os viewer filter.
+	 * 
+	 * @return the viewer filter[]
+	 */
+	private ViewerFilter[] createEnumerationViewerFilter() {
+		return new ViewerFilter[] { new ViewerFilter() {
+			@Override
+			public boolean select(final Viewer viewer, final Object parentElement, final Object element) {
+				return element instanceof Enumeration;
+			}
+		} };
 	}
 }

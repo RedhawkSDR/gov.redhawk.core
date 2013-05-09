@@ -21,6 +21,7 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Layout;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.forms.IFormColors;
@@ -266,6 +267,14 @@ public class FormEntry {
 			}
 		}
 		this.fListener = listener;
+	}
+	
+	public void setLabel(String label) {
+		if (this.fLabel instanceof Label) {
+			((Label) this.fLabel).setText(label);
+		} else if (this.fLabel instanceof Hyperlink) {
+			((Hyperlink) this.fLabel).setText(label);
+		}
 	}
 
 	/**

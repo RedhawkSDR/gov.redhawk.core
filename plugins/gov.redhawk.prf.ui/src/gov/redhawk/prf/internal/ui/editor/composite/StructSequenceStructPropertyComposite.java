@@ -22,17 +22,14 @@ import org.eclipse.ui.forms.widgets.FormToolkit;
 /**
  * 
  */
-public class StructPropertyComposite extends BasicStructPropertyComposite {
+public class StructSequenceStructPropertyComposite extends StructPropertyComposite {
 	/**
 	 * @param parent
 	 * @param style
 	 * @param toolkit
 	 */
-	public StructPropertyComposite(final Composite parent, final int style, final FormToolkit toolkit) {
+	public StructSequenceStructPropertyComposite(final Composite parent, final int style, final FormToolkit toolkit) {
 		super(parent, style, toolkit);
-
-		createControls(this, toolkit);
-
 	}
 	
 	protected void createControls(Composite parent, FormToolkit toolkit) {
@@ -42,15 +39,9 @@ public class StructPropertyComposite extends BasicStructPropertyComposite {
 
 		createIDEntryField(toolkit, parent);
 		createNameEntryField(toolkit, parent);
-		createMessage(parent, toolkit);
-		createConfigurationKindViewer(parent, toolkit);
-		createModeViewer(parent, toolkit);
 		createDescription(parent, toolkit);
 		
 		tabList.add(getIdEntry().getText());
-		tabList.add(getMessageButton());
-		tabList.add(getConfigurationKindViewer().getControl());
-		tabList.add(getModeViewer().getControl());
 		tabList.add(getDescriptionText());
 		
 		parent.setTabList(tabList.toArray(new Control[tabList.size()]));

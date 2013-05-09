@@ -38,13 +38,13 @@ import org.eclipse.emf.databinding.FeaturePath;
 import org.eclipse.emf.databinding.IEMFListProperty;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.jface.databinding.swt.SWTObservables;
+import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.forms.widgets.ExpandableComposite;
 import org.eclipse.ui.forms.widgets.FormToolkit;
@@ -73,13 +73,10 @@ public class StructSequencePropertyDetailsPage extends BasicStructPropertyDetail
 	 */
 	@Override
 	protected BasicStructPropertyComposite createSection(final Composite parent, final FormToolkit toolkit) {
-		final Section newSection = toolkit.createSection(parent, Section.DESCRIPTION | ExpandableComposite.TITLE_BAR);
+		final Section newSection = toolkit.createSection(parent,  Section.EXPANDED | ExpandableComposite.TITLE_BAR);
 		newSection.clientVerticalSpacing = FormLayoutFactory.SECTION_HEADER_VERTICAL_SPACING;
 		newSection.setText("Struct Sequence Property");
-		newSection.setDescription("");
-
-		newSection.setLayout(FormLayoutFactory.createClearGridLayout(false, 1));
-		newSection.setLayoutData(new GridData(GridData.FILL_HORIZONTAL | GridData.VERTICAL_ALIGN_BEGINNING));
+		newSection.setLayoutData(GridDataFactory.fillDefaults().grab(true, true).create());
 
 		// Align the master and details section headers (misalignment caused
 		// by section toolbar icons)

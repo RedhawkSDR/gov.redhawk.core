@@ -11,6 +11,8 @@
  */
 package gov.redhawk.prf.internal.ui.editor.composite;
 
+import java.util.ArrayList;
+
 import gov.redhawk.common.ui.AdapterFactoryCellLabelProvider;
 import gov.redhawk.common.ui.doc.HelpConstants;
 import gov.redhawk.common.ui.editor.FormLayoutFactory;
@@ -26,6 +28,7 @@ import org.eclipse.emf.edit.provider.resource.ResourceItemProviderAdapterFactory
 import org.eclipse.emf.edit.ui.provider.AdapterFactoryContentProvider;
 import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.jface.layout.GridLayoutFactory;
+import org.eclipse.jface.viewers.CheckboxTableViewer;
 import org.eclipse.jface.viewers.ColumnWeightData;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
@@ -39,6 +42,7 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.ui.forms.IFormColors;
@@ -68,33 +72,43 @@ public class SimpleSequencePropertyComposite extends BasicSimplePropertyComposit
 
 		this.adapterFactory = createAdapterFactory();
 
-		setLayout(FormLayoutFactory.createSectionClientGridLayout(false, SimpleSequencePropertyComposite.NUM_COLUMNS));
-		setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-
-		createIDEntryField(toolkit, this);
-
-		createNameEntryField(toolkit, this);
-
-		createTypeViewer(this, toolkit);
-
-		createValues(this, toolkit);
-
-		createUnits(this, toolkit);
-		
-		createMessage(this, toolkit);
-
-		createKind(this, toolkit);
-
-		createMode(this, toolkit);
-
-		createAction(this, toolkit);
-
-		createRange(this, toolkit);
-
-		createDescription(this, toolkit);
-
-		toolkit.paintBordersFor(this);
+		createControls(this, toolkit);
 	}
+	
+	protected void createControls(Composite parent, FormToolkit toolkit) {
+		parent.setLayout(FormLayoutFactory.createSectionClientGridLayout(false, SimpleSequencePropertyComposite.NUM_COLUMNS));
+		
+		createIDEntryField(toolkit, parent);
+		createNameEntryField(toolkit, parent);
+		createTypeViewer(parent, toolkit);
+		createValues(parent, toolkit);
+		createUnitsEntry(parent, toolkit);
+		createMessage(parent, toolkit);
+		createKindViewer(parent, toolkit);
+		createModeViewer(parent, toolkit);
+		createActionViewer(parent, toolkit);
+		createRange(parent, toolkit);
+		createDescription(parent, toolkit);
+		
+		ArrayList<Control> tabList = new ArrayList<Control>();
+		tabList.add(getIdEntry().getText());
+		tabList.add(getTypeViewer().getControl());
+		tabList.add(getValuesViewer().getControl().getParent());
+		tabList.add(getUnitsEntry().getText());
+		tabList.add(getMessageButton());
+		tabList.add(getKindViewer().getControl());
+		tabList.add(getModeViewer().getControl());
+		tabList.add(getActionViewer().getControl());
+		tabList.add(getRangeButton());
+		tabList.add(getMinText().getText().getParent());
+		tabList.add(getMaxText().getText().getParent());
+		tabList.add(getDescriptionText());
+		
+		parent.setTabList(tabList.toArray(new Control[tabList.size()]));
+		
+		toolkit.paintBordersFor(parent);
+	}
+	
 	/**
 	 * {@inheritDoc}
 	 */
@@ -121,8 +135,8 @@ public class SimpleSequencePropertyComposite extends BasicSimplePropertyComposit
 	}
 	
 	@Override
-	protected void createKind(Composite parent, FormToolkit toolkit) {
-		super.createKind(parent, toolkit);
+	protected CheckboxTableViewer createKindViewer(Composite parent, FormToolkit toolkit) {
+		CheckboxTableViewer retVal = super.createKindViewer(parent, toolkit);
 		// We want everything from the SimpleProperty base class but we want the 
 		// kind viewer to show all values except EXECPARAM since only SimpleProps can be exec params.
 		// This fixes bug # 264
@@ -138,7 +152,7 @@ public class SimpleSequencePropertyComposite extends BasicSimplePropertyComposit
 				return true;
 			}
 		});
-		
+		return retVal;
 	}
 	
 	protected void createValues(final Composite parent, final FormToolkit toolkit) {
@@ -216,28 +230,13 @@ public class SimpleSequencePropertyComposite extends BasicSimplePropertyComposit
 
 	@Override
 	public void setEditable(final boolean canEdit) {
-		this.addValueButton.setEnabled(canEdit);
+		if (this.addValueButton != null) {
+			this.addValueButton.setEnabled(canEdit);
+		}
+		if (this.removeValueButton != null) {
+			this.removeValueButton.setEnabled(canEdit);
+		}
 		super.setEditable(canEdit);
-	}
-
-	/**
-	 * 
-	 * {@inheritDoc}
-	 */
-	@Override
-	public void createTabList() {
-		this.tabList.clear();
-		this.tabList.add(getIdEntry().getText());
-		this.tabList.add(getTypeViewer().getControl());
-		this.tabList.add(getValuesViewer().getControl().getParent());
-		this.tabList.add(getUnitsText());
-		this.tabList.add(getKindViewer().getControl());
-		this.tabList.add(getModeViewer().getControl());
-		this.tabList.add(getActionViewer().getControl());
-		this.tabList.add(getRangeButton());
-		this.tabList.add(getMinText().getText().getParent());
-		this.tabList.add(getMaxText().getText().getParent());
-		this.tabList.add(getDescriptionText());
 	}
 
 	/**
