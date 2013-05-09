@@ -13,6 +13,7 @@ package gov.redhawk.prf.internal.ui.editor.detailspart;
 
 import gov.redhawk.prf.internal.ui.editor.PropertiesSection;
 import gov.redhawk.prf.internal.ui.editor.composite.BasicSimplePropertyComposite;
+import gov.redhawk.prf.ui.wizard.EnumerationWizard;
 import gov.redhawk.ui.editor.SCAFormEditor;
 import gov.redhawk.ui.util.EMFEmptyStringToNullUpdateValueStrategy;
 
@@ -24,6 +25,8 @@ import java.util.Map;
 
 import mil.jpeojtrs.sca.prf.Action;
 import mil.jpeojtrs.sca.prf.ActionType;
+import mil.jpeojtrs.sca.prf.Enumeration;
+import mil.jpeojtrs.sca.prf.Enumerations;
 import mil.jpeojtrs.sca.prf.Kind;
 import mil.jpeojtrs.sca.prf.PrfFactory;
 import mil.jpeojtrs.sca.prf.PrfPackage;
@@ -50,10 +53,15 @@ import org.eclipse.emf.databinding.edit.IEMFEditValueProperty;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.edit.command.AddCommand;
 import org.eclipse.emf.edit.command.RemoveCommand;
+import org.eclipse.emf.edit.command.ReplaceCommand;
+import org.eclipse.emf.edit.command.SetCommand;
 import org.eclipse.emf.edit.domain.EditingDomain;
 import org.eclipse.jface.databinding.swt.SWTObservables;
 import org.eclipse.jface.databinding.swt.WidgetProperties;
 import org.eclipse.jface.databinding.viewers.ViewersObservables;
+import org.eclipse.jface.viewers.IStructuredSelection;
+import org.eclipse.jface.window.Window;
+import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
@@ -105,7 +113,6 @@ public abstract class BasicSimplePropertyDetailsPage extends AbstractPropertyDet
 	@Override
 	protected List<Binding> bind(final DataBindingContext dataBindingContext, final EObject input) {
 		final BasicSimplePropertyComposite composite = (BasicSimplePropertyComposite) getComposite();
-		composite.getKindViewer().setCheckedElements(Collections.EMPTY_LIST.toArray());
 
 		final EditingDomain domain = getEditingDomain();
 		this.input = input;
@@ -114,30 +121,34 @@ public abstract class BasicSimplePropertyDetailsPage extends AbstractPropertyDet
 		final List<Binding> retVal = super.bind(dataBindingContext, input);
 
 		// Type
-		retVal.add(dataBindingContext.bindValue(ViewersObservables.observeSingleSelection(composite.getTypeViewer()),
-		        EMFEditObservables.observeValue(domain, input, this.property.getType()),
-		        null,
-		        null));
+		if (composite.getTypeViewer() != null) {
+			retVal.add(dataBindingContext.bindValue(ViewersObservables.observeSingleSelection(composite.getTypeViewer()),
+			        EMFEditObservables.observeValue(domain, input, this.property.getType()), null, null));
+		}
 
 		// Units
-		retVal.add(dataBindingContext.bindValue(WidgetProperties.text(SWT.Modify)
-		        .observeDelayed(SCAFormEditor.getFieldBindingDelay(), composite.getUnitsText()), EMFEditObservables.observeValue(domain,
-		        input,
-		        this.property.getUnits()), new EMFEmptyStringToNullUpdateValueStrategy(), null));
+		if (getComposite().getUnitsEntry() != null) {
+			retVal.add(dataBindingContext.bindValue(WidgetProperties.text(SWT.Modify).observeDelayed(SCAFormEditor.getFieldBindingDelay(), composite.getUnitsEntry().getText()),
+			        EMFEditObservables.observeValue(domain, input, this.property.getUnits()), new EMFEmptyStringToNullUpdateValueStrategy(), null));
+		}
 
 		// Kind
-		createKindBinding(dataBindingContext, input, domain, retVal);
+		if (getComposite().getKindViewer() != null) {
+			composite.getKindViewer().setCheckedElements(Collections.EMPTY_LIST.toArray());
+			createKindBinding(dataBindingContext, input, domain, retVal);
+		}
 
 		// Action
-		retVal.add(dataBindingContext.bindValue(ViewersObservables.observeSingleSelection(composite.getActionViewer()),
-		        EMFEditObservables.observeValue(domain, input, this.property.getAction()),
-		        createActionTargetToModel(),
-		        createActionModelToTarget()));
+		if (getComposite().getActionViewer() != null) {
+			retVal.add(dataBindingContext.bindValue(ViewersObservables.observeSingleSelection(composite.getActionViewer()),
+			        EMFEditObservables.observeValue(domain, input, this.property.getAction()), createActionTargetToModel(), createActionModelToTarget()));
+		}
 
 		// Range
-		retVal.addAll(bindRanges(input, dataBindingContext, domain));
-
-		addRangeListener();
+		if (getComposite().getRangeButton() != null) {
+			retVal.addAll(bindRanges(input, dataBindingContext, domain));
+			addRangeListener();
+		}
 
 		return retVal;
 	}
@@ -245,8 +256,8 @@ public abstract class BasicSimplePropertyDetailsPage extends AbstractPropertyDet
 			this.setMap.put(input, mySet);
 		}
 
-		retVal.add(context.bindSet(ViewersObservables.observeCheckedElements((((BasicSimplePropertyComposite) getComposite()).getKindViewer()),
-		        PropertyConfigurationType.class), this.setMap.get(input), null, null));
+		retVal.add(context.bindSet(ViewersObservables.observeCheckedElements((((BasicSimplePropertyComposite) getComposite()).getKindViewer()), PropertyConfigurationType.class),
+		        this.setMap.get(input), null, null));
 	}
 
 	private EList<Kind> getKindList(final EObject input) {
@@ -284,9 +295,7 @@ public abstract class BasicSimplePropertyDetailsPage extends AbstractPropertyDet
 
 		final List<Binding> buttonBindings = new ArrayList<Binding>();
 		buttonBindings.add(context.bindValue(SWTObservables.observeSelection(rangeButton),
-		        EMFEditObservables.observeValue(getEditingDomain(), this.input, this.property.getRange()),
-		        targetToModel,
-		        modelToTarget));
+		        EMFEditObservables.observeValue(getEditingDomain(), this.input, this.property.getRange()), targetToModel, modelToTarget));
 
 		buttonBindings.add(context.bindValue(SWTObservables.observeEnabled(minText), SWTObservables.observeSelection(rangeButton)));
 		buttonBindings.add(context.bindValue(SWTObservables.observeEnabled(maxText), SWTObservables.observeSelection(rangeButton)));
@@ -294,25 +303,119 @@ public abstract class BasicSimplePropertyDetailsPage extends AbstractPropertyDet
 	}
 
 	public Binding bindMin(final DataBindingContext context, final Text minText) {
-		final IEMFEditValueProperty minProperty = EMFEditProperties.value(getEditingDomain(),
-		        FeaturePath.fromList(this.property.getRange(), PrfPackage.Literals.RANGE__MIN));
+		final IEMFEditValueProperty minProperty = EMFEditProperties.value(getEditingDomain(), FeaturePath.fromList(this.property.getRange(), PrfPackage.Literals.RANGE__MIN));
 		final IObservableValue minObserver = minProperty.observe(this.input);
-		return this.minBinding = context.bindValue(WidgetProperties.text(SWT.Modify).observeDelayed(SCAFormEditor.getFieldBindingDelay(),
-		        ((BasicSimplePropertyComposite) getComposite()).getMinText().getText()),
-		        minObserver,
-		        EMFEmptyStringToNullUpdateValueStrategy.INSTANCE,
-		        null);
+		return this.minBinding = context.bindValue(
+		        WidgetProperties.text(SWT.Modify).observeDelayed(SCAFormEditor.getFieldBindingDelay(), ((BasicSimplePropertyComposite) getComposite()).getMinText().getText()),
+		        minObserver, EMFEmptyStringToNullUpdateValueStrategy.INSTANCE, null);
 	}
 
 	public Binding bindMax(final DataBindingContext context, final Text maxText) {
-		final IEMFEditValueProperty maxProperty = EMFEditProperties.value(getEditingDomain(),
-		        FeaturePath.fromList(this.property.getRange(), PrfPackage.Literals.RANGE__MAX));
+		final IEMFEditValueProperty maxProperty = EMFEditProperties.value(getEditingDomain(), FeaturePath.fromList(this.property.getRange(), PrfPackage.Literals.RANGE__MAX));
 		final IObservableValue maxObserver = maxProperty.observe(this.input);
-		return this.maxBinding = context.bindValue(WidgetProperties.text(SWT.Modify).observeDelayed(SCAFormEditor.getFieldBindingDelay(),
-		        ((BasicSimplePropertyComposite) getComposite()).getMaxText().getText()),
-		        maxObserver,
-		        EMFEmptyStringToNullUpdateValueStrategy.INSTANCE,
-		        null);
+		return this.maxBinding = context.bindValue(
+		        WidgetProperties.text(SWT.Modify).observeDelayed(SCAFormEditor.getFieldBindingDelay(), ((BasicSimplePropertyComposite) getComposite()).getMaxText().getText()),
+		        maxObserver, EMFEmptyStringToNullUpdateValueStrategy.INSTANCE, null);
+	}
+
+	@Override
+	protected void addListeners() {
+		super.addListeners();
+		if (getComposite().getAddEnumButton() != null) {
+			getComposite().getAddEnumButton().addSelectionListener(new SelectionAdapter() {
+				@Override
+				public void widgetSelected(final SelectionEvent e) {
+					handleAddEnum();
+				}
+			});
+		}
+		if (getComposite().getEditEnumButton() != null) {
+			getComposite().getEditEnumButton().addSelectionListener(new SelectionAdapter() {
+				@Override
+				public void widgetSelected(final SelectionEvent e) {
+					handleEditEnumeration();
+				}
+			});
+		}
+		if (getComposite().getRemoveEnumButton() != null) {
+			getComposite().getRemoveEnumButton().addSelectionListener(new SelectionAdapter() {
+				@Override
+				public void widgetSelected(final SelectionEvent e) {
+					handleRemoveEnumeration();
+				}
+			});
+		}
+	}
+
+	@Override
+	protected BasicSimplePropertyComposite getComposite() {
+		return (BasicSimplePropertyComposite) super.getComposite();
+	}
+
+	private Enumeration getEnumerationViewerSelection() {
+		return (Enumeration) ((IStructuredSelection) getComposite().getEnumerationViewer().getSelection()).getFirstElement();
+	}
+
+	public void handleAddEnum() {
+		final EnumerationWizard wizard = new EnumerationWizard();
+
+		final WizardDialog dialog = new WizardDialog(getPage().getSite().getShell(), wizard);
+
+		if (dialog.open() == Window.OK) {
+			final Enumeration enumeration = wizard.getEnumeration();
+			if (enumeration != null) {
+				Command command = null;
+				if (input instanceof Simple) {
+					Enumerations enums = ((Simple) this.input).getEnumerations();
+					if (enums == null) {
+						enums = PrfFactory.eINSTANCE.createEnumerations();
+						enums.getEnumeration().add(enumeration);
+						command = SetCommand.create(getEditingDomain(), this.input, PrfPackage.Literals.SIMPLE__ENUMERATIONS, enums);
+					} else {
+						command = AddCommand.create(getEditingDomain(), enums, PrfPackage.Literals.ENUMERATIONS__ENUMERATION, enumeration);
+					}
+				}
+				execute(command);
+			}
+		}
+	}
+
+	/**
+	 * Handle edit enumeration.
+	 */
+	protected void handleEditEnumeration() {
+		final EnumerationWizard wizard = new EnumerationWizard();
+		final Enumeration enumeration = getEnumerationViewerSelection();
+
+		wizard.setEnumeration(enumeration);
+
+		final WizardDialog dialog = new WizardDialog(getPage().getSite().getShell(), wizard);
+
+		if (dialog.open() == Window.OK && input instanceof Simple) {
+			Simple simple = (Simple) input;
+			final Command command = ReplaceCommand.create(getEditingDomain(), simple.getEnumerations(), PrfPackage.Literals.ENUMERATIONS__ENUMERATION, enumeration,
+			        Collections.singleton(wizard.getEnumeration()));
+			execute(command);
+		}
+	}
+
+	/**
+	 * Handle enumeration removed.
+	 */
+	protected void handleRemoveEnumeration() {
+		Command command = null;
+		if (input instanceof Simple) {
+			Simple simple = (Simple) this.input;
+			if (simple.getEnumerations() != null) {
+				command = RemoveCommand.create(getEditingDomain(), simple.getEnumerations(), PrfPackage.Literals.ENUMERATIONS__ENUMERATION, getEnumerationViewerSelection());
+				if (simple.getEnumerations().getEnumeration().size() - 1 == 0) {
+					command = SetCommand.create(getEditingDomain(), this.input, PrfPackage.Literals.SIMPLE__ENUMERATIONS, null);
+				}
+			}
+		}
+		if (command != null && command.canExecute()) {
+			execute(command);
+		}
 	}
 
 }

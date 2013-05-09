@@ -71,7 +71,7 @@ public abstract class AbstractPropertyDetailsPage extends ScaDetails {
 	protected void addListeners() {
 		final Color color = AbstractPropertyDetailsPage.this.composite.getNameEntry().getText().getForeground();
 		final Color disabledColor = AbstractPropertyDetailsPage.this.composite.getDisplay().getSystemColor(SWT.COLOR_GRAY);
-	
+
 		this.composite.getNameEntry().getText().addModifyListener(new ModifyListener() {
 			public void modifyText(final ModifyEvent e) {
 				String actualName = (String) AbstractPropertyDetailsPage.this.composite.getNameEntry().getText().getData("actual-name");
@@ -83,8 +83,8 @@ public abstract class AbstractPropertyDetailsPage extends ScaDetails {
 						actualName = null;
 					}
 					AbstractPropertyDetailsPage.this.composite.getNameEntry().getText().setData("actual-name", actualName);
-				} 
-				
+				}
+
 				if (actualName == null) {
 					// If the actual name is null or empty string mark the text in grey
 					if (AbstractPropertyDetailsPage.this.composite.getNameEntry().getText().getForeground() != disabledColor) {
@@ -136,61 +136,60 @@ public abstract class AbstractPropertyDetailsPage extends ScaDetails {
 		this.nameTab = (((AbstractProperty) this.input).getName() == null);
 
 		// ID
-		retVal.add(dataBindingContext.bindValue(WidgetProperties.text(SWT.Modify).observeDelayed(SCAFormEditor.getFieldBindingDelay(),
-		        this.composite.getIdEntry().getText()),
-		        EMFEditObservables.observeValue(getEditingDomain(), input, this.property.getId()),
-		        new EMFEmptyStringToNullUpdateValueStrategy(),
-		        null));
-
-		final WritableValue value = new WritableValue();
-		value.addChangeListener(new IChangeListener() {
-
-			public void handleChange(final ChangeEvent event) {
-				if (AbstractPropertyDetailsPage.this.nameBinding != null && !AbstractPropertyDetailsPage.this.nameBinding.isDisposed()) {
-					AbstractPropertyDetailsPage.this.nameBinding.updateModelToTarget();
-				}
-			}
-		});
-
-		retVal.add(dataBindingContext.bindValue(value, EMFEditObservables.observeValue(getEditingDomain(), input, this.property.getId())));
-
-		this.nameBinding = dataBindingContext.bindValue(WidgetProperties.text(SWT.Modify).observeDelayed(SCAFormEditor.getFieldBindingDelay(),
-		        this.composite.getNameEntry().getText()),
-		        EMFEditObservables.observeValue(domain, input, this.property.getName()),
-		        new EMFUpdateValueStrategy() {
-			        @Override
-			        public Object convert(final Object value) {
-						String actualName = (String) AbstractPropertyDetailsPage.this.composite.getNameEntry().getText().getData("actual-name");
-			        	return actualName;
-			        }
-		        },
-		        new EMFUpdateValueStrategy() {
-			        @Override
-			        public Object convert(final Object value) {
-			        	AbstractPropertyDetailsPage.this.composite.getNameEntry().getText().setData("actual-name", value);
-				        if (value == null || value instanceof String && ((String) value).equals("")) {
-					        final String idValue = ((AbstractProperty) input).getId();
-					        return super.convert(idValue);
-				        }
-				        return super.convert(value);			        
-			        }
-		        });
+		if (getComposite().getIdEntry() != null) {
+			retVal.add(dataBindingContext.bindValue(WidgetProperties.text(SWT.Modify).observeDelayed(SCAFormEditor.getFieldBindingDelay(), this.composite.getIdEntry().getText()),
+			        EMFEditObservables.observeValue(getEditingDomain(), input, this.property.getId()), new EMFEmptyStringToNullUpdateValueStrategy(), null));
+		}
 
 		// Name
-		retVal.add(this.nameBinding);
+		if (getComposite().getNameEntry() != null) {
+			final WritableValue value = new WritableValue();
+			value.addChangeListener(new IChangeListener() {
+
+				public void handleChange(final ChangeEvent event) {
+					if (AbstractPropertyDetailsPage.this.nameBinding != null && !AbstractPropertyDetailsPage.this.nameBinding.isDisposed()) {
+						AbstractPropertyDetailsPage.this.nameBinding.updateModelToTarget();
+					}
+				}
+			});
+
+			retVal.add(dataBindingContext.bindValue(value, EMFEditObservables.observeValue(getEditingDomain(), input, this.property.getId())));
+
+			this.nameBinding = dataBindingContext.bindValue(
+			        WidgetProperties.text(SWT.Modify).observeDelayed(SCAFormEditor.getFieldBindingDelay(), this.composite.getNameEntry().getText()),
+			        EMFEditObservables.observeValue(domain, input, this.property.getName()), new EMFUpdateValueStrategy() {
+				        @Override
+				        public Object convert(final Object value) {
+					        String actualName = (String) AbstractPropertyDetailsPage.this.composite.getNameEntry().getText().getData("actual-name");
+					        return actualName;
+				        }
+			        }, new EMFUpdateValueStrategy() {
+				        @Override
+				        public Object convert(final Object value) {
+					        AbstractPropertyDetailsPage.this.composite.getNameEntry().getText().setData("actual-name", value);
+					        if (value == null || value instanceof String && ((String) value).equals("")) {
+						        final String idValue = ((AbstractProperty) input).getId();
+						        return super.convert(idValue);
+					        }
+					        return super.convert(value);
+				        }
+			        });
+
+
+			retVal.add(this.nameBinding);
+		}
 
 		// Mode
-		retVal.add(dataBindingContext.bindValue(ViewersObservables.observeSingleSelection(this.composite.getModeViewer()),
-		        EMFEditObservables.observeValue(domain, input, this.property.getMode()),
-		        null,
-		        null));
+		if (getComposite().getModeViewer() != null) {
+			retVal.add(dataBindingContext.bindValue(ViewersObservables.observeSingleSelection(this.composite.getModeViewer()),
+			        EMFEditObservables.observeValue(domain, input, this.property.getMode()), null, null));
+		}
 
 		// Description
-		retVal.add(dataBindingContext.bindValue(WidgetProperties.text(SWT.Modify).observeDelayed(SCAFormEditor.getFieldBindingDelay(),
-		        this.composite.getDescriptionText()),
-		        EMFEditObservables.observeValue(domain, input, this.property.getDescription()),
-		        new EMFEmptyStringToNullUpdateValueStrategy(),
-		        null));
+		if (getComposite().getDescriptionText() != null) {
+			retVal.add(dataBindingContext.bindValue(WidgetProperties.text(SWT.Modify).observeDelayed(SCAFormEditor.getFieldBindingDelay(), this.composite.getDescriptionText()),
+			        EMFEditObservables.observeValue(domain, input, this.property.getDescription()), new EMFEmptyStringToNullUpdateValueStrategy(), null));
+		}
 
 		this.setEditable();
 		return retVal;

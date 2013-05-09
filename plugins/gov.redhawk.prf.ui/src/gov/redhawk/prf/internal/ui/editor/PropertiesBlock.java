@@ -13,19 +13,19 @@
 package gov.redhawk.prf.internal.ui.editor;
 
 import gov.redhawk.prf.internal.ui.editor.detailspart.SimplePropertyDetailsPage;
-import gov.redhawk.prf.internal.ui.editor.detailspart.SimpleRefDetailsPage;
 import gov.redhawk.prf.internal.ui.editor.detailspart.SimpleSequencePropertyDetailsPage;
 import gov.redhawk.prf.internal.ui.editor.detailspart.StructPropertyDetailsPage;
 import gov.redhawk.prf.internal.ui.editor.detailspart.StructSequencePropertyDetailsPage;
+import gov.redhawk.prf.internal.ui.editor.detailspart.StructSequenceSimplePropertyDetailsPage;
+import gov.redhawk.prf.internal.ui.editor.detailspart.StructSequenceStructPropertyDetailsPage;
+import gov.redhawk.prf.internal.ui.editor.detailspart.StructSimplePropertyDetailsPage;
 import gov.redhawk.prf.ui.editor.page.PropertiesFormPage;
 import gov.redhawk.ui.editor.SCAMasterDetailsBlock;
 import gov.redhawk.ui.editor.ScaSection;
 import mil.jpeojtrs.sca.prf.Simple;
-import mil.jpeojtrs.sca.prf.SimpleRef;
 import mil.jpeojtrs.sca.prf.SimpleSequence;
 import mil.jpeojtrs.sca.prf.Struct;
 import mil.jpeojtrs.sca.prf.StructSequence;
-import mil.jpeojtrs.sca.prf.StructValue;
 
 import org.eclipse.emf.edit.domain.AdapterFactoryEditingDomain;
 import org.eclipse.swt.widgets.Composite;
@@ -41,6 +41,7 @@ public class PropertiesBlock extends SCAMasterDetailsBlock {
 
 	private static final int PAGE_LIMIT = 10;
 	private PropertiesSection fSection;
+
 
 	/**
 	 * Instantiates a new scrolled properties block.
@@ -64,7 +65,7 @@ public class PropertiesBlock extends SCAMasterDetailsBlock {
 	 */
 	@Override
 	protected ScaSection createMasterSection(final IManagedForm managedForm, final Composite parent) {
-		this.fSection = new PropertiesSection(getPage(), parent);
+		this.fSection = new PropertiesSection(this, parent);
 		return this.fSection;
 	}
 
@@ -80,33 +81,59 @@ public class PropertiesBlock extends SCAMasterDetailsBlock {
 	 */
 	@Override
 	protected void registerPages(final DetailsPart detailsPart) {
-		detailsPart.setPageLimit(PropertiesBlock.PAGE_LIMIT);
-		detailsPart.registerPage(Simple.class, new SimplePropertyDetailsPage(this.fSection));
-		detailsPart.registerPage(SimpleSequence.class, new SimpleSequencePropertyDetailsPage(this.fSection));
-		detailsPart.registerPage(Struct.class, new StructPropertyDetailsPage(this.fSection));
-		detailsPart.registerPage(StructSequence.class, new StructSequencePropertyDetailsPage(this.fSection));
-		detailsPart.registerPage(SimpleRef.class, new SimpleRefDetailsPage(this.fSection));
 		detailsPart.setPageProvider(new IDetailsPageProvider() {
 
 			public Object getPageKey(Object object) {
 				object = AdapterFactoryEditingDomain.unwrap(object);
 				if (object instanceof Simple) {
-					return Simple.class;
+					Simple s = (Simple) object;
+					if (s.eContainer() instanceof Struct) {
+						Struct struct = (Struct) s.eContainer();
+						if (struct.eContainer() instanceof StructSequence) {
+							return StructSequenceSimplePropertyDetailsPage.class;
+						} else {
+							return StructSimplePropertyDetailsPage.class;
+						}
+					} else {
+						return SimplePropertyDetailsPage.class;
+					}
 				} else if (object instanceof SimpleSequence) {
-					return SimpleSequence.class;
+					return SimpleSequencePropertyDetailsPage.class;
 				} else if (object instanceof Struct) {
-					return Struct.class;
+					Struct struct = (Struct) object;
+					if (struct.eContainer() instanceof StructSequence) {
+						return StructSequenceStructPropertyDetailsPage.class;
+					} else {
+						return StructPropertyDetailsPage.class;
+					}
 				} else if (object instanceof StructSequence) {
-					return StructSequence.class;
-				} else if (object instanceof StructValue) {
-					return StructValue.class;
-				} else if (object instanceof SimpleRef) {
-					return SimpleRef.class;
+					return StructSequencePropertyDetailsPage.class;
 				}
 				return null;
 			}
 
 			public IDetailsPage getPage(final Object key) {
+				if (key == StructSequenceSimplePropertyDetailsPage.class) {
+					return new StructSequenceSimplePropertyDetailsPage(fSection);
+				}
+				if (key == StructSimplePropertyDetailsPage.class) {
+					return new StructSimplePropertyDetailsPage(fSection);
+				}
+				if (key == SimplePropertyDetailsPage.class) {
+					return new SimplePropertyDetailsPage(fSection);
+				}
+				if (key == SimpleSequencePropertyDetailsPage.class) {
+					return new SimpleSequencePropertyDetailsPage(fSection);
+				}
+				if (key == StructSequenceStructPropertyDetailsPage.class) {
+					return new StructSequenceStructPropertyDetailsPage(fSection);
+				}
+				if (key == StructPropertyDetailsPage.class) {
+					return new StructPropertyDetailsPage(fSection);
+				}
+				if (key == StructSequencePropertyDetailsPage.class) {
+					return new StructSequencePropertyDetailsPage(fSection);
+				}
 				return null;
 			}
 		});

@@ -16,6 +16,7 @@ import gov.redhawk.prf.ui.provider.PropertiesEditorPrfItemProviderAdapterFactory
 import gov.redhawk.prf.ui.provider.PropertiesEditorStructSequenceItemProvider;
 import gov.redhawk.ui.util.SWTUtil;
 
+import java.util.ArrayList;
 import java.util.Collection;
 
 import mil.jpeojtrs.sca.prf.PrfPackage;
@@ -39,6 +40,7 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.TreeColumn;
@@ -58,22 +60,29 @@ public class StructSequencePropertyComposite extends BasicStructPropertyComposit
 	public StructSequencePropertyComposite(final Composite parent, final int style, final FormToolkit toolkit) {
 		super(parent, style, toolkit);
 		this.adapterFactory = this.createAdapterFactory();
-		setLayout(FormLayoutFactory.createSectionClientGridLayout(false, AbstractPropertyComposite.NUM_COLUMNS));
-		setLayoutData(new GridData(GridData.FILL_BOTH));
+		createControls(this, toolkit);
+	}
+	
+	protected void createControls(Composite parent, FormToolkit toolkit) {
+		parent.setLayout(FormLayoutFactory.createSectionClientGridLayout(false, AbstractPropertyComposite.NUM_COLUMNS));
 
-		createIDEntryField(toolkit, this);
-
-		createNameEntryField(toolkit, this);
-
+		createIDEntryField(toolkit, parent);
+		createNameEntryField(toolkit, parent);
 		createStructValueViewer(toolkit);
-
-		createConfigurationKindViewer(this, toolkit);
-
-		createMode(this, toolkit);
-
-		createDescription(this, toolkit);
-
-		toolkit.paintBordersFor(this);
+		createConfigurationKindViewer(parent, toolkit);
+		createModeViewer(parent, toolkit);
+		createDescription(parent, toolkit);
+		toolkit.paintBordersFor(parent);
+		
+		ArrayList<Control> tabList = new ArrayList<Control>();
+		
+		tabList.add(getIdEntry().getText());
+		tabList.add(this.structValueViewer.getControl().getParent());
+		tabList.add(getConfigurationKindViewer().getControl());
+		tabList.add(getModeViewer().getControl());
+		tabList.add(getDescriptionText());
+		
+		parent.setTabList(tabList.toArray(new Control[tabList.size()]));
 	}
 
 	private void createStructValueViewer(final FormToolkit toolkit) {
@@ -175,17 +184,10 @@ public class StructSequencePropertyComposite extends BasicStructPropertyComposit
 	@Override
 	public void setEditable(final boolean canEdit) {
 		super.setEditable(canEdit);
-		this.structValueViewer.getTree().setEnabled(canEdit);
+		if (this.structValueViewer != null) {
+			this.structValueViewer.getTree().setEnabled(canEdit);
+		}
 		//		this.addButton.setEnabled(canEdit);
 	}
 
-	@Override
-	public void createTabList() {
-		this.tabList.clear();
-		this.tabList.add(getIdEntry().getText());
-		this.tabList.add(this.structValueViewer.getControl().getParent());
-		this.tabList.add(getConfigurationKindViewer().getControl());
-		this.tabList.add(getModeViewer().getControl());
-		this.tabList.add(getDescriptionText());
-	};
 }

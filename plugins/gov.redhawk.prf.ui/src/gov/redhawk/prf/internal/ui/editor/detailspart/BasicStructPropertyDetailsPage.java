@@ -12,6 +12,7 @@
 package gov.redhawk.prf.internal.ui.editor.detailspart;
 
 import gov.redhawk.prf.internal.ui.editor.PropertiesSection;
+import gov.redhawk.prf.internal.ui.editor.composite.AbstractPropertyComposite;
 import gov.redhawk.prf.internal.ui.editor.composite.BasicStructPropertyComposite;
 
 import java.util.Collections;
@@ -53,8 +54,7 @@ public abstract class BasicStructPropertyDetailsPage extends AbstractPropertyDet
 	 */
 	@Override
 	protected List<Binding> bind(final DataBindingContext context, final EObject input) {
-		final BasicStructPropertyComposite composite = (BasicStructPropertyComposite) getComposite();
-		composite.getConfigurationKindViewer().setCheckedElements(Collections.EMPTY_LIST.toArray());
+		
 
 		final EditingDomain domain = getEditingDomain();
 		this.input = input;
@@ -63,9 +63,17 @@ public abstract class BasicStructPropertyDetailsPage extends AbstractPropertyDet
 		final List<Binding> retVal = super.bind(context, input);
 
 		// Configuration Kind
-		createKindBinding(context, input, domain, retVal);
+		if (getComposite().getConfigurationKindViewer() != null) {
+			getComposite().getConfigurationKindViewer().setCheckedElements(Collections.EMPTY_LIST.toArray());
+			createKindBinding(context, input, domain, retVal);	
+		}
 
 		return retVal;
+	}
+	
+	@Override
+	protected BasicStructPropertyComposite getComposite() {
+	    return (BasicStructPropertyComposite) super.getComposite();
 	}
 
 	private void createKindBinding(final DataBindingContext context, final EObject input, final EditingDomain domain, final List<Binding> retVal) {

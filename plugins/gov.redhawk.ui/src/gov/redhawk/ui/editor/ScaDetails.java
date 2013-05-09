@@ -54,16 +54,14 @@ public abstract class ScaDetails extends AbstractFormPart implements IDetailsPag
 	 */
 	public final void createContents(final Composite parent) {
 
-		GridLayoutFactory.fillDefaults().applyTo(parent);
+		GridLayoutFactory.fillDefaults().numColumns(1).applyTo(parent);
 
-		this.mainDetailComposite = new Composite(parent, SWT.NONE);
+		this.mainDetailComposite = getToolkit().createComposite(parent, SWT.NONE);
 		this.mainDetailComposite.setLayout(FormLayoutFactory.createDetailsGridLayout(false, 1));
 		// GridLayoutFactory.fillDefaults().numColumns(1).applyTo(this._mainDetailComposite);
 		GridDataFactory.fillDefaults().grab(true, true).applyTo(this.mainDetailComposite);
 
 		createSpecificContent(this.mainDetailComposite);
-
-		getToolkit().adapt(this.mainDetailComposite);
 	}
 
 	protected abstract void createSpecificContent(Composite parent);

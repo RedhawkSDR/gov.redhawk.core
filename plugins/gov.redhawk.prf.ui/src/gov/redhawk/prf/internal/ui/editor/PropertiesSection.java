@@ -93,6 +93,7 @@ public class PropertiesSection extends TreeSection implements IPropertyChangeLis
 	private boolean deleteTriggered = false;
 	private Properties properties;
 	private Integer lastIndex = 0;
+	private PropertiesBlock block;
 
 	/**
 	 * The Constructor.
@@ -100,9 +101,10 @@ public class PropertiesSection extends TreeSection implements IPropertyChangeLis
 	 * @param page the page
 	 * @param parent the parent
 	 */
-	public PropertiesSection(final PropertiesFormPage page, final Composite parent) {
-		super(page, parent, Section.DESCRIPTION, new String[] { "Add Simple", "Add Sequence", "Add Struct", "Add StructSeq", "Browse...", "Remove" });
+	public PropertiesSection(PropertiesBlock block, final Composite parent) {
+		super(block.getPage(), parent, Section.DESCRIPTION, new String[] { "Add Simple", "Add Sequence", "Add Struct", "Add StructSeq", "Browse...", "Remove" });
 		this.fHandleDefaultButton = false;
+		this.block = block;
 	}
 
 	/**
@@ -114,17 +116,21 @@ public class PropertiesSection extends TreeSection implements IPropertyChangeLis
 		switch (index) {
 		case BUTTON_ADD_SIMPLE:
 			PropertyHandler.addSimple(getAdapterFactory(), getEditingDomain(), getProperties());
+			block.getDetailsPart().setFocus();
 			break;
 		case BUTTON_ADD_SIMPLE_SEQUENCE:
 			//Always add a simplesequence to the root properties
 			PropertyHandler.addSimpleSequence(getAdapterFactory(), getEditingDomain(), getProperties());
+			block.getDetailsPart().setFocus();
 			break;
 		case BUTTON_ADD_STRUCT:
 			PropertyHandler.addStruct(getAdapterFactory(), getEditingDomain(), getProperties());
+			block.getDetailsPart().setFocus();
 			break;
 		case BUTTON_ADD_STRUCT_SEQUENCE:
 			//Always add a structsequence to the root properties
 			PropertyHandler.addStructSequence(getAdapterFactory(), getEditingDomain(), getProperties());
+			block.getDetailsPart().setFocus();
 			break;
 		case BUTTON_BROWSE:
 			handleBrowse();
