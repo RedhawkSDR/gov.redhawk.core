@@ -34,11 +34,15 @@ import org.eclipse.jface.viewers.ViewerComparator;
 import org.eclipse.jface.viewers.ViewerFilter;
 import org.eclipse.jface.viewers.ViewerSorter;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.MouseEvent;
+import org.eclipse.swt.events.MouseWheelListener;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.forms.IFormColors;
 import org.eclipse.ui.forms.widgets.FormToolkit;
@@ -109,6 +113,14 @@ public abstract class BasicSimplePropertyComposite extends AbstractPropertyCompo
 		this.actionLabel.setForeground(toolkit.getColors().getColor(IFormColors.TITLE));
 		this.actionLabel.setLayoutData(GridDataFactory.fillDefaults().align(SWT.BEGINNING, SWT.BEGINNING).create());
 		final ComboViewer viewer = new ComboViewer(parent, SWT.DROP_DOWN | SWT.READ_ONLY);
+		viewer.getCombo().addListener(SWT.MouseVerticalWheel, new Listener() {
+
+			public void handleEvent(Event event) {
+				// Disable Mouse Wheel Combo Box Control
+				event.doit = false;
+			}
+
+		});
 		toolkit.adapt(viewer.getCombo());
 		final List<Object> input = new ArrayList<Object>();
 		input.addAll(ActionType.VALUES);
@@ -215,6 +227,14 @@ public abstract class BasicSimplePropertyComposite extends AbstractPropertyCompo
 		final Label label = toolkit.createLabel(parent, "Type*:");
 		label.setForeground(toolkit.getColors().getColor(IFormColors.TITLE));
 		this.typeViewer = new ComboViewer(parent, SWT.DROP_DOWN | SWT.READ_ONLY);
+		this.typeViewer.getCombo().addListener(SWT.MouseVerticalWheel, new Listener() {
+
+			public void handleEvent(Event event) {
+				// Disable Mouse Wheel Combo Box Control
+				event.doit = false;
+			}
+
+		});
 		this.typeViewer.setContentProvider(new ArrayContentProvider());
 		this.typeViewer.setLabelProvider(new LabelProvider());
 		this.typeViewer.setInput(PropertyValueType.values());

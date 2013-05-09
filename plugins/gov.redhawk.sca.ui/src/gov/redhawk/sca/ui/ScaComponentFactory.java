@@ -65,6 +65,8 @@ import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.FontData;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Event;
+import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.Tree;
 import org.eclipse.ui.ISharedImages;
@@ -360,6 +362,14 @@ public final class ScaComponentFactory {
 	public static Viewer createEnumPropertyViewer(final Composite parent, final int style, final ScaSimpleProperty prop) {
 		if (prop.getDefinition().getEnumerations() != null) {
 			final ComboViewer viewer = new ComboViewer(parent, style);
+			viewer.getCombo().addListener(SWT.MouseVerticalWheel, new Listener() {
+
+				public void handleEvent(Event event) {
+					// Disable Mouse Wheel Combo Box Control
+					event.doit = false;
+				}
+
+			});
 			viewer.setLabelProvider(new LabelProvider() {
 				@Override
 				public String getText(final Object element) {

@@ -24,7 +24,7 @@ import org.omg.PortableServer.POAManagerPackage.AdapterInactive;
 public class OrbSession {
 
 	private static Map<String, OrbSession> sessionMap = Collections.synchronizedMap(new WeakHashMap<String, OrbSession>());
-	
+
 	/**
 	 * Returns a "global" orb session
 	 * @return Session
@@ -90,7 +90,7 @@ public class OrbSession {
 	public String getId() {
 		return id;
 	}
-	
+
 	public ORB getOrb() {
 	    return orb;
     }
@@ -111,8 +111,7 @@ public class OrbSession {
 				destroy = true;
 			}
         }
-		
-		if (destroy) {
+		if (destroy){
 			if (orb != null) {
 				orb.destroy();
 			}
@@ -134,7 +133,7 @@ public class OrbSession {
 		}
 		return this.poa;
 	}
-	
+
 	@Override
 	protected synchronized void finalize() throws Throwable {
 	    super.finalize();

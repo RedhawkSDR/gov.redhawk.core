@@ -26,7 +26,10 @@ public class PropertyEditorFactory {
 	public static PropertyEditor getPropertyEditor(ScaAbstractProperty<?> prop) {
 		String name = prop.getName();
 		if (name == null) {
-			name = "";
+			name = prop.getId();
+		}
+		if (name == null) {
+			name = "(Invalid Property)";
 		}
 		PropertyValueType type = null;
 		if (prop instanceof ScaSimpleProperty) {

@@ -38,7 +38,9 @@ import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Text;
 
 public class DecimalPropertyEditor< T extends Number > extends PropertyEditor {
@@ -210,30 +212,19 @@ public class DecimalPropertyEditor< T extends Number > extends PropertyEditor {
 		this.context = new EMFDataBindingContext();
 		if (this.enumViewer == null) {
 			final ScaSimplePropertyControl scaSimplePropertyControl = new ScaSimplePropertyControl(this.control, this.prop);
-			final ISWTObservableValue textObservable = WidgetProperties.text(new int[] {
-			        SWT.FocusOut, SWT.DefaultSelection
-			}).observe(this.control);
+			final ISWTObservableValue textObservable = WidgetProperties.text(new int[] { SWT.FocusOut, SWT.DefaultSelection }).observe(this.control);
 			this.context.bindValue(textObservable, scaSimplePropertyControl.getModel(), new DecimalUpdateValueStrategy2(), new DecimalUpdateValueStrategy3());
 			this.context.bindValue(WidgetProperties.text(SWT.Modify).observeDelayed(UPDATE_DELAY_MS, this.control), scaSimplePropertyControl.getEditingObserable());
-			this.context.bindValue(scaSimplePropertyControl.getTarget(),
-			        EMFObservables.observeValue(this.prop, ScaPackage.Literals.SCA_SIMPLE_PROPERTY__VALUE),
-			        new DecimalUpdateValueStrategy(),
-			        new DecimalUpdateValueStrategy());
+			this.context.bindValue(scaSimplePropertyControl.getTarget(), EMFObservables.observeValue(this.prop, ScaPackage.Literals.SCA_SIMPLE_PROPERTY__VALUE),
+			        new DecimalUpdateValueStrategy(), new DecimalUpdateValueStrategy());
 		} else {
 			final ScaSimplePropertyControl scaSimplePropertyControl = new ScaSimplePropertyControl(this.enumViewer.getControl(), this.prop);
 			final ISWTObservableValue selectObservable = WidgetProperties.selection().observe(this.enumViewer.getCombo());
-			this.context.bindValue(selectObservable,
-			        scaSimplePropertyControl.getModel(),
-			        new SelectionToLocalValueStrategy(),
-			        new LocalToSelectionValueStrategy());
-			this.context.bindValue(SWTObservables.observeSelection(this.enumViewer.getCombo()),
-			        scaSimplePropertyControl.getEditingObserable(),
-			        new SelectionToLocalValueStrategy(),
-			        null);
-			this.context.bindValue(scaSimplePropertyControl.getTarget(),
-			        EMFObservables.observeValue(this.prop, ScaPackage.Literals.SCA_SIMPLE_PROPERTY__VALUE),
-			        new DecimalUpdateValueStrategy(),
-			        null);
+			this.context.bindValue(selectObservable, scaSimplePropertyControl.getModel(), new SelectionToLocalValueStrategy(), new LocalToSelectionValueStrategy());
+			this.context.bindValue(SWTObservables.observeSelection(this.enumViewer.getCombo()), scaSimplePropertyControl.getEditingObserable(),
+			        new SelectionToLocalValueStrategy(), null);
+			this.context.bindValue(scaSimplePropertyControl.getTarget(), EMFObservables.observeValue(this.prop, ScaPackage.Literals.SCA_SIMPLE_PROPERTY__VALUE),
+			        new DecimalUpdateValueStrategy(), null);
 		}
 	}
 
@@ -279,6 +270,14 @@ public class DecimalPropertyEditor< T extends Number > extends PropertyEditor {
 				((Text) this.control).setText(this.form.format(this.value));
 			} else {
 				this.enumViewer = new ComboViewer(parent, SWT.NONE);
+				this.enumViewer.getCombo().addListener(SWT.MouseVerticalWheel, new Listener() {
+
+					public void handleEvent(Event event) {
+						// Disable Mouse Wheel Combo Box Control
+						event.doit = false;
+					}
+
+				});
 				GridDataFactory.fillDefaults().grab(true, false).applyTo(this.enumViewer.getControl());
 				this.enumViewer.setContentProvider(new EnumValuesContentProvider());
 				this.enumViewer.setLabelProvider(new EnumValuesLabelProvider());
