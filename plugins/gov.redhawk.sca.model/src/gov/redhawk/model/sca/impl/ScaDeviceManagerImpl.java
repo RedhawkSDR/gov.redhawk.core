@@ -21,10 +21,12 @@ import gov.redhawk.model.sca.ScaDevice;
 import gov.redhawk.model.sca.ScaDeviceManager;
 import gov.redhawk.model.sca.ScaDeviceManagerFileSystem;
 import gov.redhawk.model.sca.ScaDomainManager;
+import gov.redhawk.model.sca.ScaFactory;
 import gov.redhawk.model.sca.ScaModelPlugin;
 import gov.redhawk.model.sca.ScaPackage;
 import gov.redhawk.model.sca.ScaPort;
 import gov.redhawk.model.sca.ScaPortContainer;
+import gov.redhawk.model.sca.ScaPropertyContainer;
 import gov.redhawk.model.sca.ScaService;
 import gov.redhawk.model.sca.commands.MergePortsCommand;
 import gov.redhawk.model.sca.commands.MergePortsCommand.PortData;
@@ -65,6 +67,7 @@ import org.eclipse.emf.common.notify.impl.AdapterImpl;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
@@ -87,8 +90,10 @@ import CF.Device;
 import CF.DeviceManager;
 import CF.DeviceManagerHelper;
 import CF.DeviceManagerOperations;
+import CF.ExecutableDeviceHelper;
 import CF.FileSystem;
 import CF.InvalidObjectReference;
+import CF.LoadableDeviceHelper;
 import CF.PortSupplierOperations;
 import CF.PropertiesHolder;
 import CF.UnknownProperties;
@@ -1326,11 +1331,11 @@ public class ScaDeviceManagerImpl extends ScaPropertyContainerImpl<DeviceManager
 						}
 					}
 				}
-				transaction.append(DeviceContainerHelper.fetchDevices(subMonitor.newChild(1),
+				transaction.append(fetchDevices(subMonitor.newChild(1),
 				        this,
 				        getRootDevices(),
 				        newRootDevices.toArray(new Device[newRootDevices.size()])));
-				transaction.append(DeviceContainerHelper.fetchDevices(subMonitor.newChild(1),
+				transaction.append(fetchDevices(subMonitor.newChild(1),
 				        this,
 				        getChildDevices(),
 				        newChildDevices.toArray(new Device[newChildDevices.size()])));
@@ -1361,6 +1366,91 @@ public class ScaDeviceManagerImpl extends ScaPropertyContainerImpl<DeviceManager
 		}
 		subMonitor.done();
 		// BEGIN GENERATED CODE
+	}
+	
+	protected static class DeviceData {
+		private final Device dev;
+		private final EClass deviceType;
+
+		private DeviceData(Device dev, EClass deviceType) {
+			super();
+			this.dev = dev;
+			this.deviceType = deviceType;
+		}
+	}
+	
+	protected Command fetchDevices(IProgressMonitor monitor,
+	        final ScaPropertyContainer< ? , ? > container,
+	        final List<ScaDevice< ? >> deviceList,
+	        Device[] corbaDevices) {
+		SubMonitor subMonitor = SubMonitor.convert(monitor, 2);
+		final Map<String, DeviceData> newDevices = new HashMap<String, DeviceData>();
+		if (corbaDevices != null) {
+			SubMonitor deviceMonitor = subMonitor.newChild(1);
+			deviceMonitor.beginTask("Init Device", corbaDevices.length);
+			for (final Device dev : corbaDevices) {
+				EClass type = getType(dev);
+				
+				newDevices.put(dev.toString(), new DeviceData(dev, type));
+			}
+		} else {
+			subMonitor.setWorkRemaining(1);
+		}
+
+		return new ScaModelCommand() {
+
+			public void execute() {
+				mergeDevices(deviceList, newDevices);
+			}
+
+		};
+	}
+	
+	protected void mergeDevices(final List<ScaDevice< ? >> deviceList, final Map<String, DeviceData> newDevices) {
+		// END GENERATED CODE
+		// Perform Actions	
+		// Setup Current Device List
+		final Map<String, ScaDevice< ? >> scaDevices = new HashMap<String, ScaDevice< ? >>();
+		for (final ScaDevice< ? > device : deviceList) {
+			scaDevices.put(device.getIor(), device);
+		}
+
+		// Setup Remove devices list that have been deleted
+		final Map<String, ScaDevice< ? >> removeDevices = new HashMap<String, ScaDevice< ? >>();
+		removeDevices.putAll(scaDevices);
+		removeDevices.keySet().removeAll(newDevices.keySet());
+
+		// Remove Duplicates
+		newDevices.keySet().removeAll(scaDevices.keySet());
+
+		// Remove Devices
+		deviceList.removeAll(removeDevices.values());
+
+		// Add devices
+		for (DeviceData dev : newDevices.values()) {
+			ScaDevice< ? > newDevice = createType(dev.deviceType);
+			deviceList.add(newDevice);
+			newDevice.setCorbaObj(dev.dev);
+		}
+		
+		// Do this to ensure we always set the list
+		if (newDevices.isEmpty() && deviceList.isEmpty()) {
+			deviceList.clear();
+		}
+	}
+
+	protected EClass getType(Device dev) {
+		EClass type = ScaPackage.Literals.SCA_DEVICE;
+		if (dev._is_a(ExecutableDeviceHelper.id())) {
+			type = ScaPackage.Literals.SCA_EXECUTABLE_DEVICE;
+		} else if (dev._is_a(LoadableDeviceHelper.id())) {
+			type = ScaPackage.Literals.SCA_LOADABLE_DEVICE;
+		}
+	    return type;
+    }
+	
+	protected ScaDevice< ? > createType(EClass type) {
+		return (ScaDevice< ? >) ScaFactory.eINSTANCE.create(type);
 	}
 
 	/**

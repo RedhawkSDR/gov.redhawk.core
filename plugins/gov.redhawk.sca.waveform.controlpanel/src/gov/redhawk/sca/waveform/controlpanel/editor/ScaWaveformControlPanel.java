@@ -33,6 +33,7 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.emf.common.notify.Adapter;
+import org.eclipse.emf.common.notify.Notifier;
 import org.eclipse.emf.common.notify.impl.AdapterImpl;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EObject;
@@ -69,19 +70,25 @@ public class ScaWaveformControlPanel< T extends EObject > extends AbstractScaCon
 		public void notifyChanged(final org.eclipse.emf.common.notify.Notification msg) {
 			switch (msg.getFeatureID(gov.redhawk.model.sca.IDisposable.class)) {
 			case ScaPackage.IDISPOSABLE__DISPOSED:
-				if (msg.getNewBooleanValue() && !ScaWaveformControlPanel.this.parent.isDisposed()) {
-					if (ScaWaveformControlPanel.this.parent == null) {
-						return;
-					}
-					final UIJob job = new UIJob(ScaWaveformControlPanel.this.parent.getDisplay(), "Close Editor job") {
-
-						@Override
-						public IStatus runInUIThread(final IProgressMonitor monitor) {
-							getSite().getPage().closeEditor(ScaWaveformControlPanel.this, true);
-							return Status.OK_STATUS;
+				if (msg.getNewBooleanValue()) {
+					if (!ScaWaveformControlPanel.this.parent.isDisposed()) {
+						if (ScaWaveformControlPanel.this.parent == null) {
+							return;
 						}
-					};
-					job.schedule();
+						final UIJob job = new UIJob(ScaWaveformControlPanel.this.parent.getDisplay(), "Close Editor job") {
+	
+							@Override
+							public IStatus runInUIThread(final IProgressMonitor monitor) {
+								getSite().getPage().closeEditor(ScaWaveformControlPanel.this, true);
+								return Status.OK_STATUS;
+							}
+						};
+						job.schedule();
+					}
+					if (msg.getNotifier() instanceof Notifier) {
+						Notifier n = (Notifier) msg.getNotifier();
+						n.eAdapters().remove(this);
+					}
 				}
 				break;
 			default:
@@ -143,7 +150,7 @@ public class ScaWaveformControlPanel< T extends EObject > extends AbstractScaCon
 			} catch (final InterruptedException e) {
 				// PASS
 			}
-			final String name = inputWaveform.getName();
+			final String name = inputWaveform.getName() == null ? inputWaveform.getIdentifier() : inputWaveform.getName();
 			/* Previously there was a bug with GTK on Linux, wherein last word in title is not displayed. Seems to be
 			 * fixed now, but leaving the workaround as comment in case the bug re-appears
 			 **/

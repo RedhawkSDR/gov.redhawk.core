@@ -28,7 +28,9 @@ import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.forms.IFormColors;
 import org.eclipse.ui.forms.widgets.FormToolkit;
@@ -85,6 +87,14 @@ public abstract class AbstractPropertyComposite extends Composite implements ISc
 		this.modeLabel.setForeground(toolkit.getColors().getColor(IFormColors.TITLE));
 		this.modeLabel.setLayoutData(GridDataFactory.fillDefaults().align(SWT.BEGINNING, SWT.BEGINNING).create());
 		final ComboViewer viewer = new ComboViewer(parent, SWT.DROP_DOWN | SWT.READ_ONLY);
+		viewer.getCombo().addListener(SWT.MouseVerticalWheel, new Listener() {
+
+			public void handleEvent(Event event) {
+				// Disable Mouse Wheel Combo Box Control
+				event.doit = false;
+			}
+
+		});
 		toolkit.adapt(viewer.getCombo());
 		viewer.getControl().setLayoutData(AbstractPropertyComposite.FACTORY.create());
 		viewer.setContentProvider(new ArrayContentProvider());
