@@ -1,8 +1,8 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: NeXtMidas Plot RAP Integration
+Bundle-Name: SCA Port NeXtMidas Plot RAP Integration
 Bundle-SymbolicName: gov.redhawk.ui.port.nxmplot.rap;singleton:=true
-Bundle-Version: 1.0.0.qualifier
+Bundle-Version: 1.1.0.qualifier
 Bundle-Vendor: REDHAWK
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Require-Bundle: org.eclipse.equinox.http.registry,
