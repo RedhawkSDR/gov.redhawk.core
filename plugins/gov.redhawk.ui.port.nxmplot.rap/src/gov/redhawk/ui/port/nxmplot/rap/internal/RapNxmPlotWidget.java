@@ -26,16 +26,12 @@ import org.eclipse.core.runtime.Assert;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Display;
 
 /**
  *
  */
 public class RapNxmPlotWidget extends AbstractNxmPlotWidget {
 
-	/**
-	 *
-	 */
     private static final long serialVersionUID = -3610272766732782615L;
     private static final String PLOT_ID = "PLOT";
 	private NxmRapComposite nxmComp;
@@ -61,7 +57,7 @@ public class RapNxmPlotWidget extends AbstractNxmPlotWidget {
 		if (plotSwitches == null) {
 			plotSwitches = "";
 		}
-		nxmComp.runClientCommand("plot" + plotSwitches + "/bg/ID=" + PLOT_ID + " " + plotArgs);
+		nxmComp.runClientCommand("PLOT" + plotSwitches + "/BG/ID=" + PLOT_ID + " " + plotArgs);
 	}
 
 	@Override
@@ -70,6 +66,7 @@ public class RapNxmPlotWidget extends AbstractNxmPlotWidget {
 		for (String source : sourcesCopy) {
 			removeSource(source);
 		}
+		runClientCommand("PIPE STOP"); // tell client macro to end
 	    super.dispose();
 	    nxmComp = null;
 	}
@@ -99,12 +96,12 @@ public class RapNxmPlotWidget extends AbstractNxmPlotWidget {
 		// Copy pipe reference from sub-shell into global shell
 		NxmRapComposite.getRootNxmShell().M.pipes.put(sourcePipeId, nxmComp.getNxmShell().M.pipes.get(sourcePipeId));
 
-		// Publish pipe on rmif
+		// Publish pipe on RMIF
 		nxmComp.getRmifPrim().getRmif().addProperty(sourcePipeId);
 
 		// From Client openFile
-		nxmComp.runClientCommand("sendto RMIF_SESSION ADDC {" + sourcePipeId + "=" + sourcePipeId + "} INFO=-1");
-		nxmComp.runClientCommand("sendto " + " " + PLOT_ID + " OPENFILE " + sourcePipeId);
+		nxmComp.runClientCommand("SENDTO RMIF_SESSION ADDC {" + sourcePipeId + "=" + sourcePipeId + "} INFO=-1");
+		nxmComp.runClientCommand("SENDTO " + PLOT_ID + " OPENFILE " + sourcePipeId);
 
 		this.sources.add(sourcePipeId);
 	}
@@ -113,14 +110,15 @@ public class RapNxmPlotWidget extends AbstractNxmPlotWidget {
 	public void addSource(String sourcePipeId, String plotQualifiers) {
 		assertNotDisposed();
 		// Copy pipe reference from sub-shell into global shell
-		NxmRapComposite.getRootNxmShell().M.pipes.put(sourcePipeId, nxmComp.getNxmShell().M.pipes.get(sourcePipeId));
+		Object pipeInSubShell = nxmComp.getNxmShell().M.pipes.get(sourcePipeId);
+		NxmRapComposite.getRootNxmShell().M.pipes.put(sourcePipeId, pipeInSubShell);
 
-		// Publish pipe on rmif
+		// Publish pipe on RMIF
 		nxmComp.getRmifPrim().getRmif().addProperty(sourcePipeId);
 
 		// From Client openFile
-		nxmComp.runClientCommand("sendto RMIF_SESSION ADDC {" + sourcePipeId + "=" + sourcePipeId + "} INFO=-1");
-		nxmComp.runClientCommand("sendto " + " " + PLOT_ID + " OPENFILE " + sourcePipeId + (plotQualifiers == null ? "" : plotQualifiers));
+		nxmComp.runClientCommand("SENDTO RMIF_SESSION ADDC {" + sourcePipeId + "=" + sourcePipeId + "} INFO=-1");
+		nxmComp.runClientCommand("SENDTO " + PLOT_ID + " OPENFILE " + sourcePipeId + (plotQualifiers == null ? "" : plotQualifiers));
 
 		this.sources.add(sourcePipeId);
 	}
@@ -129,16 +127,16 @@ public class RapNxmPlotWidget extends AbstractNxmPlotWidget {
 	public void removeSource(String sourcePipeId) {
 		assertNotDisposed();
 		// From Client closeFIle
-		nxmComp.runClientCommand("sendto " + PLOT_ID + " CLOSEFIE " + sourcePipeId);
+		nxmComp.runClientCommand("SENDTO " + PLOT_ID + " CLOSEFILE " + sourcePipeId);
 
 		// From Client via RMIF disconnect pipe
-		nxmComp.runClientCommand("sendto RMIF DELC " + sourcePipeId);
+		nxmComp.runClientCommand("SENDTO RMIF DELC " + sourcePipeId);
 
-		// UnPublish pipe on rmif
+		// UnPublish pipe on RMIF
 		nxmComp.getRmifPrim().getRmif().closeChannel(sourcePipeId);
 
-		// From Server remove reference from global registry
-		nxmComp.runServerCommand("remove/global RAM." + sourcePipeId);
+		// From Server remove pipe reference from global registry
+		nxmComp.runServerCommand("REMOVE/global RAM." + sourcePipeId);
 
 		this.sources.remove(sourcePipeId);
 	}
@@ -146,14 +144,14 @@ public class RapNxmPlotWidget extends AbstractNxmPlotWidget {
 	@Override
 	public void sendPlotMessage(String msgName, int info, Object data) {
 		assertNotDisposed();
-		nxmComp.runClientCommand("sendto " + PLOT_ID + " " + msgName + " " + data + " INFO=" + info);
+		nxmComp.runClientCommand("SENDTO " + PLOT_ID + " " + msgName + " " + data + " INFO=" + info);
 	}
 
 	@Override
 	public void configurePlot(Map<String, String> configuration) {
 		assertNotDisposed();
 		for (Map.Entry<String, String> entry : configuration.entrySet()) {
-			nxmComp.runClientCommand("set " + "REG." + PLOT_ID + "." + entry.getKey() + " " + entry.getValue());
+			nxmComp.runClientCommand("SET " + "REG." + PLOT_ID + "." + entry.getKey() + " " + entry.getValue());
 		}
 	}
 
@@ -182,7 +180,7 @@ public class RapNxmPlotWidget extends AbstractNxmPlotWidget {
 
 	@Override
 	public void removeFeature(String featureId) {
-		final String command = "invoke junk reg." + PLOT_ID + ".removeFeature(\"" + featureId + "\")";
+		final String command = "INVOKE retval REG." + PLOT_ID + ".removeFeature(\"" + featureId + "\")";
 		this.runClientCommand(command);
 	}
 
