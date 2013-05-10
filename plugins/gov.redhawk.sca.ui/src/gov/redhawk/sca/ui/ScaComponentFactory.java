@@ -362,14 +362,7 @@ public final class ScaComponentFactory {
 	public static Viewer createEnumPropertyViewer(final Composite parent, final int style, final ScaSimpleProperty prop) {
 		if (prop.getDefinition().getEnumerations() != null) {
 			final ComboViewer viewer = new ComboViewer(parent, style);
-			viewer.getCombo().addListener(SWT.MouseVerticalWheel, new Listener() {
-
-				public void handleEvent(Event event) {
-					// Disable Mouse Wheel Combo Box Control
-					event.doit = false;
-				}
-
-			});
+			CompatibilityUtil.disableComboWheelScrollSelect(viewer);
 			viewer.setLabelProvider(new LabelProvider() {
 				@Override
 				public String getText(final Object element) {

@@ -11,7 +11,11 @@
  */
 package gov.redhawk.sca.ui.compatibility;
 
+import org.eclipse.jface.viewers.ComboViewer;
+import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.FontData;
+import org.eclipse.swt.widgets.Event;
+import org.eclipse.swt.widgets.Listener;
 
 /**
  * @since 10.0
@@ -27,5 +31,16 @@ public class CompatibilityUtil {
      */
 	public static void setFontDataStyle(FontData fontData, int style) {
 		fontData.setStyle(style);
+	}
+	
+	public static void disableComboWheelScrollSelect(ComboViewer viewer) {
+		viewer.getCombo().addListener(SWT.MouseVerticalWheel, new Listener() {
+
+			public void handleEvent(Event event) {
+				// Disable Mouse Wheel Combo Box Control
+				event.doit = false;
+			}
+
+		});
 	}
 }

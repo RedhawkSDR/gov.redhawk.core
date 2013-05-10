@@ -11,6 +11,7 @@
  */
 package gov.redhawk.sca.ui.compatibility;
 
+import org.eclipse.jface.viewers.ComboViewer;
 import org.eclipse.swt.graphics.FontData;
 
 public class CompatibilityUtil {
@@ -20,6 +21,10 @@ public class CompatibilityUtil {
 	}
 	
 	public static void setFontDataStyle(FontData fontData, int style) {
-		//Cannot set style on font data in RAP
+		// Cannot set style on font data in RAP
+	}
+	
+	public static void disableComboWheelScrollSelect(ComboViewer viewer) {
+		// Does not support mouse wheel do nothing
 	}
 }
