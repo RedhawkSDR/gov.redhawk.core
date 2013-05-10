@@ -1,4 +1,4 @@
-/** 
+/**
  * This file is protected by Copyright. 
  * Please refer to the COPYRIGHT file distributed with this source distribution.
  * 
@@ -1367,18 +1367,27 @@ public class ScaDeviceManagerImpl extends ScaPropertyContainerImpl<DeviceManager
 		subMonitor.done();
 		// BEGIN GENERATED CODE
 	}
-	
+
+	/**
+	 * @since 17.0
+	 */
 	protected static class DeviceData {
 		private final Device dev;
 		private final EClass deviceType;
 
+		/**
+		 * @since 17.0
+		 */
 		private DeviceData(Device dev, EClass deviceType) {
 			super();
 			this.dev = dev;
 			this.deviceType = deviceType;
 		}
 	}
-	
+
+	/**
+	 * @since 17.0
+	 */
 	protected Command fetchDevices(IProgressMonitor monitor,
 	        final ScaPropertyContainer< ? , ? > container,
 	        final List<ScaDevice< ? >> deviceList,
@@ -1390,7 +1399,7 @@ public class ScaDeviceManagerImpl extends ScaPropertyContainerImpl<DeviceManager
 			deviceMonitor.beginTask("Init Device", corbaDevices.length);
 			for (final Device dev : corbaDevices) {
 				EClass type = getType(dev);
-				
+
 				newDevices.put(dev.toString(), new DeviceData(dev, type));
 			}
 		} else {
@@ -1405,10 +1414,13 @@ public class ScaDeviceManagerImpl extends ScaPropertyContainerImpl<DeviceManager
 
 		};
 	}
-	
+
+	/**
+	 * @since 17.0
+	 */
 	protected void mergeDevices(final List<ScaDevice< ? >> deviceList, final Map<String, DeviceData> newDevices) {
 		// END GENERATED CODE
-		// Perform Actions	
+		// Perform Actions
 		// Setup Current Device List
 		final Map<String, ScaDevice< ? >> scaDevices = new HashMap<String, ScaDevice< ? >>();
 		for (final ScaDevice< ? > device : deviceList) {
@@ -1432,13 +1444,16 @@ public class ScaDeviceManagerImpl extends ScaPropertyContainerImpl<DeviceManager
 			deviceList.add(newDevice);
 			newDevice.setCorbaObj(dev.dev);
 		}
-		
+
 		// Do this to ensure we always set the list
 		if (newDevices.isEmpty() && deviceList.isEmpty()) {
 			deviceList.clear();
 		}
 	}
 
+	/**
+	 * @since 17.0
+	 */
 	protected EClass getType(Device dev) {
 		EClass type = ScaPackage.Literals.SCA_DEVICE;
 		if (dev._is_a(ExecutableDeviceHelper.id())) {
@@ -1448,7 +1463,10 @@ public class ScaDeviceManagerImpl extends ScaPropertyContainerImpl<DeviceManager
 		}
 	    return type;
     }
-	
+
+	/**
+	 * @since 17.0
+	 */
 	protected ScaDevice< ? > createType(EClass type) {
 		return (ScaDevice< ? >) ScaFactory.eINSTANCE.create(type);
 	}
@@ -1457,7 +1475,7 @@ public class ScaDeviceManagerImpl extends ScaPropertyContainerImpl<DeviceManager
 	 * <!-- begin-user-doc -->
 	 * @since 14.0
 	 * <!-- end-user-doc -->
-	 * @throws InterruptedException 
+	 * @throws InterruptedException
 	 * @generated NOT
 	 */
 	public EList<ScaPort< ? , ? >> fetchPorts(IProgressMonitor monitor) {
@@ -1663,7 +1681,7 @@ public class ScaDeviceManagerImpl extends ScaPropertyContainerImpl<DeviceManager
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @throws InterruptedException 
+	 * @throws InterruptedException
 	 * @generated NOT
 	 */
 	@Override
@@ -1761,7 +1779,7 @@ public class ScaDeviceManagerImpl extends ScaPropertyContainerImpl<DeviceManager
 	/**
 	 * <!-- begin-user-doc -->
 	 * @since 14.0
-	 * <!-- end-user-doc --> 
+	 * <!-- end-user-doc -->
 	 * @generated NOT
 	 */
 	public String fetchLabel(IProgressMonitor monitor) {
