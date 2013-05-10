@@ -61,7 +61,7 @@ public class CorbaPrimitive extends Primitive {
 	protected static final int MAX_RETRIES = 5;
 	/**
 	 * The CORBA ORB to use for servicing requests
-	 * 
+	 *
 	 * @since 2.0
 	 */
 	private org.omg.CORBA.ORB globalOrb = null;
@@ -105,7 +105,7 @@ public class CorbaPrimitive extends Primitive {
 			} catch (final InvalidPort e) {
 				// PASS Ignore errors
 			} catch (final SystemException e) {
-				// PASS				
+				// PASS
 			} finally {
 				this.port = null;
 				this.tie = null;
@@ -190,9 +190,9 @@ public class CorbaPrimitive extends Primitive {
 		shutdownNonBlocking();
 		return super.close();
 	}
-	
+
 	/**
-     * @since 8.1
+     * @since 9.0
      */
 	protected void shutdownNonBlocking() {
 		new Thread("Corba Shutdown") {
@@ -232,7 +232,7 @@ public class CorbaPrimitive extends Primitive {
 	/**
 	 * This method connects the given Tie object to the port from the arguments
 	 * list. It will retry MAX_RETRIES times before giving up trying to connect.
-	 * 
+	 *
 	 * @param tie the Tie CORBA object. This is generic to allow any type of
 	 *            connection.
 	 * @return true if the port was successfully connected
@@ -271,7 +271,7 @@ public class CorbaPrimitive extends Primitive {
 
 				final Port port = PortHelper.narrow(portRef);
 
-				// Make a new connection from the port to the given object				
+				// Make a new connection from the port to the given object
 				final ConnectionData data = new ConnectionData(newTie, port);
 
 				if (!this.connections.contains(data)) {
