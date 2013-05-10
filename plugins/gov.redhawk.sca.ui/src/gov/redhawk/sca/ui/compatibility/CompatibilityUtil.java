@@ -11,6 +11,7 @@
  */
 package gov.redhawk.sca.ui.compatibility;
 
+import org.eclipse.jface.viewers.ComboViewer;
 import org.eclipse.swt.graphics.FontData;
 
 /**
@@ -23,6 +24,10 @@ public class CompatibilityUtil {
 	}
 	
 	public static void setFontDataStyle(FontData fontData, int style) {
+		throw new UnsupportedOperationException();
+	}
+	
+	public static void disableComboWheelScrollSelect(ComboViewer viewer) {
 		throw new UnsupportedOperationException();
 	}
 }

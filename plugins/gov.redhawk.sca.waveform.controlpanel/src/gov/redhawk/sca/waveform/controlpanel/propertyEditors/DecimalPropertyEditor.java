@@ -15,6 +15,7 @@ package gov.redhawk.sca.waveform.controlpanel.propertyEditors;
 import gov.redhawk.common.ui.widgets.Dval;
 import gov.redhawk.model.sca.ScaPackage;
 import gov.redhawk.model.sca.ScaSimpleProperty;
+import gov.redhawk.sca.ui.compatibility.CompatibilityUtil;
 
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
@@ -270,14 +271,7 @@ public class DecimalPropertyEditor< T extends Number > extends PropertyEditor {
 				((Text) this.control).setText(this.form.format(this.value));
 			} else {
 				this.enumViewer = new ComboViewer(parent, SWT.NONE);
-				this.enumViewer.getCombo().addListener(SWT.MouseVerticalWheel, new Listener() {
-
-					public void handleEvent(Event event) {
-						// Disable Mouse Wheel Combo Box Control
-						event.doit = false;
-					}
-
-				});
+				CompatibilityUtil.disableComboWheelScrollSelect(enumViewer);
 				GridDataFactory.fillDefaults().grab(true, false).applyTo(this.enumViewer.getControl());
 				this.enumViewer.setContentProvider(new EnumValuesContentProvider());
 				this.enumViewer.setLabelProvider(new EnumValuesLabelProvider());
