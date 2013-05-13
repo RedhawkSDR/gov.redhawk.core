@@ -86,31 +86,22 @@ public class RapNxmPlotWidget extends AbstractNxmPlotWidget {
 		assertNotDisposed();
 		nxmComp.runClientCommand(command);
 	}
+
 	/**
 	 * Use {@link #addSource(String, String)} to specify plot qualifiers. This method will not work properly
 	 * if plot qualifiers are concatenated to the source ID.
 	 */
 	@Override
 	public void addSource(String sourcePipeId) {
-		assertNotDisposed();
-		// Copy pipe reference from sub-shell into global shell
-		NxmRapComposite.getRootNxmShell().M.pipes.put(sourcePipeId, nxmComp.getNxmShell().M.pipes.get(sourcePipeId));
-
-		// Publish pipe on RMIF
-		nxmComp.getRmifPrim().getRmif().addProperty(sourcePipeId);
-
-		// From Client openFile
-		nxmComp.runClientCommand("SENDTO RMIF_SESSION ADDC {" + sourcePipeId + "=" + sourcePipeId + "} INFO=-1");
-		nxmComp.runClientCommand("SENDTO " + PLOT_ID + " OPENFILE " + sourcePipeId);
-
-		this.sources.add(sourcePipeId);
+		addSource(sourcePipeId, null);
 	}
 
 	@Override
 	public void addSource(String sourcePipeId, String plotQualifiers) {
 		assertNotDisposed();
-		// Copy pipe reference from sub-shell into global shell
 		Object pipeInSubShell = nxmComp.getNxmShell().M.pipes.get(sourcePipeId);
+		Assert.isTrue(pipeInSubShell instanceof nxm.sys.lib.Pipe, sourcePipeId + " value is not a valid data PIPE! value="+pipeInSubShell);
+		// Copy pipe reference from sub-shell into global shell
 		NxmRapComposite.getRootNxmShell().M.pipes.put(sourcePipeId, pipeInSubShell);
 
 		// Publish pipe on RMIF
