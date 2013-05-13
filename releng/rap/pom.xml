@@ -3,29 +3,34 @@
     <modelVersion>4.0.0</modelVersion>
     <artifactId>releng-rap</artifactId>
     <packaging>pom</packaging>
-    
-    <properties>
-        <gov.redhawk.core>http://download.redhawksdr.org/gov.redhawk.core/releases/1.9</gov.redhawk.core>
-        <rap-incubator-nightly>http://download.eclipse.org/rt/rap/incubator/nightly</rap-incubator-nightly>
-    </properties>
-
+   
     <parent>
         <groupId>gov.redhawk.core</groupId>
         <artifactId>releng</artifactId>
         <version>0.0.1-SNAPSHOT</version>
     </parent>
 
+    <properties>
+        <gov.redhawk.core>http://download.redhawksdr.org/gov.redhawk.core/releases/1.9</gov.redhawk.core>
+        <rap-cnf>http://download.eclipse.org/rt/rap/incubator/nightly/cnf/</rap-cnf>
+        <rap-tab>http://download.eclipse.org/rt/rap/incubator/nightly/tabbed-properties/</rap-tab>
+    </properties>
+
     <repositories>
         <repository>
-            <id>rap-incubator-nightly</id>
-            <layout>p2</layout>
-            <url>${rap-incubator-nightly}</url>
+           <id>gov.redhawk.core</id>
+           <layout>p2</layout>
+           <url>${gov.redhawk.core}</url>
         </repository>
-        
         <repository>
-            <id>gov.redhawk.core</id>
-            <layout>p2</layout>
-            <url>${gov.redhawk.core}</url>
+           <id>rap-cnf</id>
+           <layout>p2</layout>
+           <url>${rap-cnf}</url>
+        </repository>
+        <repository>
+           <id>rap-tab</id>
+           <layout>p2</layout>
+           <url>${rap-tab}</url>
         </repository>
     </repositories>
 
