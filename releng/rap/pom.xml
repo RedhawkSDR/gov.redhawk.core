@@ -18,9 +18,16 @@
 		<rap>http://download.eclipse.org/rt/rap/1.5/runtime</rap>
 		<rap-cnf>http://download.eclipse.org/rt/rap/incubator/nightly/cnf/</rap-cnf>
 		<rap-tab>http://download.eclipse.org/rt/rap/incubator/nightly/tabbed-properties/</rap-tab>
+		<org.eclipse.emf.transaction.ui>http://pinkman.villains.techma.com/p2/eclipse/org.eclipse.emf.transaction.ui/</org.eclipse.emf.transaction.ui>
 	</properties>
 
 	<repositories>
+		<repository>
+			<id>org.eclipse.emf.transaction.ui</id>
+			<layout>p2</layout>
+			<url>${org.eclipse.emf.transaction.ui}</url>
+		</repository>
+
 		<repository>
 			<id>rap</id>
 			<layout>p2</layout>
