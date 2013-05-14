@@ -3,6 +3,7 @@ package gov.redhawk.ui.port.nxmplot;
 import gov.redhawk.internal.ui.port.nxmplot.PlotSession;
 import gov.redhawk.model.sca.ScaUsesPort;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -27,7 +28,13 @@ public final class NxmPlotUtil {
 		StringBuilder sb = new StringBuilder();
 		String delim = "";
 		for (Entry<String, String> entry : args.entrySet()) {
-			sb.append(delim + entry.getKey() + "=" + entry.getValue());
+			String valueString = null;
+			if (entry.getValue() == null || entry.getValue().equals("")) {
+				valueString = "";
+			} else {
+				valueString =  "=" + entry.getValue();
+			}
+			sb.append(delim + entry.getKey() + valueString);
 			delim = " ";
 		}
 		return sb.toString();
@@ -125,7 +132,7 @@ public final class NxmPlotUtil {
 	}
 
 	private static Map<String, String> launchInputMacro(final SddsSource sdds, final Integer magExponent, final FftSettings fft,
-	        final AbstractNxmPlotWidget plotWidget, String pipeSize) {
+			final AbstractNxmPlotWidget plotWidget, String pipeSize) {
 		final String outName = AbstractNxmPlotWidget.createUniqueName(true);
 		final String transformIn = AbstractNxmPlotWidget.createUniqueName(true);
 		final String fftIn = AbstractNxmPlotWidget.createUniqueName(true);
@@ -167,11 +174,11 @@ public final class NxmPlotUtil {
 				plotWidget.runHeadlessCommand(command.toString());
 
 				command.delete(0, command.length());
-				command.append("fft/id=fft/psd/ac");
+				command.append("fft/id=" + "\"FFT_" + AbstractNxmPlotWidget.createUniqueName(false) + "\"" + "/psd/ac");
 				command.append(" in1=\"" + fftIn + "\"");
 				command.append(" out1=\"" + outName + "\"");
 				command.append(" nfft=" + fft.getTransformSize() + " win=\"" + fft.getWindow() + "\" over=" + fft.getOverlap() + " navg="
-				        + fft.getNumAverages());
+						+ fft.getNumAverages());
 				plotWidget.runHeadlessCommand(command.toString());
 			}
 		} else {
@@ -183,11 +190,11 @@ public final class NxmPlotUtil {
 				plotWidget.runHeadlessCommand(command.toString());
 
 				command.delete(0, command.length());
-				command.append("fft/id=fft/psd/ac");
+				command.append("fft/id=" + "\"FFT_" + AbstractNxmPlotWidget.createUniqueName(false) + "\"" + "/psd/ac");
 				command.append(" in1=\"" + fftIn + "\"");
 				command.append(" out1=\"" + outName + "\"");
 				command.append(" nfft=" + fft.getTransformSize() + " win=\"" + fft.getWindow() + "\" over=" + fft.getOverlap() + " navg="
-				        + fft.getNumAverages());
+						+ fft.getNumAverages());
 				plotWidget.runHeadlessCommand(command.toString());
 			}
 		}
@@ -208,7 +215,7 @@ public final class NxmPlotUtil {
 	 * @return a list of sources created to be plotted
 	 */
 	private static List<Map<String, String>> launchInputMacros(final List<CorbaConnectionSettings> connList, final FftSettings fft,
-	        final AbstractNxmPlotWidget plotWidget, String pipeSize) {
+			final AbstractNxmPlotWidget plotWidget, String pipeSize) {
 		final List<Map<String, String>> outputList = new ArrayList<Map<String, String>>();
 
 		for (final CorbaConnectionSettings settings : connList) {
@@ -216,6 +223,42 @@ public final class NxmPlotUtil {
 		}
 
 		return outputList;
+	}
+
+	private static Map<String, String> launchInputMacro(final File file, String format, final boolean thinData, 
+			Integer thinIncr, Integer yDelta, final AbstractNxmPlotWidget plotWidget) {
+		final String outName = AbstractNxmPlotWidget.createUniqueName(true);
+		final String thinIn = AbstractNxmPlotWidget.createUniqueName(true);
+		
+		int bytesPerSample = 1;
+		if (format.charAt(1) == 'F') {
+			bytesPerSample = 4;
+		} else if (format.charAt(1) == 'D') {
+			bytesPerSample = 8;
+		} if (format.charAt(1) == 'I') {
+			bytesPerSample = 4;
+		}
+		
+		if (yDelta == null || yDelta.intValue() == 0) {
+			yDelta = new Integer(1);
+		}
+		if (thinIncr == null || thinIncr.intValue() == 0) {
+			thinIncr = new Double(Math.floor(file.length() / 30000f / bytesPerSample)).intValue();
+		}
+
+		plotWidget.runHeadlessCommand("PIP ON");
+
+		if (thinData || SWT.getPlatform().startsWith("rap")) {
+			plotWidget.runHeadlessCommand("NOOP/WRAP/RT " + file.getAbsolutePath() + "{ydelta=" + yDelta.intValue() + ",yu=time}" + thinIn);
+			plotWidget.runHeadlessCommand("THIN IN=" + thinIn + " OUT=" + outName + " FINC=" + thinIncr.intValue());
+		} else {
+			plotWidget.runHeadlessCommand("NOOP/WRAP/RT " + file.getAbsolutePath() + "{ydelta=" + yDelta.intValue() + ",yu=time}" + outName);
+		}
+		
+		plotWidget.runHeadlessCommand("PIPE RUN");
+		Map<String, String> map = new HashMap<String,String>();
+		map.put(KEY_FILE, outName);
+		return map;
 	}
 
 	public static List<CorbaConnectionSettings> createConnList(final List< ? extends ScaUsesPort> portList) {
@@ -285,7 +328,7 @@ public final class NxmPlotUtil {
 	}
 
 	public static List<IPlotSession> addSource(final List<CorbaConnectionSettings> connList, final FftSettings fft, final AbstractNxmPlotWidget plotWidget,
-	        final String qualifiers) {
+			final String qualifiers) {
 		List<Map<String, String>> outputIds = launchInputMacros(connList, fft, plotWidget, null);
 		setPlotToReal(fft != null, plotWidget);
 		List<IPlotSession> sessions = new ArrayList<IPlotSession>();
@@ -305,7 +348,7 @@ public final class NxmPlotUtil {
 	}
 
 	public static IPlotSession addSource(final SddsSource sdds, final Integer magExponent, final FftSettings fft, final AbstractNxmPlotWidget plotWidget,
-	        final String qualifiers) {
+			final String qualifiers) {
 		final Map<String, String> outputIds = launchInputMacro(sdds, magExponent, fft, plotWidget, "1m");
 		PlotSession session = new PlotSession(plotWidget, outputIds.get(KEY_COMMAND), outputIds.get(KEY_FILE));
 		plotWidget.addSource(session.getSourceId(), (qualifiers == null ? "" : qualifiers));
@@ -318,6 +361,18 @@ public final class NxmPlotUtil {
 		} else {
 			nxmPlotWidget.configurePlot(Collections.singletonMap("MODE", "REAL"));
 		}
+	}
+	
+	/**
+	 * @since 4.1
+	 */
+	public static IPlotSession addSource(final File file, String format, final boolean thinData, Integer thinIncr, Integer yDelta,
+			final AbstractNxmPlotWidget plotWidget, final String qualifiers) {
+		
+		final Map<String, String> outputIds = launchInputMacro(file, format, thinData, thinIncr, yDelta, plotWidget);
+		PlotSession session = new PlotSession(plotWidget, outputIds.get(KEY_COMMAND), outputIds.get(KEY_FILE));
+		plotWidget.addSource(session.getSourceId(), (qualifiers == null ? "" : qualifiers));
+		return session;
 	}
 
 }
