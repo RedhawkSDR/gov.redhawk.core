@@ -11,14 +11,12 @@
  */
 package gov.redhawk.ui.port.playaudio.views;
 
-import gov.redhawk.model.sca.ScaPort;
 import gov.redhawk.model.sca.ScaUsesPort;
 import gov.redhawk.model.sca.provider.ScaItemProviderAdapterFactory;
 import gov.redhawk.ui.port.playaudio.controller.AudioController;
 import gov.redhawk.ui.port.playaudio.controller.IControllerListener;
 import gov.redhawk.ui.port.playaudio.controls.PlaybackInfo;
 
-import java.util.List;
 import java.util.Map;
 
 import javax.sound.sampled.AudioFormat;
@@ -26,18 +24,23 @@ import javax.sound.sampled.AudioFormat;
 import mil.jpeojtrs.sca.scd.provider.ScdItemProviderAdapterFactory;
 import mil.jpeojtrs.sca.spd.provider.SpdItemProviderAdapterFactory;
 
-import org.eclipse.emf.common.notify.AdapterFactory;
+import org.eclipse.core.runtime.Assert;
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
+import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.emf.edit.provider.ComposedAdapterFactory;
-import org.eclipse.emf.edit.ui.provider.AdapterFactoryContentProvider;
 import org.eclipse.emf.edit.ui.provider.AdapterFactoryLabelProvider;
+import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.IStructuredSelection;
+import org.eclipse.jface.viewers.ITreeContentProvider;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
@@ -50,6 +53,29 @@ import org.eclipse.ui.part.ViewPart;
 public class View extends ViewPart implements IControllerListener {
 	public static final String ID = "gov.redhawk.ui.port.playaudio.view";
 
+	private static class CustomContentProvider extends ArrayContentProvider implements ITreeContentProvider {
+
+		public Object[] getChildren(Object parentElement) {
+	        return null;
+        }
+
+		public Object getParent(Object element) {
+	        return null;
+        }
+
+		public boolean hasChildren(Object element) {
+	        return false;
+        }
+		
+		@Override
+		public Object[] getElements(Object inputElement) {
+			if (inputElement instanceof Map<?,?>) {
+				return super.getElements(((Map<?,?>)inputElement).keySet());
+			}
+		    return super.getElements(inputElement);
+		}
+		
+	};
 	private TreeViewer treeViewer;
 	private Button pauseButton;
 	private Button disconnectButton;
@@ -60,6 +86,7 @@ public class View extends ViewPart implements IControllerListener {
 
 	/** This is set when the view is being disposed */
 	private boolean isDisposed = false;
+	private ComposedAdapterFactory adapterFactory;
 
 	/**
 	 * This callback allows us to create and initialize the viewer.
@@ -73,34 +100,16 @@ public class View extends ViewPart implements IControllerListener {
 
 		this.treeViewer = new TreeViewer(parent, SWT.BORDER | SWT.SINGLE | SWT.V_SCROLL);
 		getSite().setSelectionProvider(this.treeViewer);
-		this.treeViewer.setContentProvider(new AdapterFactoryContentProvider(getAdapterFactory()) {
-			@Override
-			public Object[] getElements(final Object object) {
-				if (object instanceof List< ? >) {
-					return ((List< ? >) object).toArray();
-				} else if (object instanceof Map< ? , ? >) {
-					return ((Map< ? , ? >) object).keySet().toArray();
-				}
-				return super.getElements(object);
-			}
-			@Override
-			public boolean hasChildren(Object object) {
-				// We do not want to see the children of the port.  It causes an error when you click on the connection
-				// This fixes Issue #171
-			    if (object instanceof ScaPort) {
-			    	return false;
-			    }
-			    return super.hasChildren(object);
-			}
-		});
-		this.treeViewer.setLabelProvider(new AdapterFactoryLabelProvider(getAdapterFactory()) {
+		adapterFactory = createAdapterFactory();
+		this.treeViewer.setContentProvider(new CustomContentProvider());
+		this.treeViewer.setLabelProvider(new AdapterFactoryLabelProvider(adapterFactory) {
+			
 			@Override
 			public String getText(final Object object) {
-				String text = super.getText(object);
 				if (object instanceof ScaUsesPort) {
-					text = View.this.controller.getPortName((ScaUsesPort) object);
+					return View.this.controller.getPortName((ScaUsesPort) object);
 				}
-				return text;
+				return super.getText(object);
 			}
 		});
 		this.treeViewer.getTree().setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 3)); // SUPPRESS CHECKSTYLE MagicNumber
@@ -126,24 +135,37 @@ public class View extends ViewPart implements IControllerListener {
 		});
 
 		this.pauseButton = this.infoComp.getPauseButton();
-		this.pauseButton.addSelectionListener(new SelectionListener() {
-			public void widgetDefaultSelected(final SelectionEvent e) {
-				View.this.controller.pause(View.this.pauseButton.getSelection());
-			}
+		this.pauseButton.addSelectionListener(new SelectionAdapter() {
 
 			public void widgetSelected(final SelectionEvent e) {
-				this.widgetDefaultSelected(e);
+				Job job = new Job("Pausing") {
+
+					@Override
+                    protected IStatus run(IProgressMonitor monitor) {
+						View.this.controller.pause(View.this.pauseButton.getSelection());
+	                    return Status.OK_STATUS;
+                    }
+					
+				};
+				job.setUser(true);
+				job.schedule();
 			}
 		});
 
 		this.disconnectButton = this.infoComp.getDisconnectButton();
-		this.disconnectButton.addSelectionListener(new SelectionListener() {
-			public void widgetDefaultSelected(final SelectionEvent e) {
-				View.this.disconnectPort(null);
-			}
-
+		this.disconnectButton.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(final SelectionEvent e) {
-				View.this.disconnectPort(null);
+				Job job = new Job("Disconnecting") {
+
+					@Override
+                    protected IStatus run(IProgressMonitor monitor) {
+						View.this.disconnectPort(null);
+	                    return Status.OK_STATUS;
+                    }
+					
+				};
+				job.setUser(true);
+				job.schedule();
 			}
 		});
 	}
@@ -153,6 +175,12 @@ public class View extends ViewPart implements IControllerListener {
 	 */
 	@Override
 	public void setFocus() {
+		if (isDisposed) {
+			return;
+		}
+		if (this.treeViewer != null) {
+			this.treeViewer.getControl().setFocus();
+		}
 	}
 
 	/**
@@ -163,6 +191,7 @@ public class View extends ViewPart implements IControllerListener {
 	 * @param portMap map of ports to strings to play
 	 */
 	public void playNewPort(final Map<ScaUsesPort, String> portMap) {
+		Assert.isTrue(!isDisposed, "View Disposed");
 		this.controller.playPort(portMap);
 		this.infoComp.setInput(null);
 		this.treeViewer.refresh();
@@ -171,8 +200,21 @@ public class View extends ViewPart implements IControllerListener {
 
 	@Override
 	public void dispose() {
+		if (isDisposed) {
+			return;
+		}
 		this.isDisposed = true;
-		this.controller.dispose();
+		adapterFactory.dispose();
+		Job job = new Job("Disposing Controller"){
+
+			@Override
+            protected IStatus run(IProgressMonitor monitor) {
+				controller.dispose();
+	            return Status.OK_STATUS;
+            }
+			
+		};
+		job.schedule();
 		super.dispose();
 	}
 
@@ -181,7 +223,7 @@ public class View extends ViewPart implements IControllerListener {
 	 * 
 	 * @return the appropriate adapter factory to handle ScaUsesPort's
 	 */
-	private AdapterFactory getAdapterFactory() {
+	private ComposedAdapterFactory createAdapterFactory() {
 		final ComposedAdapterFactory af = new ComposedAdapterFactory();
 		af.addAdapterFactory(new SpdItemProviderAdapterFactory());
 		af.addAdapterFactory(new ScdItemProviderAdapterFactory());
@@ -203,7 +245,9 @@ public class View extends ViewPart implements IControllerListener {
 		if (this.infoComp != null && !this.isDisposed) {
 			getViewSite().getShell().getDisplay().asyncExec(new Runnable() {
 				public void run() {
-					View.this.infoComp.setInput(format);
+					if (infoComp != null && !isDisposed) {
+						View.this.infoComp.setInput(format);
+					}
 				}
 			});
 		}
@@ -213,7 +257,9 @@ public class View extends ViewPart implements IControllerListener {
 		if (!this.isDisposed) {
 			getViewSite().getShell().getDisplay().asyncExec(new Runnable() {
 				public void run() {
-					View.this.treeViewer.refresh();
+					if (!isDisposed && !treeViewer.getControl().isDisposed()) {
+						View.this.treeViewer.refresh();	
+					}
 				}
 			});
 		}

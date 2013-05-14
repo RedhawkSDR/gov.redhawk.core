@@ -129,11 +129,7 @@ public class PlaybackInfo extends Composite {
 	 */
 	public void setInput(final AudioFormat fmt) {
 		this.audioFormat = fmt;
-		Display.getCurrent().asyncExec(new Runnable() {
-			public void run() {
-				setText(PlaybackInfo.this.audioFormat);
-			}
-		});
+		setText(PlaybackInfo.this.audioFormat);
 	}
 
 	/**

@@ -742,9 +742,6 @@ public abstract class ScaAbstractComponentImpl< R extends Resource > extends Sca
 	 */
 	protected void internalFetchPorts(IProgressMonitor monitor) {
 		// END GENERATED CODE
-		if (isSetPorts()) {
-			return;
-		}
 		SubMonitor subMonitor = SubMonitor.convert(monitor, 4);
 		R currentObj = this.fetchNarrowedObject(subMonitor.newChild(1));
 		Transaction transaction = portRevision.createTransaction();
@@ -756,6 +753,11 @@ public abstract class ScaAbstractComponentImpl< R extends Resource > extends Sca
 			}
 
 			FeatureMap portGroup = ScaEcoreUtils.getFeature(this, PORTS_GROUP_PATH);
+			int size = getPorts().size();
+			int groupSize = (portGroup == null) ? 0 : portGroup.size();
+			if (isSetPorts() && size == groupSize) {
+				return;
+			}
 			List<MergePortsCommand.PortData> newPorts = new ArrayList<MergePortsCommand.PortData>();
 			// Load all of the ports
 			final MultiStatus fetchPortsStatus = new MultiStatus(ScaModelPlugin.ID, Status.OK, "Fetch ports status.", null);
