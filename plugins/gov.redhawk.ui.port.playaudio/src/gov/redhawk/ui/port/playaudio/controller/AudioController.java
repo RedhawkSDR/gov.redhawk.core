@@ -14,19 +14,22 @@ package gov.redhawk.ui.port.playaudio.controller;
 import gov.redhawk.model.sca.ScaAbstractComponent;
 import gov.redhawk.model.sca.ScaComponent;
 import gov.redhawk.model.sca.ScaDevice;
-import gov.redhawk.model.sca.ScaDomainManager;
 import gov.redhawk.model.sca.ScaPackage;
 import gov.redhawk.model.sca.ScaUsesPort;
 import gov.redhawk.model.sca.ScaWaveform;
+import gov.redhawk.model.sca.commands.ScaModelCommand;
 import gov.redhawk.ui.port.Activator;
 import gov.redhawk.ui.port.playaudio.internal.corba.CorbaReceiver;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Set;
 
 import javax.sound.sampled.AudioFormat;
 
@@ -36,11 +39,11 @@ import mil.jpeojtrs.sca.util.ScaEcoreUtils;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.notify.Notification;
-import org.eclipse.emf.common.notify.Notifier;
+import org.eclipse.emf.common.notify.impl.AdapterImpl;
 import org.eclipse.emf.ecore.EObject;
-import org.eclipse.ui.progress.WorkbenchJob;
 import org.omg.CORBA.SystemException;
 
 /**
@@ -54,26 +57,18 @@ public class AudioController {
 	private CorbaReceiver audioReceiver;
 
 	/** Map of Ports to AudioFormats */
-	private final Map<ScaUsesPort, AudioFormat> formatMap;
+	private final Map<ScaUsesPort, AudioFormat> formatMap = Collections.synchronizedMap(new HashMap<ScaUsesPort, AudioFormat>());
 
 	/** Map of Ports to Waveform Adapters */
-	private final Map<ScaUsesPort, Adapter> adapterMap;
+	private final Map<ScaUsesPort, Adapter> adapterMap = Collections.synchronizedMap(new HashMap<ScaUsesPort, Adapter>());
 
 	/** The currently selected ports */
-	private List<ScaUsesPort> curPorts;
+	private final List<ScaUsesPort> curPorts = Collections.synchronizedList(new ArrayList<ScaUsesPort>());
 
 	/** The map of available ports to names */
-	private final Map<ScaUsesPort, String> connectedPorts;
+	private final Map<ScaUsesPort, String> connectedPorts = Collections.synchronizedMap(new HashMap<ScaUsesPort, String>());
 	private boolean isDisposed;
-	private final ArrayList<IControllerListener> listenerList;
-
-	public AudioController() {
-		this.listenerList = new ArrayList<IControllerListener>();
-		this.adapterMap = new HashMap<ScaUsesPort, Adapter>();
-		this.formatMap = new HashMap<ScaUsesPort, AudioFormat>();
-		this.curPorts = new ArrayList<ScaUsesPort>();
-		this.connectedPorts = new HashMap<ScaUsesPort, String>();
-	}
+	private final Set<IControllerListener> listenerList = Collections.synchronizedSet(new HashSet<IControllerListener>());
 
 	/**
 	 * Adds a listener to the list for changes.
@@ -81,9 +76,7 @@ public class AudioController {
 	 * @param listener the listener to add
 	 */
 	public void addListener(final IControllerListener listener) {
-		if (!this.listenerList.contains(listener)) {
-			this.listenerList.add(listener);
-		}
+		this.listenerList.add(listener);
 	}
 
 	/**
@@ -101,25 +94,28 @@ public class AudioController {
 	 * @param ports the new ports to connect
 	 */
 	public void portsSelected(final Collection<ScaUsesPort> ports) {
-		final List<ScaUsesPort> newPorts = new ArrayList<ScaUsesPort>();
-		for (final ScaUsesPort port : ports) {
-			if (!this.curPorts.contains(port)) {
-				final String ior = port.getIor();
-				final String portType = processPortType(port.getRepid());
-				if (this.audioReceiver == null) {
-					try {
-						this.audioReceiver = new CorbaReceiver(this, portType);
-					} catch (final Exception e) {
-						Activator.logError("Error starting the Audio Receiver", e);
+		synchronized (this.curPorts) {
+			final List<ScaUsesPort> newPorts = new ArrayList<ScaUsesPort>();
+			for (final ScaUsesPort port : ports) {
+				if (!this.curPorts.contains(port)) {
+					final String ior = port.getIor();
+					final String portType = processPortType(port.getRepid());
+					if (this.audioReceiver == null) {
+						try {
+							this.audioReceiver = new CorbaReceiver(this, portType);
+						} catch (final Exception e) {
+							Activator.logError("Error starting the Audio Receiver", e);
+						}
 					}
+					this.audioReceiver.connectToPort(portType, ior);
 				}
-				this.audioReceiver.connectToPort(portType, ior);
+
+				newPorts.add(port);
 			}
 
-			newPorts.add(port);
+			this.curPorts.clear();
+			this.curPorts.addAll(newPorts);
 		}
-
-		this.curPorts = newPorts;
 	}
 
 	/**
@@ -227,6 +223,7 @@ public class AudioController {
 			}
 
 		} else {
+			
 			for (final ScaUsesPort port : this.curPorts) {
 				if (this.audioReceiver != null) {
 					try {
@@ -251,12 +248,22 @@ public class AudioController {
 	 * This cleans up the adapters and receiver when the panel is disposed.
 	 */
 	public void dispose() {
+		if (isDisposed) {
+			return;
+		}
 		this.isDisposed = true;
 		if (this.audioReceiver != null) {
 			this.audioReceiver.shutdown();
+			this.audioReceiver = null;
 		}
-		for (final ScaUsesPort port : this.adapterMap.keySet()) {
-			port.eContainer().eContainer().eAdapters().remove(this.adapterMap.get(port));
+		for (final Map.Entry<ScaUsesPort, Adapter> entry : this.adapterMap.entrySet()) {
+			ScaModelCommand.execute(entry.getKey(), new ScaModelCommand() {
+
+				public void execute() {
+					entry.getKey().eContainer().eContainer().eAdapters().remove(entry.getValue());     
+                }
+				
+			});
 		}
 	}
 
@@ -271,14 +278,14 @@ public class AudioController {
 		// If we're already connected to this port, don't do anything
 		for (final ScaUsesPort scaPort : portMap.keySet()) {
 			if (this.connectedPorts.get(scaPort) == null) {
-				final ScaWaveform  wave = ScaEcoreUtils.getEContainerOfType(scaPort, ScaWaveform.class);
+				final ScaWaveform wave = ScaEcoreUtils.getEContainerOfType(scaPort, ScaWaveform.class);
 				String name = portMap.get(scaPort);
 				if (name == null) {
 					name = scaPort.getName();
 					// TODO Handle other port container types
 					EObject portContainer = scaPort.eContainer();
-					if (portContainer instanceof ScaAbstractComponent<?>) {
-						final ScaAbstractComponent< ? > comp = (ScaAbstractComponent<?>) portContainer;
+					if (portContainer instanceof ScaAbstractComponent< ? >) {
+						final ScaAbstractComponent< ? > comp = (ScaAbstractComponent< ? >) portContainer;
 						if ((comp != null) && (comp.getProfileObj() != null)) {
 							String res = comp.getProfileObj().getName();
 							if (comp instanceof ScaComponent) {
@@ -298,25 +305,16 @@ public class AudioController {
 				newList.put(scaPort, name);
 				// Only do this if we have a waveform to watch
 				if (wave != null) {
-					final Adapter adapt = new Adapter() {
-						private Notifier target = null;
-
-						public Notifier getTarget() {
-							return this.target;
-						}
-
-						public boolean isAdapterForType(final Object type) {
-							return (type instanceof ScaDomainManager);
-						}
+					final Adapter adapt = new AdapterImpl() {
 
 						public void notifyChanged(final Notification notification) {
-							switch (notification.getFeatureID(ScaDomainManager.class)) {
-							case ScaPackage.SCA_DOMAIN_MANAGER__WAVEFORMS:
-								if ((notification.getOldValue() == wave) && (notification.getNewValue() == null)) {
-									final WorkbenchJob job = new WorkbenchJob("Remove Play Port tab") {
+							switch (notification.getFeatureID(ScaUsesPort.class)) {
+							case ScaPackage.SCA_USES_PORT__DISPOSED:
+								if (notification.getNewBooleanValue()) {
+									final Job job = new Job("Remove Play Port tab") {
 
 										@Override
-										public IStatus runInUIThread(final IProgressMonitor monitor) {
+										public IStatus run(final IProgressMonitor monitor) {
 											if (AudioController.this.audioReceiver != null) {
 												try {
 													AudioController.this.audioReceiver.disconnect(scaPort.getIor(), true);
@@ -327,10 +325,8 @@ public class AudioController {
 											AudioController.this.formatMap.remove(scaPort);
 											AudioController.this.connectedPorts.remove(scaPort);
 											AudioController.this.adapterMap.remove(scaPort);
-											if (!AudioController.this.isDisposed) {
-												for (final IControllerListener listener : AudioController.this.listenerList) {
-													listener.refresh();
-												}
+											for (final IControllerListener listener : AudioController.this.listenerList) {
+												listener.refresh();
 											}
 
 											return Status.OK_STATUS;
@@ -345,13 +341,15 @@ public class AudioController {
 								return;
 							}
 						}
-
-						public void setTarget(final Notifier newTarget) {
-							this.target = newTarget;
-						}
 					};
 					AudioController.this.adapterMap.put(scaPort, adapt);
-					wave.eContainer().eAdapters().add(adapt);
+					ScaModelCommand.execute(scaPort, new ScaModelCommand() {
+
+						public void execute() {
+							scaPort.eAdapters().add(adapt);
+						}
+
+					});
 				}
 			}
 		}

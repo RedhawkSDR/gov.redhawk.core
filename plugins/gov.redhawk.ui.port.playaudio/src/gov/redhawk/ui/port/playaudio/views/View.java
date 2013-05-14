@@ -26,6 +26,10 @@ import javax.sound.sampled.AudioFormat;
 import mil.jpeojtrs.sca.scd.provider.ScdItemProviderAdapterFactory;
 import mil.jpeojtrs.sca.spd.provider.SpdItemProviderAdapterFactory;
 
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
+import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.emf.common.notify.AdapterFactory;
 import org.eclipse.emf.edit.provider.ComposedAdapterFactory;
 import org.eclipse.emf.edit.ui.provider.AdapterFactoryContentProvider;
@@ -36,6 +40,7 @@ import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.layout.GridData;
@@ -126,24 +131,37 @@ public class View extends ViewPart implements IControllerListener {
 		});
 
 		this.pauseButton = this.infoComp.getPauseButton();
-		this.pauseButton.addSelectionListener(new SelectionListener() {
-			public void widgetDefaultSelected(final SelectionEvent e) {
-				View.this.controller.pause(View.this.pauseButton.getSelection());
-			}
+		this.pauseButton.addSelectionListener(new SelectionAdapter() {
 
 			public void widgetSelected(final SelectionEvent e) {
-				this.widgetDefaultSelected(e);
+				Job job = new Job("Pausing") {
+
+					@Override
+                    protected IStatus run(IProgressMonitor monitor) {
+						View.this.controller.pause(View.this.pauseButton.getSelection());
+	                    return Status.OK_STATUS;
+                    }
+					
+				};
+				job.setUser(true);
+				job.schedule();
 			}
 		});
 
 		this.disconnectButton = this.infoComp.getDisconnectButton();
-		this.disconnectButton.addSelectionListener(new SelectionListener() {
-			public void widgetDefaultSelected(final SelectionEvent e) {
-				View.this.disconnectPort(null);
-			}
-
+		this.disconnectButton.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(final SelectionEvent e) {
-				View.this.disconnectPort(null);
+				Job job = new Job("Disconnecting") {
+
+					@Override
+                    protected IStatus run(IProgressMonitor monitor) {
+						View.this.disconnectPort(null);
+	                    return Status.OK_STATUS;
+                    }
+					
+				};
+				job.setUser(true);
+				job.schedule();
 			}
 		});
 	}
@@ -171,8 +189,20 @@ public class View extends ViewPart implements IControllerListener {
 
 	@Override
 	public void dispose() {
+		if (isDisposed) {
+			return;
+		}
 		this.isDisposed = true;
-		this.controller.dispose();
+		Job job = new Job("Disposing Controller"){
+
+			@Override
+            protected IStatus run(IProgressMonitor monitor) {
+				controller.dispose();
+	            return Status.OK_STATUS;
+            }
+			
+		};
+		job.schedule();
 		super.dispose();
 	}
 
@@ -203,7 +233,9 @@ public class View extends ViewPart implements IControllerListener {
 		if (this.infoComp != null && !this.isDisposed) {
 			getViewSite().getShell().getDisplay().asyncExec(new Runnable() {
 				public void run() {
-					View.this.infoComp.setInput(format);
+					if (infoComp != null && !isDisposed) {
+						View.this.infoComp.setInput(format);
+					}
 				}
 			});
 		}
@@ -213,7 +245,9 @@ public class View extends ViewPart implements IControllerListener {
 		if (!this.isDisposed) {
 			getViewSite().getShell().getDisplay().asyncExec(new Runnable() {
 				public void run() {
-					View.this.treeViewer.refresh();
+					if (!isDisposed && !treeViewer.getControl().isDisposed()) {
+						View.this.treeViewer.refresh();	
+					}
 				}
 			});
 		}
