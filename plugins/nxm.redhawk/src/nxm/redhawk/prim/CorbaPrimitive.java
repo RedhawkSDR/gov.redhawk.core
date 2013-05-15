@@ -11,6 +11,8 @@
  */
 package nxm.redhawk.prim;
 
+import gov.redhawk.sca.util.OrbSession;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -19,6 +21,7 @@ import mil.jpeojtrs.sca.util.DceUuidUtil;
 import nxm.sys.inc.Commandable;
 import nxm.sys.lib.Primitive;
 
+import org.eclipse.core.runtime.CoreException;
 import org.omg.CORBA.ORB;
 import org.omg.CORBA.SystemException;
 import org.omg.CORBA.ORBPackage.InvalidName;
@@ -58,14 +61,8 @@ public class CorbaPrimitive extends Primitive {
 	public static final String A_HOST = "HOST";
 	/** The maximum number of times to retry the initial ORB connection */
 	protected static final int MAX_RETRIES = 5;
-	/**
-	 * The CORBA ORB to use for servicing requests
-	 *
-	 * @since 2.0
-	 */
-	private org.omg.CORBA.ORB globalOrb = null;
-	/** The root POA object */
-	private POA rootpoa = null;
+	
+	private OrbSession session = OrbSession.createSession();
 	/** The list of port connections */
 	private final List<ConnectionData> connections = Collections.synchronizedList(new ArrayList<ConnectionData>());
 	/** the NameService helper */
@@ -101,6 +98,12 @@ public class CorbaPrimitive extends Primitive {
 		public void release() {
 			try {
 				disconnect();
+				if (tie != null) {
+					tie._release();
+				}
+				if (port != null) {
+					port._release();
+				}
 			} catch (final InvalidPort e) {
 				// PASS Ignore errors
 			} catch (final SystemException e) {
@@ -121,19 +124,9 @@ public class CorbaPrimitive extends Primitive {
 			}
 		}
 	}
-
-	/**
-	 * @since 8.0
-	 */
-	public org.omg.CORBA.ORB getOrb() {
-		return this.globalOrb;
-	}
-
-	/**
-	 * @since 8.0
-	 */
-	public POA getPOA() {
-		return this.rootpoa;
+	
+	protected POA getPOA() throws CoreException {
+		return session.getPOA();
 	}
 
 	/**
@@ -143,41 +136,25 @@ public class CorbaPrimitive extends Primitive {
 	public int open() {
 		int ret = super.open();
 
-		if (this.globalOrb == null) {
-			try {
-				// Make the ORB connection - MA is the argument list
-				final String host = this.MA.getU(CorbaPrimitive.A_HOST);
-				final int port = this.MA.getL(CorbaPrimitive.A_PORT);
+		try {
+			// Make the ORB connection - MA is the argument list
+			final String host = this.MA.getU(CorbaPrimitive.A_HOST);
+			final int port = this.MA.getL(CorbaPrimitive.A_PORT);
 
-				// There are two cases here. First, we are given all the
-				// information to connect to a host and resolve the port.
-				// Second, we're given an IOR to the port. The IOR doesn't
-				// require the NameService so skip all that setup.
-				if (host != null && !host.equals("")) {
-					this.globalOrb = ORB.init((String[]) null, null);
-					// get the root naming context
-					// Use NamingContextExt which is part of the Interoperable Naming
-					// Service (INS) specification.
-					final org.omg.CORBA.Object obj = this.globalOrb.string_to_object("corbaloc::" + host + ":" + port);
-					this.ncRef = NamingContextExtHelper.narrow(obj);
-
-				} else {
-					this.globalOrb = ORB.init((String[]) null, null);
-				}
-
-				// get reference to RootPOA & activate the POAManager
-				this.rootpoa = POAHelper.narrow(this.globalOrb.resolve_initial_references("RootPOA"));
-				this.rootpoa.the_POAManager().activate();
-			} catch (final InvalidName e) {
-				this.M.error(e);
-				ret = Commandable.ABORT;
-			} catch (final AdapterInactive e) {
-				this.M.error(e);
-				ret = Commandable.ABORT;
-			} catch (final SystemException e) {
-				this.M.error(e);
-				ret = Commandable.ABORT;
-			}
+			// There are two cases here. First, we are given all the
+			// information to connect to a host and resolve the port.
+			// Second, we're given an IOR to the port. The IOR doesn't
+			// require the NameService so skip all that setup.
+			if (host != null && !host.equals("")) {
+				// get the root naming context
+				// Use NamingContextExt which is part of the Interoperable Naming
+				// Service (INS) specification.
+				final org.omg.CORBA.Object obj = session.getOrb().string_to_object("corbaloc::" + host + ":" + port);
+				this.ncRef = NamingContextExtHelper.narrow(obj);
+			} 
+		} catch (final SystemException e) {
+			this.M.error(e);
+			ret = Commandable.ABORT;
 		}
 
 		return ret;
@@ -191,8 +168,8 @@ public class CorbaPrimitive extends Primitive {
 	}
 
 	/**
-     * @since 9.0
-     */
+	 * @since 9.0
+	 */
 	protected void shutdownNonBlocking() {
 		new Thread("Corba Shutdown") {
 			public void run() {
@@ -215,16 +192,10 @@ public class CorbaPrimitive extends Primitive {
 
 		this.ncRef = null;
 
-		this.rootpoa = null;
-
 		// Shutdown the ORB connection
-		if (this.globalOrb != null) {
-			try {
-				this.globalOrb.destroy();
-			} catch (final SystemException e) {
-				//PASS
-			}
-			this.globalOrb = null;
+		if (this.session != null) {
+			this.session.dispose();
+			this.session = null;
 		}
 	}
 
@@ -265,7 +236,7 @@ public class CorbaPrimitive extends Primitive {
 				} else {
 					// If ncRef was null, we were passed an IOR for the
 					// port. Use this to directly resolve the port.
-					portRef = this.globalOrb.string_to_object(portName);
+					portRef = session.getOrb().string_to_object(portName);
 				}
 
 				final Port port = PortHelper.narrow(portRef);
