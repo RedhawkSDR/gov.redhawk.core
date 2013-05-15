@@ -25,6 +25,7 @@ import nxm.sys.lib.DataFile;
 import nxm.sys.lib.FileName;
 import nxm.sys.lib.Time;
 
+import org.eclipse.core.runtime.CoreException;
 import org.omg.PortableServer.POAPackage.ServantNotActive;
 import org.omg.PortableServer.POAPackage.WrongPolicy;
 
@@ -144,6 +145,9 @@ public class corbareceiver extends CorbaPrimitive { //SUPPRESS CHECKSTYLE ClassN
 				this.dataBuffer.size = -1;
 				this.dataBuffer = null;
 			}
+			if (this.stub != null) {
+				this.stub._release();
+			}
 			this.stub = null;
 			this.currentSri = null;
 
@@ -173,7 +177,10 @@ public class corbareceiver extends CorbaPrimitive { //SUPPRESS CHECKSTYLE ClassN
 			} catch (final WrongPolicy e) {
 				this.M.error(e);
 				return false;
-			}
+			} catch (CoreException e) {
+				this.M.error(e);
+				return false;
+            }
 			return connectPort(this.stub);
 		} else {
 			return true;
