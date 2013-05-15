@@ -231,6 +231,7 @@ public final class NxmPlotUtil {
 		final String thinIn = AbstractNxmPlotWidget.createUniqueName(true);
 		
 		int bytesPerSample = 1;
+		format = format.toUpperCase();
 		if (format.charAt(1) == 'F') {
 			bytesPerSample = 4;
 		} else if (format.charAt(1) == 'D') {
@@ -243,16 +244,17 @@ public final class NxmPlotUtil {
 			yDelta = new Integer(1);
 		}
 		if (thinIncr == null || thinIncr.intValue() == 0) {
+			//make the resulting file 30k bytes in size, to confomr to RMIF limit
 			thinIncr = new Double(Math.floor(file.length() / 30000f / bytesPerSample)).intValue();
 		}
 
-		plotWidget.runHeadlessCommand("PIP ON");
+		plotWidget.runHeadlessCommand("PIPE ON");
 
-		if (thinData || SWT.getPlatform().startsWith("rap")) {
-			plotWidget.runHeadlessCommand("NOOP/WRAP/RT " + file.getAbsolutePath() + "{ydelta=" + yDelta.intValue() + ",yu=time}" + thinIn);
+		if (thinData) {
+			plotWidget.runHeadlessCommand("NOOP/WRAP/RT " + file.getAbsolutePath() + "{ydelta=" + yDelta.intValue() + ",yu=time} " + thinIn);
 			plotWidget.runHeadlessCommand("THIN IN=" + thinIn + " OUT=" + outName + " FINC=" + thinIncr.intValue());
 		} else {
-			plotWidget.runHeadlessCommand("NOOP/WRAP/RT " + file.getAbsolutePath() + "{ydelta=" + yDelta.intValue() + ",yu=time}" + outName);
+			plotWidget.runHeadlessCommand("NOOP/WRAP/RT " + file.getAbsolutePath() + "{ydelta=" + yDelta.intValue() + ",yu=time} " + outName);
 		}
 		
 		plotWidget.runHeadlessCommand("PIPE RUN");
