@@ -67,7 +67,6 @@ import org.eclipse.emf.common.notify.impl.AdapterImpl;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EClass;
-import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
@@ -1606,7 +1605,7 @@ public class ScaDeviceManagerImpl extends ScaPropertyContainerImpl<DeviceManager
 					}
 					serviceMonitor.worked(1);
 				}
-				transaction.addCommand(new MergeServicesCommand(this, newServices));
+				transaction.addCommand(createMergeServicesCommand(newServices));
 			} catch (SystemException e) {
 				Status status = new Status(Status.ERROR, ScaModelPlugin.ID, "Failed to fetch services.", e);
 				transaction.addCommand(new UnsetLocalAttributeCommand(this, status, ScaPackage.Literals.SCA_DEVICE_MANAGER__SERVICES));
@@ -1620,6 +1619,10 @@ public class ScaDeviceManagerImpl extends ScaPropertyContainerImpl<DeviceManager
 		subMonitor.done();
 		// BEGIN GENERATED CODE
 	}
+
+	protected Command createMergeServicesCommand(final Map<String, ServiceType> newServices) {
+	    return new MergeServicesCommand(this, newServices);
+    }
 
 	/**
 	 * <!-- begin-user-doc -->
