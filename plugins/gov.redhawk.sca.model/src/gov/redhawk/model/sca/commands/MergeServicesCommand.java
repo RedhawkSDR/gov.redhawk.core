@@ -56,7 +56,7 @@ public class MergeServicesCommand extends SetStatusCommand<ScaDeviceManager> {
 
 		// Add Services
 		for (ServiceType typeInfo : newServices.values()) {
-			ScaService service = ScaFactory.eINSTANCE.createScaService();
+			ScaService service = createScaService();
 			provider.getServices().add(service);
 			service.setName(typeInfo.serviceName);
 			service.setCorbaObj(typeInfo.serviceObject);
@@ -68,5 +68,9 @@ public class MergeServicesCommand extends SetStatusCommand<ScaDeviceManager> {
 		super.execute();
 
 	}
+
+	protected ScaService createScaService() {
+	    return ScaFactory.eINSTANCE.createScaService();
+    }
 
 }
