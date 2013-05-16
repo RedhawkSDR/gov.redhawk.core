@@ -1,30 +1,33 @@
-/** 
- * This file is protected by Copyright. 
- * Please refer to the COPYRIGHT file distributed with this source distribution.
- * 
- * This file is part of REDHAWK IDE.
- * 
- * All rights reserved.  This program and the accompanying materials are made available under 
- * the terms of the Eclipse Public License v1.0 which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html.
+/*******************************************************************************
+ * This file is protected by Copyright. 
+ * Please refer to the COPYRIGHT file distributed with this source distribution.
  *
- */
+ * This file is part of REDHAWK IDE.
+ *
+ * All rights reserved.  This program and the accompanying materials are made available under 
+ * the terms of the Eclipse Public License v1.0 which accompanies this distribution, and is available at 
+ * http://www.eclipse.org/legal/epl-v10.html
+ *******************************************************************************/
 
  // BEGIN GENERATED CODE
 package gov.redhawk.model.sca.impl;
 
 import gov.redhawk.model.sca.ScaAbstractComponent;
+import gov.redhawk.model.sca.ScaModelPlugin;
 import gov.redhawk.model.sca.ScaPackage;
 import gov.redhawk.model.sca.ScaPort;
 import gov.redhawk.model.sca.ScaPortContainer;
+import gov.redhawk.model.sca.commands.ScaModelCommand;
 import mil.jpeojtrs.sca.scd.AbstractPort;
 
+import org.eclipse.core.runtime.Status;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.util.EcoreUtil;
+import org.omg.CORBA.SystemException;
 
 /**
  * <!-- begin-user-doc -->
@@ -366,6 +369,37 @@ public abstract class ScaPortImpl<P extends AbstractPort, P2 extends org.omg.COR
 		    	eNotify(new ENotificationImpl(this, Notification.SET, ScaPackage.SCA_PORT__REPID, null, getRepid()));
 		    }
 	    }
+	}
+	
+	@Override
+	public boolean exists() {
+		if (getCorbaObj() == null) {
+			ScaModelCommand.execute(this, new ScaModelCommand() {
+				
+				public void execute() {
+					setStatus(ScaPackage.Literals.CORBA_OBJ_WRAPPER__OBJ, new Status(Status.ERROR, ScaModelPlugin.ID, "Unable to find port object", null));	
+				}
+			});
+			return true;
+		}
+		try {
+			if (getCorbaObj()._non_existent()) {
+				ScaModelCommand.execute(this, new ScaModelCommand() {
+					
+					public void execute() {
+						setStatus(ScaPackage.Literals.CORBA_OBJ_WRAPPER__OBJ, new Status(Status.ERROR, ScaModelPlugin.ID, "Non existent port object", null));	
+					}
+				});
+			}
+		} catch (final SystemException e) {
+			ScaModelCommand.execute(this, new ScaModelCommand() {
+				
+				public void execute() {
+					setStatus(ScaPackage.Literals.CORBA_OBJ_WRAPPER__OBJ, new Status(Status.ERROR, ScaModelPlugin.ID, "Exception contacting port", e));	
+				}
+			});
+		}
+		return true;
 	}
 
 } //ScaPortImpl

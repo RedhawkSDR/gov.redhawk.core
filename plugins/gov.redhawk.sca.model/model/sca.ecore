@@ -587,9 +587,9 @@
         <details key="name" value="label"/>
       </eAnnotations>
     </eStructuralFeatures>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="services" upperBound="-1"
-        eType="#//ScaService" transient="true" unsettable="true" containment="true"
-        resolveProxies="false"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="services" ordered="false"
+        upperBound="-1" eType="#//ScaService" transient="true" unsettable="true" containment="true"
+        resolveProxies="false" eOpposite="#//ScaService/devMgr"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="profile" eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EString"
         transient="true" unsettable="true"/>
     <eGenericSuperTypes eClassifier="#//ScaPropertyContainer">
@@ -601,9 +601,14 @@
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="ScaService">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EString"/>
-    <eGenericSuperTypes eClassifier="#//CorbaObjWrapper">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="devMgr" ordered="false"
+        eType="#//ScaDeviceManager" changeable="false" transient="true" resolveProxies="false"
+        eOpposite="#//ScaDeviceManager/services"/>
+    <eGenericSuperTypes eClassifier="#//ScaPropertyContainer">
       <eTypeArguments eClassifier="#//Object"/>
+      <eTypeArguments eClassifier="ecore:EClass platform:/plugin/mil.jpeojtrs.sca.spd/model/spd.ecore#//SoftPkg"/>
     </eGenericSuperTypes>
+    <eGenericSuperTypes eClassifier="#//ScaPortContainer"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="ScaDeviceManagerFileSystem">
     <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">

@@ -1,16 +1,15 @@
-/**
- * This file is protected by Copyright. 
- * Please refer to the COPYRIGHT file distributed with this source distribution.
- * 
- * This file is part of REDHAWK IDE.
- * 
- * All rights reserved.  This program and the accompanying materials are made available under 
- * the terms of the Eclipse Public License v1.0 which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html.
+/*******************************************************************************
+ * This file is protected by Copyright. 
+ * Please refer to the COPYRIGHT file distributed with this source distribution.
  *
- */
+ * This file is part of REDHAWK IDE.
+ *
+ * All rights reserved.  This program and the accompanying materials are made available under 
+ * the terms of the Eclipse Public License v1.0 which accompanies this distribution, and is available at 
+ * http://www.eclipse.org/legal/epl-v10.html
+ *******************************************************************************/
 
-// BEGIN GENERATED CODE
+ // BEGIN GENERATED CODE
 package gov.redhawk.model.sca.impl;
 
 import gov.redhawk.model.sca.IRefreshable;
@@ -71,7 +70,6 @@ import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.util.BasicFeatureMap;
-import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.EObjectContainmentWithInverseEList;
 import org.eclipse.emf.ecore.util.EcoreEList;
 import org.eclipse.emf.ecore.util.EcoreUtil;
@@ -709,7 +707,7 @@ public class ScaDeviceManagerImpl extends ScaPropertyContainerImpl<DeviceManager
 	 */
 	public EList<ScaService> getServices() {
 		if (services == null) {
-			services = new EObjectContainmentEList.Unsettable<ScaService>(ScaService.class, this, ScaPackage.SCA_DEVICE_MANAGER__SERVICES);
+			services = new EObjectContainmentWithInverseEList.Unsettable<ScaService>(ScaService.class, this, ScaPackage.SCA_DEVICE_MANAGER__SERVICES, ScaPackage.SCA_SERVICE__DEV_MGR);
 		}
 		return services;
 	}
@@ -974,6 +972,8 @@ public class ScaDeviceManagerImpl extends ScaPropertyContainerImpl<DeviceManager
 				if (eInternalContainer() != null)
 					msgs = eBasicRemoveFromContainer(msgs);
 				return basicSetDomMgr((ScaDomainManager)otherEnd, msgs);
+			case ScaPackage.SCA_DEVICE_MANAGER__SERVICES:
+				return ((InternalEList<InternalEObject>)(InternalEList<?>)getServices()).basicAdd(otherEnd, msgs);
 		}
 		return super.eInverseAdd(otherEnd, featureID, msgs);
 	}

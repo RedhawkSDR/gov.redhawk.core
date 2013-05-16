@@ -1,14 +1,13 @@
-/** 
- * This file is protected by Copyright. 
- * Please refer to the COPYRIGHT file distributed with this source distribution.
- * 
- * This file is part of REDHAWK IDE.
- * 
- * All rights reserved.  This program and the accompanying materials are made available under 
- * the terms of the Eclipse Public License v1.0 which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html.
+/*******************************************************************************
+ * This file is protected by Copyright. 
+ * Please refer to the COPYRIGHT file distributed with this source distribution.
  *
- */
+ * This file is part of REDHAWK IDE.
+ *
+ * All rights reserved.  This program and the accompanying materials are made available under 
+ * the terms of the Eclipse Public License v1.0 which accompanies this distribution, and is available at 
+ * http://www.eclipse.org/legal/epl-v10.html
+ *******************************************************************************/
 
  // BEGIN GENERATED CODE
 package gov.redhawk.model.sca.impl;
@@ -1025,6 +1024,15 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public EReference getScaService_DevMgr() {
+		return (EReference)scaServiceEClass.getEStructuralFeatures().get(1);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public EClass getScaDeviceManagerFileSystem() {
 		return scaDeviceManagerFileSystemEClass;
 	}
@@ -1963,6 +1971,7 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 
 		scaServiceEClass = createEClass(SCA_SERVICE);
 		createEAttribute(scaServiceEClass, SCA_SERVICE__NAME);
+		createEReference(scaServiceEClass, SCA_SERVICE__DEV_MGR);
 
 		scaDeviceManagerFileSystemEClass = createEClass(SCA_DEVICE_MANAGER_FILE_SYSTEM);
 		createEReference(scaDeviceManagerFileSystemEClass, SCA_DEVICE_MANAGER_FILE_SYSTEM__DEVICE_MANAGER);
@@ -2207,9 +2216,13 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 		scaDeviceManagerEClass.getEGenericSuperTypes().add(g1);
 		g1 = createEGenericType(this.getScaPortContainer());
 		scaDeviceManagerEClass.getEGenericSuperTypes().add(g1);
-		g1 = createEGenericType(this.getCorbaObjWrapper());
+		g1 = createEGenericType(this.getScaPropertyContainer());
 		g2 = createEGenericType(this.getObject());
 		g1.getETypeArguments().add(g2);
+		g2 = createEGenericType(theSpdPackage.getSoftPkg());
+		g1.getETypeArguments().add(g2);
+		scaServiceEClass.getEGenericSuperTypes().add(g1);
+		g1 = createEGenericType(this.getScaPortContainer());
 		scaServiceEClass.getEGenericSuperTypes().add(g1);
 		g1 = createEGenericType(this.getScaFileSystem());
 		g2 = createEGenericType(theCfPackage.getFileSystem());
@@ -2519,7 +2532,7 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 		initEReference(getScaDeviceManager_DomMgr(), this.getScaDomainManager(), this.getScaDomainManager_DeviceManagers(), "domMgr", null, 0, 1, ScaDeviceManager.class, IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getScaDeviceManager_Identifier(), theEcorePackage.getEString(), "identifier", null, 0, 1, ScaDeviceManager.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_UNSETTABLE, IS_ID, IS_UNIQUE, IS_DERIVED, IS_ORDERED);
 		initEAttribute(getScaDeviceManager_Label(), theEcorePackage.getEString(), "label", null, 0, 1, ScaDeviceManager.class, IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_UNSETTABLE, !IS_ID, IS_UNIQUE, IS_DERIVED, IS_ORDERED);
-		initEReference(getScaDeviceManager_Services(), this.getScaService(), null, "services", null, 0, -1, ScaDeviceManager.class, IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getScaDeviceManager_Services(), this.getScaService(), this.getScaService_DevMgr(), "services", null, 0, -1, ScaDeviceManager.class, IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, !IS_ORDERED);
 		initEAttribute(getScaDeviceManager_Profile(), theEcorePackage.getEString(), "profile", null, 0, 1, ScaDeviceManager.class, IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		op = addEOperation(scaDeviceManagerEClass, null, "getDevice", 0, 1, IS_UNIQUE, IS_ORDERED);
@@ -2561,6 +2574,7 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 
 		initEClass(scaServiceEClass, ScaService.class, "ScaService", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getScaService_Name(), theEcorePackage.getEString(), "name", null, 0, 1, ScaService.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getScaService_DevMgr(), this.getScaDeviceManager(), this.getScaDeviceManager_Services(), "devMgr", null, 0, 1, ScaService.class, IS_TRANSIENT, !IS_VOLATILE, !IS_CHANGEABLE, !IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, !IS_ORDERED);
 
 		initEClass(scaDeviceManagerFileSystemEClass, ScaDeviceManagerFileSystem.class, "ScaDeviceManagerFileSystem", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEReference(getScaDeviceManagerFileSystem_DeviceManager(), this.getScaDeviceManager(), this.getScaDeviceManager_FileSystem(), "deviceManager", null, 0, 1, ScaDeviceManagerFileSystem.class, IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);

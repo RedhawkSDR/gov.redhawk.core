@@ -11,11 +11,15 @@
  */
 package gov.redhawk.sca.internal.ui;
 
+import gov.redhawk.model.sca.IRefreshable;
+import gov.redhawk.model.sca.RefreshDepth;
 import gov.redhawk.model.sca.ScaComponent;
 import gov.redhawk.model.sca.ScaDevice;
 import gov.redhawk.model.sca.ScaDeviceManager;
 import gov.redhawk.model.sca.ScaDomainManager;
 import gov.redhawk.model.sca.ScaFileStore;
+import gov.redhawk.model.sca.ScaProvidesPort;
+import gov.redhawk.model.sca.ScaService;
 import gov.redhawk.model.sca.ScaUsesPort;
 import gov.redhawk.model.sca.ScaWaveform;
 import gov.redhawk.model.sca.provider.ScaDeviceManagersContainerItemProvider;
@@ -25,7 +29,6 @@ import gov.redhawk.model.sca.util.ScaSwitch;
 import gov.redhawk.sca.internal.ui.DeferredAdapterSwitch.IDeferredAdapter;
 
 import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.core.runtime.SubMonitor;
 import org.eclipse.emf.ecore.EObject;
 
 import CF.Device;
@@ -48,49 +51,50 @@ public class DeferredAdapterSwitch extends ScaSwitch<IDeferredAdapter> {
 
 		public void fetchDeferredChildren(IProgressMonitor monitor);
 	}
+	
+	private static class DeferredAdapter implements IDeferredAdapter {
+		
+		IRefreshable refreshable;
+		DeferredAdapter(IRefreshable refreshable) {
+			this.refreshable = refreshable;
+		}
 
-	@Override
-	public < D extends Device > IDeferredAdapter caseScaDevice(final ScaDevice<D> object) {
-		return new IDeferredAdapter() {
+		public boolean isContainer() {
+	        return true;
+        }
 
-			public boolean isSet() {
-				return object.isSetChildDevices() && object.isSetPorts();
-			}
+		public boolean isSet() {
+	        return false;
+        }
 
-			public boolean isContainer() {
-				return true;
-			}
-
-			public void fetchDeferredChildren(final IProgressMonitor monitor) {
-				final SubMonitor subMonitor = SubMonitor.convert(monitor, "Fetching Children...", 2);
-				try {
-					object.fetchAggregateDevices(subMonitor.newChild(1));
-					object.fetchPorts(subMonitor.newChild(1));
-				} catch (final InterruptedException e) {
-					// PASS
-				}
-			}
-		};
+		public void fetchDeferredChildren(IProgressMonitor monitor) {
+			try {
+	            refreshable.refresh(monitor, RefreshDepth.CHILDREN);
+            } catch (InterruptedException e) {
+	            // PASS
+            }
+        }	
 	}
-
+	
+	@Override
+	public IDeferredAdapter caseScaService(ScaService object) {
+		return new DeferredAdapter(object);
+	}
+	
+	@Override
+	public < D extends Device > IDeferredAdapter caseScaDevice(ScaDevice<D> object) {
+		return new DeferredAdapter(object);
+	}
+	
 	@Override
 	public IDeferredAdapter caseScaUsesPort(final ScaUsesPort object) {
-		return new IDeferredAdapter() {
-
-			public boolean isSet() {
-				return object.isSetConnections();
-			}
-
+		return new DeferredAdapter(object) {
 			public boolean isContainer() {
 				return object._is_a(QueryablePortHelper.id());
 			}
-
-			public void fetchDeferredChildren(final IProgressMonitor monitor) {
-				object.fetchConnections(monitor);
-			}
 		};
 	}
-
+	
 	@Override
 	public IDeferredAdapter caseScaFileStore(final ScaFileStore object) {
 		return new IDeferredAdapter() {
@@ -108,66 +112,20 @@ public class DeferredAdapterSwitch extends ScaSwitch<IDeferredAdapter> {
 			}
 		};
 	}
-
+	
 	@Override
-	public IDeferredAdapter caseScaWaveform(final ScaWaveform object) {
-		return new IDeferredAdapter() {
-
-			public boolean isContainer() {
-				return true;
-			}
-
-			public boolean isSet() {
-				return object.isSetComponents() && object.isSetPorts();
-			}
-
-			public void fetchDeferredChildren(final IProgressMonitor monitor) {
-				final SubMonitor subMonitor = SubMonitor.convert(monitor, "Fetching Children...", 2);
-				object.fetchComponents(subMonitor.newChild(1));
-				object.fetchPorts(subMonitor.newChild(1));
-			}
-
-		};
+	public IDeferredAdapter caseScaWaveform(ScaWaveform object) {
+		return new DeferredAdapter(object);
 	}
-
+	
 	@Override
-	public IDeferredAdapter caseScaComponent(final ScaComponent object) {
-		return new IDeferredAdapter() {
-
-			public boolean isContainer() {
-				return true;
-			}
-
-			public void fetchDeferredChildren(final IProgressMonitor monitor) {
-				final SubMonitor subMonitor = SubMonitor.convert(monitor, "Fetching Children...", 2);
-				object.fetchDevices(subMonitor.newChild(1));
-				object.fetchPorts(subMonitor.newChild(1));
-			}
-
-			public boolean isSet() {
-				return object.isSetDevices() && object.isSetPorts();
-			}
-		};
+	public IDeferredAdapter caseScaComponent(ScaComponent object) {
+		return new DeferredAdapter(object);
 	}
 
 	@Override
 	public IDeferredAdapter caseScaDeviceManager(final ScaDeviceManager object) {
-		return new IDeferredAdapter() {
-
-			public boolean isSet() {
-				return object.isSetDevices() && object.isSetPorts();
-			}
-
-			public boolean isContainer() {
-				return true;
-			}
-
-			public void fetchDeferredChildren(final IProgressMonitor monitor) {
-				final SubMonitor subMonitor = SubMonitor.convert(monitor, "Fetching Children...", 2);
-				object.fetchDevices(subMonitor.newChild(1));
-				object.fetchPorts(subMonitor.newChild(1));
-			}
-		};
+		return new DeferredAdapter(object);
 	}
 
 	public IDeferredAdapter caseScaDeviceManagersContainerItemProvider(final ScaDeviceManagersContainerItemProvider object) {

@@ -1,14 +1,13 @@
-/** 
- * This file is protected by Copyright. 
- * Please refer to the COPYRIGHT file distributed with this source distribution.
- * 
- * This file is part of REDHAWK IDE.
- * 
- * All rights reserved.  This program and the accompanying materials are made available under 
- * the terms of the Eclipse Public License v1.0 which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html.
+/*******************************************************************************
+ * This file is protected by Copyright. 
+ * Please refer to the COPYRIGHT file distributed with this source distribution.
  *
- */
+ * This file is part of REDHAWK IDE.
+ *
+ * All rights reserved.  This program and the accompanying materials are made available under 
+ * the terms of the Eclipse Public License v1.0 which accompanies this distribution, and is available at 
+ * http://www.eclipse.org/legal/epl-v10.html
+ *******************************************************************************/
 
  // BEGIN GENERATED CODE
 package gov.redhawk.model.sca;
@@ -365,6 +364,7 @@ public interface ScaDeviceManager extends ScaPropertyContainer<DeviceManager, De
 	/**
 	 * Returns the value of the '<em><b>Services</b></em>' containment reference list.
 	 * The list contents are of type {@link gov.redhawk.model.sca.ScaService}.
+	 * It is bidirectional and its opposite is '{@link gov.redhawk.model.sca.ScaService#getDevMgr <em>Dev Mgr</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <p>
 	 * If the meaning of the '<em>Services</em>' containment reference list isn't clear,
@@ -375,7 +375,8 @@ public interface ScaDeviceManager extends ScaPropertyContainer<DeviceManager, De
 	 * @see #isSetServices()
 	 * @see #unsetServices()
 	 * @see gov.redhawk.model.sca.ScaPackage#getScaDeviceManager_Services()
-	 * @model containment="true" unsettable="true" transient="true"
+	 * @see gov.redhawk.model.sca.ScaService#getDevMgr
+	 * @model opposite="devMgr" containment="true" unsettable="true" transient="true" ordered="false"
 	 * @generated
 	 */
 	EList<ScaService> getServices();
