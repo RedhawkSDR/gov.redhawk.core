@@ -1,14 +1,13 @@
-/** 
- * This file is protected by Copyright. 
- * Please refer to the COPYRIGHT file distributed with this source distribution.
- * 
- * This file is part of REDHAWK IDE.
- * 
- * All rights reserved.  This program and the accompanying materials are made available under 
- * the terms of the Eclipse Public License v1.0 which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html.
+/*******************************************************************************
+ * This file is protected by Copyright. 
+ * Please refer to the COPYRIGHT file distributed with this source distribution.
  *
- */
+ * This file is part of REDHAWK IDE.
+ *
+ * All rights reserved.  This program and the accompanying materials are made available under 
+ * the terms of the Eclipse Public License v1.0 which accompanies this distribution, and is available at 
+ * http://www.eclipse.org/legal/epl-v10.html
+ *******************************************************************************/
 
  // BEGIN GENERATED CODE
 package gov.redhawk.model.sca.util;
@@ -297,7 +296,11 @@ public class ScaSwitch< T1 > {
 			case ScaPackage.SCA_SERVICE: {
 				ScaService scaService = (ScaService)theEObject;
 				T1 result = caseScaService(scaService);
+				if (result == null) result = caseScaPropertyContainer(scaService);
+				if (result == null) result = caseScaPortContainer(scaService);
 				if (result == null) result = caseCorbaObjWrapper(scaService);
+				if (result == null) result = caseProfileObjectWrapper(scaService);
+				if (result == null) result = casePropertySetOperations(scaService);
 				if (result == null) result = caseDataProviderObject(scaService);
 				if (result == null) result = caseIStatusProvider(scaService);
 				if (result == null) result = caseIDisposable(scaService);

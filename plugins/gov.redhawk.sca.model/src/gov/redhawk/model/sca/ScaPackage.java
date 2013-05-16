@@ -1,14 +1,13 @@
-/** 
- * This file is protected by Copyright. 
- * Please refer to the COPYRIGHT file distributed with this source distribution.
- * 
- * This file is part of REDHAWK IDE.
- * 
- * All rights reserved.  This program and the accompanying materials are made available under 
- * the terms of the Eclipse Public License v1.0 which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html.
+/*******************************************************************************
+ * This file is protected by Copyright. 
+ * Please refer to the COPYRIGHT file distributed with this source distribution.
  *
- */
+ * This file is part of REDHAWK IDE.
+ *
+ * All rights reserved.  This program and the accompanying materials are made available under 
+ * the terms of the Eclipse Public License v1.0 which accompanies this distribution, and is available at 
+ * http://www.eclipse.org/legal/epl-v10.html
+ *******************************************************************************/
 
  // BEGIN GENERATED CODE
 package gov.redhawk.model.sca;
@@ -1247,7 +1246,7 @@ public interface ScaPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int SCA_SERVICE__STATUS = CORBA_OBJ_WRAPPER__STATUS;
+	int SCA_SERVICE__STATUS = SCA_PROPERTY_CONTAINER__STATUS;
 	/**
 	 * The feature id for the '<em><b>Disposed</b></em>' attribute.
 	 * <!-- begin-user-doc -->
@@ -1255,7 +1254,7 @@ public interface ScaPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int SCA_SERVICE__DISPOSED = CORBA_OBJ_WRAPPER__DISPOSED;
+	int SCA_SERVICE__DISPOSED = SCA_PROPERTY_CONTAINER__DISPOSED;
 	/**
 	 * The feature id for the '<em><b>Data Providers</b></em>' attribute list.
 	 * <!-- begin-user-doc -->
@@ -1263,7 +1262,7 @@ public interface ScaPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int SCA_SERVICE__DATA_PROVIDERS = CORBA_OBJ_WRAPPER__DATA_PROVIDERS;
+	int SCA_SERVICE__DATA_PROVIDERS = SCA_PROPERTY_CONTAINER__DATA_PROVIDERS;
 	/**
 	 * The feature id for the '<em><b>Data Providers Enabled</b></em>' attribute.
 	 * <!-- begin-user-doc -->
@@ -1271,7 +1270,7 @@ public interface ScaPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int SCA_SERVICE__DATA_PROVIDERS_ENABLED = CORBA_OBJ_WRAPPER__DATA_PROVIDERS_ENABLED;
+	int SCA_SERVICE__DATA_PROVIDERS_ENABLED = SCA_PROPERTY_CONTAINER__DATA_PROVIDERS_ENABLED;
 	/**
 	 * The feature id for the '<em><b>Ior</b></em>' attribute.
 	 * <!-- begin-user-doc -->
@@ -1279,7 +1278,7 @@ public interface ScaPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int SCA_SERVICE__IOR = CORBA_OBJ_WRAPPER__IOR;
+	int SCA_SERVICE__IOR = SCA_PROPERTY_CONTAINER__IOR;
 	/**
 	 * The feature id for the '<em><b>Obj</b></em>' attribute.
 	 * <!-- begin-user-doc -->
@@ -1287,7 +1286,7 @@ public interface ScaPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int SCA_SERVICE__OBJ = CORBA_OBJ_WRAPPER__OBJ;
+	int SCA_SERVICE__OBJ = SCA_PROPERTY_CONTAINER__OBJ;
 	/**
 	 * The feature id for the '<em><b>Corba Obj</b></em>' attribute.
 	 * <!-- begin-user-doc -->
@@ -1295,7 +1294,47 @@ public interface ScaPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int SCA_SERVICE__CORBA_OBJ = CORBA_OBJ_WRAPPER__CORBA_OBJ;
+	int SCA_SERVICE__CORBA_OBJ = SCA_PROPERTY_CONTAINER__CORBA_OBJ;
+	/**
+	 * The feature id for the '<em><b>Profile URI</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int SCA_SERVICE__PROFILE_URI = SCA_PROPERTY_CONTAINER__PROFILE_URI;
+	/**
+	 * The feature id for the '<em><b>Profile Obj</b></em>' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int SCA_SERVICE__PROFILE_OBJ = SCA_PROPERTY_CONTAINER__PROFILE_OBJ;
+	/**
+	 * The feature id for the '<em><b>Root File Store</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int SCA_SERVICE__ROOT_FILE_STORE = SCA_PROPERTY_CONTAINER__ROOT_FILE_STORE;
+	/**
+	 * The feature id for the '<em><b>Properties</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int SCA_SERVICE__PROPERTIES = SCA_PROPERTY_CONTAINER__PROPERTIES;
+	/**
+	 * The feature id for the '<em><b>Ports</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int SCA_SERVICE__PORTS = SCA_PROPERTY_CONTAINER_FEATURE_COUNT + 0;
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
 	 * <!-- begin-user-doc -->
@@ -1303,7 +1342,15 @@ public interface ScaPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int SCA_SERVICE__NAME = CORBA_OBJ_WRAPPER_FEATURE_COUNT + 0;
+	int SCA_SERVICE__NAME = SCA_PROPERTY_CONTAINER_FEATURE_COUNT + 1;
+	/**
+	 * The feature id for the '<em><b>Dev Mgr</b></em>' container reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int SCA_SERVICE__DEV_MGR = SCA_PROPERTY_CONTAINER_FEATURE_COUNT + 2;
 	/**
 	 * The number of structural features of the '<em>Service</em>' class.
 	 * <!-- begin-user-doc -->
@@ -1311,7 +1358,7 @@ public interface ScaPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int SCA_SERVICE_FEATURE_COUNT = CORBA_OBJ_WRAPPER_FEATURE_COUNT + 1;
+	int SCA_SERVICE_FEATURE_COUNT = SCA_PROPERTY_CONTAINER_FEATURE_COUNT + 3;
 	/**
 	 * The meta object id for the '{@link gov.redhawk.model.sca.impl.ScaFileSystemImpl <em>File System</em>}' class.
 	 * <!-- begin-user-doc -->
@@ -4358,6 +4405,17 @@ public interface ScaPackage extends EPackage {
 	EAttribute getScaService_Name();
 
 	/**
+	 * Returns the meta object for the container reference '{@link gov.redhawk.model.sca.ScaService#getDevMgr <em>Dev Mgr</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the container reference '<em>Dev Mgr</em>'.
+	 * @see gov.redhawk.model.sca.ScaService#getDevMgr()
+	 * @see #getScaService()
+	 * @generated
+	 */
+	EReference getScaService_DevMgr();
+
+	/**
 	 * Returns the meta object for class '{@link gov.redhawk.model.sca.ScaDeviceManagerFileSystem <em>Device Manager File System</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -5840,6 +5898,13 @@ public interface ScaPackage extends EPackage {
 		 * @generated
 		 */
 		EAttribute SCA_SERVICE__NAME = eINSTANCE.getScaService_Name();
+		/**
+		 * The meta object literal for the '<em><b>Dev Mgr</b></em>' container reference feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EReference SCA_SERVICE__DEV_MGR = eINSTANCE.getScaService_DevMgr();
 		/**
 		 * The meta object literal for the '{@link gov.redhawk.model.sca.impl.ScaDeviceManagerFileSystemImpl <em>Device Manager File System</em>}' class.
 		 * <!-- begin-user-doc -->
