@@ -1,6 +1,6 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: Observables
+Bundle-Name: %Bundle-Name
 Bundle-SymbolicName: gov.redhawk.sca.observables
 Bundle-Version: 1.0.0.qualifier
 Bundle-Activator: gov.redhawk.sca.observables.ScaObservablesPlugin
@@ -17,4 +17,4 @@ Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: J2SE-1.5
 Export-Package: gov.redhawk.sca.observables,
  gov.redhawk.sca.observables.strategy
-Bundle-Vendor: REDHAWK
+Bundle-Vendor: %Bundle-Vendor

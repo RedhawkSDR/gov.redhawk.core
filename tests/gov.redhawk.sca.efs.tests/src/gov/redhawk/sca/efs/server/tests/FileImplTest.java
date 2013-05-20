@@ -42,9 +42,9 @@ public class FileImplTest {
 		try {
 			temp = new File(FileLocator.toFileURL(FileLocator.find(bundle, new Path("testFiles/testFile.txt"), null)).toURI());
 		} catch (final URISyntaxException e) {
-			temp = null;
+			// PASS
 		} catch (final IOException e) {
-			temp = null;
+			// PASS
 		}
 		TEST_FILE = temp;
 	}

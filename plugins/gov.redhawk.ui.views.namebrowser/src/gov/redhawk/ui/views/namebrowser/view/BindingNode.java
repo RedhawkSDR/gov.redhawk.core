@@ -13,7 +13,6 @@ package gov.redhawk.ui.views.namebrowser.view;
 
 import gov.redhawk.sca.util.CorbaURIUtil;
 import gov.redhawk.sca.util.Debug;
-import gov.redhawk.sca.util.ORBUtil;
 import gov.redhawk.sca.util.OrbSession;
 import gov.redhawk.ui.views.namebrowser.NameBrowserPlugin;
 

@@ -20,7 +20,7 @@
             class="gov.redhawk.ui.views.domainbrowser.view.DomainBrowserView"
             icon="icons/TreeViewer.png"
             id="gov.redhawk.ui.views.domainbrowserview"
-            name="Domain Browser"
+            name="%view.name"
             restorable="true">
       </view>
    </extension>
@@ -28,9 +28,9 @@
          point="org.eclipse.ui.commands">
       <command
             defaultHandler="gov.redhawk.ui.views.domainbrowser.actions.CollapseAllHandler"
-            description="Minimize All Items in Domain Tree"
+            description="%command.description"
             id="gov.redhawk.ui.views.domainbrowser.command.collapseAll"
-            name="Collapse All">
+            name="%command.name">
       </command>
    </extension>
    <extension
@@ -40,9 +40,9 @@
          <command
                commandId="gov.redhawk.ui.views.domainbrowser.command.collapseAll"
                icon="icons/collapseall.gif"
-               label="Collapse All"
+               label="%command.label"
                style="push"
-               tooltip="Collapse All Items In Tree">
+               tooltip="%command.tooltip">
             <visibleWhen
                   checkEnabled="true">
             </visibleWhen>
@@ -89,7 +89,7 @@
          </command>
           <command
                commandId="org.eclipse.ui.edit.delete"
-               label="Uninstall"
+               label="%command.label.0"
                style="push">
             <visibleWhen
                   checkEnabled="false">
@@ -131,7 +131,7 @@
          </command>
 		<command
                commandId="org.eclipse.ui.edit.delete"
-               label="Release"
+               label="%command.label.1"
                style="push">
             <visibleWhen
                   checkEnabled="false">
@@ -158,7 +158,7 @@
       <perspective
             class="gov.redhawk.ui.views.domainbrowser.application.Perspective"
             id="gov.redhawk.ui.views.domainbrowser.perspective1"
-            name="SCA Domain Browser">
+            name="%perspective.name">
       </perspective>
    </extension>
    <extension
@@ -178,7 +178,7 @@
       <command
             defaultHandler="gov.redhawk.ui.views.domainbrowser.view.handlers.NewDomainHandler"
             id="gov.redhawk.ui.views.domainbrowser.addDomain"
-            name="Add Domain Connection">
+            name="%command.name.0">
       </command>
    </extension>
 </plugin>

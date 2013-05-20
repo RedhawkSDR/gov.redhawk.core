@@ -18,7 +18,6 @@ import gov.redhawk.model.sca.ScaDevice;
 import gov.redhawk.model.sca.ScaDeviceManager;
 import gov.redhawk.model.sca.ScaDomainManager;
 import gov.redhawk.model.sca.ScaFileStore;
-import gov.redhawk.model.sca.ScaProvidesPort;
 import gov.redhawk.model.sca.ScaService;
 import gov.redhawk.model.sca.ScaUsesPort;
 import gov.redhawk.model.sca.ScaWaveform;

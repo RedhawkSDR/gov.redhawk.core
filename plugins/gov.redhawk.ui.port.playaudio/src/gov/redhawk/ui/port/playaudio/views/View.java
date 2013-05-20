@@ -69,8 +69,8 @@ public class View extends ViewPart implements IControllerListener {
 		
 		@Override
 		public Object[] getElements(Object inputElement) {
-			if (inputElement instanceof Map<?,?>) {
-				return super.getElements(((Map<?,?>)inputElement).keySet());
+			if (inputElement instanceof Map< ? , ? >) {
+				return super.getElements(((Map< ? , ? >) inputElement).keySet());
 			}
 		    return super.getElements(inputElement);
 		}
@@ -205,7 +205,7 @@ public class View extends ViewPart implements IControllerListener {
 		}
 		this.isDisposed = true;
 		adapterFactory.dispose();
-		Job job = new Job("Disposing Controller"){
+		Job job = new Job("Disposing Controller") {
 
 			@Override
             protected IStatus run(IProgressMonitor monitor) {

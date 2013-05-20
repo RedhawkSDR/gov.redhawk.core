@@ -14,7 +14,7 @@
 <plugin>
    <extension
          id="plotter"
-         name="Plotter"
+         name="%extension.name"
          point="org.eclipse.core.runtime.applications">
       <application
             cardinality="singleton-global"
@@ -31,7 +31,7 @@
             class="gov.redhawk.plotter.application.PlotterPerspective"
             fixed="false"
             id="gov.redhawk.plotter.application.perspective"
-            name="REDHAWK Plotter Perspective">
+            name="%perspective.name">
       </perspective>
    </extension>
 

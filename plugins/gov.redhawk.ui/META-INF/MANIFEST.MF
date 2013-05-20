@@ -1,6 +1,6 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: REDHAWK UI Plug-in
+Bundle-Name: %Bundle-Name
 Bundle-SymbolicName: gov.redhawk.ui;singleton:=true
 Bundle-Version: 6.1.0.qualifier
 Bundle-Activator: gov.redhawk.ui.RedhawkUiActivator
@@ -42,4 +42,4 @@ Export-Package: gov.redhawk.internal.ui;x-internal:=true,
  gov.redhawk.ui.util,
  gov.redhawk.ui.validation,
  gov.redhawk.ui.wizards
-Bundle-Vendor: REDHAWK
+Bundle-Vendor: %Bundle-Vendor

@@ -62,7 +62,7 @@ public class EmfValidatorLabelDecorator extends LabelProvider implements ILightw
 		}
 
 		// Skip non local resources
-		if (object.eResource() == null || !object.eResource().getURI().isPlatform()) {
+		if (object == null || object.eResource() == null || !object.eResource().getURI().isPlatform()) {
 			return;
 		}
 		final Diagnostic validate;
@@ -86,10 +86,12 @@ public class EmfValidatorLabelDecorator extends LabelProvider implements ILightw
 			validate = Diagnostician.INSTANCE.validate(object);
 
 		}
-		if (validate.getSeverity() == Diagnostic.ERROR) {
-			decoration.addOverlay(getErrorImageDescriptor());
-		} else if (validate.getSeverity() == Diagnostic.WARNING) {
-			decoration.addOverlay(getWarningImageDescriptor());
+		if (validate != null) {
+			if (validate.getSeverity() == Diagnostic.ERROR) {
+				decoration.addOverlay(getErrorImageDescriptor());
+			} else if (validate.getSeverity() == Diagnostic.WARNING) {
+				decoration.addOverlay(getWarningImageDescriptor());
+			}
 		}
 	}
 

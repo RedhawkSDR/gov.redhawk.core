@@ -100,12 +100,13 @@ public class TypedElementItemProvider
 	 */
 	@Override
 	public String getText(Object object) {
+		if (object == null) {
+			return "";
+		}
 		TypedElement p = (TypedElement) object;
 		IItemLabelProvider lp = (IItemLabelProvider) getRootAdapterFactory().adapt(p.getType(), IItemLabelProvider.class);
 		String label = p.getName() + " : " + lp.getText(p.getType());
-		return label == null || label.length() == 0 ?
-			getString("_UI_TypedElement_type") :
-			label;
+		return label;
 	}
 
 	/**

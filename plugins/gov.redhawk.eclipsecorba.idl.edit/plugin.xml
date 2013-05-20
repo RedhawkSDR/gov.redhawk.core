@@ -68,7 +68,7 @@
       <decorator
             class="gov.redhawk.eclipsecorba.idl.provider.decorator.IdlInterfaceDclDecorator"
             id="gov.redhawk.eclispecorba.idl.edit"
-            label="Inherited Interface Decorator"
+            label="%decorator.label"
             lightweight="true"
             state="true">
          <enablement>

@@ -124,9 +124,7 @@ public class NativeTypeDclItemProvider
 		NativeTypeDcl p = (NativeTypeDcl) object;
 		IItemLabelProvider lp = (IItemLabelProvider) getRootAdapterFactory().adapt(p.getType(), IItemLabelProvider.class);
 		String label = p.getName() + " : " + lp.getText(p.getType());
-		return label == null || label.length() == 0 ?
-			getString("_UI_NativeTypeDcl_type") :
-			label;
+		return label;
 	}
 
 	/**

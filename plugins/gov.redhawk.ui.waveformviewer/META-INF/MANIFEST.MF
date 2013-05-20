@@ -1,6 +1,6 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: REDHAWK IDE WaveformViewer Plug-in
+Bundle-Name: %Bundle-Name
 Bundle-SymbolicName: gov.redhawk.ui.waveformviewer;singleton:=true
 Bundle-Version: 1.0.0.qualifier
 Bundle-Activator: gov.redhawk.waveformviewer.ui.WaveformProjectPlugin
@@ -20,5 +20,5 @@ Require-Bundle: mil.jpeojtrs.sca.dmd;bundle-version="1.0.0",
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: J2SE-1.5
 Plugin-Class: gov.redhawk.waveformviewer.ui.WaveformProjectPlugin
-Bundle-Vendor: REDHAWK
+Bundle-Vendor: %Bundle-Vendor
 

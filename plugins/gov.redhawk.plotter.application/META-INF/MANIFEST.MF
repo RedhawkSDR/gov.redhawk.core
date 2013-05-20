@@ -1,6 +1,6 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: REDHAWK Plotter Application
+Bundle-Name: %Bundle-Name
 Bundle-SymbolicName: gov.redhawk.plotter.application;singleton:=true
 Bundle-Version: 1.0.0.qualifier
 Bundle-Activator: gov.redhawk.plotter.application.PlotterApplicationPlugin
@@ -11,4 +11,4 @@ Require-Bundle: org.eclipse.ui;bundle-version="3.6.1",
  gov.redhawk.sca.model;bundle-version="14.0.0"
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: J2SE-1.5
-Bundle-Vendor: REDHAWK
+Bundle-Vendor: %Bundle-Vendor

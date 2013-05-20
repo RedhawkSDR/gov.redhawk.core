@@ -29,7 +29,7 @@
             category="mil.jpeojtrs.sca.sad.diagram.general"
             class="gov.redhawk.sca.sad.diagram.preferences.SadFiltersPreferencePage"
             id="gov.redhawk.sca.sad.diagram.SadFiltersPreferencePage"
-            name="Interface Filters">
+            name="%page.name.0">
       </page>
    </extension>
    <extension
@@ -230,7 +230,7 @@
          <propertyTab
              category="domain"
              id="property.tab.ComponentProperties"
-             label="Component Properties"/>
+             label="%propertyTab.label"/>
       </propertyTabs>
    </extension>
    
@@ -279,7 +279,7 @@
             locationURI="popup:org.eclipse.ui.popup.any?before=additions">
          <menu
                id="gov.redhawk.sca.sad.diagram.startOrderSubMenu"
-               label="Start Order">
+               label="%menu.label">
             <visibleWhen
                   checkEnabled="false">
                <and>
@@ -300,12 +300,12 @@
             </visibleWhen>
             <command
                   commandId="gov.redhawk.sca.sad.diagram.moveEarlierInStartOrder"
-                  label="Move Earlier"
+                  label="%command.label"
                   style="push">
             </command>
             <command
                   commandId="gov.redhawk.sca.sad.diagram.moveLaterInStartOrder"
-                  label="Move Later"
+                  label="%command.label.0"
                   style="push">
             </command>
          </menu>
@@ -316,23 +316,23 @@
       <command
             categoryId="org.eclipse.ui.category.edit"
             defaultHandler="gov.redhawk.sca.sad.diagram.part.AssignAssemblyControllerCommand"
-            description="Set the selected component as the Assembly Controller"
+            description="%command.description"
             id="gov.redhawk.sca.sad.diagram.assignAssemblyController"
-            name="Assign Assembly Controller">
+            name="%command.name">
       </command>
       <command
             categoryId="org.eclipse.ui.category.edit"
             defaultHandler="gov.redhawk.sca.sad.diagram.part.MoveComponentEarlierInStartOrder"
-            description="Moves a component earlier in the auto-start sequence"
+            description="%command.description.0"
             id="gov.redhawk.sca.sad.diagram.moveEarlierInStartOrder"
-            name="Move to Earlier in Start Order">
+            name="%command.name.0">
       </command>
       <command
             categoryId="org.eclipse.ui.category.edit"
             defaultHandler="gov.redhawk.sca.sad.diagram.part.MoveComponentLaterInStartOrder"
-            description="Moves a component later in the auto-start sequence"
+            description="%command.description.1"
             id="gov.redhawk.sca.sad.diagram.moveLaterInStartOrder"
-            name="Move to Later in Start Order">
+            name="%command.name.1">
       </command>
    </extension>
    <extension

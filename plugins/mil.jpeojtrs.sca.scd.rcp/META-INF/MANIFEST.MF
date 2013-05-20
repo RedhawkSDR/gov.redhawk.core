@@ -1,8 +1,8 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: Rcp
+Bundle-Name: %Bundle-Name
 Bundle-SymbolicName: mil.jpeojtrs.sca.scd.rcp;singleton:=true
 Bundle-Version: 1.0.0.qualifier
-Bundle-Vendor: REDHAWK
+Bundle-Vendor: %Bundle-Vendor
 Fragment-Host: mil.jpeojtrs.sca.scd;bundle-version="2.2.2"
 Bundle-RequiredExecutionEnvironment: J2SE-1.5

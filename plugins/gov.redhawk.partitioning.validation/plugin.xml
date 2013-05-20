@@ -36,11 +36,11 @@
                   id="gov.redhawk.validation.constraint.partitioning.ComponentInstantiationRef"
                   lang="java"
                   mode="Batch"
-                  name="Invalid Component Reference"
+                  name="%constraint.name"
                   severity="ERROR"
                   statusCode="1002">
                <message>
-                  {0} does not reference any known component.
+                  %constraint.message
                </message>
                <target
                      class="ComponentInstantiationRef"></target>
@@ -50,11 +50,11 @@
                   id="gov.redhawk.validation.constraint.partitioning.ComponentFileRef"
                   lang="java"
                   mode="Batch"
-                  name="Invalid Component File Reference"
+                  name="%constraint.name.0"
                   severity="ERROR"
                   statusCode="1003">
                <message>
-                  {0} does not reference any known component file.
+                  %constraint.message.0
                </message>
                <target
                      class="ComponentFileRef">

@@ -190,11 +190,11 @@
                   isEnabledByDefault="true"
                   lang="java"
                   mode="Live"
-                  name="Valid Event Constraint"
+                  name="%constraint.name"
                   severity="ERROR"
                   statusCode="1002">
                <message>
-                  Missing event port.  Property events will not work.
+                  %constraint.message
                </message>
                <target
                      class="SoftPkg">

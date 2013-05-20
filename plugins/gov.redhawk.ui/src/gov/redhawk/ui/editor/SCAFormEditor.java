@@ -20,7 +20,6 @@ import gov.redhawk.ui.RedhawkUiActivator;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.Arrays;

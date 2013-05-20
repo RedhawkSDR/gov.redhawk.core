@@ -1,6 +1,6 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: SCA Launch Core
+Bundle-Name: %Bundle-Name
 Bundle-SymbolicName: gov.redhawk.sca.launch
 Bundle-Version: 1.0.0.qualifier
 Bundle-Activator: gov.redhawk.sca.launch.ScaLaunchActivator
@@ -10,4 +10,4 @@ Require-Bundle: org.eclipse.core.runtime;bundle-version="3.6.0",
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: J2SE-1.5
 Export-Package: gov.redhawk.sca.launch
-Bundle-Vendor: REDHAWK
+Bundle-Vendor: %Bundle-Vendor

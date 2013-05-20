@@ -1,10 +1,10 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: Refresh Provider UI Plugin
+Bundle-Name: %Bundle-Name
 Bundle-SymbolicName: gov.redhawk.sca.model.provider.refresh.ui;singleton:=true
 Bundle-Version: 1.0.0.qualifier
 Bundle-Activator: gov.redhawk.sca.model.provider.refresh.ui.RefreshProviderUIActivator
-Bundle-Vendor: REDHAWK
+Bundle-Vendor: %Bundle-Vendor
 Require-Bundle: org.eclipse.core.runtime;bundle-version="3.4.0",
  gov.redhawk.sca.model.provider.refresh;bundle-version="4.0.0",
  org.eclipse.core.expressions;bundle-version="3.4.200",

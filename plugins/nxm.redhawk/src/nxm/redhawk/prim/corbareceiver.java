@@ -274,7 +274,7 @@ public class corbareceiver extends CorbaPrimitive { //SUPPRESS CHECKSTYLE ClassN
 
 	private static boolean isSRIChanged(final StreamSRI sri, final StreamSRI lastSRI) {
 		boolean status = (lastSRI == null);
-		if (!status) {
+		if (lastSRI != null) {
 			status |= (lastSRI.hversion != sri.hversion);
 			status |= (lastSRI.mode != sri.mode);
 			status |= !lastSRI.streamID.equals(sri.streamID);

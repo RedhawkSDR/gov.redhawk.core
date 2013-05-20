@@ -18,7 +18,6 @@ import gov.redhawk.core.resourcefactory.IResourceFactoryProvider;
 import gov.redhawk.core.resourcefactory.IResourceFactoryRegistry;
 import gov.redhawk.core.resourcefactory.ResourceDesc;
 import gov.redhawk.core.resourcefactory.ResourceFactoryPlugin;
-import gov.redhawk.sca.util.ORBUtil;
 import gov.redhawk.sca.util.OrbSession;
 
 import java.io.File;
@@ -45,11 +44,7 @@ import org.eclipse.core.runtime.dynamichelpers.ExtensionTracker;
 import org.eclipse.core.runtime.dynamichelpers.IExtensionChangeHandler;
 import org.eclipse.core.runtime.dynamichelpers.IExtensionTracker;
 import org.eclipse.core.runtime.dynamichelpers.IFilter;
-import org.omg.CORBA.ORB;
-import org.omg.CORBA.ORBPackage.InvalidName;
 import org.omg.PortableServer.POA;
-import org.omg.PortableServer.POAHelper;
-import org.omg.PortableServer.POAManagerPackage.AdapterInactive;
 import org.omg.PortableServer.POAPackage.ServantNotActive;
 import org.omg.PortableServer.POAPackage.WrongPolicy;
 import org.osgi.framework.Bundle;
@@ -103,7 +98,7 @@ public enum ResourceFactoryRegistry implements IResourceFactoryRegistry, IExtens
 	private final OrbSession session = OrbSession.createSession();
 
 	private ResourceFactoryRegistry() {
-		for (final String s : new String[]{"components","waveforms","devices","services"}) {
+		for (final String s : new String[]{"components", "waveforms", "devices", "services"}) {
 			try {
 				this.fileManager.mkdir(s);
 			} catch (final InvalidFileName e) {

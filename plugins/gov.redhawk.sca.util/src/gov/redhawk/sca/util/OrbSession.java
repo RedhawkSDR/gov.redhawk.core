@@ -112,7 +112,7 @@ public class OrbSession {
 			}
         }
 
-		if (destroy){
+		if (destroy) {
 			if (orb != null) {
 				orb.destroy();
 			}

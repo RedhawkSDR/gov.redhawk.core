@@ -1,6 +1,6 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: Cpp
+Bundle-Name: %Bundle-Name
 Bundle-SymbolicName: org.anarres.cpp
 Bundle-Version: 1.0.0.qualifier
 Bundle-RequiredExecutionEnvironment: J2SE-1.5
@@ -8,4 +8,4 @@ Bundle-ClassPath: lib/gnu.getopt.jar,
  .
 Export-Package: org.anarres.cpp
 Require-Bundle: org.apache.ant;bundle-version="1.7.1";resolution:=optional
-Bundle-Vendor: REDHAWK
+Bundle-Vendor: %Bundle-Vendor

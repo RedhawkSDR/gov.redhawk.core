@@ -62,7 +62,7 @@
       </wizard>
    </extension>
 
-   <extension point="org.eclipse.ui.popupMenus" id="init-diagram-action">
+   <extension point="org.eclipse.ui.popupMenus" id="%extension.id">
       <?gmfgen generated="false"?>
       <objectContribution
             id="mil.jpeojtrs.sca.sad.diagram.InitDiagram"
@@ -140,7 +140,7 @@
       </MarkerNavigationProvider>
    </extension>
 
-   <extension id="diagnostic" name="Sad Plugin problems" point="org.eclipse.core.resources.markers">
+   <extension id="diagnostic" name="%extension.name" point="org.eclipse.core.resources.markers">
       <?gmfgen generated="true"?>
       <super type="org.eclipse.core.resources.problemmarker"/>
       <super type="org.eclipse.gmf.runtime.common.ui.services.marker"/>
@@ -484,7 +484,7 @@
       <?gmfgen generated="true"?>
       <category id="mil.jpeojtrs.sca.sad.diagram.part.SadDiagramEditorID" name="%cmdcategory.name" description="%cmdcategory.desc"/>
       <command id="mil.jpeojtrs.sca.sad.diagram.LoadResourceAction"
-         name="Load Resource"
+         name="%command.name"
          categoryId="mil.jpeojtrs.sca.sad.diagram.part.SadDiagramEditorID"
          defaultHandler="mil.jpeojtrs.sca.sad.diagram.part.LoadResourceAction"/>
    </extension>

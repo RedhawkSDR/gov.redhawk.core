@@ -30,17 +30,10 @@ import java.util.List;
 
 import mil.jpeojtrs.sca.partitioning.ComponentProperties;
 import mil.jpeojtrs.sca.partitioning.PartitioningPackage;
-import mil.jpeojtrs.sca.prf.AbstractProperty;
 import mil.jpeojtrs.sca.prf.AbstractPropertyRef;
-import mil.jpeojtrs.sca.prf.Properties;
-import mil.jpeojtrs.sca.prf.PropertyConfigurationType;
-import mil.jpeojtrs.sca.prf.Simple;
 import mil.jpeojtrs.sca.prf.SimpleRef;
-import mil.jpeojtrs.sca.prf.SimpleSequence;
 import mil.jpeojtrs.sca.prf.SimpleSequenceRef;
-import mil.jpeojtrs.sca.prf.Struct;
 import mil.jpeojtrs.sca.prf.StructRef;
-import mil.jpeojtrs.sca.prf.StructSequence;
 import mil.jpeojtrs.sca.prf.StructSequenceRef;
 import mil.jpeojtrs.sca.prf.StructValue;
 import mil.jpeojtrs.sca.sad.SadPackage;
@@ -149,7 +142,7 @@ public class ApplicationCreationPropertyEditWizardPage extends WizardPage {
 			try {
 				getWizard().getContainer().run(true, false, new IRunnableWithProgress() {
 
-					private EStructuralFeature [] PATH = new EStructuralFeature [] {
+					private EStructuralFeature [] path = new EStructuralFeature [] {
 							SadPackage.Literals.SOFTWARE_ASSEMBLY__ASSEMBLY_CONTROLLER,
 							SadPackage.Literals.ASSEMBLY_CONTROLLER__COMPONENT_INSTANTIATION_REF,
 							PartitioningPackage.Literals.COMPONENT_INSTANTIATION_REF__INSTANTIATION,
@@ -161,8 +154,8 @@ public class ApplicationCreationPropertyEditWizardPage extends WizardPage {
 						for (final ScaAbstractProperty< ? > prop : ApplicationCreationPropertyEditWizardPage.this.assemblyController.getProperties()) {
 							prop.setIgnoreRemoteSet(true);
 						}
-						ComponentProperties compProperties = ScaEcoreUtils.getFeature(sad, PATH);
-						if (compProperties != null) {
+						ComponentProperties compProperties = ScaEcoreUtils.getFeature(sad, path);
+						if (compProperties != null && sad != null) {
 							FeatureMap properties = sad.getAssemblyController().getComponentInstantiationRef().getInstantiation().getComponentProperties().getProperties();
 							for (Iterator<Entry> i = properties.iterator(); i.hasNext();) {
 								Entry entry = i.next();
@@ -188,13 +181,13 @@ public class ApplicationCreationPropertyEditWizardPage extends WizardPage {
 
 	protected void setValue(ScaAbstractProperty< ? > property, AbstractPropertyRef<?> prop) {
 		if (property instanceof ScaSimpleProperty) {
-			setValue((ScaSimpleProperty)property, (SimpleRef)prop);
+			setValue((ScaSimpleProperty) property, (SimpleRef) prop);
 		} else if (property instanceof ScaSimpleSequenceProperty) {
-			setValue((ScaSimpleSequenceProperty)property, (SimpleSequenceRef)prop);
+			setValue((ScaSimpleSequenceProperty) property, (SimpleSequenceRef) prop);
 		} else if (property instanceof ScaStructProperty) {
-			setValue((ScaStructProperty)property, (StructRef)prop);
+			setValue((ScaStructProperty) property, (StructRef) prop);
 		} else if (property instanceof ScaStructSequenceProperty) {
-			setValue((ScaStructSequenceProperty)property, (StructSequenceRef)prop);
+			setValue((ScaStructSequenceProperty) property, (StructSequenceRef) prop);
 		}
     }
 	
@@ -220,7 +213,7 @@ public class ApplicationCreationPropertyEditWizardPage extends WizardPage {
 	
 	protected void setValue(ScaSimpleSequenceProperty property, SimpleSequenceRef prop) {
 		Object [] newValue = new Object[prop.getValues().getValue().size()];
-		for (int i=0; i<newValue.length; i++ ){
+		for (int i = 0; i < newValue.length; i++) {
 			String value = prop.getValues().getValue().get(i);
 			newValue[i] = AnyUtils.convertString(value, prop.getProperty().getType().getLiteral());
 		}

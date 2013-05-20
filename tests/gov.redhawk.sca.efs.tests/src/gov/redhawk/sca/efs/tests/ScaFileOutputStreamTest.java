@@ -104,7 +104,9 @@ public class ScaFileOutputStreamTest {
 			Assert.assertEquals(10, input.read()); // SUPPRESS CHECKSTYLE MagicNumber
 		} finally {
 			try {
-				input.close();
+				if (input != null) {
+					input.close();
+				}
 			} catch (IOException e) {
 				// PASS
 			}

@@ -123,7 +123,7 @@ public class ComponentInstantiationEditPartHelper {
 		if (usageName == null) {
 			return 0;
 		}
-		
+
 		final int name = usageName.length();
 
 		for (final UsesPortStub uses : ci.getUses()) {
@@ -275,15 +275,16 @@ public class ComponentInstantiationEditPartHelper {
 							}
 						}
 					}
-
-					if (started != null && started) {
-						compFigure.setGradientColor(ComponentInstantiationFigure.COMPONENT_STARTED_COLOR);
-						compFigure.repaint();
-						compFigure.setOpaque(true);
-					} else {
-						compFigure.setGradientColor(ComponentInstantiationFigure.COMPONENT_IDLE_COLOR);
-						compFigure.repaint();
-						compFigure.setOpaque(true);
+					if (compFigure != null) {
+						if (started != null && started) {
+							compFigure.setGradientColor(ComponentInstantiationFigure.COMPONENT_STARTED_COLOR);
+							compFigure.repaint();
+							compFigure.setOpaque(true);
+						} else {
+							compFigure.setGradientColor(ComponentInstantiationFigure.COMPONENT_IDLE_COLOR);
+							compFigure.repaint();
+							compFigure.setOpaque(true);
+						}
 					}
 				}
 				return Status.OK_STATUS;

@@ -980,8 +980,8 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 			java.util.Properties orbProperties = createProperties();
 			java.util.Properties systemProps = System.getProperties();
 			systemProps.putAll(orbProperties);
-			final OrbSession session = OrbSession.createSession(getName(), Platform.getApplicationArgs(), systemProps);
-			setOrbSession(session);
+			OrbSession newSession = OrbSession.createSession(getName(), Platform.getApplicationArgs(), systemProps);
+			setOrbSession(newSession);
 			CompoundCommand command = new CompoundCommand();
 
 			command.append(new ScaModelCommand() {
@@ -1000,7 +1000,7 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 
 			monitor.subTask("Resolving Naming Service...");
 //			String nameService = orbProperties.getProperty("ORBInitRef.NameService");
-			ORB orb = session.getOrb();
+			ORB orb = newSession.getOrb();
 			org.omg.CORBA.Object objRef = orb.resolve_initial_references("NameService");
 			monitor.worked(RESOLVE_NAMINGCONTEXT_WORK);
 

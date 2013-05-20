@@ -6,14 +6,14 @@ import nxm.sys.lib.NeXtMidas;
 
 public final class RedhawkNxmUtil {
 
-	private static final AtomicBoolean added = new AtomicBoolean(false);
+	private static final AtomicBoolean ADDED = new AtomicBoolean(false);
 
 	private RedhawkNxmUtil() {
 
 	}
 
 	public static void initializeRedhawkOptionTrees() {
-		if (!added.compareAndSet(false, true)) {
+		if (!ADDED.compareAndSet(false, true)) {
 			return;
 		}
 		NeXtMidas instance = NeXtMidas.getGlobalInstance();

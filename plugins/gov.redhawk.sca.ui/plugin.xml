@@ -12,8 +12,8 @@
 -->
 <?eclipse version="3.4"?>
 <plugin>
-   <extension-point id="corbaViewParts" name="Corba Viewer Parts" schema="schema/corbaViewParts.exsd"/>
-   <extension-point id="scaContentTypes" name="SCA Content Types" schema="schema/scaContentTypes.exsd"/>
+   <extension-point id="corbaViewParts" name="%extension-point.name" schema="schema/corbaViewParts.exsd"/>
+   <extension-point id="scaContentTypes" name="%extension-point.name.0" schema="schema/scaContentTypes.exsd"/>
    <extension
          point="org.eclipse.ui.navigator.navigatorContent">
       <navigatorContent
@@ -22,7 +22,7 @@
             icon="icons/obj16/sca_explorer.png"
             id="gov.redhawk.ui.navigatorContent"
             labelProvider="gov.redhawk.sca.ui.ScaLabelProvider"
-            name="SCA"
+            name="%navigatorContent.name"
             priority="lower"
             providesSaveables="false"
             sortOnly="false">
@@ -103,9 +103,9 @@
       </navigatorContent>
       <commonFilter
             activeByDefault="true"
-            description="Hides waveform factories"
+            description="%commonFilter.description"
             id="gov.redhawk.ui.filter.waveform_factories"
-            name="Waveform Factories">
+            name="%commonFilter.name">
          <filterExpression>
             <instanceof
                   value="gov.redhawk.model.sca.provider.ScaWaveformFactoriesContainerItemProvider">
@@ -114,9 +114,9 @@
       </commonFilter>
       <commonFilter
             activeByDefault="false"
-            description="Hides Waveform Components"
+            description="%commonFilter.description.0"
             id="gov.redhawk.ui.filter.waveform_components"
-            name="Waveform Components">
+            name="%commonFilter.name.0">
          <filterExpression>
             <instanceof
                   value="gov.redhawk.model.sca.provider.ScaWaveformsContainerItemProvider">
@@ -125,9 +125,9 @@
       </commonFilter>
       <commonFilter
             activeByDefault="false"
-            description="Hides device managers"
+            description="%commonFilter.description.1"
             id="gov.redhawk.ui.filter.device_managers"
-            name="Device Managers">
+            name="%commonFilter.name.1">
          <filterExpression>
             <instanceof
                   value="gov.redhawk.model.sca.provider.ScaDeviceManagersContainerItemProvider">
@@ -136,9 +136,9 @@
       </commonFilter>
       <commonFilter
             activeByDefault="false"
-            description="Hides domain file managers"
+            description="%commonFilter.description.2"
             id="gov.redhawk.ui.filter.domain_file_managers"
-            name="Domain File Managers">
+            name="%commonFilter.name.2">
          <filterExpression>
             <instanceof
                   value="gov.redhawk.model.sca.ScaFileManager">
@@ -148,9 +148,9 @@
       <commonFilter
             activeByDefault="false"
             class="gov.redhawk.sca.internal.ui.filters.DeviceManagerChildDevicesFilter"
-            description="Hides child devices from being displayed under the device manager."
+            description="%commonFilter.description.3"
             id="gov.redhawk.ui.filter.child_devices"
-            name="Device Manager Child Devices">
+            name="%commonFilter.name.3">
       </commonFilter>
    </extension>
    <extension
@@ -230,7 +230,7 @@
          point="org.eclipse.ui.views">
       <category
             id="gov.redhawk.ui.category.sca"
-            name="SCA">
+            name="%category.name">
       </category>
    </extension>
    <extension
@@ -238,19 +238,19 @@
       <page
             class="gov.redhawk.sca.ui.preferences.RedhawkPreferencePage"
             id="gov.redhawk.ui.preferences"
-            name="REDHAWK">
+            name="%page.name">
       </page>
       <page
             category="gov.redhawk.ui.preferences"
             class="gov.redhawk.sca.ui.preferences.RedhawkScaPreferencePage"
             id="gov.redhawk.ui.preferences.sca"
-            name="Domain Connections">
+            name="%page.name.0">
       </page>
       <page
             category="gov.redhawk.ui.preferences"
             class="gov.redhawk.sca.internal.ui.preferences.DataProviderPreferencePage"
             id="gov.redhawk.ui.preferences.dataProviders"
-            name="Data Providers">
+            name="%page.name.1">
       </page>
    </extension>
    <extension
@@ -373,7 +373,7 @@
          <propertyTab
                category="advanced"
                id="CommonNavigator.tab.Advanced"
-               label="Advanced">
+               label="%propertyTab.label">
          </propertyTab>
       </propertyTabs>
    </extension>
@@ -395,44 +395,44 @@
          point="org.eclipse.ui.commands">
       <category
             id="gov.redhawk.ui.commands.category.sca"
-            name="SCA">
+            name="%category.name.0">
       </category>
       <command
             categoryId="gov.redhawk.ui.commands.category.sca"
             defaultHandler="gov.redhawk.sca.internal.ui.handlers.InstallApplication"
             id="gov.redhawk.ui.command.waveform.install"
-            name="Install Waveform...">
+            name="%command.name">
       </command>
       <command
             categoryId="gov.redhawk.ui.commands.category.sca"
             defaultHandler="gov.redhawk.sca.internal.ui.handlers.StartResouceOpHandler"
             id="gov.redhawk.ui.command.resource.start"
-            name="Start">
+            name="%command.name.0">
       </command>
       <command
             categoryId="gov.redhawk.ui.commands.category.sca"
             defaultHandler="gov.redhawk.sca.internal.ui.handlers.StopResourceOpHandler"
             id="gov.redhawk.ui.command.resource.stop"
-            name="Stop">
+            name="%command.name.1">
       </command>
       <command
             categoryId="gov.redhawk.ui.commands.category.sca"
             defaultHandler="gov.redhawk.sca.internal.ui.handlers.LaunchWaveformHandler"
             id="gov.redhawk.ui.command.waveform.launch"
-            name="Launch Waveform...">
+            name="%command.name.2">
       </command>
       <command
             id="gov.redhawk.ui.command.connect"
-            name="Connect">
+            name="%command.name.3">
       </command>
       <command
             id="gov.redhawk.ui.command.disconnect"
-            name="Disconnect">
+            name="%command.name.4">
       </command>
       <command
             defaultHandler="gov.redhawk.sca.internal.ui.handlers.NewDomainHandler"
             id="gov.redhawk.ui.command.new_domain"
-            name="New Domain Connection">
+            name="%command.name.5">
       </command>
    </extension>
    <extension
@@ -541,7 +541,7 @@
             locationURI="popup:org.eclipse.ui.popup.any?after=group.edit">
          <command
                commandId="org.eclipse.ui.edit.delete"
-               label="Uninstall"
+               label="%command.label"
                style="push">
             <visibleWhen
                   checkEnabled="false">
@@ -573,7 +573,7 @@
          </command>
          <command
                commandId="org.eclipse.ui.edit.delete"
-               label="Release"
+               label="%command.label.0"
                style="push">
             <visibleWhen
                   checkEnabled="false">
@@ -587,7 +587,7 @@
          </command>
          <command
                commandId="org.eclipse.ui.edit.delete"
-               label="Shutdown"
+               label="%command.label.1"
                style="push">
             <visibleWhen
                   checkEnabled="false">
@@ -601,7 +601,7 @@
          </command>
          <command
                commandId="org.eclipse.ui.edit.delete"
-               label="Disconnect"
+               label="%command.label.2"
                style="push">
             <visibleWhen
                   checkEnabled="false">
@@ -802,7 +802,7 @@
       <decorator
             class="gov.redhawk.sca.internal.ui.ScaDomainManagerDecorator"
             id="gov.redhawk.ui.domainmanager.decorator"
-            label="Domain Manager Decorator"
+            label="%decorator.label"
             lightweight="true"
             state="true">
          <enablement>
@@ -811,13 +811,13 @@
             </objectClass>
          </enablement>
          <description>
-            Decorator for ScaDomainManager
+            %decorator.description
          </description>
       </decorator>
       <decorator
             class="gov.redhawk.sca.internal.ui.StatusDataProviderDecorator"
             id="gov.redhawk.sca.ui.decorator.dataProvider"
-            label="Status Data Provider Decorator"
+            label="%decorator.label.0"
             lightweight="true"
             state="true">
          <enablement>
@@ -829,7 +829,7 @@
       <decorator
             class="gov.redhawk.sca.internal.ui.StartedDecorator"
             id="gov.redhawk.sca.ui.decorator.started"
-            label="Started Decorator"
+            label="%decorator.label.1"
             lightweight="false"
             state="true">
          <enablement>
@@ -851,7 +851,7 @@
          <propertyTab
                category="general"
                id="gov.redhawk.sca.ui.properties.propertyTab"
-               label="Properties">
+               label="%propertyTab.label.0">
          </propertyTab>
       </propertyTabs>
    </extension>
@@ -876,7 +876,7 @@
          <propertyTab
                category="domain"
                id="property.tab.runtime"
-               label="Component Properties">
+               label="%propertyTab.label.1">
          </propertyTab>
       </propertyTabs>
    </extension>

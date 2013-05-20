@@ -967,10 +967,7 @@ public class ScaWaveformImpl extends ScaPropertyContainerImpl<Application, Softw
 		if (externalPorts != null) {
 			for (final Port port : externalPorts) {
 				FeatureMap portGroup = ScaEcoreUtils.getFeature(port, PORTS_GROUP_PATH);
-				String id = null;
-				if (id == null) {
-					id = port.getProvidesIndentifier();
-				}
+				String id = port.getProvidesIndentifier();
 				if (id == null) {
 					id = port.getUsesIdentifier();
 				}

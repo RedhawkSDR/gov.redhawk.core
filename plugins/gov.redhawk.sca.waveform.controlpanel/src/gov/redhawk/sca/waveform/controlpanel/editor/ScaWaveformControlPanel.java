@@ -150,7 +150,7 @@ public class ScaWaveformControlPanel< T extends EObject > extends AbstractScaCon
 			} catch (final InterruptedException e) {
 				// PASS
 			}
-			final String name = inputWaveform.getName() == null ? inputWaveform.getIdentifier() : inputWaveform.getName();
+			final String name = (inputWaveform.getName() == null) ? inputWaveform.getIdentifier() : inputWaveform.getName();
 			/* Previously there was a bug with GTK on Linux, wherein last word in title is not displayed. Seems to be
 			 * fixed now, but leaving the workaround as comment in case the bug re-appears
 			 **/

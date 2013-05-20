@@ -18,7 +18,7 @@
             category="gov.redhawk.ui.preferences.sca"
             class="gov.redhawk.sca.ui.singledomain.preferences.ActiveDomainPreferencePage"
             id="gov.redhawk.sca.ui.activeDomain"
-            name="Single Domain">
+            name="%page.name">
       </page>
    </extension>
    <extension
@@ -28,7 +28,7 @@
             class="gov.redhawk.sca.ui.singledomain.views.ScaExplorerSingleDomain"
             icon="icons/obj16/sca_explorer.png"
             id="gov.redhawk.ui.sca_explorer_sd"
-            name="Sca Explorer (Singe Domain)"
+            name="%view.name"
             restorable="true">
       </view>
    </extension>
@@ -40,7 +40,7 @@
             icon="icons/obj16/sca_explorer.png"
             id="gov.redhawk.ui.navigatorContentSD"
             labelProvider="gov.redhawk.sca.ui.ScaLabelProvider"
-            name="SCA (SD)"
+            name="%navigatorContent.name"
             priority="lower"
             providesSaveables="false"
             sortOnly="false">
@@ -128,9 +128,9 @@
       </navigatorContent>
       <commonFilter
             activeByDefault="true"
-            description="Hides waveform factories"
+            description="%commonFilter.description"
             id="gov.redhawk.ui.filter.waveform_factories"
-            name="Waveform Factories">
+            name="%commonFilter.name">
          <filterExpression>
             <instanceof
                   value="gov.redhawk.model.sca.provider.ScaWaveformFactoriesContainerItemProvider">
@@ -139,9 +139,9 @@
       </commonFilter>
       <commonFilter
             activeByDefault="false"
-            description="Hides Waveform Components"
+            description="%commonFilter.description.0"
             id="gov.redhawk.ui.filter.waveform_components"
-            name="Waveform Components">
+            name="%commonFilter.name.0">
          <filterExpression>
             <instanceof
                   value="gov.redhawk.model.sca.provider.ScaWaveformsContainerItemProvider">
@@ -150,9 +150,9 @@
       </commonFilter>
       <commonFilter
             activeByDefault="false"
-            description="Hides device managers"
+            description="%commonFilter.description.1"
             id="gov.redhawk.ui.filter.device_managers"
-            name="Device Managers">
+            name="%commonFilter.name.1">
          <filterExpression>
             <instanceof
                   value="gov.redhawk.model.sca.provider.ScaDeviceManagersContainerItemProvider">
@@ -161,9 +161,9 @@
       </commonFilter>
       <commonFilter
             activeByDefault="false"
-            description="Hides domain file managers"
+            description="%commonFilter.description.2"
             id="gov.redhawk.ui.filter.domain_file_managers"
-            name="Domain File Managers">
+            name="%commonFilter.name.2">
          <filterExpression>
             <instanceof
                   value="gov.redhawk.model.sca.ScaFileManager">
@@ -173,9 +173,9 @@
       <commonFilter
             activeByDefault="false"
             class="gov.redhawk.sca.internal.ui.filters.DeviceManagerChildDevicesFilter"
-            description="Hides child devices from being displayed under the device manager."
+            description="%commonFilter.description.3"
             id="gov.redhawk.ui.filter.child_devices"
-            name="Device Manager Child Devices">
+            name="%commonFilter.name.3">
       </commonFilter>
    </extension>
    <extension
@@ -275,7 +275,7 @@
       <perspective
             class="gov.redhawk.sca.ui.singledomain.ScaExplorerSdPerspective"
             id="gov.redhawk.sca.ui.singledomain.perspective"
-            name="SCA Explorer Single Domain">
+            name="%perspective.name">
       </perspective>
    </extension>
 </plugin>

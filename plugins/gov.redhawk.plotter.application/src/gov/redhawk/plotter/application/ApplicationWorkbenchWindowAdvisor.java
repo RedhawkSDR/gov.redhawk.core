@@ -13,7 +13,6 @@ package gov.redhawk.plotter.application;
 
 import gov.redhawk.model.sca.ScaFactory;
 import gov.redhawk.model.sca.ScaUsesPort;
-import gov.redhawk.sca.util.ORBUtil;
 import gov.redhawk.sca.util.OrbSession;
 import gov.redhawk.ui.port.Activator;
 import gov.redhawk.ui.port.IPortHandler;
@@ -142,8 +141,10 @@ public class ApplicationWorkbenchWindowAdvisor extends WorkbenchWindowAdvisor {
 			// Connect the port
 			final List<ScaUsesPort> ports = new ArrayList<ScaUsesPort>();
 			ports.add(port);
-
-			handler.connect(ports);
+			
+			if (handler != null) {
+				handler.connect(ports);
+			}
 		} else {
 			PlotterApplicationPlugin.getDefault()
 			        .getLog()

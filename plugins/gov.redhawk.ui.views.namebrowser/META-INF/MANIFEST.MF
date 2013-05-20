@@ -1,6 +1,6 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: REDHAWK CORBA Name Browser Plug-in
+Bundle-Name: %Bundle-Name
 Bundle-SymbolicName: gov.redhawk.ui.views.namebrowser;singleton:=true
 Bundle-Version: 1.1.0.qualifier
 Bundle-Activator: gov.redhawk.ui.views.namebrowser.NameBrowserPlugin
@@ -18,7 +18,7 @@ Require-Bundle: org.eclipse.core.runtime;bundle-version="3.4.0",
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: J2SE-1.5
 Plugin-Class: gov.redhawk.ui.views.namebrowser.NameBrowserPlugin
-Bundle-Vendor: REDHAWK
+Bundle-Vendor: %Bundle-Vendor
 Export-Package: gov.redhawk.ui.views.namebrowser,
  gov.redhawk.ui.views.namebrowser.internal.command;x-internal:=true,
  gov.redhawk.ui.views.namebrowser.view,

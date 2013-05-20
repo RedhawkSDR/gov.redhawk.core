@@ -51,9 +51,9 @@ public class CustomControlItem  extends ControlContribution {
 		this.control.resize();
 		parent.layout(true);
 		for (Object listener : deferredListeners.getListeners()) {
-			if (listener instanceof CustomMouseTrackListener) {//RAP Listener
+			if (listener instanceof CustomMouseTrackListener) { //RAP Listener
 				control.addMouseTrackListener((CustomMouseTrackListener) listener);
-			} else if (listener instanceof MouseTrackListener) {//RCP Listener
+			} else if (listener instanceof MouseTrackListener) { //RCP Listener
 				/*Control#addMouseTrackListener does not exist in RAP. So we use reflection to keep
 				the RAP compiler happy */
 				addMouseTrackListenerToControl(control.getLabel(), (MouseTrackListener) listener);

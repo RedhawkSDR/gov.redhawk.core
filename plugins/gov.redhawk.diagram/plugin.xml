@@ -21,7 +21,7 @@
                edithelper="gov.redhawk.diagram.edit.helpers.FindByStubEditHelper"
                id="mil.jpeojtrs.sca.partitioning.diagram.FindByStub_12002"
                kind="org.eclipse.gmf.runtime.emf.type.core.IHintedType"
-               name="FindBy">
+               name="%metamodelType.name">
             <param
                   name="semanticHint"
                   value="12002">
@@ -32,7 +32,7 @@
                edithelper="gov.redhawk.diagram.edit.helpers.NamingServiceEditHelper"
                id="mil.jpeojtrs.sca.partitioning.diagram.NamingService_13011"
                kind="org.eclipse.gmf.runtime.emf.type.core.IHintedType"
-               name="NamingService">
+               name="%metamodelType.name.0">
             <param
                   name="semanticHint"
                   value="13011">
@@ -43,7 +43,7 @@
                edithelper="gov.redhawk.diagram.edit.helpers.DomainFinderEditHelper"
                id="mil.jpeojtrs.sca.partitioning.diagram.DomainFinder_13012"
                kind="org.eclipse.gmf.runtime.emf.type.core.IHintedType"
-               name="DomainFinder">
+               name="%metamodelType.name.1">
             <param
                   name="semanticHint"
                   value="13012">

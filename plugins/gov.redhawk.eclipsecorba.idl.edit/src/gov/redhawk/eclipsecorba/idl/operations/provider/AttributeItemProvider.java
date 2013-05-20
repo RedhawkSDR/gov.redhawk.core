@@ -119,9 +119,7 @@ public class AttributeItemProvider
 		Attribute a = (Attribute) object;
 		IItemLabelProvider lp = (IItemLabelProvider) getRootAdapterFactory().adapt(a.getType(), IItemLabelProvider.class);
 		String label = a.getName() + " : " + lp.getText(a.getType());
-		return label == null || label.length() == 0 ?
-			getString("_UI_Attribute_type") :
-			label;
+		return label;
 	}
 
 	/**

@@ -35,7 +35,7 @@ public class DcdComponentInstantiationAdapterFactory implements IAdapterFactory 
 	public Object getAdapter(final Object adaptableObject, @SuppressWarnings("rawtypes") final Class adapterType) {
 		if (adapterType == ScaDevice.class && adaptableObject instanceof DcdComponentInstantiation) {
 			final DcdComponentInstantiation compInst = (DcdComponentInstantiation) adaptableObject;
-			if (compInst == null || compInst.eResource() == null) {
+			if (compInst.eResource() == null) {
 				return null;
 			}
 

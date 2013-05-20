@@ -258,7 +258,7 @@ public final class NxmPlotUtil {
 		}
 		
 		plotWidget.runHeadlessCommand("PIPE RUN");
-		Map<String, String> map = new HashMap<String,String>();
+		Map<String, String> map = new HashMap<String, String>();
 		map.put(KEY_FILE, outName);
 		return map;
 	}
@@ -310,7 +310,7 @@ public final class NxmPlotUtil {
 	public static IPlotSession addSource(final ScaUsesPort port, final FftSettings fft, final AbstractNxmPlotWidget plotWidget, final String qualifiers) {
 		final Map<String, String> outputIds = launchInputMacro(createConnectionSettings(port), fft, plotWidget, null);
 		PlotSession session = new PlotSession(plotWidget, outputIds.get(KEY_COMMAND), outputIds.get(KEY_FILE));
-		plotWidget.addSource(session.getSourceId(), (qualifiers == null ? "" : qualifiers));
+		plotWidget.addSource(session.getSourceId(), ((qualifiers == null) ? "" : qualifiers));
 		return session;
 	}
 
@@ -335,7 +335,7 @@ public final class NxmPlotUtil {
 		setPlotToReal(fft != null, plotWidget);
 		List<IPlotSession> sessions = new ArrayList<IPlotSession>();
 		for (Map<String, String> map : outputIds) {
-			plotWidget.addSource(map.get(KEY_FILE), (qualifiers == null ? "" : qualifiers));
+			plotWidget.addSource(map.get(KEY_FILE), ((qualifiers == null) ? "" : qualifiers));
 			sessions.add(new PlotSession(plotWidget, map.get(KEY_COMMAND), map.get(KEY_FILE)));
 		}
 		return sessions;
@@ -353,7 +353,7 @@ public final class NxmPlotUtil {
 			final String qualifiers) {
 		final Map<String, String> outputIds = launchInputMacro(sdds, magExponent, fft, plotWidget, null);
 		PlotSession session = new PlotSession(plotWidget, outputIds.get(KEY_COMMAND), outputIds.get(KEY_FILE));
-		plotWidget.addSource(session.getSourceId(), (qualifiers == null ? "" : qualifiers));
+		plotWidget.addSource(session.getSourceId(), ((qualifiers == null) ? "" : qualifiers));
 		return session;
 	}
 
@@ -373,7 +373,7 @@ public final class NxmPlotUtil {
 		
 		final Map<String, String> outputIds = launchInputMacro(file, format, thinData, thinIncr, yDelta, plotWidget);
 		PlotSession session = new PlotSession(plotWidget, outputIds.get(KEY_COMMAND), outputIds.get(KEY_FILE));
-		plotWidget.addSource(session.getSourceId(), (qualifiers == null ? "" : qualifiers));
+		plotWidget.addSource(session.getSourceId(), ((qualifiers == null) ? "" : qualifiers));
 		return session;
 	}
 

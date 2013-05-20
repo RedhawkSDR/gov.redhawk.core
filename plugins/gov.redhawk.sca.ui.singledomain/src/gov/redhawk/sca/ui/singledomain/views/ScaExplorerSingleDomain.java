@@ -26,7 +26,6 @@ import gov.redhawk.sca.ui.singledomain.ScaSingleDomainPreferenceConstants;
 import gov.redhawk.sca.ui.singledomain.TrackableLabel;
 import gov.redhawk.sca.ui.singledomain.dialogs.DialogCloseJob;
 import gov.redhawk.sca.ui.singledomain.dialogs.DomainsDialog;
-import gov.redhawk.sca.ui.singledomain.dialogs.DomainsDialog.LinkType;
 import gov.redhawk.sca.ui.views.ScaExplorer;
 
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -49,7 +48,6 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.ToolItem;
 import org.eclipse.ui.IViewSite;
 import org.eclipse.ui.PartInitException;
-import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.navigator.CommonViewer;
 import org.eclipse.ui.progress.UIJob;
 
@@ -147,7 +145,7 @@ public class ScaExplorerSingleDomain extends ScaExplorer {
 					viewer.getControl().getDisplay().asyncExec(new Runnable() {
 
 						public void run() {
-							fillToolBar(activeDomain.getName().trim().equals("") ? "NO ACTIVE DOMAIN": activeDomain.getName());
+							fillToolBar(activeDomain.getName().trim().equals("") ? "NO ACTIVE DOMAIN" : activeDomain.getName());
 							viewer.setInput(activeDomain);
 							getViewSite().getActionBars().updateActionBars();
 						}
@@ -301,7 +299,7 @@ public class ScaExplorerSingleDomain extends ScaExplorer {
 
 
 	private void fillToolBar(String label) {
-		System.err.println("SWT VERSION: " + SWT.getVersion());
+//		System.err.println("SWT VERSION: " + SWT.getVersion());
 		mgr = (ToolBarManager) getViewSite().getActionBars().getToolBarManager();
 		if (domains != null) {
 			mgr.remove(domains);
@@ -327,6 +325,7 @@ public class ScaExplorerSingleDomain extends ScaExplorer {
 			createMouseMoveListener();
 		}
 		if (this.mouseMoveListenerJob.getState() != Job.RUNNING) {
+			// PASS
 			//this.mouseMoveListenerJob.schedule();
 		}
 		//END WORKAROUND CODE

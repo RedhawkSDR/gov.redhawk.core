@@ -167,7 +167,8 @@ public class PlotView extends ViewPart {
 	};
 
 	public PlotView() {
-		plotQualifiers = "{CL=8}"; /** provide plot display thinning */
+		plotQualifiers = "{CL=8}";
+		/** provide plot display thinning */
 	}
 
 	private boolean disposed;
@@ -318,7 +319,7 @@ public class PlotView extends ViewPart {
 	 * @return String unique identifier for this plot instance
 	 */
 	private String createPlot(final List<CorbaConnectionSettings> connList, final FftSettings fft, final List< ? extends ScaUsesPort> ports, final UUID sessionId,
-			boolean pageBook, PlotType plotType) {
+	        boolean pageBook, PlotType plotType) {
 		if (plotType == null) {
 			plotType = PlotType.LINE;
 		}
@@ -374,8 +375,7 @@ public class PlotView extends ViewPart {
 				spectralPlots.setData("ports", ports);
 				spectralPlots.setData("plotType", plotType);
 				((AbstractNxmPlotWidget) spectralPlots).initPlot(plotSwitches, plotArgs);
-				List<IPlotSession> plotSessions = NxmPlotUtil.addSource(
-						connList, fft, (AbstractNxmPlotWidget) spectralPlots, plotQualifiers);
+				List<IPlotSession> plotSessions = NxmPlotUtil.addSource(connList, fft, (AbstractNxmPlotWidget) spectralPlots, plotQualifiers);
 				plotSessionMap.put(spectralPlots, plotSessions);
 			}
 		}
@@ -385,38 +385,42 @@ public class PlotView extends ViewPart {
 		updateRasterButton();
 		this.plotFolder.redraw();
 
-		// Add listeners to make sure we clean up properly
-		newTab.addDisposeListener(new DisposeListener() {
-			public void widgetDisposed(final DisposeEvent e) {
-				if (!spectralPlots.isDisposed()) {
-					spectralPlots.dispose();
-				}
-				updateRasterButton();
-			}
-		});
-		spectralPlots.addDisposeListener(new DisposeListener() {
-
-			public void widgetDisposed(final DisposeEvent e) {
-				ScaModelCommand.execute(port, new ScaModelCommand() {
-
-					public void execute() {
-						port.eAdapters().remove(PlotView.this.portListener);
+		if (spectralPlots != null) {
+			// Add listeners to make sure we clean up properly
+			newTab.addDisposeListener(new DisposeListener() {
+				public void widgetDisposed(final DisposeEvent e) {
+					if (!spectralPlots.isDisposed()) {
+						spectralPlots.dispose();
 					}
-				});
-				List<IPlotSession> plotSessions = plotSessionMap.get(spectralPlots);
-				//NB: PlotPageBook handles disposing of its plot sessions when it is disposed
-				if (plotSessions != null) {
-					for (IPlotSession session : plotSessions) {
-						session.dispose();
-					}
-					plotSessionMap.remove(spectralPlots);
+					updateRasterButton();
 				}
-				if (!newTab.isDisposed()) {
-					newTab.dispose();
-				}
+			});
+			spectralPlots.addDisposeListener(new DisposeListener() {
 
-			}
-		});
+				public void widgetDisposed(final DisposeEvent e) {
+					if (port != null) {
+						ScaModelCommand.execute(port, new ScaModelCommand() {
+
+							public void execute() {
+								port.eAdapters().remove(PlotView.this.portListener);
+							}
+						});
+					}
+					List<IPlotSession> plotSessions = plotSessionMap.get(spectralPlots);
+					//NB: PlotPageBook handles disposing of its plot sessions when it is disposed
+					if (plotSessions != null) {
+						for (IPlotSession session : plotSessions) {
+							session.dispose();
+						}
+						plotSessionMap.remove(spectralPlots);
+					}
+					if (!newTab.isDisposed()) {
+						newTab.dispose();
+					}
+
+				}
+			});
+		}
 
 		if (port != null && !port.eAdapters().contains(this.portListener)) {
 			ScaModelCommand.execute(port, new ScaModelCommand() {
@@ -524,13 +528,13 @@ public class PlotView extends ViewPart {
 								Widget plotContainer = (Widget) c;
 
 								newPlot.createPlot((List<CorbaConnectionSettings>) plotContainer.getData("connList"), (FftSettings) plotContainer.getData("fft"),
-										(List< ? extends ScaUsesPort>) plotContainer.getData("ports"), UUID.randomUUID(), true, (PlotType) plotContainer.getData("plotType"));
+								        (List< ? extends ScaUsesPort>) plotContainer.getData("ports"), UUID.randomUUID(), true, (PlotType) plotContainer.getData("plotType"));
 							}
 						}
 					}
 				} catch (final PartInitException e) {
 					StatusManager.getManager()
-					.handle(new Status(IStatus.ERROR, PlotActivator.PLUGIN_ID, "Failed to open new Plot View", e), StatusManager.SHOW | StatusManager.LOG);
+					        .handle(new Status(IStatus.ERROR, PlotActivator.PLUGIN_ID, "Failed to open new Plot View", e), StatusManager.SHOW | StatusManager.LOG);
 				}
 			}
 		};
@@ -600,7 +604,7 @@ public class PlotView extends ViewPart {
 			}
 		}
 		if (retVal != null) {
-			return new StreamSRI[]{retVal};
+			return new StreamSRI[] { retVal };
 		} else {
 			return new StreamSRI[0];
 		}

@@ -1,6 +1,6 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: Event Service Data Provider
+Bundle-Name: %Bundle-Name
 Bundle-SymbolicName: gov.redhawk.sca.model.provider.event;singleton:=true
 Bundle-Version: 1.0.0.qualifier
 Bundle-Activator: gov.redhawk.sca.model.provider.event.DataProviderActivator
@@ -10,4 +10,4 @@ Require-Bundle: org.eclipse.core.runtime;bundle-version="3.6.0",
  gov.redhawk.sca.model;bundle-version="8.0.0",
  org.omg.cos;bundle-version="1.0.0",
  gov.redhawk.sca.util;bundle-version="1.4.0"
-Bundle-Vendor: REDHAWK
+Bundle-Vendor: %Bundle-Vendor

@@ -13,6 +13,8 @@ package gov.redhawk.model.sca.tests.stubs;
 
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Hashtable;
@@ -62,7 +64,7 @@ import CF.ResourcePackage.StopError;
 import CF.TestableObjectPackage.UnknownTest;
 
 public abstract class Resource implements ResourceOperations, Runnable { // SUPPRESS CHECKSTYLE Name
-    public final static Logger logger = Logger.getLogger(Resource.class.getName());
+    public static final Logger LOGGER = Logger.getLogger(Resource.class.getName());
     
     protected CF.Resource resource;
 
@@ -87,7 +89,7 @@ public abstract class Resource implements ResourceOperations, Runnable { // SUPP
     /** Map of properties for this resource */
     protected Hashtable<String, IProperty> propSet;
     /** flag if we're started */
-    protected volatile boolean _started = false;
+    protected volatile boolean started = false;
     /** flag if we're released */
     protected boolean disposed = false;
     /** flag if we're already initialized */
@@ -103,7 +105,7 @@ public abstract class Resource implements ResourceOperations, Runnable { // SUPP
     public Resource() {
         this.compId = "";
         this.compName = "";
-        this._started = false;
+        this.started = false;
         this.propertyChangePort = null;
         this.ports = new Hashtable<String, org.omg.CORBA.Object>();
         this.portServants = new Hashtable<String, Servant>();
@@ -118,7 +120,7 @@ public abstract class Resource implements ResourceOperations, Runnable { // SUPP
     
     public void addPort(String name, Object object) {
         this.portObjects.put(name, object);
-        this.portServants.put(name, (Servant)object);
+        this.portServants.put(name, (Servant) object);
     }
 
     protected void addPort(String name, Servant servant) {
@@ -150,7 +152,7 @@ public abstract class Resource implements ResourceOperations, Runnable { // SUPP
      * {@inheritDoc}
      */
     public boolean started() {
-        return this._started;
+        return this.started;
     }
 
     public String getName() {
@@ -162,7 +164,7 @@ public abstract class Resource implements ResourceOperations, Runnable { // SUPP
      * {@inheritDoc}
      */
     public void initialize() throws InitializeError {
-        logger.trace("initialize()");
+        LOGGER.trace("initialize()");
         if (!initialized) {
             this.ports.clear();
             for (Map.Entry<String, Servant> me : this.portServants.entrySet()) {
@@ -178,9 +180,9 @@ public abstract class Resource implements ResourceOperations, Runnable { // SUPP
      */
     public void start() throws StartError {
         // While we are starting or stopping don't let anything else occur
-        logger.trace("start()");
+        LOGGER.trace("start()");
         synchronized (this) {
-            this._started = true;
+            this.started = true;
             if (processingThread == null) {
                 processingThread = new Thread(this);
                 processingThread.setDaemon(true);
@@ -193,21 +195,21 @@ public abstract class Resource implements ResourceOperations, Runnable { // SUPP
      * {@inheritDoc}
      */
     public void stop() throws StopError {
-        logger.trace("stop()");
+        LOGGER.trace("stop()");
         synchronized (this) {
             if (processingThread != null) {
-                this._started = false;
+                this.started = false;
                 try {
                     processingThread.interrupt();
                     processingThread.join(1000);
                     if (processingThread.isAlive()) {
-                        logger.error("Error stopping processing thread");
+                        LOGGER.error("Error stopping processing thread");
                         throw new StopError(CF.ErrorNumberType.CF_NOTSET, "Error stopping processing thread");
                     } else {
                         processingThread = null;
                     }
                 } catch (InterruptedException e) {
-                    logger.error("Error stopping processing thread", e);
+                    LOGGER.error("Error stopping processing thread", e);
                     throw new StopError(CF.ErrorNumberType.CF_NOTSET, "Error stopping processing thread due to: " + e.toString());
                 }
 
@@ -221,17 +223,17 @@ public abstract class Resource implements ResourceOperations, Runnable { // SUPP
      * {@inheritDoc}
      */
     public void runTest(final int testid, final PropertiesHolder testValues) throws UnknownTest, UnknownProperties {
-        logger.trace("runTest()");
+        LOGGER.trace("runTest()");
     }
 
     /* BASE CLASS METHODS */
 
     public void releaseObject() throws ReleaseError {
-        logger.trace("releaseObject()");
+        LOGGER.trace("releaseObject()");
         try {
             this.stop();
         } catch (StopError e1) {
-            logger.error("Failed to stop during release", e1);
+            LOGGER.error("Failed to stop during release", e1);
         }
         
         // These loops deactivate the port objects so that they can be destroyed without incident
@@ -272,7 +274,7 @@ public abstract class Resource implements ResourceOperations, Runnable { // SUPP
         // the Ports_var maps are kept different (they could be made into one)
         // because it's less confusing this way
 
-        logger.trace("getPort(" + name + ")");
+        LOGGER.trace("getPort(" + name + ")");
         if (this.nativePorts.containsKey(name)) {
             return this.nativePorts.get(name)._this_object(getOrb());
         }
@@ -289,7 +291,7 @@ public abstract class Resource implements ResourceOperations, Runnable { // SUPP
      * {@inheritDoc}
      */
     public void configure(final DataType[] configProperties) throws InvalidConfiguration, PartialConfiguration {
-        logger.trace("configure()");
+        LOGGER.trace("configure()");
         final ArrayList<DataType> validProperties = new ArrayList<DataType>();
         final ArrayList<DataType> invalidProperties = new ArrayList<DataType>();
         
@@ -305,7 +307,7 @@ public abstract class Resource implements ResourceOperations, Runnable { // SUPP
                     if (prop.getId().equals(validProp.id)) {
                         
                         // see if the value has changed
-                        if (AnyUtils.compareAnys(prop.toAny(),(validProp.value), "ne")) {
+                        if (AnyUtils.compareAnys(prop.toAny(), (validProp.value), "ne")) {
                             
                             // update the value on the property
                             prop.fromAny(validProp.value);
@@ -319,12 +321,12 @@ public abstract class Resource implements ResourceOperations, Runnable { // SUPP
                                 }
                             }
                         }
-                        logger.trace("Configured property: " + prop);
+                        LOGGER.trace("Configured property: " + prop);
                     }
                 }
             }
         } catch (final Throwable t) {
-            t.printStackTrace();
+           // PASS
         }
         
         if ((validProperties.size() == 0) && (invalidProperties.size() != 0)) {
@@ -338,12 +340,12 @@ public abstract class Resource implements ResourceOperations, Runnable { // SUPP
      * {@inheritDoc}
      */
     public void query(final PropertiesHolder configProperties) throws UnknownProperties {
-        logger.trace("query()");
+        LOGGER.trace("query()");
         // for queries of zero length, return all id/value pairs in propertySet
         if (configProperties.value.length == 0) {
             final ArrayList<DataType> props = new ArrayList<DataType>(this.propSet.size());
             for (final IProperty prop : this.propSet.values()) {
-                logger.trace("Querying property: " + prop);
+                LOGGER.trace("Querying property: " + prop);
                 if (prop.isQueryable()) {
                     props.add(new DataType(prop.getId(), prop.toAny()));
                 }
@@ -387,7 +389,7 @@ public abstract class Resource implements ResourceOperations, Runnable { // SUPP
             boolean success = false;
             for (final IProperty prop : this.propSet.values()) {
                 if (prop.getId().equals(p.id)) {
-                    if (prop.isQueryable()){
+                    if (prop.isQueryable()) {
                         success = true;
                     }
                     break;
@@ -415,7 +417,7 @@ public abstract class Resource implements ResourceOperations, Runnable { // SUPP
             boolean success = false;
             for (final IProperty prop : this.propSet.values()) {
                 if (prop.getId().equals(p.id)) {
-                    if (prop.isConfigurable()){
+                    if (prop.isConfigurable()) {
                         success = true;
                     }
                     break;
@@ -438,15 +440,15 @@ public abstract class Resource implements ResourceOperations, Runnable { // SUPP
      * @return true if the component is started
      */
     public boolean isRunning() {
-        return this._started;
+        return this.started;
     }
 
     
     /**
      * Register whichever port is to be used to issue property changes
      */
-    public void registerPropertyChangePort(final PropertyEventSupplier _propertyChangePort) {
-        this.propertyChangePort = _propertyChangePort;
+    public void registerPropertyChangePort(final PropertyEventSupplier newPropertyChangePort) {
+        this.propertyChangePort = newPropertyChangePort;
     }
     
     protected boolean isDisposed() {
@@ -521,7 +523,7 @@ public abstract class Resource implements ResourceOperations, Runnable { // SUPP
 
         ResourcePOATie tie = new ResourcePOATie(this, poa);
         tie._this(orb);
-        resource = ResourceHelper.narrow(poa.servant_to_reference((Servant)tie));
+        resource = ResourceHelper.narrow(poa.servant_to_reference((Servant) tie));
         return resource;
     }
 
@@ -532,12 +534,12 @@ public abstract class Resource implements ResourceOperations, Runnable { // SUPP
      * @return a map of arg/value pairs
      */
     protected static Map<String, String> parseArgs(String[] args) {
-        logger.trace("Starting with execparams: " + Arrays.toString(args));
+        LOGGER.trace("Starting with execparams: " + Arrays.toString(args));
         Map<String, String> result = new Hashtable<String, String>();
-        for (int i=0; i < (args.length - 1); i = i +2) {
-            result.put(args[i], args[i+1]);
+        for (int i = 0; i < (args.length - 1); i = i + 2) {
+            result.put(args[i], args[i + 1]);
         }
-        logger.trace("Starting with execparams: " + result);
+        LOGGER.trace("Starting with execparams: " + result);
         return result;
     }
 
@@ -595,7 +597,7 @@ public abstract class Resource implements ResourceOperations, Runnable { // SUPP
     public static void start_component(final Class clazz,  final String[] args, final Properties props) 
     throws InstantiationException, IllegalAccessException, InvalidObjectReference, NotFound, CannotProceed, org.omg.CosNaming.NamingContextPackage.InvalidName, ServantNotActive, WrongPolicy 
     {
-        if (! Resource.class.isAssignableFrom(clazz)) {
+        if (!Resource.class.isAssignableFrom(clazz)) {
             throw new IllegalArgumentException("start_component() can only start classes of type org.ossie.component.Resource");
         }
         final org.omg.CORBA.ORB orb = ORB.init((String[]) null, props);
@@ -631,42 +633,45 @@ public abstract class Resource implements ResourceOperations, Runnable { // SUPP
 
         if ((nameContext == null) || (nameBinding == null)) {
             if ((!Arrays.toString(args).contains("-i")) && (!Arrays.toString(args).contains("--interactive"))) {
-                System.out.println("usage: "+clazz+" [options] [execparams]\n");
-                System.out.println("The set of execparams is defined in the .prf for the component");
-                System.out.println("They are provided as arguments pairs ID VALUE, for example:");
-                System.out.println("     "+clazz+" INT_PARAM 5 STR_PARAM ABCDED\n");
-                System.out.println("Options:");
-                System.out.println("     -i,--interactive           Run the component in interactive test mode\n");
-                System.exit(-1);
+            	StringWriter msg = new StringWriter();
+            	PrintWriter out = new PrintWriter(msg);
+                out.println("usage: " + clazz + " [options] [execparams]\n");
+                out.println("The set of execparams is defined in the .prf for the component");
+                out.println("They are provided as arguments pairs ID VALUE, for example:");
+                out.println("     " + clazz + " INT_PARAM 5 STR_PARAM ABCDED\n");
+                out.println("Options:");
+                out.println("     -i,--interactive           Run the component in interactive test mode\n");
+                throw new IllegalStateException(msg.toString());
             }
         }
 
-        final Resource resource_i = (Resource)clazz.newInstance();
+        final Resource resource_i = (Resource) clazz.newInstance();
         final CF.Resource resource = resource_i.setup(identifier, nameBinding, orb, rootpoa);
         resource_i.initializeProperties(execparams);
 
         if ((nameContext != null) && (nameBinding != null)) {
             nameContext.rebind(nameContext.to_name(nameBinding), resource);
         } else {
+        	// PASS
             // Print out the IOR so that someone can debug against the component
-            System.out.println("The IOR for your component is:\n" + orb.object_to_string(resource));
+//            System.out.println("The IOR for your component is:\n" + orb.object_to_string(resource));
         }
 
         String loggingConfigURI = null;
         if (execparams.containsKey("LOGGING_CONFIG_URI")) {
             loggingConfigURI = execparams.get("LOGGING_CONFIG_URI");
-            if (loggingConfigURI.indexOf("file://") != -1){
+            if (loggingConfigURI.indexOf("file://") != -1) {
                 int startIndex = loggingConfigURI.indexOf("file://") + 7;
                 PropertyConfigurator.configure(loggingConfigURI.substring(startIndex));
-            }else if (loggingConfigURI.indexOf("sca:") != -1){
+            } else if (loggingConfigURI.indexOf("sca:") != -1) {
                 int startIndex = loggingConfigURI.indexOf("sca:") + 4;
                 String localFile = resource_i.getLogConfig(loggingConfigURI.substring(startIndex));
                 File testLocalFile = new File(localFile);
-                if (localFile.length() > 0 && testLocalFile.exists()){
+                if (localFile.length() > 0 && testLocalFile.exists()) {
                     PropertyConfigurator.configure(localFile);
                 }
             }
-        }else{
+        } else {
             // If no logging config file, then set up logging using DEBUG_LEVEL exec param
             int debugLevel = 3; // Default level is INFO
             if (execparams.containsKey("DEBUG_LEVEL")) {
@@ -703,7 +708,7 @@ public abstract class Resource implements ResourceOperations, Runnable { // SUPP
                         // PASS
                     }
                 }
-                logger.trace("Shutting down orb");
+                LOGGER.trace("Shutting down orb");
                 orb.shutdown(true);
             }
         });
@@ -711,13 +716,13 @@ public abstract class Resource implements ResourceOperations, Runnable { // SUPP
         shutdownWatcher.start();
 
         orb.run();
-        logger.trace("Waiting for shutdown watcher to join");
+        LOGGER.trace("Waiting for shutdown watcher to join");
         try {
             shutdownWatcher.join(1000);
         } catch (InterruptedException e) {
             // PASS
         }
-        logger.debug("Goodbye!");
+        LOGGER.debug("Goodbye!");
     }
 
     /**
@@ -734,8 +739,8 @@ public abstract class Resource implements ResourceOperations, Runnable { // SUPP
             return localPath;
         }
 
-        String IOR = uri.substring(fsPos + 4);
-        org.omg.CORBA.Object obj = orb.string_to_object(IOR);
+        String ior = uri.substring(fsPos + 4);
+        org.omg.CORBA.Object obj = orb.string_to_object(ior);
         if (obj == null) {
             return localPath;
         }
@@ -763,7 +768,7 @@ public abstract class Resource implements ResourceOperations, Runnable { // SUPP
             localPath = tempPath;
             localFile.close();
             return localPath;
-        } catch (Exception e){
+        } catch (Exception e) {
             return localPath;
         }
     }

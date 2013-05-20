@@ -1480,17 +1480,17 @@ public class ScaDeviceManagerImpl extends ScaPropertyContainerImpl<DeviceManager
 	public EList<ScaPort< ? , ? >> fetchPorts(IProgressMonitor monitor) {
 		SubMonitor subMonitor = SubMonitor.convert(monitor, "Fetching ports", 2);
 		internalFetchPorts(subMonitor.newChild(1));
-		ScaPort< ? , ? >[] ports = ScaModelCommandWithResult.execute(this, new ScaModelCommandWithResult<ScaPort< ? , ? >[]>() {
+		ScaPort< ? , ? >[] tmpPorts = ScaModelCommandWithResult.execute(this, new ScaModelCommandWithResult<ScaPort< ? , ? >[]>() {
 
 			public void execute() {
 				setResult(getPorts().toArray(new ScaPort< ? , ? >[getPorts().size()]));
 			}
 
 		});
-		if (ports != null) {
+		if (tmpPorts != null) {
 			SubMonitor portRefresh = subMonitor.newChild(1);
-			portRefresh.beginTask("Refreshing state of ports", ports.length);
-			for (ScaPort< ? , ? > port : ports) {
+			portRefresh.beginTask("Refreshing state of ports", tmpPorts.length);
+			for (ScaPort< ? , ? > port : tmpPorts) {
 				try {
 					port.refresh(portRefresh.newChild(1), RefreshDepth.SELF);
 				} catch (InterruptedException e) {

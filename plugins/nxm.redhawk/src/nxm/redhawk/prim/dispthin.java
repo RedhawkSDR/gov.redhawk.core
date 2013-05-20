@@ -15,7 +15,6 @@ import nxm.sys.inc.Commandable;
 import nxm.sys.lib.BaseFile;
 import nxm.sys.lib.Data;
 import nxm.sys.lib.DataFile;
-import nxm.sys.lib.Message;
 import nxm.sys.lib.Primitive;
 
 /**
@@ -129,8 +128,8 @@ public class dispthin extends Primitive { // SUPPRESS CHECKSTYLE ClassName
 			// Process the data we read
 			this.lastUpdate = current_time;
 			// Drop packet if write is blocking
-			if (localhout !=null) {
-				localhout.write(this.dataBuffer, Math.min((int)localhout.avail(), dataBuffer.size));
+			if (localhout != null) {
+				localhout.write(this.dataBuffer, Math.min((int) localhout.avail(), dataBuffer.size));
 			}
 			status = Commandable.NORMAL;
 		}
