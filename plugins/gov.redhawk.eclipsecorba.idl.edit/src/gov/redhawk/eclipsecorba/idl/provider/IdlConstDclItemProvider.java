@@ -147,9 +147,7 @@ public class IdlConstDclItemProvider
 		IdlConstDcl p = (IdlConstDcl) object;
 		IItemLabelProvider lp = (IItemLabelProvider) getRootAdapterFactory().adapt(p.getType(), IItemLabelProvider.class);
 		String label = p.getName() + " : " + lp.getText(p.getType());
-		return label == null || label.length() == 0 ?
-			getString("_UI_IdlConstDcl_type") :
-			label;
+		return label;
 	}
 
 	/**

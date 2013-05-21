@@ -1,9 +1,9 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: SCD Validation Tests
+Bundle-Name: %Bundle-Name
 Bundle-SymbolicName: gov.redhawk.scd.validation.tests
 Bundle-Version: 1.0.0.qualifier
-Bundle-Vendor: REDHAWK
+Bundle-Vendor: %Bundle-Vendor
 Bundle-RequiredExecutionEnvironment: J2SE-1.5
 Eclipse-BundleShape: dir
 Require-Bundle: gov.redhawk.scd.validation;bundle-version="1.1.0",

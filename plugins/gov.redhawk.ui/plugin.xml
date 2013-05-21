@@ -11,7 +11,7 @@
       <decorator
             class="gov.redhawk.internal.ui.editor.validation.EmfValidatorLabelDecorator"
             id="gov.redhawk.emfValidatorLabelDecorator"
-            label="EMF trees warning and errors"
+            label="%decorator.label"
             lightweight="true"
             location="BOTTOM_LEFT"
             state="true">

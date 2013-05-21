@@ -22,14 +22,10 @@ import nxm.sys.inc.Commandable;
 import nxm.sys.lib.Primitive;
 
 import org.eclipse.core.runtime.CoreException;
-import org.omg.CORBA.ORB;
 import org.omg.CORBA.SystemException;
-import org.omg.CORBA.ORBPackage.InvalidName;
 import org.omg.CosNaming.NamingContextExt;
 import org.omg.CosNaming.NamingContextExtHelper;
 import org.omg.PortableServer.POA;
-import org.omg.PortableServer.POAHelper;
-import org.omg.PortableServer.POAManagerPackage.AdapterInactive;
 
 import CF.Port;
 import CF.PortHelper;

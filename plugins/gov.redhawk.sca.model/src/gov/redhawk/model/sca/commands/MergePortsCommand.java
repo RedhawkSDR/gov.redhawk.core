@@ -102,8 +102,10 @@ public class MergePortsCommand extends SetStatusCommand<ScaPortContainer> {
 					tmpPort.setProfileObj((Uses) data.portProfile);
 					newPort = tmpPort;
 				}
-				newPort.setCorbaObj(data.portObj);
-				provider.getPorts().add(newPort);
+				if (newPort != null) {
+					newPort.setCorbaObj(data.portObj);
+					provider.getPorts().add(newPort);
+				}
 			}
 			
 			if (!provider.isSetPorts()) {

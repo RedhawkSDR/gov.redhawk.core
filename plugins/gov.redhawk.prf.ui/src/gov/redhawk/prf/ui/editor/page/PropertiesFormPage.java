@@ -26,7 +26,6 @@ import org.eclipse.ui.forms.IManagedForm;
 import org.eclipse.ui.forms.widgets.ScrolledForm;
 import org.eclipse.ui.menus.IMenuService;
 
-// TODO: Auto-generated Javadoc
 /**
  * The Class PropertiesFormPage.
  */

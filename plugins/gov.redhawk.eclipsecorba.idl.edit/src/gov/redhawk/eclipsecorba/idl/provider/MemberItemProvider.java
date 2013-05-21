@@ -159,9 +159,7 @@ public class MemberItemProvider
 		}
 		label.append(" : ");
 		label.append(lp.getText(p.getType()));
-		return label == null || label.length() == 0 ?
-			getString("_UI_Member_type") :
-			label.toString();
+		return label.toString();
 	}
 
 	/**

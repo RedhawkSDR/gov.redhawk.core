@@ -35,7 +35,7 @@ public class SadComponentInstantiationAdapterFactory implements IAdapterFactory 
 	public Object getAdapter(final Object adaptableObject, @SuppressWarnings("rawtypes") final Class adapterType) {
 		if (adapterType == ScaComponent.class && adaptableObject instanceof SadComponentInstantiation) {
 			final SadComponentInstantiation compInst = (SadComponentInstantiation) adaptableObject;
-			if (compInst == null || compInst.eResource() == null) {
+			if (compInst.eResource() == null) {
 				return null;
 			}
 

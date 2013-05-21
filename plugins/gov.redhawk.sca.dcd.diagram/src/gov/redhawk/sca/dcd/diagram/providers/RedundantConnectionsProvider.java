@@ -99,7 +99,7 @@ public class RedundantConnectionsProvider extends AbstractProvider implements ID
 			if (editPart instanceof DcdConnectInterfaceEditPart) {
 				final DcdConnectInterfaceEditPart connPart = (DcdConnectInterfaceEditPart) editPart;
 
-				if (connPart == null || connPart.getRoot() == null) {
+				if (connPart.getRoot() == null) {
 					return;
 				}
 

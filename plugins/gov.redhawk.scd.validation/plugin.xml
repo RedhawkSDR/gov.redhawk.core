@@ -26,11 +26,11 @@
                   id="gov.redhawk.validation.constraint.scd.validRefId"
                   lang="java"
                   mode="Batch"
-                  name="Validate refid"
+                  name="%constraint.name"
                   severity="ERROR"
                   statusCode="1000">
                <message>
-                  {0} does not reference any known interface.
+                  %constraint.message
                </message>
                <target
                      class="ComponentRepId">
@@ -51,11 +51,11 @@
                   id="gov.redhawk.scd.validation.unnecessaryInterfaceDeclaration"
                   lang="java"
                   mode="Batch"
-                  name="Unnecessary Interface Declaration"
+                  name="%constraint.name.0"
                   severity="WARNING"
                   statusCode="1001">
                <message>
-                  The interface {0} is never used.
+                  %constraint.message.0
                </message>
                <target
                      class="Interface">

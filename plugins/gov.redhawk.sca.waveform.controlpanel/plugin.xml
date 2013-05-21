@@ -23,7 +23,7 @@
             icon="icons/full/obj16/SadModelFile.gif"
             id="gov.redhawk.sca.sad.controlpanel.editorID"
             matchingStrategy="gov.redhawk.sca.waveform.controlpanel.editor.ScaWaveformEditorMatchingStrategy"
-            name="Waveform Control Panel">
+            name="%editor.name">
       </editor>
    </extension>
       <extension

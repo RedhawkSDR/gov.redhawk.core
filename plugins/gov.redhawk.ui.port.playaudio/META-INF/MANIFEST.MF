@@ -1,6 +1,6 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: REDHAWK Audio Playback
+Bundle-Name: %Bundle-Name
 Bundle-SymbolicName: gov.redhawk.ui.port.playaudio;singleton:=true
 Bundle-Version: 1.1.1.qualifier
 Bundle-Activator: gov.redhawk.ui.port.playaudio.internal.Activator
@@ -13,7 +13,7 @@ Require-Bundle: org.eclipse.ui;bundle-version="3.6.1",
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: J2SE-1.5
 Bundle-ClassPath: .
-Bundle-Vendor: REDHAWK
+Bundle-Vendor: %Bundle-Vendor
 Export-Package: gov.redhawk.ui.port.playaudio.controller,
  gov.redhawk.ui.port.playaudio.controls,
  gov.redhawk.ui.port.playaudio.views

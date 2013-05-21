@@ -18,7 +18,7 @@
             category="gov.redhawk.ui.category.sca"
             class="gov.redhawk.ui.port.playaudio.views.View"
             id="gov.redhawk.ui.port.playaudio.view"
-            name="Audio Port Playback">
+            name="%view.name">
       </view>
    </extension>
    <extension

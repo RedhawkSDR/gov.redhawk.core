@@ -21,11 +21,11 @@
                   isEnabledByDefault="true"
                   lang="java"
                   mode="Live"
-                  name="Duplicate Property Name"
+                  name="%constraint.name"
                   severity="WARNING"
                   statusCode="2">
                <message>
-                  A property of the name: &quot;{0}&quot; already exists.  It is recommended that properties name be unique.
+                  %constraint.message
                </message>
                <target
                      class="Simple">
@@ -70,11 +70,11 @@
                   isEnabledByDefault="true"
                   lang="java"
                   mode="Live"
-                  name="Valid Value Type"
+                  name="%constraint.name.0"
                   severity="ERROR"
                   statusCode="1">
                <message>
-                  The value&quot;{0}&quot; is not of type &quot;{1}&quot;.
+                  %constraint.message.0
                </message>
                <target
                      class="Simple">
@@ -128,11 +128,11 @@
                   isEnabledByDefault="true"
                   lang="java"
                   mode="Live"
-                  name="Valid Enumerated Value"
+                  name="%constraint.name.1"
                   severity="ERROR"
                   statusCode="1">
                <message>
-                  The value &quot;{0}&quot; is not found in any of the listed Enumeration types.
+                  %constraint.message.1
                </message>
                <target
                      class="Simple">

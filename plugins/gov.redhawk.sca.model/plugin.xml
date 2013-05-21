@@ -6,7 +6,7 @@
 -->
 <?eclipse version="3.0"?>
 <plugin>
-   <extension-point id="dataProviderService" name="SCA Data Provider Service" schema="schema/dataProviderService.exsd"/>
+   <extension-point id="dataProviderService" name="%extension-point.name" schema="schema/dataProviderService.exsd"/>
 
    <extension
          point="org.eclipse.emf.ecore.generated_package">
@@ -37,7 +37,7 @@
             base-type="org.eclipse.core.runtime.xml"
             file-extensions="xml,sca"
             id="http://www.redhawk.gov/model/sca"
-            name="SCA 1.0.0"
+            name="%content-type.name"
             priority="low">
          <describer
                class="org.eclipse.emf.ecore.xmi.impl.RootXMLContentHandlerImpl$Describer">
@@ -51,7 +51,7 @@
             base-type="org.eclipse.core.runtime.xml"
             file-extensions="xml,sca"
             id="http://www.redhawk.gov/model/sca/2.0.0"
-            name="SCA 2.0.0"
+            name="%content-type.name.0"
             priority="normal">
          <describer
                class="org.eclipse.emf.ecore.xmi.impl.RootXMLContentHandlerImpl$Describer">

@@ -1,15 +1,13 @@
-/** 
- * This file is protected by Copyright. 
- * Please refer to the COPYRIGHT file distributed with this source distribution.
- * 
- * This file is part of REDHAWK IDE.
- * 
- * All rights reserved.  This program and the accompanying materials are made available under 
- * the terms of the Eclipse Public License v1.0 which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html.
+/*******************************************************************************
+ * This file is protected by Copyright. 
+ * Please refer to the COPYRIGHT file distributed with this source distribution.
  *
- */
-
+ * This file is part of REDHAWK IDE.
+ *
+ * All rights reserved.  This program and the accompanying materials are made available under 
+ * the terms of the Eclipse Public License v1.0 which accompanies this distribution, and is available at 
+ * http://www.eclipse.org/legal/epl-v10.html
+ *******************************************************************************/
  // BEGIN GENERATED CODE
 package gov.redhawk.model.sca.tests;
 
@@ -96,14 +94,14 @@ public class ScaUsesPortTest extends ScaPortTest {
 
 			public void execute() {
 				final ScaComponent kitchenSinkComp = waveform.findComponent(ScaTestConstaints.DCE_KITCHEN_SINK_COMPONENT);
-				if (kitchenSinkComp == null && ScaTests.DEBUG.enabled) {
+				if (kitchenSinkComp == null) {
 					ScaTests.DEBUG.message("Invalid Object State: {0}", waveform);
+					return;
 				}
-				Assert.assertNotNull(kitchenSinkComp);
 				final ScaPort< ? , ? > port = kitchenSinkComp.getScaPort("outDouble");
-				Assert.assertNotNull(port);
-				if (port == null && ScaTests.DEBUG.enabled) {
+				if (port == null) {
 					ScaTests.DEBUG.message("Invalid Object State: {0}", kitchenSinkComp);
+					return;
 				}
 				setFixture(port);
 			}

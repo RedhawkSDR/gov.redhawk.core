@@ -1,6 +1,6 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: PRF UI Plug-in
+Bundle-Name: %Bundle-Name
 Bundle-SymbolicName: gov.redhawk.prf.ui;singleton:=true
 Bundle-Version: 3.0.1.qualifier
 Bundle-Activator: gov.redhawk.prf.ui.PrfUiPlugin
@@ -21,4 +21,4 @@ Bundle-RequiredExecutionEnvironment: J2SE-1.5
 Export-Package: gov.redhawk.prf.ui,
  gov.redhawk.prf.ui.editor.page,
  gov.redhawk.prf.ui.provider
-Bundle-Vendor: REDHAWK
+Bundle-Vendor: %Bundle-Vendor

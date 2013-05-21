@@ -20,7 +20,7 @@
             class="gov.redhawk.ui.views.namebrowser.view.NameBrowserView"
             icon="icons/view.gif"
             id="gov.redhawk.ui.views.namebrowserview"
-            name="CORBA Name Browser"
+            name="%view.name"
             restorable="true">
       </view>
    </extension>
@@ -52,9 +52,9 @@
          <command
                commandId="gov.redhawk.ui.views.namebrowser.command.connectDomain"
                icon="icons/add.gif"
-               label="Connect to Domain"
+               label="%command.label"
                style="push"
-               tooltip="Connect to this Domain">
+               tooltip="%command.tooltip">
             <visibleWhen
                   checkEnabled="true">
                   <iterate>
@@ -67,9 +67,9 @@
          <command
                commandId="org.eclipse.ui.edit.delete"
                icon="icons/disconnect.png"
-               label="Disconnect"
+               label="%command.label.0"
                style="push"
-               tooltip="Disconnect from host">
+               tooltip="%command.tooltip.0">
             <visibleWhen
                   checkEnabled="false">
                   <iterate>
@@ -87,7 +87,7 @@
          </command>
          <command
                commandId="org.eclipse.ui.edit.delete"
-               label="Unbind"
+               label="%command.label.1"
                style="push">
             <visibleWhen
                   checkEnabled="false">
@@ -107,7 +107,7 @@
          </command>
          <command
                commandId="org.eclipse.ui.edit.delete"
-               label="Remove Context"
+               label="%command.label.2"
                style="push">
             <visibleWhen
                   checkEnabled="true">
@@ -218,9 +218,9 @@
    <extension
          point="org.eclipse.ui.commands">
       <command
-            description="Connect to Domain"
+            description="%command.description"
             id="gov.redhawk.ui.views.namebrowser.command.connectDomain"
-            name="ConnectDomain">
+            name="%command.name">
       </command>
    </extension>
    <extension

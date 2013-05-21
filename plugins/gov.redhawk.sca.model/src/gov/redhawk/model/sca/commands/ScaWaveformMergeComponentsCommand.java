@@ -62,6 +62,9 @@ public class ScaWaveformMergeComponentsCommand extends SetStatusCommand<ScaWavef
 	 */
 	public ScaWaveformMergeComponentsCommand(ScaWaveform provider, ComponentType[] compTypes, IStatus componentStatus) {
 		super(provider, ScaPackage.Literals.SCA_WAVEFORM__COMPONENTS, componentStatus);
+		if (compTypes == null) {
+			compTypes = new ComponentType[0];
+		}
 		this.compTypes = new ComponentInfo[compTypes.length];
 		for (int i = 0; i < compTypes.length; i++) {
 			this.compTypes[i] = new ComponentInfo();

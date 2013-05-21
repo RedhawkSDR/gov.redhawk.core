@@ -63,7 +63,7 @@
       </wizard>
    </extension>
 
-   <extension point="org.eclipse.ui.popupMenus" id="init-diagram-action">
+   <extension point="org.eclipse.ui.popupMenus" id="%extension.id">
       <?gmfgen generated="false"?>
       <objectContribution
             id="mil.jpeojtrs.sca.dcd.diagram.InitDiagram"
@@ -430,7 +430,7 @@
       <?gmfgen generated="true"?>
       <category id="mil.jpeojtrs.sca.dcd.diagram.part.DcdDiagramEditorID" name="%cmdcategory.name" description="%cmdcategory.desc"/>
       <command id="mil.jpeojtrs.sca.dcd.diagram.LoadResourceAction"
-         name="Load Resource"
+         name="%command.name"
          categoryId="mil.jpeojtrs.sca.dcd.diagram.part.DcdDiagramEditorID"
          defaultHandler="mil.jpeojtrs.sca.dcd.diagram.part.LoadResourceAction"/>
    </extension>

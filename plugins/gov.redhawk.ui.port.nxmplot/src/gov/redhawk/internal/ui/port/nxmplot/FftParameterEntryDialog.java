@@ -72,7 +72,8 @@ public class FftParameterEntryDialog extends Dialog {
 					if (val >= minAllowed) {
 						status = null; // valid user input
 					} // else invalid input (minAllowed)
-				} catch (final NumberFormatException nfe) { // SUPPRESS CHECKSTYLE Inline
+				} catch (final NumberFormatException nfe) {
+					// PASS
 					// not integer, already initialized with validation error msg
 				}
 			}

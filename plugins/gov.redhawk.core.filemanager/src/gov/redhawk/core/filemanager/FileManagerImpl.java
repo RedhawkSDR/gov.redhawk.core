@@ -45,7 +45,7 @@ public class FileManagerImpl implements IFileManager {
 		if ("".equals(fileName) || fileName == null) {
 			throw new InvalidFileName(ErrorNumberType.CF_EIO, "");
 		}
-		if (fileName == null || fileName.length() == 0 || fileName.equals("/")) {
+		if (fileName.length() == 0 || fileName.equals("/")) {
 			throw new InvalidFileName();
 		}
 		if (fileName.charAt(0) == '/') {

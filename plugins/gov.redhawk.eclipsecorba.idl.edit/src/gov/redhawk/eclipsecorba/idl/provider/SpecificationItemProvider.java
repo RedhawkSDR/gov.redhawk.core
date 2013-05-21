@@ -136,11 +136,12 @@ IItemPropertySource {
 	 */
 	@Override
 	public String getText(final Object object) {
+		if (object == null) {
+			return "";
+		}
 		final String label = ((Specification) object).getName() + "  -  "
 		        + ((Specification) object).eResource().getURI();
-		return label == null || label.length() == 0 ?
-				getString("_UI_Specification_type") :
-					label;
+		return label;
 	}
 
 	/**

@@ -61,10 +61,8 @@ public enum PropertiesProviderRegistry implements IExtensionChangeHandler, IProp
 	public void addExtension(final IExtensionTracker tracker, final IExtension extension) {
 		for (final IConfigurationElement element : extension.getConfigurationElements()) {
 			final IPropertiesProviderDescriptor descriptor = new PropertiesProviderDescriptor(element);
-			if (descriptor != null) {
-				this.propertiesProviderDescriptors.add(descriptor);
-				tracker.registerObject(extension, descriptor, IExtensionTracker.REF_SOFT);
-			}
+			this.propertiesProviderDescriptors.add(descriptor);
+			tracker.registerObject(extension, descriptor, IExtensionTracker.REF_SOFT);
 		}
 	}
 

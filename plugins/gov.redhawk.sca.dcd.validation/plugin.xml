@@ -22,11 +22,11 @@
                   isEnabledByDefault="true"
                   lang="java"
                   mode="Batch"
-                  name="Invalid Connect Interface"
+                  name="%constraint.name"
                   severity="ERROR"
                   statusCode="1001">
                <message>
-                  {0}
+                  %constraint.message
                </message>
                <target
                      class="DcdConnectInterface">
@@ -38,11 +38,11 @@
                   isEnabledByDefault="true"
                   lang="java"
                   mode="Batch"
-                  name="Invalid Connections"
+                  name="%constraint.name.0"
                   severity="WARNING"
                   statusCode="1002">
                <message>
-                  {0}
+                  %constraint.message.0
                </message>
                <target
                      class="DcdConnections">

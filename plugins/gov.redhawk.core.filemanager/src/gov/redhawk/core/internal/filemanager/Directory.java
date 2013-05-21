@@ -106,11 +106,8 @@ public class Directory implements Node {
 			throw new FileException(ErrorNumberType.CF_EIO, "File already exists");
 		} else {
 			if (nodes == null) {
-				Directory subDir = null;
-				if (nodes == null) {
-					subDir = new Directory();
-					this.mounts.put(fileName.get(0), Collections.singletonList((Node) subDir));
-				}
+				Directory subDir = new Directory();
+				this.mounts.put(fileName.get(0), Collections.singletonList((Node) subDir));
 				return subDir.create(fileName.subList(1, fileName.size()));
 			} else if (nodes.get(0) instanceof Directory) {
 				return ((Directory) nodes.get(0)).create(fileName.subList(1, fileName.size()));
@@ -140,11 +137,8 @@ public class Directory implements Node {
 			}
 		} else {
 			if (nodes == null) {
-				Directory subDir = null;
-				if (nodes == null) {
-					subDir = new Directory();
-					this.mounts.put(name.get(0), Collections.singletonList((Node) subDir));
-				}
+				Directory subDir = new Directory();
+				this.mounts.put(name.get(0), Collections.singletonList((Node) subDir));
 				subDir.mkdir(name.subList(1, name.size()));
 			} else if (nodes.get(0) instanceof Directory) {
 				((Directory) nodes.get(0)).mkdir(name.subList(1, name.size()));
@@ -176,11 +170,8 @@ public class Directory implements Node {
 			}
 		} else {
 			if (nodes == null) {
-				Directory subDir = null;
-				if (nodes == null) {
-					subDir = new Directory();
-					this.mounts.put(path.get(0), Collections.singletonList((Node) subDir));
-				}
+				Directory subDir = new Directory();
+				this.mounts.put(path.get(0), Collections.singletonList((Node) subDir));
 				subDir.mount(path.subList(1, path.size()), fileSystem);
 			} else if (nodes.get(0) instanceof Directory) {
 				((Directory) nodes.get(0)).mount(path.subList(1, path.size()), fileSystem);
@@ -312,9 +303,7 @@ public class Directory implements Node {
 	public DataType[] createDataTypeArray() {
 		final Any readOnly = AnyUtils.toAny(true, TCKind.tk_boolean);
 
-		return new DataType[] {
-			new DataType(ScaFileInformationDataType.READ_ONLY.name(), readOnly)
-		};
+		return new DataType[] { new DataType(ScaFileInformationDataType.READ_ONLY.name(), readOnly) };
 
 	}
 

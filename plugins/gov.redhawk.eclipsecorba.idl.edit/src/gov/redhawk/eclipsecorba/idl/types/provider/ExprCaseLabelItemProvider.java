@@ -125,9 +125,12 @@ public class ExprCaseLabelItemProvider extends CaseLabelItemProvider implements 
 	 */
 	@Override
 	public String getText(final Object object) {
+		if (object == null) {
+			return "";
+		}
 		final ExprCaseLabel exprCaseLabel = (ExprCaseLabel) object;
 		final IItemLabelProvider lp = (IItemLabelProvider) getRootAdapterFactory().adapt(exprCaseLabel.getExpr(), IItemLabelProvider.class);
-		if (lp == null || exprCaseLabel == null) {
+		if (lp == null) {
 			return getTextGen(object);
 		}
 		return lp.getText(exprCaseLabel.getExpr());

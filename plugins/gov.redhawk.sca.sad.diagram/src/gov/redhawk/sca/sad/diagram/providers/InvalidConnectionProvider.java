@@ -97,7 +97,7 @@ public class InvalidConnectionProvider extends AbstractProvider implements IDeco
 			if (editPart instanceof SadConnectInterfaceEditPart) {
 				final SadConnectInterfaceEditPart connPart = (SadConnectInterfaceEditPart) editPart;
 
-				if (connPart == null || connPart.getRoot() == null) {
+				if (connPart.getRoot() == null) {
 					return;
 				}
 

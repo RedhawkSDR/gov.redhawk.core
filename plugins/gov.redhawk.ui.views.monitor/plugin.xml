@@ -22,7 +22,7 @@
             fastViewWidthRatio="0.33"
             icon="icons/sample.gif"
             id="gov.redhawk.ui.views.monitor.ports.PortMonitorView"
-            name="Port Monitor"
+            name="%view.name"
             restorable="true">
       </view>
    </extension>
@@ -32,7 +32,7 @@
             locationURI="popup:gov.redhawk.ui.views.monitor.ports.PortMonitorView">
          <command
                commandId="org.eclipse.ui.edit.delete"
-               label="Stop Monitoring"
+               label="%command.label"
                style="push">
             <visibleWhen
                   checkEnabled="false">
@@ -88,9 +88,9 @@
          point="org.eclipse.ui.commands">
       <command
             categoryId="gov.redhawk.ui.commands.category.sca"
-            description="Monitor the statistics of the ports"
+            description="%command.description"
             id="gov.redhawk.ui.views.monitor.command"
-            name="Monitor Ports">
+            name="%command.name">
       </command>
    </extension>
    <extension

@@ -69,8 +69,8 @@ public class ScaWaveformsContainerItemProviderAdapterFactory implements IAdapter
 				}
 			});
 			final SubMonitor refreshMonitor = subMonitor.newChild(1);
-			refreshMonitor.beginTask("Refreshing waveforms", waveforms.length);
 			if (waveforms != null) {
+				refreshMonitor.beginTask("Refreshing waveforms", waveforms.length);
 				for (final ScaWaveform waveform : waveforms) {
 					waveform.refresh(refreshMonitor.newChild(1), RefreshDepth.SELF);
 				}

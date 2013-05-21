@@ -27,11 +27,11 @@
                   isEnabledByDefault="true"
                   lang="java"
                   mode="Batch"
-                  name="Invalid FindComponent"
+                  name="%constraint.name"
                   severity="ERROR"
                   statusCode="1001">
                <message>
-                  {0}
+                  %constraint.message
                </message>
                <target
                      class="FindComponent">
@@ -43,11 +43,11 @@
                   isEnabledByDefault="true"
                   lang="java"
                   mode="Batch"
-                  name="Invalid Connect Interface"
+                  name="%constraint.name.0"
                   severity="ERROR"
                   statusCode="1002">
                <message>
-                  {0}
+                  %constraint.message.0
                </message>
                <target
                      class="SadConnectInterface">
@@ -59,11 +59,11 @@
                   isEnabledByDefault="true"
                   lang="java"
                   mode="Batch"
-                  name="Invalid Connections"
+                  name="%constraint.name.1"
                   severity="WARNING"
                   statusCode="1003">
                <message>
-                  {0}
+                  %constraint.message.1
                </message>
                <target
                      class="SadConnections">
@@ -75,11 +75,11 @@
                   isEnabledByDefault="true"
                   lang="java"
                   mode="Live"
-                  name="Valid Version Constraint"
+                  name="%constraint.name.2"
                   severity="WARNING"
                   statusCode="1004">
                <message>
-                  The specified version &quot;{0}&quot; is non-standard.
+                  %constraint.message.2
                </message>
                <target
                      class="SoftwareAssembly">

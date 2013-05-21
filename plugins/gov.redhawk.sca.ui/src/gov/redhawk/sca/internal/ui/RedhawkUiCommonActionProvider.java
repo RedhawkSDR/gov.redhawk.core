@@ -166,9 +166,9 @@ public class RedhawkUiCommonActionProvider extends CommonActionProvider {
 					contentType = contDesc.getContentType();
 				}
 			} catch (final CoreException e) {
-				contentType = null;
+				// PASS
 			} catch (final IOException e) {
-				contentType = null;
+				// PASS
 			}
 
 			for (final IEditorDescriptor desc : this.window.getWorkbench().getEditorRegistry().getEditors(fileName, contentType)) {
@@ -187,9 +187,7 @@ public class RedhawkUiCommonActionProvider extends CommonActionProvider {
 				IEditorDescriptor defaultEditor = null;
 
 				// Try the system default editor
-				if (defaultEditor == null) {
-					defaultEditor = this.window.getWorkbench().getEditorRegistry().getDefaultEditor(fileName, contentType);
-				}
+				defaultEditor = this.window.getWorkbench().getEditorRegistry().getDefaultEditor(fileName, contentType);
 
 				// Now fallback to the text editor
 

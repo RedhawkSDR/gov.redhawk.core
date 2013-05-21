@@ -324,7 +324,7 @@ public abstract class Resource implements ResourceOperations, Runnable { // SUPP
                 }
             }
         } catch (final Throwable t) {
-            t.printStackTrace(); // SUPPRESS CHECKSTYLE Inline
+           // PASS
         }
         
         if ((validProperties.size() == 0) && (invalidProperties.size() != 0)) {
@@ -445,8 +445,8 @@ public abstract class Resource implements ResourceOperations, Runnable { // SUPP
     /**
      * Register whichever port is to be used to issue property changes
      */
-    public void registerPropertyChangePort(final PropertyEventSupplier propertyChangePort) {
-        this.propertyChangePort = propertyChangePort;
+    public void registerPropertyChangePort(final PropertyEventSupplier newPropertyChangePort) {
+        this.propertyChangePort = newPropertyChangePort;
     }
     
     protected boolean isDisposed() {
@@ -650,8 +650,11 @@ public abstract class Resource implements ResourceOperations, Runnable { // SUPP
         if ((nameContext != null) && (nameBinding != null)) {
             nameContext.rebind(nameContext.to_name(nameBinding), resource);
         } else {
+        	// PASS
             // Print out the IOR so that someone can debug against the component
+            //CHECKSTYLE:OFF
             System.out.println("The IOR for your component is:\n" + orb.object_to_string(resource)); // SUPPRESS CHECKSTYLE Inline
+            //CHECKSTYLE:ON
         }
 
         String loggingConfigURI = null;

@@ -1,10 +1,10 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Implementation-Version: 3.2.0
-Bundle-Name: REDHAWK NeXtMidas Option Tree Plug-in
+Bundle-Name: %Bundle-Name
 Bundle-SymbolicName: nxm.redhawk;singleton:=true
-Bundle-Version: 9.0.0.qualifier
-Bundle-Vendor: REDHAWK
+Bundle-Version: 10.0.0.qualifier
+Bundle-Vendor: %Bundle-Vendor
 Bundle-Localization: plugin
 Require-Bundle: mil.jpeojtrs.sca.cf;bundle-version="2.2.2",
  idl.bulkio;bundle-version="1.7.0",

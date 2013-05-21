@@ -113,7 +113,7 @@ public class MissingSoftPkgDecoratorProvider extends AbstractProvider implements
 			if (editPart instanceof ComponentPlacementEditPart) {
 				final ComponentPlacementEditPart compPart = (ComponentPlacementEditPart) editPart;
 
-				if (compPart == null || compPart.getRoot() == null) {
+				if (compPart.getRoot() == null) {
 					return;
 				}
 

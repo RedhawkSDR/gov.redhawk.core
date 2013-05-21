@@ -111,12 +111,13 @@ public class ValueBoxDclItemProvider
 	 */
 	@Override
 	public String getText(Object object) {
+		if (object == null) {
+			return "";
+		}
 		ValueBoxDcl p = (ValueBoxDcl) object;
 		IItemLabelProvider lp = (IItemLabelProvider) getRootAdapterFactory().adapt(p.getTypeSpec(), IItemLabelProvider.class);
 		String label = p.getName() + " : " + lp.getText(p.getType());
-		return label == null || label.length() == 0 ?
-			getString("_UI_ValueBoxDcl_type") :
-			label;
+		return label;
 	}
 
 	/**

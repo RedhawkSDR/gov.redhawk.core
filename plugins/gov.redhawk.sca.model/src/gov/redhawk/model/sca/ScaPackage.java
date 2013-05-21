@@ -1298,6 +1298,7 @@ public interface ScaPackage extends EPackage {
 	/**
 	 * The feature id for the '<em><b>Profile URI</b></em>' attribute.
 	 * <!-- begin-user-doc -->
+	 * @since 18.0
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
@@ -1306,6 +1307,7 @@ public interface ScaPackage extends EPackage {
 	/**
 	 * The feature id for the '<em><b>Profile Obj</b></em>' reference.
 	 * <!-- begin-user-doc -->
+	 * @since 18.0
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
@@ -1314,6 +1316,7 @@ public interface ScaPackage extends EPackage {
 	/**
 	 * The feature id for the '<em><b>Root File Store</b></em>' attribute.
 	 * <!-- begin-user-doc -->
+	 * @since 18.0
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
@@ -1322,6 +1325,7 @@ public interface ScaPackage extends EPackage {
 	/**
 	 * The feature id for the '<em><b>Properties</b></em>' containment reference list.
 	 * <!-- begin-user-doc -->
+	 * @since 18.0
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
@@ -1330,6 +1334,7 @@ public interface ScaPackage extends EPackage {
 	/**
 	 * The feature id for the '<em><b>Ports</b></em>' containment reference list.
 	 * <!-- begin-user-doc -->
+	 * @since 18.0
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
@@ -1346,6 +1351,7 @@ public interface ScaPackage extends EPackage {
 	/**
 	 * The feature id for the '<em><b>Dev Mgr</b></em>' container reference.
 	 * <!-- begin-user-doc -->
+	 * @since 18.0
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
@@ -4407,6 +4413,7 @@ public interface ScaPackage extends EPackage {
 	/**
 	 * Returns the meta object for the container reference '{@link gov.redhawk.model.sca.ScaService#getDevMgr <em>Dev Mgr</em>}'.
 	 * <!-- begin-user-doc -->
+	 * @since 18.0
 	 * <!-- end-user-doc -->
 	 * @return the meta object for the container reference '<em>Dev Mgr</em>'.
 	 * @see gov.redhawk.model.sca.ScaService#getDevMgr()
@@ -5901,6 +5908,7 @@ public interface ScaPackage extends EPackage {
 		/**
 		 * The meta object literal for the '<em><b>Dev Mgr</b></em>' container reference feature.
 		 * <!-- begin-user-doc -->
+		 * @since 18.0
 		 * <!-- end-user-doc -->
 		 * @generated
 		 */

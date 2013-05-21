@@ -5,7 +5,6 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import nxm.sys.lib.NeXtMidas;
 
 public final class RedhawkNxmUtil {
-	
 	private static final AtomicBoolean ADDED = new AtomicBoolean(false);
 
 	private RedhawkNxmUtil() {

@@ -13,7 +13,7 @@
             class="gov.redhawk.waveformviewer.ui.views.WaveformView"
             icon="icons/dlcl16/hierarchicalLayout.gif"
             id="gov.redhawk.ui.waveform.view.available"
-            name="Available Waveforms"
+            name="%view.name"
             restorable="true">
       </view>
       <view
@@ -21,36 +21,36 @@
             class="gov.redhawk.waveformviewer.ui.views.RunWaveformView"
             icon="icons/dtool16/defcon_wiz.gif"
             id="gov.redhawk.ui.waveform.view.running"
-            name="Running Waveforms"
+            name="%view.name.0"
             restorable="true">
       </view>
    </extension>
    <extension
          point="org.eclipse.ui.commands">
       <command
-            description="Install the selected Waveform"
+            description="%command.description"
             id="gov.redhawk.ui.waveform.commands.install"
-            name="Install Waveform">
+            name="%command.name">
       </command>
       <command
-            description="Runs the selected Waveform"
+            description="%command.description.0"
             id="gov.redhawk.ui.waveform.commands.run"
-            name="Run Waveform">
+            name="%command.name.0">
       </command>
       <command
-            description="Stops the selected Waveform"
+            description="%command.description.1"
             id="gov.redhawk.ui.waveform.commands.stop"
-            name="Stop Waveform">
+            name="%command.name.1">
       </command>
       <command
-            description="Uninstall the selected Waveform"
+            description="%command.description.2"
             id="gov.redhawk.ui.waveform.commands.uninstall"
-            name="Uninstall Waveform">
+            name="%command.name.2">
       </command>
       <command
-            description="View the selected Waveform"
+            description="%command.description.3"
             id="gov.redhawk.ui.waveform.commands.view"
-            name="View Waveform">
+            name="%command.name.3">
       </command>
    </extension>
    <extension
@@ -61,9 +61,9 @@
                commandId="gov.redhawk.ui.waveform.commands.view"
                disabledIcon="icons/dlcl16/find_obj.gif"
                icon="icons/elcl16/find_obj.gif"
-               label="View Waveform"
+               label="%command.label"
                style="push"
-               tooltip="View Waveform">
+               tooltip="%command.tooltip">
             <visibleWhen
                   checkEnabled="false">
                <or>
@@ -84,9 +84,9 @@
                commandId="gov.redhawk.ui.waveform.commands.install"
                disabledIcon="icons/dlcl16/add_att.gif"
                icon="icons/elcl16/add_att.gif"
-               label="Install Waveform"
+               label="%command.label.0"
                style="push"
-               tooltip="Install Waveform">
+               tooltip="%command.tooltip.0">
             <visibleWhen
                   checkEnabled="false">
                <or>
@@ -107,9 +107,9 @@
                commandId="gov.redhawk.ui.waveform.commands.run"
                disabledIcon="icons/dlcl16/goto_obj.gif"
                icon="icons/elcl16/goto_obj.gif"
-               label="Run Waveform"
+               label="%command.label.1"
                style="push"
-               tooltip="Run Waveform">
+               tooltip="%command.tooltip.1">
             <visibleWhen
                   checkEnabled="false">
                <or>
@@ -133,9 +133,9 @@
                commandId="gov.redhawk.ui.waveform.commands.view"
                disabledIcon="icons/dlcl16/find_obj.gif"
                icon="icons/elcl16/find_obj.gif"
-               label="View Waveform"
+               label="%command.label.2"
                style="push"
-               tooltip="View Waveform">
+               tooltip="%command.tooltip.2">
             <visibleWhen
                   checkEnabled="false">
                <or>
@@ -156,9 +156,9 @@
                commandId="gov.redhawk.ui.waveform.commands.run"
                disabledIcon="icons/dlcl16/goto_obj.gif"
                icon="icons/elcl16/goto_obj.gif"
-               label="Run Waveform"
+               label="%command.label.3"
                style="push"
-               tooltip="Run Waveform">
+               tooltip="%command.tooltip.3">
             <visibleWhen
                   checkEnabled="false">
                <or>
@@ -179,9 +179,9 @@
                commandId="gov.redhawk.ui.waveform.commands.stop"
                disabledIcon="icons/dlcl16/clear.gif"
                icon="icons/elcl16/clear.gif"
-               label="Stop Waveform"
+               label="%command.label.4"
                style="push"
-               tooltip="Stop Waveform">
+               tooltip="%command.tooltip.4">
             <visibleWhen
                   checkEnabled="false">
                <or>
@@ -201,9 +201,9 @@
          <command
                commandId="gov.redhawk.ui.waveform.commands.uninstall"
                icon="icons/dlcl16/remove_att.gif"
-               label="Uninstall Waveform"
+               label="%command.label.5"
                style="push"
-               tooltip="Uninstall Waveform">
+               tooltip="%command.tooltip.5">
             <visibleWhen
                   checkEnabled="false">
                <or>
@@ -227,25 +227,25 @@
                commandId="gov.redhawk.ui.waveform.commands.view"
                disabledIcon="icons/dlcl16/find_obj.gif"
                icon="icons/elcl16/find_obj.gif"
-               label="View"
+               label="%command.label.6"
                style="push"
-               tooltip="View Waveform">
+               tooltip="%command.tooltip.6">
          </command>
          <command
                commandId="gov.redhawk.ui.waveform.commands.install"
                disabledIcon="icons/dlcl16/add_att.gif"
                icon="icons/elcl16/add_att.gif"
-               label="Install"
+               label="%command.label.7"
                style="push"
-               tooltip="Install Waveform">
+               tooltip="%command.tooltip.7">
          </command>
          <command
                commandId="gov.redhawk.ui.waveform.commands.run"
                disabledIcon="icons/dlcl16/goto_obj.gif"
                icon="icons/elcl16/goto_obj.gif"
-               label="Run"
+               label="%command.label.8"
                style="push"
-               tooltip="Run Waveform">
+               tooltip="%command.tooltip.8">
          </command>
       </menuContribution>
       <menuContribution
@@ -254,32 +254,32 @@
                commandId="gov.redhawk.ui.waveform.commands.view"
                disabledIcon="icons/dlcl16/find_obj.gif"
                icon="icons/elcl16/find_obj.gif"
-               label="View"
+               label="%command.label.9"
                style="push"
-               tooltip="View Waveform">
+               tooltip="%command.tooltip.9">
          </command>
          <command
                commandId="gov.redhawk.ui.waveform.commands.run"
                disabledIcon="icons/dlcl16/goto_obj.gif"
                icon="icons/elcl16/goto_obj.gif"
-               label="Run"
+               label="%command.label.10"
                style="push"
-               tooltip="Run Waveform">
+               tooltip="%command.tooltip.10">
          </command>
          <command
                commandId="gov.redhawk.ui.waveform.commands.stop"
                disabledIcon="icons/dlcl16/clear.gif"
                icon="icons/elcl16/clear.gif"
-               label="Stop"
+               label="%command.label.11"
                style="push"
-               tooltip="Stop Waveform">
+               tooltip="%command.tooltip.11">
          </command>
          <command
                commandId="gov.redhawk.ui.waveform.commands.uninstall"
                icon="icons/dlcl16/remove_att.gif"
-               label="Uninstall"
+               label="%command.label.12"
                style="push"
-               tooltip="Uninstall Waveform">
+               tooltip="%command.tooltip.12">
          </command>
       </menuContribution>
    </extension>

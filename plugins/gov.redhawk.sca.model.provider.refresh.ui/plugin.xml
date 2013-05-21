@@ -18,7 +18,7 @@
             category="gov.redhawk.ui.preferences.dataProviders"
             class="gov.redhawk.sca.model.provider.refresh.ui.preferences.RefreshProviderPreferencePage"
             id="gov.redhawk.sca.model.provider.refresh.ui.preferences.RefreshProviderPreferencePage"
-            name="Polling Data Provider Preferences">
+            name="%page.name">
       </page>
    </extension>
    <extension
@@ -27,7 +27,7 @@
             categoryId="gov.redhawk.ui.commands.category.sca"
             defaultHandler="gov.redhawk.sca.model.provider.refresh.internal.ui.handlers.AutoRefreshHandler"
             id="gov.redhawk.sca.model.provider.refresh.ui.autoRefresh"
-            name="Auto Refresh">
+            name="%command.name">
       </command>
    </extension>
    <extension
@@ -67,7 +67,7 @@
             adaptable="false"
             class="gov.redhawk.sca.model.provider.refresh.internal.ui.RefreshDataProviderDecorator"
             id="gov.redhawk.sca.model.provider.refresh.ui.decorator1"
-            label="Auto Refresh Disabled"
+            label="%decorator.label"
             lightweight="true"
             state="true">
          <enablement>

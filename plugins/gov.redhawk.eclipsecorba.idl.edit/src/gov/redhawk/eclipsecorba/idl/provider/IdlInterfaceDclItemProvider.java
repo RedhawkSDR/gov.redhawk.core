@@ -214,7 +214,7 @@ public class IdlInterfaceDclItemProvider extends IdlTypeDclItemProvider implemen
 		final IdlInterfaceDcl inter = (IdlInterfaceDcl) object;
 		final StringBuilder label = new StringBuilder();
 		label.append(inter.getName());
-		return label == null || label.length() == 0 ? getString("_UI_IdlInterfaceDcl_type") : label.toString();
+		return label.length() == 0 ? getString("_UI_IdlInterfaceDcl_type") : label.toString();
 	}
 
 	/**

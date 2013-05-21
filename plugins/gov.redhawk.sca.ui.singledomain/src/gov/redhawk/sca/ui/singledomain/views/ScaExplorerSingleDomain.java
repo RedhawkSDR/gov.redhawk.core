@@ -322,11 +322,6 @@ public class ScaExplorerSingleDomain extends ScaExplorer {
 		if (this.mouseMoveListenerJob == null) {
 			createMouseMoveListener();
 		}
-
-		//if (this.mouseMoveListenerJob.getState() != Job.RUNNING) {
-			//this.mouseMoveListenerJob.schedule();
-		//}
-		
 		//END WORKAROUND CODE
 	}
 

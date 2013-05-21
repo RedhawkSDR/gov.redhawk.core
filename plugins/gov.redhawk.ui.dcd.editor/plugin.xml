@@ -15,7 +15,7 @@
             icon="icons/obj16/DcdExplorer.gif"
             id="gov.redhawk.ui.dcd.editor.presentation.NodeEditorID"
             matchingStrategy="gov.redhawk.ui.dcd.editor.presentation.NodeEditorMatchingStrategy"
-            name="Node Explorer">
+            name="%editor.name">
          <contentTypeBinding contentTypeId="mil.jpeojtrs.sca.dcd.content-type"/>
       </editor>
    </extension>

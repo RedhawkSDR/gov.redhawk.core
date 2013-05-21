@@ -1,6 +1,6 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: Tests
+Bundle-Name: %Bundle-Name
 Bundle-SymbolicName: gov.redhawk.partitioning.validation.tests
 Bundle-Version: 1.0.0.qualifier
 Bundle-RequiredExecutionEnvironment: J2SE-1.5
@@ -13,4 +13,4 @@ Require-Bundle: org.eclipse.core.runtime;bundle-version="3.5.0",
  mil.jpeojtrs.sca.sad;bundle-version="2.2.2",
  org.junit;bundle-version="4.8.1"
 Export-Package: gov.redhawk.partitioning.validation.tests
-Bundle-Vendor: United States Government
+Bundle-Vendor: %Bundle-Vendor

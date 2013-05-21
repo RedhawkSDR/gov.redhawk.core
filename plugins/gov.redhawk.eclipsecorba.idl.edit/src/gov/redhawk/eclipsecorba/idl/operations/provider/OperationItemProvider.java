@@ -244,7 +244,7 @@ public class OperationItemProvider extends ExportItemProvider implements IEditin
 			final IItemLabelProvider lp = (IItemLabelProvider) getRootAdapterFactory().adapt(op.getType(), IItemLabelProvider.class);
 			label.append(lp.getText(op.getType()));
 		}
-		return label == null || label.length() == 0 ? getString("_UI_Operation_type") : label.toString();
+		return label.toString();
 	}
 
 	/**

@@ -286,7 +286,7 @@ public class AudioController {
 					EObject portContainer = scaPort.eContainer();
 					if (portContainer instanceof ScaAbstractComponent< ? >) {
 						final ScaAbstractComponent< ? > comp = (ScaAbstractComponent< ? >) portContainer;
-						if ((comp != null) && (comp.getProfileObj() != null)) {
+						if (comp.getProfileObj() != null) {
 							String res = comp.getProfileObj().getName();
 							if (comp instanceof ScaComponent) {
 								SadComponentInstantiation compInstantiation = ((ScaComponent) comp).getComponentInstantiation();

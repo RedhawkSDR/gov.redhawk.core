@@ -434,9 +434,7 @@ public abstract class ScaAbstractComponentImpl< R extends Resource > extends Sca
 			return;
 		}
 		Command command = DeleteCommand.create(domain, this);
-		if (resource != null) {
-			resource.releaseObject();
-		}
+		resource.releaseObject();
 		domain.getCommandStack().execute(command);
 		// BEGIN GENERATED CODE
 	}

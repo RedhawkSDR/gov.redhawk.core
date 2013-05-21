@@ -1,6 +1,6 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: Controlpanel
+Bundle-Name: %Bundle-Name
 Bundle-SymbolicName: gov.redhawk.sca.waveform.controlpanel;singleton:=true
 Bundle-Version: 6.0.0.qualifier
 Bundle-Activator: gov.redhawk.sca.waveform.controlpanel.WaveformControlPanelPlugin
@@ -22,7 +22,7 @@ Require-Bundle: gov.redhawk.sca.ui;bundle-version="7.0.0";visibility:=reexport,
  gov.redhawk.sca.rap.supplement;bundle-version="1.0.0";resolution:=optional
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: J2SE-1.5
-Bundle-Vendor: REDHAWK
+Bundle-Vendor: %Bundle-Vendor
 Import-Package: org.eclipse.ui.ide
 Bundle-ClassPath: library.jar,
  .

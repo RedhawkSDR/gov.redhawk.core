@@ -18,7 +18,7 @@
             delegate="gov.redhawk.sca.launch.ui.WaveformLaunchConfigurationDelegate"
             id="gov.redhawk.sca.ui.launchConfigurationType.waveform"
             modes="run"
-            name="SCA Waveform">
+            name="%launchConfigurationType.name">
       </launchConfigurationType>
    </extension>
    <extension
@@ -28,7 +28,7 @@
             id="gov.redhawk.sca.ui.launchConfigurationTabGroup.waveform"
             type="gov.redhawk.sca.ui.launchConfigurationType.waveform">
          <launchMode
-               description="Run an SCA Waveform"
+               description="%launchMode.description"
                mode="run">
          </launchMode>
       </launchConfigurationTabGroup>

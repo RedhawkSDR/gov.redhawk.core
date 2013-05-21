@@ -14,7 +14,7 @@
             class="gov.redhawk.internal.ui.port.nxmplot.view.PlotView"
             icon="icons/SDU.gif"
             id="gov.redhawk.ui.port.nxmplot.portdata"
-            name="Port Data"
+            name="%view.name"
             restorable="false">
       </view>
    </extension>
@@ -29,10 +29,10 @@
          point="org.eclipse.ui.commands">
       <command
             id="gov.redhawk.ui.port.nxmplot.newdataplot"
-            name="New Plot Connection">
+            name="%command.name">
          <commandParameter
                id="gov.redhawk.ui.port.nxmplot.newdataplot.fftparam"
-               name="gov.redhawk.ui.port.nxmplot.newdataplot.fftparam"
+               name="%commandParameter.name"
                optional="false">
          </commandParameter>
       </command>
@@ -40,10 +40,10 @@
             categoryId="gov.redhawk.ui.commands.category.sca"
             defaultHandler="gov.redhawk.internal.ui.port.nxmplot.handlers.PlotUsesPortHandler"
             id="gov.redhawk.ui.port.nxmplot.command.plot"
-            name="Plot Port">
+            name="%command.name.0">
          <commandParameter
                id="gov.redhawk.ui.port.nxmplot.command.plot.fftparam"
-               name="gov.redhawk.ui.port.nxmplot.command.plot.fftparam"
+               name="%commandParameter.name.0"
                optional="false">
          </commandParameter>
       </command>
@@ -56,7 +56,7 @@
          <command
                commandId="gov.redhawk.ui.port.nxmplot.newdataplot"
                id="gov.redhawk.ui.port.nxmplot.newdataplot"
-               label="New Data Plot"
+               label="%command.label"
                style="push">
             <parameter
                   name="gov.redhawk.ui.port.nxmplot.newdataplot.fftparam"
@@ -66,7 +66,7 @@
          <command
                commandId="gov.redhawk.ui.port.nxmplot.newdataplot"
                id="gov.redhawk.ui.port.nxmplot.newdataplot"
-               label="New FFT Plot"
+               label="%command.label.0"
                style="push">
             <parameter
                   name="gov.redhawk.ui.port.nxmplot.newdataplot.fftparam"

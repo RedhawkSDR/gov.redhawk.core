@@ -211,9 +211,9 @@ public class ScaFileStoreItemProvider extends IStatusProviderItemProvider implem
 					contentType = contDesc.getContentType();
 				}
 			} catch (final CoreException e) {
-				contentType = null;
+				// PASS
 			} catch (final IOException e) {
-				contentType = null;
+				// PASS
 			}
 
 			final ImageDescriptor imageDescriptor = PlatformUI.getWorkbench().getEditorRegistry().getImageDescriptor(fileName, contentType);

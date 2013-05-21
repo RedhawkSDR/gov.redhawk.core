@@ -27,6 +27,9 @@ import java.util.Comparator;
 import mil.jpeojtrs.sca.sad.SoftwareAssembly;
 
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.IJobChangeEvent;
 import org.eclipse.core.runtime.jobs.JobChangeAdapter;
 import org.eclipse.debug.core.ILaunchConfiguration;
@@ -52,6 +55,7 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.ui.dialogs.PatternFilter;
+import org.eclipse.ui.progress.WorkbenchJob;
 
 /**
  * 
@@ -146,7 +150,17 @@ public class WaveformMainTab extends AbstractLaunchConfigurationTab {
 
 			@Override
 			public void done(final IJobChangeEvent event) {
-				restorePreviousWaveformSelection();
+				WorkbenchJob job = new WorkbenchJob("Restore Selection") {
+					
+					@Override
+					public IStatus runInUIThread(IProgressMonitor monitor) {
+						if (!getControl().isDisposed()) {
+							restorePreviousWaveformSelection();
+						}
+						return Status.OK_STATUS;
+					}
+				};
+				job.schedule();
 			}
 		});
 		this.waveformSelectionList.getViewer().setContentProvider(this.contentProvider);

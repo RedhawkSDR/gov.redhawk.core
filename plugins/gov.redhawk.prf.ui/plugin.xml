@@ -13,7 +13,7 @@
             contributorClass="gov.redhawk.prf.internal.ui.editor.PropertiesEditorActionBarContributor"
             default="true"
             id="gov.redhawk.ide.ui.editor.properties"
-            name="SCA Properties Editor">
+            name="%editor.name">
          <contentTypeBinding
                contentTypeId="mil.jpeojtrs.sca.prf.content-type">
          </contentTypeBinding>

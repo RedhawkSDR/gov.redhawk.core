@@ -41,37 +41,35 @@ public class MoveComponentEarlierInStartOrder extends AbstractHandler {
 		final ISelection selection = HandlerUtil.getCurrentSelection(event);
 		final SadComponentPlacement cp = SadDiagramHandlerUtil.getComponentPlacementFromSelection(selection);
 		final TransactionalEditingDomain editingDomain = SadDiagramHandlerUtil.getEditingDomain(selection);
-		
+
 		Assert.isTrue(cp.getComponentInstantiation().size() == 1); // currently REDHAWK doesn't support more than one anyways
 		final SadComponentInstantiation selectedCi = cp.getComponentInstantiation().get(0);
 		Assert.isNotNull(selectedCi.getId());
-		
-		if (cp != null) {
-			final SoftwareAssembly sa = SoftwareAssembly.Util.getSoftwareAssembly(cp.eResource());
-			if (sa != null) {
-				
-				Assert.isNotNull(selectedCi.getStartOrder()); // should be prevented by enablement
-				// otherwise, move all the start orders without creating new numbers
-				// by swapping existing start order numbers
-				EList<SadComponentInstantiation> cis = sa.getComponentInstantiationsInStartOrder();
-				int selectedPosition = cis.indexOf(selectedCi);
-				if ((selectedPosition - 1) >= 0) {
-				    SadComponentInstantiation earlierComponentInstantiation = cis.get(selectedPosition - 1);
-				    if ((earlierComponentInstantiation.getStartOrder() != null) && (earlierComponentInstantiation.getStartOrder().intValue() != 0)) {
-				    	// there is earlier to go...as long as cis is sorted correctly
-				    	BigInteger earlierStartOrder = earlierComponentInstantiation.getStartOrder();
-				    	BigInteger laterStartOrder = selectedCi.getStartOrder();
-				    	
-				    	if (editingDomain != null) {
-				    		CompoundCommand changeOrderCmd = new CompoundCommand("Move Earlier");
-				    		changeOrderCmd.append(SetCommand.create(editingDomain, earlierComponentInstantiation, SadPackage.Literals.SAD_COMPONENT_INSTANTIATION__START_ORDER, laterStartOrder));
-				    		changeOrderCmd.append(SetCommand.create(editingDomain, selectedCi, SadPackage.Literals.SAD_COMPONENT_INSTANTIATION__START_ORDER, earlierStartOrder));
-				    		editingDomain.getCommandStack().execute(changeOrderCmd);
-				    	} else {
-				    		earlierComponentInstantiation.setStartOrder(laterStartOrder);
-					    	selectedCi.setStartOrder(earlierStartOrder);
-				    	}
-				    }
+
+		final SoftwareAssembly sa = SoftwareAssembly.Util.getSoftwareAssembly(cp.eResource());
+		if (sa != null) {
+			Assert.isNotNull(selectedCi.getStartOrder()); // should be prevented by enablement
+			// otherwise, move all the start orders without creating new numbers
+			// by swapping existing start order numbers
+			EList<SadComponentInstantiation> cis = sa.getComponentInstantiationsInStartOrder();
+			int selectedPosition = cis.indexOf(selectedCi);
+			if ((selectedPosition - 1) >= 0) {
+				SadComponentInstantiation earlierComponentInstantiation = cis.get(selectedPosition - 1);
+				if ((earlierComponentInstantiation.getStartOrder() != null) && (earlierComponentInstantiation.getStartOrder().intValue() != 0)) {
+					// there is earlier to go...as long as cis is sorted correctly
+					BigInteger earlierStartOrder = earlierComponentInstantiation.getStartOrder();
+					BigInteger laterStartOrder = selectedCi.getStartOrder();
+
+					if (editingDomain != null) {
+						CompoundCommand changeOrderCmd = new CompoundCommand("Move Earlier");
+						changeOrderCmd.append(SetCommand.create(editingDomain, earlierComponentInstantiation, SadPackage.Literals.SAD_COMPONENT_INSTANTIATION__START_ORDER,
+						        laterStartOrder));
+						changeOrderCmd.append(SetCommand.create(editingDomain, selectedCi, SadPackage.Literals.SAD_COMPONENT_INSTANTIATION__START_ORDER, earlierStartOrder));
+						editingDomain.getCommandStack().execute(changeOrderCmd);
+					} else {
+						earlierComponentInstantiation.setStartOrder(laterStartOrder);
+						selectedCi.setStartOrder(earlierStartOrder);
+					}
 				}
 			}
 		}
@@ -88,13 +86,13 @@ public class MoveComponentEarlierInStartOrder extends AbstractHandler {
 		if (obj instanceof IStructuredSelection) {
 			final IStructuredSelection structuredSelection = (IStructuredSelection) obj;
 			final SadComponentPlacement cp = SadDiagramHandlerUtil.getComponentPlacementFromSelection(structuredSelection);
-			
+
 			Assert.isTrue(cp.getComponentInstantiation().size() == 1); // currently REDHAWK doesn't support more than one anyways
 			final SadComponentInstantiation selectedCi = cp.getComponentInstantiation().get(0);
 			Assert.isNotNull(selectedCi.getId());
-			
+
 			// You can only change the start order if it has one *and* if it's not the assembly controller
-			
+
 			setBaseEnabled((selectedCi.getStartOrder() != null) && !SoftwareAssembly.Util.isAssemblyController(selectedCi));
 		}
 	}
