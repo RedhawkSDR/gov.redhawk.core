@@ -65,7 +65,7 @@ public class RcpNxmPlotWidget extends AbstractNxmPlotWidget {
 		}
 		this.initialized = true;
 
-		if (plotArgs==null) {
+		if (plotArgs == null) {
 			plotArgs = "";
 		}
 		if (plotSwitches == null) {
@@ -107,7 +107,7 @@ public class RcpNxmPlotWidget extends AbstractNxmPlotWidget {
 
 	@Override
 	public void addSource(String sourcePipeId, String pipeQualifiers) {
-		nxmComp.runCommand("SENDTO " + plotCommand.id + " OPENFILE " + sourcePipeId + (pipeQualifiers == null ? "" : pipeQualifiers));
+		nxmComp.runCommand("SENDTO " + plotCommand.id + " OPENFILE " + sourcePipeId + ((pipeQualifiers == null) ? "" : pipeQualifiers));
 		this.sources.add(sourcePipeId);
     }
 
@@ -128,7 +128,7 @@ public class RcpNxmPlotWidget extends AbstractNxmPlotWidget {
 		// XXX We need to rethink this for RAP support
 		String tempResName = createUniqueResName();
 		nxmComp.getLocalShell().M.results.put(tempResName, data); //to pass object reference for data= in the SENDTO command
-		nxmComp.runCommand("SENDTO " + plotCommand.id + " "+ msgName + " " + tempResName + " INFO=" + info);
+		nxmComp.runCommand("SENDTO " + plotCommand.id + " " + msgName + " " + tempResName + " INFO=" + info);
 		nxmComp.getLocalShell().M.results.remove(tempResName); // cleanup
 	}
 
@@ -147,8 +147,8 @@ public class RcpNxmPlotWidget extends AbstractNxmPlotWidget {
 	public String addDataFeature(Number xStart, Number xEnd, String color) {
 		String featureId = AbstractNxmPlotWidget.createUniqueName(false);
 		final double dx = xEnd.doubleValue() - xStart.doubleValue();
-		final String cmd = "FEATURE LABEL=" + featureId + " PLOT=" + plotCommand.id + " TABLE={NAME=\"" +
-		featureId + "\",TYPE=\"DATA\",X=" + (xStart.doubleValue() + (dx/2)) + ",DX=" + dx + ",COLOR=\"" + color + "\"}";
+		final String cmd = "FEATURE LABEL=" + featureId + " PLOT=" + plotCommand.id + " TABLE={NAME=\"" 
+				+ featureId + "\",TYPE=\"DATA\",X=" + (xStart.doubleValue() + (dx / 2)) + ",DX=" + dx + ",COLOR=\"" + color + "\"}";
 		this.runClientCommand(cmd);
 		return featureId;
 	}
