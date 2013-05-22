@@ -9,7 +9,7 @@
  * http://www.eclipse.org/legal/epl-v10.html
  *******************************************************************************/
 
- // BEGIN GENERATED CODE
+// BEGIN GENERATED CODE
 package gov.redhawk.model.sca.impl;
 
 import gov.redhawk.model.sca.ProfileObjectWrapper;
@@ -94,6 +94,7 @@ public class ScaServiceImpl extends ScaPropertyContainerImpl<org.omg.CORBA.Objec
 	/**
 	 * The cached value of the '{@link #getPorts() <em>Ports</em>}' containment reference list.
 	 * <!-- begin-user-doc -->
+	 * @since 18.0
 	 * <!-- end-user-doc -->
 	 * @see #getPorts()
 	 * @generated
@@ -141,6 +142,7 @@ public class ScaServiceImpl extends ScaPropertyContainerImpl<org.omg.CORBA.Objec
 
 	/**
 	 * <!-- begin-user-doc -->
+	 * @since 18.0
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -153,6 +155,7 @@ public class ScaServiceImpl extends ScaPropertyContainerImpl<org.omg.CORBA.Objec
 
 	/**
 	 * <!-- begin-user-doc -->
+	 * @since 18.0
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -162,6 +165,7 @@ public class ScaServiceImpl extends ScaPropertyContainerImpl<org.omg.CORBA.Objec
 
 	/**
 	 * <!-- begin-user-doc -->
+	 * @since 18.0
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -192,6 +196,7 @@ public class ScaServiceImpl extends ScaPropertyContainerImpl<org.omg.CORBA.Objec
 
 	/**
 	 * <!-- begin-user-doc -->
+	 * @since 18.0
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -385,6 +390,7 @@ public class ScaServiceImpl extends ScaPropertyContainerImpl<org.omg.CORBA.Objec
 
 	/**
 	 * <!-- begin-user-doc -->
+	 * @since 18.0
 	 * <!-- end-user-doc -->
 	 * @generated NOT
 	 */
@@ -401,6 +407,7 @@ public class ScaServiceImpl extends ScaPropertyContainerImpl<org.omg.CORBA.Objec
 
 	/**
 	 * <!-- begin-user-doc -->
+	 * @since 18.0
 	 * <!-- end-user-doc -->
 	 * @generated NOT
 	 */
@@ -446,7 +453,7 @@ public class ScaServiceImpl extends ScaPropertyContainerImpl<org.omg.CORBA.Objec
 	};
 	/**
 	 * <!-- begin-user-doc -->
-	 * @since 14.0
+	 * @since 18.0
 	 * <!-- end-user-doc -->
 	 * @throws InterruptedException 
 	 * @generated NOT
@@ -527,6 +534,10 @@ public class ScaServiceImpl extends ScaPropertyContainerImpl<org.omg.CORBA.Objec
     }
 
 	private final VersionedFeature profileObjectRevision = new VersionedFeature(this, ScaPackage.Literals.PROFILE_OBJECT_WRAPPER__PROFILE_OBJ);
+	
+	/**
+	 * @since 18.0
+	 */
 	@Override
     public SoftPkg fetchProfileObject(IProgressMonitor monitor) {
 	    Transaction transaction = profileObjectRevision.createTransaction();

@@ -66,10 +66,7 @@ public interface ScaService extends ScaPropertyContainer<org.omg.CORBA.Object, S
 	 * Returns the value of the '<em><b>Dev Mgr</b></em>' container reference.
 	 * It is bidirectional and its opposite is '{@link gov.redhawk.model.sca.ScaDeviceManager#getServices <em>Services</em>}'.
 	 * <!-- begin-user-doc -->
-	 * <p>
-	 * If the meaning of the '<em>Dev Mgr</em>' container reference isn't clear,
-	 * there really should be more of a description here...
-	 * </p>
+	 * @since 18.0
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Dev Mgr</em>' container reference.
 	 * @see gov.redhawk.model.sca.ScaPackage#getScaService_DevMgr()
