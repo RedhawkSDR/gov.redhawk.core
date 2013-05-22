@@ -1,12 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<fileset-config file-format-version="1.2.0" simple-config="true">
+<fileset-config file-format-version="1.2.0" simple-config="false" sync-formatter="false">
   <fileset name="all" enabled="true" check-config-name="REDHAWK" local="false">
     <file-match-pattern match-pattern="." include-pattern="true"/>
+    <file-match-pattern match-pattern="target" include-pattern="false"/>
   </fileset>
-  <filter name="FileTypesFilter" enabled="true">
-    <filter-data value="java"/>
-    <filter-data value="properties"/>
-    <filter-data value="xml"/>
-  </filter>
+  <filter name="NonSrcDirs" enabled="false"/>
 </fileset-config>
