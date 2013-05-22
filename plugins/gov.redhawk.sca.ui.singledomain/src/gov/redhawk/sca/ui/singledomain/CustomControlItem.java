@@ -69,17 +69,17 @@ public class CustomControlItem  extends ControlContribution {
 			Method m = clazz.getMethod(METHOD_ADD_MOUSETRACK_LISTENER, Class.forName(MOUSE_TRACK_LISTENER_CLASS_NAME));
 			m.invoke(control, listener);
 		} catch (SecurityException e) {
-			e.printStackTrace();
+			ScaSingleDomainPlugin.logError("Failed to add mouse track listener.", e);
 		} catch (NoSuchMethodException e) {
-			e.printStackTrace();
+			ScaSingleDomainPlugin.logError("Failed to add mouse track listener.", e);
 		} catch (IllegalArgumentException e) {
-			e.printStackTrace();
+			ScaSingleDomainPlugin.logError("Failed to add mouse track listener.", e);
 		} catch (IllegalAccessException e) {
-			e.printStackTrace();
+			ScaSingleDomainPlugin.logError("Failed to add mouse track listener.", e);
 		} catch (InvocationTargetException e) {
-			e.printStackTrace();
+			ScaSingleDomainPlugin.logError("Failed to add mouse track listener.", e);
 		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
+			ScaSingleDomainPlugin.logError("Failed to add mouse track listener.", e);
 		}
 	}
 	
@@ -89,17 +89,17 @@ public class CustomControlItem  extends ControlContribution {
 			Method m = clazz.getMethod(METHOD_REMOVE_MOUSETRACK_LISTENER,  Class.forName(MOUSE_TRACK_LISTENER_CLASS_NAME));
 			m.invoke(control, listener);
 		} catch (SecurityException e) {
-			e.printStackTrace();
+			ScaSingleDomainPlugin.logError("Failed to remove mouse track listener.", e);
 		} catch (NoSuchMethodException e) {
-			e.printStackTrace();
+			ScaSingleDomainPlugin.logError("Failed to add mouse track listener.", e);
 		} catch (IllegalArgumentException e) {
-			e.printStackTrace();
+			ScaSingleDomainPlugin.logError("Failed to add mouse track listener.", e);
 		} catch (IllegalAccessException e) {
-			e.printStackTrace();
+			ScaSingleDomainPlugin.logError("Failed to add mouse track listener.", e);
 		} catch (InvocationTargetException e) {
-			e.printStackTrace();
+			ScaSingleDomainPlugin.logError("Failed to add mouse track listener.", e);
 		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
+			ScaSingleDomainPlugin.logError("Failed to add mouse track listener.", e);
 		}
 	}
 
