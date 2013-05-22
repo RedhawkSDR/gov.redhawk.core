@@ -89,17 +89,17 @@ public class CustomControlItem  extends ControlContribution {
 			Method m = clazz.getMethod(METHOD_REMOVE_MOUSETRACK_LISTENER,  Class.forName(MOUSE_TRACK_LISTENER_CLASS_NAME));
 			m.invoke(control, listener);
 		} catch (SecurityException e) {
-			ScaSingleDomainPlugin.logError("SecuarityException thrown while adding mouse track listner", e);
+			ScaSingleDomainPlugin.logError("Failed to remove mouse track listener.", e);
 		} catch (NoSuchMethodException e) {
-			ScaSingleDomainPlugin.logError("NoSuchMethodException thrown while adding mouse track listner", e);
+			ScaSingleDomainPlugin.logError("Failed to add mouse track listener.", e);
 		} catch (IllegalArgumentException e) {
-			ScaSingleDomainPlugin.logError("IllegalArgumentException thrown while adding mouse track listner", e);
+			ScaSingleDomainPlugin.logError("Failed to add mouse track listener.", e);
 		} catch (IllegalAccessException e) {
-			ScaSingleDomainPlugin.logError("IllegalAccessException thrown while adding mouse track listner", e);
+			ScaSingleDomainPlugin.logError("Failed to add mouse track listener.", e);
 		} catch (InvocationTargetException e) {
-			ScaSingleDomainPlugin.logError("InvocationTargetException thrown while adding mouse track listner", e);
+			ScaSingleDomainPlugin.logError("Failed to add mouse track listener.", e);
 		} catch (ClassNotFoundException e) {
-			ScaSingleDomainPlugin.logError("ClassNotFoundException thrown while adding mouse track listner", e);
+			ScaSingleDomainPlugin.logError("Failed to add mouse track listener.", e);
 		}
 	}
 
