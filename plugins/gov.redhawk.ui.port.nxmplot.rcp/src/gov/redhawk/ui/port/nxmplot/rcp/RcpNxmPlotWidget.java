@@ -1,12 +1,12 @@
 /**
- * This file is protected by Copyright. 
- * Please refer to the COPYRIGHT file distributed with this source distribution.
- * 
- * This file is part of REDHAWK IDE.
- * 
- * All rights reserved.  This program and the accompanying materials are made available under 
- * the terms of the Eclipse Public License v1.0 which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html.
+ * This file is protected by Copyright. 
+ * Please refer to the COPYRIGHT file distributed with this source distribution.
+ * 
+ * This file is part of REDHAWK IDE.
+ * 
+ * All rights reserved.  This program and the accompanying materials are made available under 
+ * the terms of the Eclipse Public License v1.0 which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html.
  *
  */
 package gov.redhawk.ui.port.nxmplot.rcp;
@@ -65,7 +65,7 @@ public class RcpNxmPlotWidget extends AbstractNxmPlotWidget {
 		}
 		this.initialized = true;
 
-		if (plotArgs==null) {
+		if (plotArgs == null) {
 			plotArgs = "";
 		}
 		if (plotSwitches == null) {
@@ -117,7 +117,7 @@ public class RcpNxmPlotWidget extends AbstractNxmPlotWidget {
 		if (!isInitialized()) {
 			throw new IllegalStateException("Plot not initialized");
 		}
-		nxmComp.runCommand("SENDTO " + plotCommand.id + " OPENFILE " + sourcePipeId + (pipeQualifiers == null ? "" : pipeQualifiers));
+		nxmComp.runCommand("SENDTO " + plotCommand.id + " OPENFILE " + sourcePipeId + ((pipeQualifiers == null) ? "" : pipeQualifiers));
 		this.sources.add(sourcePipeId);
     }
 
@@ -144,7 +144,7 @@ public class RcpNxmPlotWidget extends AbstractNxmPlotWidget {
 		// XXX We need to rethink this for RAP support
 		String tempResName = createUniqueResName();
 		nxmComp.getLocalShell().M.results.put(tempResName, data); //to pass object reference for data= in the SENDTO command
-		nxmComp.runCommand("SENDTO " + plotCommand.id + " "+ msgName + " " + tempResName + " INFO=" + info);
+		nxmComp.runCommand("SENDTO " + plotCommand.id + " " + msgName + " " + tempResName + " INFO=" + info);
 		nxmComp.getLocalShell().M.results.remove(tempResName); // cleanup
 	}
 
@@ -163,8 +163,8 @@ public class RcpNxmPlotWidget extends AbstractNxmPlotWidget {
 	public String addDataFeature(Number xStart, Number xEnd, String color) {
 		String featureId = AbstractNxmPlotWidget.createUniqueName(false);
 		final double dx = xEnd.doubleValue() - xStart.doubleValue();
-		final String cmd = "FEATURE LABEL=" + featureId + " PLOT=" + plotCommand.id + " TABLE={NAME=\"" +
-		featureId + "\",TYPE=\"DATA\",X=" + (xStart.doubleValue() + (dx/2)) + ",DX=" + dx + ",COLOR=\"" + color + "\"}";
+		final String cmd = "FEATURE LABEL=" + featureId + " PLOT=" + plotCommand.id + " TABLE={NAME=\"" 
+				+ featureId + "\",TYPE=\"DATA\",X=" + (xStart.doubleValue() + (dx / 2)) + ",DX=" + dx + ",COLOR=\"" + color + "\"}";
 		this.runClientCommand(cmd);
 		return featureId;
 	}

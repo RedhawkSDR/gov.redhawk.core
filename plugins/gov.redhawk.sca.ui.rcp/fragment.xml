@@ -19,7 +19,7 @@
             class="gov.redhawk.sca.ui.views.ScaExplorerRcp"
             icon="icons/obj16/sca_explorer.png"
             id="gov.redhawk.ui.sca_explorer"
-            name="%view.name"
+            name="SCA Explorer"
             restorable="true">
       </view>
    </extension>
