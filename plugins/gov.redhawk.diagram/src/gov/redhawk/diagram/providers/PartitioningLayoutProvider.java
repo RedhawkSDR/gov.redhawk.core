@@ -77,7 +77,7 @@ public class PartitioningLayoutProvider extends CompositeLeftRightProvider {
 	}
 
 	@Override
-	protected List< ? > getRelevantConnections(final Hashtable editPartToNodeDict) {
+	protected List< ? > getRelevantConnections(@SuppressWarnings("rawtypes") final Hashtable editPartToNodeDict) {
 		final Enumeration< ? > enumeration = editPartToNodeDict.keys();
 		final List< ? > connectionsToMove = new ArrayList<Object>();
 		while (enumeration.hasMoreElements()) {
@@ -91,6 +91,7 @@ public class PartitioningLayoutProvider extends CompositeLeftRightProvider {
 	}
 
 	@Override
+	@SuppressWarnings("rawtypes")
 	protected EdgeList buildEdges(final List selectedObjects, final Map editPartToNodeDict) {
 
 		final EdgeList edges = new EdgeList();
@@ -167,7 +168,7 @@ public class PartitioningLayoutProvider extends CompositeLeftRightProvider {
 		return edges;
 	}
 
-	private Node getNode(final EditPart editPart, final Map editPartToNodeDict) {
+	private Node getNode(final EditPart editPart, @SuppressWarnings("rawtypes") final Map editPartToNodeDict) {
 		if (editPart == null) {
 			return null;
 		}
@@ -178,7 +179,7 @@ public class PartitioningLayoutProvider extends CompositeLeftRightProvider {
 		return (Node) retVal;
 	}
 
-	private EditPart getFirstAnscestorinNodesMap(final EditPart editPart, final Map editPartToNodeDict) {
+	private EditPart getFirstAnscestorinNodesMap(final EditPart editPart, @SuppressWarnings("rawtypes") final Map editPartToNodeDict) {
 		EditPart ancestor = editPart;
 		while (ancestor != null) {
 			if (editPartToNodeDict.get(ancestor) != null) {
@@ -189,7 +190,7 @@ public class PartitioningLayoutProvider extends CompositeLeftRightProvider {
 		return null;
 	}
 
-	private boolean checkSelfEdge(final EditPart from, final EditPart to, final Map dictionary) {
+	private boolean checkSelfEdge(final EditPart from, final EditPart to, @SuppressWarnings("rawtypes") final Map dictionary) {
 		final Node graphSource = (from instanceof IBorderItemEditPart) ? (Node) dictionary.get(from.getParent()) : (Node) dictionary.get(from);
 		final Node graphTarget = (to instanceof IBorderItemEditPart) ? (Node) dictionary.get(to.getParent()) : (Node) dictionary.get(to);
 		// Fixes #163 If we are colocating a single component with feedback onto itself we will have a null graphSource & graphTarget but equal EditParts.

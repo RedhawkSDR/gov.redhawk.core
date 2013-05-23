@@ -128,7 +128,7 @@ public class PartitioningParserProviderHelper {
 		}
 
 		@Override
-		public Object getAdapter(final Class adapter) {
+		public Object getAdapter(@SuppressWarnings("rawtypes") final Class adapter) {
 			if (IElementType.class.equals(adapter)) {
 				return this.elementType;
 			}

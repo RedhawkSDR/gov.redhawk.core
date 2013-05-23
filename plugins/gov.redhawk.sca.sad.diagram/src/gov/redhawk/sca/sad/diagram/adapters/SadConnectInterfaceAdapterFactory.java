@@ -39,7 +39,7 @@ public class SadConnectInterfaceAdapterFactory implements IAdapterFactory {
 	        ScaUsesPort.class, ScaPort.class, ScaProvidesPort.class
 	};
 
-	public Object getAdapter(final Object adaptableObject, final Class adapterType) {
+	public Object getAdapter(final Object adaptableObject, @SuppressWarnings("rawtypes") final Class adapterType) {
 		if (adaptableObject instanceof SadConnectInterfaceEditPart) {
 			final SadConnectInterfaceEditPart editPart = (SadConnectInterfaceEditPart) adaptableObject;
 			final SadConnectInterface connection = (SadConnectInterface) editPart.getAdapter(ConnectInterface.class);

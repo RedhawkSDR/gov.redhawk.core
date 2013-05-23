@@ -40,7 +40,7 @@ public class StreamSRIAdapterFactory implements IAdapterFactory {
 	/**
 	 * {@inheritDoc}
 	 */
-	public Object getAdapter(final Object adaptableObject, final Class adapterType) {
+	public Object getAdapter(final Object adaptableObject, @SuppressWarnings("rawtypes") final Class adapterType) {
 		if (adaptableObject instanceof StreamSRI) {
 			if (adapterType == IPropertySourceProvider.class) {
 				return StreamSRIAdapterFactory.PROPERTY_PROVIDER;
@@ -54,7 +54,7 @@ public class StreamSRIAdapterFactory implements IAdapterFactory {
 	/**
 	 * {@inheritDoc}
 	 */
-	public Class[] getAdapterList() {
+	public Class < ? >[] getAdapterList() {
 		return StreamSRIAdapterFactory.list;
 	}
 

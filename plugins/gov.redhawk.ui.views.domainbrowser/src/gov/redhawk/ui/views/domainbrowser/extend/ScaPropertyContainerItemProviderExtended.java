@@ -128,6 +128,8 @@ public class ScaPropertyContainerItemProviderExtended extends TransientItemProvi
 		case ScaPackage.SCA_PROPERTY_CONTAINER__PROPERTIES:
 			fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
 			return;
+		default:
+			break;
 		}
 		super.notifyChanged(notification);
 	}

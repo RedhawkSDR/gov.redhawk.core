@@ -59,7 +59,11 @@ public class ActiveDomainPreferencePage extends FieldEditorPreferencePage implem
 						}
 						activeDomainField.load();
 						break;
+					default:
+						break;
 					}
+					break;
+				default:
 					break;
 				}
 			}

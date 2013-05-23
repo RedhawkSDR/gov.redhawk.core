@@ -34,7 +34,7 @@ public class UsesPortStubAdapterFactory implements IAdapterFactory {
 	        ScaUsesPort.class, ScaPort.class
 	};
 
-	public Object getAdapter(final Object adaptableObject, final Class adapterType) {
+	public Object getAdapter(final Object adaptableObject, @SuppressWarnings("rawtypes") final Class adapterType) {
 		if (adaptableObject instanceof UsesPortStubEditPart) {
 			final UsesPortStubEditPart editPart = (UsesPortStubEditPart) adaptableObject;
 			final UsesPortStub uses = (UsesPortStub) editPart.getAdapter(UsesPortStub.class);

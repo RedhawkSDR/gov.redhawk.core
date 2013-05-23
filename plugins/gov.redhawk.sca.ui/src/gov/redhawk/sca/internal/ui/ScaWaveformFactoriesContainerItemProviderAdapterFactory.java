@@ -32,7 +32,7 @@ public class ScaWaveformFactoriesContainerItemProviderAdapterFactory implements 
 	/**
 	 * {@inheritDoc}
 	 */
-	public Object getAdapter(final Object adaptableObject, final Class adapterType) {
+	public Object getAdapter(final Object adaptableObject, @SuppressWarnings("rawtypes") final Class adapterType) {
 		if (adaptableObject instanceof ScaWaveformFactoriesContainerItemProvider) {
 			if (adapterType == IRefreshable.class) {
 				final ScaWaveformFactoriesContainerItemProvider provider = (ScaWaveformFactoriesContainerItemProvider) adaptableObject;

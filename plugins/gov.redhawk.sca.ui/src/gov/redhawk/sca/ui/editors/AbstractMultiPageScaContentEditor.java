@@ -78,7 +78,7 @@ public abstract class AbstractMultiPageScaContentEditor< T extends EObject > ext
 	 * {@inheritDoc}
 	 */
 	@Override
-	public Object getAdapter(@SuppressWarnings("unchecked") final Class adapter) {
+	public Object getAdapter(@SuppressWarnings("rawtypes") final Class adapter) {
 		if (adapter == EObject.class) {
 			return getInput();
 		}

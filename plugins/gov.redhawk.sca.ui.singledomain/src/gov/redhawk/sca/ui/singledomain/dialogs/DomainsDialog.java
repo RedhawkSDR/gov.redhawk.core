@@ -591,6 +591,8 @@ public class DomainsDialog extends Dialog {
 			disconnect.setEnabled(enabled);
 			refresh.setEnabled(enabled);
 			break;
+		default:
+			break;
 		}
 	}
 

@@ -89,7 +89,7 @@ public class AutoRefreshHandler extends AbstractHandler implements IHandler, IEl
 		}
 	}
 
-	public void updateElement(final UIElement element, final Map parameters) {
+	public void updateElement(final UIElement element, @SuppressWarnings("rawtypes") final Map parameters) {
 		if (parameters == null) {
 			return;
 		}

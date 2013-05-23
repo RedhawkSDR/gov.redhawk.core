@@ -77,6 +77,8 @@ public class ScaComponentItemProviderExtended extends ScaComponentItemProvider {
 		case ScaPackage.SCA_PROPERTY_CONTAINER__PROPERTIES:
 			fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), true, false));
 			return;
+		default:
+			break;
 		}
 		super.notifyChanged(notification);
 	}

@@ -151,7 +151,7 @@ public class DragConnectionCreationProxy implements DragTracker {
 		this.editPartTracker.viewerExited(mouseEvent, viewer);
 	}
 
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings("rawtypes")
 	public void setProperties(final Map properties) {
 		this.connectionTool.setProperties(properties);
 		this.editPartTracker.setProperties(properties);

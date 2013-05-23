@@ -36,7 +36,7 @@ public abstract class PartitioningPaletteProvider extends DefaultPaletteProvider
 	private static final String TOOL_EDIT_PLUGIN_ID = "/" + PartitioningEditPlugin.getPlugin().getSymbolicName();
 
 	@Override
-	public void contributeToPalette(final IEditorPart editor, final Object content, final PaletteRoot root, final Map predefinedEntries) {
+	public void contributeToPalette(final IEditorPart editor, final Object content, final PaletteRoot root, @SuppressWarnings("rawtypes") final Map predefinedEntries) {
 		final PaletteDrawer drawer = new PaletteDrawer("Find By");
 		drawer.setId("findBy");
 		root.add(drawer);

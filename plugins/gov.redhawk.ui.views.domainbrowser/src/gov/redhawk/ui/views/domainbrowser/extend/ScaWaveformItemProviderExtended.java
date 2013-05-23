@@ -78,6 +78,8 @@ public class ScaWaveformItemProviderExtended extends ScaWaveformItemProvider {
 		case ScaPackage.PROFILE_OBJECT_WRAPPER__PROFILE_OBJ:
 			fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), true, false));
 			return;
+		default:
+			break;
 		}
 		super.notifyChanged(notification);
 	}

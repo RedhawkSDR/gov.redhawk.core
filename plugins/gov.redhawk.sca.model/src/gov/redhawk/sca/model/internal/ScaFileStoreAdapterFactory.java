@@ -28,7 +28,7 @@ public class ScaFileStoreAdapterFactory implements IAdapterFactory {
 	/**
 	 * {@inheritDoc}
 	 */
-	public Object getAdapter(Object adaptableObject, Class adapterType) {
+	public Object getAdapter(Object adaptableObject, @SuppressWarnings("rawtypes") Class adapterType) {
 		if (adaptableObject instanceof ScaFileStore) {
 			ScaFileStore store = (ScaFileStore) adaptableObject;
 			if (adapterType == IFileStore.class && !store.isDirectory()) {

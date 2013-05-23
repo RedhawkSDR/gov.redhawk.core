@@ -30,7 +30,7 @@ public class ScaModelPlugin extends Plugin implements IScaObjectLocator {
 
 	private static ScaModelPlugin instance;
 
-	private ServiceTracker locatorTracker;
+	private ServiceTracker<IScaObjectLocator, IScaObjectLocator> locatorTracker;
 
 	public ScaModelPlugin() {
 		ScaModelPlugin.instance = this;
@@ -43,7 +43,7 @@ public class ScaModelPlugin extends Plugin implements IScaObjectLocator {
 	@Override
 	public void start(final BundleContext context) throws Exception {
 		ScaModelPlugin.instance = this;
-		locatorTracker = new ServiceTracker(context, IScaObjectLocator.class.getName(), null);
+		locatorTracker = new ServiceTracker<IScaObjectLocator, IScaObjectLocator>(context, IScaObjectLocator.class, null);
 		locatorTracker.open(true);
 		super.start(context);
 	}

@@ -32,7 +32,7 @@ public class ScaDeviceManagersContainerItemProviderAdapterFactory implements IAd
 	/**
 	 * {@inheritDoc}
 	 */
-	public Object getAdapter(final Object adaptableObject, final Class adapterType) {
+	public Object getAdapter(final Object adaptableObject, @SuppressWarnings("rawtypes") final Class adapterType) {
 		if (adaptableObject instanceof ScaDeviceManagersContainerItemProvider) {
 			if (adapterType == IRefreshable.class) {
 				final ScaDeviceManagersContainerItemProvider provider = (ScaDeviceManagersContainerItemProvider) adaptableObject;

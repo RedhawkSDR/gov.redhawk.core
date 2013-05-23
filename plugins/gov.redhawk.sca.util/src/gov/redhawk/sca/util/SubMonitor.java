@@ -22,7 +22,7 @@ import org.eclipse.core.runtime.NullProgressMonitor;
  * @since 3.2
  */
 public class SubMonitor implements IProgressMonitorWithBlocking {
-	
+
 	/**
 	 * Minimum number of ticks to allocate when calling beginTask on an unknown IProgressMonitor.
 	 * Pick a number that is big enough such that, no matter where progress is being displayed,
@@ -68,7 +68,7 @@ public class SubMonitor implements IProgressMonitorWithBlocking {
 		}
 
 		public void setTaskName(String taskName) {
-			if (eq(taskName, this.taskName)) {
+			if (SubMonitor.eq(taskName, this.taskName)) {
 				return;
 			}
 			this.taskName = taskName;
@@ -76,7 +76,7 @@ public class SubMonitor implements IProgressMonitorWithBlocking {
 		}
 
 		public void subTask(String name) {
-			if (eq(subTask, name)) {
+			if (SubMonitor.eq(subTask, name)) {
 				return;
 			}
 
@@ -89,13 +89,15 @@ public class SubMonitor implements IProgressMonitorWithBlocking {
 		}
 
 		public void clearBlocked() {
-			if (root instanceof IProgressMonitorWithBlocking)
+			if (root instanceof IProgressMonitorWithBlocking) {
 				((IProgressMonitorWithBlocking) root).clearBlocked();
+			}
 		}
 
 		public void setBlocked(IStatus reason) {
-			if (root instanceof IProgressMonitorWithBlocking)
+			if (root instanceof IProgressMonitorWithBlocking) {
 				((IProgressMonitorWithBlocking) root).setBlocked(reason);
+			}
 		}
 
 	}
@@ -169,7 +171,7 @@ public class SubMonitor implements IProgressMonitorWithBlocking {
 	 * May be passed as a flag to newChild. Indicates that strings
 	 * passed to setTaskName, subTask, and beginTask should all be ignored.
 	 */
-	public static final int SUPPRESS_ALL_LABELS = SUPPRESS_SETTASKNAME | SUPPRESS_BEGINTASK | SUPPRESS_SUBTASK;
+	public static final int SUPPRESS_ALL_LABELS = SubMonitor.SUPPRESS_SETTASKNAME | SubMonitor.SUPPRESS_BEGINTASK | SubMonitor.SUPPRESS_SUBTASK;
 
 	/**
 	 * May be passed as a flag to newChild. Indicates that strings
@@ -197,22 +199,23 @@ public class SubMonitor implements IProgressMonitorWithBlocking {
 	 * @see org.eclipse.core.runtime.SubMonitor#convert(IProgressMonitor)
 	 */
 	public static SubMonitor convert(IProgressMonitor monitor) {
-		return convert(monitor, "", 0); //$NON-NLS-1$
+		return SubMonitor.convert(monitor, "", 0); //$NON-NLS-1$
 	}
 
 	/**
 	 * @see org.eclipse.core.runtime.SubMonitor#convert(IProgressMonitor, int)
 	 */
 	public static SubMonitor convert(IProgressMonitor monitor, int work) {
-		return convert(monitor, "", work); //$NON-NLS-1$
+		return SubMonitor.convert(monitor, "", work); //$NON-NLS-1$
 	}
 
 	/**
 	 * @see org.eclipse.core.runtime.SubMonitor#convert(IProgressMonitor, String, int)
 	 */
 	public static SubMonitor convert(IProgressMonitor monitor, String taskName, int work) {
-		if (monitor == null)
+		if (monitor == null) {
 			monitor = new NullProgressMonitor();
+		}
 
 		// Optimization: if the given monitor already a SubMonitor, no conversion is necessary
 		if (monitor instanceof SubMonitor) {
@@ -220,8 +223,8 @@ public class SubMonitor implements IProgressMonitorWithBlocking {
 			return (SubMonitor) monitor;
 		}
 
-		monitor.beginTask(taskName, MINIMUM_RESOLUTION);
-		return new SubMonitor(new RootInfo(monitor), MINIMUM_RESOLUTION, work, SUPPRESS_NONE);
+		monitor.beginTask(taskName, SubMonitor.MINIMUM_RESOLUTION);
+		return new SubMonitor(new RootInfo(monitor), SubMonitor.MINIMUM_RESOLUTION, work, SubMonitor.SUPPRESS_NONE);
 	}
 
 	/**
@@ -236,8 +239,9 @@ public class SubMonitor implements IProgressMonitorWithBlocking {
 			// Note: We want the following value to remain invariant after this method returns
 			double remainForParent = totalParent * (1.0d - (usedForChildren / totalForChildren));
 			usedForChildren = (workRemaining * (1.0d - remainForParent / (totalParent - usedForParent)));
-		} else
+		} else {
 			usedForChildren = 0.0d;
+		}
 
 		totalParent = totalParent - usedForParent;
 		usedForParent = 0;
@@ -253,15 +257,17 @@ public class SubMonitor implements IProgressMonitorWithBlocking {
 	 * @return ticks the number of ticks to be consumed from parent
 	 */
 	private int consume(double ticks) {
-		if (totalParent == 0 || totalForChildren == 0) // this monitor has no available work to report
+		if (totalParent == 0 || totalForChildren == 0) { // this monitor has no available work to report
 			return 0;
+		}
 
 		usedForChildren += ticks;
 
-		if (usedForChildren > totalForChildren)
+		if (usedForChildren > totalForChildren) {
 			usedForChildren = totalForChildren;
-		else if (usedForChildren < 0.0)
+		} else if (usedForChildren < 0.0) {
 			usedForChildren = 0.0;
+		}
 
 		int parentPosition = (int) (totalParent * usedForChildren / totalForChildren);
 		int delta = parentPosition - usedForParent;
@@ -281,16 +287,18 @@ public class SubMonitor implements IProgressMonitorWithBlocking {
 	 * @see org.eclipse.core.runtime.IProgressMonitor#setTaskName(java.lang.String)
 	 */
 	public void setTaskName(String name) {
-		if ((flags & SUPPRESS_SETTASKNAME) == 0)
+		if ((flags & SubMonitor.SUPPRESS_SETTASKNAME) == 0) {
 			root.setTaskName(name);
+		}
 	}
 
 	/**
 	 * @see org.eclipse.core.runtime.SubMonitor#beginTask(String, int)
 	 */
 	public void beginTask(String name, int totalWork) {
-		if ((flags & SUPPRESS_BEGINTASK) == 0 && name != null)
+		if ((flags & SubMonitor.SUPPRESS_BEGINTASK) == 0 && name != null) {
 			root.setTaskName(name);
+		}
 		setWorkRemaining(totalWork);
 	}
 
@@ -300,8 +308,9 @@ public class SubMonitor implements IProgressMonitorWithBlocking {
 	public void done() {
 		cleanupActiveChild();
 		int delta = totalParent - usedForParent;
-		if (delta > 0)
+		if (delta > 0) {
 			root.worked(delta);
+		}
 
 		totalParent = 0;
 		usedForParent = 0;
@@ -316,16 +325,18 @@ public class SubMonitor implements IProgressMonitorWithBlocking {
 		cleanupActiveChild();
 
 		int delta = consume((work > 0.0d) ? work : 0.0d);
-		if (delta != 0)
+		if (delta != 0) {
 			root.worked(delta);
+		}
 	}
 
 	/* (non-Javadoc)
 	 * @see org.eclipse.core.runtime.IProgressMonitor#subTask(java.lang.String)
 	 */
 	public void subTask(String name) {
-		if ((flags & SUPPRESS_SUBTASK) == 0)
+		if ((flags & SubMonitor.SUPPRESS_SUBTASK) == 0) {
 			root.subTask(name);
+		}
 	}
 
 	/* (non-Javadoc)
@@ -346,7 +357,7 @@ public class SubMonitor implements IProgressMonitorWithBlocking {
 	 * @see org.eclipse.core.runtime.SubMonitor#newChild(int)
 	 */
 	public SubMonitor newChild(int totalWork) {
-		return newChild(totalWork, SUPPRESS_BEGINTASK);
+		return newChild(totalWork, SubMonitor.SUPPRESS_BEGINTASK);
 	}
 
 	/**
@@ -362,18 +373,18 @@ public class SubMonitor implements IProgressMonitorWithBlocking {
 		// This means that we need to compute the flags such that - even if a label isn't 
 		// suppressed by the child - if that same label would have been suppressed when the
 		// child delegated to its parent, the child must explicitly suppress the label. 
-		int childFlags = SUPPRESS_NONE;
+		int childFlags = SubMonitor.SUPPRESS_NONE;
 
-		if ((flags & SUPPRESS_SETTASKNAME) != 0) {
+		if ((flags & SubMonitor.SUPPRESS_SETTASKNAME) != 0) {
 			// If the parent was ignoring labels passed to setTaskName, then the child will ignore
 			// labels passed to either beginTask or setTaskName - since both delegate to setTaskName
 			// on the parent
-			childFlags |= SUPPRESS_SETTASKNAME | SUPPRESS_BEGINTASK;
+			childFlags |= SubMonitor.SUPPRESS_SETTASKNAME | SubMonitor.SUPPRESS_BEGINTASK;
 		}
 
-		if ((flags & SUPPRESS_SUBTASK) != 0) {
+		if ((flags & SubMonitor.SUPPRESS_SUBTASK) != 0) {
 			// If the parent was suppressing labels passed to subTask, so will the child.
-			childFlags |= SUPPRESS_SUBTASK;
+			childFlags |= SubMonitor.SUPPRESS_SUBTASK;
 		}
 
 		// Note: the SUPPRESS_BEGINTASK flag does not affect the child since there
@@ -386,8 +397,9 @@ public class SubMonitor implements IProgressMonitorWithBlocking {
 	}
 
 	private void cleanupActiveChild() {
-		if (lastSubMonitor == null)
+		if (lastSubMonitor == null) {
 			return;
+		}
 
 		IProgressMonitor child = lastSubMonitor;
 		lastSubMonitor = null;
@@ -409,10 +421,12 @@ public class SubMonitor implements IProgressMonitorWithBlocking {
 	}
 
 	protected static boolean eq(Object o1, Object o2) {
-		if (o1 == null)
+		if (o1 == null) {
 			return (o2 == null);
-		if (o2 == null)
+		}
+		if (o2 == null) {
 			return false;
+		}
 		return o1.equals(o2);
 	}
 
@@ -426,5 +440,5 @@ public class SubMonitor implements IProgressMonitorWithBlocking {
 	public void notWorked(int work) {
 		setWorkRemaining(totalForChildren - work);
 	}
-	
+
 }

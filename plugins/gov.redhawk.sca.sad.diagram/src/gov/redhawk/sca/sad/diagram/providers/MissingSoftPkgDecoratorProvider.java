@@ -155,7 +155,7 @@ public class MissingSoftPkgDecoratorProvider extends AbstractProvider implements
 
 	private static final String KEY = "missingSoftPkg"; //$NON-NLS-1$
 
-	private static EditPart getEditPartFor(final EditPart hostPart, final EObject element, final Class expectedClass) {
+	private static EditPart getEditPartFor(final EditPart hostPart, final EObject element, @SuppressWarnings("rawtypes") final Class expectedClass) {
 		if (element != null && !(element instanceof View)) {
 			final EditPartViewer viewer = hostPart.getViewer();
 			if (viewer instanceof IDiagramGraphicalViewer) {

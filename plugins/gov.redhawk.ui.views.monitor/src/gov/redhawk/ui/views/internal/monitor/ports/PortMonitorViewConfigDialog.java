@@ -192,7 +192,7 @@ public class PortMonitorViewConfigDialog extends ViewSettingsDialog {
 
 	@Override
 	protected void okPressed() {
-		this.view.setRefreshDelta(Long.valueOf(this.refreshText.getText()) * 1000l);
+		this.view.setRefreshDelta(Long.valueOf(this.refreshText.getText()) * 1000L);
 		for (final Entry<Column, Boolean> entry : this.columnMap.entrySet()) {
 			if (entry.getValue()) {
 				this.view.addColumn(entry.getKey());

@@ -21,7 +21,7 @@ public class SddsSource {
 	public int vlan;
 	public String format;
 
-	public SddsSource (String mcastAddress, final int port, final int vlan, final String format) {
+	public SddsSource(String mcastAddress, final int port, final int vlan, final String format) {
 		this.mcastAddress = mcastAddress;
 		this.port = port;
 		this.vlan = vlan;

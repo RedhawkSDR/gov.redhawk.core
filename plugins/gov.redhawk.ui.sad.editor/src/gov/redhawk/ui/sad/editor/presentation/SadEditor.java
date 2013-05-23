@@ -286,7 +286,7 @@ public class SadEditor extends SCAFormEditor implements ITabbedPropertySheetPage
 	 */
 	@SuppressWarnings("unchecked")
 	@Override
-	public Object getAdapter(final Class key) {
+	public Object getAdapter(@SuppressWarnings("rawtypes") final Class key) {
 		if (key.equals(IPropertySheetPage.class)) {
 			return getPropertySheetPage();
 		} else if (key.equals(IGotoMarker.class)) {

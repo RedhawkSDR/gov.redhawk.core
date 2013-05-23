@@ -28,7 +28,7 @@ public class ScaUtilPluginActivator extends Plugin implements BundleActivator {
 
 	public static final String ID = "gov.redhawk.sca.util";
 	private static ScaUtilPluginActivator instance;
-	private ServiceTracker bundleTracker = null;
+	private ServiceTracker<PackageAdmin, PackageAdmin> bundleTracker = null;
 
 	@Override
 	public void start(final BundleContext context) throws Exception {
@@ -55,7 +55,7 @@ public class ScaUtilPluginActivator extends Plugin implements BundleActivator {
 	 */
 	private PackageAdmin getBundleAdmin() {
 		if (this.bundleTracker == null) {
-			this.bundleTracker = new ServiceTracker(getBundle().getBundleContext(), PackageAdmin.class.getName(), null);
+			this.bundleTracker = new ServiceTracker<PackageAdmin, PackageAdmin>(getBundle().getBundleContext(), PackageAdmin.class, null);
 			this.bundleTracker.open();
 		}
 		return (PackageAdmin) this.bundleTracker.getService();

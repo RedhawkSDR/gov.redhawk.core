@@ -81,7 +81,7 @@ public class ScaPlugin extends Plugin {
 
 	private static BundleContext bundleContext;
 
-	private ServiceTracker bundleTracker;
+	private ServiceTracker<PackageAdmin, PackageAdmin> bundleTracker;
 
 	private ScaDomainManagerRegistry scaDomainManagerRegistry;
 
@@ -95,7 +95,7 @@ public class ScaPlugin extends Plugin {
 
 	private TransactionalEditingDomain editingDomain;
 
-	private ServiceRegistration serviceReg;
+	private ServiceRegistration<IScaObjectLocator> serviceReg;
 
 	/**
 	 * The constructor.
@@ -117,7 +117,7 @@ public class ScaPlugin extends Plugin {
 		super.start(context);
 		ScaPlugin.bundleContext = context;
 		ScaPlugin.plugin = this;
-		this.serviceReg = context.registerService(IScaObjectLocator.class.getName(), new ScaDomainRegistryObjectLocator(), null);
+		this.serviceReg = context.registerService(IScaObjectLocator.class, new ScaDomainRegistryObjectLocator(), null);
 	}
 
 	/*
@@ -155,7 +155,7 @@ public class ScaPlugin extends Plugin {
 	 */
 	private PackageAdmin getBundleAdmin() {
 		if (this.bundleTracker == null) {
-			this.bundleTracker = new ServiceTracker(ScaPlugin.getContext(), PackageAdmin.class.getName(), null);
+			this.bundleTracker = new ServiceTracker<PackageAdmin, PackageAdmin>(ScaPlugin.getContext(), PackageAdmin.class, null);
 			this.bundleTracker.open();
 		}
 		return (PackageAdmin) this.bundleTracker.getService();

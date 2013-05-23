@@ -37,7 +37,7 @@ public class ProvidesPortStubAdapterFactory implements IAdapterFactory {
 	        ScaProvidesPort.class, ScaPort.class
 	};
 
-	public Object getAdapter(final Object adaptableObject, final Class adapterType) {
+	public Object getAdapter(final Object adaptableObject, @SuppressWarnings("rawtypes") final Class adapterType) {
 		if (adaptableObject instanceof ProvidesPortStubEditPart) {
 			final ProvidesPortStubEditPart editPart = (ProvidesPortStubEditPart) adaptableObject;
 			final ProvidesPortStub provides = (ProvidesPortStub) editPart.getAdapter(ProvidesPortStub.class);

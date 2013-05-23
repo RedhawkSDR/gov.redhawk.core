@@ -142,7 +142,7 @@ public class CompositeDragTracker implements DragTracker {
 		this.elementTracker.viewerExited(mouseEvent, viewer);
 	}
 
-	public void setProperties(final Map properties) {
+	public void setProperties(@SuppressWarnings("rawtypes") final Map properties) {
 		this.containerTracker.setProperties(properties);
 		this.elementTracker.setProperties(properties);
 	}

@@ -91,8 +91,12 @@ public class DcdComponentPlacementItemSemanticEditPolicy extends mil.jpeojtrs.sc
 							}
 						}
 						break;
+					default:
+						break;
 					}
 				}
+				break;
+			default:
 				break;
 			}
 		}

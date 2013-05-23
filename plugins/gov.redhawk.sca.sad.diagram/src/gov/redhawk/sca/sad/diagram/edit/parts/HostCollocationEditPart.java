@@ -65,8 +65,12 @@ public class HostCollocationEditPart extends mil.jpeojtrs.sca.sad.diagram.edit.p
 								final ComponentPlacementEditPart part = (ComponentPlacementEditPart) obj;
 								final View view = part.getNotationView();
 								final SadComponentPlacement sadComp = (SadComponentPlacement) view.getElement();
-								if (sadComp.getComponentInstantiation().size() == 0) break;
-								if (((SadComponentPlacement) msg.getNewValue()).getComponentInstantiation().size() == 0) break;
+								if (sadComp.getComponentInstantiation().size() == 0) {
+									break;
+								}
+								if (((SadComponentPlacement) msg.getNewValue()).getComponentInstantiation().size() == 0) {
+									break;
+								}
 								
 								if (sadComp.getComponentInstantiation().get(0).getId()
 								        .equals(((SadComponentPlacement) msg.getNewValue()).getComponentInstantiation().get(0).getId())) {

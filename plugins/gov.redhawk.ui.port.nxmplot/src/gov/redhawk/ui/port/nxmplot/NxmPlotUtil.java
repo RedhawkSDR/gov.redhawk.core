@@ -247,7 +247,8 @@ public final class NxmPlotUtil {
 			bytesPerSample = 4;
 		} else if (format.charAt(1) == 'D') {
 			bytesPerSample = 8;
-		} if (format.charAt(1) == 'I') {
+		}
+		if (format.charAt(1) == 'I') {
 			bytesPerSample = 4;
 		}
 		

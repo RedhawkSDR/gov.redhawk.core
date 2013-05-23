@@ -33,7 +33,7 @@ public class RedhawkConfiguratorActivator implements BundleActivator {
 	private static final MessageFormat OUT_FORMAT = new MessageFormat("[{0,date,yyyy-MM-dd} {0,time,HH:mm:ss}] " + PLUGIN_ID + "  ERROR: {1}\n{2}");
 	private static BundleContext context;
 	private final List<Bundle> installedBundles = new ArrayList<Bundle>();
-	private ServiceTracker logServiceTracker;
+	private ServiceTracker<LogService, LogService> logServiceTracker;
 
 	static BundleContext getContext() {
 		return context;
@@ -45,7 +45,7 @@ public class RedhawkConfiguratorActivator implements BundleActivator {
 	 */
 	public void start(final BundleContext bundleContext) throws Exception {
 		RedhawkConfiguratorActivator.context = bundleContext;
-		this.logServiceTracker = new ServiceTracker(bundleContext, LogService.class.getName(), null);
+		this.logServiceTracker = new ServiceTracker<LogService, LogService>(bundleContext, LogService.class, null);
 		this.logServiceTracker.open();
 		this.installOSSIEHomeLibPlugins();
 	}

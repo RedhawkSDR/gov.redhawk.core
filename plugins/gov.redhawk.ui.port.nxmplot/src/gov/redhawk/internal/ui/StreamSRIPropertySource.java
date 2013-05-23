@@ -136,6 +136,8 @@ public class StreamSRIPropertySource implements IPropertySource2 {
 			return this.sri.ystart;
 		case yunits:
 			return this.sri.yunits;
+		default:
+			break;
 		}
 		return null;
 	}

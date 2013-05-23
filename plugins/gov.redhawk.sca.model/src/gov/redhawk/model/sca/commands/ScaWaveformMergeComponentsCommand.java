@@ -47,7 +47,7 @@ public class ScaWaveformMergeComponentsCommand extends SetStatusCommand<ScaWavef
 		public String softwareProfile = null;
 		public CF.ComponentEnumType type = null;
 		public Resource componentObject = null;
-		public CF.PortType providesPorts[] = null;
+		public CF.PortType [] providesPorts = null;
 	}
 
 	private final ComponentInfo[] compTypes;

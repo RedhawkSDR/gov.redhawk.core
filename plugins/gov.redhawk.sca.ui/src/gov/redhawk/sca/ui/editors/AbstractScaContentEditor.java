@@ -91,7 +91,7 @@ public abstract class AbstractScaContentEditor< T extends EObject > extends Abst
 	 * {@inheritDoc}
 	 */
 	@Override
-	public Object getAdapter(@SuppressWarnings("unchecked") final Class adapter) {
+	public Object getAdapter(@SuppressWarnings("rawtypes") final Class adapter) {
 		if (adapter == EObject.class) {
 			return getInput();
 		}

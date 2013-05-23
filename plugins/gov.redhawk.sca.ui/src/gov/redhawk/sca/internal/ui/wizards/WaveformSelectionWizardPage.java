@@ -220,8 +220,7 @@ public class WaveformSelectionWizardPage extends WizardPage {
 					WaveformSelectionWizardPage.this.sad = (SoftwareAssembly) selected;
 					if (WaveformSelectionWizardPage.this.defaultNameChanged) {
 						// PASS since user had explicitly set the Waveform name
-					}
-					else if (WaveformSelectionWizardPage.this.sad == null) {
+					} else if (WaveformSelectionWizardPage.this.sad == null) {
 						waveformNameTextBox.setText("");
 						WaveformSelectionWizardPage.this.defaultNameChanged = false;
 					} else {

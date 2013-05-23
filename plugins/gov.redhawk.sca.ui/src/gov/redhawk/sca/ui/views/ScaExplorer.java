@@ -47,9 +47,8 @@ public class ScaExplorer extends CommonNavigator implements ITabbedPropertySheet
 		return getSite().getId();
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
-	public Object getAdapter(final Class adapter) {
+	public Object getAdapter(@SuppressWarnings("rawtypes") final Class adapter) {
 		if (IPropertySheetPage.class == adapter) {
 			return new TabbedPropertySheetPage(this);
 		}

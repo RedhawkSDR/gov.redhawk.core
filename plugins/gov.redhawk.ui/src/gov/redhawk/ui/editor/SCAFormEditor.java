@@ -1299,7 +1299,7 @@ public abstract class SCAFormEditor extends FormEditor implements IEditingDomain
 	 * {@inheritDoc}
 	 */
 	@Override
-	public Object getAdapter(final Class key) {
+	public Object getAdapter(@SuppressWarnings("rawtypes") final Class key) {
 		if (key.equals(IContentOutlinePage.class)) {
 			return getContentOutline();
 		}

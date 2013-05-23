@@ -73,7 +73,7 @@ public class RedhawkUiAdapterFactory implements IAdapterFactory {
 		return new ScaPropertySource(adaptableObject, itemPropertySource);
 	}
 
-	public Object getAdapter(final Object input, final Class adapterType) {
+	public Object getAdapter(final Object input, @SuppressWarnings("rawtypes") final Class adapterType) {
 		final Object adaptableObject = AdapterFactoryEditingDomain.unwrap(input);
 		if (adaptableObject instanceof EObject) {
 			final TransactionalEditingDomain editingDomain = TransactionUtil.getEditingDomain(adaptableObject);
