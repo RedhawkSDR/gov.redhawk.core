@@ -5,7 +5,6 @@ qx.Class.define("gov.redhawk.sca.ui.singledomain.TrackableLabelAndHyperlink", {
 		this.base(arguments);
 		this.setHtmlProperty("id", id);
 		this._id = id;
-		var _logger = this.getLogger();
 		/*
 		 * mouseover and mouseout are implemented as bubbling events, meaning they fire for
 		 * the element registered plus all of its descendants. This results in mouseout events
@@ -15,7 +14,6 @@ qx.Class.define("gov.redhawk.sca.ui.singledomain.TrackableLabelAndHyperlink", {
 		this.addEventListener('mouseover', this.mouseEvent(this.mouseIn));
 		this.addEventListener('mouseout', this.mouseEvent(this.mouseOut));
 		qx.ui.core.Widget.flushGlobalQueues();
-		_logger.error(this, this._id);
 	},
 
 	properties: {
@@ -50,7 +48,6 @@ qx.Class.define("gov.redhawk.sca.ui.singledomain.TrackableLabelAndHyperlink", {
 
 		mouseEvent: function(_fn) {
 			return function(_evt) {
-				var _logger = this.getLogger();
 				var relTarget = _evt.getRelatedTarget();
 				var target = _evt.getTarget();
 				if (this === target) {
