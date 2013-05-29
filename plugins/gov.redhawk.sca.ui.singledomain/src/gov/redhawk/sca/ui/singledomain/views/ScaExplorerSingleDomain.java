@@ -28,10 +28,7 @@ import gov.redhawk.sca.ui.singledomain.dialogs.DialogCloseJob;
 import gov.redhawk.sca.ui.singledomain.dialogs.DomainsDialog;
 import gov.redhawk.sca.ui.views.ScaExplorer;
 
-import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.NullProgressMonitor;
-import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.impl.AdapterImpl;
 import org.eclipse.jface.action.ToolBarManager;
@@ -42,18 +39,23 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.MouseTrackListener;
 import org.eclipse.swt.graphics.Point;
-import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.ToolItem;
 import org.eclipse.ui.IViewSite;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.navigator.CommonViewer;
-import org.eclipse.ui.progress.UIJob;
 
+/**
+ * 
+ * Workaround code commented out in this class is to enable a mouse listener using Juno 4.x
+ * while bug 402593 is not yet fixed.
+ *
+ */
 public class ScaExplorerSingleDomain extends ScaExplorer {
 
 	protected static final long DIALOG_HIDE_WAIT_MS = 200;
+	
+	public static final String VIEW_ID = "gov.redhawk.ui.sca_explorer_sd";
 
 	private DomainsDialog dialog;
 
@@ -228,7 +230,7 @@ public class ScaExplorerSingleDomain extends ScaExplorer {
 
 	private CustomControlItem domains;
 
-	private UIJob mouseMoveListenerJob;
+	//private UIJob mouseMoveListenerJob; //Workaround code
 
 	@Override
 	protected Object getInitialInput() {
@@ -241,7 +243,6 @@ public class ScaExplorerSingleDomain extends ScaExplorer {
 						ScaSingleDomainPlugin.logError("Unable to connect to domain", e);
 					}
 				}
-				//setContentDescription(domain.getName());
 				domains.setLabelText(domain.getName().trim().equals("") ? "NO ACTIVE DOMAIN" : domain.getName());
 				getViewSite().getActionBars().updateActionBars();
 				return domain;
@@ -273,28 +274,28 @@ public class ScaExplorerSingleDomain extends ScaExplorer {
 	}
 
 	//BEGIN WORKAROUND CODE
-	private void createMouseMoveListener() {
-		/** remove after Juno bug 402593 is fixed, wherein listeners on toolbar don't work */
-		this.mouseMoveListenerJob = new UIJob("MouseMoveListener Job") {
-
-			@Override
-			public IStatus runInUIThread(IProgressMonitor monitor) {
-				final Display display = getViewSite().getShell().getDisplay();
-				while (!monitor.isCanceled()) {
-					final Point mouseLoc = display.getCursorLocation();
-					final Rectangle toolbarItemLoc = domains.getControl().getBounds();
-					if (toolbarItemLoc.contains(domains.getControl().getParent().toControl(mouseLoc))) {
-						if (dialog.getShell() == null || !dialog.getShell().isVisible()) {
-							doMouseEnter(domains.getControl());
-						}
-					}
-				}
-				return null;
-			}
-
-		};
-		this.mouseMoveListenerJob.setSystem(true);
-	}
+//	private void createMouseMoveListener() {
+//		/** remove after Juno bug 402593 is fixed, wherein listeners on toolbar don't work */
+//		this.mouseMoveListenerJob = new UIJob("MouseMoveListener Job") {
+//
+//			@Override
+//			public IStatus runInUIThread(IProgressMonitor monitor) {
+//				final Display display = getViewSite().getShell().getDisplay();
+//				while (!monitor.isCanceled()) {
+//					final Point mouseLoc = display.getCursorLocation();
+//					final Rectangle toolbarItemLoc = domains.getControl().getBounds();
+//					if (toolbarItemLoc.contains(domains.getControl().getParent().toControl(mouseLoc))) {
+//						if (dialog.getShell() == null || !dialog.getShell().isVisible()) {
+//							doMouseEnter(domains.getControl());
+//						}
+//					}
+//				}
+//				return null;
+//			}
+//
+//		};
+//		this.mouseMoveListenerJob.setSystem(true);
+//	}
 	//END WORKAROUND CODE
 
 
@@ -321,13 +322,13 @@ public class ScaExplorerSingleDomain extends ScaExplorer {
 			domains.addMouseTrackListener(rcpMouseTrackListener);
 		}
 		//BEGIN WORKAROUND CODE
-		if (this.mouseMoveListenerJob == null) {
-			createMouseMoveListener();
-		}
-		if (this.mouseMoveListenerJob.getState() != Job.RUNNING) {
-			// PASS
-			//this.mouseMoveListenerJob.schedule();
-		}
+//		if (this.mouseMoveListenerJob == null) {
+//			createMouseMoveListener();
+//		}
+//		if (this.mouseMoveListenerJob.getState() != Job.RUNNING) {
+//			// PASS
+//			//this.mouseMoveListenerJob.schedule();
+//		}
 		//END WORKAROUND CODE
 	}
 
@@ -352,9 +353,9 @@ public class ScaExplorerSingleDomain extends ScaExplorer {
 		prefs.removePropertyChangeListener(activeDomainListener);
 		ScaPlugin.getDefault().getDomainManagerRegistry().eAdapters().remove(domainChangeAdapter);
 		//BEGIN WORKAROUND CODE
-		if (this.mouseMoveListenerJob != null) {
-			this.mouseMoveListenerJob.cancel();
-		}
+//		if (this.mouseMoveListenerJob != null) {
+//			this.mouseMoveListenerJob.cancel();
+//		}
 		//END WORKAROUND CODE
 		super.dispose();
 	}

@@ -9,7 +9,7 @@
  * http://www.eclipse.org/legal/epl-v10.html.
  *
  */
-package gov.redhawk.sca.internal.ui;
+package gov.redhawk.sca.ui;
 
 import gov.redhawk.model.sca.ScaDevice;
 import gov.redhawk.model.sca.ScaProvidesPort;

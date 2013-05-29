@@ -9,9 +9,11 @@
  * http://www.eclipse.org/legal/epl-v10.html.
  *
  */
-package gov.redhawk.sca.internal.ui.actions;
+package gov.redhawk.sca.ui.actions;
 
 import gov.redhawk.model.sca.ScaFileStore;
+import gov.redhawk.sca.internal.ui.actions.DownloadJob;
+import gov.redhawk.sca.internal.ui.actions.UploadJob;
 import gov.redhawk.sca.ui.ScaUiPlugin;
 import gov.redhawk.sca.util.Debug;
 

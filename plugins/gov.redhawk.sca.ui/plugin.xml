@@ -85,10 +85,10 @@
             </or>
          </possibleChildren>
          <commonSorter
-               class="gov.redhawk.sca.internal.ui.ScaViewerSorter">
+               class="gov.redhawk.sca.ui.ScaViewerSorter">
          </commonSorter>
          <dropAssistant
-               class="gov.redhawk.sca.internal.ui.actions.ResourceDropAdapterAssistant"
+               class="gov.redhawk.sca.ui.actions.ResourceDropAdapterAssistant"
                id="gov.redhawk.sca.ui.dropAssistant.resource">
             <possibleDropTargets>
                <or>
@@ -147,7 +147,7 @@
       </commonFilter>
       <commonFilter
             activeByDefault="false"
-            class="gov.redhawk.sca.internal.ui.filters.DeviceManagerChildDevicesFilter"
+            class="gov.redhawk.sca.ui.filters.DeviceManagerChildDevicesFilter"
             description="%commonFilter.description.3"
             id="gov.redhawk.ui.filter.child_devices"
             name="%commonFilter.name.3">
@@ -887,7 +887,7 @@
          <propertySection
                class="gov.redhawk.sca.ui.properties.ComponentPropertiesPropertySection"
                enablesFor="1"
-               filter="gov.redhawk.sca.internal.ui.properties.ComponentPlacementRuntimePropertyFilter"
+               filter="gov.redhawk.sca.ui.properties.ComponentPlacementRuntimePropertyFilter"
                id="property.section.runtime"
                tab="property.tab.runtime">
          </propertySection>
