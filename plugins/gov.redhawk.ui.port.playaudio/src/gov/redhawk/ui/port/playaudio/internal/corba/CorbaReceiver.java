@@ -889,7 +889,7 @@ public class CorbaReceiver implements dataShortOperations, dataCharOperations, d
 		}
 
 		return (enc.equals(this.audioFormat.getEncoding()) && (channels == this.audioFormat.getChannels()) && (frameSize == this.audioFormat.getFrameSize())
-		        && (frameRate == this.audioFormat.getFrameRate()) && ((1.0f / (float) sri.xdelta) == this.audioFormat.getSampleRate()));
+		        && (Math.abs(frameRate - this.audioFormat.getFrameRate()) < 0.0000001) && ((1.0f / (float) sri.xdelta) == this.audioFormat.getSampleRate()));
 	}
 
 	private class PlayThread extends Thread {
