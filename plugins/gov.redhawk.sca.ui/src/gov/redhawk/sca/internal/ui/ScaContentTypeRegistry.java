@@ -385,6 +385,9 @@ public enum ScaContentTypeRegistry implements IExtensionChangeHandler, IScaConte
 			// Now fallback to the text editor
 			if (defaultEditor == null) {
 				defaultEditor = editorRegistry.findEditor("org.eclipse.ui.DefaultTextEditor");
+				if (defaultEditor == null) {
+					return null;
+				}
 			}
 
 			// and make sure the default editor isn't a broken one

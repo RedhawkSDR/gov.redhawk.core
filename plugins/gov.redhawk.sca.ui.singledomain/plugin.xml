@@ -110,10 +110,10 @@
             </or>
          </possibleChildren>
          <commonSorter
-               class="gov.redhawk.sca.internal.ui.ScaViewerSorter">
+               class="gov.redhawk.sca.ui.ScaViewerSorter">
          </commonSorter>
          <dropAssistant
-               class="gov.redhawk.sca.internal.ui.actions.ResourceDropAdapterAssistant"
+               class="gov.redhawk.sca.ui.actions.ResourceDropAdapterAssistant"
                id="gov.redhawk.sca.ui.dropAssistant.resource">
             <possibleDropTargets>
                <or>
@@ -172,7 +172,7 @@
       </commonFilter>
       <commonFilter
             activeByDefault="false"
-            class="gov.redhawk.sca.internal.ui.filters.DeviceManagerChildDevicesFilter"
+            class="gov.redhawk.sca.ui.filters.DeviceManagerChildDevicesFilter"
             description="%commonFilter.description.3"
             id="gov.redhawk.ui.filter.child_devices"
             name="%commonFilter.name.3">
@@ -251,12 +251,11 @@
          </includes>
       </viewerContentBinding>
    </extension>
- 
-   <extension
+  <extension
          point="org.eclipse.ui.views.properties.tabbed.propertyContributor">
       <propertyContributor
             contributorId="gov.redhawk.ui.sca_explorer_sd"
-            labelProvider="gov.redhawk.sca.ui.TabbedPropertySheetTitleProvider">
+            labelProvider="gov.redhawk.sca.ui.singledomain.TabbedPropertySheetTitleProvider">
          <propertyCategory
                category="general"></propertyCategory>
          <propertyCategory
@@ -269,6 +268,80 @@
                category="advanced">
          </propertyCategory>
       </propertyContributor>
+   </extension>
+   <extension
+         point="org.eclipse.ui.views.properties.tabbed.propertyTabs">
+      <propertyTabs
+            contributorId="gov.redhawk.ui.sca_explorer_sd">
+         <propertyTab
+               category="advanced"
+               id="CommonNavigator.tab.Advanced"
+               label="Advanced">
+         </propertyTab>
+      </propertyTabs>
+   </extension>
+   <extension
+         point="org.eclipse.ui.views.properties.tabbed.propertySections">
+      <propertySections
+            contributorId="gov.redhawk.ui.sca_explorer_sd">
+         <propertySection
+               class="org.eclipse.ui.views.properties.tabbed.AdvancedPropertySection"
+               id="CommonNavigator.section.Advanced"
+               tab="CommonNavigator.tab.Advanced">
+            <input
+                  type="java.lang.Object">
+            </input>
+         </propertySection>
+      </propertySections>
+   </extension>
+   <extension
+         point="org.eclipse.ui.views.properties.tabbed.propertyTabs">
+      <propertyTabs
+            contributorId="gov.redhawk.ui.sca_explorer_sd">
+         <propertyTab
+               category="general"
+               id="gov.redhawk.sca.ui.properties.propertyTab"
+               label="Properties">
+         </propertyTab>
+      </propertyTabs>
+   </extension>
+   <extension
+         point="org.eclipse.ui.views.properties.tabbed.propertySections">
+      <propertySections
+            contributorId="gov.redhawk.ui.sca_explorer_sd">
+         <propertySection
+               class="gov.redhawk.sca.ui.properties.ComponentPropertiesPropertySection"
+               id="gov.redhawk.sca.ui.properties.propertySection"
+               tab="gov.redhawk.sca.ui.properties.propertyTab">
+            <input
+                  type="gov.redhawk.model.sca.ScaPropertyContainer">
+            </input>
+         </propertySection>
+      </propertySections>
+   </extension>
+   <extension
+         point="org.eclipse.ui.views.properties.tabbed.propertyTabs">
+      <propertyTabs
+            contributorId="mil.jpeojtrs.sca.sad.diagram">
+         <propertyTab
+               category="domain"
+               id="property.tab.runtime"
+               label="Component Properties">
+         </propertyTab>
+      </propertyTabs>
+   </extension>
+   <extension
+         point="org.eclipse.ui.views.properties.tabbed.propertySections">
+      <propertySections
+            contributorId="mil.jpeojtrs.sca.sad.diagram">
+         <propertySection
+               class="gov.redhawk.sca.ui.properties.ComponentPropertiesPropertySection"
+               enablesFor="1"
+               filter="gov.redhawk.sca.ui.properties.ComponentPlacementRuntimePropertyFilter"
+               id="property.section.runtime"
+               tab="property.tab.runtime">
+         </propertySection>
+      </propertySections>
    </extension>
    <extension
          point="org.eclipse.ui.perspectives">
