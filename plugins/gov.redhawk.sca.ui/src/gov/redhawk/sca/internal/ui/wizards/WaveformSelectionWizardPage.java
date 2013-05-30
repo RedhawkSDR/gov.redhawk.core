@@ -251,6 +251,9 @@ public class WaveformSelectionWizardPage extends WizardPage {
 
 	private void restorePreviousWaveformSelection(final String waveformId) {
 		final TreeViewer viewer = WaveformSelectionWizardPage.this.waveformSelectionList.getViewer();
+		if (viewer.getControl().isDisposed()) {
+			return;
+		}
 		viewer.refresh();
 
 		// Ignore if there is already a selection
