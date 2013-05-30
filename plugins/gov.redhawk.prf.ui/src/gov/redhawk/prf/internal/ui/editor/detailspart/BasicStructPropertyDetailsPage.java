@@ -196,7 +196,7 @@ public abstract class BasicStructPropertyDetailsPage extends
 					if (obj instanceof ConfigurationKind) {
 						newChecked.add(((ConfigurationKind) obj).getType());
 					} else if (obj instanceof StructPropertyConfigurationType) {
-						newChecked.add(((ConfigurationKind) obj).getType());
+						newChecked.add(((StructPropertyConfigurationType) obj));
 					}
 				}
 				((BasicStructPropertyComposite) getComposite())
