@@ -33,7 +33,6 @@ public class ScaModelPlugin extends Plugin implements IScaObjectLocator {
 	private ServiceTracker<IScaObjectLocator, IScaObjectLocator> locatorTracker;
 
 	public ScaModelPlugin() {
-		ScaModelPlugin.instance = this;
 	}
 
 	public static ScaModelPlugin getDefault() {
