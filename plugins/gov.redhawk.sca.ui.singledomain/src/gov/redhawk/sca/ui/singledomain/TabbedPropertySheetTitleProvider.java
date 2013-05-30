@@ -23,7 +23,6 @@
 package gov.redhawk.sca.ui.singledomain;
 
 import gov.redhawk.sca.ui.singledomain.views.ScaExplorerSingleDomain;
-import gov.redhawk.sca.ui.views.ScaExplorer;
 
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
