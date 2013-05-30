@@ -1,10 +1,10 @@
-/** 
- * This file is protected by Copyright. 
+/**
+ * This file is protected by Copyright.
  * Please refer to the COPYRIGHT file distributed with this source distribution.
- * 
+ *
  * This file is part of REDHAWK IDE.
- * 
- * All rights reserved.  This program and the accompanying materials are made available under 
+ *
+ * All rights reserved.  This program and the accompanying materials are made available under
  * the terms of the Eclipse Public License v1.0 which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html.
  *
@@ -36,13 +36,14 @@ import org.eclipse.ui.navigator.CommonDropAdapterAssistant;
 import org.eclipse.ui.part.PluginTransfer;
 
 /**
- * 
+ * @since 9.1
+ *
  */
 public class ResourceDropAdapterAssistant extends CommonDropAdapterAssistant {
 	private static final Debug DEBUG = new Debug(ScaUiPlugin.PLUGIN_ID, "DND");
 
 	/**
-	 * 
+	 *
 	 */
 	public ResourceDropAdapterAssistant() {
 		// TODO Auto-generated constructor stub
