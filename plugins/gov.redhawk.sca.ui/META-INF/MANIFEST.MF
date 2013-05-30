@@ -48,11 +48,8 @@ Export-Package: gov.redhawk.sca.internal.ui;x-internal:=true,
  gov.redhawk.sca.ui.actions,
  gov.redhawk.sca.ui.compatibility,
  gov.redhawk.sca.ui.editors,
-<<<<<<< HEAD
  gov.redhawk.sca.ui.parts,
-=======
  gov.redhawk.sca.ui.filters,
->>>>>>> develop-1_8
  gov.redhawk.sca.ui.preferences,
  gov.redhawk.sca.ui.properties,
  gov.redhawk.sca.ui.views,
