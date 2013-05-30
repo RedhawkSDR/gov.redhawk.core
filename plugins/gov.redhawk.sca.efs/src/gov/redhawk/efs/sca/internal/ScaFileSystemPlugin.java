@@ -23,17 +23,18 @@ public class ScaFileSystemPlugin extends Plugin {
 	private static ScaFileSystemPlugin instance;
 	private final ScaFileCache fileCache = new ScaFileCache();
 
-	public ScaFileSystemPlugin() {
-		ScaFileSystemPlugin.instance = this;
-	}
-
-
 	public static ScaFileSystemPlugin getDefault() {
 		return ScaFileSystemPlugin.instance;
 	}
 
 	public ScaFileCache getFileCache() {
 		return this.fileCache;
+	}
+
+	@Override
+	public void start(BundleContext context) throws Exception {
+		ScaFileSystemPlugin.instance = this;
+		super.start(context);
 	}
 
 	/**
