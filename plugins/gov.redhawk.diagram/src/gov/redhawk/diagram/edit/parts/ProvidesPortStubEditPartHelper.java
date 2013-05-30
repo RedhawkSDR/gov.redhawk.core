@@ -87,9 +87,11 @@ public class ProvidesPortStubEditPartHelper {
 		this.fixedAnchor.setOffsetV(figure.getPreferredSize().height / 2);
 
 		// Setup Tooltip
-		final String tooltip = ((ProvidesPortStub) ((View) this.editPart.getModel()).getElement()).getName();
-		this.label = new Label(tooltip);
-		this.editPart.getPrimaryShape().setToolTip(this.label);
+		if (editPart.getModel() instanceof View && ((View) editPart.getModel()).getElement() instanceof ProvidesPortStub) {
+			final String tooltip = ((ProvidesPortStub) ((View) this.editPart.getModel()).getElement()).getName();
+			this.label = new Label(tooltip);
+			this.editPart.getPrimaryShape().setToolTip(this.label);
+		}
 
 		return figure;
 
