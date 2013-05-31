@@ -198,4 +198,15 @@ public enum Property {
 			throw new UnsupportedOperationException();
 		}
 	}
+
+	public EStructuralFeature getTypeModifier() {
+		switch (this) {
+		case SIMPLE:
+			return PrfPackage.Literals.SIMPLE__COMPLEX;
+		case SIMPLE_SEQUENCE:
+			return PrfPackage.Literals.SIMPLE_SEQUENCE__COMPLEX;
+		default:
+			throw new UnsupportedOperationException();
+		}
+	}
 }

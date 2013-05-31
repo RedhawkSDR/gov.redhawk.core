@@ -144,6 +144,80 @@
                   </event>
                </target>
             </constraint>
+            <constraint
+                  class="gov.redhawk.validation.prf.ComplexTypeConstraint"
+                  id="gov.redhawk.prf.validation.typeModifier"
+                  isEnabledByDefault="true"
+                  lang="java"
+                  mode="Live"
+                  name="Invalid Complex Type"
+                  severity="ERROR"
+                  statusCode="3">
+               <message>
+                  Complex Type is not supported for properties of type {0}.
+               </message>
+               <target
+                     class="Simple">
+                  <event
+                        name="Set">
+                     <feature
+                           name="complex">
+                     </feature>
+                     <feature
+                           name="type">
+                     </feature>
+                  </event>
+               </target>
+               <target
+                     class="SimpleSequence">
+                  <event
+                        name="Set">
+                     <feature
+                           name="complex">
+                     </feature>
+                     <feature
+                           name="type">
+                     </feature>
+                  </event>
+               </target>
+            </constraint>
+            <constraint
+                  class="gov.redhawk.validation.prf.ComplexTypeWarningConstraint"
+                  id="gov.redhawk.prf.validation.typeModifierWarning"
+                  isEnabledByDefault="true"
+                  lang="java"
+                  mode="Live"
+                  name="Complex Type Warning"
+                  severity="WARNING"
+                  statusCode="3">
+               <message>
+                  Complex type should be avoided for properties of type {0}.
+               </message>
+               <target
+                     class="Simple">
+                  <event
+                        name="Set">
+                     <feature
+                           name="complex">
+                     </feature>
+                     <feature
+                           name="type">
+                     </feature>
+                  </event>
+               </target>
+               <target
+                     class="SimpleSequence">
+                  <event
+                        name="Set">
+                     <feature
+                           name="complex">
+                     </feature>
+                     <feature
+                           name="type">
+                     </feature>
+                  </event>
+               </target>
+            </constraint>
          </constraints>
       </constraintProvider>
    </extension>

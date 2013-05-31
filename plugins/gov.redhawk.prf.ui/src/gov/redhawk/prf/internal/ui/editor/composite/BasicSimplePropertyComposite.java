@@ -60,6 +60,7 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
+import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Event;
@@ -102,6 +103,7 @@ public abstract class BasicSimplePropertyComposite extends AbstractPropertyCompo
 
 	private FormToolkit toolkit;
 
+	private Combo typeModifier;
 
 	private static final String DEFAULT_ACTION = "external";
 
@@ -185,13 +187,13 @@ public abstract class BasicSimplePropertyComposite extends AbstractPropertyCompo
 		this.actionViewer = viewer;
 		return viewer;
 	}
-	
+
 	protected void createMessage(final Composite parent, final FormToolkit toolkit) {
 		// Message checkbox
 		this.messageLabel = toolkit.createLabel(parent, "Message:");
 		this.messageLabel.setForeground(toolkit.getColors().getColor(IFormColors.TITLE));
 		this.messageLabel.setLayoutData(GridDataFactory.fillDefaults().align(SWT.BEGINNING, SWT.BEGINNING).create());
-		this.messageButton = toolkit.createButton(parent,  "Enable", SWT.CHECK);
+		this.messageButton = toolkit.createButton(parent, "Enable", SWT.CHECK);
 		this.messageButton.setLayoutData(BasicSimplePropertyComposite.FACTORY.create());
 	}
 
@@ -225,22 +227,21 @@ public abstract class BasicSimplePropertyComposite extends AbstractPropertyCompo
 		viewer.setInput(PropertyConfigurationType.values());
 		viewer.getControl().setLayoutData(BasicSimplePropertyComposite.FACTORY.create());
 		assignTooltip(viewer.getControl(), HelpConstants.prf_properties_simple_kind);
-		
+
 		// In response to Bug 289 the Message property type was moved from the viewer into a stand alone checkbox so the Message type
 		// must be filtered out of the viewer.
 		viewer.addFilter(new ViewerFilter() {
-			
+
 			@Override
 			public boolean select(Viewer viewer, Object parentElement, Object element) {
-				if (element instanceof PropertyConfigurationType 
-						&& ((PropertyConfigurationType) element).equals(PropertyConfigurationType.MESSAGE)) {
-					
+				if (element instanceof PropertyConfigurationType && ((PropertyConfigurationType) element).equals(PropertyConfigurationType.MESSAGE)) {
+
 					return false;
 				}
 				return true;
 			}
 		});
-		
+
 		this.kindViewer = viewer;
 		return this.kindViewer;
 	}
@@ -279,9 +280,28 @@ public abstract class BasicSimplePropertyComposite extends AbstractPropertyCompo
 		this.typeViewer.setInput(PropertyValueType.values());
 		this.typeViewer.setSorter(new ViewerSorter());
 		toolkit.adapt(this.typeViewer.getCombo());
-		this.typeViewer.getControl().setLayoutData(BasicSimplePropertyComposite.FACTORY.create());
+
+		this.typeViewer.getControl().setLayoutData(GridDataFactory.fillDefaults().span(1, 1).grab(true, false).create());
 		assignTooltip(this.typeViewer.getControl(), HelpConstants.prf_properties_simple_type);
+
+		this.typeModifier = new Combo(parent, SWT.DROP_DOWN | SWT.READ_ONLY);
+		this.typeModifier.addListener(SWT.MouseVerticalWheel, new Listener() {
+
+			public void handleEvent(Event event) {
+				// Disable Mouse Wheel Combo Box Control
+				event.doit = false;
+			}
+
+		});
+		this.typeModifier.setItems(new String[] { "", "real", "complex" });
+		toolkit.adapt(this.typeModifier);
+		typeModifier.setLayoutData(GridDataFactory.fillDefaults().span(1, 1).grab(false, false).create());
+
 		return this.typeViewer;
+	}
+
+	public Combo getTypeModifier() {
+		return typeModifier;
 	}
 
 	/**
@@ -338,14 +358,14 @@ public abstract class BasicSimplePropertyComposite extends AbstractPropertyCompo
 	public Button getRangeButton() {
 		return this.rangeButton;
 	}
-	
+
 	/**
 	 * @return the Message Checkbox Button
 	 */
 	public Label getMessageLabel() {
 		return this.messageLabel;
 	}
-	
+
 	/**
 	 * @return the Message Checkbox Button
 	 */
@@ -419,7 +439,7 @@ public abstract class BasicSimplePropertyComposite extends AbstractPropertyCompo
 	public Label getActionLabel() {
 		return actionLabel;
 	}
-	
+
 	protected void createEnumerationsViewer(final Composite parent, final FormToolkit toolkit) {
 		final Label label = toolkit.createLabel(parent, "Enumerations:");
 		label.setForeground(toolkit.getColors().getColor(IFormColors.TITLE));
@@ -519,8 +539,7 @@ public abstract class BasicSimplePropertyComposite extends AbstractPropertyCompo
 		});
 
 		this.enumViewer.setLabelProvider(new AdapterFactoryLabelProvider(getAdapterFactory()));
-		this.enumViewer
-		        .setColumnProperties(new String[] { PrfPackage.Literals.ENUMERATION__LABEL.getName(), PrfPackage.Literals.ENUMERATION__VALUE.getName() });
+		this.enumViewer.setColumnProperties(new String[] { PrfPackage.Literals.ENUMERATION__LABEL.getName(), PrfPackage.Literals.ENUMERATION__VALUE.getName() });
 
 		this.enumViewer.setFilters(createEnumerationViewerFilter());
 		table.setLayoutData(GridDataFactory.fillDefaults().span(1, NUM_COLUMNS).hint(SWT.DEFAULT, 50).grab(true, true).create()); // SUPPRESS CHECKSTYLE MagicNumber
@@ -541,7 +560,7 @@ public abstract class BasicSimplePropertyComposite extends AbstractPropertyCompo
 		});
 		HelpUtil.assignTooltip(this.enumViewer.getControl(), HelpConstants.prf_properties_simple_value);
 	}
-	
+
 	/**
 	 * Gets the adapter factory.
 	 * 
