@@ -51,6 +51,7 @@ public class StructSimplePropertyComposite extends SimplePropertyComposite {
 		toolkit.paintBordersFor(parent);
 		
 		tabList.add(getIdEntry().getText());
+		tabList.add(getNameEntry().getText());
 		tabList.add(getTypeViewer().getControl());
 		tabList.add(getValueEntry().getText());
 		tabList.add(getUnitsEntry().getText());

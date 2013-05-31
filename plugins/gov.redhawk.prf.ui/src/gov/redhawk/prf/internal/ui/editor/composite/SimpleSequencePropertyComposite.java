@@ -92,6 +92,7 @@ public class SimpleSequencePropertyComposite extends BasicSimplePropertyComposit
 		
 		ArrayList<Control> tabList = new ArrayList<Control>();
 		tabList.add(getIdEntry().getText());
+		tabList.add(getNameEntry().getText());
 		tabList.add(getTypeViewer().getControl());
 		tabList.add(getValuesViewer().getControl().getParent());
 		tabList.add(getUnitsEntry().getText());

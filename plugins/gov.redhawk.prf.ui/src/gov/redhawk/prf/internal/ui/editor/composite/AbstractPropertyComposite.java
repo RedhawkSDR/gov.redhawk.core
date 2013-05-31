@@ -15,11 +15,6 @@ import gov.redhawk.common.ui.doc.HelpConstants;
 import gov.redhawk.common.ui.parts.FormEntry;
 import gov.redhawk.ui.doc.HelpUtil;
 import gov.redhawk.ui.editor.IScaComposite;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
 import mil.jpeojtrs.sca.prf.AccessType;
 
 import org.eclipse.jface.layout.GridDataFactory;
@@ -190,26 +185,6 @@ public abstract class AbstractPropertyComposite extends Composite implements ISc
 		}
 		if (this.nameEntry != null) {
 			this.nameEntry.setEditable(canEdit);
-		}
-	}
-
-	public void addNameToTabList() {
-		List<Control> currentTabList = new ArrayList<Control>(Arrays.asList(getTabList()));
-		
-		if (getNameEntry() != null && getNameEntry().getText() != null && !currentTabList.contains(getNameEntry().getText())) {
-			currentTabList.add(getNameEntry().getText());
-			setTabList(currentTabList.toArray(new Control[currentTabList.size()]));
-		}
-	}
-
-	/**
-	 * Remove
-	 */
-	public void removeNameFromTabList() {
-		List<Control> currentTabList = new ArrayList<Control>(Arrays.asList(getTabList()));
-		
-		if (getNameEntry() != null && getNameEntry().getText() != null && currentTabList.remove(getNameEntry().getText())) {
-			setTabList(currentTabList.toArray(new Control[currentTabList.size()]));
 		}
 	}
 
