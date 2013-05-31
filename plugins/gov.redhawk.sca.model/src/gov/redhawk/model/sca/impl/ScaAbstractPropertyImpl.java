@@ -221,9 +221,9 @@ public abstract class ScaAbstractPropertyImpl< T extends AbstractProperty > exte
 			try {
 				setRemoteValue(newRemoteValue);
 			} catch (PartialConfiguration e) {
-				return new Status(Status.ERROR, ScaModelPlugin.ID, "Failed to set remove value for " + getName(), e);
+				return new Status(Status.ERROR, ScaModelPlugin.ID, "Failed to set remove value for " + ScaAbstractPropertyImpl.this.getName(), e);
 			} catch (InvalidConfiguration e) {
-				return new Status(Status.ERROR, ScaModelPlugin.ID, "Failed to set remove value for " + getName(), e);
+				return new Status(Status.ERROR, ScaModelPlugin.ID, "Failed to set remove value for " + ScaAbstractPropertyImpl.this.getName(), e);
 			} finally {
 				for (EObject parent = eContainer(); parent != null; parent = parent.eContainer()) {
 					if (parent instanceof ScaPropertyContainer<?, ?>) {
