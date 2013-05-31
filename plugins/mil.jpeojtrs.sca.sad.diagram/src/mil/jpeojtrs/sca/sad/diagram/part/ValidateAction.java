@@ -123,7 +123,7 @@ public class ValidateAction extends Action {
 	 */
 	public static void runNonUIValidation(View view) {
 		DiagramEditPart diagramEditPart = OffscreenEditPartFactory
-				.getInstance().createDiagramEditPart(view.getDiagram());
+				.getInstance().createDiagramEditPart(view.getDiagram(), PlatformUI.getWorkbench().getDisplay().getActiveShell());
 		runValidation(diagramEditPart, view);
 	}
 
