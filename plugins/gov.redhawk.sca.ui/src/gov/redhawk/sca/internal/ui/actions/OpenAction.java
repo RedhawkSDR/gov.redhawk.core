@@ -25,9 +25,7 @@ import org.eclipse.ui.actions.ActionFactory.IWorkbenchAction;
 import org.eclipse.ui.statushandlers.StatusManager;
 
 /**
- * @deprecated Switch to using {@link OpenFileAction}
  */
-@Deprecated
 public class OpenAction extends Action implements IWorkbenchAction {
 
 	/** The page. */
@@ -54,7 +52,7 @@ public class OpenAction extends Action implements IWorkbenchAction {
 			return;
 		}
 		try {
-			this.activePage.openEditor(this.editorInput, this.editorDescriptor.getId());
+			this.activePage.openEditor(this.editorInput, this.editorDescriptor.getId(), true, IWorkbenchPage.MATCH_ID | IWorkbenchPage.MATCH_INPUT);
 		} catch (final PartInitException e) {
 			final IStatus status = new Status(IStatus.ERROR, ScaUiPlugin.PLUGIN_ID, "Failed to open editor: " + this.editorDescriptor.getId(), e);
 			StatusManager.getManager().handle(status, StatusManager.LOG | StatusManager.SHOW);

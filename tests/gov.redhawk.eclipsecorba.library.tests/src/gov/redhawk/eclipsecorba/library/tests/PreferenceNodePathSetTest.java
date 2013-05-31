@@ -84,7 +84,7 @@ public class PreferenceNodePathSetTest extends PathTest {
 
 	@Override
 	public void testGetDerivedPath() {
-		new InstanceScope().getNode("gov.redhawk.eclipsecorba.library.tests").put("IdlIncludePath", "helloWorld");
+		InstanceScope.INSTANCE.getNode("gov.redhawk.eclipsecorba.library.tests").put("IdlIncludePath", "helloWorld");
 		
 		final PreferenceNodePathSet pathSet = this.getFixture();
 		pathSet.setDelimiter(";");
