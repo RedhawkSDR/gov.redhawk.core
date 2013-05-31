@@ -12,6 +12,7 @@
 package gov.redhawk.ui.port.playaudio.internal.corba;
 
 import gov.redhawk.sca.util.OrbSession;
+import gov.redhawk.sca.util.PluginUtil;
 import gov.redhawk.ui.port.playaudio.controller.AudioController;
 import gov.redhawk.ui.port.playaudio.internal.Activator;
 
@@ -889,7 +890,11 @@ public class CorbaReceiver implements dataShortOperations, dataCharOperations, d
 		}
 
 		return (enc.equals(this.audioFormat.getEncoding()) && (channels == this.audioFormat.getChannels()) && (frameSize == this.audioFormat.getFrameSize())
-		        && (Math.abs(frameRate - this.audioFormat.getFrameRate()) < 0.0000001) && ((1.0f / (float) sri.xdelta) == this.audioFormat.getSampleRate()));
+		        && compareFloats(frameRate, this.audioFormat.getFrameRate()) &&  compareFloats((1.0f / (float) sri.xdelta), this.audioFormat.getSampleRate()));
+	}
+	
+	private boolean compareFloats(float f1, float f2) {
+		return PluginUtil.equals(f1, f2);
 	}
 
 	private class PlayThread extends Thread {

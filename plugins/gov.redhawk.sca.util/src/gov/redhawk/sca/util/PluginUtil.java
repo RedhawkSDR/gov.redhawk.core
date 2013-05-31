@@ -166,4 +166,8 @@ public class PluginUtil {
 		matcher.appendTail(retVal);
 		return retVal.toString();
 	}
+	
+	public static boolean equals(float f1, float f2) {
+		return Math.abs(f1 - f2) < 0.0000001;
+	}
 }
