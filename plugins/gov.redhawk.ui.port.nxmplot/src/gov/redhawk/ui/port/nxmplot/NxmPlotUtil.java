@@ -1,10 +1,10 @@
-/** 
- * This file is protected by Copyright. 
+/**
+ * This file is protected by Copyright.
  * Please refer to the COPYRIGHT file distributed with this source distribution.
- * 
+ *
  * This file is part of REDHAWK IDE.
- * 
- * All rights reserved.  This program and the accompanying materials are made available under 
+ *
+ * All rights reserved.  This program and the accompanying materials are made available under
  * the terms of the Eclipse Public License v1.0 which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html.
  *
@@ -24,6 +24,7 @@ import java.util.Map.Entry;
 
 import org.eclipse.swt.SWT;
 
+import nxm.sys.lib.Data;
 import nxm.sys.lib.Table;
 
 /**
@@ -34,6 +35,7 @@ public final class NxmPlotUtil {
 	private static final String KEY_FILE = "file";
 
 	private static final String KEY_COMMAND = "command";
+	private static final int MAX_RMIF_PACKET_SIZE = 32768; // in bytes
 
 	public static String formatPlotArgs(Map<String, String> args) {
 		StringBuilder sb = new StringBuilder();
@@ -90,7 +92,7 @@ public final class NxmPlotUtil {
 			corbaArgs.put("PORT", settings.getPort());
 		} else {
 			corbaArgs.put("HOST", "");
-			corbaArgs.put("PORT", 9000);
+			corbaArgs.put("PORT", 9000); // <-- TODO: this does not seem like the right default port for CORBARECEIVER // SUPPRESS CHECKSTYLE MagicNumber
 		}
 		if (settings.getResource() != null && !"".equals(settings.getResource())) {
 			corbaArgs.put("RESOURCE", settings.getResource());
@@ -109,7 +111,7 @@ public final class NxmPlotUtil {
 		if (fft != null) {
 			fftArgs.put("FFTSIZE", fft.getTransformSize());
 			fftArgs.put("WINDOW", fft.getWindow());
-			fftArgs.put("OVER", (Double.parseDouble(fft.getOverlap()) / 100.0));
+			fftArgs.put("OVER", (Double.parseDouble(fft.getOverlap()) / 100.0)); // SUPPRESS CHECKSTYLE MagicNumber
 			fftArgs.put("NUMAVG", fft.getNumAverages());
 		}
 
@@ -117,9 +119,9 @@ public final class NxmPlotUtil {
 		thinArgs.put("PIPESIZE", pipeSize);
 		// Plot at different speeds depending on platform
 		if (SWT.getPlatform().startsWith("rap")) {
-			thinArgs.put("REFRESHRATE", 10);
+			thinArgs.put("REFRESHRATE", 10); // SUPPRESS CHECKSTYLE MagicNumber
 		} else {
-			thinArgs.put("REFRESHRATE", 60);
+			thinArgs.put("REFRESHRATE", 60); // SUPPRESS CHECKSTYLE MagicNumber
 		}
 
 		final String corbaArgsStr = "CORBRAARGS=" + corbaArgs;
@@ -133,7 +135,7 @@ public final class NxmPlotUtil {
 
 		final String outputStr = " OUTPUT=" + outName;
 		final String b2mId = "B2M_" + AbstractNxmPlotWidget.createUniqueName(false);
-		final String command = "bulkio2midas/bg/id=" + b2mId + " " + corbaArgsStr + fftArgsStr + thinArgsStr + outputStr;
+		final String command = "bulkio2midas/BG/ID=" + b2mId + " " + corbaArgsStr + fftArgsStr + thinArgsStr + outputStr;
 		plotWidget.runHeadlessCommand(command);
 
 		Map<String, String> map = new HashMap<String, String>();
@@ -236,27 +238,30 @@ public final class NxmPlotUtil {
 		return outputList;
 	}
 
-	private static Map<String, String> launchInputMacro(final File file, String format, final boolean thinData, 
+	private static Map<String, String> launchInputMacro(final File file, String format, final boolean thinData,
 			Integer thinIncr, Integer yDelta, final AbstractNxmPlotWidget plotWidget) {
 		final String outName = AbstractNxmPlotWidget.createUniqueName(true);
 		final String thinIn = AbstractNxmPlotWidget.createUniqueName(true);
-		
+
 		int bytesPerSample = 1;
 		format = format.toUpperCase();
-		if (format.charAt(1) == 'F') {
-			bytesPerSample = 4;
-		} else if (format.charAt(1) == 'D') {
-			bytesPerSample = 8;
-		} if (format.charAt(1) == 'I') {
-			bytesPerSample = 4;
-		}
-		
+		bytesPerSample = Data.getBPA(format); // since 4.2
+// prior to 4.2 (TODO: remove below?)
+//		if (format.charAt(1) == 'F') {
+//			bytesPerSample = 4;
+//		} else if (format.charAt(1) == 'D') {
+//			bytesPerSample = 8;
+//		} if (format.charAt(1) == 'I') {
+//			bytesPerSample = 4;
+//		}
+// end prior to 4.2
+
 		if (yDelta == null || yDelta.intValue() == 0) {
-			yDelta = new Integer(1);
+			yDelta = Integer.valueOf(5);
 		}
 		if (thinIncr == null || thinIncr.intValue() == 0) {
-			//make the resulting file 30k bytes in size, to confomr to RMIF limit
-			thinIncr = new Double(Math.floor(file.length() / 30000f / bytesPerSample)).intValue();
+			// make the resulting file 32k bytes in size, to conform to RMIF packet size limit
+			thinIncr = new Double(Math.floor(file.length() / (double) MAX_RMIF_PACKET_SIZE / bytesPerSample)).intValue();
 		}
 
 		plotWidget.runHeadlessCommand("PIPE ON");
@@ -267,7 +272,7 @@ public final class NxmPlotUtil {
 		} else {
 			plotWidget.runHeadlessCommand("NOOP/WRAP/RT " + file.getAbsolutePath() + "{ydelta=" + yDelta.intValue() + ",yu=time} " + outName);
 		}
-		
+
 		plotWidget.runHeadlessCommand("PIPE RUN");
 		Map<String, String> map = new HashMap<String, String>();
 		map.put(KEY_FILE, outName);
@@ -375,13 +380,13 @@ public final class NxmPlotUtil {
 			nxmPlotWidget.configurePlot(Collections.singletonMap("MODE", "REAL"));
 		}
 	}
-	
+
 	/**
 	 * @since 4.1
 	 */
 	public static IPlotSession addSource(final File file, String format, final boolean thinData, Integer thinIncr, Integer yDelta,
 			final AbstractNxmPlotWidget plotWidget, final String qualifiers) {
-		
+
 		final Map<String, String> outputIds = launchInputMacro(file, format, thinData, thinIncr, yDelta, plotWidget);
 		PlotSession session = new PlotSession(plotWidget, outputIds.get(KEY_COMMAND), outputIds.get(KEY_FILE));
 		plotWidget.addSource(session.getSourceId(), ((qualifiers == null) ? "" : qualifiers));
