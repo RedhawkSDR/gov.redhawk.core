@@ -1,10 +1,10 @@
 /**
- * This file is protected by Copyright. 
+ * This file is protected by Copyright.
  * Please refer to the COPYRIGHT file distributed with this source distribution.
- * 
+ *
  * This file is part of REDHAWK IDE.
- * 
- * All rights reserved.  This program and the accompanying materials are made available under 
+ *
+ * All rights reserved.  This program and the accompanying materials are made available under
  * the terms of the Eclipse Public License v1.0 which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html.
  *
@@ -23,9 +23,12 @@ import nxm.sys.lib.Table;
 import nxm.sys.libg.DragBox;
 
 import org.eclipse.core.runtime.ISafeRunnable;
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.ListenerList;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.util.SafeRunnable;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.ui.statushandlers.StatusManager;
 
 import BULKIO.StreamSRI;
 /**
@@ -33,6 +36,7 @@ import BULKIO.StreamSRI;
  */
 public abstract class AbstractNxmPlotWidget extends Composite {
 
+	private static final long serialVersionUID = -5616513930191161990L;
 	private StreamSRI activeSRI;
 
 	/**
@@ -67,7 +71,7 @@ public abstract class AbstractNxmPlotWidget extends Composite {
 					final Object[] listeners = this.plotListeners.getListeners();
 					for (final Object obj : listeners) {
 						final IPlotWidgetListener pl = (IPlotWidgetListener) obj;
-						pl.zoomX(values[0], values[1], values[2], values[3], msg.data);
+						pl.zoomX(values[0], values[1], values[2], values[3], msg.data); // SUPPRESS CHECKSTYLE MagicNumber
 					}
 				}
 			} else if ("ZOOMIN".equals(msg.name)) { //mousewheel
@@ -76,7 +80,7 @@ public abstract class AbstractNxmPlotWidget extends Composite {
 					final Object[] listeners = this.plotListeners.getListeners();
 					for (final Object obj : listeners) {
 						final IPlotWidgetListener pl = (IPlotWidgetListener) obj;
-						pl.zoomIn(values[0], values[1], values[2], values[3], msg.data);
+						pl.zoomIn(values[0], values[1], values[2], values[3], msg.data); // SUPPRESS CHECKSTYLE MagicNumber
 					}
 				}
 			} else if ("DRAGBOX".equals(msg.name)) { //right-click drag
@@ -92,7 +96,7 @@ public abstract class AbstractNxmPlotWidget extends Composite {
 					final Object[] listeners = this.plotListeners.getListeners();
 					for (final Object obj : listeners) {
 						final IPlotWidgetListener pl = (IPlotWidgetListener) obj;
-						pl.unzoom(values[0], values[1], values[2], values[3], msg.data); //SUPPRSS CHECKSTYLE MagicNumber
+						pl.unzoom(values[0], values[1], values[2], values[3], msg.data); // SUPPRESS CHECKSTYLE MagicNumber
 					}
 				}
 			} else if ("ZOOMOUT".equals(msg.name)) { //mousewheel
@@ -101,7 +105,7 @@ public abstract class AbstractNxmPlotWidget extends Composite {
 					final Object[] listeners = this.plotListeners.getListeners();
 					for (final Object obj : listeners) {
 						final IPlotWidgetListener pl = (IPlotWidgetListener) obj;
-						pl.zoomOut(values[0], values[1], values[2], values[3], msg.data); //SUPPRSS CHECKSTYLE MagicNumber
+						pl.zoomOut(values[0], values[1], values[2], values[3], msg.data); // SUPPRESS CHECKSTYLE MagicNumber
 					}
 				}
 			} else if ("PANXY".equals(msg.name)) { //middle drag
@@ -109,9 +113,14 @@ public abstract class AbstractNxmPlotWidget extends Composite {
 				final Object[] listeners = this.plotListeners.getListeners();
 				for (final Object obj : listeners) {
 					final IPlotWidgetListener pl = (IPlotWidgetListener) obj;
-					pl.pan(d[0], d[2], d[1], d[3]); //SUPPRSS CHECKSTYLE MagicNumber
+					pl.pan(d[0], d[2], d[1], d[3]); // SUPPRESS CHECKSTYLE MagicNumber
 				}
 			} else {
+				if ("ERROR".equals(msg.name)) {
+					StatusManager.getManager().handle(
+							new Status(IStatus.ERROR, PlotActivator.PLUGIN_ID, "PlotMessageHandler got error message: " + msg.toString("+FROM")),
+							StatusManager.LOG);
+				}
 				retVal = Commandable.NOOP;
 			}
 
@@ -124,11 +133,11 @@ public abstract class AbstractNxmPlotWidget extends Composite {
 				return new Double[]{box.getXMin(), box.getYMin(), box.getXMax(), box.getYMax()};
 			} else if (obj instanceof Table) {
 				Table table = (Table) obj;
-				Double[] values = new Double[4];
-				values[0] = table.getD("X1");
-				values[1] = table.getD("Y1");
-				values[2] = table.getD("X2");
-				values[3] = table.getD("Y2");
+				Double[] values = new Double[4]; // SUPPRESS CHECKSTYLE MagicNumber
+				values[0] = table.getD("X1"); // SUPPRESS CHECKSTYLE MagicNumber
+				values[1] = table.getD("Y1"); // SUPPRESS CHECKSTYLE MagicNumber
+				values[2] = table.getD("X2"); // SUPPRESS CHECKSTYLE MagicNumber
+				values[3] = table.getD("Y2"); // SUPPRESS CHECKSTYLE MagicNumber
 				return values;
 			}
 			return null;
@@ -300,5 +309,12 @@ public abstract class AbstractNxmPlotWidget extends Composite {
 
 	public StreamSRI getActiveSRI() {
 		return activeSRI;
+	}
+
+	/**
+     * @since 4.2
+     */
+	protected void setActiveSRI(StreamSRI newSRI) {
+		activeSRI = newSRI;
 	}
 }
