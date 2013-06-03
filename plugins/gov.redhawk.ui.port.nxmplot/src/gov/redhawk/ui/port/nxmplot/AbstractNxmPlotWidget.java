@@ -311,4 +311,11 @@ public abstract class AbstractNxmPlotWidget extends Composite {
 	public StreamSRI getActiveSRI() {
 		return activeSRI;
 	}
+
+	/**
+     * @since 4.2
+     */
+	protected void setActiveSRI(StreamSRI newSRI) {
+		activeSRI = newSRI;
+	}
 }
