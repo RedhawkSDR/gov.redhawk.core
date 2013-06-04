@@ -153,7 +153,10 @@ public abstract class AbstractNxmPlotWidget extends Composite {
 
 	}
 
+	/** @deprecated since 4.2 use {@link #getPlotMessageHandler()} */
+	@Deprecated // TODO: this should become a private field in next major version (5.0)
 	protected final PlotMessageHandler plotMessageHandler = new PlotMessageHandler();
+
 	private final ListenerList messageHandlers = new ListenerList(ListenerList.IDENTITY);
 
 	public AbstractNxmPlotWidget(final Composite parent, int style) {
@@ -317,4 +320,10 @@ public abstract class AbstractNxmPlotWidget extends Composite {
 	protected void setActiveSRI(StreamSRI newSRI) {
 		activeSRI = newSRI;
 	}
+
+	/** @since 4.2 */
+	protected PlotMessageHandler getPlotMessageHandler() {
+		return plotMessageHandler;
+	}
+
 }

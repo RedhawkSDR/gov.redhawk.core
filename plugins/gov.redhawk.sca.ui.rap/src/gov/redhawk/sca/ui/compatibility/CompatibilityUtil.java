@@ -11,8 +11,13 @@
  */
 package gov.redhawk.sca.ui.compatibility;
 
+import gov.redhawk.sca.rap.RapInit;
+
+import java.security.Principal;
+
 import org.eclipse.jface.viewers.ComboViewer;
 import org.eclipse.swt.graphics.FontData;
+import org.eclipse.swt.widgets.Display;
 
 public class CompatibilityUtil {
 
@@ -26,5 +31,9 @@ public class CompatibilityUtil {
 	
 	public static void disableComboWheelScrollSelect(ComboViewer viewer) {
 		// Does not support mouse wheel do nothing
+	}
+	
+	public static Principal getUserPrincipal(Display display) {
+		return RapInit.getUserPrincipal(display);
 	}
 }
