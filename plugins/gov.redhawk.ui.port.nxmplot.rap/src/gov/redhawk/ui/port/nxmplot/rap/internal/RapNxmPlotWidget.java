@@ -1,5 +1,5 @@
 /**
- * This file is protected by Copyright. 
+g * This file is protected by Copyright. 
  * Please refer to the COPYRIGHT file distributed with this source distribution.
  * 
  * This file is part of REDHAWK IDE.
@@ -32,8 +32,9 @@ import org.eclipse.swt.widgets.Composite;
  */
 public class RapNxmPlotWidget extends AbstractNxmPlotWidget {
 
-    private static final long serialVersionUID = -3610272766732782615L;
-    private static final String PLOT_ID = "PLOT";
+	private static final long serialVersionUID = -3610272766732782615L;
+	private static final String MSG_HANDLER_ID = "MAIN_MSG_HANLDER";
+	private static final String PLOT_ID = "PLOT";
 	private NxmRapComposite nxmComp;
 	private boolean initialized;
 	private Set<String> sources = new HashSet<String>();
@@ -44,6 +45,7 @@ public class RapNxmPlotWidget extends AbstractNxmPlotWidget {
 		this.nxmComp = new NxmRapComposite(this, SWT.NONE);
 		RedhawkNxmUtil.initializeRedhawkOptionTrees();
 		nxmComp.initNxm();
+		nxmComp.getNxmShell().M.registry.put(MSG_HANDLER_ID, getPlotMessageHandler());
     }
 
 	public synchronized void initPlot(String plotSwitches, String plotArgs) {
@@ -78,7 +80,7 @@ public class RapNxmPlotWidget extends AbstractNxmPlotWidget {
 	@Override
 	public void runHeadlessCommand(String command) {
 		assertNotDisposed();
-		nxmComp.runServerCommand(command);
+		nxmComp.runServerCommand(command + " /MSGID="+ MSG_HANDLER_ID);
 	}
 
 	@Override
@@ -100,7 +102,8 @@ public class RapNxmPlotWidget extends AbstractNxmPlotWidget {
 	public void addSource(String sourcePipeId, String plotQualifiers) {
 		assertNotDisposed();
 		Object pipeInSubShell = nxmComp.getNxmShell().M.pipes.get(sourcePipeId);
-		Assert.isTrue(pipeInSubShell instanceof nxm.sys.lib.Pipe, sourcePipeId + " value is not a valid data PIPE! value="+pipeInSubShell);
+		Assert.isTrue(pipeInSubShell instanceof nxm.sys.lib.Pipe,
+				sourcePipeId + " value is not a valid data PIPE! value=" + pipeInSubShell);
 		// Copy pipe reference from sub-shell into global shell
 		NxmRapComposite.getRootNxmShell().M.pipes.put(sourcePipeId, pipeInSubShell);
 
