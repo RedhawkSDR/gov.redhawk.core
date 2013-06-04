@@ -11,6 +11,8 @@
  */
 package gov.redhawk.sca.ui.singledomain.views;
 
+import java.security.Principal;
+
 import gov.redhawk.model.sca.DomainConnectionException;
 import gov.redhawk.model.sca.RefreshDepth;
 import gov.redhawk.model.sca.ScaDomainManager;
@@ -18,6 +20,7 @@ import gov.redhawk.model.sca.ScaDomainManagerRegistry;
 import gov.redhawk.model.sca.ScaPackage;
 import gov.redhawk.sca.ScaPlugin;
 import gov.redhawk.sca.ui.ScaUiPlugin;
+import gov.redhawk.sca.ui.compatibility.CompatibilityUtil;
 import gov.redhawk.sca.ui.singledomain.CustomControlItem;
 import gov.redhawk.sca.ui.singledomain.CustomMouseEvent;
 import gov.redhawk.sca.ui.singledomain.CustomMouseTrackListener;
@@ -271,6 +274,8 @@ public class ScaExplorerSingleDomain extends ScaExplorer {
 	public void init(IViewSite site) throws PartInitException {
 		super.init(site);
 		fillToolBar("");
+		Principal user = CompatibilityUtil.getUserPrincipal(site.getShell().getDisplay());
+		//TODO Create or retrieve user-specific preferences node, for persisting domain connection info
 	}
 
 	//BEGIN WORKAROUND CODE

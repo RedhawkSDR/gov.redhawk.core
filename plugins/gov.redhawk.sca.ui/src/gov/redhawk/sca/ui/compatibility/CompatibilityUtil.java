@@ -11,8 +11,14 @@
  */
 package gov.redhawk.sca.ui.compatibility;
 
+import java.security.Principal;
+
 import org.eclipse.jface.viewers.ComboViewer;
+import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.FontData;
+import org.eclipse.swt.widgets.Display;
+import org.eclipse.ui.IWorkbenchPartSite;
+import org.eclipse.ui.internal.PartSite;
 
 /**
  * @since 9.0
@@ -29,5 +35,14 @@ public class CompatibilityUtil {
 	
 	public static void disableComboWheelScrollSelect(ComboViewer viewer) {
 		throw new UnsupportedOperationException();
+	}
+	
+	public static Principal getUserPrincipal(Display display) {
+		// Throw exception if RAP implementation not present. There is no RCP implementation, so just return null
+		if (SWT.getPlatform().startsWith("rap")) {
+			throw new UnsupportedOperationException();
+		} else {
+			return null;
+		}
 	}
 }
