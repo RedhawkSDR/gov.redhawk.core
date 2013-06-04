@@ -17,6 +17,11 @@ import org.eclipse.jface.viewers.ComboViewer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.FontData;
 import org.eclipse.swt.widgets.Display;
+<<<<<<< HEAD
+=======
+import org.eclipse.ui.IWorkbenchPartSite;
+import org.eclipse.ui.internal.PartSite;
+>>>>>>> Update code for obtaining user DN from cert in RAP. (refs #836)
 
 /**
  * @since 9.0
@@ -34,10 +39,14 @@ public class CompatibilityUtil {
 	public static void disableComboWheelScrollSelect(ComboViewer viewer) {
 		throw new UnsupportedOperationException();
 	}
+<<<<<<< HEAD
 
 	/**
      * @since 9.1
      */
+=======
+	
+>>>>>>> Update code for obtaining user DN from cert in RAP. (refs #836)
 	public static Principal getUserPrincipal(Display display) {
 		// Throw exception if RAP implementation not present. There is no RCP implementation, so just return null
 		if (SWT.getPlatform().startsWith("rap")) {
