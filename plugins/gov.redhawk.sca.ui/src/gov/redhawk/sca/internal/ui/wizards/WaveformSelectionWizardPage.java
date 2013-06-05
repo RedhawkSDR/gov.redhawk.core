@@ -1,10 +1,10 @@
 /**
- * This file is protected by Copyright. 
+ * This file is protected by Copyright.
  * Please refer to the COPYRIGHT file distributed with this source distribution.
- * 
+ *
  * This file is part of REDHAWK IDE.
- * 
- * All rights reserved.  This program and the accompanying materials are made available under 
+ *
+ * All rights reserved.  This program and the accompanying materials are made available under
  * the terms of the Eclipse Public License v1.0 which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html.
  *
@@ -220,8 +220,7 @@ public class WaveformSelectionWizardPage extends WizardPage {
 					WaveformSelectionWizardPage.this.sad = (SoftwareAssembly) selected;
 					if (WaveformSelectionWizardPage.this.defaultNameChanged) {
 						// PASS since user had explicitly set the Waveform name
-					}
-					else if (WaveformSelectionWizardPage.this.sad == null) {
+					} else if (WaveformSelectionWizardPage.this.sad == null) {
 						waveformNameTextBox.setText("");
 						WaveformSelectionWizardPage.this.defaultNameChanged = false;
 					} else {

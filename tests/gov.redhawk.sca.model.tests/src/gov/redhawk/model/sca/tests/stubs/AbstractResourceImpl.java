@@ -1,10 +1,10 @@
-/** 
- * This file is protected by Copyright. 
+/**
+ * This file is protected by Copyright.
  * Please refer to the COPYRIGHT file distributed with this source distribution.
- * 
+ *
  * This file is part of REDHAWK IDE.
- * 
- * All rights reserved.  This program and the accompanying materials are made available under 
+ *
+ * All rights reserved.  This program and the accompanying materials are made available under
  * the terms of the Eclipse Public License v1.0 which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html.
  *
@@ -49,7 +49,7 @@ import CF.PortPackage.InvalidPort;
 import CF.PortPackage.OccupiedPort;
 
 public class AbstractResourceImpl extends Resource {
-	
+
 	protected SoftPkg spd;
 
 	public AbstractResourceImpl() {
@@ -60,14 +60,14 @@ public class AbstractResourceImpl extends Resource {
 			throws ServantNotActive, WrongPolicy {
 		super(compId, compName, orb, poa);
 	}
-	
+
 	public void init(SoftPkg spd) {
 		this.spd = spd;
 		Properties prf = spd.getPropertyFile().getProperties();
 		if (this.compId == null) {
 			this.compId = spd.getId();
 		}
-		
+
 		if (this.compName == null) {
 			this.compName = spd.getName();
 		}
@@ -85,20 +85,20 @@ public class AbstractResourceImpl extends Resource {
 			e.printStackTrace();  // CHECKSTYLE: DEBUG CODE
 		}
 	}
-	
+
 	private static class AbstractPort implements PortOperations {
 
 		public void connectPort(org.omg.CORBA.Object connection,
 				String connectionId) throws InvalidPort, OccupiedPort {
 			// TODO Auto-generated method stub
-			
+
 		}
 
 		public void disconnectPort(String connectionId) throws InvalidPort {
 			// TODO Auto-generated method stub
-			
+
 		}
-		
+
 	}
 
 	protected void initPorts(Ports ports) throws Exception {
@@ -106,7 +106,7 @@ public class AbstractResourceImpl extends Resource {
 			PortPOATie tie = new PortPOATie(new AbstractPort());
 			addPort(out.getName(), tie);
 		}
-		
+
 		for (Uses in : ports.getUses()) {
 			PortPOATie tie = new PortPOATie(new AbstractPort());
 			addPort(in.getName(), tie);
@@ -114,47 +114,47 @@ public class AbstractResourceImpl extends Resource {
 	}
 
 	protected void initProperties(Properties prf) {
-		for (ValueListIterator<Object> iterator = prf.getProperties().valueListIterator(); iterator.hasNext(); ) {
+		for (ValueListIterator<Object> iterator = prf.getProperties().valueListIterator(); iterator.hasNext();) {
 			AbstractProperty prop = (AbstractProperty) iterator.next();
 			if (prop instanceof Simple) {
 				Simple simple = (Simple) prop;
-				
+
 				SimpleProperty<?> newProp = createSimpleProperty(simple);
 				if (newProp != null) {
 					addProperty(newProp);
 				}
 			} else if (prop instanceof SimpleSequence) {
 				SimpleSequence sequence = (SimpleSequence) prop;
-				
+
 				SimpleSequenceProperty<?> newProperty = createSimpleSequenceProperty(sequence);
 				if (newProperty != null) {
 					addProperty(newProperty);
 				}
 			} else if (prop instanceof Struct) {
 				Struct struct = (Struct) prop;
-				
+
 				List<String> kinds = new ArrayList<String>(struct.getConfigurationKind().size());
 				for (ConfigurationKind k : struct.getConfigurationKind()) {
 					kinds.add(k.getType().toString());
 				}
-				
+
 				StructDef structDef =  createStructDef(struct);
-				StructProperty<StructDef> newProperty = new StructProperty<StructDef>(struct.getId(), 
-						struct.getName(), 
-						structDef, 
-						structDef, 
-						struct.getMode().toString(), 
+				StructProperty<StructDef> newProperty = new StructProperty<StructDef>(struct.getId(),
+						struct.getName(),
+						structDef,
+						structDef,
+						struct.getMode().toString(),
 						kinds.toArray(new String[kinds.size()]));
 				addProperty(newProperty);
 			} else if (prop instanceof StructSequence) {
 				StructSequence structSequence = (StructSequence) prop;
-				
+
 				List<String> kinds = new ArrayList<String>(structSequence.getConfigurationKind().size());
 				for (ConfigurationKind k : structSequence.getConfigurationKind()) {
 					kinds.add(k.getType().toString());
 				}
 				Class structClass = createStructDef(structSequence.getStruct()).getClass();
-				
+
 				List<StructDef> value = new ArrayList<StructDef>();
 				if (structSequence.getStructValue() != null) {
 					for (StructValue v : structSequence.getStructValue()) {
@@ -165,17 +165,17 @@ public class AbstractResourceImpl extends Resource {
 						value.add(newValue);
 					}
 				}
-				
+
 				StructSequenceProperty<StructDef> newProperty = new StructSequenceProperty<StructDef>(structSequence.getId(),
-						structSequence.getName(), 
-						structClass, 
-						value, 
-						structSequence.getMode().toString(), 
+						structSequence.getName(),
+						structClass,
+						value,
+						structSequence.getMode().toString(),
 						kinds.toArray(new String[kinds.size()]));
 				addProperty(newProperty);
 			}
 		}
-		
+
 	}
 
 	private SimpleSequenceProperty<?> createSimpleSequenceProperty(
@@ -194,13 +194,13 @@ public class AbstractResourceImpl extends Resource {
 		for (Kind k : sequence.getKind()) {
 			kinds.add(k.getType().toString());
 		}
-		
+
 		return new SimpleSequenceProperty<Object>(sequence.getId(),
-				sequence.getName(), 
-				type, 
-				value, 
-				sequence.getMode().toString(), 
-				sequence.getAction().toString(), 
+				sequence.getName(),
+				type,
+				value,
+				sequence.getMode().toString(),
+				sequence.getAction().toString(),
 				kinds.toArray(new String[kinds.size()]));
 	}
 
@@ -214,15 +214,15 @@ public class AbstractResourceImpl extends Resource {
 		for (Kind k : simple.getKind()) {
 			kinds.add(k.getType().toString());
 		}
-		return new SimpleProperty<Object>(simple.getId(), 
-				simple.getName(), 
-				type, 
-				value, 
-				simple.getMode().toString(), 
+		return new SimpleProperty<Object>(simple.getId(),
+				simple.getName(),
+				type,
+				value,
+				simple.getMode().toString(),
 				simple.getAction().toString(),
 				kinds.toArray(new String[kinds.size()]));
 	}
-	
+
 	private static class DynamicStuctDef extends StructDef {
 		@Override
 		public void addElement(IProperty element) {
@@ -238,7 +238,7 @@ public class AbstractResourceImpl extends Resource {
 				retVal.addElement(prop);
 			}
 		}
-		
+
 		return retVal;
 	}
 
