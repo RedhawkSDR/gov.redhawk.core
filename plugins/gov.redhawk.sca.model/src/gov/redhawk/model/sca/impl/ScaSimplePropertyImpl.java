@@ -225,7 +225,7 @@ public class ScaSimplePropertyImpl extends ScaAbstractPropertyImpl<Simple> imple
 		// value = VALUE_EDEFAULT;
 		Object newValue;
 		if (getDefinition() != null && getDefinition().getType() != null) {
-			newValue = AnyUtils.convertString(getDefinition().getValue(), getDefinition().getType().getLiteral());
+			newValue = AnyUtils.convertString(getDefinition().getValue(), getDefinition().getType().getLiteral(), getDefinition().getComplex());
 		} else {
 			newValue = null;
 		}
@@ -237,7 +237,7 @@ public class ScaSimplePropertyImpl extends ScaAbstractPropertyImpl<Simple> imple
 	public boolean isDefaultValue() {
 		Object newValue;
 		if (getDefinition() != null && getDefinition().getType() != null) {
-			newValue = AnyUtils.convertString(getDefinition().getValue(), getDefinition().getType().getLiteral());
+			newValue = AnyUtils.convertString(getDefinition().getValue(), getDefinition().getType().getLiteral(), getDefinition().getComplex());
 		} else {
 			newValue = null;
 		}
@@ -262,7 +262,14 @@ public class ScaSimplePropertyImpl extends ScaAbstractPropertyImpl<Simple> imple
 	
 	@Override
 	public Any toAny() {
-		return AnyUtils.toAny(value, getType());
+		return AnyUtils.toAny(value, getType(), isComplex());
+	}
+	
+	protected boolean isComplex() {
+		if (getDefinition() != null && getDefinition().getComplex() != null) {
+			return getDefinition().getComplex();
+		}
+		return false;
 	}
 
 	/**

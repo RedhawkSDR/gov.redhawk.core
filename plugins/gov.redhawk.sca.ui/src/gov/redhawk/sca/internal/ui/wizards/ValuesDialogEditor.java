@@ -27,13 +27,15 @@ import org.eclipse.swt.widgets.Control;
 public class ValuesDialogEditor extends DialogCellEditor {
 
 	private final PropertyValueType type;
+	private final Boolean complex;
 
 	/**
 	 * @param parent
 	 */
-	public ValuesDialogEditor(final Composite parent, final PropertyValueType type) {
+	public ValuesDialogEditor(final Composite parent, final PropertyValueType type, Boolean complex) {
 		super(parent);
 		this.type = type;
+		this.complex = complex;
 	}
 
 	@Override
@@ -64,7 +66,7 @@ public class ValuesDialogEditor extends DialogCellEditor {
 	 */
 	@Override
 	protected Object openDialogBox(final Control cellEditorWindow) {
-		final ValuesWizard wizard = new ValuesWizard(this.type);
+		final ValuesWizard wizard = new ValuesWizard(this.type, this.complex);
 		wizard.setInput((String[]) getValue());
 		final WizardDialog dialog = new WizardDialog(cellEditorWindow.getShell(), wizard);
 		if (dialog.open() == Window.OK) {

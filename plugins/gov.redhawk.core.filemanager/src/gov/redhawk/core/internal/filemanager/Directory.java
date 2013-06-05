@@ -301,7 +301,7 @@ public class Directory implements Node {
 	}
 
 	public DataType[] createDataTypeArray() {
-		final Any readOnly = AnyUtils.toAny(true, TCKind.tk_boolean);
+		final Any readOnly = AnyUtils.toAny(true, TCKind.tk_boolean, null);
 
 		return new DataType[] { new DataType(ScaFileInformationDataType.READ_ONLY.name(), readOnly) };
 

@@ -221,7 +221,7 @@ public class ApplicationCreationPropertyEditWizardPage extends WizardPage {
 			struct.setDefinition(prop.getProperty().getStruct());
 			for (SimpleRef ref : refs) {
 				ScaSimpleProperty simple = struct.getSimple(ref.getRefID());
-				simple.setValue(AnyUtils.convertString(ref.getValue(), simple.getDefinition().getType().getLiteral()));
+				simple.setValue(AnyUtils.convertString(ref.getValue(), simple.getDefinition().getType().getLiteral(), simple.getDefinition().getComplex()));
 			}
 		}
 	}
@@ -236,13 +236,13 @@ public class ApplicationCreationPropertyEditWizardPage extends WizardPage {
 		Object [] newValue = new Object[prop.getValues().getValue().size()];
 		for (int i = 0; i < newValue.length; i++) {
 			String value = prop.getValues().getValue().get(i);
-			newValue[i] = AnyUtils.convertString(value, prop.getProperty().getType().getLiteral());
+			newValue[i] = AnyUtils.convertString(value, prop.getProperty().getType().getLiteral(), prop.getProperty().isComplex());
 		}
 		property.setValue(newValue);
 	}
 	
 	protected void setValue(ScaSimpleProperty property, SimpleRef prop) {
-		property.setValue(AnyUtils.convertString(prop.getValue(), prop.getProperty().getType().getLiteral()));
+		property.setValue(AnyUtils.convertString(prop.getValue(), prop.getProperty().getType().getLiteral(), prop.getProperty().getComplex()));
 	}
 
 	private void storeProperties(final boolean empty) {

@@ -94,7 +94,7 @@ public class ValueEditingSupport extends EditingSupport {
 
 					public String isValid(final Object value) {
 						try {
-							AnyUtils.convertString(value.toString(), simple.getType().getLiteral());
+							AnyUtils.convertString(value.toString(), simple.getType().getLiteral(), simple.getComplex());
 							return null;
 						} catch (final Exception e) {
 							return e.getMessage();
@@ -105,7 +105,7 @@ public class ValueEditingSupport extends EditingSupport {
 			}
 		} else if (element instanceof SimpleSequence) {
 			final SimpleSequence ss = (SimpleSequence) element;
-			return new ValuesDialogEditor((Composite) getViewer().getControl(), ss.getType());
+			return new ValuesDialogEditor((Composite) getViewer().getControl(), ss.getType(), ss.isComplex());
 		}
 		// TODO Auto-generated method stub
 		return null;
@@ -165,7 +165,7 @@ public class ValueEditingSupport extends EditingSupport {
 				}
 				if (!(value == null || "".equals(value.toString()) || value.equals(defaultValue))) {
 					// Create new component property
-					override = new DataType(simple.getId(), AnyUtils.toAny(value, simple.getType().toString()));
+					override = new DataType(simple.getId(), AnyUtils.toAny(value, simple.getType().toString(), simple.getComplex()));
 					this.overwrittenProps.add(override);
 				}
 			} else {
@@ -173,7 +173,7 @@ public class ValueEditingSupport extends EditingSupport {
 					// Revert to default
 					this.overwrittenProps.remove(override);
 				} else {
-					override.value = AnyUtils.toAny(value, simple.getType().toString());
+					override.value = AnyUtils.toAny(value, simple.getType().toString(), simple.getComplex());
 				}
 			}
 		} else if (element instanceof SimpleSequence) {
@@ -203,7 +203,7 @@ public class ValueEditingSupport extends EditingSupport {
 				}
 				if (!(value == null || valuesArray.length == 0 || Arrays.deepEquals(valuesArray, defaultArray))) {
 					// Create new component property
-					override = new DataType(seq.getId(), AnyUtils.toAny(valuesArray, seq.getType().toString()));
+					override = new DataType(seq.getId(), AnyUtils.toAny(valuesArray, seq.getType().toString(), seq.isComplex()));
 					this.overwrittenProps.add(override);
 				}
 			} else {
@@ -211,7 +211,7 @@ public class ValueEditingSupport extends EditingSupport {
 					// Revert to default
 					this.overwrittenProps.remove(override);
 				} else {
-					override.value = AnyUtils.toAny(valuesArray, seq.getType().toString());
+					override.value = AnyUtils.toAny(valuesArray, seq.getType().toString(), seq.isComplex());
 				}
 			}
 		}

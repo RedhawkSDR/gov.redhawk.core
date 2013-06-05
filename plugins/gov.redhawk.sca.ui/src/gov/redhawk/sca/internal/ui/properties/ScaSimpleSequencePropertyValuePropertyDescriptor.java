@@ -28,7 +28,7 @@ public class ScaSimpleSequencePropertyValuePropertyDescriptor extends PropertyVa
 	public static class ScaSimpleSequencePropertyValueCellEditor extends PropertyValueTypeCellEditor {
 
 		public ScaSimpleSequencePropertyValueCellEditor(final ScaSimpleSequenceProperty property, final Composite arg1) {
-			super(property.getDefinition().getType(), arg1);
+			super(property.getDefinition().getType(), property.getDefinition().isComplex(), arg1);
 		}
 	}
 

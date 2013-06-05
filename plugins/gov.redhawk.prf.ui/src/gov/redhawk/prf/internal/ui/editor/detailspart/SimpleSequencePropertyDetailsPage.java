@@ -57,9 +57,11 @@ public class SimpleSequencePropertyDetailsPage extends BasicSimplePropertyDetail
 	private class InputValueValidator implements IInputValidator {
 
 		private final PropertyValueType type;
+		private final Boolean complex;
 
-		public InputValueValidator(final PropertyValueType type) {
+		public InputValueValidator(final PropertyValueType type, Boolean complex) {
 			this.type = type;
+			this.complex = complex;
 		}
 
 		/**
@@ -67,7 +69,7 @@ public class SimpleSequencePropertyDetailsPage extends BasicSimplePropertyDetail
 		 */
 		public String isValid(final String newText) {
 			String retVal = null;
-			final boolean valid = this.type.isValueOfType(newText);
+			final boolean valid = this.type.isValueOfType(newText, this.complex);
 			if (!valid) {
 				final StringBuilder builder = new StringBuilder();
 				builder.append("The value: \"");
@@ -138,7 +140,7 @@ public class SimpleSequencePropertyDetailsPage extends BasicSimplePropertyDetail
 		final TableViewer valuesViewer = this.composite.getValuesViewer();
 		retVal.add(context.bindValue(ViewersObservables.observeInput(valuesViewer), valueProp.observe(input)));
 
-		this.composite.getValueColumn().setEditingSupport(new SimpleSequenceValueEditingSupport(this.input.getType(), valuesViewer));
+		this.composite.getValueColumn().setEditingSupport(new SimpleSequenceValueEditingSupport(this.input.getType(), this.input.isComplex(), valuesViewer));
 
 		return retVal;
 	}
@@ -176,7 +178,7 @@ public class SimpleSequencePropertyDetailsPage extends BasicSimplePropertyDetail
 	 * @param activeShell
 	 */
 	protected void handleAddValue(final Shell shell) {
-		final InputDialog dialog = new InputDialog(shell, "New Value", "Value:", "", new InputValueValidator(this.input.getType()));
+		final InputDialog dialog = new InputDialog(shell, "New Value", "Value:", "", new InputValueValidator(this.input.getType(), this.input.isComplex()));
 
 		if (dialog.open() == Window.OK) {
 			Values values = this.input.getValues();

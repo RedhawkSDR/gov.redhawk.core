@@ -139,14 +139,14 @@ public final class ScaPropertyUtil {
 			final String[] values = propertySettings.getArray(ScaPropertyUtil.SIMPLE_SEQ_VALUES);
 			prop.getValues().clear();
 			for (final String s : values) {
-				prop.getValues().add(AnyUtils.convertString(s, prop.getDefinition().getType().getLiteral()));
+				prop.getValues().add(AnyUtils.convertString(s, prop.getDefinition().getType().getLiteral(), prop.getDefinition().isComplex()));
 			}
 		}
 	}
 
 	private static void restoreSimple(final ScaSimpleProperty prop, final IDialogSettings propertySettings) {
 		if (propertySettings != null) {
-			prop.setValue(AnyUtils.convertString(propertySettings.get(ScaPropertyUtil.SIMPLE_VALUE), prop.getDefinition().getType().getLiteral()));
+			prop.setValue(AnyUtils.convertString(propertySettings.get(ScaPropertyUtil.SIMPLE_VALUE), prop.getDefinition().getType().getLiteral(), prop.getDefinition().getComplex()));
 		}
 
 	}

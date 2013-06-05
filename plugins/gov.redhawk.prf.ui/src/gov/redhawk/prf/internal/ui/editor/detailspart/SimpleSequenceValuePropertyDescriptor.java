@@ -28,10 +28,12 @@ public abstract class SimpleSequenceValuePropertyDescriptor extends PropertyDesc
 	protected static class SimpleSequenceValueHandler extends EDataTypeValueHandler {
 
 		private final PropertyValueType type;
+		private final Boolean complex;
 
-		public SimpleSequenceValueHandler(final PropertyValueType type) {
+		public SimpleSequenceValueHandler(final PropertyValueType type, Boolean complex) {
 			super(EcorePackage.Literals.ESTRING);
 			this.type = type;
+			this.complex = complex;
 		}
 
 		@Override
@@ -42,7 +44,7 @@ public abstract class SimpleSequenceValuePropertyDescriptor extends PropertyDesc
 		@Override
 		public String isValid(final String text) {
 			try {
-				AnyUtils.convertString(text, this.type.getLiteral());
+				AnyUtils.convertString(text, this.type.getLiteral(), this.complex);
 				return null;
 			} catch (final Exception e) {
 				return e.getMessage();
@@ -52,14 +54,14 @@ public abstract class SimpleSequenceValuePropertyDescriptor extends PropertyDesc
 
 	public static class SimpleSequenceValueCellEditor extends EDataTypeCellEditor {
 
-		public SimpleSequenceValueCellEditor(final PropertyValueType type, final Composite arg1) {
+		public SimpleSequenceValueCellEditor(final PropertyValueType type, Boolean complex, final Composite arg1) {
 			super(type.toDataType(), arg1);
-			this.valueHandler = createPropertyValueTypeValueHandler(type);
+			this.valueHandler = createPropertyValueTypeValueHandler(type, complex);
 			setValidator(this.valueHandler);
 		}
 
-		protected SimpleSequenceValueHandler createPropertyValueTypeValueHandler(final PropertyValueType type) {
-			return new SimpleSequenceValueHandler(type);
+		protected SimpleSequenceValueHandler createPropertyValueTypeValueHandler(final PropertyValueType type, Boolean complex) {
+			return new SimpleSequenceValueHandler(type, complex);
 		}
 
 	}

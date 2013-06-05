@@ -40,10 +40,12 @@ import org.eclipse.swt.widgets.Widget;
 public class SimpleSequenceValueEditingSupport extends EditingSupport {
 
 	private final PropertyValueType valueType;
+	private final Boolean complex;
 
-	public SimpleSequenceValueEditingSupport(final PropertyValueType valueType, final TableViewer viewer) {
+	public SimpleSequenceValueEditingSupport(final PropertyValueType valueType, Boolean complex, final TableViewer viewer) {
 		super(viewer);
 		this.valueType = valueType;
+		this.complex = complex;
 	}
 
 	@Override
@@ -61,7 +63,7 @@ public class SimpleSequenceValueEditingSupport extends EditingSupport {
 		if (eDataType.getInstanceClass() == Boolean.class || eDataType.getInstanceClass() == Boolean.TYPE) {
 			return new ExtendedComboBoxCellEditor(composite, Arrays.asList(new Object[] { Boolean.FALSE, Boolean.TRUE }), getEditLabelProvider(), true);
 		}
-		return new SimpleSequenceValuePropertyDescriptor.SimpleSequenceValueCellEditor(this.valueType, composite);
+		return new SimpleSequenceValuePropertyDescriptor.SimpleSequenceValueCellEditor(this.valueType, this.complex, composite);
 	}
 
 	protected ILabelProvider getEditLabelProvider() {

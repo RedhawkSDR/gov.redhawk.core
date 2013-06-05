@@ -185,7 +185,7 @@ public class AbstractResourceImpl extends Resource {
 		}
 		if (sequence.getValues() != null) {
 			for (String v : sequence.getValues().getValue()) {
-				value.add(AnyUtils.convertString(v, type));
+				value.add(AnyUtils.convertString(v, type, sequence.isComplex()));
 			}
 		}
 		List<String> kinds = new ArrayList<String>(sequence.getKind().size());
@@ -203,7 +203,7 @@ public class AbstractResourceImpl extends Resource {
 	}
 
 	private SimpleProperty< ? > createSimpleProperty(Simple simple) {
-		Object value = AnyUtils.convertString(simple.getValue(), simple.getType().toString());
+		Object value = AnyUtils.convertString(simple.getValue(), simple.getType().toString(), simple.getComplex());
 		List<String> kinds = new ArrayList<String>(simple.getKind().size());
 		String type = simple.getType().toString();
 		if (type.equals("objref")) {

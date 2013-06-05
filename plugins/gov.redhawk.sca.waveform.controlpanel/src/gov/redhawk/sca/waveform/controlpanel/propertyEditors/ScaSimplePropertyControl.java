@@ -126,7 +126,7 @@ public class ScaSimplePropertyControl {
 	}
 
 	private void setValue(final ScaSimpleProperty property, final Object value) throws PartialConfiguration, InvalidConfiguration {
-		property.setRemoteValue(AnyUtils.toAny(value, property.getDefinition().getType().getLiteral()));
+		property.setRemoteValue(AnyUtils.toAny(value, property.getDefinition().getType().getLiteral(), property.getDefinition().getComplex()));
 	}
 
 	public IObservableValue getModel() {

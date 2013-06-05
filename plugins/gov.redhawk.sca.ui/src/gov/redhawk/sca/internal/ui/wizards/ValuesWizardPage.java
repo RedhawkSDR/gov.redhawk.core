@@ -48,12 +48,10 @@ import org.eclipse.swt.widgets.Control;
 public class ValuesWizardPage extends WizardPage {
 
 	private class ClassStringContainer {
-		private final PropertyValueType type;
 		private String value;
 
-		public ClassStringContainer(final String value, final PropertyValueType type) {
+		public ClassStringContainer(final String value) {
 			this.value = value;
-			this.type = type;
 		}
 
 		@Override
@@ -69,6 +67,7 @@ public class ValuesWizardPage extends WizardPage {
 	private Button addButton;
 	private Button removeButton;
 	private final PropertyValueType type;
+	private Boolean complex;
 
 	/**
 	 * @param type 
@@ -76,10 +75,11 @@ public class ValuesWizardPage extends WizardPage {
 	 * @param title
 	 * @param titleImage
 	 */
-	protected ValuesWizardPage(final PropertyValueType type) {
+	protected ValuesWizardPage(final PropertyValueType type, Boolean complex) {
 		super("valuesPage", "Values", null);
 		this.setDescription("Edit the values.");
 		this.type = type;
+		this.complex = complex;
 	}
 
 	/**
@@ -139,7 +139,7 @@ public class ValuesWizardPage extends WizardPage {
 		this.addButton.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(final SelectionEvent e) {
-				final ClassStringContainer element = new ClassStringContainer("<Enter Value>", ValuesWizardPage.this.type);
+				final ClassStringContainer element = new ClassStringContainer("<Enter Value>");
 				ValuesWizardPage.this.input.add(element);
 				ValuesWizardPage.this.viewer.refresh();
 				ValuesWizardPage.this.viewer.getTable().select(ValuesWizardPage.this.input.size() - 1);
@@ -234,7 +234,7 @@ public class ValuesWizardPage extends WizardPage {
 
 					public String isValid(final Object value) {
 						try {
-							AnyUtils.convertString(value.toString(), data.type.getLiteral());
+							AnyUtils.convertString(value.toString(), type.getLiteral(), complex);
 							return null;
 						} catch (final Exception e) {
 							return e.getMessage();
@@ -272,7 +272,7 @@ public class ValuesWizardPage extends WizardPage {
 		this.input.clear();
 		if (input != null) {
 			for (final String str : input) {
-				this.input.add(new ClassStringContainer(str, this.type));
+				this.input.add(new ClassStringContainer(str));
 			}
 		}
 		if (this.viewer != null) {

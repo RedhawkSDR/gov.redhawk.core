@@ -30,10 +30,12 @@ public abstract class PropertyValueTypePropertyDescriptor extends PropertyDescri
 		private final PropertyValueType type;
 		private static final int DEFAULT_RADIX = 10;
 		private int radix = PropertyValueTypeValueHandler.DEFAULT_RADIX;
+		private Boolean complex;
 
-		public PropertyValueTypeValueHandler(final PropertyValueType type) {
+		public PropertyValueTypeValueHandler(final PropertyValueType type, Boolean complex) {
 			super(type.toDataType());
 			this.type = type;
+			this.complex = complex;
 		}
 
 		public PropertyValueType getType() {
@@ -48,7 +50,7 @@ public abstract class PropertyValueTypePropertyDescriptor extends PropertyDescri
 		@Override
 		public String isValid(final String text) {
 			try {
-				AnyUtils.convertString(text, this.type.getLiteral());
+				AnyUtils.convertString(text, this.type.getLiteral(), complex);
 				return null;
 			} catch (final Exception e) {
 				return e.getMessage();
@@ -65,7 +67,7 @@ public abstract class PropertyValueTypePropertyDescriptor extends PropertyDescri
 
 		@Override
 		public Object toValue(final String string) {
-			return AnyUtils.convertString(string, getType().getLiteral());
+			return AnyUtils.convertString(string, getType().getLiteral(), complex);
 		}
 
 		@Override
@@ -80,9 +82,9 @@ public abstract class PropertyValueTypePropertyDescriptor extends PropertyDescri
 
 	public static class PropertyValueTypeCellEditor extends EDataTypeCellEditor {
 
-		public PropertyValueTypeCellEditor(final PropertyValueType type, final Composite arg1) {
+		public PropertyValueTypeCellEditor(final PropertyValueType type, Boolean complex, final Composite arg1) {
 			super(type.toDataType(), arg1);
-			this.valueHandler = new PropertyValueTypeValueHandler(type);
+			this.valueHandler = new PropertyValueTypeValueHandler(type, complex);
 			setValidator(this.valueHandler);
 		}
 

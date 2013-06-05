@@ -10,15 +10,18 @@
  *******************************************************************************/
 package gov.redhawk.validation.prf;
 
+import mil.jpeojtrs.sca.prf.PrfPackage;
 import mil.jpeojtrs.sca.prf.PropertyValueType;
 import mil.jpeojtrs.sca.prf.Simple;
 import mil.jpeojtrs.sca.prf.SimpleSequence;
 import mil.jpeojtrs.sca.prf.util.PrfSwitch;
+import mil.jpeojtrs.sca.validator.EnhancedConstraintStatus;
 
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.validation.AbstractModelConstraint;
 import org.eclipse.emf.validation.IValidationContext;
+import org.eclipse.emf.validation.model.ConstraintStatus;
 
 /**
  * 
@@ -34,31 +37,37 @@ public class ComplexTypeWarningConstraint extends AbstractModelConstraint {
 
 		@Override
 		public IStatus caseSimple(final Simple object) {
-			Boolean complex = object.getComplex();
+			boolean complex = object.isComplex();
 			PropertyValueType type = object.getType();
-			return check(complex, type);
+			if (!check(complex, type)) {
+				return new EnhancedConstraintStatus((ConstraintStatus) this.ctx.createFailureStatus(type), PrfPackage.Literals.SIMPLE__COMPLEX);
+			}
+			return null;
 		}
 		
-		private IStatus check(Boolean complex, PropertyValueType type) {
-			if (complex != null) {
+		private boolean check(boolean complex, PropertyValueType type) {
+			if (complex) {
 				switch (type) {
 				case ULONG:
 				case ULONGLONG:
 				case USHORT:
 				case OCTET:
-					return this.ctx.createFailureStatus(type);
+					return false;
 				default:
 					break;
 				}
 			}
-			return null;
+			return true;
 		}
 
 		@Override
 		public IStatus caseSimpleSequence(SimpleSequence object) {
-			Boolean complex = object.getComplex();
+			boolean complex = object.isComplex();
 			PropertyValueType type = object.getType();
-			return check(complex, type);
+			if (!check(complex, type)) {
+				return new EnhancedConstraintStatus((ConstraintStatus) this.ctx.createFailureStatus(type), PrfPackage.Literals.SIMPLE_SEQUENCE__COMPLEX);
+			}
+			return null;
 		}
 
 		@Override

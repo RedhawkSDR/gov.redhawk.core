@@ -130,7 +130,7 @@ public class ScaSimpleSequencePropertyImpl extends ScaAbstractPropertyImpl<Simpl
 			List<Object> array = new ArrayList<Object>();
 			if (definition != null && definition.getValues() != null) {
 				for (String value : definition.getValues().getValue()) {
-					array.add(AnyUtils.convertString(value, definition.getType().getLiteral()));
+					array.add(AnyUtils.convertString(value, definition.getType().getLiteral(), definition.isComplex()));
 				}
 			}
 			return array.toArray();
@@ -238,7 +238,7 @@ public class ScaSimpleSequencePropertyImpl extends ScaAbstractPropertyImpl<Simpl
 
 	@Override
 	public Any toAny() {
-		return AnyUtils.toAny(getValues().toArray(), getType());
+		return AnyUtils.toAny(getValues().toArray(), getType(), isComplex());
 	}
 
 	@Override
@@ -286,6 +286,13 @@ public class ScaSimpleSequencePropertyImpl extends ScaAbstractPropertyImpl<Simpl
 		}
 		return null;
 		// BEGIN GENERATED CODE
+	}
+	
+	protected boolean isComplex() {
+		if (getDefinition() != null) {
+			return getDefinition().isComplex();
+		}
+		return false;
 	}
 
 	/**

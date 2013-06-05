@@ -23,11 +23,13 @@ public class ValuesWizard extends Wizard {
 	private ValuesWizardPage valuesPage;
 	private String[] input;
 	private final PropertyValueType type;
+	private final Boolean complex;
 
-	public ValuesWizard(final PropertyValueType type) {
+	public ValuesWizard(final PropertyValueType type, Boolean complex) {
 		this.setNeedsProgressMonitor(false);
 		this.setWindowTitle("Values");
 		this.type = type;
+		this.complex = complex;
 	}
 
 	/**
@@ -35,7 +37,7 @@ public class ValuesWizard extends Wizard {
 	 */
 	@Override
 	public void addPages() {
-		this.valuesPage = new ValuesWizardPage(this.type);
+		this.valuesPage = new ValuesWizardPage(this.type, complex);
 		this.valuesPage.setInput(this.input);
 		this.addPage(this.valuesPage);
 		super.addPages();

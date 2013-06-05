@@ -44,7 +44,7 @@ public class ScaSimplePropertyValuePropertyDescriptor extends PropertyValueTypeP
 	public static class ScaSimplePropertyValueTypeCellEditor extends PropertyValueTypeCellEditor {
 
 		public ScaSimplePropertyValueTypeCellEditor(final ScaSimpleProperty property, final Composite arg1) {
-			super(property.getDefinition().getType(), arg1);
+			super(property.getDefinition().getType(), property.getDefinition().getComplex(), arg1);
 			final int radix = RadixLabelProviderUtil.getRadix(property.getDefinition().getValue());
 			((PropertyValueTypeValueHandler) this.valueHandler).setRadix(radix);
 		}
