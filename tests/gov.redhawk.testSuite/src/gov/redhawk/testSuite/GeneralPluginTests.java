@@ -1,12 +1,12 @@
-/** 
- * This file is protected by Copyright. 
- * Please refer to the COPYRIGHT file distributed with this source distribution.
- * 
- * This file is part of REDHAWK IDE.
- * 
- * All rights reserved.  This program and the accompanying materials are made available under 
- * the terms of the Eclipse Public License v1.0 which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html.
+/**
+ * This file is protected by Copyright.
+ * Please refer to the COPYRIGHT file distributed with this source distribution.
+ *
+ * This file is part of REDHAWK IDE.
+ *
+ * All rights reserved.  This program and the accompanying materials are made available under
+ * the terms of the Eclipse Public License v1.0 which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html.
  *
  */
 package gov.redhawk.testSuite;
@@ -51,7 +51,7 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
 /**
- * 
+ *
  */
 public class GeneralPluginTests {
 
@@ -95,7 +95,7 @@ public class GeneralPluginTests {
 
 	/**
 	 * Determines if a bundle is optionally dependent on a RAP bundle.
-	 * 
+	 *
 	 * @param description the {@link BundleDescription} to check
 	 * @return <code> true </code> if the bundle is optionally dependent on a RAP bundle; <code> false </code> otherwise
 	 */
@@ -111,7 +111,7 @@ public class GeneralPluginTests {
 	/**
 	 * Given a bundle description and a properties file, verify that any optional rap dependencies are listed in the
 	 * file with the appropriate version range and greedy flag.
-	 * 
+	 *
 	 * @param description the bundle description for the bundle containing optional rap dependencies
 	 * @param props the p2.inf file read into a {@link Properties} object
 	 */
@@ -307,7 +307,7 @@ public class GeneralPluginTests {
 			Assert.fail(result.toString());
 		}
 	}
-	
+
 	@Test
 	public void validBuildPropertiesSrcBlackList() {
 		BundleDescription[] allBundles = Platform.getPlatformAdmin().getState().getBundles();

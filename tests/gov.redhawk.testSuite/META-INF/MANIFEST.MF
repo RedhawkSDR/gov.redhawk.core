@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: TestSuite
 Bundle-SymbolicName: gov.redhawk.testSuite
-Bundle-Version: 1.0.0.qualifier
+Bundle-Version: 1.0.1.qualifier
 Bundle-RequiredExecutionEnvironment: J2SE-1.5
 Require-Bundle: gov.redhawk.eclipsecorba.idl.tests;bundle-version="1.0.0",
  gov.redhawk.eclipsecorba.library.tests;bundle-version="1.0.0",

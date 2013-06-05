@@ -1,12 +1,12 @@
 /**
- * This file is protected by Copyright. 
- * Please refer to the COPYRIGHT file distributed with this source distribution.
- * 
- * This file is part of REDHAWK IDE.
- * 
- * All rights reserved.  This program and the accompanying materials are made available under 
- * the terms of the Eclipse Public License v1.0 which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html.
+ * This file is protected by Copyright.
+ * Please refer to the COPYRIGHT file distributed with this source distribution.
+ *
+ * This file is part of REDHAWK IDE.
+ *
+ * All rights reserved.  This program and the accompanying materials are made available under
+ * the terms of the Eclipse Public License v1.0 which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html.
  *
  */
 package gov.redhawk.feature.tests;
@@ -37,7 +37,7 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
 /**
- *  Test feature.xml files of REDHAWK features for validity.  Note that these test cases will not run successfully from 
+ *  Test feature.xml files of REDHAWK features for validity.  Note that these test cases will not run successfully from
  *  within the development environment.  The feature needs to be installed into a REDHAWK IDE to run as expected/
  */
 @SuppressWarnings("deprecation")
@@ -56,7 +56,7 @@ public class RedhawkFeatureTests {
 	/**
 	 * Parse the sca_explorer.product file and build list of items under the
 	 * configurations node.
-	 * 
+	 *
 	 * @throws Exception
 	 */
 	@Before
@@ -70,7 +70,7 @@ public class RedhawkFeatureTests {
 
 	/**
 	 * Tear down the builder and provider
-	 * 
+	 *
 	 * @throws Exception
 	 */
 	@After
@@ -81,7 +81,7 @@ public class RedhawkFeatureTests {
 
 	/**
 	 * Tests the IDE Feature for validity.
-	 *  
+	 *
 	 * @throws IOException
 	 * @throws SAXException
 	 */
@@ -98,7 +98,7 @@ public class RedhawkFeatureTests {
 
 	/**
 	 * Tests the UI Feature for validity.
-	 *  
+	 *
 	 * @throws IOException
 	 * @throws SAXException
 	 */
@@ -115,7 +115,7 @@ public class RedhawkFeatureTests {
 
 	/**
 	 * Tests the IDE UI Feature for validity.
-	 *  
+	 *
 	 * @throws IOException
 	 * @throws SAXException
 	 */
@@ -132,7 +132,7 @@ public class RedhawkFeatureTests {
 
 	/**
 	 * Tests the REDHAWK SCA Feature for validity.
-	 *  
+	 *
 	 * @throws IOException
 	 * @throws SAXException
 	 */
@@ -143,13 +143,13 @@ public class RedhawkFeatureTests {
 		Assert.assertNotNull("The feature " + this.featureUnderTest + " was not found in the product.", entry);
 		Document doc = this.parseFeature(entry.getFeatureVersion());
 		this.buildRequiresElementList(doc);
-		this.testForPluginDependency();		
+		this.testForPluginDependency();
 		this.testFeatureMatch();
 	}
 
 	/**
 	 * Tests the SCA Feature for validity.
-	 *  
+	 *
 	 * @throws IOException
 	 * @throws SAXException
 	 */
@@ -203,7 +203,7 @@ public class RedhawkFeatureTests {
 						boolean greaterOrEqual = actualVersion.compareTo(version) >= 0;
 						Assert.assertEquals("The version of the available " + feature
 						        + " feature isn't greaterOrEqual to the version specified in the dependency.", true, greaterOrEqual);
-						//Must be exact match	
+						//Must be exact match
 					} else if (match.equals("perfect")) {
 						Assert.assertEquals("The version of the available " + feature
 						        + " feature isn't a perfect match for the version specified in the dependency.", version, actualVersion);
@@ -222,7 +222,7 @@ public class RedhawkFeatureTests {
 	}
 
 	/**
-	 * 
+	 *
 	 * @param featureID
 	 * @return
 	 */
@@ -241,7 +241,7 @@ public class RedhawkFeatureTests {
 
 	/**
 	 * Parses the feature under test and returns the {@link Document}.
-	 * 
+	 *
 	 * @param version the version of the feature to parse
 	 * @return the document obtained by parsing the feature
 	 * @throws MalformedURLException
@@ -254,7 +254,7 @@ public class RedhawkFeatureTests {
 
 	/**
 	 * Returns a {@link URL} for the feature.xml file of the feature under test.
-	 * 
+	 *
 	 * @param version the version of the feature under test
 	 * @return a URL for the feature.xml file
 	 * @throws MalformedURLException
@@ -265,7 +265,7 @@ public class RedhawkFeatureTests {
 
 	/**
 	 * Builds a list of {@link Node} under the "requires" element.
-	 * 
+	 *
 	 * @param document
 	 *            the {@link Document} associated with the feature.xml file
 	 */
