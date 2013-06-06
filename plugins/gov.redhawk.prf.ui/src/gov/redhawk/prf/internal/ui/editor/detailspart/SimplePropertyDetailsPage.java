@@ -16,6 +16,8 @@ import gov.redhawk.prf.internal.ui.editor.PropertiesSection;
 import gov.redhawk.prf.internal.ui.editor.composite.SimplePropertyComposite;
 import gov.redhawk.ui.editor.SCAFormEditor;
 import gov.redhawk.ui.util.EMFEmptyStringToNullUpdateValueStrategy;
+import gov.redhawk.ui.util.EmptyStringValueToStringConverter;
+import gov.redhawk.ui.util.StringToEmptyStringValueConverter;
 
 import java.util.List;
 
@@ -23,6 +25,7 @@ import mil.jpeojtrs.sca.prf.PrfPackage;
 
 import org.eclipse.core.databinding.Binding;
 import org.eclipse.core.databinding.DataBindingContext;
+import org.eclipse.emf.databinding.EMFUpdateValueStrategy;
 import org.eclipse.emf.databinding.FeaturePath;
 import org.eclipse.emf.databinding.edit.EMFEditObservables;
 import org.eclipse.emf.databinding.edit.EMFEditProperties;
@@ -62,9 +65,13 @@ public class SimplePropertyDetailsPage extends BasicSimplePropertyDetailsPage {
 
 		// Value
 		if (getComposite().getValueEntry() != null) {
+			EMFEmptyStringToNullUpdateValueStrategy targetToModel = new EMFEmptyStringToNullUpdateValueStrategy();
+			targetToModel.setConverter(new EmptyStringValueToStringConverter());
+			EMFUpdateValueStrategy modelToTarget = new EMFUpdateValueStrategy();
+			modelToTarget.setConverter(new StringToEmptyStringValueConverter());
 			retVal.add(dataBindingContext.bindValue(WidgetProperties.text(SWT.Modify)
 			        .observeDelayed(SCAFormEditor.getFieldBindingDelay(), getComposite().getValueEntry().getText()), EMFEditObservables.observeValue(domain, input,
-			        PrfPackage.Literals.SIMPLE__VALUE), new EMFEmptyStringToNullUpdateValueStrategy(), null));
+			        PrfPackage.Literals.SIMPLE__VALUE), targetToModel, modelToTarget));
 		}
 
 		//Enumerations

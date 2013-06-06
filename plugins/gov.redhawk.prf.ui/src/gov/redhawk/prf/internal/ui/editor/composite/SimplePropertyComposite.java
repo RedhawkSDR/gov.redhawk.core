@@ -11,10 +11,8 @@
  */
 package gov.redhawk.prf.internal.ui.editor.composite;
 
-import gov.redhawk.common.ui.doc.HelpConstants;
 import gov.redhawk.common.ui.editor.FormLayoutFactory;
 import gov.redhawk.common.ui.parts.FormEntry;
-import gov.redhawk.ui.doc.HelpUtil;
 
 import java.util.ArrayList;
 
@@ -83,7 +81,7 @@ public class SimplePropertyComposite extends BasicSimplePropertyComposite {
 		// Value
 		FormEntry retVal = new FormEntry(parent, toolkit, "Value:" , SWT.SINGLE);
 		retVal.getText().setLayoutData(GridDataFactory.fillDefaults().grab(true, false).span(2, 1).create());
-		HelpUtil.assignTooltip(retVal.getText(), HelpConstants.prf_properties_simple_value);
+		retVal.getText().setToolTipText("For empty string enter a value of \"\"");
 		this.valueEntry = retVal;
 		return retVal;
 	}
