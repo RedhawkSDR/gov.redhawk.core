@@ -558,7 +558,7 @@ public abstract class Resource implements ResourceOperations, Runnable { // SUPP
      * @throws WrongPolicy
      * @throws ServantNotActive
      */
-    public static void start_component(@SuppressWarnings("rawtypes") final Class clazz, final String[] args, final boolean builtInORB, final int fragSize, final int bufSize)
+    public static void start_component(final Class<?> clazz, final String[] args, final boolean builtInORB, final int fragSize, final int bufSize)
     throws InstantiationException, IllegalAccessException, InvalidObjectReference, NotFound, CannotProceed, org.omg.CosNaming.NamingContextPackage.InvalidName, ServantNotActive, WrongPolicy
     {
         final Properties props = new Properties();
@@ -592,7 +592,7 @@ public abstract class Resource implements ResourceOperations, Runnable { // SUPP
      * @throws WrongPolicy
      * @throws ServantNotActive
      */
-    public static void start_component(@SuppressWarnings("rawtypes") final Class clazz,  final String[] args, final Properties props)
+    public static void start_component(final Class<?> clazz, final String[] args, final Properties props)
     throws InstantiationException, IllegalAccessException, InvalidObjectReference, NotFound, CannotProceed, org.omg.CosNaming.NamingContextPackage.InvalidName, ServantNotActive, WrongPolicy
     {
         if (!Resource.class.isAssignableFrom(clazz)) {
@@ -751,7 +751,7 @@ public abstract class Resource implements ResourceOperations, Runnable { // SUPP
         }
 
         String remotePath = uri.substring(0, fsPos);
-		CF.OctetSequenceHolder data = new CF.OctetSequenceHolder();
+        CF.OctetSequenceHolder data = new CF.OctetSequenceHolder();
         try {
             CF.File remoteFile = fileSystem.open(remotePath, true);
             int size = remoteFile.sizeOf();

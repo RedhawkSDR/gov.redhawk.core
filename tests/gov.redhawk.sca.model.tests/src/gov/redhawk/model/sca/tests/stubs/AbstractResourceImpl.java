@@ -138,8 +138,12 @@ public class AbstractResourceImpl extends Resource {
 				}
 
 				StructDef structDef = createStructDef(struct);
-				StructProperty<StructDef> newProperty = new StructProperty<StructDef>(struct.getId(), struct.getName(), structDef, structDef,
-				                                                                      struct.getMode().toString(), kinds.toArray(new String[kinds.size()]));
+				StructProperty<StructDef> newProperty = new StructProperty<StructDef>(struct.getId(),
+						struct.getName(),
+						structDef,
+						structDef,
+						struct.getMode().toString(),
+						kinds.toArray(new String[kinds.size()]));
 				addProperty(newProperty);
 			} else if (prop instanceof StructSequence) {
 				StructSequence structSequence = (StructSequence) prop;
@@ -161,9 +165,12 @@ public class AbstractResourceImpl extends Resource {
 					}
 				}
 
-				StructSequenceProperty<StructDef> newProperty = new StructSequenceProperty<StructDef>(structSequence.getId(), structSequence.getName(),
-				                                                                                      structClass, value, structSequence.getMode().toString(),
-				                                                                                      kinds.toArray(new String[kinds.size()]));
+				StructSequenceProperty<StructDef> newProperty = new StructSequenceProperty<StructDef>(structSequence.getId(),
+						structSequence.getName(),
+						structClass,
+						value,
+						structSequence.getMode().toString(),
+						kinds.toArray(new String[kinds.size()]));
 				addProperty(newProperty);
 			}
 		}
@@ -186,8 +193,13 @@ public class AbstractResourceImpl extends Resource {
 			kinds.add(k.getType().toString());
 		}
 
-		return new SimpleSequenceProperty<Object>(sequence.getId(), sequence.getName(), type, value, sequence.getMode().toString(),
-		                                          sequence.getAction().toString(), kinds.toArray(new String[kinds.size()]));
+		return new SimpleSequenceProperty<Object>(sequence.getId(),
+				sequence.getName(),
+				type,
+				value,
+				sequence.getMode().toString(),
+				sequence.getAction().toString(),
+				kinds.toArray(new String[kinds.size()]));
 	}
 
 	private SimpleProperty< ? > createSimpleProperty(Simple simple) {
@@ -200,8 +212,13 @@ public class AbstractResourceImpl extends Resource {
 		for (Kind k : simple.getKind()) {
 			kinds.add(k.getType().toString());
 		}
-		return new SimpleProperty<Object>(simple.getId(), simple.getName(), type, value, simple.getMode().toString(), simple.getAction().toString(),
-		                                  kinds.toArray(new String[kinds.size()]));
+		return new SimpleProperty<Object>(simple.getId(),
+				simple.getName(),
+				type,
+				value,
+				simple.getMode().toString(),
+				simple.getAction().toString(),
+				kinds.toArray(new String[kinds.size()]));
 	}
 
 	private static class DynamicStuctDef extends StructDef {
