@@ -1,10 +1,10 @@
-/** 
- * This file is protected by Copyright. 
+/**
+ * This file is protected by Copyright.
  * Please refer to the COPYRIGHT file distributed with this source distribution.
- * 
+ *
  * This file is part of REDHAWK IDE.
- * 
- * All rights reserved.  This program and the accompanying materials are made available under 
+ *
+ * All rights reserved.  This program and the accompanying materials are made available under
  * the terms of the Eclipse Public License v1.0 which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html.
  *
@@ -63,7 +63,7 @@ import CF.TestableObjectPackage.UnknownTest;
 
 public abstract class Resource implements ResourceOperations, Runnable { // SUPPRESS CHECKSTYLE Name
     public static final Logger LOGGER = Logger.getLogger(Resource.class.getName());
-    
+
     protected CF.Resource resource;
 
     /**
@@ -111,11 +111,11 @@ public abstract class Resource implements ResourceOperations, Runnable { // SUPP
         this.nativePorts = new Hashtable<String, Servant>();
         this.propSet = new Hashtable<String, IProperty>();
     }
-    
+
     public void addProperty(IProperty prop) {
-        this.propSet.put(prop.getId(), prop); 
+        this.propSet.put(prop.getId(), prop);
     }
-    
+
     public void addPort(String name, Object object) {
         this.portObjects.put(name, object);
         this.portServants.put(name, (Servant) object);
@@ -124,15 +124,15 @@ public abstract class Resource implements ResourceOperations, Runnable { // SUPP
     protected void addPort(String name, Servant servant) {
         this.nativePorts.put(name, servant);
     }
-    
+
     /**
      * Default Constructor that automatically sets parameters for the Sun ORB
      * and the JacORB ORB.
-     * 
+     *
      * @param compId Name of this resource
      * @param orb the ORB to use
-     * @throws WrongPolicy 
-     * @throws ServantNotActive 
+     * @throws WrongPolicy
+     * @throws ServantNotActive
      */
     public Resource(final String compId, final String compName, final ORB orb, final POA poa) throws ServantNotActive, WrongPolicy {
         this();
@@ -233,7 +233,7 @@ public abstract class Resource implements ResourceOperations, Runnable { // SUPP
         } catch (StopError e1) {
             LOGGER.error("Failed to stop during release", e1);
         }
-        
+
         // These loops deactivate the port objects so that they can be destroyed without incident
         synchronized (this) {
             try {
@@ -263,7 +263,7 @@ public abstract class Resource implements ResourceOperations, Runnable { // SUPP
         if (p != null) {
             return p;
         }
-        
+
         throw new UnknownPort("Unknown port: " + name);
     }
 
@@ -281,7 +281,7 @@ public abstract class Resource implements ResourceOperations, Runnable { // SUPP
         if (p != null) {
             return p;
         }
-        
+
         throw new UnknownPort("Unknown port: " + name);
     }
 
@@ -292,7 +292,7 @@ public abstract class Resource implements ResourceOperations, Runnable { // SUPP
         LOGGER.trace("configure()");
         final ArrayList<DataType> validProperties = new ArrayList<DataType>();
         final ArrayList<DataType> invalidProperties = new ArrayList<DataType>();
-        
+
         try {
             c_validate(configProperties, validProperties, invalidProperties);
             if (configProperties.length == 0) {
@@ -303,16 +303,16 @@ public abstract class Resource implements ResourceOperations, Runnable { // SUPP
                 for (final IProperty prop : this.propSet.values()) {
                     // make sure that the property ids match
                     if (prop.getId().equals(validProp.id)) {
-                        
+
                         // see if the value has changed
                         if (AnyUtils.compareAnys(prop.toAny(), (validProp.value), "ne")) {
-                            
+
                             // update the value on the property
                             prop.fromAny(validProp.value);
-                            
+
                             // check to see if this property should issue property change events
                             if (prop.isEventable()) {
-                                
+
                                 // make sure that the port exists
                                 if (this.propertyChangePort != null) {
                                     this.propertyChangePort.sendPropertyEvent(validProp.id);
@@ -326,7 +326,7 @@ public abstract class Resource implements ResourceOperations, Runnable { // SUPP
         } catch (final Throwable t) {
            // PASS
         }
-        
+
         if ((validProperties.size() == 0) && (invalidProperties.size() != 0)) {
             throw new InvalidConfiguration("Error configuring component", invalidProperties.toArray(new DataType[0]));
         } else if ((validProperties.size() != 0) && (invalidProperties.size() != 0)) {
@@ -377,7 +377,7 @@ public abstract class Resource implements ResourceOperations, Runnable { // SUPP
     /**
      * This method checks if the given configProperties are valid for this
      * component for the query operation.
-     * 
+     *
      * @param configProperties the properties to validate
      * @param validProperties storage for the valid properties
      * @param invalidProperties storage for the invalid properties
@@ -401,11 +401,11 @@ public abstract class Resource implements ResourceOperations, Runnable { // SUPP
             }
         }
     }
-    
+
     /**
      * This method checks if the given configProperties are valid for this
      * component for the configure operation.
-     * 
+     *
      * @param configProperties the properties to validate
      * @param validProperties storage for the valid properties
      * @param invalidProperties storage for the invalid properties
@@ -433,7 +433,7 @@ public abstract class Resource implements ResourceOperations, Runnable { // SUPP
     /**
      * This returns true if the component constructor has run and the component
      * is not told to release.
-     * 
+     *
      * @deprecated use started instead
      * @return true if the component is started
      */
@@ -441,21 +441,21 @@ public abstract class Resource implements ResourceOperations, Runnable { // SUPP
         return this.started;
     }
 
-    
+
     /**
      * Register whichever port is to be used to issue property changes
      */
     public void registerPropertyChangePort(final PropertyEventSupplier newPropertyChangePort) {
         this.propertyChangePort = newPropertyChangePort;
     }
-    
+
     protected boolean isDisposed() {
         return this.disposed;
     }
 
     /**
      * This returns the CORBA ORB used by the component
-     * 
+     *
      * @return the ORB in use
      */
     protected org.omg.CORBA.ORB getOrb() {
@@ -464,16 +464,16 @@ public abstract class Resource implements ResourceOperations, Runnable { // SUPP
 
     /**
      * This returns the RootPOA manager for the ORB in use
-     * 
+     *
      * @return the POA manager
      */
     protected POA getPoa() {
         return this.poa;
     }
-    
+
     /**
      * This function explicitly activates the given Servant.
-     * 
+     *
      * @param s the Servant to activate
      * @return the activated CORBA Object
      */
@@ -493,7 +493,7 @@ public abstract class Resource implements ResourceOperations, Runnable { // SUPP
 
     /**
      * Initializes properties via the execparams.
-     * 
+     *
      * @param execparams
      */
     protected void initializeProperties(Map<String, String> execparams) {
@@ -507,11 +507,11 @@ public abstract class Resource implements ResourceOperations, Runnable { // SUPP
 
     /**
      * Protected initialize intended only to be used by start_component.
-     * 
+     *
      * @param compId
      * @param orb
-     * @throws WrongPolicy 
-     * @throws ServantNotActive 
+     * @throws WrongPolicy
+     * @throws ServantNotActive
      */
     protected CF.Resource setup(final String compId, final String compName, final ORB orb, final POA poa) throws ServantNotActive, WrongPolicy {
         this.compId = compId;
@@ -527,7 +527,7 @@ public abstract class Resource implements ResourceOperations, Runnable { // SUPP
 
     /**
      * Parse the set of SCA execparam arguments into a Map
-     * 
+     *
      * @param args as passed in from the command line
      * @return a map of arg/value pairs
      */
@@ -543,7 +543,7 @@ public abstract class Resource implements ResourceOperations, Runnable { // SUPP
 
     /**
      * Start-up function to be used from a main() function.
-     * 
+     *
      * @param clazz
      * @param args
      * @param builtInORB
@@ -551,15 +551,15 @@ public abstract class Resource implements ResourceOperations, Runnable { // SUPP
      * @param bufSize
      * @throws InstantiationException
      * @throws IllegalAccessException
-     * @throws InvalidObjectReference 
-     * @throws org.omg.CosNaming.NamingContextPackage.InvalidName 
-     * @throws CannotProceed 
-     * @throws NotFound 
-     * @throws WrongPolicy 
-     * @throws ServantNotActive 
+     * @throws InvalidObjectReference
+     * @throws org.omg.CosNaming.NamingContextPackage.InvalidName
+     * @throws CannotProceed
+     * @throws NotFound
+     * @throws WrongPolicy
+     * @throws ServantNotActive
      */
-    public static void start_component(@SuppressWarnings("rawtypes") final Class clazz, final String[] args, final boolean builtInORB, final int fragSize, final int bufSize) 
-    throws InstantiationException, IllegalAccessException, InvalidObjectReference, NotFound, CannotProceed, org.omg.CosNaming.NamingContextPackage.InvalidName, ServantNotActive, WrongPolicy 
+    public static void start_component(@SuppressWarnings("rawtypes") final Class clazz, final String[] args, final boolean builtInORB, final int fragSize, final int bufSize)
+    throws InstantiationException, IllegalAccessException, InvalidObjectReference, NotFound, CannotProceed, org.omg.CosNaming.NamingContextPackage.InvalidName, ServantNotActive, WrongPolicy
     {
         final Properties props = new Properties();
         if (!builtInORB) {
@@ -577,7 +577,7 @@ public abstract class Resource implements ResourceOperations, Runnable { // SUPP
 
     /**
      * Start-up function to be used from a main() function.
-     * 
+     *
      * @param clazz
      * @param args
      * @param builtInORB
@@ -585,15 +585,15 @@ public abstract class Resource implements ResourceOperations, Runnable { // SUPP
      * @param bufSize
      * @throws InstantiationException
      * @throws IllegalAccessException
-     * @throws InvalidObjectReference 
-     * @throws org.omg.CosNaming.NamingContextPackage.InvalidName 
-     * @throws CannotProceed 
-     * @throws NotFound 
-     * @throws WrongPolicy 
-     * @throws ServantNotActive 
+     * @throws InvalidObjectReference
+     * @throws org.omg.CosNaming.NamingContextPackage.InvalidName
+     * @throws CannotProceed
+     * @throws NotFound
+     * @throws WrongPolicy
+     * @throws ServantNotActive
      */
-    public static void start_component(@SuppressWarnings("rawtypes") final Class clazz,  final String[] args, final Properties props) 
-    throws InstantiationException, IllegalAccessException, InvalidObjectReference, NotFound, CannotProceed, org.omg.CosNaming.NamingContextPackage.InvalidName, ServantNotActive, WrongPolicy 
+    public static void start_component(@SuppressWarnings("rawtypes") final Class clazz,  final String[] args, final Properties props)
+    throws InstantiationException, IllegalAccessException, InvalidObjectReference, NotFound, CannotProceed, org.omg.CosNaming.NamingContextPackage.InvalidName, ServantNotActive, WrongPolicy
     {
         if (!Resource.class.isAssignableFrom(clazz)) {
             throw new IllegalArgumentException("start_component() can only start classes of type org.ossie.component.Resource");
@@ -727,7 +727,7 @@ public abstract class Resource implements ResourceOperations, Runnable { // SUPP
 
     /**
      * This function returns the filename of the local logging configuration file given an SCA FileSystem logging file.
-     * 
+     *
      * @param uri string containing SCA File System filename for logging configuration file
      * @return the string reprenting the local logging configuration filename
      */
@@ -762,7 +762,7 @@ public abstract class Resource implements ResourceOperations, Runnable { // SUPP
             if (slashPos != -1) {
                 tempPath = tempPath.substring(slashPos + 1);
             }
-            
+
             FileOutputStream localFile = new FileOutputStream(tempPath);
             localFile.write(data.value);
             localPath = tempPath;
