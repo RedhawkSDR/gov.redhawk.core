@@ -58,7 +58,7 @@ public class SimpleSequenceValueEditingSupport extends EditingSupport {
 	 */
 	@Override
 	protected CellEditor getCellEditor(final Object element) {
-		final EDataType eDataType = this.valueType.toDataType();
+		final EDataType eDataType = this.valueType.toEDataType(complex);
 		final Composite composite = (Composite) getViewer().getControl();
 		if (eDataType.getInstanceClass() == Boolean.class || eDataType.getInstanceClass() == Boolean.TYPE) {
 			return new ExtendedComboBoxCellEditor(composite, Arrays.asList(new Object[] { Boolean.FALSE, Boolean.TRUE }), getEditLabelProvider(), true);

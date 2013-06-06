@@ -60,7 +60,7 @@ public class ScaSimpleSequenceValueEditingSupport extends EditingSupport {
 			return null;
 		}
 
-		final EDataType eDataType = this.property.getDefinition().getType().toDataType();
+		final EDataType eDataType = this.property.getDefinition().getType().toEDataType(this.property.getDefinition().isComplex());
 		final Composite composite = (Composite) getViewer().getControl();
 		if (eDataType.getInstanceClass() == Boolean.class || eDataType.getInstanceClass() == Boolean.TYPE) {
 			return new ExtendedComboBoxCellEditor(composite, Arrays.asList(new Object[] {

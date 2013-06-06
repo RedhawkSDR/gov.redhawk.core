@@ -400,7 +400,7 @@ public class SequencePropertyValueWizardPage extends WizardPage {
 			@Override
 			public void update(final ViewerCell cell) {
 				super.update(cell);
-				if (RadixLabelProviderUtil.supports(seqProperty.getDefinition().getType())) {
+				if (RadixLabelProviderUtil.supports(seqProperty.getDefinition().getType(), seqProperty.getDefinition().isComplex())) {
 					int[] radix = new int[0];
 					if (seqProperty.getDefinition().getValues() != null) {
 						radix = RadixLabelProviderUtil.getRadix(seqProperty.getDefinition().getValues().getValue());

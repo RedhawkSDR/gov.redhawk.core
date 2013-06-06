@@ -262,7 +262,7 @@ public class ScaSimpleSequencePropertyItemProvider extends ScaAbstractPropertyIt
 		} else {
 			if (property == null) {
 				retVal =  value.toString();
-			} else if (RadixLabelProviderUtil.supports(property.getType())) {
+			} else if (RadixLabelProviderUtil.supports(property.getType(), property.isComplex())) {
 				String [] defValue = new String[0];
 				if (property.getValues() != null && !property.getValues().getValue().isEmpty()) {
 					defValue = property.getValues().getValue().toArray(defValue);

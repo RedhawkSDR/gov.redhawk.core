@@ -33,7 +33,7 @@ public abstract class PropertyValueTypePropertyDescriptor extends PropertyDescri
 		private Boolean complex;
 
 		public PropertyValueTypeValueHandler(final PropertyValueType type, Boolean complex) {
-			super(type.toDataType());
+			super(type.toEDataType(complex));
 			this.type = type;
 			this.complex = complex;
 		}
@@ -72,7 +72,7 @@ public abstract class PropertyValueTypePropertyDescriptor extends PropertyDescri
 
 		@Override
 		public String toString(final Object value) {
-			if (RadixLabelProviderUtil.supports(getType())) {
+			if (RadixLabelProviderUtil.supports(getType(), complex)) {
 				return RadixLabelProviderUtil.getText(value, getRadix(value));
 			} else {
 				return super.toString(value);
@@ -83,7 +83,7 @@ public abstract class PropertyValueTypePropertyDescriptor extends PropertyDescri
 	public static class PropertyValueTypeCellEditor extends EDataTypeCellEditor {
 
 		public PropertyValueTypeCellEditor(final PropertyValueType type, Boolean complex, final Composite arg1) {
-			super(type.toDataType(), arg1);
+			super(type.toEDataType(complex), arg1);
 			this.valueHandler = new PropertyValueTypeValueHandler(type, complex);
 			setValidator(this.valueHandler);
 		}

@@ -69,7 +69,7 @@ public class ScaSimplePropertyControl {
 		this.property = property;
 		final ScaSimpleProperty simpleProperty = property;
 		final EAttribute proxyFeature = EcoreUtil.copy(ScaPackage.Literals.SCA_SIMPLE_PROPERTY__VALUE);
-		proxyFeature.setEType(simpleProperty.getDefinition().getType().toDataType());
+		proxyFeature.setEType(simpleProperty.getDefinition().getType().toEDataType(property.getDefinition().isComplex()));
 		this.localValue = new WritableValue(null, proxyFeature);
 		this.serverValue = new WritableValue(null, proxyFeature);
 

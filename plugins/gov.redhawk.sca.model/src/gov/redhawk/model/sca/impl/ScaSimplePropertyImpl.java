@@ -131,7 +131,7 @@ public class ScaSimplePropertyImpl extends ScaAbstractPropertyImpl<Simple> imple
 	public void setValue(Object newValue) {
 		if (getDefinition() != null && getDefinition().getType() != null) {
 			PropertyValueType propType = getDefinition().getType();
-			EDataType eDataType = propType.toDataType();
+			EDataType eDataType = propType.toEDataType(getDefinition().isComplex());
 			Class< ? > typeClass = eDataType.getInstanceClass();
 			typeClass.cast(newValue);
 		}

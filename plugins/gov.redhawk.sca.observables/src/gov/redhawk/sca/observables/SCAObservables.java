@@ -42,7 +42,7 @@ public class SCAObservables {
 
 	public static IObservableValue observeSimpleProperty(final ScaSimpleProperty simple) {
 		if (simple != null) {
-			final EDataType type = simple.getDefinition().getType().toDataType();
+			final EDataType type = simple.getDefinition().getType().toEDataType(simple.getDefinition().isComplex());
 
 			final EAttributeImpl attribute = (EAttributeImpl) EcoreUtil.copy(ScaPackage.Literals.SCA_SIMPLE_PROPERTY__VALUE);
 			attribute.setEType(type);

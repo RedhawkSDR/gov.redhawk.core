@@ -55,7 +55,7 @@ public abstract class SimpleSequenceValuePropertyDescriptor extends PropertyDesc
 	public static class SimpleSequenceValueCellEditor extends EDataTypeCellEditor {
 
 		public SimpleSequenceValueCellEditor(final PropertyValueType type, Boolean complex, final Composite arg1) {
-			super(type.toDataType(), arg1);
+			super(type.toEDataType(complex), arg1);
 			this.valueHandler = createPropertyValueTypeValueHandler(type, complex);
 			setValidator(this.valueHandler);
 		}

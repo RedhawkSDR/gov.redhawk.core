@@ -138,7 +138,7 @@ public class ScaSimpleSequencePropertyImpl extends ScaAbstractPropertyImpl<Simpl
 
 		protected boolean isInstance(Object object) {
 			if (getOwner().getDefinition() != null) {
-				EDataType dataType = getOwner().getDefinition().getType().toDataType();
+				EDataType dataType = getOwner().getDefinition().getType().toEDataType(getOwner().getDefinition().isComplex());
 				return dataType.isInstance(object);
 			} else {
 				return super.isInstance(object);
@@ -193,7 +193,7 @@ public class ScaSimpleSequencePropertyImpl extends ScaAbstractPropertyImpl<Simpl
 		// END GENERATED CODE
 		Class< ? > type = Object.class;
 		if (getDefinition() != null) {
-			EDataType dataType = getDefinition().getType().toDataType();
+			EDataType dataType = getDefinition().getType().toEDataType(getDefinition().isComplex());
 			type = dataType.getInstanceClass();
 		}
 		return getValues().toArray((Object[]) Array.newInstance(type, getValues().size()));

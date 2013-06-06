@@ -253,7 +253,7 @@ public class ScaSimplePropertyItemProvider extends ScaAbstractPropertyItemProvid
 					break;
 				}
 			}
-		} else if (RadixLabelProviderUtil.supports(property.getType())) {
+		} else if (RadixLabelProviderUtil.supports(property.getType(), property.isComplex())) {
 			retVal = RadixLabelProviderUtil.getText(value, RadixLabelProviderUtil.getRadix(property.getValue()));
 		}
 		

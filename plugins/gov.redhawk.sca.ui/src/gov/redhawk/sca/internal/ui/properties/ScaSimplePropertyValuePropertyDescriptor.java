@@ -72,7 +72,7 @@ public class ScaSimplePropertyValuePropertyDescriptor extends PropertyValueTypeP
 			        this.itemPropertyDescriptor.isSortChoices(this.object));
 		} else if (genericFeature instanceof EStructuralFeature) {
 			final EStructuralFeature feature = (EStructuralFeature) genericFeature;
-			final EClassifier eType = property.getDefinition().getType().toDataType();
+			final EClassifier eType = property.getDefinition().getType().toEDataType(property.getDefinition().isComplex());
 			final Collection< ? > choiceOfValues = this.itemPropertyDescriptor.getChoiceOfValues(this.object);
 			if (choiceOfValues != null) {
 				if (this.itemPropertyDescriptor.isMany(this.object)) {
@@ -154,10 +154,10 @@ public class ScaSimplePropertyValuePropertyDescriptor extends PropertyValueTypeP
 			return null;
 		}
 		final ScaSimpleProperty property = (ScaSimpleProperty) this.object;
-		if (RadixLabelProviderUtil.supports(property.getDefinition().getType())) {
+		if (RadixLabelProviderUtil.supports(property.getDefinition().getType(), property.getDefinition().isComplex())) {
 			return new ScaSimplePropertyValueTypeCellEditor(property, composite);
 		} else {
-			return super.createEDataTypeCellEditor(property.getDefinition().getType().toDataType(), composite);
+			return super.createEDataTypeCellEditor(property.getDefinition().getType().toEDataType(property.getDefinition().isComplex()), composite);
 		}
 	}
 
