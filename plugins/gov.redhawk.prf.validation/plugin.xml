@@ -218,6 +218,133 @@
                   </event>
                </target>
             </constraint>
+            <constraint
+                  class="gov.redhawk.validation.prf.ValidRangeMinTypeConstraint"
+                  id="gov.redhawk.prf.validation.constraint.min"
+                  isEnabledByDefault="true"
+                  lang="java"
+                  mode="Live"
+                  name="Valid Min Value Type"
+                  severity="ERROR"
+                  statusCode="1">
+               <message>
+                  Range Min should be of type {0}
+               </message>
+               <target
+                     class="Range">
+                  <event
+                        name="Set">
+                     <feature
+                           name="min">
+                     </feature>
+                  </event>
+               </target>
+            </constraint>
+            <constraint
+                  class="gov.redhawk.validation.prf.ValidRangeMaxTypeConstraint"
+                  id="gov.redhawk.prf.validation.constraint.max"
+                  isEnabledByDefault="true"
+                  lang="java"
+                  mode="Live"
+                  name="Valid Max Value Type"
+                  severity="ERROR"
+                  statusCode="1">
+               <message>
+                  Range Max should be of type {0}
+               </message>
+               <target
+                     class="Range">
+                  <event
+                        name="Set">
+                     <feature
+                           name="max">
+                     </feature>
+                  </event>
+               </target>
+            </constraint>
+            <constraint
+                  class="gov.redhawk.validation.prf.ValidRangeValuesConstraint"
+                  id="gov.redhawk.prf.validation.rangeValues"
+                  isEnabledByDefault="true"
+                  lang="java"
+                  mode="Live"
+                  name="Valid Range Values"
+                  severity="ERROR"
+                  statusCode="5">
+               <message>
+                  Min value of {0} is greater than max value of {1}
+               </message>
+               <target
+                     class="Range">
+                  <event
+                        name="Set">
+                     <feature
+                           name="min">
+                     </feature>
+                     <feature
+                           name="max">
+                     </feature>
+                  </event>
+               </target>
+            </constraint>
+            <constraint
+                  class="gov.redhawk.validation.prf.ValueWithinRangeTypeConstraint"
+                  id="gov.redhawk.prf.validation.constraint.valueInRange"
+                  isEnabledByDefault="true"
+                  lang="java"
+                  mode="Live"
+                  name="Value Within Range"
+                  severity="ERROR"
+                  statusCode="1">
+               <message>
+                  {0}
+               </message>
+               <target
+                     class="Simple">
+                  <event
+                        name="Set">
+                     <feature
+                           name="value">
+                     </feature>
+                  </event>
+               </target>
+               <target
+                     class="Values">
+                  <event
+                        name="Add">
+                     <feature
+                           name="value">
+                     </feature>
+                  </event>
+                  <event
+                        name="Add Many">
+                     <feature
+                           name="value">
+                     </feature>
+                  </event>
+                  <event
+                        name="Remove">
+                     <feature
+                           name="value">
+                     </feature>
+                  </event>
+                  <event
+                        name="Remove Many">
+                     <feature
+                           name="value">
+                     </feature>
+                  </event>
+               </target>
+               <target
+                     class="SimpleRef">
+                  <event
+                        name="Set">
+                     <feature
+                           name="value">
+                     </feature>
+                  </event>
+               </target>
+            </constraint>
          </constraints>
       </constraintProvider>
    </extension>
