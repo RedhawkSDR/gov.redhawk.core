@@ -1,10 +1,10 @@
 /**
- * This file is protected by Copyright. 
+ * This file is protected by Copyright.
  * Please refer to the COPYRIGHT file distributed with this source distribution.
- * 
+ *
  * This file is part of REDHAWK IDE.
- * 
- * All rights reserved.  This program and the accompanying materials are made available under 
+ *
+ * All rights reserved.  This program and the accompanying materials are made available under
  * the terms of the Eclipse Public License v1.0 which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html.
  *
@@ -98,9 +98,9 @@ public class corbareceiver extends CorbaPrimitive { //SUPPRESS CHECKSTYLE ClassN
 
 	}
 
-	/** {@inheritDoc} */
 	@Override
 	public int open() {
+		// MA is the argument list
 		final FileName fileName = this.MA.getFileName(corbareceiver.A_FILE);
 		final String encoded_idl = this.MA.getS(corbareceiver.A_IDL, null);
 		final String idl = corbareceiver.decodeIDL(encoded_idl);
@@ -116,8 +116,7 @@ public class corbareceiver extends CorbaPrimitive { //SUPPRESS CHECKSTYLE ClassN
 		this.outputFile = corbareceiver.createOutputFile(this.currentSri, this.MA.cmd, this.receiver, fileName, this.force2000, this.framesize);
 		this.outputFile.open();
 
-		// This check fails if we weren't able to connect to the ORB - MA is the
-		// argument list
+		// This check fails if we weren't able to connect to the ORB
 		if ((ret == Commandable.NORMAL)) {
 
 			// Check if we were able to connect to the port
@@ -130,7 +129,6 @@ public class corbareceiver extends CorbaPrimitive { //SUPPRESS CHECKSTYLE ClassN
 		return ret;
 	}
 
-	/** {@inheritDoc} */
 	@Override
 	public synchronized int close() {
 		if (this.state != Commandable.RESTART) {
@@ -191,7 +189,7 @@ public class corbareceiver extends CorbaPrimitive { //SUPPRESS CHECKSTYLE ClassN
 	 * This will determine if we should continue processing the packet. To
 	 * process, the endOfStream must be false and we must have previously
 	 * received SRI.
-	 * 
+	 *
 	 * @param endOfStream true if the received stream has closed
 	 * @return true if we should process the data
 	 */
@@ -208,7 +206,7 @@ public class corbareceiver extends CorbaPrimitive { //SUPPRESS CHECKSTYLE ClassN
 
 	/**
 	 * This receives the SRI and updates or modifies the output pipe.
-	 * 
+	 *
 	 * @param sri the SRI containing information about the incoming data
 	 * @since 8.0
 	 */
@@ -216,20 +214,19 @@ public class corbareceiver extends CorbaPrimitive { //SUPPRESS CHECKSTYLE ClassN
 		setStreamSri(sri);
 	}
 
-	private static DataFile createOutputFile(final StreamSRI sri, final Command cmd, final BaseBulkIOReceiver receiver, final FileName fileName,
-	        boolean force2000, final int frameSize) {
+	private static DataFile createOutputFile(final StreamSRI sri, final Command cmd, final BaseBulkIOReceiver receiver,
+			final FileName fileName, boolean force2000, final int frameSize) {
 		if (sri == null) {
-			return new DataFile(cmd, fileName, (force2000) ? "2000" : "1000", "S" + receiver.getType(), // SUPPRESS CHECKSTYLE AvoidInline
-			        BaseFile.OUTPUT,
-			        -1.0,
-			        null);
+			final String fileType = (force2000) ? "2000" : "1000"; // SUPPRESS CHECKSTYLE AvoidInline
+			final String format   = "S" + receiver.getType();
+			DataFile outputFile = new DataFile(cmd, fileName, fileType, format, BaseFile.OUTPUT);
+			outputFile.setSubSize(frameSize); // <-- this call will not convert 1000 to 2000
+			return outputFile;
 		}
-		final String format = ((sri.mode == 0) ? "S" : "C") + receiver.getType(); // SUPPRESS CHECKSTYLE AvoidInline
 
-		final DataFile outputFile = new DataFile(cmd, fileName, ((sri.subsize != 0) || (force2000)) ? "2000" : "1000", format, // SUPPRESS CHECKSTYLE AvoidInline
-		        BaseFile.OUTPUT,
-		        -1.0,
-		        null);
+		final String fileType = ((sri.subsize != 0) || (force2000)) ? "2000" : "1000"; // SUPPRESS CHECKSTYLE AvoidInline
+		final String format   = ((sri.mode == 0) ? "S" : "C") + receiver.getType();    // SUPPRESS CHECKSTYLE AvoidInline
+		final DataFile outputFile = new DataFile(cmd, fileName, fileType, format, BaseFile.OUTPUT);
 
 		if (sri.subsize > 0) {
 			outputFile.setFrameSize(sri.subsize);
@@ -248,13 +245,13 @@ public class corbareceiver extends CorbaPrimitive { //SUPPRESS CHECKSTYLE ClassN
 		outputFile.setXUnits(sri.xunits);
 
 		outputFile.setYStart(sri.ystart);
-		if (sri.ydelta == 0.0) { // NXM refuses to plot correctly if xdelta=0
+		if (sri.ydelta == 0.0) { // NXM refuses to plot correctly if ydelta=0
 			sri.ydelta = 1.0;
 		}
 		//TEMP workaround until sri is correct
 		outputFile.setYDelta(/*sri.ydelta*/0.085);
 		outputFile.setYUnits(sri.yunits);
-		
+
 		return outputFile;
 	}
 
@@ -301,11 +298,11 @@ public class corbareceiver extends CorbaPrimitive { //SUPPRESS CHECKSTYLE ClassN
 	public void write(final Object dataArray, final int size, final byte type, final boolean endOfStream) {
 		write(dataArray, size, type, endOfStream, null);
 	}
-	
+
 	/**
 	 * This plots an arbitrary typed array of data. Type checking is performed
 	 * by System.arraycopy(). The type of 'list' must match 'type'.
-	 * 
+	 *
 	 * @param dataArray the array of data to plot
 	 * @param size the length of the data in the array
 	 * @param type the NeXtMidas type of the data to plot (eg. Data.FLOAT)
