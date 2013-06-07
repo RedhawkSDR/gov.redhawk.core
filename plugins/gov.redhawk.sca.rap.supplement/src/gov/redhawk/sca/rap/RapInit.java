@@ -2,6 +2,7 @@ package gov.redhawk.sca.rap;
 
 import java.security.Principal;
 
+import java.security.cert.X509Certificate;
 import javax.servlet.http.HttpServletRequest;
 
 import org.eclipse.rwt.RWT;
@@ -72,7 +73,10 @@ public class RapInit {
 
 			public void run() {
 				if (RWT.getRequest() != null) {
-					user[0] = RWT.getRequest().getUserPrincipal();
+					X509Certificate[] certs = (X509Certificate[]) RWT.getRequest().getAttribute("javax.servlet.request.X509Certificate");
+					if (certs != null && certs.length > 0) {
+						user[0] = certs[0].getSubjectDN();
+					}
 				}
 				done[0] = true;
 			}
