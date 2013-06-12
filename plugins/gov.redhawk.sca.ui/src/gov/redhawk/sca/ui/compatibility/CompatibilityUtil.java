@@ -46,4 +46,34 @@ public class CompatibilityUtil {
 			return null;
 		}
 	}
+	
+	/**
+     * @since 9.1
+     */
+	public static void runInFakeUIContext(Display display, Runnable runnable) {
+		//Throw exception if RAP implementation not present. There is no RCP implementation.
+		if (SWT.getPlatform().startsWith("rap")) {
+			throw new UnsupportedOperationException();
+		}
+	}
+	
+	/**
+     * @since 9.1
+     */
+	public static void activateUIConnection(String id) {
+		//Throw exception if RAP implementation not present. There is no RCP implementation.
+		if (SWT.getPlatform().startsWith("rap")) {
+			throw new UnsupportedOperationException();
+		}
+	}
+	
+	/**
+     * @since 9.1
+     */
+	public static void deactivateUIConnection(String id) {
+		//Throw exception if RAP implementation not present. There is no RCP implementation.
+		if (SWT.getPlatform().startsWith("rap")) {
+			throw new UnsupportedOperationException();
+		}
+	}
 }
