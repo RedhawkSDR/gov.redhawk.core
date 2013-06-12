@@ -16,6 +16,7 @@ import gov.redhawk.sca.rap.RapInit;
 import java.security.Principal;
 
 import org.eclipse.jface.viewers.ComboViewer;
+import org.eclipse.rwt.lifecycle.UICallBack;
 import org.eclipse.swt.graphics.FontData;
 import org.eclipse.swt.widgets.Display;
 
@@ -35,5 +36,17 @@ public class CompatibilityUtil {
 	
 	public static Principal getUserPrincipal(Display display) {
 		return RapInit.getUserPrincipal(display);
+	}
+	
+	public static void runinFakeUIContext(Display display, Runnable runnable) {
+		UICallBack.runNonUIThreadWithFakeContext(display, runnable);
+	}
+	
+	public static void activateUIConnection(String id) {
+		UICallBack.activate(id);
+	}
+	
+	public static void deactivateUIConnection(String id) {
+		UICallBack.deactivate(id);
 	}
 }
