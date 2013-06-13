@@ -11,9 +11,15 @@
  */
 package gov.redhawk.sca.ui.compatibility;
 
+import gov.redhawk.sca.rap.RapInit;
+
+import java.security.Principal;
+
 import org.eclipse.jface.viewers.ComboViewer;
+import org.eclipse.rwt.lifecycle.UICallBack;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.FontData;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Listener;
 
@@ -39,5 +45,21 @@ public class CompatibilityUtil {
 			}
 
 		});
+	}
+	
+	public static Principal getUserPrincipal(Display display) {
+		return null;
+	}
+	
+	public static void runinFakeUIContext(Display display, Runnable runnable) {
+		//No RAP implementation
+	}
+	
+	public static void activateUIConnection(String id) {
+		//No RAP implementation
+	}
+	
+	public static void deactivateUIConnection(String id) {
+		//No RAP implementation
 	}
 }
