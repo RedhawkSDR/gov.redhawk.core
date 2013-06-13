@@ -11,7 +11,6 @@
  */
 package gov.redhawk.ui.port.nxmplot;
 
-
 /**
  * @since 2.1
  */
@@ -21,19 +20,33 @@ public class CorbaConnectionSettings {
 	private String resource = "<DomainManager>/<Waveform>/<Resource>";
 	private String portName = "sample_out";
 	private String idl;
-	private boolean is2D = false;
 	private String portString = "";
+	private int frameSize = 1024;
+	private boolean overrideSRISubSize;
 
 	public CorbaConnectionSettings() {
 		this.portString = this.resource.substring(this.resource.lastIndexOf('/') + 1) + "[" + this.portName + "]";
 	}
 
-	public CorbaConnectionSettings(final String portPath, final String idl, final boolean is2D) {
+	/**
+	 * @param portPath
+	 * @param idl
+	 * @param force2D
+	 * @deprecated Plots are always type 2000,  use set Frame size for changing the framing.  Use {@link #CorbaConnectionSettings(String, String)} instead.
+	 */
+	@Deprecated
+	public CorbaConnectionSettings(final String portPath, final String idl, boolean force2D) {
+		this(portPath, idl);
+	}
+
+	/**
+	 * @since 4.2
+	 */
+	public CorbaConnectionSettings(final String portPath, final String idl) {
 		this.host = "";
 		this.port = 0;
 		this.portName = portPath;
 		this.resource = "";
-		this.is2D = is2D;
 		this.idl = idl;
 	}
 
@@ -77,12 +90,21 @@ public class CorbaConnectionSettings {
 		this.idl = idl;
 	}
 
+	/**
+	 * 
+	 * @deprecated Has no effect
+	 */
+	@Deprecated
 	public void set2D(final boolean is2D) {
-		this.is2D = is2D;
+
 	}
 
+	/**
+	 * @deprecated Is always true
+	 */
+	@Deprecated
 	public boolean is2D() {
-		return this.is2D;
+		return true;
 	}
 
 	public void updatePortString() {
@@ -96,6 +118,36 @@ public class CorbaConnectionSettings {
 
 	public String getPortString() {
 		return this.portString;
+	}
+
+	/**
+	 * @since 4.2
+	 */
+	public void setFrameSize(int frameSize) {
+		this.frameSize = frameSize;
+	}
+
+	/**
+	 * @since 4.2
+	 */
+	public int getFrameSize() {
+		return frameSize;
+	}
+
+	/**
+	 * @see #setOverrideSRISubSize(boolean)
+	 * @since 4.2
+	 */
+	public boolean isOverrideSRISubSize() {
+		return this.overrideSRISubSize;
+	}
+
+	/**
+	 * @param overrideSRISubSize Override the SRI subsize with the given framesize. Default false.
+	 * @since 4.2
+	 */
+	public void setOverrideSRISubSize(boolean overrideSRISubSize) {
+		this.overrideSRISubSize = overrideSRISubSize;
 	}
 
 }

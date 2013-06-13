@@ -72,19 +72,8 @@ public class PlotPageBook extends Composite {
 
 		});
 
-		plotPorts(connList, fft, ports, sessionId, check2d(connList));
+		plotPorts(connList, fft, ports, sessionId, true);
 
-	}
-
-	private boolean check2d(final List<CorbaConnectionSettings> connList) {
-		boolean is2d = false;
-		for (final CorbaConnectionSettings settings : connList) {
-			if (settings.is2D()) {
-				is2d = true;
-				break;
-			}
-		}
-		return is2d;
 	}
 
 	/**
@@ -119,10 +108,10 @@ public class PlotPageBook extends Composite {
 		} else {
 			connList = inputConnList;
 		}
-		final boolean is2d = createRaster || check2d(connList);
+		
 		final String rasterPlotArgs = "TYPE=RASTER View=iYX SCALE=AutoMin|AutoMax AUTOL=16";
 		final String rasterPlotSwitches = "/LPS=200/RT/NICE";
-		if (is2d) {
+		if (createRaster) {
 			this.nxmPlotWidgetRaster = PlotActivator.getDefault().getPlotFactory().createPlotWidget(this.pageBook, SWT.None);
 			this.pageBook.setTabList(new Control[] { this.nxmPlotWidgetLine, this.nxmPlotWidgetRaster });
 			this.nxmPlotWidgetRaster.addMessageHandler(this.adapter);

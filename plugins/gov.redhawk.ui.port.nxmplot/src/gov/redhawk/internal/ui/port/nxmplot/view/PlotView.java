@@ -299,7 +299,7 @@ public class PlotView extends ViewPart {
 			} else if (parent instanceof ScaWaveform) {
 				name = ((ScaWaveform) parent).getName();
 			}
-			final CorbaConnectionSettings connectionSettings = new CorbaConnectionSettings(port.getIor(), port.getRepid(), true);
+			final CorbaConnectionSettings connectionSettings = new CorbaConnectionSettings(port.getIor(), port.getRepid());
 			connectionSettings.setPortString(name + " [" + port.getName() + "]");
 			connList.add(connectionSettings);
 		}

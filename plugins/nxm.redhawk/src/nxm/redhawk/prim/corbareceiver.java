@@ -19,8 +19,7 @@ import nxm.redhawk.prim.data.BaseBulkIOReceiver;
 import nxm.redhawk.prim.data.BulkIOReceiverFactory;
 import nxm.sys.inc.Commandable;
 import nxm.sys.lib.BaseFile;
-import nxm.sys.lib.Command;
-import nxm.sys.lib.Data;
+import nxm.sys.lib.Convert;
 import nxm.sys.lib.DataFile;
 import nxm.sys.lib.FileName;
 import nxm.sys.lib.Time;
@@ -46,36 +45,44 @@ public class corbareceiver extends CorbaPrimitive { //SUPPRESS CHECKSTYLE ClassN
 	 * @since 8.0
 	 */
 	public static final String A_IDL = "IDL";
-
 	/**
 	 * @since 8.0
 	 */
 	public static final String NAME = "CORBARECEIVER";
+
 	/**
-	 * @since 8.0
+	 * Framesize attribute
+	 * @since 10.0
 	 */
-	public static final String A_FORCE_2000 = "FORCE2000";
+	public static final String A_FRAMESIZE = "FRAMESIZE";
+
+	/**
+	 * OVERRIDE FRAME SIZE attribute
+	 * @since 10.0
+	 */
+	public static final String A_OVERRIDE_SRI_SUBSIZE = "OVERRIDE_SRI_SUBSIZE";
+	/**
+	 * @since 10.0
+	 */
+	//	public static final String A_WAIT = "/WAIT";
 	/**
 	 * @since 8.0
 	 */
 	public static final String A_FILE = "FILE";
-
-	private static final int DEFAULT_SUBSIZE = 1024;
-	private static final double SLEEP_INTERVAL = 0.1;
+	//	private static final int SLEEP_INTERVAL = 1000;
 
 	/** the output file to write to */
 	private DataFile outputFile = null;
 
-	/** If the data should be force to type 2000, useful for 1d plotting */
-	private boolean force2000;
 	/** The configured SRI */
 	private StreamSRI currentSri;
 	private org.omg.CORBA.Object stub;
 	private BaseBulkIOReceiver receiver;
 
-	private Data dataBuffer;
+	private int frameSizeAttribute;
 
-	private int framesize = corbareceiver.DEFAULT_SUBSIZE;
+	private FileName fileName;
+	private boolean overrideSRISubSize;
 
 	/**
 	 * @since 8.0
@@ -101,17 +108,17 @@ public class corbareceiver extends CorbaPrimitive { //SUPPRESS CHECKSTYLE ClassN
 	}
 
 	@Override
-	public int open() {
+	public synchronized int open() {
 		// MA is the argument list
-		final FileName fileName = this.MA.getFileName(corbareceiver.A_FILE);
+		this.fileName = this.MA.getFileName(corbareceiver.A_FILE);
 		final String encoded_idl = this.MA.getS(corbareceiver.A_IDL, null);
+		this.frameSizeAttribute = this.MA.getL(corbareceiver.A_FRAMESIZE, 0);
+		this.overrideSRISubSize = this.MA.getState(corbareceiver.A_OVERRIDE_SRI_SUBSIZE, false);
 		final String idl = corbareceiver.decodeIDL(encoded_idl);
 
 		if (this.receiver == null) {
 			this.receiver = BulkIOReceiverFactory.createReceiver(this, idl);
 		}
-
-		this.force2000 = this.MA.getState(corbareceiver.A_FORCE_2000, false);
 
 		int ret = super.open();
 
@@ -126,16 +133,20 @@ public class corbareceiver extends CorbaPrimitive { //SUPPRESS CHECKSTYLE ClassN
 			}
 		}
 
-		final double maxWaitForSRI = MA.getD("/WAIT", SLEEP_INTERVAL);
-		int numLoops = (int) (maxWaitForSRI / SLEEP_INTERVAL); // 0 or positive values will effect timeout
-		if (maxWaitForSRI < 0) {
-			numLoops = Integer.MAX_VALUE; // effectively infinity
-		}
-		while (this.currentSri == null && (numLoops-- > 0)) {
-			Time.sleep(SLEEP_INTERVAL);
-		}
+		//		final double maxWaitForSRI = MA.getD(corbareceiver.A_WAIT, SLEEP_INTERVAL);
+		//		int numLoops = (int) (maxWaitForSRI / SLEEP_INTERVAL); // 0 or positive values will effect timeout
+		//		if (maxWaitForSRI < 0) {
+		//			numLoops = Integer.MAX_VALUE; // effectively infinity
+		//		}
+		//		while (this.currentSri == null && (numLoops-- > 0)) {
+		//			try {
+		//				wait(SLEEP_INTERVAL);
+		//			} catch (InterruptedException e) {
+		//				// PASS
+		//			}
+		//		}
 
-		this.outputFile = corbareceiver.createOutputFile(this.currentSri, this.MA.cmd, this.receiver, fileName, this.force2000, this.framesize);
+		this.outputFile = createOutputFile(this.currentSri, this.receiver);
 		this.outputFile.open();
 
 		return ret;
@@ -149,11 +160,6 @@ public class corbareceiver extends CorbaPrimitive { //SUPPRESS CHECKSTYLE ClassN
 			if (this.outputFile != null) {
 				this.outputFile.close();
 				this.outputFile = null;
-			}
-			if (this.dataBuffer != null) {
-				this.dataBuffer.buf = null;
-				this.dataBuffer.size = -1;
-				this.dataBuffer = null;
 			}
 			if (this.stub != null) {
 				this.stub._release();
@@ -190,7 +196,7 @@ public class corbareceiver extends CorbaPrimitive { //SUPPRESS CHECKSTYLE ClassN
 			} catch (CoreException e) {
 				this.M.error(e);
 				return false;
-            }
+			}
 			return connectPort(this.stub);
 		} else {
 			return true;
@@ -226,45 +232,52 @@ public class corbareceiver extends CorbaPrimitive { //SUPPRESS CHECKSTYLE ClassN
 		setStreamSri(sri);
 	}
 
-	private static DataFile createOutputFile(final StreamSRI sri, final Command cmd, final BaseBulkIOReceiver receiver,
-			final FileName fileName, boolean force2000, final int frameSize) {
+	private DataFile createDefaultOutputFile() {
+		final String format = "S" + receiver.getType();
+		DataFile newOutputFile = new DataFile(this.MA.cmd, fileName, "2000", format, BaseFile.OUTPUT);
+		newOutputFile.setFrameSize(frameSizeAttribute); // <-- this call will not convert 1000 to 2000
+		return newOutputFile;
+	}
+
+	private DataFile createOutputFile(final StreamSRI sri, final BaseBulkIOReceiver receiver) {
 		if (sri == null) {
-			final String fileType = (force2000) ? "2000" : "1000"; // SUPPRESS CHECKSTYLE AvoidInline
-			final String format   = "S" + receiver.getType();
-			DataFile outputFile = new DataFile(cmd, fileName, fileType, format, BaseFile.OUTPUT);
-			outputFile.setSubSize(frameSize); // <-- this call will not convert 1000 to 2000
-			return outputFile;
+			return createDefaultOutputFile();
 		}
 
-		final String fileType = ((sri.subsize != 0) || (force2000)) ? "2000" : "1000"; // SUPPRESS CHECKSTYLE AvoidInline
-		final String format   = ((sri.mode == 0) ? "S" : "C") + receiver.getType();    // SUPPRESS CHECKSTYLE AvoidInline
-		final DataFile outputFile = new DataFile(cmd, fileName, fileType, format, BaseFile.OUTPUT);
+		int outputFramesize = sri.subsize;
+		if (outputFramesize <= 0) {
+			outputFramesize = this.frameSizeAttribute;
+		} else if (this.overrideSRISubSize && this.frameSizeAttribute > 0) {
+			outputFramesize = this.frameSizeAttribute;
+		}
 
-		if (sri.subsize > 0) {
-			outputFile.setFrameSize(sri.subsize);
-			force2000 = false;
+		outputFramesize = Math.max(outputFramesize, 1);
+
+		final String fileType = (outputFramesize > 0) ? "2000" : "1000"; // SUPPRESS CHECKSTYLE AvoidInline
+		final String format = ((sri.mode == 0) ? "S" : "C") + receiver.getType(); // SUPPRESS CHECKSTYLE AvoidInline
+		final DataFile newOutputFile = new DataFile(this.MA.cmd, fileName, fileType, format, BaseFile.OUTPUT);
+
+		if (outputFramesize > 0) {
+			newOutputFile.setFrameSize(outputFramesize);
+		}
+
+		newOutputFile.setXStart(sri.xstart);
+		if (sri.xdelta > 0) {
+			newOutputFile.setXDelta(sri.xdelta);
 		} else {
-			if (force2000) {
-				outputFile.setFrameSize(frameSize);
-			}
+			newOutputFile.setXDelta(1);
 		}
+		newOutputFile.setXUnits(sri.xunits);
 
-		outputFile.setXStart(sri.xstart);
-		if (sri.xdelta == 0.0) { // NXM refuses to plot correctly if xdelta=0
-			sri.xdelta = 1.0;
+		newOutputFile.setYStart(sri.ystart);
+		if (sri.ydelta > 0) {
+			newOutputFile.setYDelta(sri.ydelta);
+		} else {
+			newOutputFile.setYDelta(1);
 		}
-		outputFile.setXDelta(sri.xdelta);
-		outputFile.setXUnits(sri.xunits);
+		newOutputFile.setYUnits(sri.yunits);
 
-		outputFile.setYStart(sri.ystart);
-		if (sri.ydelta == 0.0) { // NXM refuses to plot correctly if ydelta=0
-			sri.ydelta = 1.0;
-		}
-		//TEMP workaround until sri is correct
-		outputFile.setYDelta(/*sri.ydelta*/0.085);
-		outputFile.setYUnits(sri.yunits);
-
-		return outputFile;
+		return newOutputFile;
 	}
 
 	private synchronized void setStreamSri(final StreamSRI sri) {
@@ -273,11 +286,14 @@ public class corbareceiver extends CorbaPrimitive { //SUPPRESS CHECKSTYLE ClassN
 		}
 		this.currentSri = sri;
 		sendMessage("STREAMSRI", 1, this.currentSri);
-		doRestart();
+		if (state == Commandable.PROCESS) {
+			doRestart();
+		} else if (state == Commandable.OPEN) {
+			notifyAll();
+		}
 	}
 
-	private void doRestart() {
-		this.dataBuffer = null;
+	private synchronized void doRestart() {
 		setState(Commandable.RESTART);
 	}
 
@@ -324,34 +340,24 @@ public class corbareceiver extends CorbaPrimitive { //SUPPRESS CHECKSTYLE ClassN
 		if (!(this.state == Commandable.PROCESS) || isStateChanged() || this.currentSri == null || !shouldProcessPacket(endOfStream, type)) {
 			return;
 		}
+
 		final DataFile localOutputFile = this.outputFile;
 		if (localOutputFile == null) {
 			return;
 		}
 
-		Data data = this.dataBuffer;
-		final int numElements; // FYI: we are truncating any partial data frames
-		if (localOutputFile.getType() == 2000) { // SUPPRESS CHECKSTYLE MagicNumber
-			numElements = size / localOutputFile.getSPA() / this.currentSri.subsize;
+		final Time midasTime;
+		if (time != null) {
+			midasTime = new Time(time.twsec + Time.J1970TOJ1950, time.tfsec);
 		} else {
-			numElements = size / localOutputFile.getSPA();
+			midasTime = null;
 		}
 
-		if (data == null) {
-			data = localOutputFile.getDataBuffer(numElements);
-			this.dataBuffer = data;
-		} else if (data.size != numElements) {
-			data.setSize(numElements);
-		}
-
-		if ((this.currentSri.blocking) || (localOutputFile.avail() >= data.size)) {
-			if (time != null) {
-				data.setHeader(new Time(time.twsec + Time.J1970TOJ1950, time.tfsec));
-			}
-			data.fromArray(dataArray, 0, type);
-			localOutputFile.write(data);
-		}
-
+		outputFile.setTimeAt(midasTime);
+		int bufferSize =  outputFile.bpa * size;
+		byte[] byteBuffer = new byte[bufferSize];
+		Convert.ja2bb(dataArray, 0, type, byteBuffer, 0, outputFile.dataType, size);
+		outputFile.write(byteBuffer, 0, byteBuffer.length);
 		return;
 	}
 
@@ -376,9 +382,7 @@ public class corbareceiver extends CorbaPrimitive { //SUPPRESS CHECKSTYLE ClassN
 		if (this.currentSri == null) {
 			return new StreamSRI[0];
 		} else {
-			return new StreamSRI[] {
-				this.currentSri
-			};
+			return new StreamSRI[] { this.currentSri };
 		}
 	}
 }
