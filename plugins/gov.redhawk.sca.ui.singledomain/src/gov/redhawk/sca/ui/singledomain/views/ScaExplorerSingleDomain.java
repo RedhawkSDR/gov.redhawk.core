@@ -276,8 +276,8 @@ public class ScaExplorerSingleDomain extends ScaExplorer {
 		fillToolBar("");
 		Principal user = CompatibilityUtil.getUserPrincipal(site.getShell().getDisplay());
 		//TODO Create or retrieve user-specific preferences node, for persisting domain connection info
-		//TEMP code for testing
-		ScaSingleDomainPlugin.logInfo("User CN from cert: " + (user == null ? "<NONE>" : user.getName()));
+		//TODO TEMP code for confirming cert presence while testing. Remove after implementation of cert-based user data persistence
+		ScaSingleDomainPlugin.logInfo("User CN from cert: " + ((user == null) ? "<NONE>" : user.getName()));
 	}
 
 	//BEGIN WORKAROUND CODE
