@@ -56,26 +56,27 @@ public class View extends ViewPart implements IControllerListener {
 	private static class CustomContentProvider extends ArrayContentProvider implements ITreeContentProvider {
 
 		public Object[] getChildren(Object parentElement) {
-	        return null;
-        }
+			return null;
+		}
 
 		public Object getParent(Object element) {
-	        return null;
-        }
+			return null;
+		}
 
 		public boolean hasChildren(Object element) {
-	        return false;
-        }
-		
+			return false;
+		}
+
 		@Override
 		public Object[] getElements(Object inputElement) {
 			if (inputElement instanceof Map< ? , ? >) {
 				return super.getElements(((Map< ? , ? >) inputElement).keySet());
 			}
-		    return super.getElements(inputElement);
+			return super.getElements(inputElement);
 		}
-		
+
 	};
+
 	private TreeViewer treeViewer;
 	private Button pauseButton;
 	private Button disconnectButton;
@@ -103,7 +104,7 @@ public class View extends ViewPart implements IControllerListener {
 		adapterFactory = createAdapterFactory();
 		this.treeViewer.setContentProvider(new CustomContentProvider());
 		this.treeViewer.setLabelProvider(new AdapterFactoryLabelProvider(adapterFactory) {
-			
+
 			@Override
 			public String getText(final Object object) {
 				if (object instanceof ScaUsesPort) {
@@ -138,14 +139,15 @@ public class View extends ViewPart implements IControllerListener {
 		this.pauseButton.addSelectionListener(new SelectionAdapter() {
 
 			public void widgetSelected(final SelectionEvent e) {
+				final boolean pause = View.this.pauseButton.getSelection();
 				Job job = new Job("Pausing") {
 
 					@Override
-                    protected IStatus run(IProgressMonitor monitor) {
-						View.this.controller.pause(View.this.pauseButton.getSelection());
-	                    return Status.OK_STATUS;
-                    }
-					
+					protected IStatus run(IProgressMonitor monitor) {
+						View.this.controller.pause(pause);
+						return Status.OK_STATUS;
+					}
+
 				};
 				job.setUser(true);
 				job.schedule();
@@ -158,11 +160,11 @@ public class View extends ViewPart implements IControllerListener {
 				Job job = new Job("Disconnecting") {
 
 					@Override
-                    protected IStatus run(IProgressMonitor monitor) {
+					protected IStatus run(IProgressMonitor monitor) {
 						View.this.disconnectPort(null);
-	                    return Status.OK_STATUS;
-                    }
-					
+						return Status.OK_STATUS;
+					}
+
 				};
 				job.setUser(true);
 				job.schedule();
@@ -208,11 +210,11 @@ public class View extends ViewPart implements IControllerListener {
 		Job job = new Job("Disposing Controller") {
 
 			@Override
-            protected IStatus run(IProgressMonitor monitor) {
+			protected IStatus run(IProgressMonitor monitor) {
 				controller.dispose();
-	            return Status.OK_STATUS;
-            }
-			
+				return Status.OK_STATUS;
+			}
+
 		};
 		job.schedule();
 		super.dispose();
@@ -258,7 +260,7 @@ public class View extends ViewPart implements IControllerListener {
 			getViewSite().getShell().getDisplay().asyncExec(new Runnable() {
 				public void run() {
 					if (!isDisposed && !treeViewer.getControl().isDisposed()) {
-						View.this.treeViewer.refresh();	
+						View.this.treeViewer.refresh();
 					}
 				}
 			});
