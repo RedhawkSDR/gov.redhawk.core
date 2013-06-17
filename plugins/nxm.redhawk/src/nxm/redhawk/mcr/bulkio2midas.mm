@@ -1,7 +1,8 @@
 STARTMACRO t:corbaargs t:fftargs t:thinargs s:output
     PIPE INIT
         corbareceiver/MSGID=MAIN/TLL=200/PS=^corbaargs.PIPESIZE/POLL=0.25 FILE=_CORBA_OUT HOST="^corbaargs.HOST" PORT=^corbaargs.PORT &
-            RESOURCE=^corbaargs.RESOURCE PORT_NAME=^corbaargs.PORT_NAME IDL="^corbaargs.IDL" FORCE2000=^corbaargs.FORCE2000
+            FRAMESIZE=^corbaargs.FRAMESIZE OVERRIDE_SRI_SUBSIZE=^corbaargs.OVERRIDE_SRI_SUBSIZE & 
+            RESOURCE=^corbaargs.RESOURCE PORT_NAME=^corbaargs.PORT_NAME IDL="^corbaargs.IDL"
         if fftargs isNULL then
             set fftout _CORBA_OUT
         else

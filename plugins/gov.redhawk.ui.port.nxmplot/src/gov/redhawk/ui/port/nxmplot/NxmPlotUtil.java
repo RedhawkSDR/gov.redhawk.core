@@ -24,6 +24,7 @@ import java.util.Map.Entry;
 
 import org.eclipse.swt.SWT;
 
+import nxm.redhawk.prim.corbareceiver;
 import nxm.sys.lib.Data;
 import nxm.sys.lib.Table;
 
@@ -38,6 +39,49 @@ public final class NxmPlotUtil {
 
 	private static final String KEY_COMMAND = "command";
 	private static final int MAX_RMIF_PACKET_SIZE = 32768; // in bytes
+	
+	/**
+	 * @since 4.2
+	 */
+	public static String getDefaultPlotArgs(PlotType type) {
+		if (type == null) {
+			return null;
+		}
+		switch(type) {
+		case RASTER:
+			return "TYPE=RASTER View=iYX SCALE=AutoMin|AutoMax AUTOL=16";
+		case DOT:
+		case LINE: 
+		case CONTOUR:
+		case MESH:
+		case POINT:
+			return "TYPE=" + type + " AXIS=+GRID OPTIONS=BStore SCALE=AutoMin|AutoMax AUTOL=16";
+		default:
+			return null;
+		}
+	}
+	
+	/**
+	 * @since 4.2
+	 */
+	public static String getDefaultPlotSwitches(PlotType type) {
+		if (type == null) {
+			return null;
+		}
+		switch(type) {
+		case RASTER:
+			return "/LPS=200/RT/NICE";
+		case DOT:
+		case CONTOUR:
+		case MESH:
+		case POINT:
+		case LINE:
+			return "/RT/NICE";
+		default:
+			return null;
+		}
+		
+	}
 
 	public static String formatPlotArgs(Map<String, String> args) {
 		StringBuilder sb = new StringBuilder();
@@ -87,27 +131,27 @@ public final class NxmPlotUtil {
 			// Default size
 			pipeSize = "128k";
 		}
-
 		corbaArgs.put("PIPESIZE", pipeSize);
+		corbaArgs.put(corbareceiver.A_IDL, settings.getIDL());
+		corbaArgs.put(corbareceiver.A_FRAMESIZE, settings.getFrameSize());
+		corbaArgs.put(corbareceiver.A_OVERRIDE_SRI_SUBSIZE, settings.isOverrideSRISubSize());
 		if (settings.getHost() != null && !"".equals(settings.getHost())) {
-			corbaArgs.put("HOST", settings.getHost());
-			corbaArgs.put("PORT", settings.getPort());
+			corbaArgs.put(corbareceiver.A_HOST, settings.getHost());
+			corbaArgs.put(corbareceiver.A_PORT, settings.getPort());
 		} else {
-			corbaArgs.put("HOST", "");
-			corbaArgs.put("PORT", 9000); // <-- TODO: this does not seem like the right default port for CORBARECEIVER // SUPPRESS CHECKSTYLE MagicNumber
+			corbaArgs.put(corbareceiver.A_HOST, "");
+			corbaArgs.put(corbareceiver.A_PORT, 9000); // <-- TODO: this does not seem like the right default port for CORBARECEIVER // SUPPRESS CHECKSTYLE MagicNumber
 		}
 		if (settings.getResource() != null && !"".equals(settings.getResource())) {
-			corbaArgs.put("RESOURCE", settings.getResource());
+			corbaArgs.put(corbareceiver.A_RESOURCE, settings.getResource());
 		} else {
-			corbaArgs.put("RESOURCE", "");
+			corbaArgs.put(corbareceiver.A_RESOURCE, "");
 		}
 		if (settings.getPortName() != null) {
-			corbaArgs.put("PORT_NAME", settings.getPortName());
+			corbaArgs.put(corbareceiver.A_PORT_NAME, settings.getPortName());
 		} else {
-			corbaArgs.put("PORT_NAME", "");
+			corbaArgs.put(corbareceiver.A_PORT_NAME, "");
 		}
-		corbaArgs.put("IDL", settings.getIDL());
-		corbaArgs.put("FORCE2000", settings.is2D());
 
 		final Table fftArgs = new Table();
 		if (fft != null) {
@@ -292,7 +336,7 @@ public final class NxmPlotUtil {
 	}
 
 	public static CorbaConnectionSettings createConnectionSettings(ScaUsesPort port) {
-		final CorbaConnectionSettings connectionSettings = new CorbaConnectionSettings(port.getIor(), port.getRepid(), true);
+		final CorbaConnectionSettings connectionSettings = new CorbaConnectionSettings(port.getIor(), port.getRepid());
 		return connectionSettings;
 	}
 

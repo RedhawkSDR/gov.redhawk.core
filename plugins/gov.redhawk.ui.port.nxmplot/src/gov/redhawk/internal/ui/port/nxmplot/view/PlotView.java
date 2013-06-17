@@ -299,7 +299,7 @@ public class PlotView extends ViewPart {
 			} else if (parent instanceof ScaWaveform) {
 				name = ((ScaWaveform) parent).getName();
 			}
-			final CorbaConnectionSettings connectionSettings = new CorbaConnectionSettings(port.getIor(), port.getRepid(), true);
+			final CorbaConnectionSettings connectionSettings = new CorbaConnectionSettings(port.getIor(), port.getRepid());
 			connectionSettings.setPortString(name + " [" + port.getName() + "]");
 			connList.add(connectionSettings);
 		}
@@ -353,22 +353,10 @@ public class PlotView extends ViewPart {
 			spectralPlots.setData("plotType", plotType);
 		} else {
 			INxmPlotWidgetFactory plotFactory = PlotActivator.getDefault().getPlotFactory();
-			final String plotArgs;
-			final String plotSwitches;
+			final String plotArgs = NxmPlotUtil.getDefaultPlotArgs(plotType);
+			final String plotSwitches = NxmPlotUtil.getDefaultPlotSwitches(plotType);
+			spectralPlots = plotFactory.createPlotWidget(this.plotFolder, SWT.NONE);
 
-			if (plotType == PlotType.LINE) {
-				plotArgs = "TYPE=LINE AXIS=+GRID OPTIONS=BStore SCALE=AutoMin|AutoMax AUTOL=16";
-				plotSwitches = "/RT/NICE";
-				spectralPlots = plotFactory.createPlotWidget(this.plotFolder, SWT.NONE);
-			} else if (plotType == PlotType.RASTER) {
-				plotArgs = "TYPE=RASTER View=iYX SCALE=AutoMIN|AutoMAX AUTOL=16";
-				plotSwitches = "/LPS=200/RT/NICE";
-				spectralPlots = plotFactory.createPlotWidget(this.plotFolder, SWT.NONE);
-			} else {
-				plotSwitches = null;
-				plotArgs = null;
-				spectralPlots = null;
-			}
 			if (spectralPlots instanceof AbstractNxmPlotWidget) {
 				spectralPlots.setData("connList", connList);
 				spectralPlots.setData("fft", fft);
