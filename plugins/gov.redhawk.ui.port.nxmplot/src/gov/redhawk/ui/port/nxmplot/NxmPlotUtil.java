@@ -37,6 +37,49 @@ public final class NxmPlotUtil {
 
 	private static final String KEY_COMMAND = "command";
 	private static final int MAX_RMIF_PACKET_SIZE = 32768; // in bytes
+	
+	/**
+	 * @since 4.2
+	 */
+	public static String getDefaultPlotArgs(PlotType type) {
+		if (type == null) {
+			return null;
+		}
+		switch(type) {
+		case RASTER:
+			return "TYPE=RASTER View=iYX SCALE=AutoMin|AutoMax AUTOL=16";
+		case DOT:
+		case LINE: 
+		case CONTOUR:
+		case MESH:
+		case POINT:
+			return "TYPE=" + type + " AXIS=+GRID OPTIONS=BStore SCALE=AutoMin|AutoMax AUTOL=16";
+		default:
+			return null;
+		}
+	}
+	
+	/**
+	 * @since 4.2
+	 */
+	public static String getDefaultPlotSwitches(PlotType type) {
+		if (type == null) {
+			return null;
+		}
+		switch(type) {
+		case RASTER:
+			return "/LPS=200/RT/NICE";
+		case DOT:
+		case CONTOUR:
+		case MESH:
+		case POINT:
+		case LINE:
+			return "/RT/NICE";
+		default:
+			return null;
+		}
+		
+	}
 
 	public static String formatPlotArgs(Map<String, String> args) {
 		StringBuilder sb = new StringBuilder();

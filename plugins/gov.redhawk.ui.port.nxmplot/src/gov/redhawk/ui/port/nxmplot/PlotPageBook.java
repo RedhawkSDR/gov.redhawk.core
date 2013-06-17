@@ -96,8 +96,8 @@ public class PlotPageBook extends Composite {
 	public void plotPorts(final List<CorbaConnectionSettings> inputConnList, final FftSettings fft, final List< ? extends ScaUsesPort> ports, final UUID sessionId,
 			final boolean createRaster) {
 		disposeNxmResources();
-		final String linePlotArgs = "TYPE=LINE AXIS=+GRID OPTIONS=BStore SCALE=AutoMin|AutoMax AUTOL=16";
-		final String linePlotSwitches = "/RT/NICE";
+		final String linePlotArgs = NxmPlotUtil.getDefaultPlotArgs(PlotType.LINE);
+		final String linePlotSwitches = NxmPlotUtil.getDefaultPlotSwitches(PlotType.LINE);
 
 		this.nxmPlotWidgetLine = PlotActivator.getDefault().getPlotFactory().createPlotWidget(this.pageBook, SWT.None);
 		this.nxmPlotWidgetLine.addMessageHandler(this.adapter);
@@ -109,8 +109,8 @@ public class PlotPageBook extends Composite {
 			connList = inputConnList;
 		}
 		
-		final String rasterPlotArgs = "TYPE=RASTER View=iYX SCALE=AutoMin|AutoMax AUTOL=16";
-		final String rasterPlotSwitches = "/LPS=200/RT/NICE";
+		final String rasterPlotArgs = NxmPlotUtil.getDefaultPlotArgs(PlotType.RASTER);
+		final String rasterPlotSwitches = NxmPlotUtil.getDefaultPlotSwitches(PlotType.RASTER);
 		if (createRaster) {
 			this.nxmPlotWidgetRaster = PlotActivator.getDefault().getPlotFactory().createPlotWidget(this.pageBook, SWT.None);
 			this.pageBook.setTabList(new Control[] { this.nxmPlotWidgetLine, this.nxmPlotWidgetRaster });
