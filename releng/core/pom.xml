@@ -19,6 +19,7 @@
         <module>../../features/gov.redhawk.core.feature</module>
         <module>../../features/gov.redhawk.core.ui.feature</module>
         <module>../../features/gov.redhawk.core.sdk</module>
+        <module>../../plugins/gov.redhawk.bulkio.util</module>
         <module>../../plugins/gov.redhawk.common.ui</module>
         <module>../../plugins/gov.redhawk.configurator</module>
         <module>../../plugins/gov.redhawk.core.filemanager</module>
