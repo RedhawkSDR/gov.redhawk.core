@@ -15,6 +15,9 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Plugin;
 import org.osgi.framework.BundleContext;
 
+/**
+ * @since 10.0
+ */
 public class RedhawkOptActivator extends Plugin {
 	
 	public static final String ID = "nxm.redhawk";

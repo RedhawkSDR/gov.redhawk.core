@@ -265,6 +265,9 @@ public class ScaSimplePropertyImpl extends ScaAbstractPropertyImpl<Simple> imple
 		return AnyUtils.toAny(value, getType(), isComplex());
 	}
 	
+	/**
+     * @since 18.0
+     */
 	protected boolean isComplex() {
 		if (getDefinition() != null && getDefinition().getComplex() != null) {
 			return getDefinition().getComplex();

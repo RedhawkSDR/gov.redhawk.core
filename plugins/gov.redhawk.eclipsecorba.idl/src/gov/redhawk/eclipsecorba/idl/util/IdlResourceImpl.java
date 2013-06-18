@@ -74,7 +74,6 @@ public class IdlResourceImpl extends ResourceImpl {
 	public static final String INCLUDE_PATHS = "gov.redhawk.eclipsecorba.idl.includePaths";
 	/**
 	 * @since 3.0
-	 * @noreference This variable is not intended to be referenced by clients.
 	 */
 	public static final String ROOT_SCOPE = "gov.redhawk.eclipsecorba.idl.rootScope";
 	private static final String MACROS = "gov.redhawk.eclipsecorba.idl.macros";

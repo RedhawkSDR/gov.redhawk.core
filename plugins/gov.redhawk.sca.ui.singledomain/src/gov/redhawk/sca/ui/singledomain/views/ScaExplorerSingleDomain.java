@@ -57,7 +57,10 @@ import org.eclipse.ui.navigator.CommonViewer;
 public class ScaExplorerSingleDomain extends ScaExplorer {
 
 	protected static final long DIALOG_HIDE_WAIT_MS = 200;
-	
+
+	/**
+	 * @since 1.1
+	 */
 	public static final String VIEW_ID = "gov.redhawk.ui.sca_explorer_sd";
 
 	private DomainsDialog dialog;
@@ -91,7 +94,7 @@ public class ScaExplorerSingleDomain extends ScaExplorer {
 								if (dialog != null && dialog.getShell().isVisible()) {
 									dialog.checkHyperlinkEnabled(null);
 								}
-							} 
+							}
 						}
 						break;
 					case Notification.ADD:
@@ -255,8 +258,6 @@ public class ScaExplorerSingleDomain extends ScaExplorer {
 		return null;
 	}
 
-
-
 	@Override
 	protected CommonViewer createCommonViewerObject(final Composite aParent) {
 		prefs = ScaUiPlugin.getDefault().getScaPreferenceStore();
@@ -267,7 +268,7 @@ public class ScaExplorerSingleDomain extends ScaExplorer {
 		prefs.addPropertyChangeListener(activeDomainListener);
 		CommonViewer retVal = super.createCommonViewerObject(aParent);
 		this.viewer = retVal;
-		return  retVal;
+		return retVal;
 	}
 
 	@Override
@@ -281,31 +282,30 @@ public class ScaExplorerSingleDomain extends ScaExplorer {
 	}
 
 	//BEGIN WORKAROUND CODE
-// see note above (below is only needed for Juno 4.2 if bug 402593 is not fixed)
-//	private void createMouseMoveListener() {
-//		/** remove after Juno bug 402593 is fixed, wherein listeners on toolbar don't work */
-//		this.mouseMoveListenerJob = new UIJob("MouseMoveListener Job") {
-//
-//			@Override
-//			public IStatus runInUIThread(IProgressMonitor monitor) {
-//				final Display display = getViewSite().getShell().getDisplay();
-//				while (!monitor.isCanceled()) {
-//					final Point mouseLoc = display.getCursorLocation();
-//					final Rectangle toolbarItemLoc = domains.getControl().getBounds();
-//					if (toolbarItemLoc.contains(domains.getControl().getParent().toControl(mouseLoc))) {
-//						if (dialog.getShell() == null || !dialog.getShell().isVisible()) {
-//							doMouseEnter(domains.getControl());
-//						}
-//					}
-//				}
-//				return null;
-//			}
-//
-//		};
-//		this.mouseMoveListenerJob.setSystem(true);
-//	}
+	// see note above (below is only needed for Juno 4.2 if bug 402593 is not fixed)
+	//	private void createMouseMoveListener() {
+	//		/** remove after Juno bug 402593 is fixed, wherein listeners on toolbar don't work */
+	//		this.mouseMoveListenerJob = new UIJob("MouseMoveListener Job") {
+	//
+	//			@Override
+	//			public IStatus runInUIThread(IProgressMonitor monitor) {
+	//				final Display display = getViewSite().getShell().getDisplay();
+	//				while (!monitor.isCanceled()) {
+	//					final Point mouseLoc = display.getCursorLocation();
+	//					final Rectangle toolbarItemLoc = domains.getControl().getBounds();
+	//					if (toolbarItemLoc.contains(domains.getControl().getParent().toControl(mouseLoc))) {
+	//						if (dialog.getShell() == null || !dialog.getShell().isVisible()) {
+	//							doMouseEnter(domains.getControl());
+	//						}
+	//					}
+	//				}
+	//				return null;
+	//			}
+	//
+	//		};
+	//		this.mouseMoveListenerJob.setSystem(true);
+	//	}
 	//END WORKAROUND CODE
-
 
 	private void fillToolBar(String label) {
 		mgr = (ToolBarManager) getViewSite().getActionBars().getToolBarManager();
@@ -329,14 +329,14 @@ public class ScaExplorerSingleDomain extends ScaExplorer {
 			domains.addMouseTrackListener(rcpMouseTrackListener);
 		}
 		//BEGIN WORKAROUND CODE
-// see note above (below is only needed for Juno 4.2 if bug 402593 is not fixed)
-//		if (this.mouseMoveListenerJob == null) {
-//			createMouseMoveListener();
-//		}
-//		if (this.mouseMoveListenerJob.getState() != Job.RUNNING) {
-//			// PASS
-//			//this.mouseMoveListenerJob.schedule();
-//		}
+		// see note above (below is only needed for Juno 4.2 if bug 402593 is not fixed)
+		//		if (this.mouseMoveListenerJob == null) {
+		//			createMouseMoveListener();
+		//		}
+		//		if (this.mouseMoveListenerJob.getState() != Job.RUNNING) {
+		//			// PASS
+		//			//this.mouseMoveListenerJob.schedule();
+		//		}
 		//END WORKAROUND CODE
 	}
 
@@ -361,9 +361,9 @@ public class ScaExplorerSingleDomain extends ScaExplorer {
 		prefs.removePropertyChangeListener(activeDomainListener);
 		ScaPlugin.getDefault().getDomainManagerRegistry().eAdapters().remove(domainChangeAdapter);
 		//BEGIN WORKAROUND CODE
-//		if (this.mouseMoveListenerJob != null) {
-//			this.mouseMoveListenerJob.cancel();
-//		}
+		//		if (this.mouseMoveListenerJob != null) {
+		//			this.mouseMoveListenerJob.cancel();
+		//		}
 		//END WORKAROUND CODE
 		super.dispose();
 	}

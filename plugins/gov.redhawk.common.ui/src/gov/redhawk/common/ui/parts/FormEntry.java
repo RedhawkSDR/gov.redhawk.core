@@ -269,6 +269,9 @@ public class FormEntry {
 		this.fListener = listener;
 	}
 	
+	/**
+     * @since 3.1
+     */
 	public void setLabel(String label) {
 		if (this.fLabel instanceof Label) {
 			((Label) this.fLabel).setText(label);

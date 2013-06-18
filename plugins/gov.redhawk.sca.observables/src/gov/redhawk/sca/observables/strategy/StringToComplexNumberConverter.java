@@ -16,6 +16,9 @@ import mil.jpeojtrs.sca.util.math.ComplexNumber;
 
 import org.eclipse.core.databinding.conversion.Converter;
 
+/**
+ * @since 1.1
+ */
 public class StringToComplexNumberConverter extends Converter {
 
 	private PropertyValueType type;

@@ -288,6 +288,9 @@ public class ScaSimpleSequencePropertyImpl extends ScaAbstractPropertyImpl<Simpl
 		// BEGIN GENERATED CODE
 	}
 	
+	/**
+     * @since 18.0
+     */
 	protected boolean isComplex() {
 		if (getDefinition() != null) {
 			return getDefinition().isComplex();

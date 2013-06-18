@@ -15,7 +15,7 @@ import org.eclipse.core.databinding.conversion.Converter;
 
 
 /**
- * 
+ * @since 7.0
  */
 public class StringToEmptyStringValueConverter extends Converter {
 	public static final String EMPTY_STRING_VALUE = "\"\"";

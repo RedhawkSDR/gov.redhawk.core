@@ -37,7 +37,7 @@ import org.eclipse.ui.navigator.INavigatorContentService;
 /**
  * Defines a label provider for the title bar in the tabbed properties view.
  * 
- * @since 8.0
+ * @since 1.1
  */
 public class TabbedPropertySheetTitleProvider extends LabelProvider {
 

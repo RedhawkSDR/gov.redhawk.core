@@ -35,28 +35,28 @@ public class CompatibilityUtil {
 	}
 
 	/**
-     * @since 9.1
+     * @since 10.0
      */
 	public static Principal getUserPrincipal(Display display) {
 		throw new UnsupportedOperationException();
 	}
 	
 	/**
-     * @since 9.1
+     * @since 10.0
      */
 	public static void runInFakeUIContext(Display display, Runnable runnable) {
 		throw new UnsupportedOperationException();
 	}
 	
 	/**
-     * @since 9.1
+     * @since 10.0
      */
 	public static void activateUIConnection(String id) {
 		throw new UnsupportedOperationException();
 	}
 	
 	/**
-     * @since 9.1
+     * @since 10.0
      */
 	public static void deactivateUIConnection(String id) {
 		throw new UnsupportedOperationException();

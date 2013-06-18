@@ -22,7 +22,7 @@ import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.viewers.ViewerSorter;
 
 /**
- * @since 9.1
+ * @since 10.0
  *
  */
 public class ScaViewerSorter extends ViewerSorter {

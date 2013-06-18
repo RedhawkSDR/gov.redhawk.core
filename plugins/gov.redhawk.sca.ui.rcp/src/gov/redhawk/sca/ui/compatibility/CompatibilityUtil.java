@@ -37,6 +37,10 @@ public class CompatibilityUtil {
 		fontData.setStyle(style);
 	}
 	
+	/**
+	 * @since 1.2
+	 * @param viewer
+	 */
 	public static void disableComboWheelScrollSelect(ComboViewer viewer) {
 		viewer.getCombo().addListener(SWT.MouseVerticalWheel, new Listener() {
 
@@ -48,6 +52,10 @@ public class CompatibilityUtil {
 		});
 	}
 	
+	/**
+	 * @since 1.2
+	 * @param viewer
+	 */
 	public static Principal getUserPrincipal(Display display) {
 		return null;
 	}

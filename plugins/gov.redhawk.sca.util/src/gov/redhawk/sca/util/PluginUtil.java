@@ -167,7 +167,17 @@ public class PluginUtil {
 		return retVal.toString();
 	}
 	
+	/**
+	 * @since 3.3
+	 */
 	public static boolean equals(float f1, float f2) {
 		return Math.abs(f1 - f2) < 0.0000001;
+	}
+	
+	/**
+	 * @since 3.3
+	 */
+	public static boolean equals(double d1, double d2) {
+		return Math.abs(d1 - d2) < 0.0000001;
 	}
 }
