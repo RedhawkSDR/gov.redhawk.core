@@ -28,8 +28,6 @@ import nxm.redhawk.prim.corbareceiver;
 import nxm.sys.lib.Data;
 import nxm.sys.lib.Table;
 
-import org.eclipse.swt.SWT;
-
 /**
  * @since 3.0
  */
