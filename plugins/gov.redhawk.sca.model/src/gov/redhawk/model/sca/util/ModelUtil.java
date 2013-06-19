@@ -27,6 +27,7 @@ import mil.jpeojtrs.sca.spd.LocalFile;
 import mil.jpeojtrs.sca.spd.PropertyFile;
 import mil.jpeojtrs.sca.spd.SoftPkg;
 import mil.jpeojtrs.sca.spd.util.SpdResourceImpl;
+import mil.jpeojtrs.sca.util.ScaResourceFactoryUtil;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
@@ -39,7 +40,6 @@ import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
-import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.emf.ecore.xmi.impl.XMLResourceFactoryImpl;
 import org.eclipse.emf.transaction.TransactionalEditingDomain;
 import org.eclipse.emf.transaction.util.TransactionUtil;
@@ -276,7 +276,7 @@ public final class ModelUtil {
 	 * @return the DeviceConfiguration specified by the URI
 	 */
 	public static DeviceConfiguration loadDeviceConfiguration(final URI fileURI) {
-		final ResourceSet resourceSet = new ResourceSetImpl();
+		final ResourceSet resourceSet = ScaResourceFactoryUtil.createResourceSet();
 		// Demand load the resource for this file.
 		final Resource resource = resourceSet.getResource(fileURI, true);
 
@@ -299,7 +299,7 @@ public final class ModelUtil {
 	 */
 	public static SoftPkg loadSoftPkg(final URI fileURI) {
 		// Parse the SPD file and copy all referenced files into the workspace
-		final ResourceSet resourceSet = new ResourceSetImpl();
+		final ResourceSet resourceSet = ScaResourceFactoryUtil.createResourceSet();
 		//resourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap().put(".xml", new XMLResourceFactoryImpl());
 
 		// Demand load the resource for this file.
@@ -317,7 +317,7 @@ public final class ModelUtil {
 	 */
 	public static SoftwareComponent loadSoftwareComponent(final URI fileURI) {
 		// Parse the SPD file and copy all referenced files into the workspace
-		final ResourceSet resourceSet = new ResourceSetImpl();
+		final ResourceSet resourceSet = ScaResourceFactoryUtil.createResourceSet();
 		resourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap().put(".xml", new XMLResourceFactoryImpl());
 
 		// Demand load the resource for this file.
@@ -335,7 +335,7 @@ public final class ModelUtil {
 	 */
 	public static SoftwareAssembly loadSoftwareAssembly(final URI fileURI) {
 		// Parse the SPD file and copy all referenced files into the workspace
-		final ResourceSet resourceSet = new ResourceSetImpl();
+		final ResourceSet resourceSet = ScaResourceFactoryUtil.createResourceSet();
 		resourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap().put(".xml", new XMLResourceFactoryImpl());
 
 		// Demand load the resource for this file.

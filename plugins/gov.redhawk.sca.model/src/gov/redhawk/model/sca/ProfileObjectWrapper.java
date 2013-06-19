@@ -15,6 +15,8 @@ package gov.redhawk.model.sca;
 import gov.redhawk.model.sca.commands.SetProfileObjectCommand;
 import gov.redhawk.model.sca.commands.UnsetLocalAttributeCommand;
 
+import mil.jpeojtrs.sca.util.ScaResourceFactoryUtil;
+
 import org.eclipse.core.filesystem.IFileStore;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
@@ -25,7 +27,6 @@ import org.eclipse.emf.common.command.UnexecutableCommand;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.ResourceSet;
-import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 
 /**
  * <!-- begin-user-doc -->
@@ -217,7 +218,7 @@ public interface ProfileObjectWrapper< O extends Object > extends IStatusProvide
 
 				if (uri != null) {
 					uri = uri.appendFragment(rootPath);
-					ResourceSet resourceSet = new ResourceSetImpl();
+					ResourceSet resourceSet = ScaResourceFactoryUtil.createResourceSet();
 
 					T profileObject = null;
 					IStatus status = null;

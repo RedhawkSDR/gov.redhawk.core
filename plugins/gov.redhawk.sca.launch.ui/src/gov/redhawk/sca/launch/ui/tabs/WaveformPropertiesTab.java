@@ -21,6 +21,7 @@ import gov.redhawk.sca.launch.ui.ScaUIImages;
 import gov.redhawk.sca.ui.ScaComponentFactory;
 import gov.redhawk.sca.ui.properties.ScaPropertiesAdapterFactory;
 import mil.jpeojtrs.sca.sad.SoftwareAssembly;
+import mil.jpeojtrs.sca.util.ScaResourceFactoryUtil;
 
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
@@ -33,7 +34,6 @@ import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
-import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.emf.ecore.util.EContentAdapter;
 import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.jface.viewers.TreeViewer;
@@ -173,7 +173,7 @@ public class WaveformPropertiesTab extends AbstractLaunchConfigurationTab {
 				return;
 			}
 			if (ResourcesPlugin.getWorkspace().getRoot().getFile(new Path(sadPath)).exists()) {
-				final ResourceSet resourceSet = new ResourceSetImpl();
+				final ResourceSet resourceSet = ScaResourceFactoryUtil.createResourceSet();
 				final Resource resource = resourceSet.getResource(URI.createPlatformResourceURI(sadPath, true), true);
 				setSoftwareAssembly(SoftwareAssembly.Util.getSoftwareAssembly(resource), configuration);
 			} else {

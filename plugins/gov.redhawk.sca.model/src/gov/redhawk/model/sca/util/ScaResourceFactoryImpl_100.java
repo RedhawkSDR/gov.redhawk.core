@@ -26,6 +26,8 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import mil.jpeojtrs.sca.util.ScaResourceFactoryUtil;
+
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
@@ -33,7 +35,6 @@ import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceFactoryImpl;
-import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.emf.ecore.util.ExtendedMetaData;
 import org.eclipse.emf.ecore.util.FeatureMap;
@@ -216,7 +217,7 @@ public class ScaResourceFactoryImpl_100 extends ResourceFactoryImpl {
 
 	private ExtendedMetaData getExtendedMetaData() {
 		if (extendedMetaData == null) {
-			ResourceSet resourceSet = new ResourceSetImpl();
+			ResourceSet resourceSet = ScaResourceFactoryUtil.createResourceSet();
 			EPackage.Registry ePackageRegistry = resourceSet.getPackageRegistry();
 			ePackageRegistry.put(SCA_100_NS_URI, ScaPackage.eINSTANCE);
 			ePackageRegistry.put(SCA_PLATFORM_URI, ScaPackage.eINSTANCE);

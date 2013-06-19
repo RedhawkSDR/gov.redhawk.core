@@ -19,6 +19,8 @@ import java.io.File;
 import java.io.IOException;
 import java.io.OutputStream;
 
+import mil.jpeojtrs.sca.util.ScaResourceFactoryUtil;
+
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IWorkspaceRunnable;
@@ -33,7 +35,6 @@ import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
-import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.emf.transaction.TransactionalEditingDomain;
 import org.eclipse.gmf.runtime.diagram.core.services.ViewService;
 import org.eclipse.gmf.runtime.notation.Diagram;
@@ -85,7 +86,7 @@ public final class DiagramUtil {
 	        throws IOException {
 		// Create a resource set
 		//
-		final ResourceSet resourceSet = new ResourceSetImpl();
+		final ResourceSet resourceSet = ScaResourceFactoryUtil.createResourceSet();
 
 		// Create a resource for this file.
 		//

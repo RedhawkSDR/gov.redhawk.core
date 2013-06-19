@@ -23,11 +23,12 @@ import java.net.URL;
 import java.util.Collections;
 import java.util.Map;
 
+import mil.jpeojtrs.sca.util.ScaResourceFactoryUtil;
+
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.preferences.AbstractPreferenceInitializer;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
-import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.osgi.service.datalocation.Location;
 
 /**
@@ -68,7 +69,7 @@ public class ScaPreferenceInitializer extends AbstractPreferenceInitializer {
 		if (ScaPreferenceInitializer.scaDomainManagerRegistry == null) {
 			synchronized (ScaPreferenceInitializer.class) {
 				if (ScaPreferenceInitializer.scaDomainManagerRegistry == null) { // SUPPRESS CHECKSTYLE DoubleCheck
-					final ResourceSet resourceSet = new ResourceSetImpl();
+					final ResourceSet resourceSet = ScaResourceFactoryUtil.createResourceSet();
 					try {
 						// First, try the user's config area
 						final URL configUrl = ScaPreferenceInitializer.getDomainManagerRegistryConfigURL();

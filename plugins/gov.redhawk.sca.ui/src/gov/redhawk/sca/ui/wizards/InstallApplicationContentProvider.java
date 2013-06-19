@@ -26,6 +26,7 @@ import java.util.List;
 
 import mil.jpeojtrs.sca.sad.SadPackage;
 import mil.jpeojtrs.sca.sad.SoftwareAssembly;
+import mil.jpeojtrs.sca.util.ScaResourceFactoryUtil;
 
 import org.eclipse.core.filesystem.EFS;
 import org.eclipse.core.filesystem.IFileInfo;
@@ -40,7 +41,6 @@ import org.eclipse.core.runtime.jobs.IJobChangeListener;
 import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
-import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.jface.viewers.ITreeContentProvider;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.swt.widgets.Display;
@@ -173,7 +173,7 @@ public class InstallApplicationContentProvider implements ITreeContentProvider {
 					final ScaDomainManagerFileSystem fileManager = domMgr.fetchFileManager(subMonitor.newChild(1));
 					if (fileManager != null) {
 						final IFileStore fileStore = fileManager.getFileStore();
-						final ResourceSet resourceSet = new ResourceSetImpl();
+						final ResourceSet resourceSet = ScaResourceFactoryUtil.createResourceSet();
 						final String[] paths = ScaPreferenceConstants.parsePath(ScaPlugin.getDefault()
 						        .getScaPreferenceAccessor()
 						        .getString(ScaPreferenceConstants.SCA_DOMAIN_WAVEFORMS_SEARCH_PATH));
