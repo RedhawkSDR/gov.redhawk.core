@@ -21,6 +21,10 @@ import CF.ResourceFactoryPackage.CreateResourceFailure;
 import CF.ResourceFactoryPackage.InvalidResourceId;
 import CF.ResourceFactoryPackage.ShutdownFailure;
 
+/**
+ * @deprecated Not implemented use gov.redhawk.ide.debug.ui.spdBundle extension point
+ */
+@Deprecated
 public abstract class BundleResourceFactory implements ResourceFactoryOperations {
 
 	private final Map<String, Resource> resourceCache = new HashMap<String, Resource>();
