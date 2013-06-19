@@ -184,12 +184,14 @@ public class SimpleSequencePropertyDetailsPage extends BasicSimplePropertyDetail
 			Values values = this.input.getValues();
 			if (values == null) {
 				values = PrfFactory.eINSTANCE.createValues();
+				values.getValue().add(dialog.getValue());
 				execute(SetCommand.create(getEditingDomain(), this.input, PrfPackage.Literals.SIMPLE_SEQUENCE__VALUES, values));
 				// Values
-				this.composite.getValuesViewer().setInput(this.input.getValues());
+//				this.composite.getValuesViewer().setInput(this.input.getValues());
+			} else {
+				final Command command = AddCommand.create(getEditingDomain(), values, PrfPackage.Literals.VALUES__VALUE, dialog.getValue());
+				execute(command);
 			}
-			final Command command = AddCommand.create(getEditingDomain(), values, PrfPackage.Literals.VALUES__VALUE, dialog.getValue());
-			execute(command);
 
 			if (!this.composite.getRemoveValueButton().isEnabled()) {
 				this.composite.getRemoveValueButton().setEnabled(true);

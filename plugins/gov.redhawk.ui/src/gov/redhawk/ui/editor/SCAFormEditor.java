@@ -31,7 +31,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.Vector;
 
 import mil.jpeojtrs.sca.validator.AdvancedEObjectValidator;
 
@@ -254,28 +253,27 @@ public abstract class SCAFormEditor extends FormEditor implements IEditingDomain
 			case IResourceDelta.CHANGED:
 				if (delta.getResource() instanceof IFile) {
 					final IFile newFile = (IFile) delta.getResource();
-					
+
 					// If the resource has been changed on disk and the editor is dirty we will prompt the user before blowing away its changes.
 					if (SCAFormEditor.this.isDirty() && !SCAFormEditor.this.editorSaving) {
-						boolean confirmOverwrite = MessageDialog.openConfirm(SCAFormEditor.this.getSite().getShell(), "File Changed", 
-								"The file '" 
-										+ delta.getResource().getFullPath().toOSString() 
-										+ "' has been changed on the file system. Do you want to replace the editor contents with these changes?");
+						boolean confirmOverwrite = MessageDialog.openConfirm(SCAFormEditor.this.getSite().getShell(), "File Changed", "The file '"
+						    + delta.getResource().getFullPath().toOSString()
+						    + "' has been changed on the file system. Do you want to replace the editor contents with these changes?");
 
 						SCAFormEditor.this.setFocus();
-						
+
 						if (confirmOverwrite) {
 							SCAFormEditor.this.resourceChanged(newFile, delta);
 							// Since the document gets changed within the resourceChanged function, the document will be marked dirty
 							// even though the document matches what is on disk.  Currently I cannot figure out a good way to get rid
 							// of this dirty flag.  It's a small bug that should not happen often though.
-							
+
 						}
 					}
-					
+
 					// If the editor is not dirty and the editor is not in the middle of saving then we'll take the changes.
 					// This will cause the editor to appear dirty erroneously as mentioned in the note above.  
-					if (!SCAFormEditor.this.isDirty() && !SCAFormEditor.this.editorSaving) {  
+					if (!SCAFormEditor.this.isDirty() && !SCAFormEditor.this.editorSaving) {
 						SCAFormEditor.this.resourceChanged(newFile, delta);
 					}
 				}
@@ -387,17 +385,25 @@ public abstract class SCAFormEditor extends FormEditor implements IEditingDomain
 	 */
 	private CommandStackListener commandStackListener = new CommandStackListener() {
 		public void commandStackChanged(final EventObject event) {
-			if (getContainer() != null && !getContainer().isDisposed()) {
-				getContainer().getDisplay().syncExec(new Runnable() {
+			if (Display.getCurrent() != null) {
+				handleStackChanged(event);
+			} else if (getContainer() != null && !getContainer().isDisposed()) {
+				getContainer().getDisplay().asyncExec(new Runnable() {
 					public void run() {
-						handleStructuredModelChange(event);
-						firePropertyChange(IEditorPart.PROP_DIRTY);
-						final Command mostRecentCommand = ((CommandStack) event.getSource()).getMostRecentCommand();
-						if (mostRecentCommand != null && mostRecentCommand.getAffectedObjects() != null && !mostRecentCommand.getAffectedObjects().isEmpty()) {
-							setSelectionToViewer(mostRecentCommand.getAffectedObjects());
+						if (getContainer() != null && !getContainer().isDisposed()) {
+							handleStackChanged(event);
 						}
 					}
 				});
+			}
+		}
+
+		private void handleStackChanged(EventObject event) {
+			handleStructuredModelChange(event);
+			firePropertyChange(IEditorPart.PROP_DIRTY);
+			final Command mostRecentCommand = ((CommandStack) event.getSource()).getMostRecentCommand();
+			if (mostRecentCommand != null && mostRecentCommand.getAffectedObjects() != null && !mostRecentCommand.getAffectedObjects().isEmpty()) {
+				setSelectionToViewer(mostRecentCommand.getAffectedObjects());
 			}
 		}
 	};
@@ -463,11 +469,11 @@ public abstract class SCAFormEditor extends FormEditor implements IEditingDomain
 		public IWorkbenchPart getPart() {
 			return getMultiPageEditor();
 		}
-		
+
 		@Override
 		protected void handleSelectionChanged(SelectionChangedEvent event) {
-		    super.handleSelectionChanged(event);
-		    super.handlePostSelectionChanged(event);
+			super.handleSelectionChanged(event);
+			super.handlePostSelectionChanged(event);
 		}
 	}
 
@@ -523,9 +529,8 @@ public abstract class SCAFormEditor extends FormEditor implements IEditingDomain
 			((TransactionalEditingDomainImpl) domain).setDefaultTransactionOptions(myOptions);
 		}
 
-		final NotificationFilter resourceModifiedFilter = NotificationFilter.createNotifierFilter(domain.getResourceSet())
-		        .and(NotificationFilter.createEventTypeFilter(Notification.ADD))
-		        .and(NotificationFilter.createFeatureFilter(ResourceSet.class, ResourceSet.RESOURCE_SET__RESOURCES));
+		final NotificationFilter resourceModifiedFilter = NotificationFilter.createNotifierFilter(domain.getResourceSet()).and(NotificationFilter.createEventTypeFilter(Notification.ADD)).and(NotificationFilter.createFeatureFilter(ResourceSet.class,
+		                                                                                                                                                                                                                              ResourceSet.RESOURCE_SET__RESOURCES));
 		domain.getResourceSet().eAdapters().add(new Adapter() {
 
 			private Notifier myTarget;
@@ -840,17 +845,15 @@ public abstract class SCAFormEditor extends FormEditor implements IEditingDomain
 					if (isPersisted(resource) && !SCAFormEditor.this.editingDomain.isReadOnly(resource)) {
 						// Lastly, check to make sure this resource is not only local to the current workspace
 						// but is also local to the project we're currently saving.  This fixes bug # 266
-						if (isPersisted(resource)) {
+						if (isPersisted(resource) && isLocal(resource)) {
 							try {
 								resource.save(saveOptions);
 							} catch (final Exception exception) {
-								throw new CoreException(new Status(IStatus.ERROR,
-										RedhawkUiActivator.getPluginId(),
-										"Failed to save resource: " + resource,
-										exception));
+								throw new CoreException(new Status(IStatus.ERROR, RedhawkUiActivator.getPluginId(), "Failed to save resource: " + resource,
+								    exception));
 							}
 						}
-						
+
 					}
 				}
 			}
@@ -866,24 +869,24 @@ public abstract class SCAFormEditor extends FormEditor implements IEditingDomain
 				if (!resource.getURI().isPlatformResource()) {
 					return false;
 				}
-				
+
 				// Get the file for the referenced resource
 				IPath pathToResource = new Path(resource.getURI().toPlatformString(true));
-	            IFile resourceFile = ResourcesPlugin.getWorkspace().getRoot().getFile(pathToResource);
-	            
-	            // Check the file's project against the SCA Form Editor's scd file's project.
-	            if (resourceFile != null && resourceFile.getProject() != null) {
-	            	if (SCAFormEditor.this.getEditorInput() instanceof IFileEditorInput) {
-	            		IFile localFile = ((IFileEditorInput) SCAFormEditor.this.getEditorInput()).getFile();
-	            		if (localFile != null) {
-	            			if (localFile.getProject().equals(resourceFile.getProject())) {
-	            				return true;
-	            			}
-	            		}
-	            	}
-	            }
+				IFile resourceFile = ResourcesPlugin.getWorkspace().getRoot().getFile(pathToResource);
+
+				// Check the file's project against the SCA Form Editor's scd file's project.
+				if (resourceFile != null && resourceFile.getProject() != null) {
+					if (SCAFormEditor.this.getEditorInput() instanceof IFileEditorInput) {
+						IFile localFile = ((IFileEditorInput) SCAFormEditor.this.getEditorInput()).getFile();
+						if (localFile != null) {
+							if (localFile.getProject().equals(resourceFile.getProject())) {
+								return true;
+							}
+						}
+					}
+				}
 				return false;
-            }
+			}
 		};
 
 		try {
@@ -895,9 +898,8 @@ public abstract class SCAFormEditor extends FormEditor implements IEditingDomain
 		} catch (final Exception exception) {
 			// Something went wrong that shouldn't.
 			//
-			StatusManager.getManager()
-			        .handle(new Status(IStatus.ERROR, RedhawkUiActivator.getPluginId(), "Error occured while attempting to save.", exception),
-			                StatusManager.SHOW | StatusManager.LOG);
+			StatusManager.getManager().handle(new Status(IStatus.ERROR, RedhawkUiActivator.getPluginId(), "Error occured while attempting to save.", exception),
+			                                  StatusManager.SHOW | StatusManager.LOG);
 		}
 	}
 
@@ -914,19 +916,19 @@ public abstract class SCAFormEditor extends FormEditor implements IEditingDomain
 		if (resource != null && resource.getURI() != null && resource.getURI().isPlatformResource()) {
 			// Get the file for the referenced resource
 			IPath pathToResource = new Path(resource.getURI().toPlatformString(true));
-            IFile resourceFile = ResourcesPlugin.getWorkspace().getRoot().getFile(pathToResource);
-            
-            // Check the file's project against the SCA Form Editor's scd file's project.
-            if (resourceFile != null && resourceFile.getProject() != null) {
-            	if (SCAFormEditor.this.getEditorInput() instanceof IFileEditorInput) {
-            		IFile localFile = ((IFileEditorInput) SCAFormEditor.this.getEditorInput()).getFile();
-            		if (localFile != null) {
-            			if (localFile.getProject().equals(resourceFile.getProject())) {
-            				return true;
-            			}
-            		}
-            	}
-            }
+			IFile resourceFile = ResourcesPlugin.getWorkspace().getRoot().getFile(pathToResource);
+
+			// Check the file's project against the SCA Form Editor's scd file's project.
+			if (resourceFile != null && resourceFile.getProject() != null) {
+				if (SCAFormEditor.this.getEditorInput() instanceof IFileEditorInput) {
+					IFile localFile = ((IFileEditorInput) SCAFormEditor.this.getEditorInput()).getFile();
+					if (localFile != null) {
+						if (localFile.getProject().equals(resourceFile.getProject())) {
+							return true;
+						}
+					}
+				}
+			}
 			return false;
 		}
 		return false;
@@ -976,7 +978,7 @@ public abstract class SCAFormEditor extends FormEditor implements IEditingDomain
 	 * @return
 	 */
 	private boolean selectFeature(final EditingDomainEObjectObservableValue emfObservable, final ISWTObservable swtObservable, final EObject object,
-	        final int featureID) {
+	                              final int featureID) {
 		boolean retVal = false;
 		final Object observed = emfObservable.getObserved();
 		if (emfObservable.getValueType() instanceof EStructuralFeature) {
@@ -1012,11 +1014,9 @@ public abstract class SCAFormEditor extends FormEditor implements IEditingDomain
 			this.mainResource = this.editingDomain.getResourceSet().getResource(decodedURI, false);
 		}
 		if (exception != null) {
-			StatusManager.getManager().handle(new Status(IStatus.ERROR,
-			        RedhawkUiActivator.getPluginId(),
-			        "Errors occured while loading the main resource of the editor.",
-			        exception),
-			        StatusManager.SHOW | StatusManager.LOG);
+			StatusManager.getManager().handle(new Status(IStatus.ERROR, RedhawkUiActivator.getPluginId(),
+			                                      "Errors occured while loading the main resource of the editor.", exception),
+			                                  StatusManager.SHOW | StatusManager.LOG);
 		}
 	}
 
@@ -1462,9 +1462,7 @@ public abstract class SCAFormEditor extends FormEditor implements IEditingDomain
 		getSite().registerContextMenu(contextMenu, new UnwrappingSelectionProvider(viewer));
 
 		final int dndOperations = DND.DROP_COPY | DND.DROP_MOVE | DND.DROP_LINK;
-		final Transfer[] transfers = new Transfer[] {
-			LocalTransfer.getInstance()
-		};
+		final Transfer[] transfers = new Transfer[] { LocalTransfer.getInstance() };
 		viewer.addDragSupport(dndOperations, transfers, new ViewerDragAdapter(viewer));
 		viewer.addDropSupport(dndOperations, transfers, new EditingDomainViewerDropAdapter(getEditingDomain(), viewer));
 	}
@@ -1713,19 +1711,33 @@ public abstract class SCAFormEditor extends FormEditor implements IEditingDomain
 	 * @since 4.0
 	 */
 	protected void handleStructuredModelChange(final EventObject event) {
+		if (isDisposed()) {
+			return;
+		}
 		if (event.getSource() instanceof TransactionalCommandStack) {
 			final TransactionalCommandStack stack = ((TransactionalCommandStack) event.getSource());
 			if (stack.getMostRecentCommand() != null) {
 
 				final Collection< ? > objects = stack.getMostRecentCommand().getAffectedObjects();
-
-				for (final Object obj : objects) {
-					if (obj instanceof EObject) {
-						final Resource resource = ((EObject) obj).eResource();
-						updateDocument(resource);
+				if (objects.isEmpty()) {
+					updateAllDocs();
+				} else {
+					for (final Object obj : objects) {
+						if (obj instanceof EObject) {
+							final Resource resource = ((EObject) obj).eResource();
+							updateDocument(resource);
+						}
 					}
 				}
+			} else {
+				updateAllDocs();
 			}
+		}
+	}
+
+	private void updateAllDocs() {
+		for (Resource r : resourceToDocumentMap.keySet()) {
+			updateDocument(r);
 		}
 	}
 
@@ -1735,47 +1747,48 @@ public abstract class SCAFormEditor extends FormEditor implements IEditingDomain
 	 * within the resource to document map in order to pull up the corresponding document.
 	 */
 	private void updateDocument(final Resource resource) {
-	    if (this.resourceToDocumentMap.containsKey(resource)) {
+		if (this.resourceToDocumentMap.containsKey(resource)) {
 
-	    	final IDocument document = this.resourceToDocumentMap.get(resource);
-	    	
-	    	//taken from org.eclipse.xsd.presentation.XSDEditor
-	    	final ByteArrayOutputStream out = new ByteArrayOutputStream();
-	    	try {
-	    		resource.save(out, null);
-	    		final String newContent = out.toString();
-	    		final String oldContent = document.get();
-	    		int startIndex = 0;
-	    		while (startIndex < newContent.length() && startIndex < oldContent.length()
-	    		        && newContent.charAt(startIndex) == oldContent.charAt(startIndex)) {
-	    			++startIndex;
-	    		}
-	    		int newEndIndex = newContent.length() - 1;
-	    		int oldEndIndex = oldContent.length() - 1;
-	    		while (newEndIndex >= startIndex && oldEndIndex >= startIndex
-	    		        && newContent.charAt(newEndIndex) == oldContent.charAt(oldEndIndex)) {
-	    			--newEndIndex;
-	    			--oldEndIndex;
-	    		}
+			final IDocument document = this.resourceToDocumentMap.get(resource);
 
-	    		final String replacement = newContent.substring(startIndex, newEndIndex + 1);
-	    		final int length = oldEndIndex - startIndex + 1;
-	    		this.handledStructuredModelChange = true;
-	    		//Only replace if there is actually a change
-	    		if (!"".equals(replacement) || length != 0) {
-	    			document.replace(startIndex, length, replacement);
-	    		}
-	    	} catch (final Exception exception) {
-	    		//PASS
-	    	}
-	    }
-    }
+			//taken from org.eclipse.xsd.presentation.XSDEditor
+			final ByteArrayOutputStream out = new ByteArrayOutputStream();
+			try {
+				resource.save(out, null);
+				final String newContent = out.toString();
+				final String oldContent = document.get();
+				int startIndex = 0;
+				while (startIndex < newContent.length() && startIndex < oldContent.length() && newContent.charAt(startIndex) == oldContent.charAt(startIndex)) {
+					++startIndex;
+				}
+				int newEndIndex = newContent.length() - 1;
+				int oldEndIndex = oldContent.length() - 1;
+				while (newEndIndex >= startIndex && oldEndIndex >= startIndex && newContent.charAt(newEndIndex) == oldContent.charAt(oldEndIndex)) {
+					--newEndIndex;
+					--oldEndIndex;
+				}
+
+				final String replacement = newContent.substring(startIndex, newEndIndex + 1);
+				final int length = oldEndIndex - startIndex + 1;
+				this.handledStructuredModelChange = true;
+				//Only replace if there is actually a change
+				if (!"".equals(replacement) || length != 0) {
+					document.replace(startIndex, length, replacement);
+				}
+			} catch (final Exception exception) {
+				//PASS
+			}
+		}
+	}
 
 	/**
-	 * @since 6.0
+	 * @since 7.0
 	 */
-	public Vector<Object> getPages() {
-		return this.pages;
+	public List< ? > getPages() {
+		if (this.pages == null) {
+			return null;
+		}
+		return Collections.unmodifiableList((List< ? >) this.pages);
 	}
 
 	/**
@@ -1899,21 +1912,21 @@ public abstract class SCAFormEditor extends FormEditor implements IEditingDomain
 	 */
 	protected void resourceChanged(final IResource resource, final IResourceDelta delta) {
 		// reload the model file for the resource which has been changed
-				for (final Resource r : getEditingDomain().getResourceSet().getResources()) {
-					final IFile file = WorkspaceSynchronizer.getFile(r);
-					if (file != null && file.equals(resource)) {
-						r.unload();
-						try {
-							r.load(getEditingDomain().getResourceSet().getLoadOptions());
-							updateDocument(r);
-						} catch (final IOException e) {
-							// PASS
-						}
-					}
+		for (final Resource r : getEditingDomain().getResourceSet().getResources()) {
+			final IFile file = WorkspaceSynchronizer.getFile(r);
+			if (file != null && file.equals(resource)) {
+				r.unload();
+				try {
+					r.load(getEditingDomain().getResourceSet().getLoadOptions());
+					updateDocument(r);
+				} catch (final IOException e) {
+					// PASS
 				}
-				if (getEditingDomain() != null) {
-					getEditingDomain().getCommandStack().flush();
-				}
+			}
+		}
+		if (getEditingDomain() != null) {
+			getEditingDomain().getCommandStack().flush();
+		}
 	}
 
 	/**
