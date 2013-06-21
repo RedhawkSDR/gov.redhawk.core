@@ -16,7 +16,7 @@ Require-Bundle: org.eclipse.ui;bundle-version="3.6.1";resolution:=optional,
  org.eclipse.core.expressions;bundle-version="3.4.1",
  gov.redhawk.common.ui;bundle-version="1.0.0",
  idl.bulkio;bundle-version="1.8.0",
- nxm.sys;bundle-version="3.3.0",
+ nxm.sys;bundle-version="3.3.3",
  nxm.redhawk;bundle-version="8.0.0"
 Bundle-RequiredExecutionEnvironment: J2SE-1.5
 Bundle-ActivationPolicy: lazy
