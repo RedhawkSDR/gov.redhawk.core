@@ -14,6 +14,7 @@ package gov.redhawk.core.resourcefactory;
 import gov.redhawk.core.internal.resourcefactory.ResourceFactoryRegistry;
 
 import org.eclipse.core.runtime.Plugin;
+import org.eclipse.core.runtime.Status;
 import org.osgi.framework.BundleContext;
 
 public class ResourceFactoryPlugin extends Plugin {
@@ -47,5 +48,15 @@ public class ResourceFactoryPlugin extends Plugin {
 
 	public static ResourceFactoryPlugin getDefault() {
 		return ResourceFactoryPlugin.plugin;
+	}
+
+	/**
+     * @since 2.0
+     */
+	public static void log(String msg, Throwable e) {
+		ResourceFactoryPlugin instance = plugin;
+		if (instance != null) {
+			instance.getLog().log(new Status(Status.ERROR, ID, msg, e));
+		}
 	}
 }

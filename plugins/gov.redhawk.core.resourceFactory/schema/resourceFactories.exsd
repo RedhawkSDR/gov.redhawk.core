@@ -3,7 +3,7 @@
 <schema targetNamespace="gov.redhawk.core.resourceFactory" xmlns="http://www.w3.org/2001/XMLSchema">
 <annotation>
       <appinfo>
-         <meta.schema plugin="gov.redhawk.core.resourceFactory" id="resourceFactories" name="resourceFactory"/>
+         <meta.schema plugin="gov.redhawk.core.resourceFactory" id="resourceFactories" name="Resource Factories"/>
       </appinfo>
       <documentation>
          Allows plugin developers to include a resource implementation within a bundle and expose that implementation for use within the IDE.  The main purpose is to provide a mechanism for developers to contribute &apos;utility&apos; components, such as plots, or audio playback.
@@ -18,7 +18,6 @@
       </annotation>
       <complexType>
          <choice minOccurs="1" maxOccurs="unbounded">
-            <element ref="resourceFactory"/>
             <element ref="factoryProvider"/>
          </choice>
          <attribute name="point" type="string" use="required">
@@ -42,31 +41,6 @@
                </documentation>
                <appinfo>
                   <meta.attribute translatable="true"/>
-               </appinfo>
-            </annotation>
-         </attribute>
-      </complexType>
-   </element>
-
-   <element name="resourceFactory">
-      <complexType>
-         <attribute name="profile" type="string" use="required">
-            <annotation>
-               <documentation>
-                  Path to the profile (spd/sad) within the bundle.  The folder containing the profile will be considered the root of the filesystem for that resource.
-               </documentation>
-               <appinfo>
-                  <meta.attribute kind="resource"/>
-               </appinfo>
-            </annotation>
-         </attribute>
-         <attribute name="factory" type="string" use="required">
-            <annotation>
-               <documentation>
-                  Only the interface ResourceFactory operations is required.  However, most cases should extend Abstract Resource Factory.
-               </documentation>
-               <appinfo>
-                  <meta.attribute kind="java" basedOn="gov.redhawk.core.resourcefactory.AbstractBundleResourceFactory:CF.ResourceFactoryOperations"/>
                </appinfo>
             </annotation>
          </attribute>
@@ -106,12 +80,17 @@
          </attribute>
       </complexType>
    </element>
- <annotation>
-       <appinfo>
-                <meta.section type="copyright"/>
-                      </appinfo>
-                            <documentation>
-                                     This file is protected by Copyright. 
+
+
+
+
+
+   <annotation>
+      <appinfo>
+         <meta.section type="copyright"/>
+      </appinfo>
+      <documentation>
+         This file is protected by Copyright. 
                                      Please refer to the COPYRIGHT file distributed with this source distribution.
 
 This file is part of REDHAWK IDE.
@@ -120,5 +99,6 @@ All rights reserved.  This program and the accompanying materials are made avail
 the terms of the Eclipse Public License v1.0 which accompanies this distribution, and is available at 
 http://www.eclipse.org/legal/epl-v10.html
       </documentation>
-         </annotation>
+   </annotation>
+
 </schema>

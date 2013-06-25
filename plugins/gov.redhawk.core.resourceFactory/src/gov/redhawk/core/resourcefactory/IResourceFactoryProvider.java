@@ -11,11 +11,35 @@
  */
 package gov.redhawk.core.resourcefactory;
 
-import org.omg.CORBA.ORB;
-import org.omg.PortableServer.POA;
+import java.beans.PropertyChangeListener;
+import java.util.List;
 
 public interface IResourceFactoryProvider {
-	void init(IResourceFactoryRegistry registry, ORB orb, POA poa);
+	
+	/**
+     * @since 2.0
+     */
+	final String PROPERTY_RESOURCE_DESCRIPTORS = "resourceDescriptors";
+
+	/**
+	 * @since 2.0
+	 */
+	void addPropertyChangeListener(PropertyChangeListener listener);
+
+	/**
+	 * @since 2.0
+	 */
+	void removePropertyChangeListener(PropertyChangeListener listener);
+	
+	/**
+	 * @since 2.0
+	 */
+	List<ResourceDesc> getResourceDescriptors();
+
+	/**
+	 * @since 2.0
+	 */
+	int getPriority();
 
 	void dispose();
 }

@@ -44,10 +44,10 @@ public class BundleFileSystem extends AbstractFileSystem {
 	private final Bundle bundle;
 	private final IPath basePath;
 
-	public BundleFileSystem(final ORB orb, final POA poa, final Bundle bundle, final IPath profilePath) {
+	public BundleFileSystem(final ORB orb, final POA poa, final Bundle bundle, final IPath path) {
 		super(orb, poa);
 		this.bundle = bundle;
-		this.basePath = profilePath.removeLastSegments(1);
+		this.basePath = path;
 	}
 
 	public boolean exists(final String fileName) throws InvalidFileName {

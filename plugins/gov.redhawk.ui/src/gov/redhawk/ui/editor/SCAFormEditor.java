@@ -1283,7 +1283,9 @@ public abstract class SCAFormEditor extends FormEditor implements IEditingDomain
 	 * @param selection the new selection
 	 */
 	public void setSelection(final ISelection selection) {
-		getSite().getSelectionProvider().setSelection(selection);
+		if (getSite() != null && getSite().getSelectionProvider() != null) {
+			getSite().getSelectionProvider().setSelection(selection);
+		}
 	}
 
 	/**

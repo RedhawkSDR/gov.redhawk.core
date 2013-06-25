@@ -19,6 +19,7 @@ import mil.jpeojtrs.sca.partitioning.ComponentFiles;
 import mil.jpeojtrs.sca.partitioning.ComponentInstantiation;
 import mil.jpeojtrs.sca.partitioning.ComponentPlacement;
 import mil.jpeojtrs.sca.partitioning.PartitioningFactory;
+import mil.jpeojtrs.sca.partitioning.impl.ComponentInstantiationImpl;
 import mil.jpeojtrs.sca.spd.SoftPkg;
 
 import org.eclipse.core.commands.ExecutionException;
@@ -40,6 +41,10 @@ public abstract class ComponentPlacementEditHelperAdvice< CI extends ComponentIn
         AbstractEditHelperAdvice {
 
 	public static final String CONFIGURE_OPTIONS_SPD_URI = "SPD_URI";
+	/**
+     * @since 5.1
+     */
+	public static final String CONFIGURE_OPTIONS_IMPL_ID = "IMPL_ID";
 	public static final String CONFIGURE_OPTIONS_CP_FILE = "CP_FILE";
 	/**
      * @since 5.0
@@ -110,6 +115,10 @@ public abstract class ComponentPlacementEditHelperAdvice< CI extends ComponentIn
 			// Now add the component placement
 			if (file != null) {
 				final CI inst = createComponentInstantiation(this.request, spd);
+				
+				// Set the implementation ID, this is mainly used for local debugging and isn't saved to the file.
+				inst.setImplID(getImplementationID());
+				
 				Assert.isNotNull(inst.getId());
 				Assert.isNotNull(inst.getUsageName());
 				final ComponentFileRef ref = PartitioningFactory.eINSTANCE.createComponentFileRef();
@@ -146,7 +155,17 @@ public abstract class ComponentPlacementEditHelperAdvice< CI extends ComponentIn
 			} else if (spdParam instanceof URI) {
 				spdUri = (URI) spdParam;
 			}
+			if (spdUri != null && (spdUri.fragment() == null || spdUri.fragment().equals(""))) {
+				spdUri = spdUri.appendFragment(SoftPkg.EOBJECT_PATH);
+			}
 			return spdUri;
+		}
+		
+		/**
+         * @since 5.1
+         */
+		public String getImplementationID() {
+			return (String) this.request.getParameter(ComponentPlacementEditHelperAdvice.CONFIGURE_OPTIONS_IMPL_ID);
 		}
 		
 
