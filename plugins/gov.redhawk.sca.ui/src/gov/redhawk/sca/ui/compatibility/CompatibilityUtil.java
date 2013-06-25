@@ -21,44 +21,73 @@ import org.eclipse.swt.widgets.Display;
  * @since 9.0
  */
 public class CompatibilityUtil {
+	private static enum SafeCompatibilityUtil implements ICompatibilityUtil {
+		INSTANCE;
+		private ICompatibilityUtil provider = new CompatibilityUtilImpl();
+
+		public void setFontDataStyle(FontData fontData, int style) {
+			provider.setFontDataStyle(fontData, style);
+		}
+
+		public void disableComboWheelScrollSelect(ComboViewer viewer) {
+			provider.disableComboWheelScrollSelect(viewer);
+		}
+
+		public Principal getUserPrincipal(Display display) {
+			return provider.getUserPrincipal(display);
+		}
+
+		public void runInFakeUIContext(Display display, Runnable runnable) {
+			provider.runInFakeUIContext(display, runnable);
+		}
+
+		public void activateUIConnection(String id) {
+			provider.activateUIConnection(id);
+		}
+
+		public void deactivateUIConnection(String id) {
+			provider.deactivateUIConnection(id);
+		}
+
+	}
 
 	private CompatibilityUtil() {
 		//Prevent instantiation
 	}
 
 	public static void setFontDataStyle(FontData fontData, int style) {
-		throw new UnsupportedOperationException();
+		SafeCompatibilityUtil.INSTANCE.setFontDataStyle(fontData, style);
 	}
 
 	public static void disableComboWheelScrollSelect(ComboViewer viewer) {
-		throw new UnsupportedOperationException();
+		SafeCompatibilityUtil.INSTANCE.disableComboWheelScrollSelect(viewer);
 	}
 
 	/**
      * @since 10.0
      */
 	public static Principal getUserPrincipal(Display display) {
-		throw new UnsupportedOperationException();
+		return SafeCompatibilityUtil.INSTANCE.getUserPrincipal(display);
 	}
 	
 	/**
      * @since 10.0
      */
 	public static void runInFakeUIContext(Display display, Runnable runnable) {
-		throw new UnsupportedOperationException();
+		SafeCompatibilityUtil.INSTANCE.runInFakeUIContext(display, runnable);
 	}
 	
 	/**
      * @since 10.0
      */
 	public static void activateUIConnection(String id) {
-		throw new UnsupportedOperationException();
+		SafeCompatibilityUtil.INSTANCE.activateUIConnection(id);
 	}
 	
 	/**
      * @since 10.0
      */
 	public static void deactivateUIConnection(String id) {
-		throw new UnsupportedOperationException();
+		SafeCompatibilityUtil.INSTANCE.deactivateUIConnection(id);
 	}
 }
