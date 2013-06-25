@@ -18,6 +18,8 @@ import java.util.List;
 import org.eclipse.emf.ecore.EStructuralFeature;
 
 import mil.jpeojtrs.sca.scd.ScdPackage;
+import mil.jpeojtrs.sca.spd.Code;
+import mil.jpeojtrs.sca.spd.CodeFileType;
 import mil.jpeojtrs.sca.spd.Implementation;
 import mil.jpeojtrs.sca.spd.SoftPkg;
 import mil.jpeojtrs.sca.spd.SpdPackage;
@@ -28,11 +30,8 @@ import CF.ResourceFactoryOperations;
  * @since 2.0
  */
 public class ComponentDesc extends ResourceDesc {
-	private static final EStructuralFeature [] PATH = new EStructuralFeature [] {
-		SpdPackage.Literals.SOFT_PKG__DESCRIPTOR,
-		SpdPackage.Literals.DESCRIPTOR__COMPONENT,
-		ScdPackage.Literals.SOFTWARE_COMPONENT__COMPONENT_TYPE
-	};
+	private static final EStructuralFeature[] PATH = new EStructuralFeature[] { SpdPackage.Literals.SOFT_PKG__DESCRIPTOR,
+	    SpdPackage.Literals.DESCRIPTOR__COMPONENT, ScdPackage.Literals.SOFTWARE_COMPONENT__COMPONENT_TYPE };
 
 	private final String componentType;
 	private final List<String> implementationIds;
@@ -44,7 +43,13 @@ public class ComponentDesc extends ResourceDesc {
 		this.componentType = ScaEcoreUtils.getFeature(spd, PATH);
 		this.implementationIds = new ArrayList<String>(spd.getImplementation().size());
 		for (Implementation impl : spd.getImplementation()) {
-			this.implementationIds.add(impl.getId());
+			Code code = impl.getCode();
+			if (code != null) {
+				CodeFileType type = code.getType();
+				if (type == CodeFileType.EXECUTABLE) {
+					this.implementationIds.add(impl.getId());
+				}
+			}
 		}
 	}
 

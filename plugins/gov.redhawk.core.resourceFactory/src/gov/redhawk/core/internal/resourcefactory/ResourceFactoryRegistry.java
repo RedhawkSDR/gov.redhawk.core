@@ -115,6 +115,7 @@ public enum ResourceFactoryRegistry implements IResourceFactoryRegistry {
 	private void addResourceDesc(final ResourceDesc desc, int priority) throws CoreException {
 		mount(desc, priority);
 		this.registry.add(desc);
+		pcs.firePropertyChange(PROP_RESOURCES, null, desc);
 	}
 
 	private void mount(final ResourceDesc desc, int priority) throws CoreException {
@@ -130,6 +131,7 @@ public enum ResourceFactoryRegistry implements IResourceFactoryRegistry {
 			unmount(desc);
 			desc.dispose();
 		}
+		pcs.firePropertyChange(PROP_RESOURCES, desc, null);
 	}
 
 	public void dispose() {
