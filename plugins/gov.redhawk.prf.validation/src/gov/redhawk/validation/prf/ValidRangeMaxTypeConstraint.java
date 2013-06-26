@@ -13,10 +13,13 @@ package gov.redhawk.validation.prf;
 
 import mil.jpeojtrs.sca.prf.PrfPackage;
 
+/**
+ * @since 1.1
+ */
 public class ValidRangeMaxTypeConstraint extends AbstractValidRangeTypeConstraint {
 
-    public ValidRangeMaxTypeConstraint() {
-        super(PrfPackage.Literals.RANGE__MAX);
-    }
+	public ValidRangeMaxTypeConstraint() {
+		super(PrfPackage.Literals.RANGE__MAX);
+	}
 
 }

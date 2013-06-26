@@ -15,8 +15,10 @@ import gov.redhawk.common.ui.editor.FormLayoutFactory;
 import gov.redhawk.prf.internal.ui.editor.PropertiesSection;
 import gov.redhawk.prf.internal.ui.editor.composite.BasicSimplePropertyComposite;
 import gov.redhawk.prf.internal.ui.editor.composite.SimpleSequencePropertyComposite;
+import gov.redhawk.validation.prf.ValidValueTypeConstraint;
 
 import java.util.List;
+import java.util.regex.Matcher;
 
 import mil.jpeojtrs.sca.prf.PrfFactory;
 import mil.jpeojtrs.sca.prf.PrfPackage;
@@ -69,15 +71,26 @@ public class SimpleSequencePropertyDetailsPage extends BasicSimplePropertyDetail
 		 */
 		public String isValid(final String newText) {
 			String retVal = null;
-			final boolean valid = this.type.isValueOfType(newText, this.complex);
-			if (!valid) {
+			Matcher matcher = ValidValueTypeConstraint.COMPLEX_PATTERN.matcher(newText);
+			if (complex && !matcher.matches()) {
 				final StringBuilder builder = new StringBuilder();
 				builder.append("The value: \"");
 				builder.append(newText);
 				builder.append("\"");
 				builder.append(" is invalid for PropertyValueType: ");
-				builder.append(this.type.toString());
+				builder.append("complex " + this.type.toString());
 				retVal = builder.toString();
+			} else {
+				final boolean valid = this.type.isValueOfType(newText, this.complex);
+				if (!valid) {
+					final StringBuilder builder = new StringBuilder();
+					builder.append("The value: \"");
+					builder.append(newText);
+					builder.append("\"");
+					builder.append(" is invalid for PropertyValueType: ");
+					builder.append(this.type.toString());
+					retVal = builder.toString();
+				}
 			}
 			return retVal;
 		}

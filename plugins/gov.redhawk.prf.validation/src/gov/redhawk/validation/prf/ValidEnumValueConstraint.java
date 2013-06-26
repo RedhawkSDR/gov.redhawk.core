@@ -23,6 +23,9 @@ import org.eclipse.emf.validation.AbstractModelConstraint;
 import org.eclipse.emf.validation.IValidationContext;
 import org.eclipse.emf.validation.model.ConstraintStatus;
 
+/**
+ * @since 1.1
+ */
 public class ValidEnumValueConstraint extends AbstractModelConstraint {
 
 	private static class ValidationSwitch extends PrfSwitch<IStatus> {

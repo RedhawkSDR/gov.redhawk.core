@@ -11,6 +11,8 @@
  */
 package gov.redhawk.validation.prf;
 
+import java.util.regex.Matcher;
+
 import mil.jpeojtrs.sca.prf.PropertyValueType;
 import mil.jpeojtrs.sca.prf.Range;
 import mil.jpeojtrs.sca.prf.Simple;
@@ -24,38 +26,50 @@ import org.eclipse.emf.validation.AbstractModelConstraint;
 import org.eclipse.emf.validation.IValidationContext;
 import org.eclipse.emf.validation.model.ConstraintStatus;
 
+/**
+ * @since 1.1
+ */
 public abstract class AbstractValidRangeTypeConstraint extends AbstractModelConstraint {
 
-    private EStructuralFeature feature;
+	private EStructuralFeature feature;
 
-    public AbstractValidRangeTypeConstraint(EStructuralFeature feature) {
-        this.feature = feature;
-    }
+	public AbstractValidRangeTypeConstraint(EStructuralFeature feature) {
+		this.feature = feature;
+	}
 
-    @Override
-    public IStatus validate(IValidationContext ctx) {
-        final EObject target = ctx.getTarget();
-        if (target instanceof Range) {
-            Range range = (Range) target;
-            String value = (String) range.eGet(feature);
-            EObject parent = range.eContainer();
-            if (parent instanceof Simple) {
-                Simple prop = (Simple) parent;
-                PropertyValueType type = prop.getType();
-                boolean complex = prop.isComplex();
-                if (!type.isValueOfType(value, complex)) {
-                    return new EnhancedConstraintStatus((ConstraintStatus) ctx.createFailureStatus((complex) ? "complex " + type : type), feature);
-                }
-            } else if (parent instanceof SimpleSequence) {
-                SimpleSequence prop = (SimpleSequence) parent;
-                PropertyValueType type = prop.getType();
-                boolean complex = prop.isComplex();
-                if (!type.isValueOfType(value, complex)) {
-                    return new EnhancedConstraintStatus((ConstraintStatus) ctx.createFailureStatus((complex) ? "complex " + type : type), feature);
-                }
-            }
-        }
-        return null;
-    }
+	@Override
+	public IStatus validate(IValidationContext ctx) {
+		final EObject target = ctx.getTarget();
+		if (target instanceof Range) {
+			Range range = (Range) target;
+			String value = (String) range.eGet(feature);
+			if (value == null) {
+				value = "";
+			}
+			EObject parent = range.eContainer();
+			if (parent instanceof Simple) {
+				Simple prop = (Simple) parent;
+				PropertyValueType type = prop.getType();
+				boolean complex = prop.isComplex();
+				Matcher matcher = ValidValueTypeConstraint.COMPLEX_PATTERN.matcher(value);
+				if (complex && !matcher.matches()) {
+					return new EnhancedConstraintStatus((ConstraintStatus) ctx.createFailureStatus((complex) ? "complex " + type : type), feature);
+				} else if (!type.isValueOfType(value, complex)) {
+					return new EnhancedConstraintStatus((ConstraintStatus) ctx.createFailureStatus((complex) ? "complex " + type : type), feature);
+				}
+			} else if (parent instanceof SimpleSequence) {
+				SimpleSequence prop = (SimpleSequence) parent;
+				PropertyValueType type = prop.getType();
+				boolean complex = prop.isComplex();
+				Matcher matcher = ValidValueTypeConstraint.COMPLEX_PATTERN.matcher(value);
+				if (complex && !matcher.matches()) {
+					return new EnhancedConstraintStatus((ConstraintStatus) ctx.createFailureStatus((complex) ? "complex " + type : type), feature);
+				} else if (!type.isValueOfType(value, complex)) {
+					return new EnhancedConstraintStatus((ConstraintStatus) ctx.createFailureStatus((complex) ? "complex " + type : type), feature);
+				}
+			}
+		}
+		return null;
+	}
 
 }

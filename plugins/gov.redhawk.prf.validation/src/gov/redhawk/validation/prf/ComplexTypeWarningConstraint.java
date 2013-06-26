@@ -24,6 +24,7 @@ import org.eclipse.emf.validation.IValidationContext;
 import org.eclipse.emf.validation.model.ConstraintStatus;
 
 /**
+ * @since 1.1
  * 
  */
 public class ComplexTypeWarningConstraint extends AbstractModelConstraint {

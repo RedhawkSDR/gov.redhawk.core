@@ -13,10 +13,13 @@ package gov.redhawk.validation.prf;
 
 import mil.jpeojtrs.sca.prf.PrfPackage;
 
+/**
+ * @since 1.1
+ */
 public class ValidRangeMinTypeConstraint extends AbstractValidRangeTypeConstraint {
 
-    public ValidRangeMinTypeConstraint() {
-        super(PrfPackage.Literals.RANGE__MIN);
-    }
+	public ValidRangeMinTypeConstraint() {
+		super(PrfPackage.Literals.RANGE__MIN);
+	}
 
 }
