@@ -370,7 +370,7 @@ public final class ScaComponentFactory {
 			viewer.setContentProvider(new ArrayContentProvider());
 			final List<Object> values = new ArrayList<Object>();
 			for (final Enumeration e : prop.getDefinition().getEnumerations().getEnumeration()) {
-				values.add(AnyUtils.convertString(e.getValue(), prop.getDefinition().getType().getLiteral(), prop.getDefinition().getComplex()));
+				values.add(AnyUtils.convertString(e.getValue(), prop.getDefinition().getType().getLiteral(), prop.getDefinition().isComplex()));
 			}
 			viewer.setInput(values);
 			return viewer;

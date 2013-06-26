@@ -56,10 +56,12 @@ public class ValidValueTypeConstraint extends AbstractModelConstraint {
 				if (type != null) {
 					Matcher matcher = COMPLEX_PATTERN.matcher(value);
 					if (object.isComplex() && !matcher.matches()) { // TODO: This is to force PRF complex value of format a+jb
-						return new EnhancedConstraintStatus((ConstraintStatus) this.ctx.createFailureStatus(value, "complex " + type), PrfPackage.Literals.SIMPLE__VALUE);
-					} else if (!(type.isValueOfType(value, object.getComplex()))) {
+						return new EnhancedConstraintStatus((ConstraintStatus) this.ctx.createFailureStatus(value, "complex " + type),
+							PrfPackage.Literals.SIMPLE__VALUE);
+					} else if (!(type.isValueOfType(value, object.isComplex()))) {
 						if (object.isComplex()) {
-							return new EnhancedConstraintStatus((ConstraintStatus) this.ctx.createFailureStatus(value, "complex " + type), PrfPackage.Literals.SIMPLE__VALUE);
+							return new EnhancedConstraintStatus((ConstraintStatus) this.ctx.createFailureStatus(value, "complex " + type),
+								PrfPackage.Literals.SIMPLE__VALUE);
 						} else {
 							return new EnhancedConstraintStatus((ConstraintStatus) this.ctx.createFailureStatus(value, type), PrfPackage.Literals.SIMPLE__VALUE);
 						}
@@ -89,16 +91,17 @@ public class ValidValueTypeConstraint extends AbstractModelConstraint {
 						if (type != null) {
 							Matcher matcher = COMPLEX_PATTERN.matcher(value);
 							if (mySimple.isComplex() && !matcher.matches()) { // TODO: This is to force PRF complex value of format a+jb
-								return new EnhancedConstraintStatus((ConstraintStatus) this.ctx.createFailureStatus(value, "complex " + type), PrfPackage.Literals.SIMPLE__VALUE);
-							} else if (!(type.isValueOfType(value, mySimple.getComplex()))) {
+								return new EnhancedConstraintStatus((ConstraintStatus) this.ctx.createFailureStatus(value, "complex " + type),
+									PrfPackage.Literals.SIMPLE__VALUE);
+							} else if (!(type.isValueOfType(value, mySimple.isComplex()))) {
 								if (mySimple.isComplex()) {
 									return new EnhancedConstraintStatus((ConstraintStatus) this.ctx.createFailureStatus(value, "complex " + type),
-																        PrfPackage.Literals.SIMPLE_REF__VALUE);
+										PrfPackage.Literals.SIMPLE_REF__VALUE);
 								} else {
 									return new EnhancedConstraintStatus((ConstraintStatus) this.ctx.createFailureStatus(value, type),
-																        PrfPackage.Literals.SIMPLE_REF__VALUE);
+										PrfPackage.Literals.SIMPLE_REF__VALUE);
 								}
-								
+
 							}
 						}
 					}
@@ -116,14 +119,16 @@ public class ValidValueTypeConstraint extends AbstractModelConstraint {
 					final PropertyValueType type = sequence.getType();
 					Matcher matcher = COMPLEX_PATTERN.matcher(value);
 					if (sequence.isComplex() && !matcher.matches()) { // TODO: This is to force PRF complex value of format a+jb
-						return new EnhancedConstraintStatus((ConstraintStatus) this.ctx.createFailureStatus(value, "complex " + type), PrfPackage.Literals.SIMPLE__VALUE);
+						return new EnhancedConstraintStatus((ConstraintStatus) this.ctx.createFailureStatus(value, "complex " + type),
+							PrfPackage.Literals.SIMPLE__VALUE);
 					} else if (!type.isValueOfType(value, sequence.isComplex())) {
 						if (sequence.isComplex()) {
-							return new EnhancedConstraintStatus((ConstraintStatus) this.ctx.createFailureStatus(value, "complex " + type), PrfPackage.Literals.VALUES__VALUE);
+							return new EnhancedConstraintStatus((ConstraintStatus) this.ctx.createFailureStatus(value, "complex " + type),
+								PrfPackage.Literals.VALUES__VALUE);
 						} else {
-							return new EnhancedConstraintStatus((ConstraintStatus) this.ctx.createFailureStatus(value, type), PrfPackage.Literals.VALUES__VALUE);	
+							return new EnhancedConstraintStatus((ConstraintStatus) this.ctx.createFailureStatus(value, type), PrfPackage.Literals.VALUES__VALUE);
 						}
-						
+
 					}
 				}
 			}

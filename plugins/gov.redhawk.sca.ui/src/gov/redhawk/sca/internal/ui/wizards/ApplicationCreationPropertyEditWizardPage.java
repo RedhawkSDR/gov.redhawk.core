@@ -221,7 +221,7 @@ public class ApplicationCreationPropertyEditWizardPage extends WizardPage {
 			struct.setDefinition(prop.getProperty().getStruct());
 			for (SimpleRef ref : refs) {
 				ScaSimpleProperty simple = struct.getSimple(ref.getRefID());
-				simple.setValue(AnyUtils.convertString(ref.getValue(), simple.getDefinition().getType().getLiteral(), simple.getDefinition().getComplex()));
+				simple.setValue(AnyUtils.convertString(ref.getValue(), simple.getDefinition().getType().getLiteral(), simple.getDefinition().isComplex()));
 			}
 		}
 	}
@@ -242,7 +242,7 @@ public class ApplicationCreationPropertyEditWizardPage extends WizardPage {
 	}
 	
 	protected void setValue(ScaSimpleProperty property, SimpleRef prop) {
-		property.setValue(AnyUtils.convertString(prop.getValue(), prop.getProperty().getType().getLiteral(), prop.getProperty().getComplex()));
+		property.setValue(AnyUtils.convertString(prop.getValue(), prop.getProperty().getType().getLiteral(), prop.getProperty().isComplex()));
 	}
 
 	private void storeProperties(final boolean empty) {

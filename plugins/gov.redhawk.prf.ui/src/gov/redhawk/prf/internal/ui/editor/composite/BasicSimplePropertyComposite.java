@@ -522,7 +522,7 @@ public abstract class BasicSimplePropertyComposite extends AbstractPropertyCompo
 						final Enumeration element = (Enumeration) obj;
 						final Simple simple = (Simple) element.eContainer().eContainer();
 						try {
-							AnyUtils.convertString(value.toString(), simple.getType().getLiteral(), simple.getComplex());
+							AnyUtils.convertString(value.toString(), simple.getType().getLiteral(), simple.isComplex());
 							return null;
 						} catch (final Exception e) {
 							return "Invalid value";

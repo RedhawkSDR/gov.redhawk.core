@@ -82,7 +82,7 @@ public abstract class PropertyValueTypePropertyDescriptor extends PropertyDescri
 
 	public static class PropertyValueTypeCellEditor extends EDataTypeCellEditor {
 
-		public PropertyValueTypeCellEditor(final PropertyValueType type, Boolean complex, final Composite arg1) {
+		public PropertyValueTypeCellEditor(final PropertyValueType type, boolean complex, final Composite arg1) {
 			super(type.toEDataType(complex), arg1);
 			this.valueHandler = new PropertyValueTypeValueHandler(type, complex);
 			setValidator(this.valueHandler);

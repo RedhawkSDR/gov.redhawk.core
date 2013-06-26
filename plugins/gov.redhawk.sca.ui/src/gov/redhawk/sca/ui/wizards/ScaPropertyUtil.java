@@ -146,7 +146,7 @@ public final class ScaPropertyUtil {
 
 	private static void restoreSimple(final ScaSimpleProperty prop, final IDialogSettings propertySettings) {
 		if (propertySettings != null) {
-			prop.setValue(AnyUtils.convertString(propertySettings.get(ScaPropertyUtil.SIMPLE_VALUE), prop.getDefinition().getType().getLiteral(), prop.getDefinition().getComplex()));
+			prop.setValue(AnyUtils.convertString(propertySettings.get(ScaPropertyUtil.SIMPLE_VALUE), prop.getDefinition().getType().getLiteral(), prop.getDefinition().isComplex()));
 		}
 
 	}

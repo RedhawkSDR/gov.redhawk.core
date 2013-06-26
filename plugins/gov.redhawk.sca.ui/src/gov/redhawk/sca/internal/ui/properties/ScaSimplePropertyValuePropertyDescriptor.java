@@ -19,6 +19,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
+import mil.jpeojtrs.sca.prf.PropertyValueType;
 import mil.jpeojtrs.sca.prf.provider.RadixLabelProviderUtil;
 
 import org.eclipse.emf.common.ui.celleditor.ExtendedComboBoxCellEditor;
@@ -44,7 +45,7 @@ public class ScaSimplePropertyValuePropertyDescriptor extends PropertyValueTypeP
 	public static class ScaSimplePropertyValueTypeCellEditor extends PropertyValueTypeCellEditor {
 
 		public ScaSimplePropertyValueTypeCellEditor(final ScaSimpleProperty property, final Composite arg1) {
-			super(property.getDefinition().getType(), property.getDefinition().getComplex(), arg1);
+			super(property.getDefinition().getType(), property.getDefinition().isComplex(), arg1);
 			final int radix = RadixLabelProviderUtil.getRadix(property.getDefinition().getValue());
 			((PropertyValueTypeValueHandler) this.valueHandler).setRadix(radix);
 		}
@@ -66,10 +67,8 @@ public class ScaSimplePropertyValuePropertyDescriptor extends PropertyValueTypeP
 		}
 
 		if (genericFeature instanceof EReference[]) {
-			result = new ExtendedComboBoxCellEditor(composite,
-			        new ArrayList<Object>(this.itemPropertyDescriptor.getChoiceOfValues(this.object)),
-			        getEditLabelProvider(),
-			        this.itemPropertyDescriptor.isSortChoices(this.object));
+			result = new ExtendedComboBoxCellEditor(composite, new ArrayList<Object>(this.itemPropertyDescriptor.getChoiceOfValues(this.object)),
+				getEditLabelProvider(), this.itemPropertyDescriptor.isSortChoices(this.object));
 		} else if (genericFeature instanceof EStructuralFeature) {
 			final EStructuralFeature feature = (EStructuralFeature) genericFeature;
 			final EClassifier eType = property.getDefinition().getType().toEDataType(property.getDefinition().isComplex());
@@ -89,16 +88,17 @@ public class ScaSimplePropertyValuePropertyDescriptor extends PropertyValueTypeP
 						result = new ExtendedDialogCellEditor(composite, editLabelProvider) {
 							@Override
 							protected Object openDialogBox(final Control cellEditorWindow) {
-								final FeatureEditorDialog dialog = new FeatureEditorDialog(cellEditorWindow.getShell(),
-								        editLabelProvider,
-								        ScaSimplePropertyValuePropertyDescriptor.this.object,
-								        eType,
-								        (List< ? >) doGetValue(),
-								        getDisplayName(),
-								        new ArrayList<Object>(choiceOfValues),
-								        false,
-								        ScaSimplePropertyValuePropertyDescriptor.this.itemPropertyDescriptor.isSortChoices(ScaSimplePropertyValuePropertyDescriptor.this.object),
-								        feature.isUnique());
+								final FeatureEditorDialog dialog = new FeatureEditorDialog(
+									cellEditorWindow.getShell(),
+									editLabelProvider,
+									ScaSimplePropertyValuePropertyDescriptor.this.object,
+									eType,
+									(List< ? >) doGetValue(),
+									getDisplayName(),
+									new ArrayList<Object>(choiceOfValues),
+									false,
+									ScaSimplePropertyValuePropertyDescriptor.this.itemPropertyDescriptor.isSortChoices(ScaSimplePropertyValuePropertyDescriptor.this.object),
+									feature.isUnique());
 								dialog.open();
 								return dialog.getResult();
 							}
@@ -107,10 +107,8 @@ public class ScaSimplePropertyValuePropertyDescriptor extends PropertyValueTypeP
 				}
 
 				if (result == null) {
-					result = new ExtendedComboBoxCellEditor(composite,
-					        new ArrayList<Object>(choiceOfValues),
-					        getEditLabelProvider(),
-					        this.itemPropertyDescriptor.isSortChoices(this.object));
+					result = new ExtendedComboBoxCellEditor(composite, new ArrayList<Object>(choiceOfValues), getEditLabelProvider(),
+						this.itemPropertyDescriptor.isSortChoices(this.object));
 				}
 			} else if (eType instanceof EDataType) {
 				final EDataType eDataType = (EDataType) eType;
@@ -120,24 +118,23 @@ public class ScaSimplePropertyValuePropertyDescriptor extends PropertyValueTypeP
 						result = new ExtendedDialogCellEditor(composite, editLabelProvider) {
 							@Override
 							protected Object openDialogBox(final Control cellEditorWindow) {
-								final FeatureEditorDialog dialog = new FeatureEditorDialog(cellEditorWindow.getShell(),
-								        editLabelProvider,
-								        ScaSimplePropertyValuePropertyDescriptor.this.object,
-								        eType,
-								        (List< ? >) doGetValue(),
-								        getDisplayName(),
-								        null,
-								        ScaSimplePropertyValuePropertyDescriptor.this.itemPropertyDescriptor.isMultiLine(ScaSimplePropertyValuePropertyDescriptor.this.object),
-								        false,
-								        feature.isUnique());
+								final FeatureEditorDialog dialog = new FeatureEditorDialog(
+									cellEditorWindow.getShell(),
+									editLabelProvider,
+									ScaSimplePropertyValuePropertyDescriptor.this.object,
+									eType,
+									(List< ? >) doGetValue(),
+									getDisplayName(),
+									null,
+									ScaSimplePropertyValuePropertyDescriptor.this.itemPropertyDescriptor.isMultiLine(ScaSimplePropertyValuePropertyDescriptor.this.object),
+									false, feature.isUnique());
 								dialog.open();
 								return dialog.getResult();
 							}
 						};
 					} else if (eDataType.getInstanceClass() == Boolean.class || eDataType.getInstanceClass() == Boolean.TYPE) {
-						result = new ExtendedComboBoxCellEditor(composite, Arrays.asList(new Object[] {
-						        Boolean.FALSE, Boolean.TRUE
-						}), new LabelProvider(), this.itemPropertyDescriptor.isSortChoices(this.object));
+						result = new ExtendedComboBoxCellEditor(composite, Arrays.asList(new Object[] { Boolean.FALSE, Boolean.TRUE }), new LabelProvider(),
+							this.itemPropertyDescriptor.isSortChoices(this.object));
 					} else {
 						result = createEDataTypeCellEditor(eDataType, composite);
 					}
@@ -154,7 +151,11 @@ public class ScaSimplePropertyValuePropertyDescriptor extends PropertyValueTypeP
 			return null;
 		}
 		final ScaSimpleProperty property = (ScaSimpleProperty) this.object;
-		if (RadixLabelProviderUtil.supports(property.getDefinition().getType(), property.getDefinition().isComplex())) {
+		PropertyValueType type = property.getDefinition().getType();
+		if (type == null) {
+			return null;
+		}
+		if (RadixLabelProviderUtil.supports(type, property.getDefinition().isComplex())) {
 			return new ScaSimplePropertyValueTypeCellEditor(property, composite);
 		} else {
 			return super.createEDataTypeCellEditor(property.getDefinition().getType().toEDataType(property.getDefinition().isComplex()), composite);

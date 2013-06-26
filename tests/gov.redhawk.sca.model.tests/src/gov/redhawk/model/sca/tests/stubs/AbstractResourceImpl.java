@@ -203,7 +203,7 @@ public class AbstractResourceImpl extends Resource {
 	}
 
 	private SimpleProperty< ? > createSimpleProperty(Simple simple) {
-		Object value = AnyUtils.convertString(simple.getValue(), simple.getType().toString(), simple.getComplex());
+		Object value = AnyUtils.convertString(simple.getValue(), simple.getType().toString(), simple.isComplex());
 		List<String> kinds = new ArrayList<String>(simple.getKind().size());
 		String type = simple.getType().toString();
 		if (type.equals("objref")) {

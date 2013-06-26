@@ -94,7 +94,7 @@ public class ValueEditingSupport extends EditingSupport {
 
 					public String isValid(final Object value) {
 						try {
-							AnyUtils.convertString(value.toString(), simple.getType().getLiteral(), simple.getComplex());
+							AnyUtils.convertString(value.toString(), simple.getType().getLiteral(), simple.isComplex());
 							return null;
 						} catch (final Exception e) {
 							return e.getMessage();
@@ -165,7 +165,7 @@ public class ValueEditingSupport extends EditingSupport {
 				}
 				if (!(value == null || "".equals(value.toString()) || value.equals(defaultValue))) {
 					// Create new component property
-					override = new DataType(simple.getId(), AnyUtils.toAny(value, simple.getType().toString(), simple.getComplex()));
+					override = new DataType(simple.getId(), AnyUtils.toAny(value, simple.getType().toString(), simple.isComplex()));
 					this.overwrittenProps.add(override);
 				}
 			} else {
@@ -173,7 +173,7 @@ public class ValueEditingSupport extends EditingSupport {
 					// Revert to default
 					this.overwrittenProps.remove(override);
 				} else {
-					override.value = AnyUtils.toAny(value, simple.getType().toString(), simple.getComplex());
+					override.value = AnyUtils.toAny(value, simple.getType().toString(), simple.isComplex());
 				}
 			}
 		} else if (element instanceof SimpleSequence) {

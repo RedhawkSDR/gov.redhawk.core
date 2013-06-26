@@ -115,7 +115,7 @@ public class ScaSimplePropertyItemProvider extends ScaAbstractPropertyItemProvid
 				if (enums != null) {
 					List<Object> result = new ArrayList<Object>();
 					for (Enumeration e : enums.getEnumeration()) {
-						result.add(AnyUtils.convertString(e.getValue(), def.getType().getLiteral(), def.getComplex()));
+						result.add(AnyUtils.convertString(e.getValue(), def.getType().getLiteral(), def.isComplex()));
 					}
 					return result;
 				}
@@ -247,7 +247,7 @@ public class ScaSimplePropertyItemProvider extends ScaAbstractPropertyItemProvid
 		
 		if (property.getEnumerations() != null) {
 			for (Enumeration e : property.getEnumerations().getEnumeration()) {
-				Object enumValue = AnyUtils.convertString(e.getValue(), property.getType().getLiteral(), property.getComplex());
+				Object enumValue = AnyUtils.convertString(e.getValue(), property.getType().getLiteral(), property.isComplex());
 				if (PluginUtil.equals(enumValue, value)) {
 					retVal = e.getLabel();
 					break;
