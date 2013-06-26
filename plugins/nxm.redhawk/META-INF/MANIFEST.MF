@@ -21,3 +21,4 @@ Bundle-ClassPath: .
 Export-Package: nxm.redhawk.lib,
  nxm.redhawk.prim,
  nxm.redhawk.prim.data;x-internal:=true
+Bundle-Activator: nxm.redhawk.lib.RedhawkOptActivator

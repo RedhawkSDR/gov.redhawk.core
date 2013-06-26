@@ -13,15 +13,17 @@ package nxm.redhawk.prim;
 
 import gov.redhawk.sca.util.OrbSession;
 
+import java.lang.Thread.UncaughtExceptionHandler;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import mil.jpeojtrs.sca.util.DceUuidUtil;
+import nxm.redhawk.lib.RedhawkOptActivator;
 import nxm.sys.inc.Commandable;
 import nxm.sys.lib.Primitive;
 
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.Status;
 import org.omg.CORBA.SystemException;
 import org.omg.CosNaming.NamingContextExt;
 import org.omg.CosNaming.NamingContextExtHelper;
@@ -57,7 +59,7 @@ public class CorbaPrimitive extends Primitive {
 	public static final String A_HOST = "HOST";
 	/** The maximum number of times to retry the initial ORB connection */
 	protected static final int MAX_RETRIES = 5;
-	
+
 	private OrbSession session = OrbSession.createSession();
 	/** The list of port connections */
 	private final List<ConnectionData> connections = Collections.synchronizedList(new ArrayList<ConnectionData>());
@@ -74,7 +76,7 @@ public class CorbaPrimitive extends Primitive {
 			super();
 			this.tie = tie;
 			this.port = port;
-			this.dceUUID = DceUuidUtil.createDceUUID();
+			this.dceUUID = "plot_" + System.getProperty("user.name", "user") + "_" + System.currentTimeMillis();
 		}
 
 		public void connect() throws InvalidPort, OccupiedPort {
@@ -110,6 +112,11 @@ public class CorbaPrimitive extends Primitive {
 			}
 		}
 
+		public int hashCode() {
+			assert false : "hashCode not designed";
+			return 42; // any arbitrary constant will do
+		}
+
 		@Override
 		public boolean equals(final Object obj) {
 			if (obj instanceof ConnectionData) {
@@ -120,7 +127,7 @@ public class CorbaPrimitive extends Primitive {
 			}
 		}
 	}
-	
+
 	protected POA getPOA() throws CoreException {
 		return session.getPOA();
 	}
@@ -147,7 +154,7 @@ public class CorbaPrimitive extends Primitive {
 				// Service (INS) specification.
 				final org.omg.CORBA.Object obj = session.getOrb().string_to_object("corbaloc::" + host + ":" + port);
 				this.ncRef = NamingContextExtHelper.narrow(obj);
-			} 
+			}
 		} catch (final SystemException e) {
 			this.M.error(e);
 			ret = Commandable.ABORT;
@@ -167,11 +174,20 @@ public class CorbaPrimitive extends Primitive {
 	 * @since 9.0
 	 */
 	protected void shutdownNonBlocking() {
-		new Thread("Corba Shutdown") {
+		Thread shutdownThread = new Thread("Corba Shutdown") {
 			public void run() {
 				shutdown();
 			}
-		} .start();
+		};
+		shutdownThread.setDaemon(true);
+		shutdownThread.setUncaughtExceptionHandler(new UncaughtExceptionHandler() {
+			
+			@Override
+			public void uncaughtException(Thread t, Throwable e) {
+				RedhawkOptActivator.log(new Status(Status.ERROR, RedhawkOptActivator.ID, "Error occured while shuting down Corba Primitive", e));
+			}
+		});
+		shutdownThread.start();
 	}
 
 	/**
