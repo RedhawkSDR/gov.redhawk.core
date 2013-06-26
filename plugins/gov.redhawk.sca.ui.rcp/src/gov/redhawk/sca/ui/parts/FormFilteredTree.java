@@ -26,7 +26,7 @@ import org.eclipse.ui.forms.widgets.FormToolkit;
 
 /**
  * The Class FormFilteredTree.
- * @since 1.2
+ * @since 2.0
  */
 public class FormFilteredTree extends FilteredTree {
 

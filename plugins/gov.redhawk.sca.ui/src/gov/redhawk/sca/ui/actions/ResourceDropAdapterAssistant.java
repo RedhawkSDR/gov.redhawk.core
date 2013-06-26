@@ -36,7 +36,7 @@ import org.eclipse.ui.navigator.CommonDropAdapterAssistant;
 import org.eclipse.ui.part.PluginTransfer;
 
 /**
- * @since 10.0
+ * @since 9.1
  *
  */
 public class ResourceDropAdapterAssistant extends CommonDropAdapterAssistant {

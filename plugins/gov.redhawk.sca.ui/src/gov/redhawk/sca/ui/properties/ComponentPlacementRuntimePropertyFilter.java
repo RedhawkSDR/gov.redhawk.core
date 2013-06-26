@@ -17,7 +17,7 @@ import org.eclipse.core.runtime.Platform;
 import org.eclipse.jface.viewers.IFilter;
 
 /**
- * @since 10.0
+ * @since 9.1
  */
 public class ComponentPlacementRuntimePropertyFilter implements IFilter {
 

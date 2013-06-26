@@ -19,7 +19,7 @@ import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.viewers.ViewerFilter;
 
 /**
- * @since 10.0
+ * @since 9.1
  */
 public class DeviceManagerChildDevicesFilter extends ViewerFilter {
 

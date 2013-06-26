@@ -20,7 +20,7 @@ import org.eclipse.swt.widgets.Display;
 /**
  * @since 9.0
  */
-public class CompatibilityUtil {
+public final class CompatibilityUtil {
 	private static enum SafeCompatibilityUtil implements ICompatibilityUtil {
 		INSTANCE;
 		private ICompatibilityUtil provider = new CompatibilityUtilImpl();
@@ -64,29 +64,29 @@ public class CompatibilityUtil {
 	}
 
 	/**
-     * @since 10.0
-     */
+	 * @since 9.1
+	 */
 	public static Principal getUserPrincipal(Display display) {
 		return SafeCompatibilityUtil.INSTANCE.getUserPrincipal(display);
 	}
-	
+
 	/**
-     * @since 10.0
-     */
+	 * @since 9.1
+	 */
 	public static void runInFakeUIContext(Display display, Runnable runnable) {
 		SafeCompatibilityUtil.INSTANCE.runInFakeUIContext(display, runnable);
 	}
-	
+
 	/**
-     * @since 10.0
-     */
+	 * @since 9.1
+	 */
 	public static void activateUIConnection(String id) {
 		SafeCompatibilityUtil.INSTANCE.activateUIConnection(id);
 	}
-	
+
 	/**
-     * @since 10.0
-     */
+	 * @since 9.1
+	 */
 	public static void deactivateUIConnection(String id) {
 		SafeCompatibilityUtil.INSTANCE.deactivateUIConnection(id);
 	}
