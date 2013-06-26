@@ -18,7 +18,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import mil.jpeojtrs.sca.util.DceUuidUtil;
 import nxm.redhawk.lib.RedhawkOptActivator;
 import nxm.sys.inc.Commandable;
 import nxm.sys.lib.Primitive;
@@ -77,7 +76,7 @@ public class CorbaPrimitive extends Primitive {
 			super();
 			this.tie = tie;
 			this.port = port;
-			this.dceUUID = DceUuidUtil.createDceUUID();
+			this.dceUUID = "plot_" + System.getProperty("user.name", "user") + "_" + System.currentTimeMillis();
 		}
 
 		public void connect() throws InvalidPort, OccupiedPort {

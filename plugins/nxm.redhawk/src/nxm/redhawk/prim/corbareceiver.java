@@ -14,6 +14,7 @@ package nxm.redhawk.prim;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
+import java.util.Arrays;
 
 import nxm.redhawk.prim.data.BaseBulkIOReceiver;
 import nxm.redhawk.prim.data.BulkIOReceiverFactory;
@@ -32,6 +33,7 @@ import BULKIO.PortStatistics;
 import BULKIO.PortUsageType;
 import BULKIO.PrecisionUTCTime;
 import BULKIO.StreamSRI;
+import CF.DataType;
 
 /**
  * This class connects to the specified CORBA host and receives data and writes
@@ -83,6 +85,15 @@ public class corbareceiver extends CorbaPrimitive { //SUPPRESS CHECKSTYLE ClassN
 
 	private FileName fileName;
 	private boolean overrideSRISubSize;
+	private PortStatistics statictics = new PortStatistics();
+	private long lastWrite = -1;
+	private int numCalls;
+	private int numElements;
+	{
+		statictics.keywords = new DataType[0];
+		statictics.portName = "corbareceiver";
+		statictics.streamIDs = new String[0];
+	}
 
 	/**
 	 * @since 8.0
@@ -150,6 +161,41 @@ public class corbareceiver extends CorbaPrimitive { //SUPPRESS CHECKSTYLE ClassN
 		this.outputFile.open();
 
 		return ret;
+	}
+
+	@Override
+	public int process() {
+		updateStatitics();
+//		printStats();
+		return NOOP;
+	}
+
+	private void printStats() {
+		// BEGIN DEBUG CODE
+		System.out.println("Port Stats: ");
+		System.out.println("\tQueue Depth: "+ statictics.averageQueueDepth);
+		System.out.println("\tBits/Sec: "+ statictics.bitsPerSecond);
+		System.out.println("\tCalls/Sec: "+ statictics.callsPerSecond);
+		System.out.println("\tElements/Sec: "+ statictics.elementsPerSecond);
+		System.out.println("\tPort Name: "+ statictics.portName);
+		System.out.println("\tTime Last: "+ statictics.timeSinceLastCall);
+		System.out.println("\tKeywords: "+ Arrays.toString(statictics.keywords));
+		System.out.println("\tStream IDs: "+ Arrays.toString(statictics.streamIDs));
+		// END DEBUG CODE
+	}
+
+	private synchronized void updateStatitics() {
+		statictics.callsPerSecond = this.numCalls;
+		this.numCalls = 0;
+
+		statictics.elementsPerSecond = this.numElements;
+		this.numElements = 0;
+		if (this.lastWrite > 0) {
+			statictics.timeSinceLastCall = System.currentTimeMillis() - this.lastWrite;
+		} else {
+			statictics.timeSinceLastCall = this.lastWrite;
+		}
+		statictics.bitsPerSecond = this.outputFile.bpa * statictics.elementsPerSecond * 8;
 	}
 
 	@Override
@@ -285,6 +331,11 @@ public class corbareceiver extends CorbaPrimitive { //SUPPRESS CHECKSTYLE ClassN
 			return;
 		}
 		this.currentSri = sri;
+		if (this.currentSri != null) {
+			this.statictics.streamIDs = new String[] { this.currentSri.streamID };
+		} else {
+			this.statictics.streamIDs = new String[0];
+		}
 		sendMessage("STREAMSRI", 1, this.currentSri);
 		if (state == Commandable.PROCESS) {
 			doRestart();
@@ -337,6 +388,10 @@ public class corbareceiver extends CorbaPrimitive { //SUPPRESS CHECKSTYLE ClassN
 	 * @since 8.0
 	 */
 	public synchronized void write(final Object dataArray, final int size, final byte type, final boolean endOfStream, PrecisionUTCTime time) {
+		this.lastWrite = System.currentTimeMillis();
+		this.numCalls++;
+		this.numElements += size;
+
 		if (!(this.state == Commandable.PROCESS) || isStateChanged() || this.currentSri == null || !shouldProcessPacket(endOfStream, type)) {
 			return;
 		}
@@ -354,7 +409,7 @@ public class corbareceiver extends CorbaPrimitive { //SUPPRESS CHECKSTYLE ClassN
 		}
 
 		outputFile.setTimeAt(midasTime);
-		int bufferSize =  outputFile.bpa * size;
+		int bufferSize = outputFile.bpa * size;
 		byte[] byteBuffer = new byte[bufferSize];
 		Convert.ja2bb(dataArray, 0, type, byteBuffer, 0, outputFile.dataType, size);
 		outputFile.write(byteBuffer, 0, byteBuffer.length);
@@ -371,8 +426,8 @@ public class corbareceiver extends CorbaPrimitive { //SUPPRESS CHECKSTYLE ClassN
 	/**
 	 * @since 8.0
 	 */
-	public PortStatistics statistics() {
-		return new PortStatistics();
+	public synchronized PortStatistics statistics() {
+		return statictics;
 	}
 
 	/**
