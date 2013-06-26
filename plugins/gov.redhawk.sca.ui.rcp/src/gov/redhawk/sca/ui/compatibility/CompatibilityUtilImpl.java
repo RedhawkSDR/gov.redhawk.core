@@ -11,7 +11,6 @@
  */
 package gov.redhawk.sca.ui.compatibility;
 
-
 import java.security.Principal;
 
 import org.eclipse.jface.viewers.ComboViewer;
@@ -20,6 +19,7 @@ import org.eclipse.swt.graphics.FontData;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Listener;
+
 
 /**
  * This class is meant as an extension mechanism to single source RCP / RAP applications
