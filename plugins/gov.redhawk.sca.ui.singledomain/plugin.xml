@@ -320,30 +320,6 @@
       </propertySections>
    </extension>
    <extension
-         point="org.eclipse.ui.views.properties.tabbed.propertyTabs">
-      <propertyTabs
-            contributorId="mil.jpeojtrs.sca.sad.diagram">
-         <propertyTab
-               category="domain"
-               id="property.tab.runtime"
-               label="Component Properties">
-         </propertyTab>
-      </propertyTabs>
-   </extension>
-   <extension
-         point="org.eclipse.ui.views.properties.tabbed.propertySections">
-      <propertySections
-            contributorId="mil.jpeojtrs.sca.sad.diagram">
-         <propertySection
-               class="gov.redhawk.sca.ui.properties.ComponentPropertiesPropertySection"
-               enablesFor="1"
-               filter="gov.redhawk.sca.ui.properties.ComponentPlacementRuntimePropertyFilter"
-               id="property.section.runtime"
-               tab="property.tab.runtime">
-         </propertySection>
-      </propertySections>
-   </extension>
-   <extension
          point="org.eclipse.ui.perspectives">
       <perspective
             class="gov.redhawk.sca.ui.singledomain.ScaExplorerSdPerspective"
