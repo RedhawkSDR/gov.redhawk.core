@@ -13,7 +13,7 @@ public class BulkIOUtilActivator extends Plugin {
 
 	// The shared instance
 	private static BulkIOUtilActivator plugin;
-	
+
 	/**
 	 * The constructor
 	 */
