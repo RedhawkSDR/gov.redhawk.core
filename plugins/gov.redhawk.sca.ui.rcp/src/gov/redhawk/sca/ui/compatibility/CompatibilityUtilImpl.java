@@ -1,20 +1,19 @@
 package gov.redhawk.sca.ui.compatibility;
 
-import gov.redhawk.sca.rap.RapInit;
-
 import java.security.Principal;
 
 import org.eclipse.jface.viewers.ComboViewer;
-import org.eclipse.rwt.lifecycle.UICallBack;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.FontData;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Listener;
 
+
 /**
  * This class is meant as an extension mechanism to single source RCP / RAP applications
- * @since 9.1
+ * 
+ * @since 1.2
  * @noinstantiate This class is not intended to be instantiated by clients.
  */
 public class CompatibilityUtilImpl implements ICompatibilityUtil {
