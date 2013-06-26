@@ -11,6 +11,8 @@
  */
 package nxm.redhawk.prim;
 
+import gov.redhawk.sca.util.PluginUtil;
+
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
@@ -166,21 +168,21 @@ public class corbareceiver extends CorbaPrimitive { //SUPPRESS CHECKSTYLE ClassN
 	@Override
 	public int process() {
 		updateStatitics();
-//		printStats();
+		//		printStats();
 		return NOOP;
 	}
 
 	private void printStats() {
 		// BEGIN DEBUG CODE
 		System.out.println("Port Stats: ");
-		System.out.println("\tQueue Depth: "+ statictics.averageQueueDepth);
-		System.out.println("\tBits/Sec: "+ statictics.bitsPerSecond);
-		System.out.println("\tCalls/Sec: "+ statictics.callsPerSecond);
-		System.out.println("\tElements/Sec: "+ statictics.elementsPerSecond);
-		System.out.println("\tPort Name: "+ statictics.portName);
-		System.out.println("\tTime Last: "+ statictics.timeSinceLastCall);
-		System.out.println("\tKeywords: "+ Arrays.toString(statictics.keywords));
-		System.out.println("\tStream IDs: "+ Arrays.toString(statictics.streamIDs));
+		System.out.println("\tQueue Depth: " + statictics.averageQueueDepth);
+		System.out.println("\tBits/Sec: " + statictics.bitsPerSecond);
+		System.out.println("\tCalls/Sec: " + statictics.callsPerSecond);
+		System.out.println("\tElements/Sec: " + statictics.elementsPerSecond);
+		System.out.println("\tPort Name: " + statictics.portName);
+		System.out.println("\tTime Last: " + statictics.timeSinceLastCall);
+		System.out.println("\tKeywords: " + Arrays.toString(statictics.keywords));
+		System.out.println("\tStream IDs: " + Arrays.toString(statictics.streamIDs));
 		// END DEBUG CODE
 	}
 
@@ -327,7 +329,7 @@ public class corbareceiver extends CorbaPrimitive { //SUPPRESS CHECKSTYLE ClassN
 	}
 
 	private synchronized void setStreamSri(final StreamSRI sri) {
-		if (!corbareceiver.isSRIChanged(sri, this.currentSri)) {
+		if (corbareceiver.equals(sri, this.currentSri)) {
 			return;
 		}
 		this.currentSri = sri;
@@ -348,21 +350,26 @@ public class corbareceiver extends CorbaPrimitive { //SUPPRESS CHECKSTYLE ClassN
 		setState(Commandable.RESTART);
 	}
 
-	private static boolean isSRIChanged(final StreamSRI sri, final StreamSRI lastSRI) {
-		boolean status = (lastSRI == null);
-		if (lastSRI != null) {
-			status |= (lastSRI.hversion != sri.hversion);
-			status |= (lastSRI.mode != sri.mode);
-			status |= !lastSRI.streamID.equals(sri.streamID);
-			status |= (lastSRI.subsize != sri.subsize);
-			status |= (lastSRI.xdelta != sri.xdelta);
-			status |= (lastSRI.xstart != sri.xstart);
-			status |= (lastSRI.xunits != sri.xunits);
-			status |= (lastSRI.ydelta != sri.ydelta);
-			status |= (lastSRI.ystart != sri.ystart);
-			status |= (lastSRI.yunits != sri.yunits);
+	private static boolean equals(final StreamSRI sri, final StreamSRI lastSRI) {
+		if (sri == lastSRI) {
+			return true;
+		} else if (lastSRI == null) {
+			return false;
+		} else if (sri != null) {
+			if (lastSRI.hversion == sri.hversion 
+					&& (lastSRI.mode == sri.mode) 
+					&& PluginUtil.equals(lastSRI.streamID, sri.streamID)
+					&& (lastSRI.subsize == sri.subsize) 
+					&& PluginUtil.equals(lastSRI.xdelta, sri.xdelta)
+					&& PluginUtil.equals(lastSRI.xstart, sri.xstart)
+					&& (lastSRI.xunits == sri.xunits)
+					&& PluginUtil.equals(lastSRI.ydelta, sri.ydelta)
+					&& PluginUtil.equals(lastSRI.ystart, sri.ystart)
+					&& (lastSRI.yunits == sri.yunits)) {
+				return true;
+			}
 		}
-		return status;
+		return false;
 	}
 
 	/**
