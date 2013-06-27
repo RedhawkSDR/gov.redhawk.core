@@ -159,13 +159,14 @@ public final class NxmPlotUtil {
 			fftArgs.put("NUMAVG", fft.getNumAverages());
 		}
 
-		final Table thinArgs = new Table();
-		thinArgs.put("PIPESIZE", pipeSize);
-		// Plot at different speeds depending on platform
-		if (SWT.getPlatform().startsWith("rap")) {
+		final String thinArgsStr;
+		if (SWT.getPlatform().startsWith("rap")) { // thin out data for remote PLOT on RAP platform
+			Table thinArgs = new Table();
+			thinArgs.put("PIPESIZE", pipeSize);
 			thinArgs.put("REFRESHRATE", 10); // SUPPRESS CHECKSTYLE MagicNumber
+			thinArgsStr = " THINARGS=" + thinArgs;
 		} else {
-			thinArgs.put("REFRESHRATE", 60); // SUPPRESS CHECKSTYLE MagicNumber
+			thinArgsStr = ""; // for RCP we do not need to thin out data since PLOT is on same machine
 		}
 
 		final String corbaArgsStr = "CORBRAARGS=" + corbaArgs;
@@ -175,7 +176,6 @@ public final class NxmPlotUtil {
 		} else {
 			fftArgsStr = " FFTARGS=" + fftArgs;
 		}
-		final String thinArgsStr = " THINARGS=" + thinArgs;
 
 		final String outputStr = " OUTPUT=" + outName;
 		final String b2mId = "B2M_" + AbstractNxmPlotWidget.createUniqueName(false);
