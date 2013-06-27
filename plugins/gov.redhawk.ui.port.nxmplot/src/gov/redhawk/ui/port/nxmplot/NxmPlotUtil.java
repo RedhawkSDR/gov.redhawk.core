@@ -53,7 +53,7 @@ public final class NxmPlotUtil {
 		case MESH:    // fall-through
 		case LINE:    // fall-through
 		case POINT:
-			return "TYPE=" + type + " AXIS=+GRID OPTIONS=BStore SCALE=AutoMin|AutoMax AUTOL=16";
+			return "TYPE=" + type + " AXIS=+GRID OPTIONS=BStore SCALE=AutoMin|AutoMax|NoAverage AUTOL=16";
 		default:
 			return null;
 		}
