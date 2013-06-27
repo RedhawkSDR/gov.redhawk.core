@@ -103,8 +103,8 @@ public class OrbSession {
 	}
 
 	public ORB getOrb() {
-	    return orb;
-    }
+		return orb;
+	}
 
 	public Properties getProperties() {
 		return props;
@@ -121,7 +121,7 @@ public class OrbSession {
 				sessionMap.remove(id);
 				destroy = true;
 			}
-        }
+		}
 		if (destroy) {
 			if (orb != null) {
 				orb.destroy();
@@ -147,9 +147,9 @@ public class OrbSession {
 
 	@Override
 	protected synchronized void finalize() throws Throwable {
-	    super.finalize();
-	    refs.set(-1);
-	    dispose();
+		super.finalize();
+		refs.set(-1);
+		dispose();
 	}
 
 }

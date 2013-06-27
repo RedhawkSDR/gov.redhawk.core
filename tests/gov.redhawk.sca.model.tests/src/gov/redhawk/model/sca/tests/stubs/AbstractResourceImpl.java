@@ -152,7 +152,7 @@ public class AbstractResourceImpl extends Resource {
 				for (ConfigurationKind k : structSequence.getConfigurationKind()) {
 					kinds.add(k.getType().toString());
 				}
-				Class structClass = createStructDef(structSequence.getStruct()).getClass();
+				Class< StructDef> structClass = (Class<StructDef>) createStructDef(structSequence.getStruct()).getClass();
 
 				List<StructDef> value = new ArrayList<StructDef>();
 				if (structSequence.getStructValue() != null) {

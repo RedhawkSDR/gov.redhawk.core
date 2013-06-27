@@ -154,13 +154,7 @@ public class ParseTests extends TestCase {
 		}
 
 		Assert.assertNotNull(cfModule);
-		if (cfModule == null) {
-			return;
-		}
 		Assert.assertNotNull(aggregateModule);
-		if (aggregateModule == null) {
-			return;
-		}
 		Assert.assertNotSame(cfModule, aggregateModule);
 		Assert.assertNotSame(cfModule.eResource(), aggregateModule.eResource());
 
