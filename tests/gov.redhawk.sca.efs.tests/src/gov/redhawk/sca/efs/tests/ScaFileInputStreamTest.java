@@ -11,8 +11,8 @@
  */
 package gov.redhawk.sca.efs.tests;
 
-import gov.redhawk.efs.sca.internal.ScaFileCache.FileSystemCache;
 import gov.redhawk.efs.sca.internal.ScaFileSystemPlugin;
+import gov.redhawk.efs.sca.internal.cache.FileSystemCache;
 import gov.redhawk.sca.efs.server.tests.TestServer;
 
 import java.io.InputStream;
