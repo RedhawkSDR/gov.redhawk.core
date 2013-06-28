@@ -51,6 +51,10 @@ public class corbareceiver extends CorbaPrimitive { //SUPPRESS CHECKSTYLE ClassN
 	 * @since 8.0
 	 */
 	public static final String NAME = "CORBARECEIVER";
+	/**
+	 * @since 8.0
+	 */
+	public static final String A_FILE = "FILE";
 
 	/**
 	 * Framesize attribute
@@ -75,10 +79,6 @@ public class corbareceiver extends CorbaPrimitive { //SUPPRESS CHECKSTYLE ClassN
 	 * @since 10.0
 	 */
 	//	public static final String A_WAIT = "/WAIT";
-	/**
-	 * @since 8.0
-	 */
-	public static final String A_FILE = "FILE";
 	//	private static final int SLEEP_INTERVAL = 1000;
 
 	/** the output file to write to */
