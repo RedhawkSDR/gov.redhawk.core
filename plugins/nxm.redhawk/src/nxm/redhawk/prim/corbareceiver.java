@@ -63,6 +63,14 @@ public class corbareceiver extends CorbaPrimitive { //SUPPRESS CHECKSTYLE ClassN
 	 * @since 10.0
 	 */
 	public static final String A_OVERRIDE_SRI_SUBSIZE = "OVERRIDE_SRI_SUBSIZE";
+
+	/**
+	 * set to false to not block pushPacket/write(..) when pipe doesn't have enough room,
+	 * which will cause that pushPacket data to get drop
+	 * @since 10.0
+	 */
+	public static final String A_BLOCKING = "/BLOCKING";
+
 	/**
 	 * @since 10.0
 	 */
@@ -85,6 +93,7 @@ public class corbareceiver extends CorbaPrimitive { //SUPPRESS CHECKSTYLE ClassN
 
 	private FileName fileName;
 	private boolean overrideSRISubSize;
+	private boolean blocking;
 	private PortStatistics statictics = new PortStatistics();
 	private long lastWrite = -1;
 	private int numCalls;
@@ -125,6 +134,7 @@ public class corbareceiver extends CorbaPrimitive { //SUPPRESS CHECKSTYLE ClassN
 		final String encoded_idl = this.MA.getS(corbareceiver.A_IDL, null);
 		this.frameSizeAttribute = this.MA.getL(corbareceiver.A_FRAMESIZE, 0);
 		this.overrideSRISubSize = this.MA.getState(corbareceiver.A_OVERRIDE_SRI_SUBSIZE, false);
+		this.blocking = this.MA.getState(corbareceiver.A_BLOCKING, true);
 		final String idl = corbareceiver.decodeIDL(encoded_idl);
 
 		if (this.receiver == null) {
@@ -401,15 +411,21 @@ public class corbareceiver extends CorbaPrimitive { //SUPPRESS CHECKSTYLE ClassN
 			return;
 		}
 
+		final int bufferSize = outputFile.bpa * size; // in bytes
+		if (!blocking) { // non-blocking option enabled
+			if (localOutputFile.getResource().avail() < bufferSize) {
+				return;  // drop packet since write would block
+			}
+		}
+
 		final Time midasTime;
 		if (time != null) {
 			midasTime = new Time(time.twsec + Time.J1970TOJ1950, time.tfsec);
 		} else {
 			midasTime = null;
 		}
-
 		outputFile.setTimeAt(midasTime);
-		int bufferSize = outputFile.bpa * size;
+
 		byte[] byteBuffer = new byte[bufferSize];
 		Convert.ja2bb(dataArray, 0, type, byteBuffer, 0, outputFile.dataType, size);
 		outputFile.write(byteBuffer, 0, byteBuffer.length);
