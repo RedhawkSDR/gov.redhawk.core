@@ -11,8 +11,8 @@
  */
 package gov.redhawk.efs.sca.internal;
 
+import gov.redhawk.efs.sca.internal.cache.FileCache;
 import gov.redhawk.sca.util.Debug;
-import gov.redhawk.sca.util.OrbSession;
 
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -24,7 +24,6 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeoutException;
 
 import mil.jpeojtrs.sca.util.ProtectedThreadExecutor;
-import mil.jpeojtrs.sca.util.ScaFileSystemConstants;
 
 import org.eclipse.core.filesystem.EFS;
 import org.eclipse.core.filesystem.IFileInfo;
@@ -38,15 +37,13 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.SubMonitor;
 import org.eclipse.core.runtime.SubProgressMonitor;
 import org.eclipse.osgi.util.NLS;
-import org.omg.CORBA.ORB;
 import org.omg.CORBA.SystemException;
 import org.omg.CORBA.TCKind;
 
 import CF.DataType;
 import CF.File;
 import CF.FileException;
-import CF.FileSystem;
-import CF.FileSystemHelper;
+import CF.FileSystemOperations;
 import CF.InvalidFileName;
 import CF.FilePackage.InvalidFilePointer;
 import CF.FileSystemPackage.FileInformationType;
@@ -65,78 +62,50 @@ public class ScaFileStore extends FileStore {
 
 	private final URI fsInitRef;
 	private final ScaFileEntry entry;
-	private Boolean directory;
+
+	private FileCache cache;
 
 	public ScaFileStore(final URI fsInitRef, final ScaFileEntry entry) {
 		this.fsInitRef = fsInitRef;
 		this.entry = entry;
+		cache = ScaFileSystemPlugin.getDefault().getFileCache().getCache(this);
+	}
+	
+	public URI getFsInitRef() {
+		return fsInitRef;
 	}
 
 	public ScaFileEntry getEntry() {
 		return this.entry;
 	}
-	
-	private final OrbSession session = OrbSession.createSession();
-	
-	protected void finalize() throws Throwable {
-		super.finalize();
-		session.dispose();
-	}
 
-	protected FileSystem createScaFileSystem() throws CoreException {
-		try {
-			ORB orb = session.getOrb();
-			if (ScaFileSystemConstants.FS_SCHEME_CORBA_NAME.equals(this.fsInitRef.getScheme())) {
-				final org.omg.CORBA.Object objRef = orb.string_to_object(this.fsInitRef.toString());
-				final CF.FileSystem fileSys = FileSystemHelper.narrow(objRef);
-				return fileSys;
-			} else if (ScaFileSystemConstants.FS_SCHEME_CORBA_IOR.equals(this.fsInitRef.getScheme())) {
-				final String ior = this.fsInitRef.toString();
-
-				// Length must be even for str to be valid
-				if ((ior.length() & 1) == 1) {
-					throw new CoreException(new Status(IStatus.ERROR, ScaFileSystemPlugin.ID, "Invalid File System IOR: " + ior, null));
-				}
-
-				final org.omg.CORBA.Object objRef = orb.string_to_object(ior);
-				final CF.FileSystem fileSys = FileSystemHelper.narrow(objRef);
-				return fileSys;
-			} else {
-				throw new CoreException(new Status(IStatus.ERROR, ScaFileSystemPlugin.ID, "Unknown File System Schema: " + this.fsInitRef.getScheme(), null));
-			}
-		} catch (final SystemException e) {
-			throw new CoreException(new Status(IStatus.ERROR, ScaFileSystemPlugin.ID, "Failed to resolve File System: " + this.entry.getUri(), e));
-		} 
+	public FileSystemOperations getScaFileSystem() throws CoreException {
+		return cache.getScaFileSystem();
 	}
 
 	private boolean exists() throws CoreException {
-		FileSystem fs = null;
 		try {
-			 fs = createScaFileSystem();
-			return fs.exists(this.entry.getAbsolutePath());
+			return getScaFileSystem().exists(this.entry.getAbsolutePath());
 		} catch (final SystemException e) {
 			throw new CoreException(new Status(IStatus.ERROR, ScaFileSystemPlugin.ID, "File System Exception: " + this.entry.getUri(), e));
 		} catch (final InvalidFileName e) {
 			throw new CoreException(new Status(IStatus.ERROR, ScaFileSystemPlugin.ID, NLS.bind("Invalid file name: {0}", this.entry.getAbsolutePath()), e));
-		} finally {
-			if (fs != null) {
-				fs._release();
-			}
 		}
 	}
 
 	private boolean isDirectory() {
-		if (this.directory == null) {
-			this.directory = fetchInfo().isDirectory();
-		}
-		return this.directory;
+		return cache.isDirectory();
+	}
+
+	@Override
+	public String[] childNames(final int options, IProgressMonitor monitor) throws CoreException {
+		return cache.childNames(options, monitor);
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
-	@Override
-	public String[] childNames(final int options, IProgressMonitor monitor) throws CoreException {
+	public String[] internalChildNames(final int options, IProgressMonitor monitor) throws CoreException {
 		final String path = this.entry.getAbsolutePath();
 		monitor = SubMonitor.convert(monitor, Messages.ScaFileStore__Child_Names_Task_Name, IProgressMonitor.UNKNOWN);
 		try {
@@ -146,15 +115,7 @@ public class ScaFileStore extends FileStore {
 			final FileInformationType[] result = ProtectedThreadExecutor.submit(new Callable<FileInformationType[]>() {
 
 				public FileInformationType[] call() throws Exception {
-					FileSystem fs = null;
-					try {
-						fs = createScaFileSystem();
-						return fs.list(path + "/*"); //$NON-NLS-1$
-					} finally {
-						if (fs != null) {
-							fs._release();
-						}
-					}
+					return getScaFileSystem().list(path + "/*"); //$NON-NLS-1$
 				}
 			});
 			final String[] children = new String[result.length];
@@ -174,7 +135,7 @@ public class ScaFileStore extends FileStore {
 		}
 	}
 
-	private IFileInfo translate(final FileInformationType typeInfo) {
+	public static IFileInfo translate(final FileInformationType typeInfo) {
 		final FileInfo info = new FileInfo(typeInfo.name);
 
 		// If path is a directory we will get the contents of the
@@ -248,15 +209,7 @@ public class ScaFileStore extends FileStore {
 			final FileInformationType[] result = ProtectedThreadExecutor.submit(new Callable<FileInformationType[]>() {
 
 				public FileInformationType[] call() throws Exception {
-					FileSystem fs = null;
-					try {
-						fs = createScaFileSystem();
-						return fs.list(path);
-					} finally {
-						if (fs != null) {
-							fs._release();
-						}
-					}
+					return getScaFileSystem().list(path);
 				}
 			});
 
@@ -330,22 +283,20 @@ public class ScaFileStore extends FileStore {
 	 */
 	@Override
 	public InputStream openInputStream(final int options, final IProgressMonitor monitor) throws CoreException {
-		return ScaFileSystemPlugin.getDefault().getFileCache().openInputStream(this, monitor);
+		return cache.openInputStream();
 	}
 
 	@Override
 	public OutputStream openOutputStream(final int options, IProgressMonitor monitor) throws CoreException {
 		final String path = this.entry.getAbsolutePath();
 		monitor = SubMonitor.convert(monitor, NLS.bind(Messages.ScaFileStore__Open_Output_Stream_Task_Name, path), IProgressMonitor.UNKNOWN);
-		FileSystem fs = null;
 		try {
 			final IFileInfo info = this.fetchInfo();
 			boolean exists = info.exists();
 			final boolean append = EFS.APPEND == (EFS.APPEND & options);
 
 			if (info.getAttribute(EFS.ATTRIBUTE_READ_ONLY)) {
-				throw new CoreException(new Status(IStatus.ERROR, ScaFileSystemPlugin.ID, NLS.bind(Messages.ScaFileStore__Open_Output_Stream_Error_Read_Only,
-				        path)));
+				throw new CoreException(new Status(IStatus.ERROR, ScaFileSystemPlugin.ID, NLS.bind(Messages.ScaFileStore__Open_Output_Stream_Error_Read_Only, path)));
 			}
 
 			if (exists && !append) {
@@ -354,7 +305,7 @@ public class ScaFileStore extends FileStore {
 			}
 
 			File file;
-			fs = createScaFileSystem();
+			FileSystemOperations fs = getScaFileSystem();
 			if (!exists) {
 				file = fs.create(path);
 			} else {
@@ -363,21 +314,14 @@ public class ScaFileStore extends FileStore {
 
 			return new ScaFileOutputStream(file, append);
 		} catch (final InvalidFileName e) {
-			throw new CoreException(new Status(IStatus.ERROR,
-			        ScaFileSystemPlugin.ID,
-			        NLS.bind(Messages.ScaFileStore__Open_Output_Stream_Error_Invalid_File_Name, path),
-			        e));
+			throw new CoreException(new Status(IStatus.ERROR, ScaFileSystemPlugin.ID, NLS.bind(Messages.ScaFileStore__Open_Output_Stream_Error_Invalid_File_Name, path), e));
 		} catch (final FileException e) {
-			throw new CoreException(new Status(IStatus.ERROR, ScaFileSystemPlugin.ID, NLS.bind(Messages.ScaFileStore__Open_Output_Stream_Error_File_System,
-			        path), e));
+			throw new CoreException(new Status(IStatus.ERROR, ScaFileSystemPlugin.ID, NLS.bind(Messages.ScaFileStore__Open_Output_Stream_Error_File_System, path), e));
 		} catch (final InvalidFilePointer e) {
 			throw new CoreException(new Status(IStatus.ERROR, ScaFileSystemPlugin.ID, NLS.bind(Messages.ScaFileStore__Open_Output_Stream_Error_IO, path), e));
 		} catch (final SystemException e) {
 			throw new CoreException(new Status(IStatus.ERROR, ScaFileSystemPlugin.ID, NLS.bind(Messages.ScaFileStore__Open_Output_Stream_Error_System, path), e));
 		} finally {
-			if (fs != null) {
-				fs._release();
-			}
 			monitor.done();
 		}
 	}
@@ -395,6 +339,10 @@ public class ScaFileStore extends FileStore {
 	 */
 	@Override
 	public IFileInfo[] childInfos(final int options, IProgressMonitor monitor) throws CoreException {
+		return cache.childInfos(options, monitor);
+	}
+
+	public IFileInfo[] internalChildInfos(final int options, IProgressMonitor monitor) throws CoreException {
 		final String path = this.entry.getAbsolutePath();
 		monitor = SubMonitor.convert(monitor, Messages.ScaFileStore__Getting_Child_Info_Task, IProgressMonitor.UNKNOWN);
 		try {
@@ -404,15 +352,7 @@ public class ScaFileStore extends FileStore {
 			final FileInformationType[] result = ProtectedThreadExecutor.submit(new Callable<FileInformationType[]>() {
 
 				public FileInformationType[] call() throws Exception {
-					FileSystem fs = null;
-					try {
-						fs = createScaFileSystem();
-						return fs.list(path + "/*"); //$NON-NLS-1$
-					} finally {
-						if (fs != null) {
-							fs._release();
-						}
-					}
+					return getScaFileSystem().list(path + "/*"); //$NON-NLS-1$
 				}
 			});
 			final IFileInfo[] retVal = new IFileInfo[result.length];
@@ -435,14 +375,13 @@ public class ScaFileStore extends FileStore {
 	public void delete(final int options, final IProgressMonitor monitor) throws CoreException {
 		final String path = this.entry.getAbsolutePath();
 		final SubMonitor subMonitor = SubMonitor.convert(monitor, NLS.bind(Messages.ScaFileStore__Deleting_Task, path), IProgressMonitor.UNKNOWN);
-		FileSystem fs = null;
 		try {
 			if (!exists()) {
 				return;
 			}
 
-			fs = createScaFileSystem();
-			
+			FileSystemOperations fs = getScaFileSystem();
+
 			if (fetchInfo().isDirectory()) {
 				final IFileStore[] childStore = childStores(EFS.NONE, subMonitor.newChild(1));
 				final SubMonitor deleteChildrenMonitor = subMonitor.newChild(1);
@@ -458,14 +397,10 @@ public class ScaFileStore extends FileStore {
 		} catch (final FileException e) {
 			throw new CoreException(new Status(IStatus.ERROR, ScaFileSystemPlugin.ID, NLS.bind(Messages.ScaFileStore__Deleting_Error, path) + " " + e.msg, e));
 		} catch (final InvalidFileName e) {
-			throw new CoreException(new Status(IStatus.ERROR, ScaFileSystemPlugin.ID, NLS.bind(Messages.ScaFileStore__Deleting_Error_Invalid_File_Name, path)
-			        + " " + e.msg, e));
+			throw new CoreException(new Status(IStatus.ERROR, ScaFileSystemPlugin.ID, NLS.bind(Messages.ScaFileStore__Deleting_Error_Invalid_File_Name, path) + " " + e.msg, e));
 		} catch (final SystemException e) {
 			throw new CoreException(new Status(IStatus.ERROR, ScaFileSystemPlugin.ID, NLS.bind(Messages.ScaFileStore__Deleting_Error_System, path), e));
 		} finally {
-			if (fs != null) {
-				fs._release();
-			}
 			subMonitor.done();
 		}
 	}
@@ -482,10 +417,8 @@ public class ScaFileStore extends FileStore {
 			}
 		}
 		monitor = SubMonitor.convert(monitor, NLS.bind(Messages.ScaFileStore__Mkdir_Task_Name, path), IProgressMonitor.UNKNOWN);
-		FileSystem fs = null;
 		try {
-			fs = createScaFileSystem();
-			fs.mkdir(path);
+			getScaFileSystem().mkdir(path);
 			return this;
 		} catch (final FileException e) {
 			throw new CoreException(new Status(IStatus.ERROR, ScaFileSystemPlugin.ID, NLS.bind(Messages.ScaFileStore__Mkdir_Error_File_System, path), e));
@@ -494,9 +427,6 @@ public class ScaFileStore extends FileStore {
 		} catch (final SystemException e) {
 			throw new CoreException(new Status(IStatus.ERROR, ScaFileSystemPlugin.ID, NLS.bind(Messages.ScaFileStore__Mkdi_Error_System, path), e));
 		} finally {
-			if (fs != null) {
-				fs._release();
-			}
 			monitor.done();
 		}
 	}
@@ -516,29 +446,22 @@ public class ScaFileStore extends FileStore {
 	public void move(final IFileStore destination, final int options, final IProgressMonitor monitor) throws CoreException {
 		if (destination instanceof ScaFileStore) {
 			final ScaFileStore scaDest = (ScaFileStore) destination;
-			FileSystem fs = null;
-			FileSystem destFs = null;
-			fs = createScaFileSystem();
-			destFs = scaDest.createScaFileSystem();
-			
+			FileSystemOperations fs = null;
+			FileSystemOperations destFs = null;
+			fs = getScaFileSystem();
+			destFs = scaDest.getScaFileSystem();
+
 			final String path = this.entry.getAbsolutePath();
 			final String destPath = scaDest.entry.getAbsolutePath();
-			
+
 			try {
-				if (fs != null && destFs != null && fs._is_equivalent(destFs)) {
+				if (fs == destFs) {
 					fs.move(path, destPath);
 				}
 			} catch (final InvalidFileName e) {
 				throw new CoreException(new Status(IStatus.ERROR, ScaFileSystemPlugin.ID, "Failed to move: " + path + " to " + destPath, e));
 			} catch (final FileException e) {
 				throw new CoreException(new Status(IStatus.ERROR, ScaFileSystemPlugin.ID, "Failed to move: " + path + " to " + destPath, e));
-			} finally {
-				if (fs != null) {
-					fs._release();
-				}
-				if (destFs != null) {
-					destFs._release();
-				}
 			}
 		} else {
 			super.move(destination, options, monitor);
@@ -551,26 +474,19 @@ public class ScaFileStore extends FileStore {
 			final ScaFileStore scaDest = (ScaFileStore) destination;
 			final String path = this.entry.getAbsolutePath();
 			final String destPath = scaDest.entry.getAbsolutePath();
-			
-			FileSystem fs = null;
-			FileSystem destFs = null;
+
+			FileSystemOperations fs = null;
+			FileSystemOperations destFs = null;
 			try {
-				fs = createScaFileSystem();
-				destFs = scaDest.createScaFileSystem();
-				if (fs != null && destFs != null && fs._is_equivalent(destFs)) {	
-						fs.copy(path, destPath);
+				fs = getScaFileSystem();
+				destFs = scaDest.getScaFileSystem();
+				if (fs == destFs) {
+					fs.copy(path, destPath);
 				}
 			} catch (final InvalidFileName e) {
 				throw new CoreException(new Status(IStatus.ERROR, ScaFileSystemPlugin.ID, "Failed to copy: " + path + " to " + destPath, e));
 			} catch (final FileException e) {
 				throw new CoreException(new Status(IStatus.ERROR, ScaFileSystemPlugin.ID, "Failed to copy: " + path + " to " + destPath, e));
-			} finally {
-				if (fs != null) {
-					fs._release();
-				}
-				if (destFs != null) {
-					destFs._release();
-				}
 			}
 		} else {
 			super.copyFile(sourceInfo, destination, options, monitor);

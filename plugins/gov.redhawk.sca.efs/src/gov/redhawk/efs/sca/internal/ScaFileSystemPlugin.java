@@ -11,6 +11,8 @@
  */
 package gov.redhawk.efs.sca.internal;
 
+import gov.redhawk.efs.sca.internal.cache.ScaFileCache;
+
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Plugin;
 import org.eclipse.core.runtime.Status;

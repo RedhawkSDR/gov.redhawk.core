@@ -75,12 +75,22 @@ public class InstallApplicationContentProvider implements ITreeContentProvider {
 			setSystem(true);
 		}
 
+		public boolean shouldSchedule() {
+			return super.shouldSchedule() && children == null;
+		}
+		
+		public boolean shouldRun() {
+			return super.shouldRun() && children == null;
+		}
+
 		@Override
 		protected IStatus run(final IProgressMonitor monitor) {
+			if (children != null) {
+				return Status.CANCEL_STATUS;
+			}
 			final MultiStatus mergedStatus = new MultiStatus(ScaUiPlugin.PLUGIN_ID, IStatus.WARNING, "Problems while loading SAD files.", null);
-			InstallApplicationContentProvider.this.children = InstallApplicationContentProvider.fetchDeferredChildren(InstallApplicationContentProvider.this.input,
-			        monitor,
-			        mergedStatus);
+			InstallApplicationContentProvider.this.children = InstallApplicationContentProvider.fetchDeferredChildren(InstallApplicationContentProvider.this.input, monitor,
+					mergedStatus);
 			InstallApplicationContentProvider.this.refreshJob.schedule();
 			if (!mergedStatus.isOK()) {
 				InstallApplicationContentProvider.this.loadStatus = mergedStatus;
@@ -143,9 +153,7 @@ public class InstallApplicationContentProvider implements ITreeContentProvider {
 		if (parentElement instanceof ScaDomainManager) {
 			if (this.children == null) {
 				this.fetchChildrenJob.schedule();
-				return new Object[] {
-					this.fetchChildrenJob
-				};
+				return new Object[] { this.fetchChildrenJob };
 			} else {
 				return this.children.toArray();
 			}
@@ -174,9 +182,8 @@ public class InstallApplicationContentProvider implements ITreeContentProvider {
 					if (fileManager != null) {
 						final IFileStore fileStore = fileManager.getFileStore();
 						final ResourceSet resourceSet = new ResourceSetImpl();
-						final String[] paths = ScaPreferenceConstants.parsePath(ScaPlugin.getDefault()
-						        .getScaPreferenceAccessor()
-						        .getString(ScaPreferenceConstants.SCA_DOMAIN_WAVEFORMS_SEARCH_PATH));
+						final String[] paths = ScaPreferenceConstants.parsePath(ScaPlugin.getDefault().getScaPreferenceAccessor()
+								.getString(ScaPreferenceConstants.SCA_DOMAIN_WAVEFORMS_SEARCH_PATH));
 						return InstallApplicationContentProvider.fetchAssemblies(resourceSet, fileStore, paths, status);
 					} else {
 						final IllegalStateException exception = new IllegalStateException("No file manager available");
@@ -193,8 +200,7 @@ public class InstallApplicationContentProvider implements ITreeContentProvider {
 		}
 	}
 
-	private static List<SoftwareAssembly> fetchAssemblies(final ResourceSet resourceSet, final IFileStore fileStore, final String[] paths,
-	        final MultiStatus status) {
+	private static List<SoftwareAssembly> fetchAssemblies(final ResourceSet resourceSet, final IFileStore fileStore, final String[] paths, final MultiStatus status) {
 		IFileInfo info;
 		try {
 			info = fileStore.fetchInfo(EFS.NONE, null);
