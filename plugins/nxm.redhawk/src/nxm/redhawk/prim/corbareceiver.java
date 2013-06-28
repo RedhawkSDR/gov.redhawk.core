@@ -136,7 +136,7 @@ public class corbareceiver extends CorbaPrimitive { //SUPPRESS CHECKSTYLE ClassN
 		final String encoded_idl = this.MA.getS(corbareceiver.A_IDL, null);
 		this.frameSizeAttribute = this.MA.getL(corbareceiver.A_FRAMESIZE, 0);
 		this.overrideSRISubSize = this.MA.getState(corbareceiver.A_OVERRIDE_SRI_SUBSIZE, false);
-		this.blocking = this.MA.getState(corbareceiver.A_BLOCKING, true);
+		this.blocking = this.MA.getState(corbareceiver.A_BLOCKING, false);
 		final String idl = corbareceiver.decodeIDL(encoded_idl);
 
 		if (this.receiver == null) {
@@ -366,10 +366,10 @@ public class corbareceiver extends CorbaPrimitive { //SUPPRESS CHECKSTYLE ClassN
 		} else if (lastSRI == null) {
 			return false;
 		} else if (sri != null) {
-			if (lastSRI.hversion == sri.hversion 
-					&& (lastSRI.mode == sri.mode) 
+			if (lastSRI.hversion == sri.hversion
+					&& (lastSRI.mode == sri.mode)
 					&& PluginUtil.equals(lastSRI.streamID, sri.streamID)
-					&& (lastSRI.subsize == sri.subsize) 
+					&& (lastSRI.subsize == sri.subsize)
 					&& PluginUtil.equals(lastSRI.xdelta, sri.xdelta)
 					&& PluginUtil.equals(lastSRI.xstart, sri.xstart)
 					&& (lastSRI.xunits == sri.xunits)
