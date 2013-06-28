@@ -47,10 +47,6 @@ public class ScaFileCache {
 
 	}
 
-	public Map<String, FileSystemCache> getFileSystemCacheMap() {
-		return Collections.unmodifiableMap(this.fileSystemCacheMap);
-	}
-
 	public synchronized void clear() {
 		for (final FileSystemCache cache : this.fileSystemCacheMap.values()) {
 			cache.clear();
