@@ -12,7 +12,6 @@
 package gov.redhawk.sca.efs.tests;
 
 import gov.redhawk.efs.sca.internal.ScaFileSystemPlugin;
-import gov.redhawk.efs.sca.internal.cache.FileSystemCache;
 import gov.redhawk.sca.efs.server.tests.TestServer;
 
 import java.io.InputStream;
@@ -20,7 +19,6 @@ import java.net.URI;
 import java.util.HashMap;
 import java.util.Map;
 
-import junit.framework.Assert;
 import mil.jpeojtrs.sca.util.QueryParser;
 import mil.jpeojtrs.sca.util.ScaFileSystemConstants;
 
@@ -85,23 +83,6 @@ public class ScaFileInputStreamTest {
 		this.rootFileStore = null;
 		this.rootFileStoreFile = null;
 		this.inputStream.close();
-	}
-
-	/**
-	 * Test method to test the File cache works correctly
-	 * @throws Exception 
-	 */
-	@Test
-	public void testFileCache() throws Exception {
-		final Map<String, FileSystemCache> fileSystemCache = ScaFileSystemPlugin.getDefault().getFileCache().getFileSystemCacheMap();
-		Assert.assertEquals(1, fileSystemCache.size());
-		final FileSystemCache fileCache = fileSystemCache.values().iterator().next();
-		Assert.assertEquals(1, fileCache.getFileCacheMap().size());
-		final URI corbaIOR = getCorbIorUri();
-		final IFileStore localStore = this.fileSystem.getStore(corbaIOR);
-		localStore.getFileStore(new Path("dev/devices/GPP/GPP.spd.xml"));
-		Assert.assertEquals(1, fileSystemCache.size());
-		Assert.assertEquals(1, fileCache.getFileCacheMap().size());
 	}
 
 	/**
