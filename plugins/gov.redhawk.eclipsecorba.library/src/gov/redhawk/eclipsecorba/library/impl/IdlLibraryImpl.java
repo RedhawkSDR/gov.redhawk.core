@@ -308,6 +308,9 @@ public class IdlLibraryImpl extends RepositoryModuleImpl implements IdlLibrary {
 	public synchronized IStatus load(final IProgressMonitor monitor) throws CoreException {
 		// END GENERATED CODE
 		final TransactionalEditingDomain editingDomain = TransactionUtil.getEditingDomain(this);
+		if (editingDomain == null) {
+			return new Status(IStatus.ERROR, LibraryPlugin.PLUGIN_ID, "IDL Library not connected to an editing domain.");
+		}
 
 		final IStatus loadingStatus = new Status(IStatus.INFO, LibraryPlugin.PLUGIN_ID, "Loading...");
 		editingDomain.getCommandStack().execute(SetCommand.create(editingDomain, this, LibraryPackage.Literals.IDL_LIBRARY__LOAD_STATUS, loadingStatus));
