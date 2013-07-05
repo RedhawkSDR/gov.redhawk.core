@@ -96,13 +96,17 @@ public class NameBrowserView extends ViewPart {
 
 		public IContentProposal[] getProposals(final String contents, final int position) {
 			final List<IContentProposal> list = new ArrayList<IContentProposal>();
-			for (final String proposal : NameBrowserView.this.nameServerHistory) {
+			try {
 				final String regexp = ".*" + contents.replace("*", ".*") + ".*";
 				final Pattern pattern = Pattern.compile(regexp, Pattern.CASE_INSENSITIVE);
-				final Matcher matcher = pattern.matcher(proposal);
-				if (proposal.length() >= contents.length() && matcher.matches()) {
-					list.add(new ContentProposal(proposal));
+				for (final String proposal : NameBrowserView.this.nameServerHistory) {
+					final Matcher matcher = pattern.matcher(proposal);
+					if (proposal.length() >= contents.length() && matcher.matches()) {
+						list.add(new ContentProposal(proposal));
+					}
 				}
+			} catch (Exception e) {
+				// PASS
 			}
 			return list.toArray(new IContentProposal[list.size()]);
 		}
@@ -120,10 +124,8 @@ public class NameBrowserView extends ViewPart {
 
 		this.nameServerField = new Combo(parent, SWT.BORDER);
 		final ComboContentAdapter controlAdapter = new ComboContentAdapter();
-		final ContentProposalAdapter contentProposalAdapter = CompatibilityFactory.createContentProposalAdapter(this.nameServerField,
-		        controlAdapter,
-		        this.proposalProvider,
-		        null);
+		final ContentProposalAdapter contentProposalAdapter = CompatibilityFactory.createContentProposalAdapter(this.nameServerField, controlAdapter,
+			this.proposalProvider, null);
 		contentProposalAdapter.setProposalAcceptanceStyle(ContentProposalAdapter.PROPOSAL_REPLACE);
 		this.nameServerField.setToolTipText("The CORBA URI of the NameServer");
 		this.nameServerField.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false, 1, 1));

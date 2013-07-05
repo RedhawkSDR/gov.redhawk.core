@@ -29,8 +29,10 @@ import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExtension;
 import org.eclipse.core.runtime.IExtensionPoint;
 import org.eclipse.core.runtime.IExtensionRegistry;
+import org.eclipse.core.runtime.ISafeRunnable;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Platform;
+import org.eclipse.core.runtime.SafeRunner;
 import org.eclipse.core.runtime.Status;
 
 import CF.FileException;
@@ -62,8 +64,8 @@ public enum ResourceFactoryRegistry implements IResourceFactoryRegistry {
 					try {
 						addResourceDesc(desc, provider.getPriority());
 					} catch (CoreException e) {
-						ResourceFactoryPlugin.getDefault().getLog().log(new Status(IStatus.ERROR, ResourceFactoryPlugin.ID,
-						                                                    "Failed to add resource descriptor: " + desc.getIdentifier(), e));
+						ResourceFactoryPlugin.getDefault().getLog().log(
+							new Status(IStatus.ERROR, ResourceFactoryPlugin.ID, "Failed to add resource descriptor: " + desc.getIdentifier(), e));
 					}
 				}
 			}
@@ -96,18 +98,29 @@ public enum ResourceFactoryRegistry implements IResourceFactoryRegistry {
 		for (final IConfigurationElement element : extension.getConfigurationElements()) {
 			final String id = element.getAttribute("id");
 			if (element.getName().equals(ResourceFactoryRegistry.ELM_PROVIDER)) {
-				try {
-					final IResourceFactoryProvider provider = (IResourceFactoryProvider) element.createExecutableExtension("class");
-					provider.addPropertyChangeListener(listener);
-					this.providerRegistry.add(provider);
-					int priority = provider.getPriority();
-					for (ResourceDesc desc : provider.getResourceDescriptors()) {
-						addResourceDesc(desc, priority);
+				SafeRunner.run(new ISafeRunnable() {
+
+					public void run() throws Exception {
+						try {
+							final IResourceFactoryProvider provider = (IResourceFactoryProvider) element.createExecutableExtension("class");
+							provider.addPropertyChangeListener(listener);
+							providerRegistry.add(provider);
+							int priority = provider.getPriority();
+							for (ResourceDesc desc : provider.getResourceDescriptors()) {
+								addResourceDesc(desc, priority);
+							}
+						} catch (final CoreException e) {
+							ResourceFactoryPlugin.getDefault().getLog().log(
+								new Status(IStatus.ERROR, ResourceFactoryPlugin.ID, "Failed to add Factory Provider: " + id, e));
+						}
 					}
-				} catch (final CoreException e) {
-					ResourceFactoryPlugin.getDefault().getLog().log(new Status(IStatus.ERROR, ResourceFactoryPlugin.ID,
-					                                                    "Failed to add Factory Provider: " + id, e));
-				}
+
+					public void handleException(Throwable exception) {
+						// TODO Auto-generated method stub
+
+					}
+				});
+
 			}
 		}
 	}
