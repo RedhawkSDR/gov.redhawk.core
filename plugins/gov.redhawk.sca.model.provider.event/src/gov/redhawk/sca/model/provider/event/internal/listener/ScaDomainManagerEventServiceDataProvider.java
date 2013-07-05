@@ -214,7 +214,7 @@ public class ScaDomainManagerEventServiceDataProvider extends AbstractEventChann
 				}
 
 			});
-			if (!newWaveformFactory.isDisposed()) {
+			if (newWaveformFactory != null && !newWaveformFactory.isDisposed()) {
 				newWaveformFactory.refresh(null, RefreshDepth.SELF);
 			}
 
