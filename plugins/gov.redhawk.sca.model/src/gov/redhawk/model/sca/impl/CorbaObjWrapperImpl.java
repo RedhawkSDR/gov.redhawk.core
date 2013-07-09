@@ -526,21 +526,37 @@ public abstract class CorbaObjWrapperImpl< T extends org.omg.CORBA.Object > exte
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
+	 * @generated NOT
 	 */
 	@Override
 	public String toString() {
-		if (eIsProxy()) return super.toString();
+		// END GENERATED CODE
+		if (eIsProxy()) {
+			return super.toString();
+		}
 
 		StringBuffer result = new StringBuffer(super.toString());
 		result.append(" (ior: ");
-		if (iorESet) result.append(ior); else result.append("<unset>");
+		if (iorESet) {
+			result.append(ior); 
+		} else {
+			result.append("<unset>");
+		}
 		result.append(", obj: ");
-		if (objESet) result.append(obj); else result.append("<unset>");
+		if (objESet) {
+			result.append("<set>");
+		} else {
+			result.append("<unset>");
+		}
 		result.append(", corbaObj: ");
-		if (corbaObjESet) result.append(corbaObj); else result.append("<unset>");
+		if (corbaObjESet) {
+			result.append("<set>");
+		} else {
+			result.append("<unset>");
+		}
 		result.append(')');
 		return result.toString();
+		// BEGIN GENERATED CODE
 	}
 
 	/**
