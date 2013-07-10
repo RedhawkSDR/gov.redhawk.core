@@ -47,6 +47,7 @@ import org.eclipse.core.runtime.Assert;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.notify.Notifier;
 import org.eclipse.emf.common.notify.impl.AdapterImpl;
@@ -363,8 +364,16 @@ public class PlotView extends ViewPart {
 				spectralPlots.setData("ports", ports);
 				spectralPlots.setData("plotType", plotType);
 				((AbstractNxmPlotWidget) spectralPlots).initPlot(plotSwitches, plotArgs);
-				List<IPlotSession> plotSessions = NxmPlotUtil.addSource(connList, fft, (AbstractNxmPlotWidget) spectralPlots, plotQualifiers);
-				plotSessionMap.put(spectralPlots, plotSessions);
+				new Job("Adding Plot Source...") {
+
+					@Override
+					protected IStatus run(IProgressMonitor monitor) {
+						List<IPlotSession> plotSessions = NxmPlotUtil.addSource(connList, fft, (AbstractNxmPlotWidget) spectralPlots, plotQualifiers);
+						plotSessionMap.put(spectralPlots, plotSessions);
+						return Status.OK_STATUS;
+					}
+					
+				} .schedule();
 			}
 		}
 
