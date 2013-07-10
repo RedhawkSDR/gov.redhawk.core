@@ -42,6 +42,7 @@ import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.layout.TableColumnLayout;
 import org.eclipse.jface.layout.TreeColumnLayout;
 import org.eclipse.jface.viewers.ArrayContentProvider;
+import org.eclipse.jface.viewers.CheckboxTreeViewer;
 import org.eclipse.jface.viewers.ColumnPixelData;
 import org.eclipse.jface.viewers.ColumnViewerEditorActivationEvent;
 import org.eclipse.jface.viewers.ColumnViewerEditorActivationListener;
@@ -116,7 +117,12 @@ public final class ScaComponentFactory {
 	}
 
 	private static TreeViewer createPropertyTreeViewer(final Tree tree, final AdapterFactory adapterFactory, final TreeColumnLayout layout) {
-		final TreeViewer viewer = new TreeViewer(tree);
+		final TreeViewer viewer;
+		if ((SWT.CHECK & tree.getStyle()) == SWT.CHECK) {
+			viewer = new CheckboxTreeViewer(tree);
+		} else {
+			viewer = new TreeViewer(tree);
+		}
 		viewer.getTree().setHeaderVisible(true);
 		viewer.getTree().setLinesVisible(true);
 

@@ -71,6 +71,13 @@ public class ComponentInstantiationPropertyViewerAdapter {
 			this.viewer.setInput(component);
 		}
 	}
+	
+	/**
+	 * @since 5.1
+	 */
+	public TreeViewer getViewer() {
+		return viewer;
+	}
 
 	private void mergeValues() {
 		ComponentProperties cp = PartitioningFactory.eINSTANCE.createComponentProperties();

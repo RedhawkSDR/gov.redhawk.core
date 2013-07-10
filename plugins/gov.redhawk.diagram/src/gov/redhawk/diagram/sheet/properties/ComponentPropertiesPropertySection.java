@@ -16,8 +16,10 @@ import gov.redhawk.sca.ui.ScaComponentFactory;
 import gov.redhawk.sca.ui.properties.ScaPropertiesAdapterFactory;
 import mil.jpeojtrs.sca.partitioning.ComponentInstantiation;
 
+import org.eclipse.emf.common.notify.AdapterFactory;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.edit.domain.IEditingDomainProvider;
+import org.eclipse.emf.edit.provider.IDisposable;
 import org.eclipse.emf.transaction.TransactionalEditingDomain;
 import org.eclipse.gmf.runtime.diagram.ui.properties.sections.AbstractModelerPropertySection;
 import org.eclipse.jface.viewers.ISelection;
@@ -27,13 +29,23 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetPage;
 
+/**
+ * @since 5.1
+ */
 public class ComponentPropertiesPropertySection extends AbstractModelerPropertySection implements IEditingDomainProvider {
 
-	private ScaPropertiesAdapterFactory adapterFactory;
+	private AdapterFactory adapterFactory;
 	private final ComponentInstantiationPropertyViewerAdapter adapter = new ComponentInstantiationPropertyViewerAdapter(this);
 
 	public ComponentPropertiesPropertySection() {
-		this.adapterFactory = new ScaPropertiesAdapterFactory();
+		
+	}
+	
+	/**
+	 * @since 5.1
+	 */
+	protected AdapterFactory createAdapterFactory() {
+		return new ScaPropertiesAdapterFactory();
 	}
 
 	/**
@@ -42,8 +54,31 @@ public class ComponentPropertiesPropertySection extends AbstractModelerPropertyS
 	@Override
 	public final void createControls(final Composite parent, final TabbedPropertySheetPage tabbedPropertySheetPage) {
 		super.createControls(parent, tabbedPropertySheetPage);
-		final TreeViewer viewer = ScaComponentFactory.createPropertyTable(getWidgetFactory(), parent, SWT.SINGLE, this.adapterFactory);
+		this.adapterFactory = createAdapterFactory();
+		
+		final TreeViewer viewer = createTreeViewer(parent);
 		this.adapter.setViewer(viewer);
+	}
+	
+	/**
+	 * @since 5.1
+	 */
+	public TreeViewer getViewer() {
+		return adapter.getViewer();
+	}
+	
+	/**
+	 * @since 5.1
+	 */
+	public AdapterFactory getAdapterFactory() {
+		return adapterFactory;
+	}
+
+	/**
+	 * @since 5.1
+	 */
+	protected TreeViewer createTreeViewer(final Composite parent) {
+		return ScaComponentFactory.createPropertyTable(getWidgetFactory(), parent, SWT.SINGLE, this.adapterFactory);
 	}
 
 	@Override
@@ -72,7 +107,9 @@ public class ComponentPropertiesPropertySection extends AbstractModelerPropertyS
 	@Override
 	public final void dispose() {
 		if (this.adapterFactory != null) {
-			this.adapterFactory.dispose();
+			if (adapterFactory instanceof IDisposable) {
+				((IDisposable) this.adapterFactory).dispose();
+			}
 			this.adapterFactory = null;
 
 		}
