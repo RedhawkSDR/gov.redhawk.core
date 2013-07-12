@@ -287,18 +287,8 @@ public final class NxmPlotUtil {
 		final String outName = AbstractNxmPlotWidget.createUniqueName(true);
 		final String thinIn = AbstractNxmPlotWidget.createUniqueName(true);
 
-		int bytesPerSample = 1;
 		format = format.toUpperCase();
-		bytesPerSample = Data.getBPA(format); // since 4.2
-// prior to 4.2 (TODO: remove below?)
-//		if (format.charAt(1) == 'F') {
-//			bytesPerSample = 4;
-//		} else if (format.charAt(1) == 'D') {
-//			bytesPerSample = 8;
-//		} if (format.charAt(1) == 'I') {
-//			bytesPerSample = 4;
-//		}
-// end prior to 4.2
+		int bytesPerSample = Data.getBPA(format); // since 4.2
 
 		if (yDelta == null || yDelta.intValue() == 0) {
 			yDelta = Integer.valueOf(5);
