@@ -1,11 +1,11 @@
 /*******************************************************************************
- * This file is protected by Copyright. 
+ * This file is protected by Copyright.
  * Please refer to the COPYRIGHT file distributed with this source distribution.
  *
  * This file is part of REDHAWK IDE.
  *
- * All rights reserved.  This program and the accompanying materials are made available under 
- * the terms of the Eclipse Public License v1.0 which accompanies this distribution, and is available at 
+ * All rights reserved.  This program and the accompanying materials are made available under
+ * the terms of the Eclipse Public License v1.0 which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *******************************************************************************/
 package gov.redhawk.bulkio.util;
@@ -35,10 +35,12 @@ import BULKIO.dataShortHelper;
 import BULKIO.dataShortOperations;
 import BULKIO.dataShortPOATie;
 import BULKIO.dataUlongHelper;
+import BULKIO.dataUlongLongHelper;
 import BULKIO.dataUlongLongOperations;
 import BULKIO.dataUlongLongPOATie;
 import BULKIO.dataUlongOperations;
 import BULKIO.dataUlongPOATie;
+import BULKIO.dataUshortHelper;
 import BULKIO.dataUshortOperations;
 import BULKIO.dataUshortPOATie;
 
@@ -111,9 +113,9 @@ public enum BulkIOType {
 			return BulkIOType.SHORT;
 		} else if (dataUlongHelper.id().equals(idl)) {
 			return BulkIOType.ULONG;
-		} else if (dataUlongHelper.id().equals(idl)) {
+		} else if (dataUlongLongHelper.id().equals(idl)) {
 			return BulkIOType.ULONG_LONG;
-		} else if (dataUlongHelper.id().equals(idl)) {
+		} else if (dataUshortHelper.id().equals(idl)) {
 			return BulkIOType.USHORT;
 		} else {
 			throw new IllegalArgumentException("Unknown type: " + idl);
