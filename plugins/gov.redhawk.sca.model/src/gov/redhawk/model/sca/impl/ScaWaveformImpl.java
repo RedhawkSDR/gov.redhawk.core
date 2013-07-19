@@ -986,8 +986,11 @@ public class ScaWaveformImpl extends ScaPropertyContainerImpl<Application, Softw
 							if (!abstractPort.getName().equals(id)) {
 								continue;
 							}
-							// TODO this should be replaced by the name in the Port SAD object
-							String portName = abstractPort.getName();
+
+							String portName = port.getExternalName();
+							if (portName == null) {
+								portName = abstractPort.getName();
+							}
 							try {
 								org.omg.CORBA.Object portCorbaObj = currentObj.getPort(portName);
 								newPorts.add(new PortData(abstractPort, portCorbaObj));
