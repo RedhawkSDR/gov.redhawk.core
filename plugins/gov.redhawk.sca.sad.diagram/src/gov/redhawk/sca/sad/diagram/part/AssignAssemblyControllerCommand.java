@@ -83,13 +83,11 @@ public class AssignAssemblyControllerCommand extends AbstractHandler implements 
 				 
 
 
-				// The original assembly controller moves to the end
+				// The original assembly controller swaps start order with the new one
                 if (originalAssemblyController != null) {
 					int startOrder = SoftwareAssembly.Util.getLastStartOrder(sad);
 					if ((newAssemblyController.getStartOrder() != null) && (newAssemblyController.getStartOrder().intValue() != startOrder)) {
-						// if the new assembly controller happened to be the last in the start order, we don't need to add one
-						// otherwise we must put the assembly controller at the end...because there isn't anywhere else to really put it
-					    startOrder += 1;
+						startOrder = newAssemblyController.getStartOrder().intValue();
 					}
 					assignAssemblyControllerCmd.append(SetCommand.create(editingDomain, originalAssemblyController, SadPackage.Literals.SAD_COMPONENT_INSTANTIATION__START_ORDER, BigInteger.valueOf(startOrder)));
 				}
