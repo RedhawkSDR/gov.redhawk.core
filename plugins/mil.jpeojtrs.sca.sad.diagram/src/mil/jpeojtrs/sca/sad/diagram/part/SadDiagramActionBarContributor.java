@@ -13,6 +13,7 @@
 
 package mil.jpeojtrs.sca.sad.diagram.part;
 
+import org.eclipse.gmf.runtime.common.ui.action.global.GlobalActionId;
 import org.eclipse.gmf.runtime.diagram.ui.parts.DiagramActionBarContributor;
 import org.eclipse.gmf.runtime.diagram.ui.printing.render.actions.EnhancedPrintActionHelper;
 import org.eclipse.gmf.runtime.diagram.ui.printing.render.actions.RenderedPrintPreviewAction;
@@ -62,5 +63,6 @@ public class SadDiagramActionBarContributor extends DiagramActionBarContributor 
 		}
 		IAction validateAction = new ValidateAction(page);
 		editMenu.appendToGroup("validationGroup", validateAction); //$NON-NLS-1$
+		bars.setGlobalActionHandler(GlobalActionId.SAVE, null);
 	}
 }
