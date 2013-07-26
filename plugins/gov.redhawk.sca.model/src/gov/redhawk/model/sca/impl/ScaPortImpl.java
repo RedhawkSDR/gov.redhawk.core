@@ -50,12 +50,23 @@ public abstract class ScaPortImpl<P extends AbstractPort, P2 extends org.omg.COR
 	/**
 	 * The default value of the '{@link #getName() <em>Name</em>}' attribute.
 	 * <!-- begin-user-doc -->
+	 * @since 18.0
 	 * <!-- end-user-doc -->
 	 * @see #getName()
 	 * @generated
 	 * @ordered
 	 */
 	protected static final String NAME_EDEFAULT = null;
+	/**
+	 * The cached value of the '{@link #getName() <em>Name</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * @since 18.0
+	 * <!-- end-user-doc -->
+	 * @see #getName()
+	 * @generated
+	 * @ordered
+	 */
+	protected String name = NAME_EDEFAULT;
 	/**
 	 * The cached value of the '{@link #getProfileObj() <em>Profile Obj</em>}' reference.
 	 * <!-- begin-user-doc -->
@@ -93,20 +104,37 @@ public abstract class ScaPortImpl<P extends AbstractPort, P2 extends org.omg.COR
 	protected EClass eStaticClass() {
 		return ScaPackage.Literals.SCA_PORT;
 	}
+	
+	/**
+	 * <!-- begin-user-doc -->
+	 * @since 18.0
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public String getNameGen() {
+		return name;
+	}
 
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated NOT
+	 * @generated
 	 */
 	public String getName() {
-		// END GENERATED CODE
-		if (getProfileObj() != null) {
-			return getProfileObj().getName();
-		} else {
-			return null;
-		}
-		// BEGIN GENERATED CODE
+		return name;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * @since 18.0
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public void setName(String newName) {
+		String oldName = name;
+		name = newName;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, ScaPackage.SCA_PORT__NAME, oldName, name));
 	}
 
 	/**
@@ -289,6 +317,9 @@ public abstract class ScaPortImpl<P extends AbstractPort, P2 extends org.omg.COR
 	@Override
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
+			case ScaPackage.SCA_PORT__NAME:
+				setName((String)newValue);
+				return;
 			case ScaPackage.SCA_PORT__PROFILE_OBJ:
 				setProfileObj((P)newValue);
 				return;
@@ -307,6 +338,9 @@ public abstract class ScaPortImpl<P extends AbstractPort, P2 extends org.omg.COR
 	@Override
 	public void eUnset(int featureID) {
 		switch (featureID) {
+			case ScaPackage.SCA_PORT__NAME:
+				setName(NAME_EDEFAULT);
+				return;
 			case ScaPackage.SCA_PORT__PROFILE_OBJ:
 				setProfileObj((P)null);
 				return;
@@ -326,7 +360,7 @@ public abstract class ScaPortImpl<P extends AbstractPort, P2 extends org.omg.COR
 	public boolean eIsSet(int featureID) {
 		switch (featureID) {
 			case ScaPackage.SCA_PORT__NAME:
-				return NAME_EDEFAULT == null ? getName() != null : !NAME_EDEFAULT.equals(getName());
+				return NAME_EDEFAULT == null ? name != null : !NAME_EDEFAULT.equals(name);
 			case ScaPackage.SCA_PORT__PROFILE_OBJ:
 				return profileObj != null;
 			case ScaPackage.SCA_PORT__REPID:
@@ -335,6 +369,22 @@ public abstract class ScaPortImpl<P extends AbstractPort, P2 extends org.omg.COR
 				return basicGetPortContainer() != null;
 		}
 		return super.eIsSet(featureID);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public String toString() {
+		if (eIsProxy()) return super.toString();
+
+		StringBuffer result = new StringBuffer(super.toString());
+		result.append(" (name: ");
+		result.append(name);
+		result.append(')');
+		return result.toString();
 	}
 
 	/**

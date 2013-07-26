@@ -247,6 +247,18 @@ public class ScaWaveformFactoryImpl extends CorbaObjWrapperImpl<ApplicationFacto
 
 	/**
 	 * <!-- begin-user-doc -->
+	 * @since 18.0
+	 * <!-- end-user-doc -->
+	 * This is specialized for the more specific type known in this context.
+	 * @generated
+	 */
+	@Override
+	public void setObj(ApplicationFactory newObj) {
+		super.setObj(newObj);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */

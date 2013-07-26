@@ -53,6 +53,7 @@ import org.eclipse.emf.ecore.plugin.EcorePlugin;
 
 import CF.Device;
 import CF.LoadableDevice;
+import gov.redhawk.model.sca.*;
 import CF.DevicePackage.AdminType;
 import CF.DevicePackage.OperationalType;
 import CF.DevicePackage.UsageType;
@@ -72,7 +73,7 @@ public class ScaFactoryImpl extends EFactoryImpl implements ScaFactory {
 	 */
 	public static ScaFactory init() {
 		try {
-			ScaFactory theScaFactory = (ScaFactory)EPackage.Registry.INSTANCE.getEFactory("http://www.redhawk.gov/model/sca/2.0.0"); 
+			ScaFactory theScaFactory = (ScaFactory)EPackage.Registry.INSTANCE.getEFactory(ScaPackage.eNS_URI);
 			if (theScaFactory != null) {
 				return theScaFactory;
 			}

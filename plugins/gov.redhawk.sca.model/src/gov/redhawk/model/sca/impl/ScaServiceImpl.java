@@ -37,6 +37,7 @@ import mil.jpeojtrs.sca.dcd.DcdComponentInstantiation;
 import mil.jpeojtrs.sca.dcd.DcdComponentPlacement;
 import mil.jpeojtrs.sca.dcd.DcdPartitioning;
 import mil.jpeojtrs.sca.dcd.DeviceConfiguration;
+import mil.jpeojtrs.sca.prf.AbstractProperty;
 import mil.jpeojtrs.sca.scd.AbstractPort;
 import mil.jpeojtrs.sca.scd.ScdPackage;
 import mil.jpeojtrs.sca.spd.SoftPkg;
@@ -53,6 +54,7 @@ import org.eclipse.emf.common.notify.NotificationChain;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
@@ -144,6 +146,18 @@ public class ScaServiceImpl extends ScaPropertyContainerImpl<org.omg.CORBA.Objec
 	 * <!-- begin-user-doc -->
 	 * @since 18.0
 	 * <!-- end-user-doc -->
+	 * This is specialized for the more specific type known in this context.
+	 * @generated
+	 */
+	@Override
+	public void setProfileObj(SoftPkg newProfileObj) {
+		super.setProfileObj(newProfileObj);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * @since 18.0
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public EList<ScaPort<?, ?>> getPorts() {
@@ -202,7 +216,7 @@ public class ScaServiceImpl extends ScaPropertyContainerImpl<org.omg.CORBA.Objec
 	 */
 	public ScaDeviceManager getDevMgr() {
 		if (eContainerFeatureID() != ScaPackage.SCA_SERVICE__DEV_MGR) return null;
-		return (ScaDeviceManager)eContainer();
+		return (ScaDeviceManager)eInternalContainer();
 	}
 
 	/**
@@ -615,8 +629,17 @@ public class ScaServiceImpl extends ScaPropertyContainerImpl<org.omg.CORBA.Objec
 	};
 	
 	@Override
-	protected EStructuralFeature[] getPrfPropertiesPath() {
-		return PRF_PATH;
+	protected List<AbstractProperty> fetchPropertyDefinitions(IProgressMonitor monitor){
+		EObject localProfile = fetchProfileObject(monitor);
+		mil.jpeojtrs.sca.prf.Properties propDefintions = ScaEcoreUtils.getFeature(localProfile, PRF_PATH);
+		List<AbstractProperty> retVal = new ArrayList<AbstractProperty>();
+		for ( ValueListIterator<Object> i = propDefintions.getProperties().valueListIterator(); i.hasNext(); ) {
+			Object propDef = i.next();
+			if (propDef instanceof AbstractProperty) {
+				retVal.add((AbstractProperty) propDef);
+			}
+		}
+		return retVal;
 	}
 
 	@Override

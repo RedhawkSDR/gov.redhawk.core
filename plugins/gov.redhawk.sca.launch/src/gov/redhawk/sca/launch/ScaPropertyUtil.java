@@ -11,8 +11,8 @@
  */
 package gov.redhawk.sca.launch;
 
-import gov.redhawk.model.sca.ScaAbstractComponent;
 import gov.redhawk.model.sca.ScaAbstractProperty;
+import gov.redhawk.model.sca.ScaPropertyContainer;
 import gov.redhawk.model.sca.ScaSimpleProperty;
 import gov.redhawk.model.sca.ScaSimpleSequenceProperty;
 import gov.redhawk.model.sca.ScaStructProperty;
@@ -40,7 +40,7 @@ class ScaPropertyUtil {
 
 	}
 
-	public static void load(final ScaAbstractComponent< ? > component, final String serializedValue) {
+	public static void load(final ScaPropertyContainer< ? , ? > component, final String serializedValue) {
 		if (component != null && serializedValue != null) {
 			final XMLDecoder decoder = new XMLDecoder(new ByteArrayInputStream(serializedValue.getBytes()));
 			final Map< ? , ? > propMap = (Map< ? , ? >) decoder.readObject();
@@ -49,7 +49,7 @@ class ScaPropertyUtil {
 		}
 	}
 
-	public static String save(final ScaAbstractComponent< ? > component) {
+	public static String save(final ScaPropertyContainer<?, ?> component) {
 		if (component != null) {
 			final Map< ? , ? > propMap = ScaPropertyUtil.storeProperties(component);
 
@@ -76,7 +76,7 @@ class ScaPropertyUtil {
 		}
 	}
 
-	private static Map< ? , ? > storeProperties(final ScaAbstractComponent< ? > component) {
+	private static Map< ? , ? > storeProperties(final ScaPropertyContainer< ?, ? > component) {
 		final Map<Object, Object> propMap = new HashMap<Object, Object>();
 		for (final ScaAbstractProperty< ? > prop : component.getProperties()) {
 			if (prop.isDefaultValue()) {
@@ -116,7 +116,7 @@ class ScaPropertyUtil {
 		return retVal;
 	}
 
-	private static void restoreProperties(final ScaAbstractComponent< ? > component, final Map< ? , ? > propMap) {
+	private static void restoreProperties(final ScaPropertyContainer< ? , ? > component, final Map< ? , ? > propMap) {
 		for (final ScaAbstractProperty< ? > prop : component.getProperties()) {
 			if (!propMap.containsKey(prop.getId())) {
 				continue;

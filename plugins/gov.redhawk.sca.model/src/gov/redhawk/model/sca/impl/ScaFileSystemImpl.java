@@ -207,6 +207,18 @@ public abstract class ScaFileSystemImpl< F extends FileSystem > extends CorbaObj
 
 	/**
 	 * <!-- begin-user-doc -->
+	 * @since 18.0
+	 * <!-- end-user-doc -->
+	 * This is specialized for the more specific type known in this context.
+	 * @generated
+	 */
+	@Override
+	public void setObj(F newObj) {
+		super.setObj(newObj);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */

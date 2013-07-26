@@ -11,25 +11,22 @@
  */
 package gov.redhawk.sca.internal.ui.wizards;
 
-import gov.redhawk.model.sca.ScaAbstractComponent;
 import gov.redhawk.model.sca.ScaAbstractProperty;
-import gov.redhawk.model.sca.ScaComponent;
 import gov.redhawk.model.sca.ScaFactory;
+import gov.redhawk.model.sca.ScaPropertyContainer;
 import gov.redhawk.model.sca.ScaSimpleProperty;
 import gov.redhawk.model.sca.ScaSimpleSequenceProperty;
 import gov.redhawk.model.sca.ScaStructProperty;
 import gov.redhawk.model.sca.ScaStructSequenceProperty;
+import gov.redhawk.model.sca.ScaWaveform;
 import gov.redhawk.sca.ui.ScaComponentFactory;
 import gov.redhawk.sca.ui.properties.ScaPropertiesAdapterFactory;
 import gov.redhawk.sca.ui.wizards.ScaPropertyUtil;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
-import mil.jpeojtrs.sca.partitioning.ComponentProperties;
-import mil.jpeojtrs.sca.partitioning.PartitioningPackage;
 import mil.jpeojtrs.sca.prf.AbstractPropertyRef;
 import mil.jpeojtrs.sca.prf.SimpleRef;
 import mil.jpeojtrs.sca.prf.SimpleSequenceRef;
@@ -37,18 +34,12 @@ import mil.jpeojtrs.sca.prf.StructRef;
 import mil.jpeojtrs.sca.prf.StructSequenceRef;
 import mil.jpeojtrs.sca.prf.StructValue;
 import mil.jpeojtrs.sca.prf.util.PropertiesUtil;
-import mil.jpeojtrs.sca.sad.SadPackage;
 import mil.jpeojtrs.sca.sad.SoftwareAssembly;
-import mil.jpeojtrs.sca.spd.SoftPkg;
 import mil.jpeojtrs.sca.util.AnyUtils;
-import mil.jpeojtrs.sca.util.ScaEcoreUtils;
 
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.emf.common.notify.AdapterFactory;
 import org.eclipse.emf.common.util.EList;
-import org.eclipse.emf.ecore.EStructuralFeature;
-import org.eclipse.emf.ecore.util.FeatureMap;
-import org.eclipse.emf.ecore.util.FeatureMap.Entry;
 import org.eclipse.jface.dialogs.IDialogSettings;
 import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.jface.operation.IRunnableWithProgress;
@@ -66,18 +57,8 @@ import org.eclipse.swt.widgets.Composite;
 import CF.DataType;
 
 public class ApplicationCreationPropertyEditWizardPage extends WizardPage {
-
-	private static final EStructuralFeature[] ASSEMBLY_SPD_PATH = new EStructuralFeature[] {
-	        SadPackage.Literals.SOFTWARE_ASSEMBLY__ASSEMBLY_CONTROLLER,
-	        SadPackage.Literals.ASSEMBLY_CONTROLLER__COMPONENT_INSTANTIATION_REF,
-	        PartitioningPackage.Literals.COMPONENT_INSTANTIATION_REF__INSTANTIATION,
-	        PartitioningPackage.Literals.COMPONENT_INSTANTIATION__PLACEMENT,
-	        PartitioningPackage.Literals.COMPONENT_PLACEMENT__COMPONENT_FILE_REF,
-	        PartitioningPackage.Literals.COMPONENT_FILE_REF__FILE,
-	        PartitioningPackage.Literals.COMPONENT_FILE__SOFT_PKG,
-	};
 	private final AdapterFactory adapterFactory;
-	private ScaComponent assemblyController = null;
+	private ScaWaveform localWaveform = null;
 	private String waveformId;
 	private TreeViewer viewer;
 
@@ -95,11 +76,11 @@ public class ApplicationCreationPropertyEditWizardPage extends WizardPage {
 		propComposite.setLayoutData(GridDataFactory.fillDefaults().grab(true, true).create());
 		this.viewer = ScaComponentFactory.createPropertyTable(propComposite, SWT.BORDER | SWT.FULL_SELECTION | SWT.SINGLE, this.adapterFactory);
 		this.viewer.addFilter(new ViewerFilter() {
-			
+
 			@Override
 			public boolean select(Viewer viewer, Object parentElement, Object element) {
-				if (element instanceof ScaAbstractProperty<?>) {
-					ScaAbstractProperty<?> prop = (ScaAbstractProperty< ? >) element;
+				if (element instanceof ScaAbstractProperty< ? >) {
+					ScaAbstractProperty< ? > prop = (ScaAbstractProperty< ? >) element;
 					return PropertiesUtil.canOverride(prop.getDefinition());
 				}
 				return false;
@@ -112,7 +93,7 @@ public class ApplicationCreationPropertyEditWizardPage extends WizardPage {
 		resetButton.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(final SelectionEvent e) {
-				for (final ScaAbstractProperty< ? > prop : ApplicationCreationPropertyEditWizardPage.this.assemblyController.getProperties()) {
+				for (final ScaAbstractProperty< ? > prop : ApplicationCreationPropertyEditWizardPage.this.localWaveform.getProperties()) {
 					prop.restoreDefaultValue();
 				}
 			}
@@ -124,8 +105,8 @@ public class ApplicationCreationPropertyEditWizardPage extends WizardPage {
 
 	public DataType[] getCreationProperties() {
 		final List<DataType> retVal = new ArrayList<DataType>();
-		if (this.assemblyController != null) {
-			for (final ScaAbstractProperty< ? > prop : this.assemblyController.getProperties()) {
+		if (this.localWaveform != null) {
+			for (final ScaAbstractProperty< ? > prop : this.localWaveform.getProperties()) {
 				if (!prop.isDefaultValue()) {
 					retVal.add(prop.getProperty());
 				}
@@ -141,66 +122,40 @@ public class ApplicationCreationPropertyEditWizardPage extends WizardPage {
 		} else {
 			this.waveformId = null;
 		}
-		if (this.assemblyController != null) {
-			this.assemblyController.dispose();
-			this.assemblyController = null;
+		if (this.localWaveform != null) {
+			this.localWaveform.dispose();
+			this.localWaveform = null;
 		}
-		final SoftPkg spd = ScaEcoreUtils.getFeature(sad, ApplicationCreationPropertyEditWizardPage.ASSEMBLY_SPD_PATH);
-		if (spd == null) {
-			this.assemblyController = null;
-			this.viewer.setInput(null);
-		} else {
-			this.assemblyController = ScaFactory.eINSTANCE.createScaComponent();
-			this.assemblyController.setDataProvidersEnabled(false);
-			this.assemblyController.setProfileObj(spd);
-			try {
-				getWizard().getContainer().run(true, false, new IRunnableWithProgress() {
 
+		this.localWaveform = ScaFactory.eINSTANCE.createScaWaveform();
+		this.localWaveform.setDataProvidersEnabled(false);
+		localWaveform.setProfileObj(sad);
 
-					private EStructuralFeature [] path = new EStructuralFeature [] {
-							SadPackage.Literals.SOFTWARE_ASSEMBLY__ASSEMBLY_CONTROLLER,
-							SadPackage.Literals.ASSEMBLY_CONTROLLER__COMPONENT_INSTANTIATION_REF,
-							PartitioningPackage.Literals.COMPONENT_INSTANTIATION_REF__INSTANTIATION,
-							PartitioningPackage.Literals.COMPONENT_INSTANTIATION__COMPONENT_PROPERTIES
-					};
+		try {
+			getWizard().getContainer().run(true, false, new IRunnableWithProgress() {
 
-					public void run(final IProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
-						monitor.beginTask("Fetching properties of assembly controller.", IProgressMonitor.UNKNOWN);
-						ApplicationCreationPropertyEditWizardPage.this.assemblyController.fetchProperties(null);
-						for (final ScaAbstractProperty< ? > prop : ApplicationCreationPropertyEditWizardPage.this.assemblyController.getProperties()) {
-							prop.setIgnoreRemoteSet(true);
-						}
-						
-						ComponentProperties compProperties = ScaEcoreUtils.getFeature(sad, path);
-						if (compProperties != null && sad != null) {
-							FeatureMap properties = sad.getAssemblyController().getComponentInstantiationRef().getInstantiation().getComponentProperties().getProperties();
-							for (Iterator<Entry> i = properties.iterator(); i.hasNext();) {
-								Entry entry = i.next();
-								Object obj = entry.getValue();
-								if (obj instanceof AbstractPropertyRef<?>) {
-									AbstractPropertyRef<?> prop = (AbstractPropertyRef<?>) obj;
-									setValue(assemblyController.getProperty(prop.getRefID()), prop);
-								}
-							}
-							restoreProperties();
-						}
-						
-						restoreProperties();
+				public void run(final IProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
+					monitor.beginTask("Fetching properties...", IProgressMonitor.UNKNOWN);
+					;
 
-						monitor.done();
+					for (final ScaAbstractProperty< ? > prop : localWaveform.fetchProperties(monitor)) {
+						prop.setIgnoreRemoteSet(true);
 					}
-				});
-			} catch (final InvocationTargetException e) {
-				// PASS
-			} catch (final InterruptedException e) {
-				// PASS
-			}
-			this.viewer.setInput(this.assemblyController);
+
+					restoreProperties();
+
+					monitor.done();
+				}
+			});
+		} catch (final InvocationTargetException e) {
+			// PASS
+		} catch (final InterruptedException e) {
+			// PASS
 		}
+		this.viewer.setInput(this.localWaveform);
 	}
 
-
-	protected void setValue(ScaAbstractProperty< ? > property, AbstractPropertyRef<?> prop) {
+	protected void setValue(ScaAbstractProperty< ? > property, AbstractPropertyRef< ? > prop) {
 		if (property instanceof ScaSimpleProperty) {
 			setValue((ScaSimpleProperty) property, (SimpleRef) prop);
 		} else if (property instanceof ScaSimpleSequenceProperty) {
@@ -210,8 +165,8 @@ public class ApplicationCreationPropertyEditWizardPage extends WizardPage {
 		} else if (property instanceof ScaStructSequenceProperty) {
 			setValue((ScaStructSequenceProperty) property, (StructSequenceRef) prop);
 		}
-    }
-	
+	}
+
 	protected void setValue(ScaStructSequenceProperty scaProp, StructSequenceRef prop) {
 		scaProp.getStructs().clear();
 		for (StructValue value : prop.getStructValue()) {
@@ -225,22 +180,22 @@ public class ApplicationCreationPropertyEditWizardPage extends WizardPage {
 			}
 		}
 	}
-	
+
 	protected void setValue(ScaStructProperty scaProp, StructRef prop) {
 		for (SimpleRef simple : prop.getSimpleRef()) {
 			setValue(scaProp.getSimple(simple.getRefID()), simple);
 		}
 	}
-	
+
 	protected void setValue(ScaSimpleSequenceProperty property, SimpleSequenceRef prop) {
-		Object [] newValue = new Object[prop.getValues().getValue().size()];
+		Object[] newValue = new Object[prop.getValues().getValue().size()];
 		for (int i = 0; i < newValue.length; i++) {
 			String value = prop.getValues().getValue().get(i);
 			newValue[i] = AnyUtils.convertString(value, prop.getProperty().getType().getLiteral(), prop.getProperty().isComplex());
 		}
 		property.setValue(newValue);
 	}
-	
+
 	protected void setValue(ScaSimpleProperty property, SimpleRef prop) {
 		property.setValue(AnyUtils.convertString(prop.getValue(), prop.getProperty().getType().getLiteral(), prop.getProperty().isComplex()));
 	}
@@ -251,32 +206,32 @@ public class ApplicationCreationPropertyEditWizardPage extends WizardPage {
 			propertySettings = getDialogSettings().addNewSection(getName());
 		}
 		final IDialogSettings waveformSettings = propertySettings.addNewSection(this.waveformId);
-		if (!empty && this.assemblyController != null) {
-			ScaPropertyUtil.save(this.assemblyController, waveformSettings);
+		if (!empty && this.localWaveform != null) {
+			ScaPropertyUtil.save(this.localWaveform, waveformSettings);
 		}
 	}
 
 	private void restoreProperties() {
-		if (this.assemblyController != null) {
+		if (this.localWaveform != null) {
 			final IDialogSettings propertySettings = getDialogSettings().getSection(getName());
 			if (this.waveformId != null && propertySettings != null) {
 				final IDialogSettings waveformSettings = propertySettings.getSection(this.waveformId);
 				if (waveformSettings != null) {
-					ScaPropertyUtil.load(this.assemblyController, waveformSettings);
+					ScaPropertyUtil.load(this.localWaveform, waveformSettings);
 				}
 			}
 		}
 	}
-
-	public ScaAbstractComponent< ? > getAssemblyController() {
-		return this.assemblyController;
-	}
-
+	
 	@Override
 	public void dispose() {
-		if (this.assemblyController != null) {
-			this.assemblyController.dispose();
+		if (this.localWaveform != null) {
+			this.localWaveform.dispose();
 		}
 		super.dispose();
+	}
+
+	public ScaPropertyContainer< ? , ? > getPropertyContainer() {
+		return this.localWaveform;
 	}
 }

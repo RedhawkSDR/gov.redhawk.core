@@ -2691,7 +2691,7 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 		initEClass(scaLoadableDeviceEClass, ScaLoadableDevice.class, "ScaLoadableDevice", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
 		initEClass(scaPortEClass, ScaPort.class, "ScaPort", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEAttribute(getScaPort_Name(), theEcorePackage.getEString(), "name", null, 1, 1, ScaPort.class, IS_TRANSIENT, IS_VOLATILE, !IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, IS_DERIVED, IS_ORDERED);
+		initEAttribute(getScaPort_Name(), theEcorePackage.getEString(), "name", null, 1, 1, ScaPort.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		g1 = createEGenericType(scaPortEClass_P);
 		initEReference(getScaPort_ProfileObj(), g1, null, "profileObj", null, 0, 1, ScaPort.class, IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getScaPort_Repid(), theEcorePackage.getEString(), "repid", null, 1, 1, ScaPort.class, IS_TRANSIENT, IS_VOLATILE, !IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, IS_DERIVED, IS_ORDERED);

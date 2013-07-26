@@ -24,40 +24,37 @@ import gov.redhawk.model.sca.impl.ScaStructPropertyImpl;
 import gov.redhawk.model.sca.impl.ScaStructSequencePropertyImpl;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import mil.jpeojtrs.sca.prf.AbstractProperty;
-import mil.jpeojtrs.sca.prf.Properties;
 import mil.jpeojtrs.sca.prf.Simple;
 import mil.jpeojtrs.sca.prf.SimpleSequence;
 import mil.jpeojtrs.sca.prf.Struct;
 import mil.jpeojtrs.sca.prf.StructSequence;
-
-import org.eclipse.emf.ecore.util.FeatureMap;
-import org.eclipse.emf.ecore.util.FeatureMap.Entry;
-
 
 /**
  * @since 14.0
  * 
  */
 public class MergePropertiesCommand extends ScaModelCommand {
-	
-	private Properties prfProperties;
+
+	private List<AbstractProperty> propertyDefs;
 	private ScaPropertyContainer< ? , ? > container;
 
-	public MergePropertiesCommand(ScaPropertyContainer<?, ?> container, Properties prfProperties) {
+	/**
+	 * @since 18.0
+	 */
+	public MergePropertiesCommand(ScaPropertyContainer< ? , ? > container, List<AbstractProperty> propertyDefs) {
 		this.container = container;
-		this.prfProperties = prfProperties;
-    }
+		this.propertyDefs = propertyDefs;
+	}
 
 	public void execute() {
 		// New Properties
 		final Map<String, ScaAbstractProperty< ? >> newProperties = new HashMap<String, ScaAbstractProperty< ? >>();
-		if (prfProperties != null) {
-			FeatureMap spdProperties = prfProperties.getProperties();
-			for (final Entry propDef : spdProperties) {
-				final Object value = propDef.getValue();
+		if (propertyDefs != null) {
+			for (AbstractProperty value : this.propertyDefs) {
 				if (value instanceof AbstractProperty) {
 					AbstractProperty prop = (AbstractProperty) value;
 					ScaAbstractProperty< ? > scaProp = null;
@@ -77,7 +74,7 @@ public class MergePropertiesCommand extends ScaModelCommand {
 					newProperties.put(prop.getId(), scaProp);
 				}
 			}
-		}	
+		}
 
 		// Setup Current Property Map
 		final Map<String, ScaAbstractProperty< ? >> currentProperties = new HashMap<String, ScaAbstractProperty< ? >>();
@@ -102,12 +99,11 @@ public class MergePropertiesCommand extends ScaModelCommand {
 		if (!newProperties.isEmpty()) {
 			container.getProperties().addAll(newProperties.values());
 		}
-		
+
 		if (!container.isSetProperties()) {
 			container.getProperties().clear();
 		}
-    }
-	
+	}
 
 	protected ScaStructProperty createStructScaProperty(final Struct value) {
 		// END GENERATED CODE

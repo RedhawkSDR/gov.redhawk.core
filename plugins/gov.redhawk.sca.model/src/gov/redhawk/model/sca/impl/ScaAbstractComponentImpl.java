@@ -31,6 +31,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import mil.jpeojtrs.sca.prf.AbstractProperty;
+import mil.jpeojtrs.sca.prf.Properties;
 import mil.jpeojtrs.sca.scd.AbstractPort;
 import mil.jpeojtrs.sca.scd.ScdPackage;
 import mil.jpeojtrs.sca.spd.SoftPkg;
@@ -51,10 +53,10 @@ import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.util.EObjectContainmentWithInverseEList;
+import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.emf.ecore.util.FeatureMap;
 import org.eclipse.emf.ecore.util.FeatureMap.ValueListIterator;
 import org.eclipse.emf.ecore.util.InternalEList;
-import org.eclipse.emf.edit.command.DeleteCommand;
 import org.eclipse.emf.transaction.RunnableWithResult;
 import org.eclipse.emf.transaction.TransactionalEditingDomain;
 import org.eclipse.emf.transaction.util.TransactionUtil;
@@ -182,6 +184,18 @@ public abstract class ScaAbstractComponentImpl< R extends Resource > extends Sca
 	@Override
 	protected EClass eStaticClass() {
 		return ScaPackage.Literals.SCA_ABSTRACT_COMPONENT;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * @since 18.0
+	 * <!-- end-user-doc -->
+	 * This is specialized for the more specific type known in this context.
+	 * @generated
+	 */
+	@Override
+	public void setProfileObj(SoftPkg newProfileObj) {
+		super.setProfileObj(newProfileObj);
 	}
 
 	/**
@@ -433,7 +447,12 @@ public abstract class ScaAbstractComponentImpl< R extends Resource > extends Sca
 		if (isDisposed() || resource == null || domain == null) {
 			return;
 		}
-		Command command = DeleteCommand.create(domain, this);
+		Command command = new ScaModelCommand() {
+			
+			public void execute() {
+				EcoreUtil.delete(ScaAbstractComponentImpl.this);;
+			}
+		};
 		resource.releaseObject();
 		domain.getCommandStack().execute(command);
 		// BEGIN GENERATED CODE
@@ -850,8 +869,16 @@ public abstract class ScaAbstractComponentImpl< R extends Resource > extends Sca
 	};
 
 	@Override
-	protected EStructuralFeature[] getPrfPropertiesPath() {
-		return PRF_PATH;
+	protected List<AbstractProperty> fetchPropertyDefinitions(IProgressMonitor monitor) {
+		Properties propertyDefs = ScaEcoreUtils.getFeature(fetchProfileObject(monitor), PRF_PATH);
+		List<AbstractProperty> retVal = new ArrayList<AbstractProperty>(propertyDefs.getProperties().size());
+		for (ValueListIterator<Object> i = propertyDefs.getProperties().valueListIterator(); i.hasNext();) {
+			Object propertyDefObj = i.next();
+			if (propertyDefObj instanceof AbstractProperty) {
+				retVal.add((AbstractProperty) propertyDefObj);
+			}
+		}
+		return retVal;
 	}
 
 	private final VersionedFeature profileObjectRevision = new VersionedFeature(this, ScaPackage.Literals.PROFILE_OBJECT_WRAPPER__PROFILE_OBJ);

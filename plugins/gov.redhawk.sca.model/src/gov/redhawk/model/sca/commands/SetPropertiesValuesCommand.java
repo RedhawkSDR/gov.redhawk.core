@@ -25,11 +25,11 @@ import CF.PropertiesHolder;
  * @since 14.0
  * 
  */
-public class SetPropertiesValuesCommand extends SetStatusCommand<ScaPropertyContainer<?, ?>> {
-	
+public class SetPropertiesValuesCommand extends SetStatusCommand<ScaPropertyContainer< ? , ? >> {
+
 	private PropertiesHolder propHolder;
 
-	public SetPropertiesValuesCommand(ScaPropertyContainer<?, ?> container,  PropertiesHolder propHolder) {
+	public SetPropertiesValuesCommand(ScaPropertyContainer< ? , ? > container, PropertiesHolder propHolder) {
 		super(container, ScaPackage.Literals.SCA_PROPERTY_CONTAINER__PROPERTIES, null);
 		this.propHolder = propHolder;
 	}
@@ -48,7 +48,11 @@ public class SetPropertiesValuesCommand extends SetStatusCommand<ScaPropertyCont
 				final ScaAbstractProperty< ? > prop = props.get(dt.id);
 				if (prop != null) {
 					prop.fromAny(dt.value);
-				}
+				} 
+//				else {
+					// TODO Show these as additional read only properties?
+//					Object value = AnyUtils.convertAny(dt.value);
+//				}
 			}
 		}
 		super.execute();

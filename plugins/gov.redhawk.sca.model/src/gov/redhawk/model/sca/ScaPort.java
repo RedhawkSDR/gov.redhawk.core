@@ -46,12 +46,24 @@ public interface ScaPort< P extends AbstractPort, P2 extends org.omg.CORBA.Objec
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Name</em>' attribute.
+	 * @see #setName(String)
 	 * @see gov.redhawk.model.sca.ScaPackage#getScaPort_Name()
-	 * @model required="true" transient="true" changeable="false" volatile="true" derived="true"
+	 * @model required="true"
 	 *        extendedMetaData="kind='attribute' name='name'"
 	 * @generated
 	 */
 	String getName();
+
+	/**
+	 * Sets the value of the '{@link gov.redhawk.model.sca.ScaPort#getName <em>Name</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * @since 18.0
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Name</em>' attribute.
+	 * @see #getName()
+	 * @generated
+	 */
+	void setName(String value);
 
 	/**
 	 * Returns the value of the '<em><b>Profile Obj</b></em>' reference.

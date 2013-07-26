@@ -13,6 +13,7 @@ package gov.redhawk.sca.ui.wizards;
 
 import gov.redhawk.model.sca.ScaAbstractComponent;
 import gov.redhawk.model.sca.ScaAbstractProperty;
+import gov.redhawk.model.sca.ScaPropertyContainer;
 import gov.redhawk.model.sca.ScaSimpleProperty;
 import gov.redhawk.model.sca.ScaSimpleSequenceProperty;
 import gov.redhawk.model.sca.ScaStructProperty;
@@ -37,20 +38,46 @@ public final class ScaPropertyUtil {
 
 	}
 
+	/**
+	 * @deprecated Use new broader load method {@link #load(ScaPropertyContainer, IDialogSettings)}
+	 * @param container
+	 * @param propSettings
+	 */
+	@Deprecated
 	public static void load(final ScaAbstractComponent< ? > component, final IDialogSettings propSettings) {
-		if (component != null && propSettings != null) {
-			ScaPropertyUtil.restoreProperties(component, propSettings);
+		load((ScaPropertyContainer< ? , ? >) component, propSettings);
+	}
+
+	/**
+	 * @since 9.1
+	 */
+	public static void load(ScaPropertyContainer< ? , ? > container, final IDialogSettings propSettings) {
+		if (container != null && propSettings != null) {
+			ScaPropertyUtil.restoreProperties(container, propSettings);
 		}
 	}
 
-	public static void save(final ScaAbstractComponent< ? > component, final IDialogSettings propSettings) {
-		if (component != null && propSettings != null) {
-			ScaPropertyUtil.storeProperties(component, propSettings);
+	/**
+	 * @deprecated Use new broader save method {@link #save(ScaPropertyContainer, IDialogSettings)}
+	 * @param container
+	 * @param propSettings
+	 */
+	@Deprecated
+	public static void save(final ScaAbstractComponent< ? > container, final IDialogSettings propSettings) {
+		save((ScaPropertyContainer< ? , ? >) container, propSettings);
+	}
+
+	/**
+	 * @since 9.1
+	 */
+	public static void save(final ScaPropertyContainer< ? , ? > container, final IDialogSettings propSettings) {
+		if (container != null && propSettings != null) {
+			ScaPropertyUtil.storeProperties(container, propSettings);
 		}
 	}
 
-	private static void storeProperties(final ScaAbstractComponent< ? > component, final IDialogSettings propertySettings) {
-		for (final ScaAbstractProperty< ? > prop : component.getProperties()) {
+	private static void storeProperties(final ScaPropertyContainer< ? , ? > container, final IDialogSettings propertySettings) {
+		for (final ScaAbstractProperty< ? > prop : container.getProperties()) {
 			if (prop.isDefaultValue()) {
 				continue;
 			}
@@ -98,8 +125,8 @@ public final class ScaPropertyUtil {
 		}
 	}
 
-	private static void restoreProperties(final ScaAbstractComponent< ? > component, final IDialogSettings propSettings) {
-		for (final ScaAbstractProperty< ? > prop : component.getProperties()) {
+	private static void restoreProperties(ScaPropertyContainer< ? , ? > container, final IDialogSettings propSettings) {
+		for (final ScaAbstractProperty< ? > prop : container.getProperties()) {
 			final IDialogSettings valueSection = propSettings.getSection(prop.getId());
 			if (prop instanceof ScaSimpleProperty) {
 				ScaPropertyUtil.restoreSimple((ScaSimpleProperty) prop, valueSection);
@@ -146,7 +173,8 @@ public final class ScaPropertyUtil {
 
 	private static void restoreSimple(final ScaSimpleProperty prop, final IDialogSettings propertySettings) {
 		if (propertySettings != null) {
-			prop.setValue(AnyUtils.convertString(propertySettings.get(ScaPropertyUtil.SIMPLE_VALUE), prop.getDefinition().getType().getLiteral(), prop.getDefinition().isComplex()));
+			prop.setValue(AnyUtils.convertString(propertySettings.get(ScaPropertyUtil.SIMPLE_VALUE), prop.getDefinition().getType().getLiteral(),
+				prop.getDefinition().isComplex()));
 		}
 
 	}

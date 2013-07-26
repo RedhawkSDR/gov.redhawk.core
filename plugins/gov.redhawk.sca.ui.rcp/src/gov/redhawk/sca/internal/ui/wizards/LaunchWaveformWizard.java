@@ -11,8 +11,8 @@
  */
 package gov.redhawk.sca.internal.ui.wizards;
 
-import gov.redhawk.model.sca.ScaAbstractComponent;
 import gov.redhawk.model.sca.ScaDomainManager;
+import gov.redhawk.model.sca.ScaPropertyContainer;
 import gov.redhawk.model.sca.util.LaunchWaveformJob;
 import gov.redhawk.sca.ScaPlugin;
 import gov.redhawk.sca.launch.ScaLaunchConfigurationConstants;
@@ -81,7 +81,7 @@ public class LaunchWaveformWizard extends BasicLaunchWaveformWizard {
 
 		if (createLaunchConfiguration) {
 			try {
-				createLaunchConfiguration(sad, autoStart, propertyValuePage.getAssemblyController(), deviceAssn);
+				createLaunchConfiguration(sad, autoStart, propertyValuePage.getPropertyContainer(), deviceAssn);
 			} catch (final CoreException e) {
 				StatusManager.getManager().handle(e, ScaUiPlugin.PLUGIN_ID);
 			}
@@ -163,7 +163,7 @@ public class LaunchWaveformWizard extends BasicLaunchWaveformWizard {
 		return true;
 	}
 
-	private void createLaunchConfiguration(final SoftwareAssembly sad, final boolean autoStart, final ScaAbstractComponent< ? > assemblyController,
+	private void createLaunchConfiguration(final SoftwareAssembly sad, final boolean autoStart, final ScaPropertyContainer< ?, ? > assemblyController,
 	        final DeviceAssignmentType[] deviceAssn) throws CoreException {
 		boolean createConfiguration = false;
 		final String promptOption = ScaUiPlugin.getDefault().getPreferenceStore().getString(RedhawkUIPreferenceConstants.CREATE_WAVEFORM_LAUNCH_CONFIGURATION);

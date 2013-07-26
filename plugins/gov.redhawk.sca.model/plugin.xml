@@ -21,6 +21,27 @@
             uri="http://www.redhawk.gov/model/sca/2.0.0">
       </package>
    </extension>
+
+   <extension point="org.eclipse.emf.ecore.content_parser">
+      <!-- @generated sca -->
+      <parser
+            contentTypeIdentifier="http://www.redhawk.gov/model/sca/2.0.0"
+            class="gov.redhawk.model.sca.util.ScaResourceFactoryImpl"/>
+   </extension>
+
+   <extension point="org.eclipse.core.contenttype.contentTypes">
+      <!-- @generated sca -->
+      <content-type
+            base-type="org.eclipse.core.runtime.xml"
+            file-extensions="xml"
+            id="http://www.redhawk.gov/model/sca/2.0.0"
+            name="%_UI_Sca_content_type"
+            priority="normal">
+         <describer class="org.eclipse.emf.ecore.xmi.impl.RootXMLContentHandlerImpl$Describer">
+            <parameter name="namespace" value="http://www.redhawk.gov/model/sca/2.0.0"/>
+         </describer>
+      </content-type>
+   </extension>
    <extension
          point="org.eclipse.emf.ecore.content_parser">
       <parser

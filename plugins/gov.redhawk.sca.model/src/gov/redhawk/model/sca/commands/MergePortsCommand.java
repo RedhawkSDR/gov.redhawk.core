@@ -37,11 +37,20 @@ public class MergePortsCommand extends SetStatusCommand<ScaPortContainer> {
 	public static class PortData {
 		private final AbstractPort portProfile;
 		private final org.omg.CORBA.Object portObj;
-
+		private String portName;
+		
 		public PortData(AbstractPort portProfile, Object portObj) {
+			this(portProfile.getName(), portProfile, portObj);
+		}
+
+		/**
+		 * @since 18.0
+		 */
+		public PortData(String portName, AbstractPort portProfile, Object portObj) {
 			super();
 			this.portProfile = portProfile;
 			this.portObj = portObj;
+			this.portName = portName;
 		}
 
 		public AbstractPort getPortProfile() {
@@ -53,8 +62,8 @@ public class MergePortsCommand extends SetStatusCommand<ScaPortContainer> {
 		}
 	}
 	
-	private static String buildId(AbstractPort port) {
-		return port.getClass().getName() + ":" + port.getName();
+	private static String buildId(AbstractPort port, String portName) {
+		return port.getClass().getName() + ":" + portName;
 	}
 
 	private List<PortData> newPorts;
@@ -71,7 +80,7 @@ public class MergePortsCommand extends SetStatusCommand<ScaPortContainer> {
 		if (status.isOK()) {
 			Map<String, ScaPort< ? , ? >> currentMap = new HashMap<String, ScaPort< ? , ? >>();
 			for (ScaPort< ? , ? > port : provider.getPorts()) {
-				currentMap.put(buildId(port.getProfileObj()), port);
+				currentMap.put(buildId(port.getProfileObj(), port.getName()), port);
 			}
 
 			Map<String, ScaPort< ? , ? >> removeMap = new HashMap<String, ScaPort< ? , ? >>();
@@ -79,7 +88,7 @@ public class MergePortsCommand extends SetStatusCommand<ScaPortContainer> {
 
 			Map<String, PortData> newPortMap = new HashMap<String, MergePortsCommand.PortData>();
 			for (PortData data : newPorts) {
-				newPortMap.put(buildId(data.portProfile), data);
+				newPortMap.put(buildId(data.portProfile, data.portName), data);
 			}
 
 			// Remove stale ports
@@ -104,6 +113,7 @@ public class MergePortsCommand extends SetStatusCommand<ScaPortContainer> {
 				}
 				if (newPort != null) {
 					newPort.setCorbaObj(data.portObj);
+					newPort.setName(data.portName);
 					provider.getPorts().add(newPort);
 				}
 			}

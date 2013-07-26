@@ -77,6 +77,7 @@ import CF.PropertySetOperations;
 import CF.Resource;
 import CF.ResourceOperations;
 import CF.TestableObjectOperations;
+import gov.redhawk.model.sca.*;
 
 /**
  * <!-- begin-user-doc --> The <b>Switch</b> for the model's inheritance
@@ -568,6 +569,12 @@ public class ScaSwitch< T1 > {
 			case ScaPackage.ISTATUS_PROVIDER: {
 				IStatusProvider iStatusProvider = (IStatusProvider)theEObject;
 				T1 result = caseIStatusProvider(iStatusProvider);
+				if (result == null) result = defaultCase(theEObject);
+				return result;
+			}
+			case ScaPackage.IREFRESHABLE: {
+				IRefreshable iRefreshable = (IRefreshable)theEObject;
+				T1 result = caseIRefreshable(iRefreshable);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}

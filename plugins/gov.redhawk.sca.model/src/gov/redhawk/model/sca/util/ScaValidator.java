@@ -74,6 +74,7 @@ import CF.DataType;
 import CF.DevicePackage.AdminType;
 import CF.DevicePackage.OperationalType;
 import CF.DevicePackage.UsageType;
+import gov.redhawk.model.sca.*;
 
 /**
  * <!-- begin-user-doc -->

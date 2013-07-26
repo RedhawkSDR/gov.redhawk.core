@@ -9,7 +9,7 @@
  * http://www.eclipse.org/legal/epl-v10.html
  *******************************************************************************/
 
- // BEGIN GENERATED CODE
+// BEGIN GENERATED CODE
 package gov.redhawk.model.sca.impl;
 
 import gov.redhawk.model.sca.IRefreshable;
@@ -48,6 +48,7 @@ import java.util.Map;
 
 import mil.jpeojtrs.sca.dcd.DcdPackage;
 import mil.jpeojtrs.sca.dcd.DeviceConfiguration;
+import mil.jpeojtrs.sca.prf.AbstractProperty;
 import mil.jpeojtrs.sca.scd.AbstractPort;
 import mil.jpeojtrs.sca.scd.ScdPackage;
 import mil.jpeojtrs.sca.spd.SpdPackage;
@@ -66,6 +67,7 @@ import org.eclipse.emf.common.notify.impl.AdapterImpl;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
@@ -270,6 +272,18 @@ public class ScaDeviceManagerImpl extends ScaPropertyContainerImpl<DeviceManager
 	@Override
 	protected EClass eStaticClass() {
 		return ScaPackage.Literals.SCA_DEVICE_MANAGER;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * @since 18.0
+	 * <!-- end-user-doc -->
+	 * This is specialized for the more specific type known in this context.
+	 * @generated
+	 */
+	@Override
+	public void setProfileObj(DeviceConfiguration newProfileObj) {
+		super.setProfileObj(newProfileObj);
 	}
 
 	/**
@@ -1853,10 +1867,21 @@ public class ScaDeviceManagerImpl extends ScaPropertyContainerImpl<DeviceManager
 	        SpdPackage.Literals.SOFT_PKG__PROPERTY_FILE,
 	        SpdPackage.Literals.PROPERTY_FILE__PROPERTIES
 	};
-
+	
 	@Override
-	protected EStructuralFeature[] getPrfPropertiesPath() {
-		return PRF_PATH;
+	protected List<AbstractProperty> fetchPropertyDefinitions(IProgressMonitor monitor){
+		EObject localProfile = fetchProfileObject(monitor);
+		mil.jpeojtrs.sca.prf.Properties propDefintions = ScaEcoreUtils.getFeature(localProfile, PRF_PATH);
+		List<AbstractProperty> retVal = new ArrayList<AbstractProperty>();
+		if (propDefintions != null) {
+			for ( ValueListIterator<Object> i = propDefintions.getProperties().valueListIterator(); i.hasNext(); ) {
+				Object propDef = i.next();
+				if (propDef instanceof AbstractProperty) {
+					retVal.add((AbstractProperty) propDef);
+				}
+			}
+		}
+		return retVal;
 	}
 
 	private final VersionedFeature profileObjectFeature = new VersionedFeature(this, ScaPackage.Literals.PROFILE_OBJECT_WRAPPER__PROFILE_OBJ);

@@ -40,15 +40,19 @@ import gov.redhawk.sca.util.OrbSession;
 import gov.redhawk.sca.util.PluginUtil;
 import gov.redhawk.sca.util.SilentJob;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 import mil.jpeojtrs.sca.dmd.DmdPackage;
 import mil.jpeojtrs.sca.dmd.DomainManagerConfiguration;
+import mil.jpeojtrs.sca.prf.AbstractProperty;
 import mil.jpeojtrs.sca.spd.SpdPackage;
 import mil.jpeojtrs.sca.util.NamedThreadFactory;
+import mil.jpeojtrs.sca.util.ScaEcoreUtils;
 
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
@@ -67,6 +71,7 @@ import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.util.EObjectContainmentWithInverseEList;
 import org.eclipse.emf.ecore.util.EcoreUtil;
+import org.eclipse.emf.ecore.util.FeatureMap.ValueListIterator;
 import org.eclipse.emf.ecore.util.InternalEList;
 import org.eclipse.emf.transaction.RunnableWithResult;
 import org.omg.CORBA.ORB;
@@ -350,6 +355,18 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 	@Override
 	protected EClass eStaticClass() {
 		return ScaPackage.Literals.SCA_DOMAIN_MANAGER;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * @since 18.0
+	 * <!-- end-user-doc -->
+	 * This is specialized for the more specific type known in this context.
+	 * @generated
+	 */
+	@Override
+	public void setProfileObj(DomainManagerConfiguration newProfileObj) {
+		super.setProfileObj(newProfileObj);
 	}
 
 	/**
@@ -2097,10 +2114,19 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 	        SpdPackage.Literals.SOFT_PKG__PROPERTY_FILE,
 	        SpdPackage.Literals.PROPERTY_FILE__PROPERTIES
 	};
-
+	
 	@Override
-	protected EStructuralFeature[] getPrfPropertiesPath() {
-		return PRF_PATH;
+	protected List<AbstractProperty> fetchPropertyDefinitions(IProgressMonitor monitor) {
+		DomainManagerConfiguration dmd = fetchProfileObject(monitor);
+		mil.jpeojtrs.sca.prf.Properties propDefintions = ScaEcoreUtils.getFeature(dmd, PRF_PATH);
+		List<AbstractProperty> retVal = new ArrayList<AbstractProperty>();
+		for ( ValueListIterator<Object> i = propDefintions.getProperties().valueListIterator(); i.hasNext(); ) {
+			Object propDef = i.next();
+			if (propDef instanceof AbstractProperty) {
+				retVal.add((AbstractProperty) propDef);
+			}
+		}
+		return retVal;
 	}
 
 	private final VersionedFeature profileObjectFeature = new VersionedFeature(this, ScaPackage.Literals.PROFILE_OBJECT_WRAPPER__PROFILE_OBJ);

@@ -12,6 +12,7 @@
 package gov.redhawk.sca.launch;
 
 import gov.redhawk.model.sca.ScaAbstractComponent;
+import gov.redhawk.model.sca.ScaPropertyContainer;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -50,7 +51,7 @@ public final class ScaLaunchConfigurationUtil {
 		final List<DeviceAssignmentType> retVal = new ArrayList<DeviceAssignmentType>();
 		@SuppressWarnings("unchecked")
 		final Map<String, String> deviceAssignments = configuration.getAttribute(ScaLaunchConfigurationConstants.ATT_WAVEFORM_DEVICE_ASSIGNMENT,
-		        Collections.emptyMap());
+			Collections.emptyMap());
 		for (final Map.Entry<String, String> entry : deviceAssignments.entrySet()) {
 			if (entry.getValue().length() > 0) {
 				retVal.add(new DeviceAssignmentType(entry.getKey(), entry.getValue()));
@@ -59,7 +60,20 @@ public final class ScaLaunchConfigurationUtil {
 		return retVal.toArray(new DeviceAssignmentType[retVal.size()]);
 	}
 
-	public static void saveProperties(final ILaunchConfigurationWorkingCopy configuration, final ScaAbstractComponent< ? > component) {
+	/**
+	 * @deprecated
+	 * @param configuration
+	 * @param component
+	 */
+	@Deprecated
+	public static void saveProperties(final ILaunchConfigurationWorkingCopy configuration, ScaAbstractComponent< ? > component) {
+		saveProperties(configuration, (ScaPropertyContainer< ? , ? >) component);
+	}
+
+	/**
+	 * @since 1.1
+	 */
+	public static void saveProperties(final ILaunchConfigurationWorkingCopy configuration, final ScaPropertyContainer< ? , ? > component) {
 		if (component == null) {
 			return;
 		}
@@ -73,7 +87,20 @@ public final class ScaLaunchConfigurationUtil {
 
 	}
 
+	/**
+	 * @deprecated
+	 * @param configuration
+	 * @param component
+	 */
+	@Deprecated
 	public static void loadProperties(final ILaunchConfiguration configuration, final ScaAbstractComponent< ? > component) throws CoreException {
+		loadProperties(configuration, (ScaPropertyContainer< ? , ? >) component);
+	}
+
+	/**
+	 * @since 1.1
+	 */
+	public static void loadProperties(final ILaunchConfiguration configuration, final ScaPropertyContainer< ? , ? > component) throws CoreException {
 		if (component == null || configuration == null) {
 			return;
 		}

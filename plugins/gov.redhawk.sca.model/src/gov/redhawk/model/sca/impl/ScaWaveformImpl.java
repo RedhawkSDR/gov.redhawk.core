@@ -9,7 +9,7 @@
  * http://www.eclipse.org/legal/epl-v10.html
  *******************************************************************************/
 
- // BEGIN GENERATED CODE
+// BEGIN GENERATED CODE
 package gov.redhawk.model.sca.impl;
 
 import gov.redhawk.model.sca.IRefreshable;
@@ -44,8 +44,11 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeoutException;
 
 import mil.jpeojtrs.sca.partitioning.PartitioningPackage;
+import mil.jpeojtrs.sca.prf.AbstractProperty;
 import mil.jpeojtrs.sca.sad.AssemblyController;
+import mil.jpeojtrs.sca.sad.ExternalProperty;
 import mil.jpeojtrs.sca.sad.Port;
+import mil.jpeojtrs.sca.sad.SadComponentInstantiation;
 import mil.jpeojtrs.sca.sad.SadComponentInstantiationRef;
 import mil.jpeojtrs.sca.sad.SadPackage;
 import mil.jpeojtrs.sca.sad.SoftwareAssembly;
@@ -295,6 +298,18 @@ public class ScaWaveformImpl extends ScaPropertyContainerImpl<Application, Softw
 	@Override
 	protected EClass eStaticClass() {
 		return ScaPackage.Literals.SCA_WAVEFORM;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * @since 18.0
+	 * <!-- end-user-doc -->
+	 * This is specialized for the more specific type known in this context.
+	 * @generated
+	 */
+	@Override
+	public void setProfileObj(SoftwareAssembly newProfileObj) {
+		super.setProfileObj(newProfileObj);
 	}
 
 	/**
@@ -993,7 +1008,7 @@ public class ScaWaveformImpl extends ScaPropertyContainerImpl<Application, Softw
 							}
 							try {
 								org.omg.CORBA.Object portCorbaObj = currentObj.getPort(portName);
-								newPorts.add(new PortData(abstractPort, portCorbaObj));
+								newPorts.add(new PortData(portName, abstractPort, portCorbaObj));
 							} catch (UnknownPort e) {
 								fetchPortsStatus.add(new Status(Status.ERROR, ScaModelPlugin.ID, "Failed to fetch port '" + portName + "'", e));
 							} catch (SystemException e) {
@@ -1663,10 +1678,50 @@ public class ScaWaveformImpl extends ScaPropertyContainerImpl<Application, Softw
 	        SpdPackage.Literals.SOFT_PKG__PROPERTY_FILE,
 	        SpdPackage.Literals.PROPERTY_FILE__PROPERTIES
 	};
-
+	
+	private static final EStructuralFeature[] INST_PRF_PATH = {
+        PartitioningPackage.Literals.COMPONENT_INSTANTIATION__PLACEMENT,
+        PartitioningPackage.Literals.COMPONENT_PLACEMENT__COMPONENT_FILE_REF,
+        PartitioningPackage.Literals.COMPONENT_FILE_REF__FILE,
+        PartitioningPackage.Literals.COMPONENT_FILE__SOFT_PKG,
+        SpdPackage.Literals.SOFT_PKG__PROPERTY_FILE,
+        SpdPackage.Literals.PROPERTY_FILE__PROPERTIES
+};
+	
 	@Override
-	protected EStructuralFeature[] getPrfPropertiesPath() {
-		return PRF_PATH;
+	protected List<AbstractProperty> fetchPropertyDefinitions(IProgressMonitor monitor){
+		SoftwareAssembly localProfile = fetchProfileObject(monitor);
+		mil.jpeojtrs.sca.prf.Properties propDefintions = ScaEcoreUtils.getFeature(localProfile, PRF_PATH);
+		List<AbstractProperty> retVal = new ArrayList<AbstractProperty>();
+		if (propDefintions != null) {
+			for ( ValueListIterator<Object> i = propDefintions.getProperties().valueListIterator(); i.hasNext(); ) {
+				Object propDef = i.next();
+				if (propDef instanceof AbstractProperty) {
+					retVal.add((AbstractProperty) propDef);
+				}
+			}
+		}
+		EList<SadComponentInstantiation> insts = localProfile.getAllComponentInstantiations();
+		if (localProfile.getExternalProperties() != null) {
+			for (ExternalProperty externalProp : localProfile.getExternalProperties().getProperties()) {
+				for (SadComponentInstantiation inst : insts) {
+					if (inst.getId().equals(externalProp.getCompRefID())) {
+						mil.jpeojtrs.sca.prf.Properties instProperties = ScaEcoreUtils.getFeature(inst, INST_PRF_PATH);
+						if (instProperties != null) {
+							AbstractProperty prop = instProperties.getProperty(externalProp.getPropID());
+							if (prop != null) {
+								if (externalProp.getExternalPropID() != null) {
+									prop = EcoreUtil.copy(prop);
+									prop.setId(externalProp.getExternalPropID());
+								}
+								retVal.add(prop);
+							}
+						}
+					}
+				}
+			}
+		}
+		return retVal;
 	}
 
 	private final VersionedFeature profileObjectFeature = new VersionedFeature(this, ScaPackage.Literals.PROFILE_OBJECT_WRAPPER__PROFILE_OBJ);

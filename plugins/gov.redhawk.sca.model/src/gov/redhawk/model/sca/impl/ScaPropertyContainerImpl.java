@@ -9,7 +9,7 @@
  * http://www.eclipse.org/legal/epl-v10.html
  *******************************************************************************/
 
- // BEGIN GENERATED CODE
+// BEGIN GENERATED CODE
 package gov.redhawk.model.sca.impl;
 
 import gov.redhawk.model.sca.ProfileObjectWrapper;
@@ -26,7 +26,9 @@ import gov.redhawk.sca.util.Debug;
 import gov.redhawk.sca.util.PluginUtil;
 
 import java.util.Collection;
+import java.util.List;
 
+import mil.jpeojtrs.sca.prf.AbstractProperty;
 import mil.jpeojtrs.sca.prf.Properties;
 import mil.jpeojtrs.sca.util.ScaEcoreUtils;
 
@@ -533,10 +535,9 @@ public abstract class ScaPropertyContainerImpl< P extends org.omg.CORBA.Object, 
 		IStatus fetchStatus = Status.OK_STATUS;
 		final PropertiesHolder propHolder = new PropertiesHolder(EMPTY_DATA_TYPE_ARRAY);
 		try {
-			Properties prfProperties = ScaEcoreUtils.getFeature((EObject) fetchProfileObject(subMonitor.newChild(1)), getPrfPropertiesPath());
 			subMonitor.worked(1);	
 			if (!isSetProperties()) {
-				transaction.append(new MergePropertiesCommand(this, prfProperties));
+				transaction.append(new MergePropertiesCommand(this, fetchPropertyDefinitions(subMonitor.newChild(1))));
 			}
 			query(propHolder);
 			subMonitor.worked(1);	
@@ -588,9 +589,9 @@ public abstract class ScaPropertyContainerImpl< P extends org.omg.CORBA.Object, 
 	public abstract void configure(DataType[] configProperties) throws InvalidConfiguration, PartialConfiguration;
 
 	/**
-     * @since 14.0
+     * @since 18.0
      */
-	protected abstract EStructuralFeature [] getPrfPropertiesPath();
+	protected abstract List<AbstractProperty> fetchPropertyDefinitions(IProgressMonitor monitor);
 
 	@Override
 	public IStatus getStatus() {
