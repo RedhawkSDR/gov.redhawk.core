@@ -77,7 +77,6 @@ import CF.PropertySetOperations;
 import CF.Resource;
 import CF.ResourceOperations;
 import CF.TestableObjectOperations;
-import gov.redhawk.model.sca.*;
 
 /**
  * <!-- begin-user-doc --> The <b>Switch</b> for the model's inheritance

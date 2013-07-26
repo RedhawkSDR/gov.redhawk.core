@@ -14,7 +14,6 @@ package gov.redhawk.model.sca;
 
 import gov.redhawk.model.sca.commands.SetProfileObjectCommand;
 import gov.redhawk.model.sca.commands.UnsetLocalAttributeCommand;
-
 import mil.jpeojtrs.sca.util.ScaResourceFactoryUtil;
 
 import org.eclipse.core.filesystem.IFileStore;

@@ -53,7 +53,6 @@ import org.eclipse.emf.ecore.plugin.EcorePlugin;
 
 import CF.Device;
 import CF.LoadableDevice;
-import gov.redhawk.model.sca.*;
 import CF.DevicePackage.AdminType;
 import CF.DevicePackage.OperationalType;
 import CF.DevicePackage.UsageType;

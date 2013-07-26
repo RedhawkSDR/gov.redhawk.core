@@ -29,8 +29,6 @@ import java.util.Collection;
 import java.util.List;
 
 import mil.jpeojtrs.sca.prf.AbstractProperty;
-import mil.jpeojtrs.sca.prf.Properties;
-import mil.jpeojtrs.sca.util.ScaEcoreUtils;
 
 import org.eclipse.core.filesystem.EFS;
 import org.eclipse.core.filesystem.IFileStore;
@@ -45,7 +43,6 @@ import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
-import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
