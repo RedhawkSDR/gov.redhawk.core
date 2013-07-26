@@ -633,10 +633,12 @@ public class ScaServiceImpl extends ScaPropertyContainerImpl<org.omg.CORBA.Objec
 		EObject localProfile = fetchProfileObject(monitor);
 		mil.jpeojtrs.sca.prf.Properties propDefintions = ScaEcoreUtils.getFeature(localProfile, PRF_PATH);
 		List<AbstractProperty> retVal = new ArrayList<AbstractProperty>();
-		for ( ValueListIterator<Object> i = propDefintions.getProperties().valueListIterator(); i.hasNext(); ) {
-			Object propDef = i.next();
-			if (propDef instanceof AbstractProperty) {
-				retVal.add((AbstractProperty) propDef);
+		if (propDefintions != null) {
+			for ( ValueListIterator<Object> i = propDefintions.getProperties().valueListIterator(); i.hasNext(); ) {
+				Object propDef = i.next();
+				if (propDef instanceof AbstractProperty) {
+					retVal.add((AbstractProperty) propDef);
+				}
 			}
 		}
 		return retVal;

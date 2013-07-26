@@ -53,27 +53,6 @@ public abstract class ScaPortTest extends CorbaObjWrapperTest {
 	}
 
 	/**
-	 * Tests the '{@link gov.redhawk.model.sca.ScaPort#getName() <em>Name</em>}' feature getter.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see gov.redhawk.model.sca.ScaPort#getName()
-	 * @generated NOT
-	 */
-	public void testGetName() {
-		// END GENERATED CODE
-		Assert.assertNotNull(getFixture().getName());
-		ScaModelCommand.execute(getFixture(), new ScaModelCommand() {
-
-			public void execute() {
-				getFixture().setProfileObj(null);
-				Assert.assertNull(getFixture().getName());
-			}
-
-		});
-		// BEGIN GENERATED CODE
-	}
-
-	/**
 	 * Tests the '{@link gov.redhawk.model.sca.ScaPort#getRepid() <em>Repid</em>}' feature getter.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
