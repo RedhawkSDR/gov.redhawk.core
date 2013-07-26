@@ -51,6 +51,7 @@ public class ScaProvidesPortImpl extends ScaPortImpl<Provides, org.omg.CORBA.Obj
 
 	/**
 	 * <!-- begin-user-doc -->
+	 * @since 18.0
 	 * <!-- end-user-doc -->
 	 * This is specialized for the more specific type known in this context.
 	 * @generated
