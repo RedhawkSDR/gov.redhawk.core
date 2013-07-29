@@ -19,6 +19,8 @@ import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.CheckboxTableViewer;
 import org.eclipse.jface.viewers.LabelProvider;
+import org.eclipse.jface.viewers.Viewer;
+import org.eclipse.jface.viewers.ViewerFilter;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
@@ -28,10 +30,11 @@ import org.eclipse.ui.forms.widgets.FormToolkit;
 public abstract class BasicStructPropertyComposite extends AbstractPropertyComposite {
 	private CheckboxTableViewer configurationKindViewer;
 	private Label kindLabel;
+
 	public BasicStructPropertyComposite(final Composite parent, final int style, final FormToolkit toolkit) {
 		super(parent, style, toolkit);
 	}
-	
+
 	/**
 	 * @param propertyComposite
 	 * @param toolkit
@@ -58,9 +61,25 @@ public abstract class BasicStructPropertyComposite extends AbstractPropertyCompo
 				return element == null ? "" : element.toString(); //$NON-NLS-1$ // SUPPRESS CHECKSTYLE AvoidInLine
 			}
 		});
+		viewer.addFilter(new ViewerFilter() {
+
+			@Override
+			public boolean select(Viewer viewer, Object parentElement, Object element) {
+				if (element instanceof StructPropertyConfigurationType) {
+					switch ((StructPropertyConfigurationType) element) {
+					case FACTORYPARAM:
+					case TEST:
+						return false;
+					default:
+						break;
+					}
+				}
+				return true;
+			}
+		});
 		viewer.setInput(StructPropertyConfigurationType.values());
 		viewer.getControl().setLayoutData(GridDataFactory.fillDefaults().span(2, 1).grab(true, false).create());
-		
+
 		this.configurationKindViewer = viewer;
 		HelpUtil.assignTooltip(this.configurationKindViewer.getControl(), HelpConstants.prf_properties_simple_type);
 	}
@@ -68,7 +87,7 @@ public abstract class BasicStructPropertyComposite extends AbstractPropertyCompo
 	public CheckboxTableViewer getConfigurationKindViewer() {
 		return this.configurationKindViewer;
 	}
-	
+
 	public Label getKindLabel() {
 		return this.kindLabel;
 	}

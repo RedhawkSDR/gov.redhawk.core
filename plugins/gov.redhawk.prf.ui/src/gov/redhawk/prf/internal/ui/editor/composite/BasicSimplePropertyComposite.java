@@ -211,6 +211,22 @@ public abstract class BasicSimplePropertyComposite extends AbstractPropertyCompo
 				return element == null ? "" : element.toString(); //$NON-NLS-1$ // SUPPRESS CHECKSTYLE AvoidInLine
 			}
 		});
+		viewer.addFilter(new ViewerFilter() {
+
+			@Override
+			public boolean select(Viewer viewer, Object parentElement, Object element) {
+				if (element instanceof PropertyConfigurationType) {
+					switch ((PropertyConfigurationType) element) {
+					case FACTORYPARAM:
+					case TEST:
+						return false;
+					default:
+						break;
+					}
+				}
+				return true;
+			}
+		});
 		viewer.setInput(PropertyConfigurationType.values());
 		viewer.getControl().setLayoutData(BasicSimplePropertyComposite.FACTORY.create());
 		assignTooltip(viewer.getControl(), HelpConstants.prf_properties_simple_kind);
