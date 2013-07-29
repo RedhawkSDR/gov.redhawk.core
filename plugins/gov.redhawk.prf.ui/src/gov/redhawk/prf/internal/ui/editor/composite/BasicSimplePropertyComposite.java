@@ -87,10 +87,6 @@ public abstract class BasicSimplePropertyComposite extends AbstractPropertyCompo
 	private FormEntry minText;
 	private FormEntry maxText;
 
-	private Label messageLabel;
-
-	private Button messageButton;
-
 	private Button editEnumButton;
 
 	private Button removeEnumButton;
@@ -188,15 +184,6 @@ public abstract class BasicSimplePropertyComposite extends AbstractPropertyCompo
 		return viewer;
 	}
 
-	protected void createMessage(final Composite parent, final FormToolkit toolkit) {
-		// Message checkbox
-		this.messageLabel = toolkit.createLabel(parent, "Message:");
-		this.messageLabel.setForeground(toolkit.getColors().getColor(IFormColors.TITLE));
-		this.messageLabel.setLayoutData(GridDataFactory.fillDefaults().align(SWT.BEGINNING, SWT.BEGINNING).create());
-		this.messageButton = toolkit.createButton(parent, "Enable", SWT.CHECK);
-		this.messageButton.setLayoutData(BasicSimplePropertyComposite.FACTORY.create());
-	}
-
 	/**
 	 * @param propertyComposite
 	 * @param toolkit
@@ -227,21 +214,6 @@ public abstract class BasicSimplePropertyComposite extends AbstractPropertyCompo
 		viewer.setInput(PropertyConfigurationType.values());
 		viewer.getControl().setLayoutData(BasicSimplePropertyComposite.FACTORY.create());
 		assignTooltip(viewer.getControl(), HelpConstants.prf_properties_simple_kind);
-
-		// In response to Bug 289 the Message property type was moved from the viewer into a stand alone checkbox so the Message type
-		// must be filtered out of the viewer.
-		viewer.addFilter(new ViewerFilter() {
-
-			@Override
-			public boolean select(Viewer viewer, Object parentElement, Object element) {
-				if (element instanceof PropertyConfigurationType && ((PropertyConfigurationType) element).equals(PropertyConfigurationType.MESSAGE)) {
-
-					return false;
-				}
-				return true;
-			}
-		});
-
 		this.kindViewer = viewer;
 		return this.kindViewer;
 	}
@@ -360,20 +332,6 @@ public abstract class BasicSimplePropertyComposite extends AbstractPropertyCompo
 	}
 
 	/**
-	 * @return the Message Checkbox Button
-	 */
-	public Label getMessageLabel() {
-		return this.messageLabel;
-	}
-
-	/**
-	 * @return the Message Checkbox Button
-	 */
-	public Button getMessageButton() {
-		return this.messageButton;
-	}
-
-	/**
 	 * @return the minText
 	 */
 	public FormEntry getMinText() {
@@ -399,9 +357,6 @@ public abstract class BasicSimplePropertyComposite extends AbstractPropertyCompo
 		}
 		if (this.kindViewer != null) {
 			this.kindViewer.getTable().setEnabled(canEdit);
-		}
-		if (this.messageButton != null) {
-			this.messageButton.setEnabled(canEdit);
 		}
 		if (this.typeViewer != null) {
 			this.typeViewer.getCombo().setEnabled(canEdit);

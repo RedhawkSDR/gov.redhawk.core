@@ -27,19 +27,13 @@ import mil.jpeojtrs.sca.prf.StructSequence;
 
 import org.eclipse.core.databinding.Binding;
 import org.eclipse.core.databinding.DataBindingContext;
-import org.eclipse.core.databinding.UpdateValueStrategy;
-import org.eclipse.core.databinding.conversion.Converter;
 import org.eclipse.core.databinding.observable.list.IListChangeListener;
 import org.eclipse.core.databinding.observable.list.ListChangeEvent;
 import org.eclipse.core.databinding.observable.list.WritableList;
-import org.eclipse.emf.common.util.BasicEList;
-import org.eclipse.emf.common.util.EList;
-import org.eclipse.emf.databinding.EMFUpdateValueStrategy;
 import org.eclipse.emf.databinding.edit.EMFEditObservables;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.edit.domain.EditingDomain;
-import org.eclipse.jface.databinding.swt.WidgetProperties;
 import org.eclipse.jface.viewers.CheckStateChangedEvent;
 import org.eclipse.jface.viewers.ICheckStateListener;
 
@@ -67,9 +61,6 @@ public abstract class BasicStructPropertyDetailsPage extends
 					Collections.EMPTY_LIST.toArray());
 			createKindBinding(context, input, domain, retVal);
 		}
-		if (getComposite().getMessageButton() != null) {
-			createMessageBinding(context, input, domain, retVal);
-		}
 
 		return retVal;
 	}
@@ -77,105 +68,6 @@ public abstract class BasicStructPropertyDetailsPage extends
 	@Override
 	protected BasicStructPropertyComposite getComposite() {
 		return (BasicStructPropertyComposite) super.getComposite();
-	}
-
-	private void createMessageBinding(final DataBindingContext context,
-			final EObject input, final EditingDomain domain,
-			final List<Binding> retVal) {
-
-		EMFUpdateValueStrategy modelToTargetStrategy = new EMFUpdateValueStrategy();
-		EMFUpdateValueStrategy targetToModelStrategy = new EMFUpdateValueStrategy();
-
-		// Goes from the EMF Model object of EList<ConfigurationKind> to the
-		// checkbox
-		modelToTargetStrategy.setConverter(new Converter(Object.class,
-				Boolean.class) {
-
-			public Object convert(final Object fromObject) {
-				if (fromObject instanceof EList<?>) {
-					EList<ConfigurationKind> kindList = (EList<ConfigurationKind>) fromObject;
-
-					for (ConfigurationKind kind : kindList) {
-						if (kind.getType() == StructPropertyConfigurationType.MESSAGE) {
-							return true;
-						}
-					}
-					return false;
-				}
-				throw new IllegalArgumentException();
-			}
-		});
-
-		// Goes from the Boolean based checkbox to the EMF Model object of
-		// EList<Kind>
-		targetToModelStrategy.setConverter(new Converter(Boolean.class,
-				Object.class) {
-
-			public Object convert(final Object fromObject) {
-				if (fromObject instanceof Boolean) {
-					Boolean checked = (Boolean) fromObject;
-
-					EList<ConfigurationKind> kindList = new BasicEList<ConfigurationKind>();
-					ConfigurationKind messageKind = PrfFactory.eINSTANCE
-							.createConfigurationKind();
-
-					if (checked) {
-						messageKind
-								.setType(StructPropertyConfigurationType.MESSAGE);
-					} else {
-						messageKind
-								.setType(StructPropertyConfigurationType.CONFIGURE);
-					}
-
-					kindList.add(messageKind);
-					return kindList;
-				}
-
-				throw new IllegalArgumentException();
-			}
-		});
-		EReference literal = null;
-		if (input instanceof StructSequence) {
-			literal = PrfPackage.Literals.STRUCT_SEQUENCE__CONFIGURATION_KIND;
-		} else if (input instanceof Struct) {
-			literal = PrfPackage.Literals.STRUCT__CONFIGURATION_KIND;
-		}
-
-		// Bind the checkbox to the model
-		retVal.add(context.bindValue(
-				WidgetProperties.selection().observe(
-						((BasicStructPropertyComposite) getComposite())
-								.getMessageButton()), EMFEditObservables
-						.observeValue(domain, input, literal),
-				targetToModelStrategy, modelToTargetStrategy));
-
-		EMFUpdateValueStrategy enabledToTargetStrategy = new EMFUpdateValueStrategy();
-
-		// Goes from the checkbox to the enabled state of the viewer
-		enabledToTargetStrategy.setConverter(new Converter(Boolean.class,
-				Boolean.class) {
-			public Object convert(final Object fromObject) {
-				if (fromObject instanceof Boolean) {
-					boolean editable = getComposite().isEditable();
-					if (editable) {
-						return !((Boolean) fromObject);
-					} else {
-						return editable;
-					}
-				}
-				throw new IllegalArgumentException();
-			}
-		});
-
-		retVal.add(context.bindValue(
-				WidgetProperties.enabled().observe(
-						(((BasicStructPropertyComposite) getComposite())
-								.getConfigurationKindViewer().getControl())),
-				WidgetProperties.selection().observe(
-						((BasicStructPropertyComposite) getComposite())
-								.getMessageButton()), new UpdateValueStrategy(
-						UpdateValueStrategy.POLICY_NEVER),
-				enabledToTargetStrategy));
 	}
 
 	/**

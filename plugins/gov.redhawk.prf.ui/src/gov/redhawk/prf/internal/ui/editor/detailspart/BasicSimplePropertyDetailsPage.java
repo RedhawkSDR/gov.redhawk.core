@@ -41,8 +41,6 @@ import org.eclipse.core.databinding.observable.list.ListChangeEvent;
 import org.eclipse.core.databinding.observable.list.WritableList;
 import org.eclipse.core.databinding.observable.value.IObservableValue;
 import org.eclipse.emf.common.command.Command;
-import org.eclipse.emf.common.util.BasicEList;
-import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.databinding.EMFUpdateValueStrategy;
 import org.eclipse.emf.databinding.FeaturePath;
 import org.eclipse.emf.databinding.edit.EMFEditObservables;
@@ -169,11 +167,6 @@ public abstract class BasicSimplePropertyDetailsPage extends AbstractPropertyDet
 			createKindBinding(dataBindingContext, input, domain, retVal);
 		}
 
-		// Message Checkbox
-		if (getComposite().getMessageButton() != null) {
-			createMessageBinding(dataBindingContext, input, domain, retVal);
-		}
-
 		// Action
 		if (getComposite().getActionViewer() != null) {
 			retVal.add(dataBindingContext.bindValue(ViewersObservables.observeSingleSelection(composite.getActionViewer()),
@@ -296,82 +289,6 @@ public abstract class BasicSimplePropertyDetailsPage extends AbstractPropertyDet
 		//		addRangeListener();
 
 		return retVal;
-	}
-
-	private void createMessageBinding(final DataBindingContext context, final EObject input, final EditingDomain domain, final List<Binding> retVal) {
-		EMFUpdateValueStrategy modelToTargetStrategy = new EMFUpdateValueStrategy();
-		EMFUpdateValueStrategy targetToModelStrategy = new EMFUpdateValueStrategy();
-
-		// Goes from the EMF Model object of EList<Kind> to the checkbox
-		modelToTargetStrategy.setConverter(new Converter(Object.class, Boolean.class) {
-
-			public Object convert(final Object fromObject) {
-				if (fromObject instanceof EList< ? >) {
-					EList< ? > rxKindList = (EList< ? >) fromObject;
-
-					for (Object obj : rxKindList) {
-						if (obj instanceof Kind) {
-							Kind kind = (Kind) obj;
-							if (kind.getType() == PropertyConfigurationType.MESSAGE) {
-								return true;
-							}
-						}
-					}
-				}
-				return false;
-			}
-		});
-
-		// Goes from the Boolean based checkbox to the EMF Model object of EList<Kind> 		
-		targetToModelStrategy.setConverter(new Converter(Boolean.class, EList.class) {
-
-			public Object convert(final Object fromObject) {
-				if (fromObject instanceof Boolean) {
-					Boolean checked = (Boolean) fromObject;
-
-					EList<Kind> rxKindList = new BasicEList<Kind>();
-					Kind messageKind = PrfFactory.eINSTANCE.createKind();
-
-					if (checked) {
-						messageKind.setType(PropertyConfigurationType.MESSAGE);
-					} else {
-						messageKind.setType(PropertyConfigurationType.CONFIGURE);
-					}
-
-					rxKindList.add(messageKind);
-					return rxKindList;
-				}
-				return Collections.EMPTY_LIST;
-			}
-		});
-		// Bind the checkbox to the model
-		retVal.add(context.bindValue(WidgetProperties.selection().observe(((BasicSimplePropertyComposite) getComposite()).getMessageButton()), // Selection of Message Checkbox 
-			EMFEditObservables.observeValue(domain, input, this.property.getKind()), // Kind property of input 
-			targetToModelStrategy, // Target to model (checkbox -> EMF)
-			modelToTargetStrategy)); // Model to target (EMF -> checkbox)
-
-		UpdateValueStrategy enabledToTargetStrategy = new UpdateValueStrategy();
-
-		// Goes from the checkbox to the enabled state of the viewer
-		enabledToTargetStrategy.setConverter(new Converter(Boolean.class, Boolean.class) {
-			public Object convert(final Object fromObject) {
-				if (fromObject instanceof Boolean) {
-					boolean editable = getComposite().isEditable();
-					if (editable) {
-						return !((Boolean) fromObject);
-					} else {
-						return editable;
-					}
-				}
-				throw new IllegalArgumentException();
-			}
-		});
-
-		// Bind the model to the checkbox
-		retVal.add(context.bindValue(WidgetProperties.enabled().observe((((BasicSimplePropertyComposite) getComposite()).getKindViewer().getControl())), // Kind Viewer Control
-			WidgetProperties.selection().observe(((BasicSimplePropertyComposite) getComposite()).getMessageButton()), // Checkbox Message Button
-			new UpdateValueStrategy(UpdateValueStrategy.POLICY_NEVER), // Target to model (Kind Viewer -> Checkbox)
-			enabledToTargetStrategy)); // Model to target (Checkbox -> Kind Viewer)
 	}
 
 	/**

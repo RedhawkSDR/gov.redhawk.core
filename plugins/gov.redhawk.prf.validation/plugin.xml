@@ -345,6 +345,127 @@
                   </event>
                </target>
             </constraint>
+            <constraint
+                  class="gov.redhawk.validation.prf.KindTypeConstraint"
+                  id="gov.redhawk.prf.validation.constraint.kind"
+                  isEnabledByDefault="true"
+                  lang="java"
+                  mode="Live"
+                  name="Kind Type"
+                  severity="ERROR"
+                  statusCode="1">
+               <message>
+                  Invalid kind type configuration: {0}
+               </message>
+               <target
+                     class="Simple">
+                  <event
+                        name="Add">
+                     <feature
+                           name="kind">
+                     </feature>
+                  </event>
+                  <event
+                        name="Add Many">
+                     <feature
+                           name="kind">
+                     </feature>
+                  </event>
+                  <event
+                        name="Remove">
+                     <feature
+                           name="kind">
+                     </feature>
+                  </event>
+                  <event
+                        name="Remove Many">
+                     <feature
+                           name="kind">
+                     </feature>
+                  </event>
+               </target>
+               <target
+                     class="Struct">
+                  <event
+                        name="Add">
+                     <feature
+                           name="kind">
+                     </feature>
+                  </event>
+                  <event
+                        name="Add Many">
+                     <feature
+                           name="kind">
+                     </feature>
+                  </event>
+                  <event
+                        name="Remove">
+                     <feature
+                           name="kind">
+                     </feature>
+                  </event>
+                  <event
+                        name="Remove Many">
+                     <feature
+                           name="kind">
+                     </feature>
+                  </event>
+               </target>
+               <target
+                     class="StructSequence">
+                  <event
+                        name="Add">
+                     <feature
+                           name="kind">
+                     </feature>
+                  </event>
+                  <event
+                        name="Add Many">
+                     <feature
+                           name="kind">
+                     </feature>
+                  </event>
+                  <event
+                        name="Remove">
+                     <feature
+                           name="kind">
+                     </feature>
+                  </event>
+                  <event
+                        name="Remove Many">
+                     <feature
+                           name="kind">
+                     </feature>
+                  </event>
+               </target>
+               <target
+                     class="SimpleSequence">
+                  <event
+                        name="Add">
+                     <feature
+                           name="kind">
+                     </feature>
+                  </event>
+                  <event
+                        name="Add Many">
+                     <feature
+                           name="kind">
+                     </feature>
+                  </event>
+                  <event
+                        name="Remove">
+                     <feature
+                           name="kind">
+                     </feature>
+                  </event>
+                  <event
+                        name="Remove Many">
+                     <feature
+                           name="kind">
+                     </feature>
+                  </event>
+               </target>
+            </constraint>
          </constraints>
       </constraintProvider>
    </extension>

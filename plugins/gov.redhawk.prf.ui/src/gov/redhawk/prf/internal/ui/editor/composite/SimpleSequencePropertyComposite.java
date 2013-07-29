@@ -83,7 +83,6 @@ public class SimpleSequencePropertyComposite extends BasicSimplePropertyComposit
 		createTypeViewer(parent, toolkit);
 		createValues(parent, toolkit);
 		createUnitsEntry(parent, toolkit);
-		createMessage(parent, toolkit);
 		createKindViewer(parent, toolkit);
 		createModeViewer(parent, toolkit);
 		createActionViewer(parent, toolkit);
@@ -96,7 +95,6 @@ public class SimpleSequencePropertyComposite extends BasicSimplePropertyComposit
 		tabList.add(getTypeViewer().getControl());
 		tabList.add(getValuesViewer().getControl().getParent());
 		tabList.add(getUnitsEntry().getText());
-		tabList.add(getMessageButton());
 		tabList.add(getKindViewer().getControl());
 		tabList.add(getModeViewer().getControl());
 		tabList.add(getActionViewer().getControl());

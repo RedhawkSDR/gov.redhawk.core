@@ -69,7 +69,6 @@ public class StructSequencePropertyComposite extends BasicStructPropertyComposit
 		createIDEntryField(toolkit, parent);
 		createNameEntryField(toolkit, parent);
 		createStructValueViewer(toolkit);
-		createMessage(parent, toolkit);
 		createConfigurationKindViewer(parent, toolkit);
 		createModeViewer(parent, toolkit);
 		createDescription(parent, toolkit);
@@ -79,7 +78,6 @@ public class StructSequencePropertyComposite extends BasicStructPropertyComposit
 		
 		tabList.add(getIdEntry().getText());
 		tabList.add(getNameEntry().getText());
-		tabList.add(getMessageButton());
 		tabList.add(this.structValueViewer.getControl().getParent());
 		tabList.add(getConfigurationKindViewer().getControl());
 		tabList.add(getModeViewer().getControl());

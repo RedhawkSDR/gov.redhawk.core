@@ -42,13 +42,11 @@ public class StructPropertyComposite extends BasicStructPropertyComposite {
 
 		createIDEntryField(toolkit, parent);
 		createNameEntryField(toolkit, parent);
-		createMessage(parent, toolkit);
 		createConfigurationKindViewer(parent, toolkit);
 		createModeViewer(parent, toolkit);
 		createDescription(parent, toolkit);
 		
 		tabList.add(getIdEntry().getText());
-		tabList.add(getMessageButton());
 		tabList.add(getConfigurationKindViewer().getControl());
 		tabList.add(getModeViewer().getControl());
 		tabList.add(getDescriptionText());

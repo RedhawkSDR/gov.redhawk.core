@@ -48,7 +48,6 @@ public class SimplePropertyComposite extends BasicSimplePropertyComposite {
 		createTypeViewer(parent, toolkit);
 		createValueEntry(parent, toolkit);
 		createUnitsEntry(parent, toolkit);
-		createMessage(parent, toolkit);
 		createKindViewer(parent, toolkit);
 		createModeViewer(parent, toolkit);
 		createActionViewer(parent, toolkit);
@@ -62,7 +61,6 @@ public class SimplePropertyComposite extends BasicSimplePropertyComposite {
 		tabList.add(getTypeViewer().getControl());
 		tabList.add(getValueEntry().getText());
 		tabList.add(getUnitsEntry().getText());
-		tabList.add(getMessageButton());
 		tabList.add(getKindViewer().getControl());
 		tabList.add(getModeViewer().getControl());
 		tabList.add(getActionViewer().getControl());
