@@ -264,7 +264,36 @@ public abstract class BasicSimplePropertyComposite extends AbstractPropertyCompo
 
 		});
 		this.typeViewer.setContentProvider(new ArrayContentProvider());
-		this.typeViewer.setLabelProvider(new LabelProvider());
+		this.typeViewer.setLabelProvider(new LabelProvider() {
+			@Override
+			public String getText(Object element) {
+				switch ((PropertyValueType) element) {
+				case DOUBLE:
+					return super.getText(element) + " (64-bit)";
+				case FLOAT:
+					return super.getText(element) + " (32-bit)";
+				case LONG:
+					return super.getText(element) + " (32-bit)";
+				case LONGLONG:
+					return super.getText(element) + " (64-bit)";
+				case SHORT:
+					return super.getText(element) + " (16-bit)";
+				case ULONG:
+					return super.getText(element) + " (32-bit)";
+				case ULONGLONG:
+					return super.getText(element) + " (64-bit)";
+				case USHORT:
+					return super.getText(element) + " (16-bit)";
+				case OCTET:
+				case STRING:
+				case OBJREF:
+				case CHAR:
+				case BOOLEAN:
+				default:
+					return super.getText(element);
+				}
+			}
+		});
 		this.typeViewer.setInput(PropertyValueType.values());
 		this.typeViewer.setSorter(new ViewerSorter());
 		toolkit.adapt(this.typeViewer.getCombo());
