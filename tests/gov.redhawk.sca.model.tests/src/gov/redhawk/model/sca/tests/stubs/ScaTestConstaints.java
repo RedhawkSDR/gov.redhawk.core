@@ -30,7 +30,7 @@ public final class ScaTestConstaints {
 
 	public static final String DOMAIN_NAME = "REDHAWK_DEV";
 	public static final String DCE_BASIC_AC_INSTANTIATION = "DCE:2a254209-cb6b-4de3-b465-4b26ba4e3ba9";
-	public static final String SERVICE_NAME = "testService";
+	public static final String SERVICE_NAME = "GPP1";
 
 	private ScaTestConstaints() {
 

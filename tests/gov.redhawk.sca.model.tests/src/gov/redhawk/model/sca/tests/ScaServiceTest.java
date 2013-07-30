@@ -11,6 +11,8 @@
 // BEGIN GENERATED CODE
 package gov.redhawk.model.sca.tests;
 
+import CF.DeviceHelper;
+import gov.redhawk.model.sca.RefreshDepth;
 import gov.redhawk.model.sca.ScaDeviceManager;
 import gov.redhawk.model.sca.ScaService;
 import gov.redhawk.model.sca.tests.stubs.ScaTestConstaints;
@@ -76,45 +78,7 @@ public class ScaServiceTest extends ScaPropertyContainerTest {
 		final ScaDeviceManager deviceManager = this.env.getDomMgr().getDeviceManagers().get(0);
 		setFixture(deviceManager.getScaService(ScaTestConstaints.SERVICE_NAME));
 		Assert.assertNotNull(getFixture());
-	}
-	
-	public void testGetProfileObj() {
-		// TODO Disable for now
-	}
-	
-	public void testGetProfileURI() {
-		// TODO Disable for now		
-	}
-	
-	public void testUnsetProfileURI() {
-		// TODO Disable for now
-	}
-	
-	@Override
-	public void testIsSetProfileURI() {
-		// TODO Disable for now
-	}
-	
-	public void testUnsetProfileObj() {
-		// TODO Disable for now
-	}
-	
-	public void testIsSetProfileObj() {
-		// TODO Disable for now
-	}
-	
-	@Override
-	public void testGetRootFileStore() {
-		// TODO Disable for now
-	}
-	
-	public void testFetchProfileObject__IProgressMonitor() throws InterruptedException {
-		// TODO Disable for now
-	}
-	
-	@Override
-	public void testFetchProfileURI__IProgressMonitor() {
-		// TODO Disable for now
+		getFixture().refresh(null, RefreshDepth.FULL);
 	}
 
 	/**
@@ -154,7 +118,7 @@ public class ScaServiceTest extends ScaPropertyContainerTest {
 
 	@Override
 	protected String getRepId() {
-		return null;
+		return DeviceHelper.id();
 	}
 
 } //ScaServiceTest
