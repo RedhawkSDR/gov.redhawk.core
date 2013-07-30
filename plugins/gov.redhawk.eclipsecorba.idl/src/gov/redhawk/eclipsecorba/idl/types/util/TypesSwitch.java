@@ -10,7 +10,7 @@
  *
  */
 
- // BEGIN GENERATED CODE
+// BEGIN GENERATED CODE
 package gov.redhawk.eclipsecorba.idl.types.util;
 
 import gov.redhawk.eclipsecorba.idl.Commentable;
@@ -58,11 +58,8 @@ import gov.redhawk.eclipsecorba.idl.types.ValueBaseType;
 import gov.redhawk.eclipsecorba.idl.types.VoidType;
 import gov.redhawk.eclipsecorba.idl.types.WChar;
 import gov.redhawk.eclipsecorba.idl.types.WString;
-
-import java.util.List;
-
-import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.EPackage;
 
 /**
  * <!-- begin-user-doc -->
@@ -73,11 +70,12 @@ import org.eclipse.emf.ecore.EObject;
  * and proceeding up the inheritance hierarchy
  * until a non-null result is returned,
  * which is the result of the switch.
+ * <!-- XXX: Extends org.eclipse.emf.ecore.util.Switch -->
  * <!-- end-user-doc -->
  * @see gov.redhawk.eclipsecorba.idl.types.TypesPackage
- * @generated
+ * @generated 
  */
-public class TypesSwitch<T> {
+public class TypesSwitch<T> extends org.eclipse.emf.ecore.util.Switch<T> {
 
 	/**
 	 * The cached model package
@@ -100,14 +98,16 @@ public class TypesSwitch<T> {
 	}
 
 	/**
-	 * Calls <code>caseXXX</code> for each class of the model until one returns a non null result; it yields that result.
+	 * Checks whether this is a switch for the given package.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return the first non-null result returned by a <code>caseXXX</code> call.
+	 * @parameter ePackage the package in question.
+	 * @return whether this is a switch for the given package.
 	 * @generated
 	 */
-	public T doSwitch(EObject theEObject) {
-		return doSwitch(theEObject.eClass(), theEObject);
+	@Override
+	protected boolean isSwitchFor(EPackage ePackage) {
+		return ePackage == modelPackage;
 	}
 
 	/**
@@ -117,26 +117,7 @@ public class TypesSwitch<T> {
 	 * @return the first non-null result returned by a <code>caseXXX</code> call.
 	 * @generated
 	 */
-	protected T doSwitch(EClass theEClass, EObject theEObject) {
-		if (theEClass.eContainer() == modelPackage) {
-			return doSwitch(theEClass.getClassifierID(), theEObject);
-		}
-		else {
-			List<EClass> eSuperTypes = theEClass.getESuperTypes();
-			return
-				eSuperTypes.isEmpty() ?
-					defaultCase(theEObject) :
-					doSwitch(eSuperTypes.get(0), theEObject);
-		}
-	}
-
-	/**
-	 * Calls <code>caseXXX</code> for each class of the model until one returns a non null result; it yields that result.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the first non-null result returned by a <code>caseXXX</code> call.
-	 * @generated
-	 */
+	@Override
 	protected T doSwitch(int classifierID, EObject theEObject) {
 		switch (classifierID) {
 			case TypesPackage.TYPE_DEF: {
@@ -1261,6 +1242,7 @@ public class TypesSwitch<T> {
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject)
 	 * @generated
 	 */
+	@Override
 	public T defaultCase(EObject object) {
 		return null;
 	}

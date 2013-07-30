@@ -10,7 +10,7 @@
  *
  */
 
- // BEGIN GENERATED CODE
+// BEGIN GENERATED CODE
 package gov.redhawk.eclipsecorba.idl.operations;
 
 import gov.redhawk.eclipsecorba.idl.Export;

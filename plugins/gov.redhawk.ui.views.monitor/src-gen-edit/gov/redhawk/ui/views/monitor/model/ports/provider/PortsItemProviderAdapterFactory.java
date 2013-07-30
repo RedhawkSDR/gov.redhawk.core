@@ -10,7 +10,7 @@
  *
  */
 
- // BEGIN GENERATED CODE
+// BEGIN GENERATED CODE
 package gov.redhawk.ui.views.monitor.model.ports.provider;
 
 import gov.redhawk.ui.views.monitor.model.ports.util.PortsAdapterFactory;

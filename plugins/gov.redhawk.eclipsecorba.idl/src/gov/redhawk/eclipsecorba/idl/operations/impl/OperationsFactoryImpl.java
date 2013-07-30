@@ -10,7 +10,7 @@
  *
  */
 
- // BEGIN GENERATED CODE
+// BEGIN GENERATED CODE
 package gov.redhawk.eclipsecorba.idl.operations.impl;
 
 import gov.redhawk.eclipsecorba.idl.operations.Attribute;
@@ -19,7 +19,6 @@ import gov.redhawk.eclipsecorba.idl.operations.Operation;
 import gov.redhawk.eclipsecorba.idl.operations.OperationsFactory;
 import gov.redhawk.eclipsecorba.idl.operations.OperationsPackage;
 import gov.redhawk.eclipsecorba.idl.operations.Parameter;
-
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EDataType;
 import org.eclipse.emf.ecore.EObject;
@@ -44,7 +43,7 @@ public class OperationsFactoryImpl extends EFactoryImpl implements OperationsFac
 	 */
 	public static OperationsFactory init() {
 		try {
-			OperationsFactory theOperationsFactory = (OperationsFactory)EPackage.Registry.INSTANCE.getEFactory("http:///gov/redhawk/eclipsecorba/idl.operations.ecore"); 
+			OperationsFactory theOperationsFactory = (OperationsFactory)EPackage.Registry.INSTANCE.getEFactory(OperationsPackage.eNS_URI);
 			if (theOperationsFactory != null) {
 				return theOperationsFactory;
 			}

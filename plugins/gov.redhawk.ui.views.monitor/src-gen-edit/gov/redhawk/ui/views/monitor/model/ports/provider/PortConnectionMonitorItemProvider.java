@@ -10,16 +10,14 @@
  *
  */
 
- // BEGIN GENERATED CODE
+// BEGIN GENERATED CODE
 package gov.redhawk.ui.views.monitor.model.ports.provider;
 
 
 import gov.redhawk.ui.views.monitor.model.ports.PortConnectionMonitor;
 import gov.redhawk.ui.views.monitor.model.ports.PortsPackage;
-
 import java.util.Collection;
 import java.util.List;
-
 import org.eclipse.emf.common.notify.AdapterFactory;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.edit.provider.ComposeableAdapterFactory;

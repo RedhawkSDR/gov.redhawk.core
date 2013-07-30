@@ -10,7 +10,7 @@
  *
  */
 
- // BEGIN GENERATED CODE
+// BEGIN GENERATED CODE
 package gov.redhawk.eclipsecorba.library.util;
 
 import org.eclipse.emf.common.util.URI;

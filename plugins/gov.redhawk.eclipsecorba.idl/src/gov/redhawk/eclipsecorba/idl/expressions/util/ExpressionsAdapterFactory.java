@@ -10,7 +10,7 @@
  *
  */
 
- // BEGIN GENERATED CODE
+// BEGIN GENERATED CODE
 package gov.redhawk.eclipsecorba.idl.expressions.util;
 
 import gov.redhawk.eclipsecorba.idl.FileRegion;
@@ -34,7 +34,6 @@ import gov.redhawk.eclipsecorba.idl.expressions.UnaryExpression;
 import gov.redhawk.eclipsecorba.idl.expressions.WideCharacterLiteral;
 import gov.redhawk.eclipsecorba.idl.expressions.WideStringLiteral;
 import gov.redhawk.eclipsecorba.idl.expressions.XOrExpression;
-
 import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.notify.Notifier;
 import org.eclipse.emf.common.notify.impl.AdapterFactoryImpl;

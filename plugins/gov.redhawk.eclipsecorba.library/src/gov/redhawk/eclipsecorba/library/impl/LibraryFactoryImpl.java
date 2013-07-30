@@ -10,7 +10,7 @@
  *
  */
 
- // BEGIN GENERATED CODE
+// BEGIN GENERATED CODE
 package gov.redhawk.eclipsecorba.library.impl;
 
 import gov.redhawk.eclipsecorba.library.IdlLibrary;
@@ -20,7 +20,6 @@ import gov.redhawk.eclipsecorba.library.LocalFilePath;
 import gov.redhawk.eclipsecorba.library.PreferenceNodePathSet;
 import gov.redhawk.eclipsecorba.library.RepositoryModule;
 import gov.redhawk.eclipsecorba.library.URIPathSet;
-
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.emf.common.util.URI;
@@ -46,7 +45,7 @@ public class LibraryFactoryImpl extends EFactoryImpl implements LibraryFactory {
 	 */
 	public static LibraryFactory init() {
 		try {
-			LibraryFactory theLibraryFactory = (LibraryFactory)EPackage.Registry.INSTANCE.getEFactory("http:///gov/redhawk/eclipsecorba/library"); 
+			LibraryFactory theLibraryFactory = (LibraryFactory)EPackage.Registry.INSTANCE.getEFactory(LibraryPackage.eNS_URI);
 			if (theLibraryFactory != null) {
 				return theLibraryFactory;
 			}

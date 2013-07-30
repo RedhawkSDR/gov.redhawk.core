@@ -10,7 +10,7 @@
  *
  */
 
- // BEGIN GENERATED CODE
+// BEGIN GENERATED CODE
 package gov.redhawk.eclipsecorba.library.impl;
 
 import gov.redhawk.eclipsecorba.idl.Definition;
@@ -372,7 +372,7 @@ public class IdlLibraryImpl extends RepositoryModuleImpl implements IdlLibrary {
 		for (final Resource resource : eResource().getResourceSet().getResources()) {
 			if (resource != eResource() && resource instanceof IdlResourceImpl) {
 				final MultiStatus resourceStatus = new MultiStatus(LibraryPlugin.PLUGIN_ID, IStatus.OK, "Problems occured while loading IDL file: "
-				        + resource.getURI().path(), null);
+					+ resource.getURI().path(), null);
 
 				for (final Diagnostic diag : resource.getErrors()) {
 					Throwable exception = null;

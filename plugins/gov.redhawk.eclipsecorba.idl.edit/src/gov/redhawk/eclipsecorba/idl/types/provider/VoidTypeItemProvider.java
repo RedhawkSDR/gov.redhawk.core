@@ -10,15 +10,13 @@
  *
  */
 
- // BEGIN GENERATED CODE
+// BEGIN GENERATED CODE
 package gov.redhawk.eclipsecorba.idl.types.provider;
 
 import gov.redhawk.eclipsecorba.idl.provider.IdlEditPlugin;
 import gov.redhawk.eclipsecorba.idl.provider.IdlTypeItemProvider;
-
 import java.util.Collection;
 import java.util.List;
-
 import org.eclipse.emf.common.notify.AdapterFactory;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.util.ResourceLocator;

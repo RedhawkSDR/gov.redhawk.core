@@ -10,7 +10,7 @@
  *
  */
 
- // BEGIN GENERATED CODE
+// BEGIN GENERATED CODE
 package gov.redhawk.ui.views.monitor.provider;
 
 import gov.redhawk.model.sca.provider.ScaEditPlugin;

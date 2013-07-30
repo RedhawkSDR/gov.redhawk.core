@@ -10,7 +10,7 @@
  *
  */
 
- // BEGIN GENERATED CODE
+// BEGIN GENERATED CODE
 package gov.redhawk.eclipsecorba.library.util;
 
 import gov.redhawk.eclipsecorba.idl.Commentable;
@@ -25,7 +25,6 @@ import gov.redhawk.eclipsecorba.library.Path;
 import gov.redhawk.eclipsecorba.library.PreferenceNodePathSet;
 import gov.redhawk.eclipsecorba.library.RepositoryModule;
 import gov.redhawk.eclipsecorba.library.URIPathSet;
-
 import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.notify.Notifier;
 import org.eclipse.emf.common.notify.impl.AdapterFactoryImpl;

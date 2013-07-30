@@ -10,7 +10,7 @@
  *
  */
 
- // BEGIN GENERATED CODE
+// BEGIN GENERATED CODE
 package gov.redhawk.eclipsecorba.idl.types.impl;
 
 import gov.redhawk.eclipsecorba.idl.types.Any;
@@ -69,7 +69,7 @@ public class TypesFactoryImpl extends EFactoryImpl implements TypesFactory {
 	 */
 	public static TypesFactory init() {
 		try {
-			TypesFactory theTypesFactory = (TypesFactory)EPackage.Registry.INSTANCE.getEFactory("http:///gov/redhawk/eclipsecorba/idl.types.ecore"); 
+			TypesFactory theTypesFactory = (TypesFactory)EPackage.Registry.INSTANCE.getEFactory(TypesPackage.eNS_URI);
 			if (theTypesFactory != null) {
 				return theTypesFactory;
 			}

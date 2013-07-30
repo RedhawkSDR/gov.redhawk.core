@@ -10,7 +10,7 @@
  *
  */
 
- // BEGIN GENERATED CODE
+// BEGIN GENERATED CODE
 package gov.redhawk.eclipsecorba.idl.operations.util;
 
 import gov.redhawk.eclipsecorba.idl.Commentable;
@@ -24,7 +24,6 @@ import gov.redhawk.eclipsecorba.idl.operations.Attribute;
 import gov.redhawk.eclipsecorba.idl.operations.Operation;
 import gov.redhawk.eclipsecorba.idl.operations.OperationsPackage;
 import gov.redhawk.eclipsecorba.idl.operations.Parameter;
-
 import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.notify.Notifier;
 import org.eclipse.emf.common.notify.impl.AdapterFactoryImpl;

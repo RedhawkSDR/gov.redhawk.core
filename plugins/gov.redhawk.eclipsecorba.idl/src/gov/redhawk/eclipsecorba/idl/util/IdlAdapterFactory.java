@@ -10,7 +10,7 @@
  *
  */
 
- // BEGIN GENERATED CODE
+// BEGIN GENERATED CODE
 package gov.redhawk.eclipsecorba.idl.util;
 
 import gov.redhawk.eclipsecorba.idl.ArrayDeclarator;
@@ -45,7 +45,6 @@ import gov.redhawk.eclipsecorba.idl.ValueDcl;
 import gov.redhawk.eclipsecorba.idl.ValueForwardDcl;
 import gov.redhawk.eclipsecorba.idl.ValueType;
 import gov.redhawk.eclipsecorba.idl.ValueTypeDcl;
-
 import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.notify.Notifier;
 import org.eclipse.emf.common.notify.impl.AdapterFactoryImpl;

@@ -10,7 +10,7 @@
  *
  */
 
- // BEGIN GENERATED CODE
+// BEGIN GENERATED CODE
 package gov.redhawk.eclipsecorba.idl.impl;
 
 import gov.redhawk.eclipsecorba.idl.ArrayDeclarator;
@@ -34,7 +34,6 @@ import gov.redhawk.eclipsecorba.idl.ValueDcl;
 import gov.redhawk.eclipsecorba.idl.ValueForwardDcl;
 import gov.redhawk.eclipsecorba.idl.ValueType;
 import gov.redhawk.eclipsecorba.idl.ValueTypeDcl;
-
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
@@ -57,7 +56,7 @@ public class IdlFactoryImpl extends EFactoryImpl implements IdlFactory {
 	 */
 	public static IdlFactory init() {
 		try {
-			IdlFactory theIdlFactory = (IdlFactory)EPackage.Registry.INSTANCE.getEFactory("http:///gov/redhawk/eclipsecorba/idl.ecore"); 
+			IdlFactory theIdlFactory = (IdlFactory)EPackage.Registry.INSTANCE.getEFactory(IdlPackage.eNS_URI);
 			if (theIdlFactory != null) {
 				return theIdlFactory;
 			}

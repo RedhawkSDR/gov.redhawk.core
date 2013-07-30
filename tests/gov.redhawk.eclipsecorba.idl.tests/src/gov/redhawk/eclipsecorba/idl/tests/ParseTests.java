@@ -65,16 +65,16 @@ public class ParseTests extends TestCase {
 		}
 	}
 
-	public void test_parse_Delay_idl() throws Exception { // SUPPRESS CHECKSTYLE Method Name
-		final URI uri = URI.createURI(FileLocator
-		        .toFileURL(FileLocator.find(IdlTestPlugin.getDefault().getBundle(), new Path("idl/ossie/REDHAWK/Delay.idl"), null)).toURI().toString());
-		try {
-			final Resource resource = this.resourceSet.getResource(uri, true);
-			assertParsedFine(resource);
-		} catch (final Exception e) {
-			throw new Exception("Failed to parse idl: " + uri.lastSegment(), e);
-		}
-	}
+//	public void test_parse_Delay_idl() throws Exception { // SUPPRESS CHECKSTYLE Method Name
+//		final URI uri = URI.createURI(FileLocator
+//		        .toFileURL(FileLocator.find(IdlTestPlugin.getDefault().getBundle(), new Path("idl/ossie/REDHAWK/Delay.idl"), null)).toURI().toString());
+//		try {
+//			final Resource resource = this.resourceSet.getResource(uri, true);
+//			assertParsedFine(resource);
+//		} catch (final Exception e) {
+//			throw new Exception("Failed to parse idl: " + uri.lastSegment(), e);
+//		}
+//	}
 
 	private URI getURI(final String idlFile) throws IOException {
 		final URL url = FileLocator.toFileURL(FileLocator.find(IdlTestPlugin.getDefault().getBundle(), new Path(idlFile), null));

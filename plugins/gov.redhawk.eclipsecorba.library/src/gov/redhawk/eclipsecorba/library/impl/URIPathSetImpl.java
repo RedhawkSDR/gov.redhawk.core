@@ -10,7 +10,7 @@
  *
  */
 
- // BEGIN GENERATED CODE
+// BEGIN GENERATED CODE
 package gov.redhawk.eclipsecorba.library.impl;
 
 import gov.redhawk.eclipsecorba.library.LibraryPackage;
@@ -167,7 +167,7 @@ public class URIPathSetImpl extends PathImpl implements URIPathSet {
 				case LibraryPackage.URI_PATH_SET__DIRS:
 					if (eNotificationRequired()) {
 						eNotify(new ENotificationImpl(URIPathSetImpl.this, msg.getEventType(), LibraryPackage.URI_PATH_SET__DERIVED_PATH, msg.getOldValue(),
-						        msg.getNewValue()));
+							msg.getNewValue()));
 					}
 					break;
 				default:

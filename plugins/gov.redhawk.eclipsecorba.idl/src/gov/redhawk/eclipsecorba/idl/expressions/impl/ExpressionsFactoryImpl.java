@@ -10,7 +10,7 @@
  *
  */
 
- // BEGIN GENERATED CODE
+// BEGIN GENERATED CODE
 package gov.redhawk.eclipsecorba.idl.expressions.impl;
 
 import gov.redhawk.eclipsecorba.idl.expressions.AddExpression;
@@ -37,7 +37,6 @@ import gov.redhawk.eclipsecorba.idl.expressions.UnaryType;
 import gov.redhawk.eclipsecorba.idl.expressions.WideCharacterLiteral;
 import gov.redhawk.eclipsecorba.idl.expressions.WideStringLiteral;
 import gov.redhawk.eclipsecorba.idl.expressions.XOrExpression;
-
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EDataType;
 import org.eclipse.emf.ecore.EObject;
@@ -61,7 +60,7 @@ public class ExpressionsFactoryImpl extends EFactoryImpl implements ExpressionsF
 	 */
 	public static ExpressionsFactory init() {
 		try {
-			ExpressionsFactory theExpressionsFactory = (ExpressionsFactory)EPackage.Registry.INSTANCE.getEFactory("http:///gov/redhawk/eclipsecorba/idl.expressions.ecore"); 
+			ExpressionsFactory theExpressionsFactory = (ExpressionsFactory)EPackage.Registry.INSTANCE.getEFactory(ExpressionsPackage.eNS_URI);
 			if (theExpressionsFactory != null) {
 				return theExpressionsFactory;
 			}

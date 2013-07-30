@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<genmodel:GenModel xmi:version="2.0"
-    xmlns:xmi="http://www.omg.org/XMI" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore"
-    xmlns:genmodel="http://www.eclipse.org/emf/2002/GenModel" modelDirectory="/gov.redhawk.eclipsecorba.library/src"
-    editorDirectory="/gov.redhawk.eclipsecorba.library.editor/src" modelPluginID="gov.redhawk.eclipsecorba.library"
-    templateDirectory="/mil.jpeojtrs.sca.templates/templates" dynamicTemplates="true"
-    modelName="Library" modelPluginClass="gov.redhawk.eclipsecorba.library.LibraryPlugin"
-    testsDirectory="/gov.redhawk.eclipsecorba.library.tests/src" importerID="org.eclipse.emf.importer.ecore"
-    complianceLevel="5.0" copyrightFields="false" runtimeVersion="2.6" usedGenPackages="platform:/plugin/gov.redhawk.eclipsecorba.idl/model/idl.genmodel#//idl platform:/plugin/gov.redhawk.eclipsecorba.idl/model/idl.genmodel#//expressions">
+<genmodel:GenModel xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore"
+    xmlns:genmodel="http://www.eclipse.org/emf/2002/GenModel" modelDirectory="/gov.redhawk.eclipsecorba.library/src" editorDirectory=""
+    modelPluginID="gov.redhawk.eclipsecorba.library" templateDirectory="/gov.redhawk.eclipsecorba.library/templates"
+    dynamicTemplates="true" forceOverwrite="true" modelName="Library" modelPluginClass="gov.redhawk.eclipsecorba.library.LibraryPlugin"
+    codeFormatting="true" testsDirectory="/gov.redhawk.eclipsecorba.library.tests/src"
+    importerID="org.eclipse.emf.importer.ecore" complianceLevel="6.0" copyrightFields="false"
+    runtimeVersion="2.8" usedGenPackages="platform:/plugin/gov.redhawk.eclipsecorba.idl/model/idl.genmodel#//idl platform:/plugin/gov.redhawk.eclipsecorba.idl/model/idl.genmodel#//expressions"
+    importOrganizing="true">
   <foreignModel>library.ecore</foreignModel>
   <genPackages prefix="Library" basePackage="gov.redhawk.eclipsecorba" resource="XML"
       disposableProviderFactory="true" generateExampleClass="false" contentTypeIdentifier=""
@@ -32,8 +32,6 @@
           ecoreFeature="ecore:EReference library.ecore#//RepositoryModule/moduleDefinitions"/>
       <genFeatures property="None" children="true" createChild="false" propertySortChoices="true"
           ecoreFeature="ecore:EReference library.ecore#//RepositoryModule/definitions"/>
-      <genFeatures property="None" notify="false" createChild="false" propertySortChoices="true"
-          ecoreFeature="ecore:EReference library.ecore#//RepositoryModule/repository"/>
       <genOperations ecoreOperation="library.ecore#//RepositoryModule/find">
         <genParameters ecoreParameter="library.ecore#//RepositoryModule/find/repId"/>
       </genOperations>

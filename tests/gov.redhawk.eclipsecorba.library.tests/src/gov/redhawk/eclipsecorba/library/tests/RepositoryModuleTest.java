@@ -10,7 +10,7 @@
  *
  */
 
- // BEGIN GENERATED CODE
+// BEGIN GENERATED CODE
 package gov.redhawk.eclipsecorba.library.tests;
 
 import gov.redhawk.eclipsecorba.idl.Definition;
@@ -156,19 +156,16 @@ public class RepositoryModuleTest extends TestCase {
 			Assert.assertFalse(getFixture().eResource().getURI().equals(def.eResource().getURI()));
 		}
 
-		final Collection<String> expectedDefinitions = new HashSet<String>(Arrays.asList((new String[] {
-		        "CosEventComm", "LAB", "CosNaming", "CosEventChannelAdmin"
-		})));
+		final Collection<String> expectedDefinitions = new HashSet<String>(Arrays.asList((new String[] { "CosEventComm", "LAB", "CosNaming",
+			"CosEventChannelAdmin" })));
 		final Collection<String> actualDefinitions = new HashSet<String>();
 		for (final Definition definition : this.fixture.getDefinitions()) {
 			actualDefinitions.add(definition.getName());
 		}
 		Assert.assertEquals("The IDL Library does not contain the expected definitions: " + expectedDefinitions + "!=" + actualDefinitions,
-		        expectedDefinitions.size(),
-		        actualDefinitions.size());
-		Assert.assertEquals("All of the expected Definitions are not present: " + expectedDefinitions + " != " + actualDefinitions,
-		        true,
-		        expectedDefinitions.containsAll(actualDefinitions));
+			expectedDefinitions.size(), actualDefinitions.size());
+		Assert.assertEquals("All of the expected Definitions are not present: " + expectedDefinitions + " != " + actualDefinitions, true,
+			expectedDefinitions.containsAll(actualDefinitions));
 		// BEGIN GENERATED CODE
 	}
 
@@ -181,15 +178,15 @@ public class RepositoryModuleTest extends TestCase {
 	 */
     public void testFind__String() {
 		// END GENERATED CODE
-    	TreeIterator<EObject> iterator = EcoreUtil.getAllContents(this.fixture, false);
-    	while (iterator.hasNext()) {
-    		EObject obj = iterator.next();
-    		if (obj instanceof Identifiable) {
-    			Identifiable iObj = (Identifiable) obj;
-    			Assert.assertNotNull(this.fixture.find(iObj.getId()));
-    		}
-    	}
-		
+		TreeIterator<EObject> iterator = EcoreUtil.getAllContents(this.fixture, false);
+		while (iterator.hasNext()) {
+			EObject obj = iterator.next();
+			if (obj instanceof Identifiable) {
+				Identifiable iObj = (Identifiable) obj;
+				Assert.assertNotNull(this.fixture.find(iObj.getId()));
+			}
+		}
+
 		// BEGIN GENERATED CODE
 	}
 

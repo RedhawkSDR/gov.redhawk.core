@@ -180,4 +180,25 @@
       </propertyTester>
    </extension>
 
+   <extension point="org.eclipse.emf.ecore.generated_package">
+      <!-- @generated ports -->
+      <package
+            uri="http://redhawk.gov/ui/views/monitor/ports"
+            class="gov.redhawk.ui.views.monitor.model.ports.PortsPackage"
+            genModel="model/ports.genmodel"/>
+   </extension>
+
+   <extension point="org.eclipse.emf.edit.itemProviderAdapterFactories">
+      <!-- @generated ports -->
+      <factory
+            uri="http://redhawk.gov/ui/views/monitor/ports"
+            class="gov.redhawk.ui.views.monitor.model.ports.provider.PortsItemProviderAdapterFactory"
+            supportedTypes=
+              "org.eclipse.emf.edit.provider.IEditingDomainItemProvider
+               org.eclipse.emf.edit.provider.IStructuredItemContentProvider
+               org.eclipse.emf.edit.provider.ITreeItemContentProvider
+               org.eclipse.emf.edit.provider.IItemLabelProvider
+               org.eclipse.emf.edit.provider.IItemPropertySource
+               org.eclipse.emf.edit.provider.ITableItemLabelProvider"/>
+   </extension>
 </plugin>

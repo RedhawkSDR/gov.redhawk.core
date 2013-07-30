@@ -10,7 +10,7 @@
  *
  */
 
- // BEGIN GENERATED CODE
+// BEGIN GENERATED CODE
 package gov.redhawk.eclipsecorba.library.impl;
 
 import gov.redhawk.eclipsecorba.library.LibraryPackage;

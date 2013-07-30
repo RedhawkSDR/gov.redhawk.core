@@ -10,7 +10,7 @@
  *
  */
 
- // BEGIN GENERATED CODE
+// BEGIN GENERATED CODE
 package gov.redhawk.ui.views.monitor.model.ports.impl;
 
 import gov.redhawk.ui.views.monitor.model.ports.MonitorRegistry;
@@ -20,7 +20,6 @@ import gov.redhawk.ui.views.monitor.model.ports.PortStatisticsProvider;
 import gov.redhawk.ui.views.monitor.model.ports.PortSupplierMonitor;
 import gov.redhawk.ui.views.monitor.model.ports.PortsFactory;
 import gov.redhawk.ui.views.monitor.model.ports.PortsPackage;
-
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EDataType;
 import org.eclipse.emf.ecore.EObject;
@@ -44,7 +43,7 @@ public class PortsFactoryImpl extends EFactoryImpl implements PortsFactory {
 	 */
 	public static PortsFactory init() {
 		try {
-			PortsFactory thePortsFactory = (PortsFactory)EPackage.Registry.INSTANCE.getEFactory("http://redhawk.gov/ui/views/monitor/ports"); 
+			PortsFactory thePortsFactory = (PortsFactory)EPackage.Registry.INSTANCE.getEFactory(PortsPackage.eNS_URI);
 			if (thePortsFactory != null) {
 				return thePortsFactory;
 			}

@@ -10,7 +10,7 @@
  *
  */
 
- // BEGIN GENERATED CODE
+// BEGIN GENERATED CODE
 package gov.redhawk.ui.views.monitor.model.ports.impl;
 
 import gov.redhawk.ui.views.monitor.model.ports.PortConnectionMonitor;
@@ -85,7 +85,7 @@ public class PortConnectionMonitorImpl extends PortStatisticsProviderImpl implem
 	 */
 	public PortMonitor getPort() {
 		if (eContainerFeatureID() != PortsPackage.PORT_CONNECTION_MONITOR__PORT) return null;
-		return (PortMonitor)eContainer();
+		return (PortMonitor)eInternalContainer();
 	}
 
 	/**
