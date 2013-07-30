@@ -287,13 +287,10 @@ public class ScaSimplePropertyImpl extends ScaAbstractPropertyImpl<Simple> imple
 		return false;
 	}
 
-	/**
-	 * @since 13.0
-	 */
-	protected TCKind getType() {
+	private String getType() {
 		// END GENERATED CODE
 		if (getDefinition() != null && getDefinition().getType() != null) {
-			return AnyUtils.convertToTCKind(getDefinition().getType().getLiteral());
+			return getDefinition().getType().getLiteral();
 		}
 		return null;
 		// BEGIN GENERATED CODE

@@ -35,6 +35,15 @@ import java.util.Set;
 
 import mil.jpeojtrs.sca.prf.PropertyValueType;
 import mil.jpeojtrs.sca.prf.provider.RadixLabelProviderUtil;
+import mil.jpeojtrs.sca.util.math.ComplexBoolean;
+import mil.jpeojtrs.sca.util.math.ComplexDouble;
+import mil.jpeojtrs.sca.util.math.ComplexFloat;
+import mil.jpeojtrs.sca.util.math.ComplexLong;
+import mil.jpeojtrs.sca.util.math.ComplexLongLong;
+import mil.jpeojtrs.sca.util.math.ComplexShort;
+import mil.jpeojtrs.sca.util.math.ComplexULong;
+import mil.jpeojtrs.sca.util.math.ComplexULongLong;
+import mil.jpeojtrs.sca.util.math.ComplexUShort;
 
 import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.notify.AdapterFactory;
@@ -134,43 +143,72 @@ public class SequencePropertyValueWizardPage extends WizardPage {
 		setControl(root);
 	}
 
-	private Object getDefaultValue(final PropertyValueType type) {
-		switch (type) {
-		case BOOLEAN:
-			return Boolean.FALSE;
-		case CHAR:
-			return 'a';
-		case DOUBLE:
-			return 0.00d;
-		case FLOAT:
-			return 0.00f;
-		case LONG:
-			return 0;
-		case LONGLONG:
-			return 0L;
-		case OBJREF:
-			return null;
-		case OCTET:
-			return (short) 0;
-		case SHORT:
-			return (short) 0;
-		case STRING:
-			return "newString";
-		case ULONG:
-			return 0L;
-		case USHORT:
-			return 0;
-		case ULONGLONG:
-			return new BigInteger("0");
-		default:
-			throw new IllegalArgumentException("Unhandled property type");
+	private Object getDefaultValue(final PropertyValueType type, boolean isComplex) {
+		if (isComplex) {
+			switch (type) {
+			case BOOLEAN:
+				return new ComplexBoolean();
+			case DOUBLE:
+				return new ComplexDouble();
+			case FLOAT:
+				return new ComplexFloat();
+			case LONG:
+				return new ComplexLong();
+			case LONGLONG:
+				return new ComplexLongLong();
+			case SHORT:
+				return new ComplexShort();
+			case ULONG:
+				return new ComplexULong();
+			case USHORT:
+				return new ComplexUShort();
+			case ULONGLONG:
+				return new ComplexULongLong();
+			case STRING:
+			case OCTET:
+			case OBJREF:
+			case CHAR:
+			default:
+				throw new IllegalArgumentException("Unhandled property type");
+			}
+		} else {
+			switch (type) {
+			case BOOLEAN:
+				return Boolean.FALSE;
+			case CHAR:
+				return 'a';
+			case DOUBLE:
+				return 0.00d;
+			case FLOAT:
+				return 0.00f;
+			case LONG:
+				return 0;
+			case LONGLONG:
+				return 0L;
+			case OBJREF:
+				return null;
+			case OCTET:
+				return (short) 0;
+			case SHORT:
+				return (short) 0;
+			case STRING:
+				return "newString";
+			case ULONG:
+				return 0L;
+			case USHORT:
+				return 0;
+			case ULONGLONG:
+				return new BigInteger("0");
+			default:
+				throw new IllegalArgumentException("Unhandled property type");
+			}
 		}
 	}
 
 	private void handleAddValue() {
 		if (this.property instanceof ScaSimpleSequenceProperty) {
 			final ScaSimpleSequenceProperty seqProperty = (ScaSimpleSequenceProperty) this.property;
-			final Object newValue = getDefaultValue(seqProperty.getDefinition().getType());
+			final Object newValue = getDefaultValue(seqProperty.getDefinition().getType(), seqProperty.getDefinition().isComplex());
 
 			seqProperty.getValues().add(newValue);
 		} else if (this.property instanceof ScaStructSequenceProperty) {
@@ -178,7 +216,7 @@ public class SequencePropertyValueWizardPage extends WizardPage {
 			final ScaStructProperty newStruct = structSeqProperty.createScaStructProperty();
 			for (final ScaSimpleProperty p : newStruct.getSimples()) {
 				if (p.getValue() == null) {
-					final Object value = getDefaultValue(p.getDefinition().getType());
+					final Object value = getDefaultValue(p.getDefinition().getType(), p.getDefinition().isComplex());
 					p.setValue(value);
 				}
 			}
@@ -353,10 +391,8 @@ public class SequencePropertyValueWizardPage extends WizardPage {
 			viewer.setContentProvider(new AdapterFactoryContentProvider(this.adapterFactory));
 
 		} else {
-			viewer = ScaComponentFactory.createStructSequenceTable(parent,
-			        SWT.BORDER | SWT.MULTI | SWT.FULL_SELECTION | SWT.V_SCROLL | SWT.H_SCROLL,
-			        this.adapterFactory,
-			        (ScaStructSequenceProperty) this.property);
+			viewer = ScaComponentFactory.createStructSequenceTable(parent, SWT.BORDER | SWT.MULTI | SWT.FULL_SELECTION | SWT.V_SCROLL | SWT.H_SCROLL,
+				this.adapterFactory, (ScaStructSequenceProperty) this.property);
 			viewer.getColumnViewerEditor().addEditorActivationListener(new ColumnViewerEditorActivationListener() {
 
 				@Override

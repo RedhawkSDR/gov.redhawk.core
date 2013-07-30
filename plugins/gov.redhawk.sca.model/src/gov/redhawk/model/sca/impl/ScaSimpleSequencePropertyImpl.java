@@ -279,10 +279,10 @@ public class ScaSimpleSequencePropertyImpl extends ScaAbstractPropertyImpl<Simpl
 		}
 	}
 
-	private TCKind getType() {
+	private String getType() {
 		// END GENERATED CODE
 		if (getDefinition() != null && getDefinition().getType() != null) {
-			return AnyUtils.convertToTCKind(getDefinition().getType().getLiteral());
+			return getDefinition().getType().getLiteral();
 		}
 		return null;
 		// BEGIN GENERATED CODE
