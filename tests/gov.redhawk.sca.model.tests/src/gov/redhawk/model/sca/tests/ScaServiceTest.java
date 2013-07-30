@@ -77,6 +77,45 @@ public class ScaServiceTest extends ScaPropertyContainerTest {
 		setFixture(deviceManager.getScaService(ScaTestConstaints.SERVICE_NAME));
 		Assert.assertNotNull(getFixture());
 	}
+	
+	public void testGetProfileObj() {
+		// TODO Disable for now
+	}
+	
+	public void testGetProfileURI() {
+		// TODO Disable for now		
+	}
+	
+	public void testUnsetProfileURI() {
+		// TODO Disable for now
+	}
+	
+	@Override
+	public void testIsSetProfileURI() {
+		// TODO Disable for now
+	}
+	
+	public void testUnsetProfileObj() {
+		// TODO Disable for now
+	}
+	
+	public void testIsSetProfileObj() {
+		// TODO Disable for now
+	}
+	
+	@Override
+	public void testGetRootFileStore() {
+		// TODO Disable for now
+	}
+	
+	public void testFetchProfileObject__IProgressMonitor() throws InterruptedException {
+		// TODO Disable for now
+	}
+	
+	@Override
+	public void testFetchProfileURI__IProgressMonitor() {
+		// TODO Disable for now
+	}
 
 	/**
 	 * <!-- begin-user-doc -->
