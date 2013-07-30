@@ -9,7 +9,7 @@
  * http://www.eclipse.org/legal/epl-v10.html
  *******************************************************************************/
 
- // BEGIN GENERATED CODE
+// BEGIN GENERATED CODE
 package gov.redhawk.model.sca.impl;
 
 import gov.redhawk.model.sca.ScaDomainManager;
@@ -165,8 +165,7 @@ public class ScaDomainManagerRegistryImpl extends EObjectImpl implements ScaDoma
 		getDomains().clear();
 		boolean oldDisposed = disposed;
 		disposed = true;
-		eNotify(new ENotificationImpl(this, Notification.SET, ScaPackage.SCA_DOMAIN_MANAGER_REGISTRY__DISPOSED, oldDisposed,
-		        disposed));
+		eNotify(new ENotificationImpl(this, Notification.SET, ScaPackage.SCA_DOMAIN_MANAGER_REGISTRY__DISPOSED, oldDisposed, disposed));
 		// BEGIN GENERATED CODE
 	}
 

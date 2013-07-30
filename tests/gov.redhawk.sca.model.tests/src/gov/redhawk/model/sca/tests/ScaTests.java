@@ -8,7 +8,7 @@
  * the terms of the Eclipse Public License v1.0 which accompanies this distribution, and is available at 
  * http://www.eclipse.org/legal/epl-v10.html
  *******************************************************************************/
- // BEGIN GENERATED CODE
+// BEGIN GENERATED CODE
 package gov.redhawk.model.sca.tests;
 
 import gov.redhawk.sca.util.Debug;
@@ -36,31 +36,11 @@ public class ScaTests extends TestSuite {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
+	 * @generated NOT
 	 */
 	public static Test suite() {
 		TestSuite suite = new ScaTests("sca Tests");
-		suite.addTestSuite(ScaComponentTest.class);
-		suite.addTestSuite(ScaDeviceTest.class);
-		suite.addTestSuite(ScaDeviceManagerTest.class);
-		suite.addTestSuite(ScaServiceTest.class);
-		suite.addTestSuite(ScaDeviceManagerFileSystemTest.class);
-		suite.addTestSuite(ScaDocumentRootTest.class);
-		suite.addTestSuite(ScaDomainManagerTest.class);
-		suite.addTestSuite(ScaDomainManagerFileSystemTest.class);
-		suite.addTestSuite(ScaDomainManagerRegistryTest.class);
-		suite.addTestSuite(ScaExecutableDeviceTest.class);
-		suite.addTestSuite(ScaFileStoreTest.class);
-		suite.addTestSuite(ScaLoadableDeviceTest.class);
-		suite.addTestSuite(ScaProvidesPortTest.class);
-		suite.addTestSuite(ScaSimplePropertyTest.class);
-		suite.addTestSuite(ScaSimpleSequencePropertyTest.class);
-		suite.addTestSuite(ScaStructPropertyTest.class);
-		suite.addTestSuite(ScaUsesPortTest.class);
-		suite.addTestSuite(ScaConnectionTest.class);
-		suite.addTestSuite(ScaWaveformTest.class);
-		suite.addTestSuite(ScaWaveformFactoryTest.class);
-		suite.addTestSuite(ScaStructSequencePropertyTest.class);
+		// Remove all tests to make it so tests are run only once
 		return suite;
 	}
 

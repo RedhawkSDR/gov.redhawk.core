@@ -9,7 +9,7 @@
  * http://www.eclipse.org/legal/epl-v10.html
  *******************************************************************************/
 
- // BEGIN GENERATED CODE
+// BEGIN GENERATED CODE
 package gov.redhawk.model.sca.impl;
 
 import gov.redhawk.model.sca.IStatusProvider;
@@ -19,17 +19,14 @@ import gov.redhawk.model.sca.ScaSimpleProperty;
 import gov.redhawk.model.sca.ScaStructProperty;
 import gov.redhawk.model.sca.ScaStructSequenceProperty;
 import gov.redhawk.sca.util.PluginUtil;
-
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-
 import mil.jpeojtrs.sca.prf.Simple;
 import mil.jpeojtrs.sca.prf.Struct;
-
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.MultiStatus;
 import org.eclipse.core.runtime.Status;
@@ -44,7 +41,6 @@ import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.InternalEList;
 import org.omg.CORBA.Any;
 import org.omg.CORBA.ORB;
-
 import CF.DataType;
 import CF.PropertiesHelper;
 import CF.PropertiesHolder;
@@ -137,14 +133,14 @@ public class ScaStructPropertyImpl extends ScaAbstractPropertyImpl<Struct> imple
 		// END GENERATED CODE
 
 		/**
-         * 
-         */
-        private static final long serialVersionUID = 1L;
+		 * 
+		 */
+		private static final long serialVersionUID = 1L;
 
 		public SimplesList(ScaStructPropertyImpl property) {
-	        super(ScaSimpleProperty.class, property, ScaPackage.SCA_STRUCT_PROPERTY__SIMPLES);
-        }
-		
+			super(ScaSimpleProperty.class, property, ScaPackage.SCA_STRUCT_PROPERTY__SIMPLES);
+		}
+
 		public void setDefinition(Struct defValue) {
 			// Update the list
 			if (defValue != null) {
@@ -175,28 +171,28 @@ public class ScaStructPropertyImpl extends ScaAbstractPropertyImpl<Struct> imple
 				clear();
 			}
 		}
-		
-		/**
-         * @since 14.0
-         */
-		public void restoreDefaultValue() {
-	        for (ScaSimpleProperty prop : this) {
-	        	prop.restoreDefaultValue();
-	        }
-        }
 
 		/**
-         * @since 14.0
-         */
+		 * @since 14.0
+		 */
+		public void restoreDefaultValue() {
+			for (ScaSimpleProperty prop : this) {
+				prop.restoreDefaultValue();
+			}
+		}
+
+		/**
+		 * @since 14.0
+		 */
 		public boolean isDefaultValue() {
 			for (ScaSimpleProperty prop : this) {
 				if (!prop.isDefaultValue()) {
 					return false;
 				}
 			}
-	        return true;
-        }
-		
+			return true;
+		}
+
 		// BEGIN GENERATED CODE
 	}
 
@@ -246,7 +242,7 @@ public class ScaStructPropertyImpl extends ScaAbstractPropertyImpl<Struct> imple
 			setStatus(ScaPackage.Literals.SCA_STRUCT_PROPERTY__SIMPLES, Status.OK_STATUS);
 		} catch (Exception e) {
 			setStatus(ScaPackage.Literals.SCA_STRUCT_PROPERTY__SIMPLES, new Status(Status.ERROR, ScaModelPlugin.ID, "Failed to read property value of:"
-			        + getName(), e));
+				+ getName(), e));
 		}
 		// BEGIN GENERATED CODE
 	}
@@ -362,17 +358,17 @@ public class ScaStructPropertyImpl extends ScaAbstractPropertyImpl<Struct> imple
 	public void eSet(int featureID, Object newValue) {
 		// END GENERATED CODE
 		switch (featureID) {
-			case ScaPackage.SCA_STRUCT_PROPERTY__SIMPLES:
-				setIgnoreRemoteSet(true);
-				try {
-					getSimples().clear();
-				} finally {
-					setIgnoreRemoteSet(false);
-				}
-				getSimples().addAll((Collection<? extends ScaSimpleProperty>) newValue);
-				return;
-			default:
-				break;
+		case ScaPackage.SCA_STRUCT_PROPERTY__SIMPLES:
+			setIgnoreRemoteSet(true);
+			try {
+				getSimples().clear();
+			} finally {
+				setIgnoreRemoteSet(false);
+			}
+			getSimples().addAll((Collection< ? extends ScaSimpleProperty>) newValue);
+			return;
+		default:
+			break;
 		}
 		super.eSet(featureID, newValue);
 		// BEGIN GENERATED CODE

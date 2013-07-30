@@ -9,7 +9,7 @@
  * http://www.eclipse.org/legal/epl-v10.html
  *******************************************************************************/
 
- // BEGIN GENERATED CODE
+// BEGIN GENERATED CODE
 package gov.redhawk.model.sca.impl;
 
 import gov.redhawk.model.sca.ProfileObjectWrapper;
@@ -405,10 +405,10 @@ public class ScaWaveformFactoryImpl extends CorbaObjWrapperImpl<ApplicationFacto
 	public IFileStore getRootFileStore() {
 		// END GENERATED CODE
 		try {
-	        return EFS.getStore(java.net.URI.create(getProfileURI().toString()));
-        } catch (Exception e) {
-	        return null;
-        }
+			return EFS.getStore(java.net.URI.create(getProfileURI().toString()));
+		} catch (Exception e) {
+			return null;
+		}
 		// BEGIN GENERATED CODE
 	}
 

@@ -817,7 +817,7 @@ public class ScaWaveformImpl extends ScaPropertyContainerImpl<Application, Softw
 		subMonitor.worked(1);
 		transaction.commit();
 		subMonitor.worked(1);
-		
+
 		SubMonitor compMonitor = subMonitor.newChild(1);
 		compMonitor.beginTask("Fetch Component started", getComponents().size());
 		List<ScaComponent> tmpComponents = ScaModelCommandWithResult.execute(this, new ScaModelCommandWithResult<List<ScaComponent>>() {
@@ -830,7 +830,7 @@ public class ScaWaveformImpl extends ScaPropertyContainerImpl<Application, Softw
 					retVal = new ArrayList<ScaComponent>(getComponents());
 				}
 				setResult(retVal);
-            }
+			}
 		});
 		for (ScaComponent comp : tmpComponents) {
 			comp.fetchStarted(compMonitor.newChild(1));
@@ -1315,21 +1315,21 @@ public class ScaWaveformImpl extends ScaPropertyContainerImpl<Application, Softw
 					return null;
 				}
 			};
-			
-            try {
-                ProtectedThreadExecutor.submit(callable);
-            } catch (InterruptedException e) {
-            	ScaModelPlugin.getDefault().getLog().log(new Status(IStatus.ERROR, ScaModelPlugin.ID, "Failed to release Waveform", e));
-            } catch (ExecutionException e) {
-            	ScaModelPlugin.getDefault().getLog().log(new Status(IStatus.ERROR, ScaModelPlugin.ID, "Failed to release Waveform", e));
-            } catch (TimeoutException e) {
-            	ScaModelPlugin.getDefault().getLog().log(new Status(IStatus.ERROR, ScaModelPlugin.ID, "Failed to release Waveform", e));
-            }
+
+			try {
+				ProtectedThreadExecutor.submit(callable);
+			} catch (InterruptedException e) {
+				ScaModelPlugin.getDefault().getLog().log(new Status(IStatus.ERROR, ScaModelPlugin.ID, "Failed to release Waveform", e));
+			} catch (ExecutionException e) {
+				ScaModelPlugin.getDefault().getLog().log(new Status(IStatus.ERROR, ScaModelPlugin.ID, "Failed to release Waveform", e));
+			} catch (TimeoutException e) {
+				ScaModelPlugin.getDefault().getLog().log(new Status(IStatus.ERROR, ScaModelPlugin.ID, "Failed to release Waveform", e));
+			}
 
 			// The domain may be null if the waveform has already been released.
 			if (domain != null) {
 				domain.getCommandStack().execute(command);
-			} 
+			}
 		}
 		// BEGIN GENERATED CODE
 	}
@@ -1701,20 +1701,22 @@ public class ScaWaveformImpl extends ScaPropertyContainerImpl<Application, Softw
 				}
 			}
 		}
-		EList<SadComponentInstantiation> insts = localProfile.getAllComponentInstantiations();
-		if (localProfile.getExternalProperties() != null) {
-			for (ExternalProperty externalProp : localProfile.getExternalProperties().getProperties()) {
-				for (SadComponentInstantiation inst : insts) {
-					if (inst.getId().equals(externalProp.getCompRefID())) {
-						mil.jpeojtrs.sca.prf.Properties instProperties = ScaEcoreUtils.getFeature(inst, INST_PRF_PATH);
-						if (instProperties != null) {
-							AbstractProperty prop = instProperties.getProperty(externalProp.getPropID());
-							if (prop != null) {
-								if (externalProp.getExternalPropID() != null) {
-									prop = EcoreUtil.copy(prop);
-									prop.setId(externalProp.getExternalPropID());
+		if (localProfile != null) {
+			EList<SadComponentInstantiation> insts = localProfile.getAllComponentInstantiations();
+			if (localProfile.getExternalProperties() != null) {
+				for (ExternalProperty externalProp : localProfile.getExternalProperties().getProperties()) {
+					for (SadComponentInstantiation inst : insts) {
+						if (inst.getId().equals(externalProp.getCompRefID())) {
+							mil.jpeojtrs.sca.prf.Properties instProperties = ScaEcoreUtils.getFeature(inst, INST_PRF_PATH);
+							if (instProperties != null) {
+								AbstractProperty prop = instProperties.getProperty(externalProp.getPropID());
+								if (prop != null) {
+									if (externalProp.getExternalPropID() != null) {
+										prop = EcoreUtil.copy(prop);
+										prop.setId(externalProp.getExternalPropID());
+									}
+									retVal.add(prop);
 								}
-								retVal.add(prop);
 							}
 						}
 					}

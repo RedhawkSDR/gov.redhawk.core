@@ -9,7 +9,7 @@
  * http://www.eclipse.org/legal/epl-v10.html
  *******************************************************************************/
 
- // BEGIN GENERATED CODE
+// BEGIN GENERATED CODE
 package gov.redhawk.model.sca.impl;
 
 import gov.redhawk.model.sca.ScaAbstractComponent;
@@ -396,8 +396,8 @@ public abstract class ScaPortImpl<P extends AbstractPort, P2 extends org.omg.COR
 	@Deprecated
 	public ScaAbstractComponent<?> getComponent() {
 		// END GENERATED CODE
-		if (eContainer() instanceof ScaAbstractComponent<?>) {
-			return (ScaAbstractComponent<?>) eContainer();
+		if (eContainer() instanceof ScaAbstractComponent< ? >) {
+			return (ScaAbstractComponent< ? >) eContainer();
 		}
 		return null;
 		// BEGIN GENERATED CODE

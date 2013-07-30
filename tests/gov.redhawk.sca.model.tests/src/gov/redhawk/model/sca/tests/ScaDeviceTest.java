@@ -8,7 +8,7 @@
  * the terms of the Eclipse Public License v1.0 which accompanies this distribution, and is available at 
  * http://www.eclipse.org/legal/epl-v10.html
  *******************************************************************************/
- // BEGIN GENERATED CODE
+// BEGIN GENERATED CODE
 package gov.redhawk.model.sca.tests;
 
 import gov.redhawk.model.sca.ScaDevice;
@@ -170,6 +170,55 @@ public class ScaDeviceTest extends ScaAbstractComponentTest {
 	}
 
 	/**
+	 * Tests the '{@link gov.redhawk.model.sca.ScaDevice#setLabel(java.lang.String) <em>Label</em>}' feature setter.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see gov.redhawk.model.sca.ScaDevice#setLabel(java.lang.String)
+	 * @generated NOT
+	 */
+	public void testSetLabel() {
+		final String objLabel = getFixture().getLabel();
+		ScaModelCommand.execute(getFixture(), new ScaModelCommand() {
+			
+			@Override
+			public void execute() {
+				getFixture().setLabel(null);
+			}
+		});
+		
+		Assert.assertNull(getFixture().getLabel());
+		
+		ScaModelCommand.execute(getFixture(), new ScaModelCommand() {
+			
+			@Override
+			public void execute() {
+				getFixture().setLabel(objLabel);
+			}
+		});
+
+		Assert.assertEquals(objLabel, getFixture().getLabel());
+	}
+
+	/**
+	 * Tests the '{@link gov.redhawk.model.sca.ScaDevice#unsetLabel() <em>unsetLabel()</em>}' method.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see gov.redhawk.model.sca.ScaDevice#unsetLabel()
+	 * @generated NOT
+	 */
+	public void testUnsetLabel() {
+		ScaModelCommand.execute(getFixture(), new ScaModelCommand() {
+			
+			@Override
+			public void execute() {
+				getFixture().unsetLabel();
+			}
+		});
+		
+		Assert.assertFalse(getFixture().isSetLabel());
+	}
+
+	/**
 	 * Tests the '{@link gov.redhawk.model.sca.ScaDevice#isSetLabel() <em>isSetLabel()</em>}' method.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -194,6 +243,54 @@ public class ScaDeviceTest extends ScaAbstractComponentTest {
 		final OperationalType operationalType = getFixture().getObj().operationalState();
 		Assert.assertEquals(operationalType, getFixture().getOperationalState());
 		// BEGIN GENERATED CODE
+	}
+
+	/**
+	 * Tests the '{@link gov.redhawk.model.sca.ScaDevice#setOperationalState(CF.DevicePackage.OperationalType) <em>Operational State</em>}' feature setter.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see gov.redhawk.model.sca.ScaDevice#setOperationalState(CF.DevicePackage.OperationalType)
+	 * @generated NOT
+	 */
+	public void testSetOperationalState() {
+		final OperationalType state = getFixture().getOperationalState();
+		ScaModelCommand.execute(getFixture(), new ScaModelCommand() {
+			
+			@Override
+			public void execute() {
+				getFixture().setOperationalState(null);
+			}
+		});
+		
+		Assert.assertNull(getFixture().getOperationalState());
+		ScaModelCommand.execute(getFixture(), new ScaModelCommand() {
+			
+			@Override
+			public void execute() {
+				getFixture().setOperationalState(state);
+			}
+		});
+
+		Assert.assertEquals(state, getFixture().getOperationalState());
+	}
+
+	/**
+	 * Tests the '{@link gov.redhawk.model.sca.ScaDevice#unsetOperationalState() <em>unsetOperationalState()</em>}' method.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see gov.redhawk.model.sca.ScaDevice#unsetOperationalState()
+	 * @generated NOT
+	 */
+	public void testUnsetOperationalState() {
+		ScaModelCommand.execute(getFixture(), new ScaModelCommand() {
+			
+			@Override
+			public void execute() {
+				getFixture().unsetOperationalState();
+			}
+		});
+		
+		Assert.assertFalse(getFixture().isSetOperationalState());
 	}
 
 	/**
@@ -222,6 +319,54 @@ public class ScaDeviceTest extends ScaAbstractComponentTest {
 		Assert.assertNotNull(getFixture().getObj());
 		Assert.assertEquals(usageState, getFixture().getUsageState());
 		// BEGIN GENERATED CODE
+	}
+
+	/**
+	 * Tests the '{@link gov.redhawk.model.sca.ScaDevice#setUsageState(CF.DevicePackage.UsageType) <em>Usage State</em>}' feature setter.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see gov.redhawk.model.sca.ScaDevice#setUsageState(CF.DevicePackage.UsageType)
+	 * @generated NOT
+	 */
+	public void testSetUsageState() {
+		final UsageType state = getFixture().getUsageState();
+		ScaModelCommand.execute(getFixture(), new ScaModelCommand() {
+			
+			@Override
+			public void execute() {
+				getFixture().setUsageState(null);
+			}
+		});
+		
+		Assert.assertNull(getFixture().getUsageState());
+		ScaModelCommand.execute(getFixture(), new ScaModelCommand() {
+			
+			@Override
+			public void execute() {
+				getFixture().setUsageState(state);
+			}
+		});
+		
+		Assert.assertEquals(state, getFixture().getUsageState());
+	}
+
+	/**
+	 * Tests the '{@link gov.redhawk.model.sca.ScaDevice#unsetUsageState() <em>unsetUsageState()</em>}' method.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see gov.redhawk.model.sca.ScaDevice#unsetUsageState()
+	 * @generated NOT
+	 */
+	public void testUnsetUsageState() {
+		ScaModelCommand.execute(getFixture(), new ScaModelCommand() {
+			
+			@Override
+			public void execute() {
+				getFixture().unsetUsageState();
+			}
+		});
+		
+		Assert.assertFalse(getFixture().isSetUsageState());
 	}
 
 	/**
@@ -263,6 +408,55 @@ public class ScaDeviceTest extends ScaAbstractComponentTest {
 		final AdminType adminState = getFixture().getObj().adminState();
 		Assert.assertEquals(adminState, getFixture().getAdminState());
 		// BEGIN GENERATED CODE
+	}
+
+	/**
+	 * Tests the '{@link gov.redhawk.model.sca.ScaDevice#setAdminState(CF.DevicePackage.AdminType) <em>Admin State</em>}' feature setter.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see gov.redhawk.model.sca.ScaDevice#setAdminState(CF.DevicePackage.AdminType)
+	 * @generated NOT
+	 */
+	public void testSetAdminState() {
+		final AdminType state = getFixture().getAdminState();
+		ScaModelCommand.execute(getFixture(), new ScaModelCommand() {
+			
+			@Override
+			public void execute() {
+				getFixture().setAdminState(null);
+			}
+		});
+		
+		Assert.assertNull(getFixture().getAdminState());
+		
+		ScaModelCommand.execute(getFixture(), new ScaModelCommand() {
+			
+			@Override
+			public void execute() {
+				getFixture().setAdminState(state);
+			}
+		});
+		
+		Assert.assertEquals(state, getFixture().getAdminState());
+	}
+
+	/**
+	 * Tests the '{@link gov.redhawk.model.sca.ScaDevice#unsetAdminState() <em>unsetAdminState()</em>}' method.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see gov.redhawk.model.sca.ScaDevice#unsetAdminState()
+	 * @generated NOT
+	 */
+	public void testUnsetAdminState() {
+		ScaModelCommand.execute(getFixture(), new ScaModelCommand() {
+			
+			@Override
+			public void execute() {
+				getFixture().unsetAdminState();
+			}
+		});
+		
+		Assert.assertFalse(getFixture().isSetAdminState());
 	}
 
 	/**

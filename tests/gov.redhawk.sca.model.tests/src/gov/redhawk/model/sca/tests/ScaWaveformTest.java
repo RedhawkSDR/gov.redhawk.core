@@ -8,7 +8,7 @@
  * the terms of the Eclipse Public License v1.0 which accompanies this distribution, and is available at 
  * http://www.eclipse.org/legal/epl-v10.html
  *******************************************************************************/
- // BEGIN GENERATED CODE
+// BEGIN GENERATED CODE
 package gov.redhawk.model.sca.tests;
 
 import gov.redhawk.model.sca.RefreshDepth;
@@ -28,6 +28,7 @@ import CF.DataType;
 import CF.PropertiesHolder;
 import CF.UnknownProperties;
 import CF.ApplicationPackage.ComponentElementType;
+import CF.DevicePackage.OperationalType;
 import CF.LifeCyclePackage.InitializeError;
 import CF.LifeCyclePackage.ReleaseError;
 import CF.PortSupplierPackage.UnknownPort;
@@ -158,16 +159,15 @@ public class ScaWaveformTest extends ScaPropertyContainerTest {
 	public void testSetAssemblyController() {
 		// END GENERATED CODE
 		ScaModelCommand.execute(getFixture(), new ScaModelCommand() {
-			
+
 			public void execute() {
 				Assert.assertNotNull(getFixture().getAssemblyController());
 				getFixture().setAssemblyController(null);
 				Assert.assertNull(getFixture().getAssemblyController());
-				
+
 			}
 		});
 
-		
 		// END GENERATED CODE
 	}
 
@@ -182,7 +182,7 @@ public class ScaWaveformTest extends ScaPropertyContainerTest {
 		// END GENERATED CODE
 		Assert.assertNotNull(getFixture().getAssemblyController());
 		ScaModelCommand.execute(getFixture(), new ScaModelCommand() {
-			
+
 			public void execute() {
 				getFixture().unsetAssemblyController();
 				Assert.assertNull(getFixture().getAssemblyController());
@@ -239,6 +239,55 @@ public class ScaWaveformTest extends ScaPropertyContainerTest {
 	}
 
 	/**
+	 * Tests the '{@link gov.redhawk.model.sca.ScaWaveform#setIdentifier(java.lang.String) <em>Identifier</em>}' feature setter.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see gov.redhawk.model.sca.ScaWaveform#setIdentifier(java.lang.String)
+	 * @generated NOT
+	 */
+	public void testSetIdentifier() {
+		final String id = getFixture().getIdentifier();
+		ScaModelCommand.execute(getFixture(), new ScaModelCommand() {
+			
+			@Override
+			public void execute() {
+				getFixture().setIdentifier(null);
+			}
+		});
+		
+		Assert.assertNull(getFixture().getIdentifier());
+		ScaModelCommand.execute(getFixture(), new ScaModelCommand() {
+			
+			@Override
+			public void execute() {
+				getFixture().setIdentifier(id);
+			}
+		});
+
+		Assert.assertEquals(id, getFixture().getIdentifier());
+	}
+
+	/**
+	 * Tests the '{@link gov.redhawk.model.sca.ScaWaveform#unsetIdentifier() <em>unsetIdentifier()</em>}' method.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see gov.redhawk.model.sca.ScaWaveform#unsetIdentifier()
+	 * @generated
+	 */
+	public void testUnsetIdentifier() {
+		ScaModelCommand.execute(getFixture(), new ScaModelCommand() {
+			
+			@Override
+			public void execute() {
+				getFixture().unsetIdentifier();
+			}
+		});
+		
+		Assert.assertFalse(getFixture().isSetIdentifier());
+		Assert.assertNull(getFixture().getIdentifier());
+	}
+
+	/**
 	 * Tests the '{@link gov.redhawk.model.sca.ScaWaveform#isSetIdentifier() <em>isSetIdentifier()</em>}' method.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -281,6 +330,55 @@ public class ScaWaveformTest extends ScaPropertyContainerTest {
 			}
 		});
 		// BEGIN GENERATED CODE
+	}
+
+	/**
+	 * Tests the '{@link gov.redhawk.model.sca.ScaWaveform#setName(java.lang.String) <em>Name</em>}' feature setter.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see gov.redhawk.model.sca.ScaWaveform#setName(java.lang.String)
+	 * @generated NOT
+	 */
+	public void testSetName() {
+		final String name = getFixture().getName();
+		ScaModelCommand.execute(getFixture(), new ScaModelCommand() {
+			
+			@Override
+			public void execute() {
+				getFixture().setName(null);
+			}
+		});
+		
+		Assert.assertNull(getFixture().getName());
+		ScaModelCommand.execute(getFixture(), new ScaModelCommand() {
+			
+			@Override
+			public void execute() {
+				getFixture().setName(name);
+			}
+		});
+
+		Assert.assertEquals(name, getFixture().getName());
+	}
+
+	/**
+	 * Tests the '{@link gov.redhawk.model.sca.ScaWaveform#unsetName() <em>unsetName()</em>}' method.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see gov.redhawk.model.sca.ScaWaveform#unsetName()
+	 * @generated NOT
+	 */
+	public void testUnsetName() {
+		ScaModelCommand.execute(getFixture(), new ScaModelCommand() {
+			
+			@Override
+			public void execute() {
+				getFixture().unsetName();
+			}
+		});
+		
+		Assert.assertFalse(getFixture().isSetName());
+		Assert.assertNull(getFixture().getName());
 	}
 
 	/**

@@ -8,7 +8,7 @@
  * the terms of the Eclipse Public License v1.0 which accompanies this distribution, and is available at 
  * http://www.eclipse.org/legal/epl-v10.html
  *******************************************************************************/
- // BEGIN GENERATED CODE
+// BEGIN GENERATED CODE
 package gov.redhawk.model.sca.tests;
 
 import gov.redhawk.model.sca.ScaAbstractComponent;
@@ -142,7 +142,7 @@ public abstract class ScaAbstractComponentTest extends ScaPropertyContainerTest 
 				getFixture().unsetIdentifier();
 				Assert.assertFalse(getFixture().isSetIdentifier());
 			}
-		});		
+		});
 		// BEGIN GENERATED CODE
 	}
 
@@ -160,7 +160,7 @@ public abstract class ScaAbstractComponentTest extends ScaPropertyContainerTest 
 			public void execute() {
 				Assert.assertTrue(getFixture().isSetIdentifier());
 			}
-		});		
+		});
 		// BEGIN GENERATED CODE
 	}
 
@@ -179,8 +179,8 @@ public abstract class ScaAbstractComponentTest extends ScaPropertyContainerTest 
 			public void execute() {
 				Assert.assertTrue(getFixture().isSetIdentifier());
 			}
-		});		
-		
+		});
+
 		// BEGIN GENERATED CODE
 	}
 
@@ -199,8 +199,8 @@ public abstract class ScaAbstractComponentTest extends ScaPropertyContainerTest 
 			public void execute() {
 				Assert.assertTrue(getFixture().isSetStarted());
 			}
-		});		
-		
+		});
+
 		// BEGIN GENERATED CODE
 	}
 
@@ -227,7 +227,7 @@ public abstract class ScaAbstractComponentTest extends ScaPropertyContainerTest 
 
 			public void execute() {
 				Assert.assertEquals(ports, getFixture().getPorts().size());
-				getFixture().unsetPorts();	
+				getFixture().unsetPorts();
 				Assert.assertEquals(0, getFixture().getPorts().size());
 			}
 		});

@@ -8,7 +8,7 @@
  * the terms of the Eclipse Public License v1.0 which accompanies this distribution, and is available at 
  * http://www.eclipse.org/legal/epl-v10.html
  *******************************************************************************/
- // BEGIN GENERATED CODE
+// BEGIN GENERATED CODE
 package gov.redhawk.model.sca.tests;
 
 import gov.redhawk.model.sca.ScaDocumentRoot;
@@ -17,7 +17,6 @@ import gov.redhawk.model.sca.tests.stubs.ScaTestConstaints;
 import junit.framework.Assert;
 import junit.framework.TestCase;
 import junit.textui.TestRunner;
-
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;

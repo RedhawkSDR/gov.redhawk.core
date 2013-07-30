@@ -9,7 +9,7 @@
  * http://www.eclipse.org/legal/epl-v10.html
  *******************************************************************************/
 
- // BEGIN GENERATED CODE
+// BEGIN GENERATED CODE
 package gov.redhawk.model.sca.impl;
 
 import gov.redhawk.model.sca.ScaModelPlugin;
@@ -19,7 +19,6 @@ import gov.redhawk.sca.util.PluginUtil;
 import mil.jpeojtrs.sca.prf.PropertyValueType;
 import mil.jpeojtrs.sca.prf.Simple;
 import mil.jpeojtrs.sca.util.AnyUtils;
-
 import org.eclipse.core.runtime.Status;
 import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.notify.Notification;
@@ -28,7 +27,6 @@ import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EDataType;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.omg.CORBA.Any;
-import org.omg.CORBA.TCKind;
 
 /**
  * <!-- begin-user-doc --> An implementation of the model object '
@@ -237,7 +235,7 @@ public class ScaSimplePropertyImpl extends ScaAbstractPropertyImpl<Simple> imple
 		// value = VALUE_EDEFAULT;
 		Object newValue;
 		if (getDefinition() != null && getDefinition().getType() != null) {
-			newValue = AnyUtils.convertString(getDefinition().getValue(), getDefinition().getType().getLiteral(), getDefinition().getComplex());
+			newValue = AnyUtils.convertString(getDefinition().getValue(), getDefinition().getType().getLiteral(), getDefinition().isComplex());
 		} else {
 			newValue = null;
 		}
@@ -249,7 +247,7 @@ public class ScaSimplePropertyImpl extends ScaAbstractPropertyImpl<Simple> imple
 	public boolean isDefaultValue() {
 		Object newValue;
 		if (getDefinition() != null && getDefinition().getType() != null) {
-			newValue = AnyUtils.convertString(getDefinition().getValue(), getDefinition().getType().getLiteral(), getDefinition().getComplex());
+			newValue = AnyUtils.convertString(getDefinition().getValue(), getDefinition().getType().getLiteral(), getDefinition().isComplex());
 		} else {
 			newValue = null;
 		}

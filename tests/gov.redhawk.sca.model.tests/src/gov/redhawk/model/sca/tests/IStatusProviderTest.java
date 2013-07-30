@@ -8,7 +8,7 @@
  * the terms of the Eclipse Public License v1.0 which accompanies this distribution, and is available at 
  * http://www.eclipse.org/legal/epl-v10.html
  *******************************************************************************/
- // BEGIN GENERATED CODE
+// BEGIN GENERATED CODE
 package gov.redhawk.model.sca.tests;
 
 import gov.redhawk.model.sca.IStatusProvider;
@@ -129,7 +129,7 @@ public abstract class IStatusProviderTest extends TestCase {
 		// END GENERATED CODE
 		Assert.assertTrue(getFixture().getStatus().isOK());
 		ScaModelCommand.execute(getFixture(), new SetStatusCommand<IStatusProvider>(getFixture(), ScaPackage.Literals.ISTATUS_PROVIDER__STATUS, new Status(
-		        Status.ERROR, ScaModelPlugin.ID, "Test Error", null)));
+			Status.ERROR, ScaModelPlugin.ID, "Test Error", null)));
 		Assert.assertFalse(getFixture().getStatus().isOK());
 		// BEGIN GENERATED CODE
 	}
@@ -145,7 +145,7 @@ public abstract class IStatusProviderTest extends TestCase {
 		// END GENERATED CODE
 		Assert.assertTrue(getFixture().getStatus().isOK());
 		ScaModelCommand.execute(getFixture(), new SetStatusCommand<IStatusProvider>(getFixture(), ScaPackage.Literals.ISTATUS_PROVIDER__STATUS, new Status(
-		        Status.ERROR, ScaModelPlugin.ID, "Test Error", null)));
+			Status.ERROR, ScaModelPlugin.ID, "Test Error", null)));
 		Assert.assertFalse(getFixture().getStatus().isOK());
 		ScaModelCommand.execute(getFixture(), new ScaModelCommand() {
 

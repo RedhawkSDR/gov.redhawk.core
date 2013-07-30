@@ -8,7 +8,7 @@
  * the terms of the Eclipse Public License v1.0 which accompanies this distribution, and is available at 
  * http://www.eclipse.org/legal/epl-v10.html
  *******************************************************************************/
- // BEGIN GENERATED CODE
+// BEGIN GENERATED CODE
 package gov.redhawk.model.sca.tests;
 
 import gov.redhawk.model.sca.ScaPortContainer;
@@ -84,13 +84,9 @@ public abstract class ScaPortContainerTest extends TestCase {
 	 * @generated
 	 */
 	public void testGetStatus() {
-		// END GENERATED CODE
-		
-		// FIXME: implement this feature getter test method
+		// TODO: implement this feature getter test method
 		// Ensure that you remove @generated or mark it @generated NOT
 		fail();
-		
-		// BEGIN GENERATED CODE
 	}
 
 	/**
@@ -101,13 +97,9 @@ public abstract class ScaPortContainerTest extends TestCase {
 	 * @generated
 	 */
 	public void testGetScaPort__String() {
-		// END GENERATED CODE
-		
-		// FIXME: implement this operation test method
+		// TODO: implement this operation test method
 		// Ensure that you remove @generated or mark it @generated NOT
 		fail();
-		
-		// BEGIN GENERATED CODE
 	}
 
 	/**
@@ -118,13 +110,9 @@ public abstract class ScaPortContainerTest extends TestCase {
 	 * @generated
 	 */
 	public void testFetchPorts__IProgressMonitor() {
-		// END GENERATED CODE
-		
-		// FIXME: implement this operation test method
+		// TODO: implement this operation test method
 		// Ensure that you remove @generated or mark it @generated NOT
 		fail();
-		
-		// BEGIN GENERATED CODE
 	}
 
 	/**
@@ -135,13 +123,9 @@ public abstract class ScaPortContainerTest extends TestCase {
 	 * @generated
 	 */
 	public void testSetStatus__EStructuralFeature_IStatus() {
-		// END GENERATED CODE
-		
-		// FIXME: implement this operation test method
+		// TODO: implement this operation test method
 		// Ensure that you remove @generated or mark it @generated NOT
 		fail();
-		
-		// BEGIN GENERATED CODE
 	}
 
 	/**
@@ -152,13 +136,9 @@ public abstract class ScaPortContainerTest extends TestCase {
 	 * @generated
 	 */
 	public void testClearAllStatus() {
-		// END GENERATED CODE
-		
-		// FIXME: implement this operation test method
+		// TODO: implement this operation test method
 		// Ensure that you remove @generated or mark it @generated NOT
 		fail();
-		
-		// BEGIN GENERATED CODE
 	}
 
 	/**
@@ -169,13 +149,9 @@ public abstract class ScaPortContainerTest extends TestCase {
 	 * @generated
 	 */
 	public void testGetStatus__EStructuralFeature() {
-		// END GENERATED CODE
-		
-		// FIXME: implement this operation test method
+		// TODO: implement this operation test method
 		// Ensure that you remove @generated or mark it @generated NOT
 		fail();
-		
-		// BEGIN GENERATED CODE
 	}
 
 } //ScaPortContainerTest

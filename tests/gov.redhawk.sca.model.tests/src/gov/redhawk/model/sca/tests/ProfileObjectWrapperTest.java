@@ -8,7 +8,7 @@
  * the terms of the Eclipse Public License v1.0 which accompanies this distribution, and is available at 
  * http://www.eclipse.org/legal/epl-v10.html
  *******************************************************************************/
- // BEGIN GENERATED CODE
+// BEGIN GENERATED CODE
 package gov.redhawk.model.sca.tests;
 
 import gov.redhawk.model.sca.ProfileObjectWrapper;
@@ -66,13 +66,9 @@ public abstract class ProfileObjectWrapperTest extends IStatusProviderTest {
 	 * @generated
 	 */
 	public void testGetProfileURI() {
-		// END GENERATED CODE
-		
-		// FIXME: implement this feature getter test method
+		// TODO: implement this feature getter test method
 		// Ensure that you remove @generated or mark it @generated NOT
 		fail();
-		
-		// BEGIN GENERATED CODE
 	}
 
 	/**
@@ -83,13 +79,9 @@ public abstract class ProfileObjectWrapperTest extends IStatusProviderTest {
 	 * @generated
 	 */
 	public void testSetProfileURI() {
-		// END GENERATED CODE
-		
-		// FIXME: implement this feature setter test method
+		// TODO: implement this feature setter test method
 		// Ensure that you remove @generated or mark it @generated NOT
 		fail();
-		
-		// END GENERATED CODE
 	}
 
 	/**
@@ -100,13 +92,9 @@ public abstract class ProfileObjectWrapperTest extends IStatusProviderTest {
 	 * @generated
 	 */
 	public void testUnsetProfileURI() {
-		// END GENERATED CODE
-		
-		// FIXME: implement this test method
+		// TODO: implement this test method
 		// Ensure that you remove @generated or mark it @generated NOT
 		fail();
-		
-		// BEGIN GENERATED CODE
 	}
 
 	/**
@@ -117,13 +105,9 @@ public abstract class ProfileObjectWrapperTest extends IStatusProviderTest {
 	 * @generated
 	 */
 	public void testIsSetProfileURI() {
-		// END GENERATED CODE
-		
-		// FIXME: implement this test method
+		// TODO: implement this test method
 		// Ensure that you remove @generated or mark it @generated NOT
 		fail();
-		
-		// BEGIN GENERATED CODE
 	}
 	/**
 	 * Tests the '{@link gov.redhawk.model.sca.ProfileObjectWrapper#getProfileObj() <em>Profile Obj</em>}' feature getter.
@@ -168,13 +152,9 @@ public abstract class ProfileObjectWrapperTest extends IStatusProviderTest {
 	 * @generated
 	 */
 	public void testUnsetProfileObj() {
-		// END GENERATED CODE
-		
-		// FIXME: implement this test method
+		// TODO: implement this test method
 		// Ensure that you remove @generated or mark it @generated NOT
 		fail();
-		
-		// BEGIN GENERATED CODE
 	}
 
 	/**
@@ -185,13 +165,9 @@ public abstract class ProfileObjectWrapperTest extends IStatusProviderTest {
 	 * @generated
 	 */
 	public void testIsSetProfileObj() {
-		// END GENERATED CODE
-		
-		// FIXME: implement this test method
+		// TODO: implement this test method
 		// Ensure that you remove @generated or mark it @generated NOT
 		fail();
-		
-		// BEGIN GENERATED CODE
 	}
 
 	/**
@@ -202,13 +178,9 @@ public abstract class ProfileObjectWrapperTest extends IStatusProviderTest {
 	 * @generated
 	 */
 	public void testGetRootFileStore() {
-		// END GENERATED CODE
-		
-		// FIXME: implement this feature getter test method
+		// TODO: implement this feature getter test method
 		// Ensure that you remove @generated or mark it @generated NOT
 		fail();
-		
-		// BEGIN GENERATED CODE
 	}
 
 	/**
@@ -233,13 +205,9 @@ public abstract class ProfileObjectWrapperTest extends IStatusProviderTest {
 	 * @generated
 	 */
 	public void testFetchProfileURI__IProgressMonitor() {
-		// END GENERATED CODE
-		
-		// FIXME: implement this operation test method
+		// TODO: implement this operation test method
 		// Ensure that you remove @generated or mark it @generated NOT
 		fail();
-		
-		// BEGIN GENERATED CODE
 	}
 
 } //ProfileObjectWrapperTest

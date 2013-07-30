@@ -8,7 +8,7 @@
  * the terms of the Eclipse Public License v1.0 which accompanies this distribution, and is available at 
  * http://www.eclipse.org/legal/epl-v10.html
  *******************************************************************************/
- // BEGIN GENERATED CODE
+// BEGIN GENERATED CODE
 package gov.redhawk.model.sca.tests;
 
 import gov.redhawk.model.sca.ScaDeviceManager;
@@ -21,9 +21,16 @@ import junit.textui.TestRunner;
  * <!-- begin-user-doc -->
  * A test case for the model object '<em><b>Service</b></em>'.
  * <!-- end-user-doc -->
+ * <p>
+ * The following operations are tested:
+ * <ul>
+ *   <li>{@link gov.redhawk.model.sca.ScaPortContainer#getScaPort(java.lang.String) <em>Get Sca Port</em>}</li>
+ *   <li>{@link gov.redhawk.model.sca.ScaPortContainer#fetchPorts(org.eclipse.core.runtime.IProgressMonitor) <em>Fetch Ports</em>}</li>
+ * </ul>
+ * </p>
  * @generated
  */
-public class ScaServiceTest extends CorbaObjWrapperTest {
+public class ScaServiceTest extends ScaPropertyContainerTest {
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -81,6 +88,29 @@ public class ScaServiceTest extends CorbaObjWrapperTest {
 	protected void tearDown() throws Exception {
 		this.env = null;
 		setFixture(null);
+	}
+
+	/**
+	 * Tests the '{@link gov.redhawk.model.sca.ScaPortContainer#getScaPort(java.lang.String) <em>Get Sca Port</em>}' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see gov.redhawk.model.sca.ScaPortContainer#getScaPort(java.lang.String)
+	 * @generated NOT
+	 */
+	public void testGetScaPort__String() {
+		getFixture().getScaPort(null);
+	}
+
+	/**
+	 * Tests the '{@link gov.redhawk.model.sca.ScaPortContainer#fetchPorts(org.eclipse.core.runtime.IProgressMonitor) <em>Fetch Ports</em>}' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see gov.redhawk.model.sca.ScaPortContainer#fetchPorts(org.eclipse.core.runtime.IProgressMonitor)
+	 * @generated NOT
+	 */
+	public void testFetchPorts__IProgressMonitor() {
+		getFixture().fetchPorts(null);
+		Assert.assertTrue(getFixture().isSetPorts());
 	}
 
 	@Override

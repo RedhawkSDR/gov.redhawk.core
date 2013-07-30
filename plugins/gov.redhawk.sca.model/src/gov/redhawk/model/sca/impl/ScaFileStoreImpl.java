@@ -9,7 +9,7 @@
  * http://www.eclipse.org/legal/epl-v10.html
  *******************************************************************************/
 
- // BEGIN GENERATED CODE
+// BEGIN GENERATED CODE
 package gov.redhawk.model.sca.impl;
 
 import gov.redhawk.model.sca.RefreshDepth;
@@ -477,7 +477,7 @@ public class ScaFileStoreImpl extends IStatusProviderImpl implements ScaFileStor
 	 */
 	public void refresh(IProgressMonitor monitor, RefreshDepth depth) throws InterruptedException {
 		// END GENERATED CODE	
-		switch(depth) {
+		switch (depth) {
 		case FULL:
 		case CHILDREN:
 			internalFetchChildren(monitor);
@@ -513,51 +513,51 @@ public class ScaFileStoreImpl extends IStatusProviderImpl implements ScaFileStor
 				FileStoreData data = new FileStoreData(childStore, isDirectory);
 				newChildrenMap.put(childStore.getName(), data);
 			}
-			
+
 			ScaModelCommand.execute(parentStore, new ScaModelCommand() {
-				
+
 				public void execute() {
-	                Map<String, ScaFileStore> currentChildren = new HashMap<String, ScaFileStore>();
-	                for (ScaFileStore store : parentStore.getChildren()) {
-	                	currentChildren.put(store.getFileStore().getName(), store);
-	                }
-	                
-	                Map<String, ScaFileStore> removeChildrenMap = new HashMap<String, ScaFileStore>(currentChildren);
-	                removeChildrenMap.keySet().removeAll(newChildrenMap.keySet());
-	                
-	                if (!removeChildrenMap.isEmpty() && !parentStore.getChildren().isEmpty()) {
-	                	parentStore.getChildren().removeAll(removeChildrenMap.values());
-	                }
-	                
-	                newChildrenMap.keySet().removeAll(currentChildren.keySet());
-	                
-	                for (FileStoreData childStore : newChildrenMap.values()) {
-	                	ScaFileStoreImpl childFileStore = new ScaFileStoreImpl();
-	                	childFileStore.setDirectory(childStore.isDirectory);
-	                	parentStore.getChildren().add(childFileStore);
+					Map<String, ScaFileStore> currentChildren = new HashMap<String, ScaFileStore>();
+					for (ScaFileStore store : parentStore.getChildren()) {
+						currentChildren.put(store.getFileStore().getName(), store);
+					}
+
+					Map<String, ScaFileStore> removeChildrenMap = new HashMap<String, ScaFileStore>(currentChildren);
+					removeChildrenMap.keySet().removeAll(newChildrenMap.keySet());
+
+					if (!removeChildrenMap.isEmpty() && !parentStore.getChildren().isEmpty()) {
+						parentStore.getChildren().removeAll(removeChildrenMap.values());
+					}
+
+					newChildrenMap.keySet().removeAll(currentChildren.keySet());
+
+					for (FileStoreData childStore : newChildrenMap.values()) {
+						ScaFileStoreImpl childFileStore = new ScaFileStoreImpl();
+						childFileStore.setDirectory(childStore.isDirectory);
+						parentStore.getChildren().add(childFileStore);
 						childFileStore.setFileStore(childStore.fileStore);
-	                }
-	                
-	                if (!parentStore.isSetChildren()) {
-	                	parentStore.getChildren().clear();
-	                }
-	                
-	                parentStore.setStatus(ScaPackage.Literals.SCA_FILE_STORE__CHILDREN, Status.OK_STATUS);
-                }
-				
+					}
+
+					if (!parentStore.isSetChildren()) {
+						parentStore.getChildren().clear();
+					}
+
+					parentStore.setStatus(ScaPackage.Literals.SCA_FILE_STORE__CHILDREN, Status.OK_STATUS);
+				}
+
 			});
-			subMonitor.worked(10);  //SUPPRESS CHECKSTYLE MagicNumbers
+			subMonitor.worked(10); //SUPPRESS CHECKSTYLE MagicNumbers
 			subMonitor.done();
 		} catch (final CoreException e) {
 			ScaModelCommand.execute(parentStore, new ScaModelCommand() {
-				
+
 				public void execute() {
 					parentStore.unsetChildren();
 					parentStore.setStatus(ScaPackage.Literals.SCA_FILE_STORE__CHILDREN, e.getStatus());
-                }
-				
+				}
+
 			});
-		} 
+		}
 		// BEGIN GENERATED CODE
 	}
 

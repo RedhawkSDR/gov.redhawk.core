@@ -8,10 +8,13 @@
  * the terms of the Eclipse Public License v1.0 which accompanies this distribution, and is available at 
  * http://www.eclipse.org/legal/epl-v10.html
  *******************************************************************************/
- // BEGIN GENERATED CODE
+// BEGIN GENERATED CODE
 package gov.redhawk.model.sca.tests;
 
+import java.net.URI;
+
 import gov.redhawk.model.sca.ScaFileSystem;
+import gov.redhawk.model.sca.commands.ScaModelCommand;
 
 import org.junit.Assert;
 
@@ -87,14 +90,12 @@ public abstract class ScaFileSystemTest extends CorbaObjWrapperTest {
 	
 	@Override
 	public void testRefreshWithNullAndDispose() throws InterruptedException {
-		// TODO Auto-generated method stub
 		
 	}
 	
 	@Override
 	public void testFetchAttributes__IProgressMonitor()
 			throws InterruptedException {
-		// TODO Auto-generated method stub
 		super.testFetchAttributes__IProgressMonitor();
 	}
 
@@ -109,6 +110,35 @@ public abstract class ScaFileSystemTest extends CorbaObjWrapperTest {
 		// END GENERATED CODE
 		Assert.assertNotNull(getFixture().getFileSystemURI());
 		// BEGIN GENERATED CODE
+	}
+
+	/**
+	 * Tests the '{@link gov.redhawk.model.sca.ScaFileSystem#setFileSystemURI(java.net.URI) <em>File System URI</em>}' feature setter.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see gov.redhawk.model.sca.ScaFileSystem#setFileSystemURI(java.net.URI)
+	 * @generated NOT
+	 */
+	public void testSetFileSystemURI() {
+		final URI uri = getFixture().getFileSystemURI();
+		ScaModelCommand.execute(getFixture(), new ScaModelCommand() {
+			
+			@Override
+			public void execute() {
+				getFixture().setFileSystemURI(null);
+			}
+		});
+		
+		Assert.assertNull(getFixture().getFileSystemURI());
+		
+		ScaModelCommand.execute(getFixture(), new ScaModelCommand() {
+			
+			@Override
+			public void execute() {
+				getFixture().setFileSystemURI(uri);
+			}
+		});
+		Assert.assertEquals(uri, getFixture().getFileSystemURI());
 	}
 
 	/**

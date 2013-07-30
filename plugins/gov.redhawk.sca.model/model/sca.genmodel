@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<genmodel:GenModel xmi:version="2.0"
-    xmlns:xmi="http://www.omg.org/XMI" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore"
-    xmlns:genmodel="http://www.eclipse.org/emf/2002/GenModel" modelDirectory="/gov.redhawk.sca.model/src"
-    editorDirectory="" modelPluginID="gov.redhawk.sca.model" templateDirectory="/mil.jpeojtrs.sca.templates/templates"
-    dynamicTemplates="true" forceOverwrite="true" modelName="Sca" testsDirectory="/gov.redhawk.sca.model.tests/src"
-    importerID="org.eclipse.emf.importer.ecore" containmentProxies="true" complianceLevel="5.0"
-    copyrightFields="false" tableProviders="true" colorProviders="true" runtimeVersion="2.6"
-    usedGenPackages="platform:/plugin/mil.jpeojtrs.sca.cf/model/cf.genmodel#//cf platform:/plugin/mil.jpeojtrs.sca.spd/model/spd.genmodel#//spd platform:/plugin/mil.jpeojtrs.sca.scd/model/scd.genmodel#//scd platform:/plugin/mil.jpeojtrs.sca.prf/model/prf.genmodel#//prf platform:/plugin/org.eclipse.emf.ecore/model/Ecore.genmodel#//ecore platform:/plugin/mil.jpeojtrs.sca.sad/model/sad.genmodel#//sad platform:/plugin/mil.jpeojtrs.sca.dcd/model/dcd.genmodel#//dcd platform:/plugin/mil.jpeojtrs.sca.dmd/model/dmd.genmodel#//dmd platform:/plugin/mil.jpeojtrs.sca.dpd/model/dpd.genmodel#//dpd platform:/plugin/mil.jpeojtrs.sca.partitioning/model/partitioning.genmodel#//partitioning platform:/plugin/mil.jpeojtrs.sca.cf/model/cf.genmodel#//extended">
+<genmodel:GenModel xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore"
+    xmlns:genmodel="http://www.eclipse.org/emf/2002/GenModel" modelDirectory="/gov.redhawk.sca.model/src" editorDirectory=""
+    modelPluginID="gov.redhawk.sca.model" templateDirectory="/gov.redhawk.sca.model/templates"
+    dynamicTemplates="true" forceOverwrite="true" modelName="Sca" codeFormatting="true"
+    testsDirectory="/gov.redhawk.sca.model.tests/src" importerID="org.eclipse.emf.importer.ecore"
+    containmentProxies="true" complianceLevel="6.0" copyrightFields="false" tableProviders="true"
+    colorProviders="true" runtimeVersion="2.8" usedGenPackages="platform:/plugin/mil.jpeojtrs.sca.cf/model/cf.genmodel#//cf platform:/plugin/mil.jpeojtrs.sca.spd/model/spd.genmodel#//spd platform:/plugin/mil.jpeojtrs.sca.scd/model/scd.genmodel#//scd platform:/plugin/mil.jpeojtrs.sca.prf/model/prf.genmodel#//prf platform:/plugin/org.eclipse.emf.ecore/model/Ecore.genmodel#//ecore platform:/plugin/mil.jpeojtrs.sca.sad/model/sad.genmodel#//sad platform:/plugin/mil.jpeojtrs.sca.dcd/model/dcd.genmodel#//dcd platform:/plugin/mil.jpeojtrs.sca.dmd/model/dmd.genmodel#//dmd platform:/plugin/mil.jpeojtrs.sca.dpd/model/dpd.genmodel#//dpd platform:/plugin/mil.jpeojtrs.sca.partitioning/model/partitioning.genmodel#//partitioning platform:/plugin/mil.jpeojtrs.sca.cf/model/cf.genmodel#//extended"
+    importOrganizing="true">
   <genAnnotations source="http://www.eclipse.org/emf/2002/GenModel/exporter/org.eclipse.xsd.ecore.exporter">
     <genAnnotations source="selectedPackages">
       <details key="http://www.redhawk.gov/model/sca" value="sca.xsd"/>
@@ -245,6 +245,7 @@
     </genClasses>
     <genClasses ecoreClass="sca.ecore#//ScaService">
       <genFeatures property="Readonly" createChild="false" ecoreFeature="ecore:EAttribute sca.ecore#//ScaService/name"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference sca.ecore#//ScaService/devMgr"/>
     </genClasses>
     <genClasses image="false" ecoreClass="sca.ecore#//ScaDeviceManagerFileSystem">
       <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference sca.ecore#//ScaDeviceManagerFileSystem/deviceManager"/>
@@ -269,10 +270,8 @@
       <genFeatures property="Readonly" createChild="false" ecoreFeature="ecore:EAttribute sca.ecore#//ScaDomainManager/connected"/>
       <genFeatures property="Readonly" notify="false" createChild="false" ecoreFeature="ecore:EAttribute sca.ecore#//ScaDomainManager/identifier"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute sca.ecore#//ScaDomainManager/name"/>
-      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EAttribute sca.ecore#//ScaDomainManager/orb"/>
       <genFeatures property="Readonly" notify="false" createChild="false" ecoreFeature="ecore:EAttribute sca.ecore#//ScaDomainManager/rootContext"/>
       <genFeatures property="Readonly" notify="false" createChild="false" ecoreFeature="ecore:EAttribute sca.ecore#//ScaDomainManager/state"/>
-      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EAttribute sca.ecore#//ScaDomainManager/rootPoa"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute sca.ecore#//ScaDomainManager/profile"/>
       <genOperations ecoreOperation="sca.ecore#//ScaDomainManager/getDevice">
         <genParameters ecoreParameter="sca.ecore#//ScaDomainManager/getDevice/deviceId"/>

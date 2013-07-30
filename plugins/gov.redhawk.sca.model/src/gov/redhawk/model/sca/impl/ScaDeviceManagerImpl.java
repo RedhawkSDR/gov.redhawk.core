@@ -445,10 +445,8 @@ public class ScaDeviceManagerImpl extends ScaPropertyContainerImpl<DeviceManager
 		for (ValueListIterator<Object> i = getDevices().valueListIterator(); i.hasNext();) {
 			allDevices.add((ScaDevice< ? >) i.next());
 		}
-		return new EcoreEList.UnmodifiableEList<ScaDevice< ? >>(this,
-		        ScaPackage.eINSTANCE.getScaDeviceManager_AllDevices(),
-		        allDevices.size(),
-		        allDevices.toArray());
+		return new EcoreEList.UnmodifiableEList<ScaDevice< ? >>(this, ScaPackage.eINSTANCE.getScaDeviceManager_AllDevices(), allDevices.size(),
+			allDevices.toArray());
 		// BEGIN GENERATED CODE
 	}
 
@@ -1344,14 +1342,8 @@ public class ScaDeviceManagerImpl extends ScaPropertyContainerImpl<DeviceManager
 						}
 					}
 				}
-				transaction.append(fetchDevices(subMonitor.newChild(1),
-				        this,
-				        getRootDevices(),
-				        newRootDevices.toArray(new Device[newRootDevices.size()])));
-				transaction.append(fetchDevices(subMonitor.newChild(1),
-				        this,
-				        getChildDevices(),
-				        newChildDevices.toArray(new Device[newChildDevices.size()])));
+				transaction.append(fetchDevices(subMonitor.newChild(1), this, getRootDevices(), newRootDevices.toArray(new Device[newRootDevices.size()])));
+				transaction.append(fetchDevices(subMonitor.newChild(1), this, getChildDevices(), newChildDevices.toArray(new Device[newChildDevices.size()])));
 				transaction.append(new SetStatusCommand<IStatusProvider>(this, ScaPackage.Literals.SCA_DEVICE_MANAGER__DEVICES, null));
 			} catch (SystemException e) {
 				IStatus status = new Status(Status.ERROR, ScaModelPlugin.ID, "Failed to fetch devices.", e);
@@ -1474,8 +1466,8 @@ public class ScaDeviceManagerImpl extends ScaPropertyContainerImpl<DeviceManager
 		} else if (dev._is_a(LoadableDeviceHelper.id())) {
 			type = ScaPackage.Literals.SCA_LOADABLE_DEVICE;
 		}
-	    return type;
-    }
+		return type;
+	}
 
 	/**
 	 * @since 17.0
@@ -1516,16 +1508,10 @@ public class ScaDeviceManagerImpl extends ScaPropertyContainerImpl<DeviceManager
 		return getPorts();
 	}
 
-	private static final EStructuralFeature[] PORTS_GROUP_PATH = {
-	        ScaPackage.Literals.PROFILE_OBJECT_WRAPPER__PROFILE_OBJ,
-	        DcdPackage.Literals.DEVICE_CONFIGURATION__DEVICE_MANAGER_SOFT_PKG,
-	        DcdPackage.Literals.DEVICE_MANAGER_SOFT_PKG__SOFT_PKG,
-	        SpdPackage.Literals.SOFT_PKG__DESCRIPTOR,
-	        SpdPackage.Literals.DESCRIPTOR__COMPONENT,
-	        ScdPackage.Literals.SOFTWARE_COMPONENT__COMPONENT_FEATURES,
-	        ScdPackage.Literals.COMPONENT_FEATURES__PORTS,
-	        ScdPackage.Literals.PORTS__GROUP
-	};
+	private static final EStructuralFeature[] PORTS_GROUP_PATH = { ScaPackage.Literals.PROFILE_OBJECT_WRAPPER__PROFILE_OBJ,
+		DcdPackage.Literals.DEVICE_CONFIGURATION__DEVICE_MANAGER_SOFT_PKG, DcdPackage.Literals.DEVICE_MANAGER_SOFT_PKG__SOFT_PKG,
+		SpdPackage.Literals.SOFT_PKG__DESCRIPTOR, SpdPackage.Literals.DESCRIPTOR__COMPONENT, ScdPackage.Literals.SOFTWARE_COMPONENT__COMPONENT_FEATURES,
+		ScdPackage.Literals.COMPONENT_FEATURES__PORTS, ScdPackage.Literals.PORTS__GROUP };
 
 	private final VersionedFeature portsRevision = new VersionedFeature(this, ScaPackage.Literals.SCA_PORT_CONTAINER__PORTS);
 
@@ -1778,9 +1764,8 @@ public class ScaDeviceManagerImpl extends ScaPropertyContainerImpl<DeviceManager
 				subMonitor.worked(1);
 				transaction.addCommand(new SetLocalAttributeCommand(this, newValue, ScaPackage.Literals.SCA_DEVICE_MANAGER__IDENTIFIER));
 			} catch (SystemException e) {
-				transaction.addCommand(new UnsetLocalAttributeCommand(this,
-				        new Status(Status.ERROR, ScaModelPlugin.ID, "Failed to fetch identifier", e),
-				        ScaPackage.Literals.SCA_DEVICE_MANAGER__IDENTIFIER));
+				transaction.addCommand(new UnsetLocalAttributeCommand(this, new Status(Status.ERROR, ScaModelPlugin.ID, "Failed to fetch identifier", e),
+					ScaPackage.Literals.SCA_DEVICE_MANAGER__IDENTIFIER));
 			}
 		} else {
 			transaction.addCommand(new UnsetLocalAttributeCommand(this, null, ScaPackage.Literals.SCA_DEVICE_MANAGER__IDENTIFIER));
@@ -1813,9 +1798,8 @@ public class ScaDeviceManagerImpl extends ScaPropertyContainerImpl<DeviceManager
 				subMonitor.worked(1);
 				transaction.addCommand(new SetLocalAttributeCommand(this, newValue, ScaPackage.Literals.SCA_DEVICE_MANAGER__LABEL));
 			} catch (SystemException e) {
-				transaction.addCommand(new UnsetLocalAttributeCommand(this,
-				        new Status(Status.ERROR, ScaModelPlugin.ID, "Failed to fetch label", e),
-				        ScaPackage.Literals.SCA_DEVICE_MANAGER__LABEL));
+				transaction.addCommand(new UnsetLocalAttributeCommand(this, new Status(Status.ERROR, ScaModelPlugin.ID, "Failed to fetch label", e),
+					ScaPackage.Literals.SCA_DEVICE_MANAGER__LABEL));
 			}
 		} else {
 			transaction.addCommand(new UnsetLocalAttributeCommand(this, null, ScaPackage.Literals.SCA_DEVICE_MANAGER__LABEL));

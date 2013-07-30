@@ -8,7 +8,7 @@
  * the terms of the Eclipse Public License v1.0 which accompanies this distribution, and is available at 
  * http://www.eclipse.org/legal/epl-v10.html
  *******************************************************************************/
- // BEGIN GENERATED CODE
+// BEGIN GENERATED CODE
 package gov.redhawk.model.sca.tests;
 
 import gov.redhawk.model.sca.DataProviderObject;
@@ -61,9 +61,9 @@ public abstract class DataProviderObjectTest extends IStatusProviderTest {
 	public void testAttachDataProviders() {
 		// END GENERATED CODE
 		ScaModelCommand.execute(getFixture(), new ScaModelCommand() {
-			
+
 			public void execute() {
-				getFixture().attachDataProviders();	
+				getFixture().attachDataProviders();
 			}
 		});
 		// BEGIN GENERATED CODE
@@ -79,9 +79,9 @@ public abstract class DataProviderObjectTest extends IStatusProviderTest {
 	public void testDetachDataProviders() {
 		// END GENERATED CODE
 		ScaModelCommand.execute(getFixture(), new ScaModelCommand() {
-			
+
 			public void execute() {
-				getFixture().detachDataProviders();	
+				getFixture().detachDataProviders();
 			}
 		});
 		// BEGIN GENERATED CODE

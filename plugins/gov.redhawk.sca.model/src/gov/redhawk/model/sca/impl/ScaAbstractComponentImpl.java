@@ -9,7 +9,7 @@
  * http://www.eclipse.org/legal/epl-v10.html
  *******************************************************************************/
 
- // BEGIN GENERATED CODE
+// BEGIN GENERATED CODE
 package gov.redhawk.model.sca.impl;
 
 import gov.redhawk.model.sca.ProfileObjectWrapper;
@@ -29,6 +29,7 @@ import gov.redhawk.model.sca.commands.VersionedFeature.Transaction;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 import mil.jpeojtrs.sca.prf.AbstractProperty;
@@ -448,9 +449,10 @@ public abstract class ScaAbstractComponentImpl< R extends Resource > extends Sca
 			return;
 		}
 		Command command = new ScaModelCommand() {
-			
+
 			public void execute() {
-				EcoreUtil.delete(ScaAbstractComponentImpl.this);;
+				EcoreUtil.delete(ScaAbstractComponentImpl.this);
+				;
 			}
 		};
 		resource.releaseObject();
@@ -871,12 +873,17 @@ public abstract class ScaAbstractComponentImpl< R extends Resource > extends Sca
 	@Override
 	protected List<AbstractProperty> fetchPropertyDefinitions(IProgressMonitor monitor) {
 		Properties propertyDefs = ScaEcoreUtils.getFeature(fetchProfileObject(monitor), PRF_PATH);
-		List<AbstractProperty> retVal = new ArrayList<AbstractProperty>(propertyDefs.getProperties().size());
-		for (ValueListIterator<Object> i = propertyDefs.getProperties().valueListIterator(); i.hasNext();) {
-			Object propertyDefObj = i.next();
-			if (propertyDefObj instanceof AbstractProperty) {
-				retVal.add((AbstractProperty) propertyDefObj);
+		List<AbstractProperty> retVal;
+		if (propertyDefs != null) {
+			retVal = new ArrayList<AbstractProperty>(propertyDefs.getProperties().size());
+			for (ValueListIterator<Object> i = propertyDefs.getProperties().valueListIterator(); i.hasNext();) {
+				Object propertyDefObj = i.next();
+				if (propertyDefObj instanceof AbstractProperty) {
+					retVal.add((AbstractProperty) propertyDefObj);
+				}
 			}
+		} else {
+			retVal = Collections.emptyList();
 		}
 		return retVal;
 	}

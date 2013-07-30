@@ -8,7 +8,7 @@
  * the terms of the Eclipse Public License v1.0 which accompanies this distribution, and is available at 
  * http://www.eclipse.org/legal/epl-v10.html
  *******************************************************************************/
- // BEGIN GENERATED CODE
+// BEGIN GENERATED CODE
 package gov.redhawk.model.sca.tests;
 
 import gov.redhawk.model.sca.ScaAbstractProperty;
@@ -274,7 +274,7 @@ public abstract class ScaAbstractPropertyTest extends IStatusProviderTest {
 	public void testValueEquals__Any() {
 		// END GENERATED CODE
 		Any any = getFixture().toAny();
-		Assert.assertTrue(getFixture().valueEquals(any));	
+		Assert.assertTrue(getFixture().valueEquals(any));
 		// BEGIN GENERATED CODE
 	}
 
@@ -349,7 +349,7 @@ public abstract class ScaAbstractPropertyTest extends IStatusProviderTest {
 	@Override
 	public void testProtected() {
 		try {
-			getFixture().fromAny(ORB.init().create_any());
+			getFixture().fromAny(null);
 			Assert.fail("Object not protected");
 		} catch (final IllegalStateException e) {
 			Assert.assertEquals("Cannot modify resource set without a write transaction", e.getMessage());

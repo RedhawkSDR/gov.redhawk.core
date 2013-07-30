@@ -9,7 +9,7 @@
  * http://www.eclipse.org/legal/epl-v10.html
  *******************************************************************************/
 
- // BEGIN GENERATED CODE
+// BEGIN GENERATED CODE
 package gov.redhawk.model.sca.impl;
 
 import gov.redhawk.model.sca.CorbaObjWrapper;
@@ -431,7 +431,7 @@ public abstract class CorbaObjWrapperImpl< T extends org.omg.CORBA.Object > exte
 			};
 
 			try {
-				return ProtectedThreadExecutor.submit(callable); 
+				return ProtectedThreadExecutor.submit(callable);
 			} catch (InterruptedException e1) {
 				return false;
 			} catch (ExecutionException e1) {
@@ -538,7 +538,7 @@ public abstract class CorbaObjWrapperImpl< T extends org.omg.CORBA.Object > exte
 		StringBuffer result = new StringBuffer(super.toString());
 		result.append(" (ior: ");
 		if (iorESet) {
-			result.append(ior); 
+			result.append(ior);
 		} else {
 			result.append("<unset>");
 		}

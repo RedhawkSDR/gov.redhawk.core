@@ -9,7 +9,7 @@
  * http://www.eclipse.org/legal/epl-v10.html
  *******************************************************************************/
 
- // BEGIN GENERATED CODE
+// BEGIN GENERATED CODE
 package gov.redhawk.model.sca.impl;
 
 import gov.redhawk.model.sca.DomainConnectionException;
@@ -868,11 +868,8 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 		final DomainConnectionState oldState = this.state;
 		setStateGen(newState);
 		if (eNotificationRequired()) {
-			eNotify(new ENotificationImpl(this,
-			        Notification.SET,
-			        ScaPackage.SCA_DOMAIN_MANAGER__CONNECTED,
-			        oldState == DomainConnectionState.CONNECTED,
-			        this.state == DomainConnectionState.CONNECTED));
+			eNotify(new ENotificationImpl(this, Notification.SET, ScaPackage.SCA_DOMAIN_MANAGER__CONNECTED, oldState == DomainConnectionState.CONNECTED,
+				this.state == DomainConnectionState.CONNECTED));
 		}
 		notifyAllJob.schedule();
 		// BEGIN GENERATED CODE
@@ -1016,7 +1013,7 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 			final String domMgrName = getDomMgrName();
 
 			monitor.subTask("Resolving Naming Service...");
-//			String nameService = orbProperties.getProperty("ORBInitRef.NameService");
+			//			String nameService = orbProperties.getProperty("ORBInitRef.NameService");
 			ORB orb = orbSession.getOrb();
 			org.omg.CORBA.Object objRef = orb.resolve_initial_references("NameService");
 			monitor.worked(RESOLVE_NAMINGCONTEXT_WORK);
@@ -1030,7 +1027,6 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 
 			});
 			monitor.worked(SET_NAMINGCONTEXT_WORK);
-
 
 			monitor.subTask("Resolving Domain " + domMgrName);
 			final org.omg.CORBA.Object newCorbaObj = newNamingContext.resolve_str(domMgrName);

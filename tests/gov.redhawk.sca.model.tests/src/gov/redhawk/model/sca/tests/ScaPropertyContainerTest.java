@@ -8,7 +8,7 @@
  * the terms of the Eclipse Public License v1.0 which accompanies this distribution, and is available at 
  * http://www.eclipse.org/legal/epl-v10.html
  *******************************************************************************/
- // BEGIN GENERATED CODE
+// BEGIN GENERATED CODE
 package gov.redhawk.model.sca.tests;
 
 import gov.redhawk.model.sca.ScaAbstractProperty;
@@ -97,7 +97,7 @@ public abstract class ScaPropertyContainerTest extends CorbaObjWrapperTest {
 		// END GENERATED CODE
 		final URI oldURI = getFixture().getProfileURI();
 		ScaModelCommand.execute(getFixture(), new ScaModelCommand() {
-			
+
 			public void execute() {
 				getFixture().unsetProfileURI();
 				Assert.assertFalse(getFixture().isSetProfileURI());
@@ -106,7 +106,7 @@ public abstract class ScaPropertyContainerTest extends CorbaObjWrapperTest {
 				getFixture().unsetProfileURI();
 			}
 		});
-		
+
 		// END GENERATED CODE
 	}
 
@@ -121,13 +121,13 @@ public abstract class ScaPropertyContainerTest extends CorbaObjWrapperTest {
 		// END GENERATED CODE
 		Assert.assertTrue(getFixture().isSetProfileURI());
 		ScaModelCommand.execute(getFixture(), new ScaModelCommand() {
-			
+
 			public void execute() {
 				getFixture().unsetProfileURI();
 				Assert.assertFalse(getFixture().isSetProfileURI());
 			}
 		});
-		
+
 		// BEGIN GENERATED CODE
 	}
 
@@ -142,12 +142,12 @@ public abstract class ScaPropertyContainerTest extends CorbaObjWrapperTest {
 		// END GENERATED CODE
 		getFixture().fetchProfileURI(null);
 		ScaModelCommand.execute(getFixture(), new ScaModelCommand() {
-			
+
 			public void execute() {
 				Assert.assertTrue(getFixture().isSetProfileURI());
 			}
 		});
-		
+
 		// BEGIN GENERATED CODE
 	}
 
@@ -245,7 +245,7 @@ public abstract class ScaPropertyContainerTest extends CorbaObjWrapperTest {
 	public void testFetchProperties__IProgressMonitor() {
 		// END GENERATED CODE
 		int size = getFixture().getProperties().size();
-		
+
 		ScaModelCommand.execute(getFixture(), new ScaModelCommand() {
 
 			public void execute() {

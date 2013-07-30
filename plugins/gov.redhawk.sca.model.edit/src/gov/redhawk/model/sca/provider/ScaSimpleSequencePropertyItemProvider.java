@@ -9,7 +9,7 @@
  * http://www.eclipse.org/legal/epl-v10.html
  *******************************************************************************/
 
- // BEGIN GENERATED CODE
+// BEGIN GENERATED CODE
 package gov.redhawk.model.sca.provider;
 
 import gov.redhawk.model.sca.ScaAbstractProperty;
@@ -147,16 +147,9 @@ public class ScaSimpleSequencePropertyItemProvider extends ScaAbstractPropertyIt
 	protected void addValuesPropertyDescriptor(Object object) {
 		// END GENERATED CODE
 		final ItemPropertyDescriptor defaultDescriptor = createItemPropertyDescriptor(((ComposeableAdapterFactory) adapterFactory).getRootAdapterFactory(),
-						 getResourceLocator(),
-						 getString("_UI_ScaSimpleSequenceProperty_values_feature"),
-						 getString("_UI_PropertyDescriptor_description", "_UI_ScaSimpleSequenceProperty_values_feature", "_UI_ScaSimpleSequenceProperty_type"),
-						 ScaPackage.Literals.SCA_SIMPLE_SEQUENCE_PROPERTY__VALUES,
-						 true,
-						 false,
-						 false,
-						 ItemPropertyDescriptor.GENERIC_VALUE_IMAGE,
-						 null,
-						 null);
+			getResourceLocator(), getString("_UI_ScaSimpleSequenceProperty_values_feature"),
+			getString("_UI_PropertyDescriptor_description", "_UI_ScaSimpleSequenceProperty_values_feature", "_UI_ScaSimpleSequenceProperty_type"),
+			ScaPackage.Literals.SCA_SIMPLE_SEQUENCE_PROPERTY__VALUES, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null);
 
 		this.itemPropertyDescriptors.add(new ScaSimpleSequenceValueDecorator(object, defaultDescriptor));
 		// BEGIN GENERATED CODE

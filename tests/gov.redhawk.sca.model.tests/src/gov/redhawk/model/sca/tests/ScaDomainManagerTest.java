@@ -8,16 +8,14 @@
  * the terms of the Eclipse Public License v1.0 which accompanies this distribution, and is available at 
  * http://www.eclipse.org/legal/epl-v10.html
  *******************************************************************************/
- // BEGIN GENERATED CODE
+// BEGIN GENERATED CODE
 package gov.redhawk.model.sca.tests;
 
 import gov.redhawk.model.sca.ScaDomainManager;
 import gov.redhawk.model.sca.tests.stubs.ScaTestConstaints;
 import junit.framework.Assert;
 import junit.textui.TestRunner;
-
 import org.eclipse.emf.ecore.EObject;
-
 import CF.DeviceManager;
 import CF.DomainManagerHelper;
 import CF.InvalidFileName;
@@ -43,7 +41,6 @@ import CF.DomainManagerPackage.UnregisterError;
  * <ul>
  *   <li>{@link gov.redhawk.model.sca.ScaDomainManager#getConnectionProperties() <em>Connection Properties</em>}</li>
  *   <li>{@link gov.redhawk.model.sca.ScaDomainManager#isConnected() <em>Connected</em>}</li>
- *   <li>{@link gov.redhawk.model.sca.ScaDomainManager#getRootPoa() <em>Root Poa</em>}</li>
  * </ul>
  * </p>
  * <p>
@@ -149,15 +146,15 @@ public class ScaDomainManagerTest extends ScaPropertyContainerTest {
 	public void testGetFileManager() {
 		// END GENERATED CODE
 		Assert.assertNotNull(getFixture().getFileManager());
-	// TODO Disable for now	
-//		ScaModelCommand.execute(getFixture(), new ScaModelCommand() {
-//
-//			public void execute() {
-//				EcoreUtil.delete(getFixture());
-//				Assert.assertNull(getFixture().getFileManager());
-//			}
-//
-//		});
+		// TODO Disable for now	
+		//		ScaModelCommand.execute(getFixture(), new ScaModelCommand() {
+		//
+		//			public void execute() {
+		//				EcoreUtil.delete(getFixture());
+		//				Assert.assertNull(getFixture().getFileManager());
+		//			}
+		//
+		//		});
 
 		// BEGIN GENERATED CODE
 	}
@@ -186,13 +183,13 @@ public class ScaDomainManagerTest extends ScaPropertyContainerTest {
 		// END GENERATED CODE
 		Assert.assertTrue(getFixture().isConnected());
 		// TODO Disable disconnect check for now
-//		ScaModelCommand.execute(getFixture(), new ScaModelCommand() {
-//
-//			public void execute() {
-//				getFixture().disconnect();
-//			}
-//		});
-//		Assert.assertFalse(getFixture().isConnected());
+		//		ScaModelCommand.execute(getFixture(), new ScaModelCommand() {
+		//
+		//			public void execute() {
+		//				getFixture().disconnect();
+		//			}
+		//		});
+		//		Assert.assertFalse(getFixture().isConnected());
 		// BEGIN GENERATED CODE
 	}
 
@@ -235,7 +232,7 @@ public class ScaDomainManagerTest extends ScaPropertyContainerTest {
 		// END GENERATED CODE
 		// TODO Disabled for now
 		//		getFixture().connect(null, RefreshDepth.SELF);
-		
+
 		// BEGIN GENERATED CODE
 	}
 
@@ -249,12 +246,12 @@ public class ScaDomainManagerTest extends ScaPropertyContainerTest {
 	public void testDisconnect() {
 		// END GENERATED CODE
 		// TODO
-//		ScaModelCommand.execute(getFixture(), new ScaModelCommand() {
-//
-//			public void execute() {
-//				getFixture().disconnect();
-//			}
-//		});
+		//		ScaModelCommand.execute(getFixture(), new ScaModelCommand() {
+		//
+		//			public void execute() {
+		//				getFixture().disconnect();
+		//			}
+		//		});
 		// BEGIN GENERATED CODE
 	}
 

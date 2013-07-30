@@ -8,7 +8,7 @@
  * the terms of the Eclipse Public License v1.0 which accompanies this distribution, and is available at 
  * http://www.eclipse.org/legal/epl-v10.html
  *******************************************************************************/
- // BEGIN GENERATED CODE
+// BEGIN GENERATED CODE
 package gov.redhawk.model.sca.tests;
 
 import gov.redhawk.model.sca.ScaDeviceManager;
@@ -178,7 +178,7 @@ public class ScaDeviceManagerTest extends ScaPropertyContainerTest {
 		// END GENERATED CODE
 		Assert.assertTrue(getFixture().isSetAllDevices());
 		ScaModelCommand.execute(getFixture(), new ScaModelCommand() {
-			
+
 			public void execute() {
 				getFixture().unsetAllDevices();
 				Assert.assertFalse(getFixture().isSetAllDevices());
@@ -268,6 +268,51 @@ public class ScaDeviceManagerTest extends ScaPropertyContainerTest {
 	}
 
 	/**
+	 * Tests the '{@link gov.redhawk.model.sca.ScaDeviceManager#setIdentifier(java.lang.String) <em>Identifier</em>}' feature setter.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see gov.redhawk.model.sca.ScaDeviceManager#setIdentifier(java.lang.String)
+	 * @generated NOT
+	 */
+	public void testSetIdentifier() {
+		final String id = getFixture().getIdentifier();
+		ScaModelCommand.execute(getFixture(), new ScaModelCommand() {
+			
+			@Override
+			public void execute() {
+				getFixture().setIdentifier(null);	
+			}
+		});
+		Assert.assertNull(getFixture().getIdentifier());
+		ScaModelCommand.execute(getFixture(), new ScaModelCommand() {
+			
+			@Override
+			public void execute() {
+				getFixture().setIdentifier(id);
+			}
+		});
+		Assert.assertEquals(id, getFixture().getIdentifier());
+	}
+
+	/**
+	 * Tests the '{@link gov.redhawk.model.sca.ScaDeviceManager#unsetIdentifier() <em>unsetIdentifier()</em>}' method.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see gov.redhawk.model.sca.ScaDeviceManager#unsetIdentifier()
+	 * @generated NOT
+	 */
+	public void testUnsetIdentifier() {
+		ScaModelCommand.execute(getFixture(), new ScaModelCommand() {
+			
+			@Override
+			public void execute() {
+				getFixture().unsetIdentifier();
+			}
+		});
+		Assert.assertFalse(getFixture().isSetIdentifier());
+	}
+
+	/**
 	 * Tests the '{@link gov.redhawk.model.sca.ScaDeviceManager#isSetIdentifier() <em>isSetIdentifier()</em>}' method.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -292,6 +337,53 @@ public class ScaDeviceManagerTest extends ScaPropertyContainerTest {
 		final String objLabel = getFixture().getObj().label();
 		Assert.assertEquals(objLabel, getFixture().getLabel());
 		// BEGIN GENERATED CODE
+	}
+
+	/**
+	 * Tests the '{@link gov.redhawk.model.sca.ScaDeviceManager#setLabel(java.lang.String) <em>Label</em>}' feature setter.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see gov.redhawk.model.sca.ScaDeviceManager#setLabel(java.lang.String)
+	 * @generated NOT
+	 */
+	public void testSetLabel() {
+		final String objLabel = getFixture().getLabel();
+		ScaModelCommand.execute(getFixture(), new ScaModelCommand() {
+			
+			@Override
+			public void execute() {
+				getFixture().setLabel(null);
+			}
+		});
+		
+		Assert.assertNull(getFixture().getLabel());
+		ScaModelCommand.execute(getFixture(), new ScaModelCommand() {
+			
+			@Override
+			public void execute() {
+				getFixture().setLabel(objLabel);
+			}
+		});
+		Assert.assertEquals(objLabel, getFixture().getLabel());
+	}
+
+	/**
+	 * Tests the '{@link gov.redhawk.model.sca.ScaDeviceManager#unsetLabel() <em>unsetLabel()</em>}' method.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see gov.redhawk.model.sca.ScaDeviceManager#unsetLabel()
+	 * @generated NOT
+	 */
+	public void testUnsetLabel() {
+		ScaModelCommand.execute(getFixture(), new ScaModelCommand() {
+			
+			@Override
+			public void execute() {
+				getFixture().unsetLabel();
+			}
+		});
+		
+		Assert.assertFalse(getFixture().isSetLabel());
 	}
 
 	/**

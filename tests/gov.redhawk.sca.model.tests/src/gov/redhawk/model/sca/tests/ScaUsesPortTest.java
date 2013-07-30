@@ -8,7 +8,7 @@
  * the terms of the Eclipse Public License v1.0 which accompanies this distribution, and is available at 
  * http://www.eclipse.org/legal/epl-v10.html
  *******************************************************************************/
- // BEGIN GENERATED CODE
+// BEGIN GENERATED CODE
 package gov.redhawk.model.sca.tests;
 
 import gov.redhawk.model.sca.RefreshDepth;
@@ -20,10 +20,8 @@ import gov.redhawk.model.sca.ScaWaveform;
 import gov.redhawk.model.sca.commands.ScaModelCommand;
 import gov.redhawk.model.sca.tests.stubs.ScaTestConstaints;
 import junit.textui.TestRunner;
-
 import org.eclipse.emf.transaction.util.TransactionUtil;
 import org.junit.Assert;
-
 import CF.PortHelper;
 import CF.PortPackage.InvalidPort;
 import CF.PortPackage.OccupiedPort;
@@ -167,13 +165,13 @@ public class ScaUsesPortTest extends ScaPortTest {
 	public void testConnectPort__Object_String() {
 		// END GENERATED CODE
 
-//		try {
-//			getFixture().connectPort(null, "");
-//		} catch (InvalidPort e) {
-//			// PASS
-//		} catch (OccupiedPort e) {
-//			// PASS
-//		}
+		//		try {
+		//			getFixture().connectPort(null, "");
+		//		} catch (InvalidPort e) {
+		//			// PASS
+		//		} catch (OccupiedPort e) {
+		//			// PASS
+		//		}
 
 		// BEGIN GENERATED CODE
 	}
@@ -188,11 +186,11 @@ public class ScaUsesPortTest extends ScaPortTest {
 	 */
 	public void testDisconnectPort__String() {
 		// END GENERATED CODE
-//		try {
-//			getFixture().disconnectPort("");
-//		} catch (InvalidPort e) {
-//			// PASS
-//		}
+		//		try {
+		//			getFixture().disconnectPort("");
+		//		} catch (InvalidPort e) {
+		//			// PASS
+		//		}
 		// BEGIN GENERATED CODE
 	}
 

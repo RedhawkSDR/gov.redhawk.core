@@ -9,7 +9,7 @@
  * http://www.eclipse.org/legal/epl-v10.html
  *******************************************************************************/
 
- // BEGIN GENERATED CODE
+// BEGIN GENERATED CODE
 package gov.redhawk.model.sca.util;
 
 import gov.redhawk.model.sca.CorbaObjWrapper;
@@ -54,11 +54,9 @@ import gov.redhawk.model.sca.ScaWaveform;
 import gov.redhawk.model.sca.ScaWaveformFactory;
 import gov.redhawk.model.sca.services.IScaDataProvider;
 import gov.redhawk.model.sca.services.IScaDataProviderService;
-
 import java.net.URI;
 import java.util.Collection;
 import java.util.Map;
-
 import org.eclipse.core.filesystem.IFileStore;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
@@ -69,7 +67,6 @@ import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.util.EObjectValidator;
 import org.omg.CORBA.Any;
 import org.omg.PortableServer.POA;
-
 import CF.DataType;
 import CF.DevicePackage.AdminType;
 import CF.DevicePackage.OperationalType;

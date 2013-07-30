@@ -9,15 +9,13 @@
  * http://www.eclipse.org/legal/epl-v10.html
  *******************************************************************************/
 
- // BEGIN GENERATED CODE
+// BEGIN GENERATED CODE
 package gov.redhawk.model.sca.provider;
 
 
 import gov.redhawk.model.sca.ScaPort;
-
 import java.util.Collection;
 import java.util.List;
-
 import org.eclipse.emf.common.notify.AdapterFactory;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.edit.provider.IEditingDomainItemProvider;
@@ -85,7 +83,7 @@ IEditingDomainItemProvider, IStructuredItemContentProvider, ITreeItemContentProv
 	@Override
 	public String getText(final Object object) {
 		// END GENERATED CODE
-		final String label = ((ScaPort< ? , ?>) object).getName();
+		final String label = ((ScaPort< ? , ? >) object).getName();
 		return label;
 		// BEGIN GENERATED CODE
 	}

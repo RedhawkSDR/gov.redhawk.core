@@ -9,16 +9,14 @@
  * http://www.eclipse.org/legal/epl-v10.html
  *******************************************************************************/
 
- // BEGIN GENERATED CODE
+// BEGIN GENERATED CODE
 package gov.redhawk.model.sca.provider;
 
 
 import gov.redhawk.model.sca.ScaDeviceManager;
 import gov.redhawk.model.sca.ScaPackage;
-
 import java.util.Collection;
 import java.util.List;
-
 import org.eclipse.emf.common.notify.AdapterFactory;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.ecore.EStructuralFeature;
@@ -194,14 +192,14 @@ IEditingDomainItemProvider, IStructuredItemContentProvider, ITreeItemContentProv
 		final org.omg.CORBA.Object labelValue = ((ScaDeviceManager) object).getObj();
 		final String label;
 		if (labelValue == null) {
-	        label = null;
+			label = null;
 		} else {
-	        label = labelValue.toString();
+			label = labelValue.toString();
 		}
 		if (label == null || label.length() == 0) {
-	        return getString("_UI_ScaDeviceManager_type");
+			return getString("_UI_ScaDeviceManager_type");
 		} else {
-	        return getString("_UI_ScaDeviceManager_type") + " " + label;
+			return getString("_UI_ScaDeviceManager_type") + " " + label;
 		}
 		// BEGIN GENERATED CODE
 	}

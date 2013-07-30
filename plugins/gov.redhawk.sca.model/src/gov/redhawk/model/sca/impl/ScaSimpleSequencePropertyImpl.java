@@ -9,22 +9,19 @@
  * http://www.eclipse.org/legal/epl-v10.html
  *******************************************************************************/
 
- // BEGIN GENERATED CODE
+// BEGIN GENERATED CODE
 package gov.redhawk.model.sca.impl;
 
 import gov.redhawk.model.sca.ScaModelPlugin;
 import gov.redhawk.model.sca.ScaPackage;
 import gov.redhawk.model.sca.ScaSimpleSequenceProperty;
-
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
-
 import mil.jpeojtrs.sca.prf.SimpleSequence;
 import mil.jpeojtrs.sca.util.AnyUtils;
-
 import org.apache.commons.lang.ArrayUtils;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.emf.common.notify.Adapter;
@@ -34,7 +31,6 @@ import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EDataType;
 import org.eclipse.emf.ecore.util.EDataTypeEList;
 import org.omg.CORBA.Any;
-import org.omg.CORBA.TCKind;
 
 /**
  * <!-- begin-user-doc --> An implementation of the model object '
@@ -146,18 +142,18 @@ public class ScaSimpleSequencePropertyImpl extends ScaAbstractPropertyImpl<Simpl
 		}
 
 		/**
-         * @since 14.0
-         */
+		 * @since 14.0
+		 */
 		public boolean isDefaultValue() {
-	        return Arrays.equals(toArray(), getDefaultValues(getOwner().getDefinition()));
-        }
+			return Arrays.equals(toArray(), getDefaultValues(getOwner().getDefinition()));
+		}
 
 		/**
-         * @since 14.0
-         */
+		 * @since 14.0
+		 */
 		public void restoreDefaultValue() {
-	        setDefinition(getOwner().getDefinition());	        
-        }
+			setDefinition(getOwner().getDefinition());
+		}
 
 		// BEGIN GENERATED CODE
 	}

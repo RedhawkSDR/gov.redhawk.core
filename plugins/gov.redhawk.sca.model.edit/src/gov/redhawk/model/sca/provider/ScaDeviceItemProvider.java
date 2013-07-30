@@ -9,7 +9,7 @@
  * http://www.eclipse.org/legal/epl-v10.html
  *******************************************************************************/
 
- // BEGIN GENERATED CODE
+// BEGIN GENERATED CODE
 package gov.redhawk.model.sca.provider;
 
 
@@ -258,7 +258,7 @@ IEditingDomainItemProvider, IStructuredItemContentProvider, ITreeItemContentProv
 	@Override
 	public String getText(final Object object) {
 		// END GENERATED CODE
-		String label = ((ScaDevice<?>) object).label();
+		String label = ((ScaDevice< ? >) object).label();
 		if (label == null || label.length() == 0) {
 			label = "Loading...";
 		}

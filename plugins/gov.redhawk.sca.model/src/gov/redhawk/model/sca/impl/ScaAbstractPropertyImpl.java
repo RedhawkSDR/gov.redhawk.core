@@ -9,7 +9,7 @@
  * http://www.eclipse.org/legal/epl-v10.html
  *******************************************************************************/
 
- // BEGIN GENERATED CODE
+// BEGIN GENERATED CODE
 package gov.redhawk.model.sca.impl;
 
 import gov.redhawk.model.sca.ScaAbstractProperty;
@@ -31,6 +31,7 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.omg.CORBA.Any;
+import org.omg.CORBA.ORB;
 
 import CF.DataType;
 import CF.PropertySetOperations;
@@ -219,7 +220,11 @@ public abstract class ScaAbstractPropertyImpl< T extends AbstractProperty > exte
 		@Override
 		protected IStatus runSilent(IProgressMonitor monitor) {
 			try {
-				setRemoteValue(newRemoteValue);
+				Any tmpValue = newRemoteValue;
+				if (tmpValue == null) {
+					tmpValue = ORB.init().create_any();
+				}
+				setRemoteValue(tmpValue);
 			} catch (PartialConfiguration e) {
 				return new Status(Status.ERROR, ScaModelPlugin.ID, "Failed to set remove value for " + ScaAbstractPropertyImpl.this.getName(), e);
 			} catch (InvalidConfiguration e) {
@@ -367,8 +372,8 @@ public abstract class ScaAbstractPropertyImpl< T extends AbstractProperty > exte
 	public boolean isIgnoreRemoteSet() {
 		// END GENERATED CODE
 		EObject container = eContainer();
-		if (container instanceof ScaAbstractProperty<?>) {
-			ScaAbstractProperty<?> prop = (ScaAbstractProperty<?>) container;
+		if (container instanceof ScaAbstractProperty< ? >) {
+			ScaAbstractProperty< ? > prop = (ScaAbstractProperty< ? >) container;
 			if (prop.isIgnoreRemoteSet()) {
 				return true;
 			}
@@ -446,7 +451,10 @@ public abstract class ScaAbstractPropertyImpl< T extends AbstractProperty > exte
 		EObject container = eContainer();
 		if (container instanceof PropertySetOperations) {
 			PropertySetOperations controller = (PropertySetOperations) container;
-			controller.configure(new DataType[]{new DataType(getId(), any)});
+			String localId = getId();
+			if (localId != null) {
+				controller.configure(new DataType[] { new DataType(localId, any) });
+			}
 		}
 		// BEGIN GENERATED CODE
 	}
@@ -631,52 +639,33 @@ public abstract class ScaAbstractPropertyImpl< T extends AbstractProperty > exte
 	}
 
 	private static boolean valueEquals(Any left, Any right) {
-		if (left == right) {
-			return true;
-		} else if (left == null) {
-			return false;
-		} else if (right != null) {
-			final Object leftObj = AnyUtils.convertAny(left);
-			final Object rightObj = AnyUtils.convertAny(right);
-			if (leftObj == null && rightObj == null) {
-				return true;
-			} else if (leftObj == null || rightObj == null) {
-				return false;
-			} else if (leftObj.getClass() != rightObj.getClass()) {
-				return false;
-			} else if (leftObj instanceof DataType) {
-				final DataType leftData = (DataType) leftObj;
-				final DataType rightData = (DataType) rightObj;
-				return valueEquals(leftData, rightData);
-			} else if (leftObj instanceof Any[]) {
-				final Any[] leftAnySeq = (Any[]) leftObj;
-				final Any[] rightAnySeq = (Any[]) rightObj;
-				if (leftAnySeq.length != rightAnySeq.length) {
-					return false;
-				}
-				for (int i = 0; i < leftAnySeq.length; i++) {
-					if (!valueEquals(leftAnySeq[i], rightAnySeq[i])) {
-						return false;
-					}
-				}
-				return true;
-			} else if (leftObj instanceof DataType[]) {
-				DataType [] leftArray = (DataType[]) leftObj;
-				DataType [] rightArray = (DataType[]) rightObj;
-				if (leftArray.length != rightArray.length) {
-					return false;
-				}
+		final Object leftObj = AnyUtils.convertAny(left);
+		final Object rightObj = AnyUtils.convertAny(right);
+		return valueEquals(leftObj, rightObj);
+	}
+
+	private static boolean valueEquals(Object leftElement, Object rightElement) {
+		if (leftElement instanceof DataType && rightElement instanceof DataType) {
+			return valueEquals((DataType) leftElement, (DataType) rightElement);
+		} else if (leftElement instanceof Any && rightElement instanceof Any){
+			return valueEquals((Any) leftElement, (Any) rightElement);
+		} else if (leftElement instanceof Object [] && rightElement instanceof Object []) {
+			Object [] leftArray = (Object[]) leftElement;
+			Object [] rightArray = (Object[]) rightElement;
+			if (leftArray.length == rightArray.length) {
 				for (int i=0; i<leftArray.length; i++) {
-					if (!valueEquals(leftArray[i], rightArray[i])) {
+					Object leftArrayElement = leftArray[i];
+					Object rightArrayElement = rightArray[i];
+					if (!valueEquals(leftArrayElement, rightArrayElement)) {
 						return false;
 					}
 				}
 				return true;
 			} else {
-				return PluginUtil.equals(leftObj, rightObj);
+				return false;
 			}
 		} else {
-			return false;
+			return PluginUtil.equals(leftElement, rightElement);
 		}
 	}
 

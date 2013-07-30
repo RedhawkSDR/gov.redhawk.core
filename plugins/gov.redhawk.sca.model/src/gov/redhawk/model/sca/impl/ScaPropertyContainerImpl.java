@@ -270,21 +270,21 @@ public abstract class ScaPropertyContainerImpl< P extends org.omg.CORBA.Object, 
 	@Override
 	protected void notifyChanged(Notification msg) {
 		// END GENERATED CODE
-	    super.notifyChanged(msg);
-	    switch(msg.getFeatureID(ScaPropertyContainer.class)) {
-	    case ScaPackage.SCA_PROPERTY_CONTAINER__PROFILE_OBJ:
-	    	if (!PluginUtil.equals(msg.getOldValue(), msg.getNewValue())) {
-	    		unsetProperties();
-	    	}
-	    	break;
-	    case ScaPackage.SCA_PROPERTY_CONTAINER__PROFILE_URI:
-	    	if (!PluginUtil.equals(msg.getOldValue(), msg.getNewValue())) {
-	    		unsetProfileObj();
-	    	}
-	    	break;
-	    default:
-	    	break;
-	    }
+		super.notifyChanged(msg);
+		switch (msg.getFeatureID(ScaPropertyContainer.class)) {
+		case ScaPackage.SCA_PROPERTY_CONTAINER__PROFILE_OBJ:
+			if (!PluginUtil.equals(msg.getOldValue(), msg.getNewValue())) {
+				unsetProperties();
+			}
+			break;
+		case ScaPackage.SCA_PROPERTY_CONTAINER__PROFILE_URI:
+			if (!PluginUtil.equals(msg.getOldValue(), msg.getNewValue())) {
+				unsetProfileObj();
+			}
+			break;
+		default:
+			break;
+		}
 		// BEGIN GENERATED CODE
 	}
 
@@ -297,10 +297,15 @@ public abstract class ScaPropertyContainerImpl< P extends org.omg.CORBA.Object, 
 	public IFileStore getRootFileStore() {
 		// END GENERATED CODE
 		try {
-	        return EFS.getStore(java.net.URI.create(getProfileURI().toString()));
-        } catch (Exception e) {
-	        return null;
-        }
+			URI uri = getProfileURI();
+			if (uri != null) {
+				return EFS.getStore(java.net.URI.create(uri.toString()));
+			} else {
+				return null;
+			}
+		} catch (Exception e) {
+			return null;
+		}
 		// BEGIN GENERATED CODE
 	}
 
@@ -532,12 +537,12 @@ public abstract class ScaPropertyContainerImpl< P extends org.omg.CORBA.Object, 
 		IStatus fetchStatus = Status.OK_STATUS;
 		final PropertiesHolder propHolder = new PropertiesHolder(EMPTY_DATA_TYPE_ARRAY);
 		try {
-			subMonitor.worked(1);	
+			subMonitor.worked(1);
 			if (!isSetProperties()) {
 				transaction.append(new MergePropertiesCommand(this, fetchPropertyDefinitions(subMonitor.newChild(1))));
 			}
 			query(propHolder);
-			subMonitor.worked(1);	
+			subMonitor.worked(1);
 			transaction.append(new SetPropertiesValuesCommand(this, propHolder));
 		} catch (UnknownProperties e) {
 			fetchStatus = new Status(Status.ERROR, ScaModelPlugin.ID, "Failed to query property values.", e);
@@ -548,9 +553,9 @@ public abstract class ScaPropertyContainerImpl< P extends org.omg.CORBA.Object, 
 		} catch (Exception e) {
 			fetchStatus = new Status(Status.ERROR, ScaModelPlugin.ID, "Failed to fetch properties.", e);
 			transaction.append(new UnsetLocalAttributeCommand(this, fetchStatus, ScaPackage.Literals.SCA_PROPERTY_CONTAINER__PROPERTIES));
-		} 
+		}
 		transaction.commit();
-		subMonitor.worked(1);	
+		subMonitor.worked(1);
 		subMonitor.done();
 		return getProperties();
 		// BEGIN GENERATED CODE

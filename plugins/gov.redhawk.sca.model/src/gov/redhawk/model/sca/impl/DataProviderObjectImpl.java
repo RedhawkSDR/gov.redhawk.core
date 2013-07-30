@@ -9,7 +9,7 @@
  * http://www.eclipse.org/legal/epl-v10.html
  *******************************************************************************/
 
- // BEGIN GENERATED CODE
+// BEGIN GENERATED CODE
 package gov.redhawk.model.sca.impl;
 
 import gov.redhawk.model.sca.DataProviderObject;
@@ -301,7 +301,8 @@ public abstract class DataProviderObjectImpl extends IStatusProviderImpl impleme
 					}
 				}
 
-				public void handleException(Throwable exception) { }
+				public void handleException(Throwable exception) {
+				}
 			});
 		}
 		getDataProviders().addAll(newProviders);

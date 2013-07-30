@@ -9,7 +9,7 @@
  * http://www.eclipse.org/legal/epl-v10.html
  *******************************************************************************/
 
- // BEGIN GENERATED CODE
+// BEGIN GENERATED CODE
 package gov.redhawk.model.sca.impl;
 
 import gov.redhawk.model.sca.RefreshDepth;
@@ -608,11 +608,11 @@ public class ScaDeviceImpl< D extends Device > extends ScaAbstractComponentImpl<
 			unsetProfile();
 			unsetChildDevices();
 			break;
-	    case ScaPackage.SCA_DEVICE__PROFILE:
-	    	if (!PluginUtil.equals(msg.getOldValue(), msg.getNewValue())) {
-	    		unsetProfileURI();
+		case ScaPackage.SCA_DEVICE__PROFILE:
+			if (!PluginUtil.equals(msg.getOldValue(), msg.getNewValue())) {
+				unsetProfileURI();
 			}
-	    	break;
+			break;
 		default:
 			break;
 		}
@@ -790,14 +790,14 @@ public class ScaDeviceImpl< D extends Device > extends ScaAbstractComponentImpl<
 			}
 			return;
 		}
-		
+
 		SubMonitor subMonitor = SubMonitor.convert(monitor, 2); //SUPPRESS CHECKSTYLE MagicNumber
 		final org.omg.CORBA.Object localObj = getCorbaObj();
 		Transaction transaction = aggregateDevicesRevision.createTransaction();
 		if (localObj != null) {
 			AggregateDevice aggDev = null;
 			IStatus tmpStatus = Status.OK_STATUS;
-			
+
 			try {
 				if (_is_a(AggregateDeviceHelper.id())) {
 					aggDev = AggregateDeviceHelper.unchecked_narrow(getCorbaObj());

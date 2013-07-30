@@ -8,7 +8,7 @@
  * the terms of the Eclipse Public License v1.0 which accompanies this distribution, and is available at 
  * http://www.eclipse.org/legal/epl-v10.html
  *******************************************************************************/
- // BEGIN GENERATED CODE
+// BEGIN GENERATED CODE
 package gov.redhawk.model.sca.tests;
 
 import gov.redhawk.model.sca.CorbaObjWrapper;
@@ -71,6 +71,58 @@ public abstract class CorbaObjWrapperTest extends DataProviderObjectTest {
 		Assert.assertNotNull(getFixture().getObj());
 		Assert.assertEquals(getFixture().getObj().toString(), getFixture().getIor());
 		// BEGIN GENERATED CODE
+	}
+
+	/**
+	 * Tests the '{@link gov.redhawk.model.sca.CorbaObjWrapper#setIor(java.lang.String) <em>Ior</em>}' feature setter.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see gov.redhawk.model.sca.CorbaObjWrapper#setIor(java.lang.String)
+	 * @generated NOT
+	 */
+	public void testSetIor() {
+		getFixture().fetchNarrowedObject(null);
+		final String ior = getFixture().getIor();
+		ScaModelCommand.execute(getFixture(), new ScaModelCommand() {
+			
+			@Override
+			public void execute() {
+				getFixture().setIor(null);
+			}
+		});
+		
+		Assert.assertNull(getFixture().getIor());
+		ScaModelCommand.execute(getFixture(), new ScaModelCommand() {
+			
+			@Override
+			public void execute() {
+				getFixture().setIor(ior);
+			}
+		});
+		
+		Assert.assertEquals(ior, getFixture().getIor());
+	}
+
+	/**
+	 * Tests the '{@link gov.redhawk.model.sca.CorbaObjWrapper#unsetIor() <em>unsetIor()</em>}' method.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see gov.redhawk.model.sca.CorbaObjWrapper#unsetIor()
+	 * @generated NOT
+	 */
+	public void testUnsetIor() {
+		getFixture().fetchNarrowedObject(null);
+		Assert.assertTrue(getFixture().isSetIor());
+		ScaModelCommand.execute(getFixture(), new ScaModelCommand() {
+			
+			@Override
+			public void execute() {
+				getFixture().unsetIor();
+			}
+		});
+		
+		Assert.assertFalse(getFixture().isSetIor());
+		Assert.assertNull(getFixture().getIor());
 	}
 
 	/**
