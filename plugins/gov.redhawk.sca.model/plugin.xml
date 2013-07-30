@@ -48,10 +48,6 @@
             class="gov.redhawk.model.sca.util.ScaResourceFactoryImpl_100"
             contentTypeIdentifier="http://www.redhawk.gov/model/sca">
       </parser>
-      <parser
-            class="gov.redhawk.model.sca.util.ScaResourceFactoryImpl"
-            contentTypeIdentifier="http://www.redhawk.gov/model/sca/2.0.0">
-      </parser>
    </extension>
     <extension point="org.eclipse.core.contenttype.contentTypes">
       <content-type
