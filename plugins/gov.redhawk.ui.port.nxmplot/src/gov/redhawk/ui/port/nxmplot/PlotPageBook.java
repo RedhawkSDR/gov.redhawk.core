@@ -1,10 +1,10 @@
-/** 
- * This file is protected by Copyright. 
+/**
+ * This file is protected by Copyright.
  * Please refer to the COPYRIGHT file distributed with this source distribution.
- * 
+ *
  * This file is part of REDHAWK IDE.
- * 
- * All rights reserved.  This program and the accompanying materials are made available under 
+ *
+ * All rights reserved.  This program and the accompanying materials are made available under
  * the terms of the Eclipse Public License v1.0 which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html.
  *
@@ -38,10 +38,10 @@ public class PlotPageBook extends Composite {
 	/** The page book. */
 	private PageBook pageBook;
 
-	/** The next midas plot Line. */
+	/** The NeXtMidas line plot. */
 	private AbstractNxmPlotWidget nxmPlotWidgetLine;
 
-	/** The next midas plot raster. */
+	/** The NeXtMidas raster plot. */
 	private AbstractNxmPlotWidget nxmPlotWidgetRaster;
 
 	/** The current state of the raster being visible. */
@@ -112,7 +112,7 @@ public class PlotPageBook extends Composite {
 		} else {
 			connList = inputConnList;
 		}
-		
+
 		final String rasterPlotArgs = NxmPlotUtil.getDefaultPlotArgs(PlotType.RASTER);
 		final String rasterPlotSwitches = NxmPlotUtil.getDefaultPlotSwitches(PlotType.RASTER);
 		if (createRaster) {
@@ -125,28 +125,34 @@ public class PlotPageBook extends Composite {
 
 		this.pageBook.showPage(this.pageBook.getTabList()[this.rasterShowing ? 1 : 0]); // SUPPRESS CHECKSTYLE AvoidInline
 		nxmPlotWidgetLine.initPlot(linePlotSwitches, linePlotArgs);
-		new Job("Adding Plot source...") {
+		new Job("Adding Line Plot source...") {
 
 			@Override
 			protected IStatus run(IProgressMonitor monitor) {
 				PlotPageBook.this.linePlotSessions = NxmPlotUtil.addSource(connList, fft, PlotPageBook.this.nxmPlotWidgetLine, plotQualifiers);
+				PlotSettings settings = PlotPageBook.this.nxmPlotWidgetLine.getPlotSettings();
+				settings.setPlotType(PlotType.LINE);
+				settings.setSessions(PlotPageBook.this.linePlotSessions);
 				return Status.OK_STATUS;
 			}
 
 		} .schedule();
-		
+
 		if (nxmPlotWidgetRaster != null) {
 			nxmPlotWidgetRaster.initPlot(rasterPlotSwitches, rasterPlotArgs);
-			new Job("Adding Plot source...") {
+			new Job("Adding Raster Plot source...") {
 
 				@Override
 				protected IStatus run(IProgressMonitor monitor) {
 					PlotPageBook.this.rasterPlotSessions = NxmPlotUtil.addSource(connList, fft, PlotPageBook.this.nxmPlotWidgetRaster, plotQualifiers);
+					PlotSettings settings = PlotPageBook.this.nxmPlotWidgetRaster.getPlotSettings();
+					settings.setPlotType(PlotType.RASTER);
+					settings.setSessions(PlotPageBook.this.rasterPlotSessions);
 					return Status.OK_STATUS;
 				}
-				
+
 			} .schedule();
-			
+
 		}
 
 	}
@@ -249,6 +255,17 @@ public class PlotPageBook extends Composite {
 		}
 	}
 
+	/** opposite of {@link #getActivePlotWidget()}.
+	 * @since 5.0
+	 */
+	public AbstractNxmPlotWidget getInactivePlotWidget() {
+		if (isRasterShowing()) {
+			return getNxmPlotWidgetLine();
+		} else {
+			return getNxmPlotWidgetRaster();
+		}
+	}
+
 	/**
 	 * @since 3.0
 	 */
@@ -273,6 +290,22 @@ public class PlotPageBook extends Composite {
 
 	public FftSettings getFft() {
 		return this.fftSettings;
+	}
+
+	/** <b>INTERNAL USE ONLY</b>
+	 * @return the linePlotSessions
+	 * @since 5.0
+	 */
+	public List<IPlotSession> getLinePlotSessions() {
+		return linePlotSessions;
+	}
+
+	/** <b>INTERNAL USE ONLY</b>
+	 * @return the rasterPlotSessions
+	 * @since 5.0
+	 */
+	public List<IPlotSession> getRasterPlotSessions() {
+		return rasterPlotSessions;
 	}
 
 }

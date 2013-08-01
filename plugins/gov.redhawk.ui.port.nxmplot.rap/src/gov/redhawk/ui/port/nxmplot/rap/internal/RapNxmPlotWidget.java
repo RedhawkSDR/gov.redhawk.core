@@ -46,7 +46,7 @@ public class RapNxmPlotWidget extends AbstractNxmPlotWidget {
 		RedhawkNxmUtil.initializeRedhawkOptionTrees();
 		nxmComp.initNxm();
 		nxmComp.getNxmShell().M.registry.put(MSG_HANDLER_ID, getPlotMessageHandler());
-    }
+	}
 
 	public synchronized void initPlot(String plotSwitches, String plotArgs) {
 		if (initialized) {
@@ -69,8 +69,8 @@ public class RapNxmPlotWidget extends AbstractNxmPlotWidget {
 			removeSource(source);
 		}
 		runClientCommand("PIPE STOP"); // tell client macro to end
-	    super.dispose();
-	    nxmComp = null;
+		super.dispose();
+		nxmComp = null;
 	}
 
 	private void assertNotDisposed() {
@@ -152,9 +152,9 @@ public class RapNxmPlotWidget extends AbstractNxmPlotWidget {
 	@Override
 	public String addDataFeature(Number xStart, Number xEnd, String color) {
 		String featureId = AbstractNxmPlotWidget.createUniqueName(false);
-                double dx = xEnd.doubleValue() - xStart.doubleValue();
+		double dx = xEnd.doubleValue() - xStart.doubleValue();
 		final String cmd = "FEATURE LABEL=" + featureId + " PLOT=" + PLOT_ID + " TABLE={NAME=\"" +
-		featureId + "\",TYPE=\"DATA\",X=" + (xStart.doubleValue() + (dx/2)) + ",DX=" + dx + ",COLOR=\"" + color + "\"}";
+				featureId + "\",TYPE=\"DATA\",X=" + (xStart.doubleValue() + (dx/2)) + ",DX=" + dx + ",COLOR=\"" + color + "\"}";
 		this.runClientCommand(cmd);
 		return featureId;
 	}
@@ -179,15 +179,23 @@ public class RapNxmPlotWidget extends AbstractNxmPlotWidget {
 	}
 
 	@Override
-    public Set<String> getSources() {
-	    return Collections.unmodifiableSet(this.sources);
-    }
+	public Set<String> getSources() {
+		return Collections.unmodifiableSet(this.sources);
+	}
 
 	@Override
-    public void clearSources() {
+	public void clearSources() {
 		for (String source : sources.toArray(new String[sources.size()])) {
-	    	removeSource(source);
-	    }
-    }
+			removeSource(source);
+		}
+	}
+
+	/** @since 5.0 */
+	@Override
+	public void sendMessageToCommand(String cmdID, String msgName, int info, Object data, Object quals) {
+		assertNotDisposed();
+		nxmComp.runServerCommand("MESSAGE SEND ID=" + cmdID + " NAME=" + msgName + " INFO=" + info
+				+ " DATA=" + data + " QUALS=" + quals);
+	}
 
 }

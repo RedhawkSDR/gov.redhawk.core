@@ -1,10 +1,10 @@
 /**
- * This file is protected by Copyright. 
+ * This file is protected by Copyright.
  * Please refer to the COPYRIGHT file distributed with this source distribution.
- * 
+ *
  * This file is part of REDHAWK IDE.
- * 
- * All rights reserved.  This program and the accompanying materials are made available under 
+ *
+ * All rights reserved.  This program and the accompanying materials are made available under
  * the terms of the Eclipse Public License v1.0 which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html.
  *
@@ -57,30 +57,6 @@ public class FftParameterEntryDialog extends Dialog {
 		}
 	}
 
-	private static class MinIntegerValidator implements IInputValidator {
-		private int minAllowed = Integer.MIN_VALUE; // inclusive
-		private String errMsg;
-		public MinIntegerValidator(String fieldName, int minVal) {
-			this.minAllowed = minVal;
-			this.errMsg = fieldName + " must be an integer >= " + minVal + ".";
-        }
-		public String isValid(final String newText) {
-			String status = errMsg; // assume error until passes validation check
-			if ((newText != null) && !"".equals(newText.trim())) {
-				try {
-					int val = Integer.parseInt(newText.trim());
-					if (val >= minAllowed) {
-						status = null; // valid user input
-					} // else invalid input (minAllowed)
-				} catch (final NumberFormatException nfe) {
-					// PASS
-					// not integer, already initialized with validation error msg
-				}
-			}
-			return status;
-		}
-	}
-
 	/** The settings for calculating the FFT */
 	private final FftSettings fftSettings;
 	/** The size of the transform to perform */
@@ -92,9 +68,9 @@ public class FftParameterEntryDialog extends Dialog {
 	/** The validator for the overlapField */
 	private static final OverlapValidator OVERLAP_VALIDATOR = new OverlapValidator();
 	/** The validator for the {@link #transformSizeField}. */
-	private static final MinIntegerValidator TRANSFORM_SIZE_VALIDATOR = new MinIntegerValidator("Transform Size", 2);
+	private static final MinIntegerValidator TRANSFORM_SIZE_VALIDATOR = new MinIntegerValidator("Transform Size", 2, null);
 	/** The validator for the {@link #numAveragesField}. */
-	private static final MinIntegerValidator NUM_AVERAGES_VALIDATOR = new MinIntegerValidator("Num Averages", 1);
+	private static final MinIntegerValidator NUM_AVERAGES_VALIDATOR = new MinIntegerValidator("Num Averages", 1, null);
 	/** Error message label widget. */
 	private Text errorMessageText;
 	/** Error message string. */
@@ -116,9 +92,6 @@ public class FftParameterEntryDialog extends Dialog {
 		newShell.setText("FFT Settings");
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	protected Control createDialogArea(final Composite parent) {
 		final Composite container = (Composite) super.createDialogArea(parent);

@@ -11,6 +11,9 @@
  */
 package gov.redhawk.ui.port.nxmplot;
 
+import gov.redhawk.internal.ui.port.nxmplot.PlotSession;
+
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -31,6 +34,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.statushandlers.StatusManager;
 
 import BULKIO.StreamSRI;
+
 /**
  * @since 3.0
  */
@@ -38,6 +42,7 @@ public abstract class AbstractNxmPlotWidget extends Composite {
 
 	private static final long serialVersionUID = -5616513930191161990L;
 	private StreamSRI activeSRI;
+	private PlotSettings plotSettings;
 
 	/**
 	 * This class handles all plot clicks and mouse moves and forwards the relevant ones to
@@ -275,13 +280,13 @@ public abstract class AbstractNxmPlotWidget extends Composite {
 	public abstract void removeSource(String sourcePipeId);
 
 	/**
-	 * Send the plot a message
+	 * Send the plot a message.
 	 * @param msgName
 	 */
 	public abstract void sendPlotMessage(String msgName, int info, Object data);
 
 	/**
-	 * Configure plot settings
+	 * Configure plot settings.
 	 * @param configuration
 	 */
 	public abstract void configurePlot(Map<String, String> configuration);
@@ -325,5 +330,108 @@ public abstract class AbstractNxmPlotWidget extends Composite {
 	protected PlotMessageHandler getPlotMessageHandler() {
 		return plotMessageHandler;
 	}
+
+	/** <b>INTERNAL USE ONLY</b>
+	 * Send the a  message to specified command running on server/processing side.
+	 * @param cmdID   ID of command to send message to
+	 * @param msgName name of message
+	 * @param info    info of message (normally 0)
+	 * @param data    data of message
+	 * @param quals   quals of message
+	 * @since 5.0
+	 */
+	public abstract void sendMessageToCommand(String cmdID, String msgName, int info, Object data, Object quals);
+
+	/** <b>INTERNAL USE ONLY</b>
+	 * @return the current custom plot settings (for getting state)
+	 * @since 5.0
+	 */
+	public PlotSettings getPlotSettings() {
+		if (this.plotSettings == null) {
+			this.plotSettings = new PlotSettings();
+		}
+		return this.plotSettings;
+	}
+
+	/** <b>INTERNAL USE ONLY</b>
+	 * @param set custom plot settings to use (for saving state)
+	 * @since 5.0
+	 */
+	public void setPlotSettings(PlotSettings plotSettings) {
+		this.plotSettings = plotSettings;
+	}
+
+	/** <b>INTERNAL USE ONLY</b>
+	 * @param custom plot settings to apply
+	 * @since 5.0
+	 */
+	public void applySettings(PlotSettings settings) {
+		if (settings != null) {
+			Integer  subsize    = settings.getFrameSize();
+			Double   sampleRate = settings.getSampleRate();
+			Double   minVal     = settings.getMinValue();
+			Double   maxVal     = settings.getMaxValue();
+			PlotType plotType   = settings.getPlotType();
+
+			// apply frame size and sample rate settings change to CORBARECEIVERs
+			List<IPlotSession> sessions = settings.getSessions();
+			if (sessions != null) {
+				Table msgData = new Table();
+				boolean overrideSampleRate = (sampleRate != null);
+				boolean overrideSubSize    = (subsize    != null);
+				if (!overrideSubSize) {
+					subsize = -1; // -1 tells CORBARECEIVER to use it's orig frame size value
+				}
+				msgData.put("OVERRIDESRISUBSIZE",  overrideSubSize);
+				msgData.put("FRAMESIZE",  subsize);
+				msgData.put("OVERRIDESRISAMPLERATE",  overrideSampleRate);
+				if (overrideSampleRate) {
+					msgData.put("SAMPLERATE", sampleRate);
+				}
+				for (IPlotSession session : sessions) {
+					if (session instanceof PlotSession) {
+						String cmdID = ((PlotSession) session).getCommandId();
+						sendMessageToCommand(cmdID, "CHANGE_CORBARECEIVER_SETTINGS", 0, msgData, null);
+					}
+				}
+			}
+
+			if (plotType != null) {
+				sendPlotMessage("SET.PlotType", 0, plotType.toString());
+			}
+
+			final boolean isRaster = PlotType.RASTER.equals(plotType);
+			String plotScaleSetting;
+			String plotMinProperty = null;
+			String plotMaxProperty = null;
+			if (minVal != null) {
+				if (isRaster) {
+					plotMinProperty = "SET.Z1";
+				} else {
+					plotMinProperty = "SET.Y1";
+				}
+				plotScaleSetting = "-AutoMin";
+			} else {
+				plotScaleSetting = "+AutoMin";
+			}
+			if (maxVal != null) {
+				if (isRaster) {
+					plotMaxProperty = "SET.Z2";
+				} else {
+					plotMaxProperty = "SET.Y2";
+				}
+				plotScaleSetting += "|-AutoMax";
+			} else {
+				plotScaleSetting += "|+AutoMax";
+			}
+			sendPlotMessage("SET.SCALE", 0, plotScaleSetting); // should set scale setting before setting min/max
+			if (plotMinProperty != null) {
+				sendPlotMessage(plotMinProperty, 0, minVal);
+			}
+			if (plotMaxProperty != null) {
+				sendPlotMessage(plotMaxProperty, 0, maxVal);
+			}
+		}
+    }
 
 }

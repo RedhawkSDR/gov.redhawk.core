@@ -1,7 +1,7 @@
 STARTMACRO t:corbaargs t:fftargs t:thinargs s:output
     PIPE INIT
         corbareceiver/MSGID=MAIN/TLL=200/PS=^corbaargs.PIPESIZE/POLL=1.0 FILE=_CORBA_OUT HOST="^corbaargs.HOST" PORT=^corbaargs.PORT &
-            FRAMESIZE=^corbaargs.FRAMESIZE OVERRIDE_SRI_SUBSIZE=^corbaargs.OVERRIDE_SRI_SUBSIZE & 
+            FRAMESIZE=^corbaargs.FRAMESIZE OVERRIDE_SRI_SUBSIZE=^corbaargs.OVERRIDE_SRI_SUBSIZE &
             RESOURCE=^corbaargs.RESOURCE PORT_NAME=^corbaargs.PORT_NAME IDL="^corbaargs.IDL"
         if fftargs isNULL then
             set fftout _CORBA_OUT
@@ -25,6 +25,14 @@ STARTMACRO t:corbaargs t:fftargs t:thinargs s:output
 ENDMACRO
 
 PROCEDURE processMessage m:msg
-    ! forward messages (e.g. from corbareceiver) to registered message handler for this macro (requires NeXtMidas 3.3.1+)
-    MESSAGE SEND THIS.MSGID msg
+    if msg.name eqs "CHANGE_CORBARECEIVER_SETTINGS" then
+!     info "Got CHANGE_CORBARECEIVER_SETTINGS msg, data = ^msg.data"
+      foreach key in msg.data
+        set value msg.data.^{key}
+        set reg.corbareceiver.^{key} value
+      endfor
+    else
+      ! forward messages (e.g. from corbareceiver) to registered message handler for this macro (requires NeXtMidas 3.3.1+)
+      MESSAGE SEND THIS.MSGID msg
+    endif
 RETURN

@@ -45,7 +45,7 @@ import CF.DataType;
  * been tested(the plot may not recover).
  */
 public class corbareceiver extends CorbaPrimitive { //SUPPRESS CHECKSTYLE ClassName
-	/**
+	/** Name of IDL argument
 	 * @since 8.0
 	 */
 	public static final String A_IDL = "IDL";
@@ -59,47 +59,60 @@ public class corbareceiver extends CorbaPrimitive { //SUPPRESS CHECKSTYLE ClassN
 	public static final String A_FILE = "FILE";
 
 	/**
-	 * Framesize attribute
+	 * Name of frame size argument
 	 * @since 10.0
 	 */
 	public static final String A_FRAMESIZE = "FRAMESIZE";
 
 	/**
-	 * OVERRIDE FRAME SIZE attribute
+	 * OVERRIDE FRAME SIZE (from StreamSRI) attribute
 	 * @since 10.0
 	 */
 	public static final String A_OVERRIDE_SRI_SUBSIZE = "OVERRIDE_SRI_SUBSIZE";
 
 	/**
-	 * set to false to not block pushPacket/write(..) when pipe doesn't have enough room,
+	 * Name of switch to set to false to NOT block pushPacket/write(..) when pipe doesn't have enough room,
 	 * which will cause that pushPacket data to get drop
 	 * @since 10.0
 	 */
-	public static final String A_BLOCKING = "/BLOCKING";
+	public static final String SW_BLOCKING = "/BLOCKING";
 
 	/**
+	 * Name of switch to grab number of seconds to wait for SRI during open()
 	 * @since 10.0
 	 */
-	//	public static final String A_WAIT = "/WAIT";
+	// public static final String SW_WAIT = "/WAIT";
 	//	private static final int SLEEP_INTERVAL = 1000;
 
 	/** the output file to write to */
 	private DataFile outputFile = null;
+	private FileName fileName;
 
 	/** The configured SRI */
 	private StreamSRI currentSri;
 	private org.omg.CORBA.Object stub;
 	private BaseBulkIOReceiver receiver;
 
+	private Integer origFrameSizeArg = null;
+	/** default frame size for 1000 stream or custom frame size if {@link #overrideSRISubSize} is true. */
 	private int frameSizeAttribute;
-
-	private FileName fileName;
+	/** override frame size specified in SRI with {@link #frameSizeAttribute}. */
 	private boolean overrideSRISubSize;
+
+	/** block if output pipe is full. */
 	private boolean blocking;
 	private PortStatistics statictics = new PortStatistics();
 	private long lastWrite = -1;
 	private int numCalls;
 	private int numElements;
+
+	/** true if 1000 stream (SRI.subsize <= 0); false for 2000 stream (SRI.subsize > 0). */
+	private boolean is1000FromSRI = true;
+	/** override SRI's sample rate (1/xdelta for 1000, 1/ydelta for 2000). */
+	private boolean overrideSRISampleRate = false;
+	/** custom sample rate to use for output file/pipe. zero for none. */
+	private double sampleRate = 0.0;
+
 	{
 		statictics.keywords = new DataType[0];
 		statictics.portName = "corbareceiver";
@@ -132,15 +145,19 @@ public class corbareceiver extends CorbaPrimitive { //SUPPRESS CHECKSTYLE ClassN
 	@Override
 	public synchronized int open() {
 		// MA is the argument list
-		this.fileName = this.MA.getFileName(corbareceiver.A_FILE);
-		final String encoded_idl = this.MA.getS(corbareceiver.A_IDL, null);
-		this.frameSizeAttribute = this.MA.getL(corbareceiver.A_FRAMESIZE, 0);
-		this.overrideSRISubSize = this.MA.getState(corbareceiver.A_OVERRIDE_SRI_SUBSIZE, false);
-		this.blocking = this.MA.getState(corbareceiver.A_BLOCKING, false);
+		this.fileName = this.MA.getFileName(A_FILE);
+		final String encoded_idl = this.MA.getS(A_IDL, null);
+		this.frameSizeAttribute = this.MA.getL(A_FRAMESIZE, 0);
+		this.overrideSRISubSize = this.MA.getState(A_OVERRIDE_SRI_SUBSIZE, false);
+		this.blocking = this.MA.getState(SW_BLOCKING, false);
+
 		final String idl = corbareceiver.decodeIDL(encoded_idl);
 
 		if (this.receiver == null) {
 			this.receiver = BulkIOReceiverFactory.createReceiver(this, idl);
+		}
+		if (origFrameSizeArg == null) {
+			origFrameSizeArg = this.frameSizeAttribute;
 		}
 
 		int ret = super.open();
@@ -148,15 +165,13 @@ public class corbareceiver extends CorbaPrimitive { //SUPPRESS CHECKSTYLE ClassN
 		// This check fails if we weren't able to connect to the ORB
 		if ((ret == Commandable.NORMAL)) {
 
-			// Check if we were able to connect to the port
-			if (initConnections()) {
-				ret = Commandable.NORMAL;
-			} else {
-				ret = Commandable.ABORT;
+			// Check if we were able to connect to the Port
+			if (!initConnections()) {
+				return Commandable.ABORT; // ABORT, since we are unable to connect to the Port
 			}
 		}
 
-		//		final double maxWaitForSRI = MA.getD(corbareceiver.A_WAIT, SLEEP_INTERVAL);
+		//		final double maxWaitForSRI = MA.getD(SW_WAIT, SLEEP_INTERVAL);
 		//		int numLoops = (int) (maxWaitForSRI / SLEEP_INTERVAL); // 0 or positive values will effect timeout
 		//		if (maxWaitForSRI < 0) {
 		//			numLoops = Integer.MAX_VALUE; // effectively infinity
@@ -178,7 +193,7 @@ public class corbareceiver extends CorbaPrimitive { //SUPPRESS CHECKSTYLE ClassN
 	@Override
 	public int process() {
 		updateStatitics();
-		//		printStats();
+		// printStats();
 		return NOOP;
 	}
 
@@ -302,9 +317,10 @@ public class corbareceiver extends CorbaPrimitive { //SUPPRESS CHECKSTYLE ClassN
 			return createDefaultOutputFile();
 		}
 
+		this.is1000FromSRI = (sri.subsize <= 0); // true for 1000 stream, false for 2000 stream
 		int outputFramesize = sri.subsize;
-		if (outputFramesize <= 0) {
-			outputFramesize = this.frameSizeAttribute;
+		if (this.is1000FromSRI) {
+			outputFramesize = this.frameSizeAttribute; // frame 1000 stream with our default frame size
 		} else if (this.overrideSRISubSize && this.frameSizeAttribute > 0) {
 			outputFramesize = this.frameSizeAttribute;
 		}
@@ -319,20 +335,30 @@ public class corbareceiver extends CorbaPrimitive { //SUPPRESS CHECKSTYLE ClassN
 			newOutputFile.setFrameSize(outputFramesize);
 		}
 
-		newOutputFile.setXStart(sri.xstart);
-		if (sri.xdelta > 0) {
-			newOutputFile.setXDelta(sri.xdelta);
-		} else {
-			newOutputFile.setXDelta(1);
+		double sampleDelta = 0; // zero will be ignored (not used)
+		if (isOverrideSRISampleRate() && this.sampleRate != 0) {
+			sampleDelta = 1 / this.sampleRate;
 		}
+		final boolean overrideSampleDelta = this.overrideSRISampleRate && (sampleDelta != 0);
+
+		double xdelta = 1.0;
+		if (overrideSampleDelta && this.is1000FromSRI) {
+			xdelta = sampleDelta;
+		} else if (sri.xdelta > 0) {
+			xdelta = sri.xdelta;
+		}
+		newOutputFile.setXStart(sri.xstart);
+		newOutputFile.setXDelta(xdelta);
 		newOutputFile.setXUnits(sri.xunits);
 
-		newOutputFile.setYStart(sri.ystart);
-		if (sri.ydelta > 0) {
-			newOutputFile.setYDelta(sri.ydelta);
-		} else {
-			newOutputFile.setYDelta(1);
+		double ydelta = 1.0;
+		if (overrideSampleDelta && !this.is1000FromSRI) {
+			ydelta = sampleDelta;
+		} else if (sri.ydelta > 0) {
+			ydelta = sri.ydelta;
 		}
+		newOutputFile.setYStart(sri.ystart);
+		newOutputFile.setYDelta(ydelta);
 		newOutputFile.setYUnits(sri.yunits);
 
 		return newOutputFile;
@@ -357,6 +383,7 @@ public class corbareceiver extends CorbaPrimitive { //SUPPRESS CHECKSTYLE ClassN
 	}
 
 	private synchronized void doRestart() {
+		M.info("restarting...");
 		setState(Commandable.RESTART);
 	}
 
@@ -461,6 +488,111 @@ public class corbareceiver extends CorbaPrimitive { //SUPPRESS CHECKSTYLE ClassN
 			return new StreamSRI[0];
 		} else {
 			return new StreamSRI[] { this.currentSri };
+		}
+	}
+
+	/**
+	 * @return the overrideSRISubSize
+	 * @since 10.0
+	 */
+	public boolean isOverrideSRISubSize() {
+		return overrideSRISubSize;
+	}
+
+	/**
+	 * @param overrideSRISubSize true to override the SRI SubSize (frame size) with {@link #getFrameSize()}.
+	 * @see #setFrameSize(int)
+	 * @since 10.0
+	 */
+	public void setOverrideSRISubSize(boolean overrideSRISubSize) {
+		if (this.overrideSRISubSize != overrideSRISubSize) {
+			this.overrideSRISubSize = overrideSRISubSize;
+			MA.put(A_OVERRIDE_SRI_SUBSIZE, "" + overrideSRISubSize);
+			if ((this.currentSri != null) && (this.frameSizeAttribute != this.currentSri.subsize)) {
+				doRestart(); // restart since specified subsize is different than in SRI
+			}
+		}
+	}
+
+	/**
+	 * @return the frame size to use
+	 * @since 10.0
+	 */
+	public int getFrameSize() {
+		return frameSizeAttribute;
+	}
+
+	/**
+	 * @param set the custom frame size (SubSize) to use when {@link #overrideSRISubSize} is true.;
+	 *        use -1 to reset to original frame size argument
+	 * @see #setOverrideSRISubSize(boolean)
+	 * @since 10.0
+	 */
+	public void setFrameSize(int frameSizeAttribute) {
+		if (frameSizeAttribute == -1) {
+			frameSizeAttribute = origFrameSizeArg;
+		}
+		if (this.frameSizeAttribute != frameSizeAttribute) {
+			this.frameSizeAttribute = frameSizeAttribute;
+			MA.put(A_FRAMESIZE, "" + frameSizeAttribute);
+			if (this.overrideSRISubSize) {
+				doRestart(); // restart since specified subsize is different than in SRI
+			}
+		}
+	}
+
+	/** true if custom sample rate differs from SRI's sample rate, otherwise false. */
+	private boolean isSampleRateDifferent() {
+		if ((this.currentSri != null) && (this.sampleRate != 0)) { // cannot have zero sample rate
+			final double delta = 1.0 / this.sampleRate;
+			final boolean xdDiffers =  this.is1000FromSRI && delta != this.currentSri.xdelta;
+			final boolean ydDiffers = !this.is1000FromSRI && delta != this.currentSri.ydelta;
+			if (xdDiffers || ydDiffers) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	/**
+	 * @return the overrideSRISampleRate
+	 * @since 10.0
+	 */
+	public boolean isOverrideSRISampleRate() {
+		return overrideSRISampleRate;
+	}
+
+	/**
+	 * @param overrideSRISampleRate the overrideSRISampleRate to set
+	 */
+	public void setOverrideSRISampleRate(boolean overrideSRISampleRate) {
+		if (this.overrideSRISampleRate != overrideSRISampleRate) {
+			this.overrideSRISampleRate = overrideSRISampleRate;
+			if (isSampleRateDifferent()) {
+				doRestart(); // restart since specified sample rate is different than in SRI
+			}
+		}
+	}
+
+	/**
+	 * @return the current custom sample rate to override in SRI.
+	 * @since 10.0
+	 */
+	public double getSampleRate() {
+		return sampleRate;
+	}
+
+	/**
+	 * @param newSRate the custom sample rate to override in SRI
+	 *                 (1/xdelta for 1000 stream; 1/ydelta for 2000 stream).
+	 * @since 10.0
+	 */
+	public void setSampleRate(double newSRate) {
+		if (this.sampleRate != newSRate) {
+			this.sampleRate = newSRate;
+			if (this.overrideSRISampleRate && isSampleRateDifferent()) {
+				doRestart(); // restart since specified sample rate is different than in SRI
+			}
 		}
 	}
 }

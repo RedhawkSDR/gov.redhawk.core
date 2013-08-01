@@ -1,10 +1,10 @@
 /**
- * This file is protected by Copyright. 
+ * This file is protected by Copyright.
  * Please refer to the COPYRIGHT file distributed with this source distribution.
- * 
+ *
  * This file is part of REDHAWK IDE.
- * 
- * All rights reserved.  This program and the accompanying materials are made available under 
+ *
+ * All rights reserved.  This program and the accompanying materials are made available under
  * the terms of the Eclipse Public License v1.0 which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html.
  *
@@ -22,6 +22,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 import nxm.rcp.ui.core.NeXtMidasComposite;
 import nxm.redhawk.lib.RedhawkNxmUtil;
+import nxm.sys.lib.Results;
 import nxm.sys.prim.plot;
 
 import org.eclipse.swt.SWT;
@@ -74,7 +75,7 @@ public class RcpNxmPlotWidget extends AbstractNxmPlotWidget {
 		plotCommand = (plot) nxmComp.runCommand("PLOT/BG/VERBOSE=FALSE" + plotSwitches + " " + plotArgs);
 		plotCommand.setMessageHandler(plotMessageHandler);
 	}
-	
+
 	public boolean isInitialized() {
 		return initialized;
 	}
@@ -90,7 +91,7 @@ public class RcpNxmPlotWidget extends AbstractNxmPlotWidget {
 	@Override
 	public void runClientCommand(String command) {
 		runHeadlessCommand(command);
-    }
+	}
 
 	@Override
 	public void dispose() {
@@ -99,7 +100,7 @@ public class RcpNxmPlotWidget extends AbstractNxmPlotWidget {
 			removeSource(source);
 		}
 		this.sources.clear();
-	    super.dispose();
+		super.dispose();
 
 	}
 
@@ -110,7 +111,7 @@ public class RcpNxmPlotWidget extends AbstractNxmPlotWidget {
 	@Override
 	public void addSource(String sourcePipeId) {
 		addSource(sourcePipeId, null);
-    }
+	}
 
 	@Override
 	public void addSource(String sourcePipeId, String pipeQualifiers) {
@@ -119,7 +120,7 @@ public class RcpNxmPlotWidget extends AbstractNxmPlotWidget {
 		}
 		nxmComp.runCommand("SENDTO " + plotCommand.id + " OPENFILE " + sourcePipeId + ((pipeQualifiers == null) ? "" : pipeQualifiers));
 		this.sources.add(sourcePipeId);
-    }
+	}
 
 	public Set<String> getSources() {
 		return Collections.unmodifiableSet(this.sources);
@@ -132,20 +133,15 @@ public class RcpNxmPlotWidget extends AbstractNxmPlotWidget {
 		}
 		nxmComp.runCommand("SENDTO " + plotCommand.id + " CLOSEFILE " + sourcePipeId);
 		this.sources.remove(sourcePipeId);
-    }
-
+	}
 
 	@Override
 	public void sendPlotMessage(String msgName, int info, Object data) {
 		if (!isInitialized()) {
 			throw new IllegalStateException("Plot not initialized");
 		}
-		//	    this.plotCommand.processMessage(msgName, info, data);
-		// XXX We need to rethink this for RAP support
-		String tempResName = createUniqueResName();
-		nxmComp.getLocalShell().M.results.put(tempResName, data); //to pass object reference for data= in the SENDTO command
-		nxmComp.runCommand("SENDTO " + plotCommand.id + " " + msgName + " " + tempResName + " INFO=" + info);
-		nxmComp.getLocalShell().M.results.remove(tempResName); // cleanup
+		// PLOT is running on same instance as server/processing side
+		sendMessageToCommand(plotCommand.id , msgName, info, data, null);
 	}
 
 	private static AtomicInteger uniqueCounter = new AtomicInteger();
@@ -163,7 +159,7 @@ public class RcpNxmPlotWidget extends AbstractNxmPlotWidget {
 	public String addDataFeature(Number xStart, Number xEnd, String color) {
 		String featureId = AbstractNxmPlotWidget.createUniqueName(false);
 		final double dx = xEnd.doubleValue() - xStart.doubleValue();
-		final String cmd = "FEATURE LABEL=" + featureId + " PLOT=" + plotCommand.id + " TABLE={NAME=\"" 
+		final String cmd = "FEATURE LABEL=" + featureId + " PLOT=" + plotCommand.id + " TABLE={NAME=\""
 				+ featureId + "\",TYPE=\"DATA\",X=" + (xStart.doubleValue() + (dx / 2)) + ",DX=" + dx + ",COLOR=\"" + color + "\"}";
 		this.runClientCommand(cmd);
 		return featureId;
@@ -189,20 +185,33 @@ public class RcpNxmPlotWidget extends AbstractNxmPlotWidget {
 	}
 
 	@Override
-    public void configurePlot(Map<String, String> configuration) {
+	public void configurePlot(Map<String, String> configuration) {
 		if (!isInitialized()) {
 			throw new IllegalStateException("Plot not initialized");
 		}
-	    for (Map.Entry<String, String> entry: configuration.entrySet()) {
-	    	nxmComp.runCommand("SET " + "REG." + plotCommand.id + "." + entry.getKey() + " " + entry.getValue());
-	    }
-    }
+		for (Map.Entry<String, String> entry: configuration.entrySet()) {
+			nxmComp.runCommand("SET " + "REG." + plotCommand.id + "." + entry.getKey() + " " + entry.getValue());
+		}
+	}
 
 	@Override
-    public void clearSources() {
-	    for (String source : sources.toArray(new String[sources.size()])) {
-	    	removeSource(source);
-	    }
-    }
+	public void clearSources() {
+		for (String source : sources.toArray(new String[sources.size()])) {
+			removeSource(source);
+		}
+	}
 
+	/** @since 5.0 */
+	@Override
+	public void sendMessageToCommand(String cmdID, String msgName, int info, Object data, Object quals) {
+		final String tempRes4Data  = createUniqueResName();
+		final String tempRes4Quals = createUniqueResName();
+		final Results localResultsTable = nxmComp.getLocalShell().M.results;
+		localResultsTable.put(tempRes4Data, data);   //to pass object reference for DATA=  below
+		localResultsTable.put(tempRes4Quals, quals); //to pass object reference for QUALS= below
+		nxmComp.runCommand("MESSAGE SEND ID=" + cmdID + " NAME=" + msgName + " INFO=" + info
+				+ " DATA=" + tempRes4Data + " QUALS=" + tempRes4Quals);
+		localResultsTable.remove(tempRes4Data);  // cleanup
+		localResultsTable.remove(tempRes4Quals); // cleanup
+	}
 }

@@ -1,16 +1,17 @@
 /**
- * This file is protected by Copyright. 
+ * This file is protected by Copyright.
  * Please refer to the COPYRIGHT file distributed with this source distribution.
- * 
+ *
  * This file is part of REDHAWK IDE.
- * 
- * All rights reserved.  This program and the accompanying materials are made available under 
+ *
+ * All rights reserved.  This program and the accompanying materials are made available under
  * the terms of the Eclipse Public License v1.0 which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html.
  *
  */
 package gov.redhawk.internal.ui.port.nxmplot.view;
 
+import gov.redhawk.internal.ui.port.nxmplot.PlotSettingsDialog;
 import gov.redhawk.model.sca.IDisposable;
 import gov.redhawk.model.sca.ScaComponent;
 import gov.redhawk.model.sca.ScaDevice;
@@ -29,6 +30,7 @@ import gov.redhawk.ui.port.nxmplot.NxmPlotUtil;
 import gov.redhawk.ui.port.nxmplot.PlotActivator;
 import gov.redhawk.ui.port.nxmplot.PlotListenerAdapter;
 import gov.redhawk.ui.port.nxmplot.PlotPageBook;
+import gov.redhawk.ui.port.nxmplot.PlotSettings;
 import gov.redhawk.ui.port.nxmplot.PlotType;
 
 import java.util.ArrayList;
@@ -65,6 +67,7 @@ import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.ISelectionProvider;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.StructuredSelection;
+import org.eclipse.jface.window.Window;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CTabFolder;
 import org.eclipse.swt.custom.CTabItem;
@@ -113,6 +116,9 @@ public class PlotView extends ViewPart {
 
 	/** The private action for creating a new plot connection */
 	private IAction newPlotViewAction;
+
+	/** The private action for adjusting plot settings. */
+	private IAction adjustPlotSettingsAction;
 
 	/** Map of plot ID to page books */
 	private Map<String, Composite> plotMap;
@@ -347,7 +353,8 @@ public class PlotView extends ViewPart {
 		final Composite spectralPlots;
 		// Create the holder for the plots.
 		if (pageBook) {
-			spectralPlots = new PlotPageBook(this.plotFolder, SWT.NONE, connList, fft, ports, sessionId);
+			final PlotPageBook plotPageBook = new PlotPageBook(this.plotFolder, SWT.NONE, connList, fft, ports, sessionId);
+			spectralPlots = plotPageBook;
 			spectralPlots.setData("connList", connList);
 			spectralPlots.setData("fft", fft);
 			spectralPlots.setData("ports", ports);
@@ -356,23 +363,28 @@ public class PlotView extends ViewPart {
 			INxmPlotWidgetFactory plotFactory = PlotActivator.getDefault().getPlotFactory();
 			final String plotArgs = NxmPlotUtil.getDefaultPlotArgs(plotType);
 			final String plotSwitches = NxmPlotUtil.getDefaultPlotSwitches(plotType);
-			spectralPlots = plotFactory.createPlotWidget(this.plotFolder, SWT.NONE);
+			final AbstractNxmPlotWidget nxmPlotWidget = plotFactory.createPlotWidget(this.plotFolder, SWT.NONE);
+			spectralPlots = nxmPlotWidget;
 
 			if (spectralPlots instanceof AbstractNxmPlotWidget) {
 				spectralPlots.setData("connList", connList);
 				spectralPlots.setData("fft", fft);
 				spectralPlots.setData("ports", ports);
 				spectralPlots.setData("plotType", plotType);
-				((AbstractNxmPlotWidget) spectralPlots).initPlot(plotSwitches, plotArgs);
+				nxmPlotWidget.initPlot(plotSwitches, plotArgs);
+				final PlotType _plotType = plotType;
 				new Job("Adding Plot Source...") {
 
 					@Override
 					protected IStatus run(IProgressMonitor monitor) {
 						List<IPlotSession> plotSessions = NxmPlotUtil.addSource(connList, fft, (AbstractNxmPlotWidget) spectralPlots, plotQualifiers);
 						plotSessionMap.put(spectralPlots, plotSessions);
+						PlotSettings settings = nxmPlotWidget.getPlotSettings();
+						settings.setPlotType(_plotType);
+						settings.setSessions(plotSessions);
 						return Status.OK_STATUS;
 					}
-					
+
 				} .schedule();
 			}
 		}
@@ -459,6 +471,9 @@ public class PlotView extends ViewPart {
 		}
 		if (this.showSriAction != null) {
 			menu.add(this.showSriAction);
+		}
+		if (this.adjustPlotSettingsAction != null) {
+			menu.add(this.adjustPlotSettingsAction);
 		}
 		menu.add(new Separator(IWorkbenchActionConstants.MB_ADDITIONS));
 	}
@@ -560,9 +575,9 @@ public class PlotView extends ViewPart {
 
 			@Override
 			public void run() {
-				final StringBuilder builder = new StringBuilder();
+				final StringBuilder builder = new StringBuilder(256);
 				final StreamSRI[] sris = getActiveSRI();
-				if (sris.length > 0) {
+				if (sris != null && sris.length > 0) {
 					for (final StreamSRI sri : sris) {
 						builder.append("blocking: " + sri.blocking + "\n");
 						builder.append("h version: " + sri.hversion + "\n");
@@ -587,6 +602,53 @@ public class PlotView extends ViewPart {
 		this.showSriAction.setEnabled(true);
 		this.showSriAction.setText("SRI");
 		this.showSriAction.setToolTipText("Display current plot SRI");
+
+		createActionAdjustPlotSettings();
+	}
+
+	/** @since 5.0 */
+	private void createActionAdjustPlotSettings() {
+		this.adjustPlotSettingsAction = new Action() {
+			@Override
+			public void run() {
+				final CTabItem activeTab = PlotView.this.plotFolder.getSelection();
+				if (activeTab != null && !activeTab.isDisposed()) {
+					final Control control = activeTab.getControl();
+					AbstractNxmPlotWidget plotWidget = null;
+					AbstractNxmPlotWidget plotWidgetInBg = null;
+					if (control instanceof AbstractNxmPlotWidget) {
+						plotWidget = ((AbstractNxmPlotWidget) control);
+					} else if (control instanceof PlotPageBook) {
+						final PlotPageBook currentPageBook = (PlotPageBook) activeTab.getControl();
+						plotWidget     = currentPageBook.getActivePlotWidget();
+						plotWidgetInBg = currentPageBook.getInactivePlotWidget();
+					}
+
+					if (plotWidget != null) {
+						PlotSettings plotSettings = plotWidget.getPlotSettings();
+						PlotSettingsDialog dialog = new PlotSettingsDialog(PlatformUI.getWorkbench().getDisplay().getActiveShell(), plotSettings);
+						final int result = dialog.open();
+						if (result == Window.OK) {
+							PlotSettings settings = dialog.getSettings();
+ 							plotWidget.applySettings(settings);
+
+ 							if (plotWidgetInBg != null) { // apply to PlotPageBook's inactive plot
+ 								final PlotSettings settings2 = plotWidgetInBg.getPlotSettings();
+ 								settings2.setFrameSize(settings.getFrameSize());
+ 								settings2.setSampleRate(settings.getSampleRate());
+ 								settings2.setMinValue(settings.getMinValue());
+ 								settings2.setMaxValue(settings.getMaxValue());
+ 								plotWidgetInBg.applySettings(settings2);
+ 							}
+						}
+					}
+				}
+			}
+		};
+
+		this.adjustPlotSettingsAction.setEnabled(true);
+		this.adjustPlotSettingsAction.setText("Adjust Plot Settings");
+		this.adjustPlotSettingsAction.setToolTipText("Adjust/Override Plot Settings");
 	}
 
 	private StreamSRI[] getActiveSRI() {
@@ -662,6 +724,7 @@ public class PlotView extends ViewPart {
 		this.newPlotViewAction = null;
 		this.plotFolder = null;
 		this.rasterToggleAction = null;
+		this.adjustPlotSettingsAction = null;
 		this.plotMap.clear();
 	}
 
