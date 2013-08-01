@@ -13,6 +13,7 @@
 // BEGIN GENERATED CODE
 package mil.jpeojtrs.sca.dcd.diagram.part;
 
+import org.eclipse.gmf.runtime.common.ui.action.global.GlobalActionId;
 import org.eclipse.gmf.runtime.diagram.ui.parts.DiagramActionBarContributor;
 import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.ui.IActionBars;
@@ -48,5 +49,6 @@ public class DcdDiagramActionBarContributor extends DiagramActionBarContributor 
 				IWorkbenchActionConstants.M_FILE);
 		assert fileMenu != null;
 		fileMenu.remove("pageSetupAction"); //$NON-NLS-1$
+		bars.setGlobalActionHandler(GlobalActionId.SAVE, null);
 	}
 }
