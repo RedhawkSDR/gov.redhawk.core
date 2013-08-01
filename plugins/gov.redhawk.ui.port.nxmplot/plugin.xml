@@ -14,37 +14,38 @@
             class="gov.redhawk.internal.ui.port.nxmplot.view.PlotView"
             icon="icons/SDU.gif"
             id="gov.redhawk.ui.port.nxmplot.portdata"
-            name="%view.name"
+            name="Port Data (Legacy)"
             restorable="false">
       </view>
-   </extension>
-   <extension
-         point="org.eclipse.ui.handlers">
-      <handler
-            class="gov.redhawk.internal.ui.port.nxmplot.handlers.NewNxmPlotHandler"
-            commandId="gov.redhawk.ui.port.nxmplot.newdataplot">
-      </handler>
+      <view
+            allowMultiple="true"
+            category="gov.redhawk.ui.category.sca"
+            class="gov.redhawk.internal.ui.port.nxmplot.view.PlotView2"
+            icon="icons/SDU.gif"
+            id="gov.redhawk.ui.port.nxmplot.PlotView2"
+            name="Port Data"
+            restorable="false">
+         <description>
+            Plots data from an SCA Port.
+         </description>
+      </view>
    </extension>
    <extension
          point="org.eclipse.ui.commands">
       <command
-            id="gov.redhawk.ui.port.nxmplot.newdataplot"
-            name="%command.name">
-         <commandParameter
-               id="gov.redhawk.ui.port.nxmplot.newdataplot.fftparam"
-               name="%commandParameter.name"
-               optional="false">
-         </commandParameter>
-      </command>
-      <command
             categoryId="gov.redhawk.ui.commands.category.sca"
-            defaultHandler="gov.redhawk.internal.ui.port.nxmplot.handlers.PlotUsesPortHandler"
+            defaultHandler="gov.redhawk.internal.ui.port.nxmplot.handlers.PlotPortHandler"
             id="gov.redhawk.ui.port.nxmplot.command.plot"
-            name="%command.name.0">
+            name="Plot port">
          <commandParameter
-               id="gov.redhawk.ui.port.nxmplot.command.plot.fftparam"
-               name="%commandParameter.name.0"
-               optional="false">
+               id="gov.redhawk.ui.port.nxmplot.type"
+               name="Plot Type"
+               optional="true">
+         </commandParameter>
+         <commandParameter
+               id="gov.redhawk.ui.port.nxmplot.isFft"
+               name="Use FFT"
+               optional="true">
          </commandParameter>
       </command>
       
@@ -52,142 +53,108 @@
    <extension
          point="org.eclipse.ui.menus">
       <menuContribution
-            locationURI="menu:gov.redhawk.ui.port.nxmplot.portdata?after=additions">
-         <command
-               commandId="gov.redhawk.ui.port.nxmplot.newdataplot"
-               id="gov.redhawk.ui.port.nxmplot.newdataplot"
-               label="%command.label"
-               style="push">
-            <parameter
-                  name="gov.redhawk.ui.port.nxmplot.newdataplot.fftparam"
-                  value="false">
-            </parameter>
-         </command>
-         <command
-               commandId="gov.redhawk.ui.port.nxmplot.newdataplot"
-               id="gov.redhawk.ui.port.nxmplot.newdataplot"
-               label="%command.label.0"
-               style="push">
-            <parameter
-                  name="gov.redhawk.ui.port.nxmplot.newdataplot.fftparam"
-                  value="true">
-            </parameter>
-         </command>
+            allPopups="true"
+            locationURI="popup:org.eclipse.ui.popup.any?before=additions">
+         <menu
+               icon="icons/SDU.gif"
+               label="Plot">
+            <visibleWhen
+                  checkEnabled="false">
+               <iterate
+                     ifEmpty="false"
+                     operator="or">
+                  <adapt
+                        type="gov.redhawk.model.sca.ScaUsesPort">
+                  </adapt>
+                  <test
+                        forcePluginActivation="true"
+                        property="gov.redhawk.ui.port.interface"
+                        value="IDL:BULKIO/data.*">
+                  </test>
+               </iterate>
+            </visibleWhen>
+            <command
+                  commandId="gov.redhawk.ui.port.nxmplot.command.plot"
+                  label="Line"
+                  style="push">
+               <parameter
+                     name="gov.redhawk.ui.port.nxmplot.type"
+                     value="LINE">
+               </parameter>
+            </command>
+            <command
+                  commandId="gov.redhawk.ui.port.nxmplot.command.plot"
+                  label="Raster"
+                  style="push">
+               <parameter
+                     name="gov.redhawk.ui.port.nxmplot.type"
+                     value="RASTER">
+               </parameter>
+            </command>
+            <command
+                  commandId="gov.redhawk.ui.port.nxmplot.command.plot"
+                  label="Point"
+                  style="push">
+               <parameter
+                     name="gov.redhawk.ui.port.nxmplot.type"
+                     value="POINT">
+               </parameter>
+            </command>
+            <command
+                  commandId="gov.redhawk.ui.port.nxmplot.command.plot"
+                  label="Dot"
+                  style="push">
+               <parameter
+                     name="gov.redhawk.ui.port.nxmplot.type"
+                     value="DOT">
+               </parameter>
+            </command>
+         </menu>
+         <menu
+               icon="icons/SDU.gif"
+               label="Plot FFT">
+            <visibleWhen
+                  checkEnabled="false">
+               <iterate
+                     ifEmpty="false"
+                     operator="or">
+                  <adapt
+                        type="gov.redhawk.model.sca.ScaUsesPort">
+                  </adapt>
+                  <test
+                        property="gov.redhawk.ui.port.interface"
+                        value="IDL:BULKIO/data.*">
+                  </test>
+               </iterate>
+            </visibleWhen>
+               <command
+                     commandId="gov.redhawk.ui.port.nxmplot.command.plot"
+                     label="Line"
+                     style="push">
+                  <parameter
+                        name="gov.redhawk.ui.port.nxmplot.type"
+                        value="LINE">
+                  </parameter>
+                  <parameter
+                        name="gov.redhawk.ui.port.nxmplot.isFft"
+                        value="true">
+                  </parameter>
+               </command>
+               <command
+                     commandId="gov.redhawk.ui.port.nxmplot.command.plot"
+                     label="Raster"
+                     style="push">
+                  <parameter
+                        name="gov.redhawk.ui.port.nxmplot.type"
+                        value="RASTER">
+                  </parameter>
+                  <parameter
+                        name="gov.redhawk.ui.port.nxmplot.isFft"
+                        value="true">
+                  </parameter>
+               </command>
+         </menu>
       </menuContribution>
-      <!--menuContribution
-            locationURI="popup:org.eclipse.ui.popup.any?after=additions">
-         <command
-               commandId="gov.redhawk.ui.port.nxmplot.command.plot"
-               label="Plot Data"
-               style="push">
-            <visibleWhen
-                  checkEnabled="false">
-               <iterate
-                     ifEmpty="false">
-                  <or>
-                     <instanceof
-                           value="gov.redhawk.model.sca.ScaUsesPort">
-                     </instanceof>
-                  </or>
-               </iterate>
-            </visibleWhen>
-            <parameter
-                  name="gov.redhawk.ui.port.nxmplot.command.plot.fftparam"
-                  value="false">
-            </parameter>
-         </command>
-         <command
-               commandId="gov.redhawk.ui.port.nxmplot.command.plot"
-               label="Plot FFT"
-               style="push">
-            <visibleWhen
-                  checkEnabled="false">
-               <iterate
-                     ifEmpty="false">
-                  <or>
-                     <instanceof
-                           value="gov.redhawk.model.sca.ScaUsesPort">
-                     </instanceof>
-                  </or>
-               </iterate>
-            </visibleWhen>
-            <parameter
-                  name="gov.redhawk.ui.port.nxmplot.command.plot.fftparam"
-                  value="true">
-            </parameter>
-         </command>
-      </menuContribution-->
-   </extension>
-   <extension
-         point="gov.redhawk.ui.portHandler">
-      <portHandler
-            class="gov.redhawk.internal.ui.port.nxmplot.handlers.PlotPortHandler"
-            id="gov.redhawk.ui.port.nxmplot">
-         <portInterface
-               dataType="IDL:BULKIO/dataChar:1.0">
-         </portInterface>
-         <portInterface
-               dataType="IDL:BULKIO/dataOctet:1.0">
-         </portInterface>
-         <portInterface
-               dataType="IDL:BULKIO/dataDouble:1.0">
-         </portInterface>
-         <portInterface
-               dataType="IDL:BULKIO/dataFloat:1.0">
-         </portInterface>
-         <portInterface
-               dataType="IDL:BULKIO/dataLongLong:1.0">
-         </portInterface>
-         <portInterface
-               dataType="IDL:BULKIO/dataUlongLong:1.0">
-         </portInterface>
-         <portInterface
-               dataType="IDL:BULKIO/dataLong:1.0">
-         </portInterface>
-         <portInterface
-               dataType="IDL:BULKIO/dataUlong:1.0">
-         </portInterface>
-         <portInterface
-               dataType="IDL:BULKIO/dataShort:1.0">
-         </portInterface>
-         <portInterface
-               dataType="IDL:BULKIO/dataUshort:1.0">
-         </portInterface>
-      </portHandler>
-      <portHandler
-            class="gov.redhawk.internal.ui.port.nxmplot.handlers.FftPlotPortHandler"
-            id="gov.redhawk.ui.port.nxmfftplot">
-                  <portInterface
-               dataType="IDL:BULKIO/dataChar:1.0">
-         </portInterface>
-         <portInterface
-               dataType="IDL:BULKIO/dataOctet:1.0">
-         </portInterface>
-         <portInterface
-               dataType="IDL:BULKIO/dataDouble:1.0">
-         </portInterface>
-         <portInterface
-               dataType="IDL:BULKIO/dataFloat:1.0">
-         </portInterface>
-         <portInterface
-               dataType="IDL:BULKIO/dataLongLong:1.0">
-         </portInterface>
-         <portInterface
-               dataType="IDL:BULKIO/dataUlongLong:1.0">
-         </portInterface>
-         <portInterface
-               dataType="IDL:BULKIO/dataLong:1.0">
-         </portInterface>
-         <portInterface
-               dataType="IDL:BULKIO/dataUlong:1.0">
-         </portInterface>
-         <portInterface
-               dataType="IDL:BULKIO/dataShort:1.0">
-         </portInterface>
-         <portInterface
-               dataType="IDL:BULKIO/dataUshort:1.0">
-         </portInterface>
-      </portHandler>
    </extension>
    <extension
          point="org.eclipse.core.runtime.adapters">

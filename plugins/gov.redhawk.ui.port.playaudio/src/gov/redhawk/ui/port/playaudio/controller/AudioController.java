@@ -18,7 +18,7 @@ import gov.redhawk.model.sca.ScaPackage;
 import gov.redhawk.model.sca.ScaUsesPort;
 import gov.redhawk.model.sca.ScaWaveform;
 import gov.redhawk.model.sca.commands.ScaModelCommand;
-import gov.redhawk.ui.port.Activator;
+import gov.redhawk.ui.port.playaudio.internal.Activator;
 import gov.redhawk.ui.port.playaudio.internal.corba.CorbaReceiver;
 
 import java.util.ArrayList;

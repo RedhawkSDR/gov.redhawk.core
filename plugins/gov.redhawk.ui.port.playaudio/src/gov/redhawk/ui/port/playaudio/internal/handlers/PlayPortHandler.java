@@ -12,31 +12,46 @@
 package gov.redhawk.ui.port.playaudio.internal.handlers;
 
 import gov.redhawk.model.sca.ScaUsesPort;
-import gov.redhawk.ui.port.IPortHandler;
+import gov.redhawk.sca.util.PluginUtil;
 import gov.redhawk.ui.port.playaudio.internal.Activator;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class PlayPortHandler implements IPortHandler {
+import org.eclipse.core.commands.AbstractHandler;
+import org.eclipse.core.commands.ExecutionEvent;
+import org.eclipse.core.commands.ExecutionException;
+import org.eclipse.jface.viewers.IStructuredSelection;
+import org.eclipse.ui.handlers.HandlerUtil;
+
+public class PlayPortHandler extends AbstractHandler {
 
 	public PlayPortHandler() {
 	}
 
 	public void connect(final List< ? > portList) {
-		final Map<ScaUsesPort, String> portMap = new HashMap<ScaUsesPort, String>();
-		for (final Object o : portList) {
-			if (o instanceof ScaUsesPort) {
-				portMap.put((ScaUsesPort) o, null);
+
+	}
+
+	public Object execute(ExecutionEvent event) throws ExecutionException {
+		IStructuredSelection selection = (IStructuredSelection) HandlerUtil.getActiveMenuSelection(event);
+		if (selection == null) {
+			selection = (IStructuredSelection) HandlerUtil.getCurrentSelection(event);
+		}
+		if (selection != null) {
+			List< ? > elements = selection.toList();
+			final Map<ScaUsesPort, String> portMap = new HashMap<ScaUsesPort, String>();
+			for (Object obj : elements) {
+				ScaUsesPort port = PluginUtil.adapt(ScaUsesPort.class, obj);
+				if (port != null) {
+					portMap.put(port, null);
+				}
+			}
+			if (!portMap.isEmpty()) {
+				Activator.getDefault().playPort(portMap);
 			}
 		}
-		Activator.getDefault().playPort(portMap);
-	}
-	
-	public void connect(final List< ? > portList, final String filter) {
-		if (filter != null && filter.startsWith(IPortHandler.FILTER_PLAY)) {
-			connect(portList);
-		}
+		return null;
 	}
 }

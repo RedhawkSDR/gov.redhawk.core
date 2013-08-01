@@ -29,7 +29,9 @@ import org.eclipse.ui.handlers.HandlerUtil;
 
 /**
  * @since 4.0
+ * @deprecated
  */
+@Deprecated
 public class PlayUsesPortHandler extends AbstractHandler {
 	public static final String COMMAND_ID = "gov.redhawk.ui.port.command.play";
 	public static final String FILTER_PARAM = "gov.redhawk.ui.port.command.play.filterparam";

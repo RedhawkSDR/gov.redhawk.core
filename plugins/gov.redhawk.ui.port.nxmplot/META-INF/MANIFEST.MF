@@ -25,3 +25,4 @@ Export-Package: gov.redhawk.internal.ui.port.nxmplot;x-internal:=true,
  gov.redhawk.internal.ui.port.nxmplot.view;x-internal:=true,
  gov.redhawk.ui.port.nxmplot
 Bundle-ClassPath: .
+Import-Package: nxm.dsp.prim

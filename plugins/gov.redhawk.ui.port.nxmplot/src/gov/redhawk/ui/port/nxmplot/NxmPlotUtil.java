@@ -327,6 +327,13 @@ public final class NxmPlotUtil {
 		final CorbaConnectionSettings connectionSettings = new CorbaConnectionSettings(port.getIor(), port.getRepid());
 		return connectionSettings;
 	}
+	
+	/**
+	 * @since 4.2
+	 */
+	public static IPlotSession addSource(PlotSource source, final AbstractNxmPlotWidget plotWidget) {
+		return addSource(source.getInput(), source.getFftOptions(), plotWidget, source.getQualifiers());
+	}
 
 	/**
 	 * @deprecated Use {@Link #addSource(ScaUsesPort, AbstractNxmPlotWidget, String)} instead. Using this method will

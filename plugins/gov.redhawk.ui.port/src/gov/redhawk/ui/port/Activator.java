@@ -29,6 +29,7 @@ public class Activator extends AbstractUIPlugin {
 	// The shared instance
 	private static Activator plugin;
 
+	@Deprecated
 	private static IPortHandlerRegistry portHandlerRegistry;
 
 	/**
@@ -76,7 +77,9 @@ public class Activator extends AbstractUIPlugin {
 	 * Returns the PortHandlerRegistry
 	 * 
 	 * @return the PortHandlerRegistry
+	 * @deprecated
 	 */
+	@Deprecated
 	public static IPortHandlerRegistry getPortHandlerRegistry() {
 		if (Activator.portHandlerRegistry == null) {
 			Activator.portHandlerRegistry = new PortHandlerRegistry();

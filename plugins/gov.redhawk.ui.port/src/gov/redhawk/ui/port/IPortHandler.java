@@ -13,6 +13,10 @@ package gov.redhawk.ui.port;
 
 import java.util.List;
 
+/**
+ * @deprecated
+ */
+@Deprecated
 public interface IPortHandler {
 
 	/**

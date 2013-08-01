@@ -11,6 +11,10 @@
  */
 package gov.redhawk.ui.port;
 
+/**
+ * @deprecated
+ */
+@Deprecated
 public interface IPortHandlerRegistry {
 	String EXTENSION_POINT = "gov.redhawk.ui.portHandler";
 

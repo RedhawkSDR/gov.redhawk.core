@@ -28,6 +28,10 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.ui.part.PageBook;
 
+/**
+ * @deprecated Use {@link PlotPageBook2} instead.
+ */
+@Deprecated
 public class PlotPageBook extends Composite {
 
 	/**

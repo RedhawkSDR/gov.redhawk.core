@@ -112,6 +112,7 @@ public class PlotActivator extends AbstractUIPlugin {
 	 * @param fft the settings to be used for FFTing the data before plotting.
 	 *        This may be null if no FFT is desired.
 	 */
+	@Deprecated
 	public String addPlot(final List< ? > portList, final FftSettings fft) {
 		final List<ScaUsesPort> ports = new ArrayList<ScaUsesPort>();
 		final List<CorbaConnectionSettings> ports2 = new ArrayList<CorbaConnectionSettings>();
@@ -160,6 +161,7 @@ public class PlotActivator extends AbstractUIPlugin {
 	 * @param sessionId the id of the plot session to listen to
 	 * @since 3.0
 	 */
+	@Deprecated
 	public void addPlotListener(final IPlotWidgetListener listener, final String sessionId) {
 		final IWorkbenchPage page = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
 		if (page != null) {
@@ -186,6 +188,7 @@ public class PlotActivator extends AbstractUIPlugin {
 	 * @param sessionId the id of the plot session to stop listening to
 	 * @since 3.0
 	 */
+	@Deprecated
 	public void removePlotListener(final IPlotWidgetListener listener, final String sessionId) {
 		final IWorkbenchPage page = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
 		if (page != null) {

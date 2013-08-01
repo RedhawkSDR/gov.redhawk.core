@@ -29,6 +29,10 @@ import org.eclipse.core.runtime.dynamichelpers.IExtensionChangeHandler;
 import org.eclipse.core.runtime.dynamichelpers.IExtensionTracker;
 import org.eclipse.core.runtime.dynamichelpers.IFilter;
 
+/**
+ * @deprecated
+ */
+@Deprecated
 public class PortHandlerRegistry implements IPortHandlerRegistry, IExtensionChangeHandler {
 
 	/**

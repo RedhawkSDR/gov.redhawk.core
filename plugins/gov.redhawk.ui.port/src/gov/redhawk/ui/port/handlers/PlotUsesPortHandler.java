@@ -29,7 +29,9 @@ import org.eclipse.ui.handlers.HandlerUtil;
 
 /**
  * @since 4.0
+ * @deprecated
  */
+@Deprecated
 public class PlotUsesPortHandler extends AbstractHandler {
 	public static final String COMMAND_ID = "gov.redhawk.ui.port.command.plot";
 	public static final String FILTER_PARAM = "gov.redhawk.ui.port.command.plot.filterparam";

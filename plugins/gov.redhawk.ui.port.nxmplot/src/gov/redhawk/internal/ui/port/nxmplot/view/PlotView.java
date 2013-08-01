@@ -97,6 +97,7 @@ import CF.DataType;
  *
  * @since 2.0
  */
+@Deprecated
 public class PlotView extends ViewPart {
 
 	private static int secondaryId = 0;
