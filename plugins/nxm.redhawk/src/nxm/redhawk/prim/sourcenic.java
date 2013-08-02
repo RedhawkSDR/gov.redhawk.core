@@ -72,7 +72,7 @@ public class sourcenic extends Primitive { //SUPPRESS CHECKSTYLE ClassName
 	
 	@Override
 	public int open() {
-		M.info("Hello");
+		if (verbose) { M.info("Hello"); }
 		int ret = super.open();
 				
 		if (ret == Commandable.NORMAL) {
@@ -205,7 +205,7 @@ public class sourcenic extends Primitive { //SUPPRESS CHECKSTYLE ClassName
 
 	@Override
 	public int close() {
-		M.info("Goodbye");
+		if (verbose) { M.info("Goodbye"); }
 		outputFile.close();
 		if (this.maddr != null) {
 			try {
