@@ -40,7 +40,7 @@ public class CorbaConnectionSettings {
 	}
 
 	/**
-	 * @since 4.2
+	 * @since 5.0
 	 */
 	public CorbaConnectionSettings(final String portPath, final String idl) {
 		this.host = "";
@@ -121,14 +121,14 @@ public class CorbaConnectionSettings {
 	}
 
 	/**
-	 * @since 4.2
+	 * @since 5.0
 	 */
 	public void setFrameSize(int frameSize) {
 		this.frameSize = frameSize;
 	}
 
 	/**
-	 * @since 4.2
+	 * @since 5.0
 	 */
 	public int getFrameSize() {
 		return frameSize;
@@ -136,7 +136,7 @@ public class CorbaConnectionSettings {
 
 	/**
 	 * @see #setOverrideSRISubSize(boolean)
-	 * @since 4.2
+	 * @since 5.0
 	 */
 	public boolean isOverrideSRISubSize() {
 		return this.overrideSRISubSize;
@@ -144,7 +144,7 @@ public class CorbaConnectionSettings {
 
 	/**
 	 * @param overrideSRISubSize Override the SRI subsize with the given framesize. Default false.
-	 * @since 4.2
+	 * @since 5.0
 	 */
 	public void setOverrideSRISubSize(boolean overrideSRISubSize) {
 		this.overrideSRISubSize = overrideSRISubSize;

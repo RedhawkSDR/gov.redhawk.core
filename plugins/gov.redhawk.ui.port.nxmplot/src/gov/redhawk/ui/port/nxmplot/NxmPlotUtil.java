@@ -22,11 +22,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import org.eclipse.swt.SWT;
-
 import nxm.redhawk.prim.corbareceiver;
 import nxm.sys.lib.Data;
 import nxm.sys.lib.Table;
+
+import org.eclipse.swt.SWT;
 
 /**
  * @since 3.0
@@ -39,7 +39,7 @@ public final class NxmPlotUtil {
 	private static final int MAX_RMIF_PACKET_SIZE = 32768; // in bytes
 
 	/**
-	 * @since 4.2
+	 * @since 5.0
 	 */
 	public static String getDefaultPlotArgs(PlotType type) {
 		if (type == null) {
@@ -60,7 +60,7 @@ public final class NxmPlotUtil {
 	}
 
 	/**
-	 * @since 4.2
+	 * @since 5.0
 	 */
 	public static String getDefaultPlotSwitches(PlotType type) {
 		if (type == null) {
@@ -327,13 +327,6 @@ public final class NxmPlotUtil {
 		final CorbaConnectionSettings connectionSettings = new CorbaConnectionSettings(port.getIor(), port.getRepid());
 		return connectionSettings;
 	}
-	
-	/**
-	 * @since 4.2
-	 */
-	public static IPlotSession addSource(PlotSource source, final AbstractNxmPlotWidget plotWidget) {
-		return addSource(source.getInput(), source.getFftOptions(), plotWidget, source.getQualifiers());
-	}
 
 	/**
 	 * @deprecated Use {@Link #addSource(ScaUsesPort, AbstractNxmPlotWidget, String)} instead. Using this method will
@@ -368,23 +361,8 @@ public final class NxmPlotUtil {
 	public static IPlotSession addSource(final ScaUsesPort port, final FftSettings fft, final AbstractNxmPlotWidget plotWidget, final String qualifiers) {
 		final Map<String, String> outputIds = launchInputMacro(createConnectionSettings(port), fft, plotWidget, null);
 		PlotSession session = new PlotSession(plotWidget, outputIds.get(KEY_COMMAND), outputIds.get(KEY_FILE));
-		plotWidget.addSource(session.getSourceId(), ((qualifiers == null) ? "" : qualifiers));
+		plotWidget.addSource(session.getSourceId(), ((qualifiers == null) ? "" : qualifiers), session);
 		return session;
-	}
-
-	/**
-	 * @deprecated Use {@link #addSource(List, FftSettings, AbstractNxmPlotWidget, String))} instead. Using this method will
-	 * result in a resource leak, as there is no way for the client to kill the NXM processes used to provide the plot data.
-	 * @param port the port that provides the data to be plotted. There is also no way for the client to close the plot file.
-	 */
-	@Deprecated
-	public static void plot(final List<CorbaConnectionSettings> connList, final FftSettings fft, final AbstractNxmPlotWidget plotWidget) {
-		final List<Map<String, String>> outputIds = launchInputMacros(connList, fft, plotWidget, null);
-		setPlotToReal(fft != null, plotWidget);
-
-		for (Map<String, String> map : outputIds) {
-			plotWidget.addSource(map.get(KEY_FILE), null);
-		}
 	}
 
 	public static List<IPlotSession> addSource(final List<CorbaConnectionSettings> connList, final FftSettings fft, final AbstractNxmPlotWidget plotWidget,
@@ -393,8 +371,9 @@ public final class NxmPlotUtil {
 		setPlotToReal(fft != null, plotWidget);
 		List<IPlotSession> sessions = new ArrayList<IPlotSession>();
 		for (Map<String, String> map : outputIds) {
-			plotWidget.addSource(map.get(KEY_FILE), ((qualifiers == null) ? "" : qualifiers));
-			sessions.add(new PlotSession(plotWidget, map.get(KEY_COMMAND), map.get(KEY_FILE)));
+			PlotSession session = new PlotSession(plotWidget, map.get(KEY_COMMAND), map.get(KEY_FILE));
+			plotWidget.addSource(map.get(KEY_FILE), ((qualifiers == null) ? "" : qualifiers), session);
+			sessions.add(session);
 		}
 		return sessions;
 	}
@@ -411,7 +390,7 @@ public final class NxmPlotUtil {
 			final String qualifiers) {
 		final Map<String, String> outputIds = launchInputMacro(sdds, magExponent, fft, plotWidget, null);
 		PlotSession session = new PlotSession(plotWidget, outputIds.get(KEY_COMMAND), outputIds.get(KEY_FILE));
-		plotWidget.addSource(session.getSourceId(), ((qualifiers == null) ? "" : qualifiers));
+		plotWidget.addSource(session.getSourceId(), ((qualifiers == null) ? "" : qualifiers), session);
 		return session;
 	}
 
@@ -431,7 +410,7 @@ public final class NxmPlotUtil {
 
 		final Map<String, String> outputIds = launchInputMacro(file, format, thinData, thinIncr, yDelta, plotWidget);
 		PlotSession session = new PlotSession(plotWidget, outputIds.get(KEY_COMMAND), outputIds.get(KEY_FILE));
-		plotWidget.addSource(session.getSourceId(), ((qualifiers == null) ? "" : qualifiers));
+		plotWidget.addSource(session.getSourceId(), ((qualifiers == null) ? "" : qualifiers), session);
 		return session;
 	}
 

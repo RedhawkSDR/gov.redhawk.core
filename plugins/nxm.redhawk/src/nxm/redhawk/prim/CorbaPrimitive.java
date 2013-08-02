@@ -15,9 +15,6 @@ import gov.redhawk.sca.util.Debug;
 import gov.redhawk.sca.util.OrbSession;
 
 import java.lang.Thread.UncaughtExceptionHandler;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 
 import nxm.redhawk.lib.RedhawkOptActivator;
 import nxm.sys.inc.Commandable;
@@ -25,17 +22,20 @@ import nxm.sys.lib.Primitive;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.Status;
+import org.omg.CORBA.ORB;
 import org.omg.CORBA.SystemException;
 import org.omg.CosNaming.NamingContextExt;
 import org.omg.CosNaming.NamingContextExtHelper;
+import org.omg.CosNaming.NamingContextPackage.CannotProceed;
+import org.omg.CosNaming.NamingContextPackage.InvalidName;
+import org.omg.CosNaming.NamingContextPackage.NotFound;
 import org.omg.PortableServer.POA;
 
 import CF.Port;
 import CF.PortHelper;
 import CF.Resource;
 import CF.ResourceHelper;
-import CF.PortPackage.InvalidPort;
-import CF.PortPackage.OccupiedPort;
+import CF.PortSupplierPackage.UnknownPort;
 
 /**
  * This class connects to the specified CORBA host and receives the float data
@@ -63,77 +63,15 @@ public class CorbaPrimitive extends Primitive {
 	protected static final int MAX_RETRIES = 5;
 
 	private OrbSession session = OrbSession.createSession();
-	/** The list of port connections */
-	private final List<ConnectionData> connections = Collections.synchronizedList(new ArrayList<ConnectionData>());
+	
 	/** the NameService helper */
 	private NamingContextExt ncRef = null;
 
-	private static class ConnectionData {
-		private org.omg.CORBA.Object tie;
-		private Port port;
-		private final String dceUUID;
-		private boolean connected = false;
-
-		public ConnectionData(final org.omg.CORBA.Object tie, final Port port) {
-			super();
-			this.tie = tie;
-			if (DEBUG_PORT.enabled) {
-				DEBUG_PORT.message("Plot port IOR: ", tie);
-			}
-			this.port = port;
-			this.dceUUID = "plot_" + System.getProperty("user.name", "user") + "_" + System.currentTimeMillis();
-		}
-
-		public void connect() throws InvalidPort, OccupiedPort {
-			if (!this.connected) {
-				this.port.connectPort(this.tie, this.dceUUID);
-				this.connected = true;
-			}
-		}
-
-		public void disconnect() throws InvalidPort {
-			if (this.connected) {
-				this.port.disconnectPort(this.dceUUID);
-				this.connected = false;
-			}
-		}
-
-		public void release() {
-			try {
-				disconnect();
-				if (tie != null) {
-					tie._release();
-				}
-				if (port != null) {
-					port._release();
-				}
-			} catch (final InvalidPort e) {
-				// PASS Ignore errors
-			} catch (final SystemException e) {
-				// PASS
-			} finally {
-				this.port = null;
-				this.tie = null;
-			}
-		}
-
-		public int hashCode() {
-			assert false : "hashCode not designed";
-			return 42; // any arbitrary constant will do
-		}
-
-		@Override
-		public boolean equals(final Object obj) {
-			if (obj instanceof ConnectionData) {
-				final ConnectionData cd = (ConnectionData) obj;
-				return cd.port._is_equivalent(this.port);
-			} else {
-				return false;
-			}
-		}
+	public ORB getOrb() {
+		return session.getOrb();
 	}
 
-	protected POA getPOA() throws CoreException {
+	public POA getPOA() throws CoreException {
 		return session.getPOA();
 	}
 
@@ -186,7 +124,7 @@ public class CorbaPrimitive extends Primitive {
 		};
 		shutdownThread.setDaemon(true);
 		shutdownThread.setUncaughtExceptionHandler(new UncaughtExceptionHandler() {
-			
+
 			@Override
 			public void uncaughtException(Thread t, Throwable e) {
 				RedhawkOptActivator.log(new Status(Status.ERROR, RedhawkOptActivator.ID, "Error occured while shuting down Corba Primitive", e));
@@ -199,20 +137,40 @@ public class CorbaPrimitive extends Primitive {
 	 * This closes all connected ports and cleans up the CORBA connection(s).
 	 */
 	protected void shutdown() {
-		// loop through all the ports and disconnect/release
-		synchronized (this.connections) {
-			for (final ConnectionData data : this.connections) {
-				data.release();
-			}
-			this.connections.clear();
+		if (ncRef != null) {
+			ncRef._release();
+			ncRef = null;
 		}
-
-		this.ncRef = null;
 
 		// Shutdown the ORB connection
 		if (this.session != null) {
 			this.session.dispose();
 			this.session = null;
+		}
+	}
+
+	/**
+	 * @since 9.1
+	 */
+	protected Port getPort() throws NotFound, CannotProceed, InvalidName, UnknownPort {
+		// Get the resource to connect to - MA is the argument list
+		// Resource is the component you're trying to connect to
+		final String name = this.MA.getU(CorbaPrimitive.A_RESOURCE);
+		final String portName = this.MA.getU(CorbaPrimitive.A_PORT_NAME);
+		
+		// Only do this if we were told which Host to connect to
+		if (this.ncRef != null) {
+			// Find the Resource from the NameService
+			final org.omg.CORBA.Object ref = this.ncRef.resolve(this.ncRef.to_name(name));
+			final Resource res = ResourceHelper.narrow(ref);
+
+			// Get the port from the resource - PORT_NAME is the name of the
+			// port you want to connect to
+			return PortHelper.narrow(res.getPort(portName));
+		} else {
+			// If ncRef was null, we were passed an IOR for the
+			// port. Use this to directly resolve the port.
+			return PortHelper.narrow(session.getOrb().string_to_object(portName));
 		}
 	}
 
@@ -224,62 +182,8 @@ public class CorbaPrimitive extends Primitive {
 	 *            connection.
 	 * @return true if the port was successfully connected
 	 */
+	@Deprecated
 	protected boolean connectPort(final org.omg.CORBA.Object newTie) {
-		boolean retVal = false;
-		if (newTie == null) {
-			throw new IllegalStateException("New Tie is null");
-		}
-
-		int retry = 0;
-
-		// Get the resource to connect to - MA is the argument list
-		// Resource is the component you're trying to connect to
-		final String name = this.MA.getU(CorbaPrimitive.A_RESOURCE);
-		final String portName = this.MA.getU(CorbaPrimitive.A_PORT_NAME);
-
-		while (retry < CorbaPrimitive.MAX_RETRIES) {
-			try {
-				org.omg.CORBA.Object portRef = null;
-
-				// Only do this if we were told which Host to connect to
-				if (this.ncRef != null) {
-					// Find the Resource from the NameService
-					final org.omg.CORBA.Object ref = this.ncRef.resolve(this.ncRef.to_name(name));
-					final Resource res = ResourceHelper.narrow(ref);
-
-					// Get the port from the resource - PORT_NAME is the name of the
-					// port you want to connect to
-					portRef = res.getPort(portName);
-				} else {
-					// If ncRef was null, we were passed an IOR for the
-					// port. Use this to directly resolve the port.
-					portRef = session.getOrb().string_to_object(portName);
-				}
-
-				final Port port = PortHelper.narrow(portRef);
-
-				// Make a new connection from the port to the given object
-				final ConnectionData data = new ConnectionData(newTie, port);
-
-				if (!this.connections.contains(data)) {
-					data.connect();
-					// Store the connected port for later cleanup
-					this.connections.add(data);
-				}
-				retVal = true;
-				break;
-			} catch (final Exception e) {
-				if (++retry == CorbaPrimitive.MAX_RETRIES) {
-					this.M.error(e);
-				}
-				try {
-					Thread.sleep(1000); // SUPPRESS CHECKSTYLE MagicNumber
-				} catch (final InterruptedException i) {
-					// PASS
-				}
-			}
-		}
-
-		return retVal;
+		return false;
 	}
 }

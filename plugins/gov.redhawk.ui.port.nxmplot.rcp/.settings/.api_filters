@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<component id="gov.redhawk.ui.port.nxmplot.rcp" version="2">
+    <resource path="src/gov/redhawk/ui/port/nxmplot/rcp/RcpNxmPlotWidget.java" type="gov.redhawk.ui.port.nxmplot.rcp.RcpNxmPlotWidget">
+        <filter id="571473929">
+            <message_arguments>
+                <message_argument value="AbstractNxmPlotWidget"/>
+                <message_argument value="RcpNxmPlotWidget"/>
+            </message_arguments>
+        </filter>
+    </resource>
+</component>

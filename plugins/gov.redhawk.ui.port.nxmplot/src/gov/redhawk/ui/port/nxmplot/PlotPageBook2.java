@@ -11,6 +11,7 @@
  */
 package gov.redhawk.ui.port.nxmplot;
 
+import gov.redhawk.internal.ui.port.nxmplot.view.PlotSource;
 import gov.redhawk.model.sca.IDisposable;
 import gov.redhawk.model.sca.ScaPackage;
 import gov.redhawk.model.sca.ScaUsesPort;
@@ -36,21 +37,22 @@ import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.part.PageBook;
 
 /**
- * @since 4.2
+ * @since 5.0
  */
 public class PlotPageBook2 extends Composite {
 
-	private static class PlotSession {
+	private static class PlotPage {
 		private final AbstractNxmPlotWidget plot;
 		private final Map<PlotSource, IPlotSession> sessionMap = new HashMap<PlotSource, IPlotSession>();
 
-		public PlotSession(AbstractNxmPlotWidget plot, String plotArgs, String plotSwitches) {
+		public PlotPage(AbstractNxmPlotWidget plot, String plotArgs, String plotSwitches) {
 			this.plot = plot;
 			this.plot.initPlot(plotSwitches, plotArgs);
 		}
 
 		private synchronized void addSource(PlotSource newSource) {
-			sessionMap.put(newSource, NxmPlotUtil.addSource(newSource, plot));
+			IPlotSession newSession = NxmPlotUtil.addSource(newSource.getInput(), newSource.getFftOptions(), plot, newSource.getQualifiers());
+			sessionMap.put(newSource, newSession);
 		}
 
 		private synchronized void removeSource(PlotSource source) {
@@ -73,7 +75,7 @@ public class PlotPageBook2 extends Composite {
 	private final PageBook pageBook;
 
 	/** The plots. */
-	private Map<PlotType, PlotSession> plots = new HashMap<PlotType, PlotSession>();
+	private Map<PlotType, PlotPage> plots = new HashMap<PlotType, PlotPage>();
 
 	private final PlotListenerAdapter listenerAdapter = new PlotListenerAdapter();
 
@@ -132,13 +134,13 @@ public class PlotPageBook2 extends Composite {
 	/**
 	 * @since 4.2
 	 */
-	protected PlotSession createPlot(PlotType type) {
+	protected PlotPage createPlot(PlotType type) {
 		AbstractNxmPlotWidget newPlot = PlotActivator.getDefault().getPlotFactory().createPlotWidget(this.pageBook, SWT.None);
 		newPlot.addMessageHandler(this.adapter);
 
 		final String plotArgs = NxmPlotUtil.getDefaultPlotArgs(type);
 		final String plotSwitches = NxmPlotUtil.getDefaultPlotSwitches(type);
-		PlotSession session = new PlotSession(newPlot, plotArgs, plotSwitches);
+		PlotPage session = new PlotPage(newPlot, plotArgs, plotSwitches);	
 		this.plots.put(type, session);
 
 		for (PlotSource source : this.sources) {
@@ -148,8 +150,8 @@ public class PlotPageBook2 extends Composite {
 		return session;
 	}
 
-	public IPlotSession addSource(final PlotSource plotSource) {
-		for (PlotSession session : plots.values()) {
+	private IPlotSession addSource(final PlotSource plotSource) {
+		for (PlotPage session : plots.values()) {
 			session.addSource(plotSource);
 		}
 		this.sources.add(plotSource);
@@ -164,7 +166,7 @@ public class PlotPageBook2 extends Composite {
 			private String id = DceUuidUtil.createDceUUID();
 
 			public void dispose() {
-				for (PlotSession session : plots.values()) {
+				for (PlotPage session : plots.values()) {
 					session.removeSource(plotSource);
 				}
 			}
@@ -190,11 +192,17 @@ public class PlotPageBook2 extends Composite {
 			pageBook.showPage(nullPage);
 
 		} else {
-			PlotSession plotSession = this.plots.get(type);
-			if (plotSession == null) {
-				plotSession = createPlot(type);
+			PlotPage newPlot = this.plots.get(type);
+			if (newPlot == null) {
+				AbstractNxmPlotWidget oldPlot = getActivePlotWidget();
+				newPlot = createPlot(type);
+				if (oldPlot != null) {
+					PlotSettings existingSettings = new PlotSettings(oldPlot.getPlotSettings());
+					existingSettings.setPlotType(type);
+					newPlot.plot.applySettings(existingSettings);
+				}
 			}
-			pageBook.showPage(plotSession.plot);
+			pageBook.showPage(newPlot.plot);
 		}
 		this.currentType = type;
 	}
@@ -219,7 +227,7 @@ public class PlotPageBook2 extends Composite {
 		}
 		super.dispose();
 		
-		for (PlotSession session : this.plots.values()) {
+		for (PlotPage session : this.plots.values()) {
 			session.dispose();
 		}
 		this.plots.clear();
@@ -239,7 +247,7 @@ public class PlotPageBook2 extends Composite {
 	 * @since 3.0
 	 */
 	public AbstractNxmPlotWidget getPlot(PlotType type) {
-		PlotSession session = this.plots.get(type);
+		PlotPage session = this.plots.get(type);
 		if (session != null) {
 			return session.plot;
 		}
@@ -269,6 +277,14 @@ public class PlotPageBook2 extends Composite {
 
 	public List<PlotSource> getSources() {
 		return Collections.unmodifiableList(this.sources);
+	}
+
+	public List<AbstractNxmPlotWidget> getAllPlotWidgets() {
+		List<AbstractNxmPlotWidget> retVal = new ArrayList<AbstractNxmPlotWidget>(plots.size());
+		for (PlotPage session :plots.values()) {
+			retVal.add(session.plot);
+		}
+		return retVal;
 	}
 
 }

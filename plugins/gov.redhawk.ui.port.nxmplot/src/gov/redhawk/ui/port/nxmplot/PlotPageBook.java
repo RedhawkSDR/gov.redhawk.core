@@ -136,7 +136,6 @@ public class PlotPageBook extends Composite {
 				PlotPageBook.this.linePlotSessions = NxmPlotUtil.addSource(connList, fft, PlotPageBook.this.nxmPlotWidgetLine, plotQualifiers);
 				PlotSettings settings = PlotPageBook.this.nxmPlotWidgetLine.getPlotSettings();
 				settings.setPlotType(PlotType.LINE);
-				settings.setSessions(PlotPageBook.this.linePlotSessions);
 				return Status.OK_STATUS;
 			}
 
@@ -151,7 +150,6 @@ public class PlotPageBook extends Composite {
 					PlotPageBook.this.rasterPlotSessions = NxmPlotUtil.addSource(connList, fft, PlotPageBook.this.nxmPlotWidgetRaster, plotQualifiers);
 					PlotSettings settings = PlotPageBook.this.nxmPlotWidgetRaster.getPlotSettings();
 					settings.setPlotType(PlotType.RASTER);
-					settings.setSessions(PlotPageBook.this.rasterPlotSessions);
 					return Status.OK_STATUS;
 				}
 

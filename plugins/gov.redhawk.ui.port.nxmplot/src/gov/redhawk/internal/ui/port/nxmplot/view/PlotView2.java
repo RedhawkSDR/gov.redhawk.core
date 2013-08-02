@@ -11,13 +11,14 @@
  */
 package gov.redhawk.internal.ui.port.nxmplot.view;
 
+import gov.redhawk.internal.ui.port.nxmplot.PlotSettingsDialog;
 import gov.redhawk.model.sca.ScaUsesPort;
 import gov.redhawk.ui.port.nxmplot.AbstractNxmPlotWidget;
 import gov.redhawk.ui.port.nxmplot.FftSettings;
 import gov.redhawk.ui.port.nxmplot.IPlotSession;
 import gov.redhawk.ui.port.nxmplot.PlotActivator;
 import gov.redhawk.ui.port.nxmplot.PlotPageBook2;
-import gov.redhawk.ui.port.nxmplot.PlotSource;
+import gov.redhawk.ui.port.nxmplot.PlotSettings;
 import gov.redhawk.ui.port.nxmplot.PlotType;
 
 import java.util.ArrayList;
@@ -28,25 +29,23 @@ import mil.jpeojtrs.sca.util.AnyUtils;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.action.Action;
-import org.eclipse.jface.action.ActionContributionItem;
 import org.eclipse.jface.action.IAction;
-import org.eclipse.jface.action.IMenuCreator;
 import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.jface.action.Separator;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.resource.ImageDescriptor;
+import org.eclipse.jface.window.Window;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.DisposeEvent;
 import org.eclipse.swt.events.DisposeListener;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Control;
-import org.eclipse.swt.widgets.Menu;
 import org.eclipse.ui.IActionBars;
 import org.eclipse.ui.IViewPart;
 import org.eclipse.ui.IWorkbenchActionConstants;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.PartInitException;
+import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.part.ViewPart;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.eclipse.ui.statushandlers.StatusManager;
@@ -74,36 +73,17 @@ public class PlotView2 extends ViewPart {
 
 	/** The private action for creating a new plot connection */
 	private IAction newPlotViewAction;
-	
-	private class ShowPlotAction extends Action {
-		private PlotType type;
 
-		public ShowPlotAction(PlotType type) {
-			super(type.toString());
-			this.type = type;
-		}
-		
-		@Override
-		public void run() {
-			plotPageBook.showPlot(type);
-		}
-	}
-	
-	private class PlotTypeMenuAction extends Action implements IMenuCreator {
-		private Menu menu;
-		
+	/** The private action for adjusting plot settings. */
+	private IAction adjustPlotSettingsAction;
+
+
+	private class PlotTypeMenuAction extends Action {
+
 		public PlotTypeMenuAction() {
 			super("Change Plot Type", IAction.AS_PUSH_BUTTON | IAction.AS_DROP_DOWN_MENU | SWT.None);
-			setMenuCreator(this);
 		}
 
-		public void dispose() {
-			if (menu != null) {
-				menu.dispose();
-				menu = null;
-			}
-		}
-		
 		@Override
 		public void run() {
 			PlotType currentType = plotPageBook.getCurrentType();
@@ -114,37 +94,20 @@ public class PlotView2 extends ViewPart {
 			}
 		}
 
-		public Menu getMenu(Control parent) {
-			if (menu != null) {
-				menu.dispose();
-			}
-			menu = new Menu(parent.getShell(), SWT.POP_UP | SWT.None);
-			for (PlotType type : PlotType.values()) {
-				// Don't show CONTOUR or MESH in the drop down since they almost never make sense for signal data
-				switch(type) {
-				case CONTOUR:
-				case MESH:
-					continue;
-				default:
-					break;
-				}
-				addActionToMenu(menu, new ShowPlotAction(type));
-			}
-			return menu;
-		}
-
-		private void addActionToMenu(Menu parent, ShowPlotAction showPlotAction) {
-			ActionContributionItem item = new ActionContributionItem(showPlotAction);
-			item.fill(parent, -1);
-		}
-
-		public Menu getMenu(Menu parent) {
-			return null;
-		}
-		
 	}
 
 	private PlotPageBook2 plotPageBook;
+
+	private DisposeListener disposeListener = new DisposeListener() {
+
+		public void widgetDisposed(DisposeEvent e) {
+			if (!diposed && PlotView2.this == getSite().getPage().findView(getSite().getId())) {
+				getSite().getPage().hideView(PlotView2.this);
+			}
+		}
+	};
+
+	private boolean diposed;
 
 	public PlotView2() {
 		plotQualifiers = "{CL=8}";
@@ -157,20 +120,25 @@ public class PlotView2 extends ViewPart {
 	@Override
 	public void createPartControl(final Composite parent) {
 		this.plotPageBook = new PlotPageBook2(parent, SWT.None);
-		this.plotPageBook.addDisposeListener(new DisposeListener() {
-			
-			public void widgetDisposed(DisposeEvent e) {
-				getSite().getPage().hideView(PlotView2.this);
-			}
-		});
-		
+		this.plotPageBook.addDisposeListener(disposeListener);
+
 		createActions();
 		createToolBars();
 		createMenu();
 	}
-	
-	public IPlotSession addPlotSource(PlotSource source) {
-		return this.plotPageBook.addSource(source);
+
+	private IPlotSession addPlotSource(PlotSource source) {
+		return this.plotPageBook.addSource(source.getInput(), source.getFftOptions(), source.getQualifiers());
+	}
+
+	@Override
+	public void dispose() {
+		if (this.plotPageBook != null && !plotPageBook.isDisposed()) {
+			this.plotPageBook.removeDisposeListener(disposeListener);
+			this.plotPageBook = null;
+		}
+		this.diposed = true;
+		super.dispose();
 	}
 
 	/**
@@ -202,6 +170,9 @@ public class PlotView2 extends ViewPart {
 		if (this.showSriAction != null) {
 			menu.add(this.showSriAction);
 		}
+		if (this.adjustPlotSettingsAction != null) {
+			menu.add(this.adjustPlotSettingsAction);
+		}
 		menu.add(new Separator(IWorkbenchActionConstants.MB_ADDITIONS));
 	}
 
@@ -216,7 +187,7 @@ public class PlotView2 extends ViewPart {
 		toolBarManager.add(new Separator());
 		toolBarManager.add(new Separator(IWorkbenchActionConstants.MB_ADDITIONS));
 	}
-	
+
 	public static String createSecondaryId() {
 		return String.valueOf(secondardId++);
 	}
@@ -229,21 +200,23 @@ public class PlotView2 extends ViewPart {
 		this.plotTypeAction.setImageDescriptor(rasterImageDescriptor);
 
 		this.newPlotViewAction = new Action() {
-			@SuppressWarnings("unchecked")
 			@Override
 			public void run() {
 				try {
 					final IViewPart newView = getSite().getPage().showView(getSite().getId(), createSecondaryId(), IWorkbenchPage.VIEW_ACTIVATE);
 					if (newView instanceof PlotView2) {
-						final PlotView2 newPlot = (PlotView2) newView;
-						newPlot.getPlotPageBook().showPlot(plotPageBook.getCurrentType());
+						final PlotView2 newPlotView = (PlotView2) newView;
+						newPlotView.getPlotPageBook().showPlot(plotPageBook.getCurrentType());
 						for (PlotSource source : plotPageBook.getSources()) {
-							newPlot.addPlotSource(source);
+							newPlotView.addPlotSource(source);
 						}
+						PlotSettings settings = plotPageBook.getActivePlotWidget().getPlotSettings();
+						settings.setPlotType(null);
+						newPlotView.getPlotPageBook().getActivePlotWidget().applySettings(settings);
 					}
 				} catch (final PartInitException e) {
-					StatusManager.getManager()
-					        .handle(new Status(IStatus.ERROR, PlotActivator.PLUGIN_ID, "Failed to open new Plot View", e), StatusManager.SHOW | StatusManager.LOG);
+					StatusManager.getManager().handle(new Status(IStatus.ERROR, PlotActivator.PLUGIN_ID, "Failed to open new Plot View", e),
+						StatusManager.SHOW | StatusManager.LOG);
 				}
 			}
 		};
@@ -299,6 +272,36 @@ public class PlotView2 extends ViewPart {
 		this.showSriAction.setEnabled(true);
 		this.showSriAction.setText("SRI");
 		this.showSriAction.setToolTipText("Display current plot SRI");
+
+		createActionAdjustPlotSettings();
+	}
+
+	private void createActionAdjustPlotSettings() {
+		this.adjustPlotSettingsAction = new Action() {
+			@Override
+			public void run() {
+				AbstractNxmPlotWidget activeWidget = plotPageBook.getActivePlotWidget();
+				PlotSettings plotSettings = activeWidget.getPlotSettings();
+				PlotSettingsDialog dialog = new PlotSettingsDialog(PlatformUI.getWorkbench().getDisplay().getActiveShell(), plotSettings);
+				final int result = dialog.open();
+				if (result == Window.OK) {
+					PlotSettings newSettings = dialog.getSettings();
+					PlotType newType = newSettings.getPlotType();
+					// Ignore Plot type in settings use page book instead
+					newSettings.setPlotType(null);
+
+					for (AbstractNxmPlotWidget widget : plotPageBook.getAllPlotWidgets()) {
+						widget.applySettings(newSettings);
+					}
+					plotPageBook.showPlot(newType);
+				}
+
+			}
+		};
+
+		this.adjustPlotSettingsAction.setEnabled(true);
+		this.adjustPlotSettingsAction.setText("Adjust Plot Settings");
+		this.adjustPlotSettingsAction.setToolTipText("Adjust/Override Plot Settings");
 	}
 
 	private StreamSRI[] getActiveSRI() {
@@ -309,14 +312,14 @@ public class PlotView2 extends ViewPart {
 				retVal = plot.getActiveSRI();
 			}
 		}
-		
+
 		if (retVal != null) {
 			return new StreamSRI[] { retVal };
 		} else {
 			return new StreamSRI[0];
 		}
 	}
-	
+
 	public PlotPageBook2 getPlotPageBook() {
 		return plotPageBook;
 	}

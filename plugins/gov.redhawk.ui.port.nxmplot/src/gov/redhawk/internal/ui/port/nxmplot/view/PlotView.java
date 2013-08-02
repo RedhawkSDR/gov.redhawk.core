@@ -382,7 +382,6 @@ public class PlotView extends ViewPart {
 						plotSessionMap.put(spectralPlots, plotSessions);
 						PlotSettings settings = nxmPlotWidget.getPlotSettings();
 						settings.setPlotType(_plotType);
-						settings.setSessions(plotSessions);
 						return Status.OK_STATUS;
 					}
 

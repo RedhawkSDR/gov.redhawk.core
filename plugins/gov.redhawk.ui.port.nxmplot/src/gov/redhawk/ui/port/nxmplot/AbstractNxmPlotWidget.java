@@ -13,7 +13,8 @@ package gov.redhawk.ui.port.nxmplot;
 
 import gov.redhawk.internal.ui.port.nxmplot.PlotSession;
 
-import java.util.List;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -36,13 +37,13 @@ import org.eclipse.ui.statushandlers.StatusManager;
 import BULKIO.StreamSRI;
 
 /**
- * @since 3.0
+ * @since 5.0
+ * @noextend This class is not intended to be subclassed by clients.
  */
 public abstract class AbstractNxmPlotWidget extends Composite {
-
-	private static final long serialVersionUID = -5616513930191161990L;
 	private StreamSRI activeSRI;
-	private PlotSettings plotSettings;
+	private PlotSettings plotSettings = new PlotSettings();
+	private final Map<String, IPlotSession> inputSessions = Collections.synchronizedMap(new HashMap<String, IPlotSession>());
 
 	/**
 	 * This class handles all plot clicks and mouse moves and forwards the relevant ones to
@@ -114,7 +115,7 @@ public abstract class AbstractNxmPlotWidget extends Composite {
 					}
 				}
 			} else if ("PANXY".equals(msg.name)) { //middle drag
-				final double[] d =  (double[]) msg.data;
+				final double[] d = (double[]) msg.data;
 				final Object[] listeners = this.plotListeners.getListeners();
 				for (final Object obj : listeners) {
 					final IPlotWidgetListener pl = (IPlotWidgetListener) obj;
@@ -123,8 +124,7 @@ public abstract class AbstractNxmPlotWidget extends Composite {
 			} else {
 				if ("ERROR".equals(msg.name)) {
 					StatusManager.getManager().handle(
-							new Status(IStatus.ERROR, PlotActivator.PLUGIN_ID, "PlotMessageHandler got error message: " + msg.toString("+FROM")),
-							StatusManager.LOG);
+						new Status(IStatus.ERROR, PlotActivator.PLUGIN_ID, "PlotMessageHandler got error message: " + msg.toString("+FROM")), StatusManager.LOG);
 				}
 				retVal = Commandable.NOOP;
 			}
@@ -135,7 +135,7 @@ public abstract class AbstractNxmPlotWidget extends Composite {
 		private Double[] getValues(Object obj) {
 			if (obj instanceof DragBox) {
 				DragBox box = (DragBox) obj;
-				return new Double[]{box.getXMin(), box.getYMin(), box.getXMax(), box.getYMax()};
+				return new Double[] { box.getXMin(), box.getYMin(), box.getXMax(), box.getYMax() };
 			} else if (obj instanceof Table) {
 				Table table = (Table) obj;
 				Double[] values = new Double[4]; // SUPPRESS CHECKSTYLE MagicNumber
@@ -158,9 +158,7 @@ public abstract class AbstractNxmPlotWidget extends Composite {
 
 	}
 
-	/** @deprecated since 4.2 use {@link #getPlotMessageHandler()} */
-	@Deprecated // TODO: this should become a private field in next major version (5.0)
-	protected final PlotMessageHandler plotMessageHandler = new PlotMessageHandler();
+	private final PlotMessageHandler plotMessageHandler = new PlotMessageHandler();
 
 	private final ListenerList messageHandlers = new ListenerList(ListenerList.IDENTITY);
 
@@ -186,7 +184,7 @@ public abstract class AbstractNxmPlotWidget extends Composite {
 	}
 
 	protected int fireProcessMessage(final Message msg) {
-		final int[] retVal = {Commandable.NORMAL};
+		final int[] retVal = { Commandable.NORMAL };
 		final Object[] listeners = this.messageHandlers.getListeners();
 		for (final Object obj : listeners) {
 			SafeRunnable.run(new ISafeRunnable() {
@@ -206,15 +204,15 @@ public abstract class AbstractNxmPlotWidget extends Composite {
 	public abstract String addDataFeature(Number xStart, Number xEnd, String color);
 
 	/**
-     * @since 4.0
-     */
+	 * @since 4.0
+	 */
 	public String addDragboxFeature(Number xmin, Number ymin, Number xmax, Number ymax, String color) {
 		return null;
 	}
 
 	/**
-     * @since 4.0
-     */
+	 * @since 4.0
+	 */
 	public void removeFeature(String featureid) {
 
 	}
@@ -226,7 +224,30 @@ public abstract class AbstractNxmPlotWidget extends Composite {
 	 * @param plotSwtiches Switches to send to the plot command
 	 * @param plotArgs Arguments to send to the plot command
 	 */
-	public abstract void initPlot(String plotSwtiches, String plotArgs);
+	public final void initPlot(String plotSwtiches, String plotArgs) {
+		internalInitPlot(plotSwtiches, plotArgs);
+		PlotType type = null;
+		if (plotArgs != null) {
+			String upperCase = plotArgs.toUpperCase();
+			for (PlotType t : PlotType.values()) {
+				if (upperCase.contains("TYPE=" + t)) {
+					type = t;
+					break;
+				}
+			}
+		}
+
+		if (type != null) {
+			plotSettings.setPlotType(type);
+		} else {
+			plotSettings.setPlotType(PlotType.RASTER);
+		}
+	}
+
+	/**
+	 * @since 5.0
+	 */
+	protected abstract void internalInitPlot(String plotSwtiches, String plotArgs);
 
 	/**
 	 * Runs a command headlessly within the NmSession. TODO: renamed runServerCommand(..)
@@ -249,19 +270,20 @@ public abstract class AbstractNxmPlotWidget extends Composite {
 	public abstract void runClientCommand(String command);
 
 	/**
-	 * Use {@Link #addSource(String, String)} to specify plot qualifiers. This method
-	 * will not work properly if a qualifier is concatenated to the sourceId
-	 * Add a source to the plot
-	 * @param sourcePipeId the pipe ID to add to this plot
+	 * @since 5.0
 	 */
-	public abstract void addSource(String sourcePipeId);
+	public final void addSource(String sourcePipeId, String qualifiers, IPlotSession session) {
+		internalAddSource(sourcePipeId, qualifiers);
+		inputSessions.put(sourcePipeId, session);
+	}
 
 	/**
 	 * Add a source to the plot
 	 * @param sourcePipeId the pipe ID to add to this plot
 	 * @param qualifiers plot qualifiers. Can be null.
+	 * @since 5.0
 	 */
-	public abstract void addSource(String sourcePipeId, String qualifiers);
+	protected abstract void internalAddSource(String sourcePipeId, String qualifiers);
 
 	/**
 	 * @return An unmodifiable list of the current plot sources
@@ -271,13 +293,25 @@ public abstract class AbstractNxmPlotWidget extends Composite {
 	/**
 	 * Removes all plot sources
 	 */
-	public abstract void clearSources();
+	public void clearSources() {
+		synchronized (inputSessions) {
+			for (IPlotSession session : inputSessions.values()) {
+				session.dispose();
+			}
+			inputSessions.clear();
+		}
+	}
 
 	/**
 	 * Remove a pipe source from the plot
 	 * @param sourcePipeId remove a piped source from being plotted
 	 */
-	public abstract void removeSource(String sourcePipeId);
+	public void removeSource(String sourcePipeId) {
+		IPlotSession session = inputSessions.remove(sourcePipeId);
+		if (session != null) {
+			session.dispose();
+		}
+	}
 
 	/**
 	 * Send the plot a message.
@@ -320,18 +354,20 @@ public abstract class AbstractNxmPlotWidget extends Composite {
 	}
 
 	/**
-     * @since 4.2
-     */
+	 * @since 5.0
+	 */
 	protected void setActiveSRI(StreamSRI newSRI) {
 		activeSRI = newSRI;
 	}
 
-	/** @since 4.2 */
+	/** @since 5.0 */
+
 	protected PlotMessageHandler getPlotMessageHandler() {
 		return plotMessageHandler;
 	}
 
 	/** <b>INTERNAL USE ONLY</b>
+	 * @noreference This method is not intended to be referenced by clients.
 	 * Send the a  message to specified command running on server/processing side.
 	 * @param cmdID   ID of command to send message to
 	 * @param msgName name of message
@@ -342,61 +378,64 @@ public abstract class AbstractNxmPlotWidget extends Composite {
 	 */
 	public abstract void sendMessageToCommand(String cmdID, String msgName, int info, Object data, Object quals);
 
-	/** <b>INTERNAL USE ONLY</b>
-	 * @return the current custom plot settings (for getting state)
+	/**
 	 * @since 5.0
 	 */
 	public PlotSettings getPlotSettings() {
-		if (this.plotSettings == null) {
-			this.plotSettings = new PlotSettings();
-		}
-		return this.plotSettings;
+		return new PlotSettings(this.plotSettings);
 	}
 
-	/** <b>INTERNAL USE ONLY</b>
-	 * @param set custom plot settings to use (for saving state)
-	 * @since 5.0
-	 */
-	public void setPlotSettings(PlotSettings plotSettings) {
-		this.plotSettings = plotSettings;
+	public void dispose() {
+		clearSources();
 	}
 
-	/** <b>INTERNAL USE ONLY</b>
+	/**
 	 * @param custom plot settings to apply
 	 * @since 5.0
 	 */
 	public void applySettings(PlotSettings settings) {
 		if (settings != null) {
-			Integer  subsize    = settings.getFrameSize();
-			Double   sampleRate = settings.getSampleRate();
-			Double   minVal     = settings.getMinValue();
-			Double   maxVal     = settings.getMaxValue();
-			PlotType plotType   = settings.getPlotType();
+			if (this.plotSettings.equals(settings)) {
+				return;
+			}
+			Integer subsize = settings.getFrameSize();
+			this.plotSettings.setFrameSize(subsize);
+			Double sampleRate = settings.getSampleRate();
+			this.plotSettings.setSampleRate(sampleRate);
+			Double minVal = settings.getMinValue();
+			this.plotSettings.setMinValue(minVal);
+			Double maxVal = settings.getMaxValue();
+			this.plotSettings.setMaxValue(maxVal);
+			PlotType plotType = settings.getPlotType();
+			boolean changedType = false;
+			if (plotType != null) {
+				this.plotSettings.setPlotType(plotType);
+				changedType = true;
+			} else {
+				plotType = plotSettings.getPlotType();
+			}
 
 			// apply frame size and sample rate settings change to CORBARECEIVERs
-			List<IPlotSession> sessions = settings.getSessions();
-			if (sessions != null) {
-				Table msgData = new Table();
-				boolean overrideSampleRate = (sampleRate != null);
-				boolean overrideSubSize    = (subsize    != null);
-				if (!overrideSubSize) {
-					subsize = -1; // -1 tells CORBARECEIVER to use it's orig frame size value
-				}
-				msgData.put("OVERRIDESRISUBSIZE",  overrideSubSize);
-				msgData.put("FRAMESIZE",  subsize);
-				msgData.put("OVERRIDESRISAMPLERATE",  overrideSampleRate);
-				if (overrideSampleRate) {
-					msgData.put("SAMPLERATE", sampleRate);
-				}
-				for (IPlotSession session : sessions) {
-					if (session instanceof PlotSession) {
-						String cmdID = ((PlotSession) session).getCommandId();
-						sendMessageToCommand(cmdID, "CHANGE_CORBARECEIVER_SETTINGS", 0, msgData, null);
-					}
+			Table msgData = new Table();
+			boolean overrideSampleRate = (sampleRate != null);
+			boolean overrideSubSize = (subsize != null);
+			if (!overrideSubSize) {
+				subsize = -1; // -1 tells CORBARECEIVER to use it's orig frame size value
+			}
+			msgData.put("OVERRIDESRISUBSIZE", overrideSubSize);
+			msgData.put("FRAMESIZE", subsize);
+			msgData.put("OVERRIDESRISAMPLERATE", overrideSampleRate);
+			if (overrideSampleRate) {
+				msgData.put("SAMPLERATE", sampleRate);
+			}
+			for (IPlotSession session : inputSessions.values()) {
+				if (session instanceof PlotSession) {
+					String cmdID = ((PlotSession) session).getCommandId();
+					sendMessageToCommand(cmdID, "CHANGE_CORBARECEIVER_SETTINGS", 0, msgData, null);
 				}
 			}
 
-			if (plotType != null) {
+			if (plotType != null && changedType) {
 				sendPlotMessage("SET.PlotType", 0, plotType.toString());
 			}
 
@@ -432,6 +471,6 @@ public abstract class AbstractNxmPlotWidget extends Composite {
 				sendPlotMessage(plotMaxProperty, 0, maxVal);
 			}
 		}
-    }
+	}
 
 }

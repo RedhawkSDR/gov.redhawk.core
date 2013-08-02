@@ -9,12 +9,13 @@
  * http://www.eclipse.org/legal/epl-v10.html.
  *
  */
-package gov.redhawk.ui.port.nxmplot;
+package gov.redhawk.internal.ui.port.nxmplot.view;
 
 import gov.redhawk.model.sca.ScaUsesPort;
+import gov.redhawk.ui.port.nxmplot.FftSettings;
 
 /**
- * @since 4.2
+ * @since 5.0
  */
 public class PlotSource {
 	private final ScaUsesPort input;

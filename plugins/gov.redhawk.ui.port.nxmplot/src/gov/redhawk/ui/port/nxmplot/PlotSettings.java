@@ -10,21 +10,28 @@
  */
 package gov.redhawk.ui.port.nxmplot;
 
-import java.util.List;
+import gov.redhawk.sca.util.PluginUtil;
 
 /**
  * @since 5.0
  */
 public class PlotSettings {
 
-	private List<IPlotSession> sessions = null; // reference to the sessions for this settings
-	private Integer  frameSize  = null; // null to use default (e.g. from SRI)
-	private Double   sampleRate = null; // null to use default (e.g. from SRI)
-	private Double   minValue   = null; // null to use default (i.e. AutoMin)
-	private Double   maxValue   = null; // null to use default (i.e. AutoMax)
-	private PlotType plotType   = null; // null to not change plot type
+	private Integer frameSize = null; // null to use default (e.g. from SRI)
+	private Double sampleRate = null; // null to use default (e.g. from SRI)
+	private Double minValue = null; // null to use default (i.e. AutoMin)
+	private Double maxValue = null; // null to use default (i.e. AutoMax)
+	private PlotType plotType = null; // null to not change plot type
 
 	public PlotSettings() {
+	}
+
+	public PlotSettings(PlotSettings settings) {
+		this.frameSize = settings.frameSize;
+		this.sampleRate = settings.sampleRate;
+		this.minValue = settings.minValue;
+		this.maxValue = settings.maxValue;
+		this.plotType = settings.plotType;
 	}
 
 	public PlotSettings(final PlotType plotType) {
@@ -39,20 +46,6 @@ public class PlotSettings {
 		this.maxValue = maxValue;
 		this.sampleRate = sampleRate;
 		this.plotType = plotType;
-	}
-
-	/**
-	 * @return the plot sessions list
-	 */
-	public List<IPlotSession> getSessions() {
-		return sessions;
-	}
-
-	/**
-	 * @param plot sessions list to set
-	 */
-	public void setSessions(List<IPlotSession> plotSessions) {
-		this.sessions = plotSessions;
 	}
 
 	public Integer getFrameSize() {
@@ -93,6 +86,17 @@ public class PlotSettings {
 
 	public void setPlotType(PlotType plotType) {
 		this.plotType = plotType;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (obj instanceof PlotSettings) {
+			PlotSettings other = (PlotSettings) obj;
+			return PluginUtil.equals(frameSize, other.frameSize) && PluginUtil.equals(maxValue, other.maxValue) && PluginUtil.equals(minValue, other.minValue)
+				&& PluginUtil.equals(plotType, other.plotType) && PluginUtil.equals(sampleRate, other.sampleRate);
+		}
+		// TODO Auto-generated method stub
+		return super.equals(obj);
 	}
 
 }

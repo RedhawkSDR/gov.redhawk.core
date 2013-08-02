@@ -16,7 +16,7 @@ import org.eclipse.core.runtime.Plugin;
 import org.osgi.framework.BundleContext;
 
 /**
- * @since 10.0
+ * @since 9.1
  */
 public class RedhawkOptActivator extends Plugin {
 	

@@ -57,10 +57,10 @@ public class RcpNxmPlotWidget extends AbstractNxmPlotWidget {
 		nxmComp = new NeXtMidasComposite(this, SWT.None);
 
 		RedhawkNxmUtil.initializeRedhawkOptionTrees();
-		nxmComp.getLocalShell().M.registry.put(MSG_HANDLER_ID, this.plotMessageHandler);
+		nxmComp.getLocalShell().M.registry.put(MSG_HANDLER_ID, getPlotMessageHandler());
 	}
 
-	public void initPlot(String plotSwitches, String plotArgs) {
+	public void internalInitPlot(String plotSwitches, String plotArgs) {
 		if (this.initialized) {
 			throw new IllegalStateException("Plot already initialized.");
 		}
@@ -73,7 +73,7 @@ public class RcpNxmPlotWidget extends AbstractNxmPlotWidget {
 			plotSwitches = "";
 		}
 		plotCommand = (plot) nxmComp.runCommand("PLOT/BG/VERBOSE=FALSE" + plotSwitches + " " + plotArgs);
-		plotCommand.setMessageHandler(plotMessageHandler);
+		plotCommand.setMessageHandler(getPlotMessageHandler());
 	}
 
 	public boolean isInitialized() {
@@ -104,17 +104,8 @@ public class RcpNxmPlotWidget extends AbstractNxmPlotWidget {
 
 	}
 
-	/**
-	 * Use {@Link #addSource(String, String)} to sepecify plot qualifiers. Calling this method with qualifiers
-	 * concatenated with the sourceId may result in undefined behavior.
-	 */
 	@Override
-	public void addSource(String sourcePipeId) {
-		addSource(sourcePipeId, null);
-	}
-
-	@Override
-	public void addSource(String sourcePipeId, String pipeQualifiers) {
+	public void internalAddSource(String sourcePipeId, String pipeQualifiers) {
 		if (!isInitialized()) {
 			throw new IllegalStateException("Plot not initialized");
 		}

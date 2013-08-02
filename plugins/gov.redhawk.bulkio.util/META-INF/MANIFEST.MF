@@ -6,7 +6,8 @@ Bundle-Version: 1.0.0.qualifier
 Bundle-Activator: gov.redhawk.bulkio.util.BulkIOUtilActivator
 Require-Bundle: org.eclipse.core.runtime,
  idl.bulkio;bundle-version="1.8.0",
- idl.cf;bundle-version="2.3.0"
+ idl.cf;bundle-version="2.3.0",
+ gov.redhawk.sca.util;bundle-version="3.3.0"
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Export-Package: gov.redhawk.bulkio.util

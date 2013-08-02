@@ -55,9 +55,34 @@
       <menuContribution
             allPopups="true"
             locationURI="popup:org.eclipse.ui.popup.any?before=additions">
+         <command
+               commandId="gov.redhawk.ui.port.nxmplot.command.plot"
+               icon="icons/SDU.gif"
+               label="Plot Port Data"
+               style="push">
+            <parameter
+                  name="gov.redhawk.ui.port.nxmplot.type"
+                  value="LINE">
+            </parameter>
+            <visibleWhen
+                  checkEnabled="false">
+               <iterate
+                     ifEmpty="false"
+                     operator="or">
+                  <adapt
+                        type="gov.redhawk.model.sca.ScaUsesPort">
+                  </adapt>
+                  <test
+                        forcePluginActivation="true"
+                        property="gov.redhawk.ui.port.interface"
+                        value="IDL:BULKIO/data.*">
+                  </test>
+               </iterate>
+            </visibleWhen>
+         </command>
          <menu
                icon="icons/SDU.gif"
-               label="Plot">
+               label="Plot Port Data As">
             <visibleWhen
                   checkEnabled="false">
                <iterate
@@ -110,9 +135,37 @@
                </parameter>
             </command>
          </menu>
+         <command
+               commandId="gov.redhawk.ui.port.nxmplot.command.plot"
+               icon="icons/SDU.gif"
+               label="Plot Port FFT"
+               style="push">
+            <parameter
+                  name="gov.redhawk.ui.port.nxmplot.type"
+                  value="LINE">
+            </parameter>
+            <parameter
+                  name="gov.redhawk.ui.port.nxmplot.isFft"
+                  value="true">
+            </parameter>
+            <visibleWhen
+                  checkEnabled="false">
+               <iterate
+                     ifEmpty="false"
+                     operator="or">
+                  <adapt
+                        type="gov.redhawk.model.sca.ScaUsesPort">
+                  </adapt>
+                  <test
+                        property="gov.redhawk.ui.port.interface"
+                        value="IDL:BULKIO/data.*">
+                  </test>
+               </iterate>
+            </visibleWhen>
+         </command>
          <menu
                icon="icons/SDU.gif"
-               label="Plot FFT">
+               label="Plot Port FFT As">
             <visibleWhen
                   checkEnabled="false">
                <iterate

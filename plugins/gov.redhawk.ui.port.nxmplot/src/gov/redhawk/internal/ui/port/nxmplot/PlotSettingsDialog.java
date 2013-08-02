@@ -25,6 +25,8 @@ import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.StructuredSelection;
+import org.eclipse.jface.viewers.Viewer;
+import org.eclipse.jface.viewers.ViewerFilter;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
@@ -71,11 +73,7 @@ public class PlotSettingsDialog extends Dialog {
 	 */
 	public PlotSettingsDialog(final Shell parentShell, final PlotSettings settings) {
 		super(parentShell);
-		if (settings != null) {
-			this.plotSettings = settings;
-		} else {
-			this.plotSettings = new PlotSettings();
-		}
+		this.plotSettings = new PlotSettings(settings);
 	}
 
 	@Override
@@ -113,9 +111,9 @@ public class PlotSettingsDialog extends Dialog {
 		final Integer fs = this.plotSettings.getFrameSize();
 		if (fs != null) {
 			currentFS = fs;
-			fsComboInputs = new Object[] { currentFS, otherValidFSValue, 512, 1024, 2048, 4096, 8192};
+			fsComboInputs = new Object[] { currentFS, otherValidFSValue, 512, 1024, 2048, 4096, 8192 };
 		} else {
-			fsComboInputs = new Object[] { otherValidFSValue, 512, 1024, 2048, 4096, 8192};
+			fsComboInputs = new Object[] { otherValidFSValue, 512, 1024, 2048, 4096, 8192 };
 		}
 
 		this.frameSizeField.setInput(fsComboInputs);
@@ -146,9 +144,9 @@ public class PlotSettingsDialog extends Dialog {
 		final Double srate = this.plotSettings.getSampleRate();
 		if (srate != null) {
 			currentSRate = srate;
-			srateComboInputs = new Object[] { currentSRate, otherValidSRateValue};
+			srateComboInputs = new Object[] { currentSRate, otherValidSRateValue };
 		} else {
-			srateComboInputs = new Object[] { otherValidSRateValue};
+			srateComboInputs = new Object[] { otherValidSRateValue };
 		}
 
 		this.sampleRateField.setInput(srateComboInputs);
@@ -178,9 +176,9 @@ public class PlotSettingsDialog extends Dialog {
 		final Double minVal = this.plotSettings.getMinValue();
 		if (minVal != null) {
 			currentMinVal = minVal;
-			minValComboInputs = new Object[] { currentMinVal, otherValidMinValue};
+			minValComboInputs = new Object[] { currentMinVal, otherValidMinValue };
 		} else {
-			minValComboInputs = new Object[] { otherValidMinValue};
+			minValComboInputs = new Object[] { otherValidMinValue };
 		}
 
 		this.minField.setInput(minValComboInputs);
@@ -210,9 +208,9 @@ public class PlotSettingsDialog extends Dialog {
 		final Double maxVal = this.plotSettings.getMaxValue();
 		if (maxVal != null) {
 			currentMaxVal = maxVal;
-			maxValComboInputs = new Object[] { currentMaxVal, otherValidMaxValue};
+			maxValComboInputs = new Object[] { currentMaxVal, otherValidMaxValue };
 		} else {
-			maxValComboInputs = new Object[] { otherValidMaxValue};
+			maxValComboInputs = new Object[] { otherValidMaxValue };
 		}
 
 		this.maxField.setInput(maxValComboInputs);
@@ -234,6 +232,20 @@ public class PlotSettingsDialog extends Dialog {
 		this.plotTypeField.getCombo().setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false, 1, 1));
 		this.plotTypeField.setContentProvider(new ArrayContentProvider());
 		this.plotTypeField.setLabelProvider(new LabelProvider());
+		this.plotTypeField.addFilter(new ViewerFilter() {
+
+			@Override
+			public boolean select(Viewer viewer, Object parentElement, Object element) {
+				switch ((PlotType) element) {
+				case CONTOUR:
+				case MESH:
+					return false;
+				default:
+					break;
+				}
+				return true;
+			}
+		});
 		this.plotTypeField.setInput(PlotType.values());
 		this.plotTypeField.setSelection(new StructuredSelection(this.plotSettings.getPlotType()));
 		this.plotTypeField.addSelectionChangedListener(new ISelectionChangedListener() {
@@ -265,10 +277,10 @@ public class PlotSettingsDialog extends Dialog {
 	 * @return true is valid, false
 	 */
 	private void validateInputs() {
-		String frameSizeErrMsg  = FRAME_SIZE_VALIDATOR.isValid(frameSizeField.getCombo().getText());
+		String frameSizeErrMsg = FRAME_SIZE_VALIDATOR.isValid(frameSizeField.getCombo().getText());
 		String sampleRateErrMsg = SAMPLE_RATE_VALIDATOR.isValid(sampleRateField.getCombo().getText());
-		String minValueErrMsg   = MIN_VALUE_VALIDATOR.isValid(minField.getCombo().getText());
-		String maxValueErrMsg   = MAX_VALUE_VALIDATOR.isValid(maxField.getCombo().getText());
+		String minValueErrMsg = MIN_VALUE_VALIDATOR.isValid(minField.getCombo().getText());
+		String maxValueErrMsg = MAX_VALUE_VALIDATOR.isValid(maxField.getCombo().getText());
 		String errorMsg = frameSizeErrMsg;
 		errorMsg = appendIfNotNull(errorMsg, sampleRateErrMsg);
 		errorMsg = appendIfNotNull(errorMsg, minValueErrMsg);
@@ -316,9 +328,11 @@ public class PlotSettingsDialog extends Dialog {
 
 	static class SelectComboTextListener implements ISelectionChangedListener {
 		private final Combo combo;
+
 		SelectComboTextListener(Combo combo) {
 			this.combo = combo;
 		}
+
 		public void selectionChanged(final SelectionChangedEvent event) {
 			final String text = this.combo.getText();
 			final int textLen = (text == null) ? 0 : text.length();
@@ -331,6 +345,7 @@ public class PlotSettingsDialog extends Dialog {
 		private final IOtherAllowedInputValidator validator;
 		private final String otherValidValue;
 		private final PlotSettingsDialog settingsDialog;
+
 		ComboVerifyAndSetListener(Combo combo, IOtherAllowedInputValidator validator, PlotSettingsDialog dialog) {
 			Assert.isTrue(combo != null && validator != null && dialog != null);
 			this.combo = combo;
@@ -338,6 +353,7 @@ public class PlotSettingsDialog extends Dialog {
 			this.otherValidValue = validator.getOtherAllowedValue();
 			this.settingsDialog = dialog;
 		}
+
 		public void modifyText(ModifyEvent e) {
 			final String text = this.combo.getText();
 			if (this.validator.isValid(text) == null) {
@@ -349,6 +365,7 @@ public class PlotSettingsDialog extends Dialog {
 			}
 			this.settingsDialog.validateInputs(); // validate other fields on dialog
 		}
+
 		abstract void updateSettings(Double newValue);
 	}
 }

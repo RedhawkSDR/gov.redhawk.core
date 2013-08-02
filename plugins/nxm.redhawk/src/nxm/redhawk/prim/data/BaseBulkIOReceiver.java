@@ -34,6 +34,7 @@ public abstract class BaseBulkIOReceiver implements ProvidesPortStatisticsProvid
 
 	public abstract char getType();
 
+	@Deprecated
 	public abstract Servant toServant();
 
 	public corbareceiver getReceiver() {
