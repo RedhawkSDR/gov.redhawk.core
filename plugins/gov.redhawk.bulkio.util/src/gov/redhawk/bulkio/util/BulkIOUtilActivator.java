@@ -12,17 +12,24 @@ package gov.redhawk.bulkio.util;
 
 import gov.redhawk.bulkio.util.internal.ConnectionManager;
 
-import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.core.runtime.IStatus;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
+
+import mil.jpeojtrs.sca.util.NamedThreadFactory;
+
 import org.eclipse.core.runtime.Plugin;
-import org.eclipse.core.runtime.Status;
-import org.eclipse.core.runtime.jobs.Job;
 import org.osgi.framework.BundleContext;
 
 /**
  * The activator class controls the plug-in life cycle
  */
 public class BulkIOUtilActivator extends Plugin {
+	
+	private static final ExecutorService EXECUTOR_POOL = Executors.newSingleThreadExecutor(new NamedThreadFactory(BulkIOUtilActivator.class.getName()));
 
 	// The plug-in ID
 	public static final String PLUGIN_ID = "gov.redhawk.bulkio.util"; //$NON-NLS-1$
@@ -51,16 +58,23 @@ public class BulkIOUtilActivator extends Plugin {
 	 */
 	public void stop(BundleContext context) throws Exception {
 		plugin = null;
-		Job shutdownJob = new Job("Shutting down BulkIO Port Connection Manager") {
+		Future< ? > future = EXECUTOR_POOL.submit(new Runnable() {
 
 			@Override
-			protected IStatus run(IProgressMonitor monitor) {
+			public void run() {
 				ConnectionManager.INSTANCE.dispose();
-				return Status.OK_STATUS;
 			}
 			
-		};
-		shutdownJob.schedule();
+		});
+		try {
+			future.get(30, TimeUnit.SECONDS);
+		} catch (InterruptedException e) {
+			// PASS
+		} catch (ExecutionException e) {
+			// PASS
+		} catch (TimeoutException e) {
+			// PASS
+		}
 		
 		super.stop(context);
 	}
