@@ -37,7 +37,8 @@
             <visibleWhen
                   checkEnabled="false">
                <iterate
-                     ifEmpty="false">
+                     ifEmpty="false"
+                     operator="or">
                   <or>
                      <instanceof
                            value="gov.redhawk.ui.views.monitor.model.ports.Monitor">
@@ -52,10 +53,14 @@
             <visibleWhen
                   checkEnabled="false">
                <iterate
-                     ifEmpty="false">
+                     ifEmpty="false"
+                     operator="or">
                   <or>
                      <instanceof
                            value="gov.redhawk.ui.views.monitor.model.ports.Monitor">
+                     </instanceof>
+                     <instanceof
+                           value="gov.redhawk.ui.views.monitor.model.ports.PortConnectionMonitor">
                      </instanceof>
                   </or>
                </iterate>
@@ -108,6 +113,9 @@
                   <instanceof
                         value="gov.redhawk.ui.views.monitor.model.ports.Monitor">
                   </instanceof>
+                  <instanceof
+                        value="gov.redhawk.ui.views.monitor.model.ports.PortConnectionMonitor">
+                  </instanceof>
                </or>
             </iterate>
          </activeWhen>
@@ -122,6 +130,9 @@
                <or>
                   <instanceof
                         value="gov.redhawk.ui.views.monitor.model.ports.Monitor">
+                  </instanceof>
+                  <instanceof
+                        value="gov.redhawk.ui.views.monitor.model.ports.PortConnectionMonitor">
                   </instanceof>
                </or>
             </iterate>

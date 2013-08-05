@@ -12,10 +12,12 @@
 package gov.redhawk.ui.views.internal.monitor.handler;
 
 import gov.redhawk.ui.views.monitor.model.ports.Monitor;
+import gov.redhawk.ui.views.monitor.model.ports.PortConnectionMonitor;
 
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
+import org.eclipse.emf.ecore.EObject;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.ui.handlers.HandlerUtil;
@@ -29,6 +31,12 @@ public class RefreshHandler extends AbstractHandler {
 			for (final Object obj : ss.toList()) {
 				if (obj instanceof Monitor) {
 					refresh((Monitor) obj);
+				} else if (obj instanceof PortConnectionMonitor) {
+					PortConnectionMonitor child = (PortConnectionMonitor) obj;
+					EObject container = child.eContainer();
+					if (container instanceof Monitor) {
+						refresh((Monitor) container);
+					}
 				}
 			}
 		}

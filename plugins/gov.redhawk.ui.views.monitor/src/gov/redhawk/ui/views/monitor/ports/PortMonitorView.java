@@ -45,6 +45,7 @@ import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.action.Separator;
 import org.eclipse.jface.layout.TreeColumnLayout;
+import org.eclipse.jface.viewers.AbstractTreeViewer;
 import org.eclipse.jface.viewers.ColumnWeightData;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.swt.SWT;
@@ -241,6 +242,7 @@ public class PortMonitorView extends ViewPart {
 		}
 		monitor.fetchStats();
 		this.viewer.reveal(monitor);
+		this.viewer.expandToLevel(monitor, AbstractTreeViewer.ALL_LEVELS);
 	}
 
 	private PortSupplierMonitor findMonitor(final ScaPortContainer portContainer) {
@@ -264,6 +266,7 @@ public class PortMonitorView extends ViewPart {
 		}
 		portMonitor.fetchStats();
 		this.viewer.reveal(portMonitor);
+		this.viewer.expandToLevel(portMonitor, AbstractTreeViewer.ALL_LEVELS);
 	}
 
 	private PortMonitor findMonitor(final ScaPort< ? , ? > port) {
