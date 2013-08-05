@@ -13,7 +13,7 @@ package gov.redhawk.ui.port.nxmplot;
 import gov.redhawk.sca.util.PluginUtil;
 
 /**
- * @since 5.0
+ * @since 4.2
  */
 public class PlotSettings {
 

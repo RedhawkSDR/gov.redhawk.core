@@ -60,7 +60,7 @@ public final class NxmPlotUtil {
 	}
 
 	/**
-	 * @since 5.0
+	 * @since 4.2
 	 */
 	public static String getDefaultPlotSwitches(PlotType type) {
 		if (type == null) {
@@ -412,6 +412,21 @@ public final class NxmPlotUtil {
 		PlotSession session = new PlotSession(plotWidget, outputIds.get(KEY_COMMAND), outputIds.get(KEY_FILE));
 		plotWidget.addSource(session.getSourceId(), ((qualifiers == null) ? "" : qualifiers), session);
 		return session;
+	}
+	
+	/**
+	 * @deprecated Use {@link #addSource(List, FftSettings, AbstractNxmPlotWidget, String)} instead. Using this method will
+	 * result in a resource leak, as there is no way for the client to kill the NXM processes used to provide the plot data.
+	 * @param port the port that provides the data to be plotted. There is also no way for the client to close the plot file.
+	 */
+	@Deprecated
+	public static void plot(final List<CorbaConnectionSettings> connList, final FftSettings fft, final AbstractNxmPlotWidget plotWidget) {
+		final List<Map<String, String>> outputIds = launchInputMacros(connList, fft, plotWidget, null);
+		setPlotToReal(fft != null, plotWidget);
+
+		for (Map<String, String> map : outputIds) {
+			plotWidget.addSource(map.get(KEY_FILE), null);
+		}
 	}
 
 }

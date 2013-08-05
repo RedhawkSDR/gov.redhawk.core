@@ -245,7 +245,7 @@ public abstract class AbstractNxmPlotWidget extends Composite {
 	}
 
 	/**
-	 * @since 5.0
+	 * @since 4.2
 	 */
 	protected abstract void internalInitPlot(String plotSwtiches, String plotArgs);
 
@@ -268,9 +268,28 @@ public abstract class AbstractNxmPlotWidget extends Composite {
 	 * @param command nm command to run on client machine
 	 */
 	public abstract void runClientCommand(String command);
+	
+	/**
+	 * @param sourcePipeId The nxm source pipe to add
+	 * @deprecated Use {@link #addSource(String, String, IPlotSession)} instead
+	 */
+	@Deprecated
+	public final void addSource(String sourcePipeId) {
+		addSource(sourcePipeId, null);
+	}
+	
+	/**
+	 * @param sourcePipeId The nxm source pipe to add
+	 * @param qualifiers The nxm pipe qualifiers to use for this source
+	 * @deprecated Use {@link #addSource(String, String, IPlotSession)} instead
+	 */
+	@Deprecated
+	public final void addSource(String sourcePipeId, String qualifiers) {
+		addSource(sourcePipeId, qualifiers, null);
+	}
 
 	/**
-	 * @since 5.0
+	 * @since 4.2
 	 */
 	public final void addSource(String sourcePipeId, String qualifiers, IPlotSession session) {
 		internalAddSource(sourcePipeId, qualifiers);
@@ -281,7 +300,7 @@ public abstract class AbstractNxmPlotWidget extends Composite {
 	 * Add a source to the plot
 	 * @param sourcePipeId the pipe ID to add to this plot
 	 * @param qualifiers plot qualifiers. Can be null.
-	 * @since 5.0
+	 * @since 4.2
 	 */
 	protected abstract void internalAddSource(String sourcePipeId, String qualifiers);
 
@@ -354,14 +373,15 @@ public abstract class AbstractNxmPlotWidget extends Composite {
 	}
 
 	/**
-	 * @since 5.0
+	 * @since 4.2
 	 */
 	protected void setActiveSRI(StreamSRI newSRI) {
 		activeSRI = newSRI;
 	}
 
-	/** @since 5.0 */
-
+	/** 
+	 * @since 4.2
+	 */
 	protected PlotMessageHandler getPlotMessageHandler() {
 		return plotMessageHandler;
 	}
@@ -379,19 +399,23 @@ public abstract class AbstractNxmPlotWidget extends Composite {
 	public abstract void sendMessageToCommand(String cmdID, String msgName, int info, Object data, Object quals);
 
 	/**
-	 * @since 5.0
+	 * @since 4.2
 	 */
 	public PlotSettings getPlotSettings() {
 		return new PlotSettings(this.plotSettings);
 	}
 
+	/**
+	 * @since 4.2
+	 */
 	public void dispose() {
+		super.dispose();
 		clearSources();
 	}
 
 	/**
 	 * @param custom plot settings to apply
-	 * @since 5.0
+	 * @since 4.2
 	 */
 	public void applySettings(PlotSettings settings) {
 		if (settings != null) {
