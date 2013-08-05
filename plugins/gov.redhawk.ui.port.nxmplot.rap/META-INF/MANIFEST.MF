@@ -15,5 +15,6 @@ Require-Bundle: org.eclipse.equinox.http.registry,
  mil.jpeojtrs.sca.util;bundle-version="3.1.0",
  nxm.redhawk;bundle-version="8.0.0"
 Service-Component: OSGI-INF/component.xml
-Export-Package: gov.redhawk.ui.port.nxmplot.rap.internal;x-internal:=true
+Export-Package: gov.redhawk.ui.port.nxmplot.rap,
+ gov.redhawk.ui.port.nxmplot.rap.internal;x-internal:=true
 Bundle-ActivationPolicy: lazy

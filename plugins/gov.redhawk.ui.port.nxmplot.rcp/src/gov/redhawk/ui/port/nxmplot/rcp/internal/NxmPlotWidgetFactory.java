@@ -9,10 +9,11 @@
  * http://www.eclipse.org/legal/epl-v10.html.
  *
  */
-package gov.redhawk.ui.port.nxmplot.rcp;
+package gov.redhawk.ui.port.nxmplot.rcp.internal;
 
 import gov.redhawk.ui.port.nxmplot.AbstractNxmPlotWidget;
 import gov.redhawk.ui.port.nxmplot.INxmPlotWidgetFactory;
+import gov.redhawk.ui.port.nxmplot.rcp.RcpNxmPlotWidget;
 
 import org.eclipse.swt.widgets.Composite;
 

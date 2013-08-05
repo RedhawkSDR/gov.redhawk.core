@@ -32,7 +32,7 @@ import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Composite;
 
 /**
- *
+ * @noextend This class is not intended to be subclassed by clients.
  */
 public class RcpNxmPlotWidget extends AbstractNxmPlotWidget {
 

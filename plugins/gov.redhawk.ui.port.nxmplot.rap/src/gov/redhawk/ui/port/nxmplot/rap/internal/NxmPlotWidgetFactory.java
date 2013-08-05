@@ -13,6 +13,7 @@ package gov.redhawk.ui.port.nxmplot.rap.internal;
 
 import gov.redhawk.ui.port.nxmplot.AbstractNxmPlotWidget;
 import gov.redhawk.ui.port.nxmplot.INxmPlotWidgetFactory;
+import gov.redhawk.ui.port.nxmplot.rap.RapNxmPlotWidget;
 
 import org.eclipse.swt.widgets.Composite;
 

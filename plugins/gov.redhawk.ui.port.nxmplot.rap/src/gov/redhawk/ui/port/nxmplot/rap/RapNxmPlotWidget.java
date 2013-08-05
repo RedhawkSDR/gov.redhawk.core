@@ -9,7 +9,7 @@ g * This file is protected by Copyright. 
  * http://www.eclipse.org/legal/epl-v10.html.
  *
  */
-package gov.redhawk.ui.port.nxmplot.rap.internal;
+package gov.redhawk.ui.port.nxmplot.rap;
 
 import gov.redhawk.ui.port.nxmplot.AbstractNxmPlotWidget;
 
