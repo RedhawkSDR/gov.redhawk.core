@@ -405,6 +405,7 @@ public class corbareceiver extends CorbaPrimitive { //SUPPRESS CHECKSTYLE ClassN
 		final int bufferSize = outputFile.bpa * size; // in bytes
 		if (!blocking) { // non-blocking option enabled
 			if (localOutputFile.getResource().avail() < bufferSize) {
+				Time.sleep(0.01); // provide slight back-pressure so we don't spin CPU for Component that does NOT throttle data
 				return; // drop packet since write would block
 			}
 		}
