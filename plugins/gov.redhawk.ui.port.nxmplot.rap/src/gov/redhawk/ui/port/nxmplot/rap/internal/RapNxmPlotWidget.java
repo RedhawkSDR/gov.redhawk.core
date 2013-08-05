@@ -32,7 +32,6 @@ import org.eclipse.swt.widgets.Composite;
  */
 public class RapNxmPlotWidget extends AbstractNxmPlotWidget {
 
-	private static final long serialVersionUID = -3610272766732782615L;
 	private static final String MSG_HANDLER_ID = "MAIN_MSG_HANLDER";
 	private static final String PLOT_ID = "PLOT";
 	private NxmRapComposite nxmComp;
@@ -48,7 +47,7 @@ public class RapNxmPlotWidget extends AbstractNxmPlotWidget {
 		nxmComp.getNxmShell().M.registry.put(MSG_HANDLER_ID, getPlotMessageHandler());
 	}
 
-	public synchronized void initPlot(String plotSwitches, String plotArgs) {
+	public synchronized void internalInitPlot(String plotSwitches, String plotArgs) {
 		if (initialized) {
 			return;
 		}
@@ -89,17 +88,8 @@ public class RapNxmPlotWidget extends AbstractNxmPlotWidget {
 		nxmComp.runClientCommand(command);
 	}
 
-	/**
-	 * Use {@link #addSource(String, String)} to specify plot qualifiers. This method will not work properly
-	 * if plot qualifiers are concatenated to the source ID.
-	 */
 	@Override
-	public void addSource(String sourcePipeId) {
-		addSource(sourcePipeId, null);
-	}
-
-	@Override
-	public void addSource(String sourcePipeId, String plotQualifiers) {
+	public void internalAddSource(String sourcePipeId, String plotQualifiers) {
 		assertNotDisposed();
 		Object pipeInSubShell = nxmComp.getNxmShell().M.pipes.get(sourcePipeId);
 		Assert.isTrue(pipeInSubShell instanceof nxm.sys.lib.Pipe,
