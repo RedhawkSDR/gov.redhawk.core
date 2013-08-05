@@ -33,6 +33,7 @@ import org.eclipse.swt.widgets.Composite;
 
 /**
  * @noextend This class is not intended to be subclassed by clients.
+ * @since 1.1
  */
 public class RcpNxmPlotWidget extends AbstractNxmPlotWidget {
 
