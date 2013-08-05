@@ -11,10 +11,10 @@
 // BEGIN GENERATED CODE
 package gov.redhawk.model.sca.tests;
 
-import java.net.URI;
-
 import gov.redhawk.model.sca.ScaFileSystem;
 import gov.redhawk.model.sca.commands.ScaModelCommand;
+
+import java.net.URI;
 
 import org.junit.Assert;
 

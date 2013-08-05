@@ -91,7 +91,7 @@ public class PartitioningLayoutProvider extends CompositeLeftRightProvider {
 	}
 
 	@Override
-	@SuppressWarnings("rawtypes")
+	@SuppressWarnings({ "rawtypes", "unchecked", "restriction" })
 	protected EdgeList buildEdges(final List selectedObjects, final Map editPartToNodeDict) {
 
 		final EdgeList edges = new EdgeList();
@@ -201,6 +201,7 @@ public class PartitioningLayoutProvider extends CompositeLeftRightProvider {
 		return graphSource.equals(graphTarget);
 	}
 
+	@SuppressWarnings({ "restriction", "unchecked" })
 	private void addEdge(final EdgeList edges, final ConnectionEditPart connectionEP, final Node fromNode, final Node toNode) {
 		final ConstrainedEdge edge = new ConstrainedEdge(connectionEP, fromNode, toNode);
 		initializeEdge(connectionEP, edge);

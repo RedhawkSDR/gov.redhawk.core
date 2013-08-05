@@ -196,6 +196,7 @@ public class PartitioningViewFactory implements ViewFactory {
 		return node;
 	}
 
+	@SuppressWarnings("unchecked")
 	private Node createCompartment(final View owner, final String hint, final boolean canCollapse, final boolean hasTitle, final boolean canSort,
 	        final boolean canFilter) {
 		//SemanticListCompartment rv = NotationFactory.eINSTANCE.createSemanticListCompartment();

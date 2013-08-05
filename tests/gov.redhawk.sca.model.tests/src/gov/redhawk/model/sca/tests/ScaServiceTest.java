@@ -11,13 +11,13 @@
 // BEGIN GENERATED CODE
 package gov.redhawk.model.sca.tests;
 
-import CF.DeviceHelper;
 import gov.redhawk.model.sca.RefreshDepth;
 import gov.redhawk.model.sca.ScaDeviceManager;
 import gov.redhawk.model.sca.ScaService;
 import gov.redhawk.model.sca.tests.stubs.ScaTestConstaints;
 import junit.framework.Assert;
 import junit.textui.TestRunner;
+import CF.DeviceHelper;
 
 /**
  * <!-- begin-user-doc -->

@@ -88,6 +88,7 @@ public class PartitioningBaseItemSemanticEditPolicy extends SemanticEditPolicy {
 	* 
 	* @generated NOT
 	*/
+	@SuppressWarnings("unchecked")
 	@Override
 	public Command getCommand(final Request request) {
 		if (request instanceof ReconnectRequest) {

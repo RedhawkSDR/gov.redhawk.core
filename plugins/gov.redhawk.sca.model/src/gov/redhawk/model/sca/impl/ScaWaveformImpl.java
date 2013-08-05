@@ -1099,6 +1099,7 @@ public class ScaWaveformImpl extends ScaPropertyContainerImpl<Application, Softw
 		subMonitor.done();
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	protected void notifyChanged(Notification msg) {
 		super.notifyChanged(msg);

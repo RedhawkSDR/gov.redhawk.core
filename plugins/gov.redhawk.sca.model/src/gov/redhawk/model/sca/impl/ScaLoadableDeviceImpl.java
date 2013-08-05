@@ -91,6 +91,7 @@ public class ScaLoadableDeviceImpl< L extends LoadableDevice > extends ScaDevice
 		// BEGIN GENERATED CODE
 	}
 	
+	@SuppressWarnings("unchecked")
 	@Override
 	protected Class<L> getCorbaType() {
 	    return (Class<L>) LoadableDevice.class;

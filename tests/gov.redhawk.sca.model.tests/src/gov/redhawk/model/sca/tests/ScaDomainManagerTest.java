@@ -15,7 +15,9 @@ import gov.redhawk.model.sca.ScaDomainManager;
 import gov.redhawk.model.sca.tests.stubs.ScaTestConstaints;
 import junit.framework.Assert;
 import junit.textui.TestRunner;
+
 import org.eclipse.emf.ecore.EObject;
+
 import CF.DeviceManager;
 import CF.DomainManagerHelper;
 import CF.InvalidFileName;

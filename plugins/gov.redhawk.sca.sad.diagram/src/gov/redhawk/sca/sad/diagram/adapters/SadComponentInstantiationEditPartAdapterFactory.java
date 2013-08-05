@@ -34,17 +34,11 @@ import CF.LifeCycleOperations;
 import CF.ResourceOperations;
 
 public class SadComponentInstantiationEditPartAdapterFactory implements IAdapterFactory {
-	private static final Class< ? >[] LIST = new Class< ? >[] {
-	        ScaComponent.class,
-	        ScaAbstractComponent.class,
-	        ScaPropertyContainer.class,
-	        ResourceOperations.class,
-	        LifeCycleOperations.class,
-	        IRefreshable.class,
-	        ScaPortContainer.class
-	};
+	private static final Class< ? >[] LIST = new Class< ? >[] { ScaComponent.class, ScaAbstractComponent.class, ScaPropertyContainer.class,
+		ResourceOperations.class, LifeCycleOperations.class, IRefreshable.class, ScaPortContainer.class };
 
-	public Object getAdapter(final Object adaptableObject, @SuppressWarnings("rawtypes") final Class adapterType) {
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	public Object getAdapter(final Object adaptableObject, final Class adapterType) {
 		if (adaptableObject instanceof GraphicalEditPart) {
 			final GraphicalEditPart editPart = (GraphicalEditPart) adaptableObject;
 			final SadComponentInstantiation ci = (SadComponentInstantiation) editPart.getAdapter(ComponentInstantiation.class);

@@ -232,6 +232,7 @@ public class SoftwareAssemblyCanonicalEditPolicy extends CanonicalConnectionEdit
 		return sep;
 	}
 
+	@SuppressWarnings("unchecked")
 	private EditPart getEditPartFor(final EObject element, final EObject context) {
 		if (element != null && !(element instanceof View)) {
 			final EditPartViewer viewer = getHost().getViewer();

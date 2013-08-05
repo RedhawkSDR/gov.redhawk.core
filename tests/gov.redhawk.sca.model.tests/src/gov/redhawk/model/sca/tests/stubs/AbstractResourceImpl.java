@@ -111,7 +111,7 @@ public class AbstractResourceImpl extends Resource {
 		}
 	}
 
-	@SuppressWarnings("rawtypes")
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	protected void initProperties(Properties prf) {
 		for (ValueListIterator<Object> iterator = prf.getProperties().valueListIterator(); iterator.hasNext();) {
 			AbstractProperty prop = (AbstractProperty) iterator.next();

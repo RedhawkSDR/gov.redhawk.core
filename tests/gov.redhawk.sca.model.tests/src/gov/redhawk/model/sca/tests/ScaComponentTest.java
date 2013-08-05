@@ -17,7 +17,9 @@ import gov.redhawk.model.sca.ScaWaveform;
 import gov.redhawk.model.sca.commands.ScaModelCommand;
 import junit.framework.Assert;
 import junit.textui.TestRunner;
+
 import org.eclipse.emf.transaction.util.TransactionUtil;
+
 import CF.ResourceHelper;
 
 /**

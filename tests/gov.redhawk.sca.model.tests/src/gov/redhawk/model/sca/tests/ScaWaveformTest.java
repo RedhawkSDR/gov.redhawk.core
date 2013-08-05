@@ -28,7 +28,6 @@ import CF.DataType;
 import CF.PropertiesHolder;
 import CF.UnknownProperties;
 import CF.ApplicationPackage.ComponentElementType;
-import CF.DevicePackage.OperationalType;
 import CF.LifeCyclePackage.InitializeError;
 import CF.LifeCyclePackage.ReleaseError;
 import CF.PortSupplierPackage.UnknownPort;

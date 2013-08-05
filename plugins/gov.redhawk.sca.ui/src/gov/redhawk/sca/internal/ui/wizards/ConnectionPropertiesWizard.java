@@ -174,6 +174,7 @@ public class ConnectionPropertiesWizard extends Wizard {
 					return entry.getValue();
 				}
 
+				@SuppressWarnings("unchecked")
 				@Override
 				protected void setValue(final Object element, final Object value) {
 					final Map.Entry< ? , String> entry = (Entry< ? , String>) element;

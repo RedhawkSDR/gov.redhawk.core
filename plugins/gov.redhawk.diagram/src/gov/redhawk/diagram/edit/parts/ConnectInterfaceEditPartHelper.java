@@ -37,6 +37,7 @@ public class ConnectInterfaceEditPartHelper {
 		this.figure = (ConnectInterfaceFigure) this.editPart.getFigure();
 	}
 
+	@SuppressWarnings("unchecked")
 	public void setSelected(final int selected) {
 		this.editPart.basicSetSelected(selected);
 

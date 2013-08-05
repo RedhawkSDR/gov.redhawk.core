@@ -101,6 +101,7 @@ public class ScaDomainManagerAdapterFactory extends RedhawkUiAdapterFactory impl
 			}
 		}
 
+		@SuppressWarnings("unchecked")
 		@Override
 		public void setPropertyValue(final Object propertyId, Object value) {
 			if (propertyId.equals(ScaPackage.Literals.SCA_DOMAIN_MANAGER__CONNECTION_PROPERTIES.getName())) {

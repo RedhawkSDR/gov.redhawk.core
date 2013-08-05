@@ -264,6 +264,7 @@ public class SequencePropertyValueWizardPage extends WizardPage {
 		}
 	}
 
+	@SuppressWarnings("unchecked")
 	private void handleMoveUp() {
 		List<Object> list = new ArrayList<Object>();
 		if (this.property instanceof ScaSimpleSequenceProperty) {
@@ -295,6 +296,7 @@ public class SequencePropertyValueWizardPage extends WizardPage {
 		updateButtonState();
 	}
 
+	@SuppressWarnings("unchecked")
 	private void handleMoveDown() {
 		List<Object> list = new ArrayList<Object>();
 		if (this.property instanceof ScaSimpleSequenceProperty) {

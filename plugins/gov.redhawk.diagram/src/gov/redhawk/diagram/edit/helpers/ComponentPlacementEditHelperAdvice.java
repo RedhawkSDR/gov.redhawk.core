@@ -19,7 +19,6 @@ import mil.jpeojtrs.sca.partitioning.ComponentFiles;
 import mil.jpeojtrs.sca.partitioning.ComponentInstantiation;
 import mil.jpeojtrs.sca.partitioning.ComponentPlacement;
 import mil.jpeojtrs.sca.partitioning.PartitioningFactory;
-import mil.jpeojtrs.sca.partitioning.impl.ComponentInstantiationImpl;
 import mil.jpeojtrs.sca.spd.SoftPkg;
 
 import org.eclipse.core.commands.ExecutionException;
