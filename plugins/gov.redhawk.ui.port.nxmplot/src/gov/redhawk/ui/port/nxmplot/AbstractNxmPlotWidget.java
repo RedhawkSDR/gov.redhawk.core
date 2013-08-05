@@ -37,7 +37,7 @@ import org.eclipse.ui.statushandlers.StatusManager;
 import BULKIO.StreamSRI;
 
 /**
- * @since 5.0
+ * @since 4.2
  * @noextend This class is not intended to be subclassed by clients.
  */
 public abstract class AbstractNxmPlotWidget extends Composite {
@@ -394,7 +394,7 @@ public abstract class AbstractNxmPlotWidget extends Composite {
 	 * @param info    info of message (normally 0)
 	 * @param data    data of message
 	 * @param quals   quals of message
-	 * @since 5.0
+	 * @since 4.2
 	 */
 	public abstract void sendMessageToCommand(String cmdID, String msgName, int info, Object data, Object quals);
 

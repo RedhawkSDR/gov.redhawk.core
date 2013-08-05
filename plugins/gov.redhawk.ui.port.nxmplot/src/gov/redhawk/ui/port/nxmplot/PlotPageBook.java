@@ -258,7 +258,7 @@ public class PlotPageBook extends Composite {
 	}
 
 	/** opposite of {@link #getActivePlotWidget()}.
-	 * @since 5.0
+	 * @since 4.2
 	 */
 	public AbstractNxmPlotWidget getInactivePlotWidget() {
 		if (isRasterShowing()) {
@@ -296,7 +296,7 @@ public class PlotPageBook extends Composite {
 
 	/** <b>INTERNAL USE ONLY</b>
 	 * @return the linePlotSessions
-	 * @since 5.0
+	 * @since 4.2
 	 */
 	public List<IPlotSession> getLinePlotSessions() {
 		return linePlotSessions;
@@ -304,7 +304,7 @@ public class PlotPageBook extends Composite {
 
 	/** <b>INTERNAL USE ONLY</b>
 	 * @return the rasterPlotSessions
-	 * @since 5.0
+	 * @since 4.2
 	 */
 	public List<IPlotSession> getRasterPlotSessions() {
 		return rasterPlotSessions;

@@ -13,7 +13,6 @@ package gov.redhawk.internal.ui.port.nxmplot.view;
 
 import gov.redhawk.model.sca.ScaUsesPort;
 import gov.redhawk.ui.port.nxmplot.FftSettings;
-import gov.redhawk.ui.port.nxmplot.NxmPlotUtil;
 
 public class PlotSource {
 	private final ScaUsesPort input;
@@ -24,11 +23,7 @@ public class PlotSource {
 		super();
 		this.input = input;
 		this.fftOptions = fftOptions;
-		if (qualifiers == null) {
-			this.qualifiers = NxmPlotUtil.getDefaultPlotQualifiers();
-		} else {
-			this.qualifiers = qualifiers;
-		}
+		this.qualifiers = qualifiers;
 	}
 
 	public ScaUsesPort getInput() {

@@ -41,7 +41,7 @@ public class PlotSession implements IPlotSession {
 		return this.file;
 	}
 
-	/** @since 5.0 */
+	/** @since 4.2 */
 	public String getCommandId() {
 		return this.command;
 	}

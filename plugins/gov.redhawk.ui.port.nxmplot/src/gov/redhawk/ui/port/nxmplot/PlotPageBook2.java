@@ -37,7 +37,7 @@ import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.part.PageBook;
 
 /**
- * @since 5.0
+ * @since 4.2
  */
 public class PlotPageBook2 extends Composite {
 
@@ -51,7 +51,11 @@ public class PlotPageBook2 extends Composite {
 		}
 
 		private synchronized void addSource(PlotSource newSource) {
-			IPlotSession newSession = NxmPlotUtil.addSource(newSource.getInput(), newSource.getFftOptions(), plot, newSource.getQualifiers());
+			String qualifiers = newSource.getQualifiers();
+			if (qualifiers == null) {
+				qualifiers = NxmPlotUtil.getDefaultPlotQualifiers(plot.getPlotSettings().getPlotType());
+			}
+			IPlotSession newSession = NxmPlotUtil.addSource(newSource.getInput(), newSource.getFftOptions(), plot, qualifiers);
 			sessionMap.put(newSource, newSession);
 		}
 

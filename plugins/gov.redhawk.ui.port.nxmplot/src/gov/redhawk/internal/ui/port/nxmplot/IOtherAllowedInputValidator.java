@@ -13,7 +13,7 @@ package gov.redhawk.internal.ui.port.nxmplot;
 
 import org.eclipse.jface.dialogs.IInputValidator;
 
-/** @since 5.0 */
+/** @since 4.2 */
 public interface IOtherAllowedInputValidator extends IInputValidator {
 	public String getOtherAllowedValue();
 }

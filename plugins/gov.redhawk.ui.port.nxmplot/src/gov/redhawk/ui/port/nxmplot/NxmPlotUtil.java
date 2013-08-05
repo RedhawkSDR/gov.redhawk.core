@@ -41,8 +41,16 @@ public final class NxmPlotUtil {
 	/**
 	 * @since 4.2
 	 */
-	public static String getDefaultPlotQualifiers() {
-		return "{CL=8}";
+	public static String getDefaultPlotQualifiers(PlotType type) {
+		if (type == null) {
+			return null;
+		}
+		switch(type) {
+		case RASTER:
+			return null;
+		default:
+			return "{CL=8}";
+		}
 	}
 
 	/**

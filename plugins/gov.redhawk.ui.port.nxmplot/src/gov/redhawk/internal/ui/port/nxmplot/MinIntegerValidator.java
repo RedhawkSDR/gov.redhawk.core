@@ -10,7 +10,7 @@
  */
 package gov.redhawk.internal.ui.port.nxmplot;
 
-/** @since 5.0 */
+/** @since 4.2 */
 public class MinIntegerValidator implements IOtherAllowedInputValidator {
 	private int minAllowed = Integer.MIN_VALUE; // inclusive
 	private String errMsg;

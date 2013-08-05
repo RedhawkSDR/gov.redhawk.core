@@ -42,7 +42,7 @@ import org.eclipse.swt.widgets.Text;
 
 /**
  * Adjust/override PLOT settings user entry dialog.
- * @since 5.0
+ * @since 4.2
  */
 public class PlotSettingsDialog extends Dialog {
 
