@@ -39,7 +39,7 @@ public class ValidValueTypeConstraint extends AbstractModelConstraint {
 	/**
 	 * TODO: This is to force PRF complex value of format a+jb
 	 */
-	public static final Pattern COMPLEX_PATTERN = Pattern.compile("\\d+(.\\d+)?\\s*[-+]\\s*j(\\d+(.\\d+)?)?");
+	public static final Pattern COMPLEX_PATTERN = Pattern.compile("[-]?\\d+(\\.\\d+)?([eE][+-]?\\d+)?\\s*[-+]\\s*j(\\d+(\\.\\d+)?([eE][+-]?\\d+)?)?");
 
 	private static class ValidationSwitch extends PrfSwitch<IStatus> {
 		private final IValidationContext ctx;
