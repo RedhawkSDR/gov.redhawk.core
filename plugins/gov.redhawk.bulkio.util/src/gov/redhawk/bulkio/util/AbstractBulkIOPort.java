@@ -10,8 +10,12 @@
  *******************************************************************************/
 package gov.redhawk.bulkio.util;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import BULKIO.PortStatistics;
 import BULKIO.PortUsageType;
+import BULKIO.PrecisionUTCTime;
 import BULKIO.ProvidesPortStatisticsProviderOperations;
 import BULKIO.StreamSRI;
 import BULKIO.updateSRIOperations;
@@ -22,7 +26,7 @@ import CF.DataType;
  */
 public abstract class AbstractBulkIOPort implements ProvidesPortStatisticsProviderOperations, updateSRIOperations {
 
-	private StreamSRI sri;
+	private Map<String, StreamSRI> streamSRIMap = new HashMap<String, StreamSRI>();
 	private PortStatistics stats = new PortStatistics();
 	private int bpa;
 	private long lastWrite = -1;
@@ -42,7 +46,7 @@ public abstract class AbstractBulkIOPort implements ProvidesPortStatisticsProvid
 	/**
 	 * Call this method to update the port statistics
 	 */
-	protected synchronized void updateStatitics() {
+	private void updateStatitics() {
 		long oldLastUpdate = this.lastUpdate;
 		this.lastUpdate = System.currentTimeMillis();
 		if (oldLastUpdate == -1) {
@@ -71,15 +75,23 @@ public abstract class AbstractBulkIOPort implements ProvidesPortStatisticsProvid
 
 	/**
 	 * Call this method every time a push packet is received
-	 * @param size
+	 * @param length Length of the push packet array.
 	 */
-	protected synchronized void pushPacket(int size) {
+	protected synchronized boolean pushPacket(int length, final PrecisionUTCTime time, final boolean endOfStream, final String streamID) {
+		if (endOfStream) {
+			// Process last packet sent
+			this.streamSRIMap.remove(streamID);
+		} else if (getSri(streamID) == null) {
+			return false;
+		}
 		if (lastUpdate == -1) {
 			lastUpdate = System.currentTimeMillis();
 		}
 		this.lastWrite = System.currentTimeMillis();
-		this.numElements += size;
+		this.numElements += length;
 		this.numCalls++;
+		updateStatitics();
+		return true;
 	}
 
 	public PortUsageType state() {
@@ -96,17 +108,14 @@ public abstract class AbstractBulkIOPort implements ProvidesPortStatisticsProvid
 	}
 
 	public StreamSRI[] activeSRIs() {
-		if (sri == null) {
-			return new StreamSRI[0];
-		}
-		return new StreamSRI[] { sri };
+		return this.streamSRIMap.values().toArray(new StreamSRI[this.streamSRIMap.size()]);
 	}
 
 	public void pushSRI(StreamSRI sri) {
-		this.sri = sri;
+		this.streamSRIMap.put(sri.streamID, sri);
 	}
 
-	public StreamSRI getSri() {
-		return sri;
+	public StreamSRI getSri(String streamID) {
+		return this.streamSRIMap.get(streamID);
 	}
 }

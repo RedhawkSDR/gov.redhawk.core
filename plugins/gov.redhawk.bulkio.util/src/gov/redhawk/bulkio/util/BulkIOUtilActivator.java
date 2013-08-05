@@ -10,7 +10,13 @@
  *******************************************************************************/
 package gov.redhawk.bulkio.util;
 
+import gov.redhawk.bulkio.util.internal.ConnectionManager;
+
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Plugin;
+import org.eclipse.core.runtime.Status;
+import org.eclipse.core.runtime.jobs.Job;
 import org.osgi.framework.BundleContext;
 
 /**
@@ -45,6 +51,17 @@ public class BulkIOUtilActivator extends Plugin {
 	 */
 	public void stop(BundleContext context) throws Exception {
 		plugin = null;
+		Job shutdownJob = new Job("Shutting down BulkIO Port Connection Manager") {
+
+			@Override
+			protected IStatus run(IProgressMonitor monitor) {
+				ConnectionManager.INSTANCE.dispose();
+				return Status.OK_STATUS;
+			}
+			
+		};
+		shutdownJob.schedule();
+		
 		super.stop(context);
 	}
 
@@ -55,6 +72,10 @@ public class BulkIOUtilActivator extends Plugin {
 	 */
 	public static BulkIOUtilActivator getDefault() {
 		return plugin;
+	}
+	
+	public static IBulkIOPortConnectionManager getBulkIOPortConnectionManager() {
+		return ConnectionManager.INSTANCE;
 	}
 
 }

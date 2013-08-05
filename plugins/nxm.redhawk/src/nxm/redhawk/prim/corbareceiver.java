@@ -12,7 +12,7 @@
 package nxm.redhawk.prim;
 
 import gov.redhawk.bulkio.util.AbstractBulkIOPort;
-import gov.redhawk.bulkio.util.ConnectionManager;
+import gov.redhawk.bulkio.util.BulkIOUtilActivator;
 import gov.redhawk.sca.util.PluginUtil;
 
 import java.io.UnsupportedEncodingException;
@@ -224,7 +224,7 @@ public class corbareceiver extends CorbaPrimitive { //SUPPRESS CHECKSTYLE ClassN
 			try {
 				port = getPort();
 				portIor = port.toString();
-				ConnectionManager.INSTANCE.connect(portIor, receiver);
+				BulkIOUtilActivator.getBulkIOPortConnectionManager().connect(portIor, receiver);
 				connected = true;
 			} catch (NotFound e) {
 				throw new MidasException("Failed to connect port", e);
@@ -244,7 +244,7 @@ public class corbareceiver extends CorbaPrimitive { //SUPPRESS CHECKSTYLE ClassN
 	@Override
 	protected void shutdown() {
 		super.shutdown();
-		ConnectionManager.INSTANCE.disconnect(portIor, receiver);
+		BulkIOUtilActivator.getBulkIOPortConnectionManager().disconnect(portIor, receiver);
 		connected = false;
 	}
 
@@ -434,7 +434,7 @@ public class corbareceiver extends CorbaPrimitive { //SUPPRESS CHECKSTYLE ClassN
 	 * @since 8.0
 	 */
 	public PortStatistics statistics() {
-		AbstractBulkIOPort externalPort = ConnectionManager.INSTANCE.getExternalPort(portIor);
+		AbstractBulkIOPort externalPort = BulkIOUtilActivator.getBulkIOPortConnectionManager().getExternalPort(portIor);
 		if (externalPort != null) {
 			return externalPort.statistics();
 		} else {

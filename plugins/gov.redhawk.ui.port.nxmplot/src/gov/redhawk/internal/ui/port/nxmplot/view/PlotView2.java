@@ -64,8 +64,6 @@ public class PlotView2 extends ViewPart {
 
 	private static int secondardId;
 
-	protected final String plotQualifiers;
-
 	/** The private action for toggling raster enabled state. */
 	private IAction plotTypeAction;
 
@@ -101,7 +99,7 @@ public class PlotView2 extends ViewPart {
 	private DisposeListener disposeListener = new DisposeListener() {
 
 		public void widgetDisposed(DisposeEvent e) {
-			if (!diposed && PlotView2.this == getSite().getPage().findView(getSite().getId())) {
+			if (!diposed && !PlatformUI.getWorkbench().isClosing()) {
 				getSite().getPage().hideView(PlotView2.this);
 			}
 		}
@@ -109,10 +107,6 @@ public class PlotView2 extends ViewPart {
 
 	private boolean diposed;
 
-	public PlotView2() {
-		plotQualifiers = "{CL=8}";
-		/** provide plot display thinning */
-	}
 
 	/**
 	 * {@inheritDoc}
@@ -133,11 +127,11 @@ public class PlotView2 extends ViewPart {
 
 	@Override
 	public void dispose() {
+		this.diposed = true;
 		if (this.plotPageBook != null && !plotPageBook.isDisposed()) {
 			this.plotPageBook.removeDisposeListener(disposeListener);
 			this.plotPageBook = null;
 		}
-		this.diposed = true;
 		super.dispose();
 	}
 
@@ -156,7 +150,7 @@ public class PlotView2 extends ViewPart {
 	 */
 	@Override
 	public void setFocus() {
-		if (this.plotPageBook != null) {
+		if (this.plotPageBook != null && !this.plotPageBook.isDisposed()) {
 			this.plotPageBook.setFocus();
 		}
 	}

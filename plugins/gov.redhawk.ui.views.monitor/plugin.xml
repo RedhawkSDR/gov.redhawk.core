@@ -29,14 +29,15 @@
    <extension
          point="org.eclipse.ui.menus">
       <menuContribution
-            locationURI="popup:gov.redhawk.ui.views.monitor.ports.PortMonitorView">
+            locationURI="popup:gov.redhawk.ui.views.monitor.ports.PortMonitorView?after=additions">
          <command
                commandId="org.eclipse.ui.edit.delete"
                label="Stop Monitoring"
                style="push">
             <visibleWhen
                   checkEnabled="false">
-               <iterate>
+               <iterate
+                     ifEmpty="false">
                   <or>
                      <instanceof
                            value="gov.redhawk.ui.views.monitor.model.ports.Monitor">
@@ -50,7 +51,8 @@
                style="push">
             <visibleWhen
                   checkEnabled="false">
-               <iterate>
+               <iterate
+                     ifEmpty="false">
                   <or>
                      <instanceof
                            value="gov.redhawk.ui.views.monitor.model.ports.Monitor">

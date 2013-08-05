@@ -10,7 +10,6 @@
  */
 package gov.redhawk.ui.port.nxmplot;
 
-import gov.redhawk.sca.util.PluginUtil;
 
 /**
  * @since 4.2
@@ -88,15 +87,71 @@ public class PlotSettings {
 		this.plotType = plotType;
 	}
 
+	/* (non-Javadoc)
+	 * @see java.lang.Object#hashCode()
+	 */
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((frameSize == null) ? 0 : frameSize.hashCode());
+		result = prime * result + ((maxValue == null) ? 0 : maxValue.hashCode());
+		result = prime * result + ((minValue == null) ? 0 : minValue.hashCode());
+		result = prime * result + ((plotType == null) ? 0 : plotType.hashCode());
+		result = prime * result + ((sampleRate == null) ? 0 : sampleRate.hashCode());
+		return result;
+	}
+
+	/* (non-Javadoc)
+	 * @see java.lang.Object#equals(java.lang.Object)
+	 */
 	@Override
 	public boolean equals(Object obj) {
-		if (obj instanceof PlotSettings) {
-			PlotSettings other = (PlotSettings) obj;
-			return PluginUtil.equals(frameSize, other.frameSize) && PluginUtil.equals(maxValue, other.maxValue) && PluginUtil.equals(minValue, other.minValue)
-				&& PluginUtil.equals(plotType, other.plotType) && PluginUtil.equals(sampleRate, other.sampleRate);
+		if (this == obj) {
+			return true;
 		}
-		// TODO Auto-generated method stub
-		return super.equals(obj);
+		if (obj == null) {
+			return false;
+		}
+		if (!(obj instanceof PlotSettings)) {
+			return false;
+		}
+		PlotSettings other = (PlotSettings) obj;
+		if (frameSize == null) {
+			if (other.frameSize != null) {
+				return false;
+			}
+		} else if (!frameSize.equals(other.frameSize)) {
+			return false;
+		}
+		if (maxValue == null) {
+			if (other.maxValue != null) {
+				return false;
+			}
+		} else if (!maxValue.equals(other.maxValue)) {
+			return false;
+		}
+		if (minValue == null) {
+			if (other.minValue != null) {
+				return false;
+			}
+		} else if (!minValue.equals(other.minValue)) {
+			return false;
+		}
+		if (plotType != other.plotType) {
+			return false;
+		}
+		if (sampleRate == null) {
+			if (other.sampleRate != null) {
+				return false;
+			}
+		} else if (!sampleRate.equals(other.sampleRate)) {
+			return false;
+		}
+		return true;
 	}
+	
+
+	
 
 }

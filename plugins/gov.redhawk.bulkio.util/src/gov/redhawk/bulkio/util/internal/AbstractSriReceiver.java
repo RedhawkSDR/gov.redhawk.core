@@ -58,9 +58,9 @@ public abstract class AbstractSriReceiver< T extends updateSRIOperations > exten
 	@SuppressWarnings("unchecked")
 	public void registerDataReceiver(updateSRIOperations receiver) {
 		children.add((T) receiver);
-		StreamSRI localSri = getSri();
-		if (localSri != null) {
-			receiver.pushSRI(localSri);
+		StreamSRI[] currentSri = activeSRIs();
+		for (StreamSRI sri : currentSri) {
+			receiver.pushSRI(sri);
 		}
 	}
 

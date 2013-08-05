@@ -28,6 +28,9 @@ public class DataULongLongReceiver extends AbstractSriReceiver<dataUlongLongOper
 	 * {@inheritDoc}
 	 */
 	public void pushPacket(final long[] array, final PrecisionUTCTime time, final boolean endOfStream, final String streamID) {
+		if (!pushPacket(array.length, time, endOfStream, streamID)) {
+			return;
+		}
 		Object[] localChildren = getChildren().toArray();
 		for (final Object child : localChildren) {
 			SafeRunner.run(new ISafeRunnable() {

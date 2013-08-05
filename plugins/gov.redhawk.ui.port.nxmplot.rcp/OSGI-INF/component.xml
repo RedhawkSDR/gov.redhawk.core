@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <scr:component xmlns:scr="http://www.osgi.org/xmlns/scr/v1.1.0" immediate="true" name="gov.redhawk.ui.port.nxmplot.rcp">
-   <implementation class="gov.redhawk.ui.port.nxmplot.rcp.NxmPlotWidgetFactory"/>
+   <implementation class="gov.redhawk.ui.port.nxmplot.rcp.internal.NxmPlotWidgetFactory"/>
    <service>
       <provide interface="gov.redhawk.ui.port.nxmplot.INxmPlotWidgetFactory"/>
    </service>

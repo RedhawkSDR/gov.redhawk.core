@@ -37,9 +37,16 @@ public final class NxmPlotUtil {
 
 	private static final String KEY_COMMAND = "command";
 	private static final int MAX_RMIF_PACKET_SIZE = 32768; // in bytes
+	
+	/**
+	 * @since 4.2
+	 */
+	public static String getDefaultPlotQualifiers() {
+		return "{CL=8}";
+	}
 
 	/**
-	 * @since 5.0
+	 * @since 4.2
 	 */
 	public static String getDefaultPlotArgs(PlotType type) {
 		if (type == null) {
