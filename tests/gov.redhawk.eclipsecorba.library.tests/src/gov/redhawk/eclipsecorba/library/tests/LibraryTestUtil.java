@@ -38,9 +38,8 @@ public final class LibraryTestUtil {
 		}
 		return null;
 	}
-	
-	@SuppressWarnings("unchecked")
-    public static Collection<URI> getIdlURIs() throws IOException {
+
+	public static Collection<URI> getIdlURIs() throws IOException {
 		Collection<URI> uris = new HashSet<URI>();
 		Bundle bundle = Platform.getBundle("gov.redhawk.eclipsecorba.library.tests");
 		for (Enumeration<URL> enumeration = bundle.findEntries("idl", "*.idl", true); enumeration.hasMoreElements();) {

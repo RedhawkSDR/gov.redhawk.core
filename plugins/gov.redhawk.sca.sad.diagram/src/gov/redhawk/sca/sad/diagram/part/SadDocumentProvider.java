@@ -78,8 +78,8 @@ public class SadDocumentProvider extends mil.jpeojtrs.sca.sad.diagram.part.SadDo
 	protected IDocument createDocument(final Object element) throws CoreException {
 		if (!(element instanceof FileEditorInput) && !(element instanceof URIEditorInput) && !(element instanceof EditorInputProxy)) {
 			throw new CoreException(new Status(IStatus.ERROR, SadDiagramEditorPlugin.ID, 0, NLS.bind(Messages.SadDocumentProvider_IncorrectInputError,
-			        new Object[] { element, "org.eclipse.ui.part.FileEditorInput", "org.eclipse.emf.common.ui.URIEditorInput" }), //$NON-NLS-1$ //$NON-NLS-2$
-			        null));
+				new Object[] { element, "org.eclipse.ui.part.FileEditorInput", "org.eclipse.emf.common.ui.URIEditorInput" }), //$NON-NLS-1$ //$NON-NLS-2$
+				null));
 		}
 		final IDocument document = createEmptyDocument(element);
 		setDocumentContent(document, (IEditorInput) element);
@@ -91,8 +91,8 @@ public class SadDocumentProvider extends mil.jpeojtrs.sca.sad.diagram.part.SadDo
 	protected ElementInfo createElementInfo(final Object element) throws CoreException {
 		if (!(element instanceof FileEditorInput) && !(element instanceof URIEditorInput) && !(element instanceof EditorInputProxy)) {
 			throw new CoreException(new Status(IStatus.ERROR, SadDiagramEditorPlugin.ID, 0, NLS.bind(Messages.SadDocumentProvider_IncorrectInputError,
-			        new Object[] { element, "org.eclipse.ui.part.FileEditorInput", "org.eclipse.emf.common.ui.URIEditorInput" }), //$NON-NLS-1$ //$NON-NLS-2$
-			        null));
+				new Object[] { element, "org.eclipse.ui.part.FileEditorInput", "org.eclipse.emf.common.ui.URIEditorInput" }), //$NON-NLS-1$ //$NON-NLS-2$
+				null));
 		}
 		final IEditorInput editorInput = (IEditorInput) element;
 		final IDiagramDocument document = (IDiagramDocument) createDocument(editorInput);

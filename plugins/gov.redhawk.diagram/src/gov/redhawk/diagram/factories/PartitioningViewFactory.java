@@ -163,7 +163,7 @@ public class PartitioningViewFactory implements ViewFactory {
 		}
 		final org.eclipse.swt.graphics.RGB fillRGB = PreferenceConverter.getColor(prefStore, IPreferenceConstants.PREF_FILL_COLOR);
 		ViewUtil.setStructuralFeatureValue(node, NotationPackage.eINSTANCE.getFillStyle_FillColor(), FigureUtilities.RGBToInteger(fillRGB));
-		final Node label5013 = createLabel(node, this.visualIdRegistry.getType(NamingServiceNameEditPart.VISUAL_ID));
+		createLabel(node, this.visualIdRegistry.getType(NamingServiceNameEditPart.VISUAL_ID));
 		return node;
 	}
 
@@ -191,8 +191,8 @@ public class PartitioningViewFactory implements ViewFactory {
 		}
 		final org.eclipse.swt.graphics.RGB fillRGB = PreferenceConverter.getColor(prefStore, IPreferenceConstants.PREF_FILL_COLOR);
 		ViewUtil.setStructuralFeatureValue(node, NotationPackage.eINSTANCE.getFillStyle_FillColor(), FigureUtilities.RGBToInteger(fillRGB));
-		final Node label5014 = createLabel(node, this.visualIdRegistry.getType(DomainFinderNameEditPart.VISUAL_ID));
-		final Node label5015 = createLabel(node, this.visualIdRegistry.getType(DomainFinderTypeEditPart.VISUAL_ID));
+		createLabel(node, this.visualIdRegistry.getType(DomainFinderNameEditPart.VISUAL_ID));
+		createLabel(node, this.visualIdRegistry.getType(DomainFinderTypeEditPart.VISUAL_ID));
 		return node;
 	}
 

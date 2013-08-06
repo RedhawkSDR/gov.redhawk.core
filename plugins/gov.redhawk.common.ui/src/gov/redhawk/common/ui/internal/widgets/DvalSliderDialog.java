@@ -18,7 +18,6 @@ import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Dialog;
-import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Scale;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Spinner;
@@ -30,8 +29,6 @@ public class DvalSliderDialog extends Dialog {
 
 	private Spinner spinner;
 
-	private Label label;
-
 	private Shell shell;
 
 	private GridLayout layout;
@@ -40,11 +37,11 @@ public class DvalSliderDialog extends Dialog {
 
 	private boolean isopen;
 
-	private int digits;
-
 	private double maximum;
 
 	private double minimum;
+
+	private int digits;
 
 	/**
 	 * @param parent
@@ -155,6 +152,10 @@ public class DvalSliderDialog extends Dialog {
 	public void setDigits(final int value) {
 		this.digits = value;
 	}
+	
+	public int getDigits() {
+		return digits;
+	}
 
 	/**
 	 * 
@@ -177,7 +178,7 @@ public class DvalSliderDialog extends Dialog {
 	/**
 	 * OPen the dialog
 	 */
-	public void open(final Point location,
+	public void open(final Point location, // SUPPRESS CHECKSTYLE Number of arguments 
 	        final Point size,
 	        final double value,
 	        final int digits,

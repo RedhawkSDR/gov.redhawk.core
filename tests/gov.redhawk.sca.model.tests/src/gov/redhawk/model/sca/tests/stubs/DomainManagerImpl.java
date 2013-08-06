@@ -64,7 +64,6 @@ import CF.FileManagerPackage.MountPointAlreadyExists;
  */
 public class DomainManagerImpl extends AbstractResourceImpl implements DomainManagerOperations {
 
-
 	private final List<DeviceManager> deviceManagers = new ArrayList<DeviceManager>();
 	private final List<ApplicationFactory> applicationFactories = new ArrayList<ApplicationFactory>();
 	private final List<Application> applications = new ArrayList<Application>();
@@ -72,46 +71,47 @@ public class DomainManagerImpl extends AbstractResourceImpl implements DomainMan
 	private final DomainManagerConfiguration dmd;
 	private ResourceSetImpl resourceSet;
 
-	public DomainManagerImpl(File domRoot, String dmdPath, String identifier, String label, ORB orb, POA poa) throws InvalidFileName, InvalidFileSystem, MountPointAlreadyExists, ServantNotActive, WrongPolicy {
+	public DomainManagerImpl(File domRoot, String dmdPath, String identifier, String label, ORB orb, POA poa) throws InvalidFileName, InvalidFileSystem,
+		MountPointAlreadyExists, ServantNotActive, WrongPolicy {
 		super(identifier, label, orb, poa);
 		FileManagerImpl fileManagerImpl = new FileManagerImpl();
 		this.fileManager = FileManagerHelper.narrow(poa.servant_to_reference(new FileManagerPOATie(fileManagerImpl)));
-			
+
 		JavaFileSystem componentsFileSystem = new JavaFileSystem(orb, poa, new File(domRoot, "components"));
 		JavaFileSystem domainFileSystem = new JavaFileSystem(orb, poa, new File(domRoot, "domain"));
 		JavaFileSystem mgrFileSystem = new JavaFileSystem(orb, poa, new File(domRoot, "mgr"));
 		JavaFileSystem waveformsFileSystem = new JavaFileSystem(orb, poa, new File(domRoot, "waveforms"));
-		
+
 		this.fileManager.mount("components", FileSystemHelper.narrow(poa.servant_to_reference(new FileSystemPOATie(componentsFileSystem))));
 		this.fileManager.mount("domain", FileSystemHelper.narrow(poa.servant_to_reference(new FileSystemPOATie(domainFileSystem))));
 		this.fileManager.mount("mgr", FileSystemHelper.narrow(poa.servant_to_reference(new FileSystemPOATie(mgrFileSystem))));
 		this.fileManager.mount("waveforms", FileSystemHelper.narrow(poa.servant_to_reference(new FileSystemPOATie(waveformsFileSystem))));
 		URI uri = ScaURIFactory.createURI(dmdPath, fileManager);
-		
+
 		this.resourceSet = new ResourceSetImpl();
 		this.dmd = DomainManagerConfiguration.Util.getDomainManagerConfiguration(resourceSet.getResource(uri, true));
 		Assert.assertNotNull(this.dmd);
-		
+
 		if (this.compId == null) {
 			this.compId = dmd.getId();
 		}
-		
+
 		if (this.compName == null) {
 			this.compName = dmd.getName();
 		}
 	}
-	
+
 	public void reset() {
 		deviceManagers.clear();
 		applicationFactories.clear();
 		applications.clear();
 	}
-	
+
 	@Override
 	protected POA getPoa() {
 		return super.getPoa();
 	}
-	
+
 	@Override
 	protected ORB getOrb() {
 		return super.getOrb();
@@ -156,7 +156,7 @@ public class DomainManagerImpl extends AbstractResourceImpl implements DomainMan
 	 * {@inheritDoc}
 	 */
 	public void registerDevice(final Device registeringDevice, final DeviceManager registeredDeviceMgr) throws InvalidObjectReference, InvalidProfile,
-	        DeviceManagerNotRegistered, RegisterError {
+		DeviceManagerNotRegistered, RegisterError {
 		if (registeredDeviceMgr == null) {
 			throw new InvalidObjectReference("");
 		}
@@ -191,7 +191,7 @@ public class DomainManagerImpl extends AbstractResourceImpl implements DomainMan
 	 * {@inheritDoc}
 	 */
 	public void installApplication(final String profileFileName) throws InvalidProfile, InvalidFileName, ApplicationInstallationError,
-	        ApplicationAlreadyInstalled {
+		ApplicationAlreadyInstalled {
 		URI uri = ScaURIFactory.createURI(profileFileName, fileManager);
 		try {
 			SoftwareAssembly sad = SoftwareAssembly.Util.getSoftwareAssembly(resourceSet.getResource(uri, true));
@@ -206,7 +206,6 @@ public class DomainManagerImpl extends AbstractResourceImpl implements DomainMan
 		}
 	}
 
-
 	/**
 	 * {@inheritDoc}
 	 */
@@ -218,7 +217,7 @@ public class DomainManagerImpl extends AbstractResourceImpl implements DomainMan
 	 * {@inheritDoc}
 	 */
 	public void registerService(final Object registeringService, final DeviceManager registeredDeviceMgr, final String name) throws InvalidObjectReference,
-	        DeviceManagerNotRegistered, RegisterError {
+		DeviceManagerNotRegistered, RegisterError {
 		// TODO Auto-generated method stub
 	}
 
@@ -233,7 +232,7 @@ public class DomainManagerImpl extends AbstractResourceImpl implements DomainMan
 	 * {@inheritDoc}
 	 */
 	public void registerWithEventChannel(final Object registeringObject, final String registeringId, final String eventChannelName)
-	        throws InvalidObjectReference, InvalidEventChannelName, AlreadyConnected {
+		throws InvalidObjectReference, InvalidEventChannelName, AlreadyConnected {
 		// TODO Auto-generated method stub
 
 	}
@@ -248,7 +247,7 @@ public class DomainManagerImpl extends AbstractResourceImpl implements DomainMan
 
 	public void registerApplication(Application retVal) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 }

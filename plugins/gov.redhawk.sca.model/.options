@@ -1,6 +1,5 @@
 gov.redhawk.sca.model/debug=false
 gov.redhawk.sca.model/debug/profileObjListener=false
-gov.redhawk.sca.model/debug/profileObj=false
 gov.redhawk.sca.model/debug/portFetch=false
 gov.redhawk.sca.model/debug/scaWaveform/ports=false
 gov.redhawk.sca.model/debug/scaWaveformFactory/create=false

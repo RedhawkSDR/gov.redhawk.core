@@ -32,7 +32,6 @@ import gov.redhawk.model.sca.commands.SetLocalAttributeCommand;
 import gov.redhawk.model.sca.commands.UnsetLocalAttributeCommand;
 import gov.redhawk.model.sca.commands.VersionedFeature;
 import gov.redhawk.model.sca.commands.VersionedFeature.Transaction;
-import gov.redhawk.sca.util.Debug;
 import gov.redhawk.sca.util.PluginUtil;
 
 import java.util.ArrayList;
@@ -669,8 +668,6 @@ public class ScaWaveformImpl extends ScaPropertyContainerImpl<Application, Softw
 	public boolean isSetProfile() {
 		return profileESet;
 	}
-
-	private static final Debug DEBUG_FETCH_COMPONENTS = new Debug(ScaModelPlugin.ID, "scaWaveform/fetchComponents");
 
 	/**
 	 * The default value of the '{@link #getProfileContentType() <em>Profile Content Type</em>}' attribute.

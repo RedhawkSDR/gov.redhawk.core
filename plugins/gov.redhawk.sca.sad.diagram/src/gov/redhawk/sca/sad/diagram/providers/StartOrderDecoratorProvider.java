@@ -12,9 +12,6 @@
 package gov.redhawk.sca.sad.diagram.providers;
 
 import gov.redhawk.sca.sad.diagram.part.SadDiagramEditor;
-
-import java.util.Iterator;
-
 import mil.jpeojtrs.sca.diagram.figures.ComponentInstantiationFigure;
 import mil.jpeojtrs.sca.partitioning.ComponentInstantiation;
 import mil.jpeojtrs.sca.partitioning.ComponentInstantiationRef;
@@ -29,7 +26,6 @@ import mil.jpeojtrs.sca.sad.diagram.part.SadVisualIDRegistry;
 
 import org.eclipse.draw2d.BorderLayout;
 import org.eclipse.draw2d.Ellipse;
-import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.Label;
 import org.eclipse.draw2d.PositionConstants;
 import org.eclipse.emf.common.notify.Adapter;
@@ -239,16 +235,6 @@ public class StartOrderDecoratorProvider extends AbstractProvider implements IDe
 			}
 		}
 		return null;
-	}
-
-	private static ComponentInstantiationFigure getComponentInstantiationFigure(final IFigure figure) {
-		if (figure instanceof ComponentInstantiationFigure) {
-			return (ComponentInstantiationFigure) figure;
-		} else {
-			final Iterator< ? > iter = figure.getChildren().iterator();
-
-			return StartOrderDecoratorProvider.getComponentInstantiationFigure((IFigure) iter.next());
-		}
 	}
 
 	/**

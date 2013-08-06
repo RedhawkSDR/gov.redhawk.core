@@ -69,7 +69,6 @@ import CF.DeviceAssignmentType;
 public class DeviceAssignmentComposite extends Composite {
 
 	private static class DeviceAssignmentRef {
-		public static final String PROP_COMPONENT = "component";
 		public static final String PROP_DEVICE = "device";
 
 		private final SadComponentInstantiation component;
@@ -118,13 +117,6 @@ public class DeviceAssignmentComposite extends Composite {
 
 		public void dispose() {
 
-		}
-
-		private void addDevices(final ScaDevice< ? > device, final Set<ScaDevice< ? >> devices) {
-			devices.addAll(device.getChildDevices());
-			for (final ScaDevice< ? > child : device.getChildDevices()) {
-				addDevices(child, devices);
-			}
 		}
 
 		public Object[] getElements(final Object inputElement) {
@@ -179,7 +171,7 @@ public class DeviceAssignmentComposite extends Composite {
 			super(viewer);
 			this.cellViewer = new ComboBoxViewerCellEditor((Composite) getViewer().getControl());
 			this.cellViewer.setLabelProvider(new DeviceSelectionLabelProvider());
-			this.cellViewer.setContenProvider(new DeviceSelectionContentProvider());
+			this.cellViewer.setContentProvider(new DeviceSelectionContentProvider());
 
 		}
 

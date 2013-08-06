@@ -77,8 +77,6 @@ public class ScaWaveformControlPanelContributor extends EditorActionBarContribut
 		IActionBars actionBars = getActionBars();
 		if (actionBars != null) {
 			
-			EObject obj = this.getInput();
-			
 			// TODO Setup Action Bars
 			/** Example:
 			actionBars.setGlobalActionHandler(

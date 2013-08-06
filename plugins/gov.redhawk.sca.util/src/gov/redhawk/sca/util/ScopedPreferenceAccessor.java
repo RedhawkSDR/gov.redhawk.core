@@ -140,6 +140,13 @@ public class ScopedPreferenceAccessor implements IPreferenceAccessor {
 			return null;
 		}
 	}
+	
+	/**
+	 * @since 3.3
+	 */
+	public boolean isSilentRunning() {
+		return silentRunning;
+	}
 
 	/**
 	 * Return the IEclipsePreferences node associated with this store.

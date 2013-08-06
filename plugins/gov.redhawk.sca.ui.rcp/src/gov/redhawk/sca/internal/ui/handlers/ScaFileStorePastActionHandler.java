@@ -38,7 +38,6 @@ import org.eclipse.ui.part.ResourceTransfer;
 /**
  * 
  */
-@SuppressWarnings("restriction")
 public class ScaFileStorePastActionHandler extends AbstractHandler {
 
 	private static final IResource[] EMPTY = new IResource[0];

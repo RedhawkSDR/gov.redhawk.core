@@ -41,7 +41,7 @@ public class PartitioningTestsHelper {
 
 	}
 
-	protected EObject someObject;
+	protected EObject someObject; // SUPPRESS CHECKSTYLE Protected field
 
 	public IValidationContext createSuccessfulValidationContext(final EObject someObject) {
 		this.someObject = someObject;

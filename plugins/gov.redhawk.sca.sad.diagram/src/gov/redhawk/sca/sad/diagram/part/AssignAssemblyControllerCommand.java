@@ -51,11 +51,11 @@ public class AssignAssemblyControllerCommand extends AbstractHandler implements 
 				return null;
 			}
 			if (structuredSelection.getFirstElement() instanceof GraphicalEditPart
-			        && ((GraphicalEditPart) structuredSelection.getFirstElement()).getModel() instanceof View) {
+				&& ((GraphicalEditPart) structuredSelection.getFirstElement()).getModel() instanceof View) {
 				final GraphicalEditPart editPart = (GraphicalEditPart) structuredSelection.getFirstElement();
 				final TransactionalEditingDomain editingDomain = editPart.getEditingDomain();
 				final View view = (View) editPart.getModel();
-				
+
 				SadComponentPlacement cp = null;
 
 				if (view.getElement() instanceof ComponentPlacement) {
@@ -78,25 +78,25 @@ public class AssignAssemblyControllerCommand extends AbstractHandler implements 
 				if (cp.eResource() == null) {
 					return null;
 				}
-				
-				CompoundCommand assignAssemblyControllerCmd = new CompoundCommand();
-				 
 
+				CompoundCommand assignAssemblyControllerCmd = new CompoundCommand();
 
 				// The original assembly controller swaps start order with the new one
-                if (originalAssemblyController != null) {
+				if (originalAssemblyController != null) {
 					int startOrder = SoftwareAssembly.Util.getLastStartOrder(sad);
 					if ((newAssemblyController.getStartOrder() != null) && (newAssemblyController.getStartOrder().intValue() != startOrder)) {
 						startOrder = newAssemblyController.getStartOrder().intValue();
 					}
-					assignAssemblyControllerCmd.append(SetCommand.create(editingDomain, originalAssemblyController, SadPackage.Literals.SAD_COMPONENT_INSTANTIATION__START_ORDER, BigInteger.valueOf(startOrder)));
+					assignAssemblyControllerCmd.append(SetCommand.create(editingDomain, originalAssemblyController,
+						SadPackage.Literals.SAD_COMPONENT_INSTANTIATION__START_ORDER, BigInteger.valueOf(startOrder)));
 				}
-				
+
 				// Set the start order of the assembly controller to zero
-                assignAssemblyControllerCmd.append(SetCommand.create(editingDomain, newAssemblyController, SadPackage.Literals.SAD_COMPONENT_INSTANTIATION__START_ORDER, BigInteger.valueOf(0)));
-                assignAssemblyControllerCmd.append(SetCommand.create(editingDomain, sad, SadPackage.Literals.SOFTWARE_ASSEMBLY__ASSEMBLY_CONTROLLER, ac));
+				assignAssemblyControllerCmd.append(SetCommand.create(editingDomain, newAssemblyController,
+					SadPackage.Literals.SAD_COMPONENT_INSTANTIATION__START_ORDER, BigInteger.valueOf(0)));
+				assignAssemblyControllerCmd.append(SetCommand.create(editingDomain, sad, SadPackage.Literals.SOFTWARE_ASSEMBLY__ASSEMBLY_CONTROLLER, ac));
 				editingDomain.getCommandStack().execute(assignAssemblyControllerCmd);
-				
+
 			}
 		}
 		return null;
@@ -115,7 +115,7 @@ public class AssignAssemblyControllerCommand extends AbstractHandler implements 
 		if (obj instanceof IStructuredSelection) {
 			final IStructuredSelection structuredSelection = (IStructuredSelection) obj;
 			if (structuredSelection.getFirstElement() instanceof GraphicalEditPart
-			        && ((GraphicalEditPart) structuredSelection.getFirstElement()).getModel() instanceof View) {
+				&& ((GraphicalEditPart) structuredSelection.getFirstElement()).getModel() instanceof View) {
 				final GraphicalEditPart editPart = (GraphicalEditPart) structuredSelection.getFirstElement();
 				final View view = (View) editPart.getModel();
 
@@ -142,7 +142,7 @@ public class AssignAssemblyControllerCommand extends AbstractHandler implements 
 						if (cp.getComponentInstantiation().isEmpty()) {
 							setBaseEnabled(false);
 						} else if (sad.getAssemblyController() != null && sad.getAssemblyController().getComponentInstantiationRef() != null
-						        && sad.getAssemblyController().getComponentInstantiationRef().getRefid().equals(cp.getComponentInstantiation().get(0).getId())) {
+							&& sad.getAssemblyController().getComponentInstantiationRef().getRefid().equals(cp.getComponentInstantiation().get(0).getId())) {
 							setBaseEnabled(false);
 						} else {
 							setBaseEnabled(true);

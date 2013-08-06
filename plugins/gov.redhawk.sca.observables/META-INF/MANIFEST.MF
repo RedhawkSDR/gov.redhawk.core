@@ -14,7 +14,7 @@ Require-Bundle: org.eclipse.ui;bundle-version="3.6.1";resolution:=optional,
  org.eclipse.emf.rap.edit.ui;bundle-version="2.6.1";resolution:=optional,
  org.eclipse.emf.databinding.edit;bundle-version="1.2.0"
 Bundle-ActivationPolicy: lazy
-Bundle-RequiredExecutionEnvironment: J2SE-1.5
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Export-Package: gov.redhawk.sca.observables,
  gov.redhawk.sca.observables.strategy
 Bundle-Vendor: %Bundle-Vendor

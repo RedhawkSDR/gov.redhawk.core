@@ -33,8 +33,6 @@ import org.eclipse.ui.PlatformUI;
  */
 public class PropertiesOutlinePage extends FormOutlinePage {
 
-	private ComposedAdapterFactory adapterFactory;
-
 	/**
 	 * @since 2.0
 	 */

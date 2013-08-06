@@ -39,7 +39,7 @@ public class TrackableLabel extends Composite {
 
 	private String mouseEnter;
 	private String mouseExit;
-	protected Control label;
+	protected Control label; // SUPPRESS CHECKSTYLE Event Object
 
 	private boolean button;
 

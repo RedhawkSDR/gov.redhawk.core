@@ -43,11 +43,11 @@ import CF.ResourceHelper;
 public class ScaWaveformMergeComponentsCommand extends SetStatusCommand<ScaWaveform> {
 
 	private static class ComponentInfo {
-		public String identifier = null;
-		public String softwareProfile = null;
-		public CF.ComponentEnumType type = null;
-		public Resource componentObject = null;
-		public CF.PortType [] providesPorts = null;
+		public String identifier = null; // SUPPRESS CHECKSTYLE Inner Class
+		public String softwareProfile = null; // SUPPRESS CHECKSTYLE Inner Class
+		public CF.ComponentEnumType type = null; // SUPPRESS CHECKSTYLE Inner Class
+		public Resource componentObject = null; // SUPPRESS CHECKSTYLE Inner Class
+		public CF.PortType [] providesPorts = null; // SUPPRESS CHECKSTYLE Inner Class
 	}
 
 	private final ComponentInfo[] compTypes;

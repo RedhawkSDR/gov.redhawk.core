@@ -64,38 +64,38 @@ import CF.TestableObjectPackage.UnknownTest;
 public abstract class Resource implements ResourceOperations, Runnable { // SUPPRESS CHECKSTYLE Name
     public static final Logger LOGGER = Logger.getLogger(Resource.class.getName());
 
-    protected CF.Resource resource;
+    protected CF.Resource resource; // SUPPRESS CHECKSTYLE Protected Field
 
     /**
      * The CORBA ORB to use for servicing requests
      */
-    protected org.omg.CORBA.ORB orb = null;
+    protected org.omg.CORBA.ORB orb = null; // SUPPRESS CHECKSTYLE Protected Field
     /** The POA object that this object should use for any CORBA objects it creates*/
-    protected POA poa = null;
+    protected POA poa = null; // SUPPRESS CHECKSTYLE Protected Field
     /** The component ID */
-    protected String compId;
+    protected String compId; // SUPPRESS CHECKSTYLE Protected Field
     /** The component name */
-    protected String compName;
+    protected String compName; // SUPPRESS CHECKSTYLE Protected Field
     /** Map of input ports for this resource */
-    protected Hashtable<String, Object> portObjects;
+    protected Hashtable<String, Object> portObjects; // SUPPRESS CHECKSTYLE Protected Field
     /** Map of input ports for this resource */
-    protected Hashtable<String, Servant> portServants;
+    protected Hashtable<String, Servant> portServants; // SUPPRESS CHECKSTYLE Protected Field
     /** Map of input ports for this resource */
-    protected Hashtable<String, org.omg.CORBA.Object> ports;
+    protected Hashtable<String, org.omg.CORBA.Object> ports; // SUPPRESS CHECKSTYLE Protected Field
     /** Map of native ports for this resource */
-    protected Hashtable<String, Servant> nativePorts;
+    protected Hashtable<String, Servant> nativePorts; // SUPPRESS CHECKSTYLE Protected Field
     /** Map of properties for this resource */
-    protected Hashtable<String, IProperty> propSet;
+    protected Hashtable<String, IProperty> propSet; // SUPPRESS CHECKSTYLE Protected Field
     /** flag if we're started */
-    protected volatile boolean started = false;
+    protected volatile boolean started = false; // SUPPRESS CHECKSTYLE Protected Field
     /** flag if we're released */
-    protected boolean disposed = false;
+    protected boolean disposed = false; // SUPPRESS CHECKSTYLE Protected Field
     /** flag if we're already initialized */
-    protected boolean initialized = false;
+    protected boolean initialized = false; // SUPPRESS CHECKSTYLE Protected Field
     /** the processing thread, if any */
-    protected Thread processingThread;
+    protected Thread processingThread; // SUPPRESS CHECKSTYLE Protected Field
     /** port to be used to output property changes */
-    protected PropertyEventSupplier propertyChangePort;
+    protected PropertyEventSupplier propertyChangePort; // SUPPRESS CHECKSTYLE Protected Field
 
     /**
      * Constructor intended to be used by start_component.

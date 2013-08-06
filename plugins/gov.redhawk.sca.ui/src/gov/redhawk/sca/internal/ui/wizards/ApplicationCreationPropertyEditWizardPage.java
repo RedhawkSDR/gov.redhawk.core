@@ -136,7 +136,6 @@ public class ApplicationCreationPropertyEditWizardPage extends WizardPage {
 
 				public void run(final IProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
 					monitor.beginTask("Fetching properties...", IProgressMonitor.UNKNOWN);
-					;
 
 					for (final ScaAbstractProperty< ? > prop : localWaveform.fetchProperties(monitor)) {
 						prop.setIgnoreRemoteSet(true);

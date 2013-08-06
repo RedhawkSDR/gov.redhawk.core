@@ -109,7 +109,7 @@ public final class ScaComponentFactory {
 	 * @since 9.0
 	 */
 	public static TreeViewer createPropertyTable(final TabbedPropertySheetWidgetFactory widgetFactory, final Composite parent, final int style,
-	        final AdapterFactory adapterFactory) {
+		final AdapterFactory adapterFactory) {
 		final TreeColumnLayout layout = new TreeColumnLayout();
 		parent.setLayout(layout);
 		final Tree tree = widgetFactory.createTree(parent, style | SWT.FULL_SELECTION);
@@ -330,7 +330,7 @@ public final class ScaComponentFactory {
 	 * @since 9.0
 	 */
 	public static TableViewer createStructSequenceTable(final Composite parent, final int style, final AdapterFactory adapterFactory,
-	        final ScaStructSequenceProperty property) {
+		final ScaStructSequenceProperty property) {
 		final TableViewer viewer = new TableViewer(parent, style | SWT.FULL_SELECTION);
 		ColumnViewerToolTipSupport.enableFor(viewer);
 		final TableColumnLayout layout = new TableColumnLayout();

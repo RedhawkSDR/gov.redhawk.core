@@ -46,7 +46,6 @@ import org.eclipse.ui.statushandlers.StatusManager;
 import CF.DataType;
 import CF.DeviceAssignmentType;
 
-@SuppressWarnings("restriction")
 public class LaunchWaveformWizard extends BasicLaunchWaveformWizard {
 
 	public LaunchWaveformWizard(final ScaDomainManager domMgr) {

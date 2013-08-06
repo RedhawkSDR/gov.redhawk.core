@@ -228,7 +228,6 @@ public class ValuesWizardPage extends WizardPage {
 
 			@Override
 			protected CellEditor getCellEditor(final Object element) {
-				final ClassStringContainer data = (ClassStringContainer) element;
 				final TextCellEditor editor = new TextCellEditor((Composite) ValuesWizardPage.this.viewer.getControl());
 				editor.setValidator(new ICellEditorValidator() {
 

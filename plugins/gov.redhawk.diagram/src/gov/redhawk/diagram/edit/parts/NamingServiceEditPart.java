@@ -50,12 +50,12 @@ public class NamingServiceEditPart extends ShapeNodeEditPart {
 	/**
 	* 
 	*/
-	protected IFigure contentPane;
+	protected IFigure contentPane; // SUPPRESS CHECKSTYLE Protected field
 
 	/**
 	* 
 	*/
-	protected IFigure primaryShape;
+	protected IFigure primaryShape; // SUPPRESS CHECKSTYLE Protected field
 
 	/**
 	* 

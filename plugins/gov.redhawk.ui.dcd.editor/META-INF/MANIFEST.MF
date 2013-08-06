@@ -20,6 +20,6 @@ Require-Bundle: org.eclipse.ui;bundle-version="3.6.1",
  gov.redhawk.sca.dcd.diagram;bundle-version="2.0.0",
  mil.jpeojtrs.sca.dcd.diagram;bundle-version="1.0.0"
 Bundle-ActivationPolicy: lazy
-Bundle-RequiredExecutionEnvironment: J2SE-1.5
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Bundle-Vendor: %providerName
 Export-Package: gov.redhawk.ui.dcd.editor.presentation

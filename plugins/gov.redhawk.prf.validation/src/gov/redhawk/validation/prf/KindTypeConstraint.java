@@ -58,26 +58,30 @@ public class KindTypeConstraint extends AbstractModelConstraint {
 		}
 		return null;
 	}
-	
+
 	private IStatus validatePropertyConfigurationTypeList(IValidationContext ctx, List<PropertyConfigurationType> list, EStructuralFeature feature) {
 		if (list.contains(PropertyConfigurationType.MESSAGE)) {
 			if (list.size() > 1) {
-				return new EnhancedConstraintStatus((ConstraintStatus) ctx.createFailureStatus("Property type 'MESSAGE' is a unique types, can be no other type."), feature);
+				return new EnhancedConstraintStatus(
+					(ConstraintStatus) ctx.createFailureStatus("Property type 'MESSAGE' is a unique types, can be no other type."), feature);
 			}
 		}
-		
+
 		if (list.contains(PropertyConfigurationType.ALLOCATION)) {
 			if (list.size() > 1) {
-				return new EnhancedConstraintStatus((ConstraintStatus) ctx.createFailureStatus("Property type 'ALLOCATION' is a unique types, can be no other type."), feature);
+				return new EnhancedConstraintStatus(
+					(ConstraintStatus) ctx.createFailureStatus("Property type 'ALLOCATION' is a unique types, can be no other type."), feature);
 			}
 		}
-		
+
 		if (list.contains(PropertyConfigurationType.EVENT)) {
 			if (!list.contains(PropertyConfigurationType.CONFIGURE) && !list.contains(PropertyConfigurationType.EXECPARAM)) {
-				return new EnhancedConstraintStatus((ConstraintStatus) ctx.createFailureStatus("Property type 'EVENT' can be added to a 'CONFIGURE' or an 'EXEC_PARAM' but not be by itself."), feature);
+				return new EnhancedConstraintStatus(
+					(ConstraintStatus) ctx.createFailureStatus("Property type 'EVENT' can be added to a 'CONFIGURE' or an 'EXEC_PARAM' but not be by itself."),
+					feature);
 			}
 		}
-		
+
 		return null;
 	}
 

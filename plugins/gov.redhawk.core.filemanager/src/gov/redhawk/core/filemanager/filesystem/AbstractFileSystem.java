@@ -31,8 +31,8 @@ public abstract class AbstractFileSystem implements FileSystemOperations {
 		CREATED_TIME, MODIFIED_TIME, LAST_ACCESS_TIME, IOR_AVAILABLE, READ_ONLY
 	}
 
-	protected final POA poa;
-	protected final ORB orb;
+	protected final POA poa; // SUPPRESS CHECKSTYLE Final protected field
+	protected final ORB orb; // SUPPRESS CHECKSTYLE Final protected field
 
 	public AbstractFileSystem(final ORB orb, final POA poa) {
 		this.orb = orb;

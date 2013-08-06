@@ -60,7 +60,6 @@ import CF.DomainManagerPOATie;
 public class TestEnvirornment {
 
 	public static final String EDITING_DOMAIN_ID = "gov.redhawk.sc.model.tests.editingDomain";
-	private final String domainName = "REDHAWK_DEV";
 	private final ScaDomainManagerImpl domMgr;
 
 	private final TransactionalEditingDomain editingDomain;

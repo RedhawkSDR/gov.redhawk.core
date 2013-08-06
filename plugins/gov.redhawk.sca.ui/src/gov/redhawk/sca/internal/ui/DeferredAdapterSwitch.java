@@ -53,7 +53,7 @@ public class DeferredAdapterSwitch extends ScaSwitch<IDeferredAdapter> {
 	
 	private static class DeferredAdapter implements IDeferredAdapter {
 		
-		IRefreshable refreshable;
+		private final IRefreshable refreshable;
 		DeferredAdapter(IRefreshable refreshable) {
 			this.refreshable = refreshable;
 		}

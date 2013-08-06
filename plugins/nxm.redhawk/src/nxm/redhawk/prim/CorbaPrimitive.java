@@ -11,7 +11,6 @@
  */
 package nxm.redhawk.prim;
 
-import gov.redhawk.sca.util.Debug;
 import gov.redhawk.sca.util.OrbSession;
 
 import java.lang.Thread.UncaughtExceptionHandler;
@@ -42,7 +41,6 @@ import CF.PortSupplierPackage.UnknownPort;
  * and plots the data.
  */
 public class CorbaPrimitive extends Primitive {
-	private static final Debug DEBUG_PORT = new Debug(RedhawkOptActivator.ID, "port");
 	/**
 	 * @since 8.0
 	 */

@@ -38,8 +38,6 @@ import org.eclipse.ui.forms.IManagedForm;
  * The Class ScrolledPropertiesBlock.
  */
 public class PropertiesBlock extends SCAMasterDetailsBlock {
-
-	private static final int PAGE_LIMIT = 10;
 	private PropertiesSection fSection;
 
 

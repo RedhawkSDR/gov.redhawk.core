@@ -13,7 +13,7 @@ Require-Bundle: org.eclipse.ui;bundle-version="3.6.1",
  org.eclipse.gmf.runtime.diagram.core;bundle-version="1.4.0",
  org.eclipse.gmf.runtime.diagram.ui;bundle-version="1.4.1"
 Bundle-ActivationPolicy: lazy
-Bundle-RequiredExecutionEnvironment: J2SE-1.5
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Export-Package: mil.jpeojtrs.sca.diagram,
  mil.jpeojtrs.sca.diagram.figures,
  mil.jpeojtrs.sca.diagram.impl,

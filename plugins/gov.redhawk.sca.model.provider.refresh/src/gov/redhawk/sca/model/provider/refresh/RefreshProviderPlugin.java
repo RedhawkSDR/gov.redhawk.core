@@ -32,6 +32,7 @@ public class RefreshProviderPlugin extends Plugin {
 		RefreshProviderPlugin.instance = this;
 	}
 
+	@SuppressWarnings("deprecation")
 	@Override
 	public void stop(final BundleContext context) throws Exception {
 		ScaRefreshableDataProviderService.REFRESH_POOL.shutdownNow();

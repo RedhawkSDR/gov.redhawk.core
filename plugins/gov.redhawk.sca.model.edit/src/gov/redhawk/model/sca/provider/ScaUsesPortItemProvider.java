@@ -110,8 +110,6 @@ IEditingDomainItemProvider, IStructuredItemContentProvider, ITreeItemContentProv
 		return overlayImage(object, getResourceLocator().getImage("full/obj16/ScaUsesPort"));
 	}
 
-	private ScaConnectionsContainerItemProvider connectionsItemProvider;
-
 	/**
 	 * This returns the label text for the adapted class.
 	 * <!-- begin-user-doc -->

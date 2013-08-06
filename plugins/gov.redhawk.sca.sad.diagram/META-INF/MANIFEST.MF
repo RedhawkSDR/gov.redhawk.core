@@ -25,7 +25,7 @@ Require-Bundle: org.eclipse.ui;bundle-version="3.6.1",
  org.eclipse.gmf.runtime.diagram.ui.properties;bundle-version="1.4.0",
  org.eclipse.core.expressions;bundle-version="3.4.200",
  gov.redhawk.sca.sad.validation;bundle-version="1.0.0"
-Bundle-RequiredExecutionEnvironment: J2SE-1.5
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Bundle-ActivationPolicy: lazy
 Bundle-ClassPath: .
 Export-Package: gov.redhawk.sca.sad.diagram,

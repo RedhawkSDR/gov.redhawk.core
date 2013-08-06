@@ -71,7 +71,7 @@ public class ValueEditingSupport extends EditingSupport {
 			if (simple.getEnumerations() != null) {
 				final Enumerations enumList = simple.getEnumerations();
 				final ComboBoxViewerCellEditor editor = new ComboBoxViewerCellEditor((Composite) getViewer().getControl(), SWT.READ_ONLY);
-				editor.setContenProvider(new ArrayContentProvider());
+				editor.setContentProvider(new ArrayContentProvider());
 				editor.setLabelProvider(new LabelProvider() {
 					@Override
 					public String getText(final Object element) {
@@ -82,7 +82,7 @@ public class ValueEditingSupport extends EditingSupport {
 				return editor;
 			} else if (simple.getType() == PropertyValueType.BOOLEAN) {
 				final ComboBoxViewerCellEditor editor = new ComboBoxViewerCellEditor((Composite) getViewer().getControl(), SWT.READ_ONLY);
-				editor.setContenProvider(new ArrayContentProvider());
+				editor.setContentProvider(new ArrayContentProvider());
 				editor.setLabelProvider(new LabelProvider());
 				editor.setInput(new Object[] {
 				        true, false

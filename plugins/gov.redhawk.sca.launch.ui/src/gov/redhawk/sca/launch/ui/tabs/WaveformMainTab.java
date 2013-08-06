@@ -207,7 +207,6 @@ public class WaveformMainTab extends AbstractLaunchConfigurationTab {
 				final Object selected = ((StructuredSelection) event.getSelection()).getFirstElement();
 				if (selected instanceof SoftwareAssembly) {
 					final SoftwareAssembly sad = (SoftwareAssembly) selected;
-					final String initialValue = sad.getName();
 					WaveformMainTab.this.waveformProfile = sad.eResource().getURI().path();
 				} else {
 					WaveformMainTab.this.waveformProfile = "";
@@ -279,7 +278,6 @@ public class WaveformMainTab extends AbstractLaunchConfigurationTab {
 	public void initializeFrom(final ILaunchConfiguration configuration) {
 		try {
 			final String domainName = configuration.getAttribute(ScaLaunchConfigurationConstants.ATT_DOMAIN_NAME, "");
-			final String waveformName = configuration.getName();
 			this.waveformProfile = configuration.getAttribute(ScaLaunchConfigurationConstants.ATT_PROFILE, "");
 			final boolean autoStart = configuration.getAttribute(ScaLaunchConfigurationConstants.ATT_START,
 			        ScaLaunchConfigurationConstants.DEFAULT_VALUE_ATT_START);

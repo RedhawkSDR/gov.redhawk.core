@@ -77,14 +77,10 @@ class ScaStructSequenceValuePropertyDescriptor extends ItemPropertyDescriptorDec
 		}
 
 		protected void addStructValuePropertyDescriptors(Object object) {
-			int index = 0;
-			final int size = structSequenceProperty.getStructs().size();
 			for (final ScaAbstractProperty< ? > prop : structSequenceProperty.getStructs()) {
 				IItemPropertySource source = (IItemPropertySource) getRootAdapterFactory().adapt(prop, IItemPropertySource.class);
 				List<IItemPropertyDescriptor> descriptors = source.getPropertyDescriptors(prop);
 				for (final IItemPropertyDescriptor desc : descriptors) {
-					IItemLabelProvider lp = (IItemLabelProvider) getRootAdapterFactory().adapt(prop, IItemLabelProvider.class);
-					String displayName = lp.getText(prop);
 					itemPropertyDescriptors.add(new StructPropertyDecorator(prop, desc, adapterFactory));
 				}
 

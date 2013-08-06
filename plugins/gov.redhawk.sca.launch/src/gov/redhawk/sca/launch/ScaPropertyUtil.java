@@ -33,8 +33,6 @@ import java.util.Map;
  * 
  */
 class ScaPropertyUtil {
-	private static final String SIMPLE_SEQ_VALUES = "values";
-	private static final String SIMPLE_VALUE = "value";
 
 	private ScaPropertyUtil() {
 

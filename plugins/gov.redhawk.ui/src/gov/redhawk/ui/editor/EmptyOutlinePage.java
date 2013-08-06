@@ -19,7 +19,6 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.ui.IActionBars;
 import org.eclipse.ui.views.contentoutline.IContentOutlinePage;
 
-// TODO: Auto-generated Javadoc
 /**
  * The Class EmptyOutlinePage.
  */

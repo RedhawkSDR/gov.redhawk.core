@@ -257,8 +257,8 @@ public abstract class SCAFormEditor extends FormEditor implements IEditingDomain
 					// If the resource has been changed on disk and the editor is dirty we will prompt the user before blowing away its changes.
 					if (SCAFormEditor.this.isDirty() && !SCAFormEditor.this.editorSaving) {
 						boolean confirmOverwrite = MessageDialog.openConfirm(SCAFormEditor.this.getSite().getShell(), "File Changed", "The file '"
-						    + delta.getResource().getFullPath().toOSString()
-						    + "' has been changed on the file system. Do you want to replace the editor contents with these changes?");
+							+ delta.getResource().getFullPath().toOSString()
+							+ "' has been changed on the file system. Do you want to replace the editor contents with these changes?");
 
 						SCAFormEditor.this.setFocus();
 
@@ -529,8 +529,9 @@ public abstract class SCAFormEditor extends FormEditor implements IEditingDomain
 			((TransactionalEditingDomainImpl) domain).setDefaultTransactionOptions(myOptions);
 		}
 
-		final NotificationFilter resourceModifiedFilter = NotificationFilter.createNotifierFilter(domain.getResourceSet()).and(NotificationFilter.createEventTypeFilter(Notification.ADD)).and(NotificationFilter.createFeatureFilter(ResourceSet.class,
-		                                                                                                                                                                                                                              ResourceSet.RESOURCE_SET__RESOURCES));
+		final NotificationFilter resourceModifiedFilter = NotificationFilter.createNotifierFilter(domain.getResourceSet()).and(
+			NotificationFilter.createEventTypeFilter(Notification.ADD)).and(
+			NotificationFilter.createFeatureFilter(ResourceSet.class, ResourceSet.RESOURCE_SET__RESOURCES));
 		domain.getResourceSet().eAdapters().add(new Adapter() {
 
 			private Notifier myTarget;
@@ -850,7 +851,7 @@ public abstract class SCAFormEditor extends FormEditor implements IEditingDomain
 								resource.save(saveOptions);
 							} catch (final Exception exception) {
 								throw new CoreException(new Status(IStatus.ERROR, RedhawkUiActivator.getPluginId(), "Failed to save resource: " + resource,
-								    exception));
+									exception));
 							}
 						}
 
@@ -898,8 +899,9 @@ public abstract class SCAFormEditor extends FormEditor implements IEditingDomain
 		} catch (final Exception exception) {
 			// Something went wrong that shouldn't.
 			//
-			StatusManager.getManager().handle(new Status(IStatus.ERROR, RedhawkUiActivator.getPluginId(), "Error occured while attempting to save.", exception),
-			                                  StatusManager.SHOW | StatusManager.LOG);
+			StatusManager.getManager().handle(
+				new Status(IStatus.ERROR, RedhawkUiActivator.getPluginId(), "Error occured while attempting to save.", exception),
+				StatusManager.SHOW | StatusManager.LOG);
 		}
 	}
 
@@ -978,7 +980,7 @@ public abstract class SCAFormEditor extends FormEditor implements IEditingDomain
 	 * @return
 	 */
 	private boolean selectFeature(final EditingDomainEObjectObservableValue emfObservable, final ISWTObservable swtObservable, final EObject object,
-	                              final int featureID) {
+		final int featureID) {
 		boolean retVal = false;
 		final Object observed = emfObservable.getObserved();
 		if (emfObservable.getValueType() instanceof EStructuralFeature) {
@@ -1014,9 +1016,9 @@ public abstract class SCAFormEditor extends FormEditor implements IEditingDomain
 			this.mainResource = this.editingDomain.getResourceSet().getResource(decodedURI, false);
 		}
 		if (exception != null) {
-			StatusManager.getManager().handle(new Status(IStatus.ERROR, RedhawkUiActivator.getPluginId(),
-			                                      "Errors occured while loading the main resource of the editor.", exception),
-			                                  StatusManager.SHOW | StatusManager.LOG);
+			StatusManager.getManager().handle(
+				new Status(IStatus.ERROR, RedhawkUiActivator.getPluginId(), "Errors occured while loading the main resource of the editor.", exception),
+				StatusManager.SHOW | StatusManager.LOG);
 		}
 	}
 

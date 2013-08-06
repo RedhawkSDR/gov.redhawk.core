@@ -15,14 +15,16 @@ package gov.redhawk.eclipsecorba.library.tests;
 
 import gov.redhawk.eclipsecorba.idl.Specification;
 import gov.redhawk.eclipsecorba.library.IdlLibrary;
+
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
+
 import junit.framework.Assert;
 import junit.textui.TestRunner;
+
 import org.eclipse.emf.common.util.URI;
 
 /**
@@ -73,10 +75,6 @@ public class IdlLibraryTest extends RepositoryModuleTest {
 	protected IdlLibrary getFixture() {
 		return (IdlLibrary)fixture;
 	}
-
-	private static final List<String> SKIP_IDL = new ArrayList<String>(Arrays.asList(new String[]{
-			"ExtendedEvent.idl", "PortTypes.idl", 
-	}));
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->

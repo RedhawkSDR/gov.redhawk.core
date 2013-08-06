@@ -27,21 +27,21 @@ import org.eclipse.jface.viewers.IStructuredSelection;
 public class SadDiagramHandlerUtil {
 	private SadDiagramHandlerUtil() {
 	}
-	
+
 	public static TransactionalEditingDomain getEditingDomain(final ISelection selection) {
 		final IStructuredSelection structuredSelection = (IStructuredSelection) selection;
 		if (structuredSelection.size() != 1) {
 			return null;
 		}
 		if (structuredSelection.getFirstElement() instanceof GraphicalEditPart
-		        && ((GraphicalEditPart) structuredSelection.getFirstElement()).getModel() instanceof View) {
+			&& ((GraphicalEditPart) structuredSelection.getFirstElement()).getModel() instanceof View) {
 			final GraphicalEditPart editPart = (GraphicalEditPart) structuredSelection.getFirstElement();
 			final TransactionalEditingDomain editingDomain = editPart.getEditingDomain();
 			return editingDomain;
 		}
 		return null;
 	}
-	
+
 	public static SadComponentPlacement getComponentPlacementFromSelection(final ISelection selection) {
 		if (selection instanceof IStructuredSelection) {
 			final IStructuredSelection structuredSelection = (IStructuredSelection) selection;
@@ -49,11 +49,9 @@ public class SadDiagramHandlerUtil {
 				return null;
 			}
 			if (structuredSelection.getFirstElement() instanceof GraphicalEditPart
-			        && ((GraphicalEditPart) structuredSelection.getFirstElement()).getModel() instanceof View) {
+				&& ((GraphicalEditPart) structuredSelection.getFirstElement()).getModel() instanceof View) {
 				final GraphicalEditPart editPart = (GraphicalEditPart) structuredSelection.getFirstElement();
 				final View view = (View) editPart.getModel();
-				
-				SadComponentPlacement cp = null;
 
 				if (view.getElement() instanceof ComponentPlacement) {
 					return (SadComponentPlacement) view.getElement();
@@ -66,5 +64,5 @@ public class SadDiagramHandlerUtil {
 		}
 		return null;
 	}
-	
+
 }

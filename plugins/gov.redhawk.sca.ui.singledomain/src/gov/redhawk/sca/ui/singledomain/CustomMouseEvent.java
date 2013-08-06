@@ -29,9 +29,9 @@ public class CustomMouseEvent extends EventObject {
      */
     private static final long serialVersionUID = -1326963257531635346L;
     
-	public int x;
+	public int x; // SUPPRESS CHECKSTYLE Event Object
 	
-	public int y;
+	public int y; // SUPPRESS CHECKSTYLE Event Object
 
 	public CustomMouseEvent(Object source, Point location) {
 	    super(source);

@@ -18,7 +18,7 @@ Require-Bundle: org.eclipse.ui;bundle-version="3.6.1",
  gov.redhawk.sca.ui;bundle-version="9.1.0",
  gov.redhawk.prf.validation;bundle-version="1.0.0"
 Bundle-ActivationPolicy: lazy
-Bundle-RequiredExecutionEnvironment: J2SE-1.5
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Export-Package: gov.redhawk.prf.ui,
  gov.redhawk.prf.ui.editor.page,
  gov.redhawk.prf.ui.provider

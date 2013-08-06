@@ -21,9 +21,8 @@ import org.eclipse.emf.validation.AbstractModelConstraint;
 import org.eclipse.emf.validation.IValidationContext;
 import org.eclipse.emf.validation.model.ConstraintStatus;
 
-
 public class DependencyConstraint extends AbstractModelConstraint {
-	
+
 	public static final String ID = "gov.redhawk.validation.constraint.spd.dependency";
 
 	@Override
@@ -34,27 +33,7 @@ public class DependencyConstraint extends AbstractModelConstraint {
 			if (impl.getOs().isEmpty() && impl.getProcessor().isEmpty() && impl.getDependency().isEmpty()) {
 				String retVal = null;
 				if (impl.eContainer() instanceof SoftPkg) {
-					// TODO Suuport Optional dependency on codegen
-					// try {
-					// final gov.redhawk.ide.codegen.WaveDevSettings
-					// waveDevSettings =
-					// gov.redhawk.ide.codegen.CodegenUtil.loadWaveDevSettings((SoftPkg)
-					// impl.eContainer());
-					// if (waveDevSettings != null) {
-					// final EMap<String,
-					// gov.redhawk.ide.codegen.ImplementationSettings> map =
-					// waveDevSettings.getImplSettings();
-					// if (map != null) {
-					// retVal = map.get(impl.getId()).getName();
-					// }
-					// }
-					// } catch (final Exception e) {
-					// // Do Nothing this is to catch the ClassDef Exception
-					// // for CodeGen Settings
-					// }
-					if (retVal == null) {
-						retVal = impl.getId();
-					}
+					retVal = impl.getId();
 				}
 				return new EnhancedConstraintStatus((ConstraintStatus) ctx.createFailureStatus(retVal), null);
 			}

@@ -238,6 +238,14 @@ public class ScaWaveformControlPanel< T extends EObject > extends AbstractScaCon
 	public EObject getInput() {
 		return this.waveform;
 	}
+	
+	@Override
+	public int hashCode() {
+		if (this.getPartName() != null) {
+			return getPartName().hashCode();
+		}
+		return super.hashCode();
+	}
 
 	@Override
 	public boolean equals(final Object obj) {

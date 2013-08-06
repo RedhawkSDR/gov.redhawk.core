@@ -22,7 +22,6 @@ import gov.redhawk.model.sca.commands.SetPropertiesValuesCommand;
 import gov.redhawk.model.sca.commands.UnsetLocalAttributeCommand;
 import gov.redhawk.model.sca.commands.VersionedFeature;
 import gov.redhawk.model.sca.commands.VersionedFeature.Transaction;
-import gov.redhawk.sca.util.Debug;
 import gov.redhawk.sca.util.PluginUtil;
 
 import java.util.Collection;
@@ -266,7 +265,6 @@ public abstract class ScaPropertyContainerImpl< P extends org.omg.CORBA.Object, 
 	}
 
 	private static final DataType[] EMPTY_DATA_TYPE_ARRAY = new DataType[0];
-	private static final Debug DEBUG = new Debug(ScaModelPlugin.ID, "profileObj");
 	@Override
 	protected void notifyChanged(Notification msg) {
 		// END GENERATED CODE

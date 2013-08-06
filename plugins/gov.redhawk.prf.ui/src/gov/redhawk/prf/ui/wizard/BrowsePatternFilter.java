@@ -41,6 +41,7 @@ import org.eclipse.ui.progress.PendingUpdateAdapter;
  * @see org.eclipse.ui.dialogs.FilteredTree
  * @since 3.2
  */
+@SuppressWarnings("restriction")
 public class BrowsePatternFilter extends PatternFilter {
 
 	/**

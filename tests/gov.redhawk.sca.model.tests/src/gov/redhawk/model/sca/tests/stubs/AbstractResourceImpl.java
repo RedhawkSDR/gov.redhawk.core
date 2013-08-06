@@ -50,7 +50,7 @@ import CF.PortPackage.OccupiedPort;
 
 public class AbstractResourceImpl extends Resource {
 
-	protected SoftPkg spd;
+	protected SoftPkg spd; // SUPPRESS CHECKSTYLE Protected Field
 
 	public AbstractResourceImpl() {
 		super();
@@ -111,7 +111,7 @@ public class AbstractResourceImpl extends Resource {
 		}
 	}
 
-	@SuppressWarnings({ "rawtypes", "unchecked" })
+	@SuppressWarnings({"unchecked" })
 	protected void initProperties(Properties prf) {
 		for (ValueListIterator<Object> iterator = prf.getProperties().valueListIterator(); iterator.hasNext();) {
 			AbstractProperty prop = (AbstractProperty) iterator.next();

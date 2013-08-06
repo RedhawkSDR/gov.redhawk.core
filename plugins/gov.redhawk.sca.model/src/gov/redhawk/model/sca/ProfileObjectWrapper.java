@@ -191,7 +191,6 @@ public interface ProfileObjectWrapper< O extends Object > extends IStatusProvide
 	 * @since 14.0
 	 */
 	final class Util {
-		private static final String XML_HEADER = "<?xml";
 
 		private Util() {
 

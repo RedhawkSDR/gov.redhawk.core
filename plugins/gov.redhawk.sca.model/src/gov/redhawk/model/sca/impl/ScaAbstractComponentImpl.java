@@ -452,7 +452,6 @@ public abstract class ScaAbstractComponentImpl< R extends Resource > extends Sca
 
 			public void execute() {
 				EcoreUtil.delete(ScaAbstractComponentImpl.this);
-				;
 			}
 		};
 		resource.releaseObject();

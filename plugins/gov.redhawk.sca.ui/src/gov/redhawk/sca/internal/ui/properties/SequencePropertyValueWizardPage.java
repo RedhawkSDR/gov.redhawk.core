@@ -479,29 +479,4 @@ public class SequencePropertyValueWizardPage extends WizardPage {
 			this.downButton.setEnabled(false);
 		}
 	}
-
-	/**
-	 * Helper method that returns true whether or not the table viewer's input has children.  The result is used to 
-	 * either enable / disable the remove button
-	 * 
-	 * @return Boolean whether or not the input has children for editing
-	 */
-	private boolean inputHasChildren() {
-		if (this.tableViewer.getInput() != null) {
-			if (this.tableViewer.getInput() instanceof ScaSimpleSequenceProperty) {
-				final ScaSimpleSequenceProperty ss = (ScaSimpleSequenceProperty) this.tableViewer.getInput();
-				return (!ss.getValues().isEmpty());
-			} else if (this.tableViewer.getInput() instanceof ScaStructSequenceProperty) {
-				final ScaStructSequenceProperty ss = (ScaStructSequenceProperty) this.tableViewer.getInput();
-				if (!ss.getStructs().isEmpty()) {
-					for (final ScaStructProperty struct : ss.getStructs()) {
-						if (!struct.getSimples().isEmpty()) {
-							return true;
-						}
-					}
-				}
-			}
-		}
-		return false;
-	}
 }

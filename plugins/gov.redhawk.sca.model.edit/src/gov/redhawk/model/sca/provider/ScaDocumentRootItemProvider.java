@@ -40,7 +40,6 @@ import org.eclipse.emf.edit.provider.ViewerNotification;
  * This is the item provider adapter for a {@link gov.redhawk.model.sca.ScaDocumentRoot} object.
  * <!-- begin-user-doc -->
  *  @since 6.0
- *  @deprecated
  * <!-- end-user-doc -->
  * @generated
  */

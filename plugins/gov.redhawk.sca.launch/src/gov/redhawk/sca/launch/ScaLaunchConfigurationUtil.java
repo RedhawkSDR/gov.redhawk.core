@@ -61,11 +61,9 @@ public final class ScaLaunchConfigurationUtil {
 	}
 
 	/**
-	 * @deprecated
 	 * @param configuration
 	 * @param component
 	 */
-	@Deprecated
 	public static void saveProperties(final ILaunchConfigurationWorkingCopy configuration, ScaAbstractComponent< ? > component) {
 		saveProperties(configuration, (ScaPropertyContainer< ? , ? >) component);
 	}
@@ -88,11 +86,9 @@ public final class ScaLaunchConfigurationUtil {
 	}
 
 	/**
-	 * @deprecated
 	 * @param configuration
 	 * @param component
 	 */
-	@Deprecated
 	public static void loadProperties(final ILaunchConfiguration configuration, final ScaAbstractComponent< ? > component) throws CoreException {
 		loadProperties(configuration, (ScaPropertyContainer< ? , ? >) component);
 	}

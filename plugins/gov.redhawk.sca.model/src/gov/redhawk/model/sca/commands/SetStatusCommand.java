@@ -24,9 +24,9 @@ import org.eclipse.emf.ecore.EStructuralFeature;
  */
 public class SetStatusCommand< T extends IStatusProvider > extends ScaModelCommand {
 
-	protected final T provider;
-	protected final EStructuralFeature feature;
-	protected final IStatus status;
+	protected final T provider; // SUPPRESS CHECKSTYLE Final Protected field
+	protected final EStructuralFeature feature; // SUPPRESS CHECKSTYLE Final Protected field
+	protected final IStatus status; // SUPPRESS CHECKSTYLE Final Protected field
 
 	public SetStatusCommand(T provider, EStructuralFeature feature, IStatus status) {
 		Assert.isNotNull(feature);

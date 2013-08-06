@@ -140,6 +140,7 @@ public class ScaPreferenceInitializer extends AbstractPreferenceInitializer {
 		}
 	}
 
+	@SuppressWarnings("deprecation")
 	private static void initFromPreference(final ScaDomainManagerRegistry retVal) {
 		final ScaDomainConnectionDef[] connections = ScaPreferenceUtil.loadDomainConnections();
 		for (final ScaDomainConnectionDef def : connections) {

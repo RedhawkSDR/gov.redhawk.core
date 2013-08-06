@@ -38,7 +38,7 @@ public class OpenWithActionProviderSingleDomain extends CommonActionProvider {
 	private ICommonViewerWorkbenchSite viewSite = null;
 
 	private boolean contribute = false;
-	
+
 	public OpenWithActionProviderSingleDomain() {
 		int a = 1;
 	}

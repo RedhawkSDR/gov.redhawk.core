@@ -36,8 +36,8 @@ import org.eclipse.gmf.runtime.notation.View;
  */
 public abstract class PartitioningEditPolicyProvider extends AbstractProvider implements IEditPolicyProvider {
 
-	protected final PartitioningVisualIDRegistry visualIdRegistry;
-	protected final PartitioningElementTypes elementTypes;
+	protected final PartitioningVisualIDRegistry visualIdRegistry; // SUPPRESS CHECKSTYLE Protected field
+	protected final PartitioningElementTypes elementTypes; // SUPPRESS CHECKSTYLE Protected field
 
 	public PartitioningEditPolicyProvider(final PartitioningElementTypes elementTypes, final PartitioningVisualIDRegistry visualIdRegistry) {
 		this.visualIdRegistry = visualIdRegistry;
