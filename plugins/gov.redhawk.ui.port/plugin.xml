@@ -14,7 +14,7 @@
             id="gov.redhawk.ui.port.uses"
             namespace="gov.redhawk.ui.port"
             properties="interface"
-            type="gov.redhawk.model.sca.ScaUsesPort">
+            type="java.lang.Object">
       </propertyTester>
    </extension>
 

@@ -13,6 +13,7 @@ package gov.redhawk.ui.port.internal;
 import java.util.regex.Pattern;
 
 import gov.redhawk.model.sca.ScaUsesPort;
+import gov.redhawk.sca.util.PluginUtil;
 
 import org.eclipse.core.expressions.PropertyTester;
 
@@ -25,8 +26,8 @@ public class UsesPortPropertyTester extends PropertyTester {
 	 * @see org.eclipse.core.expressions.IPropertyTester#test(java.lang.Object, java.lang.String, java.lang.Object[], java.lang.Object)
 	 */
 	public boolean test(Object receiver, String property, Object[] args, Object expectedValue) {
-		if (receiver instanceof ScaUsesPort) {
-			ScaUsesPort port = (ScaUsesPort) receiver;
+		ScaUsesPort port = PluginUtil.adapt(ScaUsesPort.class, receiver, true);
+		if (port != null) {
 			if ("interface".equals(property)) {
 				if (expectedValue != null) {
 					return Pattern.matches(expectedValue.toString(), port.getRepid());
