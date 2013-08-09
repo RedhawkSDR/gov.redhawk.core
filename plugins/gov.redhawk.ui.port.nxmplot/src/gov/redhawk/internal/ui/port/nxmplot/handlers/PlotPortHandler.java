@@ -11,15 +11,19 @@
  */
 package gov.redhawk.internal.ui.port.nxmplot.handlers;
 
-import java.util.List;
-
 import gov.redhawk.internal.ui.port.nxmplot.FftParameterEntryDialog;
 import gov.redhawk.internal.ui.port.nxmplot.view.PlotView2;
+import gov.redhawk.model.sca.ScaDomainManagerRegistry;
 import gov.redhawk.model.sca.ScaUsesPort;
+import gov.redhawk.model.sca.provider.ScaItemProviderAdapterFactory;
 import gov.redhawk.sca.util.PluginUtil;
 import gov.redhawk.ui.port.nxmplot.FftSettings;
 import gov.redhawk.ui.port.nxmplot.PlotActivator;
 import gov.redhawk.ui.port.nxmplot.PlotType;
+
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
 
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
@@ -28,8 +32,12 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
+import org.eclipse.emf.common.notify.Adapter;
+import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.edit.provider.IItemLabelProvider;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.window.Window;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.IViewPart;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.IWorkbenchWindow;
@@ -43,18 +51,18 @@ public class PlotPortHandler extends AbstractHandler {
 	}
 
 	public Object execute(ExecutionEvent event) throws ExecutionException {
-		IWorkbenchWindow window = HandlerUtil.getActiveWorkbenchWindow(event);
+		final IWorkbenchWindow window = HandlerUtil.getActiveWorkbenchWindow(event);
 		PlotType type = PlotType.valueOf(event.getParameter("gov.redhawk.ui.port.nxmplot.type"));
 		boolean isFFt = Boolean.valueOf(event.getParameter("gov.redhawk.ui.port.nxmplot.isFft"));
 		IStructuredSelection selection = (IStructuredSelection) HandlerUtil.getActiveMenuSelection(event);
 		if (selection == null) {
 			selection = (IStructuredSelection) HandlerUtil.getCurrentSelection(event);
 		}
-		
+
 		if (selection == null) {
 			return null;
 		}
-		final List<?> elements = selection.toList();
+		final List< ? > elements = selection.toList();
 		final FftSettings fft;
 		if (isFFt) {
 			final FftParameterEntryDialog fftDialog = new FftParameterEntryDialog(HandlerUtil.getActiveShell(event), new FftSettings());
@@ -80,11 +88,47 @@ public class PlotPortHandler extends AbstractHandler {
 
 					@Override
 					protected IStatus run(IProgressMonitor monitor) {
+						final ScaItemProviderAdapterFactory factory = new ScaItemProviderAdapterFactory();
+						final StringBuilder name = new StringBuilder();
+						final StringBuilder tooltip = new StringBuilder();
+
 						for (Object obj : elements) {
 							ScaUsesPort port = PluginUtil.adapt(ScaUsesPort.class, obj, true);
 							if (port != null) {
+								List<String> tmpList = new LinkedList<String>();
+								for (EObject eObj = port; !(eObj instanceof ScaDomainManagerRegistry) && eObj != null; eObj = eObj.eContainer()) {
+									Adapter adapter = factory.adapt(eObj, IItemLabelProvider.class);
+									if (adapter instanceof IItemLabelProvider) {
+										IItemLabelProvider lp = (IItemLabelProvider) adapter;
+										tmpList.add(0, lp.getText(eObj));
+									}
+								}
+								name.append(port.getName());
+								name.append(" ");
+
+								for (Iterator<String> i = tmpList.iterator(); i.hasNext();) {
+									tooltip.append(i.next());
+									if (i.hasNext()) {
+										tooltip.append(" -> ");
+									}
+								}
+								tooltip.append("\n");
+
 								plotView.addPlotSource(port, fft, null);
 							}
+						}
+						factory.dispose();
+						if (name.length() > 0) {
+							Display display = window.getWorkbench().getDisplay();
+							display.asyncExec(new Runnable() {
+
+								@Override
+								public void run() {
+									plotView.setPartName(name.substring(0, name.length() - 1).toString());
+									plotView.setTitleToolTip(tooltip.substring(0, tooltip.length() - 1).toString());
+								}
+
+							});
 						}
 						return Status.OK_STATUS;
 					}

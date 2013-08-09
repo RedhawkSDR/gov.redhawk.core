@@ -200,6 +200,8 @@ public class PlotView2 extends ViewPart {
 					final IViewPart newView = getSite().getPage().showView(getSite().getId(), createSecondaryId(), IWorkbenchPage.VIEW_ACTIVATE);
 					if (newView instanceof PlotView2) {
 						final PlotView2 newPlotView = (PlotView2) newView;
+						newPlotView.setPartName(getPartName());
+						newPlotView.setTitleToolTip(getTitleToolTip());
 						newPlotView.getPlotPageBook().showPlot(plotPageBook.getCurrentType());
 						for (PlotSource source : plotPageBook.getSources()) {
 							newPlotView.addPlotSource(source);
