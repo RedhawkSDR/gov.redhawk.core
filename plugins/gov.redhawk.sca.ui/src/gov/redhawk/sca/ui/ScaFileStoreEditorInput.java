@@ -67,7 +67,7 @@ public class ScaFileStoreEditorInput extends FileStoreEditorInput {
 	public String getToolTipText() {
 		ScaDomainManager domMgr = null;
 		EObject obj = this.scaObject;
-		while (domMgr != null) {
+		while (domMgr == null) {
 			if (obj instanceof ScaDomainManager) {
 				domMgr = (ScaDomainManager) obj;
 			} else {
