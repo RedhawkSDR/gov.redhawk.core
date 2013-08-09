@@ -246,7 +246,7 @@ public class PlotView extends ViewPart {
 		}
 		boolean checked = false;
 		boolean enabled = false;
-		if (plotFolder == null) {
+		if (plotFolder != null) {
 			CTabItem selectedTab = plotFolder.getSelection();
 			if (selectedTab != null && !selectedTab.isDisposed()) {
 				Control control = selectedTab.getControl();
