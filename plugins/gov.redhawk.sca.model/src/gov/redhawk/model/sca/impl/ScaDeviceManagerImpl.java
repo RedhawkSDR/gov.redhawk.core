@@ -365,6 +365,7 @@ public class ScaDeviceManagerImpl extends ScaPropertyContainerImpl<DeviceManager
 	}
 
 	private Adapter deviceListener = new AdapterImpl() {
+		// END GENERATED CODE
 		public void notifyChanged(Notification msg) {
 			switch (msg.getFeatureID(ScaDeviceManager.class)) {
 			case ScaPackage.SCA_DEVICE_MANAGER__DEVICES:
@@ -384,6 +385,7 @@ public class ScaDeviceManagerImpl extends ScaPropertyContainerImpl<DeviceManager
 						newValues.add(entry.getValue());
 					}
 					newValue = newValues;
+					break;
 				}
 				case Notification.REMOVE: {
 					Entry entry = (Entry) msg.getOldValue();
@@ -398,6 +400,7 @@ public class ScaDeviceManagerImpl extends ScaPropertyContainerImpl<DeviceManager
 						oldValues.add(entry.getValue());
 					}
 					oldValue = oldValues;
+					break;
 				}
 				default:
 					break;
@@ -408,6 +411,7 @@ public class ScaDeviceManagerImpl extends ScaPropertyContainerImpl<DeviceManager
 				break;
 			}
 		}
+		// BEGIN GENERATED CODE
 	};
 	{
 		eAdapters().add(deviceListener);
