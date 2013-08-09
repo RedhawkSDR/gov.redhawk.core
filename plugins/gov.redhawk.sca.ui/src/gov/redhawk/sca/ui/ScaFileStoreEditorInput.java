@@ -13,9 +13,9 @@ package gov.redhawk.sca.ui;
 
 import gov.redhawk.model.sca.CorbaObjWrapper;
 import gov.redhawk.model.sca.ScaDomainManager;
+import mil.jpeojtrs.sca.util.ScaEcoreUtils;
 
 import org.eclipse.core.filesystem.IFileStore;
-import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.edit.provider.IItemLabelProvider;
 import org.eclipse.emf.edit.provider.ReflectiveItemProviderAdapterFactory;
 import org.eclipse.ui.IMemento;
@@ -65,18 +65,7 @@ public class ScaFileStoreEditorInput extends FileStoreEditorInput {
 
 	@Override
 	public String getToolTipText() {
-		ScaDomainManager domMgr = null;
-		EObject obj = this.scaObject;
-		while (domMgr == null) {
-			if (obj instanceof ScaDomainManager) {
-				domMgr = (ScaDomainManager) obj;
-			} else {
-				obj = obj.eContainer();
-				if (obj == null) {
-					break;
-				}
-			}
-		}
+		ScaDomainManager domMgr = ScaEcoreUtils.getEContainerOfType(this.scaObject, ScaDomainManager.class);
 		if (domMgr != null) {
 			return domMgr.getName() + " - " + getURI().getPath();
 		}
