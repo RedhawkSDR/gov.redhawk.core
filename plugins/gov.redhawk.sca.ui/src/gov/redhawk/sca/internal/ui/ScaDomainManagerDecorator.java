@@ -17,10 +17,6 @@ import gov.redhawk.model.sca.ScaWaveformFactory;
 import gov.redhawk.model.sca.commands.ScaModelCommand;
 import gov.redhawk.sca.ui.ScaUiPlugin;
 import gov.redhawk.sca.ui.ScaUiPluginImages;
-import gov.redhawk.sca.util.PluginUtil;
-
-import java.util.HashSet;
-import java.util.Set;
 
 import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.notify.Notification;
@@ -43,12 +39,13 @@ public class ScaDomainManagerDecorator extends LabelProvider implements ILightwe
 				}
 				return;
 			}
+			if (msg.isTouch()) {
+				return;
+			}
 
 			switch (msg.getFeatureID(ScaWaveformFactory.class)) {
 			case ScaPackage.SCA_DOMAIN_MANAGER__STATE:
-				if (!PluginUtil.equals(msg.getOldValue(), msg.getNewValue())) {
-					fireDomainManagerChanged((ScaDomainManager) msg.getNotifier());
-				}
+				fireStatusChanged(msg.getNotifier());
 				break;
 			default:
 				break;
@@ -57,24 +54,27 @@ public class ScaDomainManagerDecorator extends LabelProvider implements ILightwe
 		}
 	};
 
-	private final Set<Object> listenerSet = new HashSet<Object>();
 	private boolean disposed;
+
+	private void fireStatusChanged(final Object object) {
+		final LabelProviderChangedEvent event = new LabelProviderChangedEvent(this, object);
+		fireLabelProviderChanged(event);
+	}
 
 	public void decorate(final Object element, final IDecoration decoration) {
 		if (element instanceof ScaDomainManager) {
 			ScaUiPlugin.getDefault().getImageRegistry().getDescriptor(ScaUiPluginImages.IMG_DEFAULT_DOMAIN_OVR);
 
 			final ScaDomainManager domMgr = (ScaDomainManager) element;
-			if (!this.listenerSet.contains(domMgr)) {
-				ScaModelCommand.execute(domMgr, new ScaModelCommand() {
+			ScaModelCommand.execute(domMgr, new ScaModelCommand() {
 
-					public void execute() {
+				public void execute() {
+					if (!domMgr.eAdapters().contains(adapter)) {
 						domMgr.eAdapters().add(ScaDomainManagerDecorator.this.adapter);
 					}
+				}
 
-				});
-				this.listenerSet.add(domMgr);
-			}
+			});
 
 			switch (domMgr.getState()) {
 			case CONNECTED:
@@ -98,15 +98,9 @@ public class ScaDomainManagerDecorator extends LabelProvider implements ILightwe
 		}
 	}
 
-	protected void fireDomainManagerChanged(final ScaDomainManager... managers) {
-		final LabelProviderChangedEvent event = new LabelProviderChangedEvent(ScaDomainManagerDecorator.this, managers);
-		fireLabelProviderChanged(event);
-	}
-
 	@Override
 	public void dispose() {
 		super.dispose();
-		this.listenerSet.clear();
 		this.disposed = true;
 	}
 

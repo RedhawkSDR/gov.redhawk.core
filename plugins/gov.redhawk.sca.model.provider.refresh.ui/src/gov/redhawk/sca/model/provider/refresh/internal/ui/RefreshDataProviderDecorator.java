@@ -47,12 +47,17 @@ public class RefreshDataProviderDecorator extends LabelProvider implements ILigh
 				}
 			}
 			if (RefreshTask.PROP_ACTIVE.equals(evt.getPropertyName())) {
-				fireLabelProviderChanged(new LabelProviderChangedEvent(RefreshDataProviderDecorator.this, this.element));
+				fireStatusChanged(element);
 			}
 		}
 	};
 
 	private boolean disposed;
+
+	private void fireStatusChanged(final Object object) {
+		final LabelProviderChangedEvent event = new LabelProviderChangedEvent(this, object);
+		fireLabelProviderChanged(event);
+	}
 
 	@Override
 	public void dispose() {

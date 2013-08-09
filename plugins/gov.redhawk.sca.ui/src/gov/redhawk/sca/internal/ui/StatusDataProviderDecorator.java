@@ -64,9 +64,9 @@ public class StatusDataProviderDecorator extends LabelProvider implements ILight
 		}
 	};
 
-	protected void fireStatusChanged(final Object... object) {
+	private void fireStatusChanged(final Object object) {
 		final LabelProviderChangedEvent event = new LabelProviderChangedEvent(this, object);
-		this.fireLabelProviderChanged(event);
+		fireLabelProviderChanged(event);
 	}
 
 	@Override
