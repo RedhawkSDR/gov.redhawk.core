@@ -317,4 +317,14 @@ public class PlotView2 extends ViewPart {
 	public PlotPageBook2 getPlotPageBook() {
 		return plotPageBook;
 	}
+	
+	@Override
+	public void setPartName(String partName) {
+		super.setPartName(partName);
+	}
+	
+	@Override
+	public void setTitleToolTip(String toolTip) {
+		super.setTitleToolTip(toolTip);
+	}
 }
