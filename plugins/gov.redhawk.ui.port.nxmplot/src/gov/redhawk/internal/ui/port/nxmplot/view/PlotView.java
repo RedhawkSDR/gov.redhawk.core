@@ -246,14 +246,16 @@ public class PlotView extends ViewPart {
 		}
 		boolean checked = false;
 		boolean enabled = false;
-		CTabItem selectedTab = plotFolder.getSelection();
-		if (selectedTab != null && !selectedTab.isDisposed()) {
-			Control control = selectedTab.getControl();
-			if (control instanceof PlotPageBook) {
-				PlotPageBook currentPageBook = (PlotPageBook) selectedTab.getControl();
-				if ((currentPageBook != null) && !currentPageBook.isDisposed() && currentPageBook instanceof PlotPageBook) {
-					checked = ((PlotPageBook) currentPageBook).isRasterShowing();
-					enabled = ((PlotPageBook) currentPageBook).isRasterable();
+		if (plotFolder == null) {
+			CTabItem selectedTab = plotFolder.getSelection();
+			if (selectedTab != null && !selectedTab.isDisposed()) {
+				Control control = selectedTab.getControl();
+				if (control instanceof PlotPageBook) {
+					PlotPageBook currentPageBook = (PlotPageBook) selectedTab.getControl();
+					if ((currentPageBook != null) && !currentPageBook.isDisposed() && currentPageBook instanceof PlotPageBook) {
+						checked = ((PlotPageBook) currentPageBook).isRasterShowing();
+						enabled = ((PlotPageBook) currentPageBook).isRasterable();
+					}
 				}
 			}
 		}
