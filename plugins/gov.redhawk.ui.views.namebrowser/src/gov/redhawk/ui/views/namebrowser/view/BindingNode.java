@@ -301,21 +301,21 @@ public class BindingNode implements IPropertySource {
 	 * @return String path of the node
 	 */
 	private String getPathToNode() {
-		String str = "";
+		StringBuilder str = new StringBuilder();
 		if (this.parent != null) {
-			str = this.parent.getPathToNode();
+			str.append(this.parent.getPathToNode());
 		}
 
 		// Create the full path to the name of the object
 		if (this.binding != null) {
 			if (this.binding.binding_name.length > 0 && str.length() > 0) {
-				str += "/";
+				str.append("/");
 			}
 			for (int i = 0; i < this.binding.binding_name.length; i++) {
 				final NameComponent name = this.binding.binding_name[i];
-				str += name.id;
+				str.append(name.id);
 				if (i + 1 < this.binding.binding_name.length) {
-					str += "/";
+					str.append("/");
 				}
 			}
 
@@ -323,7 +323,7 @@ public class BindingNode implements IPropertySource {
 		if (DEBUG.enabled) {
 			DEBUG.exitingMethod(str);
 		}
-		return str;
+		return str.toString();
 	}
 
 	private Binding[] getChildren(final String pathToNode) {

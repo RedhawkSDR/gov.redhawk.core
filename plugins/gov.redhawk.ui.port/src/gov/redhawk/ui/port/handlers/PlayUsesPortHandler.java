@@ -104,7 +104,7 @@ public class PlayUsesPortHandler extends AbstractHandler {
 	}
 
 	private String playPort(final String var, final List< ? extends ScaUsesPort> portList, final boolean sendList) {
-		String message = "";
+		StringBuilder message = new StringBuilder();
 
 		if (!sendList) {
 			for (final ScaUsesPort port : portList) {
@@ -119,7 +119,7 @@ public class PlayUsesPortHandler extends AbstractHandler {
 						handler.connect(ports, var);
 					}
 				} else {
-					message += "Unable to play a port with the type: " + port.getRepid() + "\n";
+					message.append("Unable to play a port with the type: " + port.getRepid() + "\n");
 				}
 			}
 		} else {
@@ -133,11 +133,11 @@ public class PlayUsesPortHandler extends AbstractHandler {
 					handler.connect(portList, var);
 				}
 			} else {
-				message = "Unable to play a port with the type: " + port.getRepid() + "\n";
+				message.append("Unable to play a port with the type: " + port.getRepid() + "\n");
 			}
 		}
 
-		return (message.length() > 0) ? message : null; // SUPPRESS CHECKSTYLE AvoidInline
+		return (message.length() > 0) ? message.toString() : null; // SUPPRESS CHECKSTYLE AvoidInline
 	}
 
 }
