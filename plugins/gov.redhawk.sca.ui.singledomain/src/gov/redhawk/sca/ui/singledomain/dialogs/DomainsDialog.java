@@ -537,13 +537,13 @@ public class DomainsDialog extends Dialog {
 		if (shell != null && !shell.isDisposed()) {
 			if (SWT.getPlatform().startsWith("rap")) {
 				invokeUICallback("activate",
-						new Integer(this.hashCode()).toString());
+						String.valueOf(this.hashCode()));
 			}
 			shell.setVisible(false);
 			shell.close();
 			if (SWT.getPlatform().startsWith("rap")) {
 				invokeUICallback("deactivate",
-						new Integer(this.hashCode()).toString());
+						String.valueOf(this.hashCode()));
 			}
 		}
 		if (this.closeListenerJob != null) {
