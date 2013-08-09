@@ -47,7 +47,7 @@ import org.eclipse.swt.widgets.Control;
  */
 public class ValuesWizardPage extends WizardPage {
 
-	private class ClassStringContainer {
+	private static class ClassStringContainer {
 		private String value;
 
 		public ClassStringContainer(final String value) {

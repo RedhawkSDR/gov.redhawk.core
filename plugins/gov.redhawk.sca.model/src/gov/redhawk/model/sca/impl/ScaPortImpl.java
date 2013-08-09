@@ -411,14 +411,19 @@ public abstract class ScaPortImpl<P extends AbstractPort, P2 extends org.omg.COR
 
 	@Override
 	protected void notifyChanged(Notification msg) {
-	    super.notifyChanged(msg);
-	    if (!msg.isTouch()) {
-		    switch(msg.getFeatureID(ScaPort.class)) {
-		    case ScaPackage.SCA_PORT__PROFILE_OBJ:
-		    	eNotify(new ENotificationImpl(this, Notification.SET, ScaPackage.SCA_PORT__NAME, null, getName()));
-		    	eNotify(new ENotificationImpl(this, Notification.SET, ScaPackage.SCA_PORT__REPID, null, getRepid()));
-		    }
-	    }
+		// END GENERATED CODE
+		super.notifyChanged(msg);
+		if (!msg.isTouch()) {
+			switch (msg.getFeatureID(ScaPort.class)) {
+			case ScaPackage.SCA_PORT__PROFILE_OBJ:
+				eNotify(new ENotificationImpl(this, Notification.SET, ScaPackage.SCA_PORT__NAME, null, getName()));
+				eNotify(new ENotificationImpl(this, Notification.SET, ScaPackage.SCA_PORT__REPID, null, getRepid()));
+				break;
+			default:
+				break;
+			}
+		}
+		// BEGIN GENERATED CODE
 	}
 	
 	@Override

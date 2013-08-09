@@ -374,6 +374,7 @@ public class ScaComponentImpl extends ScaAbstractComponentImpl<Resource> impleme
 
 	@Override
 	protected void notifyChanged(Notification msg) {
+		// END GENERATED CODE
 		super.notifyChanged(msg);
 		switch (msg.getFeatureID(ScaComponent.class)) {
 		case ScaPackage.SCA_COMPONENT__OBJ:
@@ -390,10 +391,11 @@ public class ScaComponentImpl extends ScaAbstractComponentImpl<Resource> impleme
 			} else {
 				setName(null);
 			}
+			break;
 		default:
 			break;
 		}
-
+		// BEGIN GENERATED CODE
 	}
 
 	/**

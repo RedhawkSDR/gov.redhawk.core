@@ -79,6 +79,7 @@ public class ScaSimpleSequencePropertyImpl extends ScaAbstractPropertyImpl<Simpl
 	}
 
 	private Adapter valueListener = new AdapterImpl() {
+		// END GENERATED CODE
 
 		public void notifyChanged(Notification msg) {
 			if (!isIgnoreRemoteSet()) {
@@ -86,9 +87,14 @@ public class ScaSimpleSequencePropertyImpl extends ScaAbstractPropertyImpl<Simpl
 				case ScaPackage.SCA_SIMPLE_SEQUENCE_PROPERTY__VALUES:
 					pushValueJob.newRemoteValue = toAny();
 					pushValueJob.schedule();
+					break;
+				default:
+					break;
 				}
 			}
 		}
+
+		// BEGIN GENERATED CODE
 	};
 
 	{

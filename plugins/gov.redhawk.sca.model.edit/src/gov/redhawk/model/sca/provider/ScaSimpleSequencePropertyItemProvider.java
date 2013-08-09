@@ -76,7 +76,9 @@ public class ScaSimpleSequencePropertyItemProvider extends ScaAbstractPropertyIt
 		return itemPropertyDescriptors;
 	}
 
-	private class ScaSimpleSequenceValueDecorator extends ItemPropertyDescriptorDecorator {
+	private static class ScaSimpleSequenceValueDecorator extends ItemPropertyDescriptorDecorator {
+		// END GENERATED CODE
+
 		public ScaSimpleSequenceValueDecorator(Object object, IItemPropertyDescriptor itemPropertyDescriptor) {
 			super(object, itemPropertyDescriptor);
 		}
@@ -84,15 +86,15 @@ public class ScaSimpleSequencePropertyItemProvider extends ScaAbstractPropertyIt
 		@Override
 		public IItemLabelProvider getLabelProvider(final Object thisObject) {
 			final ScaSimpleSequenceProperty property = (ScaSimpleSequenceProperty) thisObject;
-			
+
 			final IItemLabelProvider lp = super.getLabelProvider(thisObject);
 			return new IItemLabelProvider() {
 
 				public String getText(Object object) {
-					List<?> value = null;
+					List< ? > value = null;
 					if (object != null && object.getClass().isArray()) {
-						value = Arrays.asList((Object[])object);
-					} else if (object instanceof List<?>) {
+						value = Arrays.asList((Object[]) object);
+					} else if (object instanceof List< ? >) {
 						value = (List< ? >) object;
 					}
 					return getValueText(property, value);
@@ -103,7 +105,8 @@ public class ScaSimpleSequencePropertyItemProvider extends ScaAbstractPropertyIt
 				}
 			};
 		}
-		
+
+		// BEGIN GENERATED CODE
 	}
 
 	/**

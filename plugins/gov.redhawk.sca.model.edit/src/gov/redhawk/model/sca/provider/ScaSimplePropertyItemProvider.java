@@ -79,18 +79,19 @@ public class ScaSimplePropertyItemProvider extends ScaAbstractPropertyItemProvid
 		return itemPropertyDescriptors;
 	}
 
-	private class ValueItemPropertyDescriptor extends ItemPropertyDescriptorDecorator {
-		
+	private static class ValueItemPropertyDescriptor extends ItemPropertyDescriptorDecorator {
+		// END GENERATED CODE
+
 		public ValueItemPropertyDescriptor(Object object, IItemPropertyDescriptor itemPropertyDescriptor) {
-	        super(object, itemPropertyDescriptor);
-        }
+			super(object, itemPropertyDescriptor);
+		}
 
 		@Override
 		public IItemLabelProvider getLabelProvider(final Object thisObject) {
 			final ScaSimpleProperty property = (ScaSimpleProperty) thisObject;
 			final IItemLabelProvider lp = super.getLabelProvider(thisObject);
 			return new IItemLabelProvider() {
-				
+
 				public String getText(Object object) {
 					if (object instanceof PropertyValueWrapper) {
 						PropertyValueWrapper wrapper = (PropertyValueWrapper) object;
@@ -99,7 +100,7 @@ public class ScaSimplePropertyItemProvider extends ScaAbstractPropertyItemProvid
 						return getValueText(property, object);
 					}
 				}
-				
+
 				public Object getImage(Object object) {
 					return lp.getImage(property);
 				}
@@ -122,6 +123,8 @@ public class ScaSimplePropertyItemProvider extends ScaAbstractPropertyItemProvid
 			}
 			return super.getChoiceOfValues(thisObject);
 		}
+
+		// BEGIN GENERATED CODE
 	}
 	
 	/**

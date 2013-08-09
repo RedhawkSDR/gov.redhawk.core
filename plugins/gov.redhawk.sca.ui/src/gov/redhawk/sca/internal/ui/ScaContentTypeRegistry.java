@@ -73,7 +73,7 @@ public enum ScaContentTypeRegistry implements IExtensionChangeHandler, IScaConte
 		HIGHEST, HIGH, NORMAL, LOW, LOWEST
 	}
 
-	private class ScaContentTypeBinding {
+	private static class ScaContentTypeBinding {
 		private final String contentTypeId;
 		private final String editorId;
 		private final Priority priority;
@@ -86,7 +86,7 @@ public enum ScaContentTypeRegistry implements IExtensionChangeHandler, IScaConte
 		}
 	}
 
-	private class ScaContentType {
+	private static class ScaContentType {
 		private final String id;
 		private final String name;
 		private final IScaContentDescriber contentDescriber;

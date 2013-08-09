@@ -104,6 +104,7 @@ public class ScaSimplePropertyImpl extends ScaAbstractPropertyImpl<Simple> imple
 	}
 
 	private Adapter valueListener = new AdapterImpl() {
+		// END GENERATED CODE
 
 		public void notifyChanged(Notification msg) {
 			if (!isIgnoreRemoteSet()) {
@@ -113,9 +114,14 @@ public class ScaSimplePropertyImpl extends ScaAbstractPropertyImpl<Simple> imple
 						pushValueJob.newRemoteValue = toAny();
 						pushValueJob.schedule();
 					}
+					break;
+				default:
+					break;
 				}
 			}
 		}
+
+		// BEGIN GENERATED CODE
 	};
 	{
 		eAdapters().add(valueListener);

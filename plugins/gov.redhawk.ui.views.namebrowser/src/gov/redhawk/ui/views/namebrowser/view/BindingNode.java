@@ -84,7 +84,7 @@ public class BindingNode implements IPropertySource {
 	private static final Binding[] EMPTY = new Binding[0];
 	private static final BindingNode[] NO_CONTENT = new BindingNode[0];
 
-	private class SessionInfo {
+	private static class SessionInfo {
 		private SessionInfo(final String host) {
 			this.host = host;
 		}
