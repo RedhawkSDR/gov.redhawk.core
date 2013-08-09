@@ -112,8 +112,8 @@ public class FileStoreFileImpl extends FilePOA {
 	 */
 	public void setFilePointer(final int filePointer) throws InvalidFilePointer, FileException {
 		try {
-			this.inputStream.skip(filePointer);
-			this.pointer += filePointer;
+			long actualSkiped = this.inputStream.skip(filePointer);
+			this.pointer += actualSkiped;
 		} catch (final java.io.IOException e) {
 			throw new FileException(ErrorNumberType.CF_EIO, e.getMessage());
 		}
