@@ -198,7 +198,7 @@ public class SequencePropertyValueWizardPage extends WizardPage {
 			case USHORT:
 				return 0;
 			case ULONGLONG:
-				return new BigInteger("0");
+				return BigInteger.ZERO;
 			default:
 				throw new IllegalArgumentException("Unhandled property type");
 			}
