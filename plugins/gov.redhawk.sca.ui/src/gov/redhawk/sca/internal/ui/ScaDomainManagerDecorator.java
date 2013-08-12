@@ -19,9 +19,6 @@ import gov.redhawk.sca.ui.ScaUiPlugin;
 import gov.redhawk.sca.ui.ScaUiPluginImages;
 import gov.redhawk.sca.util.PluginUtil;
 
-import java.util.HashSet;
-import java.util.Set;
-
 import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.Notifier;
@@ -57,7 +54,6 @@ public class ScaDomainManagerDecorator extends LabelProvider implements ILightwe
 		}
 	};
 
-	private final Set<Object> listenerSet = new HashSet<Object>();
 	private boolean disposed;
 
 	public void decorate(final Object element, final IDecoration decoration) {
@@ -65,17 +61,15 @@ public class ScaDomainManagerDecorator extends LabelProvider implements ILightwe
 			ScaUiPlugin.getDefault().getImageRegistry().getDescriptor(ScaUiPluginImages.IMG_DEFAULT_DOMAIN_OVR);
 
 			final ScaDomainManager domMgr = (ScaDomainManager) element;
-			if (!this.listenerSet.contains(domMgr)) {
-				ScaModelCommand.execute(domMgr, new ScaModelCommand() {
+			ScaModelCommand.execute(domMgr, new ScaModelCommand() {
 
-					public void execute() {
+				public void execute() {
+					if (!domMgr.eAdapters().contains(adapter)) {
 						domMgr.eAdapters().add(ScaDomainManagerDecorator.this.adapter);
 					}
+				}
 
-				});
-				this.listenerSet.add(domMgr);
-			}
-
+			});
 			switch (domMgr.getState()) {
 			case CONNECTED:
 				decoration.addSuffix(" CONNECTED");
@@ -106,7 +100,6 @@ public class ScaDomainManagerDecorator extends LabelProvider implements ILightwe
 	@Override
 	public void dispose() {
 		super.dispose();
-		this.listenerSet.clear();
 		this.disposed = true;
 	}
 

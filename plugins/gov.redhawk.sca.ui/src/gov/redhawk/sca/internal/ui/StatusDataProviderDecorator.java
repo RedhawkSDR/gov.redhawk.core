@@ -15,9 +15,6 @@ import gov.redhawk.model.sca.IStatusProvider;
 import gov.redhawk.model.sca.ScaPackage;
 import gov.redhawk.model.sca.commands.ScaModelCommand;
 
-import java.util.HashSet;
-import java.util.Set;
-
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.emf.common.notify.Adapter;
@@ -34,8 +31,6 @@ import org.eclipse.ui.PlatformUI;
  * 
  */
 public class StatusDataProviderDecorator extends LabelProvider implements ILightweightLabelDecorator {
-
-	private final Set<EObject> decoratedObjects = new HashSet<EObject>();
 
 	private boolean disposed;
 
@@ -78,7 +73,6 @@ public class StatusDataProviderDecorator extends LabelProvider implements ILight
 	public void dispose() {
 		super.dispose();
 		this.disposed = true;
-		this.decoratedObjects.clear();
 
 	}
 
@@ -86,16 +80,15 @@ public class StatusDataProviderDecorator extends LabelProvider implements ILight
 		if (element instanceof IStatusProvider) {
 			final IStatusProvider statusProvider = (IStatusProvider) element;
 
-			if (!this.decoratedObjects.contains(statusProvider)) {
-				ScaModelCommand.execute(statusProvider, new ScaModelCommand() {
+			ScaModelCommand.execute(statusProvider, new ScaModelCommand() {
 
-					public void execute() {
+				public void execute() {
+					if (!statusProvider.eAdapters().contains(adaperListener)) {
 						statusProvider.eAdapters().add(StatusDataProviderDecorator.this.adaperListener);
 					}
+				}
 
-				});
-				this.decoratedObjects.add(statusProvider);
-			}
+			});
 
 			final ISharedImages sharedImages = PlatformUI.getWorkbench().getSharedImages();
 			IStatus status = statusProvider.getStatus();
