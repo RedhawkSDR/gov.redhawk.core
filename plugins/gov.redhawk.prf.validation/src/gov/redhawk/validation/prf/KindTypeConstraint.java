@@ -67,13 +67,6 @@ public class KindTypeConstraint extends AbstractModelConstraint {
 			}
 		}
 
-		if (list.contains(PropertyConfigurationType.ALLOCATION)) {
-			if (list.size() > 1) {
-				return new EnhancedConstraintStatus(
-					(ConstraintStatus) ctx.createFailureStatus("Property type 'ALLOCATION' is a unique types, can be no other type."), feature);
-			}
-		}
-
 		if (list.contains(PropertyConfigurationType.EVENT)) {
 			if (!list.contains(PropertyConfigurationType.CONFIGURE) && !list.contains(PropertyConfigurationType.EXECPARAM)) {
 				return new EnhancedConstraintStatus(
