@@ -153,7 +153,7 @@ public class FftParameterEntryDialog extends Dialog {
 
 		final Label typeLabel = new Label(container, SWT.NONE);
 		typeLabel.setLayoutData(new GridData(GridData.BEGINNING, GridData.CENTER, false, false));
-		typeLabel.setText("Plot Type:");
+		typeLabel.setText("FFT Output Type:");
 
 		final ComboViewer type = new ComboViewer(container, SWT.READ_ONLY);
 		type.getCombo().setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false, 1, 1));
