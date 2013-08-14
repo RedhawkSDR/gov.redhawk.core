@@ -2,18 +2,23 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: %Bundle-Name
 Bundle-SymbolicName: gov.redhawk.ui.port.playaudio;singleton:=true
-Bundle-Version: 1.1.1.qualifier
+Bundle-Version: 2.0.0.qualifier
 Bundle-Activator: gov.redhawk.ui.port.playaudio.internal.Activator
 Require-Bundle: org.eclipse.ui;bundle-version="3.6.1",
  org.eclipse.core.runtime;bundle-version="3.6.0",
  gov.redhawk.ui.port;bundle-version="1.0.0",
  org.eclipse.emf.edit.ui;bundle-version="2.5.0",
  gov.redhawk.sca.model.edit;bundle-version="5.0.0",
- idl.bulkio;bundle-version="1.7.0"
+ idl.bulkio;bundle-version="1.7.0",
+ org.eclipse.core.databinding;bundle-version="1.4.1",
+ org.eclipse.jface.databinding;bundle-version="1.6.0",
+ gov.redhawk.bulkio.util;bundle-version="1.0.0",
+ org.eclipse.core.databinding.beans;bundle-version="1.2.200",
+ org.eclipse.core.databinding.property;bundle-version="1.4.100"
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Bundle-ClassPath: .
 Bundle-Vendor: %Bundle-Vendor
 Export-Package: gov.redhawk.ui.port.playaudio.controller,
  gov.redhawk.ui.port.playaudio.controls,
- gov.redhawk.ui.port.playaudio.views
+ gov.redhawk.ui.port.playaudio.internal.views;x-internal:=true

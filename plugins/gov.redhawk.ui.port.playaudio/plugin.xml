@@ -16,7 +16,7 @@
          point="org.eclipse.ui.views">
       <view
             category="gov.redhawk.ui.category.sca"
-            class="gov.redhawk.ui.port.playaudio.views.View"
+            class="gov.redhawk.ui.port.playaudio.internal.views.PlayAudioView"
             icon="icons/audio-volume-medium.png"
             id="gov.redhawk.ui.port.playaudio.view"
             name="%view.name">

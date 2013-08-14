@@ -15,9 +15,8 @@ import gov.redhawk.model.sca.ScaUsesPort;
 import gov.redhawk.sca.util.PluginUtil;
 import gov.redhawk.ui.port.playaudio.internal.Activator;
 
-import java.util.HashMap;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
@@ -41,15 +40,15 @@ public class PlayPortHandler extends AbstractHandler {
 		}
 		if (selection != null) {
 			List< ? > elements = selection.toList();
-			final Map<ScaUsesPort, String> portMap = new HashMap<ScaUsesPort, String>();
+			final List<ScaUsesPort> ports = new ArrayList<ScaUsesPort>();
 			for (Object obj : elements) {
 				ScaUsesPort port = PluginUtil.adapt(ScaUsesPort.class, obj);
 				if (port != null) {
-					portMap.put(port, null);
+					ports.add(port);
 				}
 			}
-			if (!portMap.isEmpty()) {
-				Activator.getDefault().playPort(portMap);
+			if (!ports.isEmpty()) {
+				Activator.getDefault().playPorts(ports);
 			}
 		}
 		return null;

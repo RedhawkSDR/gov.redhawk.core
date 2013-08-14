@@ -60,7 +60,9 @@ import CF.PortPackage.InvalidPort;
  * This class connects to the specified CORBA host and receives data. It then
  * writes the data for sound playback. Generics are used to receive all types of
  * data(Octet(byte)/Short/Long/Float/Double).
+ * @deprecated Use new {@link gov.redhawk.ui.port.playaudio.controller.AudioReceiver}
  */
+@Deprecated
 public class CorbaReceiver implements dataShortOperations, dataCharOperations, dataOctetOperations, dataUlongOperations, dataFloatOperations,
         dataDoubleOperations {
 

@@ -12,8 +12,9 @@
 package gov.redhawk.ui.port.playaudio.internal;
 
 import gov.redhawk.model.sca.ScaUsesPort;
-import gov.redhawk.ui.port.playaudio.views.View;
+import gov.redhawk.ui.port.playaudio.internal.views.PlayAudioView;
 
+import java.util.List;
 import java.util.Map;
 
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -94,12 +95,38 @@ public class Activator extends AbstractUIPlugin {
 		}
 		return desc;
 	}
+	
+	public void playPorts(final List<ScaUsesPort> portList) {
+		final UIJob job = new UIJob("Starting Play Port") {
+			@Override
+			public IStatus runInUIThread(final IProgressMonitor monitor) {
+				monitor.beginTask("Opening Play Port View", IProgressMonitor.UNKNOWN);
+				final IWorkbenchPage page = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
+				if (page != null) {
+					PlayAudioView view;
+					try {
+						view = (PlayAudioView) page.showView(PlayAudioView.ID);
+						for (ScaUsesPort port : portList) {
+							view.playPort(port);
+						}
+					} catch (final PartInitException e) {
+						getLog().log(new Status(IStatus.ERROR, Activator.PLUGIN_ID, "Error finding Play Port View", e));
+					}
+				}
+				return Status.OK_STATUS;
+			}
+		};
+		job.setSystem(true);
+		job.schedule();
+	}
 
 	/**
 	 * This is used to connect to an arbitrary Uses port to play audio.
 	 * 
 	 * @param portList the map of Ports and Names to connect
+	 * @deprecated Use {@link #playPorts(List)}
 	 */
+	@Deprecated
 	public void playPort(final Map<ScaUsesPort, String> portList) {
 		final UIJob job = new UIJob("Starting Play Port") {
 			@Override
@@ -107,10 +134,12 @@ public class Activator extends AbstractUIPlugin {
 				monitor.beginTask("Opening Play Port View", IProgressMonitor.UNKNOWN);
 				final IWorkbenchPage page = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
 				if (page != null) {
-					View view;
+					PlayAudioView view;
 					try {
-						view = (View) page.showView(View.ID);
-						view.playNewPort(portList);
+						view = (PlayAudioView) page.showView(PlayAudioView.ID);
+						for (ScaUsesPort port : portList.keySet()) {
+							view.playPort(port);
+						}
 					} catch (final PartInitException e) {
 						getLog().log(new Status(IStatus.ERROR, Activator.PLUGIN_ID, "Error finding Play Port View", e));
 					}

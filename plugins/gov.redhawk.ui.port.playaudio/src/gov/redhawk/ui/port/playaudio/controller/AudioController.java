@@ -48,7 +48,9 @@ import org.omg.CORBA.SystemException;
 
 /**
  * @since 1.1
+ * @deprecated Use new {@link gov.redhawk.ui.port.playaudio.controller.AudioReceiver}
  */
+@Deprecated
 public class AudioController {
 	private static final String IDL_START = "IDL:BULKIO/data";
 	private static final int IDL_START_LEN = AudioController.IDL_START.length();
