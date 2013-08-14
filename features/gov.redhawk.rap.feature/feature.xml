@@ -13,7 +13,8 @@
       id="gov.redhawk.rap.feature"
       label="%featureName"
       version="1.8.4.qualifier"
-      provider-name="%featureProvider">
+      provider-name="%providerName"
+      plugin="gov.redhawk.rap">
 
    <description url="http://redhawksdr.org">
       %description
