@@ -392,7 +392,7 @@ public class corbareceiver extends CorbaPrimitive { //SUPPRESS CHECKSTYLE ClassN
 	 * @param type the NeXtMidas type of the data to plot (eg. Data.FLOAT)
 	 * @since 8.0
 	 */
-	public synchronized void write(final Object dataArray, final int size, final byte type, final boolean endOfStream, PrecisionUTCTime time) {
+	public void write(final Object dataArray, final int size, final byte type, final boolean endOfStream, PrecisionUTCTime time) {
 		if (!(this.state == Commandable.PROCESS) || isStateChanged() || this.currentSri == null || !shouldProcessPacket(endOfStream, type)) {
 			return;
 		}
@@ -402,10 +402,10 @@ public class corbareceiver extends CorbaPrimitive { //SUPPRESS CHECKSTYLE ClassN
 			return;
 		}
 
-		final int bufferSize = outputFile.bpa * size; // in bytes
+		final int bufferSize = localOutputFile.bpa * size; // in bytes
 		if (!blocking) { // non-blocking option enabled
 			if (localOutputFile.getResource().avail() < bufferSize) {
-				Time.sleep(0.01); // provide slight back-pressure so we don't spin CPU for Component that does NOT throttle data
+//				Time.sleep(0.01); // provide slight back-pressure so we don't spin CPU for Component that does NOT throttle data
 				return; // drop packet since write would block
 			}
 		}
@@ -416,11 +416,11 @@ public class corbareceiver extends CorbaPrimitive { //SUPPRESS CHECKSTYLE ClassN
 		} else {
 			midasTime = null;
 		}
-		outputFile.setTimeAt(midasTime);
+		localOutputFile.setTimeAt(midasTime);
 
 		byte[] byteBuffer = new byte[bufferSize];
-		Convert.ja2bb(dataArray, 0, type, byteBuffer, 0, outputFile.dataType, size);
-		outputFile.write(byteBuffer, 0, byteBuffer.length);
+		Convert.ja2bb(dataArray, 0, type, byteBuffer, 0, localOutputFile.dataType, size);
+		localOutputFile.write(byteBuffer, 0, byteBuffer.length);
 		return;
 	}
 
