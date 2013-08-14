@@ -559,4 +559,20 @@ public class corbareceiver extends CorbaPrimitive { //SUPPRESS CHECKSTYLE ClassN
 			}
 		}
 	}
+
+	/**
+	 * @return the blocking option
+	 * @since 9.1
+	 */
+	public boolean isBlocking() {
+		return blocking;
+	}
+
+	/**
+	 * @param blocking the blocking option to set
+	 * @since 9.1
+	 */
+	public void setBlocking(boolean blocking) {
+		this.blocking = blocking;
+	}
 }
