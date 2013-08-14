@@ -339,6 +339,7 @@ public class PlaybackInfo extends Composite {
 		this.blockingField.setContentProvider(new ArrayContentProvider());
 		this.blockingField.setLabelProvider(new LabelProvider());
 		this.blockingField.setInput(new Object[] { true, false });
+		this.blockingField.getControl().setEnabled(false);
 		this.blockingField.getControl().setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 
 		this.pauseButton = new Button(this, SWT.TOGGLE);
