@@ -11,6 +11,8 @@
  */
 package gov.redhawk.bulkio.util.internal;
 
+import gov.redhawk.bulkio.util.BulkIOType;
+
 import org.eclipse.core.runtime.ISafeRunnable;
 import org.eclipse.core.runtime.SafeRunner;
 import org.omg.PortableServer.Servant;
@@ -23,6 +25,10 @@ import BULKIO.dataUlongPOATie;
  * 
  */
 public class DataULongReceiver extends AbstractSriReceiver<dataUlongOperations> implements dataUlongOperations {
+
+	protected DataULongReceiver() {
+		super(BulkIOType.ULONG);
+	}
 
 	/**
 	 * {@inheritDoc}

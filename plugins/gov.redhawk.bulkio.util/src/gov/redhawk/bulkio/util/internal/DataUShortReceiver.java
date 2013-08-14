@@ -11,6 +11,8 @@
  */
 package gov.redhawk.bulkio.util.internal;
 
+import gov.redhawk.bulkio.util.BulkIOType;
+
 import org.eclipse.core.runtime.ISafeRunnable;
 import org.eclipse.core.runtime.SafeRunner;
 import org.omg.PortableServer.Servant;
@@ -23,6 +25,10 @@ import BULKIO.dataUshortPOATie;
  * 
  */
 public class DataUShortReceiver extends AbstractSriReceiver<dataUshortOperations> implements dataUshortOperations {
+
+	protected DataUShortReceiver() {
+		super(BulkIOType.USHORT);
+	}
 
 	/**
 	 * {@inheritDoc}

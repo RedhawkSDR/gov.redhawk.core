@@ -11,6 +11,8 @@
  */
 package gov.redhawk.bulkio.util.internal;
 
+import gov.redhawk.bulkio.util.BulkIOType;
+
 import org.eclipse.core.runtime.ISafeRunnable;
 import org.eclipse.core.runtime.SafeRunner;
 import org.omg.PortableServer.Servant;
@@ -23,6 +25,10 @@ import BULKIO.dataOctetPOATie;
  * 
  */
 public class DataOctetReceiver extends AbstractSriReceiver<dataOctetOperations> implements dataOctetOperations {
+	
+	public DataOctetReceiver() {
+		super(BulkIOType.OCTET);
+	}
 
 	/**
 	 * {@inheritDoc}

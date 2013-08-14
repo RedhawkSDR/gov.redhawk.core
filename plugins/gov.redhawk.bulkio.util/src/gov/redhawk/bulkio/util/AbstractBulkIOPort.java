@@ -10,8 +10,11 @@
  *******************************************************************************/
 package gov.redhawk.bulkio.util;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicLong;
 
 import BULKIO.PortStatistics;
 import BULKIO.PortUsageType;
@@ -26,13 +29,13 @@ import CF.DataType;
  */
 public abstract class AbstractBulkIOPort implements ProvidesPortStatisticsProviderOperations, updateSRIOperations {
 
-	private Map<String, StreamSRI> streamSRIMap = new HashMap<String, StreamSRI>();
-	private PortStatistics stats = new PortStatistics();
-	private int bpa;
-	private long lastWrite = -1;
-	private long lastUpdate = -1;
-	private int numElements;
-	private int numCalls;
+	private final Map<String, StreamSRI> streamSRIMap = Collections.synchronizedMap(new HashMap<String, StreamSRI>());
+	private final PortStatistics stats = new PortStatistics();
+	private AtomicLong lastWrite = new AtomicLong(-1);
+	private AtomicLong lastUpdate = new AtomicLong(-1);
+	private AtomicInteger numElements = new AtomicInteger();
+	private AtomicInteger numCalls = new AtomicInteger();
+	private BulkIOType type;
 	{
 		stats.callsPerSecond = -1;
 		stats.elementsPerSecond = -1;
@@ -42,55 +45,57 @@ public abstract class AbstractBulkIOPort implements ProvidesPortStatisticsProvid
 		stats.portName = "port_" + System.getProperty("user.name", "user") + "_" + System.currentTimeMillis();
 		stats.streamIDs = new String[0];
 	}
+	
+	protected AbstractBulkIOPort(BulkIOType type) {
+		this.type = type;
+	}
+	
+	public BulkIOType getBulkIOType() {
+		return type;
+	}
+
 
 	/**
-	 * Call this method to update the port statistics
+	 * Call this method to update the port statistics, should only need to be called from the statistics method itself
 	 */
-	private void updateStatitics() {
-		long oldLastUpdate = this.lastUpdate;
-		this.lastUpdate = System.currentTimeMillis();
+	private synchronized void updateStatitics() {
+		long currentTime = System.currentTimeMillis();
+		long oldLastUpdate = this.lastUpdate.getAndSet(currentTime);
 		if (oldLastUpdate == -1) {
 			return;
 		}
-		long delta = Math.max(1, System.currentTimeMillis() - oldLastUpdate);
+		long delta = Math.max(1, currentTime - oldLastUpdate);
+		
+		stats.callsPerSecond = this.numCalls.floatValue() / delta * 1000f;
+		this.numCalls.set(0);
 
-		stats.callsPerSecond = ((float) this.numCalls) / delta * 1000f;
-		this.numCalls = 0;
+		stats.elementsPerSecond = this.numElements.floatValue() / delta * 1000f;
+		this.numElements.set(0);
 
-		stats.elementsPerSecond = ((float) this.numElements) / delta * 1000f;
-		this.numElements = 0;
-
-		if (this.lastWrite > 0) {
-			stats.timeSinceLastCall = System.currentTimeMillis() - this.lastWrite;
+		if (this.lastWrite.get() > 0) {
+			stats.timeSinceLastCall = Math.max(0, currentTime - this.lastWrite.get());
 		} else {
 			stats.timeSinceLastCall = -1;
 		}
 
-		stats.bitsPerSecond = this.bpa * stats.elementsPerSecond * 8;
-	}
-
-	protected void setBytesPerAtom(int bpa) {
-		this.bpa = bpa;
+		stats.bitsPerSecond = type.getBytePerAtom() * stats.elementsPerSecond * 8;
 	}
 
 	/**
 	 * Call this method every time a push packet is received
 	 * @param length Length of the push packet array.
 	 */
-	protected synchronized boolean pushPacket(int length, final PrecisionUTCTime time, final boolean endOfStream, final String streamID) {
+	protected boolean pushPacket(int length, final PrecisionUTCTime time, final boolean endOfStream, final String streamID) {
 		if (endOfStream) {
 			// Process last packet sent
 			this.streamSRIMap.remove(streamID);
 		} else if (getSri(streamID) == null) {
 			return false;
 		}
-		if (lastUpdate == -1) {
-			lastUpdate = System.currentTimeMillis();
-		}
-		this.lastWrite = System.currentTimeMillis();
-		this.numElements += length;
-		this.numCalls++;
-		updateStatitics();
+		this.lastUpdate.compareAndSet(-1, System.currentTimeMillis());
+		this.lastWrite.set(System.currentTimeMillis());
+		this.numElements.addAndGet(length);
+		this.numCalls.incrementAndGet();
 		return true;
 	}
 
@@ -112,7 +117,16 @@ public abstract class AbstractBulkIOPort implements ProvidesPortStatisticsProvid
 	}
 
 	public void pushSRI(StreamSRI sri) {
-		this.streamSRIMap.put(sri.streamID, sri);
+		if (sri != null) {
+			StreamSRI oldSri = this.streamSRIMap.put(sri.streamID, sri);
+			if (!StreamSRIUtil.equals(oldSri, sri)) {
+				handleStreamSRIChanged(oldSri, sri);
+			}
+		}
+	}
+
+	protected void handleStreamSRIChanged(StreamSRI oldSri, StreamSRI newSri) {
+		
 	}
 
 	public StreamSRI getSri(String streamID) {

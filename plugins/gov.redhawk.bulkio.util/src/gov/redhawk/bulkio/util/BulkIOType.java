@@ -28,6 +28,7 @@ import BULKIO.dataLongHelper;
 import BULKIO.dataLongLongHelper;
 import BULKIO.dataLongLongOperations;
 import BULKIO.dataLongLongPOATie;
+import BULKIO.dataLongOperations;
 import BULKIO.dataOctetHelper;
 import BULKIO.dataOctetOperations;
 import BULKIO.dataOctetPOATie;
@@ -43,6 +44,7 @@ import BULKIO.dataUlongPOATie;
 import BULKIO.dataUshortHelper;
 import BULKIO.dataUshortOperations;
 import BULKIO.dataUshortPOATie;
+import BULKIO.updateSRIOperations;
 
 public enum BulkIOType {
 	DOUBLE(8), FLOAT(4), LONG(4), ULONG(4), LONG_LONG(8), ULONG_LONG(8), SHORT(2), USHORT(2), CHAR(2), OCTET(1);
@@ -94,6 +96,32 @@ public enum BulkIOType {
 
 	public int getBytePerAtom() {
 		return bytePerAtom;
+	}
+	
+	public static BulkIOType getType(updateSRIOperations impl) {
+		if (dataCharOperations.class.isAssignableFrom(impl.getClass())) {
+			return BulkIOType.CHAR;
+		} else if (dataDoubleOperations.class.isAssignableFrom(impl.getClass())) {
+			return BulkIOType.DOUBLE;
+		} else if (dataFloatOperations.class.isAssignableFrom(impl.getClass())) {
+			return BulkIOType.FLOAT;
+		} else if (dataLongLongOperations.class.isAssignableFrom(impl.getClass())) {
+			return BulkIOType.LONG_LONG;
+		} else if (dataLongOperations.class.isAssignableFrom(impl.getClass())) {
+			return BulkIOType.LONG;
+		} else if (dataOctetOperations.class.isAssignableFrom(impl.getClass())) {
+			return BulkIOType.OCTET;
+		} else if (dataShortOperations.class.isAssignableFrom(impl.getClass())) {
+			return BulkIOType.SHORT;
+		} else if (dataUlongLongOperations.class.isAssignableFrom(impl.getClass())) {
+			return BulkIOType.ULONG_LONG;
+		} else if (dataUlongOperations.class.isAssignableFrom(impl.getClass())) {
+			return BulkIOType.ULONG;
+		} else if (dataUshortOperations.class.isAssignableFrom(impl.getClass())) {
+			return BulkIOType.USHORT;
+		} else {
+			throw new IllegalArgumentException("Port type not supported: " + impl.getClass());
+		}
 	}
 
 	public static BulkIOType getType(String idl) {

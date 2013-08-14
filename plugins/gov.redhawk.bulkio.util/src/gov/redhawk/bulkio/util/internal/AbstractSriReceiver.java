@@ -11,6 +11,7 @@
 package gov.redhawk.bulkio.util.internal;
 
 import gov.redhawk.bulkio.util.AbstractBulkIOPort;
+import gov.redhawk.bulkio.util.BulkIOType;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -30,6 +31,10 @@ public abstract class AbstractSriReceiver< T extends updateSRIOperations > exten
 
 	private final List<T> children = Collections.synchronizedList(Collections.checkedList(new ArrayList<T>(), getType()));
 
+	protected AbstractSriReceiver(BulkIOType type) {
+		super(type);
+	}
+	
 	@Override
 	public void pushSRI(final StreamSRI sri) {
 		super.pushSRI(sri);

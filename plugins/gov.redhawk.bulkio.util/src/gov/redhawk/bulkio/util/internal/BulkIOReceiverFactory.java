@@ -11,17 +11,7 @@
  */
 package gov.redhawk.bulkio.util.internal;
 
-import BULKIO.dataCharOperations;
-import BULKIO.dataDoubleOperations;
-import BULKIO.dataFloatOperations;
-import BULKIO.dataLongLongOperations;
-import BULKIO.dataLongOperations;
-import BULKIO.dataOctetOperations;
-import BULKIO.dataShortOperations;
-import BULKIO.dataUlongLongOperations;
-import BULKIO.dataUlongOperations;
-import BULKIO.dataUshortOperations;
-import BULKIO.updateSRIOperations;
+import gov.redhawk.bulkio.util.BulkIOType;
 
 /**
  * 
@@ -30,30 +20,35 @@ public final class BulkIOReceiverFactory {
 	private BulkIOReceiverFactory() {
 
 	}
-	
-	public static AbstractSriReceiver<?> createReceiver(Class<? extends updateSRIOperations> receiver) {
-		if (dataCharOperations.class.isAssignableFrom(receiver)) {
-			return new DataCharReceiver();
-		} else if (dataDoubleOperations.class.isAssignableFrom(receiver)) {
-			return new DataDoubleReceiver();
-		} else if (dataFloatOperations.class.isAssignableFrom(receiver)) {
-			return new DataFloatReceiver();
-		} else if (dataLongLongOperations.class.isAssignableFrom(receiver)) {
-			return new DataLongLongReceiver();
-		} else if (dataLongOperations.class.isAssignableFrom(receiver)) {
-			return new DataLongReceiver();
-		} else if (dataOctetOperations.class.isAssignableFrom(receiver)) {
-			return new DataOctetReceiver();
-		} else if (dataShortOperations.class.isAssignableFrom(receiver)) {
-			return new DataShortReceiver();
-		} else if (dataUlongLongOperations.class.isAssignableFrom(receiver)) {
-			return new DataULongLongReceiver();
-		} else if (dataUlongOperations.class.isAssignableFrom(receiver)) {
-			return new DataULongReceiver();
-		} else if (dataUshortOperations.class.isAssignableFrom(receiver)) {
-			return new DataUShortReceiver();
+
+	public static AbstractSriReceiver< ? > createReceiver(BulkIOType type) {
+		if (type != null) {
+			switch (type) {
+			case CHAR:
+				return new DataCharReceiver();
+			case DOUBLE:
+				return new DataDoubleReceiver();
+			case FLOAT:
+				return new DataFloatReceiver();
+			case LONG:
+				return new DataLongReceiver();
+			case LONG_LONG:
+				return new DataLongLongReceiver();
+			case OCTET:
+				return new DataOctetReceiver();
+			case SHORT:
+				return new DataShortReceiver();
+			case ULONG:
+				return new DataULongReceiver();
+			case ULONG_LONG:
+				return new DataULongLongReceiver();
+			case USHORT:
+				return new DataUShortReceiver();
+			default:
+				throw new IllegalArgumentException("Port type not supported: " + type);
+			}
 		} else {
-			throw new IllegalArgumentException("Port type not supported: " + receiver.getClass());
+			throw new IllegalArgumentException("Null BulkIO Type.");
 		}
 	}
 

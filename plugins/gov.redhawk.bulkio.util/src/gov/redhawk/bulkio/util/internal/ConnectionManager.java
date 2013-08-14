@@ -11,6 +11,7 @@
 package gov.redhawk.bulkio.util.internal;
 
 import gov.redhawk.bulkio.util.AbstractBulkIOPort;
+import gov.redhawk.bulkio.util.BulkIOType;
 import gov.redhawk.bulkio.util.BulkIOUtilActivator;
 import gov.redhawk.bulkio.util.IBulkIOPortConnectionManager;
 import gov.redhawk.sca.util.OrbSession;
@@ -46,7 +47,7 @@ public enum ConnectionManager implements IBulkIOPortConnectionManager {
 		private Object ref;
 		private String connectionId;
 
-		public Connection(Port port, Class < ? extends updateSRIOperations> type) throws CoreException {
+		public Connection(Port port, BulkIOType type) throws CoreException {
 			this.port = port;
 			receiver = BulkIOReceiverFactory.createReceiver(type);
 
@@ -69,7 +70,7 @@ public enum ConnectionManager implements IBulkIOPortConnectionManager {
 		}
 
 		private static String createConnectionID() {
-			return  System.getProperty("user.name", "user") + "_" + System.currentTimeMillis();
+			return System.getProperty("user.name", "user") + "_" + System.currentTimeMillis();
 		}
 
 		public void dispose() {
@@ -96,14 +97,18 @@ public enum ConnectionManager implements IBulkIOPortConnectionManager {
 
 	private Map<String, Connection> connections = new HashMap<String, Connection>();
 
-	public synchronized void connect(String ior, updateSRIOperations internalPort) throws CoreException {
+	public void connect(String ior, updateSRIOperations internalPort) throws CoreException {
+		connect(ior, BulkIOType.getType(internalPort), internalPort);
+	}
+
+	public synchronized void connect(String ior, BulkIOType type, updateSRIOperations internalPort) throws CoreException {
 		if (ior == null || internalPort == null) {
 			return;
 		}
 		Connection connection = connections.get(ior);
 		if (connection == null) {
 			Port port = PortHelper.narrow(session.getOrb().string_to_object(ior));
-			connection = new Connection(port, internalPort.getClass());
+			connection = new Connection(port, type);
 			connections.put(ior, connection);
 		}
 		connection.receiver.registerDataReceiver(internalPort);
@@ -122,7 +127,7 @@ public enum ConnectionManager implements IBulkIOPortConnectionManager {
 			}
 		}
 	}
-	
+
 	public synchronized AbstractBulkIOPort getExternalPort(String ior) {
 		Connection connection = connections.get(ior);
 		if (connection != null) {
@@ -130,7 +135,7 @@ public enum ConnectionManager implements IBulkIOPortConnectionManager {
 		}
 		return null;
 	}
-	
+
 	public synchronized void dispose() {
 		for (Connection connection : connections.values()) {
 			connection.dispose();
