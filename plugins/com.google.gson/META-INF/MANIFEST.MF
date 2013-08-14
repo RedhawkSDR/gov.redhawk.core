@@ -10,5 +10,4 @@ Export-Package: com.google.gson,
  com.google.gson.reflect,
  com.google.gson.stream
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
-Require-Bundle: org.eclipse.rap.ui
 Bundle-ActivationPolicy: lazy
