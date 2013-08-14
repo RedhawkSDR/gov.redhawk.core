@@ -257,6 +257,26 @@ public class PlotSettingsDialog extends Dialog {
 			}
 		});
 
+		// === blocking option ===
+		final Label blockingLabel = new Label(container, SWT.NONE);
+		blockingLabel.setLayoutData(new GridData(GridData.BEGINNING, GridData.CENTER, false, false));
+		blockingLabel.setText("Blocking:");
+		this.blockingOptionField = new ComboViewer(container, SWT.READ_ONLY);
+		this.blockingOptionField.getCombo().setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false, 1, 1));
+		this.blockingOptionField.setContentProvider(new ArrayContentProvider());
+		this.blockingOptionField.setLabelProvider(new LabelProvider());
+		this.blockingOptionField.setInput(new Boolean[] { Boolean.TRUE, Boolean.FALSE });
+		Boolean curBlockingOption = this.plotSettings.getBlockingOption();
+		if (curBlockingOption != null) {
+			this.blockingOptionField.setSelection(new StructuredSelection(curBlockingOption));
+		}
+		this.blockingOptionField.addSelectionChangedListener(new ISelectionChangedListener() {
+			public void selectionChanged(final SelectionChangedEvent event) {
+				Object newVal = ((IStructuredSelection) event.getSelection()).getFirstElement();
+				if (newVal instanceof Boolean) {
+					PlotSettingsDialog.this.plotSettings.setBlockingOption((Boolean) newVal);
+				}
+
 		Dialog.applyDialogFont(container);
 
 		return container;

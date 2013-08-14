@@ -438,6 +438,9 @@ public abstract class AbstractNxmPlotWidget extends Composite {
 			} else {
 				plotType = plotSettings.getPlotType();
 			}
+			final Boolean blockingOption = settings.getBlockingOption();
+			this.plotSettings.setBlockingOption(blockingOption);
+
 
 			// apply frame size and sample rate settings change to CORBARECEIVERs
 			Table msgData = new Table();
@@ -451,6 +454,9 @@ public abstract class AbstractNxmPlotWidget extends Composite {
 			msgData.put("OVERRIDESRISAMPLERATE", overrideSampleRate);
 			if (overrideSampleRate) {
 				msgData.put("SAMPLERATE", sampleRate);
+			}
+			if (blockingOption != null) {
+				msgData.put("BLOCKING", blockingOption);
 			}
 			for (IPlotSession session : inputSessions.values()) {
 				if (session instanceof PlotSession) {

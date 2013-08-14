@@ -11,13 +11,15 @@
 package gov.redhawk.ui.port.nxmplot;
 
 
-/**
+/** <b>INTERNAL USE ONLY</b>
  * @since 4.2
  */
 public class PlotSettings {
 
 	private Integer frameSize = null; // null to use default (e.g. from SRI)
 	private Double sampleRate = null; // null to use default (e.g. from SRI)
+	private Boolean blockingOption = null; // null to use default
+
 	private Double minValue = null; // null to use default (i.e. AutoMin)
 	private Double maxValue = null; // null to use default (i.e. AutoMax)
 	private PlotType plotType = null; // null to not change plot type
@@ -28,6 +30,7 @@ public class PlotSettings {
 	public PlotSettings(PlotSettings settings) {
 		this.frameSize = settings.frameSize;
 		this.sampleRate = settings.sampleRate;
+		this.blockingOption = settings.blockingOption;
 		this.minValue = settings.minValue;
 		this.maxValue = settings.maxValue;
 		this.plotType = settings.plotType;
@@ -87,6 +90,20 @@ public class PlotSettings {
 		this.plotType = plotType;
 	}
 
+	/**
+	 * @return the blockingOption
+	 */
+	public Boolean getBlockingOption() {
+		return blockingOption;
+	}
+
+	/**
+	 * @param blockingOption the blockingOption to set
+	 */
+	public void setBlockingOption(Boolean blockingOption) {
+		this.blockingOption = blockingOption;
+	}
+
 	/* (non-Javadoc)
 	 * @see java.lang.Object#hashCode()
 	 */
@@ -99,6 +116,7 @@ public class PlotSettings {
 		result = prime * result + ((minValue == null) ? 0 : minValue.hashCode());
 		result = prime * result + ((plotType == null) ? 0 : plotType.hashCode());
 		result = prime * result + ((sampleRate == null) ? 0 : sampleRate.hashCode());
+		result = prime * result + ((blockingOption == null) ? 0 : blockingOption.hashCode());
 		return result;
 	}
 
@@ -148,10 +166,15 @@ public class PlotSettings {
 		} else if (!sampleRate.equals(other.sampleRate)) {
 			return false;
 		}
+		if (blockingOption == null) {
+			if (other.blockingOption != null) {
+				return false;
+			}
+		} else if (!blockingOption.equals(other.blockingOption)) {
+			return false;
+		}
+
 		return true;
 	}
 	
-
-	
-
 }
