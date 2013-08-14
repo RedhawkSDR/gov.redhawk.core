@@ -5,8 +5,8 @@ Bundle-SymbolicName: gov.redhawk.rap.js.executor;singleton:=true
 Bundle-Version: 1.0.0.qualifier
 Bundle-Activator: gov.redhawk.rap.js.executor.Activator
 Require-Bundle: org.eclipse.core.runtime,
- org.eclipse.rap.ui;bundle-version="1.5.2",
- com.google.gson;bundle-version="2.2.2";visibility:=reexport
+ org.eclipse.rap.ui,
+ com.google.gson;visibility:=reexport
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Import-Package: javax.servlet;version="2.6.0",
