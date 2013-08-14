@@ -18,7 +18,7 @@ public class PlotSettings {
 
 	private Integer frameSize = null; // null to use default (e.g. from SRI)
 	private Double sampleRate = null; // null to use default (e.g. from SRI)
-	private Boolean blockingOption = null; // null to use default
+	private Boolean blockingOption = false; // null to use default
 
 	private Double minValue = null; // null to use default (i.e. AutoMin)
 	private Double maxValue = null; // null to use default (i.e. AutoMax)

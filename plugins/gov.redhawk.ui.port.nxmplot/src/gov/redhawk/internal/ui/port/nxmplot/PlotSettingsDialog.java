@@ -51,6 +51,7 @@ public class PlotSettingsDialog extends Dialog {
 	private ComboViewer minField;
 	private ComboViewer maxField;
 	private ComboViewer sampleRateField;
+	private ComboViewer blockingOptionField;
 	private ComboViewer plotTypeField;
 	/** Error message label widget. */
 	private Text errorMessageText;
@@ -276,6 +277,8 @@ public class PlotSettingsDialog extends Dialog {
 				if (newVal instanceof Boolean) {
 					PlotSettingsDialog.this.plotSettings.setBlockingOption((Boolean) newVal);
 				}
+			}
+		});
 
 		Dialog.applyDialogFont(container);
 
