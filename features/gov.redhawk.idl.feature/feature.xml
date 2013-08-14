@@ -7,7 +7,7 @@
       label="%featureName"
       version="1.9.0.qualifier"
       provider-name="%featureProvider"
-      plugin="gov.redhawk.sca">
+      plugin="gov.redhawk.eclipsecorba.idl">
 
    <description>
       %description

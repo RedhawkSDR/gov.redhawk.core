@@ -3,8 +3,7 @@
       id="gov.redhawk.rap.sdk"
       label="%featureName"
       version="1.9.0.qualifier"
-      provider-name="%featureProvider"
-      plugin="mil.jpeojtrs.sca.util">
+      provider-name="%featureProvider">
 
    <description url="http://redhawksdr.org">
       %description
