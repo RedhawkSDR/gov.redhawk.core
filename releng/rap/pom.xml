@@ -49,6 +49,8 @@
     <module>../../plugins/gov.redhawk.sca.ui.singledomain.rap</module>
     <module>../../plugins/gov.redhawk.sca.waveform.controlpanel.rap</module>
     <module>../../plugins/gov.redhawk.ui.port.nxmplot.rap</module>
+    <module>../../plugins/com.google.gson</module>
+    <module>../../plugins/gov.redhawk.rap.js.executor</module>
     <module>p2</module>
   </modules>
 
