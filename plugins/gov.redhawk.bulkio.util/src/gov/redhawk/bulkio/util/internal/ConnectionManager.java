@@ -98,7 +98,14 @@ public enum ConnectionManager implements IBulkIOPortConnectionManager {
 	private Map<String, Connection> connections = new HashMap<String, Connection>();
 
 	public void connect(String ior, updateSRIOperations internalPort) throws CoreException {
-		connect(ior, BulkIOType.getType(internalPort), internalPort);
+		BulkIOType type;
+		try {
+			type = BulkIOType.getType(internalPort);
+		} catch (IllegalArgumentException e) {
+			throw new IllegalArgumentException("Unable to determin BulkIO Type,  consider using connect(ior,type,port) instead.", e);
+		}
+
+		connect(ior, type, internalPort);
 	}
 
 	public synchronized void connect(String ior, BulkIOType type, updateSRIOperations internalPort) throws CoreException {

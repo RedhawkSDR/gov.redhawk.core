@@ -97,31 +97,73 @@ public enum BulkIOType {
 	public int getBytePerAtom() {
 		return bytePerAtom;
 	}
-	
+
 	public static BulkIOType getType(updateSRIOperations impl) {
+		BulkIOType retVal = null;
 		if (dataCharOperations.class.isAssignableFrom(impl.getClass())) {
-			return BulkIOType.CHAR;
-		} else if (dataDoubleOperations.class.isAssignableFrom(impl.getClass())) {
-			return BulkIOType.DOUBLE;
-		} else if (dataFloatOperations.class.isAssignableFrom(impl.getClass())) {
-			return BulkIOType.FLOAT;
-		} else if (dataLongLongOperations.class.isAssignableFrom(impl.getClass())) {
-			return BulkIOType.LONG_LONG;
-		} else if (dataLongOperations.class.isAssignableFrom(impl.getClass())) {
-			return BulkIOType.LONG;
-		} else if (dataOctetOperations.class.isAssignableFrom(impl.getClass())) {
-			return BulkIOType.OCTET;
-		} else if (dataShortOperations.class.isAssignableFrom(impl.getClass())) {
-			return BulkIOType.SHORT;
-		} else if (dataUlongLongOperations.class.isAssignableFrom(impl.getClass())) {
-			return BulkIOType.ULONG_LONG;
-		} else if (dataUlongOperations.class.isAssignableFrom(impl.getClass())) {
-			return BulkIOType.ULONG;
-		} else if (dataUshortOperations.class.isAssignableFrom(impl.getClass())) {
-			return BulkIOType.USHORT;
-		} else {
+			if (retVal != null) {
+				throw new IllegalArgumentException(impl.getClass() + " implements more than more type of BulkIO Interface.");
+			}
+			retVal = BulkIOType.CHAR;
+		}
+		if (dataDoubleOperations.class.isAssignableFrom(impl.getClass())) {
+			if (retVal != null) {
+				throw new IllegalArgumentException(impl.getClass() + " implements more than more type of BulkIO Interface.");
+			}
+			retVal = BulkIOType.DOUBLE;
+		}
+		if (dataFloatOperations.class.isAssignableFrom(impl.getClass())) {
+			if (retVal != null) {
+				throw new IllegalArgumentException(impl.getClass() + " implements more than more type of BulkIO Interface.");
+			}
+			retVal = BulkIOType.FLOAT;
+		}
+		if (dataLongLongOperations.class.isAssignableFrom(impl.getClass())) {
+			if (retVal != null) {
+				throw new IllegalArgumentException(impl.getClass() + " implements more than more type of BulkIO Interface.");
+			}
+			retVal = BulkIOType.LONG_LONG;
+		}
+		if (dataLongOperations.class.isAssignableFrom(impl.getClass())) {
+			if (retVal != null) {
+				throw new IllegalArgumentException(impl.getClass() + " implements more than more type of BulkIO Interface.");
+			}
+			retVal = BulkIOType.LONG;
+		}
+		if (dataOctetOperations.class.isAssignableFrom(impl.getClass())) {
+			if (retVal != null) {
+				throw new IllegalArgumentException(impl.getClass() + " implements more than more type of BulkIO Interface.");
+			}
+			retVal = BulkIOType.OCTET;
+		}
+		if (dataShortOperations.class.isAssignableFrom(impl.getClass())) {
+			if (retVal != null) {
+				throw new IllegalArgumentException(impl.getClass() + " implements more than more type of BulkIO Interface.");
+			}
+			retVal = BulkIOType.SHORT;
+		}
+		if (dataUlongLongOperations.class.isAssignableFrom(impl.getClass())) {
+			if (retVal != null) {
+				throw new IllegalArgumentException(impl.getClass() + " implements more than more type of BulkIO Interface.");
+			}
+			retVal = BulkIOType.ULONG_LONG;
+		}
+		if (dataUlongOperations.class.isAssignableFrom(impl.getClass())) {
+			if (retVal != null) {
+				throw new IllegalArgumentException(impl.getClass() + " implements more than more type of BulkIO Interface.");
+			}
+			retVal = BulkIOType.ULONG;
+		}
+		if (dataUshortOperations.class.isAssignableFrom(impl.getClass())) {
+			if (retVal != null) {
+				throw new IllegalArgumentException(impl.getClass() + " implements more than more type of BulkIO Interface.");
+			}
+			retVal = BulkIOType.USHORT;
+		}
+		if (retVal == null) {
 			throw new IllegalArgumentException("Port type not supported: " + impl.getClass());
 		}
+		return retVal;
 	}
 
 	public static BulkIOType getType(String idl) {
