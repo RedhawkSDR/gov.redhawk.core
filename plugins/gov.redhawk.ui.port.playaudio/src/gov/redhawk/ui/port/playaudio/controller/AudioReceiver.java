@@ -136,7 +136,7 @@ public class AudioReceiver extends AbstractBulkIOPort implements dataShortOperat
 	}
 
 	private void disconnect() {
-		BulkIOUtilActivator.getBulkIOPortConnectionManager().disconnect(ior, this);
+		BulkIOUtilActivator.getBulkIOPortConnectionManager().disconnect(ior, getBulkIOType(), this);
 	}
 
 	public ScaUsesPort getPort() {

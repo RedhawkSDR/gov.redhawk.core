@@ -11,16 +11,14 @@
  */
 package nxm.redhawk.prim;
 
-import gov.redhawk.bulkio.util.AbstractBulkIOPort;
+import gov.redhawk.bulkio.util.BulkIOType;
 import gov.redhawk.bulkio.util.BulkIOUtilActivator;
-import gov.redhawk.sca.util.PluginUtil;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
 
-import nxm.redhawk.prim.data.BaseBulkIOReceiver;
-import nxm.redhawk.prim.data.BulkIOReceiverFactory;
+import nxm.redhawk.prim.data.BulkIOReceiver;
 import nxm.sys.inc.Commandable;
 import nxm.sys.lib.BaseFile;
 import nxm.sys.lib.Convert;
@@ -30,16 +28,9 @@ import nxm.sys.lib.MidasException;
 import nxm.sys.lib.Time;
 
 import org.eclipse.core.runtime.CoreException;
-import org.omg.CosNaming.NamingContextPackage.CannotProceed;
-import org.omg.CosNaming.NamingContextPackage.InvalidName;
-import org.omg.CosNaming.NamingContextPackage.NotFound;
 
-import BULKIO.PortStatistics;
-import BULKIO.PortUsageType;
 import BULKIO.PrecisionUTCTime;
 import BULKIO.StreamSRI;
-import CF.Port;
-import CF.PortSupplierPackage.UnknownPort;
 
 /**
  * This class connects to the specified CORBA host and receives data and writes
@@ -63,33 +54,27 @@ public class corbareceiver extends CorbaPrimitive { //SUPPRESS CHECKSTYLE ClassN
 	public static final String A_FILE = "FILE";
 
 	/**
-	 * @deprecated
-	 */
-	@Deprecated
-	public static final String A_FORCE_2000 = "force2000";
-
-	/**
 	 * Name of frame size argument
-	 * @since 9.1
+	 * @since 10.0
 	 */
 	public static final String A_FRAMESIZE = "FRAMESIZE";
 
 	/**
 	 * OVERRIDE FRAME SIZE (from StreamSRI) attribute
-	 * @since 9.1
+	 * @since 10.0
 	 */
 	public static final String A_OVERRIDE_SRI_SUBSIZE = "OVERRIDE_SRI_SUBSIZE";
 
 	/**
 	 * Name of switch to set to false to NOT block pushPacket/write(..) when pipe doesn't have enough room,
 	 * which will cause that pushPacket data to get drop
-	 * @since 9.1
+	 * @since 10.0
 	 */
 	public static final String SW_BLOCKING = "/BLOCKING";
 
 	/**
 	 * Name of switch to grab number of seconds to wait for SRI during open()
-	 * @since 9.1
+	 * @since 10.0
 	 */
 	public static final String SW_WAIT = "/WAIT";
 	private static final int SLEEP_INTERVAL = 100;
@@ -100,7 +85,7 @@ public class corbareceiver extends CorbaPrimitive { //SUPPRESS CHECKSTYLE ClassN
 
 	/** The configured SRI */
 	private StreamSRI currentSri;
-	private BaseBulkIOReceiver receiver;
+	private BulkIOReceiver receiver;
 
 	private Integer origFrameSizeArg = null;
 	/** default frame size for 1000 stream or custom frame size if {@link #overrideSRISubSize} is true. */
@@ -119,6 +104,7 @@ public class corbareceiver extends CorbaPrimitive { //SUPPRESS CHECKSTYLE ClassN
 	private double sampleRate = 0.0;
 	private boolean connected;
 	private String portIor;
+	private BulkIOType type;
 
 	/**
 	 * @since 8.0
@@ -152,10 +138,10 @@ public class corbareceiver extends CorbaPrimitive { //SUPPRESS CHECKSTYLE ClassN
 		this.overrideSRISubSize = this.MA.getState(A_OVERRIDE_SRI_SUBSIZE, false);
 		this.blocking = this.MA.getState(SW_BLOCKING, false);
 
-		final String idl = corbareceiver.decodeIDL(encoded_idl);
+		this.type = BulkIOType.getType(corbareceiver.decodeIDL(encoded_idl));
 
 		if (this.receiver == null) {
-			this.receiver = BulkIOReceiverFactory.createReceiver(this, idl);
+			this.receiver = new BulkIOReceiver(this, type);
 		}
 		if (origFrameSizeArg == null) {
 			origFrameSizeArg = this.frameSizeAttribute;
@@ -218,22 +204,12 @@ public class corbareceiver extends CorbaPrimitive { //SUPPRESS CHECKSTYLE ClassN
 	 * connection sequence.
 	 * @since 8.0
 	 */
-	protected synchronized boolean initConnections() {
+	private boolean initConnections() {
 		if (!connected) {
-			Port port;
 			try {
-				port = getPort();
-				portIor = port.toString();
-				BulkIOUtilActivator.getBulkIOPortConnectionManager().connect(portIor, receiver);
+				portIor = getPortIOR();
+				BulkIOUtilActivator.getBulkIOPortConnectionManager().connect(portIor, type, receiver);
 				connected = true;
-			} catch (NotFound e) {
-				throw new MidasException("Failed to connect port", e);
-			} catch (CannotProceed e) {
-				throw new MidasException("Failed to connect port", e);
-			} catch (InvalidName e) {
-				throw new MidasException("Failed to connect port", e);
-			} catch (UnknownPort e) {
-				throw new MidasException("Failed to connect port", e);
 			} catch (CoreException e) {
 				throw new MidasException("Failed to connect port", e);
 			}
@@ -244,7 +220,7 @@ public class corbareceiver extends CorbaPrimitive { //SUPPRESS CHECKSTYLE ClassN
 	@Override
 	protected void shutdown() {
 		super.shutdown();
-		BulkIOUtilActivator.getBulkIOPortConnectionManager().disconnect(portIor, receiver);
+		BulkIOUtilActivator.getBulkIOPortConnectionManager().disconnect(portIor, type, receiver);
 		connected = false;
 	}
 
@@ -257,34 +233,20 @@ public class corbareceiver extends CorbaPrimitive { //SUPPRESS CHECKSTYLE ClassN
 	 * @return true if we should process the data
 	 */
 	private final boolean shouldProcessPacket(final boolean endOfStream, final byte type) {
-		boolean status = true;
-		if (endOfStream) {
-			status = true;
-		} else if (this.outputFile == null) {
-			status = false;
+		if (this.state != Commandable.PROCESS || isStateChanged() || this.currentSri == null || this.outputFile == null) {
+			return false;
 		}
-
-		return status;
-	}
-
-	/**
-	 * This receives the SRI and updates or modifies the output pipe.
-	 *
-	 * @param sri the SRI containing information about the incoming data
-	 * @since 8.0
-	 */
-	public void pushSRI(final StreamSRI sri) {
-		setStreamSri(sri);
+		return true;
 	}
 
 	private DataFile createDefaultOutputFile() {
-		final String format = "S" + receiver.getType();
+		final String format = "S" + receiver.getMidasType();
 		DataFile newOutputFile = new DataFile(this.MA.cmd, fileName, "2000", format, BaseFile.OUTPUT);
 		newOutputFile.setFrameSize(frameSizeAttribute); // <-- this call will not convert 1000 to 2000
 		return newOutputFile;
 	}
 
-	private DataFile createOutputFile(final StreamSRI sri, final BaseBulkIOReceiver receiver) {
+	private DataFile createOutputFile(final StreamSRI sri, final BulkIOReceiver receiver) {
 		if (sri == null) {
 			return createDefaultOutputFile();
 		}
@@ -300,7 +262,7 @@ public class corbareceiver extends CorbaPrimitive { //SUPPRESS CHECKSTYLE ClassN
 		outputFramesize = Math.max(outputFramesize, 1);
 
 		final String fileType = (outputFramesize > 0) ? "2000" : "1000"; // SUPPRESS CHECKSTYLE AvoidInline
-		final String format = ((sri.mode == 0) ? "S" : "C") + receiver.getType(); // SUPPRESS CHECKSTYLE AvoidInline
+		final String format = ((sri.mode == 0) ? "S" : "C") + receiver.getMidasType(); // SUPPRESS CHECKSTYLE AvoidInline
 		final DataFile newOutputFile = new DataFile(this.MA.cmd, fileName, fileType, format, BaseFile.OUTPUT);
 
 		if (outputFramesize > 0) {
@@ -336,10 +298,10 @@ public class corbareceiver extends CorbaPrimitive { //SUPPRESS CHECKSTYLE ClassN
 		return newOutputFile;
 	}
 
-	private synchronized void setStreamSri(final StreamSRI sri) {
-		if (corbareceiver.equals(sri, this.currentSri)) {
-			return;
-		}
+	/**
+	 * @since 10.0
+	 */
+	public synchronized void setStreamSri(final StreamSRI sri) {
 		this.currentSri = sri;
 		sendMessage("STREAMSRI", 1, this.currentSri);
 		if (state == Commandable.PROCESS) {
@@ -354,35 +316,6 @@ public class corbareceiver extends CorbaPrimitive { //SUPPRESS CHECKSTYLE ClassN
 		setState(Commandable.RESTART);
 	}
 
-	private static boolean equals(final StreamSRI sri, final StreamSRI lastSRI) {
-		if (sri == lastSRI) {
-			return true;
-		} else if (lastSRI == null) {
-			return false;
-		} else if (sri != null) {
-			if (lastSRI.hversion == sri.hversion && (lastSRI.mode == sri.mode) && PluginUtil.equals(lastSRI.streamID, sri.streamID)
-				&& (lastSRI.subsize == sri.subsize) && PluginUtil.equals(lastSRI.xdelta, sri.xdelta) && PluginUtil.equals(lastSRI.xstart, sri.xstart)
-				&& (lastSRI.xunits == sri.xunits) && PluginUtil.equals(lastSRI.ydelta, sri.ydelta) && PluginUtil.equals(lastSRI.ystart, sri.ystart)
-				&& (lastSRI.yunits == sri.yunits)) {
-				return true;
-			}
-		}
-		return false;
-	}
-
-	/**
-	 * No Precision time
-	 * @param dataArray
-	 * @param size
-	 * @param type
-	 * @param endOfStream
-	 * @deprecated
-	 */
-	@Deprecated
-	public void write(final Object dataArray, final int size, final byte type, final boolean endOfStream) {
-		write(dataArray, size, type, endOfStream, null);
-	}
-
 	/**
 	 * This plots an arbitrary typed array of data. Type checking is performed
 	 * by System.arraycopy(). The type of 'list' must match 'type'.
@@ -393,7 +326,7 @@ public class corbareceiver extends CorbaPrimitive { //SUPPRESS CHECKSTYLE ClassN
 	 * @since 8.0
 	 */
 	public void write(final Object dataArray, final int size, final byte type, final boolean endOfStream, PrecisionUTCTime time) {
-		if (!(this.state == Commandable.PROCESS) || isStateChanged() || this.currentSri == null || !shouldProcessPacket(endOfStream, type)) {
+		if (!shouldProcessPacket(endOfStream, type)) {
 			return;
 		}
 
@@ -405,7 +338,7 @@ public class corbareceiver extends CorbaPrimitive { //SUPPRESS CHECKSTYLE ClassN
 		final int bufferSize = localOutputFile.bpa * size; // in bytes
 		if (!blocking) { // non-blocking option enabled
 			if (localOutputFile.getResource().avail() < bufferSize) {
-//				Time.sleep(0.01); // provide slight back-pressure so we don't spin CPU for Component that does NOT throttle data
+				//				Time.sleep(0.01); // provide slight back-pressure so we don't spin CPU for Component that does NOT throttle data
 				return; // drop packet since write would block
 			}
 		}
@@ -425,38 +358,8 @@ public class corbareceiver extends CorbaPrimitive { //SUPPRESS CHECKSTYLE ClassN
 	}
 
 	/**
-	 * @since 8.0
-	 */
-	public PortUsageType state() {
-		return PortUsageType.ACTIVE;
-	}
-
-	/**
-	 * @since 8.0
-	 */
-	public PortStatistics statistics() {
-		AbstractBulkIOPort externalPort = BulkIOUtilActivator.getBulkIOPortConnectionManager().getExternalPort(portIor);
-		if (externalPort != null) {
-			return externalPort.statistics();
-		} else {
-			return null;
-		}
-	}
-
-	/**
-	 * @since 8.0
-	 */
-	public StreamSRI[] activeSRIs() {
-		if (this.currentSri == null) {
-			return new StreamSRI[0];
-		} else {
-			return new StreamSRI[] { this.currentSri };
-		}
-	}
-
-	/**
 	 * @return the overrideSRISubSize
-	 * @since 9.1
+	 * @since 10.0
 	 */
 	public boolean isOverrideSRISubSize() {
 		return overrideSRISubSize;
@@ -465,7 +368,7 @@ public class corbareceiver extends CorbaPrimitive { //SUPPRESS CHECKSTYLE ClassN
 	/**
 	 * @param overrideSRISubSize true to override the SRI SubSize (frame size) with {@link #getFrameSize()}.
 	 * @see #setFrameSize(int)
-	 * @since 9.1
+	 * @since 10.0
 	 */
 	public void setOverrideSRISubSize(boolean overrideSRISubSize) {
 		if (this.overrideSRISubSize != overrideSRISubSize) {
@@ -479,7 +382,7 @@ public class corbareceiver extends CorbaPrimitive { //SUPPRESS CHECKSTYLE ClassN
 
 	/**
 	 * @return the frame size to use
-	 * @since 9.1
+	 * @since 10.0
 	 */
 	public int getFrameSize() {
 		return frameSizeAttribute;
@@ -489,7 +392,7 @@ public class corbareceiver extends CorbaPrimitive { //SUPPRESS CHECKSTYLE ClassN
 	 * @param set the custom frame size (SubSize) to use when {@link #overrideSRISubSize} is true.;
 	 *        use -1 to reset to original frame size argument
 	 * @see #setOverrideSRISubSize(boolean)
-	 * @since 9.1
+	 * @since 10.0
 	 */
 	public void setFrameSize(int frameSizeAttribute) {
 		if (frameSizeAttribute == -1) {
@@ -519,7 +422,7 @@ public class corbareceiver extends CorbaPrimitive { //SUPPRESS CHECKSTYLE ClassN
 
 	/**
 	 * @return the overrideSRISampleRate
-	 * @since 9.1
+	 * @since 10.0
 	 */
 	public boolean isOverrideSRISampleRate() {
 		return overrideSRISampleRate;
@@ -527,7 +430,7 @@ public class corbareceiver extends CorbaPrimitive { //SUPPRESS CHECKSTYLE ClassN
 
 	/**
 	 * @param overrideSRISampleRate the overrideSRISampleRate to set
-	 * @since 9.1
+	 * @since 10.0
 	 */
 	public void setOverrideSRISampleRate(boolean overrideSRISampleRate) {
 		if (this.overrideSRISampleRate != overrideSRISampleRate) {
@@ -540,7 +443,7 @@ public class corbareceiver extends CorbaPrimitive { //SUPPRESS CHECKSTYLE ClassN
 
 	/**
 	 * @return the current custom sample rate to override in SRI.
-	 * @since 9.1
+	 * @since 10.0
 	 */
 	public double getSampleRate() {
 		return sampleRate;
@@ -549,7 +452,7 @@ public class corbareceiver extends CorbaPrimitive { //SUPPRESS CHECKSTYLE ClassN
 	/**
 	 * @param newSRate the custom sample rate to override in SRI
 	 *                 (1/xdelta for 1000 stream; 1/ydelta for 2000 stream).
-	 * @since 9.1
+	 * @since 10.0
 	 */
 	public void setSampleRate(double newSRate) {
 		if (this.sampleRate != newSRate) {
@@ -562,7 +465,7 @@ public class corbareceiver extends CorbaPrimitive { //SUPPRESS CHECKSTYLE ClassN
 
 	/**
 	 * @return the blocking option
-	 * @since 9.1
+	 * @since 10.0
 	 */
 	public boolean isBlocking() {
 		return blocking;
@@ -570,7 +473,7 @@ public class corbareceiver extends CorbaPrimitive { //SUPPRESS CHECKSTYLE ClassN
 
 	/**
 	 * @param blocking the blocking option to set
-	 * @since 9.1
+	 * @since 10.0
 	 */
 	public void setBlocking(boolean blocking) {
 		this.blocking = blocking;

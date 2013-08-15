@@ -16,16 +16,10 @@ import BULKIO.updateSRIOperations;
 
 public interface IBulkIOPortConnectionManager {
 
-	/**
-	 * Infer the BulkIO type based on the implemented interface of internalPort
-	 * <b>WARNING</b> If internalPort implements more than one type of 
-	 * BulkIO operation you MUST use {@link #connect(String, BulkIOType, updateSRIOperations)}
-	 */
-	void connect(String ior, updateSRIOperations internalPort) throws CoreException;
 
 	void connect(String ior, BulkIOType type, updateSRIOperations internalPort) throws CoreException;
 
-	void disconnect(String ior, updateSRIOperations internalPort);
+	void disconnect(String ior, BulkIOType type, updateSRIOperations internalPort);
 
-	AbstractBulkIOPort getExternalPort(String ior);
+	AbstractBulkIOPort getExternalPort(String ior, BulkIOType type);
 }
