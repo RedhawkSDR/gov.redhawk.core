@@ -63,14 +63,14 @@ public class KindTypeConstraint extends AbstractModelConstraint {
 		if (list.contains(PropertyConfigurationType.MESSAGE)) {
 			if (list.size() > 1) {
 				return new EnhancedConstraintStatus(
-					(ConstraintStatus) ctx.createFailureStatus("Property type 'MESSAGE' is a unique types, can be no other type."), feature);
+					(ConstraintStatus) ctx.createFailureStatus("Property kind 'MESSAGE' cannot be combined with any other kind."), feature);
 			}
 		}
 
 		if (list.contains(PropertyConfigurationType.EVENT)) {
 			if (!list.contains(PropertyConfigurationType.CONFIGURE) && !list.contains(PropertyConfigurationType.EXECPARAM)) {
 				return new EnhancedConstraintStatus(
-					(ConstraintStatus) ctx.createFailureStatus("Property type 'EVENT' can be added to a 'CONFIGURE' or an 'EXEC_PARAM' but not be by itself."),
+					(ConstraintStatus) ctx.createFailureStatus("Property kind 'EVENT' can be added to a 'CONFIGURE' or an 'EXEC_PARAM' but not be by itself."),
 					feature);
 			}
 		}
