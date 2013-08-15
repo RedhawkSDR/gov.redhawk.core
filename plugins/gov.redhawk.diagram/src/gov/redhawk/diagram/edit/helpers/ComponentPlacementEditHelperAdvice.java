@@ -13,6 +13,7 @@
 // BEGIN GENERATED CODE
 package gov.redhawk.diagram.edit.helpers;
 
+import gov.redhawk.sca.util.PluginUtil;
 import mil.jpeojtrs.sca.partitioning.ComponentFile;
 import mil.jpeojtrs.sca.partitioning.ComponentFileRef;
 import mil.jpeojtrs.sca.partitioning.ComponentFiles;
@@ -182,7 +183,7 @@ public abstract class ComponentPlacementEditHelperAdvice< CI extends ComponentIn
 					continue;
 				}
 				final SoftPkg fSpd = f.getSoftPkg();
-				if (fSpd.eResource() != null && spd.eResource() != null && (spd.eResource().getURI().equals(fSpd.eResource().getURI()))) {
+				if (fSpd != null && PluginUtil.equals(spd.getId(), fSpd.getId())) {
 					file = f;
 					break;
 				}
