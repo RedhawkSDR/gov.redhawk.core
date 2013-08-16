@@ -22,6 +22,7 @@ import nxm.redhawk.prim.data.BulkIOReceiver;
 import nxm.sys.inc.Commandable;
 import nxm.sys.lib.BaseFile;
 import nxm.sys.lib.Convert;
+import nxm.sys.lib.Data;
 import nxm.sys.lib.DataFile;
 import nxm.sys.lib.FileName;
 import nxm.sys.lib.MidasException;
@@ -335,10 +336,10 @@ public class corbareceiver extends CorbaPrimitive { //SUPPRESS CHECKSTYLE ClassN
 			return;
 		}
 
-		final int bufferSize = localOutputFile.bpa * size; // in bytes
+		final int bufferSize = Data.getBPS(type) * size; // in bytes
 		if (!blocking) { // non-blocking option enabled
 			if (localOutputFile.getResource().avail() < bufferSize) {
-				//				Time.sleep(0.01); // provide slight back-pressure so we don't spin CPU for Component that does NOT throttle data
+				// Time.sleep(0.01); // <-- provide slight back-pressure so we don't spin CPU for Component that does NOT throttle data
 				return; // drop packet since write would block
 			}
 		}
