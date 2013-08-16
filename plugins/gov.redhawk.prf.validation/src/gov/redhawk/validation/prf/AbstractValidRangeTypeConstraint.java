@@ -11,8 +11,6 @@
  */
 package gov.redhawk.validation.prf;
 
-import java.util.regex.Matcher;
-
 import mil.jpeojtrs.sca.prf.PropertyValueType;
 import mil.jpeojtrs.sca.prf.Range;
 import mil.jpeojtrs.sca.prf.Simple;
@@ -51,8 +49,8 @@ public abstract class AbstractValidRangeTypeConstraint extends AbstractModelCons
 				Simple prop = (Simple) parent;
 				PropertyValueType type = prop.getType();
 				boolean complex = prop.isComplex();
-				Matcher matcher = ValidValueTypeConstraint.COMPLEX_PATTERN.matcher(value);
-				if (complex && !matcher.matches()) {
+				boolean isComplexFormat = ValidValueTypeConstraint.isComplexNumber(value);
+				if (complex && !isComplexFormat) {
 					return new EnhancedConstraintStatus((ConstraintStatus) ctx.createFailureStatus((complex) ? "complex " + type : type), feature);
 				} else if (!type.isValueOfType(value, complex)) {
 					return new EnhancedConstraintStatus((ConstraintStatus) ctx.createFailureStatus((complex) ? "complex " + type : type), feature);
@@ -61,8 +59,8 @@ public abstract class AbstractValidRangeTypeConstraint extends AbstractModelCons
 				SimpleSequence prop = (SimpleSequence) parent;
 				PropertyValueType type = prop.getType();
 				boolean complex = prop.isComplex();
-				Matcher matcher = ValidValueTypeConstraint.COMPLEX_PATTERN.matcher(value);
-				if (complex && !matcher.matches()) {
+				boolean isComplexFormat = ValidValueTypeConstraint.isComplexNumber(value);
+				if (complex && !isComplexFormat) {
 					return new EnhancedConstraintStatus((ConstraintStatus) ctx.createFailureStatus((complex) ? "complex " + type : type), feature);
 				} else if (!type.isValueOfType(value, complex)) {
 					return new EnhancedConstraintStatus((ConstraintStatus) ctx.createFailureStatus((complex) ? "complex " + type : type), feature);

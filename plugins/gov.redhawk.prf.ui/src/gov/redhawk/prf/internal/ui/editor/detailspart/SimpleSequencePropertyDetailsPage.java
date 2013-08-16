@@ -18,7 +18,6 @@ import gov.redhawk.prf.internal.ui.editor.composite.SimpleSequencePropertyCompos
 import gov.redhawk.validation.prf.ValidValueTypeConstraint;
 
 import java.util.List;
-import java.util.regex.Matcher;
 
 import mil.jpeojtrs.sca.prf.PrfFactory;
 import mil.jpeojtrs.sca.prf.PrfPackage;
@@ -71,8 +70,8 @@ public class SimpleSequencePropertyDetailsPage extends BasicSimplePropertyDetail
 		 */
 		public String isValid(final String newText) {
 			String retVal = null;
-			Matcher matcher = ValidValueTypeConstraint.COMPLEX_PATTERN.matcher(newText);
-			if (complex && !matcher.matches()) {
+			boolean isComplexFormat = ValidValueTypeConstraint.isComplexNumber(newText);
+			if (complex && !isComplexFormat) {
 				final StringBuilder builder = new StringBuilder();
 				builder.append("The value: \"");
 				builder.append(newText);

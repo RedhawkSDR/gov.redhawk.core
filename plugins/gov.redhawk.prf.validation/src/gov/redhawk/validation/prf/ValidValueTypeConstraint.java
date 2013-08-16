@@ -39,7 +39,8 @@ public class ValidValueTypeConstraint extends AbstractModelConstraint {
 	/**
 	 * TODO: This is to force PRF complex value of format a+jb
 	 */
-	public static final Pattern COMPLEX_PATTERN = Pattern.compile("[-]?\\d+(\\.\\d+)?([eE][+-]?\\d+)?\\s*[-+]\\s*j(\\d+(\\.\\d+)?([eE][+-]?\\d+)?)?");
+	private static final Pattern COMPLEX_PATTERN_1 = Pattern.compile("[-]?\\d+(\\.\\d+)?([eE][+-]?\\d+)?\\s*[-+]?\\s*j(\\d+(\\.\\d+)?([eE][+-]?\\d+)?)?");
+	private static final Pattern COMPLEX_PATTERN_2 = Pattern.compile("[-+]?\\s*j(\\d+(\\.\\d+)?([eE][+-]?\\d+)?)?");
 
 	private static class ValidationSwitch extends PrfSwitch<IStatus> {
 		private final IValidationContext ctx;
@@ -54,8 +55,8 @@ public class ValidValueTypeConstraint extends AbstractModelConstraint {
 			if (value != null) {
 				final PropertyValueType type = object.getType();
 				if (type != null) {
-					Matcher matcher = COMPLEX_PATTERN.matcher(value);
-					if (object.isComplex() && !matcher.matches()) { // TODO: This is to force PRF complex value of format a+jb
+					boolean isComplexFormat = isComplexNumber(value);
+					if (object.isComplex() && !isComplexFormat) { // TODO: This is to force PRF complex value of format a+jb
 						return new EnhancedConstraintStatus((ConstraintStatus) this.ctx.createFailureStatus(value, "complex " + type),
 							PrfPackage.Literals.SIMPLE__VALUE);
 					} else if (!(type.isValueOfType(value, object.isComplex()))) {
@@ -89,8 +90,8 @@ public class ValidValueTypeConstraint extends AbstractModelConstraint {
 					if (value != null && mySimple != null) {
 						final PropertyValueType type = mySimple.getType();
 						if (type != null) {
-							Matcher matcher = COMPLEX_PATTERN.matcher(value);
-							if (mySimple.isComplex() && !matcher.matches()) { // TODO: This is to force PRF complex value of format a+jb
+							boolean isComplexFormat = isComplexNumber(value);
+							if (mySimple.isComplex() && !isComplexFormat) { // TODO: This is to force PRF complex value of format a+jb
 								return new EnhancedConstraintStatus((ConstraintStatus) this.ctx.createFailureStatus(value, "complex " + type),
 									PrfPackage.Literals.SIMPLE__VALUE);
 							} else if (!(type.isValueOfType(value, mySimple.isComplex()))) {
@@ -117,8 +118,8 @@ public class ValidValueTypeConstraint extends AbstractModelConstraint {
 				final SimpleSequence sequence = (SimpleSequence) contObj;
 				for (final String value : object.getValue()) {
 					final PropertyValueType type = sequence.getType();
-					Matcher matcher = COMPLEX_PATTERN.matcher(value);
-					if (sequence.isComplex() && !matcher.matches()) { // TODO: This is to force PRF complex value of format a+jb
+					boolean isComplexFormat = isComplexNumber(value);
+					if (sequence.isComplex() && !isComplexFormat) { // TODO: This is to force PRF complex value of format a+jb
 						return new EnhancedConstraintStatus((ConstraintStatus) this.ctx.createFailureStatus(value, "complex " + type),
 							PrfPackage.Literals.SIMPLE__VALUE);
 					} else if (!type.isValueOfType(value, sequence.isComplex())) {
@@ -149,6 +150,24 @@ public class ValidValueTypeConstraint extends AbstractModelConstraint {
 		final EObject target = ctx.getTarget();
 		final ValidationSwitch validateSwitch = new ValidationSwitch(ctx);
 		return validateSwitch.doSwitch(target);
+	}
+	
+	public static boolean isComplexNumber(String value) {
+		Matcher matcher = COMPLEX_PATTERN_1.matcher(value);
+		if (matcher.matches()) {
+			return true;
+		} 
+		try {
+			Double.parseDouble(value);
+			return true;
+		} catch (NumberFormatException e) {
+			// PASS
+		}
+		matcher = COMPLEX_PATTERN_2.matcher(value);
+		if (matcher.matches()) {
+			return true;
+		}
+		return false;
 	}
 
 }

@@ -21,6 +21,7 @@ import gov.redhawk.eclipsecorba.library.IdlLibrary;
 import gov.redhawk.eclipsecorba.library.LibraryPackage;
 import gov.redhawk.eclipsecorba.library.LibraryPlugin;
 import gov.redhawk.eclipsecorba.library.Path;
+import gov.redhawk.model.sca.commands.ScaModelCommand;
 
 import java.net.URISyntaxException;
 import java.util.Arrays;
@@ -343,12 +344,18 @@ public class IdlLibraryImpl extends RepositoryModuleImpl implements IdlLibrary {
 		resourceSet.getLoadOptions().remove(IdlResourceImpl.ROOT_SCOPE);
 		final Resource[] resources = resourceSet.getResources().toArray(new Resource[resourceSet.getResources().size()]);
 
-		for (final Resource r : resources) {
-			if (r instanceof IdlResourceImpl) {
-				r.unload();
-				resourceSet.getResources().remove(r);
+		ScaModelCommand.execute(this, new ScaModelCommand() {
+			
+			@Override
+			public void execute() {
+				for (final Resource r : resources) {
+					if (r instanceof IdlResourceImpl) {
+						r.unload();
+						resourceSet.getResources().remove(r);
+					}
+				}	
 			}
-		}
+		});
 
 		final MultiStatus libraryStatus = new MultiStatus(LibraryPlugin.PLUGIN_ID, IStatus.OK, "Problems occured while loading IDL library.", null);
 
