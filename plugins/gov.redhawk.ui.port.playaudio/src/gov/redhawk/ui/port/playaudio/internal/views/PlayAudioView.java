@@ -142,7 +142,7 @@ public class PlayAudioView extends ViewPart {
 				try {
 					final AudioReceiver receiver = new AudioReceiver(port);
 					receiver.addPropertyChangeListener(listener);
-					connections.getRealm().asyncExec(new Runnable() {
+					connections.getRealm().exec(new Runnable() {
 
 						@Override
 						public void run() {
@@ -204,7 +204,7 @@ public class PlayAudioView extends ViewPart {
 	private void disconnect(final AudioReceiver receiver) {
 		if (!this.isDisposed) {
 			receiver.removePropertyChangeListener(listener);
-			connections.getRealm().asyncExec(new Runnable() {
+			connections.getRealm().exec(new Runnable() {
 
 				@Override
 				public void run() {

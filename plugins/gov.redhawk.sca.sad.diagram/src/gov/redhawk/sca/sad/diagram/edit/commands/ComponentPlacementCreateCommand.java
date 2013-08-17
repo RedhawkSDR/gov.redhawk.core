@@ -13,8 +13,6 @@
 
 package gov.redhawk.sca.sad.diagram.edit.commands;
 
-import java.util.concurrent.CancellationException;
-
 import mil.jpeojtrs.sca.sad.HostCollocation;
 import mil.jpeojtrs.sca.sad.SadComponentPlacement;
 import mil.jpeojtrs.sca.sad.SadFactory;
@@ -24,6 +22,7 @@ import mil.jpeojtrs.sca.sad.SoftwareAssembly;
 import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.OperationCanceledException;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.gmf.runtime.common.core.command.CommandResult;
 import org.eclipse.gmf.runtime.common.core.command.ICommand;
@@ -86,7 +85,7 @@ public class ComponentPlacementCreateCommand extends EditElementCommand {
 
 		try {
 			doConfigure(newElement, monitor, info);
-		} catch (final CancellationException e) {
+		} catch (final OperationCanceledException e) {
 			return CommandResult.newCancelledCommandResult();
 		}
 

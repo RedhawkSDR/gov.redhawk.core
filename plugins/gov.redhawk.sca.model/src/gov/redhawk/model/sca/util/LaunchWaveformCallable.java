@@ -19,11 +19,11 @@ import gov.redhawk.model.sca.commands.ScaModelCommand;
 import gov.redhawk.sca.util.Debug;
 
 import java.util.concurrent.Callable;
-import java.util.concurrent.CancellationException;
 
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.OperationCanceledException;
 import org.eclipse.core.runtime.SubMonitor;
 import org.eclipse.emf.transaction.RunnableWithResult;
 import org.omg.CORBA.SystemException;
@@ -73,7 +73,7 @@ public class LaunchWaveformCallable implements Callable<ScaWaveform> {
 			subMonitor.subTask("Installing SCA Waveform: " + profile);
 			while (factory == null) {
 				if (subMonitor.isCanceled()) {
-					throw new CancellationException();
+					throw new OperationCanceledException();
 				}
 
 				try {
@@ -100,7 +100,7 @@ public class LaunchWaveformCallable implements Callable<ScaWaveform> {
 			subMonitor.worked(1);
 
 			if (subMonitor.isCanceled()) {
-				throw new CancellationException();
+				throw new OperationCanceledException();
 			}
 
 			Assert.isNotNull(factory, "Failed to get SCA Waveform Factory");
@@ -113,7 +113,7 @@ public class LaunchWaveformCallable implements Callable<ScaWaveform> {
 			        LaunchWaveformCallable.this.deviceAssn);
 
 			if (subMonitor.isCanceled()) {
-				throw new CancellationException();
+				throw new OperationCanceledException();
 			}
 
 			if (this.autoStart) {
@@ -123,7 +123,7 @@ public class LaunchWaveformCallable implements Callable<ScaWaveform> {
 			}
 
 			if (subMonitor.isCanceled()) {
-				throw new CancellationException();
+				throw new OperationCanceledException();
 			}
 		} finally {
 			// If we installed the ApplicationFactory above, uninstall it to prevent

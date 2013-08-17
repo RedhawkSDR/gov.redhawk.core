@@ -19,12 +19,11 @@ import gov.redhawk.model.sca.commands.ScaModelCommand;
 import gov.redhawk.sca.util.Debug;
 import gov.redhawk.sca.util.SilentJob;
 
-import java.util.concurrent.CancellationException;
-
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.OperationCanceledException;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.SubMonitor;
 import org.eclipse.core.runtime.jobs.Job;
@@ -100,7 +99,7 @@ public class LaunchWaveformJob extends SilentJob {
 			subMonitor.subTask("Installing SCA Waveform: " + profile);
 			while (factory == null) {
 				if (subMonitor.isCanceled()) {
-					throw new CancellationException();
+					throw new OperationCanceledException();
 				}
 				
 				try {
@@ -127,7 +126,7 @@ public class LaunchWaveformJob extends SilentJob {
 			subMonitor.worked(1);
 
 			if (subMonitor.isCanceled()) {
-				throw new CancellationException();
+				throw new OperationCanceledException();
 			}
 
 			Assert.isNotNull(factory, "Failed to get SCA Waveform Factory");
@@ -140,7 +139,7 @@ public class LaunchWaveformJob extends SilentJob {
 			        LaunchWaveformJob.this.deviceAssn);
 
 			if (subMonitor.isCanceled()) {
-				throw new CancellationException();
+				throw new OperationCanceledException();
 			}
 
 			if (this.autoStart) {
@@ -152,7 +151,7 @@ public class LaunchWaveformJob extends SilentJob {
 			}
 
 			if (subMonitor.isCanceled()) {
-				throw new CancellationException();
+				throw new OperationCanceledException();
 			}
 		} catch (final InvalidProfile e) {
 			return StatusFactory.createStatus(e, ScaModelPlugin.ID, this.waveformName);

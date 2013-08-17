@@ -18,6 +18,7 @@ import java.util.List;
 import org.eclipse.core.databinding.Binding;
 import org.eclipse.core.databinding.DataBindingContext;
 import org.eclipse.core.databinding.observable.IObservable;
+import org.eclipse.core.databinding.observable.list.IObservableList;
 import org.eclipse.emf.common.util.Diagnostic;
 import org.eclipse.emf.databinding.EObjectObservableValue;
 import org.eclipse.emf.databinding.IEMFObservable;
@@ -30,49 +31,58 @@ import org.eclipse.ui.forms.IMessageManager;
 public class ValidatingService34 implements ValidatingService {
 
 	public void analyzeDiagnostic(final DataBindingContext dataBindingContext, final Diagnostic diagnostic, final IMessageManager messageManager) {
-		boolean atLeastOneErroneousBinding = false;
-		for (final Object o : dataBindingContext.getBindings()) {
-			final Binding binding = (Binding) o;
-			Object observed = null;
-			Object valueType = null;
-			ISWTObservable swtObservable = null;
-			final IObservable model = binding.getModel();
-			final IObservable target = binding.getTarget();
+		IObservableList bindingList = dataBindingContext.getBindings();
+		bindingList.getRealm().exec(new Runnable() {
 
-			if (model instanceof ISWTObservable) {
-				swtObservable = (ISWTObservable) model;
-			} else if (target instanceof ISWTObservable) {
-				swtObservable = (ISWTObservable) target;
-			}
+			@Override
+			public void run() {
+				boolean atLeastOneErroneousBinding = false;
+				for (final Object o : dataBindingContext.getBindings()) {
+					final Binding binding = (Binding) o;
+					Object observed = null;
+					Object valueType = null;
+					ISWTObservable swtObservable = null;
+					final IObservable model = binding.getModel();
+					final IObservable target = binding.getTarget();
 
-			if (model instanceof IEMFObservable) {
-				IEMFObservable observable = (IEMFObservable) model;
-				observed = observable.getObserved();
-				valueType = observable.getStructuralFeature();
-			} else if (target instanceof IEMFObservable) {
-				IEMFObservable observable = (IEMFObservable) target;
-				observed = observable.getObserved();
-				valueType = observable.getStructuralFeature();
-			} else if (model instanceof EObjectObservableValue) {
-				EObjectObservableValue emfObservable = (EObjectObservableValue) model;
-				observed = emfObservable.getObserved();
-				valueType = emfObservable.getValueType();
-			} else if (target instanceof EObjectObservableValue) {
-				EObjectObservableValue emfObservable = (EObjectObservableValue) target;
-				observed = emfObservable.getObserved();
-				valueType = emfObservable.getValueType();
-			}
+					if (model instanceof ISWTObservable) {
+						swtObservable = (ISWTObservable) model;
+					} else if (target instanceof ISWTObservable) {
+						swtObservable = (ISWTObservable) target;
+					}
 
-			if (observed != null && valueType != null && swtObservable != null) {
-				if (checkBindingFor34(observed, valueType, swtObservable, diagnostic, messageManager)) {
-					atLeastOneErroneousBinding = true;
+					if (model instanceof IEMFObservable) {
+						IEMFObservable observable = (IEMFObservable) model;
+						observed = observable.getObserved();
+						valueType = observable.getStructuralFeature();
+					} else if (target instanceof IEMFObservable) {
+						IEMFObservable observable = (IEMFObservable) target;
+						observed = observable.getObserved();
+						valueType = observable.getStructuralFeature();
+					} else if (model instanceof EObjectObservableValue) {
+						EObjectObservableValue emfObservable = (EObjectObservableValue) model;
+						observed = emfObservable.getObserved();
+						valueType = emfObservable.getValueType();
+					} else if (target instanceof EObjectObservableValue) {
+						EObjectObservableValue emfObservable = (EObjectObservableValue) target;
+						observed = emfObservable.getObserved();
+						valueType = emfObservable.getValueType();
+					}
+
+					if (observed != null && valueType != null && swtObservable != null) {
+						if (checkBindingFor34(observed, valueType, swtObservable, diagnostic, messageManager)) {
+							atLeastOneErroneousBinding = true;
+						}
+					}
+				}
+				if (!atLeastOneErroneousBinding) {
+					// add an error message anyways
+					messageManager.addMessage(diagnostic, diagnostic.getMessage(), null, ValidatingService.KEY_MAP.getMessageProviderKey(diagnostic.getSeverity()));
 				}
 			}
-		}
-		if (!atLeastOneErroneousBinding) {
-			// add an error message anyways
-			messageManager.addMessage(diagnostic, diagnostic.getMessage(), null, ValidatingService.KEY_MAP.getMessageProviderKey(diagnostic.getSeverity()));
-		}
+			
+		});
+		
 	}
 
 	private boolean checkBindingFor34(Object observed, Object valueType, final ISWTObservable swtObservable, final Diagnostic diagnostic,
