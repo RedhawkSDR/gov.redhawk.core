@@ -38,14 +38,24 @@ public class ValidValueTypeConstraint extends AbstractModelConstraint {
 	/**
 	 * TODO: This is to force PRF complex value of format a+jb
 	 */
-	private static final Pattern COMPLEX_PATTERN_1 = Pattern.compile("[-]?\\d+(\\.\\d+)?([eE][+-]?\\d+)?\\s*[-+]?\\s*j(\\d+(\\.\\d+)?([eE][+-]?\\d+)?)?");
-	private static final Pattern COMPLEX_PATTERN_2 = Pattern.compile("[-+]?\\s*j(\\d+(\\.\\d+)?([eE][+-]?\\d+)?)?");
+	private static final Pattern COMPLEX_PATTERN_1 = Pattern.compile("[-]?\\d+(\\.\\d+)?([eE][+-]?\\d+)?[-+]?j(\\d+(\\.\\d+)?([eE][+-]?\\d+)?)?");
+	private static final Pattern COMPLEX_PATTERN_2 = Pattern.compile("[-+]?j(\\d+(\\.\\d+)?([eE][+-]?\\d+)?)?");
 
 	private static class ValidationSwitch extends PrfSwitch<IStatus> {
 		private final IValidationContext ctx;
 
 		public ValidationSwitch(final IValidationContext ctx) {
 			this.ctx = ctx;
+		}
+		
+		private IStatus createFailureStatus(boolean complex, String value, PropertyValueType type) {
+			Object [] message;
+			if (complex) {
+				message = new Object []{value, "complex " + type, " Valid format A+jB. May not contain spaces."};
+			} else {
+				message = new Object []{value, type, ""};
+			}
+			return ctx.createFailureStatus(message);
 		}
 
 		@Override
@@ -56,14 +66,14 @@ public class ValidValueTypeConstraint extends AbstractModelConstraint {
 				if (type != null) {
 					boolean isComplexFormat = isComplexNumber(value);
 					if (object.isComplex() && !isComplexFormat) { // TODO: This is to force PRF complex value of format a+jb
-						return new EnhancedConstraintStatus((ConstraintStatus) this.ctx.createFailureStatus(value, "complex " + type),
+						return new EnhancedConstraintStatus((ConstraintStatus) createFailureStatus(true, value, type),
 							PrfPackage.Literals.SIMPLE__VALUE);
 					} else if (!(type.isValueOfType(value, object.isComplex()))) {
 						if (object.isComplex()) {
-							return new EnhancedConstraintStatus((ConstraintStatus) this.ctx.createFailureStatus(value, "complex " + type),
+							return new EnhancedConstraintStatus((ConstraintStatus) createFailureStatus(true, value, type),
 								PrfPackage.Literals.SIMPLE__VALUE);
 						} else {
-							return new EnhancedConstraintStatus((ConstraintStatus) this.ctx.createFailureStatus(value, type), PrfPackage.Literals.SIMPLE__VALUE);
+							return new EnhancedConstraintStatus((ConstraintStatus) createFailureStatus(false, value, type), PrfPackage.Literals.SIMPLE__VALUE);
 						}
 					}
 				}
@@ -81,14 +91,14 @@ public class ValidValueTypeConstraint extends AbstractModelConstraint {
 				if (type != null) {
 					boolean isComplexFormat = isComplexNumber(value);
 					if (mySimple.isComplex() && !isComplexFormat) { // TODO: This is to force PRF complex value of format a+jb
-						return new EnhancedConstraintStatus((ConstraintStatus) this.ctx.createFailureStatus(value, "complex " + type),
+						return new EnhancedConstraintStatus((ConstraintStatus) createFailureStatus(true, value, type),
 							PrfPackage.Literals.SIMPLE__VALUE);
 					} else if (!(type.isValueOfType(value, mySimple.isComplex()))) {
 						if (mySimple.isComplex()) {
-							return new EnhancedConstraintStatus((ConstraintStatus) this.ctx.createFailureStatus(value, "complex " + type),
+							return new EnhancedConstraintStatus((ConstraintStatus) createFailureStatus(true, value, type),
 								PrfPackage.Literals.SIMPLE_REF__VALUE);
 						} else {
-							return new EnhancedConstraintStatus((ConstraintStatus) this.ctx.createFailureStatus(value, type),
+							return new EnhancedConstraintStatus((ConstraintStatus) createFailureStatus(false, value, type),
 								PrfPackage.Literals.SIMPLE_REF__VALUE);
 						}
 
@@ -114,14 +124,14 @@ public class ValidValueTypeConstraint extends AbstractModelConstraint {
 					final PropertyValueType type = sequence.getType();
 					boolean isComplexFormat = isComplexNumber(value);
 					if (sequence.isComplex() && !isComplexFormat) { // TODO: This is to force PRF complex value of format a+jb
-						return new EnhancedConstraintStatus((ConstraintStatus) this.ctx.createFailureStatus(value, "complex " + type),
+						return new EnhancedConstraintStatus((ConstraintStatus) createFailureStatus(true, value, type),
 							PrfPackage.Literals.SIMPLE__VALUE);
 					} else if (!type.isValueOfType(value, sequence.isComplex())) {
 						if (sequence.isComplex()) {
-							return new EnhancedConstraintStatus((ConstraintStatus) this.ctx.createFailureStatus(value, "complex " + type),
+							return new EnhancedConstraintStatus((ConstraintStatus) createFailureStatus(true, value, type),
 								PrfPackage.Literals.VALUES__VALUE);
 						} else {
-							return new EnhancedConstraintStatus((ConstraintStatus) this.ctx.createFailureStatus(value, type), PrfPackage.Literals.VALUES__VALUE);
+							return new EnhancedConstraintStatus((ConstraintStatus) createFailureStatus(false, value, type), PrfPackage.Literals.VALUES__VALUE);
 						}
 
 					}

@@ -74,7 +74,7 @@
                   severity="ERROR"
                   statusCode="1">
                <message>
-                  %constraint.message.0
+                  The value &quot;{0}&quot; is not of type &quot;{1}&quot;. {2}
                </message>
                <target
                      class="Simple">
