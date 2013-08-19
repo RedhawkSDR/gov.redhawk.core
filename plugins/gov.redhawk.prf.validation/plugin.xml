@@ -181,6 +181,7 @@
                   </event>
                </target>
             </constraint>
+            <!--
             <constraint
                   class="gov.redhawk.validation.prf.ComplexTypeWarningConstraint"
                   id="gov.redhawk.prf.validation.typeModifierWarning"
@@ -218,6 +219,7 @@
                   </event>
                </target>
             </constraint>
+            -->
             <constraint
                   class="gov.redhawk.validation.prf.ValidRangeMinTypeConstraint"
                   id="gov.redhawk.prf.validation.constraint.min"
