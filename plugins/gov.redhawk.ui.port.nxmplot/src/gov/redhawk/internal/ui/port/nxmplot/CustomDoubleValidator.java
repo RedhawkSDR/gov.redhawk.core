@@ -16,7 +16,7 @@ public class CustomDoubleValidator implements IOtherAllowedInputValidator {
 	private final String otherValidValue;
 
 	public CustomDoubleValidator(String fieldName, String otherAllowedValue) {
-		this.errMsg = fieldName + " must be an double.";
+		this.errMsg = fieldName + " must be a double.";
 		this.otherValidValue = otherAllowedValue;
 	}
 
