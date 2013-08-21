@@ -47,12 +47,23 @@ import BULKIO.dataUshortPOATie;
 import BULKIO.updateSRIOperations;
 
 public enum BulkIOType {
-	DOUBLE(8), FLOAT(4), LONG(4), ULONG(4), LONG_LONG(8), ULONG_LONG(8), SHORT(2), USHORT(2), CHAR(2), OCTET(1);
+	DOUBLE(8, double.class), 
+	FLOAT(4, float.class), 
+	LONG(4, int.class), 
+	ULONG(4, int.class),
+	LONG_LONG(8, long.class),
+	ULONG_LONG(8, long.class),
+	SHORT(2, short.class),
+	USHORT(2, short.class),
+	CHAR(2, char.class),
+	OCTET(1, byte.class);
 
 	private final int bytePerAtom;
+	private final Class< ? > javaType;
 
-	private BulkIOType(int bytePerAtom) {
+	private BulkIOType(int bytePerAtom, Class< ? > javaType) {
 		this.bytePerAtom = bytePerAtom;
+		this.javaType = javaType;
 	}
 
 	public org.omg.CORBA.Object createRef(POA poa, Object obj) throws ServantNotActive, WrongPolicy {
@@ -101,9 +112,6 @@ public enum BulkIOType {
 	public static BulkIOType getType(updateSRIOperations impl) {
 		BulkIOType retVal = null;
 		if (dataCharOperations.class.isAssignableFrom(impl.getClass())) {
-			if (retVal != null) {
-				throw new IllegalArgumentException(impl.getClass() + " implements more than more type of BulkIO Interface.");
-			}
 			retVal = BulkIOType.CHAR;
 		}
 		if (dataDoubleOperations.class.isAssignableFrom(impl.getClass())) {
@@ -190,5 +198,12 @@ public enum BulkIOType {
 		} else {
 			throw new IllegalArgumentException("Unknown type: " + idl);
 		}
+	}
+
+	/**
+	 * @return The non upcasted Java class container type
+	 */
+	public Class< ? > getJavaType() {
+		return this.javaType;
 	}
 }

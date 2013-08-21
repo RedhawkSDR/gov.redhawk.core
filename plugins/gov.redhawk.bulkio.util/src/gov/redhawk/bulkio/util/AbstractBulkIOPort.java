@@ -30,6 +30,7 @@ import CF.DataType;
 public abstract class AbstractBulkIOPort implements ProvidesPortStatisticsProviderOperations, updateSRIOperations {
 
 	private final Map<String, StreamSRI> streamSRIMap = Collections.synchronizedMap(new HashMap<String, StreamSRI>());
+	private StreamSRI currentSri;
 	private final PortStatistics stats = new PortStatistics();
 	private AtomicLong lastWrite = new AtomicLong(-1);
 	private AtomicLong lastUpdate = new AtomicLong(-1);
@@ -46,12 +47,19 @@ public abstract class AbstractBulkIOPort implements ProvidesPortStatisticsProvid
 		stats.streamIDs = new String[0];
 	}
 	
+	protected AbstractBulkIOPort() {
+	}
+	
 	protected AbstractBulkIOPort(BulkIOType type) {
 		this.type = type;
 	}
 	
 	public BulkIOType getBulkIOType() {
 		return type;
+	}
+	
+	public void setBulkIOType(BulkIOType type) {
+		this.type = type;
 	}
 
 
@@ -84,6 +92,7 @@ public abstract class AbstractBulkIOPort implements ProvidesPortStatisticsProvid
 	/**
 	 * Call this method every time a push packet is received
 	 * @param length Length of the push packet array.
+	 * @return true if should process packet
 	 */
 	protected boolean pushPacket(int length, final PrecisionUTCTime time, final boolean endOfStream, final String streamID) {
 		if (endOfStream) {
@@ -120,12 +129,25 @@ public abstract class AbstractBulkIOPort implements ProvidesPortStatisticsProvid
 		if (sri != null) {
 			StreamSRI oldSri = this.streamSRIMap.put(sri.streamID, sri);
 			if (!StreamSRIUtil.equals(oldSri, sri)) {
-				handleStreamSRIChanged(oldSri, sri);
+				handleStreamSRIChanged(sri.streamID, oldSri, sri);
 			}
 		}
+		StreamSRI oldSri = this.currentSri;
+		this.currentSri = sri;
+		if (!StreamSRIUtil.equals(oldSri, sri)) {
+			handleStreamSRIChanged(oldSri, sri);
+		}
+	}
+	
+	public StreamSRI getStreamSRI() {
+		return this.currentSri;
+	}
+	
+	protected void handleStreamSRIChanged(StreamSRI oldSri, StreamSRI newSri) {
+		
 	}
 
-	protected void handleStreamSRIChanged(StreamSRI oldSri, StreamSRI newSri) {
+	protected void handleStreamSRIChanged(String streamID, StreamSRI oldSri, StreamSRI newSri) {
 		
 	}
 
