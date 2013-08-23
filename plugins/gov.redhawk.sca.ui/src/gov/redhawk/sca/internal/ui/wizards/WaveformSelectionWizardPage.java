@@ -217,6 +217,9 @@ public class WaveformSelectionWizardPage extends WizardPage {
 			public void selectionChanged(final SelectionChangedEvent event) {
 				final Object selected = ((StructuredSelection) event.getSelection()).getFirstElement();
 				if (selected instanceof SoftwareAssembly) {
+					if (WaveformSelectionWizardPage.this.sad == selected) {
+						return;
+					}
 					WaveformSelectionWizardPage.this.sad = (SoftwareAssembly) selected;
 					if (WaveformSelectionWizardPage.this.defaultNameChanged) {
 						// PASS since user had explicitly set the Waveform name
