@@ -47,23 +47,25 @@ import BULKIO.dataUshortPOATie;
 import BULKIO.updateSRIOperations;
 
 public enum BulkIOType {
-	DOUBLE(8, double.class), 
-	FLOAT(4, float.class), 
-	LONG(4, int.class), 
-	ULONG(4, int.class),
-	LONG_LONG(8, long.class),
-	ULONG_LONG(8, long.class),
-	SHORT(2, short.class),
-	USHORT(2, short.class),
-	CHAR(2, char.class),
-	OCTET(1, byte.class);
+	DOUBLE(8, double.class, false), 
+	FLOAT(4, float.class, false), 
+	LONG(4, int.class, false), 
+	ULONG(4, int.class, true),
+	LONG_LONG(8, long.class, true),
+	ULONG_LONG(8, long.class, true),
+	SHORT(2, short.class, false),
+	USHORT(2, short.class, true),
+	CHAR(2, char.class, false),
+	OCTET(1, byte.class, false);
 
 	private final int bytePerAtom;
 	private final Class< ? > javaType;
+	private final boolean unsigned;
 
-	private BulkIOType(int bytePerAtom, Class< ? > javaType) {
+	private BulkIOType(int bytePerAtom, Class< ? > javaType, boolean unsigned) {
 		this.bytePerAtom = bytePerAtom;
 		this.javaType = javaType;
+		this.unsigned = unsigned;
 	}
 
 	public org.omg.CORBA.Object createRef(POA poa, Object obj) throws ServantNotActive, WrongPolicy {
@@ -205,5 +207,9 @@ public enum BulkIOType {
 	 */
 	public Class< ? > getJavaType() {
 		return this.javaType;
+	}
+	
+	public boolean isUnsigned() {
+		return this.unsigned;
 	}
 }
