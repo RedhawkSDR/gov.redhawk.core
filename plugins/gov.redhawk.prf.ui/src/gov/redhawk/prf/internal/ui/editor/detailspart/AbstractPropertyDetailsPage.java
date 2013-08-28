@@ -13,7 +13,6 @@ package gov.redhawk.prf.internal.ui.editor.detailspart;
 
 import gov.redhawk.prf.internal.ui.editor.PropertiesSection;
 import gov.redhawk.prf.internal.ui.editor.composite.AbstractPropertyComposite;
-import gov.redhawk.sca.util.PluginUtil;
 import gov.redhawk.ui.editor.SCAFormEditor;
 import gov.redhawk.ui.editor.ScaDetails;
 import gov.redhawk.ui.util.EMFEmptyStringToNullUpdateValueStrategy;
@@ -30,8 +29,6 @@ import org.eclipse.emf.edit.domain.EditingDomain;
 import org.eclipse.jface.databinding.swt.WidgetProperties;
 import org.eclipse.jface.databinding.viewers.ViewersObservables;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.ModifyEvent;
-import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.forms.widgets.FormToolkit;
 
@@ -60,22 +57,23 @@ public abstract class AbstractPropertyDetailsPage extends ScaDetails {
 	}
 
 	protected void addListeners() {
-		if (this.composite.getIdEntry() != null) {
-			this.composite.getIdEntry().getText().addModifyListener(new ModifyListener() {
-
-				public void modifyText(ModifyEvent e) {
-					if (property != null && input != null) {
-						String propName = (String) input.eGet(property.getName());
-						String id = (String) input.eGet(property.getId());
-						if (PluginUtil.equals(propName, id)) {
-							if (composite.getNameEntry() != null) {
-								composite.getNameEntry().getText().setText(composite.getIdEntry().getText().getText());
-							}
-						}
-					}
-				}
-			});
-		}
+//		if (this.composite.getIdEntry() != null) {
+//			this.composite.getIdEntry().getText().addModifyListener(new ModifyListener() {
+//
+//				public void modifyText(ModifyEvent e) {
+//					if (property != null && input != null) {
+//						String propName = (String) input.eGet(property.getName());
+//						String id = (String) input.eGet(property.getId());
+//						if (PluginUtil.equals(propName, id)) {
+//							String newValue = composite.getIdEntry().getText().getText();
+//							if (composite.getNameEntry() != null) {
+//								composite.getNameEntry().getText().setText(newValue);
+//							}
+//						}
+//					}
+//				}
+//			});
+//		}
 	}
 
 	@Override
@@ -87,33 +85,30 @@ public abstract class AbstractPropertyDetailsPage extends ScaDetails {
 
 		// ID
 		if (getComposite().getIdEntry() != null) {
-			retVal.add(dataBindingContext.bindValue(WidgetProperties.text(SWT.Modify).observeDelayed(SCAFormEditor.getFieldBindingDelay(),
-			                                                                                         this.composite.getIdEntry().getText()),
-			                                        EMFEditObservables.observeValue(getEditingDomain(), input, this.property.getId()),
-			                                        new EMFEmptyStringToNullUpdateValueStrategy(), null));
+			retVal.add(dataBindingContext.bindValue(
+				WidgetProperties.text(SWT.Modify).observeDelayed(SCAFormEditor.getFieldBindingDelay(), this.composite.getIdEntry().getText()),
+				EMFEditObservables.observeValue(getEditingDomain(), input, this.property.getId()), new EMFEmptyStringToNullUpdateValueStrategy(), null));
 		}
 
 		// Name
 		if (getComposite().getNameEntry() != null) {
-			this.nameBinding = dataBindingContext.bindValue(WidgetProperties.text(SWT.Modify).observeDelayed(SCAFormEditor.getFieldBindingDelay(),
-			                                                                                                 this.composite.getNameEntry().getText()),
-			                                                EMFEditObservables.observeValue(domain, input, this.property.getName()),
-			                                                new EMFEmptyStringToNullUpdateValueStrategy(), null);
+			this.nameBinding = dataBindingContext.bindValue(
+				WidgetProperties.text(SWT.Modify).observeDelayed(SCAFormEditor.getFieldBindingDelay(), this.composite.getNameEntry().getText()),
+				EMFEditObservables.observeValue(domain, input, this.property.getName()), new EMFEmptyStringToNullUpdateValueStrategy(), null);
 			retVal.add(this.nameBinding);
 		}
 
 		// Mode
 		if (getComposite().getModeViewer() != null) {
 			retVal.add(dataBindingContext.bindValue(ViewersObservables.observeSingleSelection(this.composite.getModeViewer()),
-			                                        EMFEditObservables.observeValue(domain, input, this.property.getMode()), null, null));
+				EMFEditObservables.observeValue(domain, input, this.property.getMode()), null, null));
 		}
 
 		// Description
 		if (getComposite().getDescriptionText() != null) {
-			retVal.add(dataBindingContext.bindValue(WidgetProperties.text(SWT.Modify).observeDelayed(SCAFormEditor.getFieldBindingDelay(),
-			                                                                                         this.composite.getDescriptionText()),
-			                                        EMFEditObservables.observeValue(domain, input, this.property.getDescription()),
-			                                        new EMFEmptyStringToNullUpdateValueStrategy(), null));
+			retVal.add(dataBindingContext.bindValue(
+				WidgetProperties.text(SWT.Modify).observeDelayed(SCAFormEditor.getFieldBindingDelay(), this.composite.getDescriptionText()),
+				EMFEditObservables.observeValue(domain, input, this.property.getDescription()), new EMFEmptyStringToNullUpdateValueStrategy(), null));
 		}
 
 		this.setEditable();
