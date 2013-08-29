@@ -12,9 +12,9 @@
 <feature
       id="gov.redhawk.sca.feature"
       label="%featureName"
-      version="1.8.4.qualifier"
+      version="1.8.5.qualifier"
       provider-name="%providerName"
-      plugin="mil.jpeojtrs.sca.util">
+      plugin="gov.redhawk.sca">
 
    <description url="http://redhawksdr.org">
       %description

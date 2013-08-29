@@ -20,5 +20,5 @@
 		<version>0.0.1-SNAPSHOT</version>
 		<relativePath>../../releng/core/pom.xml</relativePath>
 	</parent>
-	<version>1.8.4-SNAPSHOT</version>
+	<version>1.8.5-SNAPSHOT</version>
 </project>
