@@ -115,10 +115,11 @@ public class IdlLibraryImpl extends RepositoryModuleImpl implements IdlLibrary {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
+	 * @generated NOT
 	 */
 	protected IdlLibraryImpl() {
 		super();
+		setName("IDL Library");
 	}
 
 	/**
@@ -211,6 +212,7 @@ public class IdlLibraryImpl extends RepositoryModuleImpl implements IdlLibrary {
 			}
 		}
 	};
+	private boolean loaded;
 
 	private void specificationAdded(final Specification spec) {
 		final EList<Definition> definitions = spec.getDefinitions();
@@ -239,7 +241,7 @@ public class IdlLibraryImpl extends RepositoryModuleImpl implements IdlLibrary {
 				childMonitor.beginTask("Adding children...", children.length);
 				for (final IFileStore child : children) {
 					if (store.toString().matches(".*/omniORB.*")) {
-						if (Arrays.binarySearch(this.BROKEN_OMNIORB_IDL_FILES, child.getName()) >= 0) {
+						if (Arrays.binarySearch(BROKEN_OMNIORB_IDL_FILES, child.getName()) >= 0) {
 							continue;
 						}
 					}
@@ -248,39 +250,23 @@ public class IdlLibraryImpl extends RepositoryModuleImpl implements IdlLibrary {
 			} else if (store.getName().endsWith(".idl")) {
 				final SubMonitor subMonitor = SubMonitor.convert(monitor, "Adding idl store: " + store.getName(), 100);
 				final URI uri = URI.createURI(store.toURI().toString()).appendFragment("/");
-				EObject tmpObj = null;
-				try {
-					tmpObj = eResource().getResourceSet().getEObject(uri, true);
-				} catch (final Exception e) {
-					// PASS (we collect any load errors later from the ResourceSet)
-				}
-				final EObject eObj = tmpObj;
-				subMonitor.worked(50);
-				if (eObj instanceof Specification) {
-					final Specification spec = (Specification) eObj;
-					domain.getCommandStack().execute(new AbstractCommand() {
-
-						@Override
-						protected boolean prepare() {
-							return true;
+				domain.getCommandStack().execute(new ScaModelCommand() {
+					
+					public void execute() {
+						EObject eObj = null;
+						try {
+							eObj = eResource().getResourceSet().getEObject(uri, true);
+						} catch (final Exception e) {
+							// PASS (we collect any load errors later from the ResourceSet)
 						}
-
-						public void execute() {
+						subMonitor.worked(50);
+						if (eObj instanceof Specification) {
+							final Specification spec = (Specification) eObj;
 							getSpecifications().add(spec);
 						}
-
-						@Override
-						public boolean canUndo() {
-							return false;
-						}
-
-						public void redo() {
-
-						}
-
-					});
-					subMonitor.worked(50);
-				}
+					}
+				});
+				subMonitor.worked(50);
 			}
 		} finally {
 			monitor.done();
@@ -315,47 +301,26 @@ public class IdlLibraryImpl extends RepositoryModuleImpl implements IdlLibrary {
 
 		final IStatus loadingStatus = new Status(IStatus.INFO, LibraryPlugin.PLUGIN_ID, "Loading...");
 		editingDomain.getCommandStack().execute(SetCommand.create(editingDomain, this, LibraryPackage.Literals.IDL_LIBRARY__LOAD_STATUS, loadingStatus));
-		editingDomain.getCommandStack().execute(new AbstractCommand() {
-
-			@Override
-			protected boolean prepare() {
-				return true;
-			}
-
-			public void execute() {
-				clear();
-			}
-
-			@Override
-			public boolean canUndo() {
-				return false;
-			}
-
-			public void redo() {
-
-			}
-
-		});
 		final ResourceSet resourceSet = editingDomain.getResourceSet();
 
 		// Ensure we are using our IDL resource factory
 		resourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap().put("idl", new IdlResourceFactoryImpl());
-
 		resourceSet.getLoadOptions().remove(IdlResourceImpl.ROOT_SCOPE);
-		final Resource[] resources = resourceSet.getResources().toArray(new Resource[resourceSet.getResources().size()]);
+		if (loaded) {
+			editingDomain.getCommandStack().execute(new ScaModelCommand() {
 
-		ScaModelCommand.execute(this, new ScaModelCommand() {
-			
-			@Override
-			public void execute() {
-				for (final Resource r : resources) {
-					if (r instanceof IdlResourceImpl) {
-						r.unload();
-						resourceSet.getResources().remove(r);
+				public void execute() {
+					final Resource[] resources = resourceSet.getResources().toArray(new Resource[resourceSet.getResources().size()]);
+					clear();
+					for (final Resource r : resources) {
+						if (r instanceof IdlResourceImpl) {
+							r.unload();
+							resourceSet.getResources().remove(r);
+						}
 					}
-				}	
-			}
-		});
+				}
+			});
+		}
 
 		final MultiStatus libraryStatus = new MultiStatus(LibraryPlugin.PLUGIN_ID, IStatus.OK, "Problems occured while loading IDL library.", null);
 
@@ -411,6 +376,7 @@ public class IdlLibraryImpl extends RepositoryModuleImpl implements IdlLibrary {
 			editingDomain.getCommandStack().execute(SetCommand.create(editingDomain, this, LibraryPackage.Literals.IDL_LIBRARY__LOAD_STATUS, libraryStatus));
 		}
 
+		this.loaded = true;
 		return getLoadStatus();
 		// BEGIN GENERATED CODE
 	}

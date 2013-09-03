@@ -23,6 +23,7 @@ import gov.redhawk.eclipsecorba.library.RepositoryModule;
 import gov.redhawk.model.sca.commands.ScaModelCommand;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -184,7 +185,7 @@ public class RepositoryModuleImpl extends DefinitionImpl implements RepositoryMo
 		}
 	};
 	
-	private final Map<String,Definition> definitionMap = new HashMap<String, Definition>();
+	private final Map<String,Definition> definitionMap = Collections.synchronizedMap(new HashMap<String, Definition>());
 
 
 	private void dispose() {
