@@ -117,7 +117,14 @@ public abstract class ComponentPlacementEditHelperAdvice< CI extends ComponentIn
 				final CI inst = createComponentInstantiation(this.request, spd);
 				
 				// Set the implementation ID, this is mainly used for local debugging and isn't saved to the file.
-				inst.setImplID(getImplementationID());
+				String implId = getImplementationID();
+				if (implId == null) {
+					// Panic! Just choose first implementation
+					if (!spd.getImplementation().isEmpty()) {
+						implId = spd.getImplementation().get(0).getId();
+					}
+				}
+				inst.setImplID(implId);
 				
 				Assert.isNotNull(inst.getId());
 				Assert.isNotNull(inst.getUsageName());
@@ -165,7 +172,11 @@ public abstract class ComponentPlacementEditHelperAdvice< CI extends ComponentIn
          * @since 5.1
          */
 		public String getImplementationID() {
-			return (String) this.request.getParameter(ComponentPlacementEditHelperAdvice.CONFIGURE_OPTIONS_IMPL_ID);
+			Object param = this.request.getParameter(ComponentPlacementEditHelperAdvice.CONFIGURE_OPTIONS_IMPL_ID);
+			if (param instanceof String) {
+				return (String) param;
+			}
+			return null;
 		}
 		
 
