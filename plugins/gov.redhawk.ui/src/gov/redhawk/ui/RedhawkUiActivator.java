@@ -12,6 +12,7 @@
 package gov.redhawk.ui;
 
 import gov.redhawk.internal.ui.StatusUtil;
+import gov.redhawk.ui.editor.IIdlLibraryService;
 
 import java.lang.reflect.InvocationTargetException;
 import java.text.MessageFormat;
@@ -32,6 +33,7 @@ import org.eclipse.ui.forms.FormColors;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.eclipse.ui.statushandlers.StatusManager;
 import org.osgi.framework.BundleContext;
+import org.osgi.util.tracker.ServiceTracker;
 
 /**
  * The activator class controls the plug-in life cycle.
@@ -61,6 +63,8 @@ public class RedhawkUiActivator extends AbstractUIPlugin {
 	/** The form colors. */
 	private FormColors formColors;
 
+	private ServiceTracker<IIdlLibraryService, IIdlLibraryService> libraryServiceTracker;
+
 	/**
 	 * The constructor.
 	 */
@@ -80,6 +84,8 @@ public class RedhawkUiActivator extends AbstractUIPlugin {
 	public void start(final BundleContext context) throws Exception {
 		super.start(context);
 		RedhawkUiActivator.plugin = this;
+		libraryServiceTracker = new ServiceTracker<IIdlLibraryService, IIdlLibraryService>(context, IIdlLibraryService.class, null);
+		libraryServiceTracker.open();
 	}
 
 	/**
@@ -99,6 +105,13 @@ public class RedhawkUiActivator extends AbstractUIPlugin {
 	private IWorkbenchPage internalGetActivePage() {
 		return getWorkbench().getActiveWorkbenchWindow().getActivePage();
 	}
+	
+	/**
+	 * @since 7.0
+	 */
+	public IIdlLibraryService getIdlLibraryService() {
+		return this.libraryServiceTracker.getService();
+	}
 
 	/*
 	 * (non-Javadoc)
@@ -112,6 +125,7 @@ public class RedhawkUiActivator extends AbstractUIPlugin {
 	@Override
 	public void stop(final BundleContext context) throws Exception {
 		try {
+			libraryServiceTracker.close();
 			if (this.formColors != null) {
 				this.formColors.dispose();
 				this.formColors = null;

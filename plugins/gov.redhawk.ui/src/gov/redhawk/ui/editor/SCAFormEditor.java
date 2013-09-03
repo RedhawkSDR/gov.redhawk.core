@@ -12,7 +12,6 @@
 package gov.redhawk.ui.editor;
 
 import gov.redhawk.eclipsecorba.library.IdlLibrary;
-import gov.redhawk.eclipsecorba.library.LibraryFactory;
 import gov.redhawk.eclipsecorba.library.util.RefreshIdlLibraryJob;
 import gov.redhawk.internal.ui.ScaIdeConstants;
 import gov.redhawk.internal.ui.editor.validation.ValidatingEContentAdapter;
@@ -39,7 +38,6 @@ import org.eclipse.core.databinding.DataBindingContext;
 import org.eclipse.core.databinding.observable.IObservable;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IMarker;
-import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IResourceChangeEvent;
 import org.eclipse.core.resources.IResourceChangeListener;
@@ -57,9 +55,6 @@ import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.SubProgressMonitor;
 import org.eclipse.core.runtime.jobs.Job;
-import org.eclipse.core.runtime.preferences.IEclipsePreferences;
-import org.eclipse.core.runtime.preferences.IEclipsePreferences.PreferenceChangeEvent;
-import org.eclipse.core.runtime.preferences.InstanceScope;
 import org.eclipse.emf.common.command.BasicCommandStack;
 import org.eclipse.emf.common.command.Command;
 import org.eclipse.emf.common.command.CommandStack;
@@ -81,7 +76,6 @@ import org.eclipse.emf.ecore.EValidator;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.xmi.XMLResource;
-import org.eclipse.emf.edit.command.AddCommand;
 import org.eclipse.emf.edit.domain.AdapterFactoryEditingDomain;
 import org.eclipse.emf.edit.domain.EditingDomain;
 import org.eclipse.emf.edit.domain.IEditingDomainProvider;
@@ -420,17 +414,6 @@ public abstract class SCAFormEditor extends FormEditor implements IEditingDomain
 
 	private ValidatingEContentAdapter validator;
 
-	/**
-	 * Listen for changes to the IDL Include Path in order to force reload.
-	 */
-	private final IEclipsePreferences.IPreferenceChangeListener idlPreferenceListener = new IEclipsePreferences.IPreferenceChangeListener() {
-		public void preferenceChange(final PreferenceChangeEvent event) {
-			if (event.getKey().equals("IdlIncludePath")) {
-				SCAFormEditor.this.idlLibrary = null;
-			}
-		}
-	};
-
 	private static final String IDL_PREFERENCE_NODE_ID = "gov.redhawk.ide";
 
 	private String id;
@@ -438,8 +421,6 @@ public abstract class SCAFormEditor extends FormEditor implements IEditingDomain
 	private boolean disposed;
 
 	private Resource mainResource;
-
-	private IdlLibrary idlLibrary;
 
 	private final Map<Resource, IDocument> resourceToDocumentMap = new HashMap<Resource, IDocument>();
 
@@ -1191,7 +1172,6 @@ public abstract class SCAFormEditor extends FormEditor implements IEditingDomain
 		this.disposed = true;
 		storeDefaultPage();
 
-		InstanceScope.INSTANCE.getNode(SCAFormEditor.IDL_PREFERENCE_NODE_ID).removePreferenceChangeListener(this.idlPreferenceListener);
 		if (this.fEditorSelectionChangedListener != null) {
 			this.fEditorSelectionChangedListener.uninstall(getSite().getSelectionProvider());
 			this.fEditorSelectionChangedListener = null;
@@ -1401,7 +1381,6 @@ public abstract class SCAFormEditor extends FormEditor implements IEditingDomain
 		super.init(site, input);
 
 		//		ResourcesPlugin.getWorkspace().addResourceChangeListener(this.resourceChangeListener, IResourceChangeEvent.POST_CHANGE);
-		InstanceScope.INSTANCE.getNode(SCAFormEditor.IDL_PREFERENCE_NODE_ID).addPreferenceChangeListener(this.idlPreferenceListener);
 	}
 
 	@Override
@@ -1805,27 +1784,7 @@ public abstract class SCAFormEditor extends FormEditor implements IEditingDomain
 	 * @since 2.1
 	 */
 	public IdlLibrary getIdlLibrary() {
-		if (this.idlLibrary == null) {
-			final IResource editorResource = (IResource) this.getEditorInput().getAdapter(IResource.class);
-			final TransactionalEditingDomain idlEditingDomain = TransactionalEditingDomain.Factory.INSTANCE.createEditingDomain();
-			if (editorResource != null) {
-				final ResourceSet set = idlEditingDomain.getResourceSet();
-				final IProject project = editorResource.getProject();
-				final IFile libraryFile = project.getFile(".library");
-				if (libraryFile.exists()) {
-					final Resource resource = set.getResource(URI.createPlatformResourceURI(libraryFile.getFullPath().toString(), true), true);
-					final EObject obj = resource.getEObject("/");
-					if (obj instanceof IdlLibrary) {
-						this.idlLibrary = (IdlLibrary) obj;
-					}
-				} else {
-					this.idlLibrary = LibraryFactory.eINSTANCE.createIdlLibrary();
-					final Resource resource = set.createResource(URI.createPlatformResourceURI(libraryFile.getFullPath().toString(), true));
-					this.editingDomain.getCommandStack().execute(new AddCommand(idlEditingDomain, resource.getContents(), this.idlLibrary));
-				}
-			}
-		}
-		return this.idlLibrary;
+		return RedhawkUiActivator.getDefault().getIdlLibraryService().getLibrary();
 	}
 
 	/**
@@ -1844,11 +1803,14 @@ public abstract class SCAFormEditor extends FormEditor implements IEditingDomain
 	 * @since 3.0
 	 */
 	public IdlLibrary loadIdlLibrary(final IProgressMonitor monitor) throws CoreException {
-		if ((this.getIdlLibrary() != null) && this.getIdlLibrary().getLoadStatus() == null) {
-			this.getIdlLibrary().load(monitor);
+		IdlLibrary library = getIdlLibrary();
+		if (library != null) {
+			IStatus status = library.getLoadStatus();
+			if (status == null) {
+				library.load(monitor);
+			}
 		}
-		return this.idlLibrary;
-
+		return library;
 	}
 
 	/**
