@@ -23,7 +23,7 @@
             id="gov.redhawk.ui.navigatorContent"
             labelProvider="gov.redhawk.sca.ui.ScaLabelProvider"
             name="%navigatorContent.name"
-            priority="lower"
+            priority="normal"
             providesSaveables="false"
             sortOnly="false">
          <actionProvider
