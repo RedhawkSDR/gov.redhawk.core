@@ -11,6 +11,7 @@
 package gov.redhawk.ui.port.nxmplot;
 
 import gov.redhawk.internal.ui.port.nxmplot.view.PlotView;
+import gov.redhawk.internal.ui.port.nxmplot.view.PlotView2;
 import gov.redhawk.model.sca.ScaUsesPort;
 
 import java.util.ArrayList;
@@ -39,7 +40,17 @@ public class PlotActivator extends AbstractUIPlugin {
 	/** The Constant PLUGIN_ID. */
 	public static final String PLUGIN_ID = "gov.redhawk.ui.port.nxmplot";
 
+	
+	/**
+	 * Use {@link #VIEW_PLOT_2} instead
+	 */
+	@Deprecated
 	public static final String VIEW_PLOT = PlotView.ID;
+	
+	/**
+	 * @since 4.2
+	 */
+	public static final String VIEW_PLOT_2 = PlotView2.ID;
 
 	/** The plugin. */
 	private static PlotActivator plugin;
