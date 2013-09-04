@@ -17,6 +17,7 @@ import gov.redhawk.model.sca.ScaDomainManagerRegistry;
 import gov.redhawk.model.sca.ScaUsesPort;
 import gov.redhawk.model.sca.provider.ScaItemProviderAdapterFactory;
 import gov.redhawk.sca.util.PluginUtil;
+import gov.redhawk.sca.util.SubMonitor;
 import gov.redhawk.ui.port.nxmplot.FftSettings;
 import gov.redhawk.ui.port.nxmplot.PlotActivator;
 import gov.redhawk.ui.port.nxmplot.PlotType;
@@ -91,41 +92,57 @@ public class PlotPortHandler extends AbstractHandler {
 						final ScaItemProviderAdapterFactory factory = new ScaItemProviderAdapterFactory();
 						final StringBuilder name = new StringBuilder();
 						final StringBuilder tooltip = new StringBuilder();
-
+						SubMonitor subMonitor = SubMonitor.convert(monitor, "Plotting...", elements.size());
 						for (Object obj : elements) {
 							ScaUsesPort port = PluginUtil.adapt(ScaUsesPort.class, obj, true);
 							if (port != null) {
+								port.fetchAttributes(subMonitor.newChild(1));
 								List<String> tmpList = new LinkedList<String>();
 								for (EObject eObj = port; !(eObj instanceof ScaDomainManagerRegistry) && eObj != null; eObj = eObj.eContainer()) {
 									Adapter adapter = factory.adapt(eObj, IItemLabelProvider.class);
 									if (adapter instanceof IItemLabelProvider) {
 										IItemLabelProvider lp = (IItemLabelProvider) adapter;
-										tmpList.add(0, lp.getText(eObj));
+										String text = lp.getText(eObj);
+										if (text != null && !text.isEmpty()) {
+											tmpList.add(0, text);
+										}
 									}
 								}
-								name.append(port.getName());
-								name.append(" ");
+								
+								String nameStr = port.getName();
+								if (nameStr != null && !nameStr.isEmpty()) {
+									name.append(port.getName());
+									name.append(" ");
+								}
 
-								for (Iterator<String> i = tmpList.iterator(); i.hasNext();) {
-									tooltip.append(i.next());
-									if (i.hasNext()) {
-										tooltip.append(" -> ");
+								if (!tmpList.isEmpty()) {
+									for (Iterator<String> i = tmpList.iterator(); i.hasNext();) {
+										tooltip.append(i.next());
+										if (i.hasNext()) {
+											tooltip.append(" -> ");
+										}
 									}
+									tooltip.append("\n");
 								}
-								tooltip.append("\n");
 
 								plotView.addPlotSource(port, fft, null);
+							} else {
+								subMonitor.worked(1);
 							}
 						}
 						factory.dispose();
-						if (name.length() > 0) {
+						if (name.length() > 0 || tooltip.length() > 0) {
 							Display display = window.getWorkbench().getDisplay();
 							display.asyncExec(new Runnable() {
 
 								@Override
 								public void run() {
-									plotView.setPartName(name.substring(0, name.length() - 1).toString());
-									plotView.setTitleToolTip(tooltip.substring(0, tooltip.length() - 1).toString());
+									if (name.length() > 0) {
+										plotView.setPartName(name.substring(0, name.length() - 1).toString());
+									}
+									if (tooltip.length() > 0) {
+										plotView.setTitleToolTip(tooltip.substring(0, tooltip.length() - 1).toString());
+									}
 								}
 
 							});
