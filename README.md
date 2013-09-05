@@ -6,11 +6,11 @@ This is the core set of plug-ins that make up the REDHAWK IDE and the REDHAWK Ex
  
 ## REDHAWK Documentation
 
-REDHAWK Website: [www.redhawkSDR.org](http://www.redhawksdr.org)
+REDHAWK Website: [www.redhawksdr.org](http://www.redhawksdr.org)
 
-Overview and Getting Started Guide: [PDF](http://sourceforge.net/projects/redhawksdr/files/redhawk-doc/1.8.4/REDHAWK_Overview_v1.8.4.pdf/download "PDF") [HTML](http://redhawksdr.github.com/Documentation/gettingstarted/main.html "HTML")
+Overview and Getting Started Guide: [PDF](http://sourceforge.net/projects/redhawksdr/files/redhawk-doc/1.8.5/REDHAWK_Overview_v1.8.5.pdf/download "PDF") [HTML](http://redhawksdr.github.com/Documentation/gettingstarted/main.html "HTML")
 
-Full REDHAWK Manual: [PDF](http://sourceforge.net/projects/redhawksdr/files/redhawk-doc/1.8.4/REDHAWK_Manual_v1.8.4.pdf/download "PDF") [HTML](http://redhawksdr.github.com/Documentation/main.html "HTML")
+Full REDHAWK Manual: [PDF](http://sourceforge.net/projects/redhawksdr/files/redhawk-doc/1.8.5/REDHAWK_Manual_v1.8.5.pdf/download "PDF") [HTML](http://redhawksdr.github.com/Documentation/main.html "HTML")
  
 ## Copyrights
 
