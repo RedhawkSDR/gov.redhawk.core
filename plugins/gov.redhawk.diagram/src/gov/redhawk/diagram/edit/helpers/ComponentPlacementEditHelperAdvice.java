@@ -122,7 +122,9 @@ public abstract class ComponentPlacementEditHelperAdvice< CI extends ComponentIn
 					// Panic! Just choose first implementation
 					if (!spd.getImplementation().isEmpty()) {
 						implId = spd.getImplementation().get(0).getId();
-					}
+					} else {
+						throw new ExecutionException("SPD implementation not available for " + spd.getName() + " ID: " + spd.getId());
+					} 
 				}
 				inst.setImplID(implId);
 				
