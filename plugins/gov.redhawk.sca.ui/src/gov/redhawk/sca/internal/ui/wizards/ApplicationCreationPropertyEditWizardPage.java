@@ -87,6 +87,19 @@ public class ApplicationCreationPropertyEditWizardPage extends WizardPage {
 			}
 		});
 
+		// ref #309 & #17  Restoring the previously set properties automatically was confusing
+		// adding a button so users can do this themselves.
+		final Button restoreLastButton = new Button(main, SWT.PUSH);
+		restoreLastButton.setText("Restore Last");
+		restoreLastButton.setToolTipText("Restore waveform properties from previous launch");
+		restoreLastButton.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				restoreProperties();
+			}
+		});
+		restoreLastButton.setLayoutData(GridDataFactory.swtDefaults().align(SWT.END, SWT.FILL).create());
+		
 		final Button resetButton = new Button(main, SWT.PUSH);
 		resetButton.setText("Reset");
 		resetButton.setToolTipText("Reset all the property values to default");
@@ -140,8 +153,6 @@ public class ApplicationCreationPropertyEditWizardPage extends WizardPage {
 					for (final ScaAbstractProperty< ? > prop : localWaveform.fetchProperties(monitor)) {
 						prop.setIgnoreRemoteSet(true);
 					}
-
-					restoreProperties();
 
 					monitor.done();
 				}

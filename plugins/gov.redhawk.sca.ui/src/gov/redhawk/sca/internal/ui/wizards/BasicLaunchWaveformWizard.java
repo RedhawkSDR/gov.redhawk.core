@@ -102,18 +102,19 @@ public class BasicLaunchWaveformWizard extends Wizard {
 		final SoftwareAssembly sad = this.waveformPage.getSoftwareAssembly();
 		final boolean autoStart = this.waveformPage.isAutoStart();
 		final String name = this.waveformPage.getWaveformName().trim();
-		final IWizardPage endingPage = getContainer().getCurrentPage();
 		final DataType[] configProps;
 		final DeviceAssignmentType[] deviceAssn;
-		if (endingPage instanceof DeviceAssignmentWizardPage) {
+		
+		if (this.propertyValuePage.getCreationProperties() == null) {
+			configProps = new DataType[0];
+		} else {
 			configProps = this.propertyValuePage.getCreationProperties();
-			deviceAssn = this.deviceAssignmentPage.getDeviceAssignment();
-		} else if (endingPage instanceof ApplicationCreationPropertyEditWizardPage) {
-			configProps = this.propertyValuePage.getCreationProperties();
+		}
+		
+		if (this.deviceAssignmentPage.getDeviceAssignment() == null) {
 			deviceAssn = new DeviceAssignmentType[0];
 		} else {
-			configProps = new DataType[0];
-			deviceAssn = new DeviceAssignmentType[0];
+			deviceAssn = this.deviceAssignmentPage.getDeviceAssignment();
 		}
 
 		final IWorkbenchPage activePage = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
