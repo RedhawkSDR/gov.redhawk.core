@@ -238,6 +238,30 @@ public class ScaComponentImpl extends ScaAbstractComponentImpl<Resource> impleme
 	public boolean isSetDevices() {
 		return devices != null && ((InternalEList.Unsettable<?>)devices).isSet();
 	}
+	
+	/**
+	 * @since 18.0
+	 */
+	public static String convertIdentifierToInstantiationID(String id) {
+		// END GENERATED CODE
+		if (id != null) {
+			if (id.length() >= DceUuidUtil.DCE_UUID_LENGTH) {
+				String dceString = id.substring(0, DceUuidUtil.DCE_UUID_LENGTH);
+				if (DceUuidUtil.isValid(dceString)) {
+					return dceString;
+				}
+			}
+			int index = id.indexOf(':');
+			if (index > 0) {
+				return id.substring(0, index);
+			} else {
+				return id;
+			}
+		} else {
+			return id;
+		}
+		// BEGIN GENERATED CODE
+	}
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -246,22 +270,7 @@ public class ScaComponentImpl extends ScaAbstractComponentImpl<Resource> impleme
 	 */
 	public String getInstantiationIdentifier() {
 		// END GENERATED CODE
-		if (identifier != null) {
-			if (identifier.length() >= DceUuidUtil.DCE_UUID_LENGTH) {
-				String dceString = identifier.substring(0, DceUuidUtil.DCE_UUID_LENGTH);
-				if (DceUuidUtil.isValid(dceString)) {
-					return dceString;
-				}
-			}
-			int index = identifier.indexOf(':');
-			if (index > 0) {
-				return identifier.substring(0, index);
-			} else {
-				return identifier;
-			}
-		} else {
-			return identifier;
-		}
+		return convertIdentifierToInstantiationID(identifier);
 		// BEGIN GENERATED CODE
 	}
 
