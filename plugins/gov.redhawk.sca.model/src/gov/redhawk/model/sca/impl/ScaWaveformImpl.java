@@ -1639,7 +1639,7 @@ public class ScaWaveformImpl extends ScaPropertyContainerImpl<Application, Softw
 		// END GENERATED CODE
 		Application waveform = fetchNarrowedObject(null);
 		if (waveform == null) {
-			throw new IllegalStateException("CORBA Object is Null");
+			return;
 		}
 		waveform.configure(configProperties);
 		fetchProperties(null);
