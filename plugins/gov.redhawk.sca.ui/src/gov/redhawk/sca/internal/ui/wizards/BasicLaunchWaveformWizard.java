@@ -28,7 +28,6 @@ import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.dialogs.IDialogSettings;
 import org.eclipse.jface.operation.IRunnableWithProgress;
-import org.eclipse.jface.wizard.IWizardPage;
 import org.eclipse.jface.wizard.Wizard;
 import org.eclipse.swt.SWT;
 import org.eclipse.ui.IWorkbenchPage;
@@ -83,15 +82,11 @@ public class BasicLaunchWaveformWizard extends Wizard {
 		super.addPage(this.deviceAssignmentPage);
 	}
 
-	@Override
-	public IWizardPage getNextPage(final IWizardPage page) {
-		if (page.equals(this.waveformPage)) {
-			this.propertyValuePage.init(this.waveformPage.getSoftwareAssembly());
-			this.deviceAssignmentPage.init(this.waveformPage.getSoftwareAssembly());
-		}
-		return super.getNextPage(page);
+	protected void reinitalizePages() {
+		this.propertyValuePage.init(this.waveformPage.getSoftwareAssembly());
+		this.deviceAssignmentPage.init(this.waveformPage.getSoftwareAssembly());
 	}
-
+	
 	public ScaDomainManager getDomMgr() {
 		return this.domMgr;
 	}
