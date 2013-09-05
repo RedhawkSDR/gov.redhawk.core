@@ -173,6 +173,9 @@ public class DomainsDialog extends Dialog {
 
 			@Override
 			public void run() {
+				if (label.isDisposed()) {
+					return;
+				}
 				FontData fontData = label.getFont().getFontData()[0];
 				font = new Font(label.getDisplay(), new FontData(fontData
 						.getName(), fontData.getHeight(), SWT.NORMAL));
@@ -621,6 +624,9 @@ public class DomainsDialog extends Dialog {
 	}
 
 	public void checkHyperlinkEnabled(ScaDomainManager domain) {
+		if (this.getShell() == null || this.getShell().isDisposed() || !this.getShell().isVisible()) {
+			return;
+		}
 		if (domain == null) {
 			enableHyperlink(LinkType.ALL, false);
 		} else {

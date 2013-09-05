@@ -12,6 +12,7 @@
 package gov.redhawk.sca;
 
 import gov.redhawk.model.sca.DomainConnectionException;
+import gov.redhawk.model.sca.Properties;
 import gov.redhawk.model.sca.RefreshDepth;
 import gov.redhawk.model.sca.ScaDocumentRoot;
 import gov.redhawk.model.sca.ScaDomainManager;
@@ -19,6 +20,10 @@ import gov.redhawk.model.sca.ScaDomainManagerRegistry;
 import gov.redhawk.model.sca.ScaFactory;
 import gov.redhawk.model.sca.ScaPackage;
 import gov.redhawk.model.sca.commands.ScaModelCommand;
+import gov.redhawk.model.sca.services.IScaObjectLocator;
+import gov.redhawk.sca.compatibility.CompatibilityUtil;
+import gov.redhawk.sca.compatibility.ICompatibilityUtil;
+import gov.redhawk.sca.internal.ScaDomainRegistryObjectLocator;
 import gov.redhawk.sca.preferences.ScaPreferenceConstants;
 import gov.redhawk.sca.preferences.ScaPreferenceInitializer;
 import gov.redhawk.sca.properties.IPropertiesProviderRegistry;
@@ -38,6 +43,9 @@ import org.eclipse.core.runtime.Plugin;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.core.runtime.preferences.InstanceScope;
+import org.eclipse.emf.common.notify.Adapter;
+import org.eclipse.emf.common.notify.Notification;
+import org.eclipse.emf.common.notify.impl.AdapterImpl;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.util.EcoreUtil;
@@ -53,6 +61,8 @@ import org.omg.CosNaming.NamingContextExtHelper;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.FrameworkUtil;
+import org.osgi.framework.ServiceRegistration;
+import org.osgi.util.tracker.ServiceTracker;
 
 import CF.DomainManagerHelper;
 
@@ -89,10 +99,109 @@ public class ScaPlugin extends Plugin {
 
 	private TransactionalEditingDomain editingDomain;
 
+	private ServiceRegistration<IScaObjectLocator> serviceReg;
+	
+	private ServiceTracker<ICompatibilityUtil, ICompatibilityUtil> compatibilityUtil;
+
+	private Adapter propListener = new AdapterImpl() {
+		public void notifyChanged(Notification msg) {
+			if (msg.getFeatureID(Properties.class) == ScaPackage.PROPERTIES__PROPERTY) {
+				switch (msg.getEventType()) {
+				case Notification.SET:
+				case Notification.ADD:
+					saveDomainManagerRegistryResource();
+					break;
+				}
+			}
+		};
+	};
+
+	private Adapter domainManagerListener = new AdapterImpl() {
+		public void notifyChanged(Notification msg) {
+			switch (msg.getFeatureID(ScaDomainManagerRegistry.class)) {
+			case ScaPackage.SCA_DOMAIN_MANAGER__AUTO_CONNECT:
+			case ScaPackage.SCA_DOMAIN_MANAGER__DATA_PROVIDERS_ENABLED:
+			case ScaPackage.SCA_DOMAIN_MANAGER__NAME:
+				saveDomainManagerRegistryResource();
+				break;
+			}
+		};
+	};
+
+
+	private Adapter domainManagerRegistrylistener = new AdapterImpl() {
+		public void notifyChanged(Notification msg) {
+			if (msg.getFeatureID(ScaDomainManagerRegistry.class) == ScaPackage.SCA_DOMAIN_MANAGER_REGISTRY__DOMAINS) {
+				switch (msg.getEventType()) {
+				case Notification.ADD:
+				case Notification.ADD_MANY:
+					saveDomainManagerRegistryResource();
+					ScaDomainManager domain = (ScaDomainManager) msg.getNewValue();
+					addDomainManagerPropertiesListeners(domain);
+					break;
+				case Notification.REMOVE:
+				case Notification.REMOVE_MANY:
+					saveDomainManagerRegistryResource();
+					domain = (ScaDomainManager) msg.getOldValue();
+					removeDomainManagerPropertiesListeners(domain);
+					break;
+				}
+			}
+		};
+	};
+
 	/**
 	 * The constructor.
 	 */
 	public ScaPlugin() {
+	}
+
+	/**
+	 * @since 6.1
+	 */
+	protected void removeDomainManagerPropertiesListeners(ScaDomainManager domain) {
+		Properties props = domain.getConnectionPropertiesContainer();
+		props.eAdapters().remove(propListener);
+		domain.eAdapters().remove(this.domainManagerListener);
+	}
+
+	/**
+	 * @since 6.1
+	 */
+	protected void addDomainManagerPropertiesListeners(ScaDomainManager domain) {
+		//Listen for connection properties changes
+		Properties props = domain.getConnectionPropertiesContainer();
+		if (!props.eAdapters().contains(propListener)) {
+			System.err.println("ADD PROPERTIES LISTENER");
+			props.eAdapters().add(propListener);
+		}
+		//Listen for changes to other properties, such as domain name, auto-connect, etc.
+		if (!domain.eAdapters().contains(this.domainManagerListener)) {
+			System.err.println("ADD DOMAIN MANAGER LISTENER");
+			domain.eAdapters().add(this.domainManagerListener);
+		}
+	}
+
+	private void saveDomainManagerRegistryResource() {
+		if (this.scaDomainManagerRegistry != null) {
+			ScaModelCommand.execute(this.scaDomainManagerRegistry, new ScaModelCommand() {
+
+				public void execute() {
+					if (registryResource != null) {
+						Resource resource = ScaPlugin.this.registryResource;
+						//ScaPlugin.this.registryResource = null;
+
+						if (resource != null) {
+							try {
+								resource.save(null);
+							} catch (IOException e) {
+								getLog().log(new Status(Status.ERROR, ScaPlugin.getPluginId(), "Failed to save Domain connections.", e));
+							}
+						}
+					}
+				}
+			});
+		}
 	}
 
 	/*
@@ -109,6 +218,9 @@ public class ScaPlugin extends Plugin {
 		super.start(context);
 		ScaPlugin.bundleContext = context;
 		ScaPlugin.plugin = this;
+		this.serviceReg = context.registerService(IScaObjectLocator.class, new ScaDomainRegistryObjectLocator(), null);
+		this.compatibilityUtil = new ServiceTracker<ICompatibilityUtil, ICompatibilityUtil>(getBundle().getBundleContext(), ICompatibilityUtil.class, null);
+		this.compatibilityUtil.open(true);
 	}
 
 	/*
@@ -148,6 +260,18 @@ public class ScaPlugin extends Plugin {
 	@Override
 	public void stop(final BundleContext context) throws Exception {
 		try {
+			if (this.compatibilityUtil != null) {
+				this.compatibilityUtil.close();
+				this.compatibilityUtil = null;
+			}
+			if (this.serviceReg != null) {
+				try {
+					this.serviceReg.unregister();
+				} catch (final Exception e) {
+					// PASS
+				}
+				this.serviceReg = null;
+			}
 			ScaPlugin.plugin = null;
 			ScaPlugin.bundleContext = null;
 			if (this.scaDomainManagerRegistry != null) {
@@ -155,20 +279,8 @@ public class ScaPlugin extends Plugin {
 
 					@Override
 					public void execute() {
-						if (registryResource != null) {
-							Resource resource = ScaPlugin.this.registryResource;
-							ScaPlugin.this.registryResource = null;
-
-							if (resource != null) {
-								try {
-									resource.save(null);
-								} catch (IOException e) {
-									getLog().log(new Status(Status.ERROR, ScaPlugin.getPluginId(), "Failed to save Domain connections.", e));
-								}
-							}
-						}
-
 						ScaDomainManagerRegistry registry = scaDomainManagerRegistry;
+						registry.eAdapters().clear();
 						registry.dispose();
 
 						scaDomainManagerRegistry = null;
@@ -206,13 +318,21 @@ public class ScaPlugin extends Plugin {
 	 * @since 3.0
 	 */
 	public ScaDomainManagerRegistry getDomainManagerRegistry() {
-		if (this.scaDomainManagerRegistry == null) {
+		return getDomainManagerRegistry(false, null);
+	}
+	
+	/**
+	 * @since 6.1
+	 */
+	public ScaDomainManagerRegistry getDomainManagerRegistry(boolean forceReload, Object context) {
+		//Force reload 
+		if (this.scaDomainManagerRegistry == null || forceReload) {
 			synchronized (this) {
 				if (this.scaDomainManagerRegistry == null) { // SUPPRESS CHECKSTYLE DoubleCheck
 					this.editingDomain = TransactionalEditingDomain.Registry.INSTANCE.getEditingDomain(ScaPlugin.EDITING_DOMAIN_ID);
 					this.scaModelResourceSet = this.editingDomain.getResourceSet();
 
-					loadScaModel();
+					loadScaModel(context);
 
 					connectOnStartup();
 				}
@@ -220,12 +340,23 @@ public class ScaPlugin extends Plugin {
 		}
 		return this.scaDomainManagerRegistry;
 	}
+	
+	/**
+	 * @since 6.1
+	 */
+	public ICompatibilityUtil getCompatibilityUtil() {
+		ICompatibilityUtil retVal = this.compatibilityUtil.getService();
+		if (retVal == null) {
+			return new CompatibilityUtil();
+		}
+		return retVal;
+	}
 
-	private void loadScaModel() {
+	private void loadScaModel(Object context) {
 		try {
-			final URI fileUri = getStateLocation().append("domains.sca").toFile().toURI();
+			final URI fileUri = getStateLocation().append(ScaPlugin.plugin.getCompatibilityUtil().getUserSpecificPath(context)).append("domains.sca").toFile().toURI();
 			final org.eclipse.emf.common.util.URI uri = org.eclipse.emf.common.util.URI.createURI(fileUri.toString());
-
+			System.err.println("Domain persistence URL: " + uri.toString());
 			try {
 				this.registryResource = this.scaModelResourceSet.getResource(uri, true);
 			} catch (final Exception e) {
@@ -239,7 +370,7 @@ public class ScaPlugin extends Plugin {
 			// the -noData option is specified. Therefore we will
 			// load into memory
 			this.registryResource = this.scaModelResourceSet.createResource(org.eclipse.emf.common.util.URI.createURI("virtual://instanceDomains.sca"),
-			        ScaPackage.eCONTENT_TYPE);
+					ScaPackage.eCONTENT_TYPE);
 			getLog().log(new Status(IStatus.WARNING, ScaPlugin.getPluginId(), "Using memory store for sca domains.  Will not presist domain connections.", e1));
 		}
 
@@ -250,10 +381,27 @@ public class ScaPlugin extends Plugin {
 				@Override
 				public void execute() {
 					ScaPlugin.this.scaDomainManagerRegistry = ScaPlugin.initScaResource(ScaPlugin.this.registryResource);
+					addDomainManagerListeners();
+					addDomainManagerRegistryListener();
 				}
 			});
 
+		} else {
+			addDomainManagerListeners();
+			addDomainManagerRegistryListener();
 		}
+	}
+
+	
+
+	private void addDomainManagerListeners() {
+		for (ScaDomainManager domain : this.scaDomainManagerRegistry.getDomains()) {
+			addDomainManagerPropertiesListeners(domain);
+		}
+	}
+
+	private void addDomainManagerRegistryListener() {
+		this.scaDomainManagerRegistry.eAdapters().add(this.domainManagerRegistrylistener );
 	}
 
 	private static ScaDomainManagerRegistry initScaResource(final Resource resource) {
@@ -389,8 +537,8 @@ public class ScaPlugin extends Plugin {
 			orbName = name;
 		}
 
-		 NamingContextExt rootContext = null;
-		 org.omg.CORBA.Object object = null;
+		NamingContextExt rootContext = null;
+		org.omg.CORBA.Object object = null;
 
 		try {
 			rootContext = NamingContextExtHelper.narrow(session.getOrb().string_to_object(nameServiceRef));

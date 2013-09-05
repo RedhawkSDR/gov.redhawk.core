@@ -69,6 +69,10 @@ public class ScaExplorerSingleDomain extends ScaExplorer {
 
 	private static IPreferenceStore prefs;
 
+	public ScaExplorerSingleDomain() {
+
+	}
+
 	private AdapterImpl domainChangeAdapter = new AdapterImpl() {
 		@Override
 		public void notifyChanged(Notification msg) {
@@ -84,16 +88,12 @@ public class ScaExplorerSingleDomain extends ScaExplorer {
 								setActiveDomain(registry.getDomains().get(0).getName());
 							} else {
 								setActiveDomain("");
-								if (dialog != null && dialog.getShell().isVisible()) {
-									dialog.checkHyperlinkEnabled(null);
-								}
+								dialog.checkHyperlinkEnabled(null);
 							}
 						} else {
 							if (registry.getDomains().size() == 0) {
 								setActiveDomain("");
-								if (dialog != null && dialog.getShell().isVisible()) {
-									dialog.checkHyperlinkEnabled(null);
-								}
+								dialog.checkHyperlinkEnabled(null);
 							}
 						}
 						break;
@@ -101,10 +101,7 @@ public class ScaExplorerSingleDomain extends ScaExplorer {
 						if (prefs.getBoolean(ScaSingleDomainPreferenceConstants.SCA_SET_NEW_DOMAIN_ACTIVE)) {
 							ScaDomainManager domainAdded = (ScaDomainManager) msg.getNewValue();
 							setActiveDomain(domainAdded.getName());
-							if (dialog != null && !dialog.getShell().isDisposed() && dialog.getShell().isVisible()) {
-								dialog.checkHyperlinkEnabled(domainAdded);
-							}
-
+							dialog.checkHyperlinkEnabled(domainAdded);
 						}
 						break;
 					default:
@@ -156,8 +153,9 @@ public class ScaExplorerSingleDomain extends ScaExplorer {
 						@Override
 						public void run() {
 							fillToolBar(activeDomain.getName().trim().equals("") ? "NO ACTIVE DOMAIN" : activeDomain.getName());
-							viewer.setInput(activeDomain);
 							getViewSite().getActionBars().updateActionBars();
+							viewer.setInput(activeDomain);
+							viewer.refresh(true);
 						}
 
 					});
@@ -174,9 +172,7 @@ public class ScaExplorerSingleDomain extends ScaExplorer {
 					});
 				}
 			}
-			if (dialog != null && dialog.getShell() != null && !dialog.getShell().isDisposed() && dialog.getShell().isVisible()) {
-				dialog.checkHyperlinkEnabled(getActiveDomain());
-			}
+			dialog.checkHyperlinkEnabled(getActiveDomain());
 		}
 	};
 
@@ -269,12 +265,6 @@ public class ScaExplorerSingleDomain extends ScaExplorer {
 
 	@Override
 	protected CommonViewer createCommonViewerObject(final Composite aParent) {
-		prefs = ScaUiPlugin.getDefault().getScaPreferenceStore();
-		ScaDomainManagerRegistry registry = ScaPlugin.getDefault().getDomainManagerRegistry();
-		if (!registry.eAdapters().contains(domainChangeAdapter)) {
-			registry.eAdapters().add(domainChangeAdapter);
-		}
-		prefs.addPropertyChangeListener(activeDomainListener);
 		CommonViewer retVal = super.createCommonViewerObject(aParent);
 		this.viewer = retVal;
 		return retVal;
@@ -284,6 +274,29 @@ public class ScaExplorerSingleDomain extends ScaExplorer {
 	public void init(IViewSite site) throws PartInitException {
 		super.init(site);
 		fillToolBar("");
+
+		/*
+		 * Force reloading of domain manager registry from UI thread for RAP, so
+		 * domain settings will be persisted in a user-specific location. The user Principal
+		 * can be obtained only from the UI thread.
+		 */
+		if (SWT.getPlatform().startsWith("rap")) {
+			ScaPlugin.getDefault().getDomainManagerRegistry(true, site.getShell().getDisplay());
+		}
+
+		prefs = ScaUiPlugin.getDefault().getScaPreferenceStore();
+		ScaDomainManagerRegistry registry = ScaPlugin.getDefault().getDomainManagerRegistry();
+		if (!registry.eAdapters().contains(domainChangeAdapter)) {
+			registry.eAdapters().add(domainChangeAdapter);
+		}
+		prefs.addPropertyChangeListener(activeDomainListener);
+		String activeDomainPref = prefs.getString(ScaSingleDomainPreferenceConstants.SCA_ACTIVE_DOMAIN);
+		if (activeDomainPref == null || "".equals(activeDomainPref)) {
+			prefs.setToDefault(ScaSingleDomainPreferenceConstants.SCA_ACTIVE_DOMAIN);
+		} else {
+			setActiveDomain(activeDomainPref);
+		}
+
 		Principal user = CompatibilityUtil.getUserPrincipal(site.getShell().getDisplay());
 		//TODO Create or retrieve user-specific preferences node, for persisting domain connection info
 		//TODO TEMP code for confirming cert presence while testing. Remove after implementation of cert-based user data persistence
