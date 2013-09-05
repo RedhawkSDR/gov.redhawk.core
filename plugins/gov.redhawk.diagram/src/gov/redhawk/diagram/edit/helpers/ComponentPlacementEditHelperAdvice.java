@@ -13,6 +13,7 @@
 // BEGIN GENERATED CODE
 package gov.redhawk.diagram.edit.helpers;
 
+import gov.redhawk.diagram.activator.PluginActivator;
 import gov.redhawk.sca.util.PluginUtil;
 import mil.jpeojtrs.sca.partitioning.ComponentFile;
 import mil.jpeojtrs.sca.partitioning.ComponentFileRef;
@@ -26,6 +27,8 @@ import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.gmf.runtime.common.core.command.CommandResult;
@@ -33,6 +36,7 @@ import org.eclipse.gmf.runtime.common.core.command.ICommand;
 import org.eclipse.gmf.runtime.emf.commands.core.command.AbstractTransactionalCommand;
 import org.eclipse.gmf.runtime.emf.type.core.edithelper.AbstractEditHelperAdvice;
 import org.eclipse.gmf.runtime.emf.type.core.requests.ConfigureRequest;
+import org.eclipse.ui.statushandlers.StatusManager;
 
 /**
  * @since 3.0
@@ -99,7 +103,7 @@ public abstract class ComponentPlacementEditHelperAdvice< CI extends ComponentIn
 
 			final SoftPkg spd = getSoftPkg();
 			if (spd == null) {
-				return CommandResult.newErrorCommandResult("Invalid SPD refernce.");
+				return CommandResult.newErrorCommandResult("Invalid SPD reference.");
 			}
 
 			// See if we have to add a new <componentfile>
@@ -119,12 +123,14 @@ public abstract class ComponentPlacementEditHelperAdvice< CI extends ComponentIn
 				// Set the implementation ID, this is mainly used for local debugging and isn't saved to the file.
 				String implId = getImplementationID();
 				if (implId == null) {
-					// Panic! Just choose first implementation
-					if (!spd.getImplementation().isEmpty()) {
+					if (!spd.getImplementation().isEmpty()) { // Panic! Just choose first implementation
 						implId = spd.getImplementation().get(0).getId();
 					} else {
-						throw new ExecutionException("SPD implementation not available for " + spd.getName() + " ID: " + spd.getId());
-					} 
+						StatusManager.getManager().handle(new Status(IStatus.ERROR, PluginActivator.ID,
+							spd.getName() + " Component has no implementation. ID: " + spd.getId()),
+					        StatusManager.LOG | StatusManager.SHOW);
+						return CommandResult.newErrorCommandResult("No SPD implementation available for " + spd.getName());
+					}
 				}
 				inst.setImplID(implId);
 				
