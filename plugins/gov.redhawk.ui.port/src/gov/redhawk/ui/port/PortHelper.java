@@ -23,6 +23,9 @@ import org.eclipse.core.commands.ParameterizedCommand;
 import org.eclipse.core.commands.common.CommandException;
 import org.eclipse.core.expressions.IEvaluationContext;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
+import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.ui.IWorkbenchPartSite;
 import org.eclipse.ui.commands.ICommandService;
 import org.eclipse.ui.handlers.IHandlerService;
@@ -83,12 +86,19 @@ public class PortHelper {
 	 * @param monitor Monitor to report status to, may be null.
 	 * @since 5.1
 	 */
-	public static void refreshPort(IRefreshable refreshable, IProgressMonitor monitor) {
-		try {
-			refreshable.refresh(null, RefreshDepth.FULL);
-		} catch (InterruptedException e) {
-			// PASS - ignore
-		}
+	public static void refreshPort(final IRefreshable refreshable, IProgressMonitor monitor) {
+		new Job("Refreshing Port...") {
+			@Override
+			protected IStatus run(IProgressMonitor monitor) {
+				try {
+					refreshable.refresh(null, RefreshDepth.FULL);
+				} catch (InterruptedException e) {
+					// PASS - ignore
+				}
+				return Status.OK_STATUS;
+			}
+
+		} .schedule();
 	}
 
 	/**
