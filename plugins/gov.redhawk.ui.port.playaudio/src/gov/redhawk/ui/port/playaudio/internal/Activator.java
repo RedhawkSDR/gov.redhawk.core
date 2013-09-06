@@ -12,6 +12,7 @@
 package gov.redhawk.ui.port.playaudio.internal;
 
 import gov.redhawk.model.sca.ScaUsesPort;
+import gov.redhawk.ui.port.PortHelper;
 import gov.redhawk.ui.port.playaudio.views.View;
 
 import java.util.Map;
@@ -111,6 +112,7 @@ public class Activator extends AbstractUIPlugin {
 					try {
 						view = (View) page.showView(View.ID);
 						view.playNewPort(portList);
+						PortHelper.refreshPorts(portList.keySet(), monitor);
 					} catch (final PartInitException e) {
 						getLog().log(new Status(IStatus.ERROR, Activator.PLUGIN_ID, "Error finding Play Port View", e));
 					}

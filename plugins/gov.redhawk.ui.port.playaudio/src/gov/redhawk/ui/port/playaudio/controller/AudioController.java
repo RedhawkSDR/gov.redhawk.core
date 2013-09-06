@@ -19,6 +19,7 @@ import gov.redhawk.model.sca.ScaUsesPort;
 import gov.redhawk.model.sca.ScaWaveform;
 import gov.redhawk.model.sca.commands.ScaModelCommand;
 import gov.redhawk.ui.port.Activator;
+import gov.redhawk.ui.port.PortHelper;
 import gov.redhawk.ui.port.playaudio.internal.corba.CorbaReceiver;
 
 import java.util.ArrayList;
@@ -214,6 +215,7 @@ public class AudioController {
 			if (port != null) {
 				try {
 					this.audioReceiver.disconnect(port.getIor(), false);
+					PortHelper.refreshPort(port, null);
 				} catch (final SystemException s) {
 					Activator.logError("Exception trying to disconnect port", s);
 				}
@@ -228,6 +230,7 @@ public class AudioController {
 				if (this.audioReceiver != null) {
 					try {
 						this.audioReceiver.disconnect(port.getIor(), false);
+						PortHelper.refreshPort(port, null);
 					} catch (final SystemException s) {
 						Activator.logError("Exception trying to disconnect port", s);
 					}
@@ -260,7 +263,7 @@ public class AudioController {
 			ScaModelCommand.execute(entry.getKey(), new ScaModelCommand() {
 
 				public void execute() {
-					entry.getKey().eContainer().eContainer().eAdapters().remove(entry.getValue());     
+					entry.getKey().eContainer().eContainer().eAdapters().remove(entry.getValue());
                 }
 				
 			});
