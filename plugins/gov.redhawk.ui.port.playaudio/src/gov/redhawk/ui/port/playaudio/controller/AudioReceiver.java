@@ -17,6 +17,7 @@ import gov.redhawk.bulkio.util.StreamSRIUtil;
 import gov.redhawk.model.sca.ScaPackage;
 import gov.redhawk.model.sca.ScaUsesPort;
 import gov.redhawk.model.sca.commands.ScaModelCommand;
+import gov.redhawk.ui.port.PortHelper;
 import gov.redhawk.ui.port.playaudio.internal.Activator;
 
 import java.beans.PropertyChangeEvent;
@@ -468,6 +469,7 @@ public class AudioReceiver extends AbstractBulkIOPort implements dataShortOperat
 			@Override
 			public void run() throws Exception {
 				disconnect();
+				PortHelper.refreshPort(port, null);
 			}
 
 			@Override

@@ -11,6 +11,10 @@
  */
 package gov.redhawk.ui.port;
 
+import gov.redhawk.model.sca.IRefreshable;
+import gov.redhawk.model.sca.RefreshDepth;
+
+import java.util.Collection;
 import java.util.Map;
 
 import org.eclipse.core.commands.Command;
@@ -18,6 +22,7 @@ import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ParameterizedCommand;
 import org.eclipse.core.commands.common.CommandException;
 import org.eclipse.core.expressions.IEvaluationContext;
+import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.ui.IWorkbenchPartSite;
 import org.eclipse.ui.commands.ICommandService;
 import org.eclipse.ui.handlers.IHandlerService;
@@ -41,7 +46,7 @@ public class PortHelper {
 	}
 
 	public static boolean executeCommand(final IWorkbenchPartSite site, final String commandId, final Map<String, String> paramMap, final String varName,
-	        final Object variable) throws CommandException {
+			final Object variable) throws CommandException {
 		final IHandlerService handlerService = (IHandlerService) site.getService(IHandlerService.class);
 		final ICommandService commandService = (ICommandService) site.getService(ICommandService.class);
 		if ((handlerService == null) || (commandService == null)) {
@@ -74,5 +79,29 @@ public class PortHelper {
 		}
 
 		return true;
+	}
+
+	/**
+	 * @param monitor Monitor to report status to, may be null.
+	 * @since 5.1
+	 */
+	public static void refreshPort(IRefreshable refreshable, IProgressMonitor monitor) {
+		try {
+			refreshable.refresh(null, RefreshDepth.FULL);
+		} catch (InterruptedException e) {
+			// PASS - ignore
+		}
+	}
+
+	/**
+	 * @param monitor Monitor to report status to, may be null.
+	 * @since 5.1
+	 */
+	public static void refreshPorts(Collection< ? > ports, IProgressMonitor monitor) {
+		for (Object port : ports) {
+			if (port instanceof IRefreshable) {
+				refreshPort((IRefreshable) port, monitor);
+			}
+		}
 	}
 }

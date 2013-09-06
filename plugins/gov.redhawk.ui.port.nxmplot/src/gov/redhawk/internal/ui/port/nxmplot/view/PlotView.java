@@ -20,6 +20,7 @@ import gov.redhawk.model.sca.ScaService;
 import gov.redhawk.model.sca.ScaUsesPort;
 import gov.redhawk.model.sca.ScaWaveform;
 import gov.redhawk.model.sca.commands.ScaModelCommand;
+import gov.redhawk.ui.port.PortHelper;
 import gov.redhawk.ui.port.nxmplot.AbstractNxmPlotWidget;
 import gov.redhawk.ui.port.nxmplot.CorbaConnectionSettings;
 import gov.redhawk.ui.port.nxmplot.FftSettings;
@@ -160,6 +161,7 @@ public class PlotView extends ViewPart {
 									PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().hideView(PlotView.this);
 								}
 
+								PortHelper.refreshPort(usesPort, monitor);
 							}
 							return Status.OK_STATUS;
 						}

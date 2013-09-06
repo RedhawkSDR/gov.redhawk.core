@@ -18,6 +18,7 @@ import gov.redhawk.model.sca.ScaUsesPort;
 import gov.redhawk.model.sca.provider.ScaItemProviderAdapterFactory;
 import gov.redhawk.sca.util.PluginUtil;
 import gov.redhawk.sca.util.SubMonitor;
+import gov.redhawk.ui.port.PortHelper;
 import gov.redhawk.ui.port.nxmplot.FftSettings;
 import gov.redhawk.ui.port.nxmplot.PlotActivator;
 import gov.redhawk.ui.port.nxmplot.PlotType;
@@ -130,6 +131,7 @@ public class PlotPortHandler extends AbstractHandler {
 								subMonitor.worked(1);
 							}
 						}
+						PortHelper.refreshPorts(elements, subMonitor);
 						factory.dispose();
 						if (name.length() > 0 || tooltip.length() > 0) {
 							Display display = window.getWorkbench().getDisplay();

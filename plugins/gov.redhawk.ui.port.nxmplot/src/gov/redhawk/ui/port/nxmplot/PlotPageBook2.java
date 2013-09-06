@@ -16,6 +16,7 @@ import gov.redhawk.model.sca.IDisposable;
 import gov.redhawk.model.sca.ScaPackage;
 import gov.redhawk.model.sca.ScaUsesPort;
 import gov.redhawk.model.sca.commands.ScaModelCommand;
+import gov.redhawk.ui.port.PortHelper;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -243,6 +244,7 @@ public class PlotPageBook2 extends Composite {
 					source.getInput().eAdapters().remove(listenerAdapter);
 				}
 			});
+			PortHelper.refreshPort(source.getInput(), null);
 		}
 		this.sources.clear();
 	}

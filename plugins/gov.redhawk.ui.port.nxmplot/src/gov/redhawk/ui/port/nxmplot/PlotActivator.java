@@ -1,10 +1,10 @@
 /**
- * This file is protected by Copyright. 
+ * This file is protected by Copyright.
  * Please refer to the COPYRIGHT file distributed with this source distribution.
- * 
+ *
  * This file is part of REDHAWK IDE.
- * 
- * All rights reserved.  This program and the accompanying materials are made available under 
+ *
+ * All rights reserved.  This program and the accompanying materials are made available under
  * the terms of the Eclipse Public License v1.0 which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html.
  */
@@ -13,6 +13,7 @@ package gov.redhawk.ui.port.nxmplot;
 import gov.redhawk.internal.ui.port.nxmplot.view.PlotView;
 import gov.redhawk.internal.ui.port.nxmplot.view.PlotView2;
 import gov.redhawk.model.sca.ScaUsesPort;
+import gov.redhawk.ui.port.PortHelper;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -68,7 +69,7 @@ public class PlotActivator extends AbstractUIPlugin {
 
 	/**
 	 * {@inheritDoc}
-	 * 
+	 *
 	 * @see org.eclipse.ui.plugin.AbstractUIPlugin#start(org.osgi.framework.BundleContext)
 	 */
 	@Override
@@ -78,7 +79,7 @@ public class PlotActivator extends AbstractUIPlugin {
 		plotFactory = new ServiceTracker<INxmPlotWidgetFactory, INxmPlotWidgetFactory>(getBundle().getBundleContext(), INxmPlotWidgetFactory.class, null);
 		plotFactory.open(true);
 	}
-	
+
 	/**
      * @since 3.0
      */
@@ -92,7 +93,7 @@ public class PlotActivator extends AbstractUIPlugin {
 
 	/**
 	 * {@inheritDoc}
-	 * 
+	 *
 	 * @see org.eclipse.ui.plugin.AbstractUIPlugin#stop(org.osgi.framework.BundleContext)
 	 */
 	@Override
@@ -107,7 +108,7 @@ public class PlotActivator extends AbstractUIPlugin {
 
 	/**
 	 * Returns the shared instance.
-	 * 
+	 *
 	 * @return the shared instance
 	 */
 	public static PlotActivator getDefault() {
@@ -118,7 +119,7 @@ public class PlotActivator extends AbstractUIPlugin {
 	 * This will connect to a given port and process the data coming out of it.
 	 * The list passed in must be of either ScaUsesPort or
 	 * CorbaConnectionSettings, anything else will not be processed.
-	 * 
+	 *
 	 * @param portList A list of ScaUsesPorts or CorbaConnectionSettings to plot
 	 * @param fft the settings to be used for FFTing the data before plotting.
 	 *        This may be null if no FFT is desired.
@@ -151,6 +152,7 @@ public class PlotActivator extends AbstractUIPlugin {
 						} else if (!ports2.isEmpty()) {
 							view.createNewPlotTabWithSettings(ports2, fft, sessionId, true, null);
 						}
+						PortHelper.refreshPorts(portList, monitor);
 					} catch (final PartInitException e) {
 						getLog().log(new Status(IStatus.ERROR, PlotActivator.PLUGIN_ID, "Error finding Plot View", e));
 					}
@@ -167,7 +169,7 @@ public class PlotActivator extends AbstractUIPlugin {
 
 	/**
 	 * Adds a plot click listener to this plot.
-	 * 
+	 *
 	 * @param listener the listener to add
 	 * @param sessionId the id of the plot session to listen to
 	 * @since 3.0
@@ -194,7 +196,7 @@ public class PlotActivator extends AbstractUIPlugin {
 
 	/**
 	 * Removes a plot click listener.
-	 * 
+	 *
 	 * @param listener the listener to remove
 	 * @param sessionId the id of the plot session to stop listening to
 	 * @since 3.0
