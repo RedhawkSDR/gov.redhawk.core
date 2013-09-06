@@ -713,26 +713,24 @@ public abstract class ScaAbstractComponentImpl< R extends Resource > extends Sca
 		SubMonitor subMonitor = SubMonitor.convert(monitor, "Fetching ports", 2);
 		internalFetchPorts(subMonitor.newChild(1));
 		ScaPort< ? , ? >[] ports = null;
-        try {
-	        ports = ScaModelCommand.runExclusive(this, new RunnableWithResult.Impl<ScaPort< ? , ? >[]>() {
-
-	        	public void run() {
-	        		setResult(getPorts().toArray(new ScaPort< ? , ? >[getPorts().size()]));
-	            }
-
-	        });
-        } catch (InterruptedException e) {
-	        // PASS
-        }
+		try {
+			ports = ScaModelCommand.runExclusive(this, new RunnableWithResult.Impl<ScaPort< ? , ? >[]>() {
+				public void run() {
+					setResult(getPorts().toArray(new ScaPort< ? , ? >[getPorts().size()]));
+					}
+			});
+		} catch (InterruptedException e) {
+			// PASS
+		}
 		if (ports != null) {
 			SubMonitor portRefresh = subMonitor.newChild(1);
 			portRefresh.beginTask("Refreshing state of ports", ports.length);
 			for (ScaPort< ? , ? > port : ports) {
 				try {
-	                port.refresh(portRefresh.newChild(1), RefreshDepth.SELF);
-                } catch (InterruptedException e) {
-	                // PASS
-                }
+					port.refresh(portRefresh.newChild(1), RefreshDepth.SELF);
+				} catch (InterruptedException e) {
+					// PASS
+				}
 			}
 		}
 		subMonitor.done();
@@ -740,12 +738,12 @@ public abstract class ScaAbstractComponentImpl< R extends Resource > extends Sca
 	}
 
 	private static final EStructuralFeature[] PORTS_GROUP_PATH = {
-	        ScaPackage.Literals.PROFILE_OBJECT_WRAPPER__PROFILE_OBJ,
-	        SpdPackage.Literals.SOFT_PKG__DESCRIPTOR,
-	        SpdPackage.Literals.DESCRIPTOR__COMPONENT,
-	        ScdPackage.Literals.SOFTWARE_COMPONENT__COMPONENT_FEATURES,
-	        ScdPackage.Literals.COMPONENT_FEATURES__PORTS,
-	        ScdPackage.Literals.PORTS__GROUP
+		ScaPackage.Literals.PROFILE_OBJECT_WRAPPER__PROFILE_OBJ,
+		SpdPackage.Literals.SOFT_PKG__DESCRIPTOR,
+		SpdPackage.Literals.DESCRIPTOR__COMPONENT,
+		ScdPackage.Literals.SOFTWARE_COMPONENT__COMPONENT_FEATURES,
+		ScdPackage.Literals.COMPONENT_FEATURES__PORTS,
+		ScdPackage.Literals.PORTS__GROUP
 	};
 
 	private final VersionedFeature portRevision = new VersionedFeature(this, ScaPackage.Literals.SCA_PORT_CONTAINER__PORTS);
@@ -770,11 +768,6 @@ public abstract class ScaAbstractComponentImpl< R extends Resource > extends Sca
 			}
 
 			FeatureMap portGroup = ScaEcoreUtils.getFeature(this, PORTS_GROUP_PATH);
-			int size = getPorts().size();
-			int groupSize = (portGroup == null) ? 0 : portGroup.size();
-			if (isSetPorts() && size == groupSize) {
-				return;
-			}
 			List<MergePortsCommand.PortData> newPorts = new ArrayList<MergePortsCommand.PortData>();
 			// Load all of the ports
 			final MultiStatus fetchPortsStatus = new MultiStatus(ScaModelPlugin.ID, Status.OK, "Fetch ports status.", null);
