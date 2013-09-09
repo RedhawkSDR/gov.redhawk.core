@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<component id="org.anarres.cpp" version="2">
+    <resource path="src/org/anarres/cpp/Source.java" type="org.anarres.cpp.Source">
+        <filter id="337682486">
+            <message_arguments>
+                <message_argument value="org.anarres.cpp.Source"/>
+            </message_arguments>
+        </filter>
+    </resource>
+</component>
