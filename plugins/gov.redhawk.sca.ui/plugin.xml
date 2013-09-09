@@ -422,17 +422,26 @@
             name="%command.name.2">
       </command>
       <command
+            categoryId="gov.redhawk.ui.commands.category.sca"
             id="gov.redhawk.ui.command.connect"
             name="%command.name.3">
       </command>
       <command
+            categoryId="gov.redhawk.ui.commands.category.sca"
             id="gov.redhawk.ui.command.disconnect"
             name="%command.name.4">
       </command>
       <command
+            categoryId="gov.redhawk.ui.commands.category.sca"
             defaultHandler="gov.redhawk.sca.internal.ui.handlers.NewDomainHandler"
             id="gov.redhawk.ui.command.new_domain"
             name="%command.name.5">
+      </command>
+      <command
+            categoryId="gov.redhawk.ui.commands.category.sca"
+            defaultHandler="gov.redhawk.sca.internal.ui.handlers.InitHandler"
+            id="gov.redhawk.ui.command.resource.initialize"
+            name="Initialize">
       </command>
    </extension>
    <extension
