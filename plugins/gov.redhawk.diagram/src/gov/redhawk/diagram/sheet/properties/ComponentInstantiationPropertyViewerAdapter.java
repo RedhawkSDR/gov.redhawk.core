@@ -73,7 +73,7 @@ public class ComponentInstantiationPropertyViewerAdapter {
 	}
 	
 	/**
-	 * @since 5.1
+	 * @since 6.0
 	 */
 	public TreeViewer getViewer() {
 		return viewer;

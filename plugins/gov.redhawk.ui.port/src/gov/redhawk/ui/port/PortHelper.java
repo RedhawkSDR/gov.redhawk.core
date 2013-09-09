@@ -86,7 +86,7 @@ public class PortHelper {
 
 	/**
 	 * @param monitor Monitor to report status to, may be null.
-	 * @since 5.1
+	 * @since 5.2
 	 */
 	public static void refreshPort(final IRefreshable refreshable, IProgressMonitor monitor) {
 		refreshPort(refreshable, monitor, 0);
@@ -113,7 +113,7 @@ public class PortHelper {
 
 	/**
 	 * @param monitor Monitor to report status to, may be null.
-	 * @since 5.1
+	 * @since 5.2
 	 */
 	public static void refreshPorts(Collection< ? > ports, IProgressMonitor monitor) {
 		for (Object port : ports) {

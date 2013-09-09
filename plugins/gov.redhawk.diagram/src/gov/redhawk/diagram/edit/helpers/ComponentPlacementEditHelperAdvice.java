@@ -46,7 +46,7 @@ public abstract class ComponentPlacementEditHelperAdvice< CI extends ComponentIn
 
 	public static final String CONFIGURE_OPTIONS_SPD_URI = "SPD_URI";
 	/**
-     * @since 5.1
+     * @since 6.0
      */
 	public static final String CONFIGURE_OPTIONS_IMPL_ID = "IMPL_ID";
 	public static final String CONFIGURE_OPTIONS_CP_FILE = "CP_FILE";
@@ -177,8 +177,8 @@ public abstract class ComponentPlacementEditHelperAdvice< CI extends ComponentIn
 		}
 		
 		/**
-         * @since 5.1
-         */
+		 * @since 6.0
+		 * */
 		public String getImplementationID() {
 			Object param = this.request.getParameter(ComponentPlacementEditHelperAdvice.CONFIGURE_OPTIONS_IMPL_ID);
 			if (param instanceof String) {

@@ -17,7 +17,7 @@ import org.eclipse.gmf.runtime.diagram.ui.editparts.IGraphicalEditPart;
 
 /**
  * @since 3.0
- * 
+ * @noimplement This interface is not intended to be implemented by clients.
  */
 public interface IProvidesPortStubEditPart extends IGraphicalEditPart {
 

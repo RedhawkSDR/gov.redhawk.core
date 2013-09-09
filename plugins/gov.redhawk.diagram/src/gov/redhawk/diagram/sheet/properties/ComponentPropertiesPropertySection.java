@@ -42,7 +42,7 @@ public class ComponentPropertiesPropertySection extends AbstractModelerPropertyS
 	}
 	
 	/**
-	 * @since 5.1
+	 * @since 6.0
 	 */
 	protected AdapterFactory createAdapterFactory() {
 		return new ScaPropertiesAdapterFactory();
@@ -68,14 +68,14 @@ public class ComponentPropertiesPropertySection extends AbstractModelerPropertyS
 	}
 	
 	/**
-	 * @since 5.1
+	 * @since 6.0
 	 */
 	public AdapterFactory getAdapterFactory() {
 		return adapterFactory;
 	}
 
 	/**
-	 * @since 5.1
+	 * @since 6.0
 	 */
 	protected TreeViewer createTreeViewer(final Composite parent) {
 		return ScaComponentFactory.createPropertyTable(getWidgetFactory(), parent, SWT.SINGLE, this.adapterFactory);
