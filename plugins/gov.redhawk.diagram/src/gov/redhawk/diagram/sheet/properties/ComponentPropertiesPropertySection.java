@@ -61,7 +61,7 @@ public class ComponentPropertiesPropertySection extends AbstractModelerPropertyS
 	}
 	
 	/**
-	 * @since 5.1
+	 * @since 6.0
 	 */
 	public TreeViewer getViewer() {
 		return adapter.getViewer();
