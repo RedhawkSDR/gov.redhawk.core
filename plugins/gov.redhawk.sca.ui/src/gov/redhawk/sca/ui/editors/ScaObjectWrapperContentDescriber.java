@@ -13,8 +13,6 @@ package gov.redhawk.sca.ui.editors;
 
 import gov.redhawk.model.sca.CorbaObjWrapper;
 import gov.redhawk.model.sca.ProfileObjectWrapper;
-import gov.redhawk.model.sca.ScaAbstractComponent;
-import gov.redhawk.model.sca.ScaWaveform;
 import gov.redhawk.sca.ui.ScaFileStoreEditorInput;
 import gov.redhawk.sca.ui.ScaUI;
 
@@ -95,14 +93,6 @@ public class ScaObjectWrapperContentDescriber implements IScaContentDescriber, I
 			if (obj instanceof CorbaObjWrapper< ? >) {
 				final CorbaObjWrapper< ? > wrapper = (CorbaObjWrapper< ? >) obj;
 				queryParams.put(ScaFileSystemConstants.QUERY_PARAM_WF, wrapper.getIor());
-				if (obj instanceof ScaWaveform) {
-					final ScaWaveform scaWaveform = (ScaWaveform) obj;
-					queryParams.put(ScaFileSystemConstants.QUERY_PARAM_NAME, scaWaveform.name());
-					this.params.put(ScaFileSystemConstants.QUERY_PARAM_WF, scaWaveform.getIor());
-				} else if (obj instanceof ScaAbstractComponent< ? >) {
-					final String name = ((ScaAbstractComponent< ? >) obj).getIdentifier();
-					queryParams.put(ScaFileSystemConstants.QUERY_PARAM_NAME, name);
-				}
 			}
 			uri = uri.trimQuery().appendQuery(QueryParser.createQuery(queryParams));
 		}
