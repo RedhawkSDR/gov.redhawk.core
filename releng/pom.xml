@@ -5,7 +5,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>gov.redhawk.core</groupId>
 	<artifactId>releng</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>1.8.5-SNAPSHOT</version>
 	<packaging>pom</packaging>
 
 	<parent>
