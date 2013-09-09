@@ -23,6 +23,7 @@ import mil.jpeojtrs.sca.partitioning.UsesPortStub;
 import mil.jpeojtrs.sca.sad.Port;
 import mil.jpeojtrs.sca.sad.SadPackage;
 import mil.jpeojtrs.sca.sad.SoftwareAssembly;
+import mil.jpeojtrs.sca.util.ScaEcoreUtils;
 
 import org.eclipse.core.databinding.observable.list.IListChangeListener;
 import org.eclipse.core.databinding.observable.list.IObservableList;
@@ -99,31 +100,48 @@ public class UsesPortStubEditPart extends mil.jpeojtrs.sca.sad.diagram.edit.part
 	}
 
 	@Override
-	protected void addNotationalListeners() {
+	protected void addSemanticListeners() {
+		super.addSemanticListeners();
 		final IEMFListProperty portsValue = EMFProperties.list(FeaturePath.fromList(SadPackage.Literals.SOFTWARE_ASSEMBLY__EXTERNAL_PORTS,
-		        SadPackage.Literals.EXTERNAL_PORTS__PORT));
-		final EObject obj = ((View) this.getModel()).getElement();
-		if (obj != null) {
+			SadPackage.Literals.EXTERNAL_PORTS__PORT));
+		disposeObserver();
+		View view = ((View) this.getModel());
+		if (view.isSetElement()) {
+			final EObject obj = view.getElement();
+			if (obj != null) {
+				final SoftwareAssembly sad = ScaEcoreUtils.getEContainerOfType(obj, SoftwareAssembly.class);
+				if (sad != null) {
+					this.observer = portsValue.observe(sad);
+					this.observer.addListChangeListener(new IListChangeListener() {
+						public void handleListChange(final ListChangeEvent event) {
+							final WorkbenchJob job = new WorkbenchJob("") {
 
-			final SoftwareAssembly sad = getSoftwareAssembly(obj);
-
-			this.observer = portsValue.observe(sad);
-			this.observer.addListChangeListener(new IListChangeListener() {
-				public void handleListChange(final ListChangeEvent event) {
-					final WorkbenchJob job = new WorkbenchJob("") {
-
-						@Override
-						public IStatus runInUIThread(final IProgressMonitor monitor) {
-							updateColor();
-							return Status.OK_STATUS;
+								@Override
+								public IStatus runInUIThread(final IProgressMonitor monitor) {
+									updateColor();
+									return Status.OK_STATUS;
+								}
+							};
+							job.schedule();
 						}
-					};
-					job.schedule();
+					});
+					updateColor();
 				}
-			});
+			}
 		}
-		updateColor();
-		super.addNotationalListeners();
+	}
+
+	private void disposeObserver() {
+		if (this.observer != null) {
+			this.observer.dispose();
+			this.observer = null;
+		}
+	}
+
+	@Override
+	protected void removeSemanticListeners() {
+		super.removeSemanticListeners();
+		disposeObserver();
 	}
 
 	private SoftwareAssembly getSoftwareAssembly(final EObject object) {
@@ -140,26 +158,29 @@ public class UsesPortStubEditPart extends mil.jpeojtrs.sca.sad.diagram.edit.part
 	}
 
 	private void updateColor() {
-		final UsesPortStub port = (UsesPortStub) ((View) this.getModel()).getElement();
-		final EObject obj = ((View) this.getModel()).getElement();
-		if (obj != null) {
-			final SoftwareAssembly sad = getSoftwareAssembly(obj);
-			boolean found = false;
-			if (sad != null && sad.getExternalPorts() != null) {
-				for (final Port externalPort : sad.getExternalPorts().getPort()) {
-					if (externalPort.getComponentInstantiationRef().getInstantiation() == port.eContainer()
-					        && port.getUses().getUsesName().equals(externalPort.getUsesIdentifier())) {
-						found = true;
-						break;
+		View view = (View) this.getModel();
+		if (view.isSetElement()) {
+			final UsesPortStub port = (UsesPortStub) view.getElement();
+			final EObject obj = ((View) this.getModel()).getElement();
+			if (obj != null) {
+				final SoftwareAssembly sad = getSoftwareAssembly(obj);
+				boolean found = false;
+				if (sad != null && sad.getExternalPorts() != null) {
+					for (final Port externalPort : sad.getExternalPorts().getPort()) {
+						if (externalPort.getComponentInstantiationRef().getInstantiation() == port.eContainer()
+							&& port.getUses().getUsesName().equals(externalPort.getUsesIdentifier())) {
+							found = true;
+							break;
+						}
 					}
 				}
-			}
-			if (found) {
-				this.primaryShape.setForegroundColor(getExternalPortForegroundColor());
-				this.primaryShape.setBackgroundColor(getExternalPortBackgroundColor());
-			} else {
-				this.primaryShape.setBackgroundColor(UsesPortStubFigure.getDefaultBackgroundColor());
-				this.primaryShape.setForegroundColor(UsesPortStubFigure.getDefaultForegroundColor());
+				if (found) {
+					this.primaryShape.setForegroundColor(getExternalPortForegroundColor());
+					this.primaryShape.setBackgroundColor(getExternalPortBackgroundColor());
+				} else {
+					this.primaryShape.setBackgroundColor(UsesPortStubFigure.getDefaultBackgroundColor());
+					this.primaryShape.setForegroundColor(UsesPortStubFigure.getDefaultForegroundColor());
+				}
 			}
 		}
 	}
@@ -182,39 +203,12 @@ public class UsesPortStubEditPart extends mil.jpeojtrs.sca.sad.diagram.edit.part
 		return this.editPartHelper.getMATypesForTarget(relationshipType);
 	}
 
-	@Override
-	protected void removeNotationalListeners() {
-		super.removeNotationalListeners();
-		if (this.observer != null) {
-			this.observer.dispose();
-			this.observer = null;
-		}
-	}
-
 	public IFigure basicCreateNodeShape() {
 		return super.createNodeShape();
 	}
 
 	public void basicAddBorderItem(final IFigure borderItemContainer, final IBorderItemEditPart borderItemEditPart) {
 		super.addBorderItem(borderItemContainer, borderItemEditPart);
-	}
-
-	@Override
-	protected void addSemanticListeners() {
-		this.editPartHelper.addSemanticListeners();
-	}
-
-	@Override
-	protected void removeSemanticListeners() {
-		this.editPartHelper.removeSemanticListeners();
-	}
-
-	public void basicAddSemanticListeners() {
-		super.addSemanticListeners();
-	}
-
-	public void basicRemoveSemanticListeners() {
-		super.removeSemanticListeners();
 	}
 
 	@Override

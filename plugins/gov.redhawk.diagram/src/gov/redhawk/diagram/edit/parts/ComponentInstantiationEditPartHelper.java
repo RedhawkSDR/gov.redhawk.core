@@ -74,20 +74,25 @@ public class ComponentInstantiationEditPartHelper {
 	public boolean addFixedChild(final EditPart childEditPart) {
 		if (childEditPart instanceof GraphicalEditPart) {
 			final GraphicalEditPart graphicalEditPart = (GraphicalEditPart) childEditPart;
-			final EObject semanticElement = ((View) graphicalEditPart.getModel()).getElement();
-			if (semanticElement instanceof UsesPortStub) {
-				final BorderItemLocator locator = new CustomBorderItemLocator(this.editPart.getPrimaryShape(), PositionConstants.EAST);
-				this.editPart.getBorderedFigure().getBorderItemContainer().add(graphicalEditPart.getFigure(), locator);
-				return true;
-			} else if (semanticElement instanceof ProvidesPortStub) {
-				final BorderItemLocator locator = new CustomBorderItemLocator(this.editPart.getPrimaryShape(), PositionConstants.WEST);
-				this.editPart.getBorderedFigure().getBorderItemContainer().add(graphicalEditPart.getFigure(), locator);
-				return true;
-			} else if (semanticElement instanceof ComponentSupportedInterfaceStub) {
-				final BorderItemLocator locator = new CustomBorderItemLocator(this.editPart.getPrimaryShape(), PositionConstants.WEST);
-				this.editPart.getBorderedFigure().getBorderItemContainer().add(graphicalEditPart.getFigure(), locator);
-				Collections.reverse(this.editPart.getBorderedFigure().getBorderItemContainer().getChildren());
-				return true;
+			View view = (View) graphicalEditPart.getModel();
+			if (view.isSetElement()) {
+				final EObject semanticElement = view.getElement();
+				if (semanticElement instanceof UsesPortStub) {
+					final BorderItemLocator locator = new CustomBorderItemLocator(this.editPart.getPrimaryShape(), PositionConstants.EAST);
+					this.editPart.getBorderedFigure().getBorderItemContainer().add(graphicalEditPart.getFigure(), locator);
+					return true;
+				} else if (semanticElement instanceof ProvidesPortStub) {
+					final BorderItemLocator locator = new CustomBorderItemLocator(this.editPart.getPrimaryShape(), PositionConstants.WEST);
+					this.editPart.getBorderedFigure().getBorderItemContainer().add(graphicalEditPart.getFigure(), locator);
+					return true;
+				} else if (semanticElement instanceof ComponentSupportedInterfaceStub) {
+					final BorderItemLocator locator = new CustomBorderItemLocator(this.editPart.getPrimaryShape(), PositionConstants.WEST);
+					this.editPart.getBorderedFigure().getBorderItemContainer().add(graphicalEditPart.getFigure(), locator);
+					Collections.reverse(this.editPart.getBorderedFigure().getBorderItemContainer().getChildren());
+					return true;
+				} else {
+					return this.editPart.basicAddFixedChild(childEditPart);
+				}
 			} else {
 				return this.editPart.basicAddFixedChild(childEditPart);
 			}

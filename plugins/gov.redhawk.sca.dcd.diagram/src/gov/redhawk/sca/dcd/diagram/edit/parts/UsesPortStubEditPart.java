@@ -103,24 +103,6 @@ public class UsesPortStubEditPart extends mil.jpeojtrs.sca.dcd.diagram.edit.part
 	}
 
 	@Override
-	protected void addSemanticListeners() {
-		this.editPartHelper.addSemanticListeners();
-	}
-
-	@Override
-	protected void removeSemanticListeners() {
-		this.editPartHelper.removeSemanticListeners();
-	}
-
-	public void basicAddSemanticListeners() {
-		super.addSemanticListeners();
-	}
-
-	public void basicRemoveSemanticListeners() {
-		super.removeSemanticListeners();
-	}
-
-	@Override
 	public void setVisibility(final boolean vis) {
 		super.setVisibility(vis);
 	}

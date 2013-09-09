@@ -44,28 +44,6 @@ public class ProvidesPortStubEditPartHelper {
 
 	private final IProvidesPortStubEditPart editPart;
 
-	private final Adapter adapter = new AdapterImpl() {
-		@Override
-		public void notifyChanged(final org.eclipse.emf.common.notify.Notification msg) {
-			switch (msg.getFeatureID(ProvidesPortStub.class)) {
-			case PartitioningPackage.PROVIDES_PORT_STUB__NAME:
-				if (Display.getCurrent() == null) {
-					PlatformUI.getWorkbench().getDisplay().asyncExec(new Runnable() {
-
-						public void run() {
-							ProvidesPortStubEditPartHelper.this.label.setText(msg.getNewStringValue());
-						}
-					});
-				} else {
-					ProvidesPortStubEditPartHelper.this.label.setText(msg.getNewStringValue());
-				}
-				break;
-			default:
-				break;
-			}
-		}
-	};
-
 	private Label label;
 
 	public ProvidesPortStubEditPartHelper(final IProvidesPortStubEditPart editPart) {
@@ -117,21 +95,6 @@ public class ProvidesPortStubEditPartHelper {
 
 	public DragTracker getDragTracker(final Request request) {
 		return new DragConnectionCreationProxy(this.editPart, HandleDirection.INCOMING, "Connection Interface");
-	}
-
-	public void addSemanticListeners() {
-		final ProvidesPortStub stub = (ProvidesPortStub) ((View) this.editPart.getModel()).getElement();
-		stub.eAdapters().add(this.adapter);
-		this.editPart.basicAddSemanticListeners();
-	}
-
-	public void removeSemanticListeners() {
-		final ProvidesPortStub stub = (ProvidesPortStub) ((View) this.editPart.getModel()).getElement();
-
-		if (stub != null) {
-			stub.eAdapters().remove(this.adapter);
-			this.editPart.basicRemoveSemanticListeners();
-		}
 	}
 
 }

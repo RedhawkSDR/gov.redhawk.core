@@ -29,10 +29,6 @@ public interface IUsesPortStubEditPart extends IGraphicalEditPart {
 
 	void basicAddBorderItem(IFigure borderItemContainer, IBorderItemEditPart borderItemEditPart);
 
-	void basicAddSemanticListeners();
-
-	void basicRemoveSemanticListeners();
-
 	/**
 	 * @since 4.0
 	 */

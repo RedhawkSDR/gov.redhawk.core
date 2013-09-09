@@ -59,27 +59,6 @@ public class UsesPortStubEditPartHelper {
 	private final PartitioningVisualIDRegistry visualIdRegistry;
 	private Label label;
 
-	private final Adapter adapter = new AdapterImpl() {
-		@Override
-		public void notifyChanged(final org.eclipse.emf.common.notify.Notification msg) {
-			switch (msg.getFeatureID(UsesPortStub.class)) {
-			case PartitioningPackage.USES_PORT_STUB__NAME:
-				if (Display.getCurrent() == null) {
-					PlatformUI.getWorkbench().getDisplay().asyncExec(new Runnable() {
-
-						public void run() {
-							UsesPortStubEditPartHelper.this.label.setText(msg.getNewStringValue());
-						}
-					});
-				} else {
-					UsesPortStubEditPartHelper.this.label.setText(msg.getNewStringValue());
-				}
-				break;
-			default:
-				break;
-			}
-		}
-	};
 
 	public UsesPortStubEditPartHelper(final IUsesPortStubEditPart editPart, final PartitioningElementTypes elementTypes,
 	        final PartitioningVisualIDRegistry visualIdRegistry) {
@@ -165,19 +144,5 @@ public class UsesPortStubEditPartHelper {
 		return types;
 	}
 
-	public void addSemanticListeners() {
-		final UsesPortStub stub = (UsesPortStub) ((View) this.editPart.getModel()).getElement();
-		stub.eAdapters().add(this.adapter);
-		this.editPart.basicAddSemanticListeners();
-	}
-
-	public void removeSemanticListeners() {
-		final UsesPortStub stub = (UsesPortStub) ((View) this.editPart.getModel()).getElement();
-
-		if (stub != null) {
-			stub.eAdapters().remove(this.adapter);
-			this.editPart.basicRemoveSemanticListeners();
-		}
-	}
 
 }

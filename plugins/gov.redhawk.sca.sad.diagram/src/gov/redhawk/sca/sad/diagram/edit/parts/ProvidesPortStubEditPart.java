@@ -19,6 +19,7 @@ import mil.jpeojtrs.sca.sad.Port;
 import mil.jpeojtrs.sca.sad.SadPackage;
 import mil.jpeojtrs.sca.sad.SoftwareAssembly;
 import mil.jpeojtrs.sca.sad.diagram.edit.parts.ProvidesPortStubNameEditPart;
+import mil.jpeojtrs.sca.util.ScaEcoreUtils;
 
 import org.eclipse.core.databinding.observable.list.IListChangeListener;
 import org.eclipse.core.databinding.observable.list.IObservableList;
@@ -86,32 +87,6 @@ public class ProvidesPortStubEditPart extends mil.jpeojtrs.sca.sad.diagram.edit.
 		return this.editPartHelper.getDragTracker(request);
 	}
 
-	@Override
-	protected void addNotationalListeners() {
-		final IEMFListProperty portsValue = EMFProperties.list(FeaturePath.fromList(SadPackage.Literals.SOFTWARE_ASSEMBLY__EXTERNAL_PORTS,
-		        SadPackage.Literals.EXTERNAL_PORTS__PORT));
-		final EObject obj = ((View) this.getModel()).getElement();
-		if (obj != null) {
-			final SoftwareAssembly sad = getSoftwareAssembly(obj);
-			this.observer = portsValue.observe(sad);
-			this.observer.addListChangeListener(new IListChangeListener() {
-
-				public void handleListChange(final ListChangeEvent event) {
-					final WorkbenchJob job = new WorkbenchJob("") {
-
-						@Override
-						public IStatus runInUIThread(final IProgressMonitor monitor) {
-							updateColor();
-							return Status.OK_STATUS;
-						}
-					};
-					job.schedule();
-				}
-			});
-		}
-		updateColor();
-		super.addNotationalListeners();
-	}
 
 	private SoftwareAssembly getSoftwareAssembly(final EObject object) {
 		SoftwareAssembly sad = null;
@@ -162,15 +137,6 @@ public class ProvidesPortStubEditPart extends mil.jpeojtrs.sca.sad.diagram.edit.
 		return ProvidesPortStubEditPart.EXTERNAL_PORT_BACKGROUND;
 	}
 
-	@Override
-	protected void removeNotationalListeners() {
-		super.removeNotationalListeners();
-		if (this.observer != null) {
-			this.observer.dispose();
-			this.observer = null;
-		}
-	}
-
 	public IFigure basicCreateNodeShape() {
 		return super.createNodeShape();
 	}
@@ -184,25 +150,52 @@ public class ProvidesPortStubEditPart extends mil.jpeojtrs.sca.sad.diagram.edit.
 	}
 
 	@Override
+	public void setVisibility(final boolean vis) {
+		super.setVisibility(vis);
+	}
+	
+	@Override
 	protected void addSemanticListeners() {
-		this.editPartHelper.addSemanticListeners();
+		super.addSemanticListeners();
+		final IEMFListProperty portsValue = EMFProperties.list(FeaturePath.fromList(SadPackage.Literals.SOFTWARE_ASSEMBLY__EXTERNAL_PORTS,
+		        SadPackage.Literals.EXTERNAL_PORTS__PORT));
+		disposeObserver();
+		View view = ((View) this.getModel());
+		if (view.isSetElement()) {
+			final EObject obj = view.getElement();
+			if (obj != null) {
+				final SoftwareAssembly sad = ScaEcoreUtils.getEContainerOfType(obj, SoftwareAssembly.class);
+				if (sad != null) {
+					this.observer = portsValue.observe(sad);
+					this.observer.addListChangeListener(new IListChangeListener() {
+								public void handleListChange(final ListChangeEvent event) {
+									final WorkbenchJob job = new WorkbenchJob("") {
+
+										@Override
+										public IStatus runInUIThread(final IProgressMonitor monitor) {
+											updateColor();
+											return Status.OK_STATUS;
+										}
+									};
+									job.schedule();
+								}
+							});
+					updateColor();
+				}
+			}
+		}
+	}
+	
+	private void disposeObserver() {
+		if (this.observer != null) {
+			this.observer.dispose();
+			this.observer = null;
+		}
 	}
 
 	@Override
 	protected void removeSemanticListeners() {
-		this.editPartHelper.removeSemanticListeners();
-	}
-
-	public void basicAddSemanticListeners() {
-		super.addSemanticListeners();
-	}
-
-	public void basicRemoveSemanticListeners() {
 		super.removeSemanticListeners();
-	}
-
-	@Override
-	public void setVisibility(final boolean vis) {
-		super.setVisibility(vis);
+		disposeObserver();
 	}
 }

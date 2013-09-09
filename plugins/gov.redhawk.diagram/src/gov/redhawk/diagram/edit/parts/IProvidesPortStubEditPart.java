@@ -31,13 +31,9 @@ public interface IProvidesPortStubEditPart extends IGraphicalEditPart {
 
 	IFigure getMainFigure();
 
-	void basicAddSemanticListeners();
-
 	/**
 	 * @since 4.0
 	 */
 	void setVisibility(boolean b);
-
-	void basicRemoveSemanticListeners();
 
 }
