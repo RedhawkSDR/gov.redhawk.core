@@ -26,12 +26,14 @@ import BULKIO.dataLongOperations;
 import BULKIO.dataOctetOperations;
 import BULKIO.dataShortOperations;
 import BULKIO.dataUlongLongOperations;
+import BULKIO.dataUlongOperations;
+import BULKIO.dataUshortOperations;
 
 /**
  * 
  */
 public class BulkIOReceiver extends AbstractBulkIOPort implements dataCharOperations, dataDoubleOperations, dataFloatOperations, dataLongLongOperations,
-		dataLongOperations, dataOctetOperations, dataShortOperations, dataUlongLongOperations {
+		dataLongOperations, dataOctetOperations, dataShortOperations, dataUlongLongOperations, dataUlongOperations, dataUshortOperations {
 
 	private final corbareceiver receiver;
 	private final char midasType;
