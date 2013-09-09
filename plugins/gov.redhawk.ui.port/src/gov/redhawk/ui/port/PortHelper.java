@@ -89,6 +89,14 @@ public class PortHelper {
 	 * @since 5.1
 	 */
 	public static void refreshPort(final IRefreshable refreshable, IProgressMonitor monitor) {
+		refreshPort(refreshable, monitor, 0);
+	}
+
+	/** utility method to refresh Port in background job.
+	 * @param monitor Monitor to report status to, may be null.
+	 * @since 5.2
+	 */
+	public static void refreshPort(final IRefreshable refreshable, IProgressMonitor monitor, long delay) {
 		new Job("Refreshing Port...") {
 			@Override
 			protected IStatus run(IProgressMonitor monitor) {
@@ -100,7 +108,7 @@ public class PortHelper {
 				return Status.OK_STATUS;
 			}
 
-		} .schedule();
+		} .schedule(delay);
 	}
 
 	/**

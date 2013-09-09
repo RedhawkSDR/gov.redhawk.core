@@ -244,8 +244,9 @@ public class PlotPageBook2 extends Composite {
 					source.getInput().eAdapters().remove(listenerAdapter);
 				}
 			});
-			PortHelper.refreshPort(source.getInput(), null);
+			PortHelper.refreshPort(source.getInput(), null, 1000);
 		}
+		
 		this.sources.clear();
 	}
 

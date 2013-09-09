@@ -161,7 +161,7 @@ public class PlotView extends ViewPart {
 									PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().hideView(PlotView.this);
 								}
 
-								PortHelper.refreshPort(usesPort, monitor);
+								PortHelper.refreshPort(usesPort, monitor, 1000);
 							}
 							return Status.OK_STATUS;
 						}
