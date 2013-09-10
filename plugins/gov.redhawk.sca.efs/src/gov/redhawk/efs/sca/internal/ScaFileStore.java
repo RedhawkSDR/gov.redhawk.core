@@ -385,8 +385,15 @@ public class ScaFileStore extends FileStore {
 			FileSystemOperations fs = getScaFileSystem();
 
 			if (fetchInfo().isDirectory()) {
+				final IFileStore[] childStore = childStores(EFS.NONE, subMonitor.newChild(1));
+				final SubMonitor deleteChildrenMonitor = subMonitor.newChild(1);
+				deleteChildrenMonitor.beginTask("Deleting contained items...", childStore.length);
+				for (final IFileStore store : childStore) {
+					store.delete(options, deleteChildrenMonitor.newChild(1));
+				}
 				fs.remove(path + "/*");
 				fs.rmdir(path);
+				subMonitor.worked(1);
 			} else {
 				fs.remove(path);
 			}
