@@ -86,10 +86,6 @@ public class ScaFileSystemPlugin extends Plugin {
 	public void stop(final BundleContext context) throws Exception {
 		super.stop(context);
 		ScaFileCache.INSTANCE.clear();
-		File tempDir = FileCache.getTempDir();
-		if (tempDir.exists()) {
-			FileUtils.deleteDirectory(tempDir);
-		}
 		ScaFileSystemPlugin.instance = null;
 	}
 
