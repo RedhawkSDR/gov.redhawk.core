@@ -12,6 +12,8 @@
 package gov.redhawk.efs.sca.internal;
 
 import gov.redhawk.efs.sca.internal.cache.FileCache;
+import gov.redhawk.efs.sca.internal.cache.ScaFileCache;
+import gov.redhawk.sca.efs.ScaFileSystemPlugin;
 import gov.redhawk.sca.util.Debug;
 
 import java.io.InputStream;
@@ -68,7 +70,7 @@ public class ScaFileStore extends FileStore {
 	public ScaFileStore(final URI fsInitRef, final ScaFileEntry entry) {
 		this.fsInitRef = fsInitRef;
 		this.entry = entry;
-		cache = ScaFileSystemPlugin.getDefault().getFileCache().getCache(this);
+		cache = ScaFileCache.INSTANCE.getCache(this);
 	}
 	
 	public URI getFsInitRef() {

@@ -14,7 +14,7 @@ package gov.redhawk.efs.sca.internal.cache;
 import gov.redhawk.efs.sca.internal.Messages;
 import gov.redhawk.efs.sca.internal.ScaFileInputStream;
 import gov.redhawk.efs.sca.internal.ScaFileStore;
-import gov.redhawk.efs.sca.internal.ScaFileSystemPlugin;
+import gov.redhawk.sca.efs.ScaFileSystemPlugin;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -22,6 +22,10 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 
 import org.apache.commons.io.IOUtils;
 import org.eclipse.core.filesystem.IFileInfo;
@@ -37,6 +41,9 @@ import CF.FileSystemOperations;
 import CF.InvalidFileName;
 
 public class FileCache {
+
+	public static final DateFormat DATE_FORMAT = new SimpleDateFormat("yyyyMMdd");
+	private static File tempDir;
 	private long cacheTimestamp;
 	private File tmpFile;
 	private ScaFileStore store;
@@ -76,7 +83,13 @@ public class FileCache {
 				prefix = "sca_" + prefix;
 			}
 			try {
-				tmpFile = File.createTempFile(prefix, null);
+				File dir = getTempDir();
+				if (!dir.exists()) {
+					if (!dir.mkdir()) {
+						throw new CoreException(new Status(IStatus.ERROR, ScaFileSystemPlugin.ID, "File cache error: Failed to create temporary file cache directory " + dir, null));
+					}
+				}
+				tmpFile = File.createTempFile(prefix, null, dir);
 				tmpFile.deleteOnExit();
 			} catch (IOException e) {
 				throw new CoreException(new Status(IStatus.ERROR, ScaFileSystemPlugin.ID, "File cache error: " + tmpFile, e));
@@ -96,6 +109,17 @@ public class FileCache {
 			IOUtils.closeQuietly(fileStream);
 			IOUtils.closeQuietly(scaInputStream);
 		}
+	}
+
+	public static synchronized File getTempDir() {
+		if (tempDir == null) {
+			String systemPath = System.getProperty("java.io.tmpdir");
+			Date date = Calendar.getInstance().getTime();
+			String user = System.getProperty("user.name");
+			String tempDirPath = systemPath + "/rhIDE-" + user + "-" + DATE_FORMAT.format(date);
+			tempDir = new File(tempDirPath);
+		}
+		return tempDir;
 	}
 
 	private InputStream createScaInputStream() throws CoreException {

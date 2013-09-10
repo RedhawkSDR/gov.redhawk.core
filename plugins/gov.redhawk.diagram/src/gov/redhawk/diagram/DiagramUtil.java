@@ -12,6 +12,7 @@
 package gov.redhawk.diagram;
 
 import gov.redhawk.diagram.editor.URIEditorInputProxy;
+import gov.redhawk.sca.efs.ScaFileSystemPlugin;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -133,7 +134,8 @@ public final class DiagramUtil {
 	private static URI getTemporaryDiagramResourceURI(final IDiagramUtilHelper options, final URI uri) throws IOException {
 		final String name = uri.lastSegment();
 		String tmpName = "rh_" + name.substring(0, name.length() - options.getSemanticFileExtension().length());
-		final File tempFile = File.createTempFile(tmpName, options.getDiagramFileExtension());
+		File tempDir = ScaFileSystemPlugin.getDefault().getTempDirectory();
+		final File tempFile = File.createTempFile(tmpName, options.getDiagramFileExtension(), tempDir);
 		tempFile.deleteOnExit();
 
 		final URI retVal = URI.createURI(tempFile.toURI().toString());

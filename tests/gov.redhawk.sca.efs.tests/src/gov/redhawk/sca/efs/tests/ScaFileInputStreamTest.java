@@ -11,7 +11,7 @@
  */
 package gov.redhawk.sca.efs.tests;
 
-import gov.redhawk.efs.sca.internal.ScaFileSystemPlugin;
+import gov.redhawk.efs.sca.internal.cache.ScaFileCache;
 import gov.redhawk.sca.efs.server.tests.TestServer;
 
 import java.io.InputStream;
@@ -60,7 +60,7 @@ public class ScaFileInputStreamTest {
 	@SuppressWarnings("restriction")
 	@Before
 	public void setUp() throws Exception {
-		ScaFileSystemPlugin.getDefault().getFileCache().clear();
+		ScaFileCache.INSTANCE.clear();
 		this.fileSystem = EFS.getFileSystem(ScaFileSystemConstants.SCHEME);
 		final URI corbaIOR = getCorbIorUri();
 

@@ -12,7 +12,8 @@ Require-Bundle: org.eclipse.gmf.runtime.diagram.ui.resources.editor.ide;bundle-v
  gov.redhawk.sca.util;bundle-version="2.1.0",
  gov.redhawk.sca.ui;bundle-version="7.0.0",
  org.eclipse.gmf.runtime.diagram.ui.providers;bundle-version="1.4.0";visibility:=reexport,
- mil.jpeojtrs.sca.partitioning.edit;bundle-version="1.0.0"
+ mil.jpeojtrs.sca.partitioning.edit;bundle-version="1.0.0",
+ gov.redhawk.sca.efs;bundle-version="1.2.0"
 Export-Package: gov.redhawk.diagram,
  gov.redhawk.diagram.activator,
  gov.redhawk.diagram.edit.commands,
