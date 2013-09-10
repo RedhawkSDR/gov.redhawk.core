@@ -19,8 +19,6 @@ import gov.redhawk.model.sca.ScaDomainManagerRegistry;
 import gov.redhawk.model.sca.ScaFactory;
 import gov.redhawk.model.sca.ScaPackage;
 import gov.redhawk.model.sca.commands.ScaModelCommand;
-import gov.redhawk.model.sca.services.IScaObjectLocator;
-import gov.redhawk.sca.internal.ScaDomainRegistryObjectLocator;
 import gov.redhawk.sca.preferences.ScaPreferenceConstants;
 import gov.redhawk.sca.preferences.ScaPreferenceInitializer;
 import gov.redhawk.sca.properties.IPropertiesProviderRegistry;
@@ -55,7 +53,6 @@ import org.omg.CosNaming.NamingContextExtHelper;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.FrameworkUtil;
-import org.osgi.framework.ServiceRegistration;
 
 import CF.DomainManagerHelper;
 
@@ -92,8 +89,6 @@ public class ScaPlugin extends Plugin {
 
 	private TransactionalEditingDomain editingDomain;
 
-	private ServiceRegistration<IScaObjectLocator> serviceReg;
-
 	/**
 	 * The constructor.
 	 */
@@ -114,7 +109,6 @@ public class ScaPlugin extends Plugin {
 		super.start(context);
 		ScaPlugin.bundleContext = context;
 		ScaPlugin.plugin = this;
-		this.serviceReg = context.registerService(IScaObjectLocator.class, new ScaDomainRegistryObjectLocator(), null);
 	}
 
 	/*
@@ -154,14 +148,6 @@ public class ScaPlugin extends Plugin {
 	@Override
 	public void stop(final BundleContext context) throws Exception {
 		try {
-			if (this.serviceReg != null) {
-				try {
-					this.serviceReg.unregister();
-				} catch (final Exception e) {
-					// PASS
-				}
-				this.serviceReg = null;
-			}
 			ScaPlugin.plugin = null;
 			ScaPlugin.bundleContext = null;
 			if (this.scaDomainManagerRegistry != null) {
