@@ -13,7 +13,7 @@ Export-Package: gov.redhawk.model.sca.tests,
  gov.redhawk.model.sca.tests.stubs;x-internal:=true,
  gov.redhawk.sca.model.tests
 Require-Bundle: org.eclipse.core.runtime;bundle-version="3.6.0",
- gov.redhawk.sca.model;visibility:=reexport;bundle-version="14.0.0",
+ gov.redhawk.sca.model;bundle-version="14.0.0";visibility:=reexport,
  mil.jpeojtrs.sca.cf;visibility:=reexport,
  mil.jpeojtrs.sca.spd;visibility:=reexport,
  mil.jpeojtrs.sca.scd;visibility:=reexport,
@@ -24,10 +24,11 @@ Require-Bundle: org.eclipse.core.runtime;bundle-version="3.6.0",
  mil.jpeojtrs.sca.dmd;visibility:=reexport,
  mil.jpeojtrs.sca.dpd;visibility:=reexport,
  mil.jpeojtrs.sca.partitioning;visibility:=reexport,
- org.eclipse.emf.ecore.xmi;visibility:=reexport;bundle-version="2.5.0",
+ org.eclipse.emf.ecore.xmi;bundle-version="2.5.0";visibility:=reexport,
  org.junit;bundle-version="4.1.0",
  mil.jpeojtrs.sca.util;bundle-version="2.2.2",
  gov.redhawk.core.filemanager;bundle-version="1.0.0",
  org.apache.log4j;bundle-version="1.2.13",
- gov.redhawk.sca.efs;bundle-version="1.1.0"
+ gov.redhawk.sca.efs;bundle-version="1.1.0",
+ gov.redhawk.sca;bundle-version="6.1.0"
 Bundle-ActivationPolicy: lazy
