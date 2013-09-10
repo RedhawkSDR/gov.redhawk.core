@@ -33,6 +33,7 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.jface.wizard.WizardDialog;
+import org.eclipse.rwt.SessionSingletonBase;
 import org.eclipse.ui.handlers.HandlerUtil;
 
 // TODO: Auto-generated Javadoc
@@ -47,7 +48,7 @@ public class NewDomainHandler extends AbstractHandler implements IHandler {
 
 	@Override
 	public Object execute(final ExecutionEvent event) throws ExecutionException {
-		final ScaDomainManagerRegistry registry = ScaPlugin.getDefault().getDomainManagerRegistry();
+		final ScaDomainManagerRegistry registry = SessionSingletonBase.getInstance(ScaPlugin.class).getDomainManagerRegistry();
 
 		final DomainEntryWizard wizard = new DomainEntryWizard();
 		wizard.setShowExtraSettings(true);

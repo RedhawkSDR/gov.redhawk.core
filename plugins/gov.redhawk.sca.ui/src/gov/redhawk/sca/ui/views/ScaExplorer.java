@@ -13,7 +13,10 @@ package gov.redhawk.sca.ui.views;
 
 import gov.redhawk.common.ui.doc.HelpConstants;
 import gov.redhawk.sca.ScaPlugin;
+import gov.redhawk.sca.ui.ScaUiPlugin;
+import gov.redhawk.sca.ui.UserSpecificScopeContext;
 
+import org.eclipse.rwt.SessionSingletonBase;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.IMemento;
@@ -50,7 +53,8 @@ public class ScaExplorer extends CommonNavigator implements ITabbedPropertySheet
 		 * can be obtained only from the UI thread.
 		 */
 		if (SWT.getPlatform().startsWith("rap")) {
-			ScaPlugin.getDefault().getDomainManagerRegistry(true, aSite.getShell().getDisplay());
+			SessionSingletonBase.getInstance(ScaPlugin.class).getDomainManagerRegistry(true, aSite.getShell().getDisplay());
+			SessionSingletonBase.getInstance(ScaPlugin.class).setScaPreferenceAccessor(new UserSpecificScopeContext(aSite.getShell().getDisplay()));
 		}
 		super.init(aSite, aMemento);
 	}

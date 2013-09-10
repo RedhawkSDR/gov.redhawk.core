@@ -9,7 +9,8 @@ Require-Bundle: org.eclipse.core.runtime;bundle-version="3.6.0",
  org.eclipse.core.resources;bundle-version="3.4.2",
  gov.redhawk.sca.model;bundle-version="1.0.0";visibility:=reexport,
  gov.redhawk.sca.util;bundle-version="1.0.0";visibility:=reexport,
- mil.jpeojtrs.sca.util;bundle-version="1.0.0"
+ mil.jpeojtrs.sca.util;bundle-version="1.0.0",
+ org.eclipse.rap.rwt;bundle-version="1.5.2";resolution:=optional
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Bundle-ActivationPolicy: lazy
 Export-Package: gov.redhawk.sca,

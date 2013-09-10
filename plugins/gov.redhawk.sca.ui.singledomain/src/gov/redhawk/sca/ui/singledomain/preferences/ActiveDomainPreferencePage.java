@@ -28,6 +28,7 @@ import org.eclipse.jface.preference.BooleanFieldEditor;
 import org.eclipse.jface.preference.ComboFieldEditor;
 import org.eclipse.jface.preference.FieldEditorPreferencePage;
 import org.eclipse.jface.preference.IPreferenceStore;
+import org.eclipse.rwt.SessionSingletonBase;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPreferencePage;
 import org.eclipse.ui.PlatformUI;
@@ -94,7 +95,7 @@ public class ActiveDomainPreferencePage extends FieldEditorPreferencePage implem
 	@Override
 	protected void createFieldEditors() {
 		
-		ScaPlugin.getDefault().getDomainManagerRegistry().eAdapters().add(domainChangeAdapter);
+		SessionSingletonBase.getInstance(ScaPlugin.class).getDomainManagerRegistry().eAdapters().add(domainChangeAdapter);
 		
 		activeDomainField = new ComboFieldEditor(ScaSingleDomainPreferenceConstants.SCA_ACTIVE_DOMAIN, "Active Domain", getDomains(), getFieldEditorParent());
 		addField(activeDomainField);
@@ -117,7 +118,7 @@ public class ActiveDomainPreferencePage extends FieldEditorPreferencePage implem
 	private String[][] getDomains() {
 		List<String[]> domains = new ArrayList<String[]>();
 		domains.add(new String[] {"", ""});
-	    for (ScaDomainManager  domain : ScaPlugin.getDefault().getDomainManagerRegistry().getDomains()) {
+	    for (ScaDomainManager  domain : SessionSingletonBase.getInstance(ScaPlugin.class).getDomainManagerRegistry().getDomains()) {
 	    	String[] nameValue = new String[2];
 	    	nameValue[0] = domain.getName();
 	    	nameValue[1] = domain.getName();
@@ -141,7 +142,9 @@ public class ActiveDomainPreferencePage extends FieldEditorPreferencePage implem
 
 	@Override
 	public void init(final IWorkbench workbench) {
-		setPreferenceStore(ScaUiPlugin.getDefault().getScaPreferenceStore());
+		setPreferenceStore(SessionSingletonBase.getInstance(ScaUiPlugin.class).getScaPreferenceStore());
+		getPreferenceStore().setDefault(ScaSingleDomainPreferenceConstants.SCA_SET_NEW_DOMAIN_ACTIVE, false);
+		getPreferenceStore().setDefault(ScaSingleDomainPreferenceConstants.SCA_DISCONNECT_INACTIVE, false);
 	}
 	
 	@Override

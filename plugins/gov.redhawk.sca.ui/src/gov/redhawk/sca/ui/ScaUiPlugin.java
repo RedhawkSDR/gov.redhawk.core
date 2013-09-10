@@ -15,14 +15,17 @@ import gov.redhawk.sca.ScaPlugin;
 import gov.redhawk.sca.internal.ui.ResourceRegistry;
 import gov.redhawk.sca.internal.ui.ScaContentTypeRegistry;
 import gov.redhawk.sca.internal.ui.ScaUiModelJob;
+import gov.redhawk.sca.util.ScopedPreferenceAccessor;
 
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
+import org.eclipse.core.runtime.preferences.IScopeContext;
 import org.eclipse.core.runtime.preferences.InstanceScope;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.resource.ImageRegistry;
+import org.eclipse.rwt.SessionSingletonBase;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.eclipse.ui.preferences.ScopedPreferenceStore;
@@ -82,6 +85,14 @@ public class ScaUiPlugin extends AbstractUIPlugin {
 			this.scaPreferenceStore = new ScopedPreferenceStore(InstanceScope.INSTANCE, ScaPlugin.getDefault().getBundle().getSymbolicName());
 		}
 		return this.scaPreferenceStore;
+	}
+	
+	
+	/**
+	 * @since 9.2
+	 */
+	public void setScaPreferenceStore(IScopeContext scope) {
+		this.scaPreferenceStore = new ScopedPreferenceStore(scope, ScaPlugin.getDefault().getBundle().getSymbolicName());
 	}
 
 	/*

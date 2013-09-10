@@ -24,6 +24,7 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.preference.BooleanFieldEditor;
 import org.eclipse.jface.preference.FieldEditorPreferencePage;
 import org.eclipse.jface.preference.StringFieldEditor;
+import org.eclipse.rwt.SessionSingletonBase;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPreferencePage;
 import org.eclipse.ui.PlatformUI;
@@ -33,7 +34,7 @@ public class RedhawkScaPreferencePage extends FieldEditorPreferencePage implemen
 	public static final String PREFERENCE_PAGE_ID = "gov.redhawk.ui.preferences.sca";
 	private DomainListEditor domList = null;
 
-	private final ScaDomainManagerRegistry registry = ScaPlugin.getDefault().getDomainManagerRegistry();
+	private final ScaDomainManagerRegistry registry = SessionSingletonBase.getInstance(ScaPlugin.class).getDomainManagerRegistry();
 
 	@Override
 	protected void createFieldEditors() {

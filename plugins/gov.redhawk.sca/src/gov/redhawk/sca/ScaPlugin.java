@@ -42,6 +42,7 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Plugin;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
+import org.eclipse.core.runtime.preferences.IScopeContext;
 import org.eclipse.core.runtime.preferences.InstanceScope;
 import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.notify.Notification;
@@ -52,6 +53,7 @@ import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.emf.transaction.RunnableWithResult;
 import org.eclipse.emf.transaction.TransactionalEditingDomain;
 import org.eclipse.emf.transaction.util.TransactionUtil;
+import org.eclipse.rwt.SessionSingletonBase;
 import org.omg.CosNaming.Binding;
 import org.omg.CosNaming.BindingIteratorHolder;
 import org.omg.CosNaming.BindingListHolder;
@@ -345,7 +347,7 @@ public class ScaPlugin extends Plugin {
 	 * @since 6.1
 	 */
 	public ICompatibilityUtil getCompatibilityUtil() {
-		ICompatibilityUtil retVal = this.compatibilityUtil.getService();
+		ICompatibilityUtil retVal = getDefault().compatibilityUtil.getService();
 		if (retVal == null) {
 			return new CompatibilityUtil();
 		}
@@ -432,6 +434,13 @@ public class ScaPlugin extends Plugin {
 		}
 		return this.scaPreferenceStore;
 	}
+	
+	/**
+	 * @since 6.1
+	 */
+	public void setScaPreferenceAccessor(IScopeContext scope) {
+		this.scaPreferenceStore = new ScopedPreferenceAccessor(scope, ScaPlugin.getPluginId());
+	}
 
 	private void connectOnStartup() {
 		this.startupJob = new Job("Connecting to domains on startup...") {
@@ -503,7 +512,7 @@ public class ScaPlugin extends Plugin {
 	 * @since 6.0
 	 */
 	public static boolean isDomainOnline(final String domainName) {
-		IPreferenceAccessor prefs = ScaPlugin.getDefault().getScaPreferenceAccessor();
+		IPreferenceAccessor prefs = SessionSingletonBase.getInstance(ScaPlugin.class).getScaPreferenceAccessor();
 		final String namingService = prefs.getString(ScaPreferenceConstants.SCA_DEFAULT_NAMING_SERVICE);
 		return isDomainOnline(domainName, namingService);
 	}
@@ -565,7 +574,7 @@ public class ScaPlugin extends Plugin {
 	 * @since 6.0
 	 */
 	public static String[] findDomainNamesOnDefaultNameServer() {
-		IPreferenceAccessor prefs = ScaPlugin.getDefault().getScaPreferenceAccessor();
+		IPreferenceAccessor prefs = SessionSingletonBase.getInstance(ScaPlugin.class).getScaPreferenceAccessor();
 		final String namingService = prefs.getString(ScaPreferenceConstants.SCA_DEFAULT_NAMING_SERVICE);
 		return findDomainNamesOnNameServer(namingService);
 	}

@@ -30,6 +30,7 @@ import org.eclipse.core.runtime.preferences.AbstractPreferenceInitializer;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.osgi.service.datalocation.Location;
+import org.eclipse.rwt.SessionSingletonBase;
 
 /**
  * The Class RedhawkIdePreferenceInitializer.
@@ -49,7 +50,7 @@ public class ScaPreferenceInitializer extends AbstractPreferenceInitializer {
 	 */
 	@Override
 	public void initializeDefaultPreferences() {
-		final IPreferenceAccessor accessor = ScaPlugin.getDefault().getScaPreferenceAccessor();
+		final IPreferenceAccessor accessor = SessionSingletonBase.getInstance(ScaPlugin.class).getScaPreferenceAccessor();
 
 		accessor.setDefault(ScaPreferenceConstants.SCA_CORBA_AUTOCONNECT_PREFERENCE, true);
 		accessor.setDefault(ScaPreferenceConstants.SCA_DEFAULT_NAMING_SERVICE, "corbaname::localhost:2809");

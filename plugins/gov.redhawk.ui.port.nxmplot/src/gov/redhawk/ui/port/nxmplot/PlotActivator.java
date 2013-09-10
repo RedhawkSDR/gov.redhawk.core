@@ -49,7 +49,7 @@ public class PlotActivator extends AbstractUIPlugin {
 	public static final String VIEW_PLOT = PlotView.ID;
 	
 	/**
-	 * @since 4.2
+	 * @since 4.3
 	 */
 	public static final String VIEW_PLOT_2 = PlotView2.ID;
 

@@ -41,6 +41,7 @@ import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.jface.layout.GridLayoutFactory;
 import org.eclipse.jface.preference.IPreferenceStore;
+import org.eclipse.rwt.SessionSingletonBase;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.MouseAdapter;
 import org.eclipse.swt.events.MouseEvent;
@@ -321,7 +322,7 @@ public class DomainsDialog extends Dialog {
 		Label sep = new Label(composite, SWT.SEPARATOR | SWT.HORIZONTAL);
 		gdf.applyTo(sep);
 		gdf.align(SWT.BEGINNING, SWT.CENTER).grab(true, false);
-		for (ScaDomainManager domain : ScaPlugin.getDefault()
+		for (ScaDomainManager domain : SessionSingletonBase.getInstance(ScaPlugin.class)
 				.getDomainManagerRegistry().getDomains()) {
 			String suffix = getActiveLabel(domain);
 			final TrackableLabelAndHyperlink label = new TrackableLabelAndHyperlink(
@@ -509,7 +510,7 @@ public class DomainsDialog extends Dialog {
 	}
 
 	protected void deleteDomain(String domainName) {
-		ScaDomainManagerRegistry registry = ScaPlugin.getDefault()
+		ScaDomainManagerRegistry registry = SessionSingletonBase.getInstance(ScaPlugin.class)
 				.getDomainManagerRegistry();
 		final ScaDomainManager domMgr = registry.findDomain(domainName);
 		if (domMgr != null) {
