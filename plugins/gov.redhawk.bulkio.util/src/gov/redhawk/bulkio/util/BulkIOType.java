@@ -51,7 +51,7 @@ public enum BulkIOType {
 	FLOAT(4, float.class, false), 
 	LONG(4, int.class, false), 
 	ULONG(4, int.class, true),
-	LONG_LONG(8, long.class, true),
+	LONG_LONG(8, long.class, false),
 	ULONG_LONG(8, long.class, true),
 	SHORT(2, short.class, false),
 	USHORT(2, short.class, true),

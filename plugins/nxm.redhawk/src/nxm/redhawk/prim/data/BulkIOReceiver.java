@@ -42,45 +42,36 @@ public class BulkIOReceiver extends AbstractBulkIOPort implements dataCharOperat
 	public BulkIOReceiver(final corbareceiver receiver, BulkIOType type) {
 		super(type);
 		this.receiver = receiver;
+		this.signed = !type.isUnsigned();
 		switch (type) {
 		case CHAR:
-			this.signed = true;
 			this.midasType = 'I';
 			break;
 		case DOUBLE:
-			this.signed = true;
 			this.midasType = 'D';
 			break;
 		case FLOAT:
-			this.signed = true;
 			this.midasType = 'F';
 			break;
 		case LONG:
-			this.signed = true;
 			this.midasType = 'L';
 			break;
 		case LONG_LONG:
-			this.signed = true;
 			this.midasType = 'X';
 			break;
 		case OCTET:
-			this.signed = true;
 			this.midasType = 'I';
 			break;
 		case SHORT:
-			this.signed = true;
 			this.midasType = 'I';
 			break;
 		case ULONG:
-			this.signed = false;
 			this.midasType = 'X';
 			break;
 		case ULONG_LONG:
-			this.signed = false;
 			this.midasType = 'X';
 			break;
 		case USHORT:
-			this.signed = false;
 			this.midasType = 'L';
 			break;
 		default:
