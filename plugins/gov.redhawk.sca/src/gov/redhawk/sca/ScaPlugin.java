@@ -62,7 +62,6 @@ import CF.DomainManagerHelper;
 /**
  * The activator class controls the plug-in life cycle.
  */
-@SuppressWarnings("deprecation")
 public class ScaPlugin extends Plugin {
 
 	/**
