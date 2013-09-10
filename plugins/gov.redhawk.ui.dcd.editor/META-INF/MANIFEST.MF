@@ -16,7 +16,6 @@ Require-Bundle: org.eclipse.ui;bundle-version="3.6.1",
  gov.redhawk.sca.util;bundle-version="1.0.0",
  gov.redhawk.sca.ui;bundle-version="2.2.0",
  mil.jpeojtrs.sca.util;bundle-version="2.2.2",
- gov.redhawk.sca;bundle-version="5.0.0",
  gov.redhawk.sca.dcd.diagram;bundle-version="2.0.0",
  mil.jpeojtrs.sca.dcd.diagram;bundle-version="1.0.0"
 Bundle-ActivationPolicy: lazy

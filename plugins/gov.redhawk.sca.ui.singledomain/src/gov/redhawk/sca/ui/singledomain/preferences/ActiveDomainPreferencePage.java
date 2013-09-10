@@ -85,7 +85,11 @@ public class ActiveDomainPreferencePage extends FieldEditorPreferencePage implem
 		}
 	}
 	
-	
+	@Override
+	public void dispose() {
+		ScaPlugin.getDefault().getDomainManagerRegistry().eAdapters().remove(domainChangeAdapter);
+		super.dispose();
+	}
 
 	@Override
 	protected void createFieldEditors() {

@@ -14,18 +14,15 @@ package gov.redhawk.sca.observables;
 import gov.redhawk.model.sca.ScaComponent;
 import gov.redhawk.model.sca.ScaPackage;
 import gov.redhawk.model.sca.ScaSimpleProperty;
-import gov.redhawk.sca.ScaPlugin;
 
 import org.eclipse.core.databinding.observable.value.IObservableValue;
 import org.eclipse.emf.databinding.edit.EditingDomainEObjectObservableValue;
 import org.eclipse.emf.ecore.EDataType;
 import org.eclipse.emf.ecore.impl.EAttributeImpl;
 import org.eclipse.emf.ecore.util.EcoreUtil;
-import org.eclipse.emf.transaction.TransactionalEditingDomain;
+import org.eclipse.emf.transaction.util.TransactionUtil;
 
 public class SCAObservables {
-
-	private static final TransactionalEditingDomain EDITING_DOMAIN = TransactionalEditingDomain.Registry.INSTANCE.getEditingDomain(ScaPlugin.EDITING_DOMAIN_ID);
 
 	private SCAObservables() {
 		//Prevent instantiation
@@ -47,7 +44,7 @@ public class SCAObservables {
 			final EAttributeImpl attribute = (EAttributeImpl) EcoreUtil.copy(ScaPackage.Literals.SCA_SIMPLE_PROPERTY__VALUE);
 			attribute.setEType(type);
 
-			return new EditingDomainEObjectObservableValue(SCAObservables.EDITING_DOMAIN, simple, ScaPackage.Literals.SCA_SIMPLE_PROPERTY__VALUE) {
+			return new EditingDomainEObjectObservableValue(TransactionUtil.getEditingDomain(simple), simple, ScaPackage.Literals.SCA_SIMPLE_PROPERTY__VALUE) {
 
 				@Override
 				public Object getValueType() {

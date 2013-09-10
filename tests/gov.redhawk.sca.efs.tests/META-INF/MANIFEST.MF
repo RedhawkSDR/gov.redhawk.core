@@ -8,11 +8,11 @@ Eclipse-BundleShape: dir
 Require-Bundle: org.eclipse.core.runtime;bundle-version="3.5.0",
  gov.redhawk.sca.efs;bundle-version="1.0.0",
  org.eclipse.core.filesystem;bundle-version="1.2.1",
- gov.redhawk.sca;bundle-version="2.4.0",
  mil.jpeojtrs.sca.util;bundle-version="2.2.2",
  org.apache.commons.io;bundle-version="1.3.2",
  mil.jpeojtrs.sca.cf;bundle-version="2.2.2",
- org.junit;bundle-version="4.8.1"
+ org.junit;bundle-version="4.8.1",
+ gov.redhawk.sca.util;bundle-version="3.3.0"
 Export-Package: gov.redhawk.sca.efs.server.tests,
  gov.redhawk.sca.efs.tests
 Bundle-Vendor: %Bundle-Vendor
