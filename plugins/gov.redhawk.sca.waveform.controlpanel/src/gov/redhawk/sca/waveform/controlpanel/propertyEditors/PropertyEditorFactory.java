@@ -18,6 +18,7 @@ import gov.redhawk.model.sca.ScaSimpleProperty;
 import gov.redhawk.model.sca.ScaSimpleSequenceProperty;
 import gov.redhawk.sca.waveform.controlpanel.WaveformControlPanelPlugin;
 import mil.jpeojtrs.sca.prf.PropertyValueType;
+import mil.jpeojtrs.sca.util.math.ComplexLong;
 
 public class PropertyEditorFactory {
 
@@ -37,6 +38,16 @@ public class PropertyEditorFactory {
 			Object value = simpleProp.getValue();
 			if (value != null) {
 				type = simpleProp.getDefinition().getType();
+				
+				if (simpleProp.getDefinition().isComplex()) {
+					switch (type) {
+					case LONG:
+						return new ComplexIntegerPropertyEditor<ComplexLong>(name, (ComplexLong) value, simpleProp);
+					default:
+						WaveformControlPanelPlugin.logWarning("Cannot render property name-value pair. Unknown TypeCode: " + type);
+						return new StringPropertyEditor(name, value.toString(), prop);
+					}
+				}
 				
 				switch (type) {
 				//extraneous type checking due to bug in framework -- FIXED

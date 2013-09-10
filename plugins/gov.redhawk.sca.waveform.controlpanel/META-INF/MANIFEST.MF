@@ -18,7 +18,8 @@ Require-Bundle: gov.redhawk.sca.ui;bundle-version="7.0.0";visibility:=reexport,
  org.eclipse.rap.ui.forms;bundle-version="1.3.1";resolution:=optional,
  org.eclipse.jface.databinding;bundle-version="1.4.0";resolution:=optional,
  org.eclipse.rap.jface.databinding;bundle-version="1.3.1";resolution:=optional,
- gov.redhawk.sca.rap.supplement;bundle-version="1.0.0";resolution:=optional
+ gov.redhawk.sca.rap.supplement;bundle-version="1.0.0";resolution:=optional,
+ gov.redhawk.sca.observables
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Bundle-Vendor: %Bundle-Vendor
