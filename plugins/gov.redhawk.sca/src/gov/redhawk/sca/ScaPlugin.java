@@ -54,9 +54,8 @@ import org.omg.CosNaming.NamingContextExt;
 import org.omg.CosNaming.NamingContextExtHelper;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
+import org.osgi.framework.FrameworkUtil;
 import org.osgi.framework.ServiceRegistration;
-import org.osgi.service.packageadmin.PackageAdmin;
-import org.osgi.util.tracker.ServiceTracker;
 
 import CF.DomainManagerHelper;
 
@@ -81,8 +80,6 @@ public class ScaPlugin extends Plugin {
 	private static ScaPlugin plugin;
 
 	private static BundleContext bundleContext;
-
-	private ServiceTracker<PackageAdmin, PackageAdmin> bundleTracker;
 
 	private ScaDomainManagerRegistry scaDomainManagerRegistry;
 
@@ -139,27 +136,11 @@ public class ScaPlugin extends Plugin {
 			return null;
 		}
 
-		final PackageAdmin packageAdmin = getBundleAdmin();
-		if (packageAdmin == null) {
-			return null;
-		}
-
-		final Bundle source = packageAdmin.getBundle(object.getClass());
+		final Bundle source = FrameworkUtil.getBundle(object.getClass());
 		if (source != null && source.getSymbolicName() != null) {
 			return source.getSymbolicName();
 		}
 		return null;
-	}
-
-	/*
-	 * Return the package admin service, if available.
-	 */
-	private PackageAdmin getBundleAdmin() {
-		if (this.bundleTracker == null) {
-			this.bundleTracker = new ServiceTracker<PackageAdmin, PackageAdmin>(ScaPlugin.getContext(), PackageAdmin.class, null);
-			this.bundleTracker.open();
-		}
-		return (PackageAdmin) this.bundleTracker.getService();
 	}
 
 	/*
@@ -183,10 +164,6 @@ public class ScaPlugin extends Plugin {
 				this.serviceReg = null;
 			}
 			ScaPlugin.plugin = null;
-			if (this.bundleTracker != null) {
-				this.bundleTracker.close();
-				this.bundleTracker = null;
-			}
 			ScaPlugin.bundleContext = null;
 			if (this.scaDomainManagerRegistry != null) {
 				ScaModelCommand.execute(this.scaDomainManagerRegistry, new ScaModelCommand() {
