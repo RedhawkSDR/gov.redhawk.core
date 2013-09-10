@@ -11,6 +11,7 @@
  */
 package gov.redhawk.efs.sca.internal;
 
+import gov.redhawk.sca.efs.ScaFileSystemPlugin;
 import gov.redhawk.sca.util.PluginUtil;
 
 import java.net.URI;

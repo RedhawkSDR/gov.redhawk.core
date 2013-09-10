@@ -12,7 +12,7 @@
 package gov.redhawk.efs.sca.internal.cache;
 
 import gov.redhawk.efs.sca.internal.ScaFileStore;
-import gov.redhawk.efs.sca.internal.ScaFileSystemPlugin;
+import gov.redhawk.sca.efs.ScaFileSystemPlugin;
 import gov.redhawk.sca.util.OrbSession;
 
 import java.net.URI;

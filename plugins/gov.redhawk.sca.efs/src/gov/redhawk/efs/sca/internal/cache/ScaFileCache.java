@@ -24,7 +24,8 @@ import mil.jpeojtrs.sca.util.ScaFileSystemConstants;
 /**
  * 
  */
-public class ScaFileCache {
+public enum ScaFileCache {
+	INSTANCE;
 
 	/** Map from FileSystem URI to FileSystemCache **/
 	private final Map<String, FileSystemCache> fileSystemCacheMap = Collections.synchronizedMap(new HashMap<String, FileSystemCache>());

@@ -12,6 +12,7 @@
 package gov.redhawk.sca.efs.server.tests;
 
 import gov.redhawk.efs.sca.server.internal.FileImpl;
+import gov.redhawk.sca.efs.ScaFileSystemPlugin;
 
 import java.io.File;
 import java.io.IOException;
@@ -144,7 +145,8 @@ public class FileImplTest {
 	@Test
 	public void testWrite() {
 		try {
-			final File tmpFile = File.createTempFile("cfTest", "testWrite");
+			File tempDir = ScaFileSystemPlugin.getDefault().getTempDirectory();
+			final File tmpFile = File.createTempFile("cfTest", "testWrite", tempDir);
 			tmpFile.deleteOnExit();
 			this.file.close();
 			this.file = new FileImpl(tmpFile, false);
