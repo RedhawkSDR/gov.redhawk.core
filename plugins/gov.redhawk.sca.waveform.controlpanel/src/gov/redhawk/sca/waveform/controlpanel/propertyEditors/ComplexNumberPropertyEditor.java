@@ -6,15 +6,18 @@ package gov.redhawk.sca.waveform.controlpanel.propertyEditors;
 import gov.redhawk.model.sca.ScaPackage;
 import gov.redhawk.model.sca.ScaSimpleProperty;
 import gov.redhawk.sca.observables.strategy.StringToComplexNumberConverter;
-
-import java.text.DecimalFormat;
-import java.text.NumberFormat;
-import java.text.ParseException;
-
 import mil.jpeojtrs.sca.prf.PropertyValueType;
+import mil.jpeojtrs.sca.util.math.ComplexByte;
+import mil.jpeojtrs.sca.util.math.ComplexDouble;
+import mil.jpeojtrs.sca.util.math.ComplexFloat;
 import mil.jpeojtrs.sca.util.math.ComplexLong;
+import mil.jpeojtrs.sca.util.math.ComplexLongLong;
 import mil.jpeojtrs.sca.util.math.ComplexNumber;
 import mil.jpeojtrs.sca.util.math.ComplexShort;
+import mil.jpeojtrs.sca.util.math.ComplexUByte;
+import mil.jpeojtrs.sca.util.math.ComplexULong;
+import mil.jpeojtrs.sca.util.math.ComplexULongLong;
+import mil.jpeojtrs.sca.util.math.ComplexUShort;
 
 import org.eclipse.core.databinding.UpdateValueStrategy;
 import org.eclipse.emf.databinding.EMFDataBindingContext;
@@ -32,18 +35,16 @@ import org.eclipse.swt.widgets.Text;
  * @author dch
  *
  */
-public class ComplexIntegerPropertyEditor<T extends ComplexNumber> extends PropertyEditor {
+public class ComplexNumberPropertyEditor extends PropertyEditor {
 
 	private String name;
 	private ComplexNumber value;
 	private final ScaSimpleProperty prop;
-	private Class<T> valueType;
 	private Control control;
 	private EMFDataBindingContext context;
-	private final DecimalFormat form = (DecimalFormat) NumberFormat.getInstance();
-	private static final double MAX_VALUE_NO_SCI_NOTATION = 10E6;
-
-	private class ComplexIntegerUpdateValueStrategy extends UpdateValueStrategy {
+	private PropertyValueType valueType;
+	
+	private class ComplexNumberUpdateValueStrategy extends UpdateValueStrategy {
 
 		@Override
 		public Object convert(final Object value) {
@@ -51,15 +52,30 @@ public class ComplexIntegerPropertyEditor<T extends ComplexNumber> extends Prope
 		}
 	}
 
-	@SuppressWarnings("unchecked")
-	public ComplexIntegerPropertyEditor(String name, ComplexNumber value, ScaSimpleProperty prop) {
+	public ComplexNumberPropertyEditor(String name, ComplexNumber value, ScaSimpleProperty prop) {
 		this.name = name;
 		this.value = value;
 		this.prop = prop;
 		if (value instanceof ComplexLong) {
-			this.valueType = (Class<T>) ComplexLong.class;
+			this.valueType = PropertyValueType.LONG;
 		} else if (value instanceof ComplexShort) {
-			this.valueType = (Class<T>) ComplexShort.class;
+			this.valueType = PropertyValueType.SHORT;
+		} else if (value instanceof ComplexByte) {
+			this.valueType = PropertyValueType.OCTET;
+		} else if (value instanceof ComplexUByte) {
+			this.valueType = PropertyValueType.OCTET;
+		} else if (value instanceof ComplexLongLong) {
+			this.valueType = PropertyValueType.LONGLONG;
+		} else if (value instanceof ComplexFloat) {
+			this.valueType = PropertyValueType.FLOAT;
+		} else if (value instanceof ComplexDouble) {
+			this.valueType = PropertyValueType.DOUBLE;
+		} else if (value instanceof ComplexULongLong) {
+			this.valueType = PropertyValueType.ULONGLONG;
+		} else if (value instanceof ComplexULong) {
+			this.valueType = PropertyValueType.ULONG;
+		} else if (value instanceof ComplexUShort) {
+			this.valueType = PropertyValueType.USHORT;
 		}
 	}
 	
@@ -81,12 +97,11 @@ public class ComplexIntegerPropertyEditor<T extends ComplexNumber> extends Prope
 		final ScaSimplePropertyControl scaSimplePropertyControl = new ScaSimplePropertyControl(this.control, this.prop);
 		final ISWTObservableValue textObservable = WidgetProperties.text(new int[] { SWT.FocusOut, SWT.DefaultSelection }).observe(this.control);
 		this.context.bindValue(textObservable, scaSimplePropertyControl.getModel(), 
-				new UpdateValueStrategy().setConverter(new StringToComplexNumberConverter(PropertyValueType.LONG)), new ComplexIntegerUpdateValueStrategy());
+				new UpdateValueStrategy().setConverter(new StringToComplexNumberConverter(this.valueType)), new ComplexNumberUpdateValueStrategy());
 		this.context.bindValue(WidgetProperties.text().observeDelayed(200, this.control), scaSimplePropertyControl.getEditingObserable(),
-		        new UpdateValueStrategy().setConverter(new StringToComplexNumberConverter(PropertyValueType.LONG)),new ComplexIntegerUpdateValueStrategy());
+		        new UpdateValueStrategy().setConverter(new StringToComplexNumberConverter(this.valueType)),new ComplexNumberUpdateValueStrategy());
 		this.context.bindValue(scaSimplePropertyControl.getTarget(), EMFObservables.observeValue(this.prop, ScaPackage.Literals.SCA_SIMPLE_PROPERTY__VALUE),
-		        new UpdateValueStrategy().setConverter(new StringToComplexNumberConverter(PropertyValueType.LONG)),new ComplexIntegerUpdateValueStrategy());
-//		        null,null);
+		        new UpdateValueStrategy().setConverter(new StringToComplexNumberConverter(this.valueType)),new ComplexNumberUpdateValueStrategy());
 	}
 
 	@Override
