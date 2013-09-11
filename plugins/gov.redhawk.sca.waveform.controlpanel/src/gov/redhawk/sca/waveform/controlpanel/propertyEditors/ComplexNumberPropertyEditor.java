@@ -32,7 +32,6 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 
 /**
- * @author dch
  *
  */
 public class ComplexNumberPropertyEditor extends PropertyEditor {
