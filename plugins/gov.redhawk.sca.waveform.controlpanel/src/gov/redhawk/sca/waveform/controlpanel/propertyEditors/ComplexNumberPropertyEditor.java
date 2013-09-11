@@ -1,5 +1,13 @@
 /**
+ * This file is protected by Copyright. 
+ * Please refer to the COPYRIGHT file distributed with this source distribution.
  * 
+ * This file is part of REDHAWK IDE.
+ * 
+ * All rights reserved.  This program and the accompanying materials are made available under 
+ * the terms of the Eclipse Public License v1.0 which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html.
+ *
  */
 package gov.redhawk.sca.waveform.controlpanel.propertyEditors;
 
@@ -42,7 +50,7 @@ public class ComplexNumberPropertyEditor extends PropertyEditor {
 	private Control control;
 	private EMFDataBindingContext context;
 	private PropertyValueType valueType;
-	
+
 	private class ComplexNumberUpdateValueStrategy extends UpdateValueStrategy {
 
 		@Override
@@ -77,7 +85,7 @@ public class ComplexNumberPropertyEditor extends PropertyEditor {
 			this.valueType = PropertyValueType.USHORT;
 		}
 	}
-	
+
 	@Override
 	public void renderNameValuePair(Composite parent) {
 		final Label label = new Label(parent, SWT.NONE);
@@ -86,21 +94,21 @@ public class ComplexNumberPropertyEditor extends PropertyEditor {
 		this.control = new Text(parent, SWT.BORDER);
 		GridDataFactory.fillDefaults().grab(true, false).applyTo(this.control);
 		((Text) this.control).setText(this.value.toString());
-		
+
 	}
 
 	@Override
 	public void setupBindings() {
 		this.context = new EMFDataBindingContext();
-		
+
 		final ScaSimplePropertyControl scaSimplePropertyControl = new ScaSimplePropertyControl(this.control, this.prop);
 		final ISWTObservableValue textObservable = WidgetProperties.text(new int[] { SWT.FocusOut, SWT.DefaultSelection }).observe(this.control);
-		this.context.bindValue(textObservable, scaSimplePropertyControl.getModel(), 
-				new UpdateValueStrategy().setConverter(new StringToComplexNumberConverter(this.valueType)), new ComplexNumberUpdateValueStrategy());
+		this.context.bindValue(textObservable, scaSimplePropertyControl.getModel(),
+			new UpdateValueStrategy().setConverter(new StringToComplexNumberConverter(this.valueType)), new ComplexNumberUpdateValueStrategy());
 		this.context.bindValue(WidgetProperties.text().observeDelayed(200, this.control), scaSimplePropertyControl.getEditingObserable(),
-		        new UpdateValueStrategy().setConverter(new StringToComplexNumberConverter(this.valueType)),new ComplexNumberUpdateValueStrategy());
+			new UpdateValueStrategy().setConverter(new StringToComplexNumberConverter(this.valueType)), new ComplexNumberUpdateValueStrategy());
 		this.context.bindValue(scaSimplePropertyControl.getTarget(), EMFObservables.observeValue(this.prop, ScaPackage.Literals.SCA_SIMPLE_PROPERTY__VALUE),
-		        new UpdateValueStrategy().setConverter(new StringToComplexNumberConverter(this.valueType)),new ComplexNumberUpdateValueStrategy());
+			new UpdateValueStrategy().setConverter(new StringToComplexNumberConverter(this.valueType)), new ComplexNumberUpdateValueStrategy());
 	}
 
 	@Override
@@ -109,5 +117,5 @@ public class ComplexNumberPropertyEditor extends PropertyEditor {
 			this.context.dispose();
 		}
 	}
-	
+
 }
