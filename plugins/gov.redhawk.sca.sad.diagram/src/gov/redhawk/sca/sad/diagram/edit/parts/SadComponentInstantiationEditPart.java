@@ -50,7 +50,24 @@ public class SadComponentInstantiationEditPart extends mil.jpeojtrs.sca.sad.diag
 	protected IFigure createNodeShape() {
 		return this.editPartHelper.createNodeShape();
 	}
+	
+	/**
+	 * @since 3.0
+	 */
+	public void addRuntimeListeners() {
+		this.editPartHelper.addRuntimeListeners();
+	}
+	
+	/**
+	 * @since 3.0
+	 */
+	public void removeRuntimeListeners() {
+		this.editPartHelper.removeRuntimeListeners();
+	}
 
+	/**
+	 * @since 3.0
+	 */
 	@Override
 	protected void addNotationalListeners() {
 		this.editPartHelper.addNotationalListeners();

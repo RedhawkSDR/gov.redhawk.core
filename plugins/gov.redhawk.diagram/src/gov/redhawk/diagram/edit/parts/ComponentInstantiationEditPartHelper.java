@@ -38,6 +38,7 @@ import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.MarginBorder;
 import org.eclipse.draw2d.PositionConstants;
 import org.eclipse.emf.common.notify.Adapter;
+import org.eclipse.emf.common.notify.Notifier;
 import org.eclipse.emf.common.notify.impl.AdapterImpl;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.util.EContentAdapter;
@@ -153,33 +154,16 @@ public class ComponentInstantiationEditPartHelper {
 			properties.eAdapters().add(this.propertyListener);
 		}
 
-		final EObject scaResource = getScaResource();
-
-		if (scaResource != null) {
-			final boolean hasStatusListener = scaResource.eAdapters().contains(this.statusListener);
-
-			if (!hasStatusListener) {
-				ScaModelCommand.execute(scaResource, new ScaModelCommand() {
-
-					public void execute() {
-						scaResource.eAdapters().add(ComponentInstantiationEditPartHelper.this.statusListener);
-					}
-				});
-			}
-			if (scaResource instanceof ScaAbstractComponent< ? >) {
-				final ScaAbstractComponent< ? > comp = (ScaAbstractComponent< ? >) scaResource;
-				paintResource(comp.started());
-			}
-		}
+		addRuntimeListeners();
 	}
 
 	public void removeNotationalListeners() {
-
 		final PropertiesSetStyle properties = (PropertiesSetStyle) this.editPart.getNotationView().getStyle(NotationPackage.eINSTANCE.getPropertiesSetStyle());
 		if (properties != null) {
 			properties.eAdapters().remove(this.propertyListener);
 		}
 		this.editPart.basicRemoveNotationalListeners();
+		removeRuntimeListeners();
 	}
 
 	public DragTracker getDragTracker(final Request request) {
@@ -243,24 +227,18 @@ public class ComponentInstantiationEditPartHelper {
 
 			switch (msg.getFeatureID(IDisposable.class)) {
 			case ScaPackage.IDISPOSABLE__DISPOSED:
-
-				final EObject scaResource = (EObject) msg.getNotifier();
-
-				if (msg.getNotifier() instanceof ScaComponent || msg.getNotifier() instanceof ScaDevice) {
-					ScaModelCommand.execute(scaResource, new ScaModelCommand() {
-
-						public void execute() {
-							scaResource.eAdapters().remove(this);
-						}
-					});
+				if (msg.getNotifier() instanceof Notifier) {
+					final Notifier notifier = (Notifier) msg.getNotifier();
+					notifier.eAdapters().remove(this);
 				}
-
 				break;
 			default:
 				break;
 			}
 		};
 	};
+
+	private EObject scaResource;
 
 	private void paintResource(final Boolean started) {
 		final WorkbenchJob job = new WorkbenchJob("Repainting Component") {
@@ -311,5 +289,47 @@ public class ComponentInstantiationEditPartHelper {
 		}
 
 		return null;
+	}
+
+	/**
+	 * @since 6.0
+	 * 
+	 */
+	public void removeRuntimeListeners() {
+		if (scaResource != null) {
+			ScaModelCommand.execute(scaResource, new ScaModelCommand() {
+
+				public void execute() {
+					scaResource.eAdapters().add(ComponentInstantiationEditPartHelper.this.statusListener);
+				}
+			});
+		}
+
+	}
+
+	/**
+	 * @since 6.0
+	 * 
+	 */
+	public void addRuntimeListeners() {
+		removeRuntimeListeners();
+		scaResource = getScaResource();
+
+		if (scaResource != null) {
+			final boolean hasStatusListener = scaResource.eAdapters().contains(this.statusListener);
+
+			if (!hasStatusListener) {
+				ScaModelCommand.execute(scaResource, new ScaModelCommand() {
+
+					public void execute() {
+						scaResource.eAdapters().add(ComponentInstantiationEditPartHelper.this.statusListener);
+					}
+				});
+			}
+			if (scaResource instanceof ScaAbstractComponent< ? >) {
+				final ScaAbstractComponent< ? > comp = (ScaAbstractComponent< ? >) scaResource;
+				paintResource(comp.started());
+			}
+		}
 	}
 }
