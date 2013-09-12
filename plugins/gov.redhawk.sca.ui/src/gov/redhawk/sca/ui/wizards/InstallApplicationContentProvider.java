@@ -38,6 +38,7 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.SubMonitor;
 import org.eclipse.core.runtime.jobs.IJobChangeListener;
 import org.eclipse.core.runtime.jobs.Job;
+import org.eclipse.emf.common.util.WrappedException;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
@@ -184,7 +185,7 @@ public class InstallApplicationContentProvider implements ITreeContentProvider {
 						final ResourceSet resourceSet = new ResourceSetImpl();
 						final String[] paths = ScaPreferenceConstants.parsePath(ScaPlugin.getDefault().getScaPreferenceAccessor()
 								.getString(ScaPreferenceConstants.SCA_DOMAIN_WAVEFORMS_SEARCH_PATH));
-						return InstallApplicationContentProvider.fetchAssemblies(resourceSet, fileStore, paths, status);
+						return InstallApplicationContentProvider.fetchAssemblies(domMgr, resourceSet, fileStore, paths, status);
 					} else {
 						final IllegalStateException exception = new IllegalStateException("No file manager available");
 						exception.fillInStackTrace();
@@ -200,7 +201,7 @@ public class InstallApplicationContentProvider implements ITreeContentProvider {
 		}
 	}
 
-	private static List<SoftwareAssembly> fetchAssemblies(final ResourceSet resourceSet, final IFileStore fileStore, final String[] paths, final MultiStatus status) {
+	private static List<SoftwareAssembly> fetchAssemblies(final ScaDomainManager domMgr, final ResourceSet resourceSet, final IFileStore fileStore, final String[] paths, final MultiStatus status) {
 		IFileInfo info;
 		try {
 			info = fileStore.fetchInfo(EFS.NONE, null);
@@ -237,7 +238,13 @@ public class InstallApplicationContentProvider implements ITreeContentProvider {
 			try {
 				final IFileStore[] stores = fileStore.childStores(0, null);
 				for (final IFileStore child : stores) {
-					retVal.addAll(InstallApplicationContentProvider.fetchAssemblies(resourceSet, child, paths, status));
+					try {
+						retVal.addAll(InstallApplicationContentProvider.fetchAssemblies(domMgr, resourceSet, child, paths, status));
+					} catch (WrappedException we) {
+						String uriPath = child.toURI().getPath();
+						status.add(new Status(Status.WARNING, ScaUiPlugin.PLUGIN_ID,
+								"Failed to load SAD file: " + uriPath + " from Domain: " + domMgr.getName(), we));
+					}
 				}
 			} catch (final CoreException e) {
 				status.add(e.getStatus());
