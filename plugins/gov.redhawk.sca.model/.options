@@ -1,4 +1,6 @@
 gov.redhawk.sca.model/debug=false
+gov.redhawk.sca.model/debug/launch/waveform=false
+gov.redhawk.sca.model/debug/ModelUtil=false
 gov.redhawk.sca.model/debug/profileObjListener=false
 gov.redhawk.sca.model/debug/portFetch=false
 gov.redhawk.sca.model/debug/scaWaveform/ports=false
@@ -7,4 +9,3 @@ gov.redhawk.sca.model/debug/scaModelCommand=false
 gov.redhawk.sca.model/debug/scaDomainManager/connect=false
 gov.redhawk.sca.model/debug/scaDomainManager/keepAliveErrors=false
 gov.redhawk.sca.model/debug/scaAbstractProperty/ignoreRemoteSet=false
-gov.redhawk.sca.model/debug/launch/waveform=false
