@@ -12,6 +12,8 @@
 package gov.redhawk.model.sca.util;
 
 import gov.redhawk.model.sca.ScaAbstractProperty;
+import gov.redhawk.model.sca.ScaModelPlugin;
+import gov.redhawk.sca.util.Debug;
 
 import java.net.URISyntaxException;
 
@@ -37,6 +39,7 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.emf.common.util.URI;
+import org.eclipse.emf.common.util.WrappedException;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
@@ -50,6 +53,8 @@ import org.eclipse.emf.workspace.util.WorkspaceSynchronizer;
  */
 public final class ModelUtil {
 
+	private static final Debug TRACE_LOGGER = new Debug(ScaModelPlugin.ID, "ModelUtil");
+	
 	/**
 	 * Instantiates a new model util.
 	 */
@@ -276,11 +281,18 @@ public final class ModelUtil {
 	 * @return the DeviceConfiguration specified by the URI
 	 */
 	public static DeviceConfiguration loadDeviceConfiguration(final URI fileURI) {
-		final ResourceSet resourceSet = ScaResourceFactoryUtil.createResourceSet();
-		// Demand load the resource for this file.
-		final Resource resource = resourceSet.getResource(fileURI, true);
-
-		return ModelUtil.getDeviceConfiguration(resource);
+		try {
+			final ResourceSet resourceSet = ScaResourceFactoryUtil.createResourceSet();
+			// Demand load the resource for this file.
+			final Resource resource = resourceSet.getResource(fileURI, true);
+	
+			return ModelUtil.getDeviceConfiguration(resource);
+		} catch (WrappedException we) {
+			if (TRACE_LOGGER.enabled) {
+				TRACE_LOGGER.catching("Unable to load DCD file: " + fileURI, we);
+			}
+			return null;
+		}
 	}
 
 	public static DeviceConfiguration getDeviceConfiguration(final Resource resource) {
@@ -298,14 +310,21 @@ public final class ModelUtil {
 	 * @return the soft pkg
 	 */
 	public static SoftPkg loadSoftPkg(final URI fileURI) {
-		// Parse the SPD file and copy all referenced files into the workspace
-		final ResourceSet resourceSet = ScaResourceFactoryUtil.createResourceSet();
-		//resourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap().put(".xml", new XMLResourceFactoryImpl());
-
-		// Demand load the resource for this file.
-		final Resource resource = resourceSet.getResource(fileURI, true);
-
-		return ModelUtil.getSoftPkg(resource);
+		try {
+			// Parse the SPD file and copy all referenced files into the workspace
+			final ResourceSet resourceSet = ScaResourceFactoryUtil.createResourceSet();
+			//resourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap().put(".xml", new XMLResourceFactoryImpl());
+	
+			// Demand load the resource for this file.
+			final Resource resource = resourceSet.getResource(fileURI, true);
+	
+			return ModelUtil.getSoftPkg(resource);
+		} catch (WrappedException we) {
+			if (TRACE_LOGGER.enabled) {
+				TRACE_LOGGER.catching("Unable to load SPD file: " + fileURI, we);
+			}
+			return null;
+		}
 	}
 
 	/**
@@ -316,14 +335,21 @@ public final class ModelUtil {
 	 * @return the software component
 	 */
 	public static SoftwareComponent loadSoftwareComponent(final URI fileURI) {
-		// Parse the SPD file and copy all referenced files into the workspace
-		final ResourceSet resourceSet = ScaResourceFactoryUtil.createResourceSet();
-		resourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap().put(".xml", new XMLResourceFactoryImpl());
-
-		// Demand load the resource for this file.
-		final Resource resource = resourceSet.getResource(fileURI, true);
-
-		return ModelUtil.getSoftwareComponent(resource);
+		try {
+			// Parse the SPD file and copy all referenced files into the workspace
+			final ResourceSet resourceSet = ScaResourceFactoryUtil.createResourceSet();
+			resourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap().put(".xml", new XMLResourceFactoryImpl());
+	
+			// Demand load the resource for this file.
+			final Resource resource = resourceSet.getResource(fileURI, true);
+	
+			return ModelUtil.getSoftwareComponent(resource);
+		} catch (WrappedException we) {
+			if (TRACE_LOGGER.enabled) {
+				TRACE_LOGGER.catching("Unable to load SCD file: " + fileURI, we);
+			}
+			return null;
+		}
 	}
 
 	/**
@@ -334,14 +360,21 @@ public final class ModelUtil {
 	 * @return the software assembly
 	 */
 	public static SoftwareAssembly loadSoftwareAssembly(final URI fileURI) {
-		// Parse the SPD file and copy all referenced files into the workspace
-		final ResourceSet resourceSet = ScaResourceFactoryUtil.createResourceSet();
-		resourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap().put(".xml", new XMLResourceFactoryImpl());
-
-		// Demand load the resource for this file.
-		final Resource resource = resourceSet.getResource(fileURI, true);
-
-		return ModelUtil.getSoftwareAssembly(resource);
+		try {
+			// Parse the SPD file and copy all referenced files into the workspace
+			final ResourceSet resourceSet = ScaResourceFactoryUtil.createResourceSet();
+			resourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap().put(".xml", new XMLResourceFactoryImpl());
+	
+			// Demand load the resource for this file.
+			final Resource resource = resourceSet.getResource(fileURI, true);
+	
+			return ModelUtil.getSoftwareAssembly(resource);
+		} catch (WrappedException we) {
+			if (TRACE_LOGGER.enabled) {
+				TRACE_LOGGER.catching("Unable to load SAD file: " + fileURI, we);
+			}
+			return null;
+		}
 	}
 
 	/**
