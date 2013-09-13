@@ -73,7 +73,7 @@ public class RcpNxmPlotWidget extends AbstractNxmPlotWidget {
 		if (plotSwitches == null) {
 			plotSwitches = "";
 		}
-		plotCommand = (plot) nxmComp.runCommand("PLOT/BG/VERBOSE=FALSE" + plotSwitches + " " + plotArgs);
+		plotCommand = (plot) nxmComp.runCommand("PLOT/BG/VERBOSE=FALSE/EXIT=MESSAGE|WINDOW" + plotSwitches + " " + plotArgs);
 		plotCommand.setMessageHandler(getPlotMessageHandler());
 	}
 
