@@ -58,7 +58,7 @@ public class RapNxmPlotWidget extends AbstractNxmPlotWidget {
 		if (plotSwitches == null) {
 			plotSwitches = "";
 		}
-		nxmComp.runClientCommand("PLOT" + plotSwitches + "/BG/ID=" + PLOT_ID + " " + plotArgs);
+		nxmComp.runClientCommand("PLOT" + plotSwitches + "/BG/EXIT=MESSAGE|WINDOW/ID=" + PLOT_ID + " " + plotArgs);
 	}
 
 	@Override
