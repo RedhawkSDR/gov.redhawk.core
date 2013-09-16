@@ -61,6 +61,8 @@ public class sourcenic extends Primitive { //SUPPRESS CHECKSTYLE ClassName
 	private byte[] buf = new byte[MAXPKTBUF];
 	private DatagramPacket packet = new DatagramPacket(buf, buf.length);
 	
+	private boolean warn;
+	
 	/**
 	 * Gets the number of socket read timeouts.
 	 * 
@@ -72,6 +74,8 @@ public class sourcenic extends Primitive { //SUPPRESS CHECKSTYLE ClassName
 	
 	@Override
 	public int open() {
+		warn = MA.getState("/WARN", true);
+		verbose = MA.getState("/VERBOSE", false);
 		if (verbose) { M.info("Hello"); }
 		int ret = super.open();
 				
@@ -118,12 +122,12 @@ public class sourcenic extends Primitive { //SUPPRESS CHECKSTYLE ClassName
 						M.error("Couldn't find usable network interface for vlan, try using the INTERFACE switch");
 					}
 				}
-				M.info("Using default multicast interface");
+				if (verbose) { M.info("Using default multicast interface"); }
 			}
 			
 			// If requested, join the group immediately
 			if (mgrp != null) {
-				M.info("Joining " + mgrp);
+				if (verbose) { M.info("Joining " + mgrp); }
 				this.setMgrp(mgrp);
 			}
 		}
@@ -148,7 +152,7 @@ public class sourcenic extends Primitive { //SUPPRESS CHECKSTYLE ClassName
 			//System.out.println("Packet HA " + packet.getAddress().getHostAddress());
 			int len = packet.getLength();
 			if (len != SDDS_PACKET_SIZE) {
-				M.warning("Discarding packet of incorrect length " + len);
+				if (warn) { M.warning("Discarding packet of incorrect length " + len); }
 				return Commandable.NORMAL;
 			}
 			
@@ -162,20 +166,20 @@ public class sourcenic extends Primitive { //SUPPRESS CHECKSTYLE ClassName
 			int dataSize = sddsHeader.getDataFieldBps();
 			switch(dataSize) {
 			case BITS_PER_SAMPLE_4:
-				M.warning("4-bit SDDS data is not yet supported");
+				if (warn) { M.warning("4-bit SDDS data is not yet supported"); }
 				break;
 				
 			case BITS_PER_SAMPLE_8:
 				if (this.outputFile.bps == 1) { // no translation
 					this.outputFile.write(outputData);
 				} else if (outputData.bps == 2) { // expand 8bit -> SI
-					M.warning("Output mode SI is not yet supported for 8-bit SDDS data");
+					if (warn) { M.warning("Output mode SI is not yet supported for 8-bit SDDS data"); }
 				}
 				break;
 				
 			case BITS_PER_SAMPLE_16:
 				if (this.outputFile.bps == 1) { // truncate SI -> SB
-					M.warning("Output mode SB is not yet supported for 16-bit SDDS data");
+					if (warn) { M.warning("Output mode SB is not yet supported for 16-bit SDDS data"); }
 				} else if (this.outputFile.bps == 2) { // byte-swap SI
 					if (!sddsHeader.isComplex()) {		
 						byteSwap(outputData.buf);
@@ -188,7 +192,7 @@ public class sourcenic extends Primitive { //SUPPRESS CHECKSTYLE ClassName
 						this.outputFile.write(outputData);
 					}
 				} else {
-					M.info("No support for 4-bit SDDS with specified output format");
+					if (warn) { M.warning("No support for 4-bit SDDS with specified output format"); }
 				}
 				break;
 				
@@ -420,7 +424,7 @@ public class sourcenic extends Primitive { //SUPPRESS CHECKSTYLE ClassName
 			// CHECKSTYLE:OFF
 			sf = (data[0] & 0x80) != 0;
 			if (!sf) {
-				M.warning("Received non-standard packet");
+				if (warn) { M.warning("Received non-standard packet"); }
 			}
 			sos = (data[0] & 0x40) != 0;
 			pp = (data[0] & 0x20) != 0;
