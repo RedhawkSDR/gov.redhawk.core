@@ -11,6 +11,8 @@
  */
 package nxm.redhawk.prim;
 
+import gov.redhawk.sca.util.Debug;
+
 import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.InetSocketAddress;
@@ -19,8 +21,11 @@ import java.net.NetworkInterface;
 import java.net.SocketException;
 import java.net.SocketTimeoutException;
 import java.net.UnknownHostException;
+import java.text.MessageFormat;
+import java.util.EnumSet;
 import java.util.Enumeration;
 
+import nxm.redhawk.lib.RedhawkOptActivator;
 import nxm.sys.inc.Commandable;
 import nxm.sys.lib.BaseFile;
 import nxm.sys.lib.Data;
@@ -31,6 +36,8 @@ import nxm.sys.lib.Primitive;
  * @since 8.0
  */
 public class sourcenic extends Primitive { //SUPPRESS CHECKSTYLE ClassName
+	private static final Debug TRACE_LOGGER = new Debug(RedhawkOptActivator.ID, sourcenic.class.getSimpleName());
+			
 	private static final int MAXPKTBUF = 65535; // The maximum UDP datagram size
 	private static final int SDDS_HEADER_SIZE = 56;
 	private static final int SDDS_PAYLOAD_SIZE = 1024;
@@ -61,6 +68,9 @@ public class sourcenic extends Primitive { //SUPPRESS CHECKSTYLE ClassName
 	private byte[] buf = new byte[MAXPKTBUF];
 	private DatagramPacket packet = new DatagramPacket(buf, buf.length);
 	
+	/** warning bit fields to display first warning msg of a particular type per instance session. */
+	private static enum WarnBit { WARN1, WARN2, WARN3, WARN4, WARN5, WARN6 };
+	private final EnumSet<WarnBit> warnedSet = EnumSet.noneOf(WarnBit.class);
 	private boolean warn;
 	
 	/**
@@ -74,6 +84,7 @@ public class sourcenic extends Primitive { //SUPPRESS CHECKSTYLE ClassName
 	
 	@Override
 	public int open() {
+		if (TRACE_LOGGER.enabled) { TRACE_LOGGER.enteringMethod(); }
 		warn = MA.getState("/WARN", true);
 		verbose = MA.getState("/VERBOSE", false);
 		if (verbose) { M.info("Hello"); }
@@ -123,11 +134,13 @@ public class sourcenic extends Primitive { //SUPPRESS CHECKSTYLE ClassName
 					}
 				}
 				if (verbose) { M.info("Using default multicast interface"); }
+				if (TRACE_LOGGER.enabled) { TRACE_LOGGER.message("Using default multicast interface"); }
 			}
 			
 			// If requested, join the group immediately
 			if (mgrp != null) {
 				if (verbose) { M.info("Joining " + mgrp); }
+				if (TRACE_LOGGER.enabled) { TRACE_LOGGER.message("Joining " + mgrp); } 
 				this.setMgrp(mgrp);
 			}
 		}
@@ -152,7 +165,7 @@ public class sourcenic extends Primitive { //SUPPRESS CHECKSTYLE ClassName
 			//System.out.println("Packet HA " + packet.getAddress().getHostAddress());
 			int len = packet.getLength();
 			if (len != SDDS_PACKET_SIZE) {
-				if (warn) { M.warning("Discarding packet of incorrect length " + len); }
+				warn(WarnBit.WARN1, "Discarding packet of incorrect length {0}", len);
 				return Commandable.NORMAL;
 			}
 			
@@ -166,20 +179,20 @@ public class sourcenic extends Primitive { //SUPPRESS CHECKSTYLE ClassName
 			int dataSize = sddsHeader.getDataFieldBps();
 			switch(dataSize) {
 			case BITS_PER_SAMPLE_4:
-				if (warn) { M.warning("4-bit SDDS data is not yet supported"); }
+				warn(WarnBit.WARN2, "4-bit SDDS data is not yet supported");
 				break;
 				
 			case BITS_PER_SAMPLE_8:
 				if (this.outputFile.bps == 1) { // no translation
 					this.outputFile.write(outputData);
 				} else if (outputData.bps == 2) { // expand 8bit -> SI
-					if (warn) { M.warning("Output mode SI is not yet supported for 8-bit SDDS data"); }
+					warn(WarnBit.WARN3, "Output mode SI is not yet supported for 8-bit SDDS data");
 				}
 				break;
 				
 			case BITS_PER_SAMPLE_16:
 				if (this.outputFile.bps == 1) { // truncate SI -> SB
-					if (warn) { M.warning("Output mode SB is not yet supported for 16-bit SDDS data"); }
+					warn(WarnBit.WARN4, "Output mode SB is not yet supported for 16-bit SDDS data");
 				} else if (this.outputFile.bps == 2) { // byte-swap SI
 					if (!sddsHeader.isComplex()) {		
 						byteSwap(outputData.buf);
@@ -192,7 +205,7 @@ public class sourcenic extends Primitive { //SUPPRESS CHECKSTYLE ClassName
 						this.outputFile.write(outputData);
 					}
 				} else {
-					if (warn) { M.warning("No support for 4-bit SDDS with specified output format"); }
+					warn(WarnBit.WARN5, "No support for 4-bit SDDS with specified output format");
 				}
 				break;
 				
@@ -209,6 +222,7 @@ public class sourcenic extends Primitive { //SUPPRESS CHECKSTYLE ClassName
 
 	@Override
 	public int close() {
+		if (TRACE_LOGGER.enabled) { TRACE_LOGGER.enteringMethod(); }
 		if (verbose) { M.info("Goodbye"); }
 		outputFile.close();
 		if (this.maddr != null) {
@@ -424,7 +438,7 @@ public class sourcenic extends Primitive { //SUPPRESS CHECKSTYLE ClassName
 			// CHECKSTYLE:OFF
 			sf = (data[0] & 0x80) != 0;
 			if (!sf) {
-				if (warn) { M.warning("Received non-standard packet"); }
+				warn(WarnBit.WARN6, "Received non-standard packet");
 			}
 			sos = (data[0] & 0x40) != 0;
 			pp = (data[0] & 0x20) != 0;
@@ -471,6 +485,18 @@ public class sourcenic extends Primitive { //SUPPRESS CHECKSTYLE ClassName
 				return BITS_PER_SAMPLE_16;
 			default:
 				throw new IllegalStateException("Invalid SDDS packet dmode");
+			}
+		}
+	}
+	
+	private void warn(final WarnBit warnBit, final String msgFormatPattern, final Object... args) {
+		if (warn) {
+			if (!warnedSet.contains(warnBit)) { // if we have not already warned on this bit field
+				warnedSet.add(warnBit);
+				String msg = MessageFormat.format(msgFormatPattern, args);
+				M.warning(msg);
+			} else if (TRACE_LOGGER.enabled) { 
+				TRACE_LOGGER.message("WARN: " + msgFormatPattern, args);
 			}
 		}
 	}
