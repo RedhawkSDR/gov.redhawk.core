@@ -177,7 +177,12 @@ public abstract class SilentJob extends Job {
 	protected IStatus handleException(final Throwable t) {
 		final StringBuilder message = new StringBuilder();
 		message.append(t.toString());
-		String bundleId = ScaUtilPluginActivator.getDefault().getBundleId(this);
+		ScaUtilPluginActivator plugin = ScaUtilPluginActivator.getDefault();
+		String bundleId = null;
+		if (plugin != null) {
+			bundleId = plugin.getBundleId(this);
+		}
+		
 		if (bundleId == null) {
 			bundleId = "unknown";
 		}
