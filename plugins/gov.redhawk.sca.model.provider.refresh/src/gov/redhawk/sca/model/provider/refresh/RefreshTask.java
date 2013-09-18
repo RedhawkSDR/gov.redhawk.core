@@ -154,7 +154,10 @@ public class RefreshTask extends AbstractDataProvider implements Runnable {
 				}
 			});
 		}
-		RefreshProviderPlugin.getInstance().getPreferenceAccessor().addPreferenceChangeListener(this.refreshPreferenceListener);
+		RefreshProviderPlugin plugin = RefreshProviderPlugin.getInstance();
+		if (plugin != null) {
+			plugin.getPreferenceAccessor().addPreferenceChangeListener(this.refreshPreferenceListener);
+		}
 	}
 
 	@Override
