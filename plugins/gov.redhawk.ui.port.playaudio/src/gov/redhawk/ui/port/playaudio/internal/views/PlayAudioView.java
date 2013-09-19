@@ -88,7 +88,8 @@ public class PlayAudioView extends ViewPart {
 				if (object instanceof AudioReceiver) {
 					AudioReceiver receiver = (AudioReceiver) object;
 					ScaUsesPort port = receiver.getPort();
-					return super.getText(port);
+					String qualifiedName = super.getText(port.eContainer()) + " -> " + super.getText(port);
+					return qualifiedName;
 				}
 				return super.getText(object);
 			}
