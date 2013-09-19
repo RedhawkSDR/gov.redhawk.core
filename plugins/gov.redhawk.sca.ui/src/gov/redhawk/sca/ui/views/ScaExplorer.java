@@ -16,7 +16,9 @@ import gov.redhawk.sca.ScaPlugin;
 import gov.redhawk.sca.ui.ScaUiPlugin;
 import gov.redhawk.sca.ui.UserSpecificScopeContext;
 
-import org.eclipse.rwt.SessionSingletonBase;
+import org.eclipse.core.runtime.Status;
+import org.eclipse.rwt.RWT;
+import org.eclipse.rwt.service.SettingStoreException;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.IMemento;
@@ -46,17 +48,18 @@ public class ScaExplorer extends CommonNavigator implements ITabbedPropertySheet
 	}
 	
 	@Override
-	public void init(IViewSite aSite, IMemento aMemento) throws PartInitException {
+	public void init(IViewSite site, IMemento aMemento) throws PartInitException {
 		/*
 		 * Force reloading of domain manager registry from UI thread for RAP, so
 		 * domain settings will be persisted in a user-specific location. The user Principal
 		 * can be obtained only from the UI thread.
 		 */
 		if (SWT.getPlatform().startsWith("rap")) {
-			SessionSingletonBase.getInstance(ScaPlugin.class).getDomainManagerRegistry(true, aSite.getShell().getDisplay());
-			SessionSingletonBase.getInstance(ScaPlugin.class).setScaPreferenceAccessor(new UserSpecificScopeContext(aSite.getShell().getDisplay()));
+			ScaPlugin.getDefault().getDomainManagerRegistry(site.getShell().getDisplay());
+			//ScaPlugin.getDefault().setScaPreferenceAccessor(new UserSpecificScopeContext(aSite.getShell().getDisplay()));
 		}
-		super.init(aSite, aMemento);
+		ScaPlugin.getDefault().getCompatibilityUtil().initializeSettingStore(site.getShell().getDisplay());
+		super.init(site, aMemento);
 	}
 
 	@Override

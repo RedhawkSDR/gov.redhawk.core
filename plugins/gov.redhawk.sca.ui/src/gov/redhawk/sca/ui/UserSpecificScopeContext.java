@@ -39,7 +39,6 @@ public class UserSpecificScopeContext implements IScopeContext {
 		try {
 			dir.mkdirs();
 			boolean created = file.createNewFile();
-			System.err.println("Prefs file created: " + created);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -50,7 +49,6 @@ public class UserSpecificScopeContext implements IScopeContext {
 		} catch (IOException e) {
 			ScaUiPlugin.logError("Unable to load user-specific preference value", e);
 		}
-		System.err.println("Prefs Store Lcoation: " + getUserSpecificLocation() + File.separator + "user-prefs");
 	}
 
 	@Override

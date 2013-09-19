@@ -17,6 +17,7 @@ import gov.redhawk.sca.internal.ui.ScaContentTypeRegistry;
 import gov.redhawk.sca.internal.ui.ScaUiModelJob;
 import gov.redhawk.sca.util.ScopedPreferenceAccessor;
 
+import org.eclipse.core.runtime.Assert;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
@@ -25,8 +26,11 @@ import org.eclipse.core.runtime.preferences.InstanceScope;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.resource.ImageRegistry;
-import org.eclipse.rwt.SessionSingletonBase;
+import org.eclipse.rap.ui.internal.preferences.SessionScope;
+import org.eclipse.rwt.RWT;
+import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Image;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.eclipse.ui.preferences.ScopedPreferenceStore;
 import org.osgi.framework.BundleContext;
@@ -81,19 +85,38 @@ public class ScaUiPlugin extends AbstractUIPlugin {
 	 * @since 3.0
 	 */
 	public IPreferenceStore getScaPreferenceStore() {
-		if (this.scaPreferenceStore == null) {
+		if (SWT.getPlatform().startsWith("rap")) {
+			Assert.isNotNull(Display.getCurrent(), "This method must be called from the UI thread");
+			ScaPlugin.getDefault().getCompatibilityUtil().initializeSettingStore(Display.getCurrent());
+			this.scaPreferenceStore = new ScopedPreferenceStore(new SessionScope(), ScaPlugin.getDefault().getBundle().getSymbolicName());
+		} else {
 			this.scaPreferenceStore = new ScopedPreferenceStore(InstanceScope.INSTANCE, ScaPlugin.getDefault().getBundle().getSymbolicName());
 		}
 		return this.scaPreferenceStore;
+//		if (this.scaPreferenceStore == null) {
+//			Assert.isNotNull(Display.getCurrent(), "This method must be called from the UI thread");
+//			ScaPlugin.getDefault().getCompatibilityUtil().initializeSettingStore(Display.getCurrent());
+//			if (SWT.getPlatform().startsWith("rap")) {
+//				this.scaPreferenceStore = new ScopedPreferenceStore(new SessionScope(), ScaPlugin.getDefault().getBundle().getSymbolicName());
+//			} else {
+//				this.scaPreferenceStore = new ScopedPreferenceStore(InstanceScope.INSTANCE, ScaPlugin.getDefault().getBundle().getSymbolicName());
+//			}
+//		}
+//		return this.scaPreferenceStore;
+	}
+	
+	@Override
+	public IPreferenceStore getPreferenceStore() {
+		return getScaPreferenceStore();
 	}
 	
 	
-	/**
-	 * @since 9.2
-	 */
-	public void setScaPreferenceStore(IScopeContext scope) {
-		this.scaPreferenceStore = new ScopedPreferenceStore(scope, ScaPlugin.getDefault().getBundle().getSymbolicName());
-	}
+//	/**
+//	 * @since 9.2
+//	 */
+//	public void setScaPreferenceStore(IScopeContext scope) {
+//		this.scaPreferenceStore = new ScopedPreferenceStore(scope, ScaPlugin.getDefault().getBundle().getSymbolicName());
+//	}
 
 	/*
 	 * (non-Javadoc)

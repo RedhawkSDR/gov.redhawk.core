@@ -18,7 +18,6 @@ import gov.redhawk.sca.ScaPlugin;
 import org.eclipse.emf.common.util.TreeIterator;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.util.EcoreUtil;
-import org.eclipse.rwt.SessionSingletonBase;
 
 /**
  * 
@@ -27,7 +26,7 @@ public class ScaDomainRegistryObjectLocator extends AbstractScaObjectLocator {
 
 	@Override
 	protected TreeIterator<EObject> getContentIterator(final Class< ? extends CorbaObjWrapper< ? >> type, final String ior) {
-		return EcoreUtil.getAllContents(SessionSingletonBase.getInstance(ScaPlugin.class).getDomainManagerRegistry(), false);
+		return EcoreUtil.getAllContents(ScaPlugin.getDefault().getDomainManagerRegistry(), false);
 	}
 
 }

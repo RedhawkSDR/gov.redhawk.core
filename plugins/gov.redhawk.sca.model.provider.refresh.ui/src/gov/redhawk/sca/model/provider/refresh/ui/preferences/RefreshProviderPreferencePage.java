@@ -15,6 +15,7 @@ import gov.redhawk.sca.model.provider.refresh.preferences.RefreshPreferenceConst
 import gov.redhawk.sca.model.provider.refresh.ui.RefreshProviderUIActivator;
 
 import org.eclipse.jface.preference.FieldEditorPreferencePage;
+import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.preference.IntegerFieldEditor;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPreferencePage;
@@ -35,6 +36,8 @@ import org.eclipse.ui.IWorkbenchPreferencePage;
 
 public class RefreshProviderPreferencePage extends FieldEditorPreferencePage implements IWorkbenchPreferencePage {
 
+	private IntegerFieldEditor refreshIntervalField;
+
 	public RefreshProviderPreferencePage() {
 		super(FieldEditorPreferencePage.GRID);
 		setPreferenceStore(RefreshProviderUIActivator.getDefault().getRefreshProviderPreferenceStore());
@@ -49,7 +52,10 @@ public class RefreshProviderPreferencePage extends FieldEditorPreferencePage imp
 	 */
 	@Override
 	public void createFieldEditors() {
-		addField(new IntegerFieldEditor(RefreshPreferenceConstants.REFRESH_INTERVAL, "Refresh Interval (ms):", getFieldEditorParent()));
+		refreshIntervalField = new IntegerFieldEditor(RefreshPreferenceConstants.REFRESH_INTERVAL, "Refresh Interval (ms):", getFieldEditorParent());
+		addField(refreshIntervalField);
+		refreshIntervalField.setPreferenceStore(getPreferenceStore());
+		refreshIntervalField.load();
 	}
 
 	/* (non-Javadoc)
@@ -57,6 +63,18 @@ public class RefreshProviderPreferencePage extends FieldEditorPreferencePage imp
 	 */
 	@Override
 	public void init(final IWorkbench workbench) {
+		setPreferenceStore(RefreshProviderUIActivator.getDefault().getRefreshProviderPreferenceStore());
+	}
+	
+	@Override
+	public boolean performOk() {
+		refreshIntervalField.store();
+		return super.performOk();
+	}
+	
+	@Override
+	public IPreferenceStore getPreferenceStore() {
+		return RefreshProviderUIActivator.getDefault().getRefreshProviderPreferenceStore();
 	}
 
 }

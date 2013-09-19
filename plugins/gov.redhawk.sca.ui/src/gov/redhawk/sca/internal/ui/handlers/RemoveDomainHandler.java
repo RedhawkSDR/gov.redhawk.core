@@ -23,7 +23,6 @@ import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.window.Window;
-import org.eclipse.rwt.SessionSingletonBase;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.handlers.HandlerUtil;
 
@@ -56,7 +55,7 @@ public class RemoveDomainHandler extends AbstractHandler implements IHandler {
 
 							@Override
 							public void execute() {
-								SessionSingletonBase.getInstance(ScaPlugin.class).getDomainManagerRegistry().getDomains().remove(domMgr);
+								ScaPlugin.getDefault().getDomainManagerRegistry().getDomains().remove(domMgr);
 							}
 
 						});

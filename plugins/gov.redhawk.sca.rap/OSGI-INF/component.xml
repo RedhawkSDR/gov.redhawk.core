@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<scr:component xmlns:scr="http://www.osgi.org/xmlns/scr/v1.1.0" immediate="true" name="gov.redhawk.sca.rap">
-   <implementation class="gov.redhawk.sca.rap.compatibility.CompatibilityUtil"/>
-   <service>
-      <provide interface="gov.redhawk.sca.compatibility.ICompatibilityUtil"/>
-   </service>
-</scr:component>

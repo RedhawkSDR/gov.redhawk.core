@@ -15,15 +15,13 @@ import gov.redhawk.sca.ScaPlugin;
 
 import java.util.ArrayList;
 
-import org.eclipse.rwt.SessionSingletonBase;
-
 public class ScaPreferenceUtil {
 	private ScaPreferenceUtil() {
 
 	}
 
 	public static boolean shouldAutoConnect() {
-		return SessionSingletonBase.getInstance(ScaPlugin.class).getScaPreferenceAccessor().getBoolean(ScaPreferenceConstants.SCA_CORBA_AUTOCONNECT_PREFERENCE);
+		return ScaPlugin.getDefault().getScaPreferenceAccessor().getBoolean(ScaPreferenceConstants.SCA_CORBA_AUTOCONNECT_PREFERENCE);
 	}
 
 	/**

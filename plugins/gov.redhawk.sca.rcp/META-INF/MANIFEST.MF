@@ -1,0 +1,13 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: SCA RCP
+Bundle-SymbolicName: gov.redhawk.sca.rcp
+Bundle-Version: 1.0.0.qualifier
+Bundle-Activator: gov.redhawk.sca.rcp.ScaRCPPlugin
+Bundle-Vendor: REDHAWK
+Require-Bundle: org.eclipse.core.runtime,
+ gov.redhawk.sca
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Bundle-ActivationPolicy: lazy
+Service-Component: OSGI-INF/domainRegistry.xml,
+ OSGI-INF/compatibility.xml

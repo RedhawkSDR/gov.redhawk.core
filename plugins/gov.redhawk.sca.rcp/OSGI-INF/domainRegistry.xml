@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<scr:component xmlns:scr="http://www.osgi.org/xmlns/scr/v1.1.0" activate="activate" deactivate="deactivate" name="gov.redhawk.sca.rcp.domainregistry">
+   <implementation class="gov.redhawk.sca.rcp.internal.ScaDomainManagerRegistryServiceImpl"/>
+   <service>
+      <provide interface="gov.redhawk.sca.IScaDomainManagerRegistryService"/>
+   </service>
+</scr:component>

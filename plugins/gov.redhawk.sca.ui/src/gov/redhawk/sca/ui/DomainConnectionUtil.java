@@ -28,7 +28,6 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.jface.wizard.WizardDialog;
-import org.eclipse.rwt.SessionSingletonBase;
 import org.eclipse.ui.PlatformUI;
 
 /**
@@ -40,7 +39,7 @@ public class DomainConnectionUtil {
 	}
 
 	public static void showDialog(final String host, final String domainName) {
-		final ScaDomainManagerRegistry registry = SessionSingletonBase.getInstance(ScaPlugin.class).getDomainManagerRegistry();
+		final ScaDomainManagerRegistry registry = ScaPlugin.getDefault().getDomainManagerRegistry();
 		final DomainEntryWizard wizard = new DomainEntryWizard();
 		wizard.setNameServiceInitRef(host);
 		wizard.setRegistry(registry);

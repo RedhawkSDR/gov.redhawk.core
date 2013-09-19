@@ -11,8 +11,6 @@
  */
 package gov.redhawk.sca.ui.singledomain.views;
 
-import java.security.Principal;
-
 import gov.redhawk.model.sca.DomainConnectionException;
 import gov.redhawk.model.sca.RefreshDepth;
 import gov.redhawk.model.sca.ScaDomainManager;
@@ -32,14 +30,19 @@ import gov.redhawk.sca.ui.singledomain.dialogs.DialogCloseJob;
 import gov.redhawk.sca.ui.singledomain.dialogs.DomainsDialog;
 import gov.redhawk.sca.ui.views.ScaExplorer;
 
+import java.security.Principal;
+
 import org.eclipse.core.runtime.NullProgressMonitor;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.impl.AdapterImpl;
 import org.eclipse.jface.action.ToolBarManager;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.util.IPropertyChangeListener;
 import org.eclipse.jface.util.PropertyChangeEvent;
-import org.eclipse.rwt.SessionSingletonBase;
+import org.eclipse.rwt.RWT;
+import org.eclipse.rwt.service.ISettingStore;
+import org.eclipse.rwt.service.SettingStoreException;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.MouseTrackListener;
@@ -102,6 +105,7 @@ public class ScaExplorerSingleDomain extends ScaExplorer {
 						break;
 					case Notification.ADD:
 						if (prefs.getBoolean(ScaSingleDomainPreferenceConstants.SCA_SET_NEW_DOMAIN_ACTIVE)) {
+							System.err.println("ACTIVATING NEW DOMAIN");
 							ScaDomainManager domainAdded = (ScaDomainManager) msg.getNewValue();
 							setActiveDomain(domainAdded.getName());
 							dialog.checkHyperlinkEnabled(domainAdded);
@@ -133,7 +137,7 @@ public class ScaExplorerSingleDomain extends ScaExplorer {
 			if (ScaSingleDomainPreferenceConstants.SCA_ACTIVE_DOMAIN.equals(event.getProperty())) {
 				String oldDomain = (String) event.getOldValue();
 				if (!oldDomain.equals("") && prefs.getBoolean(ScaSingleDomainPreferenceConstants.SCA_DISCONNECT_INACTIVE)) {
-					ScaDomainManager domain = SessionSingletonBase.getInstance(ScaPlugin.class).getDomainManagerRegistry().findDomain(oldDomain);
+					ScaDomainManager domain = ScaPlugin.getDefault().getDomainManagerRegistry().findDomain(oldDomain);
 					if (domain != null) {
 						domain.disconnect();
 					}
@@ -141,7 +145,7 @@ public class ScaExplorerSingleDomain extends ScaExplorer {
 				final ScaDomainManager activeDomain = getActiveDomain();
 				String newDomain = (String) event.getNewValue();
 				if (!newDomain.equals("")) {
-					ScaDomainManager domain = SessionSingletonBase.getInstance(ScaPlugin.class).getDomainManagerRegistry().findDomain(newDomain);
+					ScaDomainManager domain = ScaPlugin.getDefault().getDomainManagerRegistry().findDomain(newDomain);
 					if (domain != null && domain.isAutoConnect()) {
 						try {
 							domain.connect(new NullProgressMonitor(), RefreshDepth.SELF);
@@ -250,7 +254,7 @@ public class ScaExplorerSingleDomain extends ScaExplorer {
 	protected Object getInitialInput() {
 		for (ScaDomainManager domain : ScaPlugin.getDefault().getDomainManagerRegistry().getDomains()) {
 			if (domain.getName() != null && domain.getName().equals(getActiveDomainName())) {
-				if (!domain.isConnected()) {
+				if (!domain.isConnected() && domain.isAutoConnect()) {
 					try {
 						domain.connect(new NullProgressMonitor(), RefreshDepth.CHILDREN);
 					} catch (DomainConnectionException e) {
@@ -277,21 +281,14 @@ public class ScaExplorerSingleDomain extends ScaExplorer {
 	public void init(IViewSite site) throws PartInitException {
 		super.init(site);
 		fillToolBar("");
-
-		/*
-		 * Force reloading of domain manager registry from UI thread for RAP, so
-		 * domain settings will be persisted in a user-specific location. The user Principal
-		 * can be obtained only from the UI thread.
-		 */
+		ScaPlugin.getDefault().getCompatibilityUtil().initializeSettingStore(site.getShell().getDisplay());
 		if (SWT.getPlatform().startsWith("rap")) {
 			Display display = getSite().getShell().getDisplay();
-			SessionSingletonBase.getInstance(ScaPlugin.class).getDomainManagerRegistry(true, display);
-			SessionSingletonBase.getInstance(ScaPlugin.class).setScaPreferenceAccessor(new UserSpecificScopeContext(display));
-			SessionSingletonBase.getInstance(ScaUiPlugin.class).setScaPreferenceStore(new UserSpecificScopeContext(display));
+			//ScaPlugin.getDefault().setScaPreferenceAccessor(new UserSpecificScopeContext(display));
+			//ScaUiPlugin.getDefault().setScaPreferenceStore(new UserSpecificScopeContext(display));
 		}
-
-		prefs = SessionSingletonBase.getInstance(ScaUiPlugin.class).getScaPreferenceStore();
-		ScaDomainManagerRegistry registry = SessionSingletonBase.getInstance(ScaPlugin.class).getDomainManagerRegistry();
+		prefs = ScaUiPlugin.getDefault().getScaPreferenceStore();
+		ScaDomainManagerRegistry registry = ScaPlugin.getDefault().getDomainManagerRegistry(site.getShell().getDisplay());
 		if (!registry.eAdapters().contains(domainChangeAdapter)) {
 			registry.eAdapters().add(domainChangeAdapter);
 		}
@@ -302,7 +299,6 @@ public class ScaExplorerSingleDomain extends ScaExplorer {
 		} else {
 			setActiveDomain(activeDomainPref);
 		}
-
 		Principal user = CompatibilityUtil.getUserPrincipal(site.getShell().getDisplay());
 		//TODO Create or retrieve user-specific preferences node, for persisting domain connection info
 		//TODO TEMP code for confirming cert presence while testing. Remove after implementation of cert-based user data persistence
@@ -387,7 +383,7 @@ public class ScaExplorerSingleDomain extends ScaExplorer {
 	public void dispose() {
 		dialog.dispose();
 		prefs.removePropertyChangeListener(activeDomainListener);
-		SessionSingletonBase.getInstance(ScaPlugin.class).getDomainManagerRegistry().eAdapters().remove(domainChangeAdapter);
+		ScaPlugin.getDefault().getDomainManagerRegistry().eAdapters().remove(domainChangeAdapter);
 		//BEGIN WORKAROUND CODE
 		//		if (this.mouseMoveListenerJob != null) {
 		//			this.mouseMoveListenerJob.cancel();

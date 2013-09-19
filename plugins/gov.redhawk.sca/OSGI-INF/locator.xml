@@ -5,3 +5,4 @@
       <provide interface="gov.redhawk.model.sca.services.IScaObjectLocator"/>
    </service>
 </scr:component>
+
