@@ -59,6 +59,9 @@ public class CompatibilityUtil {
 		SafeCompatibilityUtil.INSTANCE.setFontDataStyle(fontData, style);
 	}
 
+	/**
+	 * @since 9.1
+	 */
 	public static void disableComboWheelScrollSelect(ComboViewer viewer) {
 		SafeCompatibilityUtil.INSTANCE.disableComboWheelScrollSelect(viewer);
 	}

@@ -416,7 +416,7 @@ public final class NxmPlotUtil {
 	}
 
 	/**
-	 * @since 4.1
+	 * @since 4.2
 	 */
 	public static IPlotSession addSource(final File file, String format, final boolean thinData, Integer thinIncr, Integer yDelta,
 			final AbstractNxmPlotWidget plotWidget, final String qualifiers) {
