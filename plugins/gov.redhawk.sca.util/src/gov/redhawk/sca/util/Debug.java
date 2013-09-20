@@ -33,17 +33,26 @@ import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Plugin;
 
 /**
- * Helper class used for debug tracing. To use, create a static final variable
- * initialized with the corresponding debug option (tag). Wherever tracing is
- * needed, check the {@link #enabled} variable first, then use
- * {@link #trace(String)} or {@link #out} directly to print debug messages.
+ * Helper class used for debug tracing (defaults to System.out if not specified).
+ * To use, create a static final variable initialized with the corresponding debug option (tag).
+ * Wherever tracing is needed, check the {@link #enabled} variable first for best performance,
+ * then use {@link #trace(String)}, {@link #message(String)}, etc. to print debug messages.
  * E.g.,
- * 
+ *
  * <pre>
- * private static final Debug debug = new Debug(&amp;quotmyPlugin$quote&quot;myTag&quot;);
+ * private static final Debug debug = new Debug(&quot;myPluginID&quot;, &quot;myTag&quot;);
  * ...
- * if (debug.enabled)
- * debug.trace(...);
+ * if (debug.enabled) {
+ *   debug.trace(...);
+ * }
+ * </pre>
+ * <br>
+ * Then create a ".options" properties file in the plug-in's root folder so that
+ *   <tt>Eclipse > Run Configuration > myApp > Tracing</tt> lists the available options.
+ *
+ * For example:<pre>
+ *   myPluginID/debug=false
+ *   myPluginID/debug/myTag=false
  * </pre>
  * 
  * @since 1.1
