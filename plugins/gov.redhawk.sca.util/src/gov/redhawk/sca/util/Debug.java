@@ -160,10 +160,10 @@ public final class Debug {
 		this.tag = tag;
 
 		String value = Platform.getDebugOption(debugTag);
-		final boolean debug = (value == null) ? false : Boolean.valueOf(value); // SUPPRESS CHECKSTYLE AvoidInLine
+		final boolean debug = Boolean.parseBoolean(value); // parseBoolean(.) defaults to false
 
 		value = Platform.getDebugOption(this.tag);
-		final boolean tagEnabled = (value == null) ? false : Boolean.valueOf(value); // SUPPRESS CHECKSTYLE AvoidInLine
+		final boolean tagEnabled = Boolean.parseBoolean(value);
 
 		this.enabled = debug && tagEnabled;
 	}
