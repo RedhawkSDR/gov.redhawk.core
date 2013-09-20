@@ -72,7 +72,7 @@ public class ScaUtilPluginActivator extends Plugin implements BundleActivator {
 		if (this.bundleTracker == null) {
 			getBundleAdmin();
 			if (this.bundleTracker == null) {
-				message("Bundle tracker is not set"); //$NON-NLS-1$
+				message(Status.ERROR, "Bundle tracker is not set"); //$NON-NLS-1$
 				return null;
 			}
 		}
@@ -88,16 +88,16 @@ public class ScaUtilPluginActivator extends Plugin implements BundleActivator {
 	}
 
 	/**
-	 * Print a debug message to the console. 
+	 * Print a message to the Eclipse log. 
 	 * Pre-pend the message with the current date and the name of the current thread.
 	 */
-	private static void message(final String message) {
-		final StringBuffer buffer = new StringBuffer();
+	private void message(int severity, final String message) {
+		final StringBuilder buffer = new StringBuilder();
 		buffer.append(new Date(System.currentTimeMillis()));
 		buffer.append(" - ["); //$NON-NLS-1$
 		buffer.append(Thread.currentThread().getName());
 		buffer.append("] "); //$NON-NLS-1$
 		buffer.append(message);
-		getDefault().getLog().log(new Status(Status.ERROR, ID, buffer.toString(), null));
+		getLog().log(new Status(severity, ID, buffer.toString(), null));
 	}
 }
