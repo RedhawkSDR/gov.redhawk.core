@@ -6,7 +6,7 @@
 	<parent>
 		<groupId>gov.redhawk.core</groupId>
 		<artifactId>core</artifactId>
-		<version>1.9.0-SNAPSHOT</version>
+		<version>1.9.1-SNAPSHOT</version>
 		<relativePath>../../releng/core/</relativePath>
 	</parent>
 	<artifactId>gov.redhawk.common.ui</artifactId>
