@@ -31,6 +31,7 @@ public class ProvidesPortStubNameEditPartHelper {
 
 	private final IPropertyChangeListener listener = new IPropertyChangeListener() {
 
+		@Override
 		public void propertyChange(final PropertyChangeEvent event) {
 			if (event.getProperty().equals(PartitioningDiagramPreferenceConstants.PREF_SHOW_PORT_LABELS)) {
 				refreshVisibility();

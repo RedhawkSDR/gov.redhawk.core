@@ -83,6 +83,7 @@ public class PortConnectionMonitorImpl extends PortStatisticsProviderImpl implem
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public PortMonitor getPort() {
 		if (eContainerFeatureID() != PortsPackage.PORT_CONNECTION_MONITOR__PORT) return null;
 		return (PortMonitor)eInternalContainer();
@@ -103,6 +104,7 @@ public class PortConnectionMonitorImpl extends PortStatisticsProviderImpl implem
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void setPort(PortMonitor newPort) {
 		if (newPort != eInternalContainer() || (eContainerFeatureID() != PortsPackage.PORT_CONNECTION_MONITOR__PORT && newPort != null)) {
 			if (EcoreUtil.isAncestor(this, newPort))
@@ -124,6 +126,7 @@ public class PortConnectionMonitorImpl extends PortStatisticsProviderImpl implem
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public String getConnectionId() {
 		return connectionId;
 	}
@@ -133,6 +136,7 @@ public class PortConnectionMonitorImpl extends PortStatisticsProviderImpl implem
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void setConnectionId(String newConnectionId) {
 		String oldConnectionId = connectionId;
 		connectionId = newConnectionId;

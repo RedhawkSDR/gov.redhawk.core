@@ -38,6 +38,7 @@ public class ScaExplorerSdPerspective implements IPerspectiveFactory {
 	/** The PDE Error Log view ID. */ //not available in RAP 1.3 Investigate porting, or see if available in 1.4 or 1.5
 	//private static final String PDE_ERROR_LOG_VIEW_ID = "org.eclipse.pde.runtime.LogView";
 
+	@Override
 	public void createInitialLayout(final IPageLayout layout) {
 		// Editors are placed for free.
 		final String editorArea = layout.getEditorArea();

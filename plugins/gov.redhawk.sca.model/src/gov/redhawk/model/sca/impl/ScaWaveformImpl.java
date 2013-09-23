@@ -316,6 +316,7 @@ public class ScaWaveformImpl extends ScaPropertyContainerImpl<Application, Softw
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EList<ScaPort<?, ?>> getPorts() {
 		if (ports == null) {
 			ports = new EObjectContainmentWithInverseEList.Unsettable<ScaPort<?, ?>>(ScaPort.class, this, ScaPackage.SCA_WAVEFORM__PORTS, ScaPackage.SCA_PORT__PORT_CONTAINER);
@@ -328,6 +329,7 @@ public class ScaWaveformImpl extends ScaPropertyContainerImpl<Application, Softw
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void unsetPorts() {
 		if (ports != null) ((InternalEList.Unsettable<?>)ports).unset();
 	}
@@ -337,6 +339,7 @@ public class ScaWaveformImpl extends ScaPropertyContainerImpl<Application, Softw
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public boolean isSetPorts() {
 		return ports != null && ((InternalEList.Unsettable<?>)ports).isSet();
 	}
@@ -346,6 +349,7 @@ public class ScaWaveformImpl extends ScaPropertyContainerImpl<Application, Softw
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EList<ScaComponent> getComponents() {
 		if (components == null) {
 			components = new EObjectContainmentWithInverseEList.Unsettable<ScaComponent>(ScaComponent.class, this, ScaPackage.SCA_WAVEFORM__COMPONENTS, ScaPackage.SCA_COMPONENT__WAVEFORM);
@@ -358,6 +362,7 @@ public class ScaWaveformImpl extends ScaPropertyContainerImpl<Application, Softw
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void unsetComponents() {
 		if (components != null) ((InternalEList.Unsettable<?>)components).unset();
 	}
@@ -367,6 +372,7 @@ public class ScaWaveformImpl extends ScaPropertyContainerImpl<Application, Softw
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public boolean isSetComponents() {
 		return components != null && ((InternalEList.Unsettable<?>)components).isSet();
 	}
@@ -376,6 +382,7 @@ public class ScaWaveformImpl extends ScaPropertyContainerImpl<Application, Softw
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public ScaComponent getAssemblyController() {
 		if (assemblyController != null && assemblyController.eIsProxy()) {
 			InternalEObject oldAssemblyController = (InternalEObject)assemblyController;
@@ -402,6 +409,7 @@ public class ScaWaveformImpl extends ScaPropertyContainerImpl<Application, Softw
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void setAssemblyController(ScaComponent newAssemblyController) {
 		ScaComponent oldAssemblyController = assemblyController;
 		assemblyController = newAssemblyController;
@@ -416,6 +424,7 @@ public class ScaWaveformImpl extends ScaPropertyContainerImpl<Application, Softw
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void unsetAssemblyController() {
 		ScaComponent oldAssemblyController = assemblyController;
 		boolean oldAssemblyControllerESet = assemblyControllerESet;
@@ -430,6 +439,7 @@ public class ScaWaveformImpl extends ScaPropertyContainerImpl<Application, Softw
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public boolean isSetAssemblyController() {
 		return assemblyControllerESet;
 	}
@@ -439,6 +449,7 @@ public class ScaWaveformImpl extends ScaPropertyContainerImpl<Application, Softw
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public ScaDomainManager getDomMgr() {
 		if (eContainerFeatureID() != ScaPackage.SCA_WAVEFORM__DOM_MGR) return null;
 		return (ScaDomainManager)eContainer();
@@ -469,6 +480,7 @@ public class ScaWaveformImpl extends ScaPropertyContainerImpl<Application, Softw
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void setDomMgr(ScaDomainManager newDomMgr) {
 		if (newDomMgr != eInternalContainer() || (eContainerFeatureID() != ScaPackage.SCA_WAVEFORM__DOM_MGR && newDomMgr != null)) {
 			if (EcoreUtil.isAncestor(this, newDomMgr))
@@ -490,6 +502,7 @@ public class ScaWaveformImpl extends ScaPropertyContainerImpl<Application, Softw
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public String getIdentifier() {
 		return identifier;
 	}
@@ -499,6 +512,7 @@ public class ScaWaveformImpl extends ScaPropertyContainerImpl<Application, Softw
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void setIdentifier(String newIdentifier) {
 		String oldIdentifier = identifier;
 		identifier = newIdentifier;
@@ -513,6 +527,7 @@ public class ScaWaveformImpl extends ScaPropertyContainerImpl<Application, Softw
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void unsetIdentifier() {
 		String oldIdentifier = identifier;
 		boolean oldIdentifierESet = identifierESet;
@@ -527,6 +542,7 @@ public class ScaWaveformImpl extends ScaPropertyContainerImpl<Application, Softw
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public boolean isSetIdentifier() {
 		return identifierESet;
 	}
@@ -536,6 +552,7 @@ public class ScaWaveformImpl extends ScaPropertyContainerImpl<Application, Softw
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public String getName() {
 		return name;
 	}
@@ -545,6 +562,7 @@ public class ScaWaveformImpl extends ScaPropertyContainerImpl<Application, Softw
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void setName(String newName) {
 		String oldName = name;
 		name = newName;
@@ -559,6 +577,7 @@ public class ScaWaveformImpl extends ScaPropertyContainerImpl<Application, Softw
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void unsetName() {
 		String oldName = name;
 		boolean oldNameESet = nameESet;
@@ -573,6 +592,7 @@ public class ScaWaveformImpl extends ScaPropertyContainerImpl<Application, Softw
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public boolean isSetName() {
 		return nameESet;
 	}
@@ -582,6 +602,7 @@ public class ScaWaveformImpl extends ScaPropertyContainerImpl<Application, Softw
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public Boolean getStarted() {
 		return started;
 	}
@@ -591,6 +612,7 @@ public class ScaWaveformImpl extends ScaPropertyContainerImpl<Application, Softw
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void setStarted(Boolean newStarted) {
 		Boolean oldStarted = started;
 		started = newStarted;
@@ -605,6 +627,7 @@ public class ScaWaveformImpl extends ScaPropertyContainerImpl<Application, Softw
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void unsetStarted() {
 		Boolean oldStarted = started;
 		boolean oldStartedESet = startedESet;
@@ -619,6 +642,7 @@ public class ScaWaveformImpl extends ScaPropertyContainerImpl<Application, Softw
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public boolean isSetStarted() {
 		return startedESet;
 	}
@@ -628,6 +652,7 @@ public class ScaWaveformImpl extends ScaPropertyContainerImpl<Application, Softw
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public String getProfile() {
 		return profile;
 	}
@@ -637,6 +662,7 @@ public class ScaWaveformImpl extends ScaPropertyContainerImpl<Application, Softw
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void setProfile(String newProfile) {
 		String oldProfile = profile;
 		profile = newProfile;
@@ -651,6 +677,7 @@ public class ScaWaveformImpl extends ScaPropertyContainerImpl<Application, Softw
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void unsetProfile() {
 		String oldProfile = profile;
 		boolean oldProfileESet = profileESet;
@@ -665,6 +692,7 @@ public class ScaWaveformImpl extends ScaPropertyContainerImpl<Application, Softw
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public boolean isSetProfile() {
 		return profileESet;
 	}
@@ -689,11 +717,13 @@ public class ScaWaveformImpl extends ScaPropertyContainerImpl<Application, Softw
 	 * @throws InterruptedException 
 	 * @generated NOT
 	 */
+	@Override
 	public EList<ScaComponent> fetchComponents(IProgressMonitor monitor) {
 		SubMonitor subMonitor = SubMonitor.convert(monitor, "Fetching components", 2);
 		internalFetchComponents(subMonitor.newChild(1));
 		IRefreshable[] array = ScaModelCommandWithResult.execute(this, new ScaModelCommandWithResult<IRefreshable[]>() {
 
+			@Override
 			public void execute() {
 				setResult(getComponents().toArray(new IRefreshable[getComponents().size()]));
 			}
@@ -722,6 +752,7 @@ public class ScaWaveformImpl extends ScaPropertyContainerImpl<Application, Softw
 	 * <!-- end-user-doc -->
 	 * @generated NOT
 	 */
+	@Override
 	public String fetchIdentifier(IProgressMonitor monitor) {
 		// END GENERATED CODE
 		if (isSetIdentifier()) {
@@ -757,6 +788,7 @@ public class ScaWaveformImpl extends ScaPropertyContainerImpl<Application, Softw
 	 * <!-- end-user-doc -->
 	 * @generated NOT
 	 */
+	@Override
 	public String fetchName(IProgressMonitor monitor) {
 		// END GENERATED CODE
 		if (isSetName()) {
@@ -792,6 +824,7 @@ public class ScaWaveformImpl extends ScaPropertyContainerImpl<Application, Softw
 	 * <!-- end-user-doc -->
 	 * @generated NOT
 	 */
+	@Override
 	public Boolean fetchStarted(IProgressMonitor monitor) {
 		// END GENERATED CODE
 		SubMonitor subMonitor = SubMonitor.convert(monitor, "Fetching started", 4);
@@ -819,6 +852,7 @@ public class ScaWaveformImpl extends ScaPropertyContainerImpl<Application, Softw
 		compMonitor.beginTask("Fetch Component started", getComponents().size());
 		List<ScaComponent> tmpComponents = ScaModelCommandWithResult.execute(this, new ScaModelCommandWithResult<List<ScaComponent>>() {
 
+			@Override
 			public void execute() {
 				List<ScaComponent> retVal;
 				if (getComponents().isEmpty()) {
@@ -898,6 +932,7 @@ public class ScaWaveformImpl extends ScaPropertyContainerImpl<Application, Softw
 	 * <!-- end-user-doc -->
 	 * @generated NOT
 	 */
+	@Override
 	public ScaComponent findComponent(String instantiationId) {
 		// END GENERATED CODE
 		return getScaComponent(instantiationId);
@@ -911,11 +946,13 @@ public class ScaWaveformImpl extends ScaPropertyContainerImpl<Application, Softw
 	 * @throws InterruptedException 
 	 * @generated NOT
 	 */
+	@Override
 	public EList<ScaPort< ? , ? >> fetchPorts(IProgressMonitor monitor) {
 		SubMonitor subMonitor = SubMonitor.convert(monitor, "Fetching ports", 2);
 		internalFetchPorts(subMonitor.newChild(1));
 		IRefreshable[] array = ScaModelCommandWithResult.execute(this, new ScaModelCommandWithResult<IRefreshable[]>() {
 
+			@Override
 			public void execute() {
 				setResult(getPorts().toArray(new IRefreshable[getPorts().size()]));
 			}
@@ -1033,6 +1070,7 @@ public class ScaWaveformImpl extends ScaPropertyContainerImpl<Application, Softw
 	 * <!-- end-user-doc -->
 	 * @generated NOT
 	 */
+	@Override
 	public ScaComponent getScaComponent(String instantiationId) {
 		// END GENERATED CODE
 		if (instantiationId == null) {
@@ -1052,6 +1090,7 @@ public class ScaWaveformImpl extends ScaPropertyContainerImpl<Application, Softw
 	 * <!-- end-user-doc -->
 	 * @generated NOT
 	 */
+	@Override
 	public ScaPort< ? , ? > getScaPort(String name) {
 		// END GENERATED CODE
 		for (ScaPort< ? , ? > port : getPorts()) {
@@ -1181,6 +1220,7 @@ public class ScaWaveformImpl extends ScaPropertyContainerImpl<Application, Softw
 	/**
 	 * @since 14.0
 	 */
+	@Override
 	public DeviceAssignmentType[] componentDevices() {
 		// END GENERATED CODE
 		Application waveform = fetchNarrowedObject(null);
@@ -1194,6 +1234,7 @@ public class ScaWaveformImpl extends ScaPropertyContainerImpl<Application, Softw
 	/**
 	 * @since 14.0
 	 */
+	@Override
 	public ComponentElementType[] componentImplementations() {
 		// END GENERATED CODE
 		Application waveform = fetchNarrowedObject(null);
@@ -1207,6 +1248,7 @@ public class ScaWaveformImpl extends ScaPropertyContainerImpl<Application, Softw
 	/**
 	 * @since 14.0
 	 */
+	@Override
 	public ComponentElementType[] componentNamingContexts() {
 		// END GENERATED CODE
 		Application waveform = fetchNarrowedObject(null);
@@ -1220,6 +1262,7 @@ public class ScaWaveformImpl extends ScaPropertyContainerImpl<Application, Softw
 	/**
 	 * @since 14.0
 	 */
+	@Override
 	public ComponentProcessIdType[] componentProcessIds() {
 		// END GENERATED CODE
 		Application waveform = fetchNarrowedObject(null);
@@ -1230,24 +1273,28 @@ public class ScaWaveformImpl extends ScaPropertyContainerImpl<Application, Softw
 		// BEGIN GENERATED CODE
 	}
 
+	@Override
 	public String name() {
 		// END GENERATED CODE
 		return getName();
 		// BEGIN GENERATED CODE
 	}
 
+	@Override
 	public String profile() {
 		// END GENERATED CODE
 		return getProfile();
 		// BEGIN GENERATED CODE
 	}
 
+	@Override
 	public String identifier() {
 		// END GENERATED CODE
 		return getIdentifier();
 		// BEGIN GENERATED CODE
 	}
 
+	@Override
 	public boolean started() {
 		Boolean retVal = getStarted();
 		if (retVal == null) {
@@ -1256,6 +1303,7 @@ public class ScaWaveformImpl extends ScaPropertyContainerImpl<Application, Softw
 		return retVal;
 	}
 
+	@Override
 	public void start() throws StartError {
 		// END GENERATED CODE
 		Application waveform = fetchNarrowedObject(null);
@@ -1267,6 +1315,7 @@ public class ScaWaveformImpl extends ScaPropertyContainerImpl<Application, Softw
 		// BEGIN GENERATED CODE
 	}
 
+	@Override
 	public void stop() throws StopError {
 		// END GENERATED CODE
 		Application waveform = fetchNarrowedObject(null);
@@ -1278,6 +1327,7 @@ public class ScaWaveformImpl extends ScaPropertyContainerImpl<Application, Softw
 		// BEGIN GENERATED CODE
 	}
 
+	@Override
 	public void initialize() throws InitializeError {
 		// END GENERATED CODE
 		Application waveform = fetchNarrowedObject(null);
@@ -1293,6 +1343,7 @@ public class ScaWaveformImpl extends ScaPropertyContainerImpl<Application, Softw
 		// BEGIN GENERATED CODE
 	}
 
+	@Override
 	public void releaseObject() throws ReleaseError {
 		// END GENERATED CODE
 		final Application waveform = fetchNarrowedObject(null);
@@ -1302,12 +1353,14 @@ public class ScaWaveformImpl extends ScaPropertyContainerImpl<Application, Softw
 			TransactionalEditingDomain domain = TransactionUtil.getEditingDomain(this);
 			Command command = new ScaModelCommand() {
 
+				@Override
 				public void execute() {
 					EcoreUtil.delete(ScaWaveformImpl.this);
 				}
 			};
 			Callable<Void> callable = new Callable<Void>() {
 
+				@Override
 				public Void call() throws ReleaseError {
 					waveform.releaseObject();
 					return null;
@@ -1625,6 +1678,7 @@ public class ScaWaveformImpl extends ScaPropertyContainerImpl<Application, Softw
 	/**
 	 * @since 14.0
 	 */
+	@Override
 	public void runTest(final int testid, final PropertiesHolder testValues) throws UnknownTest, UnknownProperties {
 		// END GENERATED CODE
 		Application waveform = fetchNarrowedObject(null);
@@ -1635,6 +1689,7 @@ public class ScaWaveformImpl extends ScaPropertyContainerImpl<Application, Softw
 		// BEGIN GENERATED CODE
 	}
 
+	@Override
 	public void configure(final DataType[] configProperties) throws InvalidConfiguration, PartialConfiguration {
 		// END GENERATED CODE
 		Application waveform = fetchNarrowedObject(null);
@@ -1646,6 +1701,7 @@ public class ScaWaveformImpl extends ScaPropertyContainerImpl<Application, Softw
 		// BEGIN GENERATED CODE
 	}
 
+	@Override
 	public void query(final PropertiesHolder configProperties) throws UnknownProperties {
 		// END GENERATED CODE
 		Application waveform = fetchNarrowedObject(null);
@@ -1655,6 +1711,7 @@ public class ScaWaveformImpl extends ScaPropertyContainerImpl<Application, Softw
 		// BEGIN GENERATED CODE
 	}
 
+	@Override
 	public org.omg.CORBA.Object getPort(final String name) throws UnknownPort {
 		// END GENERATED CODE
 		ScaPort< ? , ? > scaPort = getScaPort(name);
@@ -1746,6 +1803,7 @@ public class ScaWaveformImpl extends ScaPropertyContainerImpl<Application, Softw
 	/**
 	 * @since 14.0
 	 */
+	@Override
 	public ComponentType[] registeredComponents() {
 		Application localObj = fetchNarrowedObject(null);
 		if (localObj == null) {
@@ -1760,6 +1818,7 @@ public class ScaWaveformImpl extends ScaPropertyContainerImpl<Application, Softw
      * @since 14.0
      * @generated NOT
      */
+	@Override
 	public String fetchProfile(IProgressMonitor monitor) {
 		if (isSetProfile()) {
 			return getProfile();
@@ -1802,6 +1861,7 @@ public class ScaWaveformImpl extends ScaPropertyContainerImpl<Application, Softw
 					final URI newURI = fileMgr.createURI(profile);
 					transaction.addCommand(new ScaModelCommand() {
 	
+						@Override
 						public void execute() {
 							setProfileURI(newURI);
 						}
@@ -1812,6 +1872,7 @@ public class ScaWaveformImpl extends ScaPropertyContainerImpl<Application, Softw
 				final URI newURI = URI.createURI(profile);
 				transaction.addCommand(new ScaModelCommand() {
 	
+					@Override
 					public void execute() {
 						setProfileURI(newURI);
 					}

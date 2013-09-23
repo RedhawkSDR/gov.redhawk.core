@@ -120,6 +120,7 @@ public class DomainManagerImpl extends AbstractResourceImpl implements DomainMan
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public String domainManagerProfile() {
 		return this.dmd.eResource().getURI().path();
 	}
@@ -127,6 +128,7 @@ public class DomainManagerImpl extends AbstractResourceImpl implements DomainMan
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public DeviceManager[] deviceManagers() {
 		return this.deviceManagers.toArray(new DeviceManager[this.deviceManagers.size()]);
 	}
@@ -134,6 +136,7 @@ public class DomainManagerImpl extends AbstractResourceImpl implements DomainMan
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public Application[] applications() {
 		return this.applications.toArray(new Application[this.applications.size()]);
 	}
@@ -141,6 +144,7 @@ public class DomainManagerImpl extends AbstractResourceImpl implements DomainMan
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public ApplicationFactory[] applicationFactories() {
 		return this.applicationFactories.toArray(new ApplicationFactory[this.applicationFactories.size()]);
 	}
@@ -148,6 +152,7 @@ public class DomainManagerImpl extends AbstractResourceImpl implements DomainMan
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public FileManager fileMgr() {
 		return this.fileManager;
 	}
@@ -155,6 +160,7 @@ public class DomainManagerImpl extends AbstractResourceImpl implements DomainMan
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public void registerDevice(final Device registeringDevice, final DeviceManager registeredDeviceMgr) throws InvalidObjectReference, InvalidProfile,
 		DeviceManagerNotRegistered, RegisterError {
 		if (registeredDeviceMgr == null) {
@@ -166,6 +172,7 @@ public class DomainManagerImpl extends AbstractResourceImpl implements DomainMan
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public void registerDeviceManager(final DeviceManager deviceMgr) throws InvalidObjectReference, InvalidProfile, RegisterError {
 		if (deviceMgr != null) {
 			this.deviceManagers.add(deviceMgr);
@@ -175,6 +182,7 @@ public class DomainManagerImpl extends AbstractResourceImpl implements DomainMan
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public void unregisterDeviceManager(final DeviceManager deviceMgr) throws InvalidObjectReference, UnregisterError {
 		this.deviceManagers.remove(deviceMgr);
 	}
@@ -182,6 +190,7 @@ public class DomainManagerImpl extends AbstractResourceImpl implements DomainMan
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public void unregisterDevice(final Device unregisteringDevice) throws InvalidObjectReference, UnregisterError {
 		// TODO Auto-generated method stub
 
@@ -190,6 +199,7 @@ public class DomainManagerImpl extends AbstractResourceImpl implements DomainMan
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public void installApplication(final String profileFileName) throws InvalidProfile, InvalidFileName, ApplicationInstallationError,
 		ApplicationAlreadyInstalled {
 		URI uri = ScaURIFactory.createURI(profileFileName, fileManager);
@@ -209,6 +219,7 @@ public class DomainManagerImpl extends AbstractResourceImpl implements DomainMan
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public void uninstallApplication(final String applicationId) throws InvalidIdentifier, ApplicationUninstallationError {
 		// TODO Auto-generated method stub
 	}
@@ -216,6 +227,7 @@ public class DomainManagerImpl extends AbstractResourceImpl implements DomainMan
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public void registerService(final Object registeringService, final DeviceManager registeredDeviceMgr, final String name) throws InvalidObjectReference,
 		DeviceManagerNotRegistered, RegisterError {
 		// TODO Auto-generated method stub
@@ -224,6 +236,7 @@ public class DomainManagerImpl extends AbstractResourceImpl implements DomainMan
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public void unregisterService(final Object unregisteringService, final String name) throws InvalidObjectReference, UnregisterError {
 		// TODO Auto-generated method stub
 	}
@@ -231,6 +244,7 @@ public class DomainManagerImpl extends AbstractResourceImpl implements DomainMan
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public void registerWithEventChannel(final Object registeringObject, final String registeringId, final String eventChannelName)
 		throws InvalidObjectReference, InvalidEventChannelName, AlreadyConnected {
 		// TODO Auto-generated method stub
@@ -240,6 +254,7 @@ public class DomainManagerImpl extends AbstractResourceImpl implements DomainMan
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public void unregisterFromEventChannel(final String unregisteringId, final String eventChannelName) throws InvalidEventChannelName, NotConnected {
 		// TODO Auto-generated method stub
 

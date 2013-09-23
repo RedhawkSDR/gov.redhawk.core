@@ -143,6 +143,7 @@ public class PortMonitorImpl extends EObjectImpl implements PortMonitor {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public PortStatistics getData() {
 		return data;
 	}
@@ -152,6 +153,7 @@ public class PortMonitorImpl extends EObjectImpl implements PortMonitor {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void setData(PortStatistics newData) {
 		PortStatistics oldData = data;
 		data = newData;
@@ -164,6 +166,7 @@ public class PortMonitorImpl extends EObjectImpl implements PortMonitor {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public ScaPort<?, ?> getPort() {
 		if (port != null && port.eIsProxy()) {
 			InternalEObject oldPort = (InternalEObject)port;
@@ -192,6 +195,7 @@ public class PortMonitorImpl extends EObjectImpl implements PortMonitor {
 	 * <!-- end-user-doc -->
 	 * @generated NOT
 	 */
+	@Override
 	public void setPort(final ScaPort<?, ?> newPort) {
 		if (this.port != null) {
 			this.port.eAdapters().remove(this.disposeAdapter);
@@ -219,6 +223,7 @@ public class PortMonitorImpl extends EObjectImpl implements PortMonitor {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EList<PortConnectionMonitor> getConnections() {
 		if (connections == null) {
 			connections = new EObjectContainmentWithInverseEList<PortConnectionMonitor>(PortConnectionMonitor.class, this, PortsPackage.PORT_MONITOR__CONNECTIONS, PortsPackage.PORT_CONNECTION_MONITOR__PORT);
@@ -231,6 +236,7 @@ public class PortMonitorImpl extends EObjectImpl implements PortMonitor {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public PortUsageType getState() {
 		return state;
 	}
@@ -240,6 +246,7 @@ public class PortMonitorImpl extends EObjectImpl implements PortMonitor {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void setState(PortUsageType newState) {
 		PortUsageType oldState = state;
 		state = newState;
@@ -320,6 +327,7 @@ public class PortMonitorImpl extends EObjectImpl implements PortMonitor {
 	 * <!-- end-user-doc -->
 	 * @generated NOT
 	 */
+	@Override
 	public void fetchStats() {
 		// END GENERATED CODE
 		if (this.port != null) {

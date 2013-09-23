@@ -74,6 +74,7 @@ public class EObjectContainerStyleImpl extends NamedStyleImpl implements EObject
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EObject getValue() {
 		return value;
 	}
@@ -98,6 +99,7 @@ public class EObjectContainerStyleImpl extends NamedStyleImpl implements EObject
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void setValue(EObject newValue) {
 		if (newValue != value) {
 			NotificationChain msgs = null;

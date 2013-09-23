@@ -31,6 +31,7 @@ public class SoftwareAssemblyAdapterFactory implements IAdapterFactory {
 		ScaWaveform.class
 	};
 
+	@Override
 	public Object getAdapter(final Object adaptableObject, @SuppressWarnings("rawtypes") final Class adapterType) {
 		if (adaptableObject instanceof SoftwareAssembly) {
 			final SoftwareAssembly sad = (SoftwareAssembly) adaptableObject;
@@ -48,6 +49,7 @@ public class SoftwareAssemblyAdapterFactory implements IAdapterFactory {
 		return null;
 	}
 
+	@Override
 	public Class< ? >[] getAdapterList() {
 		return SoftwareAssemblyAdapterFactory.LIST;
 	}

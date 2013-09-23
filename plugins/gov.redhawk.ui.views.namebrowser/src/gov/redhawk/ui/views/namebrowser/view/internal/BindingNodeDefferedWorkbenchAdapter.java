@@ -28,6 +28,7 @@ public class BindingNodeDefferedWorkbenchAdapter implements IDeferredWorkbenchAd
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public Object[] getChildren(final Object o) {
 		return ((BindingNode) o).getContents();
 	}
@@ -35,6 +36,7 @@ public class BindingNodeDefferedWorkbenchAdapter implements IDeferredWorkbenchAd
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public ImageDescriptor getImageDescriptor(final Object object) {
 		final BindingNode bind = (BindingNode) object;
 		switch (bind.getType()) {
@@ -52,6 +54,7 @@ public class BindingNodeDefferedWorkbenchAdapter implements IDeferredWorkbenchAd
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public String getLabel(final Object element) {
 		String text = "";
 		if (element instanceof BindingNode) {
@@ -68,6 +71,7 @@ public class BindingNodeDefferedWorkbenchAdapter implements IDeferredWorkbenchAd
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public Object getParent(final Object o) {
 		return ((BindingNode) o).getParent();
 	}
@@ -75,6 +79,7 @@ public class BindingNodeDefferedWorkbenchAdapter implements IDeferredWorkbenchAd
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public void fetchDeferredChildren(final Object object, final IElementCollector collector, final IProgressMonitor monitor) {
 		final BindingNode node = (BindingNode) object;
 		try {
@@ -87,6 +92,7 @@ public class BindingNodeDefferedWorkbenchAdapter implements IDeferredWorkbenchAd
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public boolean isContainer() {
 		return true;
 	}
@@ -94,6 +100,7 @@ public class BindingNodeDefferedWorkbenchAdapter implements IDeferredWorkbenchAd
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public ISchedulingRule getRule(final Object object) {
 		// TODO Auto-generated method stub
 		return null;

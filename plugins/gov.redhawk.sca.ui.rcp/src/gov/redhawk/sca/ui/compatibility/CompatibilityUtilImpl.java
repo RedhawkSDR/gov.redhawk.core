@@ -28,13 +28,16 @@ import org.eclipse.swt.widgets.Listener;
  */
 public class CompatibilityUtilImpl implements ICompatibilityUtil {
 
+	@Override
 	public void setFontDataStyle(FontData fontData, int style) {
 		fontData.setStyle(style);
 	}
 	
+	@Override
 	public void disableComboWheelScrollSelect(ComboViewer viewer) {
 		viewer.getCombo().addListener(SWT.MouseVerticalWheel, new Listener() {
 
+			@Override
 			public void handleEvent(Event event) {
 				// Disable Mouse Wheel Combo Box Control
 				event.doit = false;
@@ -43,6 +46,7 @@ public class CompatibilityUtilImpl implements ICompatibilityUtil {
 		});
 	}
 	
+	@Override
 	public Principal getUserPrincipal(Display display) {
 		return null;
 	}
@@ -52,6 +56,7 @@ public class CompatibilityUtilImpl implements ICompatibilityUtil {
 	 * @param display
 	 * @param runnable
 	 */
+	@Override
 	public void runInFakeUIContext(Display display, Runnable runnable) {
 		//No RAP implementation
 	}
@@ -61,10 +66,12 @@ public class CompatibilityUtilImpl implements ICompatibilityUtil {
 	 * @param display
 	 * @param runnable
 	 */
+	@Override
 	public void activateUIConnection(String id) {
 		//No RAP implementation
 	}
 	
+	@Override
 	public void deactivateUIConnection(String id) {
 		//No RAP implementation
 	}

@@ -59,15 +59,18 @@ public class ComponentSupportedInterfaceStubItemSemanticEditPolicy extends
 		return this.editPolicyHelper.getMoveCommand(req);
 	}
 
+	@Override
 	public Command getGEFWrapper(final gov.redhawk.diagram.edit.commands.ConnectInterfaceCreateCommand connectInterfaceCreateCommand) {
 		return super.getGEFWrapper(connectInterfaceCreateCommand);
 	}
 
+	@Override
 	public gov.redhawk.diagram.edit.commands.ConnectInterfaceCreateCommand createConnectInterfaceCreateCommand(final CreateRelationshipRequest req,
 	        final EObject source, final EObject target) {
 		return new ConnectInterfaceCreateCommand((DeviceConfiguration) ((View) getHost().getRoot().getContents().getModel()).getElement(), req, source, target);
 	}
 
+	@Override
 	protected Command getReorientRelationshipCommand(ReorientRelationshipRequest req) {
 		switch (getVisualID(req)) {
 		case DcdConnectInterfaceEditPart.VISUAL_ID:

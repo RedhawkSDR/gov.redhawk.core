@@ -107,6 +107,7 @@ public class Dval extends Composite {
 	/** The mouse down listener. */
 	private final Listener mouseDownListener = new Listener() {
 
+		@Override
 		public void handleEvent(final Event e) {
 			Dval.this.arrowMouseDown(e);
 		}
@@ -115,6 +116,7 @@ public class Dval extends Composite {
 
 	/** The verify listener. */
 	private final VerifyListener verifyListener = new VerifyListener() {
+		@Override
 		public void verifyText(final VerifyEvent e) {
 			Dval.this.verifyText(e);
 		}
@@ -123,10 +125,12 @@ public class Dval extends Composite {
 	/** The key listener. */
 	private final KeyListener keyListener = new KeyListener() {
 
+		@Override
 		public void keyPressed(final KeyEvent e) {
 			Dval.this.keyPressed(e);
 		}
 
+		@Override
 		public void keyReleased(final KeyEvent e) {
 			// Do nothing
 
@@ -137,11 +141,13 @@ public class Dval extends Composite {
 	/** The selection listener. */
 	private final SelectionListener selectionListener = new SelectionListener() {
 
+		@Override
 		public void widgetDefaultSelected(final SelectionEvent e) {
 			// Do nothing
 
 		}
 
+		@Override
 		public void widgetSelected(final SelectionEvent e) {
 			if (e.detail == SWT.ARROW_UP) {
 				Dval.this.increment();
@@ -156,6 +162,7 @@ public class Dval extends Composite {
 
 	/** The slider selection. */
 	private final Listener sliderSelection = new Listener() {
+		@Override
 		public void handleEvent(final Event e) {
 			final double value = Dval.this.sliderdlg.getSelection();
 			Dval.this.setValue(value);
@@ -165,6 +172,7 @@ public class Dval extends Composite {
 
 	/** The shell listener. */
 	private final Listener shellListener = new Listener() {
+		@Override
 		public void handleEvent(final Event e) {
 			Dval.this.shellMoved(e);
 		}
@@ -173,9 +181,11 @@ public class Dval extends Composite {
 	/** The control listener. */
 	private final ControlListener controlListener = new ControlListener() {
 
+		@Override
 		public void controlMoved(final ControlEvent e) {
 		}
 
+		@Override
 		public void controlResized(final ControlEvent e) {
 			Dval.this.controlResized(e);
 		}
@@ -185,6 +195,7 @@ public class Dval extends Composite {
 	/** The modify listener. */
 	private final Listener modifyListener = new Listener() {
 
+		@Override
 		public void handleEvent(final Event e) {
 			Dval.this.controlModified(e);
 		}
@@ -194,10 +205,12 @@ public class Dval extends Composite {
 	/** The focus listener. */
 	private final FocusListener focusListener = new FocusListener() {
 
+		@Override
 		public void focusGained(final FocusEvent e) {
 			// Nothing to do
 		}
 
+		@Override
 		public void focusLost(final FocusEvent e) {
 			// When focus is lost, if the value in the text-box is invalid
 			// (i.e. it's greater than max or less then min) then make sure it
@@ -236,6 +249,7 @@ public class Dval extends Composite {
 		super(composite, style);
 		this.getParent().addDisposeListener(new DisposeListener() {
 
+			@Override
 			public void widgetDisposed(final DisposeEvent e) {
 				dispose();
 			}
@@ -739,6 +753,7 @@ public class Dval extends Composite {
 			this.sliderdlg.getSlider().addListener(SWT.Selection, this.sliderSelection);
 			this.sliderdlg.getSlider().addDisposeListener(new DisposeListener() {
 
+				@Override
 				public void widgetDisposed(final DisposeEvent e) {
 					if (Dval.this.sliderdlg != null && Dval.this.sliderdlg.getSlider() != null && !Dval.this.sliderdlg.getSlider().isDisposed()) {
 						Dval.this.sliderdlg.getSlider().removeListener(SWT.Selection, Dval.this.sliderSelection);

@@ -21,6 +21,7 @@ import org.eclipse.jface.viewers.IFilter;
  */
 public class ComponentPlacementRuntimePropertyFilter implements IFilter {
 
+	@Override
 	public boolean select(final Object toTest) {
 		final Object adapter = Platform.getAdapterManager().getAdapter(toTest, ScaComponent.class);
 		return adapter instanceof ScaComponent;

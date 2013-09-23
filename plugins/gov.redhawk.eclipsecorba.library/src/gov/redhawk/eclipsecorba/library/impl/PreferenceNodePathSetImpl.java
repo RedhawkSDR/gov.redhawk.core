@@ -170,6 +170,7 @@ public class PreferenceNodePathSetImpl extends PathImpl implements PreferenceNod
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public String getQualifier() {
 		return qualifier;
 	}
@@ -179,6 +180,7 @@ public class PreferenceNodePathSetImpl extends PathImpl implements PreferenceNod
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void setQualifier(String newQualifier) {
 		String oldQualifier = qualifier;
 		qualifier = newQualifier;
@@ -191,6 +193,7 @@ public class PreferenceNodePathSetImpl extends PathImpl implements PreferenceNod
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public String getKey() {
 		return key;
 	}
@@ -200,6 +203,7 @@ public class PreferenceNodePathSetImpl extends PathImpl implements PreferenceNod
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void setKey(String newKey) {
 		String oldKey = key;
 		key = newKey;
@@ -212,6 +216,7 @@ public class PreferenceNodePathSetImpl extends PathImpl implements PreferenceNod
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public String getDelimiter() {
 		return delimiter;
 	}
@@ -221,6 +226,7 @@ public class PreferenceNodePathSetImpl extends PathImpl implements PreferenceNod
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void setDelimiter(String newDelimiter) {
 		String oldDelimiter = delimiter;
 		delimiter = newDelimiter;
@@ -233,6 +239,7 @@ public class PreferenceNodePathSetImpl extends PathImpl implements PreferenceNod
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public boolean isFileUri() {
 		return fileUri;
 	}
@@ -242,6 +249,7 @@ public class PreferenceNodePathSetImpl extends PathImpl implements PreferenceNod
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void setFileUri(boolean newFileUri) {
 		boolean oldFileUri = fileUri;
 		fileUri = newFileUri;
@@ -254,6 +262,7 @@ public class PreferenceNodePathSetImpl extends PathImpl implements PreferenceNod
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public boolean isReplaceEnv() {
 		return replaceEnv;
 	}
@@ -263,6 +272,7 @@ public class PreferenceNodePathSetImpl extends PathImpl implements PreferenceNod
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void setReplaceEnv(boolean newReplaceEnv) {
 		boolean oldReplaceEnv = replaceEnv;
 		replaceEnv = newReplaceEnv;
@@ -444,10 +454,12 @@ public class PreferenceNodePathSetImpl extends PathImpl implements PreferenceNod
 		Assert.isTrue(this.qualifterPreferenceChangeListener == null);
 		final ScopedPreferenceAccessor accessor = new ScopedPreferenceAccessor(InstanceScope.INSTANCE, newQualifier);
 		this.qualifterPreferenceChangeListener = new IPreferenceChangeListener() {
+			@Override
 			public void preferenceChange(final PreferenceChangeEvent event) {
 				if (event.getKey().equals(getKey())) {
 					ScaModelCommand.execute(PreferenceNodePathSetImpl.this, new ScaModelCommand() {
 
+						@Override
 						public void execute() {
 							updateDerivedPaths();
 						}

@@ -64,11 +64,13 @@ public class CheckboxTablePart extends StructuredViewerPart {
 		}
 		final CheckboxTableViewer tableViewer = CheckboxTableViewer.newCheckList(parent, style);
 		tableViewer.addSelectionChangedListener(new ISelectionChangedListener() {
+			@Override
 			public void selectionChanged(final SelectionChangedEvent e) {
 				CheckboxTablePart.this.selectionChanged((IStructuredSelection) e.getSelection());
 			}
 		});
 		tableViewer.addCheckStateListener(new ICheckStateListener() {
+			@Override
 			public void checkStateChanged(final CheckStateChangedEvent event) {
 				elementChecked(event.getElement(), event.getChecked());
 			}

@@ -117,14 +117,14 @@ public abstract class SilentJob extends Job {
 				newStatus = handleCorbaException(e);
 			} catch (final OperationCanceledException e) {
 				newStatus = Status.CANCEL_STATUS;
-			} catch (final Exception e) {
+			} catch (final Exception e) { // SUPPRESS CHECKSTYLE Catch error
 				// Handle unexpected conditions
 				newStatus = handleException(e);
 			} catch (final ThreadDeath e) {
 				//must not consume thread death
 				newStatus = handleException(e);
 				throw e;
-			} catch (final Error e) {
+			} catch (final Error e) {  // SUPPRESS CHECKSTYLE Catch error
 				newStatus = handleException(e);
 			} finally {
 				//result must not be null

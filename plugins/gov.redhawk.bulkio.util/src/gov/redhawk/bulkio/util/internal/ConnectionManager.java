@@ -21,6 +21,7 @@ import java.util.Map;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.jdt.annotation.NonNull;
 import org.omg.CORBA.Object;
 import org.omg.CORBA.SystemException;
 import org.omg.PortableServer.Servant;
@@ -47,7 +48,7 @@ public enum ConnectionManager implements IBulkIOPortConnectionManager {
 		private Object ref;
 		private String connectionId;
 
-		public Connection(Port port, BulkIOType type) throws CoreException {
+		public Connection(@NonNull Port port, @NonNull BulkIOType type) throws CoreException {
 			this.port = port;
 			receiver = BulkIOReceiverFactory.createReceiver(type);
 
@@ -94,16 +95,17 @@ public enum ConnectionManager implements IBulkIOPortConnectionManager {
 			}
 		}
 	}
-	
+
 	private static class ConnectionKey {
 		private String ior;
 		private BulkIOType type;
-		
-		public ConnectionKey(String ior, BulkIOType type) {
+
+		public ConnectionKey(@NonNull String ior, @NonNull BulkIOType type) {
 			super();
 			this.ior = ior;
 			this.type = type;
 		}
+
 		/* (non-Javadoc)
 		 * @see java.lang.Object#hashCode()
 		 */
@@ -115,6 +117,7 @@ public enum ConnectionManager implements IBulkIOPortConnectionManager {
 			result = prime * result + ((type == null) ? 0 : type.hashCode());
 			return result;
 		}
+
 		/* (non-Javadoc)
 		 * @see java.lang.Object#equals(java.lang.Object)
 		 */
@@ -142,25 +145,30 @@ public enum ConnectionManager implements IBulkIOPortConnectionManager {
 			}
 			return true;
 		}
-		
+
 	}
 
 	private Map<ConnectionKey, Connection> connections = new HashMap<ConnectionKey, Connection>();
 
+	@Override
 	public synchronized void connect(String ior, BulkIOType type, updateSRIOperations internalPort) throws CoreException {
 		if (ior == null || internalPort == null) {
-			return;
+			throw new IllegalArgumentException("Null ior or port implemention.");
 		}
 		ConnectionKey key = new ConnectionKey(ior, type);
 		Connection connection = connections.get(key);
 		if (connection == null) {
 			Port port = PortHelper.narrow(session.getOrb().string_to_object(ior));
+			if (port == null) {
+				throw new IllegalStateException("Failed to narrow to port.");
+			}
 			connection = new Connection(port, type);
 			connections.put(key, connection);
 		}
 		connection.receiver.registerDataReceiver(internalPort);
 	}
 
+	@Override
 	public synchronized void disconnect(String ior, BulkIOType type, updateSRIOperations internalPort) {
 		if (ior == null || internalPort == null) {
 			return;
@@ -176,6 +184,7 @@ public enum ConnectionManager implements IBulkIOPortConnectionManager {
 		}
 	}
 
+	@Override
 	public synchronized AbstractBulkIOPort getExternalPort(String ior, BulkIOType type) {
 		ConnectionKey key = new ConnectionKey(ior, type);
 		Connection connection = connections.get(key);

@@ -32,6 +32,7 @@ public class DcdComponentInstantiationAdapterFactory implements IAdapterFactory 
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public Object getAdapter(final Object adaptableObject, @SuppressWarnings("rawtypes") final Class adapterType) {
 		if (adapterType == ScaDevice.class && adaptableObject instanceof DcdComponentInstantiation) {
 			final DcdComponentInstantiation compInst = (DcdComponentInstantiation) adaptableObject;
@@ -59,6 +60,7 @@ public class DcdComponentInstantiationAdapterFactory implements IAdapterFactory 
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public Class< ? >[] getAdapterList() {
 		return DcdComponentInstantiationAdapterFactory.SUPPORTED_TYPES;
 	}

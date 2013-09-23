@@ -125,6 +125,7 @@ public class SequencePropertyValueWizardPage extends WizardPage {
 		setDescription("Edit the values of the sequence property.\n" + propDesc);
 	}
 
+	@Override
 	public void createControl(final Composite parent) {
 		final Composite root = new Composite(parent, SWT.None);
 		root.setLayout(new GridLayout(2, false));
@@ -423,6 +424,7 @@ public class SequencePropertyValueWizardPage extends WizardPage {
 		viewer.setInput(this.property);
 		viewer.addSelectionChangedListener(new ISelectionChangedListener() {
 
+			@Override
 			public void selectionChanged(final SelectionChangedEvent event) {
 				updateButtonState();
 			}

@@ -55,6 +55,7 @@ public class TrackableLabel extends Composite {
 		}
 		addDisposeListener(new DisposeListener() {
 
+			@Override
 			public void widgetDisposed(DisposeEvent event) {
 				if (label != null) {
 					label.dispose();

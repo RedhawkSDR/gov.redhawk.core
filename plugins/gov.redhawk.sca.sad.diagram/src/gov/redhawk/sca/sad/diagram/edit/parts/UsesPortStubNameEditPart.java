@@ -61,14 +61,17 @@ public class UsesPortStubNameEditPart extends mil.jpeojtrs.sca.sad.diagram.edit.
 		return this.editPartHelper.isSelectable();
 	}
 
+	@Override
 	public void basicAddNotationalListeners() {
 		super.addNotationalListeners();
 	}
 
+	@Override
 	public IPreferenceStore getPreferenceStore() {
 		return RedhawkSadDiagramPlugin.getDefault().getPreferenceStore();
 	}
 
+	@Override
 	public void basicRemoveNotationalListeners() {
 		super.removeNotationalListeners();
 	}

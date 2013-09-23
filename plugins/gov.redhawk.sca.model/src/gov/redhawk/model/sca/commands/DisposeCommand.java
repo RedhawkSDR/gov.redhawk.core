@@ -36,13 +36,16 @@ public class DisposeCommand extends AbstractCommand {
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public void execute() {
 		SafeRunner.run(new ISafeRunnable() {
 
+			@Override
 			public void run() {
 				disposable.dispose();   
             }
 
+			@Override
 			public void handleException(Throwable exception) {
 	            // TODO Auto-generated method stub
 	            
@@ -59,6 +62,7 @@ public class DisposeCommand extends AbstractCommand {
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public void redo() {
 		// TODO Auto-generated method stub
 

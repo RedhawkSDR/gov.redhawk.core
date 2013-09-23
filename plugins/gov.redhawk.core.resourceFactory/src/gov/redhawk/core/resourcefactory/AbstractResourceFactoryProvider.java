@@ -23,23 +23,30 @@ import org.eclipse.core.runtime.IExecutableExtension;
 
 public abstract class AbstractResourceFactoryProvider implements IResourceFactoryProvider, IExecutableExtension {
 	private int priority;
-	private PropertyChangeSupport pcs = new PropertyChangeSupport(this);
+	private final PropertyChangeSupport pcs = new PropertyChangeSupport(this);
 
 	private List<ResourceDesc> descriptors = new ArrayList<ResourceDesc>();
 
 	/**
 	 * @since 2.0
 	 */
+	@Override
 	public int getPriority() {
 		return this.priority;
 	}
 
+	@Override
 	public void setInitializationData(final IConfigurationElement config, final String propertyName, final Object data) throws CoreException {
-		try {
-			this.priority = Integer.valueOf(config.getAttribute("priority"));
-		} catch (final Exception e) {
-			this.priority = Integer.MAX_VALUE;
+		String propVal = config.getAttribute("priority");
+		int value =  Integer.MAX_VALUE;
+		if (propVal != null) {
+			try {
+				value = Integer.valueOf(propVal);
+			} catch (final NumberFormatException e) {
+				// PASS
+			}
 		}
+		this.priority = value;
 	}
 
 	/**
@@ -75,6 +82,7 @@ public abstract class AbstractResourceFactoryProvider implements IResourceFactor
 	/**
 	 * @since 2.0
 	 */
+	@Override
 	public List<ResourceDesc> getResourceDescriptors() {
 		return Collections.unmodifiableList(new ArrayList<ResourceDesc>(descriptors));
 	}
@@ -82,6 +90,7 @@ public abstract class AbstractResourceFactoryProvider implements IResourceFactor
 	/**
 	 * @since 2.0
 	 */
+	@Override
 	public void addPropertyChangeListener(PropertyChangeListener listener) {
 		pcs.addPropertyChangeListener(listener);
 	}
@@ -89,6 +98,7 @@ public abstract class AbstractResourceFactoryProvider implements IResourceFactor
 	/**
 	 * @since 2.0
 	 */
+	@Override
 	public void removePropertyChangeListener(PropertyChangeListener listener) {
 		pcs.removePropertyChangeListener(listener);
 	}

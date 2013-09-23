@@ -189,19 +189,23 @@ public class WizardNewFileCreationPage extends WizardPage implements Listener {
 			});
 		}
 		this.linkedResourceGroup = new CreateLinkedResourceGroup(IResource.FILE, new Listener() {
+			@Override
 			public void handleEvent(final Event e) {
 				setPageComplete(validatePage());
 				WizardNewFileCreationPage.this.firstLinkCheck = false;
 			}
 		}, new CreateLinkedResourceGroup.IStringValue() {
+			@Override
 			public void setValue(final String string) {
 				WizardNewFileCreationPage.this.resourceGroup.setResource(string);
 			}
 
+			@Override
 			public String getValue() {
 				return WizardNewFileCreationPage.this.resourceGroup.getResource();
 			}
 
+			@Override
 			public IResource getResource() {
 				// TODO Auto-generated method stub
 				return null;
@@ -212,6 +216,7 @@ public class WizardNewFileCreationPage extends WizardPage implements Listener {
 	/**
 	 * (non-Javadoc) Method declared on IDialogPage.
 	 */
+	@Override
 	public void createControl(final Composite parent) {
 		initializeDialogUnits(parent);
 		// top level group
@@ -356,6 +361,7 @@ public class WizardNewFileCreationPage extends WizardPage implements Listener {
 
 		createLinkTarget();
 		final IRunnableWithProgress op = new IRunnableWithProgress() {
+			@Override
 			public void run(final IProgressMonitor monitor) {
 				final CreateFileOperation op = new CreateFileOperation(newFileHandle,
 				        WizardNewFileCreationPage.this.linkTargetPath,
@@ -365,6 +371,7 @@ public class WizardNewFileCreationPage extends WizardPage implements Listener {
 					PlatformUI.getWorkbench().getOperationSupport().getOperationHistory().execute(op, monitor, WorkspaceUndoUtil.getUIInfoAdapter(getShell()));
 				} catch (final ExecutionException e) {
 					getContainer().getShell().getDisplay().asyncExec(new Runnable() {
+						@Override
 						public void run() {
 							if (e.getCause() instanceof CoreException) {
 								ErrorDialog.openError(getContainer().getShell(), // Was
@@ -526,6 +533,7 @@ public class WizardNewFileCreationPage extends WizardPage implements Listener {
 	 * <code>Listener</code> method handles all events and enablements for
 	 * controls on this page. Subclasses may extend.
 	 */
+	@Override
 	public void handleEvent(final Event event) {
 		setPageComplete(validatePage());
 	}

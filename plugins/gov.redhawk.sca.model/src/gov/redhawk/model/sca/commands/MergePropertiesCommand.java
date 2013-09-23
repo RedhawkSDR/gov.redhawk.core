@@ -50,6 +50,7 @@ public class MergePropertiesCommand extends ScaModelCommand {
 		this.propertyDefs = propertyDefs;
 	}
 
+	@Override
 	public void execute() {
 		// New Properties
 		final Map<String, ScaAbstractProperty< ? >> newProperties = new HashMap<String, ScaAbstractProperty< ? >>();

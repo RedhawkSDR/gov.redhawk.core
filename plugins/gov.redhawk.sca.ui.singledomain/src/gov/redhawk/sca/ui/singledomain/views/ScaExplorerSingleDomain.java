@@ -128,6 +128,7 @@ public class ScaExplorerSingleDomain extends ScaExplorer {
 
 	private IPropertyChangeListener activeDomainListener = new IPropertyChangeListener() {
 
+		@Override
 		public void propertyChange(PropertyChangeEvent event) {
 			if (ScaSingleDomainPreferenceConstants.SCA_ACTIVE_DOMAIN.equals(event.getProperty())) {
 				String oldDomain = (String) event.getOldValue();
@@ -152,6 +153,7 @@ public class ScaExplorerSingleDomain extends ScaExplorer {
 				if (activeDomain != null) {
 					viewer.getControl().getDisplay().asyncExec(new Runnable() {
 
+						@Override
 						public void run() {
 							fillToolBar(activeDomain.getName().trim().equals("") ? "NO ACTIVE DOMAIN" : activeDomain.getName());
 							viewer.setInput(activeDomain);
@@ -162,6 +164,7 @@ public class ScaExplorerSingleDomain extends ScaExplorer {
 				} else {
 					viewer.getControl().getDisplay().asyncExec(new Runnable() {
 
+						@Override
 						public void run() {
 							fillToolBar("NO ACTIVE DOMAIN");
 							getViewSite().getActionBars().updateActionBars();
@@ -179,6 +182,7 @@ public class ScaExplorerSingleDomain extends ScaExplorer {
 
 	private CustomMouseTrackListener rapMouseTrackListener = new CustomMouseTrackListener() {
 
+		@Override
 		public void mouseHover(CustomMouseEvent e) {
 			/*
 			 * Not sure we need mouse hover
@@ -190,6 +194,7 @@ public class ScaExplorerSingleDomain extends ScaExplorer {
 			}
 		}
 
+		@Override
 		public void mouseEnter(CustomMouseEvent e) {
 			Point mouseLoc = getViewSite().getShell().getDisplay().getCursorLocation();
 			ToolItem item = mgr.getControl().getItem(mgr.getControl().toControl(mouseLoc));
@@ -198,6 +203,7 @@ public class ScaExplorerSingleDomain extends ScaExplorer {
 			}
 		}
 
+		@Override
 		public void mouseExit(CustomMouseEvent e) {
 			// TODO Auto-generated method stub
 
@@ -207,6 +213,7 @@ public class ScaExplorerSingleDomain extends ScaExplorer {
 
 	private MouseTrackListener rcpMouseTrackListener = new MouseTrackListener() {
 
+		@Override
 		public void mouseEnter(MouseEvent e) {
 			Point mouseLoc = getViewSite().getShell().getDisplay().getCursorLocation();
 			ToolItem item = mgr.getControl().getItem(mgr.getControl().toControl(mouseLoc));
@@ -215,10 +222,12 @@ public class ScaExplorerSingleDomain extends ScaExplorer {
 			}
 		}
 
+		@Override
 		public void mouseExit(MouseEvent e) {
 			//PASS
 		}
 
+		@Override
 		public void mouseHover(MouseEvent e) {
 			/*
 			 * Not sure we need mouse hover

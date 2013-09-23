@@ -18,6 +18,7 @@ import org.eclipse.gmf.runtime.emf.type.core.requests.IEditCommandRequest;
 
 public class SoftwareAssemblyEditHelperAdvice extends AbstractEditHelperAdvice {
 	
+	@Override
 	public boolean approveRequest(IEditCommandRequest request) {
 		if (request instanceof DestroyElementRequest) {
 			return false;

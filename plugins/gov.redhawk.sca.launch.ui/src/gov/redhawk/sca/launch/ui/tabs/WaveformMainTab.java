@@ -111,6 +111,7 @@ public class WaveformMainTab extends AbstractLaunchConfigurationTab {
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public void createControl(final Composite parent) {
 		// create the top level composite for the dialog area
 		final Composite composite = new Composite(parent, SWT.NONE);
@@ -129,6 +130,7 @@ public class WaveformMainTab extends AbstractLaunchConfigurationTab {
 		this.domainCombo.getControl().setLayoutData(GridDataFactory.fillDefaults().grab(true, false).create());
 		this.domainCombo.addSelectionChangedListener(new ISelectionChangedListener() {
 
+			@Override
 			public void selectionChanged(final SelectionChangedEvent event) {
 				final IStructuredSelection selection = (IStructuredSelection) event.getSelection();
 				final Object element = selection.getFirstElement();
@@ -172,6 +174,7 @@ public class WaveformMainTab extends AbstractLaunchConfigurationTab {
 			protected Comparator<String> getComparator() {
 				if (this.viewerComparator == null) {
 					this.viewerComparator = new Comparator<String>() {
+						@Override
 						public int compare(final String s1, final String s2) {
 							return s1.compareToIgnoreCase(s2);
 						}
@@ -203,6 +206,7 @@ public class WaveformMainTab extends AbstractLaunchConfigurationTab {
 
 		this.waveformSelectionList.getViewer().addSelectionChangedListener(new ISelectionChangedListener() {
 
+			@Override
 			public void selectionChanged(final SelectionChangedEvent event) {
 				final Object selected = ((StructuredSelection) event.getSelection()).getFirstElement();
 				if (selected instanceof SoftwareAssembly) {
@@ -240,6 +244,7 @@ public class WaveformMainTab extends AbstractLaunchConfigurationTab {
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public void setDefaults(final ILaunchConfigurationWorkingCopy configuration) {
 		if (this.domainCombo != null) {
 			this.domainCombo.setSelection(new StructuredSelection());
@@ -275,6 +280,7 @@ public class WaveformMainTab extends AbstractLaunchConfigurationTab {
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public void initializeFrom(final ILaunchConfiguration configuration) {
 		try {
 			final String domainName = configuration.getAttribute(ScaLaunchConfigurationConstants.ATT_DOMAIN_NAME, "");
@@ -301,6 +307,7 @@ public class WaveformMainTab extends AbstractLaunchConfigurationTab {
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public void performApply(final ILaunchConfigurationWorkingCopy configuration) {
 		String domainName = "";
 		final IStructuredSelection domainSelection = (IStructuredSelection) this.domainCombo.getSelection();
@@ -318,6 +325,7 @@ public class WaveformMainTab extends AbstractLaunchConfigurationTab {
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public String getName() {
 		return "Main";
 	}

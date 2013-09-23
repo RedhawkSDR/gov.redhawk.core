@@ -67,6 +67,7 @@ public class EmfValidationStatusProvider extends MultiValidator {
 			public void notifyChanged(final Notification notification) {
 				super.notifyChanged(notification);
 				ObservableTracker.runAndMonitor(new Runnable() {
+					@Override
 					public void run() {
 						try {
 							IStatus status = validate();
@@ -177,6 +178,7 @@ public class EmfValidationStatusProvider extends MultiValidator {
 
 	private void myRevalidate() {
 		ObservableTracker.runAndMonitor(new Runnable() {
+			@Override
 			public void run() {
 				try {
 					IStatus status = validate();

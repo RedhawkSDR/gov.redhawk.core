@@ -42,41 +42,50 @@ public class AbstractDeviceImpl extends AbstractResourceImpl implements
 		super(compId, compName, orb, poa);
 	}
 
+	@Override
 	public UsageType usageState() {
 		return this.usageState;
 	}
 
+	@Override
 	public AdminType adminState() {
 		return this.adminState;
 	}
 
+	@Override
 	public void adminState(AdminType newAdminState) {
 		this.adminState = newAdminState;
 	}
 
+	@Override
 	public OperationalType operationalState() {
 		return this.opState;
 	}
 
+	@Override
 	public String softwareProfile() {
 		return this.spd.eResource().getURI().path();
 	}
 
+	@Override
 	public String label() {
 		return this.compName;
 	}
 
+	@Override
 	public AggregateDevice compositeDevice() {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
+	@Override
 	public boolean allocateCapacity(DataType[] capacities)
 			throws InvalidCapacity, InvalidState, InsufficientCapacity {
 		// TODO Auto-generated method stub
 		return false;
 	}
 
+	@Override
 	public void deallocateCapacity(DataType[] capacities)
 			throws InvalidCapacity, InvalidState {
 		// TODO Auto-generated method stub

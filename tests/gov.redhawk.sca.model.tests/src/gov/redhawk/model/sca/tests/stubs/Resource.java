@@ -142,14 +142,16 @@ public abstract class Resource implements ResourceOperations, Runnable { // SUPP
     /**
      * {@inheritDoc}
      */
-    public String identifier() {
+    @Override
+	public String identifier() {
         return this.compId;
     }
 
     /**
      * {@inheritDoc}
      */
-    public boolean started() {
+    @Override
+	public boolean started() {
         return this.started;
     }
 
@@ -161,7 +163,8 @@ public abstract class Resource implements ResourceOperations, Runnable { // SUPP
     /**
      * {@inheritDoc}
      */
-    public void initialize() throws InitializeError {
+    @Override
+	public void initialize() throws InitializeError {
         LOGGER.trace("initialize()");
         if (!initialized) {
             this.ports.clear();
@@ -176,7 +179,8 @@ public abstract class Resource implements ResourceOperations, Runnable { // SUPP
     /**
      * {@inheritDoc}
      */
-    public void start() throws StartError {
+    @Override
+	public void start() throws StartError {
         // While we are starting or stopping don't let anything else occur
         LOGGER.trace("start()");
         synchronized (this) {
@@ -192,7 +196,8 @@ public abstract class Resource implements ResourceOperations, Runnable { // SUPP
     /**
      * {@inheritDoc}
      */
-    public void stop() throws StopError {
+    @Override
+	public void stop() throws StopError {
         LOGGER.trace("stop()");
         synchronized (this) {
             if (processingThread != null) {
@@ -220,13 +225,15 @@ public abstract class Resource implements ResourceOperations, Runnable { // SUPP
     /**
      * {@inheritDoc}
      */
-    public void runTest(final int testid, final PropertiesHolder testValues) throws UnknownTest, UnknownProperties {
+    @Override
+	public void runTest(final int testid, final PropertiesHolder testValues) throws UnknownTest, UnknownProperties {
         LOGGER.trace("runTest()");
     }
 
     /* BASE CLASS METHODS */
 
-    public void releaseObject() throws ReleaseError {
+    @Override
+	public void releaseObject() throws ReleaseError {
         LOGGER.trace("releaseObject()");
         try {
             this.stop();
@@ -267,7 +274,8 @@ public abstract class Resource implements ResourceOperations, Runnable { // SUPP
         throw new UnknownPort("Unknown port: " + name);
     }
 
-    public org.omg.CORBA.Object getPort(final String name) throws UnknownPort {
+    @Override
+	public org.omg.CORBA.Object getPort(final String name) throws UnknownPort {
         // the mapping of ports assumes that port names are unique to the component
         // the Ports_var maps are kept different (they could be made into one)
         // because it's less confusing this way
@@ -288,7 +296,8 @@ public abstract class Resource implements ResourceOperations, Runnable { // SUPP
     /**
      * {@inheritDoc}
      */
-    public void configure(final DataType[] configProperties) throws InvalidConfiguration, PartialConfiguration {
+    @Override
+	public void configure(final DataType[] configProperties) throws InvalidConfiguration, PartialConfiguration {
         LOGGER.trace("configure()");
         final ArrayList<DataType> validProperties = new ArrayList<DataType>();
         final ArrayList<DataType> invalidProperties = new ArrayList<DataType>();
@@ -337,7 +346,8 @@ public abstract class Resource implements ResourceOperations, Runnable { // SUPP
     /**
      * {@inheritDoc}
      */
-    public void query(final PropertiesHolder configProperties) throws UnknownProperties {
+    @Override
+	public void query(final PropertiesHolder configProperties) throws UnknownProperties {
         LOGGER.trace("query()");
         // for queries of zero length, return all id/value pairs in propertySet
         if (configProperties.value.length == 0) {
@@ -437,7 +447,8 @@ public abstract class Resource implements ResourceOperations, Runnable { // SUPP
      * @deprecated use started instead
      * @return true if the component is started
      */
-    public boolean isRunning() {
+    @Deprecated
+	public boolean isRunning() {
         return this.started;
     }
 
@@ -700,7 +711,8 @@ public abstract class Resource implements ResourceOperations, Runnable { // SUPP
         // Create a thread that watches for the resource to be deactivated
         Thread shutdownWatcher = new Thread(new Runnable() {
 
-            public void run() {
+            @Override
+			public void run() {
                 while (!resource_i.isDisposed()) {
                     try {
                         Thread.sleep(500);

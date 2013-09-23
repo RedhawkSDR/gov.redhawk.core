@@ -100,6 +100,7 @@ public class ScaDocumentRootImpl extends EObjectImpl implements ScaDocumentRoot 
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public FeatureMap getMixed() {
 		if (mixed == null) {
 			mixed = new BasicFeatureMap(this, ScaPackage.SCA_DOCUMENT_ROOT__MIXED);
@@ -112,6 +113,7 @@ public class ScaDocumentRootImpl extends EObjectImpl implements ScaDocumentRoot 
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EMap<String, String> getXMLNSPrefixMap() {
 		if (xMLNSPrefixMap == null) {
 			xMLNSPrefixMap = new EcoreEMap<String,String>(EcorePackage.Literals.ESTRING_TO_STRING_MAP_ENTRY, EStringToStringMapEntryImpl.class, this, ScaPackage.SCA_DOCUMENT_ROOT__XMLNS_PREFIX_MAP);
@@ -124,6 +126,7 @@ public class ScaDocumentRootImpl extends EObjectImpl implements ScaDocumentRoot 
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EMap<String, String> getXSISchemaLocation() {
 		if (xSISchemaLocation == null) {
 			xSISchemaLocation = new EcoreEMap<String,String>(EcorePackage.Literals.ESTRING_TO_STRING_MAP_ENTRY, EStringToStringMapEntryImpl.class, this, ScaPackage.SCA_DOCUMENT_ROOT__XSI_SCHEMA_LOCATION);
@@ -136,6 +139,7 @@ public class ScaDocumentRootImpl extends EObjectImpl implements ScaDocumentRoot 
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public ScaDomainManagerRegistry getDomainManagerRegistry() {
 		return (ScaDomainManagerRegistry)getMixed().get(ScaPackage.Literals.SCA_DOCUMENT_ROOT__DOMAIN_MANAGER_REGISTRY, true);
 	}
@@ -154,6 +158,7 @@ public class ScaDocumentRootImpl extends EObjectImpl implements ScaDocumentRoot 
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void setDomainManagerRegistry(ScaDomainManagerRegistry newDomainManagerRegistry) {
 		((FeatureMap.Internal)getMixed()).set(ScaPackage.Literals.SCA_DOCUMENT_ROOT__DOMAIN_MANAGER_REGISTRY, newDomainManagerRegistry);
 	}

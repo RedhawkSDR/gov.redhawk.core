@@ -76,6 +76,7 @@ public class LocalFilePathImpl extends PathImpl implements LocalFilePath {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EList<IPath> getLocalPaths() {
 		if (localPaths == null) {
 			localPaths = new EDataTypeUniqueEList<IPath>(IPath.class, this, LibraryPackage.LOCAL_FILE_PATH__LOCAL_PATHS);

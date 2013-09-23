@@ -168,6 +168,7 @@ public class PropertiesSection extends TreeSection implements IPropertyChangeLis
 		final Text filterText = this.fFilteredTree.getFilterControl();
 		if (filterText != null) {
 			filterText.addModifyListener(new ModifyListener() {
+				@Override
 				public void modifyText(final ModifyEvent e) {
 					final StructuredViewer viewer = getStructuredViewerPart().getViewer();
 					final IStructuredSelection ssel = (IStructuredSelection) viewer.getSelection();
@@ -192,6 +193,7 @@ public class PropertiesSection extends TreeSection implements IPropertyChangeLis
 		toolbar.setCursor(handCursor);
 		// Cursor needs to be explicitly disposed
 		toolbar.addDisposeListener(new DisposeListener() {
+			@Override
 			public void widgetDisposed(final DisposeEvent e) {
 				if (!handCursor.isDisposed()) {
 					handCursor.dispose();
@@ -335,6 +337,7 @@ public class PropertiesSection extends TreeSection implements IPropertyChangeLis
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public void propertyChange(final PropertyChangeEvent event) {
 		if (this.fSortAction.equals(event.getSource()) && IAction.RESULT.equals(event.getProperty())) {
 			final StructuredViewer viewer = getStructuredViewerPart().getViewer();

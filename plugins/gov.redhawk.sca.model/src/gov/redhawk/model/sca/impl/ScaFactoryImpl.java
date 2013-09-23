@@ -201,6 +201,7 @@ public class ScaFactoryImpl extends EFactoryImpl implements ScaFactory {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public Properties createProperties() {
 		PropertiesImpl properties = new PropertiesImpl();
 		return properties;
@@ -211,6 +212,7 @@ public class ScaFactoryImpl extends EFactoryImpl implements ScaFactory {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public ScaComponent createScaComponent() {
 		ScaComponentImpl scaComponent = new ScaComponentImpl();
 		return scaComponent;
@@ -221,6 +223,7 @@ public class ScaFactoryImpl extends EFactoryImpl implements ScaFactory {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public <D extends Device> ScaDevice<D> createScaDevice() {
 		ScaDeviceImpl<D> scaDevice = new ScaDeviceImpl<D>();
 		return scaDevice;
@@ -231,6 +234,7 @@ public class ScaFactoryImpl extends EFactoryImpl implements ScaFactory {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public ScaDeviceManager createScaDeviceManager() {
 		ScaDeviceManagerImpl scaDeviceManager = new ScaDeviceManagerImpl();
 		return scaDeviceManager;
@@ -241,6 +245,7 @@ public class ScaFactoryImpl extends EFactoryImpl implements ScaFactory {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public ScaService createScaService() {
 		ScaServiceImpl scaService = new ScaServiceImpl();
 		return scaService;
@@ -251,6 +256,7 @@ public class ScaFactoryImpl extends EFactoryImpl implements ScaFactory {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public ScaDeviceManagerFileSystem createScaDeviceManagerFileSystem() {
 		ScaDeviceManagerFileSystemImpl scaDeviceManagerFileSystem = new ScaDeviceManagerFileSystemImpl();
 		return scaDeviceManagerFileSystem;
@@ -261,6 +267,7 @@ public class ScaFactoryImpl extends EFactoryImpl implements ScaFactory {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public ScaDocumentRoot createScaDocumentRoot() {
 		ScaDocumentRootImpl scaDocumentRoot = new ScaDocumentRootImpl();
 		return scaDocumentRoot;
@@ -271,6 +278,7 @@ public class ScaFactoryImpl extends EFactoryImpl implements ScaFactory {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public ScaDomainManager createScaDomainManager() {
 		ScaDomainManagerImpl scaDomainManager = new ScaDomainManagerImpl();
 		return scaDomainManager;
@@ -281,6 +289,7 @@ public class ScaFactoryImpl extends EFactoryImpl implements ScaFactory {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public ScaDomainManagerFileSystem createScaDomainManagerFileSystem() {
 		ScaDomainManagerFileSystemImpl scaDomainManagerFileSystem = new ScaDomainManagerFileSystemImpl();
 		return scaDomainManagerFileSystem;
@@ -291,6 +300,7 @@ public class ScaFactoryImpl extends EFactoryImpl implements ScaFactory {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public ScaDomainManagerRegistry createScaDomainManagerRegistry() {
 		ScaDomainManagerRegistryImpl scaDomainManagerRegistry = new ScaDomainManagerRegistryImpl();
 		return scaDomainManagerRegistry;
@@ -301,6 +311,7 @@ public class ScaFactoryImpl extends EFactoryImpl implements ScaFactory {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public ScaExecutableDevice createScaExecutableDevice() {
 		ScaExecutableDeviceImpl scaExecutableDevice = new ScaExecutableDeviceImpl();
 		return scaExecutableDevice;
@@ -311,6 +322,7 @@ public class ScaFactoryImpl extends EFactoryImpl implements ScaFactory {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public ScaFileStore createScaFileStore() {
 		ScaFileStoreImpl scaFileStore = new ScaFileStoreImpl();
 		return scaFileStore;
@@ -321,6 +333,7 @@ public class ScaFactoryImpl extends EFactoryImpl implements ScaFactory {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public <L extends LoadableDevice> ScaLoadableDevice<L> createScaLoadableDevice() {
 		ScaLoadableDeviceImpl<L> scaLoadableDevice = new ScaLoadableDeviceImpl<L>();
 		return scaLoadableDevice;
@@ -331,6 +344,7 @@ public class ScaFactoryImpl extends EFactoryImpl implements ScaFactory {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public ScaProvidesPort createScaProvidesPort() {
 		ScaProvidesPortImpl scaProvidesPort = new ScaProvidesPortImpl();
 		return scaProvidesPort;
@@ -341,6 +355,7 @@ public class ScaFactoryImpl extends EFactoryImpl implements ScaFactory {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public ScaSimpleProperty createScaSimpleProperty() {
 		ScaSimplePropertyImpl scaSimpleProperty = new ScaSimplePropertyImpl();
 		return scaSimpleProperty;
@@ -351,6 +366,7 @@ public class ScaFactoryImpl extends EFactoryImpl implements ScaFactory {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public ScaSimpleSequenceProperty createScaSimpleSequenceProperty() {
 		ScaSimpleSequencePropertyImpl scaSimpleSequenceProperty = new ScaSimpleSequencePropertyImpl();
 		return scaSimpleSequenceProperty;
@@ -361,6 +377,7 @@ public class ScaFactoryImpl extends EFactoryImpl implements ScaFactory {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public ScaStructProperty createScaStructProperty() {
 		ScaStructPropertyImpl scaStructProperty = new ScaStructPropertyImpl();
 		return scaStructProperty;
@@ -371,6 +388,7 @@ public class ScaFactoryImpl extends EFactoryImpl implements ScaFactory {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public ScaUsesPort createScaUsesPort() {
 		ScaUsesPortImpl scaUsesPort = new ScaUsesPortImpl();
 		return scaUsesPort;
@@ -381,6 +399,7 @@ public class ScaFactoryImpl extends EFactoryImpl implements ScaFactory {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public ScaConnection createScaConnection() {
 		ScaConnectionImpl scaConnection = new ScaConnectionImpl();
 		return scaConnection;
@@ -391,6 +410,7 @@ public class ScaFactoryImpl extends EFactoryImpl implements ScaFactory {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public ScaWaveform createScaWaveform() {
 		ScaWaveformImpl scaWaveform = new ScaWaveformImpl();
 		return scaWaveform;
@@ -401,6 +421,7 @@ public class ScaFactoryImpl extends EFactoryImpl implements ScaFactory {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public ScaWaveformFactory createScaWaveformFactory() {
 		ScaWaveformFactoryImpl scaWaveformFactory = new ScaWaveformFactoryImpl();
 		return scaWaveformFactory;
@@ -421,6 +442,7 @@ public class ScaFactoryImpl extends EFactoryImpl implements ScaFactory {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public ScaStructSequenceProperty createScaStructSequenceProperty() {
 		ScaStructSequencePropertyImpl scaStructSequenceProperty = new ScaStructSequencePropertyImpl();
 		return scaStructSequenceProperty;
@@ -603,6 +625,7 @@ public class ScaFactoryImpl extends EFactoryImpl implements ScaFactory {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public ScaPackage getScaPackage() {
 		return (ScaPackage)getEPackage();
 	}

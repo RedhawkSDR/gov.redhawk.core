@@ -139,6 +139,7 @@ public class ActiveDomainPreferencePage extends FieldEditorPreferencePage implem
 		super.checkState();
 	}
 
+	@Override
 	public void init(final IWorkbench workbench) {
 		setPreferenceStore(ScaUiPlugin.getDefault().getScaPreferenceStore());
 	}

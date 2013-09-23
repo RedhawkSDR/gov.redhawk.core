@@ -148,6 +148,7 @@ public class ComboDirectEditManager extends DirectEditManager {
 		if (label != null) {
 			return new CellEditorLocator() {
 
+				@Override
 				public void relocate(final CellEditor celleditor) {
 					final CCombo text = (CCombo) celleditor.getControl();
 
@@ -207,6 +208,7 @@ public class ComboDirectEditManager extends DirectEditManager {
 
 		// return a default figure locator
 		return new CellEditorLocator() {
+			@Override
 			public void relocate(final CellEditor celleditor) {
 				final CCombo text = (CCombo) celleditor.getControl();
 				final Rectangle rect = source.getFigure().getBounds().getCopy();
@@ -352,6 +354,7 @@ public class ComboDirectEditManager extends DirectEditManager {
 
 		Display.getCurrent().asyncExec(new Runnable() {
 
+			@Override
 			public void run() {
 				// Content Assist hack - allow proper cleanup on childen
 				// controls
@@ -513,6 +516,7 @@ public class ComboDirectEditManager extends DirectEditManager {
 
 		final Display currDisplay = Display.getCurrent();
 		currDisplay.asyncExec(new Runnable() {
+			@Override
 			public void run() {
 				Event event;
 				event = new Event();

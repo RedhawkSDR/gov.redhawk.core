@@ -492,7 +492,8 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 		EValidator.Registry.INSTANCE.put
 			(theScaPackage, 
 			 new EValidator.Descriptor() {
-				 public EValidator getEValidator() {
+				 @Override
+				public EValidator getEValidator() {
 					 return ScaValidator.INSTANCE;
 				 }
 			 });
@@ -511,6 +512,7 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EClass getCorbaObjWrapper() {
 		return corbaObjWrapperEClass;
 	}
@@ -520,6 +522,7 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EAttribute getCorbaObjWrapper_Ior() {
 		return (EAttribute)corbaObjWrapperEClass.getEStructuralFeatures().get(0);
 	}
@@ -529,6 +532,7 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EAttribute getCorbaObjWrapper_Obj() {
 		return (EAttribute)corbaObjWrapperEClass.getEStructuralFeatures().get(1);
 	}
@@ -538,6 +542,7 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EAttribute getCorbaObjWrapper_CorbaObj() {
 		return (EAttribute)corbaObjWrapperEClass.getEStructuralFeatures().get(2);
 	}
@@ -547,6 +552,7 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EClass getDataProviderObject() {
 		return dataProviderObjectEClass;
 	}
@@ -556,6 +562,7 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EAttribute getDataProviderObject_DataProviders() {
 		return (EAttribute)dataProviderObjectEClass.getEStructuralFeatures().get(0);
 	}
@@ -565,6 +572,7 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EAttribute getDataProviderObject_DataProvidersEnabled() {
 		return (EAttribute)dataProviderObjectEClass.getEStructuralFeatures().get(1);
 	}
@@ -574,6 +582,7 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EClass getIDisposable() {
 		return iDisposableEClass;
 	}
@@ -583,6 +592,7 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EAttribute getIDisposable_Disposed() {
 		return (EAttribute)iDisposableEClass.getEStructuralFeatures().get(0);
 	}
@@ -592,6 +602,7 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EClass getProfileObjectWrapper() {
 		return profileObjectWrapperEClass;
 	}
@@ -601,6 +612,7 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EAttribute getProfileObjectWrapper_ProfileURI() {
 		return (EAttribute)profileObjectWrapperEClass.getEStructuralFeatures().get(0);
 	}
@@ -610,6 +622,7 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EReference getProfileObjectWrapper_ProfileObj() {
 		return (EReference)profileObjectWrapperEClass.getEStructuralFeatures().get(1);
 	}
@@ -619,6 +632,7 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EAttribute getProfileObjectWrapper_RootFileStore() {
 		return (EAttribute)profileObjectWrapperEClass.getEStructuralFeatures().get(2);
 	}
@@ -628,6 +642,7 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EClass getProperties() {
 		return propertiesEClass;
 	}
@@ -637,6 +652,7 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EReference getProperties_Property() {
 		return (EReference)propertiesEClass.getEStructuralFeatures().get(0);
 	}
@@ -646,6 +662,7 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EClass getScaAbstractComponent() {
 		return scaAbstractComponentEClass;
 	}
@@ -655,6 +672,7 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EAttribute getScaAbstractComponent_Identifier() {
 		return (EAttribute)scaAbstractComponentEClass.getEStructuralFeatures().get(0);
 	}
@@ -664,6 +682,7 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EAttribute getScaAbstractComponent_Started() {
 		return (EAttribute)scaAbstractComponentEClass.getEStructuralFeatures().get(1);
 	}
@@ -673,6 +692,7 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EClass getScaPropertyContainer() {
 		return scaPropertyContainerEClass;
 	}
@@ -682,6 +702,7 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EReference getScaPropertyContainer_Properties() {
 		return (EReference)scaPropertyContainerEClass.getEStructuralFeatures().get(0);
 	}
@@ -691,6 +712,7 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EClass getScaPortContainer() {
 		return scaPortContainerEClass;
 	}
@@ -700,6 +722,7 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EReference getScaPortContainer_Ports() {
 		return (EReference)scaPortContainerEClass.getEStructuralFeatures().get(0);
 	}
@@ -709,6 +732,7 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EClass getScaAbstractProperty() {
 		return scaAbstractPropertyEClass;
 	}
@@ -718,6 +742,7 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EReference getScaAbstractProperty_Definition() {
 		return (EReference)scaAbstractPropertyEClass.getEStructuralFeatures().get(0);
 	}
@@ -727,6 +752,7 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EAttribute getScaAbstractProperty_Description() {
 		return (EAttribute)scaAbstractPropertyEClass.getEStructuralFeatures().get(1);
 	}
@@ -736,6 +762,7 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EAttribute getScaAbstractProperty_Id() {
 		return (EAttribute)scaAbstractPropertyEClass.getEStructuralFeatures().get(2);
 	}
@@ -745,6 +772,7 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EAttribute getScaAbstractProperty_Mode() {
 		return (EAttribute)scaAbstractPropertyEClass.getEStructuralFeatures().get(3);
 	}
@@ -754,6 +782,7 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EAttribute getScaAbstractProperty_Name() {
 		return (EAttribute)scaAbstractPropertyEClass.getEStructuralFeatures().get(4);
 	}
@@ -763,6 +792,7 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EAttribute getScaAbstractProperty_IgnoreRemoteSet() {
 		return (EAttribute)scaAbstractPropertyEClass.getEStructuralFeatures().get(5);
 	}
@@ -772,6 +802,7 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EClass getScaComponent() {
 		return scaComponentEClass;
 	}
@@ -781,6 +812,7 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EReference getScaComponent_ComponentInstantiation() {
 		return (EReference)scaComponentEClass.getEStructuralFeatures().get(0);
 	}
@@ -790,6 +822,7 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EReference getScaComponent_Devices() {
 		return (EReference)scaComponentEClass.getEStructuralFeatures().get(1);
 	}
@@ -799,6 +832,7 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EAttribute getScaComponent_InstantiationIdentifier() {
 		return (EAttribute)scaComponentEClass.getEStructuralFeatures().get(2);
 	}
@@ -808,6 +842,7 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EReference getScaComponent_Waveform() {
 		return (EReference)scaComponentEClass.getEStructuralFeatures().get(3);
 	}
@@ -817,6 +852,7 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EAttribute getScaComponent_Name() {
 		return (EAttribute)scaComponentEClass.getEStructuralFeatures().get(4);
 	}
@@ -826,6 +862,7 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EClass getScaDevice() {
 		return scaDeviceEClass;
 	}
@@ -835,6 +872,7 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EReference getScaDevice_ChildDevices() {
 		return (EReference)scaDeviceEClass.getEStructuralFeatures().get(0);
 	}
@@ -844,6 +882,7 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EAttribute getScaDevice_AdminState() {
 		return (EAttribute)scaDeviceEClass.getEStructuralFeatures().get(1);
 	}
@@ -853,6 +892,7 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EAttribute getScaDevice_Label() {
 		return (EAttribute)scaDeviceEClass.getEStructuralFeatures().get(2);
 	}
@@ -862,6 +902,7 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EAttribute getScaDevice_OperationalState() {
 		return (EAttribute)scaDeviceEClass.getEStructuralFeatures().get(3);
 	}
@@ -871,6 +912,7 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EAttribute getScaDevice_UsageState() {
 		return (EAttribute)scaDeviceEClass.getEStructuralFeatures().get(4);
 	}
@@ -880,6 +922,7 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EReference getScaDevice_ParentDevice() {
 		return (EReference)scaDeviceEClass.getEStructuralFeatures().get(5);
 	}
@@ -889,6 +932,7 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EReference getScaDevice_DevMgr() {
 		return (EReference)scaDeviceEClass.getEStructuralFeatures().get(6);
 	}
@@ -898,6 +942,7 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EAttribute getScaDevice_Profile() {
 		return (EAttribute)scaDeviceEClass.getEStructuralFeatures().get(7);
 	}
@@ -907,6 +952,7 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EClass getScaDeviceManager() {
 		return scaDeviceManagerEClass;
 	}
@@ -916,6 +962,7 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EAttribute getScaDeviceManager_Devices() {
 		return (EAttribute)scaDeviceManagerEClass.getEStructuralFeatures().get(0);
 	}
@@ -925,6 +972,7 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EReference getScaDeviceManager_RootDevices() {
 		return (EReference)scaDeviceManagerEClass.getEStructuralFeatures().get(1);
 	}
@@ -934,6 +982,7 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EReference getScaDeviceManager_ChildDevices() {
 		return (EReference)scaDeviceManagerEClass.getEStructuralFeatures().get(2);
 	}
@@ -943,6 +992,7 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EReference getScaDeviceManager_AllDevices() {
 		return (EReference)scaDeviceManagerEClass.getEStructuralFeatures().get(3);
 	}
@@ -952,6 +1002,7 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EReference getScaDeviceManager_FileSystem() {
 		return (EReference)scaDeviceManagerEClass.getEStructuralFeatures().get(4);
 	}
@@ -961,6 +1012,7 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EReference getScaDeviceManager_DomMgr() {
 		return (EReference)scaDeviceManagerEClass.getEStructuralFeatures().get(5);
 	}
@@ -970,6 +1022,7 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EAttribute getScaDeviceManager_Identifier() {
 		return (EAttribute)scaDeviceManagerEClass.getEStructuralFeatures().get(6);
 	}
@@ -979,6 +1032,7 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EAttribute getScaDeviceManager_Label() {
 		return (EAttribute)scaDeviceManagerEClass.getEStructuralFeatures().get(7);
 	}
@@ -988,6 +1042,7 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EReference getScaDeviceManager_Services() {
 		return (EReference)scaDeviceManagerEClass.getEStructuralFeatures().get(8);
 	}
@@ -997,6 +1052,7 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EAttribute getScaDeviceManager_Profile() {
 		return (EAttribute)scaDeviceManagerEClass.getEStructuralFeatures().get(9);
 	}
@@ -1006,6 +1062,7 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EClass getScaService() {
 		return scaServiceEClass;
 	}
@@ -1015,6 +1072,7 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EAttribute getScaService_Name() {
 		return (EAttribute)scaServiceEClass.getEStructuralFeatures().get(0);
 	}
@@ -1025,6 +1083,7 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EReference getScaService_DevMgr() {
 		return (EReference)scaServiceEClass.getEStructuralFeatures().get(1);
 	}
@@ -1034,6 +1093,7 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EClass getScaDeviceManagerFileSystem() {
 		return scaDeviceManagerFileSystemEClass;
 	}
@@ -1043,6 +1103,7 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EReference getScaDeviceManagerFileSystem_DeviceManager() {
 		return (EReference)scaDeviceManagerFileSystemEClass.getEStructuralFeatures().get(0);
 	}
@@ -1052,6 +1113,7 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EClass getScaDocumentRoot() {
 		return scaDocumentRootEClass;
 	}
@@ -1061,6 +1123,7 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EAttribute getScaDocumentRoot_Mixed() {
 		return (EAttribute)scaDocumentRootEClass.getEStructuralFeatures().get(0);
 	}
@@ -1070,6 +1133,7 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EReference getScaDocumentRoot_XMLNSPrefixMap() {
 		return (EReference)scaDocumentRootEClass.getEStructuralFeatures().get(1);
 	}
@@ -1079,6 +1143,7 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EReference getScaDocumentRoot_XSISchemaLocation() {
 		return (EReference)scaDocumentRootEClass.getEStructuralFeatures().get(2);
 	}
@@ -1088,6 +1153,7 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EReference getScaDocumentRoot_DomainManagerRegistry() {
 		return (EReference)scaDocumentRootEClass.getEStructuralFeatures().get(3);
 	}
@@ -1097,6 +1163,7 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EClass getScaDomainManager() {
 		return scaDomainManagerEClass;
 	}
@@ -1106,6 +1173,7 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EReference getScaDomainManager_WaveformFactories() {
 		return (EReference)scaDomainManagerEClass.getEStructuralFeatures().get(0);
 	}
@@ -1115,6 +1183,7 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EReference getScaDomainManager_Waveforms() {
 		return (EReference)scaDomainManagerEClass.getEStructuralFeatures().get(1);
 	}
@@ -1124,6 +1193,7 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EReference getScaDomainManager_DeviceManagers() {
 		return (EReference)scaDomainManagerEClass.getEStructuralFeatures().get(2);
 	}
@@ -1133,6 +1203,7 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EReference getScaDomainManager_FileManager() {
 		return (EReference)scaDomainManagerEClass.getEStructuralFeatures().get(3);
 	}
@@ -1142,6 +1213,7 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EReference getScaDomainManager_ConnectionPropertiesContainer() {
 		return (EReference)scaDomainManagerEClass.getEStructuralFeatures().get(4);
 	}
@@ -1151,6 +1223,7 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EReference getScaDomainManager_ConnectionProperties() {
 		return (EReference)scaDomainManagerEClass.getEStructuralFeatures().get(5);
 	}
@@ -1160,6 +1233,7 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EAttribute getScaDomainManager_AutoConnect() {
 		return (EAttribute)scaDomainManagerEClass.getEStructuralFeatures().get(6);
 	}
@@ -1169,6 +1243,7 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EAttribute getScaDomainManager_Connected() {
 		return (EAttribute)scaDomainManagerEClass.getEStructuralFeatures().get(7);
 	}
@@ -1178,6 +1253,7 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EAttribute getScaDomainManager_Identifier() {
 		return (EAttribute)scaDomainManagerEClass.getEStructuralFeatures().get(8);
 	}
@@ -1187,6 +1263,7 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EAttribute getScaDomainManager_Name() {
 		return (EAttribute)scaDomainManagerEClass.getEStructuralFeatures().get(9);
 	}
@@ -1196,6 +1273,7 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EAttribute getScaDomainManager_RootContext() {
 		return (EAttribute)scaDomainManagerEClass.getEStructuralFeatures().get(10);
 	}
@@ -1205,6 +1283,7 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EAttribute getScaDomainManager_State() {
 		return (EAttribute)scaDomainManagerEClass.getEStructuralFeatures().get(11);
 	}
@@ -1214,6 +1293,7 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EAttribute getScaDomainManager_Profile() {
 		return (EAttribute)scaDomainManagerEClass.getEStructuralFeatures().get(12);
 	}
@@ -1223,6 +1303,7 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EClass getScaDomainManagerFileSystem() {
 		return scaDomainManagerFileSystemEClass;
 	}
@@ -1232,6 +1313,7 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EReference getScaDomainManagerFileSystem_DomMgr() {
 		return (EReference)scaDomainManagerFileSystemEClass.getEStructuralFeatures().get(0);
 	}
@@ -1241,6 +1323,7 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EClass getScaDomainManagerRegistry() {
 		return scaDomainManagerRegistryEClass;
 	}
@@ -1250,6 +1333,7 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EReference getScaDomainManagerRegistry_Domains() {
 		return (EReference)scaDomainManagerRegistryEClass.getEStructuralFeatures().get(0);
 	}
@@ -1259,6 +1343,7 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EClass getScaExecutableDevice() {
 		return scaExecutableDeviceEClass;
 	}
@@ -1268,6 +1353,7 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EClass getScaFileManager() {
 		return scaFileManagerEClass;
 	}
@@ -1277,6 +1363,7 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EClass getScaFileStore() {
 		return scaFileStoreEClass;
 	}
@@ -1286,6 +1373,7 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EAttribute getScaFileStore_FileStore() {
 		return (EAttribute)scaFileStoreEClass.getEStructuralFeatures().get(0);
 	}
@@ -1295,6 +1383,7 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EReference getScaFileStore_Children() {
 		return (EReference)scaFileStoreEClass.getEStructuralFeatures().get(1);
 	}
@@ -1304,6 +1393,7 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EAttribute getScaFileStore_ImageDesc() {
 		return (EAttribute)scaFileStoreEClass.getEStructuralFeatures().get(2);
 	}
@@ -1313,6 +1403,7 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EAttribute getScaFileStore_Directory() {
 		return (EAttribute)scaFileStoreEClass.getEStructuralFeatures().get(3);
 	}
@@ -1322,6 +1413,7 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EAttribute getScaFileStore_Name() {
 		return (EAttribute)scaFileStoreEClass.getEStructuralFeatures().get(4);
 	}
@@ -1331,6 +1423,7 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EClass getScaFileSystem() {
 		return scaFileSystemEClass;
 	}
@@ -1340,6 +1433,7 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EAttribute getScaFileSystem_FileSystemURI() {
 		return (EAttribute)scaFileSystemEClass.getEStructuralFeatures().get(0);
 	}
@@ -1349,6 +1443,7 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EClass getScaLoadableDevice() {
 		return scaLoadableDeviceEClass;
 	}
@@ -1358,6 +1453,7 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EClass getScaPort() {
 		return scaPortEClass;
 	}
@@ -1367,6 +1463,7 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EAttribute getScaPort_Name() {
 		return (EAttribute)scaPortEClass.getEStructuralFeatures().get(0);
 	}
@@ -1376,6 +1473,7 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EReference getScaPort_ProfileObj() {
 		return (EReference)scaPortEClass.getEStructuralFeatures().get(1);
 	}
@@ -1385,6 +1483,7 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EAttribute getScaPort_Repid() {
 		return (EAttribute)scaPortEClass.getEStructuralFeatures().get(2);
 	}
@@ -1394,6 +1493,7 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EReference getScaPort_PortContainer() {
 		return (EReference)scaPortEClass.getEStructuralFeatures().get(3);
 	}
@@ -1403,6 +1503,7 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EClass getScaProvidesPort() {
 		return scaProvidesPortEClass;
 	}
@@ -1412,6 +1513,7 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EClass getScaSimpleProperty() {
 		return scaSimplePropertyEClass;
 	}
@@ -1421,6 +1523,7 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EAttribute getScaSimpleProperty_Value() {
 		return (EAttribute)scaSimplePropertyEClass.getEStructuralFeatures().get(0);
 	}
@@ -1430,6 +1533,7 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EClass getScaSimpleSequenceProperty() {
 		return scaSimpleSequencePropertyEClass;
 	}
@@ -1439,6 +1543,7 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EAttribute getScaSimpleSequenceProperty_Values() {
 		return (EAttribute)scaSimpleSequencePropertyEClass.getEStructuralFeatures().get(0);
 	}
@@ -1448,6 +1553,7 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EClass getScaStructProperty() {
 		return scaStructPropertyEClass;
 	}
@@ -1457,6 +1563,7 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EReference getScaStructProperty_Simples() {
 		return (EReference)scaStructPropertyEClass.getEStructuralFeatures().get(0);
 	}
@@ -1466,6 +1573,7 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EClass getScaUsesPort() {
 		return scaUsesPortEClass;
 	}
@@ -1475,6 +1583,7 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EReference getScaUsesPort_Connections() {
 		return (EReference)scaUsesPortEClass.getEStructuralFeatures().get(0);
 	}
@@ -1484,6 +1593,7 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EClass getScaConnection() {
 		return scaConnectionEClass;
 	}
@@ -1493,6 +1603,7 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EAttribute getScaConnection_Data() {
 		return (EAttribute)scaConnectionEClass.getEStructuralFeatures().get(0);
 	}
@@ -1502,6 +1613,7 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EAttribute getScaConnection_Id() {
 		return (EAttribute)scaConnectionEClass.getEStructuralFeatures().get(1);
 	}
@@ -1511,6 +1623,7 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EReference getScaConnection_Port() {
 		return (EReference)scaConnectionEClass.getEStructuralFeatures().get(2);
 	}
@@ -1520,6 +1633,7 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EClass getScaWaveform() {
 		return scaWaveformEClass;
 	}
@@ -1529,6 +1643,7 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EReference getScaWaveform_Components() {
 		return (EReference)scaWaveformEClass.getEStructuralFeatures().get(0);
 	}
@@ -1538,6 +1653,7 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EReference getScaWaveform_AssemblyController() {
 		return (EReference)scaWaveformEClass.getEStructuralFeatures().get(1);
 	}
@@ -1547,6 +1663,7 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EReference getScaWaveform_DomMgr() {
 		return (EReference)scaWaveformEClass.getEStructuralFeatures().get(2);
 	}
@@ -1556,6 +1673,7 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EAttribute getScaWaveform_Identifier() {
 		return (EAttribute)scaWaveformEClass.getEStructuralFeatures().get(3);
 	}
@@ -1565,6 +1683,7 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EAttribute getScaWaveform_Name() {
 		return (EAttribute)scaWaveformEClass.getEStructuralFeatures().get(4);
 	}
@@ -1574,6 +1693,7 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EAttribute getScaWaveform_Started() {
 		return (EAttribute)scaWaveformEClass.getEStructuralFeatures().get(5);
 	}
@@ -1583,6 +1703,7 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EAttribute getScaWaveform_Profile() {
 		return (EAttribute)scaWaveformEClass.getEStructuralFeatures().get(6);
 	}
@@ -1592,6 +1713,7 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EClass getScaWaveformFactory() {
 		return scaWaveformFactoryEClass;
 	}
@@ -1601,6 +1723,7 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EReference getScaWaveformFactory_DomMgr() {
 		return (EReference)scaWaveformFactoryEClass.getEStructuralFeatures().get(0);
 	}
@@ -1610,6 +1733,7 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EAttribute getScaWaveformFactory_Identifier() {
 		return (EAttribute)scaWaveformFactoryEClass.getEStructuralFeatures().get(1);
 	}
@@ -1619,6 +1743,7 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EAttribute getScaWaveformFactory_Name() {
 		return (EAttribute)scaWaveformFactoryEClass.getEStructuralFeatures().get(2);
 	}
@@ -1628,6 +1753,7 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EAttribute getScaWaveformFactory_Profile() {
 		return (EAttribute)scaWaveformFactoryEClass.getEStructuralFeatures().get(3);
 	}
@@ -1637,6 +1763,7 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EClass getStringToStringMap() {
 		return stringToStringMapEClass;
 	}
@@ -1646,6 +1773,7 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EAttribute getStringToStringMap_Key() {
 		return (EAttribute)stringToStringMapEClass.getEStructuralFeatures().get(0);
 	}
@@ -1655,6 +1783,7 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EAttribute getStringToStringMap_Value() {
 		return (EAttribute)stringToStringMapEClass.getEStructuralFeatures().get(1);
 	}
@@ -1664,6 +1793,7 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EClass getScaStructSequenceProperty() {
 		return scaStructSequencePropertyEClass;
 	}
@@ -1673,6 +1803,7 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EReference getScaStructSequenceProperty_Structs() {
 		return (EReference)scaStructSequencePropertyEClass.getEStructuralFeatures().get(0);
 	}
@@ -1682,6 +1813,7 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EClass getIStatusProvider() {
 		return iStatusProviderEClass;
 	}
@@ -1691,6 +1823,7 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EAttribute getIStatusProvider_Status() {
 		return (EAttribute)iStatusProviderEClass.getEStructuralFeatures().get(0);
 	}
@@ -1700,6 +1833,7 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EClass getIRefreshable() {
 		return iRefreshableEClass;
 	}
@@ -1709,6 +1843,7 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EEnum getDomainConnectionState() {
 		return domainConnectionStateEEnum;
 	}
@@ -1718,6 +1853,7 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EEnum getRefreshDepth() {
 		return refreshDepthEEnum;
 	}
@@ -1727,6 +1863,7 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EDataType getAdminType() {
 		return adminTypeEDataType;
 	}
@@ -1736,6 +1873,7 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EDataType getDomainConnectionException() {
 		return domainConnectionExceptionEDataType;
 	}
@@ -1745,6 +1883,7 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 	 * @since 8.0
 	 * <!-- end-user-doc -->
 	 */
+	@Override
 	public EDataType getDomainConnectionStateObject() {
 		return this.domainConnectionStateObjectEDataType;
 	}
@@ -1754,6 +1893,7 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EDataType getIFileStore() {
 		return iFileStoreEDataType;
 	}
@@ -1763,6 +1903,7 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EDataType getIProgressMonitor() {
 		return iProgressMonitorEDataType;
 	}
@@ -1772,6 +1913,7 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EDataType getIScaDataProvider() {
 		return iScaDataProviderEDataType;
 	}
@@ -1781,6 +1923,7 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EDataType getIScaDataProviderService() {
 		return iScaDataProviderServiceEDataType;
 	}
@@ -1790,6 +1933,7 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EDataType getIStatus() {
 		return iStatusEDataType;
 	}
@@ -1799,6 +1943,7 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EDataType getObject() {
 		return objectEDataType;
 	}
@@ -1808,6 +1953,7 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EDataType getObjectArray() {
 		return objectArrayEDataType;
 	}
@@ -1817,6 +1963,7 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EDataType getOperationalType() {
 		return operationalTypeEDataType;
 	}
@@ -1826,6 +1973,7 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EDataType getRefreshDepthObject() {
 		return refreshDepthObjectEDataType;
 	}
@@ -1835,6 +1983,7 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EDataType getPOA() {
 		return poaEDataType;
 	}
@@ -1844,6 +1993,7 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EDataType getURI() {
 		return uriEDataType;
 	}
@@ -1853,6 +2003,7 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EDataType getUsageType() {
 		return usageTypeEDataType;
 	}
@@ -1862,6 +2013,7 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EDataType getDataTypeArray() {
 		return dataTypeArrayEDataType;
 	}
@@ -1871,6 +2023,7 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EDataType getAny() {
 		return anyEDataType;
 	}
@@ -1880,6 +2033,7 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public ScaFactory getScaFactory() {
 		return (ScaFactory)getEFactoryInstance();
 	}
@@ -3648,6 +3802,7 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 		   });
 	}
 
+	@Override
 	public EAttribute getScaSimpleSequenceProperty_Value() {
 	    return getScaSimpleSequenceProperty_Values();
     }

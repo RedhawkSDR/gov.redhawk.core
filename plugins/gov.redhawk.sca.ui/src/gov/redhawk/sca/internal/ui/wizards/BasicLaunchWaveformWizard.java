@@ -126,6 +126,7 @@ public class BasicLaunchWaveformWizard extends Wizard {
 		try {
 			getContainer().run(true, true, new IRunnableWithProgress() {
 
+				@Override
 				public void run(final IProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
 
 					monitor.beginTask("Launching waveform " + name, IProgressMonitor.UNKNOWN);
@@ -146,6 +147,7 @@ public class BasicLaunchWaveformWizard extends Wizard {
 						if (job.getWaveform() != null) {
 							activePage.getWorkbenchWindow().getShell().getDisplay().asyncExec(new Runnable() {
 
+								@Override
 								public void run() {
 									try {
 										final boolean useUri = !SWT.getPlatform().startsWith("rap");

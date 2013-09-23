@@ -25,26 +25,32 @@ public final class CompatibilityUtil {
 		INSTANCE;
 		private ICompatibilityUtil provider = new CompatibilityUtilImpl();
 
+		@Override
 		public void setFontDataStyle(FontData fontData, int style) {
 			provider.setFontDataStyle(fontData, style);
 		}
 
+		@Override
 		public void disableComboWheelScrollSelect(ComboViewer viewer) {
 			provider.disableComboWheelScrollSelect(viewer);
 		}
 
+		@Override
 		public Principal getUserPrincipal(Display display) {
 			return provider.getUserPrincipal(display);
 		}
 
+		@Override
 		public void runInFakeUIContext(Display display, Runnable runnable) {
 			provider.runInFakeUIContext(display, runnable);
 		}
 
+		@Override
 		public void activateUIConnection(String id) {
 			provider.activateUIConnection(id);
 		}
 
+		@Override
 		public void deactivateUIConnection(String id) {
 			provider.deactivateUIConnection(id);
 		}

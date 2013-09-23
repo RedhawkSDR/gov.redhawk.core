@@ -108,11 +108,12 @@ public class AssemblyControllerDecoratorProvider extends AbstractProvider implem
 				final View view = (View) getDecoratorTarget().getAdapter(View.class);
 				TransactionUtil.getEditingDomain(view).runExclusive(new Runnable() {
 
+					@Override
 					public void run() {
 						AssemblyControllerDecorator.this.viewId = (view != null) ? ViewUtil.getIdStr(view) : null; // SUPPRESS CHECKSTYLE AvoidInLine
 					}
 				});
-			} catch (final Exception e) {
+			} catch (final Exception e) {  // SUPPRESS CHECKSTYLE Catch All
 				SadDiagramEditorPlugin.getInstance().logError("ViewID access failure", e); //$NON-NLS-1$
 			}
 		}
@@ -120,6 +121,7 @@ public class AssemblyControllerDecoratorProvider extends AbstractProvider implem
 		/**
 		 * {@inheritDoc}
 		 */
+		@Override
 		public void activate() {
 			if (this.viewId == null) {
 				return;
@@ -146,6 +148,7 @@ public class AssemblyControllerDecoratorProvider extends AbstractProvider implem
 		/**
 		 * {@inheritDoc}
 		 */
+		@Override
 		public void refresh() {
 			removeDecoration();
 			final View view = (View) getDecoratorTarget().getAdapter(View.class);
@@ -252,6 +255,7 @@ public class AssemblyControllerDecoratorProvider extends AbstractProvider implem
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public boolean provides(final IOperation operation) {
 		if (!(operation instanceof CreateDecoratorsOperation)) {
 			return false;
@@ -264,6 +268,7 @@ public class AssemblyControllerDecoratorProvider extends AbstractProvider implem
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public void createDecorators(final IDecoratorTarget decoratorTarget) {
 		final EditPart editPart = (EditPart) decoratorTarget.getAdapter(EditPart.class);
 		if (editPart instanceof GraphicalEditPart || editPart instanceof AbstractConnectionEditPart) {

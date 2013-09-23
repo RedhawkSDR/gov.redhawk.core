@@ -47,14 +47,13 @@ import CF.DomainManagerPackage.AlreadyConnected;
 import CF.DomainManagerPackage.InvalidEventChannelName;
 import CF.DomainManagerPackage.NotConnected;
 
-
 /**
  * 
  */
 public class EventJob extends SilentJob implements PushConsumerOperations {
 
 	public static final String EVENT_DATA_PROVIDER_FAMILY = DataProviderActivator.ID + ".jobFamily";
-	
+
 	private OrbSession session = OrbSession.createSession();
 
 	private final BlockingQueue<Any> eventQueue = new LinkedBlockingQueue<Any>();
@@ -70,33 +69,34 @@ public class EventJob extends SilentJob implements PushConsumerOperations {
 
 	private PushConsumer stub;
 
-
 	public EventJob(final String channelName, final AbstractEventChannelDataProvider< ? > dp, final ScaDomainManager domain) throws CoreException {
 		super(channelName + " event queue");
 		this.channelName = channelName;
 		this.dp = dp;
-		
-		this.domMgr = domain.fetchNarrowedObject(null);
-		Assert.isNotNull(this.domMgr, "Domain Manager must not be null");
-		this.id = UUID.randomUUID();
 
-		POA poa = session.getPOA();
+		
 		try {
-	        this.stub = PushConsumerHelper.narrow(poa.servant_to_reference(new PushConsumerPOATie(this)));
-	        this.domMgr.registerWithEventChannel(stub, this.id.toString(), channelName);
-        } catch (ServantNotActive e) {
-	        throw new CoreException(new Status(Status.ERROR, DataProviderActivator.ID, "Failed to register with event channel.", e));
-        } catch (WrongPolicy e) {
-        	throw new CoreException(new Status(Status.ERROR, DataProviderActivator.ID, "Failed to register with event channel.", e));
-        } catch (InvalidObjectReference e) {
-        	throw new CoreException(new Status(Status.ERROR, DataProviderActivator.ID, "Failed to register with event channel.", e));
-        } catch (InvalidEventChannelName e) {
-        	throw new CoreException(new Status(Status.ERROR, DataProviderActivator.ID, "Failed to register with event channel.", e));
-        } catch (AlreadyConnected e) {
-        	throw new CoreException(new Status(Status.ERROR, DataProviderActivator.ID, "Failed to register with event channel.", e));
-        }
-		
-		
+			this.domMgr = domain.fetchNarrowedObject(null);
+			Assert.isNotNull(this.domMgr, "Domain Manager must not be null");
+			this.id = UUID.randomUUID();
+
+			POA poa = session.getPOA();
+			this.stub = PushConsumerHelper.narrow(poa.servant_to_reference(new PushConsumerPOATie(this)));
+			this.domMgr.registerWithEventChannel(stub, this.id.toString(), channelName);
+		} catch (ServantNotActive e) {
+			throw new CoreException(new Status(Status.ERROR, DataProviderActivator.ID, "Failed to register with event channel.", e));
+		} catch (WrongPolicy e) {
+			throw new CoreException(new Status(Status.ERROR, DataProviderActivator.ID, "Failed to register with event channel.", e));
+		} catch (InvalidObjectReference e) {
+			throw new CoreException(new Status(Status.ERROR, DataProviderActivator.ID, "Failed to register with event channel.", e));
+		} catch (InvalidEventChannelName e) {
+			throw new CoreException(new Status(Status.ERROR, DataProviderActivator.ID, "Failed to register with event channel.", e));
+		} catch (AlreadyConnected e) {
+			throw new CoreException(new Status(Status.ERROR, DataProviderActivator.ID, "Failed to register with event channel.", e));
+		} catch (SystemException e) {
+			throw new CoreException(new Status(Status.ERROR, DataProviderActivator.ID, "Failed to register with event channel.", e));
+		}
+
 		setSystem(true);
 	}
 
@@ -151,10 +151,12 @@ public class EventJob extends SilentJob implements PushConsumerOperations {
 		return Status.OK_STATUS;
 	}
 
+	@Override
 	public void push(final Any data) throws Disconnected {
 		addEvent(data);
 	}
 
+	@Override
 	public void disconnect_push_consumer() {
 		try {
 			if (!this.dp.isDisposed()) {
@@ -183,7 +185,7 @@ public class EventJob extends SilentJob implements PushConsumerOperations {
 				}
 			}
 		}
-		
+
 		if (this.stub != null) {
 			this.stub._release();
 			this.stub = null;

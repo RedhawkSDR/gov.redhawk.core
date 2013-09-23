@@ -119,6 +119,7 @@ public class DomainBrowserView extends ViewPart {
 	
 	private final IContentProposalProvider proposalProvider = new IContentProposalProvider() {
 
+		@Override
 		public IContentProposal[] getProposals(final String contents, final int position) {
 			final List<IContentProposal> list = new ArrayList<IContentProposal>();
 			final Set<String> domains = new HashSet<String>(Arrays.asList(DomainBrowserView.this.domainCombo.getCombo().getItems()));
@@ -148,6 +149,7 @@ public class DomainBrowserView extends ViewPart {
 					case Notification.ADD:
 						final ScaDomainManager newDomain = (ScaDomainManager) msg.getNewValue();
 						PlatformUI.getWorkbench().getDisplay().asyncExec(new Runnable() {
+							@Override
 							public void run() {
 								domainCombo.add(newDomain);
 								}
@@ -157,6 +159,7 @@ public class DomainBrowserView extends ViewPart {
 					case Notification.REMOVE:
 						final ScaDomainManager domainRemoved = (ScaDomainManager) msg.getOldValue();
 						PlatformUI.getWorkbench().getDisplay().asyncExec(new Runnable() {
+							@Override
 							public void run() {
 								domainCombo.remove(domainRemoved);
 							}
@@ -268,6 +271,7 @@ public class DomainBrowserView extends ViewPart {
 		
 		// We want to connect when there is a selection of when the user hits enter.
 		this.domainCombo.addSelectionChangedListener(new ISelectionChangedListener() {
+			@Override
 			public void selectionChanged(SelectionChangedEvent event) {
 				connect();
 			}
@@ -553,6 +557,7 @@ public class DomainBrowserView extends ViewPart {
 		if (!this.domainManager.isDisposed()) {
 			ScaModelCommand.execute(this.domainManager, new ScaModelCommand() {
 
+				@Override
 				public void execute() {
 					DomainBrowserView.this.domainManager.dispose();
 				}

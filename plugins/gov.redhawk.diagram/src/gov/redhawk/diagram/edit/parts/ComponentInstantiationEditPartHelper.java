@@ -299,6 +299,7 @@ public class ComponentInstantiationEditPartHelper {
 		if (scaResource != null) {
 			ScaModelCommand.execute(scaResource, new ScaModelCommand() {
 
+				@Override
 				public void execute() {
 					scaResource.eAdapters().add(ComponentInstantiationEditPartHelper.this.statusListener);
 				}
@@ -321,6 +322,7 @@ public class ComponentInstantiationEditPartHelper {
 			if (!hasStatusListener) {
 				ScaModelCommand.execute(scaResource, new ScaModelCommand() {
 
+					@Override
 					public void execute() {
 						scaResource.eAdapters().add(ComponentInstantiationEditPartHelper.this.statusListener);
 					}

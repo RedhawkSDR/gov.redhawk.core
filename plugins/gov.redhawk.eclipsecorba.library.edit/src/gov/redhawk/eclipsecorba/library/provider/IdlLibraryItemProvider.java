@@ -90,6 +90,7 @@ public class IdlLibraryItemProvider extends RepositoryModuleItemProvider impleme
 			public IItemLabelProvider getLabelProvider(final Object thisObject) {
 				return new IItemLabelProvider() {
 
+					@Override
 					public String getText(final Object object) {
 						if (object == null) {
 							return "";
@@ -98,6 +99,7 @@ public class IdlLibraryItemProvider extends RepositoryModuleItemProvider impleme
 						return status.getMessage();
 					}
 
+					@Override
 					public Object getImage(final Object object) {
 						final ISharedImages sharedImages = PlatformUI.getWorkbench().getSharedImages();
 						if (object == null) {

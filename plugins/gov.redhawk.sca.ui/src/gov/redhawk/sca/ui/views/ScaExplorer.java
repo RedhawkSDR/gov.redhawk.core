@@ -43,6 +43,7 @@ public class ScaExplorer extends CommonNavigator implements ITabbedPropertySheet
 		return ScaPlugin.getDefault().getDomainManagerRegistry();
 	}
 
+	@Override
 	public String getContributorId() {
 		return getSite().getId();
 	}

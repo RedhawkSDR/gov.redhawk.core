@@ -195,6 +195,7 @@ public abstract class SCAFormEditor extends FormEditor implements IEditingDomain
 			this.trackedResources.clear();
 		}
 
+		@Override
 		public void resourceChanged(final IResourceChangeEvent event) {
 			final IResourceDelta delta = event.getDelta();
 			switch (event.getType()) {
@@ -205,6 +206,7 @@ public abstract class SCAFormEditor extends FormEditor implements IEditingDomain
 					if (Display.getCurrent() == null) {
 						PlatformUI.getWorkbench().getDisplay().asyncExec(new Runnable() {
 
+							@Override
 							public void run() {
 								try {
 									delta.accept(ResourceTracker.this);
@@ -229,6 +231,7 @@ public abstract class SCAFormEditor extends FormEditor implements IEditingDomain
 			}
 		}
 
+		@Override
 		public boolean visit(final IResourceDelta delta) throws CoreException {
 			if ((delta == null) || (!this.trackedResources.contains(delta.getResource()))) {
 				return true;
@@ -313,6 +316,7 @@ public abstract class SCAFormEditor extends FormEditor implements IEditingDomain
 		/**
 		 * {@inheritDoc}
 		 */
+		@Override
 		public void selectionChanged(final SelectionChangedEvent event) {
 			if (RedhawkUiActivator.getDefault().getPreferenceStore().getBoolean("ToggleLinkWithEditorAction.isChecked")) {
 				if (getFormOutline() != null) {
@@ -378,11 +382,13 @@ public abstract class SCAFormEditor extends FormEditor implements IEditingDomain
 	 * Listen for changes to command stack and attempt to handle the change.
 	 */
 	private CommandStackListener commandStackListener = new CommandStackListener() {
+		@Override
 		public void commandStackChanged(final EventObject event) {
 			if (Display.getCurrent() != null) {
 				handleStackChanged(event);
 			} else if (getContainer() != null && !getContainer().isDisposed()) {
 				getContainer().getDisplay().asyncExec(new Runnable() {
+					@Override
 					public void run() {
 						if (getContainer() != null && !getContainer().isDisposed()) {
 							handleStackChanged(event);
@@ -517,14 +523,17 @@ public abstract class SCAFormEditor extends FormEditor implements IEditingDomain
 
 			private Notifier myTarget;
 
+			@Override
 			public Notifier getTarget() {
 				return this.myTarget;
 			}
 
+			@Override
 			public boolean isAdapterForType(final Object type) {
 				return false;
 			}
 
+			@Override
 			public void notifyChanged(final Notification notification) {
 				if (resourceModifiedFilter.matches(notification)) {
 					final Object value = notification.getNewValue();
@@ -534,6 +543,7 @@ public abstract class SCAFormEditor extends FormEditor implements IEditingDomain
 				}
 			}
 
+			@Override
 			public void setTarget(final Notifier newTarget) {
 				this.myTarget = newTarget;
 			}
@@ -584,6 +594,7 @@ public abstract class SCAFormEditor extends FormEditor implements IEditingDomain
 	 * 
 	 * @return the context manager
 	 */
+	@Override
 	public EditingDomain getEditingDomain() {
 		return this.editingDomain;
 	}
@@ -920,6 +931,7 @@ public abstract class SCAFormEditor extends FormEditor implements IEditingDomain
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public void gotoMarker(final IMarker marker) {
 		final String uriAttribute = marker.getAttribute(EValidator.URI_ATTRIBUTE, null);
 		final int featureID = marker.getAttribute(AdvancedEObjectValidator.FEATURE_ID, AdvancedEObjectValidator.DEFAULT_ID);
@@ -1456,6 +1468,7 @@ public abstract class SCAFormEditor extends FormEditor implements IEditingDomain
 	 * 
 	 * @param menuManager the menu manager
 	 */
+	@Override
 	public void menuAboutToShow(final IMenuManager menuManager) {
 		((IMenuListener) getEditorSite().getActionBarContributor()).menuAboutToShow(menuManager);
 	}
@@ -1577,6 +1590,7 @@ public abstract class SCAFormEditor extends FormEditor implements IEditingDomain
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public Viewer getViewer() {
 		final IFormPage page = this.getActivePageInstance();
 		if (page instanceof IViewerProvider) {
@@ -1648,10 +1662,12 @@ public abstract class SCAFormEditor extends FormEditor implements IEditingDomain
 			this.resourceToDocumentMap.put(resource, document);
 			document.addDocumentListener(new IDocumentListener() {
 
+				@Override
 				public void documentAboutToBeChanged(final DocumentEvent documentEvent) {
 					// Ignore
 				}
 
+				@Override
 				public void documentChanged(final DocumentEvent documentEvent) {
 					try {
 						if (SCAFormEditor.this.handledStructuredModelChange) {
@@ -1833,6 +1849,7 @@ public abstract class SCAFormEditor extends FormEditor implements IEditingDomain
 		//
 		if (theSelection != null && !theSelection.isEmpty()) {
 			final Runnable runnable = new Runnable() {
+				@Override
 				public void run() {
 					// Try to select the items in the current content viewer of the editor.
 					//

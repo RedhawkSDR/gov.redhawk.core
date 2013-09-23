@@ -41,6 +41,7 @@ public class UpDown extends Composite {
 		this.down = new Button(this, SWT.ARROW | SWT.DOWN | SWT.BORDER);
 
 		addListener(SWT.Resize, new Listener() {
+			@Override
 			public void handleEvent(final Event e) {
 				resize();
 			}
@@ -48,11 +49,13 @@ public class UpDown extends Composite {
 
 		this.up.addSelectionListener(new SelectionListener() {
 
+			@Override
 			public void widgetDefaultSelected(final SelectionEvent e) {
 				// TODO Auto-generated method stub
 
 			}
 
+			@Override
 			public void widgetSelected(final SelectionEvent e) {
 				UpDown.this.widgetSelected(e);
 			}
@@ -61,11 +64,13 @@ public class UpDown extends Composite {
 
 		this.down.addSelectionListener(new SelectionListener() {
 
+			@Override
 			public void widgetDefaultSelected(final SelectionEvent e) {
 				// TODO Auto-generated method stub
 
 			}
 
+			@Override
 			public void widgetSelected(final SelectionEvent e) {
 				UpDown.this.widgetSelected(e);
 			}

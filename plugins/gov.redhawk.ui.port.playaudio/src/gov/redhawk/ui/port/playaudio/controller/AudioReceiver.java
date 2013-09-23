@@ -71,6 +71,7 @@ public class AudioReceiver extends AbstractBulkIOPort implements dataShortOperat
 	private boolean disposed;
 
 	private Adapter portListener = new AdapterImpl() {
+		@Override
 		public void notifyChanged(final org.eclipse.emf.common.notify.Notification msg) {
 			switch (msg.getFeatureID(ScaUsesPort.class)) {
 			case ScaPackage.SCA_USES_PORT__DISPOSED:
@@ -133,11 +134,19 @@ public class AudioReceiver extends AbstractBulkIOPort implements dataShortOperat
 	}
 
 	private void connect() throws CoreException {
-		BulkIOUtilActivator.getBulkIOPortConnectionManager().connect(ior, getBulkIOType(), this);
+		BulkIOType type2 = getBulkIOType();
+		String ior2 = ior;
+		if (type2 != null && ior2 != null) {
+			BulkIOUtilActivator.getBulkIOPortConnectionManager().connect(ior2, type2, this);
+		}
 	}
 
 	private void disconnect() {
-		BulkIOUtilActivator.getBulkIOPortConnectionManager().disconnect(ior, getBulkIOType(), this);
+		BulkIOType type2 = getBulkIOType();
+		String ior2 = ior;
+		if (type2 != null && ior2 != null) {
+			BulkIOUtilActivator.getBulkIOPortConnectionManager().disconnect(ior2, type2, this);
+		}
 	}
 
 	public ScaUsesPort getPort() {
@@ -148,45 +157,57 @@ public class AudioReceiver extends AbstractBulkIOPort implements dataShortOperat
 	protected void handleStreamSRIChanged(StreamSRI oldSri, StreamSRI newSri) {
 		AudioFormat.Encoding enc;
 		int sampleSizeInBytes;
-		switch (getBulkIOType()) {
-		case OCTET:
-			sampleSizeInBytes = getBulkIOType().getBytePerAtom();
-			enc = AudioFormat.Encoding.PCM_SIGNED;
-			break;
-		case CHAR: // Treat Char as short data
-		case SHORT:
-			sampleSizeInBytes = getBulkIOType().getBytePerAtom();
-			enc = AudioFormat.Encoding.PCM_SIGNED;
-			break;
-		case LONG:
-			sampleSizeInBytes = getBulkIOType().getBytePerAtom();
-			enc = AudioFormat.Encoding.PCM_SIGNED;
-			break;
-		case LONG_LONG:
-			// Convert Longlong to long
-			sampleSizeInBytes = BulkIOType.LONG.getBytePerAtom();
-			enc = AudioFormat.Encoding.PCM_SIGNED;
-			break;
-		case DOUBLE: // Convert double to short
-		case FLOAT: // Convert float to short
-			sampleSizeInBytes = BulkIOType.SHORT.getBytePerAtom();
-			enc = AudioFormat.Encoding.PCM_SIGNED;
-			break;
-		case USHORT:
-			sampleSizeInBytes = getBulkIOType().getBytePerAtom();
-			enc = AudioFormat.Encoding.PCM_UNSIGNED;
-			break;
-		case ULONG:
-			sampleSizeInBytes = getBulkIOType().getBytePerAtom();
-			enc = AudioFormat.Encoding.PCM_UNSIGNED;
-			break;
-		case ULONG_LONG:
-			// Convert ULonglong to ulong
-			sampleSizeInBytes = BulkIOType.ULONG.getBytePerAtom();
-			enc = AudioFormat.Encoding.PCM_UNSIGNED;
-			break;
-		default:
-			// TODO Unsupported format
+		BulkIOType bulkIOType = getBulkIOType();
+		if (bulkIOType != null) {
+			switch (bulkIOType) {
+			case OCTET:
+				sampleSizeInBytes = bulkIOType.getBytePerAtom();
+				enc = AudioFormat.Encoding.PCM_SIGNED;
+				break;
+			case CHAR: // Treat Char as short data
+			case SHORT:
+				sampleSizeInBytes = bulkIOType.getBytePerAtom();
+				enc = AudioFormat.Encoding.PCM_SIGNED;
+				break;
+			case LONG:
+				sampleSizeInBytes = bulkIOType.getBytePerAtom();
+				enc = AudioFormat.Encoding.PCM_SIGNED;
+				break;
+			case LONG_LONG:
+				// Convert Longlong to long
+				sampleSizeInBytes = BulkIOType.LONG.getBytePerAtom();
+				enc = AudioFormat.Encoding.PCM_SIGNED;
+				break;
+			case DOUBLE: // Convert double to short
+			case FLOAT: // Convert float to short
+				sampleSizeInBytes = BulkIOType.SHORT.getBytePerAtom();
+				enc = AudioFormat.Encoding.PCM_SIGNED;
+				break;
+			case USHORT:
+				sampleSizeInBytes = bulkIOType.getBytePerAtom();
+				enc = AudioFormat.Encoding.PCM_UNSIGNED;
+				break;
+			case ULONG:
+				sampleSizeInBytes = bulkIOType.getBytePerAtom();
+				enc = AudioFormat.Encoding.PCM_UNSIGNED;
+				break;
+			case ULONG_LONG:
+				// Convert ULonglong to ulong
+				sampleSizeInBytes = BulkIOType.ULONG.getBytePerAtom();
+				enc = AudioFormat.Encoding.PCM_UNSIGNED;
+				break;
+			default:
+				// TODO Unsupported format
+				setAudioFormat(null);
+				return;
+			}
+		} else {
+			// TODO No type information
+			setAudioFormat(null);
+			return;
+		}
+
+		if (newSri == null) {
 			setAudioFormat(null);
 			return;
 		}

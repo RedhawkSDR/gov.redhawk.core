@@ -62,6 +62,7 @@ public class EMFTableViewerElementSelector extends EMFViewerElementSelector {
 	@Override
 	public void selectElement(final Object obj) {
 		PlatformUI.getWorkbench().getDisplay().asyncExec(new Runnable() {
+			@Override
 			public void run() {
 				if (!EMFTableViewerElementSelector.this.tableViewer.getTable().isDisposed()) {
 					EMFTableViewerElementSelector.this.tableViewer.refresh();

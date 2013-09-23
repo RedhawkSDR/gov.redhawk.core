@@ -58,6 +58,7 @@ public class ConnectionPropertiesWizard extends Wizard {
 			setDescription("Edit the properties used by CORBA when creating the connection. \nIf the Domain is already connected you will need to reconnect for the changes to take place.");
 		}
 
+		@Override
 		public void createControl(final Composite parent) {
 			final Composite main = new Composite(parent, SWT.None);
 			main.setLayout(new GridLayout(1, false));

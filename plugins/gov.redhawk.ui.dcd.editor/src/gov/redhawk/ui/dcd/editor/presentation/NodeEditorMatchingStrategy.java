@@ -24,6 +24,7 @@ import org.eclipse.ui.PartInitException;
  */
 public class NodeEditorMatchingStrategy implements IEditorMatchingStrategy {
 
+	@Override
 	public boolean matches(final IEditorReference editorRef, final IEditorInput input) {
 		if (input instanceof ScaFileStoreEditorInput) {
 			try {

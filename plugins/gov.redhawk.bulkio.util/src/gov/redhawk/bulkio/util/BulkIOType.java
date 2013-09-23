@@ -10,6 +10,8 @@
  *******************************************************************************/
 package gov.redhawk.bulkio.util;
 
+import org.eclipse.jdt.annotation.NonNull;
+import org.eclipse.jdt.annotation.Nullable;
 import org.omg.PortableServer.POA;
 import org.omg.PortableServer.Servant;
 import org.omg.PortableServer.POAPackage.ServantNotActive;
@@ -62,13 +64,15 @@ public enum BulkIOType {
 	private final Class< ? > javaType;
 	private final boolean unsigned;
 
-	private BulkIOType(int bytePerAtom, Class< ? > javaType, boolean unsigned) {
+	private BulkIOType(int bytePerAtom, @NonNull Class< ? > javaType, boolean unsigned) {
 		this.bytePerAtom = bytePerAtom;
 		this.javaType = javaType;
 		this.unsigned = unsigned;
 	}
 
-	public org.omg.CORBA.Object createRef(POA poa, Object obj) throws ServantNotActive, WrongPolicy {
+	@SuppressWarnings("null")
+	@NonNull
+	public org.omg.CORBA.Object createRef(@NonNull POA poa, @NonNull Object obj) throws ServantNotActive, WrongPolicy {
 		Servant tie;
 		switch (this) {
 		case CHAR:
@@ -111,7 +115,8 @@ public enum BulkIOType {
 		return bytePerAtom;
 	}
 
-	public static BulkIOType getType(updateSRIOperations impl) {
+	@NonNull
+	public static BulkIOType getType(@NonNull updateSRIOperations impl) {
 		BulkIOType retVal = null;
 		if (dataCharOperations.class.isAssignableFrom(impl.getClass())) {
 			retVal = BulkIOType.CHAR;
@@ -176,7 +181,8 @@ public enum BulkIOType {
 		return retVal;
 	}
 
-	public static BulkIOType getType(String idl) {
+	@NonNull
+	public static BulkIOType getType(@Nullable String idl) {
 		if (dataCharHelper.id().equals(idl)) {
 			return BulkIOType.CHAR;
 		} else if (dataDoubleHelper.id().equals(idl)) {
@@ -205,6 +211,8 @@ public enum BulkIOType {
 	/**
 	 * @return The non upcasted Java class container type
 	 */
+	@SuppressWarnings("null")
+	@NonNull
 	public Class< ? > getJavaType() {
 		return this.javaType;
 	}

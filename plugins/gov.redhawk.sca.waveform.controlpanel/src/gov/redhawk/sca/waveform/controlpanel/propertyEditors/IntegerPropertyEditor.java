@@ -287,6 +287,7 @@ public class IntegerPropertyEditor< T extends Number > extends PropertyEditor {
 				this.enumViewer.setInput(this.prop.getDefinition().getEnumerations());
 				this.enumViewer.addSelectionChangedListener(new ISelectionChangedListener() {
 
+					@Override
 					public void selectionChanged(final SelectionChangedEvent event) {
 						final Enumeration sel = (Enumeration) ((StructuredSelection) event.getSelection()).getFirstElement();
 						IntegerPropertyEditor.this.form.applyPattern(getFormatPattern());

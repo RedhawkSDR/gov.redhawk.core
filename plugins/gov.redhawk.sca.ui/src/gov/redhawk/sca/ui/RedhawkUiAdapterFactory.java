@@ -73,6 +73,7 @@ public class RedhawkUiAdapterFactory implements IAdapterFactory {
 		return new ScaPropertySource(adaptableObject, itemPropertySource);
 	}
 
+	@Override
 	public Object getAdapter(final Object input, @SuppressWarnings("rawtypes") final Class adapterType) {
 		final Object adaptableObject = AdapterFactoryEditingDomain.unwrap(input);
 		if (adaptableObject instanceof EObject) {
@@ -81,6 +82,7 @@ public class RedhawkUiAdapterFactory implements IAdapterFactory {
 				try {
 	                return TransactionUtil.runExclusive(editingDomain,  new RunnableWithResult.Impl<Object>() {
 
+						@Override
 						public void run() {
 							final IItemPropertySource itemPropertySource = getItemPropertySource(adaptableObject);
 							final IPropertySource propertySource = createPropertySource(adaptableObject, itemPropertySource);
@@ -102,6 +104,7 @@ public class RedhawkUiAdapterFactory implements IAdapterFactory {
 
 	}
 
+	@Override
 	public Class< ? >[] getAdapterList() {
 		return RedhawkUiAdapterFactory.LIST;
 	}

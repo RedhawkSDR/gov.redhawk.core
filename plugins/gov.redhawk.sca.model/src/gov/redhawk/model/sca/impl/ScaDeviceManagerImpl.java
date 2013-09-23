@@ -291,6 +291,7 @@ public class ScaDeviceManagerImpl extends ScaPropertyContainerImpl<DeviceManager
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EList<ScaPort<?, ?>> getPorts() {
 		if (ports == null) {
 			ports = new EObjectContainmentWithInverseEList.Unsettable<ScaPort<?, ?>>(ScaPort.class, this, ScaPackage.SCA_DEVICE_MANAGER__PORTS, ScaPackage.SCA_PORT__PORT_CONTAINER);
@@ -303,6 +304,7 @@ public class ScaDeviceManagerImpl extends ScaPropertyContainerImpl<DeviceManager
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void unsetPorts() {
 		if (ports != null) ((InternalEList.Unsettable<?>)ports).unset();
 	}
@@ -312,6 +314,7 @@ public class ScaDeviceManagerImpl extends ScaPropertyContainerImpl<DeviceManager
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public boolean isSetPorts() {
 		return ports != null && ((InternalEList.Unsettable<?>)ports).isSet();
 	}
@@ -321,6 +324,7 @@ public class ScaDeviceManagerImpl extends ScaPropertyContainerImpl<DeviceManager
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public FeatureMap getDevices() {
 		if (devices == null) {
 			devices = new BasicFeatureMap(this, ScaPackage.SCA_DEVICE_MANAGER__DEVICES);
@@ -333,6 +337,7 @@ public class ScaDeviceManagerImpl extends ScaPropertyContainerImpl<DeviceManager
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void unsetDevices() {
 		if (devices != null) ((InternalEList.Unsettable<?>)devices).unset();
 	}
@@ -342,6 +347,7 @@ public class ScaDeviceManagerImpl extends ScaPropertyContainerImpl<DeviceManager
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public boolean isSetDevices() {
 		return devices != null && ((InternalEList.Unsettable<?>)devices).isSet();
 	}
@@ -351,6 +357,7 @@ public class ScaDeviceManagerImpl extends ScaPropertyContainerImpl<DeviceManager
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EList<ScaDevice<?>> getRootDevices() {
 		return getDevices().list(ScaPackage.Literals.SCA_DEVICE_MANAGER__ROOT_DEVICES);
 	}
@@ -360,48 +367,32 @@ public class ScaDeviceManagerImpl extends ScaPropertyContainerImpl<DeviceManager
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EList<ScaDevice<?>> getChildDevices() {
 		return getDevices().list(ScaPackage.Literals.SCA_DEVICE_MANAGER__CHILD_DEVICES);
 	}
 
 	private Adapter deviceListener = new AdapterImpl() {
 		// END GENERATED CODE
+		@Override
 		public void notifyChanged(Notification msg) {
 			switch (msg.getFeatureID(ScaDeviceManager.class)) {
 			case ScaPackage.SCA_DEVICE_MANAGER__DEVICES:
 				Object newValue = null;
 				Object oldValue = null;
 				switch (msg.getEventType()) {
-				case Notification.ADD: {
-					Entry entry = (Entry) msg.getNewValue();
-					newValue = entry.getValue();
+				case Notification.ADD: 
+					newValue = handleAddDevice(msg);
 					break;
-				}
-				case Notification.ADD_MANY: {
-					Collection< ? > entries = (Collection< ? >) msg.getNewValue();
-					List<Object> newValues = new ArrayList<Object>();
-					for (Object obj : entries) {
-						Entry entry = (Entry) obj;
-						newValues.add(entry.getValue());
-					}
-					newValue = newValues;
+				case Notification.ADD_MANY: 
+					newValue = handleAddMany(msg);
 					break;
-				}
-				case Notification.REMOVE: {
-					Entry entry = (Entry) msg.getOldValue();
-					oldValue = entry.getValue();
+				case Notification.REMOVE: 
+					oldValue = handleRemove(msg);
 					break;
-				}
-				case Notification.REMOVE_MANY: {
-					Collection< ? > entries = (Collection< ? >) msg.getOldValue();
-					List<Object> oldValues = new ArrayList<Object>();
-					for (Object obj : entries) {
-						Entry entry = (Entry) obj;
-						oldValues.add(entry.getValue());
-					}
-					oldValue = oldValues;
+				case Notification.REMOVE_MANY: 
+					oldValue = handleRemoveMany(msg);
 					break;
-				}
 				default:
 					break;
 				}
@@ -411,7 +402,58 @@ public class ScaDeviceManagerImpl extends ScaPropertyContainerImpl<DeviceManager
 				break;
 			}
 		}
+		/**
+		 * @param msg
+		 * @return
+		 */
+		private Object handleRemoveMany(Notification msg) {
+			Object oldValue;
+			Collection< ? > entries = (Collection< ? >) msg.getOldValue();
+			List<Object> oldValues = new ArrayList<Object>();
+			for (Object obj : entries) {
+				Entry entry = (Entry) obj;
+				oldValues.add(entry.getValue());
+			}
+			oldValue = oldValues;
+			return oldValue;
+		}
+		/**
+		 * @param msg
+		 * @return
+		 */
+		private Object handleRemove(Notification msg) {
+			Object oldValue;
+			Entry entry = (Entry) msg.getOldValue();
+			oldValue = entry.getValue();
+			return oldValue;
+		}
+		/**
+		 * @param msg
+		 * @return
+		 */
+		private Object handleAddMany(Notification msg) {
+			Object newValue;
+			Collection< ? > entries = (Collection< ? >) msg.getNewValue();
+			List<Object> newValues = new ArrayList<Object>();
+			for (Object obj : entries) {
+				Entry entry = (Entry) obj;
+				newValues.add(entry.getValue());
+			}
+			newValue = newValues;
+			return newValue;
+		}
 		// BEGIN GENERATED CODE
+
+		/**
+		 * @param msg
+		 * @return
+		 */
+		private Object handleAddDevice(Notification msg) {
+			Object newValue;
+			Entry entry = (Entry) msg.getNewValue();
+			newValue = entry.getValue();
+			return newValue;
+		}
 	};
 	{
 		eAdapters().add(deviceListener);
@@ -443,6 +485,7 @@ public class ScaDeviceManagerImpl extends ScaPropertyContainerImpl<DeviceManager
 	 * <!-- end-user-doc -->
 	 * @generated NOT
 	 */
+	@Override
 	public EList<ScaDevice< ? >> getAllDevices() {
 		// END GENERATED CODE
 		List<ScaDevice< ? >> allDevices = new ArrayList<ScaDevice< ? >>();
@@ -460,6 +503,7 @@ public class ScaDeviceManagerImpl extends ScaPropertyContainerImpl<DeviceManager
 	 * <!-- end-user-doc -->
 	 * @generated NOT
 	 */
+	@Override
 	public void unsetAllDevices() {
 		// END GENERATED CODE
 		unsetDevices();
@@ -472,6 +516,7 @@ public class ScaDeviceManagerImpl extends ScaPropertyContainerImpl<DeviceManager
 	 * <!-- end-user-doc -->
 	 * @generated NOT
 	 */
+	@Override
 	public boolean isSetAllDevices() {
 		// END GENERATED CODE
 		return isSetDevices();
@@ -483,6 +528,7 @@ public class ScaDeviceManagerImpl extends ScaPropertyContainerImpl<DeviceManager
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public ScaDeviceManagerFileSystem getFileSystem() {
 		return fileSystem;
 	}
@@ -509,6 +555,7 @@ public class ScaDeviceManagerImpl extends ScaPropertyContainerImpl<DeviceManager
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void setFileSystem(ScaDeviceManagerFileSystem newFileSystem) {
 		if (newFileSystem != fileSystem) {
 			NotificationChain msgs = null;
@@ -549,6 +596,7 @@ public class ScaDeviceManagerImpl extends ScaPropertyContainerImpl<DeviceManager
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void unsetFileSystem() {
 		if (fileSystem != null) {
 			NotificationChain msgs = null;
@@ -569,6 +617,7 @@ public class ScaDeviceManagerImpl extends ScaPropertyContainerImpl<DeviceManager
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public boolean isSetFileSystem() {
 		return fileSystemESet;
 	}
@@ -578,6 +627,7 @@ public class ScaDeviceManagerImpl extends ScaPropertyContainerImpl<DeviceManager
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public ScaDomainManager getDomMgr() {
 		if (eContainerFeatureID() != ScaPackage.SCA_DEVICE_MANAGER__DOM_MGR) return null;
 		return (ScaDomainManager)eContainer();
@@ -608,6 +658,7 @@ public class ScaDeviceManagerImpl extends ScaPropertyContainerImpl<DeviceManager
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void setDomMgr(ScaDomainManager newDomMgr) {
 		if (newDomMgr != eInternalContainer() || (eContainerFeatureID() != ScaPackage.SCA_DEVICE_MANAGER__DOM_MGR && newDomMgr != null)) {
 			if (EcoreUtil.isAncestor(this, newDomMgr))
@@ -629,6 +680,7 @@ public class ScaDeviceManagerImpl extends ScaPropertyContainerImpl<DeviceManager
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public String getIdentifier() {
 		return identifier;
 	}
@@ -638,6 +690,7 @@ public class ScaDeviceManagerImpl extends ScaPropertyContainerImpl<DeviceManager
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void setIdentifier(String newIdentifier) {
 		String oldIdentifier = identifier;
 		identifier = newIdentifier;
@@ -652,6 +705,7 @@ public class ScaDeviceManagerImpl extends ScaPropertyContainerImpl<DeviceManager
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void unsetIdentifier() {
 		String oldIdentifier = identifier;
 		boolean oldIdentifierESet = identifierESet;
@@ -666,6 +720,7 @@ public class ScaDeviceManagerImpl extends ScaPropertyContainerImpl<DeviceManager
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public boolean isSetIdentifier() {
 		return identifierESet;
 	}
@@ -675,6 +730,7 @@ public class ScaDeviceManagerImpl extends ScaPropertyContainerImpl<DeviceManager
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public String getLabel() {
 		return label;
 	}
@@ -684,6 +740,7 @@ public class ScaDeviceManagerImpl extends ScaPropertyContainerImpl<DeviceManager
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void setLabel(String newLabel) {
 		String oldLabel = label;
 		label = newLabel;
@@ -698,6 +755,7 @@ public class ScaDeviceManagerImpl extends ScaPropertyContainerImpl<DeviceManager
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void unsetLabel() {
 		String oldLabel = label;
 		boolean oldLabelESet = labelESet;
@@ -712,6 +770,7 @@ public class ScaDeviceManagerImpl extends ScaPropertyContainerImpl<DeviceManager
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public boolean isSetLabel() {
 		return labelESet;
 	}
@@ -721,6 +780,7 @@ public class ScaDeviceManagerImpl extends ScaPropertyContainerImpl<DeviceManager
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EList<ScaService> getServices() {
 		if (services == null) {
 			services = new EObjectContainmentWithInverseEList.Unsettable<ScaService>(ScaService.class, this, ScaPackage.SCA_DEVICE_MANAGER__SERVICES, ScaPackage.SCA_SERVICE__DEV_MGR);
@@ -733,6 +793,7 @@ public class ScaDeviceManagerImpl extends ScaPropertyContainerImpl<DeviceManager
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void unsetServices() {
 		if (services != null) ((InternalEList.Unsettable<?>)services).unset();
 	}
@@ -742,6 +803,7 @@ public class ScaDeviceManagerImpl extends ScaPropertyContainerImpl<DeviceManager
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public boolean isSetServices() {
 		return services != null && ((InternalEList.Unsettable<?>)services).isSet();
 	}
@@ -751,6 +813,7 @@ public class ScaDeviceManagerImpl extends ScaPropertyContainerImpl<DeviceManager
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public String getProfile() {
 		return profile;
 	}
@@ -760,6 +823,7 @@ public class ScaDeviceManagerImpl extends ScaPropertyContainerImpl<DeviceManager
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void setProfile(String newProfile) {
 		String oldProfile = profile;
 		profile = newProfile;
@@ -774,6 +838,7 @@ public class ScaDeviceManagerImpl extends ScaPropertyContainerImpl<DeviceManager
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void unsetProfile() {
 		String oldProfile = profile;
 		boolean oldProfileESet = profileESet;
@@ -788,6 +853,7 @@ public class ScaDeviceManagerImpl extends ScaPropertyContainerImpl<DeviceManager
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public boolean isSetProfile() {
 		return profileESet;
 	}
@@ -797,6 +863,7 @@ public class ScaDeviceManagerImpl extends ScaPropertyContainerImpl<DeviceManager
 	 * <!-- end-user-doc -->
 	 * @generated NOT
 	 */
+	@Override
 	public ScaDevice< ? > getDevice(final String deviceId) {
 		// END GENERATED CODE
 		if (deviceId == null) {
@@ -811,6 +878,7 @@ public class ScaDeviceManagerImpl extends ScaPropertyContainerImpl<DeviceManager
 		// BEGIN GENERATED CODE
 	}
 
+	@Override
 	public String deviceConfigurationProfile() {
 		// END GENERATED CODE
 		return getProfile();
@@ -820,12 +888,14 @@ public class ScaDeviceManagerImpl extends ScaPropertyContainerImpl<DeviceManager
 	/**
 	 * @since 14.0
 	 */
+	@Override
 	public FileSystem fileSys() {
 		// END GENERATED CODE
 		return getFileSystem().fetchNarrowedObject(null);
 		// BEGIN GENERATED CODE
 	}
 
+	@Override
 	public String getComponentImplementationId(final String componentInstantiationId) {
 		// END GENERATED CODE
 		DeviceManager devMgr = fetchNarrowedObject(null);
@@ -836,6 +906,7 @@ public class ScaDeviceManagerImpl extends ScaPropertyContainerImpl<DeviceManager
 		// BEGIN GENERATED CODE
 	}
 
+	@Override
 	public String label() {
 		// END GENERATED CODE
 		return getLabel();
@@ -845,6 +916,7 @@ public class ScaDeviceManagerImpl extends ScaPropertyContainerImpl<DeviceManager
 	/**
 	 * @since 14.0
 	 */
+	@Override
 	public void registerDevice(final Device registeringDevice) throws InvalidObjectReference {
 		// END GENERATED CODE
 		DeviceManager devMgr = fetchNarrowedObject(null);
@@ -856,6 +928,7 @@ public class ScaDeviceManagerImpl extends ScaPropertyContainerImpl<DeviceManager
 		// BEGIN GENERATED CODE
 	}
 
+	@Override
 	public void registerService(final org.omg.CORBA.Object registeringService, final String name) throws InvalidObjectReference {
 		// END GENERATED CODE
 		DeviceManager devMgr = fetchNarrowedObject(null);
@@ -870,6 +943,7 @@ public class ScaDeviceManagerImpl extends ScaPropertyContainerImpl<DeviceManager
 	/**
 	 * @since 14.0
 	 */
+	@Override
 	public Device[] registeredDevices() {
 		// END GENERATED CODE
 		DeviceManager devMgr = fetchNarrowedObject(null);
@@ -883,6 +957,7 @@ public class ScaDeviceManagerImpl extends ScaPropertyContainerImpl<DeviceManager
 	/**
 	 * @since 14.0
 	 */
+	@Override
 	public ServiceType[] registeredServices() {
 		// END GENERATED CODE
 		DeviceManager devMgr = fetchNarrowedObject(null);
@@ -893,6 +968,7 @@ public class ScaDeviceManagerImpl extends ScaPropertyContainerImpl<DeviceManager
 		// BEGIN GENERATED CODE
 	}
 
+	@Override
 	public void shutdown() {
 		// END GENERATED CODE
 		DeviceManager devMgr = fetchNarrowedObject(null);
@@ -912,6 +988,7 @@ public class ScaDeviceManagerImpl extends ScaPropertyContainerImpl<DeviceManager
 	/**
 	 * @since 14.0
 	 */
+	@Override
 	public void unregisterDevice(final Device registeredDevice) throws InvalidObjectReference {
 		// END GENERATED CODE
 		DeviceManager devMgr = fetchNarrowedObject(null);
@@ -923,6 +1000,7 @@ public class ScaDeviceManagerImpl extends ScaPropertyContainerImpl<DeviceManager
 		// BEGIN GENERATED CODE
 	}
 
+	@Override
 	public void unregisterService(final org.omg.CORBA.Object registeredService, final String name) throws InvalidObjectReference {
 		// END GENERATED CODE
 		DeviceManager devMgr = fetchNarrowedObject(null);
@@ -933,12 +1011,14 @@ public class ScaDeviceManagerImpl extends ScaPropertyContainerImpl<DeviceManager
 		// BEGIN GENERATED CODE
 	}
 
+	@Override
 	public String identifier() {
 		// END GENERATED CODE
 		return getIdentifier();
 		// BEGIN GENERATED CODE
 	}
 
+	@Override
 	public void configure(final DataType[] configProperties) throws InvalidConfiguration, PartialConfiguration {
 		// END GENERATED CODE
 		DeviceManager devMgr = fetchNarrowedObject(null);
@@ -950,6 +1030,7 @@ public class ScaDeviceManagerImpl extends ScaPropertyContainerImpl<DeviceManager
 		// BEGIN GENERATED CODE
 	}
 
+	@Override
 	public void query(final PropertiesHolder configProperties) throws UnknownProperties {
 		// END GENERATED CODE
 		DeviceManager devMgr = fetchNarrowedObject(null);
@@ -959,6 +1040,7 @@ public class ScaDeviceManagerImpl extends ScaPropertyContainerImpl<DeviceManager
 		// BEGIN GENERATED CODE
 	}
 
+	@Override
 	public org.omg.CORBA.Object getPort(final String name) throws UnknownPort {
 		// END GENERATED CODE
 		ScaPort< ? , ? > port = getScaPort(name);
@@ -1292,11 +1374,13 @@ public class ScaDeviceManagerImpl extends ScaPropertyContainerImpl<DeviceManager
 	 * <!-- end-user-doc -->
 	 * @generated NOT
 	 */
+	@Override
 	public EList<ScaDevice< ? >> fetchDevices(IProgressMonitor monitor) {
 		SubMonitor subMonitor = SubMonitor.convert(monitor, "Fetching Devices", 2);
 		internalFetchDevices(subMonitor.newChild(1));
 		IRefreshable[] array = ScaModelCommandWithResult.execute(this, new ScaModelCommandWithResult<IRefreshable[]>() {
 
+			@Override
 			public void execute() {
 				setResult(getRootDevices().toArray(new IRefreshable[getRootDevices().size()]));
 			}
@@ -1361,6 +1445,7 @@ public class ScaDeviceManagerImpl extends ScaPropertyContainerImpl<DeviceManager
 		// We must ALWAYS fetch device SELF attributes since the REFRESH FULL will fail otherwise
 		ScaDevice< ? >[] deviceArray = ScaModelCommandWithResult.execute(this, new ScaModelCommandWithResult<ScaDevice< ? >[]>() {
 
+			@Override
 			public void execute() {
 				EList<ScaDevice< ? >> allDevices = getAllDevices();
 				setResult(allDevices.toArray(new ScaDevice< ? >[allDevices.size()]));
@@ -1417,6 +1502,7 @@ public class ScaDeviceManagerImpl extends ScaPropertyContainerImpl<DeviceManager
 
 		return new ScaModelCommand() {
 
+			@Override
 			public void execute() {
 				mergeDevices(deviceList, newDevices);
 			}
@@ -1487,11 +1573,13 @@ public class ScaDeviceManagerImpl extends ScaPropertyContainerImpl<DeviceManager
 	 * @throws InterruptedException
 	 * @generated NOT
 	 */
+	@Override
 	public EList<ScaPort< ? , ? >> fetchPorts(IProgressMonitor monitor) {
 		SubMonitor subMonitor = SubMonitor.convert(monitor, "Fetching ports", 2);
 		internalFetchPorts(subMonitor.newChild(1));
 		ScaPort< ? , ? >[] tmpPorts = ScaModelCommandWithResult.execute(this, new ScaModelCommandWithResult<ScaPort< ? , ? >[]>() {
 
+			@Override
 			public void execute() {
 				setResult(getPorts().toArray(new ScaPort< ? , ? >[getPorts().size()]));
 			}
@@ -1580,6 +1668,7 @@ public class ScaDeviceManagerImpl extends ScaPropertyContainerImpl<DeviceManager
 	 * <!-- end-user-doc -->
 	 * @generated NOT
 	 */
+	@Override
 	public EList<ScaService> fetchServices(IProgressMonitor monitor) {
 		internalFetchServices(monitor);
 		return getServices();
@@ -1633,6 +1722,7 @@ public class ScaDeviceManagerImpl extends ScaPropertyContainerImpl<DeviceManager
 	 * <!-- end-user-doc -->
 	 * @generated NOT
 	 */
+	@Override
 	public ScaService registerScaService(org.omg.CORBA.Object registeringService, String name) throws InvalidObjectReference {
 		// END GENERATED CODE
 		DeviceManager devMgr = fetchNarrowedObject(null);
@@ -1652,6 +1742,7 @@ public class ScaDeviceManagerImpl extends ScaPropertyContainerImpl<DeviceManager
 	 * <!-- end-user-doc -->
 	 * @generated NOT
 	 */
+	@Override
 	public ScaPort< ? , ? > getScaPort(String name) {
 		// END GENERATED CODE
 		if (name == null) {
@@ -1671,6 +1762,7 @@ public class ScaDeviceManagerImpl extends ScaPropertyContainerImpl<DeviceManager
 	 * <!-- end-user-doc -->
 	 * @generated NOT
 	 */
+	@Override
 	public ScaService getScaService(String name) {
 		// END GENERATED CODE
 		if (name == null) {
@@ -1720,6 +1812,7 @@ public class ScaDeviceManagerImpl extends ScaPropertyContainerImpl<DeviceManager
 	 * <!-- end-user-doc -->
 	 * @generated NOT
 	 */
+	@Override
 	public ScaDeviceManagerFileSystem fetchFileSystem(IProgressMonitor monitor) {
 		if (isSetFileSystem()) {
 			return getFileSystem();
@@ -1754,6 +1847,7 @@ public class ScaDeviceManagerImpl extends ScaPropertyContainerImpl<DeviceManager
 	 * <!-- end-user-doc -->
 	 * @generated NOT
 	 */
+	@Override
 	public String fetchIdentifier(IProgressMonitor monitor) {
 		// END GENERATED CODE
 		if (isSetIdentifier()) {
@@ -1788,6 +1882,7 @@ public class ScaDeviceManagerImpl extends ScaPropertyContainerImpl<DeviceManager
 	 * <!-- end-user-doc -->
 	 * @generated NOT
 	 */
+	@Override
 	public String fetchLabel(IProgressMonitor monitor) {
 		// END GENERATED CODE
 		if (isSetLabel()) {
@@ -1901,6 +1996,7 @@ public class ScaDeviceManagerImpl extends ScaPropertyContainerImpl<DeviceManager
      * @since 14.0
      * @generated NOT
      */
+	@Override
 	public String fetchProfile(IProgressMonitor monitor) {
 		if (isSetProfile()) {
 			return getProfile();
@@ -1940,6 +2036,7 @@ public class ScaDeviceManagerImpl extends ScaPropertyContainerImpl<DeviceManager
 			final URI newURI = fileSystem.createURI(fetchProfile(subMonitor.newChild(1)));
 			transaction.addCommand(new ScaModelCommand() {
 
+				@Override
 				public void execute() {
 					setProfileURI(newURI);
 				}

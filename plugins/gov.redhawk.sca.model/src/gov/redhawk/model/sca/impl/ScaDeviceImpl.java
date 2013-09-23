@@ -255,6 +255,7 @@ public class ScaDeviceImpl< D extends Device > extends ScaAbstractComponentImpl<
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EList<ScaDevice<?>> getChildDevices() {
 		if (childDevices == null) {
 			childDevices = new EObjectWithInverseEList.Unsettable<ScaDevice<?>>(ScaDevice.class, this, ScaPackage.SCA_DEVICE__CHILD_DEVICES, ScaPackage.SCA_DEVICE__PARENT_DEVICE);
@@ -267,6 +268,7 @@ public class ScaDeviceImpl< D extends Device > extends ScaAbstractComponentImpl<
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void unsetChildDevices() {
 		if (childDevices != null) ((InternalEList.Unsettable<?>)childDevices).unset();
 	}
@@ -276,6 +278,7 @@ public class ScaDeviceImpl< D extends Device > extends ScaAbstractComponentImpl<
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public boolean isSetChildDevices() {
 		return childDevices != null && ((InternalEList.Unsettable<?>)childDevices).isSet();
 	}
@@ -285,6 +288,7 @@ public class ScaDeviceImpl< D extends Device > extends ScaAbstractComponentImpl<
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public AdminType getAdminState() {
 		return adminState;
 	}
@@ -294,6 +298,7 @@ public class ScaDeviceImpl< D extends Device > extends ScaAbstractComponentImpl<
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void setAdminState(AdminType newAdminState) {
 		AdminType oldAdminState = adminState;
 		adminState = newAdminState;
@@ -308,6 +313,7 @@ public class ScaDeviceImpl< D extends Device > extends ScaAbstractComponentImpl<
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void unsetAdminState() {
 		AdminType oldAdminState = adminState;
 		boolean oldAdminStateESet = adminStateESet;
@@ -322,6 +328,7 @@ public class ScaDeviceImpl< D extends Device > extends ScaAbstractComponentImpl<
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public boolean isSetAdminState() {
 		return adminStateESet;
 	}
@@ -331,6 +338,7 @@ public class ScaDeviceImpl< D extends Device > extends ScaAbstractComponentImpl<
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public String getLabel() {
 		return label;
 	}
@@ -340,6 +348,7 @@ public class ScaDeviceImpl< D extends Device > extends ScaAbstractComponentImpl<
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void setLabel(String newLabel) {
 		String oldLabel = label;
 		label = newLabel;
@@ -354,6 +363,7 @@ public class ScaDeviceImpl< D extends Device > extends ScaAbstractComponentImpl<
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void unsetLabel() {
 		String oldLabel = label;
 		boolean oldLabelESet = labelESet;
@@ -368,6 +378,7 @@ public class ScaDeviceImpl< D extends Device > extends ScaAbstractComponentImpl<
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public boolean isSetLabel() {
 		return labelESet;
 	}
@@ -377,6 +388,7 @@ public class ScaDeviceImpl< D extends Device > extends ScaAbstractComponentImpl<
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public OperationalType getOperationalState() {
 		return operationalState;
 	}
@@ -386,6 +398,7 @@ public class ScaDeviceImpl< D extends Device > extends ScaAbstractComponentImpl<
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void setOperationalState(OperationalType newOperationalState) {
 		OperationalType oldOperationalState = operationalState;
 		operationalState = newOperationalState;
@@ -400,6 +413,7 @@ public class ScaDeviceImpl< D extends Device > extends ScaAbstractComponentImpl<
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void unsetOperationalState() {
 		OperationalType oldOperationalState = operationalState;
 		boolean oldOperationalStateESet = operationalStateESet;
@@ -414,6 +428,7 @@ public class ScaDeviceImpl< D extends Device > extends ScaAbstractComponentImpl<
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public boolean isSetOperationalState() {
 		return operationalStateESet;
 	}
@@ -423,6 +438,7 @@ public class ScaDeviceImpl< D extends Device > extends ScaAbstractComponentImpl<
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public UsageType getUsageState() {
 		return usageState;
 	}
@@ -432,6 +448,7 @@ public class ScaDeviceImpl< D extends Device > extends ScaAbstractComponentImpl<
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void setUsageState(UsageType newUsageState) {
 		UsageType oldUsageState = usageState;
 		usageState = newUsageState;
@@ -446,6 +463,7 @@ public class ScaDeviceImpl< D extends Device > extends ScaAbstractComponentImpl<
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void unsetUsageState() {
 		UsageType oldUsageState = usageState;
 		boolean oldUsageStateESet = usageStateESet;
@@ -460,6 +478,7 @@ public class ScaDeviceImpl< D extends Device > extends ScaAbstractComponentImpl<
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public boolean isSetUsageState() {
 		return usageStateESet;
 	}
@@ -469,6 +488,7 @@ public class ScaDeviceImpl< D extends Device > extends ScaAbstractComponentImpl<
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public ScaDevice<?> getParentDevice() {
 		if (parentDevice != null && parentDevice.eIsProxy()) {
 			InternalEObject oldParentDevice = (InternalEObject)parentDevice;
@@ -510,6 +530,7 @@ public class ScaDeviceImpl< D extends Device > extends ScaAbstractComponentImpl<
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void setParentDevice(ScaDevice<?> newParentDevice) {
 		if (newParentDevice != parentDevice) {
 			NotificationChain msgs = null;
@@ -529,6 +550,7 @@ public class ScaDeviceImpl< D extends Device > extends ScaAbstractComponentImpl<
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public ScaDeviceManager getDevMgr() {
 		ScaDeviceManager devMgr = basicGetDevMgr();
 		return devMgr != null && devMgr.eIsProxy() ? (ScaDeviceManager)eResolveProxy((InternalEObject)devMgr) : devMgr;
@@ -574,6 +596,7 @@ public class ScaDeviceImpl< D extends Device > extends ScaAbstractComponentImpl<
 	 * @generated NOT
 	 * {@inheritDoc}
 	 */
+	@Override
 	public String fetchProfile(IProgressMonitor monitor) {
 		if (isSetProfile()) {
 			return getProfile();
@@ -625,11 +648,13 @@ public class ScaDeviceImpl< D extends Device > extends ScaAbstractComponentImpl<
 	 * <!-- end-user-doc -->
 	 * @generated NOT
 	 */
+	@Override
 	public EList<ScaDevice< ? >> fetchAggregateDevices(IProgressMonitor monitor) throws InterruptedException {
 		SubMonitor subMonitor = SubMonitor.convert(monitor, "Fetch Aggregate Devices", 2);
 		internalFetchAggregateDevices(subMonitor.newChild(1));
 		ScaDevice< ? >[] devices = ScaModelCommandWithResult.execute(this, new ScaModelCommandWithResult<ScaDevice< ? >[]>() {
 
+			@Override
 			public void execute() {
 				setResult(getChildDevices().toArray(new ScaDevice< ? >[getChildDevices().size()]));
 			}
@@ -653,6 +678,7 @@ public class ScaDeviceImpl< D extends Device > extends ScaAbstractComponentImpl<
 	 * <!-- end-user-doc -->
 	 * @generated NOT
 	 */
+	@Override
 	public AdminType fetchAdminState(IProgressMonitor monitor) {
 		// END GENERATED CODE
 		SubMonitor subMonitor = SubMonitor.convert(monitor, "Fetching admin state", 3);
@@ -686,6 +712,7 @@ public class ScaDeviceImpl< D extends Device > extends ScaAbstractComponentImpl<
 	 * <!-- end-user-doc -->
 	 * @generated NOT
 	 */
+	@Override
 	public String fetchLabel(IProgressMonitor monitor) {
 		// END GENERATED CODE
 		if (isSetLabel()) {
@@ -720,6 +747,7 @@ public class ScaDeviceImpl< D extends Device > extends ScaAbstractComponentImpl<
 	 * <!-- end-user-doc -->
 	 * @generated NOT
 	 */
+	@Override
 	public OperationalType fetchOperationalState(IProgressMonitor monitor) {
 		// END GENERATED CODE
 		SubMonitor subMonitor = SubMonitor.convert(monitor, "Fetching operational state", 3);
@@ -751,6 +779,7 @@ public class ScaDeviceImpl< D extends Device > extends ScaAbstractComponentImpl<
 	 * <!-- end-user-doc -->
 	 * @generated NOT
 	 */
+	@Override
 	public UsageType fetchUsageState(IProgressMonitor monitor) {
 		// END GENERATED CODE
 		SubMonitor subMonitor = SubMonitor.convert(monitor, "Fetching usage state", 3);
@@ -850,6 +879,7 @@ public class ScaDeviceImpl< D extends Device > extends ScaAbstractComponentImpl<
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public String getProfile() {
 		return profile;
 	}
@@ -859,6 +889,7 @@ public class ScaDeviceImpl< D extends Device > extends ScaAbstractComponentImpl<
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void setProfile(String newProfile) {
 		String oldProfile = profile;
 		profile = newProfile;
@@ -873,6 +904,7 @@ public class ScaDeviceImpl< D extends Device > extends ScaAbstractComponentImpl<
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void unsetProfile() {
 		String oldProfile = profile;
 		boolean oldProfileESet = profileESet;
@@ -887,6 +919,7 @@ public class ScaDeviceImpl< D extends Device > extends ScaAbstractComponentImpl<
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public boolean isSetProfile() {
 		return profileESet;
 	}
@@ -894,6 +927,7 @@ public class ScaDeviceImpl< D extends Device > extends ScaAbstractComponentImpl<
 	/**
 	 * @since 14.0
 	 */
+	@Override
 	public AdminType adminState() {
 		// END GENERATED CODE
 		return getAdminState();
@@ -903,6 +937,7 @@ public class ScaDeviceImpl< D extends Device > extends ScaAbstractComponentImpl<
 	/**
 	 * @since 14.0
 	 */
+	@Override
 	public void adminState(final AdminType newAdminState) {
 		// END GENERATED CODE
 		D device = fetchNarrowedObject(null);
@@ -916,6 +951,7 @@ public class ScaDeviceImpl< D extends Device > extends ScaAbstractComponentImpl<
 	/**
 	 * @since 14.0
 	 */
+	@Override
 	public boolean allocateCapacity(final DataType[] capacities) throws InvalidCapacity, InvalidState, InsufficientCapacity {
 		// END GENERATED CODE
 		D device = fetchNarrowedObject(null);
@@ -929,6 +965,7 @@ public class ScaDeviceImpl< D extends Device > extends ScaAbstractComponentImpl<
 	/**
 	 * @since 14.0
 	 */
+	@Override
 	public AggregateDevice compositeDevice() {
 		// END GENERATED CODE
 		D device = fetchNarrowedObject(null);
@@ -942,6 +979,7 @@ public class ScaDeviceImpl< D extends Device > extends ScaAbstractComponentImpl<
 	/**
 	 * @since 14.0
 	 */
+	@Override
 	public void deallocateCapacity(final DataType[] capacities) throws InvalidCapacity, InvalidState {
 		// END GENERATED CODE
 		D device = fetchNarrowedObject(null);
@@ -1137,6 +1175,7 @@ public class ScaDeviceImpl< D extends Device > extends ScaAbstractComponentImpl<
 		return result.toString();
 	}
 
+	@Override
 	public String label() {
 		// END GENERATED CODE
 		return getLabel();
@@ -1146,12 +1185,14 @@ public class ScaDeviceImpl< D extends Device > extends ScaAbstractComponentImpl<
 	/**
 	 * @since 14.0
 	 */
+	@Override
 	public OperationalType operationalState() {
 		// END GENERATED CODE
 		return getOperationalState();
 		// BEGIN GENERATED CODE
 	}
 
+	@Override
 	public String softwareProfile() {
 		// END GENERATED CODE
 		return getProfile();
@@ -1161,6 +1202,7 @@ public class ScaDeviceImpl< D extends Device > extends ScaAbstractComponentImpl<
 	/**
 	 * @since 14.0
 	 */
+	@Override
 	public UsageType usageState() {
 		// END GENERATED CODE
 		return getUsageState();
@@ -1214,6 +1256,7 @@ public class ScaDeviceImpl< D extends Device > extends ScaAbstractComponentImpl<
 	    		final URI newURI = fileSystem.createURI(fetchProfile(subMonitor.newChild(1)));
 	    		transaction.addCommand(new ScaModelCommand() {
 					
+					@Override
 					public void execute() {
 						setProfileURI(newURI);
 					}

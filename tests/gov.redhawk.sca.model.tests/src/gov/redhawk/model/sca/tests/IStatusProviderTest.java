@@ -149,6 +149,7 @@ public abstract class IStatusProviderTest extends TestCase {
 		Assert.assertFalse(getFixture().getStatus().isOK());
 		ScaModelCommand.execute(getFixture(), new ScaModelCommand() {
 
+			@Override
 			public void execute() {
 				getFixture().clearAllStatus();
 			}

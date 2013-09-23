@@ -32,6 +32,7 @@ public class StructSequenceStructPropertyComposite extends StructPropertyComposi
 		super(parent, style, toolkit);
 	}
 	
+	@Override
 	protected void createControls(Composite parent, FormToolkit toolkit) {
 		parent.setLayout(FormLayoutFactory.createSectionClientGridLayout(false, AbstractPropertyComposite.NUM_COLUMNS));
 		

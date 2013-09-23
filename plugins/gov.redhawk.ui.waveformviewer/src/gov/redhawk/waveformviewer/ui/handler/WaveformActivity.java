@@ -38,6 +38,7 @@ public abstract class WaveformActivity extends AbstractHandler implements IHandl
 	private ApplicationActionListener appListener;
 	private IWorkbenchPage[] pages;
 
+	@Override
 	public Object execute(final ExecutionEvent event) throws ExecutionException {
 		final ISelection selection = HandlerUtil.getCurrentSelection(event);
 		final ArrayList<Object> ret = new ArrayList<Object>();

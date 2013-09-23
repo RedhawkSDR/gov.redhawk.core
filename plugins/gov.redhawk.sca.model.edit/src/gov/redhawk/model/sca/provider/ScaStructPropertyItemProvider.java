@@ -204,6 +204,7 @@ public class ScaStructPropertyItemProvider
 		super.collectNewChildDescriptors(newChildDescriptors, object);
 	}
 
+	@Override
 	public Object getImage(Object object) {
 		return overlayImage(object, getPrfResourceLocator().getImage("full/obj16/Struct"));
 	}

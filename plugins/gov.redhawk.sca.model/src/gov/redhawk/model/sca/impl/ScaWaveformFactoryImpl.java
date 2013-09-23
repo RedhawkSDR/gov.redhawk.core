@@ -262,6 +262,7 @@ public class ScaWaveformFactoryImpl extends CorbaObjWrapperImpl<ApplicationFacto
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public URI getProfileURI() {
 		return profileURI;
 	}
@@ -271,6 +272,7 @@ public class ScaWaveformFactoryImpl extends CorbaObjWrapperImpl<ApplicationFacto
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void setProfileURI(URI newProfileURI) {
 		URI oldProfileURI = profileURI;
 		profileURI = newProfileURI;
@@ -285,6 +287,7 @@ public class ScaWaveformFactoryImpl extends CorbaObjWrapperImpl<ApplicationFacto
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void unsetProfileURI() {
 		URI oldProfileURI = profileURI;
 		boolean oldProfileURIESet = profileURIESet;
@@ -299,6 +302,7 @@ public class ScaWaveformFactoryImpl extends CorbaObjWrapperImpl<ApplicationFacto
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public boolean isSetProfileURI() {
 		return profileURIESet;
 	}
@@ -308,6 +312,7 @@ public class ScaWaveformFactoryImpl extends CorbaObjWrapperImpl<ApplicationFacto
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public SoftwareAssembly getProfileObj() {
 		if (profileObj != null && ((EObject)profileObj).eIsProxy()) {
 			InternalEObject oldProfileObj = (InternalEObject)profileObj;
@@ -334,6 +339,7 @@ public class ScaWaveformFactoryImpl extends CorbaObjWrapperImpl<ApplicationFacto
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void setProfileObj(SoftwareAssembly newProfileObj) {
 		SoftwareAssembly oldProfileObj = profileObj;
 		profileObj = newProfileObj;
@@ -348,6 +354,7 @@ public class ScaWaveformFactoryImpl extends CorbaObjWrapperImpl<ApplicationFacto
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void unsetProfileObj() {
 		SoftwareAssembly oldProfileObj = profileObj;
 		boolean oldProfileObjESet = profileObjESet;
@@ -362,6 +369,7 @@ public class ScaWaveformFactoryImpl extends CorbaObjWrapperImpl<ApplicationFacto
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public boolean isSetProfileObj() {
 		return profileObjESet;
 	}
@@ -402,6 +410,8 @@ public class ScaWaveformFactoryImpl extends CorbaObjWrapperImpl<ApplicationFacto
 	 * <!-- end-user-doc -->
 	 * @generated NOT
 	 */
+	@Deprecated
+	@Override
 	public IFileStore getRootFileStore() {
 		// END GENERATED CODE
 		try {
@@ -417,6 +427,7 @@ public class ScaWaveformFactoryImpl extends CorbaObjWrapperImpl<ApplicationFacto
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public ScaDomainManager getDomMgr() {
 		if (eContainerFeatureID() != ScaPackage.SCA_WAVEFORM_FACTORY__DOM_MGR) return null;
 		return (ScaDomainManager)eContainer();
@@ -447,6 +458,7 @@ public class ScaWaveformFactoryImpl extends CorbaObjWrapperImpl<ApplicationFacto
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void setDomMgr(ScaDomainManager newDomMgr) {
 		if (newDomMgr != eInternalContainer() || (eContainerFeatureID() != ScaPackage.SCA_WAVEFORM_FACTORY__DOM_MGR && newDomMgr != null)) {
 			if (EcoreUtil.isAncestor(this, newDomMgr))
@@ -468,6 +480,7 @@ public class ScaWaveformFactoryImpl extends CorbaObjWrapperImpl<ApplicationFacto
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public String getIdentifier() {
 		return identifier;
 	}
@@ -477,6 +490,7 @@ public class ScaWaveformFactoryImpl extends CorbaObjWrapperImpl<ApplicationFacto
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void setIdentifier(String newIdentifier) {
 		String oldIdentifier = identifier;
 		identifier = newIdentifier;
@@ -491,6 +505,7 @@ public class ScaWaveformFactoryImpl extends CorbaObjWrapperImpl<ApplicationFacto
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void unsetIdentifier() {
 		String oldIdentifier = identifier;
 		boolean oldIdentifierESet = identifierESet;
@@ -505,6 +520,7 @@ public class ScaWaveformFactoryImpl extends CorbaObjWrapperImpl<ApplicationFacto
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public boolean isSetIdentifier() {
 		return identifierESet;
 	}
@@ -514,6 +530,7 @@ public class ScaWaveformFactoryImpl extends CorbaObjWrapperImpl<ApplicationFacto
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public String getName() {
 		return name;
 	}
@@ -523,6 +540,7 @@ public class ScaWaveformFactoryImpl extends CorbaObjWrapperImpl<ApplicationFacto
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void setName(String newName) {
 		String oldName = name;
 		name = newName;
@@ -537,6 +555,7 @@ public class ScaWaveformFactoryImpl extends CorbaObjWrapperImpl<ApplicationFacto
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void unsetName() {
 		String oldName = name;
 		boolean oldNameESet = nameESet;
@@ -551,6 +570,7 @@ public class ScaWaveformFactoryImpl extends CorbaObjWrapperImpl<ApplicationFacto
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public boolean isSetName() {
 		return nameESet;
 	}
@@ -560,6 +580,7 @@ public class ScaWaveformFactoryImpl extends CorbaObjWrapperImpl<ApplicationFacto
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public String getProfile() {
 		return profile;
 	}
@@ -569,6 +590,7 @@ public class ScaWaveformFactoryImpl extends CorbaObjWrapperImpl<ApplicationFacto
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void setProfile(String newProfile) {
 		String oldProfile = profile;
 		profile = newProfile;
@@ -583,6 +605,7 @@ public class ScaWaveformFactoryImpl extends CorbaObjWrapperImpl<ApplicationFacto
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void unsetProfile() {
 		String oldProfile = profile;
 		boolean oldProfileESet = profileESet;
@@ -597,6 +620,7 @@ public class ScaWaveformFactoryImpl extends CorbaObjWrapperImpl<ApplicationFacto
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public boolean isSetProfile() {
 		return profileESet;
 	}
@@ -625,6 +649,7 @@ public class ScaWaveformFactoryImpl extends CorbaObjWrapperImpl<ApplicationFacto
 	 * @throws CreateApplicationRequestError
 	 * @generated NOT
 	 */
+	@Override
 	public ScaWaveform createWaveform(IProgressMonitor monitor, final String name, DataType[] initConfiguration, DeviceAssignmentType[] deviceAssignments)
 	        throws CreateApplicationError, CreateApplicationRequestError, InvalidInitConfiguration, CreateApplicationInsufficientCapacityError {
 		// END GENERATED CODE
@@ -649,6 +674,7 @@ public class ScaWaveformFactoryImpl extends CorbaObjWrapperImpl<ApplicationFacto
 				if (app != null) {
 					final String ior = app.toString();
 					retVal = ScaModelCommandWithResult.execute(this, new ScaModelCommandWithResult<ScaWaveform>() {
+						@Override
 						public void execute() {
 
 							if (getDomMgr() != null) {
@@ -696,6 +722,7 @@ public class ScaWaveformFactoryImpl extends CorbaObjWrapperImpl<ApplicationFacto
 	 * <!-- end-user-doc -->
 	 * @generated NOT
 	 */
+	@Override
 	public String fetchIdentifier(IProgressMonitor monitor) {
 		// END GENERATED CODE
 		if (isSetIdentifier()) {
@@ -732,6 +759,7 @@ public class ScaWaveformFactoryImpl extends CorbaObjWrapperImpl<ApplicationFacto
 	 * <!-- end-user-doc -->
 	 * @generated NOT
 	 */
+	@Override
 	public String fetchName(IProgressMonitor monitor) {
 		// END GENERATED CODE
 		if (isSetName()) {
@@ -769,6 +797,7 @@ public class ScaWaveformFactoryImpl extends CorbaObjWrapperImpl<ApplicationFacto
 	 * @generated NOT
 	 * 
 	 */
+	@Override
 	public SoftwareAssembly fetchProfileObject(IProgressMonitor monitor) {
 		// END GENERATED CODE
 		Transaction transaction = profileObjFeature.createTransaction();
@@ -786,6 +815,7 @@ public class ScaWaveformFactoryImpl extends CorbaObjWrapperImpl<ApplicationFacto
 	 * <!-- end-user-doc -->
 	 * @generated NOT
 	 */
+	@Override
 	public String fetchProfile(IProgressMonitor monitor) {
 		// END GENERATED CODE
 		if (isSetProfile()) {
@@ -846,6 +876,7 @@ public class ScaWaveformFactoryImpl extends CorbaObjWrapperImpl<ApplicationFacto
 	/**
 	 * @since 14.0
 	 */
+	@Override
 	public Application create(final String name, final DataType[] initConfiguration, final DeviceAssignmentType[] deviceAssignments)
 	        throws CreateApplicationError, CreateApplicationRequestError, InvalidInitConfiguration, CreateApplicationInsufficientCapacityError {
 		// END GENERATED CODE
@@ -1083,18 +1114,21 @@ public class ScaWaveformFactoryImpl extends CorbaObjWrapperImpl<ApplicationFacto
 		return result.toString();
 	}
 
+	@Override
 	public String identifier() {
 		// END GENERATED CODE
 		return getIdentifier();
 		// BEGIN GENERATED CODE
 	}
 
+	@Override
 	public String name() {
 		// END GENERATED CODE
 		return getName();
 		// BEGIN GENERATED CODE
 	}
 
+	@Override
 	public String softwareProfile() {
 		// END GENERATED CODE
 		return getProfile();
@@ -1114,6 +1148,7 @@ public class ScaWaveformFactoryImpl extends CorbaObjWrapperImpl<ApplicationFacto
      * @since 14.0
      * @generated NOT
      */
+	@Override
 	public URI fetchProfileURI(IProgressMonitor monitor) {
 		if (isSetProfileURI()) {
 			return getProfileURI();
@@ -1127,6 +1162,7 @@ public class ScaWaveformFactoryImpl extends CorbaObjWrapperImpl<ApplicationFacto
 				final URI newURI = fileSystem.createURI(fetchProfile(subMonitor.newChild(1)));
 				transaction.addCommand(new ScaModelCommand() {
 
+					@Override
 					public void execute() {
 						setProfileURI(newURI);
 					}

@@ -29,6 +29,7 @@ public class MonitorPortTester extends PropertyTester {
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public boolean test(final Object receiver, final String property, final Object[] args, final Object expectedValue) {
 		final ScaPort< ? , ? > port = PluginUtil.adapt(ScaPort.class, receiver, false);
 		if (port instanceof ScaUsesPort) {

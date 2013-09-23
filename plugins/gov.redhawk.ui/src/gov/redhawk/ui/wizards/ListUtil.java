@@ -39,6 +39,7 @@ public final class ListUtil {
 
 	private static final Comparator<Object> STRING_CCOMPARATOR = new Comparator<Object>() {
 
+		@Override
 		@SuppressWarnings("unchecked")
 		public int compare(final Object arg0, final Object arg1) {
 			if (arg0 instanceof String && arg1 instanceof String) {

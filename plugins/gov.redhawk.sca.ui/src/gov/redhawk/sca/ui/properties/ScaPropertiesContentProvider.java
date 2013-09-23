@@ -70,6 +70,7 @@ public class ScaPropertiesContentProvider extends ScaModelAdapterFactoryContentP
 			final ScaAbstractProperty< ? > prop = (ScaAbstractProperty< ? >) this.object;
 			final Any any = ScaModelCommandWithResult.execute(prop, new ScaModelCommandWithResult<Any>() {
 
+				@Override
 				public void execute() {
 					prop.setIgnoreRemoteSet(true);
 					final Any oldValue = prop.toAny();
@@ -111,6 +112,7 @@ public class ScaPropertiesContentProvider extends ScaModelAdapterFactoryContentP
 			} finally {
 				ScaModelCommand.execute(prop, new ScaModelCommand() {
 
+					@Override
 					public void execute() {
 						prop.setIgnoreRemoteSet(false);
 					}
@@ -135,6 +137,7 @@ public class ScaPropertiesContentProvider extends ScaModelAdapterFactoryContentP
 	protected IPropertySource createPropertySource(final Object object, final IItemPropertySource itemPropertySource) {
 		final ValueWrapperPropertySource retVal = new ValueWrapperPropertySource(object, itemPropertySource);
 		return wrap(run(new RunnableWithResult.Impl<IPropertySource>() {
+			@Override
 			public void run() {
 				setResult(retVal);
 			}

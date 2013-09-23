@@ -25,6 +25,7 @@ import org.eclipse.ui.handlers.HandlerUtil;
 
 public class StopMonitorHandler extends AbstractHandler {
 
+	@Override
 	public Object execute(final ExecutionEvent event) throws ExecutionException {
 		final ISelection selection = HandlerUtil.getCurrentSelection(event);
 		if (selection instanceof IStructuredSelection) {

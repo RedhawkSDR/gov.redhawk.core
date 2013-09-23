@@ -279,6 +279,7 @@ public class SubMonitor implements IProgressMonitorWithBlocking {
 	/* (non-Javadoc)
 	 * @see org.eclipse.core.runtime.IProgressMonitor#isCanceled()
 	 */
+	@Override
 	public boolean isCanceled() {
 		return root.isCanceled();
 	}
@@ -286,6 +287,7 @@ public class SubMonitor implements IProgressMonitorWithBlocking {
 	/* (non-Javadoc)
 	 * @see org.eclipse.core.runtime.IProgressMonitor#setTaskName(java.lang.String)
 	 */
+	@Override
 	public void setTaskName(String name) {
 		if ((flags & SubMonitor.SUPPRESS_SETTASKNAME) == 0) {
 			root.setTaskName(name);
@@ -295,6 +297,7 @@ public class SubMonitor implements IProgressMonitorWithBlocking {
 	/**
 	 * @see org.eclipse.core.runtime.SubMonitor#beginTask(String, int)
 	 */
+	@Override
 	public void beginTask(String name, int totalWork) {
 		if ((flags & SubMonitor.SUPPRESS_BEGINTASK) == 0 && name != null) {
 			root.setTaskName(name);
@@ -305,6 +308,7 @@ public class SubMonitor implements IProgressMonitorWithBlocking {
 	/* (non-Javadoc)
 	 * @see org.eclipse.core.runtime.IProgressMonitor#done()
 	 */
+	@Override
 	public void done() {
 		cleanupActiveChild();
 		int delta = totalParent - usedForParent;
@@ -321,6 +325,7 @@ public class SubMonitor implements IProgressMonitorWithBlocking {
 	/* (non-Javadoc)
 	 * @see org.eclipse.core.runtime.IProgressMonitor#internalWorked(double)
 	 */
+	@Override
 	public void internalWorked(double work) {
 		cleanupActiveChild();
 
@@ -333,6 +338,7 @@ public class SubMonitor implements IProgressMonitorWithBlocking {
 	/* (non-Javadoc)
 	 * @see org.eclipse.core.runtime.IProgressMonitor#subTask(java.lang.String)
 	 */
+	@Override
 	public void subTask(String name) {
 		if ((flags & SubMonitor.SUPPRESS_SUBTASK) == 0) {
 			root.subTask(name);
@@ -342,6 +348,7 @@ public class SubMonitor implements IProgressMonitorWithBlocking {
 	/* (non-Javadoc)
 	 * @see org.eclipse.core.runtime.IProgressMonitor#worked(int)
 	 */
+	@Override
 	public void worked(int work) {
 		internalWorked(work);
 	}
@@ -349,6 +356,7 @@ public class SubMonitor implements IProgressMonitorWithBlocking {
 	/* (non-Javadoc)
 	 * @see org.eclipse.core.runtime.IProgressMonitor#setCanceled(boolean)
 	 */
+	@Override
 	public void setCanceled(boolean b) {
 		root.setCanceled(b);
 	}
@@ -409,6 +417,7 @@ public class SubMonitor implements IProgressMonitorWithBlocking {
 	/* (non-Javadoc)
 	 * @see org.eclipse.core.runtime.IProgressMonitorWithBlocking#clearBlocked()
 	 */
+	@Override
 	public void clearBlocked() {
 		root.clearBlocked();
 	}
@@ -416,6 +425,7 @@ public class SubMonitor implements IProgressMonitorWithBlocking {
 	/* (non-Javadoc)
 	 * @see org.eclipse.core.runtime.IProgressMonitorWithBlocking#setBlocked(org.eclipse.core.runtime.IStatus)
 	 */
+	@Override
 	public void setBlocked(IStatus reason) {
 		root.setBlocked(reason);
 	}

@@ -52,6 +52,7 @@ public class ScaModelAdapterFactoryLabelProvider extends TransactionalAdapterFac
 	@Override
 	public Color getForeground(final Object object) {
 		return run(new RunnableWithResult.Impl<Color>() {
+			@Override
 			public void run() {
 				setResult(ScaModelAdapterFactoryLabelProvider.super.getForeground(object));
 			}
@@ -61,6 +62,7 @@ public class ScaModelAdapterFactoryLabelProvider extends TransactionalAdapterFac
 	@Override
 	public Color getForeground(final Object object, final int columnIndex) {
 		return run(new RunnableWithResult.Impl<Color>() {
+			@Override
 			public void run() {
 				setResult(ScaModelAdapterFactoryLabelProvider.super.getForeground(object, columnIndex));
 			}

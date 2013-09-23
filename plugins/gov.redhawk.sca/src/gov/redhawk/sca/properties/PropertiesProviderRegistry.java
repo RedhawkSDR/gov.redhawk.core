@@ -58,6 +58,7 @@ public enum PropertiesProviderRegistry implements IExtensionChangeHandler, IProp
 		}
 	}
 
+	@Override
 	public void addExtension(final IExtensionTracker tracker, final IExtension extension) {
 		for (final IConfigurationElement element : extension.getConfigurationElements()) {
 			final IPropertiesProviderDescriptor descriptor = new PropertiesProviderDescriptor(element);
@@ -66,6 +67,7 @@ public enum PropertiesProviderRegistry implements IExtensionChangeHandler, IProp
 		}
 	}
 
+	@Override
 	public void removeExtension(final IExtension extension, final Object[] objects) {
 		for (final Object obj : objects) {
 			if (obj instanceof IPropertiesProviderDescriptor) {
@@ -78,6 +80,7 @@ public enum PropertiesProviderRegistry implements IExtensionChangeHandler, IProp
 		this.propertiesProviderDescriptors.clear();
 	}
 
+	@Override
 	public List<IPropertiesProviderDescriptor> getPropertiesProvidersDescriptors() {
 		return Collections.unmodifiableList(this.propertiesProviderDescriptors);
 	}
@@ -85,6 +88,7 @@ public enum PropertiesProviderRegistry implements IExtensionChangeHandler, IProp
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public List<IPropertiesProvider> getPropertiesProviders() {
 		this.propertiesProviders.clear();
 		this.nameMap.clear();
@@ -98,6 +102,7 @@ public enum PropertiesProviderRegistry implements IExtensionChangeHandler, IProp
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public String getName(IPropertiesProvider provider) {
 		return this.nameMap.get(provider);
 	}

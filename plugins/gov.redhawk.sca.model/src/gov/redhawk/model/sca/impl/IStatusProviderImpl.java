@@ -96,6 +96,7 @@ public abstract class IStatusProviderImpl extends EObjectImpl implements IStatus
 	 * <!-- end-user-doc -->
 	 * @generated NOT
 	 */
+	@Override
 	public IStatus getStatus() {
 		// END GENERATED CODE
 		IStatus retVal = Status.OK_STATUS;
@@ -120,6 +121,7 @@ public abstract class IStatusProviderImpl extends EObjectImpl implements IStatus
 	 * <!-- end-user-doc -->
 	 * @generated NOT
 	 */
+	@Override
 	public void setStatus(EStructuralFeature feature, IStatus status) {
 		// END GENERATED CODE
 		IStatus oldStatus = getStatus();
@@ -141,6 +143,7 @@ public abstract class IStatusProviderImpl extends EObjectImpl implements IStatus
 	 * <!-- end-user-doc -->
 	 * @generated NOT
 	 */
+	@Override
 	public void clearAllStatus() {
 		// END GENERATED CODE
 		IStatus oldStatus = getStatus();
@@ -156,6 +159,7 @@ public abstract class IStatusProviderImpl extends EObjectImpl implements IStatus
 	 * <!-- end-user-doc -->
 	 * @generated NOT
 	 */
+	@Override
 	public IStatus getStatus(EStructuralFeature feature) {
 		// END GENERATED CODE
 		return objectStatusMap.get(feature);

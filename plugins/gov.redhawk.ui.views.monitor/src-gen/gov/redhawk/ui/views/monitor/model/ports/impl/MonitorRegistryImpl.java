@@ -76,6 +76,7 @@ public class MonitorRegistryImpl extends EObjectImpl implements MonitorRegistry 
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EList<Monitor> getMonitors() {
 		if (monitors == null) {
 			monitors = new EObjectContainmentEList<Monitor>(Monitor.class, this, PortsPackage.MONITOR_REGISTRY__MONITORS);

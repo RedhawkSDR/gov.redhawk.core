@@ -113,6 +113,7 @@ public class PortsFactoryImpl extends EFactoryImpl implements PortsFactory {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public PortMonitor createPortMonitor() {
 		PortMonitorImpl portMonitor = new PortMonitorImpl();
 		return portMonitor;
@@ -123,6 +124,7 @@ public class PortsFactoryImpl extends EFactoryImpl implements PortsFactory {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public PortConnectionMonitor createPortConnectionMonitor() {
 		PortConnectionMonitorImpl portConnectionMonitor = new PortConnectionMonitorImpl();
 		return portConnectionMonitor;
@@ -133,6 +135,7 @@ public class PortsFactoryImpl extends EFactoryImpl implements PortsFactory {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public MonitorRegistry createMonitorRegistry() {
 		MonitorRegistryImpl monitorRegistry = new MonitorRegistryImpl();
 		return monitorRegistry;
@@ -143,6 +146,7 @@ public class PortsFactoryImpl extends EFactoryImpl implements PortsFactory {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public PortSupplierMonitor createPortSupplierMonitor() {
 		PortSupplierMonitorImpl portSupplierMonitor = new PortSupplierMonitorImpl();
 		return portSupplierMonitor;
@@ -153,6 +157,7 @@ public class PortsFactoryImpl extends EFactoryImpl implements PortsFactory {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public PortStatisticsProvider createPortStatisticsProvider() {
 		PortStatisticsProviderImpl portStatisticsProvider = new PortStatisticsProviderImpl();
 		return portStatisticsProvider;
@@ -163,6 +168,7 @@ public class PortsFactoryImpl extends EFactoryImpl implements PortsFactory {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public PortsPackage getPortsPackage() {
 		return (PortsPackage)getEPackage();
 	}

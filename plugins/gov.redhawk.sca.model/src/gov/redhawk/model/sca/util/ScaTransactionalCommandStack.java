@@ -101,7 +101,8 @@ public class ScaTransactionalCommandStack extends TransactionalCommandStackImpl 
 		} 
 	}
 	
-    protected void rollback(Transaction tx) {
+    @Override
+	protected void rollback(Transaction tx) {
     	// Don't allow rollback
     }
 	

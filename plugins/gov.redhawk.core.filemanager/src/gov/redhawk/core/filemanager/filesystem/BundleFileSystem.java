@@ -50,10 +50,12 @@ public class BundleFileSystem extends AbstractFileSystem {
 		this.basePath = path;
 	}
 
+	@Override
 	public boolean exists(final String fileName) throws InvalidFileName {
 		return FileLocator.find(this.bundle, this.basePath.append(fileName), null) != null;
 	}
 
+	@Override
 	public FileInformationType[] list(String pattern) throws FileException, InvalidFileName {
 		if (pattern == null) {
 			throw new InvalidFileName(ErrorNumberType.CF_EIO, "File does not exist");
@@ -144,6 +146,7 @@ public class BundleFileSystem extends AbstractFileSystem {
 		return info;
 	}
 
+	@Override
 	public File open(final String fileName, final boolean readOnly) throws InvalidFileName, FileException {
 		try {
 			final JavaFileFileImpl impl = new JavaFileFileImpl(new java.io.File(FileLocator.toFileURL(FileLocator.find(this.bundle,

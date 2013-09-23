@@ -38,7 +38,6 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.MultiStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.SubMonitor;
-import org.eclipse.emf.common.command.AbstractCommand;
 import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
@@ -137,6 +136,7 @@ public class IdlLibraryImpl extends RepositoryModuleImpl implements IdlLibrary {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EList<Specification> getSpecifications() {
 		if (specifications == null) {
 			specifications = new EObjectResolvingEList<Specification>(Specification.class, this, LibraryPackage.IDL_LIBRARY__SPECIFICATIONS);
@@ -149,6 +149,7 @@ public class IdlLibraryImpl extends RepositoryModuleImpl implements IdlLibrary {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EList<Path> getPaths() {
 		if (paths == null) {
 			paths = new EObjectContainmentEList<Path>(Path.class, this, LibraryPackage.IDL_LIBRARY__PATHS);
@@ -161,6 +162,7 @@ public class IdlLibraryImpl extends RepositoryModuleImpl implements IdlLibrary {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public IStatus getLoadStatus() {
 		return loadStatus;
 	}
@@ -293,6 +295,7 @@ public class IdlLibraryImpl extends RepositoryModuleImpl implements IdlLibrary {
 	 * 
 	 * @generated NOT
 	 */
+	@Override
 	public synchronized IStatus load(final IProgressMonitor monitor) throws CoreException {
 		// END GENERATED CODE
 		final TransactionalEditingDomain editingDomain = TransactionUtil.getEditingDomain(this);

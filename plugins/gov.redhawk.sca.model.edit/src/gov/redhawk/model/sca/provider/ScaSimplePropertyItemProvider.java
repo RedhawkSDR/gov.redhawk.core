@@ -92,6 +92,7 @@ public class ScaSimplePropertyItemProvider extends ScaAbstractPropertyItemProvid
 			final IItemLabelProvider lp = super.getLabelProvider(thisObject);
 			return new IItemLabelProvider() {
 
+				@Override
 				public String getText(Object object) {
 					if (object instanceof PropertyValueWrapper) {
 						PropertyValueWrapper wrapper = (PropertyValueWrapper) object;
@@ -101,6 +102,7 @@ public class ScaSimplePropertyItemProvider extends ScaAbstractPropertyItemProvid
 					}
 				}
 
+				@Override
 				public Object getImage(Object object) {
 					return lp.getImage(property);
 				}

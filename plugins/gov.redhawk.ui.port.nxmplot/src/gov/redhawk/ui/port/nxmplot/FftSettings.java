@@ -16,24 +16,44 @@ package gov.redhawk.ui.port.nxmplot;
  */
 public class FftSettings {
 	public enum WindowType {
-		BARTLETT { public String toString() { return "Bartlett"; } public String toWindowString() { return "BART"; } },
-		HANNING { public String toString() { return "Hanning"; } public String toWindowString() { return "HANN"; } },
-		HAMMING { public String toString() { return "Hamming"; } public String toWindowString() { return "HAMM"; } },
+		BARTLETT { @Override
+		public String toString() { return "Bartlett"; } @Override
+		public String toWindowString() { return "BART"; } },
+		HANNING { @Override
+		public String toString() { return "Hanning"; } @Override
+		public String toWindowString() { return "HANN"; } },
+		HAMMING { @Override
+		public String toString() { return "Hamming"; } @Override
+		public String toWindowString() { return "HAMM"; } },
 		/**
          * @since 4.0
          */
-		BH92 { public String toString() { return "Blackman-Harris"; } public String toWindowString() { return "BH92"; } },
-		BLACKMAN { public String toString() { return "Blackman"; } public String toWindowString() { return "BLAC"; } };
+		BH92 { @Override
+		public String toString() { return "Blackman-Harris"; } @Override
+		public String toWindowString() { return "BH92"; } },
+		BLACKMAN { @Override
+		public String toString() { return "Blackman"; } @Override
+		public String toWindowString() { return "BLAC"; } };
 		
 		public abstract String toWindowString();
 	}
 
 	public enum OutputType {
-		NORMAL { public String toString() { return "Normal"; } public String toFlagString() { return ""; } },
-		MAG_SQ { public String toString() { return "Magnitude Squared"; } public String toFlagString() { return "/MAG"; } },
-		PSD { public String toString() { return "Power Spectral Density"; } public String toFlagString() { return "/PSD"; } },
-		MAG_20LOG { public String toString() { return "20 Log Magnitude"; } public String toFlagString() { return "/MAG/LOG"; } },
-		PSD_20LOG { public String toString() { return "20 Log PSD"; } public String toFlagString() { return "/PSD/LOG"; } };
+		NORMAL { @Override
+		public String toString() { return "Normal"; } @Override
+		public String toFlagString() { return ""; } },
+		MAG_SQ { @Override
+		public String toString() { return "Magnitude Squared"; } @Override
+		public String toFlagString() { return "/MAG"; } },
+		PSD { @Override
+		public String toString() { return "Power Spectral Density"; } @Override
+		public String toFlagString() { return "/PSD"; } },
+		MAG_20LOG { @Override
+		public String toString() { return "20 Log Magnitude"; } @Override
+		public String toFlagString() { return "/MAG/LOG"; } },
+		PSD_20LOG { @Override
+		public String toString() { return "20 Log PSD"; } @Override
+		public String toFlagString() { return "/PSD/LOG"; } };
 		
 		public abstract String toFlagString();
 	}

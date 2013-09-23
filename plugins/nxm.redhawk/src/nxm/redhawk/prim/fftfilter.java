@@ -148,7 +148,8 @@ public class fftfilter extends Primitive { //SUPPRESS CHECKSTYLE ClassName
 			this.end = end;
 		}
 
-        public int compareTo(Range o) {
+        @Override
+		public int compareTo(Range o) {
 			if (start != o.start) {
 				return start - o.start;
 			} else {

@@ -68,6 +68,7 @@ public class SimpleSequencePropertyDetailsPage extends BasicSimplePropertyDetail
 		/**
 		 * {@inheritDoc}
 		 */
+		@Override
 		public String isValid(final String newText) {
 			String retVal = null;
 			boolean isComplexFormat = ValidValueTypeConstraint.isComplexNumber(newText);

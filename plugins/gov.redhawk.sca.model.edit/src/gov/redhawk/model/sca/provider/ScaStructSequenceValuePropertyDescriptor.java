@@ -44,11 +44,13 @@ class ScaStructSequenceValuePropertyDescriptor extends ItemPropertyDescriptorDec
 			this.factory = factory;
 		}
 
+		@Override
 		public String getDisplayName(Object thisObject) {
 			IItemLabelProvider lp = (IItemLabelProvider) factory.adapt(thisObject, IItemLabelProvider.class);
 			return lp.getText(thisObject);
 		}
 
+		@Override
 		public String getId(Object thisObject) {
 			return getDisplayName(thisObject);
 		}
@@ -68,6 +70,7 @@ class ScaStructSequenceValuePropertyDescriptor extends ItemPropertyDescriptorDec
 			this.structSequenceProperty = property;
 		}
 
+		@Override
 		public List<IItemPropertyDescriptor> getPropertyDescriptors(Object object) {
 			if (itemPropertyDescriptors == null) {
 				itemPropertyDescriptors = new ArrayList<IItemPropertyDescriptor>();
@@ -103,6 +106,7 @@ class ScaStructSequenceValuePropertyDescriptor extends ItemPropertyDescriptorDec
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public Object getPropertyValue(final Object object) {
 
 		return new StructValuePropertySource(this.factory, (ScaStructSequenceProperty) object);
@@ -113,6 +117,7 @@ class ScaStructSequenceValuePropertyDescriptor extends ItemPropertyDescriptorDec
 		final IItemLabelProvider lp = super.getLabelProvider(thisObject);
 		return new IItemLabelProvider() {
 
+			@Override
 			public String getText(Object object) {
 				if (object instanceof StructValuePropertySource) {
 					return "";
@@ -120,6 +125,7 @@ class ScaStructSequenceValuePropertyDescriptor extends ItemPropertyDescriptorDec
 				return lp.getText(object);
 			}
 
+			@Override
 			public Object getImage(Object object) {
 				if (object instanceof StructValuePropertySource) {
 					return null;
@@ -139,6 +145,7 @@ class ScaStructSequenceValuePropertyDescriptor extends ItemPropertyDescriptorDec
 			} else {
 				ScaModelCommand.execute(eObject, new ScaModelCommand() {
 
+					@Override
 					public void execute() {
 						eObject.eSet(ScaPackage.Literals.SCA_STRUCT_SEQUENCE_PROPERTY__STRUCTS, value);
 					}

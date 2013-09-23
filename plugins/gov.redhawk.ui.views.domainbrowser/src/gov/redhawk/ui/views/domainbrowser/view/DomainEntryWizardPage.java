@@ -61,6 +61,7 @@ public class DomainEntryWizardPage extends WizardPage {
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public void createControl(final Composite parent) {
 		final Composite container = new Composite(parent, SWT.NONE);
 		final GridLayout gridLayout = new GridLayout(2, false);
@@ -78,6 +79,7 @@ public class DomainEntryWizardPage extends WizardPage {
 		// Add the domainName validator, needs to reference the initref
 		validator.setAfterConvertValidator(new IValidator() {
 
+			@Override
 			public IStatus validate(final Object value) {
 				try {
 					final String name = (String) value;
@@ -108,6 +110,7 @@ public class DomainEntryWizardPage extends WizardPage {
 		validator = new UpdateValueStrategy();
 		validator.setAfterConvertValidator(new IValidator() {
 
+			@Override
 			public IStatus validate(final Object value) {
 				try {
 					final String newValue = (String) value;

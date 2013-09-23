@@ -32,6 +32,7 @@ public class SadComponentInstantiationAdapterFactory implements IAdapterFactory 
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public Object getAdapter(final Object adaptableObject, @SuppressWarnings("rawtypes") final Class adapterType) {
 		if (adapterType == ScaComponent.class && adaptableObject instanceof SadComponentInstantiation) {
 			final SadComponentInstantiation compInst = (SadComponentInstantiation) adaptableObject;
@@ -60,6 +61,7 @@ public class SadComponentInstantiationAdapterFactory implements IAdapterFactory 
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public Class< ? >[] getAdapterList() {
 		return SadComponentInstantiationAdapterFactory.SUPPORTED_TYPES;
 	}

@@ -50,6 +50,7 @@ public class ScaWaveformExternalPortsItemProvider extends TransientItemProvider 
 		return overlayImage(object, getResourceLocator().getImage("full/obj16/ScaWaveformExternalPorts.gif"));
 	}
 	
+	@Override
 	public void notifyChanged(Notification notification) {
 		updateChildren(notification);
 

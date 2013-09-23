@@ -33,6 +33,7 @@ public class DataCharReceiver extends AbstractSriReceiver<dataCharOperations> im
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public void pushPacket(final char[] array, final PrecisionUTCTime time, final boolean endOfStream, final String streamID) {
 		if (!pushPacket(array.length, time, endOfStream, streamID)) {
 			return;

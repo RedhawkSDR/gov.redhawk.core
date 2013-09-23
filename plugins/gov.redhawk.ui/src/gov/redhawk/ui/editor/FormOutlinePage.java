@@ -209,6 +209,7 @@ public abstract class FormOutlinePage extends ScaOutlinePage {
 			return;
 		}
 		control.getDisplay().asyncExec(new Runnable() {
+			@Override
 			public void run() {
 				if (!FormOutlinePage.this.treeViewer.getControl().isDisposed()) {
 					FormOutlinePage.this.treeViewer.refresh();

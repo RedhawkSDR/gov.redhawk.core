@@ -159,6 +159,7 @@ public abstract class ScaPropertyContainerImpl< P extends org.omg.CORBA.Object, 
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public URI getProfileURI() {
 		return profileURI;
 	}
@@ -168,6 +169,7 @@ public abstract class ScaPropertyContainerImpl< P extends org.omg.CORBA.Object, 
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void setProfileURI(URI newProfileURI) {
 		URI oldProfileURI = profileURI;
 		profileURI = newProfileURI;
@@ -182,6 +184,7 @@ public abstract class ScaPropertyContainerImpl< P extends org.omg.CORBA.Object, 
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void unsetProfileURI() {
 		URI oldProfileURI = profileURI;
 		boolean oldProfileURIESet = profileURIESet;
@@ -196,6 +199,7 @@ public abstract class ScaPropertyContainerImpl< P extends org.omg.CORBA.Object, 
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public boolean isSetProfileURI() {
 		return profileURIESet;
 	}
@@ -205,6 +209,7 @@ public abstract class ScaPropertyContainerImpl< P extends org.omg.CORBA.Object, 
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	@SuppressWarnings("unchecked")
 	public E getProfileObj() {
 		if (profileObj != null && ((EObject)profileObj).eIsProxy()) {
@@ -232,6 +237,7 @@ public abstract class ScaPropertyContainerImpl< P extends org.omg.CORBA.Object, 
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void setProfileObj(E newProfileObj) {
 		E oldProfileObj = profileObj;
 		profileObj = newProfileObj;
@@ -246,6 +252,7 @@ public abstract class ScaPropertyContainerImpl< P extends org.omg.CORBA.Object, 
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void unsetProfileObj() {
 		E oldProfileObj = profileObj;
 		boolean oldProfileObjESet = profileObjESet;
@@ -260,6 +267,7 @@ public abstract class ScaPropertyContainerImpl< P extends org.omg.CORBA.Object, 
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public boolean isSetProfileObj() {
 		return profileObjESet;
 	}
@@ -292,6 +300,8 @@ public abstract class ScaPropertyContainerImpl< P extends org.omg.CORBA.Object, 
 	 * <!-- end-user-doc -->
 	 * @generated NOT
 	 */
+	@Deprecated
+	@Override
 	public IFileStore getRootFileStore() {
 		// END GENERATED CODE
 		try {
@@ -312,6 +322,7 @@ public abstract class ScaPropertyContainerImpl< P extends org.omg.CORBA.Object, 
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EList<ScaAbstractProperty<?>> getProperties() {
 		if (properties == null) {
 			properties = new EObjectContainmentEList.Unsettable<ScaAbstractProperty<?>>(ScaAbstractProperty.class, this, ScaPackage.SCA_PROPERTY_CONTAINER__PROPERTIES);
@@ -324,6 +335,7 @@ public abstract class ScaPropertyContainerImpl< P extends org.omg.CORBA.Object, 
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void unsetProperties() {
 		if (properties != null) ((InternalEList.Unsettable<?>)properties).unset();
 	}
@@ -333,6 +345,7 @@ public abstract class ScaPropertyContainerImpl< P extends org.omg.CORBA.Object, 
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public boolean isSetProperties() {
 		return properties != null && ((InternalEList.Unsettable<?>)properties).isSet();
 	}
@@ -340,6 +353,7 @@ public abstract class ScaPropertyContainerImpl< P extends org.omg.CORBA.Object, 
 	/**
 	 * @since 14.0
 	 */
+	@Override
 	public abstract void query(final PropertiesHolder configProperties) throws UnknownProperties;
 
 	/**
@@ -349,6 +363,7 @@ public abstract class ScaPropertyContainerImpl< P extends org.omg.CORBA.Object, 
 	 * @generated NOT
 	 * 
 	 */
+	@Override
 	public abstract E fetchProfileObject(IProgressMonitor monitor);
 
 	/**
@@ -357,6 +372,7 @@ public abstract class ScaPropertyContainerImpl< P extends org.omg.CORBA.Object, 
 	 * <!-- end-user-doc -->
 	 * @generated NOT
 	 */
+	@Override
 	public abstract URI fetchProfileURI(IProgressMonitor monitor);
 	
 	/**
@@ -528,6 +544,7 @@ public abstract class ScaPropertyContainerImpl< P extends org.omg.CORBA.Object, 
 	 * 
 	 * @generated NOT
 	 */
+	@Override
 	public EList<ScaAbstractProperty< ? >> fetchProperties(IProgressMonitor monitor){
 		// END GENERATED CODE
 		final SubMonitor subMonitor = SubMonitor.convert(monitor, 4);
@@ -559,6 +576,7 @@ public abstract class ScaPropertyContainerImpl< P extends org.omg.CORBA.Object, 
 		// BEGIN GENERATED CODE
 	}
 	
+	@Override
 	@Deprecated
 	public void fetchPropertyValues(IProgressMonitor monitor) throws InterruptedException {
 	    fetchProperties(monitor);
@@ -569,6 +587,7 @@ public abstract class ScaPropertyContainerImpl< P extends org.omg.CORBA.Object, 
 	 * 
 	 * @generated NOT
 	 */
+	@Override
 	public ScaAbstractProperty< ? > getProperty(String identifier) {
 		// END GENERATED CODE
 		for (ScaAbstractProperty< ? > prop : getProperties()) {
@@ -586,6 +605,7 @@ public abstract class ScaPropertyContainerImpl< P extends org.omg.CORBA.Object, 
 	 * <!-- end-user-doc -->
 	 * @generated NOT
 	 */
+	@Override
 	public abstract void configure(DataType[] configProperties) throws InvalidConfiguration, PartialConfiguration;
 
 	/**

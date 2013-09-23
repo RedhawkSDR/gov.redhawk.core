@@ -80,6 +80,7 @@ public class RedundantConnectionsProvider extends AbstractProvider implements ID
 		/**
 		 * {@inheritDoc}
 		 */
+		@Override
 		public void activate() {
 			refresh();
 		}
@@ -87,6 +88,7 @@ public class RedundantConnectionsProvider extends AbstractProvider implements ID
 		/**
 		 * {@inheritDoc}
 		 */
+		@Override
 		public void refresh() {
 			removeDecoration();
 			final View view = (View) getDecoratorTarget().getAdapter(View.class);
@@ -131,6 +133,7 @@ public class RedundantConnectionsProvider extends AbstractProvider implements ID
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public void createDecorators(final IDecoratorTarget decoratorTarget) {
 		final EditPart editPart = (EditPart) decoratorTarget.getAdapter(EditPart.class);
 		if (editPart instanceof GraphicalEditPart || editPart instanceof AbstractConnectionEditPart) {
@@ -155,6 +158,7 @@ public class RedundantConnectionsProvider extends AbstractProvider implements ID
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public boolean provides(final IOperation operation) {
 		if (!(operation instanceof CreateDecoratorsOperation)) {
 			return false;

@@ -72,6 +72,7 @@ public abstract class PathImpl extends EObjectImpl implements Path {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EList<URI> getDerivedPath() {
 		if (derivedPath == null) {
 			derivedPath = new EDataTypeUniqueEList<URI>(URI.class, this, LibraryPackage.PATH__DERIVED_PATH);

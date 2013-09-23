@@ -24,10 +24,12 @@ public class DomainTreeLabelProvider extends DecoratingLabelProvider implements 
 		super(provider, decorator);
 	}
 
+	@Override
 	public Image getColumnImage(final Object element, final int columnIndex) {
 		return super.getImage(element);
 	}
 
+	@Override
 	public String getColumnText(final Object element, final int columnIndex) {
 		if (element instanceof AttributeValueWrapperItemProvider) {
 			final AttributeValueWrapperItemProvider attr = (AttributeValueWrapperItemProvider) element;

@@ -33,6 +33,7 @@ public abstract class AbstractDataProvider implements IScaDataProvider {
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public void addPropertyChangeListener(PropertyChangeListener listener) {
 		propertyChangeSupport.addPropertyChangeListener(listener);
 	}
@@ -40,6 +41,7 @@ public abstract class AbstractDataProvider implements IScaDataProvider {
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public void removePropertyChangeListener(PropertyChangeListener listener) {
 		propertyChangeSupport.removePropertyChangeListener(listener);
 	}
@@ -47,6 +49,7 @@ public abstract class AbstractDataProvider implements IScaDataProvider {
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public void dispose() {
 		boolean oldDisposed = disposed;
 		this.disposed = true;
@@ -69,6 +72,7 @@ public abstract class AbstractDataProvider implements IScaDataProvider {
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public boolean isDisposed() {
 		return disposed;
 	}
@@ -76,6 +80,7 @@ public abstract class AbstractDataProvider implements IScaDataProvider {
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public void setEnabled(boolean enabled) {
 		if (this.enabled == enabled) {
 			return;
@@ -95,6 +100,7 @@ public abstract class AbstractDataProvider implements IScaDataProvider {
 		firePropertyChange(STATUS_PROPERTY, oldValue, this.status);
 	}
 	
+	@Override
 	public IStatus getStatus() {
 	    return this.status;
 	}
@@ -102,10 +108,12 @@ public abstract class AbstractDataProvider implements IScaDataProvider {
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public boolean isEnabled() {
 		return enabled && !isDisposed();
 	}
 	
+	@Override
 	public IStatus refresh(IProgressMonitor monitor) {
 	    return Status.OK_STATUS;
 	}

@@ -24,6 +24,7 @@ public class EmptyStringToNullConverter extends Converter {
 	    super(String.class, String.class);
     }
 
+	@Override
 	public Object convert(final Object value) {
 		if (value instanceof String && ((String) value).trim().equals(EMFEmptyStringToNullUpdateValueStrategy.EMPTY_STRING)) {
 			return null;

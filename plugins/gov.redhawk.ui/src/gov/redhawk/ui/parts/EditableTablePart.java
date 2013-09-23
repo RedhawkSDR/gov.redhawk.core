@@ -69,6 +69,7 @@ public class EditableTablePart extends TablePart {
 		/**
 		 * {@inheritDoc}
 		 */
+		@Override
 		public boolean canModify(final Object object, final String property) {
 			return true;
 		}
@@ -76,6 +77,7 @@ public class EditableTablePart extends TablePart {
 		/**
 		 * {@inheritDoc}
 		 */
+		@Override
 		public void modify(final Object object, final String property, final Object value) {
 			entryModified(object, value.toString());
 		}
@@ -83,6 +85,7 @@ public class EditableTablePart extends TablePart {
 		/**
 		 * {@inheritDoc}
 		 */
+		@Override
 		public Object getValue(final Object object, final String property) {
 			return object.toString();
 		}

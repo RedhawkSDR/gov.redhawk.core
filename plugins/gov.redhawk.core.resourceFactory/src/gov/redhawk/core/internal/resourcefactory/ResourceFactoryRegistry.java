@@ -53,6 +53,7 @@ public enum ResourceFactoryRegistry implements IResourceFactoryRegistry {
 	private final ResourceFactoryRegistryFileManager fileManager = new ResourceFactoryRegistryFileManager();
 	private final PropertyChangeListener listener = new PropertyChangeListener() {
 
+		@Override
 		public void propertyChange(PropertyChangeEvent evt) {
 			if (IResourceFactoryProvider.PROPERTY_RESOURCE_DESCRIPTORS.equals(evt.getPropertyName())) {
 				IResourceFactoryProvider provider = (IResourceFactoryProvider) evt.getSource();
@@ -100,6 +101,7 @@ public enum ResourceFactoryRegistry implements IResourceFactoryRegistry {
 			if (element.getName().equals(ResourceFactoryRegistry.ELM_PROVIDER)) {
 				SafeRunner.run(new ISafeRunnable() {
 
+					@Override
 					public void run() throws Exception {
 						try {
 							final IResourceFactoryProvider provider = (IResourceFactoryProvider) element.createExecutableExtension("class");
@@ -115,6 +117,7 @@ public enum ResourceFactoryRegistry implements IResourceFactoryRegistry {
 						}
 					}
 
+					@Override
 					public void handleException(Throwable exception) {
 						// TODO Auto-generated method stub
 
@@ -147,6 +150,7 @@ public enum ResourceFactoryRegistry implements IResourceFactoryRegistry {
 		pcs.firePropertyChange(PROP_RESOURCES, desc, null);
 	}
 
+	@Override
 	public void dispose() {
 		for (final IResourceFactoryProvider provider : this.providerRegistry) {
 			provider.dispose();
@@ -162,14 +166,17 @@ public enum ResourceFactoryRegistry implements IResourceFactoryRegistry {
 		}
 	}
 
+	@Override
 	public IFileManager getFileManager() {
 		return this.fileManager;
 	}
 
+	@Override
 	public ResourceDesc[] getResourceDescriptors() {
 		return registry.toArray(new ResourceDesc[registry.size()]);
 	}
 
+	@Override
 	public ResourceDesc getResourceDesc(final String profile) {
 		if (profile == null) {
 			return null;
@@ -177,14 +184,17 @@ public enum ResourceFactoryRegistry implements IResourceFactoryRegistry {
 		return fileManager.getResourceDesc(profile);
 	}
 
+	@Override
 	public void addListener(PropertyChangeListener listener) {
 		pcs.addPropertyChangeListener(listener);
 	}
 
+	@Override
 	public void removeListener(PropertyChangeListener listener) {
 		pcs.removePropertyChangeListener(listener);
 	}
 
+	@Override
 	public ResourceDesc getResourceDesc(String refID, String version) {
 		synchronized (registry) {
 			for (ResourceDesc desc : registry) {

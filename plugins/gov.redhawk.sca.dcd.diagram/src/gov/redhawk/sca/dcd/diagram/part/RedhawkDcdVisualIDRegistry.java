@@ -39,6 +39,7 @@ public enum RedhawkDcdVisualIDRegistry implements PartitioningVisualIDRegistry {
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public MAPPING_ID getMappingID(final View view) {
 		return getMappingID(getVisualID(view));
 	}
@@ -46,6 +47,7 @@ public enum RedhawkDcdVisualIDRegistry implements PartitioningVisualIDRegistry {
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public MAPPING_ID getMappingID(final String type) {
 		return getMappingID(getVisualID(type));
 	}
@@ -53,6 +55,7 @@ public enum RedhawkDcdVisualIDRegistry implements PartitioningVisualIDRegistry {
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public MAPPING_ID getMappingID(final int visualId) {
 		switch (visualId) {
 		case DcdComponentInstantiationEditPart.VISUAL_ID:
@@ -84,6 +87,7 @@ public enum RedhawkDcdVisualIDRegistry implements PartitioningVisualIDRegistry {
 		}
 	}
 
+	@Override
 	public int getVisualId(final MAPPING_ID mappingId) {
 		switch (mappingId) {
 		case ComponentInstantiationEditPart:
@@ -118,6 +122,7 @@ public enum RedhawkDcdVisualIDRegistry implements PartitioningVisualIDRegistry {
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public boolean canCreateNode(final View containerView, final int nodeVisualID) {
 		return DcdVisualIDRegistry.canCreateNode(containerView, nodeVisualID);
 	}
@@ -125,6 +130,7 @@ public enum RedhawkDcdVisualIDRegistry implements PartitioningVisualIDRegistry {
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public int getDiagramVisualID(final EObject domainElement) {
 		return DcdVisualIDRegistry.getDiagramVisualID(domainElement);
 	}
@@ -132,6 +138,7 @@ public enum RedhawkDcdVisualIDRegistry implements PartitioningVisualIDRegistry {
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public int getLinkWithClassVisualID(final EObject domainElement) {
 		return DcdVisualIDRegistry.getLinkWithClassVisualID(domainElement);
 	}
@@ -139,6 +146,7 @@ public enum RedhawkDcdVisualIDRegistry implements PartitioningVisualIDRegistry {
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public String getModelID(final View view) {
 		return DcdVisualIDRegistry.getModelID(view);
 	}
@@ -146,6 +154,7 @@ public enum RedhawkDcdVisualIDRegistry implements PartitioningVisualIDRegistry {
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public int getNodeVisualID(final View containerView, final EObject domainElement) {
 		return DcdVisualIDRegistry.getNodeVisualID(containerView, domainElement);
 	}
@@ -153,6 +162,7 @@ public enum RedhawkDcdVisualIDRegistry implements PartitioningVisualIDRegistry {
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public String getType(final int visualID) {
 		return DcdVisualIDRegistry.getType(visualID);
 	}
@@ -160,6 +170,7 @@ public enum RedhawkDcdVisualIDRegistry implements PartitioningVisualIDRegistry {
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public int getVisualID(final String type) {
 		return DcdVisualIDRegistry.getVisualID(type);
 	}
@@ -167,6 +178,7 @@ public enum RedhawkDcdVisualIDRegistry implements PartitioningVisualIDRegistry {
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public int getVisualID(final View view) {
 		return DcdVisualIDRegistry.getVisualID(view);
 	}
@@ -174,6 +186,7 @@ public enum RedhawkDcdVisualIDRegistry implements PartitioningVisualIDRegistry {
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public String getModelID() {
 		return DeviceConfigurationEditPart.MODEL_ID;
 	}

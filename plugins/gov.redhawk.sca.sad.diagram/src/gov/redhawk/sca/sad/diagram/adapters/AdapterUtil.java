@@ -32,6 +32,7 @@ final class AdapterUtil {
 	public static List<ScaComponent> safeFetchComponents(final ScaWaveform waveform) {
 		final Callable<List<ScaComponent>> callable = new Callable<List<ScaComponent>>() {
 
+			@Override
 			public List<ScaComponent> call() throws Exception {
 				return waveform.fetchComponents(null);
 			}
@@ -52,6 +53,7 @@ final class AdapterUtil {
 	public static List<ScaPort< ? , ? >> safeFetchPorts(final ScaComponent component) {
 		final Callable<List<ScaPort< ? , ? >>> callable = new Callable<List<ScaPort< ? , ? >>>() {
 
+			@Override
 			public List<ScaPort< ? , ? >> call() throws Exception {
 				return component.fetchPorts(null);
 			}

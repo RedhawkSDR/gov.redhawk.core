@@ -98,6 +98,7 @@ public class TestEnvirornment {
 		
 		execute(new ScaModelCommand() {
 
+			@Override
 			public void execute() {
 				((ScaDomainManagerImpl) domMgr).setOrbSession(session);
 			}
@@ -123,6 +124,7 @@ public class TestEnvirornment {
 		devMgrImpl.reset();
 		execute(new ScaModelCommand() {
 
+			@Override
 			public void execute() {
 				domMgr.unsetObj();
 				domMgr.unsetCorbaObj();

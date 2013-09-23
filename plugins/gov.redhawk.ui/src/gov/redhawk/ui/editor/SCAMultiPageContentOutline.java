@@ -67,6 +67,7 @@ public class SCAMultiPageContentOutline extends Page implements IContentOutlineP
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public void addSelectionChangedListener(final ISelectionChangedListener listener) {
 		this.listeners.add(listener);
 	}
@@ -124,6 +125,7 @@ public class SCAMultiPageContentOutline extends Page implements IContentOutlineP
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public ISelection getSelection() {
 		return this.selection;
 	}
@@ -147,6 +149,7 @@ public class SCAMultiPageContentOutline extends Page implements IContentOutlineP
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public void removeSelectionChangedListener(final ISelectionChangedListener listener) {
 		this.listeners.remove(listener);
 	}
@@ -154,6 +157,7 @@ public class SCAMultiPageContentOutline extends Page implements IContentOutlineP
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public void selectionChanged(final SelectionChangedEvent event) {
 		setSelection(event.getSelection());
 	}
@@ -262,6 +266,7 @@ public class SCAMultiPageContentOutline extends Page implements IContentOutlineP
 	 * 
 	 * @param selection the selection
 	 */
+	@Override
 	public void setSelection(final ISelection selection) {
 		this.selection = selection;
 		if (this.listeners == null) {

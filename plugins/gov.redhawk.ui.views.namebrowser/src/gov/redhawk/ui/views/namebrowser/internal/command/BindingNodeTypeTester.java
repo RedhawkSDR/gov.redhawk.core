@@ -32,6 +32,7 @@ public class BindingNodeTypeTester extends PropertyTester {
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public boolean test(final Object receiver, final String property, final Object[] args, final Object expectedValue) {
 		if (!(receiver instanceof BindingNode)) {
 			return false;

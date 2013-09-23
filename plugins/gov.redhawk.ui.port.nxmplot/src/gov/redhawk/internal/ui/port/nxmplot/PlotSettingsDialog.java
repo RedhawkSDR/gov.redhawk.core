@@ -122,6 +122,7 @@ public class PlotSettingsDialog extends Dialog {
 
 		final Combo fsCombo = this.frameSizeField.getCombo();
 		fsCombo.addModifyListener(new ComboVerifyAndSetListener(fsCombo, FRAME_SIZE_VALIDATOR, this) {
+			@Override
 			void updateSettings(Double newValue) {
 				Integer newIntValue = (newValue == null) ? null : newValue.intValue();
 				PlotSettingsDialog.this.plotSettings.setFrameSize(newIntValue);
@@ -155,6 +156,7 @@ public class PlotSettingsDialog extends Dialog {
 
 		final Combo sRateCombo = this.sampleRateField.getCombo();
 		sRateCombo.addModifyListener(new ComboVerifyAndSetListener(sRateCombo, SAMPLE_RATE_VALIDATOR, this) {
+			@Override
 			void updateSettings(Double newValue) {
 				PlotSettingsDialog.this.plotSettings.setSampleRate(newValue);
 			}
@@ -187,6 +189,7 @@ public class PlotSettingsDialog extends Dialog {
 
 		final Combo minValCombo = this.minField.getCombo();
 		minValCombo.addModifyListener(new ComboVerifyAndSetListener(minValCombo, MIN_VALUE_VALIDATOR, this) {
+			@Override
 			void updateSettings(Double newValue) {
 				PlotSettingsDialog.this.plotSettings.setMinValue(newValue);
 			}
@@ -219,6 +222,7 @@ public class PlotSettingsDialog extends Dialog {
 
 		final Combo maxValCombo = this.maxField.getCombo();
 		maxValCombo.addModifyListener(new ComboVerifyAndSetListener(maxValCombo, MAX_VALUE_VALIDATOR, this) {
+			@Override
 			void updateSettings(Double newValue) {
 				PlotSettingsDialog.this.plotSettings.setMaxValue(newValue);
 			}
@@ -250,6 +254,7 @@ public class PlotSettingsDialog extends Dialog {
 		this.plotTypeField.setInput(PlotType.values());
 		this.plotTypeField.setSelection(new StructuredSelection(this.plotSettings.getPlotType()));
 		this.plotTypeField.addSelectionChangedListener(new ISelectionChangedListener() {
+			@Override
 			public void selectionChanged(final SelectionChangedEvent event) {
 				Object newVal = ((IStructuredSelection) event.getSelection()).getFirstElement();
 				if (newVal instanceof PlotType) {
@@ -272,6 +277,7 @@ public class PlotSettingsDialog extends Dialog {
 			this.blockingOptionField.setSelection(new StructuredSelection(curBlockingOption));
 		}
 		this.blockingOptionField.addSelectionChangedListener(new ISelectionChangedListener() {
+			@Override
 			public void selectionChanged(final SelectionChangedEvent event) {
 				Object newVal = ((IStructuredSelection) event.getSelection()).getFirstElement();
 				if (newVal instanceof Boolean) {
@@ -356,6 +362,7 @@ public class PlotSettingsDialog extends Dialog {
 			this.combo = combo;
 		}
 
+		@Override
 		public void selectionChanged(final SelectionChangedEvent event) {
 			final String text = this.combo.getText();
 			final int textLen = (text == null) ? 0 : text.length();
@@ -377,6 +384,7 @@ public class PlotSettingsDialog extends Dialog {
 			this.settingsDialog = dialog;
 		}
 
+		@Override
 		public void modifyText(ModifyEvent e) {
 			final String text = this.combo.getText();
 			if (this.validator.isValid(text) == null) {

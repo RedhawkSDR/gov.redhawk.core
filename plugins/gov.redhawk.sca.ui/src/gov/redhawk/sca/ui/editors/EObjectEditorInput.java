@@ -41,6 +41,7 @@ public class EObjectEditorInput extends PlatformObject implements IEditorInput, 
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public boolean exists() {
 		return false;
 	}
@@ -48,6 +49,7 @@ public class EObjectEditorInput extends PlatformObject implements IEditorInput, 
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public ImageDescriptor getImageDescriptor() {
 		// TODO Auto-generated method stub
 		return null;
@@ -56,6 +58,7 @@ public class EObjectEditorInput extends PlatformObject implements IEditorInput, 
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public String getName() {
 		final Adapter adapter = EcoreUtil.getRegisteredAdapter(this.input, IItemLabelProvider.class);
 		if (adapter instanceof IItemLabelProvider) {
@@ -73,6 +76,7 @@ public class EObjectEditorInput extends PlatformObject implements IEditorInput, 
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public IPersistableElement getPersistable() {
 		// TODO Auto-generated method stub
 		return null;
@@ -81,6 +85,7 @@ public class EObjectEditorInput extends PlatformObject implements IEditorInput, 
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public String getToolTipText() {
 		return "";
 	}
@@ -92,6 +97,7 @@ public class EObjectEditorInput extends PlatformObject implements IEditorInput, 
 	/**
 	 * @since 8.0
 	 */
+	@Override
 	public URI getURI() {
 		if (this.input != null && this.input.eResource() != null && this.input.eResource().getURI() != null) {
 			try {

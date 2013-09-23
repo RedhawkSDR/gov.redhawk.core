@@ -204,6 +204,7 @@ public abstract class ScaAbstractComponentImpl< R extends Resource > extends Sca
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EList<ScaPort<?, ?>> getPorts() {
 		if (ports == null) {
 			ports = new EObjectContainmentWithInverseEList.Unsettable<ScaPort<?, ?>>(ScaPort.class, this, ScaPackage.SCA_ABSTRACT_COMPONENT__PORTS, ScaPackage.SCA_PORT__PORT_CONTAINER);
@@ -216,6 +217,7 @@ public abstract class ScaAbstractComponentImpl< R extends Resource > extends Sca
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void unsetPorts() {
 		if (ports != null) ((InternalEList.Unsettable<?>)ports).unset();
 	}
@@ -225,6 +227,7 @@ public abstract class ScaAbstractComponentImpl< R extends Resource > extends Sca
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public boolean isSetPorts() {
 		return ports != null && ((InternalEList.Unsettable<?>)ports).isSet();
 	}
@@ -234,6 +237,7 @@ public abstract class ScaAbstractComponentImpl< R extends Resource > extends Sca
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public String getIdentifier() {
 		return identifier;
 	}
@@ -243,6 +247,7 @@ public abstract class ScaAbstractComponentImpl< R extends Resource > extends Sca
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void setIdentifier(String newIdentifier) {
 		String oldIdentifier = identifier;
 		identifier = newIdentifier;
@@ -257,6 +262,7 @@ public abstract class ScaAbstractComponentImpl< R extends Resource > extends Sca
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void unsetIdentifier() {
 		String oldIdentifier = identifier;
 		boolean oldIdentifierESet = identifierESet;
@@ -271,6 +277,7 @@ public abstract class ScaAbstractComponentImpl< R extends Resource > extends Sca
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public boolean isSetIdentifier() {
 		return identifierESet;
 	}
@@ -280,6 +287,7 @@ public abstract class ScaAbstractComponentImpl< R extends Resource > extends Sca
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public Boolean getStarted() {
 		return started;
 	}
@@ -289,6 +297,7 @@ public abstract class ScaAbstractComponentImpl< R extends Resource > extends Sca
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void setStarted(Boolean newStarted) {
 		Boolean oldStarted = started;
 		started = newStarted;
@@ -303,6 +312,7 @@ public abstract class ScaAbstractComponentImpl< R extends Resource > extends Sca
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void unsetStarted() {
 		Boolean oldStarted = started;
 		boolean oldStartedESet = startedESet;
@@ -317,6 +327,7 @@ public abstract class ScaAbstractComponentImpl< R extends Resource > extends Sca
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public boolean isSetStarted() {
 		return startedESet;
 	}
@@ -329,6 +340,7 @@ public abstract class ScaAbstractComponentImpl< R extends Resource > extends Sca
 	 * <!-- end-user-doc -->
 	 * @generated NOT
 	 */
+	@Override
 	public String fetchIdentifier(IProgressMonitor monitor) {
 		// END GENERATED CODE
 		if (isSetIdentifier()) {
@@ -364,6 +376,7 @@ public abstract class ScaAbstractComponentImpl< R extends Resource > extends Sca
 	 * <!-- end-user-doc -->
 	 * @generated NOT
 	 */
+	@Override
 	public Boolean fetchStarted(IProgressMonitor monitor) {
 		// END GENERATED CODE
 		SubMonitor subMonitor = SubMonitor.convert(monitor, "Fetching Started", 3);
@@ -394,12 +407,14 @@ public abstract class ScaAbstractComponentImpl< R extends Resource > extends Sca
 		// BEGIN GENERATED CODE
 	}
 
+	@Override
 	public String identifier() {
 		// END GENERATED CODE
 		return this.getIdentifier();
 		// BEGIN GENERATED CODE
 	}
 
+	@Override
 	public boolean started() {
 		Boolean retVal = getStarted();
 		if (retVal == null) {
@@ -408,6 +423,7 @@ public abstract class ScaAbstractComponentImpl< R extends Resource > extends Sca
 		return retVal;
 	}
 
+	@Override
 	public void start() throws StartError {
 		// END GENERATED CODE
 		R resource = fetchNarrowedObject(null);
@@ -419,6 +435,7 @@ public abstract class ScaAbstractComponentImpl< R extends Resource > extends Sca
 		// BEGIN GENERATED CODE
 	}
 
+	@Override
 	public void stop() throws StopError {
 		// END GENERATED CODE
 		R resource = fetchNarrowedObject(null);
@@ -430,6 +447,7 @@ public abstract class ScaAbstractComponentImpl< R extends Resource > extends Sca
 		// BEGIN GENERATED CODE
 	}
 
+	@Override
 	public void initialize() throws InitializeError {
 		// END GENERATED CODE
 		R resource = fetchNarrowedObject(null);
@@ -441,6 +459,7 @@ public abstract class ScaAbstractComponentImpl< R extends Resource > extends Sca
 		// BEGIN GENERATED CODE
 	}
 
+	@Override
 	public void releaseObject() throws ReleaseError {
 		// END GENERATED CODE
 		R resource = fetchNarrowedObject(null);
@@ -450,6 +469,7 @@ public abstract class ScaAbstractComponentImpl< R extends Resource > extends Sca
 		}
 		Command command = new ScaModelCommand() {
 
+			@Override
 			public void execute() {
 				EcoreUtil.delete(ScaAbstractComponentImpl.this);
 			}
@@ -661,6 +681,7 @@ public abstract class ScaAbstractComponentImpl< R extends Resource > extends Sca
 	/**
 	 * @since 14.0
 	 */
+	@Override
 	public void runTest(final int testid, final PropertiesHolder testValues) throws UnknownTest, UnknownProperties {
 		// END GENERATED CODE
 		R resource = fetchNarrowedObject(null);
@@ -671,6 +692,7 @@ public abstract class ScaAbstractComponentImpl< R extends Resource > extends Sca
 		// BEGIN GENERATED CODE
 	}
 
+	@Override
 	public void configure(final DataType[] configProperties) throws InvalidConfiguration, PartialConfiguration {
 		// END GENERATED CODE
 		R resource = fetchNarrowedObject(null);
@@ -682,6 +704,7 @@ public abstract class ScaAbstractComponentImpl< R extends Resource > extends Sca
 		// BEGIN GENERATED CODE
 	}
 
+	@Override
 	public void query(final PropertiesHolder configProperties) throws UnknownProperties {
 		// END GENERATED CODE
 		R resource = fetchNarrowedObject(null);
@@ -692,6 +715,7 @@ public abstract class ScaAbstractComponentImpl< R extends Resource > extends Sca
 		// BEGIN GENERATED CODE
 	}
 
+	@Override
 	public org.omg.CORBA.Object getPort(final String name) throws UnknownPort {
 		// END GENERATED CODE
 		R resource = fetchNarrowedObject(null);
@@ -709,12 +733,14 @@ public abstract class ScaAbstractComponentImpl< R extends Resource > extends Sca
 	 * @throws InterruptedException 
 	 * @generated NOT
 	 */
+	@Override
 	public EList<ScaPort< ? , ? >> fetchPorts(IProgressMonitor monitor) {
 		SubMonitor subMonitor = SubMonitor.convert(monitor, "Fetching ports", 2);
 		internalFetchPorts(subMonitor.newChild(1));
 		ScaPort< ? , ? >[] ports = null;
 		try {
 			ports = ScaModelCommand.runExclusive(this, new RunnableWithResult.Impl<ScaPort< ? , ? >[]>() {
+				@Override
 				public void run() {
 					setResult(getPorts().toArray(new ScaPort< ? , ? >[getPorts().size()]));
 					}
@@ -815,6 +841,7 @@ public abstract class ScaAbstractComponentImpl< R extends Resource > extends Sca
 	 * <!-- end-user-doc -->
 	 * @generated NOT
 	 */
+	@Override
 	public ScaPort< ? , ? > getScaPort(String name) {
 		// END GENERATED CODE
 		for (ScaPort< ? , ? > port : getPorts()) {

@@ -104,6 +104,7 @@ public class ScaDeviceTest extends ScaAbstractComponentTest {
 
 		ScaModelCommand.execute(this.env.getDomMgr(), new ScaModelCommand() {
 
+			@Override
 			public void execute() {
 				final ScaDevice< ? > device = ScaDeviceTest.this.env.getDomMgr().getDevice(ScaTestConstaints.DCE_GPP_DEVICE);
 				Assert.assertNotNull(device);
@@ -132,6 +133,7 @@ public class ScaDeviceTest extends ScaAbstractComponentTest {
 		Assert.assertEquals(initialSize, getFixture().getPorts().size());
 		ScaModelCommand.execute(getFixture(), new ScaModelCommand() {
 
+			@Override
 			public void execute() {
 				getFixture().unsetPorts();
 				Assert.assertEquals(0, getFixture().getPorts().size());
@@ -489,6 +491,7 @@ public class ScaDeviceTest extends ScaAbstractComponentTest {
 		}
 		ScaModelCommand.execute(getFixture(), new ScaModelCommand() {
 
+			@Override
 			public void execute() {
 
 				Assert.assertEquals(numChildren[0], getFixture().getChildDevices().size());
@@ -497,6 +500,7 @@ public class ScaDeviceTest extends ScaAbstractComponentTest {
 		getFixture().fetchAggregateDevices(null);
 		ScaModelCommand.execute(getFixture(), new ScaModelCommand() {
 
+			@Override
 			public void execute() {
 				Assert.assertEquals(numChildren[0], getFixture().getChildDevices().size());
 				getFixture().unsetChildDevices();

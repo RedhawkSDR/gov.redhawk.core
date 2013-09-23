@@ -37,6 +37,7 @@ public class EDataTypeUpdateValueStrategy extends EMFUpdateValueStrategy {
 				final EDataType eDataType = this.type;
 				final EFactory eFactory = eDataType.getEPackage().getEFactoryInstance();
 				return new Converter(fromType, toType) {
+					@Override
 					public Object convert(Object fromObject) {
 						String value = (fromObject == null) ? null : fromObject.toString();
 						if (eAttribute.isMany()) {
@@ -59,6 +60,7 @@ public class EDataTypeUpdateValueStrategy extends EMFUpdateValueStrategy {
 				final EDataType eDataType = this.type;
 				final EFactory eFactory = eDataType.getEPackage().getEFactoryInstance();
 				return new Converter(fromType, toType) {
+					@Override
 					public Object convert(Object fromObject) {
 						if (eAttribute.isMany()) {
 							StringBuilder result = new StringBuilder();

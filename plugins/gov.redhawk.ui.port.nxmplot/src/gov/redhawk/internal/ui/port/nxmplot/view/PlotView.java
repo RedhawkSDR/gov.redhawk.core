@@ -186,18 +186,22 @@ public class PlotView extends ViewPart {
 	private class PlotSelectionProvider implements ISelectionProvider {
 		private final Set<ISelectionChangedListener> listeners = new HashSet<ISelectionChangedListener>();
 
+		@Override
 		public void addSelectionChangedListener(final ISelectionChangedListener listener) {
 			this.listeners.add(listener);
 		}
 
+		@Override
 		public ISelection getSelection() {
 			return new StructuredSelection(getActiveSRI());
 		}
 
+		@Override
 		public void removeSelectionChangedListener(final ISelectionChangedListener listener) {
 			this.listeners.remove(listener);
 		}
 
+		@Override
 		public void setSelection(final ISelection selection) {
 			// Do nothing
 		}
@@ -230,10 +234,12 @@ public class PlotView extends ViewPart {
 
 		this.plotFolder.addSelectionListener(new SelectionListener() {
 
+			@Override
 			public void widgetDefaultSelected(final SelectionEvent e) {
 				widgetSelected(e);
 			}
 
+			@Override
 			public void widgetSelected(final SelectionEvent e) {
 				updateRasterButton();
 			}
@@ -401,6 +407,7 @@ public class PlotView extends ViewPart {
 		if (spectralPlots != null) {
 			// Add listeners to make sure we clean up properly
 			newTab.addDisposeListener(new DisposeListener() {
+				@Override
 				public void widgetDisposed(final DisposeEvent e) {
 					if (!spectralPlots.isDisposed()) {
 						spectralPlots.dispose();
@@ -410,10 +417,12 @@ public class PlotView extends ViewPart {
 			});
 			spectralPlots.addDisposeListener(new DisposeListener() {
 
+				@Override
 				public void widgetDisposed(final DisposeEvent e) {
 					if (port != null) {
 						ScaModelCommand.execute(port, new ScaModelCommand() {
 
+							@Override
 							public void execute() {
 								port.eAdapters().remove(PlotView.this.portListener);
 							}
@@ -438,6 +447,7 @@ public class PlotView extends ViewPart {
 		if (port != null && !port.eAdapters().contains(this.portListener)) {
 			ScaModelCommand.execute(port, new ScaModelCommand() {
 
+				@Override
 				public void execute() {
 					port.eAdapters().add(PlotView.this.portListener);
 				}

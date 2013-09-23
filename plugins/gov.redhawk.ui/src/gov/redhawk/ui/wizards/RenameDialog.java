@@ -161,6 +161,7 @@ public class RenameDialog extends SelectionStatusDialog {
 
 		this.renameText = new Text(container, SWT.SINGLE | SWT.BORDER);
 		this.renameText.addModifyListener(new ModifyListener() {
+			@Override
 			public void modifyText(final ModifyEvent e) {
 				textChanged(RenameDialog.this.renameText.getText());
 			}

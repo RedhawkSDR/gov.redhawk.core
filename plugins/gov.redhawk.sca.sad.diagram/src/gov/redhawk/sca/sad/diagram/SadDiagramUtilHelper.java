@@ -32,30 +32,37 @@ public enum SadDiagramUtilHelper implements IDiagramUtilHelper {
 	public static final String SAD_FILE_EXTENSION = SadPackage.FILE_EXTENSION;
 	public static final String SAD_DIAGRAM_FILE_EXTENSION = ".sad_diagramV2"; //$NON-NLS-1$
 
+	@Override
 	public String getDiagramFileExtension() {
 		return SadDiagramUtilHelper.SAD_DIAGRAM_FILE_EXTENSION;
 	}
 
+	@Override
 	public Map< ? , ? > getSaveOptions() {
 		return SadDiagramEditorUtil.getSaveOptions();
 	}
 
+	@Override
 	public String getModelId() {
 		return mil.jpeojtrs.sca.sad.diagram.edit.parts.SoftwareAssemblyEditPart.MODEL_ID;
 	}
 
+	@Override
 	public PreferencesHint getDiagramPreferencesHint() {
 		return SadDiagramEditorPlugin.DIAGRAM_PREFERENCES_HINT;
 	}
 
+	@Override
 	public EObject getRootDiagramObject(final Resource resource) {
 		return SoftwareAssembly.Util.getSoftwareAssembly(resource);
 	}
 
+	@Override
 	public String getSemanticFileExtension() {
 		return SadDiagramUtilHelper.SAD_FILE_EXTENSION;
 	}
 
+	@Override
 	public IFile getResource(final Resource resource) {
 		return ModelUtil.getResource(resource);
 	}

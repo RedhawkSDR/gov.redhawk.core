@@ -88,6 +88,7 @@ public class ScaExecutableDeviceImpl extends ScaLoadableDeviceImpl<ExecutableDev
 	/**
 	 * @since 14.0
 	 */
+	@Override
 	public int execute(final String name, final DataType[] options, final DataType[] parameters) throws InvalidState, InvalidFunction, InvalidParameters,
 	        InvalidOptions, InvalidFileName, ExecuteFail {
 		// END GENERATED CODE
@@ -99,6 +100,7 @@ public class ScaExecutableDeviceImpl extends ScaLoadableDeviceImpl<ExecutableDev
 		// BEGIN GENERATED CODE
 	}
 
+	@Override
 	public void terminate(final int processId) throws InvalidProcess, InvalidState {
 		// END GENERATED CODE
 		ExecutableDevice device = fetchNarrowedObject(null);

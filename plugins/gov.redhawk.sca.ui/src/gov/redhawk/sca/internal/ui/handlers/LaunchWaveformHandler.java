@@ -57,6 +57,7 @@ public class LaunchWaveformHandler extends AbstractHandler implements IHandler {
 	 * {@inheritDoc}
 	 */
 
+	@Override
 	public Object execute(final ExecutionEvent event) throws ExecutionException {
 		final ISelection sel = HandlerUtil.getActiveMenuSelection(event);
 		HandlerUtil.getActiveWorkbenchWindow(event).getActivePage();

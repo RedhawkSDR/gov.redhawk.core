@@ -116,6 +116,7 @@ public class ComboCellEditorEx extends ComboBoxCellEditor {
 		final CCombo retVal = (CCombo) super.createControl(parent);
 		retVal.addModifyListener(new ModifyListener() {
 
+			@Override
 			public void modifyText(final ModifyEvent e) {
 				valueChanged(isValueValid(), isCorrect(retVal.getText()));
 			}

@@ -34,10 +34,12 @@ import org.eclipse.gmf.runtime.notation.View;
 public enum RedhawkSadVisualIdRegistry implements PartitioningVisualIDRegistry {
 	INSTANCE;
 
+	@Override
 	public MAPPING_ID getMappingID(final View view) {
 		return getMappingID(getVisualID(view));
 	}
 
+	@Override
 	public MAPPING_ID getMappingID(final int visualId) {
 		switch (visualId) {
 		case SadComponentInstantiationEditPart.VISUAL_ID:
@@ -70,6 +72,7 @@ public enum RedhawkSadVisualIdRegistry implements PartitioningVisualIDRegistry {
 		}
 	}
 
+	@Override
 	public int getVisualId(final MAPPING_ID mappingId) {
 		switch (mappingId) {
 		case ComponentInstantiationEditPart:
@@ -101,42 +104,52 @@ public enum RedhawkSadVisualIdRegistry implements PartitioningVisualIDRegistry {
 		}
 	}
 
+	@Override
 	public MAPPING_ID getMappingID(final String semanticHint) {
 		return getMappingID(getVisualID(semanticHint));
 	}
 
+	@Override
 	public boolean canCreateNode(final View containerView, final int nodeVisualID) {
 		return SadVisualIDRegistry.canCreateNode(containerView, nodeVisualID);
 	}
 
+	@Override
 	public int getDiagramVisualID(final EObject domainElement) {
 		return SadVisualIDRegistry.getDiagramVisualID(domainElement);
 	}
 
+	@Override
 	public int getLinkWithClassVisualID(final EObject domainElement) {
 		return SadVisualIDRegistry.getLinkWithClassVisualID(domainElement);
 	}
 
+	@Override
 	public String getModelID(final View view) {
 		return SadVisualIDRegistry.getModelID(view);
 	}
 
+	@Override
 	public int getNodeVisualID(final View containerView, final EObject domainElement) {
 		return SadVisualIDRegistry.getNodeVisualID(containerView, domainElement);
 	}
 
+	@Override
 	public String getType(final int visualID) {
 		return SadVisualIDRegistry.getType(visualID);
 	}
 
+	@Override
 	public int getVisualID(final String type) {
 		return SadVisualIDRegistry.getVisualID(type);
 	}
 
+	@Override
 	public int getVisualID(final View view) {
 		return SadVisualIDRegistry.getVisualID(view);
 	}
 
+	@Override
 	public String getModelID() {
 		return SoftwareAssemblyEditPart.MODEL_ID;
 	}

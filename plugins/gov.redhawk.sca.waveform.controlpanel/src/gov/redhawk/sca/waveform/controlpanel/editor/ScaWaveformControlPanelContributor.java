@@ -107,6 +107,7 @@ public class ScaWaveformControlPanelContributor extends EditorActionBarContribut
 	private void createActions() {
 		// TODO Create any actions
 		sampleAction = new Action() {
+			@Override
 			public void run() {
 				MessageDialog.openInformation(null, "TestWaveform", "Sample Action Executed");
 			}
@@ -121,6 +122,7 @@ public class ScaWaveformControlPanelContributor extends EditorActionBarContribut
 		releaseAction = new ReleaseAction();
 	}
 	
+	@Override
 	public void contributeToMenu(IMenuManager manager) {
 		// TODO Contribute Actions to the Workbench Menu
 		IMenuManager menu = new MenuManager("Editor &Menu");
@@ -128,6 +130,7 @@ public class ScaWaveformControlPanelContributor extends EditorActionBarContribut
 		menu.add(sampleAction);
 	}
 	
+	@Override
 	public void contributeToToolBar(IToolBarManager manager) {
 		// TODO Contribute Actions to the Tool Bar
 		manager.add(startAction);

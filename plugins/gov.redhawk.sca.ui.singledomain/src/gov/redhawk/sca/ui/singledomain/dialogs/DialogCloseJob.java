@@ -45,6 +45,7 @@ public class DialogCloseJob extends Job {
 				 */
 				dialog.getShell().getDisplay().syncExec(new Runnable() {
 
+					@Override
 					public void run() {
 						if (dialog.getShell() != null && !dialog.getShell().isDisposed()) {
 							mouseLoc = dialog.getShell().getDisplay().getCursorLocation();
@@ -56,6 +57,7 @@ public class DialogCloseJob extends Job {
 				if (dialogLoc != null && !dialogLoc.contains(mouseLoc)) {
 					dialog.getShell().getDisplay().asyncExec(new Runnable() {
 
+						@Override
 						public void run() {
 							dialog.hide();
 						}

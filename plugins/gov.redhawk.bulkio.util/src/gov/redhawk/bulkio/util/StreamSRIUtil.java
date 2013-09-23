@@ -18,6 +18,8 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import org.eclipse.jdt.annotation.NonNull;
+
 import mil.jpeojtrs.sca.util.AnyUtils;
 import BULKIO.StreamSRI;
 import CF.DataType;
@@ -30,6 +32,8 @@ public final class StreamSRIUtil {
 
 	}
 
+	@SuppressWarnings("null")
+	@NonNull
 	public static Map<String, Object> toMap(DataType[] dataTypes) {
 		if (dataTypes == null || dataTypes.length == 0) {
 			return Collections.emptyMap();
@@ -51,6 +55,8 @@ public final class StreamSRIUtil {
 		return retVal;
 	}
 
+	@SuppressWarnings("null")
+	@NonNull
 	public static Map<String, Object> extractKeyWords(StreamSRI sri) {
 		if (sri == null) {
 			return Collections.emptyMap();

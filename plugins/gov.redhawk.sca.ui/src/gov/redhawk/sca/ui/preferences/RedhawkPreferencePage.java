@@ -20,6 +20,7 @@ import org.eclipse.ui.IWorkbenchPreferencePage;
 public class RedhawkPreferencePage extends FieldEditorPreferencePage implements IWorkbenchPreferencePage {
 	public static final String PREFERENCES_PAGE_ID = "gov.redhawk.ui.preferences";
 
+	@Override
 	public void init(final IWorkbench workbench) {
 		setPreferenceStore(ScaUiPlugin.getDefault().getPreferenceStore());
 	}

@@ -58,14 +58,17 @@ public class DeferredAdapterSwitch extends ScaSwitch<IDeferredAdapter> {
 			this.refreshable = refreshable;
 		}
 
+		@Override
 		public boolean isContainer() {
 	        return true;
         }
 
+		@Override
 		public boolean isSet() {
 	        return false;
         }
 
+		@Override
 		public void fetchDeferredChildren(IProgressMonitor monitor) {
 			try {
 	            refreshable.refresh(monitor, RefreshDepth.CHILDREN);
@@ -88,6 +91,7 @@ public class DeferredAdapterSwitch extends ScaSwitch<IDeferredAdapter> {
 	@Override
 	public IDeferredAdapter caseScaUsesPort(final ScaUsesPort object) {
 		return new DeferredAdapter(object) {
+			@Override
 			public boolean isContainer() {
 				return object._is_a(QueryablePortHelper.id());
 			}
@@ -98,14 +102,17 @@ public class DeferredAdapterSwitch extends ScaSwitch<IDeferredAdapter> {
 	public IDeferredAdapter caseScaFileStore(final ScaFileStore object) {
 		return new IDeferredAdapter() {
 
+			@Override
 			public boolean isSet() {
 				return object.isSetChildren();
 			}
 
+			@Override
 			public boolean isContainer() {
 				return object.isDirectory();
 			}
 
+			@Override
 			public void fetchDeferredChildren(final IProgressMonitor monitor) {
 				object.fetchChildren(monitor);
 			}
@@ -130,15 +137,18 @@ public class DeferredAdapterSwitch extends ScaSwitch<IDeferredAdapter> {
 	public IDeferredAdapter caseScaDeviceManagersContainerItemProvider(final ScaDeviceManagersContainerItemProvider object) {
 		return new IDeferredAdapter() {
 
+			@Override
 			public boolean isContainer() {
 				return true;
 			}
 
+			@Override
 			public boolean isSet() {
 				final ScaDomainManager domMgr = (ScaDomainManager) object.getParent(null);
 				return domMgr.isSetDeviceManagers();
 			}
 
+			@Override
 			public void fetchDeferredChildren(final IProgressMonitor monitor) {
 				final ScaDomainManager domMgr = (ScaDomainManager) object.getParent(null);
 				domMgr.fetchDeviceManagers(monitor);
@@ -150,15 +160,18 @@ public class DeferredAdapterSwitch extends ScaSwitch<IDeferredAdapter> {
 	public IDeferredAdapter caseScaWaveformFactoriesContainerItemProvider(final ScaWaveformFactoriesContainerItemProvider object) {
 		return new IDeferredAdapter() {
 
+			@Override
 			public boolean isContainer() {
 				return true;
 			}
 
+			@Override
 			public boolean isSet() {
 				final ScaDomainManager domMgr = (ScaDomainManager) object.getParent(null);
 				return domMgr.isSetWaveformFactories();
 			}
 
+			@Override
 			public void fetchDeferredChildren(final IProgressMonitor monitor) {
 				final ScaDomainManager domMgr = (ScaDomainManager) object.getParent(null);
 				domMgr.fetchWaveformFactories(monitor);
@@ -170,15 +183,18 @@ public class DeferredAdapterSwitch extends ScaSwitch<IDeferredAdapter> {
 	public IDeferredAdapter caseScaWaveformsContainerItemProvider(final ScaWaveformsContainerItemProvider object) {
 		return new IDeferredAdapter() {
 
+			@Override
 			public boolean isContainer() {
 				return true;
 			}
 
+			@Override
 			public boolean isSet() {
 				final ScaDomainManager domMgr = (ScaDomainManager) object.getParent(null);
 				return domMgr.isSetWaveforms();
 			}
 
+			@Override
 			public void fetchDeferredChildren(final IProgressMonitor monitor) {
 				final ScaDomainManager domMgr = (ScaDomainManager) object.getParent(null);
 				domMgr.fetchWaveforms(monitor);

@@ -374,6 +374,7 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EList<ScaWaveformFactory> getWaveformFactories() {
 		if (waveformFactories == null) {
 			waveformFactories = new EObjectContainmentWithInverseEList.Unsettable<ScaWaveformFactory>(ScaWaveformFactory.class, this, ScaPackage.SCA_DOMAIN_MANAGER__WAVEFORM_FACTORIES, ScaPackage.SCA_WAVEFORM_FACTORY__DOM_MGR);
@@ -386,6 +387,7 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void unsetWaveformFactories() {
 		if (waveformFactories != null) ((InternalEList.Unsettable<?>)waveformFactories).unset();
 	}
@@ -395,6 +397,7 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public boolean isSetWaveformFactories() {
 		return waveformFactories != null && ((InternalEList.Unsettable<?>)waveformFactories).isSet();
 	}
@@ -404,6 +407,7 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EList<ScaWaveform> getWaveforms() {
 		if (waveforms == null) {
 			waveforms = new EObjectContainmentWithInverseEList.Unsettable<ScaWaveform>(ScaWaveform.class, this, ScaPackage.SCA_DOMAIN_MANAGER__WAVEFORMS, ScaPackage.SCA_WAVEFORM__DOM_MGR);
@@ -416,6 +420,7 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void unsetWaveforms() {
 		if (waveforms != null) ((InternalEList.Unsettable<?>)waveforms).unset();
 	}
@@ -425,6 +430,7 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public boolean isSetWaveforms() {
 		return waveforms != null && ((InternalEList.Unsettable<?>)waveforms).isSet();
 	}
@@ -434,6 +440,7 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EList<ScaDeviceManager> getDeviceManagers() {
 		if (deviceManagers == null) {
 			deviceManagers = new EObjectContainmentWithInverseEList.Unsettable<ScaDeviceManager>(ScaDeviceManager.class, this, ScaPackage.SCA_DOMAIN_MANAGER__DEVICE_MANAGERS, ScaPackage.SCA_DEVICE_MANAGER__DOM_MGR);
@@ -446,6 +453,7 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void unsetDeviceManagers() {
 		if (deviceManagers != null) ((InternalEList.Unsettable<?>)deviceManagers).unset();
 	}
@@ -455,6 +463,7 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public boolean isSetDeviceManagers() {
 		return deviceManagers != null && ((InternalEList.Unsettable<?>)deviceManagers).isSet();
 	}
@@ -464,6 +473,7 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public ScaDomainManagerFileSystem getFileManager() {
 		return fileManager;
 	}
@@ -490,6 +500,7 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void setFileManager(ScaDomainManagerFileSystem newFileManager) {
 		if (newFileManager != fileManager) {
 			NotificationChain msgs = null;
@@ -530,6 +541,7 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void unsetFileManager() {
 		if (fileManager != null) {
 			NotificationChain msgs = null;
@@ -550,6 +562,7 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public boolean isSetFileManager() {
 		return fileManagerESet;
 	}
@@ -559,6 +572,7 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public Properties getConnectionPropertiesContainer() {
 		if (connectionPropertiesContainer != null && connectionPropertiesContainer.eIsProxy()) {
 			InternalEObject oldConnectionPropertiesContainer = (InternalEObject)connectionPropertiesContainer;
@@ -606,6 +620,7 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void setConnectionPropertiesContainer(Properties newConnectionPropertiesContainer) {
 		if (newConnectionPropertiesContainer != connectionPropertiesContainer) {
 			NotificationChain msgs = null;
@@ -655,6 +670,7 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 		}
 		EXECUTOR_POOL.submit(new Runnable() {
 
+			@Override
 			public void run() {
 				try {
 					session.dispose();
@@ -672,6 +688,7 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 	 * <!-- end-user-doc -->
 	 * @generated NOT
 	 */
+	@Override
 	public EMap<String, String> getConnectionProperties() {
 		// END GENERATED CODE
 		return getConnectionPropertiesContainer().getProperty();
@@ -683,6 +700,7 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public boolean isAutoConnect() {
 		return autoConnect;
 	}
@@ -692,6 +710,7 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void setAutoConnect(boolean newAutoConnect) {
 		boolean oldAutoConnect = autoConnect;
 		autoConnect = newAutoConnect;
@@ -704,6 +723,7 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 	 * 
 	 * @generated NOT
 	 */
+	@Override
 	public boolean isConnected() {
 		// END GENERATED CODE
 		return getState() == DomainConnectionState.CONNECTED;
@@ -715,6 +735,7 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public String getIdentifier() {
 		return identifier;
 	}
@@ -724,6 +745,7 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void setIdentifier(String newIdentifier) {
 		String oldIdentifier = identifier;
 		identifier = newIdentifier;
@@ -738,6 +760,7 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void unsetIdentifier() {
 		String oldIdentifier = identifier;
 		boolean oldIdentifierESet = identifierESet;
@@ -752,6 +775,7 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public boolean isSetIdentifier() {
 		return identifierESet;
 	}
@@ -761,6 +785,7 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public String getName() {
 		return name;
 	}
@@ -770,6 +795,7 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void setName(String newName) {
 		String oldName = name;
 		name = newName;
@@ -782,6 +808,7 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public NamingContextExt getRootContext() {
 		return rootContext;
 	}
@@ -791,6 +818,7 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void setRootContext(NamingContextExt newRootContext) {
 		NamingContextExt oldRootContext = rootContext;
 		rootContext = newRootContext;
@@ -805,6 +833,7 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void unsetRootContext() {
 		NamingContextExt oldRootContext = rootContext;
 		boolean oldRootContextESet = rootContextESet;
@@ -819,6 +848,7 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public boolean isSetRootContext() {
 		return rootContextESet;
 	}
@@ -828,6 +858,7 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public DomainConnectionState getState() {
 		return state;
 	}
@@ -863,6 +894,7 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 	 * 
 	 * @generated NOT
 	 */
+	@Override
 	public void setState(final DomainConnectionState newState) {
 		// END GENERATED CODE
 		final DomainConnectionState oldState = this.state;
@@ -880,6 +912,7 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public String getProfile() {
 		return profile;
 	}
@@ -889,6 +922,7 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void setProfile(String newProfile) {
 		String oldProfile = profile;
 		profile = newProfile;
@@ -903,6 +937,7 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void unsetProfile() {
 		String oldProfile = profile;
 		boolean oldProfileESet = profileESet;
@@ -917,6 +952,7 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public boolean isSetProfile() {
 		return profileESet;
 	}
@@ -949,6 +985,7 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 	 * 
 	 * @generated NOT
 	 */
+	@Override
 	public void connect(IProgressMonitor parentMonitor, RefreshDepth refreshDepth) throws DomainConnectionException {
 		// END GENERATED CODE
 		try {
@@ -979,6 +1016,7 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 			}
 
 			ScaModelCommand.execute(this, new ScaModelCommand() {
+				@Override
 				public void execute() {
 					setState(DomainConnectionState.CONNECTING);
 				}
@@ -1000,6 +1038,7 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 
 			command.append(new ScaModelCommand() {
 
+				@Override
 				public void execute() {
 					clearAllStatus();
 				}
@@ -1021,6 +1060,7 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 			final NamingContextExt newNamingContext = NamingContextExtHelper.narrow(objRef);
 			command.append(new ScaModelCommand() {
 
+				@Override
 				public void execute() {
 					setRootContext(newNamingContext);
 				}
@@ -1032,6 +1072,7 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 			final org.omg.CORBA.Object newCorbaObj = newNamingContext.resolve_str(domMgrName);
 			command.append(new ScaModelCommand() {
 
+				@Override
 				public void execute() {
 					setCorbaObj(newCorbaObj);
 					setState(DomainConnectionState.CONNECTED);
@@ -1059,6 +1100,7 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 		} catch (final Exception e) {
 			ScaModelCommand.execute(this, new ScaModelCommand() {
 
+				@Override
 				public void execute() {
 					setState(DomainConnectionState.FAILED);
 					reset();
@@ -1088,6 +1130,7 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 	 * <!-- end-user-doc -->
 	 * @generated NOT
 	 */
+	@Override
 	@Deprecated
 	public void connect(final IProgressMonitor parentMonitor) throws DomainConnectionException {
 		// END GENERATED CODE
@@ -1127,6 +1170,7 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 	 * 
 	 * @generated NOT
 	 */
+	@Override
 	public void disconnect() {
 		// END GENERATED CODE
 		ScaModelCommand.execute(this, new ScaModelCommand() {
@@ -1136,6 +1180,7 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 				return super.prepare() && getState() == DomainConnectionState.CONNECTED;
 			}
 
+			@Override
 			public void execute() {
 				internalDisconnect();
 			}
@@ -1150,11 +1195,13 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 	 * <!-- end-user-doc -->
 	 * @generated NOT
 	 */
+	@Override
 	public EList<ScaDeviceManager> fetchDeviceManagers(IProgressMonitor monitor) {
 		SubMonitor subMonitor = SubMonitor.convert(monitor, "Fetch Device Managers", 2);
 		internalFetchDeviceManagers(subMonitor.newChild(1));
 		ScaDeviceManager[] array = ScaModelCommandWithResult.execute(this, new ScaModelCommandWithResult<ScaDeviceManager[]>() {
 
+			@Override
 			public void execute() {
 				setResult(getDeviceManagers().toArray(new ScaDeviceManager[getDeviceManagers().size()]));
 			}
@@ -1213,11 +1260,13 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 	 * <!-- end-user-doc -->
 	 * @generated NOT
 	 */
+	@Override
 	public EList<ScaWaveformFactory> fetchWaveformFactories(IProgressMonitor monitor) {
 		SubMonitor subMonitor = SubMonitor.convert(monitor, "Fetch Waveform Factories", 2);
 		internalFetchWaveformFactories(subMonitor.newChild(1));
 		ScaWaveformFactory[] array = ScaModelCommandWithResult.execute(this, new ScaModelCommandWithResult<ScaWaveformFactory[]>() {
 
+			@Override
 			public void execute() {
 				setResult(getWaveformFactories().toArray(new ScaWaveformFactory[getWaveformFactories().size()]));
 			}
@@ -1275,11 +1324,13 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 	 * <!-- end-user-doc -->
 	 * @generated NOT
 	 */
+	@Override
 	public EList<ScaWaveform> fetchWaveforms(IProgressMonitor monitor) {
 		SubMonitor subMonitor = SubMonitor.convert(monitor, "Fetch Waveforms", 2);
 		internalFetchWaveforms(subMonitor.newChild(1));
 		ScaWaveform[] array = ScaModelCommandWithResult.execute(this, new ScaModelCommandWithResult<ScaWaveform[]>() {
 
+			@Override
 			public void execute() {
 				setResult(getWaveforms().toArray(new ScaWaveform[getWaveforms().size()]));
 			}
@@ -1339,6 +1390,7 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 	 * <!-- end-user-doc -->
 	 * @generated NOT
 	 */
+	@Override
 	public ScaWaveformFactory installScaWaveformFactory(final String profilePath) throws InvalidProfile, InvalidFileName, ApplicationInstallationError,
 	        ApplicationAlreadyInstalled {
 		// END GENERATED CODE
@@ -1349,6 +1401,7 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 		try {
 			return ScaModelCommand.runExclusive(this, new RunnableWithResult.Impl<ScaWaveformFactory>() {
 
+				@Override
 				public void run() {
 					for (ScaWaveformFactory factory : getWaveformFactories()) {
 						if (profilePath.equals(factory.getProfile())) {
@@ -1371,6 +1424,7 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 	 * <!-- end-user-doc -->
 	 * @generated NOT
 	 */
+	@Override
 	public void uninstallScaWaveformFactory(final ScaWaveformFactory factory) throws ApplicationUninstallationError, InvalidIdentifier {
 		// END GENERATED CODE
 		DomainManager localObj = fetchNarrowedObject(null);
@@ -1383,6 +1437,7 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 		localObj.uninstallApplication(factory.getIdentifier());
 		ScaModelCommand.execute(this, new ScaModelCommand() {
 
+			@Override
 			public void execute() {
 				EcoreUtil.delete(factory);
 			}
@@ -1404,6 +1459,7 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 	 * @since 2.0 <!-- end-user-doc -->
 	 * @generated NOT
 	 */
+	@Override
 	public ScaDevice< ? > getDevice(final String deviceId) {
 		// END GENERATED CODE
 		ScaDevice< ? > result = null;
@@ -1437,6 +1493,7 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 	/**
 	 * @since 14.0
 	 */
+	@Override
 	public ApplicationFactory[] applicationFactories() {
 		// END GENERATED CODE
 		DomainManager domMgr = fetchNarrowedObject(null);
@@ -1450,6 +1507,7 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 	/**
 	 * @since 14.0
 	 */
+	@Override
 	public Application[] applications() {
 		// END GENERATED CODE
 		DomainManager domMgr = fetchNarrowedObject(null);
@@ -1463,6 +1521,7 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 	/**
 	 * @since 14.0
 	 */
+	@Override
 	public DeviceManager[] deviceManagers() {
 		// END GENERATED CODE
 		DomainManager domMgr = fetchNarrowedObject(null);
@@ -1473,6 +1532,7 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 		// BEGIN GENERATED CODE
 	}
 
+	@Override
 	public String domainManagerProfile() {
 		// END GENERATED CODE
 		return this.getProfile();
@@ -1482,18 +1542,21 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 	/**
 	 * @since 14.0
 	 */
+	@Override
 	public FileManager fileMgr() {
 		// END GENERATED CODE
 		return getFileManager().fetchNarrowedObject(null);
 		// BEGIN GENERATED CODE
 	}
 
+	@Override
 	public String identifier() {
 		// END GENERATED CODE
 		return getIdentifier();
 		// BEGIN GENERATED CODE
 	}
 
+	@Override
 	public void installApplication(final String profileFileName) throws InvalidProfile, InvalidFileName, ApplicationInstallationError,
 	        ApplicationAlreadyInstalled {
 		// END GENERATED CODE
@@ -1509,6 +1572,7 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 	/**
 	 * @since 14.0
 	 */
+	@Override
 	public void registerDevice(final Device registeringDevice, final DeviceManager registeredDeviceMgr) throws InvalidObjectReference, InvalidProfile,
 	        DeviceManagerNotRegistered, RegisterError {
 		// END GENERATED CODE
@@ -1523,6 +1587,7 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 	/**
 	 * @since 14.0
 	 */
+	@Override
 	public void registerDeviceManager(final DeviceManager deviceMgr) throws InvalidObjectReference, InvalidProfile, RegisterError {
 		// END GENERATED CODE
 		DomainManager domMgr = fetchNarrowedObject(null);
@@ -1538,6 +1603,7 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 	/**
 	 * @since 14.0
 	 */
+	@Override
 	public void registerService(final org.omg.CORBA.Object registeringService, final DeviceManager registeredDeviceMgr, final String name)
 	        throws InvalidObjectReference, DeviceManagerNotRegistered, RegisterError {
 		// END GENERATED CODE
@@ -1549,6 +1615,7 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 		// BEGIN GENERATED CODE
 	}
 
+	@Override
 	public void registerWithEventChannel(final org.omg.CORBA.Object registeringObject, final String registeringId, final String eventChannelName)
 	        throws InvalidObjectReference, InvalidEventChannelName, AlreadyConnected {
 		// END GENERATED CODE
@@ -1560,12 +1627,14 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 		// BEGIN GENERATED CODE
 	}
 
+	@Override
 	public void uninstallApplication(final String applicationId) throws InvalidIdentifier, ApplicationUninstallationError {
 		// END GENERATED CODE
 		ScaWaveformFactory factory = null;
 		try {
 			factory = ScaModelCommand.runExclusive(this, new RunnableWithResult.Impl<ScaWaveformFactory>() {
 
+				@Override
 				public void run() {
 					for (ScaWaveformFactory factory : getWaveformFactories()) {
 						if (factory.getIdentifier().equals(applicationId)) {
@@ -1593,6 +1662,7 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 	/**
 	 * @since 14.0
 	 */
+	@Override
 	public void unregisterDevice(final Device unregisteringDevice) throws InvalidObjectReference, UnregisterError {
 		// END GENERATED CODE
 		DomainManager domMgr = fetchNarrowedObject(null);
@@ -1606,6 +1676,7 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 	/**
 	 * @since 14.0
 	 */
+	@Override
 	public void unregisterDeviceManager(final DeviceManager deviceMgr) throws InvalidObjectReference, UnregisterError {
 		// END GENERATED CODE
 		DomainManager domMgr = fetchNarrowedObject(null);
@@ -1616,6 +1687,7 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 		// BEGIN GENERATED CODE
 	}
 
+	@Override
 	public void unregisterFromEventChannel(final String unregisteringId, final String eventChannelName) throws InvalidEventChannelName, NotConnected {
 		// END GENERATED CODE
 		DomainManager domMgr = fetchNarrowedObject(null);
@@ -1877,6 +1949,7 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 		return result.toString();
 	}
 
+	@Override
 	public void unregisterService(final org.omg.CORBA.Object unregisteringService, final String name) throws InvalidObjectReference, UnregisterError {
 		// END GENERATED CODE
 		DomainManager domMgr = fetchNarrowedObject(null);
@@ -1887,6 +1960,7 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 		// BEGIN GENERATED CODE
 	}
 
+	@Override
 	public void configure(final DataType[] configProperties) throws InvalidConfiguration, PartialConfiguration {
 		// END GENERATED CODE
 		DomainManager domMgr = fetchNarrowedObject(null);
@@ -1897,6 +1971,7 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 		// BEGIN GENERATED CODE
 	}
 
+	@Override
 	public void query(final PropertiesHolder configProperties) throws UnknownProperties {
 		// END GENERATED CODE
 		DomainManager domMgr = fetchNarrowedObject(null);
@@ -1961,7 +2036,8 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
         try {
 	        shouldProceed = ScaModelCommand.runExclusive(this, new RunnableWithResult.Impl<Boolean>() {
 
-	        	public void run() {
+	        	@Override
+				public void run() {
 	        		setResult(isConnected() && !tmpExists && namingContext != null && domMgrname != null);
 	        	}
 
@@ -1975,6 +2051,7 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 				final org.omg.CORBA.Object newRootContext = namingContext.resolve_str(domMgrname);
 				transaction.addCommand(new ScaModelCommand() {
 
+					@Override
 					public void execute() {
 						if (namingContext != getRootContext() || !domMgrname.equals(getDomMgrName())) {
 							return;
@@ -2017,6 +2094,7 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 	 * @since 14.0
 	 * @generated NOT
 	 */
+	@Override
 	public ScaDomainManagerFileSystem fetchFileManager(IProgressMonitor monitor) {
 		if (isSetFileManager()) {
 			return getFileManager();
@@ -2029,6 +2107,7 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 				final FileManager newFileMgr = localObj.fileMgr();
 				transaction.addCommand(new ScaModelCommand() {
 
+					@Override
 					public void execute() {
 						if (fileManager == null) {
 							setFileManager(ScaFactory.eINSTANCE.createScaDomainManagerFileSystem());
@@ -2070,6 +2149,7 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 	 * <!-- end-user-doc -->
 	 * @generated NOT
 	 */
+	@Override
 	public String fetchIdentifier(IProgressMonitor monitor) {
 		// END GENERATED CODE
 		if (isSetIdentifier()) {
@@ -2152,7 +2232,8 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
      * @since 14.0
      * @generated NOT
      */
-    public String fetchProfile(IProgressMonitor monitor) {
+    @Override
+	public String fetchProfile(IProgressMonitor monitor) {
 		if (isSetProfile()) {
 			return getProfile();
 		}
@@ -2191,6 +2272,7 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 			final URI newURI = fileSystem.createURI(fetchProfile(subMonitor.newChild(1)));
 			transaction.addCommand(new ScaModelCommand() {
 
+				@Override
 				public void execute() {
 					setProfileURI(newURI);
 				}

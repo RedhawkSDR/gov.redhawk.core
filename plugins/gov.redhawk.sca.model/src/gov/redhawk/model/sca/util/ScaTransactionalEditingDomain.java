@@ -46,8 +46,10 @@ public class ScaTransactionalEditingDomain extends TransactionalEditingDomainImp
 		super(adapterFactory);
 	}
 
+	@Override
 	protected TransactionChangeRecorder createChangeRecorder(ResourceSet rset) {
 		return new TransactionChangeRecorder(this, rset) {
+			@Override
 			protected void assertWriting() {
 				InternalTransaction tx = getEditingDomain().getActiveTransaction();
 				if ((tx == null) || tx.isReadOnly() || (tx.getOwner() != Thread.currentThread())) {

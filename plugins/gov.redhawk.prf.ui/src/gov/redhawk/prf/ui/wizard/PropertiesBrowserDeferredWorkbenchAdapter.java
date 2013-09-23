@@ -35,6 +35,7 @@ public class PropertiesBrowserDeferredWorkbenchAdapter implements IDeferredWorkb
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public Object[] getChildren(Object o) {
 		return Collections.EMPTY_LIST.toArray();
 	}
@@ -42,6 +43,7 @@ public class PropertiesBrowserDeferredWorkbenchAdapter implements IDeferredWorkb
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public ImageDescriptor getImageDescriptor(Object object) {
 		return null;
 	}
@@ -49,6 +51,7 @@ public class PropertiesBrowserDeferredWorkbenchAdapter implements IDeferredWorkb
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public String getLabel(Object o) {
 		return "Browse Properties";
 	}
@@ -56,6 +59,7 @@ public class PropertiesBrowserDeferredWorkbenchAdapter implements IDeferredWorkb
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public Object getParent(Object o) {
 		return null;
 	}
@@ -63,6 +67,7 @@ public class PropertiesBrowserDeferredWorkbenchAdapter implements IDeferredWorkb
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public void fetchDeferredChildren(Object object, IElementCollector collector, IProgressMonitor monitor) {
 		List<IPropertiesProvider> providers = loadPropertiesProviders(monitor);
 		collector.add(providers, monitor);
@@ -74,6 +79,7 @@ public class PropertiesBrowserDeferredWorkbenchAdapter implements IDeferredWorkb
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public boolean isContainer() {
 		return false;
 	}
@@ -81,6 +87,7 @@ public class PropertiesBrowserDeferredWorkbenchAdapter implements IDeferredWorkb
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public ISchedulingRule getRule(Object object) {
 		return null;
 	}

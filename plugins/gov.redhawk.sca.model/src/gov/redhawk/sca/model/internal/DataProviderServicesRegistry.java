@@ -45,6 +45,7 @@ public enum DataProviderServicesRegistry implements IExtensionChangeHandler, IDa
 	private final ExtensionTracker tracker;
 	private IPreferenceChangeListener listener = new IPreferenceChangeListener() {
 
+		@Override
 		public void preferenceChange(PreferenceChangeEvent event) {
 			if (event.getKey().equals(ScaModelPreferenceContants.DISABLED_DATA_PROVIDERS)) {
 				Object obj = event.getNewValue();
@@ -87,6 +88,7 @@ public enum DataProviderServicesRegistry implements IExtensionChangeHandler, IDa
 		node.addPreferenceChangeListener(listener);
 	}
 
+	@Override
 	public void addExtension(final IExtensionTracker tracker, final IExtension extension) {
 		String disabledDataProviders = Platform.getPreferencesService().getString(ScaModelPlugin.ID,
 		        ScaModelPreferenceContants.DISABLED_DATA_PROVIDERS,
@@ -104,6 +106,7 @@ public enum DataProviderServicesRegistry implements IExtensionChangeHandler, IDa
 		return desc;
 	}
 
+	@Override
 	public void removeExtension(final IExtension extension, final Object[] objects) {
 		for (final Object obj : objects) {
 			if (obj instanceof IScaDataProviderServiceDescriptor) {
@@ -116,6 +119,7 @@ public enum DataProviderServicesRegistry implements IExtensionChangeHandler, IDa
 		this.dataProviderServiceDescriptors.clear();
 	}
 
+	@Override
 	public List<IScaDataProviderServiceDescriptor> getDataProvidersDescriptors() {
 		return Collections.unmodifiableList(this.dataProviderServiceDescriptors);
 	}

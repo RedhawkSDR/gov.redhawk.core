@@ -28,6 +28,7 @@ import org.eclipse.ui.handlers.HandlerUtil;
 public class NewDomainHandler extends AbstractHandler implements IHandler {
 
 	
+	@Override
 	public Object execute(ExecutionEvent event) throws ExecutionException {
 		// Before opening up the Wizard, we grab an instance of the domabin browser view
 		final IWorkbenchWindow window = HandlerUtil.getActiveWorkbenchWindow(event);

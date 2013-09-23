@@ -72,6 +72,7 @@ public class OpenWithMenu extends ContributionItem {
 	private static final Comparator<IScaEditorDescriptor> COMPARER = new Comparator<IScaEditorDescriptor>() {
 		private final Collator collator = Collator.getInstance();
 
+		@Override
 		public int compare(final IScaEditorDescriptor arg0, final IScaEditorDescriptor arg1) {
 			final String s1 = arg0.getEditorDescriptor().getLabel();
 			final String s2 = arg1.getEditorDescriptor().getLabel();
@@ -108,6 +109,7 @@ public class OpenWithMenu extends ContributionItem {
 			menuItem.setImage(image);
 		}
 		final Listener listener = new Listener() {
+			@Override
 			public void handleEvent(final Event event) {
 				switch (event.type) {
 				case SWT.Selection:

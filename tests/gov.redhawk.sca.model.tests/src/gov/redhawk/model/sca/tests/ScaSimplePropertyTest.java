@@ -82,6 +82,7 @@ public class ScaSimplePropertyTest extends ScaAbstractPropertyTest {
 		Assert.assertNotNull(waveform);
 		ScaModelCommand.execute(this.env.getDomMgr(), new ScaModelCommand() {
 
+			@Override
 			public void execute() {
 				final ScaComponent kitchenSink = waveform.findComponent(ScaTestConstaints.DCE_KITCHEN_SINK_COMPONENT);
 				if (kitchenSink == null && ScaTests.DEBUG.enabled) {
@@ -126,6 +127,7 @@ public class ScaSimplePropertyTest extends ScaAbstractPropertyTest {
 		// END GENERATED CODE
 		ScaModelCommand.execute(getFixture(), new ScaModelCommand() {
 
+			@Override
 			public void execute() {
 				Assert.assertNotNull(getFixture().getValue());
 			}
@@ -148,6 +150,7 @@ public class ScaSimplePropertyTest extends ScaAbstractPropertyTest {
 
 		ScaModelCommand.execute(getFixture(), new ScaModelCommand() {
 
+			@Override
 			public void execute() {
 				getFixture().setValue(value);
 				Assert.assertEquals(value, getFixture().getValue());

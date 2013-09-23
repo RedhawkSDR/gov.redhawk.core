@@ -37,6 +37,7 @@ import org.eclipse.ui.handlers.HandlerUtil;
  */
 public class MoveComponentLaterInStartOrder extends AbstractHandler {
 
+	@Override
 	public Object execute(ExecutionEvent event) throws ExecutionException {
 		final ISelection selection = HandlerUtil.getCurrentSelection(event);
 		final SadComponentPlacement cp = SadDiagramHandlerUtil.getComponentPlacementFromSelection(selection);

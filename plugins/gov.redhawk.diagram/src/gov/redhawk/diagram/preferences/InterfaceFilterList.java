@@ -73,6 +73,7 @@ public class InterfaceFilterList extends ListEditor {
 	protected String getNewInputObject() {
 		final InputDialog dialog = new InputDialog(getShell(), "Add Filter", "Enter a regular expression to filter out.", "", new IInputValidator() {
 
+			@Override
 			public String isValid(final String newText) {
 				try {
 					Pattern.compile(newText);

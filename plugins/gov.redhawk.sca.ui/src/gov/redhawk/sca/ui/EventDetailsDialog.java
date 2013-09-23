@@ -219,16 +219,19 @@ public class EventDetailsDialog extends TrayDialog {
 		this.multiStatusViewer.getControl().setLayoutData(gd);
 		this.multiStatusViewer.setContentProvider(new ITreeContentProvider() {
 
+			@Override
 			public void inputChanged(final Viewer viewer, final Object oldInput, final Object newInput) {
 				// TODO Auto-generated method stub
 
 			}
 
+			@Override
 			public void dispose() {
 				// TODO Auto-generated method stub
 
 			}
 
+			@Override
 			public boolean hasChildren(final Object element) {
 				if (element instanceof MultiStatus) {
 					final MultiStatus s = (MultiStatus) element;
@@ -237,10 +240,12 @@ public class EventDetailsDialog extends TrayDialog {
 				return false;
 			}
 
+			@Override
 			public Object getParent(final Object element) {
 				return null;
 			}
 
+			@Override
 			public Object[] getElements(final Object element) {
 				if (element instanceof MultiStatus) {
 					final MultiStatus s = (MultiStatus) element;
@@ -250,6 +255,7 @@ public class EventDetailsDialog extends TrayDialog {
 				}
 			}
 
+			@Override
 			public Object[] getChildren(final Object parentElement) {
 				// TODO Auto-generated method stub
 				return getElements(parentElement);
@@ -268,6 +274,7 @@ public class EventDetailsDialog extends TrayDialog {
 		});
 		this.multiStatusViewer.addSelectionChangedListener(new ISelectionChangedListener() {
 
+			@Override
 			public void selectionChanged(final SelectionChangedEvent event) {
 				EventDetailsDialog.this.selection = (IStatus) ((IStructuredSelection) event.getSelection()).getFirstElement();
 				updateProperties();

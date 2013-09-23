@@ -65,6 +65,7 @@ IEditingDomainItemProvider, IStructuredItemContentProvider, ITreeItemContentProv
 		// BEGIN GENERATED CODE
 	}
 	
+	@Override
 	public void notifyChanged(Notification notification) {
 		updateChildren(notification);
 

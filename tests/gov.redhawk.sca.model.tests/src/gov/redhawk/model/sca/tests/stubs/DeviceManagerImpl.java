@@ -156,6 +156,7 @@ public class DeviceManagerImpl extends AbstractResourceImpl implements DeviceMan
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public String deviceConfigurationProfile() {
 		return this.dcd.eResource().getURI().path();
 	}
@@ -163,6 +164,7 @@ public class DeviceManagerImpl extends AbstractResourceImpl implements DeviceMan
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public FileSystem fileSys() {
 		return this.fileSys;
 	}
@@ -170,6 +172,7 @@ public class DeviceManagerImpl extends AbstractResourceImpl implements DeviceMan
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public String label() {
 		return this.compName;
 	}
@@ -177,6 +180,7 @@ public class DeviceManagerImpl extends AbstractResourceImpl implements DeviceMan
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public Device[] registeredDevices() {
 		return this.devices.toArray(new Device[this.devices.size()]);
 	}
@@ -184,6 +188,7 @@ public class DeviceManagerImpl extends AbstractResourceImpl implements DeviceMan
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public ServiceType[] registeredServices() {
 		return this.services.values().toArray(new ServiceType[this.services.size()]);
 	}
@@ -191,6 +196,7 @@ public class DeviceManagerImpl extends AbstractResourceImpl implements DeviceMan
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public void registerDevice(final Device registeringDevice) throws InvalidObjectReference {
 		if (registeringDevice != null) {
 			this.devices.add(registeringDevice);
@@ -200,6 +206,7 @@ public class DeviceManagerImpl extends AbstractResourceImpl implements DeviceMan
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public void unregisterDevice(final Device registeredDevice) throws InvalidObjectReference {
 		this.devices.remove(registeredDevice);
 	}
@@ -207,6 +214,7 @@ public class DeviceManagerImpl extends AbstractResourceImpl implements DeviceMan
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public void shutdown() {
 		for (Device dev : devices) {
 			try {
@@ -227,6 +235,7 @@ public class DeviceManagerImpl extends AbstractResourceImpl implements DeviceMan
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public void registerService(final Object registeringService, final String name) throws InvalidObjectReference {
 		if (registeringService == null || name == null) {
 			throw new InvalidObjectReference("", "");
@@ -240,6 +249,7 @@ public class DeviceManagerImpl extends AbstractResourceImpl implements DeviceMan
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public void unregisterService(final Object unregisteringService, final String name) throws InvalidObjectReference {
 		ServiceType type = services.remove(name);
 		if (type == null) {
@@ -250,6 +260,7 @@ public class DeviceManagerImpl extends AbstractResourceImpl implements DeviceMan
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public String getComponentImplementationId(final String componentInstantiationId) {
 		// TODO Auto-generated method stub
 		return "";

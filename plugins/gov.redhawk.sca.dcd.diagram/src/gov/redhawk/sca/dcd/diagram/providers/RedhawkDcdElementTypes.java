@@ -27,6 +27,7 @@ public enum RedhawkDcdElementTypes implements PartitioningElementTypes {
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public Image getImage(final EClass eClass) {
 		return DcdElementTypes.getImage(eClass);
 	}
@@ -34,6 +35,7 @@ public enum RedhawkDcdElementTypes implements PartitioningElementTypes {
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public IElementType getProvidesPortStubElementType() {
 		return DcdElementTypes.ProvidesPortStub_3004;
 	}
@@ -41,6 +43,7 @@ public enum RedhawkDcdElementTypes implements PartitioningElementTypes {
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public IElementType getConnectInterfaceElementType() {
 		return DcdElementTypes.DcdConnectInterface_4001;
 	}
@@ -48,6 +51,7 @@ public enum RedhawkDcdElementTypes implements PartitioningElementTypes {
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public IElementType getComponentSupportedInterfaceStubElementType() {
 		return DcdElementTypes.ComponentSupportedInterfaceStub_3005;
 	}
@@ -55,6 +59,7 @@ public enum RedhawkDcdElementTypes implements PartitioningElementTypes {
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public IElementType getUsesPortStubElementType() {
 		return DcdElementTypes.UsesPortStub_3003;
 	}
@@ -62,6 +67,7 @@ public enum RedhawkDcdElementTypes implements PartitioningElementTypes {
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public IElementType getElementType(final int visualID) {
 		return DcdElementTypes.getElementType(visualID);
 	}

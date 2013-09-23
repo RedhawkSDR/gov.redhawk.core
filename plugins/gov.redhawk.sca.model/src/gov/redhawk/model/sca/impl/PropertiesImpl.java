@@ -74,6 +74,7 @@ public class PropertiesImpl extends EObjectImpl implements Properties {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EMap<String, String> getProperty() {
 		if (property == null) {
 			property = new EcoreEMap<String,String>(ScaPackage.Literals.STRING_TO_STRING_MAP, StringToStringMapImpl.class, this, ScaPackage.PROPERTIES__PROPERTY);

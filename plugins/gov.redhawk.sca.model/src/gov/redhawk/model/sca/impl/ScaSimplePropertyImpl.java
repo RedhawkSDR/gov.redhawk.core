@@ -99,6 +99,7 @@ public class ScaSimplePropertyImpl extends ScaAbstractPropertyImpl<Simple> imple
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public Object getValue() {
 		return value;
 	}
@@ -106,6 +107,7 @@ public class ScaSimplePropertyImpl extends ScaAbstractPropertyImpl<Simple> imple
 	private Adapter valueListener = new AdapterImpl() {
 		// END GENERATED CODE
 
+		@Override
 		public void notifyChanged(Notification msg) {
 			if (!isIgnoreRemoteSet()) {
 				switch (msg.getFeatureID(ScaSimpleProperty.class)) {
@@ -144,6 +146,7 @@ public class ScaSimplePropertyImpl extends ScaAbstractPropertyImpl<Simple> imple
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * @generated NOT
 	 */
+	@Override
 	public void setValue(Object newValue) {
 		if (getDefinition() != null && getDefinition().getType() != null) {
 			PropertyValueType propType = getDefinition().getType();
@@ -236,6 +239,7 @@ public class ScaSimplePropertyImpl extends ScaAbstractPropertyImpl<Simple> imple
 	 * 
 	 * @generated NOT
 	 */
+	@Override
 	public void restoreDefaultValue()  {
 		// END GENERATED CODE
 		// value = VALUE_EDEFAULT;

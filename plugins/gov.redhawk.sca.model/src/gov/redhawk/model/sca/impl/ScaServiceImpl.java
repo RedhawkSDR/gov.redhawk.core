@@ -160,6 +160,7 @@ public class ScaServiceImpl extends ScaPropertyContainerImpl<org.omg.CORBA.Objec
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EList<ScaPort<?, ?>> getPorts() {
 		if (ports == null) {
 			ports = new EObjectContainmentWithInverseEList.Unsettable<ScaPort<?, ?>>(ScaPort.class, this, ScaPackage.SCA_SERVICE__PORTS, ScaPackage.SCA_PORT__PORT_CONTAINER);
@@ -173,6 +174,7 @@ public class ScaServiceImpl extends ScaPropertyContainerImpl<org.omg.CORBA.Objec
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void unsetPorts() {
 		if (ports != null) ((InternalEList.Unsettable<?>)ports).unset();
 	}
@@ -183,6 +185,7 @@ public class ScaServiceImpl extends ScaPropertyContainerImpl<org.omg.CORBA.Objec
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public boolean isSetPorts() {
 		return ports != null && ((InternalEList.Unsettable<?>)ports).isSet();
 	}
@@ -192,6 +195,7 @@ public class ScaServiceImpl extends ScaPropertyContainerImpl<org.omg.CORBA.Objec
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public String getName() {
 		return name;
 	}
@@ -201,6 +205,7 @@ public class ScaServiceImpl extends ScaPropertyContainerImpl<org.omg.CORBA.Objec
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void setName(String newName) {
 		String oldName = name;
 		name = newName;
@@ -214,6 +219,7 @@ public class ScaServiceImpl extends ScaPropertyContainerImpl<org.omg.CORBA.Objec
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public ScaDeviceManager getDevMgr() {
 		if (eContainerFeatureID() != ScaPackage.SCA_SERVICE__DEV_MGR) return null;
 		return (ScaDeviceManager)eInternalContainer();
@@ -408,6 +414,7 @@ public class ScaServiceImpl extends ScaPropertyContainerImpl<org.omg.CORBA.Objec
 	 * <!-- end-user-doc -->
 	 * @generated NOT
 	 */
+	@Override
 	public ScaPort<?, ?> getScaPort(String name) {
 		// END GENERATED CODE
 		for (ScaPort< ? , ? > port : getPorts()) {
@@ -425,6 +432,7 @@ public class ScaServiceImpl extends ScaPropertyContainerImpl<org.omg.CORBA.Objec
 	 * <!-- end-user-doc -->
 	 * @generated NOT
 	 */
+	@Override
 	public EList<ScaPort<?, ?>> fetchPorts(IProgressMonitor monitor) {
 		SubMonitor subMonitor = SubMonitor.convert(monitor, "Fetching ports", 2);
 		internalFetchPorts(subMonitor.newChild(1));
@@ -432,7 +440,8 @@ public class ScaServiceImpl extends ScaPropertyContainerImpl<org.omg.CORBA.Objec
         try {
 	        ports = ScaModelCommand.runExclusive(this, new RunnableWithResult.Impl<ScaPort< ? , ? >[]>() {
 
-	        	public void run() {
+	        	@Override
+				public void run() {
 	        		setResult(getPorts().toArray(new ScaPort< ? , ? >[getPorts().size()]));
 	            }
 
@@ -592,6 +601,7 @@ public class ScaServiceImpl extends ScaPropertyContainerImpl<org.omg.CORBA.Objec
 	    		final URI newURI = fileSystem.createURI(profilePath);
 	    		transaction.addCommand(new ScaModelCommand() {
 					
+					@Override
 					public void execute() {
 						setProfileURI(newURI);
 					}

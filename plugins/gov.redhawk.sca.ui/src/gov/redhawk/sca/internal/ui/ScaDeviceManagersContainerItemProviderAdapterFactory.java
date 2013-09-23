@@ -32,12 +32,14 @@ public class ScaDeviceManagersContainerItemProviderAdapterFactory implements IAd
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public Object getAdapter(final Object adaptableObject, @SuppressWarnings("rawtypes") final Class adapterType) {
 		if (adaptableObject instanceof ScaDeviceManagersContainerItemProvider) {
 			if (adapterType == IRefreshable.class) {
 				final ScaDeviceManagersContainerItemProvider provider = (ScaDeviceManagersContainerItemProvider) adaptableObject;
 				return new IRefreshable() {
 
+					@Override
 					public void refresh(final IProgressMonitor monitor, final RefreshDepth depth) throws InterruptedException {
 						final SubMonitor subMonitor = SubMonitor.convert(monitor, "Refreshing Device Managers...", 100);
 						switch (depth) {
@@ -66,6 +68,7 @@ public class ScaDeviceManagersContainerItemProviderAdapterFactory implements IAd
 						final SubMonitor refreshMonitor = subMonitor.newChild(1);
 						final ScaDeviceManager[] devMgrs = ScaModelCommandWithResult.execute(domain, new ScaModelCommandWithResult<ScaDeviceManager[]>() {
 
+							@Override
 							public void execute() {
 								setResult(domain.getDeviceManagers().toArray(new ScaDeviceManager[domain.getDeviceManagers().size()]));
 							}
@@ -86,6 +89,7 @@ public class ScaDeviceManagersContainerItemProviderAdapterFactory implements IAd
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public Class< ? >[] getAdapterList() {
 		return ScaDeviceManagersContainerItemProviderAdapterFactory.LIST;
 	}

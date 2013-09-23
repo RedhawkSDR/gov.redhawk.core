@@ -28,11 +28,11 @@ import org.osgi.framework.BundleContext;
  * The activator class controls the plug-in life cycle
  */
 public class BulkIOUtilActivator extends Plugin {
-	
-	private static final ExecutorService EXECUTOR_POOL = Executors.newSingleThreadExecutor(new NamedThreadFactory(BulkIOUtilActivator.class.getName()));
 
 	// The plug-in ID
 	public static final String PLUGIN_ID = "gov.redhawk.bulkio.util"; //$NON-NLS-1$
+
+	private static final ExecutorService EXECUTOR_POOL = Executors.newSingleThreadExecutor(new NamedThreadFactory(BulkIOUtilActivator.class.getName()));
 
 	// The shared instance
 	private static BulkIOUtilActivator plugin;
@@ -47,6 +47,7 @@ public class BulkIOUtilActivator extends Plugin {
 	 * (non-Javadoc)
 	 * @see org.eclipse.ui.plugin.AbstractUIPlugin#start(org.osgi.framework.BundleContext)
 	 */
+	@Override
 	public void start(BundleContext context) throws Exception {
 		super.start(context);
 		plugin = this;
@@ -56,6 +57,7 @@ public class BulkIOUtilActivator extends Plugin {
 	 * (non-Javadoc)
 	 * @see org.eclipse.ui.plugin.AbstractUIPlugin#stop(org.osgi.framework.BundleContext)
 	 */
+	@Override
 	public void stop(BundleContext context) throws Exception {
 		plugin = null;
 		Future< ? > future = EXECUTOR_POOL.submit(new Runnable() {
@@ -64,7 +66,7 @@ public class BulkIOUtilActivator extends Plugin {
 			public void run() {
 				ConnectionManager.INSTANCE.dispose();
 			}
-			
+
 		});
 		try {
 			future.get(30, TimeUnit.SECONDS);
@@ -75,7 +77,7 @@ public class BulkIOUtilActivator extends Plugin {
 		} catch (TimeoutException e) {
 			// PASS
 		}
-		
+
 		super.stop(context);
 	}
 
@@ -87,7 +89,7 @@ public class BulkIOUtilActivator extends Plugin {
 	public static BulkIOUtilActivator getDefault() {
 		return plugin;
 	}
-	
+
 	public static IBulkIOPortConnectionManager getBulkIOPortConnectionManager() {
 		return ConnectionManager.INSTANCE;
 	}

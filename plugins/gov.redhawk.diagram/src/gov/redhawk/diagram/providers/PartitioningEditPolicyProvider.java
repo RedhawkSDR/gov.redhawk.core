@@ -44,6 +44,7 @@ public abstract class PartitioningEditPolicyProvider extends AbstractProvider im
 		this.elementTypes = elementTypes;
 	}
 
+	@Override
 	public void createEditPolicies(final EditPart editPart) {
 		final View view = (View) editPart.getModel();
 		if (!this.visualIdRegistry.getModelID().equals(this.visualIdRegistry.getModelID(view))) {
@@ -123,6 +124,7 @@ public abstract class PartitioningEditPolicyProvider extends AbstractProvider im
 		editPart.removeEditPolicy(EditPolicyRoles.CONNECTION_HANDLES_ROLE);
 	}
 
+	@Override
 	public boolean provides(final IOperation operation) {
 		return operation instanceof CreateEditPoliciesOperation;
 	}

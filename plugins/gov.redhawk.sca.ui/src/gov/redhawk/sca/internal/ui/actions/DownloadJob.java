@@ -89,6 +89,7 @@ public class DownloadJob extends Job {
 				rule = ruleFactory.createRule(targetFile);
 				runnable = new IWorkspaceRunnable() {
 
+					@Override
 					public void run(final IProgressMonitor monitor) throws CoreException {
 						targetFile.create(inputStream, true, monitor);
 					}
@@ -97,6 +98,7 @@ public class DownloadJob extends Job {
 				rule = ruleFactory.modifyRule(targetFile);
 				runnable = new IWorkspaceRunnable() {
 
+					@Override
 					public void run(final IProgressMonitor monitor) throws CoreException {
 						targetFile.setContents(inputStream, 0, monitor);
 					}
@@ -116,6 +118,7 @@ public class DownloadJob extends Job {
 			if (!targetFolder.exists()) {
 				ResourcesPlugin.getWorkspace().run(new IWorkspaceRunnable() {
 
+					@Override
 					public void run(final IProgressMonitor monitor) throws CoreException {
 						targetFolder.create(false, true, monitor);
 					}

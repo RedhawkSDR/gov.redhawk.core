@@ -35,6 +35,7 @@ public class URIEditorInputProxy extends EditorInputProxy implements IPersistabl
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public String getFactoryId() {
 		final IPersistableElement persistable = getPersistableElement();
 		if (persistable != null) {
@@ -47,6 +48,7 @@ public class URIEditorInputProxy extends EditorInputProxy implements IPersistabl
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public void saveState(final IMemento memento) {
 		final IPersistableElement persistable = getPersistableElement();
 		if (persistable != null) {

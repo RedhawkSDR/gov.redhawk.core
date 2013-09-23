@@ -82,6 +82,7 @@ public abstract class BasicStructPropertyDetailsPage extends
 		final WritableList myList = new WritableList();
 		myList.addListChangeListener(new IListChangeListener() {
 
+			@Override
 			public void handleListChange(ListChangeEvent event) {
 				List<StructPropertyConfigurationType> newChecked = new ArrayList<StructPropertyConfigurationType>();
 				for (Object obj : myList) {
@@ -101,6 +102,7 @@ public abstract class BasicStructPropertyDetailsPage extends
 				.getConfigurationKindViewer().addCheckStateListener(
 						new ICheckStateListener() {
 
+							@Override
 							public void checkStateChanged(
 									CheckStateChangedEvent event) {
 								if (event.getChecked()) {

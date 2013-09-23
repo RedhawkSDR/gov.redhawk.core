@@ -49,6 +49,7 @@ public class ProjectNameValidator implements IValidator {
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public IStatus validate(final Object value) {
 		// Project names are always stripped of whitespace (see the Java Project Wizard)
 		final String s = ((String) value);

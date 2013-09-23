@@ -95,6 +95,7 @@ public class ScaConnectionImpl extends EObjectImpl implements ScaConnection {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public UsesConnection getData() {
 		return data;
 	}
@@ -116,6 +117,7 @@ public class ScaConnectionImpl extends EObjectImpl implements ScaConnection {
 	 * <!-- end-user-doc -->
 	 * @generated NOT
 	 */
+	@Override
 	public void setData(UsesConnection newData) {
 		// END GENERATED CODE
 		String oldId = getId();
@@ -131,6 +133,7 @@ public class ScaConnectionImpl extends EObjectImpl implements ScaConnection {
 	 * <!-- end-user-doc -->
 	 * @generated NOT
 	 */
+	@Override
 	public String getId() {
 		// END GENERATED CODE
 		UsesConnection tmp = getData();
@@ -143,6 +146,7 @@ public class ScaConnectionImpl extends EObjectImpl implements ScaConnection {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public ScaUsesPort getPort() {
 		if (eContainerFeatureID() != ScaPackage.SCA_CONNECTION__PORT) return null;
 		return (ScaUsesPort)eContainer();
@@ -173,6 +177,7 @@ public class ScaConnectionImpl extends EObjectImpl implements ScaConnection {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void setPort(ScaUsesPort newPort) {
 		if (newPort != eInternalContainer() || (eContainerFeatureID() != ScaPackage.SCA_CONNECTION__PORT && newPort != null)) {
 			if (EcoreUtil.isAncestor(this, newPort))

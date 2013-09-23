@@ -34,34 +34,42 @@ public class StreamSRIPropertySource implements IPropertySource2 {
 	private enum SRI_PROP implements IPropertyDescriptor {
 		hversion, xstart, xdelta, xunits, subsize, ystart, ydelta, yunits, mode, streamID, blocking, keywords;
 
+		@Override
 		public CellEditor createPropertyEditor(final Composite parent) {
 			return null;
 		}
 
+		@Override
 		public String getCategory() {
 			return StreamSRI.class.getName();
 		}
 
+		@Override
 		public String getDescription() {
 			return null;
 		}
 
+		@Override
 		public String getDisplayName() {
 			return name();
 		}
 
+		@Override
 		public String[] getFilterFlags() {
 			return null;
 		}
 
+		@Override
 		public Object getHelpContextIds() {
 			return null;
 		}
 
+		@Override
 		public Object getId() {
 			return name();
 		}
 
+		@Override
 		public ILabelProvider getLabelProvider() {
 			return new LabelProvider() {
 				@Override
@@ -82,6 +90,7 @@ public class StreamSRIPropertySource implements IPropertySource2 {
 			};
 		}
 
+		@Override
 		public boolean isCompatibleWith(final IPropertyDescriptor anotherProperty) {
 			return false;
 		}
@@ -96,6 +105,7 @@ public class StreamSRIPropertySource implements IPropertySource2 {
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public Object getEditableValue() {
 		return this.sri;
 	}
@@ -103,6 +113,7 @@ public class StreamSRIPropertySource implements IPropertySource2 {
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public IPropertyDescriptor[] getPropertyDescriptors() {
 		return SRI_PROP.values();
 	}
@@ -110,6 +121,7 @@ public class StreamSRIPropertySource implements IPropertySource2 {
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public Object getPropertyValue(final Object id) {
 		switch (SRI_PROP.valueOf((String) id)) {
 		case blocking:
@@ -145,12 +157,14 @@ public class StreamSRIPropertySource implements IPropertySource2 {
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public void resetPropertyValue(final Object id) {
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public void setPropertyValue(final Object id, final Object value) {
 
 	}
@@ -158,6 +172,7 @@ public class StreamSRIPropertySource implements IPropertySource2 {
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public boolean isPropertyResettable(final Object id) {
 		return false;
 	}
@@ -165,6 +180,7 @@ public class StreamSRIPropertySource implements IPropertySource2 {
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public boolean isPropertySet(final Object id) {
 		return true;
 	}

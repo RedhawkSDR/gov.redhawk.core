@@ -117,6 +117,7 @@ public class StartedDecorator extends LabelProvider implements IDelayedLabelDeco
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public Image decorateImage(final Image image, final Object element) {
 		return null;
 	}
@@ -124,6 +125,7 @@ public class StartedDecorator extends LabelProvider implements IDelayedLabelDeco
 	private void addListener(final EObject eObject) {
 		ScaModelCommand.execute(eObject, new ScaModelCommand() {
 
+			@Override
 			public void execute() {
 				if (!eObject.eAdapters().contains(StartedDecorator.this.elementListener)) {
 					eObject.eAdapters().add(StartedDecorator.this.elementListener);
@@ -135,6 +137,7 @@ public class StartedDecorator extends LabelProvider implements IDelayedLabelDeco
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public String decorateText(final String text, final Object element) {
 		if (!prepareDecoration(element, null)) {
 			return null;
@@ -157,6 +160,7 @@ public class StartedDecorator extends LabelProvider implements IDelayedLabelDeco
 		return null;
 	}
 
+	@Override
 	public boolean prepareDecoration(final Object element, final String originalText) {
 		boolean retVal = false;
 		if (element instanceof ScaAbstractComponent< ? >) {

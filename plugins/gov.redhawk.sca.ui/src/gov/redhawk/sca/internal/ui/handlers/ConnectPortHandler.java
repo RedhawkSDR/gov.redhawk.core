@@ -76,6 +76,7 @@ public class ConnectPortHandler extends AbstractHandler implements IHandler {
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public Object execute(final ExecutionEvent event) throws ExecutionException {
 		final ISelection sel = HandlerUtil.getActiveMenuSelection(event);
 		if (sel instanceof IStructuredSelection) {

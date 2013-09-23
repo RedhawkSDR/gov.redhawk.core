@@ -81,6 +81,7 @@ public final class EntryUtil {
 		dialog.setTitle("Resource Attribute Value");
 		dialog.setMessage("Select a resource:");
 		dialog.setValidator(new ISelectionStatusValidator() {
+			@Override
 			public IStatus validate(final Object[] selection) {
 				if (selection != null && selection.length > 0
 						&& (selection[0] instanceof IFile || selection[0] instanceof IContainer)) {
@@ -131,6 +132,7 @@ public final class EntryUtil {
 		dialog.setTitle("Resource Attribute Value");
 		dialog.setMessage("Select a directory:");
 		dialog.setValidator(new ISelectionStatusValidator() {
+			@Override
 			public IStatus validate(final Object[] selection) {
 				if (selection != null && selection.length > 0
 						&& (selection[0] instanceof IFile || selection[0] instanceof IContainer)) {

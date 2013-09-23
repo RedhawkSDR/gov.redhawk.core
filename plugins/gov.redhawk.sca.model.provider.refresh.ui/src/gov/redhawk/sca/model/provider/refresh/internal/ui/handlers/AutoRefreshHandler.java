@@ -40,6 +40,7 @@ public class AutoRefreshHandler extends AbstractHandler implements IHandler, IEl
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public Object execute(final ExecutionEvent event) throws ExecutionException {
 		final ISelection selection = HandlerUtil.getActiveMenuSelection(event);
 		if (selection instanceof IStructuredSelection) {
@@ -49,6 +50,7 @@ public class AutoRefreshHandler extends AbstractHandler implements IHandler, IEl
 					try {
 						ScaModelCommand.runExclusive((DataProviderObject) obj, new RunnableWithResult.Impl<Object>() {
 
+							@Override
 							public void run() {
 								final DataProviderObject dataObj = (DataProviderObject) obj;
 								final Object[] providers = dataObj.getDataProviders().toArray();
@@ -89,6 +91,7 @@ public class AutoRefreshHandler extends AbstractHandler implements IHandler, IEl
 		}
 	}
 
+	@Override
 	public void updateElement(final UIElement element, @SuppressWarnings("rawtypes") final Map parameters) {
 		if (parameters == null) {
 			return;

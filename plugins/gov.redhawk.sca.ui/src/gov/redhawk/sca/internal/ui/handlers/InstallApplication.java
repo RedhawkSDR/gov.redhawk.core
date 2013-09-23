@@ -33,6 +33,7 @@ public class InstallApplication extends AbstractHandler {
 	 * {@inheritDoc}
 	 */
 
+	@Override
 	public Object execute(final ExecutionEvent event) throws ExecutionException {
 		final ISelection sel = HandlerUtil.getActiveMenuSelection(event);
 		if (sel instanceof IStructuredSelection) {

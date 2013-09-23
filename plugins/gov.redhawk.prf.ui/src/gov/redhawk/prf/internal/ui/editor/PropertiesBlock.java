@@ -81,6 +81,7 @@ public class PropertiesBlock extends SCAMasterDetailsBlock {
 	protected void registerPages(final DetailsPart detailsPart) {
 		detailsPart.setPageProvider(new IDetailsPageProvider() {
 
+			@Override
 			public Object getPageKey(Object object) {
 				object = AdapterFactoryEditingDomain.unwrap(object);
 				if (object instanceof Simple) {
@@ -110,6 +111,7 @@ public class PropertiesBlock extends SCAMasterDetailsBlock {
 				return null;
 			}
 
+			@Override
 			public IDetailsPage getPage(final Object key) {
 				if (key == StructSequenceSimplePropertyDetailsPage.class) {
 					return new StructSequenceSimplePropertyDetailsPage(fSection);

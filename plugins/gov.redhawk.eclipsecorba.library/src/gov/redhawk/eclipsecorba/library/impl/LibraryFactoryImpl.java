@@ -20,6 +20,7 @@ import gov.redhawk.eclipsecorba.library.LocalFilePath;
 import gov.redhawk.eclipsecorba.library.PreferenceNodePathSet;
 import gov.redhawk.eclipsecorba.library.RepositoryModule;
 import gov.redhawk.eclipsecorba.library.URIPathSet;
+
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.emf.common.util.URI;
@@ -123,6 +124,7 @@ public class LibraryFactoryImpl extends EFactoryImpl implements LibraryFactory {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public IdlLibrary createIdlLibrary() {
 		IdlLibraryImpl idlLibrary = new IdlLibraryImpl();
 		return idlLibrary;
@@ -133,6 +135,7 @@ public class LibraryFactoryImpl extends EFactoryImpl implements LibraryFactory {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public RepositoryModule createRepositoryModule() {
 		RepositoryModuleImpl repositoryModule = new RepositoryModuleImpl();
 		return repositoryModule;
@@ -143,6 +146,7 @@ public class LibraryFactoryImpl extends EFactoryImpl implements LibraryFactory {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public PreferenceNodePathSet createPreferenceNodePathSet() {
 		PreferenceNodePathSetImpl preferenceNodePathSet = new PreferenceNodePathSetImpl();
 		return preferenceNodePathSet;
@@ -153,6 +157,7 @@ public class LibraryFactoryImpl extends EFactoryImpl implements LibraryFactory {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public URIPathSet createURIPathSet() {
 		URIPathSetImpl uriPathSet = new URIPathSetImpl();
 		return uriPathSet;
@@ -163,6 +168,7 @@ public class LibraryFactoryImpl extends EFactoryImpl implements LibraryFactory {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public LocalFilePath createLocalFilePath() {
 		LocalFilePathImpl localFilePath = new LocalFilePathImpl();
 		return localFilePath;
@@ -211,6 +217,7 @@ public class LibraryFactoryImpl extends EFactoryImpl implements LibraryFactory {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public LibraryPackage getLibraryPackage() {
 		return (LibraryPackage)getEPackage();
 	}

@@ -93,6 +93,7 @@ public class ScaModelPlugin extends Plugin implements IScaObjectLocator {
 	/**
 	 * @since 14.0
 	 */
+	@Override
 	public < T extends CorbaObjWrapper< ? >> T findEObject(Class<T> type, String ior) {
 		for (IScaObjectLocator locator : getScaObjectLocators()) {
 			T obj = locator.findEObject(type, ior);

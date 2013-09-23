@@ -86,6 +86,7 @@ public abstract class ScaModelCommand extends AbstractCommand {
 		return false;
 	}
 
+	@Override
 	public void redo() {
 		throw new UnsupportedOperationException("redo");
 	}

@@ -11,6 +11,8 @@
  */
 package gov.redhawk.bulkio.util.internal;
 
+import org.eclipse.jdt.annotation.NonNull;
+
 import gov.redhawk.bulkio.util.BulkIOType;
 
 /**
@@ -21,34 +23,30 @@ public final class BulkIOReceiverFactory {
 
 	}
 
-	public static AbstractSriReceiver< ? > createReceiver(BulkIOType type) {
-		if (type != null) {
-			switch (type) {
-			case CHAR:
-				return new DataCharReceiver();
-			case DOUBLE:
-				return new DataDoubleReceiver();
-			case FLOAT:
-				return new DataFloatReceiver();
-			case LONG:
-				return new DataLongReceiver();
-			case LONG_LONG:
-				return new DataLongLongReceiver();
-			case OCTET:
-				return new DataOctetReceiver();
-			case SHORT:
-				return new DataShortReceiver();
-			case ULONG:
-				return new DataULongReceiver();
-			case ULONG_LONG:
-				return new DataULongLongReceiver();
-			case USHORT:
-				return new DataUShortReceiver();
-			default:
-				throw new IllegalArgumentException("Port type not supported: " + type);
-			}
-		} else {
-			throw new IllegalArgumentException("Null BulkIO Type.");
+	public static AbstractSriReceiver< ? > createReceiver(@NonNull BulkIOType type) {
+		switch (type) {
+		case CHAR:
+			return new DataCharReceiver();
+		case DOUBLE:
+			return new DataDoubleReceiver();
+		case FLOAT:
+			return new DataFloatReceiver();
+		case LONG:
+			return new DataLongReceiver();
+		case LONG_LONG:
+			return new DataLongLongReceiver();
+		case OCTET:
+			return new DataOctetReceiver();
+		case SHORT:
+			return new DataShortReceiver();
+		case ULONG:
+			return new DataULongReceiver();
+		case ULONG_LONG:
+			return new DataULongLongReceiver();
+		case USHORT:
+			return new DataUShortReceiver();
+		default:
+			throw new IllegalArgumentException("Port type not supported: " + type);
 		}
 	}
 

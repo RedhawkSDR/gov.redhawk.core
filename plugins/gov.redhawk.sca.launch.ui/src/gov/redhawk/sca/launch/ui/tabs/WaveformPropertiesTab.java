@@ -120,6 +120,7 @@ public class WaveformPropertiesTab extends AbstractLaunchConfigurationTab {
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public void createControl(final Composite parent) {
 		final Composite main = new Composite(parent, SWT.None);
 		main.setLayout(new GridLayout());
@@ -147,6 +148,7 @@ public class WaveformPropertiesTab extends AbstractLaunchConfigurationTab {
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public void setDefaults(final ILaunchConfigurationWorkingCopy configuration) {
 		if (this.assemblyController != null) {
 			for (final ScaAbstractProperty< ? > prop : this.assemblyController.getProperties()) {
@@ -158,6 +160,7 @@ public class WaveformPropertiesTab extends AbstractLaunchConfigurationTab {
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public void initializeFrom(final ILaunchConfiguration configuration) {
 		this.configuration = configuration;
 		if (this.loadFromConfig) {
@@ -191,6 +194,7 @@ public class WaveformPropertiesTab extends AbstractLaunchConfigurationTab {
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public void performApply(final ILaunchConfigurationWorkingCopy configuration) {
 		if (this.assemblyController != null) {
 			ScaLaunchConfigurationUtil.saveProperties(configuration, this.assemblyController);
@@ -201,6 +205,7 @@ public class WaveformPropertiesTab extends AbstractLaunchConfigurationTab {
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public String getName() {
 		return "&Properties";
 	}

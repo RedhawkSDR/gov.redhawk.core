@@ -43,6 +43,7 @@ public class RedhawkConfiguratorActivator implements BundleActivator {
 	 * (non-Javadoc)
 	 * @see org.osgi.framework.BundleActivator#start(org.osgi.framework.BundleContext)
 	 */
+	@Override
 	public void start(final BundleContext bundleContext) throws Exception {
 		RedhawkConfiguratorActivator.context = bundleContext;
 		this.logServiceTracker = new ServiceTracker<LogService, LogService>(bundleContext, LogService.class, null);
@@ -132,6 +133,7 @@ public class RedhawkConfiguratorActivator implements BundleActivator {
 	 * (non-Javadoc)
 	 * @see org.osgi.framework.BundleActivator#stop(org.osgi.framework.BundleContext)
 	 */
+	@Override
 	public void stop(final BundleContext bundleContext) throws Exception {
 		// We probably shouldn't be uninstalling the bundles since the OSGI framework will do that for us anyway
 		//		uninstallBundles();

@@ -111,14 +111,17 @@ public class DeviceAssignmentComposite extends Composite {
 
 	private static class DeviceSelectionContentProvider implements IStructuredContentProvider {
 
+		@Override
 		public void inputChanged(final Viewer viewer, final Object oldInput, final Object newInput) {
 
 		}
 
+		@Override
 		public void dispose() {
 
 		}
 
+		@Override
 		public Object[] getElements(final Object inputElement) {
 			final List<Object> retVal = new ArrayList<Object>();
 			retVal.add("AUTO");
@@ -126,6 +129,7 @@ public class DeviceAssignmentComposite extends Composite {
 				final ScaDomainManager domain = (ScaDomainManager) inputElement;
 				ScaModelCommand.execute(domain, new ScaModelCommand() {
 
+					@Override
 					public void execute() {
 						final Set<ScaDevice< ? >> devices = new HashSet<ScaDevice< ? >>();
 						for (final ScaDeviceManager devMgr : domain.getDeviceManagers()) {
@@ -228,6 +232,7 @@ public class DeviceAssignmentComposite extends Composite {
 				if (msg.getNewBooleanValue()) {
 					PlatformUI.getWorkbench().getDisplay().asyncExec(new Runnable() {
 
+						@Override
 						public void run() {
 							if (DeviceAssignmentComposite.this.disposed) {
 								return;
@@ -257,6 +262,7 @@ public class DeviceAssignmentComposite extends Composite {
 	private final PropertyChangeSupport propertyChangeSupport = new PropertyChangeSupport(this);
 	private final PropertyChangeListener listener = new PropertyChangeListener() {
 
+		@Override
 		public void propertyChange(final PropertyChangeEvent evt) {
 			DeviceAssignmentComposite.this.propertyChangeSupport.firePropertyChange(evt);
 		}

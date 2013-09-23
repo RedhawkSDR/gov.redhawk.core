@@ -76,6 +76,7 @@ public class RefreshTask extends AbstractDataProvider implements Runnable {
 
 	private final IPreferenceChangeListener refreshPreferenceListener = new IPreferenceChangeListener() {
 
+		@Override
 		public void preferenceChange(final PreferenceChangeEvent event) {
 			if (event.getKey().equals(RefreshPreferenceConstants.REFRESH_INTERVAL)) {
 				updateInterval();
@@ -149,6 +150,7 @@ public class RefreshTask extends AbstractDataProvider implements Runnable {
 		if (this.eObject instanceof EObject) {
 			ScaModelCommand.execute(this.eObject, new ScaModelCommand() {
 
+				@Override
 				public void execute() {
 					RefreshTask.this.eObject.eAdapters().add(RefreshTask.this.listener);
 				}
@@ -171,6 +173,7 @@ public class RefreshTask extends AbstractDataProvider implements Runnable {
 		if (this.eObject instanceof EObject) {
 			ScaModelCommand.execute(this.eObject, new ScaModelCommand() {
 
+				@Override
 				public void execute() {
 					RefreshTask.this.eObject.eAdapters().remove(RefreshTask.this.listener);
 				}
@@ -196,6 +199,7 @@ public class RefreshTask extends AbstractDataProvider implements Runnable {
 		return -1;
 	}
 
+	@Override
 	public void run() {
 		if (!shouldRun()) {
 			return;
@@ -209,6 +213,7 @@ public class RefreshTask extends AbstractDataProvider implements Runnable {
 		}
 		final Future< ? > task = RefreshTask.EXECUTOR_POOL.submit(new Runnable() {
 
+			@Override
 			public void run() {
 				if (!shouldRun()) {
 					return;

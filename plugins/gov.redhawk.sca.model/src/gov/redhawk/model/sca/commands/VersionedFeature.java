@@ -87,6 +87,7 @@ public class VersionedFeature {
 	private boolean ignoreNotification;
 	
 	private final Adapter versionListener = new AdapterImpl() {
+		@Override
 		public void notifyChanged(org.eclipse.emf.common.notify.Notification msg) {
 			if (msg.getFeature() == ScaPackage.Literals.IDISPOSABLE__DISPOSED) {
 				if (msg.getNotifier() instanceof Notifier) {

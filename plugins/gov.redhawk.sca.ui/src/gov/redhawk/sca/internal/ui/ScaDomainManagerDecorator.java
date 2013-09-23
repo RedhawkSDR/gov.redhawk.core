@@ -61,6 +61,7 @@ public class ScaDomainManagerDecorator extends LabelProvider implements ILightwe
 		fireLabelProviderChanged(event);
 	}
 
+	@Override
 	public void decorate(final Object element, final IDecoration decoration) {
 		if (element instanceof ScaDomainManager) {
 			ScaUiPlugin.getDefault().getImageRegistry().getDescriptor(ScaUiPluginImages.IMG_DEFAULT_DOMAIN_OVR);
@@ -68,6 +69,7 @@ public class ScaDomainManagerDecorator extends LabelProvider implements ILightwe
 			final ScaDomainManager domMgr = (ScaDomainManager) element;
 			ScaModelCommand.execute(domMgr, new ScaModelCommand() {
 
+				@Override
 				public void execute() {
 					if (!domMgr.eAdapters().contains(adapter)) {
 						domMgr.eAdapters().add(ScaDomainManagerDecorator.this.adapter);

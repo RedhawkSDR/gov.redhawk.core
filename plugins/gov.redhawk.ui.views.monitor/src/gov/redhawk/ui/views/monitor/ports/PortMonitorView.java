@@ -289,6 +289,7 @@ public class PortMonitorView extends ViewPart {
 		final MenuManager menuMgr = new MenuManager("#PopupMenu");
 		menuMgr.setRemoveAllWhenShown(true);
 		menuMgr.addMenuListener(new IMenuListener() {
+			@Override
 			public void menuAboutToShow(final IMenuManager manager) {
 				PortMonitorView.this.fillContextMenu(manager);
 			}

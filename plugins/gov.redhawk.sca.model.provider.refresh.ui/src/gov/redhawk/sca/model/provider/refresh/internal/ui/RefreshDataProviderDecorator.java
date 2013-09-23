@@ -38,6 +38,7 @@ public class RefreshDataProviderDecorator extends LabelProvider implements ILigh
 			this.element = element;
 		}
 
+		@Override
 		public void propertyChange(final PropertyChangeEvent evt) {
 			if (RefreshDataProviderDecorator.this.disposed) {
 				if (evt.getSource() instanceof RefreshTask) {
@@ -68,11 +69,13 @@ public class RefreshDataProviderDecorator extends LabelProvider implements ILigh
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public void decorate(final Object element, final IDecoration decoration) {
 		if (element instanceof DataProviderObject) {
 			final DataProviderObject dataProvider = (DataProviderObject) element;
 			final RefreshTask task = ScaModelCommandWithResult.execute(dataProvider, new ScaModelCommandWithResult<RefreshTask>() {
 
+				@Override
 				public void execute() {
 					for (final IScaDataProvider provider : dataProvider.getDataProviders()) {
 						if (provider instanceof RefreshTask) {

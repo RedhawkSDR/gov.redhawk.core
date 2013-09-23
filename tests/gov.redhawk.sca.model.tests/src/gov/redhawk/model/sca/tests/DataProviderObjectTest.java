@@ -62,6 +62,7 @@ public abstract class DataProviderObjectTest extends IStatusProviderTest {
 		// END GENERATED CODE
 		ScaModelCommand.execute(getFixture(), new ScaModelCommand() {
 
+			@Override
 			public void execute() {
 				getFixture().attachDataProviders();
 			}
@@ -80,6 +81,7 @@ public abstract class DataProviderObjectTest extends IStatusProviderTest {
 		// END GENERATED CODE
 		ScaModelCommand.execute(getFixture(), new ScaModelCommand() {
 
+			@Override
 			public void execute() {
 				getFixture().detachDataProviders();
 			}
@@ -114,6 +116,7 @@ public abstract class DataProviderObjectTest extends IStatusProviderTest {
 		// END GENERATED CODE
 		ScaModelCommand.execute(getFixture(), new ScaModelCommand() {
 
+			@Override
 			public void execute() {
 				IDisposableTest.testDipose(getFixture());
 			}

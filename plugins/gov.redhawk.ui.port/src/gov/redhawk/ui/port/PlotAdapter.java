@@ -23,6 +23,7 @@ public class PlotAdapter implements IPlotListener {
 	 * 
 	 * @param id the ID of the plot being disposed
 	 */
+	@Override
 	public void dispose(String id) {
 	}
 
@@ -33,6 +34,7 @@ public class PlotAdapter implements IPlotListener {
 	 * @param x the x position of the mouse click
 	 * @param y the y position of the mouse click
 	 */
+	@Override
 	public void click(String id, double x, double y) {
 	}
 
@@ -45,6 +47,7 @@ public class PlotAdapter implements IPlotListener {
 	 * @param xmax max x position of the zoom box
 	 * @param ymax max y position of the zoom box
 	 */
+	@Override
 	public void zoomIn(String id, double xmin, double ymin, double xmax, double ymax) {
 	}
 
@@ -57,6 +60,7 @@ public class PlotAdapter implements IPlotListener {
 	 * @param xmax max x position 2 of the box
 	 * @param ymax max y position 2 of the box
 	 */
+	@Override
 	public void dragBox(String id, double xmin, double ymin, double xmax, double ymax) {
 	}
 
@@ -69,6 +73,7 @@ public class PlotAdapter implements IPlotListener {
 	 * @param x2 x position 2 of the resulting zoom out
 	 * @param y2 y position 2 of the resulting zoom out
 	 */
+	@Override
 	public void zoomOut(String id, double x1, double y1, double x2, double y2) {
 	}
 
@@ -81,6 +86,7 @@ public class PlotAdapter implements IPlotListener {
 	 * @param x2 x position 2 of the pan
 	 * @param y2 y position 2 of the pan
 	 */
+	@Override
 	public void pan(String id, double x1, double y1, double x2, double y2) {
 	}
 

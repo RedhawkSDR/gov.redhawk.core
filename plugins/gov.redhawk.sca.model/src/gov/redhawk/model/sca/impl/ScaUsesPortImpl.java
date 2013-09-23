@@ -109,6 +109,7 @@ public class ScaUsesPortImpl extends ScaPortImpl<Uses, Port> implements ScaUsesP
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EList<ScaConnection> getConnections() {
 		if (connections == null) {
 			connections = new EObjectContainmentWithInverseEList.Unsettable.Resolving<ScaConnection>(ScaConnection.class, this, ScaPackage.SCA_USES_PORT__CONNECTIONS, ScaPackage.SCA_CONNECTION__PORT);
@@ -121,6 +122,7 @@ public class ScaUsesPortImpl extends ScaPortImpl<Uses, Port> implements ScaUsesP
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void unsetConnections() {
 		if (connections != null) ((InternalEList.Unsettable<?>)connections).unset();
 	}
@@ -130,6 +132,7 @@ public class ScaUsesPortImpl extends ScaPortImpl<Uses, Port> implements ScaUsesP
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public boolean isSetConnections() {
 		return connections != null && ((InternalEList.Unsettable<?>)connections).isSet();
 	}
@@ -160,6 +163,7 @@ public class ScaUsesPortImpl extends ScaPortImpl<Uses, Port> implements ScaUsesP
 	 * <!-- end-user-doc -->
 	 * @generated NOT
 	 */
+	@Override
 	public EList<ScaConnection> fetchConnections(IProgressMonitor monitor) {
 		// END GENERATED CODE
 		SubMonitor subMonitor = SubMonitor.convert(monitor, 2);
@@ -178,6 +182,7 @@ public class ScaUsesPortImpl extends ScaPortImpl<Uses, Port> implements ScaUsesP
 			final UsesConnection[] newConnections = tmpConnections;
 			transaction.addCommand(new ScaModelCommand() {
 
+				@Override
 				public void execute() {
 					Map<String, ScaConnection> currentConnections = new HashMap<String, ScaConnection>();
 					for (ScaConnection connection : getConnections()) {
@@ -225,6 +230,7 @@ public class ScaUsesPortImpl extends ScaPortImpl<Uses, Port> implements ScaUsesP
 	 * @generated NOT
 	 * 
 	 */
+	@Override
 	public void disconnectPort(ScaConnection connection) throws InvalidPort {
 		// END GENERATED CODE
 		if (connection != null) {
@@ -239,6 +245,7 @@ public class ScaUsesPortImpl extends ScaPortImpl<Uses, Port> implements ScaUsesP
 	 * <!-- end-user-doc -->
 	 * @generated NOT
 	 */
+	@Override
 	public void connectPort(org.omg.CORBA.Object connection, String connectionId) throws InvalidPort, OccupiedPort {
 		// END GENERATED CODE
 		Port usesPort = fetchNarrowedObject(null);
@@ -256,6 +263,7 @@ public class ScaUsesPortImpl extends ScaPortImpl<Uses, Port> implements ScaUsesP
 	 * <!-- end-user-doc -->
 	 * @generated NOT
 	 */
+	@Override
 	public void disconnectPort(String connectionId) throws InvalidPort {
 		// END GENERATED CODE
 		Port usesPort = fetchNarrowedObject(null);

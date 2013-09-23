@@ -92,6 +92,7 @@ public class ValueEditingSupport extends EditingSupport {
 				final TextCellEditor editor = new TextCellEditor((Composite) getViewer().getControl());
 				editor.setValidator(new ICellEditorValidator() {
 
+					@Override
 					public String isValid(final Object value) {
 						try {
 							AnyUtils.convertString(value.toString(), simple.getType().getLiteral(), simple.isComplex());

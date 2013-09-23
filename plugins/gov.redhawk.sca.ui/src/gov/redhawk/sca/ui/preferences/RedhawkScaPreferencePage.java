@@ -77,6 +77,7 @@ public class RedhawkScaPreferencePage extends FieldEditorPreferencePage implemen
 		super.checkState();
 	}
 
+	@Override
 	public void init(final IWorkbench workbench) {
 		setPreferenceStore(ScaUiPlugin.getDefault().getScaPreferenceStore());
 	}

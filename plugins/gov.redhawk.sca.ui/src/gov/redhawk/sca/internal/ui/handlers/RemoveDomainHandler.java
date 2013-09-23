@@ -36,6 +36,7 @@ public class RemoveDomainHandler extends AbstractHandler implements IHandler {
 	 * {@inheritDoc}
 	 */
 
+	@Override
 	public Object execute(final ExecutionEvent event) throws ExecutionException {
 		ISelection selection = HandlerUtil.getActiveMenuSelection(event);
 		if (selection == null) {
@@ -52,6 +53,7 @@ public class RemoveDomainHandler extends AbstractHandler implements IHandler {
 						domMgr.disconnect();
 						ScaModelCommand.execute(domMgr, new ScaModelCommand() {
 
+							@Override
 							public void execute() {
 								ScaPlugin.getDefault().getDomainManagerRegistry().getDomains().remove(domMgr);
 							}

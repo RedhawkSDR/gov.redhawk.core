@@ -76,6 +76,7 @@ public class AnyTest extends PrimitiveTypeTest {
 		setFixture(null);
 	}
 
+	@Override
 	public void test_pass() {
 
 	}

@@ -52,6 +52,7 @@ public class PlotPortHandler extends AbstractHandler {
 	public PlotPortHandler() {
 	}
 
+	@Override
 	public Object execute(ExecutionEvent event) throws ExecutionException {
 		final IWorkbenchWindow window = HandlerUtil.getActiveWorkbenchWindow(event);
 		PlotType type = PlotType.valueOf(event.getParameter("gov.redhawk.ui.port.nxmplot.type"));

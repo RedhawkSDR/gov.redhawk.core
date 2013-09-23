@@ -34,6 +34,7 @@ public class SadComponentPlacementCompartmentEditPart extends mil.jpeojtrs.sca.s
 		return this.editPartHelper.createFigure();
 	}
 
+	@Override
 	public IFigure basicCreateFigure() {
 		return super.createFigure();
 	}

@@ -109,6 +109,7 @@ public class DiagramPackageImpl extends EPackageImpl implements DiagramPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EClass getEObjectContainerStyle() {
 		return eObjectContainerStyleEClass;
 	}
@@ -118,6 +119,7 @@ public class DiagramPackageImpl extends EPackageImpl implements DiagramPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EReference getEObjectContainerStyle_Value() {
 		return (EReference)eObjectContainerStyleEClass.getEStructuralFeatures().get(0);
 	}
@@ -127,6 +129,7 @@ public class DiagramPackageImpl extends EPackageImpl implements DiagramPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public DiagramFactory getDiagramFactory() {
 		return (DiagramFactory)getEFactoryInstance();
 	}

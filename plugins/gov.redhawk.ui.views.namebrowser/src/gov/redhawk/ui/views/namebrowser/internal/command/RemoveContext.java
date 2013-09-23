@@ -33,6 +33,7 @@ import org.eclipse.ui.handlers.HandlerUtil;
 
 public class RemoveContext extends AbstractHandler implements IHandler {
 
+	@Override
 	public Object execute(final ExecutionEvent event) throws ExecutionException {
 		final ISelection selection = HandlerUtil.getCurrentSelection(event);
 		final IWorkbenchPage page = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();

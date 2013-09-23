@@ -28,6 +28,7 @@ public abstract class AbstractScaObjectLocator implements IScaObjectLocator {
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public < T extends CorbaObjWrapper< ? >> T findEObject(Class<T> type, String ior) {
 		if (ior == null || type == null) {
 			return null;

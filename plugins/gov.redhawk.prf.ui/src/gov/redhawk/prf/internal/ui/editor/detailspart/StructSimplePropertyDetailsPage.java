@@ -38,6 +38,7 @@ public class StructSimplePropertyDetailsPage extends SimplePropertyDetailsPage {
 	}
 	
 	
+	@Override
 	public StructSimplePropertyComposite createComposite(Composite parent, FormToolkit toolkit) {
 		StructSimplePropertyComposite retVal = new StructSimplePropertyComposite(parent, SWT.NONE, toolkit);
 		toolkit.adapt(retVal);

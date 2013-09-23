@@ -85,6 +85,7 @@ public class ValuesWizardPage extends WizardPage {
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public void createControl(final Composite parent) {
 		final Composite control = new Composite(parent, SWT.None);
 		control.setLayout(new GridLayout(2, false));
@@ -231,6 +232,7 @@ public class ValuesWizardPage extends WizardPage {
 				final TextCellEditor editor = new TextCellEditor((Composite) ValuesWizardPage.this.viewer.getControl());
 				editor.setValidator(new ICellEditorValidator() {
 
+					@Override
 					public String isValid(final Object value) {
 						try {
 							AnyUtils.convertString(value.toString(), type.getLiteral(), complex);
@@ -258,6 +260,7 @@ public class ValuesWizardPage extends WizardPage {
 
 		this.viewer.addSelectionChangedListener(new ISelectionChangedListener() {
 
+			@Override
 			public void selectionChanged(final SelectionChangedEvent event) {
 				updateButton();
 			}

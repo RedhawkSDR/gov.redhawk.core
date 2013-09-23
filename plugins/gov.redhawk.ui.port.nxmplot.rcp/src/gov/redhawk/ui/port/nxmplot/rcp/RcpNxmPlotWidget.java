@@ -61,6 +61,7 @@ public class RcpNxmPlotWidget extends AbstractNxmPlotWidget {
 		nxmComp.getLocalShell().M.registry.put(MSG_HANDLER_ID, getPlotMessageHandler());
 	}
 
+	@Override
 	public void internalInitPlot(String plotSwitches, String plotArgs) {
 		if (this.initialized) {
 			throw new IllegalStateException("Plot already initialized.");
@@ -114,6 +115,7 @@ public class RcpNxmPlotWidget extends AbstractNxmPlotWidget {
 		this.sources.add(sourcePipeId);
 	}
 
+	@Override
 	public Set<String> getSources() {
 		return Collections.unmodifiableSet(this.sources);
 	}

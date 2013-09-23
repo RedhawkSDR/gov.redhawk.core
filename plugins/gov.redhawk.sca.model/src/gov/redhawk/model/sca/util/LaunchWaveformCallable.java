@@ -61,6 +61,7 @@ public class LaunchWaveformCallable implements Callable<ScaWaveform> {
 		subMonitor = SubMonitor.convert(monitor, "Launching Application: " + this.waveformName, IProgressMonitor.UNKNOWN);
 	}
 
+	@Override
 	public ScaWaveform call() throws Exception {
 		// Track whether we installed the ApplicationFactory ourselves.
 		ScaWaveform retVal = null;
@@ -83,6 +84,7 @@ public class LaunchWaveformCallable implements Callable<ScaWaveform> {
 					try {
 						factory = ScaModelCommand.runExclusive(this.domMgr, new RunnableWithResult.Impl<ScaWaveformFactory>() {
 
+							@Override
 							public void run() {
 								for (final ScaWaveformFactory factory : LaunchWaveformCallable.this.domMgr.getWaveformFactories()) {
 									if (factory.getProfile().equals(profile)) {

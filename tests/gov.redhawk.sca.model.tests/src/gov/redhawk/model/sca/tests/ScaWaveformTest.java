@@ -159,6 +159,7 @@ public class ScaWaveformTest extends ScaPropertyContainerTest {
 		// END GENERATED CODE
 		ScaModelCommand.execute(getFixture(), new ScaModelCommand() {
 
+			@Override
 			public void execute() {
 				Assert.assertNotNull(getFixture().getAssemblyController());
 				getFixture().setAssemblyController(null);
@@ -182,6 +183,7 @@ public class ScaWaveformTest extends ScaPropertyContainerTest {
 		Assert.assertNotNull(getFixture().getAssemblyController());
 		ScaModelCommand.execute(getFixture(), new ScaModelCommand() {
 
+			@Override
 			public void execute() {
 				getFixture().unsetAssemblyController();
 				Assert.assertNull(getFixture().getAssemblyController());
@@ -214,6 +216,7 @@ public class ScaWaveformTest extends ScaPropertyContainerTest {
 		// END GENERATED CODE
 		ScaModelCommand.execute(getFixture(), new ScaModelCommand() {
 
+			@Override
 			public void execute() {
 				Assert.assertNotNull(getFixture().getDomMgr());
 				((ScaDomainManagerImpl) ScaWaveformTest.this.env.getDomMgr()).setCorbaObj(null);
@@ -312,6 +315,7 @@ public class ScaWaveformTest extends ScaPropertyContainerTest {
 		final String name = getFixture().getObj().name();
 		ScaModelCommand.execute(getFixture(), new ScaModelCommand() {
 
+			@Override
 			public void execute() {
 				Assert.assertEquals(name, getFixture().getName());
 			}
@@ -324,6 +328,7 @@ public class ScaWaveformTest extends ScaPropertyContainerTest {
 		getFixture().refresh(null, RefreshDepth.FULL);
 		ScaModelCommand.execute(getFixture(), new ScaModelCommand() {
 
+			@Override
 			public void execute() {
 				Assert.assertNull(getFixture().getName());
 			}
@@ -408,6 +413,7 @@ public class ScaWaveformTest extends ScaPropertyContainerTest {
 		final ScaComponent[] component = new ScaComponent[1];
 		ScaModelCommand.execute(getFixture(), new ScaModelCommand() {
 
+			@Override
 			public void execute() {
 				size[0] = getFixture().getComponents().size();
 
@@ -420,6 +426,7 @@ public class ScaWaveformTest extends ScaPropertyContainerTest {
 		getFixture().fetchComponents(null);
 		ScaModelCommand.execute(getFixture(), new ScaModelCommand() {
 
+			@Override
 			public void execute() {
 				if (!getFixture().getComponents().isEmpty()) {
 					Assert.assertEquals(component[0], getFixture().getComponents().get(0));
@@ -482,6 +489,7 @@ public class ScaWaveformTest extends ScaPropertyContainerTest {
 		// END GENERATED CODE
 		ScaModelCommand.execute(getFixture(), new ScaModelCommand() {
 
+			@Override
 			public void execute() {
 				Assert.assertNull(getFixture().findComponent(null));
 				Assert.assertNotNull(getFixture().findComponent(ScaTestConstaints.DCE_BASIC_AC_INSTANTIATION));
@@ -556,6 +564,7 @@ public class ScaWaveformTest extends ScaPropertyContainerTest {
 
 		ScaModelCommand.execute(getFixture(), new ScaModelCommand() {
 
+			@Override
 			public void execute() {
 				Assert.assertFalse(getFixture().started());
 
@@ -582,6 +591,7 @@ public class ScaWaveformTest extends ScaPropertyContainerTest {
 		// END GENERATED CODE
 		ScaModelCommand.execute(getFixture(), new ScaModelCommand() {
 
+			@Override
 			public void execute() {
 				((ScaWaveformImpl) getFixture()).setStarted(true);
 				Assert.assertTrue(getFixture().started());

@@ -92,6 +92,7 @@ public class ScaUsesPortTest extends ScaPortTest {
 		Assert.assertNotNull(waveform);
 		ScaModelCommand.execute(waveform, new ScaModelCommand() {
 
+			@Override
 			public void execute() {
 				final ScaComponent kitchenSinkComp = waveform.findComponent(ScaTestConstaints.DCE_KITCHEN_SINK_COMPONENT);
 				if (kitchenSinkComp == null) {

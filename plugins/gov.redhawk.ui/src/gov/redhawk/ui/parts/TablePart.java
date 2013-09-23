@@ -60,11 +60,13 @@ public class TablePart extends StructuredViewerPart {
 		}
 		final TableViewer tableViewer = new TableViewer(parent, style);
 		tableViewer.addSelectionChangedListener(new ISelectionChangedListener() {
+			@Override
 			public void selectionChanged(final SelectionChangedEvent e) {
 				TablePart.this.selectionChanged((IStructuredSelection) e.getSelection());
 			}
 		});
 		tableViewer.addDoubleClickListener(new IDoubleClickListener() {
+			@Override
 			public void doubleClick(final DoubleClickEvent e) {
 				TablePart.this.handleDoubleClick((IStructuredSelection) e.getSelection());
 			}

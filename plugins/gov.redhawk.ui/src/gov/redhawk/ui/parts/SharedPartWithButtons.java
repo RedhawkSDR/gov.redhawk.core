@@ -43,6 +43,7 @@ public abstract class SharedPartWithButtons extends SharedPart {
 		/**
 		 * {@inheritDoc}
 		 */
+		@Override
 		public void widgetSelected(final SelectionEvent e) {
 			buttonSelected(e);
 		}
@@ -50,6 +51,7 @@ public abstract class SharedPartWithButtons extends SharedPart {
 		/**
 		 * {@inheritDoc}
 		 */
+		@Override
 		public void widgetDefaultSelected(final SelectionEvent e) {
 			buttonSelected(e);
 		}

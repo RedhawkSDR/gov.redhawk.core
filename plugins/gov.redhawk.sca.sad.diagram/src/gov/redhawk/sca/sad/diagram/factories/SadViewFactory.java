@@ -32,6 +32,7 @@ public class SadViewFactory extends SadViewProvider implements ViewFactory, IPar
 
 	private final PartitioningViewFactory partitioningViewFactory = new PartitioningViewFactory(RedhawkSadVisualIdRegistry.INSTANCE, this);
 
+	@Override
 	public View createView(final IAdaptable semanticAdapter, final View containerView, final String semanticHint, final int index, final boolean persisted,
 	        final PreferencesHint preferencesHint) {
 		final int visualId = SadVisualIDRegistry.getVisualID(semanticHint);
@@ -48,26 +49,31 @@ public class SadViewFactory extends SadViewProvider implements ViewFactory, IPar
 		return retVal;
 	}
 
+	@Override
 	public Edge basicCreateConnectInterface(final EObject domainElement, final View containerView, final int index, final boolean persisted,
 	        final PreferencesHint preferencesHint) {
 		return super.createSadConnectInterface_4001(domainElement, containerView, index, persisted, preferencesHint);
 	}
 
+	@Override
 	public View basicCreateUsesPortStub(final EObject domainElement, final View containerView, final int index, final boolean persisted,
 	        final PreferencesHint preferencesHint) {
 		return super.createUsesPortStub_3003(domainElement, containerView, index, persisted, preferencesHint);
 	}
 
+	@Override
 	public View basicCreateProvidesPortStub(final EObject domainElement, final View containerView, final int index, final boolean persisted,
 	        final PreferencesHint preferencesHint) {
 		return super.createProvidesPortStub_3004(domainElement, containerView, index, persisted, preferencesHint);
 	}
 
+	@Override
 	public View basicCreateComponentSupportedInterfaceStub(final EObject domainElement, final View containerView, final int index, final boolean persisted,
 	        final PreferencesHint preferencesHint) {
 		return super.createComponentSupportedInterfaceStub_3005(domainElement, containerView, index, persisted, preferencesHint);
 	}
 
+	@Override
 	public View basicCreateComponentPlacement(final EObject domainElement, final View containerView, final int index, final boolean persisted,
 	        final PreferencesHint preferencesHint) {
 		return super.createSadComponentPlacement_3001(domainElement, containerView, index, persisted, preferencesHint);

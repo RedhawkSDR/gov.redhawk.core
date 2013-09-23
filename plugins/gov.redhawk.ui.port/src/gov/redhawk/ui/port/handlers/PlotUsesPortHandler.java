@@ -46,6 +46,7 @@ public class PlotUsesPortHandler extends AbstractHandler {
 		super();
 	}
 
+	@Override
 	public Object execute(final ExecutionEvent event) throws ExecutionException {
 		// Get the currently selected item
 		final ISelection sel = HandlerUtil.getActiveMenuSelection(event);

@@ -59,6 +59,7 @@ public class WaveformLaunchConfigurationDelegate extends LaunchConfigurationDele
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public void launch(final ILaunchConfiguration configuration, final String mode, final ILaunch launch, final IProgressMonitor mainMonitor)
 	        throws CoreException {
 		if (ILaunchManager.RUN_MODE.equals(mode)) {

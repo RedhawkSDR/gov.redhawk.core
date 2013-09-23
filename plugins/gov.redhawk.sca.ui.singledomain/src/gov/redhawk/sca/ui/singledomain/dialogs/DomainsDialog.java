@@ -93,14 +93,17 @@ public class DomainsDialog extends Dialog {
 			this.label = label;
 		}
 
+		@Override
 		public void mouseEnter(CustomMouseEvent e) {
 			doMouseEnter(label);
 		}
 
+		@Override
 		public void mouseExit(CustomMouseEvent e) {
 			doMouseExit(label);
 		}
 
+		@Override
 		public void mouseHover(CustomMouseEvent e) {
 			// TODO Auto-generated method stub
 
@@ -141,6 +144,7 @@ public class DomainsDialog extends Dialog {
 	private void doMouseEnter(final TrackableLabel label) {
 		label.getDisplay().asyncExec(new Runnable() {
 
+			@Override
 			public void run() {
 				FontData fontData = label.getFont().getFontData()[0];
 				font = new Font(label.getDisplay(), new FontData(fontData
@@ -167,6 +171,7 @@ public class DomainsDialog extends Dialog {
 	private void doMouseExit(final TrackableLabel label) {
 		label.getDisplay().asyncExec(new Runnable() {
 
+			@Override
 			public void run() {
 				FontData fontData = label.getFont().getFontData()[0];
 				font = new Font(label.getDisplay(), new FontData(fontData
@@ -208,6 +213,7 @@ public class DomainsDialog extends Dialog {
 			}
 			Runnable postFlash = new Runnable() {
 
+				@Override
 				public void run() {
 					prefs.setValue(
 							ScaSingleDomainPreferenceConstants.SCA_ACTIVE_DOMAIN,
@@ -272,10 +278,12 @@ public class DomainsDialog extends Dialog {
 
 	public void flash(Control label, final Runnable runnable) {
 		this.flasher = new FlasherJob(label, true, 50, 8, runnable) {
+			@Override
 			protected void flash(Control control) {
 				control.setForeground(colorBackground);
 			};
 
+			@Override
 			protected void unFlash(Control control) {
 				control.setForeground(colorDomainLabel);
 			};
@@ -318,16 +326,19 @@ public class DomainsDialog extends Dialog {
 					colorBackground, SWT.NONE, false);
 			label.addHyperlinkListener(new IHyperlinkListener() {
 
+				@Override
 				public void linkExited(HyperlinkEvent e) {
 					// TODO Auto-generated method stub
 
 				}
 
+				@Override
 				public void linkEntered(HyperlinkEvent e) {
 					// TODO Auto-generated method stub
 
 				}
 
+				@Override
 				public void linkActivated(HyperlinkEvent e) {
 					deleteDomain(((Label) label.getLabel()).getText());
 					refreshDialogContents();
@@ -357,14 +368,17 @@ public class DomainsDialog extends Dialog {
 		newDomain.setUnderlined(true);
 		newDomain.addHyperlinkListener(new IHyperlinkListener() {
 
+			@Override
 			public void linkEntered(org.eclipse.ui.forms.events.HyperlinkEvent e) {
 
 			}
 
+			@Override
 			public void linkExited(org.eclipse.ui.forms.events.HyperlinkEvent e) {
 
 			}
 
+			@Override
 			public void linkActivated(
 					org.eclipse.ui.forms.events.HyperlinkEvent e) {
 				EvaluationContext context = new EvaluationContext(null,
@@ -391,14 +405,17 @@ public class DomainsDialog extends Dialog {
 		connect.setUnderlined(true);
 		connect.addHyperlinkListener(new IHyperlinkListener() {
 
+			@Override
 			public void linkEntered(org.eclipse.ui.forms.events.HyperlinkEvent e) {
 
 			}
 
+			@Override
 			public void linkExited(org.eclipse.ui.forms.events.HyperlinkEvent e) {
 
 			}
 
+			@Override
 			public void linkActivated(org.eclipse.ui.forms.events.HyperlinkEvent e) {
 				ScaDomainManager domain = ScaPlugin.getDefault().getDomainManagerRegistry().findDomain(
 						ScaExplorerSingleDomain.getActiveDomainName());
@@ -421,14 +438,17 @@ public class DomainsDialog extends Dialog {
 		disconnect.setUnderlined(true);
 		disconnect.addHyperlinkListener(new IHyperlinkListener() {
 
+			@Override
 			public void linkEntered(org.eclipse.ui.forms.events.HyperlinkEvent e) {
 
 			}
 
+			@Override
 			public void linkExited(org.eclipse.ui.forms.events.HyperlinkEvent e) {
 
 			}
 
+			@Override
 			public void linkActivated(org.eclipse.ui.forms.events.HyperlinkEvent e) {
 				ScaDomainManager domain = ScaPlugin.getDefault().getDomainManagerRegistry().findDomain(
 						ScaExplorerSingleDomain.getActiveDomainName());
@@ -447,14 +467,17 @@ public class DomainsDialog extends Dialog {
 		refresh.setUnderlined(true);
 		refresh.addHyperlinkListener(new IHyperlinkListener() {
 
+			@Override
 			public void linkEntered(org.eclipse.ui.forms.events.HyperlinkEvent e) {
 
 			}
 
+			@Override
 			public void linkExited(org.eclipse.ui.forms.events.HyperlinkEvent e) {
 
 			}
 
+			@Override
 			public void linkActivated(org.eclipse.ui.forms.events.HyperlinkEvent e) {
 				ScaDomainManager domain = ScaPlugin.getDefault().getDomainManagerRegistry().findDomain(
 						ScaExplorerSingleDomain.getActiveDomainName());
@@ -490,6 +513,7 @@ public class DomainsDialog extends Dialog {
 			domMgr.disconnect();
 			ScaModelCommand.execute(domMgr, new ScaModelCommand() {
 
+				@Override
 				public void execute() {
 					ScaPlugin.getDefault().getDomainManagerRegistry()
 					.getDomains().remove(domMgr);

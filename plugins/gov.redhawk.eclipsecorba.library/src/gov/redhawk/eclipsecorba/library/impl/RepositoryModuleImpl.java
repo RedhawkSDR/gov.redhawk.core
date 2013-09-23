@@ -99,6 +99,7 @@ public class RepositoryModuleImpl extends DefinitionImpl implements RepositoryMo
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EList<Module> getModuleDefinitions() {
 		if (moduleDefinitions == null) {
 			moduleDefinitions = new EObjectResolvingEList<Module>(Module.class, this, LibraryPackage.REPOSITORY_MODULE__MODULE_DEFINITIONS);
@@ -111,6 +112,7 @@ public class RepositoryModuleImpl extends DefinitionImpl implements RepositoryMo
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EList<Definition> getDefinitions() {
 		if (definitions == null) {
 			definitions = new EObjectResolvingEList<Definition>(Definition.class, this, LibraryPackage.REPOSITORY_MODULE__DEFINITIONS);
@@ -264,6 +266,7 @@ public class RepositoryModuleImpl extends DefinitionImpl implements RepositoryMo
 	 * <!-- end-user-doc -->
 	 * @generated NOT
 	 */
+	@Override
 	public Identifiable find(final String repId) {
 		// END GENERATED CODE
 		Identifiable retVal = this.definitionMap.get(repId);
@@ -272,6 +275,7 @@ public class RepositoryModuleImpl extends DefinitionImpl implements RepositoryMo
 			try {
 				tmp = ScaModelCommand.runExclusive(this, new RunnableWithResult.Impl<Definition[]>() {
 
+					@Override
 					public void run() {
 						setResult(getDefinitions().toArray(new Definition[getDefinitions().size()]));
 					}

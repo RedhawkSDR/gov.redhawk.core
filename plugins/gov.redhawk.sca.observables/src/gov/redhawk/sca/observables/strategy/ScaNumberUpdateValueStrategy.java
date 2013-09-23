@@ -36,6 +36,7 @@ public class ScaNumberUpdateValueStrategy extends UpdateValueStrategy {
 			this.complex = complex;
 		}
 
+		@Override
 		public IStatus validate(Object value) {
 			String s = String.valueOf(value);
 			try {

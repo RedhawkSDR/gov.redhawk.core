@@ -83,30 +83,37 @@ public class SadComponentInstantiationEditPart extends mil.jpeojtrs.sca.sad.diag
 		return this.editPartHelper.getDragTracker(request);
 	}
 
+	@Override
 	public NodeFigure basicCreateNodePlate() {
 		return super.createNodePlate();
 	}
 
+	@Override
 	public boolean basicAddFixedChild(final EditPart childEditPart) {
 		return super.addFixedChild(childEditPart);
 	}
 
+	@Override
 	public void setPrimaryShape(final ComponentInstantiationFigure retVal) {
 		this.primaryShape = retVal;
 	}
 
+	@Override
 	public IPreferenceStore getPreferenceStore() {
 		return RedhawkSadDiagramPlugin.getDefault().getPreferenceStore();
 	}
 
+	@Override
 	public void basicAddNotationalListeners() {
 		super.addNotationalListeners();
 	}
 
+	@Override
 	public void basicRemoveNotationalListeners() {
 		super.removeNotationalListeners();
 	}
 
+	@Override
 	public DragTracker basicGetDragTracker(final Request request) {
 		return super.getDragTracker(request);
 	}

@@ -59,6 +59,7 @@ public class InstallApplicationWizard extends Wizard {
 		try {
 			this.getContainer().run(true, false, new IRunnableWithProgress() {
 
+				@Override
 				public void run(final IProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
 					monitor.beginTask("Installing application(s)...", elements.length);
 					try {

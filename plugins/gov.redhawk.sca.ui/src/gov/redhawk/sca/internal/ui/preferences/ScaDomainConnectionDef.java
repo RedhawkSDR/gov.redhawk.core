@@ -90,6 +90,7 @@ public class ScaDomainConnectionDef {
 		}
 	}
 
+	@Override
 	public int hashCode() {
 		assert false : "hashCode not designed";
 		return 42; // any arbitrary constant will do

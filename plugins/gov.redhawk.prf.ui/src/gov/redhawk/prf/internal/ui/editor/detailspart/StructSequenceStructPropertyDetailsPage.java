@@ -37,6 +37,7 @@ public class StructSequenceStructPropertyDetailsPage extends StructPropertyDetai
 	    return (StructSequenceStructPropertyComposite) super.getComposite();
 	}
 	
+	@Override
 	protected StructSequenceStructPropertyComposite createControls(Composite parent, FormToolkit toolkit) {
 		return new StructSequenceStructPropertyComposite(parent, SWT.None, toolkit);
 	}

@@ -94,6 +94,7 @@ public class HostCollocationDecoratorProvider extends AbstractProvider implement
 			super(decoratorTarget);
 		}
 
+		@Override
 		public void activate() {
 
 		}
@@ -105,6 +106,7 @@ public class HostCollocationDecoratorProvider extends AbstractProvider implement
 		/**
 		 * {@inheritDoc}
 		 */
+		@Override
 		public void refresh() {
 			removeDecoration();
 			final View view = (View) getDecoratorTarget().getAdapter(View.class);
@@ -141,6 +143,7 @@ public class HostCollocationDecoratorProvider extends AbstractProvider implement
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public void createDecorators(final IDecoratorTarget decoratorTarget) {
 		final EditPart editPart = (EditPart) decoratorTarget.getAdapter(EditPart.class);
 		if (editPart instanceof GraphicalEditPart || editPart instanceof AbstractConnectionEditPart) {
@@ -165,6 +168,7 @@ public class HostCollocationDecoratorProvider extends AbstractProvider implement
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public boolean provides(final IOperation operation) {
 		if (!(operation instanceof CreateDecoratorsOperation)) {
 			return false;

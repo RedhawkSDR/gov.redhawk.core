@@ -35,6 +35,7 @@ public class TrackableLabelAndHyperlink extends TrackableLabel {
 		hideLink();
 		addDisposeListener(new DisposeListener() {
 
+			@Override
 			public void widgetDisposed(DisposeEvent event) {
 				if (link != null) {
 					link.dispose();
