@@ -81,6 +81,7 @@ public abstract class AbstractOverviewPage extends ScaFormPage implements IHyper
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public void linkEntered(final HyperlinkEvent e) {
 		final IStatusLineManager mng = getEditor().getEditorSite().getActionBars().getStatusLineManager();
 		mng.setMessage(e.getLabel());
@@ -89,6 +90,7 @@ public abstract class AbstractOverviewPage extends ScaFormPage implements IHyper
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public void linkExited(final HyperlinkEvent e) {
 		final IStatusLineManager mng = getEditor().getEditorSite().getActionBars().getStatusLineManager();
 		mng.setMessage(null);

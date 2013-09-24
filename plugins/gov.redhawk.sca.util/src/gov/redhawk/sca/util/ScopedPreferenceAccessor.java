@@ -244,6 +244,7 @@ public class ScopedPreferenceAccessor implements IPreferenceAccessor {
 	 * 
 	 * @see org.eclipse.jface.preference.IPreferenceStore#contains(java.lang.String)
 	 */
+	@Override
 	public boolean contains(final String name) {
 		if (name == null) {
 			return false;
@@ -256,6 +257,7 @@ public class ScopedPreferenceAccessor implements IPreferenceAccessor {
 	 * 
 	 * @see org.eclipse.jface.preference.IPreferenceStore#getBoolean(java.lang.String)
 	 */
+	@Override
 	public boolean getBoolean(final String name) {
 		final String value = internalGet(name);
 		return (value == null) ? IPreferenceAccessor.BOOLEAN_DEFAULT_DEFAULT : Boolean.valueOf(value).booleanValue(); //SUPPRESS CHECKSTYLE Inline
@@ -266,6 +268,7 @@ public class ScopedPreferenceAccessor implements IPreferenceAccessor {
 	 * 
 	 * @see org.eclipse.jface.preference.IPreferenceStore#getDefaultBoolean(java.lang.String)
 	 */
+	@Override
 	public boolean getDefaultBoolean(final String name) {
 		return getDefaultPreferences().getBoolean(name, IPreferenceAccessor.BOOLEAN_DEFAULT_DEFAULT);
 	}
@@ -275,6 +278,7 @@ public class ScopedPreferenceAccessor implements IPreferenceAccessor {
 	 * 
 	 * @see org.eclipse.jface.preference.IPreferenceStore#getDefaultDouble(java.lang.String)
 	 */
+	@Override
 	public double getDefaultDouble(final String name) {
 		return getDefaultPreferences().getDouble(name, IPreferenceAccessor.DOUBLE_DEFAULT_DEFAULT);
 	}
@@ -284,6 +288,7 @@ public class ScopedPreferenceAccessor implements IPreferenceAccessor {
 	 * 
 	 * @see org.eclipse.jface.preference.IPreferenceStore#getDefaultFloat(java.lang.String)
 	 */
+	@Override
 	public float getDefaultFloat(final String name) {
 		return getDefaultPreferences().getFloat(name, IPreferenceAccessor.FLOAT_DEFAULT_DEFAULT);
 	}
@@ -293,6 +298,7 @@ public class ScopedPreferenceAccessor implements IPreferenceAccessor {
 	 * 
 	 * @see org.eclipse.jface.preference.IPreferenceStore#getDefaultInt(java.lang.String)
 	 */
+	@Override
 	public int getDefaultInt(final String name) {
 		return getDefaultPreferences().getInt(name, IPreferenceAccessor.INT_DEFAULT_DEFAULT);
 	}
@@ -302,6 +308,7 @@ public class ScopedPreferenceAccessor implements IPreferenceAccessor {
 	 * 
 	 * @see org.eclipse.jface.preference.IPreferenceStore#getDefaultLong(java.lang.String)
 	 */
+	@Override
 	public long getDefaultLong(final String name) {
 		return getDefaultPreferences().getLong(name, IPreferenceAccessor.LONG_DEFAULT_DEFAULT);
 	}
@@ -311,6 +318,7 @@ public class ScopedPreferenceAccessor implements IPreferenceAccessor {
 	 * 
 	 * @see org.eclipse.jface.preference.IPreferenceStore#getDefaultString(java.lang.String)
 	 */
+	@Override
 	public String getDefaultString(final String name) {
 		return getDefaultPreferences().get(name, IPreferenceAccessor.STRING_DEFAULT_DEFAULT);
 	}
@@ -320,6 +328,7 @@ public class ScopedPreferenceAccessor implements IPreferenceAccessor {
 	 * 
 	 * @see org.eclipse.jface.preference.IPreferenceStore#getDouble(java.lang.String)
 	 */
+	@Override
 	public double getDouble(final String name) {
 		final String value = internalGet(name);
 		if (value == null) {
@@ -350,6 +359,7 @@ public class ScopedPreferenceAccessor implements IPreferenceAccessor {
 	 * 
 	 * @see org.eclipse.jface.preference.IPreferenceStore#getFloat(java.lang.String)
 	 */
+	@Override
 	public float getFloat(final String name) {
 		final String value = internalGet(name);
 		if (value == null) {
@@ -367,6 +377,7 @@ public class ScopedPreferenceAccessor implements IPreferenceAccessor {
 	 * 
 	 * @see org.eclipse.jface.preference.IPreferenceStore#getInt(java.lang.String)
 	 */
+	@Override
 	public int getInt(final String name) {
 		final String value = internalGet(name);
 		if (value == null) {
@@ -384,6 +395,7 @@ public class ScopedPreferenceAccessor implements IPreferenceAccessor {
 	 * 
 	 * @see org.eclipse.jface.preference.IPreferenceStore#getLong(java.lang.String)
 	 */
+	@Override
 	public long getLong(final String name) {
 		final String value = internalGet(name);
 		if (value == null) {
@@ -401,6 +413,7 @@ public class ScopedPreferenceAccessor implements IPreferenceAccessor {
 	 * 
 	 * @see org.eclipse.jface.preference.IPreferenceStore#getString(java.lang.String)
 	 */
+	@Override
 	public String getString(final String name) {
 		final String value = internalGet(name);
 		return (value == null) ? IPreferenceAccessor.STRING_DEFAULT_DEFAULT : value; //SUPPRESS CHECKSTYLE Inline
@@ -411,6 +424,7 @@ public class ScopedPreferenceAccessor implements IPreferenceAccessor {
 	 * 
 	 * @see org.eclipse.jface.preference.IPreferenceStore#isDefault(java.lang.String)
 	 */
+	@Override
 	public boolean isDefault(final String name) {
 		if (name == null) {
 			return false;
@@ -423,6 +437,7 @@ public class ScopedPreferenceAccessor implements IPreferenceAccessor {
 	 * 
 	 * @see org.eclipse.jface.preference.IPreferenceStore#needsSaving()
 	 */
+	@Override
 	public boolean needsSaving() {
 		return this.dirty;
 	}
@@ -433,6 +448,7 @@ public class ScopedPreferenceAccessor implements IPreferenceAccessor {
 	 * @see org.eclipse.jface.preference.IPreferenceStore#putValue(java.lang.String,
 	 *      java.lang.String)
 	 */
+	@Override
 	public void putValue(final String name, final String value) {
 		try {
 			// Do not notify listeners
@@ -451,6 +467,7 @@ public class ScopedPreferenceAccessor implements IPreferenceAccessor {
 	 * @see org.eclipse.jface.preference.IPreferenceStore#setDefault(java.lang.String,
 	 *      double)
 	 */
+	@Override
 	public void setDefault(final String name, final double value) {
 		getDefaultPreferences().putDouble(name, value);
 	}
@@ -461,6 +478,7 @@ public class ScopedPreferenceAccessor implements IPreferenceAccessor {
 	 * @see org.eclipse.jface.preference.IPreferenceStore#setDefault(java.lang.String,
 	 *      float)
 	 */
+	@Override
 	public void setDefault(final String name, final float value) {
 		getDefaultPreferences().putFloat(name, value);
 	}
@@ -471,6 +489,7 @@ public class ScopedPreferenceAccessor implements IPreferenceAccessor {
 	 * @see org.eclipse.jface.preference.IPreferenceStore#setDefault(java.lang.String,
 	 *      int)
 	 */
+	@Override
 	public void setDefault(final String name, final int value) {
 		getDefaultPreferences().putInt(name, value);
 	}
@@ -481,6 +500,7 @@ public class ScopedPreferenceAccessor implements IPreferenceAccessor {
 	 * @see org.eclipse.jface.preference.IPreferenceStore#setDefault(java.lang.String,
 	 *      long)
 	 */
+	@Override
 	public void setDefault(final String name, final long value) {
 		getDefaultPreferences().putLong(name, value);
 	}
@@ -491,6 +511,7 @@ public class ScopedPreferenceAccessor implements IPreferenceAccessor {
 	 * @see org.eclipse.jface.preference.IPreferenceStore#setDefault(java.lang.String,
 	 *      java.lang.String)
 	 */
+	@Override
 	public void setDefault(final String name, final String defaultObject) {
 		getDefaultPreferences().put(name, defaultObject);
 	}
@@ -501,6 +522,7 @@ public class ScopedPreferenceAccessor implements IPreferenceAccessor {
 	 * @see org.eclipse.jface.preference.IPreferenceStore#setDefault(java.lang.String,
 	 *      boolean)
 	 */
+	@Override
 	public void setDefault(final String name, final boolean value) {
 		getDefaultPreferences().putBoolean(name, value);
 	}
@@ -510,6 +532,7 @@ public class ScopedPreferenceAccessor implements IPreferenceAccessor {
 	 * 
 	 * @see org.eclipse.jface.preference.IPreferenceStore#setToDefault(java.lang.String)
 	 */
+	@Override
 	public void setToDefault(final String name) {
 
 		final String oldValue = getString(name);
@@ -536,6 +559,7 @@ public class ScopedPreferenceAccessor implements IPreferenceAccessor {
 	 * @see org.eclipse.jface.preference.IPreferenceStore#setValue(java.lang.String,
 	 *      double)
 	 */
+	@Override
 	public void setValue(final String name, final double value) {
 		final double oldValue = getDouble(name);
 		if (oldValue == value) {
@@ -561,6 +585,7 @@ public class ScopedPreferenceAccessor implements IPreferenceAccessor {
 	 * @see org.eclipse.jface.preference.IPreferenceStore#setValue(java.lang.String,
 	 *      float)
 	 */
+	@Override
 	public void setValue(final String name, final float value) {
 		final float oldValue = getFloat(name);
 		if (oldValue == value) {
@@ -586,6 +611,7 @@ public class ScopedPreferenceAccessor implements IPreferenceAccessor {
 	 * @see org.eclipse.jface.preference.IPreferenceStore#setValue(java.lang.String,
 	 *      int)
 	 */
+	@Override
 	public void setValue(final String name, final int value) {
 		final int oldValue = getInt(name);
 		if (oldValue == value) {
@@ -611,6 +637,7 @@ public class ScopedPreferenceAccessor implements IPreferenceAccessor {
 	 * @see org.eclipse.jface.preference.IPreferenceStore#setValue(java.lang.String,
 	 *      long)
 	 */
+	@Override
 	public void setValue(final String name, final long value) {
 		final long oldValue = getLong(name);
 		if (oldValue == value) {
@@ -636,6 +663,7 @@ public class ScopedPreferenceAccessor implements IPreferenceAccessor {
 	 * @see org.eclipse.jface.preference.IPreferenceStore#setValue(java.lang.String,
 	 *      java.lang.String)
 	 */
+	@Override
 	public void setValue(final String name, final String value) {
 		// Do not turn on silent running here as Strings are propagated
 		if (getDefaultString(name).equals(value)) {
@@ -652,6 +680,7 @@ public class ScopedPreferenceAccessor implements IPreferenceAccessor {
 	 * @see org.eclipse.jface.preference.IPreferenceStore#setValue(java.lang.String,
 	 *      boolean)
 	 */
+	@Override
 	public void setValue(final String name, final boolean value) {
 		final boolean oldValue = getBoolean(name);
 		if (oldValue == value) {
@@ -688,10 +717,12 @@ public class ScopedPreferenceAccessor implements IPreferenceAccessor {
 
 	}
 
+	@Override
 	public void addPreferenceChangeListener(final IPreferenceChangeListener listener) {
 		getStorePreferences().addPreferenceChangeListener(listener);
 	}
 
+	@Override
 	public void removePreferenceChangeListener(final IPreferenceChangeListener listener) {
 		getStorePreferences().removePreferenceChangeListener(listener);
 	}

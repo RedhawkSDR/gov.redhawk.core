@@ -75,12 +75,14 @@ public class StatusDataProviderDecorator extends LabelProvider implements ILight
 		this.disposed = true;
 	}
 
+	@Override
 	public void decorate(final Object element, final IDecoration decoration) {
 		if (element instanceof IStatusProvider) {
 			final IStatusProvider statusProvider = (IStatusProvider) element;
 
 			ScaModelCommand.execute(statusProvider, new ScaModelCommand() {
 
+				@Override
 				public void execute() {
 					if (!statusProvider.eAdapters().contains(StatusDataProviderDecorator.this.adaperListener)) {
 						statusProvider.eAdapters().add(StatusDataProviderDecorator.this.adaperListener);

@@ -95,6 +95,7 @@ public class ScaStructSequencePropertyTest extends ScaAbstractPropertyTest {
 		this.env.validateStartState();
 		ScaModelCommand.execute(waveform, new ScaModelCommand() {
 
+			@Override
 			public void execute() {
 				final ScaComponent kitchenSink = waveform.findComponent(ScaTestConstaints.DCE_KITCHEN_SINK_COMPONENT);
 				Assert.assertNotNull(kitchenSink);
@@ -167,6 +168,7 @@ public class ScaStructSequencePropertyTest extends ScaAbstractPropertyTest {
 		};
 		ScaModelCommand.execute(getFixture(), new ScaModelCommand() {
 			
+			@Override
 			public void execute() {
 				System.out.println("Contents: " + getFixture().eContents().size());
 				getFixture().eAdapters().add(adapter);

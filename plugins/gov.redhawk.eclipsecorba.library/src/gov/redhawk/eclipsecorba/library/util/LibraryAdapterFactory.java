@@ -25,6 +25,7 @@ import gov.redhawk.eclipsecorba.library.Path;
 import gov.redhawk.eclipsecorba.library.PreferenceNodePathSet;
 import gov.redhawk.eclipsecorba.library.RepositoryModule;
 import gov.redhawk.eclipsecorba.library.URIPathSet;
+
 import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.notify.Notifier;
 import org.eclipse.emf.common.notify.impl.AdapterFactoryImpl;

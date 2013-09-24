@@ -30,6 +30,7 @@ public class UnsetLocalAttributeCommand extends SetStatusCommand<IStatusProvider
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public void execute() {
 		this.provider.eUnset(feature);
 		super.execute();

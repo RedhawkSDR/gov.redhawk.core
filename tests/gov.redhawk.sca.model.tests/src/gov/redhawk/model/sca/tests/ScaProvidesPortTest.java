@@ -76,6 +76,7 @@ public class ScaProvidesPortTest extends ScaPortTest {
 		this.env.validateStartState();
 		ScaModelCommand.execute(waveform, new ScaModelCommand() {
 
+			@Override
 			public void execute() {
 				final ScaComponent kitchenSinkComp = waveform.findComponent(ScaTestConstaints.DCE_KITCHEN_SINK_COMPONENT);
 				if (kitchenSinkComp == null && ScaTests.DEBUG.enabled) {

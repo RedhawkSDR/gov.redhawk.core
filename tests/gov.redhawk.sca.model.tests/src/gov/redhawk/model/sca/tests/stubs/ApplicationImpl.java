@@ -62,6 +62,7 @@ public class ApplicationImpl extends AbstractResourceImpl implements
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public ComponentElementType[] componentNamingContexts() {
 		final List<ComponentElementType> retVal = new ArrayList<ComponentElementType>();
 		synchronized (this.components) {
@@ -78,6 +79,7 @@ public class ApplicationImpl extends AbstractResourceImpl implements
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public ComponentProcessIdType[] componentProcessIds() {
 		final List<ComponentProcessIdType> retVal = new ArrayList<ComponentProcessIdType>();
 		synchronized (this.components) {
@@ -94,6 +96,7 @@ public class ApplicationImpl extends AbstractResourceImpl implements
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public DeviceAssignmentType[] componentDevices() {
 		final List<DeviceAssignmentType> retVal = new ArrayList<DeviceAssignmentType>();
 		synchronized (this.components) {
@@ -110,6 +113,7 @@ public class ApplicationImpl extends AbstractResourceImpl implements
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public ComponentElementType[] componentImplementations() {
 		final List<ComponentElementType> retVal = new ArrayList<ComponentElementType>();
 		synchronized (this.components) {
@@ -126,6 +130,7 @@ public class ApplicationImpl extends AbstractResourceImpl implements
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public String profile() {
 		return (this.sad == null) ? null : this.sad.eResource().getURI().path();
 	}
@@ -133,6 +138,7 @@ public class ApplicationImpl extends AbstractResourceImpl implements
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public String name() {
 		return this.compName;
 	}
@@ -140,6 +146,7 @@ public class ApplicationImpl extends AbstractResourceImpl implements
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public void start() throws StartError {
 		super.start();
 		if (this.assemblyController != null) {
@@ -150,6 +157,7 @@ public class ApplicationImpl extends AbstractResourceImpl implements
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public void stop() throws StopError {
 		super.stop();
 		if (this.assemblyController != null) {
@@ -160,6 +168,7 @@ public class ApplicationImpl extends AbstractResourceImpl implements
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public void releaseObject() throws ReleaseError {
 		super.releaseObject();
 		synchronized (components) {
@@ -174,6 +183,7 @@ public class ApplicationImpl extends AbstractResourceImpl implements
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public ComponentType[] registeredComponents() {
 		final List<ComponentType> retVal = new ArrayList<ComponentType>();
 		synchronized (this.components) {

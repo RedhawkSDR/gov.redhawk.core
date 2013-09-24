@@ -64,6 +64,7 @@ public class ServiceDecoratorProvider extends AbstractProvider implements IDecor
 		/**
 		 * {@inheritDoc}
 		 */
+		@Override
 		public void refresh() {
 			final View view = (View) getDecoratorTarget().getAdapter(View.class);
 			if (view == null || view.eResource() == null) {
@@ -91,6 +92,7 @@ public class ServiceDecoratorProvider extends AbstractProvider implements IDecor
 			return DcdDiagramPluginActivator.getDefault().getBundledImage("icons/obj16/gear_10x.gif");
 		}
 
+		@Override
 		public void activate() {
 
 		}
@@ -116,6 +118,7 @@ public class ServiceDecoratorProvider extends AbstractProvider implements IDecor
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public boolean provides(final IOperation operation) {
 		if (!(operation instanceof CreateDecoratorsOperation)) {
 			return false;
@@ -128,6 +131,7 @@ public class ServiceDecoratorProvider extends AbstractProvider implements IDecor
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public void createDecorators(final IDecoratorTarget decoratorTarget) {
 		final EditPart editPart = (EditPart) decoratorTarget.getAdapter(EditPart.class);
 		if (editPart instanceof GraphicalEditPart || editPart instanceof AbstractConnectionEditPart) {

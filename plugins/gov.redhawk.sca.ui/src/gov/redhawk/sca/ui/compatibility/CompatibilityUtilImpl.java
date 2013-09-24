@@ -24,30 +24,36 @@ import org.eclipse.swt.widgets.Display;
  */
 public class CompatibilityUtilImpl implements ICompatibilityUtil {
 
+	@Override
 	public void setFontDataStyle(FontData fontData, int style) {
 		throw new UnsupportedOperationException();
 
 	}
 
+	@Override
 	public void disableComboWheelScrollSelect(ComboViewer viewer) {
 		throw new UnsupportedOperationException();
 
 	}
 
+	@Override
 	public Principal getUserPrincipal(Display display) {
 		throw new UnsupportedOperationException();
 	}
 
+	@Override
 	public void runInFakeUIContext(Display display, Runnable runnable) {
 		throw new UnsupportedOperationException();
 
 	}
 
+	@Override
 	public void activateUIConnection(String id) {
 		throw new UnsupportedOperationException();
 
 	}
 
+	@Override
 	public void deactivateUIConnection(String id) {
 		throw new UnsupportedOperationException();
 

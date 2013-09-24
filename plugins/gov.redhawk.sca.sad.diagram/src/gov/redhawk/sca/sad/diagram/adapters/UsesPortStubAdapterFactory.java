@@ -34,6 +34,7 @@ public class UsesPortStubAdapterFactory implements IAdapterFactory {
 	        ScaUsesPort.class, ScaPort.class
 	};
 
+	@Override
 	public Object getAdapter(final Object adaptableObject, @SuppressWarnings("rawtypes") final Class adapterType) {
 		if (adaptableObject instanceof UsesPortStubEditPart) {
 			final UsesPortStubEditPart editPart = (UsesPortStubEditPart) adaptableObject;
@@ -62,6 +63,7 @@ public class UsesPortStubAdapterFactory implements IAdapterFactory {
 		return null;
 	}
 
+	@Override
 	public Class< ? >[] getAdapterList() {
 		return UsesPortStubAdapterFactory.LIST;
 	}

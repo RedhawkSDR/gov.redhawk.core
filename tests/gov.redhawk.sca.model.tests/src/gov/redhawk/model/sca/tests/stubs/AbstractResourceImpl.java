@@ -73,7 +73,7 @@ public class AbstractResourceImpl extends Resource {
 		initProperties(prf);
 		try {
 			initPorts(spd.getDescriptor().getComponent().getComponentFeatures().getPorts());
-		} catch (Exception e) {
+		} catch (Exception e) { // CHECKSTYLE: DEBUG CODE
 			// TODO Auto-generated catch block
 			e.printStackTrace(); // CHECKSTYLE: DEBUG CODE
 		}
@@ -87,11 +87,13 @@ public class AbstractResourceImpl extends Resource {
 
 	private static class AbstractPort implements PortOperations {
 
+		@Override
 		public void connectPort(org.omg.CORBA.Object connection, String connectionId) throws InvalidPort, OccupiedPort {
 			// TODO Auto-generated method stub
 
 		}
 
+		@Override
 		public void disconnectPort(String connectionId) throws InvalidPort {
 			// TODO Auto-generated method stub
 
@@ -240,6 +242,7 @@ public class AbstractResourceImpl extends Resource {
 		return retVal;
 	}
 
+	@Override
 	public void run() {
 		// Do Nothing
 

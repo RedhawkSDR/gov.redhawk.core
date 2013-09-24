@@ -95,6 +95,7 @@ public class PortSupplierMonitorImpl extends EObjectImpl implements PortSupplier
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public ScaPortContainer getPortContainer() {
 		if (portContainer != null && portContainer.eIsProxy()) {
 			InternalEObject oldPortContainer = (InternalEObject)portContainer;
@@ -141,6 +142,7 @@ public class PortSupplierMonitorImpl extends EObjectImpl implements PortSupplier
 	 * <!-- end-user-doc -->
 	 * @generated NOT
 	 */
+	@Override
 	public void setPortContainer(final ScaPortContainer newPortContainer) {
 		if (this.portContainer != null) {
 			this.portContainer.eAdapters().remove(this.listener);
@@ -180,6 +182,7 @@ public class PortSupplierMonitorImpl extends EObjectImpl implements PortSupplier
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EList<PortMonitor> getMonitors() {
 		if (monitors == null) {
 			monitors = new EObjectContainmentEList<PortMonitor>(PortMonitor.class, this, PortsPackage.PORT_SUPPLIER_MONITOR__MONITORS);
@@ -192,6 +195,7 @@ public class PortSupplierMonitorImpl extends EObjectImpl implements PortSupplier
 	 * <!-- end-user-doc -->
 	 * @generated NOT
 	 */
+	@Override
 	public void fetchStats() {
 		// END GENERATED CODE
 		for (final PortMonitor pm : getMonitors()) {

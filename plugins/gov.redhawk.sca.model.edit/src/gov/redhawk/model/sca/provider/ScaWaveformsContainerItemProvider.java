@@ -70,6 +70,7 @@ public class ScaWaveformsContainerItemProvider
 		return "Waveforms";
 	}
 	
+	@Override
 	public void notifyChanged(Notification notification) {
 		updateChildren(notification);
 

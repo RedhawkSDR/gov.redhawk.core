@@ -118,10 +118,12 @@ public class DomainListEditor extends FieldEditor {
 		final Button newButton = createPushButton(box, "New...");
 		newButton.addSelectionListener(new SelectionListener() {
 
+			@Override
 			public void widgetDefaultSelected(final SelectionEvent e) {
 				widgetSelected(e);
 			}
 
+			@Override
 			public void widgetSelected(final SelectionEvent e) {
 				final DomainEntryWizard wizard = new DomainEntryWizard();
 				wizard.setShowExtraSettings(false);
@@ -140,10 +142,12 @@ public class DomainListEditor extends FieldEditor {
 		this.editButton.setEnabled(false);
 		this.editButton.addSelectionListener(new SelectionListener() {
 
+			@Override
 			public void widgetDefaultSelected(final SelectionEvent e) {
 				widgetSelected(e);
 			}
 
+			@Override
 			public void widgetSelected(final SelectionEvent e) {
 				final ScaDomainConnectionDef def = (ScaDomainConnectionDef) ((IStructuredSelection) DomainListEditor.this.list.getSelection())
 				        .getFirstElement();
@@ -170,10 +174,12 @@ public class DomainListEditor extends FieldEditor {
 		this.removeButton.setEnabled(false);
 		this.removeButton.addSelectionListener(new SelectionListener() {
 
+			@Override
 			public void widgetDefaultSelected(final SelectionEvent e) {
 				widgetSelected(e);
 			}
 
+			@Override
 			public void widgetSelected(final SelectionEvent e) {
 				final boolean confirmedDelete = MessageDialog.openConfirm(box.getShell(), "Delete domain connection?",
 				        "Are you sure you want to delete the domain connection?");
@@ -190,10 +196,12 @@ public class DomainListEditor extends FieldEditor {
 		this.autoConnectButton = createPushButton(box, "Toggle Auto Connect");
 		this.autoConnectButton.addSelectionListener(new SelectionListener() {
 
+			@Override
 			public void widgetDefaultSelected(final SelectionEvent e) {
 				widgetSelected(e);
 			}
 
+			@Override
 			public void widgetSelected(final SelectionEvent e) {
 				final Object obj = ((StructuredSelection) DomainListEditor.this.list.getSelection()).getFirstElement();
 				for (final ScaDomainConnectionDef def : DomainListEditor.this.domainConnectionDefs) {
@@ -239,6 +247,7 @@ public class DomainListEditor extends FieldEditor {
 		this.list.setLabelProvider(new LabelProvider());
 		this.list.setInput(this.domainConnectionDefs);
 		this.list.addSelectionChangedListener(new ISelectionChangedListener() {
+			@Override
 			public void selectionChanged(final SelectionChangedEvent event) {
 				DomainListEditor.this.editButton.setEnabled(!event.getSelection().isEmpty());
 				DomainListEditor.this.removeButton.setEnabled(!event.getSelection().isEmpty());
@@ -311,6 +320,7 @@ public class DomainListEditor extends FieldEditor {
 							final ScaDomainManager[] newDomain = new ScaDomainManager[1];
 							ScaModelCommand.execute(DomainListEditor.this.registry, new ScaModelCommand() {
 
+								@Override
 								public void execute() {
 									newDomain[0] = DomainListEditor.this.registry.createDomain(def.getDomainName(), def.isConnectOnStartup(),
 									        Collections.singletonMap(ScaDomainManager.NAMING_SERVICE_PROP, def.getNameServiceInitRef()));
@@ -329,6 +339,7 @@ public class DomainListEditor extends FieldEditor {
 				job.schedule();
 			} else {
 				ScaModelCommand.execute(domain, new ScaModelCommand() {
+					@Override
 					public void execute() {
 						domain.setAutoConnect(def.isConnectOnStartup());
 						domain.getConnectionProperties().put(ScaDomainManager.NAMING_SERVICE_PROP, def.getNameServiceInitRef());
@@ -353,6 +364,7 @@ public class DomainListEditor extends FieldEditor {
 
 		ScaModelCommand.execute(this.registry, new ScaModelCommand() {
 
+			@Override
 			public void execute() {
 				DomainListEditor.this.registry.getDomains().removeAll(domainsToRemove);
 			}
@@ -374,6 +386,7 @@ public class DomainListEditor extends FieldEditor {
 			this.buttonBox.setLayout(layout);
 			createButtons(this.buttonBox);
 			this.buttonBox.addDisposeListener(new DisposeListener() {
+				@Override
 				public void widgetDisposed(final DisposeEvent event) {
 					DomainListEditor.this.buttonBox = null;
 				}

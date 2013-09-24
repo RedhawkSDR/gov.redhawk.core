@@ -47,6 +47,7 @@ public class ControlCommandBinder {
 			private boolean enabled = false;
 
 			//If command enablement has changed, update the button accordingly.
+			@Override
 			public void commandChanged(final CommandEvent commandEvent) {
 				if (commandEvent.isEnabledChanged()) {
 					this.enabled = !this.enabled;

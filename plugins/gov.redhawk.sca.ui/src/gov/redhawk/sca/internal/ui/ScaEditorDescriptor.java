@@ -32,10 +32,12 @@ public class ScaEditorDescriptor implements IScaEditorDescriptor {
 		this.selectedObject = selected;
 	}
 
+	@Override
 	public IEditorDescriptor getEditorDescriptor() {
 		return this.editorDescriptor;
 	}
 
+	@Override
 	public IEditorInput getEditorInput() {
 		return this.editorInput;
 	}
@@ -53,6 +55,7 @@ public class ScaEditorDescriptor implements IScaEditorDescriptor {
 		return this.editorDescriptor.getId().hashCode();
 	}
 
+	@Override
 	public Object getSelectedObject() {
 		return this.selectedObject;
 	}

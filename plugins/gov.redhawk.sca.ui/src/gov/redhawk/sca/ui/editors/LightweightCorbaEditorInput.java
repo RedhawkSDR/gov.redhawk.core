@@ -37,6 +37,7 @@ public class LightweightCorbaEditorInput extends PlatformObject implements IEdit
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public boolean exists() {
 		return this.ior != null;
 	}
@@ -44,6 +45,7 @@ public class LightweightCorbaEditorInput extends PlatformObject implements IEdit
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public ImageDescriptor getImageDescriptor() {
 		return this.imageDescriptor;
 	}
@@ -58,6 +60,7 @@ public class LightweightCorbaEditorInput extends PlatformObject implements IEdit
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public String getName() {
 		return this.name;
 	}
@@ -72,6 +75,7 @@ public class LightweightCorbaEditorInput extends PlatformObject implements IEdit
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public IPersistableElement getPersistable() {
 		return null;
 	}
@@ -79,6 +83,7 @@ public class LightweightCorbaEditorInput extends PlatformObject implements IEdit
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public String getToolTipText() {
 		return this.tooltip;
 	}
@@ -126,6 +131,7 @@ public class LightweightCorbaEditorInput extends PlatformObject implements IEdit
 	/**
 	 * @since 8.0
 	 */
+	@Override
 	public java.net.URI getURI() {
 		return java.net.URI.create(this.uri.toString());
 	}

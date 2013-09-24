@@ -135,6 +135,7 @@ public final class ScaComponentFactory {
 					if (o instanceof ScaAbstractProperty< ? >) {
 						final ScaAbstractProperty< ? > prop = (ScaAbstractProperty< ? >) o;
 						ScaModelCommand.execute(prop, new ScaModelCommand() {
+							@Override
 							public void execute() {
 								prop.restoreDefaultValue();
 							}
@@ -177,6 +178,7 @@ public final class ScaComponentFactory {
 
 		viewer.addSelectionChangedListener(new ISelectionChangedListener() {
 
+			@Override
 			public void selectionChanged(final SelectionChangedEvent event) {
 				if (event.getSelection() instanceof IStructuredSelection) {
 					final IStructuredSelection ss = (IStructuredSelection) event.getSelection();
@@ -201,6 +203,7 @@ public final class ScaComponentFactory {
 		menuMgr.setRemoveAllWhenShown(true);
 		menuMgr.addMenuListener(new IMenuListener() {
 
+			@Override
 			public void menuAboutToShow(final IMenuManager manager) {
 				manager.add(revert);
 			}

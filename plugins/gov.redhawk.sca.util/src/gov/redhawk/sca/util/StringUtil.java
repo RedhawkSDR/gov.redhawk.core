@@ -51,6 +51,7 @@ public class StringUtil {
 
 		return new StringUpdateStrategy() {
 
+			@Override
 			public String update(final String input) {
 				int index = start;
 				final StringBuilder retVal = new StringBuilder();
@@ -108,6 +109,7 @@ public class StringUtil {
 	public static Comparator<String> getDefaultComparator() {
 		return new Comparator<String>() {
 
+			@Override
 			public int compare(final String o1, final String o2) {
 				if (o1 == null) {
 					return (o2 != null) ? 1 : 0; // SUPPRESS CHECKSTYLE AvoidInline

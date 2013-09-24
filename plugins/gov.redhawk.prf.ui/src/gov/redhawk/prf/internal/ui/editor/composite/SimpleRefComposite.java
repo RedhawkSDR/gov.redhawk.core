@@ -87,6 +87,7 @@ public class SimpleRefComposite extends Composite implements IScaComposite {
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public void setEditable(boolean canEdit) {
 	   this.idEntry.setEditable(canEdit);
 	   this.valueEntry.setEditable(canEdit);

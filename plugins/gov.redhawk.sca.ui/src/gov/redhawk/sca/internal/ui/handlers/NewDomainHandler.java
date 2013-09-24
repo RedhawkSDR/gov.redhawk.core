@@ -45,6 +45,7 @@ public class NewDomainHandler extends AbstractHandler implements IHandler {
 	 * {@inheritDoc}
 	 */
 
+	@Override
 	public Object execute(final ExecutionEvent event) throws ExecutionException {
 		final ScaDomainManagerRegistry registry = ScaPlugin.getDefault().getDomainManagerRegistry();
 
@@ -70,6 +71,7 @@ public class NewDomainHandler extends AbstractHandler implements IHandler {
 						final ScaDomainManager[] domain = new ScaDomainManager[1];
 						ScaModelCommand.execute(registry, new ScaModelCommand() {
 
+							@Override
 							public void execute() {
 								domain[0] = registry.createDomain(domainName, autoConnect, connectionProperties);
 							}

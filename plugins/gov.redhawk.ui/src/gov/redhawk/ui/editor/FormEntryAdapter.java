@@ -62,12 +62,14 @@ public class FormEntryAdapter implements IFormEntryListener {
 	 * {@inheritDoc}
 	 * @since 6.0
 	 */
+	@Override
 	public void buttonSelected(final FormEntry entry) {
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public void linkEntered(final HyperlinkEvent e) {
 		if (this.actionBars == null) {
 			return;
@@ -79,6 +81,7 @@ public class FormEntryAdapter implements IFormEntryListener {
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public void linkExited(final HyperlinkEvent e) {
 		if (this.actionBars == null) {
 			return;
@@ -90,6 +93,7 @@ public class FormEntryAdapter implements IFormEntryListener {
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public void linkActivated(final HyperlinkEvent e) {
 	}
 

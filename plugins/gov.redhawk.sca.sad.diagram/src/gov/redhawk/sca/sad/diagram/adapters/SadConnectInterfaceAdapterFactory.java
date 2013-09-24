@@ -39,6 +39,7 @@ public class SadConnectInterfaceAdapterFactory implements IAdapterFactory {
 	        ScaUsesPort.class, ScaPort.class, ScaProvidesPort.class
 	};
 
+	@Override
 	public Object getAdapter(final Object adaptableObject, @SuppressWarnings("rawtypes") final Class adapterType) {
 		if (adaptableObject instanceof SadConnectInterfaceEditPart) {
 			final SadConnectInterfaceEditPart editPart = (SadConnectInterfaceEditPart) adaptableObject;
@@ -88,6 +89,7 @@ public class SadConnectInterfaceAdapterFactory implements IAdapterFactory {
 		return null;
 	}
 
+	@Override
 	public Class< ? >[] getAdapterList() {
 		return SadConnectInterfaceAdapterFactory.LIST;
 	}

@@ -59,15 +59,18 @@ public class UsesPortStubItemSemanticEditPolicy extends mil.jpeojtrs.sca.dcd.dia
 		return this.editPolicyHelper.getMoveCommand(req);
 	}
 
+	@Override
 	public gov.redhawk.diagram.edit.commands.ConnectInterfaceCreateCommand createConnectInterfaceCreateCommand(final CreateRelationshipRequest req,
 	        final EObject source, final EObject target) {
 		return new ConnectInterfaceCreateCommand((DeviceConfiguration) ((View) getHost().getRoot().getContents().getModel()).getElement(), req, source, target);
 	}
 
+	@Override
 	public Command getGEFWrapper(final gov.redhawk.diagram.edit.commands.ConnectInterfaceCreateCommand createConnectInterfaceCreateCommand) {
 		return super.getGEFWrapper(createConnectInterfaceCreateCommand);
 	}
 	
+	@Override
 	protected Command getReorientRelationshipCommand(ReorientRelationshipRequest req) {
 		switch (getVisualID(req)) {
 		case DcdConnectInterfaceEditPart.VISUAL_ID:

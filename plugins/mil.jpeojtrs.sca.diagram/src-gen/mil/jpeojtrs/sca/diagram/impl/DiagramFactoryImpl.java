@@ -80,6 +80,7 @@ public class DiagramFactoryImpl extends EFactoryImpl implements DiagramFactory {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EObjectContainerStyle createEObjectContainerStyle() {
 		EObjectContainerStyleImpl eObjectContainerStyle = new EObjectContainerStyleImpl();
 		return eObjectContainerStyle;
@@ -90,6 +91,7 @@ public class DiagramFactoryImpl extends EFactoryImpl implements DiagramFactory {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public DiagramPackage getDiagramPackage() {
 		return (DiagramPackage)getEPackage();
 	}

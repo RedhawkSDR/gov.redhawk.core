@@ -83,6 +83,7 @@ public abstract class EMFViewerElementSelector extends AdapterImpl {
 	 */
 	protected void refreshViewer() {
 		PlatformUI.getWorkbench().getDisplay().asyncExec(new Runnable() {
+			@Override
 			public void run() {
 				EMFViewerElementSelector.this.viewer.refresh();
 			}

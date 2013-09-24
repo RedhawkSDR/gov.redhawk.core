@@ -37,6 +37,7 @@ class InstallApplicationWizardPage extends WizardPage {
 		this.domMgr = domMgr;
 	}
 
+	@Override
 	public void createControl(final Composite parent) {
 		final FormFilteredTree filtered = new FormFilteredTree(parent, SWT.H_SCROLL | SWT.V_SCROLL | SWT.BORDER, new PatternFilter()) {
 			@Override
@@ -46,6 +47,7 @@ class InstallApplicationWizardPage extends WizardPage {
 				InstallApplicationWizardPage.this.viewer.setLabelProvider(new AdapterFactoryLabelProvider(new WizardSadItemProviderAdapterFactory()));
 				InstallApplicationWizardPage.this.viewer.setComparator(new ViewerComparator());
 				InstallApplicationWizardPage.this.viewer.addCheckStateListener(new ICheckStateListener() {
+					@Override
 					public void checkStateChanged(final CheckStateChangedEvent event) {
 						setPageComplete(InstallApplicationWizardPage.this.viewer.getCheckedElements().length > 0);
 					}

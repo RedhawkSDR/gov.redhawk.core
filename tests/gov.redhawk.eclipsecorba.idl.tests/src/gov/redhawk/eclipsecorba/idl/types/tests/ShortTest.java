@@ -75,6 +75,7 @@ public class ShortTest extends PrimitiveTypeTest {
 		setFixture(null);
 	}
 
+	@Override
 	public void test_pass() {
 
 	}

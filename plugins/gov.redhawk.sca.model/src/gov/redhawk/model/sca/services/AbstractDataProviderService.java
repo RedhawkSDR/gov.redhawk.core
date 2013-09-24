@@ -29,6 +29,7 @@ public abstract class AbstractDataProviderService implements IScaDataProviderSer
 
 	private final PropertyChangeListener listener = new PropertyChangeListener() {
 
+		@Override
 		public void propertyChange(final PropertyChangeEvent evt) {
 			if (IScaDataProvider.DISPOSED_PROPERTY.equals(evt.getPropertyName())) {
 				providers.remove(evt.getSource());
@@ -39,6 +40,7 @@ public abstract class AbstractDataProviderService implements IScaDataProviderSer
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public final IScaDataProvider hookDataProvider(EObject object) {
 		final IScaDataProvider provider = createDataProvider(object);
 		if (provider != null) {
@@ -56,6 +58,7 @@ public abstract class AbstractDataProviderService implements IScaDataProviderSer
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public void setEnabled(boolean enabled) {
 		if (this.enabled == enabled) {
 			return;
@@ -72,6 +75,7 @@ public abstract class AbstractDataProviderService implements IScaDataProviderSer
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public boolean isEnabled() {
 		return enabled;
 	}
@@ -79,6 +83,7 @@ public abstract class AbstractDataProviderService implements IScaDataProviderSer
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public void dispose() {
 		setEnabled(false);
 		synchronized (providers) {

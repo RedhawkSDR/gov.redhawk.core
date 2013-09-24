@@ -40,6 +40,7 @@ public class ClientInterceptor extends LocalObject implements ClientRequestInter
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public void send_request(final ClientRequestInfo ri) throws ForwardRequest {
 		assertThreadState(ri);
 	}
@@ -47,6 +48,7 @@ public class ClientInterceptor extends LocalObject implements ClientRequestInter
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public void send_poll(final ClientRequestInfo ri) {
 		assertThreadState(ri);
 	}
@@ -54,6 +56,7 @@ public class ClientInterceptor extends LocalObject implements ClientRequestInter
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public void receive_reply(final ClientRequestInfo ri) {
 		//		assertThreadState(ri);
 	}
@@ -61,6 +64,7 @@ public class ClientInterceptor extends LocalObject implements ClientRequestInter
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public void receive_exception(final ClientRequestInfo ri) throws ForwardRequest {
 		//		assertThreadState(ri);
 	}
@@ -68,6 +72,7 @@ public class ClientInterceptor extends LocalObject implements ClientRequestInter
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public void receive_other(final ClientRequestInfo ri) throws ForwardRequest {
 		//		assertThreadState(ri);
 	}
@@ -75,6 +80,7 @@ public class ClientInterceptor extends LocalObject implements ClientRequestInter
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public String name() {
 		return "ClientInterceptor";
 	}
@@ -82,6 +88,7 @@ public class ClientInterceptor extends LocalObject implements ClientRequestInter
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public void destroy() {
 
 	}

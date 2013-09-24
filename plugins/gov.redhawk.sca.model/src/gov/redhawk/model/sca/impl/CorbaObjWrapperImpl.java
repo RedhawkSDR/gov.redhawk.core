@@ -153,6 +153,7 @@ public abstract class CorbaObjWrapperImpl< T extends org.omg.CORBA.Object > exte
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public String getIor() {
 		return ior;
 	}
@@ -162,6 +163,7 @@ public abstract class CorbaObjWrapperImpl< T extends org.omg.CORBA.Object > exte
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void setIor(String newIor) {
 		String oldIor = ior;
 		ior = newIor;
@@ -176,6 +178,7 @@ public abstract class CorbaObjWrapperImpl< T extends org.omg.CORBA.Object > exte
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void unsetIor() {
 		String oldIor = ior;
 		boolean oldIorESet = iorESet;
@@ -190,6 +193,7 @@ public abstract class CorbaObjWrapperImpl< T extends org.omg.CORBA.Object > exte
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public boolean isSetIor() {
 		return iorESet;
 	}
@@ -199,6 +203,7 @@ public abstract class CorbaObjWrapperImpl< T extends org.omg.CORBA.Object > exte
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public T getObj() {
 		return obj;
 	}
@@ -208,6 +213,7 @@ public abstract class CorbaObjWrapperImpl< T extends org.omg.CORBA.Object > exte
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void setObj(T newObj) {
 		T oldObj = obj;
 		obj = newObj;
@@ -222,6 +228,7 @@ public abstract class CorbaObjWrapperImpl< T extends org.omg.CORBA.Object > exte
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void unsetObj() {
 		T oldObj = obj;
 		boolean oldObjESet = objESet;
@@ -236,6 +243,7 @@ public abstract class CorbaObjWrapperImpl< T extends org.omg.CORBA.Object > exte
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public boolean isSetObj() {
 		return objESet;
 	}
@@ -245,6 +253,7 @@ public abstract class CorbaObjWrapperImpl< T extends org.omg.CORBA.Object > exte
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public org.omg.CORBA.Object getCorbaObj() {
 		return corbaObj;
 	}
@@ -254,6 +263,7 @@ public abstract class CorbaObjWrapperImpl< T extends org.omg.CORBA.Object > exte
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void setCorbaObj(org.omg.CORBA.Object newCorbaObj) {
 		org.omg.CORBA.Object oldCorbaObj = corbaObj;
 		corbaObj = newCorbaObj;
@@ -268,6 +278,7 @@ public abstract class CorbaObjWrapperImpl< T extends org.omg.CORBA.Object > exte
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void unsetCorbaObj() {
 		org.omg.CORBA.Object oldCorbaObj = corbaObj;
 		boolean oldCorbaObjESet = corbaObjESet;
@@ -282,6 +293,7 @@ public abstract class CorbaObjWrapperImpl< T extends org.omg.CORBA.Object > exte
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public boolean isSetCorbaObj() {
 		return corbaObjESet;
 	}
@@ -344,6 +356,7 @@ public abstract class CorbaObjWrapperImpl< T extends org.omg.CORBA.Object > exte
 	 * 
 	 * @generated NOT
 	 */
+	@Override
 	public boolean exists() {
 		// END GENERATED CODE
 
@@ -364,6 +377,7 @@ public abstract class CorbaObjWrapperImpl< T extends org.omg.CORBA.Object > exte
 	 * @throws InterruptedException
 	 * @generated NOT
 	 */
+	@Override
 	public void fetchAttributes(IProgressMonitor monitor) {
 		fetchNarrowedObject(monitor);
 	}
@@ -381,6 +395,7 @@ public abstract class CorbaObjWrapperImpl< T extends org.omg.CORBA.Object > exte
 	 * <!-- end-user-doc -->
 	 * @generated NOT
 	 */
+	@Override
 	public T fetchNarrowedObject(IProgressMonitor monitor) {
 		if (isSetObj()) {
 			return getObj();
@@ -412,6 +427,7 @@ public abstract class CorbaObjWrapperImpl< T extends org.omg.CORBA.Object > exte
 	 * 
 	 * @generated NOT
 	 */
+	@Override
 	public boolean _is_a(final String repId) {
 		// END GENERATED CODE
 
@@ -423,6 +439,7 @@ public abstract class CorbaObjWrapperImpl< T extends org.omg.CORBA.Object > exte
 		if (isA == null) {
 			Callable<Boolean> callable = new Callable<Boolean>() {
 
+				@Override
 				public Boolean call() throws Exception {
 					boolean newVal = localCorbaObj._is_a(repId);
 					isAMap.put(repId, newVal);

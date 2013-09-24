@@ -76,10 +76,12 @@ public class InstallApplicationContentProvider implements ITreeContentProvider {
 			setSystem(true);
 		}
 
+		@Override
 		public boolean shouldSchedule() {
 			return super.shouldSchedule() && children == null;
 		}
 		
+		@Override
 		public boolean shouldRun() {
 			return super.shouldRun() && children == null;
 		}
@@ -119,10 +121,12 @@ public class InstallApplicationContentProvider implements ITreeContentProvider {
 		return this.loadStatus;
 	}
 
+	@Override
 	public void dispose() {
 		this.children = null;
 	}
 
+	@Override
 	public void inputChanged(final Viewer viewer, final Object oldInput, final Object newInput) {
 		this.viewer = viewer;
 		if (viewer != null) {
@@ -138,6 +142,7 @@ public class InstallApplicationContentProvider implements ITreeContentProvider {
 		this.fetchChildrenJob.addJobChangeListener(listener);
 	}
 
+	@Override
 	public Object[] getElements(final Object inputElement) {
 		return getChildren(inputElement);
 	}
@@ -150,6 +155,7 @@ public class InstallApplicationContentProvider implements ITreeContentProvider {
 		}
 	}
 
+	@Override
 	public Object[] getChildren(final Object parentElement) {
 		if (parentElement instanceof ScaDomainManager) {
 			if (this.children == null) {
@@ -162,10 +168,12 @@ public class InstallApplicationContentProvider implements ITreeContentProvider {
 		return Collections.EMPTY_LIST.toArray();
 	}
 
+	@Override
 	public Object getParent(final Object element) {
 		return null;
 	}
 
+	@Override
 	public boolean hasChildren(final Object element) {
 		if (element instanceof ScaDomainManager) {
 			return true;

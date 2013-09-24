@@ -23,6 +23,7 @@ import org.eclipse.ui.handlers.HandlerUtil;
 
 public class CollapseAllHandler extends AbstractHandler implements IHandler {
 
+	@Override
 	public Object execute(final ExecutionEvent event) throws ExecutionException {
 		final IWorkbenchPart part = HandlerUtil.getActivePart(event);
 

@@ -28,6 +28,7 @@ public class MutexRule implements ISchedulingRule {
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public boolean contains(final ISchedulingRule rule) {
 		if (rule instanceof MutexRule) {
 			final MutexRule r = (MutexRule) rule;
@@ -39,6 +40,7 @@ public class MutexRule implements ISchedulingRule {
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public boolean isConflicting(final ISchedulingRule rule) {
 		return contains(rule);
 	}

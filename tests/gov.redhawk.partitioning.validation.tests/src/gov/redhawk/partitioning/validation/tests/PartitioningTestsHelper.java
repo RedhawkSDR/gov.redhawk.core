@@ -48,75 +48,91 @@ public class PartitioningTestsHelper {
 
 		final IValidationContext ctx = new IValidationContext() {
 
+			@Override
 			public String getCurrentConstraintId() {
 
 				return null;
 			}
 
+			@Override
 			public EObject getTarget() {
 				return PartitioningTestsHelper.this.someObject;
 			}
 
+			@Override
 			public EMFEventType getEventType() {
 
 				return null;
 			}
 
+			@Override
 			public List<Notification> getAllEvents() {
 
 				return null;
 			}
 
+			@Override
 			public EStructuralFeature getFeature() {
 
 				return null;
 			}
 
+			@Override
 			public Object getFeatureNewValue() {
 
 				return null;
 			}
 
+			@Override
 			public void skipCurrentConstraintFor(final EObject eObject) {
 
 			}
 
+			@Override
 			public void skipCurrentConstraintForAll(final Collection< ? > eObjects) {
 
 			}
 
+			@Override
 			public void disableCurrentConstraint(final Throwable exception) {
 
 			}
 
+			@Override
 			public Object getCurrentConstraintData() {
 
 				return null;
 			}
 
+			@Override
 			public Object putCurrentConstraintData(final Object newData) {
 
 				return null;
 			}
 
+			@Override
 			public Set<EObject> getResultLocus() {
 
 				return null;
 			}
 
+			@Override
 			public void addResult(final EObject eObject) {
 
 			}
 
+			@Override
 			public void addResults(final Collection< ? extends EObject> eObjects) {
 
 			}
 
+			@Override
 			public IStatus createSuccessStatus() {
 				final IStatus success = new Status(IStatus.OK, "gov.redhawk.sad.validation.tests", "Success");
 				return success;
 			}
 
+			@Override
 			public IStatus createFailureStatus(final Object... messageArgument) {
 
 				return null;
@@ -130,157 +146,196 @@ public class PartitioningTestsHelper {
 		this.someObject = someObject;
 		final IValidationContext ctx = new IValidationContext() {
 
+			@Override
 			public String getCurrentConstraintId() {
 				return null;
 			}
 
+			@Override
 			public EObject getTarget() {
 				return PartitioningTestsHelper.this.someObject;
 			}
 
+			@Override
 			public EMFEventType getEventType() {
 				return null;
 			}
 
+			@Override
 			public List<Notification> getAllEvents() {
 				return null;
 			}
 
+			@Override
 			public EStructuralFeature getFeature() {
 				return null;
 			}
 
+			@Override
 			public Object getFeatureNewValue() {
 				return null;
 			}
 
+			@Override
 			public void skipCurrentConstraintFor(final EObject eObject) {
 
 			}
 
+			@Override
 			public void skipCurrentConstraintForAll(final Collection< ? > eObjects) {
 
 			}
 
+			@Override
 			public void disableCurrentConstraint(final Throwable exception) {
 
 			}
 
+			@Override
 			public Object getCurrentConstraintData() {
 				return null;
 			}
 
+			@Override
 			public Object putCurrentConstraintData(final Object newData) {
 				return null;
 			}
 
+			@Override
 			public Set<EObject> getResultLocus() {
 				return null;
 			}
 
+			@Override
 			public void addResult(final EObject eObject) {
 
 			}
 
+			@Override
 			public void addResults(final Collection< ? extends EObject> eObjects) {
 
 			}
 
+			@Override
 			public IStatus createSuccessStatus() {
 				return null;
 			}
 
+			@Override
 			public IStatus createFailureStatus(final Object... messageArgument) {
 
 				final IModelConstraint constraint = new IModelConstraint() {
 
+					@Override
 					public IStatus validate(final IValidationContext ctx) {
 
 						return null;
 					}
 
+					@Override
 					public IConstraintDescriptor getDescriptor() {
 						final IConstraintDescriptor desc = new IConstraintDescriptor() {
 
+							@Override
 							public String getName() {
 								return null;
 							}
 
+							@Override
 							public String getId() {
 								return null;
 							}
 
+							@Override
 							public String getPluginId() {
 								return "gov.redhawk.sad.validation.tests";
 							}
 
+							@Override
 							public String getDescription() {
 								return null;
 							}
 
+							@Override
 							public ConstraintSeverity getSeverity() {
 								return ConstraintSeverity.ERROR;
 							}
 
+							@Override
 							public int getStatusCode() {
 								return 0;
 							}
 
+							@Override
 							public EvaluationMode< ? > getEvaluationMode() {
 								return null;
 							}
 
+							@Override
 							public boolean targetsTypeOf(final EObject eObject) {
 								return false;
 							}
 
+							@Override
 							public boolean targetsEvent(final Notification notification) {
 								return false;
 							}
 
+							@Override
 							public boolean isBatch() {
 								return false;
 							}
 
+							@Override
 							public boolean isLive() {
 								return false;
 							}
 
+							@Override
 							public boolean isError() {
 								return false;
 							}
 
+							@Override
 							public Throwable getException() {
 								return null;
 							}
 
+							@Override
 							public boolean isEnabled() {
 								return false;
 							}
 
+							@Override
 							public void setEnabled(final boolean enabled) {
 							}
 
+							@Override
 							public void setError(final Throwable exception) {
 
 							}
 
+							@Override
 							public Set<Category> getCategories() {
 								return null;
 							}
 
+							@Override
 							public void addCategory(final Category category) {
 
 							}
 
+							@Override
 							public void removeCategory(final Category category) {
 
 							}
 
+							@Override
 							public String getMessagePattern() {
 								return null;
 							}
 
+							@Override
 							public String getBody() {
 								return null;
 							}

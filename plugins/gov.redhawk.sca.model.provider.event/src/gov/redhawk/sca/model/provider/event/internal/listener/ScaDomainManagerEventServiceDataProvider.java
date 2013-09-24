@@ -92,6 +92,7 @@ public class ScaDomainManagerEventServiceDataProvider extends AbstractEventChann
 		final String sourceId = event.sourceId;
 		final ScaDomainManager domain = getContainer();
 		ScaModelCommand.execute(domain, new ScaModelCommand() {
+			@Override
 			public void execute() {
 				for (final ScaDeviceManager deviceManager : domain.getDeviceManagers()) {
 					if (deviceManager != null && PluginUtil.equals(deviceManager.identifier(), sourceId)) {
@@ -109,6 +110,7 @@ public class ScaDomainManagerEventServiceDataProvider extends AbstractEventChann
 		final String sourceId = event.sourceId;
 		final ScaDomainManager domain = getContainer();
 		ScaModelCommand.execute(domain, new ScaModelCommand() {
+			@Override
 			public void execute() {
 				for (final ScaWaveformFactory factory : domain.getWaveformFactories()) {
 					if (factory != null && PluginUtil.equals(sourceId, factory.getIdentifier())) {
@@ -124,6 +126,7 @@ public class ScaDomainManagerEventServiceDataProvider extends AbstractEventChann
 	private void handleRemoveApplication(final DomainManagementObjectRemovedEventType event) {
 		final ScaDomainManager domain = getContainer();
 		ScaModelCommand.execute(domain, new ScaModelCommand() {
+			@Override
 			public void execute() {
 				for (final ScaWaveform waveform : domain.getWaveforms()) {
 					if (waveform != null && PluginUtil.equals(event.sourceId, waveform.getIdentifier())) {
@@ -170,6 +173,7 @@ public class ScaDomainManagerEventServiceDataProvider extends AbstractEventChann
 			final String ior = devMgr.toString();
 			final ScaDomainManager domain = getContainer();
 			final ScaDeviceManager newDeviceManager = ScaModelCommandWithResult.execute(domain, new ScaModelCommandWithResult<ScaDeviceManager>() {
+				@Override
 				public void execute() {
 					for (final ScaDeviceManager deviceManager : domain.getDeviceManagers()) {
 						if (deviceManager != null && PluginUtil.equals(ior, deviceManager.getIor())) {
@@ -201,6 +205,7 @@ public class ScaDomainManagerEventServiceDataProvider extends AbstractEventChann
 			final String ior = appFactory.toString();
 			final ScaDomainManager domain = getContainer();
 			final ScaWaveformFactory newWaveformFactory = ScaModelCommandWithResult.execute(domain, new ScaModelCommandWithResult<ScaWaveformFactory>() {
+				@Override
 				public void execute() {
 					for (final ScaWaveformFactory factory : domain.getWaveformFactories()) {
 						if (factory != null && PluginUtil.equals(ior, factory.getIor())) {
@@ -231,6 +236,7 @@ public class ScaDomainManagerEventServiceDataProvider extends AbstractEventChann
 			final String ior = app.toString();
 			final ScaDomainManager domain = getContainer();
 			final ScaWaveform newWaveform = ScaModelCommandWithResult.execute(domain, new ScaModelCommandWithResult<ScaWaveform>() {
+				@Override
 				public void execute() {
 					for (final ScaWaveform w : domain.getWaveforms()) {
 						if (w != null && PluginUtil.equals(ior, w.getIor())) {

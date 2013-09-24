@@ -174,6 +174,7 @@ public abstract class ScaAbstractPropertyImpl< T extends AbstractProperty > exte
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	@SuppressWarnings("unchecked")
 	public T getDefinition() {
 		if (definition != null && definition.eIsProxy()) {
@@ -265,6 +266,7 @@ public abstract class ScaAbstractPropertyImpl< T extends AbstractProperty > exte
 	 * <!-- end-user-doc -->
 	 * @generated NOT
 	 */
+	@Override
 	public void setDefinition(T newDefinition) {
 		T oldDef = getDefinition();
 		setDefinitionGen(newDefinition);
@@ -284,6 +286,7 @@ public abstract class ScaAbstractPropertyImpl< T extends AbstractProperty > exte
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public String getDescription() {
 		return description;
 	}
@@ -293,6 +296,7 @@ public abstract class ScaAbstractPropertyImpl< T extends AbstractProperty > exte
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void setDescription(String newDescription) {
 		String oldDescription = description;
 		description = newDescription;
@@ -305,6 +309,7 @@ public abstract class ScaAbstractPropertyImpl< T extends AbstractProperty > exte
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public String getId() {
 		return id;
 	}
@@ -314,6 +319,7 @@ public abstract class ScaAbstractPropertyImpl< T extends AbstractProperty > exte
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void setId(String newId) {
 		String oldId = id;
 		id = newId;
@@ -326,6 +332,7 @@ public abstract class ScaAbstractPropertyImpl< T extends AbstractProperty > exte
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public AccessType getMode() {
 		return mode;
 	}
@@ -335,6 +342,7 @@ public abstract class ScaAbstractPropertyImpl< T extends AbstractProperty > exte
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void setMode(AccessType newMode) {
 		AccessType oldMode = mode;
 		mode = newMode == null ? MODE_EDEFAULT : newMode;
@@ -347,6 +355,7 @@ public abstract class ScaAbstractPropertyImpl< T extends AbstractProperty > exte
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public String getName() {
 		return name;
 	}
@@ -356,6 +365,7 @@ public abstract class ScaAbstractPropertyImpl< T extends AbstractProperty > exte
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void setName(String newName) {
 		String oldName = name;
 		name = newName;
@@ -369,6 +379,7 @@ public abstract class ScaAbstractPropertyImpl< T extends AbstractProperty > exte
 	 * <!-- end-user-doc -->
 	 * @generated NOT
 	 */
+	@Override
 	public boolean isIgnoreRemoteSet() {
 		// END GENERATED CODE
 		EObject container = eContainer();
@@ -391,6 +402,7 @@ public abstract class ScaAbstractPropertyImpl< T extends AbstractProperty > exte
 	 * <!-- end-user-doc -->
 	 * @generated NOT
 	 */
+	@Override
 	public void setIgnoreRemoteSet(boolean newIgnoreRemoteSet) {
 		// END GENERATED CODE
 		boolean oldValue = isIgnoreRemoteSet();
@@ -418,6 +430,7 @@ public abstract class ScaAbstractPropertyImpl< T extends AbstractProperty > exte
 	 * <!-- end-user-doc -->
 	 * @generated NOT
 	 */
+	@Override
 	public abstract Any toAny();
 
 	/**
@@ -426,6 +439,7 @@ public abstract class ScaAbstractPropertyImpl< T extends AbstractProperty > exte
 	 * <!-- end-user-doc -->
 	 * @generated NOT
 	 */
+	@Override
 	public final void fromAny(Any any) {
 		try {
 			setIgnoreRemoteSet(true);
@@ -446,6 +460,7 @@ public abstract class ScaAbstractPropertyImpl< T extends AbstractProperty > exte
 	 * <!-- end-user-doc -->
 	 * @generated NOT
 	 */
+	@Override
 	public void setRemoteValue(Any any) throws PartialConfiguration, InvalidConfiguration {
 		// END GENERATED CODE
 		EObject container = eContainer();
@@ -465,6 +480,7 @@ public abstract class ScaAbstractPropertyImpl< T extends AbstractProperty > exte
 	 * <!-- end-user-doc -->
 	 * @generated NOT
 	 */
+	@Override
 	public DataType getProperty() {
 		// END GENERATED CODE
 		return new DataType(getId(), toAny());
@@ -477,6 +493,7 @@ public abstract class ScaAbstractPropertyImpl< T extends AbstractProperty > exte
 	 * <!-- end-user-doc -->
 	 * @generated NOT
 	 */
+	@Override
 	public abstract boolean isDefaultValue();
 
 	/**
@@ -485,6 +502,7 @@ public abstract class ScaAbstractPropertyImpl< T extends AbstractProperty > exte
 	 * <!-- end-user-doc -->
 	 * @generated NOT
 	 */
+	@Override
 	public abstract void restoreDefaultValue();
 
 	/**
@@ -493,6 +511,7 @@ public abstract class ScaAbstractPropertyImpl< T extends AbstractProperty > exte
 	 * <!-- end-user-doc -->
 	 * @generated NOT
 	 */
+	@Override
 	public boolean valueEquals(Any any) {
 		// END GENERATED CODE
 		return valueEquals(toAny(), any);

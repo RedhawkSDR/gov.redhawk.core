@@ -163,6 +163,7 @@ public class NodeEditor extends SCAFormEditor implements ITabbedPropertySheetPag
 			case ScaPackage.IDISPOSABLE__DISPOSED:
 				if (msg.getNewBooleanValue()) {
 					PlatformUI.getWorkbench().getDisplay().asyncExec(new Runnable() {
+						@Override
 						public void run() {
 							getSite().getPage().closeEditor(NodeEditor.this, true);
 						}
@@ -183,6 +184,7 @@ public class NodeEditor extends SCAFormEditor implements ITabbedPropertySheetPag
 		initializeEditingDomain();
 		this.selectionProvider = new MultiPageSelectionProvider(this);
 		this.selectionProvider.addSelectionChangedListener(new ISelectionChangedListener() {
+			@Override
 			public void selectionChanged(final SelectionChangedEvent event) {
 				setStatusLineManager(event.getSelection());
 			}
@@ -232,6 +234,7 @@ public class NodeEditor extends SCAFormEditor implements ITabbedPropertySheetPag
 			//
 			//
 			final Runnable runnable = new Runnable() {
+				@Override
 				public void run() {
 					// Try to select the items in the current content viewer of
 					// the editor.
@@ -372,6 +375,7 @@ public class NodeEditor extends SCAFormEditor implements ITabbedPropertySheetPag
 	 * org.eclipse.ui.views.properties.tabbed.ITabbedPropertySheetPageContributor
 	 * #getContributorId()
 	 */
+	@Override
 	public String getContributorId() {
 		if (this.diagramEditor != null) {
 			return this.diagramEditor.getContributorId();
@@ -387,6 +391,7 @@ public class NodeEditor extends SCAFormEditor implements ITabbedPropertySheetPag
 	 * org.eclipse.gmf.runtime.diagram.ui.parts.IDiagramWorkbenchPart#getDiagram
 	 * ()
 	 */
+	@Override
 	public Diagram getDiagram() {
 		if (this.diagramEditor != null) {
 			return this.diagramEditor.getDiagram();
@@ -401,6 +406,7 @@ public class NodeEditor extends SCAFormEditor implements ITabbedPropertySheetPag
 	 * @seeorg.eclipse.gmf.runtime.diagram.ui.parts.IDiagramWorkbenchPart#
 	 * getDiagramEditDomain()
 	 */
+	@Override
 	public IDiagramEditDomain getDiagramEditDomain() {
 		if (this.diagramEditor != null) {
 			return this.diagramEditor.getDiagramEditDomain();
@@ -415,6 +421,7 @@ public class NodeEditor extends SCAFormEditor implements ITabbedPropertySheetPag
 	 * @seeorg.eclipse.gmf.runtime.diagram.ui.parts.IDiagramWorkbenchPart#
 	 * getDiagramEditPart()
 	 */
+	@Override
 	public DiagramEditPart getDiagramEditPart() {
 		if (this.diagramEditor != null) {
 			return this.diagramEditor.getDiagramEditPart();
@@ -429,6 +436,7 @@ public class NodeEditor extends SCAFormEditor implements ITabbedPropertySheetPag
 	 * @seeorg.eclipse.gmf.runtime.diagram.ui.parts.IDiagramWorkbenchPart#
 	 * getDiagramGraphicalViewer()
 	 */
+	@Override
 	public IDiagramGraphicalViewer getDiagramGraphicalViewer() {
 		if (this.diagramEditor != null) {
 			return this.diagramEditor.getDiagramGraphicalViewer();
@@ -594,6 +602,7 @@ public class NodeEditor extends SCAFormEditor implements ITabbedPropertySheetPag
 			this.contentOutlinePage.addSelectionChangedListener(new ISelectionChangedListener() {
 				// This ensures that we handle selections correctly.
 				//
+				@Override
 				public void selectionChanged(final SelectionChangedEvent event) {
 					handleContentOutlineSelection(event.getSelection());
 				}

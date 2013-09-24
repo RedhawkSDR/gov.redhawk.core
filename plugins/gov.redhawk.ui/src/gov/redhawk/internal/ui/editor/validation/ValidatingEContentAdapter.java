@@ -227,13 +227,16 @@ public class ValidatingEContentAdapter extends EContentAdapter {
 			try {
 	            ted.runExclusive(new Runnable() {
 
+					@Override
 					public void run() {
 						SafeRunnable.run(new ISafeRunnable() {
 							
+							@Override
 							public void run() throws Exception {
 								diagnostician.validate(obj, diagnostic);	
 							}
 							
+							@Override
 							public void handleException(Throwable exception) {
 								diagnostic.add(BasicDiagnostic.toDiagnostic(new Status(Status.ERROR, RedhawkUiActivator.getPluginId(), "FATAL Diagnostic exception on: " + obj, exception)));
 							}
@@ -247,10 +250,12 @@ public class ValidatingEContentAdapter extends EContentAdapter {
 		} else {
 			SafeRunnable.run(new ISafeRunnable() {
 				
+				@Override
 				public void run() throws Exception {
 					diagnostician.validate(obj, diagnostic);	
 				}
 				
+				@Override
 				public void handleException(Throwable exception) {
 					diagnostic.add(BasicDiagnostic.toDiagnostic(new Status(Status.ERROR, RedhawkUiActivator.getPluginId(), "FATAL Diagnostic exception on: " + obj, exception)));
 				}

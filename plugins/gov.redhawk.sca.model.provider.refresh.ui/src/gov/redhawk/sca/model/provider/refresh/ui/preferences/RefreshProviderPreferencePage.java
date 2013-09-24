@@ -55,6 +55,7 @@ public class RefreshProviderPreferencePage extends FieldEditorPreferencePage imp
 	/* (non-Javadoc)
 	 * @see org.eclipse.ui.IWorkbenchPreferencePage#init(org.eclipse.ui.IWorkbench)
 	 */
+	@Override
 	public void init(final IWorkbench workbench) {
 	}
 

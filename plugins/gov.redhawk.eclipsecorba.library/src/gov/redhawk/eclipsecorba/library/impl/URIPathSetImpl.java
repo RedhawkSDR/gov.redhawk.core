@@ -75,6 +75,7 @@ public class URIPathSetImpl extends PathImpl implements URIPathSet {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EList<URI> getDirs() {
 		if (dirs == null) {
 			dirs = new EDataTypeUniqueEList<URI>(URI.class, this, LibraryPackage.URI_PATH_SET__DIRS);

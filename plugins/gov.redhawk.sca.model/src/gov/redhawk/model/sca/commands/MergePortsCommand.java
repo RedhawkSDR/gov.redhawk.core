@@ -142,6 +142,7 @@ public class MergePortsCommand extends SetStatusCommand<ScaPortContainer> {
 	/* (non-Javadoc)
 	 * @see org.eclipse.emf.common.command.Command#execute()
 	 */
+	@Override
 	public void execute() {
 		if (status.isOK()) {
 			Map<PortHash, ScaPort< ? , ? >> currentMap = new HashMap<PortHash, ScaPort< ? , ? >>();

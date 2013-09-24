@@ -151,6 +151,7 @@ public abstract class CorbaObjWrapperTest extends DataProviderObjectTest {
 		Assert.assertNotNull(obj);
 		ScaModelCommand.execute(getFixture(), new ScaModelCommand() {
 
+			@Override
 			public void execute() {
 				getFixture().setCorbaObj(null);
 				Assert.assertNull(getFixture().getCorbaObj());
@@ -226,6 +227,7 @@ public abstract class CorbaObjWrapperTest extends DataProviderObjectTest {
 		final org.omg.CORBA.Object obj = getFixture().getCorbaObj();
 		ScaModelCommand.execute(getFixture(), new ScaModelCommand() {
 			
+			@Override
 			public void execute() {
 			    getFixture().setCorbaObj(null);	
 			}
@@ -233,6 +235,7 @@ public abstract class CorbaObjWrapperTest extends DataProviderObjectTest {
 	    super.testRefresh__IProgressMonitor_RefreshDepth();
 	    ScaModelCommand.execute(getFixture(), new ScaModelCommand() {
 			
+			@Override
 			public void execute() {
 				getFixture().setCorbaObj(obj);
 			}

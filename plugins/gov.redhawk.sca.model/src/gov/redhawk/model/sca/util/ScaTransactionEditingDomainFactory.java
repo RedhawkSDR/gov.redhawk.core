@@ -27,6 +27,7 @@ public class ScaTransactionEditingDomainFactory extends TransactionalEditingDoma
 	public static final ScaTransactionEditingDomainFactory INSTANCE = new ScaTransactionEditingDomainFactory();
 
 	// Documentation copied from the inherited specification
+	@Override
 	public synchronized TransactionalEditingDomain createEditingDomain() {
 		TransactionalEditingDomain retVal = new ScaTransactionalEditingDomain(new ComposedAdapterFactory(ComposedAdapterFactory.Descriptor.Registry.INSTANCE), new ScaTransactionalCommandStack());
 
@@ -43,6 +44,7 @@ public class ScaTransactionEditingDomainFactory extends TransactionalEditingDoma
 	}
 
 	// Documentation copied from the inherited specification
+	@Override
 	public synchronized TransactionalEditingDomain createEditingDomain(ResourceSet rset) {
 		TransactionalEditingDomain result = new ScaTransactionalEditingDomain(new ComposedAdapterFactory(ComposedAdapterFactory.Descriptor.Registry.INSTANCE));
 

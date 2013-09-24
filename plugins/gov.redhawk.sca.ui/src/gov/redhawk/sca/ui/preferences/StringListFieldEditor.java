@@ -53,6 +53,7 @@ public class StringListFieldEditor extends ListEditor {
 	protected String getNewInputObject() {
 		final InputDialog input = new InputDialog(getShell(), "New Path", "Path:", "", new IInputValidator() {
 
+			@Override
 			public String isValid(final String newText) {
 				if (newText.contains(File.pathSeparator)) {
 					return "Must not contain '" + File.pathSeparator + "'";

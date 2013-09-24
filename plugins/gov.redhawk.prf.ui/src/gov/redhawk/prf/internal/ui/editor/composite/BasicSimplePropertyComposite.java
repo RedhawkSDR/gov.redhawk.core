@@ -150,6 +150,7 @@ public abstract class BasicSimplePropertyComposite extends AbstractPropertyCompo
 		final ComboViewer viewer = new ComboViewer(parent, SWT.DROP_DOWN | SWT.READ_ONLY);
 		viewer.getCombo().addListener(SWT.MouseVerticalWheel, new Listener() {
 
+			@Override
 			public void handleEvent(Event event) {
 				// Disable Mouse Wheel Combo Box Control
 				event.doit = false;
@@ -166,6 +167,7 @@ public abstract class BasicSimplePropertyComposite extends AbstractPropertyCompo
 		viewer.setComparator(new ViewerComparator(new Comparator<String>() {
 			// List should be: "", Default, Everything else in alphanumeric
 			// order
+			@Override
 			public int compare(final String o1, final String o2) {
 				int retVal = 0;
 				if (o1.equalsIgnoreCase(BasicSimplePropertyComposite.DEFAULT_ACTION)) {
@@ -257,6 +259,7 @@ public abstract class BasicSimplePropertyComposite extends AbstractPropertyCompo
 		this.typeViewer = new ComboViewer(parent, SWT.DROP_DOWN | SWT.READ_ONLY);
 		this.typeViewer.getCombo().addListener(SWT.MouseVerticalWheel, new Listener() {
 
+			@Override
 			public void handleEvent(Event event) {
 				// Disable Mouse Wheel Combo Box Control
 				event.doit = false;
@@ -304,6 +307,7 @@ public abstract class BasicSimplePropertyComposite extends AbstractPropertyCompo
 		this.typeModifier = new Combo(parent, SWT.DROP_DOWN | SWT.READ_ONLY);
 		this.typeModifier.addListener(SWT.MouseVerticalWheel, new Listener() {
 
+			@Override
 			public void handleEvent(Event event) {
 				// Disable Mouse Wheel Combo Box Control
 				event.doit = false;
@@ -469,6 +473,7 @@ public abstract class BasicSimplePropertyComposite extends AbstractPropertyCompo
 				final Enumeration e = (Enumeration) element;
 				ScaModelCommand.execute(e, new ScaModelCommand() {
 
+					@Override
 					public void execute() {
 						e.setLabel((value == null) ? null : value.toString());
 					}
@@ -501,6 +506,7 @@ public abstract class BasicSimplePropertyComposite extends AbstractPropertyCompo
 				final Enumeration e = (Enumeration) element;
 				ScaModelCommand.execute(e, new ScaModelCommand() {
 
+					@Override
 					public void execute() {
 						e.setValue((value == null) ? null : value.toString());
 					}
@@ -518,6 +524,7 @@ public abstract class BasicSimplePropertyComposite extends AbstractPropertyCompo
 				final TextCellEditor retVal = new TextCellEditor(enumViewer.getTable());
 				retVal.setValidator(new ICellEditorValidator() {
 
+					@Override
 					public String isValid(final Object value) {
 						final Enumeration element = (Enumeration) obj;
 						final Simple simple = (Simple) element.eContainer().eContainer();
@@ -553,6 +560,7 @@ public abstract class BasicSimplePropertyComposite extends AbstractPropertyCompo
 		this.removeEnumButton.setEnabled(!this.enumViewer.getSelection().isEmpty());
 		this.enumViewer.addSelectionChangedListener(new ISelectionChangedListener() {
 
+			@Override
 			public void selectionChanged(final SelectionChangedEvent event) {
 				removeEnumButton.setEnabled(!event.getSelection().isEmpty());
 				editEnumButton.setEnabled(!event.getSelection().isEmpty());

@@ -41,6 +41,7 @@ import org.eclipse.ui.handlers.HandlerUtil;
 
 public class AssignAssemblyControllerCommand extends AbstractHandler implements IHandler {
 
+	@Override
 	public Object execute(final ExecutionEvent event) throws ExecutionException {
 
 		final ISelection selection = HandlerUtil.getCurrentSelection(event);

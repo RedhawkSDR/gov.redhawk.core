@@ -44,6 +44,7 @@ public class ScaDataProviderServiceDescriptor implements IScaDataProviderService
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public String getName() {
 		return this.name;
 	}
@@ -51,6 +52,7 @@ public class ScaDataProviderServiceDescriptor implements IScaDataProviderService
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public String getId() {
 		return this.id;
 	}
@@ -58,6 +60,7 @@ public class ScaDataProviderServiceDescriptor implements IScaDataProviderService
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public IScaDataProviderService getService() {
 		if (this.service == null) {
 			try {

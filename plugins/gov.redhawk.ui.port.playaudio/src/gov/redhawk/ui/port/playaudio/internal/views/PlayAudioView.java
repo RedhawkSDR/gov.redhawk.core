@@ -111,6 +111,7 @@ public class PlayAudioView extends ViewPart {
 
 		this.treeViewer.addSelectionChangedListener(new ISelectionChangedListener() {
 
+			@Override
 			public void selectionChanged(final SelectionChangedEvent event) {
 				AudioReceiver input = (AudioReceiver) ((IStructuredSelection) event.getSelection()).getFirstElement();
 				infoComp.setInput(input);

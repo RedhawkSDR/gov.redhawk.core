@@ -95,6 +95,7 @@ public class PlotPageBook2 extends Composite {
 			case ScaPackage.IDISPOSABLE__DISPOSED:
 				if (!isDisposed()) {
 					PlatformUI.getWorkbench().getDisplay().asyncExec(new Runnable() {
+						@Override
 						public void run() {
 							dispose();
 						}
@@ -118,6 +119,7 @@ public class PlotPageBook2 extends Composite {
 		this.pageBook = new PageBook(this, SWT.NONE);
 		parent.addDisposeListener(new DisposeListener() {
 
+			@Override
 			public void widgetDisposed(DisposeEvent e) {
 				dispose();
 			}
@@ -162,6 +164,7 @@ public class PlotPageBook2 extends Composite {
 		this.sources.add(plotSource);
 		ScaModelCommand.execute(plotSource.getInput(), new ScaModelCommand() {
 			
+			@Override
 			public void execute() {
 				plotSource.getInput().eAdapters().add(portListener);
 			}
@@ -170,12 +173,14 @@ public class PlotPageBook2 extends Composite {
 
 			private String id = DceUuidUtil.createDceUUID();
 
+			@Override
 			public void dispose() {
 				for (PlotPage session : plots.values()) {
 					session.removeSource(plotSource);
 				}
 			}
 
+			@Override
 			public String getSourceId() {
 				return id;
 			}
@@ -240,6 +245,7 @@ public class PlotPageBook2 extends Composite {
 		for (final PlotSource source : sources) {
 			ScaModelCommand.execute(source.getInput(), new ScaModelCommand() {
 				
+				@Override
 				public void execute() {
 					source.getInput().eAdapters().remove(listenerAdapter);
 				}

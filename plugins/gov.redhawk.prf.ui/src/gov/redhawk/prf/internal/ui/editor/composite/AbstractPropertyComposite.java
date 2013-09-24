@@ -87,6 +87,7 @@ public abstract class AbstractPropertyComposite extends Composite implements ISc
 		final ComboViewer viewer = new ComboViewer(parent, SWT.DROP_DOWN | SWT.READ_ONLY);
 		viewer.getCombo().addListener(SWT.MouseVerticalWheel, new Listener() {
 
+			@Override
 			public void handleEvent(Event event) {
 				// Disable Mouse Wheel Combo Box Control
 				event.doit = false;
@@ -172,6 +173,7 @@ public abstract class AbstractPropertyComposite extends Composite implements ISc
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public void setEditable(final boolean canEdit) {
 		this.canEdit = canEdit;
 		if (this.descriptionText != null) {

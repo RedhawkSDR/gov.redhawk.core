@@ -16,6 +16,9 @@ import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
 
+import org.eclipse.jdt.annotation.NonNull;
+import org.eclipse.jdt.annotation.Nullable;
+
 import BULKIO.PortStatistics;
 import BULKIO.PortUsageType;
 import BULKIO.PrecisionUTCTime;
@@ -54,11 +57,12 @@ public abstract class AbstractBulkIOPort implements ProvidesPortStatisticsProvid
 		this.type = type;
 	}
 	
+	@Nullable
 	public BulkIOType getBulkIOType() {
 		return type;
 	}
 	
-	public void setBulkIOType(BulkIOType type) {
+	public void setBulkIOType(@NonNull BulkIOType type) {
 		this.type = type;
 	}
 
@@ -94,7 +98,7 @@ public abstract class AbstractBulkIOPort implements ProvidesPortStatisticsProvid
 	 * @param length Length of the push packet array.
 	 * @return true if should process packet
 	 */
-	protected boolean pushPacket(int length, final PrecisionUTCTime time, final boolean endOfStream, final String streamID) {
+	protected boolean pushPacket(int length, @Nullable final PrecisionUTCTime time, final boolean endOfStream, @Nullable final String streamID) {
 		if (endOfStream) {
 			// Process last packet sent
 			this.streamSRIMap.remove(streamID);
@@ -108,28 +112,43 @@ public abstract class AbstractBulkIOPort implements ProvidesPortStatisticsProvid
 		return true;
 	}
 
+	@SuppressWarnings("null")
+	@Override
+	@NonNull
 	public PortUsageType state() {
 		return PortUsageType.ACTIVE;
 	}
-
+	
+	@SuppressWarnings("null")
+	@NonNull
 	public PortStatistics getPortStatistics() {
 		return stats;
 	}
 
+	@SuppressWarnings("null")
+	@Override
+	@NonNull
 	public PortStatistics statistics() {
 		updateStatitics();
 		return stats;
 	}
 
+	@SuppressWarnings("null")
+	@Override
+	@NonNull
 	public StreamSRI[] activeSRIs() {
 		return this.streamSRIMap.values().toArray(new StreamSRI[this.streamSRIMap.size()]);
 	}
 
-	public void pushSRI(StreamSRI sri) {
+	@Override
+	public void pushSRI(@Nullable StreamSRI sri) {
 		if (sri != null) {
-			StreamSRI oldSri = this.streamSRIMap.put(sri.streamID, sri);
-			if (!StreamSRIUtil.equals(oldSri, sri)) {
-				handleStreamSRIChanged(sri.streamID, oldSri, sri);
+			String streamId = sri.streamID;
+			if (streamId != null) {
+				StreamSRI oldSri = this.streamSRIMap.put(streamId, sri);
+				if (!StreamSRIUtil.equals(oldSri, sri)) {
+					handleStreamSRIChanged(streamId, oldSri, sri);
+				}
 			}
 		}
 		StreamSRI oldSri = this.currentSri;
@@ -139,19 +158,21 @@ public abstract class AbstractBulkIOPort implements ProvidesPortStatisticsProvid
 		}
 	}
 	
+	@Nullable
 	public StreamSRI getStreamSRI() {
 		return this.currentSri;
 	}
 	
-	protected void handleStreamSRIChanged(StreamSRI oldSri, StreamSRI newSri) {
+	protected void handleStreamSRIChanged(@Nullable StreamSRI oldSri, @Nullable StreamSRI newSri) {
 		
 	}
 
-	protected void handleStreamSRIChanged(String streamID, StreamSRI oldSri, StreamSRI newSri) {
+	protected void handleStreamSRIChanged(@NonNull String streamID, @Nullable StreamSRI oldSri, @NonNull StreamSRI newSri) {
 		
 	}
 
-	public StreamSRI getSri(String streamID) {
+	@Nullable
+	public StreamSRI getSri(@Nullable String streamID) {
 		return this.streamSRIMap.get(streamID);
 	}
 }

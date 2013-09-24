@@ -38,10 +38,12 @@ class ScaStructValuePropertyDescriptor extends ItemPropertyDescriptorDecorator {
 			this.displayName = displayName;
 		}
 
+		@Override
 		public String getDisplayName(Object thisObject) {
 			return this.displayName;
 		}
 
+		@Override
 		public String getId(Object thisObject) {
 			return getDisplayName(this.object);
 
@@ -57,6 +59,7 @@ class ScaStructValuePropertyDescriptor extends ItemPropertyDescriptorDecorator {
 			this.structProperty = property;
 		}
 
+		@Override
 		public List<IItemPropertyDescriptor> getPropertyDescriptors(Object object) {
 			if (itemPropertyDescriptors == null) {
 				itemPropertyDescriptors = new ArrayList<IItemPropertyDescriptor>();
@@ -94,6 +97,7 @@ class ScaStructValuePropertyDescriptor extends ItemPropertyDescriptorDecorator {
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public Object getPropertyValue(final Object object) {
 		return new SimplesValuePropertySource(this.factory, (ScaStructProperty) object);
 	}
@@ -103,6 +107,7 @@ class ScaStructValuePropertyDescriptor extends ItemPropertyDescriptorDecorator {
 		final IItemLabelProvider lp = super.getLabelProvider(thisObject);
 		return new IItemLabelProvider() {
 
+			@Override
 			public String getText(Object object) {
 				if (object instanceof SimplesValuePropertySource) {
 					return "";
@@ -110,6 +115,7 @@ class ScaStructValuePropertyDescriptor extends ItemPropertyDescriptorDecorator {
 				return lp.getText(object);
 			}
 
+			@Override
 			public Object getImage(Object object) {
 				if (object instanceof SimplesValuePropertySource) {
 					return null;

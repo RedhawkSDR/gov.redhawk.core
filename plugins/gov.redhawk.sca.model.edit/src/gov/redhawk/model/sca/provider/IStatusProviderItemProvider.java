@@ -99,6 +99,7 @@ public class IStatusProviderItemProvider extends ItemProviderAdapter implements 
 			public IItemLabelProvider getLabelProvider(Object object) {
 				return new IItemLabelProvider() {
 
+					@Override
 					public String getText(Object object) {
 						IStatus status = (IStatus) object;
 						if (status == null) {
@@ -120,6 +121,7 @@ public class IStatusProviderItemProvider extends ItemProviderAdapter implements 
 						}
 					}
 
+					@Override
 					public Object getImage(Object object) {
 						ISharedImages sharedImages = PlatformUI.getWorkbench().getSharedImages();
 						IStatus status = (IStatus) object;

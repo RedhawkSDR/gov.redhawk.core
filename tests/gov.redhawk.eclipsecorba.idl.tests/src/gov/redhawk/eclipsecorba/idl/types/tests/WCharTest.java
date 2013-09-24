@@ -76,6 +76,7 @@ public class WCharTest extends PrimitiveTypeTest {
 		setFixture(null);
 	}
 
+	@Override
 	public void test_pass() {
 
 	}

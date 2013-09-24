@@ -28,6 +28,7 @@ public class StringToComplexNumberConverter extends Converter {
 	    this.type = type;
     }
 
+	@Override
 	public Object convert(Object fromObject) {
 		return ComplexNumber.valueOf(type.getLiteral(), fromObject.toString());
 	}

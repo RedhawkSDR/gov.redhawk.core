@@ -74,6 +74,7 @@ public class OpenAction extends Action implements IWorkbenchAction {
 		}
 	}
 
+	@Override
 	public void dispose() {
 		// TODO Auto-generated method stub
 

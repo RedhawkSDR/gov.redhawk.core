@@ -81,6 +81,7 @@ public class EnumerationWizardPage extends WizardPage {
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public void createControl(final Composite parent) {
 
 		// Create an adapter factory that yields item providers.

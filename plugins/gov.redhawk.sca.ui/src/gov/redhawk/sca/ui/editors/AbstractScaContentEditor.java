@@ -41,6 +41,7 @@ public abstract class AbstractScaContentEditor< T extends EObject > extends Abst
 				if (msg.getNewBooleanValue()) {
 					//For RAP compatibility, do not get Display from static call to PlatformUI
 					getSite().getWorkbenchWindow().getShell().getDisplay().asyncExec(new Runnable() {
+						@Override
 						public void run() {
 							getSite().getPage().closeEditor(AbstractScaContentEditor.this, true);
 						}

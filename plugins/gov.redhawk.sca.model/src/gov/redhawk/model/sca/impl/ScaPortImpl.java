@@ -120,6 +120,7 @@ public abstract class ScaPortImpl<P extends AbstractPort, P2 extends org.omg.COR
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public String getName() {
 		return name;
 	}
@@ -130,6 +131,7 @@ public abstract class ScaPortImpl<P extends AbstractPort, P2 extends org.omg.COR
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void setName(String newName) {
 		String oldName = name;
 		name = newName;
@@ -142,6 +144,7 @@ public abstract class ScaPortImpl<P extends AbstractPort, P2 extends org.omg.COR
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	@SuppressWarnings("unchecked")
 	public P getProfileObj() {
 		if (profileObj != null && profileObj.eIsProxy()) {
@@ -169,6 +172,7 @@ public abstract class ScaPortImpl<P extends AbstractPort, P2 extends org.omg.COR
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void setProfileObj(P newProfileObj) {
 		P oldProfileObj = profileObj;
 		profileObj = newProfileObj;
@@ -181,6 +185,7 @@ public abstract class ScaPortImpl<P extends AbstractPort, P2 extends org.omg.COR
 	 * <!-- end-user-doc -->
 	 * @generated NOT
 	 */
+	@Override
 	public String getRepid() {
 		// END GENERATED CODE
 		if (getProfileObj() != null) {
@@ -196,6 +201,7 @@ public abstract class ScaPortImpl<P extends AbstractPort, P2 extends org.omg.COR
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public ScaPortContainer getPortContainer() {
 		if (eContainerFeatureID() != ScaPackage.SCA_PORT__PORT_CONTAINER) return null;
 		return (ScaPortContainer)eContainer();
@@ -226,6 +232,7 @@ public abstract class ScaPortImpl<P extends AbstractPort, P2 extends org.omg.COR
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void setPortContainer(ScaPortContainer newPortContainer) {
 		if (newPortContainer != eInternalContainer() || (eContainerFeatureID() != ScaPackage.SCA_PORT__PORT_CONTAINER && newPortContainer != null)) {
 			if (EcoreUtil.isAncestor(this, newPortContainer))
@@ -431,6 +438,7 @@ public abstract class ScaPortImpl<P extends AbstractPort, P2 extends org.omg.COR
 		if (getCorbaObj() == null) {
 			ScaModelCommand.execute(this, new ScaModelCommand() {
 				
+				@Override
 				public void execute() {
 					setStatus(ScaPackage.Literals.CORBA_OBJ_WRAPPER__OBJ, new Status(Status.ERROR, ScaModelPlugin.ID, "Unable to find port object", null));	
 				}
@@ -441,6 +449,7 @@ public abstract class ScaPortImpl<P extends AbstractPort, P2 extends org.omg.COR
 			if (getCorbaObj()._non_existent()) {
 				ScaModelCommand.execute(this, new ScaModelCommand() {
 					
+					@Override
 					public void execute() {
 						setStatus(ScaPackage.Literals.CORBA_OBJ_WRAPPER__OBJ, new Status(Status.ERROR, ScaModelPlugin.ID, "Non existent port object", null));	
 					}
@@ -449,6 +458,7 @@ public abstract class ScaPortImpl<P extends AbstractPort, P2 extends org.omg.COR
 		} catch (final SystemException e) {
 			ScaModelCommand.execute(this, new ScaModelCommand() {
 				
+				@Override
 				public void execute() {
 					setStatus(ScaPackage.Literals.CORBA_OBJ_WRAPPER__OBJ, new Status(Status.ERROR, ScaModelPlugin.ID, "Exception contacting port", e));	
 				}

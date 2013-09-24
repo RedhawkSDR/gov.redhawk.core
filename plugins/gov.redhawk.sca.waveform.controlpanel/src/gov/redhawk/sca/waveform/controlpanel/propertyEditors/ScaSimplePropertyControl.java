@@ -77,6 +77,7 @@ public class ScaSimplePropertyControl {
 
 		this.localValue.addValueChangeListener(new IValueChangeListener() {
 
+			@Override
 			public void handleValueChange(final ValueChangeEvent event) {
 				if (!ScaSimplePropertyControl.this.ignoreSet) {
 					ScaSimplePropertyControl.this.editing = false;
@@ -99,6 +100,7 @@ public class ScaSimplePropertyControl {
 			//don't flash the first time the control's value is set
 			private boolean initialSet = true;
 
+			@Override
 			public void handleValueChange(final ValueChangeEvent event) {
 				if (!ScaSimplePropertyControl.this.editing) {
 					if (!this.initialSet) {
@@ -113,6 +115,7 @@ public class ScaSimplePropertyControl {
 		});
 		this.editingValue.addValueChangeListener(new IValueChangeListener() {
 
+			@Override
 			public void handleValueChange(final ValueChangeEvent event) {
 				if (!ScaSimplePropertyControl.this.ignoreSet) {
 					ScaSimplePropertyControl.this.editing = !event.getObservableValue().getValue().equals(ScaSimplePropertyControl.this.localValue.getValue());

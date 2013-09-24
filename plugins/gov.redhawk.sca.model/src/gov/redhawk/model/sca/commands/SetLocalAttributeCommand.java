@@ -31,6 +31,7 @@ public class SetLocalAttributeCommand extends SetStatusCommand<IStatusProvider> 
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public void execute() {
 		if (status.isOK()) {
 			this.provider.eSet(feature, newValue);

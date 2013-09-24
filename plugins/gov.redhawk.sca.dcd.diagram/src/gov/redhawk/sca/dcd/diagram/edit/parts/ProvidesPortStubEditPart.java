@@ -67,6 +67,7 @@ public class ProvidesPortStubEditPart extends mil.jpeojtrs.sca.dcd.diagram.edit.
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public IFigure basicCreateNodeShape() {
 		return super.createNodeShape();
 	}
@@ -74,6 +75,7 @@ public class ProvidesPortStubEditPart extends mil.jpeojtrs.sca.dcd.diagram.edit.
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public boolean isInstanceofProvidesPortStubNameEditPart(final IBorderItemEditPart borderItemEditPart) {
 		return borderItemEditPart instanceof ProvidesPortStubNameEditPart;
 	}
@@ -81,6 +83,7 @@ public class ProvidesPortStubEditPart extends mil.jpeojtrs.sca.dcd.diagram.edit.
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public void basicAddBorderItem(final IFigure borderItemContainer, final IBorderItemEditPart borderItemEditPart) {
 		super.addBorderItem(borderItemContainer, borderItemEditPart);
 	}

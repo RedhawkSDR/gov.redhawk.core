@@ -88,6 +88,7 @@ public class ScaComponentTest extends ScaAbstractComponentTest {
 		this.env.validateStartState();
 		ScaModelCommand.execute(waveform, new ScaModelCommand() {
 
+			@Override
 			public void execute() {
 				if (waveform.getComponents().isEmpty() && ScaTests.DEBUG.enabled) {
 					ScaTests.DEBUG.message("Invalid state: {0}", waveform);
@@ -124,6 +125,7 @@ public class ScaComponentTest extends ScaAbstractComponentTest {
 		final String identifier = getFixture().getObj().identifier();
 		ScaModelCommand.execute(getFixture(), new ScaModelCommand() {
 
+			@Override
 			public void execute() {
 				Assert.assertEquals(identifier, getFixture().getIdentifier());
 			}
@@ -142,6 +144,7 @@ public class ScaComponentTest extends ScaAbstractComponentTest {
 		// END GENERATED CODE
 		ScaModelCommand.execute(getFixture(), new ScaModelCommand() {
 
+			@Override
 			public void execute() {
 				Assert.assertTrue(getFixture().isSetComponentInstantiation());
 				getFixture().unsetComponentInstantiation();

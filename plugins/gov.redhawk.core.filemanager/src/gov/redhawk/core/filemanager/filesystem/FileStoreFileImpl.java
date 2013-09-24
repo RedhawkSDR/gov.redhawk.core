@@ -47,6 +47,7 @@ public class FileStoreFileImpl extends FilePOA {
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public String fileName() {
 		return this.store.getName();
 	}
@@ -54,6 +55,7 @@ public class FileStoreFileImpl extends FilePOA {
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public int filePointer() {
 		return this.pointer;
 	}
@@ -61,6 +63,7 @@ public class FileStoreFileImpl extends FilePOA {
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public void read(final OctetSequenceHolder data, final int length) throws IOException {
 		final byte[] buffer = new byte[length];
 		try {
@@ -84,6 +87,7 @@ public class FileStoreFileImpl extends FilePOA {
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public void write(final byte[] data) throws IOException {
 		throw new IOException(ErrorNumberType.CF_ENOTSUP, "Does not support write operations");
 	}
@@ -91,6 +95,7 @@ public class FileStoreFileImpl extends FilePOA {
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public int sizeOf() throws FileException {
 		return (int) this.store.fetchInfo().getLength();
 	}
@@ -98,6 +103,7 @@ public class FileStoreFileImpl extends FilePOA {
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public void close() throws FileException {
 		try {
 			this.inputStream.close();
@@ -110,6 +116,7 @@ public class FileStoreFileImpl extends FilePOA {
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public void setFilePointer(final int filePointer) throws InvalidFilePointer, FileException {
 		try {
 			long actualSkiped = this.inputStream.skip(filePointer);

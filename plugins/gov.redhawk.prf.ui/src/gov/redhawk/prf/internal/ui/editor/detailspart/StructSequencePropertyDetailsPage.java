@@ -131,6 +131,7 @@ public class StructSequencePropertyDetailsPage extends BasicStructPropertyDetail
 			/**
 			 * {@inheritDoc}
 			 */
+			@Override
 			public void selectionChanged(final SelectionChangedEvent event) {
 				final List<Object> selection = getSelection();
 				boolean remove = !selection.isEmpty();

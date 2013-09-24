@@ -41,6 +41,7 @@ import org.eclipse.swt.widgets.Text;
 public class FftParameterEntryDialog extends Dialog {
 
 	private static class OverlapValidator implements IInputValidator {
+		@Override
 		public String isValid(final String newText) {
 			String status = "Percent Overlap must be between 0 and 100.";
 			if ((newText != null) && !"".equals(newText.trim())) {
@@ -115,6 +116,7 @@ public class FftParameterEntryDialog extends Dialog {
 		this.transformSizeField.setText(this.fftSettings.getTransformSize());
 		this.transformSizeField.setToolTipText("Performance is best if factorable by 2, 3, 4 and 5.");
 		this.transformSizeField.addModifyListener(new ModifyListener() {
+			@Override
 			public void modifyText(final ModifyEvent e) {
 				FftParameterEntryDialog.this.fftSettings.setTransformSize(FftParameterEntryDialog.this.transformSizeField.getText().trim());
 				validateInputs();
@@ -129,6 +131,7 @@ public class FftParameterEntryDialog extends Dialog {
 		this.overlapField.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false));
 		this.overlapField.setText(this.fftSettings.getOverlap());
 		this.overlapField.addModifyListener(new ModifyListener() {
+			@Override
 			public void modifyText(final ModifyEvent e) {
 				final String newText = FftParameterEntryDialog.this.overlapField.getText();
 				FftParameterEntryDialog.this.fftSettings.setOverlap(newText.trim());
@@ -145,6 +148,7 @@ public class FftParameterEntryDialog extends Dialog {
 		this.numAveragesField.setText(this.fftSettings.getNumAverages());
 		this.numAveragesField.setToolTipText("Avoid using large value as it will cause highlighted energy to remain longer.");
 		this.numAveragesField.addModifyListener(new ModifyListener() {
+			@Override
 			public void modifyText(final ModifyEvent e) {
 				FftParameterEntryDialog.this.fftSettings.setNumAverages(FftParameterEntryDialog.this.numAveragesField.getText().trim());
 				validateInputs();
@@ -162,6 +166,7 @@ public class FftParameterEntryDialog extends Dialog {
 		type.setInput(FftSettings.OutputType.values());
 		type.setSelection(new StructuredSelection(FftSettings.OutputType.PSD));
 		type.addSelectionChangedListener(new ISelectionChangedListener() {
+			@Override
 			public void selectionChanged(final SelectionChangedEvent event) {
 				FftParameterEntryDialog.this.fftSettings
 				        .setOutputType((FftSettings.OutputType) ((IStructuredSelection) event.getSelection()).getFirstElement());
@@ -179,6 +184,7 @@ public class FftParameterEntryDialog extends Dialog {
 		window.setInput(FftSettings.WindowType.values());
 		window.setSelection(new StructuredSelection(FftSettings.WindowType.HANNING));
 		window.addSelectionChangedListener(new ISelectionChangedListener() {
+			@Override
 			public void selectionChanged(final SelectionChangedEvent event) {
 				FftParameterEntryDialog.this.fftSettings.setWindow((FftSettings.WindowType) ((IStructuredSelection) event.getSelection()).getFirstElement());
 			}

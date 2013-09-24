@@ -24,6 +24,7 @@ public class StringToEmptyStringValueConverter extends Converter {
 	    super(String.class, String.class);
     }
 
+	@Override
 	public Object convert(final Object value) {
 		if ("".equals(value)) {
 			return EMPTY_STRING_VALUE;

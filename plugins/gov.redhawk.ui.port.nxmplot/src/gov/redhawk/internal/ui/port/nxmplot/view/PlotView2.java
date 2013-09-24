@@ -98,6 +98,7 @@ public class PlotView2 extends ViewPart {
 
 	private DisposeListener disposeListener = new DisposeListener() {
 
+		@Override
 		public void widgetDisposed(DisposeEvent e) {
 			if (!diposed && !PlatformUI.getWorkbench().isClosing()) {
 				getSite().getPage().hideView(PlotView2.this);

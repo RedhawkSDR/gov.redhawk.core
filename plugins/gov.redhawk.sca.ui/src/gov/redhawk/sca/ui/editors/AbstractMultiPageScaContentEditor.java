@@ -41,6 +41,7 @@ public abstract class AbstractMultiPageScaContentEditor< T extends EObject > ext
 			case ScaPackage.IDISPOSABLE__DISPOSED:
 				if (msg.getNewBooleanValue()) {
 					PlatformUI.getWorkbench().getDisplay().asyncExec(new Runnable() {
+						@Override
 						public void run() {
 							getSite().getPage().closeEditor(AbstractMultiPageScaContentEditor.this, true);
 						}

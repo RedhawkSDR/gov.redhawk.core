@@ -46,6 +46,7 @@ public class EmfValidatorLabelDecorator extends LabelProvider implements ILightw
 	 * @see org.eclipse.jface.viewers.ILightweightLabelDecorator#decorate(java.lang.Object,
 	 *      org.eclipse.jface.viewers.IDecoration)
 	 */
+	@Override
 	public void decorate(final Object element, final IDecoration decoration) {
 		if (!(element instanceof EObject || element instanceof FeatureMap.Entry || element instanceof IWrapperItemProvider)) {
 			return;
@@ -73,6 +74,7 @@ public class EmfValidatorLabelDecorator extends LabelProvider implements ILightw
 			try {
 				tmp = TransactionUtil.runExclusive(editingDomain, new RunnableWithResult.Impl<Diagnostic>() {
 
+					@Override
 					public void run() {
 						setResult(Diagnostician.INSTANCE.validate(diagObj));
 					}

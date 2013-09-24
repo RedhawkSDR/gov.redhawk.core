@@ -254,12 +254,14 @@ public class ContainerSelectionGroup extends Composite {
 		this.treeViewer.setComparator(new ViewerComparator());
 		this.treeViewer.setUseHashlookup(true);
 		this.treeViewer.addSelectionChangedListener(new ISelectionChangedListener() {
+			@Override
 			public void selectionChanged(final SelectionChangedEvent event) {
 				final IStructuredSelection selection = (IStructuredSelection) event.getSelection();
 				containerSelectionChanged((IContainer) selection.getFirstElement()); // allow null
 			}
 		});
 		this.treeViewer.addDoubleClickListener(new IDoubleClickListener() {
+			@Override
 			public void doubleClick(final DoubleClickEvent event) {
 				final ISelection selection = event.getSelection();
 				if (selection instanceof IStructuredSelection) {

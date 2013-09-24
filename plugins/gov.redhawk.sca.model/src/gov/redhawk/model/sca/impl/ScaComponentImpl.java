@@ -151,6 +151,7 @@ public class ScaComponentImpl extends ScaAbstractComponentImpl<Resource> impleme
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public SadComponentInstantiation getComponentInstantiation() {
 		if (componentInstantiation != null && componentInstantiation.eIsProxy()) {
 			InternalEObject oldComponentInstantiation = (InternalEObject)componentInstantiation;
@@ -177,6 +178,7 @@ public class ScaComponentImpl extends ScaAbstractComponentImpl<Resource> impleme
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void setComponentInstantiation(SadComponentInstantiation newComponentInstantiation) {
 		SadComponentInstantiation oldComponentInstantiation = componentInstantiation;
 		componentInstantiation = newComponentInstantiation;
@@ -191,6 +193,7 @@ public class ScaComponentImpl extends ScaAbstractComponentImpl<Resource> impleme
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void unsetComponentInstantiation() {
 		SadComponentInstantiation oldComponentInstantiation = componentInstantiation;
 		boolean oldComponentInstantiationESet = componentInstantiationESet;
@@ -205,6 +208,7 @@ public class ScaComponentImpl extends ScaAbstractComponentImpl<Resource> impleme
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public boolean isSetComponentInstantiation() {
 		return componentInstantiationESet;
 	}
@@ -214,6 +218,7 @@ public class ScaComponentImpl extends ScaAbstractComponentImpl<Resource> impleme
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EList<ScaDevice<?>> getDevices() {
 		if (devices == null) {
 			devices = new EObjectResolvingEList.Unsettable<ScaDevice<?>>(ScaDevice.class, this, ScaPackage.SCA_COMPONENT__DEVICES);
@@ -226,6 +231,7 @@ public class ScaComponentImpl extends ScaAbstractComponentImpl<Resource> impleme
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void unsetDevices() {
 		if (devices != null) ((InternalEList.Unsettable<?>)devices).unset();
 	}
@@ -235,6 +241,7 @@ public class ScaComponentImpl extends ScaAbstractComponentImpl<Resource> impleme
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public boolean isSetDevices() {
 		return devices != null && ((InternalEList.Unsettable<?>)devices).isSet();
 	}
@@ -268,6 +275,7 @@ public class ScaComponentImpl extends ScaAbstractComponentImpl<Resource> impleme
 	 * <!-- end-user-doc -->
 	 * @generated NOT
 	 */
+	@Override
 	public String getInstantiationIdentifier() {
 		// END GENERATED CODE
 		return convertIdentifierToInstantiationID(identifier);
@@ -280,6 +288,7 @@ public class ScaComponentImpl extends ScaAbstractComponentImpl<Resource> impleme
 	 * <!-- end-user-doc -->
 	 * @generated NOT
 	 */
+	@Override
 	public boolean isSetInstantiationIdentifier() {
 		// END GENERATED CODE
 		return isSetIdentifier();
@@ -291,6 +300,7 @@ public class ScaComponentImpl extends ScaAbstractComponentImpl<Resource> impleme
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public ScaWaveform getWaveform() {
 		if (eContainerFeatureID() != ScaPackage.SCA_COMPONENT__WAVEFORM) return null;
 		return (ScaWaveform)eContainer();
@@ -321,6 +331,7 @@ public class ScaComponentImpl extends ScaAbstractComponentImpl<Resource> impleme
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void setWaveform(ScaWaveform newWaveform) {
 		if (newWaveform != eInternalContainer() || (eContainerFeatureID() != ScaPackage.SCA_COMPONENT__WAVEFORM && newWaveform != null)) {
 			if (EcoreUtil.isAncestor(this, newWaveform))
@@ -342,6 +353,7 @@ public class ScaComponentImpl extends ScaAbstractComponentImpl<Resource> impleme
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public String getName() {
 		return name;
 	}
@@ -351,6 +363,7 @@ public class ScaComponentImpl extends ScaAbstractComponentImpl<Resource> impleme
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void setName(String newName) {
 		String oldName = name;
 		name = newName;
@@ -414,11 +427,13 @@ public class ScaComponentImpl extends ScaAbstractComponentImpl<Resource> impleme
 	 * @throws InterruptedException 
 	 * @generated NOT
 	 */
+	@Override
 	public EList<ScaDevice< ? >> fetchDevices(IProgressMonitor monitor) {
 		SubMonitor subMonitor = SubMonitor.convert(monitor, "Fetch Devices", 2);
 		internalFetchDevices(subMonitor.newChild(1));
 		ScaDevice< ? >[] devices = ScaModelCommandWithResult.execute(this, new ScaModelCommandWithResult<ScaDevice< ? >[]>() {
 
+			@Override
 			public void execute() {
 				setResult(getDevices().toArray(new ScaDevice< ? >[getDevices().size()]));
 			}

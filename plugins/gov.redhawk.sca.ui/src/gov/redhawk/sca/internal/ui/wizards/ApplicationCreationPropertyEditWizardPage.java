@@ -69,6 +69,7 @@ public class ApplicationCreationPropertyEditWizardPage extends WizardPage {
 		this.adapterFactory = new ScaPropertiesAdapterFactory();
 	}
 
+	@Override
 	public void createControl(final Composite parent) {
 		final Composite main = new Composite(parent, SWT.None);
 		main.setLayout(new GridLayout());
@@ -147,6 +148,7 @@ public class ApplicationCreationPropertyEditWizardPage extends WizardPage {
 		try {
 			getWizard().getContainer().run(true, false, new IRunnableWithProgress() {
 
+				@Override
 				public void run(final IProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
 					monitor.beginTask("Fetching properties...", IProgressMonitor.UNKNOWN);
 

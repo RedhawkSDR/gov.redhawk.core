@@ -26,6 +26,7 @@ public class BindingNodeAdapterFactory implements IAdapterFactory {
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public Object getAdapter(final Object adaptableObject, @SuppressWarnings("rawtypes") final Class adapterType) {
 		if (adapterType == IWorkbenchAdapter.class) {
 			return ADAPTER;
@@ -39,6 +40,7 @@ public class BindingNodeAdapterFactory implements IAdapterFactory {
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public Class< ? >[] getAdapterList() {
 		return LIST;
 	}

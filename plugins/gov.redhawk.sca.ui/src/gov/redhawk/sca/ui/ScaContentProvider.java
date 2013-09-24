@@ -175,14 +175,17 @@ public class ScaContentProvider extends ScaModelAdapterFactoryContentProvider im
 		super.dispose();
 	}
 
+	@Override
 	public void init(final ICommonContentExtensionSite config) {
 		// Nothing to do
 	}
 
+	@Override
 	public void restoreState(final IMemento memento) {
 		// Nothing to do
 	}
 
+	@Override
 	public void saveState(final IMemento memento) {
 		// Nothing to do
 	}

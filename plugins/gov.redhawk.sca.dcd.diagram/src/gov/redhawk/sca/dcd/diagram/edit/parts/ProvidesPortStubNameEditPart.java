@@ -57,6 +57,7 @@ public class ProvidesPortStubNameEditPart extends mil.jpeojtrs.sca.dcd.diagram.e
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public void basicAddNotationalListeners() {
 		super.addNotationalListeners();
 	}
@@ -64,6 +65,7 @@ public class ProvidesPortStubNameEditPart extends mil.jpeojtrs.sca.dcd.diagram.e
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public IPreferenceStore getPreferenceStore() {
 		return DcdDiagramPluginActivator.getDefault().getPreferenceStore();
 	}
@@ -71,6 +73,7 @@ public class ProvidesPortStubNameEditPart extends mil.jpeojtrs.sca.dcd.diagram.e
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public void basicRemoveNotationalListeners() {
 		super.removeNotationalListeners();
 	}

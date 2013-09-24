@@ -40,12 +40,14 @@ public class WaveformLaunchConfigurationTabGroup extends AbstractLaunchConfigura
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public void createTabs(final ILaunchConfigurationDialog dialog, final String mode) {
 		final WaveformMainTab mainTab = new WaveformMainTab();
 		final WaveformPropertiesTab propTabs = new WaveformPropertiesTab();
 		final WaveformDeviceAssignmentTab deviceAssignment = new WaveformDeviceAssignmentTab(mainTab);
 		mainTab.addPropertyChangeListener(new PropertyChangeListener() {
 
+			@Override
 			public void propertyChange(final PropertyChangeEvent evt) {
 				if (WaveformMainTab.DOMAIN.equals(evt.getPropertyName())) {
 					deviceAssignment.setScaDomainManager((ScaDomainManager) evt.getNewValue());

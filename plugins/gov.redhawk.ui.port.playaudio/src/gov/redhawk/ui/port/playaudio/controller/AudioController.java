@@ -37,6 +37,7 @@ import javax.sound.sampled.AudioFormat;
 import mil.jpeojtrs.sca.sad.SadComponentInstantiation;
 import mil.jpeojtrs.sca.util.ScaEcoreUtils;
 
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
@@ -106,7 +107,7 @@ public class AudioController {
 					if (this.audioReceiver == null) {
 						try {
 							this.audioReceiver = new CorbaReceiver(this, portType);
-						} catch (final Exception e) {
+						} catch (final CoreException e) {
 							Activator.logError("Error starting the Audio Receiver", e);
 						}
 					}
@@ -227,7 +228,7 @@ public class AudioController {
 			}
 
 		} else {
-			
+
 			for (final ScaUsesPort port : this.curPorts) {
 				if (this.audioReceiver != null) {
 					try {
@@ -264,10 +265,11 @@ public class AudioController {
 		for (final Map.Entry<ScaUsesPort, Adapter> entry : this.adapterMap.entrySet()) {
 			ScaModelCommand.execute(entry.getKey(), new ScaModelCommand() {
 
+				@Override
 				public void execute() {
 					entry.getKey().eContainer().eContainer().eAdapters().remove(entry.getValue());
-                }
-				
+				}
+
 			});
 		}
 	}
@@ -312,6 +314,7 @@ public class AudioController {
 				if (wave != null) {
 					final Adapter adapt = new AdapterImpl() {
 
+						@Override
 						public void notifyChanged(final Notification notification) {
 							switch (notification.getFeatureID(ScaUsesPort.class)) {
 							case ScaPackage.SCA_USES_PORT__DISPOSED:
@@ -350,6 +353,7 @@ public class AudioController {
 					AudioController.this.adapterMap.put(scaPort, adapt);
 					ScaModelCommand.execute(scaPort, new ScaModelCommand() {
 
+						@Override
 						public void execute() {
 							scaPort.eAdapters().add(adapt);
 						}

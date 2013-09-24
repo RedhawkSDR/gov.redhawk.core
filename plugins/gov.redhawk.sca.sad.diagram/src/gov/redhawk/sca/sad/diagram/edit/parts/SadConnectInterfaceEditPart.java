@@ -35,6 +35,7 @@ public class SadConnectInterfaceEditPart extends mil.jpeojtrs.sca.sad.diagram.ed
 		return super.getLayer(layer);
 	}
 
+	@Override
 	public void basicSetSelected(final int selected) {
 		super.setSelected(selected);
 	}

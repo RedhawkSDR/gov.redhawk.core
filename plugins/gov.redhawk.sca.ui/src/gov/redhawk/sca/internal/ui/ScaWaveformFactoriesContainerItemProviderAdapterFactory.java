@@ -32,12 +32,14 @@ public class ScaWaveformFactoriesContainerItemProviderAdapterFactory implements 
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public Object getAdapter(final Object adaptableObject, @SuppressWarnings("rawtypes") final Class adapterType) {
 		if (adaptableObject instanceof ScaWaveformFactoriesContainerItemProvider) {
 			if (adapterType == IRefreshable.class) {
 				final ScaWaveformFactoriesContainerItemProvider provider = (ScaWaveformFactoriesContainerItemProvider) adaptableObject;
 				return new IRefreshable() {
 
+					@Override
 					public void refresh(final IProgressMonitor monitor, final RefreshDepth depth) throws InterruptedException {
 						final SubMonitor subMonitor = SubMonitor.convert(monitor, "Fetching waveform factories", 100);
 						switch (depth) {
@@ -64,6 +66,7 @@ public class ScaWaveformFactoriesContainerItemProviderAdapterFactory implements 
 						refreshStandard(subMonitor.newChild(1));
 						final ScaWaveformFactory[] factories = ScaModelCommandWithResult.execute(domain, new ScaModelCommandWithResult<ScaWaveformFactory[]>() {
 
+							@Override
 							public void execute() {
 								setResult(domain.getWaveformFactories().toArray(new ScaWaveformFactory[domain.getWaveformFactories().size()]));
 							}
@@ -86,6 +89,7 @@ public class ScaWaveformFactoriesContainerItemProviderAdapterFactory implements 
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public Class< ? >[] getAdapterList() {
 		return ScaWaveformFactoriesContainerItemProviderAdapterFactory.LIST;
 	}

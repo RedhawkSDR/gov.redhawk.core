@@ -113,6 +113,7 @@ public class UsesPortStubEditPart extends mil.jpeojtrs.sca.sad.diagram.edit.part
 				if (sad != null) {
 					this.observer = portsValue.observe(sad);
 					this.observer.addListChangeListener(new IListChangeListener() {
+						@Override
 						public void handleListChange(final ListChangeEvent event) {
 							final WorkbenchJob job = new WorkbenchJob("") {
 
@@ -203,10 +204,12 @@ public class UsesPortStubEditPart extends mil.jpeojtrs.sca.sad.diagram.edit.part
 		return this.editPartHelper.getMATypesForTarget(relationshipType);
 	}
 
+	@Override
 	public IFigure basicCreateNodeShape() {
 		return super.createNodeShape();
 	}
 
+	@Override
 	public void basicAddBorderItem(final IFigure borderItemContainer, final IBorderItemEditPart borderItemEditPart) {
 		super.addBorderItem(borderItemContainer, borderItemEditPart);
 	}

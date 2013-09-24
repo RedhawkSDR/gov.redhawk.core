@@ -31,6 +31,7 @@ public class RepositoryNameTester extends PropertyTester {
 	 * 
 	 * @return <code> true </code> if the expectedValue matches the {@link RepositoryModule} name; <code> false </code> otherwise
 	 */
+	@Override
 	public boolean test(final Object receiver, final String property, final Object[] args, final Object expectedValue) {
 		if (receiver instanceof RepositoryModule && expectedValue instanceof String) {
 			return Pattern.matches((String) expectedValue, ((RepositoryModule) receiver).getName());

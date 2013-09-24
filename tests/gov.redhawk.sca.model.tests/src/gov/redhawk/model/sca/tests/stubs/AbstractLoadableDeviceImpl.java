@@ -38,12 +38,14 @@ public class AbstractLoadableDeviceImpl extends AbstractDeviceImpl implements
 		// TODO Auto-generated constructor stub
 	}
 
+	@Override
 	public void load(FileSystem fs, String fileName, LoadType loadKind)
 			throws InvalidState, InvalidLoadKind, InvalidFileName, LoadFail {
 		// TODO Auto-generated method stub
 
 	}
 
+	@Override
 	public void unload(String fileName) throws InvalidState, InvalidFileName {
 		// TODO Auto-generated method stub
 

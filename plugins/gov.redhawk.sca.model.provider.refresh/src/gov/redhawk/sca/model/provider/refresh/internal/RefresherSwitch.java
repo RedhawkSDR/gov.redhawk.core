@@ -31,6 +31,7 @@ public class RefresherSwitch extends ScaSwitch<IRefresher> {
 	public IRefresher caseScaDeviceManager(final ScaDeviceManager object) {
 		return new IRefresher() {
 
+			@Override
 			public void refresh(final IProgressMonitor monitor) {
 				try {
 					object.refresh(monitor, RefreshDepth.CHILDREN);
@@ -45,6 +46,7 @@ public class RefresherSwitch extends ScaSwitch<IRefresher> {
 	public IRefresher caseScaUsesPort(final ScaUsesPort object) {
 		return new IRefresher() {
 
+			@Override
 			public void refresh(final IProgressMonitor monitor) {
 				try {
 					object.refresh(monitor, RefreshDepth.CHILDREN);
@@ -59,6 +61,7 @@ public class RefresherSwitch extends ScaSwitch<IRefresher> {
 	public IRefresher caseScaDomainManager(final ScaDomainManager object) {
 		return new IRefresher() {
 
+			@Override
 			public void refresh(final IProgressMonitor monitor) {
 				try {
 					object.refresh(monitor, RefreshDepth.CHILDREN);
@@ -72,6 +75,7 @@ public class RefresherSwitch extends ScaSwitch<IRefresher> {
 	@Override
 	public IRefresher defaultCase(final EObject object) {
 		return new IRefresher() {
+			@Override
 			public void refresh(final IProgressMonitor monitor) {
 				if (object instanceof IRefreshable) {
 					final IRefreshable refreshable = (IRefreshable) object;

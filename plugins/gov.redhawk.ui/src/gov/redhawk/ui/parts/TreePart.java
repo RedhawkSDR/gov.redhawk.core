@@ -66,11 +66,13 @@ public class TreePart extends StructuredViewerPart {
 		}
 		final TreeViewer treeViewer = createTreeViewer(parent, style);
 		treeViewer.addSelectionChangedListener(new ISelectionChangedListener() {
+			@Override
 			public void selectionChanged(final SelectionChangedEvent e) {
 				TreePart.this.selectionChanged((IStructuredSelection) e.getSelection());
 			}
 		});
 		treeViewer.addDoubleClickListener(new IDoubleClickListener() {
+			@Override
 			public void doubleClick(final DoubleClickEvent e) {
 				TreePart.this.handleDoubleClick((IStructuredSelection) e.getSelection());
 			}

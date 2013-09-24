@@ -113,19 +113,24 @@ public class RunWaveformView extends ViewPart implements DragSourceListener, Dro
 		this.treeViewer.getControl().setFocus();
 	}
 
+	@Override
 	public void dragEnter(final DropTargetEvent event) {
 		event.detail = DND.DROP_COPY;
 	}
 
+	@Override
 	public void dragLeave(final DropTargetEvent event) {
 	}
 
+	@Override
 	public void dragOperationChanged(final DropTargetEvent event) {
 	}
 
+	@Override
 	public void dragOver(final DropTargetEvent event) {
 	}
 
+	@Override
 	public void drop(final DropTargetEvent event) {
 		final Object[] expanded = this.treeViewer.getExpandedElements();
 
@@ -157,9 +162,11 @@ public class RunWaveformView extends ViewPart implements DragSourceListener, Dro
 		this.treeViewer.setExpandedElements(expanded);
 	}
 
+	@Override
 	public void dropAccept(final DropTargetEvent event) {
 	}
 
+	@Override
 	public void dragFinished(final DragSourceEvent event) {
 		if (this.dragSource != null && event.detail == DND.DROP_MOVE) {
 			final IHandlerService serv = (IHandlerService) getSite().getService(IHandlerService.class);
@@ -184,10 +191,12 @@ public class RunWaveformView extends ViewPart implements DragSourceListener, Dro
 		this.dragSource = null;
 	}
 
+	@Override
 	public void dragSetData(final DragSourceEvent event) {
 		event.data = this.dragSource.identifier();
 	}
 
+	@Override
 	public void dragStart(final DragSourceEvent event) {
 		final Object dragObject = this.treeViewer.getCell(new Point(event.x, event.y)).getElement();
 
@@ -208,6 +217,7 @@ public class RunWaveformView extends ViewPart implements DragSourceListener, Dro
 	 *            ApplicationActionListener.UNINSTALL
 	 * @param app the list of applications to perform the action on
 	 */
+	@Override
 	public void actionPerformed(final int action, final Object app) {
 		if ((app != null) && !this.ignoreCallback) {
 			if (app instanceof List< ? >) {

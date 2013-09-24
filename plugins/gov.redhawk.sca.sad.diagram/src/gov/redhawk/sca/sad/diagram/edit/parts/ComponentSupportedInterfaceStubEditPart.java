@@ -44,10 +44,12 @@ public class ComponentSupportedInterfaceStubEditPart extends mil.jpeojtrs.sca.sa
 		return this.editPartHelper.getTargetConnectionAnchor(request);
 	}
 
+	@Override
 	public IFigure basicCreateNodeShape() {
 		return super.createNodeShape();
 	}
 
+	@Override
 	public void setPrimaryShape(final IFigure primaryShape) {
 		this.primaryShape = primaryShape;
 	}

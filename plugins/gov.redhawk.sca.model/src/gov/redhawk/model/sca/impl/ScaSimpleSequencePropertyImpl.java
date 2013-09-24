@@ -81,6 +81,7 @@ public class ScaSimpleSequencePropertyImpl extends ScaAbstractPropertyImpl<Simpl
 	private Adapter valueListener = new AdapterImpl() {
 		// END GENERATED CODE
 
+		@Override
 		public void notifyChanged(Notification msg) {
 			if (!isIgnoreRemoteSet()) {
 				switch (msg.getFeatureID(ScaSimpleSequenceProperty.class)) {
@@ -138,6 +139,7 @@ public class ScaSimpleSequencePropertyImpl extends ScaAbstractPropertyImpl<Simpl
 			return array.toArray();
 		}
 
+		@Override
 		protected boolean isInstance(Object object) {
 			if (getOwner().getDefinition() != null) {
 				EDataType dataType = getOwner().getDefinition().getType().toEDataType(getOwner().getDefinition().isComplex());
@@ -181,6 +183,7 @@ public class ScaSimpleSequencePropertyImpl extends ScaAbstractPropertyImpl<Simpl
 	 * <!-- end-user-doc -->
 	 * @generated NOT
 	 */
+	@Override
 	public ObjectList getValues() {
 		return values;
 	}
@@ -191,6 +194,7 @@ public class ScaSimpleSequencePropertyImpl extends ScaAbstractPropertyImpl<Simpl
 	 * <!-- end-user-doc -->
 	 * @generated NOT
 	 */
+	@Override
 	public Object[] getValue() {
 		// END GENERATED CODE
 		Class< ? > type = Object.class;
@@ -222,6 +226,7 @@ public class ScaSimpleSequencePropertyImpl extends ScaAbstractPropertyImpl<Simpl
 	 * <!-- end-user-doc -->
 	 * @generated NOT
 	 */
+	@Override
 	public void setValue(Object[] newValue) {
 		// END GENERATED CODE
 		if (newValue != null && newValue.length > 0) {

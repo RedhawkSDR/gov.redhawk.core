@@ -38,6 +38,7 @@ public class DeviceAssignmentWizardPage extends WizardPage {
 		setDescription("Select device assignment for components.");
 	}
 
+	@Override
 	public void createControl(final Composite root) {
 		this.deviceAssignmentComposite = new DeviceAssignmentComposite(root, SWT.None);
 		this.deviceAssignmentComposite.setScaDomainManager(this.domain);

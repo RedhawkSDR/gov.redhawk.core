@@ -58,6 +58,7 @@ public class FixedConnectionAnchor extends AbstractConnectionAnchor {
 		super.ancestorMoved(figure);
 	}
 
+	@Override
 	public Point getLocation(final Point reference) {
 		final Rectangle r = getOwner().getBounds();
 		int x, y;

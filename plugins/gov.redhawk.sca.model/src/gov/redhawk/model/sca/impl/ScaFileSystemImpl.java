@@ -222,6 +222,7 @@ public abstract class ScaFileSystemImpl< F extends FileSystem > extends CorbaObj
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public IFileStore getFileStore() {
 		return fileStore;
 	}
@@ -231,6 +232,7 @@ public abstract class ScaFileSystemImpl< F extends FileSystem > extends CorbaObj
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void setFileStore(IFileStore newFileStore) {
 		IFileStore oldFileStore = fileStore;
 		fileStore = newFileStore;
@@ -243,6 +245,7 @@ public abstract class ScaFileSystemImpl< F extends FileSystem > extends CorbaObj
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EList<ScaFileStore> getChildren() {
 		if (children == null) {
 			children = new EObjectContainmentEList.Unsettable.Resolving<ScaFileStore>(ScaFileStore.class, this, ScaPackage.SCA_FILE_SYSTEM__CHILDREN);
@@ -255,6 +258,7 @@ public abstract class ScaFileSystemImpl< F extends FileSystem > extends CorbaObj
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void unsetChildren() {
 		if (children != null) ((InternalEList.Unsettable<?>)children).unset();
 	}
@@ -264,6 +268,7 @@ public abstract class ScaFileSystemImpl< F extends FileSystem > extends CorbaObj
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public boolean isSetChildren() {
 		return children != null && ((InternalEList.Unsettable<?>)children).isSet();
 	}
@@ -273,6 +278,7 @@ public abstract class ScaFileSystemImpl< F extends FileSystem > extends CorbaObj
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public Object getImageDesc() {
 		return imageDesc;
 	}
@@ -282,6 +288,7 @@ public abstract class ScaFileSystemImpl< F extends FileSystem > extends CorbaObj
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void setImageDesc(Object newImageDesc) {
 		Object oldImageDesc = imageDesc;
 		imageDesc = newImageDesc;
@@ -296,6 +303,7 @@ public abstract class ScaFileSystemImpl< F extends FileSystem > extends CorbaObj
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void unsetImageDesc() {
 		Object oldImageDesc = imageDesc;
 		boolean oldImageDescESet = imageDescESet;
@@ -310,6 +318,7 @@ public abstract class ScaFileSystemImpl< F extends FileSystem > extends CorbaObj
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public boolean isSetImageDesc() {
 		return imageDescESet;
 	}
@@ -319,6 +328,7 @@ public abstract class ScaFileSystemImpl< F extends FileSystem > extends CorbaObj
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public boolean isDirectory() {
 		return directory;
 	}
@@ -340,6 +350,7 @@ public abstract class ScaFileSystemImpl< F extends FileSystem > extends CorbaObj
 	 * <!-- end-user-doc -->
 	 * @generated NOT
 	 */
+	@Override
 	public void setDirectory(boolean newDirectory) {
 		// DO nothing this should always be a directory
 	}
@@ -349,6 +360,7 @@ public abstract class ScaFileSystemImpl< F extends FileSystem > extends CorbaObj
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public String getName() {
 		return name;
 	}
@@ -358,6 +370,7 @@ public abstract class ScaFileSystemImpl< F extends FileSystem > extends CorbaObj
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void setName(String newName) {
 		String oldName = name;
 		name = newName;
@@ -370,6 +383,7 @@ public abstract class ScaFileSystemImpl< F extends FileSystem > extends CorbaObj
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public URI getFileSystemURI() {
 		return fileSystemURI;
 	}
@@ -393,6 +407,7 @@ public abstract class ScaFileSystemImpl< F extends FileSystem > extends CorbaObj
 	 * <!-- end-user-doc -->
 	 * @generated NOT
 	 */
+	@Override
 	public void setFileSystemURI(URI newFileSystemURI) {
 		setFileSystemURIGen(newFileSystemURI);
 		IFileSystem fileSystem = null;
@@ -415,6 +430,7 @@ public abstract class ScaFileSystemImpl< F extends FileSystem > extends CorbaObj
 	 * <!-- end-user-doc -->
 	 * @generated NOT
 	 */
+	@Override
 	public org.eclipse.emf.common.util.URI createURI(String path) {
 		// END GENERATED CODE
 		if (path == null) {
@@ -442,6 +458,7 @@ public abstract class ScaFileSystemImpl< F extends FileSystem > extends CorbaObj
 	 * <!-- end-user-doc -->
 	 * @generated NOT
 	 */
+	@Override
 	public EList<ScaFileStore> fetchChildren(IProgressMonitor monitor) {
 		// END GENERATED CODE
 		ScaFileStoreImpl.internalFetchChildren(monitor, this);
@@ -449,6 +466,7 @@ public abstract class ScaFileSystemImpl< F extends FileSystem > extends CorbaObj
 		// BEGIN GENERATED CODE
 	}
 
+	@Override
 	public void copy(final String sourceFileName, final String destinationFileName) throws InvalidFileName, FileException {
 		final FileSystem fileSys = fetchNarrowedObject(null);
 		if (fileSys == null) {
@@ -460,6 +478,7 @@ public abstract class ScaFileSystemImpl< F extends FileSystem > extends CorbaObj
 	/**
      * @since 14.0
      */
+	@Override
 	public void move(String sourceFileName, String destinationFileName) throws InvalidFileName, FileException {
 		final FileSystem fileSys = fetchNarrowedObject(null);
 		if (fileSys == null) {
@@ -471,6 +490,7 @@ public abstract class ScaFileSystemImpl< F extends FileSystem > extends CorbaObj
 	/**
 	 * @since 14.0
 	 */
+	@Override
 	public File create(final String fileName) throws InvalidFileName, FileException {
 		final FileSystem fileSys = fetchNarrowedObject(null);
 		if (fileSys == null) {
@@ -479,6 +499,7 @@ public abstract class ScaFileSystemImpl< F extends FileSystem > extends CorbaObj
 		return fileSys.create(fileName);
 	}
 
+	@Override
 	public boolean exists(final String fileName) throws InvalidFileName {
 		final FileSystem fileSys = fetchNarrowedObject(null);
 		if (fileSys == null) {
@@ -490,6 +511,7 @@ public abstract class ScaFileSystemImpl< F extends FileSystem > extends CorbaObj
 	/**
 	 * @since 14.0
 	 */
+	@Override
 	public FileInformationType[] list(final String pattern) throws FileException, InvalidFileName {
 		final FileSystem fileSys = fetchNarrowedObject(null);
 		if (fileSys == null) {
@@ -498,6 +520,7 @@ public abstract class ScaFileSystemImpl< F extends FileSystem > extends CorbaObj
 		return fileSys.list(pattern);
 	}
 
+	@Override
 	public void mkdir(final String directoryName) throws InvalidFileName, FileException {
 		final FileSystem fileSys = fetchNarrowedObject(null);
 		if (fileSys == null) {
@@ -509,6 +532,7 @@ public abstract class ScaFileSystemImpl< F extends FileSystem > extends CorbaObj
 	/**
 	 * @since 14.0
 	 */
+	@Override
 	public File open(final String fileName, final boolean read_Only) throws InvalidFileName, FileException {
 		final FileSystem fileSys = fetchNarrowedObject(null);
 		if (fileSys == null) {
@@ -520,6 +544,7 @@ public abstract class ScaFileSystemImpl< F extends FileSystem > extends CorbaObj
 	/**
 	 * @since 14.0
 	 */
+	@Override
 	public void query(final PropertiesHolder fileSystemProperties) throws UnknownFileSystemProperties {
 		final FileSystem fileSys = fetchNarrowedObject(null);
 		if (fileSys == null) {
@@ -726,6 +751,7 @@ public abstract class ScaFileSystemImpl< F extends FileSystem > extends CorbaObj
 		return result.toString();
 	}
 
+	@Override
 	public void remove(final String fileName) throws FileException, InvalidFileName {
 		final FileSystem fileSys = fetchNarrowedObject(null);
 		if (fileSys == null) {
@@ -734,6 +760,7 @@ public abstract class ScaFileSystemImpl< F extends FileSystem > extends CorbaObj
 		fileSys.remove(fileName);
 	}
 
+	@Override
 	public void rmdir(final String directoryName) throws InvalidFileName, FileException {
 		final FileSystem fileSys = fetchNarrowedObject(null);
 		if (fileSys == null) {
@@ -743,6 +770,7 @@ public abstract class ScaFileSystemImpl< F extends FileSystem > extends CorbaObj
 	}
 	
 
+	@Override
 	protected void internalFetchChildren(IProgressMonitor monitor) {
 	    ScaFileStoreImpl.internalFetchChildren(monitor, this);
     }

@@ -29,6 +29,7 @@ public class PlotMessageAdapter implements MessageHandler {
 		this.listener = listener;
 	}
 
+	@Override
 	public int processMessage(final Message msg) {
 		int retVal = Commandable.NORMAL;
 

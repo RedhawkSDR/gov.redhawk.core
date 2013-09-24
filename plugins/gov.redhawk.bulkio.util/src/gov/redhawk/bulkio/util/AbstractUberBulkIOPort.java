@@ -10,6 +10,8 @@
  *******************************************************************************/
 package gov.redhawk.bulkio.util;
 
+import org.eclipse.jdt.annotation.NonNull;
+
 import BULKIO.dataCharOperations;
 import BULKIO.dataDoubleOperations;
 import BULKIO.dataFloatOperations;
@@ -31,7 +33,7 @@ public abstract class AbstractUberBulkIOPort extends AbstractBulkIOPort implemen
 		super();
 	}
 
-	public AbstractUberBulkIOPort(BulkIOType type) {
+	public AbstractUberBulkIOPort(@NonNull BulkIOType type) {
 		super(type);
 	}
 

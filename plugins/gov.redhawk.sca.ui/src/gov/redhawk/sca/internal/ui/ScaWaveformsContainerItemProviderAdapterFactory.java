@@ -39,6 +39,7 @@ public class ScaWaveformsContainerItemProviderAdapterFactory implements IAdapter
 			this.domain = domMgr;
 		}
 
+		@Override
 		public void refresh(final IProgressMonitor monitor, final RefreshDepth depth) throws InterruptedException {
 			final SubMonitor subMonitor = SubMonitor.convert(monitor, "Fetching waveforms", 100);
 
@@ -64,6 +65,7 @@ public class ScaWaveformsContainerItemProviderAdapterFactory implements IAdapter
 			refreshStandard(subMonitor.newChild(1));
 			final ScaWaveform[] waveforms = ScaModelCommandWithResult.execute(this.domain, new ScaModelCommandWithResult<ScaWaveform[]>() {
 
+				@Override
 				public void execute() {
 					setResult(Refresher.this.domain.getWaveforms().toArray(new ScaWaveform[Refresher.this.domain.getWaveforms().size()]));
 				}
@@ -83,6 +85,7 @@ public class ScaWaveformsContainerItemProviderAdapterFactory implements IAdapter
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public Object getAdapter(final Object adaptableObject, @SuppressWarnings("rawtypes") final Class adapterType) {
 		if (adaptableObject instanceof ScaWaveformsContainerItemProvider) {
 			if (adapterType == IRefreshable.class) {
@@ -95,6 +98,7 @@ public class ScaWaveformsContainerItemProviderAdapterFactory implements IAdapter
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public Class< ? >[] getAdapterList() {
 		return ScaWaveformsContainerItemProviderAdapterFactory.LIST;
 	}

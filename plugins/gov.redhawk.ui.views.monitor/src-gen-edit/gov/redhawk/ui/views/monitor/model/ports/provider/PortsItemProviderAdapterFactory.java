@@ -203,6 +203,7 @@ public class PortsItemProviderAdapterFactory extends PortsAdapterFactory impleme
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public ComposeableAdapterFactory getRootAdapterFactory() {
 		return parentAdapterFactory == null ? this : parentAdapterFactory.getRootAdapterFactory();
 	}
@@ -213,6 +214,7 @@ public class PortsItemProviderAdapterFactory extends PortsAdapterFactory impleme
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void setParentAdapterFactory(ComposedAdapterFactory parentAdapterFactory) {
 		this.parentAdapterFactory = parentAdapterFactory;
 	}
@@ -261,6 +263,7 @@ public class PortsItemProviderAdapterFactory extends PortsAdapterFactory impleme
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void addListener(INotifyChangedListener notifyChangedListener) {
 		changeNotifier.addListener(notifyChangedListener);
 	}
@@ -271,6 +274,7 @@ public class PortsItemProviderAdapterFactory extends PortsAdapterFactory impleme
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void removeListener(INotifyChangedListener notifyChangedListener) {
 		changeNotifier.removeListener(notifyChangedListener);
 	}
@@ -281,6 +285,7 @@ public class PortsItemProviderAdapterFactory extends PortsAdapterFactory impleme
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void fireNotifyChanged(Notification notification) {
 		changeNotifier.fireNotifyChanged(notification);
 
@@ -295,6 +300,7 @@ public class PortsItemProviderAdapterFactory extends PortsAdapterFactory impleme
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void dispose() {
 		if (portMonitorItemProvider != null) portMonitorItemProvider.dispose();
 		if (portConnectionMonitorItemProvider != null) portConnectionMonitorItemProvider.dispose();

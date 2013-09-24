@@ -185,6 +185,7 @@ public class SimpleSequencePropertyComposite extends BasicSimplePropertyComposit
 		this.removeValueButton.setLayoutData(GridDataFactory.fillDefaults().align(SWT.FILL, SWT.BEGINNING).create());
 		this.valuesViewer.addSelectionChangedListener(new ISelectionChangedListener() {
 
+			@Override
 			public void selectionChanged(final SelectionChangedEvent event) {
 				if (event.getSelection() instanceof StructuredSelection) {
 					if (((StructuredSelection) event.getSelection()).getFirstElement() instanceof AttributeValueWrapperItemProvider) {

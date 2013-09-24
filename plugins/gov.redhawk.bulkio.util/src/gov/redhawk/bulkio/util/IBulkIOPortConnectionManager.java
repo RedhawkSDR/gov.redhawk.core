@@ -11,15 +11,15 @@
 package gov.redhawk.bulkio.util;
 
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.jdt.annotation.NonNull;
 
 import BULKIO.updateSRIOperations;
 
 public interface IBulkIOPortConnectionManager {
 
+	void connect(@NonNull String ior, @NonNull BulkIOType type, @NonNull updateSRIOperations internalPort) throws CoreException;
 
-	void connect(String ior, BulkIOType type, updateSRIOperations internalPort) throws CoreException;
+	void disconnect(@NonNull String ior, @NonNull BulkIOType type, @NonNull updateSRIOperations internalPort);
 
-	void disconnect(String ior, BulkIOType type, updateSRIOperations internalPort);
-
-	AbstractBulkIOPort getExternalPort(String ior, BulkIOType type);
+	AbstractBulkIOPort getExternalPort(@NonNull String ior, @NonNull BulkIOType type);
 }

@@ -33,6 +33,7 @@ public class DataLongReceiver extends AbstractSriReceiver<dataLongOperations> im
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public void pushPacket(final int[] array, final PrecisionUTCTime time, final boolean endOfStream, final String streamID) {
 		if (!pushPacket(array.length, time, endOfStream, streamID)) {
 			return;

@@ -73,6 +73,7 @@ public abstract class ScaSection extends SectionPart implements IContextPart {
 	 * 
 	 * @return the page
 	 */
+	@Override
 	public ScaFormPage getPage() {
 		return this.fPage;
 	}

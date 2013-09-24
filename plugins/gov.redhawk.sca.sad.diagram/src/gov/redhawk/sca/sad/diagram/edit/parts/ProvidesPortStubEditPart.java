@@ -137,14 +137,17 @@ public class ProvidesPortStubEditPart extends mil.jpeojtrs.sca.sad.diagram.edit.
 		return ProvidesPortStubEditPart.EXTERNAL_PORT_BACKGROUND;
 	}
 
+	@Override
 	public IFigure basicCreateNodeShape() {
 		return super.createNodeShape();
 	}
 
+	@Override
 	public boolean isInstanceofProvidesPortStubNameEditPart(final IBorderItemEditPart borderItemEditPart) {
 		return borderItemEditPart instanceof ProvidesPortStubNameEditPart;
 	}
 
+	@Override
 	public void basicAddBorderItem(final IFigure borderItemContainer, final IBorderItemEditPart borderItemEditPart) {
 		super.addBorderItem(borderItemContainer, borderItemEditPart);
 	}
@@ -168,6 +171,7 @@ public class ProvidesPortStubEditPart extends mil.jpeojtrs.sca.sad.diagram.edit.
 				if (sad != null) {
 					this.observer = portsValue.observe(sad);
 					this.observer.addListChangeListener(new IListChangeListener() {
+								@Override
 								public void handleListChange(final ListChangeEvent event) {
 									final WorkbenchJob job = new WorkbenchJob("") {
 

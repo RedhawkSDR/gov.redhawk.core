@@ -21,11 +21,13 @@ public class CorbaObjWrapperAdapterFactory implements IAdapterFactory {
 
 	private static final ICorbaObjectDescriptorAdapter ADAPTER = new ICorbaObjectDescriptorAdapter() {
 
+		@Override
 		public String getIOR(final Object contents) {
 			final CorbaObjWrapper< ? > obj = (CorbaObjWrapper< ? >) contents;
 			return obj.getIor();
 		}
 
+		@Override
 		public boolean supports(final Object contents, final String repId) {
 			final CorbaObjWrapper< ? > obj = (CorbaObjWrapper< ? >) contents;
 			return obj._is_a(repId);
@@ -33,6 +35,7 @@ public class CorbaObjWrapperAdapterFactory implements IAdapterFactory {
 
 	};
 
+	@Override
 	public Object getAdapter(final Object adaptableObject, @SuppressWarnings("rawtypes") final Class adapterType) {
 		if (adaptableObject instanceof CorbaObjWrapper< ? >) {
 			if (adapterType == ICorbaObjectDescriptorAdapter.class) {
@@ -42,6 +45,7 @@ public class CorbaObjWrapperAdapterFactory implements IAdapterFactory {
 		return null;
 	}
 
+	@Override
 	public Class< ? >[] getAdapterList() {
 		return CorbaObjWrapperAdapterFactory.LIST;
 	}

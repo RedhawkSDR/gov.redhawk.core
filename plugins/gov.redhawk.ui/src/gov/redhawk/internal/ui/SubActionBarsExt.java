@@ -227,6 +227,7 @@ public class SubActionBarsExt extends SubActionBars2 {
 		 * org.eclipse.ui.IPartListener#partActivated(org.eclipse.ui.IWorkbenchPart
 		 * )
 		 */
+		@Override
 		public void partActivated(final IWorkbenchPart part) {
 			if (part instanceof IEditorPart) {
 				final IEditorPart editorPart = (IEditorPart) part;
@@ -242,6 +243,7 @@ public class SubActionBarsExt extends SubActionBars2 {
 		 * @seeorg.eclipse.ui.IPartListener#partBroughtToTop(org.eclipse.ui.
 		 * IWorkbenchPart)
 		 */
+		@Override
 		public void partBroughtToTop(final IWorkbenchPart part) {
 			// not required
 		}
@@ -252,6 +254,7 @@ public class SubActionBarsExt extends SubActionBars2 {
 		 * org.eclipse.ui.IPartListener#partClosed(org.eclipse.ui.IWorkbenchPart
 		 * )
 		 */
+		@Override
 		public void partClosed(final IWorkbenchPart part) {
 			// not required
 		}
@@ -261,6 +264,7 @@ public class SubActionBarsExt extends SubActionBars2 {
 		 * @seeorg.eclipse.ui.IPartListener#partDeactivated(org.eclipse.ui.
 		 * IWorkbenchPart)
 		 */
+		@Override
 		public void partDeactivated(final IWorkbenchPart part) {
 			// not required
 		}
@@ -271,6 +275,7 @@ public class SubActionBarsExt extends SubActionBars2 {
 		 * org.eclipse.ui.IPartListener#partOpened(org.eclipse.ui.IWorkbenchPart
 		 * )
 		 */
+		@Override
 		public void partOpened(final IWorkbenchPart part) {
 			// not required
 		}

@@ -88,6 +88,7 @@ public abstract class ScaFormPage extends FormPage implements IMenuListener, IEd
 				final Resource resource = (Resource) msg.getNotifier();
 				PlatformUI.getWorkbench().getDisplay().asyncExec(new Runnable() {
 
+					@Override
 					public void run() {
 						if (!isDisposed()) {
 							refresh(resource);
@@ -137,6 +138,7 @@ public abstract class ScaFormPage extends FormPage implements IMenuListener, IEd
 	/**
 	 * @return the common editing domain provided by the parent editor
 	 */
+	@Override
 	public EditingDomain getEditingDomain() {
 		return getEditor().getEditingDomain();
 	}
@@ -184,6 +186,7 @@ public abstract class ScaFormPage extends FormPage implements IMenuListener, IEd
 				@Override
 				public void run() {
 					BusyIndicator.showWhile(form.getDisplay(), new Runnable() {
+						@Override
 						public void run() {
 							PlatformUI.getWorkbench().getHelpSystem().displayHelp(href);
 						}
@@ -326,10 +329,12 @@ public abstract class ScaFormPage extends FormPage implements IMenuListener, IEd
 	 */
 	private void addLastFocusListener(final Control control) {
 		control.addFocusListener(new FocusListener() {
+			@Override
 			public void focusGained(final FocusEvent e) {
 				// NO-OP
 			}
 
+			@Override
 			public void focusLost(final FocusEvent e) {
 				ScaFormPage.this.fLastFocusControl = control;
 			}
@@ -432,6 +437,7 @@ public abstract class ScaFormPage extends FormPage implements IMenuListener, IEd
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public void menuAboutToShow(final IMenuManager manager) {
 		// pass the request to show the context menu on to the parent editor
 		getEditor().getActionBarContributor().menuAboutToShow(manager);

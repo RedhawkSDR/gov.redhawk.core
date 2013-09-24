@@ -63,6 +63,7 @@ public final class DiagramUtil {
 			if (!file.exists()) {
 				final IWorkspaceRunnable operation = new IWorkspaceRunnable() {
 
+					@Override
 					public void run(final IProgressMonitor monitor) throws CoreException {
 						final ByteArrayOutputStream buffer = new ByteArrayOutputStream();
 						try {

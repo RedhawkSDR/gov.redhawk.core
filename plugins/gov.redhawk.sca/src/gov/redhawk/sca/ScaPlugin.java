@@ -153,6 +153,7 @@ public class ScaPlugin extends Plugin {
 			if (this.scaDomainManagerRegistry != null) {
 				ScaModelCommand.execute(this.scaDomainManagerRegistry, new ScaModelCommand() {
 
+					@Override
 					public void execute() {
 						if (registryResource != null) {
 							Resource resource = ScaPlugin.this.registryResource;
@@ -246,6 +247,7 @@ public class ScaPlugin extends Plugin {
 		if (this.scaDomainManagerRegistry == null) { // SUPPRESS CHECKSTYLE DoubleCheck
 			this.editingDomain.getCommandStack().execute(new ScaModelCommand() {
 
+				@Override
 				public void execute() {
 					ScaPlugin.this.scaDomainManagerRegistry = ScaPlugin.initScaResource(ScaPlugin.this.registryResource);
 				}
@@ -294,6 +296,7 @@ public class ScaPlugin extends Plugin {
 					try {
 						domains = TransactionUtil.runExclusive(ScaPlugin.this.editingDomain, new RunnableWithResult.Impl<ScaDomainManager[]>() {
 
+							@Override
 							public void run() {
 								setResult(getDomainManagerRegistry().getDomains().toArray(new ScaDomainManager[getDomainManagerRegistry().getDomains().size()]));
 							}

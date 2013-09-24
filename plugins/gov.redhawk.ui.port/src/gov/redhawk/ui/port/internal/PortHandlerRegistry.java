@@ -100,6 +100,7 @@ public class PortHandlerRegistry implements IPortHandlerRegistry, IExtensionChan
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public void addExtension(final IExtensionTracker tracker, final IExtension extension) {
 		final IConfigurationElement[] configs = extension.getConfigurationElements();
 
@@ -144,14 +145,17 @@ public class PortHandlerRegistry implements IPortHandlerRegistry, IExtensionChan
 		}
 	}
 
+	@Override
 	public void removeExtension(final IExtension extension, final Object[] objects) {
 		// TODO Fill this in: remove mapped objects
 	}
 
+	@Override
 	public IPortHandler findPortHandler(final String handlerid) {
 		return this.portHandlerMap.get(handlerid);
 	}
 	
+	@Override
 	public IPortHandler findPortHandler(String handlerid, String type) {
 		final ArrayList<String> ids = this.typeToIdMap.get(type);
 		if (ids != null && ids.contains(handlerid)) {
@@ -160,14 +164,17 @@ public class PortHandlerRegistry implements IPortHandlerRegistry, IExtensionChan
 		return null;
 	}
 
+	@Override
 	public IPortHandler[] getPortHandlers() {
 		return this.portHandlerMap.values().toArray(new IPortHandler[this.portHandlerMap.size()]);
 	}
 
+	@Override
 	public String[] getIds() {
 		return this.portHandlerMap.keySet().toArray(new String[this.portHandlerMap.size()]);
 	}
 
+	@Override
 	public IPortHandler[] findPortHandlersByType(final String type) {
 		final ArrayList<String> ids = this.typeToIdMap.get(type);
 		final ArrayList<IPortHandler> handlers = new ArrayList<IPortHandler>();

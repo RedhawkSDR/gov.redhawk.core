@@ -91,6 +91,7 @@ public abstract class ScaAbstractComponentTest extends ScaPropertyContainerTest 
 		final Resource[] resource = new Resource[1];
 		ScaModelCommand.execute(getFixture(), new ScaModelCommand() {
 
+			@Override
 			public void execute() {
 				resource[0] = getFixture().getObj();
 				Assert.assertNotNull(resource);
@@ -100,6 +101,7 @@ public abstract class ScaAbstractComponentTest extends ScaPropertyContainerTest 
 		final String identifier = resource[0].identifier();
 		ScaModelCommand.execute(getFixture(), new ScaModelCommand() {
 
+			@Override
 			public void execute() {
 				Assert.assertEquals(identifier, getFixture().getIdentifier());
 			}
@@ -118,6 +120,7 @@ public abstract class ScaAbstractComponentTest extends ScaPropertyContainerTest 
 		// END GENERATED CODE
 		ScaModelCommand.execute(getFixture(), new ScaModelCommand() {
 
+			@Override
 			public void execute() {
 				getFixture().setIdentifier(null);
 			}
@@ -137,6 +140,7 @@ public abstract class ScaAbstractComponentTest extends ScaPropertyContainerTest 
 		// END GENERATED CODE
 		ScaModelCommand.execute(getFixture(), new ScaModelCommand() {
 
+			@Override
 			public void execute() {
 				Assert.assertTrue(getFixture().isSetIdentifier());
 				getFixture().unsetIdentifier();
@@ -157,6 +161,7 @@ public abstract class ScaAbstractComponentTest extends ScaPropertyContainerTest 
 		// END GENERATED CODE
 		ScaModelCommand.execute(getFixture(), new ScaModelCommand() {
 
+			@Override
 			public void execute() {
 				Assert.assertTrue(getFixture().isSetIdentifier());
 			}
@@ -176,6 +181,7 @@ public abstract class ScaAbstractComponentTest extends ScaPropertyContainerTest 
 		getFixture().fetchIdentifier(null);
 		ScaModelCommand.execute(getFixture(), new ScaModelCommand() {
 
+			@Override
 			public void execute() {
 				Assert.assertTrue(getFixture().isSetIdentifier());
 			}
@@ -196,6 +202,7 @@ public abstract class ScaAbstractComponentTest extends ScaPropertyContainerTest 
 		getFixture().fetchStarted(null);
 		ScaModelCommand.execute(getFixture(), new ScaModelCommand() {
 
+			@Override
 			public void execute() {
 				Assert.assertTrue(getFixture().isSetStarted());
 			}
@@ -216,6 +223,7 @@ public abstract class ScaAbstractComponentTest extends ScaPropertyContainerTest 
 		// END GENERATED CODE
 		final int ports = ScaModelCommandWithResult.execute(getFixture(), new ScaModelCommandWithResult<Integer>() {
 
+			@Override
 			public void execute() {
 				final int result = getFixture().getPorts().size();
 				setResult(result);
@@ -225,6 +233,7 @@ public abstract class ScaAbstractComponentTest extends ScaPropertyContainerTest 
 		getFixture().fetchPorts(null);
 		ScaModelCommand.execute(getFixture(), new ScaModelCommand() {
 
+			@Override
 			public void execute() {
 				Assert.assertEquals(ports, getFixture().getPorts().size());
 				getFixture().unsetPorts();
@@ -235,6 +244,7 @@ public abstract class ScaAbstractComponentTest extends ScaPropertyContainerTest 
 		getFixture().fetchPorts(null);
 		ScaModelCommand.execute(getFixture(), new ScaModelCommand() {
 
+			@Override
 			public void execute() {
 				Assert.assertEquals(ports, getFixture().getPorts().size());
 			}
@@ -270,6 +280,7 @@ public abstract class ScaAbstractComponentTest extends ScaPropertyContainerTest 
 		final boolean started = getFixture().started();
 		ScaModelCommand.execute(getFixture(), new ScaModelCommand() {
 
+			@Override
 			public void execute() {
 				Assert.assertFalse(started);
 				Assert.assertNotNull(getFixture().getObj());
@@ -297,6 +308,7 @@ public abstract class ScaAbstractComponentTest extends ScaPropertyContainerTest 
 		// END GENERATED CODE
 		ScaModelCommand.execute(getFixture(), new ScaModelCommand() {
 
+			@Override
 			public void execute() {
 				((ScaAbstractComponentImpl< ? >) getFixture()).setStarted(true);
 				Assert.assertTrue(getFixture().started());

@@ -25,6 +25,7 @@ import gov.redhawk.eclipsecorba.library.Path;
 import gov.redhawk.eclipsecorba.library.PreferenceNodePathSet;
 import gov.redhawk.eclipsecorba.library.RepositoryModule;
 import gov.redhawk.eclipsecorba.library.URIPathSet;
+
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.util.Switch;

@@ -33,6 +33,7 @@ public class DcdConnectInterfaceEditPart extends mil.jpeojtrs.sca.dcd.diagram.ed
 		this.editPartHelper.setSelected(value);
 	}
 
+	@Override
 	public void basicSetSelected(final int selected) {
 		super.setSelected(selected);
 	}

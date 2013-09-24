@@ -14,7 +14,7 @@ package gov.redhawk.ui.port;
 import java.util.List;
 
 /**
- * @deprecated
+ * @deprecated Use commands instead
  */
 @Deprecated
 public interface IPortHandler {
@@ -22,15 +22,18 @@ public interface IPortHandler {
 	/**
 	 * @deprecated Filter needs to be seriously reevaluated
 	 */
+	@Deprecated
 	final String FILTER_PLOT = "plot";
 	/**
 	 * @deprecated Filter needs to be seriously reevaluated
 	 */
+	@Deprecated
 	final String FILTER_FFT = "fft";
 	/**
 	 * @since 2.0
 	 * @deprecated Filter needs to be seriously reevaluated
 	 */
+	@Deprecated
 	final String FILTER_PLAY = "play";
 
 	/**
@@ -54,5 +57,6 @@ public interface IPortHandler {
 	 * @since 3.0
 	 * @deprecated The use of filter needs to be really evaluated
 	 */
+	@Deprecated
 	void connect(List< ? > portList, String filter);
 }

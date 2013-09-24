@@ -52,6 +52,7 @@ public abstract class AbstractNxmPlotWidget extends Composite {
 	private class PlotMessageHandler implements MessageHandler {
 		private final ListenerList plotListeners = new ListenerList(ListenerList.IDENTITY);
 
+		@Override
 		public int processMessage(Message msg) {
 			int retVal = Commandable.NORMAL;
 
@@ -189,10 +190,12 @@ public abstract class AbstractNxmPlotWidget extends Composite {
 		for (final Object obj : listeners) {
 			SafeRunnable.run(new ISafeRunnable() {
 
+				@Override
 				public void run() throws Exception {
 					retVal[0] = ((MessageHandler) obj).processMessage(msg);
 				}
 
+				@Override
 				public void handleException(final Throwable exception) {
 
 				}
@@ -408,6 +411,7 @@ public abstract class AbstractNxmPlotWidget extends Composite {
 	/**
 	 * @since 4.2
 	 */
+	@Override
 	public void dispose() {
 		super.dispose();
 		clearSources();

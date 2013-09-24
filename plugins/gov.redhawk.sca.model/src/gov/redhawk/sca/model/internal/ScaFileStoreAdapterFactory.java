@@ -28,6 +28,7 @@ public class ScaFileStoreAdapterFactory implements IAdapterFactory {
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public Object getAdapter(Object adaptableObject, @SuppressWarnings("rawtypes") Class adapterType) {
 		if (adaptableObject instanceof ScaFileStore) {
 			ScaFileStore store = (ScaFileStore) adaptableObject;
@@ -41,6 +42,7 @@ public class ScaFileStoreAdapterFactory implements IAdapterFactory {
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public Class<?>[] getAdapterList() {
 		return LIST;
 	}

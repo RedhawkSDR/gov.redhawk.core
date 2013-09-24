@@ -67,6 +67,7 @@ public class EMFTreeViewerElementSelector extends EMFViewerElementSelector {
 	@Override
 	public void selectElement(final Object obj) {
 		PlatformUI.getWorkbench().getDisplay().asyncExec(new Runnable() {
+			@Override
 			public void run() {
 				EMFTreeViewerElementSelector.this.treeViewer.refresh();
 				final Tree tree = EMFTreeViewerElementSelector.this.treeViewer.getTree();

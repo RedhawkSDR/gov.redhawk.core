@@ -83,12 +83,14 @@ public class WaveformDeviceAssignmentTab extends AbstractLaunchConfigurationTab 
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public void createControl(final Composite parent) {
 		this.deviceAssignmentComposite = new DeviceAssignmentComposite(parent, SWT.None);
 		this.deviceAssignmentComposite.setScaDomainManager(this.domainManager);
 		this.deviceAssignmentComposite.setSoftwareAssembly(this.softwareAssembly);
 		this.deviceAssignmentComposite.addPropertyChangeListener(new PropertyChangeListener() {
 
+			@Override
 			public void propertyChange(final PropertyChangeEvent evt) {
 				if (WaveformDeviceAssignmentTab.this.disposed) {
 					return;
@@ -102,6 +104,7 @@ public class WaveformDeviceAssignmentTab extends AbstractLaunchConfigurationTab 
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public void setDefaults(final ILaunchConfigurationWorkingCopy configuration) {
 		if (this.deviceAssignmentComposite != null) {
 			this.deviceAssignmentComposite.setDefaults();
@@ -111,6 +114,7 @@ public class WaveformDeviceAssignmentTab extends AbstractLaunchConfigurationTab 
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	@SuppressWarnings("unchecked")
 	public void initializeFrom(final ILaunchConfiguration configuration) {
 		try {
@@ -125,6 +129,7 @@ public class WaveformDeviceAssignmentTab extends AbstractLaunchConfigurationTab 
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public void performApply(final ILaunchConfigurationWorkingCopy configuration) {
 		final Map<String, String> deviceAssignment = new HashMap<String, String>();
 		this.deviceAssignmentComposite.storeSettings(deviceAssignment);
@@ -143,6 +148,7 @@ public class WaveformDeviceAssignmentTab extends AbstractLaunchConfigurationTab 
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public String getName() {
 		return "Device Assignment";
 	}

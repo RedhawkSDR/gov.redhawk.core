@@ -26,6 +26,7 @@ public class StreamSRIAdapterFactory implements IAdapterFactory {
 
 	private static class StreamSRIPropertySourceProvider implements IPropertySourceProvider {
 
+		@Override
 		public IPropertySource getPropertySource(final Object object) {
 			if (object instanceof StreamSRI) {
 				return new StreamSRIPropertySource((StreamSRI) object);
@@ -40,6 +41,7 @@ public class StreamSRIAdapterFactory implements IAdapterFactory {
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public Object getAdapter(final Object adaptableObject, @SuppressWarnings("rawtypes") final Class adapterType) {
 		if (adaptableObject instanceof StreamSRI) {
 			if (adapterType == IPropertySourceProvider.class) {
@@ -54,6 +56,7 @@ public class StreamSRIAdapterFactory implements IAdapterFactory {
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public Class < ? >[] getAdapterList() {
 		return StreamSRIAdapterFactory.list;
 	}

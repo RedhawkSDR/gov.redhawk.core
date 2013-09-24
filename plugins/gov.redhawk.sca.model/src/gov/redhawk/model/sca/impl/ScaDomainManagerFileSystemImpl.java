@@ -72,6 +72,7 @@ public class ScaDomainManagerFileSystemImpl extends ScaFileManagerImpl implement
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public ScaDomainManager getDomMgr() {
 		if (eContainerFeatureID() != ScaPackage.SCA_DOMAIN_MANAGER_FILE_SYSTEM__DOM_MGR) return null;
 		return (ScaDomainManager)eContainer();
@@ -102,6 +103,7 @@ public class ScaDomainManagerFileSystemImpl extends ScaFileManagerImpl implement
 	 * <!-- end-user-doc -->
 	 * @generated NOT
 	 */
+	@Override
 	public void setDomMgr(ScaDomainManager newDomMgr) {
 		setDomMgrGen(newDomMgr);
 		setFileSystemURI(createFileSystemURI());

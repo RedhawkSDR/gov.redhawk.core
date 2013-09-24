@@ -31,6 +31,7 @@ public class IdlInterfaceDclDecorator extends LabelProvider implements ILightwei
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public void decorate(final Object element, final IDecoration decoration) {
 		if (!(element instanceof EObject || element instanceof FeatureMap.Entry || element instanceof IWrapperItemProvider)) {
 			return;

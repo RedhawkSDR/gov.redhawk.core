@@ -225,6 +225,7 @@ public class NamingServiceNameEditPart extends CompartmentEditPart implements IT
 	/**
 	* 
 	*/
+	@Override
 	public void setLabelText(final String text) {
 		setLabelTextHelper(getFigure(), text);
 		final Object pdEditPolicy = getEditPolicy(EditPolicy.PRIMARY_DRAG_ROLE);
@@ -240,6 +241,7 @@ public class NamingServiceNameEditPart extends CompartmentEditPart implements IT
 	/**
 	* 
 	*/
+	@Override
 	public String getEditText() {
 		if (getParserElement() == null || getParser() == null) {
 			return ""; //$NON-NLS-1$
@@ -257,9 +259,11 @@ public class NamingServiceNameEditPart extends CompartmentEditPart implements IT
 	/**
 	* 
 	*/
+	@Override
 	public ICellEditorValidator getEditTextValidator() {
 		return new ICellEditorValidator() {
 
+			@Override
 			public String isValid(final Object value) {
 				if (value instanceof String) {
 					final EObject element = getParserElement();
@@ -267,6 +271,7 @@ public class NamingServiceNameEditPart extends CompartmentEditPart implements IT
 					try {
 						final IParserEditStatus valid = (IParserEditStatus) getEditingDomain().runExclusive(new RunnableWithResult.Impl<IParserEditStatus>() {
 
+							@Override
 							public void run() {
 								setResult(localParser.isValidEditString(new EObjectAdapter(element), (String) value));
 							}
@@ -286,6 +291,7 @@ public class NamingServiceNameEditPart extends CompartmentEditPart implements IT
 	/**
 	* 
 	*/
+	@Override
 	public IContentAssistProcessor getCompletionProcessor() {
 		if (getParserElement() == null || getParser() == null) {
 			return null;
@@ -296,6 +302,7 @@ public class NamingServiceNameEditPart extends CompartmentEditPart implements IT
 	/**
 	* 
 	*/
+	@Override
 	public ParserOptions getParserOptions() {
 		return ParserOptions.NONE;
 	}
@@ -303,6 +310,7 @@ public class NamingServiceNameEditPart extends CompartmentEditPart implements IT
 	/**
 	* 
 	*/
+	@Override
 	public IParser getParser() {
 		if (this.parser == null) {
 			this.parser = PartitioningParserProviderHelper.getParser(PartitioningElementTypes.NamingService, getParserElement(),
@@ -366,6 +374,7 @@ public class NamingServiceNameEditPart extends CompartmentEditPart implements IT
 		try {
 			getEditingDomain().runExclusive(new Runnable() {
 
+				@Override
 				public void run() {
 					if (isActive() && isEditable()) {
 						if (theRequest.getExtendedData().get(RequestConstants.REQ_DIRECTEDIT_EXTENDEDDATA_INITIAL_CHAR) instanceof Character) {

@@ -66,6 +66,7 @@ public class ScaConnectionsContainerItemProvider extends TransientItemProvider i
 		// BEGIN GENERATED CODE
 	}
 	
+	@Override
 	public void notifyChanged(Notification notification) {
 		updateChildren(notification);
 

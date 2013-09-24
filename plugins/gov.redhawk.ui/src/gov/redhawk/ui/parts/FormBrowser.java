@@ -84,6 +84,7 @@ public class FormBrowser {
 		ftext.marginHeight = 2;
 		ftext.setHyperlinkSettings(this.toolkit.getHyperlinkGroup());
 		this.formText.addDisposeListener(new DisposeListener() {
+			@Override
 			public void widgetDisposed(final DisposeEvent e) {
 				if (FormBrowser.this.toolkit != null) {
 					FormBrowser.this.toolkit.dispose();

@@ -135,6 +135,7 @@ public abstract class DataProviderObjectImpl extends IStatusProviderImpl impleme
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public boolean isDisposed() {
 		return disposed;
 	}
@@ -144,6 +145,7 @@ public abstract class DataProviderObjectImpl extends IStatusProviderImpl impleme
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EList<IScaDataProvider> getDataProviders() {
 		if (dataProviders == null) {
 			dataProviders = new EDataTypeUniqueEList.Unsettable<IScaDataProvider>(IScaDataProvider.class, this, ScaPackage.DATA_PROVIDER_OBJECT__DATA_PROVIDERS);
@@ -156,6 +158,7 @@ public abstract class DataProviderObjectImpl extends IStatusProviderImpl impleme
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void unsetDataProviders() {
 		if (dataProviders != null) ((InternalEList.Unsettable<?>)dataProviders).unset();
 	}
@@ -165,6 +168,7 @@ public abstract class DataProviderObjectImpl extends IStatusProviderImpl impleme
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public boolean isSetDataProviders() {
 		return dataProviders != null && ((InternalEList.Unsettable<?>)dataProviders).isSet();
 	}
@@ -174,6 +178,7 @@ public abstract class DataProviderObjectImpl extends IStatusProviderImpl impleme
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public boolean isDataProvidersEnabled() {
 		return dataProvidersEnabled;
 	}
@@ -183,6 +188,7 @@ public abstract class DataProviderObjectImpl extends IStatusProviderImpl impleme
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void setDataProvidersEnabled(boolean newDataProvidersEnabled) {
 		boolean oldDataProvidersEnabled = dataProvidersEnabled;
 		dataProvidersEnabled = newDataProvidersEnabled;
@@ -192,6 +198,7 @@ public abstract class DataProviderObjectImpl extends IStatusProviderImpl impleme
 
 	private PropertyChangeListener providerListener = new PropertyChangeListener() {
 
+		@Override
 		public void propertyChange(final PropertyChangeEvent evt) {
 			if (isDisposed()) {
 				if (evt.getSource() instanceof IScaDataProvider) {
@@ -202,6 +209,7 @@ public abstract class DataProviderObjectImpl extends IStatusProviderImpl impleme
 			if (IScaDataProvider.DISPOSED_PROPERTY.equals(evt.getPropertyName())) {
 				ScaModelCommand.execute(DataProviderObjectImpl.this, new ScaModelCommand() {
 					
+					@Override
 					public void execute() {
 						dataProviderDisposed((IScaDataProvider) evt.getSource());	
 					}
@@ -209,6 +217,7 @@ public abstract class DataProviderObjectImpl extends IStatusProviderImpl impleme
 			} else if (IScaDataProvider.STATUS_PROPERTY.equals(evt.getPropertyName())) {
 				ScaModelCommand.execute(DataProviderObjectImpl.this, new ScaModelCommand() {
 					
+					@Override
 					public void execute() {
 						updateDataProviderStatus();
 					}
@@ -234,6 +243,7 @@ public abstract class DataProviderObjectImpl extends IStatusProviderImpl impleme
 			}
 			SafeRunner.run(new ISafeRunnable() {
 
+				@Override
 				public void run() throws Exception {
 					IStatus status = provider.getStatus();
 					if (status != null && !status.isOK()) {
@@ -241,6 +251,7 @@ public abstract class DataProviderObjectImpl extends IStatusProviderImpl impleme
 					}
 				}
 
+				@Override
 				public void handleException(Throwable exception) { }
 			});
 		}
@@ -278,6 +289,7 @@ public abstract class DataProviderObjectImpl extends IStatusProviderImpl impleme
 	 * <!-- end-user-doc -->
 	 * @generated NOT
 	 */
+	@Override
 	public void attachDataProviders() {
 		// END GENERATED CODE
 		if (isSetDataProviders()) {
@@ -293,6 +305,7 @@ public abstract class DataProviderObjectImpl extends IStatusProviderImpl impleme
 		for (final IScaDataProviderServiceDescriptor desc : descriptors) {
 			SafeRunner.run(new ISafeRunnable() {
 
+				@Override
 				public void run() throws Exception {
 					IScaDataProviderService service = desc.getService();
 					IScaDataProvider provider = service.hookDataProvider(DataProviderObjectImpl.this);
@@ -301,6 +314,7 @@ public abstract class DataProviderObjectImpl extends IStatusProviderImpl impleme
 					}
 				}
 
+				@Override
 				public void handleException(Throwable exception) {
 				}
 			});
@@ -315,6 +329,7 @@ public abstract class DataProviderObjectImpl extends IStatusProviderImpl impleme
 	 * <!-- end-user-doc -->
 	 * @generated NOT
 	 */
+	@Override
 	public void detachDataProviders() {
 		// END GENERATED CODE
 		unsetDataProviders();
@@ -328,6 +343,7 @@ public abstract class DataProviderObjectImpl extends IStatusProviderImpl impleme
 	 * @throws InterruptedException 
 	 * @generated NOT
 	 */
+	@Override
 	public void refresh(IProgressMonitor monitor, RefreshDepth depth) throws InterruptedException {
 		// END GENERATED CODE
 		Assert.isNotNull(depth);
@@ -345,6 +361,7 @@ public abstract class DataProviderObjectImpl extends IStatusProviderImpl impleme
 		if (depth != null) {
 			final EObject[] contents = ScaModelCommand.runExclusive(this, new RunnableWithResult.Impl<EObject[]>() {
 
+				@Override
 				public void run() {
 					setResult(eContents().toArray(new EObject[eContents().size()]));
 				}
@@ -372,11 +389,13 @@ public abstract class DataProviderObjectImpl extends IStatusProviderImpl impleme
 	private void removeDataProvider(final IScaDataProvider dataProvider) {
 		SafeRunner.run(new ISafeRunnable() {
 			
+			@Override
 			public void run() throws Exception {
 				dataProvider.removePropertyChangeListener(providerListener);
 				dataProvider.dispose();
 			}
 
+			@Override
 			public void handleException(Throwable exception) { }
 		});
 	}
@@ -446,10 +465,12 @@ public abstract class DataProviderObjectImpl extends IStatusProviderImpl impleme
 	private void addDataProvider(final IScaDataProvider dataProvider) {
 	    SafeRunner.run(new ISafeRunnable() {
 			
+			@Override
 			public void run() throws Exception {
 				dataProvider.addPropertyChangeListener(providerListener);
 			}
 			
+			@Override
 			public void handleException(Throwable exception) { }
 		});
     }
@@ -459,6 +480,7 @@ public abstract class DataProviderObjectImpl extends IStatusProviderImpl impleme
 	 * <!-- end-user-doc -->
 	 * @generated NOT
 	 */
+	@Override
 	public void dispose() {
 		// END GENERATED CODE
 		detachDataProviders();

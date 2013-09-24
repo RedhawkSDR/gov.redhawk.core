@@ -22,6 +22,7 @@ import java.util.Iterator;
 import java.util.Map;
 
 import org.eclipse.core.runtime.Assert;
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.MultiStatus;
@@ -156,8 +157,8 @@ public abstract class AbstractEventChannelDataProvider< T > extends AbstractData
 					try {
 						job = new EventJob(channelName, this, this.domain);
 						this.connectedChannels.put(channelName, job);
-					} catch (Exception e) {
-						return new Status(IStatus.ERROR, DataProviderActivator.ID, "Failed to connect to event channel " + channelName, e);
+					} catch (CoreException e) {
+						return e.getStatus();
 					}
 				}
 			}

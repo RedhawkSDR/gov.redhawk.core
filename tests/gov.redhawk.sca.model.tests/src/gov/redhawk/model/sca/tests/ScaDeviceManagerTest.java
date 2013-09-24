@@ -179,6 +179,7 @@ public class ScaDeviceManagerTest extends ScaPropertyContainerTest {
 		Assert.assertTrue(getFixture().isSetAllDevices());
 		ScaModelCommand.execute(getFixture(), new ScaModelCommand() {
 
+			@Override
 			public void execute() {
 				getFixture().unsetAllDevices();
 				Assert.assertFalse(getFixture().isSetAllDevices());
@@ -425,6 +426,7 @@ public class ScaDeviceManagerTest extends ScaPropertyContainerTest {
 		// END GENERATED CODE
 		final int size = ScaModelCommand.runExclusive(getFixture(), new RunnableWithResult.Impl<Integer>() {
 
+			@Override
 			public void run() {
 				setResult(getFixture().getDevices().size());
 			}
@@ -435,6 +437,7 @@ public class ScaDeviceManagerTest extends ScaPropertyContainerTest {
 		getFixture().fetchDevices(null);
 		ScaModelCommand.execute(getFixture(), new ScaModelCommand() {
 
+			@Override
 			public void execute() {
 				Assert.assertEquals(size, getFixture().getDevices().size());
 				getFixture().unsetDevices();
@@ -445,6 +448,7 @@ public class ScaDeviceManagerTest extends ScaPropertyContainerTest {
 		getFixture().fetchDevices(null);
 		ScaModelCommand.execute(getFixture(), new ScaModelCommand() {
 
+			@Override
 			public void execute() {
 				Assert.assertEquals(size, getFixture().getDevices().size());
 			}

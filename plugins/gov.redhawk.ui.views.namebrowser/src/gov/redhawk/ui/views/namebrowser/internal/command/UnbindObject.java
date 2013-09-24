@@ -34,6 +34,7 @@ import org.eclipse.ui.progress.UIJob;
 
 public class UnbindObject extends AbstractHandler implements IHandler {
 
+	@Override
 	public Object execute(final ExecutionEvent event) throws ExecutionException {
 		final ISelection selection = HandlerUtil.getCurrentSelection(event);
 

@@ -79,6 +79,7 @@ public class InvalidConnectionProvider extends AbstractProvider implements IDeco
 		/**
 		 * {@inheritDoc}
 		 */
+		@Override
 		public void activate() {
 			refresh();
 		}
@@ -86,6 +87,7 @@ public class InvalidConnectionProvider extends AbstractProvider implements IDeco
 		/**
 		 * {@inheritDoc}
 		 */
+		@Override
 		public void refresh() {
 			removeDecoration();
 			final View view = (View) getDecoratorTarget().getAdapter(View.class);
@@ -132,6 +134,7 @@ public class InvalidConnectionProvider extends AbstractProvider implements IDeco
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public void createDecorators(final IDecoratorTarget decoratorTarget) {
 		final EditPart editPart = (EditPart) decoratorTarget.getAdapter(EditPart.class);
 		if (editPart instanceof GraphicalEditPart || editPart instanceof AbstractConnectionEditPart) {
@@ -156,6 +159,7 @@ public class InvalidConnectionProvider extends AbstractProvider implements IDeco
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public boolean provides(final IOperation operation) {
 		if (!(operation instanceof CreateDecoratorsOperation)) {
 			return false;

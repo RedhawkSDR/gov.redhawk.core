@@ -63,6 +63,7 @@ public class PartitioningViewFactory implements ViewFactory {
 		this.basicViewProvider = basicViewProvider;
 	}
 
+	@Override
 	public View createView(final IAdaptable semanticAdapter, final View containerView, final String semanticHint, final int index, final boolean persisted,
 	        final PreferencesHint preferencesHint) {
 		final int visualId = this.visualIdRegistry.getVisualID(semanticHint);

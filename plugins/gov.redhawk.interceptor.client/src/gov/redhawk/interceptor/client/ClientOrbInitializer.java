@@ -32,6 +32,7 @@ public class ClientOrbInitializer extends LocalObject implements ORBInitializer 
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public void pre_init(final ORBInitInfo info) {
 		// Do Nothing
 	}
@@ -39,6 +40,7 @@ public class ClientOrbInitializer extends LocalObject implements ORBInitializer 
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public void post_init(final ORBInitInfo info) {
 		try {
 			// Get a reference to TSC PICurrent

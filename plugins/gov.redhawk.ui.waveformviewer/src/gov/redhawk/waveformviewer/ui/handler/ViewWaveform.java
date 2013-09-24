@@ -20,6 +20,7 @@ import org.omg.CORBA.Object;
 public class ViewWaveform extends AbstractHandler implements IHandler {
 	public static final String ID = "gov.redhawk.ui.waveform.commands.view";
 
+	@Override
 	public Object execute(final ExecutionEvent event) throws ExecutionException {
 		//		System.out.println("Checking Handlers");
 		//		IPortHandlerRegistry reg = gov.redhawk.ui.port.Activator.getPortHandlerRegistry();

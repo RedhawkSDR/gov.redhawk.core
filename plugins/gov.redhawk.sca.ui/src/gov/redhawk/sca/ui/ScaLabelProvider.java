@@ -92,6 +92,7 @@ public class ScaLabelProvider extends ScaModelAdapterFactoryLabelProvider implem
 		super.dispose();
 	}
 
+	@Override
 	public String getDescription(final Object anElement) {
 		if (anElement instanceof EObject) {
 			final EObject eObj = (EObject) anElement;
@@ -161,15 +162,19 @@ public class ScaLabelProvider extends ScaModelAdapterFactoryLabelProvider implem
 	}
 
 	// IToolTipProvider
+	@Override
 	public void init(final ICommonContentExtensionSite aConfig) {
 	}
 
+	@Override
 	public void restoreState(final IMemento aMemento) {
 	}
 
+	@Override
 	public void saveState(final IMemento aMemento) {
 	}
 
+	@Override
 	public Image getToolTipImage(final Object element) {
 		if (element instanceof IStatusProvider) {
 			final IStatusProvider dpo = (IStatusProvider) element;
@@ -190,6 +195,7 @@ public class ScaLabelProvider extends ScaModelAdapterFactoryLabelProvider implem
 		return null;
 	}
 
+	@Override
 	public String getToolTipText(final Object element) {
 		final StringBuilder toolTip = new StringBuilder();
 
@@ -215,34 +221,42 @@ public class ScaLabelProvider extends ScaModelAdapterFactoryLabelProvider implem
 		}
 	}
 
+	@Override
 	public Color getToolTipBackgroundColor(final Object object) {
 		return null;
 	}
 
+	@Override
 	public Color getToolTipForegroundColor(final Object object) {
 		return null;
 	}
 
+	@Override
 	public Font getToolTipFont(final Object object) {
 		return null;
 	}
 
+	@Override
 	public Point getToolTipShift(final Object object) {
 		return new Point(5, 5); // SUPPRESS CHECKSTYLE MagicNumber
 	}
 
+	@Override
 	public boolean useNativeToolTip(final Object object) {
 		return false;
 	}
 
+	@Override
 	public int getToolTipTimeDisplayed(final Object object) {
 		return 4000;
 	}
 
+	@Override
 	public int getToolTipDisplayDelayTime(final Object object) {
 		return 100;
 	}
 
+	@Override
 	public int getToolTipStyle(final Object object) {
 		return SWT.NONE;
 	}

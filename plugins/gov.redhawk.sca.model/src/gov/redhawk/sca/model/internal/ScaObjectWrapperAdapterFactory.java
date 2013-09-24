@@ -26,12 +26,14 @@ public class ScaObjectWrapperAdapterFactory implements IAdapterFactory {
 
 	private static final IScaObjectIdentifierAdapter ADAPTER = new IScaObjectIdentifierAdapter() {
 
+		@Override
 		public String getIdentifier(final Object obj) {
 			final ProfileObjectWrapper< ? > wrapper = (ProfileObjectWrapper< ? >) obj;
 			final EObject eObj = (EObject) wrapper.getProfileObj();
 			return EcoreUtil.getID(eObj);
 		}
 
+		@Override
 		public EObject getScaEObject(final Object obj) {
 			final ProfileObjectWrapper< ? > wrapper = (ProfileObjectWrapper< ? >) obj;
 			final EObject eObj = (EObject) wrapper.getProfileObj();
@@ -43,6 +45,7 @@ public class ScaObjectWrapperAdapterFactory implements IAdapterFactory {
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	@SuppressWarnings("rawtypes")
 	public Object getAdapter(final Object adaptableObject, final Class adapterType) {
 		if (adaptableObject instanceof ProfileObjectWrapper< ? >) {
@@ -60,6 +63,7 @@ public class ScaObjectWrapperAdapterFactory implements IAdapterFactory {
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public Class< ? >[] getAdapterList() {
 		return ScaObjectWrapperAdapterFactory.LIST;
 	}

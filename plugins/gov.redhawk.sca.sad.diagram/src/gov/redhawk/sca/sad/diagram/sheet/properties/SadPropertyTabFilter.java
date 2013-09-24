@@ -23,6 +23,7 @@ import org.eclipse.jface.viewers.IFilter;
  */
 public class SadPropertyTabFilter implements IFilter {
 
+	@Override
 	public boolean select(final Object toTest) {
 		if (toTest instanceof IGraphicalEditPart) {
 			final IGraphicalEditPart part = (IGraphicalEditPart) toTest;

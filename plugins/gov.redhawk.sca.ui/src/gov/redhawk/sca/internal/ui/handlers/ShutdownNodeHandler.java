@@ -37,6 +37,7 @@ public class ShutdownNodeHandler extends AbstractHandler implements IHandler {
 	 * {@inheritDoc}
 	 */
 
+	@Override
 	public Object execute(final ExecutionEvent event) throws ExecutionException {
 		ISelection selection = HandlerUtil.getActiveMenuSelection(event);
 		if (selection == null) {

@@ -71,6 +71,7 @@ IEditingDomainItemProvider, IStructuredItemContentProvider, ITreeItemContentProv
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public String getTextGen(Object object) {
 		String label = ((ScaFileManager)object).getName();
 		return label == null || label.length() == 0 ?

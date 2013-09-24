@@ -19,6 +19,7 @@ import org.eclipse.core.expressions.PropertyTester;
 public class DomainManagerTester extends PropertyTester {
 	public static final String ID = "gov.redhawk.ui.views.namebrowser.command.DomainManagerTester";
 
+	@Override
 	public boolean test(final Object receiver, final String property, final Object[] args, final Object expectedValue) {
 		if (!(receiver instanceof BindingNode)) {
 			return false;

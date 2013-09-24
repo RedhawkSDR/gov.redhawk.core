@@ -139,10 +139,11 @@ public class corbareceiver extends CorbaPrimitive { //SUPPRESS CHECKSTYLE ClassN
 		this.overrideSRISubSize = this.MA.getState(A_OVERRIDE_SRI_SUBSIZE, false);
 		this.blocking = this.MA.getState(SW_BLOCKING, false);
 
-		this.type = BulkIOType.getType(corbareceiver.decodeIDL(encoded_idl));
-
+		BulkIOType newType = BulkIOType.getType(corbareceiver.decodeIDL(encoded_idl));
+		this.type = newType;
+		
 		if (this.receiver == null) {
-			this.receiver = new BulkIOReceiver(this, type);
+			this.receiver = new BulkIOReceiver(this, newType);
 		}
 		if (origFrameSizeArg == null) {
 			origFrameSizeArg = this.frameSizeAttribute;
@@ -208,8 +209,15 @@ public class corbareceiver extends CorbaPrimitive { //SUPPRESS CHECKSTYLE ClassN
 	private boolean initConnections() {
 		if (!connected) {
 			try {
-				portIor = getPortIOR();
-				BulkIOUtilActivator.getBulkIOPortConnectionManager().connect(portIor, type, receiver);
+				String portIor2 = getPortIOR();
+				portIor = portIor2;
+				BulkIOType type2 = type;
+				BulkIOReceiver receiver2 = receiver;
+				if (portIor2 != null && type2 != null && receiver2 != null) {
+					BulkIOUtilActivator.getBulkIOPortConnectionManager().connect(portIor2, type2, receiver2);
+				} else {
+					return false;
+				}
 				connected = true;
 			} catch (CoreException e) {
 				throw new MidasException("Failed to connect port", e);
@@ -221,7 +229,12 @@ public class corbareceiver extends CorbaPrimitive { //SUPPRESS CHECKSTYLE ClassN
 	@Override
 	protected void shutdown() {
 		super.shutdown();
-		BulkIOUtilActivator.getBulkIOPortConnectionManager().disconnect(portIor, type, receiver);
+		final String portIor2 = portIor;
+		final BulkIOType type2 = type;
+		final BulkIOReceiver receiver2 = receiver;
+		if (portIor2 != null && type2 != null && receiver2 != null) {
+			BulkIOUtilActivator.getBulkIOPortConnectionManager().disconnect(portIor2, type2, receiver2);
+		}
 		connected = false;
 	}
 

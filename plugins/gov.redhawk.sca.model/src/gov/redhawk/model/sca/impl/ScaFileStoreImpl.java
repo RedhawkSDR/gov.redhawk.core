@@ -169,6 +169,7 @@ public class ScaFileStoreImpl extends IStatusProviderImpl implements ScaFileStor
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public IFileStore getFileStore() {
 		return fileStore;
 	}
@@ -178,6 +179,7 @@ public class ScaFileStoreImpl extends IStatusProviderImpl implements ScaFileStor
 	 * <!-- end-user-doc -->
 	 * @generated NOT
 	 */
+	@Override
 	public void setFileStore(IFileStore newFileStore) {
 		setFileStoreGen(newFileStore);
 		setName(newFileStore.getName());
@@ -200,6 +202,7 @@ public class ScaFileStoreImpl extends IStatusProviderImpl implements ScaFileStor
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EList<ScaFileStore> getChildren() {
 		if (children == null) {
 			children = new EObjectContainmentEList.Unsettable.Resolving<ScaFileStore>(ScaFileStore.class, this, ScaPackage.SCA_FILE_STORE__CHILDREN);
@@ -212,6 +215,7 @@ public class ScaFileStoreImpl extends IStatusProviderImpl implements ScaFileStor
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void unsetChildren() {
 		if (children != null) ((InternalEList.Unsettable<?>)children).unset();
 	}
@@ -221,6 +225,7 @@ public class ScaFileStoreImpl extends IStatusProviderImpl implements ScaFileStor
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public boolean isSetChildren() {
 		return children != null && ((InternalEList.Unsettable<?>)children).isSet();
 	}
@@ -230,6 +235,7 @@ public class ScaFileStoreImpl extends IStatusProviderImpl implements ScaFileStor
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public Object getImageDesc() {
 		return imageDesc;
 	}
@@ -239,6 +245,7 @@ public class ScaFileStoreImpl extends IStatusProviderImpl implements ScaFileStor
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void setImageDesc(Object newImageDesc) {
 		Object oldImageDesc = imageDesc;
 		imageDesc = newImageDesc;
@@ -253,6 +260,7 @@ public class ScaFileStoreImpl extends IStatusProviderImpl implements ScaFileStor
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void unsetImageDesc() {
 		Object oldImageDesc = imageDesc;
 		boolean oldImageDescESet = imageDescESet;
@@ -267,6 +275,7 @@ public class ScaFileStoreImpl extends IStatusProviderImpl implements ScaFileStor
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public boolean isSetImageDesc() {
 		return imageDescESet;
 	}
@@ -276,6 +285,7 @@ public class ScaFileStoreImpl extends IStatusProviderImpl implements ScaFileStor
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public boolean isDirectory() {
 		return directory;
 	}
@@ -285,6 +295,7 @@ public class ScaFileStoreImpl extends IStatusProviderImpl implements ScaFileStor
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void setDirectory(boolean newDirectory) {
 		boolean oldDirectory = directory;
 		directory = newDirectory;
@@ -297,6 +308,7 @@ public class ScaFileStoreImpl extends IStatusProviderImpl implements ScaFileStor
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public String getName() {
 		return name;
 	}
@@ -306,6 +318,7 @@ public class ScaFileStoreImpl extends IStatusProviderImpl implements ScaFileStor
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void setName(String newName) {
 		String oldName = name;
 		name = newName;
@@ -319,6 +332,7 @@ public class ScaFileStoreImpl extends IStatusProviderImpl implements ScaFileStor
 	 * <!-- end-user-doc -->
 	 * @generated NOT
 	 */
+	@Override
 	public EList<ScaFileStore> fetchChildren(IProgressMonitor monitor) {
 		// END GENERATED CODE
 		ScaFileStoreImpl.internalFetchChildren(monitor, this);
@@ -475,6 +489,7 @@ public class ScaFileStoreImpl extends IStatusProviderImpl implements ScaFileStor
 	 * <!-- end-user-doc -->
 	 * @generated NOT
 	 */
+	@Override
 	public void refresh(IProgressMonitor monitor, RefreshDepth depth) throws InterruptedException {
 		// END GENERATED CODE	
 		switch (depth) {
@@ -516,6 +531,7 @@ public class ScaFileStoreImpl extends IStatusProviderImpl implements ScaFileStor
 
 			ScaModelCommand.execute(parentStore, new ScaModelCommand() {
 
+				@Override
 				public void execute() {
 					Map<String, ScaFileStore> currentChildren = new HashMap<String, ScaFileStore>();
 					for (ScaFileStore store : parentStore.getChildren()) {
@@ -551,6 +567,7 @@ public class ScaFileStoreImpl extends IStatusProviderImpl implements ScaFileStor
 		} catch (final CoreException e) {
 			ScaModelCommand.execute(parentStore, new ScaModelCommand() {
 
+				@Override
 				public void execute() {
 					parentStore.unsetChildren();
 					parentStore.setStatus(ScaPackage.Literals.SCA_FILE_STORE__CHILDREN, e.getStatus());

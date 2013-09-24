@@ -86,6 +86,7 @@ public class WaveformSelectionWizardPage extends WizardPage {
 		}
 	}
 
+	@Override
 	public void createControl(final Composite parent) {
 		setupDialogSettings();
 
@@ -128,6 +129,7 @@ public class WaveformSelectionWizardPage extends WizardPage {
 				if (!getControl().isDisposed()) {
 					getControl().getDisplay().asyncExec(new Runnable() {
 
+						@Override
 						public void run() {
 							final IStatus loadStatus = WaveformSelectionWizardPage.this.contentProvider.getLoadStatus();
 							if (loadStatus != null && !loadStatus.isOK()) {
@@ -151,6 +153,7 @@ public class WaveformSelectionWizardPage extends WizardPage {
 		this.waveformSelectionList.getViewer().setLabelProvider(new AdapterFactoryLabelProvider(new WizardSadItemProviderAdapterFactory()));
 		this.waveformSelectionList.getViewer().addDoubleClickListener(new IDoubleClickListener() {
 
+			@Override
 			public void doubleClick(final DoubleClickEvent event) {
 				if (getWizard().canFinish()) {
 					if (getWizard().performFinish()) {
@@ -167,6 +170,7 @@ public class WaveformSelectionWizardPage extends WizardPage {
 			protected Comparator<String> getComparator() {
 				if (this.viewerComparator == null) {
 					this.viewerComparator = new Comparator<String>() {
+						@Override
 						public int compare(final String s1, final String s2) {
 							return s1.compareToIgnoreCase(s2);
 						}
@@ -188,6 +192,7 @@ public class WaveformSelectionWizardPage extends WizardPage {
 
 		waveformNameTextBox.addModifyListener(new ModifyListener() {
 
+			@Override
 			public void modifyText(final ModifyEvent e) {
 				WaveformSelectionWizardPage.this.defaultNameChanged = true;
 				WaveformSelectionWizardPage.this.waveformName = waveformNameTextBox.getText();
@@ -203,10 +208,12 @@ public class WaveformSelectionWizardPage extends WizardPage {
 
 		this.startWaveform.addSelectionListener(new SelectionListener() {
 
+			@Override
 			public void widgetSelected(final SelectionEvent e) {
 				WaveformSelectionWizardPage.this.autoStart = WaveformSelectionWizardPage.this.startWaveform.getSelection();
 			}
 
+			@Override
 			public void widgetDefaultSelected(final SelectionEvent e) {
 				// PASS
 			}
@@ -214,6 +221,7 @@ public class WaveformSelectionWizardPage extends WizardPage {
 
 		this.waveformSelectionList.getViewer().addSelectionChangedListener(new ISelectionChangedListener() {
 
+			@Override
 			public void selectionChanged(final SelectionChangedEvent event) {
 				final Object selected = ((StructuredSelection) event.getSelection()).getFirstElement();
 				if (selected instanceof SoftwareAssembly) {

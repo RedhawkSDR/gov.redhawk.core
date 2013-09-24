@@ -37,6 +37,7 @@ public class DcdComponentPlacementCompartmentEditPart extends mil.jpeojtrs.sca.d
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public IFigure basicCreateFigure() {
 		return super.createFigure();
 	}

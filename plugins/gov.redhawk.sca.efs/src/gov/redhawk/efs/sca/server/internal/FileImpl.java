@@ -61,6 +61,7 @@ public class FileImpl extends FilePOA {
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public void close() throws FileException {
 		if (this.fileAccess != null) {
 			try {
@@ -78,6 +79,7 @@ public class FileImpl extends FilePOA {
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public String fileName() {
 		return this.file.getName();
 	}
@@ -88,6 +90,7 @@ public class FileImpl extends FilePOA {
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public int filePointer() {
 		if (this.fileAccess != null) {
 			try {
@@ -105,6 +108,7 @@ public class FileImpl extends FilePOA {
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public void read(final OctetSequenceHolder data, final int length) throws IOException {
 		if (this.fileAccess != null) {
 			final byte[] buffer = new byte[length];
@@ -131,6 +135,7 @@ public class FileImpl extends FilePOA {
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public void setFilePointer(final int filePointer) throws InvalidFilePointer, FileException {
 		if (this.fileAccess != null) {
 			try {
@@ -149,6 +154,7 @@ public class FileImpl extends FilePOA {
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public int sizeOf() throws FileException {
 		return (int) this.file.length();
 	}
@@ -159,6 +165,7 @@ public class FileImpl extends FilePOA {
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public void write(final byte[] data) throws IOException {
 		if (this.fileAccess != null) {
 			try {

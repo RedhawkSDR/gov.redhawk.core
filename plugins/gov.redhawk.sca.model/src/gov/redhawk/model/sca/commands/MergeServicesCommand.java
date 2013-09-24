@@ -36,6 +36,7 @@ public class MergeServicesCommand extends SetStatusCommand<ScaDeviceManager> {
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public void execute() {
 		// Setup current Service Map
 		final Map<String, ScaService> currentServices = new HashMap<String, ScaService>();

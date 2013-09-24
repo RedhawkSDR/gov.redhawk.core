@@ -36,6 +36,7 @@ public class EmptyOutlinePage implements IContentOutlinePage {
 	 * 
 	 * @param parent the parent
 	 */
+	@Override
 	public void createControl(final Composite parent) {
 		this.control = new Composite(parent, SWT.NULL);
 	}
@@ -43,6 +44,7 @@ public class EmptyOutlinePage implements IContentOutlinePage {
 	/**
 	 * Dispose.
 	 */
+	@Override
 	public void dispose() {
 	}
 
@@ -51,6 +53,7 @@ public class EmptyOutlinePage implements IContentOutlinePage {
 	 * 
 	 * @return the control
 	 */
+	@Override
 	public Control getControl() {
 		return this.control;
 	}
@@ -60,12 +63,14 @@ public class EmptyOutlinePage implements IContentOutlinePage {
 	 * 
 	 * @param actionBars the new action bars
 	 */
+	@Override
 	public void setActionBars(final IActionBars actionBars) {
 	}
 
 	/**
 	 * Sets the focus.
 	 */
+	@Override
 	public void setFocus() {
 	}
 
@@ -74,6 +79,7 @@ public class EmptyOutlinePage implements IContentOutlinePage {
 	 * 
 	 * @param listener the listener
 	 */
+	@Override
 	public void addSelectionChangedListener(final ISelectionChangedListener listener) {
 	}
 
@@ -82,8 +88,10 @@ public class EmptyOutlinePage implements IContentOutlinePage {
 	 * 
 	 * @return the selection
 	 */
+	@Override
 	public ISelection getSelection() {
 		return new ISelection() {
+			@Override
 			public boolean isEmpty() {
 				return true;
 			}
@@ -95,6 +103,7 @@ public class EmptyOutlinePage implements IContentOutlinePage {
 	 * 
 	 * @param listener the listener
 	 */
+	@Override
 	public void removeSelectionChangedListener(final ISelectionChangedListener listener) {
 	}
 
@@ -103,6 +112,7 @@ public class EmptyOutlinePage implements IContentOutlinePage {
 	 * 
 	 * @param selection the new selection
 	 */
+	@Override
 	public void setSelection(final ISelection selection) {
 	}
 }

@@ -44,36 +44,42 @@ public class PropertiesBrowserContentProvider extends AdapterFactoryContentProvi
 	private final Set<IJobChangeListener> jobListeners = new HashSet<IJobChangeListener>();
 	private final IJobChangeListener mainListener = new IJobChangeListener() {
 
+		@Override
 		public void sleeping(final IJobChangeEvent event) {
 			for (final IJobChangeListener listener : PropertiesBrowserContentProvider.this.jobListeners) {
 				listener.sleeping(event);
 			}
 		}
 
+		@Override
 		public void scheduled(final IJobChangeEvent event) {
 			for (final IJobChangeListener listener : PropertiesBrowserContentProvider.this.jobListeners) {
 				listener.scheduled(event);
 			}
 		}
 
+		@Override
 		public void running(final IJobChangeEvent event) {
 			for (final IJobChangeListener listener : PropertiesBrowserContentProvider.this.jobListeners) {
 				listener.running(event);
 			}
 		}
 
+		@Override
 		public void done(final IJobChangeEvent event) {
 			for (final IJobChangeListener listener : PropertiesBrowserContentProvider.this.jobListeners) {
 				listener.done(event);
 			}
 		}
 
+		@Override
 		public void awake(final IJobChangeEvent event) {
 			for (final IJobChangeListener listener : PropertiesBrowserContentProvider.this.jobListeners) {
 				listener.awake(event);
 			}
 		}
 
+		@Override
 		public void aboutToRun(final IJobChangeEvent event) {
 			for (final IJobChangeListener listener : PropertiesBrowserContentProvider.this.jobListeners) {
 				listener.aboutToRun(event);
@@ -92,6 +98,7 @@ public class PropertiesBrowserContentProvider extends AdapterFactoryContentProvi
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public Object[] getChildren(Object parentElement) {
 		if (parentElement instanceof List) {
 			return ((List< ? >) parentElement).toArray();
@@ -117,6 +124,7 @@ public class PropertiesBrowserContentProvider extends AdapterFactoryContentProvi
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public Object getParent(Object element) {
 		return null;
 	}
@@ -132,6 +140,7 @@ public class PropertiesBrowserContentProvider extends AdapterFactoryContentProvi
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public void dispose() {
 		//Nothing to do
 	}
@@ -139,6 +148,7 @@ public class PropertiesBrowserContentProvider extends AdapterFactoryContentProvi
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public void inputChanged(Viewer viewer, Object oldInput, Object newInput) {
 		super.inputChanged(viewer, oldInput, newInput);
 		this.deferredContentManager = createDeferredContentManager((AbstractTreeViewer) viewer);
@@ -147,6 +157,7 @@ public class PropertiesBrowserContentProvider extends AdapterFactoryContentProvi
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public Object[] getElements(Object inputElement) {
 		final List<IPropertiesProvider> providers = this.map.get(inputElement);
 		if (providers != null) {

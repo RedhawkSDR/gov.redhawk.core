@@ -105,6 +105,7 @@ public class ScaDomainManagerRegistryImpl extends EObjectImpl implements ScaDoma
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public boolean isDisposed() {
 		return disposed;
 	}
@@ -114,6 +115,7 @@ public class ScaDomainManagerRegistryImpl extends EObjectImpl implements ScaDoma
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EList<ScaDomainManager> getDomains() {
 		if (domains == null) {
 			domains = new EObjectContainmentEList.Resolving<ScaDomainManager>(ScaDomainManager.class, this, ScaPackage.SCA_DOMAIN_MANAGER_REGISTRY__DOMAINS);
@@ -126,6 +128,7 @@ public class ScaDomainManagerRegistryImpl extends EObjectImpl implements ScaDoma
 	 * <!-- end-user-doc -->
 	 * @generated NOT
 	 */
+	@Override
 	public ScaDomainManager findDomain(final String domainName) {
 		// END GENERATED CODE
 		ScaDomainManager retVal = null;
@@ -154,6 +157,7 @@ public class ScaDomainManagerRegistryImpl extends EObjectImpl implements ScaDoma
 	 * <!-- end-user-doc -->
 	 * @generated NOT
 	 */
+	@Override
 	public void dispose() {
 		// END GENERATED CODE
 		if (disposed) {
@@ -268,6 +272,7 @@ public class ScaDomainManagerRegistryImpl extends EObjectImpl implements ScaDoma
 	 * <!-- end-user-doc -->
 	 * @generated NOT
 	 */
+	@Override
 	public ScaDomainManager createDomain(final String domainName, final boolean autoConnect, Map<String, String> connectionProperties) {
 		// END GENERATED CODE
 		final ScaDomainManager newDomain = ScaFactory.eINSTANCE.createScaDomainManager();

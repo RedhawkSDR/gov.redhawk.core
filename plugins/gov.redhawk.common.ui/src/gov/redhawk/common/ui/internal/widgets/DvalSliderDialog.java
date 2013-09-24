@@ -217,11 +217,13 @@ public class DvalSliderDialog extends Dialog {
 
 		this.shell.addFocusListener(new FocusListener() {
 
+			@Override
 			public void focusGained(final FocusEvent e) {
 				// Do nothing
 
 			}
 
+			@Override
 			public void focusLost(final FocusEvent e) {
 				DvalSliderDialog.this.focusLost(e);
 			}

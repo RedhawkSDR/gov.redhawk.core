@@ -99,6 +99,7 @@ public abstract class BasicSimplePropertyDetailsPage extends AbstractPropertyDet
 	{
 		kindList.addListChangeListener(new IListChangeListener() {
 
+			@Override
 			public void handleListChange(ListChangeEvent event) {
 				List<PropertyConfigurationType> newChecked = new ArrayList<PropertyConfigurationType>();
 				for (Object obj : kindList) {
@@ -186,6 +187,7 @@ public abstract class BasicSimplePropertyDetailsPage extends AbstractPropertyDet
 		EMFUpdateValueStrategy strategy = new EMFUpdateValueStrategy();
 		strategy.setConverter(new Converter(Boolean.class, String.class) {
 
+			@Override
 			public Object convert(Object fromObject) {
 				if (fromObject == null) {
 					return "";
@@ -208,6 +210,7 @@ public abstract class BasicSimplePropertyDetailsPage extends AbstractPropertyDet
 		EMFUpdateValueStrategy strategy = new EMFUpdateValueStrategy();
 		strategy.setConverter(new Converter(String.class, Boolean.class) {
 
+			@Override
 			public Object convert(Object fromObject) {
 				if (fromObject instanceof String) {
 					if (fromObject.toString().equals("")) {
@@ -234,6 +237,7 @@ public abstract class BasicSimplePropertyDetailsPage extends AbstractPropertyDet
 		final EMFUpdateValueStrategy strategy = new EMFUpdateValueStrategy();
 		strategy.setConverter(new Converter(Action.class, Object.class) {
 
+			@Override
 			public Object convert(final Object fromObject) {
 				if (fromObject instanceof Action) {
 					final Action a = (Action) fromObject;
@@ -256,6 +260,7 @@ public abstract class BasicSimplePropertyDetailsPage extends AbstractPropertyDet
 		final EMFUpdateValueStrategy strategy = new EMFUpdateValueStrategy();
 		strategy.setConverter(new Converter(Object.class, ActionType.class) {
 
+			@Override
 			public Object convert(final Object fromObject) {
 				if (fromObject instanceof ActionType) {
 					final ActionType a = (ActionType) fromObject;
@@ -307,6 +312,7 @@ public abstract class BasicSimplePropertyDetailsPage extends AbstractPropertyDet
 		if (getComposite().getKindViewer() != null) {
 			getComposite().getKindViewer().addCheckStateListener(new ICheckStateListener() {
 
+				@Override
 				public void checkStateChanged(CheckStateChangedEvent event) {
 					if (event.getChecked()) {
 						Kind kind = PrfFactory.eINSTANCE.createKind();
@@ -330,6 +336,7 @@ public abstract class BasicSimplePropertyDetailsPage extends AbstractPropertyDet
 		final EMFUpdateValueStrategy targetToModel = new EMFUpdateValueStrategy();
 		targetToModel.setConverter(new Converter(Boolean.class, Range.class) {
 
+			@Override
 			public Object convert(final Object fromObject) {
 				if ((Boolean) fromObject) {
 					return PrfFactory.eINSTANCE.createRange();
@@ -342,6 +349,7 @@ public abstract class BasicSimplePropertyDetailsPage extends AbstractPropertyDet
 		final EMFUpdateValueStrategy modelToTarget = new EMFUpdateValueStrategy();
 		modelToTarget.setConverter(new Converter(Range.class, Boolean.class) {
 
+			@Override
 			public Object convert(final Object fromObject) {
 				return fromObject != null;
 			}

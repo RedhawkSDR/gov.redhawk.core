@@ -74,6 +74,7 @@ public class PlotPageBook extends Composite {
 		this.rasterShowing = false;
 		parent.addDisposeListener(new DisposeListener() {
 
+			@Override
 			public void widgetDisposed(DisposeEvent e) {
 				dispose();
 			}

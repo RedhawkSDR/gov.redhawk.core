@@ -31,6 +31,7 @@ public class RefreshProviderPropertyTester extends PropertyTester {
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public boolean test(final Object receiver, final String property, final Object[] args, final Object expectedValue) {
 		if (receiver instanceof DataProviderObject) {
 			final DataProviderObject dataProvider = (DataProviderObject) receiver;

@@ -35,30 +35,37 @@ public enum DcdDiagramUtilHelper implements IDiagramUtilHelper {
 	public static final String FILE_EXTENSION = ".dcd.xml"; //$NON-NLS-1$
 	public static final String DIAGRAM_FILE_EXTENSION = ".dcd_diagramV2"; //$NON-NLS-1$
 
+	@Override
 	public String getDiagramFileExtension() {
 		return DIAGRAM_FILE_EXTENSION;
 	}
 
+	@Override
 	public Map< ? , ? > getSaveOptions() {
 		return DcdDiagramEditorUtil.getSaveOptions();
 	}
 
+	@Override
 	public String getModelId() {
 		return DeviceConfigurationEditPart.MODEL_ID;
 	}
 
+	@Override
 	public PreferencesHint getDiagramPreferencesHint() {
 		return DcdDiagramEditorPlugin.DIAGRAM_PREFERENCES_HINT;
 	}
 
+	@Override
 	public EObject getRootDiagramObject(final Resource resource) {
 		return DeviceConfiguration.Util.getDeviceConfiguration(resource);
 	}
 
+	@Override
 	public String getSemanticFileExtension() {
 		return FILE_EXTENSION;
 	}
 
+	@Override
 	public IFile getResource(final Resource resource) {
 		return ModelUtil.getResource(resource);
 	}

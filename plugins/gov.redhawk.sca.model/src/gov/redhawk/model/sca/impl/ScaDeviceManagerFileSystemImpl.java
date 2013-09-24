@@ -65,6 +65,7 @@ public class ScaDeviceManagerFileSystemImpl extends ScaFileSystemImpl<FileSystem
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public ScaDeviceManager getDeviceManager() {
 		if (eContainerFeatureID() != ScaPackage.SCA_DEVICE_MANAGER_FILE_SYSTEM__DEVICE_MANAGER) return null;
 		return (ScaDeviceManager)eContainer();
@@ -95,6 +96,7 @@ public class ScaDeviceManagerFileSystemImpl extends ScaFileSystemImpl<FileSystem
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void setDeviceManager(ScaDeviceManager newDeviceManager) {
 		if (newDeviceManager != eInternalContainer() || (eContainerFeatureID() != ScaPackage.SCA_DEVICE_MANAGER_FILE_SYSTEM__DEVICE_MANAGER && newDeviceManager != null)) {
 			if (EcoreUtil.isAncestor(this, newDeviceManager))

@@ -113,6 +113,7 @@ public class StartOrderDecoratorProvider extends AbstractProvider implements IDe
 				final View view = (View) getDecoratorTarget().getAdapter(View.class);
 				TransactionUtil.getEditingDomain(view).runExclusive(new Runnable() {
 
+					@Override
 					public void run() {
 						StartOrderDecorator.this.viewId = (view != null) ? ViewUtil.getIdStr(view) : null; // SUPPRESS CHECKSTYLE AvoidInLine
 					}
@@ -125,6 +126,7 @@ public class StartOrderDecoratorProvider extends AbstractProvider implements IDe
 		/**
 		 * {@inheritDoc}
 		 */
+		@Override
 		public void activate() {
 			if (this.viewId == null) {
 				return;
@@ -151,6 +153,7 @@ public class StartOrderDecoratorProvider extends AbstractProvider implements IDe
 		/**
 		 * {@inheritDoc}
 		 */
+		@Override
 		public void refresh() {
 			removeDecoration();
 			final View view = (View) getDecoratorTarget().getAdapter(View.class);
@@ -240,6 +243,7 @@ public class StartOrderDecoratorProvider extends AbstractProvider implements IDe
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public boolean provides(final IOperation operation) {
 		if (!(operation instanceof CreateDecoratorsOperation)) {
 			return false;
@@ -252,6 +256,7 @@ public class StartOrderDecoratorProvider extends AbstractProvider implements IDe
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public void createDecorators(final IDecoratorTarget decoratorTarget) {
 		final EditPart editPart = (EditPart) decoratorTarget.getAdapter(EditPart.class);
 		if (editPart instanceof GraphicalEditPart || editPart instanceof AbstractConnectionEditPart) {

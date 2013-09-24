@@ -50,6 +50,7 @@ public class ScaContentDescriber implements IScaContentDescriber, IExecutableExt
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public int describe(final Object contents) throws IOException {
 		if (this.params == null) {
 			return IScaContentDescriber.INDETERMINATE;
@@ -123,6 +124,7 @@ public class ScaContentDescriber implements IScaContentDescriber, IExecutableExt
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public IEditorInput getEditorInput(final Object contents) {
 		final IAdapterManager adapterManager = Platform.getAdapterManager();
 
@@ -149,6 +151,7 @@ public class ScaContentDescriber implements IScaContentDescriber, IExecutableExt
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	@SuppressWarnings("unchecked")
 	public void setInitializationData(final IConfigurationElement config, final String propertyName, final Object data) throws CoreException {
 		if (data instanceof Map) {

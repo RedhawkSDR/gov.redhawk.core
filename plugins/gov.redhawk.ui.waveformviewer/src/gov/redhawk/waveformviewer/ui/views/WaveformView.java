@@ -74,6 +74,7 @@ public class WaveformView extends ViewPart implements DragSourceListener, DropTa
 			try {
 				ScaModelCommand.runExclusive(registry, new RunnableWithResult.Impl<Object>() {
 
+					@Override
 					public void run() {
 						for (final ScaDomainManager adom : doms) {
 							if (adom.isConnected()) {
@@ -148,16 +149,19 @@ public class WaveformView extends ViewPart implements DragSourceListener, DropTa
 		this.treeViewer.getControl().setFocus();
 	}
 
+	@Override
 	public void dragFinished(final DragSourceEvent event) {
 		if ((this.dragSource != null) && (event.detail == DND.DROP_COPY)) {
 			this.dragSource = null;
 		}
 	}
 
+	@Override
 	public void dragSetData(final DragSourceEvent event) {
 		event.data = this.dragSource.eResource().getURI().toString();
 	}
 
+	@Override
 	public void dragStart(final DragSourceEvent event) {
 		final Object dragObject = this.treeViewer.getCell(new Point(event.x, event.y)).getElement();
 
@@ -170,21 +174,27 @@ public class WaveformView extends ViewPart implements DragSourceListener, DropTa
 		event.doit = this.dragSource != null;
 	}
 
+	@Override
 	public void dragEnter(final DropTargetEvent event) {
 	}
 
+	@Override
 	public void dragLeave(final DropTargetEvent event) {
 	}
 
+	@Override
 	public void dragOperationChanged(final DropTargetEvent event) {
 	}
 
+	@Override
 	public void dragOver(final DropTargetEvent event) {
 	}
 
+	@Override
 	public void drop(final DropTargetEvent event) {
 	}
 
+	@Override
 	public void dropAccept(final DropTargetEvent event) {
 	}
 }

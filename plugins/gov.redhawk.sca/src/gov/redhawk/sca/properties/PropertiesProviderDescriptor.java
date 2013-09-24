@@ -38,6 +38,7 @@ public class PropertiesProviderDescriptor implements IPropertiesProviderDescript
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public String getName() {
 		return this.name;
 	}
@@ -45,6 +46,7 @@ public class PropertiesProviderDescriptor implements IPropertiesProviderDescript
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public String getId() {
 		return this.id;
 	}
@@ -52,6 +54,7 @@ public class PropertiesProviderDescriptor implements IPropertiesProviderDescript
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public IPropertiesProvider getProvider() {
 		if (this.provider == null) {
 			try {

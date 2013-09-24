@@ -91,6 +91,7 @@ public class BrowsePropertiesWizardPage extends WizardPage {
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public void createControl(final Composite parent) {
 
 		final Composite client = new Composite(parent, SWT.NULL);
@@ -125,6 +126,7 @@ public class BrowsePropertiesWizardPage extends WizardPage {
 		this.propertyTree.setSorter(new ViewerSorter());
 		this.propertyTree.addSelectionChangedListener(new ISelectionChangedListener() {
 
+			@Override
 			public void selectionChanged(SelectionChangedEvent event) {
 				properties.clear();
 				List<Object> selection = Arrays.asList(((IStructuredSelection) event.getSelection()).toArray());

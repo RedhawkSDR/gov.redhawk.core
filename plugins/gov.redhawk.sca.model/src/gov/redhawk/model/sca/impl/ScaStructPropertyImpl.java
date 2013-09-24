@@ -95,6 +95,7 @@ public class ScaStructPropertyImpl extends ScaAbstractPropertyImpl<Struct> imple
 
 	private EContentAdapter derrivedStatusListener = new EContentAdapter() {
 		// END GENERATED CODE
+		@Override
 		public void notifyChanged(org.eclipse.emf.common.notify.Notification notification) {
 			super.notifyChanged(notification);
 			if (notification.getNotifier() == ScaStructPropertyImpl.this) {
@@ -111,6 +112,7 @@ public class ScaStructPropertyImpl extends ScaAbstractPropertyImpl<Struct> imple
 			}
 		}
 
+		@Override
 		protected void addAdapter(org.eclipse.emf.common.notify.Notifier notifier) {
 			if (notifier instanceof EObject) {
 				if (((EObject) notifier).eContainer() == ScaStructPropertyImpl.this) {
@@ -202,6 +204,7 @@ public class ScaStructPropertyImpl extends ScaAbstractPropertyImpl<Struct> imple
 	 * <!-- end-user-doc -->
 	 * @generated NOT
 	 */
+	@Override
 	public SimplesList getSimples() {
 		// END GENERATED CODE
 		return simples;
@@ -266,6 +269,7 @@ public class ScaStructPropertyImpl extends ScaAbstractPropertyImpl<Struct> imple
 	 * <!-- end-user-doc -->
 	 * @generated NOT
 	 */
+	@Override
 	public ScaSimpleProperty getSimple(String id) {
 		// END GENERATED CODE
 		for (ScaSimpleProperty prop : getSimples()) {
@@ -284,6 +288,7 @@ public class ScaStructPropertyImpl extends ScaAbstractPropertyImpl<Struct> imple
 	 * @generated NOT
 	 *
 	 */
+	@Override
 	public void configure(DataType[] configProperties) throws InvalidConfiguration, PartialConfiguration {
 		// END GENERATED CODE
 		Map<String, Any> configMap = new HashMap<String, Any>();
@@ -312,6 +317,7 @@ public class ScaStructPropertyImpl extends ScaAbstractPropertyImpl<Struct> imple
 	 * @generated NOT
 	 * 
 	 */
+	@Override
 	public void query(PropertiesHolder configProperties) throws UnknownProperties {
 		// END GENERATED CODE
 		EObject container = eContainer();

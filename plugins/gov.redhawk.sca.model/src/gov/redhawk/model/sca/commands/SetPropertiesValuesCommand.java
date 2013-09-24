@@ -37,6 +37,7 @@ public class SetPropertiesValuesCommand extends SetStatusCommand<ScaPropertyCont
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public void execute() {
 		if (propHolder.value != null && propHolder.value.length > 0) {
 			final Map<String, ScaAbstractProperty< ? >> props = new HashMap<String, ScaAbstractProperty< ? >>();

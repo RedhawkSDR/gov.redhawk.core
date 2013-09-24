@@ -59,6 +59,7 @@ public class ScaLoadableDeviceImpl< L extends LoadableDevice > extends ScaDevice
 	/**
 	 * @since 14.0
 	 */
+	@Override
 	public void load(final FileSystem fs, final String fileName, final LoadType loadKind) throws InvalidState, InvalidLoadKind, InvalidFileName, LoadFail {
 		// END GENERATED CODE
 		L device = fetchNarrowedObject(null);
@@ -69,6 +70,7 @@ public class ScaLoadableDeviceImpl< L extends LoadableDevice > extends ScaDevice
 		// BEGIN GENERATED CODE
 	}
 
+	@Override
 	public void unload(final String fileName) throws InvalidState, InvalidFileName {
 		// END GENERATED CODE
 		L device = fetchNarrowedObject(null);

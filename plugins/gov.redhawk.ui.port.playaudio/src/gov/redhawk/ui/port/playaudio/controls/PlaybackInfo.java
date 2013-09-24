@@ -348,6 +348,7 @@ public class PlaybackInfo extends Composite {
 		this.pauseButton.setEnabled(false);
 		this.pauseButton.addSelectionListener(new SelectionAdapter() {
 
+			@Override
 			public void widgetSelected(final SelectionEvent e) {
 				if (receiver.isPlaying()) {
 					receiver.pause();
@@ -367,6 +368,7 @@ public class PlaybackInfo extends Composite {
 		this.disconnectButton.setLayoutData(new GridData(SWT.CENTER, SWT.CENTER, false, false, 2, 1));
 		this.disconnectButton.setEnabled(false);
 		this.disconnectButton.addSelectionListener(new SelectionAdapter() {
+			@Override
 			public void widgetSelected(SelectionEvent e) {
 				AudioReceiver oldValue = receiver;
 				setInput(null);

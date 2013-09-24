@@ -203,6 +203,7 @@ public class FileSystemImplTest {
 			final File subRoot = new File(FileSystemImplTest.root, "subFolder");
 			Assert.assertEquals(subRoot.list(new FilenameFilter() {
 
+				@Override
 				public boolean accept(final File dir, final String name) {
 					if (!dir.equals(subRoot)) {
 						return false;

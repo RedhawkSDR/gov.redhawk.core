@@ -61,6 +61,7 @@ public class DomainConnectionUtil {
 					@Override
 					protected IStatus run(final IProgressMonitor monitor) {
 						final ScaDomainManager domain = ScaModelCommandWithResult.execute(registry, new ScaModelCommandWithResult<ScaDomainManager>() {
+							@Override
 							public void execute() {
 								setResult(registry.createDomain(domainName, autoConnect, connectionProperties));
 							}

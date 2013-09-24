@@ -161,6 +161,7 @@ public class PortsPackageImpl extends EPackageImpl implements PortsPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EClass getPortMonitor() {
 		return portMonitorEClass;
 	}
@@ -170,6 +171,7 @@ public class PortsPackageImpl extends EPackageImpl implements PortsPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EReference getPortMonitor_Port() {
 		return (EReference)portMonitorEClass.getEStructuralFeatures().get(0);
 	}
@@ -179,6 +181,7 @@ public class PortsPackageImpl extends EPackageImpl implements PortsPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EReference getPortMonitor_Connections() {
 		return (EReference)portMonitorEClass.getEStructuralFeatures().get(1);
 	}
@@ -188,6 +191,7 @@ public class PortsPackageImpl extends EPackageImpl implements PortsPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EAttribute getPortMonitor_State() {
 		return (EAttribute)portMonitorEClass.getEStructuralFeatures().get(2);
 	}
@@ -197,6 +201,7 @@ public class PortsPackageImpl extends EPackageImpl implements PortsPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EClass getPortConnectionMonitor() {
 		return portConnectionMonitorEClass;
 	}
@@ -206,6 +211,7 @@ public class PortsPackageImpl extends EPackageImpl implements PortsPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EReference getPortConnectionMonitor_Port() {
 		return (EReference)portConnectionMonitorEClass.getEStructuralFeatures().get(0);
 	}
@@ -215,6 +221,7 @@ public class PortsPackageImpl extends EPackageImpl implements PortsPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EAttribute getPortConnectionMonitor_ConnectionId() {
 		return (EAttribute)portConnectionMonitorEClass.getEStructuralFeatures().get(1);
 	}
@@ -224,6 +231,7 @@ public class PortsPackageImpl extends EPackageImpl implements PortsPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EClass getMonitorRegistry() {
 		return monitorRegistryEClass;
 	}
@@ -233,6 +241,7 @@ public class PortsPackageImpl extends EPackageImpl implements PortsPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EReference getMonitorRegistry_Monitors() {
 		return (EReference)monitorRegistryEClass.getEStructuralFeatures().get(0);
 	}
@@ -242,6 +251,7 @@ public class PortsPackageImpl extends EPackageImpl implements PortsPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EClass getPortSupplierMonitor() {
 		return portSupplierMonitorEClass;
 	}
@@ -251,6 +261,7 @@ public class PortsPackageImpl extends EPackageImpl implements PortsPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EReference getPortSupplierMonitor_PortContainer() {
 		return (EReference)portSupplierMonitorEClass.getEStructuralFeatures().get(0);
 	}
@@ -260,6 +271,7 @@ public class PortsPackageImpl extends EPackageImpl implements PortsPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EReference getPortSupplierMonitor_Monitors() {
 		return (EReference)portSupplierMonitorEClass.getEStructuralFeatures().get(1);
 	}
@@ -269,6 +281,7 @@ public class PortsPackageImpl extends EPackageImpl implements PortsPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EClass getMonitor() {
 		return monitorEClass;
 	}
@@ -278,6 +291,7 @@ public class PortsPackageImpl extends EPackageImpl implements PortsPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EClass getPortStatisticsProvider() {
 		return portStatisticsProviderEClass;
 	}
@@ -287,6 +301,7 @@ public class PortsPackageImpl extends EPackageImpl implements PortsPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EAttribute getPortStatisticsProvider_Data() {
 		return (EAttribute)portStatisticsProviderEClass.getEStructuralFeatures().get(0);
 	}
@@ -296,6 +311,7 @@ public class PortsPackageImpl extends EPackageImpl implements PortsPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EDataType getPortUsageType() {
 		return portUsageTypeEDataType;
 	}
@@ -305,6 +321,7 @@ public class PortsPackageImpl extends EPackageImpl implements PortsPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EDataType getPortStatistics() {
 		return portStatisticsEDataType;
 	}
@@ -314,6 +331,7 @@ public class PortsPackageImpl extends EPackageImpl implements PortsPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public PortsFactory getPortsFactory() {
 		return (PortsFactory)getEFactoryInstance();
 	}

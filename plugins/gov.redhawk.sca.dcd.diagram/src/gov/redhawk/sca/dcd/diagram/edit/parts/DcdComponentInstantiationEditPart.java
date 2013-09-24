@@ -69,6 +69,7 @@ public class DcdComponentInstantiationEditPart extends mil.jpeojtrs.sca.dcd.diag
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public NodeFigure basicCreateNodePlate() {
 		return super.createNodePlate();
 	}
@@ -76,6 +77,7 @@ public class DcdComponentInstantiationEditPart extends mil.jpeojtrs.sca.dcd.diag
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public boolean basicAddFixedChild(final EditPart childEditPart) {
 		return super.addFixedChild(childEditPart);
 	}
@@ -83,6 +85,7 @@ public class DcdComponentInstantiationEditPart extends mil.jpeojtrs.sca.dcd.diag
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public void setPrimaryShape(final ComponentInstantiationFigure retVal) {
 		this.primaryShape = retVal;
 	}
@@ -90,6 +93,7 @@ public class DcdComponentInstantiationEditPart extends mil.jpeojtrs.sca.dcd.diag
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public IPreferenceStore getPreferenceStore() {
 		return DcdDiagramPluginActivator.getDefault().getPreferenceStore();
 	}
@@ -97,6 +101,7 @@ public class DcdComponentInstantiationEditPart extends mil.jpeojtrs.sca.dcd.diag
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public void basicAddNotationalListeners() {
 		super.addNotationalListeners();
 	}
@@ -104,6 +109,7 @@ public class DcdComponentInstantiationEditPart extends mil.jpeojtrs.sca.dcd.diag
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public void basicRemoveNotationalListeners() {
 		super.removeNotationalListeners();
 	}
@@ -111,6 +117,7 @@ public class DcdComponentInstantiationEditPart extends mil.jpeojtrs.sca.dcd.diag
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public DragTracker basicGetDragTracker(final Request request) {
 		return super.getDragTracker(request);
 	}

@@ -19,6 +19,7 @@ import java.util.List;
 
 import org.eclipse.core.runtime.ISafeRunnable;
 import org.eclipse.core.runtime.SafeRunner;
+import org.eclipse.jdt.annotation.NonNull;
 import org.omg.PortableServer.Servant;
 
 import BULKIO.StreamSRI;
@@ -56,25 +57,31 @@ public abstract class AbstractSriReceiver< T extends updateSRIOperations > exten
 		}
 	}
 
+	@SuppressWarnings("null")
+	@NonNull
 	protected List<T> getChildren() {
 		return children;
 	}
 
 	@SuppressWarnings("unchecked")
-	public void registerDataReceiver(updateSRIOperations receiver) {
+	public void registerDataReceiver(@NonNull updateSRIOperations receiver) {
 		children.add((T) receiver);
 		StreamSRI[] currentSri = activeSRIs();
-		for (StreamSRI sri : currentSri) {
-			receiver.pushSRI(sri);
+		if (currentSri != null) {
+			for (StreamSRI sri : currentSri) {
+				receiver.pushSRI(sri);
+			}
 		}
 	}
 
-	public void deregisterDataReceiver(updateSRIOperations receiver) {
+	public void deregisterDataReceiver(@NonNull updateSRIOperations receiver) {
 		children.remove(receiver);
 	}
 
+	@NonNull
 	public abstract Servant toServant();
 
+	@NonNull
 	public abstract Class<T> getType();
 
 	public boolean isEmpty() {

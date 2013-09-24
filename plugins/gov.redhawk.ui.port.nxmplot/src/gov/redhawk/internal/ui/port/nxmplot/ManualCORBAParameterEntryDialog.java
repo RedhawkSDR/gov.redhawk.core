@@ -74,6 +74,7 @@ public class ManualCORBAParameterEntryDialog extends Dialog {
 		this.hostField.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false));
 		this.hostField.setText(this.connectionSettings.getHost());
 		this.hostField.addModifyListener(new ModifyListener() {
+			@Override
 			public void modifyText(final ModifyEvent e) {
 				ManualCORBAParameterEntryDialog.this.connectionSettings.setHost(ManualCORBAParameterEntryDialog.this.hostField.getText());
 			}
@@ -87,6 +88,7 @@ public class ManualCORBAParameterEntryDialog extends Dialog {
 		this.portField.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false));
 		this.portField.setText(Integer.toString(this.connectionSettings.getPort()));
 		this.portField.addModifyListener(new ModifyListener() {
+			@Override
 			public void modifyText(final ModifyEvent e) {
 				try {
 					final int port = Integer.parseInt(ManualCORBAParameterEntryDialog.this.portField.getText());
@@ -105,6 +107,7 @@ public class ManualCORBAParameterEntryDialog extends Dialog {
 		this.resourceField.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false, 3, 1)); // SUPPRESS CHECKSTYLE MagicNumber
 		this.resourceField.setText(this.connectionSettings.getResource());
 		this.resourceField.addModifyListener(new ModifyListener() {
+			@Override
 			public void modifyText(final ModifyEvent e) {
 				ManualCORBAParameterEntryDialog.this.connectionSettings.setResource(ManualCORBAParameterEntryDialog.this.resourceField.getText());
 			}
@@ -118,6 +121,7 @@ public class ManualCORBAParameterEntryDialog extends Dialog {
 		this.portNameField.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false, 3, 1)); // SUPPRESS CHECKSTYLE MagicNumber
 		this.portNameField.setText(this.connectionSettings.getPortName());
 		this.portNameField.addModifyListener(new ModifyListener() {
+			@Override
 			public void modifyText(final ModifyEvent e) {
 				ManualCORBAParameterEntryDialog.this.connectionSettings.setPortName(ManualCORBAParameterEntryDialog.this.portNameField.getText());
 			}
@@ -135,6 +139,7 @@ public class ManualCORBAParameterEntryDialog extends Dialog {
 		}
 		this.formatField.setText(idl);
 		this.formatField.addModifyListener(new ModifyListener() {
+			@Override
 			public void modifyText(final ModifyEvent e) {
 				ManualCORBAParameterEntryDialog.this.connectionSettings.setIDL(ManualCORBAParameterEntryDialog.this.formatField.getText());
 			}

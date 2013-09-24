@@ -109,6 +109,7 @@ public class LaunchWaveformJob extends SilentJob {
 					try {
 						factory = ScaModelCommand.runExclusive(this.domMgr, new RunnableWithResult.Impl<ScaWaveformFactory>() {
 
+							@Override
 							public void run() {
 								for (final ScaWaveformFactory factory : LaunchWaveformJob.this.domMgr.fetchWaveformFactories(null)) {
 									if (factory.getProfile().equals(profile)) {

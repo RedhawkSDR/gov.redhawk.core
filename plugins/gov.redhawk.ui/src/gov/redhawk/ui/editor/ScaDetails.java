@@ -52,6 +52,7 @@ public abstract class ScaDetails extends AbstractFormPart implements IDetailsPag
 	/**
 	 * @wbp.parser.entryPoint
 	 */
+	@Override
 	public final void createContents(final Composite parent) {
 
 		GridLayoutFactory.fillDefaults().numColumns(1).applyTo(parent);
@@ -102,6 +103,7 @@ public abstract class ScaDetails extends AbstractFormPart implements IDetailsPag
 		return false;
 	}
 
+	@Override
 	public final void selectionChanged(final IFormPart part, final ISelection selection) {
 		final IStructuredSelection sel = (IStructuredSelection) selection;
 		if (!sel.isEmpty()) {
@@ -154,6 +156,7 @@ public abstract class ScaDetails extends AbstractFormPart implements IDetailsPag
 		return this.toolkit;
 	}
 
+	@Override
 	public ScaFormPage getPage() {
 		return this.parentPage;
 	}

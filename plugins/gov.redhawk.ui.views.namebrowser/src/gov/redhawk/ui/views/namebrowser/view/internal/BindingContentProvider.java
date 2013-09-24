@@ -33,9 +33,11 @@ public class BindingContentProvider implements ITreeContentProvider, IStructured
 		super();
 	}
 
+	@Override
 	public void dispose() {
 	}
 
+	@Override
 	public void inputChanged(final Viewer viewer, final Object oldInput, final Object newInput) {
 		if (newInput == null) {
 			if (this.fManager != null) {
@@ -53,10 +55,12 @@ public class BindingContentProvider implements ITreeContentProvider, IStructured
 		};
 	}
 
+	@Override
 	public Object[] getElements(final Object inputElement) {
 		return getChildren(inputElement);
 	}
 
+	@Override
 	public Object[] getChildren(final Object parentElement) {
 		if (parentElement instanceof IDeferredWorkbenchAdapter) {
 			return this.fManager.getChildren(parentElement);
@@ -71,6 +75,7 @@ public class BindingContentProvider implements ITreeContentProvider, IStructured
 		return EMPTY;
 	}
 
+	@Override
 	public boolean hasChildren(final Object element) {
 		if (element instanceof IDeferredWorkbenchAdapter) {
 			return this.fManager.mayHaveChildren(element);
@@ -80,6 +85,7 @@ public class BindingContentProvider implements ITreeContentProvider, IStructured
 		return false;
 	}
 
+	@Override
 	public Object getParent(final Object element) {
 		if (element instanceof BindingNode) {
 			return ((BindingNode) element).getParent();

@@ -22,15 +22,18 @@ public class EnumValuesContentProvider implements IStructuredContentProvider {
 
 	private Enumerations enumerations;
 
+	@Override
 	public void dispose() {
 		// TODO Auto-generated method stub
 		
 	}
 
+	@Override
 	public void inputChanged(Viewer viewer, Object oldInput, Object newInput) {
 		this.enumerations = (Enumerations) newInput;
 	}
 
+	@Override
 	public Object[] getElements(Object inputElement) {
 		return this.enumerations.getEnumeration().toArray(new Enumeration[0]);
 	}

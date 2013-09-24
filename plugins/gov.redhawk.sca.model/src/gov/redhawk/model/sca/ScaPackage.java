@@ -5460,11 +5460,13 @@ public interface ScaPackage extends EPackage {
 	/**
 	 * @deprecated Use {@link #SCA_SIMPLE_SEQUENCE_PROPERTY__VALUES}
 	 */
+	@Deprecated
 	int SCA_SIMPLE_SEQUENCE_PROPERTY__VALUE = SCA_SIMPLE_SEQUENCE_PROPERTY__VALUES;
 
 	/**
 	 * @deprecated Use {@link #getScaSimpleSequenceProperty_Values()}
 	 */
+	@Deprecated
 	EAttribute getScaSimpleSequenceProperty_Value();
 
 	/**
@@ -6656,6 +6658,7 @@ public interface ScaPackage extends EPackage {
 		/**
 		 * @deprecated Use {@link #SCA_SIMPLE_SEQUENCE_PROPERTY__VALUES}
 		 */
+		@Deprecated
 		EAttribute SCA_SIMPLE_SEQUENCE_PROPERTY__VALUE = SCA_SIMPLE_SEQUENCE_PROPERTY__VALUES;
 
 	}

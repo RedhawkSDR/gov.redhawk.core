@@ -20,6 +20,7 @@ import nxm.sys.lib.MidasException;
 import nxm.sys.lib.Primitive;
 
 import org.eclipse.core.runtime.Status;
+import org.eclipse.jdt.annotation.NonNull;
 import org.omg.CORBA.SystemException;
 import org.omg.CosNaming.NamingContextExt;
 import org.omg.CosNaming.NamingContextExtHelper;
@@ -70,6 +71,7 @@ public class CorbaPrimitive extends Primitive {
 	 */
 	protected final void shutdownNonBlocking() {
 		Thread shutdownThread = new Thread("Corba Shutdown") {
+			@Override
 			public void run() {
 				shutdown();
 			}
@@ -95,6 +97,7 @@ public class CorbaPrimitive extends Primitive {
 	/**
 	 * @since 10.0
 	 */
+	@NonNull
 	protected String getPortIOR() {
 		// Get the resource to connect to - MA is the argument list
 		// Resource is the component you're trying to connect to
@@ -104,6 +107,7 @@ public class CorbaPrimitive extends Primitive {
 		// Make the ORB connection - MA is the argument list
 		final String host = this.MA.getU(CorbaPrimitive.A_HOST);
 		final int port = this.MA.getL(CorbaPrimitive.A_PORT);
+		String retVal;
 
 		if (resourceName != null && !resourceName.isEmpty() && host != null && !host.isEmpty() && port > 0) {
 			OrbSession session = OrbSession.createSession();
@@ -127,7 +131,7 @@ public class CorbaPrimitive extends Primitive {
 				// Get the port from the resource - PORT_NAME is the name of the
 				// port you want to connect to
 				portRef = PortHelper.narrow(res.getPort(portName));
-				return portRef.toString();
+				retVal = portRef.toString();
 			} catch (final SystemException e) {
 				throw new MidasException("Failed to find Port.", e);
 			} catch (UnknownPort e) {
@@ -150,8 +154,13 @@ public class CorbaPrimitive extends Primitive {
 		} else {
 			// If ncRef was null, we were passed an IOR for the
 			// port. Use this to directly resolve the port.
-			return portName;
+			retVal = portName;
 		}
+		
+		if (retVal == null) {
+			throw new IllegalStateException("Failed to resolve port ior");
+		}
+		return retVal;
 	}
 
 }

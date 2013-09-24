@@ -98,6 +98,7 @@ public abstract class ScaPropertyContainerTest extends CorbaObjWrapperTest {
 		final URI oldURI = getFixture().getProfileURI();
 		ScaModelCommand.execute(getFixture(), new ScaModelCommand() {
 
+			@Override
 			public void execute() {
 				getFixture().unsetProfileURI();
 				Assert.assertFalse(getFixture().isSetProfileURI());
@@ -122,6 +123,7 @@ public abstract class ScaPropertyContainerTest extends CorbaObjWrapperTest {
 		Assert.assertTrue(getFixture().isSetProfileURI());
 		ScaModelCommand.execute(getFixture(), new ScaModelCommand() {
 
+			@Override
 			public void execute() {
 				getFixture().unsetProfileURI();
 				Assert.assertFalse(getFixture().isSetProfileURI());
@@ -143,6 +145,7 @@ public abstract class ScaPropertyContainerTest extends CorbaObjWrapperTest {
 		getFixture().fetchProfileURI(null);
 		ScaModelCommand.execute(getFixture(), new ScaModelCommand() {
 
+			@Override
 			public void execute() {
 				Assert.assertTrue(getFixture().isSetProfileURI());
 			}
@@ -173,6 +176,7 @@ public abstract class ScaPropertyContainerTest extends CorbaObjWrapperTest {
 		// END GENERATED CODE
 		ScaModelCommand.execute(getFixture(), new ScaModelCommand() {
 
+			@Override
 			public void execute() {
 				getFixture().setProfileObj(null);
 				getFixture().unsetProfileObj();
@@ -195,6 +199,7 @@ public abstract class ScaPropertyContainerTest extends CorbaObjWrapperTest {
 		Assert.assertTrue(getFixture().isSetProfileObj());
 		ScaModelCommand.execute(getFixture(), new ScaModelCommand() {
 
+			@Override
 			public void execute() {
 				getFixture().unsetProfileObj();
 				Assert.assertFalse(getFixture().isSetProfileObj());
@@ -215,6 +220,7 @@ public abstract class ScaPropertyContainerTest extends CorbaObjWrapperTest {
 		getFixture().fetchProfileObject(null);
 		ScaModelCommand.execute(getFixture(), new ScaModelCommand() {
 
+			@Override
 			public void execute() {
 				Assert.assertTrue(getFixture().isSetProfileObj());
 			}
@@ -248,6 +254,7 @@ public abstract class ScaPropertyContainerTest extends CorbaObjWrapperTest {
 
 		ScaModelCommand.execute(getFixture(), new ScaModelCommand() {
 
+			@Override
 			public void execute() {
 				getFixture().unsetProperties();
 				Assert.assertEquals(0, getFixture().getProperties().size());

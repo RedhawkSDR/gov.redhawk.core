@@ -140,6 +140,7 @@ public class ScaWaveformFactoryTest extends CorbaObjWrapperTest {
 		Assert.assertNotNull(getFixture().getProfileURI());
 		ScaModelCommand.execute(getFixture(), new ScaModelCommand() {
 
+			@Override
 			public void execute() {
 				getFixture().setProfileURI(null);
 				Assert.assertNull(getFixture().getProfileURI());
@@ -161,6 +162,7 @@ public class ScaWaveformFactoryTest extends CorbaObjWrapperTest {
 		Assert.assertNotNull(getFixture().getProfileURI());
 		ScaModelCommand.execute(getFixture(), new ScaModelCommand() {
 
+			@Override
 			public void execute() {
 				getFixture().unsetProfileURI();
 				Assert.assertNull(getFixture().getProfileURI());
@@ -210,6 +212,7 @@ public class ScaWaveformFactoryTest extends CorbaObjWrapperTest {
 		// END GENERATED CODE
 		ScaModelCommand.execute(getFixture(), new ScaModelCommand() {
 
+			@Override
 			public void execute() {
 				getFixture().setProfile(null);
 				getFixture().setProfile("BadProfile");
@@ -245,6 +248,7 @@ public class ScaWaveformFactoryTest extends CorbaObjWrapperTest {
 		// END GENERATED CODE
 		ScaModelCommand.execute(getFixture(), new ScaModelCommand() {
 
+			@Override
 			public void execute() {
 				getFixture().setProfileObj(null);
 			}
@@ -265,6 +269,7 @@ public class ScaWaveformFactoryTest extends CorbaObjWrapperTest {
 		Assert.assertNotNull(getFixture().getProfileObj());
 		ScaModelCommand.execute(getFixture(), new ScaModelCommand() {
 
+			@Override
 			public void execute() {
 				getFixture().unsetProfileObj();
 				Assert.assertNull(getFixture().getProfileObj());
@@ -311,6 +316,7 @@ public class ScaWaveformFactoryTest extends CorbaObjWrapperTest {
 		// END GENERATED CODE
 		ScaModelCommand.execute(getFixture(), new ScaModelCommand() {
 
+			@Override
 			public void execute() {
 				Assert.assertNotNull(getFixture().getDomMgr());
 			}

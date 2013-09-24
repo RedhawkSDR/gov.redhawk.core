@@ -205,6 +205,7 @@ public class ScaStructSequencePropertyItemProvider
 		if (feature == ScaPackage.Literals.SCA_STRUCT_SEQUENCE_PROPERTY__STRUCTS) {
 			return new ScaModelCommand() {
 				
+				@Override
 				public void execute() {
 					ScaStructSequenceProperty prop = (ScaStructSequenceProperty) owner;
 					prop.eSet(ScaPackage.Literals.SCA_STRUCT_SEQUENCE_PROPERTY__STRUCTS, value);
@@ -215,6 +216,7 @@ public class ScaStructSequencePropertyItemProvider
 		}
 	}
 	
+	@Override
 	public Object getImage(Object object) {
 		return overlayImage(object, getPrfResourceLocator().getImage("full/obj16/StructSequence"));
 	}

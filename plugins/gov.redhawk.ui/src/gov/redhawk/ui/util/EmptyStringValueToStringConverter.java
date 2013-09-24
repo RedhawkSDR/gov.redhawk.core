@@ -23,6 +23,7 @@ public class EmptyStringValueToStringConverter extends Converter {
 	    super(String.class, String.class);
     }
 
+	@Override
 	public Object convert(final Object value) {
 		if (StringToEmptyStringValueConverter.EMPTY_STRING_VALUE.equals(value)) {
 			return "";

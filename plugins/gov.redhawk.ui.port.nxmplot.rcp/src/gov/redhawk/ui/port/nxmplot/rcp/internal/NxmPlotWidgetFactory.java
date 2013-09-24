@@ -25,6 +25,7 @@ public class NxmPlotWidgetFactory implements INxmPlotWidgetFactory {
 
 	}
 	
+	@Override
 	public AbstractNxmPlotWidget createPlotWidget(Composite parent, int style) {
 		return new RcpNxmPlotWidget(parent, style);
 	}

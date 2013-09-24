@@ -37,6 +37,7 @@ public abstract class SilentModelJob extends SilentJob {
 	private final EStructuralFeature errFeature;
 	
 	private final IJobChangeListener jobChangeListener = new JobChangeAdapter() {
+		@Override
 		public void done(org.eclipse.core.runtime.jobs.IJobChangeEvent event) {
 			IStatus silentStatus = getSilentStatus();
 			IStatusProvider dataProvider = getModelObject();

@@ -80,6 +80,7 @@ public abstract class IDisposableTest extends TestCase {
 		// END GENERATED CODE
 		ScaModelCommand.execute(getFixture(), new ScaModelCommand() {
 
+			@Override
 			public void execute() {
 				IDisposableTest.testDipose(getFixture());
 			}

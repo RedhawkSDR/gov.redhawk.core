@@ -223,10 +223,12 @@ public class PlotActivator extends AbstractUIPlugin {
 
 	private static class PlotSchedulingRule implements ISchedulingRule {
 
+		@Override
 		public boolean contains(final ISchedulingRule rule) {
 			return rule == this;
 		}
 
+		@Override
 		public boolean isConflicting(final ISchedulingRule rule) {
 			return contains(rule);
 		}

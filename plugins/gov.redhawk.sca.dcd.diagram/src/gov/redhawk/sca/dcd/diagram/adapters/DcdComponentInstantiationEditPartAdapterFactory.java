@@ -39,6 +39,7 @@ public class DcdComponentInstantiationEditPartAdapterFactory implements IAdapter
 	        ScaDevice.class, ScaAbstractComponent.class, ScaPropertyContainer.class
 	};
 
+	@Override
 	public Object getAdapter(final Object adaptableObject, final Class adapterType) {
 		if (adaptableObject instanceof GraphicalEditPart) {
 			final GraphicalEditPart editPart = (GraphicalEditPart) adaptableObject;
@@ -54,6 +55,7 @@ public class DcdComponentInstantiationEditPartAdapterFactory implements IAdapter
 					if (manager != null) {
 						final Callable<List<ScaDevice< ? >>> callable = new Callable<List<ScaDevice< ? >>>() {
 
+							@Override
 							public List<ScaDevice< ? >> call() throws Exception {
 								return manager.fetchDevices(null);
 							}
@@ -79,6 +81,7 @@ public class DcdComponentInstantiationEditPartAdapterFactory implements IAdapter
 		return null;
 	}
 
+	@Override
 	public Class< ? >[] getAdapterList() {
 		return DcdComponentInstantiationEditPartAdapterFactory.LIST;
 	}

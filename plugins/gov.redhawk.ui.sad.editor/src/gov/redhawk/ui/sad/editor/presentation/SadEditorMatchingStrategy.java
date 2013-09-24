@@ -25,6 +25,7 @@ import org.eclipse.ui.PartInitException;
  */
 public class SadEditorMatchingStrategy implements IEditorMatchingStrategy {
 
+	@Override
 	public boolean matches(final IEditorReference editorRef, final IEditorInput input) {
 		if (input instanceof ScaFileStoreEditorInput) {
 			final ScaFileStoreEditorInput inp1 = (ScaFileStoreEditorInput) input;

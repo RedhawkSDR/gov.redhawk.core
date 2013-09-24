@@ -33,6 +33,7 @@ public class DcdViewFactory extends DcdViewProvider implements ViewFactory, IPar
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public Edge basicCreateConnectInterface(final EObject domainElement,
 	        final View containerView,
 	        final int index,
@@ -44,6 +45,7 @@ public class DcdViewFactory extends DcdViewProvider implements ViewFactory, IPar
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public View basicCreateUsesPortStub(final EObject domainElement,
 	        final View containerView,
 	        final int index,
@@ -55,6 +57,7 @@ public class DcdViewFactory extends DcdViewProvider implements ViewFactory, IPar
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public View basicCreateProvidesPortStub(final EObject domainElement,
 	        final View containerView,
 	        final int index,
@@ -66,6 +69,7 @@ public class DcdViewFactory extends DcdViewProvider implements ViewFactory, IPar
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public View basicCreateComponentSupportedInterfaceStub(final EObject domainElement,
 	        final View containerView,
 	        final int index,
@@ -77,6 +81,7 @@ public class DcdViewFactory extends DcdViewProvider implements ViewFactory, IPar
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public View basicCreateComponentPlacement(final EObject domainElement,
 	        final View containerView,
 	        final int index,
@@ -88,6 +93,7 @@ public class DcdViewFactory extends DcdViewProvider implements ViewFactory, IPar
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public View createView(final IAdaptable semanticAdapter,
 	        final View containerView,
 	        final String semanticHint,

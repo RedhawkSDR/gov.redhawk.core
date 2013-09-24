@@ -50,6 +50,7 @@ public class ComponentSupportedInterfaceStubEditPart extends mil.jpeojtrs.sca.dc
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public IFigure basicCreateNodeShape() {
 		return super.createNodeShape();
 	}
@@ -57,6 +58,7 @@ public class ComponentSupportedInterfaceStubEditPart extends mil.jpeojtrs.sca.dc
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public void setPrimaryShape(final IFigure primaryShape) {
 		this.primaryShape = primaryShape;
 	}

@@ -101,6 +101,7 @@ public class ScaStructSequencePropertyImpl extends ScaAbstractPropertyImpl<Struc
 	private EContentAdapter derrivedStatusListener = new EContentAdapter() {
 		// END GENERATED CODE
 
+		@Override
 		public void notifyChanged(org.eclipse.emf.common.notify.Notification notification) {
 			super.notifyChanged(notification);
 			if (notification.getNotifier() == ScaStructSequencePropertyImpl.this) {
@@ -117,6 +118,7 @@ public class ScaStructSequencePropertyImpl extends ScaAbstractPropertyImpl<Struc
 			}
 		}
 
+		@Override
 		protected void addAdapter(org.eclipse.emf.common.notify.Notifier notifier) {
 			if (notifier instanceof EObject) {
 				if (((EObject) notifier).eContainer() == ScaStructSequencePropertyImpl.this) {
@@ -134,6 +136,7 @@ public class ScaStructSequencePropertyImpl extends ScaAbstractPropertyImpl<Struc
 
 	private Adapter pushAdapter = new AdapterImpl() {
 		// END GENERATED CODE
+		@Override
 		public void notifyChanged(Notification msg) {
 			if (!isIgnoreRemoteSet()) {
 				switch (msg.getFeatureID(ScaStructSequenceProperty.class)) {
@@ -204,6 +207,7 @@ public class ScaStructSequencePropertyImpl extends ScaAbstractPropertyImpl<Struc
 	 * @generated NOT
 	 * 
 	 */
+	@Override
 	public StructList getStructs() {
 		// END GENERATED CODE
 		return structs;
@@ -227,6 +231,7 @@ public class ScaStructSequencePropertyImpl extends ScaAbstractPropertyImpl<Struc
 	 * <!-- end-user-doc -->
 	 * @generated NOT
 	 */
+	@Override
 	public ScaStructProperty createScaStructProperty() {
 		// END GENERATED CODE
 		return createStructValue(getDefinition(), null);
@@ -239,6 +244,7 @@ public class ScaStructSequencePropertyImpl extends ScaAbstractPropertyImpl<Struc
 	 * <!-- end-user-doc -->
 	 * @generated NOT
 	 */
+	@Override
 	public void configure(DataType[] configProperties) throws InvalidConfiguration, PartialConfiguration {
 		// END GENERATED CODE
 		Map<Integer, Any> configMap = new HashMap<Integer, Any>();
@@ -434,6 +440,7 @@ public class ScaStructSequencePropertyImpl extends ScaAbstractPropertyImpl<Struc
 	 * @generated NOT
 	 * 
 	 */
+	@Override
 	public void query(PropertiesHolder configProperties) throws UnknownProperties {
 		// END GENERATED CODE
 		EObject container = eContainer();

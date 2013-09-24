@@ -27,26 +27,32 @@ public enum RedhawkSadElementTypes implements PartitioningElementTypes {
 
 	}
 
+	@Override
 	public Image getImage(final EClass eClass) {
 		return SadElementTypes.getImage(eClass);
 	}
 
+	@Override
 	public IElementType getProvidesPortStubElementType() {
 		return SadElementTypes.ProvidesPortStub_3004;
 	}
 
+	@Override
 	public IElementType getConnectInterfaceElementType() {
 		return SadElementTypes.SadConnectInterface_4001;
 	}
 
+	@Override
 	public IElementType getComponentSupportedInterfaceStubElementType() {
 		return SadElementTypes.ComponentSupportedInterfaceStub_3005;
 	}
 
+	@Override
 	public IElementType getUsesPortStubElementType() {
 		return SadElementTypes.UsesPortStub_3003;
 	}
 
+	@Override
 	public IElementType getElementType(final int visualID) {
 		return SadElementTypes.getElementType(visualID);
 	}

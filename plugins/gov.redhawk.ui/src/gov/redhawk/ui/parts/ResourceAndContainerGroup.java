@@ -344,6 +344,7 @@ public class ResourceAndContainerGroup implements Listener {
 	 * 
 	 * @param e org.eclipse.swt.widgets.Event
 	 */
+	@Override
 	public void handleEvent(final Event e) {
 		validateControls();
 		if (this.client != null) {

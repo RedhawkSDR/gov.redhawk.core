@@ -81,6 +81,7 @@ public class PortStatisticsProviderImpl extends EObjectImpl implements PortStati
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public PortStatistics getData() {
 		return data;
 	}
@@ -90,6 +91,7 @@ public class PortStatisticsProviderImpl extends EObjectImpl implements PortStati
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void setData(PortStatistics newData) {
 		PortStatistics oldData = data;
 		data = newData;

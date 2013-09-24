@@ -81,6 +81,7 @@ public abstract class ScaAbstractPropertyTest extends IStatusProviderTest {
 	public void testGetId() {
 		ScaModelCommand.execute(getFixture(), new ScaModelCommand() {
 
+			@Override
 			public void execute() {
 				Assert.assertNotNull(getFixture().getId());
 				((ScaAbstractPropertyImpl< ? >) getFixture()).setDefinition(null);
@@ -88,6 +89,7 @@ public abstract class ScaAbstractPropertyTest extends IStatusProviderTest {
 		});
 		ScaModelCommand.execute(getFixture(), new ScaModelCommand() {
 
+			@Override
 			public void execute() {
 
 				Assert.assertNull(getFixture().getId());
@@ -117,6 +119,7 @@ public abstract class ScaAbstractPropertyTest extends IStatusProviderTest {
 	public void testGetName() {
 		ScaModelCommand.execute(getFixture(), new ScaModelCommand() {
 
+			@Override
 			public void execute() {
 
 				Assert.assertNotNull(getFixture().getName());
@@ -125,6 +128,7 @@ public abstract class ScaAbstractPropertyTest extends IStatusProviderTest {
 		});
 		ScaModelCommand.execute(getFixture(), new ScaModelCommand() {
 
+			@Override
 			public void execute() {
 
 				Assert.assertNull(getFixture().getName());
@@ -156,6 +160,7 @@ public abstract class ScaAbstractPropertyTest extends IStatusProviderTest {
 		// END GENERATED CODE
 		ScaModelCommand.execute(getFixture(), new ScaModelCommand() {
 
+			@Override
 			public void execute() {
 				getFixture().setIgnoreRemoteSet(true);
 				Assert.assertTrue(getFixture().isIgnoreRemoteSet());
@@ -195,6 +200,7 @@ public abstract class ScaAbstractPropertyTest extends IStatusProviderTest {
 		// END GENERATED CODE
 		ScaModelCommand.execute(getFixture(), new ScaModelCommand() {
 
+			@Override
 			public void execute() {
 				getFixture().fromAny(getFixture().toAny());
 			}
@@ -254,6 +260,7 @@ public abstract class ScaAbstractPropertyTest extends IStatusProviderTest {
 		// END GENERATED CODE
 		ScaModelCommand.execute(getFixture(), new ScaModelCommand() {
 
+			@Override
 			public void execute() {
 				getFixture().restoreDefaultValue();
 				Assert.assertTrue(getFixture().isDefaultValue());
@@ -287,6 +294,7 @@ public abstract class ScaAbstractPropertyTest extends IStatusProviderTest {
 	public void testGetDescription() {
 		ScaModelCommand.execute(getFixture(), new ScaModelCommand() {
 
+			@Override
 			public void execute() {
 
 				Assert.assertNotNull(getFixture().getDescription());
@@ -295,6 +303,7 @@ public abstract class ScaAbstractPropertyTest extends IStatusProviderTest {
 		});
 		ScaModelCommand.execute(getFixture(), new ScaModelCommand() {
 
+			@Override
 			public void execute() {
 
 				Assert.assertNull(getFixture().getDescription());
@@ -312,6 +321,7 @@ public abstract class ScaAbstractPropertyTest extends IStatusProviderTest {
 	public void testGetMode() {
 		ScaModelCommand.execute(getFixture(), new ScaModelCommand() {
 
+			@Override
 			public void execute() {
 
 				Assert.assertNotNull(getFixture().getMode());
@@ -320,6 +330,7 @@ public abstract class ScaAbstractPropertyTest extends IStatusProviderTest {
 		});
 		ScaModelCommand.execute(getFixture(), new ScaModelCommand() {
 
+			@Override
 			public void execute() {
 
 				Assert.assertEquals(AccessType.WRITEONLY, getFixture().getMode());
@@ -338,6 +349,7 @@ public abstract class ScaAbstractPropertyTest extends IStatusProviderTest {
 		// END GENERATED CODE
 		ScaModelCommand.execute(getFixture(), new ScaModelCommand() {
 
+			@Override
 			public void execute() {
 				((ScaAbstractPropertyImpl< ? >) getFixture()).setDefinition(null);
 			}

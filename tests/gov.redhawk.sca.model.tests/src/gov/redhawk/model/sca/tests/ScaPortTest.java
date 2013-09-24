@@ -62,6 +62,7 @@ public abstract class ScaPortTest extends CorbaObjWrapperTest {
 		// END GENERATED CODE
 		ScaModelCommand.execute(getFixture(), new ScaModelCommand() {
 
+			@Override
 			public void execute() {
 				Assert.assertNotNull(getFixture().getRepid());
 				getFixture().setProfileObj(null);

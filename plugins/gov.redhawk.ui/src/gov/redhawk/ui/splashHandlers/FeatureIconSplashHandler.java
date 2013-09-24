@@ -97,6 +97,7 @@ public class FeatureIconSplashHandler extends EclipseSplashHandler {
 		final Point location = StringConverter.asPoint(locationStr, new Point(10, 10));
 		getContent().addPaintListener(new PaintListener() {
 
+			@Override
 			public void paintControl(final PaintEvent e) {
 				int xposition = location.x;
 				final int yposition = location.y;

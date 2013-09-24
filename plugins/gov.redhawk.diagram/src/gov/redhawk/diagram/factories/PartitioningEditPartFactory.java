@@ -30,6 +30,7 @@ import org.eclipse.swt.widgets.Text;
  */
 public class PartitioningEditPartFactory implements EditPartFactory {
 
+	@Override
 	public EditPart createEditPart(final EditPart context, final Object model) {
 		return createUnrecognizedEditPart(context, model);
 	}
@@ -80,6 +81,7 @@ public class PartitioningEditPartFactory implements EditPartFactory {
 		/**
 		* 
 		*/
+		@Override
 		public void relocate(final CellEditor celleditor) {
 			final Control text = celleditor.getControl();
 			final Rectangle rect = getWrapLabel().getTextBounds().getCopy();
@@ -125,6 +127,7 @@ public class PartitioningEditPartFactory implements EditPartFactory {
 		/**
 		* 
 		*/
+		@Override
 		public void relocate(final CellEditor celleditor) {
 			final Text text = (Text) celleditor.getControl();
 			final Rectangle rect = getLabel().getTextBounds().getCopy();

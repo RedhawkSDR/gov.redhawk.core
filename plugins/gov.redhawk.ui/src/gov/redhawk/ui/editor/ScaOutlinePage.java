@@ -64,6 +64,7 @@ public abstract class ScaOutlinePage extends ContentOutlinePage {
 
 		final MenuManager popupMenuManager = new MenuManager();
 		final IMenuListener listener = new IMenuListener() {
+			@Override
 			public void menuAboutToShow(final IMenuManager manager) {
 				getSelection();
 			}

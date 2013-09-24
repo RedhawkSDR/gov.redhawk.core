@@ -143,6 +143,7 @@ public class PortMonitorViewConfigDialog extends ViewSettingsDialog {
 		this.refreshText.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 		this.refreshText.addVerifyListener(new VerifyListener() {
 
+			@Override
 			public void verifyText(final VerifyEvent e) {
 				e.doit = Character.isDigit(e.character);
 			}
@@ -172,10 +173,12 @@ public class PortMonitorViewConfigDialog extends ViewSettingsDialog {
 		});
 		this.viewer.setCheckStateProvider(new ICheckStateProvider() {
 
+			@Override
 			public boolean isGrayed(final Object element) {
 				return false;
 			}
 
+			@Override
 			public boolean isChecked(final Object element) {
 				final Column c = (Column) element;
 				return PortMonitorViewConfigDialog.this.columnMap.get(c);
@@ -183,6 +186,7 @@ public class PortMonitorViewConfigDialog extends ViewSettingsDialog {
 		});
 		this.viewer.addCheckStateListener(new ICheckStateListener() {
 
+			@Override
 			public void checkStateChanged(final CheckStateChangedEvent event) {
 				PortMonitorViewConfigDialog.this.columnMap.put(((Column) event.getElement()), event.getChecked());
 			}

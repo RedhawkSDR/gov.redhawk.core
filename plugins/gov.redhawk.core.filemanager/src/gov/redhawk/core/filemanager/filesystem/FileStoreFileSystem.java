@@ -48,6 +48,7 @@ public class FileStoreFileSystem extends AbstractFileSystem {
 		this.root = root;
 	}
 
+	@Override
 	public boolean exists(final String fileName) throws InvalidFileName {
 		final IFileStore store = this.root.getFileStore(new Path(fileName));
 		if (store.fetchInfo().exists()) {
@@ -56,6 +57,7 @@ public class FileStoreFileSystem extends AbstractFileSystem {
 		return false;
 	}
 
+	@Override
 	public FileInformationType[] list(String pattern) throws FileException, InvalidFileName {
 		if (pattern == null) {
 			throw new InvalidFileName(ErrorNumberType.CF_EIO, "File does not exist");
@@ -132,6 +134,7 @@ public class FileStoreFileSystem extends AbstractFileSystem {
 		return info;
 	}
 
+	@Override
 	public File open(final String fileName, final boolean readOnly) throws InvalidFileName, FileException {
 		final IFileStore store = this.root.getFileStore(new Path(fileName));
 		try {

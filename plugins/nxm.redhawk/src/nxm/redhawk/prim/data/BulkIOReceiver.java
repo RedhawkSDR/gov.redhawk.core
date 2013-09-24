@@ -11,6 +11,8 @@
  */
 package nxm.redhawk.prim.data;
 
+import org.eclipse.jdt.annotation.NonNull;
+
 import gov.redhawk.bulkio.util.AbstractBulkIOPort;
 import gov.redhawk.bulkio.util.BulkIOType;
 import mil.jpeojtrs.sca.util.UnsignedUtils;
@@ -39,7 +41,7 @@ public class BulkIOReceiver extends AbstractBulkIOPort implements dataCharOperat
 	private final char midasType;
 	private final boolean signed;
 
-	public BulkIOReceiver(final corbareceiver receiver, BulkIOType type) {
+	public BulkIOReceiver(@NonNull final corbareceiver receiver, @NonNull BulkIOType type) {
 		super(type);
 		this.receiver = receiver;
 		this.signed = !type.isUnsigned();
@@ -92,6 +94,7 @@ public class BulkIOReceiver extends AbstractBulkIOPort implements dataCharOperat
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public void pushPacket(final char[] dataArray, final PrecisionUTCTime time, final boolean endOfStream, final String streamId) {
 		if (!super.pushPacket(dataArray.length, time, endOfStream, streamId)) {
 			return;
@@ -99,6 +102,7 @@ public class BulkIOReceiver extends AbstractBulkIOPort implements dataCharOperat
 		receiver.write(dataArray, dataArray.length, DataTypes.INT, endOfStream, time);
 	}
 
+	@Override
 	public void pushPacket(final double[] dataArray, final PrecisionUTCTime time, final boolean endOfStream, final String streamId) {
 		if (!super.pushPacket(dataArray.length, time, endOfStream, streamId)) {
 			return;
@@ -106,6 +110,7 @@ public class BulkIOReceiver extends AbstractBulkIOPort implements dataCharOperat
 		receiver.write(dataArray, dataArray.length, DataTypes.DOUBLE, endOfStream, time);
 	}
 
+	@Override
 	public void pushPacket(final float[] dataArray, final PrecisionUTCTime time, final boolean endOfStream, final String streamId) {
 		if (!super.pushPacket(dataArray.length, time, endOfStream, streamId)) {
 			return;
@@ -113,6 +118,7 @@ public class BulkIOReceiver extends AbstractBulkIOPort implements dataCharOperat
 		receiver.write(dataArray, dataArray.length, DataTypes.FLOAT, endOfStream, time);
 	}
 
+	@Override
 	public void pushPacket(final long[] dataArray, final PrecisionUTCTime time, final boolean endOfStream, final String streamId) {
 		if (!super.pushPacket(dataArray.length, time, endOfStream, streamId)) {
 			return;
@@ -133,6 +139,7 @@ public class BulkIOReceiver extends AbstractBulkIOPort implements dataCharOperat
 		}
 	}
 
+	@Override
 	public void pushPacket(final int[] dataArray, final PrecisionUTCTime time, final boolean endOfStream, final String streamId) {
 		if (!super.pushPacket(dataArray.length, time, endOfStream, streamId)) {
 			return;
@@ -145,6 +152,7 @@ public class BulkIOReceiver extends AbstractBulkIOPort implements dataCharOperat
 		}
 	}
 
+	@Override
 	public void pushPacket(final byte[] dataArray, final PrecisionUTCTime time, final boolean endOfStream, final String streamId) {
 		if (!super.pushPacket(dataArray.length, time, endOfStream, streamId)) {
 			return;
@@ -157,6 +165,7 @@ public class BulkIOReceiver extends AbstractBulkIOPort implements dataCharOperat
 		}
 	}
 
+	@Override
 	public void pushPacket(final short[] dataArray, final PrecisionUTCTime time, final boolean endOfStream, final String streamId) {
 		if (!super.pushPacket(dataArray.length, time, endOfStream, streamId)) {
 			return;

@@ -33,6 +33,7 @@ public class DataDoubleReceiver extends AbstractSriReceiver<dataDoubleOperations
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public void pushPacket(final double[] array, final PrecisionUTCTime time, final boolean endOfStream, final String streamID) {
 		if (!pushPacket(array.length, time, endOfStream, streamID)) {
 			return;

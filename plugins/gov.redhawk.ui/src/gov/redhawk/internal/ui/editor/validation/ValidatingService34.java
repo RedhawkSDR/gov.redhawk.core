@@ -30,6 +30,7 @@ import org.eclipse.ui.forms.IMessageManager;
 
 public class ValidatingService34 implements ValidatingService {
 
+	@Override
 	public void analyzeDiagnostic(final DataBindingContext dataBindingContext, final Diagnostic diagnostic, final IMessageManager messageManager) {
 		IObservableList bindingList = dataBindingContext.getBindings();
 		bindingList.getRealm().exec(new Runnable() {

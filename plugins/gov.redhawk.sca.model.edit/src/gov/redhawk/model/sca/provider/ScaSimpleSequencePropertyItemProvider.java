@@ -90,6 +90,7 @@ public class ScaSimpleSequencePropertyItemProvider extends ScaAbstractPropertyIt
 			final IItemLabelProvider lp = super.getLabelProvider(thisObject);
 			return new IItemLabelProvider() {
 
+				@Override
 				public String getText(Object object) {
 					List< ? > value = null;
 					if (object != null && object.getClass().isArray()) {
@@ -100,6 +101,7 @@ public class ScaSimpleSequencePropertyItemProvider extends ScaAbstractPropertyIt
 					return getValueText(property, value);
 				}
 
+				@Override
 				public Object getImage(Object object) {
 					return lp.getImage(object);
 				}
@@ -112,6 +114,7 @@ public class ScaSimpleSequencePropertyItemProvider extends ScaAbstractPropertyIt
 	/**
 	 * @deprecated Use {@link #addValuesPropertyDescriptor(Object)}
 	 */
+	@Deprecated
 	protected void addValuePropertyDescriptor(Object object) {
 		addValuesPropertyDescriptor(object);
 	}
@@ -242,6 +245,7 @@ public class ScaSimpleSequencePropertyItemProvider extends ScaAbstractPropertyIt
 	    return getValueText(prop, prop.getValues());
 	}
 	
+	@Override
 	public Object getImage(Object object) {
 		return overlayImage(object, getPrfResourceLocator().getImage("full/obj16/SimpleSequence"));
 	}

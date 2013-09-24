@@ -126,6 +126,7 @@ public enum ScaContentTypeRegistry implements IExtensionChangeHandler, IScaConte
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public void addExtension(final IExtensionTracker tracker, final IExtension extension) {
 		final IConfigurationElement[] configs = extension.getConfigurationElements();
 		for (final IConfigurationElement element : configs) {
@@ -178,6 +179,7 @@ public enum ScaContentTypeRegistry implements IExtensionChangeHandler, IScaConte
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public String[] findContentTypes(final Object input) {
 		final List<String> retVal = new ArrayList<String>();
 		if (input != null) {
@@ -221,6 +223,7 @@ public enum ScaContentTypeRegistry implements IExtensionChangeHandler, IScaConte
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public void removeExtension(final IExtension extension, final Object[] objects) {
 		for (final Object obj : objects) {
 			if (obj instanceof ScaContentType) {
@@ -245,6 +248,7 @@ public enum ScaContentTypeRegistry implements IExtensionChangeHandler, IScaConte
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public IScaContentDescriber getDescriber(final String contentType) {
 		final ScaContentType desc = this.registry.get(contentType);
 		if (desc != null) {
@@ -256,6 +260,7 @@ public enum ScaContentTypeRegistry implements IExtensionChangeHandler, IScaConte
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public String[] findEditors(final String contentType) {
 		final List<ScaContentTypeBinding> typeBindings = this.bindings.get(contentType);
 		final List<String> editors = new ArrayList<String>();
@@ -270,10 +275,12 @@ public enum ScaContentTypeRegistry implements IExtensionChangeHandler, IScaConte
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public String findContentType(final Object obj) {
 		final List<String> contentTypes = new ArrayList<String>(Arrays.asList(findContentTypes(obj)));
 		Collections.sort(contentTypes, new Comparator<String>() {
 
+			@Override
 			public int compare(final String o1, final String o2) {
 				final ScaContentType contentType1 = ScaContentTypeRegistry.this.registry.get(o1);
 				final ScaContentType contentType2 = ScaContentTypeRegistry.this.registry.get(o2);
@@ -292,6 +299,7 @@ public enum ScaContentTypeRegistry implements IExtensionChangeHandler, IScaConte
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public String findEditor(final String contentTypeId) {
 		if (contentTypeId != null) {
 			final List<ScaContentTypeBinding> editors = this.bindings.get(contentTypeId);
@@ -301,6 +309,7 @@ public enum ScaContentTypeRegistry implements IExtensionChangeHandler, IScaConte
 
 			Collections.sort(editors, new Comparator<ScaContentTypeBinding>() {
 
+				@Override
 				public int compare(final ScaContentTypeBinding o1, final ScaContentTypeBinding o2) {
 					return o1.priority.compareTo(o2.priority);
 				}
@@ -326,6 +335,7 @@ public enum ScaContentTypeRegistry implements IExtensionChangeHandler, IScaConte
 			final String fileName = fileStore.getName();
 			final Callable<IContentType> callable = new Callable<IContentType>() {
 
+				@Override
 				public IContentType call() throws Exception {
 					InputStream is = null;
 					try {
@@ -353,6 +363,7 @@ public enum ScaContentTypeRegistry implements IExtensionChangeHandler, IScaConte
 		return null;
 	}
 
+	@Override
 	public IScaEditorDescriptor getScaEditorDescriptor(final Object obj) {
 		final String contentTypeId = findContentType(obj);
 		final String editorId = findEditor(contentTypeId);
@@ -399,6 +410,7 @@ public enum ScaContentTypeRegistry implements IExtensionChangeHandler, IScaConte
 		return null;
 	}
 
+	@Override
 	public IScaEditorDescriptor[] getAllScaEditorDescriptors(final Object obj) {
 		final List<IScaEditorDescriptor> retVal = new ArrayList<IScaEditorDescriptor>();
 		final String[] contentTypesIds = findContentTypes(obj);

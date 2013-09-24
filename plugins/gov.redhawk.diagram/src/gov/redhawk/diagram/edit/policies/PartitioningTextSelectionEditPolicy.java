@@ -216,6 +216,7 @@ public class PartitioningTextSelectionEditPolicy extends SelectionEditPolicy {
 	private FigureListener getHostPositionListener() {
 		if (this.hostPositionListener == null) {
 			this.hostPositionListener = new FigureListener() {
+				@Override
 				public void figureMoved(final IFigure source) {
 					refreshFeedback();
 				}

@@ -46,6 +46,7 @@ public abstract class ScaMultipageActionBarContributor extends MultiPageEditorAc
 
 	private final IPropertyListener myEditorPropertyChangeListener = new IPropertyListener() {
 
+		@Override
 		public void propertyChanged(final Object source, final int propId) {
 			if (ScaMultipageActionBarContributor.this.myActiveEditorActionBars != null) {
 				if (ScaMultipageActionBarContributor.this.myActiveEditorActionBars.getContributor() instanceof EditingDomainActionBarContributor
@@ -182,6 +183,7 @@ public abstract class ScaMultipageActionBarContributor extends MultiPageEditorAc
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public void menuAboutToShow(final IMenuManager manager) {
 		final SubActionBarsExt actionBars = this.actionBarMap.get(this.myActiveEditor);
 		if (actionBars != null && actionBars.getContributor() instanceof IMenuListener) {

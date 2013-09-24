@@ -198,14 +198,17 @@ public class BindingNode implements IPropertySource {
 		return this.getPathToNode();
 	}
 
+	@Override
 	public Object getEditableValue() {
 		return this;
 	}
 
+	@Override
 	public IPropertyDescriptor[] getPropertyDescriptors() {
 		return BindingNode.DESCRIPTORS;
 	}
 
+	@Override
 	public Object getPropertyValue(final Object id) {
 		if (BindingNode.PATH_ID.equals(id)) {
 			return this.getPath();
@@ -219,14 +222,17 @@ public class BindingNode implements IPropertySource {
 		return null;
 	}
 
+	@Override
 	public boolean isPropertySet(final Object id) {
 		return true;
 	}
 
+	@Override
 	public void resetPropertyValue(final Object id) {
 		// PASS
 	}
 
+	@Override
 	public void setPropertyValue(final Object id, final Object value) {
 		// PASS
 	}

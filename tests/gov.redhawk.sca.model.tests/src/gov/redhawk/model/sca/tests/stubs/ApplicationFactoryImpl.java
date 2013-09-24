@@ -54,18 +54,22 @@ public class ApplicationFactoryImpl extends ApplicationFactoryPOA {
 		this.dmd = dmd;
 	}
 
+	@Override
 	public String name() {
 		return this.sad.getName();
 	}
 
+	@Override
 	public String identifier() {
 		return this.sad.getId();
 	}
 
+	@Override
 	public String softwareProfile() {
 		return this.sad.eResource().getURI().path();
 	}
 
+	@Override
 	public Application create(final String name, final DataType[] initConfiguration, final DeviceAssignmentType[] deviceAssignments) throws CreateApplicationError,
 	        CreateApplicationRequestError,
 	        InvalidInitConfiguration {	

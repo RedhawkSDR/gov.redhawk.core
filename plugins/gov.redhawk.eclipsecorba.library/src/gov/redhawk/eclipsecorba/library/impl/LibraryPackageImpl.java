@@ -181,6 +181,7 @@ public class LibraryPackageImpl extends EPackageImpl implements LibraryPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EClass getIdlLibrary() {
 		return idlLibraryEClass;
 	}
@@ -190,6 +191,7 @@ public class LibraryPackageImpl extends EPackageImpl implements LibraryPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EReference getIdlLibrary_Specifications() {
 		return (EReference)idlLibraryEClass.getEStructuralFeatures().get(0);
 	}
@@ -199,6 +201,7 @@ public class LibraryPackageImpl extends EPackageImpl implements LibraryPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EReference getIdlLibrary_Paths() {
 		return (EReference)idlLibraryEClass.getEStructuralFeatures().get(1);
 	}
@@ -208,6 +211,7 @@ public class LibraryPackageImpl extends EPackageImpl implements LibraryPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EAttribute getIdlLibrary_LoadStatus() {
 		return (EAttribute)idlLibraryEClass.getEStructuralFeatures().get(2);
 	}
@@ -217,6 +221,7 @@ public class LibraryPackageImpl extends EPackageImpl implements LibraryPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EClass getRepositoryModule() {
 		return repositoryModuleEClass;
 	}
@@ -226,6 +231,7 @@ public class LibraryPackageImpl extends EPackageImpl implements LibraryPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EReference getRepositoryModule_ModuleDefinitions() {
 		return (EReference)repositoryModuleEClass.getEStructuralFeatures().get(0);
 	}
@@ -235,6 +241,7 @@ public class LibraryPackageImpl extends EPackageImpl implements LibraryPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EReference getRepositoryModule_Definitions() {
 		return (EReference)repositoryModuleEClass.getEStructuralFeatures().get(1);
 	}
@@ -244,6 +251,7 @@ public class LibraryPackageImpl extends EPackageImpl implements LibraryPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EClass getPath() {
 		return pathEClass;
 	}
@@ -253,6 +261,7 @@ public class LibraryPackageImpl extends EPackageImpl implements LibraryPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EAttribute getPath_DerivedPath() {
 		return (EAttribute)pathEClass.getEStructuralFeatures().get(0);
 	}
@@ -262,6 +271,7 @@ public class LibraryPackageImpl extends EPackageImpl implements LibraryPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EClass getPreferenceNodePathSet() {
 		return preferenceNodePathSetEClass;
 	}
@@ -271,6 +281,7 @@ public class LibraryPackageImpl extends EPackageImpl implements LibraryPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EAttribute getPreferenceNodePathSet_Qualifier() {
 		return (EAttribute)preferenceNodePathSetEClass.getEStructuralFeatures().get(0);
 	}
@@ -280,6 +291,7 @@ public class LibraryPackageImpl extends EPackageImpl implements LibraryPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EAttribute getPreferenceNodePathSet_Key() {
 		return (EAttribute)preferenceNodePathSetEClass.getEStructuralFeatures().get(1);
 	}
@@ -289,6 +301,7 @@ public class LibraryPackageImpl extends EPackageImpl implements LibraryPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EAttribute getPreferenceNodePathSet_Delimiter() {
 		return (EAttribute)preferenceNodePathSetEClass.getEStructuralFeatures().get(2);
 	}
@@ -298,6 +311,7 @@ public class LibraryPackageImpl extends EPackageImpl implements LibraryPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EAttribute getPreferenceNodePathSet_FileUri() {
 		return (EAttribute)preferenceNodePathSetEClass.getEStructuralFeatures().get(3);
 	}
@@ -307,6 +321,7 @@ public class LibraryPackageImpl extends EPackageImpl implements LibraryPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EAttribute getPreferenceNodePathSet_ReplaceEnv() {
 		return (EAttribute)preferenceNodePathSetEClass.getEStructuralFeatures().get(4);
 	}
@@ -316,6 +331,7 @@ public class LibraryPackageImpl extends EPackageImpl implements LibraryPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EClass getURIPathSet() {
 		return uriPathSetEClass;
 	}
@@ -325,6 +341,7 @@ public class LibraryPackageImpl extends EPackageImpl implements LibraryPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EAttribute getURIPathSet_Dirs() {
 		return (EAttribute)uriPathSetEClass.getEStructuralFeatures().get(0);
 	}
@@ -334,6 +351,7 @@ public class LibraryPackageImpl extends EPackageImpl implements LibraryPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EClass getLocalFilePath() {
 		return localFilePathEClass;
 	}
@@ -343,6 +361,7 @@ public class LibraryPackageImpl extends EPackageImpl implements LibraryPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EAttribute getLocalFilePath_LocalPaths() {
 		return (EAttribute)localFilePathEClass.getEStructuralFeatures().get(0);
 	}
@@ -352,6 +371,7 @@ public class LibraryPackageImpl extends EPackageImpl implements LibraryPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EDataType getURI() {
 		return uriEDataType;
 	}
@@ -361,6 +381,7 @@ public class LibraryPackageImpl extends EPackageImpl implements LibraryPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EDataType getIProgressMonitor() {
 		return iProgressMonitorEDataType;
 	}
@@ -370,6 +391,7 @@ public class LibraryPackageImpl extends EPackageImpl implements LibraryPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EDataType getCoreExceptoin() {
 		return coreExceptoinEDataType;
 	}
@@ -379,6 +401,7 @@ public class LibraryPackageImpl extends EPackageImpl implements LibraryPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EDataType getIPath() {
 		return iPathEDataType;
 	}
@@ -388,6 +411,7 @@ public class LibraryPackageImpl extends EPackageImpl implements LibraryPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EDataType getIStatus() {
 		return iStatusEDataType;
 	}
@@ -397,6 +421,7 @@ public class LibraryPackageImpl extends EPackageImpl implements LibraryPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public LibraryFactory getLibraryFactory() {
 		return (LibraryFactory)getEFactoryInstance();
 	}

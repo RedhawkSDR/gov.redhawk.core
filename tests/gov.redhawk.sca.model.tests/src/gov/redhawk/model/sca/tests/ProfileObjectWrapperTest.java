@@ -119,6 +119,7 @@ public abstract class ProfileObjectWrapperTest extends IStatusProviderTest {
 	public void testGetProfileObj() {
 		ScaModelCommand.execute(getFixture(), new ScaModelCommand() {
 
+			@Override
 			public void execute() {
 				Assert.assertNotNull(getFixture().getProfileObj());
 			}
@@ -136,6 +137,7 @@ public abstract class ProfileObjectWrapperTest extends IStatusProviderTest {
 		// END GENERATED CODE
 		ScaModelCommand.execute(getFixture(), new ScaModelCommand() {
 
+			@Override
 			public void execute() {
 				getFixture().setProfileObj(null);
 			}

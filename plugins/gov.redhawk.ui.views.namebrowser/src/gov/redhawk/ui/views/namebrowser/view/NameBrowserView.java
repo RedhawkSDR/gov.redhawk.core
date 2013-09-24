@@ -94,6 +94,7 @@ public class NameBrowserView extends ViewPart {
 
 	private final IContentProposalProvider proposalProvider = new IContentProposalProvider() {
 
+		@Override
 		public IContentProposal[] getProposals(final String contents, final int position) {
 			final List<IContentProposal> list = new ArrayList<IContentProposal>();
 			try {

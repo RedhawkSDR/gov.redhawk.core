@@ -26,6 +26,7 @@ public class PlotSession implements IPlotSession {
 		this.file = file;
 	}
 
+	@Override
 	public void dispose() {
 		if (!plotWidget.isDisposed()) {
 			if (file != null) {
@@ -37,6 +38,7 @@ public class PlotSession implements IPlotSession {
 		}
 	}
 
+	@Override
 	public String getSourceId() {
 		return this.file;
 	}

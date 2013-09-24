@@ -81,16 +81,19 @@ public class DataProviderPreferencePage extends PreferencePage implements IWorkb
 		this.viewer.setLabelProvider(new LabelProvider());
 		this.viewer.setCheckStateProvider(new ICheckStateProvider() {
 
+			@Override
 			public boolean isGrayed(final Object element) {
 				return false;
 			}
 
+			@Override
 			public boolean isChecked(final Object element) {
 				return ((Descriptor) element).enabled;
 			}
 		});
 		this.viewer.addCheckStateListener(new ICheckStateListener() {
 
+			@Override
 			public void checkStateChanged(final CheckStateChangedEvent event) {
 				((Descriptor) event.getElement()).enabled = event.getChecked();
 			}
@@ -116,6 +119,7 @@ public class DataProviderPreferencePage extends PreferencePage implements IWorkb
 		return super.performOk();
 	}
 
+	@Override
 	public void init(final IWorkbench workbench) {
 		// TODO Auto-generated method stub
 
