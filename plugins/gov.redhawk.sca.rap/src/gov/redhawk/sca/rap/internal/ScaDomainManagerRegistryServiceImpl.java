@@ -30,6 +30,7 @@ import java.util.Set;
 
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.emf.common.notify.Adapter;
@@ -167,8 +168,8 @@ public class ScaDomainManagerRegistryServiceImpl implements IScaDomainManagerReg
 
 	private void loadScaModel(Object context) {
 		try {
-			final URI fileUri = ScaPlugin.getDefault().getStateLocation()
-					.append(ScaPlugin.getDefault().getCompatibilityUtil().getUserSpecificPath(context))
+			final URI fileUri = new Path(ScaPlugin.getDefault().getCompatibilityUtil().getSettingStoreWorkDir().getAbsolutePath())
+					.append(ScaPlugin.getDefault().getCompatibilityUtil().getUserSpecificPath(context) + "_sca")
 					.append("domains.sca").toFile().toURI();
 			final org.eclipse.emf.common.util.URI uri = org.eclipse.emf.common.util.URI.createURI(fileUri.toString());
 			try {

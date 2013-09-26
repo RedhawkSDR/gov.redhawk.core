@@ -4,7 +4,9 @@ import gov.redhawk.sca.rap.RapInit;
 
 import java.security.Principal;
 
+import org.eclipse.core.runtime.Assert;
 import org.eclipse.jface.viewers.ComboViewer;
+import org.eclipse.rwt.RWT;
 import org.eclipse.rwt.lifecycle.UICallBack;
 import org.eclipse.swt.graphics.FontData;
 import org.eclipse.swt.widgets.Display;
@@ -30,6 +32,11 @@ public class CompatibilityUtilImpl implements ICompatibilityUtil {
 	
 	public void runInFakeUIContext(Display display, Runnable runnable) {
 		UICallBack.runNonUIThreadWithFakeContext(display, runnable);
+	}
+	
+	public void executeOnRequestThread(Runnable runnable) {
+		Assert.isNotNull(Display.getCurrent(), "This method must be called from teh UI thread");
+		RWT.requestThreadExec(runnable);
 	}
 	
 	public void activateUIConnection(String id) {

@@ -46,9 +46,13 @@ public class CompatibilityUtilImpl implements ICompatibilityUtil {
 		});
 	}
 	
+
 	@Override
+	/**
+	 * @since 9.1
+	 */
 	public Principal getUserPrincipal(Display display) {
-		return null;
+		throw new UnsupportedOperationException("This method is used in RAP only");
 	}
 	
 	/**
@@ -58,7 +62,8 @@ public class CompatibilityUtilImpl implements ICompatibilityUtil {
 	 */
 	@Override
 	public void runInFakeUIContext(Display display, Runnable runnable) {
-		//No RAP implementation
+		//PASS
+		//No RCP implementation needed
 	}
 	
 	/**
@@ -68,11 +73,19 @@ public class CompatibilityUtilImpl implements ICompatibilityUtil {
 	 */
 	@Override
 	public void activateUIConnection(String id) {
-		//No RAP implementation
+		//PASS
+		//No RCP implementation needed
 	}
 	
 	@Override
 	public void deactivateUIConnection(String id) {
-		//No RAP implementation
+		//PASS
+		//No RCP implementation needed
+	}
+
+	@Override
+	public void executeOnRequestThread(Runnable runnable) {
+		//Run on Request Thread only in RAP
+		runnable.run();
 	}
 }

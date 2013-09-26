@@ -1,5 +1,7 @@
 package gov.redhawk.sca.compatibility;
 
+import java.io.File;
+
 /**
  * @since 6.1
  */
@@ -15,4 +17,12 @@ public interface ICompatibilityUtil {
 	 *            the current Display
 	 */
 	public void initializeSettingStore(Object context);
+	
+	/**
+	 * Gets the RAP SettingStore work directory.
+	 * 
+	 * @return the directory in which the SettingStore is storing
+	 * user-specific preferences
+	 */
+	public File getSettingStoreWorkDir();
 }

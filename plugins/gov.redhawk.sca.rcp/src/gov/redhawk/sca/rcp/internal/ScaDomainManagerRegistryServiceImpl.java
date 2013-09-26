@@ -34,6 +34,7 @@ import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.impl.AdapterImpl;
+import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.util.EcoreUtil;
@@ -54,7 +55,7 @@ public class ScaDomainManagerRegistryServiceImpl implements IScaDomainManagerReg
 
 	private TransactionalEditingDomain editingDomain = TransactionalEditingDomain.Registry.INSTANCE.getEditingDomain(ScaPlugin.EDITING_DOMAIN_ID);
 	private ResourceSet scaModelResourceSet = this.editingDomain.getResourceSet();
-	
+
 	private Adapter propListener = new AdapterImpl() {
 		public void notifyChanged(Notification msg) {
 			if (msg.getFeatureID(Properties.class) == ScaPackage.PROPERTIES__PROPERTY) {
@@ -82,20 +83,33 @@ public class ScaDomainManagerRegistryServiceImpl implements IScaDomainManagerReg
 
 
 	private Adapter domainManagerRegistrylistener = new AdapterImpl() {
+		@SuppressWarnings("unchecked")
 		public void notifyChanged(Notification msg) {
 			if (msg.getFeatureID(ScaDomainManagerRegistry.class) == ScaPackage.SCA_DOMAIN_MANAGER_REGISTRY__DOMAINS) {
 				switch (msg.getEventType()) {
 				case Notification.ADD:
-				case Notification.ADD_MANY:
 					saveDomainManagerRegistryResource();
 					ScaDomainManager domain = (ScaDomainManager) msg.getNewValue();
 					addDomainManagerPropertiesListeners(domain);
 					break;
+				case Notification.ADD_MANY:
+					saveDomainManagerRegistryResource();
+					EList<ScaDomainManager> domains = (EList<ScaDomainManager>) msg.getNewValue();
+					for (ScaDomainManager mgr : domains) {
+						addDomainManagerPropertiesListeners(mgr);
+					}
+					break;
 				case Notification.REMOVE:
-				case Notification.REMOVE_MANY:
 					saveDomainManagerRegistryResource();
 					domain = (ScaDomainManager) msg.getOldValue();
 					removeDomainManagerPropertiesListeners(domain);
+					break;
+				case Notification.REMOVE_MANY:
+					saveDomainManagerRegistryResource();
+					domains = (EList<ScaDomainManager>) msg.getOldValue();
+					for (ScaDomainManager mgr : domains) {
+						removeDomainManagerPropertiesListeners(mgr);
+					}
 					break;
 				}
 			}
@@ -145,13 +159,13 @@ public class ScaDomainManagerRegistryServiceImpl implements IScaDomainManagerReg
 			this.startupJob = null;
 		}
 	}
-	
-	
+
+
 	@Override
 	public ScaDomainManagerRegistry getRegistry(Object context) {
 		return scaDomainManagerRegistry;
 	}
-	
+
 	private void loadScaModel(Object context) {
 		try {
 			final URI fileUri = ScaPlugin.getDefault().getStateLocation().append("domains.sca").toFile().toURI();
@@ -190,7 +204,7 @@ public class ScaDomainManagerRegistryServiceImpl implements IScaDomainManagerReg
 			addDomainManagerRegistryListener();
 		}
 	}
-	
+
 	/**
 	 * @since 6.1
 	 */
@@ -217,7 +231,7 @@ public class ScaDomainManagerRegistryServiceImpl implements IScaDomainManagerReg
 		}
 	}
 
-	
+
 	private void addDomainManagerListeners() {
 		for (ScaDomainManager domain : this.scaDomainManagerRegistry.getDomains()) {
 			addDomainManagerPropertiesListeners(domain);
@@ -227,7 +241,7 @@ public class ScaDomainManagerRegistryServiceImpl implements IScaDomainManagerReg
 	private void addDomainManagerRegistryListener() {
 		this.scaDomainManagerRegistry.eAdapters().add(this.domainManagerRegistrylistener );
 	}
-	
+
 	private void saveDomainManagerRegistryResource() {
 		if (this.scaDomainManagerRegistry != null) {
 			ScaModelCommand.execute(this.scaDomainManagerRegistry, new ScaModelCommand() {

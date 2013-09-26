@@ -78,14 +78,16 @@ public class ScaSettingStore implements ISettingStore {
 		String path = getPropsFilePath(id);
 		File propsFile = new File(path + File.separator + "user-prefs.prop");
 		try {
-			System.err.println("CREATE FILE: " + propsFile.getAbsolutePath());
+			System.err.println("CREATE PROPS FILE: " + propsFile.getAbsolutePath());
 			propsFile.createNewFile();
 		} catch (IOException e) {
 			throw new SettingStoreException("Failed to create Properties file for SettingStore", e);
 		}
 		this.filePath = propsFile.getAbsolutePath();
 		try {
+			this.silentRunning = true;
 			loadProps();
+			this.silentRunning = false;
 		} catch (IOException e) {
 			throw new SettingStoreException("Failed to load SettingStore", e);
 		}

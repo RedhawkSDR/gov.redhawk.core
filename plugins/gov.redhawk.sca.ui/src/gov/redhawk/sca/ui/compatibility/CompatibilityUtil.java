@@ -55,6 +55,11 @@ public final class CompatibilityUtil {
 			provider.deactivateUIConnection(id);
 		}
 
+		@Override
+		public void executeOnRequestThread(Runnable runnable) {
+			provider.executeOnRequestThread(runnable);
+		}
+
 	}
 
 	private CompatibilityUtil() {
@@ -84,6 +89,13 @@ public final class CompatibilityUtil {
 	 */
 	public static void runInFakeUIContext(Display display, Runnable runnable) {
 		SafeCompatibilityUtil.INSTANCE.runInFakeUIContext(display, runnable);
+	}
+	
+	/**
+	 * @since 9.2
+	 */
+	public static void executeOnRequestThread(Runnable runnable) {
+		SafeCompatibilityUtil.INSTANCE.executeOnRequestThread(runnable);
 	}
 
 	/**

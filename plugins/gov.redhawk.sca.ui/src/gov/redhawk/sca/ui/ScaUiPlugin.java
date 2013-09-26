@@ -15,24 +15,19 @@ import gov.redhawk.sca.ScaPlugin;
 import gov.redhawk.sca.internal.ui.ResourceRegistry;
 import gov.redhawk.sca.internal.ui.ScaContentTypeRegistry;
 import gov.redhawk.sca.internal.ui.ScaUiModelJob;
-import gov.redhawk.sca.util.ScopedPreferenceAccessor;
 
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
-import org.eclipse.core.runtime.preferences.IScopeContext;
-import org.eclipse.core.runtime.preferences.InstanceScope;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.resource.ImageRegistry;
-import org.eclipse.rap.ui.internal.preferences.SessionScope;
-import org.eclipse.rwt.RWT;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Display;
+import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
-import org.eclipse.ui.preferences.ScopedPreferenceStore;
 import org.osgi.framework.BundleContext;
 
 // TODO: Auto-generated Javadoc
@@ -50,6 +45,8 @@ public class ScaUiPlugin extends AbstractUIPlugin {
 	private static ScaUiPlugin plugin;
 
 	private IPreferenceStore scaPreferenceStore;
+
+	private String lastId;
 
 	/**
 	 * The constructor.
@@ -77,7 +74,7 @@ public class ScaUiPlugin extends AbstractUIPlugin {
 	protected ImageRegistry createImageRegistry() {
 		final ImageRegistry registry = super.createImageRegistry();
 		registry.put(ScaUiPluginImages.IMG_DEFAULT_DOMAIN_OVR,
-		        AbstractUIPlugin.imageDescriptorFromPlugin(ScaUiPlugin.PLUGIN_ID, "icons/ovr16/default_domain_ovr.gif"));
+				AbstractUIPlugin.imageDescriptorFromPlugin(ScaUiPlugin.PLUGIN_ID, "icons/ovr16/default_domain_ovr.gif"));
 		return registry;
 	}
 
@@ -87,36 +84,23 @@ public class ScaUiPlugin extends AbstractUIPlugin {
 	public IPreferenceStore getScaPreferenceStore() {
 		if (SWT.getPlatform().startsWith("rap")) {
 			Assert.isNotNull(Display.getCurrent(), "This method must be called from the UI thread");
-			ScaPlugin.getDefault().getCompatibilityUtil().initializeSettingStore(Display.getCurrent());
-			this.scaPreferenceStore = new ScopedPreferenceStore(new SessionScope(), ScaPlugin.getDefault().getBundle().getSymbolicName());
+			String currentId = ScaPlugin.getDefault().getCompatibilityUtil().getUserSpecificPath(Display.getCurrent());
+			if (currentId != null && !currentId.equals(lastId)) {
+				ScaPlugin.getDefault().getCompatibilityUtil().initializeSettingStore(Display.getCurrent());
+				this.lastId = currentId;
+			}
+			this.scaPreferenceStore = PlatformUI.getPreferenceStore();
 		} else {
-			this.scaPreferenceStore = new ScopedPreferenceStore(InstanceScope.INSTANCE, ScaPlugin.getDefault().getBundle().getSymbolicName());
+			//this.scaPreferenceStore = new ScopedPreferenceStore(InstanceScope.INSTANCE, ScaPlugin.getDefault().getBundle().getSymbolicName());
+			this.scaPreferenceStore = PlatformUI.getPreferenceStore();
 		}
 		return this.scaPreferenceStore;
-//		if (this.scaPreferenceStore == null) {
-//			Assert.isNotNull(Display.getCurrent(), "This method must be called from the UI thread");
-//			ScaPlugin.getDefault().getCompatibilityUtil().initializeSettingStore(Display.getCurrent());
-//			if (SWT.getPlatform().startsWith("rap")) {
-//				this.scaPreferenceStore = new ScopedPreferenceStore(new SessionScope(), ScaPlugin.getDefault().getBundle().getSymbolicName());
-//			} else {
-//				this.scaPreferenceStore = new ScopedPreferenceStore(InstanceScope.INSTANCE, ScaPlugin.getDefault().getBundle().getSymbolicName());
-//			}
-//		}
-//		return this.scaPreferenceStore;
 	}
-	
+
 	@Override
 	public IPreferenceStore getPreferenceStore() {
 		return getScaPreferenceStore();
 	}
-	
-	
-//	/**
-//	 * @since 9.2
-//	 */
-//	public void setScaPreferenceStore(IScopeContext scope) {
-//		this.scaPreferenceStore = new ScopedPreferenceStore(scope, ScaPlugin.getDefault().getBundle().getSymbolicName());
-//	}
 
 	/*
 	 * (non-Javadoc)

@@ -13,12 +13,7 @@ package gov.redhawk.sca.ui.views;
 
 import gov.redhawk.common.ui.doc.HelpConstants;
 import gov.redhawk.sca.ScaPlugin;
-import gov.redhawk.sca.ui.ScaUiPlugin;
-import gov.redhawk.sca.ui.UserSpecificScopeContext;
 
-import org.eclipse.core.runtime.Status;
-import org.eclipse.rwt.RWT;
-import org.eclipse.rwt.service.SettingStoreException;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.IMemento;
@@ -58,7 +53,6 @@ public class ScaExplorer extends CommonNavigator implements ITabbedPropertySheet
 			ScaPlugin.getDefault().getDomainManagerRegistry(site.getShell().getDisplay());
 			//ScaPlugin.getDefault().setScaPreferenceAccessor(new UserSpecificScopeContext(aSite.getShell().getDisplay()));
 		}
-		ScaPlugin.getDefault().getCompatibilityUtil().initializeSettingStore(site.getShell().getDisplay());
 		super.init(site, aMemento);
 	}
 

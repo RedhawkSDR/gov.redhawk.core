@@ -25,10 +25,14 @@ import gov.redhawk.sca.util.ScopedPreferenceAccessor;
 
 import java.util.ArrayList;
 
+import org.eclipse.core.runtime.Assert;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Plugin;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.preferences.InstanceScope;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.widgets.Display;
 import org.omg.CosNaming.Binding;
 import org.omg.CosNaming.BindingIteratorHolder;
 import org.omg.CosNaming.BindingListHolder;
@@ -179,18 +183,12 @@ public class ScaPlugin extends Plugin {
 	 * @since 3.0
 	 */
 	public IPreferenceAccessor getScaPreferenceAccessor() {
+		
 		if (this.scaPreferenceStore == null) {
 			this.scaPreferenceStore = new ScopedPreferenceAccessor(InstanceScope.INSTANCE, ScaPlugin.getPluginId());
 		}
 		return this.scaPreferenceStore;
 	}
-	
-//	/**
-//	 * @since 6.1
-//	 */
-//	public void setScaPreferenceAccessor(IScopeContext scope) {
-//		this.scaPreferenceStore = new ScopedPreferenceAccessor(scope, ScaPlugin.getPluginId());
-//	}
 	
 	/**
 	 * @since 6.1
@@ -222,6 +220,7 @@ public class ScaPlugin extends Plugin {
 	public static boolean isDomainOnline(final String domainName) {
 		IPreferenceAccessor prefs = ScaPlugin.getDefault().getScaPreferenceAccessor();
 		final String namingService = prefs.getString(ScaPreferenceConstants.SCA_DEFAULT_NAMING_SERVICE);
+		//final String namingService = Platform.getPreferencesService().getString(ScaPreferenceConstants.SCA_DEFAULT_NAMING_SERVICE);
 		return isDomainOnline(domainName, namingService);
 	}
 

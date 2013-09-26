@@ -13,7 +13,6 @@ package gov.redhawk.sca.internal.ui.preferences;
 
 import gov.redhawk.model.sca.IScaDataProviderServiceDescriptor;
 import gov.redhawk.model.sca.ScaModelPlugin;
-import gov.redhawk.sca.ScaPlugin;
 import gov.redhawk.sca.model.preferences.ScaModelPreferenceContants;
 import gov.redhawk.sca.ui.ScaUiPlugin;
 
@@ -21,7 +20,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import org.eclipse.core.runtime.preferences.InstanceScope;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.preference.PreferencePage;
 import org.eclipse.jface.viewers.ArrayContentProvider;
@@ -30,13 +28,11 @@ import org.eclipse.jface.viewers.CheckboxTableViewer;
 import org.eclipse.jface.viewers.ICheckStateListener;
 import org.eclipse.jface.viewers.ICheckStateProvider;
 import org.eclipse.jface.viewers.LabelProvider;
-import org.eclipse.rap.ui.internal.preferences.SessionScope;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPreferencePage;
-import org.eclipse.ui.preferences.ScopedPreferenceStore;
 
 /**
  * 
@@ -65,7 +61,6 @@ public class DataProviderPreferencePage extends PreferencePage implements IWorkb
 	 * 
 	 */
 	public DataProviderPreferencePage() {
-		//setPreferenceStore(new ScopedPreferenceStore(InstanceScope.INSTANCE, ScaModelPlugin.getDefault().getBundle().getSymbolicName()));
 		final String str = getPreferenceStore().getString(ScaModelPreferenceContants.DISABLED_DATA_PROVIDERS);
 		final List<String> disabledProviders = Arrays.asList(str.split(","));
 		for (final IScaDataProviderServiceDescriptor desc : ScaModelPlugin.getDataProviderRegistry().getDataProvidersDescriptors()) {

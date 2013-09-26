@@ -1,28 +1,26 @@
 package gov.redhawk.sca.rap.internal;
 
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
-import java.security.Principal;
+import gov.redhawk.sca.ScaPlugin;
+import gov.redhawk.sca.compatibility.ICompatibilityUtil;
 
-import javax.servlet.http.HttpServletRequest;
+import java.io.File;
+import java.lang.reflect.Field;
 
 import org.eclipse.core.runtime.Status;
 import org.eclipse.rwt.RWT;
+import org.eclipse.rwt.service.FileSettingStore;
 import org.eclipse.rwt.service.ISettingStore;
 import org.eclipse.rwt.service.SettingStoreException;
 import org.eclipse.swt.widgets.Display;
 
-import gov.redhawk.sca.ScaPlugin;
-import gov.redhawk.sca.compatibility.ICompatibilityUtil;
-import gov.redhawk.sca.rap.RapInit;
-
 public class CompatibilityUtil implements ICompatibilityUtil {
 
 	private static final String KEY_SHARED_DOMAINS = "gov.redhawk.sca.sharedDomains";
+	private static final String FIELD_WORKDIR = "workDir";
 
 	public String getUserSpecificPath(Object context) {
 		if (Boolean.valueOf(System.getProperty(KEY_SHARED_DOMAINS))) {
-			return "";
+			return "SHARED";
 		}
 		//		if (context == null || !(context instanceof Display)) {
 		//			context = Display.getCurrent();
@@ -65,7 +63,7 @@ public class CompatibilityUtil implements ICompatibilityUtil {
 
 		});
 
-		while (waitForResult[0]) {
+		while (waitForResult[0] && display != null) {
 			if (!display.readAndDispatch()) {
 				display.sleep();
 			}
@@ -79,10 +77,30 @@ public class CompatibilityUtil implements ICompatibilityUtil {
 	public void initializeSettingStore(Object context) {
 		ISettingStore store =  RWT.getSettingStore();
 		try {
-			store.loadById(ScaPlugin.getDefault().getCompatibilityUtil().getUserSpecificPath(context));
+			store.loadById(getUserSpecificPath(context));
 		} catch (SettingStoreException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	}
+
+	@Override
+	public File getSettingStoreWorkDir() {
+		ISettingStore store = RWT.getSettingStore();
+		if (store instanceof FileSettingStore) {
+			Class<?> clazz = FileSettingStore.class;
+			try {
+				Field f = clazz.getDeclaredField(FIELD_WORKDIR);
+				f.setAccessible(true);
+				Object file = f.get(store);
+				if (file instanceof File) {
+					return ((File) file);
+				}
+			} catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException e) {
+				ScaPlugin.getDefault().getLog().log(
+						new Status(Status.ERROR, ScaPlugin.PLUGIN_ID, "Unable to determine SettingStore work directory", e));
+			}
+		}
+		return null;
 	}
 }

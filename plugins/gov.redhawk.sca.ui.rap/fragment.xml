@@ -15,7 +15,7 @@
    <extension
          point="org.eclipse.rap.ui.settingstores">
       <factory
-            class="gov.redhawk.sca.ui.internal.ScaSettingStoreFactory"
+            class="org.eclipse.rap.ui.internal.preferences.WorkbenchFileSettingStoreFactory"
             id="gov.redhawk.sca.ui.rap.factory">
       </factory>
    </extension>

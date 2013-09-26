@@ -21,9 +21,19 @@ import java.io.IOException;
 
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.jface.layout.GridLayoutFactory;
 import org.eclipse.jface.preference.BooleanFieldEditor;
 import org.eclipse.jface.preference.FieldEditorPreferencePage;
+import org.eclipse.jface.preference.RadioGroupFieldEditor;
 import org.eclipse.jface.preference.StringFieldEditor;
+import org.eclipse.jface.util.IPropertyChangeListener;
+import org.eclipse.jface.util.PropertyChangeEvent;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.widgets.Button;
+import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Group;
+import org.eclipse.swt.widgets.Label;
+import org.eclipse.ui.IPropertyListener;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPreferencePage;
 import org.eclipse.ui.PlatformUI;
@@ -45,11 +55,22 @@ public class RedhawkScaPreferencePage extends FieldEditorPreferencePage implemen
 		this.domList.setPreferenceStore(getPreferenceStore());
 		addField(this.domList);
 
-		final BooleanFieldEditor autoConnect = new BooleanFieldEditor(ScaPreferenceConstants.SCA_CORBA_AUTOCONNECT_PREFERENCE,
-		        "Reconnect to domains on startup", getFieldEditorParent());
+		/** We bind this field editor to a fake preference because we just use it to set the auto-connect 
+		  preference on all domains when selected */
+		final RadioGroupFieldEditor autoConnect = new RadioGroupFieldEditor("NONE",
+		        "All Domains: Reconnect on startup", 2, new String[][] {{"Auto", "true"},{"Manual", "false"}}, getFieldEditorParent(), false);
 		autoConnect.setPreferenceName(ScaPreferenceConstants.SCA_CORBA_AUTOCONNECT_PREFERENCE);
-		addField(autoConnect);
+		autoConnect.setPropertyChangeListener(new IPropertyChangeListener() {
 
+			@Override
+			public void propertyChange(PropertyChangeEvent event) {
+				Boolean auto = Boolean.valueOf((String) event.getNewValue());
+				RedhawkScaPreferencePage.this.domList.setAllAutoConnect(auto);
+			}
+
+			
+		});
+		
 		final StringListFieldEditor listField = new StringListFieldEditor(ScaPreferenceConstants.SCA_DOMAIN_WAVEFORMS_SEARCH_PATH, "Waveforms Search Path:",
 		        getFieldEditorParent());
 		addField(listField);

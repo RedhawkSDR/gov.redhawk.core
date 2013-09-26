@@ -38,6 +38,11 @@ public interface ICompatibilityUtil {
 	public void runInFakeUIContext(Display display, Runnable runnable);
 	
 	/**
+	 * @since 9.2
+	 */
+	public void executeOnRequestThread(Runnable runnable);
+	
+	/**
      * @since 9.1
      */
 	public void activateUIConnection(String id);
