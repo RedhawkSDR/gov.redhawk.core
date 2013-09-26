@@ -178,7 +178,8 @@ public class ScaExplorerSingleDomain extends ScaExplorer {
 					});
 				}
 			} else if (ScaSingleDomainPreferenceConstants.SCA_SET_NEW_DOMAIN_ACTIVE.equals(event.getProperty())) {
-				ScaExplorerSingleDomain.this.setNewDomainActive = (Boolean) event.getNewValue();
+				//event.getNewValue() can return a String or Boolean
+				ScaExplorerSingleDomain.this.setNewDomainActive = Boolean.valueOf(String.valueOf(event.getNewValue()));
 			}
 			dialog.checkHyperlinkEnabled(getActiveDomain());
 		}
