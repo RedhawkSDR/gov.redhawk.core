@@ -52,14 +52,14 @@ public class SadComponentInstantiationEditPart extends mil.jpeojtrs.sca.sad.diag
 	}
 	
 	/**
-	 * @since 3.0
+	 * @since 3.1
 	 */
 	public void addRuntimeListeners() {
 		this.editPartHelper.addRuntimeListeners();
 	}
 	
 	/**
-	 * @since 3.0
+	 * @since 3.1
 	 */
 	public void removeRuntimeListeners() {
 		this.editPartHelper.removeRuntimeListeners();

@@ -292,7 +292,7 @@ public class ComponentInstantiationEditPartHelper {
 	}
 
 	/**
-	 * @since 6.0
+	 * @since 6.1
 	 * 
 	 */
 	public void removeRuntimeListeners() {
@@ -309,7 +309,7 @@ public class ComponentInstantiationEditPartHelper {
 	}
 
 	/**
-	 * @since 6.0
+	 * @since 6.1
 	 * 
 	 */
 	public void addRuntimeListeners() {
