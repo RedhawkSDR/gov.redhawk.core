@@ -1463,7 +1463,7 @@ public class ScaDeviceManagerImpl extends ScaPropertyContainerImpl<DeviceManager
 	}
 
 	/**
-	 * @since 17.0
+	 * @since 18.0
 	 */
 	protected static class DeviceData {
 		private final Device dev;
@@ -1480,7 +1480,7 @@ public class ScaDeviceManagerImpl extends ScaPropertyContainerImpl<DeviceManager
 	}
 
 	/**
-	 * @since 17.0
+	 * @since 18.0
 	 */
 	protected Command fetchDevices(IProgressMonitor monitor,
 	        final ScaPropertyContainer< ? , ? > container,
@@ -1511,7 +1511,7 @@ public class ScaDeviceManagerImpl extends ScaPropertyContainerImpl<DeviceManager
 	}
 
 	/**
-	 * @since 17.0
+	 * @since 18.0
 	 */
 	protected void mergeDevices(final List<ScaDevice< ? >> deviceList, final Map<String, DeviceData> newDevices) {
 		// END GENERATED CODE
@@ -1547,7 +1547,7 @@ public class ScaDeviceManagerImpl extends ScaPropertyContainerImpl<DeviceManager
 	}
 
 	/**
-	 * @since 17.0
+	 * @since 18.0
 	 */
 	protected EClass getType(Device dev) {
 		EClass type = ScaPackage.Literals.SCA_DEVICE;
@@ -1560,7 +1560,7 @@ public class ScaDeviceManagerImpl extends ScaPropertyContainerImpl<DeviceManager
 	}
 
 	/**
-	 * @since 17.0
+	 * @since 18.0
 	 */
 	protected ScaDevice< ? > createType(EClass type) {
 		return (ScaDevice< ? >) ScaFactory.eINSTANCE.create(type);
@@ -1713,6 +1713,9 @@ public class ScaDeviceManagerImpl extends ScaPropertyContainerImpl<DeviceManager
 		// BEGIN GENERATED CODE
 	}
 
+	/**
+	 * @since 18.0
+	 */
 	protected Command createMergeServicesCommand(final Map<String, ServiceType> newServices) {
 	    return new MergeServicesCommand(this, newServices);
     }
