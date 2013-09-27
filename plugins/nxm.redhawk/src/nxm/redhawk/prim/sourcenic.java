@@ -194,18 +194,17 @@ public class sourcenic extends Primitive { //SUPPRESS CHECKSTYLE ClassName
 				if (this.outputFile.bps == 1) { // truncate SI -> SB
 					warn(WarnBit.WARN4, "Output mode SB is not yet supported for 16-bit SDDS data");
 				} else if (this.outputFile.bps == 2) { // byte-swap SI
-					if (!sddsHeader.isComplex()) {		
+					if (!sddsHeader.isComplex()) {
 						byteSwap(outputData.buf);
 						this.outputFile.write(outputData);
 					} else {
-						System.arraycopy(packet.getData(), packet.getOffset() + SDDS_HEADER_SIZE + 1, outputData.buf, 0, SDDS_PAYLOAD_SIZE);
 						if (sddsHeader.ss) { // If necessary, spectral swap
 							intSwap(outputData.buf);
 						}
 						this.outputFile.write(outputData);
 					}
 				} else {
-					warn(WarnBit.WARN5, "No support for 4-bit SDDS with specified output format");
+					warn(WarnBit.WARN5, "No support for 16-bit SDDS with specified output format");
 				}
 				break;
 				
