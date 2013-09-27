@@ -15,6 +15,7 @@ import gov.redhawk.bulkio.util.BulkIOType;
 
 import org.eclipse.core.runtime.ISafeRunnable;
 import org.eclipse.core.runtime.SafeRunner;
+import org.eclipse.jdt.annotation.NonNull;
 import org.omg.PortableServer.Servant;
 
 import BULKIO.PrecisionUTCTime;
@@ -55,11 +56,13 @@ public class DataUShortReceiver extends AbstractSriReceiver<dataUshortOperations
 	}
 
 	@Override
+	@NonNull
 	public Servant toServant() {
 		return new dataUshortPOATie(this);
 	}
 
 	@Override
+	@NonNull
 	public Class<dataUshortOperations> getType() {
 		return dataUshortOperations.class;
 	}
