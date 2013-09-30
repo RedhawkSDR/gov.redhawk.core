@@ -10,7 +10,7 @@ public class ScaDomainManagerRegistryFactoryServiceImpl implements IScaDomainMan
 
 	@Override
 	public IScaDomainManagerRegistryContainer getRegistryContainer() {
-		if (Boolean.valueOf(EntrypointActivator.PROP_SHARED_DOMAINS)) {
+		if (Boolean.valueOf(System.getProperty(EntrypointActivator.PROP_SHARED_DOMAINS))) {
 			return ScaDomainManagerRegistryContainerImpl.getInstance();
 		}
 		return SessionSingletonBase.getInstance(ScaDomainManagerRegistryContainerImpl.class);
@@ -21,7 +21,7 @@ public class ScaDomainManagerRegistryFactoryServiceImpl implements IScaDomainMan
 	}
 	
 	public void activate() {
-		//nothing to do. Model will be loaded with specific user context when registry is obtained.
+		//Nothing to do. Model will be loaded with specific user context when registry is obtained.
 	}
 
 }
