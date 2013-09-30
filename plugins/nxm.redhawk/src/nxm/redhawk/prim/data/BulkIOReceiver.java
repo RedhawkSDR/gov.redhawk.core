@@ -12,6 +12,7 @@
 package nxm.redhawk.prim.data;
 
 import org.eclipse.jdt.annotation.NonNull;
+import org.eclipse.jdt.annotation.Nullable;
 
 import gov.redhawk.bulkio.util.AbstractBulkIOPort;
 import gov.redhawk.bulkio.util.BulkIOType;
@@ -86,7 +87,7 @@ public class BulkIOReceiver extends AbstractBulkIOPort implements dataCharOperat
 	}
 
 	@Override
-	protected void handleStreamSRIChanged(StreamSRI oldSri, StreamSRI newSri) {
+	protected void handleStreamSRIChanged(@Nullable StreamSRI oldSri, @Nullable StreamSRI newSri) {
 		super.handleStreamSRIChanged(oldSri, newSri);
 		receiver.setStreamSri(newSri);
 	}

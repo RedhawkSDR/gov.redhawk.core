@@ -20,6 +20,7 @@ import java.util.List;
 import org.eclipse.core.runtime.ISafeRunnable;
 import org.eclipse.core.runtime.SafeRunner;
 import org.eclipse.jdt.annotation.NonNull;
+import org.eclipse.jdt.annotation.Nullable;
 import org.omg.PortableServer.Servant;
 
 import BULKIO.StreamSRI;
@@ -37,7 +38,7 @@ public abstract class AbstractSriReceiver< T extends updateSRIOperations > exten
 	}
 	
 	@Override
-	public void pushSRI(final StreamSRI sri) {
+	public void pushSRI(@Nullable final StreamSRI sri) {
 		super.pushSRI(sri);
 		Object [] childrenArray = children.toArray();
 		for (final Object child : childrenArray) {
