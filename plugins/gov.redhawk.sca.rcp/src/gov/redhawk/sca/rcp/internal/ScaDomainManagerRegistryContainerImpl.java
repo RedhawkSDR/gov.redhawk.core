@@ -19,7 +19,7 @@ import gov.redhawk.model.sca.ScaDomainManagerRegistry;
 import gov.redhawk.model.sca.ScaFactory;
 import gov.redhawk.model.sca.ScaPackage;
 import gov.redhawk.model.sca.commands.ScaModelCommand;
-import gov.redhawk.sca.IScaDomainManagerRegistryService;
+import gov.redhawk.sca.IScaDomainManagerRegistryContainer;
 import gov.redhawk.sca.ScaPlugin;
 import gov.redhawk.sca.preferences.ScaPreferenceInitializer;
 import gov.redhawk.sca.rcp.ScaRCPPlugin;
@@ -45,7 +45,9 @@ import org.eclipse.emf.transaction.util.TransactionUtil;
 /**
  * 
  */
-public class ScaDomainManagerRegistryServiceImpl implements IScaDomainManagerRegistryService {
+public class ScaDomainManagerRegistryContainerImpl implements IScaDomainManagerRegistryContainer {
+
+	private static ScaDomainManagerRegistryContainerImpl INSTANCE;
 
 	private ScaDomainManagerRegistry scaDomainManagerRegistry;
 
@@ -121,7 +123,7 @@ public class ScaDomainManagerRegistryServiceImpl implements IScaDomainManagerReg
 		connectOnStartup();
 	}
 
-	public void deactivate() {
+	public void dispose() {
 		if (this.scaDomainManagerRegistry != null) {
 			ScaModelCommand.execute(this.scaDomainManagerRegistry, new ScaModelCommand() {
 
@@ -159,6 +161,17 @@ public class ScaDomainManagerRegistryServiceImpl implements IScaDomainManagerReg
 			this.startupJob = null;
 		}
 	}
+	
+	private ScaDomainManagerRegistryContainerImpl() {
+		//use singleton only
+	}
+	
+	public static ScaDomainManagerRegistryContainerImpl getInstance() {
+		if (INSTANCE == null) {
+			INSTANCE = new ScaDomainManagerRegistryContainerImpl();
+		}
+		return INSTANCE;
+	}
 
 
 	@Override
@@ -170,7 +183,6 @@ public class ScaDomainManagerRegistryServiceImpl implements IScaDomainManagerReg
 		try {
 			final URI fileUri = ScaPlugin.getDefault().getStateLocation().append("domains.sca").toFile().toURI();
 			final org.eclipse.emf.common.util.URI uri = org.eclipse.emf.common.util.URI.createURI(fileUri.toString());
-			System.err.println("Domain persistence URL: " + uri.toString());
 			try {
 				this.registryResource = this.scaModelResourceSet.getResource(uri, true);
 			} catch (final Exception e) {
@@ -221,12 +233,10 @@ public class ScaDomainManagerRegistryServiceImpl implements IScaDomainManagerReg
 		//Listen for connection properties changes
 		Properties props = domain.getConnectionPropertiesContainer();
 		if (!props.eAdapters().contains(propListener)) {
-			System.err.println("ADD PROPERTIES LISTENER");
 			props.eAdapters().add(propListener);
 		}
 		//Listen for changes to other properties, such as domain name, auto-connect, etc.
 		if (!domain.eAdapters().contains(this.domainManagerListener)) {
-			System.err.println("ADD DOMAIN MANAGER LISTENER");
 			domain.eAdapters().add(this.domainManagerListener);
 		}
 	}

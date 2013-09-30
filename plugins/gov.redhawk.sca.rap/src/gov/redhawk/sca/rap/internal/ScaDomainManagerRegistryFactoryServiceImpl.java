@@ -19,5 +19,9 @@ public class ScaDomainManagerRegistryFactoryServiceImpl implements IScaDomainMan
 	public void deactivate() {
 		SessionSingletonBase.getInstance(ScaDomainManagerRegistryContainerImpl.class).dispose();
 	}
+	
+	public void activate() {
+		//nothing to do. Model will be loaded with specific user context when registry is obtained.
+	}
 
 }
