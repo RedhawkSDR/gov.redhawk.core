@@ -14,12 +14,14 @@ package gov.redhawk.sca.model.provider.refresh.ui;
 import gov.redhawk.sca.ScaPlugin;
 
 import org.eclipse.core.runtime.Assert;
+import org.eclipse.core.runtime.preferences.InstanceScope;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
+import org.eclipse.ui.preferences.ScopedPreferenceStore;
 import org.osgi.framework.BundleContext;
 
 /**
@@ -83,12 +85,10 @@ public class RefreshProviderUIActivator extends AbstractUIPlugin {
 				ScaPlugin.getDefault().getCompatibilityUtil().initializeSettingStore(Display.getCurrent());
 				this.lastId = currentId;
 			}
-			//this.providerPreferenceStore = new ScopedPreferenceStore(new SessionScope(), ScaPlugin.getDefault().getBundle().getSymbolicName());
 			this.providerPreferenceStore = PlatformUI.getPreferenceStore();
 		} else {
 			if (this.providerPreferenceStore == null) {
-				//this.providerPreferenceStore = new ScopedPreferenceStore(InstanceScope.INSTANCE, ScaPlugin.getDefault().getBundle().getSymbolicName());
-				this.providerPreferenceStore = PlatformUI.getPreferenceStore();
+				this.providerPreferenceStore = new ScopedPreferenceStore(InstanceScope.INSTANCE, ScaPlugin.getDefault().getBundle().getSymbolicName());
 			}
 		}
 		return this.providerPreferenceStore;

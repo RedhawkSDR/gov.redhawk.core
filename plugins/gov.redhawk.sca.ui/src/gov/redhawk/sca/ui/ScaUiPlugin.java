@@ -20,6 +20,7 @@ import org.eclipse.core.runtime.Assert;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
+import org.eclipse.core.runtime.preferences.InstanceScope;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.resource.ImageRegistry;
@@ -28,6 +29,7 @@ import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
+import org.eclipse.ui.preferences.ScopedPreferenceStore;
 import org.osgi.framework.BundleContext;
 
 // TODO: Auto-generated Javadoc
@@ -91,8 +93,7 @@ public class ScaUiPlugin extends AbstractUIPlugin {
 			}
 			this.scaPreferenceStore = PlatformUI.getPreferenceStore();
 		} else {
-			//this.scaPreferenceStore = new ScopedPreferenceStore(InstanceScope.INSTANCE, ScaPlugin.getDefault().getBundle().getSymbolicName());
-			this.scaPreferenceStore = PlatformUI.getPreferenceStore();
+			this.scaPreferenceStore = new ScopedPreferenceStore(InstanceScope.INSTANCE, ScaPlugin.getDefault().getBundle().getSymbolicName());
 		}
 		return this.scaPreferenceStore;
 	}
