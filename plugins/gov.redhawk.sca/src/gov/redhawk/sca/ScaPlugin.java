@@ -64,7 +64,7 @@ public class ScaPlugin extends Plugin {
 
 	private ScopedPreferenceAccessor scaPreferenceStore;
 	
-	private ServiceTracker<IScaDomainManagerRegistryService, IScaDomainManagerRegistryService> registryService;
+	private ServiceTracker<IScaDomainManagerRegistryFactoryService, IScaDomainManagerRegistryFactoryService> registryService;
 
 	private ServiceRegistration<IScaObjectLocator> serviceReg;
 	
@@ -92,7 +92,7 @@ public class ScaPlugin extends Plugin {
 		this.serviceReg = context.registerService(IScaObjectLocator.class, new ScaDomainRegistryObjectLocator(), null);
 		this.compatibilityUtil = new ServiceTracker<ICompatibilityUtil, ICompatibilityUtil>(getBundle().getBundleContext(), ICompatibilityUtil.class, null);
 		this.compatibilityUtil.open(true);
-		this.registryService = new ServiceTracker<IScaDomainManagerRegistryService, IScaDomainManagerRegistryService>(context, IScaDomainManagerRegistryService.class, null);
+		this.registryService = new ServiceTracker<IScaDomainManagerRegistryFactoryService, IScaDomainManagerRegistryFactoryService>(context, IScaDomainManagerRegistryFactoryService.class, null);
 		this.registryService.open();
 	}
 
@@ -125,9 +125,12 @@ public class ScaPlugin extends Plugin {
 	 * @since 6.1
 	 */
 	public ScaDomainManagerRegistry getDomainManagerRegistry(Object context) {
-		IScaDomainManagerRegistryService service = this.registryService.getService();
+		IScaDomainManagerRegistryFactoryService service = this.registryService.getService();
 		if (service != null) {
-			return service.getRegistry(context);
+			IScaDomainManagerRegistryContainer container = service.getRegistryContainer();
+			if (container != null) {
+				return container.getRegistry(context);
+			}
 		}
 		return null;
 	}

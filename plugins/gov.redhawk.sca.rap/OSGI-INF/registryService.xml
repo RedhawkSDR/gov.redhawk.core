@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <scr:component xmlns:scr="http://www.osgi.org/xmlns/scr/v1.1.0" name="gov.redhawk.sca.rap.domainregistry">
-   <implementation class="gov.redhawk.sca.rap.internal.ScaDomainManagerRegistryServiceImpl"/>
+   <implementation class="gov.redhawk.sca.rap.internal.ScaDomainManagerRegistryFactoryServiceImpl"/>
    <service>
-      <provide interface="gov.redhawk.sca.IScaDomainManagerRegistryService"/>
+      <provide interface="gov.redhawk.sca.IScaDomainManagerRegistryFactoryService"/>
    </service>
 </scr:component>

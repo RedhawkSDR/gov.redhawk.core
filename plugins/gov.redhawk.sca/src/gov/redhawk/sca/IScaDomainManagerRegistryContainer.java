@@ -15,7 +15,7 @@ import gov.redhawk.model.sca.ScaDomainManagerRegistry;
 /**
  * @since 6.1
  */
-public interface IScaDomainManagerRegistryService {
+public interface IScaDomainManagerRegistryContainer {
 
 	/**
 	 * Gets the Domain Manager registry.

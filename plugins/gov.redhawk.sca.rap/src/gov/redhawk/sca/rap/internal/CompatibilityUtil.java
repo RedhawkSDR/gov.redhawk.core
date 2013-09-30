@@ -1,5 +1,6 @@
 package gov.redhawk.sca.rap.internal;
 
+import gov.redhawk.entrypoint.scaExplorer.EntrypointActivator;
 import gov.redhawk.sca.ScaPlugin;
 import gov.redhawk.sca.compatibility.ICompatibilityUtil;
 
@@ -15,11 +16,10 @@ import org.eclipse.swt.widgets.Display;
 
 public class CompatibilityUtil implements ICompatibilityUtil {
 
-	private static final String KEY_SHARED_DOMAINS = "gov.redhawk.sca.sharedDomains";
 	private static final String FIELD_WORKDIR = "workDir";
 
 	public String getUserSpecificPath(Object context) {
-		if (Boolean.valueOf(System.getProperty(KEY_SHARED_DOMAINS))) {
+		if (Boolean.valueOf(System.getProperty(EntrypointActivator.PROP_SHARED_DOMAINS))) {
 			return "SHARED";
 		}
 		//		if (context == null || !(context instanceof Display)) {

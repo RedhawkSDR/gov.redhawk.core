@@ -19,7 +19,7 @@ import gov.redhawk.model.sca.ScaDomainManagerRegistry;
 import gov.redhawk.model.sca.ScaFactory;
 import gov.redhawk.model.sca.ScaPackage;
 import gov.redhawk.model.sca.commands.ScaModelCommand;
-import gov.redhawk.sca.IScaDomainManagerRegistryService;
+import gov.redhawk.sca.IScaDomainManagerRegistryContainer;
 import gov.redhawk.sca.ScaPlugin;
 import gov.redhawk.sca.preferences.ScaPreferenceInitializer;
 
@@ -43,10 +43,14 @@ import org.eclipse.emf.transaction.RunnableWithResult;
 import org.eclipse.emf.transaction.TransactionalEditingDomain;
 import org.eclipse.emf.transaction.util.TransactionUtil;
 
+import org.eclipse.rwt.SessionSingletonBase;
+
 /**
  * 
  */
-public class ScaDomainManagerRegistryServiceImpl implements IScaDomainManagerRegistryService {
+public class ScaDomainManagerRegistryContainerImpl extends SessionSingletonBase implements IScaDomainManagerRegistryContainer {
+
+	private static ScaDomainManagerRegistryContainerImpl INSTANCE = null;
 
 	private ScaDomainManagerRegistry scaDomainManagerRegistry;
 
@@ -105,11 +109,23 @@ public class ScaDomainManagerRegistryServiceImpl implements IScaDomainManagerReg
 	};
 
 	private Set<Object> initializedContexts = new HashSet<Object>();
-
-	public void activate() {
+	
+	private ScaDomainManagerRegistryContainerImpl() {
+		//Class must be used as a singleton or a session singleton
+	}
+	
+	
+	/**
+	 * @return a singleton instance shared across all UI Sessions
+	 */
+	public static ScaDomainManagerRegistryContainerImpl getInstance() {
+		if (INSTANCE == null) {
+			INSTANCE = new ScaDomainManagerRegistryContainerImpl();
+		}
+		return INSTANCE;
 	}
 
-	public void deactivate() {
+	public void dispose() {
 		if (this.scaDomainManagerRegistry != null) {
 			ScaModelCommand.execute(this.scaDomainManagerRegistry, new ScaModelCommand() {
 
@@ -226,12 +242,10 @@ public class ScaDomainManagerRegistryServiceImpl implements IScaDomainManagerReg
 		//Listen for connection properties changes
 		Properties props = domain.getConnectionPropertiesContainer();
 		if (!props.eAdapters().contains(propListener)) {
-			System.err.println("ADD PROPERTIES LISTENER");
 			props.eAdapters().add(propListener);
 		}
 		//Listen for changes to other properties, such as domain name, auto-connect, etc.
 		if (!domain.eAdapters().contains(this.domainManagerListener)) {
-			System.err.println("ADD DOMAIN MANAGER LISTENER");
 			domain.eAdapters().add(this.domainManagerListener);
 		}
 	}
