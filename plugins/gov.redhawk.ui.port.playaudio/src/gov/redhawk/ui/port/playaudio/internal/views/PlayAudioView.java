@@ -28,6 +28,7 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
+import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.edit.provider.ComposedAdapterFactory;
 import org.eclipse.emf.edit.ui.provider.AdapterFactoryLabelProvider;
 import org.eclipse.jface.databinding.viewers.ObservableListContentProvider;
@@ -88,8 +89,11 @@ public class PlayAudioView extends ViewPart {
 				if (object instanceof AudioReceiver) {
 					AudioReceiver receiver = (AudioReceiver) object;
 					ScaUsesPort port = receiver.getPort();
-					String qualifiedName = super.getText(port.eContainer()) + " -> " + super.getText(port);
-					return qualifiedName;
+					EObject container = port.eContainer();
+					if (port != null && container != null) {
+						String qualifiedName = super.getText(container) + " -> " + super.getText(port);
+						return qualifiedName;
+					}
 				}
 				return super.getText(object);
 			}
