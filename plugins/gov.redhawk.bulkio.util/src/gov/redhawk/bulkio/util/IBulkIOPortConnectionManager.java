@@ -15,6 +15,9 @@ import org.eclipse.jdt.annotation.NonNull;
 
 import BULKIO.updateSRIOperations;
 
+/**
+ * @noimplement This interface is not intended to be implemented by clients.
+ */
 public interface IBulkIOPortConnectionManager {
 
 	void connect(@NonNull String ior, @NonNull BulkIOType type, @NonNull updateSRIOperations internalPort) throws CoreException;
