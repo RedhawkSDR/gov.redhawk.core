@@ -8,20 +8,25 @@ import java.io.File;
 public class CompatibilityUtil implements ICompatibilityUtil {
 
 	
-	/**
-	 * RAP implementation returns a path component specific to the authenticated
-	 * user. RCP implementation returns an empty string.
+	/* (non-Javadoc)
+	 * @see gov.redhawk.sca.compatibility.ICompatibilityUtil#getUserSpecificPath(java.lang.Object)
 	 */
 	@Override
 	public String getUserSpecificPath(Object context) {
 		return "";
 	}
 
+	/* (non-Javadoc)
+	 * @see gov.redhawk.sca.compatibility.ICompatibilityUtil#initializeSettingStore(java.lang.Object)
+	 */
 	@Override
 	public void initializeSettingStore(Object context) {
 		throw new UnsupportedOperationException("This method is used in RAP only");
 	}
 
+	/* (non-Javadoc)
+	 * @see gov.redhawk.sca.compatibility.ICompatibilityUtil#getSettingStoreWorkDir()
+	 */
 	@Override
 	public File getSettingStoreWorkDir() {
 		throw new UnsupportedOperationException("This method is used in RAP only");

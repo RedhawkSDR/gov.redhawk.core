@@ -57,9 +57,8 @@ public class RedhawkScaPreferencePage extends FieldEditorPreferencePage implemen
 
 		/** We bind this field editor to a fake preference because we just use it to set the auto-connect 
 		  preference on all domains when selected */
-		final RadioGroupFieldEditor autoConnect = new RadioGroupFieldEditor("NONE",
+		final RadioGroupFieldEditor autoConnect = new RadioGroupFieldEditor("FAKE",
 		        "All Domains: Reconnect on startup", 2, new String[][] {{"Auto", "true"},{"Manual", "false"}}, getFieldEditorParent(), false);
-		autoConnect.setPreferenceName(ScaPreferenceConstants.SCA_CORBA_AUTOCONNECT_PREFERENCE);
 		autoConnect.setPropertyChangeListener(new IPropertyChangeListener() {
 
 			@Override

@@ -22,7 +22,6 @@ import gov.redhawk.model.sca.commands.ScaModelCommand;
 import gov.redhawk.sca.IScaDomainManagerRegistryContainer;
 import gov.redhawk.sca.ScaPlugin;
 import gov.redhawk.sca.preferences.ScaPreferenceInitializer;
-import gov.redhawk.sca.rcp.ScaRCPPlugin;
 
 import java.io.IOException;
 import java.net.URI;
@@ -58,6 +57,10 @@ public class ScaDomainManagerRegistryContainerImpl implements IScaDomainManagerR
 	private TransactionalEditingDomain editingDomain = TransactionalEditingDomain.Registry.INSTANCE.getEditingDomain(ScaPlugin.EDITING_DOMAIN_ID);
 	private ResourceSet scaModelResourceSet = this.editingDomain.getResourceSet();
 
+	/**
+	 * Listens for changes to domain manager properties, and persists them to the
+	 * configured preference store.
+	 */
 	private Adapter propListener = new AdapterImpl() {
 		public void notifyChanged(Notification msg) {
 			if (msg.getFeatureID(Properties.class) == ScaPackage.PROPERTIES__PROPERTY) {
@@ -71,6 +74,10 @@ public class ScaDomainManagerRegistryContainerImpl implements IScaDomainManagerR
 		};
 	};
 
+	/**
+	 * Listens for changes to a domain manager, and persists domain preferences
+	 * to the configured preference store.
+	 */
 	private Adapter domainManagerListener = new AdapterImpl() {
 		public void notifyChanged(Notification msg) {
 			switch (msg.getFeatureID(ScaDomainManagerRegistry.class)) {
@@ -83,7 +90,10 @@ public class ScaDomainManagerRegistryContainerImpl implements IScaDomainManagerR
 		};
 	};
 
-
+	/**
+	 * Listens for changes to the domain manager registry, and persists domain preferences
+	 * to the configured preference store.
+	 */
 	private Adapter domainManagerRegistrylistener = new AdapterImpl() {
 		@SuppressWarnings("unchecked")
 		public void notifyChanged(Notification msg) {

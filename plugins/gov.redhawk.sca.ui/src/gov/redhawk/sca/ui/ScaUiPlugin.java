@@ -82,11 +82,20 @@ public class ScaUiPlugin extends AbstractUIPlugin {
 
 	/**
 	 * @since 3.0
+	 * 
+	 * Returns a Preference store scoped to this plug-in (RCP) or to the current user (RAP).
+	 * 
+	 * @return
+	 * 			The scoped preference store
 	 */
 	public IPreferenceStore getScaPreferenceStore() {
 		if (SWT.getPlatform().startsWith("rap")) {
 			Assert.isNotNull(Display.getCurrent(), "This method must be called from the UI thread");
 			String currentId = ScaPlugin.getDefault().getCompatibilityUtil().getUserSpecificPath(Display.getCurrent());
+			/**
+			 * If we have not yet done so for the current user, initialize the SettingStore with settings 
+			 * for this user.
+			 */
 			if (currentId != null && !currentId.equals(lastId)) {
 				ScaPlugin.getDefault().getCompatibilityUtil().initializeSettingStore(Display.getCurrent());
 				this.lastId = currentId;

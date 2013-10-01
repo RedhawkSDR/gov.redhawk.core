@@ -79,8 +79,8 @@ public class CompatibilityUtil implements ICompatibilityUtil {
 		try {
 			store.loadById(getUserSpecificPath(context));
 		} catch (SettingStoreException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			ScaPlugin.getDefault().getLog().log(
+					new Status(Status.ERROR, ScaPlugin.PLUGIN_ID, "Unable to initialize the SettingStore", e));
 		}
 	}
 

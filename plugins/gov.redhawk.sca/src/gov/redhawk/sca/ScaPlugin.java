@@ -123,6 +123,12 @@ public class ScaPlugin extends Plugin {
 	
 	/**
 	 * @since 6.1
+	 *
+	 * Returns the SCA Domain Manager registry.
+	 * @param context
+	 * 			the current Display (meaningful in RAP only), used to ensure user-specific context.
+	 * @return
+	 * 			the SCA Domain Manager registry
 	 */
 	public ScaDomainManagerRegistry getDomainManagerRegistry(Object context) {
 		IScaDomainManagerRegistryFactoryService service = this.registryService.getService();
@@ -180,6 +186,13 @@ public class ScaPlugin extends Plugin {
 	
 	/**
 	 * @since 3.0
+	 *
+	 * Returns an object that can be used to read and write system Preferences.
+	 *  
+	 * @return 
+	 * 			an object used to access system preferences. For RAP, preferences are generally scoped and
+	 * persisted on a per-user basis. That is not the case with this plug-in. Because there are no UI
+	 * dependencies, there is no way to access a user context.
 	 */
 	public IPreferenceAccessor getScaPreferenceAccessor() {
 		
@@ -191,8 +204,13 @@ public class ScaPlugin extends Plugin {
 	
 	/**
 	 * @since 6.1
+	 *
+	 * Returns a utility class that provides platform-specific implementations for RAP
+	 * and RCP runtime environments.
+	 * 
+	 * @return 
+	 * 			the utility class
 	 */
-
 	public ICompatibilityUtil getCompatibilityUtil() {
 		return getDefault().compatibilityUtil.getService();
 	}

@@ -46,7 +46,8 @@ import org.eclipse.emf.transaction.util.TransactionUtil;
 import org.eclipse.rwt.SessionSingletonBase;
 
 /**
- * 
+ * This class provides a wrapper around ScaDomainManagerRegistry, so that either shared singleton
+ * or session singleton instance can be used for obtaining the registry and managing its listeners
  */
 public class ScaDomainManagerRegistryContainerImpl extends SessionSingletonBase implements IScaDomainManagerRegistryContainer {
 
@@ -61,6 +62,10 @@ public class ScaDomainManagerRegistryContainerImpl extends SessionSingletonBase 
 	private TransactionalEditingDomain editingDomain = TransactionalEditingDomain.Registry.INSTANCE.getEditingDomain(ScaPlugin.EDITING_DOMAIN_ID);
 	private ResourceSet scaModelResourceSet = this.editingDomain.getResourceSet();
 
+	/**
+	 * Listens for changes to domain manager properties, and persists them to the
+	 * configured preference store.
+	 */
 	private Adapter propListener = new AdapterImpl() {
 		public void notifyChanged(Notification msg) {
 			if (msg.getFeatureID(Properties.class) == ScaPackage.PROPERTIES__PROPERTY) {
@@ -74,6 +79,10 @@ public class ScaDomainManagerRegistryContainerImpl extends SessionSingletonBase 
 		};
 	};
 
+	/**
+	 * Listens for changes to a domain manager, and persists domain preferences
+	 * to the configured preference store.
+	 */
 	private Adapter domainManagerListener = new AdapterImpl() {
 		public void notifyChanged(Notification msg) {
 			switch (msg.getFeatureID(ScaDomainManagerRegistry.class)) {
@@ -86,7 +95,10 @@ public class ScaDomainManagerRegistryContainerImpl extends SessionSingletonBase 
 		};
 	};
 
-
+	/**
+	 * Listens for changes to the domain manager registry, and persists domain preferences
+	 * to the configured preference store.
+	 */
 	private Adapter domainManagerRegistrylistener = new AdapterImpl() {
 		public void notifyChanged(Notification msg) {
 			if (msg.getFeatureID(ScaDomainManagerRegistry.class) == ScaPackage.SCA_DOMAIN_MANAGER_REGISTRY__DOMAINS) {
@@ -111,12 +123,17 @@ public class ScaDomainManagerRegistryContainerImpl extends SessionSingletonBase 
 	private Set<Object> initializedContexts = new HashSet<Object>();
 	
 	private ScaDomainManagerRegistryContainerImpl() {
-		//Class must be used as a singleton or a session singleton
+		//Class must be used as a singleton or a (RAP) session singleton
 	}
 	
 	
 	/**
-	 * @return a singleton instance shared across all UI Sessions
+	 * Return a singleton instance. In RAP, the singleton will be shared
+	 * across all UI Sessions.
+	 * 
+	 * @return 
+	 * 			a singleton instance (RCP), or a singleton instance shared
+	 * across all UI Sessions (RAP).
 	 */
 	public static ScaDomainManagerRegistryContainerImpl getInstance() {
 		if (INSTANCE == null) {
@@ -157,6 +174,7 @@ public class ScaDomainManagerRegistryContainerImpl extends SessionSingletonBase 
 				}
 			});
 		}
+		this.initializedContexts.clear();
 
 		if (this.startupJob != null) {
 			this.startupJob.cancel();
@@ -268,7 +286,6 @@ public class ScaDomainManagerRegistryContainerImpl extends SessionSingletonBase 
 				public void execute() {
 					if (registryResource != null) {
 						Resource resource = registryResource;
-						//ScaPlugin.this.registryResource = null;
 
 						if (resource != null) {
 							try {
