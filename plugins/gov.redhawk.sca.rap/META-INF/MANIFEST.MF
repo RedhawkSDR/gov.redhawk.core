@@ -3,7 +3,7 @@ Bundle-ManifestVersion: 2
 Bundle-Name: SCA RAP
 Bundle-SymbolicName: gov.redhawk.sca.rap;singleton:=true
 Bundle-Version: 1.0.0.qualifier
-Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Bundle-ClassPath: .
 Service-Component: OSGI-INF/compatibility.xml,
  OSGI-INF/registryService.xml

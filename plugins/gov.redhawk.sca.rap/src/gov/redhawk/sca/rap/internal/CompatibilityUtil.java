@@ -96,7 +96,16 @@ public class CompatibilityUtil implements ICompatibilityUtil {
 				if (file instanceof File) {
 					return ((File) file);
 				}
-			} catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException e) {
+			} catch (NoSuchFieldException e) {
+				ScaPlugin.getDefault().getLog().log(
+					new Status(Status.ERROR, ScaPlugin.PLUGIN_ID, "Unable to determine SettingStore work directory", e));
+			} catch (SecurityException e) {
+				ScaPlugin.getDefault().getLog().log(
+					new Status(Status.ERROR, ScaPlugin.PLUGIN_ID, "Unable to determine SettingStore work directory", e));
+			} catch (IllegalArgumentException e) {
+				ScaPlugin.getDefault().getLog().log(
+					new Status(Status.ERROR, ScaPlugin.PLUGIN_ID, "Unable to determine SettingStore work directory", e));
+			} catch (IllegalAccessException e) {
 				ScaPlugin.getDefault().getLog().log(
 						new Status(Status.ERROR, ScaPlugin.PLUGIN_ID, "Unable to determine SettingStore work directory", e));
 			}

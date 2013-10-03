@@ -32,7 +32,6 @@ import gov.redhawk.sca.ui.views.ScaExplorer;
 import java.security.Principal;
 
 import org.eclipse.core.runtime.NullProgressMonitor;
-import org.eclipse.core.runtime.Status;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.impl.AdapterImpl;
 import org.eclipse.jface.action.ToolBarManager;
@@ -101,7 +100,6 @@ public class ScaExplorerSingleDomain extends ScaExplorer {
 						break;
 					case Notification.ADD:
 						if (ScaExplorerSingleDomain.this.setNewDomainActive) {
-							System.err.println("ACTIVATING NEW DOMAIN");
 							ScaDomainManager domainAdded = (ScaDomainManager) msg.getNewValue();
 							setActiveDomain(domainAdded.getName());
 							dialog.checkHyperlinkEnabled(domainAdded);
@@ -134,8 +132,7 @@ public class ScaExplorerSingleDomain extends ScaExplorer {
 				String oldDomain = (String) event.getOldValue();
 				if (!oldDomain.equals("") && prefs.getBoolean(ScaSingleDomainPreferenceConstants.SCA_DISCONNECT_INACTIVE)) {
 					if (Display.getCurrent() != null) {
-						ScaDomainManager domain = ScaPlugin.getDefault().getDomainManagerRegistry(getSite().getShell().getDisplay())
-								.findDomain(oldDomain);
+						ScaDomainManager domain = ScaPlugin.getDefault().getDomainManagerRegistry(getSite().getShell().getDisplay()).findDomain(oldDomain);
 						if (domain != null) {
 							domain.disconnect();
 						}
@@ -354,7 +351,7 @@ public class ScaExplorerSingleDomain extends ScaExplorer {
 			}
 		}
 
-		domains = new CustomControlItem(label);//causes UI to hang if page is refreshed
+		domains = new CustomControlItem(label); //causes UI to hang if page is refreshed
 		mgr.insert(0, domains);
 
 		dialog = new DomainsDialog(getViewSite().getShell());

@@ -10,14 +10,16 @@ public class Activator extends Plugin {
 
 	@Override
 	public void start(BundleContext context) throws Exception {
+		super.start(context);
 		Activator.bundleContext = context;
 		Activator.plugin = this;
 	}
 
 	@Override
 	public void stop(BundleContext context) throws Exception {
-		// TODO Auto-generated method stub
-
+		super.stop(context);
+		Activator.bundleContext = null;
+		Activator.plugin = null;
 	}
 	
 	 /* Returns the shared instance.

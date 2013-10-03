@@ -21,19 +21,11 @@ import java.io.IOException;
 
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
-import org.eclipse.jface.layout.GridLayoutFactory;
-import org.eclipse.jface.preference.BooleanFieldEditor;
 import org.eclipse.jface.preference.FieldEditorPreferencePage;
 import org.eclipse.jface.preference.RadioGroupFieldEditor;
 import org.eclipse.jface.preference.StringFieldEditor;
 import org.eclipse.jface.util.IPropertyChangeListener;
 import org.eclipse.jface.util.PropertyChangeEvent;
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.widgets.Button;
-import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Group;
-import org.eclipse.swt.widgets.Label;
-import org.eclipse.ui.IPropertyListener;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPreferencePage;
 import org.eclipse.ui.PlatformUI;
@@ -48,7 +40,7 @@ public class RedhawkScaPreferencePage extends FieldEditorPreferencePage implemen
 	@Override
 	protected void createFieldEditors() {
 		final StringFieldEditor field = new StringFieldEditor(ScaPreferenceConstants.SCA_DEFAULT_NAMING_SERVICE, "Default Naming Service:",
-		        getFieldEditorParent());
+			getFieldEditorParent());
 		addField(field);
 
 		this.domList = new DomainListEditor(this.registry, "Domains:", getFieldEditorParent());
@@ -57,8 +49,8 @@ public class RedhawkScaPreferencePage extends FieldEditorPreferencePage implemen
 
 		/** We bind this field editor to a fake preference because we just use it to set the auto-connect 
 		  preference on all domains when selected */
-		final RadioGroupFieldEditor autoConnect = new RadioGroupFieldEditor("FAKE",
-		        "All Domains: Reconnect on startup", 2, new String[][] {{"Auto", "true"},{"Manual", "false"}}, getFieldEditorParent(), false);
+		final RadioGroupFieldEditor autoConnect = new RadioGroupFieldEditor("FAKE", "All Domains: Reconnect on startup", 2, new String[][] {
+			{ "Auto", "true" }, { "Manual", "false" } }, getFieldEditorParent(), false);
 		autoConnect.setPropertyChangeListener(new IPropertyChangeListener() {
 
 			@Override
@@ -67,11 +59,10 @@ public class RedhawkScaPreferencePage extends FieldEditorPreferencePage implemen
 				RedhawkScaPreferencePage.this.domList.setAllAutoConnect(auto);
 			}
 
-			
 		});
-		
+
 		final StringListFieldEditor listField = new StringListFieldEditor(ScaPreferenceConstants.SCA_DOMAIN_WAVEFORMS_SEARCH_PATH, "Waveforms Search Path:",
-		        getFieldEditorParent());
+			getFieldEditorParent());
 		addField(listField);
 		listField.getUpButton().setVisible(false);
 		listField.getDownButton().setVisible(false);
@@ -86,7 +77,7 @@ public class RedhawkScaPreferencePage extends FieldEditorPreferencePage implemen
 			RedhawkScaPreferencePage.this.registry.eResource().save(null);
 		} catch (final IOException e) {
 			StatusManager.getManager().handle(new Status(IStatus.ERROR, ScaUiPlugin.PLUGIN_ID, "Failed to save SCA Domain Connections to configuration.", e),
-			        StatusManager.LOG | StatusManager.SHOW);
+				StatusManager.LOG | StatusManager.SHOW);
 			return false;
 		}
 		return true;

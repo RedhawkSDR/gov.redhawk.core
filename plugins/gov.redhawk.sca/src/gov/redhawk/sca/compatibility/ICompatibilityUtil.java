@@ -1,3 +1,14 @@
+/**
+ * This file is protected by Copyright. 
+ * Please refer to the COPYRIGHT file distributed with this source distribution.
+ * 
+ * This file is part of REDHAWK IDE.
+ * 
+ * All rights reserved.  This program and the accompanying materials are made available under 
+ * the terms of the Eclipse Public License v1.0 which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html.
+ *
+ */
 package gov.redhawk.sca.compatibility;
 
 import java.io.File;
@@ -19,7 +30,7 @@ public interface ICompatibilityUtil {
 	 * an empty String.
 	 */
 	public String getUserSpecificPath(Object context);
-	
+
 	/**
 	 * Initialize the setting store. Used only in RAP, to initialize the
 	 * SettingStore with preference values scoped and persisted for the
@@ -29,7 +40,7 @@ public interface ICompatibilityUtil {
 	 *            the current Display
 	 */
 	public void initializeSettingStore(Object context);
-	
+
 	/**
 	 * Gets the RAP SettingStore work directory.
 	 * 

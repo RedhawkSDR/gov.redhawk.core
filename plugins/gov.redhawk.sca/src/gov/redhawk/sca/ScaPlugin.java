@@ -212,7 +212,7 @@ public class ScaPlugin extends Plugin {
 	 * 			the utility class
 	 */
 	public ICompatibilityUtil getCompatibilityUtil() {
-		return getDefault().compatibilityUtil.getService();
+		return compatibilityUtil.getService();
 	}
 
 	/**
