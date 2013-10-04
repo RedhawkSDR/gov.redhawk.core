@@ -51,7 +51,7 @@ import org.eclipse.rwt.SessionSingletonBase;
  */
 public class ScaDomainManagerRegistryContainerImpl extends SessionSingletonBase implements IScaDomainManagerRegistryContainer {
 
-	private static ScaDomainManagerRegistryContainerImpl INSTANCE = null;
+	private static ScaDomainManagerRegistryContainerImpl instance = null;
 
 	private ScaDomainManagerRegistry scaDomainManagerRegistry;
 
@@ -91,6 +91,7 @@ public class ScaDomainManagerRegistryContainerImpl extends SessionSingletonBase 
 			case ScaPackage.SCA_DOMAIN_MANAGER__NAME:
 				saveDomainManagerRegistryResource();
 				break;
+			default:
 			}
 		};
 	};
@@ -115,18 +116,19 @@ public class ScaDomainManagerRegistryContainerImpl extends SessionSingletonBase 
 					domain = (ScaDomainManager) msg.getOldValue();
 					removeDomainManagerPropertiesListeners(domain);
 					break;
+				default:
 				}
 			}
 		};
 	};
 
 	private Set<Object> initializedContexts = new HashSet<Object>();
-	
+
 	private ScaDomainManagerRegistryContainerImpl() {
 		//Class must be used as a singleton or a (RAP) session singleton
 	}
-	
-	
+
+
 	/**
 	 * Return a singleton instance. In RAP, the singleton will be shared
 	 * across all UI Sessions.
@@ -136,10 +138,10 @@ public class ScaDomainManagerRegistryContainerImpl extends SessionSingletonBase 
 	 * across all UI Sessions (RAP).
 	 */
 	public static ScaDomainManagerRegistryContainerImpl getInstance() {
-		if (INSTANCE == null) {
-			INSTANCE = new ScaDomainManagerRegistryContainerImpl();
+		if (instance == null) {
+			instance = new ScaDomainManagerRegistryContainerImpl();
 		}
-		return INSTANCE;
+		return instance;
 	}
 
 	public void dispose() {
@@ -203,8 +205,8 @@ public class ScaDomainManagerRegistryContainerImpl extends SessionSingletonBase 
 	private void loadScaModel(Object context) {
 		try {
 			final URI fileUri = new Path(ScaPlugin.getDefault().getCompatibilityUtil().getSettingStoreWorkDir().getAbsolutePath())
-					.append(ScaPlugin.getDefault().getCompatibilityUtil().getUserSpecificPath(context) + "_sca")
-					.append("domains.sca").toFile().toURI();
+			.append(ScaPlugin.getDefault().getCompatibilityUtil().getUserSpecificPath(context) + "_sca")
+			.append("domains.sca").toFile().toURI();
 			final org.eclipse.emf.common.util.URI uri = org.eclipse.emf.common.util.URI.createURI(fileUri.toString());
 			try {
 				this.registryResource = this.scaModelResourceSet.getResource(uri, true);
@@ -276,7 +278,7 @@ public class ScaDomainManagerRegistryContainerImpl extends SessionSingletonBase 
 	}
 
 	private void addDomainManagerRegistryListener() {
-		this.scaDomainManagerRegistry.eAdapters().add(this.domainManagerRegistrylistener );
+		this.scaDomainManagerRegistry.eAdapters().add(this.domainManagerRegistrylistener);
 	}
 
 	private void saveDomainManagerRegistryResource() {

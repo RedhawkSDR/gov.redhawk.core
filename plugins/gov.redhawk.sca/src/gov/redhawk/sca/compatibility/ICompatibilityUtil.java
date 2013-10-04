@@ -1,4 +1,4 @@
-/**
+/** 
  * This file is protected by Copyright. 
  * Please refer to the COPYRIGHT file distributed with this source distribution.
  * 
@@ -12,6 +12,7 @@
 package gov.redhawk.sca.compatibility;
 
 import java.io.File;
+
 
 /**
  * @since 6.1

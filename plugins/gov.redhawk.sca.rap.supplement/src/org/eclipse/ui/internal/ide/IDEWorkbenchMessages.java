@@ -1,4 +1,15 @@
-/*******************************************************************************
+/** 
+ * This file is protected by Copyright. 
+ * Please refer to the COPYRIGHT file distributed with this source distribution.
+ * 
+ * This file is part of REDHAWK IDE.
+ * 
+ * All rights reserved.  This program and the accompanying materials are made available under 
+ * the terms of the Eclipse Public License v1.0 which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html.
+ *
+ *
+ *
  * Copyright (c) 2005, 2010 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -19,9 +30,10 @@ package org.eclipse.ui.internal.ide;
 import org.eclipse.osgi.util.NLS;
 
 public class IDEWorkbenchMessages extends NLS {
-	private static final String BUNDLE_NAME = "org.eclipse.ui.internal.ide.messages";//$NON-NLS-1$
+	private static final String BUNDLE_NAME = "org.eclipse.ui.internal.ide.messages"; //$NON-NLS-1$
 	// package: org.eclipse.ui.ide
 
+	// CHECKSTYLE:OFF This class copied from eclipse source; too many violations to fix
 	public static String IDEWorkbenchAdvisor_noPerspective;
 	public static String IDEWorkbenchAdvisor_cancelHistoryPruning;
 	public static String IDEWorkbenchAdvisor_preHistoryCompaction;
@@ -101,7 +113,6 @@ public class IDEWorkbenchMessages extends NLS {
 	public static String ResourceFilterPage_multiWithin;
 	public static String ResourceFilterPage_true;
 	public static String ResourceFilterPage_false;
-	
 	//
 	//
 	// Copies from org.eclipse.ui.workbench
@@ -976,5 +987,5 @@ public class IDEWorkbenchMessages extends NLS {
 		// load message values from bundle file
 		NLS.initializeMessages(BUNDLE_NAME, IDEWorkbenchMessages.class);
 	}
-
+	// CHECKSTYLE:ON
 }
