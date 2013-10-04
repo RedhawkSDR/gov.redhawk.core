@@ -46,7 +46,7 @@ import org.eclipse.emf.transaction.util.TransactionUtil;
  */
 public class ScaDomainManagerRegistryContainerImpl implements IScaDomainManagerRegistryContainer {
 
-	private static ScaDomainManagerRegistryContainerImpl INSTANCE;
+	private static ScaDomainManagerRegistryContainerImpl instance;
 
 	private ScaDomainManagerRegistry scaDomainManagerRegistry;
 
@@ -69,6 +69,7 @@ public class ScaDomainManagerRegistryContainerImpl implements IScaDomainManagerR
 				case Notification.ADD:
 					saveDomainManagerRegistryResource();
 					break;
+				default:
 				}
 			}
 		};
@@ -86,6 +87,7 @@ public class ScaDomainManagerRegistryContainerImpl implements IScaDomainManagerR
 			case ScaPackage.SCA_DOMAIN_MANAGER__NAME:
 				saveDomainManagerRegistryResource();
 				break;
+			default:
 			}
 		};
 	};
@@ -123,6 +125,7 @@ public class ScaDomainManagerRegistryContainerImpl implements IScaDomainManagerR
 						removeDomainManagerPropertiesListeners(mgr);
 					}
 					break;
+				default:
 				}
 			}
 		};
@@ -171,16 +174,16 @@ public class ScaDomainManagerRegistryContainerImpl implements IScaDomainManagerR
 			this.startupJob = null;
 		}
 	}
-	
+
 	private ScaDomainManagerRegistryContainerImpl() {
 		//use singleton only
 	}
-	
+
 	public static ScaDomainManagerRegistryContainerImpl getInstance() {
-		if (INSTANCE == null) {
-			INSTANCE = new ScaDomainManagerRegistryContainerImpl();
+		if (instance == null) {
+			instance = new ScaDomainManagerRegistryContainerImpl();
 		}
-		return INSTANCE;
+		return instance;
 	}
 
 
@@ -259,7 +262,7 @@ public class ScaDomainManagerRegistryContainerImpl implements IScaDomainManagerR
 	}
 
 	private void addDomainManagerRegistryListener() {
-		this.scaDomainManagerRegistry.eAdapters().add(this.domainManagerRegistrylistener );
+		this.scaDomainManagerRegistry.eAdapters().add(this.domainManagerRegistrylistener);
 	}
 
 	private void saveDomainManagerRegistryResource() {
