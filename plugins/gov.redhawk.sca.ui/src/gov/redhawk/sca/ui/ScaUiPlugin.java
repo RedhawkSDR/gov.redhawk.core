@@ -102,7 +102,7 @@ public class ScaUiPlugin extends AbstractUIPlugin {
 			}
 			this.scaPreferenceStore = PlatformUI.getPreferenceStore();
 		} else {
-			this.scaPreferenceStore = new ScopedPreferenceStore(InstanceScope.INSTANCE, ScaPlugin.getDefault().getBundle().getSymbolicName());
+			this.scaPreferenceStore = new ScopedPreferenceStore(InstanceScope.INSTANCE, getBundle().getSymbolicName());
 		}
 		return this.scaPreferenceStore;
 	}
