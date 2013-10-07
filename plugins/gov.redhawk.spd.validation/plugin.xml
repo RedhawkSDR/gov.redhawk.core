@@ -200,6 +200,21 @@
                      class="SoftPkg">
                </target>
             </constraint>
+            <constraint
+                  class="gov.redhawk.spd.internal.validation.LocalFileConstraint"
+                  id="propertyinterface_constraint"
+                  lang="java"
+                  mode="Live"
+                  name="%constraint.name.validPropertyInterface"
+                  severity="WARNING"
+                  statusCode="1">
+               <message>
+                  %constraint.message.validPropertyInterface
+               </message>
+               <target
+                     class="SoftPkg">
+               </target>
+            </constraint>
          </constraints>
       </constraintProvider>
    </extension>
