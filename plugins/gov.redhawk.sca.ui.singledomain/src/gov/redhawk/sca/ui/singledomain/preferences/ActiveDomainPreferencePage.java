@@ -104,19 +104,16 @@ public class ActiveDomainPreferencePage extends FieldEditorPreferencePage implem
 		
 		activeDomainField = new ComboFieldEditor(ScaSingleDomainPreferenceConstants.SCA_ACTIVE_DOMAIN, "Active Domain", getDomains(), getFieldEditorParent());
 		addField(activeDomainField);
-		activeDomainField.setPreferenceStore(getPreferenceStore());
 		activeDomainField.load();
 		
 		setNewDomainActiveField = new BooleanFieldEditor(ScaSingleDomainPreferenceConstants.SCA_SET_NEW_DOMAIN_ACTIVE, "Make a newly created domain the active domain",
 				getFieldEditorParent());
-		setNewDomainActiveField.setPreferenceStore(getPreferenceStore());
 		addField(setNewDomainActiveField);
 		setNewDomainActiveField.load();
 		
 		disconnectInactive = new BooleanFieldEditor(ScaSingleDomainPreferenceConstants.SCA_DISCONNECT_INACTIVE, "Disconnect a domain when it ceases to be the active domain",
 				getFieldEditorParent());
 		addField(disconnectInactive);
-		disconnectInactive.setPreferenceStore(getPreferenceStore());
 		disconnectInactive.load();
 
 		PlatformUI.getWorkbench().getHelpSystem().setHelp(getControl(), HelpConstants.singleDomain);
@@ -157,8 +154,7 @@ public class ActiveDomainPreferencePage extends FieldEditorPreferencePage implem
 	
 	@Override
 	public IPreferenceStore getPreferenceStore() {
-	    //return super.getPreferenceStore();
-		return ScaUiPlugin.getDefault().getScaPreferenceStore();
+	    return super.getPreferenceStore();
 	}
 	
 

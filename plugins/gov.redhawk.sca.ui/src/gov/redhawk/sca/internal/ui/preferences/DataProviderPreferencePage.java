@@ -61,13 +61,7 @@ public class DataProviderPreferencePage extends PreferencePage implements IWorkb
 	 * 
 	 */
 	public DataProviderPreferencePage() {
-		final String str = getPreferenceStore().getString(ScaModelPreferenceContants.DISABLED_DATA_PROVIDERS);
-		final List<String> disabledProviders = Arrays.asList(str.split(","));
-		for (final IScaDataProviderServiceDescriptor desc : ScaModelPlugin.getDataProviderRegistry().getDataProvidersDescriptors()) {
-			final Descriptor d = new Descriptor(desc);
-			d.enabled = !disabledProviders.contains(d.desc.getId());
-			this.dataProviders.add(d);
-		}
+		
 	}
 
 	/**
@@ -75,6 +69,14 @@ public class DataProviderPreferencePage extends PreferencePage implements IWorkb
 	 */
 	@Override
 	protected Control createContents(final Composite parent) {
+		final String str = getPreferenceStore().getString(ScaModelPreferenceContants.DISABLED_DATA_PROVIDERS);
+		final List<String> disabledProviders = Arrays.asList(str.split(","));
+		for (final IScaDataProviderServiceDescriptor desc : ScaModelPlugin.getDataProviderRegistry().getDataProvidersDescriptors()) {
+			final Descriptor d = new Descriptor(desc);
+			d.enabled = !disabledProviders.contains(d.desc.getId());
+			this.dataProviders.add(d);
+		}
+		
 		this.viewer = CheckboxTableViewer.newCheckList(parent, SWT.BORDER);
 		this.viewer.setContentProvider(new ArrayContentProvider());
 		this.viewer.setLabelProvider(new LabelProvider());
@@ -125,6 +127,6 @@ public class DataProviderPreferencePage extends PreferencePage implements IWorkb
 
 	@Override
 	public IPreferenceStore getPreferenceStore() {
-		return ScaUiPlugin.getDefault().getScaPreferenceStore();
+		return super.getPreferenceStore();
 	}
 }

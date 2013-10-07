@@ -54,7 +54,6 @@ public class RefreshProviderPreferencePage extends FieldEditorPreferencePage imp
 	public void createFieldEditors() {
 		refreshIntervalField = new IntegerFieldEditor(RefreshPreferenceConstants.REFRESH_INTERVAL, "Refresh Interval (ms):", getFieldEditorParent());
 		addField(refreshIntervalField);
-		refreshIntervalField.setPreferenceStore(getPreferenceStore());
 		refreshIntervalField.load();
 	}
 
@@ -74,7 +73,7 @@ public class RefreshProviderPreferencePage extends FieldEditorPreferencePage imp
 	
 	@Override
 	public IPreferenceStore getPreferenceStore() {
-		return RefreshProviderUIActivator.getDefault().getRefreshProviderPreferenceStore();
+		return super.getPreferenceStore();
 	}
 
 }

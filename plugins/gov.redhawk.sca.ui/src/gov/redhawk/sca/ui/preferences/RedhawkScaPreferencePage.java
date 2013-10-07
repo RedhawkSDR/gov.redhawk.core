@@ -44,7 +44,6 @@ public class RedhawkScaPreferencePage extends FieldEditorPreferencePage implemen
 		addField(field);
 
 		this.domList = new DomainListEditor(this.registry, "Domains:", getFieldEditorParent());
-		this.domList.setPreferenceStore(getPreferenceStore());
 		addField(this.domList);
 
 		/** We bind this field editor to a fake preference because we just use it to set the auto-connect 
