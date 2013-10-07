@@ -11,6 +11,7 @@
  */
 package gov.redhawk.spd.internal.validation;
 
+import mil.jpeojtrs.sca.scd.Interface;
 import mil.jpeojtrs.sca.spd.Code;
 import mil.jpeojtrs.sca.spd.CodeFileType;
 import mil.jpeojtrs.sca.spd.Implementation;
@@ -37,6 +38,7 @@ public class LocalFileConstraint extends AbstractModelConstraint {
 
 	public static final String SCD_ID = "gov.redhawk.spd.validation.scdfile_constraint";
 	public static final String PROPERTY_ID = "gov.redhawk.spd.validation.propertyfile_constraint";
+	public static final String PROPERTYIF_ID = "gov.redhawk.spd.validation.propertyinterface_constraint";
 	public static final String CODE_ID = "gov.redhawk.spd.validation.codelocalfile_constraint";
 
 	@Override
@@ -57,6 +59,12 @@ public class LocalFileConstraint extends AbstractModelConstraint {
 					final LocalFile localFile = softPkg.getPropertyFile().getLocalFile();
 					retVal = validateLocalFile(ctx, localFile, SpdPackage.Literals.SOFT_PKG__PROPERTY_FILE);
 				}
+			}
+		} else if (ctx.getCurrentConstraintId().equals(LocalFileConstraint.PROPERTYIF_ID)) {
+			final SoftPkg softPkg = (SoftPkg) target;
+			if (softPkg.getPropertyFile() != null && softPkg.getPropertyFile().getLocalFile() != null) {
+				final LocalFile localFile = softPkg.getPropertyFile().getLocalFile();
+				retVal = validatePrfInterface(ctx, localFile, SpdPackage.Literals.SOFT_PKG__PROPERTY_FILE, softPkg);
 			}
 		} else if (ctx.getCurrentConstraintId().equals(LocalFileConstraint.SCD_ID)) {
 			final SoftPkg softPkg = (SoftPkg) target;
@@ -96,4 +104,17 @@ public class LocalFileConstraint extends AbstractModelConstraint {
 		}
 		return new EnhancedConstraintStatus((ConstraintStatus) ctx.createFailureStatus(file.getName()), eReference);
 	}
+
+	private ConstraintStatus validatePrfInterface(final IValidationContext ctx, final LocalFile file, final EStructuralFeature eReference, SoftPkg spkg) {
+		if (spkg != null && spkg.getDescriptor() != null && spkg.getDescriptor().getComponent() != null) {
+			for (Interface iface: spkg.getDescriptor().getComponent().getInterfaces().getInterface()) {
+				if ("PropertySet".equals(iface.getName())) {
+					return null;
+				}
+			}
+			return new EnhancedConstraintStatus((ConstraintStatus) ctx.createFailureStatus(file.getName()), eReference);
+		}
+		return null;
+	}
+
 }

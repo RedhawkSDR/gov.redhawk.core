@@ -162,8 +162,10 @@ public class PortMonitorItemProvider
 	@Override
 	public String getText(final Object object) {
 		final ScaPort< ? , ? > port = ((PortMonitor)object).getPort();
-		final IItemLabelProvider lp = (IItemLabelProvider) getRootAdapterFactory().adapt(port, IItemLabelProvider.class);
-		return lp.getText(port);
+		final IItemLabelProvider lpPort = (IItemLabelProvider) getRootAdapterFactory().adapt(port, IItemLabelProvider.class);
+		final IItemLabelProvider lpComponent = (IItemLabelProvider) getRootAdapterFactory().adapt(port.eContainer(), IItemLabelProvider.class);
+		String qualifiedName = lpComponent.getText(port.eContainer()) + " -> " + lpPort.getText(port);
+		return qualifiedName;
 	}
 	
 	/**
