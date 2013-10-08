@@ -14,35 +14,37 @@ import org.eclipse.core.runtime.Plugin;
 import org.osgi.framework.BundleContext;
 
 
-public class Activator extends Plugin {
+public class ScaRapPlugin extends Plugin {
 
-	private static Activator plugin;
+	private static ScaRapPlugin plugin;
 	private static BundleContext bundleContext;
+	
+	public static final String PROP_SHARED_DOMAINS = "gov.redhawk.sca.sharedDomains";
 
 	@Override
 	public void start(BundleContext context) throws Exception {
 		super.start(context);
-		Activator.bundleContext = context;
-		Activator.plugin = this;
+		ScaRapPlugin.bundleContext = context;
+		ScaRapPlugin.plugin = this;
 	}
 
 	@Override
 	public void stop(BundleContext context) throws Exception {
 		super.stop(context);
-		Activator.bundleContext = null;
-		Activator.plugin = null;
+		ScaRapPlugin.bundleContext = null;
+		ScaRapPlugin.plugin = null;
 	}
 	
 	 /* Returns the shared instance.
 	 * 
 	 * @return the shared instance
 	 */
-	public static Activator getDefault() {
-		return Activator.plugin;
+	public static ScaRapPlugin getDefault() {
+		return ScaRapPlugin.plugin;
 	}
 	
 	public static BundleContext getBudleContext() {
-		return Activator.bundleContext;
+		return ScaRapPlugin.bundleContext;
 	}
 
 }

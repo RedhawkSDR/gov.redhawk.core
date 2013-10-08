@@ -13,7 +13,7 @@ package gov.redhawk.sca.rap.internal;
 
 import gov.redhawk.sca.IScaDomainManagerRegistryContainer;
 import gov.redhawk.sca.IScaDomainManagerRegistryFactoryService;
-import gov.redhawk.sca.ScaPlugin;
+import gov.redhawk.sca.rap.ScaRapPlugin;
 
 import org.eclipse.rwt.SessionSingletonBase;
 
@@ -21,7 +21,7 @@ public class ScaDomainManagerRegistryFactoryServiceImpl implements IScaDomainMan
 
 	@Override
 	public IScaDomainManagerRegistryContainer getRegistryContainer() {
-		if (Boolean.valueOf(System.getProperty(ScaPlugin.PROP_SHARED_DOMAINS))) {
+		if (Boolean.valueOf(System.getProperty(ScaRapPlugin.PROP_SHARED_DOMAINS))) {
 			return ScaDomainManagerRegistryContainerImpl.getInstance();
 		}
 		return SessionSingletonBase.getInstance(ScaDomainManagerRegistryContainerImpl.class);

@@ -13,6 +13,7 @@ package gov.redhawk.sca.rap.internal;
 
 import gov.redhawk.sca.ScaPlugin;
 import gov.redhawk.sca.compatibility.ICompatibilityUtil;
+import gov.redhawk.sca.rap.ScaRapPlugin;
 
 import java.io.File;
 import java.lang.reflect.Field;
@@ -29,7 +30,7 @@ public class CompatibilityUtil implements ICompatibilityUtil {
 	private static final String FIELD_WORKDIR = "workDir";
 
 	public String getUserSpecificPath(Object context) {
-		if (Boolean.valueOf(System.getProperty(ScaPlugin.PROP_SHARED_DOMAINS))) {
+		if (Boolean.valueOf(System.getProperty(ScaRapPlugin.PROP_SHARED_DOMAINS))) {
 			return "SHARED";
 		}
 		//		if (context == null || !(context instanceof Display)) {
