@@ -25,6 +25,7 @@ import gov.redhawk.sca.preferences.ScaPreferenceInitializer;
 
 import java.io.IOException;
 import java.net.URI;
+import java.util.List;
 
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
@@ -33,7 +34,6 @@ import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.impl.AdapterImpl;
-import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.util.EcoreUtil;
@@ -108,7 +108,7 @@ public class ScaDomainManagerRegistryContainerImpl implements IScaDomainManagerR
 					break;
 				case Notification.ADD_MANY:
 					saveDomainManagerRegistryResource();
-					EList<ScaDomainManager> domains = (EList<ScaDomainManager>) msg.getNewValue();
+					List<ScaDomainManager> domains = (List<ScaDomainManager>) msg.getNewValue();
 					for (ScaDomainManager mgr : domains) {
 						addDomainManagerPropertiesListeners(mgr);
 					}
@@ -120,7 +120,7 @@ public class ScaDomainManagerRegistryContainerImpl implements IScaDomainManagerR
 					break;
 				case Notification.REMOVE_MANY:
 					saveDomainManagerRegistryResource();
-					domains = (EList<ScaDomainManager>) msg.getOldValue();
+					domains = (List<ScaDomainManager>) msg.getOldValue();
 					for (ScaDomainManager mgr : domains) {
 						removeDomainManagerPropertiesListeners(mgr);
 					}

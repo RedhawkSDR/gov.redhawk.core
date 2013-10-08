@@ -26,6 +26,7 @@ import gov.redhawk.sca.preferences.ScaPreferenceInitializer;
 import java.io.IOException;
 import java.net.URI;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -101,20 +102,25 @@ public class ScaDomainManagerRegistryContainerImpl extends SessionSingletonBase 
 	 * to the configured preference store.
 	 */
 	private Adapter domainManagerRegistrylistener = new AdapterImpl() {
+		@SuppressWarnings("unchecked")
 		public void notifyChanged(Notification msg) {
 			if (msg.getFeatureID(ScaDomainManagerRegistry.class) == ScaPackage.SCA_DOMAIN_MANAGER_REGISTRY__DOMAINS) {
 				switch (msg.getEventType()) {
 				case Notification.ADD:
 				case Notification.ADD_MANY:
 					saveDomainManagerRegistryResource();
-					ScaDomainManager domain = (ScaDomainManager) msg.getNewValue();
-					addDomainManagerPropertiesListeners(domain);
+					List<ScaDomainManager> domains = (List<ScaDomainManager>) msg.getNewValue();
+					for (ScaDomainManager mgr : domains) {
+						addDomainManagerPropertiesListeners(mgr);
+					}
 					break;
 				case Notification.REMOVE:
 				case Notification.REMOVE_MANY:
 					saveDomainManagerRegistryResource();
-					domain = (ScaDomainManager) msg.getOldValue();
-					removeDomainManagerPropertiesListeners(domain);
+					domains = (List<ScaDomainManager>) msg.getOldValue();
+					for (ScaDomainManager mgr : domains) {
+						removeDomainManagerPropertiesListeners(mgr);
+					}
 					break;
 				default:
 				}
