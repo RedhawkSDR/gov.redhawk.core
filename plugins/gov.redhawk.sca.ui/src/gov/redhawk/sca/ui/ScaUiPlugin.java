@@ -37,6 +37,11 @@ import org.osgi.framework.BundleContext;
  * The activator class controls the plug-in life cycle.
  */
 public class ScaUiPlugin extends AbstractUIPlugin {
+	
+	/**
+	 * @since 9.2
+	 */
+	public static final String PROP_SINGLE_DOMAIN = "gov.redhawk.sca.singleDomain";
 
 	// The plug-in ID
 	/** The Constant PLUGIN_ID. */

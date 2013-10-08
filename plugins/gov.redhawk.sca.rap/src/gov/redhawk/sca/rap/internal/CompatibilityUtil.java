@@ -11,7 +11,6 @@
  */
 package gov.redhawk.sca.rap.internal;
 
-import gov.redhawk.entrypoint.scaExplorer.EntrypointActivator;
 import gov.redhawk.sca.ScaPlugin;
 import gov.redhawk.sca.compatibility.ICompatibilityUtil;
 
@@ -30,7 +29,7 @@ public class CompatibilityUtil implements ICompatibilityUtil {
 	private static final String FIELD_WORKDIR = "workDir";
 
 	public String getUserSpecificPath(Object context) {
-		if (Boolean.valueOf(System.getProperty(EntrypointActivator.PROP_SHARED_DOMAINS))) {
+		if (Boolean.valueOf(System.getProperty(ScaPlugin.PROP_SHARED_DOMAINS))) {
 			return "SHARED";
 		}
 		//		if (context == null || !(context instanceof Display)) {

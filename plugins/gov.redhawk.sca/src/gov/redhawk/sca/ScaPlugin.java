@@ -52,6 +52,11 @@ public class ScaPlugin extends Plugin {
 	 * @since 4.0
 	 */
 	public static final String PLUGIN_ID = "gov.redhawk.sca";
+	
+	/**
+	 * @since 6.1
+	 */
+	public static final String PROP_SHARED_DOMAINS = "gov.redhawk.sca.sharedDomains";
 
 	/**
 	 * @since 6.0
