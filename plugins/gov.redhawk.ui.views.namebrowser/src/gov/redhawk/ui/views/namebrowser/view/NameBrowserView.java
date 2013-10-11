@@ -38,6 +38,8 @@ import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.viewers.ViewerComparator;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.ModifyEvent;
+import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.layout.GridData;
@@ -91,6 +93,7 @@ public class NameBrowserView extends ViewPart {
 	private Set<String> nameServerHistory = new HashSet<String>();
 
 	private Combo nameServerField;
+	private Button connectButton;
 
 	private final IContentProposalProvider proposalProvider = new IContentProposalProvider() {
 
@@ -131,6 +134,14 @@ public class NameBrowserView extends ViewPart {
 		this.nameServerField.setToolTipText("The CORBA URI of the NameServer");
 		this.nameServerField.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false, 1, 1));
 		this.nameServerField.setText("");
+		//disable connect button when name server text empty
+		nameServerField.addModifyListener(new ModifyListener() {
+		    public void modifyText(ModifyEvent e) {
+		    	final String newRef = NameBrowserView.this.nameServerField.getText().trim();
+		    	connectButton.setEnabled(!newRef.isEmpty());
+		    }
+		});
+		//this listener doesn't seem to do anything.
 		this.nameServerField.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetDefaultSelected(final SelectionEvent e) {
@@ -142,11 +153,11 @@ public class NameBrowserView extends ViewPart {
 			}
 		});
 
-		final Button button = new Button(parent, SWT.PUSH);
-		button.setImage(NameBrowserPlugin.getDefault().getImageRegistry().get(NameBrowserPlugin.CONNECT));
-		button.setToolTipText("Connect to the specified host");
-		button.setLayoutData(new GridData(GridData.BEGINNING, GridData.CENTER, false, false, 1, 1));
-		button.addSelectionListener(new SelectionAdapter() {
+		connectButton = new Button(parent, SWT.PUSH);
+		connectButton.setImage(NameBrowserPlugin.getDefault().getImageRegistry().get(NameBrowserPlugin.CONNECT));
+		connectButton.setToolTipText("Connect to the specified host");
+		connectButton.setLayoutData(new GridData(GridData.BEGINNING, GridData.CENTER, false, false, 1, 1));
+		connectButton.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(final SelectionEvent e) {
 				final String newRef = NameBrowserView.this.nameServerField.getText().trim();
