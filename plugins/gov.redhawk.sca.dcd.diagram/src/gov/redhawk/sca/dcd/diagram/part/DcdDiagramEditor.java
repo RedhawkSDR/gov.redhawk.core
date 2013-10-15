@@ -11,6 +11,8 @@
  */
 package gov.redhawk.sca.dcd.diagram.part;
 
+import gov.redhawk.sca.sad.diagram.palette.LabelEditPart;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -25,11 +27,16 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.edit.ui.dnd.LocalTransfer;
 import org.eclipse.emf.transaction.TransactionalEditingDomain;
+import org.eclipse.gef.EditPart;
 import org.eclipse.gef.EditPartViewer;
+import org.eclipse.gef.internal.ui.palette.editparts.ToolbarEditPart;
 import org.eclipse.gef.palette.PaletteContainer;
 import org.eclipse.gef.palette.PaletteEntry;
 import org.eclipse.gef.palette.PaletteRoot;
+import org.eclipse.gef.palette.PaletteToolbar;
 import org.eclipse.gef.palette.ToolEntry;
+import org.eclipse.gef.ui.palette.PaletteEditPartFactory;
+import org.eclipse.gef.ui.palette.PaletteViewer;
 import org.eclipse.gmf.runtime.diagram.ui.parts.DiagramDropTargetListener;
 import org.eclipse.gmf.runtime.diagram.ui.resources.editor.document.EditorInputProxy;
 import org.eclipse.gmf.runtime.diagram.ui.resources.editor.document.IDiagramDocument;
@@ -48,7 +55,7 @@ import org.eclipse.ui.IFileEditorInput;
 public class DcdDiagramEditor extends mil.jpeojtrs.sca.dcd.diagram.part.DcdDiagramEditor {
 
 	private static final List<String> FILTER_TOOL_IDS = Arrays.asList(new String[] { "createComponentInstantiation1CreationTool",
-	        "createComponentPlacement2CreationTool", "createPartitioning4CreationTool" });
+		"createComponentPlacement2CreationTool", "createPartitioning4CreationTool" });
 	public static final String EDITING_DOMAIN_ID = "mil.jpeojtrs.sca.dcd.diagram.EditingDomain";
 
 	public DcdDiagramEditor(final boolean hasFlyoutPalette) {
@@ -176,5 +183,54 @@ public class DcdDiagramEditor extends mil.jpeojtrs.sca.dcd.diagram.part.DcdDiagr
 			}
 		}
 
+	}
+	
+	/*
+	 * @see org.eclipse.gmf.runtime.diagram.ui.parts.DiagramEditorWithFlyOutPalette#constructPaletteViewer()
+	 */
+	@Override
+	protected PaletteViewer constructPaletteViewer() {
+		PaletteViewer retVal = super.constructPaletteViewer();
+		setPaletteViewerFactory(retVal);
+		return retVal;
+	}
+	
+	private void setPaletteViewerFactory(final PaletteViewer paletteViewer) {
+		paletteViewer.setEditPartFactory(new PaletteEditPartFactory() {
+			
+			/*
+			 * @see org.eclipse.gef.ui.palette.PaletteEditPartFactory#createToolbarEditPart(org.eclipse.gef.EditPart, java.lang.Object)
+			 */
+			@SuppressWarnings("unchecked")
+			@Override
+			protected EditPart createToolbarEditPart(EditPart parentEditPart, final Object model) {
+				ToolbarEditPart retVal = new ToolbarEditPart((PaletteToolbar) model) {
+					
+					/*
+					 * @see org.eclipse.gef.editparts.AbstractEditPart#createChild(java.lang.Object)
+					 */
+					@Override
+					protected EditPart createChild(Object model) {
+						if ("Text".equals(model)) {
+							LabelEditPart label = new LabelEditPart(paletteViewer);
+							return label;
+						}
+						return super.createChild(model);
+					}
+					
+					/*
+					 * @see org.eclipse.gef.ui.palette.editparts.PaletteEditPart#getModelChildren()
+					 */
+					@Override
+					public List<Object> getModelChildren() {
+						List<Object> retVal =  super.getModelChildren();
+						retVal.add("Text");
+						return retVal;
+					}
+				};
+				
+				return retVal;
+			}
+		});
 	}
 }

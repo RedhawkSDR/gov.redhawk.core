@@ -28,14 +28,18 @@ import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.actions.ActionFactory;
 import org.eclipse.ui.part.CellEditorActionHandler;
 
-public class LogicLabelEditManager extends DirectEditManager {
+
+/**
+ * @since 3.1
+ */
+public class LabelEditManager extends DirectEditManager {
 
 	private IActionBars actionBars;
 	private CellEditorActionHandler actionHandler;
 	private IAction copy, cut, paste, undo, redo, find, selectAll, delete;
 	private PaletteFilter filter;
 
-	public LogicLabelEditManager(LogicLabelEditPart source, CellEditorLocator locator, PaletteFilter filter) {
+	public LabelEditManager(LabelEditPart source, CellEditorLocator locator, PaletteFilter filter) {
 		super(source, null, locator);
 		this.filter = filter;
 	}

@@ -15,6 +15,10 @@ import org.eclipse.gef.commands.Command;
 import org.eclipse.gef.editpolicies.DirectEditPolicy;
 import org.eclipse.gef.requests.DirectEditRequest;
 
+
+/**
+ * @since 3.1
+ */
 public class LabelDirectEditPolicy extends DirectEditPolicy {
 
 	/**
@@ -22,8 +26,8 @@ public class LabelDirectEditPolicy extends DirectEditPolicy {
 	 */
 	protected Command getDirectEditCommand(DirectEditRequest edit) {
 		String labelText = (String) edit.getCellEditor().getValue();
-		LogicLabelEditPart label = (LogicLabelEditPart) getHost();
-		LogicLabelCommand command = new LogicLabelCommand(label.getPaletteFilter(), labelText);
+		LabelEditPart label = (LabelEditPart) getHost();
+		LabelCommand command = new LabelCommand(label.getPaletteFilter(), labelText);
 		return command;
 	}
 

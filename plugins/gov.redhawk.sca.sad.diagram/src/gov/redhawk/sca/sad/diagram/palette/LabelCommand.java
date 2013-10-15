@@ -13,14 +13,18 @@ package gov.redhawk.sca.sad.diagram.palette;
 
 import org.eclipse.gef.commands.Command;
 
-public class LogicLabelCommand extends Command {
+
+/**
+ * @since 3.1
+ */
+public class LabelCommand extends Command {
 
 
 	private String newFilter;
 	private PaletteFilter filter;
 	private String oldFilter;
 
-	public LogicLabelCommand(PaletteFilter filter, String s) {
+	public LabelCommand(PaletteFilter filter, String s) {
 		this.filter = filter;
 		this.newFilter = s;
 	}

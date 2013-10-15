@@ -20,8 +20,7 @@ import org.eclipse.draw2d.text.ParagraphTextLayout;
 import org.eclipse.draw2d.text.TextFlow;
 
 /**
- * A Figure with a bent corner and an embedded TextFlow within a FlowPage that
- * contains text.
+ * @since 3.1
  */
 public class LabelFigure extends RectangleFigure {
 
@@ -50,7 +49,7 @@ public class LabelFigure extends RectangleFigure {
 		add(flowPage);
 
 		setBackgroundColor(ColorConstants.white);
-		setForegroundColor(ColorConstants.black);
+		setForegroundColor(ColorConstants.lightGray);
 	}
 
 	/**
@@ -76,10 +75,10 @@ public class LabelFigure extends RectangleFigure {
 		if (newText == null || newText.isEmpty()) {
 			this.empty = true;
 			newText = "type filter text";
-			setForegroundColor(ColorConstants.lightGray);
+			textFlow.setForegroundColor(ColorConstants.lightGray);
 		} else {
 			this.empty = false;
-			setForegroundColor(ColorConstants.black);
+			textFlow.setForegroundColor(ColorConstants.black);
 		}
 		textFlow.setText(newText);
 	}

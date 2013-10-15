@@ -21,16 +21,16 @@ import org.eclipse.gef.ui.palette.PaletteViewer;
 import org.eclipse.gmf.runtime.diagram.ui.internal.services.palette.PaletteToolEntry;
 
 /**
- * 
+ * @since 3.1
  */
 public class PaletteFilter {
 
 	private String filter = "";
 	private PaletteViewer viewer;
 	private Pattern pattern;
-	private LogicLabelEditPart editPart;
+	private LabelEditPart editPart;
 
-	public PaletteFilter(PaletteViewer viewer, LogicLabelEditPart logicLabelEditPart) {
+	public PaletteFilter(PaletteViewer viewer, LabelEditPart logicLabelEditPart) {
 		this.viewer = viewer;
 		this.editPart = logicLabelEditPart;
 	}
@@ -61,7 +61,7 @@ public class PaletteFilter {
 				continue;
 			}
 			if (obj instanceof PaletteEntry) {
-				boolean visible = isVisible((PaletteEntry) obj);
+				updateVisible((PaletteEntry) obj);
 //				((PaletteEntry) obj).setVisible(visible);
 			}
 		}
@@ -71,21 +71,19 @@ public class PaletteFilter {
 	 * @param obj
 	 * @return
 	 */
-	private boolean isVisible(PaletteEntry obj) {
-		boolean retVal = false;
+	private void updateVisible(PaletteEntry obj) {
 		if (obj instanceof PaletteToolEntry) {
-			retVal = matches(obj);
-			obj.setVisible(retVal);
+			boolean visible = matches(obj);
+			obj.setVisible(visible);
 		} else if (obj instanceof PaletteContainer) {
 			PaletteContainer container = (PaletteContainer) obj;
 			for (Object child : container.getChildren()) {
 				if (child instanceof PaletteEntry) {
 					PaletteEntry entry = (PaletteEntry) child;
-					retVal = isVisible(entry);
+					updateVisible(entry);
 				}
 			}
 		}
-		return retVal;
 	}
 
 	/**

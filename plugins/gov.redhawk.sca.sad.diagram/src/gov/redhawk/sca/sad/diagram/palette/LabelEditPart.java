@@ -17,11 +17,15 @@ import org.eclipse.gef.Request;
 import org.eclipse.gef.RequestConstants;
 import org.eclipse.gef.ui.palette.PaletteViewer;
 
-public class LogicLabelEditPart extends org.eclipse.gef.editparts.AbstractGraphicalEditPart {
+
+/**
+ * @since 3.1
+ */
+public class LabelEditPart extends org.eclipse.gef.editparts.AbstractGraphicalEditPart {
 
 	private final PaletteFilter filter;
 
-	public LogicLabelEditPart(PaletteViewer viewer) {
+	public LabelEditPart(PaletteViewer viewer) {
 		filter = new PaletteFilter(viewer, this);
 	}
 
@@ -44,7 +48,7 @@ public class LogicLabelEditPart extends org.eclipse.gef.editparts.AbstractGraphi
 	}
 
 	private void performDirectEdit() {
-		new LogicLabelEditManager(this, new LabelCellEditorLocator((LabelFigure) getFigure()), filter).show();
+		new LabelEditManager(this, new LabelCellEditorLocator((LabelFigure) getFigure()), filter).show();
 	}
 
 	public void performRequest(Request request) {

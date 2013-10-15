@@ -16,6 +16,9 @@ import org.eclipse.gef.tools.CellEditorLocator;
 import org.eclipse.jface.viewers.CellEditor;
 import org.eclipse.swt.widgets.Text;
 
+/**
+ * @since 3.1
+ */
 public class LabelCellEditorLocator implements CellEditorLocator {
 
 	private LabelFigure stickyNote;

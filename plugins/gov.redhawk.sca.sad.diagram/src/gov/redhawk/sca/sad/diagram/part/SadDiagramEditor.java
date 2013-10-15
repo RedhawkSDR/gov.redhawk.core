@@ -11,7 +11,7 @@
  */
 package gov.redhawk.sca.sad.diagram.part;
 
-import gov.redhawk.sca.sad.diagram.palette.LogicLabelEditPart;
+import gov.redhawk.sca.sad.diagram.palette.LabelEditPart;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -27,7 +27,6 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.edit.ui.dnd.LocalTransfer;
 import org.eclipse.emf.transaction.TransactionalEditingDomain;
-import org.eclipse.gef.DefaultEditDomain;
 import org.eclipse.gef.EditPart;
 import org.eclipse.gef.EditPartViewer;
 import org.eclipse.gef.internal.ui.palette.editparts.ToolbarEditPart;
@@ -201,7 +200,7 @@ public class SadDiagramEditor extends mil.jpeojtrs.sca.sad.diagram.part.SadDiagr
 					@Override
 					protected EditPart createChild(Object model) {
 						if ("Text".equals(model)) {
-							LogicLabelEditPart label = new LogicLabelEditPart(paletteViewer);
+							LabelEditPart label = new LabelEditPart(paletteViewer);
 							return label;
 						}
 						return super.createChild(model);
@@ -221,12 +220,6 @@ public class SadDiagramEditor extends mil.jpeojtrs.sca.sad.diagram.part.SadDiagr
 				return retVal;
 			}
 		});
-	}
-
-	@Override
-	public DefaultEditDomain getEditDomain() {
-		// TODO Auto-generated method stub
-		return super.getEditDomain();
 	}
 
 	private void filterOutTools(final PaletteEntry entry) {
