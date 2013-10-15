@@ -11,6 +11,8 @@
  */
 package gov.redhawk.sca.sad.diagram.part;
 
+import gov.redhawk.sca.sad.diagram.palette.LogicLabelEditPart;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -26,11 +28,16 @@ import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.edit.ui.dnd.LocalTransfer;
 import org.eclipse.emf.transaction.TransactionalEditingDomain;
 import org.eclipse.gef.DefaultEditDomain;
+import org.eclipse.gef.EditPart;
 import org.eclipse.gef.EditPartViewer;
+import org.eclipse.gef.internal.ui.palette.editparts.ToolbarEditPart;
 import org.eclipse.gef.palette.PaletteContainer;
 import org.eclipse.gef.palette.PaletteEntry;
 import org.eclipse.gef.palette.PaletteRoot;
+import org.eclipse.gef.palette.PaletteToolbar;
 import org.eclipse.gef.palette.ToolEntry;
+import org.eclipse.gef.ui.palette.PaletteEditPartFactory;
+import org.eclipse.gef.ui.palette.PaletteViewer;
 import org.eclipse.gmf.runtime.diagram.ui.parts.DiagramDropTargetListener;
 import org.eclipse.gmf.runtime.diagram.ui.resources.editor.document.EditorInputProxy;
 import org.eclipse.gmf.runtime.diagram.ui.resources.editor.document.IDiagramDocument;
@@ -164,6 +171,56 @@ public class SadDiagramEditor extends mil.jpeojtrs.sca.sad.diagram.part.SadDiagr
 		final PaletteRoot root = super.createPaletteRoot(existingPaletteRoot);
 		filterOutTools(root);
 		return root;
+	}
+	
+	/*
+	 * @see org.eclipse.gmf.runtime.diagram.ui.parts.DiagramEditorWithFlyOutPalette#constructPaletteViewer()
+	 */
+	@Override
+	protected PaletteViewer constructPaletteViewer() {
+		PaletteViewer retVal = super.constructPaletteViewer();
+		setPaletteViewerFactory(retVal);
+		return retVal;
+	}
+	
+	
+	private void setPaletteViewerFactory(final PaletteViewer paletteViewer) {
+		paletteViewer.setEditPartFactory(new PaletteEditPartFactory() {
+			
+			/*
+			 * @see org.eclipse.gef.ui.palette.PaletteEditPartFactory#createToolbarEditPart(org.eclipse.gef.EditPart, java.lang.Object)
+			 */
+			@SuppressWarnings("unchecked")
+			@Override
+			protected EditPart createToolbarEditPart(EditPart parentEditPart, final Object model) {
+				ToolbarEditPart retVal = new ToolbarEditPart((PaletteToolbar) model) {
+					
+					/*
+					 * @see org.eclipse.gef.editparts.AbstractEditPart#createChild(java.lang.Object)
+					 */
+					@Override
+					protected EditPart createChild(Object model) {
+						if ("Text".equals(model)) {
+							LogicLabelEditPart label = new LogicLabelEditPart(paletteViewer);
+							return label;
+						}
+						return super.createChild(model);
+					}
+					
+					/*
+					 * @see org.eclipse.gef.ui.palette.editparts.PaletteEditPart#getModelChildren()
+					 */
+					@Override
+					public List<Object> getModelChildren() {
+						List<Object> retVal =  super.getModelChildren();
+						retVal.add("Text");
+						return retVal;
+					}
+				};
+				
+				return retVal;
+			}
+		});
 	}
 
 	@Override

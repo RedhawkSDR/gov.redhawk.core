@@ -23,7 +23,9 @@ Require-Bundle: org.eclipse.ui;bundle-version="3.6.1",
  org.eclipse.emf.edit.ui;bundle-version="2.6.0",
  org.eclipse.gmf.runtime.diagram.ui.properties;bundle-version="1.4.0",
  org.eclipse.core.expressions;bundle-version="3.4.200",
- gov.redhawk.sca.sad.validation;bundle-version="1.0.0"
+ gov.redhawk.sca.sad.validation;bundle-version="1.0.0",
+ org.eclipse.gef,
+ org.eclipse.draw2d
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Bundle-ActivationPolicy: lazy
 Bundle-ClassPath: .
