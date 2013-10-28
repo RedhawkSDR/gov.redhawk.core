@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<xsd:schema xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore"
+ xmlns:prf="http://sca.jpeojtrs.mil/prf"
+ xmlns:streamSRI="http://redhawk.gov/streamSRI"
+ xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+  ecore:nsPrefix="streamSRI"
+  ecore:package="gov.redhawk.bulkio.util.StreamSRIMetaData" 
+  ecore:documentRoot="StreamSRIDocumentRoot"
+  targetNamespace="http://redhawk.gov/streamSRI">
+  <xsd:import namespace="http://sca.jpeojtrs.mil/prf" schemaLocation="platform:/resource/mil.jpeojtrs.sca.prf/model/prf.xsd"/>
+  <xsd:import namespace="http://www.eclipse.org/emf/2002/Ecore" schemaLocation="platform:/plugin/org.eclipse.emf.ecore/model/Ecore.xsd"/>
+  <xsd:complexType ecore:name="StreamSRIModel" name="StreamSRIModel">
+    <xsd:sequence>
+      <xsd:element name="numberOfSamples" type="xsd:long"/>
+      <xsd:element default="" name="dataByteOrder" type="xsd:string"/>
+      <xsd:element name="time" type="streamSRI:Time"/>
+      <xsd:element ecore:name="bulkIOType" name="BulkIOType" type="xsd:string"/>
+      <xsd:element ecore:name="streamSRI" name="StreamSRI" type="streamSRI:SRI"/>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="SRI">
+    <xsd:sequence>
+      <xsd:element name="hversion" type="xsd:int"/>
+      <xsd:element name="xstart" type="xsd:double"/>
+      <xsd:element name="xdelta" type="xsd:double"/>
+      <xsd:element name="xunits" type="xsd:short"/>
+      <xsd:element name="subsize" type="xsd:double"/>
+      <xsd:element name="ystart" type="xsd:double"/>
+      <xsd:element name="ydelta" type="xsd:double"/>
+      <xsd:element name="yunits" type="xsd:short"/>
+      <xsd:element name="mode" type="xsd:short"/>
+      <xsd:element name="streamID" type="xsd:string"/>
+      <xsd:element name="blocking" type="xsd:boolean"/>
+      <xsd:element name="keywords" type="prf:properties"/>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="Time">
+    <xsd:sequence>
+      <xsd:element default="0" name="startTime" type="xsd:string"/>
+      <xsd:element default="0" name="endTime" type="xsd:string"/>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:element name="sri" type="streamSRI:StreamSRIModel">
+  </xsd:element>
+</xsd:schema>

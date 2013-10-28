@@ -21,11 +21,6 @@ import gov.redhawk.ui.port.nxmplot.PlotPageBook2;
 import gov.redhawk.ui.port.nxmplot.PlotSettings;
 import gov.redhawk.ui.port.nxmplot.PlotType;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import mil.jpeojtrs.sca.util.AnyUtils;
-
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.action.Action;
@@ -33,7 +28,6 @@ import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.jface.action.Separator;
-import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.window.Window;
 import org.eclipse.swt.SWT;
@@ -51,7 +45,6 @@ import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.eclipse.ui.statushandlers.StatusManager;
 
 import BULKIO.StreamSRI;
-import CF.DataType;
 
 /**
  * The spectral view provides multi-tab view that displays spectral data.
@@ -67,14 +60,11 @@ public class PlotView2 extends ViewPart {
 	/** The private action for toggling raster enabled state. */
 	private IAction plotTypeAction;
 
-	private IAction showSriAction;
-
 	/** The private action for creating a new plot connection */
 	private IAction newPlotViewAction;
 
 	/** The private action for adjusting plot settings. */
 	private IAction adjustPlotSettingsAction;
-
 
 	private class PlotTypeMenuAction extends Action {
 
@@ -107,7 +97,6 @@ public class PlotView2 extends ViewPart {
 	};
 
 	private boolean diposed;
-
 
 	/**
 	 * {@inheritDoc}
@@ -161,9 +150,6 @@ public class PlotView2 extends ViewPart {
 		final IMenuManager menu = bars.getMenuManager();
 		if (this.newPlotViewAction != null) {
 			menu.add(this.newPlotViewAction);
-		}
-		if (this.showSriAction != null) {
-			menu.add(this.showSriAction);
 		}
 		if (this.adjustPlotSettingsAction != null) {
 			menu.add(this.adjustPlotSettingsAction);
@@ -221,55 +207,6 @@ public class PlotView2 extends ViewPart {
 		this.newPlotViewAction.setText("New Plot View");
 		this.newPlotViewAction.setToolTipText("Open a new Plot View with all the same plots.");
 
-		this.showSriAction = new Action() {
-
-			private String getText(final Object obj) {
-				if (obj instanceof DataType[]) {
-					final DataType[] keywords = (DataType[]) obj;
-					final List<String> result = new ArrayList<String>();
-					for (final DataType t : keywords) {
-						result.add(getText(t));
-					}
-					return result.toString();
-				} else if (obj instanceof DataType) {
-					final DataType t = (DataType) obj;
-					return t.id + ", " + getText(AnyUtils.convertAny(t.value));
-				} else if (obj != null) {
-					return obj.toString();
-				}
-				return "null";
-			}
-
-			@Override
-			public void run() {
-				final StringBuilder builder = new StringBuilder();
-				final StreamSRI[] sris = getActiveSRI();
-				if (sris.length > 0) {
-					for (final StreamSRI sri : sris) {
-						builder.append("blocking: " + sri.blocking + "\n");
-						builder.append("h version: " + sri.hversion + "\n");
-						builder.append("mode: " + sri.mode + "\n");
-						builder.append("streamID: " + sri.streamID + "\n");
-						builder.append("subsize: " + sri.subsize + "\n");
-						builder.append("xdelta: " + sri.xdelta + "\n");
-						builder.append("xstart: " + sri.xstart + "\n");
-						builder.append("xunits: " + sri.xunits + "\n");
-						builder.append("ydelta: " + sri.ydelta + "\n");
-						builder.append("ystart: " + sri.ystart + "\n");
-						builder.append("yunits: " + sri.yunits + "\n");
-						builder.append("keywords: " + getText(sri.keywords));
-					}
-				} else {
-					builder.append("No SRI information available");
-				}
-
-				MessageDialog.openInformation(getSite().getShell(), "SRI", builder.toString());
-			}
-		};
-		this.showSriAction.setEnabled(true);
-		this.showSriAction.setText("SRI");
-		this.showSriAction.setToolTipText("Display current plot SRI");
-
 		createActionAdjustPlotSettings();
 	}
 
@@ -320,12 +257,12 @@ public class PlotView2 extends ViewPart {
 	public PlotPageBook2 getPlotPageBook() {
 		return plotPageBook;
 	}
-	
+
 	@Override
 	public void setPartName(String partName) {
 		super.setPartName(partName);
 	}
-	
+
 	@Override
 	public void setTitleToolTip(String toolTip) {
 		super.setTitleToolTip(toolTip);

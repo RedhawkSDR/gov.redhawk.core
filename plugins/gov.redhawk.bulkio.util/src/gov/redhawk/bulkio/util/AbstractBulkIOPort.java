@@ -112,20 +112,17 @@ public abstract class AbstractBulkIOPort implements ProvidesPortStatisticsProvid
 		return true;
 	}
 
-	@SuppressWarnings("null")
 	@Override
 	@NonNull
 	public PortUsageType state() {
 		return PortUsageType.ACTIVE;
 	}
 	
-	@SuppressWarnings("null")
 	@NonNull
 	public PortStatistics getPortStatistics() {
 		return stats;
 	}
 
-	@SuppressWarnings("null")
 	@Override
 	@NonNull
 	public PortStatistics statistics() {
@@ -133,7 +130,6 @@ public abstract class AbstractBulkIOPort implements ProvidesPortStatisticsProvid
 		return stats;
 	}
 
-	@SuppressWarnings("null")
 	@Override
 	@NonNull
 	public StreamSRI[] activeSRIs() {
@@ -146,14 +142,14 @@ public abstract class AbstractBulkIOPort implements ProvidesPortStatisticsProvid
 			String streamId = sri.streamID;
 			if (streamId != null) {
 				StreamSRI oldSri = this.streamSRIMap.put(streamId, sri);
-				if (!StreamSRIUtil.equals(oldSri, sri)) {
+				if (!StreamXMLSRIUtil.equals(oldSri, sri)) {
 					handleStreamSRIChanged(streamId, oldSri, sri);
 				}
 			}
 		}
 		StreamSRI oldSri = this.currentSri;
 		this.currentSri = sri;
-		if (!StreamSRIUtil.equals(oldSri, sri)) {
+		if (!StreamXMLSRIUtil.equals(oldSri, sri)) {
 			handleStreamSRIChanged(oldSri, sri);
 		}
 	}

@@ -10,6 +10,7 @@
  *******************************************************************************/
 package gov.redhawk.bulkio.util;
 
+import gov.redhawk.bulkio.util.internal.SRIKeywordHandler;
 import gov.redhawk.sca.util.PluginUtil;
 
 import java.util.Collections;
@@ -18,20 +19,42 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import mil.jpeojtrs.sca.util.AnyUtils;
+import nxm.sys.lib.Table;
+
 import org.eclipse.jdt.annotation.NonNull;
 
-import mil.jpeojtrs.sca.util.AnyUtils;
 import BULKIO.StreamSRI;
 import CF.DataType;
 
-/**
- * 
- */
 public final class StreamSRIUtil {
 	private StreamSRIUtil() {
-
 	}
 
+	/**
+	 * @since 1.1
+	 */
+	public static void putSriInfo(StreamSRI sri, Table rootTable) {
+		Table sriTable = (Table) rootTable.addTable("SRI");
+		sriTable.put("streamid", sri.streamID);
+		sriTable.put("blocking", sri.blocking);
+		sriTable.put("hversion", sri.hversion);
+		sriTable.put("mode", sri.mode);
+		sriTable.put("subsize", sri.subsize);
+		sriTable.put("xdelta", sri.xdelta);
+		sriTable.put("xstart", sri.xstart);
+		sriTable.put("xunits", sri.xunits);
+		sriTable.put("ydelta", sri.ydelta);
+		sriTable.put("ystart", sri.ystart);
+		sriTable.put("yunits", sri.yunits);
+
+		if (sri.keywords.length > 0) {
+			Table keywordTable = (Table) rootTable.addTable("Keywords");
+			SRIKeywordHandler keyHandler = new SRIKeywordHandler();
+			keyHandler.addKeywordsToTable(sri.keywords, keywordTable);
+		}
+	}
+	
 	@SuppressWarnings("null")
 	@NonNull
 	public static Map<String, Object> toMap(DataType[] dataTypes) {

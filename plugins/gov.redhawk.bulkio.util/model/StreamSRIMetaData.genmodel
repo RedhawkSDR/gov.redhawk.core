@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<genmodel:GenModel xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore"
+    xmlns:genmodel="http://www.eclipse.org/emf/2002/GenModel" modelDirectory="/gov.redhawk.bulkio.util/src-model" editDirectory="/gov.redhawk.bulkio.util.edit/src"
+    editorDirectory="" modelPluginID="gov.redhawk.bulkio.util" templateDirectory="/gov.redhawk.bulkio.util/templates"
+    dynamicTemplates="true" forceOverwrite="true" modelName="StreamSRIMetaData" modelPluginClass=""
+    editPluginClass="gov.redhawk.bulkio.util.provider.StreamSRIMetaDataEditPlugin"
+    editorPluginClass="" codeFormatting="true" testsDirectory="" testSuiteClass="gov.redhawk.bulkio.util.tests.StreamSRIMetaDataAllTests"
+    importerID="org.eclipse.xsd.ecore.importer" complianceLevel="6.0" suppressGenModelAnnotations="false"
+    copyrightFields="false" editPluginID="gov.redhawk.bulkio.util.edit" editorPluginID="gov.redhawk.bulkio.util"
+    usedGenPackages="platform:/plugin/org.eclipse.emf.ecore/model/Ecore.genmodel#//ecore platform:/plugin/mil.jpeojtrs.sca.prf/model/prf.genmodel#//prf"
+    importOrganizing="true" pluginKey="StreamSRIMetaData">
+  <genAnnotations source="http://www.eclipse.org/emf/2002/GenModel/exporter/org.eclipse.xsd.ecore.exporter">
+    <genAnnotations source="selectedPackages">
+      <details key="platform:/resource/gov.redhawk.bulkio.util/src/StreamSRIMetaData.xsd"
+          value="StreamSRIMetaData.xsd"/>
+    </genAnnotations>
+    <genAnnotations source="selectedReferencedPackages" references="platform:/plugin/org.eclipse.emf.ecore/model/Ecore.genmodel#//ecore platform:/plugin/mil.jpeojtrs.sca.prf/model/prf.genmodel#//prf">
+      <details key="http://www.eclipse.org/emf/2002/Ecore" value="Ecore.xsd"/>
+      <details key="http://sca.jpeojtrs.mil/prf" value="prf.xsd"/>
+    </genAnnotations>
+    <details key="directoryURI" value="."/>
+  </genAnnotations>
+  <foreignModel>StreamSRIMetaData.xsd</foreignModel>
+  <genPackages prefix="StreamSRIMetaData" basePackage="gov.redhawk.bulkio.util" resource="XML"
+      disposableProviderFactory="true" generateExampleClass="false" contentTypeIdentifier="gov.redhawk.bulkio.util.streamSRI"
+      fileExtensions="xml" ecorePackage="StreamSRIMetaData.ecore#/">
+    <genClasses ecoreClass="StreamSRIMetaData.ecore#//SRI">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute StreamSRIMetaData.ecore#//SRI/hversion"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute StreamSRIMetaData.ecore#//SRI/xstart"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute StreamSRIMetaData.ecore#//SRI/xdelta"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute StreamSRIMetaData.ecore#//SRI/xunits"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute StreamSRIMetaData.ecore#//SRI/subsize"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute StreamSRIMetaData.ecore#//SRI/ystart"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute StreamSRIMetaData.ecore#//SRI/ydelta"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute StreamSRIMetaData.ecore#//SRI/yunits"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute StreamSRIMetaData.ecore#//SRI/mode"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute StreamSRIMetaData.ecore#//SRI/streamID"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute StreamSRIMetaData.ecore#//SRI/blocking"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference StreamSRIMetaData.ecore#//SRI/keywords"/>
+    </genClasses>
+    <genClasses ecoreClass="StreamSRIMetaData.ecore#//StreamSRIDocumentRoot">
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EAttribute StreamSRIMetaData.ecore#//StreamSRIDocumentRoot/mixed"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference StreamSRIMetaData.ecore#//StreamSRIDocumentRoot/xMLNSPrefixMap"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference StreamSRIMetaData.ecore#//StreamSRIDocumentRoot/xSISchemaLocation"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference StreamSRIMetaData.ecore#//StreamSRIDocumentRoot/sri"/>
+    </genClasses>
+    <genClasses ecoreClass="StreamSRIMetaData.ecore#//StreamSRIModel">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute StreamSRIMetaData.ecore#//StreamSRIModel/numberOfSamples"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute StreamSRIMetaData.ecore#//StreamSRIModel/dataByteOrder"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference StreamSRIMetaData.ecore#//StreamSRIModel/time"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute StreamSRIMetaData.ecore#//StreamSRIModel/bulkIOType"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference StreamSRIMetaData.ecore#//StreamSRIModel/streamSRI"/>
+    </genClasses>
+    <genClasses ecoreClass="StreamSRIMetaData.ecore#//Time">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute StreamSRIMetaData.ecore#//Time/startTime"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute StreamSRIMetaData.ecore#//Time/endTime"/>
+    </genClasses>
+  </genPackages>
+</genmodel:GenModel>

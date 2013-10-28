@@ -58,7 +58,6 @@ public abstract class AbstractSriReceiver< T extends updateSRIOperations > exten
 		}
 	}
 
-	@SuppressWarnings("null")
 	@NonNull
 	protected List<T> getChildren() {
 		return children;

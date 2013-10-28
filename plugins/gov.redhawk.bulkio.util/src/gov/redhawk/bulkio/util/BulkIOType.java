@@ -70,7 +70,6 @@ public enum BulkIOType {
 		this.unsigned = unsigned;
 	}
 
-	@SuppressWarnings("null")
 	@NonNull
 	public org.omg.CORBA.Object createRef(@NonNull POA poa, @NonNull Object obj) throws ServantNotActive, WrongPolicy {
 		Servant tie;
@@ -211,7 +210,6 @@ public enum BulkIOType {
 	/**
 	 * @return The non upcasted Java class container type
 	 */
-	@SuppressWarnings("null")
 	@NonNull
 	public Class< ? > getJavaType() {
 		return this.javaType;
