@@ -28,11 +28,17 @@ import org.eclipse.swt.widgets.Listener;
  */
 public class CompatibilityUtilImpl implements ICompatibilityUtil {
 
+	/* (non-Javadoc)
+	 * @see gov.redhawk.sca.ui.compatibility.ICompatibilityUtil#setFontDataStyle(org.eclipse.swt.graphics.FontData, int)
+	 */
 	@Override
 	public void setFontDataStyle(FontData fontData, int style) {
 		fontData.setStyle(style);
 	}
 	
+	/* (non-Javadoc)
+	 * @see gov.redhawk.sca.ui.compatibility.ICompatibilityUtil#disableComboWheelScrollSelect(org.eclipse.jface.viewers.ComboViewer)
+	 */
 	@Override
 	public void disableComboWheelScrollSelect(ComboViewer viewer) {
 		viewer.getCombo().addListener(SWT.MouseVerticalWheel, new Listener() {
@@ -46,33 +52,57 @@ public class CompatibilityUtilImpl implements ICompatibilityUtil {
 		});
 	}
 	
+
+	/* (non-Javadoc)
+	 * @see gov.redhawk.sca.ui.compatibility.ICompatibilityUtil#getUserPrincipal(org.eclipse.swt.widgets.Display)
+	 */
 	@Override
+	/**
+	 * @since 9.1
+	 */
 	public Principal getUserPrincipal(Display display) {
-		return null;
+		throw new UnsupportedOperationException("This method is used in RAP only");
 	}
 	
 	/**
 	 * @since 1.2
-	 * @param display
-	 * @param runnable
+	 */
+	/* (non-Javadoc)
+	 * @see gov.redhawk.sca.ui.compatibility.ICompatibilityUtil#runInFakeUIContext(org.eclipse.swt.widgets.Display, java.lang.Runnable)
 	 */
 	@Override
 	public void runInFakeUIContext(Display display, Runnable runnable) {
-		//No RAP implementation
+		//PASS
+		//No RCP implementation needed
 	}
 	
 	/**
 	 * @since 1.2
-	 * @param display
-	 * @param runnable
+	 */
+	/* (non-Javadoc)
+	 * @see gov.redhawk.sca.ui.compatibility.ICompatibilityUtil#activateUIConnection(java.lang.String)
 	 */
 	@Override
 	public void activateUIConnection(String id) {
-		//No RAP implementation
+		//PASS
+		//No RCP implementation needed
 	}
 	
+	/* (non-Javadoc)
+	 * @see gov.redhawk.sca.ui.compatibility.ICompatibilityUtil#deactivateUIConnection(java.lang.String)
+	 */
 	@Override
 	public void deactivateUIConnection(String id) {
-		//No RAP implementation
+		//PASS
+		//No RCP implementation needed
+	}
+
+	/* (non-Javadoc)
+	 * @see gov.redhawk.sca.ui.compatibility.ICompatibilityUtil#executeOnRequestThread(java.lang.Runnable)
+	 */
+	@Override
+	public void executeOnRequestThread(Runnable runnable) {
+		//Run on Request Thread only in RAP
+		runnable.run();
 	}
 }

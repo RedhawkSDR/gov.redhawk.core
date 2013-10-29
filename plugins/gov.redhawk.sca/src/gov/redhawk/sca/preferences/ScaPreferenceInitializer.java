@@ -53,9 +53,7 @@ public class ScaPreferenceInitializer extends AbstractPreferenceInitializer {
 
 		accessor.setDefault(ScaPreferenceConstants.SCA_CORBA_AUTOCONNECT_PREFERENCE, true);
 		accessor.setDefault(ScaPreferenceConstants.SCA_DEFAULT_NAMING_SERVICE, "corbaname::localhost:2809");
-		accessor.setDefault(ScaPreferenceConstants.SCA_DOMAIN_WAVEFORMS_SEARCH_PATH, ScaPreferenceConstants.createPath(new String[] {
-			"waveforms"
-		}));
+		accessor.setDefault(ScaPreferenceConstants.SCA_DOMAIN_WAVEFORMS_SEARCH_PATH, ScaPreferenceConstants.createPath(new String[] { "waveforms" }));
 	}
 
 	/**

@@ -12,4 +12,11 @@
             restorable="true">
       </view>
    </extension>
+   <extension
+         point="org.eclipse.rap.ui.settingstores">
+      <factory
+            class="org.eclipse.rap.ui.internal.preferences.WorkbenchFileSettingStoreFactory"
+            id="gov.redhawk.sca.ui.rap.factory">
+      </factory>
+   </extension>
 </fragment>

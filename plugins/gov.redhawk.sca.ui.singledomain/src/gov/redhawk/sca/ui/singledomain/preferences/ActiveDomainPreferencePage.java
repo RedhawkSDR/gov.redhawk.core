@@ -12,6 +12,12 @@
 package gov.redhawk.sca.ui.singledomain.preferences;
 
 import gov.redhawk.common.ui.doc.HelpConstants;
+
+/**
+ * ++++++++++++++++++ TROUBLESHOOTING +++++++++++++++++++++
+ * Preferences are being stored as #store/gov.redhawk.sca/<pref name>, but they are being loaded as #session/gov.redhawk.sca/<pref name>
+ */
+
 import gov.redhawk.model.sca.ScaDomainManager;
 import gov.redhawk.model.sca.ScaDomainManagerRegistry;
 import gov.redhawk.model.sca.ScaPackage;
@@ -98,20 +104,20 @@ public class ActiveDomainPreferencePage extends FieldEditorPreferencePage implem
 		
 		activeDomainField = new ComboFieldEditor(ScaSingleDomainPreferenceConstants.SCA_ACTIVE_DOMAIN, "Active Domain", getDomains(), getFieldEditorParent());
 		addField(activeDomainField);
+		activeDomainField.load();
 		
 		setNewDomainActiveField = new BooleanFieldEditor(ScaSingleDomainPreferenceConstants.SCA_SET_NEW_DOMAIN_ACTIVE, "Make a newly created domain the active domain",
 				getFieldEditorParent());
 		addField(setNewDomainActiveField);
+		setNewDomainActiveField.load();
 		
 		disconnectInactive = new BooleanFieldEditor(ScaSingleDomainPreferenceConstants.SCA_DISCONNECT_INACTIVE, "Disconnect a domain when it ceases to be the active domain",
 				getFieldEditorParent());
 		addField(disconnectInactive);
+		disconnectInactive.load();
 
 		PlatformUI.getWorkbench().getHelpSystem().setHelp(getControl(), HelpConstants.singleDomain);
 		
-		activeDomainField.load();
-		setNewDomainActiveField.load();
-		disconnectInactive.load();
 	}
 
 	private String[][] getDomains() {
@@ -142,6 +148,8 @@ public class ActiveDomainPreferencePage extends FieldEditorPreferencePage implem
 	@Override
 	public void init(final IWorkbench workbench) {
 		setPreferenceStore(ScaUiPlugin.getDefault().getScaPreferenceStore());
+		getPreferenceStore().setDefault(ScaSingleDomainPreferenceConstants.SCA_SET_NEW_DOMAIN_ACTIVE, false);
+		getPreferenceStore().setDefault(ScaSingleDomainPreferenceConstants.SCA_DISCONNECT_INACTIVE, false);
 	}
 	
 	@Override

@@ -14,7 +14,6 @@ package gov.redhawk.sca.ui.singledomain;
 import org.eclipse.rwt.resources.IResource;
 import org.eclipse.rwt.resources.IResourceManager.RegisterOptions;
 
-@SuppressWarnings("restriction")
 public class TrackableLabelResource implements IResource {
 
     public ClassLoader getLoader() {

@@ -371,6 +371,16 @@ public class DomainListEditor extends FieldEditor {
 
 		});
 	}
+	
+	/**
+	 * @since 9.2
+	 */
+	public void setAllAutoConnect(boolean auto) {
+		for (ScaDomainConnectionDef def : this.domainConnectionDefs) {
+			def.setConnectOnStartup(auto);
+		}
+		this.list.refresh();
+	}
 
 	/**
 	 * Returns this field editor's button box containing the Add, Remove, Up, and Down button.

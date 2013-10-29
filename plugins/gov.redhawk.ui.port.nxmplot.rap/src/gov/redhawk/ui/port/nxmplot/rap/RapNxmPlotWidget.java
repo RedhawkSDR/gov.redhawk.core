@@ -1,12 +1,12 @@
 /**
-g * This file is protected by Copyright. 
- * Please refer to the COPYRIGHT file distributed with this source distribution.
- * 
- * This file is part of REDHAWK IDE.
- * 
- * All rights reserved.  This program and the accompanying materials are made available under 
- * the terms of the Eclipse Public License v1.0 which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html.
+ * This file is protected by Copyright. 
+ * Please refer to the COPYRIGHT file distributed with this source distribution.
+ * 
+ * This file is part of REDHAWK IDE.
+ * 
+ * All rights reserved.  This program and the accompanying materials are made available under 
+ * the terms of the Eclipse Public License v1.0 which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html.
  *
  */
 package gov.redhawk.ui.port.nxmplot.rap;
@@ -52,7 +52,7 @@ public class RapNxmPlotWidget extends AbstractNxmPlotWidget {
 			return;
 		}
 		initialized = true;
-		if (plotArgs==null) {
+		if (plotArgs == null) {
 			plotArgs = "";
 		}
 		if (plotSwitches == null) {
@@ -79,7 +79,7 @@ public class RapNxmPlotWidget extends AbstractNxmPlotWidget {
 	@Override
 	public void runHeadlessCommand(String command) {
 		assertNotDisposed();
-		nxmComp.runServerCommand(command + " /MSGID="+ MSG_HANDLER_ID);
+		nxmComp.runServerCommand(command + " /MSGID=" + MSG_HANDLER_ID);
 	}
 
 	@Override
@@ -102,7 +102,7 @@ public class RapNxmPlotWidget extends AbstractNxmPlotWidget {
 
 		// From Client openFile
 		nxmComp.runClientCommand("SENDTO RMIF_SESSION ADDC {" + sourcePipeId + "=" + sourcePipeId + "} INFO=-1");
-		nxmComp.runClientCommand("SENDTO " + PLOT_ID + " OPENFILE " + sourcePipeId + (plotQualifiers == null ? "" : plotQualifiers));
+		nxmComp.runClientCommand("SENDTO " + PLOT_ID + " OPENFILE " + sourcePipeId + ((plotQualifiers == null) ? "" : plotQualifiers));
 
 		this.sources.add(sourcePipeId);
 	}
@@ -143,8 +143,8 @@ public class RapNxmPlotWidget extends AbstractNxmPlotWidget {
 	public String addDataFeature(Number xStart, Number xEnd, String color) {
 		String featureId = AbstractNxmPlotWidget.createUniqueName(false);
 		double dx = xEnd.doubleValue() - xStart.doubleValue();
-		final String cmd = "FEATURE LABEL=" + featureId + " PLOT=" + PLOT_ID + " TABLE={NAME=\"" +
-				featureId + "\",TYPE=\"DATA\",X=" + (xStart.doubleValue() + (dx/2)) + ",DX=" + dx + ",COLOR=\"" + color + "\"}";
+		final String cmd = "FEATURE LABEL=" + featureId + " PLOT=" + PLOT_ID + " TABLE={NAME=\""
+				+ featureId + "\",TYPE=\"DATA\",X=" + (xStart.doubleValue() + (dx / 2)) + ",DX=" + dx + ",COLOR=\"" + color + "\"}";
 		this.runClientCommand(cmd);
 		return featureId;
 	}

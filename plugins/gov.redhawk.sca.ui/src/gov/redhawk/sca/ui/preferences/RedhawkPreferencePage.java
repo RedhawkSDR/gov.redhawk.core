@@ -22,7 +22,7 @@ public class RedhawkPreferencePage extends FieldEditorPreferencePage implements 
 
 	@Override
 	public void init(final IWorkbench workbench) {
-		setPreferenceStore(ScaUiPlugin.getDefault().getPreferenceStore());
+		setPreferenceStore(ScaUiPlugin.getDefault().getScaPreferenceStore());
 	}
 
 	@Override

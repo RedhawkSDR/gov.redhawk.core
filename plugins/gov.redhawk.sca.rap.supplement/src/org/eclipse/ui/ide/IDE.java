@@ -1,14 +1,14 @@
-/*******************************************************************************
- * This file is protected by Copyright. 
- * Please refer to the COPYRIGHT file distributed with this source distribution.
- * 
- * This file is part of REDHAWK IDE.
- * 
- * All rights reserved.  This program and the accompanying materials are made available under 
- * the terms of the Eclipse Public License v1.0 which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html.
- *
+/** 
+ * This file is protected by Copyright. 
+ * Please refer to the COPYRIGHT file distributed with this source distribution.
  * 
+ * This file is part of REDHAWK IDE.
+ * 
+ * All rights reserved.  This program and the accompanying materials are made available under 
+ * the terms of the Eclipse Public License v1.0 which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html.
+ *
+ *
  * Copyright (c) 2007 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -20,7 +20,7 @@
  ******************************************************************************/
 
 /****************************************************************************************************
-*  !!!!!!! NOTE !!!!!!!!
+ *  !!!!!!! NOTE !!!!!!!!
  *  
  * This class contains only a subset of the methods from org.eclipse.ui.ide.IDE, which are needed for
  * the sca_explorer application running in the RAP environment
@@ -54,7 +54,7 @@ import org.eclipse.ui.internal.misc.UIStats;
 import org.eclipse.ui.part.FileEditorInput;
 
 public class IDE {
-	
+
 	/**
 	 * The persistent property key used on IFile resources to contain the
 	 * preferred editor ID to use.
@@ -90,8 +90,12 @@ public class IDE {
 	 * </p>
 	 */
 	public static final QualifiedName EDITOR_KEY = new QualifiedName(
-			"org.eclipse.ui.internal.registry.ResourceEditorRegistry", "EditorProperty");//$NON-NLS-2$//$NON-NLS-1$
-	
+			"org.eclipse.ui.internal.registry.ResourceEditorRegistry", "EditorProperty"); //$NON-NLS-2$//$NON-NLS-1$
+
+	private IDE() {
+
+	}
+
 	/**
 	 * Create the Editor Input appropriate for the given <code>IFileStore</code>.
 	 * The result is a normal file editor input if the file exists in the
@@ -105,11 +109,12 @@ public class IDE {
 	 */
 	private static IEditorInput getEditorInput(IFileStore fileStore) {
 		IFile workspaceFile = getWorkspaceFile(fileStore);
-		if (workspaceFile != null)
+		if (workspaceFile != null) {
 			return new FileEditorInput(workspaceFile);
+		}
 		return new FileStoreEditorInput(fileStore);
 	}
-	
+
 	/**
 	 * Filter the incoming array of <code>IFile</code> elements by removing
 	 * any that do not currently exist in the workspace.
@@ -119,18 +124,19 @@ public class IDE {
 	 * @return The filtered array
 	 */
 	private static IFile[] filterNonExistentFiles(IFile[] files) {
-		if (files == null)
+		if (files == null) {
 			return null;
-
+		}
 		int length = files.length;
 		ArrayList existentFiles = new ArrayList(length);
 		for (int i = 0; i < length; i++) {
-			if (files[i].exists())
+			if (files[i].exists()) {
 				existentFiles.add(files[i]);
+			}
 		}
 		return (IFile[]) existentFiles.toArray(new IFile[existentFiles.size()]);
 	}
-	
+
 	/**
 	 * Determine whether or not the <code>IFileStore</code> represents a file
 	 * currently in the workspace.
@@ -144,13 +150,14 @@ public class IDE {
 		IWorkspaceRoot root = ResourcesPlugin.getWorkspace().getRoot();
 		IFile[] files = root.findFilesForLocationURI(fileStore.toURI());
 		files = filterNonExistentFiles(files);
-		if (files == null || files.length == 0)
+		if (files == null || files.length == 0) {
 			return null;
+		}
 
 		// for now only return the first file
 		return files[0];
 	}
-	
+
 	/**
 	 * Opens an editor on the given object.
 	 * <p>
@@ -176,7 +183,7 @@ public class IDE {
 	 */
 	public static IEditorPart openEditor(IWorkbenchPage page,
 			IEditorInput input, String editorId, boolean activate)
-			throws PartInitException {
+					throws PartInitException {
 		// sanity checks
 		if (page == null) {
 			throw new IllegalArgumentException();
@@ -185,7 +192,7 @@ public class IDE {
 		// open the editor on the file
 		return page.openEditor(input, editorId, activate);
 	}
-	
+
 	/**
 	 * Opens an editor on the given file resource. This method will attempt to
 	 * resolve the editor based on content-type bindings as well as traditional
@@ -216,7 +223,7 @@ public class IDE {
 		IEditorDescriptor editorDesc = getEditorDescriptor(input);
 		return page.openEditor(new FileEditorInput(input), editorDesc.getId());
 	}
-	
+
 	/**
 	 * Opens an editor on the given object.
 	 * <p>
@@ -246,7 +253,7 @@ public class IDE {
 		// open the editor on the file
 		return page.openEditor(input, editorId);
 	}
-	
+
 	/**
 	 * Returns an editor descriptor appropriate for opening the given file
 	 * resource.
@@ -282,7 +289,7 @@ public class IDE {
 			throws PartInitException {
 		return getEditorDescriptor(file, true);
 	}
-	
+
 	/**
 	 * Returns an editor descriptor appropriate for opening the given file
 	 * resource.
@@ -327,9 +334,9 @@ public class IDE {
 
 		return getEditorDescriptor(file.getName(), PlatformUI.getWorkbench()
 				.getEditorRegistry(), getDefaultEditor(file,
-				determineContentType));
+						determineContentType));
 	}
-	
+
 	/**
 	 * Returns the default editor for a given file. This method will attempt to
 	 * resolve the editor based on content-type bindings as well as traditional
@@ -365,7 +372,7 @@ public class IDE {
 				}
 			}
 		} catch (CoreException e) {
-			// do nothing
+			// PASS
 		}
 
 		IContentType contentType = null;
@@ -375,7 +382,7 @@ public class IDE {
 		// Try lookup with filename
 		return editorReg.getDefaultEditor(file.getName(), contentType);
 	}
-	
+
 	/**
 	 * Return the content type for the given file.
 	 * 
@@ -398,7 +405,7 @@ public class IDE {
 			if (e.getStatus().getCode() == IResourceStatus.OUT_OF_SYNC_LOCAL) {
 				// Determine the content type from the file name.
 				return Platform.getContentTypeManager()
-							.findContentTypeFor(file.getName());
+						.findContentTypeFor(file.getName());
 			}
 			return null;
 		} finally {
@@ -406,40 +413,40 @@ public class IDE {
 		}
 	}
 
-	 /**
-     * Opens an editor on the given IFileStore object.
-     * <p>
-     * Unlike the other <code>openEditor</code> methods, this one
-     * can be used to open files that reside outside the workspace
-     * resource set.
-     * </p>
-     * <p>
-     * If the page already has an editor open on the target object then that
-     * editor is brought to front; otherwise, a new editor is opened.
-     * </p>
-     * 
-     * @param page
-     *            the page in which the editor will be opened
-     * @param fileStore 
-     *            the IFileStore representing the file to open
-     * @return an open editor or <code>null</code> if an external editor was opened
-     * @exception PartInitException
-     *                if the editor could not be initialized
-     * @see org.eclipse.ui.IWorkbenchPage#openEditor(IEditorInput, String)
-     * @since 3.3
-     */
+	/**
+	 * Opens an editor on the given IFileStore object.
+	 * <p>
+	 * Unlike the other <code>openEditor</code> methods, this one
+	 * can be used to open files that reside outside the workspace
+	 * resource set.
+	 * </p>
+	 * <p>
+	 * If the page already has an editor open on the target object then that
+	 * editor is brought to front; otherwise, a new editor is opened.
+	 * </p>
+	 * 
+	 * @param page
+	 *            the page in which the editor will be opened
+	 * @param fileStore 
+	 *            the IFileStore representing the file to open
+	 * @return an open editor or <code>null</code> if an external editor was opened
+	 * @exception PartInitException
+	 *                if the editor could not be initialized
+	 * @see org.eclipse.ui.IWorkbenchPage#openEditor(IEditorInput, String)
+	 * @since 3.3
+	 */
 	public static IEditorPart openEditorOnFileStore(IWorkbenchPage page, IFileStore fileStore) throws PartInitException {
-        //sanity checks
-        if (page == null) {
+		//sanity checks
+		if (page == null) {
 			throw new IllegalArgumentException();
 		}
 
-        IEditorInput input = getEditorInput(fileStore);
-        String editorId = getEditorId(fileStore);
-        
-        // open the editor on the file
-        return page.openEditor(input, editorId);
-    }
+		IEditorInput input = getEditorInput(fileStore);
+		String editorId = getEditorId(fileStore);
+
+		// open the editor on the file
+		return page.openEditor(input, editorId);
+	}
 
 	/**
 	 * Opens an internal editor on the given IFileStore object.
@@ -465,60 +472,64 @@ public class IDE {
 	 * @since 3.6
 	 */
 	public static IEditorPart openInternalEditorOnFileStore(IWorkbenchPage page, IFileStore fileStore) throws PartInitException {
-		if (page == null)
+		if (page == null) {
 			throw new IllegalArgumentException();
-		if (fileStore == null)
+		}
+		if (fileStore == null) {
 			throw new IllegalArgumentException();
-
+		}
 		IEditorInput input = getEditorInput(fileStore);
 		String name = fileStore.fetchInfo().getName();
-		if (name == null)
+		if (name == null) {
 			throw new IllegalArgumentException();
-
+		}
 		IContentType[] contentTypes = null;
 		InputStream is = null;
 		try {
 			is = fileStore.openInputStream(EFS.NONE, null);
 			contentTypes = Platform.getContentTypeManager().findContentTypesFor(is, name);
 		} catch (CoreException ex) {
-			// it's OK, ignore
+			// PASS
 		} catch (IOException ex) {
-			// it's OK, ignore
+			// PASS
 		} finally {
 			if (is != null) {
 				try {
 					is.close();
 				} catch (IOException e) {
-					// nothing good can be done here, ignore
+					// PASS Noting good can be done here
 				}
 			}
 		}
 
 		IEditorRegistry editorReg = PlatformUI.getWorkbench().getEditorRegistry();
 		if (contentTypes != null) {
-			for(int i = 0 ; i < contentTypes.length; i++) {
+			for (int i = 0; i < contentTypes.length; i++) {
 				IEditorDescriptor editorDesc = editorReg.getDefaultEditor(name, contentTypes[i]);
-				if ((editorDesc != null) && (editorDesc.isInternal()))
+				if ((editorDesc != null) && (editorDesc.isInternal())) {
 					return page.openEditor(input, editorDesc.getId());
+				}
 			}
 		}
 
 		// no content types are available, use file name associations
 		IEditorDescriptor[] editors = editorReg.getEditors(name);
 		if (editors != null) {
-			for(int i = 0 ; i < editors.length; i++) {
-				if ((editors[i] != null) && (editors[i].isInternal()))
+			for (int i = 0; i < editors.length; i++) {
+				if ((editors[i] != null) && (editors[i].isInternal())) {
 					return page.openEditor(input, editors[i].getId());
+				}
 			}
 		}
 
 		// fallback to the default text editor
 		IEditorDescriptor textEditor = editorReg.findEditor(/*IDEWorkbenchPlugin.DEFAULT_TEXT_EDITOR_ID*/"org.eclipse.ui.DefaultTextEditor");
-		if (textEditor == null)
+		if (textEditor == null) {
 			throw new PartInitException(IDEWorkbenchMessages.IDE_noFileEditorFound);
+		}
 		return page.openEditor(input, textEditor.getId());
 	}
-	
+
 	/**
 	 * Returns an editor id appropriate for opening the given file
 	 * store.
@@ -553,28 +564,28 @@ public class IDE {
 			throw new IllegalArgumentException();
 		}
 
-		IContentType contentType= null;
+		IContentType contentType = null;
 		try {
 			InputStream is = null;
 			try {
 				is = fileStore.openInputStream(EFS.NONE, null);
-				contentType= Platform.getContentTypeManager().findContentTypeFor(is, name);
+				contentType = Platform.getContentTypeManager().findContentTypeFor(is, name);
 			} finally {
 				if (is != null) {
 					is.close();
 				}
 			}
 		} catch (CoreException ex) {
-			// continue without content type
+			// PASS continue without content type
 		} catch (IOException ex) {
-			// continue without content type
+			// PASS continue without content type
 		}
 
-		IEditorRegistry editorReg= PlatformUI.getWorkbench().getEditorRegistry();
+		IEditorRegistry editorReg = PlatformUI.getWorkbench().getEditorRegistry();
 
 		return getEditorDescriptor(name, editorReg, editorReg.getDefaultEditor(name, contentType)).getId();
 	}
-	
+
 	/**
 	 * Get the editor descriptor for a given name using the editorDescriptor
 	 * passed in as a default as a starting point.
@@ -593,7 +604,7 @@ public class IDE {
 	 */
 	private static IEditorDescriptor getEditorDescriptor(String name,
 			IEditorRegistry editorReg, IEditorDescriptor defaultDescriptor)
-			throws PartInitException {
+					throws PartInitException {
 
 		if (defaultDescriptor != null) {
 			return defaultDescriptor;
@@ -609,11 +620,11 @@ public class IDE {
 
 		// next check with the OS for an external editor
 		//Not available for RAP
-//		if (editorDesc == null
-//				&& editorReg.isSystemExternalEditorAvailable(name)) {
-//			editorDesc = editorReg
-//					.findEditor(IEditorRegistry.SYSTEM_EXTERNAL_EDITOR_ID);
-//		}
+		//		if (editorDesc == null
+		//				&& editorReg.isSystemExternalEditorAvailable(name)) {
+		//			editorDesc = editorReg
+		//					.findEditor(IEditorRegistry.SYSTEM_EXTERNAL_EDITOR_ID);
+		//		}
 
 		// next lookup the default text editor
 		if (editorDesc == null) {

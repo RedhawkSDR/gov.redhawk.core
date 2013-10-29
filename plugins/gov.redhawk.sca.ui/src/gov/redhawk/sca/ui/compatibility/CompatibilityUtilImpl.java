@@ -27,7 +27,6 @@ public class CompatibilityUtilImpl implements ICompatibilityUtil {
 	@Override
 	public void setFontDataStyle(FontData fontData, int style) {
 		throw new UnsupportedOperationException();
-
 	}
 
 	@Override
@@ -44,13 +43,18 @@ public class CompatibilityUtilImpl implements ICompatibilityUtil {
 	@Override
 	public void runInFakeUIContext(Display display, Runnable runnable) {
 		throw new UnsupportedOperationException();
-
+	}
+	
+	/**
+	 * @since 9.2
+	 */
+	public void executeOnRequestThread(Runnable runnable) {
+		throw new UnsupportedOperationException();
 	}
 
 	@Override
 	public void activateUIConnection(String id) {
 		throw new UnsupportedOperationException();
-
 	}
 
 	@Override

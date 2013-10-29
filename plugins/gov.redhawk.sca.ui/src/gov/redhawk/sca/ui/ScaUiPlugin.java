@@ -16,6 +16,7 @@ import gov.redhawk.sca.internal.ui.ResourceRegistry;
 import gov.redhawk.sca.internal.ui.ScaContentTypeRegistry;
 import gov.redhawk.sca.internal.ui.ScaUiModelJob;
 
+import org.eclipse.core.runtime.Assert;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
@@ -23,7 +24,10 @@ import org.eclipse.core.runtime.preferences.InstanceScope;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.resource.ImageRegistry;
+import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Image;
+import org.eclipse.swt.widgets.Display;
+import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.eclipse.ui.preferences.ScopedPreferenceStore;
 import org.osgi.framework.BundleContext;
@@ -33,6 +37,11 @@ import org.osgi.framework.BundleContext;
  * The activator class controls the plug-in life cycle.
  */
 public class ScaUiPlugin extends AbstractUIPlugin {
+	
+	/**
+	 * @since 9.2
+	 */
+	public static final String PROP_SINGLE_DOMAIN = "gov.redhawk.sca.singleDomain";
 
 	// The plug-in ID
 	/** The Constant PLUGIN_ID. */
@@ -43,6 +52,8 @@ public class ScaUiPlugin extends AbstractUIPlugin {
 	private static ScaUiPlugin plugin;
 
 	private IPreferenceStore scaPreferenceStore;
+
+	private String lastId;
 
 	/**
 	 * The constructor.
@@ -70,18 +81,40 @@ public class ScaUiPlugin extends AbstractUIPlugin {
 	protected ImageRegistry createImageRegistry() {
 		final ImageRegistry registry = super.createImageRegistry();
 		registry.put(ScaUiPluginImages.IMG_DEFAULT_DOMAIN_OVR,
-		        AbstractUIPlugin.imageDescriptorFromPlugin(ScaUiPlugin.PLUGIN_ID, "icons/ovr16/default_domain_ovr.gif"));
+				AbstractUIPlugin.imageDescriptorFromPlugin(ScaUiPlugin.PLUGIN_ID, "icons/ovr16/default_domain_ovr.gif"));
 		return registry;
 	}
 
 	/**
 	 * @since 3.0
+	 * 
+	 * Returns a Preference store scoped to this plug-in (RCP) or to the current user (RAP).
+	 * 
+	 * @return
+	 * 			The scoped preference store
 	 */
 	public IPreferenceStore getScaPreferenceStore() {
-		if (this.scaPreferenceStore == null) {
+		if (SWT.getPlatform().startsWith("rap")) {
+			Assert.isNotNull(Display.getCurrent(), "This method must be called from the UI thread");
+			String currentId = ScaPlugin.getDefault().getCompatibilityUtil().getUserSpecificPath(Display.getCurrent());
+			/**
+			 * If we have not yet done so for the current user, initialize the SettingStore with settings 
+			 * for this user.
+			 */
+			if (currentId != null && !currentId.equals(lastId)) {
+				ScaPlugin.getDefault().getCompatibilityUtil().initializeSettingStore(Display.getCurrent());
+				this.lastId = currentId;
+			}
+			this.scaPreferenceStore = PlatformUI.getPreferenceStore();
+		} else {
 			this.scaPreferenceStore = new ScopedPreferenceStore(InstanceScope.INSTANCE, ScaPlugin.getDefault().getBundle().getSymbolicName());
 		}
 		return this.scaPreferenceStore;
+	}
+
+	@Override
+	public IPreferenceStore getPreferenceStore() {
+		return getScaPreferenceStore();
 	}
 
 	/*

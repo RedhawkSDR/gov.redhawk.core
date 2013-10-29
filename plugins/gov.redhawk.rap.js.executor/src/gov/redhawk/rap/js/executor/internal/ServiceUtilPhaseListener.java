@@ -1,3 +1,14 @@
+/** 
+ * This file is protected by Copyright. 
+ * Please refer to the COPYRIGHT file distributed with this source distribution.
+ * 
+ * This file is part of REDHAWK IDE.
+ * 
+ * All rights reserved.  This program and the accompanying materials are made available under 
+ * the terms of the Eclipse Public License v1.0 which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html.
+ *
+ */
 package gov.redhawk.rap.js.executor.internal;
 
 import gov.redhawk.rap.js.executor.DisposeEvent;
@@ -72,7 +83,7 @@ public class ServiceUtilPhaseListener implements PhaseListener {
 
 		try {
 			final String type = req.getParameter(PHASE_TYPE);
-			if ( PHASE_TYPE_FUNCTION.equals(type) || PHASE_TYPE_EVALUATE.equals(type)) {
+			if (PHASE_TYPE_FUNCTION.equals(type) || PHASE_TYPE_EVALUATE.equals(type)) {
 				final String id = req.getParameter(PHASE_ID);
 				final String args = req.getParameter(PHASE_ARGS);
 				final JsonElement result;
