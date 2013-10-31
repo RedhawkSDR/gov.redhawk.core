@@ -136,6 +136,11 @@ public abstract class AbstractBulkIOPort implements ProvidesPortStatisticsProvid
 		return this.streamSRIMap.values().toArray(new StreamSRI[this.streamSRIMap.size()]);
 	}
 
+	/**
+	 * <b>WARN: sub-classes are NOT suppose to override this method.</b>
+	 * Instead sub-class should override the {@link #handleStreamSRIChanged(String, StreamSRI, StreamSRI)} method.
+	 * This method will become final in next release.q
+	 */
 	@Override
 	public void pushSRI(@Nullable StreamSRI sri) {
 		if (sri != null) {
