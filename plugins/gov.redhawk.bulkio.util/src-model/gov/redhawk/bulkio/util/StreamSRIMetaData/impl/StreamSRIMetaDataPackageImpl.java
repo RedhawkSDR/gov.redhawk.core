@@ -27,7 +27,7 @@ import org.eclipse.emf.ecore.xml.type.XMLTypePackage;
 /**
  * <!-- begin-user-doc -->
  * An implementation of the model <b>Package</b>.
- * @since 1.1
+ * @since 2.0
  * <!-- end-user-doc -->
  * @generated
  */

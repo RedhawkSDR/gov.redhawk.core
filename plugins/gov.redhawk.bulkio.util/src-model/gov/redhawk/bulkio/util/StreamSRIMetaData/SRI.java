@@ -17,7 +17,7 @@ import org.eclipse.emf.ecore.EObject;
 /**
  * <!-- begin-user-doc -->
  * A representation of the model object '<em><b>SRI</b></em>'.
- * @since 1.1
+ * @since 2.0
  * <!-- end-user-doc -->
  *
  * <p>

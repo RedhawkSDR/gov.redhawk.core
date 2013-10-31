@@ -137,12 +137,10 @@ public abstract class AbstractBulkIOPort implements ProvidesPortStatisticsProvid
 	}
 
 	/**
-	 * <b>WARN: sub-classes are NOT suppose to override this method.</b>
-	 * Instead sub-class should override the {@link #handleStreamSRIChanged(String, StreamSRI, StreamSRI)} method.
-	 * This method will become final in next release.q
+	 * sub-class should override the {@link #handleStreamSRIChanged(String, StreamSRI, StreamSRI)} method.
 	 */
 	@Override
-	public void pushSRI(@Nullable StreamSRI sri) {
+	public final void pushSRI(@Nullable StreamSRI sri) {
 		if (sri != null) {
 			String streamId = sri.streamID;
 			if (streamId != null) {

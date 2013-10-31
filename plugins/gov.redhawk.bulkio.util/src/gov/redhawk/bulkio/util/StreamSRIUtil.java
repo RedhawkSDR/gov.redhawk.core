@@ -32,7 +32,7 @@ public final class StreamSRIUtil {
 	}
 
 	/**
-	 * @since 1.1
+	 * @since 2.0
 	 */
 	public static void putSriInfo(StreamSRI sri, Table rootTable) {
 		Table sriTable = (Table) rootTable.addTable("SRI");

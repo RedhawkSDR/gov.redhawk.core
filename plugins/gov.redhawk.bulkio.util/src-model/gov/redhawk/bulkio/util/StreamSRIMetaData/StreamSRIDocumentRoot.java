@@ -20,7 +20,7 @@ import org.eclipse.emf.ecore.util.FeatureMap;
 /**
  * <!-- begin-user-doc -->
  * A representation of the model object '<em><b>Stream SRI Document Root</b></em>'.
- * @since 1.1
+ * @since 2.0
  * <!-- end-user-doc -->
  *
  * <p>

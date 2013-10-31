@@ -38,15 +38,14 @@ public abstract class AbstractSriReceiver< T extends updateSRIOperations > exten
 	}
 	
 	@Override
-	public void pushSRI(@Nullable final StreamSRI sri) {
-		super.pushSRI(sri);
+	protected void handleStreamSRIChanged(@NonNull String streamID, @Nullable StreamSRI oldSri, @NonNull final StreamSRI newSri) {
 		Object [] childrenArray = children.toArray();
 		for (final Object child : childrenArray) {
 			SafeRunner.run(new ISafeRunnable() {
 
 				@Override
 				public void run() throws Exception {
-					((updateSRIOperations) child).pushSRI(sri);
+					((updateSRIOperations) child).pushSRI(newSri);
 				}
 
 				@Override
@@ -54,7 +53,6 @@ public abstract class AbstractSriReceiver< T extends updateSRIOperations > exten
 
 				}
 			});
-
 		}
 	}
 

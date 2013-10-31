@@ -42,8 +42,7 @@ import CF.DataType;
 import CF.PropertiesHelper;
 
 /**
- * @since 1.1
- * 
+ * @since 2.0
  */
 public final class StreamXMLSRIUtil {
 	protected enum type {

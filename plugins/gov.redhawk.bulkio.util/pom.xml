@@ -9,6 +9,6 @@
     <relativePath>../../releng/core</relativePath>
   </parent>
   <artifactId>gov.redhawk.bulkio.util</artifactId>
-  <version>1.1.0-SNAPSHOT</version>
+  <version>2.0.0-SNAPSHOT</version>
   <packaging>eclipse-plugin</packaging>
 </project>

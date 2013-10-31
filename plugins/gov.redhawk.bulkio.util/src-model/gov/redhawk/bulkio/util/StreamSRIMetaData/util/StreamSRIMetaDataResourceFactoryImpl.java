@@ -19,7 +19,7 @@ import org.eclipse.emf.ecore.xmi.XMLResource;
 /**
  * <!-- begin-user-doc -->
  * The <b>Resource Factory</b> associated with the package.
- * @since 1.1
+ * @since 2.0
  * <!-- end-user-doc -->
  * @see gov.redhawk.bulkio.util.StreamSRIMetaData.util.StreamSRIMetaDataResourceImpl
  * @generated

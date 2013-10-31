@@ -35,7 +35,7 @@ import org.eclipse.emf.ecore.util.InternalEList;
 /**
  * <!-- begin-user-doc -->
  * An implementation of the model object '<em><b>Stream SRI Document Root</b></em>'.
- * @since 1.1
+ * @since 2.0
  * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
