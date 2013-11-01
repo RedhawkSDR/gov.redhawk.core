@@ -42,6 +42,7 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.swt.widgets.Shell;
@@ -200,15 +201,9 @@ public class SriDataView extends ViewPart {
 			@Override
 			public void run() {
 				Shell parent = getSite().getShell();
-				String saveLocation = null;
-				// TODO Support RAP?
-//				FileDialog saveDialog = new FileDialog(parent, SWT.SAVE | SWT.CANCEL);
-//				saveDialog.setText("Save SRI to File");
-//				String saveLocation = saveDialog.open();
-				
-				if (saveLocation == null) {
-					return;
-				}
+				FileDialog saveDialog = new FileDialog(parent, SWT.SAVE | SWT.CANCEL);
+				saveDialog.setText("Save SRI to File");
+				String saveLocation = saveDialog.open();
 
 				Map<String, SriWrapper> streamMapToSave = sriReceiver.getStreamMap();
 				List<String> filesWritten = new ArrayList<String>();

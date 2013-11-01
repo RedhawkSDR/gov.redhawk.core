@@ -28,6 +28,7 @@
     <module>../../features/gov.redhawk.validation.feature</module>
     <module>../../features/gov.redhawk.idl.feature</module>
     <module>../../features/gov.redhawk.rcp.sdk</module>
+    <module>../../plugins/gov.redhawk.bulkio.ui</module>
     <module>../../plugins/gov.redhawk.diagram</module>
     <module>../../plugins/gov.redhawk.eclipsecorba.idl</module>
     <module>../../plugins/gov.redhawk.eclipsecorba.idl.edit</module>
