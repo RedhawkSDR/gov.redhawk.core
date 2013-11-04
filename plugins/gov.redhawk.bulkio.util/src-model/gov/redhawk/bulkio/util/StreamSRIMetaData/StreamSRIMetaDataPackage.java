@@ -26,7 +26,7 @@ import org.eclipse.emf.ecore.EReference;
  *   <li>each enum,</li>
  *   <li>and each data type</li>
  * </ul>
- * @since 1.1
+ * @since 2.0
  * <!-- end-user-doc -->
  * @see gov.redhawk.bulkio.util.StreamSRIMetaData.StreamSRIMetaDataFactory
  * @model kind="package"

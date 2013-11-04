@@ -27,7 +27,7 @@ import org.eclipse.emf.ecore.util.Switch;
  * and proceeding up the inheritance hierarchy
  * until a non-null result is returned,
  * which is the result of the switch.
- * @since 1.1
+ * @since 2.0
  * <!-- end-user-doc -->
  * @see gov.redhawk.bulkio.util.StreamSRIMetaData.StreamSRIMetaDataPackage
  * @generated

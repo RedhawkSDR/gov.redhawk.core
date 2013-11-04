@@ -24,7 +24,7 @@ import org.eclipse.emf.ecore.plugin.EcorePlugin;
 /**
  * <!-- begin-user-doc -->
  * An implementation of the model <b>Factory</b>.
- * @since 1.1
+ * @since 2.0
  * <!-- end-user-doc -->
  * @generated
  */

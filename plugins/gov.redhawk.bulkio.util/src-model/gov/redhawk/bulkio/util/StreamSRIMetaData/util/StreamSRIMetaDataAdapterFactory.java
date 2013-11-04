@@ -24,7 +24,7 @@ import org.eclipse.emf.ecore.EObject;
  * <!-- begin-user-doc -->
  * The <b>Adapter Factory</b> for the model.
  * It provides an adapter <code>createXXX</code> method for each class of the model.
- * @since 1.1
+ * @since 2.0
  * <!-- end-user-doc -->
  * @see gov.redhawk.bulkio.util.StreamSRIMetaData.StreamSRIMetaDataPackage
  * @generated
