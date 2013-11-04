@@ -39,6 +39,7 @@ import org.eclipse.emf.edit.provider.ViewerNotification;
 /**
  * This is the item provider adapter for a {@link gov.redhawk.ui.views.monitor.model.ports.MonitorRegistry} object.
  * <!-- begin-user-doc -->
+ * @since 4.1
  * <!-- end-user-doc -->
  * @generated
  */

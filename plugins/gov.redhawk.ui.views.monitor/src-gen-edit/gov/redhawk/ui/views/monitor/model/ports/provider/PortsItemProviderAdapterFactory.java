@@ -40,6 +40,7 @@ import org.eclipse.emf.edit.provider.ITreeItemContentProvider;
  * The adapters also support Eclipse property sheets.
  * Note that most of the adapters are shared among multiple instances.
  * <!-- begin-user-doc -->
+ * @since 4.1
  * <!-- end-user-doc -->
  * @generated
  */
