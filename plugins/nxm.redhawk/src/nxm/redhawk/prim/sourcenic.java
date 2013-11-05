@@ -21,12 +21,12 @@ import java.net.NetworkInterface;
 import java.net.SocketException;
 import java.net.SocketTimeoutException;
 import java.net.UnknownHostException;
+import java.nio.ByteOrder;
 import java.text.MessageFormat;
 import java.util.EnumSet;
 import java.util.Enumeration;
 
 import nxm.redhawk.lib.RedhawkOptActivator;
-import nxm.sys.inc.Commandable;
 import nxm.sys.lib.BaseFile;
 import nxm.sys.lib.Data;
 import nxm.sys.lib.DataFile;
@@ -38,7 +38,6 @@ import nxm.sys.lib.Primitive;
 public class sourcenic extends Primitive { //SUPPRESS CHECKSTYLE ClassName
 	private static final Debug TRACE_LOGGER = new Debug(RedhawkOptActivator.ID, sourcenic.class.getSimpleName());
 
-	private static final int MAXPKTBUF = 65535; // The maximum UDP datagram size
 	private static final int SDDS_HEADER_SIZE = 56;
 	private static final int SDDS_PAYLOAD_SIZE = 1024;
 	private static final int SDDS_PACKET_SIZE = SDDS_HEADER_SIZE + SDDS_PAYLOAD_SIZE;
@@ -50,10 +49,11 @@ public class sourcenic extends Primitive { //SUPPRESS CHECKSTYLE ClassName
 	private static final int BITS_PER_SAMPLE_4 = 4;
 	private static final int BITS_PER_SAMPLE_8 = 8;
 	private static final int BITS_PER_SAMPLE_16 = 16;
+	/** this is used by REDHAWK SinkNic Component to send out float data (32-bit) since SDDS header only allows 5 bit to represent bits per sample (bps). */
+	private static final int BITS_PER_SAMPLE_32 = 32;
 
 	/** the output file to write to */
 	private DataFile outputFile = null;
-	private Data packetHeader;
 	private Data outputData;
 	private SDDSHeader sddsHeader;
 
@@ -62,20 +62,21 @@ public class sourcenic extends Primitive { //SUPPRESS CHECKSTYLE ClassName
 	private InetSocketAddress maddr;
 	private int port;
 
-	/* statistics */
+	/** statistics for socket read timeouts. */
 	private long emptyCount;
 
-	private byte[] buf = new byte[MAXPKTBUF];
-	private DatagramPacket packet = new DatagramPacket(buf, buf.length);
+	private DatagramPacket packet;
 
 	/** warning bit fields to display first warning msg of a particular type per instance session. */
 	private static enum WarnBit { WARN1, WARN2, WARN3, WARN4, WARN5, WARN6 };
 	private final EnumSet<WarnBit> warnedSet = EnumSet.noneOf(WarnBit.class);
 	private boolean warn;
 
+	/** is SDDS packet payload data in big-endian/IEEE (network) byte order per spec? or in little-endian/EEEI byte-order. */
+	private ByteOrder packetDataByteOrder = ByteOrder.BIG_ENDIAN;
+
 	/**
 	 * Gets the number of socket read timeouts.
-	 *
 	 * @return
 	 */
 	public long getEmptyCount() {
@@ -87,10 +88,9 @@ public class sourcenic extends Primitive { //SUPPRESS CHECKSTYLE ClassName
 		if (TRACE_LOGGER.enabled) { TRACE_LOGGER.enteringMethod(); }
 		warn = MA.getState("/WARN", true);
 		verbose = MA.getState("/VERBOSE", false);
-		if (verbose) { M.info("Hello"); }
 		int ret = super.open();
 
-		if (ret == Commandable.NORMAL) {
+		if (ret == NORMAL) {
 			// Parse arguments and switches
 			String interfaceBaseName = MA.getS("/INTERFACE", null);
 			String mgrp = MA.getS("/MGRP", null);
@@ -102,8 +102,22 @@ public class sourcenic extends Primitive { //SUPPRESS CHECKSTYLE ClassName
 
 			outputFile = MA.getDataFile("OUT", "1000", fc, DataFile.OUTPUT, 0, null);
 			outputFile.open(BaseFile.OUTPUT);
-			packetHeader = new Data(Data.BYTE, MAXPKTBUF);
-			outputData = outputFile.getDataBuffer(SDDS_PAYLOAD_SIZE / outputFile.bpa);
+
+			// allocate data buffer with enough room for SDDS packet header + SDDS data + 8 (bytes extra to detect non-standard SDDS packets)
+			final int numDataElements = SDDS_PAYLOAD_SIZE / outputFile.bpa;
+			outputData = outputFile.getDataBuffer(numDataElements + (SDDS_HEADER_SIZE + 8) / outputFile.bpa);
+			outputData.boff = SDDS_HEADER_SIZE;  // move byte offset pass SDDS header in outputData's byte buffer
+			outputData.setSize(numDataElements); // reset size to number of SDDS data samples/elements
+			packet = new DatagramPacket(outputData.getBuf(), outputData.buf.length); // use dataBuffer
+
+			// switch to allow workaround for REDHAWK SinkNic Component sending data in little-endian byte order
+			setDataByteOrder(MA.getS("/BYTEORDER", ByteOrder.BIG_ENDIAN.toString()));
+
+			// SDDS 4-bit data is packed in NXM IEEE sub-byte order, i,e. byte0:(sample0, sample1), byte1:(sample2, sample3),...
+			if (outputFile.getFormatType() == Data.NIBBLE) {
+				outputFile.setDataRep("IEEE");
+				outputData.rep = Data.IEEE;
+			}
 
 			// Make sure the user provided a reasonable network interface
 			if (interfaceBaseName != null) {
@@ -151,78 +165,68 @@ public class sourcenic extends Primitive { //SUPPRESS CHECKSTYLE ClassName
 	@Override
 	public int process() {
 		if (this.msock == null) {
-			return Commandable.NOOP;
+			return NOOP;
 		}
 
 		try {
 			try {
+				// this receives packet directly into byte[] at outputData.getBuf() - reducing another array copy
 			    msock.receive(packet);
 			}  catch (SocketTimeoutException e) {
 				this.emptyCount += 1;
-				return Commandable.NOOP;
+				return NOOP;
 			}
 
 			//System.out.println("Packet HA " + packet.getAddress().getHostAddress());
-			int len = packet.getLength();
+			final int len = packet.getLength();
 			if (len != SDDS_PACKET_SIZE) {
 				warn(WarnBit.WARN1, "Discarding packet of incorrect length {0}", len);
-				return Commandable.NORMAL;
+				return NORMAL;
 			}
 
-			packetHeader.setSize(packet.getLength());
-			packetHeader.fromArray(packet.getData(), packet.getOffset(), Data.BYTE);
-			sddsHeader.parsePacket(packetHeader.buf);
+			sddsHeader.parsePacket(packet.getData(), packet.getOffset(), len);
 
-			// Load the data into the output buffer
-			System.arraycopy(packet.getData(), packet.getOffset() + SDDS_HEADER_SIZE, outputData.buf, 0, SDDS_PAYLOAD_SIZE);
-
-			int dataSize = sddsHeader.getDataFieldBps();
-			switch(dataSize) {
+			final byte packetDataType;
+			final int dataBitSize = sddsHeader.getDataFieldBps();
+			switch(dataBitSize) {
 			case BITS_PER_SAMPLE_4:
-				warn(WarnBit.WARN2, "4-bit SDDS data is not yet supported");
+				packetDataType = Data.NIBBLE;
 				break;
 
 			case BITS_PER_SAMPLE_8:
-				if (this.outputFile.bps == 1) { // no translation
-					this.outputFile.write(outputData);
-				} else if (outputData.bps == 2) { // expand 8bit -> SI
-					warn(WarnBit.WARN3, "Output mode SI is not yet supported for 8-bit SDDS data");
-				}
+				packetDataType = Data.BYTE;
 				break;
 
 			case BITS_PER_SAMPLE_16:
-				if (this.outputFile.bps == 1) { // truncate SI -> SB
-					warn(WarnBit.WARN4, "Output mode SB is not yet supported for 16-bit SDDS data");
-				} else if (this.outputFile.bps == 2) { // byte-swap SI
-					if (!sddsHeader.isComplex()) {
-						byteSwap(outputData.buf);
-						this.outputFile.write(outputData);
-					} else {
-						if (sddsHeader.ss) { // If necessary, spectral swap
-							intSwap(outputData.buf);
-						}
-						this.outputFile.write(outputData);
-					}
-				} else {
-					warn(WarnBit.WARN5, "No support for 16-bit SDDS with specified output format");
-				}
+				packetDataType = Data.INT;
+				break;
+
+			case BITS_PER_SAMPLE_32:
+				// to receive REDHAWK SinkNic Component SDDS packets
+				packetDataType = Data.FLOAT;
 				break;
 
 			default:
-				return Commandable.ABORT;
+				// return ABORT; // prior to 10.1
+				warn(WarnBit.WARN2, "Discarding packet of unsupported bit size: {0}", dataBitSize);
+				return NOOP;
 			}
 
-			return Commandable.NORMAL;
+			if (packetDataType != outputData.getFormatType()) {
+				outputData.setFormatType(packetDataType);
+			}
+			this.outputFile.write(outputData);
+
+			return NORMAL;
 		} catch (IOException e) {
 			M.warning(e);
-			return Commandable.ABORT;
+			return ABORT;
 		}
 	}
 
 	@Override
 	public int close() {
 		if (TRACE_LOGGER.enabled) { TRACE_LOGGER.enteringMethod(); }
-		if (verbose) { M.info("Goodbye"); }
 		outputFile.close();
 		if (this.maddr != null) {
 			try {
@@ -284,11 +288,10 @@ public class sourcenic extends Primitive { //SUPPRESS CHECKSTYLE ClassName
 	}
 
 	/**
-	 * Swaps byte order in a 32-bit buffer
-	 *
+	 * Swaps byte order (two shorts - complex data) in a 32-bit (4 bytes pair) buffer
 	 * @param buf The buffer to swap byte order
 	 */
-	private void intSwap(byte[] buf) {
+	private void byteSwapComplexShorts(byte[] buf) {
 		// CHECKSTYLE:OFF
 		for (int i = 0; i < buf.length; i += 4) {
 			byte tmp1 = buf[i];
@@ -382,6 +385,8 @@ public class sourcenic extends Primitive { //SUPPRESS CHECKSTYLE ClassName
 	 */
 	class SDDSHeader {
 		static final int DMODE_TEN_IN_SIXTEEN_AD = 0x06;
+		/** REDHAWK SinkNic Component uses dmode=4 and bitsPerSample(bps)=31 (since only 5 bits are used for that field in SDDS header) */
+		static final int DMODE_FOUR_FOR_32BITS_PER_SAMPLE = 0x04;
 
 		static final int SDDS_MODE_COMPAT = 0;
 		static final int SDDS_MODE_STRICT = 1;
@@ -395,20 +400,28 @@ public class sourcenic extends Primitive { //SUPPRESS CHECKSTYLE ClassName
 		final int mode;
 
 		// byte 1
+		/** is Standard Format (SF) packet */
 		public boolean sf;
+		/** is Start of Sequence (SoS) */
 		public boolean sos;
+		/** Parity Packet (PP) */
 		public boolean pp;
+		/** Original Format (OF) */
 		public boolean of;
+		/** Spectral Sense (SS) */
 		public boolean ss;
+		/** Data Mode / data field (DF) */
 		public byte dmode;
 
 		// byte 2
+		/** is CompleX data */
 		public boolean cx;
 		public boolean snp;
 		public boolean bw;
+		/** Bits Per Sample */
 		public byte bps;
 
-		// Frame sequences
+		// Frame sequences (byte 3 & byte 4)
 		public short seq;
 
 		public short msptr;
@@ -429,29 +442,33 @@ public class sourcenic extends Primitive { //SUPPRESS CHECKSTYLE ClassName
 			this.mode = mode;
 		}
 
-		public void parsePacket(byte[] data) {
-			if (data.length != SDDS_PACKET_SIZE) {
+		public void parsePacket(final byte[] data, final int offset, final int len) {
+			if (len != SDDS_PACKET_SIZE) {
 				throw new IllegalArgumentException("Packet data is not the correct size");
 			}
 
+			final byte byte0 = data[offset + 0];
+			final byte byte1 = data[offset + 1];
+			final byte byte2 = data[offset + 2];
+			final byte byte3 = data[offset + 3];
 			// CHECKSTYLE:OFF
-			sf = (data[0] & 0x80) != 0;
+			sf  = (byte0 & 0x80) != 0;
 			if (!sf) {
 				warn(WarnBit.WARN6, "Received non-standard packet");
 			}
-			sos = (data[0] & 0x40) != 0;
-			pp = (data[0] & 0x20) != 0;
-			of = (data[0] & 0x10) != 0;
-			ss = (data[0] & 0x80) != 0;
-			dmode = (byte) (data[0] & 0x07);
+			sos = (byte0 & 0x40) != 0;
+			pp  = (byte0 & 0x20) != 0;
+			of  = (byte0 & 0x10) != 0;
+			ss  = (byte0 & 0x08) != 0;
+			dmode = (byte) (byte0 & 0x07); // 3 bits
 
-			cx = (data[1] & 0x80) != 0;
-			snp = (data[1] & 0x40) != 0;
-			bw = (data[1] & 0x20) != 0;
-			bps = (byte) (data[1] & 0x1F);
+			cx  = (byte1 & 0x80) != 0;
+			snp = (byte1 & 0x40) != 0;
+			bw  = (byte1 & 0x20) != 0;
+			bps = (byte) (byte1 & 0x1F); // 5 bits
 
-			seq = data[2];
-			seq = (short) ((seq << 8) | data[3]);
+			seq = byte2;
+			seq = (short) ((seq << 8) | byte3);
 			// CHECKSTYLE:ON
 		}
 
@@ -474,6 +491,9 @@ public class sourcenic extends Primitive { //SUPPRESS CHECKSTYLE ClassName
 		 * @return
 		 */
 		public int getDataFieldBps() {
+			if (dmode == DMODE_FOUR_FOR_32BITS_PER_SAMPLE && bps == 31) { // REDHAWK SinkNic Component uses this for 32-bit samples
+				return BITS_PER_SAMPLE_32;
+			}
 			int x = (dmode & 0x3); // SUPPRESS CHECKSTYLE MAGIC NUMBER
 			switch(x) {
 			case 0:
@@ -499,4 +519,35 @@ public class sourcenic extends Primitive { //SUPPRESS CHECKSTYLE ClassName
 			}
 		}
 	}
+
+	/**
+     * @since 10.1
+     */
+	public ByteOrder getDataByteOrder() {
+		return packetDataByteOrder;
+	}
+
+	/**
+     * @since 10.1
+     */
+	public void setDataByteOrder(ByteOrder byteOrder) {
+		packetDataByteOrder = byteOrder;
+	}
+
+	/**
+     * @since 10.1
+     */
+	public void setDataByteOrder(String byteOrderStr) {
+		if (ByteOrder.BIG_ENDIAN.toString().equals(byteOrderStr)) {
+			packetDataByteOrder = ByteOrder.BIG_ENDIAN;
+		} else if (ByteOrder.LITTLE_ENDIAN.toString().equals(byteOrderStr)) {
+			packetDataByteOrder = ByteOrder.LITTLE_ENDIAN;
+		} else {
+			throw new IllegalArgumentException("Invalid data byte order specified: " + byteOrderStr);
+		}
+		if (outputData != null) {
+			outputData.rep = (packetDataByteOrder == ByteOrder.BIG_ENDIAN) ? Data.IEEE : Data.EEEI;
+		}
+	}
+
 }
