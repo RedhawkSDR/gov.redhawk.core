@@ -14,6 +14,9 @@ package gov.redhawk.internal.ui.port.nxmplot;
 import gov.redhawk.ui.port.nxmplot.AbstractNxmPlotWidget;
 import gov.redhawk.ui.port.nxmplot.IPlotSession;
 
+/**
+ * @noreference This class is not intended to be referenced by clients
+ */
 public class PlotSession implements IPlotSession {
 
 	private AbstractNxmPlotWidget plotWidget;

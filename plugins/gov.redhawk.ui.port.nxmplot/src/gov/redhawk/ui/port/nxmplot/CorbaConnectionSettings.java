@@ -13,7 +13,9 @@ package gov.redhawk.ui.port.nxmplot;
 
 /**
  * @since 2.1
+ * @deprecated Since 4.2
  */
+@Deprecated
 public class CorbaConnectionSettings {
 	private String host = "localhost";
 	private int port = 2809; // SUPPRESS CHECKSTYLE MagicNumber

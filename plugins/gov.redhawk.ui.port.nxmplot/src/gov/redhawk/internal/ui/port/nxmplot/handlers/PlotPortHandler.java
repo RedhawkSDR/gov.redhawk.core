@@ -47,6 +47,9 @@ import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.handlers.HandlerUtil;
 import org.eclipse.ui.statushandlers.StatusManager;
 
+/**
+ * @noreference This class is not intended to be referenced by clients
+ */
 public class PlotPortHandler extends AbstractHandler {
 
 	public PlotPortHandler() {

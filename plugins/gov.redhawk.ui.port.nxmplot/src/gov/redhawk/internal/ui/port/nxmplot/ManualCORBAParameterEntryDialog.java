@@ -1,10 +1,10 @@
 /**
- * This file is protected by Copyright. 
+ * This file is protected by Copyright.
  * Please refer to the COPYRIGHT file distributed with this source distribution.
- * 
+ *
  * This file is part of REDHAWK IDE.
- * 
- * All rights reserved.  This program and the accompanying materials are made available under 
+ *
+ * All rights reserved.  This program and the accompanying materials are made available under
  * the terms of the Eclipse Public License v1.0 which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html.
  *
@@ -30,7 +30,10 @@ import org.eclipse.swt.widgets.Text;
 
 /**
  * The Class ManualCORBAParameterEntryDialog.
+ * @deprecated since 4.2
+ * @noreference This class is not intended to be referenced by clients
  */
+@Deprecated
 public class ManualCORBAParameterEntryDialog extends Dialog {
 
 	/** The plot description. */
@@ -43,7 +46,7 @@ public class ManualCORBAParameterEntryDialog extends Dialog {
 
 	/**
 	 * Instantiates a new manual stream parameter entry dialog.
-	 * 
+	 *
 	 * @param parentShell the parent shell
 	 */
 	public ManualCORBAParameterEntryDialog(final Shell parentShell, final CorbaConnectionSettings settings) {
@@ -160,7 +163,7 @@ public class ManualCORBAParameterEntryDialog extends Dialog {
 
 	/**
 	 * Gets the plot description created by this dialog.
-	 * 
+	 *
 	 * @return the plot description
 	 */
 	public CorbaConnectionSettings getConnectionSettings() {

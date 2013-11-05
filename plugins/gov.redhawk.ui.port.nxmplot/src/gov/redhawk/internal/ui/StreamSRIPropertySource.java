@@ -27,7 +27,7 @@ import BULKIO.StreamSRI;
 import CF.DataType;
 
 /**
- * 
+ * @noreference This class is not intended to be referenced by clients.
  */
 public class StreamSRIPropertySource implements IPropertySource2 {
 

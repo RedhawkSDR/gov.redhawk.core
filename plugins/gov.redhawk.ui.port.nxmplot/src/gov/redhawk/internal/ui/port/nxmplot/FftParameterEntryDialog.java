@@ -37,6 +37,7 @@ import org.eclipse.swt.widgets.Text;
 
 /**
  * FFT parameters/settings user entry dialog.
+ * @noreference This class is not intended to be referenced by clients
  */
 public class FftParameterEntryDialog extends Dialog {
 

@@ -14,6 +14,9 @@ package gov.redhawk.internal.ui.port.nxmplot.view;
 import gov.redhawk.model.sca.ScaUsesPort;
 import gov.redhawk.ui.port.nxmplot.FftSettings;
 
+/**
+ * @noreference This class is not intended to be referenced by clients
+ */
 public class PlotSource {
 	private final ScaUsesPort input;
 	private final FftSettings fftOptions;

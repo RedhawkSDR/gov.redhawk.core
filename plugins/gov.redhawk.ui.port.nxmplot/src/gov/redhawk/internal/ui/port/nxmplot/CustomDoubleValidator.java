@@ -10,7 +10,10 @@
  */
 package gov.redhawk.internal.ui.port.nxmplot;
 
-/** @since 4.2 */
+/**
+ * @noreference This class is not intended to be referenced by clients 
+ * @since 4.2
+ */
 public class CustomDoubleValidator implements IOtherAllowedInputValidator {
 	private String errMsg;
 	private final String otherValidValue;

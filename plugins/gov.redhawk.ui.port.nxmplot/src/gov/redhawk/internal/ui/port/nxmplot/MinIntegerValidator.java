@@ -10,7 +10,10 @@
  */
 package gov.redhawk.internal.ui.port.nxmplot;
 
-/** @since 4.2 */
+/**
+ * @since 4.2
+ * @noreference This class is not intended to be referenced by clients.
+ **/
 public class MinIntegerValidator implements IOtherAllowedInputValidator {
 	private int minAllowed = Integer.MIN_VALUE; // inclusive
 	private String errMsg;

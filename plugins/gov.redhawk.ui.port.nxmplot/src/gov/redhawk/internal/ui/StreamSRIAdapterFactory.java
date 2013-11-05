@@ -18,7 +18,7 @@ import org.eclipse.ui.views.properties.IPropertySourceProvider;
 import BULKIO.StreamSRI;
 
 /**
- * 
+ * @noreference This class is not intended to be referenced by clients.
  */
 public class StreamSRIAdapterFactory implements IAdapterFactory {
 
