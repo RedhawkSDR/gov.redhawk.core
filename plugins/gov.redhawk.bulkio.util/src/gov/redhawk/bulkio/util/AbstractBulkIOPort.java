@@ -162,14 +162,20 @@ public abstract class AbstractBulkIOPort implements ProvidesPortStatisticsProvid
 		return this.currentSri;
 	}
 	
+	/** callback to notify that SRI has changed from previous SRI */
 	protected void handleStreamSRIChanged(@Nullable StreamSRI oldSri, @Nullable StreamSRI newSri) {
 		
 	}
 
+	/** callback to notify that SRI has changed for specified streamID (this is method that sub-classes should override). */
 	protected void handleStreamSRIChanged(@NonNull String streamID, @Nullable StreamSRI oldSri, @NonNull StreamSRI newSri) {
 		
 	}
 
+	/** 
+	 * @param streamID 
+	 * @return SRI for specified stream ID (null if it does not exist or has reached end-of-stream (EOS)).
+	 */
 	@Nullable
 	public StreamSRI getSri(@Nullable String streamID) {
 		return this.streamSRIMap.get(streamID);
