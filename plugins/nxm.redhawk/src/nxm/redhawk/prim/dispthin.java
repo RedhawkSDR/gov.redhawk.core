@@ -1,10 +1,10 @@
 /**
- * This file is protected by Copyright. 
+ * This file is protected by Copyright.
  * Please refer to the COPYRIGHT file distributed with this source distribution.
- * 
+ *
  * This file is part of REDHAWK IDE.
- * 
- * All rights reserved.  This program and the accompanying materials are made available under 
+ *
+ * All rights reserved.  This program and the accompanying materials are made available under
  * the terms of the Eclipse Public License v1.0 which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html.
  *
@@ -114,7 +114,7 @@ public class dispthin extends Primitive { // SUPPRESS CHECKSTYLE ClassName
 				// SKIP Update
 				return Commandable.NOOP;
 			}
-		} 
+		}
 
 		final int status;
 
@@ -165,6 +165,22 @@ public class dispthin extends Primitive { // SUPPRESS CHECKSTYLE ClassName
 		}; // Both positive
 		final int lookup = ((a >= 0) ? 1 : 0) + ((a >= 0) ? 1 : 0) * 2; // SUPPRESS CHECKSTYLE AvoidInline
 		return a * multipliers[lookup];
+	}
+
+	/**
+	 * @return the refreshRate
+	 * @since 10.1
+	 */
+	public double getRefreshRate() {
+		return refreshRate;
+	}
+
+	/**
+	 * @param refreshRate the refreshRate to set
+	 * @since 10.1
+	 */
+	public void setRefreshRate(double refreshRate) {
+		this.refreshRate = refreshRate;
 	}
 
 }
