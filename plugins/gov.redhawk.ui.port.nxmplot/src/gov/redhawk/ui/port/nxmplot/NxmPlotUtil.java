@@ -157,6 +157,7 @@ public final class NxmPlotUtil {
 			fftArgs.put("WINDOW", fft.getWindow());
 			fftArgs.put("OVER", (Double.parseDouble(fft.getOverlap()) / 100.0)); // SUPPRESS CHECKSTYLE MagicNumber
 			fftArgs.put("NUMAVG", fft.getNumAverages());
+			fftArgs.put("SWITCHES", fft.getOutputType().toFlagString());
 		}
 
 		final Table thinArgs = new Table();
