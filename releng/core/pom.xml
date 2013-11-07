@@ -41,6 +41,12 @@
     <module>../../plugins/gov.redhawk.ui.views.monitor</module>
     <module>../../plugins/gov.redhawk.ui.views.namebrowser</module>
     <module>../../plugins/nxm.redhawk</module>
+    <module>../../plugins/bulkio</module>
+    <module>../../plugins/gov.redhawk.bulkio.orb.omni</module>
+    <module>../../plugins/idl.bulkio.jni</module>
+    <module>../../plugins/idl.cf.jni</module>
+    <module>../../plugins/omnijni</module>
+    <module>../../plugins/org.ossie</module>
     <module>../../tests/gov.redhawk.sca.efs.tests</module>
     <module>../../tests/gov.redhawk.sca.model.tests</module>
     <module>p2</module>

@@ -1,2 +1,3 @@
 gov.redhawk.bulkio.util/debug=false
 gov.redhawk.bulkio.util/debug/Connection=false
+gov.redhawk.bulkio.util/debug/PortFactory=false

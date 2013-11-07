@@ -13,6 +13,8 @@ package gov.redhawk.bulkio.util.internal;
 import gov.redhawk.bulkio.util.AbstractUberBulkIOPort;
 import gov.redhawk.bulkio.util.BulkIOType;
 import gov.redhawk.bulkio.util.BulkIOUtilActivator;
+import gov.redhawk.bulkio.util.IPortFactory;
+import gov.redhawk.bulkio.util.PortReference;
 import gov.redhawk.sca.util.Debug;
 import gov.redhawk.sca.util.OrbSession;
 
@@ -30,8 +32,6 @@ import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.Nullable;
 import org.omg.CORBA.SystemException;
-import org.omg.PortableServer.POAPackage.ServantNotActive;
-import org.omg.PortableServer.POAPackage.WrongPolicy;
 
 import BULKIO.PrecisionUTCTime;
 import BULKIO.StreamSRI;
@@ -49,7 +49,6 @@ import BULKIO.updateSRIOperations;
 import CF.Port;
 import CF.PortHelper;
 import CF.PortPackage.InvalidPort;
-import CF.PortPackage.OccupiedPort;
 
 /**
  * @since 1.1
@@ -61,7 +60,7 @@ public class Connection extends AbstractUberBulkIOPort {
 
 	private String ior;
 	private Port port;
-	private org.omg.CORBA.Object ref;
+	private PortReference ref;
 	private String connectionId;
 	private final List<updateSRIOperations> children = Collections.synchronizedList(new ArrayList<updateSRIOperations>());
 
@@ -84,22 +83,13 @@ public class Connection extends AbstractUberBulkIOPort {
 		if (port == null) {
 			throw new IllegalStateException("Failed to narrow to port.");
 		}
-
-		try {
-			ref = type.createRef(orbSession.getPOA(), this);
-			connectionId = createConnectionID();
-			this.port.connectPort(ref, connectionId);
-		} catch (ServantNotActive e) {
-			throw new CoreException(new Status(Status.ERROR, BulkIOUtilActivator.PLUGIN_ID, "Failed to register new shared connection.", e));
-		} catch (WrongPolicy e) {
-			throw new CoreException(new Status(Status.ERROR, BulkIOUtilActivator.PLUGIN_ID, "Failed to register new shared connection.", e));
-		} catch (InvalidPort e) {
-			throw new CoreException(new Status(Status.ERROR, BulkIOUtilActivator.PLUGIN_ID, "Failed to register new shared connection.", e));
-		} catch (OccupiedPort e) {
-			throw new CoreException(new Status(Status.ERROR, BulkIOUtilActivator.PLUGIN_ID, "Failed to register new shared connection.", e));
-		} catch (SystemException e) {
-			throw new CoreException(new Status(Status.ERROR, BulkIOUtilActivator.PLUGIN_ID, "Failed to register new shared connection.", e));
+		IPortFactory factory = BulkIOUtilActivator.getDefault().getPortFactory();
+		if (factory == null) {
+			throw new CoreException(new Status(Status.ERROR, BulkIOUtilActivator.PLUGIN_ID, "Failed to find Port Factory", null));
 		}
+
+		connectionId = createConnectionID();
+		ref = factory.connect(connectionId, ior, type, this);
 	}
 
 	// SRI has changed for specified streamID
@@ -144,11 +134,7 @@ public class Connection extends AbstractUberBulkIOPort {
 			// PASS
 		}
 		if (ref != null) {
-			try {
-				ref._release();
-			} catch (SystemException e) {
-				// PASS
-			}
+			ref.dispose();
 			ref = null;
 		}
 		children.clear();
@@ -158,7 +144,7 @@ public class Connection extends AbstractUberBulkIOPort {
 
 	public void registerDataReceiver(@NonNull final updateSRIOperations receiver) {
 		// TODO: Throw class cast exception if wrong type
-		//		type.getJavaType().cast(receiver); // check later
+		type.getPortType().cast(receiver);
 
 		children.add(receiver);
 

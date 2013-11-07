@@ -27,6 +27,7 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.ui.IWorkbenchPartSite;
+import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.commands.ICommandService;
 import org.eclipse.ui.handlers.IHandlerService;
 
@@ -97,7 +98,19 @@ public class PortHelper {
 	 * @since 5.2
 	 */
 	public static void refreshPort(final IRefreshable refreshable, IProgressMonitor monitor, long delay) {
+		if (!PlatformUI.isWorkbenchRunning()) {
+			return;
+		}
 		new Job("Refreshing Port...") {
+			
+			public boolean shouldSchedule() {
+				return super.shouldSchedule() && PlatformUI.isWorkbenchRunning();
+			}
+			
+			public boolean shouldRun() {
+				return super.shouldRun() && PlatformUI.isWorkbenchRunning();
+			}
+			
 			@Override
 			protected IStatus run(IProgressMonitor monitor) {
 				try {

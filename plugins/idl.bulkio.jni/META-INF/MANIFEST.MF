@@ -1,0 +1,10 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Jni
+Bundle-SymbolicName: idl.bulkio.jni
+Bundle-Version: 1.0.0.qualifier
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Require-Bundle: idl.bulkio;bundle-version="1.9.0";visibility:=reexport,
+ idl.cf.jni;bundle-version="1.0.0";visibility:=reexport
+Export-Package: BULKIO.jni
+Bundle-Vendor: REDHAWK

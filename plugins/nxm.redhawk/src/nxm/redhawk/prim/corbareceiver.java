@@ -81,11 +81,11 @@ public class corbareceiver extends CorbaPrimitive { //SUPPRESS CHECKSTYLE ClassN
 	private static final int SLEEP_INTERVAL = 100;
 
 	/** the output file to write to */
-	private DataFile outputFile = null;
+	private volatile DataFile outputFile = null;
 	private FileName fileName;
 
 	/** The configured SRI */
-	private StreamSRI currentSri;
+	private volatile StreamSRI currentSri;
 	private BulkIOReceiver receiver;
 
 	private Integer origFrameSizeArg = null;
@@ -181,23 +181,17 @@ public class corbareceiver extends CorbaPrimitive { //SUPPRESS CHECKSTYLE ClassN
 
 	@Override
 	public synchronized int close() {
+		DataFile localOutputFile = this.outputFile;
+		this.outputFile = null;
+		if (localOutputFile != null) {
+			localOutputFile.close();
+		}
 		if (this.state != Commandable.RESTART) {
 			//Avoid hanging the UI if the CORBA call to the component fails to return
 			super.close();
-			if (this.outputFile != null) {
-				this.outputFile.close();
-				this.outputFile = null;
-			}
 			this.currentSri = null;
-
-			return Commandable.NORMAL;
-		} else {
-			if (this.outputFile != null) {
-				this.outputFile.close();
-				this.outputFile = null;
-			}
-			return Commandable.NORMAL;
 		}
+		return Commandable.NORMAL;
 	}
 
 	/**
@@ -246,7 +240,7 @@ public class corbareceiver extends CorbaPrimitive { //SUPPRESS CHECKSTYLE ClassN
 	 * @param endOfStream true if the received stream has closed
 	 * @return true if we should process the data
 	 */
-	private final boolean shouldProcessPacket(final boolean endOfStream, final byte type) {
+	private synchronized boolean shouldProcessPacket(final boolean endOfStream, final byte type) {
 		if (this.state != Commandable.PROCESS || isStateChanged() || this.currentSri == null || this.outputFile == null) {
 			return false;
 		}
@@ -326,7 +320,6 @@ public class corbareceiver extends CorbaPrimitive { //SUPPRESS CHECKSTYLE ClassN
 	}
 
 	private synchronized void doRestart() {
-		M.info("restarting...");
 		setState(Commandable.RESTART);
 	}
 
@@ -345,7 +338,7 @@ public class corbareceiver extends CorbaPrimitive { //SUPPRESS CHECKSTYLE ClassN
 		}
 
 		final DataFile localOutputFile = this.outputFile;
-		if (localOutputFile == null) {
+		if (localOutputFile == null || !localOutputFile.isOpen) {
 			return;
 		}
 

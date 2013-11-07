@@ -1,0 +1,9 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Jni
+Bundle-SymbolicName: idl.cf.jni
+Bundle-Version: 1.0.0.qualifier
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Require-Bundle: omnijni;bundle-version="1.0.0";visibility:=reexport,
+ idl.cf;bundle-version="2.3.0";visibility:=reexport
+Bundle-Vendor: REDHAWK

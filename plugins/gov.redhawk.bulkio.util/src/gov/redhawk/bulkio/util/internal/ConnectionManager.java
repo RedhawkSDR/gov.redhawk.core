@@ -18,21 +18,23 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 import org.eclipse.core.runtime.CoreException;
-import org.eclipse.jdt.annotation.NonNull;
+import org.eclipse.jdt.annotation.NonNullByDefault;
 
 import BULKIO.updateSRIOperations;
 
 /**
  * 
  */
+@NonNullByDefault
 public enum ConnectionManager implements IBulkIOPortConnectionManager {
 	INSTANCE;
+
 
 	private static class ConnectionKey {
 		private String ior;
 		private BulkIOType type;
 
-		public ConnectionKey(@NonNull String ior, @NonNull BulkIOType type) {
+		public ConnectionKey(String ior, BulkIOType type) {
 			super();
 			this.ior = ior;
 			this.type = type;

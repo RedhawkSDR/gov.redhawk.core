@@ -1,0 +1,16 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Ossie
+Bundle-SymbolicName: org.ossie
+Bundle-Version: 1.0.0.qualifier
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Require-Bundle: idl.bulkio.jni;bundle-version="1.0.0";visibility:=reexport,
+ org.apache.commons.lang;bundle-version="2.6.0",
+ org.apache.log4j;bundle-version="1.2.15"
+Import-Package: org.omg.CosEventChannelAdmin,
+ org.omg.CosEventComm
+Export-Package: org.ossie.component,
+ org.ossie.events,
+ org.ossie.properties
+Bundle-Vendor: REDHAWK
+Bundle-ClassPath: .

@@ -35,6 +35,7 @@ import org.omg.CORBA.ORB;
 import org.omg.PortableServer.POA;
 import org.omg.PortableServer.POAPackage.ServantNotActive;
 import org.omg.PortableServer.POAPackage.WrongPolicy;
+import org.ossie.component.Resource;
 import org.ossie.properties.IProperty;
 import org.ossie.properties.SimpleProperty;
 import org.ossie.properties.SimpleSequenceProperty;
@@ -223,7 +224,7 @@ public class AbstractResourceImpl extends Resource {
 				kinds.toArray(new String[kinds.size()]));
 	}
 
-	private static class DynamicStuctDef extends StructDef {
+	public static class DynamicStuctDef extends StructDef {
 		@Override
 		public void addElement(IProperty element) {
 			super.addElement(element);

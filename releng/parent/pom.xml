@@ -47,6 +47,7 @@
           <encoding>${project.build.sourceEncoding}</encoding>
           <debug>true</debug>
           <strictCompilerTarget>true</strictCompilerTarget>
+          <verbose>true</verbose>
           <optimize>true</optimize>
           <showDeprecation>true</showDeprecation>
           <showWarnings>true</showWarnings>

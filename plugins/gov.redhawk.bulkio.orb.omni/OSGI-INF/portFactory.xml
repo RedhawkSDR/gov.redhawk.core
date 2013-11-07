@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<scr:component xmlns:scr="http://www.osgi.org/xmlns/scr/v1.1.0" name="gov.redhawk.bulkio.orb.omni">
+   <implementation class="gov.redhawk.bulkio.orb.omni.internal.PortFactory"/>
+   <service>
+      <provide interface="gov.redhawk.bulkio.util.IPortFactory"/>
+   </service>
+   <property name="orbType" type="String" value="omnijni"/>
+</scr:component>

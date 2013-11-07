@@ -11,11 +11,8 @@
 package gov.redhawk.bulkio.util;
 
 import org.eclipse.jdt.annotation.NonNull;
-import org.eclipse.jdt.annotation.Nullable;
-import org.omg.PortableServer.POA;
+import org.eclipse.jdt.annotation.NonNullByDefault;
 import org.omg.PortableServer.Servant;
-import org.omg.PortableServer.POAPackage.ServantNotActive;
-import org.omg.PortableServer.POAPackage.WrongPolicy;
 
 import BULKIO.dataCharHelper;
 import BULKIO.dataCharOperations;
@@ -48,74 +45,36 @@ import BULKIO.dataUshortOperations;
 import BULKIO.dataUshortPOATie;
 import BULKIO.updateSRIOperations;
 
+@NonNullByDefault
 public enum BulkIOType {
-	DOUBLE(8, double.class, false), 
-	FLOAT(4, float.class, false), 
-	LONG(4, int.class, false), 
-	ULONG(4, int.class, true),
-	LONG_LONG(8, long.class, false),
-	ULONG_LONG(8, long.class, true),
-	SHORT(2, short.class, false),
-	USHORT(2, short.class, true),
-	CHAR(2, char.class, false),
-	OCTET(1, byte.class, false);
+	DOUBLE(8, double.class, false, dataDoubleOperations.class),
+	FLOAT(4, float.class, false, dataFloatOperations.class),
+	LONG(4, int.class, false, dataLongOperations.class),
+	ULONG(4, int.class, true, dataUlongOperations.class),
+	LONG_LONG(8, long.class, false, dataLongLongOperations.class),
+	ULONG_LONG(8, long.class, true, dataUlongLongOperations.class),
+	SHORT(2, short.class, false, dataShortOperations.class),
+	USHORT(2, short.class, true, dataUshortOperations.class),
+	CHAR(2, char.class, false, dataCharOperations.class),
+	OCTET(1, byte.class, false, dataOctetOperations.class);
 
 	private final int bytePerAtom;
 	private final Class< ? > javaType;
 	private final boolean unsigned;
+	private final Class< ? > portType;
 
-	private BulkIOType(int bytePerAtom, @NonNull Class< ? > javaType, boolean unsigned) {
+	private BulkIOType(int bytePerAtom, Class< ? > javaType, boolean unsigned, Class< ? > portType) {
 		this.bytePerAtom = bytePerAtom;
 		this.javaType = javaType;
 		this.unsigned = unsigned;
-	}
-
-	@NonNull
-	public org.omg.CORBA.Object createRef(@NonNull POA poa, @NonNull Object obj) throws ServantNotActive, WrongPolicy {
-		Servant tie;
-		switch (this) {
-		case CHAR:
-			tie = new dataCharPOATie((dataCharOperations) obj);
-			break;
-		case DOUBLE:
-			tie = new dataDoublePOATie((dataDoubleOperations) obj);
-			break;
-		case FLOAT:
-			tie = new dataFloatPOATie((dataFloatOperations) obj);
-			break;
-		case LONG:
-			tie = new dataLongLongPOATie((dataLongLongOperations) obj);
-			break;
-		case LONG_LONG:
-			tie = new dataLongLongPOATie((dataLongLongOperations) obj);
-			break;
-		case OCTET:
-			tie = new dataOctetPOATie((dataOctetOperations) obj);
-			break;
-		case SHORT:
-			tie = new dataShortPOATie((dataShortOperations) obj);
-			break;
-		case ULONG:
-			tie = new dataUlongPOATie((dataUlongOperations) obj);
-			break;
-		case ULONG_LONG:
-			tie = new dataUlongLongPOATie((dataUlongLongOperations) obj);
-			break;
-		case USHORT:
-			tie = new dataUshortPOATie((dataUshortOperations) obj);
-			break;
-		default:
-			throw new IllegalArgumentException("Invalid type: " + this);
-		}
-		return poa.servant_to_reference(tie);
+		this.portType = portType;
 	}
 
 	public int getBytePerAtom() {
 		return bytePerAtom;
 	}
 
-	@NonNull
-	public static BulkIOType getType(@NonNull updateSRIOperations impl) {
+	public static BulkIOType getType(updateSRIOperations impl) {
 		BulkIOType retVal = null;
 		if (dataCharOperations.class.isAssignableFrom(impl.getClass())) {
 			retVal = BulkIOType.CHAR;
@@ -180,8 +139,7 @@ public enum BulkIOType {
 		return retVal;
 	}
 
-	@NonNull
-	public static BulkIOType getType(@Nullable String idl) {
+	public static BulkIOType getType(String idl) {
 		if (dataCharHelper.id().equals(idl)) {
 			return BulkIOType.CHAR;
 		} else if (dataDoubleHelper.id().equals(idl)) {
@@ -214,8 +172,50 @@ public enum BulkIOType {
 	public Class< ? > getJavaType() {
 		return this.javaType;
 	}
-	
+
 	public boolean isUnsigned() {
 		return this.unsigned;
+	}
+
+	/**
+	 * @return the portType
+	 * @since 2.0
+	 */
+	public Class< ? > getPortType() {
+		return portType;
+	}
+
+	/**
+	 * @since 2.0
+	 */
+	@NonNull
+	public Servant createServant(Object handler) {
+		if (!portType.isAssignableFrom(handler.getClass())) {
+			throw new IllegalArgumentException(this + " can not create servant.  Handler must be of type " + portType);
+		}
+		switch (this) {
+		case CHAR:
+			return new dataCharPOATie((dataCharOperations) handler);
+		case DOUBLE:
+			return new dataDoublePOATie((dataDoubleOperations) handler);
+		case FLOAT:
+			return new dataFloatPOATie((dataFloatOperations) handler);
+		case LONG:
+			return new dataLongLongPOATie((dataLongLongOperations) handler);
+		case LONG_LONG:
+			return new dataLongLongPOATie((dataLongLongOperations) handler);
+		case OCTET:
+			return new dataOctetPOATie((dataOctetOperations) handler);
+		case SHORT:
+			return new dataShortPOATie((dataShortOperations) handler);
+		case ULONG:
+			return new dataUlongPOATie((dataUlongOperations) handler);
+		case ULONG_LONG:
+			return new dataUlongLongPOATie((dataUlongLongOperations) handler);
+		case USHORT:
+			return new dataUshortPOATie((dataUshortOperations) handler);
+		default:
+			throw new IllegalStateException("Unhandled port type: " + this);
+		}
 	}
 }
