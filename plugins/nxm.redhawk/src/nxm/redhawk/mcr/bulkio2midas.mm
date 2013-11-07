@@ -7,7 +7,13 @@ STARTMACRO t:corbaargs t:fftargs t:thinargs s:output
             set fftout _CORBA_OUT
         else
             set fftout _FFT_OUT
-            FFT/NEXP=^fftargs.numAvg _CORBA_OUT ^fftout NFFT=^fftargs.fftsize WIN=^fftargs.window OVER=^fftargs.over NAVG=2
+            if fftargs.switches NREXISTS then
+              set fftargs.switches ""
+            elseif fftargs.switches.startsWith("/") isFalse then
+              warn "ignoring invalid FFT switches: ^{fftargs.switches}"
+              set fftargs.switches ""
+            endif
+            FFT/NEXP=^{fftargs.numAvg}^{fftargs.switches} _CORBA_OUT ^fftout NFFT=^fftargs.fftsize WIN=^fftargs.window OVER=^fftargs.over NAVG=2
         endif
         if thinargs isNULL then
             set thinout ^fftout
