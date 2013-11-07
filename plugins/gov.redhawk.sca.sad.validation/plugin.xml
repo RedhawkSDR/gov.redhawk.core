@@ -92,7 +92,29 @@
                </target>
             </constraint>
             <constraint
-                  class="gov.redhawk.sca.sad.validation.DuplicateExternalPropertyIDContraint"
+                  class="gov.redhawk.sca.sad.validation.DuplicateAssemblyExternalPropertyIDConstraint"
+                  id="gov.redhawk.sca.sad.validation.assemblyexternalproperties"
+                  isEnabledByDefault="true"
+                  lang="java"
+                  mode="Batch"
+                  name="Duplicate External Properties with Assembly Controller"
+                  severity="ERROR"
+                  statusCode="1">
+               <message>
+                  External property ID duplicates Assembly Controller property ID &quot;{0}&quot;
+               </message>
+               <target
+                     class="ExternalProperty">
+                  <event
+                        name="Set">
+                     <feature
+                           name="externalPropID">
+                     </feature>
+                  </event>
+               </target>
+            </constraint>
+            <constraint
+                  class="gov.redhawk.sca.sad.validation.DuplicateExternalPropertyIDConstraint"
                   id="gov.redhawk.sca.sad.validation.externalproperties"
                   isEnabledByDefault="true"
                   lang="java"

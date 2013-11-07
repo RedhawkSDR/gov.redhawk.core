@@ -24,16 +24,12 @@ import org.eclipse.emf.ecore.util.FeatureMap.ValueListIterator;
 import org.eclipse.emf.validation.AbstractModelConstraint;
 import org.eclipse.emf.validation.IValidationContext;
 
-/**
- * @since 1.1
- * 
- */
-public class DuplicateExternalPropertyIDContraint extends AbstractModelConstraint {
+public class DuplicateAssemblyExternalPropertyIDConstraint extends AbstractModelConstraint {
 
 	/**
 	 * 
 	 */
-	public DuplicateExternalPropertyIDContraint() {
+	public DuplicateAssemblyExternalPropertyIDConstraint() {
 		// TODO Auto-generated constructor stub
 	}
 
@@ -54,17 +50,6 @@ public class DuplicateExternalPropertyIDContraint extends AbstractModelConstrain
 		String id = prop.resolveExternalID();
 		if (id == null) {
 			return true;
-		}
-		if (sad.getExternalProperties() != null) {
-			for (ExternalProperty p : sad.getExternalProperties().getProperties()) {
-				if (p == prop) {
-					continue;
-				}
-				String id2 = p.resolveExternalID();
-				if (id.equals(id2)) {
-					return false;
-				}
-			}
 		}
 		AssemblyController asm = sad.getAssemblyController();
 		if (asm != null) {
