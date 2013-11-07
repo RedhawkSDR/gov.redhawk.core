@@ -1,36 +1,31 @@
-BERPLOT - An extension of PLOT that ...
+CORBARECEIVER - Output data from a REDHAWK SCA Port to Midas file/pipe
 
-<OUT>  The output file [DEF=<temp file in RAM>]
-
-
-Keyword Only Parameters:
-  [COLUMNS]  The columns to show [DEF=BERX]
-
-  Can use any of the keyword-only parameters in PLOT.
-
-
-put description here...
+<FILE>		 - Name of the Midas output file/pipe (destination)
+<HOST>       - TODO
+<PORT>       - TODO
+<RESOURCE>   - TODO
+<PORT_NAME>  -
+<IDL>		 - CORBA IDL for Port
+<FRAMESIZE>	 - Frame size to use if Port's SRI have no subsize set [DEF=1024]
+<OVERRIDE_SRI_SUBSIZE> - Always Override Port's SRI with <FRAMESIZE> [DEF=false]
 
 
-Messages:
-  BERMSG (in)  - tbd
-  
-  Can also send any of the messages processed in PLOT.
+CORBARECEIVER*  P,8, FILE=,HOST=,PORT=9000,RESOURCE=,PORT_NAME=,IDL=,FRAMESIZE=0,OVERRIDE_SRI_SUBSIZE=false
 
+// There are two cases here. First, we are given all the
+// information to connect to a host and resolve the port.
+// Second, we're given an IOR to the port. The IOR doesn't
+// require the NameService so skip all that setup.
+
+
+<UNKNOWN>	 - Tag description ???
+
+Body - Detailed description here
+TODO
 
 Examples:
-  1. Run it in demo mode:
-       nM> berplot/demo/timestart=23:59:55/all/id=idplot/READOUT="+OnAxis|+DateString" tempfile{Layer={LT="Multi",COLUMNS="BERX"}} X1=0 X2=86400 Y1=0 Y2=1
-       
-  2. Another demo:
-       nM> berplot/demo/all/id=idplot/READOUT="+OnAxis|+DateString" OUT=temp X1=0 X2=86400 Y1=0 Y2=1
-
-  3. tbd
 
 Switches:
-  /DEMO                - Run in "demo" mode
-  /TIMESTART=hh:mm:ss  - Start time while in demo mode
-  
-  Can also use any of the switches in PLOT.
-  
-See Also: PLOT
+  /BLOCKING - Block pushPacket(..) call when pipe does not have enough room.
+              Set to false to not block (which will drop data packet when pipe
+              is full).                                              [DEF=false]
