@@ -68,7 +68,7 @@ public class sourcenic extends Primitive { //SUPPRESS CHECKSTYLE ClassName
 	private DatagramPacket packet;
 
 	/** warning bit fields to display first warning msg of a particular type per instance session. */
-	private static enum WarnBit { WARN1, WARN2, WARN3, WARN4, WARN5, WARN6 };
+	private static enum WarnBit { WARN1, WARN2, WARN3 };
 	private final EnumSet<WarnBit> warnedSet = EnumSet.noneOf(WarnBit.class);
 	private boolean warn;
 
@@ -250,7 +250,7 @@ public class sourcenic extends Primitive { //SUPPRESS CHECKSTYLE ClassName
 			this.maddr = null;
 		}
 
-		if ((mgrp == null) || (mgrp.trim().equals(""))) {
+		if ((mgrp == null) || mgrp.trim().isEmpty()) {
 			return;
 		}
 
@@ -272,8 +272,6 @@ public class sourcenic extends Primitive { //SUPPRESS CHECKSTYLE ClassName
 		} catch (UnknownHostException e) {
 			M.error(e);
 		} catch (IOException e) {
-			M.error(e);
-		} catch (Exception e) {
 			M.error(e);
 		}
 	}
@@ -454,7 +452,7 @@ public class sourcenic extends Primitive { //SUPPRESS CHECKSTYLE ClassName
 			// CHECKSTYLE:OFF
 			sf  = (byte0 & 0x80) != 0;
 			if (!sf) {
-				warn(WarnBit.WARN6, "Received non-standard packet");
+				warn(WarnBit.WARN3, "Received non-standard packet");
 			}
 			sos = (byte0 & 0x40) != 0;
 			pp  = (byte0 & 0x20) != 0;
