@@ -392,7 +392,7 @@ public class SriDataView extends ViewPart {
 
 	public void activateReceiver(@NonNull ScaUsesPort port) {
 		if (sriReceiver != null) {
-			dispose();
+			return;
 		}
 		BulkIOType type = BulkIOType.getType(port.getRepid());
 		sriReceiver = new SriDataViewReceiver(type, viewer, this);
@@ -452,9 +452,12 @@ public class SriDataView extends ViewPart {
 		} else if (eObj instanceof ScaWaveform) {
 			ScaWaveform waveform = (ScaWaveform) eObj;
 			retVal.append(waveform.getIdentifier());
+		} else {
+			retVal.append("port");
 		}
 
 		retVal.append("_" + port.getName());
-		return retVal.toString();
+		
+		return retVal.toString().replace(':', '_');
 	}
 }
