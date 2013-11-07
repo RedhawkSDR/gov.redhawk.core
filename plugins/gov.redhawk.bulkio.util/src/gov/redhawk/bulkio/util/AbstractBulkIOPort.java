@@ -90,7 +90,8 @@ public abstract class AbstractBulkIOPort implements ProvidesPortStatisticsProvid
 			stats.timeSinceLastCall = -1;
 		}
 
-		stats.bitsPerSecond = type.getBytePerAtom() * stats.elementsPerSecond * 8;
+		int bpa = (type != null) ? type.getBytePerAtom() : 1;
+		stats.bitsPerSecond = bpa * stats.elementsPerSecond * 8;
 	}
 
 	/**
