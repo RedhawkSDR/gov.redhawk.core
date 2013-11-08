@@ -12,7 +12,10 @@ package gov.redhawk.bulkio.util;
 
 import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.NonNullByDefault;
+import org.omg.PortableServer.POA;
 import org.omg.PortableServer.Servant;
+import org.omg.PortableServer.POAPackage.ServantNotActive;
+import org.omg.PortableServer.POAPackage.WrongPolicy;
 
 import BULKIO.dataCharHelper;
 import BULKIO.dataCharOperations;
@@ -183,6 +186,16 @@ public enum BulkIOType {
 	 */
 	public Class< ? > getPortType() {
 		return portType;
+	}
+
+	/**
+	 * @deprecated since 2.0 use {@link #createServant(Object)} then call {@link POA#servant_to_reference(Servant)} instead.
+	 */
+	@Deprecated
+	@NonNull
+	public org.omg.CORBA.Object createRef(@NonNull POA poa, @NonNull Object handler) throws ServantNotActive, WrongPolicy {
+		Servant tie = createServant(handler);
+		return poa.servant_to_reference(tie);
 	}
 
 	/**
