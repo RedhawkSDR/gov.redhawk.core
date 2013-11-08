@@ -95,16 +95,17 @@ import CF.DataType;
 
 /**
  * The spectral view provides multi-tab view that displays spectral data.
- *
  * @since 2.0
+ * @deprecated Since 4.2, use PlotView2
+ * @noreference This class is not intended to be referenced by clients.
  */
 @Deprecated
 public class PlotView extends ViewPart {
 
-	private static int secondaryId = 0;
-
 	/** The ID of the view. */
 	public static final String ID = "gov.redhawk.ui.port.nxmplot.portdata";
+
+	private static int secondaryId = 0;
 
 	protected final String plotQualifiers;
 
