@@ -66,7 +66,7 @@ public class MissingSoftPkgDecoratorProvider extends AbstractProvider implements
 	private static class MissingSoftPkgProvider extends AbstractDecorator {
 
 		private final Label toolTip = new Label("Component not found in the target SDR", //$NON-NLS-1$
-		        getImage());
+			getImage());
 
 		private final Adapter listener = new EContentAdapter() {
 			/**
@@ -133,6 +133,9 @@ public class MissingSoftPkgDecoratorProvider extends AbstractProvider implements
 
 				if (view.getElement() instanceof DcdComponentPlacement) {
 					final DcdComponentPlacement comp = (DcdComponentPlacement) view.getElement();
+					if (comp.eResource() == null) {
+						return;
+					}
 					final DeviceConfiguration dcd = DeviceConfiguration.Util.getDeviceConfiguration(comp.eResource());
 					if (DiagramUtil.isDiagramLocalSandbox(dcd.eResource())) {
 						return;
@@ -154,8 +157,7 @@ public class MissingSoftPkgDecoratorProvider extends AbstractProvider implements
 								final EditPart foundPart = MissingSoftPkgDecoratorProvider.getEditPartFor(editPart, inst, INodeEditPart.class);
 
 								if (foundPart != null) {
-									final ComponentInstantiationFigure figure = (ComponentInstantiationFigure) ((DcdComponentInstantiationEditPart) foundPart)
-									        .getContentPane();
+									final ComponentInstantiationFigure figure = (ComponentInstantiationFigure) ((DcdComponentInstantiationEditPart) foundPart).getContentPane();
 									figure.setLineStyle(SWT.LINE_DASH);
 								}
 							}
