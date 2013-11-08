@@ -24,6 +24,9 @@ import org.eclipse.emf.ecore.util.FeatureMap.ValueListIterator;
 import org.eclipse.emf.validation.AbstractModelConstraint;
 import org.eclipse.emf.validation.IValidationContext;
 
+/**
+ * @since 2.0
+ */
 public class DuplicateAssemblyExternalPropertyIDConstraint extends AbstractModelConstraint {
 
 	/**

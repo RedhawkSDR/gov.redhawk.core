@@ -20,7 +20,7 @@ import org.eclipse.emf.validation.AbstractModelConstraint;
 import org.eclipse.emf.validation.IValidationContext;
 
 /**
- * @since 1.1
+ * @since 2.0
  * 
  */
 public class DuplicateExternalPropertyIDConstraint extends AbstractModelConstraint {
