@@ -1,16 +1,20 @@
 /**
- * This file is protected by Copyright. 
+ * This file is protected by Copyright.
  * Please refer to the COPYRIGHT file distributed with this source distribution.
- * 
+ *
  * This file is part of REDHAWK IDE.
- * 
- * All rights reserved.  This program and the accompanying materials are made available under 
+ *
+ * All rights reserved.  This program and the accompanying materials are made available under
  * the terms of the Eclipse Public License v1.0 which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html.
  *
  */
 package gov.redhawk.internal.ui.port.nxmplot.view;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import gov.redhawk.internal.ui.port.nxmplot.FftParameterEntryDialog;
 import gov.redhawk.internal.ui.port.nxmplot.PlotSettingsDialog;
 import gov.redhawk.model.sca.ScaUsesPort;
 import gov.redhawk.ui.port.nxmplot.AbstractNxmPlotWidget;
@@ -20,10 +24,6 @@ import gov.redhawk.ui.port.nxmplot.PlotActivator;
 import gov.redhawk.ui.port.nxmplot.PlotPageBook2;
 import gov.redhawk.ui.port.nxmplot.PlotSettings;
 import gov.redhawk.ui.port.nxmplot.PlotType;
-
-import java.util.ArrayList;
-import java.util.List;
-
 import mil.jpeojtrs.sca.util.AnyUtils;
 
 import org.eclipse.core.runtime.IStatus;
@@ -48,15 +48,18 @@ import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.part.ViewPart;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
+import org.eclipse.ui.services.IDisposable;
 import org.eclipse.ui.statushandlers.StatusManager;
 
 import BULKIO.StreamSRI;
+import BULKIO.dataSDDSHelper;
 import CF.DataType;
 
 /**
- * The spectral view provides multi-tab view that displays spectral data.
+ * The spectral view provides view that displays spectral data in a plot.
  *
- * @since 2.0
+ * @since 4.2
+ * @noreference This class is not intended to be referenced by clients
  */
 public class PlotView2 extends ViewPart {
 	/** The ID of the view. */
@@ -67,14 +70,14 @@ public class PlotView2 extends ViewPart {
 	/** The private action for toggling raster enabled state. */
 	private IAction plotTypeAction;
 
-	private IAction showSriAction;
-
 	/** The private action for creating a new plot connection */
 	private IAction newPlotViewAction;
 
 	/** The private action for adjusting plot settings. */
 	private IAction adjustPlotSettingsAction;
 
+	/** The private action for adjusting fft settings. */
+	private IAction adjustFftSettingsAction;
 
 	private class PlotTypeMenuAction extends Action {
 
@@ -108,6 +111,7 @@ public class PlotView2 extends ViewPart {
 
 	private boolean diposed;
 
+	private Action showSriAction;
 
 	/**
 	 * {@inheritDoc}
@@ -122,6 +126,7 @@ public class PlotView2 extends ViewPart {
 		createMenu();
 	}
 
+	/** used to create a new (clone) plot view of current plot view for the "New Plot View" Action / Menu. */ 
 	private IPlotSession addPlotSource(PlotSource source) {
 		return this.plotPageBook.addSource(source.getInput(), source.getFftOptions(), source.getQualifiers());
 	}
@@ -136,14 +141,34 @@ public class PlotView2 extends ViewPart {
 		super.dispose();
 	}
 
-	/**
-	 * @param fft settings to use if an FFT is to be displayed
-	 * @param qualifiers 
+	/** OLD API
+	 * @param fftSettings settings to use if an FFT is to be displayed (null for none)
+	 * @param qualifiers
 	 * @param ports list of ScaPort object to plot the output from.
-	 * @return New session
+	 * @return New session (no longer used, always null since 4.3) 
 	 */
-	public IPlotSession addPlotSource(ScaUsesPort port, final FftSettings fft, String qualifiers) {
-		return this.plotPageBook.addSource(port, fft, qualifiers);
+	public IPlotSession xaddPlotSource(ScaUsesPort port, final FftSettings fftSettings, String qualifiers) {
+// used by PlotPortHandler.execute(..) to plot SCA Port
+		if (port.getRepid().equals(dataSDDSHelper.id())) { // NTN copy this for SDDS Port
+			// PASS
+		}
+		return this.plotPageBook.addSource(port, fftSettings, qualifiers); // orig: 4.2 (RH 1.9.0)
+//		return null;
+	}
+	
+	/** NEW API
+	 * @param port
+	 * @param fftSettings
+	 * @param qualifiers
+	 * @return
+	 * @since 4.3
+	 */
+	public IDisposable addPlotSource(ScaUsesPort port, final FftSettings fftSettings, String qualifiers) {
+		if (port.getRepid().equals(dataSDDSHelper.id())) { // NTN copy this for SDDS Port
+			// PASS
+		}
+		// TODO
+		return this.plotPageBook.addSource(port, fftSettings, qualifiers); // orig: 4.2 (RH 1.9.0)
 	}
 
 	/**
@@ -162,11 +187,11 @@ public class PlotView2 extends ViewPart {
 		if (this.newPlotViewAction != null) {
 			menu.add(this.newPlotViewAction);
 		}
-		if (this.showSriAction != null) {
-			menu.add(this.showSriAction);
-		}
 		if (this.adjustPlotSettingsAction != null) {
 			menu.add(this.adjustPlotSettingsAction);
+		}
+		if (this.adjustFftSettingsAction != null) {
+			menu.add(this.adjustFftSettingsAction);
 		}
 		menu.add(new Separator(IWorkbenchActionConstants.MB_ADDITIONS));
 	}
@@ -215,7 +240,7 @@ public class PlotView2 extends ViewPart {
 					StatusManager.getManager().handle(new Status(IStatus.ERROR, PlotActivator.PLUGIN_ID, "Failed to open new Plot View", e),
 						StatusManager.SHOW | StatusManager.LOG);
 				}
-			}
+			} // end method
 		};
 		this.newPlotViewAction.setEnabled(true);
 		this.newPlotViewAction.setText("New Plot View");
@@ -238,7 +263,7 @@ public class PlotView2 extends ViewPart {
 					return obj.toString();
 				}
 				return "null";
-			}
+			} // end method
 
 			@Override
 			public void run() {
@@ -264,13 +289,14 @@ public class PlotView2 extends ViewPart {
 				}
 
 				MessageDialog.openInformation(getSite().getShell(), "SRI", builder.toString());
-			}
+			} // end method
 		};
 		this.showSriAction.setEnabled(true);
 		this.showSriAction.setText("SRI");
 		this.showSriAction.setToolTipText("Display current plot SRI");
 
 		createActionAdjustPlotSettings();
+		createActionAdjustFftSettings();
 	}
 
 	private void createActionAdjustPlotSettings() {
@@ -289,11 +315,10 @@ public class PlotView2 extends ViewPart {
 
 					for (AbstractNxmPlotWidget widget : plotPageBook.getAllPlotWidgets()) {
 						widget.applySettings(newSettings);
-					}
+					} // end for loop
 					plotPageBook.showPlot(newType);
 				}
-
-			}
+			} // end method
 		};
 
 		this.adjustPlotSettingsAction.setEnabled(true);
@@ -301,6 +326,44 @@ public class PlotView2 extends ViewPart {
 		this.adjustPlotSettingsAction.setToolTipText("Adjust/Override Plot Settings");
 	}
 
+	private void createActionAdjustFftSettings() {
+		List<PlotSource> plotSources = plotPageBook.getSources();
+		FftSettings fft = null;
+		for (PlotSource source : plotSources) {
+			fft = source.getFftOptions();
+			if (fft != null) {
+				break; // use first found FFT options
+			}
+		} // end for loop
+
+		this.adjustFftSettingsAction = new Action() {
+			@Override
+			public void run() {
+				List<PlotSource> plotSources = plotPageBook.getSources();
+				FftSettings fftOptions = null;
+				for (PlotSource source : plotSources) {
+					fftOptions = source.getFftOptions();
+					if (fftOptions != null) {
+						break; // use first found FFT options
+					}
+				} // end for loop
+				FftParameterEntryDialog dialog = new FftParameterEntryDialog(PlatformUI.getWorkbench().getDisplay().getActiveShell(), fftOptions);
+				dialog.setDisableChangeOutputType(true); // cannot change FFT output type at this time
+				final int result = dialog.open();
+				if (result == Window.OK) {
+					FftSettings newSettings = dialog.getFFTSettings();
+					for (AbstractNxmPlotWidget widget : plotPageBook.getAllPlotWidgets()) {
+						widget.applyFftSettings(newSettings);
+					}
+				} // end for loop
+			} // end method
+		};
+
+		this.adjustFftSettingsAction.setEnabled(true); // TODO: disable, it will be enabled later when there are plot sources with fft options
+		this.adjustFftSettingsAction.setText("Adjust FFT Settings");
+		this.adjustFftSettingsAction.setToolTipText("Adjust FFT Settings");
+	}
+	
 	private StreamSRI[] getActiveSRI() {
 		StreamSRI retVal = null;
 		if (this.plotPageBook != null && !plotPageBook.isDisposed()) {
@@ -320,12 +383,12 @@ public class PlotView2 extends ViewPart {
 	public PlotPageBook2 getPlotPageBook() {
 		return plotPageBook;
 	}
-	
+
 	@Override
 	public void setPartName(String partName) {
 		super.setPartName(partName);
 	}
-	
+
 	@Override
 	public void setTitleToolTip(String toolTip) {
 		super.setTitleToolTip(toolTip);

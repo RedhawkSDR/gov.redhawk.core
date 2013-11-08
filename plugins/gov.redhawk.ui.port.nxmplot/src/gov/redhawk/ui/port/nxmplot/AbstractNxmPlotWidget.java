@@ -37,10 +37,15 @@ import org.eclipse.ui.statushandlers.StatusManager;
 import BULKIO.StreamSRI;
 
 /**
- * @since 4.2
- * @noextend This class is not intended to be subclassed by clients.
+ * @noextend This class is not intended to be subclassed by SDK clients.
  */
 public abstract class AbstractNxmPlotWidget extends Composite {
+	/** index to create unique results name. */
+	private static final AtomicInteger NAME_INDEX = new AtomicInteger();
+	
+	/** index to create unique pipe name. */
+	private static final AtomicInteger PIPE_NAME_INDEX = new AtomicInteger();
+	
 	private StreamSRI activeSRI;
 	private PlotSettings plotSettings = new PlotSettings();
 	private final Map<String, IPlotSession> inputSessions = Collections.synchronizedMap(new HashMap<String, IPlotSession>());
@@ -283,12 +288,12 @@ public abstract class AbstractNxmPlotWidget extends Composite {
 	
 	/**
 	 * @param sourcePipeId The nxm source pipe to add
-	 * @param qualifiers The nxm pipe qualifiers to use for this source
+	 * @param pipeQualifiers The pipe qualifiers to use for this source
 	 * @deprecated Use {@link #addSource(String, String, IPlotSession)} instead
 	 */
 	@Deprecated
-	public final void addSource(String sourcePipeId, String qualifiers) {
-		addSource(sourcePipeId, qualifiers, null);
+	public final void addSource(String sourcePipeId, String pipeQualifiers) {
+		addSource(sourcePipeId, pipeQualifiers, null);
 	}
 
 	/**
@@ -300,12 +305,12 @@ public abstract class AbstractNxmPlotWidget extends Composite {
 	}
 
 	/**
-	 * Add a source to the plot
+	 * Add a source to the plot (e.g. open file on PLOT).
 	 * @param sourcePipeId the pipe ID to add to this plot
-	 * @param qualifiers plot qualifiers. Can be null.
+	 * @param pipeQualifiers pipe qualifiers. Can be null.
 	 * @since 4.2
 	 */
-	protected abstract void internalAddSource(String sourcePipeId, String qualifiers);
+	protected abstract void internalAddSource(String sourcePipeId, String pipeQualifiers);
 
 	/**
 	 * @return An unmodifiable list of the current plot sources
@@ -322,6 +327,7 @@ public abstract class AbstractNxmPlotWidget extends Composite {
 			}
 			inputSessions.clear();
 		}
+
 	}
 
 	/**
@@ -333,6 +339,7 @@ public abstract class AbstractNxmPlotWidget extends Composite {
 		if (session != null) {
 			session.dispose();
 		}
+
 	}
 
 	/**
@@ -346,8 +353,6 @@ public abstract class AbstractNxmPlotWidget extends Composite {
 	 * @param configuration
 	 */
 	public abstract void configurePlot(Map<String, String> configuration);
-
-	private static final AtomicInteger NAME_INDEX = new AtomicInteger();
 
 	/**
 	 * Creates a unique name to be used for pipes for variables within the shared NeXtMidas session
@@ -365,7 +370,7 @@ public abstract class AbstractNxmPlotWidget extends Composite {
 	 */
 	public static String createUniqueName(boolean pipe) {
 		if (pipe) {
-			return "_UNIQUE_PIPE" + NAME_INDEX.incrementAndGet();
+			return "_UNIQUE_PIPE" + PIPE_NAME_INDEX.incrementAndGet();
 		} else {
 			return "UNIQUE_NAME" + NAME_INDEX.incrementAndGet();
 		}
@@ -445,7 +450,6 @@ public abstract class AbstractNxmPlotWidget extends Composite {
 			final Boolean blockingOption = settings.getBlockingOption();
 			this.plotSettings.setBlockingOption(blockingOption);
 
-
 			// apply frame size and sample rate settings change to CORBARECEIVERs
 			Table msgData = new Table();
 			boolean overrideSampleRate = (sampleRate != null);
@@ -503,6 +507,30 @@ public abstract class AbstractNxmPlotWidget extends Composite {
 			}
 			if (plotMaxProperty != null) {
 				sendPlotMessage(plotMaxProperty, 0, maxVal);
+			}
+		}
+	}
+
+	/**
+	 * @param custom FFT settings to apply
+	 * @since 4.3
+	 */
+	public void applyFftSettings(FftSettings fftSettings) {
+		if (fftSettings != null) {
+			Table msgData = new Table();
+			Table fftSettingsTbl = new Table();
+			fftSettingsTbl.put("OVERLAP", (Double.parseDouble(fftSettings.getOverlap()) / 100.0));
+			fftSettingsTbl.put("NEXP", fftSettings.getNumAverages());
+			fftSettingsTbl.put("WINDOW", fftSettings.getWindow());
+			// fftSettings.getOutputType(); // cannot change: output type (NORMAL, PSD, MAG, MAG & LOG, PSD & LOG) on FFT at this time
+			fftSettingsTbl.put("NFFT", fftSettings.getTransformSize()); // do this last as this can cause a restart
+			msgData.put("FFT", fftSettingsTbl);
+
+			for (IPlotSession session: inputSessions.values()) {
+				if (session instanceof PlotSession) {
+					String cmdID = ((PlotSession) session).getCommandId();
+					sendMessageToCommand(cmdID, "CHANGE_SETTINGS", 0, msgData, null);
+				}
 			}
 		}
 	}

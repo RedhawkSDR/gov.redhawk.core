@@ -12,6 +12,7 @@
 package gov.redhawk.internal.ui.port.nxmplot;
 
 import gov.redhawk.ui.port.nxmplot.FftSettings;
+import gov.redhawk.ui.port.nxmplot.FftSettings.OutputType;
 
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.IDialogConstants;
@@ -76,6 +77,7 @@ public class FftParameterEntryDialog extends Dialog {
 	private Text errorMessageText;
 	/** Error message string. */
 	private String errorMessage;
+	private boolean disableChangeOutputType;
 
 	/**
 	 * Instantiates a new manual stream parameter entry dialog.
@@ -163,15 +165,23 @@ public class FftParameterEntryDialog extends Dialog {
 		type.getCombo().setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false, 1, 1));
 		type.setContentProvider(new ArrayContentProvider());
 		type.setLabelProvider(new LabelProvider());
+		OutputType currentOutputType = this.fftSettings.getOutputType();
+		if (currentOutputType == null) {
+			currentOutputType = FftSettings.OutputType.PSD; // default to PSD
+		}
 		type.setInput(FftSettings.OutputType.values());
-		type.setSelection(new StructuredSelection(FftSettings.OutputType.PSD));
-		type.addSelectionChangedListener(new ISelectionChangedListener() {
-			@Override
-			public void selectionChanged(final SelectionChangedEvent event) {
-				FftParameterEntryDialog.this.fftSettings
-				        .setOutputType((FftSettings.OutputType) ((IStructuredSelection) event.getSelection()).getFirstElement());
-			}
-		});
+		type.setSelection(new StructuredSelection(currentOutputType));
+		if (disableChangeOutputType) {
+			type.getCombo().setEnabled(false); // disable changing output type
+		} else {
+			type.addSelectionChangedListener(new ISelectionChangedListener() {
+				@Override
+				public void selectionChanged(final SelectionChangedEvent event) {
+					FftParameterEntryDialog.this.fftSettings
+					        .setOutputType((FftSettings.OutputType) ((IStructuredSelection) event.getSelection()).getFirstElement());
+				}
+			});
+		}
 
 		final Label windowLabel = new Label(container, SWT.NONE);
 		windowLabel.setLayoutData(new GridData(GridData.BEGINNING, GridData.CENTER, false, false));
@@ -257,4 +267,13 @@ public class FftParameterEntryDialog extends Dialog {
 		}
 	}
 
+	/**
+	 * @param disableChangeOutputType
+	 * @noreference This method is not intended to be referenced by clients.
+	 */
+	public void setDisableChangeOutputType(boolean disableChangeOutputType) {
+		this.disableChangeOutputType = disableChangeOutputType;
+	}
+
+	
 }

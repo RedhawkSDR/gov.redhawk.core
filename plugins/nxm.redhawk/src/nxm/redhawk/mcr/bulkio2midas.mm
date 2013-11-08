@@ -31,14 +31,30 @@ STARTMACRO t:corbaargs t:fftargs t:thinargs s:output
 ENDMACRO
 
 PROCEDURE processMessage m:msg
-    if msg.name eqs "CHANGE_CORBARECEIVER_SETTINGS" then
-!     info "Got CHANGE_CORBARECEIVER_SETTINGS msg, data = ^msg.data"
+    if msg.name eqs "CHANGE_SETTINGS" then
+      ! info "DEBUG: Got CHANGE_SETTINGS msg, data = ^msg.data"
+      foreach cmdID in msg.data
+        set settingsTbl msg.data.^{cmdID}
+        if reg.^{cmdID} rexists then
+          foreach property in settingsTbl
+            set value settingsTbl.^{property}
+            set reg.^{cmdID}.^{property} value
+          endfor
+        else
+          warn "Unable to change settings for non-existent command=^{cmdID} value=^{settingsTbl}"
+        endif
+      endfor
+
+    elseif msg.name eqs "CHANGE_CORBARECEIVER_SETTINGS" then
+      ! TODO: remove this if block after verifying that the above block works
+      ! info "DEBUG: Got CHANGE_CORBARECEIVER_SETTINGS msg, data = ^msg.data"
       foreach key in msg.data
         set value msg.data.^{key}
         set reg.corbareceiver.^{key} value
       endfor
+      
     else
-      ! forward messages (e.g. from corbareceiver) to registered message handler for this macro (requires NeXtMidas 3.3.1+)
+      ! forward messages (e.g. from CORBARECEIVER) to registered message handler for this macro (requires NeXtMidas 3.3.1+)
       MESSAGE SEND THIS.MSGID msg
     endif
 RETURN
