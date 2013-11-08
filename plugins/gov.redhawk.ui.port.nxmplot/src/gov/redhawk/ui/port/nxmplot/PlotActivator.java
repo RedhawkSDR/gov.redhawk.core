@@ -44,6 +44,7 @@ public class PlotActivator extends AbstractUIPlugin {
 	
 	/**
 	 * Use {@link #VIEW_PLOT_2} instead
+	 * @deprecated since 4.2
 	 */
 	@Deprecated
 	public static final String VIEW_PLOT = PlotView.ID;
