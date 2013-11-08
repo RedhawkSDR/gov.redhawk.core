@@ -1,10 +1,10 @@
 /**
- * This file is protected by Copyright. 
+ * This file is protected by Copyright.
  * Please refer to the COPYRIGHT file distributed with this source distribution.
- * 
+ *
  * This file is part of REDHAWK IDE.
- * 
- * All rights reserved.  This program and the accompanying materials are made available under 
+ *
+ * All rights reserved.  This program and the accompanying materials are made available under
  * the terms of the Eclipse Public License v1.0 which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html.
  *
@@ -16,44 +16,52 @@ package gov.redhawk.ui.port.nxmplot;
  */
 public class FftSettings {
 	public enum WindowType {
-		BARTLETT { @Override
-		public String toString() { return "Bartlett"; } @Override
-		public String toWindowString() { return "BART"; } },
-		HANNING { @Override
-		public String toString() { return "Hanning"; } @Override
-		public String toWindowString() { return "HANN"; } },
-		HAMMING { @Override
-		public String toString() { return "Hamming"; } @Override
-		public String toWindowString() { return "HAMM"; } },
-		/**
-         * @since 4.0
-         */
-		BH92 { @Override
-		public String toString() { return "Blackman-Harris"; } @Override
-		public String toWindowString() { return "BH92"; } },
-		BLACKMAN { @Override
-		public String toString() { return "Blackman"; } @Override
-		public String toWindowString() { return "BLAC"; } };
+		BARTLETT { 
+			@Override public String toString() { return "Bartlett"; } 
+			@Override public String toWindowString() { return "BART"; }
+		},
+		HANNING { 
+			@Override public String toString() { return "Hanning"; } 
+			@Override public String toWindowString() { return "HANN"; }
+		},
+		HAMMING {
+			@Override public String toString() { return "Hamming"; } 
+			@Override public String toWindowString() { return "HAMM"; }
+		},
+		/** @since 4.0 */
+		BH92 { 
+			@Override public String toString() { return "Blackman-Harris"; }
+			@Override public String toWindowString() { return "BH92"; }
+		},
+		BLACKMAN { 
+			@Override public String toString() { return "Blackman"; }
+			@Override public String toWindowString() { return "BLAC"; }
+		};
 		
 		public abstract String toWindowString();
 	}
 
 	public enum OutputType {
-		NORMAL { @Override
-		public String toString() { return "Normal"; } @Override
-		public String toFlagString() { return ""; } },
-		MAG_SQ { @Override
-		public String toString() { return "Magnitude Squared"; } @Override
-		public String toFlagString() { return "/MAG"; } },
-		PSD { @Override
-		public String toString() { return "Power Spectral Density"; } @Override
-		public String toFlagString() { return "/PSD"; } },
-		MAG_20LOG { @Override
-		public String toString() { return "20 Log Magnitude"; } @Override
-		public String toFlagString() { return "/MAG/LOG"; } },
-		PSD_20LOG { @Override
-		public String toString() { return "20 Log PSD"; } @Override
-		public String toFlagString() { return "/PSD/LOG"; } };
+		NORMAL {
+			@Override public String toString() { return "Normal"; }
+			@Override public String toFlagString() { return ""; }
+		},
+		MAG_SQ { 
+			@Override public String toString() { return "Magnitude Squared"; }
+			@Override public String toFlagString() { return "/MAG"; }
+		},
+		PSD {
+			@Override public String toString() { return "Power Spectral Density"; }
+			@Override public String toFlagString() { return "/PSD"; }
+		},
+		MAG_20LOG {
+			@Override public String toString() { return "20 Log Magnitude"; }
+			@Override public String toFlagString() { return "/MAG/LOG"; }
+		},
+		PSD_20LOG {
+			@Override public String toString() { return "20 Log PSD"; }
+			@Override public String toFlagString() { return "/PSD/LOG"; }
+		};
 		
 		public abstract String toFlagString();
 	}
@@ -82,6 +90,7 @@ public class FftSettings {
 		this.transformSize = transformSize;
 	}
 
+	/** 0-100 (percent) of the transform size to overlap blocks of data from the input. */
 	public String getOverlap() {
 		return this.overlap;
 	}
