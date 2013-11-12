@@ -60,6 +60,13 @@ public class FftParameterEntryDialog extends Dialog {
 		}
 	}
 
+	/** The validator for the overlapField */
+	private static final OverlapValidator OVERLAP_VALIDATOR = new OverlapValidator();
+	/** The validator for the {@link #transformSizeField}. */
+	private static final MinIntegerValidator TRANSFORM_SIZE_VALIDATOR = new MinIntegerValidator("Transform Size", 2, null);
+	/** The validator for the {@link #numAveragesField}. */
+	private static final MinIntegerValidator NUM_AVERAGES_VALIDATOR = new MinIntegerValidator("Num Averages", 1, null);
+	
 	/** The settings for calculating the FFT */
 	private final FftSettings fftSettings;
 	/** The size of the transform to perform */
@@ -68,12 +75,6 @@ public class FftParameterEntryDialog extends Dialog {
 	private Text overlapField;
 	/** The number of averages for FFTing */
 	private Text numAveragesField;
-	/** The validator for the overlapField */
-	private static final OverlapValidator OVERLAP_VALIDATOR = new OverlapValidator();
-	/** The validator for the {@link #transformSizeField}. */
-	private static final MinIntegerValidator TRANSFORM_SIZE_VALIDATOR = new MinIntegerValidator("Transform Size", 2, null);
-	/** The validator for the {@link #numAveragesField}. */
-	private static final MinIntegerValidator NUM_AVERAGES_VALIDATOR = new MinIntegerValidator("Num Averages", 1, null);
 	/** Error message label widget. */
 	private Text errorMessageText;
 	/** Error message string. */
