@@ -22,10 +22,7 @@ import gov.redhawk.ui.port.nxmplot.PlotPageBook2;
 import gov.redhawk.ui.port.nxmplot.PlotSettings;
 import gov.redhawk.ui.port.nxmplot.PlotType;
 
-import java.util.ArrayList;
 import java.util.List;
-
-import mil.jpeojtrs.sca.util.AnyUtils;
 
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
@@ -51,7 +48,6 @@ import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.eclipse.ui.statushandlers.StatusManager;
 
 import BULKIO.StreamSRI;
-import CF.DataType;
 
 /**
  * The spectral view provides view that displays spectral data in a plot.
@@ -108,8 +104,6 @@ public class PlotView2 extends ViewPart {
 	};
 
 	private boolean diposed;
-
-	private Action showSriAction;
 
 	/**
 	 * {@inheritDoc}
@@ -223,55 +217,6 @@ public class PlotView2 extends ViewPart {
 		this.newPlotViewAction.setEnabled(true);
 		this.newPlotViewAction.setText("New Plot View");
 		this.newPlotViewAction.setToolTipText("Open a new Plot View with all the same plots.");
-
-		this.showSriAction = new Action() {
-
-			private String getText(final Object obj) {
-				if (obj instanceof DataType[]) {
-					final DataType[] keywords = (DataType[]) obj;
-					final List<String> result = new ArrayList<String>();
-					for (final DataType t : keywords) {
-						result.add(getText(t));
-					}
-					return result.toString();
-				} else if (obj instanceof DataType) {
-					final DataType t = (DataType) obj;
-					return t.id + ", " + getText(AnyUtils.convertAny(t.value));
-				} else if (obj != null) {
-					return obj.toString();
-				}
-				return "null";
-			} // end method
-
-			@Override
-			public void run() {
-				final StringBuilder builder = new StringBuilder();
-				final StreamSRI[] sris = getActiveSRI();
-				if (sris.length > 0) {
-					for (final StreamSRI sri : sris) {
-						builder.append("blocking: " + sri.blocking + "\n");
-						builder.append("h version: " + sri.hversion + "\n");
-						builder.append("mode: " + sri.mode + "\n");
-						builder.append("streamID: " + sri.streamID + "\n");
-						builder.append("subsize: " + sri.subsize + "\n");
-						builder.append("xdelta: " + sri.xdelta + "\n");
-						builder.append("xstart: " + sri.xstart + "\n");
-						builder.append("xunits: " + sri.xunits + "\n");
-						builder.append("ydelta: " + sri.ydelta + "\n");
-						builder.append("ystart: " + sri.ystart + "\n");
-						builder.append("yunits: " + sri.yunits + "\n");
-						builder.append("keywords: " + getText(sri.keywords));
-					}
-				} else {
-					builder.append("No SRI information available");
-				}
-
-				MessageDialog.openInformation(getSite().getShell(), "SRI", builder.toString());
-			} // end method
-		};
-		this.showSriAction.setEnabled(true);
-		this.showSriAction.setText("SRI");
-		this.showSriAction.setToolTipText("Display current plot SRI");
 
 		createActionAdjustPlotSettings();
 		createActionAdjustFftSettings();
