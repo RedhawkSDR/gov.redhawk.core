@@ -14,14 +14,10 @@ import gov.redhawk.bulkio.util.BulkIOType;
 import gov.redhawk.bulkio.util.IPortFactory;
 import gov.redhawk.bulkio.util.PortReference;
 import gov.redhawk.sca.util.OrbSession;
-import gov.redhawk.sca.util.PluginUtil;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.Status;
-import org.omg.CORBA.ORB;
 import org.omg.CORBA.SystemException;
-import org.omg.PortableServer.POA;
-import org.ossie.component.Resource;
 
 import BULKIO.PortStatistics;
 import BULKIO.PortUsageType;
@@ -60,47 +56,8 @@ public class PortFactory implements IPortFactory {
 
 	private static final OrbSession SESSION = OrbSession.createSession();
 
-	private static class LocalResource extends Resource {
-
-		{
-			this.orb = SESSION.getOrb();
-			try {
-				this.poa = SESSION.getPOA();
-			} catch (CoreException e) {
-				PluginUtil.logError(BulkIOOmniActivator.getInstance(), "Failed to setup root POA.", e);
-			}
-		}
-
-		/*
-		 * @see java.lang.Runnable#run()
-		 */
-		@Override
-		public void run() {
-
-		}
-
-		/*
-		 * @see org.ossie.component.Resource#getPoa()
-		 */
-		@Override
-		protected POA getPoa() {
-			return super.getPoa();
-		}
-
-		/*
-		 * @see org.ossie.component.Resource#getOrb()
-		 */
-		@Override
-		public ORB getOrb() {
-			return super.getOrb();
-		}
-
-	}
-
-	private static final LocalResource resource = new LocalResource();
-
 	public PortReference connect(final String connectionID, final String portIor, BulkIOType type, final updateSRIOperations handler) throws CoreException {
-		org.omg.CORBA.Object portRef = resource.getOrb().string_to_object(portIor);
+		org.omg.CORBA.Object portRef = SESSION.getOrb().string_to_object(portIor);
 		final Port port = PortHelper.narrow(portRef);
 		switch (type) {
 		case CHAR:
@@ -170,7 +127,7 @@ public class PortFactory implements IPortFactory {
 					return handler.statistics();
 				}
 			};
-			port.connectPort(inPort._this_object(resource.getOrb()), connectionID);
+			port.connectPort(inPort._this_object(SESSION.getOrb()), connectionID);
 			return new PortReference() {
 				@Override
 				public void dispose() {
@@ -236,7 +193,7 @@ public class PortFactory implements IPortFactory {
 					return handler.statistics();
 				}
 			};
-			port.connectPort(inPort._this_object(resource.getOrb()), connectionID);
+			port.connectPort(inPort._this_object(SESSION.getOrb()), connectionID);
 			return new PortReference() {
 				@Override
 				public void dispose() {
@@ -301,7 +258,7 @@ public class PortFactory implements IPortFactory {
 					return handler.statistics();
 				}
 			};
-			port.connectPort(inPort._this_object(resource.getOrb()), connectionID);
+			port.connectPort(inPort._this_object(SESSION.getOrb()), connectionID);
 			return new PortReference() {
 				@Override
 				public void dispose() {
@@ -366,7 +323,7 @@ public class PortFactory implements IPortFactory {
 					return handler.statistics();
 				}
 			};
-			port.connectPort(inPort._this_object(resource.getOrb()), connectionID);
+			port.connectPort(inPort._this_object(SESSION.getOrb()), connectionID);
 			return new PortReference() {
 				@Override
 				public void dispose() {
@@ -431,7 +388,7 @@ public class PortFactory implements IPortFactory {
 					return handler.statistics();
 				}
 			};
-			port.connectPort(inPort._this_object(resource.getOrb()), connectionID);
+			port.connectPort(inPort._this_object(SESSION.getOrb()), connectionID);
 			return new PortReference() {
 				@Override
 				public void dispose() {
@@ -496,7 +453,7 @@ public class PortFactory implements IPortFactory {
 					return handler.statistics();
 				}
 			};
-			port.connectPort(inPort._this_object(resource.getOrb()), connectionID);
+			port.connectPort(inPort._this_object(SESSION.getOrb()), connectionID);
 			return new PortReference() {
 				@Override
 				public void dispose() {
@@ -561,7 +518,7 @@ public class PortFactory implements IPortFactory {
 					return handler.statistics();
 				}
 			};
-			port.connectPort(inPort._this_object(resource.getOrb()), connectionID);
+			port.connectPort(inPort._this_object(SESSION.getOrb()), connectionID);
 			return new PortReference() {
 				@Override
 				public void dispose() {
@@ -626,7 +583,7 @@ public class PortFactory implements IPortFactory {
 					return handler.statistics();
 				}
 			};
-			port.connectPort(inPort._this_object(resource.getOrb()), connectionID);
+			port.connectPort(inPort._this_object(SESSION.getOrb()), connectionID);
 			return new PortReference() {
 				@Override
 				public void dispose() {
@@ -691,7 +648,7 @@ public class PortFactory implements IPortFactory {
 					return handler.statistics();
 				}
 			};
-			port.connectPort(inPort._this_object(resource.getOrb()), connectionID);
+			port.connectPort(inPort._this_object(SESSION.getOrb()), connectionID);
 			return new PortReference() {
 				@Override
 				public void dispose() {
@@ -757,7 +714,7 @@ public class PortFactory implements IPortFactory {
 					return handler.statistics();
 				}
 			};
-			port.connectPort(inPort._this_object(resource.getOrb()), connectionID);
+			port.connectPort(inPort._this_object(SESSION.getOrb()), connectionID);
 			return new PortReference() {
 				@Override
 				public void dispose() {
