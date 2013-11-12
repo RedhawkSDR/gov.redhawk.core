@@ -11,9 +11,6 @@
  */
 package gov.redhawk.internal.ui.port.nxmplot.view;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import gov.redhawk.internal.ui.port.nxmplot.FftParameterEntryDialog;
 import gov.redhawk.internal.ui.port.nxmplot.PlotSettingsDialog;
 import gov.redhawk.model.sca.ScaUsesPort;
@@ -24,6 +21,10 @@ import gov.redhawk.ui.port.nxmplot.PlotActivator;
 import gov.redhawk.ui.port.nxmplot.PlotPageBook2;
 import gov.redhawk.ui.port.nxmplot.PlotSettings;
 import gov.redhawk.ui.port.nxmplot.PlotType;
+
+import java.util.ArrayList;
+import java.util.List;
+
 import mil.jpeojtrs.sca.util.AnyUtils;
 
 import org.eclipse.core.runtime.IStatus;
@@ -47,11 +48,9 @@ import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.part.ViewPart;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
-import org.eclipse.ui.services.IDisposable;
 import org.eclipse.ui.statushandlers.StatusManager;
 
 import BULKIO.StreamSRI;
-import BULKIO.dataSDDSHelper;
 import CF.DataType;
 
 /**
@@ -140,34 +139,14 @@ public class PlotView2 extends ViewPart {
 		super.dispose();
 	}
 
-	/** OLD API
+	/** 
 	 * @param fftSettings settings to use if an FFT is to be displayed (null for none)
 	 * @param qualifiers
 	 * @param ports list of ScaPort object to plot the output from.
-	 * @return New session (no longer used, always null since 4.3) 
+	 * @return New session 
 	 */
-	public IPlotSession xaddPlotSource(ScaUsesPort port, final FftSettings fftSettings, String qualifiers) {
-// used by PlotPortHandler.execute(..) to plot SCA Port
-		if (port.getRepid().equals(dataSDDSHelper.id())) { // NTN copy this for SDDS Port
-			// PASS
-		}
-		return this.plotPageBook.addSource(port, fftSettings, qualifiers); // orig: 4.2 (RH 1.9.0)
-//		return null;
-	}
-	
-	/** NEW API
-	 * @param port
-	 * @param fftSettings
-	 * @param qualifiers
-	 * @return
-	 * @since 4.3
-	 */
-	public IDisposable addPlotSource(ScaUsesPort port, final FftSettings fftSettings, String qualifiers) {
-		if (port.getRepid().equals(dataSDDSHelper.id())) { // NTN copy this for SDDS Port
-			// PASS
-		}
-		// TODO
-		return this.plotPageBook.addSource(port, fftSettings, qualifiers); // orig: 4.2 (RH 1.9.0)
+	public IPlotSession addPlotSource(ScaUsesPort port, final FftSettings fftSettings, String qualifiers) {
+		return this.plotPageBook.addSource(port, fftSettings, qualifiers);
 	}
 
 	/**
