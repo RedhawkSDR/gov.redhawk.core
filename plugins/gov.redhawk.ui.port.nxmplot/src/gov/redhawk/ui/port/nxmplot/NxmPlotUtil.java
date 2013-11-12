@@ -33,11 +33,16 @@ import org.eclipse.swt.SWT;
  */
 public final class NxmPlotUtil {
 
+	/** key to get NeXtMidas Command ID entry in Map returned from launchInputMacro(..) methods. */
+	private static final String KEY_COMMAND = "command";
+	/** key to get NeXtMidas Pipe/File name entry in Map returned from launchInputMacro(..) methods. */
 	private static final String KEY_FILE = "file";
 
-	private static final String KEY_COMMAND = "command";
 	private static final int MAX_RMIF_PACKET_SIZE = 32768; // in bytes
-	
+
+	private NxmPlotUtil() {
+	}
+
 	/**
 	 * @since 4.2
 	 */
@@ -101,7 +106,7 @@ public final class NxmPlotUtil {
 		String delim = "";
 		for (Entry<String, String> entry : args.entrySet()) {
 			String valueString = null;
-			if (entry.getValue() == null || entry.getValue().equals("")) {
+			if (entry.getValue() == null || "".equals(entry.getValue())) {
 				valueString = "";
 			} else {
 				valueString =  "=" + entry.getValue();
@@ -130,10 +135,6 @@ public final class NxmPlotUtil {
 		}
 		sb.append("}");
 		return sb.toString();
-	}
-
-	private NxmPlotUtil() {
-
 	}
 
 	private static Map<String, String> launchInputMacro(final CorbaConnectionSettings settings, final FftSettings fft, final AbstractNxmPlotWidget plotWidget, String pipeSize) {
@@ -213,12 +214,12 @@ public final class NxmPlotUtil {
 		plotWidget.runHeadlessCommand("PIPE ON");
 
 		final StringBuilder command = new StringBuilder();
-		final String sourceId = "SOURCENIC_" + AbstractNxmPlotWidget.createUniqueName(false);
+		final String sourcenicId = "SOURCENIC_" + AbstractNxmPlotWidget.createUniqueName(false);
 		if (pipeSize == null) {
 			// Default size
 			pipeSize = "128k";
 		}
-		command.append("SOURCENIC/PS=" + pipeSize + "/ID=" + sourceId);
+		command.append("SOURCENIC/PS=" + pipeSize + "/ID=" + sourcenicId);
 		command.append("/fc=" + sdds.format);
 		if (sdds.mcastAddress != null) {
 			command.append("/mgrp=" + sdds.mcastAddress);
@@ -273,7 +274,7 @@ public final class NxmPlotUtil {
 		}
 		plotWidget.runHeadlessCommand("PIPE RUN");
 		Map<String, String> map = new HashMap<String, String>();
-		map.put(KEY_COMMAND, sourceId);
+		map.put(KEY_COMMAND, sourcenicId);
 		map.put(KEY_FILE, outName);
 		return map;
 	}
