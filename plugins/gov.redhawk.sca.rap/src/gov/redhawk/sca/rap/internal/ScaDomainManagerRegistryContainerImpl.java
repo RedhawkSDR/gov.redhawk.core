@@ -107,6 +107,9 @@ public class ScaDomainManagerRegistryContainerImpl extends SessionSingletonBase 
 			if (msg.getFeatureID(ScaDomainManagerRegistry.class) == ScaPackage.SCA_DOMAIN_MANAGER_REGISTRY__DOMAINS) {
 				switch (msg.getEventType()) {
 				case Notification.ADD:
+					ScaDomainManager manager = (ScaDomainManager) msg.getNewValue();
+					addDomainManagerPropertiesListeners(manager);
+					break;
 				case Notification.ADD_MANY:
 					saveDomainManagerRegistryResource();
 					List<ScaDomainManager> domains = (List<ScaDomainManager>) msg.getNewValue();
@@ -115,6 +118,9 @@ public class ScaDomainManagerRegistryContainerImpl extends SessionSingletonBase 
 					}
 					break;
 				case Notification.REMOVE:
+					manager = (ScaDomainManager) msg.getNewValue();
+					removeDomainManagerPropertiesListeners(manager);
+					break;
 				case Notification.REMOVE_MANY:
 					saveDomainManagerRegistryResource();
 					domains = (List<ScaDomainManager>) msg.getOldValue();
