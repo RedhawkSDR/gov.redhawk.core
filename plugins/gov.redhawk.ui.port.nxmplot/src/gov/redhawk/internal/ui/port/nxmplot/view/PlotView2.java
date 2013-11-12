@@ -127,7 +127,11 @@ public class PlotView2 extends ViewPart {
 
 	/** used to create a new (clone) plot view of current plot view for the "New Plot View" Action / Menu. */ 
 	private IPlotSession addPlotSource(PlotSource source) {
-		return this.plotPageBook.addSource(source.getInput(), source.getFftOptions(), source.getQualifiers());
+		FftSettings fftSettings = source.getFftOptions();
+		if (fftSettings != null) {
+			adjustFftSettingsAction.setEnabled(true);
+		}
+		return this.plotPageBook.addSource(source.getInput(), fftSettings, source.getQualifiers());
 	}
 
 	@Override
@@ -147,6 +151,9 @@ public class PlotView2 extends ViewPart {
 	 * @return New session 
 	 */
 	public IPlotSession addPlotSource(ScaUsesPort port, final FftSettings fftSettings, String qualifiers) {
+		if (fftSettings != null) {
+			adjustFftSettingsAction.setEnabled(true);
+		}
 		return this.plotPageBook.addSource(port, fftSettings, qualifiers);
 	}
 
@@ -338,7 +345,7 @@ public class PlotView2 extends ViewPart {
 			} // end method
 		};
 
-		this.adjustFftSettingsAction.setEnabled(true); // TODO: disable, it will be enabled later when there are plot sources with fft options
+		this.adjustFftSettingsAction.setEnabled(false); // disable, it will be enabled later when there are plot sources with fft options
 		this.adjustFftSettingsAction.setText("Adjust FFT Settings");
 		this.adjustFftSettingsAction.setToolTipText("Adjust FFT Settings");
 	}
