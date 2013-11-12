@@ -333,6 +333,9 @@ public class PlotView2 extends ViewPart {
 						break; // use first found FFT options
 					}
 				} // end for loop
+				if (fftOptions == null) {
+					return; // no source with FFT options
+				}
 				FftParameterEntryDialog dialog = new FftParameterEntryDialog(PlatformUI.getWorkbench().getDisplay().getActiveShell(), fftOptions);
 				dialog.setDisableChangeOutputType(true); // cannot change FFT output type at this time
 				final int result = dialog.open();
@@ -345,7 +348,7 @@ public class PlotView2 extends ViewPart {
 			} // end method
 		};
 
-		this.adjustFftSettingsAction.setEnabled(false); // disable, it will be enabled later when there are plot sources with fft options
+		this.adjustFftSettingsAction.setEnabled(true); // disable, it will be enabled later when there are plot sources with fft options
 		this.adjustFftSettingsAction.setText("Adjust FFT Settings");
 		this.adjustFftSettingsAction.setToolTipText("Adjust FFT Settings");
 	}
