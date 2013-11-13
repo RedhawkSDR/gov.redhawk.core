@@ -12,23 +12,23 @@ package gov.redhawk.ui.port.nxmplot;
 
 
 /** <b>INTERNAL USE ONLY</b>
+ * @noreference This class is not intended to be referenced by clients.
  * @since 4.2
  */
 public class PlotSettings {
 
-	private Integer frameSize = null; // null to use default (e.g. from SRI)
-	private Double sampleRate = null; // null to use default (e.g. from SRI)
+	private Integer  frameSize      = null; // null to use default (e.g. from SRI)
+	private Double   sampleRate     = null; // null to use default (e.g. from SRI)
 	private Boolean blockingOption = false; // null to use default
-
-	private Double minValue = null; // null to use default (i.e. AutoMin)
-	private Double maxValue = null; // null to use default (i.e. AutoMax)
-	private PlotType plotType = null; // null to not change plot type
+	private Double   minValue       = null; // null to use default (i.e. AutoMin)
+	private Double   maxValue       = null; // null to use default (i.e. AutoMax)
+	private PlotType plotType       = null; // null to not change plot type
 
 	public PlotSettings() {
 	}
 
 	public PlotSettings(PlotSettings settings) {
-		this.frameSize = settings.frameSize;
+		this.frameSize  = settings.frameSize;
 		this.sampleRate = settings.sampleRate;
 		this.blockingOption = settings.blockingOption;
 		this.minValue = settings.minValue;
@@ -42,11 +42,16 @@ public class PlotSettings {
 	}
 
 	public PlotSettings(final Integer frameSize, final Double minValue, final Double maxValue, final Double sampleRate, final PlotType plotType) {
+		this(frameSize, minValue, maxValue, Boolean.TRUE, sampleRate, plotType);
+	}
+	
+	PlotSettings(final Integer frameSize, final Double minValue, final Double maxValue, final Boolean blockingOption, final Double sampleRate, final PlotType plotType) {
 		super();
 		this.frameSize = frameSize;
+		this.sampleRate = sampleRate;
+		this.blockingOption = blockingOption;
 		this.minValue = minValue;
 		this.maxValue = maxValue;
-		this.sampleRate = sampleRate;
 		this.plotType = plotType;
 	}
 
@@ -112,10 +117,10 @@ public class PlotSettings {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + ((frameSize == null) ? 0 : frameSize.hashCode());
+		result = prime * result + ((sampleRate == null) ? 0 : sampleRate.hashCode());
 		result = prime * result + ((maxValue == null) ? 0 : maxValue.hashCode());
 		result = prime * result + ((minValue == null) ? 0 : minValue.hashCode());
 		result = prime * result + ((plotType == null) ? 0 : plotType.hashCode());
-		result = prime * result + ((sampleRate == null) ? 0 : sampleRate.hashCode());
 		result = prime * result + ((blockingOption == null) ? 0 : blockingOption.hashCode());
 		return result;
 	}
@@ -142,6 +147,20 @@ public class PlotSettings {
 		} else if (!frameSize.equals(other.frameSize)) {
 			return false;
 		}
+		if (sampleRate == null) {
+			if (other.sampleRate != null) {
+				return false;
+			}
+		} else if (!sampleRate.equals(other.sampleRate)) {
+			return false;
+		}
+		if (blockingOption == null) {
+			if (other.blockingOption != null) {
+				return false;
+			}
+		} else if (!blockingOption.equals(other.blockingOption)) {
+			return false;
+		}
 		if (maxValue == null) {
 			if (other.maxValue != null) {
 				return false;
@@ -159,21 +178,6 @@ public class PlotSettings {
 		if (plotType != other.plotType) {
 			return false;
 		}
-		if (sampleRate == null) {
-			if (other.sampleRate != null) {
-				return false;
-			}
-		} else if (!sampleRate.equals(other.sampleRate)) {
-			return false;
-		}
-		if (blockingOption == null) {
-			if (other.blockingOption != null) {
-				return false;
-			}
-		} else if (!blockingOption.equals(other.blockingOption)) {
-			return false;
-		}
-
 		return true;
 	}
 	
