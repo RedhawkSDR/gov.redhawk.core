@@ -34,6 +34,10 @@ public class ScaDomainManagerRegistryFactoryServiceImpl implements IScaDomainMan
 		final boolean[] done = {false};
 		final IScaDomainManagerRegistryContainer[] result = new IScaDomainManagerRegistryContainer[1];
 		
+		if (context == null) {
+			context = Display.getCurrent();
+		}
+		
 		UICallBack.runNonUIThreadWithFakeContext((Display) context, new Runnable() {
 
 			@Override
