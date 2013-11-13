@@ -58,7 +58,7 @@ public class ScaExplorer extends CommonNavigator implements ITabbedPropertySheet
 
 	@Override
 	protected Object getInitialInput() {
-		return ScaPlugin.getDefault().getDomainManagerRegistry();
+		return ScaPlugin.getDefault().getDomainManagerRegistry(getSite().getShell().getDisplay());
 	}
 
 	@Override

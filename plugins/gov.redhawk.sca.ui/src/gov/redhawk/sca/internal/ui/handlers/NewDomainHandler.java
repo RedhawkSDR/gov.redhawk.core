@@ -47,7 +47,8 @@ public class NewDomainHandler extends AbstractHandler implements IHandler {
 
 	@Override
 	public Object execute(final ExecutionEvent event) throws ExecutionException {
-		final ScaDomainManagerRegistry registry = ScaPlugin.getDefault().getDomainManagerRegistry();
+		final ScaDomainManagerRegistry registry = ScaPlugin.getDefault().getDomainManagerRegistry(
+				HandlerUtil.getActiveShell(event).getDisplay());
 
 		final DomainEntryWizard wizard = new DomainEntryWizard();
 		wizard.setShowExtraSettings(true);
