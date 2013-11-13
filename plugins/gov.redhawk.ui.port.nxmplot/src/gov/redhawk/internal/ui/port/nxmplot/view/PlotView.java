@@ -107,7 +107,7 @@ public class PlotView extends ViewPart {
 
 	private static int secondaryId = 0;
 
-	protected final String plotQualifiers;
+	protected final String plotQualifiers; // SUPPRESS CHECKSTYLE variable
 
 	/** The tab folder that contains each plot. */
 	private CTabFolder plotFolder;
@@ -177,12 +177,15 @@ public class PlotView extends ViewPart {
 		}
 	};
 
+	private boolean disposed;
+	
+	private final PlotSelectionProvider selectionProvider = new PlotSelectionProvider();
+	private Map<String, PlotListenerAdapter> listenerMap = Collections.synchronizedMap(new HashMap<String, PlotListenerAdapter>());
+
 	public PlotView() {
 		plotQualifiers = "{CL=8}";
 		/** provide plot display thinning */
 	}
-
-	private boolean disposed;
 
 	private class PlotSelectionProvider implements ISelectionProvider {
 		private final Set<ISelectionChangedListener> listeners = new HashSet<ISelectionChangedListener>();
@@ -215,9 +218,6 @@ public class PlotView extends ViewPart {
 		}
 
 	}
-
-	private final PlotSelectionProvider selectionProvider = new PlotSelectionProvider();
-	private Map<String, PlotListenerAdapter> listenerMap = Collections.synchronizedMap(new HashMap<String, PlotListenerAdapter>());
 
 	/**
 	 * {@inheritDoc}
@@ -461,7 +461,8 @@ public class PlotView extends ViewPart {
 		this.plotMap.put(sessionId.toString(), spectralPlots);
 		List<CTabItem> tabList = this.portToTabMap.get(port);
 		if (tabList == null) {
-			this.portToTabMap.put(port, tabList = new ArrayList<CTabItem>());
+			tabList = new ArrayList<CTabItem>();
+			this.portToTabMap.put(port, tabList);
 		}
 		tabList.add(newTab);
 

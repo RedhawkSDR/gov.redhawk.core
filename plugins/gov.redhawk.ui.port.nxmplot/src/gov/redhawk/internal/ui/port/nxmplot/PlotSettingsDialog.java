@@ -43,9 +43,19 @@ import org.eclipse.swt.widgets.Text;
 /**
  * Adjust/override PLOT settings user entry dialog.
  * @since 4.2
+ * @noreference This class is not intended to be referenced by clients
  */
 public class PlotSettingsDialog extends Dialog {
 
+	/** The validator for the {@link #frameSizeField}. */
+	private static final MinIntegerValidator FRAME_SIZE_VALIDATOR = new MinIntegerValidator("Frame Size", 1, "default");
+	/** The validator for the {@link #minField}. */
+	private static final CustomDoubleValidator MIN_VALUE_VALIDATOR = new CustomDoubleValidator("Min Value", "AutoMin");
+	/** The validator for the {@link #maxField}. */
+	private static final CustomDoubleValidator MAX_VALUE_VALIDATOR = new CustomDoubleValidator("Max Value", "AutoMax");
+	/** The validator for the {@link #sampleRateField}. */
+	private static final CustomDoubleValidator SAMPLE_RATE_VALIDATOR = new CustomDoubleValidator("Sample Rate", "default");
+	
 	private final PlotSettings plotSettings;
 	private ComboViewer frameSizeField;
 	private ComboViewer minField;
@@ -57,15 +67,6 @@ public class PlotSettingsDialog extends Dialog {
 	private Text errorMessageText;
 	/** Error message string. */
 	private String errorMessage;
-
-	/** The validator for the {@link #frameSizeField}. */
-	private static final MinIntegerValidator FRAME_SIZE_VALIDATOR = new MinIntegerValidator("Frame Size", 1, "default");
-	/** The validator for the {@link #minField}. */
-	private static final CustomDoubleValidator MIN_VALUE_VALIDATOR = new CustomDoubleValidator("Min Value", "AutoMin");
-	/** The validator for the {@link #maxField}. */
-	private static final CustomDoubleValidator MAX_VALUE_VALIDATOR = new CustomDoubleValidator("Max Value", "AutoMax");
-	/** The validator for the {@link #sampleRateField}. */
-	private static final CustomDoubleValidator SAMPLE_RATE_VALIDATOR = new CustomDoubleValidator("Sample Rate", "default");
 
 	/**
 	 * Instantiates a new entry dialog.
