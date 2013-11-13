@@ -29,6 +29,7 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Plugin;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.preferences.InstanceScope;
+import org.eclipse.swt.widgets.Display;
 import org.omg.CosNaming.Binding;
 import org.omg.CosNaming.BindingIteratorHolder;
 import org.omg.CosNaming.BindingListHolder;
@@ -131,9 +132,12 @@ public class ScaPlugin extends Plugin {
 	 * 			the SCA Domain Manager registry
 	 */
 	public ScaDomainManagerRegistry getDomainManagerRegistry(Object context) {
+		if (context == null) {
+			context = Display.getCurrent();
+		}
 		IScaDomainManagerRegistryFactoryService service = this.registryService.getService();
 		if (service != null) {
-			IScaDomainManagerRegistryContainer container = service.getRegistryContainer();
+			IScaDomainManagerRegistryContainer container = service.getRegistryContainer(context);
 			if (container != null) {
 				return container.getRegistry(context);
 			}
