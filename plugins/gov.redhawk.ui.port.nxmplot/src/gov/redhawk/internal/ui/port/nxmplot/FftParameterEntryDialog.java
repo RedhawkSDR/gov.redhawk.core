@@ -13,6 +13,7 @@ package gov.redhawk.internal.ui.port.nxmplot;
 
 import gov.redhawk.ui.port.nxmplot.FftSettings;
 import gov.redhawk.ui.port.nxmplot.FftSettings.OutputType;
+import gov.redhawk.ui.port.nxmplot.FftSettings.WindowType;
 
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.IDialogConstants;
@@ -194,7 +195,11 @@ public class FftParameterEntryDialog extends Dialog {
 		window.setContentProvider(new ArrayContentProvider());
 		window.setLabelProvider(new LabelProvider());
 		window.setInput(FftSettings.WindowType.values());
-		window.setSelection(new StructuredSelection(FftSettings.WindowType.HANNING));
+		WindowType currentWindowType = this.fftSettings.getWindowType();
+		if (currentWindowType == null) {
+			currentWindowType = FftSettings.WindowType.HANNING;
+		} 
+		window.setSelection(new StructuredSelection(currentWindowType));
 		window.addSelectionChangedListener(new ISelectionChangedListener() {
 			@Override
 			public void selectionChanged(final SelectionChangedEvent event) {
