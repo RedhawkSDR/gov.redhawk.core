@@ -64,6 +64,8 @@ public class PlotView2 extends ViewPart {
 	/** The ID of the view. */
 	public static final String ID = "gov.redhawk.ui.port.nxmplot.PlotView2";
 
+	private static final String ADJUST_PLOT_SETTINGS_ACTION_ID = "AdjustPlotSettingsMenuItemAction";
+	
 	private static int secondardId;
 
 	/** The private action for toggling raster enabled state. */
@@ -77,6 +79,8 @@ public class PlotView2 extends ViewPart {
 
 	/** The private action for adjusting fft settings. */
 	private IAction adjustFftSettingsAction;
+	
+	private IMenuManager menu;
 
 	private class PlotTypeMenuAction extends Action {
 
@@ -125,11 +129,19 @@ public class PlotView2 extends ViewPart {
 		createMenu();
 	}
 
+	/** adds the adjust FFT settings menu if not already added */
+	private void addAdjustFftSettingsMenuIfNotPresent() {
+		if (this.adjustFftSettingsAction == null) {
+			createActionAdjustFftSettings();
+			this.menu.insertAfter(ADJUST_PLOT_SETTINGS_ACTION_ID, this.adjustFftSettingsAction);
+		}
+	}
+	
 	/** used to create a new (clone) plot view of current plot view for the "New Plot View" Action / Menu. */ 
 	private IPlotSession addPlotSource(PlotSource source) {
 		FftSettings fftSettings = source.getFftOptions();
 		if (fftSettings != null) {
-			adjustFftSettingsAction.setEnabled(true);
+			addAdjustFftSettingsMenuIfNotPresent();
 		}
 		return this.plotPageBook.addSource(source.getInput(), fftSettings, source.getQualifiers());
 	}
@@ -152,7 +164,7 @@ public class PlotView2 extends ViewPart {
 	 */
 	public IPlotSession addPlotSource(ScaUsesPort port, final FftSettings fftSettings, String qualifiers) {
 		if (fftSettings != null) {
-			adjustFftSettingsAction.setEnabled(true);
+			addAdjustFftSettingsMenuIfNotPresent();
 		}
 		return this.plotPageBook.addSource(port, fftSettings, qualifiers);
 	}
@@ -169,15 +181,12 @@ public class PlotView2 extends ViewPart {
 
 	private void createMenu() {
 		final IActionBars bars = getViewSite().getActionBars();
-		final IMenuManager menu = bars.getMenuManager();
+		menu = bars.getMenuManager();
 		if (this.newPlotViewAction != null) {
 			menu.add(this.newPlotViewAction);
 		}
 		if (this.adjustPlotSettingsAction != null) {
 			menu.add(this.adjustPlotSettingsAction);
-		}
-		if (this.adjustFftSettingsAction != null) {
-			menu.add(this.adjustFftSettingsAction);
 		}
 		menu.add(new Separator(IWorkbenchActionConstants.MB_ADDITIONS));
 	}
@@ -282,7 +291,6 @@ public class PlotView2 extends ViewPart {
 		this.showSriAction.setToolTipText("Display current plot SRI");
 
 		createActionAdjustPlotSettings();
-		createActionAdjustFftSettings();
 	}
 
 	private void createActionAdjustPlotSettings() {
@@ -307,21 +315,13 @@ public class PlotView2 extends ViewPart {
 			} // end method
 		};
 
+		this.adjustPlotSettingsAction.setId(ADJUST_PLOT_SETTINGS_ACTION_ID);
 		this.adjustPlotSettingsAction.setEnabled(true);
 		this.adjustPlotSettingsAction.setText("Adjust Plot Settings");
 		this.adjustPlotSettingsAction.setToolTipText("Adjust/Override Plot Settings");
 	}
 
 	private void createActionAdjustFftSettings() {
-		List<PlotSource> plotSources = plotPageBook.getSources();
-		FftSettings fft = null;
-		for (PlotSource source : plotSources) {
-			fft = source.getFftOptions();
-			if (fft != null) {
-				break; // use first found FFT options
-			}
-		} // end for loop
-
 		this.adjustFftSettingsAction = new Action() {
 			@Override
 			public void run() {
@@ -348,9 +348,9 @@ public class PlotView2 extends ViewPart {
 			} // end method
 		};
 
-		this.adjustFftSettingsAction.setEnabled(true); // disable, it will be enabled later when there are plot sources with fft options
+		this.adjustFftSettingsAction.setEnabled(true);
 		this.adjustFftSettingsAction.setText("Adjust FFT Settings");
-		this.adjustFftSettingsAction.setToolTipText("Adjust FFT Settings");
+		this.adjustFftSettingsAction.setToolTipText(this.adjustFftSettingsAction.getText());
 	}
 	
 	private StreamSRI[] getActiveSRI() {
