@@ -11,6 +11,7 @@
  */
 package gov.redhawk.sca.rcp.internal;
 
+import gov.redhawk.sca.IScaDomainManagerRegistryContainer;
 import gov.redhawk.sca.IScaDomainManagerRegistryFactoryService;
 
 public class ScaDomainManagerRegistryFactoryServiceImpl implements
@@ -18,6 +19,11 @@ public class ScaDomainManagerRegistryFactoryServiceImpl implements
 
 	@Override
 	public ScaDomainManagerRegistryContainerImpl getRegistryContainer() {
+		return (ScaDomainManagerRegistryContainerImpl) getRegistryContainer(null);
+	}
+	
+	@Override
+	public IScaDomainManagerRegistryContainer getRegistryContainer(Object context) {
 		return ScaDomainManagerRegistryContainerImpl.getInstance();
 	}
 	
@@ -28,5 +34,4 @@ public class ScaDomainManagerRegistryFactoryServiceImpl implements
 	public void deactivate() {
 		getRegistryContainer().dispose();
 	}
-
 }

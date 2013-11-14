@@ -133,7 +133,7 @@ public class ScaPlugin extends Plugin {
 	public ScaDomainManagerRegistry getDomainManagerRegistry(Object context) {
 		IScaDomainManagerRegistryFactoryService service = this.registryService.getService();
 		if (service != null) {
-			IScaDomainManagerRegistryContainer container = service.getRegistryContainer();
+			IScaDomainManagerRegistryContainer container = service.getRegistryContainer(context);
 			if (container != null) {
 				return container.getRegistry(context);
 			}

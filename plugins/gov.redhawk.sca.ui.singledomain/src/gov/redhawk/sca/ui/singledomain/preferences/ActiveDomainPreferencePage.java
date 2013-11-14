@@ -100,7 +100,7 @@ public class ActiveDomainPreferencePage extends FieldEditorPreferencePage implem
 	@Override
 	protected void createFieldEditors() {
 		
-		ScaPlugin.getDefault().getDomainManagerRegistry().eAdapters().add(domainChangeAdapter);
+		ScaPlugin.getDefault().getDomainManagerRegistry(getFieldEditorParent().getDisplay()).eAdapters().add(domainChangeAdapter);
 		
 		activeDomainField = new ComboFieldEditor(ScaSingleDomainPreferenceConstants.SCA_ACTIVE_DOMAIN, "Active Domain", getDomains(), getFieldEditorParent());
 		addField(activeDomainField);

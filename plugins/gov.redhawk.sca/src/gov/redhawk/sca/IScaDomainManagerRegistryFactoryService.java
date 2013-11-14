@@ -21,5 +21,7 @@ public interface IScaDomainManagerRegistryFactoryService {
 	 * @return the SCA Domain Manager registry container.
 	 */
 	public IScaDomainManagerRegistryContainer getRegistryContainer();
+	
+	public IScaDomainManagerRegistryContainer getRegistryContainer(Object context);
 
 }
