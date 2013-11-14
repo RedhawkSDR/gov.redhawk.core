@@ -105,6 +105,13 @@ public class FftSettings {
 	public String getWindow() {
 		return this.window.toWindowString();
 	}
+	
+	/**
+	 * @since 4.3
+	 */
+	public WindowType getWindowType() {
+		return this.window;
+	}
 
 	public void setOutputType(final OutputType outputType) {
 		this.outputType = outputType;
