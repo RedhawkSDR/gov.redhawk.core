@@ -13,7 +13,6 @@ package gov.redhawk.sca.ui.preferences;
 
 import gov.redhawk.common.ui.doc.HelpConstants;
 import gov.redhawk.model.sca.ScaDomainManagerRegistry;
-import gov.redhawk.model.sca.commands.ScaModelCommand;
 import gov.redhawk.sca.ScaPlugin;
 import gov.redhawk.sca.preferences.ScaPreferenceConstants;
 import gov.redhawk.sca.ui.ScaUiPlugin;
@@ -22,7 +21,6 @@ import java.io.IOException;
 
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
-import org.eclipse.emf.common.command.CommandStack;
 import org.eclipse.jface.preference.FieldEditorPreferencePage;
 import org.eclipse.jface.preference.RadioGroupFieldEditor;
 import org.eclipse.jface.preference.StringFieldEditor;
