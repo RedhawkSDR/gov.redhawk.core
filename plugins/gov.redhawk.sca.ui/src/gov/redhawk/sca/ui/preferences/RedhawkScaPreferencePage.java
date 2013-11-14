@@ -36,14 +36,15 @@ import org.eclipse.ui.statushandlers.StatusManager;
 public class RedhawkScaPreferencePage extends FieldEditorPreferencePage implements IWorkbenchPreferencePage {
 	public static final String PREFERENCE_PAGE_ID = "gov.redhawk.ui.preferences.sca";
 	private DomainListEditor domList = null;
-
-	private final ScaDomainManagerRegistry registry = ScaPlugin.getDefault().getDomainManagerRegistry();
+	private ScaDomainManagerRegistry registry;
 
 	@Override
 	protected void createFieldEditors() {
 		final StringFieldEditor field = new StringFieldEditor(ScaPreferenceConstants.SCA_DEFAULT_NAMING_SERVICE, "Default Naming Service:",
 			getFieldEditorParent());
 		addField(field);
+		
+		this.registry = ScaPlugin.getDefault().getDomainManagerRegistry(getFieldEditorParent().getDisplay());
 
 		this.domList = new DomainListEditor(this.registry, "Domains:", getFieldEditorParent());
 		addField(this.domList);

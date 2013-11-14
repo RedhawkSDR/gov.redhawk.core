@@ -93,7 +93,7 @@ public class ActiveDomainPreferencePage extends FieldEditorPreferencePage implem
 	
 	@Override
 	public void dispose() {
-		ScaPlugin.getDefault().getDomainManagerRegistry().eAdapters().remove(domainChangeAdapter);
+		ScaPlugin.getDefault().getDomainManagerRegistry(getFieldEditorParent().getDisplay()).eAdapters().remove(domainChangeAdapter);
 		super.dispose();
 	}
 
@@ -123,7 +123,7 @@ public class ActiveDomainPreferencePage extends FieldEditorPreferencePage implem
 	private String[][] getDomains() {
 		List<String[]> domains = new ArrayList<String[]>();
 		domains.add(new String[] {"", ""});
-	    for (ScaDomainManager  domain : ScaPlugin.getDefault().getDomainManagerRegistry().getDomains()) {
+	    for (ScaDomainManager  domain : ScaPlugin.getDefault().getDomainManagerRegistry(getFieldEditorParent().getDisplay()).getDomains()) {
 	    	String[] nameValue = new String[2];
 	    	nameValue[0] = domain.getName();
 	    	nameValue[1] = domain.getName();

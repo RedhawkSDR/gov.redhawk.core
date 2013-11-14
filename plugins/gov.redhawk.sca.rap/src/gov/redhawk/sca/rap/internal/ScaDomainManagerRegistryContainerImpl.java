@@ -45,6 +45,8 @@ import org.eclipse.emf.transaction.TransactionalEditingDomain;
 import org.eclipse.emf.transaction.util.TransactionUtil;
 
 import org.eclipse.rwt.SessionSingletonBase;
+import org.eclipse.rwt.lifecycle.UICallBack;
+import org.eclipse.swt.widgets.Display;
 
 /**
  * This class provides a wrapper around ScaDomainManagerRegistry, so that either shared singleton
@@ -214,12 +216,32 @@ public class ScaDomainManagerRegistryContainerImpl extends SessionSingletonBase 
 		return true;
 	}
 
-	private void loadScaModel(Object context) {
+	private void loadScaModel(final Object context) {
 		try {
-			final URI fileUri = new Path(ScaPlugin.getDefault().getCompatibilityUtil().getSettingStoreWorkDir().getAbsolutePath())
-			.append(ScaPlugin.getDefault().getCompatibilityUtil().getUserSpecificPath(context) + "_sca")
-			.append("domains.sca").toFile().toURI();
-			final org.eclipse.emf.common.util.URI uri = org.eclipse.emf.common.util.URI.createURI(fileUri.toString());
+			final boolean[] done = {false};
+			final URI[] result = new URI[1];
+			
+			UICallBack.runNonUIThreadWithFakeContext((Display) context, new Runnable() {
+
+				@Override
+				public void run() {
+					result[0] = new Path(ScaPlugin.getDefault().getCompatibilityUtil().getSettingStoreWorkDir().getAbsolutePath())
+					.append(ScaPlugin.getDefault().getCompatibilityUtil().getUserSpecificPath(context) + "_sca")
+					.append("domains.sca").toFile().toURI();
+					done[0] = true;
+				}
+				
+			});
+			
+			while(!done[0]) {
+				try {
+					Thread.sleep(200);
+				} catch (InterruptedException e) {
+					//PASS
+				}
+			}
+			
+			final org.eclipse.emf.common.util.URI uri = org.eclipse.emf.common.util.URI.createURI(result[0].toString());
 			try {
 				this.registryResource = this.scaModelResourceSet.getResource(uri, true);
 			} catch (final Exception e) {
