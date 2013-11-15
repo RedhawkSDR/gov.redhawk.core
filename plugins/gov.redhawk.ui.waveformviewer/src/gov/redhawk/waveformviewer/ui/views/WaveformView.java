@@ -64,7 +64,7 @@ public class WaveformView extends ViewPart implements DragSourceListener, DropTa
 		@Override
 		protected IStatus run(final IProgressMonitor monitor) {
 			// Get all domain managers
-			final ScaDomainManagerRegistry registry = ScaPlugin.getDefault().getDomainManagerRegistry();
+			final ScaDomainManagerRegistry registry = ScaPlugin.getDefault().getDomainManagerRegistry(getSite().getShell().getDisplay());
 			final EList<ScaDomainManager> doms = registry.getDomains();
 
 			WaveformView.this.availableWaves.clear();
@@ -128,7 +128,7 @@ public class WaveformView extends ViewPart implements DragSourceListener, DropTa
 		this.treeViewer.addDropSupport(DND.DROP_MOVE, types, this);
 		this.treeViewer.addDragSupport(DND.DROP_COPY, types, this);
 
-		final ScaDomainManagerRegistry registry = ScaPlugin.getDefault().getDomainManagerRegistry();
+		final ScaDomainManagerRegistry registry = ScaPlugin.getDefault().getDomainManagerRegistry(getSite().getShell().getDisplay());
 		registry.eAdapters().add(new AdapterImpl() {
 			@Override
 			public void notifyChanged(final Notification msg) {

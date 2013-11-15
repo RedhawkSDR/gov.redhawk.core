@@ -26,6 +26,8 @@ public class ScaDomainRegistryObjectLocator extends AbstractScaObjectLocator {
 
 	@Override
 	protected TreeIterator<EObject> getContentIterator(final Class< ? extends CorbaObjWrapper< ? >> type, final String ior) {
+		//If this method is invoked in RAP, the domain registry will not be retrieved, because a Display
+		//should be provided. To avoid creating a dependency on the UI, we don't provide one.
 		return EcoreUtil.getAllContents(ScaPlugin.getDefault().getDomainManagerRegistry(), false);
 	}
 

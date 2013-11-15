@@ -39,9 +39,9 @@ public class RedhawkScaPreferencePage extends FieldEditorPreferencePage implemen
 	@Override
 	protected void createFieldEditors() {
 		final StringFieldEditor field = new StringFieldEditor(ScaPreferenceConstants.SCA_DEFAULT_NAMING_SERVICE, "Default Naming Service:",
-			getFieldEditorParent());
+				getFieldEditorParent());
 		addField(field);
-		
+
 		this.registry = ScaPlugin.getDefault().getDomainManagerRegistry(getFieldEditorParent().getDisplay());
 
 		this.domList = new DomainListEditor(this.registry, "Domains:", getFieldEditorParent());
@@ -50,7 +50,7 @@ public class RedhawkScaPreferencePage extends FieldEditorPreferencePage implemen
 		/** We bind this field editor to a fake preference because we just use it to set the auto-connect 
 		  preference on all domains when selected */
 		final RadioGroupFieldEditor autoConnect = new RadioGroupFieldEditor("FAKE", "All Domains: Reconnect on startup", 2, new String[][] {
-			{ "Auto", "true" }, { "Manual", "false" } }, getFieldEditorParent(), false);
+				{ "Auto", "true" }, { "Manual", "false" } }, getFieldEditorParent(), false);
 		autoConnect.setPropertyChangeListener(new IPropertyChangeListener() {
 
 			@Override
@@ -62,7 +62,7 @@ public class RedhawkScaPreferencePage extends FieldEditorPreferencePage implemen
 		});
 
 		final StringListFieldEditor listField = new StringListFieldEditor(ScaPreferenceConstants.SCA_DOMAIN_WAVEFORMS_SEARCH_PATH, "Waveforms Search Path:",
-			getFieldEditorParent());
+				getFieldEditorParent());
 		addField(listField);
 		listField.getUpButton().setVisible(false);
 		listField.getDownButton().setVisible(false);
@@ -73,14 +73,31 @@ public class RedhawkScaPreferencePage extends FieldEditorPreferencePage implemen
 	@Override
 	public boolean performOk() {
 		super.performOk();
-		try {
-			RedhawkScaPreferencePage.this.registry.eResource().save(null);
-		} catch (final IOException e) {
-			StatusManager.getManager().handle(new Status(IStatus.ERROR, ScaUiPlugin.PLUGIN_ID, "Failed to save SCA Domain Connections to configuration.", e),
-				StatusManager.LOG | StatusManager.SHOW);
-			return false;
+		final boolean[] success = {false};
+		final boolean[] done = {false};
+		ScaModelCommand.execute(RedhawkScaPreferencePage.this.registry, new ScaModelCommand() {
+
+			@Override
+			public void execute() {
+				try {
+					RedhawkScaPreferencePage.this.registry.eResource().save(null);
+					success[0] = true;
+				} catch (IOException e) {
+					StatusManager.getManager().handle(new Status(IStatus.ERROR, ScaUiPlugin.PLUGIN_ID, "Failed to save SCA Domain Connections to configuration.", e),
+							StatusManager.LOG | StatusManager.SHOW);
+				} finally {
+					done[0] = true;
+				}
+			}
+
+		});
+		
+		while (!done[0]) {
+			if (!getShell().getDisplay().readAndDispatch()) {
+				getShell().getDisplay().sleep();
+			}
 		}
-		return true;
+		return success[0];
 	}
 
 	@Override

@@ -13,7 +13,7 @@ package gov.redhawk.sca;
 import gov.redhawk.model.sca.ScaDomainManagerRegistry;
 
 /**
- * @since 6.1
+ * @since 7.0
  */
 public interface IScaDomainManagerRegistryContainer {
 

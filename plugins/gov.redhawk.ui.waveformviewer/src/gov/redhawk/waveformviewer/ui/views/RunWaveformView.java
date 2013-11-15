@@ -86,7 +86,7 @@ public class RunWaveformView extends ViewPart implements DragSourceListener, Dro
 	 */
 	private void initializeWaveform() {
 		// Get all domain managers
-		final ScaDomainManagerRegistry registry = ScaPlugin.getDefault().getDomainManagerRegistry();
+		final ScaDomainManagerRegistry registry = ScaPlugin.getDefault().getDomainManagerRegistry(getSite().getShell().getDisplay());
 		final EList<ScaDomainManager> doms = registry.getDomains();
 
 		this.apps.clear();

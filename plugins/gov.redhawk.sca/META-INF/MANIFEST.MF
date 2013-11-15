@@ -2,15 +2,14 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: %Bundle-Name
 Bundle-SymbolicName: gov.redhawk.sca;singleton:=true
-Bundle-Version: 6.1.0.qualifier
+Bundle-Version: 7.0.0.qualifier
 Bundle-Activator: gov.redhawk.sca.ScaPlugin
 Bundle-Vendor: %Bundle-Vendor
 Require-Bundle: org.eclipse.core.runtime;bundle-version="3.6.0",
  org.eclipse.core.resources;bundle-version="3.4.2",
  gov.redhawk.sca.model;bundle-version="1.0.0";visibility:=reexport,
  gov.redhawk.sca.util;bundle-version="1.0.0";visibility:=reexport,
- mil.jpeojtrs.sca.util;bundle-version="1.0.0",
- org.eclipse.rap.rwt;bundle-version="1.5.2";resolution:=optional
+ mil.jpeojtrs.sca.util;bundle-version="1.0.0"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Bundle-ActivationPolicy: lazy
 Export-Package: gov.redhawk.sca,

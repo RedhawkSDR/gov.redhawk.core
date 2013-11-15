@@ -22,6 +22,7 @@ import gov.redhawk.model.sca.commands.ScaModelCommand;
 import gov.redhawk.sca.IScaDomainManagerRegistryContainer;
 import gov.redhawk.sca.ScaPlugin;
 import gov.redhawk.sca.preferences.ScaPreferenceInitializer;
+import gov.redhawk.sca.rap.ScaRapPlugin;
 
 import java.io.IOException;
 import java.net.URI;
@@ -120,7 +121,7 @@ public class ScaDomainManagerRegistryContainerImpl extends SessionSingletonBase 
 					}
 					break;
 				case Notification.REMOVE:
-					manager = (ScaDomainManager) msg.getNewValue();
+					manager = (ScaDomainManager) msg.getOldValue();
 					removeDomainManagerPropertiesListeners(manager);
 					break;
 				case Notification.REMOVE_MANY:
@@ -220,19 +221,32 @@ public class ScaDomainManagerRegistryContainerImpl extends SessionSingletonBase 
 		try {
 			final boolean[] done = {false};
 			final URI[] result = new URI[1];
-			
-			UICallBack.runNonUIThreadWithFakeContext((Display) context, new Runnable() {
 
-				@Override
-				public void run() {
-					result[0] = new Path(ScaPlugin.getDefault().getCompatibilityUtil().getSettingStoreWorkDir().getAbsolutePath())
-					.append(ScaPlugin.getDefault().getCompatibilityUtil().getUserSpecificPath(context) + "_sca")
-					.append("domains.sca").toFile().toURI();
-					done[0] = true;
-				}
-				
-			});
-			
+			final Display display;
+			if (context instanceof Display) {
+				display = (Display) context;
+			} else {
+				display = Display.getCurrent();
+			}
+
+			if (display != null) {
+				UICallBack.runNonUIThreadWithFakeContext(display, new Runnable() {
+
+					@Override
+					public void run() {
+						result[0] = new Path(ScaPlugin.getDefault().getCompatibilityUtil().getSettingStoreWorkDir().getAbsolutePath())
+						.append(ScaPlugin.getDefault().getCompatibilityUtil().getUserSpecificPath(context) + "_sca")
+						.append("domains.sca").toFile().toURI();
+						done[0] = true;
+					}
+
+				});
+			} else {
+				ScaRapPlugin.getDefault().getLog().log(new Status(
+						Status.WARNING, ScaRapPlugin.PLUGIN_ID, "Unable to load SCA Domains because a Display instance was not provided"));
+				return;
+			}
+
 			while(!done[0]) {
 				try {
 					Thread.sleep(200);
@@ -240,7 +254,7 @@ public class ScaDomainManagerRegistryContainerImpl extends SessionSingletonBase 
 					//PASS
 				}
 			}
-			
+
 			final org.eclipse.emf.common.util.URI uri = org.eclipse.emf.common.util.URI.createURI(result[0].toString());
 			try {
 				this.registryResource = this.scaModelResourceSet.getResource(uri, true);

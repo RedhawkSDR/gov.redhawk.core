@@ -15,7 +15,7 @@ import java.io.File;
 
 
 /**
- * @since 6.1
+ * @since 7.0
  */
 public interface ICompatibilityUtil {
 

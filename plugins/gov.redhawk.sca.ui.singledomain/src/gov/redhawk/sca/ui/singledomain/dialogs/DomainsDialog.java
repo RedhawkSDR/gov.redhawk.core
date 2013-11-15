@@ -322,7 +322,7 @@ public class DomainsDialog extends Dialog {
 		gdf.applyTo(sep);
 		gdf.align(SWT.BEGINNING, SWT.CENTER).grab(true, false);
 		for (ScaDomainManager domain : ScaPlugin.getDefault()
-				.getDomainManagerRegistry().getDomains()) {
+				.getDomainManagerRegistry(getShell().getDisplay()).getDomains()) {
 			String suffix = getActiveLabel(domain);
 			final TrackableLabelAndHyperlink label = new TrackableLabelAndHyperlink(
 					composite, domain.getName() + suffix, "delete",
@@ -420,7 +420,7 @@ public class DomainsDialog extends Dialog {
 
 			@Override
 			public void linkActivated(org.eclipse.ui.forms.events.HyperlinkEvent e) {
-				ScaDomainManager domain = ScaPlugin.getDefault().getDomainManagerRegistry().findDomain(
+				ScaDomainManager domain = ScaPlugin.getDefault().getDomainManagerRegistry(getShell().getDisplay()).findDomain(
 						ScaExplorerSingleDomain.getActiveDomainName());
 				if (domain != null && !domain.isConnected()) {
 					try {
@@ -453,7 +453,7 @@ public class DomainsDialog extends Dialog {
 
 			@Override
 			public void linkActivated(org.eclipse.ui.forms.events.HyperlinkEvent e) {
-				ScaDomainManager domain = ScaPlugin.getDefault().getDomainManagerRegistry().findDomain(
+				ScaDomainManager domain = ScaPlugin.getDefault().getDomainManagerRegistry(getShell().getDisplay()).findDomain(
 						ScaExplorerSingleDomain.getActiveDomainName());
 				if (domain != null && domain.isConnected()) {
 					domain.disconnect();
@@ -482,7 +482,7 @@ public class DomainsDialog extends Dialog {
 
 			@Override
 			public void linkActivated(org.eclipse.ui.forms.events.HyperlinkEvent e) {
-				ScaDomainManager domain = ScaPlugin.getDefault().getDomainManagerRegistry().findDomain(
+				ScaDomainManager domain = ScaPlugin.getDefault().getDomainManagerRegistry(getShell().getDisplay()).findDomain(
 						ScaExplorerSingleDomain.getActiveDomainName());
 				if (domain != null && domain.isConnected()) {
 					try {
@@ -510,7 +510,7 @@ public class DomainsDialog extends Dialog {
 
 	protected void deleteDomain(String domainName) {
 		ScaDomainManagerRegistry registry = ScaPlugin.getDefault()
-				.getDomainManagerRegistry();
+				.getDomainManagerRegistry(getShell().getDisplay());
 		final ScaDomainManager domMgr = registry.findDomain(domainName);
 		if (domMgr != null) {
 			domMgr.disconnect();
@@ -518,7 +518,7 @@ public class DomainsDialog extends Dialog {
 
 				@Override
 				public void execute() {
-					ScaPlugin.getDefault().getDomainManagerRegistry()
+					ScaPlugin.getDefault().getDomainManagerRegistry(getShell().getDisplay())
 					.getDomains().remove(domMgr);
 				}
 
@@ -555,7 +555,7 @@ public class DomainsDialog extends Dialog {
 		if (this.closeListenerJob != null) {
 			this.closeListenerJob.cancel();
 		}
-		checkHyperlinkEnabled(ScaExplorerSingleDomain.getActiveDomain());
+		checkHyperlinkEnabled(ScaExplorerSingleDomain.getActiveDomain(shell.getDisplay()));
 		this.closeListenerJob = closeListener;
 		this.closeListenerJob.schedule();
 	}
