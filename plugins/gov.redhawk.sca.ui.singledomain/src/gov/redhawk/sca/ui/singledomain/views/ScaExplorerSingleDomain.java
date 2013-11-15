@@ -116,12 +116,16 @@ public class ScaExplorerSingleDomain extends ScaExplorer {
 		}
 	};
 
+	
 	public static String getActiveDomainName() {
 		return prefs.getString(ScaSingleDomainPreferenceConstants.SCA_ACTIVE_DOMAIN);
 	}
 
-	public static ScaDomainManager getActiveDomain() {
-		return ScaPlugin.getDefault().getDomainManagerRegistry().findDomain(getActiveDomainName());
+	/**
+	 * @since 2.0
+	 */
+	public static ScaDomainManager getActiveDomain(Display display) {
+		return ScaPlugin.getDefault().getDomainManagerRegistry(display).findDomain(getActiveDomainName());
 	}
 
 	private IPropertyChangeListener activeDomainListener = new IPropertyChangeListener() {
@@ -138,10 +142,10 @@ public class ScaExplorerSingleDomain extends ScaExplorer {
 						}
 					}
 				}
-				final ScaDomainManager activeDomain = getActiveDomain();
+				final ScaDomainManager activeDomain = getActiveDomain(getSite().getShell().getDisplay());
 				String newDomain = (String) event.getNewValue();
 				if (!newDomain.equals("")) {
-					ScaDomainManager domain = ScaPlugin.getDefault().getDomainManagerRegistry().findDomain(newDomain);
+					ScaDomainManager domain = ScaPlugin.getDefault().getDomainManagerRegistry(getSite().getShell().getDisplay()).findDomain(newDomain);
 					if (domain != null && domain.isAutoConnect()) {
 						try {
 							domain.connect(new NullProgressMonitor(), RefreshDepth.SELF);
@@ -178,7 +182,7 @@ public class ScaExplorerSingleDomain extends ScaExplorer {
 				//event.getNewValue() can return a String or Boolean
 				ScaExplorerSingleDomain.this.setNewDomainActive = Boolean.valueOf(String.valueOf(event.getNewValue()));
 			}
-			dialog.checkHyperlinkEnabled(getActiveDomain());
+			dialog.checkHyperlinkEnabled(getActiveDomain(getSite().getShell().getDisplay()));
 		}
 	};
 
@@ -253,7 +257,7 @@ public class ScaExplorerSingleDomain extends ScaExplorer {
 
 	@Override
 	protected Object getInitialInput() {
-		for (ScaDomainManager domain : ScaPlugin.getDefault().getDomainManagerRegistry().getDomains()) {
+		for (ScaDomainManager domain : ScaPlugin.getDefault().getDomainManagerRegistry(getSite().getShell().getDisplay()).getDomains()) {
 			if (domain.getName() != null && domain.getName().equals(getActiveDomainName())) {
 				if (!domain.isConnected() && domain.isAutoConnect()) {
 					try {
@@ -422,7 +426,7 @@ public class ScaExplorerSingleDomain extends ScaExplorer {
 			dialog.dispose();
 		}
 		prefs.removePropertyChangeListener(activeDomainListener);
-		ScaPlugin.getDefault().getDomainManagerRegistry().eAdapters().remove(domainChangeAdapter);
+		ScaPlugin.getDefault().getDomainManagerRegistry(getSite().getShell().getDisplay()).eAdapters().remove(domainChangeAdapter);
 		if (SWT.getPlatform().startsWith("rap")) {
 			if (!domains.getControl().isDisposed()) {
 				domains.removeMouseTrackListener(rapMouseTrackListener);

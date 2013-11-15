@@ -20,6 +20,8 @@ public class ScaRapPlugin extends Plugin {
 	private static BundleContext bundleContext;
 	
 	public static final String PROP_SHARED_DOMAINS = "gov.redhawk.sca.sharedDomains";
+	
+	public static final String PLUGIN_ID = "gov.redhawk.sca.rap";
 
 	@Override
 	public void start(BundleContext context) throws Exception {

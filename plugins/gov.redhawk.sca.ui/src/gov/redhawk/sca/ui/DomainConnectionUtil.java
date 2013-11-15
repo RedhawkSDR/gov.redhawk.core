@@ -39,8 +39,8 @@ public class DomainConnectionUtil {
 	}
 
 	public static void showDialog(final String host, final String domainName) {
-		final ScaDomainManagerRegistry registry = ScaPlugin.getDefault().getDomainManagerRegistry();
 		final DomainEntryWizard wizard = new DomainEntryWizard();
+		final ScaDomainManagerRegistry registry = ScaPlugin.getDefault().getDomainManagerRegistry(wizard.getShell().getDisplay());
 		wizard.setNameServiceInitRef(host);
 		wizard.setRegistry(registry);
 		wizard.setDomainName(domainName);

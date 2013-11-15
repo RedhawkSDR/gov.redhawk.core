@@ -116,13 +116,14 @@ public class ScaPlugin extends Plugin {
 	
 	/**
 	 * @since 3.0
+	 * @deprecated Use {@link #getDomainManagerRegistry(Object) instead. In RAP, the domain registry cannot be retrieved without the active Display instance}
 	 */
 	public ScaDomainManagerRegistry getDomainManagerRegistry() {
 		return getDomainManagerRegistry(null);
 	}
 	
 	/**
-	 * @since 6.1
+	 * @since 7.0
 	 *
 	 * Returns the SCA Domain Manager registry.
 	 * @param context
@@ -203,7 +204,7 @@ public class ScaPlugin extends Plugin {
 	}
 	
 	/**
-	 * @since 6.1
+	 * @since 7.0
 	 *
 	 * Returns a utility class that provides platform-specific implementations for RAP
 	 * and RCP runtime environments.

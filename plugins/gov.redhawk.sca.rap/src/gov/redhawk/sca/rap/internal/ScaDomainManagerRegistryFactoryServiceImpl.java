@@ -21,7 +21,11 @@ import org.eclipse.swt.widgets.Display;
 
 public class ScaDomainManagerRegistryFactoryServiceImpl implements IScaDomainManagerRegistryFactoryService {
 
-	@Override
+	/**
+	 * @Override
+	 * @Deprecated use {@link #getRegistryContainer(Object) instead. In RAP, the domain manager
+	 * registry cannot be retrieved without the active Display instance}
+	 */
 	public IScaDomainManagerRegistryContainer getRegistryContainer() {
 		return getRegistryContainer(null);
 	}

@@ -255,10 +255,10 @@ public class DomainBrowserView extends ViewPart {
 		});
 
 		// If there are any domains within the domain registry we want to set them onto our combo list
-		this.domainCombo.setInput(ScaPlugin.getDefault().getDomainManagerRegistry().getDomains());
+		this.domainCombo.setInput(ScaPlugin.getDefault().getDomainManagerRegistry(domainCombo.getControl().getDisplay()).getDomains());
 
 		// If the domain register logs any new domains or removes any we want to add / remove them from the combo
-		ScaPlugin.getDefault().getDomainManagerRegistry().eAdapters().add(domainChangeAdapter);
+		ScaPlugin.getDefault().getDomainManagerRegistry(domainCombo.getControl().getDisplay()).eAdapters().add(domainChangeAdapter);
 
 		// Now to make it so that the text box in the combo will have an auto-complete like feel to it.
 		final ComboContentAdapter controlAdapter = new ComboContentAdapter();
@@ -489,7 +489,7 @@ public class DomainBrowserView extends ViewPart {
 			        DomainBrowserView.resource.getContents(),
 			        this.domainManager));
 		}
-		ScaPlugin.getDefault().getDomainManagerRegistry().eAdapters().remove(this.domainChangeAdapter);
+		ScaPlugin.getDefault().getDomainManagerRegistry(getSite().getShell().getDisplay()).eAdapters().remove(this.domainChangeAdapter);
 		super.dispose();
 	}
 

@@ -28,6 +28,7 @@ import org.eclipse.core.commands.IHandler;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.IWorkbenchPart;
@@ -95,7 +96,11 @@ public abstract class WaveformActivity extends AbstractHandler implements IHandl
 	 * @param ret the result list to add any returned object to
 	 */
 	protected void processSelection(final Object selection, final ArrayList<Object> ret) {
-		final ScaDomainManagerRegistry registry = ScaPlugin.getDefault().getDomainManagerRegistry();
+		Display display = null;
+		if (pages.length > 0) {
+			display = pages[0].getWorkbenchWindow().getShell().getDisplay();
+		}
+		final ScaDomainManagerRegistry registry = ScaPlugin.getDefault().getDomainManagerRegistry(display);
 		final EList<ScaDomainManager> doms = registry.getDomains();
 
 		if (selection instanceof SoftwareAssembly) {
