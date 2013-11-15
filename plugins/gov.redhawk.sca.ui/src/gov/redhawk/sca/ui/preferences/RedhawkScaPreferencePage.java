@@ -13,6 +13,7 @@ package gov.redhawk.sca.ui.preferences;
 
 import gov.redhawk.common.ui.doc.HelpConstants;
 import gov.redhawk.model.sca.ScaDomainManagerRegistry;
+import gov.redhawk.model.sca.commands.ScaModelCommand;
 import gov.redhawk.sca.ScaPlugin;
 import gov.redhawk.sca.preferences.ScaPreferenceConstants;
 import gov.redhawk.sca.ui.ScaUiPlugin;
