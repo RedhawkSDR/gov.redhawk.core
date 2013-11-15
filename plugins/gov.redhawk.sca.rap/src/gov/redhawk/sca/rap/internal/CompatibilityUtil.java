@@ -14,9 +14,13 @@ package gov.redhawk.sca.rap.internal;
 import gov.redhawk.sca.ScaPlugin;
 import gov.redhawk.sca.compatibility.ICompatibilityUtil;
 import gov.redhawk.sca.rap.ScaRapPlugin;
+import gov.redhawk.sca.rap.RapInit;
 
 import java.io.File;
 import java.lang.reflect.Field;
+import java.security.Principal;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 
 import org.eclipse.core.runtime.Status;
 import org.eclipse.rwt.RWT;
@@ -33,54 +37,54 @@ public class CompatibilityUtil implements ICompatibilityUtil {
 		if (Boolean.valueOf(System.getProperty(ScaRapPlugin.PROP_SHARED_DOMAINS))) {
 			return "SHARED";
 		}
-		//		if (context == null || !(context instanceof Display)) {
-		//			context = Display.getCurrent();
-		//			if (context == null) {
-		//				return "";
-		//			}
-		//		}
-		//		Principal user = RapInit.getUserPrincipal((Display) context);
-		//		if (user != null) {
-		//			String dn = user.getName();
-		//			MessageDigest hashSum = null;
-		//			try {
-		//				hashSum = MessageDigest.getInstance("SHA-256");
-		//			} catch (NoSuchAlgorithmException e) {
-		//				return "";
-		//			}
-		//			return new String(hashSum.digest(dn.getBytes()));
-		//		}
-		//		return "";
+				if (context == null || !(context instanceof Display)) {
+					context = Display.getCurrent();
+					if (context == null) {
+						return "SHARED";
+					}
+				}
+				Principal user = RapInit.getUserPrincipal((Display) context);
+				if (user != null) {
+					String dn = user.getName();
+					MessageDigest hashSum = null;
+					try {
+						hashSum = MessageDigest.getInstance("SHA-256");
+					} catch (NoSuchAlgorithmException e) {
+						return "SHARED";
+					}
+					return new String(hashSum.digest(dn.getBytes()));
+				}
+				return "SHARED";
 
 		//BEGIN TEMP CODE
 		/* return user agent instead of DN, for dev testing */
-		Display display = (Display) context;
-		final String[] result = new String[1];
-		final boolean[] waitForResult = {true};
-		RWT.requestThreadExec(new Runnable() {
+		//Display display = (Display) context;
+		//final String[] result = new String[1];
+		//final boolean[] waitForResult = {true};
+		//RWT.requestThreadExec(new Runnable() {
 
-			@Override
-			public void run() {
-				String agent = RWT.getRequest().getHeader("User-Agent");
-				if (agent.contains("Firefox")) {
-					result[0] = "Firefox";
-				} else if (agent.contains("Chrome")) {
-					result[0] = "Chrome";
-				} else {
-					result[0] = "unknown";
-				}
-				waitForResult[0] = false;
-			}
+		//	@Override
+		//	public void run() {
+		//		String agent = RWT.getRequest().getHeader("User-Agent");
+		//		if (agent.contains("Firefox")) {
+		//			result[0] = "Firefox";
+		//		} else if (agent.contains("Chrome")) {
+		//			result[0] = "Chrome";
+		//		} else {
+		//			result[0] = "unknown";
+		//		}
+		//		waitForResult[0] = false;
+		//	}
 
-		});
+		//});
 
-		while (waitForResult[0] && display != null) {
-			if (!display.readAndDispatch()) {
-				display.sleep();
-			}
-		}
+		//while (waitForResult[0] && display != null) {
+		//	if (!display.readAndDispatch()) {
+		//		display.sleep();
+		//	}
+		//}
 
-		return result[0];
+		//return result[0];
 		//END TEMP CODE
 	}
 
