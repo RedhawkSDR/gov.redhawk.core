@@ -22,6 +22,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 import nxm.rcp.ui.core.NeXtMidasComposite;
 import nxm.redhawk.lib.RedhawkNxmUtil;
+import nxm.sys.lib.Command;
 import nxm.sys.lib.Results;
 import nxm.sys.prim.plot;
 
@@ -84,10 +85,15 @@ public class RcpNxmPlotWidget extends AbstractNxmPlotWidget {
 
 	@Override
 	public void runHeadlessCommand(String command) {
+		runHeadlessCommandWithResult(command);
+	}
+
+	@Override
+	public Command runHeadlessCommandWithResult(String command) {
 		if (!isInitialized()) {
 			throw new IllegalStateException("Plot not initialized");
 		}
-		nxmComp.runCommand(command + " /MSGID=" + MSG_HANDLER_ID, false);
+		return nxmComp.runCommand(command + " /MSGID=" + MSG_HANDLER_ID, false);
 	}
 
 	@Override

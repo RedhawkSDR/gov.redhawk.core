@@ -247,7 +247,7 @@ public abstract class AbstractNxmBlock<C extends Command, S extends Object> impl
 			TRACE_LOG.message("launch({0}) cmdline: {1} [{2}]", streamID, cmdLine, toString());
 		}
 		if (cmdLine != null && !cmdLine.trim().isEmpty()) {
-			final Command cmd = plotWidget.runServerCommand(cmdLine + " /BG");
+			final Command cmd = plotWidget.runHeadlessCommandWithResult(cmdLine + " /BG");
 			if (cmd == null) {
 				throw new IllegalStateException("Expected to launch NeXtMidas command, but got null");
 			} else {

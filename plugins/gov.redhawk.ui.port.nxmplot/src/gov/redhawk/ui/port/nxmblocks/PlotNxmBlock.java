@@ -75,10 +75,10 @@ public class PlotNxmBlock extends AbstractNxmBlock<plot, PlotNxmBlockSettings> {
 				frameSize = sri.subsize;
 			}
 			String tmpResName = AbstractNxmPlotWidget.createUniqueName(false);
-			currentPlotWidget.runServerCommand("TABLE " + tmpResName + " CREATE");
-			currentPlotWidget.runServerCommand("STATUS/VERBOSE " + sourceName + " type=" + tmpResName + ".type  frameSize=" + tmpResName + ".fs");
-			currentPlotWidget.runServerCommand("RES/ALL " + tmpResName + "");
-			currentPlotWidget.runServerCommand("STATUS/VERBOSE " + sourceName);
+			currentPlotWidget.runHeadlessCommandWithResult("TABLE " + tmpResName + " CREATE");
+			currentPlotWidget.runHeadlessCommandWithResult("STATUS/VERBOSE " + sourceName + " type=" + tmpResName + ".type  frameSize=" + tmpResName + ".fs");
+			currentPlotWidget.runHeadlessCommandWithResult("RES/ALL " + tmpResName + "");
+			currentPlotWidget.runHeadlessCommandWithResult("STATUS/VERBOSE " + sourceName);
 			if (frameSize <= 0) { // 3. no frame size
 				pipeQualifiers.append("{FRAMESIZE=1024}"); // frame type 1000 pipe to 1024
 			}

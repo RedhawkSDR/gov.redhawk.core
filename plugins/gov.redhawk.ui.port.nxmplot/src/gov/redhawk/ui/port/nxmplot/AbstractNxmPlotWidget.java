@@ -21,6 +21,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 import nxm.sys.inc.Commandable;
 import nxm.sys.inc.MessageHandler;
+import nxm.sys.lib.Command;
 import nxm.sys.lib.Message;
 import nxm.sys.lib.Position;
 import nxm.sys.lib.Table;
@@ -266,6 +267,18 @@ public abstract class AbstractNxmPlotWidget extends Composite {
 	 * @param command headless nm command to run
 	 */
 	public abstract void runHeadlessCommand(String command);
+
+	/**
+	 * Runs a command headlessly within the NmSession (the server side for RAP).
+	 * <p>
+	 * <b> DO NOT RUN PLOT OR SEND PLOT MESSAGES HERE</b>
+	 * <p>
+	 * This should be used to run source commands and additional filtering or processing commands before plotting.
+	 * @param command headless nm command to run
+	 * @return Command that was executed
+	 * @since 4.3 
+	 */
+	public abstract Command runHeadlessCommandWithResult(String command);
 
 	/**
 	 * Runs a command on the client's NeXtMidas session.
