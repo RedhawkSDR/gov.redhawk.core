@@ -16,12 +16,18 @@ Require-Bundle: org.eclipse.ui;bundle-version="3.6.1";resolution:=optional,
  gov.redhawk.common.ui;bundle-version="1.0.0",
  idl.bulkio;bundle-version="1.8.0",
  nxm.sys;bundle-version="3.3.3",
- nxm.redhawk;bundle-version="8.0.0"
+ nxm.redhawk;bundle-version="8.0.0",
+ org.eclipse.core.databinding;bundle-version="1.4.1",
+ org.eclipse.core.databinding.beans;bundle-version="1.2.200",
+ org.eclipse.core.databinding.property;bundle-version="1.4.100",
+ org.eclipse.jface.databinding
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Bundle-ActivationPolicy: lazy
 Export-Package: gov.redhawk.internal.ui.port.nxmplot;x-internal:=true,
  gov.redhawk.internal.ui.port.nxmplot.handlers;x-internal:=true,
  gov.redhawk.internal.ui.port.nxmplot.view;x-internal:=true,
+ gov.redhawk.ui.port.nxmblocks,
  gov.redhawk.ui.port.nxmplot
 Bundle-ClassPath: .
-Import-Package: nxm.dsp.prim
+Import-Package: gov.redhawk.bulkio.util,
+ nxm.dsp.prim
