@@ -2,13 +2,13 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: %Bundle-Name
 Bundle-SymbolicName: gov.redhawk.ui.port.nxmplot.rcp;singleton:=true
-Bundle-Version: 1.1.0.qualifier
+Bundle-Version: 1.2.0.qualifier
 Bundle-Vendor: %Bundle-Vendor
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Require-Bundle: org.eclipse.ui;bundle-version="3.6.1",
  org.eclipse.core.runtime;bundle-version="3.6.0",
  gov.redhawk.ui.port.nxmplot;bundle-version="2.2.0",
- nxm.sys;bundle-version="[3.3.0,3.5.0)",
+ nxm.sys;bundle-version="[3.3.3,3.7.0)",
  nxm.rcp.ui;bundle-version="[1.0.0,2.0.0)",
  nxm.redhawk;bundle-version="8.0.0"
 Service-Component: OSGI-INF/component.xml
