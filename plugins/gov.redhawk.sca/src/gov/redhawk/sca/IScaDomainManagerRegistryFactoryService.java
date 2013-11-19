@@ -13,7 +13,7 @@ package gov.redhawk.sca;
 
 
 /**
- * @since 6.1
+ * @since 7.0
  */
 public interface IScaDomainManagerRegistryFactoryService {
 	
