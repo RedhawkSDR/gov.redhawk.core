@@ -8,7 +8,7 @@ Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Require-Bundle: org.eclipse.equinox.http.registry,
  org.eclipse.ui;bundle-version="3.6.1";resolution:=optional,
  org.eclipse.core.runtime;bundle-version="3.6.0",
- nxm.rap.ui;bundle-version="1.1.0",
+ nxm.rap.ui;bundle-version="1.2.0",
  nxm.sys;bundle-version="3.3.3",
  gov.redhawk.ui.port.nxmplot;bundle-version="4.2.0",
  mil.jpeojtrs.sca.util;bundle-version="3.1.0",
