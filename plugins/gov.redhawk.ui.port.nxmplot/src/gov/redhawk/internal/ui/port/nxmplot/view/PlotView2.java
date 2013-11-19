@@ -45,6 +45,7 @@ import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.part.ViewPart;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
+import org.eclipse.ui.services.IDisposable;
 import org.eclipse.ui.statushandlers.StatusManager;
 
 import BULKIO.StreamSRI;
@@ -153,9 +154,9 @@ public class PlotView2 extends ViewPart {
 	 * @param fftSettings settings to use if an FFT is to be displayed (null for none)
 	 * @param qualifiers
 	 * @param ports list of ScaPort object to plot the output from.
-	 * @return New session 
+	 * @return IDisposable (since 4.3)
 	 */
-	public IPlotSession addPlotSource(ScaUsesPort port, final FftSettings fftSettings, String qualifiers) {
+	public IDisposable addPlotSource(ScaUsesPort port, final FftSettings fftSettings, String qualifiers) {
 		if (fftSettings != null) {
 			addAdjustFftSettingsMenuIfNotPresent();
 		}
