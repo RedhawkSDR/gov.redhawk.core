@@ -14,7 +14,7 @@ package gov.redhawk.model.sca.tests;
 import gov.redhawk.model.sca.ScaAbstractProperty;
 import gov.redhawk.model.sca.ScaPropertyContainer;
 import gov.redhawk.model.sca.commands.ScaModelCommand;
-import junit.framework.Assert;
+import org.junit.Assert;
 
 import org.eclipse.emf.common.util.URI;
 

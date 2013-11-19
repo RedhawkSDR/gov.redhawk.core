@@ -13,7 +13,7 @@ package gov.redhawk.model.sca.tests;
 
 import gov.redhawk.model.sca.CorbaObjWrapper;
 import gov.redhawk.model.sca.commands.ScaModelCommand;
-import junit.framework.Assert;
+import org.junit.Assert;
 
 /**
  * <!-- begin-user-doc -->

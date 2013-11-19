@@ -12,7 +12,7 @@
 package gov.redhawk.model.sca.tests;
 
 import gov.redhawk.model.sca.ScaDomainManagerFileSystem;
-import junit.framework.Assert;
+import org.junit.Assert;
 import junit.textui.TestRunner;
 
 import org.eclipse.emf.transaction.util.TransactionUtil;

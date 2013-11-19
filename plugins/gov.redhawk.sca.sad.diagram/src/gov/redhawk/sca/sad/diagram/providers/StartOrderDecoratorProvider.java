@@ -118,7 +118,7 @@ public class StartOrderDecoratorProvider extends AbstractProvider implements IDe
 						StartOrderDecorator.this.viewId = (view != null) ? ViewUtil.getIdStr(view) : null; // SUPPRESS CHECKSTYLE AvoidInLine
 					}
 				});
-			} catch (final Exception e) {
+			} catch (final Exception e) { // SUPPRESS CHECKSTYLE Logged Catch all exception
 				SadDiagramEditorPlugin.getInstance().logError("ViewID access failure", e); //$NON-NLS-1$
 			}
 		}

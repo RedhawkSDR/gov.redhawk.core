@@ -13,7 +13,7 @@ package gov.redhawk.model.sca.tests;
 
 import gov.redhawk.model.sca.ScaConnection;
 import gov.redhawk.model.sca.ScaFactory;
-import junit.framework.Assert;
+import org.junit.Assert;
 import junit.framework.TestCase;
 import junit.textui.TestRunner;
 import mil.jpeojtrs.sca.util.DceUuidUtil;

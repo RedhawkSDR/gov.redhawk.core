@@ -66,7 +66,7 @@ public class UninstallWaveform extends WaveformActivity {
 			WaveformProjectPlugin.logError("Failed to uninstall waveform: " + id, e);
 		} catch (final ReleaseError e) {
 			WaveformProjectPlugin.logError("Failed to uninstall waveform: " + id, e);
-		} catch (final Exception e) {
+		} catch (final Exception e) { // SUPPRESS CHECKSTYLE Logged Catch all exception
 			WaveformProjectPlugin.logError("Failed to uninstall waveform: " + id, e);
 		}
 

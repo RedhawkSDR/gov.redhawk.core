@@ -14,7 +14,7 @@
 package gov.redhawk.eclipsecorba.idl.tests;
 
 import gov.redhawk.eclipsecorba.idl.Identifiable;
-import junit.framework.Assert;
+import org.junit.Assert;
 import junit.framework.TestCase;
 
 /**

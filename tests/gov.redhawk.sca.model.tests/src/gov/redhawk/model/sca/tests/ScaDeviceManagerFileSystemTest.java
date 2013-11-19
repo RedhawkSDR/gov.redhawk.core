@@ -12,7 +12,7 @@
 package gov.redhawk.model.sca.tests;
 
 import gov.redhawk.model.sca.ScaDeviceManagerFileSystem;
-import junit.framework.Assert;
+import org.junit.Assert;
 import junit.textui.TestRunner;
 import CF.FileSystemHelper;
 

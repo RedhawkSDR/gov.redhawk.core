@@ -79,7 +79,7 @@ public class ConnectDomainHandler extends AbstractHandler implements IHandler {
 							try {
 								domMgr.connect(monitor, RefreshDepth.SELF);
 								return Status.OK_STATUS;
-							} catch (final Exception e) {
+							} catch (final Exception e) {  // SUPPRESS CHECKSTYLE Logged Catch all exception
 								return new Status(IStatus.ERROR, ScaUiPlugin.PLUGIN_ID, "Failed to connect", e);
 							}
 						}

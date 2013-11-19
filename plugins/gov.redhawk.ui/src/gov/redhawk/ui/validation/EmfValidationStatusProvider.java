@@ -75,7 +75,7 @@ public class EmfValidationStatusProvider extends MultiValidator {
 								status = ValidationStatus.ok();
 							}
 							EmfValidationStatusProvider.this.validationStatus.setValue(status);
-						} catch (final RuntimeException e) {
+						} catch (final RuntimeException e) { // SUPPRESS CHECKSTYLE Logged Catch all exception
 							// Usually an NPE as dependencies are
 							// initialized
 							EmfValidationStatusProvider.this.validationStatus.setValue(ValidationStatus.error(
@@ -186,7 +186,7 @@ public class EmfValidationStatusProvider extends MultiValidator {
 						status = ValidationStatus.ok();
 					}
 					EmfValidationStatusProvider.this.validationStatus.setValue(status);
-				} catch (final RuntimeException e) {
+				} catch (final RuntimeException e) { // SUPPRESS CHECKSTYLE Logged Catch all exception
 					// Usually an NPE as dependencies are initialized
 					EmfValidationStatusProvider.this.validationStatus.setValue(ValidationStatus.error(e.getMessage(), e));
 				}

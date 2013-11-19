@@ -16,7 +16,7 @@ import gov.redhawk.model.sca.ScaPort;
 import gov.redhawk.model.sca.commands.ScaModelCommand;
 import gov.redhawk.model.sca.commands.ScaModelCommandWithResult;
 import gov.redhawk.model.sca.impl.ScaAbstractComponentImpl;
-import junit.framework.Assert;
+import org.junit.Assert;
 import CF.DataType;
 import CF.PropertiesHolder;
 import CF.Resource;

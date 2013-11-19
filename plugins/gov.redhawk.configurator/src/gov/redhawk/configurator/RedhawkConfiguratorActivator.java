@@ -96,7 +96,7 @@ public class RedhawkConfiguratorActivator implements BundleActivator {
 			default:
 				this.logError("Invalid bundle: " + file.getAbsolutePath(), e);
 			}
-		} catch (final Exception e) {
+		} catch (final Exception e) { // SUPPRESS CHECKSTYLE Logged Catch all exception
 			this.logError("Problems installing bundle: " + file.getAbsolutePath(), e);
 		}
 	}
@@ -106,7 +106,7 @@ public class RedhawkConfiguratorActivator implements BundleActivator {
 			if (b.getState() != Bundle.UNINSTALLED) {
 				try {
 					b.uninstall();
-				} catch (final Exception e) {
+				} catch (final Exception e) { // SUPPRESS CHECKSTYLE Logged Catch all exception
 					this.logError("Problems uninstalling bundle: " + b.getSymbolicName(), e);
 				}
 			}

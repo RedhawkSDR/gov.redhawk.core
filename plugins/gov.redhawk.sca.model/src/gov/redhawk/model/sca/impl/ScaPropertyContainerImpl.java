@@ -565,7 +565,7 @@ public abstract class ScaPropertyContainerImpl< P extends org.omg.CORBA.Object, 
 		} catch (SystemException e) {
 			fetchStatus = new Status(Status.ERROR, ScaModelPlugin.ID, "Failed to query property values.", e);
 			transaction.append(new UnsetLocalAttributeCommand(this, fetchStatus, ScaPackage.Literals.SCA_PROPERTY_CONTAINER__PROPERTIES));
-		} catch (Exception e) {
+		} catch (Exception e) { // SUPPRESS CHECKSTYLE Logged Catch all exception
 			fetchStatus = new Status(Status.ERROR, ScaModelPlugin.ID, "Failed to fetch properties.", e);
 			transaction.append(new UnsetLocalAttributeCommand(this, fetchStatus, ScaPackage.Literals.SCA_PROPERTY_CONTAINER__PROPERTIES));
 		}

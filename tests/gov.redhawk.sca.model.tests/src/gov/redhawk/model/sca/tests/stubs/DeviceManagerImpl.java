@@ -20,7 +20,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import junit.framework.Assert;
+import org.junit.Assert;
 import mil.jpeojtrs.sca.dcd.DcdComponentInstantiation;
 import mil.jpeojtrs.sca.dcd.DcdComponentPlacement;
 import mil.jpeojtrs.sca.dcd.DeviceConfiguration;
@@ -272,7 +272,7 @@ public class DeviceManagerImpl extends AbstractResourceImpl implements DeviceMan
 		try {
 			initDevices();
 			initServices();
-		} catch (Exception e) {
+		} catch (Exception e) {  // SUPPRESS CHECKSTYLE DEBUG CODE
 			// TODO Auto-generated catch block
 			e.printStackTrace(); // CHECKSTYLE: DEBUG CODE
 		}

@@ -20,7 +20,7 @@ import gov.redhawk.model.sca.ScaStructProperty;
 import gov.redhawk.model.sca.ScaWaveform;
 import gov.redhawk.model.sca.commands.ScaModelCommand;
 import gov.redhawk.model.sca.tests.stubs.ScaTestConstaints;
-import junit.framework.Assert;
+import org.junit.Assert;
 import junit.textui.TestRunner;
 
 import org.eclipse.emf.common.notify.Notification;

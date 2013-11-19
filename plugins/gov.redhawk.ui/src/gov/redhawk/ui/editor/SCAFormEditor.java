@@ -841,7 +841,7 @@ public abstract class SCAFormEditor extends FormEditor implements IEditingDomain
 						if (isPersisted(resource) && isLocal(resource)) {
 							try {
 								resource.save(saveOptions);
-							} catch (final Exception exception) {
+							} catch (final Exception exception) { // SUPPRESS CHECKSTYLE Logged Catch all exception
 								throw new CoreException(new Status(IStatus.ERROR, RedhawkUiActivator.getPluginId(), "Failed to save resource: " + resource,
 									exception));
 							}
@@ -888,7 +888,7 @@ public abstract class SCAFormEditor extends FormEditor implements IEditingDomain
 			// Refresh the necessary state.
 			//
 			((BasicCommandStack) this.editingDomain.getCommandStack()).saveIsDone();
-		} catch (final Exception exception) {
+		} catch (final Exception exception) { // SUPPRESS CHECKSTYLE Logged Catch all exception
 			// Something went wrong that shouldn't.
 			//
 			StatusManager.getManager().handle(
@@ -1004,7 +1004,7 @@ public abstract class SCAFormEditor extends FormEditor implements IEditingDomain
 			// Load the resource through the editing domain.
 			//
 			this.mainResource = this.editingDomain.getResourceSet().getResource(decodedURI, true);
-		} catch (final Exception e) {
+		} catch (final Exception e) { // SUPPRESS CHECKSTYLE Logged Catch all exception
 			exception = e;
 			this.mainResource = this.editingDomain.getResourceSet().getResource(decodedURI, false);
 		}

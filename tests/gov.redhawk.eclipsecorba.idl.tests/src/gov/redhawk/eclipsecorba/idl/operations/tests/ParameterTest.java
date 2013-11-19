@@ -20,7 +20,7 @@ import gov.redhawk.eclipsecorba.idl.operations.Operation;
 import gov.redhawk.eclipsecorba.idl.operations.OperationsFactory;
 import gov.redhawk.eclipsecorba.idl.operations.Parameter;
 import gov.redhawk.eclipsecorba.idl.tests.TypedElementTest;
-import junit.framework.Assert;
+import org.junit.Assert;
 import junit.textui.TestRunner;
 
 /**

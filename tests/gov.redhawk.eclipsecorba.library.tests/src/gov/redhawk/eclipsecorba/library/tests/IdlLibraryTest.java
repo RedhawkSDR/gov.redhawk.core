@@ -22,7 +22,7 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 
-import junit.framework.Assert;
+import org.junit.Assert;
 import junit.textui.TestRunner;
 
 import org.eclipse.emf.common.util.URI;

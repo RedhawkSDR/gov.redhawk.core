@@ -18,7 +18,7 @@ import gov.redhawk.eclipsecorba.idl.Identifiable;
 import gov.redhawk.eclipsecorba.idl.IdlFactory;
 import gov.redhawk.eclipsecorba.idl.IdlInterfaceDcl;
 import gov.redhawk.eclipsecorba.idl.Module;
-import junit.framework.Assert;
+import org.junit.Assert;
 import junit.textui.TestRunner;
 
 /**

@@ -18,7 +18,7 @@ import gov.redhawk.model.sca.commands.ScaModelCommand;
 import gov.redhawk.model.sca.impl.ScaDomainManagerImpl;
 import gov.redhawk.model.sca.impl.ScaWaveformImpl;
 import gov.redhawk.model.sca.tests.stubs.ScaTestConstaints;
-import junit.framework.Assert;
+import org.junit.Assert;
 import junit.textui.TestRunner;
 
 import org.eclipse.emf.transaction.util.TransactionUtil;

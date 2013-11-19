@@ -531,7 +531,7 @@ public abstract class BasicSimplePropertyComposite extends AbstractPropertyCompo
 						try {
 							AnyUtils.convertString(value.toString(), simple.getType().getLiteral(), simple.isComplex());
 							return null;
-						} catch (final Exception e) {
+						} catch (final Exception e) { // SUPPRESS CHECKSTYLE Logged Catch all exception
 							return "Invalid value";
 						}
 					}

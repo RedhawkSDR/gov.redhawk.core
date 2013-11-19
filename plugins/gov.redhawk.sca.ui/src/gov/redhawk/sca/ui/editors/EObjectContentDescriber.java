@@ -71,7 +71,7 @@ public class EObjectContentDescriber implements IScaContentDescriber, IExecutabl
 						} else {
 							return IScaContentDescriber.INVALID;
 						}
-					} catch (final Exception e) {
+					} catch (final Exception e) {  // SUPPRESS CHECKSTYLE Logged Catch all exception
 						return IScaContentDescriber.INVALID;
 					}
 				}

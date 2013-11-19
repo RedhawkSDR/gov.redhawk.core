@@ -13,7 +13,7 @@ package gov.redhawk.model.sca.tests;
 
 import gov.redhawk.model.sca.RefreshDepth;
 import gov.redhawk.model.sca.ScaFileStore;
-import junit.framework.Assert;
+import org.junit.Assert;
 import junit.textui.TestRunner;
 
 /**

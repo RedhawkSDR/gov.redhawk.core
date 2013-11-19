@@ -15,7 +15,7 @@ package gov.redhawk.eclipsecorba.library.tests;
 
 import gov.redhawk.eclipsecorba.library.LibraryFactory;
 import gov.redhawk.eclipsecorba.library.PreferenceNodePathSet;
-import junit.framework.Assert;
+import org.junit.Assert;
 import junit.textui.TestRunner;
 
 import org.eclipse.core.runtime.preferences.InstanceScope;

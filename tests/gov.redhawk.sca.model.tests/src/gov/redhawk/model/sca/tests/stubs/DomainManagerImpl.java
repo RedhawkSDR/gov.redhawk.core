@@ -211,7 +211,7 @@ public class DomainManagerImpl extends AbstractResourceImpl implements DomainMan
 			throw new ApplicationInstallationError(e.getMessage(), ErrorNumberType.CF_EIO, profileFileName);
 		} catch (WrongPolicy e) {
 			throw new ApplicationInstallationError(e.getMessage(), ErrorNumberType.CF_EIO, profileFileName);
-		} catch (Exception e) {
+		} catch (Exception e) {  // SUPPRESS CHECKSTYLE Logged Catch all exception
 			throw new InvalidProfile(e.getMessage());
 		}
 	}

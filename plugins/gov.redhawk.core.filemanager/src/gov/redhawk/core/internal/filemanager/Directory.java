@@ -165,7 +165,7 @@ public class Directory implements Node {
 			}
 			try {
 				nodes.add(new MountPoint(fileSystem));
-			} catch (final Exception e) {
+			} catch (final Exception e) {  // SUPPRESS CHECKSTYLE Logged Catch all exception
 				throw new MountPointAlreadyExists(e.getMessage());
 			}
 		} else {

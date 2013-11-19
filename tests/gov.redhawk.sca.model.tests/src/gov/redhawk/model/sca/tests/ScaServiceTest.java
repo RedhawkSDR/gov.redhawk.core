@@ -15,7 +15,7 @@ import gov.redhawk.model.sca.RefreshDepth;
 import gov.redhawk.model.sca.ScaDeviceManager;
 import gov.redhawk.model.sca.ScaService;
 import gov.redhawk.model.sca.tests.stubs.ScaTestConstaints;
-import junit.framework.Assert;
+import org.junit.Assert;
 import junit.textui.TestRunner;
 import CF.DeviceHelper;
 

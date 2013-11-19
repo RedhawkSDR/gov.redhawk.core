@@ -847,7 +847,7 @@ public class CorbaReceiver implements dataShortOperations, dataCharOperations, d
 			} catch (final LineUnavailableException e) {
 				Activator.logError("Error getting audio line for playback", e);
 				this.sourceDataLine = null;
-			} catch (Exception e) {
+			} catch (Exception e) {  // SUPPRESS CHECKSTYLE Logged Catch all exception
 				Activator.logError("Error getting audio line for playback", e);
 				this.sourceDataLine = null;
 			}

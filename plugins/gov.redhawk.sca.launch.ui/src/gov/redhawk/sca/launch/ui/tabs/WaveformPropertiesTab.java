@@ -185,7 +185,7 @@ public class WaveformPropertiesTab extends AbstractLaunchConfigurationTab {
 		} catch (final CoreException e) {
 			setSoftwareAssembly(null, configuration);
 			ScaLauncherActivator.log(e);
-		} catch (final Exception e) {
+		} catch (final Exception e) { // SUPPRESS CHECKSTYLE Logged Catch all exception
 			setSoftwareAssembly(null, configuration);
 			ScaLauncherActivator.log(e);
 		}

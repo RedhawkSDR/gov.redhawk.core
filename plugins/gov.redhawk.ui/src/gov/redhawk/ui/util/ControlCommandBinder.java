@@ -63,7 +63,7 @@ public class ControlCommandBinder {
 			public void widgetSelected(final SelectionEvent e) {
 				try {
 					((IHandlerService) PlatformUI.getWorkbench().getService(IHandlerService.class)).executeCommand(commandId, null);
-				} catch (final Exception ex) {
+				} catch (final Exception ex) {  // SUPPRESS CHECKSTYLE Logged Catch all exception
 					RedhawkUiActivator.logException(ex, "Unable to execute command: " + commandId);
 				}
 			}

@@ -20,7 +20,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.Enumeration;
 
-import junit.framework.Assert;
+import org.junit.Assert;
 import junit.framework.TestCase;
 
 import org.eclipse.core.runtime.FileLocator;
@@ -58,7 +58,7 @@ public class ParseTests extends TestCase {
 				try {
 					final Resource resource = this.resourceSet.getResource(uri, true);
 					assertParsedFine(resource);
-				} catch (final Exception e) {
+				} catch (final Exception e) { // SUPPRESS CHECKSTYLE Logged Catch all exception
 					throw new Exception("Failed to parse idl: " + uri.lastSegment(), e);
 				}
 			}

@@ -33,7 +33,7 @@ import gov.redhawk.sca.util.OrbSession;
 import java.io.File;
 import java.net.URL;
 
-import junit.framework.Assert;
+import org.junit.Assert;
 
 import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.Path;

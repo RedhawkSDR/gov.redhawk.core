@@ -1086,7 +1086,7 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 			monitor.subTask("Refreshing Domain...");
 			try {
 				this.refresh(monitor.newChild(REFRESH_DOMAIN_WORK), refreshDepth);
-			} catch (Exception e) {
+			} catch (Exception e) { // SUPPRESS CHECKSTYLE Logged Catch all exception
 				if (DEBUG.enabled) {
 					DEBUG.message("Errors during refresh in connect.");
 					DEBUG.catching(e);
@@ -1097,7 +1097,7 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 		} catch (final DomainConnectionException e) {
 			// Failure occurred in another thread and we're reporting that failure to this thread
 			throw e;
-		} catch (final Exception e) {
+		} catch (final Exception e) { // SUPPRESS CHECKSTYLE Logged Catch all exception
 			ScaModelCommand.execute(this, new ScaModelCommand() {
 
 				@Override

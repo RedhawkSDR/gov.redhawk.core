@@ -235,7 +235,7 @@ public class NameBrowserView extends ViewPart {
 				final BindingNode newRootNode = new BindingNode(newRef);
 				try {
 					newRootNode.connect();
-				} catch (final Exception e) {
+				} catch (final Exception e) { // SUPPRESS CHECKSTYLE Logged Catch all exception
 					newRootNode.dispose();
 					return new Status(IStatus.ERROR, NameBrowserPlugin.PLUGIN_ID, "Error connecting to the name server, see Error Log for details.", e);
 				}

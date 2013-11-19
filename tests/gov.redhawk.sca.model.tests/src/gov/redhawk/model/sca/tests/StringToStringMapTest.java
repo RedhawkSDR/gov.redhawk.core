@@ -16,7 +16,7 @@ import gov.redhawk.model.sca.ScaPackage;
 
 import java.util.Map;
 
-import junit.framework.Assert;
+import org.junit.Assert;
 import junit.framework.TestCase;
 import junit.textui.TestRunner;
 

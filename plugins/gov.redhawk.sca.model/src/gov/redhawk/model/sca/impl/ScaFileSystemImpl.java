@@ -445,7 +445,7 @@ public abstract class ScaFileSystemImpl< F extends FileSystem > extends CorbaObj
 			if (retVal.scheme() == null) {
 				retVal = org.eclipse.emf.common.util.URI.createURI(fileStore.getFileStore(new Path(path)).toURI().toString());
 			}
-		} catch (Exception e) {
+		} catch (Exception e) { // SUPPRESS CHECKSTYLE Logged Catch all exception
 			retVal = org.eclipse.emf.common.util.URI.createURI(fileStore.getFileStore(new Path(path)).toURI().toString());
 		}
 		return retVal;

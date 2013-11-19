@@ -61,7 +61,7 @@ public class ClientOrbInitializer extends LocalObject implements ORBInitializer 
 			final ClientRequestInterceptor interceptor = new ClientInterceptor(piCurrent, outCallIndicatorSlotId);
 
 			info.add_client_request_interceptor(interceptor);
-		} catch (final Throwable e) {
+		} catch (final Throwable e) { // SUPPRESS CHECKSTYLE Logged Catch all exception
 			throw new RuntimeException(e);
 		}
 	}

@@ -55,7 +55,6 @@ public final class StreamSRIUtil {
 		}
 	}
 	
-	@SuppressWarnings("null")
 	@NonNull
 	public static Map<String, Object> toMap(DataType[] dataTypes) {
 		if (dataTypes == null || dataTypes.length == 0) {
@@ -78,7 +77,6 @@ public final class StreamSRIUtil {
 		return retVal;
 	}
 
-	@SuppressWarnings("null")
 	@NonNull
 	public static Map<String, Object> extractKeyWords(StreamSRI sri) {
 		if (sri == null) {

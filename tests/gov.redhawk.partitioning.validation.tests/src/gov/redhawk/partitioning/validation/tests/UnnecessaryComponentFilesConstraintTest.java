@@ -12,7 +12,7 @@
 package gov.redhawk.partitioning.validation.tests;
 
 import gov.redhawk.partitioning.validation.UnnecessaryComponentFilesConstraint;
-import junit.framework.Assert;
+import org.junit.Assert;
 import mil.jpeojtrs.sca.sad.SoftwareAssembly;
 
 import org.eclipse.emf.ecore.resource.ResourceSet;

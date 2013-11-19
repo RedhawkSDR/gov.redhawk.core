@@ -48,7 +48,7 @@ public class ScaTransactionalCommandStack extends TransactionalCommandStackImpl 
 					notifyListeners();
 				} catch (AbortExecutionException exception) {
 					command.dispose();
-				} catch (RuntimeException exception) {
+				} catch (RuntimeException exception) { // SUPPRESS CHECKSTYLE Logged Catch all exception
 					handleError(exception);
 					command.dispose();
 					notifyListeners();
