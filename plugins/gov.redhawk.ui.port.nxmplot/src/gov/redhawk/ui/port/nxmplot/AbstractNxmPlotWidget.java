@@ -401,9 +401,9 @@ public abstract class AbstractNxmPlotWidget extends Composite {
 	}
 
 	/** 
-	 * @since 4.2
+	 * @since 4.3, was added in 4.2 as protected
 	 */
-	protected PlotMessageHandler getPlotMessageHandler() {
+	public PlotMessageHandler getPlotMessageHandler() {
 		return plotMessageHandler;
 	}
 
