@@ -30,6 +30,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import org.eclipse.core.runtime.Assert;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Path;
@@ -110,6 +111,7 @@ public class ScaDomainManagerRegistryContainerImpl extends SessionSingletonBase 
 			if (msg.getFeatureID(ScaDomainManagerRegistry.class) == ScaPackage.SCA_DOMAIN_MANAGER_REGISTRY__DOMAINS) {
 				switch (msg.getEventType()) {
 				case Notification.ADD:
+					saveDomainManagerRegistryResource();
 					ScaDomainManager manager = (ScaDomainManager) msg.getNewValue();
 					addDomainManagerPropertiesListeners(manager);
 					break;
@@ -121,6 +123,7 @@ public class ScaDomainManagerRegistryContainerImpl extends SessionSingletonBase 
 					}
 					break;
 				case Notification.REMOVE:
+					saveDomainManagerRegistryResource();
 					manager = (ScaDomainManager) msg.getOldValue();
 					removeDomainManagerPropertiesListeners(manager);
 					break;
@@ -201,12 +204,40 @@ public class ScaDomainManagerRegistryContainerImpl extends SessionSingletonBase 
 
 
 	@Override
-	public ScaDomainManagerRegistry getRegistry(Object context) {
-		loadScaModel(context);
-		if (initialStartup(context)) {
-			connectOnStartup();
+	public ScaDomainManagerRegistry getRegistry(final Object context) {
+
+		Assert.isTrue(context instanceof Display, "The context object must be an instance of Display");
+		Assert.isTrue(!((Display) context).isDisposed(), "The context object must not be disposed");
+
+		if (Display.getCurrent() != null) {
+			loadScaModel(Display.getCurrent());
+			if (initialStartup(context)) {
+				connectOnStartup();
+			}
+			return scaDomainManagerRegistry;
+		} else {
+			((Display) context).asyncExec(new Runnable() {
+
+				@Override
+				public void run() {
+					scaDomainManagerRegistry = null;
+					loadScaModel(context);
+				}
+				
+			});
+			
+			while (scaDomainManagerRegistry == null) {
+				try {
+					Thread.sleep(100);
+				} catch (InterruptedException e) {
+					//PASS
+				}
+			}
+			if (initialStartup(context)) {
+				connectOnStartup();
+			}
+			return scaDomainManagerRegistry;
 		}
-		return scaDomainManagerRegistry;
 	}
 
 	private boolean initialStartup(Object context) {
@@ -219,43 +250,11 @@ public class ScaDomainManagerRegistryContainerImpl extends SessionSingletonBase 
 
 	private void loadScaModel(final Object context) {
 		try {
-			final boolean[] done = {false};
-			final URI[] result = new URI[1];
+			URI path = new Path(ScaPlugin.getDefault().getCompatibilityUtil().getSettingStoreWorkDir().getAbsolutePath())
+				.append(ScaPlugin.getDefault().getCompatibilityUtil().getUserSpecificPath(context) + "_sca")
+				.append("domains.sca").toFile().toURI();
 
-			final Display display;
-			if (context instanceof Display) {
-				display = (Display) context;
-			} else {
-				display = Display.getCurrent();
-			}
-
-			if (display != null) {
-				UICallBack.runNonUIThreadWithFakeContext(display, new Runnable() {
-
-					@Override
-					public void run() {
-						result[0] = new Path(ScaPlugin.getDefault().getCompatibilityUtil().getSettingStoreWorkDir().getAbsolutePath())
-						.append(ScaPlugin.getDefault().getCompatibilityUtil().getUserSpecificPath(context) + "_sca")
-						.append("domains.sca").toFile().toURI();
-						done[0] = true;
-					}
-
-				});
-			} else {
-				ScaRapPlugin.getDefault().getLog().log(new Status(
-						Status.WARNING, ScaRapPlugin.PLUGIN_ID, "Unable to load SCA Domains because a Display instance was not provided"));
-				return;
-			}
-
-			while(!done[0]) {
-				try {
-					Thread.sleep(200);
-				} catch (InterruptedException e) {
-					//PASS
-				}
-			}
-
-			final org.eclipse.emf.common.util.URI uri = org.eclipse.emf.common.util.URI.createURI(result[0].toString());
+			final org.eclipse.emf.common.util.URI uri = org.eclipse.emf.common.util.URI.createURI(path.toString());
 			try {
 				this.registryResource = this.scaModelResourceSet.getResource(uri, true);
 			} catch (final Exception e) {
