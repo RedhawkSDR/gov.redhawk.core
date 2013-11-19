@@ -318,6 +318,9 @@ public class ScaPlugin extends Plugin {
 		try {
 
 			rootContext = NamingContextExtHelper.narrow(session.getOrb().string_to_object(nameServiceRef));
+			if (rootContext == null) {
+				return new String[0];
+			}
 
 			final BindingListHolder bl = new BindingListHolder();
 			// Get a listing of root names
@@ -343,7 +346,7 @@ public class ScaPlugin extends Plugin {
 				}
 			}
 			return retVal.toArray(new String[retVal.size()]);
-		} catch (final Exception e) {
+		} catch (final Exception e) { // SUPPRESS CHECKSTYLE Logged Catch all exception
 			ScaPlugin.getDefault().getLog().log(new Status(IStatus.WARNING, ScaPlugin.PLUGIN_ID, "Failed to find domain names", e));
 			return new String[0];
 		} finally {
