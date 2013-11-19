@@ -15,6 +15,7 @@ import gov.redhawk.sca.IScaDomainManagerRegistryContainer;
 import gov.redhawk.sca.IScaDomainManagerRegistryFactoryService;
 import gov.redhawk.sca.rap.ScaRapPlugin;
 
+import org.eclipse.core.runtime.Assert;
 import org.eclipse.rwt.SessionSingletonBase;
 import org.eclipse.rwt.lifecycle.UICallBack;
 import org.eclipse.swt.widgets.Display;
@@ -32,14 +33,16 @@ public class ScaDomainManagerRegistryFactoryServiceImpl implements IScaDomainMan
 	
 	@Override
 	public IScaDomainManagerRegistryContainer getRegistryContainer(Object context) {
+		
 		if (Boolean.valueOf(System.getProperty(ScaRapPlugin.PROP_SHARED_DOMAINS))) {
 			return ScaDomainManagerRegistryContainerImpl.getInstance();
 		}
 		final boolean[] done = {false};
 		final IScaDomainManagerRegistryContainer[] result = new IScaDomainManagerRegistryContainer[1];
 		
-		if (context == null) {
-			context = Display.getCurrent();
+		
+		if (Display.getCurrent() != null) {
+			return SessionSingletonBase.getInstance(ScaDomainManagerRegistryContainerImpl.class);
 		}
 		
 		UICallBack.runNonUIThreadWithFakeContext((Display) context, new Runnable() {
@@ -54,7 +57,7 @@ public class ScaDomainManagerRegistryFactoryServiceImpl implements IScaDomainMan
 
 		while (!done[0]) {
 			try {
-				Thread.sleep(200);
+				Thread.sleep(100);
 			} catch (InterruptedException e) {
 				//PASS
 			}
