@@ -53,6 +53,7 @@ public abstract class AbstractNxmBlock<C extends Command, S extends Object> impl
 	private final Class<? extends C> desiredLaunchClass;
 
 	// FYI: ConcurrentHashMap does not allow null key or value
+	/** key=streamID value=(cmdline,Command). */
 	private final ConcurrentHashMap<String, SimpleImmutableEntry<String, C>> streamIDToCmdMap = new ConcurrentHashMap<String, SimpleImmutableEntry<String, C>>();
 	private final List<String> launchedStreamIDList = Collections.synchronizedList(new ArrayList<String>());
 
