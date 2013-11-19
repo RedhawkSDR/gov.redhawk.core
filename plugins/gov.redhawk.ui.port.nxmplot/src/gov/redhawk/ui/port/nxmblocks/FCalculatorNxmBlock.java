@@ -64,7 +64,6 @@ public class FCalculatorNxmBlock extends AbstractNxmBlock<fcalculator, String> {
 		this.calcExpression = calcExpression;
 	}
 
-	@SuppressWarnings("null")
 	@Override
 	@NonNull
 	public String getSettings() {

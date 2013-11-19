@@ -67,7 +67,6 @@ public class FftNxmBlock extends AbstractNxmBlock<fft, FftNxmBlockSettings> {
 		// getNxmCommand().getNFft();
 	}
 
-	@SuppressWarnings("null")
 	@Override
 	@NonNull protected String formCmdLine(@NonNull AbstractNxmPlotWidget plotWidget, String streamID) {
 		if (settings == null) {

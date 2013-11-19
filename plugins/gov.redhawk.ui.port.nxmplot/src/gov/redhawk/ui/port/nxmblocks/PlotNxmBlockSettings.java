@@ -30,7 +30,6 @@ public class PlotNxmBlockSettings implements Cloneable {
 	/* (non-Javadoc)
 	 * @see java.lang.Object#clone()
 	 */
-	@SuppressWarnings("null")
 	@NonNull
 	@Override
 	public PlotNxmBlockSettings clone() {

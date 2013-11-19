@@ -39,7 +39,6 @@ public class BulkIONxmBlockSettings implements Cloneable {
 	/* (non-Javadoc)
 	 * @see java.lang.Object#clone()
 	 */
-	@SuppressWarnings("null")
 	@NonNull
 	@Override
 	public BulkIONxmBlockSettings clone() {

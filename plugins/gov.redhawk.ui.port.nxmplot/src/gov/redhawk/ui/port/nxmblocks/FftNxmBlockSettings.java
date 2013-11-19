@@ -85,7 +85,6 @@ public class FftNxmBlockSettings implements Cloneable {
 	/* (non-Javadoc)
 	 * @see java.lang.Object#clone()
 	 */
-	@SuppressWarnings("null")
 	@NonNull
 	@Override
 	public FftNxmBlockSettings clone() {
