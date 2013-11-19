@@ -38,10 +38,11 @@ import org.eclipse.swt.widgets.Composite;
  */
 public class RcpNxmPlotWidget extends AbstractNxmPlotWidget {
 
+	private static final String MSG_HANDLER_ID = "MAIN_MSG_HANLDER";
+	private static AtomicInteger uniqueCounter = new AtomicInteger();
+
 	private NeXtMidasComposite nxmComp;
 	private plot plotCommand;
-
-	private static final String MSG_HANDLER_ID = "MAIN_MSG_HANLDER";
 
 	private Set<String> sources = new HashSet<String>();
 	private boolean initialized;
@@ -109,7 +110,6 @@ public class RcpNxmPlotWidget extends AbstractNxmPlotWidget {
 		}
 		this.sources.clear();
 		super.dispose();
-
 	}
 
 	@Override
@@ -131,7 +131,9 @@ public class RcpNxmPlotWidget extends AbstractNxmPlotWidget {
 		if (!isInitialized()) {
 			throw new IllegalStateException("Plot not initialized");
 		}
-		nxmComp.runCommand("SENDTO " + plotCommand.id + " CLOSEFILE " + sourcePipeId);
+		if (!nxmComp.isDisposed()) {
+			nxmComp.runCommand("SENDTO " + plotCommand.id + " CLOSEFILE " + sourcePipeId);
+		}
 		this.sources.remove(sourcePipeId);
 	}
 
@@ -143,8 +145,6 @@ public class RcpNxmPlotWidget extends AbstractNxmPlotWidget {
 		// PLOT is running on same instance as server/processing side
 		sendMessageToCommand(plotCommand.id , msgName, info, data, null);
 	}
-
-	private static AtomicInteger uniqueCounter = new AtomicInteger();
 
 	private static String createUniqueResName() {
 		return "_TEMPRES_" + uniqueCounter.incrementAndGet();
