@@ -21,6 +21,7 @@ import java.util.Set;
 
 import nxm.rap.ui.NxmRapComposite;
 import nxm.redhawk.lib.RedhawkNxmUtil;
+import nxm.sys.lib.Command;
 
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.swt.SWT;
@@ -78,8 +79,13 @@ public class RapNxmPlotWidget extends AbstractNxmPlotWidget {
 
 	@Override
 	public void runHeadlessCommand(String command) {
+		runHeadlessCommandWithResult(command);
+	}
+
+	@Override
+	public Command runHeadlessCommandWithResult(String command) {
 		assertNotDisposed();
-		nxmComp.runServerCommand(command + " /MSGID=" + MSG_HANDLER_ID);
+		return nxmComp.runServerCommand(command + " /MSGID=" + MSG_HANDLER_ID);
 	}
 
 	@Override
