@@ -15,8 +15,11 @@ import gov.redhawk.ui.views.namebrowser.NameBrowserPlugin;
 import gov.redhawk.ui.views.namebrowser.view.BindingNode;
 
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.ISchedulingRule;
 import org.eclipse.jface.resource.ImageDescriptor;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.progress.IDeferredWorkbenchAdapter;
 import org.eclipse.ui.progress.IElementCollector;
 
@@ -83,9 +86,41 @@ public class BindingNodeDefferedWorkbenchAdapter implements IDeferredWorkbenchAd
 	public void fetchDeferredChildren(final Object object, final IElementCollector collector, final IProgressMonitor monitor) {
 		final BindingNode node = (BindingNode) object;
 		try {
-			collector.add(node.fetchContents(), monitor);
+			if (Display.getCurrent() != null) {
+				Display.getCurrent().asyncExec(new Runnable() {
+
+					@Override
+					public void run() {
+						collector.add(node.fetchContents(), monitor);
+					}
+					
+				});
+			} else {
+				if (SWT.getPlatform().startsWith("rap")) {
+					NameBrowserPlugin.getDefault().getLog().log(new Status(
+							Status.ERROR, NameBrowserPlugin.PLUGIN_ID, "Unable to retrieve defrrred children from non-UI thread"));
+				} else {
+					collector.add(node.fetchContents(), monitor);
+				}
+			}
 		} finally {
-			collector.done();
+			if (Display.getCurrent() != null) {
+				Display.getCurrent().asyncExec(new Runnable() {
+
+					@Override
+					public void run() {
+						collector.done();
+					}
+					
+				});
+			} else {
+				if (SWT.getPlatform().startsWith("rap")) {
+					NameBrowserPlugin.getDefault().getLog().log(new Status(
+							Status.ERROR, NameBrowserPlugin.PLUGIN_ID, "Unable to retrieve defrrred children from non-UI thread"));
+				} else {
+					collector.done();
+				}
+			}
 		}
 	}
 
