@@ -47,6 +47,8 @@ import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.eclipse.ui.services.IDisposable;
 import org.eclipse.ui.statushandlers.StatusManager;
 
+import BULKIO.dataSDDSHelper;
+
 /**
  * The spectral view provides view that displays spectral data in a plot.
  *
@@ -152,6 +154,10 @@ public class PlotView2 extends ViewPart {
 	public IDisposable addPlotSource(ScaUsesPort port, final FftSettings fftSettings, String qualifiers) {
 		if (fftSettings != null) {
 			addAdjustFftSettingsMenuIfNotPresent();
+		}
+		if (dataSDDSHelper.id().equals(port.getRepid())) {
+			this.plotPageBook.addSource2(port, fftSettings, qualifiers);
+			return null;
 		}
 		return this.plotPageBook.addSource(port, fftSettings, qualifiers);
 	}
