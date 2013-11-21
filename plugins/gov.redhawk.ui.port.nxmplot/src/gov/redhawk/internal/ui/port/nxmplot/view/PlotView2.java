@@ -16,7 +16,6 @@ import gov.redhawk.internal.ui.port.nxmplot.PlotSettingsDialog;
 import gov.redhawk.model.sca.ScaUsesPort;
 import gov.redhawk.ui.port.nxmplot.AbstractNxmPlotWidget;
 import gov.redhawk.ui.port.nxmplot.FftSettings;
-import gov.redhawk.ui.port.nxmplot.IPlotSession;
 import gov.redhawk.ui.port.nxmplot.PlotActivator;
 import gov.redhawk.ui.port.nxmplot.PlotPageBook2;
 import gov.redhawk.ui.port.nxmplot.PlotSettings;
@@ -47,8 +46,6 @@ import org.eclipse.ui.part.ViewPart;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.eclipse.ui.services.IDisposable;
 import org.eclipse.ui.statushandlers.StatusManager;
-
-import BULKIO.StreamSRI;
 
 /**
  * The spectral view provides view that displays spectral data in a plot.
@@ -124,20 +121,16 @@ public class PlotView2 extends ViewPart {
 	}
 
 	/** adds the adjust FFT settings menu if not already added */
-	private void addAdjustFftSettingsMenuIfNotPresent() {
+	private synchronized void addAdjustFftSettingsMenuIfNotPresent() {
 		if (this.adjustFftSettingsAction == null) {
-			createActionAdjustFftSettings();
+			this.adjustFftSettingsAction = createAdjustFftSettingsAction();
 			this.menu.insertAfter(ADJUST_PLOT_SETTINGS_ACTION_ID, this.adjustFftSettingsAction);
 		}
 	}
 	
 	/** used to create a new (clone) plot view of current plot view for the "New Plot View" Action / Menu. */ 
-	private IPlotSession addPlotSource(PlotSource source) {
-		FftSettings fftSettings = source.getFftOptions();
-		if (fftSettings != null) {
-			addAdjustFftSettingsMenuIfNotPresent();
-		}
-		return this.plotPageBook.addSource(source.getInput(), fftSettings, source.getQualifiers());
+	private IDisposable addPlotSource(PlotSource source) {
+		return addPlotSource(source.getInput(), source.getFftOptions(), source.getQualifiers());
 	}
 
 	@Override
@@ -154,7 +147,7 @@ public class PlotView2 extends ViewPart {
 	 * @param fftSettings settings to use if an FFT is to be displayed (null for none)
 	 * @param qualifiers
 	 * @param ports list of ScaPort object to plot the output from.
-	 * @return IDisposable (since 4.3)
+	 * @return IDisposable (since 4.3, was IPlotSession in 4.2)
 	 */
 	public IDisposable addPlotSource(ScaUsesPort port, final FftSettings fftSettings, String qualifiers) {
 		if (fftSettings != null) {
@@ -208,7 +201,12 @@ public class PlotView2 extends ViewPart {
 		final ImageDescriptor rasterImageDescriptor = AbstractUIPlugin.imageDescriptorFromPlugin(PlotActivator.PLUGIN_ID, "icons/raster.png");
 		this.plotTypeAction.setImageDescriptor(rasterImageDescriptor);
 
-		this.newPlotViewAction = new Action() {
+		this.newPlotViewAction = createNewPlotViewAction();
+		this.adjustPlotSettingsAction = createAdjustPlotSettingsAction();
+	}
+
+	private IAction createNewPlotViewAction() {
+		IAction action = new Action() {
 			@Override
 			public void run() {
 				try {
@@ -231,15 +229,15 @@ public class PlotView2 extends ViewPart {
 				}
 			} // end method
 		};
-		this.newPlotViewAction.setEnabled(true);
-		this.newPlotViewAction.setText("New Plot View");
-		this.newPlotViewAction.setToolTipText("Open a new Plot View with all the same plots.");
-
-		createActionAdjustPlotSettings();
+		action.setEnabled(true);
+		action.setText("New Plot View");
+		action.setToolTipText("Open a new Plot View with all the same plots.");
+		
+		return action;
 	}
-
-	private void createActionAdjustPlotSettings() {
-		this.adjustPlotSettingsAction = new Action() {
+	
+	private IAction createAdjustPlotSettingsAction() {
+		IAction action = new Action() {
 			@Override
 			public void run() {
 				AbstractNxmPlotWidget activeWidget = plotPageBook.getActivePlotWidget();
@@ -249,7 +247,7 @@ public class PlotView2 extends ViewPart {
 				if (result == Window.OK) {
 					PlotSettings newSettings = dialog.getSettings();
 					PlotType newType = newSettings.getPlotType();
-					// Ignore Plot type in settings use page book instead
+					// Ignore Plot type in settings use page book.showPlot(type) instead
 					newSettings.setPlotType(null);
 
 					for (AbstractNxmPlotWidget widget : plotPageBook.getAllPlotWidgets()) {
@@ -260,14 +258,16 @@ public class PlotView2 extends ViewPart {
 			} // end method
 		};
 
-		this.adjustPlotSettingsAction.setId(ADJUST_PLOT_SETTINGS_ACTION_ID);
-		this.adjustPlotSettingsAction.setEnabled(true);
-		this.adjustPlotSettingsAction.setText("Adjust Plot Settings");
-		this.adjustPlotSettingsAction.setToolTipText("Adjust/Override Plot Settings");
+		action.setId(ADJUST_PLOT_SETTINGS_ACTION_ID);
+		action.setEnabled(true);
+		action.setText("Adjust Plot Settings");
+		action.setToolTipText("Adjust/Override Plot Settings");
+		
+		return action;
 	}
 
-	private void createActionAdjustFftSettings() {
-		this.adjustFftSettingsAction = new Action() {
+	private IAction createAdjustFftSettingsAction() {
+		IAction action = new Action() {
 			@Override
 			public void run() {
 				List<PlotSource> plotSources = plotPageBook.getSources();
@@ -293,27 +293,13 @@ public class PlotView2 extends ViewPart {
 			} // end method
 		};
 
-		this.adjustFftSettingsAction.setEnabled(true);
-		this.adjustFftSettingsAction.setText("Adjust FFT Settings");
-		this.adjustFftSettingsAction.setToolTipText(this.adjustFftSettingsAction.getText());
+		action.setEnabled(true);
+		action.setText("Adjust FFT Settings");
+		action.setToolTipText(this.adjustFftSettingsAction.getText());
+		
+		return action;
 	}
 	
-	private StreamSRI[] getActiveSRI() {
-		StreamSRI retVal = null;
-		if (this.plotPageBook != null && !plotPageBook.isDisposed()) {
-			AbstractNxmPlotWidget plot = this.plotPageBook.getActivePlotWidget();
-			if (plot != null && !plot.isDisposed()) {
-				retVal = plot.getActiveSRI();
-			}
-		}
-
-		if (retVal != null) {
-			return new StreamSRI[] { retVal };
-		} else {
-			return new StreamSRI[0];
-		}
-	}
-
 	public PlotPageBook2 getPlotPageBook() {
 		return plotPageBook;
 	}
