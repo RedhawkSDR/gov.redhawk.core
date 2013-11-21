@@ -211,7 +211,8 @@ public class NameBrowserView extends ViewPart {
 		for (final String nameServer : this.nameServerHistory) {
 			this.nameServerField.add(nameServer);
 		}
-
+		
+		NameBrowserPlugin.getDefault().setSessionDisplay(getSite().getShell().getDisplay());
 	}
 
 	@Override

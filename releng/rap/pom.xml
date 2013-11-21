@@ -53,6 +53,7 @@
     <module>../../plugins/gov.redhawk.ui.port.nxmplot.rap</module>
     <module>../../plugins/com.google.gson</module>
     <module>../../plugins/gov.redhawk.rap.js.executor</module>
+    <module>../../plugins/gov.redhawk.ui.views.namebrowser.rap</module>
     <module>p2</module>
   </modules>
 
