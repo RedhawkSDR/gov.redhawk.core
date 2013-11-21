@@ -14,8 +14,10 @@ package gov.redhawk.ui.views.namebrowser;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.resource.ImageRegistry;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
+import org.osgi.util.tracker.ServiceTracker;
 
 /**
  * The activator class controls the plug-in life cycle
@@ -37,6 +39,10 @@ public class NameBrowserPlugin extends AbstractUIPlugin {
 	// The shared instance
 	private static NameBrowserPlugin plugin;
 
+	private ServiceTracker<IDisplayHolder, IDisplayHolder> displayHolderService;
+
+	private Display display;
+
 	/**
 	 * The constructor
 	 */
@@ -52,6 +58,8 @@ public class NameBrowserPlugin extends AbstractUIPlugin {
 	public void start(final BundleContext context) throws Exception {
 		super.start(context);
 		NameBrowserPlugin.plugin = this;
+		this.displayHolderService = new ServiceTracker<IDisplayHolder, IDisplayHolder>(getBundle().getBundleContext(), IDisplayHolder.class, null);
+		this.displayHolderService.open();
 	}
 
 	/*
@@ -63,6 +71,34 @@ public class NameBrowserPlugin extends AbstractUIPlugin {
 	public void stop(final BundleContext context) throws Exception {
 		NameBrowserPlugin.plugin = null;
 		super.stop(context);
+		if (this.displayHolderService != null) {
+			this.displayHolderService.close();
+			this.displayHolderService = null;
+		}
+	}
+	
+	/**
+	 * @since 1.2
+	 */
+	public void setSessionDisplay(Display display) {
+		/**
+		 * We save the reference to <code>display</code> because
+		 * we need it to retrieve the session singleton instance
+		 * of DisplayHolder in <code>getDisplay</code>.
+		 */
+		this.display = display;
+		if (this.displayHolderService != null) {
+			this.displayHolderService.getService().setSessionDisplay(display);
+		}
+	}
+	/**
+	 * @since 1.2
+	 */
+	public Display getDisplay() {
+		if (this.displayHolderService != null) {
+			return this.displayHolderService.getService().getSessionDisplay(this.display);
+		}
+		return null;
 	}
 
 	/**

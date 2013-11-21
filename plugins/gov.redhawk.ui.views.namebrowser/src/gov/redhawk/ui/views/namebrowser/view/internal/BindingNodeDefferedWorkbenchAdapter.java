@@ -93,12 +93,24 @@ public class BindingNodeDefferedWorkbenchAdapter implements IDeferredWorkbenchAd
 					public void run() {
 						collector.add(node.fetchContents(), monitor);
 					}
-					
+
 				});
 			} else {
 				if (SWT.getPlatform().startsWith("rap")) {
-					NameBrowserPlugin.getDefault().getLog().log(new Status(
-							Status.ERROR, NameBrowserPlugin.PLUGIN_ID, "Unable to retrieve defrrred children from non-UI thread"));
+					Display display = NameBrowserPlugin.getDefault().getDisplay();
+					if (display != null) {
+						display.asyncExec(new Runnable() {
+
+							@Override
+							public void run() {
+								collector.add(node.fetchContents(), monitor);
+							}
+
+						});
+					} else {
+						NameBrowserPlugin.getDefault().getLog().log(new Status(
+								Status.ERROR, NameBrowserPlugin.PLUGIN_ID, "Unable to retrieve defrrred children from non-UI thread"));
+					}
 				} else {
 					collector.add(node.fetchContents(), monitor);
 				}
@@ -111,12 +123,24 @@ public class BindingNodeDefferedWorkbenchAdapter implements IDeferredWorkbenchAd
 					public void run() {
 						collector.done();
 					}
-					
+
 				});
 			} else {
 				if (SWT.getPlatform().startsWith("rap")) {
-					NameBrowserPlugin.getDefault().getLog().log(new Status(
-							Status.ERROR, NameBrowserPlugin.PLUGIN_ID, "Unable to retrieve defrrred children from non-UI thread"));
+					Display display = NameBrowserPlugin.getDefault().getDisplay();
+					if (display != null) {
+						display.asyncExec(new Runnable() {
+
+							@Override
+							public void run() {
+								collector.add(node.fetchContents(), monitor);
+							}
+
+						});
+					} else {
+						NameBrowserPlugin.getDefault().getLog().log(new Status(
+								Status.ERROR, NameBrowserPlugin.PLUGIN_ID, "Unable to retrieve defrrred children from non-UI thread"));
+					}
 				} else {
 					collector.done();
 				}
