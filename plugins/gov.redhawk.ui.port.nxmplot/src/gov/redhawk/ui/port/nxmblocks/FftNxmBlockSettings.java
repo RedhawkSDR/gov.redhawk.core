@@ -20,7 +20,7 @@ import org.eclipse.jdt.annotation.NonNull;
  */
 public class FftNxmBlockSettings implements Cloneable {
 	// FFT args/switches
-	public enum WindowType {
+	public static enum WindowType {
 		BARTLETT { 
 			public String toString() { return "Bartlett"; } 
 			public String toWindowString() { return "BART"; }
@@ -45,7 +45,7 @@ public class FftNxmBlockSettings implements Cloneable {
 		public abstract String toWindowString();
 	}
 
-	public enum OutputType {
+	public static enum OutputType {
 		NORMAL {
 			public String toString() { return "Normal"; }
 			public String toSwitchString() { return ""; }
