@@ -1,3 +1,4 @@
 gov.redhawk.ui.port.nxmplot/debug=false
 gov.redhawk.ui.port.nxmplot/debug/AbstractNxmBlock=false
 gov.redhawk.ui.port.nxmplot/debug/BulkIOSddsNxmBlock=false
+gov.redhawk.ui.port.nxmplot/debug/PlotPageBook2=false

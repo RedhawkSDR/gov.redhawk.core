@@ -16,8 +16,18 @@ import gov.redhawk.model.sca.IDisposable;
 import gov.redhawk.model.sca.ScaPackage;
 import gov.redhawk.model.sca.ScaUsesPort;
 import gov.redhawk.model.sca.commands.ScaModelCommand;
+import gov.redhawk.sca.util.Debug;
 import gov.redhawk.ui.port.PortHelper;
+import gov.redhawk.ui.port.nxmblocks.BulkIONxmBlock;
+import gov.redhawk.ui.port.nxmblocks.BulkIONxmBlockSettings;
+import gov.redhawk.ui.port.nxmblocks.BulkIOSddsNxmBlock;
+import gov.redhawk.ui.port.nxmblocks.FftNxmBlock;
+import gov.redhawk.ui.port.nxmblocks.FftNxmBlockSettings;
+import gov.redhawk.ui.port.nxmblocks.PlotNxmBlock;
+import gov.redhawk.ui.port.nxmblocks.PlotNxmBlockSettings;
+import gov.redhawk.ui.port.nxmblocks.SddsNxmBlockSettings;
 
+import java.nio.ByteOrder;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -26,9 +36,11 @@ import java.util.Map;
 
 import mil.jpeojtrs.sca.util.DceUuidUtil;
 
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.impl.AdapterImpl;
+import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.DisposeEvent;
 import org.eclipse.swt.events.DisposeListener;
@@ -37,12 +49,17 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.part.PageBook;
 
+import BULKIO.dataSDDSHelper;
+
 /**
  * @since 4.2
  */
 public class PlotPageBook2 extends Composite {
+	
+	private static final Debug TRACE_LOG = new Debug(PlotActivator.PLUGIN_ID, PlotPageBook2.class.getSimpleName());
 
 	private static class PlotPage {
+		private final List<INxmBlock< ? >> nxmBlocks = Collections.synchronizedList(new ArrayList<INxmBlock< ? >>());
 		private final AbstractNxmPlotWidget plot;
 		private final Map<PlotSource, IPlotSession> sessionMap = new HashMap<PlotSource, IPlotSession>();
 
@@ -51,6 +68,54 @@ public class PlotPageBook2 extends Composite {
 			this.plot.initPlot(plotSwitches, plotArgs);
 		}
 
+		private synchronized void addSource2(final ScaUsesPort scaPort, final FftSettings fftSettings, final String pipeQualifiers) {
+			final AbstractNxmPlotWidget currentPlotWidget = this.plot;
+			BulkIONxmBlockSettings bbSettings = new BulkIONxmBlockSettings();
+
+			INxmBlock<?> startingBlock;
+			if (dataSDDSHelper.id().equals(scaPort.getRepid())) {
+				SddsNxmBlockSettings sddsSettings = new SddsNxmBlockSettings();
+				sddsSettings.setDataByteOrder(ByteOrder.nativeOrder()); // workaround for REDHAWK SinkNic Component
+				BulkIOSddsNxmBlock sddsBlock = new BulkIOSddsNxmBlock(currentPlotWidget, scaPort, sddsSettings);
+				startingBlock = sddsBlock;
+			} else {
+				BulkIONxmBlock bulkioBlock = new BulkIONxmBlock(currentPlotWidget, scaPort, bbSettings);
+				//BulkIONxmBlock2 bulkioBlock = new BulkIONxmBlock2(currentPlotWidget, scaPort, bbSettings);
+				startingBlock = bulkioBlock;
+			}
+			TRACE_LOG.trace("PlotPageBook2.addSource(.) startingBlock = {0}", startingBlock);
+
+			PlotNxmBlock plotBlock = new PlotNxmBlock(currentPlotWidget, new PlotNxmBlockSettings());
+			if (fftSettings != null) {
+				FftNxmBlockSettings fftBlockSettings = toFftNxmBlockSettings(fftSettings);
+				FftNxmBlock fftBlock = new FftNxmBlock(currentPlotWidget, fftBlockSettings);
+				fftBlock.addInput(startingBlock);
+				try {
+					fftBlock.start();
+					nxmBlocks.add(fftBlock);
+				} catch (CoreException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();  // SUPPRESS CHECKSTYLE DEBUG
+				}
+
+				plotBlock.addInput(fftBlock);
+			} else {
+				plotBlock.addInput(startingBlock);
+			}
+
+			try {
+				plotBlock.start();
+				startingBlock.start(); // starting block should be last to start
+				
+				nxmBlocks.add(plotBlock);
+				nxmBlocks.add(startingBlock);
+			} catch (CoreException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace(); // SUPPRESS CHECKSTYLE DEBUG
+			}
+			TRACE_LOG.exitingMethod();
+		}
+		
 		private synchronized void addSource(PlotSource newSource) {
 			String qualifiers = newSource.getQualifiers();
 			if (qualifiers == null) {
@@ -131,16 +196,10 @@ public class PlotPageBook2 extends Composite {
 		showPlot(type);
 	}
 
-	/**
-	 * @since 4.2
-	 */
 	public PlotPageBook2(Composite parent, int style) {
 		this(parent, style, null);
 	}
 
-	/**
-	 * @since 4.2
-	 */
 	protected PlotPage createPlot(PlotType type) {
 		AbstractNxmPlotWidget newPlot = PlotActivator.getDefault().getPlotFactory().createPlotWidget(this.pageBook, SWT.None);
 		newPlot.addMessageHandler(this.adapter);
@@ -192,6 +251,26 @@ public class PlotPageBook2 extends Composite {
 		return addSource(plotSource);
 	}
 
+	/**
+	 * @param scaPort
+	 * @param fftSettings
+	 * @param qualifiers
+	 * @since 4.3
+	 * @noreference This method is not intended to be referenced by clients
+	 */
+	public void addSource2(final ScaUsesPort scaPort, FftSettings fftSettings, String qualifiers) {
+		
+		for (PlotPage plotPage : plots.values()) {
+			plotPage.addSource2(scaPort, fftSettings, qualifiers);
+		}
+		ScaModelCommand.execute(scaPort, new ScaModelCommand() {
+			@Override
+			public void execute() {
+				scaPort.eAdapters().add(portListener);
+			}
+		});
+
+	}
 	/**
 	 * Toggle if the raster is visible or not.
 	 *
@@ -298,6 +377,18 @@ public class PlotPageBook2 extends Composite {
 			retVal.add(session.plot);
 		}
 		return retVal;
+	}
+
+	@NonNull
+	private static FftNxmBlockSettings toFftNxmBlockSettings(FftSettings fftOptions) {
+		FftNxmBlockSettings settings = new FftNxmBlockSettings();
+		// TODO 
+		settings.setNumAverages(Integer.parseInt(fftOptions.getNumAverages()));
+		settings.setOverlap(Integer.parseInt(fftOptions.getOverlap())); // 0-100
+		//			settings.setPipeSize(pipeSize);
+		settings.setTransformSize(Integer.parseInt(fftOptions.getTransformSize()));
+		settings.setWindow(FftNxmBlockSettings.WindowType.valueOf(fftOptions.getWindow().toString()));
+		return settings;
 	}
 
 }
