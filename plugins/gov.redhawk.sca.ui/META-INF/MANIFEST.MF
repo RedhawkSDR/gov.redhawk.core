@@ -34,7 +34,8 @@ Require-Bundle: gov.redhawk.sca;bundle-version="1.0.0",
  gov.redhawk.sca.rap.supplement;bundle-version="1.0.0";resolution:=optional,
  org.eclipse.emf.rap.common.ui;bundle-version="2.6.0";resolution:=optional;visibility:=reexport,
  org.eclipse.emf.rap.edit.ui;bundle-version="2.6.1";resolution:=optional;visibility:=reexport,
- org.eclipse.emf.rap;bundle-version="2.6.0";resolution:=optional;visibility:=reexport
+ org.eclipse.emf.rap;bundle-version="2.6.0";resolution:=optional;visibility:=reexport,
+ org.eclipse.core.databinding.property;bundle-version="1.4.200"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Bundle-ActivationPolicy: lazy
 Export-Package: gov.redhawk.sca.internal.ui;x-internal:=true,
