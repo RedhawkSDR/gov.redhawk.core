@@ -10,7 +10,9 @@
  *******************************************************************************/
 package gov.redhawk.ui.port.nxmblocks;
 
+import gov.redhawk.sca.util.Debug;
 import gov.redhawk.ui.port.nxmplot.AbstractNxmPlotWidget;
+import gov.redhawk.ui.port.nxmplot.PlotActivator;
 
 import java.util.Iterator;
 import java.util.concurrent.ConcurrentHashMap;
@@ -29,6 +31,8 @@ import BULKIO.StreamSRI;
  */
 public class PlotNxmBlock extends AbstractNxmBlock<plot, PlotNxmBlockSettings> {
 
+	private static final Debug TRACE_LOG = new Debug(PlotActivator.PLUGIN_ID, PlotNxmBlock.class.getSimpleName());
+	
 	private PlotNxmBlockSettings settings;
 	private ConcurrentHashMap<String, String> streamIdToSourceNameMap = new ConcurrentHashMap<String, String>();
 
@@ -55,7 +59,7 @@ public class PlotNxmBlock extends AbstractNxmBlock<plot, PlotNxmBlockSettings> {
 
 	@Override
 	public void launch(String streamID, StreamSRI sri) {
-		System.out.println("DEBUG: PlotNxmBlock.launch() adding stream: " + streamID); // SUPPRESS CHECKSTYLE DEBUG - TODO: REMOVE ME
+		TRACE_LOG.enteringMethod(streamID, sri);
 		checkLaunchParams(streamID, sri);
 
 		BlockIndexPair inputBlockInfo = this.getInputBlockInfo(0);
@@ -95,11 +99,12 @@ public class PlotNxmBlock extends AbstractNxmBlock<plot, PlotNxmBlockSettings> {
 		streamIdToSourceNameMap.put(streamID, sourceName); // save mapping for shutdown
 
 		// FYI: this is end point, so it DOES NOT have any follow on blocks
+		TRACE_LOG.exitingMethod(streamID);
 	}
 
 	@Override
 	public void shutdown(String streamID) {
-		System.out.println("DEBUG: PlotNxmBlock.shutdown() removing stream: " + streamID); // SUPPRESS CHECKSTYLE DEBUG - TODO: REMOVE ME
+		TRACE_LOG.enteringMethod(streamID);
 		final AbstractNxmPlotWidget currentPlotWidget = getContext();
 		if (currentPlotWidget == null) {
 			throw new IllegalStateException("A context (AbstractNxmPlotWidget) must be set before shutdown() can be called.");
@@ -113,7 +118,7 @@ public class PlotNxmBlock extends AbstractNxmBlock<plot, PlotNxmBlockSettings> {
 
 	@Override
 	public void stop() {
-System.out.println("DEBUG: PlotNxmBlock.stop() removing ALL streams, size=" + streamIdToSourceNameMap.size()); // SUPPRESS CHECKSTYLE DEBUG - TODO: REMOVE ME
+		TRACE_LOG.enteringMethod("size=" + streamIdToSourceNameMap.size());
 		final AbstractNxmPlotWidget currentPlotWidget = getContext();
 		if (currentPlotWidget == null) {
 			throw new IllegalStateException("A context (AbstractNxmPlotWidget) must be set before stop() can be called.");

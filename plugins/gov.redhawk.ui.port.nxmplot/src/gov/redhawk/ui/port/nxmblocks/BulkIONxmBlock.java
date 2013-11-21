@@ -14,7 +14,9 @@ import gov.redhawk.bulkio.util.AbstractUberBulkIOPort;
 import gov.redhawk.bulkio.util.BulkIOType;
 import gov.redhawk.bulkio.util.BulkIOUtilActivator;
 import gov.redhawk.model.sca.ScaUsesPort;
+import gov.redhawk.sca.util.Debug;
 import gov.redhawk.ui.port.nxmplot.AbstractNxmPlotWidget;
+import gov.redhawk.ui.port.nxmplot.PlotActivator;
 
 import java.text.MessageFormat;
 
@@ -35,6 +37,8 @@ import BULKIO.StreamSRI;
  */
 public class BulkIONxmBlock extends AbstractNxmBlock<corbareceiver, BulkIONxmBlockSettings> {
 
+	private static final Debug TRACE_LOG = new Debug(PlotActivator.PLUGIN_ID, BulkIONxmBlock.class.getSimpleName());
+	
 	private BulkIONxmBlockSettings settings;
 
 	private ScaUsesPort scaPort;
@@ -46,10 +50,11 @@ public class BulkIONxmBlock extends AbstractNxmBlock<corbareceiver, BulkIONxmBlo
 
 		@Override
 		protected void handleStreamSRIChanged(String streamID, StreamSRI oldSri, StreamSRI newSri) {
+			TRACE_LOG.enteringMethod(streamID, oldSri, newSri);
 			launch(streamID, newSri); // so launch for this stream
 //			if (oldSri == null) { // no previous SRI for this stream
 //			}
-//else { System.out.println("DEBUG: BulkIOPort.handleStreamSRIChanged() have previous SRI for this stream, not launching: " + streamID + " oldSRI: " + oldSri); } // SUPPRESS CHECKSTYLE DEBUG - TODO: REMOVE ME 
+//else { // BulkIOPort.handleStreamSRIChanged() have previous SRI for this stream, not launching: 
 
 		}
 
@@ -160,7 +165,7 @@ public class BulkIONxmBlock extends AbstractNxmBlock<corbareceiver, BulkIONxmBlo
 
 	@Override
 	public void stop() {
-		System.out.println("DEBUG: bulkioNxmBlock.stop() enter"); // SUPPRESS CHECKSTYLE DEBUG - TODO: REMOVE ME
+		TRACE_LOG.enteringMethod();
 		if (scaPort != null) {
 			BulkIOUtilActivator.getBulkIOPortConnectionManager().disconnect(ior, bulkIOType, bulkIOPort);
 			scaPort = null;
