@@ -11,6 +11,10 @@
  */
 package gov.redhawk.ui.port.nxmblocks;
 
+
+import gov.redhawk.ui.port.nxmblocks.FftNxmBlockSettings.OutputType;
+import gov.redhawk.ui.port.nxmblocks.FftNxmBlockSettings.WindowType;
+
 import org.eclipse.core.databinding.DataBindingContext;
 import org.eclipse.core.databinding.UpdateValueStrategy;
 import org.eclipse.core.databinding.beans.BeansObservables;
@@ -19,18 +23,15 @@ import org.eclipse.core.databinding.observable.value.IObservableValue;
 import org.eclipse.core.databinding.validation.IValidator;
 import org.eclipse.core.databinding.validation.ValidationStatus;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jface.databinding.swt.WidgetProperties;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.ComboViewer;
-import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.LabelProvider;
-import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
@@ -42,8 +43,6 @@ import org.eclipse.swt.widgets.Text;
  */
 public class FftNxmBlockControls extends Composite {
 
-	private static final Integer[] COMMON_FFT_SIZES = { 1024, 2048, 4096, 8192, 16384 };
-
 	private DataBindingContext dataBindingCtx;
 	private final FftNxmBlockSettings settings;
 	private Text        transformSizeField;
@@ -54,10 +53,9 @@ public class FftNxmBlockControls extends Composite {
 
 	/**
 	 * Instantiates a new entry dialog.
-	 *
 	 * @param parentShell the parent shell
 	 */
-	public FftNxmBlockControls(final Composite parent, int style, final FftNxmBlockSettings settings,
+	public FftNxmBlockControls(@NonNull final Composite parent, int style, @NonNull final FftNxmBlockSettings settings,
 			final DataBindingContext dataBindingsCtx) {
 		super(parent, style);
 		this.settings = settings;
@@ -95,7 +93,7 @@ public class FftNxmBlockControls extends Composite {
 		this.numAveragesField.setText(Integer.toString(this.settings.getNumAverages()));
 		this.numAveragesField.setToolTipText("Avoid using large value as it will cause highlighted energy to remain longer.");
 
-		// === FFT output type ===
+		// === can not change FFT output type at this time ===
 		final Label typeLabel = new Label(container, SWT.NONE);
 		typeLabel.setLayoutData(new GridData(GridData.BEGINNING, GridData.CENTER, false, false));
 		typeLabel.setText("Output Type:");
@@ -104,7 +102,12 @@ public class FftNxmBlockControls extends Composite {
 		fftType.setContentProvider(new ArrayContentProvider());
 		fftType.setLabelProvider(new LabelProvider());
 		fftType.setInput(FftNxmBlockSettings.OutputType.values());
-		fftType.setSelection(new StructuredSelection(FftNxmBlockSettings.OutputType.PSD));
+		OutputType currentOutputType = this.settings.getOutputType();
+		if (currentOutputType == null) {
+			currentOutputType = OutputType.PSD; // default to PSD
+		}
+		fftType.setSelection(new StructuredSelection(currentOutputType));
+		fftType.getCombo().setEnabled(false); // disable changing fft output type
 
 		// === FFT Window ===
 		final Label windowLabel = new Label(container, SWT.NONE);
@@ -116,31 +119,35 @@ public class FftNxmBlockControls extends Composite {
 		fftWindow.setContentProvider(new ArrayContentProvider());
 		fftWindow.setLabelProvider(new LabelProvider());
 		fftWindow.setInput(FftNxmBlockSettings.WindowType.values());
-		fftWindow.setSelection(new StructuredSelection(FftNxmBlockSettings.WindowType.HANNING));
+		WindowType windowType = this.settings.getWindow();
+		if (windowType == null) {
+			windowType = WindowType.HANNING;
+		}
+		fftWindow.setSelection(new StructuredSelection(windowType));
 	}
 
 	protected void addBindings() {
-		IObservableValue fsTargetObservableVal = WidgetProperties.text(SWT.Modify).observeDelayed(500, this.transformSizeField);
+		IObservableValue fsTargetObservableVal = WidgetProperties.text(SWT.Modify).observeDelayed(200, this.transformSizeField);
 		IObservableValue fsModelObservableVal  = BeansObservables.observeValue(settings, "transformSize");
 		dataBindingCtx.bindValue(fsTargetObservableVal, fsModelObservableVal, createTargetToModelForFftSize(), null);
 
-		IObservableValue srTargetObservableVal = WidgetProperties.text(SWT.Modify).observeDelayed(500, this.overlapField);
+		IObservableValue srTargetObservableVal = WidgetProperties.text(SWT.Modify).observeDelayed(200, this.overlapField);
 		IObservableValue srModelObservableVal  = BeansObservables.observeValue(settings, "overlap");
 		dataBindingCtx.bindValue(srTargetObservableVal, srModelObservableVal, createTargetToModelForOverlap(), null);
 
-		IObservableValue numAvgTargetObservableValue = WidgetProperties.text(SWT.Modify).observeDelayed(500, this.numAveragesField);
+		IObservableValue numAvgTargetObservableValue = WidgetProperties.text(SWT.Modify).observeDelayed(200, this.numAveragesField);
 		IObservableValue numAvgModelObservableValue = BeansObservables.observeValue(settings, "numAverages");
 		dataBindingCtx.bindValue(numAvgTargetObservableValue, numAvgModelObservableValue, createTargetToModelForNumAverages(), null);
 
-		IObservableValue windowTargetObservableValue = WidgetProperties.text(SWT.Modify).observeDelayed(500, this.fftWindow.getCombo());
-		IObservableValue windowModelObservableValue = BeansObservables.observeValue(settings, "numAverages");
+		IObservableValue windowTargetObservableValue = WidgetProperties.text(SWT.Modify).observeDelayed(200, this.fftWindow.getCombo());
+		IObservableValue windowModelObservableValue = BeansObservables.observeValue(settings, "window");
 		dataBindingCtx.bindValue(windowTargetObservableValue, windowModelObservableValue, createTargetToModelForWindow(), null);
 	}
 
 	private UpdateValueStrategy createTargetToModelForOverlap() {
 		UpdateValueStrategy updateValueStrategy = new UpdateValueStrategy();
+		
 		updateValueStrategy.setAfterGetValidator(new IValidator() {
-
 			@Override
 			public IStatus validate(Object value) {
 				if ("default".equalsIgnoreCase((String) value)) {
@@ -157,7 +164,6 @@ public class FftNxmBlockControls extends Composite {
 		});
 
 		updateValueStrategy.setConverter(new Converter(String.class, Double.class) {
-
 			@Override
 			public Object convert(Object fromObject) {
 				if ("default".equalsIgnoreCase((String) fromObject)) {
@@ -168,14 +174,13 @@ public class FftNxmBlockControls extends Composite {
 		});
 
 		updateValueStrategy.setAfterConvertValidator(new IValidator() {
-
 			@Override
 			public IStatus validate(Object value) {
 				Double val = (Double) value;
-				if (val > 0) {
+				if (val >= 0 && val <= 100) {
 					return ValidationStatus.ok();
 				}
-				return ValidationStatus.error("Sample rate must be greater than 0.");
+				return ValidationStatus.error("Overlap percent must a number between 0 - 100.");
 			}
 		});
 		return updateValueStrategy;
@@ -183,8 +188,8 @@ public class FftNxmBlockControls extends Composite {
 
 	private UpdateValueStrategy createTargetToModelForFftSize() {
 		UpdateValueStrategy updateValueStrategy = new UpdateValueStrategy();
+		
 		updateValueStrategy.setAfterGetValidator(new IValidator() {
-
 			@Override
 			public IStatus validate(Object value) {
 				if ("default".equalsIgnoreCase((String) value)) {
@@ -194,14 +199,13 @@ public class FftNxmBlockControls extends Composite {
 						Integer.valueOf((String) value);
 						return ValidationStatus.ok();
 					} catch (NumberFormatException nfe) {
-						return ValidationStatus.error("Frame size must a number greater than 0.");
+						return ValidationStatus.error("FFT transform size must a number greater than 0.");
 					}
 				}
 			}
 		});
 
 		updateValueStrategy.setConverter(new Converter(String.class, Integer.class) {
-
 			@Override
 			public Object convert(Object fromObject) {
 				if ("default".equalsIgnoreCase((String) fromObject)) {
@@ -210,43 +214,40 @@ public class FftNxmBlockControls extends Composite {
 				return Integer.valueOf((String) fromObject);
 			}
 		});
+		
 		updateValueStrategy.setAfterConvertValidator(new IValidator() {
-
 			@Override
 			public IStatus validate(Object value) {
 				Integer val = (Integer) value;
 				if (val > 0) {
 					return ValidationStatus.ok();
 				}
-				return ValidationStatus.error("Frame size must be greater than 0.");
+				return ValidationStatus.error("FFT transform size must be greater than 0.");
 			}
 		});
 		return updateValueStrategy;
 	}
 
 	private UpdateValueStrategy createTargetToModelForWindow() {
-		// TODO Auto-generated method stub
-		return null;
+		UpdateValueStrategy updateValueStrategy = new UpdateValueStrategy();
+		// TODO: ?
+		return updateValueStrategy;
 	}
 
 	private UpdateValueStrategy createTargetToModelForNumAverages() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-
-	static class SelectAllTextComboTextListener implements ISelectionChangedListener {
-		private final Combo combo;
-
-		SelectAllTextComboTextListener(Combo combo) {
-			this.combo = combo;
-		}
-
-		public void selectionChanged(final SelectionChangedEvent event) {
-			final String text = this.combo.getText();
-			final int textLen = (text == null) ? 0 : text.length();
-			this.combo.setSelection(new Point(0, textLen)); // select text from combo selection
-		}
+		UpdateValueStrategy updateValueStrategy = new UpdateValueStrategy();
+		
+		updateValueStrategy.setAfterConvertValidator(new IValidator() {
+			@Override
+			public IStatus validate(Object value) {
+				Integer val = (Integer) value;
+				if (val >= 1) {
+					return ValidationStatus.ok();
+				}
+				return ValidationStatus.error("Num averages must be greater than 0.");
+			}
+		});
+		return updateValueStrategy;
 	}
 
 }

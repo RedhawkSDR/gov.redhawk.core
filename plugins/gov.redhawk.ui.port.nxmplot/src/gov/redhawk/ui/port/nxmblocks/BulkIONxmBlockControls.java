@@ -22,14 +22,10 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.jface.databinding.swt.WidgetProperties;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.ComboViewer;
-import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.LabelProvider;
-import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 
@@ -42,13 +38,11 @@ public class BulkIONxmBlockControls extends Composite {
 
 	private DataBindingContext dataBindingCtx;
 	private final BulkIONxmBlockSettings settings;
-	private ComboViewer frameSizeField;
 	private ComboViewer sampleRateField;
 	private ComboViewer blockingField;
 
 	/**
 	 * Instantiates a new entry dialog.
-	 *
 	 * @param parentShell the parent shell
 	 */
 	public BulkIONxmBlockControls(Composite parent, int style, BulkIONxmBlockSettings settings, DataBindingContext dataBindingCtx) {
@@ -61,30 +55,6 @@ public class BulkIONxmBlockControls extends Composite {
 	protected void createControls(final Composite container) {
 		final GridLayout gridLayout = new GridLayout(2, false);
 		container.setLayout(gridLayout);
-
-		// === frame size ===
-		final Label frameSizeLabel = new Label(container, SWT.NONE);
-		frameSizeLabel.setLayoutData(new GridData(GridData.BEGINNING, GridData.CENTER, false, false));
-		frameSizeLabel.setText("Frame Size:");
-		this.frameSizeField = new ComboViewer(container, SWT.BORDER); // writable
-		this.frameSizeField.getCombo().setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false, 1, 1));
-		this.frameSizeField.setContentProvider(new ArrayContentProvider());
-		this.frameSizeField.setLabelProvider(new LabelProvider());
-
-
-		final String otherValidFSValue = "default";
-		Object currentFS = otherValidFSValue;
-		final Object[] fsComboInputs;
-		final Integer fs = this.settings.getFrameSize();
-		if (fs != null) {
-			currentFS = fs;
-			fsComboInputs = new Object[] { currentFS, otherValidFSValue, 512, 1024, 2048, 4096, 8192 };
-		} else {
-			fsComboInputs = new Object[] { otherValidFSValue, 512, 1024, 2048, 4096, 8192 };
-		}
-
-		this.frameSizeField.setInput(fsComboInputs);
-		this.frameSizeField.addSelectionChangedListener(new SelectAllTextComboTextListener(this.frameSizeField.getCombo()));
 
 		// === sample rate ===
 		final Label sampleRateValueLabel = new Label(container, SWT.NONE);
@@ -105,7 +75,6 @@ public class BulkIONxmBlockControls extends Composite {
 		} else {
 			srateComboInputs = new Object[] { otherValidSRateValue };
 		}
-
 		this.sampleRateField.setInput(srateComboInputs);
 		this.sampleRateField.addSelectionChangedListener(new SelectAllTextComboTextListener(this.sampleRateField.getCombo()));
 
@@ -121,10 +90,6 @@ public class BulkIONxmBlockControls extends Composite {
 	}
 
 	protected void addBindings() {
-		IObservableValue fsTargetObservableVal = WidgetProperties.text(SWT.Modify).observeDelayed(200, this.frameSizeField.getCombo());
-		IObservableValue fsModelObservableVal  = BeansObservables.observeValue(settings, "frameSize");
-		dataBindingCtx.bindValue(fsTargetObservableVal, fsModelObservableVal, createTargetToModelForFrameSize(), null);
-
 		IObservableValue srTargetObservableVal = WidgetProperties.text(SWT.Modify).observeDelayed(200, this.sampleRateField.getCombo());
 		IObservableValue srModelObservableVal  = BeansObservables.observeValue(settings, "sampleRate");
 		dataBindingCtx.bindValue(srTargetObservableVal, srModelObservableVal, createTargetToModelForSampleRate(), null);
@@ -136,8 +101,8 @@ public class BulkIONxmBlockControls extends Composite {
 
 	private UpdateValueStrategy createTargetToModelForSampleRate() {
 		UpdateValueStrategy updateValueStrategy = new UpdateValueStrategy();
+		
 		updateValueStrategy.setAfterGetValidator(new IValidator() {
-
 			@Override
 			public IStatus validate(Object value) {
 				if ("default".equalsIgnoreCase((String) value)) {
@@ -154,7 +119,6 @@ public class BulkIONxmBlockControls extends Composite {
 		});
 
 		updateValueStrategy.setConverter(new Converter(String.class, Double.class) {
-
 			@Override
 			public Object convert(Object fromObject) {
 				if ("default".equalsIgnoreCase((String) fromObject)) {
@@ -165,7 +129,6 @@ public class BulkIONxmBlockControls extends Composite {
 		});
 
 		updateValueStrategy.setAfterConvertValidator(new IValidator() {
-
 			@Override
 			public IStatus validate(Object value) {
 				Double val = (Double) value;
@@ -176,63 +139,6 @@ public class BulkIONxmBlockControls extends Composite {
 			}
 		});
 		return updateValueStrategy;
-	}
-
-	private UpdateValueStrategy createTargetToModelForFrameSize() {
-		UpdateValueStrategy updateValueStrategy = new UpdateValueStrategy();
-		updateValueStrategy.setAfterGetValidator(new IValidator() {
-
-			@Override
-			public IStatus validate(Object value) {
-				if ("default".equalsIgnoreCase((String) value)) {
-					return ValidationStatus.ok();
-				} else {
-					try {
-						Integer.valueOf((String) value);
-						return ValidationStatus.ok();
-					} catch (NumberFormatException nfe) {
-						return ValidationStatus.error("Frame size must a number greater than 0.");
-					}
-				}
-			}
-		});
-
-		updateValueStrategy.setConverter(new Converter(String.class, Integer.class) {
-
-			@Override
-			public Object convert(Object fromObject) {
-				if ("default".equalsIgnoreCase((String) fromObject)) {
-					return -1;
-				}
-				return Integer.valueOf((String) fromObject);
-			}
-		});
-		updateValueStrategy.setAfterConvertValidator(new IValidator() {
-
-			@Override
-			public IStatus validate(Object value) {
-				Integer val = (Integer) value;
-				if (val > 0) {
-					return ValidationStatus.ok();
-				}
-				return ValidationStatus.error("Frame size must be greater than 0.");
-			}
-		});
-		return updateValueStrategy;
-	}
-
-	static class SelectAllTextComboTextListener implements ISelectionChangedListener {
-		private final Combo combo;
-
-		SelectAllTextComboTextListener(Combo combo) {
-			this.combo = combo;
-		}
-
-		public void selectionChanged(final SelectionChangedEvent event) {
-			final String text = this.combo.getText();
-			final int textLen = (text == null) ? 0 : text.length();
-			this.combo.setSelection(new Point(0, textLen)); // select text from combo selection
-		}
 	}
 
 }
