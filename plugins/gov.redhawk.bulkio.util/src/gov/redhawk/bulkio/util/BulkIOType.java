@@ -50,27 +50,29 @@ import BULKIO.updateSRIOperations;
 
 @NonNullByDefault
 public enum BulkIOType {
-	DOUBLE(8, double.class, false, dataDoubleOperations.class),
-	FLOAT(4, float.class, false, dataFloatOperations.class),
-	LONG(4, int.class, false, dataLongOperations.class),
-	ULONG(4, int.class, true, dataUlongOperations.class),
-	LONG_LONG(8, long.class, false, dataLongLongOperations.class),
-	ULONG_LONG(8, long.class, true, dataUlongLongOperations.class),
-	SHORT(2, short.class, false, dataShortOperations.class),
-	USHORT(2, short.class, true, dataUshortOperations.class),
-	CHAR(2, char.class, false, dataCharOperations.class),
-	OCTET(1, byte.class, false, dataOctetOperations.class);
+	DOUBLE(8, double.class, false, dataDoubleOperations.class, 'D'),
+	FLOAT(4, float.class, false, dataFloatOperations.class, 'F'),
+	LONG_LONG(8, long.class, false, dataLongLongOperations.class, 'X'),
+	ULONG_LONG(8, long.class, true, dataUlongLongOperations.class, 'X'),
+	LONG(4, int.class, false, dataLongOperations.class, 'L'),
+	ULONG(4, int.class, true, dataUlongOperations.class, 'X'),
+	SHORT(2, short.class, false, dataShortOperations.class, 'I'),
+	USHORT(2, short.class, true, dataUshortOperations.class, 'L'),
+	OCTET(1, byte.class, false, dataOctetOperations.class, 'B'),
+	CHAR(2, char.class, false, dataCharOperations.class, 'I');
 
 	private final int bytePerAtom;
 	private final Class< ? > javaType;
 	private final boolean unsigned;
 	private final Class< ? > portType;
+	private final char midasType;
 
-	private BulkIOType(int bytePerAtom, Class< ? > javaType, boolean unsigned, Class< ? > portType) {
+	private BulkIOType(int bytePerAtom, Class< ? > javaType, boolean unsigned, Class< ? > portType, char midasType) {
 		this.bytePerAtom = bytePerAtom;
 		this.javaType = javaType;
 		this.unsigned = unsigned;
 		this.portType = portType;
+		this.midasType = midasType;
 	}
 
 	public int getBytePerAtom() {
@@ -186,6 +188,13 @@ public enum BulkIOType {
 	 */
 	public Class< ? > getPortType() {
 		return portType;
+	}
+
+	/**
+	 * @since 2.0
+	 */
+	public char getMidasType() {
+		return midasType;
 	}
 
 	/**
