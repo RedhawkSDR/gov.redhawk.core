@@ -70,8 +70,10 @@ public class RapInit {
 			});
 
 			while (!done[0]) {
-				if (!display.readAndDispatch()) {
-					display.sleep();
+				try {
+					Thread.sleep(100);
+				} catch (InterruptedException e) {
+					//PASS
 				}
 			}
 			return user[0];
