@@ -30,14 +30,9 @@ import org.eclipse.swt.widgets.Composite;
 public class FftNxmBlock extends AbstractNxmBlock<fft, FftNxmBlockSettings> {
 	private FftNxmBlockSettings settings;
 
-	public FftNxmBlock() {
-		super(fft.class, "FFT");
-	}
-
 	public FftNxmBlock(@NonNull AbstractNxmPlotWidget plotWidget, @NonNull FftNxmBlockSettings settings) {
-		this();
+		super(fft.class, "FFT", plotWidget);
 		this.settings = settings;
-		setContext(plotWidget);
 	}
 
 	@Override

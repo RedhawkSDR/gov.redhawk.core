@@ -113,9 +113,10 @@ public abstract class AbstractNxmBlock<C extends Command, S extends Object> impl
 	private final ConcurrentHashMap<Integer, List<BlockIndexPair>> outputMap = new ConcurrentHashMap<Integer, List<BlockIndexPair>>();
 	private String label;
 
-	protected AbstractNxmBlock(@NonNull Class<C> desiredLaunchCommandClass, @NonNull String label) {
+	protected AbstractNxmBlock(@NonNull Class<C> desiredLaunchCommandClass, @NonNull String label, AbstractNxmPlotWidget plotWidget) {
 		desiredLaunchClass = desiredLaunchCommandClass;
 		this.label = label;
+		this.plotWidget = plotWidget;
 	}
 
 	/** any sub-class that overrides this method MUST call super.setContext(..). */
@@ -248,7 +249,7 @@ public abstract class AbstractNxmBlock<C extends Command, S extends Object> impl
 			TRACE_LOG.message("launch({0}) cmdline: {1} [{2}]", streamID, cmdLine, toString());
 		}
 		if (cmdLine != null && !cmdLine.trim().isEmpty()) {
-			final Command cmd = plotWidget.runHeadlessCommandWithResult(cmdLine + " /BG");
+			final Command cmd = currentPlotContext.runHeadlessCommandWithResult(cmdLine + " /BG");
 			if (cmd == null) {
 				throw new IllegalStateException("Expected to launch NeXtMidas command, but got null");
 			} else {
@@ -264,9 +265,9 @@ public abstract class AbstractNxmBlock<C extends Command, S extends Object> impl
 					throw new IllegalStateException("Expected to launch " + desiredLaunchClass + " command, but found: " + cmd.getClass());
 				}
 			}
-			cmd.setMessageHandler(plotWidget.getPlotMessageHandler());
+			cmd.setMessageHandler(currentPlotContext.getPlotMessageHandler());
 
-			plotWidget.runHeadlessCommand("PIPE RUN"); // start NeXtMidas pipe data flow (if it has not already started)
+			currentPlotContext.runHeadlessCommand("PIPE RUN"); // start NeXtMidas pipe data flow (if it has not already started)
 		}
 
 		// launch hooked output blocks to consume this streamID

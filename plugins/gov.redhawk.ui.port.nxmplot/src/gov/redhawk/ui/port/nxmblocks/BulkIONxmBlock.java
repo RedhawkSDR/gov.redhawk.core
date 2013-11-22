@@ -102,18 +102,16 @@ public class BulkIONxmBlock extends AbstractNxmBlock<corbareceiver, BulkIONxmBlo
 
 	} // end inner class BulkIOPort
 
-	/** <b>INTERNAL USE ONLY</b>
-	 * @noreference This constructor is not intended to be referenced by clients.
+	/** 
 	 * @param settings
 	 */
 	public BulkIONxmBlock(@NonNull AbstractNxmPlotWidget plotWidget, @NonNull ScaUsesPort scaUsesPort, @NonNull BulkIONxmBlockSettings settings) {
-		super(corbareceiver.class, "BULKIO");
+		super(corbareceiver.class, "BULKIO", plotWidget);
 		this.settings = settings;
 		this.scaPort = scaUsesPort;
 		this.ior = scaUsesPort.getIor();
 		String idl = scaPort.getRepid();
 		this.bulkIOType = BulkIOType.getType(idl);
-		setContext(plotWidget);
 	}
 
 	@Override

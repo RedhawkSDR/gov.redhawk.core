@@ -23,9 +23,6 @@ import java.nio.ByteOrder;
 import java.text.MessageFormat;
 import java.util.concurrent.ConcurrentHashMap;
 
-import nxm.redhawk.prim.sourcenic;
-
-import org.eclipse.core.databinding.DataBindingContext;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
@@ -33,7 +30,6 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.Nullable;
-import org.eclipse.swt.widgets.Composite;
 import org.omg.CORBA.SystemException;
 import org.omg.PortableServer.Servant;
 import org.omg.PortableServer.POAPackage.ServantNotActive;
@@ -52,7 +48,7 @@ import CF.PortPackage.OccupiedPort;
  * @noreference This class is provisional/beta and is subject to API changes
  * @since 4.3
  */
-public class BulkIOSddsNxmBlock extends AbstractNxmBlock<sourcenic, SddsNxmBlockSettings> {
+public class BulkIOSddsNxmBlock extends SddsNxmBlock {
 
 	private static final Debug TRACE_LOG = new Debug(PlotActivator.PLUGIN_ID, BulkIOSddsNxmBlock.class.getSimpleName());
 	
@@ -121,15 +117,10 @@ public class BulkIOSddsNxmBlock extends AbstractNxmBlock<sourcenic, SddsNxmBlock
 	} // inner class SddsPort
 
 	public BulkIOSddsNxmBlock(@NonNull AbstractNxmPlotWidget plotWidget, @NonNull ScaUsesPort scaUsesPort, @NonNull SddsNxmBlockSettings settings) {
-		super(sourcenic.class, "BULKIO SDDS");
-		setContext(plotWidget);
+		super(plotWidget, settings);
+		setLabel("BULKIO SDDS");
 		this.settings = settings;
 		this.scaUsesPort = scaUsesPort;
-	}
-
-	@Override
-	public int getMaxInputs() {
-		return 0; // BULKIO SDDS Port is starting point (so it has no inputs)
 	}
 
 	@Override
@@ -142,7 +133,7 @@ public class BulkIOSddsNxmBlock extends AbstractNxmBlock<sourcenic, SddsNxmBlock
 		SDDSStreamDefinition sddsSettings = sss.getSddsStreamDef();
 		String outputFormat = settings.getOutputFormat();
 		if (outputFormat == null) {
-			outputFormat = sddsDigraph2Format(sddsSettings.dataFormat);
+			outputFormat = sddsDigraph2MidasFormatType(sddsSettings.dataFormat);
 		}
 		int pipeSize = settings.getPipeSize();
 		if (pipeSize >= 0) {
@@ -158,30 +149,8 @@ public class BulkIOSddsNxmBlock extends AbstractNxmBlock<sourcenic, SddsNxmBlock
 	}
 
 	@Override
-	@NonNull
-	public SddsNxmBlockSettings getSettings() {
-		SddsNxmBlockSettings clone;
-		if (settings != null) {
-			clone = settings.clone();
-		} else {
-			clone = new SddsNxmBlockSettings();
-		}
-		return clone;
-	}
-
-	@Override
 	public void applySettings(SddsNxmBlockSettings settings) {
 		// TODO Auto-generated method stub
-	}
-
-	@Override
-	public boolean hasControls() {
-		return false; // none at this time
-	}
-
-	@Override
-	public Composite createControls(Composite parent, SddsNxmBlockSettings settings, DataBindingContext context) {
-		return null; // none at this time
 	}
 
 	private void connect() throws CoreException {
@@ -240,7 +209,7 @@ public class BulkIOSddsNxmBlock extends AbstractNxmBlock<sourcenic, SddsNxmBlock
 		TRACE_LOG.exitingMethod();
 	}
 
-	private static String sddsDigraph2Format(SDDSDataDigraph sddsDataFormat) {
+	private static String sddsDigraph2MidasFormatType(SDDSDataDigraph sddsDataFormat) {
 		String format = null;
 		if        (SDDSDataDigraph.SDDS_SF.equals(sddsDataFormat)) {
 			format = "SF";

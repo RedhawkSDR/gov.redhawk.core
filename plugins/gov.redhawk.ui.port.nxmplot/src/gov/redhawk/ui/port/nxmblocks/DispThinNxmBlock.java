@@ -35,8 +35,7 @@ public class DispThinNxmBlock extends AbstractNxmBlock<dispthin, Map<String, Obj
 	private int refreshRate;
 
 	public DispThinNxmBlock(@NonNull AbstractNxmPlotWidget plotWidget) {
-		super(dispthin.class, "Display Thin");
-		setContext(plotWidget);
+		super(dispthin.class, "Display Thin", plotWidget);
 	}
 
 	@Override

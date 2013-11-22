@@ -24,23 +24,11 @@ import org.eclipse.swt.widgets.Composite;
  */
 public class FileNxmBlock extends AbstractNxmBlock<Command, String> {
 
-	private AbstractNxmPlotWidget plotWidget;
-
 	private final String filename;
 
-	public FileNxmBlock(@NonNull String filename) {
-		super(Command.class, "File");
+	public FileNxmBlock(@NonNull String filename, @NonNull AbstractNxmPlotWidget plotWidget) {
+		super(Command.class, "File", plotWidget);
 		this.filename = filename;
-	}
-
-	@Override
-	public void setContext(AbstractNxmPlotWidget widget) {
-		plotWidget = widget;
-	}
-
-	@Override
-	public AbstractNxmPlotWidget getContext() {
-		return plotWidget;
 	}
 
 	@Override

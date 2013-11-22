@@ -32,8 +32,7 @@ public class SddsNxmBlock extends AbstractNxmBlock<sourcenic, SddsNxmBlockSettin
 	private SddsNxmBlockSettings settings;
 
 	public SddsNxmBlock(@NonNull AbstractNxmPlotWidget plotWidget, @NonNull SddsNxmBlockSettings settings) {
-		super(sourcenic.class, "SDDS");
-		setContext(plotWidget);
+		super(sourcenic.class, "SDDS", plotWidget);
 		this.settings = settings;
 	}
 

@@ -37,14 +37,13 @@ public class PlotNxmBlock extends AbstractNxmBlock<plot, PlotNxmBlockSettings> {
 	private ConcurrentHashMap<String, String> streamIdToSourceNameMap = new ConcurrentHashMap<String, String>();
 
 	public PlotNxmBlock(@NonNull AbstractNxmPlotWidget plotWidget, PlotNxmBlockSettings settings) {
-		super(plot.class, "PLOT");
+		super(plot.class, "PLOT", plotWidget);
 		if (settings == null) {
 			settings = new PlotNxmBlockSettings();
 		} else {
 			// PASS: TODO: clone settings?
 		}
 		this.settings = settings;
-		setContext(plotWidget);
 	}
 
 	@Override
@@ -118,7 +117,7 @@ public class PlotNxmBlock extends AbstractNxmBlock<plot, PlotNxmBlockSettings> {
 
 	@Override
 	public void stop() {
-		TRACE_LOG.enteringMethod("size=" + streamIdToSourceNameMap.size());
+		TRACE_LOG.enteringMethod("curSize=" + streamIdToSourceNameMap.size());
 		final AbstractNxmPlotWidget currentPlotWidget = getContext();
 		if (currentPlotWidget == null) {
 			throw new IllegalStateException("A context (AbstractNxmPlotWidget) must be set before stop() can be called.");

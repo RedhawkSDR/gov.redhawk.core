@@ -35,8 +35,7 @@ public class FCalculatorNxmBlock extends AbstractNxmBlock<fcalculator, String> {
 	 * @param inputSources input sources (most not have any null inputs)
 	 */
 	public FCalculatorNxmBlock(@NonNull AbstractNxmPlotWidget plotWidget, @NonNull String fcalcExpression) {
-		super(fcalculator.class, "FCalculator");
-		setContext(plotWidget);
+		super(fcalculator.class, "FCalculator", plotWidget);
 		this.calcExpression = fcalcExpression;
 	}
 
