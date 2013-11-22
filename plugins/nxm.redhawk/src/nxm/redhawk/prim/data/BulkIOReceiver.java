@@ -11,14 +11,15 @@
  */
 package nxm.redhawk.prim.data;
 
-import org.eclipse.jdt.annotation.NonNull;
-import org.eclipse.jdt.annotation.Nullable;
-
 import gov.redhawk.bulkio.util.AbstractBulkIOPort;
 import gov.redhawk.bulkio.util.BulkIOType;
 import mil.jpeojtrs.sca.util.UnsignedUtils;
-import nxm.redhawk.prim.corbareceiver;
+import nxm.redhawk.prim.IMidasDataWriter;
 import nxm.sys.inc.DataTypes;
+
+import org.eclipse.jdt.annotation.NonNull;
+import org.eclipse.jdt.annotation.Nullable;
+
 import BULKIO.PrecisionUTCTime;
 import BULKIO.StreamSRI;
 import BULKIO.dataCharOperations;
@@ -33,52 +34,28 @@ import BULKIO.dataUlongOperations;
 import BULKIO.dataUshortOperations;
 
 /**
- * 
+ * uber BULKIO Port (CORBA) data receiver
  */
 public class BulkIOReceiver extends AbstractBulkIOPort implements dataCharOperations, dataDoubleOperations, dataFloatOperations, dataLongLongOperations,
 		dataLongOperations, dataOctetOperations, dataShortOperations, dataUlongLongOperations, dataUlongOperations, dataUshortOperations {
 
-	private final corbareceiver receiver;
+	private final IMidasDataWriter receiver;
 	private final char midasType;
 	private final boolean signed;
 
-	public BulkIOReceiver(@NonNull final corbareceiver receiver, @NonNull BulkIOType type) {
+	public BulkIOReceiver(@NonNull final IMidasDataWriter receiver, @NonNull BulkIOType type) {
+		this(receiver, type, false);
+	}
+	
+	public BulkIOReceiver(@NonNull final IMidasDataWriter receiver, @NonNull BulkIOType type, boolean treatOctetAsUnsigned) {
 		super(type);
 		this.receiver = receiver;
-		this.signed = !type.isUnsigned();
-		switch (type) {
-		case CHAR:
-			this.midasType = 'I';
-			break;
-		case DOUBLE:
-			this.midasType = 'D';
-			break;
-		case FLOAT:
-			this.midasType = 'F';
-			break;
-		case LONG:
-			this.midasType = 'L';
-			break;
-		case LONG_LONG:
-			this.midasType = 'X';
-			break;
-		case OCTET:
-			this.midasType = 'I';
-			break;
-		case SHORT:
-			this.midasType = 'I';
-			break;
-		case ULONG:
-			this.midasType = 'X';
-			break;
-		case ULONG_LONG:
-			this.midasType = 'X';
-			break;
-		case USHORT:
-			this.midasType = 'L';
-			break;
-		default:
-			throw new IllegalStateException("Unhandled BulkIO Type.");
+		if (treatOctetAsUnsigned && (BulkIOType.OCTET == type)) {
+			this.signed = false;
+			this.midasType = 'I'; // need to upcast to signed 16-bit integer to represent unsigned 8-bit
+		} else {
+			this.signed = !type.isUnsigned();
+			this.midasType = type.getMidasType();
 		}
 	}
 
@@ -87,11 +64,10 @@ public class BulkIOReceiver extends AbstractBulkIOPort implements dataCharOperat
 	}
 
 	@Override
-	protected void handleStreamSRIChanged(@Nullable StreamSRI oldSri, @Nullable StreamSRI newSri) {
-		super.handleStreamSRIChanged(oldSri, newSri);
-		receiver.setStreamSri(newSri);
+	protected void handleStreamSRIChanged(@NonNull String streamID, @Nullable StreamSRI oldSri, @NonNull StreamSRI newSri) {
+		receiver.setStreamSri(streamID, oldSri, newSri);
 	}
-
+	
 	/**
 	 * {@inheritDoc}
 	 */
@@ -127,16 +103,13 @@ public class BulkIOReceiver extends AbstractBulkIOPort implements dataCharOperat
 		if (signed) {
 			receiver.write(dataArray, dataArray.length, DataTypes.XLONG, endOfStream, time);
 		} else {
-			final long[] newDataArray = new long[dataArray.length];
 			for (int i = 0; i < dataArray.length; i++) {
-				if (dataArray[i] >= 0) {
-					newDataArray[i] = dataArray[i];
-				} else {
+				if (dataArray[i] < 0) {
 					// NextMidas does not accept integer precision values outside of Long.MAX_VALUE,  therefore clip.
-					newDataArray[i] = Long.MAX_VALUE;
-				}
+					dataArray[i] = Long.MAX_VALUE;
+				} // else no change necessary
 			}
-			receiver.write(newDataArray, newDataArray.length, DataTypes.XLONG, endOfStream, time);
+			receiver.write(dataArray, dataArray.length, DataTypes.XLONG, endOfStream, time);
 		}
 	}
 
@@ -154,19 +127,6 @@ public class BulkIOReceiver extends AbstractBulkIOPort implements dataCharOperat
 	}
 
 	@Override
-	public void pushPacket(final byte[] dataArray, final PrecisionUTCTime time, final boolean endOfStream, final String streamId) {
-		if (!super.pushPacket(dataArray.length, time, endOfStream, streamId)) {
-			return;
-		}
-		if (signed) {
-			receiver.write(dataArray, dataArray.length, DataTypes.BYTE, endOfStream, time);
-		} else {
-			final short[] newDataArray = UnsignedUtils.toSigned(dataArray);
-			receiver.write(newDataArray, newDataArray.length, DataTypes.INT, endOfStream, time);
-		}
-	}
-
-	@Override
 	public void pushPacket(final short[] dataArray, final PrecisionUTCTime time, final boolean endOfStream, final String streamId) {
 		if (!super.pushPacket(dataArray.length, time, endOfStream, streamId)) {
 			return;
@@ -179,4 +139,17 @@ public class BulkIOReceiver extends AbstractBulkIOPort implements dataCharOperat
 		}
 	}
 
+	@Override
+	public void pushPacket(final byte[] dataArray, final PrecisionUTCTime time, final boolean endOfStream, final String streamId) {
+		if (!super.pushPacket(dataArray.length, time, endOfStream, streamId)) {
+			return;
+		}
+		if (signed) {
+			receiver.write(dataArray, dataArray.length, DataTypes.BYTE, endOfStream, time);
+		} else {
+			final short[] newDataArray = UnsignedUtils.toSigned(dataArray);
+			receiver.write(newDataArray, newDataArray.length, DataTypes.INT, endOfStream, time);
+		}
+	}
+	
 }

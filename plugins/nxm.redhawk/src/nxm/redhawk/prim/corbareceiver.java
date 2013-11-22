@@ -40,7 +40,7 @@ import BULKIO.StreamSRI;
  * Scalar and Complex, but not the actual data type. This functionality has not
  * been tested(the plot may not recover).
  */
-public class corbareceiver extends CorbaPrimitive { //SUPPRESS CHECKSTYLE ClassName
+public class corbareceiver extends CorbaPrimitive implements IMidasDataWriter { //SUPPRESS CHECKSTYLE ClassName
 	/** Name of IDL argument
 	 * @since 8.0
 	 */
@@ -78,8 +78,15 @@ public class corbareceiver extends CorbaPrimitive { //SUPPRESS CHECKSTYLE ClassN
 	 * @since 10.0
 	 */
 	public static final String SW_WAIT = "/WAIT";
-	private static final int SLEEP_INTERVAL = 100;
 
+	/** treat dataOctet as 8-bit unsigned integer (this will upcast format type to 16-bit signed integer to hold value).  
+	 * @since 10.1
+	 */
+	public static final String SW_TREAT_OCTET_AS_UNSIGNED = "/UNSIGNEDOCTET";
+	
+	/** sleep interval (ms) for {@link #SW_WAIT}. */
+	private static final int SLEEP_INTERVAL = 100;
+	
 	/** the output file to write to */
 	private volatile DataFile outputFile = null;
 	private FileName fileName;
@@ -138,12 +145,13 @@ public class corbareceiver extends CorbaPrimitive { //SUPPRESS CHECKSTYLE ClassN
 		this.frameSizeAttribute = this.MA.getL(A_FRAMESIZE, 0);
 		this.overrideSRISubSize = this.MA.getState(A_OVERRIDE_SRI_SUBSIZE, false);
 		this.blocking = this.MA.getState(SW_BLOCKING, false);
+		boolean unsignedOctet = MA.getState(SW_TREAT_OCTET_AS_UNSIGNED); 
 
 		BulkIOType newType = BulkIOType.getType(corbareceiver.decodeIDL(encoded_idl));
 		this.type = newType;
 		
 		if (this.receiver == null) {
-			this.receiver = new BulkIOReceiver(this, newType);
+			this.receiver = new BulkIOReceiver(this, newType, unsignedOctet);
 		}
 		if (origFrameSizeArg == null) {
 			origFrameSizeArg = this.frameSizeAttribute;
@@ -308,9 +316,18 @@ public class corbareceiver extends CorbaPrimitive { //SUPPRESS CHECKSTYLE ClassN
 
 	/**
 	 * @since 10.0
+	 * @deprecated since 10.1 use {@link #setStreamSri(String, StreamSRI, StreamSRI)}
 	 */
-	public synchronized void setStreamSri(final StreamSRI sri) {
-		this.currentSri = sri;
+	@Deprecated
+	public void setStreamSri(final StreamSRI sri) {
+	}
+	
+	/**
+	 * @since 10.1
+	 * @noreference This method is not intended to be referenced by clients.
+	 */
+	public synchronized void setStreamSri(String streamID, StreamSRI oldSri, StreamSRI newSri) {
+		this.currentSri = newSri;
 		sendMessage("STREAMSRI", 1, this.currentSri);
 		if (state == Commandable.PROCESS) {
 			doRestart();
