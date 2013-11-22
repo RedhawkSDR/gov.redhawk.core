@@ -13,5 +13,3 @@ Require-Bundle: gov.redhawk.sca.rap.supplement;bundle-version="1.1.0",
  gov.redhawk.sca;bundle-version="6.1.0"
 Bundle-ActivationPolicy: lazy
 Bundle-Activator: gov.redhawk.sca.rap.ScaRapPlugin
-Import-Package: javax.servlet;version="2.6.0",
- javax.servlet.http;version="2.6.0"
