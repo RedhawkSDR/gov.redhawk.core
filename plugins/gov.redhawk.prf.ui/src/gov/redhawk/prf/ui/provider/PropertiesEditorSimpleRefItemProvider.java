@@ -59,7 +59,7 @@ public class PropertiesEditorSimpleRefItemProvider extends SimpleRefItemProvider
 		final SimpleRef simpleRef = (SimpleRef) object;
 		final Simple simple = this.findSimple(simpleRef);
 		String label = simpleRef.getRefID();
-		if (simple != null && simple.getName() != null && !simple.getName().equals("")) {
+		if (simple != null && simple.getName() != null && !simple.getName().isEmpty()) {
 			label = simple.getName();
 		}
 		return label;

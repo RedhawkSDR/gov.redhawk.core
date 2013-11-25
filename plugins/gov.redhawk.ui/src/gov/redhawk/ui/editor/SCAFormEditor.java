@@ -1675,7 +1675,7 @@ public abstract class SCAFormEditor extends FormEditor implements IEditingDomain
 						} else {
 							handleDocumentChange(resource);
 						}
-					} catch (final Exception exception) {
+					} catch (final Exception exception) { // SUPPRESS CHECKSTYLE Fallback
 						//PASS
 					}
 				}
@@ -1698,7 +1698,7 @@ public abstract class SCAFormEditor extends FormEditor implements IEditingDomain
 				xmlResource.unload();
 			}
 			xmlResource.load(new InputSource(new StringReader(document.get())), xmlResource.getDefaultLoadOptions());
-		} catch (final Exception exception) {
+		} catch (final Exception exception) { // SUPPRESS CHECKSTYLE Fallback
 			//PASS - Allow the validators to do their job rather than prevent invalid xml
 		}
 
@@ -1774,7 +1774,7 @@ public abstract class SCAFormEditor extends FormEditor implements IEditingDomain
 				if (!"".equals(replacement) || length != 0) {
 					document.replace(startIndex, length, replacement);
 				}
-			} catch (final Exception exception) {
+			} catch (final Exception exception) { // SUPPRESS CHECKSTYLE Fallback
 				//PASS
 			}
 		}

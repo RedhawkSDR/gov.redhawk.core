@@ -29,7 +29,7 @@ import org.eclipse.ui.handlers.HandlerUtil;
 
 /**
  * @since 4.0
- * @deprecated
+ * @deprecated Use Commands
  */
 @Deprecated
 public class PlayUsesPortHandler extends AbstractHandler {

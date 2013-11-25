@@ -31,7 +31,7 @@ import BULKIO.dataUlongPOATie;
 
 /**
  * This class is used to generate the correct Tie object for a given data type.
- * @deprecated
+ * @deprecated Internal Object remove in favor of OrbSession
  */
 @Deprecated
 public class TieFactory {

@@ -13,7 +13,7 @@ package gov.redhawk.ui.port;
 
 /**
  * @since 5.0
- * @deprecated
+ * @deprecated No more global action handlers
  */
 @Deprecated
 public class PlotAdapter implements IPlotListener {

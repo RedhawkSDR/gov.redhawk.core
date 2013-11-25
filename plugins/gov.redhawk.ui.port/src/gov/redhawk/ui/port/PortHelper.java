@@ -33,9 +33,7 @@ import org.eclipse.ui.handlers.IHandlerService;
 
 /**
  * @since 4.0
- * @deprecated
  */
-@Deprecated
 public class PortHelper {
 
 	private PortHelper() {

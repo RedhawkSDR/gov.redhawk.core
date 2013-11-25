@@ -137,6 +137,11 @@ public final class NxmPlotUtil {
 		return sb.toString();
 	}
 
+	/**
+	 * 
+	 * @deprecated Use new plot block 
+	 */
+	@Deprecated
 	private static Map<String, String> launchInputMacro(final CorbaConnectionSettings settings, final FftSettings fft, final AbstractNxmPlotWidget plotWidget, String pipeSize) {
 		final String outName = AbstractNxmPlotWidget.createUniqueName(true);
 
@@ -287,7 +292,9 @@ public final class NxmPlotUtil {
 	 * @param commandSources list to store the commands created so they can be
 	 *        started later
 	 * @return a list of sources created to be plotted
+	 * @deprecated Use new plot blocks
 	 */
+	@Deprecated
 	private static List<Map<String, String>> launchInputMacros(final List<CorbaConnectionSettings> connList, final FftSettings fft,
 			final AbstractNxmPlotWidget plotWidget, String pipeSize) {
 		final List<Map<String, String>> outputList = new ArrayList<Map<String, String>>();
@@ -330,6 +337,11 @@ public final class NxmPlotUtil {
 		return map;
 	}
 
+	/**
+	 * 
+	 * @deprecated Use new plot blocks
+	 */
+	@Deprecated
 	public static List<CorbaConnectionSettings> createConnList(final List< ? extends ScaUsesPort> portList) {
 		final List<CorbaConnectionSettings> connList = new ArrayList<CorbaConnectionSettings>();
 
@@ -340,6 +352,11 @@ public final class NxmPlotUtil {
 		return connList;
 	}
 
+	/**
+	 * 
+	 * @deprecated Use new plot blocks
+	 */
+	@Deprecated
 	public static CorbaConnectionSettings createConnectionSettings(ScaUsesPort port) {
 		final CorbaConnectionSettings connectionSettings = new CorbaConnectionSettings(port.getIor(), port.getRepid());
 		return connectionSettings;
@@ -382,6 +399,10 @@ public final class NxmPlotUtil {
 		return session;
 	}
 
+	/**
+	 * @deprecated Use new plot blocks
+	 */
+	@Deprecated
 	public static List<IPlotSession> addSource(final List<CorbaConnectionSettings> connList, final FftSettings fft, final AbstractNxmPlotWidget plotWidget,
 			final String qualifiers) {
 		List<Map<String, String>> outputIds = launchInputMacros(connList, fft, plotWidget, null);

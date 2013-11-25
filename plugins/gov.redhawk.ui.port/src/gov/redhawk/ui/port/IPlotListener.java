@@ -13,7 +13,7 @@ package gov.redhawk.ui.port;
 
 /**
  * @since 5.0
- * @deprecated
+ * @deprecated Use commands
  */
 @Deprecated
 public interface IPlotListener {

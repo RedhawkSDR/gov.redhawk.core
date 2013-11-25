@@ -62,15 +62,13 @@ public class FileStoreFileSystem extends AbstractFileSystem {
 		if (pattern == null) {
 			throw new InvalidFileName(ErrorNumberType.CF_EIO, "File does not exist");
 		}
-		if (pattern.length() == 0 || pattern.equals("/")) {
+		if (pattern.length() == 0 || "/".equals(pattern)) {
 			final FileInformationType info = new FileInformationType();
 			info.fileProperties = createDataTypeArray(this.root);
 			info.kind = FileType.FILE_SYSTEM;
 			info.name = "/";
 			info.size = 0;
-			return new FileInformationType[] {
-				info
-			};
+			return new FileInformationType[] { info };
 		} else {
 			if (pattern.charAt(0) == '/') {
 				pattern = pattern.substring(1);
@@ -112,10 +110,8 @@ public class FileStoreFileSystem extends AbstractFileSystem {
 		final Any readOnly = this.orb.create_any();
 		readOnly.insert_boolean(info.getAttribute(EFS.ATTRIBUTE_READ_ONLY));
 
-		return new DataType[] {
-		        new DataType(ScaFileInformationDataType.MODIFIED_TIME.name(), anyLastModified),
-		        new DataType(ScaFileInformationDataType.READ_ONLY.name(), readOnly)
-		};
+		return new DataType[] { new DataType(ScaFileInformationDataType.MODIFIED_TIME.name(), anyLastModified),
+			new DataType(ScaFileInformationDataType.READ_ONLY.name(), readOnly) };
 
 	}
 

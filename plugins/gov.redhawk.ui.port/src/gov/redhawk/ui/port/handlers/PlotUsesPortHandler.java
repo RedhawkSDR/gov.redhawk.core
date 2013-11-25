@@ -29,7 +29,7 @@ import org.eclipse.ui.handlers.HandlerUtil;
 
 /**
  * @since 4.0
- * @deprecated
+ * @deprecated No more global action handlers
  */
 @Deprecated
 public class PlotUsesPortHandler extends AbstractHandler {

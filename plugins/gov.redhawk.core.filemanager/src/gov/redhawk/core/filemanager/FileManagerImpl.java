@@ -46,7 +46,7 @@ public class FileManagerImpl implements IFileManager {
 		if ("".equals(fileName) || fileName == null) {
 			throw new InvalidFileName(ErrorNumberType.CF_EIO, "");
 		}
-		if (fileName.length() == 0 || fileName.equals("/")) {
+		if (fileName.length() == 0 || "/".equals(fileName)) {
 			throw new InvalidFileName();
 		}
 		if (fileName.charAt(0) == '/') {
@@ -63,7 +63,7 @@ public class FileManagerImpl implements IFileManager {
 
 	@Override
 	public boolean exists(String fileName) throws InvalidFileName {
-		if (fileName == null || fileName.length() == 0 || fileName.equals("/")) {
+		if (fileName == null || fileName.length() == 0 || "/".equals(fileName)) {
 			return true;
 		}
 		if (fileName.charAt(0) == '/') {
@@ -77,13 +77,11 @@ public class FileManagerImpl implements IFileManager {
 		if (pattern == null) {
 			throw new InvalidFileName(ErrorNumberType.CF_EIO, "File must not be null");
 		}
-		if (pattern.length() == 0 || pattern.equals("/")) {
+		if (pattern.length() == 0 || "/".equals(pattern)) {
 			final FileInformationType info = this.root.createFileInformationType();
 			info.kind = FileType.FILE_SYSTEM;
 			info.name = "/";
-			return new FileInformationType[] {
-				info
-			};
+			return new FileInformationType[] { info };
 		} else {
 			if (pattern.charAt(0) == '/') {
 				pattern = pattern.substring(1);
@@ -95,7 +93,7 @@ public class FileManagerImpl implements IFileManager {
 
 	@Override
 	public File create(String fileName) throws InvalidFileName, FileException {
-		if (fileName == null || fileName.length() == 0 || fileName.equals("/")) {
+		if (fileName == null || fileName.length() == 0 || "/".equals(fileName)) {
 			throw new InvalidFileName(ErrorNumberType.CF_EIO, "");
 		}
 		if (fileName.charAt(0) == '/') {
@@ -106,7 +104,7 @@ public class FileManagerImpl implements IFileManager {
 
 	@Override
 	public File open(String fileName, final boolean readOnly) throws InvalidFileName, FileException {
-		if (fileName == null || fileName.length() == 0 || fileName.equals("/")) {
+		if (fileName == null || fileName.length() == 0 || "/".equals(fileName)) {
 			throw new InvalidFileName(ErrorNumberType.CF_EINVAL, "Invalid file: " + fileName);
 		}
 		if (fileName.charAt(0) == '/') {
@@ -117,7 +115,7 @@ public class FileManagerImpl implements IFileManager {
 
 	@Override
 	public void mkdir(String directoryName) throws InvalidFileName, FileException {
-		if (directoryName == null || directoryName.length() == 0 || directoryName.equals("/")) {
+		if (directoryName == null || directoryName.length() == 0 || "/".equals(directoryName)) {
 			throw new InvalidFileName(ErrorNumberType.CF_EINVAL, "Invalid directory Name: " + directoryName);
 		}
 		if (directoryName.charAt(0) == '/') {
@@ -128,7 +126,7 @@ public class FileManagerImpl implements IFileManager {
 
 	@Override
 	public void rmdir(String directoryName) throws InvalidFileName, FileException {
-		if (directoryName == null || directoryName.length() == 0 || directoryName.equals("/")) {
+		if (directoryName == null || directoryName.length() == 0 || "/".equals(directoryName)) {
 			throw new InvalidFileName(ErrorNumberType.CF_EINVAL, "Invalid directory Name: " + directoryName);
 		}
 		if (directoryName.charAt(0) == '/') {
@@ -144,7 +142,7 @@ public class FileManagerImpl implements IFileManager {
 
 	@Override
 	public void mount(String mp, final FileSystem fileSystem) throws InvalidFileName, InvalidFileSystem, MountPointAlreadyExists {
-		if (mp == null || mp.length() == 0 || mp.equals("/")) {
+		if (mp == null || mp.length() == 0 || "/".equals(mp)) {
 			throw new InvalidFileName(ErrorNumberType.CF_EINVAL, "Invalid mount point: " + mp);
 		}
 		if (mp.charAt(0) == '/') {
@@ -155,7 +153,7 @@ public class FileManagerImpl implements IFileManager {
 
 	@Override
 	public void unmount(String mp) throws NonExistentMount {
-		if (mp == null || mp.length() == 0 || mp.equals("/")) {
+		if (mp == null || mp.length() == 0 || "/".equals(mp)) {
 			throw new NonExistentMount("Invalid mount Name: " + mp);
 		}
 		if (mp.charAt(0) == '/') {

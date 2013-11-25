@@ -311,7 +311,7 @@ public abstract class ScaPropertyContainerImpl< P extends org.omg.CORBA.Object, 
 			} else {
 				return null;
 			}
-		} catch (Exception e) {
+		} catch (Exception e) { // SUPPRESS CHECKSTYLE Deprecated
 			return null;
 		}
 		// BEGIN GENERATED CODE

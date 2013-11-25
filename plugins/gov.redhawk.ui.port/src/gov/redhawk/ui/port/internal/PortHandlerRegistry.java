@@ -30,7 +30,7 @@ import org.eclipse.core.runtime.dynamichelpers.IExtensionTracker;
 import org.eclipse.core.runtime.dynamichelpers.IFilter;
 
 /**
- * @deprecated
+ * @deprecated Use commands
  */
 @Deprecated
 public class PortHandlerRegistry implements IPortHandlerRegistry, IExtensionChangeHandler {

@@ -123,7 +123,7 @@ public class PlotActivator extends AbstractUIPlugin {
 	 * @param portList A list of ScaUsesPorts or CorbaConnectionSettings to plot
 	 * @param fft the settings to be used for FFTing the data before plotting.
 	 *        This may be null if no FFT is desired.
-	 * @deprecated
+	 * @deprecated Create own views
 	 */
 	@Deprecated
 	public String addPlot(final List< ? > portList, final FftSettings fft) {
@@ -174,7 +174,7 @@ public class PlotActivator extends AbstractUIPlugin {
 	 * @param listener the listener to add
 	 * @param sessionId the id of the plot session to listen to
 	 * @since 3.0
-	 * @deprecated
+	 * @deprecated No more global action handlers
 	 */
 	@Deprecated
 	public void addPlotListener(final IPlotWidgetListener listener, final String sessionId) {
@@ -202,7 +202,7 @@ public class PlotActivator extends AbstractUIPlugin {
 	 * @param listener the listener to remove
 	 * @param sessionId the id of the plot session to stop listening to
 	 * @since 3.0
-	 * @deprecated
+	 * @deprecated No more global action handlers
 	 */
 	@Deprecated
 	public void removePlotListener(final IPlotWidgetListener listener, final String sessionId) {

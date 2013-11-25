@@ -70,7 +70,7 @@ public class ScaObjectWrapperContentDescriber implements IScaContentDescriber, I
 					}
 				}
 			}
-		} catch (final Exception e) {
+		} catch (final Exception e) { // SUPPRESS CHECKSTYLE Fallback
 			// PASS If we run into any problems return invalid
 		}
 		return IScaContentDescriber.INVALID;

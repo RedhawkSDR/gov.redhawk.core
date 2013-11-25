@@ -80,7 +80,7 @@ public class Activator extends AbstractUIPlugin {
 	 * Returns the PortHandlerRegistry
 	 * 
 	 * @return the PortHandlerRegistry
-	 * @deprecated
+	 * @deprecated Port Handler registry has been removed
 	 */
 	@Deprecated
 	public static IPortHandlerRegistry getPortHandlerRegistry() {

@@ -35,7 +35,7 @@ public class EmfPropertyTester extends PropertyTester {
 			return false;
 		}
 		final EObject obj = (EObject) receiver;
-		if (property.equals("namespace")) {
+		if ("namespace".equals(property)) {
 			if (obj.eClass().getEPackage().getNsURI().equals(expectedValue)) {
 				return true;
 			}

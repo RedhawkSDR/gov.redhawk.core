@@ -63,7 +63,7 @@ public class PlayAudioView extends ViewPart {
 			if (isDisposed) {
 				return;
 			}
-			if (evt.getPropertyName().equals("disposed")) {
+			if ("disposed".equals(evt.getPropertyName())) {
 				AudioReceiver receiver = (AudioReceiver) evt.getSource();
 				disconnect(receiver);
 			}

@@ -198,7 +198,7 @@ public class ScaDomainManagerRegistryContainerImpl implements IScaDomainManagerR
 			final org.eclipse.emf.common.util.URI uri = org.eclipse.emf.common.util.URI.createURI(fileUri.toString());
 			try {
 				this.registryResource = this.scaModelResourceSet.getResource(uri, true);
-			} catch (final Exception e) {
+			} catch (final Exception e) { // SUPPRESS CHECKSTYLE Fallback
 				// Clear the resource set here to remove the bad
 				// resource from above
 				this.scaModelResourceSet.getResources().clear();

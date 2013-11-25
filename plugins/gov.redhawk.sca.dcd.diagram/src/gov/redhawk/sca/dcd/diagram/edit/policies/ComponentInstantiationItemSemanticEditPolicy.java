@@ -18,7 +18,7 @@ import org.eclipse.gmf.runtime.emf.type.core.requests.DestroyElementRequest;
 
 public class ComponentInstantiationItemSemanticEditPolicy extends mil.jpeojtrs.sca.dcd.diagram.edit.policies.DcdComponentInstantiationItemSemanticEditPolicy {
 
-	private final gov.redhawk.diagram.edit.policies.ComponentInstantiationItemSemanticEditPolicyHelper editPolicyHelper = new gov.redhawk.diagram.edit.policies.ComponentInstantiationItemSemanticEditPolicyHelper();
+	private final gov.redhawk.diagram.edit.policies.ComponentInstantiationItemSemanticEditPolicyHelper editPolicyHelper = new gov.redhawk.diagram.edit.policies.ComponentInstantiationItemSemanticEditPolicyHelper(); // SUPPRESS CHECKSTYLE Line length
 
 	@Override
 	protected Command getCreateCommand(final CreateElementRequest req) {
@@ -27,6 +27,6 @@ public class ComponentInstantiationItemSemanticEditPolicy extends mil.jpeojtrs.s
 
 	@Override
 	protected Command getDestroyElementCommand(DestroyElementRequest req) {
-	    return super.getDestroyElementCommand(req);
+		return super.getDestroyElementCommand(req);
 	}
 }

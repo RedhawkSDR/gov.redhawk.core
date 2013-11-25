@@ -109,7 +109,7 @@ public class NameBrowserView extends ViewPart {
 						list.add(new ContentProposal(proposal));
 					}
 				}
-			} catch (Exception e) {
+			} catch (Exception e) { // SUPPRESS CHECKSTYLE Pattern Matcher
 				// PASS
 			}
 			return list.toArray(new IContentProposal[list.size()]);
@@ -500,7 +500,7 @@ public class NameBrowserView extends ViewPart {
 				return man != null;
 			} catch (final UserException e) {
 				// PASS 
-			} catch (final Exception e) {
+			} catch (final Exception e) { // SUPPRESS CHECKSTYLE Fallback
 				// PASS
 			}
 

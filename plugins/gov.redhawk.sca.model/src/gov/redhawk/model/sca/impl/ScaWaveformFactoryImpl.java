@@ -416,7 +416,7 @@ public class ScaWaveformFactoryImpl extends CorbaObjWrapperImpl<ApplicationFacto
 		// END GENERATED CODE
 		try {
 			return EFS.getStore(java.net.URI.create(getProfileURI().toString()));
-		} catch (Exception e) {
+		} catch (Exception e) { // SUPPRESS CHECKSTYLE Deprecated
 			return null;
 		}
 		// BEGIN GENERATED CODE

@@ -88,7 +88,7 @@ public class ValueColumnLabelProvider extends ColumnLabelProvider {
 				builder.append(ref.getRange().getMax());
 				builder.append('\n');
 			}
-			if (builder.toString().equals("")) {
+			if (builder.toString().isEmpty()) {
 				return null;
 			}
 			return builder.toString();
@@ -111,7 +111,7 @@ public class ValueColumnLabelProvider extends ColumnLabelProvider {
 				builder.append(ref.getRange().getMax());
 				builder.append('\n');
 			}
-			if (builder.toString().equals("")) {
+			if (builder.toString().isEmpty()) {
 				return null;
 			}
 			return builder.toString();

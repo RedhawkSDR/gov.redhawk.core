@@ -184,7 +184,7 @@ public enum ScaContentTypeRegistry implements IExtensionChangeHandler, IScaConte
 		final List<String> retVal = new ArrayList<String>();
 		if (input != null) {
 			final MultiStatus status = new MultiStatus(ScaUiPlugin.PLUGIN_ID, IStatus.OK, "Errors occured while attempting to find content Type for input: "
-			        + input, null);
+				+ input, null);
 			for (final ScaContentType type : this.registry.values()) {
 				final List<ScaContentTypeBinding> editors = this.bindings.get(type.id);
 				if (editors == null) {
@@ -402,7 +402,7 @@ public enum ScaContentTypeRegistry implements IExtensionChangeHandler, IScaConte
 			}
 
 			// and make sure the default editor isn't a broken one
-			if (defaultEditor.getId().equals("org.eclipse.wst.xml.ui.internal.tabletree.XMLMultiPageEditorPart")) {
+			if ("org.eclipse.wst.xml.ui.internal.tabletree.XMLMultiPageEditorPart".equals(defaultEditor.getId())) {
 				defaultEditor = editorRegistry.findEditor("org.eclipse.ui.DefaultTextEditor");
 			}
 			return defaultEditor;

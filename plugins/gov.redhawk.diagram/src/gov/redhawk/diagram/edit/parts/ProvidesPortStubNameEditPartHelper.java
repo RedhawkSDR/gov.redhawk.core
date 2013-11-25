@@ -58,7 +58,7 @@ public class ProvidesPortStubNameEditPartHelper {
 	public void refreshVisibility() {
 		final Object model = this.editPart.getModel();
 		if (model instanceof View) {
-			if (!this.editPart.getPreferenceStore().getString(PartitioningDiagramPreferenceConstants.PREF_SHOW_PORT_LABELS).equals("")) {
+			if (!this.editPart.getPreferenceStore().getString(PartitioningDiagramPreferenceConstants.PREF_SHOW_PORT_LABELS).isEmpty()) {
 				this.editPart.setVisibility(((View) model).isVisible()
 				        && this.editPart.getPreferenceStore().getBoolean(PartitioningDiagramPreferenceConstants.PREF_SHOW_PORT_LABELS));
 			} else {

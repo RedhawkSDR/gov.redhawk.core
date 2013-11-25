@@ -124,7 +124,7 @@ public final class ScaUI {
 			final Resource resource = object.eResource();
 			if (resource != null) {
 				final URI uri = resource.getURI();
-				if (uri.scheme().equals("platform")) {
+				if ("platform".equals(uri.scheme())) {
 					final IFile[] files = ResourcesPlugin.getWorkspace().getRoot().findFilesForLocationURI(java.net.URI.create(uri.toString()));
 					return files.length > 0;
 				} else {

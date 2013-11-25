@@ -143,12 +143,12 @@ public class ParseTests extends TestCase {
 		Module cfModule = null;
 		Module aggregateModule = null;
 		for (final Definition cfDef : cfDefinitions) {
-			if (cfDef instanceof Module && cfDef.getName().equals("CF")) {
+			if (cfDef instanceof Module && cfDef.getName().equals("CF")) { // SUPPRESS CHECKSTYLE Comparison
 				cfModule = (Module) cfDef;
 			}
 		}
 		for (final Definition agDef : aggregateDefinitions) {
-			if (agDef instanceof Module && agDef.getName().equals("CF")) {
+			if (agDef instanceof Module && agDef.getName().equals("CF")) { // SUPPRESS CHECKSTYLE Comparison
 				aggregateModule = (Module) agDef;
 			}
 		}

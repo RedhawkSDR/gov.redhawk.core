@@ -25,7 +25,7 @@ import org.eclipse.gmf.runtime.notation.View;
 
 public class ComponentInstantiationItemSemanticEditPolicy extends mil.jpeojtrs.sca.sad.diagram.edit.policies.SadComponentInstantiationItemSemanticEditPolicy {
 
-	private final gov.redhawk.diagram.edit.policies.ComponentInstantiationItemSemanticEditPolicyHelper editPolicyHelper = new gov.redhawk.diagram.edit.policies.ComponentInstantiationItemSemanticEditPolicyHelper();
+	private final gov.redhawk.diagram.edit.policies.ComponentInstantiationItemSemanticEditPolicyHelper editPolicyHelper = new gov.redhawk.diagram.edit.policies.ComponentInstantiationItemSemanticEditPolicyHelper(); // SUPPRESS CHECKSTYLE Line length
 
 	@Override
 	protected Command getCreateCommand(final CreateElementRequest req) {

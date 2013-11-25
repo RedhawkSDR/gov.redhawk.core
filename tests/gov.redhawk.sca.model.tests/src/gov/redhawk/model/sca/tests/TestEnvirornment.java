@@ -111,7 +111,7 @@ public class TestEnvirornment {
 		if (env == null) {
 			env = new TestEnvirornment();
 		}
-		env.setup();
+		env.setUp();
 		return env;
 	}
 
@@ -119,7 +119,7 @@ public class TestEnvirornment {
 		return this.domMgr;
 	}
 
-	private void setup() throws Exception {
+	protected void setUp() throws Exception {
 		domainMgrImpl.reset();
 		devMgrImpl.reset();
 		execute(new ScaModelCommand() {

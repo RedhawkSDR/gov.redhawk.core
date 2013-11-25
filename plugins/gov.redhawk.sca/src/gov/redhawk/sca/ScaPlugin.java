@@ -166,7 +166,7 @@ public class ScaPlugin extends Plugin {
 			if (this.serviceReg != null) {
 				try {
 					this.serviceReg.unregister();
-				} catch (final Exception e) {
+				} catch (final Exception e) { // SUPPRESS CHECKSTYLE Fallback
 					// PASS
 				}
 				this.serviceReg = null;
@@ -279,7 +279,7 @@ public class ScaPlugin extends Plugin {
 			rootContext = NamingContextExtHelper.narrow(session.getOrb().string_to_object(nameServiceRef));
 			object = rootContext.resolve_str(orbName);
 			return (!object._non_existent());
-		} catch (final Exception e) {
+		} catch (final Exception e) { // SUPPRESS CHECKSTYLE Fallback
 			return false;
 		} finally {
 			if (rootContext != null) {
@@ -336,7 +336,7 @@ public class ScaPlugin extends Plugin {
 						if ((!object._non_existent()) && (object._is_a(DomainManagerHelper.id()))) {
 							retVal.add(b.binding_name[0].id);
 						}
-					} catch (final Exception e) {
+					} catch (final Exception e) { // SUPPRESS CHECKSTYLE Fallback
 						continue;
 					} finally {
 						if (object != null) {

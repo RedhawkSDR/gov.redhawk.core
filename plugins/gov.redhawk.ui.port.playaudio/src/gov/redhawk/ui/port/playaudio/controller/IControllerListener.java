@@ -15,7 +15,7 @@ import javax.sound.sampled.AudioFormat;
 
 /**
  * @since 1.1
- * @deprecated
+ * @deprecated Use commands
  */
 @Deprecated
 public interface IControllerListener {

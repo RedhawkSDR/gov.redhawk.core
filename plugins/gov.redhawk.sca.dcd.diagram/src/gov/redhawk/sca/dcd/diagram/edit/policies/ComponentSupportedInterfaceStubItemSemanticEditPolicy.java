@@ -32,11 +32,11 @@ import org.eclipse.gmf.runtime.notation.View;
  * 
  */
 public class ComponentSupportedInterfaceStubItemSemanticEditPolicy extends
-        mil.jpeojtrs.sca.dcd.diagram.edit.policies.ComponentSupportedInterfaceStubItemSemanticEditPolicy implements
-        IComponentSupportedInterfaceStubItemSemanticEditPolicy {
+		mil.jpeojtrs.sca.dcd.diagram.edit.policies.ComponentSupportedInterfaceStubItemSemanticEditPolicy implements
+		IComponentSupportedInterfaceStubItemSemanticEditPolicy {
 
-	private final gov.redhawk.diagram.edit.policies.ComponentSupportedInterfaceStubItemSemanticEditPolicyHelper editPolicyHelper = new gov.redhawk.diagram.edit.policies.ComponentSupportedInterfaceStubItemSemanticEditPolicyHelper(
-	        RedhawkDcdElementTypes.INSTANCE, this);
+	private final gov.redhawk.diagram.edit.policies.ComponentSupportedInterfaceStubItemSemanticEditPolicyHelper editPolicyHelper = new gov.redhawk.diagram.edit.policies.ComponentSupportedInterfaceStubItemSemanticEditPolicyHelper( // SUPPRESS CHECKSTYLE Line length
+		RedhawkDcdElementTypes.INSTANCE, this);
 
 	@Override
 	protected Command getCompleteCreateRelationshipCommand(final CreateRelationshipRequest req) {
@@ -66,7 +66,7 @@ public class ComponentSupportedInterfaceStubItemSemanticEditPolicy extends
 
 	@Override
 	public gov.redhawk.diagram.edit.commands.ConnectInterfaceCreateCommand createConnectInterfaceCreateCommand(final CreateRelationshipRequest req,
-	        final EObject source, final EObject target) {
+		final EObject source, final EObject target) {
 		return new ConnectInterfaceCreateCommand((DeviceConfiguration) ((View) getHost().getRoot().getContents().getModel()).getElement(), req, source, target);
 	}
 

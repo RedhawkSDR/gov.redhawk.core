@@ -12,7 +12,7 @@
 package gov.redhawk.ui.port;
 
 /**
- * @deprecated
+ * @deprecated Use commands
  */
 @Deprecated
 public interface IPortHandlerRegistry {

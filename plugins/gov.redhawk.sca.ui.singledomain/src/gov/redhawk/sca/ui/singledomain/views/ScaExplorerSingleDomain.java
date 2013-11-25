@@ -134,7 +134,7 @@ public class ScaExplorerSingleDomain extends ScaExplorer {
 		public void propertyChange(PropertyChangeEvent event) {
 			if (ScaSingleDomainPreferenceConstants.SCA_ACTIVE_DOMAIN.equals(event.getProperty())) {
 				String oldDomain = (String) event.getOldValue();
-				if (!oldDomain.equals("") && prefs.getBoolean(ScaSingleDomainPreferenceConstants.SCA_DISCONNECT_INACTIVE)) {
+				if (!oldDomain.isEmpty() && prefs.getBoolean(ScaSingleDomainPreferenceConstants.SCA_DISCONNECT_INACTIVE)) {
 					if (Display.getCurrent() != null) {
 						ScaDomainManager domain = ScaPlugin.getDefault().getDomainManagerRegistry(getSite().getShell().getDisplay()).findDomain(oldDomain);
 						if (domain != null) {
@@ -144,7 +144,7 @@ public class ScaExplorerSingleDomain extends ScaExplorer {
 				}
 				final ScaDomainManager activeDomain = getActiveDomain(getSite().getShell().getDisplay());
 				String newDomain = (String) event.getNewValue();
-				if (!newDomain.equals("")) {
+				if (!newDomain.isEmpty()) {
 					ScaDomainManager domain = ScaPlugin.getDefault().getDomainManagerRegistry(getSite().getShell().getDisplay()).findDomain(newDomain);
 					if (domain != null && domain.isAutoConnect()) {
 						try {
@@ -159,7 +159,7 @@ public class ScaExplorerSingleDomain extends ScaExplorer {
 
 						@Override
 						public void run() {
-							fillToolBar(activeDomain.getName().trim().equals("") ? "NO ACTIVE DOMAIN" : activeDomain.getName());
+							fillToolBar(activeDomain.getName().trim().isEmpty() ? "NO ACTIVE DOMAIN" : activeDomain.getName());
 							getViewSite().getActionBars().updateActionBars();
 							viewer.setInput(activeDomain);
 							viewer.refresh(true);
@@ -266,7 +266,7 @@ public class ScaExplorerSingleDomain extends ScaExplorer {
 						ScaSingleDomainPlugin.logError("Unable to connect to domain", e);
 					}
 				}
-				domains.setLabelText(domain.getName().trim().equals("") ? "NO ACTIVE DOMAIN" : domain.getName());
+				domains.setLabelText(domain.getName().trim().isEmpty() ? "NO ACTIVE DOMAIN" : domain.getName());
 				getViewSite().getActionBars().updateActionBars();
 				return domain;
 			}
@@ -385,7 +385,7 @@ public class ScaExplorerSingleDomain extends ScaExplorer {
 	}
 
 	private void setActiveDomain(final String name) {
-		if (name == null || name.equals("")) {
+		if (name == null || name.isEmpty()) {
 			getSite().getShell().getDisplay().asyncExec(new Runnable() {
 
 				@Override

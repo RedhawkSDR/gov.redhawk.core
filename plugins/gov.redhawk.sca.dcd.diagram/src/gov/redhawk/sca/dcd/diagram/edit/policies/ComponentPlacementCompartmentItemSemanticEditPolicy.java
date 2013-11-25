@@ -17,9 +17,9 @@ import org.eclipse.gmf.runtime.emf.type.core.requests.DestroyRequest;
  * 
  */
 public class ComponentPlacementCompartmentItemSemanticEditPolicy extends
-        mil.jpeojtrs.sca.dcd.diagram.edit.policies.DcdComponentPlacementCompartmentItemSemanticEditPolicy {
+		mil.jpeojtrs.sca.dcd.diagram.edit.policies.DcdComponentPlacementCompartmentItemSemanticEditPolicy {
 
-	private final gov.redhawk.diagram.edit.policies.ComponentPlacementCompartmentItemSemanticEditPolicyHelper editPolicyHelper = new gov.redhawk.diagram.edit.policies.ComponentPlacementCompartmentItemSemanticEditPolicyHelper();
+	private final gov.redhawk.diagram.edit.policies.ComponentPlacementCompartmentItemSemanticEditPolicyHelper editPolicyHelper = new gov.redhawk.diagram.edit.policies.ComponentPlacementCompartmentItemSemanticEditPolicyHelper(); // SUPPRESS CHECKSTYLE Line length
 
 	@Override
 	protected boolean shouldProceed(final DestroyRequest destroyRequest) {

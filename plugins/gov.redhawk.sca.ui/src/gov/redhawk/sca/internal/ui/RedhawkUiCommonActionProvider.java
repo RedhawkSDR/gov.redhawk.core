@@ -174,7 +174,7 @@ public class RedhawkUiCommonActionProvider extends CommonActionProvider {
 			for (final IEditorDescriptor desc : this.window.getWorkbench().getEditorRegistry().getEditors(fileName, contentType)) {
 				// Filter out eclipse editors that have issues with files
 				// outside of the workspace
-				if (desc.getId().equals("org.eclipse.wst.xml.ui.internal.tabletree.XMLMultiPageEditorPart")) {
+				if ("org.eclipse.wst.xml.ui.internal.tabletree.XMLMultiPageEditorPart".equals(desc.getId())) {
 					continue;
 				}
 				final OpenAction action = new OpenAction(this.window.getActivePage(), ScaUI.getEditorInput(fileStore), desc);
@@ -196,7 +196,7 @@ public class RedhawkUiCommonActionProvider extends CommonActionProvider {
 				}
 
 				// and make sure the default editor isn't a broken one
-				if (defaultEditor.getId().equals("org.eclipse.wst.xml.ui.internal.tabletree.XMLMultiPageEditorPart")) {
+				if ("org.eclipse.wst.xml.ui.internal.tabletree.XMLMultiPageEditorPart".equals(defaultEditor.getId())) {
 					defaultEditor = this.window.getWorkbench().getEditorRegistry().findEditor("org.eclipse.ui.DefaultTextEditor");
 				}
 
