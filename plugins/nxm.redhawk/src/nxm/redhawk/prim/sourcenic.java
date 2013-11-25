@@ -442,7 +442,7 @@ public class sourcenic extends Primitive { //SUPPRESS CHECKSTYLE ClassName
 			sos = (data[0] & 0x40) != 0;
 			pp = (data[0] & 0x20) != 0;
 			of = (data[0] & 0x10) != 0;
-			ss = (data[0] & 0x80) != 0;
+			ss = (data[0] & 0x08) != 0;
 			dmode = (byte) (data[0] & 0x07);
 
 			cx = (data[1] & 0x80) != 0;
