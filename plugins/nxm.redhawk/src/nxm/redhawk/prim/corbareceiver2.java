@@ -39,12 +39,14 @@ import BULKIO.StreamSRI;
  * @since 10.1
  */
 public class corbareceiver2 extends CorbaPrimitive implements IMidasDataWriter { //SUPPRESS CHECKSTYLE ClassName
-	/** Name of IDL= argument. */
-	public static final String A_IDL = "IDL";
 	/** name of FILE= argument. */
 	public static final String A_FILE = "FILE";
 	/** name of IOR= argument. */
 	public static final String A_IOR = "IOR";
+	/** Name of IDL= argument. */
+	public static final String A_IDL = "IDL";
+	/** Name of STREAMID= argument. */
+	public static final String A_STREAM_ID = "STREAMID";
 
 	/**
 	 * Name of switch to set to false to NOT block pushPacket/write(..) when pipe doesn't have enough room,
@@ -104,7 +106,7 @@ public class corbareceiver2 extends CorbaPrimitive implements IMidasDataWriter {
 		this.portIor  = MA.getCS(A_IOR);
 		final String encoded_idl = MA.getCS(A_IDL);
 		this.idl      = decodeIDL(encoded_idl);
-		this.streamID = MA.getCS("STREAMID", null);
+		this.streamID = MA.getCS(A_STREAM_ID, null);
 		this.blocking = MA.getState(SW_BLOCKING, false);
 		boolean unsignedOctet = MA.getState(SW_TREAT_OCTET_AS_UNSIGNED); 
 
