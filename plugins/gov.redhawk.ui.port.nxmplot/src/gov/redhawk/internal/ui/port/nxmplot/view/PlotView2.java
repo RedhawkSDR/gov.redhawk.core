@@ -62,6 +62,8 @@ public class PlotView2 extends ViewPart {
 	private static final String ADJUST_PLOT_SETTINGS_ACTION_ID = "AdjustPlotSettingsMenuItemAction";
 	
 	private static int secondardId;
+	
+	private boolean useNxmBlocks = false; 
 
 	/** The private action for toggling raster enabled state. */
 	private IAction plotTypeAction;
@@ -155,7 +157,7 @@ public class PlotView2 extends ViewPart {
 		if (fftSettings != null) {
 			addAdjustFftSettingsMenuIfNotPresent();
 		}
-		if (dataSDDSHelper.id().equals(port.getRepid())) {
+		if (dataSDDSHelper.id().equals(port.getRepid()) || useNxmBlocks) {
 			this.plotPageBook.addSource2(port, fftSettings, qualifiers);
 			return null;
 		}
