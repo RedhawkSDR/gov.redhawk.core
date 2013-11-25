@@ -171,7 +171,7 @@ public class sourcenic extends Primitive { //SUPPRESS CHECKSTYLE ClassName
 		try {
 			try {
 				// this receives packet directly into byte[] at outputData.getBuf() - reducing another array copy
-			    msock.receive(packet);
+				msock.receive(packet);
 			}  catch (SocketTimeoutException e) {
 				this.emptyCount += 1;
 				return NOOP;
@@ -302,7 +302,7 @@ public class sourcenic extends Primitive { //SUPPRESS CHECKSTYLE ClassName
 		for (int i = 0; i < buf.length; i += 4) {
 			byte tmp1 = buf[i];
 			byte tmp2 = buf[i + 1];
-			buf[i] = buf[i + 2];
+			buf[i    ] = buf[i + 2];
 			buf[i + 1] = buf[i + 3];
 			buf[i + 2] = tmp1;
 			buf[i + 3] = tmp2;
