@@ -104,7 +104,7 @@ public class AudioReceiver extends AbstractBulkIOPort implements dataShortOperat
 
 			@Override
 			public void propertyChange(PropertyChangeEvent evt) {
-				if (evt.getPropertyName().equals("audioFormat")) {
+				if ("audioFormat".equals(evt.getPropertyName())) {
 					AudioFormat newValue = (AudioFormat) evt.getNewValue();
 					if (newValue == null) {
 						setSourceDataLine(null);
@@ -119,7 +119,7 @@ public class AudioReceiver extends AbstractBulkIOPort implements dataShortOperat
 							setSourceDataLine(newLine);
 						}
 					}
-				} else if (evt.getPropertyName().equals("sourceDataLine")) {
+				} else if ("sourceDataLine".equals(evt.getPropertyName())) {
 					setPlaying(false);
 					try {
 						play();

@@ -16,6 +16,7 @@ import org.eclipse.draw2d.Figure;
 import org.eclipse.draw2d.FlowLayout;
 import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.MarginBorder;
+import org.eclipse.draw2d.OrderedLayout;
 import org.eclipse.draw2d.RectangleFigure;
 import org.eclipse.gmf.runtime.draw2d.ui.figures.WrappingLabel;
 
@@ -47,9 +48,9 @@ public class FindByStubFigure extends RectangleFigure {
 
 		final FlowLayout layoutFFigureFindByCompartmentFigure = new FlowLayout();
 		layoutFFigureFindByCompartmentFigure.setStretchMinorAxis(false);
-		layoutFFigureFindByCompartmentFigure.setMinorAlignment(FlowLayout.ALIGN_LEFTTOP);
+		layoutFFigureFindByCompartmentFigure.setMinorAlignment(OrderedLayout.ALIGN_TOPLEFT);
 
-		layoutFFigureFindByCompartmentFigure.setMajorAlignment(FlowLayout.ALIGN_LEFTTOP);
+		layoutFFigureFindByCompartmentFigure.setMajorAlignment(OrderedLayout.ALIGN_TOPLEFT);
 		layoutFFigureFindByCompartmentFigure.setMajorSpacing(5);
 		layoutFFigureFindByCompartmentFigure.setMinorSpacing(5);
 		layoutFFigureFindByCompartmentFigure.setHorizontal(true);

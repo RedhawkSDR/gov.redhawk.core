@@ -43,31 +43,22 @@ public class UsesPortStubNameEditPartHelper {
 
 	};
 
-	/**
-	 * {@inheritDoc}
-	 */
 	public void addNotationalListeners() {
 		this.editPart.basicAddNotationalListeners();
 		this.editPart.getPreferenceStore().addPropertyChangeListener(this.listener);
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	public void removeNotationalListeners() {
 		this.editPart.basicRemoveNotationalListeners();
 		this.editPart.getPreferenceStore().removePropertyChangeListener(this.listener);
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	public void refreshVisibility() {
 		final Object model = this.editPart.getModel();
 		if (model instanceof View) {
-			if (!this.editPart.getPreferenceStore().getString(PartitioningDiagramPreferenceConstants.PREF_SHOW_PORT_LABELS).equals("")) {
+			if (!"".equals(this.editPart.getPreferenceStore().getString(PartitioningDiagramPreferenceConstants.PREF_SHOW_PORT_LABELS))) {
 				this.editPart.setVisibility(((View) model).isVisible()
-				        && this.editPart.getPreferenceStore().getBoolean(PartitioningDiagramPreferenceConstants.PREF_SHOW_PORT_LABELS));
+					&& this.editPart.getPreferenceStore().getBoolean(PartitioningDiagramPreferenceConstants.PREF_SHOW_PORT_LABELS));
 			} else {
 				this.editPart.setVisibility(true);
 			}

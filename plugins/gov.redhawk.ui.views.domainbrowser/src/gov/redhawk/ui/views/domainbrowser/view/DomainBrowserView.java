@@ -106,7 +106,6 @@ import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.part.ViewPart;
 import org.eclipse.ui.progress.UIJob;
 
-
 public class DomainBrowserView extends ViewPart {
 
 	/** The ID of this view */
@@ -116,7 +115,7 @@ public class DomainBrowserView extends ViewPart {
 	private TreeViewer domainTree;
 
 	private boolean showAdvancedProperties = false;
-	
+
 	private final IContentProposalProvider proposalProvider = new IContentProposalProvider() {
 
 		@Override
@@ -132,7 +131,7 @@ public class DomainBrowserView extends ViewPart {
 					list.add(new ContentProposal(proposal));
 				}
 			}
-	
+
 			return list.toArray(new IContentProposal[list.size()]);
 		}
 	};
@@ -152,7 +151,7 @@ public class DomainBrowserView extends ViewPart {
 							@Override
 							public void run() {
 								domainCombo.add(newDomain);
-								}
+							}
 						});
 						break;
 
@@ -179,7 +178,7 @@ public class DomainBrowserView extends ViewPart {
 			}
 		}
 	};
-	
+
 	private static final TransactionalEditingDomain EDITING_DOMAIN = TransactionalEditingDomain.Registry.INSTANCE.getEditingDomain(ScaPlugin.EDITING_DOMAIN_ID);
 
 	private ScaDomainManager domainManager;
@@ -198,35 +197,35 @@ public class DomainBrowserView extends ViewPart {
 		this.domainCombo = new ComboViewer(parent, SWT.BORDER);
 		this.domainCombo.getCombo().setToolTipText("Valid input: \n <DOMAIN_NAME> ie: REDHAWK_DEV \n <DOMAIN_NAME>@<HOST:PORT> ie: REDHAWK_DEV@localhost:2809");
 		this.domainCombo.getCombo().setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
-		
+
 		this.domainCombo.setContentProvider(ArrayContentProvider.getInstance());
-		
+
 		// Creating a comparator so that the objects within the ComboViewer will be sorted correctly.
 		this.domainCombo.setComparator(new ViewerComparator() {
 			@Override
 			public int compare(Viewer viewer, Object e1, Object e2) {
 				String s1 = null, s2 = null;
-				
-				if (e1 instanceof String) { 
+
+				if (e1 instanceof String) {
 					s1 = (String) e1;
 				}
-				
+
 				if (e1 instanceof ScaDomainManager) {
 					ScaDomainManager dom = ((ScaDomainManager) e1);
 					String[] tokens = dom.getConnectionProperties().get(ScaDomainManager.NAMING_SERVICE_PROP).split("::");
 					s1 = ((ScaDomainManager) e1).getName() + "@" + tokens[1];
 				}
-				
-				if (e2 instanceof String) { 
+
+				if (e2 instanceof String) {
 					s2 = (String) e2;
 				}
-				
+
 				if (e2 instanceof ScaDomainManager) {
 					ScaDomainManager dom = ((ScaDomainManager) e2);
 					String[] tokens = dom.getConnectionProperties().get(ScaDomainManager.NAMING_SERVICE_PROP).split("::");
 					s2 = dom.getName() + "@" + tokens[1];
 				}
-				
+
 				if (s1 != null && s2 != null) {
 					return s1.compareToIgnoreCase(s2);
 				} else {
@@ -234,7 +233,7 @@ public class DomainBrowserView extends ViewPart {
 				}
 			}
 		});
-		
+
 		this.domainCombo.setLabelProvider(new LabelProvider() {
 			@Override
 			public String getText(Object element) {
@@ -245,7 +244,7 @@ public class DomainBrowserView extends ViewPart {
 					ScaDomainManager domain = (ScaDomainManager) element;
 					tokens = domain.getConnectionProperties().get(ScaDomainManager.NAMING_SERVICE_PROP).split("::");
 					if (tokens.length == 2) {
-						return domain.getName() + "@" + tokens[1];  // Is this a safe way of doing this?
+						return domain.getName() + "@" + tokens[1]; // Is this a safe way of doing this?
 					} else {
 						return domain.getName();
 					}
@@ -262,13 +261,11 @@ public class DomainBrowserView extends ViewPart {
 
 		// Now to make it so that the text box in the combo will have an auto-complete like feel to it.
 		final ComboContentAdapter controlAdapter = new ComboContentAdapter();
-		final ContentProposalAdapter contentProposalAdapter = CompatibilityFactory.createContentProposalAdapter(this.domainCombo.getCombo(),
-				controlAdapter,
-				this.proposalProvider,
-				null);
-		
+		final ContentProposalAdapter contentProposalAdapter = CompatibilityFactory.createContentProposalAdapter(this.domainCombo.getCombo(), controlAdapter,
+			this.proposalProvider, null);
+
 		contentProposalAdapter.setProposalAcceptanceStyle(ContentProposalAdapter.PROPOSAL_REPLACE);
-		
+
 		// We want to connect when there is a selection of when the user hits enter.
 		this.domainCombo.addSelectionChangedListener(new ISelectionChangedListener() {
 			@Override
@@ -291,11 +288,11 @@ public class DomainBrowserView extends ViewPart {
 		dropDownMenu.add(action);
 	}
 
-	public void setDomainAndConnect(String domain)	{
+	public void setDomainAndConnect(String domain) {
 		this.domainCombo.getCombo().setText(domain);
 		connect();
 	}
-	
+
 	private void createDomainViewer(final Composite parent) {
 		final Composite treeComposite = new Composite(parent, SWT.NULL);
 		final TreeColumnLayout treeLayout = new TreeColumnLayout();
@@ -311,9 +308,7 @@ public class DomainBrowserView extends ViewPart {
 			public Object[] getChildren(final Object object) {
 				final Object result = DomainBrowserUtil.delayedContent(object, DomainBrowserView.this.domainTree);
 				if (result != null) {
-					return new Object[] {
-						result
-					};
+					return new Object[] { result };
 				}
 
 				return super.getChildren(object);
@@ -327,35 +322,36 @@ public class DomainBrowserView extends ViewPart {
 			@Override
 			public boolean select(final Viewer viewer, final Object parentElement, final Object element) {
 				if (element instanceof ScaFileStore || element instanceof DomainManagerConfiguration || element instanceof SoftwareAssembly
-				        || element instanceof DeviceConfiguration || element instanceof DelegatingWrapperItemProvider) {
+					|| element instanceof DeviceConfiguration || element instanceof DelegatingWrapperItemProvider) {
 					return DomainBrowserView.this.showAdvancedProperties;
 				}
 				return true;
 			}
 		});
 
-		final TreeColumnViewerLabelProvider lp = new TreeColumnViewerLabelProvider(new ScaModelAdapterFactoryLabelProvider(this.adapterFactory, this.domainTree) {
-			@Override
-			public String getColumnText(final Object object, final int columnIndex) {
-				switch (columnIndex) {
-				case 0:
-					return getText(object);
-				default:
-					return super.getColumnText(object, columnIndex);
+		final TreeColumnViewerLabelProvider lp = new TreeColumnViewerLabelProvider(
+			new ScaModelAdapterFactoryLabelProvider(this.adapterFactory, this.domainTree) {
+				@Override
+				public String getColumnText(final Object object, final int columnIndex) {
+					switch (columnIndex) {
+					case 0:
+						return getText(object);
+					default:
+						return super.getColumnText(object, columnIndex);
+					}
 				}
-			}
 
-			@Override
-			public Image getColumnImage(final Object object, final int columnIndex) {
-				switch (columnIndex) {
-				case 0:
-					return getImage(object);
-				default:
-					return super.getColumnImage(object, columnIndex);
+				@Override
+				public Image getColumnImage(final Object object, final int columnIndex) {
+					switch (columnIndex) {
+					case 0:
+						return getImage(object);
+					default:
+						return super.getColumnImage(object, columnIndex);
+					}
 				}
-			}
-		});
-		
+			});
+
 		TreeColumn column = new TreeColumn(tree, SWT.NONE);
 		column.setText("Object");
 		treeLayout.setColumnData(column, new ColumnWeightData(2, 200, true));
@@ -388,7 +384,7 @@ public class DomainBrowserView extends ViewPart {
 		this.domainTree.getTree().setEnabled(false);
 		this.domainTree.setLabelProvider(lp);
 		this.domainTree.setSorter(new ViewerSorter());
-		
+
 		getSite().setSelectionProvider(this.domainTree);
 	}
 
@@ -411,21 +407,19 @@ public class DomainBrowserView extends ViewPart {
 
 	private void connect() {
 		String domainName = this.domainCombo.getCombo().getText().trim();
-				
-		
+
 		if (this.domainManager != null) {
 			disposeDomainManager();
-			
+
 			// It looks like this line is removing the current domain manager from the Editing Domain / contents in a thread safe way
-			DomainBrowserView.EDITING_DOMAIN.getCommandStack().execute(new RemoveCommand(DomainBrowserView.EDITING_DOMAIN,
-			        DomainBrowserView.resource.getContents(),
-			        this.domainManager));
+			DomainBrowserView.EDITING_DOMAIN.getCommandStack().execute(
+				new RemoveCommand(DomainBrowserView.EDITING_DOMAIN, DomainBrowserView.resource.getContents(), this.domainManager));
 		}
-		
-		if (domainName != null && domainName != "") {
+
+		if (domainName != null && !domainName.isEmpty()) {
 			String namingService = DomainBrowserUtil.getNamingService(domainName);
 
-			if (namingService == "") {
+			if (namingService == null || namingService.isEmpty()) {
 				namingService = ScaUiPlugin.getDefault().getScaPreferenceStore().getString(ScaPreferenceConstants.SCA_DEFAULT_NAMING_SERVICE);
 			} else {
 				domainName = domainName.split("@")[0];
@@ -439,25 +433,24 @@ public class DomainBrowserView extends ViewPart {
 			newDomain.getConnectionProperties().putAll(connectionProperties);
 
 			this.domainManager = newDomain;
-			
+
 			boolean nameFound = false;
 			String[] domainNamesInCombo = this.domainCombo.getCombo().getItems();
-			
+
 			for (String name : domainNamesInCombo) {
 				String[] tokens = newDomain.getConnectionProperties().get(ScaDomainManager.NAMING_SERVICE_PROP).split("::");
 				if (name.equals(newDomain.getName() + "@" + tokens[1])) {
 					nameFound = true;
 				}
 			}
-			
+
 			if (!nameFound) {
 				this.domainCombo.add(newDomain);
 			}
-			
+
 			// Looks like this command is adding the new domain into the Domain Browsers resource
-			DomainBrowserView.EDITING_DOMAIN.getCommandStack().execute(new AddCommand(DomainBrowserView.EDITING_DOMAIN,
-			        DomainBrowserView.resource.getContents(),
-			        newDomain));
+			DomainBrowserView.EDITING_DOMAIN.getCommandStack().execute(
+				new AddCommand(DomainBrowserView.EDITING_DOMAIN, DomainBrowserView.resource.getContents(), newDomain));
 
 			this.connectJob.addJobChangeListener(new JobChangeAdapter() {
 				@Override
@@ -465,13 +458,13 @@ public class DomainBrowserView extends ViewPart {
 					if (DomainBrowserView.this.domainManager != null && DomainBrowserView.this.domainManager.getProfileObj() != null) {
 						// TODO: This doesn't seem like it does anything does it?
 						final List<ScaWaveformFactory> factories = DomainBrowserView.this.domainManager.fetchWaveformFactories(new NullProgressMonitor());
-						factories.toArray();  
+						factories.toArray();
 
 						DomainBrowserView.this.postConnectUiJob.schedule(1000);
 					} else {
 						DomainBrowserView.this.failedConnectUiJob.schedule();
 					}
-					
+
 					super.done(event);
 				}
 			});
@@ -485,9 +478,8 @@ public class DomainBrowserView extends ViewPart {
 		if (this.domainManager != null) {
 			disposeDomainManager();
 
-			DomainBrowserView.EDITING_DOMAIN.getCommandStack().execute(new RemoveCommand(DomainBrowserView.EDITING_DOMAIN,
-			        DomainBrowserView.resource.getContents(),
-			        this.domainManager));
+			DomainBrowserView.EDITING_DOMAIN.getCommandStack().execute(
+				new RemoveCommand(DomainBrowserView.EDITING_DOMAIN, DomainBrowserView.resource.getContents(), this.domainManager));
 		}
 		ScaPlugin.getDefault().getDomainManagerRegistry(getSite().getShell().getDisplay()).eAdapters().remove(this.domainChangeAdapter);
 		super.dispose();
@@ -502,7 +494,7 @@ public class DomainBrowserView extends ViewPart {
 			} catch (final DomainConnectionException e) {
 				// TODO: This is not causing any sort of pop-up.  It should since it is an ERROR status.
 				return new Status(IStatus.ERROR, Activator.PLUGIN_ID, "Problems experienced while connecting to domain "
-				        + DomainBrowserView.this.domainManager.getName(), e);
+					+ DomainBrowserView.this.domainManager.getName(), e);
 			}
 			return Status.OK_STATUS;
 		}
@@ -511,9 +503,11 @@ public class DomainBrowserView extends ViewPart {
 		{
 			setSystem(true);
 		}
+
 		@Override
 		public IStatus runInUIThread(IProgressMonitor monitor) {
-			MessageDialog.openError(getSite().getShell(), "Error Connecting", "Cannot connect to the specified domain.  Please make sure you have specified the domain correctly");
+			MessageDialog.openError(getSite().getShell(), "Error Connecting",
+				"Cannot connect to the specified domain.  Please make sure you have specified the domain correctly");
 			return Status.OK_STATUS;
 		}
 	};
@@ -527,7 +521,7 @@ public class DomainBrowserView extends ViewPart {
 			if (DomainBrowserView.this.domainManager.isConnected() && DomainBrowserView.this.domainManager.getProfileObj() != null) {
 				updateWidgets(true);
 				setContentDescription("Domain: " + DomainBrowserView.this.domainManager.getName() + " (" + DomainBrowserView.this.domainManager.getIdentifier()
-				        + ")");
+					+ ")");
 				setTitleToolTip("ID: " + DomainBrowserView.this.domainManager.getIdentifier());
 
 				return Status.OK_STATUS;

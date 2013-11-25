@@ -128,6 +128,13 @@ public class ScaPropertiesContentProvider extends ScaModelAdapterFactoryContentP
 		super(adapterFactory);
 	}
 
+	/**
+	 * 
+	 * @param adapterFactory
+	 * @param cellListener
+	 * @param object2
+	 * @deprecated
+	 */
 	@Deprecated
 	public ScaPropertiesContentProvider(final AdapterFactory adapterFactory, final Listener cellListener, final ICellEditorListener object2) {
 		this(adapterFactory);

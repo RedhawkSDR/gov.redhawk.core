@@ -11,7 +11,9 @@
  */
 package gov.redhawk.diagram.ui.tools;
 
+import gov.redhawk.diagram.activator.PluginActivator;
 import gov.redhawk.diagram.ui.tools.internal.ComboCellEditorEx;
+import gov.redhawk.sca.util.Debug;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -69,6 +71,8 @@ import org.eclipse.ui.part.CellEditorActionHandler;
  */
 @SuppressWarnings("restriction")
 public class ComboDirectEditManager extends DirectEditManager {
+	
+	private static final Debug DEBUG = new Debug(PluginActivator.ID, "comboDirectEdit");
 
 	/**
 	 * content assist background color
@@ -417,7 +421,7 @@ public class ComboDirectEditManager extends DirectEditManager {
 	public void show(final char initialChar) {
 		this.initialString = this.initialString.append(initialChar);
 		show();
-		if (SWT.getPlatform() != "carbon") { //$NON-NLS-1$ 
+		if (!"carbon".equals(SWT.getPlatform())) { //$NON-NLS-1$ 
 			// Set the cell editor text to the initial character
 			setEditText(this.initialString.toString());
 		}
@@ -588,8 +592,10 @@ public class ComboDirectEditManager extends DirectEditManager {
 		try {
 			getEditPart().getRoot();
 			super.showFeedback();
-		} catch (final Exception e) {
-			//PASS
+		} catch (final Exception e) { // SUPPRESS CHECKSTYLE Logging Exception
+			if (DEBUG.enabled) {
+				DEBUG.catching("Ignoring exception", e);
+			}
 		}
 
 	}

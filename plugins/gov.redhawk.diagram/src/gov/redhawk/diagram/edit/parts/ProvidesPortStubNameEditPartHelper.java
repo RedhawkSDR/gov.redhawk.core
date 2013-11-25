@@ -41,9 +41,6 @@ public class ProvidesPortStubNameEditPartHelper {
 
 	};
 
-	/**
-	 * {@inheritDoc}
-	 */
 	public void addNotationalListeners() {
 		this.editPart.basicAddNotationalListeners();
 		this.editPart.getPreferenceStore().addPropertyChangeListener(this.listener);

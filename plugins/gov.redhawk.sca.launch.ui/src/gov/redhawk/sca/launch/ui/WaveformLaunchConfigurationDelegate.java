@@ -63,7 +63,7 @@ public class WaveformLaunchConfigurationDelegate extends LaunchConfigurationDele
 	public void launch(final ILaunchConfiguration configuration, final String mode, final ILaunch launch, final IProgressMonitor mainMonitor)
 	        throws CoreException {
 		if (ILaunchManager.RUN_MODE.equals(mode)) {
-			final ScaDomainManagerRegistry domainManagerRegistry = ScaPlugin.getDefault().getDomainManagerRegistry();
+			final ScaDomainManagerRegistry domainManagerRegistry = ScaPlugin.getDefault().getDomainManagerRegistry(null);
 			final SubMonitor monitor = SubMonitor.convert(mainMonitor, "Launch Waveform...", 3);
 			final String domainName = configuration.getAttribute(ScaLaunchConfigurationConstants.ATT_DOMAIN_NAME, (String) null);
 			for (final ScaDomainManager domain : domainManagerRegistry.getDomains()) {

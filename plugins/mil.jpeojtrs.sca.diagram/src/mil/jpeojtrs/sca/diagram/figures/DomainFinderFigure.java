@@ -12,6 +12,7 @@
 package mil.jpeojtrs.sca.diagram.figures;
 
 import org.eclipse.draw2d.FlowLayout;
+import org.eclipse.draw2d.OrderedLayout;
 import org.eclipse.draw2d.RectangleFigure;
 import org.eclipse.gmf.runtime.draw2d.ui.figures.WrappingLabel;
 
@@ -24,9 +25,9 @@ public class DomainFinderFigure extends RectangleFigure {
 
 		final FlowLayout layoutThis = new FlowLayout();
 		layoutThis.setStretchMinorAxis(false);
-		layoutThis.setMinorAlignment(FlowLayout.ALIGN_LEFTTOP);
+		layoutThis.setMinorAlignment(OrderedLayout.ALIGN_TOPLEFT);
 
-		layoutThis.setMajorAlignment(FlowLayout.ALIGN_LEFTTOP);
+		layoutThis.setMajorAlignment(OrderedLayout.ALIGN_TOPLEFT);
 		layoutThis.setMajorSpacing(5);
 		layoutThis.setMinorSpacing(5);
 		layoutThis.setHorizontal(true);

@@ -29,6 +29,9 @@ public class Activator extends AbstractUIPlugin {
 	// The shared instance
 	private static Activator plugin;
 
+	/**
+	 * @deprecated Port handler Registry removed in favor of commands
+	 */
 	@Deprecated
 	private static IPortHandlerRegistry portHandlerRegistry;
 

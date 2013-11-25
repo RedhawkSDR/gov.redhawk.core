@@ -274,7 +274,7 @@ public class CorbaReceiver implements dataShortOperations, dataCharOperations, d
 				this.connections.put(port, uuid.toString());
 				this.ties.put(port, tie);
 				break;
-			} catch (final Exception e) {
+			} catch (final Exception e) { // SUPPRESS CHECKSTYLE Exception on Connect retry
 				if (++retry == CorbaReceiver.MAX_RETRIES) {
 					this.isDone = true;
 				}
@@ -958,7 +958,7 @@ public class CorbaReceiver implements dataShortOperations, dataCharOperations, d
 				Activator.logError("Error opening Audio Playback line. Playback unavailable.", e);
 			} catch (final InterruptedException e) {
 				// PASS
-			} catch (Exception e) {
+			} catch (Exception e) { // SUPPRESS CHECKSTYLE Logged Error
 				Activator.logError("Error opening Audio Playback line. Playback unavailable.", e);
 			} finally {
 				CorbaReceiver.this.configured = false;

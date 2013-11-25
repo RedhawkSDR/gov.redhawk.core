@@ -237,7 +237,7 @@ public class ValuesWizardPage extends WizardPage {
 						try {
 							AnyUtils.convertString(value.toString(), type.getLiteral(), complex);
 							return null;
-						} catch (final Exception e) {
+						} catch (final Exception e) { // SUPPRESS CHECKSTYLE Logged Error
 							return e.getMessage();
 						}
 					}

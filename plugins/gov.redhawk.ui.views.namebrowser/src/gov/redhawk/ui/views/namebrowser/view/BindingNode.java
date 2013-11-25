@@ -85,13 +85,12 @@ public class BindingNode implements IPropertySource {
 	private static final BindingNode[] NO_CONTENT = new BindingNode[0];
 
 	private static class SessionInfo {
+		private final String host;
+		private NamingContextExt namingContext;
+		private OrbSession session;
 		private SessionInfo(final String host) {
 			this.host = host;
 		}
-
-		private NamingContextExt namingContext;
-		private final String host;
-		private OrbSession session;
 	}
 
 	private final Binding binding;

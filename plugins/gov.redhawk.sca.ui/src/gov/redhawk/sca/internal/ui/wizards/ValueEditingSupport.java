@@ -97,7 +97,7 @@ public class ValueEditingSupport extends EditingSupport {
 						try {
 							AnyUtils.convertString(value.toString(), simple.getType().getLiteral(), simple.isComplex());
 							return null;
-						} catch (final Exception e) {
+						} catch (final Exception e) { // SUPPRESS CHECKSTYLE Logged Error
 							return e.getMessage();
 						}
 					}

@@ -183,7 +183,7 @@ public class AbstractResourceImpl extends Resource {
 	private SimpleSequenceProperty< ? > createSimpleSequenceProperty(SimpleSequence sequence) {
 		List<Object> value = new ArrayList<Object>();
 		String type = sequence.getType().toString();
-		if (type.equals("objref")) {
+		if ("objref".equals(type)) {
 			return null; // TODO AnyUtil doesn't support objref type
 		}
 		if (sequence.getValues() != null) {
@@ -209,7 +209,7 @@ public class AbstractResourceImpl extends Resource {
 		Object value = AnyUtils.convertString(simple.getValue(), simple.getType().toString(), simple.isComplex());
 		List<String> kinds = new ArrayList<String>(simple.getKind().size());
 		String type = simple.getType().toString();
-		if (type.equals("objref")) {
+		if ("objref".equals(type)) {
 			return null; // TODO AnyUtil doesn't support objref type
 		}
 		for (Kind k : simple.getKind()) {

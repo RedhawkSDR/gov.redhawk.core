@@ -84,7 +84,7 @@ public class ActiveDomainPreferencePage extends FieldEditorPreferencePage implem
 	}
 	
 	private void setActiveDomain(String name) {
-		if (name == null || name.equals("")) {
+		if (name == null || name.isEmpty()) {
 			getPreferenceStore().setToDefault(ScaSingleDomainPreferenceConstants.SCA_ACTIVE_DOMAIN);
 		} else {
 			getPreferenceStore().setValue(ScaSingleDomainPreferenceConstants.SCA_ACTIVE_DOMAIN, name);

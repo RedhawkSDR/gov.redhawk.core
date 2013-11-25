@@ -143,9 +143,6 @@ public abstract class ConnectInterfaceCreateCommand extends EditElementCommand {
 	 */
 	protected abstract ConnectInterface< ? , ? , ? > createSadConnectInterface();
 
-	/**
-	 * {@inheritDoc}
-	 */
 	protected void doConfigure(final ConnectInterface< ? , ? , ? > newElement, final IProgressMonitor monitor, final IAdaptable info) throws ExecutionException {
 		final IElementType elementType = ((CreateElementRequest) getRequest()).getElementType();
 		final ConfigureRequest configureRequest = new ConfigureRequest(getEditingDomain(), newElement, elementType);
@@ -171,16 +168,10 @@ public abstract class ConnectInterfaceCreateCommand extends EditElementCommand {
 		throw new UnsupportedOperationException();
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	protected UsesPortStub getSource() {
 		return (UsesPortStub) this.source;
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	protected ConnectionTarget getTarget() {
 		return (ConnectionTarget) this.target;
 	}

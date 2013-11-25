@@ -213,12 +213,13 @@ public abstract class BasicSimplePropertyDetailsPage extends AbstractPropertyDet
 			@Override
 			public Object convert(Object fromObject) {
 				if (fromObject instanceof String) {
-					if (fromObject.toString().equals("")) {
+					String fromObjectStr = (String) fromObject;
+					if (fromObjectStr.isEmpty()) {
 						return null;
 					}
-					if (fromObject.toString().equalsIgnoreCase("real")) {
+					if ("real".equalsIgnoreCase(fromObjectStr)) {
 						return false;
-					} else if (fromObject.toString().equalsIgnoreCase("complex")) {
+					} else if ("complex".equalsIgnoreCase(fromObjectStr)) {
 						return true;
 					}
 				}

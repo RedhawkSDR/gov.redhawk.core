@@ -67,7 +67,7 @@ public class BrowsePatternFilter extends PatternFilter {
 		} else if ("org.eclipse.ui.keys.optimization.false".equals(patternString)) { //$NON-NLS-1$
 			return;
 		}
-		if (patternString == null || patternString.equals("")) { //$NON-NLS-1$
+		if (patternString == null || patternString.isEmpty()) {
 			this.myMatcher = null;
 		} else {
 			final String pattern = patternString + "*"; //$NON-NLS-1$

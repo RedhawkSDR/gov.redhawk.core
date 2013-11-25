@@ -60,7 +60,7 @@ public class BundleFileSystem extends AbstractFileSystem {
 		if (pattern == null) {
 			throw new InvalidFileName(ErrorNumberType.CF_EIO, "File does not exist");
 		}
-		if (pattern.length() == 0 || pattern.equals("/")) {
+		if (pattern.length() == 0 || "/".equals(pattern)) {
 			final FileInformationType info = new FileInformationType();
 			java.io.File file;
 			try {

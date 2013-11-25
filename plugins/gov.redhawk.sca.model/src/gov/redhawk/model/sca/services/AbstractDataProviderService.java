@@ -26,7 +26,7 @@ import org.eclipse.emf.ecore.EObject;
 public abstract class AbstractDataProviderService implements IScaDataProviderService {
 	
 	private final List<IScaDataProvider> providers = Collections.synchronizedList(new ArrayList<IScaDataProvider>());
-
+	private boolean enabled;
 	private final PropertyChangeListener listener = new PropertyChangeListener() {
 
 		@Override
@@ -50,8 +50,6 @@ public abstract class AbstractDataProviderService implements IScaDataProviderSer
 		}
 		return provider;
 	}
-	
-	private boolean enabled;
 	
 	protected abstract IScaDataProvider createDataProvider(EObject object);
 

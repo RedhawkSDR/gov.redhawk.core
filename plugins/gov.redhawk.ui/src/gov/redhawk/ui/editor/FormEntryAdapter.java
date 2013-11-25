@@ -98,7 +98,6 @@ public class FormEntryAdapter implements IFormEntryListener {
 	}
 
 	/**
-	 * {@inheritDoc}
 	 * @since 6.0
 	 */
 	public void selectionChanged(final FormEntry entry) {

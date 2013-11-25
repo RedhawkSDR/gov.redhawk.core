@@ -52,7 +52,7 @@ public abstract class PropertyValueTypePropertyDescriptor extends PropertyDescri
 			try {
 				AnyUtils.convertString(text, this.type.getLiteral(), complex);
 				return null;
-			} catch (final Exception e) {
+			} catch (final Exception e) { // SUPPRESS CHECKSTYLE Logged Error
 				return e.getMessage();
 			}
 		}

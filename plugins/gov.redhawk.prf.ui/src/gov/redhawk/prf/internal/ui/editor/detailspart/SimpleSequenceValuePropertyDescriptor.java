@@ -46,7 +46,7 @@ public abstract class SimpleSequenceValuePropertyDescriptor extends PropertyDesc
 			try {
 				AnyUtils.convertString(text, this.type.getLiteral(), this.complex);
 				return null;
-			} catch (final Exception e) {
+			} catch (final Exception e) { // SUPPRESS CHECKSTYLE Logged Error
 				return e.getMessage();
 			}
 		}

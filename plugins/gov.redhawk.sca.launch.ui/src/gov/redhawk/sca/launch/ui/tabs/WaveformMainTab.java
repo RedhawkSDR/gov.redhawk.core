@@ -53,6 +53,7 @@ import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.ui.dialogs.PatternFilter;
 import org.eclipse.ui.progress.WorkbenchJob;
@@ -126,7 +127,7 @@ public class WaveformMainTab extends AbstractLaunchConfigurationTab {
 		this.domainCombo = new ComboViewer(composite, SWT.BORDER);
 		this.domainCombo.setContentProvider(new ArrayContentProvider());
 		this.domainCombo.setLabelProvider(new AdapterFactoryLabelProvider(new ScaItemProviderAdapterFactory()));
-		this.domainCombo.setInput(ScaPlugin.getDefault().getDomainManagerRegistry().getDomains());
+		this.domainCombo.setInput(ScaPlugin.getDefault().getDomainManagerRegistry(parent.getDisplay()).getDomains());
 		this.domainCombo.getControl().setLayoutData(GridDataFactory.fillDefaults().grab(true, false).create());
 		this.domainCombo.addSelectionChangedListener(new ISelectionChangedListener() {
 
@@ -153,7 +154,7 @@ public class WaveformMainTab extends AbstractLaunchConfigurationTab {
 			@Override
 			public void done(final IJobChangeEvent event) {
 				WorkbenchJob job = new WorkbenchJob("Restore Selection") {
-					
+
 					@Override
 					public IStatus runInUIThread(IProgressMonitor monitor) {
 						if (!getControl().isDisposed()) {
@@ -286,10 +287,10 @@ public class WaveformMainTab extends AbstractLaunchConfigurationTab {
 			final String domainName = configuration.getAttribute(ScaLaunchConfigurationConstants.ATT_DOMAIN_NAME, "");
 			this.waveformProfile = configuration.getAttribute(ScaLaunchConfigurationConstants.ATT_PROFILE, "");
 			final boolean autoStart = configuration.getAttribute(ScaLaunchConfigurationConstants.ATT_START,
-			        ScaLaunchConfigurationConstants.DEFAULT_VALUE_ATT_START);
+				ScaLaunchConfigurationConstants.DEFAULT_VALUE_ATT_START);
 			final boolean openEditor = configuration.getAttribute(ScaLaunchConfigurationConstants.ATT_OPEN,
-			        ScaLaunchConfigurationConstants.DEFAULT_VALUE_ATT_OPEN);
-			for (final ScaDomainManager domain : ScaPlugin.getDefault().getDomainManagerRegistry().getDomains()) {
+				ScaLaunchConfigurationConstants.DEFAULT_VALUE_ATT_OPEN);
+			for (final ScaDomainManager domain : ScaPlugin.getDefault().getDomainManagerRegistry(Display.getCurrent()).getDomains()) {
 				if (domainName.equals(domain.getName())) {
 					this.domainCombo.setSelection(new StructuredSelection(domain));
 					break;

@@ -41,14 +41,13 @@ public class PlotActivator extends AbstractUIPlugin {
 	/** The Constant PLUGIN_ID. */
 	public static final String PLUGIN_ID = "gov.redhawk.ui.port.nxmplot";
 
-	
 	/**
 	 * Use {@link #VIEW_PLOT_2} instead
 	 * @deprecated since 4.2
 	 */
 	@Deprecated
 	public static final String VIEW_PLOT = PlotView.ID;
-	
+
 	/**
 	 * @since 4.2
 	 */
@@ -82,8 +81,8 @@ public class PlotActivator extends AbstractUIPlugin {
 	}
 
 	/**
-     * @since 3.0
-     */
+	 * @since 3.0
+	 */
 	public INxmPlotWidgetFactory getPlotFactory() {
 		INxmPlotWidgetFactory retVal = plotFactory.getService();
 		if (retVal == null) {
@@ -124,6 +123,7 @@ public class PlotActivator extends AbstractUIPlugin {
 	 * @param portList A list of ScaUsesPorts or CorbaConnectionSettings to plot
 	 * @param fft the settings to be used for FFTing the data before plotting.
 	 *        This may be null if no FFT is desired.
+	 * @deprecated
 	 */
 	@Deprecated
 	public String addPlot(final List< ? > portList, final FftSettings fft) {
@@ -174,6 +174,7 @@ public class PlotActivator extends AbstractUIPlugin {
 	 * @param listener the listener to add
 	 * @param sessionId the id of the plot session to listen to
 	 * @since 3.0
+	 * @deprecated
 	 */
 	@Deprecated
 	public void addPlotListener(final IPlotWidgetListener listener, final String sessionId) {
@@ -201,6 +202,7 @@ public class PlotActivator extends AbstractUIPlugin {
 	 * @param listener the listener to remove
 	 * @param sessionId the id of the plot session to stop listening to
 	 * @since 3.0
+	 * @deprecated
 	 */
 	@Deprecated
 	public void removePlotListener(final IPlotWidgetListener listener, final String sessionId) {
@@ -235,6 +237,5 @@ public class PlotActivator extends AbstractUIPlugin {
 		}
 
 	}
-
 
 }

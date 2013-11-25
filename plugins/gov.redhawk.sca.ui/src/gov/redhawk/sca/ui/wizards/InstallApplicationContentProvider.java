@@ -270,7 +270,7 @@ public class InstallApplicationContentProvider implements ITreeContentProvider {
 				if (sad != null) {
 					return Collections.singletonList(sad);
 				}
-			} catch (final Exception e) {
+			} catch (final Exception e) { // SUPPRESS CHECKSTYLE Logged Error
 				status.add(new Status(IStatus.WARNING, ScaUiPlugin.PLUGIN_ID, "Failed to parse SAD file: " + uri.getPath(), e));
 			}
 			return Collections.emptyList();
