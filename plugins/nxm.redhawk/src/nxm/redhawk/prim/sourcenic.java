@@ -199,6 +199,9 @@ public class sourcenic extends Primitive { //SUPPRESS CHECKSTYLE ClassName
 
 			case BITS_PER_SAMPLE_16:
 				packetDataType = Data.INT;
+				if (sddsHeader.ss && sddsHeader.isComplex()) { // If necessary, spectral swap/invert complex data
+					intSwap(outputData.buf);
+				}
 				break;
 
 			case BITS_PER_SAMPLE_32:
@@ -286,10 +289,15 @@ public class sourcenic extends Primitive { //SUPPRESS CHECKSTYLE ClassName
 	}
 
 	/**
-	 * Swaps byte order (two shorts - complex data) in a 32-bit (4 bytes pair) buffer
+	 * Swaps/invert 16-bit integers (2 bytes) in a 32-bit (4 bytes pair) buffer. <br>
+	 * buf[0] = buf[2]<br>
+	 * buf[1] = buf[3]<br>
+	 * buf[2] = orig buf[0]<br>
+	 * buf[3] = orig buf[1]<br>
+	 * ...
 	 * @param buf The buffer to swap byte order
 	 */
-	private void byteSwapComplexShorts(byte[] buf) {
+	private void intSwap(byte[] buf) {
 		// CHECKSTYLE:OFF
 		for (int i = 0; i < buf.length; i += 4) {
 			byte tmp1 = buf[i];
