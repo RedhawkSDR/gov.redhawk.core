@@ -69,8 +69,8 @@ public class PlotPageBook2 extends Composite {
 		}
 
 		private synchronized void addSource2(final ScaUsesPort scaPort, final FftSettings fftSettings, final String pipeQualifiers) {
+			TRACE_LOG.enteringMethod(scaPort, fftSettings, pipeQualifiers);
 			final AbstractNxmPlotWidget currentPlotWidget = this.plot;
-			BulkIONxmBlockSettings bbSettings = new BulkIONxmBlockSettings();
 
 			INxmBlock<?> startingBlock;
 			if (dataSDDSHelper.id().equals(scaPort.getRepid())) {
@@ -79,8 +79,8 @@ public class PlotPageBook2 extends Composite {
 				BulkIOSddsNxmBlock sddsBlock = new BulkIOSddsNxmBlock(currentPlotWidget, scaPort, sddsSettings);
 				startingBlock = sddsBlock;
 			} else {
+				BulkIONxmBlockSettings bbSettings = new BulkIONxmBlockSettings();
 				BulkIONxmBlock bulkioBlock = new BulkIONxmBlock(currentPlotWidget, scaPort, bbSettings);
-				//BulkIONxmBlock2 bulkioBlock = new BulkIONxmBlock2(currentPlotWidget, scaPort, bbSettings);
 				startingBlock = bulkioBlock;
 			}
 			TRACE_LOG.trace("PlotPageBook2.addSource(.) startingBlock = {0}", startingBlock);
@@ -382,12 +382,11 @@ public class PlotPageBook2 extends Composite {
 	@NonNull
 	private static FftNxmBlockSettings toFftNxmBlockSettings(FftSettings fftOptions) {
 		FftNxmBlockSettings settings = new FftNxmBlockSettings();
-		// TODO 
-		settings.setNumAverages(Integer.parseInt(fftOptions.getNumAverages()));
-		settings.setOverlap(Integer.parseInt(fftOptions.getOverlap())); // 0-100
-		//			settings.setPipeSize(pipeSize);
-		settings.setTransformSize(Integer.parseInt(fftOptions.getTransformSize()));
+		settings.setTransformSize(Integer.parseInt(fftOptions.getTransformSize())); // 1+
+		settings.setOverlap(Integer.parseInt(fftOptions.getOverlap()));             // 0-100
+		settings.setNumAverages(Integer.parseInt(fftOptions.getNumAverages()));     // 1+
 		settings.setWindow(FftNxmBlockSettings.WindowType.valueOf(fftOptions.getWindow().toString()));
+		settings.setOutputType(FftNxmBlockSettings.OutputType.valueOf(fftOptions.getOutputType().toString()));
 		return settings;
 	}
 
