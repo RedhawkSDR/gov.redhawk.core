@@ -20,7 +20,7 @@ import gov.redhawk.ui.port.nxmplot.PlotActivator;
 
 import java.text.MessageFormat;
 
-import nxm.redhawk.prim.corbareceiver;
+import nxm.redhawk.prim.corbareceiver2;
 
 import org.eclipse.core.databinding.DataBindingContext;
 import org.eclipse.core.runtime.CoreException;
@@ -35,7 +35,7 @@ import BULKIO.StreamSRI;
  * @noreference This class is provisional/beta and is subject to API changes
  * @since 4.3
  */
-public class BulkIONxmBlock extends AbstractNxmBlock<corbareceiver, BulkIONxmBlockSettings> {
+public class BulkIONxmBlock extends AbstractNxmBlock<corbareceiver2, BulkIONxmBlockSettings> {
 
 	private static final Debug TRACE_LOG = new Debug(PlotActivator.PLUGIN_ID, BulkIONxmBlock.class.getSimpleName());
 	
@@ -106,7 +106,7 @@ public class BulkIONxmBlock extends AbstractNxmBlock<corbareceiver, BulkIONxmBlo
 	 * @param settings
 	 */
 	public BulkIONxmBlock(@NonNull AbstractNxmPlotWidget plotWidget, @NonNull ScaUsesPort scaUsesPort, @NonNull BulkIONxmBlockSettings settings) {
-		super(corbareceiver.class, "BULKIO", plotWidget);
+		super(corbareceiver2.class, "BULKIO", plotWidget);
 		this.settings = settings;
 		this.scaPort = scaUsesPort;
 		this.ior = scaUsesPort.getIor();
@@ -133,7 +133,7 @@ public class BulkIONxmBlock extends AbstractNxmBlock<corbareceiver, BulkIONxmBlo
 	@Override
 	public BulkIONxmBlockSettings getSettings() {
 		BulkIONxmBlockSettings clone = settings.clone();
-		//		corbareceiver corbareceiver = getNxmCommand(); // we now possilby have multiple Fft commands running per stream ID
+		//		corbareceiver corbareceiver = getNxmCommand(); // we now possibly have multiple commands running per stream ID
 		//		if (corbareceiver != null) {
 		//			clone.setFrameSize(corbareceiver.getFrameSize());
 		//			clone.setSampleRate(corbareceiver.getSampleRate());
@@ -182,18 +182,20 @@ public class BulkIONxmBlock extends AbstractNxmBlock<corbareceiver, BulkIONxmBlo
 		String outputName = AbstractNxmPlotWidget.createUniqueName(true);
 		putOutputNameMapping(0, streamID, outputName); // save output name mapping 
 
-		int frameSize = settings.getFrameSize();
-		if (frameSize <= 0) {
-			frameSize = 1024; 
-		}
-		int pipeSize = settings.getPipeSize();
-		if (pipeSize <= 0) {
-			pipeSize = 131072; // in bytes 
+		final StringBuilder switches = new StringBuilder("/POLL=1.0");
+		final int pipeSize = settings.getPipeSize(); // in bytes
+		if (pipeSize > 0) {
+			switches.append("/PS=").append(pipeSize);
 		}
 		final int timeLineLen = settings.getTimelineLength();
+		if (timeLineLen > 0) {
+			switches.append("/TLL=").append(timeLineLen);
+		}
 		final String idl = scaPort.getRepid();
-		String pattern = "CORBARECEIVER/BG/TLL={0,number,#}/PS={1,number,#}/POLL=1.0 FILE={2} FRAMESIZE={3,number,#} PORT_NAME={4} IDL=\"{5}\"";
-		String cmdLine = MessageFormat.format(pattern, timeLineLen, pipeSize, outputName, frameSize, ior, idl);
+//		String pattern = "CORBARECEIVER/BG/TLL={0,number,#}/PS={1,number,#}/POLL=1.0 FILE={2} FRAMESIZE={3,number,#} PORT_NAME={4} IDL=\"{5}\"";
+//		String cmdLine = MessageFormat.format(pattern, timeLineLen, pipeSize, outputName, frameSize, ior, idl);
+		String pattern = "CORBARECEIVER2{0}/BG FILE={1} IOR={2} IDL=\"{3}\" STREAMID=\"{4}\"";
+		String cmdLine = MessageFormat.format(pattern, switches, outputName, ior, idl, streamID);
 
 		return cmdLine;
 	}
