@@ -24,6 +24,7 @@ import org.eclipse.core.databinding.validation.IValidator;
 import org.eclipse.core.databinding.validation.ValidationStatus;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.jdt.annotation.NonNull;
+import org.eclipse.jdt.annotation.Nullable;
 import org.eclipse.jface.databinding.swt.WidgetProperties;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.ComboViewer;
@@ -56,7 +57,7 @@ public class FftNxmBlockControls extends Composite {
 	 * Instantiates a new entry dialog.
 	 * @param parentShell the parent shell
 	 */
-	public FftNxmBlockControls(@NonNull final Composite parent, int style, @NonNull final FftNxmBlockSettings settings,
+	public FftNxmBlockControls(@NonNull final Composite parent, int style, @Nullable final FftNxmBlockSettings settings,
 			final DataBindingContext dataBindingsCtx) {
 		super(parent, style);
 		this.settings = settings;

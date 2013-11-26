@@ -19,6 +19,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jdt.annotation.NonNullByDefault;
+import org.eclipse.jdt.annotation.Nullable;
 
 import BULKIO.updateSRIOperations;
 
@@ -56,7 +57,7 @@ public enum ConnectionManager implements IBulkIOPortConnectionManager {
 		 * @see java.lang.Object#equals(java.lang.Object)
 		 */
 		@Override
-		public boolean equals(java.lang.Object obj) {
+		public boolean equals(@Nullable java.lang.Object obj) {
 			if (this == obj) {
 				return true;
 			}

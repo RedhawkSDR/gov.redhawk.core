@@ -58,7 +58,7 @@ public class CompatibilityUtil implements ICompatibilityUtil {
 			BigInteger bigInt = new BigInteger(1, hashSum.digest(dn.getBytes()));
 			String hashText = bigInt.toString(16);
 			// Zero pad to ensure 16 chars.
-			while(hashText.length() < 16 ){
+			while (hashText.length() < 16 ){
 				hashText = "0" + hashText;
 			}
 			return hashText;

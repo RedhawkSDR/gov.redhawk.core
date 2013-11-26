@@ -169,7 +169,6 @@ public class SriDataViewContentProvider implements ITreeContentProvider {
 	}
 
 	@Override
-	@NonNull
 	public boolean hasChildren(Object element) {
 		if (element instanceof SriBuilder) {
 			SriBuilder attribute = (SriBuilder) element;

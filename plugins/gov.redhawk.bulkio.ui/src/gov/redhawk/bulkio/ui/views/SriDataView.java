@@ -39,6 +39,7 @@ import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.impl.AdapterImpl;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.jdt.annotation.NonNull;
+import org.eclipse.jdt.annotation.Nullable;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.ActionContributionItem;
 import org.eclipse.jface.action.IAction;
@@ -265,7 +266,7 @@ public class SriDataView extends ViewPart {
 					}
 					if (streamMap.isEmpty()) {
 						//If this was the only SRI being tracked, clear the view
-						sriReceiver.setActiveStreamID(null);
+						sriReceiver.setActiveStreamID("");
 					} else {
 						//Otherwise, switch the view to the next SRI in the Map
 						Map.Entry<String, SriWrapper> nextStream = streamMap.entrySet().iterator().next();
@@ -292,7 +293,7 @@ public class SriDataView extends ViewPart {
 				}
 				if (streamMap.isEmpty()) {
 					//If there are no non-terminated SRIs, clear the view
-					sriReceiver.setActiveStreamID(null);
+					sriReceiver.setActiveStreamID("");
 				} else {
 					//Otherwise, switch the view to the next SRI in the Map
 					Map.Entry<String, SriWrapper> nextStream = streamMap.entrySet().iterator().next();
@@ -434,12 +435,12 @@ public class SriDataView extends ViewPart {
 	}
 
 	@Override
-	public void setPartName(@NonNull String partName) {
+	public void setPartName(@Nullable String partName) {
 		super.setPartName(partName);
 	}
 
 	@Override
-	public void setTitleToolTip(@NonNull String toolTip) {
+	public void setTitleToolTip(@Nullable String toolTip) {
 		super.setTitleToolTip(toolTip);
 	}
 

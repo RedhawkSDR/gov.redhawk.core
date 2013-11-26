@@ -57,7 +57,7 @@ public abstract class AbstractBulkIOPort implements ProvidesPortStatisticsProvid
 		this.type = type;
 	}
 	
-	@Nullable
+	@NonNull
 	public BulkIOType getBulkIOType() {
 		return type;
 	}

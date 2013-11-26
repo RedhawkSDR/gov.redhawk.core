@@ -27,7 +27,7 @@ public class StructSequenceHelper {
 								the StructSequenceHelper is an array.  
 								If not, it is the lowest element in the hierarchy and has no children*/
 
-	public StructSequenceHelper(@NonNull String id, @NonNull Any any, @NonNull int index, Object parent) {
+	public StructSequenceHelper(@NonNull String id, @NonNull Any any, int index, Object parent) {
 		if (AnyUtils.convertAny(any) instanceof DataType[]) {
 			this.id = id + " [" + index + "]";
 			this.dataTypeArray = ((DataType[]) AnyUtils.convertAny(any));
@@ -70,7 +70,6 @@ public class StructSequenceHelper {
 		this.dataTypeArray = elements;
 	}
 
-	@NonNull
 	public boolean isArray() {
 		return isArray;
 	}

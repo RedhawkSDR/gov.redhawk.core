@@ -109,7 +109,7 @@ public class GetSriHandler extends AbstractHandler {
 								}
 
 								String nameStr = port.getName();
-								if (nameStr != null & !nameStr.isEmpty()) {
+								if (nameStr != null && nameStr != null && !nameStr.isEmpty()) {
 									name.append(nameStr + " SRI ");
 								}
 

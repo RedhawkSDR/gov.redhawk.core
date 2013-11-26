@@ -112,8 +112,8 @@ public abstract class AbstractNxmBlock<C extends Command, S extends Object> impl
 	/** key=output index; value=list of (destination block & it's input index). */
 	private final ConcurrentHashMap<Integer, List<BlockIndexPair>> outputMap = new ConcurrentHashMap<Integer, List<BlockIndexPair>>();
 	private String label;
-
-	protected AbstractNxmBlock(@NonNull Class<C> desiredLaunchCommandClass, @NonNull String label, AbstractNxmPlotWidget plotWidget) {
+ 
+	protected AbstractNxmBlock(@NonNull Class<C> desiredLaunchCommandClass, @NonNull String label, @NonNull AbstractNxmPlotWidget plotWidget) {
 		desiredLaunchClass = desiredLaunchCommandClass;
 		this.label = label;
 		this.plotWidget = plotWidget;
@@ -125,6 +125,7 @@ public abstract class AbstractNxmBlock<C extends Command, S extends Object> impl
 		this.plotWidget = widget;
 	}
 
+	@NonNull
 	@Override
 	public AbstractNxmPlotWidget getContext() {
 		return plotWidget;
