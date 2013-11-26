@@ -133,7 +133,7 @@ public class BulkIOUtilActivator extends Plugin {
 
 		});
 		try {
-			future.get(30, TimeUnit.SECONDS);
+			future.get(30, TimeUnit.SECONDS); // SUPPRESS CHECKSTYLE MAGIC NUMBER
 		} catch (InterruptedException e) {
 			// PASS
 		} catch (ExecutionException e) {

@@ -217,7 +217,7 @@ public class corbareceiver2 extends CorbaPrimitive implements IMidasDataWriter {
 
 		boolean noSubSizeFromSRI = (sri.subsize <= 0); // true for 1000 stream, false for 2000 stream
 
-		final String fileType = (noSubSizeFromSRI) ?  "1000" : "2000";
+		final String fileType = (noSubSizeFromSRI) ?  "1000" : "2000"; // SUPPRESS CHECKSTYLE AvoidInline
 		final String format = ((sri.mode == 0) ? "S" : "C") + receiver.getMidasType(); // SUPPRESS CHECKSTYLE AvoidInline
 		final DataFile newOutputFile = new DataFile(MA.cmd, fileName, fileType, format, BaseFile.OUTPUT);
 

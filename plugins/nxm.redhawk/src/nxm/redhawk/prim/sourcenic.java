@@ -105,7 +105,7 @@ public class sourcenic extends Primitive { //SUPPRESS CHECKSTYLE ClassName
 
 			// allocate data buffer with enough room for SDDS packet header + SDDS data + 8 (bytes extra to detect non-standard SDDS packets)
 			final int numDataElements = SDDS_PAYLOAD_SIZE / outputFile.bpa;
-			outputData = outputFile.getDataBuffer(numDataElements + (SDDS_HEADER_SIZE + 8) / outputFile.bpa);
+			outputData = outputFile.getDataBuffer(numDataElements + (SDDS_HEADER_SIZE + 8) / outputFile.bpa); // SUPPRESS CHECKSTYLE MagicNumber
 			outputData.boff = SDDS_HEADER_SIZE;  // move byte offset pass SDDS header in outputData's byte buffer
 			outputData.setSize(numDataElements); // reset size to number of SDDS data samples/elements
 			packet = new DatagramPacket(outputData.getBuf(), outputData.buf.length); // use dataBuffer
@@ -453,11 +453,11 @@ public class sourcenic extends Primitive { //SUPPRESS CHECKSTYLE ClassName
 				throw new IllegalArgumentException("Packet data is not the correct size");
 			}
 
+			// CHECKSTYLE:OFF
 			final byte byte0 = data[offset + 0];
 			final byte byte1 = data[offset + 1];
 			final byte byte2 = data[offset + 2];
-			final byte byte3 = data[offset + 3];
-			// CHECKSTYLE:OFF
+			final byte byte3 = data[offset + 3]; 
 			sf  = (byte0 & 0x80) != 0;
 			if (!sf) {
 				warn(WarnBit.WARN3, "Received non-standard packet");
@@ -497,7 +497,7 @@ public class sourcenic extends Primitive { //SUPPRESS CHECKSTYLE ClassName
 		 * @return
 		 */
 		public int getDataFieldBps() {
-			if (dmode == DMODE_FOUR_FOR_32BITS_PER_SAMPLE && bps == 31) { // REDHAWK SinkNic Component uses this for 32-bit samples
+			if (dmode == DMODE_FOUR_FOR_32BITS_PER_SAMPLE && bps == 31) { // REDHAWK SinkNic Component uses this for 32-bit samples - SUPPRESS CHECKSTYLE MagicNumber
 				return BITS_PER_SAMPLE_32;
 			}
 			int x = (dmode & 0x3); // SUPPRESS CHECKSTYLE MAGIC NUMBER
@@ -552,7 +552,7 @@ public class sourcenic extends Primitive { //SUPPRESS CHECKSTYLE ClassName
 			throw new IllegalArgumentException("Invalid data byte order specified: " + byteOrderStr);
 		}
 		if (outputData != null) {
-			outputData.rep = (packetDataByteOrder == ByteOrder.BIG_ENDIAN) ? Data.IEEE : Data.EEEI;
+			outputData.rep = (packetDataByteOrder == ByteOrder.BIG_ENDIAN) ? Data.IEEE : Data.EEEI; // SUPPRESS CHECKSTYLE AvoidInline
 		}
 	}
 

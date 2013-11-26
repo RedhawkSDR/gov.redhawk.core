@@ -47,8 +47,8 @@ public enum ConnectionManager implements IBulkIOPortConnectionManager {
 		public int hashCode() {
 			final int prime = 31;
 			int result = 1;
-			result = prime * result + ((ior == null) ? 0 : ior.hashCode());
-			result = prime * result + ((type == null) ? 0 : type.hashCode());
+			result = prime * result + ((ior == null) ? 0 : ior.hashCode());   // SUPPRESS CHECKSTYLE AvoidInline
+			result = prime * result + ((type == null) ? 0 : type.hashCode()); // SUPPRESS CHECKSTYLE AvoidInline
 			return result;
 		}
 

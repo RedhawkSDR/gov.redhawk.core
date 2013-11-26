@@ -26,7 +26,7 @@ class SelectAllTextComboTextListener implements ISelectionChangedListener {
 
 	public void selectionChanged(final SelectionChangedEvent event) {
 		final String text = this.combo.getText();
-		final int textLen = (text == null) ? 0 : text.length();
+		final int textLen = (text == null) ? 0 : text.length(); // SUPPRESS CHECKSTYLE AvoidInline
 		this.combo.setSelection(new Point(0, textLen)); // select text from combo selection
 	}
 }

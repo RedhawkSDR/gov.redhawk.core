@@ -57,10 +57,10 @@ public final class StreamXMLSRIUtil {
 
 		metaInfo.getStreamSRI().setHversion(sri.hversion);
 		metaInfo.getStreamSRI().setXstart(sri.xstart);
-		metaInfo.getStreamSRI().setXdelta((sri.xdelta == 0) ? 1.0 : sri.xdelta);
+		metaInfo.getStreamSRI().setXdelta((sri.xdelta == 0) ? 1.0 : sri.xdelta); // SUPPRESS CHECKSTYLE AvoidInline
 		metaInfo.getStreamSRI().setXunits(sri.xunits);
 		metaInfo.getStreamSRI().setYstart(sri.ystart);
-		metaInfo.getStreamSRI().setYdelta((sri.ydelta == 0) ? 1.0 : sri.ydelta);
+		metaInfo.getStreamSRI().setYdelta((sri.ydelta == 0) ? 1.0 : sri.ydelta); // SUPPRESS CHECKSTYLE AvoidInline
 		metaInfo.getStreamSRI().setYunits(sri.yunits);
 		metaInfo.getStreamSRI().setSubsize(sri.subsize);
 		metaInfo.getStreamSRI().setMode(sri.mode);

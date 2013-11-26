@@ -78,10 +78,10 @@ public abstract class AbstractBulkIOPort implements ProvidesPortStatisticsProvid
 		}
 		long delta = Math.max(1, currentTime - oldLastUpdate);
 		
-		stats.callsPerSecond = this.numCalls.floatValue() / delta * 1000f;
+		stats.callsPerSecond = this.numCalls.floatValue() / delta * 1000f; // SUPPRESS CHECKSTYLE MAGIC NUMBER
 		this.numCalls.set(0);
 
-		stats.elementsPerSecond = this.numElements.floatValue() / delta * 1000f;
+		stats.elementsPerSecond = this.numElements.floatValue() / delta * 1000f; // SUPPRESS CHECKSTYLE MAGIC NUMBER
 		this.numElements.set(0);
 
 		if (this.lastWrite.get() > 0) {
@@ -90,8 +90,8 @@ public abstract class AbstractBulkIOPort implements ProvidesPortStatisticsProvid
 			stats.timeSinceLastCall = -1;
 		}
 
-		int bpa = (type != null) ? type.getBytePerAtom() : 1;
-		stats.bitsPerSecond = bpa * stats.elementsPerSecond * 8;
+		int bpa = (type != null) ? type.getBytePerAtom() : 1;    // SUPPRESS CHECKSTYLE AvoidInline
+		stats.bitsPerSecond = bpa * stats.elementsPerSecond * 8; // SUPPRESS CHECKSTYLE MAGIC NUMBER
 	}
 
 	/**
