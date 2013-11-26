@@ -1,3 +1,14 @@
+/**
+ * This file is protected by Copyright. 
+ * Please refer to the COPYRIGHT file distributed with this source distribution.
+ * 
+ * This file is part of REDHAWK IDE.
+ * 
+ * All rights reserved.  This program and the accompanying materials are made available under 
+ * the terms of the Eclipse Public License v1.0 which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html.
+ *
+ */
 package gov.redhawk.bulkio.ui.internal;
 
 import java.util.Date;
@@ -11,7 +22,7 @@ public class SriWrapper {
 	private StreamSRI sri;
 	private Date date;
 	private String precisionTime;
-	private boolean EOS;
+	private boolean eos;
 
 	public SriWrapper(@NonNull StreamSRI streamSRI, @NonNull Date date) {
 		this.setSri(streamSRI);
@@ -22,7 +33,7 @@ public class SriWrapper {
 		this.sri = value.getSri();
 		this.date = value.getDate();
 		this.precisionTime = value.getPrecisionTime();
-		this.EOS = value.isEOS();
+		this.eos = value.isEOS();
 	}
 
 	@NonNull
@@ -53,11 +64,11 @@ public class SriWrapper {
 	}
 
 	public boolean isEOS() {
-		return EOS;
+		return eos;
 	}
 
-	public void setEOS(boolean EOS) {
-		this.EOS = EOS;
+	public void setEOS(boolean eos) {
+		this.eos = eos;
 	}
 	
 }

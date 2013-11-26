@@ -1,3 +1,14 @@
+/**
+ * This file is protected by Copyright. 
+ * Please refer to the COPYRIGHT file distributed with this source distribution.
+ * 
+ * This file is part of REDHAWK IDE.
+ * 
+ * All rights reserved.  This program and the accompanying materials are made available under 
+ * the terms of the Eclipse Public License v1.0 which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html.
+ *
+ */
 package gov.redhawk.bulkio.ui.internal;
 
 import gov.redhawk.bulkio.ui.views.SriDataView;
@@ -140,15 +151,15 @@ public class SriDataViewReceiver extends AbstractUberBulkIOPort {
 		BulkIOUtilActivator.getBulkIOPortConnectionManager().disconnect(port.getIor(), getBulkIOType(), this);
 	}
 
-	private void setPrecisionTime(@NonNull PrecisionUTCTime T, String streamID) {
+	private void setPrecisionTime(@NonNull PrecisionUTCTime time, String streamID) {
 		//sets precision time to latest pushPacket
 		SriWrapper stream = modelStreamMap.get(streamID);
 		if (stream == null) {
 			return;
 		}
-		if (T != null) {
+		if (time != null) {
 			//Build precision time stamp
-			Date precisionTime = new Date((long) (T.twsec * 1000 + T.tfsec));
+			Date precisionTime = new Date((long) (time.twsec * 1000 + time.tfsec));
 			String precisionString = new SimpleDateFormat("hh:mm:ss.S").format(precisionTime);
 
 			//Assign to SriWrapper object
@@ -161,9 +172,9 @@ public class SriDataViewReceiver extends AbstractUberBulkIOPort {
 		}
 	}
 
-	private void checkForEOS(boolean EOS, String streamID) {
+	private void checkForEOS(boolean eos, String streamID) {
 		SriWrapper stream = modelStreamMap.get(streamID);
-		if (stream == null || !EOS) {
+		if (stream == null || !eos) {
 			return;
 		} else {
 			stream.setEOS(true);
@@ -177,44 +188,44 @@ public class SriDataViewReceiver extends AbstractUberBulkIOPort {
 	}
 
 	@Override
-	public void pushPacket(short[] data, PrecisionUTCTime T, boolean EOS, String streamID) {
-		setPrecisionTime(T, streamID);
-		checkForEOS(EOS, streamID);
+	public void pushPacket(short[] data, PrecisionUTCTime time, boolean eos, String streamID) {
+		setPrecisionTime(time, streamID);
+		checkForEOS(eos, streamID);
 	}
 
 	@Override
-	public void pushPacket(char[] data, PrecisionUTCTime T, boolean EOS, String streamID) {
-		setPrecisionTime(T, streamID);
-		checkForEOS(EOS, streamID);
+	public void pushPacket(char[] data, PrecisionUTCTime time, boolean eos, String streamID) {
+		setPrecisionTime(time, streamID);
+		checkForEOS(eos, streamID);
 	}
 
 	@Override
-	public void pushPacket(double[] data, PrecisionUTCTime T, boolean EOS, String streamID) {
-		setPrecisionTime(T, streamID);
-		checkForEOS(EOS, streamID);
+	public void pushPacket(double[] data, PrecisionUTCTime time, boolean eos, String streamID) {
+		setPrecisionTime(time, streamID);
+		checkForEOS(eos, streamID);
 	}
 
 	@Override
-	public void pushPacket(float[] data, PrecisionUTCTime T, boolean EOS, String streamID) {
-		setPrecisionTime(T, streamID);
-		checkForEOS(EOS, streamID);
+	public void pushPacket(float[] data, PrecisionUTCTime time, boolean eos, String streamID) {
+		setPrecisionTime(time, streamID);
+		checkForEOS(eos, streamID);
 	}
 
 	@Override
-	public void pushPacket(long[] data, PrecisionUTCTime T, boolean EOS, String streamID) {
-		setPrecisionTime(T, streamID);
-		checkForEOS(EOS, streamID);
+	public void pushPacket(long[] data, PrecisionUTCTime time, boolean eos, String streamID) {
+		setPrecisionTime(time, streamID);
+		checkForEOS(eos, streamID);
 	}
 
 	@Override
-	public void pushPacket(int[] data, PrecisionUTCTime T, boolean EOS, String streamID) {
-		setPrecisionTime(T, streamID);
-		checkForEOS(EOS, streamID);
+	public void pushPacket(int[] data, PrecisionUTCTime time, boolean eos, String streamID) {
+		setPrecisionTime(time, streamID);
+		checkForEOS(eos, streamID);
 	}
 
 	@Override
-	public void pushPacket(byte[] data, PrecisionUTCTime T, boolean EOS, String streamID) {
-		setPrecisionTime(T, streamID);
-		checkForEOS(EOS, streamID);
+	public void pushPacket(byte[] data, PrecisionUTCTime time, boolean eos, String streamID) {
+		setPrecisionTime(time, streamID);
+		checkForEOS(eos, streamID);
 	}
 }
