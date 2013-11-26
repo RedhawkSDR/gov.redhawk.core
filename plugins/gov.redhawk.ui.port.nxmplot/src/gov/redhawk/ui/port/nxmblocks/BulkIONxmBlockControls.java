@@ -36,6 +36,8 @@ import org.eclipse.swt.widgets.Label;
  */
 public class BulkIONxmBlockControls extends Composite {
 
+	private static final int FIELD_BINDING_DELAY = 200;
+	
 	private DataBindingContext dataBindingCtx;
 	private final BulkIONxmBlockSettings settings;
 	private ComboViewer sampleRateField;
@@ -90,11 +92,11 @@ public class BulkIONxmBlockControls extends Composite {
 	}
 
 	protected void addBindings() {
-		IObservableValue srTargetObservableVal = WidgetProperties.text(SWT.Modify).observeDelayed(200, this.sampleRateField.getCombo());
+		IObservableValue srTargetObservableVal = WidgetProperties.text(SWT.Modify).observeDelayed(FIELD_BINDING_DELAY, this.sampleRateField.getCombo());
 		IObservableValue srModelObservableVal  = BeansObservables.observeValue(settings, "sampleRate");
 		dataBindingCtx.bindValue(srTargetObservableVal, srModelObservableVal, createTargetToModelForSampleRate(), null);
 
-		IObservableValue boTargetObservableValue = WidgetProperties.text(SWT.Modify).observeDelayed(200, this.blockingField.getCombo());
+		IObservableValue boTargetObservableValue = WidgetProperties.text(SWT.Modify).observeDelayed(FIELD_BINDING_DELAY, this.blockingField.getCombo());
 		IObservableValue boModelObservableValue = BeansObservables.observeValue(settings, "blocking");
 		dataBindingCtx.bindValue(boTargetObservableValue, boModelObservableValue, null, null);
 	}

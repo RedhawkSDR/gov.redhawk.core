@@ -42,7 +42,7 @@ public class FftNxmBlock extends AbstractNxmBlock<fft, FftNxmBlockSettings> {
 
 	@Override
 	public int getMaxOutputs() {
-		return 3;
+		return 3; // SUPPRESS CHECKSTYLE MAGIC NUMBER
 	}
 
 	@Override

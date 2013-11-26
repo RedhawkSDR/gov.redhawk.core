@@ -36,6 +36,8 @@ import org.eclipse.swt.widgets.Label;
  */
 public class PlotNxmBlockControls extends Composite {
 
+	private static final int FIELD_BINDING_DELAY = 200;
+	
 	private DataBindingContext dataBindingCtx;
 	private final PlotNxmBlockSettings settings;
 	private ComboViewer frameSizeField;
@@ -71,9 +73,9 @@ public class PlotNxmBlockControls extends Composite {
 		final Integer fs = this.settings.getFrameSize();
 		if (fs != null) {
 			currentFS = fs;
-			fsComboInputs = new Object[] { currentFS, otherValidFSValue, 512, 1024, 2048, 4096, 8192 };
+			fsComboInputs = new Object[] { currentFS, otherValidFSValue, 512, 1024, 2048, 4096, 8192 }; // SUPPRESS CHECKSTYLE MAGIC NUMBER
 		} else {
-			fsComboInputs = new Object[] { otherValidFSValue, 512, 1024, 2048, 4096, 8192 };
+			fsComboInputs = new Object[] { otherValidFSValue, 512, 1024, 2048, 4096, 8192 }; // SUPPRESS CHECKSTYLE MAGIC NUMBER
 		}
 
 		this.frameSizeField.setInput(fsComboInputs);
@@ -81,7 +83,7 @@ public class PlotNxmBlockControls extends Composite {
 	}
 
 	protected void addBindings() {
-		IObservableValue fsTargetObservableVal = WidgetProperties.text(SWT.Modify).observeDelayed(200, this.frameSizeField.getCombo());
+		IObservableValue fsTargetObservableVal = WidgetProperties.text(SWT.Modify).observeDelayed(FIELD_BINDING_DELAY, this.frameSizeField.getCombo());
 		IObservableValue fsModelObservableVal  = BeansObservables.observeValue(settings, "frameSize");
 		dataBindingCtx.bindValue(fsTargetObservableVal, fsModelObservableVal, createTargetToModelForFrameSize(), null);
 	}

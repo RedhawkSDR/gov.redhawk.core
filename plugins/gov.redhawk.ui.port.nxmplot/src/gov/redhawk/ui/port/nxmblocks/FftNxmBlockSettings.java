@@ -70,8 +70,8 @@ public class FftNxmBlockSettings implements Cloneable {
 		public abstract String toSwitchString();
 	}
 
-	private int transformSize  = 8192;
-	private int overlap        = 50;
+	private int transformSize  = 8192; // SUPPRESS CHECKSTYLE MAGIC NUMBER
+	private int overlap        = 50;   // SUPPRESS CHECKSTYLE MAGIC NUMBER
 	private int numAverages    = 1;
 	private int numExpAverages = 1;
 	private WindowType window = WindowType.HANNING;

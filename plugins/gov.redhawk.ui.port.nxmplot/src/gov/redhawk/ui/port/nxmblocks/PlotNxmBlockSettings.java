@@ -19,7 +19,7 @@ import org.eclipse.jdt.annotation.NonNull;
  */
 public class PlotNxmBlockSettings implements Cloneable {
 
-	public static final int DEFAULT_FRAME_SIZE = 1024;
+	public static final int DEFAULT_FRAME_SIZE = 1024; // SUPPRESS CHECKSTYLE MAGIC NUMBER
 
 	private int frameSize = -1;   // <= 0 to use default
 	private int pipeSize;         // <= 0 to use default

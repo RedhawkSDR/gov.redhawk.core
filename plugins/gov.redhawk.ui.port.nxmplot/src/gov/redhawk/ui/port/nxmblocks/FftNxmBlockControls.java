@@ -43,6 +43,7 @@ import org.eclipse.swt.widgets.Text;
  */
 public class FftNxmBlockControls extends Composite {
 
+	private static final int FIELD_BINDING_DELAY = 200;
 	private DataBindingContext dataBindingCtx;
 	private final FftNxmBlockSettings settings;
 	private Text        transformSizeField;
@@ -127,19 +128,19 @@ public class FftNxmBlockControls extends Composite {
 	}
 
 	protected void addBindings() {
-		IObservableValue fsTargetObservableVal = WidgetProperties.text(SWT.Modify).observeDelayed(200, this.transformSizeField);
+		IObservableValue fsTargetObservableVal = WidgetProperties.text(SWT.Modify).observeDelayed(FIELD_BINDING_DELAY, this.transformSizeField);
 		IObservableValue fsModelObservableVal  = BeansObservables.observeValue(settings, "transformSize");
 		dataBindingCtx.bindValue(fsTargetObservableVal, fsModelObservableVal, createTargetToModelForFftSize(), null);
 
-		IObservableValue srTargetObservableVal = WidgetProperties.text(SWT.Modify).observeDelayed(200, this.overlapField);
+		IObservableValue srTargetObservableVal = WidgetProperties.text(SWT.Modify).observeDelayed(FIELD_BINDING_DELAY, this.overlapField);
 		IObservableValue srModelObservableVal  = BeansObservables.observeValue(settings, "overlap");
 		dataBindingCtx.bindValue(srTargetObservableVal, srModelObservableVal, createTargetToModelForOverlap(), null);
 
-		IObservableValue numAvgTargetObservableValue = WidgetProperties.text(SWT.Modify).observeDelayed(200, this.numAveragesField);
+		IObservableValue numAvgTargetObservableValue = WidgetProperties.text(SWT.Modify).observeDelayed(FIELD_BINDING_DELAY, this.numAveragesField);
 		IObservableValue numAvgModelObservableValue = BeansObservables.observeValue(settings, "numAverages");
 		dataBindingCtx.bindValue(numAvgTargetObservableValue, numAvgModelObservableValue, createTargetToModelForNumAverages(), null);
 
-		IObservableValue windowTargetObservableValue = WidgetProperties.text(SWT.Modify).observeDelayed(200, this.fftWindow.getCombo());
+		IObservableValue windowTargetObservableValue = WidgetProperties.text(SWT.Modify).observeDelayed(FIELD_BINDING_DELAY, this.fftWindow.getCombo());
 		IObservableValue windowModelObservableValue = BeansObservables.observeValue(settings, "window");
 		dataBindingCtx.bindValue(windowTargetObservableValue, windowModelObservableValue, createTargetToModelForWindow(), null);
 	}

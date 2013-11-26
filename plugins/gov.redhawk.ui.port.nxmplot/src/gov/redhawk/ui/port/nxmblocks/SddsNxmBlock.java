@@ -47,18 +47,19 @@ public class SddsNxmBlock extends AbstractNxmBlock<sourcenic, SddsNxmBlockSettin
 		final String outputName = AbstractNxmPlotWidget.createUniqueName(true);
 		putOutputNameMapping(0, streamID, outputName); // save output name mapping
 
+		final StringBuilder switches = new StringBuilder("");
+		final int pipeSize = settings.getPipeSize(); // in bytes
+		if (pipeSize > 0) {
+			switches.append("/PS=").append(pipeSize);
+		}
+		ByteOrder byteOrder = settings.getDataByteOrder();
 		String outputFormat = settings.getOutputFormat();
 		if (outputFormat == null) {
 			outputFormat = "";
 		}
-		int pipeSize = settings.getPipeSize();
-		if (pipeSize >= 0) {
-			pipeSize = 131072; // default 
-		}
-		ByteOrder byteOrder = settings.getDataByteOrder();
 
-		String pattern = "SOURCENIC/BG/BYTEORDER={0}/PS={1,number,#}/FC={2}/MGRP={3}/PORT={4,number,#}/VLAN={5,number,#} OUT={6}";
-		String cmdLine = MessageFormat.format(pattern, byteOrder, pipeSize, outputFormat,
+		String pattern = "SOURCENIC{0}/BG/BYTEORDER={1}/FC={2}/MGRP={3}/PORT={4,number,#}/VLAN={5,number,#} OUT={6}";
+		String cmdLine = MessageFormat.format(pattern, switches, byteOrder, outputFormat,
 				settings.getMcastAddress(), settings.getPort(), settings.getVlan(), outputName);
 
 		return cmdLine;

@@ -131,8 +131,7 @@ public abstract class AbstractNxmBlock<C extends Command, S extends Object> impl
 	}
 
 	@Override
-	public void addInput(int myInIndex, INxmBlock<?> srcBlock, int srcBlockOutIndex)
-			throws IllegalArgumentException, UnsupportedOperationException {
+	public void addInput(int myInIndex, INxmBlock<?> srcBlock, int srcBlockOutIndex) {
 		final int maxInIndex = getMaxInputs();
 		if (maxInIndex == 0) {
 			throw new UnsupportedOperationException(getClass().getName() + " does not have any inputs.");
@@ -146,14 +145,12 @@ public abstract class AbstractNxmBlock<C extends Command, S extends Object> impl
 	}
 
 	@Override
-	public void addInput(INxmBlock<?> srcBlock)
-			throws IllegalArgumentException, UnsupportedOperationException {
+	public void addInput(INxmBlock<?> srcBlock) {
 		addInput(getDefaultInputIndex(), srcBlock, 0);
 	}
 
 	@Override
-	public void removeInput(int myInIndex)
-			throws IllegalArgumentException, UnsupportedOperationException {
+	public void removeInput(int myInIndex) {
 		final int maxInIndex = getMaxInputs();
 		if (maxInIndex == 0) {
 			throw new UnsupportedOperationException(getClass().getName() + " does not have any inputs.");
@@ -193,8 +190,7 @@ public abstract class AbstractNxmBlock<C extends Command, S extends Object> impl
 	}
 
 	@Override
-	public void internalAddOutputMapping(int outIndex, INxmBlock< ? > destBlock, int destBlockInIndex)
-			throws IllegalArgumentException, UnsupportedOperationException {
+	public void internalAddOutputMapping(int outIndex, INxmBlock< ? > destBlock, int destBlockInIndex) {
 		final int maxOutIndex = getMaxOutputs();
 		if (maxOutIndex == 0) {
 			throw new UnsupportedOperationException(getClass().getName() + " does not have any outputs.");
@@ -217,7 +213,7 @@ public abstract class AbstractNxmBlock<C extends Command, S extends Object> impl
 	}
 
 	@Override
-	public void internalRemoveOutputMapping(int outIndex, INxmBlock< ? > destBlock, int destBlockInIndex) throws IllegalArgumentException, UnsupportedOperationException {
+	public void internalRemoveOutputMapping(int outIndex, INxmBlock< ? > destBlock, int destBlockInIndex) {
 		final int maxOutIndex = getMaxOutputs();
 		if (maxOutIndex == 0) {
 			throw new UnsupportedOperationException(getClass().getName() + " does not have any outputs.");
