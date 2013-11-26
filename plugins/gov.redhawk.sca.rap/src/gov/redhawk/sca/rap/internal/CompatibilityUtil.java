@@ -46,7 +46,7 @@ public class CompatibilityUtil implements ICompatibilityUtil {
 		}
 		Principal user = RapInit.getUserPrincipal((Display) context);
 		if (user != null) {
-			String dn = "12345678901234567890";
+			String dn = user.getName();
 			MessageDigest hashSum = null;
 			try {
 				//we need a unique path segment per user, and strength of one-way protection is not important.
