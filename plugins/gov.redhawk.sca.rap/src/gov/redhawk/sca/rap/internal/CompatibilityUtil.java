@@ -18,6 +18,7 @@ import gov.redhawk.sca.rap.RapInit;
 
 import java.io.File;
 import java.lang.reflect.Field;
+import java.math.BigInteger;
 import java.security.Principal;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -37,24 +38,32 @@ public class CompatibilityUtil implements ICompatibilityUtil {
 		if (Boolean.valueOf(System.getProperty(ScaRapPlugin.PROP_SHARED_DOMAINS))) {
 			return "SHARED";
 		}
-				if (context == null || !(context instanceof Display)) {
-					context = Display.getCurrent();
-					if (context == null) {
-						return "SHARED";
-					}
-				}
-				Principal user = RapInit.getUserPrincipal((Display) context);
-				if (user != null) {
-					String dn = user.getName();
-					MessageDigest hashSum = null;
-					try {
-						hashSum = MessageDigest.getInstance("SHA-256");
-					} catch (NoSuchAlgorithmException e) {
-						return "SHARED";
-					}
-					return new String(hashSum.digest(dn.getBytes()));
-				}
+		if (context == null || !(context instanceof Display)) {
+			context = Display.getCurrent();
+			if (context == null) {
 				return "SHARED";
+			}
+		}
+		Principal user = RapInit.getUserPrincipal((Display) context);
+		if (user != null) {
+			String dn = "12345678901234567890";
+			MessageDigest hashSum = null;
+			try {
+				//we need a unique path segment per user, and strength of one-way protection is not important.
+				//So we use MD5 to get a smaller path segment name than we would with a stronger algorithm
+				hashSum = MessageDigest.getInstance("MD5");
+			} catch (NoSuchAlgorithmException e) {
+				return "SHARED";
+			}
+			BigInteger bigInt = new BigInteger(1, hashSum.digest(dn.getBytes()));
+			String hashText = bigInt.toString(16);
+			// Zero pad to ensure 16 chars.
+			while(hashText.length() < 16 ){
+				hashText = "0" + hashText;
+			}
+			return hashText;
+		}
+		return "SHARED";
 
 		//BEGIN TEMP CODE
 		/* return user agent instead of DN, for dev testing */
@@ -113,13 +122,13 @@ public class CompatibilityUtil implements ICompatibilityUtil {
 				}
 			} catch (NoSuchFieldException e) {
 				ScaPlugin.getDefault().getLog().log(
-					new Status(Status.ERROR, ScaPlugin.PLUGIN_ID, "Unable to determine SettingStore work directory", e));
+						new Status(Status.ERROR, ScaPlugin.PLUGIN_ID, "Unable to determine SettingStore work directory", e));
 			} catch (SecurityException e) {
 				ScaPlugin.getDefault().getLog().log(
-					new Status(Status.ERROR, ScaPlugin.PLUGIN_ID, "Unable to determine SettingStore work directory", e));
+						new Status(Status.ERROR, ScaPlugin.PLUGIN_ID, "Unable to determine SettingStore work directory", e));
 			} catch (IllegalArgumentException e) {
 				ScaPlugin.getDefault().getLog().log(
-					new Status(Status.ERROR, ScaPlugin.PLUGIN_ID, "Unable to determine SettingStore work directory", e));
+						new Status(Status.ERROR, ScaPlugin.PLUGIN_ID, "Unable to determine SettingStore work directory", e));
 			} catch (IllegalAccessException e) {
 				ScaPlugin.getDefault().getLog().log(
 						new Status(Status.ERROR, ScaPlugin.PLUGIN_ID, "Unable to determine SettingStore work directory", e));
