@@ -13,16 +13,18 @@ package gov.redhawk.ui.port.nxmplot;
 
 /**
  * @since 3.0
+ * @deprecated since 4.3 - this is not used in this plug-in
  */
+@Deprecated
 public class MulticastSource {
 
-	public String payload;
-	public String mcastAddress;
-	public int vlan;
-	public int port;
-	public String format;
-	public String mode;
-	public Object frameSize;
+	public String payload;      // SUPPRESS CHECKSTYLE VARIABLE
+	public String mcastAddress; // SUPPRESS CHECKSTYLE VARIABLE
+	public int vlan;            // SUPPRESS CHECKSTYLE VARIABLE
+	public int port;            // SUPPRESS CHECKSTYLE VARIABLE
+	public String format;       // SUPPRESS CHECKSTYLE VARIABLE
+	public String mode;         // SUPPRESS CHECKSTYLE VARIABLE
+	public Object frameSize;    // SUPPRESS CHECKSTYLE VARIABLE
 
 	public MulticastSource(
 			final String payload,
