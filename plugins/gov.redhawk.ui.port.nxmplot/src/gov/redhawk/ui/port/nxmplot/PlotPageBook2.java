@@ -33,6 +33,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import mil.jpeojtrs.sca.util.DceUuidUtil;
 
@@ -41,6 +42,10 @@ import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.impl.AdapterImpl;
 import org.eclipse.jdt.annotation.NonNull;
+import org.eclipse.jface.action.Action;
+import org.eclipse.jface.action.IAction;
+import org.eclipse.jface.action.IMenuManager;
+import org.eclipse.jface.action.SubMenuManager;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.DisposeEvent;
 import org.eclipse.swt.events.DisposeListener;
@@ -68,10 +73,11 @@ public class PlotPageBook2 extends Composite {
 			this.plot.initPlot(plotSwitches, plotArgs);
 		}
 
-		private synchronized void addSource2(final ScaUsesPort scaPort, final FftSettings fftSettings, final String pipeQualifiers) {
+		private synchronized void addSource2(final ScaUsesPort scaPort, final FftSettings fftSettings, final String pipeQualifiers, IMenuManager menu) {
 			TRACE_LOG.enteringMethod(scaPort, fftSettings, pipeQualifiers);
 			final AbstractNxmPlotWidget currentPlotWidget = this.plot;
 
+			ArrayList<INxmBlock< ? >> nxmBlocksForSource = new ArrayList<INxmBlock< ? >>();
 			INxmBlock<?> startingBlock;
 			if (dataSDDSHelper.id().equals(scaPort.getRepid())) {
 				SddsNxmBlockSettings sddsSettings = new SddsNxmBlockSettings();
@@ -84,6 +90,7 @@ public class PlotPageBook2 extends Composite {
 				startingBlock = bulkioBlock;
 			}
 			TRACE_LOG.trace("PlotPageBook2.addSource(.) startingBlock = {0}", startingBlock);
+			nxmBlocksForSource.add(startingBlock);
 
 			PlotNxmBlock plotBlock = new PlotNxmBlock(currentPlotWidget, new PlotNxmBlockSettings());
 			if (fftSettings != null) {
@@ -99,9 +106,16 @@ public class PlotPageBook2 extends Composite {
 				}
 
 				plotBlock.addInput(fftBlock);
+				nxmBlocksForSource.add(fftBlock);
 			} else {
 				plotBlock.addInput(startingBlock);
 			}
+			nxmBlocksForSource.add(plotBlock);
+
+			SubMenuManager subMenu = new SubMenuManager(menu);
+			plotBlock.contributeMenuItems(subMenu);
+			subMenu.add(createSettingsMenuActionForSource(scaPort, nxmBlocksForSource.toArray(new INxmBlock<?>[0])));
+			subMenu.setVisible(true);
 
 			try {
 				plotBlock.start();
@@ -114,6 +128,16 @@ public class PlotPageBook2 extends Composite {
 				e.printStackTrace(); // SUPPRESS CHECKSTYLE DEBUG
 			}
 			TRACE_LOG.exitingMethod();
+		}
+		
+		private IAction createSettingsMenuActionForSource(final ScaUsesPort scaPort, final INxmBlock<?>... nxmBlocks) {
+			IAction action = new Action("Settings...") {
+				@Override
+				public void run() {
+					// TODO: kick off wizard
+				}
+			};
+			return action;
 		}
 		
 		private synchronized void addSource(PlotSource newSource) {
@@ -177,6 +201,8 @@ public class PlotPageBook2 extends Composite {
 	private PlotType currentType;
 
 	private Composite nullPage;
+	
+	private IMenuManager contextMenu;
 
 	public PlotPageBook2(Composite parent, int style, PlotType type) {
 		super(parent, style);
@@ -206,14 +232,14 @@ public class PlotPageBook2 extends Composite {
 
 		final String plotArgs = NxmPlotUtil.getDefaultPlotArgs(type);
 		final String plotSwitches = NxmPlotUtil.getDefaultPlotSwitches(type);
-		PlotPage session = new PlotPage(newPlot, plotArgs, plotSwitches);	
-		this.plots.put(type, session);
+		PlotPage plotPageSession = new PlotPage(newPlot, plotArgs, plotSwitches);	
+		this.plots.put(type, plotPageSession);
 
 		for (PlotSource source : this.sources) {
-			session.addSource(source);
+			plotPageSession.addSource(source);
 		}
 
-		return session;
+		return plotPageSession;
 	}
 
 	private IPlotSession addSource(final PlotSource plotSource) {
@@ -248,28 +274,49 @@ public class PlotPageBook2 extends Composite {
 
 	public IPlotSession addSource(ScaUsesPort port, FftSettings settings, String qualifiers) {
 		final PlotSource plotSource = new PlotSource(port, settings, qualifiers);
+		boolean useNxmBlocks = false; // change this to true to use new INxmBlock API
+		if (dataSDDSHelper.id().equals(port.getRepid()) || useNxmBlocks) {
+			return addSource2(plotSource);
+		}
 		return addSource(plotSource);
 	}
 
 	/**
-	 * @param scaPort
-	 * @param fftSettings
-	 * @param qualifiers
 	 * @since 4.3
 	 * @noreference This method is not intended to be referenced by clients
 	 */
-	public void addSource2(final ScaUsesPort scaPort, FftSettings fftSettings, String qualifiers) {
+	IPlotSession addSource2(@NonNull final PlotSource plotSource) {
+		final ScaUsesPort scaPort = plotSource.getInput();
+		final FftSettings fftSettings = plotSource.getFftOptions();
+		final String qualifiers = plotSource.getQualifiers();
 		
 		for (PlotPage plotPage : plots.values()) {
-			plotPage.addSource2(scaPort, fftSettings, qualifiers);
+			plotPage.addSource2(scaPort, fftSettings, qualifiers, this.contextMenu);
 		}
+		this.sources.add(plotSource);
+		
 		ScaModelCommand.execute(scaPort, new ScaModelCommand() {
 			@Override
 			public void execute() {
 				scaPort.eAdapters().add(portListener);
 			}
 		});
+		
+		return new IPlotSession() {
+			private String id = UUID.randomUUID().toString();
 
+			@Override
+			public void dispose() {
+				for (PlotPage session : plots.values()) {
+					session.removeSource(plotSource);
+				}
+			}
+
+			@Override
+			public String getSourceId() {
+				return id;
+			}
+		};
 	}
 	/**
 	 * Toggle if the raster is visible or not.
@@ -323,13 +370,12 @@ public class PlotPageBook2 extends Composite {
 		
 		for (final PlotSource source : sources) {
 			ScaModelCommand.execute(source.getInput(), new ScaModelCommand() {
-				
 				@Override
 				public void execute() {
 					source.getInput().eAdapters().remove(listenerAdapter);
 				}
 			});
-			PortHelper.refreshPort(source.getInput(), null, 1000);
+			PortHelper.refreshPort(source.getInput(), null, 1000); // SUPPRESS CHECKSTYLE MAGIC NUMBER
 		}
 		
 		this.sources.clear();
@@ -388,6 +434,14 @@ public class PlotPageBook2 extends Composite {
 		settings.setWindow(FftNxmBlockSettings.WindowType.valueOf(fftOptions.getWindow().toString()));
 		settings.setOutputType(FftNxmBlockSettings.OutputType.valueOf(fftOptions.getOutputType().toString()));
 		return settings;
+	}
+
+	/**
+	 * @noreference This method is not intended to be referenced by clients.
+	 * @since 4.3
+	 */
+	public void contributeMenuItems(IMenuManager menu) {
+		this.contextMenu = menu; // save a reference so that we can make contributions later to the context menu
 	}
 
 }

@@ -47,8 +47,6 @@ import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.eclipse.ui.services.IDisposable;
 import org.eclipse.ui.statushandlers.StatusManager;
 
-import BULKIO.dataSDDSHelper;
-
 /**
  * The spectral view provides view that displays spectral data in a plot.
  *
@@ -63,8 +61,6 @@ public class PlotView2 extends ViewPart {
 	
 	private static int secondardId;
 	
-	private boolean useNxmBlocks = false; 
-
 	/** The private action for toggling raster enabled state. */
 	private IAction plotTypeAction;
 
@@ -157,10 +153,6 @@ public class PlotView2 extends ViewPart {
 		if (fftSettings != null) {
 			addAdjustFftSettingsMenuIfNotPresent();
 		}
-		if (dataSDDSHelper.id().equals(port.getRepid()) || useNxmBlocks) {
-			this.plotPageBook.addSource2(port, fftSettings, qualifiers);
-			return null;
-		}
 		return this.plotPageBook.addSource(port, fftSettings, qualifiers);
 	}
 
@@ -183,7 +175,10 @@ public class PlotView2 extends ViewPart {
 		if (this.adjustPlotSettingsAction != null) {
 			menu.add(this.adjustPlotSettingsAction);
 		}
+		
 		menu.add(new Separator(IWorkbenchActionConstants.MB_ADDITIONS));
+		
+		this.plotPageBook.contributeMenuItems(menu);
 	}
 
 	/**
