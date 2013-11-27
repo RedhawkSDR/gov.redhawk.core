@@ -17,6 +17,8 @@ import gov.redhawk.ui.port.nxmplot.PlotActivator;
 import java.util.Iterator;
 import java.util.concurrent.ConcurrentHashMap;
 
+import nxm.sys.lib.NeXtMidas;
+import nxm.sys.lib.Table;
 import nxm.sys.prim.plot;
 
 import org.eclipse.core.databinding.DataBindingContext;
@@ -78,16 +80,24 @@ public class PlotNxmBlock extends AbstractNxmBlock<plot, PlotNxmBlockSettings> {
 		int frameSize = settings.getFrameSize();
 		if (frameSize > 0) {   // 1. override frame size with value in settings
 			pipeQualifiers.append("{FRAMESIZE=").append(frameSize).append('}');
-		} else if (!(getInputBlockInfo(0).getBlock() instanceof FftNxmBlock)) {
+		} else { // (!(getInputBlockInfo(0).getBlock() instanceof FftNxmBlock)) {
 			if (sri != null) { // ?. check sri.subsize
 				frameSize = sri.subsize;
 			}
 			String tmpResName = AbstractNxmPlotWidget.createUniqueName(false);
 			currentPlotWidget.runHeadlessCommandWithResult("TABLE " + tmpResName + " CREATE");
 			currentPlotWidget.runHeadlessCommandWithResult("STATUS/VERBOSE " + sourceName + " type=" + tmpResName + ".type  frameSize=" + tmpResName + ".fs");
-			currentPlotWidget.runHeadlessCommandWithResult("RESULTS/ALL " + tmpResName);
+			if (TRACE_LOG.enabled) {
+				currentPlotWidget.runHeadlessCommandWithResult("RESULTS/ALL " + tmpResName);
+				currentPlotWidget.runHeadlessCommandWithResult("STATUS/VERBOSE " + sourceName);
+			}
+			currentPlotWidget.runHeadlessCommandWithResult("RESULTS/GLOBAL " + tmpResName + " " + tmpResName); // put in global results table
+			Table statusResults = NeXtMidas.getGlobalInstance().getMidasContext().getResults().getTable(tmpResName);
 			currentPlotWidget.runHeadlessCommandWithResult("REMOVE " + tmpResName);
-			currentPlotWidget.runHeadlessCommandWithResult("STATUS/VERBOSE " + sourceName);
+			currentPlotWidget.runHeadlessCommandWithResult("REMOVE/GLOBAL " + tmpResName);
+			if (statusResults != null) {
+				frameSize = statusResults.getL("FS", frameSize);
+			}
 			if (frameSize <= 0) { // 3. no frame size
 				pipeQualifiers.append("{FRAMESIZE=1024}"); // frame type 1000 pipe to 1024
 			}
@@ -136,9 +146,10 @@ public class PlotNxmBlock extends AbstractNxmBlock<plot, PlotNxmBlockSettings> {
 		if (sourceName != null) {
 			currentPlotWidget.removeSource(sourceName);
 		}
-		final IMenuManager _menuManager = this.menu;
-		if (_menuManager != null) {
-			_menuManager.remove(streamID);
+		
+		final IMenuManager menuManager = this.menu;
+		if (menuManager != null) {
+			menuManager.remove(streamID);
 		}
 	}
 
