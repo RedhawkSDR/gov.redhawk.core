@@ -37,7 +37,7 @@ public class PlotPageBook extends Composite {
 	/**
      * @since 3.0
      */
-	protected String plotQualifiers;
+	protected String plotQualifiers; // SUPPRESS CHECKSTYLE VARIABLE
 
 	/** The page book. */
 	private PageBook pageBook;
