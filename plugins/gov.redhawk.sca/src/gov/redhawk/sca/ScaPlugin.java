@@ -25,9 +25,7 @@ import gov.redhawk.sca.util.ScopedPreferenceAccessor;
 
 import java.util.ArrayList;
 
-import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Plugin;
-import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.preferences.InstanceScope;
 import org.omg.CosNaming.Binding;
 import org.omg.CosNaming.BindingIteratorHolder;
@@ -348,7 +346,6 @@ public class ScaPlugin extends Plugin {
 			}
 			return retVal.toArray(new String[retVal.size()]);
 		} catch (final Exception e) { // SUPPRESS CHECKSTYLE Logged Catch all exception
-			ScaPlugin.getDefault().getLog().log(new Status(IStatus.WARNING, ScaPlugin.PLUGIN_ID, "Failed to find domain names", e));
 			return new String[0];
 		} finally {
 			if (rootContext != null) {
