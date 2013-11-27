@@ -15,6 +15,7 @@ import gov.redhawk.ui.port.nxmplot.AbstractNxmPlotWidget;
 import gov.redhawk.ui.port.nxmplot.INxmBlock;
 import gov.redhawk.ui.port.nxmplot.PlotActivator;
 
+import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.util.AbstractMap.SimpleImmutableEntry;
@@ -31,6 +32,7 @@ import nxm.sys.lib.Command;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.Nullable;
+import org.eclipse.jface.action.IMenuManager;
 
 import BULKIO.StreamSRI;
 
@@ -367,6 +369,11 @@ public abstract class AbstractNxmBlock<C extends Command, S extends Object> impl
 	}
 
 	@Override
+	public void contributeMenuItems(IMenuManager menu) {
+		// sub-classes should override this to contribute menu items
+	}
+	
+	@Override
 	public void addProperChangeListener(PropertyChangeListener nxmCmdSourceListner) {
 		pcs.addPropertyChangeListener(nxmCmdSourceListner);
 	}
@@ -457,4 +464,7 @@ public abstract class AbstractNxmBlock<C extends Command, S extends Object> impl
 	@Nullable
 	protected abstract String formCmdLine(@NonNull AbstractNxmPlotWidget plotWidget, @NonNull String streamID);
 
+	protected void firePropertyChangeEvent(PropertyChangeEvent event) {
+		pcs.firePropertyChange(event);
+	}
 }

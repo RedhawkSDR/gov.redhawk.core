@@ -17,6 +17,7 @@ import org.eclipse.core.databinding.DataBindingContext;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jdt.annotation.NonNullByDefault;
 import org.eclipse.jdt.annotation.Nullable;
+import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.swt.widgets.Composite;
 
 import BULKIO.StreamSRI;
@@ -199,12 +200,15 @@ public interface INxmBlock<S extends Object> {
 
 	/** create SWT controls for adjusting this input source's settings.
 	 *  @param parent Composite of parent container
-	 *  @param currentSettings the current settings to use for displaying the adjust settings controls
+	 *  @param currentSettings the current settings (S) to use for displaying the adjust settings controls
 	 *  @param dataBindingContext the data binding context to use
 	 *  @return reference to the Composite holding all the setting controls, null if none is available
 	 */
-	@Nullable public Composite createControls(Composite parent, @Nullable S currentSettings, DataBindingContext dataBindingContext);
+	@Nullable public Composite createControls(Composite parent, @Nullable Object currentSettings, DataBindingContext dataBindingContext);
 
+	/** contribute menu items to specified menu */
+	public void contributeMenuItems(IMenuManager menu);
+	
 	/** get a copy of current settings. */
 	public S getSettings();
 

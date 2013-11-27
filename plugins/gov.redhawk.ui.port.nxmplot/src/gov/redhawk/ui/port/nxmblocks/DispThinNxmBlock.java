@@ -49,7 +49,7 @@ public class DispThinNxmBlock extends AbstractNxmBlock<dispthin, Map<String, Obj
 	}
 
 	@Override
-	public Composite createControls(Composite parent, Map<String, Object> settings, DataBindingContext context) {
+	public Composite createControls(Composite parent, Object settings, DataBindingContext context) {
 		return null; // none for now
 	}
 

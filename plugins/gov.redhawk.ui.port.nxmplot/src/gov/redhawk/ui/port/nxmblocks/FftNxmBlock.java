@@ -51,15 +51,12 @@ public class FftNxmBlock extends AbstractNxmBlock<fft, FftNxmBlockSettings> {
 	}
 
 	@Override
-	public Composite createControls(@NonNull Composite parent, @Nullable FftNxmBlockSettings settings, DataBindingContext context) {
-		return new FftNxmBlockControls(parent, SWT.NONE, settings, context);
-		// TODO 
-		// fft/transform size
-		// window
-		// overlap
-		// num avg
-		// num exp avg (sliding window)
-		// getNxmCommand().getNFft();
+	public Composite createControls(@NonNull Composite parent, @Nullable Object settings, DataBindingContext dataBindingContext) {
+		FftNxmBlockSettings blockSettings = null;
+		if (settings instanceof FftNxmBlockSettings) {
+			blockSettings = (FftNxmBlockSettings) settings;
+		}
+		return new FftNxmBlockControls(parent, SWT.NONE, blockSettings, dataBindingContext);
 	}
 
 	@Override

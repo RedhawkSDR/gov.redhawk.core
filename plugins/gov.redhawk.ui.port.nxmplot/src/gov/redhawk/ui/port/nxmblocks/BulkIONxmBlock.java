@@ -52,7 +52,10 @@ public class BulkIONxmBlock extends AbstractNxmBlock<corbareceiver2, BulkIONxmBl
 		protected void handleStreamSRIChanged(String streamID, StreamSRI oldSri, StreamSRI newSri) {
 			TRACE_LOG.enteringMethod(streamID, oldSri, newSri);
 			launch(streamID, newSri); // so launch for this stream
+			
 //			if (oldSri == null) { // no previous SRI for this stream
+//				PropertyChangeEvent event = new PropertyChangeEvent(this, "newStreamId", oldSri, newSri);
+//				firePropertyChangeEvent(event);
 //			}
 //else { // BulkIOPort.handleStreamSRIChanged() have previous SRI for this stream, not launching: 
 
@@ -123,8 +126,12 @@ public class BulkIONxmBlock extends AbstractNxmBlock<corbareceiver2, BulkIONxmBl
 	 * @see gov.redhawk.ui.port.nxmplot.IInputSource#createControls(org.eclipse.swt.widgets.Composite)
 	 */
 	@Override
-	public Composite createControls(Composite parent, BulkIONxmBlockSettings settings, DataBindingContext dataBindingContext) {
-		return new BulkIONxmBlockControls(parent, SWT.NONE, settings, dataBindingContext);
+	public Composite createControls(Composite parent, Object settings, DataBindingContext dataBindingContext) {
+		BulkIONxmBlockSettings blockSettings = null;
+		if (settings instanceof BulkIONxmBlockSettings) {
+			blockSettings = (BulkIONxmBlockSettings) settings;
+		}
+		return new BulkIONxmBlockControls(parent, SWT.NONE, blockSettings, dataBindingContext);
 	}
 
 	/* (non-Javadoc)
@@ -192,8 +199,6 @@ public class BulkIONxmBlock extends AbstractNxmBlock<corbareceiver2, BulkIONxmBl
 			switches.append("/TLL=").append(timeLineLen);
 		}
 		final String idl = scaPort.getRepid();
-//		String pattern = "CORBARECEIVER/BG/TLL={0,number,#}/PS={1,number,#}/POLL=1.0 FILE={2} FRAMESIZE={3,number,#} PORT_NAME={4} IDL=\"{5}\"";
-//		String cmdLine = MessageFormat.format(pattern, timeLineLen, pipeSize, outputName, frameSize, ior, idl);
 		String pattern = "CORBARECEIVER2{0}/BG FILE={1} IOR={2} IDL=\"{3}\" STREAMID=\"{4}\"";
 		String cmdLine = MessageFormat.format(pattern, switches, outputName, ior, idl, streamID);
 

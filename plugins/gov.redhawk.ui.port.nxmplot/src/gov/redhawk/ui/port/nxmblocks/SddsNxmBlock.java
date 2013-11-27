@@ -20,6 +20,7 @@ import nxm.redhawk.prim.sourcenic;
 
 import org.eclipse.core.databinding.DataBindingContext;
 import org.eclipse.jdt.annotation.NonNull;
+import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 
 /**
@@ -84,11 +85,15 @@ public class SddsNxmBlock extends AbstractNxmBlock<sourcenic, SddsNxmBlockSettin
 
 	@Override
 	public boolean hasControls() {
-		return false; // none at this time
+		return true; // none at this time
 	}
 
 	@Override
-	public Composite createControls(Composite parent, SddsNxmBlockSettings settings, DataBindingContext context) {
-		return null; // none at this time
+	public Composite createControls(Composite parent, Object settings, DataBindingContext dataBindingContext) {
+		SddsNxmBlockSettings blockSettings = null;
+		if (settings instanceof SddsNxmBlockSettings) {
+			blockSettings = (SddsNxmBlockSettings) settings;
+		}
+		return new SddsNxmBlockControls(parent, SWT.NONE, blockSettings, dataBindingContext);
 	}
 }

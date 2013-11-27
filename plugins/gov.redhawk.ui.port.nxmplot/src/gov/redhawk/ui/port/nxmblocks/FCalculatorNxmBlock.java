@@ -45,7 +45,7 @@ public class FCalculatorNxmBlock extends AbstractNxmBlock<fcalculator, String> {
 	}
 
 	@Override
-	public Composite createControls(Composite parent, String settings, DataBindingContext context) {
+	public Composite createControls(Composite parent, Object settings, DataBindingContext context) {
 		return null; // non-available for fcaculator expression at this time
 	}
 

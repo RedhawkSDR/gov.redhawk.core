@@ -21,6 +21,10 @@ import nxm.sys.prim.plot;
 
 import org.eclipse.core.databinding.DataBindingContext;
 import org.eclipse.jdt.annotation.NonNull;
+import org.eclipse.jface.action.Action;
+import org.eclipse.jface.action.IAction;
+import org.eclipse.jface.action.IMenuManager;
+import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 
 import BULKIO.StreamSRI;
@@ -35,6 +39,7 @@ public class PlotNxmBlock extends AbstractNxmBlock<plot, PlotNxmBlockSettings> {
 	
 	private PlotNxmBlockSettings settings;
 	private ConcurrentHashMap<String, String> streamIdToSourceNameMap = new ConcurrentHashMap<String, String>();
+	private IMenuManager menu;
 
 	public PlotNxmBlock(@NonNull AbstractNxmPlotWidget plotWidget, PlotNxmBlockSettings settings) {
 		super(plot.class, "PLOT", plotWidget);
@@ -67,7 +72,7 @@ public class PlotNxmBlock extends AbstractNxmBlock<plot, PlotNxmBlockSettings> {
 		}
 		
 		final AbstractNxmPlotWidget currentPlotWidget = getContext();
-		String sourceName = inputBlockInfo.getBlock().getOutputName(inputBlockInfo.getIndex(), streamID);
+		final String sourceName = inputBlockInfo.getBlock().getOutputName(inputBlockInfo.getIndex(), streamID);
 
 		StringBuilder pipeQualifiers = new StringBuilder();
 		int frameSize = settings.getFrameSize();
@@ -80,7 +85,8 @@ public class PlotNxmBlock extends AbstractNxmBlock<plot, PlotNxmBlockSettings> {
 			String tmpResName = AbstractNxmPlotWidget.createUniqueName(false);
 			currentPlotWidget.runHeadlessCommandWithResult("TABLE " + tmpResName + " CREATE");
 			currentPlotWidget.runHeadlessCommandWithResult("STATUS/VERBOSE " + sourceName + " type=" + tmpResName + ".type  frameSize=" + tmpResName + ".fs");
-			currentPlotWidget.runHeadlessCommandWithResult("RES/ALL " + tmpResName + "");
+			currentPlotWidget.runHeadlessCommandWithResult("RESULTS/ALL " + tmpResName);
+			currentPlotWidget.runHeadlessCommandWithResult("REMOVE " + tmpResName);
 			currentPlotWidget.runHeadlessCommandWithResult("STATUS/VERBOSE " + sourceName);
 			if (frameSize <= 0) { // 3. no frame size
 				pipeQualifiers.append("{FRAMESIZE=1024}"); // frame type 1000 pipe to 1024
@@ -93,10 +99,27 @@ public class PlotNxmBlock extends AbstractNxmBlock<plot, PlotNxmBlockSettings> {
 		}
 		
 		//		PlotSession plotSession = new PlotSession(currentPlotWidget, )
-		currentPlotWidget.addSource(sourceName, pipeQualifiers.toString());
+		final String pipeQuals = pipeQualifiers.toString();
+		currentPlotWidget.addSource(sourceName, pipeQuals);
 
 		streamIdToSourceNameMap.put(streamID, sourceName); // save mapping for shutdown
 
+		final IMenuManager menuManager = this.menu;
+		if (menuManager != null) {
+			IAction action = new Action(streamID, IAction.AS_CHECK_BOX) {
+				@Override
+				public void run() {
+					if (this.isChecked()) {
+						currentPlotWidget.addSource(sourceName, pipeQuals);
+					} else {
+						currentPlotWidget.removeSource(sourceName);
+					}
+				}
+			};
+			action.setChecked(true);
+			action.setId(streamID);
+			menuManager.add(action);
+		}
 		// FYI: this is end point, so it DOES NOT have any follow on blocks
 		TRACE_LOG.exitingMethod(streamID);
 	}
@@ -112,6 +135,10 @@ public class PlotNxmBlock extends AbstractNxmBlock<plot, PlotNxmBlockSettings> {
 		String sourceName = streamIdToSourceNameMap.remove(streamID);
 		if (sourceName != null) {
 			currentPlotWidget.removeSource(sourceName);
+		}
+		final IMenuManager _menuManager = this.menu;
+		if (_menuManager != null) {
+			_menuManager.remove(streamID);
 		}
 	}
 
@@ -139,9 +166,13 @@ public class PlotNxmBlock extends AbstractNxmBlock<plot, PlotNxmBlockSettings> {
 	}
 
 	@Override
-	public Composite createControls(Composite parent, PlotNxmBlockSettings currentSettings, DataBindingContext dataBindingContext) {
-		// TODO Auto-generated method stub
-		return null;
+	public Composite createControls(Composite parent, Object settings, DataBindingContext dataBindingContext) {
+		PlotNxmBlockSettings blockSettings = null;
+		if (settings instanceof PlotNxmBlockSettings) {
+			blockSettings = (PlotNxmBlockSettings) settings;
+		}
+		// this.settings = settings; // ?
+		return new PlotNxmBlockControls(parent, SWT.NONE, blockSettings, dataBindingContext);
 	}
 
 	@Override
@@ -149,6 +180,11 @@ public class PlotNxmBlock extends AbstractNxmBlock<plot, PlotNxmBlockSettings> {
 		return settings;
 	}
 
+	@Override
+	public void contributeMenuItems(IMenuManager menu) {
+		this.menu = menu;
+	}
+	
 	@Override
 	public void applySettings(PlotNxmBlockSettings settings) {
 		// TODO Auto-generated method stub

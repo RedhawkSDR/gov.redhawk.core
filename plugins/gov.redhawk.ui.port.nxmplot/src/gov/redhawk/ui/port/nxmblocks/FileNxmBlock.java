@@ -55,7 +55,7 @@ public class FileNxmBlock extends AbstractNxmBlock<Command, String> {
 	}
 
 	@Override
-	public Composite createControls(Composite parent, @Nullable String currentSettings, DataBindingContext context) {
+	public Composite createControls(Composite parent, Object currentSettings, DataBindingContext context) {
 		return null; // no settings controls for file
 	}
 
