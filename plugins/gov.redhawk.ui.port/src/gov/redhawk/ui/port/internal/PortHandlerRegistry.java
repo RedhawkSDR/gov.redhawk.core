@@ -36,11 +36,6 @@ import org.eclipse.core.runtime.dynamichelpers.IFilter;
 public class PortHandlerRegistry implements IPortHandlerRegistry, IExtensionChangeHandler {
 
 	/**
-	 * Create a tracker.
-	 */
-	private final ExtensionTracker tracker;
-
-	/**
 	 * The Constant ATTR_ID
 	 */
 	private static final String ATTR_ID = "id";
@@ -51,6 +46,11 @@ public class PortHandlerRegistry implements IPortHandlerRegistry, IExtensionChan
 	private static final String ATTR_PORTHANDLER = "portHandler";
 
 	private static final String ATTR_TYPE = "dataType";
+
+	/**
+	 * Create a tracker.
+	 */
+	private final ExtensionTracker tracker;
 
 	/**
 	 * The porthandler objects.
