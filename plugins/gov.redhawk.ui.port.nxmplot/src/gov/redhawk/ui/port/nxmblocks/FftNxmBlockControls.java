@@ -179,7 +179,7 @@ public class FftNxmBlockControls extends Composite {
 			@Override
 			public IStatus validate(Object value) {
 				Double val = (Double) value;
-				if (val >= 0 && val <= 100) {
+				if (val >= 0 && val <= 100) { // SUPPRESS CHECKSTYLE MAGIC NUMBER
 					return ValidationStatus.ok();
 				}
 				return ValidationStatus.error("Overlap percent must a number between 0 - 100.");

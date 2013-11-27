@@ -33,6 +33,8 @@ import org.eclipse.swt.widgets.Label;
  */
 public class SddsNxmBlockControls extends Composite {
 
+	private static final int FIELD_BINDING_DELAY = 200;
+
 	private DataBindingContext dataBindingCtx;
 	private final SddsNxmBlockSettings settings;
 	private ComboViewer dataByteOrderField;
@@ -66,7 +68,7 @@ public class SddsNxmBlockControls extends Composite {
 	}
 
 	protected void addBindings() {
-		IObservableValue boTargetObservableValue = WidgetProperties.text(SWT.Modify).observeDelayed(200, this.dataByteOrderField.getCombo());
+		IObservableValue boTargetObservableValue = WidgetProperties.text(SWT.Modify).observeDelayed(FIELD_BINDING_DELAY, this.dataByteOrderField.getCombo());
 		IObservableValue boModelObservableValue = BeansObservables.observeValue(settings, "dataByteOrder");
 		dataBindingCtx.bindValue(boTargetObservableValue, boModelObservableValue, null, null);
 	}

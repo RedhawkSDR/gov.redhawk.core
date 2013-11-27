@@ -42,7 +42,7 @@ public class FileNxmBlock extends AbstractNxmBlock<Command, String> {
 	}
 
 	@Override
-	public String getOutputName(int index, String sriStreamID) throws IllegalArgumentException {
+	public String getOutputName(int index, String sriStreamID) {
 		if (index != 0) {
 			throw new IllegalArgumentException("Invalid index [" + index + "] specified.");
 		}

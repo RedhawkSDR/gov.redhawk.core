@@ -16,10 +16,10 @@ package gov.redhawk.ui.port.nxmplot;
  */
 public class SddsSource {
 
-	public String mcastAddress;
-	public int port;
-	public int vlan;
-	public String format;
+	public String mcastAddress; // SUPPRESS CHECKSTYLE VARIABLE
+	public int port;            // SUPPRESS CHECKSTYLE VARIABLE
+	public int vlan;            // SUPPRESS CHECKSTYLE VARIABLE
+	public String format;       // SUPPRESS CHECKSTYLE VARIABLE
 
 	public SddsSource(String mcastAddress, final int port, final int vlan, final String format) {
 		this.mcastAddress = mcastAddress;

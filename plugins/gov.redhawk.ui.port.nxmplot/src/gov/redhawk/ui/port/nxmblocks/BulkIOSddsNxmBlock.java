@@ -135,14 +135,15 @@ public class BulkIOSddsNxmBlock extends SddsNxmBlock {
 		if (outputFormat == null) {
 			outputFormat = sddsDigraph2MidasFormatType(sddsSettings.dataFormat);
 		}
-		int pipeSize = settings.getPipeSize();
-		if (pipeSize >= 0) {
-			pipeSize = 131072; // default
+		final StringBuilder switches = new StringBuilder("");
+		final int pipeSize = settings.getPipeSize(); // in bytes
+		if (pipeSize > 0) {
+			switches.append("/PS=").append(pipeSize);
 		}
 
 		ByteOrder byteOrder = settings.getDataByteOrder();
-		String pattern = "SOURCENIC/BG/BYTEORDER={0}/PS={1,number,#}/FC={2}/MGRP={3}/VLAN={4,number,#}/PORT={5,number,#} OUT={6}";
-		String cmdLine = MessageFormat.format(pattern, byteOrder, pipeSize, outputFormat,
+		String pattern = "SOURCENIC{0}/BG/BYTEORDER={1}/FC={2}/MGRP={3}/VLAN={4,number,#}/PORT={5,number,#} OUT={6}";
+		String cmdLine = MessageFormat.format(pattern, switches, byteOrder, outputFormat,
 				sddsSettings.multicastAddress, sddsSettings.vlan, sddsSettings.port, outputName);
 
 		return cmdLine;
