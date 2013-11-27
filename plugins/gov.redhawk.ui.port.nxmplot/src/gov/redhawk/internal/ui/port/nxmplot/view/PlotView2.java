@@ -298,7 +298,7 @@ public class PlotView2 extends ViewPart {
 
 		action.setEnabled(true);
 		action.setText("Adjust FFT Settings");
-		action.setToolTipText(this.adjustFftSettingsAction.getText());
+		action.setToolTipText(action.getText());
 		
 		return action;
 	}
