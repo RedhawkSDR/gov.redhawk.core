@@ -15,7 +15,6 @@ import nxm.sys.lib.Command;
 
 import org.eclipse.core.databinding.DataBindingContext;
 import org.eclipse.jdt.annotation.NonNull;
-import org.eclipse.jdt.annotation.Nullable;
 import org.eclipse.swt.widgets.Composite;
 
 /**
