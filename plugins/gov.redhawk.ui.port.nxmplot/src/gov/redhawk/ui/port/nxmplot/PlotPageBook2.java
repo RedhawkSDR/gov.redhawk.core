@@ -431,8 +431,8 @@ public class PlotPageBook2 extends Composite {
 		settings.setTransformSize(Integer.parseInt(fftOptions.getTransformSize())); // 1+
 		settings.setOverlap(Integer.parseInt(fftOptions.getOverlap()));             // 0-100
 		settings.setNumAverages(Integer.parseInt(fftOptions.getNumAverages()));     // 1+
-		settings.setWindow(FftNxmBlockSettings.WindowType.valueOf(fftOptions.getWindow().toString()));
-		settings.setOutputType(FftNxmBlockSettings.OutputType.valueOf(fftOptions.getOutputType().toString()));
+		settings.setWindow(FftNxmBlockSettings.WindowType.valueOf(fftOptions.getWindowType().name()));
+		settings.setOutputType(FftNxmBlockSettings.OutputType.valueOf(fftOptions.getOutputType().name()));
 		return settings;
 	}
 
