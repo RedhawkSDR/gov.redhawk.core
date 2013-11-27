@@ -23,5 +23,5 @@ import BULKIO.StreamSRI;
  */
 public interface IMidasDataWriter {
 	void setStreamSri(@NonNull String streamID, @Nullable StreamSRI oldSri, @NonNull StreamSRI newSri);
-	void write(final Object dataArray, final int size, final byte type, final boolean endOfStream, final PrecisionUTCTime time);
+	void write(final Object dataArray, final int size, final byte type, final boolean endOfStream, final PrecisionUTCTime time, final String streamID);
 }

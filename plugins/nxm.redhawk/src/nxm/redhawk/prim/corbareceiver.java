@@ -341,15 +341,26 @@ public class corbareceiver extends CorbaPrimitive implements IMidasDataWriter { 
 	}
 
 	/**
+	 * @noreference This method is not intended to be referenced by clients.
+	 * @since 8.0
+	 * @deprecated since 10.1 use {@link #write(Object, int, byte, boolean, PrecisionUTCTime, String)}
+	 */
+	@Deprecated
+	public void write(final Object dataArray, final int size, final byte type, final boolean endOfStream, PrecisionUTCTime time) {
+		write(dataArray, size, type, endOfStream, time, null);
+	}
+
+	/**
 	 * This plots an arbitrary typed array of data. Type checking is performed
 	 * by System.arraycopy(). The type of 'list' must match 'type'.
 	 *
 	 * @param dataArray the array of data to plot
 	 * @param size the length of the data in the array
 	 * @param type the NeXtMidas type of the data to plot (eg. Data.FLOAT)
-	 * @since 8.0
+	 * @since 10.1
+	 * @noreference This method is not intended to be referenced by clients.
 	 */
-	public void write(final Object dataArray, final int size, final byte type, final boolean endOfStream, PrecisionUTCTime time) {
+	public void write(final Object dataArray, final int size, final byte type, final boolean endOfStream, PrecisionUTCTime time, final String streamId) {
 		if (!shouldProcessPacket(endOfStream, type)) {
 			return;
 		}

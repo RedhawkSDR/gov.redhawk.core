@@ -76,7 +76,7 @@ public class BulkIOReceiver extends AbstractBulkIOPort implements dataCharOperat
 		if (!super.pushPacket(dataArray.length, time, endOfStream, streamId)) {
 			return;
 		}
-		receiver.write(dataArray, dataArray.length, DataTypes.INT, endOfStream, time);
+		receiver.write(dataArray, dataArray.length, DataTypes.INT, endOfStream, time, streamId);
 	}
 
 	@Override
@@ -84,7 +84,7 @@ public class BulkIOReceiver extends AbstractBulkIOPort implements dataCharOperat
 		if (!super.pushPacket(dataArray.length, time, endOfStream, streamId)) {
 			return;
 		}
-		receiver.write(dataArray, dataArray.length, DataTypes.DOUBLE, endOfStream, time);
+		receiver.write(dataArray, dataArray.length, DataTypes.DOUBLE, endOfStream, time, streamId);
 	}
 
 	@Override
@@ -92,7 +92,7 @@ public class BulkIOReceiver extends AbstractBulkIOPort implements dataCharOperat
 		if (!super.pushPacket(dataArray.length, time, endOfStream, streamId)) {
 			return;
 		}
-		receiver.write(dataArray, dataArray.length, DataTypes.FLOAT, endOfStream, time);
+		receiver.write(dataArray, dataArray.length, DataTypes.FLOAT, endOfStream, time, streamId);
 	}
 
 	@Override
@@ -101,7 +101,7 @@ public class BulkIOReceiver extends AbstractBulkIOPort implements dataCharOperat
 			return;
 		}
 		if (signed) {
-			receiver.write(dataArray, dataArray.length, DataTypes.XLONG, endOfStream, time);
+			receiver.write(dataArray, dataArray.length, DataTypes.XLONG, endOfStream, time, streamId);
 		} else {
 			for (int i = 0; i < dataArray.length; i++) {
 				if (dataArray[i] < 0) {
@@ -109,7 +109,7 @@ public class BulkIOReceiver extends AbstractBulkIOPort implements dataCharOperat
 					dataArray[i] = Long.MAX_VALUE;
 				} // else no change necessary
 			}
-			receiver.write(dataArray, dataArray.length, DataTypes.XLONG, endOfStream, time);
+			receiver.write(dataArray, dataArray.length, DataTypes.XLONG, endOfStream, time, streamId);
 		}
 	}
 
@@ -119,10 +119,10 @@ public class BulkIOReceiver extends AbstractBulkIOPort implements dataCharOperat
 			return;
 		}
 		if (signed) {
-			receiver.write(dataArray, dataArray.length, DataTypes.LONG, endOfStream, time);
+			receiver.write(dataArray, dataArray.length, DataTypes.LONG, endOfStream, time, streamId);
 		} else {
 			final long[] newDataArray = UnsignedUtils.toSigned(dataArray);
-			receiver.write(newDataArray, newDataArray.length, DataTypes.XLONG, endOfStream, time);
+			receiver.write(newDataArray, newDataArray.length, DataTypes.XLONG, endOfStream, time, streamId);
 		}
 	}
 
@@ -132,10 +132,10 @@ public class BulkIOReceiver extends AbstractBulkIOPort implements dataCharOperat
 			return;
 		}
 		if (signed) {
-			receiver.write(dataArray, dataArray.length, DataTypes.INT, endOfStream, time);
+			receiver.write(dataArray, dataArray.length, DataTypes.INT, endOfStream, time, streamId);
 		} else {
 			final int[] newDataArray = UnsignedUtils.toSigned(dataArray);
-			receiver.write(newDataArray, newDataArray.length, DataTypes.LONG, endOfStream, time);
+			receiver.write(newDataArray, newDataArray.length, DataTypes.LONG, endOfStream, time, streamId);
 		}
 	}
 
@@ -145,10 +145,10 @@ public class BulkIOReceiver extends AbstractBulkIOPort implements dataCharOperat
 			return;
 		}
 		if (signed) {
-			receiver.write(dataArray, dataArray.length, DataTypes.BYTE, endOfStream, time);
+			receiver.write(dataArray, dataArray.length, DataTypes.BYTE, endOfStream, time, streamId);
 		} else {
 			final short[] newDataArray = UnsignedUtils.toSigned(dataArray);
-			receiver.write(newDataArray, newDataArray.length, DataTypes.INT, endOfStream, time);
+			receiver.write(newDataArray, newDataArray.length, DataTypes.INT, endOfStream, time, streamId);
 		}
 	}
 	

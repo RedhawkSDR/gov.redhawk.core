@@ -283,9 +283,11 @@ public class corbareceiver2 extends CorbaPrimitive implements IMidasDataWriter {
 	 * @param size the length of the data in the array
 	 * @param type the NeXtMidas type of the data to plot (eg. Data.FLOAT)
 	 */
-	public void write(final Object dataArray, final int size, final byte type, final boolean endOfStream, PrecisionUTCTime time) {
+	public void write(final Object dataArray, final int size, final byte type, final boolean endOfStream, PrecisionUTCTime time, final String streamId) {
 		if (!shouldProcessPacket(endOfStream, type)) {
 			return;
+		} else if (this.streamID != null && !this.streamID.equals(streamId)) {
+			return; // ignore streams that we are not interested in
 		}
 
 		final DataFile localOutputFile = this.outputFile;
