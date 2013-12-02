@@ -114,7 +114,7 @@ public class corbareceiver2 extends CorbaPrimitive implements IMidasDataWriter {
 		this.bulkioType = newType;
 		
 		if (this.receiver == null) {
-			this.receiver = new BulkIOReceiver(this, newType, unsignedOctet);
+			this.receiver = new BulkIOReceiver(this, newType, unsignedOctet, this.streamID);
 		}
 
 		// Check if we were able to connect to the Port
@@ -286,8 +286,6 @@ public class corbareceiver2 extends CorbaPrimitive implements IMidasDataWriter {
 	public void write(final Object dataArray, final int size, final byte type, final boolean endOfStream, PrecisionUTCTime time, final String streamId) {
 		if (!shouldProcessPacket(endOfStream, type)) {
 			return;
-		} else if (this.streamID != null && !this.streamID.equals(streamId)) {
-			return; // ignore streams that we are not interested in
 		}
 
 		final DataFile localOutputFile = this.outputFile;

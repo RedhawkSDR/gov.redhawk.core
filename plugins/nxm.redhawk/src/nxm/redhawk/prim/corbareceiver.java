@@ -151,7 +151,7 @@ public class corbareceiver extends CorbaPrimitive implements IMidasDataWriter { 
 		this.type = newType;
 		
 		if (this.receiver == null) {
-			this.receiver = new BulkIOReceiver(this, newType, unsignedOctet);
+			this.receiver = new BulkIOReceiver(this, newType, unsignedOctet, null);
 		}
 		if (origFrameSizeArg == null) {
 			origFrameSizeArg = this.frameSizeAttribute;

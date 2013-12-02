@@ -35,6 +35,7 @@ import BULKIO.dataUshortOperations;
 
 /**
  * uber BULKIO Port (CORBA) data receiver
+ * @noreference This class is not intended to be referenced by clients.
  */
 public class BulkIOReceiver extends AbstractBulkIOPort implements dataCharOperations, dataDoubleOperations, dataFloatOperations, dataLongLongOperations,
 		dataLongOperations, dataOctetOperations, dataShortOperations, dataUlongLongOperations, dataUlongOperations, dataUshortOperations {
@@ -42,12 +43,16 @@ public class BulkIOReceiver extends AbstractBulkIOPort implements dataCharOperat
 	private final IMidasDataWriter receiver;
 	private final char midasType;
 	private final boolean signed;
+	private String filterStreamId = null;
 
 	public BulkIOReceiver(@NonNull final IMidasDataWriter receiver, @NonNull BulkIOType type) {
-		this(receiver, type, false);
+		this(receiver, type, false, null);
 	}
 	
-	public BulkIOReceiver(@NonNull final IMidasDataWriter receiver, @NonNull BulkIOType type, boolean treatOctetAsUnsigned) {
+	/**
+	 * @since 10.1
+	 */
+	public BulkIOReceiver(@NonNull final IMidasDataWriter receiver, @NonNull BulkIOType type, boolean treatOctetAsUnsigned, String streamId) {
 		super(type);
 		this.receiver = receiver;
 		if (treatOctetAsUnsigned && (BulkIOType.OCTET == type)) {
@@ -57,6 +62,7 @@ public class BulkIOReceiver extends AbstractBulkIOPort implements dataCharOperat
 			this.signed = !type.isUnsigned();
 			this.midasType = type.getMidasType();
 		}
+		this.filterStreamId = streamId; 
 	}
 
 	public char getMidasType() {
@@ -75,6 +81,8 @@ public class BulkIOReceiver extends AbstractBulkIOPort implements dataCharOperat
 	public void pushPacket(final char[] dataArray, final PrecisionUTCTime time, final boolean endOfStream, final String streamId) {
 		if (!super.pushPacket(dataArray.length, time, endOfStream, streamId)) {
 			return;
+		} else if (this.filterStreamId != null && !this.filterStreamId.equals(streamId)) {
+			return; // ignore streams that we are not interested in
 		}
 		receiver.write(dataArray, dataArray.length, DataTypes.INT, endOfStream, time, streamId);
 	}
@@ -83,6 +91,8 @@ public class BulkIOReceiver extends AbstractBulkIOPort implements dataCharOperat
 	public void pushPacket(final double[] dataArray, final PrecisionUTCTime time, final boolean endOfStream, final String streamId) {
 		if (!super.pushPacket(dataArray.length, time, endOfStream, streamId)) {
 			return;
+		} else if (this.filterStreamId != null && !this.filterStreamId.equals(streamId)) {
+			return; // ignore streams that we are not interested in
 		}
 		receiver.write(dataArray, dataArray.length, DataTypes.DOUBLE, endOfStream, time, streamId);
 	}
@@ -91,6 +101,8 @@ public class BulkIOReceiver extends AbstractBulkIOPort implements dataCharOperat
 	public void pushPacket(final float[] dataArray, final PrecisionUTCTime time, final boolean endOfStream, final String streamId) {
 		if (!super.pushPacket(dataArray.length, time, endOfStream, streamId)) {
 			return;
+		} else if (this.filterStreamId != null && !this.filterStreamId.equals(streamId)) {
+			return; // ignore streams that we are not interested in
 		}
 		receiver.write(dataArray, dataArray.length, DataTypes.FLOAT, endOfStream, time, streamId);
 	}
@@ -99,6 +111,8 @@ public class BulkIOReceiver extends AbstractBulkIOPort implements dataCharOperat
 	public void pushPacket(final long[] dataArray, final PrecisionUTCTime time, final boolean endOfStream, final String streamId) {
 		if (!super.pushPacket(dataArray.length, time, endOfStream, streamId)) {
 			return;
+		} else if (this.filterStreamId != null && !this.filterStreamId.equals(streamId)) {
+			return; // ignore streams that we are not interested in
 		}
 		if (signed) {
 			receiver.write(dataArray, dataArray.length, DataTypes.XLONG, endOfStream, time, streamId);
@@ -117,6 +131,8 @@ public class BulkIOReceiver extends AbstractBulkIOPort implements dataCharOperat
 	public void pushPacket(final int[] dataArray, final PrecisionUTCTime time, final boolean endOfStream, final String streamId) {
 		if (!super.pushPacket(dataArray.length, time, endOfStream, streamId)) {
 			return;
+		} else if (this.filterStreamId != null && !this.filterStreamId.equals(streamId)) {
+			return; // ignore streams that we are not interested in
 		}
 		if (signed) {
 			receiver.write(dataArray, dataArray.length, DataTypes.LONG, endOfStream, time, streamId);
@@ -130,6 +146,8 @@ public class BulkIOReceiver extends AbstractBulkIOPort implements dataCharOperat
 	public void pushPacket(final short[] dataArray, final PrecisionUTCTime time, final boolean endOfStream, final String streamId) {
 		if (!super.pushPacket(dataArray.length, time, endOfStream, streamId)) {
 			return;
+		} else if (this.filterStreamId != null && !this.filterStreamId.equals(streamId)) {
+			return; // ignore streams that we are not interested in
 		}
 		if (signed) {
 			receiver.write(dataArray, dataArray.length, DataTypes.INT, endOfStream, time, streamId);
@@ -143,6 +161,8 @@ public class BulkIOReceiver extends AbstractBulkIOPort implements dataCharOperat
 	public void pushPacket(final byte[] dataArray, final PrecisionUTCTime time, final boolean endOfStream, final String streamId) {
 		if (!super.pushPacket(dataArray.length, time, endOfStream, streamId)) {
 			return;
+		} else if (this.filterStreamId != null && !this.filterStreamId.equals(streamId)) {
+			return; // ignore streams that we are not interested in
 		}
 		if (signed) {
 			receiver.write(dataArray, dataArray.length, DataTypes.BYTE, endOfStream, time, streamId);
