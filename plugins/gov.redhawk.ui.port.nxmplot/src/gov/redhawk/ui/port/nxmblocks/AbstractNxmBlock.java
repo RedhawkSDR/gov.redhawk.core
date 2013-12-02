@@ -23,6 +23,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
@@ -383,6 +384,27 @@ public abstract class AbstractNxmBlock<C extends Command, S extends Object> impl
 		pcs.removePropertyChangeListener(nxmCmdSourceListner);
 	}
 
+	@Override
+	public void applySettings(S settings, String streamId) {
+		if (settings == null) {
+			return;
+		}
+		if (streamId != null) {
+			C cmd = getNxmCommand(streamId);
+			if (cmd != null) {
+				applySettingsTo(cmd, settings, streamId);
+			}
+		} else { // apply to all stream IDs
+			Set<Entry<String, SimpleImmutableEntry<String, C>>> entryValues = streamIDToCmdMap.entrySet();
+			for (Entry<String, SimpleImmutableEntry<String, C>> entry : entryValues) {
+				C cmd = entry.getValue().getValue();
+				if (cmd != null) {
+					applySettingsTo(cmd, settings, entry.getKey());
+				}
+			}
+		}
+	}
+	
 	/**
 	 * @return the NeXtMidas Command for the specified streamID (null if none)
 	 */
@@ -398,6 +420,14 @@ public abstract class AbstractNxmBlock<C extends Command, S extends Object> impl
 		return nxmCommand;
 	}
 
+	/**
+	 * sub-classes should override this instead of {@link #applySettings(Object, String)} 
+	 * since this classes's implementation does the command lookup and iteration logic.
+	 * The only exception is if the subclass does not support applying settings operations. 
+	 */
+	protected void applySettingsTo(@NonNull C cmd, @NonNull S settings, @NonNull String streamId) {
+	}
+	
 	@Nullable
 	protected C getNxmCommandForFirstStream() {
 		C nxmCommand;
@@ -451,7 +481,11 @@ public abstract class AbstractNxmBlock<C extends Command, S extends Object> impl
 			throw new IllegalArgumentException("streamID [" + streamID + "] MUST match sri.streamID [" + sri.streamID + "] when sri is specified.");
 		}
     }
-
+	
+	protected Map<String, SimpleImmutableEntry<String, C>> getStreamIdToCommandMap() {
+		return Collections.unmodifiableMap(streamIDToCmdMap);
+	}
+	
 	// =========================================================================
 	// METHODS that subclasses should implement
 	// =========================================================================
@@ -467,4 +501,5 @@ public abstract class AbstractNxmBlock<C extends Command, S extends Object> impl
 	protected void firePropertyChangeEvent(PropertyChangeEvent event) {
 		pcs.firePropertyChange(event);
 	}
+	
 }

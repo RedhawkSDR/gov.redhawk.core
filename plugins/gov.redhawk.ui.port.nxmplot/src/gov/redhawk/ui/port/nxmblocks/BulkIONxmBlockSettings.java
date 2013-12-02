@@ -21,17 +21,10 @@ import org.eclipse.jdt.annotation.NonNull;
 public class BulkIONxmBlockSettings implements Cloneable {
 	private static final int DEFAULT_TIMELINE_LENGTTH = 200;
 
-	private String host = "localhost";
-	private int port = 2809;          // SUPPRESS CHECKSTYLE MagicNumber
-	private int frameSize = -1;       // -1 to use default
-	private double sampleRate = -1.0; // -1 to use default
+	private double sampleRate = -1.0; // <=0 to use default
+	private boolean blocking;
 	private int pipeSize;
 	private int timelineLength = DEFAULT_TIMELINE_LENGTTH;
-	private boolean blocking;
-
-	private String cfResourceIor;
-	private String cfPortName;
-	private String dataTypeIdl;
 
 	public BulkIONxmBlockSettings() {
 	}
@@ -47,30 +40,6 @@ public class BulkIONxmBlockSettings implements Cloneable {
 		} catch (CloneNotSupportedException e) {
 			throw new AssertionError("This should never happenn: " + e);
 		}
-	}
-
-	public String getHost() {
-		return this.host;
-	}
-
-	public void setHost(final String host) {
-		this.host = host;
-	}
-
-	public int getPort() {
-		return this.port;
-	}
-
-	public void setPort(final int port) {
-		this.port = port;
-	}
-
-	public void setFrameSize(int frameSize) {
-		this.frameSize = frameSize;
-	}
-
-	public int getFrameSize() {
-		return frameSize;
 	}
 
 	/**
@@ -121,48 +90,6 @@ public class BulkIONxmBlockSettings implements Cloneable {
 	 */
 	public void setTimelineLength(int timelineLength) {
 		this.timelineLength = timelineLength;
-	}
-
-	/**
-	 * @return the cfResourceIor
-	 */
-	public String getCfResourceIor() {
-		return cfResourceIor;
-	}
-
-	/**
-	 * @param cfResourceIor the cfResourceIor to set
-	 */
-	public void setCfResourceIor(String cfResourceIor) {
-		this.cfResourceIor = cfResourceIor;
-	}
-
-	/**
-	 * @return the cfPortName
-	 */
-	public String getCfPortName() {
-		return cfPortName;
-	}
-
-	/**
-	 * @param cfPortName the cfPortName to set
-	 */
-	public void setCfPortName(String cfPortName) {
-		this.cfPortName = cfPortName;
-	}
-
-	/**
-	 * @return the dataTypeIdl
-	 */
-	public String getDataTypeIdl() {
-		return dataTypeIdl;
-	}
-
-	/**
-	 * @param dataTypeIdl the dataTypeIdl to set
-	 */
-	public void setDataTypeIdl(String dataTypeIdl) {
-		this.dataTypeIdl = dataTypeIdl;
 	}
 
 }

@@ -214,9 +214,10 @@ public interface INxmBlock<S extends Object> {
 
 	/** apply settings to this block.
 	 * @param settings
+	 * @param streamId apply settings to specified streams, null to apply to all streams
      * @throws UnsupportedOperationException, e.g. if block does not support applying settings
 	 */
-	public void applySettings(S settings) throws UnsupportedOperationException;
+	public void applySettings(S settings, @Nullable String streamId) throws UnsupportedOperationException;
 
 	public void addProperChangeListener(PropertyChangeListener nxmCmdSourceListner);
 	public void removeProperChangeListener(PropertyChangeListener nxmCmdSourceListner);

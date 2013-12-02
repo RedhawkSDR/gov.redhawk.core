@@ -79,13 +79,14 @@ public class SddsNxmBlock extends AbstractNxmBlock<sourcenic, SddsNxmBlockSettin
 	}
 
 	@Override
-	public void applySettings(SddsNxmBlockSettings settings) {
-		// TODO Auto-generated method stub
+	protected void applySettingsTo(sourcenic cmd, SddsNxmBlockSettings settings, String streamId) {
+		ByteOrder byteOrder = settings.getDataByteOrder();
+		cmd.setDataByteOrder(byteOrder);
 	}
 
 	@Override
 	public boolean hasControls() {
-		return true; // none at this time
+		return true;
 	}
 
 	@Override

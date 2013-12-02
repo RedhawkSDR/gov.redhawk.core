@@ -68,8 +68,9 @@ public class FileNxmBlock extends AbstractNxmBlock<Command, String> {
 		return clone;
 	}
 
-	public void applySettings(String settings) {
-		// none for file source
+	@Override
+	public void applySettings(String settings, String streamId) {
+		// none for file source at this time
 	}
 
 	@Override

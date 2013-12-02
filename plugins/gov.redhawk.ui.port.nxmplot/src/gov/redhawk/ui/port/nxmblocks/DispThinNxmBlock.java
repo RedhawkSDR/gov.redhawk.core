@@ -64,7 +64,7 @@ public class DispThinNxmBlock extends AbstractNxmBlock<dispthin, Map<String, Obj
 	}
 
 	@Override
-	public void applySettings(Map<String, Object> settings) {
+	public void applySettings(Map<String, Object> settings, String streamId) {
 		throw new UnsupportedOperationException("settings adjustment not supported for " + getClass());
 		// TODO: can only set refreshRate at this time on dispthin
 	}
@@ -127,11 +127,6 @@ public class DispThinNxmBlock extends AbstractNxmBlock<dispthin, Map<String, Obj
 	 */
 	public void setRefreshRate(int refreshRate) {
 		this.refreshRate = refreshRate;
-	}
-
-	@Override
-	public void dispose() {
-		// TODO Auto-generated method stub
 	}
 
 }

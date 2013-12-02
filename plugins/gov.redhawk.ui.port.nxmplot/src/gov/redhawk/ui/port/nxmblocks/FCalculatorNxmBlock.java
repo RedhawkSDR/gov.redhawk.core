@@ -70,19 +70,13 @@ public class FCalculatorNxmBlock extends AbstractNxmBlock<fcalculator, String> {
 	}
 
 	@Override
-	public void applySettings(String settings) {
+	public void applySettings(String settings, String streamId) {
 		throw new UnsupportedOperationException("settings adjustment not supported for " + getClass());
 	}
 
 	@Override
-	public void dispose() {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
 	public int getMaxInputs() {
-		return 1; // TODO: support more than one?
+		return 1; // TODO: support more than one input?
 	}
 
 	@Override 

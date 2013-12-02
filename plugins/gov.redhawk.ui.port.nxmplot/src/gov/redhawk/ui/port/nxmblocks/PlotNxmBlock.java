@@ -80,26 +80,28 @@ public class PlotNxmBlock extends AbstractNxmBlock<plot, PlotNxmBlockSettings> {
 		int frameSize = settings.getFrameSize();
 		if (frameSize > 0) {   // 1. override frame size with value in settings
 			pipeQualifiers.append("{FRAMESIZE=").append(frameSize).append('}');
-		} else { // (!(getInputBlockInfo(0).getBlock() instanceof FftNxmBlock)) {
-			if (sri != null) { // ?. check sri.subsize
+		} else { 
+			if (sri != null) { // 2. check sri.subsize
 				frameSize = sri.subsize;
 			}
 			String tmpResName = AbstractNxmPlotWidget.createUniqueName(false);
 			currentPlotWidget.runHeadlessCommandWithResult("TABLE " + tmpResName + " CREATE");
-			currentPlotWidget.runHeadlessCommandWithResult("STATUS/VERBOSE " + sourceName + " type=" + tmpResName + ".type  frameSize=" + tmpResName + ".fs");
+			currentPlotWidget.runHeadlessCommandWithResult("STATUS/VERBOSE " + sourceName + " typeCodeClass=" + tmpResName + ".TYPECODECLASS  frameSize=" + tmpResName + ".FRAMESIZE");
 			if (TRACE_LOG.enabled) {
 				currentPlotWidget.runHeadlessCommandWithResult("RESULTS/ALL " + tmpResName);
 				currentPlotWidget.runHeadlessCommandWithResult("STATUS/VERBOSE " + sourceName);
 			}
 			currentPlotWidget.runHeadlessCommandWithResult("RESULTS/GLOBAL " + tmpResName + " " + tmpResName); // put in global results table
 			Table statusResults = NeXtMidas.getGlobalInstance().getMidasContext().getResults().getTable(tmpResName);
-			currentPlotWidget.runHeadlessCommandWithResult("REMOVE " + tmpResName);
-			currentPlotWidget.runHeadlessCommandWithResult("REMOVE/GLOBAL " + tmpResName);
+			currentPlotWidget.runHeadlessCommandWithResult("REMOVE " + tmpResName);        // cleanup tmp results
+			currentPlotWidget.runHeadlessCommandWithResult("REMOVE/GLOBAL " + tmpResName); // cleanup tmp results
+			int typeCodeClass = 1;
 			if (statusResults != null) {
-				frameSize = statusResults.getL("FS", frameSize);
+				typeCodeClass = statusResults.getL("TYPECODECLASS", typeCodeClass);
+				frameSize = statusResults.getL("FRAMESIZE", frameSize);
 			}
-			if (frameSize <= 0) { // 3. no frame size
-				pipeQualifiers.append("{FRAMESIZE=1024}"); // frame type 1000 pipe to 1024
+			if (typeCodeClass == 1 && frameSize <= 0) {    // 3. no frame size and type 1000 data
+				pipeQualifiers.append("{FRAMESIZE=1024}"); //    frame to 1024
 			}
 		}
 		
@@ -172,8 +174,7 @@ public class PlotNxmBlock extends AbstractNxmBlock<plot, PlotNxmBlockSettings> {
 
 	@Override
 	public boolean hasControls() {
-		// TODO Auto-generated method stub
-		return false;
+		return true;
 	}
 
 	@Override
@@ -197,8 +198,12 @@ public class PlotNxmBlock extends AbstractNxmBlock<plot, PlotNxmBlockSettings> {
 	}
 	
 	@Override
-	public void applySettings(PlotNxmBlockSettings settings) {
-		// TODO Auto-generated method stub
+	protected void applySettingsTo(plot cmd, PlotNxmBlockSettings settings, String streamId) {
+		int frameSize = settings.getFrameSize();
+		if (frameSize > 0) {
+			// PASS TODO: 1. add/remove source?
+			//            2. how else to adjust frameSize on the fly (cause a restart somehow?)
+		}
 
 	}
 

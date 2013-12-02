@@ -142,25 +142,18 @@ public class BulkIONxmBlock extends AbstractNxmBlock<corbareceiver2, BulkIONxmBl
 		BulkIONxmBlockSettings clone = settings.clone();
 		//		corbareceiver corbareceiver = getNxmCommand(); // we now possibly have multiple commands running per stream ID
 		//		if (corbareceiver != null) {
-		//			clone.setFrameSize(corbareceiver.getFrameSize());
 		//			clone.setSampleRate(corbareceiver.getSampleRate());
 		//			clone.setBlocking(corbareceiver.isBlocking());
 		//		}
 		return clone;
 	}
 
-	/* (non-Javadoc)
-	 * @see gov.redhawk.ui.port.nxmplot.INxmCmdSource#applySettings(java.lang.Object)
-	 */
 	@Override
-	public void applySettings(BulkIONxmBlockSettings settings) {
-		//		corbareceiver corbaReceiver = getNxmCommand();
-		//		if (corbaReceiver != null) {
-		//			corbaReceiver.setBlocking(settings.isBlocking());
-		//
-		//			corbaReceiver.setFrameSize(settings.getFrameSize());
-		//			corbaReceiver.setSampleRate(settings.getSampleRate());
-		//		}
+	protected void applySettingsTo(corbareceiver2 cmd, BulkIONxmBlockSettings settings, String streamId) {
+		boolean blocking = settings.isBlocking();
+		double sampleRate = settings.getSampleRate();
+		cmd.setBlocking(blocking);
+		cmd.setSampleRate(sampleRate);
 	}
 
 	@Override

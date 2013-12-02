@@ -149,11 +149,6 @@ public class BulkIOSddsNxmBlock extends SddsNxmBlock {
 		return cmdLine;
 	}
 
-	@Override
-	public void applySettings(SddsNxmBlockSettings settings) {
-		// TODO Auto-generated method stub
-	}
-
 	private void connect() throws CoreException {
 		sddsPort = new SddsPort();
 		Servant sddsPortServant = sddsPort.toServant(orbSession.getPOA());
