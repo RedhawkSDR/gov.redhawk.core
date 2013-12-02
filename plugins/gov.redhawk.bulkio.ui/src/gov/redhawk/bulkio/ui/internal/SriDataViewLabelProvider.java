@@ -99,16 +99,16 @@ public class SriDataViewLabelProvider implements ITableLabelProvider {
 			case 0:
 				return sri.getName();
 			case 1:
-				if (sri.getName().equals("keywords: "))
+				if ("keywords: ".equals(sri.getName())) {
 					return "";
-				else if (sri.getName().equals("mode: ")) {
+				} else if ("mode: ".equals(sri.getName())) {
 					Short value = (Short) sri.getValue();
 					if (value == 0) {
 						return "[" + String.valueOf(sri.getValue()) + "] scalar";
 					} else if (value == 1) {
 						return "[" + String.valueOf(sri.getValue()) + "] complex";
 					}
-				} else if (sri.getName().equals("xunits: ") || sri.getName().equals("yunits: ")) {
+				} else if ("xunits: ".equals(sri.getName()) || "yunits: ".equals(sri.getName())) {
 					switch ((Short) sri.getValue()) {
 					case 0:
 						return "[" + String.valueOf(sri.getValue()) + "] " + BulkioDataTypes.UNITS_NONE;
@@ -182,8 +182,9 @@ public class SriDataViewLabelProvider implements ITableLabelProvider {
 			case 0:
 				return helper.getId();
 			case 1:
-				if (helper.isArray())
+				if (helper.isArray()) {
 					return "";
+				}
 				return String.valueOf(helper.getValue());
 			default:
 				return "";
