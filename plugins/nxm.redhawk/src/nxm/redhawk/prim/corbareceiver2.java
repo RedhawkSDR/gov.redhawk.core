@@ -54,15 +54,14 @@ public class corbareceiver2 extends CorbaPrimitive implements IMidasDataWriter {
 	 */
 	public static final String SW_BLOCKING = "/BLOCKING";
 
-	/**
-	 * Name of switch to grab number of seconds to wait for SRI during open()
-	 */
+	/** Name of switch to grab number of seconds to wait for SRI during open(). */
 	public static final String SW_WAIT = "/WAIT";
 	
-	/** treat dataOctet as 8-bit unsigned integer (this will upcast format type to 16-bit signed integer to hold value).  
-	 * @since 10.1
-	 */
+	/** Name of switch to treat dataOctet as 8-bit unsigned integer (this will upcast format type to 16-bit signed integer to hold value). */
 	public static final String SW_TREAT_OCTET_AS_UNSIGNED = "/UNSIGNEDOCTET";
+	
+	/** Name of switch to specify desired connection ID. */
+	public static final String SW_CONNECTION_ID = "/CONNECTIONID";
 	
 	/** sleep interval (milliseconds) for {@link #SW_WAIT}. */
 	private static final int SLEEP_INTERVAL = 100;
@@ -78,9 +77,8 @@ public class corbareceiver2 extends CorbaPrimitive implements IMidasDataWriter {
 	private BulkIOReceiver receiver;
 	
 	/** the streamID to only receive data from (null for all streams). */
-	private String streamID;
+	private String streamId;
 
-	// === blocking/non-blocking options and constants ===
 	/** blocking option when output pipe is full. */
 	private boolean blocking;
 
@@ -90,6 +88,8 @@ public class corbareceiver2 extends CorbaPrimitive implements IMidasDataWriter {
 	private boolean connected;
 	private String portIor;
 	private BulkIOType bulkioType;
+	/** custom Port connection ID to use (when not null). */
+	private String connectionId;
 
 	public static String decodeIDL(final String idl) {
 		try {
@@ -106,15 +106,16 @@ public class corbareceiver2 extends CorbaPrimitive implements IMidasDataWriter {
 		this.portIor  = MA.getCS(A_IOR);
 		final String encoded_idl = MA.getCS(A_IDL);
 		this.idl      = decodeIDL(encoded_idl);
-		this.streamID = MA.getCS(A_STREAM_ID, null);
+		this.streamId = MA.getCS(A_STREAM_ID, null);
 		this.blocking = MA.getState(SW_BLOCKING, false);
-		boolean unsignedOctet = MA.getState(SW_TREAT_OCTET_AS_UNSIGNED); 
+		boolean unsignedOctet = MA.getState(SW_TREAT_OCTET_AS_UNSIGNED);
+		this.connectionId = MA.getCS(SW_CONNECTION_ID, null);
 
 		BulkIOType newType = BulkIOType.getType(this.idl);
 		this.bulkioType = newType;
 		
 		if (this.receiver == null) {
-			this.receiver = new BulkIOReceiver(this, newType, unsignedOctet, this.streamID);
+			this.receiver = new BulkIOReceiver(this, newType, unsignedOctet, this.streamId);
 		}
 
 		// Check if we were able to connect to the Port
@@ -162,11 +163,12 @@ public class corbareceiver2 extends CorbaPrimitive implements IMidasDataWriter {
 	private boolean initConnections() {
 		if (!connected) {
 			try {
-				String ior = portIor;
-				BulkIOType type = bulkioType;
-				BulkIOReceiver receiver2 = receiver;
+				String ior = this.portIor;
+				BulkIOType type = this.bulkioType;
+				BulkIOReceiver receiver2 = this.receiver;
+				String desiredConnID = this.connectionId;
 				if (ior != null && !ior.trim().isEmpty() && type != null && receiver2 != null) {
-					BulkIOUtilActivator.getBulkIOPortConnectionManager().connect(ior, type, receiver2);
+					BulkIOUtilActivator.getBulkIOPortConnectionManager().connect(ior, type, receiver2, desiredConnID);
 				} else {
 					return false;
 				}
@@ -255,7 +257,7 @@ public class corbareceiver2 extends CorbaPrimitive implements IMidasDataWriter {
 	 * @noreference This method is not intended to be referenced by clients.
 	 */
 	public synchronized void setStreamSri(String streamID, StreamSRI oldSri, StreamSRI newSri) {
-		if (this.streamID == null || this.streamID.equals(streamID)) {
+		if (this.streamId == null || this.streamId.equals(streamID)) {
 			this.currentSri = newSri;
 			if (state == PROCESS) {
 				if (oldSri != null) {
