@@ -180,6 +180,19 @@ public class ScaStructSequencePropertyTest extends ScaAbstractPropertyTest {
 		
 		Assert.assertTrue(simpleNotification[0]);
 	}
+	
+	@Override
+	public void testIsDefaultValue() {
+		super.testIsDefaultValue();
+		ScaModelCommand.execute(getFixture(), new ScaModelCommand() {
+			
+			@Override
+			public void execute() {
+				getFixture().getStructs().add(getFixture().createScaStructProperty());	
+			}
+		});
+		Assert.assertFalse(getFixture().isDefaultValue());
+	}
 
 	/**
 	 * Tests the '{@link gov.redhawk.model.sca.IPropertyConfigurer#configure(mil.jpeojtrs.sca.cf.DataType) <em>Configure</em>}' operation.
