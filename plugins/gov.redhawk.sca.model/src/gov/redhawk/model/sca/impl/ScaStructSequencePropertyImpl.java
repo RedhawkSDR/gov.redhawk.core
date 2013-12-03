@@ -185,6 +185,9 @@ public class ScaStructSequencePropertyImpl extends ScaAbstractPropertyImpl<Struc
 		}
 
 		public boolean isDefaultValue() {
+			if (getDefinition().getStructValue().size() != size()) {
+				return false;
+			}
 			for (ScaStructProperty struct : this) {
 				if (!struct.isDefaultValue()) {
 					return false;
