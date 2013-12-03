@@ -12,6 +12,7 @@ package gov.redhawk.bulkio.util;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jdt.annotation.NonNull;
+import org.eclipse.jdt.annotation.Nullable;
 
 import BULKIO.updateSRIOperations;
 
@@ -21,8 +22,23 @@ import BULKIO.updateSRIOperations;
 public interface IBulkIOPortConnectionManager {
 
 	void connect(@NonNull String ior, @NonNull BulkIOType type, @NonNull updateSRIOperations internalPort) throws CoreException;
+	
+	/**
+	 * @since 2.0
+	 */
+	void connect(@NonNull String ior, @NonNull BulkIOType type, @NonNull updateSRIOperations internalPort, @Nullable String connectionID) throws CoreException;
 
 	void disconnect(@NonNull String ior, @NonNull BulkIOType type, @NonNull updateSRIOperations internalPort);
+	
+	/**
+	 * @since 2.0
+	 */	
+	void disconnect(@NonNull String ior, @NonNull BulkIOType type, @NonNull updateSRIOperations internalPort, @Nullable String connectionID);
 
 	AbstractBulkIOPort getExternalPort(@NonNull String ior, @NonNull BulkIOType type);
+	
+	/**
+	 * @since 2.0
+	 */
+	AbstractBulkIOPort getExternalPort(@NonNull String ior, @NonNull BulkIOType type, @Nullable String connectionID);
 }

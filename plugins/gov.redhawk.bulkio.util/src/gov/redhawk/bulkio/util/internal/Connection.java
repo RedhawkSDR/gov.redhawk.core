@@ -11,7 +11,6 @@
 package gov.redhawk.bulkio.util.internal;
 
 import gov.redhawk.bulkio.util.AbstractUberBulkIOPort;
-import gov.redhawk.bulkio.util.BulkIOType;
 import gov.redhawk.bulkio.util.BulkIOUtilActivator;
 import gov.redhawk.bulkio.util.IPortFactory;
 import gov.redhawk.bulkio.util.PortReference;
@@ -57,29 +56,30 @@ public class Connection extends AbstractUberBulkIOPort {
 	private static final Debug DEBUG_PUSHPACKET = new Debug(BulkIOUtilActivator.PLUGIN_ID, Connection.class.getSimpleName());
 
 	private OrbSession orbSession = OrbSession.createSession();
-
-	private String ior;
+	private final ConnectionKey info;
+	private final String connectionId;
 	private Port port;
 	private PortReference ref;
-	private String connectionId;
 	private final List<updateSRIOperations> children = Collections.synchronizedList(new ArrayList<updateSRIOperations>());
 
 	private boolean disposed;
 	private boolean warnedPushPacketError = false;
 
-	private final BulkIOType type;
-
-	public Connection(@NonNull BulkIOType type) {
-		this.type = type;
+	public Connection(ConnectionKey info) {
+		this.info = info;
+		if (info.getConnectionID() == null) {
+			connectionId = createConnectionID();
+		} else {
+			connectionId = info.getConnectionID();
+		}
 	}
 
-	public void connectPort(@NonNull String ior) throws CoreException {
+	public void connectPort() throws CoreException {
 		if (disposed) {
 			// Connection is disposed, do nothing
 			return;
 		}
-		this.ior = ior;
-		this.port = PortHelper.narrow(orbSession.getOrb().string_to_object(ior));
+		this.port = PortHelper.narrow(orbSession.getOrb().string_to_object(info.getIor()));
 		if (port == null) {
 			throw new IllegalStateException("Failed to narrow to port.");
 		}
@@ -88,8 +88,7 @@ public class Connection extends AbstractUberBulkIOPort {
 			throw new CoreException(new Status(Status.ERROR, BulkIOUtilActivator.PLUGIN_ID, "Failed to find Port Factory", null));
 		}
 
-		connectionId = createConnectionID();
-		ref = factory.connect(connectionId, ior, type, this);
+		ref = factory.connect(connectionId, info.getIor(), info.getType(), this);
 	}
 
 	// SRI has changed for specified streamID
@@ -143,8 +142,7 @@ public class Connection extends AbstractUberBulkIOPort {
 	}
 
 	public void registerDataReceiver(@NonNull final updateSRIOperations receiver) {
-		// TODO: Throw class cast exception if wrong type
-		type.getPortType().cast(receiver);
+		info.getType().getPortType().cast(receiver);
 
 		children.add(receiver);
 
@@ -187,7 +185,7 @@ public class Connection extends AbstractUberBulkIOPort {
 					log(IStatus.ERROR, "This will only be logged once per Port Connection, got exception calling pushPacket(" + data.getClass().getCanonicalName() + "...) on " + child, e);
 				}
 				if (DEBUG_PUSHPACKET.enabled) {
-					DEBUG_PUSHPACKET.message("Got exception calling pushPacket({0}...) on {1}. Exception={2}. IOR={3}" , data.getClass().getCanonicalName(), child, e, ior);
+					DEBUG_PUSHPACKET.message("Got exception calling pushPacket({0}...) on {1}. Exception={2}. IOR={3}" , data.getClass().getCanonicalName(), child, e, info.getIor());
 				}
 			}
 		}
@@ -207,7 +205,7 @@ public class Connection extends AbstractUberBulkIOPort {
 					log(IStatus.ERROR, "This will only be logged once per Port Connection, got exception calling pushPacket(" + data.getClass().getCanonicalName() + "...) on " + child, e);
 				}
 				if (DEBUG_PUSHPACKET.enabled) {
-					DEBUG_PUSHPACKET.message("Got exception calling pushPacket({0}...) on {1}. Exception={2}. IOR={3}" , data.getClass().getCanonicalName(), child, e, ior);
+					DEBUG_PUSHPACKET.message("Got exception calling pushPacket({0}...) on {1}. Exception={2}. IOR={3}" , data.getClass().getCanonicalName(), child, e, info.getIor());
 				}
 			}
 		}
@@ -227,7 +225,7 @@ public class Connection extends AbstractUberBulkIOPort {
 					log(IStatus.ERROR, "This will only be logged once per Port Connection, got exception calling pushPacket(" + data.getClass().getCanonicalName() + "...) on " + child, e);
 				}
 				if (DEBUG_PUSHPACKET.enabled) {
-					DEBUG_PUSHPACKET.message("Got exception calling pushPacket({0}...) on {1}. Exception={2}. IOR={3}" , data.getClass().getCanonicalName(), child, e, ior);
+					DEBUG_PUSHPACKET.message("Got exception calling pushPacket({0}...) on {1}. Exception={2}. IOR={3}" , data.getClass().getCanonicalName(), child, e, info.getIor());
 				}
 			}
 		}
@@ -247,7 +245,7 @@ public class Connection extends AbstractUberBulkIOPort {
 					log(IStatus.ERROR, "This will only be logged once per Port Connection, got exception calling pushPacket(" + data.getClass().getCanonicalName() + "...) on " + child, e);
 				}
 				if (DEBUG_PUSHPACKET.enabled) {
-					DEBUG_PUSHPACKET.message("Got exception calling pushPacket({0}...) on {1}. Exception={2}. IOR={3}" , data.getClass().getCanonicalName(), child, e, ior);
+					DEBUG_PUSHPACKET.message("Got exception calling pushPacket({0}...) on {1}. Exception={2}. IOR={3}" , data.getClass().getCanonicalName(), child, e, info.getIor());
 				}
 			}
 		}
@@ -260,7 +258,7 @@ public class Connection extends AbstractUberBulkIOPort {
 		}
 		for (final updateSRIOperations child : children) {
 			try {
-				if (type.isUnsigned()) {
+				if (info.getType().isUnsigned()) {
 					((dataUshortOperations) child).pushPacket(data, time, eos, streamID);
 				} else {
 					((dataShortOperations) child).pushPacket(data, time, eos, streamID);
@@ -271,7 +269,7 @@ public class Connection extends AbstractUberBulkIOPort {
 					log(IStatus.ERROR, "This will only be logged once per Port Connection, got exception calling pushPacket(" + data.getClass().getCanonicalName() + "...) on " + child, e);
 				}
 				if (DEBUG_PUSHPACKET.enabled) {
-					DEBUG_PUSHPACKET.message("Got exception calling pushPacket({0}...) on {1}. Exception={2}. IOR={3}" , data.getClass().getCanonicalName(), child, e, ior);
+					DEBUG_PUSHPACKET.message("Got exception calling pushPacket({0}...) on {1}. Exception={2}. IOR={3}" , data.getClass().getCanonicalName(), child, e, info.getIor());
 				}
 			}
 		}
@@ -284,7 +282,7 @@ public class Connection extends AbstractUberBulkIOPort {
 		}
 		for (updateSRIOperations child : children) {
 			try {
-				if (type.isUnsigned()) {
+				if (info.getType().isUnsigned()) {
 					((dataUlongOperations) child).pushPacket(data, time, eos, streamID);
 				} else {
 					((dataLongOperations) child).pushPacket(data, time, eos, streamID);
@@ -295,7 +293,7 @@ public class Connection extends AbstractUberBulkIOPort {
 					log(IStatus.ERROR, "This will only be logged once per Port Connection, got exception calling pushPacket(" + data.getClass().getCanonicalName() + "...) on " + child, e);
 				}
 				if (DEBUG_PUSHPACKET.enabled) {
-					DEBUG_PUSHPACKET.message("Got exception calling pushPacket({0}...) on {1}. Exception={2}. IOR={3}" , data.getClass().getCanonicalName(), child, e, ior);
+					DEBUG_PUSHPACKET.message("Got exception calling pushPacket({0}...) on {1}. Exception={2}. IOR={3}" , data.getClass().getCanonicalName(), child, e, info.getIor());
 				}
 			}
 		}
@@ -308,7 +306,7 @@ public class Connection extends AbstractUberBulkIOPort {
 		}
 		for (updateSRIOperations child : children) {
 			try {
-				if (type.isUnsigned()) {
+				if (info.getType().isUnsigned()) {
 					((dataUlongLongOperations) child).pushPacket(data, time, eos, streamID);
 				} else {
 					((dataLongLongOperations) child).pushPacket(data, time, eos, streamID);
@@ -319,7 +317,7 @@ public class Connection extends AbstractUberBulkIOPort {
 					log(IStatus.ERROR, "This will only be logged once per Port Connection, got exception calling pushPacket(" + data.getClass().getCanonicalName() + "...) on " + child, e);
 				}
 				if (DEBUG_PUSHPACKET.enabled) {
-					DEBUG_PUSHPACKET.message("Got exception calling pushPacket({0}...) on {1}. Exception={2}. IOR={3}" , data.getClass().getCanonicalName(), child, e, ior);
+					DEBUG_PUSHPACKET.message("Got exception calling pushPacket({0}...) on {1}. Exception={2}. IOR={3}" , data.getClass().getCanonicalName(), child, e, info.getIor());
 				}
 			}
 		}

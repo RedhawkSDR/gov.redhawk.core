@@ -207,6 +207,27 @@
                   </parameter>
                </command>
          </menu>
+         <command
+               commandId="gov.redhawk.ui.port.nxmplot.command.plot"
+               icon="icons/SDU.gif"
+               label="Plot Port ..."
+               style="push">
+            <visibleWhen
+                  checkEnabled="false">
+               <iterate
+                     ifEmpty="false"
+                     operator="or">
+                  <adapt
+                        type="gov.redhawk.model.sca.ScaUsesPort">
+                  </adapt>
+                  <test
+                        forcePluginActivation="true"
+                        property="gov.redhawk.ui.port.interface"
+                        value="IDL:BULKIO/data.*">
+                  </test>
+               </iterate>
+            </visibleWhen>
+         </command>
       </menuContribution>
    </extension>
    <extension

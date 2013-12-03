@@ -11,6 +11,8 @@
  */
 package gov.redhawk.internal.ui.port.nxmplot.handlers;
 
+import gov.redhawk.internal.ui.PlotWizard;
+import gov.redhawk.internal.ui.PlotWizardSettings;
 import gov.redhawk.internal.ui.port.nxmplot.FftParameterEntryDialog;
 import gov.redhawk.internal.ui.port.nxmplot.view.PlotView2;
 import gov.redhawk.model.sca.ScaDomainManagerRegistry;
@@ -39,6 +41,7 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.edit.provider.IItemLabelProvider;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.window.Window;
+import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.IViewPart;
 import org.eclipse.ui.IWorkbenchPage;
@@ -58,8 +61,24 @@ public class PlotPortHandler extends AbstractHandler {
 	@Override
 	public Object execute(ExecutionEvent event) throws ExecutionException {
 		final IWorkbenchWindow window = HandlerUtil.getActiveWorkbenchWindow(event);
-		PlotType type = PlotType.valueOf(event.getParameter("gov.redhawk.ui.port.nxmplot.type"));
-		boolean isFFt = Boolean.valueOf(event.getParameter("gov.redhawk.ui.port.nxmplot.isFft"));
+		String plotTypeStr = event.getParameter("gov.redhawk.ui.port.nxmplot.type");
+		final PlotType type;
+		final boolean isFFt;
+		if (plotTypeStr != null) {
+			type = PlotType.valueOf(plotTypeStr);
+			isFFt = Boolean.valueOf(event.getParameter("gov.redhawk.ui.port.nxmplot.isFft"));
+		} else {
+			PlotWizard wizard = new PlotWizard();
+			WizardDialog dialog = new WizardDialog(HandlerUtil.getActiveShell(event), wizard);
+			if (dialog.open() == Window.OK) {
+				PlotWizardSettings settings = wizard.getPlotSettings();
+				type = settings.getType();
+				isFFt = settings.isFft();
+			} else {
+				return null;
+			}
+		}
+
 		IStructuredSelection selection = (IStructuredSelection) HandlerUtil.getActiveMenuSelection(event);
 		if (selection == null) {
 			selection = (IStructuredSelection) HandlerUtil.getCurrentSelection(event);
