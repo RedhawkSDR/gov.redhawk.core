@@ -114,6 +114,7 @@ public class SequencePropertyValueWizardPage extends WizardPage {
 	private Button removeButton;
 	private Button downButton;
 	private Button upButton;
+	private Button resetButton;
 
 	protected SequencePropertyValueWizardPage(final ScaAbstractProperty< ? > property) {
 		super("valuePage", "Edit Value", null);
@@ -332,7 +333,7 @@ public class SequencePropertyValueWizardPage extends WizardPage {
 
 	private Composite createButtons(final Composite root) {
 		final Composite buttonRoot = new Composite(root, SWT.None);
-		buttonRoot.setLayout(new GridLayout(4, false));
+		buttonRoot.setLayout(new GridLayout(5, false));
 		final ISharedImages sharedImages = PlatformUI.getWorkbench().getSharedImages();
 
 		final Button addButton = new Button(buttonRoot, SWT.PUSH);
@@ -375,10 +376,24 @@ public class SequencePropertyValueWizardPage extends WizardPage {
 				handleMoveDown();
 			}
 		});
+		this.resetButton = new Button(buttonRoot, SWT.PUSH);
+		resetButton.setText("Reset");
+		this.resetButton.setToolTipText("Reset to default value");
+		this.resetButton.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(final SelectionEvent e) {
+				handleReset();
+			}
+		});
 
 		updateButtonState();
 
 		return buttonRoot;
+	}
+
+	protected void handleReset() {
+		property.restoreDefaultValue();
+		tableViewer.refresh();
 	}
 
 	private TableViewer createTableViewer(final Composite parent) {
