@@ -26,7 +26,6 @@ import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.action.IMenuManager;
-import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 
 import BULKIO.StreamSRI;
@@ -77,8 +76,8 @@ public class PlotNxmBlock extends AbstractNxmBlock<plot, PlotNxmBlockSettings> {
 		final String sourceName = inputBlockInfo.getBlock().getOutputName(inputBlockInfo.getIndex(), streamID);
 
 		StringBuilder pipeQualifiers = new StringBuilder();
-		int frameSize = settings.getFrameSize();
-		if (frameSize > 0) {   // 1. override frame size with value in settings
+		Integer frameSize = settings.getFrameSize();
+		if (frameSize != null && frameSize > 0) {   // 1. override frame size with value in settings
 			pipeQualifiers.append("{FRAMESIZE=").append(frameSize).append('}');
 		} else { 
 			if (sri != null) { // 2. check sri.subsize
@@ -105,8 +104,8 @@ public class PlotNxmBlock extends AbstractNxmBlock<plot, PlotNxmBlockSettings> {
 			}
 		}
 		
-		final int pipeSize = settings.getPipeSize();
-		if (pipeSize > 0) {
+		final Integer pipeSize = settings.getPipeSize();
+		if (pipeSize != null && pipeSize > 0) {
 			pipeQualifiers.append("{PIPESIZE=").append(pipeSize).append('}');
 		}
 		
@@ -178,13 +177,12 @@ public class PlotNxmBlock extends AbstractNxmBlock<plot, PlotNxmBlockSettings> {
 	}
 
 	@Override
-	public Composite createControls(Composite parent, Object settings, DataBindingContext dataBindingContext) {
+	public void createControls(Composite parent, Object settings, DataBindingContext dataBindingContext) {
 		PlotNxmBlockSettings blockSettings = null;
 		if (settings instanceof PlotNxmBlockSettings) {
 			blockSettings = (PlotNxmBlockSettings) settings;
 		}
-		// this.settings = settings; // ?
-		return new PlotNxmBlockControls(parent, SWT.NONE, blockSettings, dataBindingContext);
+		new PlotNxmBlockControls(blockSettings, dataBindingContext).createControls(parent);
 	}
 
 	@Override
@@ -198,13 +196,15 @@ public class PlotNxmBlock extends AbstractNxmBlock<plot, PlotNxmBlockSettings> {
 	}
 	
 	@Override
-	protected void applySettingsTo(plot cmd, PlotNxmBlockSettings settings, String streamId) {
-		int frameSize = settings.getFrameSize();
-		if (frameSize > 0) {
-			// PASS TODO: 1. add/remove source?
-			//            2. how else to adjust frameSize on the fly (cause a restart somehow?)
+	protected void applySettingsTo(plot cmd, Object settings, String streamId) {
+		if (settings instanceof PlotNxmBlockSettings) {
+			PlotNxmBlockSettings newSettings = (PlotNxmBlockSettings) settings;
+			Integer frameSize = newSettings.getFrameSize();
+			if (frameSize != null && frameSize > 0) {
+				// PASS TODO: 1. add/remove source?
+				//            2. how else to adjust frameSize on the fly (cause a restart somehow?)
+			}
 		}
-
 	}
 
 	@Override

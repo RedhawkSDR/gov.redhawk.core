@@ -11,6 +11,7 @@
  */
 package gov.redhawk.ui.port.nxmplot;
 
+import gov.redhawk.internal.ui.port.nxmplot.handlers.NxmBlockSettingsWizard;
 import gov.redhawk.internal.ui.port.nxmplot.view.PlotSource;
 import gov.redhawk.model.sca.IDisposable;
 import gov.redhawk.model.sca.ScaPackage;
@@ -38,6 +39,10 @@ import java.util.UUID;
 import mil.jpeojtrs.sca.util.DceUuidUtil;
 
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
+import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.impl.AdapterImpl;
@@ -46,6 +51,8 @@ import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.SubMenuManager;
+import org.eclipse.jface.window.Window;
+import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.DisposeEvent;
 import org.eclipse.swt.events.DisposeListener;
@@ -64,7 +71,7 @@ public class PlotPageBook2 extends Composite {
 	private static final Debug TRACE_LOG = new Debug(PlotActivator.PLUGIN_ID, PlotPageBook2.class.getSimpleName());
 
 	private static class PlotPage {
-		private final List<INxmBlock< ? >> nxmBlocks = Collections.synchronizedList(new ArrayList<INxmBlock< ? >>());
+		private final List<INxmBlock> nxmBlocks = Collections.synchronizedList(new ArrayList<INxmBlock>());
 		private final AbstractNxmPlotWidget plot;
 		private final Map<PlotSource, IPlotSession> sessionMap = new HashMap<PlotSource, IPlotSession>();
 
@@ -77,8 +84,8 @@ public class PlotPageBook2 extends Composite {
 			TRACE_LOG.enteringMethod(scaPort, fftSettings, pipeQualifiers);
 			final AbstractNxmPlotWidget currentPlotWidget = this.plot;
 
-			ArrayList<INxmBlock< ? >> nxmBlocksForSource = new ArrayList<INxmBlock< ? >>();
-			INxmBlock<?> startingBlock;
+			ArrayList<INxmBlock> nxmBlocksForSource = new ArrayList<INxmBlock>();
+			INxmBlock startingBlock;
 			if (dataSDDSHelper.id().equals(scaPort.getRepid())) {
 				SddsNxmBlockSettings sddsSettings = new SddsNxmBlockSettings();
 				sddsSettings.setDataByteOrder(ByteOrder.nativeOrder()); // workaround for REDHAWK SinkNic Component
@@ -114,7 +121,7 @@ public class PlotPageBook2 extends Composite {
 
 			SubMenuManager subMenu = new SubMenuManager(menu);
 			plotBlock.contributeMenuItems(subMenu);
-			subMenu.add(createSettingsMenuActionForSource(scaPort, nxmBlocksForSource.toArray(new INxmBlock<?>[0])));
+			subMenu.add(createSettingsMenuActionForSource(scaPort, nxmBlocksForSource.toArray(new INxmBlock[0])));
 			subMenu.setVisible(true);
 
 			try {
@@ -130,11 +137,28 @@ public class PlotPageBook2 extends Composite {
 			TRACE_LOG.exitingMethod();
 		}
 		
-		private IAction createSettingsMenuActionForSource(final ScaUsesPort scaPort, final INxmBlock<?>... nxmBlocks) {
+		private IAction createSettingsMenuActionForSource(final ScaUsesPort scaPort, final INxmBlock... nxmBlocks) {
 			IAction action = new Action("Settings...") {
 				@Override
 				public void run() {
-					// TODO: kick off wizard
+					final NxmBlockSettingsWizard wizard = new NxmBlockSettingsWizard();
+					wizard.setNxmBlocks(nxmBlocks);
+					
+					WizardDialog dialog = new WizardDialog(PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(), wizard);
+					if (Window.OK == dialog.open()) {
+						Job job = new Job("apply plot settings") {
+							@Override
+							protected IStatus run(IProgressMonitor monitor) {
+								for (INxmBlock nxmBlock : nxmBlocks) {
+									Object newBlockSettings = wizard.getSettings(nxmBlock);
+									nxmBlock.applySettings(newBlockSettings, null); // apply settings to all streams
+								}
+								// return new Status(IStatus.ERROR, PLUGIN_ID, "Failed to connect", e);
+								return Status.OK_STATUS;
+							}
+						};
+						job.schedule(0);
+					}
 				}
 			};
 			return action;

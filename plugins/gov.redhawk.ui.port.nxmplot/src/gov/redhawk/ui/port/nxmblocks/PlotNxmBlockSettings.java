@@ -18,11 +18,11 @@ import org.eclipse.jdt.annotation.NonNull;
  * @since 4.3
  */
 public class PlotNxmBlockSettings implements Cloneable {
-
+	public static final String PROP_FRAME_SIZE = "frameSize";
 	public static final int DEFAULT_FRAME_SIZE = 1024; // SUPPRESS CHECKSTYLE MAGIC NUMBER
 
-	private int frameSize = -1;   // <= 0 to use default
-	private int pipeSize;         // <= 0 to use default
+	private Integer frameSize; // null or <= 0 to use default
+	private Integer pipeSize;  // null or <= 0 to use default
 
 	public PlotNxmBlockSettings() {
 	}
@@ -40,25 +40,25 @@ public class PlotNxmBlockSettings implements Cloneable {
 		}
 	}
 
-	public void setFrameSize(int frameSize) {
+	public void setFrameSize(Integer frameSize) {
 		this.frameSize = frameSize;
 	}
 
-	public int getFrameSize() {
+	public Integer getFrameSize() {
 		return frameSize;
 	}
 
 	/**
 	 * @return the pipeSize
 	 */
-	public int getPipeSize() {
+	public Integer getPipeSize() {
 		return pipeSize;
 	}
 
 	/**
 	 * @param pipeSize the pipeSize to set
 	 */
-	public void setPipeSize(int pipeSize) {
+	public void setPipeSize(Integer pipeSize) {
 		this.pipeSize = pipeSize;
 	}
 

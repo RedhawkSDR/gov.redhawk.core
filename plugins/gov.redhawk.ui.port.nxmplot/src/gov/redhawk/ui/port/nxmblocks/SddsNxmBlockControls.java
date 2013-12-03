@@ -31,7 +31,7 @@ import org.eclipse.swt.widgets.Label;
  * @noreference This class is provisional/beta and is subject to API changes
  * @since 4.3
  */
-public class SddsNxmBlockControls extends Composite {
+public class SddsNxmBlockControls {
 
 	private static final int FIELD_BINDING_DELAY = 200;
 
@@ -44,15 +44,12 @@ public class SddsNxmBlockControls extends Composite {
 	 *
 	 * @param parentShell the parent shell
 	 */
-	public SddsNxmBlockControls(Composite parent, int style, SddsNxmBlockSettings settings, DataBindingContext dataBindingCtx) {
-		super(parent, style);
+	public SddsNxmBlockControls(SddsNxmBlockSettings settings, DataBindingContext dataBindingCtx) {
 		this.settings = settings;
-		this.dataBindingCtx = dataBindingCtx;
-		createControls(this);
-		addBindings();
+		this.dataBindingCtx = dataBindingCtx;		
 	}
 
-	protected void createControls(final Composite container) {
+	public void createControls(final Composite container) {
 		final GridLayout gridLayout = new GridLayout(2, false);
 		container.setLayout(gridLayout);
 
@@ -65,9 +62,11 @@ public class SddsNxmBlockControls extends Composite {
 		this.dataByteOrderField.setContentProvider(new ArrayContentProvider());
 		this.dataByteOrderField.setLabelProvider(new LabelProvider());
 		this.dataByteOrderField.setInput(new ByteOrder[] { ByteOrder.BIG_ENDIAN, ByteOrder.LITTLE_ENDIAN});
+		
+		addDataBindings();
 	}
 
-	protected void addBindings() {
+	protected void addDataBindings() {
 		IObservableValue boTargetObservableValue = WidgetProperties.text(SWT.Modify).observeDelayed(FIELD_BINDING_DELAY, this.dataByteOrderField.getCombo());
 		IObservableValue boModelObservableValue = BeansObservables.observeValue(settings, "dataByteOrder");
 		dataBindingCtx.bindValue(boTargetObservableValue, boModelObservableValue, null, null);

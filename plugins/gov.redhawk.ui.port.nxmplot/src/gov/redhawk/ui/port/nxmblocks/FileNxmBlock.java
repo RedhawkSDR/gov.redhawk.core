@@ -54,8 +54,8 @@ public class FileNxmBlock extends AbstractNxmBlock<Command, String> {
 	}
 
 	@Override
-	public Composite createControls(Composite parent, Object currentSettings, DataBindingContext context) {
-		return null; // no settings controls for file
+	public void createControls(Composite parent, Object currentSettings, DataBindingContext context) {
+		// no settings controls for file
 	}
 
 	/** copy of current settings */
@@ -69,7 +69,7 @@ public class FileNxmBlock extends AbstractNxmBlock<Command, String> {
 	}
 
 	@Override
-	public void applySettings(String settings, String streamId) {
+	public void applySettings(Object settings, String streamId) {
 		// none for file source at this time
 	}
 

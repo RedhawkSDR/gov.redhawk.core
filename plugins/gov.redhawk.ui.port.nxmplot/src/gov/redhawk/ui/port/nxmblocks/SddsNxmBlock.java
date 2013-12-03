@@ -20,7 +20,6 @@ import nxm.redhawk.prim.sourcenic;
 
 import org.eclipse.core.databinding.DataBindingContext;
 import org.eclipse.jdt.annotation.NonNull;
-import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 
 /**
@@ -79,9 +78,12 @@ public class SddsNxmBlock extends AbstractNxmBlock<sourcenic, SddsNxmBlockSettin
 	}
 
 	@Override
-	protected void applySettingsTo(sourcenic cmd, SddsNxmBlockSettings settings, String streamId) {
-		ByteOrder byteOrder = settings.getDataByteOrder();
-		cmd.setDataByteOrder(byteOrder);
+	protected void applySettingsTo(sourcenic cmd, Object settings, String streamId) {
+		if (settings instanceof SddsNxmBlockSettings) {
+			SddsNxmBlockSettings newSettings = (SddsNxmBlockSettings) settings;
+			ByteOrder byteOrder = newSettings.getDataByteOrder();
+			cmd.setDataByteOrder(byteOrder);
+		}
 	}
 
 	@Override
@@ -90,11 +92,11 @@ public class SddsNxmBlock extends AbstractNxmBlock<sourcenic, SddsNxmBlockSettin
 	}
 
 	@Override
-	public Composite createControls(Composite parent, Object settings, DataBindingContext dataBindingContext) {
+	public void createControls(Composite parent, Object settings, DataBindingContext dataBindingContext) {
 		SddsNxmBlockSettings blockSettings = null;
 		if (settings instanceof SddsNxmBlockSettings) {
 			blockSettings = (SddsNxmBlockSettings) settings;
 		}
-		return new SddsNxmBlockControls(parent, SWT.NONE, blockSettings, dataBindingContext);
+		new SddsNxmBlockControls(blockSettings, dataBindingContext).createControls(parent);
 	}
 }

@@ -12,23 +12,30 @@ package gov.redhawk.internal.ui.port.nxmplot.handlers;
 
 import gov.redhawk.ui.port.nxmplot.INxmBlock;
 
+import java.util.concurrent.ConcurrentHashMap;
+
 import org.eclipse.core.databinding.DataBindingContext;
 import org.eclipse.jface.databinding.wizard.WizardPageSupport;
+import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.jface.wizard.Wizard;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.Group;
 
 /**
- * 
+ * @noreference This class is not intended to be referenced by clients.
+ * @since 10.1
  */
 public class NxmBlockSettingsWizard extends Wizard {
 
 	private static class BlockWizardPage extends WizardPage {
 		private DataBindingContext dataBindingContext;
 		private WizardPageSupport support;
-		private INxmBlock< ? >[] nxmBlocks;
+		private INxmBlock[] nxmBlocks;
+		/** key=INxmBlock, value=Settings for that block. */
+		private ConcurrentHashMap<INxmBlock, Object> nxmBlockToSettingsMap = new ConcurrentHashMap<INxmBlock, Object>();
 		
 		protected BlockWizardPage() {
 			super("nxmBlockSettingspage", "Adjust Plot Settings", null);
@@ -38,14 +45,18 @@ public class NxmBlockSettingsWizard extends Wizard {
 		@Override
 		public void createControl(Composite parent) {
 			Composite composite = new Composite(parent, SWT.None);
+			composite.setLayout(new GridLayout(1, false));
 			dataBindingContext = new DataBindingContext();
 			
 			if (nxmBlocks != null) {
-				for (INxmBlock<?> nxmBlock : nxmBlocks) {
+				for (INxmBlock nxmBlock : nxmBlocks) {
 					if (nxmBlock.hasControls()) {
-						Label label = new Label(composite, SWT.None);
-						label.setText(nxmBlock.getLabel());
-						nxmBlock.createControls(composite, nxmBlock.getSettings(), dataBindingContext);
+						Group group = new Group(composite, SWT.None);
+						group.setLayoutData(GridDataFactory.fillDefaults().grab(true, false).create());
+						group.setText(nxmBlock.getLabel());
+						Object settings = nxmBlock.getSettings();
+						nxmBlockToSettingsMap.put(nxmBlock, settings);
+						nxmBlock.createControls(group, settings, dataBindingContext);
 					}
 				} // end for loop
 			}
@@ -63,14 +74,26 @@ public class NxmBlockSettingsWizard extends Wizard {
 	} // end class BlockWizardPage
 	
 	private BlockWizardPage page = new BlockWizardPage();
-	
+
+	@Override
+	public void addPages() {
+		addPage(page);
+	}
+
 	/* (non-Javadoc)
 	 * @see org.eclipse.jface.wizard.Wizard#performFinish()
 	 */
 	@Override
 	public boolean performFinish() {
-		// TODO Auto-generated method stub
-		return false;
+		return true;
+	}
+	
+	public void setNxmBlocks(INxmBlock... blocks) {
+		page.nxmBlocks = blocks;
+	}
+	
+	public Object getSettings(INxmBlock block) {
+		return page.nxmBlockToSettingsMap.get(block);
 	}
 
 }

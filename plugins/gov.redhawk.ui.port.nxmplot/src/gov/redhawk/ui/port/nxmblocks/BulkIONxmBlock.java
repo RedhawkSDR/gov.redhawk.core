@@ -25,7 +25,6 @@ import nxm.redhawk.prim.corbareceiver2;
 import org.eclipse.core.databinding.DataBindingContext;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jdt.annotation.NonNull;
-import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 
 import BULKIO.PrecisionUTCTime;
@@ -126,12 +125,12 @@ public class BulkIONxmBlock extends AbstractNxmBlock<corbareceiver2, BulkIONxmBl
 	 * @see gov.redhawk.ui.port.nxmplot.IInputSource#createControls(org.eclipse.swt.widgets.Composite)
 	 */
 	@Override
-	public Composite createControls(Composite parent, Object settings, DataBindingContext dataBindingContext) {
+	public void createControls(Composite parent, Object settings, DataBindingContext dataBindingContext) {
 		BulkIONxmBlockSettings blockSettings = null;
 		if (settings instanceof BulkIONxmBlockSettings) {
 			blockSettings = (BulkIONxmBlockSettings) settings;
 		}
-		return new BulkIONxmBlockControls(parent, SWT.NONE, blockSettings, dataBindingContext);
+		new BulkIONxmBlockControls(blockSettings, dataBindingContext).createControls(parent);
 	}
 
 	/* (non-Javadoc)
@@ -149,11 +148,17 @@ public class BulkIONxmBlock extends AbstractNxmBlock<corbareceiver2, BulkIONxmBl
 	}
 
 	@Override
-	protected void applySettingsTo(corbareceiver2 cmd, BulkIONxmBlockSettings settings, String streamId) {
-		boolean blocking = settings.isBlocking();
-		double sampleRate = settings.getSampleRate();
-		cmd.setBlocking(blocking);
-		cmd.setSampleRate(sampleRate);
+	protected void applySettingsTo(corbareceiver2 cmd, Object settings, String streamId) {
+		if (settings instanceof BulkIONxmBlockSettings) {
+			BulkIONxmBlockSettings newSettings = (BulkIONxmBlockSettings) settings;
+			boolean blocking = newSettings.isBlocking();
+			Double sampleRate = newSettings.getSampleRate();
+			cmd.setBlocking(blocking);
+			if (sampleRate == null) {
+				sampleRate = 0.0; // zero to use default from input stream
+			}
+			cmd.setSampleRate(sampleRate);
+		}
 	}
 
 	@Override

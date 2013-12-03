@@ -19,9 +19,13 @@ import org.eclipse.jdt.annotation.NonNull;
  * @since 4.3
  */
 public class BulkIONxmBlockSettings implements Cloneable {
+	public static final String PROP_SAMPLE_RATE     = "sampleRate";
+	public static final String PROP_BLOCKING_OPTION = "blocking";
+	
 	private static final int DEFAULT_TIMELINE_LENGTTH = 200;
 
-	private double sampleRate = -1.0; // <=0 to use default
+	private Double sampleRate; // null or zero to use default from StreamSRI
+	
 	private boolean blocking;
 	private int pipeSize;
 	private int timelineLength = DEFAULT_TIMELINE_LENGTTH;
@@ -45,14 +49,14 @@ public class BulkIONxmBlockSettings implements Cloneable {
 	/**
 	 * @return the sampleRate
 	 */
-	public double getSampleRate() {
+	public Double getSampleRate() {
 		return sampleRate;
 	}
 
 	/**
 	 * @param sampleRate the sampleRate to set
 	 */
-	public void setSampleRate(double sampleRate) {
+	public void setSampleRate(Double sampleRate) {
 		this.sampleRate = sampleRate;
 	}
 
@@ -74,7 +78,7 @@ public class BulkIONxmBlockSettings implements Cloneable {
 	/**
 	 * @param pipeSize the pipeSize to set
 	 */
-	public void setPipeSize(int pipeSize) {
+	public void setPipeSize(Integer pipeSize) {
 		this.pipeSize = pipeSize;
 	}
 

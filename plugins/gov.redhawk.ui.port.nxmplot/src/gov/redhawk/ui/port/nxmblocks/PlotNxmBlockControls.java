@@ -11,14 +11,16 @@
  */
 package gov.redhawk.ui.port.nxmblocks;
 
+import org.eclipse.core.databinding.Binding;
 import org.eclipse.core.databinding.DataBindingContext;
 import org.eclipse.core.databinding.UpdateValueStrategy;
-import org.eclipse.core.databinding.beans.BeansObservables;
+import org.eclipse.core.databinding.beans.PojoProperties;
 import org.eclipse.core.databinding.conversion.Converter;
 import org.eclipse.core.databinding.observable.value.IObservableValue;
 import org.eclipse.core.databinding.validation.IValidator;
 import org.eclipse.core.databinding.validation.ValidationStatus;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.jface.databinding.fieldassist.ControlDecorationSupport;
 import org.eclipse.jface.databinding.swt.WidgetProperties;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.ComboViewer;
@@ -34,9 +36,9 @@ import org.eclipse.swt.widgets.Label;
  * @noreference This class is provisional/beta and is subject to API changes
  * @since 4.3
  */
-public class PlotNxmBlockControls extends Composite {
+public class PlotNxmBlockControls {
 
-	private static final int FIELD_BINDING_DELAY = 200;
+	private static final int FIELD_BINDING_DELAY = 100;
 	
 	private DataBindingContext dataBindingCtx;
 	private final PlotNxmBlockSettings settings;
@@ -46,15 +48,12 @@ public class PlotNxmBlockControls extends Composite {
 	 * Instantiates a new entry dialog.
 	 * @param parentShell the parent shell
 	 */
-	public PlotNxmBlockControls(Composite parent, int style, PlotNxmBlockSettings settings, DataBindingContext dataBindingCtx) {
-		super(parent, style);
+	public PlotNxmBlockControls(PlotNxmBlockSettings settings, DataBindingContext dataBindingCtx) {
 		this.settings = settings;
-		this.dataBindingCtx = dataBindingCtx;
-		createControls(this);
-		addBindings();
+		this.dataBindingCtx = dataBindingCtx;		
 	}
 
-	protected void createControls(final Composite container) {
+	public void createControls(final Composite container) {
 		final GridLayout gridLayout = new GridLayout(2, false);
 		container.setLayout(gridLayout);
 
@@ -67,25 +66,23 @@ public class PlotNxmBlockControls extends Composite {
 		this.frameSizeField.setContentProvider(new ArrayContentProvider());
 		this.frameSizeField.setLabelProvider(new LabelProvider());
 
-		final String otherValidFSValue = "default";
-		Object currentFS = otherValidFSValue;
-		final Object[] fsComboInputs;
 		final Integer fs = this.settings.getFrameSize();
 		if (fs != null) {
-			currentFS = fs;
-			fsComboInputs = new Object[] { currentFS, otherValidFSValue, 512, 1024, 2048, 4096, 8192 }; // SUPPRESS CHECKSTYLE MAGIC NUMBER
-		} else {
-			fsComboInputs = new Object[] { otherValidFSValue, 512, 1024, 2048, 4096, 8192 }; // SUPPRESS CHECKSTYLE MAGIC NUMBER
+			this.frameSizeField.setInput(new Object[] { fs });
 		}
 
-		this.frameSizeField.setInput(fsComboInputs);
 		this.frameSizeField.addSelectionChangedListener(new SelectAllTextComboTextListener(this.frameSizeField.getCombo()));
+		
+		addDataBindings();
 	}
 
-	protected void addBindings() {
-		IObservableValue fsTargetObservableVal = WidgetProperties.text(SWT.Modify).observeDelayed(FIELD_BINDING_DELAY, this.frameSizeField.getCombo());
-		IObservableValue fsModelObservableVal  = BeansObservables.observeValue(settings, "frameSize");
-		dataBindingCtx.bindValue(fsTargetObservableVal, fsModelObservableVal, createTargetToModelForFrameSize(), null);
+	protected void addDataBindings() {
+		IObservableValue frameSizeWidgetValue = WidgetProperties.selection().observeDelayed(FIELD_BINDING_DELAY, this.frameSizeField.getCombo());
+		IObservableValue frameSizeModelValue = PojoProperties.value("frameSize").observe(this.settings);
+//		dataBindingCtx.bindValue(fsTargetObservableVal, fsModelObservableVal, createTargetToModelForFrameSize(), null);
+		Binding fsBindValue = dataBindingCtx.bindValue(frameSizeWidgetValue, frameSizeModelValue);
+		
+		ControlDecorationSupport.create(fsBindValue, SWT.TOP | SWT.LEFT);
 	}
 
 	private UpdateValueStrategy createTargetToModelForFrameSize() {

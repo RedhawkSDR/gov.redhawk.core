@@ -17,13 +17,12 @@ import gov.redhawk.ui.port.nxmblocks.FftNxmBlockSettings.WindowType;
 
 import org.eclipse.core.databinding.DataBindingContext;
 import org.eclipse.core.databinding.UpdateValueStrategy;
-import org.eclipse.core.databinding.beans.BeansObservables;
+import org.eclipse.core.databinding.beans.PojoProperties;
 import org.eclipse.core.databinding.conversion.Converter;
 import org.eclipse.core.databinding.observable.value.IObservableValue;
 import org.eclipse.core.databinding.validation.IValidator;
 import org.eclipse.core.databinding.validation.ValidationStatus;
 import org.eclipse.core.runtime.IStatus;
-import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.Nullable;
 import org.eclipse.jface.databinding.swt.WidgetProperties;
 import org.eclipse.jface.viewers.ArrayContentProvider;
@@ -42,7 +41,7 @@ import org.eclipse.swt.widgets.Text;
  * @noreference This class is provisional/beta and is subject to API changes
  * @since 4.3
  */
-public class FftNxmBlockControls extends Composite {
+public class FftNxmBlockControls {
 
 	private static final int FIELD_BINDING_DELAY = 200;
 	private DataBindingContext dataBindingCtx;
@@ -57,15 +56,13 @@ public class FftNxmBlockControls extends Composite {
 	 * Instantiates a new entry dialog.
 	 * @param parentShell the parent shell
 	 */
-	public FftNxmBlockControls(@NonNull final Composite parent, int style, @Nullable final FftNxmBlockSettings settings,
+	public FftNxmBlockControls(@Nullable final FftNxmBlockSettings settings,
 			final DataBindingContext dataBindingsCtx) {
-		super(parent, style);
 		this.settings = settings;
 		this.dataBindingCtx = dataBindingsCtx;
-		createControls(this);
 	}
 
-	protected void createControls(final Composite container) {
+	public void createControls(final Composite container) {
 		final GridLayout gridLayout = new GridLayout(2, false);
 		container.setLayout(gridLayout);
 
@@ -126,24 +123,28 @@ public class FftNxmBlockControls extends Composite {
 			windowType = WindowType.HANNING;
 		}
 		fftWindow.setSelection(new StructuredSelection(windowType));
+		
+		addDataBindings();
 	}
 
-	protected void addBindings() {
+	protected void addDataBindings() {
 		IObservableValue fsTargetObservableVal = WidgetProperties.text(SWT.Modify).observeDelayed(FIELD_BINDING_DELAY, this.transformSizeField);
-		IObservableValue fsModelObservableVal  = BeansObservables.observeValue(settings, "transformSize");
+		IObservableValue fsModelObservableVal = PojoProperties.value("transformSize").observe(this.settings);
+//		IObservableValue fsModelObservableVal = BeansObservables.observeValue(settings, );
 		dataBindingCtx.bindValue(fsTargetObservableVal, fsModelObservableVal, createTargetToModelForFftSize(), null);
 
-		IObservableValue srTargetObservableVal = WidgetProperties.text(SWT.Modify).observeDelayed(FIELD_BINDING_DELAY, this.overlapField);
-		IObservableValue srModelObservableVal  = BeansObservables.observeValue(settings, "overlap");
-		dataBindingCtx.bindValue(srTargetObservableVal, srModelObservableVal, createTargetToModelForOverlap(), null);
+		IObservableValue srWidgetValue = WidgetProperties.text(SWT.Modify).observe(this.overlapField);
+		IObservableValue srModelValue  = PojoProperties.value("overlap").observe(this.settings);
+//		IObservableValue srModelObservableVal  = BeansObservables.observeValue(settings, "overlap");
+		dataBindingCtx.bindValue(srWidgetValue, srModelValue, createTargetToModelForOverlap(), null);
 
-		IObservableValue numAvgTargetObservableValue = WidgetProperties.text(SWT.Modify).observeDelayed(FIELD_BINDING_DELAY, this.numAveragesField);
-		IObservableValue numAvgModelObservableValue = BeansObservables.observeValue(settings, "numAverages");
-		dataBindingCtx.bindValue(numAvgTargetObservableValue, numAvgModelObservableValue, createTargetToModelForNumAverages(), null);
-
-		IObservableValue windowTargetObservableValue = WidgetProperties.text(SWT.Modify).observeDelayed(FIELD_BINDING_DELAY, this.fftWindow.getCombo());
-		IObservableValue windowModelObservableValue = BeansObservables.observeValue(settings, "window");
-		dataBindingCtx.bindValue(windowTargetObservableValue, windowModelObservableValue, createTargetToModelForWindow(), null);
+//		IObservableValue numAvgTargetObservableValue = WidgetProperties.text(SWT.Modify).observeDelayed(FIELD_BINDING_DELAY, this.numAveragesField);
+//		IObservableValue numAvgModelObservableValue = BeansObservables.observeValue(settings, "numAverages");
+//		dataBindingCtx.bindValue(numAvgTargetObservableValue, numAvgModelObservableValue, createTargetToModelForNumAverages(), null);
+//
+//		IObservableValue windowWidgetValue = ViewerProperties.singleSelection().observeDelayed(FIELD_BINDING_DELAY, this.fftWindow);
+//		IObservableValue windowModelValue = BeansObservables.observeValue(settings, "window");
+//		dataBindingCtx.bindValue(windowWidgetValue, windowModelValue, createTargetToModelForWindow(), null);
 	}
 
 	private UpdateValueStrategy createTargetToModelForOverlap() {
@@ -156,7 +157,7 @@ public class FftNxmBlockControls extends Composite {
 					return ValidationStatus.ok();
 				} else {
 					try {
-						Double.valueOf((String) value);
+						Integer.valueOf((String) value);
 						return ValidationStatus.ok();
 					} catch (NumberFormatException nfe) {
 						return ValidationStatus.error("Overlap percent must a number between 0 - 100.");
@@ -165,20 +166,20 @@ public class FftNxmBlockControls extends Composite {
 			}
 		});
 
-		updateValueStrategy.setConverter(new Converter(String.class, Double.class) {
+		updateValueStrategy.setConverter(new Converter(String.class, Integer.class) {
 			@Override
 			public Object convert(Object fromObject) {
 				if ("default".equalsIgnoreCase((String) fromObject)) {
-					return -1.0;
+					return -1;
 				}
-				return Double.valueOf((String) fromObject);
+				return Integer.valueOf((String) fromObject);
 			}
 		});
 
 		updateValueStrategy.setAfterConvertValidator(new IValidator() {
 			@Override
 			public IStatus validate(Object value) {
-				Double val = (Double) value;
+				Integer val = (Integer) value;
 				if (val >= 0 && val <= 100) { // SUPPRESS CHECKSTYLE MAGIC NUMBER
 					return ValidationStatus.ok();
 				}

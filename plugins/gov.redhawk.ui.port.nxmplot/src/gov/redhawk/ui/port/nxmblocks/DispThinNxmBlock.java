@@ -49,8 +49,8 @@ public class DispThinNxmBlock extends AbstractNxmBlock<dispthin, Map<String, Obj
 	}
 
 	@Override
-	public Composite createControls(Composite parent, Object settings, DataBindingContext context) {
-		return null; // none for now
+	public void createControls(Composite parent, Object settings, DataBindingContext context) {
+		// none for now
 	}
 
 	@Override
@@ -64,7 +64,7 @@ public class DispThinNxmBlock extends AbstractNxmBlock<dispthin, Map<String, Obj
 	}
 
 	@Override
-	public void applySettings(Map<String, Object> settings, String streamId) {
+	public void applySettings(Object settings, String streamId) {
 		throw new UnsupportedOperationException("settings adjustment not supported for " + getClass());
 		// TODO: can only set refreshRate at this time on dispthin
 	}

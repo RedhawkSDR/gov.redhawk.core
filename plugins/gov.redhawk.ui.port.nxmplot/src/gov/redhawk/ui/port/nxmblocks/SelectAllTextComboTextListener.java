@@ -16,7 +16,9 @@ import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.widgets.Combo;
 
-// package-private for now
+/**
+ * @since 4.3 (package-private for now)
+ */
 class SelectAllTextComboTextListener implements ISelectionChangedListener {
 	private final Combo combo;
 

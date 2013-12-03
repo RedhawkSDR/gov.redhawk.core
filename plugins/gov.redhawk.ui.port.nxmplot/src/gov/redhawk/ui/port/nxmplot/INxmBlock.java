@@ -76,7 +76,7 @@ import BULKIO.StreamSRI;
  * @since 4.3
  */
 @NonNullByDefault
-public interface INxmBlock<S extends Object> {
+public interface INxmBlock {
 
 	/** if have existing context, it will be shutdown first before associating to the new context. */
 	public void setContext(AbstractNxmPlotWidget widget);
@@ -92,7 +92,7 @@ public interface INxmBlock<S extends Object> {
 	 *  @throws IllegalArgumentException, e.g. for invalid inIndex and or srcBlockOutIndex
 	 *  @throws UnsupportedOperationException, e.g. if block does not have any input b/c it is the starting point
 	 */ // other method names to consider: putInput? putInputBlock setInput? setInputBlock
-	public void addInput(int inIndex, INxmBlock< ? > srcBlock, int srcBlockOutIndex) throws IllegalArgumentException, UnsupportedOperationException;
+	public void addInput(int inIndex, INxmBlock srcBlock, int srcBlockOutIndex) throws IllegalArgumentException, UnsupportedOperationException;
 
 	/** This implementation should call {@link #addInput(int, INxmBlock, int)} with normal case
 	 *  defaults (e.g. inIndex would be 0 and srcBlockOutIndex would 0).
@@ -100,7 +100,7 @@ public interface INxmBlock<S extends Object> {
 	 *  @throws IllegalArgumentException, e.g. for invalid inIndex
 	 *  @throws UnsupportedOperationException, e.g. if block does not have any input b/c it is the starting point
 	 */
-	public void addInput(INxmBlock< ? > srcBlock) throws IllegalArgumentException, UnsupportedOperationException;
+	public void addInput(INxmBlock srcBlock) throws IllegalArgumentException, UnsupportedOperationException;
 
 	/** remove hook for specified input index.
 	 *   This only removes the hook up, it will NOT shutdown things.
@@ -116,7 +116,7 @@ public interface INxmBlock<S extends Object> {
 	 * @return input/source block (null for none)
 	 * @throws UnsupportedOperationException, e.g. if this block does not have any input b/c it is the starting point
 	 */
-	@Nullable public INxmBlock< ? > getInputBlock(int inIndex) throws UnsupportedOperationException;
+	@Nullable public INxmBlock getInputBlock(int inIndex) throws UnsupportedOperationException;
 
 	/** this SHOULD only be called by {@link #addInput(int, INxmBlock, int)} to provide forward lookup
 	 *  on the srcBlock to invoke this (destination) block's {@link #launch(String, StreamSRI)} when it's launch is called.
@@ -126,10 +126,10 @@ public interface INxmBlock<S extends Object> {
 	 *  @throws IllegalArgumentException, e.g. for invalid outIndex and or destBlockInIndex
 	 *  @throws UnsupportedOperationException, e.g. if block does not have any output(s)
 	 */
-	void internalAddOutputMapping(int outIndex, INxmBlock< ? > destBlock, int destBlockInIndex)
+	void internalAddOutputMapping(int outIndex, INxmBlock destBlock, int destBlockInIndex)
 			throws IllegalArgumentException, UnsupportedOperationException;
 	/** this SHOULD only be called by {@link #removeInput(int, INxmBlock)}. */
-	void internalRemoveOutputMapping(int outIndex, INxmBlock< ? > destBlock, int destBlockInIndex)
+	void internalRemoveOutputMapping(int outIndex, INxmBlock destBlock, int destBlockInIndex)
 			throws IllegalArgumentException, UnsupportedOperationException;
 
 	/** @return maximum number of inputs allowed by this (usually 1+, 0 for none i.e. for start point) */
@@ -202,22 +202,21 @@ public interface INxmBlock<S extends Object> {
 	 *  @param parent Composite of parent container
 	 *  @param currentSettings the current settings (S) to use for displaying the adjust settings controls
 	 *  @param dataBindingContext the data binding context to use
-	 *  @return reference to the Composite holding all the setting controls, null if none is available
 	 */
-	@Nullable public Composite createControls(Composite parent, @Nullable Object currentSettings, DataBindingContext dataBindingContext);
+	public void createControls(Composite parent, @Nullable Object currentSettings, DataBindingContext dataBindingContext);
 
 	/** contribute menu items to specified menu */
 	public void contributeMenuItems(IMenuManager menu);
 	
 	/** get a copy of current settings. */
-	public S getSettings();
+	public Object getSettings();
 
 	/** apply settings to this block.
 	 * @param settings
 	 * @param streamId apply settings to specified streams, null to apply to all streams
      * @throws UnsupportedOperationException, e.g. if block does not support applying settings
 	 */
-	public void applySettings(S settings, @Nullable String streamId) throws UnsupportedOperationException;
+	public void applySettings(Object settings, @Nullable String streamId) throws UnsupportedOperationException;
 
 	public void addProperChangeListener(PropertyChangeListener nxmCmdSourceListner);
 	public void removeProperChangeListener(PropertyChangeListener nxmCmdSourceListner);

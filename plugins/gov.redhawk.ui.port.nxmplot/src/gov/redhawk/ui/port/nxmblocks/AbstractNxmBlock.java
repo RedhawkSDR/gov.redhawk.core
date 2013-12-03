@@ -46,7 +46,7 @@ import BULKIO.StreamSRI;
  * @noreference This class is provisional/beta and is subject to API changes
  * @since 4.3
  */
-public abstract class AbstractNxmBlock<C extends Command, S extends Object> implements INxmBlock<S> {
+public abstract class AbstractNxmBlock<C extends Command, S extends Object> implements INxmBlock {
 
 	private static final Debug TRACE_LOG = new Debug(PlotActivator.PLUGIN_ID, AbstractNxmBlock.class.getSimpleName());
 		
@@ -63,14 +63,14 @@ public abstract class AbstractNxmBlock<C extends Command, S extends Object> impl
 	private final ConcurrentHashMap<String, String> outIndexStreamIDToOutNameMap = new ConcurrentHashMap<String, String>();
 
 	static class BlockIndexPair {
-		private final INxmBlock<?> block;
+		private final INxmBlock block;
 		private final int index;
-		public BlockIndexPair(INxmBlock< ? > block, int index) {
+		public BlockIndexPair(INxmBlock block, int index) {
 			super();
 			this.block = block;
 			this.index = index;
 		}
-		public INxmBlock< ? > getBlock() {
+		public INxmBlock getBlock() {
 			return block;
 		}
 		public int getIndex() {
@@ -135,7 +135,7 @@ public abstract class AbstractNxmBlock<C extends Command, S extends Object> impl
 	}
 
 	@Override
-	public void addInput(int myInIndex, INxmBlock<?> srcBlock, int srcBlockOutIndex) {
+	public void addInput(int myInIndex, INxmBlock srcBlock, int srcBlockOutIndex) {
 		final int maxInIndex = getMaxInputs();
 		if (maxInIndex == 0) {
 			throw new UnsupportedOperationException(getClass().getName() + " does not have any inputs.");
@@ -149,7 +149,7 @@ public abstract class AbstractNxmBlock<C extends Command, S extends Object> impl
 	}
 
 	@Override
-	public void addInput(INxmBlock<?> srcBlock) {
+	public void addInput(INxmBlock srcBlock) {
 		addInput(getDefaultInputIndex(), srcBlock, 0);
 	}
 
@@ -163,13 +163,13 @@ public abstract class AbstractNxmBlock<C extends Command, S extends Object> impl
 		}
 		BlockIndexPair srcBlockPair = inputMap.remove(myInIndex);
 		if (srcBlockPair != null) {
-			INxmBlock< ? > block = srcBlockPair.getBlock();
+			INxmBlock block = srcBlockPair.getBlock();
 			block.internalRemoveOutputMapping(srcBlockPair.getIndex(), this, myInIndex);
 		}
 	}
 
 	@Override
-	public INxmBlock< ? >  getInputBlock(int myInIndex) {
+	public INxmBlock  getInputBlock(int myInIndex) {
 		final int maxInIndex = getMaxInputs();
 		if (maxInIndex == 0) {
 			throw new UnsupportedOperationException(getClass().getName() + " does not have any inputs.");
@@ -179,7 +179,7 @@ public abstract class AbstractNxmBlock<C extends Command, S extends Object> impl
 
 		BlockIndexPair srcBlockPair = inputMap.get(myInIndex);
 		if (srcBlockPair != null) {
-			INxmBlock< ? > block = srcBlockPair.getBlock();
+			INxmBlock block = srcBlockPair.getBlock();
 			return block;
 		}
 		return null;
@@ -194,7 +194,7 @@ public abstract class AbstractNxmBlock<C extends Command, S extends Object> impl
 	}
 
 	@Override
-	public void internalAddOutputMapping(int outIndex, INxmBlock< ? > destBlock, int destBlockInIndex) {
+	public void internalAddOutputMapping(int outIndex, INxmBlock destBlock, int destBlockInIndex) {
 		final int maxOutIndex = getMaxOutputs();
 		if (maxOutIndex == 0) {
 			throw new UnsupportedOperationException(getClass().getName() + " does not have any outputs.");
@@ -217,7 +217,7 @@ public abstract class AbstractNxmBlock<C extends Command, S extends Object> impl
 	}
 
 	@Override
-	public void internalRemoveOutputMapping(int outIndex, INxmBlock< ? > destBlock, int destBlockInIndex) {
+	public void internalRemoveOutputMapping(int outIndex, INxmBlock destBlock, int destBlockInIndex) {
 		final int maxOutIndex = getMaxOutputs();
 		if (maxOutIndex == 0) {
 			throw new UnsupportedOperationException(getClass().getName() + " does not have any outputs.");
@@ -385,7 +385,7 @@ public abstract class AbstractNxmBlock<C extends Command, S extends Object> impl
 	}
 
 	@Override
-	public void applySettings(S settings, String streamId) {
+	public void applySettings(Object settings, String streamId) {
 		if (settings == null) {
 			return;
 		}
@@ -425,7 +425,7 @@ public abstract class AbstractNxmBlock<C extends Command, S extends Object> impl
 	 * since this classes's implementation does the command lookup and iteration logic.
 	 * The only exception is if the subclass does not support applying settings operations. 
 	 */
-	protected void applySettingsTo(@NonNull C cmd, @NonNull S settings, @NonNull String streamId) {
+	protected void applySettingsTo(@NonNull C cmd, @NonNull Object settings, @NonNull String streamId) {
 	}
 	
 	@Nullable

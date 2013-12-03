@@ -346,12 +346,12 @@ public class corbareceiver2 extends CorbaPrimitive implements IMidasDataWriter {
 	}
 
 	/**
-	 * @param newSRate the custom sample rate to override in SRI
+	 * @param newSRate the custom sample rate to override in SRI (zero for none);
 	 *                 (1/xdelta for 1000 stream; 1/ydelta for 2000 stream).
 	 */
 	public void setSampleRate(double newSRate) {
 		if (newSRate <= 0) {
-			newSRate = -1;
+			newSRate = 0;
 		}
 		double oldValue = getSampleRateFor(this.sampleRate, currentSri);
 		if (this.sampleRate != newSRate) {

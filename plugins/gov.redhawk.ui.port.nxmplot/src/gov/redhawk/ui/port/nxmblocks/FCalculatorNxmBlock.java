@@ -45,8 +45,8 @@ public class FCalculatorNxmBlock extends AbstractNxmBlock<fcalculator, String> {
 	}
 
 	@Override
-	public Composite createControls(Composite parent, Object settings, DataBindingContext context) {
-		return null; // non-available for fcaculator expression at this time
+	public void createControls(Composite parent, Object settings, DataBindingContext context) {
+		// non-available for fcaculator expression at this time
 	}
 
 	/**
@@ -70,7 +70,7 @@ public class FCalculatorNxmBlock extends AbstractNxmBlock<fcalculator, String> {
 	}
 
 	@Override
-	public void applySettings(String settings, String streamId) {
+	public void applySettings(Object settings, String streamId) {
 		throw new UnsupportedOperationException("settings adjustment not supported for " + getClass());
 	}
 
@@ -84,13 +84,13 @@ public class FCalculatorNxmBlock extends AbstractNxmBlock<fcalculator, String> {
 		if (calcExpression == null) {
 			throw new IllegalStateException("FCALCULATOR expression has not been specified");
 		}
-		//		List<INxmBlock<?>> inputs = getInputs();
+		//		List<INxmBlock> inputs = getInputs();
 		//		if (inputs.size() < 1) {
 		//			throw new IllegalStateException("Input have not been specified");
 		//		}
 		StringBuilder inputSB = new StringBuilder();
 		//		int ii = 0;
-		//		for (INxmBlock<?> inSrc : inputs) {
+		//		for (INxmBlock inSrc : inputs) {
 		//			String inputSelector = (inputSelectors == null) ? null : inputSelectors[ii];
 		//			inputSB.append(inSrc.getOutput(inputSelector)).append(' ');
 		//			ii++;

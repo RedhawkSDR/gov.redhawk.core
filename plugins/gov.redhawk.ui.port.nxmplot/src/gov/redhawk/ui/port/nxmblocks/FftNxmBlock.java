@@ -20,7 +20,6 @@ import nxm.sys.prim.fft;
 import org.eclipse.core.databinding.DataBindingContext;
 import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.Nullable;
-import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 
 /**
@@ -51,12 +50,12 @@ public class FftNxmBlock extends AbstractNxmBlock<fft, FftNxmBlockSettings> {
 	}
 
 	@Override
-	public Composite createControls(@NonNull Composite parent, @Nullable Object settings, DataBindingContext dataBindingContext) {
+	public void createControls(@NonNull Composite parent, @Nullable Object settings, DataBindingContext dataBindingContext) {
 		FftNxmBlockSettings blockSettings = null;
 		if (settings instanceof FftNxmBlockSettings) {
 			blockSettings = (FftNxmBlockSettings) settings;
 		}
-		return new FftNxmBlockControls(parent, SWT.NONE, blockSettings, dataBindingContext);
+		new FftNxmBlockControls(blockSettings, dataBindingContext).createControls(parent);
 	}
 
 	@Override
@@ -129,12 +128,15 @@ public class FftNxmBlock extends AbstractNxmBlock<fft, FftNxmBlockSettings> {
 	}
 
 	@Override
-	protected void applySettingsTo(fft cmd, FftNxmBlockSettings settings, String streamId) {
-		cmd.setNAvg(settings.getNumAverages());
-		cmd.setNExp(settings.getNumExpAverages());
-		cmd.setOverlap(settings.getOverlap() / 100.0); // SUPPRESS CHECKSTYLE MagicNumber 
-		// fftSettings.getOutputType(); // cannot change: output type (NORMAL, PSD, MAG, MAG & LOG, PSD & LOG) on FFT at this time
-		cmd.setWindow(settings.getWindowString());
-		cmd.setNAvg(settings.getTransformSize()); // do this last as it can cause restart
+	protected void applySettingsTo(fft cmd, Object settings, String streamId) {
+		if (settings instanceof FftNxmBlockSettings) {
+			FftNxmBlockSettings newSettings = (FftNxmBlockSettings) settings;
+			cmd.setNAvg(newSettings.getNumAverages());
+			cmd.setNExp(newSettings.getNumExpAverages());
+			cmd.setOverlap(newSettings.getOverlap() / 100.0); // SUPPRESS CHECKSTYLE MagicNumber 
+			// fftSettings.getOutputType(); // cannot change: output type (NORMAL, PSD, MAG, MAG & LOG, PSD & LOG) on FFT at this time
+			cmd.setWindow(newSettings.getWindowString());
+			cmd.setNAvg(newSettings.getTransformSize()); // do this last as it can cause restart
+		}
 	}
 }
