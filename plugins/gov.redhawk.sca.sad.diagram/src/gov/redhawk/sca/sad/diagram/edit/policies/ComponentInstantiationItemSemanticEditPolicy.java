@@ -12,6 +12,8 @@
 
 package gov.redhawk.sca.sad.diagram.edit.policies;
 
+import gov.redhawk.sca.util.PluginUtil;
+import mil.jpeojtrs.sca.sad.ExternalProperty;
 import mil.jpeojtrs.sca.sad.Port;
 import mil.jpeojtrs.sca.sad.SadComponentInstantiation;
 import mil.jpeojtrs.sca.sad.SoftwareAssembly;
@@ -38,6 +40,7 @@ public class ComponentInstantiationItemSemanticEditPolicy extends mil.jpeojtrs.s
 		final CompositeTransactionalCommand cmd = new CompositeTransactionalCommand(getEditingDomain(), null);
 
 		addDestroyExternalPortsCommand(cmd, (View) getHost().getModel());
+		addDestoryExternalPropertiesCommand(cmd, (View) getHost().getModel());
 
 		if (!cmd.isEmpty()) {
 			return command.chain(getGEFWrapper(cmd.reduce()));
@@ -46,10 +49,30 @@ public class ComponentInstantiationItemSemanticEditPolicy extends mil.jpeojtrs.s
 		}
 	}
 
+	private void addDestoryExternalPropertiesCommand(CompositeTransactionalCommand cmd, final View view) {
+		final SadComponentInstantiation inst = (SadComponentInstantiation) view.getElement();
+		final SoftwareAssembly sad = SoftwareAssembly.Util.getSoftwareAssembly(inst.eResource());
+
+		if (sad.getExternalProperties() != null) {
+			int removing = 0;
+			for (ExternalProperty prop : sad.getExternalProperties().getProperties()) {
+				if (PluginUtil.equals(prop.getCompRefID(), inst.getId())) {
+					final DestroyElementRequest r = new DestroyElementRequest(prop, false);
+					cmd.add(new DestroyElementCommand(r));
+					removing++;
+				}
+			}
+			if (removing == sad.getExternalProperties().getProperties().size()) {
+				final DestroyElementRequest r = new DestroyElementRequest(sad.getExternalProperties(), false);
+				cmd.add(new DestroyElementCommand(r));
+			}
+		}
+	}
+
 	private void addDestroyExternalPortsCommand(final CompositeTransactionalCommand cmd, final View view) {
 		final SadComponentInstantiation inst = (SadComponentInstantiation) view.getElement();
 		final SoftwareAssembly sad = SoftwareAssembly.Util.getSoftwareAssembly(inst.eResource());
-		Integer ports = 0;
+		int ports = 0;
 
 		if (sad.getExternalPorts() != null) {
 			for (final Port port : sad.getExternalPorts().getPort()) {
@@ -60,7 +83,7 @@ public class ComponentInstantiationItemSemanticEditPolicy extends mil.jpeojtrs.s
 				}
 			}
 
-			if (ports.equals(sad.getExternalPorts().getPort().size())) {
+			if (ports == sad.getExternalPorts().getPort().size()) {
 				final DestroyElementRequest r = new DestroyElementRequest(sad.getExternalPorts(), false);
 				cmd.add(new DestroyElementCommand(r));
 			}
