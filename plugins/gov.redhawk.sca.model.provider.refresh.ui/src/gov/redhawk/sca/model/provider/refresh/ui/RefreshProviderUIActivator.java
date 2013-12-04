@@ -12,6 +12,7 @@
 package gov.redhawk.sca.model.provider.refresh.ui;
 
 import gov.redhawk.sca.ScaPlugin;
+import gov.redhawk.sca.model.provider.refresh.RefreshProviderPlugin;
 
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.core.runtime.preferences.InstanceScope;
@@ -88,7 +89,7 @@ public class RefreshProviderUIActivator extends AbstractUIPlugin {
 			this.providerPreferenceStore = PlatformUI.getPreferenceStore();
 		} else {
 			if (this.providerPreferenceStore == null) {
-				this.providerPreferenceStore = new ScopedPreferenceStore(InstanceScope.INSTANCE, ScaPlugin.getDefault().getBundle().getSymbolicName());
+				this.providerPreferenceStore = new ScopedPreferenceStore(InstanceScope.INSTANCE, RefreshProviderPlugin.getInstance().getBundle().getSymbolicName());
 			}
 		}
 		return this.providerPreferenceStore;
