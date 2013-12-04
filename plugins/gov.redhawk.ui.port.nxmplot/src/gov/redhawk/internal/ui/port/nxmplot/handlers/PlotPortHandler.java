@@ -11,8 +11,6 @@
  */
 package gov.redhawk.internal.ui.port.nxmplot.handlers;
 
-import gov.redhawk.internal.ui.PlotWizard;
-import gov.redhawk.internal.ui.PlotWizardSettings;
 import gov.redhawk.internal.ui.port.nxmplot.FftParameterEntryDialog;
 import gov.redhawk.internal.ui.port.nxmplot.view.PlotView2;
 import gov.redhawk.model.sca.ScaDomainManagerRegistry;
@@ -64,6 +62,16 @@ public class PlotPortHandler extends AbstractHandler {
 		String plotTypeStr = event.getParameter("gov.redhawk.ui.port.nxmplot.type");
 		final PlotType type;
 		final boolean isFFt;
+		
+		// need to grab Port selections first, otherwise Plot Wizard option below will change the selection
+		IStructuredSelection selection = (IStructuredSelection) HandlerUtil.getActiveMenuSelection(event);
+		if (selection == null) {
+			selection = (IStructuredSelection) HandlerUtil.getCurrentSelection(event);
+		}
+		if (selection == null) {
+			return null;
+		}
+
 		if (plotTypeStr != null) {
 			type = PlotType.valueOf(plotTypeStr);
 			isFFt = Boolean.valueOf(event.getParameter("gov.redhawk.ui.port.nxmplot.isFft"));
@@ -79,14 +87,6 @@ public class PlotPortHandler extends AbstractHandler {
 			}
 		}
 
-		IStructuredSelection selection = (IStructuredSelection) HandlerUtil.getActiveMenuSelection(event);
-		if (selection == null) {
-			selection = (IStructuredSelection) HandlerUtil.getCurrentSelection(event);
-		}
-
-		if (selection == null) {
-			return null;
-		}
 		final List< ? > elements = selection.toList();
 		final FftSettings fft;
 		if (isFFt) {

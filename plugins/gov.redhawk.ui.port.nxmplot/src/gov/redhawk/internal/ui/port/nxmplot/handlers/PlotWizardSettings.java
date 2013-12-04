@@ -8,12 +8,12 @@
  * the terms of the Eclipse Public License v1.0 which accompanies this distribution, and is available at 
  * http://www.eclipse.org/legal/epl-v10.html
  *******************************************************************************/
-package gov.redhawk.internal.ui;
+package gov.redhawk.internal.ui.port.nxmplot.handlers;
 
 import gov.redhawk.ui.port.nxmplot.PlotType;
 
 /**
- * 
+ * @since 10.1
  */
 public class PlotWizardSettings {
 	public static final String PROP_TYPE = "type";
@@ -21,7 +21,7 @@ public class PlotWizardSettings {
 	public static final String PROP_CONNECTION_ID = "connectionID";
 	
 	private PlotType type = PlotType.LINE;
-	private boolean fft = Boolean.FALSE;
+	private boolean fft = false;
 	private String connectionID;
 	
 	public PlotType getType() {
@@ -42,6 +42,5 @@ public class PlotWizardSettings {
 	public void setConnectionID(String connectionID) {
 		this.connectionID = connectionID;
 	}
-	
 	
 }
