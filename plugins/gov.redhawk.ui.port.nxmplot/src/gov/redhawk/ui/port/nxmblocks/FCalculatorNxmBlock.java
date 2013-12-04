@@ -25,7 +25,7 @@ import org.eclipse.swt.widgets.Composite;
  * @noreference This class is provisional/beta and is subject to API changes
  * @since 4.3
  */
-public class FCalculatorNxmBlock extends AbstractNxmBlock<fcalculator, String> {
+public class FCalculatorNxmBlock extends AbstractNxmBlock<fcalculator> {
 
 	private String calcExpression;
 
@@ -35,7 +35,7 @@ public class FCalculatorNxmBlock extends AbstractNxmBlock<fcalculator, String> {
 	 * @param inputSources input sources (most not have any null inputs)
 	 */
 	public FCalculatorNxmBlock(@NonNull AbstractNxmPlotWidget plotWidget, @NonNull String fcalcExpression) {
-		super(fcalculator.class, "FCalculator", plotWidget);
+		super(fcalculator.class, String.class, "FCalculator", plotWidget);
 		this.calcExpression = fcalcExpression;
 	}
 

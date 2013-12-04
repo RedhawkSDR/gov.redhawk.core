@@ -42,11 +42,10 @@ import BULKIO.StreamSRI;
  * to minimize the effort required to implement this interface.
  * <br>
  * C is the NeXtMidas Command that should have been launch.
- * S is the settings object.
  * @noreference This class is provisional/beta and is subject to API changes
  * @since 4.3
  */
-public abstract class AbstractNxmBlock<C extends Command, S extends Object> implements INxmBlock {
+public abstract class AbstractNxmBlock<C extends Command> implements INxmBlock {
 
 	private static final Debug TRACE_LOG = new Debug(PlotActivator.PLUGIN_ID, AbstractNxmBlock.class.getSimpleName());
 		
@@ -54,6 +53,7 @@ public abstract class AbstractNxmBlock<C extends Command, S extends Object> impl
 	private int defaultInputIndex = 0;
 	private final PropertyChangeSupport pcs = new PropertyChangeSupport(this);
 	private final Class<? extends C> desiredLaunchClass;
+	private final Class<?> desiredSettingsClass;
 
 	// FYI: ConcurrentHashMap does not allow null key or value
 	/** key=streamID value=(cmdline,Command). */
@@ -80,7 +80,7 @@ public abstract class AbstractNxmBlock<C extends Command, S extends Object> impl
 		public int hashCode() {
 			final int prime = 31;
 			int result = 1;
-			result = prime * result + ((block == null) ? 0 : block.hashCode());
+			result = prime * result + ((block == null) ? 0 : block.hashCode()); // SUPPRESS CHECKSTYLE AvoidInline
 			result = prime * result + index;
 			return result;
 		}
@@ -116,8 +116,10 @@ public abstract class AbstractNxmBlock<C extends Command, S extends Object> impl
 	private final ConcurrentHashMap<Integer, List<BlockIndexPair>> outputMap = new ConcurrentHashMap<Integer, List<BlockIndexPair>>();
 	private String label;
  
-	protected AbstractNxmBlock(@NonNull Class<C> desiredLaunchCommandClass, @NonNull String label, @NonNull AbstractNxmPlotWidget plotWidget) {
-		desiredLaunchClass = desiredLaunchCommandClass;
+	protected AbstractNxmBlock(@NonNull Class<C> desiredLaunchCommandClass, @NonNull Class<?> desiredSettingsClass, 
+		@NonNull String label, @NonNull AbstractNxmPlotWidget plotWidget) {
+		this.desiredLaunchClass = desiredLaunchCommandClass;
+		this.desiredSettingsClass = desiredSettingsClass;
 		this.label = label;
 		this.plotWidget = plotWidget;
 	}
@@ -387,6 +389,9 @@ public abstract class AbstractNxmBlock<C extends Command, S extends Object> impl
 	@Override
 	public void applySettings(Object settings, String streamId) {
 		if (settings == null) {
+			return;
+		}
+		if (!desiredSettingsClass.isAssignableFrom(settings.getClass())) {
 			return;
 		}
 		if (streamId != null) {

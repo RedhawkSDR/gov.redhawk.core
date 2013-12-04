@@ -34,7 +34,7 @@ import BULKIO.StreamSRI;
  * @noreference This class is provisional/beta and is subject to API changes
  * @since 4.3
  */
-public class PlotNxmBlock extends AbstractNxmBlock<plot, PlotNxmBlockSettings> {
+public class PlotNxmBlock extends AbstractNxmBlock<plot> {
 
 	private static final Debug TRACE_LOG = new Debug(PlotActivator.PLUGIN_ID, PlotNxmBlock.class.getSimpleName());
 	
@@ -43,7 +43,7 @@ public class PlotNxmBlock extends AbstractNxmBlock<plot, PlotNxmBlockSettings> {
 	private IMenuManager menu;
 
 	public PlotNxmBlock(@NonNull AbstractNxmPlotWidget plotWidget, PlotNxmBlockSettings settings) {
-		super(plot.class, "PLOT", plotWidget);
+		super(plot.class, PlotNxmBlockSettings.class, "PLOT", plotWidget);
 		if (settings == null) {
 			settings = new PlotNxmBlockSettings();
 		} else {

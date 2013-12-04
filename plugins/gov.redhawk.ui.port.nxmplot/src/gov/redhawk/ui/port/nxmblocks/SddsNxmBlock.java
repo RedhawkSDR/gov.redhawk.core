@@ -27,12 +27,12 @@ import org.eclipse.swt.widgets.Composite;
  * @noreference This class is provisional/beta and is subject to API changes
  * @since 4.3
  */
-public class SddsNxmBlock extends AbstractNxmBlock<sourcenic, SddsNxmBlockSettings> {
+public class SddsNxmBlock extends AbstractNxmBlock<sourcenic> {
 
 	private SddsNxmBlockSettings settings;
 
 	public SddsNxmBlock(@NonNull AbstractNxmPlotWidget plotWidget, @NonNull SddsNxmBlockSettings settings) {
-		super(sourcenic.class, "SDDS", plotWidget);
+		super(sourcenic.class, SddsNxmBlockSettings.class, "SDDS", plotWidget);
 		this.settings = settings;
 	}
 

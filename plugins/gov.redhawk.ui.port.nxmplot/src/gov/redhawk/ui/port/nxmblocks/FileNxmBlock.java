@@ -21,12 +21,12 @@ import org.eclipse.swt.widgets.Composite;
  * @noreference This class is provisional/beta and is subject to API changes
  * @since 4.3
  */
-public class FileNxmBlock extends AbstractNxmBlock<Command, String> {
+public class FileNxmBlock extends AbstractNxmBlock<Command> {
 
 	private final String filename;
 
 	public FileNxmBlock(@NonNull String filename, @NonNull AbstractNxmPlotWidget plotWidget) {
-		super(Command.class, "File", plotWidget);
+		super(Command.class, String.class, "File", plotWidget);
 		this.filename = filename;
 	}
 

@@ -27,7 +27,7 @@ import org.eclipse.swt.widgets.Composite;
  * @noreference This class is provisional/beta and is subject to API changes
  * @since 4.3
  */
-public class DispThinNxmBlock extends AbstractNxmBlock<dispthin, Map<String, Object>> {
+public class DispThinNxmBlock extends AbstractNxmBlock<dispthin> {
 
 	private Map<String, Object> settings;
 	private int pipeSize;
@@ -35,7 +35,7 @@ public class DispThinNxmBlock extends AbstractNxmBlock<dispthin, Map<String, Obj
 	private int refreshRate;
 
 	public DispThinNxmBlock(@NonNull AbstractNxmPlotWidget plotWidget) {
-		super(dispthin.class, "Display Thin", plotWidget);
+		super(dispthin.class, Map.class, "Display Thin", plotWidget);
 	}
 
 	@Override

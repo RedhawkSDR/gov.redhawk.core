@@ -34,7 +34,7 @@ import BULKIO.StreamSRI;
  * @noreference This class is provisional/beta and is subject to API changes
  * @since 4.3
  */
-public class BulkIONxmBlock extends AbstractNxmBlock<corbareceiver2, BulkIONxmBlockSettings> {
+public class BulkIONxmBlock extends AbstractNxmBlock<corbareceiver2> {
 
 	private static final Debug TRACE_LOG = new Debug(PlotActivator.PLUGIN_ID, BulkIONxmBlock.class.getSimpleName());
 	
@@ -108,7 +108,7 @@ public class BulkIONxmBlock extends AbstractNxmBlock<corbareceiver2, BulkIONxmBl
 	 * @param settings
 	 */
 	public BulkIONxmBlock(@NonNull AbstractNxmPlotWidget plotWidget, @NonNull ScaUsesPort scaUsesPort, @NonNull BulkIONxmBlockSettings settings) {
-		super(corbareceiver2.class, "BULKIO", plotWidget);
+		super(corbareceiver2.class, BulkIONxmBlockSettings.class, "BULKIO", plotWidget);
 		this.settings = settings;
 		this.scaPort = scaUsesPort;
 		this.ior = scaUsesPort.getIor();

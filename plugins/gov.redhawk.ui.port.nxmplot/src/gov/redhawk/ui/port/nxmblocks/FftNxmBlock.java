@@ -26,11 +26,11 @@ import org.eclipse.swt.widgets.Composite;
  * @noreference This class is provisional/beta and is subject to API changes
  * @since 4.3
  */
-public class FftNxmBlock extends AbstractNxmBlock<fft, FftNxmBlockSettings> {
+public class FftNxmBlock extends AbstractNxmBlock<fft> {
 	private FftNxmBlockSettings settings;
 
 	public FftNxmBlock(@NonNull AbstractNxmPlotWidget plotWidget, @NonNull FftNxmBlockSettings settings) {
-		super(fft.class, "FFT", plotWidget);
+		super(fft.class, FftNxmBlockSettings.class, "FFT", plotWidget);
 		this.settings = settings;
 	}
 
