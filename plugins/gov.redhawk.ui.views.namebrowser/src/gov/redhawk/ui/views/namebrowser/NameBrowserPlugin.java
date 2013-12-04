@@ -87,7 +87,7 @@ public class NameBrowserPlugin extends AbstractUIPlugin {
 		 * of DisplayHolder in <code>getDisplay</code>.
 		 */
 		this.display = display;
-		if (this.displayHolderService != null) {
+		if (this.displayHolderService != null && this.displayHolderService.getService() != null) {
 			this.displayHolderService.getService().setSessionDisplay(display);
 		}
 	}
