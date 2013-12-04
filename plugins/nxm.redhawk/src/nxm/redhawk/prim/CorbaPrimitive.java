@@ -95,7 +95,7 @@ public class CorbaPrimitive extends Primitive {
 	}
 
 	/**
-	 * @since 10.0
+	 * @since 10.1
 	 */
 	@NonNull
 	protected String getPortIOR() {

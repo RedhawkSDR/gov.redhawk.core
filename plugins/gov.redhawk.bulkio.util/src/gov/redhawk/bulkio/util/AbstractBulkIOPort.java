@@ -53,15 +53,24 @@ public abstract class AbstractBulkIOPort implements ProvidesPortStatisticsProvid
 	protected AbstractBulkIOPort() {
 	}
 	
+	/**
+	 * @since 2.0
+	 */
 	protected AbstractBulkIOPort(BulkIOType type) {
 		this.type = type;
 	}
 	
+	/**
+	 * @since 2.0
+	 */
 	@NonNull
 	public BulkIOType getBulkIOType() {
 		return type;
 	}
 	
+	/**
+	 * @since 2.0
+	 */
 	public void setBulkIOType(@NonNull BulkIOType type) {
 		this.type = type;
 	}
@@ -139,6 +148,7 @@ public abstract class AbstractBulkIOPort implements ProvidesPortStatisticsProvid
 
 	/**
 	 * sub-class should override the {@link #handleStreamSRIChanged(String, StreamSRI, StreamSRI)} method.
+	 * @since 2.0
 	 */
 	@Override
 	public final void pushSRI(@Nullable StreamSRI sri) {
@@ -158,17 +168,22 @@ public abstract class AbstractBulkIOPort implements ProvidesPortStatisticsProvid
 		}
 	}
 	
+	/**
+	 * @since 2.0
+	 */
 	@Nullable
 	public StreamSRI getStreamSRI() {
 		return this.currentSri;
 	}
 	
-	/** callback to notify that SRI has changed from previous SRI */
+	/** callback to notify that SRI has changed from previous SRI 
+	 * @since 2.0*/
 	protected void handleStreamSRIChanged(@Nullable StreamSRI oldSri, @Nullable StreamSRI newSri) {
 		
 	}
 
-	/** callback to notify that SRI has changed for specified streamID (this is method that sub-classes should override). */
+	/** callback to notify that SRI has changed for specified streamID (this is method that sub-classes should override). 
+	 * @since 2.0*/
 	protected void handleStreamSRIChanged(@NonNull String streamID, @Nullable StreamSRI oldSri, @NonNull StreamSRI newSri) {
 		
 	}

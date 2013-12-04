@@ -79,6 +79,9 @@ public enum BulkIOType {
 		return bytePerAtom;
 	}
 
+	/**
+	 * @since 2.0
+	 */
 	public static BulkIOType getType(updateSRIOperations impl) {
 		BulkIOType retVal = null;
 		if (dataCharOperations.class.isAssignableFrom(impl.getClass())) {
@@ -172,12 +175,16 @@ public enum BulkIOType {
 
 	/**
 	 * @return The non upcasted Java class container type
+	 * @since 2.0
 	 */
 	@NonNull
 	public Class< ? > getJavaType() {
 		return this.javaType;
 	}
 
+	/**
+	 * @since 2.0
+	 */
 	public boolean isUnsigned() {
 		return this.unsigned;
 	}

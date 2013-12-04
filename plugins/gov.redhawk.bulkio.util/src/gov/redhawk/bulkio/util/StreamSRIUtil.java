@@ -27,6 +27,9 @@ import org.eclipse.jdt.annotation.NonNull;
 import BULKIO.StreamSRI;
 import CF.DataType;
 
+/**
+ * @since 2.0
+ */
 public final class StreamSRIUtil {
 	private StreamSRIUtil() {
 	}

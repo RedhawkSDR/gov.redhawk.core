@@ -315,7 +315,7 @@ public class corbareceiver extends CorbaPrimitive implements IMidasDataWriter { 
 	}
 
 	/**
-	 * @since 10.0
+	 * @since 10.1
 	 * @deprecated since 10.1 use {@link #setStreamSri(String, StreamSRI, StreamSRI)}
 	 */
 	@Deprecated
@@ -500,7 +500,7 @@ public class corbareceiver extends CorbaPrimitive implements IMidasDataWriter { 
 
 	/**
 	 * @return the blocking option
-	 * @since 10.0
+	 * @since 10.1
 	 */
 	public boolean isBlocking() {
 		return blocking;
@@ -508,7 +508,7 @@ public class corbareceiver extends CorbaPrimitive implements IMidasDataWriter { 
 
 	/**
 	 * @param blocking the blocking option to set
-	 * @since 10.0
+	 * @since 10.1
 	 */
 	public void setBlocking(boolean blocking) {
 		this.blocking = blocking;
