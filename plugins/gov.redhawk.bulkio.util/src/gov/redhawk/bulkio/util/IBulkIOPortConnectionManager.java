@@ -21,6 +21,9 @@ import BULKIO.updateSRIOperations;
  */
 public interface IBulkIOPortConnectionManager {
 
+	/**
+	 * @since 2.0
+	 */
 	void connect(@NonNull String ior, @NonNull BulkIOType type, @NonNull updateSRIOperations internalPort) throws CoreException;
 	
 	/**
@@ -28,6 +31,9 @@ public interface IBulkIOPortConnectionManager {
 	 */
 	void connect(@NonNull String ior, @NonNull BulkIOType type, @NonNull updateSRIOperations internalPort, @Nullable String connectionID) throws CoreException;
 
+	/**
+	 * @since 2.0
+	 */
 	void disconnect(@NonNull String ior, @NonNull BulkIOType type, @NonNull updateSRIOperations internalPort);
 	
 	/**
@@ -35,6 +41,9 @@ public interface IBulkIOPortConnectionManager {
 	 */	
 	void disconnect(@NonNull String ior, @NonNull BulkIOType type, @NonNull updateSRIOperations internalPort, @Nullable String connectionID);
 
+	/**
+	 * @since 2.0
+	 */
 	AbstractBulkIOPort getExternalPort(@NonNull String ior, @NonNull BulkIOType type);
 	
 	/**
