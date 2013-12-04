@@ -107,7 +107,7 @@ public class FftNxmBlock extends AbstractNxmBlock<fft> {
 			fftSwitches = "";
 		}
 		double overlap = settings.getOverlap() / 100.0; // fraction of <transform size> to overlap blocks // SUPPRESS CHECKSTYLE MAGIC NUMBER
-		String pattern = "FFT{0}/NEXP={1,number,#} IN1={2} OUT1={3} NFFT={4,number,#} WIN={5} OVER={6,number,#} NAVG={7,number,#} IN2={8} OUT2={9} CROSS={10}";
+		String pattern = "FFT{0}/NEXP={1,number,#} IN1={2} OUT1={3} NFFT={4,number,#} WIN={5} OVER={6,number,#.###} NAVG={7,number,#} IN2={8} OUT2={9} CROSS={10}";
 		String cmdLine = MessageFormat.format(pattern, fftSwitches, settings.getNumExpAverages(),
 			inputName1, outputName1, settings.getTransformSize(), settings.getWindowString(), overlap,
 			settings.getNumAverages(), inputName2, outputName2, outputNameCross);
