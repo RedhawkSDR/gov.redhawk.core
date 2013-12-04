@@ -315,7 +315,7 @@ public class corbareceiver extends CorbaPrimitive implements IMidasDataWriter { 
 	}
 
 	/**
-	 * @since 10.1
+	 * @since 10.0
 	 * @deprecated since 10.1 use {@link #setStreamSri(String, StreamSRI, StreamSRI)}
 	 */
 	@Deprecated
@@ -323,7 +323,7 @@ public class corbareceiver extends CorbaPrimitive implements IMidasDataWriter { 
 	}
 	
 	/**
-	 * @since 10.1
+	 * @since 10.0
 	 * @noreference This method is not intended to be referenced by clients.
 	 */
 	public synchronized void setStreamSri(String streamID, StreamSRI oldSri, StreamSRI newSri) {
@@ -357,7 +357,7 @@ public class corbareceiver extends CorbaPrimitive implements IMidasDataWriter { 
 	 * @param dataArray the array of data to plot
 	 * @param size the length of the data in the array
 	 * @param type the NeXtMidas type of the data to plot (eg. Data.FLOAT)
-	 * @since 10.1
+	 * @since 10.0
 	 * @noreference This method is not intended to be referenced by clients.
 	 */
 	public void write(final Object dataArray, final int size, final byte type, final boolean endOfStream, PrecisionUTCTime time, final String streamId) {
@@ -500,7 +500,7 @@ public class corbareceiver extends CorbaPrimitive implements IMidasDataWriter { 
 
 	/**
 	 * @return the blocking option
-	 * @since 10.1
+	 * @since 10.0
 	 */
 	public boolean isBlocking() {
 		return blocking;
@@ -508,7 +508,7 @@ public class corbareceiver extends CorbaPrimitive implements IMidasDataWriter { 
 
 	/**
 	 * @param blocking the blocking option to set
-	 * @since 10.1
+	 * @since 10.0
 	 */
 	public void setBlocking(boolean blocking) {
 		this.blocking = blocking;
