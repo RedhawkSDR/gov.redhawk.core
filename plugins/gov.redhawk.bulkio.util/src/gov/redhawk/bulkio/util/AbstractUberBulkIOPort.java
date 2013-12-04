@@ -24,6 +24,7 @@ import BULKIO.dataUlongOperations;
 import BULKIO.dataUshortOperations;
 
 /**
+ * @since 2.0
  * 
  */
 public abstract class AbstractUberBulkIOPort extends AbstractBulkIOPort implements dataUshortOperations, dataCharOperations, dataDoubleOperations, dataFloatOperations,
