@@ -23,7 +23,11 @@ public class ArrayUtil {
 		// Prevent instantiation since all methods here are static
 	}
 
-	/** copy and insert (prepend) element at beginning if it is not null, otherwise just return values as is. */
+	/** copy and insert (prepend) element at beginning if it is not null, otherwise just return values as is.
+	 * @param element item to insert at beginning of new copied array (when not null)
+	 * @param values existing array of values
+	 * @return new copy of values array with element inserted at beginning (if element is not null), otherwise same values array
+	 */
 	public static Object[] copyAndPrependIfNotNull(@Nullable Object element, Object... values) {
 		if (element != null) {
 			Object[] newArray = new Object[values.length + 1];
@@ -34,7 +38,11 @@ public class ArrayUtil {
 		return values;
 	}
 	
-	/** copy and insert (append) element at end if it is not null, otherwise just return values as is. */
+	/** copy and insert (append) element at end if it is not null, otherwise just return values as is.
+	 * @param element item to insert at end of new copied array (when not null)
+	 * @param values existing array of values
+	 * @return new copy of values array with element inserted at end (if element is not null), otherwise same values array 
+	 */
 	public static Object[] copyAndAppendIfNotNull(@Nullable Object element, Object... values) {
 		if (element != null) {
 			values = Arrays.copyOf(values, values.length + 1);
