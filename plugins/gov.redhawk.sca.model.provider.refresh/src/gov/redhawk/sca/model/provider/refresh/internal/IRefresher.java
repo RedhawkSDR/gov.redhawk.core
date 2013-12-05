@@ -9,14 +9,11 @@
  * http://www.eclipse.org/legal/epl-v10.html.
  *
  */
-package gov.redhawk.sca.model.provider.refresh;
+package gov.redhawk.sca.model.provider.refresh.internal;
 
 import org.eclipse.core.runtime.IProgressMonitor;
 
-/**
- * @since 4.0
- * 
- */
+
 public interface IRefresher {
 	void refresh(IProgressMonitor monitor);
 }

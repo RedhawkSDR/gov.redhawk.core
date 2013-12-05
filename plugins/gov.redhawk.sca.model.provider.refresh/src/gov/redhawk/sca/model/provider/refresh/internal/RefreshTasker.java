@@ -9,7 +9,7 @@
  * http://www.eclipse.org/legal/epl-v10.html.
  *
  */
-package gov.redhawk.sca.model.provider.refresh;
+package gov.redhawk.sca.model.provider.refresh.internal;
 
 import gov.redhawk.model.sca.CorbaObjWrapper;
 import gov.redhawk.model.sca.IDisposable;
@@ -17,7 +17,9 @@ import gov.redhawk.model.sca.ProfileObjectWrapper;
 import gov.redhawk.model.sca.ScaPackage;
 import gov.redhawk.model.sca.commands.ScaModelCommand;
 import gov.redhawk.model.sca.services.AbstractDataProvider;
+import gov.redhawk.sca.model.provider.refresh.RefreshProviderPlugin;
 import gov.redhawk.sca.model.provider.refresh.preferences.RefreshPreferenceConstants;
+import gov.redhawk.sca.util.Debug;
 import gov.redhawk.sca.util.IPreferenceAccessor;
 
 import java.util.concurrent.ExecutionException;
@@ -33,38 +35,37 @@ import mil.jpeojtrs.sca.util.NamedThreadFactory;
 
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
-import org.eclipse.core.runtime.preferences.IEclipsePreferences.IPreferenceChangeListener;
-import org.eclipse.core.runtime.preferences.IEclipsePreferences.PreferenceChangeEvent;
 import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.notify.impl.AdapterImpl;
 import org.eclipse.emf.ecore.EObject;
 
-/**
- * @since 4.0
- * 
- */
-public class RefreshTask extends AbstractDataProvider implements Runnable {
+public class RefreshTasker extends AbstractDataProvider implements Runnable {
+	private static final Debug DEBUG = new Debug(RefreshProviderPlugin.PLUGIN_ID, "tasker");
 
-	private static final ExecutorService EXECUTOR_POOL = Executors.newSingleThreadExecutor(new NamedThreadFactory(RefreshTask.class.getName()));
+	/**
+	 * One global tasking thread pool  The actual CORBA invocation is handled by the refresher
+	 */
+	public static final ScheduledExecutorService TASKER_POOL = Executors.newScheduledThreadPool(4, new NamedThreadFactory(
+		ScaRefreshableDataProviderService.class.getName()));
 
 	/**
 	 * @since 4.0
 	 */
 	public static final String PROP_ACTIVE = "active";
 
-	private static final long REFRESH_TIMEOUT = 120;
-
+	private static final long REFRESH_TIMEOUT = 15;
+	public static final ExecutorService WORKER_POOL = new StarvationThreadPoolExecutor(new NamedThreadFactory(ScaRefreshableDataProviderService.class.getName()
+		+ ":WorkerPool"));
 	private final EObject eObject;
 	private final IRefresher refresher;
 	private ScheduledFuture< ? > schedule;
-	private final ScheduledExecutorService threadPool;
 	private boolean active = true;
 	private final Adapter listener = new AdapterImpl() {
 		@Override
 		public void notifyChanged(final org.eclipse.emf.common.notify.Notification msg) {
 			if (msg.getFeature() == ScaPackage.Literals.IDISPOSABLE__DISPOSED) {
-				if (msg.getNewBooleanValue() && RefreshTask.this.schedule != null) {
-					RefreshTask.this.schedule.cancel(true);
+				if (msg.getNewBooleanValue()) {
+					dispose();
 				}
 			} else if (msg.getFeature() == ScaPackage.Literals.CORBA_OBJ_WRAPPER__CORBA_OBJ && !msg.isTouch()) {
 				schedule();
@@ -74,41 +75,42 @@ public class RefreshTask extends AbstractDataProvider implements Runnable {
 		}
 	};
 
-	private final IPreferenceChangeListener refreshPreferenceListener = new IPreferenceChangeListener() {
-
-		@Override
-		public void preferenceChange(final PreferenceChangeEvent event) {
-			if (event.getKey().equals(RefreshPreferenceConstants.REFRESH_INTERVAL)) {
-				updateInterval();
-			}
-		}
-
-	};
-
-	/**
-	 * @since 4.0
-	 */
-	public RefreshTask(final ScheduledExecutorService threadPool, final EObject eObject, final IRefresher refresher) {
+	public RefreshTasker(final EObject eObject, final IRefresher refresher) {
 		this.refresher = refresher;
 		this.eObject = eObject;
-		this.threadPool = threadPool;
 		addListeners();
-		schedule();
+		doSchedule(getInterval());
 	}
-
-	private synchronized void updateInterval() {
-		if (this.schedule != null) {
-			cancel();
-			schedule();
+	
+	private synchronized void doSchedule(long delay) {
+		if (this.schedule == null) {
+			if (DEBUG.enabled) {
+				DEBUG.enteringMethod(delay);
+				DEBUG.message("Scheduled (" + delay + " " + TimeUnit.MILLISECONDS + "): " + this.eObject);
+			}
+			this.schedule = TASKER_POOL.schedule(RefreshTasker.this, delay, TimeUnit.MILLISECONDS);
+		} else {
+			long remaining = this.schedule.getDelay(TimeUnit.MILLISECONDS);
+			if (remaining > delay && remaining > 500) {
+				if (DEBUG.enabled) {
+					DEBUG.enteringMethod(delay);
+					DEBUG.message("ReScheduled (" + delay + " " + TimeUnit.MILLISECONDS + "): " + this.eObject);
+				}
+				this.schedule.cancel(false);
+				this.schedule = TASKER_POOL.schedule(RefreshTasker.this, delay, TimeUnit.MILLISECONDS);
+			}
 		}
 	}
+	
+	public synchronized void schedule() {
+		schedule(0);
+	}
 
-	private synchronized void schedule() {
-		if (this.schedule == null && shouldSchedule()) {
-			final long interval = getInterval();
-			if (interval > 0) {
-				this.schedule = RefreshTask.this.threadPool.scheduleWithFixedDelay(RefreshTask.this, interval, interval, TimeUnit.MILLISECONDS);
-			}
+	public synchronized void schedule(long delay) {
+		if (shouldSchedule()) {
+			doSchedule(delay);
+		} else if (DEBUG.enabled) {
+			DEBUG.message("Ignoring schedule on " + this.eObject);
 		}
 	}
 
@@ -122,11 +124,11 @@ public class RefreshTask extends AbstractDataProvider implements Runnable {
 			final ProfileObjectWrapper< ? > wrapper = (ProfileObjectWrapper< ? >) this.eObject;
 			shouldSchedule |= wrapper.getProfileURI() != null;
 		}
-		return shouldSchedule;
+		return DEBUG.exitingMethodWithResult(shouldSchedule);
 	}
 
 	protected boolean shouldRun() {
-		return !isDisposed() && isEnabled() && this.active;
+		return DEBUG.exitingMethodWithResult(!isDisposed() && isEnabled() && this.active);
 	}
 
 	public synchronized void cancel() {
@@ -152,13 +154,9 @@ public class RefreshTask extends AbstractDataProvider implements Runnable {
 
 				@Override
 				public void execute() {
-					RefreshTask.this.eObject.eAdapters().add(RefreshTask.this.listener);
+					RefreshTasker.this.eObject.eAdapters().add(RefreshTasker.this.listener);
 				}
 			});
-		}
-		RefreshProviderPlugin plugin = RefreshProviderPlugin.getInstance();
-		if (plugin != null) {
-			plugin.getPreferenceAccessor().addPreferenceChangeListener(this.refreshPreferenceListener);
 		}
 	}
 
@@ -175,16 +173,9 @@ public class RefreshTask extends AbstractDataProvider implements Runnable {
 
 				@Override
 				public void execute() {
-					RefreshTask.this.eObject.eAdapters().remove(RefreshTask.this.listener);
+					RefreshTasker.this.eObject.eAdapters().remove(RefreshTasker.this.listener);
 				}
 			});
-		}
-		final RefreshProviderPlugin instance = RefreshProviderPlugin.getInstance();
-		if (instance != null) {
-			final IPreferenceAccessor accessor = instance.getPreferenceAccessor();
-			if (accessor != null) {
-				accessor.removePreferenceChangeListener(this.refreshPreferenceListener);
-			}
 		}
 	}
 
@@ -193,10 +184,10 @@ public class RefreshTask extends AbstractDataProvider implements Runnable {
 		if (instance != null) {
 			final IPreferenceAccessor accessor = instance.getPreferenceAccessor();
 			if (accessor != null) {
-				return accessor.getLong(RefreshPreferenceConstants.REFRESH_INTERVAL);
+				return DEBUG.exitingMethodWithResult(accessor.getLong(RefreshPreferenceConstants.REFRESH_INTERVAL));
 			}
 		}
-		return -1;
+		return DEBUG.exitingMethodWithResult(-1);
 	}
 
 	@Override
@@ -211,30 +202,32 @@ public class RefreshTask extends AbstractDataProvider implements Runnable {
 				return;
 			}
 		}
-		final Future< ? > task = RefreshTask.EXECUTOR_POOL.submit(new Runnable() {
+
+		final Future< ? > task;
+		task = WORKER_POOL.submit(new Runnable() {
 
 			@Override
 			public void run() {
 				if (!shouldRun()) {
 					return;
 				}
-				RefreshTask.this.refresher.refresh(null);
+				try {
+					RefreshTasker.this.refresher.refresh(null);
+				} finally {
+					schedule = null;
+					schedule(getInterval());
+				}
 			}
 
 		});
 		try {
-			task.get(RefreshTask.REFRESH_TIMEOUT, TimeUnit.SECONDS);
+			task.get(RefreshTasker.REFRESH_TIMEOUT, TimeUnit.SECONDS);
 			setStatus(Status.OK_STATUS);
-			if (!shouldSchedule()) {
-				cancel();
-			}
 		} catch (final InterruptedException e) {
-			task.cancel(true);
 			setStatus(Status.CANCEL_STATUS);
 		} catch (final ExecutionException e) {
 			setStatus(new Status(IStatus.ERROR, RefreshProviderPlugin.PLUGIN_ID, "Refresh failed.", e));
 		} catch (final TimeoutException e) {
-			task.cancel(true);
 			setStatus(new Status(IStatus.WARNING, RefreshProviderPlugin.PLUGIN_ID, "Refresh timed out.", e));
 		}
 	}
@@ -247,7 +240,7 @@ public class RefreshTask extends AbstractDataProvider implements Runnable {
 		} else {
 			cancel();
 		}
-		firePropertyChange(RefreshTask.PROP_ACTIVE, oldValue, this.active);
+		firePropertyChange(RefreshTasker.PROP_ACTIVE, oldValue, this.active);
 	}
 
 	public boolean isActive() {

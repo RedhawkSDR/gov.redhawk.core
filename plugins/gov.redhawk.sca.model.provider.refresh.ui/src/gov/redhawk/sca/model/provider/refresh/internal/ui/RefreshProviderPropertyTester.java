@@ -12,7 +12,7 @@
 package gov.redhawk.sca.model.provider.refresh.internal.ui;
 
 import gov.redhawk.model.sca.DataProviderObject;
-import gov.redhawk.sca.model.provider.refresh.RefreshTask;
+import gov.redhawk.sca.model.provider.refresh.internal.RefreshTasker;
 
 import org.eclipse.core.expressions.PropertyTester;
 
@@ -37,7 +37,7 @@ public class RefreshProviderPropertyTester extends PropertyTester {
 			final DataProviderObject dataProvider = (DataProviderObject) receiver;
 			final Object[] providers = dataProvider.getDataProviders().toArray();
 			for (final Object provider : providers) {
-				if (provider instanceof RefreshTask) {
+				if (provider instanceof RefreshTasker) {
 					return true;
 				}
 			}

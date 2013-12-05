@@ -17,10 +17,8 @@ import gov.redhawk.model.sca.ScaDeviceManager;
 import gov.redhawk.model.sca.ScaDomainManager;
 import gov.redhawk.model.sca.ScaUsesPort;
 import gov.redhawk.model.sca.util.ScaSwitch;
-import gov.redhawk.sca.model.provider.refresh.IRefresher;
 
 import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.emf.ecore.EObject;
 
 /**
  * 
@@ -73,19 +71,17 @@ public class RefresherSwitch extends ScaSwitch<IRefresher> {
 	}
 
 	@Override
-	public IRefresher defaultCase(final EObject object) {
+	public IRefresher caseIRefreshable(final IRefreshable object) {
 		return new IRefresher() {
 			@Override
 			public void refresh(final IProgressMonitor monitor) {
-				if (object instanceof IRefreshable) {
-					final IRefreshable refreshable = (IRefreshable) object;
-					try {
-						refreshable.refresh(null, RefreshDepth.SELF);
-					} catch (final InterruptedException e) {
-						// PASS
-					}
+				try {
+					object.refresh(null, RefreshDepth.SELF);
+				} catch (final InterruptedException e) {
+					// PASS
 				}
 			}
 		};
 	}
+
 }

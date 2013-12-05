@@ -11,7 +11,7 @@
  */
 package gov.redhawk.sca.model.provider.refresh;
 
-import gov.redhawk.sca.model.provider.refresh.internal.ScaRefreshableDataProviderService;
+import gov.redhawk.sca.model.provider.refresh.internal.RefreshTasker;
 import gov.redhawk.sca.util.IPreferenceAccessor;
 import gov.redhawk.sca.util.ScopedPreferenceAccessor;
 
@@ -35,7 +35,8 @@ public class RefreshProviderPlugin extends Plugin {
 	@SuppressWarnings("deprecation")
 	@Override
 	public void stop(final BundleContext context) throws Exception {
-		ScaRefreshableDataProviderService.REFRESH_POOL.shutdownNow();
+		RefreshTasker.TASKER_POOL.shutdownNow();
+		RefreshTasker.WORKER_POOL.shutdown();
 		super.stop(context);
 		savePluginPreferences();
 		RefreshProviderPlugin.instance = null;

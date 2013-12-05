@@ -13,7 +13,7 @@ package gov.redhawk.sca.model.provider.refresh.internal.ui.handlers;
 
 import gov.redhawk.model.sca.DataProviderObject;
 import gov.redhawk.model.sca.commands.ScaModelCommand;
-import gov.redhawk.sca.model.provider.refresh.RefreshTask;
+import gov.redhawk.sca.model.provider.refresh.internal.RefreshTasker;
 
 import java.util.Map;
 
@@ -56,8 +56,8 @@ public class AutoRefreshHandler extends AbstractHandler implements IHandler, IEl
 								final Object[] providers = dataObj.getDataProviders().toArray();
 								boolean state = false;
 								for (final Object provider : providers) {
-									if (provider instanceof RefreshTask) {
-										final RefreshTask job = (RefreshTask) provider;
+									if (provider instanceof RefreshTasker) {
+										final RefreshTasker job = (RefreshTasker) provider;
 										state = !job.isActive();
 										job.setActive(state);
 									}
@@ -82,8 +82,8 @@ public class AutoRefreshHandler extends AbstractHandler implements IHandler, IEl
 				final DataProviderObject dataProvider = (DataProviderObject) obj;
 				final Object[] providers = dataProvider.getDataProviders().toArray();
 				for (final Object provider : providers) {
-					if (provider instanceof RefreshTask) {
-						final RefreshTask job = (RefreshTask) provider;
+					if (provider instanceof RefreshTasker) {
+						final RefreshTasker job = (RefreshTasker) provider;
 						job.setEnabled(state);
 					}
 				}
@@ -108,8 +108,8 @@ public class AutoRefreshHandler extends AbstractHandler implements IHandler, IEl
 						final DataProviderObject dataProviderObj = (DataProviderObject) selectedElement;
 						final Object[] providers = dataProviderObj.getDataProviders().toArray();
 						for (final Object obj : providers) {
-							if (obj instanceof RefreshTask) {
-								final RefreshTask job = (RefreshTask) obj;
+							if (obj instanceof RefreshTasker) {
+								final RefreshTasker job = (RefreshTasker) obj;
 								element.setChecked(job.isActive());
 							}
 						}

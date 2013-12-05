@@ -14,7 +14,7 @@ package gov.redhawk.sca.model.provider.refresh.internal.ui;
 import gov.redhawk.model.sca.DataProviderObject;
 import gov.redhawk.model.sca.commands.ScaModelCommandWithResult;
 import gov.redhawk.model.sca.services.IScaDataProvider;
-import gov.redhawk.sca.model.provider.refresh.RefreshTask;
+import gov.redhawk.sca.model.provider.refresh.internal.RefreshTasker;
 import gov.redhawk.sca.model.provider.refresh.ui.RefreshProviderUIActivator;
 
 import java.beans.PropertyChangeEvent;
@@ -41,13 +41,13 @@ public class RefreshDataProviderDecorator extends LabelProvider implements ILigh
 		@Override
 		public void propertyChange(final PropertyChangeEvent evt) {
 			if (RefreshDataProviderDecorator.this.disposed) {
-				if (evt.getSource() instanceof RefreshTask) {
-					final RefreshTask job = (RefreshTask) evt.getSource();
+				if (evt.getSource() instanceof RefreshTasker) {
+					final RefreshTasker job = (RefreshTasker) evt.getSource();
 					job.removePropertyChangeListener(this);
 					return;
 				}
 			}
-			if (RefreshTask.PROP_ACTIVE.equals(evt.getPropertyName())) {
+			if (RefreshTasker.PROP_ACTIVE.equals(evt.getPropertyName())) {
 				fireStatusChanged(element);
 			}
 		}
@@ -73,13 +73,13 @@ public class RefreshDataProviderDecorator extends LabelProvider implements ILigh
 	public void decorate(final Object element, final IDecoration decoration) {
 		if (element instanceof DataProviderObject) {
 			final DataProviderObject dataProvider = (DataProviderObject) element;
-			final RefreshTask task = ScaModelCommandWithResult.execute(dataProvider, new ScaModelCommandWithResult<RefreshTask>() {
+			final RefreshTasker task = ScaModelCommandWithResult.execute(dataProvider, new ScaModelCommandWithResult<RefreshTasker>() {
 
 				@Override
 				public void execute() {
 					for (final IScaDataProvider provider : dataProvider.getDataProviders()) {
-						if (provider instanceof RefreshTask) {
-							final RefreshTask job = (RefreshTask) provider;
+						if (provider instanceof RefreshTasker) {
+							final RefreshTasker job = (RefreshTasker) provider;
 							setResult(job);
 						}
 					}

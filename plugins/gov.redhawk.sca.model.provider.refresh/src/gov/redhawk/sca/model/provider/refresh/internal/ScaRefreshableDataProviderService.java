@@ -11,18 +11,8 @@
  */
 package gov.redhawk.sca.model.provider.refresh.internal;
 
-import gov.redhawk.model.sca.IRefreshable;
 import gov.redhawk.model.sca.services.AbstractDataProviderService;
 import gov.redhawk.model.sca.services.IScaDataProvider;
-import gov.redhawk.sca.model.provider.refresh.RefreshProviderPlugin;
-import gov.redhawk.sca.model.provider.refresh.RefreshTask;
-import gov.redhawk.sca.model.provider.refresh.preferences.RefreshPreferenceConstants;
-import gov.redhawk.sca.model.provider.refresh.preferences.RefreshPreferenceInitializer;
-
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-
-import mil.jpeojtrs.sca.util.NamedThreadFactory;
 
 import org.eclipse.emf.ecore.EObject;
 
@@ -33,26 +23,16 @@ public class ScaRefreshableDataProviderService extends AbstractDataProviderServi
 
 	private static final RefresherSwitch SWITCH = new RefresherSwitch();
 
-	public static final ScheduledExecutorService REFRESH_POOL = Executors.newScheduledThreadPool(ScaRefreshableDataProviderService.getPoolSize(),
-			new NamedThreadFactory(ScaRefreshableDataProviderService.class.getName()));
-
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
 	protected IScaDataProvider createDataProvider(final EObject object) {
-		if (object instanceof IRefreshable) {
-			return new RefreshTask(ScaRefreshableDataProviderService.REFRESH_POOL, object, ScaRefreshableDataProviderService.SWITCH.doSwitch(object));
+		IRefresher refresher = ScaRefreshableDataProviderService.SWITCH.doSwitch(object);
+		if (refresher != null) {
+			return new RefreshTasker(object, refresher);
 		}
 		return null;
-	}
-
-	private static int getPoolSize() {
-		int permits = RefreshProviderPlugin.getInstance().getPreferenceAccessor().getInt(RefreshPreferenceConstants.REFRESH_PERMITS);
-		if (permits <= 0) {
-			permits = RefreshPreferenceInitializer.getDefaultRefreshPermits();
-		}
-		return permits;
 	}
 
 }
