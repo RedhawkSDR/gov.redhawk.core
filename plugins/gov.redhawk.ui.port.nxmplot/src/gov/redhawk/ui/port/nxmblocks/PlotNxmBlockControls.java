@@ -17,7 +17,6 @@ import org.eclipse.core.databinding.Binding;
 import org.eclipse.core.databinding.DataBindingContext;
 import org.eclipse.core.databinding.UpdateValueStrategy;
 import org.eclipse.core.databinding.beans.PojoProperties;
-import org.eclipse.core.databinding.conversion.NumberToStringConverter;
 import org.eclipse.core.databinding.conversion.StringToNumberConverter;
 import org.eclipse.core.databinding.observable.value.IObservableValue;
 import org.eclipse.jface.databinding.fieldassist.ControlDecorationSupport;
@@ -43,6 +42,8 @@ public class PlotNxmBlockControls {
 	private static final String VALUE_USE_DEFAULT = "default";
 	private static final Object[] FRAME_SIZE_COMBO_VALUES = new Object[] { VALUE_USE_DEFAULT, 512, 1024, 2048, 4096, 8192 };
 	
+	private static final String FRAME_SIZE_FIELD_NAME = "Frame Size";
+	
 	private final PlotNxmBlockSettings settings;
 	private final DataBindingContext dataBindingCtx;
 
@@ -59,7 +60,7 @@ public class PlotNxmBlockControls {
 
 		// === frame size ===
 		label = new Label(container, SWT.NONE);
-		label.setText("Frame Size:");
+		label.setText(FRAME_SIZE_FIELD_NAME + ":");
 		this.frameSizeField = new ComboViewer(container, SWT.BORDER); // writable
 		this.frameSizeField.getCombo().setLayoutData(GridDataFactory.fillDefaults().grab(true,  false).create());
 		this.frameSizeField.getCombo().setToolTipText("Custom frame size to override value in StreamSRI. Default uses value from StreamSRI.");
@@ -77,7 +78,7 @@ public class PlotNxmBlockControls {
 		IObservableValue frameSizeWidgetValue = WidgetProperties.selection().observe(this.frameSizeField.getCombo());
 		IObservableValue frameSizeModelValue = PojoProperties.value(PlotNxmBlockSettings.PROP_FRAME_SIZE).observe(this.settings);
 		UpdateValueStrategy frameSizeModelToTarget = new UpdateValueStrategy();
-		frameSizeModelToTarget.setConverter(new ObjectsToNullConverterWrapper(NumberToStringConverter.fromInteger(false))); // wrap so that null converts to null
+		frameSizeModelToTarget.setConverter(new ObjectToNullConverter()); // converts null to null, otherwise uses toString()
 		Binding bindingValue = dataBindingCtx.bindValue(frameSizeWidgetValue, frameSizeModelValue, createTargetToModelForFrameSize(), frameSizeModelToTarget);
 		ControlDecorationSupport.create(bindingValue, SWT.TOP | SWT.LEFT);
 	}
@@ -85,8 +86,9 @@ public class PlotNxmBlockControls {
 	private UpdateValueStrategy createTargetToModelForFrameSize() {
 		UpdateValueStrategy updateValueStrategy = new UpdateValueStrategy();
 		
-		updateValueStrategy.setConverter(new ObjectsToNullConverterWrapper(StringToNumberConverter.toInteger(false), true, true, VALUE_USE_DEFAULT));
-		updateValueStrategy.setAfterConvertValidator(new NumberRangeValidator<Integer>("Frame size", Integer.class, 0, false));
+		updateValueStrategy.setAfterGetValidator(new StringToIntegerValidator(FRAME_SIZE_FIELD_NAME, VALUE_USE_DEFAULT));
+		updateValueStrategy.setConverter(new ObjectToNullConverter(StringToNumberConverter.toInteger(false), true, true, VALUE_USE_DEFAULT));
+		updateValueStrategy.setAfterConvertValidator(new NumberRangeValidator<Integer>(FRAME_SIZE_FIELD_NAME, Integer.class, 0, false));
 
 		return updateValueStrategy;
 	}

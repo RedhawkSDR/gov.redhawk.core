@@ -15,9 +15,11 @@ import org.eclipse.core.databinding.conversion.IConverter;
 import org.eclipse.jdt.annotation.NonNull;
 
 /**
- * Wrap an existing {@link IConverter} to convert values, overriding it to convert
+ * Wrap an optional existing {@link IConverter} to convert values, overriding it to convert
  * specified Object values (e.g. "default" String) to null. This uses's the value Object's equals(..) 
  * method to compare for equality for converting it to null.
+ * If converter is null, it uses the {@link String#valueOf(Object)) conversion of the fromObject 
+ * (i.e. a plain vanilla ObjectToStringConverter).
  * <li>
  *   Has option to convert null fromObject to null (since StringToNumberConverter throws
  *   IllegalArgumentException and NumberToStringConverter converts null to empty String).
@@ -27,16 +29,24 @@ import org.eclipse.jdt.annotation.NonNull;
  * </li>
  * @since 4.3 (package-private for now)
  */
-class ObjectsToNullConverterWrapper extends Converter {
+class ObjectToNullConverter extends Converter {
 	private final boolean nullToNull;
 	private final boolean blankToNull;
 	private final Object[] valuesToConvertToNull;
 	private final IConverter converter;
 	
+	public ObjectToNullConverter() {
+		super(null, String.class);
+		this.converter = null;
+		this.nullToNull = true;
+		this.blankToNull = true;
+		this.valuesToConvertToNull = null;
+	}
+	
 	/** calls {@link #ObjectsToNullConverterWrapper(IConverter, boolean, boolean, Object...)}
 	 *  with nullToNull and blankToNull parms set to true.
 	 */
-	public ObjectsToNullConverterWrapper(@NonNull IConverter converter) {
+	public ObjectToNullConverter(@NonNull IConverter converter) {
 		this(converter, true, true);
 	}
 
@@ -46,7 +56,7 @@ class ObjectsToNullConverterWrapper extends Converter {
 	 * @param blankToNull true to convert blank fromObject String (empty or just whitespaces) to null
 	 * @param valuesToConvertToNull (must NOT contain any nulls in this varargs)
 	 */
-	public ObjectsToNullConverterWrapper(@NonNull IConverter converter, boolean nullToNull, boolean blankToNull, @NonNull Object... valuesToConvertToNull) {
+	public ObjectToNullConverter(@NonNull IConverter converter, boolean nullToNull, boolean blankToNull, @NonNull Object... valuesToConvertToNull) {
 		super(converter.getFromType(), converter.getToType());
 		this.converter = converter;
 		this.nullToNull = nullToNull;
@@ -55,11 +65,11 @@ class ObjectsToNullConverterWrapper extends Converter {
 	}
 
 	@Override
-	public Object convert(Object fromObject) {
+	public Object convert(final Object fromObject) {
 		if (fromObject == null) {
 			if (nullToNull) {
 				return null;
-			} 
+			} // else defer to converter
 		} else if (blankToNull && (fromObject instanceof String) && ((String) fromObject).trim().isEmpty()) {
 			return null;
 		} else if (valuesToConvertToNull != null) {
@@ -69,6 +79,10 @@ class ObjectsToNullConverterWrapper extends Converter {
 				}
 			}
 		}
-		return converter.convert(fromObject);
+		if (converter != null) {
+			return converter.convert(fromObject);
+		} else {
+			return String.valueOf(fromObject);
+		}
 	}
 }

@@ -15,50 +15,24 @@ import org.eclipse.core.runtime.IStatus;
 
 /**
  * Used before custom converter in data bindings (e.g. afterGetValidator when value from widget is still a String).
- * @NonNullByDefault
  * @since 4.3 (package-private for now)
  */
-class StringToDoubleValidator extends AllowableStringValidator {
-	
-	public StringToDoubleValidator(String fieldName, String... allowableStrings) {
+class StringToIntegerValidator extends AllowableStringValidator {
+
+	public StringToIntegerValidator(String fieldName, String... allowableStrings) {
 		this(fieldName, true, true, allowableStrings);
 	}
 	
-	public StringToDoubleValidator(String fieldName, boolean allowNull, boolean allowEmpty, String... allowableStrings) {
+	public StringToIntegerValidator(String fieldName, boolean allowNull, boolean allowEmpty, String... allowableStrings) {
 		super(fieldName, allowNull, allowEmpty, allowableStrings);
 	}
-	
-//	@Override
-//	public IStatus validate(Object value) {
-//		if (value == null) {
-//			if (!allowNull) {
-//				return ValidationStatus.error(fieldName + " cannot be null.");
-//			}
-//		} else if ("".equals(value)) {
-//			if (!allowEmpty) {
-//				return ValidationStatus.error(fieldName + " cannot be empty.");
-//			}
-//		} else {
-//			for (String str : allowableStrings) {
-//				if (str.equals(value)) {
-//					return ValidationStatus.ok();
-//				}
-//			}
-//			try {
-//				Double.parseDouble((String) value);
-//			} catch (NumberFormatException nfe) {
-//				return ValidationStatus.error(fieldName + " must be a floating point number.");
-//			}
-//		}
-//		return ValidationStatus.ok(); // passed all checks
-//	}
-	
+
 	@Override
 	public IStatus doValidate(String value) {
 		try {
-			Double.parseDouble((String) value);
+			Integer.parseInt(value);
 		} catch (NumberFormatException nfe) {
-			return ValidationStatus.error(getFieldName() + " must be a floating point number.");
+			return ValidationStatus.error(getFieldName() + " must be an integer number.");
 		}
 		return ValidationStatus.ok(); 
 	}

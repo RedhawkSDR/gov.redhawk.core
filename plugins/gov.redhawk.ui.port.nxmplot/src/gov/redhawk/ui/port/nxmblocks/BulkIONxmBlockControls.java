@@ -16,7 +16,6 @@ import org.eclipse.core.databinding.Binding;
 import org.eclipse.core.databinding.DataBindingContext;
 import org.eclipse.core.databinding.UpdateValueStrategy;
 import org.eclipse.core.databinding.beans.PojoProperties;
-import org.eclipse.core.databinding.conversion.NumberToStringConverter;
 import org.eclipse.core.databinding.conversion.StringToNumberConverter;
 import org.eclipse.core.databinding.observable.value.IObservableValue;
 import org.eclipse.jface.databinding.fieldassist.ControlDecorationSupport;
@@ -41,6 +40,7 @@ import org.eclipse.swt.widgets.Label;
 public class BulkIONxmBlockControls {
 
 	private static final String VALUE_USE_DEFAULT = "default";
+	private static final String SAMPLE_RATE_FIELD_NAME = "Sample Rate";
 	
 	private final BulkIONxmBlockSettings settings;
 	private final DataBindingContext dataBindingCtx;
@@ -60,7 +60,7 @@ public class BulkIONxmBlockControls {
 		
 		// === sample rate ===
 		label = new Label(container, SWT.NONE);
-		label.setText("Sample rate:");
+		label.setText(SAMPLE_RATE_FIELD_NAME + ":");
 		this.sampleRateField = new ComboViewer(container, SWT.BORDER); // writable
 		this.sampleRateField.getCombo().setLayoutData(GridDataFactory.fillDefaults().grab(true,  false).create());
 		this.sampleRateField.getCombo().setToolTipText("Custom sample rate to override value in StreamSRI. Default uses value from StreamSRI.");
@@ -86,7 +86,7 @@ public class BulkIONxmBlockControls {
 		IObservableValue srWidgetValue = WidgetProperties.selection().observe(this.sampleRateField.getCombo());
 		IObservableValue srModelValue = PojoProperties.value(BulkIONxmBlockSettings.PROP_SAMPLE_RATE).observe(settings);
 		UpdateValueStrategy srModelToTarget = new UpdateValueStrategy();
-		srModelToTarget.setConverter(new ObjectsToNullConverterWrapper(NumberToStringConverter.fromDouble(false))); // wrap so that null converts to null
+		srModelToTarget.setConverter(new ObjectToNullConverter()); // converts null to null, otherwise uses toString()
 		bindingValue = dataBindingCtx.bindValue(srWidgetValue, srModelValue, createTargetToModelForSampleRate(), srModelToTarget);
 		ControlDecorationSupport.create(bindingValue, SWT.TOP | SWT.LEFT);
 		
@@ -99,8 +99,9 @@ public class BulkIONxmBlockControls {
 	private UpdateValueStrategy createTargetToModelForSampleRate() {
 		UpdateValueStrategy updateValueStrategy = new UpdateValueStrategy();
 		
-		updateValueStrategy.setConverter(new ObjectsToNullConverterWrapper(StringToNumberConverter.toDouble(false), true, true, VALUE_USE_DEFAULT));
-		updateValueStrategy.setAfterConvertValidator(new NumberRangeValidator<Double>("Sample rate", Double.class, 0.0, false));
+		updateValueStrategy.setAfterGetValidator(new StringToDoubleValidator(SAMPLE_RATE_FIELD_NAME, VALUE_USE_DEFAULT));
+		updateValueStrategy.setConverter(new ObjectToNullConverter(StringToNumberConverter.toDouble(false), true, true, VALUE_USE_DEFAULT));
+		updateValueStrategy.setAfterConvertValidator(new NumberRangeValidator<Double>(SAMPLE_RATE_FIELD_NAME, Double.class, 0.0, false));
 		return updateValueStrategy;
 	}
 
