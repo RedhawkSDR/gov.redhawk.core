@@ -66,8 +66,8 @@ public final class Debug {
 	static {
 		final String valueShowTag = Platform.getDebugOption("gov.redhawk.sca.util/debug/showTag"); //$NON-NLS-1$
 		final String valueShowDate = Platform.getDebugOption("gov.redhawk.sca.util/debug/showDate"); //$NON-NLS-1$
-		SHOW_TAG = (valueShowTag == null) ? true : Boolean.valueOf(valueShowTag); // SUPPRESS CHECKSTYLE AvoidInLine
-		SHOW_DATE = (valueShowDate == null) ? true : Boolean.valueOf(valueShowDate); // SUPPRESS CHECKSTYLE AvoidInLine
+		SHOW_TAG = Boolean.valueOf(valueShowTag);
+		SHOW_DATE = Boolean.valueOf(valueShowDate);
 		if (Debug.SHOW_TAG) {
 			if (Debug.SHOW_DATE) {
 				OUT_FORMAT = new MessageFormat(Messages.Debug__DATE_TAG_MSG_PATTERN);
@@ -226,13 +226,19 @@ public final class Debug {
 		}
 		return null;
 	}
+	
+	public void exitingMethod(final Object retVal) {
+		exitingMethodWithResult(retVal);
+	}
 
 	/**
 	 * Exiting method.
 	 * 
 	 * @param retVal the return value of the method
+	 * @return Returns passed in value
+	 * @since 3.4
 	 */
-	public void exitingMethod(final Object retVal) {
+	public <T> T exitingMethodWithResult(final T retVal) {
 		if (this.enabled) {
 			final StackTraceElement stack = getCaller();
 			final String fileName = stack.getFileName();
@@ -250,6 +256,7 @@ public final class Debug {
 				                retVal));
 			}
 		}
+		return retVal;
 	}
 
 	/**
