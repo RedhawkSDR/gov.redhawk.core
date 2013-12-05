@@ -37,6 +37,7 @@ import org.eclipse.ui.IWorkbenchPreferencePage;
 public class RefreshProviderPreferencePage extends FieldEditorPreferencePage implements IWorkbenchPreferencePage {
 
 	private IntegerFieldEditor refreshIntervalField;
+	private IntegerFieldEditor refreshTimeoutField;
 
 	public RefreshProviderPreferencePage() {
 		super(FieldEditorPreferencePage.GRID);
@@ -55,6 +56,10 @@ public class RefreshProviderPreferencePage extends FieldEditorPreferencePage imp
 		refreshIntervalField = new IntegerFieldEditor(RefreshPreferenceConstants.REFRESH_INTERVAL, "Refresh Interval (ms):", getFieldEditorParent());
 		addField(refreshIntervalField);
 		refreshIntervalField.load();
+		
+		refreshTimeoutField = new IntegerFieldEditor(RefreshPreferenceConstants.REFRESH_TIMEOUT, "Refresh Timeout (ms):", getFieldEditorParent());
+		addField(refreshTimeoutField);
+		refreshTimeoutField.load();
 	}
 
 	/* (non-Javadoc)
@@ -68,6 +73,7 @@ public class RefreshProviderPreferencePage extends FieldEditorPreferencePage imp
 	@Override
 	public boolean performOk() {
 		refreshIntervalField.store();
+		refreshTimeoutField.store();
 		return super.performOk();
 	}
 	

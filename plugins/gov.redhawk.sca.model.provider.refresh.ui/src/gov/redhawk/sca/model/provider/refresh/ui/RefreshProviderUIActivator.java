@@ -11,16 +11,11 @@
  */
 package gov.redhawk.sca.model.provider.refresh.ui;
 
-import gov.redhawk.sca.ScaPlugin;
 import gov.redhawk.sca.model.provider.refresh.RefreshProviderPlugin;
 
-import org.eclipse.core.runtime.Assert;
 import org.eclipse.core.runtime.preferences.InstanceScope;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.resource.ImageDescriptor;
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.widgets.Display;
-import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.eclipse.ui.preferences.ScopedPreferenceStore;
 import org.osgi.framework.BundleContext;
@@ -79,18 +74,8 @@ public class RefreshProviderUIActivator extends AbstractUIPlugin {
 	 * @since 3.0
 	 */
 	public IPreferenceStore getRefreshProviderPreferenceStore() {
-		if (SWT.getPlatform().startsWith("rap")) {
-			Assert.isNotNull(Display.getCurrent(), "This method must be called from the UI thread");
-			String currentId = ScaPlugin.getDefault().getCompatibilityUtil().getUserSpecificPath(Display.getCurrent());
-			if (currentId != null && !currentId.equals(lastId)) {
-				ScaPlugin.getDefault().getCompatibilityUtil().initializeSettingStore(Display.getCurrent());
-				this.lastId = currentId;
-			}
-			this.providerPreferenceStore = PlatformUI.getPreferenceStore();
-		} else {
-			if (this.providerPreferenceStore == null) {
-				this.providerPreferenceStore = new ScopedPreferenceStore(InstanceScope.INSTANCE, RefreshProviderPlugin.getInstance().getBundle().getSymbolicName());
-			}
+		if (this.providerPreferenceStore == null) {
+			this.providerPreferenceStore = new ScopedPreferenceStore(InstanceScope.INSTANCE, RefreshProviderPlugin.getInstance().getBundle().getSymbolicName());
 		}
 		return this.providerPreferenceStore;
 	}

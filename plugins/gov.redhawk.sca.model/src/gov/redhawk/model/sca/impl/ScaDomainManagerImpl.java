@@ -635,7 +635,7 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 			eNotify(new ENotificationImpl(this, Notification.SET, ScaPackage.SCA_DOMAIN_MANAGER__CONNECTION_PROPERTIES_CONTAINER, newConnectionPropertiesContainer, newConnectionPropertiesContainer));
 	}
 
-	private static final ExecutorService EXECUTOR_POOL = Executors.newFixedThreadPool(5, new NamedThreadFactory(ScaDomainManagerImpl.class.getName()));
+	private final ExecutorService disposeOrbExecutor = Executors.newSingleThreadScheduledExecutor(new NamedThreadFactory(ScaDomainManagerImpl.class.getName()));
 
 	/**
 	 * @since 14.0
@@ -664,11 +664,12 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 		// BEGIN GENERATED CODE
 	}
 	
-	private static void destroyOrbSession(final OrbSession session) {
+	private void destroyOrbSession(final OrbSession session) {
+		// END GENERATED CODE
 		if (session == null) {
 			return;
 		}
-		EXECUTOR_POOL.submit(new Runnable() {
+		disposeOrbExecutor.submit(new Runnable() {
 
 			@Override
 			public void run() {
@@ -677,9 +678,10 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 				} catch (Exception e) {
 					// PASS Ignore Exception on close
 				}
-            }
-			
+			}
+
 		});
+		// BEGIN GENERATED CODE
 	}
 
 	/**

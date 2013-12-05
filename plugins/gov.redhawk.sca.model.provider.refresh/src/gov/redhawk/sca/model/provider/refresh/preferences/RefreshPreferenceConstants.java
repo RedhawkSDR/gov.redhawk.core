@@ -17,6 +17,10 @@ package gov.redhawk.sca.model.provider.refresh.preferences;
  */
 public final class RefreshPreferenceConstants {
 	public static final String REFRESH_INTERVAL = "refreshInterval";
+	/**
+	 * @since 5.0
+	 */
+	public static final String REFRESH_TIMEOUT = "refreshTimeout";
 	public static final String REFRESH_PERMITS = "refreshPermits";
 
 	private RefreshPreferenceConstants() {

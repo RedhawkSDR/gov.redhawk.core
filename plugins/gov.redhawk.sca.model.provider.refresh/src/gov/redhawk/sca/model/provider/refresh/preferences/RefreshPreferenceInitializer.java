@@ -36,6 +36,7 @@ public class RefreshPreferenceInitializer extends AbstractPreferenceInitializer 
 	public void initializeDefaultPreferences() {
 		RefreshProviderPlugin.getInstance().getPreferenceAccessor().setDefault(RefreshPreferenceConstants.REFRESH_INTERVAL, DEFAULT_REFRESH_INTERVAL);
 		RefreshProviderPlugin.getInstance().getPreferenceAccessor().setDefault(RefreshPreferenceConstants.REFRESH_PERMITS, DEFAULT_REFRESH_PERMITS);
+		RefreshProviderPlugin.getInstance().getPreferenceAccessor().setDefault(RefreshPreferenceConstants.REFRESH_TIMEOUT, 15000);
 	}
 	
 	public static int getDefaultRefreshPermits() {

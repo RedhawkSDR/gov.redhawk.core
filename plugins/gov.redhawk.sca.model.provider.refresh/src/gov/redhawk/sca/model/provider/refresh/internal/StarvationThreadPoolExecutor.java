@@ -29,7 +29,6 @@ public class StarvationThreadPoolExecutor extends ThreadPoolExecutor {
 	private static final int MIN_POOL = 5;
 
 	private class Task implements Runnable {
-		private static final long TIMEOUT = 5000;
 		private long startTime = -1;
 		private final Runnable command;
 
@@ -42,7 +41,7 @@ public class StarvationThreadPoolExecutor extends ThreadPoolExecutor {
 		}
 
 		public boolean isHanging() {
-			return isRunning() && (System.currentTimeMillis() - startTime > TIMEOUT);
+			return isRunning() && (System.currentTimeMillis() - startTime > RefreshTasker.getTimeout());
 		}
 
 		@Override
@@ -73,11 +72,26 @@ public class StarvationThreadPoolExecutor extends ThreadPoolExecutor {
 					numHanging++;
 				}
 			}
-			int poolSize = MIN_POOL + numHanging;
-			if (getMaximumPoolSize() != poolSize) {
-				setMaximumPoolSize(poolSize);
+			int adjustedMinPool = MIN_POOL + numHanging;
+			int currentMax = getMaximumPoolSize();
+			int newMax = (adjustedMinPool / 5 + 1) * 5;
+			boolean adjust = false;
+
+			if (numHanging == 0) {
+				adjust = true;
+				newMax = MIN_POOL;
+			} else if (numHanging > 0) {
+				if (currentMax < newMax) {
+					adjust = true;
+				} else if (newMax >= adjustedMinPool + 5) {
+					adjust = true;
+				}
+			}
+
+			if (adjust && newMax != currentMax) {
+				setMaximumPoolSize(newMax);
 				if (DEBUG.enabled) {
-					DEBUG.message("Adjusting pool size to: " + poolSize);
+					DEBUG.message("Adjusting pool size to: " + newMax + " old max = " + currentMax + " adjusted min = " + adjustedMinPool);
 				}
 			}
 		}

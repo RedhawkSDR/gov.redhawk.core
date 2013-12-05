@@ -53,7 +53,6 @@ public class RefreshTasker extends AbstractDataProvider implements Runnable {
 	 */
 	public static final String PROP_ACTIVE = "active";
 
-	private static final long REFRESH_TIMEOUT = 15;
 	public static final ExecutorService WORKER_POOL = new StarvationThreadPoolExecutor(new NamedThreadFactory(ScaRefreshableDataProviderService.class.getName()
 		+ ":WorkerPool"));
 	private final EObject eObject;
@@ -179,12 +178,23 @@ public class RefreshTasker extends AbstractDataProvider implements Runnable {
 		}
 	}
 
-	public long getInterval() {
+	public static long getInterval() {
 		final RefreshProviderPlugin instance = RefreshProviderPlugin.getInstance();
 		if (instance != null) {
 			final IPreferenceAccessor accessor = instance.getPreferenceAccessor();
 			if (accessor != null) {
 				return DEBUG.exitingMethodWithResult(accessor.getLong(RefreshPreferenceConstants.REFRESH_INTERVAL));
+			}
+		}
+		return DEBUG.exitingMethodWithResult(-1);
+	}
+	
+	public static long getTimeout() {
+		final RefreshProviderPlugin instance = RefreshProviderPlugin.getInstance();
+		if (instance != null) {
+			final IPreferenceAccessor accessor = instance.getPreferenceAccessor();
+			if (accessor != null) {
+				return DEBUG.exitingMethodWithResult(accessor.getLong(RefreshPreferenceConstants.REFRESH_TIMEOUT));
 			}
 		}
 		return DEBUG.exitingMethodWithResult(-1);
@@ -221,7 +231,7 @@ public class RefreshTasker extends AbstractDataProvider implements Runnable {
 
 		});
 		try {
-			task.get(RefreshTasker.REFRESH_TIMEOUT, TimeUnit.SECONDS);
+			task.get(getTimeout(), TimeUnit.MILLISECONDS);
 			setStatus(Status.OK_STATUS);
 		} catch (final InterruptedException e) {
 			setStatus(Status.CANCEL_STATUS);

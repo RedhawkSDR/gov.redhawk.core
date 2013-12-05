@@ -24,7 +24,6 @@
     <module>../../plugins/gov.redhawk.core.filemanager</module>
     <module>../../plugins/gov.redhawk.sca.model.provider.event</module>
     <module>../../plugins/gov.redhawk.sca.model.provider.refresh</module>
-    <module>../../plugins/gov.redhawk.sca.model.provider.refresh.ui</module>
     <module>../../plugins/gov.redhawk.core.resourceFactory</module>
     <module>../../plugins/gov.redhawk.interceptor.client</module>
     <module>../../plugins/gov.redhawk.sca</module>

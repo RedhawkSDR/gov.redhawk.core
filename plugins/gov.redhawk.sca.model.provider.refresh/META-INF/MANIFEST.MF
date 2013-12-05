@@ -13,4 +13,3 @@ Export-Package: gov.redhawk.sca.model.provider.refresh,
  gov.redhawk.sca.model.provider.refresh.internal;x-friends:="gov.redhawk.sca.model.provider.refresh.ui",
  gov.redhawk.sca.model.provider.refresh.preferences
 Bundle-Vendor: %Bundle-Vendor
-Import-Package: org.jacorb.orb;version="3.3.0"
