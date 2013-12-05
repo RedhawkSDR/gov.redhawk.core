@@ -1034,7 +1034,12 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 			java.util.Properties orbProperties = createProperties();
 			java.util.Properties systemProps = System.getProperties();
 			systemProps.putAll(orbProperties);
-			final OrbSession orbSession = OrbSession.createSession(getName(), Platform.getApplicationArgs(), systemProps);
+			
+			String tmpName = getName();
+			if (tmpName == null) {
+				tmpName = "";
+			}
+			final OrbSession orbSession = OrbSession.createSession(tmpName, Platform.getApplicationArgs(), systemProps);
 			setOrbSession(orbSession);
 			CompoundCommand command = new CompoundCommand();
 

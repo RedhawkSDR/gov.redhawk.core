@@ -26,6 +26,7 @@ public class ScaRCPPlugin implements BundleActivator {
 	 * (non-Javadoc)
 	 * @see org.osgi.framework.BundleActivator#start(org.osgi.framework.BundleContext)
 	 */
+	@Override
 	public void start(BundleContext bundleContext) throws Exception {
 		ScaRCPPlugin.context = bundleContext;
 	}
@@ -34,6 +35,7 @@ public class ScaRCPPlugin implements BundleActivator {
 	 * (non-Javadoc)
 	 * @see org.osgi.framework.BundleActivator#stop(org.osgi.framework.BundleContext)
 	 */
+	@Override
 	public void stop(BundleContext bundleContext) throws Exception {
 		ScaRCPPlugin.context = null;
 	}

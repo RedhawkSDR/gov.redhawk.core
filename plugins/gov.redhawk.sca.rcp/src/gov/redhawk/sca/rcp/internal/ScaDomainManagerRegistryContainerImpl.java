@@ -62,6 +62,7 @@ public class ScaDomainManagerRegistryContainerImpl implements IScaDomainManagerR
 	 * configured preference store.
 	 */
 	private Adapter propListener = new AdapterImpl() {
+		@Override
 		public void notifyChanged(Notification msg) {
 			if (msg.getFeatureID(Properties.class) == ScaPackage.PROPERTIES__PROPERTY) {
 				switch (msg.getEventType()) {
@@ -80,6 +81,7 @@ public class ScaDomainManagerRegistryContainerImpl implements IScaDomainManagerR
 	 * to the configured preference store.
 	 */
 	private Adapter domainManagerListener = new AdapterImpl() {
+		@Override
 		public void notifyChanged(Notification msg) {
 			switch (msg.getFeatureID(ScaDomainManagerRegistry.class)) {
 			case ScaPackage.SCA_DOMAIN_MANAGER__AUTO_CONNECT:
@@ -98,6 +100,7 @@ public class ScaDomainManagerRegistryContainerImpl implements IScaDomainManagerR
 	 */
 	private Adapter domainManagerRegistrylistener = new AdapterImpl() {
 		@SuppressWarnings("unchecked")
+		@Override
 		public void notifyChanged(Notification msg) {
 			if (msg.getFeatureID(ScaDomainManagerRegistry.class) == ScaPackage.SCA_DOMAIN_MANAGER_REGISTRY__DOMAINS) {
 				switch (msg.getEventType()) {
@@ -140,6 +143,7 @@ public class ScaDomainManagerRegistryContainerImpl implements IScaDomainManagerR
 		if (this.scaDomainManagerRegistry != null) {
 			ScaModelCommand.execute(this.scaDomainManagerRegistry, new ScaModelCommand() {
 
+				@Override
 				public void execute() {
 					if (registryResource != null) {
 						Resource resource = registryResource;
@@ -186,7 +190,6 @@ public class ScaDomainManagerRegistryContainerImpl implements IScaDomainManagerR
 		return instance;
 	}
 
-
 	@Override
 	public ScaDomainManagerRegistry getRegistry(Object context) {
 		return scaDomainManagerRegistry;
@@ -209,14 +212,16 @@ public class ScaDomainManagerRegistryContainerImpl implements IScaDomainManagerR
 			// the -noData option is specified. Therefore we will
 			// load into memory
 			this.registryResource = this.scaModelResourceSet.createResource(org.eclipse.emf.common.util.URI.createURI("virtual://instanceDomains.sca"),
-					ScaPackage.eCONTENT_TYPE);
-			ScaPlugin.getDefault().getLog().log(new Status(IStatus.WARNING, ScaPlugin.getPluginId(), "Using memory store for sca domains.  Will not presist domain connections.", e1));
+				ScaPackage.eCONTENT_TYPE);
+			ScaPlugin.getDefault().getLog().log(
+				new Status(IStatus.WARNING, ScaPlugin.getPluginId(), "Using memory store for sca domains.  Will not presist domain connections.", e1));
 		}
 
 		this.scaDomainManagerRegistry = ScaDomainManagerRegistry.Util.getScaDomainManagerRegistry(this.registryResource);
 		if (this.scaDomainManagerRegistry == null) { // SUPPRESS CHECKSTYLE DoubleCheck
 			this.editingDomain.getCommandStack().execute(new ScaModelCommand() {
 
+				@Override
 				public void execute() {
 					scaDomainManagerRegistry = initScaResource(registryResource);
 					addDomainManagerListeners();
@@ -254,7 +259,6 @@ public class ScaDomainManagerRegistryContainerImpl implements IScaDomainManagerR
 		}
 	}
 
-
 	private void addDomainManagerListeners() {
 		for (ScaDomainManager domain : this.scaDomainManagerRegistry.getDomains()) {
 			addDomainManagerPropertiesListeners(domain);
@@ -268,7 +272,7 @@ public class ScaDomainManagerRegistryContainerImpl implements IScaDomainManagerR
 	private void saveDomainManagerRegistryResource() {
 		if (this.scaDomainManagerRegistry != null) {
 			ScaModelCommand.execute(this.scaDomainManagerRegistry, new ScaModelCommand() {
-
+				@Override
 				public void execute() {
 					if (registryResource != null) {
 						Resource resource = registryResource;
@@ -316,7 +320,7 @@ public class ScaDomainManagerRegistryContainerImpl implements IScaDomainManagerR
 					ScaDomainManager[] domains;
 					try {
 						domains = TransactionUtil.runExclusive(editingDomain, new RunnableWithResult.Impl<ScaDomainManager[]>() {
-
+							@Override
 							public void run() {
 								setResult(scaDomainManagerRegistry.getDomains().toArray(new ScaDomainManager[scaDomainManagerRegistry.getDomains().size()]));
 							}
