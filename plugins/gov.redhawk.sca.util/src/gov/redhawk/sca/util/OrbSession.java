@@ -42,7 +42,7 @@ public class OrbSession {
 	 * Returns a "global" orb session
 	 * @return Session
 	 */
-	@SuppressWarnings("null")
+	@NonNull
 	public static OrbSession createSession() {
 		return createSession(OrbSession.class.getName());
 	}
@@ -52,6 +52,7 @@ public class OrbSession {
 	 * @param ID id of the session
 	 * @return Session
 	 */
+	@NonNull
 	public static OrbSession createSession(@NonNull String id) {
 		return createSession(id, Platform.getApplicationArgs(), System.getProperties());
 	}
@@ -63,6 +64,7 @@ public class OrbSession {
 	 * @param props props to pass to ORB init
 	 * @return Session
 	 */
+	@NonNull
 	public static OrbSession createSession(@NonNull String id, String[] args, Properties props) {
 		Assert.isNotNull(id, "ID must not be null");
 		OrbSession session;
@@ -103,13 +105,11 @@ public class OrbSession {
 	}
 
 	@NonNull
-	@SuppressWarnings("null")
 	public String getId() {
 		return id;
 	}
 
 	@NonNull
-	@SuppressWarnings("null")
 	public ORB getOrb() {
 		return orb;
 	}
@@ -141,7 +141,6 @@ public class OrbSession {
 	}
 
 	@NonNull
-	@SuppressWarnings("null")
 	public synchronized POA getPOA() throws CoreException {
 		if (this.poa == null) {
 			try {
