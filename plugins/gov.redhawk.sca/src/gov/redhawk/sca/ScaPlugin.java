@@ -118,6 +118,7 @@ public class ScaPlugin extends Plugin {
 	 * @since 3.0
 	 * @deprecated Use {@link #getDomainManagerRegistry(Object) instead. In RAP, the domain registry cannot be retrieved without the active Display instance}
 	 */
+	@Deprecated
 	public ScaDomainManagerRegistry getDomainManagerRegistry() {
 		return getDomainManagerRegistry(null);
 	}

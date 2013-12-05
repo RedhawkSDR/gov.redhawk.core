@@ -23,6 +23,8 @@ import org.eclipse.core.runtime.Assert;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.jdt.annotation.NonNull;
+import org.eclipse.jdt.annotation.Nullable;
 import org.omg.CORBA.ORB;
 import org.omg.CORBA.ORBPackage.InvalidName;
 import org.omg.PortableServer.POA;
@@ -40,6 +42,7 @@ public class OrbSession {
 	 * Returns a "global" orb session
 	 * @return Session
 	 */
+	@SuppressWarnings("null")
 	public static OrbSession createSession() {
 		return createSession(OrbSession.class.getName());
 	}
@@ -49,7 +52,7 @@ public class OrbSession {
 	 * @param ID id of the session
 	 * @return Session
 	 */
-	public static OrbSession createSession(String id) {
+	public static OrbSession createSession(@NonNull String id) {
 		return createSession(id, Platform.getApplicationArgs(), System.getProperties());
 	}
 
@@ -60,7 +63,7 @@ public class OrbSession {
 	 * @param props props to pass to ORB init
 	 * @return Session
 	 */
-	public static OrbSession createSession(String id, String[] args, Properties props) {
+	public static OrbSession createSession(@NonNull String id, String[] args, Properties props) {
 		Assert.isNotNull(id, "ID must not be null");
 		OrbSession session;
 		synchronized (sessionMap) {
@@ -81,7 +84,7 @@ public class OrbSession {
 	private ORB orb;
 	private POA poa;
 
-	private OrbSession(String id, String[] args, Properties props) {
+	private OrbSession(@NonNull String id, String[] args, Properties props) {
 		this.id = id;
 		this.args = args;
 		this.props = props;
@@ -94,18 +97,24 @@ public class OrbSession {
 		refs.incrementAndGet();
 	}
 
+	@Nullable
 	public String[] getArgs() {
 		return args;
 	}
 
+	@NonNull
+	@SuppressWarnings("null")
 	public String getId() {
 		return id;
 	}
 
+	@NonNull
+	@SuppressWarnings("null")
 	public ORB getOrb() {
 		return orb;
 	}
 
+	@Nullable
 	public Properties getProperties() {
 		return props;
 	}
@@ -131,6 +140,8 @@ public class OrbSession {
 		}
 	}
 
+	@NonNull
+	@SuppressWarnings("null")
 	public synchronized POA getPOA() throws CoreException {
 		if (this.poa == null) {
 			try {

@@ -48,6 +48,7 @@ public class CompatibilityUtilImpl implements ICompatibilityUtil {
 	/**
 	 * @since 9.2
 	 */
+	@Override
 	public void executeOnRequestThread(Runnable runnable) {
 		throw new UnsupportedOperationException();
 	}
