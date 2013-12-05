@@ -17,7 +17,7 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.jdt.annotation.NonNull;
 
 /**
- * @since 4.3 (package-private for now)
+ * @since 4.3 (package-private for now) - TODO: DELETE - no longer used
  */
 class StringToDoubleValidator implements IValidator {
 	private final boolean allowNull;

@@ -17,49 +17,44 @@ import org.eclipse.core.databinding.DataBindingContext;
 import org.eclipse.core.databinding.beans.BeansObservables;
 import org.eclipse.core.databinding.observable.value.IObservableValue;
 import org.eclipse.jface.databinding.swt.WidgetProperties;
+import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.ComboViewer;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 
 /**
- * Adjust/override BULKIO SDDS NXM block settings user entry dialog.
+ * Adjust/override SDDS NXM block settings user entry dialog.
  * @noreference This class is provisional/beta and is subject to API changes
  * @since 4.3
  */
 public class SddsNxmBlockControls {
 
-	private static final int FIELD_BINDING_DELAY = 200;
-
-	private DataBindingContext dataBindingCtx;
 	private final SddsNxmBlockSettings settings;
+	private final DataBindingContext dataBindingCtx;
+	
+	// widgets
 	private ComboViewer dataByteOrderField;
 
-	/**
-	 * Instantiates a new entry dialog.
-	 *
-	 * @param parentShell the parent shell
-	 */
 	public SddsNxmBlockControls(SddsNxmBlockSettings settings, DataBindingContext dataBindingCtx) {
 		this.settings = settings;
-		this.dataBindingCtx = dataBindingCtx;		
+		this.dataBindingCtx = dataBindingCtx;
 	}
 
 	public void createControls(final Composite container) {
-		final GridLayout gridLayout = new GridLayout(2, false);
-		container.setLayout(gridLayout);
+		container.setLayout(new GridLayout(2, false));
+		Label label;
 
 		// === data byte order ===
-		final Label label = new Label(container, SWT.NONE);
-		label.setLayoutData(new GridData(GridData.BEGINNING, GridData.CENTER, false, false));
+		label = new Label(container, SWT.NONE);
 		label.setText("Data Byte Order:");
 		this.dataByteOrderField = new ComboViewer(container, SWT.READ_ONLY);
-		this.dataByteOrderField.getCombo().setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false, 1, 1));
-		this.dataByteOrderField.setContentProvider(new ArrayContentProvider());
+		this.dataByteOrderField.getCombo().setLayoutData(GridDataFactory.fillDefaults().grab(true,  false).create());
+		this.dataByteOrderField.getCombo().setToolTipText("Custom data byte order to override value in SDDS packets.");
+		this.dataByteOrderField.setContentProvider(ArrayContentProvider.getInstance()); // ArrayContentProvider does not store any state, therefore can re-use instances
 		this.dataByteOrderField.setLabelProvider(new LabelProvider());
 		this.dataByteOrderField.setInput(new ByteOrder[] { ByteOrder.BIG_ENDIAN, ByteOrder.LITTLE_ENDIAN});
 		
@@ -67,7 +62,7 @@ public class SddsNxmBlockControls {
 	}
 
 	protected void addDataBindings() {
-		IObservableValue boTargetObservableValue = WidgetProperties.text(SWT.Modify).observeDelayed(FIELD_BINDING_DELAY, this.dataByteOrderField.getCombo());
+		IObservableValue boTargetObservableValue = WidgetProperties.text(SWT.Modify).observe(this.dataByteOrderField.getCombo());
 		IObservableValue boModelObservableValue = BeansObservables.observeValue(settings, "dataByteOrder");
 		dataBindingCtx.bindValue(boTargetObservableValue, boModelObservableValue, null, null);
 	}

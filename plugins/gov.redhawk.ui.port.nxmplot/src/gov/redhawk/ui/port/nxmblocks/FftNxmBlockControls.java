@@ -25,12 +25,12 @@ import org.eclipse.core.databinding.validation.ValidationStatus;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.jdt.annotation.Nullable;
 import org.eclipse.jface.databinding.swt.WidgetProperties;
+import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.ComboViewer;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
@@ -43,7 +43,9 @@ import org.eclipse.swt.widgets.Text;
  */
 public class FftNxmBlockControls {
 
+	private static final String VALUE_USE_DEFAULT = "default";
 	private static final int FIELD_BINDING_DELAY = 200;
+	
 	private DataBindingContext dataBindingCtx;
 	private final FftNxmBlockSettings settings;
 	private Text        transformSizeField;
@@ -63,42 +65,38 @@ public class FftNxmBlockControls {
 	}
 
 	public void createControls(final Composite container) {
-		final GridLayout gridLayout = new GridLayout(2, false);
-		container.setLayout(gridLayout);
+		container.setLayout(new GridLayout(2, false));
+		Label label;
 
 		// === FFT transform size ===
-		final Label transformSizeLabel = new Label(container, SWT.NONE);
-		transformSizeLabel.setLayoutData(new GridData(GridData.BEGINNING, GridData.CENTER, false, false));
-		transformSizeLabel.setText("Transform Size:");
+		label = new Label(container, SWT.NONE);
+		label.setText("Transform Size:");
 		this.transformSizeField = new Text(container, SWT.BORDER); // writable
-		this.transformSizeField.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false));
+		this.transformSizeField.setLayoutData(GridDataFactory.fillDefaults().grab(true,  false).create());
 		this.transformSizeField.setText(Integer.toString(this.settings.getTransformSize()));
 		this.transformSizeField.setToolTipText("Performance is best if factorable by 2, 3, 4 and 5.");
 
 		// === percent overlap ===
-		final Label percentOverlapLabel = new Label(container, SWT.NONE);
-		percentOverlapLabel.setLayoutData(new GridData(GridData.BEGINNING, GridData.CENTER, false, false));
-		percentOverlapLabel.setText("Percent Overlap:");
+		label = new Label(container, SWT.NONE);
+		label.setText("Percent Overlap:");
 		this.overlapField = new Text(container, SWT.BORDER);
-		this.overlapField.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false));
+		this.overlapField.setLayoutData(GridDataFactory.fillDefaults().grab(true,  false).create());
 		this.overlapField.setText(Integer.toString(this.settings.getOverlap()));
 
 		// === num averages (/nexp) ===
-		final Label numAveragesLabel = new Label(container, SWT.NONE);
-		numAveragesLabel.setLayoutData(new GridData(GridData.BEGINNING, GridData.CENTER, false, false));
-		numAveragesLabel.setText("Num Averages:");
+		label = new Label(container, SWT.NONE);
+		label.setText("Num Averages:");
 		this.numAveragesField = new Text(container, SWT.BORDER);
-		this.numAveragesField.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false, 1, 1));
+		this.numAveragesField.setLayoutData(GridDataFactory.fillDefaults().grab(true,  false).create());
 		this.numAveragesField.setText(Integer.toString(this.settings.getNumAverages()));
 		this.numAveragesField.setToolTipText("Avoid using large value as it will cause highlighted energy to remain longer.");
 
 		// === can not change FFT output type at this time ===
-		final Label typeLabel = new Label(container, SWT.NONE);
-		typeLabel.setLayoutData(new GridData(GridData.BEGINNING, GridData.CENTER, false, false));
-		typeLabel.setText("Output Type:");
+		label = new Label(container, SWT.NONE);
+		label.setText("Output Type:");
 		this.fftType = new ComboViewer(container, SWT.READ_ONLY);
-		fftType.getCombo().setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false, 1, 1));
-		fftType.setContentProvider(new ArrayContentProvider());
+		fftType.getCombo().setLayoutData(GridDataFactory.fillDefaults().grab(true,  false).create());
+		fftType.setContentProvider(ArrayContentProvider.getInstance()); // ArrayContentProvider does not store any state, therefore can re-use instances
 		fftType.setLabelProvider(new LabelProvider());
 		fftType.setInput(FftNxmBlockSettings.OutputType.values());
 		OutputType currentOutputType = this.settings.getOutputType();
@@ -109,13 +107,12 @@ public class FftNxmBlockControls {
 		fftType.getCombo().setEnabled(false); // disable changing fft output type
 
 		// === FFT Window ===
-		final Label windowLabel = new Label(container, SWT.NONE);
-		windowLabel.setLayoutData(new GridData(GridData.BEGINNING, GridData.CENTER, false, false));
-		windowLabel.setText("Window:");
+		label = new Label(container, SWT.NONE);
+		label.setText("Window:");
 
 		fftWindow = new ComboViewer(container, SWT.READ_ONLY);
-		fftWindow.getCombo().setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false, 1, 1));
-		fftWindow.setContentProvider(new ArrayContentProvider());
+		fftWindow.getCombo().setLayoutData(GridDataFactory.fillDefaults().grab(true,  false).create());
+		fftWindow.setContentProvider(ArrayContentProvider.getInstance()); // ArrayContentProvider does not store any state, therefore can re-use instances
 		fftWindow.setLabelProvider(new LabelProvider());
 		fftWindow.setInput(FftNxmBlockSettings.WindowType.values());
 		WindowType windowType = this.settings.getWindow();

@@ -11,109 +11,83 @@
  */
 package gov.redhawk.ui.port.nxmblocks;
 
+import gov.redhawk.sca.util.ArrayUtil;
+
 import org.eclipse.core.databinding.Binding;
 import org.eclipse.core.databinding.DataBindingContext;
 import org.eclipse.core.databinding.UpdateValueStrategy;
 import org.eclipse.core.databinding.beans.PojoProperties;
-import org.eclipse.core.databinding.conversion.Converter;
+import org.eclipse.core.databinding.conversion.NumberToStringConverter;
+import org.eclipse.core.databinding.conversion.StringToNumberConverter;
 import org.eclipse.core.databinding.observable.value.IObservableValue;
-import org.eclipse.core.databinding.validation.IValidator;
-import org.eclipse.core.databinding.validation.ValidationStatus;
-import org.eclipse.core.runtime.IStatus;
 import org.eclipse.jface.databinding.fieldassist.ControlDecorationSupport;
 import org.eclipse.jface.databinding.swt.WidgetProperties;
+import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.ComboViewer;
 import org.eclipse.jface.viewers.LabelProvider;
+import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 
 /**
  * Adjust/override INxmBlock settings to plot user entry dialog.
+ * @NonNullByDefault
  * @noreference This class is provisional/beta and is subject to API changes
  * @since 4.3
  */
 public class PlotNxmBlockControls {
 
-	private static final int FIELD_BINDING_DELAY = 100;
+	private static final String VALUE_USE_DEFAULT = "default";
+	private static final Object[] FRAME_SIZE_COMBO_VALUES = new Object[] { VALUE_USE_DEFAULT, 512, 1024, 2048, 4096, 8192 };
 	
-	private DataBindingContext dataBindingCtx;
 	private final PlotNxmBlockSettings settings;
+	private final DataBindingContext dataBindingCtx;
+
 	private ComboViewer frameSizeField;
 
-	/**
-	 * Instantiates a new entry dialog.
-	 * @param parentShell the parent shell
-	 */
 	public PlotNxmBlockControls(PlotNxmBlockSettings settings, DataBindingContext dataBindingCtx) {
 		this.settings = settings;
-		this.dataBindingCtx = dataBindingCtx;		
+		this.dataBindingCtx = dataBindingCtx;
 	}
 
 	public void createControls(final Composite container) {
-		final GridLayout gridLayout = new GridLayout(2, false);
-		container.setLayout(gridLayout);
+		container.setLayout(new GridLayout(2, false));
+		Label label;
 
 		// === frame size ===
-		final Label frameSizeLabel = new Label(container, SWT.NONE);
-		frameSizeLabel.setLayoutData(new GridData(GridData.BEGINNING, GridData.CENTER, false, false));
-		frameSizeLabel.setText("Frame Size:");
+		label = new Label(container, SWT.NONE);
+		label.setText("Frame Size:");
 		this.frameSizeField = new ComboViewer(container, SWT.BORDER); // writable
-		this.frameSizeField.getCombo().setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false, 1, 1));
-		this.frameSizeField.setContentProvider(new ArrayContentProvider());
+		this.frameSizeField.getCombo().setLayoutData(GridDataFactory.fillDefaults().grab(true,  false).create());
+		this.frameSizeField.getCombo().setToolTipText("Custom frame size to override value in StreamSRI. Default uses value from StreamSRI.");
+		this.frameSizeField.setContentProvider(ArrayContentProvider.getInstance()); // ArrayContentProvider does not store any state, therefore can re-use instances
 		this.frameSizeField.setLabelProvider(new LabelProvider());
-
-		final Integer fs = this.settings.getFrameSize();
-		if (fs != null) {
-			this.frameSizeField.setInput(new Object[] { fs });
-		}
-
+		Object[] inputValues = ArrayUtil.copyAndPrependIfNotNull(this.settings.getFrameSize(), FRAME_SIZE_COMBO_VALUES);
+		this.frameSizeField.setInput(inputValues);
+		this.frameSizeField.setSelection(new StructuredSelection(inputValues[0])); // select first value (which is current value or default)
 		this.frameSizeField.addSelectionChangedListener(new SelectAllTextComboTextListener(this.frameSizeField.getCombo()));
 		
-		addDataBindings();
+		initDataBindings();
 	}
 
-	protected void addDataBindings() {
-		IObservableValue frameSizeWidgetValue = WidgetProperties.selection().observeDelayed(FIELD_BINDING_DELAY, this.frameSizeField.getCombo());
-		IObservableValue frameSizeModelValue = PojoProperties.value("frameSize").observe(this.settings);
-//		dataBindingCtx.bindValue(fsTargetObservableVal, fsModelObservableVal, createTargetToModelForFrameSize(), null);
-		Binding fsBindValue = dataBindingCtx.bindValue(frameSizeWidgetValue, frameSizeModelValue);
-		
-		ControlDecorationSupport.create(fsBindValue, SWT.TOP | SWT.LEFT);
+	private void initDataBindings() {
+		IObservableValue frameSizeWidgetValue = WidgetProperties.selection().observe(this.frameSizeField.getCombo());
+		IObservableValue frameSizeModelValue = PojoProperties.value(PlotNxmBlockSettings.PROP_FRAME_SIZE).observe(this.settings);
+		UpdateValueStrategy frameSizeModelToTarget = new UpdateValueStrategy();
+		frameSizeModelToTarget.setConverter(new ObjectsToNullConverterWrapper(NumberToStringConverter.fromInteger(false))); // wrap so that null converts to null
+		Binding bindingValue = dataBindingCtx.bindValue(frameSizeWidgetValue, frameSizeModelValue, createTargetToModelForFrameSize(), frameSizeModelToTarget);
+		ControlDecorationSupport.create(bindingValue, SWT.TOP | SWT.LEFT);
 	}
 
 	private UpdateValueStrategy createTargetToModelForFrameSize() {
 		UpdateValueStrategy updateValueStrategy = new UpdateValueStrategy();
 		
-		updateValueStrategy.setAfterGetValidator(new IValidator() {
-			@Override
-			public IStatus validate(Object value) {
-				if ("default".equalsIgnoreCase((String) value)) {
-					return ValidationStatus.ok();
-				} else {
-					try {
-						Integer.valueOf((String) value);
-						return ValidationStatus.ok();
-					} catch (NumberFormatException nfe) {
-						return ValidationStatus.error("Frame size must a number greater than 0.");
-					}
-				}
-			}
-		});
+		updateValueStrategy.setConverter(new ObjectsToNullConverterWrapper(StringToNumberConverter.toInteger(false), true, true, VALUE_USE_DEFAULT));
+		updateValueStrategy.setAfterConvertValidator(new NumberRangeValidator<Integer>("Frame size", Integer.class, 0, false));
 
-		updateValueStrategy.setConverter(new Converter(String.class, Integer.class) {
-			@Override
-			public Object convert(Object fromObject) {
-				if ("default".equalsIgnoreCase((String) fromObject)) {
-					return -1;
-				}
-				return Integer.valueOf((String) fromObject);
-			}
-		});
-		
 		return updateValueStrategy;
 	}
 }

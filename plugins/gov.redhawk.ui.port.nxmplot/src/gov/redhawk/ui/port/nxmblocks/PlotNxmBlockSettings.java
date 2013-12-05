@@ -21,8 +21,10 @@ public class PlotNxmBlockSettings implements Cloneable {
 	public static final String PROP_FRAME_SIZE = "frameSize";
 	public static final int DEFAULT_FRAME_SIZE = 1024; // SUPPRESS CHECKSTYLE MAGIC NUMBER
 
-	private Integer frameSize; // null or <= 0 to use default
-	private Integer pipeSize;  // null or <= 0 to use default
+	/** null to use default. */
+	private Integer frameSize;
+	/** null to use default. */
+	private Integer pipeSize;
 
 	public PlotNxmBlockSettings() {
 	}
@@ -36,7 +38,7 @@ public class PlotNxmBlockSettings implements Cloneable {
 		try {
 			return (PlotNxmBlockSettings) super.clone();
 		} catch (CloneNotSupportedException e) {
-			throw new AssertionError("This should never happenn: " + e);
+			throw new AssertionError("This should never happen: " + e);
 		}
 	}
 

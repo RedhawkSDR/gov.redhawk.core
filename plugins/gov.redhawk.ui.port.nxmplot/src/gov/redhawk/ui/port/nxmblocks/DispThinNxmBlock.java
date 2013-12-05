@@ -54,7 +54,6 @@ public class DispThinNxmBlock extends AbstractNxmBlock<dispthin> {
 	}
 
 	@Override
-	@NonNull
 	public Map<String, Object> getSettings() {
 		Map<String, Object> clone = settings;
 		if (clone == null) {

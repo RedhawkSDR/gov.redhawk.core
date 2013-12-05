@@ -24,37 +24,37 @@ public class BulkIONxmBlockSettings implements Cloneable {
 	
 	private static final int DEFAULT_TIMELINE_LENGTTH = 200;
 
-	private Double sampleRate; // null or zero to use default from StreamSRI
-	
+	/** null to use default from StreamSRI. */
+	private Double sampleRate;
+	/** true to block pushPacket when downstream Command (e.g. Plot) cannot keep up, false to drop packets in this scenario. */
 	private boolean blocking;
+	/** zero to use NeXtMidas default pipe size. */
 	private int pipeSize;
+	/** time line length for output data pipe. */
 	private int timelineLength = DEFAULT_TIMELINE_LENGTTH;
 
 	public BulkIONxmBlockSettings() {
 	}
 
-	/* (non-Javadoc)
-	 * @see java.lang.Object#clone()
-	 */
 	@NonNull
 	@Override
 	public BulkIONxmBlockSettings clone() {
 		try {
 			return (BulkIONxmBlockSettings) super.clone();
 		} catch (CloneNotSupportedException e) {
-			throw new AssertionError("This should never happenn: " + e);
+			throw new AssertionError("This should never happen: " + e);
 		}
 	}
 
 	/**
-	 * @return the sampleRate
+	 * @return the current sample rate (null to use default)
 	 */
 	public Double getSampleRate() {
 		return sampleRate;
 	}
 
 	/**
-	 * @param sampleRate the sampleRate to set
+	 * @param sampleRate the sampleRate to set (null to use default)
 	 */
 	public void setSampleRate(Double sampleRate) {
 		this.sampleRate = sampleRate;
