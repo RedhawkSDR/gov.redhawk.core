@@ -19,6 +19,11 @@ import org.eclipse.jdt.annotation.NonNull;
  * @since 4.3
  */
 public class FftNxmBlockSettings implements Cloneable {
+	public static final String PROP_TRANSFORM_SIZE = "transformSize";
+	public static final String PROP_OVERLAP = "overlap";
+	public static final String PROP_NUM_AVERAGES = "numAverages";
+	public static final String PROP_WINDOW_TYPE = "window";
+	
 	// FFT args/switches
 	public static enum WindowType {
 		BARTLETT { 
@@ -75,7 +80,7 @@ public class FftNxmBlockSettings implements Cloneable {
 	private int numAverages    = 1;
 	private int numExpAverages = 1;
 	private WindowType window = WindowType.HANNING;
-	private OutputType outputType = OutputType.PSD;
+	private OutputType outputType;
 
 	private int    pipeSize;      // /PS=
 
@@ -146,7 +151,7 @@ public class FftNxmBlockSettings implements Cloneable {
 		return this.window.toWindowString();
 	}
 
-	public void setOutputType(final OutputType outputType) {
+	public void setOutputType(@NonNull final OutputType outputType) {
 		this.outputType = outputType;
 	}
 

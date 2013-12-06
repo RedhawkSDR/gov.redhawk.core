@@ -12,19 +12,19 @@
 package gov.redhawk.ui.port.nxmblocks;
 
 
+import gov.redhawk.sca.util.ArrayUtil;
 import gov.redhawk.ui.port.nxmblocks.FftNxmBlockSettings.OutputType;
 import gov.redhawk.ui.port.nxmblocks.FftNxmBlockSettings.WindowType;
 
+import org.eclipse.core.databinding.Binding;
 import org.eclipse.core.databinding.DataBindingContext;
 import org.eclipse.core.databinding.UpdateValueStrategy;
 import org.eclipse.core.databinding.beans.PojoProperties;
-import org.eclipse.core.databinding.conversion.Converter;
 import org.eclipse.core.databinding.observable.value.IObservableValue;
-import org.eclipse.core.databinding.validation.IValidator;
-import org.eclipse.core.databinding.validation.ValidationStatus;
-import org.eclipse.core.runtime.IStatus;
-import org.eclipse.jdt.annotation.Nullable;
+import org.eclipse.jdt.annotation.NonNull;
+import org.eclipse.jface.databinding.fieldassist.ControlDecorationSupport;
 import org.eclipse.jface.databinding.swt.WidgetProperties;
+import org.eclipse.jface.databinding.viewers.ViewerProperties;
 import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.ComboViewer;
@@ -43,49 +43,52 @@ import org.eclipse.swt.widgets.Text;
  */
 public class FftNxmBlockControls {
 
-	private static final String VALUE_USE_DEFAULT = "default";
-	private static final int FIELD_BINDING_DELAY = 200;
+	private static final String VALUE_USE_DEFAULT = "default"; // TODO: DELETE - NOT USED?
+	private static final Object[] FFT_SIZE_COMBO_VALUES = new Object[] { 1024, 2048, 4096, 8192, 16384 };
+	private static final String FFT_SIZE_FIELD_NAME = "Transform Size";
+	private static final String OVERLAP_FIELD_NAME = "Percent Overlap";
+	private static final String NUM_AVERAGES_FIELD_NAME = "Num Averages";
 	
-	private DataBindingContext dataBindingCtx;
 	private final FftNxmBlockSettings settings;
-	private Text        transformSizeField;
+	private DataBindingContext dataBindingCtx;
+	
+	private ComboViewer transformSizeField;
 	private Text        overlapField;
 	private Text        numAveragesField;
 	private ComboViewer fftType;
 	private ComboViewer fftWindow;
 
-	/**
-	 * Instantiates a new entry dialog.
-	 * @param parentShell the parent shell
-	 */
-	public FftNxmBlockControls(@Nullable final FftNxmBlockSettings settings,
-			final DataBindingContext dataBindingsCtx) {
+	public FftNxmBlockControls(@NonNull final FftNxmBlockSettings settings, @NonNull final DataBindingContext dataBindingsCtx) {
 		this.settings = settings;
 		this.dataBindingCtx = dataBindingsCtx;
 	}
 
-	public void createControls(final Composite container) {
+	public void createControls(@NonNull final Composite container) {
 		container.setLayout(new GridLayout(2, false));
 		Label label;
 
 		// === FFT transform size ===
 		label = new Label(container, SWT.NONE);
-		label.setText("Transform Size:");
-		this.transformSizeField = new Text(container, SWT.BORDER); // writable
-		this.transformSizeField.setLayoutData(GridDataFactory.fillDefaults().grab(true,  false).create());
-		this.transformSizeField.setText(Integer.toString(this.settings.getTransformSize()));
-		this.transformSizeField.setToolTipText("Performance is best if factorable by 2, 3, 4 and 5.");
+		label.setText(FFT_SIZE_FIELD_NAME + ":");
+		this.transformSizeField = new ComboViewer(container, SWT.BORDER); // writable
+		this.transformSizeField.getCombo().setLayoutData(GridDataFactory.fillDefaults().grab(true,  false).create());
+		this.transformSizeField.getCombo().setToolTipText("Performance is best if factorable by 2, 3, 4 and 5.");
+		this.transformSizeField.setContentProvider(ArrayContentProvider.getInstance()); // ArrayContentProvider does not store any state, therefore can re-use instances
+		this.transformSizeField.setLabelProvider(new LabelProvider());
+		Object[] inputValues = ArrayUtil.copyAndPrependIfNotNull(this.settings.getTransformSize(), FFT_SIZE_COMBO_VALUES);
+		this.transformSizeField.setInput(inputValues);
+		this.transformSizeField.setSelection(new StructuredSelection(inputValues[0])); // select first value (which is current value or default)
 
 		// === percent overlap ===
 		label = new Label(container, SWT.NONE);
-		label.setText("Percent Overlap:");
+		label.setText(OVERLAP_FIELD_NAME + ":");
 		this.overlapField = new Text(container, SWT.BORDER);
 		this.overlapField.setLayoutData(GridDataFactory.fillDefaults().grab(true,  false).create());
 		this.overlapField.setText(Integer.toString(this.settings.getOverlap()));
 
 		// === num averages (/nexp) ===
 		label = new Label(container, SWT.NONE);
-		label.setText("Num Averages:");
+		label.setText(NUM_AVERAGES_FIELD_NAME + ":");
 		this.numAveragesField = new Text(container, SWT.BORDER);
 		this.numAveragesField.setLayoutData(GridDataFactory.fillDefaults().grab(true,  false).create());
 		this.numAveragesField.setText(Integer.toString(this.settings.getNumAverages()));
@@ -101,15 +104,15 @@ public class FftNxmBlockControls {
 		fftType.setInput(FftNxmBlockSettings.OutputType.values());
 		OutputType currentOutputType = this.settings.getOutputType();
 		if (currentOutputType == null) {
-			currentOutputType = OutputType.PSD; // default to PSD
+			currentOutputType = OutputType.PSD; // default to PSD output
+		} else {
+			fftType.getCombo().setEnabled(false); // disable changing fft output type
 		}
 		fftType.setSelection(new StructuredSelection(currentOutputType));
-		fftType.getCombo().setEnabled(false); // disable changing fft output type
 
 		// === FFT Window ===
 		label = new Label(container, SWT.NONE);
 		label.setText("Window:");
-
 		fftWindow = new ComboViewer(container, SWT.READ_ONLY);
 		fftWindow.getCombo().setLayoutData(GridDataFactory.fillDefaults().grab(true,  false).create());
 		fftWindow.setContentProvider(ArrayContentProvider.getInstance()); // ArrayContentProvider does not store any state, therefore can re-use instances
@@ -117,136 +120,57 @@ public class FftNxmBlockControls {
 		fftWindow.setInput(FftNxmBlockSettings.WindowType.values());
 		WindowType windowType = this.settings.getWindow();
 		if (windowType == null) {
-			windowType = WindowType.HANNING;
+			windowType = WindowType.HANNING; // default to Hanning Window Type
 		}
 		fftWindow.setSelection(new StructuredSelection(windowType));
 		
-		addDataBindings();
+		initDataBindings();
 	}
 
-	protected void addDataBindings() {
-		IObservableValue fsTargetObservableVal = WidgetProperties.text(SWT.Modify).observeDelayed(FIELD_BINDING_DELAY, this.transformSizeField);
-		IObservableValue fsModelObservableVal = PojoProperties.value("transformSize").observe(this.settings);
-//		IObservableValue fsModelObservableVal = BeansObservables.observeValue(settings, );
-		dataBindingCtx.bindValue(fsTargetObservableVal, fsModelObservableVal, createTargetToModelForFftSize(), null);
+	private void initDataBindings() {
+		Binding bindingValue;
 
-		IObservableValue srWidgetValue = WidgetProperties.text(SWT.Modify).observe(this.overlapField);
-		IObservableValue srModelValue  = PojoProperties.value("overlap").observe(this.settings);
-//		IObservableValue srModelObservableVal  = BeansObservables.observeValue(settings, "overlap");
-		dataBindingCtx.bindValue(srWidgetValue, srModelValue, createTargetToModelForOverlap(), null);
+		IObservableValue tsWidgetValue = WidgetProperties.selection().observe(this.transformSizeField.getCombo());
+		IObservableValue tsModelValue = PojoProperties.value(FftNxmBlockSettings.PROP_TRANSFORM_SIZE).observe(this.settings);
+		bindingValue = dataBindingCtx.bindValue(tsWidgetValue, tsModelValue, createTargetToModelForFftSize(), null);
+		ControlDecorationSupport.create(bindingValue, SWT.TOP | SWT.LEFT);
 
-//		IObservableValue numAvgTargetObservableValue = WidgetProperties.text(SWT.Modify).observeDelayed(FIELD_BINDING_DELAY, this.numAveragesField);
-//		IObservableValue numAvgModelObservableValue = BeansObservables.observeValue(settings, "numAverages");
-//		dataBindingCtx.bindValue(numAvgTargetObservableValue, numAvgModelObservableValue, createTargetToModelForNumAverages(), null);
-//
-//		IObservableValue windowWidgetValue = ViewerProperties.singleSelection().observeDelayed(FIELD_BINDING_DELAY, this.fftWindow);
-//		IObservableValue windowModelValue = BeansObservables.observeValue(settings, "window");
-//		dataBindingCtx.bindValue(windowWidgetValue, windowModelValue, createTargetToModelForWindow(), null);
-	}
+		IObservableValue overlapWidgetValue = WidgetProperties.text(SWT.Modify).observe(this.overlapField);
+		IObservableValue overlapModelValue  = PojoProperties.value(FftNxmBlockSettings.PROP_OVERLAP).observe(this.settings);
+		bindingValue = dataBindingCtx.bindValue(overlapWidgetValue, overlapModelValue, createTargetToModelForOverlap(), null);
+		ControlDecorationSupport.create(bindingValue, SWT.TOP | SWT.LEFT);
 
-	private UpdateValueStrategy createTargetToModelForOverlap() {
-		UpdateValueStrategy updateValueStrategy = new UpdateValueStrategy();
+		IObservableValue numAvgWidgetValue = WidgetProperties.text(SWT.Modify).observe(this.numAveragesField);
+		IObservableValue numAvgModelValue = PojoProperties.value(FftNxmBlockSettings.PROP_NUM_AVERAGES).observe(this.settings);
+		bindingValue = dataBindingCtx.bindValue(numAvgWidgetValue, numAvgModelValue, createTargetToModelForNumAverages(), null);
+		ControlDecorationSupport.create(bindingValue, SWT.TOP | SWT.LEFT);
+
+		// todo bind output type
 		
-		updateValueStrategy.setAfterGetValidator(new IValidator() {
-			@Override
-			public IStatus validate(Object value) {
-				if ("default".equalsIgnoreCase((String) value)) {
-					return ValidationStatus.ok();
-				} else {
-					try {
-						Integer.valueOf((String) value);
-						return ValidationStatus.ok();
-					} catch (NumberFormatException nfe) {
-						return ValidationStatus.error("Overlap percent must a number between 0 - 100.");
-					}
-				}
-			}
-		});
-
-		updateValueStrategy.setConverter(new Converter(String.class, Integer.class) {
-			@Override
-			public Object convert(Object fromObject) {
-				if ("default".equalsIgnoreCase((String) fromObject)) {
-					return -1;
-				}
-				return Integer.valueOf((String) fromObject);
-			}
-		});
-
-		updateValueStrategy.setAfterConvertValidator(new IValidator() {
-			@Override
-			public IStatus validate(Object value) {
-				Integer val = (Integer) value;
-				if (val >= 0 && val <= 100) { // SUPPRESS CHECKSTYLE MAGIC NUMBER
-					return ValidationStatus.ok();
-				}
-				return ValidationStatus.error("Overlap percent must a number between 0 - 100.");
-			}
-		});
-		return updateValueStrategy;
+		IObservableValue windowWidgetValue = ViewerProperties.singleSelection().observe(this.fftWindow);
+		IObservableValue windowModelValue = PojoProperties.value(FftNxmBlockSettings.PROP_WINDOW_TYPE).observe(this.settings);
+		bindingValue = dataBindingCtx.bindValue(windowWidgetValue, windowModelValue);
+		ControlDecorationSupport.create(bindingValue, SWT.TOP | SWT.LEFT);
 	}
 
 	private UpdateValueStrategy createTargetToModelForFftSize() {
 		UpdateValueStrategy updateValueStrategy = new UpdateValueStrategy();
 		
-		updateValueStrategy.setAfterGetValidator(new IValidator() {
-			@Override
-			public IStatus validate(Object value) {
-				if ("default".equalsIgnoreCase((String) value)) {
-					return ValidationStatus.ok();
-				} else {
-					try {
-						Integer.valueOf((String) value);
-						return ValidationStatus.ok();
-					} catch (NumberFormatException nfe) {
-						return ValidationStatus.error("FFT transform size must a number greater than 0.");
-					}
-				}
-			}
-		});
-
-		updateValueStrategy.setConverter(new Converter(String.class, Integer.class) {
-			@Override
-			public Object convert(Object fromObject) {
-				if ("default".equalsIgnoreCase((String) fromObject)) {
-					return -1;
-				}
-				return Integer.valueOf((String) fromObject);
-			}
-		});
-		
-		updateValueStrategy.setAfterConvertValidator(new IValidator() {
-			@Override
-			public IStatus validate(Object value) {
-				Integer val = (Integer) value;
-				if (val > 0) {
-					return ValidationStatus.ok();
-				}
-				return ValidationStatus.error("FFT transform size must be greater than 0.");
-			}
-		});
+		updateValueStrategy.setAfterConvertValidator(new NumberRangeValidator<Integer>(FFT_SIZE_FIELD_NAME, Integer.class, 0, false));
 		return updateValueStrategy;
 	}
-
-	private UpdateValueStrategy createTargetToModelForWindow() {
+	
+	private UpdateValueStrategy createTargetToModelForOverlap() {
 		UpdateValueStrategy updateValueStrategy = new UpdateValueStrategy();
-		// TODO: ?
+		
+		updateValueStrategy.setAfterConvertValidator(new NumberRangeValidator<Integer>(OVERLAP_FIELD_NAME, Integer.class, 0, 100));
 		return updateValueStrategy;
 	}
 
 	private UpdateValueStrategy createTargetToModelForNumAverages() {
 		UpdateValueStrategy updateValueStrategy = new UpdateValueStrategy();
 		
-		updateValueStrategy.setAfterConvertValidator(new IValidator() {
-			@Override
-			public IStatus validate(Object value) {
-				Integer val = (Integer) value;
-				if (val >= 1) {
-					return ValidationStatus.ok();
-				}
-				return ValidationStatus.error("Num averages must be greater than 0.");
-			}
-		});
+		updateValueStrategy.setAfterConvertValidator(new NumberRangeValidator<Integer>(NUM_AVERAGES_FIELD_NAME, Integer.class, 0, false));
 		return updateValueStrategy;
 	}
 

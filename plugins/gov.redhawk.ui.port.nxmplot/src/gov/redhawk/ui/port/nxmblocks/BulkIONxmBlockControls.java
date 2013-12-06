@@ -81,7 +81,7 @@ public class BulkIONxmBlockControls {
 	}
 
 	private void initDataBindings() {
-		Binding bindingValue; 
+		Binding bindingValue;
 		
 		IObservableValue srWidgetValue = WidgetProperties.selection().observe(this.sampleRateField.getCombo());
 		IObservableValue srModelValue = PojoProperties.value(BulkIONxmBlockSettings.PROP_SAMPLE_RATE).observe(settings);

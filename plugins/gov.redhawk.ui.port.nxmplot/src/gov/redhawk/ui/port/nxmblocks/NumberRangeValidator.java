@@ -38,7 +38,11 @@ class NumberRangeValidator<C extends Comparable<? super C>> implements IValidato
 	public NumberRangeValidator(@NonNull String fieldName, @NonNull Class<? extends Number> numberClass, C minValue, boolean inclusiveMin) {
 		this(fieldName, numberClass, true, minValue, inclusiveMin, null, true);
 	}
-	
+
+	public NumberRangeValidator(@NonNull String fieldName, @NonNull Class<? extends Number> numberClass, C minValue, C maxValue) {
+		this(fieldName, numberClass, true, minValue, true, maxValue, true);
+	}
+
 	public NumberRangeValidator(@NonNull String fieldName, @NonNull Class<? extends Number> numberClass,
 		boolean allowNull, C minValue, boolean inclusiveMin, C maxValue, boolean inclusiveMax) {
 		this.fieldName = fieldName;
