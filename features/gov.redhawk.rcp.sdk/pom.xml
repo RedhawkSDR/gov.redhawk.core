@@ -9,9 +9,7 @@
 		<version>1.9.1-SNAPSHOT</version>
 		<relativePath>../../releng/rcp/</relativePath>
 	</parent>
-	<version>1.9.1-SNAPSHOT</version>
-
-    <build>
+	<build>
         <plugins>
             <plugin>
                 <groupId>org.eclipse.tycho.extras</groupId>
