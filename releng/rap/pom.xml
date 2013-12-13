@@ -11,14 +11,14 @@
   <parent>
     <groupId>gov.redhawk.core</groupId>
     <artifactId>releng</artifactId>
-    <version>1.8.5-SNAPSHOT</version>
+    <version>1.8.6-SNAPSHOT</version>
   </parent>
 
   <properties>
     <rap>http://download.eclipse.org/rt/rap/1.5/runtime</rap>
     <rap-cnf>http://download.eclipse.org/rt/rap/incubator/nightly/cnf/</rap-cnf>
     <rap-tab>http://download.eclipse.org/rt/rap/incubator/nightly/tabbed-properties/</rap-tab>
-    <org.eclipse.emf.transaction.ui>http://pinkman.villains.techma.com/p2/eclipse/org.eclipse.emf.transaction.ui/</org.eclipse.emf.transaction.ui>
+    <org.eclipse.emf.transaction.ui>http://pinkman.techma.com/p2/eclipse/org.eclipse.emf.transaction.ui/</org.eclipse.emf.transaction.ui>
   </properties>
 
   <repositories>
