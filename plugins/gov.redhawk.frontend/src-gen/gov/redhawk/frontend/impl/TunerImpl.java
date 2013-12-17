@@ -2,7 +2,6 @@
  */
 package gov.redhawk.frontend.impl;
 
-import gov.redhawk.frontend.AnalogDevice;
 import gov.redhawk.frontend.FrontendPackage;
 import gov.redhawk.frontend.Tuner;
 import gov.redhawk.frontend.TunerStatus;
@@ -16,8 +15,6 @@ import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
 
-import org.eclipse.emf.ecore.util.EcoreUtil;
-
 /**
  * <!-- begin-user-doc -->
  * An implementation of the model object '<em><b>Tuner</b></em>'.
@@ -25,7 +22,6 @@ import org.eclipse.emf.ecore.util.EcoreUtil;
  * <p>
  * The following features are implemented:
  * <ul>
- *   <li>{@link gov.redhawk.frontend.impl.TunerImpl#getAnalogDevice <em>Analog Device</em>}</li>
  *   <li>{@link gov.redhawk.frontend.impl.TunerImpl#getAllocationID <em>Allocation ID</em>}</li>
  *   <li>{@link gov.redhawk.frontend.impl.TunerImpl#getTunerType <em>Tuner Type</em>}</li>
  *   <li>{@link gov.redhawk.frontend.impl.TunerImpl#isDeviceControl <em>Device Control</em>}</li>
@@ -189,62 +185,6 @@ public class TunerImpl extends MinimalEObjectImpl.Container implements Tuner
   protected EClass eStaticClass()
   {
     return FrontendPackage.Literals.TUNER;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  public AnalogDevice getAnalogDevice()
-  {
-    if (eContainerFeatureID() != FrontendPackage.TUNER__ANALOG_DEVICE) return null;
-    return (AnalogDevice)eContainer();
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  public AnalogDevice basicGetAnalogDevice()
-  {
-    if (eContainerFeatureID() != FrontendPackage.TUNER__ANALOG_DEVICE) return null;
-    return (AnalogDevice)eInternalContainer();
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  public NotificationChain basicSetAnalogDevice(AnalogDevice newAnalogDevice, NotificationChain msgs)
-  {
-    msgs = eBasicSetContainer((InternalEObject)newAnalogDevice, FrontendPackage.TUNER__ANALOG_DEVICE, msgs);
-    return msgs;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  public void setAnalogDevice(AnalogDevice newAnalogDevice)
-  {
-    if (newAnalogDevice != eInternalContainer() || (eContainerFeatureID() != FrontendPackage.TUNER__ANALOG_DEVICE && newAnalogDevice != null))
-    {
-      if (EcoreUtil.isAncestor(this, newAnalogDevice))
-        throw new IllegalArgumentException("Recursive containment not allowed for " + toString());
-      NotificationChain msgs = null;
-      if (eInternalContainer() != null)
-        msgs = eBasicRemoveFromContainer(msgs);
-      if (newAnalogDevice != null)
-        msgs = ((InternalEObject)newAnalogDevice).eInverseAdd(this, FrontendPackage.ANALOG_DEVICE__TUNERS, AnalogDevice.class, msgs);
-      msgs = basicSetAnalogDevice(newAnalogDevice, msgs);
-      if (msgs != null) msgs.dispatch();
-    }
-    else if (eNotificationRequired())
-      eNotify(new ENotificationImpl(this, Notification.SET, FrontendPackage.TUNER__ANALOG_DEVICE, newAnalogDevice, newAnalogDevice));
   }
 
   /**
@@ -443,10 +383,6 @@ public class TunerImpl extends MinimalEObjectImpl.Container implements Tuner
   {
     switch (featureID)
     {
-      case FrontendPackage.TUNER__ANALOG_DEVICE:
-        if (eInternalContainer() != null)
-          msgs = eBasicRemoveFromContainer(msgs);
-        return basicSetAnalogDevice((AnalogDevice)otherEnd, msgs);
       case FrontendPackage.TUNER__TUNER_STATUS:
         if (tunerStatus != null)
           msgs = ((InternalEObject)tunerStatus).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - FrontendPackage.TUNER__TUNER_STATUS, null, msgs);
@@ -465,8 +401,6 @@ public class TunerImpl extends MinimalEObjectImpl.Container implements Tuner
   {
     switch (featureID)
     {
-      case FrontendPackage.TUNER__ANALOG_DEVICE:
-        return basicSetAnalogDevice(null, msgs);
       case FrontendPackage.TUNER__TUNER_STATUS:
         return basicSetTunerStatus(null, msgs);
     }
@@ -479,29 +413,10 @@ public class TunerImpl extends MinimalEObjectImpl.Container implements Tuner
    * @generated
    */
   @Override
-  public NotificationChain eBasicRemoveFromContainerFeature(NotificationChain msgs)
-  {
-    switch (eContainerFeatureID())
-    {
-      case FrontendPackage.TUNER__ANALOG_DEVICE:
-        return eInternalContainer().eInverseRemove(this, FrontendPackage.ANALOG_DEVICE__TUNERS, AnalogDevice.class, msgs);
-    }
-    return super.eBasicRemoveFromContainerFeature(msgs);
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  @Override
   public Object eGet(int featureID, boolean resolve, boolean coreType)
   {
     switch (featureID)
     {
-      case FrontendPackage.TUNER__ANALOG_DEVICE:
-        if (resolve) return getAnalogDevice();
-        return basicGetAnalogDevice();
       case FrontendPackage.TUNER__ALLOCATION_ID:
         return getAllocationID();
       case FrontendPackage.TUNER__TUNER_TYPE:
@@ -530,9 +445,6 @@ public class TunerImpl extends MinimalEObjectImpl.Container implements Tuner
   {
     switch (featureID)
     {
-      case FrontendPackage.TUNER__ANALOG_DEVICE:
-        setAnalogDevice((AnalogDevice)newValue);
-        return;
       case FrontendPackage.TUNER__ALLOCATION_ID:
         setAllocationID((String)newValue);
         return;
@@ -568,9 +480,6 @@ public class TunerImpl extends MinimalEObjectImpl.Container implements Tuner
   {
     switch (featureID)
     {
-      case FrontendPackage.TUNER__ANALOG_DEVICE:
-        setAnalogDevice((AnalogDevice)null);
-        return;
       case FrontendPackage.TUNER__ALLOCATION_ID:
         setAllocationID(ALLOCATION_ID_EDEFAULT);
         return;
@@ -606,8 +515,6 @@ public class TunerImpl extends MinimalEObjectImpl.Container implements Tuner
   {
     switch (featureID)
     {
-      case FrontendPackage.TUNER__ANALOG_DEVICE:
-        return basicGetAnalogDevice() != null;
       case FrontendPackage.TUNER__ALLOCATION_ID:
         return ALLOCATION_ID_EDEFAULT == null ? allocationID != null : !ALLOCATION_ID_EDEFAULT.equals(allocationID);
       case FrontendPackage.TUNER__TUNER_TYPE:

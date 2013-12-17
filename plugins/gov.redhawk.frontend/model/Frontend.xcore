@@ -4,13 +4,20 @@
 @GenModel(editDirectory="/gov.redhawk.frontend.edit/src-gen")
 package gov.redhawk.frontend
 
+import gov.redhawk.model.sca.ScaStructProperty
+
 class AnalogDevice {
-	contains Tuner[] tuners opposite analogDevice
+	contains TunerContainer tunerContainer opposite analogDevice
 }
 
+class TunerContainer {
+	container AnalogDevice analogDevice opposite tunerContainer
+	TunerStruct[] tuners  
+}
+
+type TunerStruct wraps ScaStructProperty
+
 class Tuner { 
-	@GenModel(property="Readonly")
-	container AnalogDevice analogDevice opposite tuners
     @GenModel(property="Readonly")
 	String allocationID
 	@GenModel(property="Readonly")

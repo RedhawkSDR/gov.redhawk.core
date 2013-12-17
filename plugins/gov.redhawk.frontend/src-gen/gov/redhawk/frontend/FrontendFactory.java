@@ -2,6 +2,8 @@
  */
 package gov.redhawk.frontend;
 
+import gov.redhawk.model.sca.ScaStructProperty;
+
 import org.eclipse.emf.ecore.EFactory;
 
 /**
@@ -32,6 +34,15 @@ public interface FrontendFactory extends EFactory
   AnalogDevice createAnalogDevice();
 
   /**
+   * Returns a new object of class '<em>Tuner Container</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>Tuner Container</em>'.
+   * @generated
+   */
+  TunerContainer createTunerContainer();
+
+  /**
    * Returns a new object of class '<em>Tuner</em>'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
@@ -48,6 +59,26 @@ public interface FrontendFactory extends EFactory
    * @generated
    */
   TunerStatus createTunerStatus();
+
+  /**
+   * Returns an instance of data type '<em>Tuner Struct</em>' corresponding the given literal.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @param literal a literal of the data type.
+   * @return a new instance value of the data type.
+   * @generated
+   */
+  ScaStructProperty createTunerStruct(String literal);
+
+  /**
+   * Returns a literal representation of an instance of data type '<em>Tuner Struct</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @param instanceValue an instance value of the data type.
+   * @return a literal representation of the instance value.
+   * @generated
+   */
+  String convertTunerStruct(ScaStructProperty instanceValue);
 
   /**
    * Returns the package supported by this factory.

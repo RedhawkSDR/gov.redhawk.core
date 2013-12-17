@@ -4,7 +4,10 @@ package gov.redhawk.frontend.impl;
 
 import gov.redhawk.frontend.*;
 
+import gov.redhawk.model.sca.ScaStructProperty;
+
 import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.EDataType;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
 
@@ -65,6 +68,7 @@ public class FrontendFactoryImpl extends EFactoryImpl implements FrontendFactory
     switch (eClass.getClassifierID())
     {
       case FrontendPackage.ANALOG_DEVICE: return createAnalogDevice();
+      case FrontendPackage.TUNER_CONTAINER: return createTunerContainer();
       case FrontendPackage.TUNER: return createTuner();
       case FrontendPackage.TUNER_STATUS: return createTunerStatus();
       default:
@@ -77,10 +81,55 @@ public class FrontendFactoryImpl extends EFactoryImpl implements FrontendFactory
    * <!-- end-user-doc -->
    * @generated
    */
+  @Override
+  public Object createFromString(EDataType eDataType, String initialValue)
+  {
+    switch (eDataType.getClassifierID())
+    {
+      case FrontendPackage.TUNER_STRUCT:
+        return createTunerStructFromString(eDataType, initialValue);
+      default:
+        throw new IllegalArgumentException("The datatype '" + eDataType.getName() + "' is not a valid classifier");
+    }
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public String convertToString(EDataType eDataType, Object instanceValue)
+  {
+    switch (eDataType.getClassifierID())
+    {
+      case FrontendPackage.TUNER_STRUCT:
+        return convertTunerStructToString(eDataType, instanceValue);
+      default:
+        throw new IllegalArgumentException("The datatype '" + eDataType.getName() + "' is not a valid classifier");
+    }
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
   public AnalogDevice createAnalogDevice()
   {
     AnalogDeviceImpl analogDevice = new AnalogDeviceImpl();
     return analogDevice;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public TunerContainer createTunerContainer()
+  {
+    TunerContainerImpl tunerContainer = new TunerContainerImpl();
+    return tunerContainer;
   }
 
   /**
@@ -103,6 +152,46 @@ public class FrontendFactoryImpl extends EFactoryImpl implements FrontendFactory
   {
     TunerStatusImpl tunerStatus = new TunerStatusImpl();
     return tunerStatus;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public ScaStructProperty createTunerStruct(String literal)
+  {
+    return (ScaStructProperty)super.createFromString(FrontendPackage.Literals.TUNER_STRUCT, literal);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public ScaStructProperty createTunerStructFromString(EDataType eDataType, String initialValue)
+  {
+    return createTunerStruct(initialValue);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public String convertTunerStruct(ScaStructProperty instanceValue)
+  {
+    return super.convertToString(FrontendPackage.Literals.TUNER_STRUCT, instanceValue);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public String convertTunerStructToString(EDataType eDataType, Object instanceValue)
+  {
+    return convertTunerStruct((ScaStructProperty)instanceValue);
   }
 
   /**

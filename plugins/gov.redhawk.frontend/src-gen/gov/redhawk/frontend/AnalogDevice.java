@@ -2,8 +2,6 @@
  */
 package gov.redhawk.frontend;
 
-import org.eclipse.emf.common.util.EList;
-
 import org.eclipse.emf.ecore.EObject;
 
 /**
@@ -14,7 +12,7 @@ import org.eclipse.emf.ecore.EObject;
  * <p>
  * The following features are supported:
  * <ul>
- *   <li>{@link gov.redhawk.frontend.AnalogDevice#getTuners <em>Tuners</em>}</li>
+ *   <li>{@link gov.redhawk.frontend.AnalogDevice#getTunerContainer <em>Tuner Container</em>}</li>
  * </ul>
  * </p>
  *
@@ -25,21 +23,31 @@ import org.eclipse.emf.ecore.EObject;
 public interface AnalogDevice extends EObject
 {
   /**
-   * Returns the value of the '<em><b>Tuners</b></em>' containment reference list.
-   * The list contents are of type {@link gov.redhawk.frontend.Tuner}.
-   * It is bidirectional and its opposite is '{@link gov.redhawk.frontend.Tuner#getAnalogDevice <em>Analog Device</em>}'.
+   * Returns the value of the '<em><b>Tuner Container</b></em>' containment reference.
+   * It is bidirectional and its opposite is '{@link gov.redhawk.frontend.TunerContainer#getAnalogDevice <em>Analog Device</em>}'.
    * <!-- begin-user-doc -->
    * <p>
-   * If the meaning of the '<em>Tuners</em>' containment reference list isn't clear,
+   * If the meaning of the '<em>Tuner Container</em>' containment reference isn't clear,
    * there really should be more of a description here...
    * </p>
    * <!-- end-user-doc -->
-   * @return the value of the '<em>Tuners</em>' containment reference list.
-   * @see gov.redhawk.frontend.FrontendPackage#getAnalogDevice_Tuners()
-   * @see gov.redhawk.frontend.Tuner#getAnalogDevice
+   * @return the value of the '<em>Tuner Container</em>' containment reference.
+   * @see #setTunerContainer(TunerContainer)
+   * @see gov.redhawk.frontend.FrontendPackage#getAnalogDevice_TunerContainer()
+   * @see gov.redhawk.frontend.TunerContainer#getAnalogDevice
    * @model opposite="analogDevice" containment="true"
    * @generated
    */
-  EList<Tuner> getTuners();
+  TunerContainer getTunerContainer();
+
+  /**
+   * Sets the value of the '{@link gov.redhawk.frontend.AnalogDevice#getTunerContainer <em>Tuner Container</em>}' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @param value the new value of the '<em>Tuner Container</em>' containment reference.
+   * @see #getTunerContainer()
+   * @generated
+   */
+  void setTunerContainer(TunerContainer value);
 
 } // AnalogDevice

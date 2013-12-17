@@ -12,7 +12,6 @@ import org.eclipse.emf.ecore.EObject;
  * <p>
  * The following features are supported:
  * <ul>
- *   <li>{@link gov.redhawk.frontend.Tuner#getAnalogDevice <em>Analog Device</em>}</li>
  *   <li>{@link gov.redhawk.frontend.Tuner#getAllocationID <em>Allocation ID</em>}</li>
  *   <li>{@link gov.redhawk.frontend.Tuner#getTunerType <em>Tuner Type</em>}</li>
  *   <li>{@link gov.redhawk.frontend.Tuner#isDeviceControl <em>Device Control</em>}</li>
@@ -29,35 +28,6 @@ import org.eclipse.emf.ecore.EObject;
  */
 public interface Tuner extends EObject
 {
-  /**
-   * Returns the value of the '<em><b>Analog Device</b></em>' container reference.
-   * It is bidirectional and its opposite is '{@link gov.redhawk.frontend.AnalogDevice#getTuners <em>Tuners</em>}'.
-   * <!-- begin-user-doc -->
-   * <p>
-   * If the meaning of the '<em>Analog Device</em>' container reference isn't clear,
-   * there really should be more of a description here...
-   * </p>
-   * <!-- end-user-doc -->
-   * @return the value of the '<em>Analog Device</em>' container reference.
-   * @see #setAnalogDevice(AnalogDevice)
-   * @see gov.redhawk.frontend.FrontendPackage#getTuner_AnalogDevice()
-   * @see gov.redhawk.frontend.AnalogDevice#getTuners
-   * @model opposite="tuners" transient="false"
-   *        annotation="http://www.eclipse.org/emf/2002/GenModel property='Readonly'"
-   * @generated
-   */
-  AnalogDevice getAnalogDevice();
-
-  /**
-   * Sets the value of the '{@link gov.redhawk.frontend.Tuner#getAnalogDevice <em>Analog Device</em>}' container reference.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @param value the new value of the '<em>Analog Device</em>' container reference.
-   * @see #getAnalogDevice()
-   * @generated
-   */
-  void setAnalogDevice(AnalogDevice value);
-
   /**
    * Returns the value of the '<em><b>Allocation ID</b></em>' attribute.
    * <!-- begin-user-doc -->

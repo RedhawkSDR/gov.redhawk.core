@@ -6,10 +6,14 @@ import gov.redhawk.frontend.AnalogDevice;
 import gov.redhawk.frontend.FrontendFactory;
 import gov.redhawk.frontend.FrontendPackage;
 import gov.redhawk.frontend.Tuner;
+import gov.redhawk.frontend.TunerContainer;
 import gov.redhawk.frontend.TunerStatus;
+
+import gov.redhawk.model.sca.ScaStructProperty;
 
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.EDataType;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.EcorePackage;
@@ -36,6 +40,13 @@ public class FrontendPackageImpl extends EPackageImpl implements FrontendPackage
    * <!-- end-user-doc -->
    * @generated
    */
+  private EClass tunerContainerEClass = null;
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
   private EClass tunerEClass = null;
 
   /**
@@ -44,6 +55,13 @@ public class FrontendPackageImpl extends EPackageImpl implements FrontendPackage
    * @generated
    */
   private EClass tunerStatusEClass = null;
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  private EDataType tunerStructEDataType = null;
 
   /**
    * Creates an instance of the model <b>Package</b>, registered with
@@ -126,9 +144,39 @@ public class FrontendPackageImpl extends EPackageImpl implements FrontendPackage
    * <!-- end-user-doc -->
    * @generated
    */
-  public EReference getAnalogDevice_Tuners()
+  public EReference getAnalogDevice_TunerContainer()
   {
     return (EReference)analogDeviceEClass.getEStructuralFeatures().get(0);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EClass getTunerContainer()
+  {
+    return tunerContainerEClass;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EReference getTunerContainer_AnalogDevice()
+  {
+    return (EReference)tunerContainerEClass.getEStructuralFeatures().get(0);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EAttribute getTunerContainer_Tuners()
+  {
+    return (EAttribute)tunerContainerEClass.getEStructuralFeatures().get(1);
   }
 
   /**
@@ -146,19 +194,9 @@ public class FrontendPackageImpl extends EPackageImpl implements FrontendPackage
    * <!-- end-user-doc -->
    * @generated
    */
-  public EReference getTuner_AnalogDevice()
-  {
-    return (EReference)tunerEClass.getEStructuralFeatures().get(0);
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
   public EAttribute getTuner_AllocationID()
   {
-    return (EAttribute)tunerEClass.getEStructuralFeatures().get(1);
+    return (EAttribute)tunerEClass.getEStructuralFeatures().get(0);
   }
 
   /**
@@ -168,7 +206,7 @@ public class FrontendPackageImpl extends EPackageImpl implements FrontendPackage
    */
   public EAttribute getTuner_TunerType()
   {
-    return (EAttribute)tunerEClass.getEStructuralFeatures().get(2);
+    return (EAttribute)tunerEClass.getEStructuralFeatures().get(1);
   }
 
   /**
@@ -178,7 +216,7 @@ public class FrontendPackageImpl extends EPackageImpl implements FrontendPackage
    */
   public EAttribute getTuner_DeviceControl()
   {
-    return (EAttribute)tunerEClass.getEStructuralFeatures().get(3);
+    return (EAttribute)tunerEClass.getEStructuralFeatures().get(2);
   }
 
   /**
@@ -188,7 +226,7 @@ public class FrontendPackageImpl extends EPackageImpl implements FrontendPackage
    */
   public EAttribute getTuner_GroupID()
   {
-    return (EAttribute)tunerEClass.getEStructuralFeatures().get(4);
+    return (EAttribute)tunerEClass.getEStructuralFeatures().get(3);
   }
 
   /**
@@ -198,7 +236,7 @@ public class FrontendPackageImpl extends EPackageImpl implements FrontendPackage
    */
   public EAttribute getTuner_RfFlowID()
   {
-    return (EAttribute)tunerEClass.getEStructuralFeatures().get(5);
+    return (EAttribute)tunerEClass.getEStructuralFeatures().get(4);
   }
 
   /**
@@ -208,7 +246,7 @@ public class FrontendPackageImpl extends EPackageImpl implements FrontendPackage
    */
   public EReference getTuner_TunerStatus()
   {
-    return (EReference)tunerEClass.getEStructuralFeatures().get(6);
+    return (EReference)tunerEClass.getEStructuralFeatures().get(5);
   }
 
   /**
@@ -218,7 +256,7 @@ public class FrontendPackageImpl extends EPackageImpl implements FrontendPackage
    */
   public EAttribute getTuner_Gain()
   {
-    return (EAttribute)tunerEClass.getEStructuralFeatures().get(7);
+    return (EAttribute)tunerEClass.getEStructuralFeatures().get(6);
   }
 
   /**
@@ -286,6 +324,16 @@ public class FrontendPackageImpl extends EPackageImpl implements FrontendPackage
    * <!-- end-user-doc -->
    * @generated
    */
+  public EDataType getTunerStruct()
+  {
+    return tunerStructEDataType;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
   public FrontendFactory getFrontendFactory()
   {
     return (FrontendFactory)getEFactoryInstance();
@@ -312,10 +360,13 @@ public class FrontendPackageImpl extends EPackageImpl implements FrontendPackage
 
     // Create classes and their features
     analogDeviceEClass = createEClass(ANALOG_DEVICE);
-    createEReference(analogDeviceEClass, ANALOG_DEVICE__TUNERS);
+    createEReference(analogDeviceEClass, ANALOG_DEVICE__TUNER_CONTAINER);
+
+    tunerContainerEClass = createEClass(TUNER_CONTAINER);
+    createEReference(tunerContainerEClass, TUNER_CONTAINER__ANALOG_DEVICE);
+    createEAttribute(tunerContainerEClass, TUNER_CONTAINER__TUNERS);
 
     tunerEClass = createEClass(TUNER);
-    createEReference(tunerEClass, TUNER__ANALOG_DEVICE);
     createEAttribute(tunerEClass, TUNER__ALLOCATION_ID);
     createEAttribute(tunerEClass, TUNER__TUNER_TYPE);
     createEAttribute(tunerEClass, TUNER__DEVICE_CONTROL);
@@ -330,6 +381,9 @@ public class FrontendPackageImpl extends EPackageImpl implements FrontendPackage
     createEAttribute(tunerStatusEClass, TUNER_STATUS__BANDWIDTH);
     createEAttribute(tunerStatusEClass, TUNER_STATUS__SAMPLE_RATE);
     createEAttribute(tunerStatusEClass, TUNER_STATUS__ENABLED);
+
+    // Create data types
+    tunerStructEDataType = createEDataType(TUNER_STRUCT);
   }
 
   /**
@@ -367,10 +421,13 @@ public class FrontendPackageImpl extends EPackageImpl implements FrontendPackage
 
     // Initialize classes, features, and operations; add parameters
     initEClass(analogDeviceEClass, AnalogDevice.class, "AnalogDevice", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-    initEReference(getAnalogDevice_Tuners(), this.getTuner(), this.getTuner_AnalogDevice(), "tuners", null, 0, -1, AnalogDevice.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEReference(getAnalogDevice_TunerContainer(), this.getTunerContainer(), this.getTunerContainer_AnalogDevice(), "tunerContainer", null, 0, 1, AnalogDevice.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+    initEClass(tunerContainerEClass, TunerContainer.class, "TunerContainer", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEReference(getTunerContainer_AnalogDevice(), this.getAnalogDevice(), this.getAnalogDevice_TunerContainer(), "analogDevice", null, 0, 1, TunerContainer.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEAttribute(getTunerContainer_Tuners(), this.getTunerStruct(), "tuners", null, 0, -1, TunerContainer.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     initEClass(tunerEClass, Tuner.class, "Tuner", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-    initEReference(getTuner_AnalogDevice(), this.getAnalogDevice(), this.getAnalogDevice_Tuners(), "analogDevice", null, 0, 1, Tuner.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEAttribute(getTuner_AllocationID(), theEcorePackage.getEString(), "allocationID", null, 0, 1, Tuner.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEAttribute(getTuner_TunerType(), theEcorePackage.getEString(), "tunerType", null, 0, 1, Tuner.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEAttribute(getTuner_DeviceControl(), theEcorePackage.getEBoolean(), "deviceControl", null, 0, 1, Tuner.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -385,6 +442,9 @@ public class FrontendPackageImpl extends EPackageImpl implements FrontendPackage
     initEAttribute(getTunerStatus_Bandwidth(), theEcorePackage.getEDouble(), "bandwidth", null, 0, 1, TunerStatus.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEAttribute(getTunerStatus_SampleRate(), theEcorePackage.getEDouble(), "sampleRate", null, 0, 1, TunerStatus.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEAttribute(getTunerStatus_Enabled(), theEcorePackage.getEBoolean(), "enabled", null, 0, 1, TunerStatus.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+    // Initialize data types
+    initEDataType(tunerStructEDataType, ScaStructProperty.class, "TunerStruct", IS_SERIALIZABLE, !IS_GENERATED_INSTANCE_CLASS);
 
     // Create resource
     createResource(eNS_URI);
