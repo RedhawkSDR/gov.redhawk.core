@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.0"?>
+
+<!--
+-->
+
+<plugin>
+
+   <extension point="org.eclipse.emf.ecore.generated_package">
+      <!-- @generated Frontend -->
+      <package
+            uri="http://redhawk.gov/frontend/1.0.0"
+            class="gov.redhawk.frontend.FrontendPackage"
+            genModel="model/Frontend.xcore"/>
+   </extension>
+
+
+   <extension point="org.eclipse.emf.ecore.content_parser">
+      <!-- @generated Frontend -->
+      <parser
+            contentTypeIdentifier="http://redhawk.gov/frontend/1.0.0"
+            class="gov.redhawk.frontend.util.FrontendResourceFactoryImpl"/>
+   </extension>
+   <extension point="org.eclipse.core.contenttype.contentTypes">
+      <!-- @generated Frontend -->
+      <content-type
+            base-type="org.eclipse.core.runtime.xml"
+            file-extensions="xml"
+            id="http://redhawk.gov/frontend/1.0.0"
+            name="%_UI_Frontend_content_type"
+            priority="normal">
+         <describer class="org.eclipse.emf.ecore.xmi.impl.RootXMLContentHandlerImpl$Describer">
+            <parameter name="namespace" value="http://redhawk.gov/frontend/1.0.0"/>
+         </describer>
+      </content-type>
+   </extension>
+
+</plugin>

@@ -1,0 +1,32 @@
+@Ecore(nsURI="http://redhawk.gov/frontend/1.0.0")
+@GenModel(prefix="Frontend", dataTypeConverters="true", binaryCompantibleReflectiveMethods="true", fileExtensions="xml", colorProviders="true", fontProviders="true", tablesProviders="true", resource="XML", templateDirectory="/gov.redhawk.frontend/templates", forceOverwrite="true", modelPluginVariables="org.eclipse.xtext.xbase.lib")
+@GenModel(contentTypeIdentifier="http://redhawk.gov/frontend/1.0.0")
+@GenModel(editDirectory="/gov.redhawk.frontend.edit/src-gen")
+package gov.redhawk.frontend
+
+class AnalogDevice {
+	contains Tuner[] tuners opposite analogDevice
+}
+
+class Tuner { 
+	@GenModel(property="Readonly")
+	container AnalogDevice analogDevice opposite tuners
+    @GenModel(property="Readonly")
+	String allocationID
+	@GenModel(property="Readonly")
+	String tunerType
+	boolean deviceControl
+	String groupID
+	String rfFlowID
+	contains TunerStatus tunerStatus opposite tuner
+	float gain
+}
+
+class TunerStatus {
+	@GenModel(property="Readonly")
+	container Tuner tuner opposite tunerStatus
+	double centerFrequency
+	double bandwidth
+	double sampleRate
+	boolean enabled
+}
