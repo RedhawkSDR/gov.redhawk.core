@@ -22,7 +22,6 @@ import gov.redhawk.model.sca.commands.ScaModelCommand;
 import gov.redhawk.sca.IScaDomainManagerRegistryContainer;
 import gov.redhawk.sca.ScaPlugin;
 import gov.redhawk.sca.preferences.ScaPreferenceInitializer;
-import gov.redhawk.sca.rap.ScaRapPlugin;
 
 import java.io.IOException;
 import java.net.URI;
@@ -45,9 +44,7 @@ import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.emf.transaction.RunnableWithResult;
 import org.eclipse.emf.transaction.TransactionalEditingDomain;
 import org.eclipse.emf.transaction.util.TransactionUtil;
-
 import org.eclipse.rwt.SessionSingletonBase;
-import org.eclipse.rwt.lifecycle.UICallBack;
 import org.eclipse.swt.widgets.Display;
 
 /**

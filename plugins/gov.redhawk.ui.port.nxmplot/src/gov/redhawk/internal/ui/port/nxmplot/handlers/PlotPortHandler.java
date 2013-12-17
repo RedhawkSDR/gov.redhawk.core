@@ -157,7 +157,7 @@ public class PlotPortHandler extends AbstractHandler {
 						PortHelper.refreshPorts(elements, subMonitor);
 						factory.dispose();
 						if (name.length() > 0 || tooltip.length() > 0) {
-							Display display = window.getWorkbench().getDisplay();
+							Display display = plotView.getSite().getShell().getDisplay();
 							display.asyncExec(new Runnable() {
 
 								@Override

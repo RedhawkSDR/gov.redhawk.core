@@ -15,7 +15,6 @@ import gov.redhawk.sca.IScaDomainManagerRegistryContainer;
 import gov.redhawk.sca.IScaDomainManagerRegistryFactoryService;
 import gov.redhawk.sca.rap.ScaRapPlugin;
 
-import org.eclipse.core.runtime.Assert;
 import org.eclipse.rwt.SessionSingletonBase;
 import org.eclipse.rwt.lifecycle.UICallBack;
 import org.eclipse.swt.widgets.Display;
