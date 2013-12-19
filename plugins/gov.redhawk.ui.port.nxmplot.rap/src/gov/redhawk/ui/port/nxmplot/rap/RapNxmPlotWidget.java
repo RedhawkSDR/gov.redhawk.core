@@ -38,6 +38,7 @@ public class RapNxmPlotWidget extends AbstractNxmPlotWidget {
 	private NxmRapComposite nxmComp;
 	private boolean initialized;
 	private Set<String> sources = new HashSet<String>();
+	private boolean initializing;
 
 	public RapNxmPlotWidget(Composite parent, int style) {
 		super(parent, style);
@@ -64,6 +65,14 @@ public class RapNxmPlotWidget extends AbstractNxmPlotWidget {
 
 	@Override
 	public void dispose() {
+		/* avoid race condition when plot is disposed and re-initialized
+		 * rapidly (e.g. via menu listeners causing plot to be hidden and shown).
+		 */
+		while (!this.nxmComp.isClientInitialized()) {
+			if (!getParent().getDisplay().readAndDispatch()) {
+				getParent().getDisplay().sleep();
+			}
+		}
 		String[] sourcesCopy = Arrays.copyOf(sources.toArray(new String[0]), sources.size());
 		for (String source : sourcesCopy) {
 			removeSource(source);
@@ -116,19 +125,22 @@ public class RapNxmPlotWidget extends AbstractNxmPlotWidget {
 	@Override
 	public void removeSource(String sourcePipeId) {
 		assertNotDisposed();
-		// From Client closeFIle
-		nxmComp.runClientCommand("SENDTO " + PLOT_ID + " CLOSEFILE " + sourcePipeId);
+		if (sourcePipeId != null) {
+			// From Client closeFIle
+			nxmComp.runClientCommand("SENDTO " + PLOT_ID + " CLOSEFILE " + sourcePipeId);
 
-		// From Client via RMIF disconnect pipe
-		nxmComp.runClientCommand("SENDTO RMIF DELC " + sourcePipeId);
+			// From Client via RMIF disconnect pipe
+			nxmComp.runClientCommand("SENDTO RMIF DELC " + sourcePipeId);
 
-		// UnPublish pipe on RMIF
-		nxmComp.getRmifPrim().getRmif().closeChannel(sourcePipeId);
+			// UnPublish pipe on RMIF
+			nxmComp.getRmifPrim().getRmif().closeChannel(sourcePipeId);
 
-		// From Server remove pipe reference from global registry
-		nxmComp.runServerCommand("REMOVE/global RAM." + sourcePipeId);
+			// From Server remove pipe reference from global registry
+			nxmComp.runServerCommand("REMOVE/global RAM." + sourcePipeId);
+			
+			this.sources.remove(sourcePipeId);
+		}
 
-		this.sources.remove(sourcePipeId);
 	}
 
 	@Override
