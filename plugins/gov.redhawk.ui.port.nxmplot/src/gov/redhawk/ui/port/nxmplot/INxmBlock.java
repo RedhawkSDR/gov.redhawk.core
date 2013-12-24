@@ -79,10 +79,10 @@ import BULKIO.StreamSRI;
 public interface INxmBlock {
 
 	/** if have existing context, it will be shutdown first before associating to the new context. */
-	public void setContext(AbstractNxmPlotWidget widget);
+	void setContext(AbstractNxmPlotWidget widget);
 
 	/** get current PlotWidget context. */
-	@Nullable public AbstractNxmPlotWidget getContext();
+	@Nullable AbstractNxmPlotWidget getContext();
 
 	/** hook up input to source block's output.
 	 *  This only does the hook up, it will NOT launch things.
@@ -92,7 +92,7 @@ public interface INxmBlock {
 	 *  @throws IllegalArgumentException, e.g. for invalid inIndex and or srcBlockOutIndex
 	 *  @throws UnsupportedOperationException, e.g. if block does not have any input b/c it is the starting point
 	 */ // other method names to consider: putInput? putInputBlock setInput? setInputBlock
-	public void addInput(int inIndex, INxmBlock srcBlock, int srcBlockOutIndex) throws IllegalArgumentException, UnsupportedOperationException;
+	void addInput(int inIndex, INxmBlock srcBlock, int srcBlockOutIndex) throws IllegalArgumentException, UnsupportedOperationException;
 
 	/** This implementation should call {@link #addInput(int, INxmBlock, int)} with normal case
 	 *  defaults (e.g. inIndex would be 0 and srcBlockOutIndex would 0).
@@ -100,7 +100,7 @@ public interface INxmBlock {
 	 *  @throws IllegalArgumentException, e.g. for invalid inIndex
 	 *  @throws UnsupportedOperationException, e.g. if block does not have any input b/c it is the starting point
 	 */
-	public void addInput(INxmBlock srcBlock) throws IllegalArgumentException, UnsupportedOperationException;
+	void addInput(INxmBlock srcBlock) throws IllegalArgumentException, UnsupportedOperationException;
 
 	/** remove hook for specified input index.
 	 *   This only removes the hook up, it will NOT shutdown things.
@@ -108,7 +108,7 @@ public interface INxmBlock {
 	 *  @throws IllegalArgumentException, e.g. for invalid inIndex
 	 *  @throws UnsupportedOperationException, e.g. if this block does not have any input b/c it is the starting point
 	 */
-	public void removeInput(int inIndex) throws IllegalArgumentException, UnsupportedOperationException;
+	void removeInput(int inIndex) throws IllegalArgumentException, UnsupportedOperationException;
 
 	/**
 	 * get input/source block and it's output index for specified input index.
@@ -116,7 +116,7 @@ public interface INxmBlock {
 	 * @return input/source block (null for none)
 	 * @throws UnsupportedOperationException, e.g. if this block does not have any input b/c it is the starting point
 	 */
-	@Nullable public INxmBlock getInputBlock(int inIndex) throws UnsupportedOperationException;
+	@Nullable INxmBlock getInputBlock(int inIndex) throws UnsupportedOperationException;
 
 	/** this SHOULD only be called by {@link #addInput(int, INxmBlock, int)} to provide forward lookup
 	 *  on the srcBlock to invoke this (destination) block's {@link #launch(String, StreamSRI)} when it's launch is called.
@@ -133,13 +133,13 @@ public interface INxmBlock {
 			throws IllegalArgumentException, UnsupportedOperationException;
 
 	/** @return maximum number of inputs allowed by this (usually 1+, 0 for none i.e. for start point) */
-	public int getMaxInputs();
+	int getMaxInputs();
 
 	/** @return maximum number of outputs allowed by this (usually 1+, 0 for none i.e. for end point) */
-	public int getMaxOutputs();
+	int getMaxOutputs();
 
 	/** @return current number of inputs to this (usually 1 -or- 0 for starting input point). */
-	public int getNumberInputs();
+	int getNumberInputs();
 
 	/**
 	 * @returns current number of outputs available for this (usually 1 -or- 0 for end point).
@@ -147,7 +147,7 @@ public interface INxmBlock {
 	 * if FFT has two inputs, and hence it can have two or three outputs (out1, out2, outCross),
 	 * then it should return 2 (no cross output enabled) or 3 (if cross output is enabled).
 	 */
-	public int getNumberOutputs();
+	int getNumberOutputs();
 
 	/** returns the output file/pipe name that should be processed/displayed.
 	 *  @param outIndex the output index
@@ -155,7 +155,7 @@ public interface INxmBlock {
 	 *  @return output name (null if none?)
 	 *  @throws IllegalArgumentException, e.g. for invalid outIndex
 	 */
-	@Nullable public String getOutputName(int outIndex, String streamID) throws IllegalArgumentException;
+	@Nullable String getOutputName(int outIndex, String streamID) throws IllegalArgumentException;
 
 	/** launches the appropriate NeXtMidas command to acquire the input (e.g. CORBARECEIVER, SOURCENIC)
 	 *  or process it's input(s) (e.g. using FFT, FCALCUALTOR).
@@ -164,61 +164,61 @@ public interface INxmBlock {
 	 * @param sriStreamID
 	 * @param sri (StreamSRI for this streamID - this can be null)
 	 */
-	public void launch(String streamID, @Nullable StreamSRI sri);
+	void launch(String streamID, @Nullable StreamSRI sri);
 
 	/** Disposes of input source for specified stream ID. All resources MUST be freed. Any launched
 	 *  commands/processing should be closed/exited and cleaned for this stream.
 	 *  NOTE: This MUST shutdown hooked/connected follow on blocks.
 	 */
-	public void shutdown(String streamID);
+	void shutdown(String streamID);
 
 	/** (optional) start any necessary things for this block.
 	 *  e.g. register/connect to BULK IO Port for pushSRI, or BULK IO SDDS Port for attach/detach.
 	 */
-	public void start() throws CoreException; // or init()
+	void start() throws CoreException; // or init()
 	/** (optional) stop any necessary things for this block.
 	 *  e.g. de-register/disconnect to BULK IO Port or BULK IO SDDS Port.
 	 *  
 	 */
-	public void stop();  // or maybe use dispose() instead
+	void stop();  // or maybe use dispose() instead
 
 	/** tear *ALL* my resources and call my INxmBlock's shutdown() for each stream that I have published.??? */
-	public void dispose();
+	void dispose();
 
 	/** Label for controls (e.g. to be display on menu / sub-menu to user.
 	 * Do not append " Settings" to this return value (that will be done elsewhere). */
-	public String getLabel();
+	String getLabel();
 
 	/**
 	 * @param newLabel
 	 * @return returns previous label (null if not set)
 	 */
-	@Nullable public String setLabel(String newLabel);
+	@Nullable String setLabel(String newLabel);
 
 	/** Has settings controls. */
-	public boolean hasControls();
+	boolean hasControls();
 
 	/** create SWT controls for adjusting this input source's settings.
 	 *  @param parent Composite of parent container
 	 *  @param currentSettings the current settings (S) to use for displaying the adjust settings controls
 	 *  @param dataBindingContext the data binding context to use
 	 */
-	public void createControls(Composite parent, @Nullable Object currentSettings, DataBindingContext dataBindingContext);
+	void createControls(Composite parent, @Nullable Object currentSettings, DataBindingContext dataBindingContext);
 
 	/** contribute menu items to specified menu */
-	public void contributeMenuItems(IMenuManager menu);
+	void contributeMenuItems(IMenuManager menu);
 	
 	/** get a copy of current settings. */
-	public Object getSettings();
+	Object getSettings();
 
 	/** apply settings to this block.
 	 * @param settings
 	 * @param streamId apply settings to specified streams, null to apply to all streams
      * @throws UnsupportedOperationException, e.g. if block does not support applying settings
 	 */
-	public void applySettings(Object settings, @Nullable String streamId) throws UnsupportedOperationException;
+	void applySettings(Object settings, @Nullable String streamId) throws UnsupportedOperationException;
 
-	public void addProperChangeListener(PropertyChangeListener nxmCmdSourceListner);
-	public void removeProperChangeListener(PropertyChangeListener nxmCmdSourceListner);
+	void addProperChangeListener(PropertyChangeListener nxmCmdSourceListner);
+	void removeProperChangeListener(PropertyChangeListener nxmCmdSourceListner);
 
 }
