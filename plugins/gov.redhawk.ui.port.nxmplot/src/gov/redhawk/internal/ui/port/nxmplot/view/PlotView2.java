@@ -144,9 +144,9 @@ public class PlotView2 extends ViewPart {
 	}
 
 	/** 
+	 * @param port ScaPort object to plot the output from.
 	 * @param fftSettings settings to use if an FFT is to be displayed (null for none)
 	 * @param qualifiers
-	 * @param ports list of ScaPort object to plot the output from.
 	 * @return IDisposable (since 4.3, was IPlotSession in 4.2)
 	 */
 	public IDisposable addPlotSource(ScaUsesPort port, final FftSettings fftSettings, String qualifiers) {
@@ -307,12 +307,10 @@ public class PlotView2 extends ViewPart {
 		return plotPageBook;
 	}
 
-	@Override
 	public void setPartName(String partName) {
 		super.setPartName(partName);
 	}
 
-	@Override
 	public void setTitleToolTip(String toolTip) {
 		super.setTitleToolTip(toolTip);
 	}
