@@ -67,17 +67,17 @@ class NumberRangeValidator<C extends Comparable<? super C>> implements IValidato
 			C val = (C) value;
 			if (minValue != null) { 
 				int compareToResults = minValue.compareTo(val);
-				if (inclusiveMin && compareToResults > 0) { // inclusive min value check
+				if (inclusiveMin && compareToResults > 0) {           // inclusive min value check
 					return ValidationStatus.error(fieldName + " must be greater than or equal to " + minValue);
-				} else if (compareToResults >= 0) {         // exclusive min value check 
+				} else if (!inclusiveMin && compareToResults >= 0) {  // exclusive min value check 
 					return ValidationStatus.error(fieldName + " must be greater than " + minValue);
 				}
 			}
 			if (maxValue != null) {
 				int compareToResults = maxValue.compareTo(val);
-				if (inclusiveMax && compareToResults < 0) { // inclusive max value check
+				if (inclusiveMax && compareToResults < 0) {           // inclusive max value check
 					return ValidationStatus.error(fieldName + " must be less than or equal to " + maxValue);
-				} else if (compareToResults <= 0) {         // exclusive max value check
+				} else if (!inclusiveMax && compareToResults <= 0) {  // exclusive max value check
 					return ValidationStatus.error(fieldName + " must be less than " + maxValue);
 				}
 			}
