@@ -186,7 +186,7 @@ public class corbareceiver2 extends CorbaPrimitive implements IMidasDataWriter {
 		final BulkIOType type = bulkioType;
 		final BulkIOReceiver receiver2 = receiver;
 		if (ior != null && !ior.trim().isEmpty() && type != null && receiver2 != null) {
-			BulkIOUtilActivator.getBulkIOPortConnectionManager().disconnect(ior, type, receiver2);
+			BulkIOUtilActivator.getBulkIOPortConnectionManager().disconnect(ior, type, receiver2, this.connectionId);
 		}
 		connected = false;
 	}

@@ -30,6 +30,7 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.Text;
 
 /**
  * Adjust/override BULKIO NXM block settings user interface/entry control widgets.
@@ -46,6 +47,7 @@ public class BulkIONxmBlockControls {
 	private final DataBindingContext dataBindingCtx;
 	
 	// widgets
+	private Text connectionIDField;
 	private ComboViewer sampleRateField;
 	private Button blockingField;
 
@@ -58,6 +60,16 @@ public class BulkIONxmBlockControls {
 		container.setLayout(new GridLayout(2, false));
 		Label label;
 		
+		// === connection ID ==
+		label = new Label(container, SWT.None);
+		label.setText("Connection ID:");
+		connectionIDField = new Text(container, SWT.BORDER);
+		connectionIDField.setLayoutData(GridDataFactory.fillDefaults().grab(true, false).create());
+		connectionIDField.setToolTipText("Custom Port connection ID to use vs a generated one.");
+		if (this.settings.getConnectionID() != null) {
+			connectionIDField.setEditable(false); // cannot change custom connection ID after it has been set at this time
+		}
+
 		// === sample rate ===
 		label = new Label(container, SWT.NONE);
 		label.setText(SAMPLE_RATE_FIELD_NAME + ":");
@@ -83,14 +95,19 @@ public class BulkIONxmBlockControls {
 	private void initDataBindings() {
 		Binding bindingValue;
 		
-		IObservableValue srWidgetValue = WidgetProperties.selection().observe(this.sampleRateField.getCombo());
+		IObservableValue connIdWidgetValue = WidgetProperties.text(SWT.Modify).observe(connectionIDField);
+		IObservableValue connIdModelValue = PojoProperties.value(BulkIONxmBlockSettings.PROP_CONNECTION_ID).observe(settings);
+		bindingValue = dataBindingCtx.bindValue(connIdWidgetValue, connIdModelValue);
+		ControlDecorationSupport.create(bindingValue, SWT.TOP | SWT.LEFT);
+		
+		IObservableValue srWidgetValue = WidgetProperties.selection().observe(sampleRateField.getCombo());
 		IObservableValue srModelValue = PojoProperties.value(BulkIONxmBlockSettings.PROP_SAMPLE_RATE).observe(settings);
 		UpdateValueStrategy srModelToTarget = new UpdateValueStrategy();
 		srModelToTarget.setConverter(new ObjectToNullConverter()); // converts null to null, otherwise uses toString()
 		bindingValue = dataBindingCtx.bindValue(srWidgetValue, srModelValue, createTargetToModelForSampleRate(), srModelToTarget);
 		ControlDecorationSupport.create(bindingValue, SWT.TOP | SWT.LEFT);
 		
-		IObservableValue boWidgetValue = WidgetProperties.selection().observe(this.blockingField); 
+		IObservableValue boWidgetValue = WidgetProperties.selection().observe(blockingField); 
 		IObservableValue boModelValue = PojoProperties.value(BulkIONxmBlockSettings.PROP_BLOCKING_OPTION).observe(settings);
 		bindingValue = dataBindingCtx.bindValue(boWidgetValue, boModelValue);
 		ControlDecorationSupport.create(bindingValue, SWT.TOP | SWT.LEFT);

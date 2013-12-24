@@ -19,11 +19,14 @@ import org.eclipse.jdt.annotation.NonNull;
  * @since 4.3
  */
 public class BulkIONxmBlockSettings implements Cloneable {
+	public static final String PROP_CONNECTION_ID   = "connectionID";
 	public static final String PROP_SAMPLE_RATE     = "sampleRate";
 	public static final String PROP_BLOCKING_OPTION = "blocking";
 	
 	private static final int DEFAULT_TIMELINE_LENGTTH = 200;
 
+	/** custom connection ID to use. */
+	private String connectionID;
 	/** null to use default from StreamSRI. */
 	private Double sampleRate;
 	/** true to block pushPacket when downstream Command (e.g. Plot) cannot keep up, false to drop packets in this scenario. */
@@ -46,6 +49,14 @@ public class BulkIONxmBlockSettings implements Cloneable {
 		}
 	}
 
+	public String getConnectionID() {
+		return connectionID;
+	}
+	
+	public void setConnectionID(String connectionID) {
+		this.connectionID = connectionID;
+	}
+	
 	/**
 	 * @return the current sample rate (null to use default)
 	 */

@@ -21,6 +21,7 @@ import gov.redhawk.ui.port.nxmplot.PlotActivator;
 import java.text.MessageFormat;
 
 import nxm.redhawk.prim.corbareceiver2;
+import nxm.sys.lib.StringUtil;
 
 import org.eclipse.core.databinding.DataBindingContext;
 import org.eclipse.core.runtime.CoreException;
@@ -163,14 +164,14 @@ public class BulkIONxmBlock extends AbstractNxmBlock<corbareceiver2> {
 
 	@Override
 	public void start() throws CoreException {
-		BulkIOUtilActivator.getBulkIOPortConnectionManager().connect(ior, bulkIOType, bulkIOPort);
+		BulkIOUtilActivator.getBulkIOPortConnectionManager().connect(ior, bulkIOType, bulkIOPort, settings.getConnectionID());
 	}
 
 	@Override
 	public void stop() {
 		TRACE_LOG.enteringMethod();
 		if (scaPort != null) {
-			BulkIOUtilActivator.getBulkIOPortConnectionManager().disconnect(ior, bulkIOType, bulkIOPort);
+			BulkIOUtilActivator.getBulkIOPortConnectionManager().disconnect(ior, bulkIOType, bulkIOPort, settings.getConnectionID());
 			scaPort = null;
 		}
 	}
@@ -195,6 +196,11 @@ public class BulkIONxmBlock extends AbstractNxmBlock<corbareceiver2> {
 		final int timeLineLen = settings.getTimelineLength();
 		if (timeLineLen > 0) {
 			switches.append("/TLL=").append(timeLineLen);
+		}
+		String customConnectionId = settings.getConnectionID();
+		if (customConnectionId != null) {
+			customConnectionId = StringUtil.escapeString(customConnectionId, true);
+			switches.append("/CONNECTIONID=\"").append(customConnectionId).append('\"');
 		}
 		final String idl = scaPort.getRepid();
 		String pattern = "CORBARECEIVER2{0}/BG FILE={1} IOR={2} IDL=\"{3}\" STREAMID=\"{4}\"";

@@ -24,6 +24,7 @@ public class ConnectionKey {
 		super();
 		this.ior = ior;
 		this.type = type;
+		this.connectionID = connectionID;
 	}
 
 	public String getIor() {
