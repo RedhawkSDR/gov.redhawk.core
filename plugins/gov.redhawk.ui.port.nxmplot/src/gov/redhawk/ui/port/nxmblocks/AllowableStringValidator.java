@@ -46,10 +46,8 @@ class AllowableStringValidator implements IValidator {
 			return ValidationStatus.ok();
 		} else if (value instanceof String) {
 			String strValue = ((String) value).trim();
-			if ("".equals(strValue)) {
-				if (!allowEmpty) {
-					return ValidationStatus.error(fieldName + " cannot be empty.");
-				}
+			if (!allowEmpty && "".equals(strValue)) {
+				return ValidationStatus.error(fieldName + " cannot be empty.");
 			}
 			if (allowableStrings != null) {
 				for (String allowableStr : allowableStrings) {
