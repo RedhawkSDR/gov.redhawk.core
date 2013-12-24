@@ -127,8 +127,7 @@ public interface INxmBlock {
 	 *  @throws UnsupportedOperationException, e.g. if block does not have any output(s)
 	 */
 	void internalAddOutputMapping(int outIndex, INxmBlock destBlock, int destBlockInIndex);
-	void internalRemoveOutputMapping(int outIndex, INxmBlock destBlock, int destBlockInIndex)
-			throws IllegalArgumentException, UnsupportedOperationException;
+	void internalRemoveOutputMapping(int outIndex, INxmBlock destBlock, int destBlockInIndex);
 
 	/** @return maximum number of inputs allowed by this (usually 1+, 0 for none i.e. for start point) */
 	int getMaxInputs();
