@@ -43,7 +43,6 @@ import org.eclipse.swt.widgets.Text;
  */
 public class FftNxmBlockControls {
 
-	private static final String VALUE_USE_DEFAULT = "default"; // TODO: DELETE - NOT USED?
 	private static final Object[] FFT_SIZE_COMBO_VALUES = new Object[] { 1024, 2048, 4096, 8192, 16384 };
 	private static final String FFT_SIZE_FIELD_NAME = "Transform Size";
 	private static final String OVERLAP_FIELD_NAME = "Percent Overlap";
@@ -94,7 +93,7 @@ public class FftNxmBlockControls {
 		this.numAveragesField.setText(Integer.toString(this.settings.getNumAverages()));
 		this.numAveragesField.setToolTipText("Avoid using large value as it will cause highlighted energy to remain longer.");
 
-		// === can not change FFT output type at this time ===
+		// === FFT output type ===
 		label = new Label(container, SWT.NONE);
 		label.setText("Output Type:");
 		this.fftType = new ComboViewer(container, SWT.READ_ONLY);
@@ -104,9 +103,9 @@ public class FftNxmBlockControls {
 		fftType.setInput(FftNxmBlockSettings.OutputType.values());
 		OutputType currentOutputType = this.settings.getOutputType();
 		if (currentOutputType == null) {
-			currentOutputType = OutputType.PSD; // default to PSD output
+			currentOutputType = OutputType.PSD;   // default to PSD output
 		} else {
-			fftType.getCombo().setEnabled(false); // disable changing fft output type
+			fftType.getCombo().setEnabled(false); // disable: cannot change FFT output type at this time
 		}
 		fftType.setSelection(new StructuredSelection(currentOutputType));
 
