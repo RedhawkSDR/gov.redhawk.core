@@ -91,8 +91,8 @@ public interface INxmBlock {
 	 *  @param srcBlockOutIndex the source block's output index
 	 *  @throws IllegalArgumentException, e.g. for invalid inIndex and or srcBlockOutIndex
 	 *  @throws UnsupportedOperationException, e.g. if block does not have any input b/c it is the starting point
-	 */ // other method names to consider: putInput? putInputBlock setInput? setInputBlock
-	void addInput(int inIndex, INxmBlock srcBlock, int srcBlockOutIndex) throws IllegalArgumentException, UnsupportedOperationException;
+	 */ 
+	void addInput(int inIndex, INxmBlock srcBlock, int srcBlockOutIndex);
 
 	/** This implementation should call {@link #addInput(int, INxmBlock, int)} with normal case
 	 *  defaults (e.g. inIndex would be 0 and srcBlockOutIndex would 0).
@@ -100,7 +100,7 @@ public interface INxmBlock {
 	 *  @throws IllegalArgumentException, e.g. for invalid inIndex
 	 *  @throws UnsupportedOperationException, e.g. if block does not have any input b/c it is the starting point
 	 */
-	void addInput(INxmBlock srcBlock) throws IllegalArgumentException, UnsupportedOperationException;
+	void addInput(INxmBlock srcBlock);
 
 	/** remove hook for specified input index.
 	 *   This only removes the hook up, it will NOT shutdown things.
@@ -108,7 +108,7 @@ public interface INxmBlock {
 	 *  @throws IllegalArgumentException, e.g. for invalid inIndex
 	 *  @throws UnsupportedOperationException, e.g. if this block does not have any input b/c it is the starting point
 	 */
-	void removeInput(int inIndex) throws IllegalArgumentException, UnsupportedOperationException;
+	void removeInput(int inIndex);
 
 	/**
 	 * get input/source block and it's output index for specified input index.
@@ -116,7 +116,7 @@ public interface INxmBlock {
 	 * @return input/source block (null for none)
 	 * @throws UnsupportedOperationException, e.g. if this block does not have any input b/c it is the starting point
 	 */
-	@Nullable INxmBlock getInputBlock(int inIndex) throws UnsupportedOperationException;
+	@Nullable INxmBlock getInputBlock(int inIndex);
 
 	/** this SHOULD only be called by {@link #addInput(int, INxmBlock, int)} to provide forward lookup
 	 *  on the srcBlock to invoke this (destination) block's {@link #launch(String, StreamSRI)} when it's launch is called.
@@ -126,9 +126,7 @@ public interface INxmBlock {
 	 *  @throws IllegalArgumentException, e.g. for invalid outIndex and or destBlockInIndex
 	 *  @throws UnsupportedOperationException, e.g. if block does not have any output(s)
 	 */
-	void internalAddOutputMapping(int outIndex, INxmBlock destBlock, int destBlockInIndex)
-			throws IllegalArgumentException, UnsupportedOperationException;
-	/** this SHOULD only be called by {@link #removeInput(int, INxmBlock)}. */
+	void internalAddOutputMapping(int outIndex, INxmBlock destBlock, int destBlockInIndex);
 	void internalRemoveOutputMapping(int outIndex, INxmBlock destBlock, int destBlockInIndex)
 			throws IllegalArgumentException, UnsupportedOperationException;
 
@@ -155,7 +153,7 @@ public interface INxmBlock {
 	 *  @return output name (null if none?)
 	 *  @throws IllegalArgumentException, e.g. for invalid outIndex
 	 */
-	@Nullable String getOutputName(int outIndex, String streamID) throws IllegalArgumentException;
+	@Nullable String getOutputName(int outIndex, String streamID);
 
 	/** launches the appropriate NeXtMidas command to acquire the input (e.g. CORBARECEIVER, SOURCENIC)
 	 *  or process it's input(s) (e.g. using FFT, FCALCUALTOR).
@@ -216,7 +214,7 @@ public interface INxmBlock {
 	 * @param streamId apply settings to specified streams, null to apply to all streams
      * @throws UnsupportedOperationException, e.g. if block does not support applying settings
 	 */
-	void applySettings(Object settings, @Nullable String streamId) throws UnsupportedOperationException;
+	void applySettings(Object settings, @Nullable String streamId);
 
 	void addProperChangeListener(PropertyChangeListener nxmCmdSourceListner);
 	void removeProperChangeListener(PropertyChangeListener nxmCmdSourceListner);
