@@ -104,6 +104,7 @@ public class FftNxmBlockControls {
 		OutputType currentOutputType = this.settings.getOutputType();
 		if (currentOutputType == null) {
 			currentOutputType = OutputType.PSD;   // default to PSD output
+			settings.setOutputType(currentOutputType);
 		} else {
 			fftType.getCombo().setEnabled(false); // disable: cannot change FFT output type at this time
 		}
@@ -120,6 +121,7 @@ public class FftNxmBlockControls {
 		WindowType windowType = this.settings.getWindow();
 		if (windowType == null) {
 			windowType = WindowType.HANNING; // default to Hanning Window Type
+			settings.setWindow(windowType);
 		}
 		fftWindow.setSelection(new StructuredSelection(windowType));
 		
@@ -129,48 +131,36 @@ public class FftNxmBlockControls {
 	private void initDataBindings() {
 		Binding bindingValue;
 
-		IObservableValue tsWidgetValue = WidgetProperties.selection().observe(this.transformSizeField.getCombo());
-		IObservableValue tsModelValue = PojoProperties.value(FftNxmBlockSettings.PROP_TRANSFORM_SIZE).observe(this.settings);
-		bindingValue = dataBindingCtx.bindValue(tsWidgetValue, tsModelValue, createTargetToModelForFftSize(), null);
+		IObservableValue fftSizeWidgetValue = WidgetProperties.selection().observe(this.transformSizeField.getCombo());
+		IObservableValue fftSizeModelValue = PojoProperties.value(FftNxmBlockSettings.PROP_TRANSFORM_SIZE).observe(this.settings);
+		UpdateValueStrategy fftSizeTargetToModel = new UpdateValueStrategy();
+		fftSizeTargetToModel.setAfterConvertValidator(new NumberRangeValidator<Integer>(FFT_SIZE_FIELD_NAME, Integer.class, 0, false));
+		bindingValue = dataBindingCtx.bindValue(fftSizeWidgetValue, fftSizeModelValue, fftSizeTargetToModel, null);
 		ControlDecorationSupport.create(bindingValue, SWT.TOP | SWT.LEFT);
 
 		IObservableValue overlapWidgetValue = WidgetProperties.text(SWT.Modify).observe(this.overlapField);
 		IObservableValue overlapModelValue  = PojoProperties.value(FftNxmBlockSettings.PROP_OVERLAP).observe(this.settings);
-		bindingValue = dataBindingCtx.bindValue(overlapWidgetValue, overlapModelValue, createTargetToModelForOverlap(), null);
+		UpdateValueStrategy overlapTargetToModel = new UpdateValueStrategy();		
+		overlapTargetToModel.setAfterConvertValidator(new NumberRangeValidator<Integer>(OVERLAP_FIELD_NAME, Integer.class, 0, 100));
+		bindingValue = dataBindingCtx.bindValue(overlapWidgetValue, overlapModelValue, overlapTargetToModel, null);
 		ControlDecorationSupport.create(bindingValue, SWT.TOP | SWT.LEFT);
 
 		IObservableValue numAvgWidgetValue = WidgetProperties.text(SWT.Modify).observe(this.numAveragesField);
 		IObservableValue numAvgModelValue = PojoProperties.value(FftNxmBlockSettings.PROP_NUM_AVERAGES).observe(this.settings);
-		bindingValue = dataBindingCtx.bindValue(numAvgWidgetValue, numAvgModelValue, createTargetToModelForNumAverages(), null);
+		UpdateValueStrategy numAvgTargetToModel = new UpdateValueStrategy();
+		numAvgTargetToModel.setAfterConvertValidator(new NumberRangeValidator<Integer>(NUM_AVERAGES_FIELD_NAME, Integer.class, 0, false));
+		bindingValue = dataBindingCtx.bindValue(numAvgWidgetValue, numAvgModelValue, numAvgTargetToModel, null);
 		ControlDecorationSupport.create(bindingValue, SWT.TOP | SWT.LEFT);
 
-		// todo bind output type
+		IObservableValue outputTypeWidgetValue = ViewerProperties.singleSelection().observe(this.fftType);
+		IObservableValue outputTypeModelValue = PojoProperties.value(FftNxmBlockSettings.PROP_OUTPUT_TYPE).observe(this.settings);
+		bindingValue = dataBindingCtx.bindValue(outputTypeWidgetValue, outputTypeModelValue);
+		ControlDecorationSupport.create(bindingValue, SWT.TOP | SWT.LEFT);
 		
 		IObservableValue windowWidgetValue = ViewerProperties.singleSelection().observe(this.fftWindow);
 		IObservableValue windowModelValue = PojoProperties.value(FftNxmBlockSettings.PROP_WINDOW_TYPE).observe(this.settings);
 		bindingValue = dataBindingCtx.bindValue(windowWidgetValue, windowModelValue);
 		ControlDecorationSupport.create(bindingValue, SWT.TOP | SWT.LEFT);
-	}
-
-	private UpdateValueStrategy createTargetToModelForFftSize() {
-		UpdateValueStrategy updateValueStrategy = new UpdateValueStrategy();
-		
-		updateValueStrategy.setAfterConvertValidator(new NumberRangeValidator<Integer>(FFT_SIZE_FIELD_NAME, Integer.class, 0, false));
-		return updateValueStrategy;
-	}
-	
-	private UpdateValueStrategy createTargetToModelForOverlap() {
-		UpdateValueStrategy updateValueStrategy = new UpdateValueStrategy();
-		
-		updateValueStrategy.setAfterConvertValidator(new NumberRangeValidator<Integer>(OVERLAP_FIELD_NAME, Integer.class, 0, 100));
-		return updateValueStrategy;
-	}
-
-	private UpdateValueStrategy createTargetToModelForNumAverages() {
-		UpdateValueStrategy updateValueStrategy = new UpdateValueStrategy();
-		
-		updateValueStrategy.setAfterConvertValidator(new NumberRangeValidator<Integer>(NUM_AVERAGES_FIELD_NAME, Integer.class, 0, false));
-		return updateValueStrategy;
 	}
 
 }

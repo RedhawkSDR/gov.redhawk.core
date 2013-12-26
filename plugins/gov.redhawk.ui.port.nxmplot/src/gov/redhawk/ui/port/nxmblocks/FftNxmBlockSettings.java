@@ -19,10 +19,11 @@ import org.eclipse.jdt.annotation.NonNull;
  * @since 4.3
  */
 public class FftNxmBlockSettings implements Cloneable {
+	public static final String PROP_NUM_AVERAGES   = "numAverages";
+	public static final String PROP_OVERLAP        = "overlap";
+	public static final String PROP_OUTPUT_TYPE    = "outputType";
 	public static final String PROP_TRANSFORM_SIZE = "transformSize";
-	public static final String PROP_OVERLAP = "overlap";
-	public static final String PROP_NUM_AVERAGES = "numAverages";
-	public static final String PROP_WINDOW_TYPE = "window";
+	public static final String PROP_WINDOW_TYPE    = "window";
 	
 	// FFT args/switches
 	public static enum WindowType {
