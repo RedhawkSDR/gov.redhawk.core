@@ -93,6 +93,9 @@ public class ResourceAndContainerGroup implements Listener {
 	 */
 	public static final int PROBLEM_PATH_OCCUPIED = 8;
 
+	// constants
+	private static final int SIZING_TEXT_FIELD_WIDTH = 250;
+
 	// the client to notify of changes
 	private final Listener client;
 
@@ -122,9 +125,6 @@ public class ResourceAndContainerGroup implements Listener {
 	 */
 	private String resourceExtension;
 	private final IProject root;
-
-	// constants
-	private static final int SIZING_TEXT_FIELD_WIDTH = 250;
 
 	/**
 	 * Create an instance of the group to allow the user to enter/select a

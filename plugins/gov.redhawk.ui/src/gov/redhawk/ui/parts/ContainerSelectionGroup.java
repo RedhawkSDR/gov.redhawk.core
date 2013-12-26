@@ -58,6 +58,16 @@ import org.eclipse.ui.part.DrillDownComposite;
  * Workbench-level composite for choosing a container.
  */
 public class ContainerSelectionGroup extends Composite {
+	// the message to display at the top of this dialog
+	private static final String DEFAULT_MSG_NEW_ALLOWED = IDEWorkbenchMessages.ContainerGroup_message;
+
+	private static final String DEFAULT_MSG_SELECT_ONLY = IDEWorkbenchMessages.ContainerGroup_selectFolder;
+
+	// sizing constants
+	private static final int SIZING_SELECTION_PANE_WIDTH = 320;
+
+	private static final int SIZING_SELECTION_PANE_HEIGHT = 300;
+
 	// The listener to notify of events
 	private final Listener listener;
 
@@ -76,16 +86,6 @@ public class ContainerSelectionGroup extends Composite {
 	private TreeViewer treeViewer;
 
 	private final IProject root;
-
-	// the message to display at the top of this dialog
-	private static final String DEFAULT_MSG_NEW_ALLOWED = IDEWorkbenchMessages.ContainerGroup_message;
-
-	private static final String DEFAULT_MSG_SELECT_ONLY = IDEWorkbenchMessages.ContainerGroup_selectFolder;
-
-	// sizing constants
-	private static final int SIZING_SELECTION_PANE_WIDTH = 320;
-
-	private static final int SIZING_SELECTION_PANE_HEIGHT = 300;
 
 	/**
 	 * Creates a new instance of the widget.

@@ -77,6 +77,8 @@ public abstract class BasicSimplePropertyComposite extends AbstractPropertyCompo
 	protected static final int NUM_COLUMNS = 3;
 
 	private static final GridDataFactory FACTORY = GridDataFactory.fillDefaults().span(2, 1).grab(true, false);
+	private static final String DEFAULT_ACTION = "external";
+
 	private ComboViewer typeViewer;
 	private FormEntry unitsEntry;
 	private Label kindLabel;
@@ -100,8 +102,6 @@ public abstract class BasicSimplePropertyComposite extends AbstractPropertyCompo
 	private FormToolkit toolkit;
 
 	private Combo typeModifier;
-
-	private static final String DEFAULT_ACTION = "external";
 
 	/**
 	 * @param parent
