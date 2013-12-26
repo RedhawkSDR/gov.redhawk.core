@@ -14,9 +14,9 @@ package gov.redhawk.ui.port.nxmblocks;
 import java.nio.ByteOrder;
 
 import org.eclipse.core.databinding.DataBindingContext;
-import org.eclipse.core.databinding.beans.BeansObservables;
+import org.eclipse.core.databinding.beans.PojoProperties;
 import org.eclipse.core.databinding.observable.value.IObservableValue;
-import org.eclipse.jface.databinding.swt.WidgetProperties;
+import org.eclipse.jface.databinding.viewers.ViewerProperties;
 import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.ComboViewer;
@@ -62,9 +62,9 @@ public class SddsNxmBlockControls {
 	}
 
 	protected void addDataBindings() {
-		IObservableValue boTargetObservableValue = WidgetProperties.text(SWT.Modify).observe(this.dataByteOrderField.getCombo());
-		IObservableValue boModelObservableValue = BeansObservables.observeValue(settings, "dataByteOrder");
-		dataBindingCtx.bindValue(boTargetObservableValue, boModelObservableValue, null, null);
+		IObservableValue boTargetObservableValue = ViewerProperties.singleSelection().observe(this.dataByteOrderField);
+		IObservableValue boModelObservableValue = PojoProperties.value(SddsNxmBlockSettings.PROP_DATA_BYTE_ORDER).observe(this.settings);
+		dataBindingCtx.bindValue(boTargetObservableValue, boModelObservableValue);
 	}
 
 }

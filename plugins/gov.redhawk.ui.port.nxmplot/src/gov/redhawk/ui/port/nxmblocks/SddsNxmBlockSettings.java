@@ -21,6 +21,8 @@ import org.eclipse.jdt.annotation.NonNull;
  * @since 4.3
  */
 public class SddsNxmBlockSettings implements Cloneable {
+	public static final String PROP_DATA_BYTE_ORDER = "dataByteOrder";
+	
 	// SOURCENIC switches
 	private String mcastAddress;  // /MGRP=      [DEF=null]
 	private int    port;          // /PORT=      [DEF=29495]
