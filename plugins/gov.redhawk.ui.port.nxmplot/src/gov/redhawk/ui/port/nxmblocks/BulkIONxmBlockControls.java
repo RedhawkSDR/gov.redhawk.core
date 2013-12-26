@@ -102,24 +102,19 @@ public class BulkIONxmBlockControls {
 		
 		IObservableValue srWidgetValue = WidgetProperties.selection().observe(sampleRateField.getCombo());
 		IObservableValue srModelValue = PojoProperties.value(BulkIONxmBlockSettings.PROP_SAMPLE_RATE).observe(settings);
+		UpdateValueStrategy srTargetToModel = new UpdateValueStrategy();
+		srTargetToModel.setAfterGetValidator(new StringToDoubleValidator(SAMPLE_RATE_FIELD_NAME, VALUE_USE_DEFAULT));
+		srTargetToModel.setConverter(new ObjectToNullConverter(StringToNumberConverter.toDouble(false), true, true, VALUE_USE_DEFAULT));
+		srTargetToModel.setAfterConvertValidator(new NumberRangeValidator<Double>(SAMPLE_RATE_FIELD_NAME, Double.class, 0.0, false));
 		UpdateValueStrategy srModelToTarget = new UpdateValueStrategy();
 		srModelToTarget.setConverter(new ObjectToNullConverter()); // converts null to null, otherwise uses toString()
-		bindingValue = dataBindingCtx.bindValue(srWidgetValue, srModelValue, createTargetToModelForSampleRate(), srModelToTarget);
+		bindingValue = dataBindingCtx.bindValue(srWidgetValue, srModelValue, srTargetToModel, srModelToTarget);
 		ControlDecorationSupport.create(bindingValue, SWT.TOP | SWT.LEFT);
 		
 		IObservableValue boWidgetValue = WidgetProperties.selection().observe(blockingField); 
 		IObservableValue boModelValue = PojoProperties.value(BulkIONxmBlockSettings.PROP_BLOCKING_OPTION).observe(settings);
 		bindingValue = dataBindingCtx.bindValue(boWidgetValue, boModelValue);
 		ControlDecorationSupport.create(bindingValue, SWT.TOP | SWT.LEFT);
-	}
-
-	private UpdateValueStrategy createTargetToModelForSampleRate() {
-		UpdateValueStrategy updateValueStrategy = new UpdateValueStrategy();
-		
-		updateValueStrategy.setAfterGetValidator(new StringToDoubleValidator(SAMPLE_RATE_FIELD_NAME, VALUE_USE_DEFAULT));
-		updateValueStrategy.setConverter(new ObjectToNullConverter(StringToNumberConverter.toDouble(false), true, true, VALUE_USE_DEFAULT));
-		updateValueStrategy.setAfterConvertValidator(new NumberRangeValidator<Double>(SAMPLE_RATE_FIELD_NAME, Double.class, 0.0, false));
-		return updateValueStrategy;
 	}
 
 }

@@ -77,19 +77,13 @@ public class PlotNxmBlockControls {
 	private void initDataBindings() {
 		IObservableValue frameSizeWidgetValue = WidgetProperties.selection().observe(this.frameSizeField.getCombo());
 		IObservableValue frameSizeModelValue = PojoProperties.value(PlotNxmBlockSettings.PROP_FRAME_SIZE).observe(this.settings);
+		UpdateValueStrategy frameSizeTargetToModel = new UpdateValueStrategy();
+		frameSizeTargetToModel.setAfterGetValidator(new StringToIntegerValidator(FRAME_SIZE_FIELD_NAME, VALUE_USE_DEFAULT));
+		frameSizeTargetToModel.setConverter(new ObjectToNullConverter(StringToNumberConverter.toInteger(false), true, true, VALUE_USE_DEFAULT));
+		frameSizeTargetToModel.setAfterConvertValidator(new NumberRangeValidator<Integer>(FRAME_SIZE_FIELD_NAME, Integer.class, 0, false));
 		UpdateValueStrategy frameSizeModelToTarget = new UpdateValueStrategy();
 		frameSizeModelToTarget.setConverter(new ObjectToNullConverter()); // converts null to null, otherwise uses toString()
-		Binding bindingValue = dataBindingCtx.bindValue(frameSizeWidgetValue, frameSizeModelValue, createTargetToModelForFrameSize(), frameSizeModelToTarget);
+		Binding bindingValue = dataBindingCtx.bindValue(frameSizeWidgetValue, frameSizeModelValue, frameSizeTargetToModel, frameSizeModelToTarget);
 		ControlDecorationSupport.create(bindingValue, SWT.TOP | SWT.LEFT);
-	}
-
-	private UpdateValueStrategy createTargetToModelForFrameSize() {
-		UpdateValueStrategy updateValueStrategy = new UpdateValueStrategy();
-		
-		updateValueStrategy.setAfterGetValidator(new StringToIntegerValidator(FRAME_SIZE_FIELD_NAME, VALUE_USE_DEFAULT));
-		updateValueStrategy.setConverter(new ObjectToNullConverter(StringToNumberConverter.toInteger(false), true, true, VALUE_USE_DEFAULT));
-		updateValueStrategy.setAfterConvertValidator(new NumberRangeValidator<Integer>(FRAME_SIZE_FIELD_NAME, Integer.class, 0, false));
-
-		return updateValueStrategy;
 	}
 }
