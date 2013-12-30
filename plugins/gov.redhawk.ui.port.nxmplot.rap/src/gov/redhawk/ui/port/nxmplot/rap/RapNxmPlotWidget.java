@@ -22,6 +22,7 @@ import java.util.Set;
 import nxm.rap.ui.NxmRapComposite;
 import nxm.redhawk.lib.RedhawkNxmUtil;
 import nxm.sys.lib.Command;
+import nxm.sys.lib.Shell;
 
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.swt.SWT;
@@ -33,12 +34,13 @@ import org.eclipse.swt.widgets.Composite;
  */
 public class RapNxmPlotWidget extends AbstractNxmPlotWidget {
 
-	private static final String MSG_HANDLER_ID = "MAIN_MSG_HANLDER";
 	private static final String PLOT_ID = "PLOT";
+	
+	private final String msgHandlerId;
 	private NxmRapComposite nxmComp;
+	private Shell rootNxmShell;
 	private boolean initialized;
 	private Set<String> sources = new HashSet<String>();
-	private boolean initializing;
 
 	public RapNxmPlotWidget(Composite parent, int style) {
 		super(parent, style);
@@ -46,7 +48,8 @@ public class RapNxmPlotWidget extends AbstractNxmPlotWidget {
 		this.nxmComp = new NxmRapComposite(this, SWT.NONE);
 		RedhawkNxmUtil.initializeRedhawkOptionTrees();
 		nxmComp.initNxm();
-		nxmComp.getNxmShell().M.registry.put(MSG_HANDLER_ID, getPlotMessageHandler());
+		rootNxmShell = NxmRapComposite.getRootNxmShell();
+		msgHandlerId = rootNxmShell.M.registry.putInstance("MAIN_MSG_HANLDER", getPlotMessageHandler());
 	}
 
 	public synchronized void internalInitPlot(String plotSwitches, String plotArgs) {
@@ -78,6 +81,7 @@ public class RapNxmPlotWidget extends AbstractNxmPlotWidget {
 			removeSource(source);
 		}
 		runClientCommand("PIPE STOP"); // tell client macro to end
+		rootNxmShell.M.registry.remove(msgHandlerId);
 		super.dispose();
 		nxmComp = null;
 	}
@@ -94,7 +98,7 @@ public class RapNxmPlotWidget extends AbstractNxmPlotWidget {
 	@Override
 	public Command runHeadlessCommandWithResult(String command) {
 		assertNotDisposed();
-		return nxmComp.runServerCommand(command + " /MSGID=" + MSG_HANDLER_ID);
+		return nxmComp.runGlobalCommand(command + " /MSGID=" + msgHandlerId);
 	}
 
 	@Override
@@ -104,20 +108,20 @@ public class RapNxmPlotWidget extends AbstractNxmPlotWidget {
 	}
 
 	@Override
-	public void internalAddSource(String sourcePipeId, String plotQualifiers) {
+	public void internalAddSource(String sourcePipeId, String pipeQualifiers) {
 		assertNotDisposed();
-		Object pipeInSubShell = nxmComp.getNxmShell().M.pipes.get(sourcePipeId);
-		Assert.isTrue(pipeInSubShell instanceof nxm.sys.lib.Pipe,
-				sourcePipeId + " value is not a valid data PIPE! value=" + pipeInSubShell);
+		Object pipeInShell = rootNxmShell.M.pipes.get(sourcePipeId);
+		Assert.isTrue(pipeInShell instanceof nxm.sys.lib.Pipe,
+				sourcePipeId + " value is not a valid data PIPE! value=" + pipeInShell);
 		// Copy pipe reference from sub-shell into global shell
-		NxmRapComposite.getRootNxmShell().M.pipes.put(sourcePipeId, pipeInSubShell);
+//		NxmRapComposite.getRootNxmShell().M.pipes.put(sourcePipeId, pipeInShell); // NO LONGER NEEDED since we run in global NXM shell
 
 		// Publish pipe on RMIF
 		nxmComp.getRmifPrim().getRmif().addProperty(sourcePipeId);
 
 		// From Client openFile
 		nxmComp.runClientCommand("SENDTO RMIF_SESSION ADDC {" + sourcePipeId + "=" + sourcePipeId + "} INFO=-1");
-		nxmComp.runClientCommand("SENDTO " + PLOT_ID + " OPENFILE " + sourcePipeId + ((plotQualifiers == null) ? "" : plotQualifiers));
+		nxmComp.runClientCommand("SENDTO " + PLOT_ID + " OPENFILE " + sourcePipeId + ((pipeQualifiers == null) ? "" : pipeQualifiers));
 
 		this.sources.add(sourcePipeId);
 	}
@@ -136,7 +140,7 @@ public class RapNxmPlotWidget extends AbstractNxmPlotWidget {
 			nxmComp.getRmifPrim().getRmif().closeChannel(sourcePipeId);
 
 			// From Server remove pipe reference from global registry
-			nxmComp.runServerCommand("REMOVE/global RAM." + sourcePipeId);
+//			nxmComp.runServerCommand("REMOVE/global RAM." + sourcePipeId); // no longer needed since we are running in global NXM session
 			
 			this.sources.remove(sourcePipeId);
 		}
@@ -198,11 +202,10 @@ public class RapNxmPlotWidget extends AbstractNxmPlotWidget {
 		}
 	}
 
-	/** @since 5.0 */
 	@Override
 	public void sendMessageToCommand(String cmdID, String msgName, int info, Object data, Object quals) {
 		assertNotDisposed();
-		nxmComp.runServerCommand("MESSAGE SEND ID=" + cmdID + " NAME=" + msgName + " INFO=" + info
+		nxmComp.runGlobalCommand("MESSAGE SEND ID=" + cmdID + " NAME=" + msgName + " INFO=" + info
 				+ " DATA=" + data + " QUALS=" + quals);
 	}
 
