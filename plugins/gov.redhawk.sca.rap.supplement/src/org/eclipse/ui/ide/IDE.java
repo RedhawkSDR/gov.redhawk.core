@@ -127,14 +127,13 @@ public class IDE {
 		if (files == null) {
 			return null;
 		}
-		int length = files.length;
-		ArrayList existentFiles = new ArrayList(length);
-		for (int i = 0; i < length; i++) {
-			if (files[i].exists()) {
-				existentFiles.add(files[i]);
+		ArrayList<IFile> existentFiles = new ArrayList<IFile>(files.length);
+		for (IFile ifile : files) {
+			if (ifile.exists()) {
+				existentFiles.add(ifile);
 			}
 		}
-		return (IFile[]) existentFiles.toArray(new IFile[existentFiles.size()]);
+		return existentFiles.toArray(new IFile[existentFiles.size()]);
 	}
 
 	/**
