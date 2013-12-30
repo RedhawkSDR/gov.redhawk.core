@@ -22,6 +22,7 @@ public class PlotSession implements IPlotSession {
 	private AbstractNxmPlotWidget plotWidget;
 	private String command;
 	private String file;
+	private boolean disposed = false;
 
 	public PlotSession(AbstractNxmPlotWidget plotWidget, String command, String file) {
 		this.plotWidget = plotWidget;
@@ -31,7 +32,9 @@ public class PlotSession implements IPlotSession {
 
 	@Override
 	public void dispose() {
-		if (!plotWidget.isDisposed()) {
+//		if (!plotWidget.isDisposed()) {
+		if (!disposed) {
+			disposed = true;
 			if (file != null) {
 				plotWidget.sendPlotMessage("CLOSEFILE", 0, file);
 			}

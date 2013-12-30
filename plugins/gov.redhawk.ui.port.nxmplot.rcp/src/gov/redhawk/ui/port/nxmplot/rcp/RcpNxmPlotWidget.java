@@ -24,6 +24,7 @@ import nxm.rcp.ui.core.NeXtMidasComposite;
 import nxm.redhawk.lib.RedhawkNxmUtil;
 import nxm.sys.lib.Command;
 import nxm.sys.lib.Results;
+import nxm.sys.lib.Shell;
 import nxm.sys.prim.plot;
 
 import org.eclipse.swt.SWT;
@@ -38,10 +39,11 @@ import org.eclipse.swt.widgets.Composite;
  */
 public class RcpNxmPlotWidget extends AbstractNxmPlotWidget {
 
-	private static final String MSG_HANDLER_ID = "MAIN_MSG_HANLDER";
 	private static AtomicInteger uniqueCounter = new AtomicInteger();
 
+	private final String msgHandlerId;
 	private NeXtMidasComposite nxmComp;
+	private Shell rootNxmShell;
 	private plot plotCommand;
 
 	private Set<String> sources = new HashSet<String>();
@@ -60,7 +62,8 @@ public class RcpNxmPlotWidget extends AbstractNxmPlotWidget {
 		nxmComp = new NeXtMidasComposite(this, SWT.None);
 
 		RedhawkNxmUtil.initializeRedhawkOptionTrees();
-		nxmComp.getLocalShell().M.registry.put(MSG_HANDLER_ID, getPlotMessageHandler());
+		rootNxmShell = NeXtMidasComposite.getRootNxmShell();
+		msgHandlerId = rootNxmShell.M.registry.putInstance("MAIN_MSG_HANLDER", getPlotMessageHandler());
 	}
 
 	@Override
@@ -76,7 +79,7 @@ public class RcpNxmPlotWidget extends AbstractNxmPlotWidget {
 		if (plotSwitches == null) {
 			plotSwitches = "";
 		}
-		plotCommand = (plot) nxmComp.runCommand("PLOT/BG/VERBOSE=FALSE/EXIT=MESSAGE|WINDOW" + plotSwitches + " " + plotArgs);
+		plotCommand = (plot) nxmComp.runGlobalCommand("PLOT/BG/VERBOSE=FALSE/EXIT=MESSAGE|WINDOW" + plotSwitches + " " + plotArgs, true);
 		plotCommand.setMessageHandler(getPlotMessageHandler());
 	}
 
@@ -94,7 +97,7 @@ public class RcpNxmPlotWidget extends AbstractNxmPlotWidget {
 		if (!isInitialized()) {
 			throw new IllegalStateException("Plot not initialized");
 		}
-		return nxmComp.runCommand(command + " /MSGID=" + MSG_HANDLER_ID, false);
+		return nxmComp.runGlobalCommand(command + " /MSGID=" + msgHandlerId, false);
 	}
 
 	@Override
@@ -109,7 +112,12 @@ public class RcpNxmPlotWidget extends AbstractNxmPlotWidget {
 			removeSource(source);
 		}
 		this.sources.clear();
+		if (plotCommand != null) {
+			plotCommand.setState(Command.FINISH); // tell PLOT to FINISH/EXIT
+		}
+		rootNxmShell.M.registry.remove(msgHandlerId);
 		super.dispose();
+		
 	}
 
 	@Override
@@ -117,7 +125,7 @@ public class RcpNxmPlotWidget extends AbstractNxmPlotWidget {
 		if (!isInitialized()) {
 			throw new IllegalStateException("Plot not initialized");
 		}
-		nxmComp.runCommand("SENDTO " + plotCommand.id + " OPENFILE " + sourcePipeId + ((pipeQualifiers == null) ? "" : pipeQualifiers));
+		nxmComp.runGlobalCommand("SENDTO " + plotCommand.id + " OPENFILE " + sourcePipeId + ((pipeQualifiers == null) ? "" : pipeQualifiers), false);
 		this.sources.add(sourcePipeId);
 	}
 
@@ -132,7 +140,7 @@ public class RcpNxmPlotWidget extends AbstractNxmPlotWidget {
 			throw new IllegalStateException("Plot not initialized");
 		}
 		if (!nxmComp.isDisposed()) {
-			nxmComp.runCommand("SENDTO " + plotCommand.id + " CLOSEFILE " + sourcePipeId);
+			nxmComp.runGlobalCommand("SENDTO " + plotCommand.id + " CLOSEFILE " + sourcePipeId, false);
 		}
 		this.sources.remove(sourcePipeId);
 	}
@@ -190,7 +198,7 @@ public class RcpNxmPlotWidget extends AbstractNxmPlotWidget {
 			throw new IllegalStateException("Plot not initialized");
 		}
 		for (Map.Entry<String, String> entry: configuration.entrySet()) {
-			nxmComp.runCommand("SET " + "REG." + plotCommand.id + "." + entry.getKey() + " " + entry.getValue());
+			nxmComp.runGlobalCommand("SET " + "REG." + plotCommand.id + "." + entry.getKey() + " " + entry.getValue(), false);
 		}
 	}
 
@@ -206,12 +214,12 @@ public class RcpNxmPlotWidget extends AbstractNxmPlotWidget {
 	public void sendMessageToCommand(String cmdID, String msgName, int info, Object data, Object quals) {
 		final String tempRes4Data  = createUniqueResName();
 		final String tempRes4Quals = createUniqueResName();
-		final Results localResultsTable = nxmComp.getLocalShell().M.results;
-		localResultsTable.put(tempRes4Data, data);   //to pass object reference for DATA=  below
-		localResultsTable.put(tempRes4Quals, quals); //to pass object reference for QUALS= below
-		nxmComp.runCommand("MESSAGE SEND ID=" + cmdID + " NAME=" + msgName + " INFO=" + info
-				+ " DATA=" + tempRes4Data + " QUALS=" + tempRes4Quals);
-		localResultsTable.remove(tempRes4Data);  // cleanup
-		localResultsTable.remove(tempRes4Quals); // cleanup
+		final Results resultsTable = rootNxmShell.M.results;
+		resultsTable.put(tempRes4Data, data);   //to pass object reference for DATA=  below
+		resultsTable.put(tempRes4Quals, quals); //to pass object reference for QUALS= below
+		nxmComp.runGlobalCommand("MESSAGE SEND ID=" + cmdID + " NAME=" + msgName + " INFO=" + info
+				+ " DATA=" + tempRes4Data + " QUALS=" + tempRes4Quals, false);
+		resultsTable.remove(tempRes4Data);  // cleanup
+		resultsTable.remove(tempRes4Quals); // cleanup
 	}
 }
