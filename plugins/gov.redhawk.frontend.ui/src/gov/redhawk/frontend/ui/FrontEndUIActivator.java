@@ -1,5 +1,9 @@
 package gov.redhawk.frontend.ui;
 
+import gov.redhawk.frontend.Tuner;
+import gov.redhawk.sca.ui.ScaUiPlugin;
+import gov.redhawk.sca.ui.filters.AdvancedPropertiesExtensibleFilter;
+
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
 
@@ -27,6 +31,19 @@ public class FrontEndUIActivator extends AbstractUIPlugin {
 	public void start(BundleContext context) throws Exception {
 		super.start(context);
 		plugin = this;
+		if (ScaUiPlugin.getDefault() != null) {
+			AdvancedPropertiesExtensibleFilter.addSubFilter(new org.eclipse.jface.viewers.IFilter() {
+
+				@Override
+				public boolean select(Object toTest) {
+					if (toTest instanceof Tuner) {
+						return false;
+					}
+					return true;
+				}
+				
+			});
+		}
 	}
 
 	/*

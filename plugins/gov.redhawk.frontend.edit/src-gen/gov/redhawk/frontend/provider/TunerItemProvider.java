@@ -253,15 +253,17 @@ public class TunerItemProvider
   }
 
   /**
-   * This returns Tuner.gif.
+   * This returns Tuner.gif or TunerAllocated.gif depending on whether the Tuner is allocated.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @generated
    */
   @Override
   public Object getImage(Object object)
   {
-    return overlayImage(object, getResourceLocator().getImage("full/obj16/Tuner"));
+	String label = ((Tuner)object).getAllocationID();
+    return label == null || label.length() == 0 ? 
+    		overlayImage(object, getResourceLocator().getImage("full/obj16/Tuner")) : 
+    		overlayImage(object, getResourceLocator().getImage("full/obj16/TunerAllocated"));
   }
 
   /**

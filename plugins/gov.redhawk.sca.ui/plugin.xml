@@ -390,6 +390,7 @@
             contributorId="gov.redhawk.ui.sca_explorer">
          <propertySection
                class="org.eclipse.ui.views.properties.tabbed.AdvancedPropertySection"
+               filter="gov.redhawk.sca.ui.filters.AdvancedPropertiesExtensibleFilter"
                id="CommonNavigator.section.Advanced"
                tab="CommonNavigator.tab.Advanced">
             <input
