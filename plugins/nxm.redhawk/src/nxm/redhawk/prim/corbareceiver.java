@@ -323,7 +323,7 @@ public class corbareceiver extends CorbaPrimitive implements IMidasDataWriter { 
 	}
 	
 	/**
-	 * @since 10.0
+	 * @since 10.1
 	 * @noreference This method is not intended to be referenced by clients.
 	 */
 	public synchronized void setStreamSri(String streamID, StreamSRI oldSri, StreamSRI newSri) {
