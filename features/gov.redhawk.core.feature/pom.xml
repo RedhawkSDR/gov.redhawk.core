@@ -22,6 +22,5 @@
 		<relativePath>../../releng/core/</relativePath>
 	</parent>
     <groupId>gov.redhawk.core.feature</groupId>
-	<version>1.10.0-SNAPSHOT</version>
 
 </project>

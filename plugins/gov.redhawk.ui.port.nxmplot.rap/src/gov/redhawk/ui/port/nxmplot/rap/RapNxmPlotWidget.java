@@ -41,6 +41,7 @@ public class RapNxmPlotWidget extends AbstractNxmPlotWidget {
 	private Shell rootNxmShell;
 	private boolean initialized;
 	private Set<String> sources = new HashSet<String>();
+	private boolean initializing;
 
 	public RapNxmPlotWidget(Composite parent, int style) {
 		super(parent, style);
