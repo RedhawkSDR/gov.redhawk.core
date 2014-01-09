@@ -16,6 +16,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
+ * fan out received callbacks to multiple subscribed IPlotWidgetListener
  * @since 3.0
  */
 public class PlotListenerAdapter implements IPlotWidgetListener {

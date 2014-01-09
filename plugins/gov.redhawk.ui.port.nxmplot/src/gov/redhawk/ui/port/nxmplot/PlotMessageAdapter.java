@@ -19,6 +19,7 @@ import nxm.sys.lib.Table;
 import nxm.sys.libg.DragBox;
 
 /**
+ * Converts known PLOT messages received via {@link MessageHandler#processMessage(Message)} to IPlotWidgetListener callbacks.
  * @since 3.0
  */
 public class PlotMessageAdapter implements MessageHandler {
