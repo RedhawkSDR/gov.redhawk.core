@@ -23,6 +23,8 @@ import java.util.concurrent.atomic.AtomicInteger;
 import nxm.rcp.ui.core.NeXtMidasComposite;
 import nxm.redhawk.lib.RedhawkNxmUtil;
 import nxm.sys.lib.Command;
+import nxm.sys.lib.Midas;
+import nxm.sys.lib.NeXtMidas;
 import nxm.sys.lib.Results;
 import nxm.sys.lib.Shell;
 import nxm.sys.prim.plot;
@@ -43,7 +45,8 @@ public class RcpNxmPlotWidget extends AbstractNxmPlotWidget {
 
 	private final String msgHandlerId;
 	private NeXtMidasComposite nxmComp;
-	private Shell rootNxmShell;
+	private final Shell rootNxmShell;
+	private final Midas rootMidasContext;
 	private plot plotCommand;
 
 	private Set<String> sources = new HashSet<String>();
@@ -62,8 +65,10 @@ public class RcpNxmPlotWidget extends AbstractNxmPlotWidget {
 		nxmComp = new NeXtMidasComposite(this, SWT.None);
 
 		RedhawkNxmUtil.initializeRedhawkOptionTrees();
-		rootNxmShell = NeXtMidasComposite.getRootNxmShell();
-		msgHandlerId = rootNxmShell.M.registry.putInstance("MAIN_MSG_HANLDER", getPlotMessageHandler());
+		NeXtMidas globalNxm = NeXtMidas.getGlobalInstance();
+		rootNxmShell = globalNxm.getShell();
+		rootMidasContext = globalNxm.getMidasContext();
+		msgHandlerId = rootMidasContext.getRegistry().putInstance("MAIN_MSG_HANLDER", getPlotMessageHandler());
 	}
 
 	@Override
@@ -115,7 +120,7 @@ public class RcpNxmPlotWidget extends AbstractNxmPlotWidget {
 		if (plotCommand != null) {
 			plotCommand.setState(Command.FINISH); // tell PLOT to FINISH/EXIT
 		}
-		rootNxmShell.M.registry.remove(msgHandlerId);
+		rootMidasContext.getRegistry().remove(msgHandlerId);
 		super.dispose();
 		
 	}
@@ -209,7 +214,6 @@ public class RcpNxmPlotWidget extends AbstractNxmPlotWidget {
 		}
 	}
 
-	/** @since 5.0 */
 	@Override
 	public void sendMessageToCommand(String cmdID, String msgName, int info, Object data, Object quals) {
 		final String tempRes4Data  = createUniqueResName();
@@ -221,5 +225,10 @@ public class RcpNxmPlotWidget extends AbstractNxmPlotWidget {
 				+ " DATA=" + tempRes4Data + " QUALS=" + tempRes4Quals, false);
 		resultsTable.remove(tempRes4Data);  // cleanup
 		resultsTable.remove(tempRes4Quals); // cleanup
+	}
+
+	@Override
+	public Command runGlobalCommand(String command) {
+		return nxmComp.runGlobalCommand(command, false);
 	}
 }

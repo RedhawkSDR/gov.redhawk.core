@@ -289,6 +289,18 @@ public abstract class AbstractNxmPlotWidget extends Composite {
 	 * @param command nm command to run on client machine
 	 */
 	public abstract void runClientCommand(String command);
+
+	/**
+	 * Runs a command within the global NeXtMidas session
+	 * <p>
+	 * <b> DO NOT RUN PLOT OR SEND PLOT MESSAGES HERE</b>
+	 * <p>
+	 * This should be used to run source commands and additional filtering or processing commands before plotting.
+	 * @param command nm command to run in global NeXtMidas session
+	 * @return Command that was executed
+	 * @since 4.3 
+	 */
+	public abstract Command runGlobalCommand(String command);
 	
 	/**
 	 * @param sourcePipeId The nxm source pipe to add
@@ -436,6 +448,7 @@ public abstract class AbstractNxmPlotWidget extends Composite {
 	}
 
 	/**
+	 * @noreference This method is not intended to be referenced by clients.
 	 * @param custom plot settings to apply
 	 * @since 4.2
 	 */
@@ -525,6 +538,7 @@ public abstract class AbstractNxmPlotWidget extends Composite {
 	}
 
 	/**
+	 * @noreference This method is not intended to be referenced by clients.
 	 * @param custom FFT settings to apply
 	 * @since 4.3
 	 */

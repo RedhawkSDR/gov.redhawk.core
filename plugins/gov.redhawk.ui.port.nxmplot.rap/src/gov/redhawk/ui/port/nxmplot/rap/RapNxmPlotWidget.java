@@ -210,4 +210,9 @@ public class RapNxmPlotWidget extends AbstractNxmPlotWidget {
 				+ " DATA=" + data + " QUALS=" + quals);
 	}
 
+	@Override
+	public Command runGlobalCommand(String command) {
+		return nxmComp.runGlobalCommand(command);
+	}
+
 }
