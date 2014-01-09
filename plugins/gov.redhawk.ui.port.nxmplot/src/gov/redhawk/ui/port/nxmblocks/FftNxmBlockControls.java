@@ -47,6 +47,7 @@ public class FftNxmBlockControls {
 	private static final String FFT_SIZE_FIELD_NAME = "Transform Size";
 	private static final String OVERLAP_FIELD_NAME = "Percent Overlap";
 	private static final String NUM_AVERAGES_FIELD_NAME = "Num Averages";
+	private static final String SLIDING_NUM_AVERAGES_FIELD_NAME = "Sliding Num Averages";
 	
 	private final FftNxmBlockSettings settings;
 	private DataBindingContext dataBindingCtx;
@@ -54,6 +55,7 @@ public class FftNxmBlockControls {
 	private ComboViewer transformSizeField;
 	private Text        overlapField;
 	private Text        numAveragesField;
+	private Text        slidingNumAveragesField;
 	private ComboViewer fftType;
 	private ComboViewer fftWindow;
 
@@ -85,13 +87,21 @@ public class FftNxmBlockControls {
 		this.overlapField.setLayoutData(GridDataFactory.fillDefaults().grab(true,  false).create());
 		this.overlapField.setText(Integer.toString(this.settings.getOverlap()));
 
-		// === num averages (/nexp) ===
+		// === num averages (NAVG=) ===
 		label = new Label(container, SWT.NONE);
 		label.setText(NUM_AVERAGES_FIELD_NAME + ":");
 		this.numAveragesField = new Text(container, SWT.BORDER);
 		this.numAveragesField.setLayoutData(GridDataFactory.fillDefaults().grab(true,  false).create());
 		this.numAveragesField.setText(Integer.toString(this.settings.getNumAverages()));
 		this.numAveragesField.setToolTipText("Avoid using large value as it will cause highlighted energy to remain longer.");
+
+		// === num sliding averages (/NEXP=) ===
+		label = new Label(container, SWT.NONE);
+		label.setText(SLIDING_NUM_AVERAGES_FIELD_NAME + ":");
+		this.slidingNumAveragesField = new Text(container, SWT.BORDER);
+		this.slidingNumAveragesField.setLayoutData(GridDataFactory.fillDefaults().grab(true,  false).create());
+		this.slidingNumAveragesField.setText(Integer.toString(this.settings.getNumExpAverages()));
+		this.slidingNumAveragesField.setToolTipText("Avoid using large value as it will cause highlighted energy to remain longer.");
 
 		// === FFT output type ===
 		label = new Label(container, SWT.NONE);
@@ -150,6 +160,13 @@ public class FftNxmBlockControls {
 		UpdateValueStrategy numAvgTargetToModel = new UpdateValueStrategy();
 		numAvgTargetToModel.setAfterConvertValidator(new NumberRangeValidator<Integer>(NUM_AVERAGES_FIELD_NAME, Integer.class, 0, false));
 		bindingValue = dataBindingCtx.bindValue(numAvgWidgetValue, numAvgModelValue, numAvgTargetToModel, null);
+		ControlDecorationSupport.create(bindingValue, SWT.TOP | SWT.LEFT);
+
+		IObservableValue numExpAvgWidgetValue = WidgetProperties.text(SWT.Modify).observe(this.slidingNumAveragesField);
+		IObservableValue numExpAvgModelValue = PojoProperties.value(FftNxmBlockSettings.PROP_SLIDING_NUM_AVERAGES).observe(this.settings);
+		UpdateValueStrategy numExpAvgTargetToModel = new UpdateValueStrategy();
+		numAvgTargetToModel.setAfterConvertValidator(new NumberRangeValidator<Integer>(SLIDING_NUM_AVERAGES_FIELD_NAME, Integer.class, 0, false));
+		bindingValue = dataBindingCtx.bindValue(numExpAvgWidgetValue, numExpAvgModelValue, numExpAvgTargetToModel, null);
 		ControlDecorationSupport.create(bindingValue, SWT.TOP | SWT.LEFT);
 
 		IObservableValue outputTypeWidgetValue = ViewerProperties.singleSelection().observe(this.fftType);

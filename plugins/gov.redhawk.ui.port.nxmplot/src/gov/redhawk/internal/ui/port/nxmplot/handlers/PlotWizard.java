@@ -10,16 +10,32 @@
  *******************************************************************************/
 package gov.redhawk.internal.ui.port.nxmplot.handlers;
 
+import java.nio.ByteOrder;
+
+import gov.redhawk.ui.port.nxmblocks.BulkIONxmBlockSettings;
+import gov.redhawk.ui.port.nxmblocks.PlotNxmBlockSettings;
+import gov.redhawk.ui.port.nxmblocks.SddsNxmBlockSettings;
+
 import org.eclipse.jface.wizard.Wizard;
 
 /**
+ * @noreference This class is not intended to be referenced by clients.
  * @since 10.1
  */
 public class PlotWizard extends Wizard {
 	private PlotWizardPage page = new PlotWizardPage("settings", "Plot Port Settings", null);
 	
-	public PlotWizard() {
+	public PlotWizard(boolean containsBulkIOPort, boolean containsSDDSPort) {
 		setWindowTitle("Plot Port");
+		if (containsBulkIOPort) {
+			getPlotSettings().setBulkIOBlockSettings(new BulkIONxmBlockSettings());
+		}
+		if (containsSDDSPort) {
+			SddsNxmBlockSettings sddsSettings = new SddsNxmBlockSettings();
+			sddsSettings.setDataByteOrder(ByteOrder.nativeOrder()); // <-- workaround for REDHAWK SinkNic Component
+			getPlotSettings().setSddsBlockSettings(sddsSettings);
+		}
+		getPlotSettings().setPlotBlockSettings(new PlotNxmBlockSettings());
 	}
 	
 	@Override

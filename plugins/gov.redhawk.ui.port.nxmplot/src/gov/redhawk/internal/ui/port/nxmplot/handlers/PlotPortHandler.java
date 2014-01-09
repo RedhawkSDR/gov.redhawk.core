@@ -12,6 +12,7 @@
 package gov.redhawk.internal.ui.port.nxmplot.handlers;
 
 import gov.redhawk.internal.ui.port.nxmplot.FftParameterEntryDialog;
+import gov.redhawk.internal.ui.port.nxmplot.view.PlotSource;
 import gov.redhawk.internal.ui.port.nxmplot.view.PlotView2;
 import gov.redhawk.model.sca.ScaDomainManagerRegistry;
 import gov.redhawk.model.sca.ScaUsesPort;
@@ -19,6 +20,8 @@ import gov.redhawk.model.sca.provider.ScaItemProviderAdapterFactory;
 import gov.redhawk.sca.util.PluginUtil;
 import gov.redhawk.sca.util.SubMonitor;
 import gov.redhawk.ui.port.PortHelper;
+import gov.redhawk.ui.port.nxmblocks.FftNxmBlockSettings;
+import gov.redhawk.ui.port.nxmblocks.PlotNxmBlockSettings;
 import gov.redhawk.ui.port.nxmplot.FftSettings;
 import gov.redhawk.ui.port.nxmplot.PlotActivator;
 import gov.redhawk.ui.port.nxmplot.PlotType;
@@ -48,6 +51,10 @@ import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.handlers.HandlerUtil;
 import org.eclipse.ui.statushandlers.StatusManager;
 
+import BULKIO.dataFileHelper;
+import BULKIO.dataSDDSHelper;
+import BULKIO.dataXMLHelper;
+
 /**
  * @noreference This class is not intended to be referenced by clients
  */
@@ -61,7 +68,7 @@ public class PlotPortHandler extends AbstractHandler {
 		final IWorkbenchWindow window = HandlerUtil.getActiveWorkbenchWindow(event);
 		String plotTypeStr = event.getParameter("gov.redhawk.ui.port.nxmplot.type");
 		final PlotType type;
-		final boolean isFFt;
+		final boolean isFFT;
 		
 		// need to grab Port selections first, otherwise Plot Wizard option below will change the selection
 		IStructuredSelection selection = (IStructuredSelection) HandlerUtil.getActiveMenuSelection(event);
@@ -71,25 +78,47 @@ public class PlotPortHandler extends AbstractHandler {
 		if (selection == null) {
 			return null;
 		}
+		final List< ? > elements = selection.toList();
+		final PlotWizardSettings plotWizardSettings;
+		final FftNxmBlockSettings fftNxmBlockSettings;
 
 		if (plotTypeStr != null) {
 			type = PlotType.valueOf(plotTypeStr);
-			isFFt = Boolean.valueOf(event.getParameter("gov.redhawk.ui.port.nxmplot.isFft"));
-		} else {
-			PlotWizard wizard = new PlotWizard();
+			isFFT = Boolean.valueOf(event.getParameter("gov.redhawk.ui.port.nxmplot.isFft"));
+			plotWizardSettings = null;
+			fftNxmBlockSettings = null;
+		} else { // run advanced Port plot wizard
+			boolean containsBulkIOPort = false;
+			boolean containsSDDSPort = false;
+			for (Object obj : elements) {
+				ScaUsesPort port = PluginUtil.adapt(ScaUsesPort.class, obj, true);
+				if (port != null) {
+					String idl = port.getRepid();
+					if (dataSDDSHelper.id().equals(idl)) { // a BULKIO:dataSDDS Port
+						containsSDDSPort = true;
+					} else if (!dataFileHelper.id().equals(idl) && !dataXMLHelper.id().equals(idl)) { // BULKIO:dataFile and BULIO:dataXML Ports are currently unsupported
+						containsBulkIOPort = true;
+					}
+				}
+			}
+			PlotWizard wizard = new PlotWizard(containsBulkIOPort, containsSDDSPort); // advanced Port Plot wizard
 			WizardDialog dialog = new WizardDialog(HandlerUtil.getActiveShell(event), wizard);
 			if (dialog.open() == Window.OK) {
-				PlotWizardSettings settings = wizard.getPlotSettings();
-				type = settings.getType();
-				isFFt = settings.isFft();
+				plotWizardSettings = wizard.getPlotSettings();
+				type = plotWizardSettings.getType();
+				isFFT = plotWizardSettings.isFft();
+				if (isFFT) {
+					fftNxmBlockSettings = plotWizardSettings.getFftBlockSettings();
+				} else {
+					fftNxmBlockSettings = null;
+				}
 			} else {
 				return null;
 			}
 		}
 
-		final List< ? > elements = selection.toList();
 		final FftSettings fft;
-		if (isFFt) {
+		if (isFFT && plotWizardSettings == null) {
 			final FftParameterEntryDialog fftDialog = new FftParameterEntryDialog(HandlerUtil.getActiveShell(event), new FftSettings());
 			final int result = fftDialog.open();
 			if (result == Window.OK) {
@@ -110,7 +139,6 @@ public class PlotPortHandler extends AbstractHandler {
 				plotView.getPlotPageBook().showPlot(type);
 
 				Job job = new Job("Adding plot sources...") {
-
 					@Override
 					protected IStatus run(IProgressMonitor monitor) {
 						final ScaItemProviderAdapterFactory factory = new ScaItemProviderAdapterFactory();
@@ -121,26 +149,25 @@ public class PlotPortHandler extends AbstractHandler {
 							ScaUsesPort port = PluginUtil.adapt(ScaUsesPort.class, obj, true);
 							if (port != null) {
 								port.fetchAttributes(subMonitor.newChild(1));
-								List<String> tmpList = new LinkedList<String>();
+								List<String> tmpList4Tooltip = new LinkedList<String>();
 								for (EObject eObj = port; !(eObj instanceof ScaDomainManagerRegistry) && eObj != null; eObj = eObj.eContainer()) {
 									Adapter adapter = factory.adapt(eObj, IItemLabelProvider.class);
 									if (adapter instanceof IItemLabelProvider) {
 										IItemLabelProvider lp = (IItemLabelProvider) adapter;
 										String text = lp.getText(eObj);
 										if (text != null && !text.isEmpty()) {
-											tmpList.add(0, text);
+											tmpList4Tooltip.add(0, text);
 										}
 									}
 								}
 								
 								String nameStr = port.getName();
 								if (nameStr != null && !nameStr.isEmpty()) {
-									name.append(port.getName());
-									name.append(" ");
+									name.append(nameStr).append(" ");
 								}
 
-								if (!tmpList.isEmpty()) {
-									for (Iterator<String> i = tmpList.iterator(); i.hasNext();) {
+								if (!tmpList4Tooltip.isEmpty()) {
+									for (Iterator<String> i = tmpList4Tooltip.iterator(); i.hasNext();) {
 										tooltip.append(i.next());
 										if (i.hasNext()) {
 											tooltip.append(" -> ");
@@ -149,34 +176,48 @@ public class PlotPortHandler extends AbstractHandler {
 									tooltip.append("\n");
 								}
 
-								plotView.addPlotSource(port, fft, null);
+								if (plotWizardSettings != null) {
+									PlotSource plotSource;
+									String idl = port.getRepid();
+									String pipeQualifiers = null;
+									PlotNxmBlockSettings plotBlockSettings = plotWizardSettings.getPlotBlockSettings();
+									if (dataSDDSHelper.id().equals(idl)) { // a BULKIO:dataSDDS Port
+										plotSource = new PlotSource(port, plotWizardSettings.getSddsBlockSettings(), fftNxmBlockSettings, plotBlockSettings, pipeQualifiers);
+									} else if (!dataFileHelper.id().equals(idl) && !dataXMLHelper.id().equals(idl)) { // BULKIO:dataFile and BULIO:dataXML Ports are currently unsupported
+										plotSource = new PlotSource(port, plotWizardSettings.getBulkIOBlockSettings(), fftNxmBlockSettings, plotBlockSettings, pipeQualifiers);
+									} else {
+										StatusManager.getManager().handle(new Status(Status.WARNING, PlotActivator.PLUGIN_ID, "Unsupported Port: " + port + " idl: " + idl), StatusManager.LOG); 
+										continue; // log warning and skip unsupported Port type
+									}
+									plotView.addPlotSource2(plotSource);
+								} else {
+									plotView.addPlotSource(port, fft, null);
+								}
+								
 							} else {
 								subMonitor.worked(1);
 							}
-						}
+						} // end for loop
 						PortHelper.refreshPorts(elements, subMonitor);
 						factory.dispose();
 						if (name.length() > 0 || tooltip.length() > 0) {
 							Display display = plotView.getSite().getShell().getDisplay();
 							display.asyncExec(new Runnable() {
-
 								@Override
 								public void run() {
 									if (name.length() > 0) {
-										plotView.setPartName(name.substring(0, name.length() - 1).toString());
+										plotView.setPartName(name.substring(0, name.length() - 1)); // remove trailing space from view's name
 									}
 									if (tooltip.length() > 0) {
-										plotView.setTitleToolTip(tooltip.substring(0, tooltip.length() - 1).toString());
+										plotView.setTitleToolTip(tooltip.substring(0, tooltip.length() - 1)); // remove trailing newline from view's tooltip
 									}
 								}
-
 							});
 						}
 						return Status.OK_STATUS;
 					}
-
 				};
-				job.schedule();
+				job.schedule(0);
 			}
 		} catch (PartInitException e) {
 			StatusManager.getManager().handle(new Status(Status.ERROR, PlotActivator.PLUGIN_ID, "Failed to show Plot View", e),

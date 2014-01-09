@@ -25,6 +25,7 @@ import java.util.List;
 
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.action.IMenuManager;
@@ -129,8 +130,9 @@ public class PlotView2 extends ViewPart {
 	}
 	
 	/** used to create a new (clone) plot view of current plot view for the "New Plot View" Action / Menu. */ 
-	private IDisposable addPlotSource(PlotSource source) {
-		return addPlotSource(source.getInput(), source.getFftOptions(), source.getQualifiers());
+	private IDisposable addPlotSourceInternal(PlotSource source) {
+		return addPlotSource2(source);
+//		return addPlotSource(source.getInput(), source.getFftOptions(), source.getQualifiers());
 	}
 
 	@Override
@@ -156,6 +158,10 @@ public class PlotView2 extends ViewPart {
 		return this.plotPageBook.addSource(port, fftSettings, qualifiers);
 	}
 
+	public IDisposable addPlotSource2(@NonNull PlotSource plotSource) {
+		return this.plotPageBook.addSource2(plotSource);
+	}
+	
 	/**
 	 * {@inheritDoc}
 	 */
@@ -220,7 +226,7 @@ public class PlotView2 extends ViewPart {
 						newPlotView.setTitleToolTip(getTitleToolTip());
 						newPlotView.getPlotPageBook().showPlot(plotPageBook.getCurrentType());
 						for (PlotSource source : plotPageBook.getSources()) {
-							newPlotView.addPlotSource(source);
+							newPlotView.addPlotSourceInternal(source);
 						}
 						PlotSettings settings = plotPageBook.getActivePlotWidget().getPlotSettings();
 						settings.setPlotType(null);
@@ -254,7 +260,7 @@ public class PlotView2 extends ViewPart {
 					newSettings.setPlotType(null);
 
 					for (AbstractNxmPlotWidget widget : plotPageBook.getAllPlotWidgets()) {
-						widget.applySettings(newSettings);
+						widget.applySettings(newSettings); // apply settings to all plot widgets
 					} // end for loop
 					plotPageBook.showPlot(newType);
 				}
@@ -290,7 +296,7 @@ public class PlotView2 extends ViewPart {
 				if (result == Window.OK) {
 					FftSettings newSettings = dialog.getFFTSettings();
 					for (AbstractNxmPlotWidget widget : plotPageBook.getAllPlotWidgets()) {
-						widget.applyFftSettings(newSettings);
+						widget.applyFftSettings(newSettings); // apply settings to all plot widgets
 					}
 				} // end for loop
 			} // end method

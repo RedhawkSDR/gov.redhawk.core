@@ -20,6 +20,7 @@ import org.eclipse.jdt.annotation.NonNull;
  */
 public class FftNxmBlockSettings implements Cloneable {
 	public static final String PROP_NUM_AVERAGES   = "numAverages";
+	public static final String PROP_SLIDING_NUM_AVERAGES = "numExpAverages";
 	public static final String PROP_OVERLAP        = "overlap";
 	public static final String PROP_OUTPUT_TYPE    = "outputType";
 	public static final String PROP_TRANSFORM_SIZE = "transformSize";

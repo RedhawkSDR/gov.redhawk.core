@@ -22,6 +22,7 @@ import java.util.AbstractMap.SimpleImmutableEntry;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -62,7 +63,7 @@ public abstract class AbstractNxmBlock<C extends Command> implements INxmBlock {
 
 	private final ConcurrentHashMap<String, String> outIndexStreamIDToOutNameMap = new ConcurrentHashMap<String, String>();
 
-	static class BlockIndexPair {
+	protected static class BlockIndexPair {
 		private final INxmBlock block;
 		private final int index;
 		public BlockIndexPair(INxmBlock block, int index) {
@@ -251,7 +252,7 @@ public abstract class AbstractNxmBlock<C extends Command> implements INxmBlock {
 			TRACE_LOG.message("launch({0}) cmdline: {1} [{2}]", streamID, cmdLine, toString());
 		}
 		if (cmdLine != null && !cmdLine.trim().isEmpty()) {
-			final Command cmd = currentPlotContext.runHeadlessCommandWithResult(cmdLine + " /BG");
+			final Command cmd = currentPlotContext.runGlobalCommand(cmdLine + " /BG");
 			if (cmd == null) {
 				throw new IllegalStateException("Expected to launch NeXtMidas command, but got null");
 			} else {
@@ -269,7 +270,11 @@ public abstract class AbstractNxmBlock<C extends Command> implements INxmBlock {
 			}
 			cmd.setMessageHandler(currentPlotContext.getPlotMessageHandler());
 
-			currentPlotContext.runHeadlessCommand("PIPE RUN"); // start NeXtMidas pipe data flow (if it has not already started)
+			currentPlotContext.runGlobalCommand("PIPE RUN"); // start NeXtMidas pipe data flow (if it has not already started)
+			
+			if (TRACE_LOG.enabled) {
+				currentPlotContext.runGlobalCommand("STATUS/VERBOSE " + getOutputName(0, streamID));
+			}
 		}
 
 		// launch hooked output blocks to consume this streamID
@@ -351,6 +356,15 @@ public abstract class AbstractNxmBlock<C extends Command> implements INxmBlock {
 	public void dispose() {
 		TRACE_LOG.enteringMethod();
 		stop();
+		// shutdown all launched Commands
+		// for (SimpleImmutableEntry<String, C> entry : streamIDToCmdMap.values()) {
+		Iterator<Entry<String, SimpleImmutableEntry<String, C>>> iter = streamIDToCmdMap.entrySet().iterator();
+		while (iter.hasNext()) {
+			Entry<String, SimpleImmutableEntry<String, C>> entry = iter.next();
+			C nxmCommand = entry.getValue().getValue();
+			nxmCommand.setState(Command.FINISH); // tell Command it should FINISH/EXIT
+			iter.remove();
+		}
 	}
 
 	@Override

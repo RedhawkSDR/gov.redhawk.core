@@ -77,23 +77,23 @@ public class PlotNxmBlock extends AbstractNxmBlock<plot> {
 
 		StringBuilder pipeQualifiers = new StringBuilder();
 		Integer frameSize = settings.getFrameSize();
-		if (frameSize != null && frameSize > 0) {   // 1. override frame size with value in settings
+		if (frameSize != null && frameSize > 0) {          // 1. override frame size with value in settings
 			pipeQualifiers.append("{FRAMESIZE=").append(frameSize).append('}');
 		} else { 
-			if (sri != null) { // 2. check sri.subsize
+			if (sri != null) {                             // 2. check sri.subsize
 				frameSize = sri.subsize;
 			}
 			String tmpResName = AbstractNxmPlotWidget.createUniqueName(false);
-			currentPlotWidget.runHeadlessCommandWithResult("TABLE " + tmpResName + " CREATE");
-			currentPlotWidget.runHeadlessCommandWithResult("STATUS/VERBOSE " + sourceName + " typeCodeClass=" + tmpResName + ".TYPECODECLASS  frameSize=" + tmpResName + ".FRAMESIZE");
+			currentPlotWidget.runGlobalCommand("TABLE " + tmpResName + " CREATE");
+			currentPlotWidget.runGlobalCommand("STATUS/VERBOSE " + sourceName + " typeCodeClass=" + tmpResName + ".TYPECODECLASS  frameSize=" + tmpResName + ".FRAMESIZE");
 			if (TRACE_LOG.enabled) {
-				currentPlotWidget.runHeadlessCommandWithResult("RESULTS/ALL " + tmpResName);
-				currentPlotWidget.runHeadlessCommandWithResult("STATUS/VERBOSE " + sourceName);
+				currentPlotWidget.runGlobalCommand("RESULTS/ALL " + tmpResName);
+				currentPlotWidget.runGlobalCommand("STATUS/VERBOSE " + sourceName);
 			}
-			currentPlotWidget.runHeadlessCommandWithResult("RESULTS/GLOBAL " + tmpResName + " " + tmpResName); // put in global results table
+			currentPlotWidget.runGlobalCommand("RESULTS/GLOBAL " + tmpResName + " " + tmpResName); // put in global results table
 			Table statusResults = NeXtMidas.getGlobalInstance().getMidasContext().getResults().getTable(tmpResName);
-			currentPlotWidget.runHeadlessCommandWithResult("REMOVE " + tmpResName);        // cleanup tmp results
-			currentPlotWidget.runHeadlessCommandWithResult("REMOVE/GLOBAL " + tmpResName); // cleanup tmp results
+			currentPlotWidget.runGlobalCommand("REMOVE " + tmpResName);        // cleanup tmp results
+			currentPlotWidget.runGlobalCommand("REMOVE/GLOBAL " + tmpResName); // cleanup tmp results
 			int typeCodeClass = 1;
 			if (statusResults != null) {
 				typeCodeClass = statusResults.getL("TYPECODECLASS", typeCodeClass);

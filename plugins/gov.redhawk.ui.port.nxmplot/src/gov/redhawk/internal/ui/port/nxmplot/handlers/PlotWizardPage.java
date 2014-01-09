@@ -10,6 +10,14 @@
  *******************************************************************************/
 package gov.redhawk.internal.ui.port.nxmplot.handlers;
 
+import gov.redhawk.ui.port.nxmblocks.BulkIONxmBlockControls;
+import gov.redhawk.ui.port.nxmblocks.BulkIONxmBlockSettings;
+import gov.redhawk.ui.port.nxmblocks.FftNxmBlockControls;
+import gov.redhawk.ui.port.nxmblocks.FftNxmBlockSettings;
+import gov.redhawk.ui.port.nxmblocks.PlotNxmBlockControls;
+import gov.redhawk.ui.port.nxmblocks.PlotNxmBlockSettings;
+import gov.redhawk.ui.port.nxmblocks.SddsNxmBlockControls;
+import gov.redhawk.ui.port.nxmblocks.SddsNxmBlockSettings;
 import gov.redhawk.ui.port.nxmplot.PlotType;
 
 import org.eclipse.core.databinding.DataBindingContext;
@@ -24,13 +32,16 @@ import org.eclipse.jface.viewers.ComboViewer;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
-import org.eclipse.swt.widgets.Text;
 
 /**
+ * @noreference This class is not intended to be referenced by clients.
  * @since 10.1
  */
 public class PlotWizardPage extends WizardPage {
@@ -48,29 +59,66 @@ public class PlotWizardPage extends WizardPage {
 		parent.setLayout(new GridLayout(2, false));
 		
 		Label label;
-		Text text;
+		Group group;
 		
+		// === plot type ===
 		label = new Label(parent, SWT.None);
 		label.setText("Plot Type:");
-		ComboViewer viewer = new ComboViewer(parent, SWT.None);
+		ComboViewer viewer = new ComboViewer(parent, SWT.READ_ONLY);
 		viewer.setLabelProvider(new LabelProvider());
 		viewer.setContentProvider(new ArrayContentProvider());
 		viewer.setInput(PlotType.values());
 		viewer.getControl().setLayoutData(GridDataFactory.fillDefaults().grab(true, false).create());
-		dataBindingContext.bindValue(ViewerProperties.singleSelection().observe(viewer), PojoProperties.value(PlotWizardSettings.PROP_TYPE).observe(settings));
+		dataBindingContext.bindValue(ViewerProperties.singleSelection().observe(viewer), PojoProperties.value(PlotWizardSettings.PROP_PLOT_TYPE).observe(settings));
+
+		// == PLOT Block settings (e.g. frame size) ==
+		PlotNxmBlockSettings plotSettings = settings.getPlotBlockSettings();
+		if (plotSettings != null) {
+			group = new Group(parent, SWT.None);
+			group.setLayoutData(GridDataFactory.fillDefaults().grab(true, false).span(2, 1).create());
+			group.setText("PLOT");
+			new PlotNxmBlockControls(plotSettings, dataBindingContext).createControls(group);
+		}
+
+		// === BULKIO settings ===
+		BulkIONxmBlockSettings bulkioSettings = settings.getBulkIOBlockSettings();
+		if (bulkioSettings != null) {
+			group = new Group(parent, SWT.None);
+			group.setLayoutData(GridDataFactory.fillDefaults().grab(true, false).span(2, 1).create());
+			group.setText("BULKIO");
+			new BulkIONxmBlockControls(bulkioSettings, dataBindingContext).createControls(group);
+		}
 		
+		// == BULKIO SDDS settings ===
+		SddsNxmBlockSettings sddsSettings = settings.getSddsBlockSettings();
+		if (sddsSettings != null) {
+			group = new Group(parent, SWT.None);
+			group.setLayoutData(GridDataFactory.fillDefaults().grab(true, false).span(2, 1).create());
+			group.setText("BULKIO SDDS");
+			new SddsNxmBlockControls(sddsSettings, dataBindingContext).createControls(group);
+		}
 		
-		label = new Label(parent, SWT.None);
-		Button button = new Button(parent, SWT.CHECK);
+		// == FFT settings ==
+		final Button button = new Button(parent, SWT.CHECK);
 		button.setText("Take FFT");
-		button.setLayoutData(GridDataFactory.fillDefaults().grab(true, false).create());
-		dataBindingContext.bindValue(WidgetProperties.selection().observe(button), PojoProperties.value(PlotWizardSettings.PROP_FFT).observe(settings));
-		
-		label = new Label(parent, SWT.None);
-		label.setText("Connection ID:");
-		text = new Text(parent, SWT.BORDER);
-		text.setLayoutData(GridDataFactory.fillDefaults().grab(true, false).create());
-		dataBindingContext.bindValue(WidgetProperties.text(SWT.Modify).observe(text), PojoProperties.value(PlotWizardSettings.PROP_CONNECTION_ID).observe(settings));
+		button.setLayoutData(GridDataFactory.fillDefaults().grab(true, false).span(2, 1).create());
+		dataBindingContext.bindValue(WidgetProperties.selection().observe(button), PojoProperties.value(PlotWizardSettings.PROP_DO_FFT).observe(settings));		
+		FftNxmBlockSettings fftSettings = settings.getFftBlockSettings();
+		if (fftSettings == null) {
+			fftSettings = new FftNxmBlockSettings();
+			settings.setFftBlockSettings(fftSettings);
+		}
+		final Group fftGroup = new Group(parent, SWT.None);
+		fftGroup.setLayoutData(GridDataFactory.fillDefaults().grab(true, false).span(2, 1).create());
+		fftGroup.setText("FFT");
+		fftGroup.setVisible(button.getSelection());
+		new FftNxmBlockControls(fftSettings, dataBindingContext).createControls(fftGroup);
+		button.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				fftGroup.setVisible(button.getSelection()); // hide/show fft settings controls based on take FFT checkbox button
+			}
+		});
 		
 		WizardPageSupport.create(this, dataBindingContext);
 		

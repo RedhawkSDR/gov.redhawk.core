@@ -32,7 +32,7 @@ public class PlotSession implements IPlotSession {
 
 	@Override
 	public void dispose() {
-//		if (!plotWidget.isDisposed()) {
+//		if (!plotWidget.isDisposed()) { // <-- this does not catch all scenarios during closing
 		if (!disposed) {
 			disposed = true;
 			if (file != null) {
