@@ -130,6 +130,9 @@ public class ScaSimpleSequencePropertyImpl extends ScaAbstractPropertyImpl<Simpl
 		}
 
 		private static Object[] getDefaultValues(SimpleSequence definition) {
+			if (definition == null) {
+				return new Object[0];
+			}
 			List<Object> array = new ArrayList<Object>();
 			if (definition != null && definition.getValues() != null) {
 				for (String value : definition.getValues().getValue()) {

@@ -252,6 +252,9 @@ public final class ScaComponentFactory {
 			@Override
 			public String getToolTipText(final Object element) {
 				final ScaAbstractProperty< ? > prop = (ScaAbstractProperty< ? >) element;
+				if (prop.getDefinition() == null) {
+					return null;
+				}
 				String retVal = prop.getDescription();
 				if (prop instanceof ScaSimpleProperty) {
 					final String typeString = "< " + ((ScaSimpleProperty) prop).getDefinition().getType().getLiteral() + " >";
@@ -340,18 +343,20 @@ public final class ScaComponentFactory {
 		parent.setLayout(layout);
 		final ScaPropertiesContentProvider contentProvider = new ScaPropertiesContentProvider(adapterFactory);
 
-		for (final Simple propDef : property.getDefinition().getStruct().getSimple()) {
-			final TableViewerColumn columnViewer = new TableViewerColumn(viewer, SWT.CENTER);
-			columnViewer.setEditingSupport(new StructFieldPropertyEditingSupport(viewer, contentProvider, propDef.getId()));
-			columnViewer.setLabelProvider(new StructFieldPropertyColumnLabelProvider(contentProvider, propDef.getId()));
-			String label;
-			if (propDef.getName() != null) {
-				label = propDef.getName();
-			} else {
-				label = propDef.getId();
+		if (property.getDefinition() != null) {
+			for (final Simple propDef : property.getDefinition().getStruct().getSimple()) {
+				final TableViewerColumn columnViewer = new TableViewerColumn(viewer, SWT.CENTER);
+				columnViewer.setEditingSupport(new StructFieldPropertyEditingSupport(viewer, contentProvider, propDef.getId()));
+				columnViewer.setLabelProvider(new StructFieldPropertyColumnLabelProvider(contentProvider, propDef.getId()));
+				String label;
+				if (propDef.getName() != null) {
+					label = propDef.getName();
+				} else {
+					label = propDef.getId();
+				}
+				layout.setColumnData(columnViewer.getColumn(), new ColumnPixelData(Math.min(300, 8 * label.length() + 10), true));
+				columnViewer.getColumn().setText(label);
 			}
-			layout.setColumnData(columnViewer.getColumn(), new ColumnPixelData(Math.min(300, 8 * label.length() + 10), true));
-			columnViewer.getColumn().setText(label);
 		}
 
 		viewer.getTable().setHeaderVisible(true);
@@ -367,7 +372,7 @@ public final class ScaComponentFactory {
 	 * @since 9.0
 	 */
 	public static Viewer createEnumPropertyViewer(final Composite parent, final int style, final ScaSimpleProperty prop) {
-		if (prop.getDefinition().getEnumerations() != null) {
+		if (prop.getDefinition() != null && prop.getDefinition().getEnumerations() != null) {
 			final ComboViewer viewer = new ComboViewer(parent, style);
 			CompatibilityUtil.disableComboWheelScrollSelect(viewer);
 			viewer.setLabelProvider(new LabelProvider() {

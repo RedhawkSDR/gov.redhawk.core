@@ -185,7 +185,7 @@ public class ScaStructSequencePropertyImpl extends ScaAbstractPropertyImpl<Struc
 		}
 
 		public boolean isDefaultValue() {
-			if (getDefinition().getStructValue().size() != size()) {
+			if (getDefinition() != null && getDefinition().getStructValue().size() != size()) {
 				return false;
 			}
 			for (ScaStructProperty struct : this) {
@@ -333,29 +333,33 @@ public class ScaStructSequencePropertyImpl extends ScaAbstractPropertyImpl<Struc
 		return super.eIsSet(featureID);
 	}
 
-	private static ScaStructProperty createStructValue(StructSequence seqDef, StructValue value) {
+	private ScaStructProperty createStructValue(StructSequence seqDef, StructValue value) {
 		// END GENERATED CODE
-		Assert.isNotNull(seqDef);
 		ScaStructPropertyImpl struct = new ScaStructPropertyImpl();
-		Struct structDef = EcoreUtil.copy(seqDef.getStruct());
-		// Copy the Mode and Configuration kind since this new struct will not be contained by anyone
-		structDef.setMode(seqDef.getMode());
-		for (ConfigurationKind k : seqDef.getConfigurationKind()) {
-			structDef.getConfigurationKind().add(EcoreUtil.copy(k));
-		}
+		if (seqDef != null) {
+			Struct structDef = EcoreUtil.copy(seqDef.getStruct());
+			// Copy the Mode and Configuration kind since this new struct will not be contained by anyone
+			structDef.setMode(seqDef.getMode());
+			for (ConfigurationKind k : seqDef.getConfigurationKind()) {
+				structDef.getConfigurationKind().add(EcoreUtil.copy(k));
+			}
 
-		struct.setDefinition(structDef);
+			struct.setDefinition(structDef);
 
-		if (value != null) {
-			for (SimpleRef ref : value.getSimpleRef()) {
-				for (Simple simple : structDef.getSimple()) {
-					if (ref.getRefID().equals(simple.getId())) {
-						simple.setValue(ref.getValue());
+			if (value != null) {
+				for (SimpleRef ref : value.getSimpleRef()) {
+					for (Simple simple : structDef.getSimple()) {
+						if (ref.getRefID().equals(simple.getId())) {
+							simple.setValue(ref.getValue());
+						}
 					}
 				}
 			}
+			struct.restoreDefaultValue();
+		} else {
+			struct.setId(getId());
+			struct.setName(getName());
 		}
-		struct.restoreDefaultValue();
 		return struct;
 		// BEGIN GENERATED CODE
 	}

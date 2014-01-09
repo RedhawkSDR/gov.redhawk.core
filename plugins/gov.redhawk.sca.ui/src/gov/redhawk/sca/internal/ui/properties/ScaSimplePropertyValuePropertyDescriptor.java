@@ -71,6 +71,9 @@ public class ScaSimplePropertyValuePropertyDescriptor extends PropertyValueTypeP
 				getEditLabelProvider(), this.itemPropertyDescriptor.isSortChoices(this.object));
 		} else if (genericFeature instanceof EStructuralFeature) {
 			final EStructuralFeature feature = (EStructuralFeature) genericFeature;
+			if (property.getDefinition() == null) {
+				return null;
+			}
 			final EClassifier eType = property.getDefinition().getType().toEDataType(property.getDefinition().isComplex());
 			final Collection< ? > choiceOfValues = this.itemPropertyDescriptor.getChoiceOfValues(this.object);
 			if (choiceOfValues != null) {
@@ -151,6 +154,9 @@ public class ScaSimplePropertyValuePropertyDescriptor extends PropertyValueTypeP
 			return null;
 		}
 		final ScaSimpleProperty property = (ScaSimpleProperty) this.object;
+		if (property.getDefinition() == null) {
+			return null;
+		}
 		PropertyValueType type = property.getDefinition().getType();
 		if (type == null) {
 			return null;

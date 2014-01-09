@@ -108,6 +108,9 @@ public class StructFieldPropertyColumnLabelProvider extends PropertyColumnLabelP
 	public String getToolTipText(final Object element) {
 		final ScaSimpleProperty simple = getSimple(element);
 		String retVal = simple.getDescription();
+		if (simple.getDefinition() == null) {
+			return null;
+		}
 		if (retVal == null) {
 			retVal = "< " + simple.getDefinition().getType().getLiteral() + " >";
 		} else {

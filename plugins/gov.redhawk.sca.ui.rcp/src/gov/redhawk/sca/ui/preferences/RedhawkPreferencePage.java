@@ -33,19 +33,9 @@ public class RedhawkPreferencePage extends FieldEditorPreferencePage implements 
 	@Override
 	protected void createFieldEditors() {
 		final RadioGroupFieldEditor field = new RadioGroupFieldEditor(RedhawkUIPreferenceConstants.CREATE_WAVEFORM_LAUNCH_CONFIGURATION,
-		        "Create new launch shortcut after Waveform Launch",
-		        3,
-		        new String[][] {
-		                new String[] {
-		                        "Always", MessageDialogWithToggle.ALWAYS
-		                }, new String[] {
-		                        "Never", MessageDialogWithToggle.NEVER
-		                }, new String[] {
-		                        "Prompt", MessageDialogWithToggle.PROMPT
-		                }
-		        },
-		        getFieldEditorParent(),
-		        true);
+			"Create new launch shortcut after Waveform Launch", 3, new String[][] { new String[] { "Always", MessageDialogWithToggle.ALWAYS },
+			new String[] { "Never", MessageDialogWithToggle.NEVER }, new String[] { "Prompt", MessageDialogWithToggle.PROMPT } }, getFieldEditorParent(),
+			true);
 		addField(field);
 	}
 

@@ -255,44 +255,52 @@ public class ScaSimplePropertyImpl extends ScaAbstractPropertyImpl<Simple> imple
 	
 	@Override
 	public boolean isDefaultValue() {
+		// END GENERATED CODE
 		Object newValue;
 		if (getDefinition() != null && getDefinition().getType() != null) {
 			newValue = AnyUtils.convertString(getDefinition().getValue(), getDefinition().getType().getLiteral(), getDefinition().isComplex());
 		} else {
 			newValue = null;
 		}
-	    return PluginUtil.equals(newValue, value);
+		return PluginUtil.equals(newValue, value);
+		// BEGIN GENERATED CODE
 	}
 
 	@Override
 	protected void internalFromAny(Any newAny) {
+		// END GENERATED CODE
 		try {
 			if (newAny != null) {
 				Object newValue = AnyUtils.convertAny(newAny);
 				setValue(newValue);
 			} else {
-				restoreDefaultValue();	
+				restoreDefaultValue();
 			}
 			setStatus(ScaPackage.Literals.SCA_SIMPLE_PROPERTY__VALUE, Status.OK_STATUS);
 		} catch (Exception e) {
 			setStatus(ScaPackage.Literals.SCA_SIMPLE_PROPERTY__VALUE, new Status(Status.ERROR, ScaModelPlugin.ID, "Failed to read property value of:"
-			        + getName(), e));
-		} 
+				+ getName(), e));
+		}
+		// BEGIN GENERATED CODE
 	}
 	
 	@Override
 	public Any toAny() {
+		// END GENERATED CODE
 		return AnyUtils.toAny(value, getType(), isComplex());
+		// BEGIN GENERATED CODE
 	}
 	
 	/**
      * @since 18.0
      */
 	protected boolean isComplex() {
+		// END GENERATED CODE
 		if (getDefinition() != null && getDefinition().getComplex() != null) {
 			return getDefinition().getComplex();
 		}
 		return false;
+		// BEGIN GENERATED CODE
 	}
 
 	private String getType() {

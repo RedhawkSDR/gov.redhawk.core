@@ -11,33 +11,33 @@
  */
 package gov.redhawk.sca.ui.views;
 
-
 import org.eclipse.jface.viewers.ColumnViewerToolTipSupport;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.navigator.CommonViewer;
 
 /**
+ * @since 9.2
  * 
  */
 public class ScaExplorerRcp extends ScaExplorer {
 
 	/**
-     * @since 10.0
-     */
+	 * @since 10.0
+	 */
 	@Override
 	protected CommonViewer createCommonViewerObject(final Composite aParent) {
 		return new ScaCommonViewer(getViewSite().getId(), aParent, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL);
 	}
 
 	/**
-     * @since 10.0
-     */
+	 * @since 10.0
+	 */
 	@Override
 	protected CommonViewer createCommonViewer(final Composite aParent) {
 		final CommonViewer retVal = super.createCommonViewer(aParent);
 		ColumnViewerToolTipSupport.enableFor(retVal);
 		return retVal;
 	}
-	
+
 }

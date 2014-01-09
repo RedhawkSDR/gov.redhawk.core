@@ -20,7 +20,6 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Listener;
 
-
 /**
  * This class is meant as an extension mechanism to single source RCP / RAP applications
  * @since 2.0
@@ -35,7 +34,7 @@ public class CompatibilityUtilImpl implements ICompatibilityUtil {
 	public void setFontDataStyle(FontData fontData, int style) {
 		fontData.setStyle(style);
 	}
-	
+
 	/* (non-Javadoc)
 	 * @see gov.redhawk.sca.ui.compatibility.ICompatibilityUtil#disableComboWheelScrollSelect(org.eclipse.jface.viewers.ComboViewer)
 	 */
@@ -51,7 +50,6 @@ public class CompatibilityUtilImpl implements ICompatibilityUtil {
 
 		});
 	}
-	
 
 	/* (non-Javadoc)
 	 * @see gov.redhawk.sca.ui.compatibility.ICompatibilityUtil#getUserPrincipal(org.eclipse.swt.widgets.Display)
@@ -63,7 +61,7 @@ public class CompatibilityUtilImpl implements ICompatibilityUtil {
 	public Principal getUserPrincipal(Display display) {
 		throw new UnsupportedOperationException("This method is used in RAP only");
 	}
-	
+
 	/**
 	 * @since 1.2
 	 */
@@ -75,7 +73,7 @@ public class CompatibilityUtilImpl implements ICompatibilityUtil {
 		//PASS
 		//No RCP implementation needed
 	}
-	
+
 	/**
 	 * @since 1.2
 	 */
@@ -87,7 +85,7 @@ public class CompatibilityUtilImpl implements ICompatibilityUtil {
 		//PASS
 		//No RCP implementation needed
 	}
-	
+
 	/* (non-Javadoc)
 	 * @see gov.redhawk.sca.ui.compatibility.ICompatibilityUtil#deactivateUIConnection(java.lang.String)
 	 */

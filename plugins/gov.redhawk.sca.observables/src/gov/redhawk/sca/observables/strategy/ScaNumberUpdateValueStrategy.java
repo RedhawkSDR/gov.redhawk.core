@@ -11,6 +11,7 @@
 package gov.redhawk.sca.observables.strategy;
 
 import gov.redhawk.model.sca.ScaSimpleProperty;
+import gov.redhawk.sca.observables.SCAObservables;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -22,6 +23,7 @@ import org.eclipse.core.databinding.UpdateValueStrategy;
 import org.eclipse.core.databinding.conversion.StringToNumberConverter;
 import org.eclipse.core.databinding.validation.IValidator;
 import org.eclipse.core.databinding.validation.ValidationStatus;
+import org.eclipse.core.internal.databinding.validation.ReadOnlyValidator;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.emf.ecore.EDataType;
 import org.eclipse.emf.ecore.EcorePackage;
@@ -87,11 +89,22 @@ public class ScaNumberUpdateValueStrategy extends UpdateValueStrategy {
 	};
 
 	public ScaNumberUpdateValueStrategy(ScaSimpleProperty prop) {
-		boolean complex = prop.getDefinition().isComplex();
-		NumberValidator validator = new NumberValidator(prop.getDefinition().getType(), complex);
-		this.beforeSetValidator = validator;
-		this.afterGetValidator = validator;
-		EDataType type = prop.getDefinition().getType().toEDataType(complex);
+		boolean complex;
+		EDataType type;
+
+		if (prop.getDefinition() == null) {
+			this.beforeSetValidator = ReadOnlyValidator.getDefault();
+			this.afterGetValidator = ReadOnlyValidator.getDefault();
+			type = SCAObservables.toType(prop.getValue());
+			complex = prop.getValue() instanceof ComplexNumber;
+		} else {
+			complex = prop.getDefinition().isComplex();
+			type = prop.getDefinition().getType().toEDataType(complex);
+			NumberValidator validator = new NumberValidator(prop.getDefinition().getType(), complex);
+			this.beforeSetValidator = validator;
+			this.afterGetValidator = validator;
+		}
+
 		if (complex) {
 			setConverter(new StringToComplexNumberConverter(prop.getDefinition().getType()));
 		} else {

@@ -30,12 +30,12 @@ import org.eclipse.ui.navigator.INavigatorContentExtension;
  * Extends the Common Navigator framework to support extensiable tooltips
  * 
  * @see gov.redhawk.sca.ui.ITooltipProvider
- * @since 10.0
+ * @since 9.2
  */
 @SuppressWarnings("restriction")
 public class ScaCommonViewer extends CommonViewer {
 
-    private class DelegatingTooltipLabelProvider extends NavigatorDecoratingLabelProvider {
+	private class DelegatingTooltipLabelProvider extends NavigatorDecoratingLabelProvider {
 
 		public DelegatingTooltipLabelProvider(final ILabelProvider commonLabelProvider) {
 			super(commonLabelProvider);
@@ -147,8 +147,8 @@ public class ScaCommonViewer extends CommonViewer {
 	}
 
 	/**
-     * @since 10.0
-     */
+	 * @since 10.0
+	 */
 	public ScaCommonViewer(final String aViewerId, final Composite aParent, final int aStyle) {
 		super(aViewerId, aParent, aStyle);
 	}

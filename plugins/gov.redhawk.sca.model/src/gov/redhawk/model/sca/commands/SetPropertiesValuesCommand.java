@@ -12,12 +12,18 @@
 package gov.redhawk.model.sca.commands;
 
 import gov.redhawk.model.sca.ScaAbstractProperty;
+import gov.redhawk.model.sca.ScaFactory;
 import gov.redhawk.model.sca.ScaPackage;
 import gov.redhawk.model.sca.ScaPropertyContainer;
+import gov.redhawk.model.sca.ScaSimpleProperty;
+import gov.redhawk.model.sca.ScaSimpleSequenceProperty;
+import gov.redhawk.model.sca.ScaStructProperty;
+import gov.redhawk.model.sca.ScaStructSequenceProperty;
 
 import java.util.HashMap;
 import java.util.Map;
 
+import mil.jpeojtrs.sca.util.AnyUtils;
 import CF.DataType;
 import CF.PropertiesHolder;
 
@@ -49,14 +55,75 @@ public class SetPropertiesValuesCommand extends SetStatusCommand<ScaPropertyCont
 				final ScaAbstractProperty< ? > prop = props.get(dt.id);
 				if (prop != null) {
 					prop.fromAny(dt.value);
-				} 
-//				else {
-					// TODO Show these as additional read only properties?
-//					Object value = AnyUtils.convertAny(dt.value);
-//				}
+				} else {
+					ScaAbstractProperty< ? > newProp = createProperty(dt);
+
+					if (newProp != null) {
+						provider.getProperties().add(newProp);
+					}
+
+				}
 			}
 		}
 		super.execute();
+	}
+
+	private static ScaAbstractProperty< ? > createProperty(DataType dt) {
+		ScaAbstractProperty< ? > newProp = null;
+		if (isSimple(dt)) {
+			newProp = createSimple(dt);
+		} else if (isStruct(dt)) {
+			newProp = createStruct(dt);
+		} else if (isSequence(dt)) {
+			newProp = createSequence(dt);
+		} else if (isStructSequence(dt)) {
+			newProp = createStructSequence(dt);
+		}
+		return newProp;
+	}
+
+	private static ScaStructSequenceProperty createStructSequence(DataType dt) {
+		ScaStructSequenceProperty retVal = ScaFactory.eINSTANCE.createScaStructSequenceProperty();
+		retVal.setId(dt.id);
+		retVal.fromAny(dt.value);
+		return retVal;
+	}
+
+	private static boolean isStructSequence(DataType dt) {
+		return AnyUtils.isStructSequence(dt);
+	}
+
+	private static ScaSimpleSequenceProperty createSequence(DataType dt) {
+		ScaSimpleSequenceProperty retVal = ScaFactory.eINSTANCE.createScaSimpleSequenceProperty();
+		retVal.setId(dt.id);
+		retVal.fromAny(dt.value);
+		return retVal;
+	}
+
+	private static boolean isSequence(DataType dt) {
+		return AnyUtils.isSequence(dt);
+	}
+
+	private static ScaStructProperty createStruct(DataType dt) {
+		ScaStructProperty retVal = ScaFactory.eINSTANCE.createScaStructProperty();
+		retVal.setId(dt.id);
+		retVal.fromAny(dt.value);
+		return retVal;
+	}
+
+	private static  boolean isStruct(DataType dt) {
+		return AnyUtils.isStruct(dt);
+	}
+
+	private static boolean isSimple(DataType dt) {
+		return AnyUtils.isSimple(dt);
+	}
+
+	private static ScaSimpleProperty createSimple(DataType dt) {
+		ScaSimpleProperty retVal = ScaFactory.eINSTANCE.createScaSimpleProperty();
+		retVal.setId(dt.id);
+		retVal.fromAny(dt.value);
+		return retVal;
 	}
 
 }
