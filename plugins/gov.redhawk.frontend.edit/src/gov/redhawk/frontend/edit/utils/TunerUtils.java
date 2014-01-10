@@ -89,8 +89,6 @@ public enum TunerUtils {
 			// Assign tuner type to model object - provides tree label
 			setTunerType(tunerDevice, tunerModel);
 			
-			
-
 			tunerDevice.getSimples(); //TODO this is all of the simples for each individual physical Tuner, map them to the model objects
 
 			ScaModelCommand.execute(container, new ScaModelCommand() {

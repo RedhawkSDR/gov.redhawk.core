@@ -1,7 +1,21 @@
-package gov.redhawk.frontend.internal;
+/** 
+ * This file is protected by Copyright. 
+ * Please refer to the COPYRIGHT file distributed with this source distribution.
+ * 
+ * This file is part of REDHAWK IDE.
+ * 
+ * All rights reserved.  This program and the accompanying materials are made available under 
+ * the terms of the Eclipse Public License v1.0 which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html.
+ *
+ */
+package gov.redhawk.frontend.ui.internal;
 
+import gov.redhawk.frontend.Tuner;
 import gov.redhawk.frontend.TunerContainer;
 import gov.redhawk.frontend.edit.utils.TunerUtils;
+import gov.redhawk.frontend.edit.utils.TunerWrapper;
+import gov.redhawk.frontend.edit.utils.TunerWrapper.TunerProperty;
 import gov.redhawk.frontend.provider.FrontendItemProviderAdapterFactory;
 import gov.redhawk.model.sca.ScaDevice;
 import gov.redhawk.sca.ui.ScaModelAdapterFactoryContentProvider;
@@ -25,6 +39,13 @@ public class FrontEndContentProvider extends ScaModelAdapterFactoryContentProvid
 
 	@Override
 	public Object[] getElements(Object object) {
+		//Create TunerWrapper object that returns an array of TunerProperty objects to pass to the label provider
+		if(object instanceof Tuner) {
+			Tuner tuner = (Tuner) object;
+			TunerWrapper tunerWrapper = new TunerWrapper(tuner);
+			Object[] properties = tunerWrapper.getProperties();
+			return properties;
+		}
 		return super.getElements(object);
 	}
 
@@ -40,6 +61,10 @@ public class FrontEndContentProvider extends ScaModelAdapterFactoryContentProvid
 			TunerContainer tuners = (TunerContainer) object;
 			return TunerUtils.INSTANCE.getChildren(tuners);
 		}
+		if (object instanceof TunerWrapper.TunerProperty) {
+			TunerProperty property = (TunerProperty) object;
+			return property.getTunerStatusElements();
+		}
 		return super.getChildren(object);
 	}
 
@@ -47,6 +72,13 @@ public class FrontEndContentProvider extends ScaModelAdapterFactoryContentProvid
 	public boolean hasChildren(Object object) {
 		if (object instanceof TunerContainer) {
 			return true;
+		}
+		if (object instanceof TunerWrapper.TunerProperty) {
+			TunerProperty property = (TunerProperty) object;
+			if (property.getId().equals("Tuner Status")) {
+				return true;
+			}
+			return false;
 		}
 		return super.hasChildren(object);
 	}

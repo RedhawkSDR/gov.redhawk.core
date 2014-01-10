@@ -1,5 +1,18 @@
-package gov.redhawk.frontend.internal;
+/** 
+ * This file is protected by Copyright. 
+ * Please refer to the COPYRIGHT file distributed with this source distribution.
+ * 
+ * This file is part of REDHAWK IDE.
+ * 
+ * All rights reserved.  This program and the accompanying materials are made available under 
+ * the terms of the Eclipse Public License v1.0 which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html.
+ *
+ */
+package gov.redhawk.frontend.ui.internal;
 
+import gov.redhawk.frontend.edit.utils.TunerWrapper;
+import gov.redhawk.frontend.edit.utils.TunerWrapper.TunerProperty;
 import gov.redhawk.frontend.provider.FrontendItemProviderAdapterFactory;
 import gov.redhawk.sca.ui.ITooltipProvider;
 import gov.redhawk.sca.ui.ScaModelAdapterFactoryLabelProvider;
@@ -17,6 +30,25 @@ public class FrontEndLabelProvider extends ScaModelAdapterFactoryLabelProvider i
 	
 	public FrontEndLabelProvider() {
 		super(FrontEndLabelProvider.createAdapterFactory());
+	}
+	
+	@Override
+	public String getColumnText(Object object, int columnIndex) {
+		System.out.println("Object: " + object.getClass());
+		if(object instanceof TunerWrapper.TunerProperty) {
+			TunerProperty property = (TunerProperty) object;
+			switch (columnIndex) {
+			case 0:
+				return property.getId();
+			case 1:
+				if (property.getId().equals("Tuner Status")) {
+					return "";
+				} else {
+					return String.valueOf(property.getValue());
+				}
+			}
+		}
+		return "";
 	}
 
 	private static AdapterFactory createAdapterFactory() {
@@ -100,8 +132,7 @@ public class FrontEndLabelProvider extends ScaModelAdapterFactoryLabelProvider i
 
 	@Override
 	public String getDescription(Object anElement) {
-		// TODO Auto-generated method stub
-		return null;
+		return getText(anElement);
 	}
 
 }

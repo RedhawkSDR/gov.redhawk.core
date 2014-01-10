@@ -371,6 +371,9 @@
          <propertyCategory
                category="advanced">
          </propertyCategory>
+         <propertyCategory
+               category="frontend">
+         </propertyCategory>
       </propertyContributor>
    </extension>
    <extension

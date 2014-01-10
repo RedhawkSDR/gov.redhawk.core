@@ -5,9 +5,9 @@
          point="org.eclipse.ui.navigator.navigatorContent">
       <navigatorContent
             activeByDefault="true"
-            contentProvider="gov.redhawk.frontend.internal.FrontEndContentProvider"
+            contentProvider="gov.redhawk.frontend.ui.internal.FrontEndContentProvider"
             id="gov.redhawk.frontend.ui.navigatorContent"
-            labelProvider="gov.redhawk.frontend.internal.FrontEndLabelProvider"
+            labelProvider="gov.redhawk.frontend.ui.internal.FrontEndLabelProvider"
             name="FrontEndInterfaces"
             priority="normal"
             providesSaveables="false"
@@ -43,10 +43,9 @@
       <propertyTabs
             contributorId="gov.redhawk.ui.sca_explorer">
          <propertyTab
-               afterTab="CommonNavigator.tab.Advanced"
-               category="advanced"
-               id="gov.redhawk.frontend.ui.tab.TunerStatus"
-               label="Tuner Status">
+               category="frontend"
+               id="gov.redhawk.frontend.ui.tab.Frontend"
+               label="Front End Interfaces">
          </propertyTab>
       </propertyTabs>
    </extension>
@@ -55,11 +54,12 @@
       <propertySections
             contributorId="gov.redhawk.ui.sca_explorer">
          <propertySection
-               class="gov.redhawk.frontend.ui.tabbed.TunerStatusSection"
-               id="gov.redhawk.frontend.ui.section.TunerStatus"
-               tab="gov.redhawk.frontend.ui.tab.TunerStatus">
+               class="gov.redhawk.frontend.ui.internal.section.FrontendSection"
+               filter="gov.redhawk.frontend.ui.internal.section.FrontendSectionFilter"
+               id="gov.redhawk.frontend.ui.section.frontendSection"
+               tab="gov.redhawk.frontend.ui.tab.Frontend">
             <input
-                  type="gov.redhawk.frontend.Tuner">
+                  type="java.lang.Object">
             </input>
          </propertySection>
       </propertySections>
@@ -169,27 +169,27 @@
    <extension
          point="org.eclipse.ui.commands">
       <command
-            defaultHandler="gov.redhawk.frontend.internal.AllocateHandler"
+            defaultHandler="gov.redhawk.frontend.ui.internal.AllocateHandler"
             id="gov.redhawk.frontend.commands.allocate"
             name="Allocate...">
       </command>
       <command
-            defaultHandler="gov.redhawk.frontend.internal.DeallocateHandler"
+            defaultHandler="gov.redhawk.frontend.ui.internal.DeallocateHandler"
             id="gov.redhawk.frontend.commands.deallocate"
             name="Deallocate">
       </command>
       <command
-            defaultHandler="gov.redhawk.frontend.internal.PlotHandler"
+            defaultHandler="gov.redhawk.frontend.ui.internal.PlotHandler"
             id="gov.redhawk.frontend.commands.plot"
             name="Plot...">
       </command>
       <command
-            defaultHandler="gov.redhawk.frontend.internal.SnapshotHandler"
+            defaultHandler="gov.redhawk.frontend.ui.internal.SnapshotHandler"
             id="gov.redhawk.frontend.commands.snapshot"
             name="Snapshot">
       </command>
       <command
-            defaultHandler="gov.redhawk.frontend.internal.DeallocateHandler"
+            defaultHandler="gov.redhawk.frontend.ui.internal.DeallocateHandler"
             id="gov.redhawk.frontend.commands.deallocateall"
             name="Deallocate All">
       </command>
@@ -197,14 +197,14 @@
    <extension
          point="org.eclipse.core.expressions.propertyTesters">
       <propertyTester
-            class="gov.redhawk.frontend.internal.AllocationPropertyTester"
+            class="gov.redhawk.frontend.ui.internal.AllocationPropertyTester"
             id="gov.redhawk.frontend.allocationPropertyTester"
             namespace="gov.redhawk.frontend"
             properties="hasAllocationID"
             type="gov.redhawk.frontend.Tuner">
       </propertyTester>
       <propertyTester
-            class="gov.redhawk.frontend.internal.TunerContainerPropertyTester"
+            class="gov.redhawk.frontend.ui.internal.TunerContainerPropertyTester"
             id="gov.redhawk.frontend.tunerContainerPropertyTester"
             namespace="gov.redhawk.frontend"
             properties="hasUnallocatedTuners,hasAllocatedTuners"
