@@ -4,40 +4,28 @@ import gov.redhawk.frontend.FrontendFactory;
 import gov.redhawk.frontend.ModelDevice;
 import gov.redhawk.frontend.Tuner;
 import gov.redhawk.frontend.TunerContainer;
-import gov.redhawk.model.sca.IDisposable;
 import gov.redhawk.model.sca.ScaDevice;
-import gov.redhawk.model.sca.ScaPackage;
 import gov.redhawk.model.sca.ScaStructProperty;
 import gov.redhawk.model.sca.ScaStructSequenceProperty;
-import gov.redhawk.model.sca.commands.ScaModelCommand;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import mil.jpeojtrs.sca.scd.Interface;
 
 import org.eclipse.emf.common.notify.Notification;
-import org.eclipse.emf.common.notify.impl.AdapterImpl;
 import org.eclipse.emf.common.util.EList;
-import org.eclipse.emf.common.util.URI;
-import org.eclipse.emf.ecore.EObject;
-import org.eclipse.emf.ecore.resource.Resource;
-import org.eclipse.emf.transaction.TransactionalEditingDomain;
 
 import FRONTEND.DigitalTunerHelper;
 
 public enum TunerUtils {
 	INSTANCE;
 
-	private Map<EObject, Object[]> fMap = Collections.synchronizedMap(new HashMap<EObject, Object[]>());
-	private final TransactionalEditingDomain editingDomain = TransactionalEditingDomain.Registry.INSTANCE.getEditingDomain("gov.redhawk.sca.editingDomain");
-	private Resource tunerStatus;
+//	private Map<EObject, Object[]> fMap = Collections.synchronizedMap(new HashMap<EObject, Object[]>());
+//	private final TransactionalEditingDomain editingDomain = TransactionalEditingDomain.Registry.INSTANCE.getEditingDomain("gov.redhawk.sca.editingDomain");
+//	private Resource tunerStatus;
 
 	private TunerUtils() {
-		tunerStatus = editingDomain.getResourceSet().createResource(URI.createURI("null:///tunerStatus.xml"));
+//		tunerStatus = editingDomain.getResourceSet().createResource(URI.createURI("null:///tunerStatus.xml"));
 	}
 
 	public void processChange(Notification notification) {
@@ -69,11 +57,14 @@ public enum TunerUtils {
 				EList<Tuner> tunerList = container.getTuners();
 
 				// populate container object with tuners from device
+				int tunerIndex = 0;
 				for (ScaStructProperty struct : structs) {
 					final Tuner tuner = FrontendFactory.eINSTANCE.createTuner();
 					tuner.setTunerContainer(container);
 					tuner.setTunerStruct(struct);
+					tuner.setTunerID(String.valueOf(tunerIndex));
 					tunerList.add(tuner);
+					tunerIndex++;
 
 					// Assign tuner type to model object - provides tree label
 					setTunerType(tuner);
@@ -88,30 +79,30 @@ public enum TunerUtils {
 		return new Object[0];
 	}
 
-	/**
-	 * 
-	 * 
-	 * @param container
-	 * @return an Object[] containing the tuners associated with the parent device
-	 */
-	public Object[] getChildren(final TunerContainer container) {
-		final List<Tuner> tuners = new ArrayList<Tuner>();
-		// Create tuner model object
-		Tuner[] tunerList = (Tuner[]) container.getTuners().toArray();
-		int numOfTuners = tunerList.length;
-		for (int i = 0; i < numOfTuners; i++) {
-			final Tuner tuner = tunerList[i];
-			tuner.setTunerID(String.valueOf(i));
-			tuners.add(tuner);
-
-		}
-		if (!tuners.isEmpty()) {
-			return tuners.toArray();
-		}
-
-		// If there are no tuners, return an empty Object array
-		return new Object[0];
-	}
+//	/**
+//	 * 
+//	 * 
+//	 * @param container
+//	 * @return an Object[] containing the tuners associated with the parent device
+//	 */
+//	public Object[] getChildren(final TunerContainer container) {
+//		final List<Tuner> tuners = new ArrayList<Tuner>();
+//		// Create tuner model object
+//		Tuner[] tunerList = (Tuner[]) container.getTuners().toArray();
+//		int numOfTuners = tunerList.length;
+//		for (int i = 0; i < numOfTuners; i++) {
+//			final Tuner tuner = tunerList[i];
+//			tuner.setTunerID(String.valueOf(i));
+//			tuners.add(tuner);
+//
+//		}
+//		if (!tuners.isEmpty()) {
+//			return tuners.toArray();
+//		}
+//
+//		// If there are no tuners, return an empty Object array
+//		return new Object[0];
+//	}
 
 	/** 
 	 * Assigns tuner type to model object

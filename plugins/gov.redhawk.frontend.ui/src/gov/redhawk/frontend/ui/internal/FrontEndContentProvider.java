@@ -21,6 +21,7 @@ import gov.redhawk.model.sca.ScaDevice;
 import gov.redhawk.sca.ui.ScaModelAdapterFactoryContentProvider;
 
 import org.eclipse.emf.common.notify.AdapterFactory;
+import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.ui.IMemento;
 import org.eclipse.ui.navigator.ICommonContentExtensionSite;
 import org.eclipse.ui.navigator.ICommonContentProvider;
@@ -57,14 +58,11 @@ public class FrontEndContentProvider extends ScaModelAdapterFactoryContentProvid
 				return TunerUtils.INSTANCE.getTunerContainer(device);
 			}
 		}
-		if (object instanceof TunerContainer) {
-			TunerContainer tuners = (TunerContainer) object;
-			return TunerUtils.INSTANCE.getChildren(tuners);
-		}
 		if (object instanceof TunerWrapper.TunerProperty) {
 			TunerProperty property = (TunerProperty) object;
 			return property.getTunerStatusElements();
 		}
+
 		return super.getChildren(object);
 	}
 
@@ -101,4 +99,8 @@ public class FrontEndContentProvider extends ScaModelAdapterFactoryContentProvid
 
 	}
 
+	@Override
+	public void notifyChanged(Notification notification) {
+		super.notifyChanged(notification);
+	}
 }

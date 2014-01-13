@@ -134,4 +134,8 @@ public class FrontEndLabelProvider extends ScaModelAdapterFactoryLabelProvider i
 		return getText(anElement);
 	}
 
+	@Override
+	public boolean isFireLabelUpdateNotifications() {
+		return true;
+	}
 }

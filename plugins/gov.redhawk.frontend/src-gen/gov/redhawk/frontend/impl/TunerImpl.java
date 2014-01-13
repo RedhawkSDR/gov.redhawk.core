@@ -271,14 +271,15 @@ public class TunerImpl extends MinimalEObjectImpl.Container implements Tuner
   /**
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @generated
    */
   public void setAllocationID(String newAllocationID)
   {
     String oldAllocationID = allocationID;
     allocationID = newAllocationID;
-    if (eNotificationRequired())
+    if (eNotificationRequired()) {
       eNotify(new ENotificationImpl(this, Notification.SET, FrontendPackage.TUNER__ALLOCATION_ID, oldAllocationID, allocationID));
+      getTunerContainer().eNotify(new ENotificationImpl((TunerContainerImpl) getTunerContainer(), Notification.MOVE, FrontendPackage.TUNER_CONTAINER__TUNERS, Notification.NO_INDEX, Notification.NO_INDEX));
+    }
   }
 
   /**

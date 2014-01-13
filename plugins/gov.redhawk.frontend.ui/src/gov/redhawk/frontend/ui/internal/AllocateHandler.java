@@ -16,8 +16,6 @@ import gov.redhawk.frontend.TunerContainer;
 import gov.redhawk.frontend.ui.wizard.TunerAllocationWizard;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.LinkedList;
 import java.util.List;
 
 import org.eclipse.core.commands.AbstractHandler;

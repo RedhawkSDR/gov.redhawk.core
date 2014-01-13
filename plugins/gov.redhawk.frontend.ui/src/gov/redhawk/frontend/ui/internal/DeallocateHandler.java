@@ -13,7 +13,6 @@ package gov.redhawk.frontend.ui.internal;
 
 import gov.redhawk.frontend.Tuner;
 import gov.redhawk.frontend.TunerContainer;
-import gov.redhawk.frontend.edit.utils.TunerUtils;
 
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
@@ -41,15 +40,13 @@ public class DeallocateHandler extends AbstractHandler implements IHandler {
 		}
 		Object obj = selection.getFirstElement();
 		if (obj instanceof Tuner) {
-			Tuner tuner = (Tuner) obj;
+//			Tuner tuner = (Tuner) obj;
 			//TODO: Unset all the properties of the Tuner
 //			tuner.setAllocationID(null);
 		}
 		if (obj instanceof TunerContainer) {
 			TunerContainer container = (TunerContainer) obj;
-			Object[] tuners = TunerUtils.INSTANCE.getChildren(container);
-			for (Object tunerObj: tuners) {
-				Tuner tuner = (Tuner) tunerObj;
+			for (Tuner tuner: container.getTuners()) {
 				String allocationID = tuner.getAllocationID();
 				if (!(allocationID == null || "".equals(allocationID))) {
 					//TODO: deallocate tuner

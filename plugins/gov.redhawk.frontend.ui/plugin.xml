@@ -24,6 +24,14 @@
                </instanceof>
             </or>
          </possibleChildren>
+         <commonSorter
+               class="gov.redhawk.frontend.ui.FrontEndViewerSorter">
+            <parentExpression>
+               <instanceof
+                     value="gov.redhawk.frontend.TunerContainer">
+               </instanceof>
+            </parentExpression>
+         </commonSorter>
       </navigatorContent>
    </extension>
    <extension

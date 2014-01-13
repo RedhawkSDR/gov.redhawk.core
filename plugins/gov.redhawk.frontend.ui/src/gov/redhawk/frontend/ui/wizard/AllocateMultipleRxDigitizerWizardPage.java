@@ -1,12 +1,9 @@
 package gov.redhawk.frontend.ui.wizard;
 
-import gov.redhawk.frontend.TunerContainer;
-import gov.redhawk.frontend.edit.utils.TunerUtils;
 import gov.redhawk.frontend.Tuner;
+import gov.redhawk.frontend.TunerContainer;
 
-import java.util.ArrayList;
 import java.util.Collections;
-import java.util.List;
 
 import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.jface.layout.GridLayoutFactory;
@@ -16,7 +13,6 @@ import org.eclipse.jface.viewers.ICheckStateListener;
 import org.eclipse.jface.viewers.ILabelProviderListener;
 import org.eclipse.jface.viewers.IStructuredContentProvider;
 import org.eclipse.jface.viewers.ITableLabelProvider;
-import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.wizard.IWizardPage;
 import org.eclipse.jface.wizard.WizardPage;
@@ -33,7 +29,7 @@ public class AllocateMultipleRxDigitizerWizardPage extends WizardPage {
 
 	protected AllocateMultipleRxDigitizerWizardPage(TunerContainer container) {
 		super("Allocate Multiple RX Digitizer Tuners");
-		this.tuners = (Tuner[]) TunerUtils.INSTANCE.getChildren(container);
+		this.tuners = container.getTuners().toArray(new Tuner[0]);
 	}
 	
 	protected AllocateMultipleRxDigitizerWizardPage(Tuner[] tuners) {

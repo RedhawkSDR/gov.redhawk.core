@@ -2,14 +2,9 @@ package gov.redhawk.frontend.ui.wizard;
 
 import gov.redhawk.common.ui.widgets.Dval;
 import gov.redhawk.frontend.Tuner;
-import gov.redhawk.frontend.TunerContainer;
-import gov.redhawk.model.sca.ScaAbstractProperty;
-import gov.redhawk.model.sca.ScaDevice;
 import gov.redhawk.model.sca.ScaSimpleProperty;
 import gov.redhawk.model.sca.ScaStructProperty;
 
-import org.eclipse.emf.common.util.EList;
-import org.eclipse.emf.ecore.EObject;
 import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.jface.layout.GridLayoutFactory;
 import org.eclipse.jface.wizard.IWizardPage;
