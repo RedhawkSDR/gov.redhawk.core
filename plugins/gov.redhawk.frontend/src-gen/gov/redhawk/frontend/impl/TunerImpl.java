@@ -154,7 +154,7 @@ public class TunerImpl extends MinimalEObjectImpl.Container implements Tuner
    * @generated
    * @ordered
    */
-  protected static final float GAIN_EDEFAULT = 0.0F;
+  protected static final double GAIN_EDEFAULT = 0.0;
 
   /**
    * The cached value of the '{@link #getGain() <em>Gain</em>}' attribute.
@@ -164,7 +164,7 @@ public class TunerImpl extends MinimalEObjectImpl.Container implements Tuner
    * @generated
    * @ordered
    */
-  protected float gain = GAIN_EDEFAULT;
+  protected double gain = GAIN_EDEFAULT;
 
   /**
    * <!-- begin-user-doc -->
@@ -355,7 +355,7 @@ public class TunerImpl extends MinimalEObjectImpl.Container implements Tuner
    * <!-- end-user-doc -->
    * @generated
    */
-  public float getGain()
+  public double getGain()
   {
     return gain;
   }
@@ -365,9 +365,9 @@ public class TunerImpl extends MinimalEObjectImpl.Container implements Tuner
    * <!-- end-user-doc -->
    * @generated
    */
-  public void setGain(float newGain)
+  public void setGain(double newGain)
   {
-    float oldGain = gain;
+    double oldGain = gain;
     gain = newGain;
     if (eNotificationRequired())
       eNotify(new ENotificationImpl(this, Notification.SET, FrontendPackage.TUNER__GAIN, oldGain, gain));
@@ -464,7 +464,7 @@ public class TunerImpl extends MinimalEObjectImpl.Container implements Tuner
         setTunerStatus((TunerStatus)newValue);
         return;
       case FrontendPackage.TUNER__GAIN:
-        setGain((Float)newValue);
+        setGain((Double)newValue);
         return;
     }
     super.eSet(featureID, newValue);

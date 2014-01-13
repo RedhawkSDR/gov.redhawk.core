@@ -34,7 +34,6 @@ public class FrontEndLabelProvider extends ScaModelAdapterFactoryLabelProvider i
 	
 	@Override
 	public String getColumnText(Object object, int columnIndex) {
-		System.out.println("Object: " + object.getClass());
 		if(object instanceof TunerWrapper.TunerProperty) {
 			TunerProperty property = (TunerProperty) object;
 			switch (columnIndex) {

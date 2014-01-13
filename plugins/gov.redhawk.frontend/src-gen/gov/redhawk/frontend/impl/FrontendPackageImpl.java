@@ -434,7 +434,7 @@ public class FrontendPackageImpl extends EPackageImpl implements FrontendPackage
     initEAttribute(getTuner_GroupID(), theEcorePackage.getEString(), "groupID", null, 0, 1, Tuner.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEAttribute(getTuner_RfFlowID(), theEcorePackage.getEString(), "rfFlowID", null, 0, 1, Tuner.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEReference(getTuner_TunerStatus(), this.getTunerStatus(), this.getTunerStatus_Tuner(), "tunerStatus", null, 0, 1, Tuner.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-    initEAttribute(getTuner_Gain(), theEcorePackage.getEFloat(), "gain", null, 0, 1, Tuner.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEAttribute(getTuner_Gain(), theEcorePackage.getEDouble(), "gain", null, 0, 1, Tuner.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     initEClass(tunerStatusEClass, TunerStatus.class, "TunerStatus", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
     initEReference(getTunerStatus_Tuner(), this.getTuner(), this.getTuner_TunerStatus(), "tuner", null, 0, 1, TunerStatus.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);

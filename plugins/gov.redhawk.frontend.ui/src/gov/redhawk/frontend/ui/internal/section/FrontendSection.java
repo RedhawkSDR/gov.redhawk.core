@@ -12,14 +12,19 @@
 package gov.redhawk.frontend.ui.internal.section;
 
 import gov.redhawk.frontend.Tuner;
+import gov.redhawk.frontend.edit.utils.TunerWrapper;
 import gov.redhawk.frontend.ui.internal.FrontEndContentProvider;
 import gov.redhawk.frontend.ui.internal.FrontEndLabelProvider;
 
 import org.eclipse.jface.layout.TreeColumnLayout;
+import org.eclipse.jface.viewers.CellEditor;
 import org.eclipse.jface.viewers.ColumnWeightData;
+import org.eclipse.jface.viewers.EditingSupport;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.StructuredSelection;
+import org.eclipse.jface.viewers.TextCellEditor;
 import org.eclipse.jface.viewers.TreeViewer;
+import org.eclipse.jface.viewers.TreeViewerColumn;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
@@ -84,10 +89,53 @@ public class FrontendSection extends AbstractPropertySection {
 		propertyColumn.setText("Property");
 		treeLayout.setColumnData(propertyColumn, new ColumnWeightData(40, 50));
 
-		TreeColumn valueColumn = new TreeColumn(viewer.getTree(), SWT.None);
-		valueColumn.setWidth(400);
-		valueColumn.setText("Value");
-		treeLayout.setColumnData(valueColumn, new ColumnWeightData(60, 100));
+		TreeViewerColumn valueColumn = new TreeViewerColumn(viewer, SWT.None);
+		valueColumn.getColumn().setWidth(400);
+		valueColumn.getColumn().setText("Value");
+		treeLayout.setColumnData(valueColumn.getColumn(), new ColumnWeightData(60, 100));
+		final TextCellEditor cellEditor = new TextCellEditor(viewer.getTree());
+		valueColumn.setEditingSupport(new EditingSupport(viewer) {
+			
+			@Override
+			protected void setValue(Object element, Object value) {
+				TunerWrapper.TunerProperty entry = (TunerWrapper.TunerProperty) element;
+				
+				entry.setValue(value.toString());
+				System.out.println("New Value: " + entry.getValue());
+				viewer.refresh();
+			}
+			
+			@Override
+			protected Object getValue(Object element) {
+				if(element instanceof TunerWrapper.TunerProperty) {
+					TunerWrapper.TunerProperty entry = (TunerWrapper.TunerProperty) element;
+//					System.out.println("Entry: " + entry.getValue().getClass());
+//					if(entry.getValue().getClass() == Double.class) {
+//						System.out.println("HERE");
+//						Double value = (Double) entry.getValue();
+//						return value;
+//					}
+					Object value = entry.getValue();
+					System.out.println("Value: " + value);
+					return value.toString();
+				}
+				return "Test";
+			}
+			
+			@Override
+			protected CellEditor getCellEditor(Object element) {
+				return cellEditor;
+			}
+			
+			@Override
+			protected boolean canEdit(Object element) {
+				TunerWrapper.TunerProperty entry = (TunerWrapper.TunerProperty) element;
+				String ID = entry.getId();
+				if(ID.equals("Tuner Status") || ID.equals("Tuner Type") /* 'add back, this was removed for testing' || ID.equals("Allocation ID")*/)
+					return false;
+				return true;
+			}
+		});
 	}
 
 	public void setInput(IWorkbenchPart part, ISelection selection) {

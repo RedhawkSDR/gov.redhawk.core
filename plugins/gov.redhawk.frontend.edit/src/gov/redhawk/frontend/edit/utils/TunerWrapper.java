@@ -14,6 +14,7 @@ package gov.redhawk.frontend.edit.utils;
 import gov.redhawk.frontend.FrontendFactory;
 import gov.redhawk.frontend.Tuner;
 import gov.redhawk.frontend.TunerStatus;
+import gov.redhawk.model.sca.commands.ScaModelCommand;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,8 +22,7 @@ import java.util.List;
 public class TunerWrapper {
 
 	private Tuner tuner;
-	private List<TunerProperty> properties  = new ArrayList<TunerProperty>();
-	
+	private List<TunerProperty> properties = new ArrayList<TunerProperty>();
 
 	public TunerWrapper(Tuner tuner) {
 		this.setTuner(tuner);
@@ -32,29 +32,56 @@ public class TunerWrapper {
 	public class TunerProperty {
 		private String id;
 		private Object value;
-		
+
 		TunerProperty(String id, Object value) {
 			this.setId(id);
 			this.setValue(value);
 		}
-		
+
 		public String getId() {
 			return id;
 		}
+
 		public void setId(String id) {
 			this.id = id;
 		}
+
 		public Object getValue() {
 			return value;
 		}
-		public void setValue(Object value) {
+
+		public void setValue(final Object value) {
 			this.value = value;
+			ScaModelCommand.execute(tuner, new ScaModelCommand() {
+
+				@Override
+				public void execute() {
+					if(id.equals("Allocation ID")) 
+						tuner.setAllocationID(value.toString());
+					if(id.equals("Device Control"))
+						tuner.setDeviceControl(Boolean.parseBoolean(value.toString()));
+					if(id.equals("Group ID"))
+						tuner.setGroupID(value.toString());
+					if(id.equals("RF Flow ID"))
+						tuner.setRfFlowID(value.toString());
+					if(id.equals("Gain"))
+						tuner.setGain(Double.parseDouble(value.toString()));
+					if(id.equals("Bandwidth"))
+						tuner.getTunerStatus().setBandwidth(Double.parseDouble(value.toString()));
+					if(id.equals("Center Frequency"))
+						tuner.getTunerStatus().setCenterFrequency(Double.parseDouble(value.toString()));
+					if(id.equals("Sample Rate"))
+						tuner.getTunerStatus().setSampleRate(Double.parseDouble(value.toString()));
+					if(id.equals("Enabled"))
+						tuner.getTunerStatus().setEnabled(Boolean.parseBoolean(value.toString()));
+				}
+			});
 		}
 
 		public Object[] getTunerStatusElements() {
 			List<TunerProperty> tunerStatusProperties = new ArrayList<TunerProperty>();
 			TunerStatus tunerStatus = (TunerStatus) value;
-			if(tunerStatus == null) {
+			if (tunerStatus == null) {
 				tunerStatus = FrontendFactory.eINSTANCE.createTunerStatus();
 			}
 			tunerStatusProperties.add(new TunerProperty("Bandwidth", tunerStatus.getBandwidth()));
@@ -64,8 +91,7 @@ public class TunerWrapper {
 			return tunerStatusProperties.toArray();
 		}
 	}
-	
-	
+
 	private void setProperties() {
 		properties.add(new TunerProperty("Allocation ID", tuner.getAllocationID()));
 		properties.add(new TunerProperty("Tuner Type", tuner.getTunerType()));
@@ -87,7 +113,7 @@ public class TunerWrapper {
 	public Tuner getTuner() {
 		return tuner;
 	}
-	
+
 	public void setTuner(Tuner tuner) {
 		this.tuner = tuner;
 	}

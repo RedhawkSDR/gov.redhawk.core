@@ -26,7 +26,7 @@ class Tuner {
 	String groupID
 	String rfFlowID
 	contains TunerStatus tunerStatus opposite tuner
-	float gain
+	double gain
 }
 
 class TunerStatus {

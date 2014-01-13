@@ -89,6 +89,9 @@ public enum TunerUtils {
 			// Assign tuner type to model object - provides tree label
 			setTunerType(tunerDevice, tunerModel);
 			
+			// TODO - Temporary code, remove this with a better implementation for setting properties
+			setTunerProperties(tunerDevice, tunerModel);
+			
 			tunerDevice.getSimples(); //TODO this is all of the simples for each individual physical Tuner, map them to the model objects
 
 			ScaModelCommand.execute(container, new ScaModelCommand() {
@@ -132,5 +135,37 @@ public enum TunerUtils {
 	private void setTunerType(ScaStructProperty tunerDevice, Tuner tunerModel) {
 		String tunerType = tunerDevice.getSimple("FRONTEND::tuner_status::tuner_type").getValue().toString();
 		tunerModel.setTunerType(tunerType);
+	}
+	
+	/**
+	 * Assigns tuner properties to model object
+	 * 
+	 * @param tunerDevice represents physical tuner
+	 * @param tunerModel represents tuner model object
+	 */
+	private void setTunerProperties(ScaStructProperty tunerDevice, Tuner tunerModel) {
+		String allocationID = tunerDevice.getSimple("FRONTEND::tuner_status::allocation_id_csv").getValue().toString();
+		tunerModel.setAllocationID(allocationID);
+//		Boolean deviceControl = (Boolean) tunerDevice.getSimple("FRONTEND::tuner_allocation::device_control").getValue();
+//		tunerModel.setDeviceControl(deviceControl);
+		String groupID = tunerDevice.getSimple("FRONTEND::tuner_status::group_id").getValue().toString();
+		tunerModel.setGroupID(groupID);
+		String rfFlowID = tunerDevice.getSimple("FRONTEND::tuner_status::rf_flow_id").getValue().toString();
+		tunerModel.setRfFlowID(rfFlowID);
+		Double gain = (Double) tunerDevice.getSimple("FRONTEND::tuner_status::gain").getValue();
+		tunerModel.setGain(gain);
+		
+		if(tunerModel.getTunerStatus() == null) {
+			tunerModel.setTunerStatus(FrontendFactory.eINSTANCE.createTunerStatus());
+		}
+		
+		Double bandwidth = (Double) tunerDevice.getSimple("FRONTEND::tuner_status::bandwidth").getValue();
+		tunerModel.getTunerStatus().setBandwidth(bandwidth);
+		Double centerFrequency = (Double) tunerDevice.getSimple("FRONTEND::tuner_status::center_frequency").getValue();
+		tunerModel.getTunerStatus().setCenterFrequency(centerFrequency);
+		Double sampleRate = (Double) tunerDevice.getSimple("FRONTEND::tuner_status::sample_rate").getValue();
+		tunerModel.getTunerStatus().setSampleRate(sampleRate);
+		Boolean enabled = (Boolean) tunerDevice.getSimple("FRONTEND::tuner_status::enabled").getValue();
+		tunerModel.getTunerStatus().setEnabled(enabled);
 	}
 }

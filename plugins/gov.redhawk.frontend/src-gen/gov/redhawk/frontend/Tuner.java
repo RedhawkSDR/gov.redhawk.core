@@ -197,12 +197,12 @@ public interface Tuner extends EObject
    * </p>
    * <!-- end-user-doc -->
    * @return the value of the '<em>Gain</em>' attribute.
-   * @see #setGain(float)
+   * @see #setGain(double)
    * @see gov.redhawk.frontend.FrontendPackage#getTuner_Gain()
    * @model unique="false"
    * @generated
    */
-  float getGain();
+  double getGain();
 
   /**
    * Sets the value of the '{@link gov.redhawk.frontend.Tuner#getGain <em>Gain</em>}' attribute.
@@ -212,6 +212,6 @@ public interface Tuner extends EObject
    * @see #getGain()
    * @generated
    */
-  void setGain(float value);
+  void setGain(double value);
 
 } // Tuner
