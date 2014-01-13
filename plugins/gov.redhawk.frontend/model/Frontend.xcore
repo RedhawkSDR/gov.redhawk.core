@@ -5,26 +5,33 @@
 package gov.redhawk.frontend
 
 import gov.redhawk.model.sca.ScaStructProperty
+import gov.redhawk.model.sca.ScaDevice
 
-class AnalogDevice {
-	contains TunerContainer tunerContainer opposite analogDevice
+class ModelDevice {
+	contains TunerContainer tunerContainer opposite modelDevice
+	ScaDevice scaDevice
 }
 
 class TunerContainer {
-	container AnalogDevice analogDevice opposite tunerContainer
-	TunerStruct[] tuners  
+	container ModelDevice modelDevice opposite tunerContainer
+	contains Tuner[] tuners opposite tunerContainer
 }
+
+type ScaDevice wraps ScaDevice < ? >
 
 type TunerStruct wraps ScaStructProperty
 
 class Tuner { 
+	TunerStruct tunerStruct
     @GenModel(property="Readonly")
 	String allocationID
 	@GenModel(property="Readonly")
 	String tunerType
+	String tunerID
 	boolean deviceControl
 	String groupID
 	String rfFlowID
+	container TunerContainer tunerContainer opposite tuners
 	contains TunerStatus tunerStatus opposite tuner
 	double gain
 }

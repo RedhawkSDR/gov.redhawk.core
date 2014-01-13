@@ -5,10 +5,8 @@ package gov.redhawk.frontend.provider;
 import gov.redhawk.frontend.FrontendFactory;
 import gov.redhawk.frontend.FrontendPackage;
 import gov.redhawk.frontend.Tuner;
-
 import java.util.Collection;
 import java.util.List;
-
 import org.eclipse.emf.common.notify.AdapterFactory;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.util.ResourceLocator;
@@ -56,17 +54,43 @@ public class TunerItemProvider extends ItemProviderAdapter implements IEditingDo
     {
       super.getPropertyDescriptors(object);
 
+      addTunerStructPropertyDescriptor(object);
       addAllocationIDPropertyDescriptor(object);
       addTunerTypePropertyDescriptor(object);
+      addTunerIDPropertyDescriptor(object);
       addDeviceControlPropertyDescriptor(object);
       addGroupIDPropertyDescriptor(object);
       addRfFlowIDPropertyDescriptor(object);
+      addTunerContainerPropertyDescriptor(object);
       addGainPropertyDescriptor(object);
     }
     return itemPropertyDescriptors;
   }
 
 	/**
+   * This adds a property descriptor for the Tuner Struct feature.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  protected void addTunerStructPropertyDescriptor(Object object)
+  {
+    itemPropertyDescriptors.add
+      (createItemPropertyDescriptor
+        (((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
+         getResourceLocator(),
+         getString("_UI_Tuner_tunerStruct_feature"),
+         getString("_UI_PropertyDescriptor_description", "_UI_Tuner_tunerStruct_feature", "_UI_Tuner_type"),
+         FrontendPackage.Literals.TUNER__TUNER_STRUCT,
+         true,
+         false,
+         false,
+         ItemPropertyDescriptor.GENERIC_VALUE_IMAGE,
+         null,
+         null));
+  }
+
+  /**
    * This adds a property descriptor for the Allocation ID feature.
    * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -111,6 +135,29 @@ public class TunerItemProvider extends ItemProviderAdapter implements IEditingDo
   }
 
 	/**
+   * This adds a property descriptor for the Tuner ID feature.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  protected void addTunerIDPropertyDescriptor(Object object)
+  {
+    itemPropertyDescriptors.add
+      (createItemPropertyDescriptor
+        (((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
+         getResourceLocator(),
+         getString("_UI_Tuner_tunerID_feature"),
+         getString("_UI_PropertyDescriptor_description", "_UI_Tuner_tunerID_feature", "_UI_Tuner_type"),
+         FrontendPackage.Literals.TUNER__TUNER_ID,
+         true,
+         false,
+         false,
+         ItemPropertyDescriptor.GENERIC_VALUE_IMAGE,
+         null,
+         null));
+  }
+
+  /**
    * This adds a property descriptor for the Device Control feature.
    * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -177,6 +224,29 @@ public class TunerItemProvider extends ItemProviderAdapter implements IEditingDo
   }
 
 	/**
+   * This adds a property descriptor for the Tuner Container feature.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  protected void addTunerContainerPropertyDescriptor(Object object)
+  {
+    itemPropertyDescriptors.add
+      (createItemPropertyDescriptor
+        (((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
+         getResourceLocator(),
+         getString("_UI_Tuner_tunerContainer_feature"),
+         getString("_UI_PropertyDescriptor_description", "_UI_Tuner_tunerContainer_feature", "_UI_Tuner_type"),
+         FrontendPackage.Literals.TUNER__TUNER_CONTAINER,
+         true,
+         false,
+         true,
+         null,
+         null,
+         null));
+  }
+
+  /**
    * This adds a property descriptor for the Gain feature.
    * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -266,8 +336,10 @@ public class TunerItemProvider extends ItemProviderAdapter implements IEditingDo
 
     switch (notification.getFeatureID(Tuner.class))
     {
+      case FrontendPackage.TUNER__TUNER_STRUCT:
       case FrontendPackage.TUNER__ALLOCATION_ID:
       case FrontendPackage.TUNER__TUNER_TYPE:
+      case FrontendPackage.TUNER__TUNER_ID:
       case FrontendPackage.TUNER__DEVICE_CONTROL:
       case FrontendPackage.TUNER__GROUP_ID:
       case FrontendPackage.TUNER__RF_FLOW_ID:

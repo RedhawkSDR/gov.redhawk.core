@@ -40,7 +40,7 @@ public class FrontEndContentProvider extends ScaModelAdapterFactoryContentProvid
 	@Override
 	public Object[] getElements(Object object) {
 		//Create TunerWrapper object that returns an array of TunerProperty objects to pass to the label provider
-		if(object instanceof Tuner) {
+		if (object instanceof Tuner) {
 			Tuner tuner = (Tuner) object;
 			TunerWrapper tunerWrapper = new TunerWrapper(tuner);
 			Object[] properties = tunerWrapper.getProperties();
@@ -78,6 +78,9 @@ public class FrontEndContentProvider extends ScaModelAdapterFactoryContentProvid
 			if (property.getId().equals("Tuner Status")) {
 				return true;
 			}
+			return false;
+		}
+		if (object instanceof Tuner) {
 			return false;
 		}
 		return super.hasChildren(object);

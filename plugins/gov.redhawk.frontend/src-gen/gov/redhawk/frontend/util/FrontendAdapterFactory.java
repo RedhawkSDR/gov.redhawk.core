@@ -75,9 +75,9 @@ public class FrontendAdapterFactory extends AdapterFactoryImpl
     new FrontendSwitch<Adapter>()
     {
       @Override
-      public Adapter caseAnalogDevice(AnalogDevice object)
+      public Adapter caseModelDevice(ModelDevice object)
       {
-        return createAnalogDeviceAdapter();
+        return createModelDeviceAdapter();
       }
       @Override
       public Adapter caseTunerContainer(TunerContainer object)
@@ -117,16 +117,16 @@ public class FrontendAdapterFactory extends AdapterFactoryImpl
 
 
   /**
-   * Creates a new adapter for an object of class '{@link gov.redhawk.frontend.AnalogDevice <em>Analog Device</em>}'.
+   * Creates a new adapter for an object of class '{@link gov.redhawk.frontend.ModelDevice <em>Model Device</em>}'.
    * <!-- begin-user-doc -->
    * This default implementation returns null so that we can easily ignore cases;
    * it's useful to ignore a case when inheritance will catch all the cases anyway.
    * <!-- end-user-doc -->
    * @return the new adapter.
-   * @see gov.redhawk.frontend.AnalogDevice
+   * @see gov.redhawk.frontend.ModelDevice
    * @generated
    */
-  public Adapter createAnalogDeviceAdapter()
+  public Adapter createModelDeviceAdapter()
   {
     return null;
   }

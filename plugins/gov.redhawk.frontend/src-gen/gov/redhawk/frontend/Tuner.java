@@ -2,6 +2,8 @@
  */
 package gov.redhawk.frontend;
 
+import gov.redhawk.model.sca.ScaStructProperty;
+
 import org.eclipse.emf.ecore.EObject;
 
 /**
@@ -12,11 +14,14 @@ import org.eclipse.emf.ecore.EObject;
  * <p>
  * The following features are supported:
  * <ul>
+ *   <li>{@link gov.redhawk.frontend.Tuner#getTunerStruct <em>Tuner Struct</em>}</li>
  *   <li>{@link gov.redhawk.frontend.Tuner#getAllocationID <em>Allocation ID</em>}</li>
  *   <li>{@link gov.redhawk.frontend.Tuner#getTunerType <em>Tuner Type</em>}</li>
+ *   <li>{@link gov.redhawk.frontend.Tuner#getTunerID <em>Tuner ID</em>}</li>
  *   <li>{@link gov.redhawk.frontend.Tuner#isDeviceControl <em>Device Control</em>}</li>
  *   <li>{@link gov.redhawk.frontend.Tuner#getGroupID <em>Group ID</em>}</li>
  *   <li>{@link gov.redhawk.frontend.Tuner#getRfFlowID <em>Rf Flow ID</em>}</li>
+ *   <li>{@link gov.redhawk.frontend.Tuner#getTunerContainer <em>Tuner Container</em>}</li>
  *   <li>{@link gov.redhawk.frontend.Tuner#getTunerStatus <em>Tuner Status</em>}</li>
  *   <li>{@link gov.redhawk.frontend.Tuner#getGain <em>Gain</em>}</li>
  * </ul>
@@ -28,6 +33,32 @@ import org.eclipse.emf.ecore.EObject;
  */
 public interface Tuner extends EObject
 {
+  /**
+   * Returns the value of the '<em><b>Tuner Struct</b></em>' attribute.
+   * <!-- begin-user-doc -->
+   * <p>
+   * If the meaning of the '<em>Tuner Struct</em>' attribute isn't clear,
+   * there really should be more of a description here...
+   * </p>
+   * <!-- end-user-doc -->
+   * @return the value of the '<em>Tuner Struct</em>' attribute.
+   * @see #setTunerStruct(ScaStructProperty)
+   * @see gov.redhawk.frontend.FrontendPackage#getTuner_TunerStruct()
+   * @model unique="false" dataType="gov.redhawk.frontend.TunerStruct"
+   * @generated
+   */
+  ScaStructProperty getTunerStruct();
+
+  /**
+   * Sets the value of the '{@link gov.redhawk.frontend.Tuner#getTunerStruct <em>Tuner Struct</em>}' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @param value the new value of the '<em>Tuner Struct</em>' attribute.
+   * @see #getTunerStruct()
+   * @generated
+   */
+  void setTunerStruct(ScaStructProperty value);
+
   /**
    * Returns the value of the '<em><b>Allocation ID</b></em>' attribute.
    * <!-- begin-user-doc -->
@@ -81,6 +112,32 @@ public interface Tuner extends EObject
    * @generated
    */
   void setTunerType(String value);
+
+  /**
+   * Returns the value of the '<em><b>Tuner ID</b></em>' attribute.
+   * <!-- begin-user-doc -->
+   * <p>
+   * If the meaning of the '<em>Tuner ID</em>' attribute isn't clear,
+   * there really should be more of a description here...
+   * </p>
+   * <!-- end-user-doc -->
+   * @return the value of the '<em>Tuner ID</em>' attribute.
+   * @see #setTunerID(String)
+   * @see gov.redhawk.frontend.FrontendPackage#getTuner_TunerID()
+   * @model unique="false"
+   * @generated
+   */
+  String getTunerID();
+
+  /**
+   * Sets the value of the '{@link gov.redhawk.frontend.Tuner#getTunerID <em>Tuner ID</em>}' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @param value the new value of the '<em>Tuner ID</em>' attribute.
+   * @see #getTunerID()
+   * @generated
+   */
+  void setTunerID(String value);
 
   /**
    * Returns the value of the '<em><b>Device Control</b></em>' attribute.
@@ -159,6 +216,34 @@ public interface Tuner extends EObject
    * @generated
    */
   void setRfFlowID(String value);
+
+  /**
+   * Returns the value of the '<em><b>Tuner Container</b></em>' container reference.
+   * It is bidirectional and its opposite is '{@link gov.redhawk.frontend.TunerContainer#getTuners <em>Tuners</em>}'.
+   * <!-- begin-user-doc -->
+   * <p>
+   * If the meaning of the '<em>Tuner Container</em>' container reference isn't clear,
+   * there really should be more of a description here...
+   * </p>
+   * <!-- end-user-doc -->
+   * @return the value of the '<em>Tuner Container</em>' container reference.
+   * @see #setTunerContainer(TunerContainer)
+   * @see gov.redhawk.frontend.FrontendPackage#getTuner_TunerContainer()
+   * @see gov.redhawk.frontend.TunerContainer#getTuners
+   * @model opposite="tuners" transient="false"
+   * @generated
+   */
+  TunerContainer getTunerContainer();
+
+  /**
+   * Sets the value of the '{@link gov.redhawk.frontend.Tuner#getTunerContainer <em>Tuner Container</em>}' container reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @param value the new value of the '<em>Tuner Container</em>' container reference.
+   * @see #getTunerContainer()
+   * @generated
+   */
+  void setTunerContainer(TunerContainer value);
 
   /**
    * Returns the value of the '<em><b>Tuner Status</b></em>' containment reference.

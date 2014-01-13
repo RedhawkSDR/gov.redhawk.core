@@ -1,6 +1,7 @@
 package gov.redhawk.frontend.edit.utils;
 
 import gov.redhawk.frontend.FrontendFactory;
+import gov.redhawk.frontend.ModelDevice;
 import gov.redhawk.frontend.Tuner;
 import gov.redhawk.frontend.TunerContainer;
 import gov.redhawk.model.sca.IDisposable;
@@ -50,21 +51,35 @@ public enum TunerUtils {
 	 * @return container object for the devices tuners
 	 */
 	public Object[] getTunerContainer(final ScaDevice< ? > device) {
+		//Create model device and tuner container
+		ModelDevice modelDevice = FrontendFactory.eINSTANCE.createModelDevice();
+		modelDevice.setScaDevice(device);
+		modelDevice.setTunerContainer(FrontendFactory.eINSTANCE.createTunerContainer());
+
 		EList<Interface> interfaceList = device.getProfileObj().getDescriptor().getComponent().getInterfaces().getInterface();
 		for (Interface i : interfaceList) {
 			// Check to see if this is a frontEndInterface
 			if (i.getRepid().equals(DigitalTunerHelper.id())) {
 				// Fetch list of tuners
 				ScaStructSequenceProperty prop = (ScaStructSequenceProperty) device.getProperty("FRONTEND::tuner_status");
-				EList<ScaStructProperty> structs = prop.getStructs();
+				List<ScaStructProperty> structs = prop.getStructs();
 
 				// create TunerContainer model object
-				TunerContainer container = FrontendFactory.eINSTANCE.createTunerContainer();
-				EList<ScaStructProperty> tunerList = container.getTuners();
+				TunerContainer container = modelDevice.getTunerContainer();
+				EList<Tuner> tunerList = container.getTuners();
 
 				// populate container object with tuners from device
 				for (ScaStructProperty struct : structs) {
-					tunerList.add(struct);
+					final Tuner tuner = FrontendFactory.eINSTANCE.createTuner();
+					tuner.setTunerContainer(container);
+					tuner.setTunerStruct(struct);
+					tunerList.add(tuner);
+
+					// Assign tuner type to model object - provides tree label
+					setTunerType(tuner);
+
+					// TODO - Temporary code, remove this with a better implementation for setting properties
+					setTunerProperties(tuner);
 				}
 
 				return new Object[] { container };
@@ -81,41 +96,14 @@ public enum TunerUtils {
 	 */
 	public Object[] getChildren(final TunerContainer container) {
 		final List<Tuner> tuners = new ArrayList<Tuner>();
-		// Create tuner model object - TODO if there is not allocation ID, then do not create a tuner
-		for (ScaStructProperty tunerDevice : container.getTuners()) {
-			final Tuner tunerModel = FrontendFactory.eINSTANCE.createTuner();
-			tuners.add(tunerModel);
-			
-			// Assign tuner type to model object - provides tree label
-			setTunerType(tunerDevice, tunerModel);
-			
-			// TODO - Temporary code, remove this with a better implementation for setting properties
-			setTunerProperties(tunerDevice, tunerModel);
-			
-			tunerDevice.getSimples(); //TODO this is all of the simples for each individual physical Tuner, map them to the model objects
+		// Create tuner model object
+		Tuner[] tunerList = (Tuner[]) container.getTuners().toArray();
+		int numOfTuners = tunerList.length;
+		for (int i = 0; i < numOfTuners; i++) {
+			final Tuner tuner = tunerList[i];
+			tuner.setTunerID(String.valueOf(i));
+			tuners.add(tuner);
 
-			ScaModelCommand.execute(container, new ScaModelCommand() {
-				@Override
-				public void execute() {
-					tunerStatus.getContents().add(tunerModel);
-
-					// On dispose remove tuner information
-					container.eAdapters().add(new AdapterImpl() {
-						@Override
-						public void notifyChanged(Notification msg) {
-							switch (msg.getFeatureID(IDisposable.class)) {
-							case ScaPackage.IDISPOSABLE__DISPOSED:
-								if (msg.getNewBooleanValue()) {
-									tunerStatus.getContents().remove(tunerModel);
-									container.eAdapters().remove(this);
-									fMap.remove(container);
-								}
-							}
-						}
-
-					});
-				}
-			});
 		}
 		if (!tuners.isEmpty()) {
 			return tuners.toArray();
@@ -128,44 +116,45 @@ public enum TunerUtils {
 	/** 
 	 * Assigns tuner type to model object
 	 * 
-	 * @param tunerDevice represents physical tuner
-	 * @param tunerModel represents tuner model object
+	 * @param tuner represents tuner model object
 	 * 
 	 */
-	private void setTunerType(ScaStructProperty tunerDevice, Tuner tunerModel) {
+	private void setTunerType(Tuner tuner) {
+		ScaStructProperty tunerDevice = tuner.getTunerStruct();
 		String tunerType = tunerDevice.getSimple("FRONTEND::tuner_status::tuner_type").getValue().toString();
-		tunerModel.setTunerType(tunerType);
+		tuner.setTunerType(tunerType);
 	}
-	
+
 	/**
 	 * Assigns tuner properties to model object
 	 * 
 	 * @param tunerDevice represents physical tuner
 	 * @param tunerModel represents tuner model object
 	 */
-	private void setTunerProperties(ScaStructProperty tunerDevice, Tuner tunerModel) {
+	private void setTunerProperties(Tuner tuner) {
+		ScaStructProperty tunerDevice = tuner.getTunerStruct();
 		String allocationID = tunerDevice.getSimple("FRONTEND::tuner_status::allocation_id_csv").getValue().toString();
-		tunerModel.setAllocationID(allocationID);
-//		Boolean deviceControl = (Boolean) tunerDevice.getSimple("FRONTEND::tuner_allocation::device_control").getValue();
-//		tunerModel.setDeviceControl(deviceControl);
+		tuner.setAllocationID(allocationID);
+		// Boolean deviceControl = (Boolean) tunerDevice.getSimple("FRONTEND::tuner_allocation::device_control").getValue();
+		// tunerModel.setDeviceControl(deviceControl);
 		String groupID = tunerDevice.getSimple("FRONTEND::tuner_status::group_id").getValue().toString();
-		tunerModel.setGroupID(groupID);
+		tuner.setGroupID(groupID);
 		String rfFlowID = tunerDevice.getSimple("FRONTEND::tuner_status::rf_flow_id").getValue().toString();
-		tunerModel.setRfFlowID(rfFlowID);
+		tuner.setRfFlowID(rfFlowID);
 		Double gain = (Double) tunerDevice.getSimple("FRONTEND::tuner_status::gain").getValue();
-		tunerModel.setGain(gain);
-		
-		if(tunerModel.getTunerStatus() == null) {
-			tunerModel.setTunerStatus(FrontendFactory.eINSTANCE.createTunerStatus());
+		tuner.setGain(gain);
+
+		if (tuner.getTunerStatus() == null) {
+			tuner.setTunerStatus(FrontendFactory.eINSTANCE.createTunerStatus());
 		}
-		
+
 		Double bandwidth = (Double) tunerDevice.getSimple("FRONTEND::tuner_status::bandwidth").getValue();
-		tunerModel.getTunerStatus().setBandwidth(bandwidth);
+		tuner.getTunerStatus().setBandwidth(bandwidth);
 		Double centerFrequency = (Double) tunerDevice.getSimple("FRONTEND::tuner_status::center_frequency").getValue();
-		tunerModel.getTunerStatus().setCenterFrequency(centerFrequency);
+		tuner.getTunerStatus().setCenterFrequency(centerFrequency);
 		Double sampleRate = (Double) tunerDevice.getSimple("FRONTEND::tuner_status::sample_rate").getValue();
-		tunerModel.getTunerStatus().setSampleRate(sampleRate);
+		tuner.getTunerStatus().setSampleRate(sampleRate);
 		Boolean enabled = (Boolean) tunerDevice.getSimple("FRONTEND::tuner_status::enabled").getValue();
-		tunerModel.getTunerStatus().setEnabled(enabled);
+		tuner.getTunerStatus().setEnabled(enabled);
 	}
 }

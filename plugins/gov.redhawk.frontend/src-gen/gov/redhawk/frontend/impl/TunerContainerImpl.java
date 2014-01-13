@@ -2,11 +2,10 @@
  */
 package gov.redhawk.frontend.impl;
 
-import gov.redhawk.frontend.AnalogDevice;
 import gov.redhawk.frontend.FrontendPackage;
+import gov.redhawk.frontend.ModelDevice;
+import gov.redhawk.frontend.Tuner;
 import gov.redhawk.frontend.TunerContainer;
-
-import gov.redhawk.model.sca.ScaStructProperty;
 
 import java.util.Collection;
 
@@ -21,8 +20,9 @@ import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
 
-import org.eclipse.emf.ecore.util.EDataTypeEList;
+import org.eclipse.emf.ecore.util.EObjectContainmentWithInverseEList;
 import org.eclipse.emf.ecore.util.EcoreUtil;
+import org.eclipse.emf.ecore.util.InternalEList;
 
 /**
  * <!-- begin-user-doc -->
@@ -31,7 +31,7 @@ import org.eclipse.emf.ecore.util.EcoreUtil;
  * <p>
  * The following features are implemented:
  * <ul>
- *   <li>{@link gov.redhawk.frontend.impl.TunerContainerImpl#getAnalogDevice <em>Analog Device</em>}</li>
+ *   <li>{@link gov.redhawk.frontend.impl.TunerContainerImpl#getModelDevice <em>Model Device</em>}</li>
  *   <li>{@link gov.redhawk.frontend.impl.TunerContainerImpl#getTuners <em>Tuners</em>}</li>
  * </ul>
  * </p>
@@ -41,14 +41,14 @@ import org.eclipse.emf.ecore.util.EcoreUtil;
 public class TunerContainerImpl extends MinimalEObjectImpl.Container implements TunerContainer
 {
   /**
-   * The cached value of the '{@link #getTuners() <em>Tuners</em>}' attribute list.
+   * The cached value of the '{@link #getTuners() <em>Tuners</em>}' containment reference list.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @see #getTuners()
    * @generated
    * @ordered
    */
-  protected EList<ScaStructProperty> tuners;
+  protected EList<Tuner> tuners;
 
   /**
    * <!-- begin-user-doc -->
@@ -76,10 +76,10 @@ public class TunerContainerImpl extends MinimalEObjectImpl.Container implements 
    * <!-- end-user-doc -->
    * @generated
    */
-  public AnalogDevice getAnalogDevice()
+  public ModelDevice getModelDevice()
   {
-    if (eContainerFeatureID() != FrontendPackage.TUNER_CONTAINER__ANALOG_DEVICE) return null;
-    return (AnalogDevice)eContainer();
+    if (eContainerFeatureID() != FrontendPackage.TUNER_CONTAINER__MODEL_DEVICE) return null;
+    return (ModelDevice)eContainer();
   }
 
   /**
@@ -87,10 +87,10 @@ public class TunerContainerImpl extends MinimalEObjectImpl.Container implements 
    * <!-- end-user-doc -->
    * @generated
    */
-  public AnalogDevice basicGetAnalogDevice()
+  public ModelDevice basicGetModelDevice()
   {
-    if (eContainerFeatureID() != FrontendPackage.TUNER_CONTAINER__ANALOG_DEVICE) return null;
-    return (AnalogDevice)eInternalContainer();
+    if (eContainerFeatureID() != FrontendPackage.TUNER_CONTAINER__MODEL_DEVICE) return null;
+    return (ModelDevice)eInternalContainer();
   }
 
   /**
@@ -98,9 +98,9 @@ public class TunerContainerImpl extends MinimalEObjectImpl.Container implements 
    * <!-- end-user-doc -->
    * @generated
    */
-  public NotificationChain basicSetAnalogDevice(AnalogDevice newAnalogDevice, NotificationChain msgs)
+  public NotificationChain basicSetModelDevice(ModelDevice newModelDevice, NotificationChain msgs)
   {
-    msgs = eBasicSetContainer((InternalEObject)newAnalogDevice, FrontendPackage.TUNER_CONTAINER__ANALOG_DEVICE, msgs);
+    msgs = eBasicSetContainer((InternalEObject)newModelDevice, FrontendPackage.TUNER_CONTAINER__MODEL_DEVICE, msgs);
     return msgs;
   }
 
@@ -109,22 +109,22 @@ public class TunerContainerImpl extends MinimalEObjectImpl.Container implements 
    * <!-- end-user-doc -->
    * @generated
    */
-  public void setAnalogDevice(AnalogDevice newAnalogDevice)
+  public void setModelDevice(ModelDevice newModelDevice)
   {
-    if (newAnalogDevice != eInternalContainer() || (eContainerFeatureID() != FrontendPackage.TUNER_CONTAINER__ANALOG_DEVICE && newAnalogDevice != null))
+    if (newModelDevice != eInternalContainer() || (eContainerFeatureID() != FrontendPackage.TUNER_CONTAINER__MODEL_DEVICE && newModelDevice != null))
     {
-      if (EcoreUtil.isAncestor(this, newAnalogDevice))
+      if (EcoreUtil.isAncestor(this, newModelDevice))
         throw new IllegalArgumentException("Recursive containment not allowed for " + toString());
       NotificationChain msgs = null;
       if (eInternalContainer() != null)
         msgs = eBasicRemoveFromContainer(msgs);
-      if (newAnalogDevice != null)
-        msgs = ((InternalEObject)newAnalogDevice).eInverseAdd(this, FrontendPackage.ANALOG_DEVICE__TUNER_CONTAINER, AnalogDevice.class, msgs);
-      msgs = basicSetAnalogDevice(newAnalogDevice, msgs);
+      if (newModelDevice != null)
+        msgs = ((InternalEObject)newModelDevice).eInverseAdd(this, FrontendPackage.MODEL_DEVICE__TUNER_CONTAINER, ModelDevice.class, msgs);
+      msgs = basicSetModelDevice(newModelDevice, msgs);
       if (msgs != null) msgs.dispatch();
     }
     else if (eNotificationRequired())
-      eNotify(new ENotificationImpl(this, Notification.SET, FrontendPackage.TUNER_CONTAINER__ANALOG_DEVICE, newAnalogDevice, newAnalogDevice));
+      eNotify(new ENotificationImpl(this, Notification.SET, FrontendPackage.TUNER_CONTAINER__MODEL_DEVICE, newModelDevice, newModelDevice));
   }
 
   /**
@@ -132,11 +132,11 @@ public class TunerContainerImpl extends MinimalEObjectImpl.Container implements 
    * <!-- end-user-doc -->
    * @generated
    */
-  public EList<ScaStructProperty> getTuners()
+  public EList<Tuner> getTuners()
   {
     if (tuners == null)
     {
-      tuners = new EDataTypeEList<ScaStructProperty>(ScaStructProperty.class, this, FrontendPackage.TUNER_CONTAINER__TUNERS);
+      tuners = new EObjectContainmentWithInverseEList<Tuner>(Tuner.class, this, FrontendPackage.TUNER_CONTAINER__TUNERS, FrontendPackage.TUNER__TUNER_CONTAINER);
     }
     return tuners;
   }
@@ -146,15 +146,18 @@ public class TunerContainerImpl extends MinimalEObjectImpl.Container implements 
    * <!-- end-user-doc -->
    * @generated
    */
+  @SuppressWarnings("unchecked")
   @Override
   public NotificationChain eInverseAdd(InternalEObject otherEnd, int featureID, NotificationChain msgs)
   {
     switch (featureID)
     {
-      case FrontendPackage.TUNER_CONTAINER__ANALOG_DEVICE:
+      case FrontendPackage.TUNER_CONTAINER__MODEL_DEVICE:
         if (eInternalContainer() != null)
           msgs = eBasicRemoveFromContainer(msgs);
-        return basicSetAnalogDevice((AnalogDevice)otherEnd, msgs);
+        return basicSetModelDevice((ModelDevice)otherEnd, msgs);
+      case FrontendPackage.TUNER_CONTAINER__TUNERS:
+        return ((InternalEList<InternalEObject>)(InternalEList<?>)getTuners()).basicAdd(otherEnd, msgs);
     }
     return super.eInverseAdd(otherEnd, featureID, msgs);
   }
@@ -169,8 +172,10 @@ public class TunerContainerImpl extends MinimalEObjectImpl.Container implements 
   {
     switch (featureID)
     {
-      case FrontendPackage.TUNER_CONTAINER__ANALOG_DEVICE:
-        return basicSetAnalogDevice(null, msgs);
+      case FrontendPackage.TUNER_CONTAINER__MODEL_DEVICE:
+        return basicSetModelDevice(null, msgs);
+      case FrontendPackage.TUNER_CONTAINER__TUNERS:
+        return ((InternalEList<?>)getTuners()).basicRemove(otherEnd, msgs);
     }
     return super.eInverseRemove(otherEnd, featureID, msgs);
   }
@@ -185,8 +190,8 @@ public class TunerContainerImpl extends MinimalEObjectImpl.Container implements 
   {
     switch (eContainerFeatureID())
     {
-      case FrontendPackage.TUNER_CONTAINER__ANALOG_DEVICE:
-        return eInternalContainer().eInverseRemove(this, FrontendPackage.ANALOG_DEVICE__TUNER_CONTAINER, AnalogDevice.class, msgs);
+      case FrontendPackage.TUNER_CONTAINER__MODEL_DEVICE:
+        return eInternalContainer().eInverseRemove(this, FrontendPackage.MODEL_DEVICE__TUNER_CONTAINER, ModelDevice.class, msgs);
     }
     return super.eBasicRemoveFromContainerFeature(msgs);
   }
@@ -201,9 +206,9 @@ public class TunerContainerImpl extends MinimalEObjectImpl.Container implements 
   {
     switch (featureID)
     {
-      case FrontendPackage.TUNER_CONTAINER__ANALOG_DEVICE:
-        if (resolve) return getAnalogDevice();
-        return basicGetAnalogDevice();
+      case FrontendPackage.TUNER_CONTAINER__MODEL_DEVICE:
+        if (resolve) return getModelDevice();
+        return basicGetModelDevice();
       case FrontendPackage.TUNER_CONTAINER__TUNERS:
         return getTuners();
     }
@@ -221,12 +226,12 @@ public class TunerContainerImpl extends MinimalEObjectImpl.Container implements 
   {
     switch (featureID)
     {
-      case FrontendPackage.TUNER_CONTAINER__ANALOG_DEVICE:
-        setAnalogDevice((AnalogDevice)newValue);
+      case FrontendPackage.TUNER_CONTAINER__MODEL_DEVICE:
+        setModelDevice((ModelDevice)newValue);
         return;
       case FrontendPackage.TUNER_CONTAINER__TUNERS:
         getTuners().clear();
-        getTuners().addAll((Collection<? extends ScaStructProperty>)newValue);
+        getTuners().addAll((Collection<? extends Tuner>)newValue);
         return;
     }
     super.eSet(featureID, newValue);
@@ -242,8 +247,8 @@ public class TunerContainerImpl extends MinimalEObjectImpl.Container implements 
   {
     switch (featureID)
     {
-      case FrontendPackage.TUNER_CONTAINER__ANALOG_DEVICE:
-        setAnalogDevice((AnalogDevice)null);
+      case FrontendPackage.TUNER_CONTAINER__MODEL_DEVICE:
+        setModelDevice((ModelDevice)null);
         return;
       case FrontendPackage.TUNER_CONTAINER__TUNERS:
         getTuners().clear();
@@ -262,29 +267,12 @@ public class TunerContainerImpl extends MinimalEObjectImpl.Container implements 
   {
     switch (featureID)
     {
-      case FrontendPackage.TUNER_CONTAINER__ANALOG_DEVICE:
-        return basicGetAnalogDevice() != null;
+      case FrontendPackage.TUNER_CONTAINER__MODEL_DEVICE:
+        return basicGetModelDevice() != null;
       case FrontendPackage.TUNER_CONTAINER__TUNERS:
         return tuners != null && !tuners.isEmpty();
     }
     return super.eIsSet(featureID);
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  @Override
-  public String toString()
-  {
-    if (eIsProxy()) return super.toString();
-
-    StringBuffer result = new StringBuffer(super.toString());
-    result.append(" (tuners: ");
-    result.append(tuners);
-    result.append(')');
-    return result.toString();
   }
 
 } //TunerContainerImpl

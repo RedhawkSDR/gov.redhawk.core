@@ -69,13 +69,13 @@ public class FrontendSection extends AbstractPropertySection {
 
 		viewer.setContentProvider(new FrontEndContentProvider());
 		viewer.setLabelProvider(new FrontEndLabelProvider());
+		viewer.setAutoExpandLevel(2);
+		
+		createToolbar();
+	}
 
-		//		page.getControl().addControlListener(new ControlAdapter() {
-		//
-		//			public void controlResized(ControlEvent e) {
-		//				aTabbedPropertySheetPage.resizeScrolledComposite();
-		//			}
-		//		});
+	private void createToolbar() {
+		//TODO - contribute to view toolbar
 	}
 
 	@Override
@@ -101,25 +101,18 @@ public class FrontendSection extends AbstractPropertySection {
 				TunerWrapper.TunerProperty entry = (TunerWrapper.TunerProperty) element;
 				
 				entry.setValue(value.toString());
-				System.out.println("New Value: " + entry.getValue());
 				viewer.refresh();
+				viewer.setAutoExpandLevel(2);
 			}
 			
 			@Override
 			protected Object getValue(Object element) {
 				if(element instanceof TunerWrapper.TunerProperty) {
 					TunerWrapper.TunerProperty entry = (TunerWrapper.TunerProperty) element;
-//					System.out.println("Entry: " + entry.getValue().getClass());
-//					if(entry.getValue().getClass() == Double.class) {
-//						System.out.println("HERE");
-//						Double value = (Double) entry.getValue();
-//						return value;
-//					}
 					Object value = entry.getValue();
-					System.out.println("Value: " + value);
 					return value.toString();
 				}
-				return "Test";
+				return "";
 			}
 			
 			@Override
@@ -131,7 +124,7 @@ public class FrontendSection extends AbstractPropertySection {
 			protected boolean canEdit(Object element) {
 				TunerWrapper.TunerProperty entry = (TunerWrapper.TunerProperty) element;
 				String ID = entry.getId();
-				if(ID.equals("Tuner Status") || ID.equals("Tuner Type") /* 'add back, this was removed for testing' || ID.equals("Allocation ID")*/)
+				if(ID.equals("Tuner Status") || ID.equals("Tuner Type") /* TODO 'add back, this was removed for testing' || ID.equals("Allocation ID")*/)
 					return false;
 				return true;
 			}

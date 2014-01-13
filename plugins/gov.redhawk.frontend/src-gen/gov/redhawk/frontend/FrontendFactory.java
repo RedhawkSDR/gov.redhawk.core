@@ -2,6 +2,7 @@
  */
 package gov.redhawk.frontend;
 
+import gov.redhawk.model.sca.ScaDevice;
 import gov.redhawk.model.sca.ScaStructProperty;
 
 import org.eclipse.emf.ecore.EFactory;
@@ -25,13 +26,13 @@ public interface FrontendFactory extends EFactory
   FrontendFactory eINSTANCE = gov.redhawk.frontend.impl.FrontendFactoryImpl.init();
 
   /**
-   * Returns a new object of class '<em>Analog Device</em>'.
+   * Returns a new object of class '<em>Model Device</em>'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @return a new object of class '<em>Analog Device</em>'.
+   * @return a new object of class '<em>Model Device</em>'.
    * @generated
    */
-  AnalogDevice createAnalogDevice();
+  ModelDevice createModelDevice();
 
   /**
    * Returns a new object of class '<em>Tuner Container</em>'.
@@ -59,6 +60,26 @@ public interface FrontendFactory extends EFactory
    * @generated
    */
   TunerStatus createTunerStatus();
+
+  /**
+   * Returns an instance of data type '<em>Sca Device</em>' corresponding the given literal.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @param literal a literal of the data type.
+   * @return a new instance value of the data type.
+   * @generated
+   */
+  ScaDevice<?> createScaDevice(String literal);
+
+  /**
+   * Returns a literal representation of an instance of data type '<em>Sca Device</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @param instanceValue an instance value of the data type.
+   * @return a literal representation of the instance value.
+   * @generated
+   */
+  String convertScaDevice(ScaDevice<?> instanceValue);
 
   /**
    * Returns an instance of data type '<em>Tuner Struct</em>' corresponding the given literal.

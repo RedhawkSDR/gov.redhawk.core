@@ -68,14 +68,14 @@ public interface FrontendPackage extends EPackage
   FrontendPackage eINSTANCE = gov.redhawk.frontend.impl.FrontendPackageImpl.init();
 
   /**
-   * The meta object id for the '{@link gov.redhawk.frontend.impl.AnalogDeviceImpl <em>Analog Device</em>}' class.
+   * The meta object id for the '{@link gov.redhawk.frontend.impl.ModelDeviceImpl <em>Model Device</em>}' class.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @see gov.redhawk.frontend.impl.AnalogDeviceImpl
-   * @see gov.redhawk.frontend.impl.FrontendPackageImpl#getAnalogDevice()
+   * @see gov.redhawk.frontend.impl.ModelDeviceImpl
+   * @see gov.redhawk.frontend.impl.FrontendPackageImpl#getModelDevice()
    * @generated
    */
-  int ANALOG_DEVICE = 0;
+  int MODEL_DEVICE = 0;
 
   /**
    * The feature id for the '<em><b>Tuner Container</b></em>' containment reference.
@@ -84,25 +84,34 @@ public interface FrontendPackage extends EPackage
    * @generated
    * @ordered
    */
-  int ANALOG_DEVICE__TUNER_CONTAINER = 0;
+  int MODEL_DEVICE__TUNER_CONTAINER = 0;
 
   /**
-   * The number of structural features of the '<em>Analog Device</em>' class.
+   * The feature id for the '<em><b>Sca Device</b></em>' attribute.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
    * @ordered
    */
-  int ANALOG_DEVICE_FEATURE_COUNT = 1;
+  int MODEL_DEVICE__SCA_DEVICE = 1;
 
   /**
-   * The number of operations of the '<em>Analog Device</em>' class.
+   * The number of structural features of the '<em>Model Device</em>' class.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
    * @ordered
    */
-  int ANALOG_DEVICE_OPERATION_COUNT = 0;
+  int MODEL_DEVICE_FEATURE_COUNT = 2;
+
+  /**
+   * The number of operations of the '<em>Model Device</em>' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int MODEL_DEVICE_OPERATION_COUNT = 0;
 
   /**
    * The meta object id for the '{@link gov.redhawk.frontend.impl.TunerContainerImpl <em>Tuner Container</em>}' class.
@@ -115,16 +124,16 @@ public interface FrontendPackage extends EPackage
   int TUNER_CONTAINER = 1;
 
   /**
-   * The feature id for the '<em><b>Analog Device</b></em>' container reference.
+   * The feature id for the '<em><b>Model Device</b></em>' container reference.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
    * @ordered
    */
-  int TUNER_CONTAINER__ANALOG_DEVICE = 0;
+  int TUNER_CONTAINER__MODEL_DEVICE = 0;
 
   /**
-   * The feature id for the '<em><b>Tuners</b></em>' attribute list.
+   * The feature id for the '<em><b>Tuners</b></em>' containment reference list.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
@@ -161,13 +170,22 @@ public interface FrontendPackage extends EPackage
   int TUNER = 2;
 
   /**
+   * The feature id for the '<em><b>Tuner Struct</b></em>' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int TUNER__TUNER_STRUCT = 0;
+
+  /**
    * The feature id for the '<em><b>Allocation ID</b></em>' attribute.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
    * @ordered
    */
-  int TUNER__ALLOCATION_ID = 0;
+  int TUNER__ALLOCATION_ID = 1;
 
   /**
    * The feature id for the '<em><b>Tuner Type</b></em>' attribute.
@@ -176,7 +194,16 @@ public interface FrontendPackage extends EPackage
    * @generated
    * @ordered
    */
-  int TUNER__TUNER_TYPE = 1;
+  int TUNER__TUNER_TYPE = 2;
+
+  /**
+   * The feature id for the '<em><b>Tuner ID</b></em>' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int TUNER__TUNER_ID = 3;
 
   /**
    * The feature id for the '<em><b>Device Control</b></em>' attribute.
@@ -185,7 +212,7 @@ public interface FrontendPackage extends EPackage
    * @generated
    * @ordered
    */
-  int TUNER__DEVICE_CONTROL = 2;
+  int TUNER__DEVICE_CONTROL = 4;
 
   /**
    * The feature id for the '<em><b>Group ID</b></em>' attribute.
@@ -194,7 +221,7 @@ public interface FrontendPackage extends EPackage
    * @generated
    * @ordered
    */
-  int TUNER__GROUP_ID = 3;
+  int TUNER__GROUP_ID = 5;
 
   /**
    * The feature id for the '<em><b>Rf Flow ID</b></em>' attribute.
@@ -203,7 +230,16 @@ public interface FrontendPackage extends EPackage
    * @generated
    * @ordered
    */
-  int TUNER__RF_FLOW_ID = 4;
+  int TUNER__RF_FLOW_ID = 6;
+
+  /**
+   * The feature id for the '<em><b>Tuner Container</b></em>' container reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int TUNER__TUNER_CONTAINER = 7;
 
   /**
    * The feature id for the '<em><b>Tuner Status</b></em>' containment reference.
@@ -212,7 +248,7 @@ public interface FrontendPackage extends EPackage
    * @generated
    * @ordered
    */
-  int TUNER__TUNER_STATUS = 5;
+  int TUNER__TUNER_STATUS = 8;
 
   /**
    * The feature id for the '<em><b>Gain</b></em>' attribute.
@@ -221,7 +257,7 @@ public interface FrontendPackage extends EPackage
    * @generated
    * @ordered
    */
-  int TUNER__GAIN = 6;
+  int TUNER__GAIN = 9;
 
   /**
    * The number of structural features of the '<em>Tuner</em>' class.
@@ -230,7 +266,7 @@ public interface FrontendPackage extends EPackage
    * @generated
    * @ordered
    */
-  int TUNER_FEATURE_COUNT = 7;
+  int TUNER_FEATURE_COUNT = 10;
 
   /**
    * The number of operations of the '<em>Tuner</em>' class.
@@ -315,6 +351,16 @@ public interface FrontendPackage extends EPackage
   int TUNER_STATUS_OPERATION_COUNT = 0;
 
   /**
+   * The meta object id for the '<em>Sca Device</em>' data type.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see gov.redhawk.model.sca.ScaDevice
+   * @see gov.redhawk.frontend.impl.FrontendPackageImpl#getScaDevice()
+   * @generated
+   */
+  int SCA_DEVICE = 4;
+
+  /**
    * The meta object id for the '<em>Tuner Struct</em>' data type.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
@@ -322,29 +368,40 @@ public interface FrontendPackage extends EPackage
    * @see gov.redhawk.frontend.impl.FrontendPackageImpl#getTunerStruct()
    * @generated
    */
-  int TUNER_STRUCT = 4;
+  int TUNER_STRUCT = 5;
 
 
   /**
-   * Returns the meta object for class '{@link gov.redhawk.frontend.AnalogDevice <em>Analog Device</em>}'.
+   * Returns the meta object for class '{@link gov.redhawk.frontend.ModelDevice <em>Model Device</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @return the meta object for class '<em>Analog Device</em>'.
-   * @see gov.redhawk.frontend.AnalogDevice
+   * @return the meta object for class '<em>Model Device</em>'.
+   * @see gov.redhawk.frontend.ModelDevice
    * @generated
    */
-  EClass getAnalogDevice();
+  EClass getModelDevice();
 
   /**
-   * Returns the meta object for the containment reference '{@link gov.redhawk.frontend.AnalogDevice#getTunerContainer <em>Tuner Container</em>}'.
+   * Returns the meta object for the containment reference '{@link gov.redhawk.frontend.ModelDevice#getTunerContainer <em>Tuner Container</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @return the meta object for the containment reference '<em>Tuner Container</em>'.
-   * @see gov.redhawk.frontend.AnalogDevice#getTunerContainer()
-   * @see #getAnalogDevice()
+   * @see gov.redhawk.frontend.ModelDevice#getTunerContainer()
+   * @see #getModelDevice()
    * @generated
    */
-  EReference getAnalogDevice_TunerContainer();
+  EReference getModelDevice_TunerContainer();
+
+  /**
+   * Returns the meta object for the attribute '{@link gov.redhawk.frontend.ModelDevice#getScaDevice <em>Sca Device</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the attribute '<em>Sca Device</em>'.
+   * @see gov.redhawk.frontend.ModelDevice#getScaDevice()
+   * @see #getModelDevice()
+   * @generated
+   */
+  EAttribute getModelDevice_ScaDevice();
 
   /**
    * Returns the meta object for class '{@link gov.redhawk.frontend.TunerContainer <em>Tuner Container</em>}'.
@@ -357,26 +414,26 @@ public interface FrontendPackage extends EPackage
   EClass getTunerContainer();
 
   /**
-   * Returns the meta object for the container reference '{@link gov.redhawk.frontend.TunerContainer#getAnalogDevice <em>Analog Device</em>}'.
+   * Returns the meta object for the container reference '{@link gov.redhawk.frontend.TunerContainer#getModelDevice <em>Model Device</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @return the meta object for the container reference '<em>Analog Device</em>'.
-   * @see gov.redhawk.frontend.TunerContainer#getAnalogDevice()
+   * @return the meta object for the container reference '<em>Model Device</em>'.
+   * @see gov.redhawk.frontend.TunerContainer#getModelDevice()
    * @see #getTunerContainer()
    * @generated
    */
-  EReference getTunerContainer_AnalogDevice();
+  EReference getTunerContainer_ModelDevice();
 
   /**
-   * Returns the meta object for the attribute list '{@link gov.redhawk.frontend.TunerContainer#getTuners <em>Tuners</em>}'.
+   * Returns the meta object for the containment reference list '{@link gov.redhawk.frontend.TunerContainer#getTuners <em>Tuners</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @return the meta object for the attribute list '<em>Tuners</em>'.
+   * @return the meta object for the containment reference list '<em>Tuners</em>'.
    * @see gov.redhawk.frontend.TunerContainer#getTuners()
    * @see #getTunerContainer()
    * @generated
    */
-  EAttribute getTunerContainer_Tuners();
+  EReference getTunerContainer_Tuners();
 
   /**
    * Returns the meta object for class '{@link gov.redhawk.frontend.Tuner <em>Tuner</em>}'.
@@ -387,6 +444,17 @@ public interface FrontendPackage extends EPackage
    * @generated
    */
   EClass getTuner();
+
+  /**
+   * Returns the meta object for the attribute '{@link gov.redhawk.frontend.Tuner#getTunerStruct <em>Tuner Struct</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the attribute '<em>Tuner Struct</em>'.
+   * @see gov.redhawk.frontend.Tuner#getTunerStruct()
+   * @see #getTuner()
+   * @generated
+   */
+  EAttribute getTuner_TunerStruct();
 
   /**
    * Returns the meta object for the attribute '{@link gov.redhawk.frontend.Tuner#getAllocationID <em>Allocation ID</em>}'.
@@ -409,6 +477,17 @@ public interface FrontendPackage extends EPackage
    * @generated
    */
   EAttribute getTuner_TunerType();
+
+  /**
+   * Returns the meta object for the attribute '{@link gov.redhawk.frontend.Tuner#getTunerID <em>Tuner ID</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the attribute '<em>Tuner ID</em>'.
+   * @see gov.redhawk.frontend.Tuner#getTunerID()
+   * @see #getTuner()
+   * @generated
+   */
+  EAttribute getTuner_TunerID();
 
   /**
    * Returns the meta object for the attribute '{@link gov.redhawk.frontend.Tuner#isDeviceControl <em>Device Control</em>}'.
@@ -442,6 +521,17 @@ public interface FrontendPackage extends EPackage
    * @generated
    */
   EAttribute getTuner_RfFlowID();
+
+  /**
+   * Returns the meta object for the container reference '{@link gov.redhawk.frontend.Tuner#getTunerContainer <em>Tuner Container</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the container reference '<em>Tuner Container</em>'.
+   * @see gov.redhawk.frontend.Tuner#getTunerContainer()
+   * @see #getTuner()
+   * @generated
+   */
+  EReference getTuner_TunerContainer();
 
   /**
    * Returns the meta object for the containment reference '{@link gov.redhawk.frontend.Tuner#getTunerStatus <em>Tuner Status</em>}'.
@@ -531,6 +621,17 @@ public interface FrontendPackage extends EPackage
   EAttribute getTunerStatus_Enabled();
 
   /**
+   * Returns the meta object for data type '{@link gov.redhawk.model.sca.ScaDevice <em>Sca Device</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for data type '<em>Sca Device</em>'.
+   * @see gov.redhawk.model.sca.ScaDevice
+   * @model instanceClass="gov.redhawk.model.sca.ScaDevice<?>"
+   * @generated
+   */
+  EDataType getScaDevice();
+
+  /**
    * Returns the meta object for data type '{@link gov.redhawk.model.sca.ScaStructProperty <em>Tuner Struct</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
@@ -566,14 +667,14 @@ public interface FrontendPackage extends EPackage
   interface Literals
   {
     /**
-     * The meta object literal for the '{@link gov.redhawk.frontend.impl.AnalogDeviceImpl <em>Analog Device</em>}' class.
+     * The meta object literal for the '{@link gov.redhawk.frontend.impl.ModelDeviceImpl <em>Model Device</em>}' class.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @see gov.redhawk.frontend.impl.AnalogDeviceImpl
-     * @see gov.redhawk.frontend.impl.FrontendPackageImpl#getAnalogDevice()
+     * @see gov.redhawk.frontend.impl.ModelDeviceImpl
+     * @see gov.redhawk.frontend.impl.FrontendPackageImpl#getModelDevice()
      * @generated
      */
-    EClass ANALOG_DEVICE = eINSTANCE.getAnalogDevice();
+    EClass MODEL_DEVICE = eINSTANCE.getModelDevice();
 
     /**
      * The meta object literal for the '<em><b>Tuner Container</b></em>' containment reference feature.
@@ -581,7 +682,15 @@ public interface FrontendPackage extends EPackage
      * <!-- end-user-doc -->
      * @generated
      */
-    EReference ANALOG_DEVICE__TUNER_CONTAINER = eINSTANCE.getAnalogDevice_TunerContainer();
+    EReference MODEL_DEVICE__TUNER_CONTAINER = eINSTANCE.getModelDevice_TunerContainer();
+
+    /**
+     * The meta object literal for the '<em><b>Sca Device</b></em>' attribute feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EAttribute MODEL_DEVICE__SCA_DEVICE = eINSTANCE.getModelDevice_ScaDevice();
 
     /**
      * The meta object literal for the '{@link gov.redhawk.frontend.impl.TunerContainerImpl <em>Tuner Container</em>}' class.
@@ -594,20 +703,20 @@ public interface FrontendPackage extends EPackage
     EClass TUNER_CONTAINER = eINSTANCE.getTunerContainer();
 
     /**
-     * The meta object literal for the '<em><b>Analog Device</b></em>' container reference feature.
+     * The meta object literal for the '<em><b>Model Device</b></em>' container reference feature.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      */
-    EReference TUNER_CONTAINER__ANALOG_DEVICE = eINSTANCE.getTunerContainer_AnalogDevice();
+    EReference TUNER_CONTAINER__MODEL_DEVICE = eINSTANCE.getTunerContainer_ModelDevice();
 
     /**
-     * The meta object literal for the '<em><b>Tuners</b></em>' attribute list feature.
+     * The meta object literal for the '<em><b>Tuners</b></em>' containment reference list feature.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      */
-    EAttribute TUNER_CONTAINER__TUNERS = eINSTANCE.getTunerContainer_Tuners();
+    EReference TUNER_CONTAINER__TUNERS = eINSTANCE.getTunerContainer_Tuners();
 
     /**
      * The meta object literal for the '{@link gov.redhawk.frontend.impl.TunerImpl <em>Tuner</em>}' class.
@@ -618,6 +727,14 @@ public interface FrontendPackage extends EPackage
      * @generated
      */
     EClass TUNER = eINSTANCE.getTuner();
+
+    /**
+     * The meta object literal for the '<em><b>Tuner Struct</b></em>' attribute feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EAttribute TUNER__TUNER_STRUCT = eINSTANCE.getTuner_TunerStruct();
 
     /**
      * The meta object literal for the '<em><b>Allocation ID</b></em>' attribute feature.
@@ -634,6 +751,14 @@ public interface FrontendPackage extends EPackage
      * @generated
      */
     EAttribute TUNER__TUNER_TYPE = eINSTANCE.getTuner_TunerType();
+
+    /**
+     * The meta object literal for the '<em><b>Tuner ID</b></em>' attribute feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EAttribute TUNER__TUNER_ID = eINSTANCE.getTuner_TunerID();
 
     /**
      * The meta object literal for the '<em><b>Device Control</b></em>' attribute feature.
@@ -658,6 +783,14 @@ public interface FrontendPackage extends EPackage
      * @generated
      */
     EAttribute TUNER__RF_FLOW_ID = eINSTANCE.getTuner_RfFlowID();
+
+    /**
+     * The meta object literal for the '<em><b>Tuner Container</b></em>' container reference feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EReference TUNER__TUNER_CONTAINER = eINSTANCE.getTuner_TunerContainer();
 
     /**
      * The meta object literal for the '<em><b>Tuner Status</b></em>' containment reference feature.
@@ -724,6 +857,16 @@ public interface FrontendPackage extends EPackage
      * @generated
      */
     EAttribute TUNER_STATUS__ENABLED = eINSTANCE.getTunerStatus_Enabled();
+
+    /**
+     * The meta object literal for the '<em>Sca Device</em>' data type.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see gov.redhawk.model.sca.ScaDevice
+     * @see gov.redhawk.frontend.impl.FrontendPackageImpl#getScaDevice()
+     * @generated
+     */
+    EDataType SCA_DEVICE = eINSTANCE.getScaDevice();
 
     /**
      * The meta object literal for the '<em>Tuner Struct</em>' data type.

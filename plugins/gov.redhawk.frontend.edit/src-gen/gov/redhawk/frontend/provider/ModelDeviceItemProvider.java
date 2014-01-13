@@ -3,9 +3,11 @@
 package gov.redhawk.frontend.provider;
 
 
-import gov.redhawk.frontend.AnalogDevice;
 import gov.redhawk.frontend.FrontendFactory;
 import gov.redhawk.frontend.FrontendPackage;
+import gov.redhawk.frontend.ModelDevice;
+
+import gov.redhawk.model.sca.ScaDevice;
 
 import java.util.Collection;
 import java.util.List;
@@ -17,6 +19,7 @@ import org.eclipse.emf.common.util.ResourceLocator;
 
 import org.eclipse.emf.ecore.EStructuralFeature;
 
+import org.eclipse.emf.edit.provider.ComposeableAdapterFactory;
 import org.eclipse.emf.edit.provider.IEditingDomainItemProvider;
 import org.eclipse.emf.edit.provider.IItemColorProvider;
 import org.eclipse.emf.edit.provider.IItemFontProvider;
@@ -25,16 +28,17 @@ import org.eclipse.emf.edit.provider.IItemPropertyDescriptor;
 import org.eclipse.emf.edit.provider.IItemPropertySource;
 import org.eclipse.emf.edit.provider.IStructuredItemContentProvider;
 import org.eclipse.emf.edit.provider.ITreeItemContentProvider;
+import org.eclipse.emf.edit.provider.ItemPropertyDescriptor;
 import org.eclipse.emf.edit.provider.ItemProviderAdapter;
 import org.eclipse.emf.edit.provider.ViewerNotification;
 
 /**
- * This is the item provider adapter for a {@link gov.redhawk.frontend.AnalogDevice} object.
+ * This is the item provider adapter for a {@link gov.redhawk.frontend.ModelDevice} object.
  * <!-- begin-user-doc -->
  * <!-- end-user-doc -->
  * @generated
  */
-public class AnalogDeviceItemProvider
+public class ModelDeviceItemProvider
   extends ItemProviderAdapter
   implements
     IEditingDomainItemProvider,
@@ -51,7 +55,7 @@ public class AnalogDeviceItemProvider
    * <!-- end-user-doc -->
    * @generated
    */
-  public AnalogDeviceItemProvider(AdapterFactory adapterFactory)
+  public ModelDeviceItemProvider(AdapterFactory adapterFactory)
   {
     super(adapterFactory);
   }
@@ -69,8 +73,32 @@ public class AnalogDeviceItemProvider
     {
       super.getPropertyDescriptors(object);
 
+      addScaDevicePropertyDescriptor(object);
     }
     return itemPropertyDescriptors;
+  }
+
+  /**
+   * This adds a property descriptor for the Sca Device feature.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  protected void addScaDevicePropertyDescriptor(Object object)
+  {
+    itemPropertyDescriptors.add
+      (createItemPropertyDescriptor
+        (((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
+         getResourceLocator(),
+         getString("_UI_ModelDevice_scaDevice_feature"),
+         getString("_UI_PropertyDescriptor_description", "_UI_ModelDevice_scaDevice_feature", "_UI_ModelDevice_type"),
+         FrontendPackage.Literals.MODEL_DEVICE__SCA_DEVICE,
+         true,
+         false,
+         false,
+         ItemPropertyDescriptor.GENERIC_VALUE_IMAGE,
+         null,
+         null));
   }
 
   /**
@@ -87,7 +115,7 @@ public class AnalogDeviceItemProvider
     if (childrenFeatures == null)
     {
       super.getChildrenFeatures(object);
-      childrenFeatures.add(FrontendPackage.Literals.ANALOG_DEVICE__TUNER_CONTAINER);
+      childrenFeatures.add(FrontendPackage.Literals.MODEL_DEVICE__TUNER_CONTAINER);
     }
     return childrenFeatures;
   }
@@ -107,7 +135,7 @@ public class AnalogDeviceItemProvider
   }
 
   /**
-   * This returns AnalogDevice.gif.
+   * This returns ModelDevice.gif.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
@@ -115,7 +143,7 @@ public class AnalogDeviceItemProvider
   @Override
   public Object getImage(Object object)
   {
-    return overlayImage(object, getResourceLocator().getImage("full/obj16/AnalogDevice"));
+    return overlayImage(object, getResourceLocator().getImage("full/obj16/ModelDevice"));
   }
 
   /**
@@ -127,7 +155,11 @@ public class AnalogDeviceItemProvider
   @Override
   public String getText(Object object)
   {
-    return getString("_UI_AnalogDevice_type");
+    ScaDevice<?> labelValue = ((ModelDevice)object).getScaDevice();
+    String label = labelValue == null ? null : labelValue.toString();
+    return label == null || label.length() == 0 ?
+      getString("_UI_ModelDevice_type") :
+      getString("_UI_ModelDevice_type") + " " + label;
   }
 
   /**
@@ -142,9 +174,12 @@ public class AnalogDeviceItemProvider
   {
     updateChildren(notification);
 
-    switch (notification.getFeatureID(AnalogDevice.class))
+    switch (notification.getFeatureID(ModelDevice.class))
     {
-      case FrontendPackage.ANALOG_DEVICE__TUNER_CONTAINER:
+      case FrontendPackage.MODEL_DEVICE__SCA_DEVICE:
+        fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
+        return;
+      case FrontendPackage.MODEL_DEVICE__TUNER_CONTAINER:
         fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), true, false));
         return;
     }
@@ -165,7 +200,7 @@ public class AnalogDeviceItemProvider
 
     newChildDescriptors.add
       (createChildParameter
-        (FrontendPackage.Literals.ANALOG_DEVICE__TUNER_CONTAINER,
+        (FrontendPackage.Literals.MODEL_DEVICE__TUNER_CONTAINER,
          FrontendFactory.eINSTANCE.createTunerContainer()));
   }
 

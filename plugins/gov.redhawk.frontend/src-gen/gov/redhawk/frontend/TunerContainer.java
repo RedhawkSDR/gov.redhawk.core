@@ -2,8 +2,6 @@
  */
 package gov.redhawk.frontend;
 
-import gov.redhawk.model.sca.ScaStructProperty;
-
 import org.eclipse.emf.common.util.EList;
 
 import org.eclipse.emf.ecore.EObject;
@@ -16,7 +14,7 @@ import org.eclipse.emf.ecore.EObject;
  * <p>
  * The following features are supported:
  * <ul>
- *   <li>{@link gov.redhawk.frontend.TunerContainer#getAnalogDevice <em>Analog Device</em>}</li>
+ *   <li>{@link gov.redhawk.frontend.TunerContainer#getModelDevice <em>Model Device</em>}</li>
  *   <li>{@link gov.redhawk.frontend.TunerContainer#getTuners <em>Tuners</em>}</li>
  * </ul>
  * </p>
@@ -28,47 +26,49 @@ import org.eclipse.emf.ecore.EObject;
 public interface TunerContainer extends EObject
 {
   /**
-   * Returns the value of the '<em><b>Analog Device</b></em>' container reference.
-   * It is bidirectional and its opposite is '{@link gov.redhawk.frontend.AnalogDevice#getTunerContainer <em>Tuner Container</em>}'.
+   * Returns the value of the '<em><b>Model Device</b></em>' container reference.
+   * It is bidirectional and its opposite is '{@link gov.redhawk.frontend.ModelDevice#getTunerContainer <em>Tuner Container</em>}'.
    * <!-- begin-user-doc -->
    * <p>
-   * If the meaning of the '<em>Analog Device</em>' container reference isn't clear,
+   * If the meaning of the '<em>Model Device</em>' container reference isn't clear,
    * there really should be more of a description here...
    * </p>
    * <!-- end-user-doc -->
-   * @return the value of the '<em>Analog Device</em>' container reference.
-   * @see #setAnalogDevice(AnalogDevice)
-   * @see gov.redhawk.frontend.FrontendPackage#getTunerContainer_AnalogDevice()
-   * @see gov.redhawk.frontend.AnalogDevice#getTunerContainer
+   * @return the value of the '<em>Model Device</em>' container reference.
+   * @see #setModelDevice(ModelDevice)
+   * @see gov.redhawk.frontend.FrontendPackage#getTunerContainer_ModelDevice()
+   * @see gov.redhawk.frontend.ModelDevice#getTunerContainer
    * @model opposite="tunerContainer" transient="false"
    * @generated
    */
-  AnalogDevice getAnalogDevice();
+  ModelDevice getModelDevice();
 
   /**
-   * Sets the value of the '{@link gov.redhawk.frontend.TunerContainer#getAnalogDevice <em>Analog Device</em>}' container reference.
+   * Sets the value of the '{@link gov.redhawk.frontend.TunerContainer#getModelDevice <em>Model Device</em>}' container reference.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @param value the new value of the '<em>Analog Device</em>' container reference.
-   * @see #getAnalogDevice()
+   * @param value the new value of the '<em>Model Device</em>' container reference.
+   * @see #getModelDevice()
    * @generated
    */
-  void setAnalogDevice(AnalogDevice value);
+  void setModelDevice(ModelDevice value);
 
   /**
-   * Returns the value of the '<em><b>Tuners</b></em>' attribute list.
-   * The list contents are of type {@link gov.redhawk.model.sca.ScaStructProperty}.
+   * Returns the value of the '<em><b>Tuners</b></em>' containment reference list.
+   * The list contents are of type {@link gov.redhawk.frontend.Tuner}.
+   * It is bidirectional and its opposite is '{@link gov.redhawk.frontend.Tuner#getTunerContainer <em>Tuner Container</em>}'.
    * <!-- begin-user-doc -->
    * <p>
-   * If the meaning of the '<em>Tuners</em>' attribute list isn't clear,
+   * If the meaning of the '<em>Tuners</em>' containment reference list isn't clear,
    * there really should be more of a description here...
    * </p>
    * <!-- end-user-doc -->
-   * @return the value of the '<em>Tuners</em>' attribute list.
+   * @return the value of the '<em>Tuners</em>' containment reference list.
    * @see gov.redhawk.frontend.FrontendPackage#getTunerContainer_Tuners()
-   * @model unique="false" dataType="gov.redhawk.frontend.TunerStruct"
+   * @see gov.redhawk.frontend.Tuner#getTunerContainer
+   * @model opposite="tunerContainer" containment="true"
    * @generated
    */
-  EList<ScaStructProperty> getTuners();
+  EList<Tuner> getTuners();
 
 } // TunerContainer

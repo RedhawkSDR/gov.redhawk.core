@@ -11,9 +11,8 @@
  */
 package gov.redhawk.frontend.ui.internal;
 
+import gov.redhawk.frontend.Tuner;
 import gov.redhawk.frontend.TunerContainer;
-import gov.redhawk.model.sca.ScaSimpleProperty;
-import gov.redhawk.model.sca.ScaStructProperty;
 
 import org.eclipse.core.expressions.PropertyTester;
 
@@ -33,21 +32,21 @@ public class TunerContainerPropertyTester extends PropertyTester {
 	 * @see org.eclipse.core.expressions.IPropertyTester#test(java.lang.Object, java.lang.String, java.lang.Object[], java.lang.Object)
 	 */
 	@Override
-	public boolean test(Object receiver, String property, Object[] args,
-			Object expectedValue) {
+	public boolean test(Object receiver, String property, Object[] args, Object expectedValue) {
 		TunerContainer container = (TunerContainer) receiver;
 		if ("hasUnallocatedTuners".equals(property)) {
-			for (ScaStructProperty tuner: container.getTuners()) {
-				ScaSimpleProperty allocationID = tuner.getSimple("FRONTEND::tuner_status::allocation_id_csv");
-				if (allocationID == null || allocationID.getValue() == null || "".equals(allocationID.getValue())) {
+			for (Tuner tuner : container.getTuners()) {
+				String allocationID = tuner.getAllocationID();
+				if (allocationID == null || "".equals(allocationID)) {
 					return true;
 				}
 			}
 		}
+		
 		if ("hasAllocatedTuners".equals(property)) {
-			for (ScaStructProperty tuner: container.getTuners()) {
-				ScaSimpleProperty allocationID = tuner.getSimple("FRONTEND::tuner_status::allocation_id_csv");
-				if (!(allocationID == null || allocationID.getValue() == null || "".equals(allocationID.getValue()))) {
+			for (Tuner tuner : container.getTuners()) {
+				String allocationID = tuner.getAllocationID();
+				if (!(allocationID == null || "".equals(allocationID))) {
 					return true;
 				}
 			}

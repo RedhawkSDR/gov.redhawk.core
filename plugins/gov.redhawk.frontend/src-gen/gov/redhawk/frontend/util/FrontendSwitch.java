@@ -72,10 +72,10 @@ public class FrontendSwitch<T> extends Switch<T>
   {
     switch (classifierID)
     {
-      case FrontendPackage.ANALOG_DEVICE:
+      case FrontendPackage.MODEL_DEVICE:
       {
-        AnalogDevice analogDevice = (AnalogDevice)theEObject;
-        T result = caseAnalogDevice(analogDevice);
+        ModelDevice modelDevice = (ModelDevice)theEObject;
+        T result = caseModelDevice(modelDevice);
         if (result == null) result = defaultCase(theEObject);
         return result;
       }
@@ -105,17 +105,17 @@ public class FrontendSwitch<T> extends Switch<T>
   }
 
   /**
-   * Returns the result of interpreting the object as an instance of '<em>Analog Device</em>'.
+   * Returns the result of interpreting the object as an instance of '<em>Model Device</em>'.
    * <!-- begin-user-doc -->
    * This implementation returns null;
    * returning a non-null result will terminate the switch.
    * <!-- end-user-doc -->
    * @param object the target of the switch.
-   * @return the result of interpreting the object as an instance of '<em>Analog Device</em>'.
+   * @return the result of interpreting the object as an instance of '<em>Model Device</em>'.
    * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
    * @generated
    */
-  public T caseAnalogDevice(AnalogDevice object)
+  public T caseModelDevice(ModelDevice object)
   {
     return null;
   }

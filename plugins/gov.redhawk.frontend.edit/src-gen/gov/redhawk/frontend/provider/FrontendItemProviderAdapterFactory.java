@@ -75,28 +75,28 @@ public class FrontendItemProviderAdapterFactory extends FrontendAdapterFactory i
   }
 
   /**
-   * This keeps track of the one adapter used for all {@link gov.redhawk.frontend.AnalogDevice} instances.
+   * This keeps track of the one adapter used for all {@link gov.redhawk.frontend.ModelDevice} instances.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
    */
-  protected AnalogDeviceItemProvider analogDeviceItemProvider;
+  protected ModelDeviceItemProvider modelDeviceItemProvider;
 
   /**
-   * This creates an adapter for a {@link gov.redhawk.frontend.AnalogDevice}.
+   * This creates an adapter for a {@link gov.redhawk.frontend.ModelDevice}.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
    */
   @Override
-  public Adapter createAnalogDeviceAdapter()
+  public Adapter createModelDeviceAdapter()
   {
-    if (analogDeviceItemProvider == null)
+    if (modelDeviceItemProvider == null)
     {
-      analogDeviceItemProvider = new AnalogDeviceItemProvider(this);
+      modelDeviceItemProvider = new ModelDeviceItemProvider(this);
     }
 
-    return analogDeviceItemProvider;
+    return modelDeviceItemProvider;
   }
 
   /**
@@ -285,7 +285,7 @@ public class FrontendItemProviderAdapterFactory extends FrontendAdapterFactory i
    */
   public void dispose()
   {
-    if (analogDeviceItemProvider != null) analogDeviceItemProvider.dispose();
+    if (modelDeviceItemProvider != null) modelDeviceItemProvider.dispose();
     if (tunerContainerItemProvider != null) tunerContainerItemProvider.dispose();
     if (tunerItemProvider != null) tunerItemProvider.dispose();
     if (tunerStatusItemProvider != null) tunerStatusItemProvider.dispose();

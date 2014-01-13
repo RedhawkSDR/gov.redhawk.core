@@ -2,9 +2,11 @@
  */
 package gov.redhawk.frontend.impl;
 
-import gov.redhawk.frontend.AnalogDevice;
 import gov.redhawk.frontend.FrontendPackage;
+import gov.redhawk.frontend.ModelDevice;
 import gov.redhawk.frontend.TunerContainer;
+
+import gov.redhawk.model.sca.ScaDevice;
 
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
@@ -17,18 +19,19 @@ import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
 
 /**
  * <!-- begin-user-doc -->
- * An implementation of the model object '<em><b>Analog Device</b></em>'.
+ * An implementation of the model object '<em><b>Model Device</b></em>'.
  * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
  * <ul>
- *   <li>{@link gov.redhawk.frontend.impl.AnalogDeviceImpl#getTunerContainer <em>Tuner Container</em>}</li>
+ *   <li>{@link gov.redhawk.frontend.impl.ModelDeviceImpl#getTunerContainer <em>Tuner Container</em>}</li>
+ *   <li>{@link gov.redhawk.frontend.impl.ModelDeviceImpl#getScaDevice <em>Sca Device</em>}</li>
  * </ul>
  * </p>
  *
  * @generated
  */
-public class AnalogDeviceImpl extends MinimalEObjectImpl.Container implements AnalogDevice
+public class ModelDeviceImpl extends MinimalEObjectImpl.Container implements ModelDevice
 {
   /**
    * The cached value of the '{@link #getTunerContainer() <em>Tuner Container</em>}' containment reference.
@@ -41,11 +44,21 @@ public class AnalogDeviceImpl extends MinimalEObjectImpl.Container implements An
   protected TunerContainer tunerContainer;
 
   /**
+   * The cached value of the '{@link #getScaDevice() <em>Sca Device</em>}' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see #getScaDevice()
+   * @generated
+   * @ordered
+   */
+  protected ScaDevice<?> scaDevice;
+
+  /**
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
    */
-  protected AnalogDeviceImpl()
+  protected ModelDeviceImpl()
   {
     super();
   }
@@ -58,7 +71,7 @@ public class AnalogDeviceImpl extends MinimalEObjectImpl.Container implements An
   @Override
   protected EClass eStaticClass()
   {
-    return FrontendPackage.Literals.ANALOG_DEVICE;
+    return FrontendPackage.Literals.MODEL_DEVICE;
   }
 
   /**
@@ -82,7 +95,7 @@ public class AnalogDeviceImpl extends MinimalEObjectImpl.Container implements An
     tunerContainer = newTunerContainer;
     if (eNotificationRequired())
     {
-      ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, FrontendPackage.ANALOG_DEVICE__TUNER_CONTAINER, oldTunerContainer, newTunerContainer);
+      ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, FrontendPackage.MODEL_DEVICE__TUNER_CONTAINER, oldTunerContainer, newTunerContainer);
       if (msgs == null) msgs = notification; else msgs.add(notification);
     }
     return msgs;
@@ -99,14 +112,37 @@ public class AnalogDeviceImpl extends MinimalEObjectImpl.Container implements An
     {
       NotificationChain msgs = null;
       if (tunerContainer != null)
-        msgs = ((InternalEObject)tunerContainer).eInverseRemove(this, FrontendPackage.TUNER_CONTAINER__ANALOG_DEVICE, TunerContainer.class, msgs);
+        msgs = ((InternalEObject)tunerContainer).eInverseRemove(this, FrontendPackage.TUNER_CONTAINER__MODEL_DEVICE, TunerContainer.class, msgs);
       if (newTunerContainer != null)
-        msgs = ((InternalEObject)newTunerContainer).eInverseAdd(this, FrontendPackage.TUNER_CONTAINER__ANALOG_DEVICE, TunerContainer.class, msgs);
+        msgs = ((InternalEObject)newTunerContainer).eInverseAdd(this, FrontendPackage.TUNER_CONTAINER__MODEL_DEVICE, TunerContainer.class, msgs);
       msgs = basicSetTunerContainer(newTunerContainer, msgs);
       if (msgs != null) msgs.dispatch();
     }
     else if (eNotificationRequired())
-      eNotify(new ENotificationImpl(this, Notification.SET, FrontendPackage.ANALOG_DEVICE__TUNER_CONTAINER, newTunerContainer, newTunerContainer));
+      eNotify(new ENotificationImpl(this, Notification.SET, FrontendPackage.MODEL_DEVICE__TUNER_CONTAINER, newTunerContainer, newTunerContainer));
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public ScaDevice<?> getScaDevice()
+  {
+    return scaDevice;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public void setScaDevice(ScaDevice<?> newScaDevice)
+  {
+    ScaDevice<?> oldScaDevice = scaDevice;
+    scaDevice = newScaDevice;
+    if (eNotificationRequired())
+      eNotify(new ENotificationImpl(this, Notification.SET, FrontendPackage.MODEL_DEVICE__SCA_DEVICE, oldScaDevice, scaDevice));
   }
 
   /**
@@ -119,9 +155,9 @@ public class AnalogDeviceImpl extends MinimalEObjectImpl.Container implements An
   {
     switch (featureID)
     {
-      case FrontendPackage.ANALOG_DEVICE__TUNER_CONTAINER:
+      case FrontendPackage.MODEL_DEVICE__TUNER_CONTAINER:
         if (tunerContainer != null)
-          msgs = ((InternalEObject)tunerContainer).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - FrontendPackage.ANALOG_DEVICE__TUNER_CONTAINER, null, msgs);
+          msgs = ((InternalEObject)tunerContainer).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - FrontendPackage.MODEL_DEVICE__TUNER_CONTAINER, null, msgs);
         return basicSetTunerContainer((TunerContainer)otherEnd, msgs);
     }
     return super.eInverseAdd(otherEnd, featureID, msgs);
@@ -137,7 +173,7 @@ public class AnalogDeviceImpl extends MinimalEObjectImpl.Container implements An
   {
     switch (featureID)
     {
-      case FrontendPackage.ANALOG_DEVICE__TUNER_CONTAINER:
+      case FrontendPackage.MODEL_DEVICE__TUNER_CONTAINER:
         return basicSetTunerContainer(null, msgs);
     }
     return super.eInverseRemove(otherEnd, featureID, msgs);
@@ -153,8 +189,10 @@ public class AnalogDeviceImpl extends MinimalEObjectImpl.Container implements An
   {
     switch (featureID)
     {
-      case FrontendPackage.ANALOG_DEVICE__TUNER_CONTAINER:
+      case FrontendPackage.MODEL_DEVICE__TUNER_CONTAINER:
         return getTunerContainer();
+      case FrontendPackage.MODEL_DEVICE__SCA_DEVICE:
+        return getScaDevice();
     }
     return super.eGet(featureID, resolve, coreType);
   }
@@ -164,13 +202,17 @@ public class AnalogDeviceImpl extends MinimalEObjectImpl.Container implements An
    * <!-- end-user-doc -->
    * @generated
    */
+  @SuppressWarnings("unchecked")
   @Override
   public void eSet(int featureID, Object newValue)
   {
     switch (featureID)
     {
-      case FrontendPackage.ANALOG_DEVICE__TUNER_CONTAINER:
+      case FrontendPackage.MODEL_DEVICE__TUNER_CONTAINER:
         setTunerContainer((TunerContainer)newValue);
+        return;
+      case FrontendPackage.MODEL_DEVICE__SCA_DEVICE:
+        setScaDevice((ScaDevice<?>)newValue);
         return;
     }
     super.eSet(featureID, newValue);
@@ -186,8 +228,11 @@ public class AnalogDeviceImpl extends MinimalEObjectImpl.Container implements An
   {
     switch (featureID)
     {
-      case FrontendPackage.ANALOG_DEVICE__TUNER_CONTAINER:
+      case FrontendPackage.MODEL_DEVICE__TUNER_CONTAINER:
         setTunerContainer((TunerContainer)null);
+        return;
+      case FrontendPackage.MODEL_DEVICE__SCA_DEVICE:
+        setScaDevice((ScaDevice<?>)null);
         return;
     }
     super.eUnset(featureID);
@@ -203,10 +248,29 @@ public class AnalogDeviceImpl extends MinimalEObjectImpl.Container implements An
   {
     switch (featureID)
     {
-      case FrontendPackage.ANALOG_DEVICE__TUNER_CONTAINER:
+      case FrontendPackage.MODEL_DEVICE__TUNER_CONTAINER:
         return tunerContainer != null;
+      case FrontendPackage.MODEL_DEVICE__SCA_DEVICE:
+        return scaDevice != null;
     }
     return super.eIsSet(featureID);
   }
 
-} //AnalogDeviceImpl
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public String toString()
+  {
+    if (eIsProxy()) return super.toString();
+
+    StringBuffer result = new StringBuffer(super.toString());
+    result.append(" (scaDevice: ");
+    result.append(scaDevice);
+    result.append(')');
+    return result.toString();
+  }
+
+} //ModelDeviceImpl

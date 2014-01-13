@@ -4,6 +4,7 @@ package gov.redhawk.frontend.impl;
 
 import gov.redhawk.frontend.*;
 
+import gov.redhawk.model.sca.ScaDevice;
 import gov.redhawk.model.sca.ScaStructProperty;
 
 import org.eclipse.emf.ecore.EClass;
@@ -67,7 +68,7 @@ public class FrontendFactoryImpl extends EFactoryImpl implements FrontendFactory
   {
     switch (eClass.getClassifierID())
     {
-      case FrontendPackage.ANALOG_DEVICE: return createAnalogDevice();
+      case FrontendPackage.MODEL_DEVICE: return createModelDevice();
       case FrontendPackage.TUNER_CONTAINER: return createTunerContainer();
       case FrontendPackage.TUNER: return createTuner();
       case FrontendPackage.TUNER_STATUS: return createTunerStatus();
@@ -86,6 +87,8 @@ public class FrontendFactoryImpl extends EFactoryImpl implements FrontendFactory
   {
     switch (eDataType.getClassifierID())
     {
+      case FrontendPackage.SCA_DEVICE:
+        return createScaDeviceFromString(eDataType, initialValue);
       case FrontendPackage.TUNER_STRUCT:
         return createTunerStructFromString(eDataType, initialValue);
       default:
@@ -103,6 +106,8 @@ public class FrontendFactoryImpl extends EFactoryImpl implements FrontendFactory
   {
     switch (eDataType.getClassifierID())
     {
+      case FrontendPackage.SCA_DEVICE:
+        return convertScaDeviceToString(eDataType, instanceValue);
       case FrontendPackage.TUNER_STRUCT:
         return convertTunerStructToString(eDataType, instanceValue);
       default:
@@ -115,10 +120,10 @@ public class FrontendFactoryImpl extends EFactoryImpl implements FrontendFactory
    * <!-- end-user-doc -->
    * @generated
    */
-  public AnalogDevice createAnalogDevice()
+  public ModelDevice createModelDevice()
   {
-    AnalogDeviceImpl analogDevice = new AnalogDeviceImpl();
-    return analogDevice;
+    ModelDeviceImpl modelDevice = new ModelDeviceImpl();
+    return modelDevice;
   }
 
   /**
@@ -152,6 +157,48 @@ public class FrontendFactoryImpl extends EFactoryImpl implements FrontendFactory
   {
     TunerStatusImpl tunerStatus = new TunerStatusImpl();
     return tunerStatus;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @SuppressWarnings("unchecked")
+  public ScaDevice<?> createScaDevice(String literal)
+  {
+    return (ScaDevice<?>)super.createFromString(literal);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public ScaDevice<?> createScaDeviceFromString(EDataType eDataType, String initialValue)
+  {
+    return createScaDevice(initialValue);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public String convertScaDevice(ScaDevice<?> instanceValue)
+  {
+    return super.convertToString(instanceValue);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @SuppressWarnings("unchecked")
+  public String convertScaDeviceToString(EDataType eDataType, Object instanceValue)
+  {
+    return convertScaDevice((ScaDevice<?>)instanceValue);
   }
 
   /**
