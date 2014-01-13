@@ -17,7 +17,7 @@ import org.eclipse.jface.viewers.CellEditor;
 import org.eclipse.swt.widgets.Text;
 
 /**
- * @since 3.1
+ * @since 3.2
  */
 public class LabelCellEditorLocator implements CellEditorLocator {
 

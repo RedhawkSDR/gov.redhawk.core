@@ -21,7 +21,7 @@ import org.eclipse.gef.ui.palette.PaletteViewer;
 import org.eclipse.gmf.runtime.diagram.ui.internal.services.palette.PaletteToolEntry;
 
 /**
- * @since 3.1
+ * @since 3.2
  */
 public class PaletteFilter {
 

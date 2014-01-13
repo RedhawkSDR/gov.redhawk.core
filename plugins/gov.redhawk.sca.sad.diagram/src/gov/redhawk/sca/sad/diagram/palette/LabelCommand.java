@@ -15,7 +15,7 @@ import org.eclipse.gef.commands.Command;
 
 
 /**
- * @since 3.1
+ * @since 3.2
  */
 public class LabelCommand extends Command {
 

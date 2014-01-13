@@ -20,7 +20,7 @@ import org.eclipse.draw2d.text.ParagraphTextLayout;
 import org.eclipse.draw2d.text.TextFlow;
 
 /**
- * @since 3.1
+ * @since 3.2
  */
 public class LabelFigure extends RectangleFigure {
 

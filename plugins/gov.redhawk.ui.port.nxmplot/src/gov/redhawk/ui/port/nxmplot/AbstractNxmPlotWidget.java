@@ -276,7 +276,7 @@ public abstract class AbstractNxmPlotWidget extends Composite {
 	 * This should be used to run source commands and additional filtering or processing commands before plotting.
 	 * @param command headless nm command to run
 	 * @return Command that was executed
-	 * @since 4.3 
+	 * @since 4.4
 	 */
 	public abstract Command runHeadlessCommandWithResult(String command);
 
@@ -298,7 +298,7 @@ public abstract class AbstractNxmPlotWidget extends Composite {
 	 * This should be used to run source commands and additional filtering or processing commands before plotting.
 	 * @param command nm command to run in global NeXtMidas session
 	 * @return Command that was executed
-	 * @since 4.3 
+	 * @since 4.4
 	 */
 	public abstract Command runGlobalCommand(String command);
 	
@@ -413,7 +413,7 @@ public abstract class AbstractNxmPlotWidget extends Composite {
 	}
 
 	/** 
-	 * @since 4.3, was added in 4.2 as protected
+	 * @since 4.4, was added in 4.2 as protected
 	 */
 	public PlotMessageHandler getPlotMessageHandler() {
 		return plotMessageHandler;

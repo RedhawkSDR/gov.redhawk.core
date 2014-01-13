@@ -30,7 +30,7 @@ import org.eclipse.ui.part.CellEditorActionHandler;
 
 
 /**
- * @since 3.1
+ * @since 3.2
  */
 public class LabelEditManager extends DirectEditManager {
 

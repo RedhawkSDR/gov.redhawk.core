@@ -17,7 +17,7 @@ import org.eclipse.gef.requests.DirectEditRequest;
 
 
 /**
- * @since 3.1
+ * @since 3.2
  */
 public class LabelDirectEditPolicy extends DirectEditPolicy {
 
