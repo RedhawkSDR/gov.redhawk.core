@@ -17,7 +17,7 @@ import java.util.List;
 import org.eclipse.jface.viewers.IFilter;
 
 /**
- * @since 9.2
+ * @since 9.3
  *
  */
 public class AdvancedPropertiesExtensibleFilter implements IFilter {
