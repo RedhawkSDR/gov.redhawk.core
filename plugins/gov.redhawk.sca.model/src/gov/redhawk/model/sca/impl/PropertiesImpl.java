@@ -77,7 +77,8 @@ public class PropertiesImpl extends EObjectImpl implements Properties {
 	@Override
 	public EMap<String, String> getProperty() {
 		if (property == null) {
-			property = new EcoreEMap<String,String>(ScaPackage.Literals.STRING_TO_STRING_MAP, StringToStringMapImpl.class, this, ScaPackage.PROPERTIES__PROPERTY);
+			property = new EcoreEMap<String, String>(ScaPackage.Literals.STRING_TO_STRING_MAP, StringToStringMapImpl.class, this,
+				ScaPackage.PROPERTIES__PROPERTY);
 		}
 		return property;
 	}
@@ -90,8 +91,8 @@ public class PropertiesImpl extends EObjectImpl implements Properties {
 	@Override
 	public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
 		switch (featureID) {
-			case ScaPackage.PROPERTIES__PROPERTY:
-				return ((InternalEList<?>)getProperty()).basicRemove(otherEnd, msgs);
+		case ScaPackage.PROPERTIES__PROPERTY:
+			return ((InternalEList< ? >) getProperty()).basicRemove(otherEnd, msgs);
 		}
 		return super.eInverseRemove(otherEnd, featureID, msgs);
 	}
@@ -104,9 +105,11 @@ public class PropertiesImpl extends EObjectImpl implements Properties {
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
-			case ScaPackage.PROPERTIES__PROPERTY:
-				if (coreType) return getProperty();
-				else return getProperty().map();
+		case ScaPackage.PROPERTIES__PROPERTY:
+			if (coreType)
+				return getProperty();
+			else
+				return getProperty().map();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -119,9 +122,9 @@ public class PropertiesImpl extends EObjectImpl implements Properties {
 	@Override
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
-			case ScaPackage.PROPERTIES__PROPERTY:
-				((EStructuralFeature.Setting)getProperty()).set(newValue);
-				return;
+		case ScaPackage.PROPERTIES__PROPERTY:
+			((EStructuralFeature.Setting) getProperty()).set(newValue);
+			return;
 		}
 		super.eSet(featureID, newValue);
 	}
@@ -134,9 +137,9 @@ public class PropertiesImpl extends EObjectImpl implements Properties {
 	@Override
 	public void eUnset(int featureID) {
 		switch (featureID) {
-			case ScaPackage.PROPERTIES__PROPERTY:
-				getProperty().clear();
-				return;
+		case ScaPackage.PROPERTIES__PROPERTY:
+			getProperty().clear();
+			return;
 		}
 		super.eUnset(featureID);
 	}
@@ -149,8 +152,8 @@ public class PropertiesImpl extends EObjectImpl implements Properties {
 	@Override
 	public boolean eIsSet(int featureID) {
 		switch (featureID) {
-			case ScaPackage.PROPERTIES__PROPERTY:
-				return property != null && !property.isEmpty();
+		case ScaPackage.PROPERTIES__PROPERTY:
+			return property != null && !property.isEmpty();
 		}
 		return super.eIsSet(featureID);
 	}

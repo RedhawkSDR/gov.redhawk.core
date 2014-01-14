@@ -92,11 +92,11 @@ public class ScaLoadableDeviceImpl< L extends LoadableDevice > extends ScaDevice
 		return (L) LoadableDeviceHelper.narrow(obj);
 		// BEGIN GENERATED CODE
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	@Override
 	protected Class<L> getCorbaType() {
-	    return (Class<L>) LoadableDevice.class;
+		return (Class<L>) LoadableDevice.class;
 	}
 
 } //ScaLoadableDeviceImpl

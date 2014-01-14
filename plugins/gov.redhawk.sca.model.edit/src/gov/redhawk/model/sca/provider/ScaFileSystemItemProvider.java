@@ -12,7 +12,6 @@
 // BEGIN GENERATED CODE
 package gov.redhawk.model.sca.provider;
 
-
 import gov.redhawk.model.sca.ScaFileSystem;
 import gov.redhawk.model.sca.ScaPackage;
 
@@ -41,10 +40,8 @@ import org.eclipse.emf.edit.provider.ViewerNotification;
  * <!-- end-user-doc -->
  * @generated
  */
-public class ScaFileSystemItemProvider
-	extends CorbaObjWrapperItemProvider
-	implements
-		IEditingDomainItemProvider, IStructuredItemContentProvider, ITreeItemContentProvider, IItemLabelProvider, IItemPropertySource, ITableItemLabelProvider, ITableItemColorProvider, IItemColorProvider {
+public class ScaFileSystemItemProvider extends CorbaObjWrapperItemProvider implements IEditingDomainItemProvider, IStructuredItemContentProvider,
+		ITreeItemContentProvider, IItemLabelProvider, IItemPropertySource, ITableItemLabelProvider, ITableItemColorProvider, IItemColorProvider {
 	/**
 	 * This constructs an instance from a factory and a notifier.
 	 * <!-- begin-user-doc -->
@@ -67,8 +64,8 @@ public class ScaFileSystemItemProvider
 			super.getPropertyDescriptors(object);
 
 			addFileStorePropertyDescriptor(object);
-//			addDirectoryPropertyDescriptor(object);
-//			addNamePropertyDescriptor(object);
+			//			addDirectoryPropertyDescriptor(object);
+			//			addNamePropertyDescriptor(object);
 			addFileSystemURIPropertyDescriptor(object);
 		}
 		return itemPropertyDescriptors;
@@ -81,19 +78,10 @@ public class ScaFileSystemItemProvider
 	 * @generated
 	 */
 	protected void addFileStorePropertyDescriptor(Object object) {
-		itemPropertyDescriptors.add
-			(createItemPropertyDescriptor
-				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
-				 getResourceLocator(),
-				 getString("_UI_ScaFileStore_fileStore_feature"),
-				 getString("_UI_PropertyDescriptor_description", "_UI_ScaFileStore_fileStore_feature", "_UI_ScaFileStore_type"),
-				 ScaPackage.Literals.SCA_FILE_STORE__FILE_STORE,
-				 false,
-				 false,
-				 false,
-				 ItemPropertyDescriptor.GENERIC_VALUE_IMAGE,
-				 null,
-				 null));
+		itemPropertyDescriptors.add(createItemPropertyDescriptor(((ComposeableAdapterFactory) adapterFactory).getRootAdapterFactory(), getResourceLocator(),
+			getString("_UI_ScaFileStore_fileStore_feature"),
+			getString("_UI_PropertyDescriptor_description", "_UI_ScaFileStore_fileStore_feature", "_UI_ScaFileStore_type"),
+			ScaPackage.Literals.SCA_FILE_STORE__FILE_STORE, false, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
 	}
 
 	/**
@@ -103,19 +91,10 @@ public class ScaFileSystemItemProvider
 	 * @generated
 	 */
 	protected void addDirectoryPropertyDescriptor(Object object) {
-		itemPropertyDescriptors.add
-			(createItemPropertyDescriptor
-				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
-				 getResourceLocator(),
-				 getString("_UI_ScaFileStore_directory_feature"),
-				 getString("_UI_PropertyDescriptor_description", "_UI_ScaFileStore_directory_feature", "_UI_ScaFileStore_type"),
-				 ScaPackage.Literals.SCA_FILE_STORE__DIRECTORY,
-				 true,
-				 false,
-				 false,
-				 ItemPropertyDescriptor.BOOLEAN_VALUE_IMAGE,
-				 null,
-				 null));
+		itemPropertyDescriptors.add(createItemPropertyDescriptor(((ComposeableAdapterFactory) adapterFactory).getRootAdapterFactory(), getResourceLocator(),
+			getString("_UI_ScaFileStore_directory_feature"),
+			getString("_UI_PropertyDescriptor_description", "_UI_ScaFileStore_directory_feature", "_UI_ScaFileStore_type"),
+			ScaPackage.Literals.SCA_FILE_STORE__DIRECTORY, true, false, false, ItemPropertyDescriptor.BOOLEAN_VALUE_IMAGE, null, null));
 	}
 
 	/**
@@ -125,19 +104,10 @@ public class ScaFileSystemItemProvider
 	 * @generated
 	 */
 	protected void addNamePropertyDescriptor(Object object) {
-		itemPropertyDescriptors.add
-			(createItemPropertyDescriptor
-				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
-				 getResourceLocator(),
-				 getString("_UI_ScaFileStore_name_feature"),
-				 getString("_UI_PropertyDescriptor_description", "_UI_ScaFileStore_name_feature", "_UI_ScaFileStore_type"),
-				 ScaPackage.Literals.SCA_FILE_STORE__NAME,
-				 true,
-				 false,
-				 false,
-				 ItemPropertyDescriptor.GENERIC_VALUE_IMAGE,
-				 null,
-				 null));
+		itemPropertyDescriptors.add(createItemPropertyDescriptor(((ComposeableAdapterFactory) adapterFactory).getRootAdapterFactory(), getResourceLocator(),
+			getString("_UI_ScaFileStore_name_feature"),
+			getString("_UI_PropertyDescriptor_description", "_UI_ScaFileStore_name_feature", "_UI_ScaFileStore_type"),
+			ScaPackage.Literals.SCA_FILE_STORE__NAME, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
 	}
 
 	/**
@@ -147,19 +117,10 @@ public class ScaFileSystemItemProvider
 	 * @generated
 	 */
 	protected void addFileSystemURIPropertyDescriptor(Object object) {
-		itemPropertyDescriptors.add
-			(createItemPropertyDescriptor
-				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
-				 getResourceLocator(),
-				 getString("_UI_ScaFileSystem_fileSystemURI_feature"),
-				 getString("_UI_PropertyDescriptor_description", "_UI_ScaFileSystem_fileSystemURI_feature", "_UI_ScaFileSystem_type"),
-				 ScaPackage.Literals.SCA_FILE_SYSTEM__FILE_SYSTEM_URI,
-				 false,
-				 false,
-				 false,
-				 ItemPropertyDescriptor.GENERIC_VALUE_IMAGE,
-				 null,
-				 null));
+		itemPropertyDescriptors.add(createItemPropertyDescriptor(((ComposeableAdapterFactory) adapterFactory).getRootAdapterFactory(), getResourceLocator(),
+			getString("_UI_ScaFileSystem_fileSystemURI_feature"),
+			getString("_UI_PropertyDescriptor_description", "_UI_ScaFileSystem_fileSystemURI_feature", "_UI_ScaFileSystem_type"),
+			ScaPackage.Literals.SCA_FILE_SYSTEM__FILE_SYSTEM_URI, false, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
 	}
 
 	/**
@@ -171,7 +132,7 @@ public class ScaFileSystemItemProvider
 	 * @generated
 	 */
 	@Override
-	public Collection<? extends EStructuralFeature> getChildrenFeatures(Object object) {
+	public Collection< ? extends EStructuralFeature> getChildrenFeatures(Object object) {
 		if (childrenFeatures == null) {
 			super.getChildrenFeatures(object);
 			childrenFeatures.add(ScaPackage.Literals.SCA_FILE_STORE__CHILDREN);
@@ -211,12 +172,10 @@ public class ScaFileSystemItemProvider
 	 * @generated
 	 */
 	public String getTextGen(Object object) {
-		String label = ((ScaFileSystem<?>)object).getName();
-		return label == null || label.length() == 0 ?
-			getString("_UI_ScaFileSystem_type") :
-			getString("_UI_ScaFileSystem_type") + " " + label;
+		String label = ((ScaFileSystem< ? >) object).getName();
+		return label == null || label.length() == 0 ? getString("_UI_ScaFileSystem_type") : getString("_UI_ScaFileSystem_type") + " " + label;
 	}
-	
+
 	/**
 	 * This returns the label text for the adapted class.
 	 * <!-- begin-user-doc -->
@@ -242,10 +201,10 @@ public class ScaFileSystemItemProvider
 		updateChildren(notification);
 
 		switch (notification.getFeatureID(ScaFileSystem.class)) {
-			case ScaPackage.SCA_FILE_SYSTEM__FILE_STORE:
-			case ScaPackage.SCA_FILE_SYSTEM__CHILDREN:
-				fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), true, false));
-				return;
+		case ScaPackage.SCA_FILE_SYSTEM__FILE_STORE:
+		case ScaPackage.SCA_FILE_SYSTEM__CHILDREN:
+			fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), true, false));
+			return;
 		}
 		super.notifyChanged(notification);
 	}

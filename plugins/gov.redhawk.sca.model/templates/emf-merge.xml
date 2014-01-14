@@ -152,12 +152,12 @@
 
   <merge:sort markup="^ordered$" select="Field"/>
   <merge:sort markup="^ordered$" select="EnumConstant"/>
-  
-  <merge:pull 
-      sourceGet="CompilationUnit/getHeader"
-      targetPut="CompilationUnit/setHeader"/>
 
 <!-- Basic Rules
+
+    <merge:pull 
+      sourceGet="CompilationUnit/getHeader"
+      targetPut="CompilationUnit/setHeader"/>
 
     <merge:pull 
       sourceGet="Package/getName"

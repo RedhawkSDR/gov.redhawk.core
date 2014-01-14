@@ -42,6 +42,7 @@
          </describer>
       </content-type>
    </extension>
+
    <extension
          point="org.eclipse.emf.ecore.content_parser">
       <parser

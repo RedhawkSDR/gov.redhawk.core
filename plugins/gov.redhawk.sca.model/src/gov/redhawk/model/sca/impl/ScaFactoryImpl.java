@@ -69,12 +69,11 @@ public class ScaFactoryImpl extends EFactoryImpl implements ScaFactory {
 	 */
 	public static ScaFactory init() {
 		try {
-			ScaFactory theScaFactory = (ScaFactory)EPackage.Registry.INSTANCE.getEFactory(ScaPackage.eNS_URI);
+			ScaFactory theScaFactory = (ScaFactory) EPackage.Registry.INSTANCE.getEFactory(ScaPackage.eNS_URI);
 			if (theScaFactory != null) {
 				return theScaFactory;
 			}
-		}
-		catch (Exception exception) {
+		} catch (Exception exception) {
 			EcorePlugin.INSTANCE.log(exception);
 		}
 		return new ScaFactoryImpl();
@@ -98,31 +97,54 @@ public class ScaFactoryImpl extends EFactoryImpl implements ScaFactory {
 	@Override
 	public EObject create(EClass eClass) {
 		switch (eClass.getClassifierID()) {
-			case ScaPackage.PROPERTIES: return createProperties();
-			case ScaPackage.SCA_COMPONENT: return createScaComponent();
-			case ScaPackage.SCA_DEVICE: return createScaDevice();
-			case ScaPackage.SCA_DEVICE_MANAGER: return createScaDeviceManager();
-			case ScaPackage.SCA_SERVICE: return createScaService();
-			case ScaPackage.SCA_DEVICE_MANAGER_FILE_SYSTEM: return createScaDeviceManagerFileSystem();
-			case ScaPackage.SCA_DOCUMENT_ROOT: return createScaDocumentRoot();
-			case ScaPackage.SCA_DOMAIN_MANAGER: return createScaDomainManager();
-			case ScaPackage.SCA_DOMAIN_MANAGER_FILE_SYSTEM: return createScaDomainManagerFileSystem();
-			case ScaPackage.SCA_DOMAIN_MANAGER_REGISTRY: return createScaDomainManagerRegistry();
-			case ScaPackage.SCA_EXECUTABLE_DEVICE: return createScaExecutableDevice();
-			case ScaPackage.SCA_FILE_STORE: return createScaFileStore();
-			case ScaPackage.SCA_LOADABLE_DEVICE: return createScaLoadableDevice();
-			case ScaPackage.SCA_PROVIDES_PORT: return createScaProvidesPort();
-			case ScaPackage.SCA_SIMPLE_PROPERTY: return createScaSimpleProperty();
-			case ScaPackage.SCA_SIMPLE_SEQUENCE_PROPERTY: return createScaSimpleSequenceProperty();
-			case ScaPackage.SCA_STRUCT_PROPERTY: return createScaStructProperty();
-			case ScaPackage.SCA_USES_PORT: return createScaUsesPort();
-			case ScaPackage.SCA_CONNECTION: return createScaConnection();
-			case ScaPackage.SCA_WAVEFORM: return createScaWaveform();
-			case ScaPackage.SCA_WAVEFORM_FACTORY: return createScaWaveformFactory();
-			case ScaPackage.STRING_TO_STRING_MAP: return (EObject)createStringToStringMap();
-			case ScaPackage.SCA_STRUCT_SEQUENCE_PROPERTY: return createScaStructSequenceProperty();
-			default:
-				throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier");
+		case ScaPackage.PROPERTIES:
+			return createProperties();
+		case ScaPackage.SCA_COMPONENT:
+			return createScaComponent();
+		case ScaPackage.SCA_DEVICE:
+			return createScaDevice();
+		case ScaPackage.SCA_DEVICE_MANAGER:
+			return createScaDeviceManager();
+		case ScaPackage.SCA_SERVICE:
+			return createScaService();
+		case ScaPackage.SCA_DEVICE_MANAGER_FILE_SYSTEM:
+			return createScaDeviceManagerFileSystem();
+		case ScaPackage.SCA_DOCUMENT_ROOT:
+			return createScaDocumentRoot();
+		case ScaPackage.SCA_DOMAIN_MANAGER:
+			return createScaDomainManager();
+		case ScaPackage.SCA_DOMAIN_MANAGER_FILE_SYSTEM:
+			return createScaDomainManagerFileSystem();
+		case ScaPackage.SCA_DOMAIN_MANAGER_REGISTRY:
+			return createScaDomainManagerRegistry();
+		case ScaPackage.SCA_EXECUTABLE_DEVICE:
+			return createScaExecutableDevice();
+		case ScaPackage.SCA_FILE_STORE:
+			return createScaFileStore();
+		case ScaPackage.SCA_LOADABLE_DEVICE:
+			return createScaLoadableDevice();
+		case ScaPackage.SCA_PROVIDES_PORT:
+			return createScaProvidesPort();
+		case ScaPackage.SCA_SIMPLE_PROPERTY:
+			return createScaSimpleProperty();
+		case ScaPackage.SCA_SIMPLE_SEQUENCE_PROPERTY:
+			return createScaSimpleSequenceProperty();
+		case ScaPackage.SCA_STRUCT_PROPERTY:
+			return createScaStructProperty();
+		case ScaPackage.SCA_USES_PORT:
+			return createScaUsesPort();
+		case ScaPackage.SCA_CONNECTION:
+			return createScaConnection();
+		case ScaPackage.SCA_WAVEFORM:
+			return createScaWaveform();
+		case ScaPackage.SCA_WAVEFORM_FACTORY:
+			return createScaWaveformFactory();
+		case ScaPackage.STRING_TO_STRING_MAP:
+			return (EObject) createStringToStringMap();
+		case ScaPackage.SCA_STRUCT_SEQUENCE_PROPERTY:
+			return createScaStructSequenceProperty();
+		default:
+			throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier");
 		}
 	}
 
@@ -134,30 +156,30 @@ public class ScaFactoryImpl extends EFactoryImpl implements ScaFactory {
 	@Override
 	public Object createFromString(EDataType eDataType, String initialValue) {
 		switch (eDataType.getClassifierID()) {
-			case ScaPackage.DOMAIN_CONNECTION_STATE:
-				return createDomainConnectionStateFromString(eDataType, initialValue);
-			case ScaPackage.REFRESH_DEPTH:
-				return createRefreshDepthFromString(eDataType, initialValue);
-			case ScaPackage.ADMIN_TYPE:
-				return createAdminTypeFromString(eDataType, initialValue);
-			case ScaPackage.DOMAIN_CONNECTION_EXCEPTION:
-				return createDomainConnectionExceptionFromString(eDataType, initialValue);
-			case ScaPackage.DOMAIN_CONNECTION_STATE_OBJECT:
-				return createDomainConnectionStateObjectFromString(eDataType, initialValue);
-			case ScaPackage.IFILE_STORE:
-				return createIFileStoreFromString(eDataType, initialValue);
-			case ScaPackage.OBJECT:
-				return createObjectFromString(eDataType, initialValue);
-			case ScaPackage.OPERATIONAL_TYPE:
-				return createOperationalTypeFromString(eDataType, initialValue);
-			case ScaPackage.REFRESH_DEPTH_OBJECT:
-				return createRefreshDepthObjectFromString(eDataType, initialValue);
-			case ScaPackage.URI:
-				return createURIFromString(eDataType, initialValue);
-			case ScaPackage.USAGE_TYPE:
-				return createUsageTypeFromString(eDataType, initialValue);
-			default:
-				throw new IllegalArgumentException("The datatype '" + eDataType.getName() + "' is not a valid classifier");
+		case ScaPackage.DOMAIN_CONNECTION_STATE:
+			return createDomainConnectionStateFromString(eDataType, initialValue);
+		case ScaPackage.REFRESH_DEPTH:
+			return createRefreshDepthFromString(eDataType, initialValue);
+		case ScaPackage.ADMIN_TYPE:
+			return createAdminTypeFromString(eDataType, initialValue);
+		case ScaPackage.DOMAIN_CONNECTION_EXCEPTION:
+			return createDomainConnectionExceptionFromString(eDataType, initialValue);
+		case ScaPackage.DOMAIN_CONNECTION_STATE_OBJECT:
+			return createDomainConnectionStateObjectFromString(eDataType, initialValue);
+		case ScaPackage.IFILE_STORE:
+			return createIFileStoreFromString(eDataType, initialValue);
+		case ScaPackage.OBJECT:
+			return createObjectFromString(eDataType, initialValue);
+		case ScaPackage.OPERATIONAL_TYPE:
+			return createOperationalTypeFromString(eDataType, initialValue);
+		case ScaPackage.REFRESH_DEPTH_OBJECT:
+			return createRefreshDepthObjectFromString(eDataType, initialValue);
+		case ScaPackage.URI:
+			return createURIFromString(eDataType, initialValue);
+		case ScaPackage.USAGE_TYPE:
+			return createUsageTypeFromString(eDataType, initialValue);
+		default:
+			throw new IllegalArgumentException("The datatype '" + eDataType.getName() + "' is not a valid classifier");
 		}
 	}
 
@@ -169,30 +191,30 @@ public class ScaFactoryImpl extends EFactoryImpl implements ScaFactory {
 	@Override
 	public String convertToString(EDataType eDataType, Object instanceValue) {
 		switch (eDataType.getClassifierID()) {
-			case ScaPackage.DOMAIN_CONNECTION_STATE:
-				return convertDomainConnectionStateToString(eDataType, instanceValue);
-			case ScaPackage.REFRESH_DEPTH:
-				return convertRefreshDepthToString(eDataType, instanceValue);
-			case ScaPackage.ADMIN_TYPE:
-				return convertAdminTypeToString(eDataType, instanceValue);
-			case ScaPackage.DOMAIN_CONNECTION_EXCEPTION:
-				return convertDomainConnectionExceptionToString(eDataType, instanceValue);
-			case ScaPackage.DOMAIN_CONNECTION_STATE_OBJECT:
-				return convertDomainConnectionStateObjectToString(eDataType, instanceValue);
-			case ScaPackage.IFILE_STORE:
-				return convertIFileStoreToString(eDataType, instanceValue);
-			case ScaPackage.OBJECT:
-				return convertObjectToString(eDataType, instanceValue);
-			case ScaPackage.OPERATIONAL_TYPE:
-				return convertOperationalTypeToString(eDataType, instanceValue);
-			case ScaPackage.REFRESH_DEPTH_OBJECT:
-				return convertRefreshDepthObjectToString(eDataType, instanceValue);
-			case ScaPackage.URI:
-				return convertURIToString(eDataType, instanceValue);
-			case ScaPackage.USAGE_TYPE:
-				return convertUsageTypeToString(eDataType, instanceValue);
-			default:
-				throw new IllegalArgumentException("The datatype '" + eDataType.getName() + "' is not a valid classifier");
+		case ScaPackage.DOMAIN_CONNECTION_STATE:
+			return convertDomainConnectionStateToString(eDataType, instanceValue);
+		case ScaPackage.REFRESH_DEPTH:
+			return convertRefreshDepthToString(eDataType, instanceValue);
+		case ScaPackage.ADMIN_TYPE:
+			return convertAdminTypeToString(eDataType, instanceValue);
+		case ScaPackage.DOMAIN_CONNECTION_EXCEPTION:
+			return convertDomainConnectionExceptionToString(eDataType, instanceValue);
+		case ScaPackage.DOMAIN_CONNECTION_STATE_OBJECT:
+			return convertDomainConnectionStateObjectToString(eDataType, instanceValue);
+		case ScaPackage.IFILE_STORE:
+			return convertIFileStoreToString(eDataType, instanceValue);
+		case ScaPackage.OBJECT:
+			return convertObjectToString(eDataType, instanceValue);
+		case ScaPackage.OPERATIONAL_TYPE:
+			return convertOperationalTypeToString(eDataType, instanceValue);
+		case ScaPackage.REFRESH_DEPTH_OBJECT:
+			return convertRefreshDepthObjectToString(eDataType, instanceValue);
+		case ScaPackage.URI:
+			return convertURIToString(eDataType, instanceValue);
+		case ScaPackage.USAGE_TYPE:
+			return convertUsageTypeToString(eDataType, instanceValue);
+		default:
+			throw new IllegalArgumentException("The datatype '" + eDataType.getName() + "' is not a valid classifier");
 		}
 	}
 
@@ -224,7 +246,7 @@ public class ScaFactoryImpl extends EFactoryImpl implements ScaFactory {
 	 * @generated
 	 */
 	@Override
-	public <D extends Device> ScaDevice<D> createScaDevice() {
+	public < D extends Device > ScaDevice<D> createScaDevice() {
 		ScaDeviceImpl<D> scaDevice = new ScaDeviceImpl<D>();
 		return scaDevice;
 	}
@@ -334,7 +356,7 @@ public class ScaFactoryImpl extends EFactoryImpl implements ScaFactory {
 	 * @generated
 	 */
 	@Override
-	public <L extends LoadableDevice> ScaLoadableDevice<L> createScaLoadableDevice() {
+	public < L extends LoadableDevice > ScaLoadableDevice<L> createScaLoadableDevice() {
 		ScaLoadableDeviceImpl<L> scaLoadableDevice = new ScaLoadableDeviceImpl<L>();
 		return scaLoadableDevice;
 	}
@@ -455,7 +477,8 @@ public class ScaFactoryImpl extends EFactoryImpl implements ScaFactory {
 	 */
 	public DomainConnectionState createDomainConnectionStateFromString(EDataType eDataType, String initialValue) {
 		DomainConnectionState result = DomainConnectionState.get(initialValue);
-		if (result == null) throw new IllegalArgumentException("The value '" + initialValue + "' is not a valid enumerator of '" + eDataType.getName() + "'");
+		if (result == null)
+			throw new IllegalArgumentException("The value '" + initialValue + "' is not a valid enumerator of '" + eDataType.getName() + "'");
 		return result;
 	}
 
@@ -475,7 +498,8 @@ public class ScaFactoryImpl extends EFactoryImpl implements ScaFactory {
 	 */
 	public RefreshDepth createRefreshDepthFromString(EDataType eDataType, String initialValue) {
 		RefreshDepth result = RefreshDepth.get(initialValue);
-		if (result == null) throw new IllegalArgumentException("The value '" + initialValue + "' is not a valid enumerator of '" + eDataType.getName() + "'");
+		if (result == null)
+			throw new IllegalArgumentException("The value '" + initialValue + "' is not a valid enumerator of '" + eDataType.getName() + "'");
 		return result;
 	}
 
@@ -496,7 +520,7 @@ public class ScaFactoryImpl extends EFactoryImpl implements ScaFactory {
 	 */
 	public String convertIFileStoreToString(EDataType eDataType, Object instanceValue) {
 		if (instanceValue instanceof IFileStore) {
-			return ((IFileStore)instanceValue).toURI().toString();
+			return ((IFileStore) instanceValue).toURI().toString();
 		}
 		return super.convertToString(eDataType, instanceValue);
 	}
@@ -507,7 +531,7 @@ public class ScaFactoryImpl extends EFactoryImpl implements ScaFactory {
 	 * @generated
 	 */
 	public org.omg.CORBA.Object createObjectFromString(EDataType eDataType, String initialValue) {
-		return (org.omg.CORBA.Object)super.createFromString(eDataType, initialValue);
+		return (org.omg.CORBA.Object) super.createFromString(eDataType, initialValue);
 	}
 
 	/**
@@ -549,7 +573,7 @@ public class ScaFactoryImpl extends EFactoryImpl implements ScaFactory {
 		} else if ("DISABLED".equalsIgnoreCase(initialValue)) {
 			return OperationalType.DISABLED;
 		}
-		return (OperationalType)super.createFromString(eDataType, initialValue);
+		return (OperationalType) super.createFromString(eDataType, initialValue);
 	}
 
 	/**
@@ -593,14 +617,14 @@ public class ScaFactoryImpl extends EFactoryImpl implements ScaFactory {
 	 *
 	 */
 	public UsageType createUsageTypeFromString(EDataType eDataType, String initialValue) {
-		if ("ACTIVE".equalsIgnoreCase(initialValue)){
+		if ("ACTIVE".equalsIgnoreCase(initialValue)) {
 			return UsageType.ACTIVE;
-		} else if ("BUSY".equalsIgnoreCase(initialValue)){
+		} else if ("BUSY".equalsIgnoreCase(initialValue)) {
 			return UsageType.BUSY;
-		} else if ("IDLE".equalsIgnoreCase(initialValue)){
+		} else if ("IDLE".equalsIgnoreCase(initialValue)) {
 			return UsageType.IDLE;
-		} 
-		return (UsageType)super.createFromString(eDataType, initialValue);
+		}
+		return (UsageType) super.createFromString(eDataType, initialValue);
 	}
 
 	/**
@@ -616,7 +640,7 @@ public class ScaFactoryImpl extends EFactoryImpl implements ScaFactory {
 			return "BUSY";
 		} else if (instanceValue == UsageType.IDLE) {
 			return "IDLE";
-		} 
+		}
 		return super.convertToString(eDataType, instanceValue);
 	}
 
@@ -627,7 +651,7 @@ public class ScaFactoryImpl extends EFactoryImpl implements ScaFactory {
 	 */
 	@Override
 	public ScaPackage getScaPackage() {
-		return (ScaPackage)getEPackage();
+		return (ScaPackage) getEPackage();
 	}
 
 	/**
@@ -654,8 +678,8 @@ public class ScaFactoryImpl extends EFactoryImpl implements ScaFactory {
 			return AdminType.SHUTTING_DOWN;
 		} else if ("UNLOCKED".equalsIgnoreCase(initialValue)) {
 			return AdminType.UNLOCKED;
-		}  
-		return (AdminType)super.createFromString(eDataType, initialValue);
+		}
+		return (AdminType) super.createFromString(eDataType, initialValue);
 	}
 
 	/**
@@ -671,7 +695,7 @@ public class ScaFactoryImpl extends EFactoryImpl implements ScaFactory {
 			return "SHUTTING DOWN";
 		} else if (instanceValue == AdminType.UNLOCKED) {
 			return "UNLOCKED";
-		} 
+		}
 		return super.convertToString(eDataType, instanceValue);
 	}
 
@@ -681,7 +705,7 @@ public class ScaFactoryImpl extends EFactoryImpl implements ScaFactory {
 	 * @generated
 	 */
 	public DomainConnectionException createDomainConnectionExceptionFromString(EDataType eDataType, String initialValue) {
-		return (DomainConnectionException)super.createFromString(eDataType, initialValue);
+		return (DomainConnectionException) super.createFromString(eDataType, initialValue);
 	}
 
 	/**
@@ -717,7 +741,7 @@ public class ScaFactoryImpl extends EFactoryImpl implements ScaFactory {
 	 * @generated
 	 */
 	public IFileStore createIFileStoreFromString(EDataType eDataType, String initialValue) {
-		return (IFileStore)super.createFromString(eDataType, initialValue);
+		return (IFileStore) super.createFromString(eDataType, initialValue);
 	}
 
 } // ScaFactoryImpl

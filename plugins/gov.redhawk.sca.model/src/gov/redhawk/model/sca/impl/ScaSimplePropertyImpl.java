@@ -168,8 +168,8 @@ public class ScaSimplePropertyImpl extends ScaAbstractPropertyImpl<Simple> imple
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
-			case ScaPackage.SCA_SIMPLE_PROPERTY__VALUE:
-				return getValue();
+		case ScaPackage.SCA_SIMPLE_PROPERTY__VALUE:
+			return getValue();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -182,9 +182,9 @@ public class ScaSimplePropertyImpl extends ScaAbstractPropertyImpl<Simple> imple
 	@Override
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
-			case ScaPackage.SCA_SIMPLE_PROPERTY__VALUE:
-				setValue(newValue);
-				return;
+		case ScaPackage.SCA_SIMPLE_PROPERTY__VALUE:
+			setValue(newValue);
+			return;
 		}
 		super.eSet(featureID, newValue);
 	}
@@ -197,9 +197,9 @@ public class ScaSimplePropertyImpl extends ScaAbstractPropertyImpl<Simple> imple
 	@Override
 	public void eUnset(int featureID) {
 		switch (featureID) {
-			case ScaPackage.SCA_SIMPLE_PROPERTY__VALUE:
-				setValue(VALUE_EDEFAULT);
-				return;
+		case ScaPackage.SCA_SIMPLE_PROPERTY__VALUE:
+			setValue(VALUE_EDEFAULT);
+			return;
 		}
 		super.eUnset(featureID);
 	}
@@ -212,8 +212,8 @@ public class ScaSimplePropertyImpl extends ScaAbstractPropertyImpl<Simple> imple
 	@Override
 	public boolean eIsSet(int featureID) {
 		switch (featureID) {
-			case ScaPackage.SCA_SIMPLE_PROPERTY__VALUE:
-				return VALUE_EDEFAULT == null ? value != null : !VALUE_EDEFAULT.equals(value);
+		case ScaPackage.SCA_SIMPLE_PROPERTY__VALUE:
+			return VALUE_EDEFAULT == null ? value != null : !VALUE_EDEFAULT.equals(value);
 		}
 		return super.eIsSet(featureID);
 	}
@@ -225,7 +225,8 @@ public class ScaSimplePropertyImpl extends ScaAbstractPropertyImpl<Simple> imple
 	 */
 	@Override
 	public String toString() {
-		if (eIsProxy()) return super.toString();
+		if (eIsProxy())
+			return super.toString();
 
 		StringBuffer result = new StringBuffer(super.toString());
 		result.append(" (value: ");
@@ -240,7 +241,7 @@ public class ScaSimplePropertyImpl extends ScaAbstractPropertyImpl<Simple> imple
 	 * @generated NOT
 	 */
 	@Override
-	public void restoreDefaultValue()  {
+	public void restoreDefaultValue() {
 		// END GENERATED CODE
 		// value = VALUE_EDEFAULT;
 		Object newValue;
@@ -252,7 +253,7 @@ public class ScaSimplePropertyImpl extends ScaAbstractPropertyImpl<Simple> imple
 		setValue(newValue);
 		// BEGIN GENERATED CODE
 	}
-	
+
 	@Override
 	public boolean isDefaultValue() {
 		// END GENERATED CODE
@@ -283,17 +284,17 @@ public class ScaSimplePropertyImpl extends ScaAbstractPropertyImpl<Simple> imple
 		}
 		// BEGIN GENERATED CODE
 	}
-	
+
 	@Override
 	public Any toAny() {
 		// END GENERATED CODE
 		return AnyUtils.toAny(value, getType(), isComplex());
 		// BEGIN GENERATED CODE
 	}
-	
+
 	/**
-     * @since 18.0
-     */
+	 * @since 18.0
+	 */
 	protected boolean isComplex() {
 		// END GENERATED CODE
 		if (getDefinition() != null && getDefinition().getComplex() != null) {

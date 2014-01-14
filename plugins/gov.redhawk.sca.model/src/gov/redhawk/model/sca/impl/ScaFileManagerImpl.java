@@ -162,8 +162,8 @@ public abstract class ScaFileManagerImpl extends ScaFileSystemImpl<FileManager> 
 	}
 
 	/**
-     * @since 14.0
-     */
+	 * @since 14.0
+	 */
 	@Override
 	public MountType[] getMounts() {
 		// END GENERATED CODE
@@ -176,8 +176,8 @@ public abstract class ScaFileManagerImpl extends ScaFileSystemImpl<FileManager> 
 	}
 
 	/**
-     * @since 14.0
-     */
+	 * @since 14.0
+	 */
 	@Override
 	public void mount(final String mountPoint, final FileSystem file_System) throws InvalidFileName, InvalidFileSystem, MountPointAlreadyExists {
 		// END GENERATED CODE
@@ -210,9 +210,9 @@ public abstract class ScaFileManagerImpl extends ScaFileSystemImpl<FileManager> 
 		return FileManagerHelper.narrow(obj);
 		// BEGIN GENERATED CODE
 	}
-	
+
 	@Override
 	protected Class<FileManager> getCorbaType() {
-	    return FileManager.class;
+		return FileManager.class;
 	}
 } //ScaFileManagerImpl

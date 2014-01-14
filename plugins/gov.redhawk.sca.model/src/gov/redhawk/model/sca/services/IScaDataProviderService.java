@@ -19,19 +19,19 @@ import org.eclipse.emf.ecore.EObject;
 public interface IScaDataProviderService {
 
 	public IScaDataProvider hookDataProvider(EObject object);
-	
+
 	/**
-     * @since 14.0
-     */
+	 * @since 14.0
+	 */
 	public void setEnabled(boolean enabled);
-	
+
 	/**
-     * @since 14.0
-     */
+	 * @since 14.0
+	 */
 	public boolean isEnabled();
-	
+
 	/**
-     * @since 14.0
-     */
+	 * @since 14.0
+	 */
 	public void dispose();
 }

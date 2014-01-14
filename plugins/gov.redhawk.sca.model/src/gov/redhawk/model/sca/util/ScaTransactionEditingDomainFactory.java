@@ -29,7 +29,8 @@ public class ScaTransactionEditingDomainFactory extends TransactionalEditingDoma
 	// Documentation copied from the inherited specification
 	@Override
 	public synchronized TransactionalEditingDomain createEditingDomain() {
-		TransactionalEditingDomain retVal = new ScaTransactionalEditingDomain(new ComposedAdapterFactory(ComposedAdapterFactory.Descriptor.Registry.INSTANCE), new ScaTransactionalCommandStack());
+		TransactionalEditingDomain retVal = new ScaTransactionalEditingDomain(new ComposedAdapterFactory(ComposedAdapterFactory.Descriptor.Registry.INSTANCE),
+			new ScaTransactionalCommandStack());
 
 		mapResourceSet(retVal);
 		setupEditingDomain((TransactionalEditingDomainImpl) retVal);

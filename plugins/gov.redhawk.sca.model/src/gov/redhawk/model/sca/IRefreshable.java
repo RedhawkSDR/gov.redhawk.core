@@ -29,4 +29,4 @@ public interface IRefreshable {
 	 */
 	void refresh(IProgressMonitor monitor, RefreshDepth depth) throws InterruptedException;
 
-} 
+}

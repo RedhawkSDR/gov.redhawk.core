@@ -23,15 +23,15 @@ import org.eclipse.core.runtime.IStatus;
  * @since 14.0
  * 
  */
-public class MergeAggregateDevices extends SetStatusCommand<ScaDevice<?>> {
+public class MergeAggregateDevices extends SetStatusCommand<ScaDevice< ? >> {
 
 	private Set<String> deviceIds;
 
 	public MergeAggregateDevices(ScaDevice< ? > provider, Set<String> deviceIds, IStatus status) {
-	    super(provider, ScaPackage.Literals.SCA_DEVICE__CHILD_DEVICES, status);
-	    this.deviceIds = deviceIds;
-    }
-	
+		super(provider, ScaPackage.Literals.SCA_DEVICE__CHILD_DEVICES, status);
+		this.deviceIds = deviceIds;
+	}
+
 	@Override
 	public void execute() {
 		if (status.isOK()) {
@@ -50,15 +50,15 @@ public class MergeAggregateDevices extends SetStatusCommand<ScaDevice<?>> {
 			}
 			if (!devicesToRemove.isEmpty()) {
 				provider.getChildDevices().removeAll(devicesToRemove);
-			}	
-			
+			}
+
 			if (!provider.isSetChildDevices()) {
 				provider.getChildDevices().clear();
 			}
 		} else {
 			provider.unsetChildDevices();
 		}
-	    super.execute();
+		super.execute();
 	}
 
 }

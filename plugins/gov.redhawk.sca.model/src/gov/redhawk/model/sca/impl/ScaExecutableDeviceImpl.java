@@ -67,10 +67,10 @@ public class ScaExecutableDeviceImpl extends ScaLoadableDeviceImpl<ExecutableDev
 		return ExecutableDeviceHelper.narrow(obj);
 		// BEGIN GENERATED CODE
 	}
-	
+
 	@Override
 	protected Class<ExecutableDevice> getCorbaType() {
-	   return ExecutableDevice.class;
+		return ExecutableDevice.class;
 	}
 
 	/**
@@ -90,7 +90,7 @@ public class ScaExecutableDeviceImpl extends ScaLoadableDeviceImpl<ExecutableDev
 	 */
 	@Override
 	public int execute(final String name, final DataType[] options, final DataType[] parameters) throws InvalidState, InvalidFunction, InvalidParameters,
-	        InvalidOptions, InvalidFileName, ExecuteFail {
+		InvalidOptions, InvalidFileName, ExecuteFail {
 		// END GENERATED CODE
 		ExecutableDevice device = fetchNarrowedObject(null);
 		if (device == null) {

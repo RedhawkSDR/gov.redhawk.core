@@ -17,10 +17,12 @@ import gov.redhawk.model.sca.ScaComponent;
 import gov.redhawk.model.sca.ScaDevice;
 import gov.redhawk.model.sca.ScaDeviceManager;
 import gov.redhawk.model.sca.ScaDomainManager;
+import gov.redhawk.model.sca.ScaDomainManagerFileSystem;
 import gov.redhawk.model.sca.ScaModelPlugin;
 import gov.redhawk.model.sca.ScaPackage;
 import gov.redhawk.model.sca.ScaWaveform;
 import gov.redhawk.model.sca.commands.MergeComponentDevicesCommand;
+import gov.redhawk.model.sca.commands.ScaModelCommand;
 import gov.redhawk.model.sca.commands.ScaModelCommandWithResult;
 import gov.redhawk.model.sca.commands.UnsetLocalAttributeCommand;
 import gov.redhawk.model.sca.commands.VersionedFeature;
@@ -98,7 +100,7 @@ public class ScaComponentImpl extends ScaAbstractComponentImpl<Resource> impleme
 	 * @generated
 	 * @ordered
 	 */
-	protected EList<ScaDevice<?>> devices;
+	protected EList<ScaDevice< ? >> devices;
 	/**
 	 * The default value of the '{@link #getInstantiationIdentifier() <em>Instantiation Identifier</em>}' attribute.
 	 * <!-- begin-user-doc -->
@@ -154,11 +156,12 @@ public class ScaComponentImpl extends ScaAbstractComponentImpl<Resource> impleme
 	@Override
 	public SadComponentInstantiation getComponentInstantiation() {
 		if (componentInstantiation != null && componentInstantiation.eIsProxy()) {
-			InternalEObject oldComponentInstantiation = (InternalEObject)componentInstantiation;
-			componentInstantiation = (SadComponentInstantiation)eResolveProxy(oldComponentInstantiation);
+			InternalEObject oldComponentInstantiation = (InternalEObject) componentInstantiation;
+			componentInstantiation = (SadComponentInstantiation) eResolveProxy(oldComponentInstantiation);
 			if (componentInstantiation != oldComponentInstantiation) {
 				if (eNotificationRequired())
-					eNotify(new ENotificationImpl(this, Notification.RESOLVE, ScaPackage.SCA_COMPONENT__COMPONENT_INSTANTIATION, oldComponentInstantiation, componentInstantiation));
+					eNotify(new ENotificationImpl(this, Notification.RESOLVE, ScaPackage.SCA_COMPONENT__COMPONENT_INSTANTIATION, oldComponentInstantiation,
+						componentInstantiation));
 			}
 		}
 		return componentInstantiation;
@@ -185,7 +188,8 @@ public class ScaComponentImpl extends ScaAbstractComponentImpl<Resource> impleme
 		boolean oldComponentInstantiationESet = componentInstantiationESet;
 		componentInstantiationESet = true;
 		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, ScaPackage.SCA_COMPONENT__COMPONENT_INSTANTIATION, oldComponentInstantiation, componentInstantiation, !oldComponentInstantiationESet));
+			eNotify(new ENotificationImpl(this, Notification.SET, ScaPackage.SCA_COMPONENT__COMPONENT_INSTANTIATION, oldComponentInstantiation,
+				componentInstantiation, !oldComponentInstantiationESet));
 	}
 
 	/**
@@ -200,7 +204,8 @@ public class ScaComponentImpl extends ScaAbstractComponentImpl<Resource> impleme
 		componentInstantiation = null;
 		componentInstantiationESet = false;
 		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.UNSET, ScaPackage.SCA_COMPONENT__COMPONENT_INSTANTIATION, oldComponentInstantiation, null, oldComponentInstantiationESet));
+			eNotify(new ENotificationImpl(this, Notification.UNSET, ScaPackage.SCA_COMPONENT__COMPONENT_INSTANTIATION, oldComponentInstantiation, null,
+				oldComponentInstantiationESet));
 	}
 
 	/**
@@ -219,9 +224,9 @@ public class ScaComponentImpl extends ScaAbstractComponentImpl<Resource> impleme
 	 * @generated
 	 */
 	@Override
-	public EList<ScaDevice<?>> getDevices() {
+	public EList<ScaDevice< ? >> getDevices() {
 		if (devices == null) {
-			devices = new EObjectResolvingEList.Unsettable<ScaDevice<?>>(ScaDevice.class, this, ScaPackage.SCA_COMPONENT__DEVICES);
+			devices = new EObjectResolvingEList.Unsettable<ScaDevice< ? >>(ScaDevice.class, this, ScaPackage.SCA_COMPONENT__DEVICES);
 		}
 		return devices;
 	}
@@ -233,7 +238,8 @@ public class ScaComponentImpl extends ScaAbstractComponentImpl<Resource> impleme
 	 */
 	@Override
 	public void unsetDevices() {
-		if (devices != null) ((InternalEList.Unsettable<?>)devices).unset();
+		if (devices != null)
+			((InternalEList.Unsettable< ? >) devices).unset();
 	}
 
 	/**
@@ -243,9 +249,9 @@ public class ScaComponentImpl extends ScaAbstractComponentImpl<Resource> impleme
 	 */
 	@Override
 	public boolean isSetDevices() {
-		return devices != null && ((InternalEList.Unsettable<?>)devices).isSet();
+		return devices != null && ((InternalEList.Unsettable< ? >) devices).isSet();
 	}
-	
+
 	/**
 	 * @since 18.0
 	 */
@@ -302,8 +308,9 @@ public class ScaComponentImpl extends ScaAbstractComponentImpl<Resource> impleme
 	 */
 	@Override
 	public ScaWaveform getWaveform() {
-		if (eContainerFeatureID() != ScaPackage.SCA_COMPONENT__WAVEFORM) return null;
-		return (ScaWaveform)eContainer();
+		if (eContainerFeatureID() != ScaPackage.SCA_COMPONENT__WAVEFORM)
+			return null;
+		return (ScaWaveform) eContainer();
 	}
 
 	/**
@@ -312,8 +319,9 @@ public class ScaComponentImpl extends ScaAbstractComponentImpl<Resource> impleme
 	 * @generated
 	 */
 	public ScaWaveform basicGetWaveform() {
-		if (eContainerFeatureID() != ScaPackage.SCA_COMPONENT__WAVEFORM) return null;
-		return (ScaWaveform)eInternalContainer();
+		if (eContainerFeatureID() != ScaPackage.SCA_COMPONENT__WAVEFORM)
+			return null;
+		return (ScaWaveform) eInternalContainer();
 	}
 
 	/**
@@ -322,7 +330,7 @@ public class ScaComponentImpl extends ScaAbstractComponentImpl<Resource> impleme
 	 * @generated
 	 */
 	public NotificationChain basicSetWaveform(ScaWaveform newWaveform, NotificationChain msgs) {
-		msgs = eBasicSetContainer((InternalEObject)newWaveform, ScaPackage.SCA_COMPONENT__WAVEFORM, msgs);
+		msgs = eBasicSetContainer((InternalEObject) newWaveform, ScaPackage.SCA_COMPONENT__WAVEFORM, msgs);
 		return msgs;
 	}
 
@@ -340,11 +348,11 @@ public class ScaComponentImpl extends ScaAbstractComponentImpl<Resource> impleme
 			if (eInternalContainer() != null)
 				msgs = eBasicRemoveFromContainer(msgs);
 			if (newWaveform != null)
-				msgs = ((InternalEObject)newWaveform).eInverseAdd(this, ScaPackage.SCA_WAVEFORM__COMPONENTS, ScaWaveform.class, msgs);
+				msgs = ((InternalEObject) newWaveform).eInverseAdd(this, ScaPackage.SCA_WAVEFORM__COMPONENTS, ScaWaveform.class, msgs);
 			msgs = basicSetWaveform(newWaveform, msgs);
-			if (msgs != null) msgs.dispatch();
-		}
-		else if (eNotificationRequired())
+			if (msgs != null)
+				msgs.dispatch();
+		} else if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET, ScaPackage.SCA_COMPONENT__WAVEFORM, newWaveform, newWaveform));
 	}
 
@@ -443,10 +451,10 @@ public class ScaComponentImpl extends ScaAbstractComponentImpl<Resource> impleme
 			deviceMonitor.beginTask("Refreshing Devices", devices.length);
 			for (ScaDevice< ? > device : devices) {
 				try {
-	                device.refresh(deviceMonitor.newChild(1), RefreshDepth.SELF);
-                } catch (InterruptedException e) {
-	                // PASS
-                }
+					device.refresh(deviceMonitor.newChild(1), RefreshDepth.SELF);
+				} catch (InterruptedException e) {
+					// PASS
+				}
 			}
 		}
 		subMonitor.done();
@@ -461,10 +469,10 @@ public class ScaComponentImpl extends ScaAbstractComponentImpl<Resource> impleme
 	@Override
 	public NotificationChain eInverseAdd(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
 		switch (featureID) {
-			case ScaPackage.SCA_COMPONENT__WAVEFORM:
-				if (eInternalContainer() != null)
-					msgs = eBasicRemoveFromContainer(msgs);
-				return basicSetWaveform((ScaWaveform)otherEnd, msgs);
+		case ScaPackage.SCA_COMPONENT__WAVEFORM:
+			if (eInternalContainer() != null)
+				msgs = eBasicRemoveFromContainer(msgs);
+			return basicSetWaveform((ScaWaveform) otherEnd, msgs);
 		}
 		return super.eInverseAdd(otherEnd, featureID, msgs);
 	}
@@ -477,8 +485,8 @@ public class ScaComponentImpl extends ScaAbstractComponentImpl<Resource> impleme
 	@Override
 	public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
 		switch (featureID) {
-			case ScaPackage.SCA_COMPONENT__WAVEFORM:
-				return basicSetWaveform(null, msgs);
+		case ScaPackage.SCA_COMPONENT__WAVEFORM:
+			return basicSetWaveform(null, msgs);
 		}
 		return super.eInverseRemove(otherEnd, featureID, msgs);
 	}
@@ -491,8 +499,8 @@ public class ScaComponentImpl extends ScaAbstractComponentImpl<Resource> impleme
 	@Override
 	public NotificationChain eBasicRemoveFromContainerFeature(NotificationChain msgs) {
 		switch (eContainerFeatureID()) {
-			case ScaPackage.SCA_COMPONENT__WAVEFORM:
-				return eInternalContainer().eInverseRemove(this, ScaPackage.SCA_WAVEFORM__COMPONENTS, ScaWaveform.class, msgs);
+		case ScaPackage.SCA_COMPONENT__WAVEFORM:
+			return eInternalContainer().eInverseRemove(this, ScaPackage.SCA_WAVEFORM__COMPONENTS, ScaWaveform.class, msgs);
 		}
 		return super.eBasicRemoveFromContainerFeature(msgs);
 	}
@@ -505,18 +513,20 @@ public class ScaComponentImpl extends ScaAbstractComponentImpl<Resource> impleme
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
-			case ScaPackage.SCA_COMPONENT__COMPONENT_INSTANTIATION:
-				if (resolve) return getComponentInstantiation();
-				return basicGetComponentInstantiation();
-			case ScaPackage.SCA_COMPONENT__DEVICES:
-				return getDevices();
-			case ScaPackage.SCA_COMPONENT__INSTANTIATION_IDENTIFIER:
-				return getInstantiationIdentifier();
-			case ScaPackage.SCA_COMPONENT__WAVEFORM:
-				if (resolve) return getWaveform();
-				return basicGetWaveform();
-			case ScaPackage.SCA_COMPONENT__NAME:
-				return getName();
+		case ScaPackage.SCA_COMPONENT__COMPONENT_INSTANTIATION:
+			if (resolve)
+				return getComponentInstantiation();
+			return basicGetComponentInstantiation();
+		case ScaPackage.SCA_COMPONENT__DEVICES:
+			return getDevices();
+		case ScaPackage.SCA_COMPONENT__INSTANTIATION_IDENTIFIER:
+			return getInstantiationIdentifier();
+		case ScaPackage.SCA_COMPONENT__WAVEFORM:
+			if (resolve)
+				return getWaveform();
+			return basicGetWaveform();
+		case ScaPackage.SCA_COMPONENT__NAME:
+			return getName();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -530,19 +540,19 @@ public class ScaComponentImpl extends ScaAbstractComponentImpl<Resource> impleme
 	@Override
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
-			case ScaPackage.SCA_COMPONENT__COMPONENT_INSTANTIATION:
-				setComponentInstantiation((SadComponentInstantiation)newValue);
-				return;
-			case ScaPackage.SCA_COMPONENT__DEVICES:
-				getDevices().clear();
-				getDevices().addAll((Collection<? extends ScaDevice<?>>)newValue);
-				return;
-			case ScaPackage.SCA_COMPONENT__WAVEFORM:
-				setWaveform((ScaWaveform)newValue);
-				return;
-			case ScaPackage.SCA_COMPONENT__NAME:
-				setName((String)newValue);
-				return;
+		case ScaPackage.SCA_COMPONENT__COMPONENT_INSTANTIATION:
+			setComponentInstantiation((SadComponentInstantiation) newValue);
+			return;
+		case ScaPackage.SCA_COMPONENT__DEVICES:
+			getDevices().clear();
+			getDevices().addAll((Collection< ? extends ScaDevice< ? >>) newValue);
+			return;
+		case ScaPackage.SCA_COMPONENT__WAVEFORM:
+			setWaveform((ScaWaveform) newValue);
+			return;
+		case ScaPackage.SCA_COMPONENT__NAME:
+			setName((String) newValue);
+			return;
 		}
 		super.eSet(featureID, newValue);
 	}
@@ -555,18 +565,18 @@ public class ScaComponentImpl extends ScaAbstractComponentImpl<Resource> impleme
 	@Override
 	public void eUnset(int featureID) {
 		switch (featureID) {
-			case ScaPackage.SCA_COMPONENT__COMPONENT_INSTANTIATION:
-				unsetComponentInstantiation();
-				return;
-			case ScaPackage.SCA_COMPONENT__DEVICES:
-				unsetDevices();
-				return;
-			case ScaPackage.SCA_COMPONENT__WAVEFORM:
-				setWaveform((ScaWaveform)null);
-				return;
-			case ScaPackage.SCA_COMPONENT__NAME:
-				setName(NAME_EDEFAULT);
-				return;
+		case ScaPackage.SCA_COMPONENT__COMPONENT_INSTANTIATION:
+			unsetComponentInstantiation();
+			return;
+		case ScaPackage.SCA_COMPONENT__DEVICES:
+			unsetDevices();
+			return;
+		case ScaPackage.SCA_COMPONENT__WAVEFORM:
+			setWaveform((ScaWaveform) null);
+			return;
+		case ScaPackage.SCA_COMPONENT__NAME:
+			setName(NAME_EDEFAULT);
+			return;
 		}
 		super.eUnset(featureID);
 	}
@@ -579,16 +589,16 @@ public class ScaComponentImpl extends ScaAbstractComponentImpl<Resource> impleme
 	@Override
 	public boolean eIsSet(int featureID) {
 		switch (featureID) {
-			case ScaPackage.SCA_COMPONENT__COMPONENT_INSTANTIATION:
-				return isSetComponentInstantiation();
-			case ScaPackage.SCA_COMPONENT__DEVICES:
-				return isSetDevices();
-			case ScaPackage.SCA_COMPONENT__INSTANTIATION_IDENTIFIER:
-				return isSetInstantiationIdentifier();
-			case ScaPackage.SCA_COMPONENT__WAVEFORM:
-				return basicGetWaveform() != null;
-			case ScaPackage.SCA_COMPONENT__NAME:
-				return NAME_EDEFAULT == null ? name != null : !NAME_EDEFAULT.equals(name);
+		case ScaPackage.SCA_COMPONENT__COMPONENT_INSTANTIATION:
+			return isSetComponentInstantiation();
+		case ScaPackage.SCA_COMPONENT__DEVICES:
+			return isSetDevices();
+		case ScaPackage.SCA_COMPONENT__INSTANTIATION_IDENTIFIER:
+			return isSetInstantiationIdentifier();
+		case ScaPackage.SCA_COMPONENT__WAVEFORM:
+			return basicGetWaveform() != null;
+		case ScaPackage.SCA_COMPONENT__NAME:
+			return NAME_EDEFAULT == null ? name != null : !NAME_EDEFAULT.equals(name);
 		}
 		return super.eIsSet(featureID);
 	}
@@ -600,7 +610,8 @@ public class ScaComponentImpl extends ScaAbstractComponentImpl<Resource> impleme
 	 */
 	@Override
 	public String toString() {
-		if (eIsProxy()) return super.toString();
+		if (eIsProxy())
+			return super.toString();
 
 		StringBuffer result = new StringBuffer(super.toString());
 		result.append(" (name: ");
@@ -686,10 +697,38 @@ public class ScaComponentImpl extends ScaAbstractComponentImpl<Resource> impleme
 		return Resource.class;
 	}
 
+	private final VersionedFeature profileURIFeature = new VersionedFeature(this, ScaPackage.Literals.PROFILE_OBJECT_WRAPPER__PROFILE_URI);
+
 	@Override
-    public URI fetchProfileURI(IProgressMonitor monitor) {
-		// We can't fetch a components Profile URI so just return what we've got
-	    return getProfileURI();
-    }
+	public URI fetchProfileURI(IProgressMonitor monitor) {
+		if (isSetProfileURI()) {
+			return getProfileURI();
+		}
+		SubMonitor subMonitor = SubMonitor.convert(monitor, "Fetch profile URI.", 2);
+		ScaWaveform waveform = getWaveform();
+		if (waveform != null) {
+			ScaDomainManager domMgr = waveform.getDomMgr();
+			if (domMgr != null) {
+				ScaDomainManagerFileSystem fileSystem = domMgr.getFileManager();
+				if (fileSystem != null) {
+					Transaction transaction = profileURIFeature.createTransaction();
+					final String localProfile = fetchProfile(subMonitor.newChild(1));
+					if (localProfile != null) {
+						final URI newURI = fileSystem.createURI(localProfile);
+						transaction.addCommand(new ScaModelCommand() {
+	
+							@Override
+							public void execute() {
+								setProfileURI(newURI);
+							}
+						});
+						transaction.commit();
+					}
+				}
+			}
+		}
+		subMonitor.done();
+		return getProfileURI();
+	}
 
 } //ScaComponentImpl

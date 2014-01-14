@@ -21,15 +21,15 @@ import org.eclipse.emf.ecore.EObject;
  * @since 14.0
  * 
  */
-public class SetProfileObjectCommand  <T extends EObject> extends SetStatusCommand<ProfileObjectWrapper<T>> {
+public class SetProfileObjectCommand< T extends EObject > extends SetStatusCommand<ProfileObjectWrapper<T>> {
 
 	private T profileObject;
 
-	public SetProfileObjectCommand(ProfileObjectWrapper< T > provider, T profileObject, IStatus status) {
-	    super(provider, ScaPackage.Literals.PROFILE_OBJECT_WRAPPER__PROFILE_OBJ, status);
-	    this.profileObject = profileObject;
-    }
-	
+	public SetProfileObjectCommand(ProfileObjectWrapper<T> provider, T profileObject, IStatus status) {
+		super(provider, ScaPackage.Literals.PROFILE_OBJECT_WRAPPER__PROFILE_OBJ, status);
+		this.profileObject = profileObject;
+	}
+
 	@Override
 	public void execute() {
 		if (status.isOK()) {
@@ -37,7 +37,7 @@ public class SetProfileObjectCommand  <T extends EObject> extends SetStatusComma
 		} else {
 			provider.unsetProfileObj();
 		}
-	    super.execute();
+		super.execute();
 	}
 
 }

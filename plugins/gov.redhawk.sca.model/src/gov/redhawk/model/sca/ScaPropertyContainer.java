@@ -36,7 +36,8 @@ import CF.PropertySetOperations;
  *        extendedMetaData="name='ScaPropertyContainer' kind='elementOnly'"
  * @generated
  */
-public interface ScaPropertyContainer<P extends org.omg.CORBA.Object, E extends Object> extends CorbaObjWrapper<P>, ProfileObjectWrapper<E>, PropertySetOperations {
+public interface ScaPropertyContainer< P extends org.omg.CORBA.Object, E extends Object > extends CorbaObjWrapper<P>, ProfileObjectWrapper<E>,
+		PropertySetOperations {
 	/**
 	 * Returns the value of the '<em><b>Properties</b></em>' containment reference list.
 	 * The list contents are of type {@link gov.redhawk.model.sca.ScaAbstractProperty}&lt;?>.
@@ -54,7 +55,7 @@ public interface ScaPropertyContainer<P extends org.omg.CORBA.Object, E extends 
 	 *        extendedMetaData="kind='element' name='properties'"
 	 * @generated
 	 */
-	EList<ScaAbstractProperty<?>> getProperties();
+	EList<ScaAbstractProperty< ? >> getProperties();
 
 	/**
 	 * Unsets the value of the '{@link gov.redhawk.model.sca.ScaPropertyContainer#getProperties <em>Properties</em>}' containment reference list.
@@ -83,7 +84,7 @@ public interface ScaPropertyContainer<P extends org.omg.CORBA.Object, E extends 
 	 * @model monitorDataType="gov.redhawk.model.sca.IProgressMonitor"
 	 * @generated
 	 */
-	EList<ScaAbstractProperty<?>> fetchProperties(IProgressMonitor monitor);
+	EList<ScaAbstractProperty< ? >> fetchProperties(IProgressMonitor monitor);
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -91,7 +92,7 @@ public interface ScaPropertyContainer<P extends org.omg.CORBA.Object, E extends 
 	 * @model
 	 * @generated
 	 */
-	ScaAbstractProperty<?> getProperty(String identifier);
+	ScaAbstractProperty< ? > getProperty(String identifier);
 
 	/**
 	 * @deprecated Use {@link #fetchProperties(IProgressMonitor)} instead

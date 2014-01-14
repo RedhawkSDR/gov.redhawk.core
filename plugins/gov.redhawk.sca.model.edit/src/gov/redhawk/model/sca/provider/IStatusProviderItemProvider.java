@@ -44,7 +44,8 @@ import org.eclipse.ui.PlatformUI;
  * <!-- end-user-doc -->
  * @generated
  */
-public class IStatusProviderItemProvider extends ItemProviderAdapter implements IEditingDomainItemProvider, IStructuredItemContentProvider, ITreeItemContentProvider, IItemLabelProvider, IItemPropertySource, ITableItemLabelProvider, ITableItemColorProvider, IItemColorProvider {
+public class IStatusProviderItemProvider extends ItemProviderAdapter implements IEditingDomainItemProvider, IStructuredItemContentProvider,
+		ITreeItemContentProvider, IItemLabelProvider, IItemPropertySource, ITableItemLabelProvider, ITableItemColorProvider, IItemColorProvider {
 	/**
 	 * This constructs an instance from a factory and a notifier.
 	 * <!-- begin-user-doc -->
@@ -92,9 +93,9 @@ public class IStatusProviderItemProvider extends ItemProviderAdapter implements 
 		//				 null,
 		//				 null));
 		itemPropertyDescriptors.add(new ItemPropertyDescriptor(((ComposeableAdapterFactory) adapterFactory).getRootAdapterFactory(), getResourceLocator(),
-		        getString("_UI_IStatusProvider_status_feature"), getString("_UI_PropertyDescriptor_description", "_UI_IStatusProvider_status_feature",
-		                "_UI_IStatusProvider_type"), ScaPackage.Literals.ISTATUS_PROVIDER__STATUS, false, true, false,
-		        ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null) {
+			getString("_UI_IStatusProvider_status_feature"), getString("_UI_PropertyDescriptor_description", "_UI_IStatusProvider_status_feature",
+				"_UI_IStatusProvider_type"), ScaPackage.Literals.ISTATUS_PROVIDER__STATUS, false, true, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE,
+			null, null) {
 			@Override
 			public IItemLabelProvider getLabelProvider(Object object) {
 				return new IItemLabelProvider() {
@@ -156,11 +157,9 @@ public class IStatusProviderItemProvider extends ItemProviderAdapter implements 
 	 */
 	@Override
 	public String getText(Object object) {
-		IStatus labelValue = ((IStatusProvider)object).getStatus();
+		IStatus labelValue = ((IStatusProvider) object).getStatus();
 		String label = labelValue == null ? null : labelValue.toString();
-		return label == null || label.length() == 0 ?
-			getString("_UI_IStatusProvider_type") :
-			getString("_UI_IStatusProvider_type") + " " + label;
+		return label == null || label.length() == 0 ? getString("_UI_IStatusProvider_type") : getString("_UI_IStatusProvider_type") + " " + label;
 	}
 
 	/**

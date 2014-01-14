@@ -74,14 +74,14 @@ public class ScaDataProviderServiceDescriptor implements IScaDataProviderService
 	}
 
 	public boolean isEnabled() {
-	    return enabled;
-    }
+		return enabled;
+	}
 
 	public void setEnabled(boolean enabled) {
-	    this.enabled = enabled;
-	    if (this.service != null) {
-	    	this.service.setEnabled(enabled);
-	    }
-    }
+		this.enabled = enabled;
+		if (this.service != null) {
+			this.service.setEnabled(enabled);
+		}
+	}
 
 }

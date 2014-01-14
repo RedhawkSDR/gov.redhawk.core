@@ -10,7 +10,7 @@
  *
  */
 
- // BEGIN GENERATED CODE
+// BEGIN GENERATED CODE
 package gov.redhawk.model.sca.util;
 
 import gov.redhawk.model.sca.ScaDocumentRoot;
@@ -52,42 +52,42 @@ import org.eclipse.emf.mapping.ecore2xml.util.Ecore2XMLExtendedMetaData;
  * @see gov.redhawk.model.sca.util.ScaResourceImpl
  */
 public class ScaResourceFactoryImpl_100 extends ResourceFactoryImpl {
-	
+
 	private static class RulesResourceHandler extends BasicResourceHandler {
 		@Override
 		public void postLoad(XMLResource resource, InputStream inputStream, Map< ? , ? > options) {
-		    Map<EObject, AnyType> extMap = resource.getEObjectToExtensionMap();
-		    for (Iterator<?> itr = extMap.entrySet().iterator(); itr.hasNext();) {
-		    	Map.Entry<?, ?> entry = (Entry< ? , ? >) itr.next();
-		    	EObject key = (EObject) entry.getKey();
-		    	AnyType value = (AnyType) entry.getValue();
-		    	handleUnknownData(key, value);
-		    }
+			Map<EObject, AnyType> extMap = resource.getEObjectToExtensionMap();
+			for (Iterator< ? > itr = extMap.entrySet().iterator(); itr.hasNext();) {
+				Map.Entry< ? , ? > entry = (Entry< ? , ? >) itr.next();
+				EObject key = (EObject) entry.getKey();
+				AnyType value = (AnyType) entry.getValue();
+				handleUnknownData(key, value);
+			}
 		}
 
 		private void handleUnknownData(EObject eObj, AnyType unknownData) {
-	        handleUnknownFeature(eObj, unknownData.getMixed());
-	        handleUnknownFeature(eObj, unknownData.getAnyAttribute());
-        }
+			handleUnknownFeature(eObj, unknownData.getMixed());
+			handleUnknownFeature(eObj, unknownData.getAnyAttribute());
+		}
 
 		private void handleUnknownFeature(EObject owner, FeatureMap featureMap) {
-	        for (Iterator<?> iter = featureMap.iterator(); iter.hasNext();) {
-	        	FeatureMap.Entry entry = (FeatureMap.Entry) iter.next();
-	        	EStructuralFeature f = entry.getEStructuralFeature();
-	        	if (entry.getValue() instanceof AnyType) {
-		        	if (handleUnknownFeature(owner, f, (AnyType) entry.getValue())) {
-		        		iter.remove();
-		        		
-		        	}
-	        	}
-	        }
-        }
+			for (Iterator< ? > iter = featureMap.iterator(); iter.hasNext();) {
+				FeatureMap.Entry entry = (FeatureMap.Entry) iter.next();
+				EStructuralFeature f = entry.getEStructuralFeature();
+				if (entry.getValue() instanceof AnyType) {
+					if (handleUnknownFeature(owner, f, (AnyType) entry.getValue())) {
+						iter.remove();
+
+					}
+				}
+			}
+		}
 
 		private boolean handleUnknownFeature(EObject owner, EStructuralFeature feature, AnyType value) {
 			if (owner instanceof ScaDomainManagerRegistry) {
 				ScaDomainManagerRegistry registry = (ScaDomainManagerRegistry) owner;
 				if (feature.getName().equals("domains")) {
-					for ( Iterator<?> iter = value.getMixed().iterator(); iter.hasNext();) {
+					for (Iterator< ? > iter = value.getMixed().iterator(); iter.hasNext();) {
 						FeatureMap.Entry entry = (org.eclipse.emf.ecore.util.FeatureMap.Entry) iter.next();
 						EStructuralFeature domainFeature = entry.getEStructuralFeature();
 						if (domainFeature.getName().equals("domain")) {
@@ -103,7 +103,7 @@ public class ScaResourceFactoryImpl_100 extends ResourceFactoryImpl {
 				if (feature.getName().equals("domainManagerRegistry")) {
 					ScaDomainManagerRegistry registry = ScaFactory.eINSTANCE.createScaDomainManagerRegistry();
 					root.setDomainManagerRegistry(registry);
-					for ( Iterator<?> iter = value.getMixed().iterator(); iter.hasNext();) {
+					for (Iterator< ? > iter = value.getMixed().iterator(); iter.hasNext();) {
 						FeatureMap.Entry entry = (org.eclipse.emf.ecore.util.FeatureMap.Entry) iter.next();
 						EStructuralFeature domainFeature = entry.getEStructuralFeature();
 						if (entry.getValue() instanceof AnyType) {
@@ -113,12 +113,12 @@ public class ScaResourceFactoryImpl_100 extends ResourceFactoryImpl {
 					return true;
 				}
 			}
-	        return false;
-        }
+			return false;
+		}
 
 		private ScaDomainManager createDomain(AnyType value) {
 			ScaDomainManager retVal = ScaFactory.eINSTANCE.createScaDomainManager();
-			for ( Iterator<?> iter = value.getAnyAttribute().iterator(); iter.hasNext();) {
+			for (Iterator< ? > iter = value.getAnyAttribute().iterator(); iter.hasNext();) {
 				FeatureMap.Entry entry = (org.eclipse.emf.ecore.util.FeatureMap.Entry) iter.next();
 				EStructuralFeature f = entry.getEStructuralFeature();
 				if (f.getName().equals("name")) {
@@ -131,7 +131,7 @@ public class ScaResourceFactoryImpl_100 extends ResourceFactoryImpl {
 					}
 				}
 			}
-			for ( Iterator<?> iter = value.getMixed().iterator(); iter.hasNext();) {
+			for (Iterator< ? > iter = value.getMixed().iterator(); iter.hasNext();) {
 				FeatureMap.Entry entry = (org.eclipse.emf.ecore.util.FeatureMap.Entry) iter.next();
 				EStructuralFeature f = entry.getEStructuralFeature();
 				if (f.getName().equals("connectionProperties")) {
@@ -141,12 +141,12 @@ public class ScaResourceFactoryImpl_100 extends ResourceFactoryImpl {
 					}
 				}
 			}
-	        return retVal;
-        }
-		
+			return retVal;
+		}
+
 		private Map<String, String> createConnectionProperties(AnyType value) {
-			Map<String,String> retVal = new HashMap<String, String>();
-			for ( Iterator<?> iter = value.getMixed().iterator(); iter.hasNext();) {
+			Map<String, String> retVal = new HashMap<String, String>();
+			for (Iterator< ? > iter = value.getMixed().iterator(); iter.hasNext();) {
 				FeatureMap.Entry entry = (org.eclipse.emf.ecore.util.FeatureMap.Entry) iter.next();
 				EStructuralFeature f = entry.getEStructuralFeature();
 				if (f.getName().equals("property")) {
@@ -156,29 +156,29 @@ public class ScaResourceFactoryImpl_100 extends ResourceFactoryImpl {
 				}
 			}
 			return retVal;
-        }
+		}
 
 		private Map<String, String> createProperty(AnyType anyValue) {
 			String key = "";
 			String value = "";
-			for ( Iterator<?> iter = anyValue.getAnyAttribute().iterator(); iter.hasNext();) {
+			for (Iterator< ? > iter = anyValue.getAnyAttribute().iterator(); iter.hasNext();) {
 				FeatureMap.Entry entry = (org.eclipse.emf.ecore.util.FeatureMap.Entry) iter.next();
 				EStructuralFeature f = entry.getEStructuralFeature();
 				if (f.getName().equals("key")) {
-					key= entry.getValue().toString();
+					key = entry.getValue().toString();
 				} else if (f.getName().equals("value")) {
-					value= entry.getValue().toString();
+					value = entry.getValue().toString();
 				}
 			}
-		    return Collections.singletonMap(key, value);
-	    }
+			return Collections.singletonMap(key, value);
+		}
 	}
 
 	private static final String SCA_100_NS_URI = "http://www.redhawk.gov/model/sca";
 	private static final String SCA_PLATFORM_URI = "platform:/plugin/gov.redhawk.sca.model/model/sca.ecore";
 	private static final String SCA_100_PLATFORM_URI = "platform:/plugin/gov.redhawk.sca.model/model/scaOld_2_sca.ecore2xml";
 	private Ecore2XMLExtendedMetaData extendedMetaData;
-	
+
 	/**
 	 * Creates an instance of the resource factory.
 	 * <!-- begin-user-doc -->
@@ -208,7 +208,7 @@ public class ScaResourceFactoryImpl_100 extends ResourceFactoryImpl {
 		result.getDefaultSaveOptions().put(XMLResource.OPTION_USE_ENCODED_ATTRIBUTE_STYLE, Boolean.TRUE);
 
 		result.getDefaultLoadOptions().put(XMLResource.OPTION_USE_LEXICAL_HANDLER, Boolean.TRUE);
-		
+
 		defaultLoadOptions.put(XMLResource.OPTION_EXTENDED_META_DATA, getExtendedMetaData());
 		defaultLoadOptions.put(XMLResource.OPTION_RECORD_UNKNOWN_FEATURE, Boolean.TRUE);
 		defaultLoadOptions.put(XMLResource.OPTION_RESOURCE_HANDLER, new RulesResourceHandler());
@@ -222,10 +222,11 @@ public class ScaResourceFactoryImpl_100 extends ResourceFactoryImpl {
 			ePackageRegistry.put(SCA_100_NS_URI, ScaPackage.eINSTANCE);
 			ePackageRegistry.put(SCA_PLATFORM_URI, ScaPackage.eINSTANCE);
 			Ecore2XMLRegistry ecore2xmlRegistry = new Ecore2XMLRegistryImpl(Ecore2XMLRegistry.INSTANCE);
-			ecore2xmlRegistry.put(SCA_100_NS_URI, EcoreUtil.getObjectByType(resourceSet.getResource(URI.createURI(SCA_100_PLATFORM_URI), true).getContents(), Ecore2XMLPackage.Literals.XML_MAP));
+			ecore2xmlRegistry.put(SCA_100_NS_URI,
+				EcoreUtil.getObjectByType(resourceSet.getResource(URI.createURI(SCA_100_PLATFORM_URI), true).getContents(), Ecore2XMLPackage.Literals.XML_MAP));
 			extendedMetaData = new Ecore2XMLExtendedMetaData(ePackageRegistry, ecore2xmlRegistry);
 		}
-	    return extendedMetaData;
-    }
+		return extendedMetaData;
+	}
 
 } //ScaResourceFactoryImpl

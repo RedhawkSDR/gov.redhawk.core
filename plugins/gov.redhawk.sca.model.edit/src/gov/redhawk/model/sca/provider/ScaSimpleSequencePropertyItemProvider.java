@@ -48,7 +48,9 @@ import org.eclipse.emf.edit.provider.ViewerNotification;
  * <!-- end-user-doc -->
  * @generated
  */
-public class ScaSimpleSequencePropertyItemProvider extends ScaAbstractPropertyItemProvider implements IEditingDomainItemProvider, IStructuredItemContentProvider, ITreeItemContentProvider, IItemLabelProvider, IItemPropertySource, ITableItemLabelProvider, ITableItemColorProvider, IItemColorProvider {
+public class ScaSimpleSequencePropertyItemProvider extends ScaAbstractPropertyItemProvider implements IEditingDomainItemProvider,
+		IStructuredItemContentProvider, ITreeItemContentProvider, IItemLabelProvider, IItemPropertySource, ITableItemLabelProvider, ITableItemColorProvider,
+		IItemColorProvider {
 
 	/**
 	 * This constructs an instance from a factory and a notifier.
@@ -118,7 +120,7 @@ public class ScaSimpleSequencePropertyItemProvider extends ScaAbstractPropertyIt
 	protected void addValuePropertyDescriptor(Object object) {
 		addValuesPropertyDescriptor(object);
 	}
-	
+
 	/**
 	 * This adds a property descriptor for the Values feature.
 	 * <!-- begin-user-doc -->
@@ -127,19 +129,10 @@ public class ScaSimpleSequencePropertyItemProvider extends ScaAbstractPropertyIt
 	 * @generated
 	 */
 	protected void addValuesPropertyDescriptorGen(Object object) {
-		itemPropertyDescriptors.add
-			(createItemPropertyDescriptor
-				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
-				 getResourceLocator(),
-				 getString("_UI_ScaSimpleSequenceProperty_values_feature"),
-				 getString("_UI_PropertyDescriptor_description", "_UI_ScaSimpleSequenceProperty_values_feature", "_UI_ScaSimpleSequenceProperty_type"),
-				 ScaPackage.Literals.SCA_SIMPLE_SEQUENCE_PROPERTY__VALUES,
-				 true,
-				 false,
-				 false,
-				 ItemPropertyDescriptor.GENERIC_VALUE_IMAGE,
-				 null,
-				 null));
+		itemPropertyDescriptors.add(createItemPropertyDescriptor(((ComposeableAdapterFactory) adapterFactory).getRootAdapterFactory(), getResourceLocator(),
+			getString("_UI_ScaSimpleSequenceProperty_values_feature"),
+			getString("_UI_PropertyDescriptor_description", "_UI_ScaSimpleSequenceProperty_values_feature", "_UI_ScaSimpleSequenceProperty_type"),
+			ScaPackage.Literals.SCA_SIMPLE_SEQUENCE_PROPERTY__VALUES, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
 	}
 
 	/**
@@ -170,7 +163,7 @@ public class ScaSimpleSequencePropertyItemProvider extends ScaAbstractPropertyIt
 	 * @generated
 	 */
 	@Override
-	public Collection<? extends EStructuralFeature> getChildrenFeatures(Object object) {
+	public Collection< ? extends EStructuralFeature> getChildrenFeatures(Object object) {
 		if (childrenFeatures == null) {
 			super.getChildrenFeatures(object);
 			childrenFeatures.add(ScaPackage.Literals.SCA_SIMPLE_SEQUENCE_PROPERTY__VALUES);
@@ -220,9 +213,9 @@ public class ScaSimpleSequencePropertyItemProvider extends ScaAbstractPropertyIt
 		updateChildren(notification);
 
 		switch (notification.getFeatureID(ScaSimpleSequenceProperty.class)) {
-			case ScaPackage.SCA_SIMPLE_SEQUENCE_PROPERTY__VALUES:
-				fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), true, false));
-				return;
+		case ScaPackage.SCA_SIMPLE_SEQUENCE_PROPERTY__VALUES:
+			fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), true, false));
+			return;
 		}
 		super.notifyChanged(notification);
 	}
@@ -242,28 +235,28 @@ public class ScaSimpleSequencePropertyItemProvider extends ScaAbstractPropertyIt
 	@Override
 	protected String getValueText(ScaAbstractProperty< ? > object) {
 		ScaSimpleSequenceProperty prop = (ScaSimpleSequenceProperty) object;
-	    return getValueText(prop, prop.getValues());
+		return getValueText(prop, prop.getValues());
 	}
-	
+
 	@Override
 	public Object getImage(Object object) {
 		return overlayImage(object, getPrfResourceLocator().getImage("full/obj16/SimpleSequence"));
 	}
-	
+
 	/**
-     * @since 12.0
-     */
-	public static String getValueText(ScaSimpleSequenceProperty scaProperty, List<?> value) {
+	 * @since 12.0
+	 */
+	public static String getValueText(ScaSimpleSequenceProperty scaProperty, List< ? > value) {
 		String retVal = null;
 		SimpleSequence property = scaProperty.getDefinition();
-		
+
 		if (value == null || value.isEmpty()) {
 			retVal = Collections.emptyList().toString();
 		} else {
 			if (property == null) {
-				retVal =  value.toString();
+				retVal = value.toString();
 			} else if (RadixLabelProviderUtil.supports(property.getType(), property.isComplex())) {
-				String [] defValue = new String[0];
+				String[] defValue = new String[0];
 				if (property.getValues() != null && !property.getValues().getValue().isEmpty()) {
 					defValue = property.getValues().getValue().toArray(defValue);
 				}
@@ -272,14 +265,14 @@ public class ScaSimpleSequencePropertyItemProvider extends ScaAbstractPropertyIt
 				retVal = value.toString();
 			}
 		}
-		
+
 		final String units;
 		if (property != null) {
 			units = property.getUnits();
 		} else {
 			units = null;
 		}
-		
+
 		if (units != null) {
 			return retVal + " " + units;
 		} else {

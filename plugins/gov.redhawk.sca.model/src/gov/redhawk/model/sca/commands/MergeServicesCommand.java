@@ -74,7 +74,7 @@ public class MergeServicesCommand extends SetStatusCommand<ScaDeviceManager> {
 	 * @since 18.0
 	 */
 	protected ScaService createScaService() {
-	    return ScaFactory.eINSTANCE.createScaService();
-    }
+		return ScaFactory.eINSTANCE.createScaService();
+	}
 
 }

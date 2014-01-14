@@ -12,7 +12,6 @@
 // BEGIN GENERATED CODE
 package gov.redhawk.model.sca.provider;
 
-
 import gov.redhawk.model.sca.ScaPort;
 import java.util.Collection;
 import java.util.List;
@@ -34,10 +33,8 @@ import org.eclipse.emf.edit.provider.ITreeItemContentProvider;
  * <!-- end-user-doc -->
  * @generated
  */
-public class ScaProvidesPortItemProvider
-extends ScaPortItemProvider
-implements
-IEditingDomainItemProvider, IStructuredItemContentProvider, ITreeItemContentProvider, IItemLabelProvider, IItemPropertySource, ITableItemLabelProvider, ITableItemColorProvider, IItemColorProvider {
+public class ScaProvidesPortItemProvider extends ScaPortItemProvider implements IEditingDomainItemProvider, IStructuredItemContentProvider,
+		ITreeItemContentProvider, IItemLabelProvider, IItemPropertySource, ITableItemLabelProvider, ITableItemColorProvider, IItemColorProvider {
 	/**
 	 * This constructs an instance from a factory and a notifier.
 	 * <!-- begin-user-doc -->

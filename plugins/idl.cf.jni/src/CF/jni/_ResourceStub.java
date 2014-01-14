@@ -59,6 +59,12 @@ public class _ResourceStub extends omnijni.ObjectImpl implements CF.Resource
   }
   private static native boolean _get_started (long __ref__);
 
+  public String softwareProfile ()
+  {
+    return _get_softwareProfile(this.ref_);
+  }
+  private static native String _get_softwareProfile (long __ref__);
+
   public void start ()
   {
     start(this.ref_);

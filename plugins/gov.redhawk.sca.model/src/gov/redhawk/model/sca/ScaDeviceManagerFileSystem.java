@@ -14,7 +14,6 @@ package gov.redhawk.model.sca;
 
 import CF.FileSystem;
 
-
 /**
  * <!-- begin-user-doc -->
  * A representation of the model object '<em><b>Device Manager File System</b></em>'.

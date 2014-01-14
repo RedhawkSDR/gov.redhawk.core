@@ -12,7 +12,6 @@
 // BEGIN GENERATED CODE
 package gov.redhawk.model.sca.provider;
 
-
 import gov.redhawk.model.sca.ScaPackage;
 import gov.redhawk.model.sca.ScaStructProperty;
 import gov.redhawk.model.sca.ScaStructSequenceProperty;
@@ -43,11 +42,9 @@ import org.eclipse.emf.edit.provider.ViewerNotification;
  * <!-- end-user-doc -->
  * @generated
  */
-public class ScaStructPropertyItemProvider
-	extends ScaAbstractPropertyItemProvider
-	implements
-		IEditingDomainItemProvider, IStructuredItemContentProvider, ITreeItemContentProvider, IItemLabelProvider, IItemPropertySource, ITableItemLabelProvider, ITableItemColorProvider, IItemColorProvider {
-	
+public class ScaStructPropertyItemProvider extends ScaAbstractPropertyItemProvider implements IEditingDomainItemProvider, IStructuredItemContentProvider,
+		ITreeItemContentProvider, IItemLabelProvider, IItemPropertySource, ITableItemLabelProvider, ITableItemColorProvider, IItemColorProvider {
+
 	/**
 	 * This constructs an instance from a factory and a notifier.
 	 * <!-- begin-user-doc -->
@@ -81,21 +78,12 @@ public class ScaStructPropertyItemProvider
 	 * @generated
 	 */
 	protected void addSimplesPropertyDescriptorGen(Object object) {
-		itemPropertyDescriptors.add
-			(createItemPropertyDescriptor
-				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
-				 getResourceLocator(),
-				 getString("_UI_ScaStructProperty_simples_feature"),
-				 getString("_UI_PropertyDescriptor_description", "_UI_ScaStructProperty_simples_feature", "_UI_ScaStructProperty_type"),
-				 ScaPackage.Literals.SCA_STRUCT_PROPERTY__SIMPLES,
-				 false,
-				 false,
-				 false,
-				 null,
-				 null,
-				 null));
+		itemPropertyDescriptors.add(createItemPropertyDescriptor(((ComposeableAdapterFactory) adapterFactory).getRootAdapterFactory(), getResourceLocator(),
+			getString("_UI_ScaStructProperty_simples_feature"),
+			getString("_UI_PropertyDescriptor_description", "_UI_ScaStructProperty_simples_feature", "_UI_ScaStructProperty_type"),
+			ScaPackage.Literals.SCA_STRUCT_PROPERTY__SIMPLES, false, false, false, null, null, null));
 	}
-	
+
 	/**
 	 * This adds a property descriptor for the Simples feature.
 	 * <!-- begin-user-doc -->
@@ -103,18 +91,11 @@ public class ScaStructPropertyItemProvider
 	 * @generated NOT
 	 */
 	protected void addSimplesPropertyDescriptor(Object object) {
-		ItemPropertyDescriptor propertyDescriptor = createItemPropertyDescriptor(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
-			 getResourceLocator(),
-			 getString("_UI_ScaStructProperty_simples_feature"),
-			 getString("_UI_PropertyDescriptor_description", "_UI_ScaStructProperty_simples_feature", "_UI_ScaStructProperty_type"),
-			 ScaPackage.Literals.SCA_STRUCT_PROPERTY__SIMPLES,
-			 false,
-			 false,
-			 false,
-			 null,
-			 null,
-			 null);
-		
+		ItemPropertyDescriptor propertyDescriptor = createItemPropertyDescriptor(((ComposeableAdapterFactory) adapterFactory).getRootAdapterFactory(),
+			getResourceLocator(), getString("_UI_ScaStructProperty_simples_feature"),
+			getString("_UI_PropertyDescriptor_description", "_UI_ScaStructProperty_simples_feature", "_UI_ScaStructProperty_type"),
+			ScaPackage.Literals.SCA_STRUCT_PROPERTY__SIMPLES, false, false, false, null, null, null);
+
 		itemPropertyDescriptors.add(new ScaStructValuePropertyDescriptor(object, propertyDescriptor, getRootAdapterFactory()));
 	}
 
@@ -127,7 +108,7 @@ public class ScaStructPropertyItemProvider
 	 * @generated
 	 */
 	@Override
-	public Collection<? extends EStructuralFeature> getChildrenFeatures(Object object) {
+	public Collection< ? extends EStructuralFeature> getChildrenFeatures(Object object) {
 		if (childrenFeatures == null) {
 			super.getChildrenFeatures(object);
 			childrenFeatures.add(ScaPackage.Literals.SCA_STRUCT_PROPERTY__SIMPLES);
@@ -185,9 +166,9 @@ public class ScaStructPropertyItemProvider
 		updateChildren(notification);
 
 		switch (notification.getFeatureID(ScaStructProperty.class)) {
-			case ScaPackage.SCA_STRUCT_PROPERTY__SIMPLES:
-				fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), true, false));
-				return;
+		case ScaPackage.SCA_STRUCT_PROPERTY__SIMPLES:
+			fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), true, false));
+			return;
 		}
 		super.notifyChanged(notification);
 	}

@@ -114,7 +114,7 @@ public interface ScaComponent extends ScaAbstractComponent<Resource> {
 	 *        extendedMetaData="kind='attribute' name='devices'"
 	 * @generated
 	 */
-	EList<ScaDevice<?>> getDevices();
+	EList<ScaDevice< ? >> getDevices();
 
 	/**
 	 * Unsets the value of the '{@link gov.redhawk.model.sca.ScaComponent#getDevices <em>Devices</em>}' reference list.
@@ -225,6 +225,6 @@ public interface ScaComponent extends ScaAbstractComponent<Resource> {
 	 * @model monitorDataType="gov.redhawk.model.sca.IProgressMonitor"
 	 * @generated
 	 */
-	EList<ScaDevice<?>> fetchDevices(IProgressMonitor monitor);
+	EList<ScaDevice< ? >> fetchDevices(IProgressMonitor monitor);
 
 } // ScaComponent

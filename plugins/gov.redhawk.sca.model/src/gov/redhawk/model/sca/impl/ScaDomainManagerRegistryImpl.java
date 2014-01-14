@@ -181,8 +181,8 @@ public class ScaDomainManagerRegistryImpl extends EObjectImpl implements ScaDoma
 	@Override
 	public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
 		switch (featureID) {
-			case ScaPackage.SCA_DOMAIN_MANAGER_REGISTRY__DOMAINS:
-				return ((InternalEList<?>)getDomains()).basicRemove(otherEnd, msgs);
+		case ScaPackage.SCA_DOMAIN_MANAGER_REGISTRY__DOMAINS:
+			return ((InternalEList< ? >) getDomains()).basicRemove(otherEnd, msgs);
 		}
 		return super.eInverseRemove(otherEnd, featureID, msgs);
 	}
@@ -195,10 +195,10 @@ public class ScaDomainManagerRegistryImpl extends EObjectImpl implements ScaDoma
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
-			case ScaPackage.SCA_DOMAIN_MANAGER_REGISTRY__DISPOSED:
-				return isDisposed();
-			case ScaPackage.SCA_DOMAIN_MANAGER_REGISTRY__DOMAINS:
-				return getDomains();
+		case ScaPackage.SCA_DOMAIN_MANAGER_REGISTRY__DISPOSED:
+			return isDisposed();
+		case ScaPackage.SCA_DOMAIN_MANAGER_REGISTRY__DOMAINS:
+			return getDomains();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -212,10 +212,10 @@ public class ScaDomainManagerRegistryImpl extends EObjectImpl implements ScaDoma
 	@Override
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
-			case ScaPackage.SCA_DOMAIN_MANAGER_REGISTRY__DOMAINS:
-				getDomains().clear();
-				getDomains().addAll((Collection<? extends ScaDomainManager>)newValue);
-				return;
+		case ScaPackage.SCA_DOMAIN_MANAGER_REGISTRY__DOMAINS:
+			getDomains().clear();
+			getDomains().addAll((Collection< ? extends ScaDomainManager>) newValue);
+			return;
 		}
 		super.eSet(featureID, newValue);
 	}
@@ -228,9 +228,9 @@ public class ScaDomainManagerRegistryImpl extends EObjectImpl implements ScaDoma
 	@Override
 	public void eUnset(int featureID) {
 		switch (featureID) {
-			case ScaPackage.SCA_DOMAIN_MANAGER_REGISTRY__DOMAINS:
-				getDomains().clear();
-				return;
+		case ScaPackage.SCA_DOMAIN_MANAGER_REGISTRY__DOMAINS:
+			getDomains().clear();
+			return;
 		}
 		super.eUnset(featureID);
 	}
@@ -243,10 +243,10 @@ public class ScaDomainManagerRegistryImpl extends EObjectImpl implements ScaDoma
 	@Override
 	public boolean eIsSet(int featureID) {
 		switch (featureID) {
-			case ScaPackage.SCA_DOMAIN_MANAGER_REGISTRY__DISPOSED:
-				return disposed != DISPOSED_EDEFAULT;
-			case ScaPackage.SCA_DOMAIN_MANAGER_REGISTRY__DOMAINS:
-				return domains != null && !domains.isEmpty();
+		case ScaPackage.SCA_DOMAIN_MANAGER_REGISTRY__DISPOSED:
+			return disposed != DISPOSED_EDEFAULT;
+		case ScaPackage.SCA_DOMAIN_MANAGER_REGISTRY__DOMAINS:
+			return domains != null && !domains.isEmpty();
 		}
 		return super.eIsSet(featureID);
 	}
@@ -258,7 +258,8 @@ public class ScaDomainManagerRegistryImpl extends EObjectImpl implements ScaDoma
 	 */
 	@Override
 	public String toString() {
-		if (eIsProxy()) return super.toString();
+		if (eIsProxy())
+			return super.toString();
 
 		StringBuffer result = new StringBuffer(super.toString());
 		result.append(" (disposed: ");

@@ -73,7 +73,7 @@ import CF.PropertySetPackage.PartialConfiguration;
  * @generated
  */
 public abstract class ScaPropertyContainerImpl< P extends org.omg.CORBA.Object, E extends Object > extends CorbaObjWrapperImpl<P> implements
-        ScaPropertyContainer<P, E> {
+		ScaPropertyContainer<P, E> {
 	/**
 	 * The default value of the '{@link #getProfileURI() <em>Profile URI</em>}' attribute.
 	 * <!-- begin-user-doc -->
@@ -134,7 +134,8 @@ public abstract class ScaPropertyContainerImpl< P extends org.omg.CORBA.Object, 
 	 * @generated
 	 * @ordered
 	 */
-	protected EList<ScaAbstractProperty<?>> properties;
+	protected EList<ScaAbstractProperty< ? >> properties;
+
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -191,7 +192,8 @@ public abstract class ScaPropertyContainerImpl< P extends org.omg.CORBA.Object, 
 		profileURI = PROFILE_URI_EDEFAULT;
 		profileURIESet = false;
 		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.UNSET, ScaPackage.SCA_PROPERTY_CONTAINER__PROFILE_URI, oldProfileURI, PROFILE_URI_EDEFAULT, oldProfileURIESet));
+			eNotify(new ENotificationImpl(this, Notification.UNSET, ScaPackage.SCA_PROPERTY_CONTAINER__PROFILE_URI, oldProfileURI, PROFILE_URI_EDEFAULT,
+				oldProfileURIESet));
 	}
 
 	/**
@@ -212,9 +214,9 @@ public abstract class ScaPropertyContainerImpl< P extends org.omg.CORBA.Object, 
 	@Override
 	@SuppressWarnings("unchecked")
 	public E getProfileObj() {
-		if (profileObj != null && ((EObject)profileObj).eIsProxy()) {
-			InternalEObject oldProfileObj = (InternalEObject)profileObj;
-			profileObj = (E)eResolveProxy(oldProfileObj);
+		if (profileObj != null && ((EObject) profileObj).eIsProxy()) {
+			InternalEObject oldProfileObj = (InternalEObject) profileObj;
+			profileObj = (E) eResolveProxy(oldProfileObj);
 			if (profileObj != oldProfileObj) {
 				if (eNotificationRequired())
 					eNotify(new ENotificationImpl(this, Notification.RESOLVE, ScaPackage.SCA_PROPERTY_CONTAINER__PROFILE_OBJ, oldProfileObj, profileObj));
@@ -273,6 +275,7 @@ public abstract class ScaPropertyContainerImpl< P extends org.omg.CORBA.Object, 
 	}
 
 	private static final DataType[] EMPTY_DATA_TYPE_ARRAY = new DataType[0];
+
 	@Override
 	protected void notifyChanged(Notification msg) {
 		// END GENERATED CODE
@@ -323,9 +326,10 @@ public abstract class ScaPropertyContainerImpl< P extends org.omg.CORBA.Object, 
 	 * @generated
 	 */
 	@Override
-	public EList<ScaAbstractProperty<?>> getProperties() {
+	public EList<ScaAbstractProperty< ? >> getProperties() {
 		if (properties == null) {
-			properties = new EObjectContainmentEList.Unsettable<ScaAbstractProperty<?>>(ScaAbstractProperty.class, this, ScaPackage.SCA_PROPERTY_CONTAINER__PROPERTIES);
+			properties = new EObjectContainmentEList.Unsettable<ScaAbstractProperty< ? >>(ScaAbstractProperty.class, this,
+				ScaPackage.SCA_PROPERTY_CONTAINER__PROPERTIES);
 		}
 		return properties;
 	}
@@ -337,7 +341,8 @@ public abstract class ScaPropertyContainerImpl< P extends org.omg.CORBA.Object, 
 	 */
 	@Override
 	public void unsetProperties() {
-		if (properties != null) ((InternalEList.Unsettable<?>)properties).unset();
+		if (properties != null)
+			((InternalEList.Unsettable< ? >) properties).unset();
 	}
 
 	/**
@@ -347,7 +352,7 @@ public abstract class ScaPropertyContainerImpl< P extends org.omg.CORBA.Object, 
 	 */
 	@Override
 	public boolean isSetProperties() {
-		return properties != null && ((InternalEList.Unsettable<?>)properties).isSet();
+		return properties != null && ((InternalEList.Unsettable< ? >) properties).isSet();
 	}
 
 	/**
@@ -374,7 +379,7 @@ public abstract class ScaPropertyContainerImpl< P extends org.omg.CORBA.Object, 
 	 */
 	@Override
 	public abstract URI fetchProfileURI(IProgressMonitor monitor);
-	
+
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -383,8 +388,8 @@ public abstract class ScaPropertyContainerImpl< P extends org.omg.CORBA.Object, 
 	@Override
 	public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
 		switch (featureID) {
-			case ScaPackage.SCA_PROPERTY_CONTAINER__PROPERTIES:
-				return ((InternalEList<?>)getProperties()).basicRemove(otherEnd, msgs);
+		case ScaPackage.SCA_PROPERTY_CONTAINER__PROPERTIES:
+			return ((InternalEList< ? >) getProperties()).basicRemove(otherEnd, msgs);
 		}
 		return super.eInverseRemove(otherEnd, featureID, msgs);
 	}
@@ -397,15 +402,16 @@ public abstract class ScaPropertyContainerImpl< P extends org.omg.CORBA.Object, 
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
-			case ScaPackage.SCA_PROPERTY_CONTAINER__PROFILE_URI:
-				return getProfileURI();
-			case ScaPackage.SCA_PROPERTY_CONTAINER__PROFILE_OBJ:
-				if (resolve) return getProfileObj();
-				return basicGetProfileObj();
-			case ScaPackage.SCA_PROPERTY_CONTAINER__ROOT_FILE_STORE:
-				return getRootFileStore();
-			case ScaPackage.SCA_PROPERTY_CONTAINER__PROPERTIES:
-				return getProperties();
+		case ScaPackage.SCA_PROPERTY_CONTAINER__PROFILE_URI:
+			return getProfileURI();
+		case ScaPackage.SCA_PROPERTY_CONTAINER__PROFILE_OBJ:
+			if (resolve)
+				return getProfileObj();
+			return basicGetProfileObj();
+		case ScaPackage.SCA_PROPERTY_CONTAINER__ROOT_FILE_STORE:
+			return getRootFileStore();
+		case ScaPackage.SCA_PROPERTY_CONTAINER__PROPERTIES:
+			return getProperties();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -419,16 +425,16 @@ public abstract class ScaPropertyContainerImpl< P extends org.omg.CORBA.Object, 
 	@Override
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
-			case ScaPackage.SCA_PROPERTY_CONTAINER__PROFILE_URI:
-				setProfileURI((URI)newValue);
-				return;
-			case ScaPackage.SCA_PROPERTY_CONTAINER__PROFILE_OBJ:
-				setProfileObj((E)newValue);
-				return;
-			case ScaPackage.SCA_PROPERTY_CONTAINER__PROPERTIES:
-				getProperties().clear();
-				getProperties().addAll((Collection<? extends ScaAbstractProperty<?>>)newValue);
-				return;
+		case ScaPackage.SCA_PROPERTY_CONTAINER__PROFILE_URI:
+			setProfileURI((URI) newValue);
+			return;
+		case ScaPackage.SCA_PROPERTY_CONTAINER__PROFILE_OBJ:
+			setProfileObj((E) newValue);
+			return;
+		case ScaPackage.SCA_PROPERTY_CONTAINER__PROPERTIES:
+			getProperties().clear();
+			getProperties().addAll((Collection< ? extends ScaAbstractProperty< ? >>) newValue);
+			return;
 		}
 		super.eSet(featureID, newValue);
 	}
@@ -441,15 +447,15 @@ public abstract class ScaPropertyContainerImpl< P extends org.omg.CORBA.Object, 
 	@Override
 	public void eUnset(int featureID) {
 		switch (featureID) {
-			case ScaPackage.SCA_PROPERTY_CONTAINER__PROFILE_URI:
-				unsetProfileURI();
-				return;
-			case ScaPackage.SCA_PROPERTY_CONTAINER__PROFILE_OBJ:
-				unsetProfileObj();
-				return;
-			case ScaPackage.SCA_PROPERTY_CONTAINER__PROPERTIES:
-				unsetProperties();
-				return;
+		case ScaPackage.SCA_PROPERTY_CONTAINER__PROFILE_URI:
+			unsetProfileURI();
+			return;
+		case ScaPackage.SCA_PROPERTY_CONTAINER__PROFILE_OBJ:
+			unsetProfileObj();
+			return;
+		case ScaPackage.SCA_PROPERTY_CONTAINER__PROPERTIES:
+			unsetProperties();
+			return;
 		}
 		super.eUnset(featureID);
 	}
@@ -462,14 +468,14 @@ public abstract class ScaPropertyContainerImpl< P extends org.omg.CORBA.Object, 
 	@Override
 	public boolean eIsSet(int featureID) {
 		switch (featureID) {
-			case ScaPackage.SCA_PROPERTY_CONTAINER__PROFILE_URI:
-				return isSetProfileURI();
-			case ScaPackage.SCA_PROPERTY_CONTAINER__PROFILE_OBJ:
-				return isSetProfileObj();
-			case ScaPackage.SCA_PROPERTY_CONTAINER__ROOT_FILE_STORE:
-				return ROOT_FILE_STORE_EDEFAULT == null ? getRootFileStore() != null : !ROOT_FILE_STORE_EDEFAULT.equals(getRootFileStore());
-			case ScaPackage.SCA_PROPERTY_CONTAINER__PROPERTIES:
-				return isSetProperties();
+		case ScaPackage.SCA_PROPERTY_CONTAINER__PROFILE_URI:
+			return isSetProfileURI();
+		case ScaPackage.SCA_PROPERTY_CONTAINER__PROFILE_OBJ:
+			return isSetProfileObj();
+		case ScaPackage.SCA_PROPERTY_CONTAINER__ROOT_FILE_STORE:
+			return ROOT_FILE_STORE_EDEFAULT == null ? getRootFileStore() != null : !ROOT_FILE_STORE_EDEFAULT.equals(getRootFileStore());
+		case ScaPackage.SCA_PROPERTY_CONTAINER__PROPERTIES:
+			return isSetProperties();
 		}
 		return super.eIsSet(featureID);
 	}
@@ -480,18 +486,23 @@ public abstract class ScaPropertyContainerImpl< P extends org.omg.CORBA.Object, 
 	 * @generated
 	 */
 	@Override
-	public int eBaseStructuralFeatureID(int derivedFeatureID, Class<?> baseClass) {
+	public int eBaseStructuralFeatureID(int derivedFeatureID, Class< ? > baseClass) {
 		if (baseClass == ProfileObjectWrapper.class) {
 			switch (derivedFeatureID) {
-				case ScaPackage.SCA_PROPERTY_CONTAINER__PROFILE_URI: return ScaPackage.PROFILE_OBJECT_WRAPPER__PROFILE_URI;
-				case ScaPackage.SCA_PROPERTY_CONTAINER__PROFILE_OBJ: return ScaPackage.PROFILE_OBJECT_WRAPPER__PROFILE_OBJ;
-				case ScaPackage.SCA_PROPERTY_CONTAINER__ROOT_FILE_STORE: return ScaPackage.PROFILE_OBJECT_WRAPPER__ROOT_FILE_STORE;
-				default: return -1;
+			case ScaPackage.SCA_PROPERTY_CONTAINER__PROFILE_URI:
+				return ScaPackage.PROFILE_OBJECT_WRAPPER__PROFILE_URI;
+			case ScaPackage.SCA_PROPERTY_CONTAINER__PROFILE_OBJ:
+				return ScaPackage.PROFILE_OBJECT_WRAPPER__PROFILE_OBJ;
+			case ScaPackage.SCA_PROPERTY_CONTAINER__ROOT_FILE_STORE:
+				return ScaPackage.PROFILE_OBJECT_WRAPPER__ROOT_FILE_STORE;
+			default:
+				return -1;
 			}
 		}
 		if (baseClass == PropertySetOperations.class) {
 			switch (derivedFeatureID) {
-				default: return -1;
+			default:
+				return -1;
 			}
 		}
 		return super.eBaseStructuralFeatureID(derivedFeatureID, baseClass);
@@ -503,18 +514,23 @@ public abstract class ScaPropertyContainerImpl< P extends org.omg.CORBA.Object, 
 	 * @generated
 	 */
 	@Override
-	public int eDerivedStructuralFeatureID(int baseFeatureID, Class<?> baseClass) {
+	public int eDerivedStructuralFeatureID(int baseFeatureID, Class< ? > baseClass) {
 		if (baseClass == ProfileObjectWrapper.class) {
 			switch (baseFeatureID) {
-				case ScaPackage.PROFILE_OBJECT_WRAPPER__PROFILE_URI: return ScaPackage.SCA_PROPERTY_CONTAINER__PROFILE_URI;
-				case ScaPackage.PROFILE_OBJECT_WRAPPER__PROFILE_OBJ: return ScaPackage.SCA_PROPERTY_CONTAINER__PROFILE_OBJ;
-				case ScaPackage.PROFILE_OBJECT_WRAPPER__ROOT_FILE_STORE: return ScaPackage.SCA_PROPERTY_CONTAINER__ROOT_FILE_STORE;
-				default: return -1;
+			case ScaPackage.PROFILE_OBJECT_WRAPPER__PROFILE_URI:
+				return ScaPackage.SCA_PROPERTY_CONTAINER__PROFILE_URI;
+			case ScaPackage.PROFILE_OBJECT_WRAPPER__PROFILE_OBJ:
+				return ScaPackage.SCA_PROPERTY_CONTAINER__PROFILE_OBJ;
+			case ScaPackage.PROFILE_OBJECT_WRAPPER__ROOT_FILE_STORE:
+				return ScaPackage.SCA_PROPERTY_CONTAINER__ROOT_FILE_STORE;
+			default:
+				return -1;
 			}
 		}
 		if (baseClass == PropertySetOperations.class) {
 			switch (baseFeatureID) {
-				default: return -1;
+			default:
+				return -1;
 			}
 		}
 		return super.eDerivedStructuralFeatureID(baseFeatureID, baseClass);
@@ -527,16 +543,21 @@ public abstract class ScaPropertyContainerImpl< P extends org.omg.CORBA.Object, 
 	 */
 	@Override
 	public String toString() {
-		if (eIsProxy()) return super.toString();
+		if (eIsProxy())
+			return super.toString();
 
 		StringBuffer result = new StringBuffer(super.toString());
 		result.append(" (profileURI: ");
-		if (profileURIESet) result.append(profileURI); else result.append("<unset>");
+		if (profileURIESet)
+			result.append(profileURI);
+		else
+			result.append("<unset>");
 		result.append(')');
 		return result.toString();
 	}
 
 	private VersionedFeature propertiesFeature = new VersionedFeature(this, ScaPackage.Literals.SCA_PROPERTY_CONTAINER__PROPERTIES);
+
 	/**
 	 * <!-- begin-user-doc -->
 	 * @since 14.0 
@@ -545,7 +566,7 @@ public abstract class ScaPropertyContainerImpl< P extends org.omg.CORBA.Object, 
 	 * @generated NOT
 	 */
 	@Override
-	public EList<ScaAbstractProperty< ? >> fetchProperties(IProgressMonitor monitor){
+	public EList<ScaAbstractProperty< ? >> fetchProperties(IProgressMonitor monitor) {
 		// END GENERATED CODE
 		final SubMonitor subMonitor = SubMonitor.convert(monitor, 4);
 		Transaction transaction = propertiesFeature.createTransaction();
@@ -575,11 +596,11 @@ public abstract class ScaPropertyContainerImpl< P extends org.omg.CORBA.Object, 
 		return getProperties();
 		// BEGIN GENERATED CODE
 	}
-	
+
 	@Override
 	@Deprecated
 	public void fetchPropertyValues(IProgressMonitor monitor) throws InterruptedException {
-	    fetchProperties(monitor);
+		fetchProperties(monitor);
 	}
 
 	/**
@@ -609,8 +630,8 @@ public abstract class ScaPropertyContainerImpl< P extends org.omg.CORBA.Object, 
 	public abstract void configure(DataType[] configProperties) throws InvalidConfiguration, PartialConfiguration;
 
 	/**
-     * @since 18.0
-     */
+	 * @since 18.0
+	 */
 	protected abstract List<AbstractProperty> fetchPropertyDefinitions(IProgressMonitor monitor);
 
 	@Override

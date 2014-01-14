@@ -49,7 +49,7 @@ import CF.ResourcePackage.StartError;
  * @since 14.0
  */
 public class LaunchWaveformJob extends SilentJob {
-	
+
 	private static final Debug DEBUG = new Debug(ScaModelPlugin.ID, "launch/waveform");
 
 	private final ScaDomainManager domMgr;
@@ -62,7 +62,7 @@ public class LaunchWaveformJob extends SilentJob {
 	private ScaWaveform waveform = null;
 
 	public LaunchWaveformJob(final ScaDomainManager domMgr, final String waveformName, final IPath waveformPath, final DeviceAssignmentType[] deviceAssn,
-	        final DataType[] configProps, final boolean autoStart, final Object waitLock) {
+		final DataType[] configProps, final boolean autoStart, final Object waitLock) {
 		super("Launching waveform " + waveformName);
 		this.domMgr = domMgr;
 		this.waveformName = waveformName;
@@ -93,7 +93,7 @@ public class LaunchWaveformJob extends SilentJob {
 					factory = temp;
 				}
 			}
-			
+
 			////////////////////
 			// INSTALL WAVEFORM
 			subMonitor.subTask("Installing SCA Waveform: " + profile);
@@ -101,7 +101,7 @@ public class LaunchWaveformJob extends SilentJob {
 				if (subMonitor.isCanceled()) {
 					throw new OperationCanceledException();
 				}
-				
+
 				try {
 					factory = this.domMgr.installScaWaveformFactory(profile);
 					installed = true;
@@ -137,7 +137,7 @@ public class LaunchWaveformJob extends SilentJob {
 			final IProgressMonitor createMonitor = subMonitor.newChild(1);
 			createMonitor.beginTask("Creating application: " + this.waveformName, IProgressMonitor.UNKNOWN);
 			this.waveform = factory.createWaveform(createMonitor, LaunchWaveformJob.this.waveformName, LaunchWaveformJob.this.configProps,
-			        LaunchWaveformJob.this.deviceAssn);
+				LaunchWaveformJob.this.deviceAssn);
 
 			if (subMonitor.isCanceled()) {
 				throw new OperationCanceledException();
@@ -145,10 +145,10 @@ public class LaunchWaveformJob extends SilentJob {
 
 			if (this.autoStart) {
 				try {
-	                waveform.start();
-                } catch (StartError e) {
-	               return new Status(Status.ERROR, ScaModelPlugin.ID, "Failed to start: " + waveformName, e);
-                }
+					waveform.start();
+				} catch (StartError e) {
+					return new Status(Status.ERROR, ScaModelPlugin.ID, "Failed to start: " + waveformName, e);
+				}
 			}
 
 			if (subMonitor.isCanceled()) {
@@ -170,7 +170,7 @@ public class LaunchWaveformJob extends SilentJob {
 			return StatusFactory.createStatus(e, ScaModelPlugin.ID, this.waveformName);
 		} catch (CreateApplicationInsufficientCapacityError e) {
 			return StatusFactory.createStatus(e, ScaModelPlugin.ID, this.waveformName);
-        } finally {
+		} finally {
 			// If we installed the ApplicationFactory above, uninstall it to prevent
 			// future conflicts if the user changes the SAD.
 			try {

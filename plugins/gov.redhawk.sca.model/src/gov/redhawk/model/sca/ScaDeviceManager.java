@@ -106,7 +106,7 @@ public interface ScaDeviceManager extends ScaPropertyContainer<DeviceManager, De
 	 *        extendedMetaData="group='#devices:1'"
 	 * @generated
 	 */
-	EList<ScaDevice<?>> getRootDevices();
+	EList<ScaDevice< ? >> getRootDevices();
 
 	/**
 	 * Returns the value of the '<em><b>Child Devices</b></em>' containment reference list.
@@ -123,7 +123,7 @@ public interface ScaDeviceManager extends ScaPropertyContainer<DeviceManager, De
 	 *        extendedMetaData="group='#devices:1'"
 	 * @generated
 	 */
-	EList<ScaDevice<?>> getChildDevices();
+	EList<ScaDevice< ? >> getChildDevices();
 
 	/**
 	 * Returns the value of the '<em><b>All Devices</b></em>' containment reference list.
@@ -141,7 +141,7 @@ public interface ScaDeviceManager extends ScaPropertyContainer<DeviceManager, De
 	 * @model containment="true" resolveProxies="true" unsettable="true" transient="true" volatile="true" derived="true"
 	 * @generated
 	 */
-	EList<ScaDevice<?>> getAllDevices();
+	EList<ScaDevice< ? >> getAllDevices();
 
 	/**
 	 * Unsets the value of the '{@link gov.redhawk.model.sca.ScaDeviceManager#getAllDevices <em>All Devices</em>}' containment reference list.
@@ -461,7 +461,7 @@ public interface ScaDeviceManager extends ScaPropertyContainer<DeviceManager, De
 	 * @model
 	 * @generated
 	 */
-	ScaDevice<?> getDevice(String deviceId);
+	ScaDevice< ? > getDevice(String deviceId);
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -469,7 +469,7 @@ public interface ScaDeviceManager extends ScaPropertyContainer<DeviceManager, De
 	 * @model monitorDataType="gov.redhawk.model.sca.IProgressMonitor"
 	 * @generated
 	 */
-	EList<ScaDevice<?>> fetchDevices(IProgressMonitor monitor);
+	EList<ScaDevice< ? >> fetchDevices(IProgressMonitor monitor);
 
 	/**
 	 * <!-- begin-user-doc -->

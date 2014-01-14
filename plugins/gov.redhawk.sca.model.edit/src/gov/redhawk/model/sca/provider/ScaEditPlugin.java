@@ -55,19 +55,8 @@ public final class ScaEditPlugin extends EMFPlugin {
 	 * @generated
 	 */
 	public ScaEditPlugin() {
-		super
-		  (new ResourceLocator [] {
-		     CfEditPlugin.INSTANCE,
-		     SpdEditPlugin.INSTANCE,
-		     ScdEditPlugin.INSTANCE,
-		     PrfEditPlugin.INSTANCE,
-		     EcoreEditPlugin.INSTANCE,
-		     SadEditPlugin.INSTANCE,
-		     DcdEditPlugin.INSTANCE,
-		     DmdEditPlugin.INSTANCE,
-		     DpdEditPlugin.INSTANCE,
-		     PartitioningEditPlugin.INSTANCE,
-		   });
+		super(new ResourceLocator[] { CfEditPlugin.INSTANCE, SpdEditPlugin.INSTANCE, ScdEditPlugin.INSTANCE, PrfEditPlugin.INSTANCE, EcoreEditPlugin.INSTANCE,
+			SadEditPlugin.INSTANCE, DcdEditPlugin.INSTANCE, DmdEditPlugin.INSTANCE, DpdEditPlugin.INSTANCE, PartitioningEditPlugin.INSTANCE, });
 	}
 
 	/**

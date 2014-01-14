@@ -31,10 +31,10 @@ public class StartJob extends Job {
 	private String resourceName;
 
 	public StartJob(String name, ResourceOperations resource) {
-	    super("Starting " + name);
-	    this.resource = resource; 
-	    this.resourceName = name;
-    }
+		super("Starting " + name);
+		this.resource = resource;
+		this.resourceName = name;
+	}
 
 	/**
 	 * {@inheritDoc}
@@ -43,12 +43,12 @@ public class StartJob extends Job {
 	protected IStatus run(IProgressMonitor monitor) {
 		monitor.beginTask(getName(), IProgressMonitor.UNKNOWN);
 		try {
-	        resource.start();
-        } catch (StartError e) {
-        	return new Status(IStatus.ERROR, ScaModelPlugin.ID, "Failed to start: " + resourceName, e);
-        } finally {
-        	monitor.done();
-        }
+			resource.start();
+		} catch (StartError e) {
+			return new Status(IStatus.ERROR, ScaModelPlugin.ID, "Failed to start: " + resourceName, e);
+		} finally {
+			monitor.done();
+		}
 		return Status.OK_STATUS;
 	}
 

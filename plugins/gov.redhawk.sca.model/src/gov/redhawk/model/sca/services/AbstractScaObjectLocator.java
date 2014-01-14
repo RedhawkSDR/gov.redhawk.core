@@ -48,14 +48,14 @@ public abstract class AbstractScaObjectLocator implements IScaObjectLocator {
 		}
 		return null;
 	}
-	
+
 	protected boolean shouldPrune(EObject obj) {
 		if (obj instanceof ScaAbstractProperty< ? > || obj instanceof ScaFileStore || obj instanceof Properties) {
 			return true;
 		}
 		return false;
-    }
+	}
 
-	protected abstract TreeIterator<EObject> getContentIterator(Class<? extends CorbaObjWrapper<?>> type, String ior);
+	protected abstract TreeIterator<EObject> getContentIterator(Class< ? extends CorbaObjWrapper< ? >> type, String ior);
 
 }

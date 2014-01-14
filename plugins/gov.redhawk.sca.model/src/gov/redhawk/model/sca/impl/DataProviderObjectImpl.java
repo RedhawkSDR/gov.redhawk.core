@@ -160,7 +160,8 @@ public abstract class DataProviderObjectImpl extends IStatusProviderImpl impleme
 	 */
 	@Override
 	public void unsetDataProviders() {
-		if (dataProviders != null) ((InternalEList.Unsettable<?>)dataProviders).unset();
+		if (dataProviders != null)
+			((InternalEList.Unsettable< ? >) dataProviders).unset();
 	}
 
 	/**
@@ -170,7 +171,7 @@ public abstract class DataProviderObjectImpl extends IStatusProviderImpl impleme
 	 */
 	@Override
 	public boolean isSetDataProviders() {
-		return dataProviders != null && ((InternalEList.Unsettable<?>)dataProviders).isSet();
+		return dataProviders != null && ((InternalEList.Unsettable< ? >) dataProviders).isSet();
 	}
 
 	/**
@@ -193,7 +194,8 @@ public abstract class DataProviderObjectImpl extends IStatusProviderImpl impleme
 		boolean oldDataProvidersEnabled = dataProvidersEnabled;
 		dataProvidersEnabled = newDataProvidersEnabled;
 		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, ScaPackage.DATA_PROVIDER_OBJECT__DATA_PROVIDERS_ENABLED, oldDataProvidersEnabled, dataProvidersEnabled));
+			eNotify(new ENotificationImpl(this, Notification.SET, ScaPackage.DATA_PROVIDER_OBJECT__DATA_PROVIDERS_ENABLED, oldDataProvidersEnabled,
+				dataProvidersEnabled));
 	}
 
 	private PropertyChangeListener providerListener = new PropertyChangeListener() {
@@ -202,21 +204,21 @@ public abstract class DataProviderObjectImpl extends IStatusProviderImpl impleme
 		public void propertyChange(final PropertyChangeEvent evt) {
 			if (isDisposed()) {
 				if (evt.getSource() instanceof IScaDataProvider) {
-					((IScaDataProvider)evt.getSource()).removePropertyChangeListener(this);
+					((IScaDataProvider) evt.getSource()).removePropertyChangeListener(this);
 				}
 				return;
 			}
 			if (IScaDataProvider.DISPOSED_PROPERTY.equals(evt.getPropertyName())) {
 				ScaModelCommand.execute(DataProviderObjectImpl.this, new ScaModelCommand() {
-					
+
 					@Override
 					public void execute() {
-						dataProviderDisposed((IScaDataProvider) evt.getSource());	
+						dataProviderDisposed((IScaDataProvider) evt.getSource());
 					}
 				});
 			} else if (IScaDataProvider.STATUS_PROPERTY.equals(evt.getPropertyName())) {
 				ScaModelCommand.execute(DataProviderObjectImpl.this, new ScaModelCommand() {
-					
+
 					@Override
 					public void execute() {
 						updateDataProviderStatus();
@@ -252,7 +254,8 @@ public abstract class DataProviderObjectImpl extends IStatusProviderImpl impleme
 				}
 
 				@Override
-				public void handleException(Throwable exception) { }
+				public void handleException(Throwable exception) {
+				}
 			});
 		}
 		if (dataProviderStatus.isOK()) {
@@ -385,10 +388,10 @@ public abstract class DataProviderObjectImpl extends IStatusProviderImpl impleme
 		subMonitor.done();
 		// BEGIN GENERATED CODE
 	}
-	
+
 	private void removeDataProvider(final IScaDataProvider dataProvider) {
 		SafeRunner.run(new ISafeRunnable() {
-			
+
 			@Override
 			public void run() throws Exception {
 				dataProvider.removePropertyChangeListener(providerListener);
@@ -396,7 +399,8 @@ public abstract class DataProviderObjectImpl extends IStatusProviderImpl impleme
 			}
 
 			@Override
-			public void handleException(Throwable exception) { }
+			public void handleException(Throwable exception) {
+			}
 		});
 	}
 
@@ -463,17 +467,18 @@ public abstract class DataProviderObjectImpl extends IStatusProviderImpl impleme
 	}
 
 	private void addDataProvider(final IScaDataProvider dataProvider) {
-	    SafeRunner.run(new ISafeRunnable() {
-			
+		SafeRunner.run(new ISafeRunnable() {
+
 			@Override
 			public void run() throws Exception {
 				dataProvider.addPropertyChangeListener(providerListener);
 			}
-			
+
 			@Override
-			public void handleException(Throwable exception) { }
+			public void handleException(Throwable exception) {
+			}
 		});
-    }
+	}
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -501,12 +506,12 @@ public abstract class DataProviderObjectImpl extends IStatusProviderImpl impleme
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
-			case ScaPackage.DATA_PROVIDER_OBJECT__DISPOSED:
-				return isDisposed();
-			case ScaPackage.DATA_PROVIDER_OBJECT__DATA_PROVIDERS:
-				return getDataProviders();
-			case ScaPackage.DATA_PROVIDER_OBJECT__DATA_PROVIDERS_ENABLED:
-				return isDataProvidersEnabled();
+		case ScaPackage.DATA_PROVIDER_OBJECT__DISPOSED:
+			return isDisposed();
+		case ScaPackage.DATA_PROVIDER_OBJECT__DATA_PROVIDERS:
+			return getDataProviders();
+		case ScaPackage.DATA_PROVIDER_OBJECT__DATA_PROVIDERS_ENABLED:
+			return isDataProvidersEnabled();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -520,13 +525,13 @@ public abstract class DataProviderObjectImpl extends IStatusProviderImpl impleme
 	@Override
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
-			case ScaPackage.DATA_PROVIDER_OBJECT__DATA_PROVIDERS:
-				getDataProviders().clear();
-				getDataProviders().addAll((Collection<? extends IScaDataProvider>)newValue);
-				return;
-			case ScaPackage.DATA_PROVIDER_OBJECT__DATA_PROVIDERS_ENABLED:
-				setDataProvidersEnabled((Boolean)newValue);
-				return;
+		case ScaPackage.DATA_PROVIDER_OBJECT__DATA_PROVIDERS:
+			getDataProviders().clear();
+			getDataProviders().addAll((Collection< ? extends IScaDataProvider>) newValue);
+			return;
+		case ScaPackage.DATA_PROVIDER_OBJECT__DATA_PROVIDERS_ENABLED:
+			setDataProvidersEnabled((Boolean) newValue);
+			return;
 		}
 		super.eSet(featureID, newValue);
 	}
@@ -539,12 +544,12 @@ public abstract class DataProviderObjectImpl extends IStatusProviderImpl impleme
 	@Override
 	public void eUnset(int featureID) {
 		switch (featureID) {
-			case ScaPackage.DATA_PROVIDER_OBJECT__DATA_PROVIDERS:
-				unsetDataProviders();
-				return;
-			case ScaPackage.DATA_PROVIDER_OBJECT__DATA_PROVIDERS_ENABLED:
-				setDataProvidersEnabled(DATA_PROVIDERS_ENABLED_EDEFAULT);
-				return;
+		case ScaPackage.DATA_PROVIDER_OBJECT__DATA_PROVIDERS:
+			unsetDataProviders();
+			return;
+		case ScaPackage.DATA_PROVIDER_OBJECT__DATA_PROVIDERS_ENABLED:
+			setDataProvidersEnabled(DATA_PROVIDERS_ENABLED_EDEFAULT);
+			return;
 		}
 		super.eUnset(featureID);
 	}
@@ -557,12 +562,12 @@ public abstract class DataProviderObjectImpl extends IStatusProviderImpl impleme
 	@Override
 	public boolean eIsSet(int featureID) {
 		switch (featureID) {
-			case ScaPackage.DATA_PROVIDER_OBJECT__DISPOSED:
-				return disposed != DISPOSED_EDEFAULT;
-			case ScaPackage.DATA_PROVIDER_OBJECT__DATA_PROVIDERS:
-				return isSetDataProviders();
-			case ScaPackage.DATA_PROVIDER_OBJECT__DATA_PROVIDERS_ENABLED:
-				return dataProvidersEnabled != DATA_PROVIDERS_ENABLED_EDEFAULT;
+		case ScaPackage.DATA_PROVIDER_OBJECT__DISPOSED:
+			return disposed != DISPOSED_EDEFAULT;
+		case ScaPackage.DATA_PROVIDER_OBJECT__DATA_PROVIDERS:
+			return isSetDataProviders();
+		case ScaPackage.DATA_PROVIDER_OBJECT__DATA_PROVIDERS_ENABLED:
+			return dataProvidersEnabled != DATA_PROVIDERS_ENABLED_EDEFAULT;
 		}
 		return super.eIsSet(featureID);
 	}
@@ -573,16 +578,19 @@ public abstract class DataProviderObjectImpl extends IStatusProviderImpl impleme
 	 * @generated
 	 */
 	@Override
-	public int eBaseStructuralFeatureID(int derivedFeatureID, Class<?> baseClass) {
+	public int eBaseStructuralFeatureID(int derivedFeatureID, Class< ? > baseClass) {
 		if (baseClass == IDisposable.class) {
 			switch (derivedFeatureID) {
-				case ScaPackage.DATA_PROVIDER_OBJECT__DISPOSED: return ScaPackage.IDISPOSABLE__DISPOSED;
-				default: return -1;
+			case ScaPackage.DATA_PROVIDER_OBJECT__DISPOSED:
+				return ScaPackage.IDISPOSABLE__DISPOSED;
+			default:
+				return -1;
 			}
 		}
 		if (baseClass == IRefreshable.class) {
 			switch (derivedFeatureID) {
-				default: return -1;
+			default:
+				return -1;
 			}
 		}
 		return super.eBaseStructuralFeatureID(derivedFeatureID, baseClass);
@@ -594,16 +602,19 @@ public abstract class DataProviderObjectImpl extends IStatusProviderImpl impleme
 	 * @generated
 	 */
 	@Override
-	public int eDerivedStructuralFeatureID(int baseFeatureID, Class<?> baseClass) {
+	public int eDerivedStructuralFeatureID(int baseFeatureID, Class< ? > baseClass) {
 		if (baseClass == IDisposable.class) {
 			switch (baseFeatureID) {
-				case ScaPackage.IDISPOSABLE__DISPOSED: return ScaPackage.DATA_PROVIDER_OBJECT__DISPOSED;
-				default: return -1;
+			case ScaPackage.IDISPOSABLE__DISPOSED:
+				return ScaPackage.DATA_PROVIDER_OBJECT__DISPOSED;
+			default:
+				return -1;
 			}
 		}
 		if (baseClass == IRefreshable.class) {
 			switch (baseFeatureID) {
-				default: return -1;
+			default:
+				return -1;
 			}
 		}
 		return super.eDerivedStructuralFeatureID(baseFeatureID, baseClass);
@@ -616,7 +627,8 @@ public abstract class DataProviderObjectImpl extends IStatusProviderImpl impleme
 	 */
 	@Override
 	public String toString() {
-		if (eIsProxy()) return super.toString();
+		if (eIsProxy())
+			return super.toString();
 
 		StringBuffer result = new StringBuffer(super.toString());
 		result.append(" (disposed: ");
@@ -631,10 +643,10 @@ public abstract class DataProviderObjectImpl extends IStatusProviderImpl impleme
 
 	@Override
 	protected void eBasicSetContainer(InternalEObject newContainer, int newContainerFeatureID) {
-	    if (newContainer instanceof DataProviderObject) {
-	    	setDataProvidersEnabled(((DataProviderObject) newContainer).isDataProvidersEnabled());
-	    }
-	    super.eBasicSetContainer(newContainer, newContainerFeatureID);
+		if (newContainer instanceof DataProviderObject) {
+			setDataProvidersEnabled(((DataProviderObject) newContainer).isDataProvidersEnabled());
+		}
+		super.eBasicSetContainer(newContainer, newContainerFeatureID);
 	}
 
 } //DataProviderObjectImpl

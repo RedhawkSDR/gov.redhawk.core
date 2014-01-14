@@ -111,7 +111,7 @@ public class ScaConnectionImpl extends EObjectImpl implements ScaConnection {
 		if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET, ScaPackage.SCA_CONNECTION__DATA, oldData, data));
 	}
-	
+
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -148,8 +148,9 @@ public class ScaConnectionImpl extends EObjectImpl implements ScaConnection {
 	 */
 	@Override
 	public ScaUsesPort getPort() {
-		if (eContainerFeatureID() != ScaPackage.SCA_CONNECTION__PORT) return null;
-		return (ScaUsesPort)eContainer();
+		if (eContainerFeatureID() != ScaPackage.SCA_CONNECTION__PORT)
+			return null;
+		return (ScaUsesPort) eContainer();
 	}
 
 	/**
@@ -158,8 +159,9 @@ public class ScaConnectionImpl extends EObjectImpl implements ScaConnection {
 	 * @generated
 	 */
 	public ScaUsesPort basicGetPort() {
-		if (eContainerFeatureID() != ScaPackage.SCA_CONNECTION__PORT) return null;
-		return (ScaUsesPort)eInternalContainer();
+		if (eContainerFeatureID() != ScaPackage.SCA_CONNECTION__PORT)
+			return null;
+		return (ScaUsesPort) eInternalContainer();
 	}
 
 	/**
@@ -168,7 +170,7 @@ public class ScaConnectionImpl extends EObjectImpl implements ScaConnection {
 	 * @generated
 	 */
 	public NotificationChain basicSetPort(ScaUsesPort newPort, NotificationChain msgs) {
-		msgs = eBasicSetContainer((InternalEObject)newPort, ScaPackage.SCA_CONNECTION__PORT, msgs);
+		msgs = eBasicSetContainer((InternalEObject) newPort, ScaPackage.SCA_CONNECTION__PORT, msgs);
 		return msgs;
 	}
 
@@ -186,11 +188,11 @@ public class ScaConnectionImpl extends EObjectImpl implements ScaConnection {
 			if (eInternalContainer() != null)
 				msgs = eBasicRemoveFromContainer(msgs);
 			if (newPort != null)
-				msgs = ((InternalEObject)newPort).eInverseAdd(this, ScaPackage.SCA_USES_PORT__CONNECTIONS, ScaUsesPort.class, msgs);
+				msgs = ((InternalEObject) newPort).eInverseAdd(this, ScaPackage.SCA_USES_PORT__CONNECTIONS, ScaUsesPort.class, msgs);
 			msgs = basicSetPort(newPort, msgs);
-			if (msgs != null) msgs.dispatch();
-		}
-		else if (eNotificationRequired())
+			if (msgs != null)
+				msgs.dispatch();
+		} else if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET, ScaPackage.SCA_CONNECTION__PORT, newPort, newPort));
 	}
 
@@ -202,10 +204,10 @@ public class ScaConnectionImpl extends EObjectImpl implements ScaConnection {
 	@Override
 	public NotificationChain eInverseAdd(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
 		switch (featureID) {
-			case ScaPackage.SCA_CONNECTION__PORT:
-				if (eInternalContainer() != null)
-					msgs = eBasicRemoveFromContainer(msgs);
-				return basicSetPort((ScaUsesPort)otherEnd, msgs);
+		case ScaPackage.SCA_CONNECTION__PORT:
+			if (eInternalContainer() != null)
+				msgs = eBasicRemoveFromContainer(msgs);
+			return basicSetPort((ScaUsesPort) otherEnd, msgs);
 		}
 		return super.eInverseAdd(otherEnd, featureID, msgs);
 	}
@@ -218,8 +220,8 @@ public class ScaConnectionImpl extends EObjectImpl implements ScaConnection {
 	@Override
 	public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
 		switch (featureID) {
-			case ScaPackage.SCA_CONNECTION__PORT:
-				return basicSetPort(null, msgs);
+		case ScaPackage.SCA_CONNECTION__PORT:
+			return basicSetPort(null, msgs);
 		}
 		return super.eInverseRemove(otherEnd, featureID, msgs);
 	}
@@ -232,8 +234,8 @@ public class ScaConnectionImpl extends EObjectImpl implements ScaConnection {
 	@Override
 	public NotificationChain eBasicRemoveFromContainerFeature(NotificationChain msgs) {
 		switch (eContainerFeatureID()) {
-			case ScaPackage.SCA_CONNECTION__PORT:
-				return eInternalContainer().eInverseRemove(this, ScaPackage.SCA_USES_PORT__CONNECTIONS, ScaUsesPort.class, msgs);
+		case ScaPackage.SCA_CONNECTION__PORT:
+			return eInternalContainer().eInverseRemove(this, ScaPackage.SCA_USES_PORT__CONNECTIONS, ScaUsesPort.class, msgs);
 		}
 		return super.eBasicRemoveFromContainerFeature(msgs);
 	}
@@ -246,13 +248,14 @@ public class ScaConnectionImpl extends EObjectImpl implements ScaConnection {
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
-			case ScaPackage.SCA_CONNECTION__DATA:
-				return getData();
-			case ScaPackage.SCA_CONNECTION__ID:
-				return getId();
-			case ScaPackage.SCA_CONNECTION__PORT:
-				if (resolve) return getPort();
-				return basicGetPort();
+		case ScaPackage.SCA_CONNECTION__DATA:
+			return getData();
+		case ScaPackage.SCA_CONNECTION__ID:
+			return getId();
+		case ScaPackage.SCA_CONNECTION__PORT:
+			if (resolve)
+				return getPort();
+			return basicGetPort();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -265,12 +268,12 @@ public class ScaConnectionImpl extends EObjectImpl implements ScaConnection {
 	@Override
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
-			case ScaPackage.SCA_CONNECTION__DATA:
-				setData((UsesConnection)newValue);
-				return;
-			case ScaPackage.SCA_CONNECTION__PORT:
-				setPort((ScaUsesPort)newValue);
-				return;
+		case ScaPackage.SCA_CONNECTION__DATA:
+			setData((UsesConnection) newValue);
+			return;
+		case ScaPackage.SCA_CONNECTION__PORT:
+			setPort((ScaUsesPort) newValue);
+			return;
 		}
 		super.eSet(featureID, newValue);
 	}
@@ -283,12 +286,12 @@ public class ScaConnectionImpl extends EObjectImpl implements ScaConnection {
 	@Override
 	public void eUnset(int featureID) {
 		switch (featureID) {
-			case ScaPackage.SCA_CONNECTION__DATA:
-				setData(DATA_EDEFAULT);
-				return;
-			case ScaPackage.SCA_CONNECTION__PORT:
-				setPort((ScaUsesPort)null);
-				return;
+		case ScaPackage.SCA_CONNECTION__DATA:
+			setData(DATA_EDEFAULT);
+			return;
+		case ScaPackage.SCA_CONNECTION__PORT:
+			setPort((ScaUsesPort) null);
+			return;
 		}
 		super.eUnset(featureID);
 	}
@@ -301,12 +304,12 @@ public class ScaConnectionImpl extends EObjectImpl implements ScaConnection {
 	@Override
 	public boolean eIsSet(int featureID) {
 		switch (featureID) {
-			case ScaPackage.SCA_CONNECTION__DATA:
-				return DATA_EDEFAULT == null ? data != null : !DATA_EDEFAULT.equals(data);
-			case ScaPackage.SCA_CONNECTION__ID:
-				return ID_EDEFAULT == null ? getId() != null : !ID_EDEFAULT.equals(getId());
-			case ScaPackage.SCA_CONNECTION__PORT:
-				return basicGetPort() != null;
+		case ScaPackage.SCA_CONNECTION__DATA:
+			return DATA_EDEFAULT == null ? data != null : !DATA_EDEFAULT.equals(data);
+		case ScaPackage.SCA_CONNECTION__ID:
+			return ID_EDEFAULT == null ? getId() != null : !ID_EDEFAULT.equals(getId());
+		case ScaPackage.SCA_CONNECTION__PORT:
+			return basicGetPort() != null;
 		}
 		return super.eIsSet(featureID);
 	}
@@ -318,7 +321,8 @@ public class ScaConnectionImpl extends EObjectImpl implements ScaConnection {
 	 */
 	@Override
 	public String toString() {
-		if (eIsProxy()) return super.toString();
+		if (eIsProxy())
+			return super.toString();
 
 		StringBuffer result = new StringBuffer(super.toString());
 		result.append(" (data: ");

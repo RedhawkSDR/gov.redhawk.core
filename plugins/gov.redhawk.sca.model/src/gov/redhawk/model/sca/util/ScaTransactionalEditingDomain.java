@@ -55,7 +55,7 @@ public class ScaTransactionalEditingDomain extends TransactionalEditingDomainImp
 				if ((tx == null) || tx.isReadOnly() || (tx.getOwner() != Thread.currentThread())) {
 					if (tx != null) {
 						tx.abort(new Status(IStatus.ERROR, EMFTransactionPlugin.getPluginId(), EMFTransactionStatusCodes.CONCURRENT_WRITE,
-						        Messages.concurrentWrite, null));
+							Messages.concurrentWrite, null));
 					}
 
 					IllegalStateException ise = new IllegalStateException(Messages.noWriteTx);

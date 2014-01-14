@@ -12,7 +12,6 @@
 // BEGIN GENERATED CODE
 package gov.redhawk.model.sca.provider;
 
-
 import gov.redhawk.model.sca.ScaPackage;
 import gov.redhawk.model.sca.ScaPropertyContainer;
 
@@ -42,10 +41,8 @@ import org.eclipse.emf.edit.provider.ViewerNotification;
  * <!-- end-user-doc -->
  * @generated
  */
-public class ScaPropertyContainerItemProvider
-	extends CorbaObjWrapperItemProvider
-	implements
-		IEditingDomainItemProvider, IStructuredItemContentProvider, ITreeItemContentProvider, IItemLabelProvider, IItemPropertySource, ITableItemLabelProvider, ITableItemColorProvider, IItemColorProvider {
+public class ScaPropertyContainerItemProvider extends CorbaObjWrapperItemProvider implements IEditingDomainItemProvider, IStructuredItemContentProvider,
+		ITreeItemContentProvider, IItemLabelProvider, IItemPropertySource, ITableItemLabelProvider, ITableItemColorProvider, IItemColorProvider {
 
 	/**
 	 * This constructs an instance from a factory and a notifier.
@@ -81,19 +78,10 @@ public class ScaPropertyContainerItemProvider
 	 * @generated
 	 */
 	protected void addProfileURIPropertyDescriptor(Object object) {
-		itemPropertyDescriptors.add
-			(createItemPropertyDescriptor
-				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
-				 getResourceLocator(),
-				 getString("_UI_ProfileObjectWrapper_profileURI_feature"),
-				 getString("_UI_PropertyDescriptor_description", "_UI_ProfileObjectWrapper_profileURI_feature", "_UI_ProfileObjectWrapper_type"),
-				 ScaPackage.Literals.PROFILE_OBJECT_WRAPPER__PROFILE_URI,
-				 false,
-				 false,
-				 false,
-				 ItemPropertyDescriptor.GENERIC_VALUE_IMAGE,
-				 null,
-				 null));
+		itemPropertyDescriptors.add(createItemPropertyDescriptor(((ComposeableAdapterFactory) adapterFactory).getRootAdapterFactory(), getResourceLocator(),
+			getString("_UI_ProfileObjectWrapper_profileURI_feature"),
+			getString("_UI_PropertyDescriptor_description", "_UI_ProfileObjectWrapper_profileURI_feature", "_UI_ProfileObjectWrapper_type"),
+			ScaPackage.Literals.PROFILE_OBJECT_WRAPPER__PROFILE_URI, false, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
 	}
 
 	/**
@@ -103,19 +91,10 @@ public class ScaPropertyContainerItemProvider
 	 * @generated
 	 */
 	protected void addProfileObjPropertyDescriptor(Object object) {
-		itemPropertyDescriptors.add
-			(createItemPropertyDescriptor
-				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
-				 getResourceLocator(),
-				 getString("_UI_ProfileObjectWrapper_profileObj_feature"),
-				 getString("_UI_PropertyDescriptor_description", "_UI_ProfileObjectWrapper_profileObj_feature", "_UI_ProfileObjectWrapper_type"),
-				 ScaPackage.Literals.PROFILE_OBJECT_WRAPPER__PROFILE_OBJ,
-				 false,
-				 false,
-				 true,
-				 null,
-				 null,
-				 null));
+		itemPropertyDescriptors.add(createItemPropertyDescriptor(((ComposeableAdapterFactory) adapterFactory).getRootAdapterFactory(), getResourceLocator(),
+			getString("_UI_ProfileObjectWrapper_profileObj_feature"),
+			getString("_UI_PropertyDescriptor_description", "_UI_ProfileObjectWrapper_profileObj_feature", "_UI_ProfileObjectWrapper_type"),
+			ScaPackage.Literals.PROFILE_OBJECT_WRAPPER__PROFILE_OBJ, false, false, true, null, null, null));
 	}
 
 	/**
@@ -126,11 +105,9 @@ public class ScaPropertyContainerItemProvider
 	 */
 	@Override
 	public String getText(Object object) {
-		IStatus labelValue = ((ScaPropertyContainer<?, ?>)object).getStatus();
+		IStatus labelValue = ((ScaPropertyContainer< ? , ? >) object).getStatus();
 		String label = labelValue == null ? null : labelValue.toString();
-		return label == null || label.length() == 0 ?
-			getString("_UI_ScaPropertyContainer_type") :
-			getString("_UI_ScaPropertyContainer_type") + " " + label;
+		return label == null || label.length() == 0 ? getString("_UI_ScaPropertyContainer_type") : getString("_UI_ScaPropertyContainer_type") + " " + label;
 	}
 
 	/**
@@ -145,10 +122,10 @@ public class ScaPropertyContainerItemProvider
 		updateChildren(notification);
 
 		switch (notification.getFeatureID(ScaPropertyContainer.class)) {
-			case ScaPackage.SCA_PROPERTY_CONTAINER__PROFILE_URI:
-			case ScaPackage.SCA_PROPERTY_CONTAINER__PROPERTIES:
-				fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
-				return;
+		case ScaPackage.SCA_PROPERTY_CONTAINER__PROFILE_URI:
+		case ScaPackage.SCA_PROPERTY_CONTAINER__PROPERTIES:
+			fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
+			return;
 		}
 		super.notifyChanged(notification);
 	}

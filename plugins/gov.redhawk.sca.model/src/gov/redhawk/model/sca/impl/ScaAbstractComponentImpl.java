@@ -23,6 +23,7 @@ import gov.redhawk.model.sca.commands.MergePortsCommand;
 import gov.redhawk.model.sca.commands.MergePortsCommand.PortData;
 import gov.redhawk.model.sca.commands.ScaModelCommand;
 import gov.redhawk.model.sca.commands.SetLocalAttributeCommand;
+import gov.redhawk.model.sca.commands.SetStatusCommand;
 import gov.redhawk.model.sca.commands.UnsetLocalAttributeCommand;
 import gov.redhawk.model.sca.commands.VersionedFeature;
 import gov.redhawk.model.sca.commands.VersionedFeature.Transaction;
@@ -93,6 +94,7 @@ import CF.TestableObjectPackage.UnknownTest;
  *   <li>{@link gov.redhawk.model.sca.impl.ScaAbstractComponentImpl#getPorts <em>Ports</em>}</li>
  *   <li>{@link gov.redhawk.model.sca.impl.ScaAbstractComponentImpl#getIdentifier <em>Identifier</em>}</li>
  *   <li>{@link gov.redhawk.model.sca.impl.ScaAbstractComponentImpl#getStarted <em>Started</em>}</li>
+ *   <li>{@link gov.redhawk.model.sca.impl.ScaAbstractComponentImpl#getProfile <em>Profile</em>}</li>
  * </ul>
  * </p>
  *
@@ -108,7 +110,7 @@ public abstract class ScaAbstractComponentImpl< R extends Resource > extends Sca
 	 * @generated
 	 * @ordered
 	 */
-	protected EList<ScaPort<?, ?>> ports;
+	protected EList<ScaPort< ? , ? >> ports;
 
 	/**
 	 * The default value of the '{@link #getIdentifier() <em>Identifier</em>}' attribute.
@@ -169,6 +171,38 @@ public abstract class ScaAbstractComponentImpl< R extends Resource > extends Sca
 	protected boolean startedESet;
 
 	/**
+	 * The default value of the '{@link #getProfile() <em>Profile</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * @since 19.0
+	 * <!-- end-user-doc -->
+	 * @see #getProfile()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final String PROFILE_EDEFAULT = null;
+
+	/**
+	 * The cached value of the '{@link #getProfile() <em>Profile</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * @since 19.0
+	 * <!-- end-user-doc -->
+	 * @see #getProfile()
+	 * @generated
+	 * @ordered
+	 */
+	protected String profile = PROFILE_EDEFAULT;
+
+	/**
+	 * This is true if the Profile attribute has been set.
+	 * <!-- begin-user-doc -->
+	 * @since 19.0
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	protected boolean profileESet;
+
+	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
@@ -205,9 +239,10 @@ public abstract class ScaAbstractComponentImpl< R extends Resource > extends Sca
 	 * @generated
 	 */
 	@Override
-	public EList<ScaPort<?, ?>> getPorts() {
+	public EList<ScaPort< ? , ? >> getPorts() {
 		if (ports == null) {
-			ports = new EObjectContainmentWithInverseEList.Unsettable<ScaPort<?, ?>>(ScaPort.class, this, ScaPackage.SCA_ABSTRACT_COMPONENT__PORTS, ScaPackage.SCA_PORT__PORT_CONTAINER);
+			ports = new EObjectContainmentWithInverseEList.Unsettable<ScaPort< ? , ? >>(ScaPort.class, this, ScaPackage.SCA_ABSTRACT_COMPONENT__PORTS,
+				ScaPackage.SCA_PORT__PORT_CONTAINER);
 		}
 		return ports;
 	}
@@ -219,7 +254,8 @@ public abstract class ScaAbstractComponentImpl< R extends Resource > extends Sca
 	 */
 	@Override
 	public void unsetPorts() {
-		if (ports != null) ((InternalEList.Unsettable<?>)ports).unset();
+		if (ports != null)
+			((InternalEList.Unsettable< ? >) ports).unset();
 	}
 
 	/**
@@ -229,7 +265,7 @@ public abstract class ScaAbstractComponentImpl< R extends Resource > extends Sca
 	 */
 	@Override
 	public boolean isSetPorts() {
-		return ports != null && ((InternalEList.Unsettable<?>)ports).isSet();
+		return ports != null && ((InternalEList.Unsettable< ? >) ports).isSet();
 	}
 
 	/**
@@ -269,7 +305,8 @@ public abstract class ScaAbstractComponentImpl< R extends Resource > extends Sca
 		identifier = IDENTIFIER_EDEFAULT;
 		identifierESet = false;
 		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.UNSET, ScaPackage.SCA_ABSTRACT_COMPONENT__IDENTIFIER, oldIdentifier, IDENTIFIER_EDEFAULT, oldIdentifierESet));
+			eNotify(new ENotificationImpl(this, Notification.UNSET, ScaPackage.SCA_ABSTRACT_COMPONENT__IDENTIFIER, oldIdentifier, IDENTIFIER_EDEFAULT,
+				oldIdentifierESet));
 	}
 
 	/**
@@ -330,6 +367,56 @@ public abstract class ScaAbstractComponentImpl< R extends Resource > extends Sca
 	@Override
 	public boolean isSetStarted() {
 		return startedESet;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * @since 19.0
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public String getProfile() {
+		return profile;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * @since 19.0
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public void setProfile(String newProfile) {
+		String oldProfile = profile;
+		profile = newProfile;
+		boolean oldProfileESet = profileESet;
+		profileESet = true;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, ScaPackage.SCA_ABSTRACT_COMPONENT__PROFILE, oldProfile, profile, !oldProfileESet));
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * @since 19.0
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public void unsetProfile() {
+		String oldProfile = profile;
+		boolean oldProfileESet = profileESet;
+		profile = PROFILE_EDEFAULT;
+		profileESet = false;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.UNSET, ScaPackage.SCA_ABSTRACT_COMPONENT__PROFILE, oldProfile, PROFILE_EDEFAULT, oldProfileESet));
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * @since 19.0
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public boolean isSetProfile() {
+		return profileESet;
 	}
 
 	private final VersionedFeature identifierRevision = new VersionedFeature(this, ScaPackage.Literals.SCA_ABSTRACT_COMPONENT__IDENTIFIER);
@@ -488,8 +575,8 @@ public abstract class ScaAbstractComponentImpl< R extends Resource > extends Sca
 	@Override
 	public NotificationChain eInverseAdd(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
 		switch (featureID) {
-			case ScaPackage.SCA_ABSTRACT_COMPONENT__PORTS:
-				return ((InternalEList<InternalEObject>)(InternalEList<?>)getPorts()).basicAdd(otherEnd, msgs);
+		case ScaPackage.SCA_ABSTRACT_COMPONENT__PORTS:
+			return ((InternalEList<InternalEObject>) (InternalEList< ? >) getPorts()).basicAdd(otherEnd, msgs);
 		}
 		return super.eInverseAdd(otherEnd, featureID, msgs);
 	}
@@ -502,8 +589,8 @@ public abstract class ScaAbstractComponentImpl< R extends Resource > extends Sca
 	@Override
 	public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
 		switch (featureID) {
-			case ScaPackage.SCA_ABSTRACT_COMPONENT__PORTS:
-				return ((InternalEList<?>)getPorts()).basicRemove(otherEnd, msgs);
+		case ScaPackage.SCA_ABSTRACT_COMPONENT__PORTS:
+			return ((InternalEList< ? >) getPorts()).basicRemove(otherEnd, msgs);
 		}
 		return super.eInverseRemove(otherEnd, featureID, msgs);
 	}
@@ -516,12 +603,14 @@ public abstract class ScaAbstractComponentImpl< R extends Resource > extends Sca
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
-			case ScaPackage.SCA_ABSTRACT_COMPONENT__PORTS:
-				return getPorts();
-			case ScaPackage.SCA_ABSTRACT_COMPONENT__IDENTIFIER:
-				return getIdentifier();
-			case ScaPackage.SCA_ABSTRACT_COMPONENT__STARTED:
-				return getStarted();
+		case ScaPackage.SCA_ABSTRACT_COMPONENT__PORTS:
+			return getPorts();
+		case ScaPackage.SCA_ABSTRACT_COMPONENT__IDENTIFIER:
+			return getIdentifier();
+		case ScaPackage.SCA_ABSTRACT_COMPONENT__STARTED:
+			return getStarted();
+		case ScaPackage.SCA_ABSTRACT_COMPONENT__PROFILE:
+			return getProfile();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -535,16 +624,19 @@ public abstract class ScaAbstractComponentImpl< R extends Resource > extends Sca
 	@Override
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
-			case ScaPackage.SCA_ABSTRACT_COMPONENT__PORTS:
-				getPorts().clear();
-				getPorts().addAll((Collection<? extends ScaPort<?, ?>>)newValue);
-				return;
-			case ScaPackage.SCA_ABSTRACT_COMPONENT__IDENTIFIER:
-				setIdentifier((String)newValue);
-				return;
-			case ScaPackage.SCA_ABSTRACT_COMPONENT__STARTED:
-				setStarted((Boolean)newValue);
-				return;
+		case ScaPackage.SCA_ABSTRACT_COMPONENT__PORTS:
+			getPorts().clear();
+			getPorts().addAll((Collection< ? extends ScaPort< ? , ? >>) newValue);
+			return;
+		case ScaPackage.SCA_ABSTRACT_COMPONENT__IDENTIFIER:
+			setIdentifier((String) newValue);
+			return;
+		case ScaPackage.SCA_ABSTRACT_COMPONENT__STARTED:
+			setStarted((Boolean) newValue);
+			return;
+		case ScaPackage.SCA_ABSTRACT_COMPONENT__PROFILE:
+			setProfile((String) newValue);
+			return;
 		}
 		super.eSet(featureID, newValue);
 	}
@@ -557,15 +649,18 @@ public abstract class ScaAbstractComponentImpl< R extends Resource > extends Sca
 	@Override
 	public void eUnset(int featureID) {
 		switch (featureID) {
-			case ScaPackage.SCA_ABSTRACT_COMPONENT__PORTS:
-				unsetPorts();
-				return;
-			case ScaPackage.SCA_ABSTRACT_COMPONENT__IDENTIFIER:
-				unsetIdentifier();
-				return;
-			case ScaPackage.SCA_ABSTRACT_COMPONENT__STARTED:
-				unsetStarted();
-				return;
+		case ScaPackage.SCA_ABSTRACT_COMPONENT__PORTS:
+			unsetPorts();
+			return;
+		case ScaPackage.SCA_ABSTRACT_COMPONENT__IDENTIFIER:
+			unsetIdentifier();
+			return;
+		case ScaPackage.SCA_ABSTRACT_COMPONENT__STARTED:
+			unsetStarted();
+			return;
+		case ScaPackage.SCA_ABSTRACT_COMPONENT__PROFILE:
+			unsetProfile();
+			return;
 		}
 		super.eUnset(featureID);
 	}
@@ -578,12 +673,14 @@ public abstract class ScaAbstractComponentImpl< R extends Resource > extends Sca
 	@Override
 	public boolean eIsSet(int featureID) {
 		switch (featureID) {
-			case ScaPackage.SCA_ABSTRACT_COMPONENT__PORTS:
-				return isSetPorts();
-			case ScaPackage.SCA_ABSTRACT_COMPONENT__IDENTIFIER:
-				return isSetIdentifier();
-			case ScaPackage.SCA_ABSTRACT_COMPONENT__STARTED:
-				return isSetStarted();
+		case ScaPackage.SCA_ABSTRACT_COMPONENT__PORTS:
+			return isSetPorts();
+		case ScaPackage.SCA_ABSTRACT_COMPONENT__IDENTIFIER:
+			return isSetIdentifier();
+		case ScaPackage.SCA_ABSTRACT_COMPONENT__STARTED:
+			return isSetStarted();
+		case ScaPackage.SCA_ABSTRACT_COMPONENT__PROFILE:
+			return isSetProfile();
 		}
 		return super.eIsSet(featureID);
 	}
@@ -594,31 +691,37 @@ public abstract class ScaAbstractComponentImpl< R extends Resource > extends Sca
 	 * @generated
 	 */
 	@Override
-	public int eBaseStructuralFeatureID(int derivedFeatureID, Class<?> baseClass) {
+	public int eBaseStructuralFeatureID(int derivedFeatureID, Class< ? > baseClass) {
 		if (baseClass == LifeCycleOperations.class) {
 			switch (derivedFeatureID) {
-				default: return -1;
+			default:
+				return -1;
 			}
 		}
 		if (baseClass == TestableObjectOperations.class) {
 			switch (derivedFeatureID) {
-				default: return -1;
+			default:
+				return -1;
 			}
 		}
 		if (baseClass == PortSupplierOperations.class) {
 			switch (derivedFeatureID) {
-				default: return -1;
+			default:
+				return -1;
 			}
 		}
 		if (baseClass == ResourceOperations.class) {
 			switch (derivedFeatureID) {
-				default: return -1;
+			default:
+				return -1;
 			}
 		}
 		if (baseClass == ScaPortContainer.class) {
 			switch (derivedFeatureID) {
-				case ScaPackage.SCA_ABSTRACT_COMPONENT__PORTS: return ScaPackage.SCA_PORT_CONTAINER__PORTS;
-				default: return -1;
+			case ScaPackage.SCA_ABSTRACT_COMPONENT__PORTS:
+				return ScaPackage.SCA_PORT_CONTAINER__PORTS;
+			default:
+				return -1;
 			}
 		}
 		return super.eBaseStructuralFeatureID(derivedFeatureID, baseClass);
@@ -630,31 +733,37 @@ public abstract class ScaAbstractComponentImpl< R extends Resource > extends Sca
 	 * @generated
 	 */
 	@Override
-	public int eDerivedStructuralFeatureID(int baseFeatureID, Class<?> baseClass) {
+	public int eDerivedStructuralFeatureID(int baseFeatureID, Class< ? > baseClass) {
 		if (baseClass == LifeCycleOperations.class) {
 			switch (baseFeatureID) {
-				default: return -1;
+			default:
+				return -1;
 			}
 		}
 		if (baseClass == TestableObjectOperations.class) {
 			switch (baseFeatureID) {
-				default: return -1;
+			default:
+				return -1;
 			}
 		}
 		if (baseClass == PortSupplierOperations.class) {
 			switch (baseFeatureID) {
-				default: return -1;
+			default:
+				return -1;
 			}
 		}
 		if (baseClass == ResourceOperations.class) {
 			switch (baseFeatureID) {
-				default: return -1;
+			default:
+				return -1;
 			}
 		}
 		if (baseClass == ScaPortContainer.class) {
 			switch (baseFeatureID) {
-				case ScaPackage.SCA_PORT_CONTAINER__PORTS: return ScaPackage.SCA_ABSTRACT_COMPONENT__PORTS;
-				default: return -1;
+			case ScaPackage.SCA_PORT_CONTAINER__PORTS:
+				return ScaPackage.SCA_ABSTRACT_COMPONENT__PORTS;
+			default:
+				return -1;
 			}
 		}
 		return super.eDerivedStructuralFeatureID(baseFeatureID, baseClass);
@@ -667,13 +776,25 @@ public abstract class ScaAbstractComponentImpl< R extends Resource > extends Sca
 	 */
 	@Override
 	public String toString() {
-		if (eIsProxy()) return super.toString();
+		if (eIsProxy())
+			return super.toString();
 
 		StringBuffer result = new StringBuffer(super.toString());
 		result.append(" (identifier: ");
-		if (identifierESet) result.append(identifier); else result.append("<unset>");
+		if (identifierESet)
+			result.append(identifier);
+		else
+			result.append("<unset>");
 		result.append(", started: ");
-		if (startedESet) result.append(started); else result.append("<unset>");
+		if (startedESet)
+			result.append(started);
+		else
+			result.append("<unset>");
+		result.append(", profile: ");
+		if (profileESet)
+			result.append(profile);
+		else
+			result.append("<unset>");
 		result.append(')');
 		return result.toString();
 	}
@@ -743,7 +864,7 @@ public abstract class ScaAbstractComponentImpl< R extends Resource > extends Sca
 				@Override
 				public void run() {
 					setResult(getPorts().toArray(new ScaPort< ? , ? >[getPorts().size()]));
-					}
+				}
 			});
 		} catch (InterruptedException e) {
 			// PASS
@@ -763,14 +884,9 @@ public abstract class ScaAbstractComponentImpl< R extends Resource > extends Sca
 		return getPorts();
 	}
 
-	private static final EStructuralFeature[] PORTS_GROUP_PATH = {
-		ScaPackage.Literals.PROFILE_OBJECT_WRAPPER__PROFILE_OBJ,
-		SpdPackage.Literals.SOFT_PKG__DESCRIPTOR,
-		SpdPackage.Literals.DESCRIPTOR__COMPONENT,
-		ScdPackage.Literals.SOFTWARE_COMPONENT__COMPONENT_FEATURES,
-		ScdPackage.Literals.COMPONENT_FEATURES__PORTS,
-		ScdPackage.Literals.PORTS__GROUP
-	};
+	private static final EStructuralFeature[] PORTS_GROUP_PATH = { ScaPackage.Literals.PROFILE_OBJECT_WRAPPER__PROFILE_OBJ,
+		SpdPackage.Literals.SOFT_PKG__DESCRIPTOR, SpdPackage.Literals.DESCRIPTOR__COMPONENT, ScdPackage.Literals.SOFTWARE_COMPONENT__COMPONENT_FEATURES,
+		ScdPackage.Literals.COMPONENT_FEATURES__PORTS, ScdPackage.Literals.PORTS__GROUP };
 
 	private final VersionedFeature portRevision = new VersionedFeature(this, ScaPackage.Literals.SCA_PORT_CONTAINER__PORTS);
 
@@ -830,7 +946,7 @@ public abstract class ScaAbstractComponentImpl< R extends Resource > extends Sca
 		subMonitor.done();
 		// BEGIN GENERATED CODE
 	}
-	
+
 	@Override
 	protected void internalFetchChildren(IProgressMonitor monitor) throws InterruptedException {
 		internalFetchPorts(monitor);
@@ -861,10 +977,12 @@ public abstract class ScaAbstractComponentImpl< R extends Resource > extends Sca
 	 */
 	@Override
 	public void fetchAttributes(IProgressMonitor monitor) {
-		SubMonitor subMonitor = SubMonitor.convert(monitor, 3);
+		SubMonitor subMonitor = SubMonitor.convert(monitor, 5);
 		super.fetchAttributes(subMonitor.newChild(1));
 		fetchIdentifier(subMonitor.newChild(1));
 		fetchStarted(subMonitor.newChild(1));
+		fetchProfile(subMonitor.newChild(1));
+		fetchProfileObject(subMonitor.newChild(1));
 		subMonitor.done();
 	}
 
@@ -876,7 +994,7 @@ public abstract class ScaAbstractComponentImpl< R extends Resource > extends Sca
 		super.notifyChanged(msg);
 		switch (msg.getFeatureID(ScaAbstractComponent.class)) {
 		case ScaPackage.SCA_ABSTRACT_COMPONENT__OBJ:
-//			unsetIdentifier();
+			//			unsetIdentifier();
 			unsetStarted();
 			unsetPorts();
 			break;
@@ -885,9 +1003,7 @@ public abstract class ScaAbstractComponentImpl< R extends Resource > extends Sca
 		}
 	}
 
-	private static final EStructuralFeature[] PRF_PATH = {
-	        SpdPackage.Literals.SOFT_PKG__PROPERTY_FILE, SpdPackage.Literals.PROPERTY_FILE__PROPERTIES
-	};
+	private static final EStructuralFeature[] PRF_PATH = { SpdPackage.Literals.SOFT_PKG__PROPERTY_FILE, SpdPackage.Literals.PROPERTY_FILE__PROPERTIES };
 
 	@Override
 	protected List<AbstractProperty> fetchPropertyDefinitions(IProgressMonitor monitor) {
@@ -921,5 +1037,49 @@ public abstract class ScaAbstractComponentImpl< R extends Resource > extends Sca
 		transaction.addCommand(command);
 		transaction.commit();
 		return getProfileObj();
+	}
+
+	private final VersionedFeature profileFeature = new VersionedFeature(this, ScaPackage.Literals.SCA_ABSTRACT_COMPONENT__PROFILE);
+
+	/**
+	 * @since 19.0
+	 * @generated NOT
+	 * {@inheritDoc}
+	 */
+	@Override
+	public String fetchProfile(IProgressMonitor monitor) {
+		if (isSetProfile()) {
+			return getProfile();
+		}
+		SubMonitor subMonitor = SubMonitor.convert(monitor, "Fetching profile", 3);
+		R localObj = fetchNarrowedObject(subMonitor.newChild(1));
+		Transaction transaction = profileFeature.createTransaction();
+		if (localObj != null) {
+			final String newProfile;
+			try {
+				newProfile = localObj.softwareProfile();
+				transaction.addCommand(new SetLocalAttributeCommand(this, newProfile, ScaPackage.Literals.SCA_ABSTRACT_COMPONENT__PROFILE));
+			} catch (BAD_OPERATION e) {
+				// the profile attribute was moved from Device to resource in 1.10.0...so don't expect it
+				transaction.append(new SetLocalAttributeCommand(this, null, ScaPackage.Literals.SCA_ABSTRACT_COMPONENT__PROFILE, Status.OK_STATUS));
+			} catch (final SystemException e) {
+				IStatus startedStatus = new Status(Status.ERROR, ScaModelPlugin.ID, "Failed to fetch started.", e);
+				transaction.append(new UnsetLocalAttributeCommand(this, startedStatus, ScaPackage.Literals.SCA_ABSTRACT_COMPONENT__PROFILE));
+			}
+			subMonitor.worked(1);
+		} else {
+			transaction.addCommand(new UnsetLocalAttributeCommand(this, null, ScaPackage.Literals.SCA_ABSTRACT_COMPONENT__PROFILE));
+		}
+		transaction.commit();
+		subMonitor.done();
+		return getProfile();
+	}
+
+	/**
+	 * @since 19.0
+	 */
+	@Override
+	public String softwareProfile() {
+		return getProfile();
 	}
 } // ScaAbstractComponentImpl

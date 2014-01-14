@@ -24,7 +24,7 @@ import org.eclipse.core.runtime.Status;
  * 
  */
 public abstract class AbstractDataProvider implements IScaDataProvider {
-	
+
 	private final PropertyChangeSupport propertyChangeSupport = new PropertyChangeSupport(this);
 	private boolean disposed;
 	private boolean enabled;
@@ -55,19 +55,18 @@ public abstract class AbstractDataProvider implements IScaDataProvider {
 		this.disposed = true;
 		propertyChangeSupport.firePropertyChange(IScaDataProvider.DISPOSED_PROPERTY, oldDisposed, disposed);
 	}
-	
 
 	protected void firePropertyChange(String propertyName, Object oldValue, Object newValue) {
-	    propertyChangeSupport.firePropertyChange(propertyName, oldValue, newValue);
-    }
+		propertyChangeSupport.firePropertyChange(propertyName, oldValue, newValue);
+	}
 
 	protected void firePropertyChange(String propertyName, boolean oldValue, boolean newValue) {
-	    propertyChangeSupport.firePropertyChange(propertyName, oldValue, newValue);
-    }
+		propertyChangeSupport.firePropertyChange(propertyName, oldValue, newValue);
+	}
 
 	protected void firePropertyChange(PropertyChangeEvent evt) {
-	    propertyChangeSupport.firePropertyChange(evt);
-    }
+		propertyChangeSupport.firePropertyChange(evt);
+	}
 
 	/**
 	 * {@inheritDoc}
@@ -87,10 +86,10 @@ public abstract class AbstractDataProvider implements IScaDataProvider {
 		}
 		boolean oldValue = this.enabled;
 		this.enabled = enabled;
-		
+
 		propertyChangeSupport.firePropertyChange(IScaDataProvider.ENABLED_PROPERTY, oldValue, isEnabled());
 	}
-	
+
 	protected void setStatus(IStatus status) {
 		if (this.status != null && (status == null || (status.getSeverity() == this.status.getSeverity()))) {
 			return;
@@ -99,10 +98,10 @@ public abstract class AbstractDataProvider implements IScaDataProvider {
 		this.status = status;
 		firePropertyChange(STATUS_PROPERTY, oldValue, this.status);
 	}
-	
+
 	@Override
 	public IStatus getStatus() {
-	    return this.status;
+		return this.status;
 	}
 
 	/**
@@ -112,10 +111,10 @@ public abstract class AbstractDataProvider implements IScaDataProvider {
 	public boolean isEnabled() {
 		return enabled && !isDisposed();
 	}
-	
+
 	@Override
 	public IStatus refresh(IProgressMonitor monitor) {
-	    return Status.OK_STATUS;
+		return Status.OK_STATUS;
 	}
 
 }

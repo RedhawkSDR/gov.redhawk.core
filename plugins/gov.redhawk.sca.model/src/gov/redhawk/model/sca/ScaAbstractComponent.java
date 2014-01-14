@@ -31,6 +31,7 @@ import CF.ResourceOperations;
  * <ul>
  *   <li>{@link gov.redhawk.model.sca.ScaAbstractComponent#getIdentifier <em>Identifier</em>}</li>
  *   <li>{@link gov.redhawk.model.sca.ScaAbstractComponent#getStarted <em>Started</em>}</li>
+ *   <li>{@link gov.redhawk.model.sca.ScaAbstractComponent#getProfile <em>Profile</em>}</li>
  * </ul>
  * </p>
  *
@@ -151,6 +152,59 @@ public interface ScaAbstractComponent< R extends Resource > extends ScaPropertyC
 	boolean isSetStarted();
 
 	/**
+	 * Returns the value of the '<em><b>Profile</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Profile</em>' attribute isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Profile</em>' attribute.
+	 * @see #isSetProfile()
+	 * @see #unsetProfile()
+	 * @see #setProfile(String)
+	 * @see gov.redhawk.model.sca.ScaPackage#getScaAbstractComponent_Profile()
+	 * @model unsettable="true" transient="true"
+	 * @generated
+	 */
+	String getProfile();
+
+	/**
+	 * Sets the value of the '{@link gov.redhawk.model.sca.ScaAbstractComponent#getProfile <em>Profile</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Profile</em>' attribute.
+	 * @see #isSetProfile()
+	 * @see #unsetProfile()
+	 * @see #getProfile()
+	 * @generated
+	 */
+	void setProfile(String value);
+
+	/**
+	 * Unsets the value of the '{@link gov.redhawk.model.sca.ScaAbstractComponent#getProfile <em>Profile</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #isSetProfile()
+	 * @see #getProfile()
+	 * @see #setProfile(String)
+	 * @generated
+	 */
+	void unsetProfile();
+
+	/**
+	 * Returns whether the value of the '{@link gov.redhawk.model.sca.ScaAbstractComponent#getProfile <em>Profile</em>}' attribute is set.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return whether the value of the '<em>Profile</em>' attribute is set.
+	 * @see #unsetProfile()
+	 * @see #getProfile()
+	 * @see #setProfile(String)
+	 * @generated
+	 */
+	boolean isSetProfile();
+
+	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @model monitorDataType="gov.redhawk.model.sca.IProgressMonitor"
@@ -165,4 +219,12 @@ public interface ScaAbstractComponent< R extends Resource > extends ScaPropertyC
 	 * @generated
 	 */
 	Boolean fetchStarted(IProgressMonitor monitor);
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @model monitorDataType="gov.redhawk.model.sca.IProgressMonitor"
+	 * @generated
+	 */
+	String fetchProfile(IProgressMonitor monitor);
 } // ScaAbstractComponent

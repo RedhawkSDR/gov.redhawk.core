@@ -12,7 +12,6 @@
 // BEGIN GENERATED CODE
 package gov.redhawk.model.sca.provider;
 
-
 import gov.redhawk.model.sca.ScaAbstractProperty;
 import gov.redhawk.model.sca.ScaPackage;
 import gov.redhawk.model.sca.ScaStructSequenceProperty;
@@ -47,10 +46,9 @@ import org.eclipse.emf.edit.provider.ViewerNotification;
  * <!-- end-user-doc -->
  * @generated
  */
-public class ScaStructSequencePropertyItemProvider
-	extends ScaAbstractPropertyItemProvider
-	implements
-		IEditingDomainItemProvider, IStructuredItemContentProvider, ITreeItemContentProvider, IItemLabelProvider, IItemPropertySource, ITableItemLabelProvider, ITableItemColorProvider, IItemColorProvider {
+public class ScaStructSequencePropertyItemProvider extends ScaAbstractPropertyItemProvider implements IEditingDomainItemProvider,
+		IStructuredItemContentProvider, ITreeItemContentProvider, IItemLabelProvider, IItemPropertySource, ITableItemLabelProvider, ITableItemColorProvider,
+		IItemColorProvider {
 	/**
 	 * This constructs an instance from a factory and a notifier.
 	 * <!-- begin-user-doc -->
@@ -85,21 +83,12 @@ public class ScaStructSequencePropertyItemProvider
 	 * @generated
 	 */
 	protected void addStructsPropertyDescriptorGen(Object object) {
-		itemPropertyDescriptors.add
-			(createItemPropertyDescriptor
-				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
-				 getResourceLocator(),
-				 getString("_UI_ScaStructSequenceProperty_structs_feature"),
-				 getString("_UI_PropertyDescriptor_description", "_UI_ScaStructSequenceProperty_structs_feature", "_UI_ScaStructSequenceProperty_type"),
-				 ScaPackage.Literals.SCA_STRUCT_SEQUENCE_PROPERTY__STRUCTS,
-				 true,
-				 false,
-				 false,
-				 null,
-				 null,
-				 null));
+		itemPropertyDescriptors.add(createItemPropertyDescriptor(((ComposeableAdapterFactory) adapterFactory).getRootAdapterFactory(), getResourceLocator(),
+			getString("_UI_ScaStructSequenceProperty_structs_feature"),
+			getString("_UI_PropertyDescriptor_description", "_UI_ScaStructSequenceProperty_structs_feature", "_UI_ScaStructSequenceProperty_type"),
+			ScaPackage.Literals.SCA_STRUCT_SEQUENCE_PROPERTY__STRUCTS, true, false, false, null, null, null));
 	}
-	
+
 	/**
 	 * This adds a property descriptor for the Simples feature.
 	 * <!-- begin-user-doc -->
@@ -107,18 +96,11 @@ public class ScaStructSequencePropertyItemProvider
 	 * @generated NOT
 	 */
 	protected void addStructsPropertyDescriptor(Object object) {
-		ItemPropertyDescriptor propertyDescriptor = createItemPropertyDescriptor(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
-						 getResourceLocator(),
-						 getString("_UI_ScaStructSequenceProperty_structs_feature"),
-						 getString("_UI_PropertyDescriptor_description", "_UI_ScaStructSequenceProperty_structs_feature", "_UI_ScaStructSequenceProperty_type"),
-						 ScaPackage.Literals.SCA_STRUCT_SEQUENCE_PROPERTY__STRUCTS,
-						 true,
-						 false,
-						 false,
-						 null,
-						 null,
-						 null);
-		
+		ItemPropertyDescriptor propertyDescriptor = createItemPropertyDescriptor(((ComposeableAdapterFactory) adapterFactory).getRootAdapterFactory(),
+			getResourceLocator(), getString("_UI_ScaStructSequenceProperty_structs_feature"),
+			getString("_UI_PropertyDescriptor_description", "_UI_ScaStructSequenceProperty_structs_feature", "_UI_ScaStructSequenceProperty_type"),
+			ScaPackage.Literals.SCA_STRUCT_SEQUENCE_PROPERTY__STRUCTS, true, false, false, null, null, null);
+
 		itemPropertyDescriptors.add(new ScaStructSequenceValuePropertyDescriptor(object, propertyDescriptor, getRootAdapterFactory()));
 	}
 
@@ -131,7 +113,7 @@ public class ScaStructSequencePropertyItemProvider
 	 * @generated
 	 */
 	@Override
-	public Collection<? extends EStructuralFeature> getChildrenFeatures(Object object) {
+	public Collection< ? extends EStructuralFeature> getChildrenFeatures(Object object) {
 		if (childrenFeatures == null) {
 			super.getChildrenFeatures(object);
 			childrenFeatures.add(ScaPackage.Literals.SCA_STRUCT_SEQUENCE_PROPERTY__STRUCTS);
@@ -181,9 +163,9 @@ public class ScaStructSequencePropertyItemProvider
 		updateChildren(notification);
 
 		switch (notification.getFeatureID(ScaStructSequenceProperty.class)) {
-			case ScaPackage.SCA_STRUCT_SEQUENCE_PROPERTY__STRUCTS:
-				fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), true, false));
-				return;
+		case ScaPackage.SCA_STRUCT_SEQUENCE_PROPERTY__STRUCTS:
+			fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), true, false));
+			return;
 		}
 		super.notifyChanged(notification);
 	}
@@ -204,7 +186,7 @@ public class ScaStructSequencePropertyItemProvider
 	protected Command createSetCommand(EditingDomain domain, final EObject owner, EStructuralFeature feature, final Object value) {
 		if (feature == ScaPackage.Literals.SCA_STRUCT_SEQUENCE_PROPERTY__STRUCTS) {
 			return new ScaModelCommand() {
-				
+
 				@Override
 				public void execute() {
 					ScaStructSequenceProperty prop = (ScaStructSequenceProperty) owner;
@@ -215,19 +197,19 @@ public class ScaStructSequencePropertyItemProvider
 			return super.createSetCommand(domain, owner, feature, value);
 		}
 	}
-	
+
 	@Override
 	public Object getImage(Object object) {
 		return overlayImage(object, getPrfResourceLocator().getImage("full/obj16/StructSequence"));
 	}
-	
+
 	@Override
 	protected String getValueText(ScaAbstractProperty< ? > object) {
 		ScaStructSequenceProperty ss = (ScaStructSequenceProperty) object;
 		if (ss.getStructs().isEmpty()) {
 			return "[]";
 		} else {
-			return "[" + ((ScaStructSequenceProperty)object).getStructs().size() + "]";
+			return "[" + ((ScaStructSequenceProperty) object).getStructs().size() + "]";
 		}
 	}
 }

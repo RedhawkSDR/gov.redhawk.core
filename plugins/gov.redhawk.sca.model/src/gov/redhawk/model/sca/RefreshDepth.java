@@ -38,112 +38,106 @@ public enum RefreshDepth implements Enumerator {
 	 * @ordered
 	 */
 	NONE(0, "NONE", "NONE"), /**
-	 * The '<em><b>SELF</b></em>' literal object.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #SELF_VALUE
-	 * @generated
-	 * @ordered
-	 */
+								* The '<em><b>SELF</b></em>' literal object.
+								* <!-- begin-user-doc -->
+								* <!-- end-user-doc -->
+								* @see #SELF_VALUE
+								* @generated
+								* @ordered
+								*/
 	SELF(1, "SELF", "SELF"), /**
-	 * The '<em><b>CHILDREN</b></em>' literal object.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #CHILDREN_VALUE
-	 * @generated
-	 * @ordered
-	 */
+								* The '<em><b>CHILDREN</b></em>' literal object.
+								* <!-- begin-user-doc -->
+								* <!-- end-user-doc -->
+								* @see #CHILDREN_VALUE
+								* @generated
+								* @ordered
+								*/
 	CHILDREN(2, "CHILDREN", "CHILDREN"), /**
-	 * The '<em><b>FULL</b></em>' literal object.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #FULL_VALUE
-	 * @generated
-	 * @ordered
-	 */
+											* The '<em><b>FULL</b></em>' literal object.
+											* <!-- begin-user-doc -->
+											* <!-- end-user-doc -->
+											* @see #FULL_VALUE
+											* @generated
+											* @ordered
+											*/
 	FULL(3, "FULL", "FULL");
 
-/**
+	/**
 	 * The '<em><b>NONE</b></em>' literal value.
 	 * <!-- begin-user-doc -->
-	 * <p>
-	 * If the meaning of '<em><b>NONE</b></em>' literal object isn't clear,
-	 * there really should be more of a description here...
-	 * </p>
-	 * <!-- end-user-doc -->
+		 * <p>
+		 * If the meaning of '<em><b>NONE</b></em>' literal object isn't clear,
+		 * there really should be more of a description here...
+		 * </p>
+		 * <!-- end-user-doc -->
 	 * @see #NONE
 	 * @model
 	 * @generated
 	 * @ordered
 	 */
 	public static final int NONE_VALUE = 0;
-/**
+	/**
 	 * The '<em><b>SELF</b></em>' literal value.
 	 * <!-- begin-user-doc -->
-	 * <p>
-	 * If the meaning of '<em><b>SELF</b></em>' literal object isn't clear,
-	 * there really should be more of a description here...
-	 * </p>
-	 * <!-- end-user-doc -->
+		 * <p>
+		 * If the meaning of '<em><b>SELF</b></em>' literal object isn't clear,
+		 * there really should be more of a description here...
+		 * </p>
+		 * <!-- end-user-doc -->
 	 * @see #SELF
 	 * @model
 	 * @generated
 	 * @ordered
 	 */
 	public static final int SELF_VALUE = 1;
-/**
+	/**
 	 * The '<em><b>CHILDREN</b></em>' literal value.
 	 * <!-- begin-user-doc -->
-	 * <p>
-	 * If the meaning of '<em><b>CHILDREN</b></em>' literal object isn't clear,
-	 * there really should be more of a description here...
-	 * </p>
-	 * <!-- end-user-doc -->
+		 * <p>
+		 * If the meaning of '<em><b>CHILDREN</b></em>' literal object isn't clear,
+		 * there really should be more of a description here...
+		 * </p>
+		 * <!-- end-user-doc -->
 	 * @see #CHILDREN
 	 * @model
 	 * @generated
 	 * @ordered
 	 */
 	public static final int CHILDREN_VALUE = 2;
-/**
+	/**
 	 * The '<em><b>FULL</b></em>' literal value.
 	 * <!-- begin-user-doc -->
-	 * <p>
-	 * If the meaning of '<em><b>FULL</b></em>' literal object isn't clear,
-	 * there really should be more of a description here...
-	 * </p>
-	 * <!-- end-user-doc -->
+		 * <p>
+		 * If the meaning of '<em><b>FULL</b></em>' literal object isn't clear,
+		 * there really should be more of a description here...
+		 * </p>
+		 * <!-- end-user-doc -->
 	 * @see #FULL
 	 * @model
 	 * @generated
 	 * @ordered
 	 */
 	public static final int FULL_VALUE = 3;
-/**
+	/**
 	 * An array of all the '<em><b>Refresh Depth</b></em>' enumerators.
 	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+		 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	private static final RefreshDepth[] VALUES_ARRAY =
-		new RefreshDepth[] {
-			NONE,
-			SELF,
-			CHILDREN,
-			FULL,
-		};
-/**
+	private static final RefreshDepth[] VALUES_ARRAY = new RefreshDepth[] { NONE, SELF, CHILDREN, FULL, };
+	/**
 	 * A public read-only list of all the '<em><b>Refresh Depth</b></em>' enumerators.
 	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+		 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public static final List<RefreshDepth> VALUES = Collections.unmodifiableList(Arrays.asList(VALUES_ARRAY));
 
-/**
+	/**
 	 * Returns the '<em><b>Refresh Depth</b></em>' literal with the specified literal value.
 	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+		 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public static RefreshDepth get(String literal) {
@@ -156,10 +150,10 @@ public enum RefreshDepth implements Enumerator {
 		return null;
 	}
 
-/**
+	/**
 	 * Returns the '<em><b>Refresh Depth</b></em>' literal with the specified name.
 	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+		 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public static RefreshDepth getByName(String name) {
@@ -172,45 +166,49 @@ public enum RefreshDepth implements Enumerator {
 		return null;
 	}
 
-/**
+	/**
 	 * Returns the '<em><b>Refresh Depth</b></em>' literal with the specified integer value.
 	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+		 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public static RefreshDepth get(int value) {
 		switch (value) {
-			case NONE_VALUE: return NONE;
-			case SELF_VALUE: return SELF;
-			case CHILDREN_VALUE: return CHILDREN;
-			case FULL_VALUE: return FULL;
+		case NONE_VALUE:
+			return NONE;
+		case SELF_VALUE:
+			return SELF;
+		case CHILDREN_VALUE:
+			return CHILDREN;
+		case FULL_VALUE:
+			return FULL;
 		}
 		return null;
 	}
 
-/**
+	/**
 	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+		 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	private final int value;
-/**
+	/**
 	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+		 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	private final String name;
-/**
+	/**
 	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+		 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	private final String literal;
 
-/**
+	/**
 	 * Only this class can construct instances.
 	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+		 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	private RefreshDepth(int value, String name, String literal) {
@@ -219,40 +217,40 @@ public enum RefreshDepth implements Enumerator {
 		this.literal = literal;
 	}
 
-/**
+	/**
 	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+		 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
 	public int getValue() {
-	  return value;
+		return value;
 	}
 
-/**
+	/**
 	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+		 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
 	public String getName() {
-	  return name;
+		return name;
 	}
 
-/**
+	/**
 	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+		 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
 	public String getLiteral() {
-	  return literal;
+		return literal;
 	}
 
-/**
+	/**
 	 * Returns the literal value of the enumerator, which is its string representation.
 	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+		 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override

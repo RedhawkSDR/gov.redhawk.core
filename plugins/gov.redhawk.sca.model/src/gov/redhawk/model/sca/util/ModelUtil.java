@@ -54,7 +54,7 @@ import org.eclipse.emf.workspace.util.WorkspaceSynchronizer;
 public final class ModelUtil {
 
 	private static final Debug TRACE_LOGGER = new Debug(ScaModelPlugin.ID, "ModelUtil");
-	
+
 	/**
 	 * Instantiates a new model util.
 	 */
@@ -285,7 +285,7 @@ public final class ModelUtil {
 			final ResourceSet resourceSet = ScaResourceFactoryUtil.createResourceSet();
 			// Demand load the resource for this file.
 			final Resource resource = resourceSet.getResource(fileURI, true);
-	
+
 			return ModelUtil.getDeviceConfiguration(resource);
 		} catch (WrappedException we) {
 			if (TRACE_LOGGER.enabled) {
@@ -314,10 +314,10 @@ public final class ModelUtil {
 			// Parse the SPD file and copy all referenced files into the workspace
 			final ResourceSet resourceSet = ScaResourceFactoryUtil.createResourceSet();
 			//resourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap().put(".xml", new XMLResourceFactoryImpl());
-	
+
 			// Demand load the resource for this file.
 			final Resource resource = resourceSet.getResource(fileURI, true);
-	
+
 			return ModelUtil.getSoftPkg(resource);
 		} catch (WrappedException we) {
 			if (TRACE_LOGGER.enabled) {
@@ -339,10 +339,10 @@ public final class ModelUtil {
 			// Parse the SPD file and copy all referenced files into the workspace
 			final ResourceSet resourceSet = ScaResourceFactoryUtil.createResourceSet();
 			resourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap().put(".xml", new XMLResourceFactoryImpl());
-	
+
 			// Demand load the resource for this file.
 			final Resource resource = resourceSet.getResource(fileURI, true);
-	
+
 			return ModelUtil.getSoftwareComponent(resource);
 		} catch (WrappedException we) {
 			if (TRACE_LOGGER.enabled) {
@@ -364,10 +364,10 @@ public final class ModelUtil {
 			// Parse the SPD file and copy all referenced files into the workspace
 			final ResourceSet resourceSet = ScaResourceFactoryUtil.createResourceSet();
 			resourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap().put(".xml", new XMLResourceFactoryImpl());
-	
+
 			// Demand load the resource for this file.
 			final Resource resource = resourceSet.getResource(fileURI, true);
-	
+
 			return ModelUtil.getSoftwareAssembly(resource);
 		} catch (WrappedException we) {
 			if (TRACE_LOGGER.enabled) {

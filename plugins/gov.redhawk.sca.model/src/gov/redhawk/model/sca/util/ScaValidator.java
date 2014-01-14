@@ -131,7 +131,7 @@ public class ScaValidator extends EObjectValidator {
 	 */
 	@Override
 	protected EPackage getEPackage() {
-	  return ScaPackage.eINSTANCE;
+		return ScaPackage.eINSTANCE;
 	}
 
 	/**
@@ -143,118 +143,118 @@ public class ScaValidator extends EObjectValidator {
 	@Override
 	protected boolean validate(int classifierID, Object value, DiagnosticChain diagnostics, Map<Object, Object> context) {
 		switch (classifierID) {
-			case ScaPackage.CORBA_OBJ_WRAPPER:
-				return validateCorbaObjWrapper((CorbaObjWrapper<?>)value, diagnostics, context);
-			case ScaPackage.DATA_PROVIDER_OBJECT:
-				return validateDataProviderObject((DataProviderObject)value, diagnostics, context);
-			case ScaPackage.IDISPOSABLE:
-				return validateIDisposable((IDisposable)value, diagnostics, context);
-			case ScaPackage.PROFILE_OBJECT_WRAPPER:
-				return validateProfileObjectWrapper((ProfileObjectWrapper<?>)value, diagnostics, context);
-			case ScaPackage.PROPERTIES:
-				return validateProperties((Properties)value, diagnostics, context);
-			case ScaPackage.SCA_ABSTRACT_COMPONENT:
-				return validateScaAbstractComponent((ScaAbstractComponent<?>)value, diagnostics, context);
-			case ScaPackage.SCA_PROPERTY_CONTAINER:
-				return validateScaPropertyContainer((ScaPropertyContainer<?, ?>)value, diagnostics, context);
-			case ScaPackage.SCA_PORT_CONTAINER:
-				return validateScaPortContainer((ScaPortContainer)value, diagnostics, context);
-			case ScaPackage.SCA_ABSTRACT_PROPERTY:
-				return validateScaAbstractProperty((ScaAbstractProperty<?>)value, diagnostics, context);
-			case ScaPackage.SCA_COMPONENT:
-				return validateScaComponent((ScaComponent)value, diagnostics, context);
-			case ScaPackage.SCA_DEVICE:
-				return validateScaDevice((ScaDevice<?>)value, diagnostics, context);
-			case ScaPackage.SCA_DEVICE_MANAGER:
-				return validateScaDeviceManager((ScaDeviceManager)value, diagnostics, context);
-			case ScaPackage.SCA_SERVICE:
-				return validateScaService((ScaService)value, diagnostics, context);
-			case ScaPackage.SCA_DEVICE_MANAGER_FILE_SYSTEM:
-				return validateScaDeviceManagerFileSystem((ScaDeviceManagerFileSystem)value, diagnostics, context);
-			case ScaPackage.SCA_DOCUMENT_ROOT:
-				return validateScaDocumentRoot((ScaDocumentRoot)value, diagnostics, context);
-			case ScaPackage.SCA_DOMAIN_MANAGER:
-				return validateScaDomainManager((ScaDomainManager)value, diagnostics, context);
-			case ScaPackage.SCA_DOMAIN_MANAGER_FILE_SYSTEM:
-				return validateScaDomainManagerFileSystem((ScaDomainManagerFileSystem)value, diagnostics, context);
-			case ScaPackage.SCA_DOMAIN_MANAGER_REGISTRY:
-				return validateScaDomainManagerRegistry((ScaDomainManagerRegistry)value, diagnostics, context);
-			case ScaPackage.SCA_EXECUTABLE_DEVICE:
-				return validateScaExecutableDevice((ScaExecutableDevice)value, diagnostics, context);
-			case ScaPackage.SCA_FILE_MANAGER:
-				return validateScaFileManager((ScaFileManager)value, diagnostics, context);
-			case ScaPackage.SCA_FILE_STORE:
-				return validateScaFileStore((ScaFileStore)value, diagnostics, context);
-			case ScaPackage.SCA_FILE_SYSTEM:
-				return validateScaFileSystem((ScaFileSystem<?>)value, diagnostics, context);
-			case ScaPackage.SCA_LOADABLE_DEVICE:
-				return validateScaLoadableDevice((ScaLoadableDevice<?>)value, diagnostics, context);
-			case ScaPackage.SCA_PORT:
-				return validateScaPort((ScaPort<?, ?>)value, diagnostics, context);
-			case ScaPackage.SCA_PROVIDES_PORT:
-				return validateScaProvidesPort((ScaProvidesPort)value, diagnostics, context);
-			case ScaPackage.SCA_SIMPLE_PROPERTY:
-				return validateScaSimpleProperty((ScaSimpleProperty)value, diagnostics, context);
-			case ScaPackage.SCA_SIMPLE_SEQUENCE_PROPERTY:
-				return validateScaSimpleSequenceProperty((ScaSimpleSequenceProperty)value, diagnostics, context);
-			case ScaPackage.SCA_STRUCT_PROPERTY:
-				return validateScaStructProperty((ScaStructProperty)value, diagnostics, context);
-			case ScaPackage.SCA_USES_PORT:
-				return validateScaUsesPort((ScaUsesPort)value, diagnostics, context);
-			case ScaPackage.SCA_CONNECTION:
-				return validateScaConnection((ScaConnection)value, diagnostics, context);
-			case ScaPackage.SCA_WAVEFORM:
-				return validateScaWaveform((ScaWaveform)value, diagnostics, context);
-			case ScaPackage.SCA_WAVEFORM_FACTORY:
-				return validateScaWaveformFactory((ScaWaveformFactory)value, diagnostics, context);
-			case ScaPackage.STRING_TO_STRING_MAP:
-				return validateStringToStringMap((Map.Entry<?, ?>)value, diagnostics, context);
-			case ScaPackage.SCA_STRUCT_SEQUENCE_PROPERTY:
-				return validateScaStructSequenceProperty((ScaStructSequenceProperty)value, diagnostics, context);
-			case ScaPackage.ISTATUS_PROVIDER:
-				return validateIStatusProvider((IStatusProvider)value, diagnostics, context);
-			case ScaPackage.IREFRESHABLE:
-				return validateIRefreshable((IRefreshable)value, diagnostics, context);
-			case ScaPackage.DOMAIN_CONNECTION_STATE:
-				return validateDomainConnectionState((DomainConnectionState)value, diagnostics, context);
-			case ScaPackage.REFRESH_DEPTH:
-				return validateRefreshDepth((RefreshDepth)value, diagnostics, context);
-			case ScaPackage.ADMIN_TYPE:
-				return validateAdminType((AdminType)value, diagnostics, context);
-			case ScaPackage.DOMAIN_CONNECTION_EXCEPTION:
-				return validateDomainConnectionException((DomainConnectionException)value, diagnostics, context);
-			case ScaPackage.DOMAIN_CONNECTION_STATE_OBJECT:
-				return validateDomainConnectionStateObject((DomainConnectionState)value, diagnostics, context);
-			case ScaPackage.IFILE_STORE:
-				return validateIFileStore((IFileStore)value, diagnostics, context);
-			case ScaPackage.IPROGRESS_MONITOR:
-				return validateIProgressMonitor((IProgressMonitor)value, diagnostics, context);
-			case ScaPackage.ISCA_DATA_PROVIDER:
-				return validateIScaDataProvider((IScaDataProvider)value, diagnostics, context);
-			case ScaPackage.ISCA_DATA_PROVIDER_SERVICE:
-				return validateIScaDataProviderService((IScaDataProviderService)value, diagnostics, context);
-			case ScaPackage.ISTATUS:
-				return validateIStatus((IStatus)value, diagnostics, context);
-			case ScaPackage.OBJECT:
-				return validateObject((org.omg.CORBA.Object)value, diagnostics, context);
-			case ScaPackage.OBJECT_ARRAY:
-				return validateObjectArray((Object[])value, diagnostics, context);
-			case ScaPackage.OPERATIONAL_TYPE:
-				return validateOperationalType((OperationalType)value, diagnostics, context);
-			case ScaPackage.REFRESH_DEPTH_OBJECT:
-				return validateRefreshDepthObject((RefreshDepth)value, diagnostics, context);
-			case ScaPackage.POA:
-				return validatePOA((POA)value, diagnostics, context);
-			case ScaPackage.URI:
-				return validateURI((URI)value, diagnostics, context);
-			case ScaPackage.USAGE_TYPE:
-				return validateUsageType((UsageType)value, diagnostics, context);
-			case ScaPackage.DATA_TYPE_ARRAY:
-				return validateDataTypeArray((DataType[])value, diagnostics, context);
-			case ScaPackage.ANY:
-				return validateAny((Any)value, diagnostics, context);
-			default:
-				return true;
+		case ScaPackage.CORBA_OBJ_WRAPPER:
+			return validateCorbaObjWrapper((CorbaObjWrapper< ? >) value, diagnostics, context);
+		case ScaPackage.DATA_PROVIDER_OBJECT:
+			return validateDataProviderObject((DataProviderObject) value, diagnostics, context);
+		case ScaPackage.IDISPOSABLE:
+			return validateIDisposable((IDisposable) value, diagnostics, context);
+		case ScaPackage.PROFILE_OBJECT_WRAPPER:
+			return validateProfileObjectWrapper((ProfileObjectWrapper< ? >) value, diagnostics, context);
+		case ScaPackage.PROPERTIES:
+			return validateProperties((Properties) value, diagnostics, context);
+		case ScaPackage.SCA_ABSTRACT_COMPONENT:
+			return validateScaAbstractComponent((ScaAbstractComponent< ? >) value, diagnostics, context);
+		case ScaPackage.SCA_PROPERTY_CONTAINER:
+			return validateScaPropertyContainer((ScaPropertyContainer< ? , ? >) value, diagnostics, context);
+		case ScaPackage.SCA_PORT_CONTAINER:
+			return validateScaPortContainer((ScaPortContainer) value, diagnostics, context);
+		case ScaPackage.SCA_ABSTRACT_PROPERTY:
+			return validateScaAbstractProperty((ScaAbstractProperty< ? >) value, diagnostics, context);
+		case ScaPackage.SCA_COMPONENT:
+			return validateScaComponent((ScaComponent) value, diagnostics, context);
+		case ScaPackage.SCA_DEVICE:
+			return validateScaDevice((ScaDevice< ? >) value, diagnostics, context);
+		case ScaPackage.SCA_DEVICE_MANAGER:
+			return validateScaDeviceManager((ScaDeviceManager) value, diagnostics, context);
+		case ScaPackage.SCA_SERVICE:
+			return validateScaService((ScaService) value, diagnostics, context);
+		case ScaPackage.SCA_DEVICE_MANAGER_FILE_SYSTEM:
+			return validateScaDeviceManagerFileSystem((ScaDeviceManagerFileSystem) value, diagnostics, context);
+		case ScaPackage.SCA_DOCUMENT_ROOT:
+			return validateScaDocumentRoot((ScaDocumentRoot) value, diagnostics, context);
+		case ScaPackage.SCA_DOMAIN_MANAGER:
+			return validateScaDomainManager((ScaDomainManager) value, diagnostics, context);
+		case ScaPackage.SCA_DOMAIN_MANAGER_FILE_SYSTEM:
+			return validateScaDomainManagerFileSystem((ScaDomainManagerFileSystem) value, diagnostics, context);
+		case ScaPackage.SCA_DOMAIN_MANAGER_REGISTRY:
+			return validateScaDomainManagerRegistry((ScaDomainManagerRegistry) value, diagnostics, context);
+		case ScaPackage.SCA_EXECUTABLE_DEVICE:
+			return validateScaExecutableDevice((ScaExecutableDevice) value, diagnostics, context);
+		case ScaPackage.SCA_FILE_MANAGER:
+			return validateScaFileManager((ScaFileManager) value, diagnostics, context);
+		case ScaPackage.SCA_FILE_STORE:
+			return validateScaFileStore((ScaFileStore) value, diagnostics, context);
+		case ScaPackage.SCA_FILE_SYSTEM:
+			return validateScaFileSystem((ScaFileSystem< ? >) value, diagnostics, context);
+		case ScaPackage.SCA_LOADABLE_DEVICE:
+			return validateScaLoadableDevice((ScaLoadableDevice< ? >) value, diagnostics, context);
+		case ScaPackage.SCA_PORT:
+			return validateScaPort((ScaPort< ? , ? >) value, diagnostics, context);
+		case ScaPackage.SCA_PROVIDES_PORT:
+			return validateScaProvidesPort((ScaProvidesPort) value, diagnostics, context);
+		case ScaPackage.SCA_SIMPLE_PROPERTY:
+			return validateScaSimpleProperty((ScaSimpleProperty) value, diagnostics, context);
+		case ScaPackage.SCA_SIMPLE_SEQUENCE_PROPERTY:
+			return validateScaSimpleSequenceProperty((ScaSimpleSequenceProperty) value, diagnostics, context);
+		case ScaPackage.SCA_STRUCT_PROPERTY:
+			return validateScaStructProperty((ScaStructProperty) value, diagnostics, context);
+		case ScaPackage.SCA_USES_PORT:
+			return validateScaUsesPort((ScaUsesPort) value, diagnostics, context);
+		case ScaPackage.SCA_CONNECTION:
+			return validateScaConnection((ScaConnection) value, diagnostics, context);
+		case ScaPackage.SCA_WAVEFORM:
+			return validateScaWaveform((ScaWaveform) value, diagnostics, context);
+		case ScaPackage.SCA_WAVEFORM_FACTORY:
+			return validateScaWaveformFactory((ScaWaveformFactory) value, diagnostics, context);
+		case ScaPackage.STRING_TO_STRING_MAP:
+			return validateStringToStringMap((Map.Entry< ? , ? >) value, diagnostics, context);
+		case ScaPackage.SCA_STRUCT_SEQUENCE_PROPERTY:
+			return validateScaStructSequenceProperty((ScaStructSequenceProperty) value, diagnostics, context);
+		case ScaPackage.ISTATUS_PROVIDER:
+			return validateIStatusProvider((IStatusProvider) value, diagnostics, context);
+		case ScaPackage.IREFRESHABLE:
+			return validateIRefreshable((IRefreshable) value, diagnostics, context);
+		case ScaPackage.DOMAIN_CONNECTION_STATE:
+			return validateDomainConnectionState((DomainConnectionState) value, diagnostics, context);
+		case ScaPackage.REFRESH_DEPTH:
+			return validateRefreshDepth((RefreshDepth) value, diagnostics, context);
+		case ScaPackage.ADMIN_TYPE:
+			return validateAdminType((AdminType) value, diagnostics, context);
+		case ScaPackage.DOMAIN_CONNECTION_EXCEPTION:
+			return validateDomainConnectionException((DomainConnectionException) value, diagnostics, context);
+		case ScaPackage.DOMAIN_CONNECTION_STATE_OBJECT:
+			return validateDomainConnectionStateObject((DomainConnectionState) value, diagnostics, context);
+		case ScaPackage.IFILE_STORE:
+			return validateIFileStore((IFileStore) value, diagnostics, context);
+		case ScaPackage.IPROGRESS_MONITOR:
+			return validateIProgressMonitor((IProgressMonitor) value, diagnostics, context);
+		case ScaPackage.ISCA_DATA_PROVIDER:
+			return validateIScaDataProvider((IScaDataProvider) value, diagnostics, context);
+		case ScaPackage.ISCA_DATA_PROVIDER_SERVICE:
+			return validateIScaDataProviderService((IScaDataProviderService) value, diagnostics, context);
+		case ScaPackage.ISTATUS:
+			return validateIStatus((IStatus) value, diagnostics, context);
+		case ScaPackage.OBJECT:
+			return validateObject((org.omg.CORBA.Object) value, diagnostics, context);
+		case ScaPackage.OBJECT_ARRAY:
+			return validateObjectArray((Object[]) value, diagnostics, context);
+		case ScaPackage.OPERATIONAL_TYPE:
+			return validateOperationalType((OperationalType) value, diagnostics, context);
+		case ScaPackage.REFRESH_DEPTH_OBJECT:
+			return validateRefreshDepthObject((RefreshDepth) value, diagnostics, context);
+		case ScaPackage.POA:
+			return validatePOA((POA) value, diagnostics, context);
+		case ScaPackage.URI:
+			return validateURI((URI) value, diagnostics, context);
+		case ScaPackage.USAGE_TYPE:
+			return validateUsageType((UsageType) value, diagnostics, context);
+		case ScaPackage.DATA_TYPE_ARRAY:
+			return validateDataTypeArray((DataType[]) value, diagnostics, context);
+		case ScaPackage.ANY:
+			return validateAny((Any) value, diagnostics, context);
+		default:
+			return true;
 		}
 	}
 
@@ -263,7 +263,7 @@ public class ScaValidator extends EObjectValidator {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public boolean validateCorbaObjWrapper(CorbaObjWrapper<?> corbaObjWrapper, DiagnosticChain diagnostics, Map<Object, Object> context) {
+	public boolean validateCorbaObjWrapper(CorbaObjWrapper< ? > corbaObjWrapper, DiagnosticChain diagnostics, Map<Object, Object> context) {
 		return validate_EveryDefaultConstraint(corbaObjWrapper, diagnostics, context);
 	}
 
@@ -290,7 +290,7 @@ public class ScaValidator extends EObjectValidator {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public boolean validateProfileObjectWrapper(ProfileObjectWrapper<?> profileObjectWrapper, DiagnosticChain diagnostics, Map<Object, Object> context) {
+	public boolean validateProfileObjectWrapper(ProfileObjectWrapper< ? > profileObjectWrapper, DiagnosticChain diagnostics, Map<Object, Object> context) {
 		return validate_EveryDefaultConstraint(profileObjectWrapper, diagnostics, context);
 	}
 
@@ -308,7 +308,7 @@ public class ScaValidator extends EObjectValidator {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public boolean validateScaAbstractComponent(ScaAbstractComponent<?> scaAbstractComponent, DiagnosticChain diagnostics, Map<Object, Object> context) {
+	public boolean validateScaAbstractComponent(ScaAbstractComponent< ? > scaAbstractComponent, DiagnosticChain diagnostics, Map<Object, Object> context) {
 		return validate_EveryDefaultConstraint(scaAbstractComponent, diagnostics, context);
 	}
 
@@ -317,7 +317,7 @@ public class ScaValidator extends EObjectValidator {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public boolean validateScaPropertyContainer(ScaPropertyContainer<?, ?> scaPropertyContainer, DiagnosticChain diagnostics, Map<Object, Object> context) {
+	public boolean validateScaPropertyContainer(ScaPropertyContainer< ? , ? > scaPropertyContainer, DiagnosticChain diagnostics, Map<Object, Object> context) {
 		return validate_EveryDefaultConstraint(scaPropertyContainer, diagnostics, context);
 	}
 
@@ -335,7 +335,7 @@ public class ScaValidator extends EObjectValidator {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public boolean validateScaAbstractProperty(ScaAbstractProperty<?> scaAbstractProperty, DiagnosticChain diagnostics, Map<Object, Object> context) {
+	public boolean validateScaAbstractProperty(ScaAbstractProperty< ? > scaAbstractProperty, DiagnosticChain diagnostics, Map<Object, Object> context) {
 		return validate_EveryDefaultConstraint(scaAbstractProperty, diagnostics, context);
 	}
 
@@ -353,7 +353,7 @@ public class ScaValidator extends EObjectValidator {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public boolean validateScaDevice(ScaDevice<?> scaDevice, DiagnosticChain diagnostics, Map<Object, Object> context) {
+	public boolean validateScaDevice(ScaDevice< ? > scaDevice, DiagnosticChain diagnostics, Map<Object, Object> context) {
 		return validate_EveryDefaultConstraint(scaDevice, diagnostics, context);
 	}
 
@@ -380,7 +380,8 @@ public class ScaValidator extends EObjectValidator {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public boolean validateScaDeviceManagerFileSystem(ScaDeviceManagerFileSystem scaDeviceManagerFileSystem, DiagnosticChain diagnostics, Map<Object, Object> context) {
+	public boolean validateScaDeviceManagerFileSystem(ScaDeviceManagerFileSystem scaDeviceManagerFileSystem, DiagnosticChain diagnostics,
+		Map<Object, Object> context) {
 		return validate_EveryDefaultConstraint(scaDeviceManagerFileSystem, diagnostics, context);
 	}
 
@@ -407,7 +408,8 @@ public class ScaValidator extends EObjectValidator {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public boolean validateScaDomainManagerFileSystem(ScaDomainManagerFileSystem scaDomainManagerFileSystem, DiagnosticChain diagnostics, Map<Object, Object> context) {
+	public boolean validateScaDomainManagerFileSystem(ScaDomainManagerFileSystem scaDomainManagerFileSystem, DiagnosticChain diagnostics,
+		Map<Object, Object> context) {
 		return validate_EveryDefaultConstraint(scaDomainManagerFileSystem, diagnostics, context);
 	}
 
@@ -452,7 +454,7 @@ public class ScaValidator extends EObjectValidator {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public boolean validateScaFileSystem(ScaFileSystem<?> scaFileSystem, DiagnosticChain diagnostics, Map<Object, Object> context) {
+	public boolean validateScaFileSystem(ScaFileSystem< ? > scaFileSystem, DiagnosticChain diagnostics, Map<Object, Object> context) {
 		return validate_EveryDefaultConstraint(scaFileSystem, diagnostics, context);
 	}
 
@@ -461,7 +463,7 @@ public class ScaValidator extends EObjectValidator {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public boolean validateScaLoadableDevice(ScaLoadableDevice<?> scaLoadableDevice, DiagnosticChain diagnostics, Map<Object, Object> context) {
+	public boolean validateScaLoadableDevice(ScaLoadableDevice< ? > scaLoadableDevice, DiagnosticChain diagnostics, Map<Object, Object> context) {
 		return validate_EveryDefaultConstraint(scaLoadableDevice, diagnostics, context);
 	}
 
@@ -470,7 +472,7 @@ public class ScaValidator extends EObjectValidator {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public boolean validateScaPort(ScaPort<?, ?> scaPort, DiagnosticChain diagnostics, Map<Object, Object> context) {
+	public boolean validateScaPort(ScaPort< ? , ? > scaPort, DiagnosticChain diagnostics, Map<Object, Object> context) {
 		return validate_EveryDefaultConstraint(scaPort, diagnostics, context);
 	}
 
@@ -497,7 +499,8 @@ public class ScaValidator extends EObjectValidator {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public boolean validateScaSimpleSequenceProperty(ScaSimpleSequenceProperty scaSimpleSequenceProperty, DiagnosticChain diagnostics, Map<Object, Object> context) {
+	public boolean validateScaSimpleSequenceProperty(ScaSimpleSequenceProperty scaSimpleSequenceProperty, DiagnosticChain diagnostics,
+		Map<Object, Object> context) {
 		return validate_EveryDefaultConstraint(scaSimpleSequenceProperty, diagnostics, context);
 	}
 
@@ -551,8 +554,8 @@ public class ScaValidator extends EObjectValidator {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public boolean validateStringToStringMap(Map.Entry<?, ?> stringToStringMap, DiagnosticChain diagnostics, Map<Object, Object> context) {
-		return validate_EveryDefaultConstraint((EObject)stringToStringMap, diagnostics, context);
+	public boolean validateStringToStringMap(Map.Entry< ? , ? > stringToStringMap, DiagnosticChain diagnostics, Map<Object, Object> context) {
+		return validate_EveryDefaultConstraint((EObject) stringToStringMap, diagnostics, context);
 	}
 
 	/**
@@ -560,7 +563,8 @@ public class ScaValidator extends EObjectValidator {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public boolean validateScaStructSequenceProperty(ScaStructSequenceProperty scaStructSequenceProperty, DiagnosticChain diagnostics, Map<Object, Object> context) {
+	public boolean validateScaStructSequenceProperty(ScaStructSequenceProperty scaStructSequenceProperty, DiagnosticChain diagnostics,
+		Map<Object, Object> context) {
 		return validate_EveryDefaultConstraint(scaStructSequenceProperty, diagnostics, context);
 	}
 
@@ -579,7 +583,7 @@ public class ScaValidator extends EObjectValidator {
 	 * @generated
 	 */
 	public boolean validateIRefreshable(IRefreshable iRefreshable, DiagnosticChain diagnostics, Map<Object, Object> context) {
-		return validate_EveryDefaultConstraint((EObject)iRefreshable, diagnostics, context);
+		return validate_EveryDefaultConstraint((EObject) iRefreshable, diagnostics, context);
 	}
 
 	/**
@@ -616,13 +620,10 @@ public class ScaValidator extends EObjectValidator {
 	 * @generated
 	 * @see #validateAdminType_Enumeration
 	 */
-	public static final Collection<Object> ADMIN_TYPE__ENUMERATION__VALUES =
-		wrapEnumerationValues
-			(new Object[] {
-				 ScaFactory.eINSTANCE.createFromString(ScaPackage.eINSTANCE.getAdminType(), "LOCKED"),
-				 ScaFactory.eINSTANCE.createFromString(ScaPackage.eINSTANCE.getAdminType(), "SHUTTING DOWN"),
-				 ScaFactory.eINSTANCE.createFromString(ScaPackage.eINSTANCE.getAdminType(), "UNLOCKED")
-			 });
+	public static final Collection<Object> ADMIN_TYPE__ENUMERATION__VALUES = wrapEnumerationValues(new Object[] {
+		ScaFactory.eINSTANCE.createFromString(ScaPackage.eINSTANCE.getAdminType(), "LOCKED"),
+		ScaFactory.eINSTANCE.createFromString(ScaPackage.eINSTANCE.getAdminType(), "SHUTTING DOWN"),
+		ScaFactory.eINSTANCE.createFromString(ScaPackage.eINSTANCE.getAdminType(), "UNLOCKED") });
 
 	/**
 	 * Validates the Enumeration constraint of '<em>Admin Type</em>'.
@@ -642,7 +643,8 @@ public class ScaValidator extends EObjectValidator {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public boolean validateDomainConnectionException(DomainConnectionException domainConnectionException, DiagnosticChain diagnostics, Map<Object, Object> context) {
+	public boolean validateDomainConnectionException(DomainConnectionException domainConnectionException, DiagnosticChain diagnostics,
+		Map<Object, Object> context) {
 		return true;
 	}
 
@@ -651,7 +653,8 @@ public class ScaValidator extends EObjectValidator {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public boolean validateDomainConnectionStateObject(DomainConnectionState domainConnectionStateObject, DiagnosticChain diagnostics, Map<Object, Object> context) {
+	public boolean validateDomainConnectionStateObject(DomainConnectionState domainConnectionStateObject, DiagnosticChain diagnostics,
+		Map<Object, Object> context) {
 		return true;
 	}
 
@@ -734,12 +737,9 @@ public class ScaValidator extends EObjectValidator {
 	 * @generated
 	 * @see #validateOperationalType_Enumeration
 	 */
-	public static final Collection<Object> OPERATIONAL_TYPE__ENUMERATION__VALUES =
-		wrapEnumerationValues
-			(new Object[] {
-				 ScaFactory.eINSTANCE.createFromString(ScaPackage.eINSTANCE.getOperationalType(), "ENABLED"),
-				 ScaFactory.eINSTANCE.createFromString(ScaPackage.eINSTANCE.getOperationalType(), "DISABLED")
-			 });
+	public static final Collection<Object> OPERATIONAL_TYPE__ENUMERATION__VALUES = wrapEnumerationValues(new Object[] {
+		ScaFactory.eINSTANCE.createFromString(ScaPackage.eINSTANCE.getOperationalType(), "ENABLED"),
+		ScaFactory.eINSTANCE.createFromString(ScaPackage.eINSTANCE.getOperationalType(), "DISABLED") });
 
 	/**
 	 * Validates the Enumeration constraint of '<em>Operational Type</em>'.
@@ -797,13 +797,10 @@ public class ScaValidator extends EObjectValidator {
 	 * @generated
 	 * @see #validateUsageType_Enumeration
 	 */
-	public static final Collection<Object> USAGE_TYPE__ENUMERATION__VALUES =
-		wrapEnumerationValues
-			(new Object[] {
-				 ScaFactory.eINSTANCE.createFromString(ScaPackage.eINSTANCE.getUsageType(), "ACTIVE"),
-				 ScaFactory.eINSTANCE.createFromString(ScaPackage.eINSTANCE.getUsageType(), "BUSY"),
-				 ScaFactory.eINSTANCE.createFromString(ScaPackage.eINSTANCE.getUsageType(), "IDLE")
-			 });
+	public static final Collection<Object> USAGE_TYPE__ENUMERATION__VALUES = wrapEnumerationValues(new Object[] {
+		ScaFactory.eINSTANCE.createFromString(ScaPackage.eINSTANCE.getUsageType(), "ACTIVE"),
+		ScaFactory.eINSTANCE.createFromString(ScaPackage.eINSTANCE.getUsageType(), "BUSY"),
+		ScaFactory.eINSTANCE.createFromString(ScaPackage.eINSTANCE.getUsageType(), "IDLE") });
 
 	/**
 	 * Validates the Enumeration constraint of '<em>Usage Type</em>'.

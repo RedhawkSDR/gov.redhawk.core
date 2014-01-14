@@ -79,12 +79,13 @@ public interface ScaFileSystem< F extends FileSystem > extends CorbaObjWrapper<F
 	org.eclipse.emf.common.util.URI createURI(String path);
 
 	/**
-     * @since 14.0
-     */
+	 * @since 14.0
+	 */
 	final class Util {
-		private Util(){
-			
+		private Util() {
+
 		}
+
 		/**
 		 * @since 13.0
 		 * @param ior
@@ -99,8 +100,8 @@ public interface ScaFileSystem< F extends FileSystem > extends CorbaObjWrapper<F
 			queryParams.put(ScaFileSystemConstants.QUERY_PARAM_FS, ior);
 			return new URI(ScaFileSystemConstants.SCHEME + "://?" + QueryParser.createQuery(queryParams));
 		}
-		
-		public static URI createFileSystemURI(ScaFileSystem<?> fileSystem) throws URISyntaxException {
+
+		public static URI createFileSystemURI(ScaFileSystem< ? > fileSystem) throws URISyntaxException {
 			return createFileSystemURI(fileSystem.getIor());
 		}
 	}

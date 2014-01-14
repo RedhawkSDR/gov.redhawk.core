@@ -217,7 +217,8 @@ public class ScaFileStoreImpl extends IStatusProviderImpl implements ScaFileStor
 	 */
 	@Override
 	public void unsetChildren() {
-		if (children != null) ((InternalEList.Unsettable<?>)children).unset();
+		if (children != null)
+			((InternalEList.Unsettable< ? >) children).unset();
 	}
 
 	/**
@@ -227,7 +228,7 @@ public class ScaFileStoreImpl extends IStatusProviderImpl implements ScaFileStor
 	 */
 	@Override
 	public boolean isSetChildren() {
-		return children != null && ((InternalEList.Unsettable<?>)children).isSet();
+		return children != null && ((InternalEList.Unsettable< ? >) children).isSet();
 	}
 
 	/**
@@ -348,8 +349,8 @@ public class ScaFileStoreImpl extends IStatusProviderImpl implements ScaFileStor
 	@Override
 	public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
 		switch (featureID) {
-			case ScaPackage.SCA_FILE_STORE__CHILDREN:
-				return ((InternalEList<?>)getChildren()).basicRemove(otherEnd, msgs);
+		case ScaPackage.SCA_FILE_STORE__CHILDREN:
+			return ((InternalEList< ? >) getChildren()).basicRemove(otherEnd, msgs);
 		}
 		return super.eInverseRemove(otherEnd, featureID, msgs);
 	}
@@ -362,16 +363,16 @@ public class ScaFileStoreImpl extends IStatusProviderImpl implements ScaFileStor
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
-			case ScaPackage.SCA_FILE_STORE__FILE_STORE:
-				return getFileStore();
-			case ScaPackage.SCA_FILE_STORE__CHILDREN:
-				return getChildren();
-			case ScaPackage.SCA_FILE_STORE__IMAGE_DESC:
-				return getImageDesc();
-			case ScaPackage.SCA_FILE_STORE__DIRECTORY:
-				return isDirectory();
-			case ScaPackage.SCA_FILE_STORE__NAME:
-				return getName();
+		case ScaPackage.SCA_FILE_STORE__FILE_STORE:
+			return getFileStore();
+		case ScaPackage.SCA_FILE_STORE__CHILDREN:
+			return getChildren();
+		case ScaPackage.SCA_FILE_STORE__IMAGE_DESC:
+			return getImageDesc();
+		case ScaPackage.SCA_FILE_STORE__DIRECTORY:
+			return isDirectory();
+		case ScaPackage.SCA_FILE_STORE__NAME:
+			return getName();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -385,22 +386,22 @@ public class ScaFileStoreImpl extends IStatusProviderImpl implements ScaFileStor
 	@Override
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
-			case ScaPackage.SCA_FILE_STORE__FILE_STORE:
-				setFileStore((IFileStore)newValue);
-				return;
-			case ScaPackage.SCA_FILE_STORE__CHILDREN:
-				getChildren().clear();
-				getChildren().addAll((Collection<? extends ScaFileStore>)newValue);
-				return;
-			case ScaPackage.SCA_FILE_STORE__IMAGE_DESC:
-				setImageDesc(newValue);
-				return;
-			case ScaPackage.SCA_FILE_STORE__DIRECTORY:
-				setDirectory((Boolean)newValue);
-				return;
-			case ScaPackage.SCA_FILE_STORE__NAME:
-				setName((String)newValue);
-				return;
+		case ScaPackage.SCA_FILE_STORE__FILE_STORE:
+			setFileStore((IFileStore) newValue);
+			return;
+		case ScaPackage.SCA_FILE_STORE__CHILDREN:
+			getChildren().clear();
+			getChildren().addAll((Collection< ? extends ScaFileStore>) newValue);
+			return;
+		case ScaPackage.SCA_FILE_STORE__IMAGE_DESC:
+			setImageDesc(newValue);
+			return;
+		case ScaPackage.SCA_FILE_STORE__DIRECTORY:
+			setDirectory((Boolean) newValue);
+			return;
+		case ScaPackage.SCA_FILE_STORE__NAME:
+			setName((String) newValue);
+			return;
 		}
 		super.eSet(featureID, newValue);
 	}
@@ -413,21 +414,21 @@ public class ScaFileStoreImpl extends IStatusProviderImpl implements ScaFileStor
 	@Override
 	public void eUnset(int featureID) {
 		switch (featureID) {
-			case ScaPackage.SCA_FILE_STORE__FILE_STORE:
-				setFileStore(FILE_STORE_EDEFAULT);
-				return;
-			case ScaPackage.SCA_FILE_STORE__CHILDREN:
-				unsetChildren();
-				return;
-			case ScaPackage.SCA_FILE_STORE__IMAGE_DESC:
-				unsetImageDesc();
-				return;
-			case ScaPackage.SCA_FILE_STORE__DIRECTORY:
-				setDirectory(DIRECTORY_EDEFAULT);
-				return;
-			case ScaPackage.SCA_FILE_STORE__NAME:
-				setName(NAME_EDEFAULT);
-				return;
+		case ScaPackage.SCA_FILE_STORE__FILE_STORE:
+			setFileStore(FILE_STORE_EDEFAULT);
+			return;
+		case ScaPackage.SCA_FILE_STORE__CHILDREN:
+			unsetChildren();
+			return;
+		case ScaPackage.SCA_FILE_STORE__IMAGE_DESC:
+			unsetImageDesc();
+			return;
+		case ScaPackage.SCA_FILE_STORE__DIRECTORY:
+			setDirectory(DIRECTORY_EDEFAULT);
+			return;
+		case ScaPackage.SCA_FILE_STORE__NAME:
+			setName(NAME_EDEFAULT);
+			return;
 		}
 		super.eUnset(featureID);
 	}
@@ -440,16 +441,16 @@ public class ScaFileStoreImpl extends IStatusProviderImpl implements ScaFileStor
 	@Override
 	public boolean eIsSet(int featureID) {
 		switch (featureID) {
-			case ScaPackage.SCA_FILE_STORE__FILE_STORE:
-				return FILE_STORE_EDEFAULT == null ? fileStore != null : !FILE_STORE_EDEFAULT.equals(fileStore);
-			case ScaPackage.SCA_FILE_STORE__CHILDREN:
-				return isSetChildren();
-			case ScaPackage.SCA_FILE_STORE__IMAGE_DESC:
-				return isSetImageDesc();
-			case ScaPackage.SCA_FILE_STORE__DIRECTORY:
-				return directory != DIRECTORY_EDEFAULT;
-			case ScaPackage.SCA_FILE_STORE__NAME:
-				return NAME_EDEFAULT == null ? name != null : !NAME_EDEFAULT.equals(name);
+		case ScaPackage.SCA_FILE_STORE__FILE_STORE:
+			return FILE_STORE_EDEFAULT == null ? fileStore != null : !FILE_STORE_EDEFAULT.equals(fileStore);
+		case ScaPackage.SCA_FILE_STORE__CHILDREN:
+			return isSetChildren();
+		case ScaPackage.SCA_FILE_STORE__IMAGE_DESC:
+			return isSetImageDesc();
+		case ScaPackage.SCA_FILE_STORE__DIRECTORY:
+			return directory != DIRECTORY_EDEFAULT;
+		case ScaPackage.SCA_FILE_STORE__NAME:
+			return NAME_EDEFAULT == null ? name != null : !NAME_EDEFAULT.equals(name);
 		}
 		return super.eIsSet(featureID);
 	}
@@ -461,13 +462,17 @@ public class ScaFileStoreImpl extends IStatusProviderImpl implements ScaFileStor
 	 */
 	@Override
 	public String toString() {
-		if (eIsProxy()) return super.toString();
+		if (eIsProxy())
+			return super.toString();
 
 		StringBuffer result = new StringBuffer(super.toString());
 		result.append(" (fileStore: ");
 		result.append(fileStore);
 		result.append(", imageDesc: ");
-		if (imageDescESet) result.append(imageDesc); else result.append("<unset>");
+		if (imageDescESet)
+			result.append(imageDesc);
+		else
+			result.append("<unset>");
 		result.append(", directory: ");
 		result.append(directory);
 		result.append(", name: ");
@@ -482,7 +487,7 @@ public class ScaFileStoreImpl extends IStatusProviderImpl implements ScaFileStor
 	protected void internalFetchChildren(IProgressMonitor monitor) {
 		ScaFileStoreImpl.internalFetchChildren(monitor, this);
 	}
-	
+
 	/**
 	 * <!-- begin-user-doc -->
 	 * @since 14.0
@@ -505,13 +510,14 @@ public class ScaFileStoreImpl extends IStatusProviderImpl implements ScaFileStor
 
 	private static class FileStoreData {
 		public FileStoreData(IFileStore childStore, boolean isDirectory) {
-	       fileStore = childStore;
-	       this.isDirectory = isDirectory;
-        }
+			fileStore = childStore;
+			this.isDirectory = isDirectory;
+		}
+
 		final IFileStore fileStore;
 		final boolean isDirectory;
 	}
-	
+
 	static void internalFetchChildren(IProgressMonitor monitor, final ScaFileStore parentStore) {
 		// END GENERATED CODE
 		try {

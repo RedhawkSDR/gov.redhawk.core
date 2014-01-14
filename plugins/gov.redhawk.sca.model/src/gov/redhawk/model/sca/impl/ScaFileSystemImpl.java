@@ -174,7 +174,7 @@ public abstract class ScaFileSystemImpl< F extends FileSystem > extends CorbaObj
 	 * @generated
 	 * @ordered
 	 */
-	protected static final URI FILE_SYSTEM_URI_EDEFAULT = (URI)ScaFactory.eINSTANCE.createFromString(ScaPackage.eINSTANCE.getURI(), "");
+	protected static final URI FILE_SYSTEM_URI_EDEFAULT = (URI) ScaFactory.eINSTANCE.createFromString(ScaPackage.eINSTANCE.getURI(), "");
 
 	/**
 	 * The cached value of the '{@link #getFileSystemURI() <em>File System URI</em>}' attribute.
@@ -260,7 +260,8 @@ public abstract class ScaFileSystemImpl< F extends FileSystem > extends CorbaObj
 	 */
 	@Override
 	public void unsetChildren() {
-		if (children != null) ((InternalEList.Unsettable<?>)children).unset();
+		if (children != null)
+			((InternalEList.Unsettable< ? >) children).unset();
 	}
 
 	/**
@@ -270,7 +271,7 @@ public abstract class ScaFileSystemImpl< F extends FileSystem > extends CorbaObj
 	 */
 	@Override
 	public boolean isSetChildren() {
-		return children != null && ((InternalEList.Unsettable<?>)children).isSet();
+		return children != null && ((InternalEList.Unsettable< ? >) children).isSet();
 	}
 
 	/**
@@ -400,7 +401,7 @@ public abstract class ScaFileSystemImpl< F extends FileSystem > extends CorbaObj
 		if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET, ScaPackage.SCA_FILE_SYSTEM__FILE_SYSTEM_URI, oldFileSystemURI, fileSystemURI));
 	}
-	
+
 	/**
 	 * <!-- begin-user-doc -->
 	 * @since 9.0
@@ -417,7 +418,8 @@ public abstract class ScaFileSystemImpl< F extends FileSystem > extends CorbaObj
 				setFileStore(fileSystem.getStore(newFileSystemURI));
 				setStatus(ScaPackage.Literals.SCA_FILE_SYSTEM__FILE_SYSTEM_URI, Status.OK_STATUS);
 			} catch (final CoreException e) {
-				setStatus(ScaPackage.Literals.SCA_FILE_SYSTEM__FILE_SYSTEM_URI, new Status(Status.ERROR, ScaModelPlugin.ID, "Error in resolving file system.", e));
+				setStatus(ScaPackage.Literals.SCA_FILE_SYSTEM__FILE_SYSTEM_URI, new Status(Status.ERROR, ScaModelPlugin.ID, "Error in resolving file system.",
+					e));
 			}
 		} else {
 			setFileStore(null);
@@ -474,10 +476,10 @@ public abstract class ScaFileSystemImpl< F extends FileSystem > extends CorbaObj
 		}
 		fileSys.copy(sourceFileName, destinationFileName);
 	}
-	
+
 	/**
-     * @since 14.0
-     */
+	 * @since 14.0
+	 */
 	@Override
 	public void move(String sourceFileName, String destinationFileName) throws InvalidFileName, FileException {
 		final FileSystem fileSys = fetchNarrowedObject(null);
@@ -561,8 +563,8 @@ public abstract class ScaFileSystemImpl< F extends FileSystem > extends CorbaObj
 	@Override
 	public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
 		switch (featureID) {
-			case ScaPackage.SCA_FILE_SYSTEM__CHILDREN:
-				return ((InternalEList<?>)getChildren()).basicRemove(otherEnd, msgs);
+		case ScaPackage.SCA_FILE_SYSTEM__CHILDREN:
+			return ((InternalEList< ? >) getChildren()).basicRemove(otherEnd, msgs);
 		}
 		return super.eInverseRemove(otherEnd, featureID, msgs);
 	}
@@ -575,18 +577,18 @@ public abstract class ScaFileSystemImpl< F extends FileSystem > extends CorbaObj
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
-			case ScaPackage.SCA_FILE_SYSTEM__FILE_STORE:
-				return getFileStore();
-			case ScaPackage.SCA_FILE_SYSTEM__CHILDREN:
-				return getChildren();
-			case ScaPackage.SCA_FILE_SYSTEM__IMAGE_DESC:
-				return getImageDesc();
-			case ScaPackage.SCA_FILE_SYSTEM__DIRECTORY:
-				return isDirectory();
-			case ScaPackage.SCA_FILE_SYSTEM__NAME:
-				return getName();
-			case ScaPackage.SCA_FILE_SYSTEM__FILE_SYSTEM_URI:
-				return getFileSystemURI();
+		case ScaPackage.SCA_FILE_SYSTEM__FILE_STORE:
+			return getFileStore();
+		case ScaPackage.SCA_FILE_SYSTEM__CHILDREN:
+			return getChildren();
+		case ScaPackage.SCA_FILE_SYSTEM__IMAGE_DESC:
+			return getImageDesc();
+		case ScaPackage.SCA_FILE_SYSTEM__DIRECTORY:
+			return isDirectory();
+		case ScaPackage.SCA_FILE_SYSTEM__NAME:
+			return getName();
+		case ScaPackage.SCA_FILE_SYSTEM__FILE_SYSTEM_URI:
+			return getFileSystemURI();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -600,25 +602,25 @@ public abstract class ScaFileSystemImpl< F extends FileSystem > extends CorbaObj
 	@Override
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
-			case ScaPackage.SCA_FILE_SYSTEM__FILE_STORE:
-				setFileStore((IFileStore)newValue);
-				return;
-			case ScaPackage.SCA_FILE_SYSTEM__CHILDREN:
-				getChildren().clear();
-				getChildren().addAll((Collection<? extends ScaFileStore>)newValue);
-				return;
-			case ScaPackage.SCA_FILE_SYSTEM__IMAGE_DESC:
-				setImageDesc(newValue);
-				return;
-			case ScaPackage.SCA_FILE_SYSTEM__DIRECTORY:
-				setDirectory((Boolean)newValue);
-				return;
-			case ScaPackage.SCA_FILE_SYSTEM__NAME:
-				setName((String)newValue);
-				return;
-			case ScaPackage.SCA_FILE_SYSTEM__FILE_SYSTEM_URI:
-				setFileSystemURI((URI)newValue);
-				return;
+		case ScaPackage.SCA_FILE_SYSTEM__FILE_STORE:
+			setFileStore((IFileStore) newValue);
+			return;
+		case ScaPackage.SCA_FILE_SYSTEM__CHILDREN:
+			getChildren().clear();
+			getChildren().addAll((Collection< ? extends ScaFileStore>) newValue);
+			return;
+		case ScaPackage.SCA_FILE_SYSTEM__IMAGE_DESC:
+			setImageDesc(newValue);
+			return;
+		case ScaPackage.SCA_FILE_SYSTEM__DIRECTORY:
+			setDirectory((Boolean) newValue);
+			return;
+		case ScaPackage.SCA_FILE_SYSTEM__NAME:
+			setName((String) newValue);
+			return;
+		case ScaPackage.SCA_FILE_SYSTEM__FILE_SYSTEM_URI:
+			setFileSystemURI((URI) newValue);
+			return;
 		}
 		super.eSet(featureID, newValue);
 	}
@@ -631,24 +633,24 @@ public abstract class ScaFileSystemImpl< F extends FileSystem > extends CorbaObj
 	@Override
 	public void eUnset(int featureID) {
 		switch (featureID) {
-			case ScaPackage.SCA_FILE_SYSTEM__FILE_STORE:
-				setFileStore(FILE_STORE_EDEFAULT);
-				return;
-			case ScaPackage.SCA_FILE_SYSTEM__CHILDREN:
-				unsetChildren();
-				return;
-			case ScaPackage.SCA_FILE_SYSTEM__IMAGE_DESC:
-				unsetImageDesc();
-				return;
-			case ScaPackage.SCA_FILE_SYSTEM__DIRECTORY:
-				setDirectory(DIRECTORY_EDEFAULT);
-				return;
-			case ScaPackage.SCA_FILE_SYSTEM__NAME:
-				setName(NAME_EDEFAULT);
-				return;
-			case ScaPackage.SCA_FILE_SYSTEM__FILE_SYSTEM_URI:
-				setFileSystemURI(FILE_SYSTEM_URI_EDEFAULT);
-				return;
+		case ScaPackage.SCA_FILE_SYSTEM__FILE_STORE:
+			setFileStore(FILE_STORE_EDEFAULT);
+			return;
+		case ScaPackage.SCA_FILE_SYSTEM__CHILDREN:
+			unsetChildren();
+			return;
+		case ScaPackage.SCA_FILE_SYSTEM__IMAGE_DESC:
+			unsetImageDesc();
+			return;
+		case ScaPackage.SCA_FILE_SYSTEM__DIRECTORY:
+			setDirectory(DIRECTORY_EDEFAULT);
+			return;
+		case ScaPackage.SCA_FILE_SYSTEM__NAME:
+			setName(NAME_EDEFAULT);
+			return;
+		case ScaPackage.SCA_FILE_SYSTEM__FILE_SYSTEM_URI:
+			setFileSystemURI(FILE_SYSTEM_URI_EDEFAULT);
+			return;
 		}
 		super.eUnset(featureID);
 	}
@@ -661,18 +663,18 @@ public abstract class ScaFileSystemImpl< F extends FileSystem > extends CorbaObj
 	@Override
 	public boolean eIsSet(int featureID) {
 		switch (featureID) {
-			case ScaPackage.SCA_FILE_SYSTEM__FILE_STORE:
-				return FILE_STORE_EDEFAULT == null ? fileStore != null : !FILE_STORE_EDEFAULT.equals(fileStore);
-			case ScaPackage.SCA_FILE_SYSTEM__CHILDREN:
-				return isSetChildren();
-			case ScaPackage.SCA_FILE_SYSTEM__IMAGE_DESC:
-				return isSetImageDesc();
-			case ScaPackage.SCA_FILE_SYSTEM__DIRECTORY:
-				return directory != DIRECTORY_EDEFAULT;
-			case ScaPackage.SCA_FILE_SYSTEM__NAME:
-				return NAME_EDEFAULT == null ? name != null : !NAME_EDEFAULT.equals(name);
-			case ScaPackage.SCA_FILE_SYSTEM__FILE_SYSTEM_URI:
-				return FILE_SYSTEM_URI_EDEFAULT == null ? fileSystemURI != null : !FILE_SYSTEM_URI_EDEFAULT.equals(fileSystemURI);
+		case ScaPackage.SCA_FILE_SYSTEM__FILE_STORE:
+			return FILE_STORE_EDEFAULT == null ? fileStore != null : !FILE_STORE_EDEFAULT.equals(fileStore);
+		case ScaPackage.SCA_FILE_SYSTEM__CHILDREN:
+			return isSetChildren();
+		case ScaPackage.SCA_FILE_SYSTEM__IMAGE_DESC:
+			return isSetImageDesc();
+		case ScaPackage.SCA_FILE_SYSTEM__DIRECTORY:
+			return directory != DIRECTORY_EDEFAULT;
+		case ScaPackage.SCA_FILE_SYSTEM__NAME:
+			return NAME_EDEFAULT == null ? name != null : !NAME_EDEFAULT.equals(name);
+		case ScaPackage.SCA_FILE_SYSTEM__FILE_SYSTEM_URI:
+			return FILE_SYSTEM_URI_EDEFAULT == null ? fileSystemURI != null : !FILE_SYSTEM_URI_EDEFAULT.equals(fileSystemURI);
 		}
 		return super.eIsSet(featureID);
 	}
@@ -683,20 +685,27 @@ public abstract class ScaFileSystemImpl< F extends FileSystem > extends CorbaObj
 	 * @generated
 	 */
 	@Override
-	public int eBaseStructuralFeatureID(int derivedFeatureID, Class<?> baseClass) {
+	public int eBaseStructuralFeatureID(int derivedFeatureID, Class< ? > baseClass) {
 		if (baseClass == FileSystemOperations.class) {
 			switch (derivedFeatureID) {
-				default: return -1;
+			default:
+				return -1;
 			}
 		}
 		if (baseClass == ScaFileStore.class) {
 			switch (derivedFeatureID) {
-				case ScaPackage.SCA_FILE_SYSTEM__FILE_STORE: return ScaPackage.SCA_FILE_STORE__FILE_STORE;
-				case ScaPackage.SCA_FILE_SYSTEM__CHILDREN: return ScaPackage.SCA_FILE_STORE__CHILDREN;
-				case ScaPackage.SCA_FILE_SYSTEM__IMAGE_DESC: return ScaPackage.SCA_FILE_STORE__IMAGE_DESC;
-				case ScaPackage.SCA_FILE_SYSTEM__DIRECTORY: return ScaPackage.SCA_FILE_STORE__DIRECTORY;
-				case ScaPackage.SCA_FILE_SYSTEM__NAME: return ScaPackage.SCA_FILE_STORE__NAME;
-				default: return -1;
+			case ScaPackage.SCA_FILE_SYSTEM__FILE_STORE:
+				return ScaPackage.SCA_FILE_STORE__FILE_STORE;
+			case ScaPackage.SCA_FILE_SYSTEM__CHILDREN:
+				return ScaPackage.SCA_FILE_STORE__CHILDREN;
+			case ScaPackage.SCA_FILE_SYSTEM__IMAGE_DESC:
+				return ScaPackage.SCA_FILE_STORE__IMAGE_DESC;
+			case ScaPackage.SCA_FILE_SYSTEM__DIRECTORY:
+				return ScaPackage.SCA_FILE_STORE__DIRECTORY;
+			case ScaPackage.SCA_FILE_SYSTEM__NAME:
+				return ScaPackage.SCA_FILE_STORE__NAME;
+			default:
+				return -1;
 			}
 		}
 		return super.eBaseStructuralFeatureID(derivedFeatureID, baseClass);
@@ -708,20 +717,27 @@ public abstract class ScaFileSystemImpl< F extends FileSystem > extends CorbaObj
 	 * @generated
 	 */
 	@Override
-	public int eDerivedStructuralFeatureID(int baseFeatureID, Class<?> baseClass) {
+	public int eDerivedStructuralFeatureID(int baseFeatureID, Class< ? > baseClass) {
 		if (baseClass == FileSystemOperations.class) {
 			switch (baseFeatureID) {
-				default: return -1;
+			default:
+				return -1;
 			}
 		}
 		if (baseClass == ScaFileStore.class) {
 			switch (baseFeatureID) {
-				case ScaPackage.SCA_FILE_STORE__FILE_STORE: return ScaPackage.SCA_FILE_SYSTEM__FILE_STORE;
-				case ScaPackage.SCA_FILE_STORE__CHILDREN: return ScaPackage.SCA_FILE_SYSTEM__CHILDREN;
-				case ScaPackage.SCA_FILE_STORE__IMAGE_DESC: return ScaPackage.SCA_FILE_SYSTEM__IMAGE_DESC;
-				case ScaPackage.SCA_FILE_STORE__DIRECTORY: return ScaPackage.SCA_FILE_SYSTEM__DIRECTORY;
-				case ScaPackage.SCA_FILE_STORE__NAME: return ScaPackage.SCA_FILE_SYSTEM__NAME;
-				default: return -1;
+			case ScaPackage.SCA_FILE_STORE__FILE_STORE:
+				return ScaPackage.SCA_FILE_SYSTEM__FILE_STORE;
+			case ScaPackage.SCA_FILE_STORE__CHILDREN:
+				return ScaPackage.SCA_FILE_SYSTEM__CHILDREN;
+			case ScaPackage.SCA_FILE_STORE__IMAGE_DESC:
+				return ScaPackage.SCA_FILE_SYSTEM__IMAGE_DESC;
+			case ScaPackage.SCA_FILE_STORE__DIRECTORY:
+				return ScaPackage.SCA_FILE_SYSTEM__DIRECTORY;
+			case ScaPackage.SCA_FILE_STORE__NAME:
+				return ScaPackage.SCA_FILE_SYSTEM__NAME;
+			default:
+				return -1;
 			}
 		}
 		return super.eDerivedStructuralFeatureID(baseFeatureID, baseClass);
@@ -734,13 +750,17 @@ public abstract class ScaFileSystemImpl< F extends FileSystem > extends CorbaObj
 	 */
 	@Override
 	public String toString() {
-		if (eIsProxy()) return super.toString();
+		if (eIsProxy())
+			return super.toString();
 
 		StringBuffer result = new StringBuffer(super.toString());
 		result.append(" (fileStore: ");
 		result.append(fileStore);
 		result.append(", imageDesc: ");
-		if (imageDescESet) result.append(imageDesc); else result.append("<unset>");
+		if (imageDescESet)
+			result.append(imageDesc);
+		else
+			result.append("<unset>");
 		result.append(", directory: ");
 		result.append(directory);
 		result.append(", name: ");
@@ -768,24 +788,23 @@ public abstract class ScaFileSystemImpl< F extends FileSystem > extends CorbaObj
 		}
 		fileSys.rmdir(directoryName);
 	}
-	
 
 	@Override
 	protected void internalFetchChildren(IProgressMonitor monitor) {
-	    ScaFileStoreImpl.internalFetchChildren(monitor, this);
-    }
-	
+		ScaFileStoreImpl.internalFetchChildren(monitor, this);
+	}
+
 	@Override
 	public void setIor(String newIor) {
-	    super.setIor(newIor);
-	    setFileSystemURI(createFileSystemURI());
+		super.setIor(newIor);
+		setFileSystemURI(createFileSystemURI());
 	}
-	
+
 	/**
 	 * @since 14.0
 	 * @return
 	 */
-    protected URI createFileSystemURI() {
+	protected URI createFileSystemURI() {
 		// END GENERATED CODE
 		try {
 			return Util.createFileSystemURI(ior);
@@ -793,5 +812,5 @@ public abstract class ScaFileSystemImpl< F extends FileSystem > extends CorbaObj
 			return null;
 		}
 		// BEGIN GENERATED CODE
-    }
+	}
 } //ScaFileSystemImpl

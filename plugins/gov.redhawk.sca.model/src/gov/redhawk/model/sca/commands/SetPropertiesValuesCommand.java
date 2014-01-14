@@ -111,7 +111,7 @@ public class SetPropertiesValuesCommand extends SetStatusCommand<ScaPropertyCont
 		return retVal;
 	}
 
-	private static  boolean isStruct(DataType dt) {
+	private static boolean isStruct(DataType dt) {
 		return AnyUtils.isStruct(dt);
 	}
 

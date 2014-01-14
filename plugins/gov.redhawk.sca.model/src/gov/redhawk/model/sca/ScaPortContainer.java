@@ -52,7 +52,7 @@ public interface ScaPortContainer extends IRefreshable, IStatusProvider {
 	 * @model opposite="portContainer" containment="true" unsettable="true" transient="true"
 	 * @generated
 	 */
-	EList<ScaPort<?, ?>> getPorts();
+	EList<ScaPort< ? , ? >> getPorts();
 
 	/**
 	 * Unsets the value of the '{@link gov.redhawk.model.sca.ScaPortContainer#getPorts <em>Ports</em>}' containment reference list.
@@ -81,7 +81,7 @@ public interface ScaPortContainer extends IRefreshable, IStatusProvider {
 	 * @model
 	 * @generated
 	 */
-	ScaPort<?, ?> getScaPort(String name);
+	ScaPort< ? , ? > getScaPort(String name);
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -89,6 +89,6 @@ public interface ScaPortContainer extends IRefreshable, IStatusProvider {
 	 * @model monitorDataType="gov.redhawk.model.sca.IProgressMonitor"
 	 * @generated
 	 */
-	EList<ScaPort<?, ?>> fetchPorts(IProgressMonitor monitor);
+	EList<ScaPort< ? , ? >> fetchPorts(IProgressMonitor monitor);
 
 } // ScaPortContainer

@@ -22,13 +22,13 @@ import org.eclipse.core.runtime.IStatus;
 public interface IScaDataProvider {
 	public static final String STATUS_PROPERTY = IScaDataProvider.class.getName() + ".status";
 	/**
-     * @since 14.0
-     */
+	 * @since 14.0
+	 */
 	public static final String DISPOSED_PROPERTY = IScaDataProvider.class.getName() + ".disposed";
-	
+
 	/**
-     * @since 14.0
-     */
+	 * @since 14.0
+	 */
 	public static final String ENABLED_PROPERTY = IScaDataProvider.class.getName() + ".enabled";
 
 	public void addPropertyChangeListener(PropertyChangeListener listener);
@@ -38,21 +38,21 @@ public interface IScaDataProvider {
 	public IStatus getStatus();
 
 	public IStatus refresh(IProgressMonitor monitor);
-	
+
 	public void dispose();
-	
+
 	/**
-     * @since 14.0
-     */
+	 * @since 14.0
+	 */
 	public boolean isDisposed();
-	
+
 	/**
-     * @since 14.0
-     */
+	 * @since 14.0
+	 */
 	public void setEnabled(boolean enabled);
-	
+
 	/**
-     * @since 14.0
-     */
+	 * @since 14.0
+	 */
 	public boolean isEnabled();
 }

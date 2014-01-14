@@ -19,21 +19,21 @@ import org.eclipse.emf.ecore.EObject;
 /**
  * @since 14.0
  */
-public abstract class ScaModelCommandWithResult<RESULT> extends ScaModelCommand {
+public abstract class ScaModelCommandWithResult< RESULT > extends ScaModelCommand {
 	private RESULT result;
 
 	@Override
-	public Collection< RESULT > getResult() {
+	public Collection<RESULT> getResult() {
 		if (result == null) {
 			return null;
 		}
-	    return Collections.singleton(result);
+		return Collections.singleton(result);
 	}
-	
+
 	protected void setResult(RESULT val) {
 		this.result = val;
 	}
-	
+
 	/**
 	 * 
 	 * @param <T> The return type
@@ -41,7 +41,7 @@ public abstract class ScaModelCommandWithResult<RESULT> extends ScaModelCommand 
 	 * @param command The command to run
 	 * @return The result of the command <b> NOTE </b> May be NULL if the command failed to execute.
 	 */
-	public static <T> T execute(EObject context, ScaModelCommandWithResult<T> command) {
+	public static < T > T execute(EObject context, ScaModelCommandWithResult<T> command) {
 		ScaModelCommand.execute(context, command);
 		return command.result;
 	}

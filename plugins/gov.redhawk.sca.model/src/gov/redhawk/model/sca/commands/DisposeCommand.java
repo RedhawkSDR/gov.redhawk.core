@@ -42,15 +42,15 @@ public class DisposeCommand extends AbstractCommand {
 
 			@Override
 			public void run() {
-				disposable.dispose();   
-            }
+				disposable.dispose();
+			}
 
 			@Override
 			public void handleException(Throwable exception) {
-	            // TODO Auto-generated method stub
-	            
-            }
-			
+				// TODO Auto-generated method stub
+
+			}
+
 		});
 	}
 

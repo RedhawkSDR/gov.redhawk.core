@@ -558,7 +558,7 @@ public interface ScaDomainManager extends ScaPropertyContainer<DomainManager, Do
 	 * @model
 	 * @generated
 	 */
-	ScaDevice<?> getDevice(String deviceId);
+	ScaDevice< ? > getDevice(String deviceId);
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -630,7 +630,8 @@ public interface ScaDomainManager extends ScaPropertyContainer<DomainManager, Do
 	 * @model exceptions="mil.jpeojtrs.sca.cf.InvalidProfile mil.jpeojtrs.sca.cf.InvalidFileName mil.jpeojtrs.sca.cf.ApplicationInstallationError mil.jpeojtrs.sca.cf.ApplicationAlreadyInstalled"
 	 * @generated
 	 */
-	ScaWaveformFactory installScaWaveformFactory(String profilePath) throws InvalidProfile, InvalidFileName, ApplicationInstallationError, ApplicationAlreadyInstalled;
+	ScaWaveformFactory installScaWaveformFactory(String profilePath) throws InvalidProfile, InvalidFileName, ApplicationInstallationError,
+		ApplicationAlreadyInstalled;
 
 	/**
 	 * <!-- begin-user-doc -->

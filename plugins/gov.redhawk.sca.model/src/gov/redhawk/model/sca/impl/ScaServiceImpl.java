@@ -102,7 +102,7 @@ public class ScaServiceImpl extends ScaPropertyContainerImpl<org.omg.CORBA.Objec
 	 * @generated
 	 * @ordered
 	 */
-	protected EList<ScaPort<?, ?>> ports;
+	protected EList<ScaPort< ? , ? >> ports;
 	/**
 	 * The default value of the '{@link #getName() <em>Name</em>}' attribute.
 	 * <!-- begin-user-doc -->
@@ -161,9 +161,10 @@ public class ScaServiceImpl extends ScaPropertyContainerImpl<org.omg.CORBA.Objec
 	 * @generated
 	 */
 	@Override
-	public EList<ScaPort<?, ?>> getPorts() {
+	public EList<ScaPort< ? , ? >> getPorts() {
 		if (ports == null) {
-			ports = new EObjectContainmentWithInverseEList.Unsettable<ScaPort<?, ?>>(ScaPort.class, this, ScaPackage.SCA_SERVICE__PORTS, ScaPackage.SCA_PORT__PORT_CONTAINER);
+			ports = new EObjectContainmentWithInverseEList.Unsettable<ScaPort< ? , ? >>(ScaPort.class, this, ScaPackage.SCA_SERVICE__PORTS,
+				ScaPackage.SCA_PORT__PORT_CONTAINER);
 		}
 		return ports;
 	}
@@ -176,7 +177,8 @@ public class ScaServiceImpl extends ScaPropertyContainerImpl<org.omg.CORBA.Objec
 	 */
 	@Override
 	public void unsetPorts() {
-		if (ports != null) ((InternalEList.Unsettable<?>)ports).unset();
+		if (ports != null)
+			((InternalEList.Unsettable< ? >) ports).unset();
 	}
 
 	/**
@@ -187,7 +189,7 @@ public class ScaServiceImpl extends ScaPropertyContainerImpl<org.omg.CORBA.Objec
 	 */
 	@Override
 	public boolean isSetPorts() {
-		return ports != null && ((InternalEList.Unsettable<?>)ports).isSet();
+		return ports != null && ((InternalEList.Unsettable< ? >) ports).isSet();
 	}
 
 	/**
@@ -221,8 +223,9 @@ public class ScaServiceImpl extends ScaPropertyContainerImpl<org.omg.CORBA.Objec
 	 */
 	@Override
 	public ScaDeviceManager getDevMgr() {
-		if (eContainerFeatureID() != ScaPackage.SCA_SERVICE__DEV_MGR) return null;
-		return (ScaDeviceManager)eInternalContainer();
+		if (eContainerFeatureID() != ScaPackage.SCA_SERVICE__DEV_MGR)
+			return null;
+		return (ScaDeviceManager) eInternalContainer();
 	}
 
 	/**
@@ -234,12 +237,12 @@ public class ScaServiceImpl extends ScaPropertyContainerImpl<org.omg.CORBA.Objec
 	@Override
 	public NotificationChain eInverseAdd(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
 		switch (featureID) {
-			case ScaPackage.SCA_SERVICE__PORTS:
-				return ((InternalEList<InternalEObject>)(InternalEList<?>)getPorts()).basicAdd(otherEnd, msgs);
-			case ScaPackage.SCA_SERVICE__DEV_MGR:
-				if (eInternalContainer() != null)
-					msgs = eBasicRemoveFromContainer(msgs);
-				return eBasicSetContainer(otherEnd, ScaPackage.SCA_SERVICE__DEV_MGR, msgs);
+		case ScaPackage.SCA_SERVICE__PORTS:
+			return ((InternalEList<InternalEObject>) (InternalEList< ? >) getPorts()).basicAdd(otherEnd, msgs);
+		case ScaPackage.SCA_SERVICE__DEV_MGR:
+			if (eInternalContainer() != null)
+				msgs = eBasicRemoveFromContainer(msgs);
+			return eBasicSetContainer(otherEnd, ScaPackage.SCA_SERVICE__DEV_MGR, msgs);
 		}
 		return super.eInverseAdd(otherEnd, featureID, msgs);
 	}
@@ -252,10 +255,10 @@ public class ScaServiceImpl extends ScaPropertyContainerImpl<org.omg.CORBA.Objec
 	@Override
 	public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
 		switch (featureID) {
-			case ScaPackage.SCA_SERVICE__PORTS:
-				return ((InternalEList<?>)getPorts()).basicRemove(otherEnd, msgs);
-			case ScaPackage.SCA_SERVICE__DEV_MGR:
-				return eBasicSetContainer(null, ScaPackage.SCA_SERVICE__DEV_MGR, msgs);
+		case ScaPackage.SCA_SERVICE__PORTS:
+			return ((InternalEList< ? >) getPorts()).basicRemove(otherEnd, msgs);
+		case ScaPackage.SCA_SERVICE__DEV_MGR:
+			return eBasicSetContainer(null, ScaPackage.SCA_SERVICE__DEV_MGR, msgs);
 		}
 		return super.eInverseRemove(otherEnd, featureID, msgs);
 	}
@@ -268,8 +271,8 @@ public class ScaServiceImpl extends ScaPropertyContainerImpl<org.omg.CORBA.Objec
 	@Override
 	public NotificationChain eBasicRemoveFromContainerFeature(NotificationChain msgs) {
 		switch (eContainerFeatureID()) {
-			case ScaPackage.SCA_SERVICE__DEV_MGR:
-				return eInternalContainer().eInverseRemove(this, ScaPackage.SCA_DEVICE_MANAGER__SERVICES, ScaDeviceManager.class, msgs);
+		case ScaPackage.SCA_SERVICE__DEV_MGR:
+			return eInternalContainer().eInverseRemove(this, ScaPackage.SCA_DEVICE_MANAGER__SERVICES, ScaDeviceManager.class, msgs);
 		}
 		return super.eBasicRemoveFromContainerFeature(msgs);
 	}
@@ -282,12 +285,12 @@ public class ScaServiceImpl extends ScaPropertyContainerImpl<org.omg.CORBA.Objec
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
-			case ScaPackage.SCA_SERVICE__PORTS:
-				return getPorts();
-			case ScaPackage.SCA_SERVICE__NAME:
-				return getName();
-			case ScaPackage.SCA_SERVICE__DEV_MGR:
-				return getDevMgr();
+		case ScaPackage.SCA_SERVICE__PORTS:
+			return getPorts();
+		case ScaPackage.SCA_SERVICE__NAME:
+			return getName();
+		case ScaPackage.SCA_SERVICE__DEV_MGR:
+			return getDevMgr();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -298,16 +301,16 @@ public class ScaServiceImpl extends ScaPropertyContainerImpl<org.omg.CORBA.Objec
 	 * @generated
 	 */
 	@SuppressWarnings("unchecked")
- @Override
+	@Override
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
-			case ScaPackage.SCA_SERVICE__PORTS:
-				getPorts().clear();
-				getPorts().addAll((Collection<? extends ScaPort<?, ?>>)newValue);
-				return;
-			case ScaPackage.SCA_SERVICE__NAME:
-				setName((String)newValue);
-				return;
+		case ScaPackage.SCA_SERVICE__PORTS:
+			getPorts().clear();
+			getPorts().addAll((Collection< ? extends ScaPort< ? , ? >>) newValue);
+			return;
+		case ScaPackage.SCA_SERVICE__NAME:
+			setName((String) newValue);
+			return;
 		}
 		super.eSet(featureID, newValue);
 	}
@@ -320,12 +323,12 @@ public class ScaServiceImpl extends ScaPropertyContainerImpl<org.omg.CORBA.Objec
 	@Override
 	public void eUnset(int featureID) {
 		switch (featureID) {
-			case ScaPackage.SCA_SERVICE__PORTS:
-				unsetPorts();
-				return;
-			case ScaPackage.SCA_SERVICE__NAME:
-				setName(NAME_EDEFAULT);
-				return;
+		case ScaPackage.SCA_SERVICE__PORTS:
+			unsetPorts();
+			return;
+		case ScaPackage.SCA_SERVICE__NAME:
+			setName(NAME_EDEFAULT);
+			return;
 		}
 		super.eUnset(featureID);
 	}
@@ -338,12 +341,12 @@ public class ScaServiceImpl extends ScaPropertyContainerImpl<org.omg.CORBA.Objec
 	@Override
 	public boolean eIsSet(int featureID) {
 		switch (featureID) {
-			case ScaPackage.SCA_SERVICE__PORTS:
-				return isSetPorts();
-			case ScaPackage.SCA_SERVICE__NAME:
-				return NAME_EDEFAULT == null ? name != null : !NAME_EDEFAULT.equals(name);
-			case ScaPackage.SCA_SERVICE__DEV_MGR:
-				return getDevMgr() != null;
+		case ScaPackage.SCA_SERVICE__PORTS:
+			return isSetPorts();
+		case ScaPackage.SCA_SERVICE__NAME:
+			return NAME_EDEFAULT == null ? name != null : !NAME_EDEFAULT.equals(name);
+		case ScaPackage.SCA_SERVICE__DEV_MGR:
+			return getDevMgr() != null;
 		}
 		return super.eIsSet(featureID);
 	}
@@ -354,11 +357,13 @@ public class ScaServiceImpl extends ScaPropertyContainerImpl<org.omg.CORBA.Objec
 	 * @generated
 	 */
 	@Override
-	public int eBaseStructuralFeatureID(int derivedFeatureID, Class<?> baseClass) {
+	public int eBaseStructuralFeatureID(int derivedFeatureID, Class< ? > baseClass) {
 		if (baseClass == ScaPortContainer.class) {
 			switch (derivedFeatureID) {
-				case ScaPackage.SCA_SERVICE__PORTS: return ScaPackage.SCA_PORT_CONTAINER__PORTS;
-				default: return -1;
+			case ScaPackage.SCA_SERVICE__PORTS:
+				return ScaPackage.SCA_PORT_CONTAINER__PORTS;
+			default:
+				return -1;
 			}
 		}
 		return super.eBaseStructuralFeatureID(derivedFeatureID, baseClass);
@@ -370,11 +375,13 @@ public class ScaServiceImpl extends ScaPropertyContainerImpl<org.omg.CORBA.Objec
 	 * @generated
 	 */
 	@Override
-	public int eDerivedStructuralFeatureID(int baseFeatureID, Class<?> baseClass) {
+	public int eDerivedStructuralFeatureID(int baseFeatureID, Class< ? > baseClass) {
 		if (baseClass == ScaPortContainer.class) {
 			switch (baseFeatureID) {
-				case ScaPackage.SCA_PORT_CONTAINER__PORTS: return ScaPackage.SCA_SERVICE__PORTS;
-				default: return -1;
+			case ScaPackage.SCA_PORT_CONTAINER__PORTS:
+				return ScaPackage.SCA_SERVICE__PORTS;
+			default:
+				return -1;
 			}
 		}
 		return super.eDerivedStructuralFeatureID(baseFeatureID, baseClass);
@@ -387,7 +394,8 @@ public class ScaServiceImpl extends ScaPropertyContainerImpl<org.omg.CORBA.Objec
 	 */
 	@Override
 	public String toString() {
-		if (eIsProxy()) return super.toString();
+		if (eIsProxy())
+			return super.toString();
 
 		StringBuffer result = new StringBuffer(super.toString());
 		result.append(" (name: ");
@@ -397,16 +405,15 @@ public class ScaServiceImpl extends ScaPropertyContainerImpl<org.omg.CORBA.Objec
 	}
 
 	@Override
-    protected org.omg.CORBA.Object narrow(org.omg.CORBA.Object obj) {
-	    // We don't know what to narrow to here so return the original object
-	    return obj;
-    }
-	
+	protected org.omg.CORBA.Object narrow(org.omg.CORBA.Object obj) {
+		// We don't know what to narrow to here so return the original object
+		return obj;
+	}
+
 	@Override
 	protected Class<org.omg.CORBA.Object> getCorbaType() {
-	    return org.omg.CORBA.Object.class;
+		return org.omg.CORBA.Object.class;
 	}
-	
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -415,7 +422,7 @@ public class ScaServiceImpl extends ScaPropertyContainerImpl<org.omg.CORBA.Objec
 	 * @generated NOT
 	 */
 	@Override
-	public ScaPort<?, ?> getScaPort(String name) {
+	public ScaPort< ? , ? > getScaPort(String name) {
 		// END GENERATED CODE
 		for (ScaPort< ? , ? > port : getPorts()) {
 			if (port.getName().equals(name)) {
@@ -433,47 +440,43 @@ public class ScaServiceImpl extends ScaPropertyContainerImpl<org.omg.CORBA.Objec
 	 * @generated NOT
 	 */
 	@Override
-	public EList<ScaPort<?, ?>> fetchPorts(IProgressMonitor monitor) {
+	public EList<ScaPort< ? , ? >> fetchPorts(IProgressMonitor monitor) {
 		SubMonitor subMonitor = SubMonitor.convert(monitor, "Fetching ports", 2);
 		internalFetchPorts(subMonitor.newChild(1));
 		ScaPort< ? , ? >[] ports = null;
-        try {
-	        ports = ScaModelCommand.runExclusive(this, new RunnableWithResult.Impl<ScaPort< ? , ? >[]>() {
+		try {
+			ports = ScaModelCommand.runExclusive(this, new RunnableWithResult.Impl<ScaPort< ? , ? >[]>() {
 
-	        	@Override
+				@Override
 				public void run() {
-	        		setResult(getPorts().toArray(new ScaPort< ? , ? >[getPorts().size()]));
-	            }
+					setResult(getPorts().toArray(new ScaPort< ? , ? >[getPorts().size()]));
+				}
 
-	        });
-        } catch (InterruptedException e) {
-	        // PASS
-        }
+			});
+		} catch (InterruptedException e) {
+			// PASS
+		}
 		if (ports != null) {
 			SubMonitor portRefresh = subMonitor.newChild(1);
 			portRefresh.beginTask("Refreshing state of ports", ports.length);
 			for (ScaPort< ? , ? > port : ports) {
 				try {
-	                port.refresh(portRefresh.newChild(1), RefreshDepth.SELF);
-                } catch (InterruptedException e) {
-	                // PASS
-                }
+					port.refresh(portRefresh.newChild(1), RefreshDepth.SELF);
+				} catch (InterruptedException e) {
+					// PASS
+				}
 			}
 		}
 		subMonitor.done();
 		return getPorts();
 	}
-	
+
 	private final VersionedFeature portRevision = new VersionedFeature(this, ScaPackage.Literals.SCA_PORT_CONTAINER__PORTS);
 	private PortSupplierOperations portSupplier;
-	private static final EStructuralFeature[] PORTS_GROUP_PATH = {
-        ScaPackage.Literals.PROFILE_OBJECT_WRAPPER__PROFILE_OBJ,
-        SpdPackage.Literals.SOFT_PKG__DESCRIPTOR,
-        SpdPackage.Literals.DESCRIPTOR__COMPONENT,
-        ScdPackage.Literals.SOFTWARE_COMPONENT__COMPONENT_FEATURES,
-        ScdPackage.Literals.COMPONENT_FEATURES__PORTS,
-        ScdPackage.Literals.PORTS__GROUP
-	};
+	private static final EStructuralFeature[] PORTS_GROUP_PATH = { ScaPackage.Literals.PROFILE_OBJECT_WRAPPER__PROFILE_OBJ,
+		SpdPackage.Literals.SOFT_PKG__DESCRIPTOR, SpdPackage.Literals.DESCRIPTOR__COMPONENT, ScdPackage.Literals.SOFTWARE_COMPONENT__COMPONENT_FEATURES,
+		ScdPackage.Literals.COMPONENT_FEATURES__PORTS, ScdPackage.Literals.PORTS__GROUP };
+
 	/**
 	 * <!-- begin-user-doc -->
 	 * @since 18.0
@@ -546,81 +549,81 @@ public class ScaServiceImpl extends ScaPropertyContainerImpl<org.omg.CORBA.Objec
 			}
 		}
 		return this.portSupplier;
-    }
+	}
 
 	@Override
-    public void query(PropertiesHolder configProperties) throws UnknownProperties {
+	public void query(PropertiesHolder configProperties) throws UnknownProperties {
 		PropertySetOperations set = getPropertySet();
 		if (set != null) {
 			set.query(configProperties);
 		}
-    }
+	}
 
 	private final VersionedFeature profileObjectRevision = new VersionedFeature(this, ScaPackage.Literals.PROFILE_OBJECT_WRAPPER__PROFILE_OBJ);
-	
+
 	/**
 	 * @since 18.0
 	 */
 	@Override
-    public SoftPkg fetchProfileObject(IProgressMonitor monitor) {
-	    Transaction transaction = profileObjectRevision.createTransaction();
+	public SoftPkg fetchProfileObject(IProgressMonitor monitor) {
+		Transaction transaction = profileObjectRevision.createTransaction();
 		Command command = ProfileObjectWrapper.Util.fetchProfileObject(monitor, this, SoftPkg.class, SoftPkg.EOBJECT_PATH);
 		transaction.addCommand(command);
 		transaction.commit();
 		return getProfileObj();
-    }
+	}
 
 	private final VersionedFeature profileURIFeature = new VersionedFeature(this, ScaPackage.Literals.PROFILE_OBJECT_WRAPPER__PROFILE_URI);
+
 	@Override
-    public URI fetchProfileURI(IProgressMonitor monitor) {
+	public URI fetchProfileURI(IProgressMonitor monitor) {
 		if (isSetProfileURI()) {
 			return getProfileURI();
 		}
 		SubMonitor subMonitor = SubMonitor.convert(monitor, "Fetch profile URI.", 2);
-	    ScaDeviceManager devMgr = getDevMgr();
-	    if (devMgr != null) {
-	    	DeviceConfiguration dcd = devMgr.fetchProfileObject(subMonitor.newChild(1));
-	    	String profilePath = null;
-	    	ScaDeviceManagerFileSystem fileSystem = devMgr.fetchFileSystem(subMonitor.newChild(1));
-	    	if (dcd != null) {
-		    	DcdPartitioning part = dcd.getPartitioning();
-		    	if (part != null) {
-		    		out:for (DcdComponentPlacement cp : part.getComponentPlacement()) {
-		    			for (DcdComponentInstantiation ci : cp.getComponentInstantiation()) {
-		    				String usageName = ci.getUsageName();
-		    				if (PluginUtil.equals(usageName, name)) {
-		    					profilePath = cp.getComponentFileRef().getFile().getLocalFile().getName();
-		    					break out;
-		    				}
-		    			}
-		    		}
-		    	}
-	    	}
-	    	if (fileSystem != null && profilePath != null) {
-	    		Transaction transaction = profileURIFeature.createTransaction();
-	    		final URI newURI = fileSystem.createURI(profilePath);
-	    		transaction.addCommand(new ScaModelCommand() {
-					
+		ScaDeviceManager devMgr = getDevMgr();
+		if (devMgr != null) {
+			DeviceConfiguration dcd = devMgr.fetchProfileObject(subMonitor.newChild(1));
+			String profilePath = null;
+			ScaDeviceManagerFileSystem fileSystem = devMgr.fetchFileSystem(subMonitor.newChild(1));
+			if (dcd != null) {
+				DcdPartitioning part = dcd.getPartitioning();
+				if (part != null) {
+					out: for (DcdComponentPlacement cp : part.getComponentPlacement()) {
+						for (DcdComponentInstantiation ci : cp.getComponentInstantiation()) {
+							String usageName = ci.getUsageName();
+							if (PluginUtil.equals(usageName, name)) {
+								profilePath = cp.getComponentFileRef().getFile().getLocalFile().getName();
+								break out;
+							}
+						}
+					}
+				}
+			}
+			if (fileSystem != null && profilePath != null) {
+				Transaction transaction = profileURIFeature.createTransaction();
+				final URI newURI = fileSystem.createURI(profilePath);
+				transaction.addCommand(new ScaModelCommand() {
+
 					@Override
 					public void execute() {
 						setProfileURI(newURI);
 					}
 				});
-	    		transaction.commit();
-	    	}
-	    }
-	    subMonitor.done();
-	    return getProfileURI();
-    }
-
+				transaction.commit();
+			}
+		}
+		subMonitor.done();
+		return getProfileURI();
+	}
 
 	@Override
-    public void configure(DataType[] configProperties) throws InvalidConfiguration, PartialConfiguration {
+	public void configure(DataType[] configProperties) throws InvalidConfiguration, PartialConfiguration {
 		PropertySetOperations set = getPropertySet();
 		if (set != null) {
 			set.configure(configProperties);
 		}
-    }
+	}
 
 	private PropertySetOperations getPropertySet() {
 		if (this.propertySetOp == null) {
@@ -632,19 +635,17 @@ public class ScaServiceImpl extends ScaPropertyContainerImpl<org.omg.CORBA.Objec
 			}
 		}
 		return this.propertySetOp;
-    }
+	}
 
-	private static final EStructuralFeature[] PRF_PATH = {
-        SpdPackage.Literals.SOFT_PKG__PROPERTY_FILE, SpdPackage.Literals.PROPERTY_FILE__PROPERTIES
-	};
-	
+	private static final EStructuralFeature[] PRF_PATH = { SpdPackage.Literals.SOFT_PKG__PROPERTY_FILE, SpdPackage.Literals.PROPERTY_FILE__PROPERTIES };
+
 	@Override
-	protected List<AbstractProperty> fetchPropertyDefinitions(IProgressMonitor monitor){
+	protected List<AbstractProperty> fetchPropertyDefinitions(IProgressMonitor monitor) {
 		EObject localProfile = fetchProfileObject(monitor);
 		mil.jpeojtrs.sca.prf.Properties propDefintions = ScaEcoreUtils.getFeature(localProfile, PRF_PATH);
 		List<AbstractProperty> retVal = new ArrayList<AbstractProperty>();
 		if (propDefintions != null) {
-			for ( ValueListIterator<Object> i = propDefintions.getProperties().valueListIterator(); i.hasNext(); ) {
+			for (ValueListIterator<Object> i = propDefintions.getProperties().valueListIterator(); i.hasNext();) {
 				Object propDef = i.next();
 				if (propDef instanceof AbstractProperty) {
 					retVal.add((AbstractProperty) propDef);
@@ -655,18 +656,18 @@ public class ScaServiceImpl extends ScaPropertyContainerImpl<org.omg.CORBA.Objec
 	}
 
 	@Override
-    protected void internalFetchChildren(IProgressMonitor monitor) throws InterruptedException {
+	protected void internalFetchChildren(IProgressMonitor monitor) throws InterruptedException {
 		internalFetchPorts(monitor);
-    }
-	
+	}
+
 	@Override
 	public void fetchAttributes(IProgressMonitor monitor) {
 		SubMonitor subMonitor = SubMonitor.convert(monitor, 2); //SUPPRESS CHECKSTYLE MagicNumber
-	    super.fetchAttributes(subMonitor.newChild(1));
-	    fetchProfileObject(subMonitor.newChild(1));
-	    fetchProperties(subMonitor.newChild(1));
+		super.fetchAttributes(subMonitor.newChild(1));
+		fetchProfileObject(subMonitor.newChild(1));
+		fetchProperties(subMonitor.newChild(1));
 	}
-	
+
 	/**
 	 * @since 14.0
 	 */

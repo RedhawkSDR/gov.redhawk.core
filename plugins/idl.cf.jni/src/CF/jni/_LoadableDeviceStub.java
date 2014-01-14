@@ -59,6 +59,12 @@ public class _LoadableDeviceStub extends omnijni.ObjectImpl implements CF.Loadab
   }
   private static native boolean _get_started (long __ref__);
 
+  public String softwareProfile ()
+  {
+    return _get_softwareProfile(this.ref_);
+  }
+  private static native String _get_softwareProfile (long __ref__);
+
   public void start ()
   {
     start(this.ref_);
@@ -94,12 +100,6 @@ public class _LoadableDeviceStub extends omnijni.ObjectImpl implements CF.Loadab
     return _get_operationalState(this.ref_);
   }
   private static native CF.DevicePackage.OperationalType _get_operationalState (long __ref__);
-
-  public String softwareProfile ()
-  {
-    return _get_softwareProfile(this.ref_);
-  }
-  private static native String _get_softwareProfile (long __ref__);
 
   public String label ()
   {

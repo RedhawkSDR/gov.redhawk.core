@@ -14,7 +14,6 @@ package gov.redhawk.model.sca;
 
 import mil.jpeojtrs.sca.spd.SoftPkg;
 
-
 /**
  * <!-- begin-user-doc -->
  * A representation of the model object '<em><b>Service</b></em>'.

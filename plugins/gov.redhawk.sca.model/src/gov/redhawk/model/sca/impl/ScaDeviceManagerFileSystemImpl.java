@@ -67,8 +67,9 @@ public class ScaDeviceManagerFileSystemImpl extends ScaFileSystemImpl<FileSystem
 	 */
 	@Override
 	public ScaDeviceManager getDeviceManager() {
-		if (eContainerFeatureID() != ScaPackage.SCA_DEVICE_MANAGER_FILE_SYSTEM__DEVICE_MANAGER) return null;
-		return (ScaDeviceManager)eContainer();
+		if (eContainerFeatureID() != ScaPackage.SCA_DEVICE_MANAGER_FILE_SYSTEM__DEVICE_MANAGER)
+			return null;
+		return (ScaDeviceManager) eContainer();
 	}
 
 	/**
@@ -77,8 +78,9 @@ public class ScaDeviceManagerFileSystemImpl extends ScaFileSystemImpl<FileSystem
 	 * @generated
 	 */
 	public ScaDeviceManager basicGetDeviceManager() {
-		if (eContainerFeatureID() != ScaPackage.SCA_DEVICE_MANAGER_FILE_SYSTEM__DEVICE_MANAGER) return null;
-		return (ScaDeviceManager)eInternalContainer();
+		if (eContainerFeatureID() != ScaPackage.SCA_DEVICE_MANAGER_FILE_SYSTEM__DEVICE_MANAGER)
+			return null;
+		return (ScaDeviceManager) eInternalContainer();
 	}
 
 	/**
@@ -87,7 +89,7 @@ public class ScaDeviceManagerFileSystemImpl extends ScaFileSystemImpl<FileSystem
 	 * @generated
 	 */
 	public NotificationChain basicSetDeviceManager(ScaDeviceManager newDeviceManager, NotificationChain msgs) {
-		msgs = eBasicSetContainer((InternalEObject)newDeviceManager, ScaPackage.SCA_DEVICE_MANAGER_FILE_SYSTEM__DEVICE_MANAGER, msgs);
+		msgs = eBasicSetContainer((InternalEObject) newDeviceManager, ScaPackage.SCA_DEVICE_MANAGER_FILE_SYSTEM__DEVICE_MANAGER, msgs);
 		return msgs;
 	}
 
@@ -98,18 +100,19 @@ public class ScaDeviceManagerFileSystemImpl extends ScaFileSystemImpl<FileSystem
 	 */
 	@Override
 	public void setDeviceManager(ScaDeviceManager newDeviceManager) {
-		if (newDeviceManager != eInternalContainer() || (eContainerFeatureID() != ScaPackage.SCA_DEVICE_MANAGER_FILE_SYSTEM__DEVICE_MANAGER && newDeviceManager != null)) {
+		if (newDeviceManager != eInternalContainer()
+			|| (eContainerFeatureID() != ScaPackage.SCA_DEVICE_MANAGER_FILE_SYSTEM__DEVICE_MANAGER && newDeviceManager != null)) {
 			if (EcoreUtil.isAncestor(this, newDeviceManager))
 				throw new IllegalArgumentException("Recursive containment not allowed for " + toString());
 			NotificationChain msgs = null;
 			if (eInternalContainer() != null)
 				msgs = eBasicRemoveFromContainer(msgs);
 			if (newDeviceManager != null)
-				msgs = ((InternalEObject)newDeviceManager).eInverseAdd(this, ScaPackage.SCA_DEVICE_MANAGER__FILE_SYSTEM, ScaDeviceManager.class, msgs);
+				msgs = ((InternalEObject) newDeviceManager).eInverseAdd(this, ScaPackage.SCA_DEVICE_MANAGER__FILE_SYSTEM, ScaDeviceManager.class, msgs);
 			msgs = basicSetDeviceManager(newDeviceManager, msgs);
-			if (msgs != null) msgs.dispatch();
-		}
-		else if (eNotificationRequired())
+			if (msgs != null)
+				msgs.dispatch();
+		} else if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET, ScaPackage.SCA_DEVICE_MANAGER_FILE_SYSTEM__DEVICE_MANAGER, newDeviceManager, newDeviceManager));
 	}
 
@@ -121,10 +124,10 @@ public class ScaDeviceManagerFileSystemImpl extends ScaFileSystemImpl<FileSystem
 	@Override
 	public NotificationChain eInverseAdd(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
 		switch (featureID) {
-			case ScaPackage.SCA_DEVICE_MANAGER_FILE_SYSTEM__DEVICE_MANAGER:
-				if (eInternalContainer() != null)
-					msgs = eBasicRemoveFromContainer(msgs);
-				return basicSetDeviceManager((ScaDeviceManager)otherEnd, msgs);
+		case ScaPackage.SCA_DEVICE_MANAGER_FILE_SYSTEM__DEVICE_MANAGER:
+			if (eInternalContainer() != null)
+				msgs = eBasicRemoveFromContainer(msgs);
+			return basicSetDeviceManager((ScaDeviceManager) otherEnd, msgs);
 		}
 		return super.eInverseAdd(otherEnd, featureID, msgs);
 	}
@@ -137,8 +140,8 @@ public class ScaDeviceManagerFileSystemImpl extends ScaFileSystemImpl<FileSystem
 	@Override
 	public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
 		switch (featureID) {
-			case ScaPackage.SCA_DEVICE_MANAGER_FILE_SYSTEM__DEVICE_MANAGER:
-				return basicSetDeviceManager(null, msgs);
+		case ScaPackage.SCA_DEVICE_MANAGER_FILE_SYSTEM__DEVICE_MANAGER:
+			return basicSetDeviceManager(null, msgs);
 		}
 		return super.eInverseRemove(otherEnd, featureID, msgs);
 	}
@@ -151,8 +154,8 @@ public class ScaDeviceManagerFileSystemImpl extends ScaFileSystemImpl<FileSystem
 	@Override
 	public NotificationChain eBasicRemoveFromContainerFeature(NotificationChain msgs) {
 		switch (eContainerFeatureID()) {
-			case ScaPackage.SCA_DEVICE_MANAGER_FILE_SYSTEM__DEVICE_MANAGER:
-				return eInternalContainer().eInverseRemove(this, ScaPackage.SCA_DEVICE_MANAGER__FILE_SYSTEM, ScaDeviceManager.class, msgs);
+		case ScaPackage.SCA_DEVICE_MANAGER_FILE_SYSTEM__DEVICE_MANAGER:
+			return eInternalContainer().eInverseRemove(this, ScaPackage.SCA_DEVICE_MANAGER__FILE_SYSTEM, ScaDeviceManager.class, msgs);
 		}
 		return super.eBasicRemoveFromContainerFeature(msgs);
 	}
@@ -165,9 +168,10 @@ public class ScaDeviceManagerFileSystemImpl extends ScaFileSystemImpl<FileSystem
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
-			case ScaPackage.SCA_DEVICE_MANAGER_FILE_SYSTEM__DEVICE_MANAGER:
-				if (resolve) return getDeviceManager();
-				return basicGetDeviceManager();
+		case ScaPackage.SCA_DEVICE_MANAGER_FILE_SYSTEM__DEVICE_MANAGER:
+			if (resolve)
+				return getDeviceManager();
+			return basicGetDeviceManager();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -180,9 +184,9 @@ public class ScaDeviceManagerFileSystemImpl extends ScaFileSystemImpl<FileSystem
 	@Override
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
-			case ScaPackage.SCA_DEVICE_MANAGER_FILE_SYSTEM__DEVICE_MANAGER:
-				setDeviceManager((ScaDeviceManager)newValue);
-				return;
+		case ScaPackage.SCA_DEVICE_MANAGER_FILE_SYSTEM__DEVICE_MANAGER:
+			setDeviceManager((ScaDeviceManager) newValue);
+			return;
 		}
 		super.eSet(featureID, newValue);
 	}
@@ -195,9 +199,9 @@ public class ScaDeviceManagerFileSystemImpl extends ScaFileSystemImpl<FileSystem
 	@Override
 	public void eUnset(int featureID) {
 		switch (featureID) {
-			case ScaPackage.SCA_DEVICE_MANAGER_FILE_SYSTEM__DEVICE_MANAGER:
-				setDeviceManager((ScaDeviceManager)null);
-				return;
+		case ScaPackage.SCA_DEVICE_MANAGER_FILE_SYSTEM__DEVICE_MANAGER:
+			setDeviceManager((ScaDeviceManager) null);
+			return;
 		}
 		super.eUnset(featureID);
 	}
@@ -210,35 +214,35 @@ public class ScaDeviceManagerFileSystemImpl extends ScaFileSystemImpl<FileSystem
 	@Override
 	public boolean eIsSet(int featureID) {
 		switch (featureID) {
-			case ScaPackage.SCA_DEVICE_MANAGER_FILE_SYSTEM__DEVICE_MANAGER:
-				return basicGetDeviceManager() != null;
+		case ScaPackage.SCA_DEVICE_MANAGER_FILE_SYSTEM__DEVICE_MANAGER:
+			return basicGetDeviceManager() != null;
 		}
 		return super.eIsSet(featureID);
 	}
 
 	/**
-     * @since 14.0
-     */
+	 * @since 14.0
+	 */
 	@Override
 	protected FileSystem narrow(final org.omg.CORBA.Object obj) {
 		// END GENERATED CODE
 		return FileSystemHelper.narrow(obj);
 		// BEGIN GENERATED CODE	    
 	}
-	
+
 	@Override
 	protected Class< ? extends FileSystem> getCorbaType() {
-	    return FileSystem.class;
+		return FileSystem.class;
 	}
 
 	@Override
 	public void setCorbaObj(org.omg.CORBA.Object newCorbaObj) {
 		if (newCorbaObj instanceof FileSystem) {
-		    super.setCorbaObj(newCorbaObj);
+			super.setCorbaObj(newCorbaObj);
 			setObj((FileSystem) newCorbaObj);
 		} else {
-		    super.setCorbaObj(newCorbaObj);
+			super.setCorbaObj(newCorbaObj);
 		}
 	}
-	
+
 } //ScaDeviceManagerFileSystemImpl

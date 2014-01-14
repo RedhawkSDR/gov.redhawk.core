@@ -61,7 +61,7 @@ public interface ScaFactory extends EFactory {
 	 * @return a new object of class '<em>Device</em>'.
 	 * @generated
 	 */
-	<D extends Device> ScaDevice<D> createScaDevice();
+	< D extends Device > ScaDevice<D> createScaDevice();
 
 	/**
 	 * Returns a new object of class '<em>Device Manager</em>'.
@@ -151,7 +151,7 @@ public interface ScaFactory extends EFactory {
 	 * @return a new object of class '<em>Loadable Device</em>'.
 	 * @generated
 	 */
-	<L extends LoadableDevice> ScaLoadableDevice<L> createScaLoadableDevice();
+	< L extends LoadableDevice > ScaLoadableDevice<L> createScaLoadableDevice();
 
 	/**
 	 * Returns a new object of class '<em>Provides Port</em>'.

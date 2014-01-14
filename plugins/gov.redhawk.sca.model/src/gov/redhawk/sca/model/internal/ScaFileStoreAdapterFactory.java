@@ -20,10 +20,8 @@ import org.eclipse.core.runtime.IAdapterFactory;
  * 
  */
 public class ScaFileStoreAdapterFactory implements IAdapterFactory {
-	
-	private static final Class<?> [] LIST = new Class []{
-		IFileStore.class
-	};
+
+	private static final Class< ? >[] LIST = new Class[] { IFileStore.class };
 
 	/**
 	 * {@inheritDoc}
@@ -43,7 +41,7 @@ public class ScaFileStoreAdapterFactory implements IAdapterFactory {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public Class<?>[] getAdapterList() {
+	public Class< ? >[] getAdapterList() {
 		return LIST;
 	}
 

@@ -51,8 +51,9 @@ import org.eclipse.emf.edit.provider.ViewerNotification;
  * <!-- end-user-doc -->
  * @generated
  */
-public class ScaSimplePropertyItemProvider extends ScaAbstractPropertyItemProvider implements IEditingDomainItemProvider, IStructuredItemContentProvider, ITreeItemContentProvider, IItemLabelProvider, IItemPropertySource, ITableItemLabelProvider, ITableItemColorProvider, IItemColorProvider {
-	
+public class ScaSimplePropertyItemProvider extends ScaAbstractPropertyItemProvider implements IEditingDomainItemProvider, IStructuredItemContentProvider,
+		ITreeItemContentProvider, IItemLabelProvider, IItemPropertySource, ITableItemLabelProvider, ITableItemColorProvider, IItemColorProvider {
+
 	/**
 	 * This constructs an instance from a factory and a notifier.
 	 * <!-- begin-user-doc -->
@@ -128,7 +129,7 @@ public class ScaSimplePropertyItemProvider extends ScaAbstractPropertyItemProvid
 
 		// BEGIN GENERATED CODE
 	}
-	
+
 	/**
 	 * This adds a property descriptor for the Value feature.
 	 * <!-- begin-user-doc -->
@@ -137,21 +138,12 @@ public class ScaSimplePropertyItemProvider extends ScaAbstractPropertyItemProvid
 	 * @generated
 	 */
 	protected void addValuePropertyDescriptorGen(Object object) {
-		itemPropertyDescriptors.add
-			(createItemPropertyDescriptor
-				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
-				 getResourceLocator(),
-				 getString("_UI_ScaSimpleProperty_value_feature"),
-				 getString("_UI_PropertyDescriptor_description", "_UI_ScaSimpleProperty_value_feature", "_UI_ScaSimpleProperty_type"),
-				 ScaPackage.Literals.SCA_SIMPLE_PROPERTY__VALUE,
-				 true,
-				 false,
-				 false,
-				 ItemPropertyDescriptor.GENERIC_VALUE_IMAGE,
-				 null,
-				 null));
+		itemPropertyDescriptors.add(createItemPropertyDescriptor(((ComposeableAdapterFactory) adapterFactory).getRootAdapterFactory(), getResourceLocator(),
+			getString("_UI_ScaSimpleProperty_value_feature"),
+			getString("_UI_PropertyDescriptor_description", "_UI_ScaSimpleProperty_value_feature", "_UI_ScaSimpleProperty_type"),
+			ScaPackage.Literals.SCA_SIMPLE_PROPERTY__VALUE, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
 	}
-	
+
 	/**
 	 * This adds a property descriptor for the Value feature.
 	 * <!-- begin-user-doc -->
@@ -200,9 +192,9 @@ public class ScaSimplePropertyItemProvider extends ScaAbstractPropertyItemProvid
 		updateChildren(notification);
 
 		switch (notification.getFeatureID(ScaSimpleProperty.class)) {
-			case ScaPackage.SCA_SIMPLE_PROPERTY__VALUE:
-				fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
-				return;
+		case ScaPackage.SCA_SIMPLE_PROPERTY__VALUE:
+			fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
+			return;
 		}
 		super.notifyChanged(notification);
 	}
@@ -221,18 +213,18 @@ public class ScaSimplePropertyItemProvider extends ScaAbstractPropertyItemProvid
 
 	@Override
 	protected String getValueText(ScaAbstractProperty< ? > object) {
-		ScaSimpleProperty simple = (ScaSimpleProperty) object; 
-	    return getValueText(simple, simple.getValue());
+		ScaSimpleProperty simple = (ScaSimpleProperty) object;
+		return getValueText(simple, simple.getValue());
 	}
-	
+
 	@Override
 	public Object getImage(Object object) {
 		return overlayImage(object, getPrfResourceLocator().getImage("full/obj16/Simple"));
 	}
-	
+
 	/**
-     * @since 12.0
-     */
+	 * @since 12.0
+	 */
 	public static String getValueText(ScaSimpleProperty scaProperty, Object value) {
 		String retVal = null;
 		Simple property = scaProperty.getDefinition();
@@ -242,7 +234,7 @@ public class ScaSimplePropertyItemProvider extends ScaAbstractPropertyItemProvid
 		if (property == null) {
 			return value.toString();
 		}
-		
+
 		if (property.getEnumerations() != null) {
 			for (Enumeration e : property.getEnumerations().getEnumeration()) {
 				Object enumValue = AnyUtils.convertString(e.getValue(), property.getType().getLiteral(), property.isComplex());
@@ -254,11 +246,11 @@ public class ScaSimplePropertyItemProvider extends ScaAbstractPropertyItemProvid
 		} else if (RadixLabelProviderUtil.supports(property.getType(), property.isComplex())) {
 			retVal = RadixLabelProviderUtil.getText(value, RadixLabelProviderUtil.getRadix(property.getValue()));
 		}
-		
+
 		if (retVal == null) {
 			retVal = value.toString();
 		}
-		
+
 		final String units = property.getUnits();
 		if (units != null) {
 			return retVal + " " + units;

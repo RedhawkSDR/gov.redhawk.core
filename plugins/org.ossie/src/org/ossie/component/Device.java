@@ -430,9 +430,17 @@ public abstract class Device extends Resource implements DeviceOperations {
         }
 
         // Verify that the device is in a valid state
-        if (adminState == AdminType.LOCKED || operationState == OperationalType.DISABLED){
-            logger.warn("Cannot allocate capacity: System is either LOCKED, SHUTTING DOWN, or DISABLED.");
-            throw new InvalidState("Cannot allocate capacity. System is either LOCKED, SHUTTING DOWN or DISABLED.");
+        if (!isUnlocked() || isDisabled()) {
+            String invalidState;
+            if (isLocked()) {
+                invalidState = "LOCKED";
+            } else if (isDisabled()) {
+                invalidState = "DISABLED";
+            } else {
+                invalidState = "SHUTTING_DOWN";
+            }
+            logger.debug("Cannot allocate capacity: System is " + invalidState);
+            throw new InvalidState(invalidState);
         }
 
         if (usageState == UsageType.BUSY) {
@@ -869,5 +877,31 @@ public abstract class Device extends Resource implements DeviceOperations {
         }
     }
 
+    /**
+     * Returns whether this device's administrative state is UNLOCKED
+     *
+     * @returns true if admin state is UNLOCKED, false otherwise
+     */
+    public boolean isUnlocked() {
+        return adminState.equals(AdminType.UNLOCKED);
+    }
+
+    /**
+     * Returns whether this device's administrative state is LOCKED
+     *
+     * @returns true if admin state is LOCKED, false otherwise
+     */
+    public boolean isLocked() {
+        return adminState.equals(AdminType.LOCKED);
+    }
+
+    /**
+     * Returns whether this device's operational state is DISABLED
+     *
+     * @returns true if operational state is DISABLED, false otherwise
+     */
+    public boolean isDisabled() {
+        return operationState.equals(OperationalType.DISABLED);
+    }
 }
 

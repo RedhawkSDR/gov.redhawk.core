@@ -10,9 +10,8 @@
  *
  */
 
- // BEGIN GENERATED CODE
+// BEGIN GENERATED CODE
 package gov.redhawk.model.sca;
-
 
 /**
  * <!-- begin-user-doc -->

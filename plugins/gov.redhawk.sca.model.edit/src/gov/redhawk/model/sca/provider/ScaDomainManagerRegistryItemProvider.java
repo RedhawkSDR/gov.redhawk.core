@@ -12,7 +12,6 @@
 // BEGIN GENERATED CODE
 package gov.redhawk.model.sca.provider;
 
-
 import gov.redhawk.model.sca.ScaDomainManagerRegistry;
 import gov.redhawk.model.sca.ScaFactory;
 import gov.redhawk.model.sca.ScaPackage;
@@ -43,10 +42,8 @@ import org.eclipse.emf.edit.provider.ViewerNotification;
  * <!-- end-user-doc -->
  * @generated
  */
-public class ScaDomainManagerRegistryItemProvider
-	extends ItemProviderAdapter
-	implements
-		IEditingDomainItemProvider, IStructuredItemContentProvider, ITreeItemContentProvider, IItemLabelProvider, IItemPropertySource, ITableItemLabelProvider, ITableItemColorProvider, IItemColorProvider {
+public class ScaDomainManagerRegistryItemProvider extends ItemProviderAdapter implements IEditingDomainItemProvider, IStructuredItemContentProvider,
+		ITreeItemContentProvider, IItemLabelProvider, IItemPropertySource, ITableItemLabelProvider, ITableItemColorProvider, IItemColorProvider {
 
 	/**
 	 * This constructs an instance from a factory and a notifier.
@@ -82,7 +79,7 @@ public class ScaDomainManagerRegistryItemProvider
 	 * @generated
 	 */
 	@Override
-	public Collection<? extends EStructuralFeature> getChildrenFeatures(Object object) {
+	public Collection< ? extends EStructuralFeature> getChildrenFeatures(Object object) {
 		if (childrenFeatures == null) {
 			super.getChildrenFeatures(object);
 			childrenFeatures.add(ScaPackage.Literals.SCA_DOMAIN_MANAGER_REGISTRY__DOMAINS);
@@ -122,7 +119,7 @@ public class ScaDomainManagerRegistryItemProvider
 	 */
 	@Override
 	public String getText(Object object) {
-		ScaDomainManagerRegistry scaDomainManagerRegistry = (ScaDomainManagerRegistry)object;
+		ScaDomainManagerRegistry scaDomainManagerRegistry = (ScaDomainManagerRegistry) object;
 		return getString("_UI_ScaDomainManagerRegistry_type") + " " + scaDomainManagerRegistry.isDisposed();
 	}
 
@@ -138,9 +135,9 @@ public class ScaDomainManagerRegistryItemProvider
 		updateChildren(notification);
 
 		switch (notification.getFeatureID(ScaDomainManagerRegistry.class)) {
-			case ScaPackage.SCA_DOMAIN_MANAGER_REGISTRY__DOMAINS:
-				fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), true, false));
-				return;
+		case ScaPackage.SCA_DOMAIN_MANAGER_REGISTRY__DOMAINS:
+			fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), true, false));
+			return;
 		}
 		super.notifyChanged(notification);
 	}
@@ -156,10 +153,7 @@ public class ScaDomainManagerRegistryItemProvider
 	protected void collectNewChildDescriptors(Collection<Object> newChildDescriptors, Object object) {
 		super.collectNewChildDescriptors(newChildDescriptors, object);
 
-		newChildDescriptors.add
-			(createChildParameter
-				(ScaPackage.Literals.SCA_DOMAIN_MANAGER_REGISTRY__DOMAINS,
-				 ScaFactory.eINSTANCE.createScaDomainManager()));
+		newChildDescriptors.add(createChildParameter(ScaPackage.Literals.SCA_DOMAIN_MANAGER_REGISTRY__DOMAINS, ScaFactory.eINSTANCE.createScaDomainManager()));
 	}
 
 	/**

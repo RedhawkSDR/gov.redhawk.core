@@ -12,7 +12,6 @@
 // BEGIN GENERATED CODE
 package gov.redhawk.model.sca.provider;
 
-
 import gov.redhawk.model.sca.ScaPackage;
 import gov.redhawk.model.sca.ScaWaveformFactory;
 
@@ -40,10 +39,8 @@ import org.eclipse.emf.edit.provider.ViewerNotification;
  * <!-- end-user-doc -->
  * @generated
  */
-public class ScaWaveformFactoryItemProvider
-extends CorbaObjWrapperItemProvider
-implements
-IEditingDomainItemProvider, IStructuredItemContentProvider, ITreeItemContentProvider, IItemLabelProvider, IItemPropertySource, ITableItemLabelProvider, ITableItemColorProvider, IItemColorProvider {
+public class ScaWaveformFactoryItemProvider extends CorbaObjWrapperItemProvider implements IEditingDomainItemProvider, IStructuredItemContentProvider,
+		ITreeItemContentProvider, IItemLabelProvider, IItemPropertySource, ITableItemLabelProvider, ITableItemColorProvider, IItemColorProvider {
 	/**
 	 * This constructs an instance from a factory and a notifier.
 	 * <!-- begin-user-doc -->
@@ -81,19 +78,10 @@ IEditingDomainItemProvider, IStructuredItemContentProvider, ITreeItemContentProv
 	 * @generated
 	 */
 	protected void addProfileURIPropertyDescriptor(Object object) {
-		itemPropertyDescriptors.add
-			(createItemPropertyDescriptor
-				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
-				 getResourceLocator(),
-				 getString("_UI_ProfileObjectWrapper_profileURI_feature"),
-				 getString("_UI_PropertyDescriptor_description", "_UI_ProfileObjectWrapper_profileURI_feature", "_UI_ProfileObjectWrapper_type"),
-				 ScaPackage.Literals.PROFILE_OBJECT_WRAPPER__PROFILE_URI,
-				 false,
-				 false,
-				 false,
-				 ItemPropertyDescriptor.GENERIC_VALUE_IMAGE,
-				 null,
-				 null));
+		itemPropertyDescriptors.add(createItemPropertyDescriptor(((ComposeableAdapterFactory) adapterFactory).getRootAdapterFactory(), getResourceLocator(),
+			getString("_UI_ProfileObjectWrapper_profileURI_feature"),
+			getString("_UI_PropertyDescriptor_description", "_UI_ProfileObjectWrapper_profileURI_feature", "_UI_ProfileObjectWrapper_type"),
+			ScaPackage.Literals.PROFILE_OBJECT_WRAPPER__PROFILE_URI, false, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
 	}
 
 	/**
@@ -103,19 +91,10 @@ IEditingDomainItemProvider, IStructuredItemContentProvider, ITreeItemContentProv
 	 * @generated
 	 */
 	protected void addProfileObjPropertyDescriptor(Object object) {
-		itemPropertyDescriptors.add
-			(createItemPropertyDescriptor
-				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
-				 getResourceLocator(),
-				 getString("_UI_ProfileObjectWrapper_profileObj_feature"),
-				 getString("_UI_PropertyDescriptor_description", "_UI_ProfileObjectWrapper_profileObj_feature", "_UI_ProfileObjectWrapper_type"),
-				 ScaPackage.Literals.PROFILE_OBJECT_WRAPPER__PROFILE_OBJ,
-				 false,
-				 false,
-				 true,
-				 null,
-				 null,
-				 null));
+		itemPropertyDescriptors.add(createItemPropertyDescriptor(((ComposeableAdapterFactory) adapterFactory).getRootAdapterFactory(), getResourceLocator(),
+			getString("_UI_ProfileObjectWrapper_profileObj_feature"),
+			getString("_UI_PropertyDescriptor_description", "_UI_ProfileObjectWrapper_profileObj_feature", "_UI_ProfileObjectWrapper_type"),
+			ScaPackage.Literals.PROFILE_OBJECT_WRAPPER__PROFILE_OBJ, false, false, true, null, null, null));
 	}
 
 	/**
@@ -125,19 +104,10 @@ IEditingDomainItemProvider, IStructuredItemContentProvider, ITreeItemContentProv
 	 * @generated
 	 */
 	protected void addIdentifierPropertyDescriptor(Object object) {
-		itemPropertyDescriptors.add
-			(createItemPropertyDescriptor
-				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
-				 getResourceLocator(),
-				 getString("_UI_ScaWaveformFactory_identifier_feature"),
-				 getString("_UI_PropertyDescriptor_description", "_UI_ScaWaveformFactory_identifier_feature", "_UI_ScaWaveformFactory_type"),
-				 ScaPackage.Literals.SCA_WAVEFORM_FACTORY__IDENTIFIER,
-				 false,
-				 false,
-				 false,
-				 ItemPropertyDescriptor.GENERIC_VALUE_IMAGE,
-				 null,
-				 null));
+		itemPropertyDescriptors.add(createItemPropertyDescriptor(((ComposeableAdapterFactory) adapterFactory).getRootAdapterFactory(), getResourceLocator(),
+			getString("_UI_ScaWaveformFactory_identifier_feature"),
+			getString("_UI_PropertyDescriptor_description", "_UI_ScaWaveformFactory_identifier_feature", "_UI_ScaWaveformFactory_type"),
+			ScaPackage.Literals.SCA_WAVEFORM_FACTORY__IDENTIFIER, false, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
 	}
 
 	/**
@@ -147,19 +117,10 @@ IEditingDomainItemProvider, IStructuredItemContentProvider, ITreeItemContentProv
 	 * @generated
 	 */
 	protected void addNamePropertyDescriptor(Object object) {
-		itemPropertyDescriptors.add
-			(createItemPropertyDescriptor
-				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
-				 getResourceLocator(),
-				 getString("_UI_ScaWaveformFactory_name_feature"),
-				 getString("_UI_PropertyDescriptor_description", "_UI_ScaWaveformFactory_name_feature", "_UI_ScaWaveformFactory_type"),
-				 ScaPackage.Literals.SCA_WAVEFORM_FACTORY__NAME,
-				 false,
-				 false,
-				 false,
-				 ItemPropertyDescriptor.GENERIC_VALUE_IMAGE,
-				 null,
-				 null));
+		itemPropertyDescriptors.add(createItemPropertyDescriptor(((ComposeableAdapterFactory) adapterFactory).getRootAdapterFactory(), getResourceLocator(),
+			getString("_UI_ScaWaveformFactory_name_feature"),
+			getString("_UI_PropertyDescriptor_description", "_UI_ScaWaveformFactory_name_feature", "_UI_ScaWaveformFactory_type"),
+			ScaPackage.Literals.SCA_WAVEFORM_FACTORY__NAME, false, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
 	}
 
 	/**
@@ -169,19 +130,10 @@ IEditingDomainItemProvider, IStructuredItemContentProvider, ITreeItemContentProv
 	 * @generated
 	 */
 	protected void addProfilePropertyDescriptor(Object object) {
-		itemPropertyDescriptors.add
-			(createItemPropertyDescriptor
-				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
-				 getResourceLocator(),
-				 getString("_UI_ScaWaveformFactory_profile_feature"),
-				 getString("_UI_PropertyDescriptor_description", "_UI_ScaWaveformFactory_profile_feature", "_UI_ScaWaveformFactory_type"),
-				 ScaPackage.Literals.SCA_WAVEFORM_FACTORY__PROFILE,
-				 true,
-				 false,
-				 false,
-				 ItemPropertyDescriptor.GENERIC_VALUE_IMAGE,
-				 null,
-				 null));
+		itemPropertyDescriptors.add(createItemPropertyDescriptor(((ComposeableAdapterFactory) adapterFactory).getRootAdapterFactory(), getResourceLocator(),
+			getString("_UI_ScaWaveformFactory_profile_feature"),
+			getString("_UI_PropertyDescriptor_description", "_UI_ScaWaveformFactory_profile_feature", "_UI_ScaWaveformFactory_type"),
+			ScaPackage.Literals.SCA_WAVEFORM_FACTORY__PROFILE, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
 	}
 
 	/**
@@ -202,10 +154,8 @@ IEditingDomainItemProvider, IStructuredItemContentProvider, ITreeItemContentProv
 	 * @generated
 	 */
 	public String getTextGen(Object object) {
-		String label = ((ScaWaveformFactory)object).getName();
-		return label == null || label.length() == 0 ?
-			getString("_UI_ScaWaveformFactory_type") :
-			getString("_UI_ScaWaveformFactory_type") + " " + label;
+		String label = ((ScaWaveformFactory) object).getName();
+		return label == null || label.length() == 0 ? getString("_UI_ScaWaveformFactory_type") : getString("_UI_ScaWaveformFactory_type") + " " + label;
 	}
 
 	/**
@@ -234,11 +184,11 @@ IEditingDomainItemProvider, IStructuredItemContentProvider, ITreeItemContentProv
 		updateChildren(notification);
 
 		switch (notification.getFeatureID(ScaWaveformFactory.class)) {
-			case ScaPackage.SCA_WAVEFORM_FACTORY__PROFILE_URI:
-			case ScaPackage.SCA_WAVEFORM_FACTORY__NAME:
-			case ScaPackage.SCA_WAVEFORM_FACTORY__PROFILE:
-				fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
-				return;
+		case ScaPackage.SCA_WAVEFORM_FACTORY__PROFILE_URI:
+		case ScaPackage.SCA_WAVEFORM_FACTORY__NAME:
+		case ScaPackage.SCA_WAVEFORM_FACTORY__PROFILE:
+			fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
+			return;
 		}
 		super.notifyChanged(notification);
 	}

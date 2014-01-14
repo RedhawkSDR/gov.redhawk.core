@@ -73,7 +73,6 @@ import CF.DevicePackage.UsageType;
  *   <li>{@link gov.redhawk.model.sca.impl.ScaDeviceImpl#getUsageState <em>Usage State</em>}</li>
  *   <li>{@link gov.redhawk.model.sca.impl.ScaDeviceImpl#getParentDevice <em>Parent Device</em>}</li>
  *   <li>{@link gov.redhawk.model.sca.impl.ScaDeviceImpl#getDevMgr <em>Dev Mgr</em>}</li>
- *   <li>{@link gov.redhawk.model.sca.impl.ScaDeviceImpl#getProfile <em>Profile</em>}</li>
  * </ul>
  * </p>
  *
@@ -89,7 +88,7 @@ public class ScaDeviceImpl< D extends Device > extends ScaAbstractComponentImpl<
 	 * @generated
 	 * @ordered
 	 */
-	protected EList<ScaDevice<?>> childDevices;
+	protected EList<ScaDevice< ? >> childDevices;
 	/**
 	 * The default value of the '{@link #getAdminState() <em>Admin State</em>}' attribute.
 	 * <!-- begin-user-doc -->
@@ -202,34 +201,7 @@ public class ScaDeviceImpl< D extends Device > extends ScaAbstractComponentImpl<
 	 * @generated
 	 * @ordered
 	 */
-	protected ScaDevice<?> parentDevice;
-	/**
-	 * The default value of the '{@link #getProfile() <em>Profile</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getProfile()
-	 * @generated
-	 * @ordered
-	 */
-	protected static final String PROFILE_EDEFAULT = null;
-	/**
-	 * The cached value of the '{@link #getProfile() <em>Profile</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getProfile()
-	 * @generated
-	 * @ordered
-	 */
-	protected String profile = PROFILE_EDEFAULT;
-	/**
-	 * This is true if the Profile attribute has been set.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	protected boolean profileESet;
-
+	protected ScaDevice< ? > parentDevice;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -256,9 +228,10 @@ public class ScaDeviceImpl< D extends Device > extends ScaAbstractComponentImpl<
 	 * @generated
 	 */
 	@Override
-	public EList<ScaDevice<?>> getChildDevices() {
+	public EList<ScaDevice< ? >> getChildDevices() {
 		if (childDevices == null) {
-			childDevices = new EObjectWithInverseEList.Unsettable<ScaDevice<?>>(ScaDevice.class, this, ScaPackage.SCA_DEVICE__CHILD_DEVICES, ScaPackage.SCA_DEVICE__PARENT_DEVICE);
+			childDevices = new EObjectWithInverseEList.Unsettable<ScaDevice< ? >>(ScaDevice.class, this, ScaPackage.SCA_DEVICE__CHILD_DEVICES,
+				ScaPackage.SCA_DEVICE__PARENT_DEVICE);
 		}
 		return childDevices;
 	}
@@ -270,7 +243,8 @@ public class ScaDeviceImpl< D extends Device > extends ScaAbstractComponentImpl<
 	 */
 	@Override
 	public void unsetChildDevices() {
-		if (childDevices != null) ((InternalEList.Unsettable<?>)childDevices).unset();
+		if (childDevices != null)
+			((InternalEList.Unsettable< ? >) childDevices).unset();
 	}
 
 	/**
@@ -280,7 +254,7 @@ public class ScaDeviceImpl< D extends Device > extends ScaAbstractComponentImpl<
 	 */
 	@Override
 	public boolean isSetChildDevices() {
-		return childDevices != null && ((InternalEList.Unsettable<?>)childDevices).isSet();
+		return childDevices != null && ((InternalEList.Unsettable< ? >) childDevices).isSet();
 	}
 
 	/**
@@ -405,7 +379,8 @@ public class ScaDeviceImpl< D extends Device > extends ScaAbstractComponentImpl<
 		boolean oldOperationalStateESet = operationalStateESet;
 		operationalStateESet = true;
 		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, ScaPackage.SCA_DEVICE__OPERATIONAL_STATE, oldOperationalState, operationalState, !oldOperationalStateESet));
+			eNotify(new ENotificationImpl(this, Notification.SET, ScaPackage.SCA_DEVICE__OPERATIONAL_STATE, oldOperationalState, operationalState,
+				!oldOperationalStateESet));
 	}
 
 	/**
@@ -420,7 +395,8 @@ public class ScaDeviceImpl< D extends Device > extends ScaAbstractComponentImpl<
 		operationalState = OPERATIONAL_STATE_EDEFAULT;
 		operationalStateESet = false;
 		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.UNSET, ScaPackage.SCA_DEVICE__OPERATIONAL_STATE, oldOperationalState, OPERATIONAL_STATE_EDEFAULT, oldOperationalStateESet));
+			eNotify(new ENotificationImpl(this, Notification.UNSET, ScaPackage.SCA_DEVICE__OPERATIONAL_STATE, oldOperationalState, OPERATIONAL_STATE_EDEFAULT,
+				oldOperationalStateESet));
 	}
 
 	/**
@@ -489,10 +465,10 @@ public class ScaDeviceImpl< D extends Device > extends ScaAbstractComponentImpl<
 	 * @generated
 	 */
 	@Override
-	public ScaDevice<?> getParentDevice() {
+	public ScaDevice< ? > getParentDevice() {
 		if (parentDevice != null && parentDevice.eIsProxy()) {
-			InternalEObject oldParentDevice = (InternalEObject)parentDevice;
-			parentDevice = (ScaDevice<?>)eResolveProxy(oldParentDevice);
+			InternalEObject oldParentDevice = (InternalEObject) parentDevice;
+			parentDevice = (ScaDevice< ? >) eResolveProxy(oldParentDevice);
 			if (parentDevice != oldParentDevice) {
 				if (eNotificationRequired())
 					eNotify(new ENotificationImpl(this, Notification.RESOLVE, ScaPackage.SCA_DEVICE__PARENT_DEVICE, oldParentDevice, parentDevice));
@@ -506,7 +482,7 @@ public class ScaDeviceImpl< D extends Device > extends ScaAbstractComponentImpl<
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public ScaDevice<?> basicGetParentDevice() {
+	public ScaDevice< ? > basicGetParentDevice() {
 		return parentDevice;
 	}
 
@@ -515,12 +491,16 @@ public class ScaDeviceImpl< D extends Device > extends ScaAbstractComponentImpl<
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public NotificationChain basicSetParentDevice(ScaDevice<?> newParentDevice, NotificationChain msgs) {
-		ScaDevice<?> oldParentDevice = parentDevice;
+	public NotificationChain basicSetParentDevice(ScaDevice< ? > newParentDevice, NotificationChain msgs) {
+		ScaDevice< ? > oldParentDevice = parentDevice;
 		parentDevice = newParentDevice;
 		if (eNotificationRequired()) {
-			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, ScaPackage.SCA_DEVICE__PARENT_DEVICE, oldParentDevice, newParentDevice);
-			if (msgs == null) msgs = notification; else msgs.add(notification);
+			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, ScaPackage.SCA_DEVICE__PARENT_DEVICE, oldParentDevice,
+				newParentDevice);
+			if (msgs == null)
+				msgs = notification;
+			else
+				msgs.add(notification);
 		}
 		return msgs;
 	}
@@ -531,17 +511,17 @@ public class ScaDeviceImpl< D extends Device > extends ScaAbstractComponentImpl<
 	 * @generated
 	 */
 	@Override
-	public void setParentDevice(ScaDevice<?> newParentDevice) {
+	public void setParentDevice(ScaDevice< ? > newParentDevice) {
 		if (newParentDevice != parentDevice) {
 			NotificationChain msgs = null;
 			if (parentDevice != null)
-				msgs = ((InternalEObject)parentDevice).eInverseRemove(this, ScaPackage.SCA_DEVICE__CHILD_DEVICES, ScaDevice.class, msgs);
+				msgs = ((InternalEObject) parentDevice).eInverseRemove(this, ScaPackage.SCA_DEVICE__CHILD_DEVICES, ScaDevice.class, msgs);
 			if (newParentDevice != null)
-				msgs = ((InternalEObject)newParentDevice).eInverseAdd(this, ScaPackage.SCA_DEVICE__CHILD_DEVICES, ScaDevice.class, msgs);
+				msgs = ((InternalEObject) newParentDevice).eInverseAdd(this, ScaPackage.SCA_DEVICE__CHILD_DEVICES, ScaDevice.class, msgs);
 			msgs = basicSetParentDevice(newParentDevice, msgs);
-			if (msgs != null) msgs.dispatch();
-		}
-		else if (eNotificationRequired())
+			if (msgs != null)
+				msgs.dispatch();
+		} else if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET, ScaPackage.SCA_DEVICE__PARENT_DEVICE, newParentDevice, newParentDevice));
 	}
 
@@ -553,7 +533,7 @@ public class ScaDeviceImpl< D extends Device > extends ScaAbstractComponentImpl<
 	@Override
 	public ScaDeviceManager getDevMgr() {
 		ScaDeviceManager devMgr = basicGetDevMgr();
-		return devMgr != null && devMgr.eIsProxy() ? (ScaDeviceManager)eResolveProxy((InternalEObject)devMgr) : devMgr;
+		return devMgr != null && devMgr.eIsProxy() ? (ScaDeviceManager) eResolveProxy((InternalEObject) devMgr) : devMgr;
 	}
 
 	/**
@@ -565,14 +545,12 @@ public class ScaDeviceImpl< D extends Device > extends ScaAbstractComponentImpl<
 	@Override
 	public void fetchAttributes(IProgressMonitor monitor) {
 		// END GENERATED CODE
-		SubMonitor subMonitor = SubMonitor.convert(monitor, 8); //SUPPRESS CHECKSTYLE MagicNumber
+		SubMonitor subMonitor = SubMonitor.convert(monitor, 6); //SUPPRESS CHECKSTYLE MagicNumber
 		super.fetchAttributes(subMonitor.newChild(1));
 		fetchAdminState(subMonitor.newChild(1));
 		fetchLabel(subMonitor.newChild(1));
 		fetchOperationalState(subMonitor.newChild(1));
 		fetchUsageState(subMonitor.newChild(1));
-		fetchProfile(subMonitor.newChild(1));
-		fetchProfileObject(subMonitor.newChild(1));
 		fetchProperties(subMonitor.newChild(1));
 		subMonitor.done();
 		// BEGIN GENERATED CODE
@@ -586,34 +564,6 @@ public class ScaDeviceImpl< D extends Device > extends ScaAbstractComponentImpl<
 		internalFetchAggregateDevices(subMonitor.newChild(1));
 		subMonitor.done();
 		// BEGIN GENERATED CODE
-	}
-
-	private final VersionedFeature profileFeature = new VersionedFeature(this, ScaPackage.Literals.SCA_DEVICE__PROFILE);
-
-	
-	/**
-	 * @since 14.0
-	 * @generated NOT
-	 * {@inheritDoc}
-	 */
-	@Override
-	public String fetchProfile(IProgressMonitor monitor) {
-		if (isSetProfile()) {
-			return getProfile();
-		}
-		SubMonitor subMonitor = SubMonitor.convert(monitor, "Fetching profile", 3);
-		D localObj = fetchNarrowedObject(subMonitor.newChild(1));
-		Transaction transaction = profileFeature.createTransaction();
-		if (localObj != null) {
-			String newProfile = localObj.softwareProfile();
-			subMonitor.worked(1);
-			transaction.addCommand(new SetLocalAttributeCommand(this, newProfile, ScaPackage.Literals.SCA_DEVICE__PROFILE));
-		} else {
-			transaction.addCommand(new UnsetLocalAttributeCommand(this, null, ScaPackage.Literals.SCA_DEVICE__PROFILE));
-		}
-		transaction.commit();
-		subMonitor.done();
-		return getProfile();
 	}
 
 	@Override
@@ -875,56 +825,6 @@ public class ScaDeviceImpl< D extends Device > extends ScaAbstractComponentImpl<
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
-	public String getProfile() {
-		return profile;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
-	public void setProfile(String newProfile) {
-		String oldProfile = profile;
-		profile = newProfile;
-		boolean oldProfileESet = profileESet;
-		profileESet = true;
-		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, ScaPackage.SCA_DEVICE__PROFILE, oldProfile, profile, !oldProfileESet));
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
-	public void unsetProfile() {
-		String oldProfile = profile;
-		boolean oldProfileESet = profileESet;
-		profile = PROFILE_EDEFAULT;
-		profileESet = false;
-		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.UNSET, ScaPackage.SCA_DEVICE__PROFILE, oldProfile, PROFILE_EDEFAULT, oldProfileESet));
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
-	public boolean isSetProfile() {
-		return profileESet;
-	}
-
-	/**
 	 * @since 14.0
 	 */
 	@Override
@@ -999,12 +899,12 @@ public class ScaDeviceImpl< D extends Device > extends ScaAbstractComponentImpl<
 	@Override
 	public NotificationChain eInverseAdd(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
 		switch (featureID) {
-			case ScaPackage.SCA_DEVICE__CHILD_DEVICES:
-				return ((InternalEList<InternalEObject>)(InternalEList<?>)getChildDevices()).basicAdd(otherEnd, msgs);
-			case ScaPackage.SCA_DEVICE__PARENT_DEVICE:
-				if (parentDevice != null)
-					msgs = ((InternalEObject)parentDevice).eInverseRemove(this, ScaPackage.SCA_DEVICE__CHILD_DEVICES, ScaDevice.class, msgs);
-				return basicSetParentDevice((ScaDevice<?>)otherEnd, msgs);
+		case ScaPackage.SCA_DEVICE__CHILD_DEVICES:
+			return ((InternalEList<InternalEObject>) (InternalEList< ? >) getChildDevices()).basicAdd(otherEnd, msgs);
+		case ScaPackage.SCA_DEVICE__PARENT_DEVICE:
+			if (parentDevice != null)
+				msgs = ((InternalEObject) parentDevice).eInverseRemove(this, ScaPackage.SCA_DEVICE__CHILD_DEVICES, ScaDevice.class, msgs);
+			return basicSetParentDevice((ScaDevice< ? >) otherEnd, msgs);
 		}
 		return super.eInverseAdd(otherEnd, featureID, msgs);
 	}
@@ -1017,10 +917,10 @@ public class ScaDeviceImpl< D extends Device > extends ScaAbstractComponentImpl<
 	@Override
 	public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
 		switch (featureID) {
-			case ScaPackage.SCA_DEVICE__CHILD_DEVICES:
-				return ((InternalEList<?>)getChildDevices()).basicRemove(otherEnd, msgs);
-			case ScaPackage.SCA_DEVICE__PARENT_DEVICE:
-				return basicSetParentDevice(null, msgs);
+		case ScaPackage.SCA_DEVICE__CHILD_DEVICES:
+			return ((InternalEList< ? >) getChildDevices()).basicRemove(otherEnd, msgs);
+		case ScaPackage.SCA_DEVICE__PARENT_DEVICE:
+			return basicSetParentDevice(null, msgs);
 		}
 		return super.eInverseRemove(otherEnd, featureID, msgs);
 	}
@@ -1033,24 +933,24 @@ public class ScaDeviceImpl< D extends Device > extends ScaAbstractComponentImpl<
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
-			case ScaPackage.SCA_DEVICE__CHILD_DEVICES:
-				return getChildDevices();
-			case ScaPackage.SCA_DEVICE__ADMIN_STATE:
-				return getAdminState();
-			case ScaPackage.SCA_DEVICE__LABEL:
-				return getLabel();
-			case ScaPackage.SCA_DEVICE__OPERATIONAL_STATE:
-				return getOperationalState();
-			case ScaPackage.SCA_DEVICE__USAGE_STATE:
-				return getUsageState();
-			case ScaPackage.SCA_DEVICE__PARENT_DEVICE:
-				if (resolve) return getParentDevice();
-				return basicGetParentDevice();
-			case ScaPackage.SCA_DEVICE__DEV_MGR:
-				if (resolve) return getDevMgr();
-				return basicGetDevMgr();
-			case ScaPackage.SCA_DEVICE__PROFILE:
-				return getProfile();
+		case ScaPackage.SCA_DEVICE__CHILD_DEVICES:
+			return getChildDevices();
+		case ScaPackage.SCA_DEVICE__ADMIN_STATE:
+			return getAdminState();
+		case ScaPackage.SCA_DEVICE__LABEL:
+			return getLabel();
+		case ScaPackage.SCA_DEVICE__OPERATIONAL_STATE:
+			return getOperationalState();
+		case ScaPackage.SCA_DEVICE__USAGE_STATE:
+			return getUsageState();
+		case ScaPackage.SCA_DEVICE__PARENT_DEVICE:
+			if (resolve)
+				return getParentDevice();
+			return basicGetParentDevice();
+		case ScaPackage.SCA_DEVICE__DEV_MGR:
+			if (resolve)
+				return getDevMgr();
+			return basicGetDevMgr();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -1064,28 +964,25 @@ public class ScaDeviceImpl< D extends Device > extends ScaAbstractComponentImpl<
 	@Override
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
-			case ScaPackage.SCA_DEVICE__CHILD_DEVICES:
-				getChildDevices().clear();
-				getChildDevices().addAll((Collection<? extends ScaDevice<?>>)newValue);
-				return;
-			case ScaPackage.SCA_DEVICE__ADMIN_STATE:
-				setAdminState((AdminType)newValue);
-				return;
-			case ScaPackage.SCA_DEVICE__LABEL:
-				setLabel((String)newValue);
-				return;
-			case ScaPackage.SCA_DEVICE__OPERATIONAL_STATE:
-				setOperationalState((OperationalType)newValue);
-				return;
-			case ScaPackage.SCA_DEVICE__USAGE_STATE:
-				setUsageState((UsageType)newValue);
-				return;
-			case ScaPackage.SCA_DEVICE__PARENT_DEVICE:
-				setParentDevice((ScaDevice<?>)newValue);
-				return;
-			case ScaPackage.SCA_DEVICE__PROFILE:
-				setProfile((String)newValue);
-				return;
+		case ScaPackage.SCA_DEVICE__CHILD_DEVICES:
+			getChildDevices().clear();
+			getChildDevices().addAll((Collection< ? extends ScaDevice< ? >>) newValue);
+			return;
+		case ScaPackage.SCA_DEVICE__ADMIN_STATE:
+			setAdminState((AdminType) newValue);
+			return;
+		case ScaPackage.SCA_DEVICE__LABEL:
+			setLabel((String) newValue);
+			return;
+		case ScaPackage.SCA_DEVICE__OPERATIONAL_STATE:
+			setOperationalState((OperationalType) newValue);
+			return;
+		case ScaPackage.SCA_DEVICE__USAGE_STATE:
+			setUsageState((UsageType) newValue);
+			return;
+		case ScaPackage.SCA_DEVICE__PARENT_DEVICE:
+			setParentDevice((ScaDevice< ? >) newValue);
+			return;
 		}
 		super.eSet(featureID, newValue);
 	}
@@ -1098,27 +995,24 @@ public class ScaDeviceImpl< D extends Device > extends ScaAbstractComponentImpl<
 	@Override
 	public void eUnset(int featureID) {
 		switch (featureID) {
-			case ScaPackage.SCA_DEVICE__CHILD_DEVICES:
-				unsetChildDevices();
-				return;
-			case ScaPackage.SCA_DEVICE__ADMIN_STATE:
-				unsetAdminState();
-				return;
-			case ScaPackage.SCA_DEVICE__LABEL:
-				unsetLabel();
-				return;
-			case ScaPackage.SCA_DEVICE__OPERATIONAL_STATE:
-				unsetOperationalState();
-				return;
-			case ScaPackage.SCA_DEVICE__USAGE_STATE:
-				unsetUsageState();
-				return;
-			case ScaPackage.SCA_DEVICE__PARENT_DEVICE:
-				setParentDevice((ScaDevice<?>)null);
-				return;
-			case ScaPackage.SCA_DEVICE__PROFILE:
-				unsetProfile();
-				return;
+		case ScaPackage.SCA_DEVICE__CHILD_DEVICES:
+			unsetChildDevices();
+			return;
+		case ScaPackage.SCA_DEVICE__ADMIN_STATE:
+			unsetAdminState();
+			return;
+		case ScaPackage.SCA_DEVICE__LABEL:
+			unsetLabel();
+			return;
+		case ScaPackage.SCA_DEVICE__OPERATIONAL_STATE:
+			unsetOperationalState();
+			return;
+		case ScaPackage.SCA_DEVICE__USAGE_STATE:
+			unsetUsageState();
+			return;
+		case ScaPackage.SCA_DEVICE__PARENT_DEVICE:
+			setParentDevice((ScaDevice< ? >) null);
+			return;
 		}
 		super.eUnset(featureID);
 	}
@@ -1131,22 +1025,20 @@ public class ScaDeviceImpl< D extends Device > extends ScaAbstractComponentImpl<
 	@Override
 	public boolean eIsSet(int featureID) {
 		switch (featureID) {
-			case ScaPackage.SCA_DEVICE__CHILD_DEVICES:
-				return isSetChildDevices();
-			case ScaPackage.SCA_DEVICE__ADMIN_STATE:
-				return isSetAdminState();
-			case ScaPackage.SCA_DEVICE__LABEL:
-				return isSetLabel();
-			case ScaPackage.SCA_DEVICE__OPERATIONAL_STATE:
-				return isSetOperationalState();
-			case ScaPackage.SCA_DEVICE__USAGE_STATE:
-				return isSetUsageState();
-			case ScaPackage.SCA_DEVICE__PARENT_DEVICE:
-				return parentDevice != null;
-			case ScaPackage.SCA_DEVICE__DEV_MGR:
-				return basicGetDevMgr() != null;
-			case ScaPackage.SCA_DEVICE__PROFILE:
-				return isSetProfile();
+		case ScaPackage.SCA_DEVICE__CHILD_DEVICES:
+			return isSetChildDevices();
+		case ScaPackage.SCA_DEVICE__ADMIN_STATE:
+			return isSetAdminState();
+		case ScaPackage.SCA_DEVICE__LABEL:
+			return isSetLabel();
+		case ScaPackage.SCA_DEVICE__OPERATIONAL_STATE:
+			return isSetOperationalState();
+		case ScaPackage.SCA_DEVICE__USAGE_STATE:
+			return isSetUsageState();
+		case ScaPackage.SCA_DEVICE__PARENT_DEVICE:
+			return parentDevice != null;
+		case ScaPackage.SCA_DEVICE__DEV_MGR:
+			return basicGetDevMgr() != null;
 		}
 		return super.eIsSet(featureID);
 	}
@@ -1158,19 +1050,30 @@ public class ScaDeviceImpl< D extends Device > extends ScaAbstractComponentImpl<
 	 */
 	@Override
 	public String toString() {
-		if (eIsProxy()) return super.toString();
+		if (eIsProxy())
+			return super.toString();
 
 		StringBuffer result = new StringBuffer(super.toString());
 		result.append(" (adminState: ");
-		if (adminStateESet) result.append(adminState); else result.append("<unset>");
+		if (adminStateESet)
+			result.append(adminState);
+		else
+			result.append("<unset>");
 		result.append(", label: ");
-		if (labelESet) result.append(label); else result.append("<unset>");
+		if (labelESet)
+			result.append(label);
+		else
+			result.append("<unset>");
 		result.append(", operationalState: ");
-		if (operationalStateESet) result.append(operationalState); else result.append("<unset>");
+		if (operationalStateESet)
+			result.append(operationalState);
+		else
+			result.append("<unset>");
 		result.append(", usageState: ");
-		if (usageStateESet) result.append(usageState); else result.append("<unset>");
-		result.append(", profile: ");
-		if (profileESet) result.append(profile); else result.append("<unset>");
+		if (usageStateESet)
+			result.append(usageState);
+		else
+			result.append("<unset>");
 		result.append(')');
 		return result.toString();
 	}
@@ -1241,31 +1144,31 @@ public class ScaDeviceImpl< D extends Device > extends ScaAbstractComponentImpl<
 	}
 
 	private final VersionedFeature profileURIFeature = new VersionedFeature(this, ScaPackage.Literals.PROFILE_OBJECT_WRAPPER__PROFILE_URI);
-	
+
 	@Override
-    public URI fetchProfileURI(IProgressMonitor monitor) {
+	public URI fetchProfileURI(IProgressMonitor monitor) {
 		if (isSetProfileURI()) {
 			return getProfileURI();
 		}
 		SubMonitor subMonitor = SubMonitor.convert(monitor, "Fetch profile URI.", 2);
-	    ScaDeviceManager devMgr = getDevMgr();
-	    if (devMgr != null) {
-	    	ScaDeviceManagerFileSystem fileSystem = devMgr.fetchFileSystem(subMonitor.newChild(1));
-	    	if (fileSystem != null) {
-	    		Transaction transaction = profileURIFeature.createTransaction();
-	    		final URI newURI = fileSystem.createURI(fetchProfile(subMonitor.newChild(1)));
-	    		transaction.addCommand(new ScaModelCommand() {
-					
+		ScaDeviceManager devMgr = getDevMgr();
+		if (devMgr != null) {
+			ScaDeviceManagerFileSystem fileSystem = devMgr.fetchFileSystem(subMonitor.newChild(1));
+			if (fileSystem != null) {
+				Transaction transaction = profileURIFeature.createTransaction();
+				final URI newURI = fileSystem.createURI(fetchProfile(subMonitor.newChild(1)));
+				transaction.addCommand(new ScaModelCommand() {
+
 					@Override
 					public void execute() {
 						setProfileURI(newURI);
 					}
 				});
-	    		transaction.commit();
-	    	}
-	    }
-	    subMonitor.done();
-	    return getProfileURI();
-    }
+				transaction.commit();
+			}
+		}
+		subMonitor.done();
+		return getProfileURI();
+	}
 
 } // ScaDeviceImpl

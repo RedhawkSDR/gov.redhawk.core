@@ -12,7 +12,6 @@
 // BEGIN GENERATED CODE
 package gov.redhawk.model.sca.provider;
 
-
 import gov.redhawk.model.sca.ScaPackage;
 import gov.redhawk.model.sca.ScaPort;
 
@@ -40,10 +39,8 @@ import org.eclipse.emf.edit.provider.ViewerNotification;
  * <!-- end-user-doc -->
  * @generated
  */
-public class ScaPortItemProvider
-extends CorbaObjWrapperItemProvider
-implements
-IEditingDomainItemProvider, IStructuredItemContentProvider, ITreeItemContentProvider, IItemLabelProvider, IItemPropertySource, ITableItemLabelProvider, ITableItemColorProvider, IItemColorProvider {
+public class ScaPortItemProvider extends CorbaObjWrapperItemProvider implements IEditingDomainItemProvider, IStructuredItemContentProvider,
+		ITreeItemContentProvider, IItemLabelProvider, IItemPropertySource, ITableItemLabelProvider, ITableItemColorProvider, IItemColorProvider {
 	/**
 	 * This constructs an instance from a factory and a notifier.
 	 * <!-- begin-user-doc -->
@@ -79,19 +76,9 @@ IEditingDomainItemProvider, IStructuredItemContentProvider, ITreeItemContentProv
 	 * @generated
 	 */
 	protected void addNamePropertyDescriptor(Object object) {
-		itemPropertyDescriptors.add
-			(createItemPropertyDescriptor
-				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
-				 getResourceLocator(),
-				 getString("_UI_ScaPort_name_feature"),
-				 getString("_UI_PropertyDescriptor_description", "_UI_ScaPort_name_feature", "_UI_ScaPort_type"),
-				 ScaPackage.Literals.SCA_PORT__NAME,
-				 false,
-				 false,
-				 false,
-				 ItemPropertyDescriptor.GENERIC_VALUE_IMAGE,
-				 null,
-				 null));
+		itemPropertyDescriptors.add(createItemPropertyDescriptor(((ComposeableAdapterFactory) adapterFactory).getRootAdapterFactory(), getResourceLocator(),
+			getString("_UI_ScaPort_name_feature"), getString("_UI_PropertyDescriptor_description", "_UI_ScaPort_name_feature", "_UI_ScaPort_type"),
+			ScaPackage.Literals.SCA_PORT__NAME, false, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
 	}
 
 	/**
@@ -101,19 +88,9 @@ IEditingDomainItemProvider, IStructuredItemContentProvider, ITreeItemContentProv
 	 * @generated
 	 */
 	protected void addProfileObjPropertyDescriptor(Object object) {
-		itemPropertyDescriptors.add
-			(createItemPropertyDescriptor
-				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
-				 getResourceLocator(),
-				 getString("_UI_ScaPort_profileObj_feature"),
-				 getString("_UI_PropertyDescriptor_description", "_UI_ScaPort_profileObj_feature", "_UI_ScaPort_type"),
-				 ScaPackage.Literals.SCA_PORT__PROFILE_OBJ,
-				 false,
-				 false,
-				 true,
-				 null,
-				 null,
-				 null));
+		itemPropertyDescriptors.add(createItemPropertyDescriptor(((ComposeableAdapterFactory) adapterFactory).getRootAdapterFactory(), getResourceLocator(),
+			getString("_UI_ScaPort_profileObj_feature"), getString("_UI_PropertyDescriptor_description", "_UI_ScaPort_profileObj_feature", "_UI_ScaPort_type"),
+			ScaPackage.Literals.SCA_PORT__PROFILE_OBJ, false, false, true, null, null, null));
 	}
 
 	/**
@@ -123,19 +100,9 @@ IEditingDomainItemProvider, IStructuredItemContentProvider, ITreeItemContentProv
 	 * @generated
 	 */
 	protected void addRepidPropertyDescriptor(Object object) {
-		itemPropertyDescriptors.add
-			(createItemPropertyDescriptor
-				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
-				 getResourceLocator(),
-				 getString("_UI_ScaPort_repid_feature"),
-				 getString("_UI_PropertyDescriptor_description", "_UI_ScaPort_repid_feature", "_UI_ScaPort_type"),
-				 ScaPackage.Literals.SCA_PORT__REPID,
-				 false,
-				 false,
-				 false,
-				 ItemPropertyDescriptor.GENERIC_VALUE_IMAGE,
-				 null,
-				 null));
+		itemPropertyDescriptors.add(createItemPropertyDescriptor(((ComposeableAdapterFactory) adapterFactory).getRootAdapterFactory(), getResourceLocator(),
+			getString("_UI_ScaPort_repid_feature"), getString("_UI_PropertyDescriptor_description", "_UI_ScaPort_repid_feature", "_UI_ScaPort_type"),
+			ScaPackage.Literals.SCA_PORT__REPID, false, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
 	}
 
 	/**
@@ -145,10 +112,8 @@ IEditingDomainItemProvider, IStructuredItemContentProvider, ITreeItemContentProv
 	 * @generated
 	 */
 	public String getTextGen(Object object) {
-		String label = ((ScaPort<?, ?>)object).getName();
-		return label == null || label.length() == 0 ?
-			getString("_UI_ScaPort_type") :
-			getString("_UI_ScaPort_type") + " " + label;
+		String label = ((ScaPort< ? , ? >) object).getName();
+		return label == null || label.length() == 0 ? getString("_UI_ScaPort_type") : getString("_UI_ScaPort_type") + " " + label;
 	}
 
 	/**
@@ -177,9 +142,9 @@ IEditingDomainItemProvider, IStructuredItemContentProvider, ITreeItemContentProv
 		updateChildren(notification);
 
 		switch (notification.getFeatureID(ScaPort.class)) {
-			case ScaPackage.SCA_PORT__NAME:
-				fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
-				return;
+		case ScaPackage.SCA_PORT__NAME:
+			fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
+			return;
 		}
 		super.notifyChanged(notification);
 	}

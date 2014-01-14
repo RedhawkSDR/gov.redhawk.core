@@ -12,7 +12,6 @@
 // BEGIN GENERATED CODE
 package gov.redhawk.model.sca.provider;
 
-
 import gov.redhawk.model.sca.ScaDevice;
 import gov.redhawk.model.sca.ScaPackage;
 
@@ -41,10 +40,8 @@ import org.eclipse.emf.edit.provider.ViewerNotification;
  * <!-- end-user-doc -->
  * @generated
  */
-public class ScaDeviceItemProvider
-extends ScaAbstractComponentItemProvider
-implements
-IEditingDomainItemProvider, IStructuredItemContentProvider, ITreeItemContentProvider, IItemLabelProvider, IItemPropertySource, ITableItemLabelProvider, ITableItemColorProvider, IItemColorProvider {
+public class ScaDeviceItemProvider extends ScaAbstractComponentItemProvider implements IEditingDomainItemProvider, IStructuredItemContentProvider,
+		ITreeItemContentProvider, IItemLabelProvider, IItemPropertySource, ITableItemLabelProvider, ITableItemColorProvider, IItemColorProvider {
 	/**
 	 * This constructs an instance from a factory and a notifier.
 	 * <!-- begin-user-doc -->
@@ -71,7 +68,6 @@ IEditingDomainItemProvider, IStructuredItemContentProvider, ITreeItemContentProv
 			addOperationalStatePropertyDescriptor(object);
 			addUsageStatePropertyDescriptor(object);
 			addParentDevicePropertyDescriptor(object);
-			addProfilePropertyDescriptor(object);
 		}
 		return itemPropertyDescriptors;
 	}
@@ -83,19 +79,10 @@ IEditingDomainItemProvider, IStructuredItemContentProvider, ITreeItemContentProv
 	 * @generated
 	 */
 	protected void addAdminStatePropertyDescriptor(Object object) {
-		itemPropertyDescriptors.add
-			(createItemPropertyDescriptor
-				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
-				 getResourceLocator(),
-				 getString("_UI_ScaDevice_adminState_feature"),
-				 getString("_UI_PropertyDescriptor_description", "_UI_ScaDevice_adminState_feature", "_UI_ScaDevice_type"),
-				 ScaPackage.Literals.SCA_DEVICE__ADMIN_STATE,
-				 false,
-				 false,
-				 false,
-				 ItemPropertyDescriptor.GENERIC_VALUE_IMAGE,
-				 null,
-				 null));
+		itemPropertyDescriptors.add(createItemPropertyDescriptor(((ComposeableAdapterFactory) adapterFactory).getRootAdapterFactory(), getResourceLocator(),
+			getString("_UI_ScaDevice_adminState_feature"),
+			getString("_UI_PropertyDescriptor_description", "_UI_ScaDevice_adminState_feature", "_UI_ScaDevice_type"),
+			ScaPackage.Literals.SCA_DEVICE__ADMIN_STATE, false, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
 	}
 
 	/**
@@ -105,19 +92,9 @@ IEditingDomainItemProvider, IStructuredItemContentProvider, ITreeItemContentProv
 	 * @generated
 	 */
 	protected void addLabelPropertyDescriptor(Object object) {
-		itemPropertyDescriptors.add
-			(createItemPropertyDescriptor
-				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
-				 getResourceLocator(),
-				 getString("_UI_ScaDevice_label_feature"),
-				 getString("_UI_PropertyDescriptor_description", "_UI_ScaDevice_label_feature", "_UI_ScaDevice_type"),
-				 ScaPackage.Literals.SCA_DEVICE__LABEL,
-				 false,
-				 false,
-				 false,
-				 ItemPropertyDescriptor.GENERIC_VALUE_IMAGE,
-				 null,
-				 null));
+		itemPropertyDescriptors.add(createItemPropertyDescriptor(((ComposeableAdapterFactory) adapterFactory).getRootAdapterFactory(), getResourceLocator(),
+			getString("_UI_ScaDevice_label_feature"), getString("_UI_PropertyDescriptor_description", "_UI_ScaDevice_label_feature", "_UI_ScaDevice_type"),
+			ScaPackage.Literals.SCA_DEVICE__LABEL, false, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
 	}
 
 	/**
@@ -127,19 +104,10 @@ IEditingDomainItemProvider, IStructuredItemContentProvider, ITreeItemContentProv
 	 * @generated
 	 */
 	protected void addOperationalStatePropertyDescriptor(Object object) {
-		itemPropertyDescriptors.add
-			(createItemPropertyDescriptor
-				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
-				 getResourceLocator(),
-				 getString("_UI_ScaDevice_operationalState_feature"),
-				 getString("_UI_PropertyDescriptor_description", "_UI_ScaDevice_operationalState_feature", "_UI_ScaDevice_type"),
-				 ScaPackage.Literals.SCA_DEVICE__OPERATIONAL_STATE,
-				 false,
-				 false,
-				 false,
-				 ItemPropertyDescriptor.GENERIC_VALUE_IMAGE,
-				 null,
-				 null));
+		itemPropertyDescriptors.add(createItemPropertyDescriptor(((ComposeableAdapterFactory) adapterFactory).getRootAdapterFactory(), getResourceLocator(),
+			getString("_UI_ScaDevice_operationalState_feature"),
+			getString("_UI_PropertyDescriptor_description", "_UI_ScaDevice_operationalState_feature", "_UI_ScaDevice_type"),
+			ScaPackage.Literals.SCA_DEVICE__OPERATIONAL_STATE, false, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
 	}
 
 	/**
@@ -149,19 +117,10 @@ IEditingDomainItemProvider, IStructuredItemContentProvider, ITreeItemContentProv
 	 * @generated
 	 */
 	protected void addUsageStatePropertyDescriptor(Object object) {
-		itemPropertyDescriptors.add
-			(createItemPropertyDescriptor
-				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
-				 getResourceLocator(),
-				 getString("_UI_ScaDevice_usageState_feature"),
-				 getString("_UI_PropertyDescriptor_description", "_UI_ScaDevice_usageState_feature", "_UI_ScaDevice_type"),
-				 ScaPackage.Literals.SCA_DEVICE__USAGE_STATE,
-				 false,
-				 false,
-				 false,
-				 ItemPropertyDescriptor.GENERIC_VALUE_IMAGE,
-				 null,
-				 null));
+		itemPropertyDescriptors.add(createItemPropertyDescriptor(((ComposeableAdapterFactory) adapterFactory).getRootAdapterFactory(), getResourceLocator(),
+			getString("_UI_ScaDevice_usageState_feature"),
+			getString("_UI_PropertyDescriptor_description", "_UI_ScaDevice_usageState_feature", "_UI_ScaDevice_type"),
+			ScaPackage.Literals.SCA_DEVICE__USAGE_STATE, false, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
 	}
 
 	/**
@@ -171,41 +130,10 @@ IEditingDomainItemProvider, IStructuredItemContentProvider, ITreeItemContentProv
 	 * @generated
 	 */
 	protected void addParentDevicePropertyDescriptor(Object object) {
-		itemPropertyDescriptors.add
-			(createItemPropertyDescriptor
-				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
-				 getResourceLocator(),
-				 getString("_UI_ScaDevice_parentDevice_feature"),
-				 getString("_UI_PropertyDescriptor_description", "_UI_ScaDevice_parentDevice_feature", "_UI_ScaDevice_type"),
-				 ScaPackage.Literals.SCA_DEVICE__PARENT_DEVICE,
-				 false,
-				 false,
-				 true,
-				 null,
-				 null,
-				 null));
-	}
-
-	/**
-	 * This adds a property descriptor for the Profile feature.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	protected void addProfilePropertyDescriptor(Object object) {
-		itemPropertyDescriptors.add
-			(createItemPropertyDescriptor
-				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
-				 getResourceLocator(),
-				 getString("_UI_ScaDevice_profile_feature"),
-				 getString("_UI_PropertyDescriptor_description", "_UI_ScaDevice_profile_feature", "_UI_ScaDevice_type"),
-				 ScaPackage.Literals.SCA_DEVICE__PROFILE,
-				 true,
-				 false,
-				 false,
-				 ItemPropertyDescriptor.GENERIC_VALUE_IMAGE,
-				 null,
-				 null));
+		itemPropertyDescriptors.add(createItemPropertyDescriptor(((ComposeableAdapterFactory) adapterFactory).getRootAdapterFactory(), getResourceLocator(),
+			getString("_UI_ScaDevice_parentDevice_feature"),
+			getString("_UI_PropertyDescriptor_description", "_UI_ScaDevice_parentDevice_feature", "_UI_ScaDevice_type"),
+			ScaPackage.Literals.SCA_DEVICE__PARENT_DEVICE, false, false, true, null, null, null));
 	}
 
 	/**
@@ -217,7 +145,7 @@ IEditingDomainItemProvider, IStructuredItemContentProvider, ITreeItemContentProv
 	 * @generated
 	 */
 	@Override
-	public Collection<? extends EStructuralFeature> getChildrenFeatures(Object object) {
+	public Collection< ? extends EStructuralFeature> getChildrenFeatures(Object object) {
 		if (childrenFeatures == null) {
 			super.getChildrenFeatures(object);
 			childrenFeatures.add(ScaPackage.Literals.SCA_DEVICE__CHILD_DEVICES);
@@ -278,13 +206,12 @@ IEditingDomainItemProvider, IStructuredItemContentProvider, ITreeItemContentProv
 		updateChildren(notification);
 
 		switch (notification.getFeatureID(ScaDevice.class)) {
-			case ScaPackage.SCA_DEVICE__LABEL:
-			case ScaPackage.SCA_DEVICE__PROFILE:
-				fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
-				return;
-			case ScaPackage.SCA_DEVICE__CHILD_DEVICES:
-				fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), true, false));
-				return;
+		case ScaPackage.SCA_DEVICE__LABEL:
+			fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
+			return;
+		case ScaPackage.SCA_DEVICE__CHILD_DEVICES:
+			fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), true, false));
+			return;
 		}
 		super.notifyChanged(notification);
 	}

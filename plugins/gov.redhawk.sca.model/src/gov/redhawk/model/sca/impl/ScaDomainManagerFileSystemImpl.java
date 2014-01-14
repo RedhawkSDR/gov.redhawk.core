@@ -74,8 +74,9 @@ public class ScaDomainManagerFileSystemImpl extends ScaFileManagerImpl implement
 	 */
 	@Override
 	public ScaDomainManager getDomMgr() {
-		if (eContainerFeatureID() != ScaPackage.SCA_DOMAIN_MANAGER_FILE_SYSTEM__DOM_MGR) return null;
-		return (ScaDomainManager)eContainer();
+		if (eContainerFeatureID() != ScaPackage.SCA_DOMAIN_MANAGER_FILE_SYSTEM__DOM_MGR)
+			return null;
+		return (ScaDomainManager) eContainer();
 	}
 
 	/**
@@ -84,8 +85,9 @@ public class ScaDomainManagerFileSystemImpl extends ScaFileManagerImpl implement
 	 * @generated
 	 */
 	public ScaDomainManager basicGetDomMgr() {
-		if (eContainerFeatureID() != ScaPackage.SCA_DOMAIN_MANAGER_FILE_SYSTEM__DOM_MGR) return null;
-		return (ScaDomainManager)eInternalContainer();
+		if (eContainerFeatureID() != ScaPackage.SCA_DOMAIN_MANAGER_FILE_SYSTEM__DOM_MGR)
+			return null;
+		return (ScaDomainManager) eInternalContainer();
 	}
 
 	/**
@@ -94,7 +96,7 @@ public class ScaDomainManagerFileSystemImpl extends ScaFileManagerImpl implement
 	 * @generated
 	 */
 	public NotificationChain basicSetDomMgr(ScaDomainManager newDomMgr, NotificationChain msgs) {
-		msgs = eBasicSetContainer((InternalEObject)newDomMgr, ScaPackage.SCA_DOMAIN_MANAGER_FILE_SYSTEM__DOM_MGR, msgs);
+		msgs = eBasicSetContainer((InternalEObject) newDomMgr, ScaPackage.SCA_DOMAIN_MANAGER_FILE_SYSTEM__DOM_MGR, msgs);
 		return msgs;
 	}
 
@@ -123,11 +125,11 @@ public class ScaDomainManagerFileSystemImpl extends ScaFileManagerImpl implement
 			if (eInternalContainer() != null)
 				msgs = eBasicRemoveFromContainer(msgs);
 			if (newDomMgr != null)
-				msgs = ((InternalEObject)newDomMgr).eInverseAdd(this, ScaPackage.SCA_DOMAIN_MANAGER__FILE_MANAGER, ScaDomainManager.class, msgs);
+				msgs = ((InternalEObject) newDomMgr).eInverseAdd(this, ScaPackage.SCA_DOMAIN_MANAGER__FILE_MANAGER, ScaDomainManager.class, msgs);
 			msgs = basicSetDomMgr(newDomMgr, msgs);
-			if (msgs != null) msgs.dispatch();
-		}
-		else if (eNotificationRequired())
+			if (msgs != null)
+				msgs.dispatch();
+		} else if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET, ScaPackage.SCA_DOMAIN_MANAGER_FILE_SYSTEM__DOM_MGR, newDomMgr, newDomMgr));
 	}
 
@@ -139,10 +141,10 @@ public class ScaDomainManagerFileSystemImpl extends ScaFileManagerImpl implement
 	@Override
 	public NotificationChain eInverseAdd(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
 		switch (featureID) {
-			case ScaPackage.SCA_DOMAIN_MANAGER_FILE_SYSTEM__DOM_MGR:
-				if (eInternalContainer() != null)
-					msgs = eBasicRemoveFromContainer(msgs);
-				return basicSetDomMgr((ScaDomainManager)otherEnd, msgs);
+		case ScaPackage.SCA_DOMAIN_MANAGER_FILE_SYSTEM__DOM_MGR:
+			if (eInternalContainer() != null)
+				msgs = eBasicRemoveFromContainer(msgs);
+			return basicSetDomMgr((ScaDomainManager) otherEnd, msgs);
 		}
 		return super.eInverseAdd(otherEnd, featureID, msgs);
 	}
@@ -155,8 +157,8 @@ public class ScaDomainManagerFileSystemImpl extends ScaFileManagerImpl implement
 	@Override
 	public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
 		switch (featureID) {
-			case ScaPackage.SCA_DOMAIN_MANAGER_FILE_SYSTEM__DOM_MGR:
-				return basicSetDomMgr(null, msgs);
+		case ScaPackage.SCA_DOMAIN_MANAGER_FILE_SYSTEM__DOM_MGR:
+			return basicSetDomMgr(null, msgs);
 		}
 		return super.eInverseRemove(otherEnd, featureID, msgs);
 	}
@@ -169,8 +171,8 @@ public class ScaDomainManagerFileSystemImpl extends ScaFileManagerImpl implement
 	@Override
 	public NotificationChain eBasicRemoveFromContainerFeature(NotificationChain msgs) {
 		switch (eContainerFeatureID()) {
-			case ScaPackage.SCA_DOMAIN_MANAGER_FILE_SYSTEM__DOM_MGR:
-				return eInternalContainer().eInverseRemove(this, ScaPackage.SCA_DOMAIN_MANAGER__FILE_MANAGER, ScaDomainManager.class, msgs);
+		case ScaPackage.SCA_DOMAIN_MANAGER_FILE_SYSTEM__DOM_MGR:
+			return eInternalContainer().eInverseRemove(this, ScaPackage.SCA_DOMAIN_MANAGER__FILE_MANAGER, ScaDomainManager.class, msgs);
 		}
 		return super.eBasicRemoveFromContainerFeature(msgs);
 	}
@@ -183,9 +185,10 @@ public class ScaDomainManagerFileSystemImpl extends ScaFileManagerImpl implement
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
-			case ScaPackage.SCA_DOMAIN_MANAGER_FILE_SYSTEM__DOM_MGR:
-				if (resolve) return getDomMgr();
-				return basicGetDomMgr();
+		case ScaPackage.SCA_DOMAIN_MANAGER_FILE_SYSTEM__DOM_MGR:
+			if (resolve)
+				return getDomMgr();
+			return basicGetDomMgr();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -198,9 +201,9 @@ public class ScaDomainManagerFileSystemImpl extends ScaFileManagerImpl implement
 	@Override
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
-			case ScaPackage.SCA_DOMAIN_MANAGER_FILE_SYSTEM__DOM_MGR:
-				setDomMgr((ScaDomainManager)newValue);
-				return;
+		case ScaPackage.SCA_DOMAIN_MANAGER_FILE_SYSTEM__DOM_MGR:
+			setDomMgr((ScaDomainManager) newValue);
+			return;
 		}
 		super.eSet(featureID, newValue);
 	}
@@ -213,9 +216,9 @@ public class ScaDomainManagerFileSystemImpl extends ScaFileManagerImpl implement
 	@Override
 	public void eUnset(int featureID) {
 		switch (featureID) {
-			case ScaPackage.SCA_DOMAIN_MANAGER_FILE_SYSTEM__DOM_MGR:
-				setDomMgr((ScaDomainManager)null);
-				return;
+		case ScaPackage.SCA_DOMAIN_MANAGER_FILE_SYSTEM__DOM_MGR:
+			setDomMgr((ScaDomainManager) null);
+			return;
 		}
 		super.eUnset(featureID);
 	}
@@ -228,8 +231,8 @@ public class ScaDomainManagerFileSystemImpl extends ScaFileManagerImpl implement
 	@Override
 	public boolean eIsSet(int featureID) {
 		switch (featureID) {
-			case ScaPackage.SCA_DOMAIN_MANAGER_FILE_SYSTEM__DOM_MGR:
-				return basicGetDomMgr() != null;
+		case ScaPackage.SCA_DOMAIN_MANAGER_FILE_SYSTEM__DOM_MGR:
+			return basicGetDomMgr() != null;
 		}
 		return super.eIsSet(featureID);
 	}
@@ -247,7 +250,7 @@ public class ScaDomainManagerFileSystemImpl extends ScaFileManagerImpl implement
 			return null;
 		}
 	}
-	
+
 	/**
 	 * @since 14.0
 	 * @param ior
@@ -263,8 +266,7 @@ public class ScaDomainManagerFileSystemImpl extends ScaFileManagerImpl implement
 		queryParams.put(ScaFileSystemConstants.QUERY_PARAM_FS, ior);
 		return new URI(ScaFileSystemConstants.SCHEME + "://?" + QueryParser.createQuery(queryParams));
 	}
-	
-	
+
 	@Override
 	public void setCorbaObj(org.omg.CORBA.Object newCorbaObj) {
 		if (newCorbaObj instanceof FileManager) {

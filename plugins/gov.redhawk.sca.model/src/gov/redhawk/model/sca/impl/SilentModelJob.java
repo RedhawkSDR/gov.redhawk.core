@@ -33,9 +33,9 @@ public abstract class SilentModelJob extends SilentJob {
 	private static boolean shouldRun = true;
 
 	private final IStatusProvider dataObj;
-	
+
 	private final EStructuralFeature errFeature;
-	
+
 	private final IJobChangeListener jobChangeListener = new JobChangeAdapter() {
 		@Override
 		public void done(org.eclipse.core.runtime.jobs.IJobChangeEvent event) {
@@ -49,13 +49,13 @@ public abstract class SilentModelJob extends SilentJob {
 	};
 
 	public SilentModelJob(String msg, final IStatusProvider dataObj, EStructuralFeature errFeature) {
-	    super(msg);
-	    this.dataObj = dataObj;
-	    this.errFeature = errFeature;
-	    setSystem(true);
-	    addJobChangeListener(jobChangeListener);
-    }
-	
+		super(msg);
+		this.dataObj = dataObj;
+		this.errFeature = errFeature;
+		setSystem(true);
+		addJobChangeListener(jobChangeListener);
+	}
+
 	public SilentModelJob(String msg) {
 		super(msg);
 		setSystem(true);
@@ -64,13 +64,13 @@ public abstract class SilentModelJob extends SilentJob {
 	}
 
 	protected EStructuralFeature getErrFeature() {
-	    return errFeature;
-    }
-	
+		return errFeature;
+	}
+
 	protected IStatusProvider getModelObject() {
 		return this.dataObj;
 	}
-	
+
 	private boolean validState() {
 		IStatusProvider tmpDataObj = getModelObject();
 		if (tmpDataObj instanceof IDisposable) {
@@ -79,27 +79,26 @@ public abstract class SilentModelJob extends SilentJob {
 			return true;
 		}
 	}
-	
+
 	@Override
 	public boolean shouldSchedule() {
-	    return validState() && super.shouldSchedule();
-//		return false;
+		return validState() && super.shouldSchedule();
+		//		return false;
 	}
-	
+
 	@Override
 	public boolean shouldRun() {
-	    return shouldRun && validState() && super.shouldRun();
-//		return false;
+		return shouldRun && validState() && super.shouldRun();
+		//		return false;
 	}
-	
+
 	@Override
 	public boolean belongsTo(Object family) {
-	    return super.belongsTo(family) || JOB_FAMILY.equals(family);
+		return super.belongsTo(family) || JOB_FAMILY.equals(family);
 	}
-	
+
 	public static void setShouldRun(boolean b) {
-	    shouldRun = b;
-    }
-	
+		shouldRun = b;
+	}
 
 }

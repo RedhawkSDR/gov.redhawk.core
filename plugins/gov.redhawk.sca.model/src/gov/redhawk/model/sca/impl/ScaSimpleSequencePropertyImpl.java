@@ -103,9 +103,9 @@ public class ScaSimpleSequencePropertyImpl extends ScaAbstractPropertyImpl<Simpl
 	}
 
 	/**
-     * @since 14.0
-     */
-	protected static class ObjectList extends EDataTypeEList<Object>{
+	 * @since 14.0
+	 */
+	protected static class ObjectList extends EDataTypeEList<Object> {
 		// END GENERATED CODE
 
 		/**
@@ -168,16 +168,16 @@ public class ScaSimpleSequencePropertyImpl extends ScaAbstractPropertyImpl<Simpl
 
 		// BEGIN GENERATED CODE
 	}
-	
+
 	/**
-     * @since 14.0
-     */
+	 * @since 14.0
+	 */
 	@Override
 	public void setDefinition(SimpleSequence newDefinition) {
 		if (newDefinition != definition && values != null) {
-			((ObjectList)values).setDefinition(newDefinition);
+			((ObjectList) values).setDefinition(newDefinition);
 		}
-	    super.setDefinition(newDefinition);
+		super.setDefinition(newDefinition);
 	}
 
 	/**
@@ -217,8 +217,8 @@ public class ScaSimpleSequencePropertyImpl extends ScaAbstractPropertyImpl<Simpl
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
-			case ScaPackage.SCA_SIMPLE_SEQUENCE_PROPERTY__VALUES:
-				return getValues();
+		case ScaPackage.SCA_SIMPLE_SEQUENCE_PROPERTY__VALUES:
+			return getValues();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -285,7 +285,7 @@ public class ScaSimpleSequencePropertyImpl extends ScaAbstractPropertyImpl<Simpl
 			setStatus(ScaPackage.Literals.SCA_SIMPLE_SEQUENCE_PROPERTY__VALUES, Status.OK_STATUS);
 		} catch (Exception e) {
 			setStatus(ScaPackage.Literals.SCA_SIMPLE_SEQUENCE_PROPERTY__VALUES, new Status(Status.ERROR, ScaModelPlugin.ID, "Failed to read property value of:"
-			        + getName(), e));
+				+ getName(), e));
 		}
 	}
 
@@ -297,10 +297,10 @@ public class ScaSimpleSequencePropertyImpl extends ScaAbstractPropertyImpl<Simpl
 		return null;
 		// BEGIN GENERATED CODE
 	}
-	
+
 	/**
-     * @since 18.0
-     */
+	 * @since 18.0
+	 */
 	protected boolean isComplex() {
 		if (getDefinition() != null) {
 			return getDefinition().isComplex();
@@ -331,9 +331,9 @@ public class ScaSimpleSequencePropertyImpl extends ScaAbstractPropertyImpl<Simpl
 	@Override
 	public void eUnset(int featureID) {
 		switch (featureID) {
-			case ScaPackage.SCA_SIMPLE_SEQUENCE_PROPERTY__VALUES:
-				getValues().clear();
-				return;
+		case ScaPackage.SCA_SIMPLE_SEQUENCE_PROPERTY__VALUES:
+			getValues().clear();
+			return;
 		}
 		super.eUnset(featureID);
 	}
@@ -346,8 +346,8 @@ public class ScaSimpleSequencePropertyImpl extends ScaAbstractPropertyImpl<Simpl
 	@Override
 	public boolean eIsSet(int featureID) {
 		switch (featureID) {
-			case ScaPackage.SCA_SIMPLE_SEQUENCE_PROPERTY__VALUES:
-				return values != null && !values.isEmpty();
+		case ScaPackage.SCA_SIMPLE_SEQUENCE_PROPERTY__VALUES:
+			return values != null && !values.isEmpty();
 		}
 		return super.eIsSet(featureID);
 	}
@@ -359,7 +359,8 @@ public class ScaSimpleSequencePropertyImpl extends ScaAbstractPropertyImpl<Simpl
 	 */
 	@Override
 	public String toString() {
-		if (eIsProxy()) return super.toString();
+		if (eIsProxy())
+			return super.toString();
 
 		StringBuffer result = new StringBuffer(super.toString());
 		result.append(" (values: ");
@@ -374,8 +375,8 @@ public class ScaSimpleSequencePropertyImpl extends ScaAbstractPropertyImpl<Simpl
 	}
 
 	@Override
-    public void restoreDefaultValue() {
+	public void restoreDefaultValue() {
 		getValues().restoreDefaultValue();
-    }
+	}
 
 } // ScaSimpleSequencePropertyImpl

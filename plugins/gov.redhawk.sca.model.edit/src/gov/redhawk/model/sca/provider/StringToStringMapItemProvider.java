@@ -12,7 +12,6 @@
 // BEGIN GENERATED CODE
 package gov.redhawk.model.sca.provider;
 
-
 import gov.redhawk.model.sca.ScaPackage;
 
 import java.util.Collection;
@@ -43,10 +42,8 @@ import org.eclipse.emf.edit.provider.ViewerNotification;
  * <!-- end-user-doc -->
  * @generated
  */
-public class StringToStringMapItemProvider
-	extends ItemProviderAdapter
-	implements
-		IEditingDomainItemProvider, IStructuredItemContentProvider, ITreeItemContentProvider, IItemLabelProvider, IItemPropertySource, ITableItemLabelProvider, ITableItemColorProvider, IItemColorProvider {
+public class StringToStringMapItemProvider extends ItemProviderAdapter implements IEditingDomainItemProvider, IStructuredItemContentProvider,
+		ITreeItemContentProvider, IItemLabelProvider, IItemPropertySource, ITableItemLabelProvider, ITableItemColorProvider, IItemColorProvider {
 
 	/**
 	 * This constructs an instance from a factory and a notifier.
@@ -82,19 +79,10 @@ public class StringToStringMapItemProvider
 	 * @generated
 	 */
 	protected void addKeyPropertyDescriptor(Object object) {
-		itemPropertyDescriptors.add
-			(createItemPropertyDescriptor
-				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
-				 getResourceLocator(),
-				 getString("_UI_StringToStringMap_key_feature"),
-				 getString("_UI_PropertyDescriptor_description", "_UI_StringToStringMap_key_feature", "_UI_StringToStringMap_type"),
-				 ScaPackage.Literals.STRING_TO_STRING_MAP__KEY,
-				 true,
-				 false,
-				 false,
-				 ItemPropertyDescriptor.GENERIC_VALUE_IMAGE,
-				 null,
-				 null));
+		itemPropertyDescriptors.add(createItemPropertyDescriptor(((ComposeableAdapterFactory) adapterFactory).getRootAdapterFactory(), getResourceLocator(),
+			getString("_UI_StringToStringMap_key_feature"),
+			getString("_UI_PropertyDescriptor_description", "_UI_StringToStringMap_key_feature", "_UI_StringToStringMap_type"),
+			ScaPackage.Literals.STRING_TO_STRING_MAP__KEY, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
 	}
 
 	/**
@@ -104,19 +92,10 @@ public class StringToStringMapItemProvider
 	 * @generated
 	 */
 	protected void addValuePropertyDescriptor(Object object) {
-		itemPropertyDescriptors.add
-			(createItemPropertyDescriptor
-				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
-				 getResourceLocator(),
-				 getString("_UI_StringToStringMap_value_feature"),
-				 getString("_UI_PropertyDescriptor_description", "_UI_StringToStringMap_value_feature", "_UI_StringToStringMap_type"),
-				 ScaPackage.Literals.STRING_TO_STRING_MAP__VALUE,
-				 true,
-				 false,
-				 false,
-				 ItemPropertyDescriptor.GENERIC_VALUE_IMAGE,
-				 null,
-				 null));
+		itemPropertyDescriptors.add(createItemPropertyDescriptor(((ComposeableAdapterFactory) adapterFactory).getRootAdapterFactory(), getResourceLocator(),
+			getString("_UI_StringToStringMap_value_feature"),
+			getString("_UI_PropertyDescriptor_description", "_UI_StringToStringMap_value_feature", "_UI_StringToStringMap_type"),
+			ScaPackage.Literals.STRING_TO_STRING_MAP__VALUE, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
 	}
 
 	/**
@@ -138,7 +117,7 @@ public class StringToStringMapItemProvider
 	 */
 	@Override
 	public String getText(Object object) {
-		Map.Entry<?, ?> stringToStringMap = (Map.Entry<?, ?>)object;
+		Map.Entry< ? , ? > stringToStringMap = (Map.Entry< ? , ? >) object;
 		return "" + stringToStringMap.getKey() + " -> " + stringToStringMap.getValue();
 	}
 
@@ -154,10 +133,10 @@ public class StringToStringMapItemProvider
 		updateChildren(notification);
 
 		switch (notification.getFeatureID(Map.Entry.class)) {
-			case ScaPackage.STRING_TO_STRING_MAP__KEY:
-			case ScaPackage.STRING_TO_STRING_MAP__VALUE:
-				fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
-				return;
+		case ScaPackage.STRING_TO_STRING_MAP__KEY:
+		case ScaPackage.STRING_TO_STRING_MAP__VALUE:
+			fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
+			return;
 		}
 		super.notifyChanged(notification);
 	}

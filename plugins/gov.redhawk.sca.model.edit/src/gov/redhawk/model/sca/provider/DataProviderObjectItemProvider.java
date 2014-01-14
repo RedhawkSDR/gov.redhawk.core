@@ -12,7 +12,6 @@
 // BEGIN GENERATED CODE
 package gov.redhawk.model.sca.provider;
 
-
 import gov.redhawk.model.sca.DataProviderObject;
 import gov.redhawk.model.sca.ScaPackage;
 
@@ -42,10 +41,8 @@ import org.eclipse.emf.edit.provider.ViewerNotification;
  * <!-- end-user-doc -->
  * @generated
  */
-public class DataProviderObjectItemProvider
-	extends IStatusProviderItemProvider
-	implements
-		IEditingDomainItemProvider, IStructuredItemContentProvider, ITreeItemContentProvider, IItemLabelProvider, IItemPropertySource, ITableItemLabelProvider, ITableItemColorProvider, IItemColorProvider {
+public class DataProviderObjectItemProvider extends IStatusProviderItemProvider implements IEditingDomainItemProvider, IStructuredItemContentProvider,
+		ITreeItemContentProvider, IItemLabelProvider, IItemPropertySource, ITableItemLabelProvider, ITableItemColorProvider, IItemColorProvider {
 
 	/**
 	 * This constructs an instance from a factory and a notifier.
@@ -80,19 +77,10 @@ public class DataProviderObjectItemProvider
 	 * @generated
 	 */
 	protected void addDataProvidersEnabledPropertyDescriptor(Object object) {
-		itemPropertyDescriptors.add
-			(createItemPropertyDescriptor
-				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
-				 getResourceLocator(),
-				 getString("_UI_DataProviderObject_dataProvidersEnabled_feature"),
-				 getString("_UI_PropertyDescriptor_description", "_UI_DataProviderObject_dataProvidersEnabled_feature", "_UI_DataProviderObject_type"),
-				 ScaPackage.Literals.DATA_PROVIDER_OBJECT__DATA_PROVIDERS_ENABLED,
-				 true,
-				 false,
-				 false,
-				 ItemPropertyDescriptor.BOOLEAN_VALUE_IMAGE,
-				 null,
-				 null));
+		itemPropertyDescriptors.add(createItemPropertyDescriptor(((ComposeableAdapterFactory) adapterFactory).getRootAdapterFactory(), getResourceLocator(),
+			getString("_UI_DataProviderObject_dataProvidersEnabled_feature"),
+			getString("_UI_PropertyDescriptor_description", "_UI_DataProviderObject_dataProvidersEnabled_feature", "_UI_DataProviderObject_type"),
+			ScaPackage.Literals.DATA_PROVIDER_OBJECT__DATA_PROVIDERS_ENABLED, true, false, false, ItemPropertyDescriptor.BOOLEAN_VALUE_IMAGE, null, null));
 	}
 
 	/**
@@ -103,11 +91,9 @@ public class DataProviderObjectItemProvider
 	 */
 	@Override
 	public String getText(Object object) {
-		IStatus labelValue = ((DataProviderObject)object).getStatus();
+		IStatus labelValue = ((DataProviderObject) object).getStatus();
 		String label = labelValue == null ? null : labelValue.toString();
-		return label == null || label.length() == 0 ?
-			getString("_UI_DataProviderObject_type") :
-			getString("_UI_DataProviderObject_type") + " " + label;
+		return label == null || label.length() == 0 ? getString("_UI_DataProviderObject_type") : getString("_UI_DataProviderObject_type") + " " + label;
 	}
 
 	/**
@@ -122,9 +108,9 @@ public class DataProviderObjectItemProvider
 		updateChildren(notification);
 
 		switch (notification.getFeatureID(DataProviderObject.class)) {
-			case ScaPackage.DATA_PROVIDER_OBJECT__DATA_PROVIDERS_ENABLED:
-				fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
-				return;
+		case ScaPackage.DATA_PROVIDER_OBJECT__DATA_PROVIDERS_ENABLED:
+			fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
+			return;
 		}
 		super.notifyChanged(notification);
 	}

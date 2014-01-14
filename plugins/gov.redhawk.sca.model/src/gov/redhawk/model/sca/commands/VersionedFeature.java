@@ -49,7 +49,7 @@ public class VersionedFeature {
 			}
 			if (oldRevision == currentRevision.get()) {
 				ScaModelCommand.execute(context, new CommandWrapper("Version checked command", "", compoundCommand) {
-					
+
 					@Override
 					protected boolean prepare() {
 						if (context instanceof IDisposable) {
@@ -57,7 +57,7 @@ public class VersionedFeature {
 								return false;
 							}
 						}
-					    return super.prepare();
+						return super.prepare();
 					}
 
 					@Override
@@ -81,11 +81,12 @@ public class VersionedFeature {
 		}
 
 		public void append(Command command) {
-	        addCommand(command);
-        }
+			addCommand(command);
+		}
 	}
+
 	private boolean ignoreNotification;
-	
+
 	private final Adapter versionListener = new AdapterImpl() {
 		@Override
 		public void notifyChanged(org.eclipse.emf.common.notify.Notification msg) {
@@ -94,7 +95,7 @@ public class VersionedFeature {
 					((Notifier) msg.getNotifier()).eAdapters().remove(this);
 					return;
 				}
-			} else if (!ignoreNotification && msg.getFeature() == feature && !msg.isTouch()) {  
+			} else if (!ignoreNotification && msg.getFeature() == feature && !msg.isTouch()) {
 				currentRevision.incrementAndGet();
 			}
 		}

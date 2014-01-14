@@ -12,7 +12,6 @@
 // BEGIN GENERATED CODE
 package gov.redhawk.model.sca.provider;
 
-
 import gov.redhawk.model.sca.ScaPackage;
 import gov.redhawk.model.sca.ScaService;
 
@@ -42,10 +41,8 @@ import org.eclipse.emf.edit.provider.ViewerNotification;
  * <!-- end-user-doc -->
  * @generated
  */
-public class ScaServiceItemProvider
-	extends ScaPropertyContainerItemProvider
-	implements
-		IEditingDomainItemProvider, IStructuredItemContentProvider, ITreeItemContentProvider, IItemLabelProvider, IItemPropertySource, ITableItemLabelProvider, ITableItemColorProvider, IItemColorProvider {
+public class ScaServiceItemProvider extends ScaPropertyContainerItemProvider implements IEditingDomainItemProvider, IStructuredItemContentProvider,
+		ITreeItemContentProvider, IItemLabelProvider, IItemPropertySource, ITableItemLabelProvider, ITableItemColorProvider, IItemColorProvider {
 	/**
 	 * This constructs an instance from a factory and a notifier.
 	 * <!-- begin-user-doc -->
@@ -79,19 +76,9 @@ public class ScaServiceItemProvider
 	 * @generated
 	 */
 	protected void addNamePropertyDescriptor(Object object) {
-		itemPropertyDescriptors.add
-			(createItemPropertyDescriptor
-				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
-				 getResourceLocator(),
-				 getString("_UI_ScaService_name_feature"),
-				 getString("_UI_PropertyDescriptor_description", "_UI_ScaService_name_feature", "_UI_ScaService_type"),
-				 ScaPackage.Literals.SCA_SERVICE__NAME,
-				 false,
-				 false,
-				 false,
-				 ItemPropertyDescriptor.GENERIC_VALUE_IMAGE,
-				 null,
-				 null));
+		itemPropertyDescriptors.add(createItemPropertyDescriptor(((ComposeableAdapterFactory) adapterFactory).getRootAdapterFactory(), getResourceLocator(),
+			getString("_UI_ScaService_name_feature"), getString("_UI_PropertyDescriptor_description", "_UI_ScaService_name_feature", "_UI_ScaService_type"),
+			ScaPackage.Literals.SCA_SERVICE__NAME, false, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
 	}
 
 	/**
@@ -103,7 +90,7 @@ public class ScaServiceItemProvider
 	 * @generated
 	 */
 	@Override
-	public Collection<? extends EStructuralFeature> getChildrenFeatures(Object object) {
+	public Collection< ? extends EStructuralFeature> getChildrenFeatures(Object object) {
 		if (childrenFeatures == null) {
 			super.getChildrenFeatures(object);
 			childrenFeatures.add(ScaPackage.Literals.SCA_PORT_CONTAINER__PORTS);
@@ -143,10 +130,8 @@ public class ScaServiceItemProvider
 	 */
 	@Override
 	public String getText(Object object) {
-		String label = ((ScaService)object).getName();
-		return label == null || label.length() == 0 ?
-			getString("_UI_ScaService_type") :
-			label;
+		String label = ((ScaService) object).getName();
+		return label == null || label.length() == 0 ? getString("_UI_ScaService_type") : label;
 	}
 
 	/**
@@ -161,12 +146,12 @@ public class ScaServiceItemProvider
 		updateChildren(notification);
 
 		switch (notification.getFeatureID(ScaService.class)) {
-			case ScaPackage.SCA_SERVICE__NAME:
-				fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
-				return;
-			case ScaPackage.SCA_SERVICE__PORTS:
-				fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), true, false));
-				return;
+		case ScaPackage.SCA_SERVICE__NAME:
+			fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
+			return;
+		case ScaPackage.SCA_SERVICE__PORTS:
+			fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), true, false));
+			return;
 		}
 		super.notifyChanged(notification);
 	}

@@ -377,7 +377,8 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 	@Override
 	public EList<ScaWaveformFactory> getWaveformFactories() {
 		if (waveformFactories == null) {
-			waveformFactories = new EObjectContainmentWithInverseEList.Unsettable<ScaWaveformFactory>(ScaWaveformFactory.class, this, ScaPackage.SCA_DOMAIN_MANAGER__WAVEFORM_FACTORIES, ScaPackage.SCA_WAVEFORM_FACTORY__DOM_MGR);
+			waveformFactories = new EObjectContainmentWithInverseEList.Unsettable<ScaWaveformFactory>(ScaWaveformFactory.class, this,
+				ScaPackage.SCA_DOMAIN_MANAGER__WAVEFORM_FACTORIES, ScaPackage.SCA_WAVEFORM_FACTORY__DOM_MGR);
 		}
 		return waveformFactories;
 	}
@@ -389,7 +390,8 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 	 */
 	@Override
 	public void unsetWaveformFactories() {
-		if (waveformFactories != null) ((InternalEList.Unsettable<?>)waveformFactories).unset();
+		if (waveformFactories != null)
+			((InternalEList.Unsettable< ? >) waveformFactories).unset();
 	}
 
 	/**
@@ -399,7 +401,7 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 	 */
 	@Override
 	public boolean isSetWaveformFactories() {
-		return waveformFactories != null && ((InternalEList.Unsettable<?>)waveformFactories).isSet();
+		return waveformFactories != null && ((InternalEList.Unsettable< ? >) waveformFactories).isSet();
 	}
 
 	/**
@@ -410,7 +412,8 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 	@Override
 	public EList<ScaWaveform> getWaveforms() {
 		if (waveforms == null) {
-			waveforms = new EObjectContainmentWithInverseEList.Unsettable<ScaWaveform>(ScaWaveform.class, this, ScaPackage.SCA_DOMAIN_MANAGER__WAVEFORMS, ScaPackage.SCA_WAVEFORM__DOM_MGR);
+			waveforms = new EObjectContainmentWithInverseEList.Unsettable<ScaWaveform>(ScaWaveform.class, this, ScaPackage.SCA_DOMAIN_MANAGER__WAVEFORMS,
+				ScaPackage.SCA_WAVEFORM__DOM_MGR);
 		}
 		return waveforms;
 	}
@@ -422,7 +425,8 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 	 */
 	@Override
 	public void unsetWaveforms() {
-		if (waveforms != null) ((InternalEList.Unsettable<?>)waveforms).unset();
+		if (waveforms != null)
+			((InternalEList.Unsettable< ? >) waveforms).unset();
 	}
 
 	/**
@@ -432,7 +436,7 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 	 */
 	@Override
 	public boolean isSetWaveforms() {
-		return waveforms != null && ((InternalEList.Unsettable<?>)waveforms).isSet();
+		return waveforms != null && ((InternalEList.Unsettable< ? >) waveforms).isSet();
 	}
 
 	/**
@@ -443,7 +447,8 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 	@Override
 	public EList<ScaDeviceManager> getDeviceManagers() {
 		if (deviceManagers == null) {
-			deviceManagers = new EObjectContainmentWithInverseEList.Unsettable<ScaDeviceManager>(ScaDeviceManager.class, this, ScaPackage.SCA_DOMAIN_MANAGER__DEVICE_MANAGERS, ScaPackage.SCA_DEVICE_MANAGER__DOM_MGR);
+			deviceManagers = new EObjectContainmentWithInverseEList.Unsettable<ScaDeviceManager>(ScaDeviceManager.class, this,
+				ScaPackage.SCA_DOMAIN_MANAGER__DEVICE_MANAGERS, ScaPackage.SCA_DEVICE_MANAGER__DOM_MGR);
 		}
 		return deviceManagers;
 	}
@@ -455,7 +460,8 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 	 */
 	@Override
 	public void unsetDeviceManagers() {
-		if (deviceManagers != null) ((InternalEList.Unsettable<?>)deviceManagers).unset();
+		if (deviceManagers != null)
+			((InternalEList.Unsettable< ? >) deviceManagers).unset();
 	}
 
 	/**
@@ -465,7 +471,7 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 	 */
 	@Override
 	public boolean isSetDeviceManagers() {
-		return deviceManagers != null && ((InternalEList.Unsettable<?>)deviceManagers).isSet();
+		return deviceManagers != null && ((InternalEList.Unsettable< ? >) deviceManagers).isSet();
 	}
 
 	/**
@@ -489,8 +495,12 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 		boolean oldFileManagerESet = fileManagerESet;
 		fileManagerESet = true;
 		if (eNotificationRequired()) {
-			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, ScaPackage.SCA_DOMAIN_MANAGER__FILE_MANAGER, oldFileManager, newFileManager, !oldFileManagerESet);
-			if (msgs == null) msgs = notification; else msgs.add(notification);
+			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, ScaPackage.SCA_DOMAIN_MANAGER__FILE_MANAGER, oldFileManager,
+				newFileManager, !oldFileManagerESet);
+			if (msgs == null)
+				msgs = notification;
+			else
+				msgs.add(notification);
 		}
 		return msgs;
 	}
@@ -505,17 +515,20 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 		if (newFileManager != fileManager) {
 			NotificationChain msgs = null;
 			if (fileManager != null)
-				msgs = ((InternalEObject)fileManager).eInverseRemove(this, ScaPackage.SCA_DOMAIN_MANAGER_FILE_SYSTEM__DOM_MGR, ScaDomainManagerFileSystem.class, msgs);
+				msgs = ((InternalEObject) fileManager).eInverseRemove(this, ScaPackage.SCA_DOMAIN_MANAGER_FILE_SYSTEM__DOM_MGR,
+					ScaDomainManagerFileSystem.class, msgs);
 			if (newFileManager != null)
-				msgs = ((InternalEObject)newFileManager).eInverseAdd(this, ScaPackage.SCA_DOMAIN_MANAGER_FILE_SYSTEM__DOM_MGR, ScaDomainManagerFileSystem.class, msgs);
+				msgs = ((InternalEObject) newFileManager).eInverseAdd(this, ScaPackage.SCA_DOMAIN_MANAGER_FILE_SYSTEM__DOM_MGR,
+					ScaDomainManagerFileSystem.class, msgs);
 			msgs = basicSetFileManager(newFileManager, msgs);
-			if (msgs != null) msgs.dispatch();
-		}
-		else {
+			if (msgs != null)
+				msgs.dispatch();
+		} else {
 			boolean oldFileManagerESet = fileManagerESet;
 			fileManagerESet = true;
 			if (eNotificationRequired())
-				eNotify(new ENotificationImpl(this, Notification.SET, ScaPackage.SCA_DOMAIN_MANAGER__FILE_MANAGER, newFileManager, newFileManager, !oldFileManagerESet));
+				eNotify(new ENotificationImpl(this, Notification.SET, ScaPackage.SCA_DOMAIN_MANAGER__FILE_MANAGER, newFileManager, newFileManager,
+					!oldFileManagerESet));
 		}
 	}
 
@@ -530,8 +543,12 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 		boolean oldFileManagerESet = fileManagerESet;
 		fileManagerESet = false;
 		if (eNotificationRequired()) {
-			ENotificationImpl notification = new ENotificationImpl(this, Notification.UNSET, ScaPackage.SCA_DOMAIN_MANAGER__FILE_MANAGER, oldFileManager, null, oldFileManagerESet);
-			if (msgs == null) msgs = notification; else msgs.add(notification);
+			ENotificationImpl notification = new ENotificationImpl(this, Notification.UNSET, ScaPackage.SCA_DOMAIN_MANAGER__FILE_MANAGER, oldFileManager, null,
+				oldFileManagerESet);
+			if (msgs == null)
+				msgs = notification;
+			else
+				msgs.add(notification);
 		}
 		return msgs;
 	}
@@ -545,11 +562,12 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 	public void unsetFileManager() {
 		if (fileManager != null) {
 			NotificationChain msgs = null;
-			msgs = ((InternalEObject)fileManager).eInverseRemove(this, ScaPackage.SCA_DOMAIN_MANAGER_FILE_SYSTEM__DOM_MGR, ScaDomainManagerFileSystem.class, msgs);
+			msgs = ((InternalEObject) fileManager).eInverseRemove(this, ScaPackage.SCA_DOMAIN_MANAGER_FILE_SYSTEM__DOM_MGR, ScaDomainManagerFileSystem.class,
+				msgs);
 			msgs = basicUnsetFileManager(msgs);
-			if (msgs != null) msgs.dispatch();
-		}
-		else {
+			if (msgs != null)
+				msgs.dispatch();
+		} else {
 			boolean oldFileManagerESet = fileManagerESet;
 			fileManagerESet = false;
 			if (eNotificationRequired())
@@ -575,17 +593,21 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 	@Override
 	public Properties getConnectionPropertiesContainer() {
 		if (connectionPropertiesContainer != null && connectionPropertiesContainer.eIsProxy()) {
-			InternalEObject oldConnectionPropertiesContainer = (InternalEObject)connectionPropertiesContainer;
-			connectionPropertiesContainer = (Properties)eResolveProxy(oldConnectionPropertiesContainer);
+			InternalEObject oldConnectionPropertiesContainer = (InternalEObject) connectionPropertiesContainer;
+			connectionPropertiesContainer = (Properties) eResolveProxy(oldConnectionPropertiesContainer);
 			if (connectionPropertiesContainer != oldConnectionPropertiesContainer) {
-				InternalEObject newConnectionPropertiesContainer = (InternalEObject)connectionPropertiesContainer;
-				NotificationChain msgs = oldConnectionPropertiesContainer.eInverseRemove(this, EOPPOSITE_FEATURE_BASE - ScaPackage.SCA_DOMAIN_MANAGER__CONNECTION_PROPERTIES_CONTAINER, null, null);
+				InternalEObject newConnectionPropertiesContainer = (InternalEObject) connectionPropertiesContainer;
+				NotificationChain msgs = oldConnectionPropertiesContainer.eInverseRemove(this, EOPPOSITE_FEATURE_BASE
+					- ScaPackage.SCA_DOMAIN_MANAGER__CONNECTION_PROPERTIES_CONTAINER, null, null);
 				if (newConnectionPropertiesContainer.eInternalContainer() == null) {
-					msgs = newConnectionPropertiesContainer.eInverseAdd(this, EOPPOSITE_FEATURE_BASE - ScaPackage.SCA_DOMAIN_MANAGER__CONNECTION_PROPERTIES_CONTAINER, null, msgs);
+					msgs = newConnectionPropertiesContainer.eInverseAdd(this, EOPPOSITE_FEATURE_BASE
+						- ScaPackage.SCA_DOMAIN_MANAGER__CONNECTION_PROPERTIES_CONTAINER, null, msgs);
 				}
-				if (msgs != null) msgs.dispatch();
+				if (msgs != null)
+					msgs.dispatch();
 				if (eNotificationRequired())
-					eNotify(new ENotificationImpl(this, Notification.RESOLVE, ScaPackage.SCA_DOMAIN_MANAGER__CONNECTION_PROPERTIES_CONTAINER, oldConnectionPropertiesContainer, connectionPropertiesContainer));
+					eNotify(new ENotificationImpl(this, Notification.RESOLVE, ScaPackage.SCA_DOMAIN_MANAGER__CONNECTION_PROPERTIES_CONTAINER,
+						oldConnectionPropertiesContainer, connectionPropertiesContainer));
 			}
 		}
 		return connectionPropertiesContainer;
@@ -609,8 +631,12 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 		Properties oldConnectionPropertiesContainer = connectionPropertiesContainer;
 		connectionPropertiesContainer = newConnectionPropertiesContainer;
 		if (eNotificationRequired()) {
-			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, ScaPackage.SCA_DOMAIN_MANAGER__CONNECTION_PROPERTIES_CONTAINER, oldConnectionPropertiesContainer, newConnectionPropertiesContainer);
-			if (msgs == null) msgs = notification; else msgs.add(notification);
+			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, ScaPackage.SCA_DOMAIN_MANAGER__CONNECTION_PROPERTIES_CONTAINER,
+				oldConnectionPropertiesContainer, newConnectionPropertiesContainer);
+			if (msgs == null)
+				msgs = notification;
+			else
+				msgs.add(notification);
 		}
 		return msgs;
 	}
@@ -625,14 +651,17 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 		if (newConnectionPropertiesContainer != connectionPropertiesContainer) {
 			NotificationChain msgs = null;
 			if (connectionPropertiesContainer != null)
-				msgs = ((InternalEObject)connectionPropertiesContainer).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - ScaPackage.SCA_DOMAIN_MANAGER__CONNECTION_PROPERTIES_CONTAINER, null, msgs);
+				msgs = ((InternalEObject) connectionPropertiesContainer).eInverseRemove(this, EOPPOSITE_FEATURE_BASE
+					- ScaPackage.SCA_DOMAIN_MANAGER__CONNECTION_PROPERTIES_CONTAINER, null, msgs);
 			if (newConnectionPropertiesContainer != null)
-				msgs = ((InternalEObject)newConnectionPropertiesContainer).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - ScaPackage.SCA_DOMAIN_MANAGER__CONNECTION_PROPERTIES_CONTAINER, null, msgs);
+				msgs = ((InternalEObject) newConnectionPropertiesContainer).eInverseAdd(this, EOPPOSITE_FEATURE_BASE
+					- ScaPackage.SCA_DOMAIN_MANAGER__CONNECTION_PROPERTIES_CONTAINER, null, msgs);
 			msgs = basicSetConnectionPropertiesContainer(newConnectionPropertiesContainer, msgs);
-			if (msgs != null) msgs.dispatch();
-		}
-		else if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, ScaPackage.SCA_DOMAIN_MANAGER__CONNECTION_PROPERTIES_CONTAINER, newConnectionPropertiesContainer, newConnectionPropertiesContainer));
+			if (msgs != null)
+				msgs.dispatch();
+		} else if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, ScaPackage.SCA_DOMAIN_MANAGER__CONNECTION_PROPERTIES_CONTAINER,
+				newConnectionPropertiesContainer, newConnectionPropertiesContainer));
 	}
 
 	private final ExecutorService disposeOrbExecutor = Executors.newSingleThreadScheduledExecutor(new NamedThreadFactory(ScaDomainManagerImpl.class.getName()));
@@ -663,7 +692,7 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 		}
 		// BEGIN GENERATED CODE
 	}
-	
+
 	private void destroyOrbSession(final OrbSession session) {
 		// END GENERATED CODE
 		if (session == null) {
@@ -769,7 +798,8 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 		identifier = IDENTIFIER_EDEFAULT;
 		identifierESet = false;
 		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.UNSET, ScaPackage.SCA_DOMAIN_MANAGER__IDENTIFIER, oldIdentifier, IDENTIFIER_EDEFAULT, oldIdentifierESet));
+			eNotify(new ENotificationImpl(this, Notification.UNSET, ScaPackage.SCA_DOMAIN_MANAGER__IDENTIFIER, oldIdentifier, IDENTIFIER_EDEFAULT,
+				oldIdentifierESet));
 	}
 
 	/**
@@ -842,7 +872,8 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 		rootContext = ROOT_CONTEXT_EDEFAULT;
 		rootContextESet = false;
 		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.UNSET, ScaPackage.SCA_DOMAIN_MANAGER__ROOT_CONTEXT, oldRootContext, ROOT_CONTEXT_EDEFAULT, oldRootContextESet));
+			eNotify(new ENotificationImpl(this, Notification.UNSET, ScaPackage.SCA_DOMAIN_MANAGER__ROOT_CONTEXT, oldRootContext, ROOT_CONTEXT_EDEFAULT,
+				oldRootContextESet));
 	}
 
 	/**
@@ -1034,7 +1065,7 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 			java.util.Properties orbProperties = createProperties();
 			java.util.Properties systemProps = System.getProperties();
 			systemProps.putAll(orbProperties);
-			
+
 			String tmpName = getName();
 			if (tmpName == null) {
 				tmpName = "";
@@ -1124,8 +1155,8 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 	}
 
 	/**
-     * @since 18.0
-     */
+	 * @since 18.0
+	 */
 	public void setOrbSession(OrbSession session) {
 		destroyOrbSession(this.session);
 		this.session = session;
@@ -1165,7 +1196,7 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 		}
 		// BEGIN GENERATED CODE
 	}
-	
+
 	private void internalDisconnect() {
 		setState(DomainConnectionState.DISCONNECTING);
 		reset();
@@ -1218,10 +1249,10 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 			deviceMonitor.beginTask("Refreshing device Managers", array.length);
 			for (ScaDeviceManager element : array) {
 				try {
-	                element.refresh(deviceMonitor.newChild(1), RefreshDepth.SELF);
-                } catch (InterruptedException e) {
-                	// PASS
-                }
+					element.refresh(deviceMonitor.newChild(1), RefreshDepth.SELF);
+				} catch (InterruptedException e) {
+					// PASS
+				}
 			}
 		}
 		subMonitor.done();
@@ -1283,10 +1314,10 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 			childMonitor.beginTask("Refreshing waveform factory", array.length);
 			for (ScaWaveformFactory element : array) {
 				try {
-	                element.refresh(childMonitor.newChild(1), RefreshDepth.SELF);
-                } catch (InterruptedException e) {
-	                // PASS
-                }
+					element.refresh(childMonitor.newChild(1), RefreshDepth.SELF);
+				} catch (InterruptedException e) {
+					// PASS
+				}
 			}
 		}
 		subMonitor.done();
@@ -1347,10 +1378,10 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 			childMonitor.beginTask("Refreshing waveforms", array.length);
 			for (ScaWaveform element : array) {
 				try {
-	                element.refresh(childMonitor.newChild(1), RefreshDepth.SELF);
-                } catch (InterruptedException e) {
-                	// PASS
-                }
+					element.refresh(childMonitor.newChild(1), RefreshDepth.SELF);
+				} catch (InterruptedException e) {
+					// PASS
+				}
 			}
 		}
 		subMonitor.done();
@@ -1399,7 +1430,7 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 	 */
 	@Override
 	public ScaWaveformFactory installScaWaveformFactory(final String profilePath) throws InvalidProfile, InvalidFileName, ApplicationInstallationError,
-	        ApplicationAlreadyInstalled {
+		ApplicationAlreadyInstalled {
 		// END GENERATED CODE
 		if (profilePath == null) {
 			throw new InvalidProfile("Null path");
@@ -1488,13 +1519,13 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 		clearAllStatus();
 		// BEGIN GENERATED CODE
 	}
-	
+
 	@Override
 	public IStatus getStatus() {
 		if (getState() == DomainConnectionState.DISCONNECTED) {
 			return Status.OK_STATUS;
 		}
-	    return super.getStatus();
+		return super.getStatus();
 	}
 
 	/**
@@ -1565,7 +1596,7 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 
 	@Override
 	public void installApplication(final String profileFileName) throws InvalidProfile, InvalidFileName, ApplicationInstallationError,
-	        ApplicationAlreadyInstalled {
+		ApplicationAlreadyInstalled {
 		// END GENERATED CODE
 		DomainManager domMgr = fetchNarrowedObject(null);
 		if (domMgr == null) {
@@ -1581,7 +1612,7 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 	 */
 	@Override
 	public void registerDevice(final Device registeringDevice, final DeviceManager registeredDeviceMgr) throws InvalidObjectReference, InvalidProfile,
-	        DeviceManagerNotRegistered, RegisterError {
+		DeviceManagerNotRegistered, RegisterError {
 		// END GENERATED CODE
 		DomainManager domMgr = fetchNarrowedObject(null);
 		if (domMgr == null) {
@@ -1612,7 +1643,7 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 	 */
 	@Override
 	public void registerService(final org.omg.CORBA.Object registeringService, final DeviceManager registeredDeviceMgr, final String name)
-	        throws InvalidObjectReference, DeviceManagerNotRegistered, RegisterError {
+		throws InvalidObjectReference, DeviceManagerNotRegistered, RegisterError {
 		// END GENERATED CODE
 		DomainManager domMgr = fetchNarrowedObject(null);
 		if (domMgr == null) {
@@ -1624,7 +1655,7 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 
 	@Override
 	public void registerWithEventChannel(final org.omg.CORBA.Object registeringObject, final String registeringId, final String eventChannelName)
-	        throws InvalidObjectReference, InvalidEventChannelName, AlreadyConnected {
+		throws InvalidObjectReference, InvalidEventChannelName, AlreadyConnected {
 		// END GENERATED CODE
 		DomainManager domMgr = fetchNarrowedObject(null);
 		if (domMgr == null) {
@@ -1714,16 +1745,16 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 	@Override
 	public NotificationChain eInverseAdd(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
 		switch (featureID) {
-			case ScaPackage.SCA_DOMAIN_MANAGER__WAVEFORM_FACTORIES:
-				return ((InternalEList<InternalEObject>)(InternalEList<?>)getWaveformFactories()).basicAdd(otherEnd, msgs);
-			case ScaPackage.SCA_DOMAIN_MANAGER__WAVEFORMS:
-				return ((InternalEList<InternalEObject>)(InternalEList<?>)getWaveforms()).basicAdd(otherEnd, msgs);
-			case ScaPackage.SCA_DOMAIN_MANAGER__DEVICE_MANAGERS:
-				return ((InternalEList<InternalEObject>)(InternalEList<?>)getDeviceManagers()).basicAdd(otherEnd, msgs);
-			case ScaPackage.SCA_DOMAIN_MANAGER__FILE_MANAGER:
-				if (fileManager != null)
-					msgs = ((InternalEObject)fileManager).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - ScaPackage.SCA_DOMAIN_MANAGER__FILE_MANAGER, null, msgs);
-				return basicSetFileManager((ScaDomainManagerFileSystem)otherEnd, msgs);
+		case ScaPackage.SCA_DOMAIN_MANAGER__WAVEFORM_FACTORIES:
+			return ((InternalEList<InternalEObject>) (InternalEList< ? >) getWaveformFactories()).basicAdd(otherEnd, msgs);
+		case ScaPackage.SCA_DOMAIN_MANAGER__WAVEFORMS:
+			return ((InternalEList<InternalEObject>) (InternalEList< ? >) getWaveforms()).basicAdd(otherEnd, msgs);
+		case ScaPackage.SCA_DOMAIN_MANAGER__DEVICE_MANAGERS:
+			return ((InternalEList<InternalEObject>) (InternalEList< ? >) getDeviceManagers()).basicAdd(otherEnd, msgs);
+		case ScaPackage.SCA_DOMAIN_MANAGER__FILE_MANAGER:
+			if (fileManager != null)
+				msgs = ((InternalEObject) fileManager).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - ScaPackage.SCA_DOMAIN_MANAGER__FILE_MANAGER, null, msgs);
+			return basicSetFileManager((ScaDomainManagerFileSystem) otherEnd, msgs);
 		}
 		return super.eInverseAdd(otherEnd, featureID, msgs);
 	}
@@ -1736,18 +1767,18 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 	@Override
 	public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
 		switch (featureID) {
-			case ScaPackage.SCA_DOMAIN_MANAGER__WAVEFORM_FACTORIES:
-				return ((InternalEList<?>)getWaveformFactories()).basicRemove(otherEnd, msgs);
-			case ScaPackage.SCA_DOMAIN_MANAGER__WAVEFORMS:
-				return ((InternalEList<?>)getWaveforms()).basicRemove(otherEnd, msgs);
-			case ScaPackage.SCA_DOMAIN_MANAGER__DEVICE_MANAGERS:
-				return ((InternalEList<?>)getDeviceManagers()).basicRemove(otherEnd, msgs);
-			case ScaPackage.SCA_DOMAIN_MANAGER__FILE_MANAGER:
-				return basicUnsetFileManager(msgs);
-			case ScaPackage.SCA_DOMAIN_MANAGER__CONNECTION_PROPERTIES_CONTAINER:
-				return basicSetConnectionPropertiesContainer(null, msgs);
-			case ScaPackage.SCA_DOMAIN_MANAGER__CONNECTION_PROPERTIES:
-				return ((InternalEList<?>)getConnectionProperties()).basicRemove(otherEnd, msgs);
+		case ScaPackage.SCA_DOMAIN_MANAGER__WAVEFORM_FACTORIES:
+			return ((InternalEList< ? >) getWaveformFactories()).basicRemove(otherEnd, msgs);
+		case ScaPackage.SCA_DOMAIN_MANAGER__WAVEFORMS:
+			return ((InternalEList< ? >) getWaveforms()).basicRemove(otherEnd, msgs);
+		case ScaPackage.SCA_DOMAIN_MANAGER__DEVICE_MANAGERS:
+			return ((InternalEList< ? >) getDeviceManagers()).basicRemove(otherEnd, msgs);
+		case ScaPackage.SCA_DOMAIN_MANAGER__FILE_MANAGER:
+			return basicUnsetFileManager(msgs);
+		case ScaPackage.SCA_DOMAIN_MANAGER__CONNECTION_PROPERTIES_CONTAINER:
+			return basicSetConnectionPropertiesContainer(null, msgs);
+		case ScaPackage.SCA_DOMAIN_MANAGER__CONNECTION_PROPERTIES:
+			return ((InternalEList< ? >) getConnectionProperties()).basicRemove(otherEnd, msgs);
 		}
 		return super.eInverseRemove(otherEnd, featureID, msgs);
 	}
@@ -1760,34 +1791,37 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
-			case ScaPackage.SCA_DOMAIN_MANAGER__WAVEFORM_FACTORIES:
-				return getWaveformFactories();
-			case ScaPackage.SCA_DOMAIN_MANAGER__WAVEFORMS:
-				return getWaveforms();
-			case ScaPackage.SCA_DOMAIN_MANAGER__DEVICE_MANAGERS:
-				return getDeviceManagers();
-			case ScaPackage.SCA_DOMAIN_MANAGER__FILE_MANAGER:
-				return getFileManager();
-			case ScaPackage.SCA_DOMAIN_MANAGER__CONNECTION_PROPERTIES_CONTAINER:
-				if (resolve) return getConnectionPropertiesContainer();
-				return basicGetConnectionPropertiesContainer();
-			case ScaPackage.SCA_DOMAIN_MANAGER__CONNECTION_PROPERTIES:
-				if (coreType) return getConnectionProperties();
-				else return getConnectionProperties().map();
-			case ScaPackage.SCA_DOMAIN_MANAGER__AUTO_CONNECT:
-				return isAutoConnect();
-			case ScaPackage.SCA_DOMAIN_MANAGER__CONNECTED:
-				return isConnected();
-			case ScaPackage.SCA_DOMAIN_MANAGER__IDENTIFIER:
-				return getIdentifier();
-			case ScaPackage.SCA_DOMAIN_MANAGER__NAME:
-				return getName();
-			case ScaPackage.SCA_DOMAIN_MANAGER__ROOT_CONTEXT:
-				return getRootContext();
-			case ScaPackage.SCA_DOMAIN_MANAGER__STATE:
-				return getState();
-			case ScaPackage.SCA_DOMAIN_MANAGER__PROFILE:
-				return getProfile();
+		case ScaPackage.SCA_DOMAIN_MANAGER__WAVEFORM_FACTORIES:
+			return getWaveformFactories();
+		case ScaPackage.SCA_DOMAIN_MANAGER__WAVEFORMS:
+			return getWaveforms();
+		case ScaPackage.SCA_DOMAIN_MANAGER__DEVICE_MANAGERS:
+			return getDeviceManagers();
+		case ScaPackage.SCA_DOMAIN_MANAGER__FILE_MANAGER:
+			return getFileManager();
+		case ScaPackage.SCA_DOMAIN_MANAGER__CONNECTION_PROPERTIES_CONTAINER:
+			if (resolve)
+				return getConnectionPropertiesContainer();
+			return basicGetConnectionPropertiesContainer();
+		case ScaPackage.SCA_DOMAIN_MANAGER__CONNECTION_PROPERTIES:
+			if (coreType)
+				return getConnectionProperties();
+			else
+				return getConnectionProperties().map();
+		case ScaPackage.SCA_DOMAIN_MANAGER__AUTO_CONNECT:
+			return isAutoConnect();
+		case ScaPackage.SCA_DOMAIN_MANAGER__CONNECTED:
+			return isConnected();
+		case ScaPackage.SCA_DOMAIN_MANAGER__IDENTIFIER:
+			return getIdentifier();
+		case ScaPackage.SCA_DOMAIN_MANAGER__NAME:
+			return getName();
+		case ScaPackage.SCA_DOMAIN_MANAGER__ROOT_CONTEXT:
+			return getRootContext();
+		case ScaPackage.SCA_DOMAIN_MANAGER__STATE:
+			return getState();
+		case ScaPackage.SCA_DOMAIN_MANAGER__PROFILE:
+			return getProfile();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -1801,45 +1835,45 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 	@Override
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
-			case ScaPackage.SCA_DOMAIN_MANAGER__WAVEFORM_FACTORIES:
-				getWaveformFactories().clear();
-				getWaveformFactories().addAll((Collection<? extends ScaWaveformFactory>)newValue);
-				return;
-			case ScaPackage.SCA_DOMAIN_MANAGER__WAVEFORMS:
-				getWaveforms().clear();
-				getWaveforms().addAll((Collection<? extends ScaWaveform>)newValue);
-				return;
-			case ScaPackage.SCA_DOMAIN_MANAGER__DEVICE_MANAGERS:
-				getDeviceManagers().clear();
-				getDeviceManagers().addAll((Collection<? extends ScaDeviceManager>)newValue);
-				return;
-			case ScaPackage.SCA_DOMAIN_MANAGER__FILE_MANAGER:
-				setFileManager((ScaDomainManagerFileSystem)newValue);
-				return;
-			case ScaPackage.SCA_DOMAIN_MANAGER__CONNECTION_PROPERTIES_CONTAINER:
-				setConnectionPropertiesContainer((Properties)newValue);
-				return;
-			case ScaPackage.SCA_DOMAIN_MANAGER__CONNECTION_PROPERTIES:
-				((EStructuralFeature.Setting)getConnectionProperties()).set(newValue);
-				return;
-			case ScaPackage.SCA_DOMAIN_MANAGER__AUTO_CONNECT:
-				setAutoConnect((Boolean)newValue);
-				return;
-			case ScaPackage.SCA_DOMAIN_MANAGER__IDENTIFIER:
-				setIdentifier((String)newValue);
-				return;
-			case ScaPackage.SCA_DOMAIN_MANAGER__NAME:
-				setName((String)newValue);
-				return;
-			case ScaPackage.SCA_DOMAIN_MANAGER__ROOT_CONTEXT:
-				setRootContext((NamingContextExt)newValue);
-				return;
-			case ScaPackage.SCA_DOMAIN_MANAGER__STATE:
-				setState((DomainConnectionState)newValue);
-				return;
-			case ScaPackage.SCA_DOMAIN_MANAGER__PROFILE:
-				setProfile((String)newValue);
-				return;
+		case ScaPackage.SCA_DOMAIN_MANAGER__WAVEFORM_FACTORIES:
+			getWaveformFactories().clear();
+			getWaveformFactories().addAll((Collection< ? extends ScaWaveformFactory>) newValue);
+			return;
+		case ScaPackage.SCA_DOMAIN_MANAGER__WAVEFORMS:
+			getWaveforms().clear();
+			getWaveforms().addAll((Collection< ? extends ScaWaveform>) newValue);
+			return;
+		case ScaPackage.SCA_DOMAIN_MANAGER__DEVICE_MANAGERS:
+			getDeviceManagers().clear();
+			getDeviceManagers().addAll((Collection< ? extends ScaDeviceManager>) newValue);
+			return;
+		case ScaPackage.SCA_DOMAIN_MANAGER__FILE_MANAGER:
+			setFileManager((ScaDomainManagerFileSystem) newValue);
+			return;
+		case ScaPackage.SCA_DOMAIN_MANAGER__CONNECTION_PROPERTIES_CONTAINER:
+			setConnectionPropertiesContainer((Properties) newValue);
+			return;
+		case ScaPackage.SCA_DOMAIN_MANAGER__CONNECTION_PROPERTIES:
+			((EStructuralFeature.Setting) getConnectionProperties()).set(newValue);
+			return;
+		case ScaPackage.SCA_DOMAIN_MANAGER__AUTO_CONNECT:
+			setAutoConnect((Boolean) newValue);
+			return;
+		case ScaPackage.SCA_DOMAIN_MANAGER__IDENTIFIER:
+			setIdentifier((String) newValue);
+			return;
+		case ScaPackage.SCA_DOMAIN_MANAGER__NAME:
+			setName((String) newValue);
+			return;
+		case ScaPackage.SCA_DOMAIN_MANAGER__ROOT_CONTEXT:
+			setRootContext((NamingContextExt) newValue);
+			return;
+		case ScaPackage.SCA_DOMAIN_MANAGER__STATE:
+			setState((DomainConnectionState) newValue);
+			return;
+		case ScaPackage.SCA_DOMAIN_MANAGER__PROFILE:
+			setProfile((String) newValue);
+			return;
 		}
 		super.eSet(featureID, newValue);
 	}
@@ -1852,42 +1886,42 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 	@Override
 	public void eUnset(int featureID) {
 		switch (featureID) {
-			case ScaPackage.SCA_DOMAIN_MANAGER__WAVEFORM_FACTORIES:
-				unsetWaveformFactories();
-				return;
-			case ScaPackage.SCA_DOMAIN_MANAGER__WAVEFORMS:
-				unsetWaveforms();
-				return;
-			case ScaPackage.SCA_DOMAIN_MANAGER__DEVICE_MANAGERS:
-				unsetDeviceManagers();
-				return;
-			case ScaPackage.SCA_DOMAIN_MANAGER__FILE_MANAGER:
-				unsetFileManager();
-				return;
-			case ScaPackage.SCA_DOMAIN_MANAGER__CONNECTION_PROPERTIES_CONTAINER:
-				setConnectionPropertiesContainer((Properties)null);
-				return;
-			case ScaPackage.SCA_DOMAIN_MANAGER__CONNECTION_PROPERTIES:
-				getConnectionProperties().clear();
-				return;
-			case ScaPackage.SCA_DOMAIN_MANAGER__AUTO_CONNECT:
-				setAutoConnect(AUTO_CONNECT_EDEFAULT);
-				return;
-			case ScaPackage.SCA_DOMAIN_MANAGER__IDENTIFIER:
-				unsetIdentifier();
-				return;
-			case ScaPackage.SCA_DOMAIN_MANAGER__NAME:
-				setName(NAME_EDEFAULT);
-				return;
-			case ScaPackage.SCA_DOMAIN_MANAGER__ROOT_CONTEXT:
-				unsetRootContext();
-				return;
-			case ScaPackage.SCA_DOMAIN_MANAGER__STATE:
-				setState(STATE_EDEFAULT);
-				return;
-			case ScaPackage.SCA_DOMAIN_MANAGER__PROFILE:
-				unsetProfile();
-				return;
+		case ScaPackage.SCA_DOMAIN_MANAGER__WAVEFORM_FACTORIES:
+			unsetWaveformFactories();
+			return;
+		case ScaPackage.SCA_DOMAIN_MANAGER__WAVEFORMS:
+			unsetWaveforms();
+			return;
+		case ScaPackage.SCA_DOMAIN_MANAGER__DEVICE_MANAGERS:
+			unsetDeviceManagers();
+			return;
+		case ScaPackage.SCA_DOMAIN_MANAGER__FILE_MANAGER:
+			unsetFileManager();
+			return;
+		case ScaPackage.SCA_DOMAIN_MANAGER__CONNECTION_PROPERTIES_CONTAINER:
+			setConnectionPropertiesContainer((Properties) null);
+			return;
+		case ScaPackage.SCA_DOMAIN_MANAGER__CONNECTION_PROPERTIES:
+			getConnectionProperties().clear();
+			return;
+		case ScaPackage.SCA_DOMAIN_MANAGER__AUTO_CONNECT:
+			setAutoConnect(AUTO_CONNECT_EDEFAULT);
+			return;
+		case ScaPackage.SCA_DOMAIN_MANAGER__IDENTIFIER:
+			unsetIdentifier();
+			return;
+		case ScaPackage.SCA_DOMAIN_MANAGER__NAME:
+			setName(NAME_EDEFAULT);
+			return;
+		case ScaPackage.SCA_DOMAIN_MANAGER__ROOT_CONTEXT:
+			unsetRootContext();
+			return;
+		case ScaPackage.SCA_DOMAIN_MANAGER__STATE:
+			setState(STATE_EDEFAULT);
+			return;
+		case ScaPackage.SCA_DOMAIN_MANAGER__PROFILE:
+			unsetProfile();
+			return;
 		}
 		super.eUnset(featureID);
 	}
@@ -1900,32 +1934,32 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 	@Override
 	public boolean eIsSet(int featureID) {
 		switch (featureID) {
-			case ScaPackage.SCA_DOMAIN_MANAGER__WAVEFORM_FACTORIES:
-				return isSetWaveformFactories();
-			case ScaPackage.SCA_DOMAIN_MANAGER__WAVEFORMS:
-				return isSetWaveforms();
-			case ScaPackage.SCA_DOMAIN_MANAGER__DEVICE_MANAGERS:
-				return isSetDeviceManagers();
-			case ScaPackage.SCA_DOMAIN_MANAGER__FILE_MANAGER:
-				return isSetFileManager();
-			case ScaPackage.SCA_DOMAIN_MANAGER__CONNECTION_PROPERTIES_CONTAINER:
-				return connectionPropertiesContainer != null;
-			case ScaPackage.SCA_DOMAIN_MANAGER__CONNECTION_PROPERTIES:
-				return !getConnectionProperties().isEmpty();
-			case ScaPackage.SCA_DOMAIN_MANAGER__AUTO_CONNECT:
-				return autoConnect != AUTO_CONNECT_EDEFAULT;
-			case ScaPackage.SCA_DOMAIN_MANAGER__CONNECTED:
-				return isConnected() != CONNECTED_EDEFAULT;
-			case ScaPackage.SCA_DOMAIN_MANAGER__IDENTIFIER:
-				return isSetIdentifier();
-			case ScaPackage.SCA_DOMAIN_MANAGER__NAME:
-				return NAME_EDEFAULT == null ? name != null : !NAME_EDEFAULT.equals(name);
-			case ScaPackage.SCA_DOMAIN_MANAGER__ROOT_CONTEXT:
-				return isSetRootContext();
-			case ScaPackage.SCA_DOMAIN_MANAGER__STATE:
-				return state != STATE_EDEFAULT;
-			case ScaPackage.SCA_DOMAIN_MANAGER__PROFILE:
-				return isSetProfile();
+		case ScaPackage.SCA_DOMAIN_MANAGER__WAVEFORM_FACTORIES:
+			return isSetWaveformFactories();
+		case ScaPackage.SCA_DOMAIN_MANAGER__WAVEFORMS:
+			return isSetWaveforms();
+		case ScaPackage.SCA_DOMAIN_MANAGER__DEVICE_MANAGERS:
+			return isSetDeviceManagers();
+		case ScaPackage.SCA_DOMAIN_MANAGER__FILE_MANAGER:
+			return isSetFileManager();
+		case ScaPackage.SCA_DOMAIN_MANAGER__CONNECTION_PROPERTIES_CONTAINER:
+			return connectionPropertiesContainer != null;
+		case ScaPackage.SCA_DOMAIN_MANAGER__CONNECTION_PROPERTIES:
+			return !getConnectionProperties().isEmpty();
+		case ScaPackage.SCA_DOMAIN_MANAGER__AUTO_CONNECT:
+			return autoConnect != AUTO_CONNECT_EDEFAULT;
+		case ScaPackage.SCA_DOMAIN_MANAGER__CONNECTED:
+			return isConnected() != CONNECTED_EDEFAULT;
+		case ScaPackage.SCA_DOMAIN_MANAGER__IDENTIFIER:
+			return isSetIdentifier();
+		case ScaPackage.SCA_DOMAIN_MANAGER__NAME:
+			return NAME_EDEFAULT == null ? name != null : !NAME_EDEFAULT.equals(name);
+		case ScaPackage.SCA_DOMAIN_MANAGER__ROOT_CONTEXT:
+			return isSetRootContext();
+		case ScaPackage.SCA_DOMAIN_MANAGER__STATE:
+			return state != STATE_EDEFAULT;
+		case ScaPackage.SCA_DOMAIN_MANAGER__PROFILE:
+			return isSetProfile();
 		}
 		return super.eIsSet(featureID);
 	}
@@ -1937,21 +1971,31 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 	 */
 	@Override
 	public String toString() {
-		if (eIsProxy()) return super.toString();
+		if (eIsProxy())
+			return super.toString();
 
 		StringBuffer result = new StringBuffer(super.toString());
 		result.append(" (autoConnect: ");
 		result.append(autoConnect);
 		result.append(", identifier: ");
-		if (identifierESet) result.append(identifier); else result.append("<unset>");
+		if (identifierESet)
+			result.append(identifier);
+		else
+			result.append("<unset>");
 		result.append(", name: ");
 		result.append(name);
 		result.append(", rootContext: ");
-		if (rootContextESet) result.append(rootContext); else result.append("<unset>");
+		if (rootContextESet)
+			result.append(rootContext);
+		else
+			result.append("<unset>");
 		result.append(", state: ");
 		result.append(state);
 		result.append(", profile: ");
-		if (profileESet) result.append(profile); else result.append("<unset>");
+		if (profileESet)
+			result.append(profile);
+		else
+			result.append("<unset>");
 		result.append(')');
 		return result.toString();
 	}
@@ -2040,18 +2084,18 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 		final NamingContextExt namingContext = rootContext;
 		final String domMgrname = getDomMgrName();
 		Boolean shouldProceed;
-        try {
-	        shouldProceed = ScaModelCommand.runExclusive(this, new RunnableWithResult.Impl<Boolean>() {
+		try {
+			shouldProceed = ScaModelCommand.runExclusive(this, new RunnableWithResult.Impl<Boolean>() {
 
-	        	@Override
+				@Override
 				public void run() {
-	        		setResult(isConnected() && !tmpExists && namingContext != null && domMgrname != null);
-	        	}
+					setResult(isConnected() && !tmpExists && namingContext != null && domMgrname != null);
+				}
 
-	        });
-        } catch (InterruptedException e1) {
-	       return;
-        }
+			});
+		} catch (InterruptedException e1) {
+			return;
+		}
 		if (shouldProceed != null && shouldProceed) {
 			try {
 				Transaction transaction = keepAliveFeature.createTransaction();
@@ -2126,9 +2170,8 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 
 				});
 			} catch (SystemException e) {
-				transaction.addCommand(new UnsetLocalAttributeCommand(this,
-				        new Status(Status.ERROR, ScaModelPlugin.ID, "Failed to fetch file manager.", e),
-				        ScaPackage.Literals.SCA_DOMAIN_MANAGER__FILE_MANAGER));
+				transaction.addCommand(new UnsetLocalAttributeCommand(this, new Status(Status.ERROR, ScaModelPlugin.ID, "Failed to fetch file manager.", e),
+					ScaPackage.Literals.SCA_DOMAIN_MANAGER__FILE_MANAGER));
 			}
 			subMonitor.worked(1);
 		} else {
@@ -2139,10 +2182,10 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 		ScaDomainManagerFileSystem localFileManager = getFileManager();
 		if (localFileManager != null) {
 			try {
-	            localFileManager.refresh(subMonitor.newChild(1), RefreshDepth.SELF);
-            } catch (InterruptedException e) {
-	            // PASS
-            }
+				localFileManager.refresh(subMonitor.newChild(1), RefreshDepth.SELF);
+			} catch (InterruptedException e) {
+				// PASS
+			}
 		}
 		subMonitor.done();
 		return getFileManager();
@@ -2191,20 +2234,16 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 		subMonitor.done();
 	}
 
-	private static final EStructuralFeature[] PRF_PATH = {
-	        DmdPackage.Literals.DOMAIN_MANAGER_CONFIGURATION__DOMAIN_MANAGER_SOFT_PKG,
-	        DmdPackage.Literals.DOMAIN_MANAGER_SOFT_PKG__SOFT_PKG,
-	        SpdPackage.Literals.SOFT_PKG__PROPERTY_FILE,
-	        SpdPackage.Literals.PROPERTY_FILE__PROPERTIES
-	};
-	
+	private static final EStructuralFeature[] PRF_PATH = { DmdPackage.Literals.DOMAIN_MANAGER_CONFIGURATION__DOMAIN_MANAGER_SOFT_PKG,
+		DmdPackage.Literals.DOMAIN_MANAGER_SOFT_PKG__SOFT_PKG, SpdPackage.Literals.SOFT_PKG__PROPERTY_FILE, SpdPackage.Literals.PROPERTY_FILE__PROPERTIES };
+
 	@Override
 	protected List<AbstractProperty> fetchPropertyDefinitions(IProgressMonitor monitor) {
 		DomainManagerConfiguration dmd = fetchProfileObject(monitor);
 		mil.jpeojtrs.sca.prf.Properties propDefintions = ScaEcoreUtils.getFeature(dmd, PRF_PATH);
 		List<AbstractProperty> retVal = new ArrayList<AbstractProperty>();
 		if (propDefintions != null) {
-			for ( ValueListIterator<Object> i = propDefintions.getProperties().valueListIterator(); i.hasNext(); ) {
+			for (ValueListIterator<Object> i = propDefintions.getProperties().valueListIterator(); i.hasNext();) {
 				Object propDef = i.next();
 				if (propDef instanceof AbstractProperty) {
 					retVal.add((AbstractProperty) propDef);
@@ -2225,21 +2264,19 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 	@Override
 	public DomainManagerConfiguration fetchProfileObject(IProgressMonitor monitor) {
 		Transaction transaction = profileObjectFeature.createTransaction();
-		transaction.addCommand(ProfileObjectWrapper.Util.fetchProfileObject(monitor,
-		        this,
-		        DomainManagerConfiguration.class,
-		        DomainManagerConfiguration.EOBJECT_PATH));
+		transaction.addCommand(ProfileObjectWrapper.Util.fetchProfileObject(monitor, this, DomainManagerConfiguration.class,
+			DomainManagerConfiguration.EOBJECT_PATH));
 		transaction.commit();
 		return getProfileObj();
 	}
 
 	private final VersionedFeature profileRevision = new VersionedFeature(this, ScaPackage.Literals.SCA_DOMAIN_MANAGER__PROFILE);
 
-    /**
-     * @since 14.0
-     * @generated NOT
-     */
-    @Override
+	/**
+	 * @since 14.0
+	 * @generated NOT
+	 */
+	@Override
 	public String fetchProfile(IProgressMonitor monitor) {
 		if (isSetProfile()) {
 			return getProfile();
@@ -2263,8 +2300,8 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 		subMonitor.worked(1);
 		subMonitor.done();
 		return getProfile();
-    }
-	
+	}
+
 	private final VersionedFeature profileURIFeature = new VersionedFeature(this, ScaPackage.Literals.PROFILE_OBJECT_WRAPPER__PROFILE_URI);
 
 	@Override

@@ -53,29 +53,29 @@ public class DisposableObjectContainerListener extends AdapterImpl {
 	}
 
 	private void handleRemoveMany(Notification msg) {
-	    Object value = msg.getOldValue();
-	    if (value instanceof List<?>) {
-	    	for (Object obj : ((List<?>) value)) {
-	    		dispose(obj);
-	    	}
-	    }
-    }
+		Object value = msg.getOldValue();
+		if (value instanceof List< ? >) {
+			for (Object obj : ((List< ? >) value)) {
+				dispose(obj);
+			}
+		}
+	}
 
 	private void handleRemove(Notification msg) {
 		dispose(msg.getOldValue());
-    }
+	}
 
 	private void handleSet(Notification msg) {
 		if (msg.getOldValue() != msg.getNewValue()) {
 			dispose(msg.getOldValue());
 		}
-    }
-	
+	}
+
 	private void dispose(Object oldValue) {
 		if (oldValue instanceof IDisposable) {
-	    	((IDisposable) oldValue).dispose();
+			((IDisposable) oldValue).dispose();
 			TransactionUtil.disconnectFromEditingDomain((IDisposable) oldValue);
-	    	((IDisposable) oldValue).eAdapters().clear();
-	    }
+			((IDisposable) oldValue).eAdapters().clear();
+		}
 	}
 }

@@ -12,7 +12,6 @@
 // BEGIN GENERATED CODE
 package gov.redhawk.model.sca.provider;
 
-
 import gov.redhawk.model.sca.ScaAbstractComponent;
 import gov.redhawk.model.sca.ScaPackage;
 
@@ -42,10 +41,8 @@ import org.eclipse.emf.edit.provider.ViewerNotification;
  * <!-- end-user-doc -->
  * @generated
  */
-public class ScaAbstractComponentItemProvider
-	extends ScaPropertyContainerItemProvider
-	implements
-		IEditingDomainItemProvider, IStructuredItemContentProvider, ITreeItemContentProvider, IItemLabelProvider, IItemPropertySource, ITableItemLabelProvider, ITableItemColorProvider, IItemColorProvider {
+public class ScaAbstractComponentItemProvider extends ScaPropertyContainerItemProvider implements IEditingDomainItemProvider, IStructuredItemContentProvider,
+		ITreeItemContentProvider, IItemLabelProvider, IItemPropertySource, ITableItemLabelProvider, ITableItemColorProvider, IItemColorProvider {
 	/**
 	 * This constructs an instance from a factory and a notifier.
 	 * <!-- begin-user-doc -->
@@ -69,6 +66,7 @@ public class ScaAbstractComponentItemProvider
 
 			addIdentifierPropertyDescriptor(object);
 			addStartedPropertyDescriptor(object);
+			addProfilePropertyDescriptor(object);
 		}
 		return itemPropertyDescriptors;
 	}
@@ -80,19 +78,10 @@ public class ScaAbstractComponentItemProvider
 	 * @generated
 	 */
 	protected void addIdentifierPropertyDescriptor(Object object) {
-		itemPropertyDescriptors.add
-			(createItemPropertyDescriptor
-				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
-				 getResourceLocator(),
-				 getString("_UI_ScaAbstractComponent_identifier_feature"),
-				 getString("_UI_PropertyDescriptor_description", "_UI_ScaAbstractComponent_identifier_feature", "_UI_ScaAbstractComponent_type"),
-				 ScaPackage.Literals.SCA_ABSTRACT_COMPONENT__IDENTIFIER,
-				 false,
-				 false,
-				 false,
-				 ItemPropertyDescriptor.GENERIC_VALUE_IMAGE,
-				 null,
-				 null));
+		itemPropertyDescriptors.add(createItemPropertyDescriptor(((ComposeableAdapterFactory) adapterFactory).getRootAdapterFactory(), getResourceLocator(),
+			getString("_UI_ScaAbstractComponent_identifier_feature"),
+			getString("_UI_PropertyDescriptor_description", "_UI_ScaAbstractComponent_identifier_feature", "_UI_ScaAbstractComponent_type"),
+			ScaPackage.Literals.SCA_ABSTRACT_COMPONENT__IDENTIFIER, false, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
 	}
 
 	/**
@@ -103,19 +92,24 @@ public class ScaAbstractComponentItemProvider
 	 * @generated NOT
 	 */
 	protected void addStartedPropertyDescriptor(Object object) {
-		itemPropertyDescriptors.add
-			(createItemPropertyDescriptor
-				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
-				 getResourceLocator(),
-				 getString("_UI_ScaAbstractComponent_started_feature"),
-				 getString("_UI_PropertyDescriptor_description", "_UI_ScaAbstractComponent_started_feature", "_UI_ScaAbstractComponent_type"),
-				 ScaPackage.Literals.SCA_ABSTRACT_COMPONENT__STARTED,
-				 false,
-				 false,
-				 false,
-				 ItemPropertyDescriptor.BOOLEAN_VALUE_IMAGE,
-				 null,
-				 null));
+		itemPropertyDescriptors.add(createItemPropertyDescriptor(((ComposeableAdapterFactory) adapterFactory).getRootAdapterFactory(), getResourceLocator(),
+			getString("_UI_ScaAbstractComponent_started_feature"),
+			getString("_UI_PropertyDescriptor_description", "_UI_ScaAbstractComponent_started_feature", "_UI_ScaAbstractComponent_type"),
+			ScaPackage.Literals.SCA_ABSTRACT_COMPONENT__STARTED, false, false, false, ItemPropertyDescriptor.BOOLEAN_VALUE_IMAGE, null, null));
+	}
+
+	/**
+	 * This adds a property descriptor for the Profile feature.
+	 * <!-- begin-user-doc -->
+	 * @since 12.1
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	protected void addProfilePropertyDescriptor(Object object) {
+		itemPropertyDescriptors.add(createItemPropertyDescriptor(((ComposeableAdapterFactory) adapterFactory).getRootAdapterFactory(), getResourceLocator(),
+			getString("_UI_ScaAbstractComponent_profile_feature"),
+			getString("_UI_PropertyDescriptor_description", "_UI_ScaAbstractComponent_profile_feature", "_UI_ScaAbstractComponent_type"),
+			ScaPackage.Literals.SCA_ABSTRACT_COMPONENT__PROFILE, false, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
 	}
 
 	/**
@@ -127,7 +121,7 @@ public class ScaAbstractComponentItemProvider
 	 * @generated
 	 */
 	@Override
-	public Collection<? extends EStructuralFeature> getChildrenFeatures(Object object) {
+	public Collection< ? extends EStructuralFeature> getChildrenFeatures(Object object) {
 		if (childrenFeatures == null) {
 			super.getChildrenFeatures(object);
 			childrenFeatures.add(ScaPackage.Literals.SCA_PORT_CONTAINER__PORTS);
@@ -156,10 +150,8 @@ public class ScaAbstractComponentItemProvider
 	 */
 	@Override
 	public String getText(Object object) {
-		String label = ((ScaAbstractComponent<?>)object).getIdentifier();
-		return label == null || label.length() == 0 ?
-			getString("_UI_ScaAbstractComponent_type") :
-			getString("_UI_ScaAbstractComponent_type") + " " + label;
+		String label = ((ScaAbstractComponent< ? >) object).getIdentifier();
+		return label == null || label.length() == 0 ? getString("_UI_ScaAbstractComponent_type") : getString("_UI_ScaAbstractComponent_type") + " " + label;
 	}
 
 	/**
@@ -174,9 +166,12 @@ public class ScaAbstractComponentItemProvider
 		updateChildren(notification);
 
 		switch (notification.getFeatureID(ScaAbstractComponent.class)) {
-			case ScaPackage.SCA_ABSTRACT_COMPONENT__PORTS:
-				fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), true, false));
-				return;
+		case ScaPackage.SCA_ABSTRACT_COMPONENT__PROFILE:
+			fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
+			return;
+		case ScaPackage.SCA_ABSTRACT_COMPONENT__PORTS:
+			fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), true, false));
+			return;
 		}
 		super.notifyChanged(notification);
 	}

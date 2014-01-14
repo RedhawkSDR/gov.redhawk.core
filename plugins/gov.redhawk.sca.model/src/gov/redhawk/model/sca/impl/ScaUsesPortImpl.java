@@ -112,7 +112,8 @@ public class ScaUsesPortImpl extends ScaPortImpl<Uses, Port> implements ScaUsesP
 	@Override
 	public EList<ScaConnection> getConnections() {
 		if (connections == null) {
-			connections = new EObjectContainmentWithInverseEList.Unsettable.Resolving<ScaConnection>(ScaConnection.class, this, ScaPackage.SCA_USES_PORT__CONNECTIONS, ScaPackage.SCA_CONNECTION__PORT);
+			connections = new EObjectContainmentWithInverseEList.Unsettable.Resolving<ScaConnection>(ScaConnection.class, this,
+				ScaPackage.SCA_USES_PORT__CONNECTIONS, ScaPackage.SCA_CONNECTION__PORT);
 		}
 		return connections;
 	}
@@ -124,7 +125,8 @@ public class ScaUsesPortImpl extends ScaPortImpl<Uses, Port> implements ScaUsesP
 	 */
 	@Override
 	public void unsetConnections() {
-		if (connections != null) ((InternalEList.Unsettable<?>)connections).unset();
+		if (connections != null)
+			((InternalEList.Unsettable< ? >) connections).unset();
 	}
 
 	/**
@@ -134,7 +136,7 @@ public class ScaUsesPortImpl extends ScaPortImpl<Uses, Port> implements ScaUsesP
 	 */
 	@Override
 	public boolean isSetConnections() {
-		return connections != null && ((InternalEList.Unsettable<?>)connections).isSet();
+		return connections != null && ((InternalEList.Unsettable< ? >) connections).isSet();
 	}
 
 	/**
@@ -149,14 +151,15 @@ public class ScaUsesPortImpl extends ScaPortImpl<Uses, Port> implements ScaUsesP
 	protected static final String TYPE_EDEFAULT = "uses";
 
 	/**
-     * @since 14.0
-     */
+	 * @since 14.0
+	 */
 	@Override
 	protected void internalFetchChildren(IProgressMonitor monitor) throws InterruptedException {
 		fetchConnections(monitor);
-    }
+	}
 
 	private final VersionedFeature connectionsFeature = new VersionedFeature(this, ScaPackage.Literals.SCA_USES_PORT__CONNECTIONS);
+
 	/**
 	 * <!-- begin-user-doc -->
 	 * @since 14.0
@@ -284,8 +287,8 @@ public class ScaUsesPortImpl extends ScaPortImpl<Uses, Port> implements ScaUsesP
 	@Override
 	public NotificationChain eInverseAdd(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
 		switch (featureID) {
-			case ScaPackage.SCA_USES_PORT__CONNECTIONS:
-				return ((InternalEList<InternalEObject>)(InternalEList<?>)getConnections()).basicAdd(otherEnd, msgs);
+		case ScaPackage.SCA_USES_PORT__CONNECTIONS:
+			return ((InternalEList<InternalEObject>) (InternalEList< ? >) getConnections()).basicAdd(otherEnd, msgs);
 		}
 		return super.eInverseAdd(otherEnd, featureID, msgs);
 	}
@@ -298,8 +301,8 @@ public class ScaUsesPortImpl extends ScaPortImpl<Uses, Port> implements ScaUsesP
 	@Override
 	public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
 		switch (featureID) {
-			case ScaPackage.SCA_USES_PORT__CONNECTIONS:
-				return ((InternalEList<?>)getConnections()).basicRemove(otherEnd, msgs);
+		case ScaPackage.SCA_USES_PORT__CONNECTIONS:
+			return ((InternalEList< ? >) getConnections()).basicRemove(otherEnd, msgs);
 		}
 		return super.eInverseRemove(otherEnd, featureID, msgs);
 	}
@@ -312,8 +315,8 @@ public class ScaUsesPortImpl extends ScaPortImpl<Uses, Port> implements ScaUsesP
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
-			case ScaPackage.SCA_USES_PORT__CONNECTIONS:
-				return getConnections();
+		case ScaPackage.SCA_USES_PORT__CONNECTIONS:
+			return getConnections();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -327,10 +330,10 @@ public class ScaUsesPortImpl extends ScaPortImpl<Uses, Port> implements ScaUsesP
 	@Override
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
-			case ScaPackage.SCA_USES_PORT__CONNECTIONS:
-				getConnections().clear();
-				getConnections().addAll((Collection<? extends ScaConnection>)newValue);
-				return;
+		case ScaPackage.SCA_USES_PORT__CONNECTIONS:
+			getConnections().clear();
+			getConnections().addAll((Collection< ? extends ScaConnection>) newValue);
+			return;
 		}
 		super.eSet(featureID, newValue);
 	}
@@ -343,9 +346,9 @@ public class ScaUsesPortImpl extends ScaPortImpl<Uses, Port> implements ScaUsesP
 	@Override
 	public void eUnset(int featureID) {
 		switch (featureID) {
-			case ScaPackage.SCA_USES_PORT__CONNECTIONS:
-				unsetConnections();
-				return;
+		case ScaPackage.SCA_USES_PORT__CONNECTIONS:
+			unsetConnections();
+			return;
 		}
 		super.eUnset(featureID);
 	}
@@ -358,8 +361,8 @@ public class ScaUsesPortImpl extends ScaPortImpl<Uses, Port> implements ScaUsesP
 	@Override
 	public boolean eIsSet(int featureID) {
 		switch (featureID) {
-			case ScaPackage.SCA_USES_PORT__CONNECTIONS:
-				return isSetConnections();
+		case ScaPackage.SCA_USES_PORT__CONNECTIONS:
+			return isSetConnections();
 		}
 		return super.eIsSet(featureID);
 	}
@@ -374,7 +377,6 @@ public class ScaUsesPortImpl extends ScaPortImpl<Uses, Port> implements ScaUsesP
 		return ScaUsesPortImpl.TYPE_EDEFAULT;
 		// BEGIN GENERATED CODE
 	}
-
 
 	/**
 	 * @since 14.0

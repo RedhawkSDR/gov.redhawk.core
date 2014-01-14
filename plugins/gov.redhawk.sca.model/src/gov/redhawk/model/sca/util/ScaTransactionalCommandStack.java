@@ -60,36 +60,36 @@ public class ScaTransactionalCommandStack extends TransactionalCommandStackImpl 
 			}
 		}
 	}
-	
+
 	@Override
 	public Command getRedoCommand() {
-	    return null;
+		return null;
 	}
-	
+
 	@Override
 	public Command getUndoCommand() {
-	    return null;
+		return null;
 	}
-	
+
 	@Override
 	public boolean isSaveNeeded() {
-	    return false;
+		return false;
 	}
-	
+
 	@Override
 	public void redo() {
-	    // Not supported
+		// Not supported
 	}
-	
+
 	@Override
 	public void undo() {
-	    // Not supported
+		// Not supported
 	}
-	
+
 	@Override
 	protected void doExecute(Command command, Map< ? , ? > options) throws InterruptedException, RollbackException {
 		InternalTransaction tx = createTransaction(command, options);
-	
+
 		try {
 			basicExecute(command);
 			// commit the transaction now
@@ -98,17 +98,17 @@ public class ScaTransactionalCommandStack extends TransactionalCommandStackImpl 
 			// PASS
 			// snuff the exception, because this is expected (user asked to
 			//    cancel the model change).  We will rollback, below
-		} 
+		}
 	}
-	
-    @Override
+
+	@Override
 	protected void rollback(Transaction tx) {
-    	// Don't allow rollback
-    }
-	
+		// Don't allow rollback
+	}
+
 	@Override
 	protected void handleRollback(Command command, RollbackException rbe) {
-	   // We don't allow roll back
+		// We don't allow roll back
 	}
 
 	public boolean isEmpty() {

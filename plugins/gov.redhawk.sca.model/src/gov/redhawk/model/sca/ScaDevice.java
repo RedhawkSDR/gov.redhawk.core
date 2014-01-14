@@ -37,7 +37,6 @@ import CF.DevicePackage.UsageType;
  *   <li>{@link gov.redhawk.model.sca.ScaDevice#getUsageState <em>Usage State</em>}</li>
  *   <li>{@link gov.redhawk.model.sca.ScaDevice#getParentDevice <em>Parent Device</em>}</li>
  *   <li>{@link gov.redhawk.model.sca.ScaDevice#getDevMgr <em>Dev Mgr</em>}</li>
- *   <li>{@link gov.redhawk.model.sca.ScaDevice#getProfile <em>Profile</em>}</li>
  * </ul>
  * </p>
  *
@@ -67,7 +66,7 @@ public interface ScaDevice< D extends Device > extends ScaAbstractComponent<D>, 
 	 *        extendedMetaData="kind='element' name='childDevices'"
 	 * @generated
 	 */
-	EList<ScaDevice<?>> getChildDevices();
+	EList<ScaDevice< ? >> getChildDevices();
 
 	/**
 	 * Unsets the value of the '{@link gov.redhawk.model.sca.ScaDevice#getChildDevices <em>Child Devices</em>}' reference list.
@@ -330,7 +329,7 @@ public interface ScaDevice< D extends Device > extends ScaAbstractComponent<D>, 
 	 * @model opposite="childDevices" transient="true"
 	 * @generated
 	 */
-	ScaDevice<?> getParentDevice();
+	ScaDevice< ? > getParentDevice();
 
 	/**
 	 * Sets the value of the '{@link gov.redhawk.model.sca.ScaDevice#getParentDevice <em>Parent Device</em>}' reference.
@@ -340,7 +339,7 @@ public interface ScaDevice< D extends Device > extends ScaAbstractComponent<D>, 
 	 * @see #getParentDevice()
 	 * @generated
 	 */
-	void setParentDevice(ScaDevice<?> value);
+	void setParentDevice(ScaDevice< ? > value);
 
 	/**
 	 * Returns the value of the '<em><b>Dev Mgr</b></em>' reference.
@@ -358,65 +357,12 @@ public interface ScaDevice< D extends Device > extends ScaAbstractComponent<D>, 
 	ScaDeviceManager getDevMgr();
 
 	/**
-	 * Returns the value of the '<em><b>Profile</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <p>
-	 * If the meaning of the '<em>Profile</em>' attribute isn't clear,
-	 * there really should be more of a description here...
-	 * </p>
-	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Profile</em>' attribute.
-	 * @see #isSetProfile()
-	 * @see #unsetProfile()
-	 * @see #setProfile(String)
-	 * @see gov.redhawk.model.sca.ScaPackage#getScaDevice_Profile()
-	 * @model unsettable="true" transient="true"
-	 * @generated
-	 */
-	String getProfile();
-
-	/**
-	 * Sets the value of the '{@link gov.redhawk.model.sca.ScaDevice#getProfile <em>Profile</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @param value the new value of the '<em>Profile</em>' attribute.
-	 * @see #isSetProfile()
-	 * @see #unsetProfile()
-	 * @see #getProfile()
-	 * @generated
-	 */
-	void setProfile(String value);
-
-	/**
-	 * Unsets the value of the '{@link gov.redhawk.model.sca.ScaDevice#getProfile <em>Profile</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #isSetProfile()
-	 * @see #getProfile()
-	 * @see #setProfile(String)
-	 * @generated
-	 */
-	void unsetProfile();
-
-	/**
-	 * Returns whether the value of the '{@link gov.redhawk.model.sca.ScaDevice#getProfile <em>Profile</em>}' attribute is set.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return whether the value of the '<em>Profile</em>' attribute is set.
-	 * @see #unsetProfile()
-	 * @see #getProfile()
-	 * @see #setProfile(String)
-	 * @generated
-	 */
-	boolean isSetProfile();
-
-	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @model monitorDataType="gov.redhawk.model.sca.IProgressMonitor"
 	 * @generated
 	 */
-	EList<ScaDevice<?>> fetchAggregateDevices(IProgressMonitor monitor) throws InterruptedException;
+	EList<ScaDevice< ? >> fetchAggregateDevices(IProgressMonitor monitor) throws InterruptedException;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -449,12 +395,4 @@ public interface ScaDevice< D extends Device > extends ScaAbstractComponent<D>, 
 	 * @generated
 	 */
 	UsageType fetchUsageState(IProgressMonitor monitor);
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @model monitorDataType="gov.redhawk.model.sca.IProgressMonitor"
-	 * @generated
-	 */
-	String fetchProfile(IProgressMonitor monitor);
 } // ScaDevice

@@ -77,7 +77,7 @@ public abstract class IStatusProviderImpl extends EObjectImpl implements IStatus
 
 	{
 		eAdapters().add(new DisposableObjectContainerListener());
-		eAdapters().add(new AdapterImpl(){
+		eAdapters().add(new AdapterImpl() {
 			@Override
 			public void notifyChanged(Notification msg) {
 				IStatusProviderImpl.this.notifyChanged(msg);
@@ -88,7 +88,7 @@ public abstract class IStatusProviderImpl extends EObjectImpl implements IStatus
 	private Map<EStructuralFeature, IStatus> objectStatusMap = Collections.synchronizedMap(new HashMap<EStructuralFeature, IStatus>());
 
 	protected void notifyChanged(Notification msg) {
-		
+
 	}
 
 	/**
@@ -174,8 +174,8 @@ public abstract class IStatusProviderImpl extends EObjectImpl implements IStatus
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
-			case ScaPackage.ISTATUS_PROVIDER__STATUS:
-				return getStatus();
+		case ScaPackage.ISTATUS_PROVIDER__STATUS:
+			return getStatus();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -188,8 +188,8 @@ public abstract class IStatusProviderImpl extends EObjectImpl implements IStatus
 	@Override
 	public boolean eIsSet(int featureID) {
 		switch (featureID) {
-			case ScaPackage.ISTATUS_PROVIDER__STATUS:
-				return STATUS_EDEFAULT == null ? getStatus() != null : !STATUS_EDEFAULT.equals(getStatus());
+		case ScaPackage.ISTATUS_PROVIDER__STATUS:
+			return STATUS_EDEFAULT == null ? getStatus() != null : !STATUS_EDEFAULT.equals(getStatus());
 		}
 		return super.eIsSet(featureID);
 	}

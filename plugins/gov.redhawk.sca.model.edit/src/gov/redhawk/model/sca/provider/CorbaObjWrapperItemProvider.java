@@ -38,7 +38,8 @@ import org.eclipse.emf.edit.provider.ItemPropertyDescriptor;
  * <!-- end-user-doc -->
  * @generated
  */
-public class CorbaObjWrapperItemProvider extends DataProviderObjectItemProvider implements IEditingDomainItemProvider, IStructuredItemContentProvider, ITreeItemContentProvider, IItemLabelProvider, IItemPropertySource, ITableItemLabelProvider, ITableItemColorProvider, IItemColorProvider {
+public class CorbaObjWrapperItemProvider extends DataProviderObjectItemProvider implements IEditingDomainItemProvider, IStructuredItemContentProvider,
+		ITreeItemContentProvider, IItemLabelProvider, IItemPropertySource, ITableItemLabelProvider, ITableItemColorProvider, IItemColorProvider {
 
 	/**
 	 * This constructs an instance from a factory and a notifier.
@@ -73,19 +74,10 @@ public class CorbaObjWrapperItemProvider extends DataProviderObjectItemProvider 
 	 * @generated
 	 */
 	protected void addIorPropertyDescriptor(Object object) {
-		itemPropertyDescriptors.add
-			(createItemPropertyDescriptor
-				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
-				 getResourceLocator(),
-				 getString("_UI_CorbaObjWrapper_ior_feature"),
-				 getString("_UI_PropertyDescriptor_description", "_UI_CorbaObjWrapper_ior_feature", "_UI_CorbaObjWrapper_type"),
-				 ScaPackage.Literals.CORBA_OBJ_WRAPPER__IOR,
-				 false,
-				 false,
-				 false,
-				 ItemPropertyDescriptor.GENERIC_VALUE_IMAGE,
-				 null,
-				 null));
+		itemPropertyDescriptors.add(createItemPropertyDescriptor(((ComposeableAdapterFactory) adapterFactory).getRootAdapterFactory(), getResourceLocator(),
+			getString("_UI_CorbaObjWrapper_ior_feature"),
+			getString("_UI_PropertyDescriptor_description", "_UI_CorbaObjWrapper_ior_feature", "_UI_CorbaObjWrapper_type"),
+			ScaPackage.Literals.CORBA_OBJ_WRAPPER__IOR, false, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
 	}
 
 	/**
@@ -96,10 +88,8 @@ public class CorbaObjWrapperItemProvider extends DataProviderObjectItemProvider 
 	 */
 	@Override
 	public String getText(Object object) {
-		String label = ((CorbaObjWrapper<?>)object).getIor();
-		return label == null || label.length() == 0 ?
-			getString("_UI_CorbaObjWrapper_type") :
-			getString("_UI_CorbaObjWrapper_type") + " " + label;
+		String label = ((CorbaObjWrapper< ? >) object).getIor();
+		return label == null || label.length() == 0 ? getString("_UI_CorbaObjWrapper_type") : getString("_UI_CorbaObjWrapper_type") + " " + label;
 	}
 
 	/**

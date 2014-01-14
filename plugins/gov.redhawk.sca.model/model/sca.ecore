@@ -214,6 +214,9 @@
     <eOperations name="fetchStarted" eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EBooleanObject">
       <eParameters name="monitor" eType="#//IProgressMonitor"/>
     </eOperations>
+    <eOperations name="fetchProfile" eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EString">
+      <eParameters name="monitor" eType="#//IProgressMonitor"/>
+    </eOperations>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="identifier" eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EString"
         unsettable="true" derived="true" iD="true">
       <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
@@ -222,6 +225,8 @@
       </eAnnotations>
     </eStructuralFeatures>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="started" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//BooleanObject"
+        transient="true" unsettable="true"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="profile" eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EString"
         transient="true" unsettable="true"/>
     <eGenericSuperTypes eClassifier="#//ScaPropertyContainer">
       <eTypeArguments eTypeParameter="#//ScaAbstractComponent/R"/>
@@ -431,9 +436,6 @@
     <eOperations name="fetchUsageState" eType="#//UsageType">
       <eParameters name="monitor" eType="#//IProgressMonitor"/>
     </eOperations>
-    <eOperations name="fetchProfile" eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EString">
-      <eParameters name="monitor" eType="#//IProgressMonitor"/>
-    </eOperations>
     <eStructuralFeatures xsi:type="ecore:EReference" name="childDevices" upperBound="-1"
         transient="true" unsettable="true" resolveProxies="false" eOpposite="#//ScaDevice/parentDevice">
       <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
@@ -480,8 +482,6 @@
     </eStructuralFeatures>
     <eStructuralFeatures xsi:type="ecore:EReference" name="devMgr" eType="#//ScaDeviceManager"
         changeable="false" volatile="true" transient="true" derived="true"/>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="profile" eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EString"
-        transient="true" unsettable="true"/>
     <eGenericSuperTypes eClassifier="#//ScaAbstractComponent">
       <eTypeArguments eTypeParameter="#//ScaDevice/D"/>
     </eGenericSuperTypes>

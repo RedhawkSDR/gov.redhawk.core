@@ -249,7 +249,8 @@ public interface ScaWaveformFactory extends CorbaObjWrapper<ApplicationFactory>,
 	 * @model exceptions="mil.jpeojtrs.sca.cf.CreateApplicationError mil.jpeojtrs.sca.cf.CreateApplicationRequestError mil.jpeojtrs.sca.cf.InvalidInitConfiguration mil.jpeojtrs.sca.cf.CreateApplicationInsufficientCapacityError" monitorDataType="gov.redhawk.model.sca.IProgressMonitor" initConfigurationDataType="mil.jpeojtrs.sca.cf.DataTypeArray" deviceAssignmentsDataType="mil.jpeojtrs.sca.cf.DeviceAssignmentTypeArray"
 	 * @generated
 	 */
-	ScaWaveform createWaveform(IProgressMonitor monitor, String name, DataType[] initConfiguration, DeviceAssignmentType[] deviceAssignments) throws CreateApplicationError, CreateApplicationRequestError, InvalidInitConfiguration, CreateApplicationInsufficientCapacityError;
+	ScaWaveform createWaveform(IProgressMonitor monitor, String name, DataType[] initConfiguration, DeviceAssignmentType[] deviceAssignments)
+		throws CreateApplicationError, CreateApplicationRequestError, InvalidInitConfiguration, CreateApplicationInsufficientCapacityError;
 
 	/**
 	 * <!-- begin-user-doc -->

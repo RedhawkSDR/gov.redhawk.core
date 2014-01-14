@@ -90,10 +90,8 @@ public enum DataProviderServicesRegistry implements IExtensionChangeHandler, IDa
 
 	@Override
 	public void addExtension(final IExtensionTracker tracker, final IExtension extension) {
-		String disabledDataProviders = Platform.getPreferencesService().getString(ScaModelPlugin.ID,
-		        ScaModelPreferenceContants.DISABLED_DATA_PROVIDERS,
-		        "",
-		        null);
+		String disabledDataProviders = Platform.getPreferencesService().getString(ScaModelPlugin.ID, ScaModelPreferenceContants.DISABLED_DATA_PROVIDERS, "",
+			null);
 		for (final IConfigurationElement element : extension.getConfigurationElements()) {
 			final ScaDataProviderServiceDescriptor descriptor = createDescriptor(element, disabledDataProviders);
 			this.dataProviderServiceDescriptors.add(descriptor);

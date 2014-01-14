@@ -22,10 +22,9 @@ import org.eclipse.emf.ecore.EStructuralFeature;
  */
 public class UnsetLocalAttributeCommand extends SetStatusCommand<IStatusProvider> {
 
-	
 	public UnsetLocalAttributeCommand(IStatusProvider target, IStatus status, EStructuralFeature feature) {
 		super(target, feature, status);
-    }
+	}
 
 	/**
 	 * {@inheritDoc}

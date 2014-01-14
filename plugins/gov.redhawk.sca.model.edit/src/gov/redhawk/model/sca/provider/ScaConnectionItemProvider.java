@@ -12,7 +12,6 @@
 // BEGIN GENERATED CODE
 package gov.redhawk.model.sca.provider;
 
-
 import gov.redhawk.model.sca.ScaConnection;
 import gov.redhawk.model.sca.ScaPackage;
 
@@ -43,10 +42,8 @@ import org.eclipse.emf.edit.provider.ViewerNotification;
  * <!-- end-user-doc -->
  * @generated
  */
-public class ScaConnectionItemProvider
-	extends ItemProviderAdapter
-	implements
-		IEditingDomainItemProvider, IStructuredItemContentProvider, ITreeItemContentProvider, IItemLabelProvider, IItemPropertySource, ITableItemLabelProvider, ITableItemColorProvider, IItemColorProvider {
+public class ScaConnectionItemProvider extends ItemProviderAdapter implements IEditingDomainItemProvider, IStructuredItemContentProvider,
+		ITreeItemContentProvider, IItemLabelProvider, IItemPropertySource, ITableItemLabelProvider, ITableItemColorProvider, IItemColorProvider {
 	/**
 	 * This constructs an instance from a factory and a notifier.
 	 * <!-- begin-user-doc -->
@@ -80,19 +77,10 @@ public class ScaConnectionItemProvider
 	 * @generated
 	 */
 	protected void addIdPropertyDescriptor(Object object) {
-		itemPropertyDescriptors.add
-			(createItemPropertyDescriptor
-				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
-				 getResourceLocator(),
-				 getString("_UI_ScaConnection_id_feature"),
-				 getString("_UI_PropertyDescriptor_description", "_UI_ScaConnection_id_feature", "_UI_ScaConnection_type"),
-				 ScaPackage.Literals.SCA_CONNECTION__ID,
-				 false,
-				 false,
-				 false,
-				 ItemPropertyDescriptor.GENERIC_VALUE_IMAGE,
-				 null,
-				 null));
+		itemPropertyDescriptors.add(createItemPropertyDescriptor(((ComposeableAdapterFactory) adapterFactory).getRootAdapterFactory(), getResourceLocator(),
+			getString("_UI_ScaConnection_id_feature"),
+			getString("_UI_PropertyDescriptor_description", "_UI_ScaConnection_id_feature", "_UI_ScaConnection_type"), ScaPackage.Literals.SCA_CONNECTION__ID,
+			false, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
 	}
 
 	/**
@@ -114,10 +102,8 @@ public class ScaConnectionItemProvider
 	 */
 	@Override
 	public String getText(Object object) {
-		String label = ((ScaConnection)object).getId();
-		return label == null || label.length() == 0 ?
-			getString("_UI_ScaConnection_type") :
-			label;
+		String label = ((ScaConnection) object).getId();
+		return label == null || label.length() == 0 ? getString("_UI_ScaConnection_type") : label;
 	}
 
 	/**
@@ -132,10 +118,10 @@ public class ScaConnectionItemProvider
 		updateChildren(notification);
 
 		switch (notification.getFeatureID(ScaConnection.class)) {
-			case ScaPackage.SCA_CONNECTION__DATA:
-			case ScaPackage.SCA_CONNECTION__ID:
-				fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
-				return;
+		case ScaPackage.SCA_CONNECTION__DATA:
+		case ScaPackage.SCA_CONNECTION__ID:
+			fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
+			return;
 		}
 		super.notifyChanged(notification);
 	}

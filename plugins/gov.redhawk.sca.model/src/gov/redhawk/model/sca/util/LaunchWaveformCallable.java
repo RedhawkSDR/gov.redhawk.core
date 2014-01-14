@@ -51,7 +51,7 @@ public class LaunchWaveformCallable implements Callable<ScaWaveform> {
 	private SubMonitor subMonitor;
 
 	public LaunchWaveformCallable(final ScaDomainManager domMgr, final String waveformName, final IPath waveformPath, final DeviceAssignmentType[] deviceAssn,
-	        final DataType[] configProps, final boolean autoStart, IProgressMonitor monitor) {
+		final DataType[] configProps, final boolean autoStart, IProgressMonitor monitor) {
 		this.domMgr = domMgr;
 		this.waveformName = waveformName;
 		this.waveformPath = waveformPath;
@@ -112,7 +112,7 @@ public class LaunchWaveformCallable implements Callable<ScaWaveform> {
 			final IProgressMonitor createMonitor = subMonitor.newChild(1);
 			createMonitor.beginTask("Creating application: " + this.waveformName, IProgressMonitor.UNKNOWN);
 			retVal = factory.createWaveform(createMonitor, LaunchWaveformCallable.this.waveformName, LaunchWaveformCallable.this.configProps,
-			        LaunchWaveformCallable.this.deviceAssn);
+				LaunchWaveformCallable.this.deviceAssn);
 
 			if (subMonitor.isCanceled()) {
 				throw new OperationCanceledException();
@@ -166,7 +166,7 @@ public class LaunchWaveformCallable implements Callable<ScaWaveform> {
 				subMonitor.done();
 			}
 		}
-		
+
 		return retVal;
 	}
 

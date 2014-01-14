@@ -135,7 +135,7 @@ public class ScaDeviceManagerImpl extends ScaPropertyContainerImpl<DeviceManager
 	 * @generated
 	 * @ordered
 	 */
-	protected EList<ScaPort<?, ?>> ports;
+	protected EList<ScaPort< ? , ? >> ports;
 
 	/**
 	 * The cached value of the '{@link #getDevices() <em>Devices</em>}' attribute list.
@@ -292,9 +292,10 @@ public class ScaDeviceManagerImpl extends ScaPropertyContainerImpl<DeviceManager
 	 * @generated
 	 */
 	@Override
-	public EList<ScaPort<?, ?>> getPorts() {
+	public EList<ScaPort< ? , ? >> getPorts() {
 		if (ports == null) {
-			ports = new EObjectContainmentWithInverseEList.Unsettable<ScaPort<?, ?>>(ScaPort.class, this, ScaPackage.SCA_DEVICE_MANAGER__PORTS, ScaPackage.SCA_PORT__PORT_CONTAINER);
+			ports = new EObjectContainmentWithInverseEList.Unsettable<ScaPort< ? , ? >>(ScaPort.class, this, ScaPackage.SCA_DEVICE_MANAGER__PORTS,
+				ScaPackage.SCA_PORT__PORT_CONTAINER);
 		}
 		return ports;
 	}
@@ -306,7 +307,8 @@ public class ScaDeviceManagerImpl extends ScaPropertyContainerImpl<DeviceManager
 	 */
 	@Override
 	public void unsetPorts() {
-		if (ports != null) ((InternalEList.Unsettable<?>)ports).unset();
+		if (ports != null)
+			((InternalEList.Unsettable< ? >) ports).unset();
 	}
 
 	/**
@@ -316,7 +318,7 @@ public class ScaDeviceManagerImpl extends ScaPropertyContainerImpl<DeviceManager
 	 */
 	@Override
 	public boolean isSetPorts() {
-		return ports != null && ((InternalEList.Unsettable<?>)ports).isSet();
+		return ports != null && ((InternalEList.Unsettable< ? >) ports).isSet();
 	}
 
 	/**
@@ -339,7 +341,8 @@ public class ScaDeviceManagerImpl extends ScaPropertyContainerImpl<DeviceManager
 	 */
 	@Override
 	public void unsetDevices() {
-		if (devices != null) ((InternalEList.Unsettable<?>)devices).unset();
+		if (devices != null)
+			((InternalEList.Unsettable< ? >) devices).unset();
 	}
 
 	/**
@@ -349,7 +352,7 @@ public class ScaDeviceManagerImpl extends ScaPropertyContainerImpl<DeviceManager
 	 */
 	@Override
 	public boolean isSetDevices() {
-		return devices != null && ((InternalEList.Unsettable<?>)devices).isSet();
+		return devices != null && ((InternalEList.Unsettable< ? >) devices).isSet();
 	}
 
 	/**
@@ -358,7 +361,7 @@ public class ScaDeviceManagerImpl extends ScaPropertyContainerImpl<DeviceManager
 	 * @generated
 	 */
 	@Override
-	public EList<ScaDevice<?>> getRootDevices() {
+	public EList<ScaDevice< ? >> getRootDevices() {
 		return getDevices().list(ScaPackage.Literals.SCA_DEVICE_MANAGER__ROOT_DEVICES);
 	}
 
@@ -368,7 +371,7 @@ public class ScaDeviceManagerImpl extends ScaPropertyContainerImpl<DeviceManager
 	 * @generated
 	 */
 	@Override
-	public EList<ScaDevice<?>> getChildDevices() {
+	public EList<ScaDevice< ? >> getChildDevices() {
 		return getDevices().list(ScaPackage.Literals.SCA_DEVICE_MANAGER__CHILD_DEVICES);
 	}
 
@@ -381,16 +384,16 @@ public class ScaDeviceManagerImpl extends ScaPropertyContainerImpl<DeviceManager
 				Object newValue = null;
 				Object oldValue = null;
 				switch (msg.getEventType()) {
-				case Notification.ADD: 
+				case Notification.ADD:
 					newValue = handleAddDevice(msg);
 					break;
-				case Notification.ADD_MANY: 
+				case Notification.ADD_MANY:
 					newValue = handleAddMany(msg);
 					break;
-				case Notification.REMOVE: 
+				case Notification.REMOVE:
 					oldValue = handleRemove(msg);
 					break;
-				case Notification.REMOVE_MANY: 
+				case Notification.REMOVE_MANY:
 					oldValue = handleRemoveMany(msg);
 					break;
 				default:
@@ -402,6 +405,7 @@ public class ScaDeviceManagerImpl extends ScaPropertyContainerImpl<DeviceManager
 				break;
 			}
 		}
+
 		/**
 		 * @param msg
 		 * @return
@@ -417,6 +421,7 @@ public class ScaDeviceManagerImpl extends ScaPropertyContainerImpl<DeviceManager
 			oldValue = oldValues;
 			return oldValue;
 		}
+
 		/**
 		 * @param msg
 		 * @return
@@ -427,6 +432,7 @@ public class ScaDeviceManagerImpl extends ScaPropertyContainerImpl<DeviceManager
 			oldValue = entry.getValue();
 			return oldValue;
 		}
+
 		/**
 		 * @param msg
 		 * @return
@@ -442,6 +448,7 @@ public class ScaDeviceManagerImpl extends ScaPropertyContainerImpl<DeviceManager
 			newValue = newValues;
 			return newValue;
 		}
+
 		// BEGIN GENERATED CODE
 
 		/**
@@ -544,8 +551,12 @@ public class ScaDeviceManagerImpl extends ScaPropertyContainerImpl<DeviceManager
 		boolean oldFileSystemESet = fileSystemESet;
 		fileSystemESet = true;
 		if (eNotificationRequired()) {
-			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, ScaPackage.SCA_DEVICE_MANAGER__FILE_SYSTEM, oldFileSystem, newFileSystem, !oldFileSystemESet);
-			if (msgs == null) msgs = notification; else msgs.add(notification);
+			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, ScaPackage.SCA_DEVICE_MANAGER__FILE_SYSTEM, oldFileSystem,
+				newFileSystem, !oldFileSystemESet);
+			if (msgs == null)
+				msgs = notification;
+			else
+				msgs.add(notification);
 		}
 		return msgs;
 	}
@@ -560,17 +571,20 @@ public class ScaDeviceManagerImpl extends ScaPropertyContainerImpl<DeviceManager
 		if (newFileSystem != fileSystem) {
 			NotificationChain msgs = null;
 			if (fileSystem != null)
-				msgs = ((InternalEObject)fileSystem).eInverseRemove(this, ScaPackage.SCA_DEVICE_MANAGER_FILE_SYSTEM__DEVICE_MANAGER, ScaDeviceManagerFileSystem.class, msgs);
+				msgs = ((InternalEObject) fileSystem).eInverseRemove(this, ScaPackage.SCA_DEVICE_MANAGER_FILE_SYSTEM__DEVICE_MANAGER,
+					ScaDeviceManagerFileSystem.class, msgs);
 			if (newFileSystem != null)
-				msgs = ((InternalEObject)newFileSystem).eInverseAdd(this, ScaPackage.SCA_DEVICE_MANAGER_FILE_SYSTEM__DEVICE_MANAGER, ScaDeviceManagerFileSystem.class, msgs);
+				msgs = ((InternalEObject) newFileSystem).eInverseAdd(this, ScaPackage.SCA_DEVICE_MANAGER_FILE_SYSTEM__DEVICE_MANAGER,
+					ScaDeviceManagerFileSystem.class, msgs);
 			msgs = basicSetFileSystem(newFileSystem, msgs);
-			if (msgs != null) msgs.dispatch();
-		}
-		else {
+			if (msgs != null)
+				msgs.dispatch();
+		} else {
 			boolean oldFileSystemESet = fileSystemESet;
 			fileSystemESet = true;
 			if (eNotificationRequired())
-				eNotify(new ENotificationImpl(this, Notification.SET, ScaPackage.SCA_DEVICE_MANAGER__FILE_SYSTEM, newFileSystem, newFileSystem, !oldFileSystemESet));
+				eNotify(new ENotificationImpl(this, Notification.SET, ScaPackage.SCA_DEVICE_MANAGER__FILE_SYSTEM, newFileSystem, newFileSystem,
+					!oldFileSystemESet));
 		}
 	}
 
@@ -585,8 +599,12 @@ public class ScaDeviceManagerImpl extends ScaPropertyContainerImpl<DeviceManager
 		boolean oldFileSystemESet = fileSystemESet;
 		fileSystemESet = false;
 		if (eNotificationRequired()) {
-			ENotificationImpl notification = new ENotificationImpl(this, Notification.UNSET, ScaPackage.SCA_DEVICE_MANAGER__FILE_SYSTEM, oldFileSystem, null, oldFileSystemESet);
-			if (msgs == null) msgs = notification; else msgs.add(notification);
+			ENotificationImpl notification = new ENotificationImpl(this, Notification.UNSET, ScaPackage.SCA_DEVICE_MANAGER__FILE_SYSTEM, oldFileSystem, null,
+				oldFileSystemESet);
+			if (msgs == null)
+				msgs = notification;
+			else
+				msgs.add(notification);
 		}
 		return msgs;
 	}
@@ -600,11 +618,12 @@ public class ScaDeviceManagerImpl extends ScaPropertyContainerImpl<DeviceManager
 	public void unsetFileSystem() {
 		if (fileSystem != null) {
 			NotificationChain msgs = null;
-			msgs = ((InternalEObject)fileSystem).eInverseRemove(this, ScaPackage.SCA_DEVICE_MANAGER_FILE_SYSTEM__DEVICE_MANAGER, ScaDeviceManagerFileSystem.class, msgs);
+			msgs = ((InternalEObject) fileSystem).eInverseRemove(this, ScaPackage.SCA_DEVICE_MANAGER_FILE_SYSTEM__DEVICE_MANAGER,
+				ScaDeviceManagerFileSystem.class, msgs);
 			msgs = basicUnsetFileSystem(msgs);
-			if (msgs != null) msgs.dispatch();
-		}
-		else {
+			if (msgs != null)
+				msgs.dispatch();
+		} else {
 			boolean oldFileSystemESet = fileSystemESet;
 			fileSystemESet = false;
 			if (eNotificationRequired())
@@ -629,8 +648,9 @@ public class ScaDeviceManagerImpl extends ScaPropertyContainerImpl<DeviceManager
 	 */
 	@Override
 	public ScaDomainManager getDomMgr() {
-		if (eContainerFeatureID() != ScaPackage.SCA_DEVICE_MANAGER__DOM_MGR) return null;
-		return (ScaDomainManager)eContainer();
+		if (eContainerFeatureID() != ScaPackage.SCA_DEVICE_MANAGER__DOM_MGR)
+			return null;
+		return (ScaDomainManager) eContainer();
 	}
 
 	/**
@@ -639,8 +659,9 @@ public class ScaDeviceManagerImpl extends ScaPropertyContainerImpl<DeviceManager
 	 * @generated
 	 */
 	public ScaDomainManager basicGetDomMgr() {
-		if (eContainerFeatureID() != ScaPackage.SCA_DEVICE_MANAGER__DOM_MGR) return null;
-		return (ScaDomainManager)eInternalContainer();
+		if (eContainerFeatureID() != ScaPackage.SCA_DEVICE_MANAGER__DOM_MGR)
+			return null;
+		return (ScaDomainManager) eInternalContainer();
 	}
 
 	/**
@@ -649,7 +670,7 @@ public class ScaDeviceManagerImpl extends ScaPropertyContainerImpl<DeviceManager
 	 * @generated
 	 */
 	public NotificationChain basicSetDomMgr(ScaDomainManager newDomMgr, NotificationChain msgs) {
-		msgs = eBasicSetContainer((InternalEObject)newDomMgr, ScaPackage.SCA_DEVICE_MANAGER__DOM_MGR, msgs);
+		msgs = eBasicSetContainer((InternalEObject) newDomMgr, ScaPackage.SCA_DEVICE_MANAGER__DOM_MGR, msgs);
 		return msgs;
 	}
 
@@ -667,11 +688,11 @@ public class ScaDeviceManagerImpl extends ScaPropertyContainerImpl<DeviceManager
 			if (eInternalContainer() != null)
 				msgs = eBasicRemoveFromContainer(msgs);
 			if (newDomMgr != null)
-				msgs = ((InternalEObject)newDomMgr).eInverseAdd(this, ScaPackage.SCA_DOMAIN_MANAGER__DEVICE_MANAGERS, ScaDomainManager.class, msgs);
+				msgs = ((InternalEObject) newDomMgr).eInverseAdd(this, ScaPackage.SCA_DOMAIN_MANAGER__DEVICE_MANAGERS, ScaDomainManager.class, msgs);
 			msgs = basicSetDomMgr(newDomMgr, msgs);
-			if (msgs != null) msgs.dispatch();
-		}
-		else if (eNotificationRequired())
+			if (msgs != null)
+				msgs.dispatch();
+		} else if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET, ScaPackage.SCA_DEVICE_MANAGER__DOM_MGR, newDomMgr, newDomMgr));
 	}
 
@@ -712,7 +733,8 @@ public class ScaDeviceManagerImpl extends ScaPropertyContainerImpl<DeviceManager
 		identifier = IDENTIFIER_EDEFAULT;
 		identifierESet = false;
 		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.UNSET, ScaPackage.SCA_DEVICE_MANAGER__IDENTIFIER, oldIdentifier, IDENTIFIER_EDEFAULT, oldIdentifierESet));
+			eNotify(new ENotificationImpl(this, Notification.UNSET, ScaPackage.SCA_DEVICE_MANAGER__IDENTIFIER, oldIdentifier, IDENTIFIER_EDEFAULT,
+				oldIdentifierESet));
 	}
 
 	/**
@@ -783,7 +805,8 @@ public class ScaDeviceManagerImpl extends ScaPropertyContainerImpl<DeviceManager
 	@Override
 	public EList<ScaService> getServices() {
 		if (services == null) {
-			services = new EObjectContainmentWithInverseEList.Unsettable<ScaService>(ScaService.class, this, ScaPackage.SCA_DEVICE_MANAGER__SERVICES, ScaPackage.SCA_SERVICE__DEV_MGR);
+			services = new EObjectContainmentWithInverseEList.Unsettable<ScaService>(ScaService.class, this, ScaPackage.SCA_DEVICE_MANAGER__SERVICES,
+				ScaPackage.SCA_SERVICE__DEV_MGR);
 		}
 		return services;
 	}
@@ -795,7 +818,8 @@ public class ScaDeviceManagerImpl extends ScaPropertyContainerImpl<DeviceManager
 	 */
 	@Override
 	public void unsetServices() {
-		if (services != null) ((InternalEList.Unsettable<?>)services).unset();
+		if (services != null)
+			((InternalEList.Unsettable< ? >) services).unset();
 	}
 
 	/**
@@ -805,7 +829,7 @@ public class ScaDeviceManagerImpl extends ScaPropertyContainerImpl<DeviceManager
 	 */
 	@Override
 	public boolean isSetServices() {
-		return services != null && ((InternalEList.Unsettable<?>)services).isSet();
+		return services != null && ((InternalEList.Unsettable< ? >) services).isSet();
 	}
 
 	/**
@@ -1060,18 +1084,18 @@ public class ScaDeviceManagerImpl extends ScaPropertyContainerImpl<DeviceManager
 	@Override
 	public NotificationChain eInverseAdd(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
 		switch (featureID) {
-			case ScaPackage.SCA_DEVICE_MANAGER__PORTS:
-				return ((InternalEList<InternalEObject>)(InternalEList<?>)getPorts()).basicAdd(otherEnd, msgs);
-			case ScaPackage.SCA_DEVICE_MANAGER__FILE_SYSTEM:
-				if (fileSystem != null)
-					msgs = ((InternalEObject)fileSystem).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - ScaPackage.SCA_DEVICE_MANAGER__FILE_SYSTEM, null, msgs);
-				return basicSetFileSystem((ScaDeviceManagerFileSystem)otherEnd, msgs);
-			case ScaPackage.SCA_DEVICE_MANAGER__DOM_MGR:
-				if (eInternalContainer() != null)
-					msgs = eBasicRemoveFromContainer(msgs);
-				return basicSetDomMgr((ScaDomainManager)otherEnd, msgs);
-			case ScaPackage.SCA_DEVICE_MANAGER__SERVICES:
-				return ((InternalEList<InternalEObject>)(InternalEList<?>)getServices()).basicAdd(otherEnd, msgs);
+		case ScaPackage.SCA_DEVICE_MANAGER__PORTS:
+			return ((InternalEList<InternalEObject>) (InternalEList< ? >) getPorts()).basicAdd(otherEnd, msgs);
+		case ScaPackage.SCA_DEVICE_MANAGER__FILE_SYSTEM:
+			if (fileSystem != null)
+				msgs = ((InternalEObject) fileSystem).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - ScaPackage.SCA_DEVICE_MANAGER__FILE_SYSTEM, null, msgs);
+			return basicSetFileSystem((ScaDeviceManagerFileSystem) otherEnd, msgs);
+		case ScaPackage.SCA_DEVICE_MANAGER__DOM_MGR:
+			if (eInternalContainer() != null)
+				msgs = eBasicRemoveFromContainer(msgs);
+			return basicSetDomMgr((ScaDomainManager) otherEnd, msgs);
+		case ScaPackage.SCA_DEVICE_MANAGER__SERVICES:
+			return ((InternalEList<InternalEObject>) (InternalEList< ? >) getServices()).basicAdd(otherEnd, msgs);
 		}
 		return super.eInverseAdd(otherEnd, featureID, msgs);
 	}
@@ -1084,22 +1108,22 @@ public class ScaDeviceManagerImpl extends ScaPropertyContainerImpl<DeviceManager
 	@Override
 	public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
 		switch (featureID) {
-			case ScaPackage.SCA_DEVICE_MANAGER__PORTS:
-				return ((InternalEList<?>)getPorts()).basicRemove(otherEnd, msgs);
-			case ScaPackage.SCA_DEVICE_MANAGER__DEVICES:
-				return ((InternalEList<?>)getDevices()).basicRemove(otherEnd, msgs);
-			case ScaPackage.SCA_DEVICE_MANAGER__ROOT_DEVICES:
-				return ((InternalEList<?>)getRootDevices()).basicRemove(otherEnd, msgs);
-			case ScaPackage.SCA_DEVICE_MANAGER__CHILD_DEVICES:
-				return ((InternalEList<?>)getChildDevices()).basicRemove(otherEnd, msgs);
-			case ScaPackage.SCA_DEVICE_MANAGER__ALL_DEVICES:
-				return ((InternalEList<?>)getAllDevices()).basicRemove(otherEnd, msgs);
-			case ScaPackage.SCA_DEVICE_MANAGER__FILE_SYSTEM:
-				return basicUnsetFileSystem(msgs);
-			case ScaPackage.SCA_DEVICE_MANAGER__DOM_MGR:
-				return basicSetDomMgr(null, msgs);
-			case ScaPackage.SCA_DEVICE_MANAGER__SERVICES:
-				return ((InternalEList<?>)getServices()).basicRemove(otherEnd, msgs);
+		case ScaPackage.SCA_DEVICE_MANAGER__PORTS:
+			return ((InternalEList< ? >) getPorts()).basicRemove(otherEnd, msgs);
+		case ScaPackage.SCA_DEVICE_MANAGER__DEVICES:
+			return ((InternalEList< ? >) getDevices()).basicRemove(otherEnd, msgs);
+		case ScaPackage.SCA_DEVICE_MANAGER__ROOT_DEVICES:
+			return ((InternalEList< ? >) getRootDevices()).basicRemove(otherEnd, msgs);
+		case ScaPackage.SCA_DEVICE_MANAGER__CHILD_DEVICES:
+			return ((InternalEList< ? >) getChildDevices()).basicRemove(otherEnd, msgs);
+		case ScaPackage.SCA_DEVICE_MANAGER__ALL_DEVICES:
+			return ((InternalEList< ? >) getAllDevices()).basicRemove(otherEnd, msgs);
+		case ScaPackage.SCA_DEVICE_MANAGER__FILE_SYSTEM:
+			return basicUnsetFileSystem(msgs);
+		case ScaPackage.SCA_DEVICE_MANAGER__DOM_MGR:
+			return basicSetDomMgr(null, msgs);
+		case ScaPackage.SCA_DEVICE_MANAGER__SERVICES:
+			return ((InternalEList< ? >) getServices()).basicRemove(otherEnd, msgs);
 		}
 		return super.eInverseRemove(otherEnd, featureID, msgs);
 	}
@@ -1112,8 +1136,8 @@ public class ScaDeviceManagerImpl extends ScaPropertyContainerImpl<DeviceManager
 	@Override
 	public NotificationChain eBasicRemoveFromContainerFeature(NotificationChain msgs) {
 		switch (eContainerFeatureID()) {
-			case ScaPackage.SCA_DEVICE_MANAGER__DOM_MGR:
-				return eInternalContainer().eInverseRemove(this, ScaPackage.SCA_DOMAIN_MANAGER__DEVICE_MANAGERS, ScaDomainManager.class, msgs);
+		case ScaPackage.SCA_DEVICE_MANAGER__DOM_MGR:
+			return eInternalContainer().eInverseRemove(this, ScaPackage.SCA_DOMAIN_MANAGER__DEVICE_MANAGERS, ScaDomainManager.class, msgs);
 		}
 		return super.eBasicRemoveFromContainerFeature(msgs);
 	}
@@ -1126,30 +1150,32 @@ public class ScaDeviceManagerImpl extends ScaPropertyContainerImpl<DeviceManager
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
-			case ScaPackage.SCA_DEVICE_MANAGER__PORTS:
-				return getPorts();
-			case ScaPackage.SCA_DEVICE_MANAGER__DEVICES:
-				if (coreType) return getDevices();
-				return ((FeatureMap.Internal)getDevices()).getWrapper();
-			case ScaPackage.SCA_DEVICE_MANAGER__ROOT_DEVICES:
-				return getRootDevices();
-			case ScaPackage.SCA_DEVICE_MANAGER__CHILD_DEVICES:
-				return getChildDevices();
-			case ScaPackage.SCA_DEVICE_MANAGER__ALL_DEVICES:
-				return getAllDevices();
-			case ScaPackage.SCA_DEVICE_MANAGER__FILE_SYSTEM:
-				return getFileSystem();
-			case ScaPackage.SCA_DEVICE_MANAGER__DOM_MGR:
-				if (resolve) return getDomMgr();
-				return basicGetDomMgr();
-			case ScaPackage.SCA_DEVICE_MANAGER__IDENTIFIER:
-				return getIdentifier();
-			case ScaPackage.SCA_DEVICE_MANAGER__LABEL:
-				return getLabel();
-			case ScaPackage.SCA_DEVICE_MANAGER__SERVICES:
-				return getServices();
-			case ScaPackage.SCA_DEVICE_MANAGER__PROFILE:
-				return getProfile();
+		case ScaPackage.SCA_DEVICE_MANAGER__PORTS:
+			return getPorts();
+		case ScaPackage.SCA_DEVICE_MANAGER__DEVICES:
+			if (coreType)
+				return getDevices();
+			return ((FeatureMap.Internal) getDevices()).getWrapper();
+		case ScaPackage.SCA_DEVICE_MANAGER__ROOT_DEVICES:
+			return getRootDevices();
+		case ScaPackage.SCA_DEVICE_MANAGER__CHILD_DEVICES:
+			return getChildDevices();
+		case ScaPackage.SCA_DEVICE_MANAGER__ALL_DEVICES:
+			return getAllDevices();
+		case ScaPackage.SCA_DEVICE_MANAGER__FILE_SYSTEM:
+			return getFileSystem();
+		case ScaPackage.SCA_DEVICE_MANAGER__DOM_MGR:
+			if (resolve)
+				return getDomMgr();
+			return basicGetDomMgr();
+		case ScaPackage.SCA_DEVICE_MANAGER__IDENTIFIER:
+			return getIdentifier();
+		case ScaPackage.SCA_DEVICE_MANAGER__LABEL:
+			return getLabel();
+		case ScaPackage.SCA_DEVICE_MANAGER__SERVICES:
+			return getServices();
+		case ScaPackage.SCA_DEVICE_MANAGER__PROFILE:
+			return getProfile();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -1163,44 +1189,44 @@ public class ScaDeviceManagerImpl extends ScaPropertyContainerImpl<DeviceManager
 	@Override
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
-			case ScaPackage.SCA_DEVICE_MANAGER__PORTS:
-				getPorts().clear();
-				getPorts().addAll((Collection<? extends ScaPort<?, ?>>)newValue);
-				return;
-			case ScaPackage.SCA_DEVICE_MANAGER__DEVICES:
-				((FeatureMap.Internal)getDevices()).set(newValue);
-				return;
-			case ScaPackage.SCA_DEVICE_MANAGER__ROOT_DEVICES:
-				getRootDevices().clear();
-				getRootDevices().addAll((Collection<? extends ScaDevice<?>>)newValue);
-				return;
-			case ScaPackage.SCA_DEVICE_MANAGER__CHILD_DEVICES:
-				getChildDevices().clear();
-				getChildDevices().addAll((Collection<? extends ScaDevice<?>>)newValue);
-				return;
-			case ScaPackage.SCA_DEVICE_MANAGER__ALL_DEVICES:
-				getAllDevices().clear();
-				getAllDevices().addAll((Collection<? extends ScaDevice<?>>)newValue);
-				return;
-			case ScaPackage.SCA_DEVICE_MANAGER__FILE_SYSTEM:
-				setFileSystem((ScaDeviceManagerFileSystem)newValue);
-				return;
-			case ScaPackage.SCA_DEVICE_MANAGER__DOM_MGR:
-				setDomMgr((ScaDomainManager)newValue);
-				return;
-			case ScaPackage.SCA_DEVICE_MANAGER__IDENTIFIER:
-				setIdentifier((String)newValue);
-				return;
-			case ScaPackage.SCA_DEVICE_MANAGER__LABEL:
-				setLabel((String)newValue);
-				return;
-			case ScaPackage.SCA_DEVICE_MANAGER__SERVICES:
-				getServices().clear();
-				getServices().addAll((Collection<? extends ScaService>)newValue);
-				return;
-			case ScaPackage.SCA_DEVICE_MANAGER__PROFILE:
-				setProfile((String)newValue);
-				return;
+		case ScaPackage.SCA_DEVICE_MANAGER__PORTS:
+			getPorts().clear();
+			getPorts().addAll((Collection< ? extends ScaPort< ? , ? >>) newValue);
+			return;
+		case ScaPackage.SCA_DEVICE_MANAGER__DEVICES:
+			((FeatureMap.Internal) getDevices()).set(newValue);
+			return;
+		case ScaPackage.SCA_DEVICE_MANAGER__ROOT_DEVICES:
+			getRootDevices().clear();
+			getRootDevices().addAll((Collection< ? extends ScaDevice< ? >>) newValue);
+			return;
+		case ScaPackage.SCA_DEVICE_MANAGER__CHILD_DEVICES:
+			getChildDevices().clear();
+			getChildDevices().addAll((Collection< ? extends ScaDevice< ? >>) newValue);
+			return;
+		case ScaPackage.SCA_DEVICE_MANAGER__ALL_DEVICES:
+			getAllDevices().clear();
+			getAllDevices().addAll((Collection< ? extends ScaDevice< ? >>) newValue);
+			return;
+		case ScaPackage.SCA_DEVICE_MANAGER__FILE_SYSTEM:
+			setFileSystem((ScaDeviceManagerFileSystem) newValue);
+			return;
+		case ScaPackage.SCA_DEVICE_MANAGER__DOM_MGR:
+			setDomMgr((ScaDomainManager) newValue);
+			return;
+		case ScaPackage.SCA_DEVICE_MANAGER__IDENTIFIER:
+			setIdentifier((String) newValue);
+			return;
+		case ScaPackage.SCA_DEVICE_MANAGER__LABEL:
+			setLabel((String) newValue);
+			return;
+		case ScaPackage.SCA_DEVICE_MANAGER__SERVICES:
+			getServices().clear();
+			getServices().addAll((Collection< ? extends ScaService>) newValue);
+			return;
+		case ScaPackage.SCA_DEVICE_MANAGER__PROFILE:
+			setProfile((String) newValue);
+			return;
 		}
 		super.eSet(featureID, newValue);
 	}
@@ -1213,39 +1239,39 @@ public class ScaDeviceManagerImpl extends ScaPropertyContainerImpl<DeviceManager
 	@Override
 	public void eUnset(int featureID) {
 		switch (featureID) {
-			case ScaPackage.SCA_DEVICE_MANAGER__PORTS:
-				unsetPorts();
-				return;
-			case ScaPackage.SCA_DEVICE_MANAGER__DEVICES:
-				unsetDevices();
-				return;
-			case ScaPackage.SCA_DEVICE_MANAGER__ROOT_DEVICES:
-				getRootDevices().clear();
-				return;
-			case ScaPackage.SCA_DEVICE_MANAGER__CHILD_DEVICES:
-				getChildDevices().clear();
-				return;
-			case ScaPackage.SCA_DEVICE_MANAGER__ALL_DEVICES:
-				unsetAllDevices();
-				return;
-			case ScaPackage.SCA_DEVICE_MANAGER__FILE_SYSTEM:
-				unsetFileSystem();
-				return;
-			case ScaPackage.SCA_DEVICE_MANAGER__DOM_MGR:
-				setDomMgr((ScaDomainManager)null);
-				return;
-			case ScaPackage.SCA_DEVICE_MANAGER__IDENTIFIER:
-				unsetIdentifier();
-				return;
-			case ScaPackage.SCA_DEVICE_MANAGER__LABEL:
-				unsetLabel();
-				return;
-			case ScaPackage.SCA_DEVICE_MANAGER__SERVICES:
-				unsetServices();
-				return;
-			case ScaPackage.SCA_DEVICE_MANAGER__PROFILE:
-				unsetProfile();
-				return;
+		case ScaPackage.SCA_DEVICE_MANAGER__PORTS:
+			unsetPorts();
+			return;
+		case ScaPackage.SCA_DEVICE_MANAGER__DEVICES:
+			unsetDevices();
+			return;
+		case ScaPackage.SCA_DEVICE_MANAGER__ROOT_DEVICES:
+			getRootDevices().clear();
+			return;
+		case ScaPackage.SCA_DEVICE_MANAGER__CHILD_DEVICES:
+			getChildDevices().clear();
+			return;
+		case ScaPackage.SCA_DEVICE_MANAGER__ALL_DEVICES:
+			unsetAllDevices();
+			return;
+		case ScaPackage.SCA_DEVICE_MANAGER__FILE_SYSTEM:
+			unsetFileSystem();
+			return;
+		case ScaPackage.SCA_DEVICE_MANAGER__DOM_MGR:
+			setDomMgr((ScaDomainManager) null);
+			return;
+		case ScaPackage.SCA_DEVICE_MANAGER__IDENTIFIER:
+			unsetIdentifier();
+			return;
+		case ScaPackage.SCA_DEVICE_MANAGER__LABEL:
+			unsetLabel();
+			return;
+		case ScaPackage.SCA_DEVICE_MANAGER__SERVICES:
+			unsetServices();
+			return;
+		case ScaPackage.SCA_DEVICE_MANAGER__PROFILE:
+			unsetProfile();
+			return;
 		}
 		super.eUnset(featureID);
 	}
@@ -1258,28 +1284,28 @@ public class ScaDeviceManagerImpl extends ScaPropertyContainerImpl<DeviceManager
 	@Override
 	public boolean eIsSet(int featureID) {
 		switch (featureID) {
-			case ScaPackage.SCA_DEVICE_MANAGER__PORTS:
-				return isSetPorts();
-			case ScaPackage.SCA_DEVICE_MANAGER__DEVICES:
-				return isSetDevices();
-			case ScaPackage.SCA_DEVICE_MANAGER__ROOT_DEVICES:
-				return !getRootDevices().isEmpty();
-			case ScaPackage.SCA_DEVICE_MANAGER__CHILD_DEVICES:
-				return !getChildDevices().isEmpty();
-			case ScaPackage.SCA_DEVICE_MANAGER__ALL_DEVICES:
-				return isSetAllDevices();
-			case ScaPackage.SCA_DEVICE_MANAGER__FILE_SYSTEM:
-				return isSetFileSystem();
-			case ScaPackage.SCA_DEVICE_MANAGER__DOM_MGR:
-				return basicGetDomMgr() != null;
-			case ScaPackage.SCA_DEVICE_MANAGER__IDENTIFIER:
-				return isSetIdentifier();
-			case ScaPackage.SCA_DEVICE_MANAGER__LABEL:
-				return isSetLabel();
-			case ScaPackage.SCA_DEVICE_MANAGER__SERVICES:
-				return isSetServices();
-			case ScaPackage.SCA_DEVICE_MANAGER__PROFILE:
-				return isSetProfile();
+		case ScaPackage.SCA_DEVICE_MANAGER__PORTS:
+			return isSetPorts();
+		case ScaPackage.SCA_DEVICE_MANAGER__DEVICES:
+			return isSetDevices();
+		case ScaPackage.SCA_DEVICE_MANAGER__ROOT_DEVICES:
+			return !getRootDevices().isEmpty();
+		case ScaPackage.SCA_DEVICE_MANAGER__CHILD_DEVICES:
+			return !getChildDevices().isEmpty();
+		case ScaPackage.SCA_DEVICE_MANAGER__ALL_DEVICES:
+			return isSetAllDevices();
+		case ScaPackage.SCA_DEVICE_MANAGER__FILE_SYSTEM:
+			return isSetFileSystem();
+		case ScaPackage.SCA_DEVICE_MANAGER__DOM_MGR:
+			return basicGetDomMgr() != null;
+		case ScaPackage.SCA_DEVICE_MANAGER__IDENTIFIER:
+			return isSetIdentifier();
+		case ScaPackage.SCA_DEVICE_MANAGER__LABEL:
+			return isSetLabel();
+		case ScaPackage.SCA_DEVICE_MANAGER__SERVICES:
+			return isSetServices();
+		case ScaPackage.SCA_DEVICE_MANAGER__PROFILE:
+			return isSetProfile();
 		}
 		return super.eIsSet(featureID);
 	}
@@ -1290,21 +1316,25 @@ public class ScaDeviceManagerImpl extends ScaPropertyContainerImpl<DeviceManager
 	 * @generated
 	 */
 	@Override
-	public int eBaseStructuralFeatureID(int derivedFeatureID, Class<?> baseClass) {
+	public int eBaseStructuralFeatureID(int derivedFeatureID, Class< ? > baseClass) {
 		if (baseClass == PortSupplierOperations.class) {
 			switch (derivedFeatureID) {
-				default: return -1;
+			default:
+				return -1;
 			}
 		}
 		if (baseClass == DeviceManagerOperations.class) {
 			switch (derivedFeatureID) {
-				default: return -1;
+			default:
+				return -1;
 			}
 		}
 		if (baseClass == ScaPortContainer.class) {
 			switch (derivedFeatureID) {
-				case ScaPackage.SCA_DEVICE_MANAGER__PORTS: return ScaPackage.SCA_PORT_CONTAINER__PORTS;
-				default: return -1;
+			case ScaPackage.SCA_DEVICE_MANAGER__PORTS:
+				return ScaPackage.SCA_PORT_CONTAINER__PORTS;
+			default:
+				return -1;
 			}
 		}
 		return super.eBaseStructuralFeatureID(derivedFeatureID, baseClass);
@@ -1316,21 +1346,25 @@ public class ScaDeviceManagerImpl extends ScaPropertyContainerImpl<DeviceManager
 	 * @generated
 	 */
 	@Override
-	public int eDerivedStructuralFeatureID(int baseFeatureID, Class<?> baseClass) {
+	public int eDerivedStructuralFeatureID(int baseFeatureID, Class< ? > baseClass) {
 		if (baseClass == PortSupplierOperations.class) {
 			switch (baseFeatureID) {
-				default: return -1;
+			default:
+				return -1;
 			}
 		}
 		if (baseClass == DeviceManagerOperations.class) {
 			switch (baseFeatureID) {
-				default: return -1;
+			default:
+				return -1;
 			}
 		}
 		if (baseClass == ScaPortContainer.class) {
 			switch (baseFeatureID) {
-				case ScaPackage.SCA_PORT_CONTAINER__PORTS: return ScaPackage.SCA_DEVICE_MANAGER__PORTS;
-				default: return -1;
+			case ScaPackage.SCA_PORT_CONTAINER__PORTS:
+				return ScaPackage.SCA_DEVICE_MANAGER__PORTS;
+			default:
+				return -1;
 			}
 		}
 		return super.eDerivedStructuralFeatureID(baseFeatureID, baseClass);
@@ -1343,17 +1377,27 @@ public class ScaDeviceManagerImpl extends ScaPropertyContainerImpl<DeviceManager
 	 */
 	@Override
 	public String toString() {
-		if (eIsProxy()) return super.toString();
+		if (eIsProxy())
+			return super.toString();
 
 		StringBuffer result = new StringBuffer(super.toString());
 		result.append(" (devices: ");
 		result.append(devices);
 		result.append(", identifier: ");
-		if (identifierESet) result.append(identifier); else result.append("<unset>");
+		if (identifierESet)
+			result.append(identifier);
+		else
+			result.append("<unset>");
 		result.append(", label: ");
-		if (labelESet) result.append(label); else result.append("<unset>");
+		if (labelESet)
+			result.append(label);
+		else
+			result.append("<unset>");
 		result.append(", profile: ");
-		if (profileESet) result.append(profile); else result.append("<unset>");
+		if (profileESet)
+			result.append(profile);
+		else
+			result.append("<unset>");
 		result.append(')');
 		return result.toString();
 	}
@@ -1482,10 +1526,8 @@ public class ScaDeviceManagerImpl extends ScaPropertyContainerImpl<DeviceManager
 	/**
 	 * @since 18.0
 	 */
-	protected Command fetchDevices(IProgressMonitor monitor,
-	        final ScaPropertyContainer< ? , ? > container,
-	        final List<ScaDevice< ? >> deviceList,
-	        Device[] corbaDevices) {
+	protected Command fetchDevices(IProgressMonitor monitor, final ScaPropertyContainer< ? , ? > container, final List<ScaDevice< ? >> deviceList,
+		Device[] corbaDevices) {
 		SubMonitor subMonitor = SubMonitor.convert(monitor, 2);
 		final Map<String, DeviceData> newDevices = new HashMap<String, DeviceData>();
 		if (corbaDevices != null) {
@@ -1717,8 +1759,8 @@ public class ScaDeviceManagerImpl extends ScaPropertyContainerImpl<DeviceManager
 	 * @since 18.0
 	 */
 	protected Command createMergeServicesCommand(final Map<String, ServiceType> newServices) {
-	    return new MergeServicesCommand(this, newServices);
-    }
+		return new MergeServicesCommand(this, newServices);
+	}
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -1828,9 +1870,8 @@ public class ScaDeviceManagerImpl extends ScaPropertyContainerImpl<DeviceManager
 				FileSystem fileSys = localObj.fileSys();
 				transaction.addCommand(new SetDeviceManagerFileSystemCommand(this, fileSys));
 			} catch (SystemException e) {
-				transaction.addCommand(new UnsetLocalAttributeCommand(this,
-				        new Status(Status.ERROR, ScaModelPlugin.ID, "Failed to fetch file sys.", e),
-				        ScaPackage.Literals.SCA_DEVICE_MANAGER__FILE_SYSTEM));
+				transaction.addCommand(new UnsetLocalAttributeCommand(this, new Status(Status.ERROR, ScaModelPlugin.ID, "Failed to fetch file sys.", e),
+					ScaPackage.Literals.SCA_DEVICE_MANAGER__FILE_SYSTEM));
 			}
 		} else {
 			transaction.addCommand(new UnsetLocalAttributeCommand(this, null, ScaPackage.Literals.SCA_DEVICE_MANAGER__FILE_SYSTEM));
@@ -1929,11 +1970,11 @@ public class ScaDeviceManagerImpl extends ScaPropertyContainerImpl<DeviceManager
 			unsetDevices();
 			unsetServices();
 			break;
-	    case ScaPackage.SCA_DEVICE_MANAGER__PROFILE:
-	    	if (!PluginUtil.equals(msg.getOldValue(), msg.getNewValue())){
-	    		unsetProfileURI();
+		case ScaPackage.SCA_DEVICE_MANAGER__PROFILE:
+			if (!PluginUtil.equals(msg.getOldValue(), msg.getNewValue())) {
+				unsetProfileURI();
 			}
-	    	break;
+			break;
 		default:
 			break;
 		}
@@ -1947,20 +1988,16 @@ public class ScaDeviceManagerImpl extends ScaPropertyContainerImpl<DeviceManager
 		subMonitor.done();
 	}
 
-	private static final EStructuralFeature[] PRF_PATH = {
-	        DcdPackage.Literals.DEVICE_CONFIGURATION__DEVICE_MANAGER_SOFT_PKG,
-	        DcdPackage.Literals.DEVICE_MANAGER_SOFT_PKG__SOFT_PKG,
-	        SpdPackage.Literals.SOFT_PKG__PROPERTY_FILE,
-	        SpdPackage.Literals.PROPERTY_FILE__PROPERTIES
-	};
-	
+	private static final EStructuralFeature[] PRF_PATH = { DcdPackage.Literals.DEVICE_CONFIGURATION__DEVICE_MANAGER_SOFT_PKG,
+		DcdPackage.Literals.DEVICE_MANAGER_SOFT_PKG__SOFT_PKG, SpdPackage.Literals.SOFT_PKG__PROPERTY_FILE, SpdPackage.Literals.PROPERTY_FILE__PROPERTIES };
+
 	@Override
-	protected List<AbstractProperty> fetchPropertyDefinitions(IProgressMonitor monitor){
+	protected List<AbstractProperty> fetchPropertyDefinitions(IProgressMonitor monitor) {
 		EObject localProfile = fetchProfileObject(monitor);
 		mil.jpeojtrs.sca.prf.Properties propDefintions = ScaEcoreUtils.getFeature(localProfile, PRF_PATH);
 		List<AbstractProperty> retVal = new ArrayList<AbstractProperty>();
 		if (propDefintions != null) {
-			for ( ValueListIterator<Object> i = propDefintions.getProperties().valueListIterator(); i.hasNext(); ) {
+			for (ValueListIterator<Object> i = propDefintions.getProperties().valueListIterator(); i.hasNext();) {
 				Object propDef = i.next();
 				if (propDef instanceof AbstractProperty) {
 					retVal.add((AbstractProperty) propDef);
@@ -1978,10 +2015,8 @@ public class ScaDeviceManagerImpl extends ScaPropertyContainerImpl<DeviceManager
 	@Override
 	public DeviceConfiguration fetchProfileObject(IProgressMonitor monitor) {
 		Transaction transaction = profileObjectFeature.createTransaction();
-		transaction.addCommand(ProfileObjectWrapper.Util.fetchProfileObject(monitor,
-		        ScaDeviceManagerImpl.this,
-		        DeviceConfiguration.class,
-		        DeviceConfiguration.EOBJECT_PATH));
+		transaction.addCommand(ProfileObjectWrapper.Util.fetchProfileObject(monitor, ScaDeviceManagerImpl.this, DeviceConfiguration.class,
+			DeviceConfiguration.EOBJECT_PATH));
 		transaction.commit();
 		return getProfileObj();
 	}
@@ -1996,9 +2031,9 @@ public class ScaDeviceManagerImpl extends ScaPropertyContainerImpl<DeviceManager
 	private final VersionedFeature profileFeature = new VersionedFeature(this, ScaPackage.Literals.SCA_DEVICE_MANAGER__PROFILE);
 
 	/**
-     * @since 14.0
-     * @generated NOT
-     */
+	 * @since 14.0
+	 * @generated NOT
+	 */
 	@Override
 	public String fetchProfile(IProgressMonitor monitor) {
 		if (isSetProfile()) {
@@ -2013,9 +2048,8 @@ public class ScaDeviceManagerImpl extends ScaPropertyContainerImpl<DeviceManager
 				subMonitor.worked(1);
 				transaction.addCommand(new SetLocalAttributeCommand(this, newValue, ScaPackage.Literals.SCA_DEVICE_MANAGER__PROFILE));
 			} catch (SystemException e) {
-				transaction.addCommand(new UnsetLocalAttributeCommand(this,
-				        new Status(Status.ERROR, ScaModelPlugin.ID, "Failed to profile", e),
-				        ScaPackage.Literals.SCA_DEVICE_MANAGER__PROFILE));
+				transaction.addCommand(new UnsetLocalAttributeCommand(this, new Status(Status.ERROR, ScaModelPlugin.ID, "Failed to profile", e),
+					ScaPackage.Literals.SCA_DEVICE_MANAGER__PROFILE));
 			}
 		} else {
 			transaction.addCommand(new UnsetLocalAttributeCommand(this, null, ScaPackage.Literals.SCA_DEVICE_MANAGER__PROFILE));

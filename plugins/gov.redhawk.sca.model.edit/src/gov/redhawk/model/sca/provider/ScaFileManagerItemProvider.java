@@ -12,7 +12,6 @@
 // BEGIN GENERATED CODE
 package gov.redhawk.model.sca.provider;
 
-
 import gov.redhawk.model.sca.ScaFileManager;
 
 import java.util.Collection;
@@ -36,10 +35,8 @@ import org.eclipse.emf.edit.provider.ITreeItemContentProvider;
  * <!-- end-user-doc -->
  * @generated
  */
-public class ScaFileManagerItemProvider
-extends ScaFileSystemItemProvider
-implements
-IEditingDomainItemProvider, IStructuredItemContentProvider, ITreeItemContentProvider, IItemLabelProvider, IItemPropertySource, ITableItemLabelProvider, ITableItemColorProvider, IItemColorProvider {
+public class ScaFileManagerItemProvider extends ScaFileSystemItemProvider implements IEditingDomainItemProvider, IStructuredItemContentProvider,
+		ITreeItemContentProvider, IItemLabelProvider, IItemPropertySource, ITableItemLabelProvider, ITableItemColorProvider, IItemColorProvider {
 	/**
 	 * This constructs an instance from a factory and a notifier.
 	 * <!-- begin-user-doc -->
@@ -73,10 +70,8 @@ IEditingDomainItemProvider, IStructuredItemContentProvider, ITreeItemContentProv
 	 */
 	@Override
 	public String getTextGen(Object object) {
-		String label = ((ScaFileManager)object).getName();
-		return label == null || label.length() == 0 ?
-			getString("_UI_ScaFileManager_type") :
-			getString("_UI_ScaFileManager_type") + " " + label;
+		String label = ((ScaFileManager) object).getName();
+		return label == null || label.length() == 0 ? getString("_UI_ScaFileManager_type") : getString("_UI_ScaFileManager_type") + " " + label;
 	}
 
 	/**

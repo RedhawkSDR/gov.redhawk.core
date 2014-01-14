@@ -116,7 +116,8 @@ public class ScaDocumentRootImpl extends EObjectImpl implements ScaDocumentRoot 
 	@Override
 	public EMap<String, String> getXMLNSPrefixMap() {
 		if (xMLNSPrefixMap == null) {
-			xMLNSPrefixMap = new EcoreEMap<String,String>(EcorePackage.Literals.ESTRING_TO_STRING_MAP_ENTRY, EStringToStringMapEntryImpl.class, this, ScaPackage.SCA_DOCUMENT_ROOT__XMLNS_PREFIX_MAP);
+			xMLNSPrefixMap = new EcoreEMap<String, String>(EcorePackage.Literals.ESTRING_TO_STRING_MAP_ENTRY, EStringToStringMapEntryImpl.class, this,
+				ScaPackage.SCA_DOCUMENT_ROOT__XMLNS_PREFIX_MAP);
 		}
 		return xMLNSPrefixMap;
 	}
@@ -129,7 +130,8 @@ public class ScaDocumentRootImpl extends EObjectImpl implements ScaDocumentRoot 
 	@Override
 	public EMap<String, String> getXSISchemaLocation() {
 		if (xSISchemaLocation == null) {
-			xSISchemaLocation = new EcoreEMap<String,String>(EcorePackage.Literals.ESTRING_TO_STRING_MAP_ENTRY, EStringToStringMapEntryImpl.class, this, ScaPackage.SCA_DOCUMENT_ROOT__XSI_SCHEMA_LOCATION);
+			xSISchemaLocation = new EcoreEMap<String, String>(EcorePackage.Literals.ESTRING_TO_STRING_MAP_ENTRY, EStringToStringMapEntryImpl.class, this,
+				ScaPackage.SCA_DOCUMENT_ROOT__XSI_SCHEMA_LOCATION);
 		}
 		return xSISchemaLocation;
 	}
@@ -141,7 +143,7 @@ public class ScaDocumentRootImpl extends EObjectImpl implements ScaDocumentRoot 
 	 */
 	@Override
 	public ScaDomainManagerRegistry getDomainManagerRegistry() {
-		return (ScaDomainManagerRegistry)getMixed().get(ScaPackage.Literals.SCA_DOCUMENT_ROOT__DOMAIN_MANAGER_REGISTRY, true);
+		return (ScaDomainManagerRegistry) getMixed().get(ScaPackage.Literals.SCA_DOCUMENT_ROOT__DOMAIN_MANAGER_REGISTRY, true);
 	}
 
 	/**
@@ -150,7 +152,7 @@ public class ScaDocumentRootImpl extends EObjectImpl implements ScaDocumentRoot 
 	 * @generated
 	 */
 	public NotificationChain basicSetDomainManagerRegistry(ScaDomainManagerRegistry newDomainManagerRegistry, NotificationChain msgs) {
-		return ((FeatureMap.Internal)getMixed()).basicAdd(ScaPackage.Literals.SCA_DOCUMENT_ROOT__DOMAIN_MANAGER_REGISTRY, newDomainManagerRegistry, msgs);
+		return ((FeatureMap.Internal) getMixed()).basicAdd(ScaPackage.Literals.SCA_DOCUMENT_ROOT__DOMAIN_MANAGER_REGISTRY, newDomainManagerRegistry, msgs);
 	}
 
 	/**
@@ -160,7 +162,7 @@ public class ScaDocumentRootImpl extends EObjectImpl implements ScaDocumentRoot 
 	 */
 	@Override
 	public void setDomainManagerRegistry(ScaDomainManagerRegistry newDomainManagerRegistry) {
-		((FeatureMap.Internal)getMixed()).set(ScaPackage.Literals.SCA_DOCUMENT_ROOT__DOMAIN_MANAGER_REGISTRY, newDomainManagerRegistry);
+		((FeatureMap.Internal) getMixed()).set(ScaPackage.Literals.SCA_DOCUMENT_ROOT__DOMAIN_MANAGER_REGISTRY, newDomainManagerRegistry);
 	}
 
 	/**
@@ -171,14 +173,14 @@ public class ScaDocumentRootImpl extends EObjectImpl implements ScaDocumentRoot 
 	@Override
 	public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
 		switch (featureID) {
-			case ScaPackage.SCA_DOCUMENT_ROOT__MIXED:
-				return ((InternalEList<?>)getMixed()).basicRemove(otherEnd, msgs);
-			case ScaPackage.SCA_DOCUMENT_ROOT__XMLNS_PREFIX_MAP:
-				return ((InternalEList<?>)getXMLNSPrefixMap()).basicRemove(otherEnd, msgs);
-			case ScaPackage.SCA_DOCUMENT_ROOT__XSI_SCHEMA_LOCATION:
-				return ((InternalEList<?>)getXSISchemaLocation()).basicRemove(otherEnd, msgs);
-			case ScaPackage.SCA_DOCUMENT_ROOT__DOMAIN_MANAGER_REGISTRY:
-				return basicSetDomainManagerRegistry(null, msgs);
+		case ScaPackage.SCA_DOCUMENT_ROOT__MIXED:
+			return ((InternalEList< ? >) getMixed()).basicRemove(otherEnd, msgs);
+		case ScaPackage.SCA_DOCUMENT_ROOT__XMLNS_PREFIX_MAP:
+			return ((InternalEList< ? >) getXMLNSPrefixMap()).basicRemove(otherEnd, msgs);
+		case ScaPackage.SCA_DOCUMENT_ROOT__XSI_SCHEMA_LOCATION:
+			return ((InternalEList< ? >) getXSISchemaLocation()).basicRemove(otherEnd, msgs);
+		case ScaPackage.SCA_DOCUMENT_ROOT__DOMAIN_MANAGER_REGISTRY:
+			return basicSetDomainManagerRegistry(null, msgs);
 		}
 		return super.eInverseRemove(otherEnd, featureID, msgs);
 	}
@@ -191,17 +193,22 @@ public class ScaDocumentRootImpl extends EObjectImpl implements ScaDocumentRoot 
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
-			case ScaPackage.SCA_DOCUMENT_ROOT__MIXED:
-				if (coreType) return getMixed();
-				return ((FeatureMap.Internal)getMixed()).getWrapper();
-			case ScaPackage.SCA_DOCUMENT_ROOT__XMLNS_PREFIX_MAP:
-				if (coreType) return getXMLNSPrefixMap();
-				else return getXMLNSPrefixMap().map();
-			case ScaPackage.SCA_DOCUMENT_ROOT__XSI_SCHEMA_LOCATION:
-				if (coreType) return getXSISchemaLocation();
-				else return getXSISchemaLocation().map();
-			case ScaPackage.SCA_DOCUMENT_ROOT__DOMAIN_MANAGER_REGISTRY:
-				return getDomainManagerRegistry();
+		case ScaPackage.SCA_DOCUMENT_ROOT__MIXED:
+			if (coreType)
+				return getMixed();
+			return ((FeatureMap.Internal) getMixed()).getWrapper();
+		case ScaPackage.SCA_DOCUMENT_ROOT__XMLNS_PREFIX_MAP:
+			if (coreType)
+				return getXMLNSPrefixMap();
+			else
+				return getXMLNSPrefixMap().map();
+		case ScaPackage.SCA_DOCUMENT_ROOT__XSI_SCHEMA_LOCATION:
+			if (coreType)
+				return getXSISchemaLocation();
+			else
+				return getXSISchemaLocation().map();
+		case ScaPackage.SCA_DOCUMENT_ROOT__DOMAIN_MANAGER_REGISTRY:
+			return getDomainManagerRegistry();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -214,18 +221,18 @@ public class ScaDocumentRootImpl extends EObjectImpl implements ScaDocumentRoot 
 	@Override
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
-			case ScaPackage.SCA_DOCUMENT_ROOT__MIXED:
-				((FeatureMap.Internal)getMixed()).set(newValue);
-				return;
-			case ScaPackage.SCA_DOCUMENT_ROOT__XMLNS_PREFIX_MAP:
-				((EStructuralFeature.Setting)getXMLNSPrefixMap()).set(newValue);
-				return;
-			case ScaPackage.SCA_DOCUMENT_ROOT__XSI_SCHEMA_LOCATION:
-				((EStructuralFeature.Setting)getXSISchemaLocation()).set(newValue);
-				return;
-			case ScaPackage.SCA_DOCUMENT_ROOT__DOMAIN_MANAGER_REGISTRY:
-				setDomainManagerRegistry((ScaDomainManagerRegistry)newValue);
-				return;
+		case ScaPackage.SCA_DOCUMENT_ROOT__MIXED:
+			((FeatureMap.Internal) getMixed()).set(newValue);
+			return;
+		case ScaPackage.SCA_DOCUMENT_ROOT__XMLNS_PREFIX_MAP:
+			((EStructuralFeature.Setting) getXMLNSPrefixMap()).set(newValue);
+			return;
+		case ScaPackage.SCA_DOCUMENT_ROOT__XSI_SCHEMA_LOCATION:
+			((EStructuralFeature.Setting) getXSISchemaLocation()).set(newValue);
+			return;
+		case ScaPackage.SCA_DOCUMENT_ROOT__DOMAIN_MANAGER_REGISTRY:
+			setDomainManagerRegistry((ScaDomainManagerRegistry) newValue);
+			return;
 		}
 		super.eSet(featureID, newValue);
 	}
@@ -238,18 +245,18 @@ public class ScaDocumentRootImpl extends EObjectImpl implements ScaDocumentRoot 
 	@Override
 	public void eUnset(int featureID) {
 		switch (featureID) {
-			case ScaPackage.SCA_DOCUMENT_ROOT__MIXED:
-				getMixed().clear();
-				return;
-			case ScaPackage.SCA_DOCUMENT_ROOT__XMLNS_PREFIX_MAP:
-				getXMLNSPrefixMap().clear();
-				return;
-			case ScaPackage.SCA_DOCUMENT_ROOT__XSI_SCHEMA_LOCATION:
-				getXSISchemaLocation().clear();
-				return;
-			case ScaPackage.SCA_DOCUMENT_ROOT__DOMAIN_MANAGER_REGISTRY:
-				setDomainManagerRegistry((ScaDomainManagerRegistry)null);
-				return;
+		case ScaPackage.SCA_DOCUMENT_ROOT__MIXED:
+			getMixed().clear();
+			return;
+		case ScaPackage.SCA_DOCUMENT_ROOT__XMLNS_PREFIX_MAP:
+			getXMLNSPrefixMap().clear();
+			return;
+		case ScaPackage.SCA_DOCUMENT_ROOT__XSI_SCHEMA_LOCATION:
+			getXSISchemaLocation().clear();
+			return;
+		case ScaPackage.SCA_DOCUMENT_ROOT__DOMAIN_MANAGER_REGISTRY:
+			setDomainManagerRegistry((ScaDomainManagerRegistry) null);
+			return;
 		}
 		super.eUnset(featureID);
 	}
@@ -262,14 +269,14 @@ public class ScaDocumentRootImpl extends EObjectImpl implements ScaDocumentRoot 
 	@Override
 	public boolean eIsSet(int featureID) {
 		switch (featureID) {
-			case ScaPackage.SCA_DOCUMENT_ROOT__MIXED:
-				return mixed != null && !mixed.isEmpty();
-			case ScaPackage.SCA_DOCUMENT_ROOT__XMLNS_PREFIX_MAP:
-				return xMLNSPrefixMap != null && !xMLNSPrefixMap.isEmpty();
-			case ScaPackage.SCA_DOCUMENT_ROOT__XSI_SCHEMA_LOCATION:
-				return xSISchemaLocation != null && !xSISchemaLocation.isEmpty();
-			case ScaPackage.SCA_DOCUMENT_ROOT__DOMAIN_MANAGER_REGISTRY:
-				return getDomainManagerRegistry() != null;
+		case ScaPackage.SCA_DOCUMENT_ROOT__MIXED:
+			return mixed != null && !mixed.isEmpty();
+		case ScaPackage.SCA_DOCUMENT_ROOT__XMLNS_PREFIX_MAP:
+			return xMLNSPrefixMap != null && !xMLNSPrefixMap.isEmpty();
+		case ScaPackage.SCA_DOCUMENT_ROOT__XSI_SCHEMA_LOCATION:
+			return xSISchemaLocation != null && !xSISchemaLocation.isEmpty();
+		case ScaPackage.SCA_DOCUMENT_ROOT__DOMAIN_MANAGER_REGISTRY:
+			return getDomainManagerRegistry() != null;
 		}
 		return super.eIsSet(featureID);
 	}
@@ -281,7 +288,8 @@ public class ScaDocumentRootImpl extends EObjectImpl implements ScaDocumentRoot 
 	 */
 	@Override
 	public String toString() {
-		if (eIsProxy()) return super.toString();
+		if (eIsProxy())
+			return super.toString();
 
 		StringBuffer result = new StringBuffer(super.toString());
 		result.append(" (mixed: ");

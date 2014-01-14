@@ -88,26 +88,26 @@ public class ScaProvidesPortImpl extends ScaPortImpl<Provides, org.omg.CORBA.Obj
 		// We don't know what to narrow to so do nothing
 		return obj;
 	}
-	
+
 	@Override
 	protected Class<org.omg.CORBA.Object> getCorbaType() {
-	    return org.omg.CORBA.Object.class;
+		return org.omg.CORBA.Object.class;
 	}
 
 	/**
-     * @since 14.0
-     */
+	 * @since 14.0
+	 */
 	@Override
-    protected void internalFetchChildren(IProgressMonitor monitor) throws InterruptedException {
-	    // Do nothing
-	    
-    }
-	
+	protected void internalFetchChildren(IProgressMonitor monitor) throws InterruptedException {
+		// Do nothing
+
+	}
+
 	/**
-     * @since 14.0
-     */
+	 * @since 14.0
+	 */
 	public boolean mayHaveChildren() {
-	    return false;
-    }
+		return false;
+	}
 
 } //ScaProvidesPortImpl

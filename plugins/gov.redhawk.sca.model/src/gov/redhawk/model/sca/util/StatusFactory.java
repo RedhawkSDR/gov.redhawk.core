@@ -107,9 +107,9 @@ public final class StatusFactory {
 
 	public static IStatus createStatus(CreateApplicationInsufficientCapacityError e, String pluginId, String waveformName) {
 		if (e.msg != null) {
-			return new Status(IStatus.ERROR, pluginId, "Failed to create application: " + waveformName + " " + e.msg, e);		
+			return new Status(IStatus.ERROR, pluginId, "Failed to create application: " + waveformName + " " + e.msg, e);
 		} else {
 			return new Status(IStatus.ERROR, pluginId, "Failed to create application: " + waveformName, e);
 		}
-    }
+	}
 }

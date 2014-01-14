@@ -47,7 +47,7 @@ public class ScaWaveformMergeComponentsCommand extends SetStatusCommand<ScaWavef
 		public String softwareProfile = null; // SUPPRESS CHECKSTYLE Inner Class
 		public CF.ComponentEnumType type = null; // SUPPRESS CHECKSTYLE Inner Class
 		public Resource componentObject = null; // SUPPRESS CHECKSTYLE Inner Class
-		public CF.PortType [] providesPorts = null; // SUPPRESS CHECKSTYLE Inner Class
+		public CF.PortType[] providesPorts = null; // SUPPRESS CHECKSTYLE Inner Class
 	}
 
 	private final ComponentInfo[] compTypes;
@@ -135,7 +135,8 @@ public class ScaWaveformMergeComponentsCommand extends SetStatusCommand<ScaWavef
 				if (ciId != null) {
 					for (TreeIterator<EObject> iterator = EcoreUtil.getAllContents(provider.getProfileObj(), false); iterator.hasNext();) {
 						EObject obj = iterator.next();
-						if (obj instanceof SoftwareAssembly || obj instanceof SadPartitioning || obj instanceof SadComponentPlacement || obj instanceof HostCollocation) {
+						if (obj instanceof SoftwareAssembly || obj instanceof SadPartitioning || obj instanceof SadComponentPlacement
+							|| obj instanceof HostCollocation) {
 							continue;
 						} else if (obj instanceof SadComponentInstantiation) {
 							SadComponentInstantiation ci = (SadComponentInstantiation) obj;

@@ -328,10 +328,10 @@ public abstract class CorbaObjWrapperImpl< T extends org.omg.CORBA.Object > exte
 				}
 				if (msg.getOldValue() instanceof org.omg.CORBA.Object) {
 					Job job = new SilentModelJob("Release Object Job") {
-						
+
 						@Override
 						protected IStatus runSilent(IProgressMonitor monitor) {
-							((org.omg.CORBA.Object)msg.getOldValue())._release();
+							((org.omg.CORBA.Object) msg.getOldValue())._release();
 							return Status.OK_STATUS;
 						}
 					};
@@ -469,12 +469,12 @@ public abstract class CorbaObjWrapperImpl< T extends org.omg.CORBA.Object > exte
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
-			case ScaPackage.CORBA_OBJ_WRAPPER__IOR:
-				return getIor();
-			case ScaPackage.CORBA_OBJ_WRAPPER__OBJ:
-				return getObj();
-			case ScaPackage.CORBA_OBJ_WRAPPER__CORBA_OBJ:
-				return getCorbaObj();
+		case ScaPackage.CORBA_OBJ_WRAPPER__IOR:
+			return getIor();
+		case ScaPackage.CORBA_OBJ_WRAPPER__OBJ:
+			return getObj();
+		case ScaPackage.CORBA_OBJ_WRAPPER__CORBA_OBJ:
+			return getCorbaObj();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -488,15 +488,15 @@ public abstract class CorbaObjWrapperImpl< T extends org.omg.CORBA.Object > exte
 	@Override
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
-			case ScaPackage.CORBA_OBJ_WRAPPER__IOR:
-				setIor((String)newValue);
-				return;
-			case ScaPackage.CORBA_OBJ_WRAPPER__OBJ:
-				setObj((T)newValue);
-				return;
-			case ScaPackage.CORBA_OBJ_WRAPPER__CORBA_OBJ:
-				setCorbaObj((org.omg.CORBA.Object)newValue);
-				return;
+		case ScaPackage.CORBA_OBJ_WRAPPER__IOR:
+			setIor((String) newValue);
+			return;
+		case ScaPackage.CORBA_OBJ_WRAPPER__OBJ:
+			setObj((T) newValue);
+			return;
+		case ScaPackage.CORBA_OBJ_WRAPPER__CORBA_OBJ:
+			setCorbaObj((org.omg.CORBA.Object) newValue);
+			return;
 		}
 		super.eSet(featureID, newValue);
 	}
@@ -509,15 +509,15 @@ public abstract class CorbaObjWrapperImpl< T extends org.omg.CORBA.Object > exte
 	@Override
 	public void eUnset(int featureID) {
 		switch (featureID) {
-			case ScaPackage.CORBA_OBJ_WRAPPER__IOR:
-				unsetIor();
-				return;
-			case ScaPackage.CORBA_OBJ_WRAPPER__OBJ:
-				unsetObj();
-				return;
-			case ScaPackage.CORBA_OBJ_WRAPPER__CORBA_OBJ:
-				unsetCorbaObj();
-				return;
+		case ScaPackage.CORBA_OBJ_WRAPPER__IOR:
+			unsetIor();
+			return;
+		case ScaPackage.CORBA_OBJ_WRAPPER__OBJ:
+			unsetObj();
+			return;
+		case ScaPackage.CORBA_OBJ_WRAPPER__CORBA_OBJ:
+			unsetCorbaObj();
+			return;
 		}
 		super.eUnset(featureID);
 	}
@@ -530,12 +530,12 @@ public abstract class CorbaObjWrapperImpl< T extends org.omg.CORBA.Object > exte
 	@Override
 	public boolean eIsSet(int featureID) {
 		switch (featureID) {
-			case ScaPackage.CORBA_OBJ_WRAPPER__IOR:
-				return isSetIor();
-			case ScaPackage.CORBA_OBJ_WRAPPER__OBJ:
-				return isSetObj();
-			case ScaPackage.CORBA_OBJ_WRAPPER__CORBA_OBJ:
-				return isSetCorbaObj();
+		case ScaPackage.CORBA_OBJ_WRAPPER__IOR:
+			return isSetIor();
+		case ScaPackage.CORBA_OBJ_WRAPPER__OBJ:
+			return isSetObj();
+		case ScaPackage.CORBA_OBJ_WRAPPER__CORBA_OBJ:
+			return isSetCorbaObj();
 		}
 		return super.eIsSet(featureID);
 	}
@@ -633,12 +633,12 @@ public abstract class CorbaObjWrapperImpl< T extends org.omg.CORBA.Object > exte
 			subMonitor.done();
 		}
 	}
-	
+
 	@Override
 	protected void finalize() throws Throwable {
-	    super.finalize();
-	    dispose();
-	    eAdapters().clear();
+		super.finalize();
+		dispose();
+		eAdapters().clear();
 	}
 
 } // CorbaObjWrapperImpl

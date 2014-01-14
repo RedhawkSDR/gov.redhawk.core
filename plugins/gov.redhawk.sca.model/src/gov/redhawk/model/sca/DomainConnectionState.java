@@ -36,136 +36,130 @@ public enum DomainConnectionState implements Enumerator {
 	 * @generated
 	 * @ordered
 	 */
-	DISCONNECTED(1, "disconnected", "disconnected"), /**
+	DISCONNECTED(1, "disconnected", "disconnected"),
+	/**
 	 * The '<em><b>Connecting</b></em>' literal object.
 	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	* <!-- end-user-doc -->
 	 * @see #CONNECTING_VALUE
 	 * @generated
 	 * @ordered
 	 */
 	CONNECTING(2, "connecting", "connecting"), /**
-	 * The '<em><b>Connected</b></em>' literal object.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #CONNECTED_VALUE
-	 * @generated
-	 * @ordered
-	 */
+												* The '<em><b>Connected</b></em>' literal object.
+												* <!-- begin-user-doc -->
+												* <!-- end-user-doc -->
+												* @see #CONNECTED_VALUE
+												* @generated
+												* @ordered
+												*/
 	CONNECTED(3, "connected", "connected"), /**
-	 * The '<em><b>Disconnecting</b></em>' literal object.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #DISCONNECTING_VALUE
-	 * @generated
-	 * @ordered
-	 */
+											* The '<em><b>Disconnecting</b></em>' literal object.
+											* <!-- begin-user-doc -->
+											* <!-- end-user-doc -->
+											* @see #DISCONNECTING_VALUE
+											* @generated
+											* @ordered
+											*/
 	DISCONNECTING(4, "disconnecting", "disconnecting"), /**
-	 * The '<em><b>Failed</b></em>' literal object.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #FAILED_VALUE
-	 * @generated
-	 * @ordered
-	 */
+														* The '<em><b>Failed</b></em>' literal object.
+														* <!-- begin-user-doc -->
+														* <!-- end-user-doc -->
+														* @see #FAILED_VALUE
+														* @generated
+														* @ordered
+														*/
 	FAILED(-1, "failed", "failed");
 
-/**
+	/**
 	 * The '<em><b>Disconnected</b></em>' literal value.
 	 * <!-- begin-user-doc -->
-	 * <p>
-	 * If the meaning of '<em><b>Disconnected</b></em>' literal object isn't clear,
-	 * there really should be more of a description here...
-	 * </p>
-	 * <!-- end-user-doc -->
+		 * <p>
+		 * If the meaning of '<em><b>Disconnected</b></em>' literal object isn't clear,
+		 * there really should be more of a description here...
+		 * </p>
+		 * <!-- end-user-doc -->
 	 * @see #DISCONNECTED
 	 * @model name="disconnected"
 	 * @generated
 	 * @ordered
 	 */
 	public static final int DISCONNECTED_VALUE = 1;
-/**
+	/**
 	 * The '<em><b>Connecting</b></em>' literal value.
 	 * <!-- begin-user-doc -->
-	 * <p>
-	 * If the meaning of '<em><b>Connecting</b></em>' literal object isn't clear,
-	 * there really should be more of a description here...
-	 * </p>
-	 * <!-- end-user-doc -->
+		 * <p>
+		 * If the meaning of '<em><b>Connecting</b></em>' literal object isn't clear,
+		 * there really should be more of a description here...
+		 * </p>
+		 * <!-- end-user-doc -->
 	 * @see #CONNECTING
 	 * @model name="connecting"
 	 * @generated
 	 * @ordered
 	 */
 	public static final int CONNECTING_VALUE = 2;
-/**
+	/**
 	 * The '<em><b>Connected</b></em>' literal value.
 	 * <!-- begin-user-doc -->
-	 * <p>
-	 * If the meaning of '<em><b>Connected</b></em>' literal object isn't clear,
-	 * there really should be more of a description here...
-	 * </p>
-	 * <!-- end-user-doc -->
+		 * <p>
+		 * If the meaning of '<em><b>Connected</b></em>' literal object isn't clear,
+		 * there really should be more of a description here...
+		 * </p>
+		 * <!-- end-user-doc -->
 	 * @see #CONNECTED
 	 * @model name="connected"
 	 * @generated
 	 * @ordered
 	 */
 	public static final int CONNECTED_VALUE = 3;
-/**
+	/**
 	 * The '<em><b>Disconnecting</b></em>' literal value.
 	 * <!-- begin-user-doc -->
-	 * <p>
-	 * If the meaning of '<em><b>Disconnecting</b></em>' literal object isn't clear,
-	 * there really should be more of a description here...
-	 * </p>
-	 * <!-- end-user-doc -->
+		 * <p>
+		 * If the meaning of '<em><b>Disconnecting</b></em>' literal object isn't clear,
+		 * there really should be more of a description here...
+		 * </p>
+		 * <!-- end-user-doc -->
 	 * @see #DISCONNECTING
 	 * @model name="disconnecting"
 	 * @generated
 	 * @ordered
 	 */
 	public static final int DISCONNECTING_VALUE = 4;
-/**
+	/**
 	 * The '<em><b>Failed</b></em>' literal value.
 	 * <!-- begin-user-doc -->
-	 * <p>
-	 * If the meaning of '<em><b>Failed</b></em>' literal object isn't clear,
-	 * there really should be more of a description here...
-	 * </p>
-	 * <!-- end-user-doc -->
+		 * <p>
+		 * If the meaning of '<em><b>Failed</b></em>' literal object isn't clear,
+		 * there really should be more of a description here...
+		 * </p>
+		 * <!-- end-user-doc -->
 	 * @see #FAILED
 	 * @model name="failed"
 	 * @generated
 	 * @ordered
 	 */
 	public static final int FAILED_VALUE = -1;
-/**
+	/**
 	 * An array of all the '<em><b>Domain Connection State</b></em>' enumerators.
 	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+		 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	private static final DomainConnectionState[] VALUES_ARRAY =
-		new DomainConnectionState[] {
-			DISCONNECTED,
-			CONNECTING,
-			CONNECTED,
-			DISCONNECTING,
-			FAILED,
-		};
-/**
+	private static final DomainConnectionState[] VALUES_ARRAY = new DomainConnectionState[] { DISCONNECTED, CONNECTING, CONNECTED, DISCONNECTING, FAILED, };
+	/**
 	 * A public read-only list of all the '<em><b>Domain Connection State</b></em>' enumerators.
 	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+		 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public static final List<DomainConnectionState> VALUES = Collections.unmodifiableList(Arrays.asList(VALUES_ARRAY));
 
-/**
+	/**
 	 * Returns the '<em><b>Domain Connection State</b></em>' literal with the specified literal value.
 	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+		 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public static DomainConnectionState get(String literal) {
@@ -178,10 +172,10 @@ public enum DomainConnectionState implements Enumerator {
 		return null;
 	}
 
-/**
+	/**
 	 * Returns the '<em><b>Domain Connection State</b></em>' literal with the specified name.
 	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+		 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public static DomainConnectionState getByName(String name) {
@@ -194,46 +188,51 @@ public enum DomainConnectionState implements Enumerator {
 		return null;
 	}
 
-/**
+	/**
 	 * Returns the '<em><b>Domain Connection State</b></em>' literal with the specified integer value.
 	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+		 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public static DomainConnectionState get(int value) {
 		switch (value) {
-			case DISCONNECTED_VALUE: return DISCONNECTED;
-			case CONNECTING_VALUE: return CONNECTING;
-			case CONNECTED_VALUE: return CONNECTED;
-			case DISCONNECTING_VALUE: return DISCONNECTING;
-			case FAILED_VALUE: return FAILED;
+		case DISCONNECTED_VALUE:
+			return DISCONNECTED;
+		case CONNECTING_VALUE:
+			return CONNECTING;
+		case CONNECTED_VALUE:
+			return CONNECTED;
+		case DISCONNECTING_VALUE:
+			return DISCONNECTING;
+		case FAILED_VALUE:
+			return FAILED;
 		}
 		return null;
 	}
 
-/**
+	/**
 	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+		 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	private final int value;
-/**
+	/**
 	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+		 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	private final String name;
-/**
+	/**
 	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+		 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	private final String literal;
 
-/**
+	/**
 	 * Only this class can construct instances.
 	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+		 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	private DomainConnectionState(int value, String name, String literal) {
@@ -242,37 +241,37 @@ public enum DomainConnectionState implements Enumerator {
 		this.literal = literal;
 	}
 
-/**
+	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
 	public int getValue() {
-	  return value;
+		return value;
 	}
 
-/**
+	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
 	public String getName() {
-	  return name;
+		return name;
 	}
 
-/**
+	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
 	public String getLiteral() {
-	  return literal;
+		return literal;
 	}
 
-/**
+	/**
 	 * Returns the literal value of the enumerator, which is its string representation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->

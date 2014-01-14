@@ -58,7 +58,7 @@ import CF.PropertySetPackage.PartialConfiguration;
  * @generated
  */
 public abstract class ScaAbstractPropertyImpl< T extends AbstractProperty > extends IStatusProviderImpl implements ScaAbstractProperty<T> {
-	
+
 	/**
 	 * The cached value of the '{@link #getDefinition() <em>Definition</em>}' reference.
 	 * <!-- begin-user-doc -->
@@ -178,8 +178,8 @@ public abstract class ScaAbstractPropertyImpl< T extends AbstractProperty > exte
 	@SuppressWarnings("unchecked")
 	public T getDefinition() {
 		if (definition != null && definition.eIsProxy()) {
-			InternalEObject oldDefinition = (InternalEObject)definition;
-			definition = (T)eResolveProxy(oldDefinition);
+			InternalEObject oldDefinition = (InternalEObject) definition;
+			definition = (T) eResolveProxy(oldDefinition);
 			if (definition != oldDefinition) {
 				if (eNotificationRequired())
 					eNotify(new ENotificationImpl(this, Notification.RESOLVE, ScaPackage.SCA_ABSTRACT_PROPERTY__DEFINITION, oldDefinition, definition));
@@ -199,13 +199,13 @@ public abstract class ScaAbstractPropertyImpl< T extends AbstractProperty > exte
 
 	private static final Debug DEBUG = new Debug(ScaModelPlugin.ID, "scaAbstractProperty/ignoreRemoteSet");
 	/**
-     * @since 13.0
-     */
-	private int ignoreRemoteSetNumber=0;
-	
+	 * @since 13.0
+	 */
+	private int ignoreRemoteSetNumber = 0;
+
 	/**
-     * @since 13.0
-     */
+	 * @since 13.0
+	 */
 	protected class PushValueJob extends SilentModelJob {
 		public Any newRemoteValue = null;
 
@@ -232,8 +232,8 @@ public abstract class ScaAbstractPropertyImpl< T extends AbstractProperty > exte
 				return new Status(Status.ERROR, ScaModelPlugin.ID, "Failed to set remove value for " + ScaAbstractPropertyImpl.this.getName(), e);
 			} finally {
 				for (EObject parent = eContainer(); parent != null; parent = parent.eContainer()) {
-					if (parent instanceof ScaPropertyContainer<?, ?>) {
-						ScaPropertyContainer<?, ?> propCont = (ScaPropertyContainer< ? , ? >) parent;
+					if (parent instanceof ScaPropertyContainer< ? , ? >) {
+						ScaPropertyContainer< ? , ? > propCont = (ScaPropertyContainer< ? , ? >) parent;
 						propCont.fetchProperties(monitor);
 						break;
 					}
@@ -245,8 +245,8 @@ public abstract class ScaAbstractPropertyImpl< T extends AbstractProperty > exte
 	}
 
 	/**
-     * @since 13.0
-     */
+	 * @since 13.0
+	 */
 	protected final PushValueJob pushValueJob = new PushValueJob();
 
 	/**
@@ -260,7 +260,7 @@ public abstract class ScaAbstractPropertyImpl< T extends AbstractProperty > exte
 		if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET, ScaPackage.SCA_ABSTRACT_PROPERTY__DEFINITION, oldDefinition, definition));
 	}
-	
+
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -450,8 +450,8 @@ public abstract class ScaAbstractPropertyImpl< T extends AbstractProperty > exte
 	}
 
 	/**
-     * @since 13.0
-     */
+	 * @since 13.0
+	 */
 	protected abstract void internalFromAny(Any any);
 
 	/**
@@ -517,7 +517,7 @@ public abstract class ScaAbstractPropertyImpl< T extends AbstractProperty > exte
 		return valueEquals(toAny(), any);
 		// BEGIN GENERATED CODE
 	}
-	
+
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -526,19 +526,20 @@ public abstract class ScaAbstractPropertyImpl< T extends AbstractProperty > exte
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
-			case ScaPackage.SCA_ABSTRACT_PROPERTY__DEFINITION:
-				if (resolve) return getDefinition();
-				return basicGetDefinition();
-			case ScaPackage.SCA_ABSTRACT_PROPERTY__DESCRIPTION:
-				return getDescription();
-			case ScaPackage.SCA_ABSTRACT_PROPERTY__ID:
-				return getId();
-			case ScaPackage.SCA_ABSTRACT_PROPERTY__MODE:
-				return getMode();
-			case ScaPackage.SCA_ABSTRACT_PROPERTY__NAME:
-				return getName();
-			case ScaPackage.SCA_ABSTRACT_PROPERTY__IGNORE_REMOTE_SET:
-				return isIgnoreRemoteSet();
+		case ScaPackage.SCA_ABSTRACT_PROPERTY__DEFINITION:
+			if (resolve)
+				return getDefinition();
+			return basicGetDefinition();
+		case ScaPackage.SCA_ABSTRACT_PROPERTY__DESCRIPTION:
+			return getDescription();
+		case ScaPackage.SCA_ABSTRACT_PROPERTY__ID:
+			return getId();
+		case ScaPackage.SCA_ABSTRACT_PROPERTY__MODE:
+			return getMode();
+		case ScaPackage.SCA_ABSTRACT_PROPERTY__NAME:
+			return getName();
+		case ScaPackage.SCA_ABSTRACT_PROPERTY__IGNORE_REMOTE_SET:
+			return isIgnoreRemoteSet();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -552,24 +553,24 @@ public abstract class ScaAbstractPropertyImpl< T extends AbstractProperty > exte
 	@Override
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
-			case ScaPackage.SCA_ABSTRACT_PROPERTY__DEFINITION:
-				setDefinition((T)newValue);
-				return;
-			case ScaPackage.SCA_ABSTRACT_PROPERTY__DESCRIPTION:
-				setDescription((String)newValue);
-				return;
-			case ScaPackage.SCA_ABSTRACT_PROPERTY__ID:
-				setId((String)newValue);
-				return;
-			case ScaPackage.SCA_ABSTRACT_PROPERTY__MODE:
-				setMode((AccessType)newValue);
-				return;
-			case ScaPackage.SCA_ABSTRACT_PROPERTY__NAME:
-				setName((String)newValue);
-				return;
-			case ScaPackage.SCA_ABSTRACT_PROPERTY__IGNORE_REMOTE_SET:
-				setIgnoreRemoteSet((Boolean)newValue);
-				return;
+		case ScaPackage.SCA_ABSTRACT_PROPERTY__DEFINITION:
+			setDefinition((T) newValue);
+			return;
+		case ScaPackage.SCA_ABSTRACT_PROPERTY__DESCRIPTION:
+			setDescription((String) newValue);
+			return;
+		case ScaPackage.SCA_ABSTRACT_PROPERTY__ID:
+			setId((String) newValue);
+			return;
+		case ScaPackage.SCA_ABSTRACT_PROPERTY__MODE:
+			setMode((AccessType) newValue);
+			return;
+		case ScaPackage.SCA_ABSTRACT_PROPERTY__NAME:
+			setName((String) newValue);
+			return;
+		case ScaPackage.SCA_ABSTRACT_PROPERTY__IGNORE_REMOTE_SET:
+			setIgnoreRemoteSet((Boolean) newValue);
+			return;
 		}
 		super.eSet(featureID, newValue);
 	}
@@ -582,24 +583,24 @@ public abstract class ScaAbstractPropertyImpl< T extends AbstractProperty > exte
 	@Override
 	public void eUnset(int featureID) {
 		switch (featureID) {
-			case ScaPackage.SCA_ABSTRACT_PROPERTY__DEFINITION:
-				setDefinition((T)null);
-				return;
-			case ScaPackage.SCA_ABSTRACT_PROPERTY__DESCRIPTION:
-				setDescription(DESCRIPTION_EDEFAULT);
-				return;
-			case ScaPackage.SCA_ABSTRACT_PROPERTY__ID:
-				setId(ID_EDEFAULT);
-				return;
-			case ScaPackage.SCA_ABSTRACT_PROPERTY__MODE:
-				setMode(MODE_EDEFAULT);
-				return;
-			case ScaPackage.SCA_ABSTRACT_PROPERTY__NAME:
-				setName(NAME_EDEFAULT);
-				return;
-			case ScaPackage.SCA_ABSTRACT_PROPERTY__IGNORE_REMOTE_SET:
-				setIgnoreRemoteSet(IGNORE_REMOTE_SET_EDEFAULT);
-				return;
+		case ScaPackage.SCA_ABSTRACT_PROPERTY__DEFINITION:
+			setDefinition((T) null);
+			return;
+		case ScaPackage.SCA_ABSTRACT_PROPERTY__DESCRIPTION:
+			setDescription(DESCRIPTION_EDEFAULT);
+			return;
+		case ScaPackage.SCA_ABSTRACT_PROPERTY__ID:
+			setId(ID_EDEFAULT);
+			return;
+		case ScaPackage.SCA_ABSTRACT_PROPERTY__MODE:
+			setMode(MODE_EDEFAULT);
+			return;
+		case ScaPackage.SCA_ABSTRACT_PROPERTY__NAME:
+			setName(NAME_EDEFAULT);
+			return;
+		case ScaPackage.SCA_ABSTRACT_PROPERTY__IGNORE_REMOTE_SET:
+			setIgnoreRemoteSet(IGNORE_REMOTE_SET_EDEFAULT);
+			return;
 		}
 		super.eUnset(featureID);
 	}
@@ -612,18 +613,18 @@ public abstract class ScaAbstractPropertyImpl< T extends AbstractProperty > exte
 	@Override
 	public boolean eIsSet(int featureID) {
 		switch (featureID) {
-			case ScaPackage.SCA_ABSTRACT_PROPERTY__DEFINITION:
-				return definition != null;
-			case ScaPackage.SCA_ABSTRACT_PROPERTY__DESCRIPTION:
-				return DESCRIPTION_EDEFAULT == null ? description != null : !DESCRIPTION_EDEFAULT.equals(description);
-			case ScaPackage.SCA_ABSTRACT_PROPERTY__ID:
-				return ID_EDEFAULT == null ? id != null : !ID_EDEFAULT.equals(id);
-			case ScaPackage.SCA_ABSTRACT_PROPERTY__MODE:
-				return mode != MODE_EDEFAULT;
-			case ScaPackage.SCA_ABSTRACT_PROPERTY__NAME:
-				return NAME_EDEFAULT == null ? name != null : !NAME_EDEFAULT.equals(name);
-			case ScaPackage.SCA_ABSTRACT_PROPERTY__IGNORE_REMOTE_SET:
-				return isIgnoreRemoteSet() != IGNORE_REMOTE_SET_EDEFAULT;
+		case ScaPackage.SCA_ABSTRACT_PROPERTY__DEFINITION:
+			return definition != null;
+		case ScaPackage.SCA_ABSTRACT_PROPERTY__DESCRIPTION:
+			return DESCRIPTION_EDEFAULT == null ? description != null : !DESCRIPTION_EDEFAULT.equals(description);
+		case ScaPackage.SCA_ABSTRACT_PROPERTY__ID:
+			return ID_EDEFAULT == null ? id != null : !ID_EDEFAULT.equals(id);
+		case ScaPackage.SCA_ABSTRACT_PROPERTY__MODE:
+			return mode != MODE_EDEFAULT;
+		case ScaPackage.SCA_ABSTRACT_PROPERTY__NAME:
+			return NAME_EDEFAULT == null ? name != null : !NAME_EDEFAULT.equals(name);
+		case ScaPackage.SCA_ABSTRACT_PROPERTY__IGNORE_REMOTE_SET:
+			return isIgnoreRemoteSet() != IGNORE_REMOTE_SET_EDEFAULT;
 		}
 		return super.eIsSet(featureID);
 	}
@@ -635,7 +636,8 @@ public abstract class ScaAbstractPropertyImpl< T extends AbstractProperty > exte
 	 */
 	@Override
 	public String toString() {
-		if (eIsProxy()) return super.toString();
+		if (eIsProxy())
+			return super.toString();
 
 		StringBuffer result = new StringBuffer(super.toString());
 		result.append(" (description: ");
@@ -649,7 +651,7 @@ public abstract class ScaAbstractPropertyImpl< T extends AbstractProperty > exte
 		result.append(')');
 		return result.toString();
 	}
-	
+
 	private static boolean valueEquals(DataType leftData, DataType rightData) {
 		if (!PluginUtil.equals(leftData.id, rightData.id)) {
 			return false;
@@ -666,13 +668,13 @@ public abstract class ScaAbstractPropertyImpl< T extends AbstractProperty > exte
 	private static boolean valueEquals(Object leftElement, Object rightElement) {
 		if (leftElement instanceof DataType && rightElement instanceof DataType) {
 			return valueEquals((DataType) leftElement, (DataType) rightElement);
-		} else if (leftElement instanceof Any && rightElement instanceof Any){
+		} else if (leftElement instanceof Any && rightElement instanceof Any) {
 			return valueEquals((Any) leftElement, (Any) rightElement);
-		} else if (leftElement instanceof Object [] && rightElement instanceof Object []) {
-			Object [] leftArray = (Object[]) leftElement;
-			Object [] rightArray = (Object[]) rightElement;
+		} else if (leftElement instanceof Object[] && rightElement instanceof Object[]) {
+			Object[] leftArray = (Object[]) leftElement;
+			Object[] rightArray = (Object[]) rightElement;
 			if (leftArray.length == rightArray.length) {
-				for (int i=0; i<leftArray.length; i++) {
+				for (int i = 0; i < leftArray.length; i++) {
 					Object leftArrayElement = leftArray[i];
 					Object rightArrayElement = rightArray[i];
 					if (!valueEquals(leftArrayElement, rightArrayElement)) {

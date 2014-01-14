@@ -545,13 +545,21 @@ public interface ScaPackage extends EPackage {
 	 */
 	int SCA_ABSTRACT_COMPONENT__STARTED = SCA_PROPERTY_CONTAINER_FEATURE_COUNT + 2;
 	/**
+	 * The feature id for the '<em><b>Profile</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int SCA_ABSTRACT_COMPONENT__PROFILE = SCA_PROPERTY_CONTAINER_FEATURE_COUNT + 3;
+	/**
 	 * The number of structural features of the '<em>Abstract Component</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int SCA_ABSTRACT_COMPONENT_FEATURE_COUNT = SCA_PROPERTY_CONTAINER_FEATURE_COUNT + 3;
+	int SCA_ABSTRACT_COMPONENT_FEATURE_COUNT = SCA_PROPERTY_CONTAINER_FEATURE_COUNT + 4;
 	/**
 	 * The meta object id for the '{@link gov.redhawk.model.sca.IRefreshable <em>IRefreshable</em>}' class.
 	 * <!-- begin-user-doc -->
@@ -797,6 +805,14 @@ public interface ScaPackage extends EPackage {
 	 */
 	int SCA_COMPONENT__STARTED = SCA_ABSTRACT_COMPONENT__STARTED;
 	/**
+	 * The feature id for the '<em><b>Profile</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int SCA_COMPONENT__PROFILE = SCA_ABSTRACT_COMPONENT__PROFILE;
+	/**
 	 * The feature id for the '<em><b>Component Instantiation</b></em>' reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -966,6 +982,14 @@ public interface ScaPackage extends EPackage {
 	 */
 	int SCA_DEVICE__STARTED = SCA_ABSTRACT_COMPONENT__STARTED;
 	/**
+	 * The feature id for the '<em><b>Profile</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int SCA_DEVICE__PROFILE = SCA_ABSTRACT_COMPONENT__PROFILE;
+	/**
 	 * The feature id for the '<em><b>Child Devices</b></em>' reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -1022,21 +1046,13 @@ public interface ScaPackage extends EPackage {
 	 */
 	int SCA_DEVICE__DEV_MGR = SCA_ABSTRACT_COMPONENT_FEATURE_COUNT + 6;
 	/**
-	 * The feature id for the '<em><b>Profile</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int SCA_DEVICE__PROFILE = SCA_ABSTRACT_COMPONENT_FEATURE_COUNT + 7;
-	/**
 	 * The number of structural features of the '<em>Device</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int SCA_DEVICE_FEATURE_COUNT = SCA_ABSTRACT_COMPONENT_FEATURE_COUNT + 8;
+	int SCA_DEVICE_FEATURE_COUNT = SCA_ABSTRACT_COMPONENT_FEATURE_COUNT + 7;
 	/**
 	 * The meta object id for the '{@link gov.redhawk.model.sca.impl.ScaDeviceManagerImpl <em>Device Manager</em>}' class.
 	 * <!-- begin-user-doc -->
@@ -2278,6 +2294,14 @@ public interface ScaPackage extends EPackage {
 	 */
 	int SCA_LOADABLE_DEVICE__STARTED = SCA_DEVICE__STARTED;
 	/**
+	 * The feature id for the '<em><b>Profile</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int SCA_LOADABLE_DEVICE__PROFILE = SCA_DEVICE__PROFILE;
+	/**
 	 * The feature id for the '<em><b>Child Devices</b></em>' reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -2333,14 +2357,6 @@ public interface ScaPackage extends EPackage {
 	 * @ordered
 	 */
 	int SCA_LOADABLE_DEVICE__DEV_MGR = SCA_DEVICE__DEV_MGR;
-	/**
-	 * The feature id for the '<em><b>Profile</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int SCA_LOADABLE_DEVICE__PROFILE = SCA_DEVICE__PROFILE;
 	/**
 	 * The number of structural features of the '<em>Loadable Device</em>' class.
 	 * <!-- begin-user-doc -->
@@ -2471,6 +2487,14 @@ public interface ScaPackage extends EPackage {
 	 */
 	int SCA_EXECUTABLE_DEVICE__STARTED = SCA_LOADABLE_DEVICE__STARTED;
 	/**
+	 * The feature id for the '<em><b>Profile</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int SCA_EXECUTABLE_DEVICE__PROFILE = SCA_LOADABLE_DEVICE__PROFILE;
+	/**
 	 * The feature id for the '<em><b>Child Devices</b></em>' reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -2526,14 +2550,6 @@ public interface ScaPackage extends EPackage {
 	 * @ordered
 	 */
 	int SCA_EXECUTABLE_DEVICE__DEV_MGR = SCA_LOADABLE_DEVICE__DEV_MGR;
-	/**
-	 * The feature id for the '<em><b>Profile</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int SCA_EXECUTABLE_DEVICE__PROFILE = SCA_LOADABLE_DEVICE__PROFILE;
 	/**
 	 * The number of structural features of the '<em>Executable Device</em>' class.
 	 * <!-- begin-user-doc -->
@@ -3989,6 +4005,17 @@ public interface ScaPackage extends EPackage {
 	EAttribute getScaAbstractComponent_Started();
 
 	/**
+	 * Returns the meta object for the attribute '{@link gov.redhawk.model.sca.ScaAbstractComponent#getProfile <em>Profile</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Profile</em>'.
+	 * @see gov.redhawk.model.sca.ScaAbstractComponent#getProfile()
+	 * @see #getScaAbstractComponent()
+	 * @generated
+	 */
+	EAttribute getScaAbstractComponent_Profile();
+
+	/**
 	 * Returns the meta object for class '{@link gov.redhawk.model.sca.ScaPropertyContainer <em>Property Container</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -4257,17 +4284,6 @@ public interface ScaPackage extends EPackage {
 	 * @generated
 	 */
 	EReference getScaDevice_DevMgr();
-
-	/**
-	 * Returns the meta object for the attribute '{@link gov.redhawk.model.sca.ScaDevice#getProfile <em>Profile</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the attribute '<em>Profile</em>'.
-	 * @see gov.redhawk.model.sca.ScaDevice#getProfile()
-	 * @see #getScaDevice()
-	 * @generated
-	 */
-	EAttribute getScaDevice_Profile();
 
 	/**
 	 * Returns the meta object for class '{@link gov.redhawk.model.sca.ScaDeviceManager <em>Device Manager</em>}'.
@@ -5621,6 +5637,13 @@ public interface ScaPackage extends EPackage {
 		 */
 		EAttribute SCA_ABSTRACT_COMPONENT__STARTED = eINSTANCE.getScaAbstractComponent_Started();
 		/**
+		 * The meta object literal for the '<em><b>Profile</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute SCA_ABSTRACT_COMPONENT__PROFILE = eINSTANCE.getScaAbstractComponent_Profile();
+		/**
 		 * The meta object literal for the '{@link gov.redhawk.model.sca.impl.ScaPropertyContainerImpl <em>Property Container</em>}' class.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
@@ -5805,13 +5828,6 @@ public interface ScaPackage extends EPackage {
 		 * @generated
 		 */
 		EReference SCA_DEVICE__DEV_MGR = eINSTANCE.getScaDevice_DevMgr();
-		/**
-		 * The meta object literal for the '<em><b>Profile</b></em>' attribute feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		EAttribute SCA_DEVICE__PROFILE = eINSTANCE.getScaDevice_Profile();
 		/**
 		 * The meta object literal for the '{@link gov.redhawk.model.sca.impl.ScaDeviceManagerImpl <em>Device Manager</em>}' class.
 		 * <!-- begin-user-doc -->

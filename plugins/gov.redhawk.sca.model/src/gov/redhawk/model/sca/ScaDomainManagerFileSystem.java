@@ -12,7 +12,6 @@
 // BEGIN GENERATED CODE
 package gov.redhawk.model.sca;
 
-
 /**
  * <!-- begin-user-doc -->
  * A representation of the model object '<em><b>Domain Manager File System</b></em>'.

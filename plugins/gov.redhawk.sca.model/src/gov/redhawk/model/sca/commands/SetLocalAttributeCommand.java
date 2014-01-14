@@ -13,6 +13,7 @@ package gov.redhawk.model.sca.commands;
 
 import gov.redhawk.model.sca.IStatusProvider;
 
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.emf.ecore.EStructuralFeature;
 
 /**
@@ -23,10 +24,18 @@ public class SetLocalAttributeCommand extends SetStatusCommand<IStatusProvider> 
 
 	private Object newValue;
 	
+	/**
+	 * @since 19.0
+	 */
+	public SetLocalAttributeCommand(IStatusProvider target, Object newValue, EStructuralFeature feature, IStatus status) {
+		super(target, feature, status);
+		this.newValue = newValue;
+	}
+
 	public SetLocalAttributeCommand(IStatusProvider target, Object newValue, EStructuralFeature feature) {
 		super(target, feature, null);
 		this.newValue = newValue;
-    }
+	}
 
 	/**
 	 * {@inheritDoc}

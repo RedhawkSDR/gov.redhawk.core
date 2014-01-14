@@ -18,7 +18,7 @@ import gov.redhawk.model.sca.services.IScaDataProviderService;
  * @noimplement This interface is not intended to be implemented by clients.
  */
 public interface IScaDataProviderServiceDescriptor {
-	
+
 	String getName();
 
 	String getId();

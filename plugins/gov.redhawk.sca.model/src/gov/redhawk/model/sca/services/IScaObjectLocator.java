@@ -18,5 +18,5 @@ import gov.redhawk.model.sca.CorbaObjWrapper;
  * 
  */
 public interface IScaObjectLocator {
-	public <T extends CorbaObjWrapper<?>> T findEObject(Class<T> type, String ior);
+	public < T extends CorbaObjWrapper< ? >> T findEObject(Class<T> type, String ior);
 }

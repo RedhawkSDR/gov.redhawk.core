@@ -75,7 +75,7 @@ public abstract class StructDef {
         return fields;
     }
 
-    public void addElement(final IProperty element) {
+    protected void addElement(final IProperty element) {
         getElementsMap().put(element.getId(), element);
     }
     
@@ -122,10 +122,7 @@ public abstract class StructDef {
             throw new IllegalArgumentException("Invalid Any type for struct");
         }
         for (final DataType prop : PropertiesHelper.extract(any)) {
-            IProperty element = this.getElement(prop.id);
-            if (element != null) {
-                element.fromAny(prop.value);
-            }
+            this.getElement(prop.id).fromAny(prop.value);
         }
     }
 

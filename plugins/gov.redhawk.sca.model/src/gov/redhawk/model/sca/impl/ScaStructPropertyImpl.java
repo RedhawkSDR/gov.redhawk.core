@@ -20,17 +20,14 @@ import gov.redhawk.model.sca.ScaSimpleProperty;
 import gov.redhawk.model.sca.ScaStructProperty;
 import gov.redhawk.model.sca.ScaStructSequenceProperty;
 import gov.redhawk.sca.util.PluginUtil;
-
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-
 import mil.jpeojtrs.sca.prf.Simple;
 import mil.jpeojtrs.sca.prf.Struct;
-
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.MultiStatus;
 import org.eclipse.core.runtime.Status;
@@ -45,7 +42,6 @@ import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.InternalEList;
 import org.omg.CORBA.Any;
 import org.omg.CORBA.ORB;
-
 import CF.DataType;
 import CF.PropertiesHelper;
 import CF.PropertiesHolder;
@@ -134,8 +130,8 @@ public class ScaStructPropertyImpl extends ScaAbstractPropertyImpl<Struct> imple
 	}
 
 	/**
-     * @since 14.0
-     */
+	 * @since 14.0
+	 */
 	protected static class SimplesList extends EObjectContainmentEList<ScaSimpleProperty> {
 		// END GENERATED CODE
 
@@ -215,16 +211,16 @@ public class ScaStructPropertyImpl extends ScaAbstractPropertyImpl<Struct> imple
 		return simples;
 		// BEGIN GENERATED CODE
 	}
-	
+
 	/**
-     * @since 14.0
-     */
+	 * @since 14.0
+	 */
 	@Override
 	public void setDefinition(Struct newDefinition) {
 		if (newDefinition != definition && simples != null) {
-			((SimplesList)simples).setDefinition(newDefinition);
+			((SimplesList) simples).setDefinition(newDefinition);
 		}
-	    super.setDefinition(newDefinition);
+		super.setDefinition(newDefinition);
 	}
 
 	@Override
@@ -348,8 +344,8 @@ public class ScaStructPropertyImpl extends ScaAbstractPropertyImpl<Struct> imple
 	@Override
 	public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
 		switch (featureID) {
-			case ScaPackage.SCA_STRUCT_PROPERTY__SIMPLES:
-				return ((InternalEList<?>)getSimples()).basicRemove(otherEnd, msgs);
+		case ScaPackage.SCA_STRUCT_PROPERTY__SIMPLES:
+			return ((InternalEList< ? >) getSimples()).basicRemove(otherEnd, msgs);
 		}
 		return super.eInverseRemove(otherEnd, featureID, msgs);
 	}
@@ -362,8 +358,8 @@ public class ScaStructPropertyImpl extends ScaAbstractPropertyImpl<Struct> imple
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
-			case ScaPackage.SCA_STRUCT_PROPERTY__SIMPLES:
-				return getSimples();
+		case ScaPackage.SCA_STRUCT_PROPERTY__SIMPLES:
+			return getSimples();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -401,9 +397,9 @@ public class ScaStructPropertyImpl extends ScaAbstractPropertyImpl<Struct> imple
 	@Override
 	public void eUnset(int featureID) {
 		switch (featureID) {
-			case ScaPackage.SCA_STRUCT_PROPERTY__SIMPLES:
-				getSimples().clear();
-				return;
+		case ScaPackage.SCA_STRUCT_PROPERTY__SIMPLES:
+			getSimples().clear();
+			return;
 		}
 		super.eUnset(featureID);
 	}
@@ -416,8 +412,8 @@ public class ScaStructPropertyImpl extends ScaAbstractPropertyImpl<Struct> imple
 	@Override
 	public boolean eIsSet(int featureID) {
 		switch (featureID) {
-			case ScaPackage.SCA_STRUCT_PROPERTY__SIMPLES:
-				return simples != null && !simples.isEmpty();
+		case ScaPackage.SCA_STRUCT_PROPERTY__SIMPLES:
+			return simples != null && !simples.isEmpty();
 		}
 		return super.eIsSet(featureID);
 	}
@@ -443,7 +439,7 @@ public class ScaStructPropertyImpl extends ScaAbstractPropertyImpl<Struct> imple
 		}
 		// BEGIN GENERATED CODE
 	}
-	
+
 	private int getIndex() {
 		if (eContainer() instanceof ScaStructSequenceProperty) {
 			ScaStructSequenceProperty parent = (ScaStructSequenceProperty) eContainer();
@@ -452,25 +448,25 @@ public class ScaStructPropertyImpl extends ScaAbstractPropertyImpl<Struct> imple
 		}
 		return -1;
 	}
-	
+
 	@Override
 	public void setRemoteValue(Any any) throws PartialConfiguration, InvalidConfiguration {
 		EObject container = eContainer();
 		if (container instanceof ScaStructSequenceProperty) {
-			((ScaStructSequenceProperty)container).configure(new DataType[]{new DataType(String.valueOf(getIndex()), any)});
+			((ScaStructSequenceProperty) container).configure(new DataType[] { new DataType(String.valueOf(getIndex()), any) });
 		} else {
 			super.setRemoteValue(any);
 		}
 	}
 
 	@Override
-    public boolean isDefaultValue() {
-	    return getSimples().isDefaultValue();
-    }
+	public boolean isDefaultValue() {
+		return getSimples().isDefaultValue();
+	}
 
 	@Override
-    public void restoreDefaultValue() {
-	   getSimples().restoreDefaultValue();
-    }
+	public void restoreDefaultValue() {
+		getSimples().restoreDefaultValue();
+	}
 
 } // ScaStructPropertyImpl

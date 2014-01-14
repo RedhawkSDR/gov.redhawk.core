@@ -16,11 +16,11 @@ package gov.redhawk.sca.model.preferences;
  * 
  */
 public final class ScaModelPreferenceContants {
-	
+
 	public static final String DISABLED_DATA_PROVIDERS = "disabledDataProviders";
-	
+
 	private ScaModelPreferenceContants() {
-		
+
 	}
 
 }

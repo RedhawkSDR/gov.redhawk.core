@@ -12,7 +12,6 @@
 // BEGIN GENERATED CODE
 package gov.redhawk.model.sca.provider;
 
-
 import gov.redhawk.model.sca.ScaAbstractProperty;
 import gov.redhawk.model.sca.ScaPackage;
 import gov.redhawk.model.sca.util.ModelUtil;
@@ -48,11 +47,9 @@ import org.eclipse.ui.PlatformUI;
  * <!-- end-user-doc -->
  * @generated
  */
-public class ScaAbstractPropertyItemProvider
-	extends IStatusProviderItemProvider
-	implements
-		IEditingDomainItemProvider, IStructuredItemContentProvider, ITreeItemContentProvider, IItemLabelProvider, IItemPropertySource, ITableItemLabelProvider, ITableItemColorProvider, IItemColorProvider {
-	
+public class ScaAbstractPropertyItemProvider extends IStatusProviderItemProvider implements IEditingDomainItemProvider, IStructuredItemContentProvider,
+		ITreeItemContentProvider, IItemLabelProvider, IItemPropertySource, ITableItemLabelProvider, ITableItemColorProvider, IItemColorProvider {
+
 	/**
 	 * This constructs an instance from a factory and a notifier.
 	 * <!-- begin-user-doc -->
@@ -90,19 +87,10 @@ public class ScaAbstractPropertyItemProvider
 	 * @generated
 	 */
 	protected void addDefinitionPropertyDescriptor(Object object) {
-		itemPropertyDescriptors.add
-			(createItemPropertyDescriptor
-				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
-				 getResourceLocator(),
-				 getString("_UI_ScaAbstractProperty_definition_feature"),
-				 getString("_UI_PropertyDescriptor_description", "_UI_ScaAbstractProperty_definition_feature", "_UI_ScaAbstractProperty_type"),
-				 ScaPackage.Literals.SCA_ABSTRACT_PROPERTY__DEFINITION,
-				 false,
-				 false,
-				 false,
-				 null,
-				 null,
-				 null));
+		itemPropertyDescriptors.add(createItemPropertyDescriptor(((ComposeableAdapterFactory) adapterFactory).getRootAdapterFactory(), getResourceLocator(),
+			getString("_UI_ScaAbstractProperty_definition_feature"),
+			getString("_UI_PropertyDescriptor_description", "_UI_ScaAbstractProperty_definition_feature", "_UI_ScaAbstractProperty_type"),
+			ScaPackage.Literals.SCA_ABSTRACT_PROPERTY__DEFINITION, false, false, false, null, null, null));
 	}
 
 	/**
@@ -112,19 +100,10 @@ public class ScaAbstractPropertyItemProvider
 	 * @generated
 	 */
 	protected void addDescriptionPropertyDescriptor(Object object) {
-		itemPropertyDescriptors.add
-			(createItemPropertyDescriptor
-				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
-				 getResourceLocator(),
-				 getString("_UI_ScaAbstractProperty_description_feature"),
-				 getString("_UI_PropertyDescriptor_description", "_UI_ScaAbstractProperty_description_feature", "_UI_ScaAbstractProperty_type"),
-				 ScaPackage.Literals.SCA_ABSTRACT_PROPERTY__DESCRIPTION,
-				 false,
-				 false,
-				 false,
-				 ItemPropertyDescriptor.GENERIC_VALUE_IMAGE,
-				 null,
-				 null));
+		itemPropertyDescriptors.add(createItemPropertyDescriptor(((ComposeableAdapterFactory) adapterFactory).getRootAdapterFactory(), getResourceLocator(),
+			getString("_UI_ScaAbstractProperty_description_feature"),
+			getString("_UI_PropertyDescriptor_description", "_UI_ScaAbstractProperty_description_feature", "_UI_ScaAbstractProperty_type"),
+			ScaPackage.Literals.SCA_ABSTRACT_PROPERTY__DESCRIPTION, false, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
 	}
 
 	/**
@@ -134,19 +113,10 @@ public class ScaAbstractPropertyItemProvider
 	 * @generated
 	 */
 	protected void addIdPropertyDescriptor(Object object) {
-		itemPropertyDescriptors.add
-			(createItemPropertyDescriptor
-				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
-				 getResourceLocator(),
-				 getString("_UI_ScaAbstractProperty_id_feature"),
-				 getString("_UI_PropertyDescriptor_description", "_UI_ScaAbstractProperty_id_feature", "_UI_ScaAbstractProperty_type"),
-				 ScaPackage.Literals.SCA_ABSTRACT_PROPERTY__ID,
-				 false,
-				 false,
-				 false,
-				 ItemPropertyDescriptor.GENERIC_VALUE_IMAGE,
-				 null,
-				 null));
+		itemPropertyDescriptors.add(createItemPropertyDescriptor(((ComposeableAdapterFactory) adapterFactory).getRootAdapterFactory(), getResourceLocator(),
+			getString("_UI_ScaAbstractProperty_id_feature"),
+			getString("_UI_PropertyDescriptor_description", "_UI_ScaAbstractProperty_id_feature", "_UI_ScaAbstractProperty_type"),
+			ScaPackage.Literals.SCA_ABSTRACT_PROPERTY__ID, false, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
 	}
 
 	/**
@@ -156,19 +126,10 @@ public class ScaAbstractPropertyItemProvider
 	 * @generated
 	 */
 	protected void addModePropertyDescriptor(Object object) {
-		itemPropertyDescriptors.add
-			(createItemPropertyDescriptor
-				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
-				 getResourceLocator(),
-				 getString("_UI_ScaAbstractProperty_mode_feature"),
-				 getString("_UI_PropertyDescriptor_description", "_UI_ScaAbstractProperty_mode_feature", "_UI_ScaAbstractProperty_type"),
-				 ScaPackage.Literals.SCA_ABSTRACT_PROPERTY__MODE,
-				 false,
-				 false,
-				 false,
-				 ItemPropertyDescriptor.GENERIC_VALUE_IMAGE,
-				 null,
-				 null));
+		itemPropertyDescriptors.add(createItemPropertyDescriptor(((ComposeableAdapterFactory) adapterFactory).getRootAdapterFactory(), getResourceLocator(),
+			getString("_UI_ScaAbstractProperty_mode_feature"),
+			getString("_UI_PropertyDescriptor_description", "_UI_ScaAbstractProperty_mode_feature", "_UI_ScaAbstractProperty_type"),
+			ScaPackage.Literals.SCA_ABSTRACT_PROPERTY__MODE, false, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
 	}
 
 	/**
@@ -178,19 +139,10 @@ public class ScaAbstractPropertyItemProvider
 	 * @generated
 	 */
 	protected void addNamePropertyDescriptor(Object object) {
-		itemPropertyDescriptors.add
-			(createItemPropertyDescriptor
-				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
-				 getResourceLocator(),
-				 getString("_UI_ScaAbstractProperty_name_feature"),
-				 getString("_UI_PropertyDescriptor_description", "_UI_ScaAbstractProperty_name_feature", "_UI_ScaAbstractProperty_type"),
-				 ScaPackage.Literals.SCA_ABSTRACT_PROPERTY__NAME,
-				 false,
-				 false,
-				 false,
-				 ItemPropertyDescriptor.GENERIC_VALUE_IMAGE,
-				 null,
-				 null));
+		itemPropertyDescriptors.add(createItemPropertyDescriptor(((ComposeableAdapterFactory) adapterFactory).getRootAdapterFactory(), getResourceLocator(),
+			getString("_UI_ScaAbstractProperty_name_feature"),
+			getString("_UI_PropertyDescriptor_description", "_UI_ScaAbstractProperty_name_feature", "_UI_ScaAbstractProperty_type"),
+			ScaPackage.Literals.SCA_ABSTRACT_PROPERTY__NAME, false, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
 	}
 
 	/**
@@ -201,10 +153,8 @@ public class ScaAbstractPropertyItemProvider
 	 */
 	@Override
 	public String getText(Object object) {
-		String label = ((ScaAbstractProperty<?>)object).getName();
-		return label == null || label.length() == 0 ?
-			getString("_UI_ScaAbstractProperty_type") :
-			getString("_UI_ScaAbstractProperty_type") + " " + label;
+		String label = ((ScaAbstractProperty< ? >) object).getName();
+		return label == null || label.length() == 0 ? getString("_UI_ScaAbstractProperty_type") : getString("_UI_ScaAbstractProperty_type") + " " + label;
 	}
 
 	/**
@@ -219,9 +169,9 @@ public class ScaAbstractPropertyItemProvider
 		updateChildren(notification);
 
 		switch (notification.getFeatureID(ScaAbstractProperty.class)) {
-			case ScaPackage.SCA_ABSTRACT_PROPERTY__NAME:
-				fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
-				return;
+		case ScaPackage.SCA_ABSTRACT_PROPERTY__NAME:
+			fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
+			return;
 		}
 		super.notifyChanged(notification);
 	}
@@ -246,35 +196,35 @@ public class ScaAbstractPropertyItemProvider
 			return super.getForeground(object);
 		}
 	}
-	
+
 	@Override
 	public Object getForeground(Object object, int columnIndex) {
-	    return getForeground(object);
+		return getForeground(object);
 	}
-	
+
 	/**
 	 * {@inheritDoc}
 	 * @generated NOT
 	 */
 	@Override
 	public Object getColumnImage(Object object, int columnIndex) {
-		switch(columnIndex) {
+		switch (columnIndex) {
 		case AbstractPropertyItemProvider.PROP_NAME_COLUMN:
-			return getImage(object); 
+			return getImage(object);
 		case AbstractPropertyItemProvider.PROP_VALUE_COLUMN:
 			return null;
 		default:
 			return super.getColumnImage(object, columnIndex);
 		}
 	}
-	
+
 	/**
-     * @since 12.0
-     */
+	 * @since 12.0
+	 */
 	protected ResourceLocator getPrfResourceLocator() {
 		return PrfEditPlugin.INSTANCE;
 	}
-	
+
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -282,7 +232,7 @@ public class ScaAbstractPropertyItemProvider
 	 */
 	@Override
 	public String getColumnText(final Object object, final int columnIndex) {
-		switch(columnIndex) {
+		switch (columnIndex) {
 		case AbstractPropertyItemProvider.PROP_VALUE_COLUMN:
 			return getValueText((ScaAbstractProperty< ? >) object);
 		case AbstractPropertyItemProvider.PROP_NAME_COLUMN:
@@ -293,9 +243,9 @@ public class ScaAbstractPropertyItemProvider
 	}
 
 	/**
-     * @since 12.0
-     */
-	protected String getValueText(ScaAbstractProperty<?> object) {
+	 * @since 12.0
+	 */
+	protected String getValueText(ScaAbstractProperty< ? > object) {
 		return "";
 	}
 

@@ -28,7 +28,6 @@ import mil.jpeojtrs.sca.prf.SimpleRef;
 import mil.jpeojtrs.sca.prf.Struct;
 import mil.jpeojtrs.sca.prf.StructSequence;
 import mil.jpeojtrs.sca.prf.StructValue;
-import org.eclipse.core.runtime.Assert;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.MultiStatus;
 import org.eclipse.core.runtime.Status;
@@ -156,8 +155,8 @@ public class ScaStructSequencePropertyImpl extends ScaAbstractPropertyImpl<Struc
 	}
 
 	/**
-     * @since 14.0
-     */
+	 * @since 14.0
+	 */
 	protected class StructList extends EObjectContainmentEList<ScaStructProperty> {
 		// END GENERATED CODE
 
@@ -312,9 +311,9 @@ public class ScaStructSequencePropertyImpl extends ScaAbstractPropertyImpl<Struc
 	@Override
 	public void eUnset(int featureID) {
 		switch (featureID) {
-			case ScaPackage.SCA_STRUCT_SEQUENCE_PROPERTY__STRUCTS:
-				getStructs().clear();
-				return;
+		case ScaPackage.SCA_STRUCT_SEQUENCE_PROPERTY__STRUCTS:
+			getStructs().clear();
+			return;
 		}
 		super.eUnset(featureID);
 	}
@@ -327,8 +326,8 @@ public class ScaStructSequencePropertyImpl extends ScaAbstractPropertyImpl<Struc
 	@Override
 	public boolean eIsSet(int featureID) {
 		switch (featureID) {
-			case ScaPackage.SCA_STRUCT_SEQUENCE_PROPERTY__STRUCTS:
-				return structs != null && !structs.isEmpty();
+		case ScaPackage.SCA_STRUCT_SEQUENCE_PROPERTY__STRUCTS:
+			return structs != null && !structs.isEmpty();
 		}
 		return super.eIsSet(featureID);
 	}
@@ -465,8 +464,8 @@ public class ScaStructSequencePropertyImpl extends ScaAbstractPropertyImpl<Struc
 	@Override
 	public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
 		switch (featureID) {
-			case ScaPackage.SCA_STRUCT_SEQUENCE_PROPERTY__STRUCTS:
-				return ((InternalEList<?>)getStructs()).basicRemove(otherEnd, msgs);
+		case ScaPackage.SCA_STRUCT_SEQUENCE_PROPERTY__STRUCTS:
+			return ((InternalEList< ? >) getStructs()).basicRemove(otherEnd, msgs);
 		}
 		return super.eInverseRemove(otherEnd, featureID, msgs);
 	}
@@ -479,8 +478,8 @@ public class ScaStructSequencePropertyImpl extends ScaAbstractPropertyImpl<Struc
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
-			case ScaPackage.SCA_STRUCT_SEQUENCE_PROPERTY__STRUCTS:
-				return getStructs();
+		case ScaPackage.SCA_STRUCT_SEQUENCE_PROPERTY__STRUCTS:
+			return getStructs();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}

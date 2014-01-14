@@ -226,6 +226,7 @@ public class ScaWaveformFactoryImpl extends CorbaObjWrapperImpl<ApplicationFacto
 	 * @ordered
 	 */
 	protected boolean profileESet;
+
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -294,7 +295,8 @@ public class ScaWaveformFactoryImpl extends CorbaObjWrapperImpl<ApplicationFacto
 		profileURI = PROFILE_URI_EDEFAULT;
 		profileURIESet = false;
 		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.UNSET, ScaPackage.SCA_WAVEFORM_FACTORY__PROFILE_URI, oldProfileURI, PROFILE_URI_EDEFAULT, oldProfileURIESet));
+			eNotify(new ENotificationImpl(this, Notification.UNSET, ScaPackage.SCA_WAVEFORM_FACTORY__PROFILE_URI, oldProfileURI, PROFILE_URI_EDEFAULT,
+				oldProfileURIESet));
 	}
 
 	/**
@@ -314,9 +316,9 @@ public class ScaWaveformFactoryImpl extends CorbaObjWrapperImpl<ApplicationFacto
 	 */
 	@Override
 	public SoftwareAssembly getProfileObj() {
-		if (profileObj != null && ((EObject)profileObj).eIsProxy()) {
-			InternalEObject oldProfileObj = (InternalEObject)profileObj;
-			profileObj = (SoftwareAssembly)eResolveProxy(oldProfileObj);
+		if (profileObj != null && ((EObject) profileObj).eIsProxy()) {
+			InternalEObject oldProfileObj = (InternalEObject) profileObj;
+			profileObj = (SoftwareAssembly) eResolveProxy(oldProfileObj);
 			if (profileObj != oldProfileObj) {
 				if (eNotificationRequired())
 					eNotify(new ENotificationImpl(this, Notification.RESOLVE, ScaPackage.SCA_WAVEFORM_FACTORY__PROFILE_OBJ, oldProfileObj, profileObj));
@@ -378,6 +380,7 @@ public class ScaWaveformFactoryImpl extends CorbaObjWrapperImpl<ApplicationFacto
 
 	private static final DataType[] DATA_EMPTY_TYPE = new DataType[0];
 	private static final DeviceAssignmentType[] DEVICE_EMPTY_TYPE = new DeviceAssignmentType[0];
+
 	@Override
 	protected void notifyChanged(Notification msg) {
 		// END GENERATED CODE
@@ -429,8 +432,9 @@ public class ScaWaveformFactoryImpl extends CorbaObjWrapperImpl<ApplicationFacto
 	 */
 	@Override
 	public ScaDomainManager getDomMgr() {
-		if (eContainerFeatureID() != ScaPackage.SCA_WAVEFORM_FACTORY__DOM_MGR) return null;
-		return (ScaDomainManager)eContainer();
+		if (eContainerFeatureID() != ScaPackage.SCA_WAVEFORM_FACTORY__DOM_MGR)
+			return null;
+		return (ScaDomainManager) eContainer();
 	}
 
 	/**
@@ -439,8 +443,9 @@ public class ScaWaveformFactoryImpl extends CorbaObjWrapperImpl<ApplicationFacto
 	 * @generated
 	 */
 	public ScaDomainManager basicGetDomMgr() {
-		if (eContainerFeatureID() != ScaPackage.SCA_WAVEFORM_FACTORY__DOM_MGR) return null;
-		return (ScaDomainManager)eInternalContainer();
+		if (eContainerFeatureID() != ScaPackage.SCA_WAVEFORM_FACTORY__DOM_MGR)
+			return null;
+		return (ScaDomainManager) eInternalContainer();
 	}
 
 	/**
@@ -449,7 +454,7 @@ public class ScaWaveformFactoryImpl extends CorbaObjWrapperImpl<ApplicationFacto
 	 * @generated
 	 */
 	public NotificationChain basicSetDomMgr(ScaDomainManager newDomMgr, NotificationChain msgs) {
-		msgs = eBasicSetContainer((InternalEObject)newDomMgr, ScaPackage.SCA_WAVEFORM_FACTORY__DOM_MGR, msgs);
+		msgs = eBasicSetContainer((InternalEObject) newDomMgr, ScaPackage.SCA_WAVEFORM_FACTORY__DOM_MGR, msgs);
 		return msgs;
 	}
 
@@ -467,11 +472,11 @@ public class ScaWaveformFactoryImpl extends CorbaObjWrapperImpl<ApplicationFacto
 			if (eInternalContainer() != null)
 				msgs = eBasicRemoveFromContainer(msgs);
 			if (newDomMgr != null)
-				msgs = ((InternalEObject)newDomMgr).eInverseAdd(this, ScaPackage.SCA_DOMAIN_MANAGER__WAVEFORM_FACTORIES, ScaDomainManager.class, msgs);
+				msgs = ((InternalEObject) newDomMgr).eInverseAdd(this, ScaPackage.SCA_DOMAIN_MANAGER__WAVEFORM_FACTORIES, ScaDomainManager.class, msgs);
 			msgs = basicSetDomMgr(newDomMgr, msgs);
-			if (msgs != null) msgs.dispatch();
-		}
-		else if (eNotificationRequired())
+			if (msgs != null)
+				msgs.dispatch();
+		} else if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET, ScaPackage.SCA_WAVEFORM_FACTORY__DOM_MGR, newDomMgr, newDomMgr));
 	}
 
@@ -512,7 +517,8 @@ public class ScaWaveformFactoryImpl extends CorbaObjWrapperImpl<ApplicationFacto
 		identifier = IDENTIFIER_EDEFAULT;
 		identifierESet = false;
 		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.UNSET, ScaPackage.SCA_WAVEFORM_FACTORY__IDENTIFIER, oldIdentifier, IDENTIFIER_EDEFAULT, oldIdentifierESet));
+			eNotify(new ENotificationImpl(this, Notification.UNSET, ScaPackage.SCA_WAVEFORM_FACTORY__IDENTIFIER, oldIdentifier, IDENTIFIER_EDEFAULT,
+				oldIdentifierESet));
 	}
 
 	/**
@@ -651,7 +657,7 @@ public class ScaWaveformFactoryImpl extends CorbaObjWrapperImpl<ApplicationFacto
 	 */
 	@Override
 	public ScaWaveform createWaveform(IProgressMonitor monitor, final String name, DataType[] initConfiguration, DeviceAssignmentType[] deviceAssignments)
-	        throws CreateApplicationError, CreateApplicationRequestError, InvalidInitConfiguration, CreateApplicationInsufficientCapacityError {
+		throws CreateApplicationError, CreateApplicationRequestError, InvalidInitConfiguration, CreateApplicationInsufficientCapacityError {
 		// END GENERATED CODE
 		if (DEBUG.enabled) {
 			DEBUG.enteringMethod(name, Arrays.toString(initConfiguration), Arrays.toString(deviceAssignments));
@@ -878,7 +884,7 @@ public class ScaWaveformFactoryImpl extends CorbaObjWrapperImpl<ApplicationFacto
 	 */
 	@Override
 	public Application create(final String name, final DataType[] initConfiguration, final DeviceAssignmentType[] deviceAssignments)
-	        throws CreateApplicationError, CreateApplicationRequestError, InvalidInitConfiguration, CreateApplicationInsufficientCapacityError {
+		throws CreateApplicationError, CreateApplicationRequestError, InvalidInitConfiguration, CreateApplicationInsufficientCapacityError {
 		// END GENERATED CODE
 		ScaWaveform result = createWaveform(null, name, initConfiguration, deviceAssignments);
 		if (result != null) {
@@ -896,10 +902,10 @@ public class ScaWaveformFactoryImpl extends CorbaObjWrapperImpl<ApplicationFacto
 	@Override
 	public NotificationChain eInverseAdd(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
 		switch (featureID) {
-			case ScaPackage.SCA_WAVEFORM_FACTORY__DOM_MGR:
-				if (eInternalContainer() != null)
-					msgs = eBasicRemoveFromContainer(msgs);
-				return basicSetDomMgr((ScaDomainManager)otherEnd, msgs);
+		case ScaPackage.SCA_WAVEFORM_FACTORY__DOM_MGR:
+			if (eInternalContainer() != null)
+				msgs = eBasicRemoveFromContainer(msgs);
+			return basicSetDomMgr((ScaDomainManager) otherEnd, msgs);
 		}
 		return super.eInverseAdd(otherEnd, featureID, msgs);
 	}
@@ -912,8 +918,8 @@ public class ScaWaveformFactoryImpl extends CorbaObjWrapperImpl<ApplicationFacto
 	@Override
 	public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
 		switch (featureID) {
-			case ScaPackage.SCA_WAVEFORM_FACTORY__DOM_MGR:
-				return basicSetDomMgr(null, msgs);
+		case ScaPackage.SCA_WAVEFORM_FACTORY__DOM_MGR:
+			return basicSetDomMgr(null, msgs);
 		}
 		return super.eInverseRemove(otherEnd, featureID, msgs);
 	}
@@ -926,8 +932,8 @@ public class ScaWaveformFactoryImpl extends CorbaObjWrapperImpl<ApplicationFacto
 	@Override
 	public NotificationChain eBasicRemoveFromContainerFeature(NotificationChain msgs) {
 		switch (eContainerFeatureID()) {
-			case ScaPackage.SCA_WAVEFORM_FACTORY__DOM_MGR:
-				return eInternalContainer().eInverseRemove(this, ScaPackage.SCA_DOMAIN_MANAGER__WAVEFORM_FACTORIES, ScaDomainManager.class, msgs);
+		case ScaPackage.SCA_WAVEFORM_FACTORY__DOM_MGR:
+			return eInternalContainer().eInverseRemove(this, ScaPackage.SCA_DOMAIN_MANAGER__WAVEFORM_FACTORIES, ScaDomainManager.class, msgs);
 		}
 		return super.eBasicRemoveFromContainerFeature(msgs);
 	}
@@ -940,22 +946,24 @@ public class ScaWaveformFactoryImpl extends CorbaObjWrapperImpl<ApplicationFacto
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
-			case ScaPackage.SCA_WAVEFORM_FACTORY__PROFILE_URI:
-				return getProfileURI();
-			case ScaPackage.SCA_WAVEFORM_FACTORY__PROFILE_OBJ:
-				if (resolve) return getProfileObj();
-				return basicGetProfileObj();
-			case ScaPackage.SCA_WAVEFORM_FACTORY__ROOT_FILE_STORE:
-				return getRootFileStore();
-			case ScaPackage.SCA_WAVEFORM_FACTORY__DOM_MGR:
-				if (resolve) return getDomMgr();
-				return basicGetDomMgr();
-			case ScaPackage.SCA_WAVEFORM_FACTORY__IDENTIFIER:
-				return getIdentifier();
-			case ScaPackage.SCA_WAVEFORM_FACTORY__NAME:
-				return getName();
-			case ScaPackage.SCA_WAVEFORM_FACTORY__PROFILE:
-				return getProfile();
+		case ScaPackage.SCA_WAVEFORM_FACTORY__PROFILE_URI:
+			return getProfileURI();
+		case ScaPackage.SCA_WAVEFORM_FACTORY__PROFILE_OBJ:
+			if (resolve)
+				return getProfileObj();
+			return basicGetProfileObj();
+		case ScaPackage.SCA_WAVEFORM_FACTORY__ROOT_FILE_STORE:
+			return getRootFileStore();
+		case ScaPackage.SCA_WAVEFORM_FACTORY__DOM_MGR:
+			if (resolve)
+				return getDomMgr();
+			return basicGetDomMgr();
+		case ScaPackage.SCA_WAVEFORM_FACTORY__IDENTIFIER:
+			return getIdentifier();
+		case ScaPackage.SCA_WAVEFORM_FACTORY__NAME:
+			return getName();
+		case ScaPackage.SCA_WAVEFORM_FACTORY__PROFILE:
+			return getProfile();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -968,24 +976,24 @@ public class ScaWaveformFactoryImpl extends CorbaObjWrapperImpl<ApplicationFacto
 	@Override
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
-			case ScaPackage.SCA_WAVEFORM_FACTORY__PROFILE_URI:
-				setProfileURI((URI)newValue);
-				return;
-			case ScaPackage.SCA_WAVEFORM_FACTORY__PROFILE_OBJ:
-				setProfileObj((SoftwareAssembly)newValue);
-				return;
-			case ScaPackage.SCA_WAVEFORM_FACTORY__DOM_MGR:
-				setDomMgr((ScaDomainManager)newValue);
-				return;
-			case ScaPackage.SCA_WAVEFORM_FACTORY__IDENTIFIER:
-				setIdentifier((String)newValue);
-				return;
-			case ScaPackage.SCA_WAVEFORM_FACTORY__NAME:
-				setName((String)newValue);
-				return;
-			case ScaPackage.SCA_WAVEFORM_FACTORY__PROFILE:
-				setProfile((String)newValue);
-				return;
+		case ScaPackage.SCA_WAVEFORM_FACTORY__PROFILE_URI:
+			setProfileURI((URI) newValue);
+			return;
+		case ScaPackage.SCA_WAVEFORM_FACTORY__PROFILE_OBJ:
+			setProfileObj((SoftwareAssembly) newValue);
+			return;
+		case ScaPackage.SCA_WAVEFORM_FACTORY__DOM_MGR:
+			setDomMgr((ScaDomainManager) newValue);
+			return;
+		case ScaPackage.SCA_WAVEFORM_FACTORY__IDENTIFIER:
+			setIdentifier((String) newValue);
+			return;
+		case ScaPackage.SCA_WAVEFORM_FACTORY__NAME:
+			setName((String) newValue);
+			return;
+		case ScaPackage.SCA_WAVEFORM_FACTORY__PROFILE:
+			setProfile((String) newValue);
+			return;
 		}
 		super.eSet(featureID, newValue);
 	}
@@ -998,24 +1006,24 @@ public class ScaWaveformFactoryImpl extends CorbaObjWrapperImpl<ApplicationFacto
 	@Override
 	public void eUnset(int featureID) {
 		switch (featureID) {
-			case ScaPackage.SCA_WAVEFORM_FACTORY__PROFILE_URI:
-				unsetProfileURI();
-				return;
-			case ScaPackage.SCA_WAVEFORM_FACTORY__PROFILE_OBJ:
-				unsetProfileObj();
-				return;
-			case ScaPackage.SCA_WAVEFORM_FACTORY__DOM_MGR:
-				setDomMgr((ScaDomainManager)null);
-				return;
-			case ScaPackage.SCA_WAVEFORM_FACTORY__IDENTIFIER:
-				unsetIdentifier();
-				return;
-			case ScaPackage.SCA_WAVEFORM_FACTORY__NAME:
-				unsetName();
-				return;
-			case ScaPackage.SCA_WAVEFORM_FACTORY__PROFILE:
-				unsetProfile();
-				return;
+		case ScaPackage.SCA_WAVEFORM_FACTORY__PROFILE_URI:
+			unsetProfileURI();
+			return;
+		case ScaPackage.SCA_WAVEFORM_FACTORY__PROFILE_OBJ:
+			unsetProfileObj();
+			return;
+		case ScaPackage.SCA_WAVEFORM_FACTORY__DOM_MGR:
+			setDomMgr((ScaDomainManager) null);
+			return;
+		case ScaPackage.SCA_WAVEFORM_FACTORY__IDENTIFIER:
+			unsetIdentifier();
+			return;
+		case ScaPackage.SCA_WAVEFORM_FACTORY__NAME:
+			unsetName();
+			return;
+		case ScaPackage.SCA_WAVEFORM_FACTORY__PROFILE:
+			unsetProfile();
+			return;
 		}
 		super.eUnset(featureID);
 	}
@@ -1028,20 +1036,20 @@ public class ScaWaveformFactoryImpl extends CorbaObjWrapperImpl<ApplicationFacto
 	@Override
 	public boolean eIsSet(int featureID) {
 		switch (featureID) {
-			case ScaPackage.SCA_WAVEFORM_FACTORY__PROFILE_URI:
-				return isSetProfileURI();
-			case ScaPackage.SCA_WAVEFORM_FACTORY__PROFILE_OBJ:
-				return isSetProfileObj();
-			case ScaPackage.SCA_WAVEFORM_FACTORY__ROOT_FILE_STORE:
-				return ROOT_FILE_STORE_EDEFAULT == null ? getRootFileStore() != null : !ROOT_FILE_STORE_EDEFAULT.equals(getRootFileStore());
-			case ScaPackage.SCA_WAVEFORM_FACTORY__DOM_MGR:
-				return basicGetDomMgr() != null;
-			case ScaPackage.SCA_WAVEFORM_FACTORY__IDENTIFIER:
-				return isSetIdentifier();
-			case ScaPackage.SCA_WAVEFORM_FACTORY__NAME:
-				return isSetName();
-			case ScaPackage.SCA_WAVEFORM_FACTORY__PROFILE:
-				return isSetProfile();
+		case ScaPackage.SCA_WAVEFORM_FACTORY__PROFILE_URI:
+			return isSetProfileURI();
+		case ScaPackage.SCA_WAVEFORM_FACTORY__PROFILE_OBJ:
+			return isSetProfileObj();
+		case ScaPackage.SCA_WAVEFORM_FACTORY__ROOT_FILE_STORE:
+			return ROOT_FILE_STORE_EDEFAULT == null ? getRootFileStore() != null : !ROOT_FILE_STORE_EDEFAULT.equals(getRootFileStore());
+		case ScaPackage.SCA_WAVEFORM_FACTORY__DOM_MGR:
+			return basicGetDomMgr() != null;
+		case ScaPackage.SCA_WAVEFORM_FACTORY__IDENTIFIER:
+			return isSetIdentifier();
+		case ScaPackage.SCA_WAVEFORM_FACTORY__NAME:
+			return isSetName();
+		case ScaPackage.SCA_WAVEFORM_FACTORY__PROFILE:
+			return isSetProfile();
 		}
 		return super.eIsSet(featureID);
 	}
@@ -1052,18 +1060,23 @@ public class ScaWaveformFactoryImpl extends CorbaObjWrapperImpl<ApplicationFacto
 	 * @generated
 	 */
 	@Override
-	public int eBaseStructuralFeatureID(int derivedFeatureID, Class<?> baseClass) {
+	public int eBaseStructuralFeatureID(int derivedFeatureID, Class< ? > baseClass) {
 		if (baseClass == ApplicationFactoryOperations.class) {
 			switch (derivedFeatureID) {
-				default: return -1;
+			default:
+				return -1;
 			}
 		}
 		if (baseClass == ProfileObjectWrapper.class) {
 			switch (derivedFeatureID) {
-				case ScaPackage.SCA_WAVEFORM_FACTORY__PROFILE_URI: return ScaPackage.PROFILE_OBJECT_WRAPPER__PROFILE_URI;
-				case ScaPackage.SCA_WAVEFORM_FACTORY__PROFILE_OBJ: return ScaPackage.PROFILE_OBJECT_WRAPPER__PROFILE_OBJ;
-				case ScaPackage.SCA_WAVEFORM_FACTORY__ROOT_FILE_STORE: return ScaPackage.PROFILE_OBJECT_WRAPPER__ROOT_FILE_STORE;
-				default: return -1;
+			case ScaPackage.SCA_WAVEFORM_FACTORY__PROFILE_URI:
+				return ScaPackage.PROFILE_OBJECT_WRAPPER__PROFILE_URI;
+			case ScaPackage.SCA_WAVEFORM_FACTORY__PROFILE_OBJ:
+				return ScaPackage.PROFILE_OBJECT_WRAPPER__PROFILE_OBJ;
+			case ScaPackage.SCA_WAVEFORM_FACTORY__ROOT_FILE_STORE:
+				return ScaPackage.PROFILE_OBJECT_WRAPPER__ROOT_FILE_STORE;
+			default:
+				return -1;
 			}
 		}
 		return super.eBaseStructuralFeatureID(derivedFeatureID, baseClass);
@@ -1075,18 +1088,23 @@ public class ScaWaveformFactoryImpl extends CorbaObjWrapperImpl<ApplicationFacto
 	 * @generated
 	 */
 	@Override
-	public int eDerivedStructuralFeatureID(int baseFeatureID, Class<?> baseClass) {
+	public int eDerivedStructuralFeatureID(int baseFeatureID, Class< ? > baseClass) {
 		if (baseClass == ApplicationFactoryOperations.class) {
 			switch (baseFeatureID) {
-				default: return -1;
+			default:
+				return -1;
 			}
 		}
 		if (baseClass == ProfileObjectWrapper.class) {
 			switch (baseFeatureID) {
-				case ScaPackage.PROFILE_OBJECT_WRAPPER__PROFILE_URI: return ScaPackage.SCA_WAVEFORM_FACTORY__PROFILE_URI;
-				case ScaPackage.PROFILE_OBJECT_WRAPPER__PROFILE_OBJ: return ScaPackage.SCA_WAVEFORM_FACTORY__PROFILE_OBJ;
-				case ScaPackage.PROFILE_OBJECT_WRAPPER__ROOT_FILE_STORE: return ScaPackage.SCA_WAVEFORM_FACTORY__ROOT_FILE_STORE;
-				default: return -1;
+			case ScaPackage.PROFILE_OBJECT_WRAPPER__PROFILE_URI:
+				return ScaPackage.SCA_WAVEFORM_FACTORY__PROFILE_URI;
+			case ScaPackage.PROFILE_OBJECT_WRAPPER__PROFILE_OBJ:
+				return ScaPackage.SCA_WAVEFORM_FACTORY__PROFILE_OBJ;
+			case ScaPackage.PROFILE_OBJECT_WRAPPER__ROOT_FILE_STORE:
+				return ScaPackage.SCA_WAVEFORM_FACTORY__ROOT_FILE_STORE;
+			default:
+				return -1;
 			}
 		}
 		return super.eDerivedStructuralFeatureID(baseFeatureID, baseClass);
@@ -1099,17 +1117,30 @@ public class ScaWaveformFactoryImpl extends CorbaObjWrapperImpl<ApplicationFacto
 	 */
 	@Override
 	public String toString() {
-		if (eIsProxy()) return super.toString();
+		if (eIsProxy())
+			return super.toString();
 
 		StringBuffer result = new StringBuffer(super.toString());
 		result.append(" (profileURI: ");
-		if (profileURIESet) result.append(profileURI); else result.append("<unset>");
+		if (profileURIESet)
+			result.append(profileURI);
+		else
+			result.append("<unset>");
 		result.append(", identifier: ");
-		if (identifierESet) result.append(identifier); else result.append("<unset>");
+		if (identifierESet)
+			result.append(identifier);
+		else
+			result.append("<unset>");
 		result.append(", name: ");
-		if (nameESet) result.append(name); else result.append("<unset>");
+		if (nameESet)
+			result.append(name);
+		else
+			result.append("<unset>");
 		result.append(", profile: ");
-		if (profileESet) result.append(profile); else result.append("<unset>");
+		if (profileESet)
+			result.append(profile);
+		else
+			result.append("<unset>");
 		result.append(')');
 		return result.toString();
 	}
@@ -1145,9 +1176,9 @@ public class ScaWaveformFactoryImpl extends CorbaObjWrapperImpl<ApplicationFacto
 	private final VersionedFeature profileURIFeature = new VersionedFeature(this, ScaPackage.Literals.PROFILE_OBJECT_WRAPPER__PROFILE_URI);
 
 	/**
-     * @since 14.0
-     * @generated NOT
-     */
+	 * @since 14.0
+	 * @generated NOT
+	 */
 	@Override
 	public URI fetchProfileURI(IProgressMonitor monitor) {
 		if (isSetProfileURI()) {

@@ -43,7 +43,8 @@ import org.eclipse.emf.edit.provider.ViewerNotification;
  * --> <!-- end-user-doc -->
  * @generated
  */
-public class ScaDomainManagerItemProvider extends ScaPropertyContainerItemProvider implements IEditingDomainItemProvider, IStructuredItemContentProvider, ITreeItemContentProvider, IItemLabelProvider, IItemPropertySource, ITableItemLabelProvider, ITableItemColorProvider, IItemColorProvider {
+public class ScaDomainManagerItemProvider extends ScaPropertyContainerItemProvider implements IEditingDomainItemProvider, IStructuredItemContentProvider,
+		ITreeItemContentProvider, IItemLabelProvider, IItemPropertySource, ITableItemLabelProvider, ITableItemColorProvider, IItemColorProvider {
 	/**
 	 * This constructs an instance from a factory and a notifier.
 	 * <!-- begin-user-doc -->
@@ -84,19 +85,10 @@ public class ScaDomainManagerItemProvider extends ScaPropertyContainerItemProvid
 	 * @generated
 	 */
 	protected void addConnectionPropertiesPropertyDescriptor(Object object) {
-		itemPropertyDescriptors.add
-			(createItemPropertyDescriptor
-				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
-				 getResourceLocator(),
-				 getString("_UI_ScaDomainManager_connectionProperties_feature"),
-				 getString("_UI_PropertyDescriptor_description", "_UI_ScaDomainManager_connectionProperties_feature", "_UI_ScaDomainManager_type"),
-				 ScaPackage.Literals.SCA_DOMAIN_MANAGER__CONNECTION_PROPERTIES,
-				 true,
-				 true,
-				 false,
-				 null,
-				 null,
-				 null));
+		itemPropertyDescriptors.add(createItemPropertyDescriptor(((ComposeableAdapterFactory) adapterFactory).getRootAdapterFactory(), getResourceLocator(),
+			getString("_UI_ScaDomainManager_connectionProperties_feature"),
+			getString("_UI_PropertyDescriptor_description", "_UI_ScaDomainManager_connectionProperties_feature", "_UI_ScaDomainManager_type"),
+			ScaPackage.Literals.SCA_DOMAIN_MANAGER__CONNECTION_PROPERTIES, true, true, false, null, null, null));
 	}
 
 	/**
@@ -106,19 +98,10 @@ public class ScaDomainManagerItemProvider extends ScaPropertyContainerItemProvid
 	 * @generated
 	 */
 	protected void addAutoConnectPropertyDescriptor(Object object) {
-		itemPropertyDescriptors.add
-			(createItemPropertyDescriptor
-				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
-				 getResourceLocator(),
-				 getString("_UI_ScaDomainManager_autoConnect_feature"),
-				 getString("_UI_PropertyDescriptor_description", "_UI_ScaDomainManager_autoConnect_feature", "_UI_ScaDomainManager_type"),
-				 ScaPackage.Literals.SCA_DOMAIN_MANAGER__AUTO_CONNECT,
-				 true,
-				 false,
-				 false,
-				 ItemPropertyDescriptor.BOOLEAN_VALUE_IMAGE,
-				 null,
-				 null));
+		itemPropertyDescriptors.add(createItemPropertyDescriptor(((ComposeableAdapterFactory) adapterFactory).getRootAdapterFactory(), getResourceLocator(),
+			getString("_UI_ScaDomainManager_autoConnect_feature"),
+			getString("_UI_PropertyDescriptor_description", "_UI_ScaDomainManager_autoConnect_feature", "_UI_ScaDomainManager_type"),
+			ScaPackage.Literals.SCA_DOMAIN_MANAGER__AUTO_CONNECT, true, false, false, ItemPropertyDescriptor.BOOLEAN_VALUE_IMAGE, null, null));
 	}
 
 	/**
@@ -128,19 +111,10 @@ public class ScaDomainManagerItemProvider extends ScaPropertyContainerItemProvid
 	 * @generated
 	 */
 	protected void addConnectedPropertyDescriptor(Object object) {
-		itemPropertyDescriptors.add
-			(createItemPropertyDescriptor
-				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
-				 getResourceLocator(),
-				 getString("_UI_ScaDomainManager_connected_feature"),
-				 getString("_UI_PropertyDescriptor_description", "_UI_ScaDomainManager_connected_feature", "_UI_ScaDomainManager_type"),
-				 ScaPackage.Literals.SCA_DOMAIN_MANAGER__CONNECTED,
-				 false,
-				 false,
-				 false,
-				 ItemPropertyDescriptor.BOOLEAN_VALUE_IMAGE,
-				 null,
-				 null));
+		itemPropertyDescriptors.add(createItemPropertyDescriptor(((ComposeableAdapterFactory) adapterFactory).getRootAdapterFactory(), getResourceLocator(),
+			getString("_UI_ScaDomainManager_connected_feature"),
+			getString("_UI_PropertyDescriptor_description", "_UI_ScaDomainManager_connected_feature", "_UI_ScaDomainManager_type"),
+			ScaPackage.Literals.SCA_DOMAIN_MANAGER__CONNECTED, false, false, false, ItemPropertyDescriptor.BOOLEAN_VALUE_IMAGE, null, null));
 	}
 
 	/**
@@ -150,19 +124,10 @@ public class ScaDomainManagerItemProvider extends ScaPropertyContainerItemProvid
 	 * @generated
 	 */
 	protected void addIdentifierPropertyDescriptor(Object object) {
-		itemPropertyDescriptors.add
-			(createItemPropertyDescriptor
-				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
-				 getResourceLocator(),
-				 getString("_UI_ScaDomainManager_identifier_feature"),
-				 getString("_UI_PropertyDescriptor_description", "_UI_ScaDomainManager_identifier_feature", "_UI_ScaDomainManager_type"),
-				 ScaPackage.Literals.SCA_DOMAIN_MANAGER__IDENTIFIER,
-				 false,
-				 false,
-				 false,
-				 ItemPropertyDescriptor.GENERIC_VALUE_IMAGE,
-				 null,
-				 null));
+		itemPropertyDescriptors.add(createItemPropertyDescriptor(((ComposeableAdapterFactory) adapterFactory).getRootAdapterFactory(), getResourceLocator(),
+			getString("_UI_ScaDomainManager_identifier_feature"),
+			getString("_UI_PropertyDescriptor_description", "_UI_ScaDomainManager_identifier_feature", "_UI_ScaDomainManager_type"),
+			ScaPackage.Literals.SCA_DOMAIN_MANAGER__IDENTIFIER, false, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
 	}
 
 	/**
@@ -172,19 +137,10 @@ public class ScaDomainManagerItemProvider extends ScaPropertyContainerItemProvid
 	 * @generated
 	 */
 	protected void addNamePropertyDescriptor(Object object) {
-		itemPropertyDescriptors.add
-			(createItemPropertyDescriptor
-				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
-				 getResourceLocator(),
-				 getString("_UI_ScaDomainManager_name_feature"),
-				 getString("_UI_PropertyDescriptor_description", "_UI_ScaDomainManager_name_feature", "_UI_ScaDomainManager_type"),
-				 ScaPackage.Literals.SCA_DOMAIN_MANAGER__NAME,
-				 true,
-				 false,
-				 false,
-				 ItemPropertyDescriptor.GENERIC_VALUE_IMAGE,
-				 null,
-				 null));
+		itemPropertyDescriptors.add(createItemPropertyDescriptor(((ComposeableAdapterFactory) adapterFactory).getRootAdapterFactory(), getResourceLocator(),
+			getString("_UI_ScaDomainManager_name_feature"),
+			getString("_UI_PropertyDescriptor_description", "_UI_ScaDomainManager_name_feature", "_UI_ScaDomainManager_type"),
+			ScaPackage.Literals.SCA_DOMAIN_MANAGER__NAME, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
 	}
 
 	/**
@@ -194,19 +150,10 @@ public class ScaDomainManagerItemProvider extends ScaPropertyContainerItemProvid
 	 * @generated
 	 */
 	protected void addRootContextPropertyDescriptor(Object object) {
-		itemPropertyDescriptors.add
-			(createItemPropertyDescriptor
-				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
-				 getResourceLocator(),
-				 getString("_UI_ScaDomainManager_rootContext_feature"),
-				 getString("_UI_PropertyDescriptor_description", "_UI_ScaDomainManager_rootContext_feature", "_UI_ScaDomainManager_type"),
-				 ScaPackage.Literals.SCA_DOMAIN_MANAGER__ROOT_CONTEXT,
-				 false,
-				 false,
-				 false,
-				 ItemPropertyDescriptor.GENERIC_VALUE_IMAGE,
-				 null,
-				 null));
+		itemPropertyDescriptors.add(createItemPropertyDescriptor(((ComposeableAdapterFactory) adapterFactory).getRootAdapterFactory(), getResourceLocator(),
+			getString("_UI_ScaDomainManager_rootContext_feature"),
+			getString("_UI_PropertyDescriptor_description", "_UI_ScaDomainManager_rootContext_feature", "_UI_ScaDomainManager_type"),
+			ScaPackage.Literals.SCA_DOMAIN_MANAGER__ROOT_CONTEXT, false, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
 	}
 
 	/**
@@ -216,19 +163,10 @@ public class ScaDomainManagerItemProvider extends ScaPropertyContainerItemProvid
 	 * @generated
 	 */
 	protected void addStatePropertyDescriptor(Object object) {
-		itemPropertyDescriptors.add
-			(createItemPropertyDescriptor
-				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
-				 getResourceLocator(),
-				 getString("_UI_ScaDomainManager_state_feature"),
-				 getString("_UI_PropertyDescriptor_description", "_UI_ScaDomainManager_state_feature", "_UI_ScaDomainManager_type"),
-				 ScaPackage.Literals.SCA_DOMAIN_MANAGER__STATE,
-				 false,
-				 false,
-				 false,
-				 ItemPropertyDescriptor.GENERIC_VALUE_IMAGE,
-				 null,
-				 null));
+		itemPropertyDescriptors.add(createItemPropertyDescriptor(((ComposeableAdapterFactory) adapterFactory).getRootAdapterFactory(), getResourceLocator(),
+			getString("_UI_ScaDomainManager_state_feature"),
+			getString("_UI_PropertyDescriptor_description", "_UI_ScaDomainManager_state_feature", "_UI_ScaDomainManager_type"),
+			ScaPackage.Literals.SCA_DOMAIN_MANAGER__STATE, false, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
 	}
 
 	/**
@@ -238,19 +176,10 @@ public class ScaDomainManagerItemProvider extends ScaPropertyContainerItemProvid
 	 * @generated
 	 */
 	protected void addProfilePropertyDescriptor(Object object) {
-		itemPropertyDescriptors.add
-			(createItemPropertyDescriptor
-				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
-				 getResourceLocator(),
-				 getString("_UI_ScaDomainManager_profile_feature"),
-				 getString("_UI_PropertyDescriptor_description", "_UI_ScaDomainManager_profile_feature", "_UI_ScaDomainManager_type"),
-				 ScaPackage.Literals.SCA_DOMAIN_MANAGER__PROFILE,
-				 true,
-				 false,
-				 false,
-				 ItemPropertyDescriptor.GENERIC_VALUE_IMAGE,
-				 null,
-				 null));
+		itemPropertyDescriptors.add(createItemPropertyDescriptor(((ComposeableAdapterFactory) adapterFactory).getRootAdapterFactory(), getResourceLocator(),
+			getString("_UI_ScaDomainManager_profile_feature"),
+			getString("_UI_PropertyDescriptor_description", "_UI_ScaDomainManager_profile_feature", "_UI_ScaDomainManager_type"),
+			ScaPackage.Literals.SCA_DOMAIN_MANAGER__PROFILE, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
 	}
 
 	/**
@@ -262,7 +191,7 @@ public class ScaDomainManagerItemProvider extends ScaPropertyContainerItemProvid
 	 * @generated
 	 */
 	@Override
-	public Collection<? extends EStructuralFeature> getChildrenFeatures(Object object) {
+	public Collection< ? extends EStructuralFeature> getChildrenFeatures(Object object) {
 		if (childrenFeatures == null) {
 			super.getChildrenFeatures(object);
 			childrenFeatures.add(ScaPackage.Literals.SCA_DOMAIN_MANAGER__FILE_MANAGER);
@@ -326,10 +255,8 @@ public class ScaDomainManagerItemProvider extends ScaPropertyContainerItemProvid
 	 * @generated
 	 */
 	public String getTextGen(Object object) {
-		String label = ((ScaDomainManager)object).getName();
-		return label == null || label.length() == 0 ?
-			getString("_UI_ScaDomainManager_type") :
-			getString("_UI_ScaDomainManager_type") + " " + label;
+		String label = ((ScaDomainManager) object).getName();
+		return label == null || label.length() == 0 ? getString("_UI_ScaDomainManager_type") : getString("_UI_ScaDomainManager_type") + " " + label;
 	}
 
 	/**
@@ -366,22 +293,22 @@ public class ScaDomainManagerItemProvider extends ScaPropertyContainerItemProvid
 		updateChildren(notification);
 
 		switch (notification.getFeatureID(ScaDomainManager.class)) {
-			case ScaPackage.SCA_DOMAIN_MANAGER__CONNECTED:
-			case ScaPackage.SCA_DOMAIN_MANAGER__NAME:
-			case ScaPackage.SCA_DOMAIN_MANAGER__PROFILE:
-				fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
-				return;
-			case ScaPackage.SCA_DOMAIN_MANAGER__FILE_MANAGER:
-				fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), true, false));
-				return;
+		case ScaPackage.SCA_DOMAIN_MANAGER__CONNECTED:
+		case ScaPackage.SCA_DOMAIN_MANAGER__NAME:
+		case ScaPackage.SCA_DOMAIN_MANAGER__PROFILE:
+			fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
+			return;
+		case ScaPackage.SCA_DOMAIN_MANAGER__FILE_MANAGER:
+			fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), true, false));
+			return;
 		}
 		super.notifyChanged(notification);
 	}
-	
+
 	@Override
 	public void notifyChanged(Notification notification) {
 		updateChildren(notification);
-		
+
 		switch (notification.getFeatureID(ScaDomainManager.class)) {
 		case ScaPackage.SCA_DOMAIN_MANAGER__CONNECTED:
 			disposeContainerItemProviders();
@@ -390,7 +317,7 @@ public class ScaDomainManagerItemProvider extends ScaPropertyContainerItemProvid
 		}
 		notifyChangedGen(notification);
 	}
-	
+
 	/**
 	 * This adds {@link org.eclipse.emf.edit.command.CommandParameter}s describing the children
 	 * that can be created under this object.
@@ -406,52 +333,52 @@ public class ScaDomainManagerItemProvider extends ScaPropertyContainerItemProvid
 	private void disposeContainerItemProviders() {
 		if (this.waveformFactoriesItemProvider != null) {
 			this.waveformFactoriesItemProvider.dispose();
-			this.waveformFactoriesItemProvider=null;
+			this.waveformFactoriesItemProvider = null;
 		}
 		if (this.waveformItemProvider != null) {
 			this.waveformItemProvider.dispose();
-			this.waveformItemProvider=null;
+			this.waveformItemProvider = null;
 		}
 		if (this.deviceManagersItemProvider != null) {
 			this.deviceManagersItemProvider.dispose();
 			this.deviceManagersItemProvider = null;
 		}
 	}
-	
+
 	/**
-     * @since 11.0
-     */
+	 * @since 11.0
+	 */
 	public ScaWaveformsContainerItemProvider getWaveformContainerItemProvider() {
 		if (waveformItemProvider == null) {
 			waveformItemProvider = new ScaWaveformsContainerItemProvider(adapterFactory, (EObject) target);
 		}
-	    return waveformItemProvider;
-    }
-	
+		return waveformItemProvider;
+	}
+
 	/**
-     * @since 11.0
-     */
+	 * @since 11.0
+	 */
 	public ScaWaveformFactoriesContainerItemProvider getWaveformFactoriesContainerItemProvider() {
 		if (waveformFactoriesItemProvider == null) {
 			waveformFactoriesItemProvider = new ScaWaveformFactoriesContainerItemProvider(adapterFactory, (ScaDomainManager) target);
 		}
-	    return waveformFactoriesItemProvider;
-    }
-	
+		return waveformFactoriesItemProvider;
+	}
+
 	/**
-     * @since 11.0
-     */
+	 * @since 11.0
+	 */
 	public ScaDeviceManagersContainerItemProvider getDeviceManagersContainerItemProvider() {
 		if (deviceManagersItemProvider == null) {
 			deviceManagersItemProvider = new ScaDeviceManagersContainerItemProvider(adapterFactory, (ScaDomainManager) target);
 		}
-	    return deviceManagersItemProvider;
-    }
-	
+		return deviceManagersItemProvider;
+	}
+
 	@Override
 	public void dispose() {
 		disposeContainerItemProviders();
-	    super.dispose();
+		super.dispose();
 	}
 
 }

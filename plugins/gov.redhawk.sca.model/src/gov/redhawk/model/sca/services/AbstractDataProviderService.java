@@ -24,7 +24,7 @@ import org.eclipse.emf.ecore.EObject;
  * 
  */
 public abstract class AbstractDataProviderService implements IScaDataProviderService {
-	
+
 	private final List<IScaDataProvider> providers = Collections.synchronizedList(new ArrayList<IScaDataProvider>());
 	private boolean enabled;
 	private final PropertyChangeListener listener = new PropertyChangeListener() {
@@ -50,7 +50,7 @@ public abstract class AbstractDataProviderService implements IScaDataProviderSer
 		}
 		return provider;
 	}
-	
+
 	protected abstract IScaDataProvider createDataProvider(EObject object);
 
 	/**
@@ -64,10 +64,10 @@ public abstract class AbstractDataProviderService implements IScaDataProviderSer
 		this.enabled = enabled;
 		synchronized (providers) {
 			IScaDataProvider[] providerArray = providers.toArray(new IScaDataProvider[providers.size()]);
-	        for (IScaDataProvider provider : providerArray) {
-	        	provider.setEnabled(enabled);
-	        }
-        }
+			for (IScaDataProvider provider : providerArray) {
+				provider.setEnabled(enabled);
+			}
+		}
 	}
 
 	/**
@@ -91,7 +91,7 @@ public abstract class AbstractDataProviderService implements IScaDataProviderSer
 				provider.dispose();
 			}
 			this.providers.clear();
-        }
+		}
 	}
 
 }
