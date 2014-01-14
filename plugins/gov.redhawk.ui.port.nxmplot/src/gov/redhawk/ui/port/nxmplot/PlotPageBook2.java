@@ -35,6 +35,8 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 import mil.jpeojtrs.sca.util.DceUuidUtil;
@@ -63,7 +65,9 @@ import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.part.PageBook;
+import org.eclipse.ui.statushandlers.StatusManager;
 
+import BULKIO.StreamSRI;
 import BULKIO.dataSDDSHelper;
 
 /**
@@ -88,6 +92,7 @@ public class PlotPageBook2 extends Composite {
 			if (qualifiers == null) {
 				qualifiers = NxmPlotUtil.getDefaultPlotQualifiers(plot.getPlotSettings().getPlotType());
 			}
+			@SuppressWarnings("deprecation")
 			IPlotSession newSession = NxmPlotUtil.addSource(newSource.getInput(), newSource.getFftOptions(), plot, qualifiers);
 			sessionMap.put(newSource, newSession);
 		}
@@ -106,7 +111,7 @@ public class PlotPageBook2 extends Composite {
 			sessionMap.clear();
 			plot.dispose();
 		}
-	}
+	} // end inner-class PlotPage
 
 	/** The page book. */
 	private final PageBook pageBook;
@@ -183,6 +188,31 @@ public class PlotPageBook2 extends Composite {
 		for (PlotSource source : this.sources) {
 			plotPageSession.addSource(source);
 		}
+		
+		Set<Entry<PlotSource, List<INxmBlock>>> entrySet = source2NxmBlocks.entrySet();
+		for (Entry<PlotSource, List<INxmBlock>> entry : entrySet) {
+			PlotNxmBlockSettings plotBlockSettings = entry.getKey().getPlotBlockSettings();
+			if (plotBlockSettings == null) {
+				plotBlockSettings = new PlotNxmBlockSettings();
+			}
+			PlotNxmBlock plotBlock = new PlotNxmBlock(newPlot, plotBlockSettings);
+			List<INxmBlock> nxmBlocksForSource = entry.getValue();
+			int idx4LastNonPlotBlock = nxmBlocksForSource.size() - 2;
+			if (idx4LastNonPlotBlock >= 0) { // must have at least initial NxmBlock + PlotNxmBlock
+				final INxmBlock srcBlock = nxmBlocksForSource.get(idx4LastNonPlotBlock);
+				StreamSRI[] streamSRIs = srcBlock.getLaunchedStreams();
+				
+				plotBlock.addInput(srcBlock);
+				try {
+					plotBlock.start();
+					for (StreamSRI sri : streamSRIs) {
+						plotBlock.launch(sri.streamID, sri);
+					}
+				} catch (CoreException e) {
+					StatusManager.getManager().handle(new Status(Status.WARNING, PlotActivator.PLUGIN_ID, "Got Exception trying to plot Port: " + entry.getKey().getInput(), e), StatusManager.LOG);
+				}
+			}
+		}
 
 		return plotPageSession;
 	}
@@ -239,7 +269,8 @@ public class PlotPageBook2 extends Composite {
 		
 		final PlotPage curPlotPage = this.currentPlotPage;
 		if (curPlotPage == null) {
-			return null; // TODO: log warning?
+			StatusManager.getManager().handle(new Status(Status.WARNING, PlotActivator.PLUGIN_ID, "Unable to addSource Port when current PlotPage is null"), StatusManager.LOG);
+			return null;
 		}
 		final AbstractNxmPlotWidget currentPlotWidget = curPlotPage.plot;
 
@@ -290,10 +321,10 @@ public class PlotPageBook2 extends Composite {
 
 		IMenuManager menu = this.contextMenu;
 		if (menu != null) {
-			final int numSources = source2NxmBlocks.size();
-			final IMenuManager subMenu;
+			final MenuManager subMenu;
 			String subMenuText = scaPort.getName();
-			if (numSources > 0) {
+//			final int numSources = source2NxmBlocks.size();
+//			if (numSources > 0) {
 				EObject eObj = scaPort.eContainer();
 				if (eObj != null) {
 					final ScaItemProviderAdapterFactory factory = new ScaItemProviderAdapterFactory();
@@ -303,7 +334,7 @@ public class PlotPageBook2 extends Composite {
 						subMenuText = lp.getText(eObj) + " -> " + subMenuText;
 					}
 				}
-			}
+//			}
 			subMenu = new MenuManager(subMenuText, scaPort.getIor()); // subMenu for each Port source
 			menu.add(subMenu);
 			plotBlock.contributeMenuItems(subMenu); // allow NxmBlocks to contribute to subMenu 
@@ -318,8 +349,7 @@ public class PlotPageBook2 extends Composite {
 			}
 			startingBlock.start(); // starting block should be last to start
 		} catch (CoreException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace(); // SUPPRESS CHECKSTYLE DEBUG
+			StatusManager.getManager().handle(new Status(Status.WARNING, PlotActivator.PLUGIN_ID, "Got Exception trying to plot Port: " + scaPort, e), StatusManager.LOG);
 		}
 		
 		this.source2NxmBlocks.put(plotSource, nxmBlocksForSource);
@@ -361,7 +391,6 @@ public class PlotPageBook2 extends Composite {
 		if (type == null) {
 			pageBook.showPage(nullPage);
 			currentPlotPage = null;
-
 		} else {
 			PlotPage newPlot = this.plots.get(type);
 			if (newPlot == null) {

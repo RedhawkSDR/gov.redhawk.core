@@ -49,6 +49,7 @@ import BULKIO.StreamSRI;
 public abstract class AbstractNxmBlock<C extends Command> implements INxmBlock {
 
 	private static final Debug TRACE_LOG = new Debug(PlotActivator.PLUGIN_ID, AbstractNxmBlock.class.getSimpleName());
+	private static final StreamSRI[] EMPTY_STREAMSRI_ARRAY = new StreamSRI[0];
 		
 	private AbstractNxmPlotWidget plotWidget;
 	private int defaultInputIndex = 0;
@@ -59,7 +60,7 @@ public abstract class AbstractNxmBlock<C extends Command> implements INxmBlock {
 	// FYI: ConcurrentHashMap does not allow null key or value
 	/** key=streamID value=(cmdline,Command). */
 	private final ConcurrentHashMap<String, SimpleImmutableEntry<String, C>> streamIDToCmdMap = new ConcurrentHashMap<String, SimpleImmutableEntry<String, C>>();
-	private final List<String> launchedStreamIDList = Collections.synchronizedList(new ArrayList<String>());
+	private final List<StreamSRI> launchedStreamsList = Collections.synchronizedList(new ArrayList<StreamSRI>()); 
 
 	private final ConcurrentHashMap<String, String> outIndexStreamIDToOutNameMap = new ConcurrentHashMap<String, String>();
 
@@ -260,6 +261,7 @@ public abstract class AbstractNxmBlock<C extends Command> implements INxmBlock {
 					C nxmCommand = (C) cmd;
 					SimpleImmutableEntry<String, C> cmd4Stream = new SimpleImmutableEntry<String, C>(cmdLine, nxmCommand);
 					streamIDToCmdMap.put(streamID, cmd4Stream);
+					launchedStreamsList.add(sri);
 					if (TRACE_LOG.enabled) {
 						TRACE_LOG.message("launched({0}) Command: {1} [{2}]", streamID, nxmCommand, toString());
 					}
@@ -303,6 +305,12 @@ public abstract class AbstractNxmBlock<C extends Command> implements INxmBlock {
 		}
 	}
 
+	@Override
+	public StreamSRI[] getLaunchedStreams() {
+		StreamSRI[] retval = launchedStreamsList.toArray(EMPTY_STREAMSRI_ARRAY);
+		return retval;
+	}
+	
 	@Override
 	public int getMaxOutputs() {
 		return 1;
@@ -447,28 +455,6 @@ public abstract class AbstractNxmBlock<C extends Command> implements INxmBlock {
 	protected void applySettingsTo(@NonNull C cmd, @NonNull Object settings, @NonNull String streamId) {
 	}
 	
-	@Nullable
-	protected C getNxmCommandForFirstStream() {
-		C nxmCommand;
-		String firstStreamID;
-		try {
-			firstStreamID = launchedStreamIDList.get(0);
-		} catch (IndexOutOfBoundsException e) {
-			firstStreamID = null;
-		}
-		if (firstStreamID != null) {
-			SimpleImmutableEntry<String, C> entry = streamIDToCmdMap.get(firstStreamID);
-			if (entry != null) {
-				nxmCommand = entry.getValue();
-			} else {
-				nxmCommand = null;
-			}
-		} else {
-			nxmCommand = null;
-		}
-		return nxmCommand;
-	}
-
 	protected int getDefaultInputIndex() {
 		return defaultInputIndex;
 	}

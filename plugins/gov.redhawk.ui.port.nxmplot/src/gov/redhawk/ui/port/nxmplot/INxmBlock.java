@@ -169,6 +169,11 @@ public interface INxmBlock {
 	 */
 	void shutdown(String streamID);
 
+	/** get array of StreamSRIs that has been launched by this block.
+	 * @return empty array if none, otherwise array of launched streams
+	 */
+	StreamSRI[] getLaunchedStreams();
+	
 	/** (optional) start any necessary things for this block.
 	 *  e.g. register/connect to BULK IO Port for pushSRI, or BULK IO SDDS Port for attach/detach.
 	 */
