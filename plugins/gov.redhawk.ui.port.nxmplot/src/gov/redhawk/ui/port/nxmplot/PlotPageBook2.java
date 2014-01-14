@@ -484,7 +484,9 @@ public class PlotPageBook2 extends Composite {
 	}
 
 	public List<PlotSource> getSources() {
-		return Collections.unmodifiableList(this.sources);
+		List<PlotSource> plotSources = new ArrayList<PlotSource>(this.source2NxmBlocks.keySet());
+		plotSources.addAll(this.sources);
+		return plotSources;
 	}
 
 	public List<AbstractNxmPlotWidget> getAllPlotWidgets() {
