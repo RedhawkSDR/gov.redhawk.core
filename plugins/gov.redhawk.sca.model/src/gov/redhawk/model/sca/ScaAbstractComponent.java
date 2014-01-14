@@ -155,8 +155,7 @@ public interface ScaAbstractComponent< R extends Resource > extends ScaPropertyC
 	 * Returns the value of the '<em><b>Profile</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <p>
-	 * If the meaning of the '<em>Profile</em>' attribute isn't clear,
-	 * there really should be more of a description here...
+	 * @since 19.0
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Profile</em>' attribute.
@@ -172,6 +171,7 @@ public interface ScaAbstractComponent< R extends Resource > extends ScaPropertyC
 	/**
 	 * Sets the value of the '{@link gov.redhawk.model.sca.ScaAbstractComponent#getProfile <em>Profile</em>}' attribute.
 	 * <!-- begin-user-doc -->
+	 * @since 19.0
 	 * <!-- end-user-doc -->
 	 * @param value the new value of the '<em>Profile</em>' attribute.
 	 * @see #isSetProfile()
@@ -184,6 +184,7 @@ public interface ScaAbstractComponent< R extends Resource > extends ScaPropertyC
 	/**
 	 * Unsets the value of the '{@link gov.redhawk.model.sca.ScaAbstractComponent#getProfile <em>Profile</em>}' attribute.
 	 * <!-- begin-user-doc -->
+	 * @since 19.0
 	 * <!-- end-user-doc -->
 	 * @see #isSetProfile()
 	 * @see #getProfile()
@@ -195,6 +196,7 @@ public interface ScaAbstractComponent< R extends Resource > extends ScaPropertyC
 	/**
 	 * Returns whether the value of the '{@link gov.redhawk.model.sca.ScaAbstractComponent#getProfile <em>Profile</em>}' attribute is set.
 	 * <!-- begin-user-doc -->
+	 * @since 19.0
 	 * <!-- end-user-doc -->
 	 * @return whether the value of the '<em>Profile</em>' attribute is set.
 	 * @see #unsetProfile()
@@ -222,6 +224,7 @@ public interface ScaAbstractComponent< R extends Resource > extends ScaPropertyC
 
 	/**
 	 * <!-- begin-user-doc -->
+	 * @since 19.0
 	 * <!-- end-user-doc -->
 	 * @model monitorDataType="gov.redhawk.model.sca.IProgressMonitor"
 	 * @generated

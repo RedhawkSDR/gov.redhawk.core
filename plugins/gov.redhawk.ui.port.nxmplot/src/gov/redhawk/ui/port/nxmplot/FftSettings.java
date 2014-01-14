@@ -16,53 +16,123 @@ package gov.redhawk.ui.port.nxmplot;
  */
 public class FftSettings {
 	public enum WindowType {
-		BARTLETT { 
-			@Override public String toString() { return "Bartlett"; } 
-			@Override public String toWindowString() { return "BART"; }
+		BARTLETT {
+			@Override
+			public String toString() {
+				return "Bartlett";
+			}
+
+			@Override
+			public String toWindowString() {
+				return "BART";
+			}
 		},
-		HANNING { 
-			@Override public String toString() { return "Hanning"; } 
-			@Override public String toWindowString() { return "HANN"; }
+		HANNING {
+			@Override
+			public String toString() {
+				return "Hanning";
+			}
+
+			@Override
+			public String toWindowString() {
+				return "HANN";
+			}
 		},
 		HAMMING {
-			@Override public String toString() { return "Hamming"; } 
-			@Override public String toWindowString() { return "HAMM"; }
+			@Override
+			public String toString() {
+				return "Hamming";
+			}
+
+			@Override
+			public String toWindowString() {
+				return "HAMM";
+			}
 		},
 		/** @since 4.0 */
-		BH92 { 
-			@Override public String toString() { return "Blackman-Harris"; }
-			@Override public String toWindowString() { return "BH92"; }
+		BH92 {
+			@Override
+			public String toString() {
+				return "Blackman-Harris";
+			}
+
+			@Override
+			public String toWindowString() {
+				return "BH92";
+			}
 		},
-		BLACKMAN { 
-			@Override public String toString() { return "Blackman"; }
-			@Override public String toWindowString() { return "BLAC"; }
+		BLACKMAN {
+			@Override
+			public String toString() {
+				return "Blackman";
+			}
+
+			@Override
+			public String toWindowString() {
+				return "BLAC";
+			}
 		};
-		
+
 		public abstract String toWindowString();
 	}
 
 	public enum OutputType {
 		NORMAL {
-			@Override public String toString() { return "Normal"; }
-			@Override public String toFlagString() { return ""; }
+			@Override
+			public String toString() {
+				return "Normal";
+			}
+
+			@Override
+			public String toFlagString() {
+				return "";
+			}
 		},
-		MAG_SQ { 
-			@Override public String toString() { return "Magnitude Squared"; }
-			@Override public String toFlagString() { return "/MAG"; }
+		MAG_SQ {
+			@Override
+			public String toString() {
+				return "Magnitude Squared";
+			}
+
+			@Override
+			public String toFlagString() {
+				return "/MAG";
+			}
 		},
 		PSD {
-			@Override public String toString() { return "Power Spectral Density"; }
-			@Override public String toFlagString() { return "/PSD"; }
+			@Override
+			public String toString() {
+				return "Power Spectral Density";
+			}
+
+			@Override
+			public String toFlagString() {
+				return "/PSD";
+			}
 		},
 		MAG_20LOG {
-			@Override public String toString() { return "20 Log Magnitude"; }
-			@Override public String toFlagString() { return "/MAG/LOG"; }
+			@Override
+			public String toString() {
+				return "20 Log Magnitude";
+			}
+
+			@Override
+			public String toFlagString() {
+				return "/MAG/LOG";
+			}
 		},
 		PSD_20LOG {
-			@Override public String toString() { return "20 Log PSD"; }
-			@Override public String toFlagString() { return "/PSD/LOG"; }
+			@Override
+			public String toString() {
+				return "20 Log PSD";
+			}
+
+			@Override
+			public String toFlagString() {
+				return "/PSD/LOG";
+			}
 		};
-		
+
 		public abstract String toFlagString();
 	}
 
@@ -114,9 +184,9 @@ public class FftSettings {
 	public String getWindow() {
 		return this.window.toWindowString();
 	}
-	
+
 	/**
-	 * @since 4.3
+	 * @since 4.4
 	 */
 	public WindowType getWindowType() {
 		return this.window;

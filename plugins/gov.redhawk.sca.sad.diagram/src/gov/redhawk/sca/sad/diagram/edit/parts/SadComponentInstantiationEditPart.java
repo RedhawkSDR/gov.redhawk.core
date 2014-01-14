@@ -28,7 +28,7 @@ import org.eclipse.jface.preference.IPreferenceStore;
  * 
  */
 public class SadComponentInstantiationEditPart extends mil.jpeojtrs.sca.sad.diagram.edit.parts.SadComponentInstantiationEditPart implements
-        IComponentInstantiationEditPart {
+		IComponentInstantiationEditPart {
 	private final ComponentInstantiationEditPartHelper editPartHelper = new ComponentInstantiationEditPartHelper(this);
 
 	// Look at ListCompartmentEditPart for filtering details
@@ -50,16 +50,16 @@ public class SadComponentInstantiationEditPart extends mil.jpeojtrs.sca.sad.diag
 	protected IFigure createNodeShape() {
 		return this.editPartHelper.createNodeShape();
 	}
-	
+
 	/**
-	 * @since 3.1
+	 * @since 3.2
 	 */
 	public void addRuntimeListeners() {
 		this.editPartHelper.addRuntimeListeners();
 	}
-	
+
 	/**
-	 * @since 3.1
+	 * @since 3.2
 	 */
 	public void removeRuntimeListeners() {
 		this.editPartHelper.removeRuntimeListeners();

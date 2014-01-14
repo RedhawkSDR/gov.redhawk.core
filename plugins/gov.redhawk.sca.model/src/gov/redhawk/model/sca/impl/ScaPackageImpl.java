@@ -687,6 +687,7 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 
 	/**
 	 * <!-- begin-user-doc -->
+	 * @since 19.0
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
