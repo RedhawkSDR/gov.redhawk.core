@@ -51,14 +51,9 @@ public class BulkIONxmBlock extends AbstractNxmBlock<corbareceiver2> {
 		@Override
 		protected void handleStreamSRIChanged(String streamID, StreamSRI oldSri, StreamSRI newSri) {
 			TRACE_LOG.enteringMethod(streamID, oldSri, newSri);
-			launch(streamID, newSri); // so launch for this stream
-			
-//			if (oldSri == null) { // no previous SRI for this stream
-//				PropertyChangeEvent event = new PropertyChangeEvent(this, "newStreamId", oldSri, newSri);
-//				firePropertyChangeEvent(event);
-//			}
-//else { // BulkIOPort.handleStreamSRIChanged() have previous SRI for this stream, not launching: 
-
+			if (oldSri == null) { // only launch for a new stream
+				launch(streamID, newSri);
+			}
 		}
 
 		@Override
