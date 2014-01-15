@@ -60,16 +60,18 @@ import BULKIO.dataXMLHelper;
  */
 public class PlotPortHandler extends AbstractHandler {
 
+	private static String PARAM_PLOT_TYPE = "gov.redhawk.ui.port.nxmplot.type";
+
+	private static String PARAM_ISFFT = "gov.redhawk.ui.port.nxmplot.isFft";
+
 	public PlotPortHandler() {
 	}
 
 	@Override
 	public Object execute(ExecutionEvent event) throws ExecutionException {
 		final IWorkbenchWindow window = HandlerUtil.getActiveWorkbenchWindow(event);
-		String plotTypeStr = event.getParameter("gov.redhawk.ui.port.nxmplot.type");
-		final PlotType type;
-		final boolean isFFT;
-		
+		String plotTypeStr = event.getParameter(PARAM_PLOT_TYPE);
+
 		// need to grab Port selections first, otherwise Plot Wizard option below will change the selection
 		IStructuredSelection selection = (IStructuredSelection) HandlerUtil.getActiveMenuSelection(event);
 		if (selection == null) {
@@ -79,14 +81,33 @@ public class PlotPortHandler extends AbstractHandler {
 			return null;
 		}
 		final List< ? > elements = selection.toList();
+
+		// Both of these are always set (below)
+		final PlotType type;
+		final boolean isFFT;
+
+		// Either fft gets set, or plotWizardSettings and fftNxmBlockSettings get set (below)
+		final FftSettings fft;
 		final PlotWizardSettings plotWizardSettings;
 		final FftNxmBlockSettings fftNxmBlockSettings;
 
 		if (plotTypeStr != null) {
 			type = PlotType.valueOf(plotTypeStr);
-			isFFT = Boolean.valueOf(event.getParameter("gov.redhawk.ui.port.nxmplot.isFft"));
+			isFFT = Boolean.valueOf(event.getParameter(PARAM_ISFFT));
 			plotWizardSettings = null;
 			fftNxmBlockSettings = null;
+
+			if (isFFT) {
+				final FftParameterEntryDialog fftDialog = new FftParameterEntryDialog(HandlerUtil.getActiveShell(event), new FftSettings());
+				final int result = fftDialog.open();
+				if (result == Window.OK) {
+					fft = fftDialog.getFFTSettings();
+				} else {
+					return null;
+				}
+			} else {
+				fft = null;
+			}
 		} else { // run advanced Port plot wizard
 			boolean containsBulkIOPort = false;
 			boolean containsSDDSPort = false;
@@ -103,37 +124,22 @@ public class PlotPortHandler extends AbstractHandler {
 			}
 			PlotWizard wizard = new PlotWizard(containsBulkIOPort, containsSDDSPort); // advanced Port Plot wizard
 			WizardDialog dialog = new WizardDialog(HandlerUtil.getActiveShell(event), wizard);
-			if (dialog.open() == Window.OK) {
-				plotWizardSettings = wizard.getPlotSettings();
-				type = plotWizardSettings.getType();
-				isFFT = plotWizardSettings.isFft();
-				if (isFFT) {
-					fftNxmBlockSettings = plotWizardSettings.getFftBlockSettings();
-				} else {
-					fftNxmBlockSettings = null;
-				}
-			} else {
+			if (dialog.open() != Window.OK) {
 				return null;
 			}
-		}
-
-		final FftSettings fft;
-		if (isFFT && plotWizardSettings == null) {
-			final FftParameterEntryDialog fftDialog = new FftParameterEntryDialog(HandlerUtil.getActiveShell(event), new FftSettings());
-			final int result = fftDialog.open();
-			if (result == Window.OK) {
-				fft = fftDialog.getFFTSettings();
+			plotWizardSettings = wizard.getPlotSettings();
+			type = plotWizardSettings.getType();
+			isFFT = plotWizardSettings.isFft();
+			if (isFFT) {
+				fftNxmBlockSettings = plotWizardSettings.getFftBlockSettings();
 			} else {
-				fft = null;
+				fftNxmBlockSettings = null;
 			}
-			if (fft == null) {
-				return null;
-			}
-		} else {
 			fft = null;
 		}
+
 		try {
-			IViewPart view = window.getActivePage().showView(PlotView2.ID, PlotView2.createSecondaryId(), IWorkbenchPage.VIEW_ACTIVATE);
+			final IViewPart view = window.getActivePage().showView(PlotView2.ID, PlotView2.createSecondaryId(), IWorkbenchPage.VIEW_ACTIVATE);
 			if (view instanceof PlotView2) {
 				final PlotView2 plotView = (PlotView2) view;
 				plotView.getPlotPageBook().showPlot(type);
@@ -160,7 +166,7 @@ public class PlotPortHandler extends AbstractHandler {
 										}
 									}
 								}
-								
+
 								String nameStr = port.getName();
 								if (nameStr != null && !nameStr.isEmpty()) {
 									name.append(nameStr).append(" ");
@@ -182,18 +188,22 @@ public class PlotPortHandler extends AbstractHandler {
 									String pipeQualifiers = null;
 									PlotNxmBlockSettings plotBlockSettings = plotWizardSettings.getPlotBlockSettings();
 									if (dataSDDSHelper.id().equals(idl)) { // a BULKIO:dataSDDS Port
-										plotSource = new PlotSource(port, plotWizardSettings.getSddsBlockSettings(), fftNxmBlockSettings, plotBlockSettings, pipeQualifiers);
+										plotSource = new PlotSource(port, plotWizardSettings.getSddsBlockSettings(), fftNxmBlockSettings, plotBlockSettings,
+										        pipeQualifiers);
 									} else if (!dataFileHelper.id().equals(idl) && !dataXMLHelper.id().equals(idl)) { // BULKIO:dataFile and BULIO:dataXML Ports are currently unsupported
-										plotSource = new PlotSource(port, plotWizardSettings.getBulkIOBlockSettings(), fftNxmBlockSettings, plotBlockSettings, pipeQualifiers);
+										plotSource = new PlotSource(port, plotWizardSettings.getBulkIOBlockSettings(), fftNxmBlockSettings, plotBlockSettings,
+										        pipeQualifiers);
 									} else {
-										StatusManager.getManager().handle(new Status(Status.WARNING, PlotActivator.PLUGIN_ID, "Unsupported Port: " + port + " idl: " + idl), StatusManager.LOG); 
+										StatusManager.getManager().handle(
+										        new Status(Status.WARNING, PlotActivator.PLUGIN_ID, "Unsupported Port: " + port + " idl: " + idl),
+										        StatusManager.LOG);
 										continue; // log warning and skip unsupported Port type
 									}
 									plotView.addPlotSource2(plotSource);
 								} else {
 									plotView.addPlotSource(port, fft, null);
 								}
-								
+
 							} else {
 								subMonitor.worked(1);
 							}
@@ -221,7 +231,7 @@ public class PlotPortHandler extends AbstractHandler {
 			}
 		} catch (PartInitException e) {
 			StatusManager.getManager().handle(new Status(Status.ERROR, PlotActivator.PLUGIN_ID, "Failed to show Plot View", e),
-				StatusManager.LOG | StatusManager.SHOW);
+			        StatusManager.LOG | StatusManager.SHOW);
 		}
 		return null;
 	}
