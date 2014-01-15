@@ -13,9 +13,15 @@ package gov.redhawk.frontend.ui.internal;
 
 import gov.redhawk.frontend.Tuner;
 import gov.redhawk.frontend.TunerContainer;
+import gov.redhawk.frontend.ui.FrontEndUIActivator;
 import gov.redhawk.frontend.ui.wizard.TunerAllocationWizard;
+import gov.redhawk.model.sca.ScaSimpleProperty;
+import gov.redhawk.model.sca.ScaStructProperty;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.LinkedList;
 import java.util.List;
 
 import org.eclipse.core.commands.AbstractHandler;
@@ -34,6 +40,7 @@ import org.eclipse.ui.handlers.HandlerUtil;
  *
  */
 public class AllocateHandler extends AbstractHandler implements IHandler {
+
 
 	/* (non-Javadoc)
 	 * @see org.eclipse.core.commands.IHandler#execute(org.eclipse.core.commands.ExecutionEvent)
@@ -69,6 +76,7 @@ public class AllocateHandler extends AbstractHandler implements IHandler {
 		if (selection.getFirstElement() instanceof Tuner && selection.size() > 1) {
 			Object[] selObjects = selection.toArray();
 			Tuner[] tuners = this.<Tuner>castArray(selObjects, new Tuner[0]);
+			tuners = filterUnsupportedTypes(tuners);
 			WizardDialog dialog = new WizardDialog(HandlerUtil.getActiveShell(event), new TunerAllocationWizard(tuners));
 			dialog.open(); 
 		} else {
@@ -85,11 +93,22 @@ public class AllocateHandler extends AbstractHandler implements IHandler {
 						tuners.add(tuner);
 					}
 				}
-				WizardDialog dialog = new WizardDialog(HandlerUtil.getActiveShell(event), new TunerAllocationWizard(tuners.toArray(new Tuner[0])));
+				Tuner[] tunerArray = filterUnsupportedTypes(tuners.toArray(new Tuner[0]));
+				WizardDialog dialog = new WizardDialog(HandlerUtil.getActiveShell(event), new TunerAllocationWizard(tunerArray));
 				dialog.open(); 
 			}
 		}
 		return null;
+	}
+
+	private Tuner[] filterUnsupportedTypes(Tuner[] tuners) {
+		List<Tuner> list = new ArrayList<Tuner>();
+		for (Tuner tuner : tuners) {
+			if (FrontEndUIActivator.supportedTunerTypes .contains(tuner.getTunerType())) {
+				list.add(tuner);
+			}
+		}
+		return list.toArray(new Tuner[0]);
 	}
 
 	@SuppressWarnings("unchecked")

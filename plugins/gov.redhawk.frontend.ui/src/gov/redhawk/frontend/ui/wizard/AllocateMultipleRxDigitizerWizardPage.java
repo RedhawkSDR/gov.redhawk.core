@@ -121,7 +121,7 @@ public class AllocateMultipleRxDigitizerWizardPage extends WizardPage {
 					break;
 				case 1:
 					retVal = ((Tuner) element).getRfFlowID();
-					if ("".equals(retVal.trim())) {
+					if (retVal == null || "".equals(retVal)) {
 						retVal = "[None]";
 					}
 					break;
@@ -151,7 +151,7 @@ public class AllocateMultipleRxDigitizerWizardPage extends WizardPage {
 			
 		});
 		viewer.setInput(tuners);
-		setPageComplete(false);
+		setPageComplete(validate());
 	}
 	
 
@@ -174,7 +174,14 @@ public class AllocateMultipleRxDigitizerWizardPage extends WizardPage {
 	}
 	
 	private boolean validate() {
-		return ((TunerAllocationWizard) getWizard()).getSelectedTunerCount() > 0;
+		boolean valid = true;
+		String msg = null;
+		if (((TunerAllocationWizard) getWizard()).getSelectedTunerCount() <= 0) {
+			valid = false;
+			msg = "Please select a Tuner to allocate";
+		}
+		setErrorMessage(msg);
+		return valid;
 	}		
 	
 }

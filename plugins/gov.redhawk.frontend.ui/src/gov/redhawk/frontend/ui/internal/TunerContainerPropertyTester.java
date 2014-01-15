@@ -13,6 +13,7 @@ package gov.redhawk.frontend.ui.internal;
 
 import gov.redhawk.frontend.Tuner;
 import gov.redhawk.frontend.TunerContainer;
+import gov.redhawk.frontend.ui.FrontEndUIActivator;
 
 import org.eclipse.core.expressions.PropertyTester;
 
@@ -37,7 +38,8 @@ public class TunerContainerPropertyTester extends PropertyTester {
 		if ("hasUnallocatedTuners".equals(property)) {
 			for (Tuner tuner : container.getTuners()) {
 				String allocationID = tuner.getAllocationID();
-				if (allocationID == null || "".equals(allocationID)) {
+				if (((allocationID == null || "".equals(allocationID))) && 
+						FrontEndUIActivator.supportedTunerTypes.contains(tuner.getTunerType())) {
 					return true;
 				}
 			}
@@ -45,12 +47,16 @@ public class TunerContainerPropertyTester extends PropertyTester {
 		
 		if ("hasAllocatedTuners".equals(property)) {
 			for (Tuner tuner : container.getTuners()) {
+				if (!FrontEndUIActivator.supportedTunerTypes.contains(tuner.getTunerType())) {
+					return false;
+				}
 				String allocationID = tuner.getAllocationID();
 				if (!(allocationID == null || "".equals(allocationID))) {
 					return true;
 				}
 			}
 		}
+		
 		return false;
 	}
 

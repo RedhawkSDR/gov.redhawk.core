@@ -121,6 +121,9 @@
                                  property="gov.redhawk.frontend.hasAllocationID">
                            </test>
                         </not>
+                        <test
+                              property="gov.redhawk.frontend.supportedTunerType">
+                        </test>
                      </and>
                      <and>
                         <instanceof
@@ -147,6 +150,9 @@
                         </instanceof>
                         <test
                               property="gov.redhawk.frontend.hasAllocationID">
+                        </test>
+                        <test
+                              property="gov.redhawk.frontend.supportedTunerType">
                         </test>
                      </and>
                   </or>
@@ -276,7 +282,7 @@
             class="gov.redhawk.frontend.ui.internal.AllocationPropertyTester"
             id="gov.redhawk.frontend.allocationPropertyTester"
             namespace="gov.redhawk.frontend"
-            properties="hasAllocationID"
+            properties="hasAllocationID,supportedTunerType"
             type="gov.redhawk.frontend.Tuner">
       </propertyTester>
       <propertyTester

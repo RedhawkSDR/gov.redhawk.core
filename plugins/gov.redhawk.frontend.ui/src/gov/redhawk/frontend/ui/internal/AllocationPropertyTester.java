@@ -12,6 +12,7 @@
 package gov.redhawk.frontend.ui.internal;
 
 import gov.redhawk.frontend.Tuner;
+import gov.redhawk.frontend.ui.FrontEndUIActivator;
 
 import org.eclipse.core.expressions.PropertyTester;
 
@@ -27,6 +28,10 @@ public class AllocationPropertyTester extends PropertyTester {
 		if ("hasAllocationID".equals(property)) {
 			String allocationID = theTuner.getAllocationID();
 			if (!(allocationID == null || "".equals(allocationID))) {
+				return true;
+			}
+		} else if ("supportedTunerType".equals(property)) {
+			if (FrontEndUIActivator.supportedTunerTypes.contains(theTuner.getTunerType())) {
 				return true;
 			}
 		}

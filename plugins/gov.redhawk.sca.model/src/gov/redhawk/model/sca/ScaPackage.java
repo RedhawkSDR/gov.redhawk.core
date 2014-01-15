@@ -552,6 +552,7 @@ public interface ScaPackage extends EPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
+	 * @since 19.0
 	 */
 	int SCA_ABSTRACT_COMPONENT__PROFILE = SCA_PROPERTY_CONTAINER_FEATURE_COUNT + 3;
 	/**
@@ -813,6 +814,7 @@ public interface ScaPackage extends EPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
+	 * @since 19.0
 	 */
 	int SCA_COMPONENT__PROFILE = SCA_ABSTRACT_COMPONENT__PROFILE;
 	/**
@@ -4135,6 +4137,7 @@ public interface ScaPackage extends EPackage {
 	 * @see gov.redhawk.model.sca.ScaAbstractComponent#getProfile()
 	 * @see #getScaAbstractComponent()
 	 * @generated
+	 * @since 19.0
 	 */
 	EAttribute getScaAbstractComponent_Profile();
 
@@ -5812,6 +5815,7 @@ public interface ScaPackage extends EPackage {
 		 * @since 19.0
 		 * <!-- end-user-doc -->
 		 * @generated
+		 * @since 19.0
 		 */
 		EAttribute SCA_ABSTRACT_COMPONENT__PROFILE = eINSTANCE.getScaAbstractComponent_Profile();
 		/**

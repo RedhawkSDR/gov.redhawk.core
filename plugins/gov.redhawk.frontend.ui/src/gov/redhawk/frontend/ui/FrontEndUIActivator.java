@@ -11,6 +11,10 @@
  */
 package gov.redhawk.frontend.ui;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 import gov.redhawk.frontend.Tuner;
 import gov.redhawk.sca.ui.ScaUiPlugin;
 import gov.redhawk.sca.ui.filters.AdvancedPropertiesExtensibleFilter;
@@ -34,6 +38,15 @@ public class FrontEndUIActivator extends AbstractUIPlugin {
 	 */
 	public FrontEndUIActivator() {
 	}
+	
+	public static List<String> supportedTunerTypes = new ArrayList<String>(Arrays.asList(
+			new String[] {
+				FRONTEND.TUNER_TYPE_CHANNELIZER.value,
+				FRONTEND.TUNER_TYPE_DDC.value,
+				FRONTEND.TUNER_TYPE_RX.value,
+				FRONTEND.TUNER_TYPE_RX_DIGITIZER.value,
+				FRONTEND.TUNER_TYPE_RX_DIGITIZER_CHANNELIZER.value}
+		));
 
 	/*
 	 * (non-Javadoc)
