@@ -547,6 +547,7 @@ public interface ScaPackage extends EPackage {
 	/**
 	 * The feature id for the '<em><b>Profile</b></em>' attribute.
 	 * <!-- begin-user-doc -->
+	 * @since 19.0
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
@@ -807,6 +808,7 @@ public interface ScaPackage extends EPackage {
 	/**
 	 * The feature id for the '<em><b>Profile</b></em>' attribute.
 	 * <!-- begin-user-doc -->
+	 * @since 19.0
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
@@ -4007,6 +4009,7 @@ public interface ScaPackage extends EPackage {
 	/**
 	 * Returns the meta object for the attribute '{@link gov.redhawk.model.sca.ScaAbstractComponent#getProfile <em>Profile</em>}'.
 	 * <!-- begin-user-doc -->
+	 * @since 19.0
 	 * <!-- end-user-doc -->
 	 * @return the meta object for the attribute '<em>Profile</em>'.
 	 * @see gov.redhawk.model.sca.ScaAbstractComponent#getProfile()
@@ -5639,6 +5642,7 @@ public interface ScaPackage extends EPackage {
 		/**
 		 * The meta object literal for the '<em><b>Profile</b></em>' attribute feature.
 		 * <!-- begin-user-doc -->
+		 * @since 19.0
 		 * <!-- end-user-doc -->
 		 * @generated
 		 */
