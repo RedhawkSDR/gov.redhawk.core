@@ -173,6 +173,74 @@
             </visibleWhen>
          </command>
       </menuContribution>
+      <menuContribution
+            allPopups="false"
+            locationURI="toolbar:org.eclipse.ui.views.PropertySheet ">
+         <command
+               commandId="gov.redhawk.frontend.commands.allocate"
+               icon="icons/allocate.gif"
+               style="push">
+            <visibleWhen
+                  checkEnabled="false">
+               <iterate>
+                  <or>
+                     <and>
+                        <instanceof
+                              value="gov.redhawk.frontend.Tuner">
+                        </instanceof>
+                     </and>
+                     <and>
+                        <instanceof
+                              value="gov.redhawk.frontend.TunerContainer">
+                        </instanceof>
+                     </and>
+                  </or>
+               </iterate>
+            </visibleWhen>
+         </command>
+         <command
+               commandId="gov.redhawk.frontend.commands.deallocate"
+               icon="icons/deallocate.gif"
+               style="push">
+            <visibleWhen
+                  checkEnabled="false">
+               <iterate>
+                  <or>
+                     <and>
+                        <instanceof
+                              value="gov.redhawk.frontend.Tuner">
+                        </instanceof></and>
+                     <and>
+                        <instanceof
+                              value="gov.redhawk.frontend.TunerContainer">
+                        </instanceof></and>
+                  </or>
+               </iterate>
+            </visibleWhen>
+         </command>
+         <command
+               commandId="gov.redhawk.frontend.commands.plot"
+               icon="icons/plot.gif"
+               style="push">
+            <visibleWhen
+                  checkEnabled="false">
+               <iterate>
+                  <or>
+                     <and>
+                        <instanceof
+                              value="gov.redhawk.frontend.Tuner">
+                        </instanceof>
+                     </and>
+                     <and>
+                        <instanceof
+                              value="gov.redhawk.frontend.TunerContainer">
+                        </instanceof>
+                     </and>
+                  </or>
+               </iterate>
+            </visibleWhen>
+         </command>
+      </menuContribution>
    </extension>
    <extension
          point="org.eclipse.ui.commands">

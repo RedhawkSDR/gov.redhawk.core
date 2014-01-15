@@ -315,13 +315,31 @@ public interface FrontendPackage extends EPackage
   int TUNER_STATUS__BANDWIDTH = 2;
 
   /**
+   * The feature id for the '<em><b>Bandwidth Tolerance</b></em>' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int TUNER_STATUS__BANDWIDTH_TOLERANCE = 3;
+
+  /**
    * The feature id for the '<em><b>Sample Rate</b></em>' attribute.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
    * @ordered
    */
-  int TUNER_STATUS__SAMPLE_RATE = 3;
+  int TUNER_STATUS__SAMPLE_RATE = 4;
+
+  /**
+   * The feature id for the '<em><b>Sample Rate Tolerance</b></em>' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int TUNER_STATUS__SAMPLE_RATE_TOLERANCE = 5;
 
   /**
    * The feature id for the '<em><b>Enabled</b></em>' attribute.
@@ -330,7 +348,7 @@ public interface FrontendPackage extends EPackage
    * @generated
    * @ordered
    */
-  int TUNER_STATUS__ENABLED = 4;
+  int TUNER_STATUS__ENABLED = 6;
 
   /**
    * The number of structural features of the '<em>Tuner Status</em>' class.
@@ -339,7 +357,7 @@ public interface FrontendPackage extends EPackage
    * @generated
    * @ordered
    */
-  int TUNER_STATUS_FEATURE_COUNT = 5;
+  int TUNER_STATUS_FEATURE_COUNT = 7;
 
   /**
    * The number of operations of the '<em>Tuner Status</em>' class.
@@ -599,6 +617,17 @@ public interface FrontendPackage extends EPackage
   EAttribute getTunerStatus_Bandwidth();
 
   /**
+   * Returns the meta object for the attribute '{@link gov.redhawk.frontend.TunerStatus#getBandwidthTolerance <em>Bandwidth Tolerance</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the attribute '<em>Bandwidth Tolerance</em>'.
+   * @see gov.redhawk.frontend.TunerStatus#getBandwidthTolerance()
+   * @see #getTunerStatus()
+   * @generated
+   */
+  EAttribute getTunerStatus_BandwidthTolerance();
+
+  /**
    * Returns the meta object for the attribute '{@link gov.redhawk.frontend.TunerStatus#getSampleRate <em>Sample Rate</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
@@ -608,6 +637,17 @@ public interface FrontendPackage extends EPackage
    * @generated
    */
   EAttribute getTunerStatus_SampleRate();
+
+  /**
+   * Returns the meta object for the attribute '{@link gov.redhawk.frontend.TunerStatus#getSampleRateTolerance <em>Sample Rate Tolerance</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the attribute '<em>Sample Rate Tolerance</em>'.
+   * @see gov.redhawk.frontend.TunerStatus#getSampleRateTolerance()
+   * @see #getTunerStatus()
+   * @generated
+   */
+  EAttribute getTunerStatus_SampleRateTolerance();
 
   /**
    * Returns the meta object for the attribute '{@link gov.redhawk.frontend.TunerStatus#isEnabled <em>Enabled</em>}'.
@@ -843,12 +883,28 @@ public interface FrontendPackage extends EPackage
     EAttribute TUNER_STATUS__BANDWIDTH = eINSTANCE.getTunerStatus_Bandwidth();
 
     /**
+     * The meta object literal for the '<em><b>Bandwidth Tolerance</b></em>' attribute feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EAttribute TUNER_STATUS__BANDWIDTH_TOLERANCE = eINSTANCE.getTunerStatus_BandwidthTolerance();
+
+    /**
      * The meta object literal for the '<em><b>Sample Rate</b></em>' attribute feature.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      */
     EAttribute TUNER_STATUS__SAMPLE_RATE = eINSTANCE.getTunerStatus_SampleRate();
+
+    /**
+     * The meta object literal for the '<em><b>Sample Rate Tolerance</b></em>' attribute feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EAttribute TUNER_STATUS__SAMPLE_RATE_TOLERANCE = eINSTANCE.getTunerStatus_SampleRateTolerance();
 
     /**
      * The meta object literal for the '<em><b>Enabled</b></em>' attribute feature.

@@ -27,7 +27,9 @@ import org.eclipse.emf.ecore.util.EcoreUtil;
  *   <li>{@link gov.redhawk.frontend.impl.TunerStatusImpl#getTuner <em>Tuner</em>}</li>
  *   <li>{@link gov.redhawk.frontend.impl.TunerStatusImpl#getCenterFrequency <em>Center Frequency</em>}</li>
  *   <li>{@link gov.redhawk.frontend.impl.TunerStatusImpl#getBandwidth <em>Bandwidth</em>}</li>
+ *   <li>{@link gov.redhawk.frontend.impl.TunerStatusImpl#getBandwidthTolerance <em>Bandwidth Tolerance</em>}</li>
  *   <li>{@link gov.redhawk.frontend.impl.TunerStatusImpl#getSampleRate <em>Sample Rate</em>}</li>
+ *   <li>{@link gov.redhawk.frontend.impl.TunerStatusImpl#getSampleRateTolerance <em>Sample Rate Tolerance</em>}</li>
  *   <li>{@link gov.redhawk.frontend.impl.TunerStatusImpl#isEnabled <em>Enabled</em>}</li>
  * </ul>
  * </p>
@@ -77,6 +79,26 @@ public class TunerStatusImpl extends MinimalEObjectImpl.Container implements Tun
   protected double bandwidth = BANDWIDTH_EDEFAULT;
 
   /**
+   * The default value of the '{@link #getBandwidthTolerance() <em>Bandwidth Tolerance</em>}' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see #getBandwidthTolerance()
+   * @generated
+   * @ordered
+   */
+  protected static final double BANDWIDTH_TOLERANCE_EDEFAULT = 0.0;
+
+  /**
+   * The cached value of the '{@link #getBandwidthTolerance() <em>Bandwidth Tolerance</em>}' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see #getBandwidthTolerance()
+   * @generated
+   * @ordered
+   */
+  protected double bandwidthTolerance = BANDWIDTH_TOLERANCE_EDEFAULT;
+
+  /**
    * The default value of the '{@link #getSampleRate() <em>Sample Rate</em>}' attribute.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
@@ -95,6 +117,26 @@ public class TunerStatusImpl extends MinimalEObjectImpl.Container implements Tun
    * @ordered
    */
   protected double sampleRate = SAMPLE_RATE_EDEFAULT;
+
+  /**
+   * The default value of the '{@link #getSampleRateTolerance() <em>Sample Rate Tolerance</em>}' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see #getSampleRateTolerance()
+   * @generated
+   * @ordered
+   */
+  protected static final double SAMPLE_RATE_TOLERANCE_EDEFAULT = 0.0;
+
+  /**
+   * The cached value of the '{@link #getSampleRateTolerance() <em>Sample Rate Tolerance</em>}' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see #getSampleRateTolerance()
+   * @generated
+   * @ordered
+   */
+  protected double sampleRateTolerance = SAMPLE_RATE_TOLERANCE_EDEFAULT;
 
   /**
    * The default value of the '{@link #isEnabled() <em>Enabled</em>}' attribute.
@@ -244,6 +286,29 @@ public class TunerStatusImpl extends MinimalEObjectImpl.Container implements Tun
    * <!-- end-user-doc -->
    * @generated
    */
+  public double getBandwidthTolerance()
+  {
+    return bandwidthTolerance;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public void setBandwidthTolerance(double newBandwidthTolerance)
+  {
+    double oldBandwidthTolerance = bandwidthTolerance;
+    bandwidthTolerance = newBandwidthTolerance;
+    if (eNotificationRequired())
+      eNotify(new ENotificationImpl(this, Notification.SET, FrontendPackage.TUNER_STATUS__BANDWIDTH_TOLERANCE, oldBandwidthTolerance, bandwidthTolerance));
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
   public double getSampleRate()
   {
     return sampleRate;
@@ -260,6 +325,29 @@ public class TunerStatusImpl extends MinimalEObjectImpl.Container implements Tun
     sampleRate = newSampleRate;
     if (eNotificationRequired())
       eNotify(new ENotificationImpl(this, Notification.SET, FrontendPackage.TUNER_STATUS__SAMPLE_RATE, oldSampleRate, sampleRate));
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public double getSampleRateTolerance()
+  {
+    return sampleRateTolerance;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public void setSampleRateTolerance(double newSampleRateTolerance)
+  {
+    double oldSampleRateTolerance = sampleRateTolerance;
+    sampleRateTolerance = newSampleRateTolerance;
+    if (eNotificationRequired())
+      eNotify(new ENotificationImpl(this, Notification.SET, FrontendPackage.TUNER_STATUS__SAMPLE_RATE_TOLERANCE, oldSampleRateTolerance, sampleRateTolerance));
   }
 
   /**
@@ -352,8 +440,12 @@ public class TunerStatusImpl extends MinimalEObjectImpl.Container implements Tun
         return getCenterFrequency();
       case FrontendPackage.TUNER_STATUS__BANDWIDTH:
         return getBandwidth();
+      case FrontendPackage.TUNER_STATUS__BANDWIDTH_TOLERANCE:
+        return getBandwidthTolerance();
       case FrontendPackage.TUNER_STATUS__SAMPLE_RATE:
         return getSampleRate();
+      case FrontendPackage.TUNER_STATUS__SAMPLE_RATE_TOLERANCE:
+        return getSampleRateTolerance();
       case FrontendPackage.TUNER_STATUS__ENABLED:
         return isEnabled();
     }
@@ -379,8 +471,14 @@ public class TunerStatusImpl extends MinimalEObjectImpl.Container implements Tun
       case FrontendPackage.TUNER_STATUS__BANDWIDTH:
         setBandwidth((Double)newValue);
         return;
+      case FrontendPackage.TUNER_STATUS__BANDWIDTH_TOLERANCE:
+        setBandwidthTolerance((Double)newValue);
+        return;
       case FrontendPackage.TUNER_STATUS__SAMPLE_RATE:
         setSampleRate((Double)newValue);
+        return;
+      case FrontendPackage.TUNER_STATUS__SAMPLE_RATE_TOLERANCE:
+        setSampleRateTolerance((Double)newValue);
         return;
       case FrontendPackage.TUNER_STATUS__ENABLED:
         setEnabled((Boolean)newValue);
@@ -408,8 +506,14 @@ public class TunerStatusImpl extends MinimalEObjectImpl.Container implements Tun
       case FrontendPackage.TUNER_STATUS__BANDWIDTH:
         setBandwidth(BANDWIDTH_EDEFAULT);
         return;
+      case FrontendPackage.TUNER_STATUS__BANDWIDTH_TOLERANCE:
+        setBandwidthTolerance(BANDWIDTH_TOLERANCE_EDEFAULT);
+        return;
       case FrontendPackage.TUNER_STATUS__SAMPLE_RATE:
         setSampleRate(SAMPLE_RATE_EDEFAULT);
+        return;
+      case FrontendPackage.TUNER_STATUS__SAMPLE_RATE_TOLERANCE:
+        setSampleRateTolerance(SAMPLE_RATE_TOLERANCE_EDEFAULT);
         return;
       case FrontendPackage.TUNER_STATUS__ENABLED:
         setEnabled(ENABLED_EDEFAULT);
@@ -434,8 +538,12 @@ public class TunerStatusImpl extends MinimalEObjectImpl.Container implements Tun
         return centerFrequency != CENTER_FREQUENCY_EDEFAULT;
       case FrontendPackage.TUNER_STATUS__BANDWIDTH:
         return bandwidth != BANDWIDTH_EDEFAULT;
+      case FrontendPackage.TUNER_STATUS__BANDWIDTH_TOLERANCE:
+        return bandwidthTolerance != BANDWIDTH_TOLERANCE_EDEFAULT;
       case FrontendPackage.TUNER_STATUS__SAMPLE_RATE:
         return sampleRate != SAMPLE_RATE_EDEFAULT;
+      case FrontendPackage.TUNER_STATUS__SAMPLE_RATE_TOLERANCE:
+        return sampleRateTolerance != SAMPLE_RATE_TOLERANCE_EDEFAULT;
       case FrontendPackage.TUNER_STATUS__ENABLED:
         return enabled != ENABLED_EDEFAULT;
     }
@@ -457,8 +565,12 @@ public class TunerStatusImpl extends MinimalEObjectImpl.Container implements Tun
     result.append(centerFrequency);
     result.append(", bandwidth: ");
     result.append(bandwidth);
+    result.append(", bandwidthTolerance: ");
+    result.append(bandwidthTolerance);
     result.append(", sampleRate: ");
     result.append(sampleRate);
+    result.append(", sampleRateTolerance: ");
+    result.append(sampleRateTolerance);
     result.append(", enabled: ");
     result.append(enabled);
     result.append(')');

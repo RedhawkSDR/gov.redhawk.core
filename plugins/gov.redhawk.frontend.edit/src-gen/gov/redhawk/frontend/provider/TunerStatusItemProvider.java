@@ -71,7 +71,9 @@ public class TunerStatusItemProvider
       addTunerPropertyDescriptor(object);
       addCenterFrequencyPropertyDescriptor(object);
       addBandwidthPropertyDescriptor(object);
+      addBandwidthTolerancePropertyDescriptor(object);
       addSampleRatePropertyDescriptor(object);
+      addSampleRateTolerancePropertyDescriptor(object);
       addEnabledPropertyDescriptor(object);
     }
     return itemPropertyDescriptors;
@@ -147,6 +149,29 @@ public class TunerStatusItemProvider
   }
 
   /**
+   * This adds a property descriptor for the Bandwidth Tolerance feature.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  protected void addBandwidthTolerancePropertyDescriptor(Object object)
+  {
+    itemPropertyDescriptors.add
+      (createItemPropertyDescriptor
+        (((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
+         getResourceLocator(),
+         getString("_UI_TunerStatus_bandwidthTolerance_feature"),
+         getString("_UI_PropertyDescriptor_description", "_UI_TunerStatus_bandwidthTolerance_feature", "_UI_TunerStatus_type"),
+         FrontendPackage.Literals.TUNER_STATUS__BANDWIDTH_TOLERANCE,
+         true,
+         false,
+         false,
+         ItemPropertyDescriptor.REAL_VALUE_IMAGE,
+         null,
+         null));
+  }
+
+  /**
    * This adds a property descriptor for the Sample Rate feature.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
@@ -161,6 +186,29 @@ public class TunerStatusItemProvider
          getString("_UI_TunerStatus_sampleRate_feature"),
          getString("_UI_PropertyDescriptor_description", "_UI_TunerStatus_sampleRate_feature", "_UI_TunerStatus_type"),
          FrontendPackage.Literals.TUNER_STATUS__SAMPLE_RATE,
+         true,
+         false,
+         false,
+         ItemPropertyDescriptor.REAL_VALUE_IMAGE,
+         null,
+         null));
+  }
+
+  /**
+   * This adds a property descriptor for the Sample Rate Tolerance feature.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  protected void addSampleRateTolerancePropertyDescriptor(Object object)
+  {
+    itemPropertyDescriptors.add
+      (createItemPropertyDescriptor
+        (((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
+         getResourceLocator(),
+         getString("_UI_TunerStatus_sampleRateTolerance_feature"),
+         getString("_UI_PropertyDescriptor_description", "_UI_TunerStatus_sampleRateTolerance_feature", "_UI_TunerStatus_type"),
+         FrontendPackage.Literals.TUNER_STATUS__SAMPLE_RATE_TOLERANCE,
          true,
          false,
          false,
@@ -233,7 +281,9 @@ public class TunerStatusItemProvider
     {
       case FrontendPackage.TUNER_STATUS__CENTER_FREQUENCY:
       case FrontendPackage.TUNER_STATUS__BANDWIDTH:
+      case FrontendPackage.TUNER_STATUS__BANDWIDTH_TOLERANCE:
       case FrontendPackage.TUNER_STATUS__SAMPLE_RATE:
+      case FrontendPackage.TUNER_STATUS__SAMPLE_RATE_TOLERANCE:
       case FrontendPackage.TUNER_STATUS__ENABLED:
         fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
         return;

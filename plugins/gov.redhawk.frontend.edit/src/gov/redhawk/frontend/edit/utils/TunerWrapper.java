@@ -32,10 +32,12 @@ public class TunerWrapper {
 	public class TunerProperty {
 		private String id;
 		private Object value;
+		private TunerWrapper wrapper; //reference to container object for backwards navigation
 
-		TunerProperty(String id, Object value) {
+		TunerProperty(String id, Object value, TunerWrapper wrapper) {
 			this.setId(id);
 			this.setValue(value);
+			this.setWrapper(wrapper);
 		}
 
 		public String getId() {
@@ -50,29 +52,41 @@ public class TunerWrapper {
 			return value;
 		}
 
-		public void setValue(final Object value) {
-			this.value = value;
+		private void setWrapper(TunerWrapper wrapper) {
+			this.wrapper = wrapper;
+		}
+
+		public TunerWrapper getWrapper() {
+			return wrapper;
+		}
+
+		public void setValue(final Object newValue) {
+			if (newValue == null) {
+				this.value = "";
+			} else {
+				this.value = newValue;
+			}
 			ScaModelCommand.execute(tuner, new ScaModelCommand() {
 
 				@Override
 				public void execute() {
-					if(id.equals("Allocation ID")) 
+					if (id.equals("Allocation ID"))
 						tuner.setAllocationID(value.toString());
-					if(id.equals("Device Control"))
+					if (id.equals("Device Control"))
 						tuner.setDeviceControl(Boolean.parseBoolean(value.toString()));
-					if(id.equals("Group ID"))
+					if (id.equals("Group ID"))
 						tuner.setGroupID(value.toString());
-					if(id.equals("RF Flow ID"))
+					if (id.equals("RF Flow ID"))
 						tuner.setRfFlowID(value.toString());
-					if(id.equals("Gain"))
+					if (id.equals("Gain"))
 						tuner.setGain(Double.parseDouble(value.toString()));
-					if(id.equals("Bandwidth"))
+					if (id.equals("Bandwidth"))
 						tuner.getTunerStatus().setBandwidth(Double.parseDouble(value.toString()));
-					if(id.equals("Center Frequency"))
+					if (id.equals("Center Frequency"))
 						tuner.getTunerStatus().setCenterFrequency(Double.parseDouble(value.toString()));
-					if(id.equals("Sample Rate"))
+					if (id.equals("Sample Rate"))
 						tuner.getTunerStatus().setSampleRate(Double.parseDouble(value.toString()));
-					if(id.equals("Enabled"))
+					if (id.equals("Enabled"))
 						tuner.getTunerStatus().setEnabled(Boolean.parseBoolean(value.toString()));
 				}
 			});
@@ -80,26 +94,29 @@ public class TunerWrapper {
 
 		public Object[] getTunerStatusElements() {
 			List<TunerProperty> tunerStatusProperties = new ArrayList<TunerProperty>();
-			TunerStatus tunerStatus = (TunerStatus) value;
-			if (tunerStatus == null) {
+			TunerStatus tunerStatus;
+			if (value instanceof TunerStatus) {
+				tunerStatus = (TunerStatus) value;
+			} else {
 				tunerStatus = FrontendFactory.eINSTANCE.createTunerStatus();
 			}
-			tunerStatusProperties.add(new TunerProperty("Bandwidth", tunerStatus.getBandwidth()));
-			tunerStatusProperties.add(new TunerProperty("Center Frequency", tunerStatus.getCenterFrequency()));
-			tunerStatusProperties.add(new TunerProperty("Sample Rate", tunerStatus.getSampleRate()));
-			tunerStatusProperties.add(new TunerProperty("Enabled", tunerStatus.isEnabled()));
+
+			tunerStatusProperties.add(new TunerProperty("Bandwidth", tunerStatus.getBandwidth(), getWrapper()));
+			tunerStatusProperties.add(new TunerProperty("Center Frequency", tunerStatus.getCenterFrequency(), getWrapper()));
+			tunerStatusProperties.add(new TunerProperty("Sample Rate", tunerStatus.getSampleRate(), getWrapper()));
+			tunerStatusProperties.add(new TunerProperty("Enabled", tunerStatus.isEnabled(), getWrapper()));
 			return tunerStatusProperties.toArray();
 		}
 	}
 
 	private void setProperties() {
-		properties.add(new TunerProperty("Allocation ID", tuner.getAllocationID()));
-		properties.add(new TunerProperty("Tuner Type", tuner.getTunerType()));
-		properties.add(new TunerProperty("Device Control", tuner.isDeviceControl()));
-		properties.add(new TunerProperty("Group ID", tuner.getGroupID()));
-		properties.add(new TunerProperty("RF Flow ID", tuner.getRfFlowID()));
-		properties.add(new TunerProperty("Gain", tuner.getGain()));
-		properties.add(new TunerProperty("Tuner Status", tuner.getTunerStatus()));
+		properties.add(new TunerProperty("Allocation ID", tuner.getAllocationID(), this));
+		properties.add(new TunerProperty("Tuner Type", tuner.getTunerType(), this));
+		properties.add(new TunerProperty("Device Control", tuner.isDeviceControl(), this));
+		properties.add(new TunerProperty("Group ID", tuner.getGroupID(), this));
+		properties.add(new TunerProperty("RF Flow ID", tuner.getRfFlowID(), this));
+		properties.add(new TunerProperty("Gain", tuner.getGain(), this));
+		properties.add(new TunerProperty("Tuner Status", tuner.getTunerStatus(), this));
 	}
 
 	/**

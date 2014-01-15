@@ -38,11 +38,18 @@ public class FrontEndContentProvider extends ScaModelAdapterFactoryContentProvid
 		return new FrontendItemProviderAdapterFactory();
 	}
 
+	public static Tuner currentSelection;
+
+	public static Tuner getCurrentSelection() {
+		return currentSelection;
+	}
+
 	@Override
 	public Object[] getElements(Object object) {
 		//Create TunerWrapper object that returns an array of TunerProperty objects to pass to the label provider
 		if (object instanceof Tuner) {
 			Tuner tuner = (Tuner) object;
+			currentSelection = tuner; // sets a static variable that is used by the allocate/deallocate handlers
 			TunerWrapper tunerWrapper = new TunerWrapper(tuner);
 			Object[] properties = tunerWrapper.getProperties();
 			return properties;

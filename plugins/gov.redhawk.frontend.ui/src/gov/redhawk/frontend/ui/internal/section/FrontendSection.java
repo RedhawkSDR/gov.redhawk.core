@@ -12,6 +12,7 @@
 package gov.redhawk.frontend.ui.internal.section;
 
 import gov.redhawk.frontend.Tuner;
+import gov.redhawk.frontend.edit.utils.TunerUtils;
 import gov.redhawk.frontend.edit.utils.TunerWrapper;
 import gov.redhawk.frontend.ui.internal.FrontEndContentProvider;
 import gov.redhawk.frontend.ui.internal.FrontEndLabelProvider;
@@ -70,7 +71,7 @@ public class FrontendSection extends AbstractPropertySection {
 		viewer.setContentProvider(new FrontEndContentProvider());
 		viewer.setLabelProvider(new FrontEndLabelProvider());
 		viewer.setAutoExpandLevel(2);
-		
+
 		createToolbar();
 	}
 
@@ -95,36 +96,38 @@ public class FrontendSection extends AbstractPropertySection {
 		treeLayout.setColumnData(valueColumn.getColumn(), new ColumnWeightData(60, 100));
 		final TextCellEditor cellEditor = new TextCellEditor(viewer.getTree());
 		valueColumn.setEditingSupport(new EditingSupport(viewer) {
-			
+
 			@Override
 			protected void setValue(Object element, Object value) {
 				TunerWrapper.TunerProperty entry = (TunerWrapper.TunerProperty) element;
-				
 				entry.setValue(value.toString());
+
+				TunerUtils.setTunerProperties(entry);
+
 				viewer.refresh();
 				viewer.setAutoExpandLevel(2);
 			}
-			
+
 			@Override
 			protected Object getValue(Object element) {
-				if(element instanceof TunerWrapper.TunerProperty) {
+				if (element instanceof TunerWrapper.TunerProperty) {
 					TunerWrapper.TunerProperty entry = (TunerWrapper.TunerProperty) element;
 					Object value = entry.getValue();
 					return value.toString();
 				}
 				return "";
 			}
-			
+
 			@Override
 			protected CellEditor getCellEditor(Object element) {
 				return cellEditor;
 			}
-			
+
 			@Override
 			protected boolean canEdit(Object element) {
 				TunerWrapper.TunerProperty entry = (TunerWrapper.TunerProperty) element;
 				String ID = entry.getId();
-				if(ID.equals("Tuner Status") || ID.equals("Tuner Type") /* TODO 'add back, this was removed for testing' || ID.equals("Allocation ID")*/)
+				if (ID.equals("Tuner Status") || ID.equals("Tuner Type") /* TODO 'add back, this was removed for testing' || ID.equals("Allocation ID")*/)
 					return false;
 				return true;
 			}

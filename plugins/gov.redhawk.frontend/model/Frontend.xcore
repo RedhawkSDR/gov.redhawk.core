@@ -41,6 +41,8 @@ class TunerStatus {
 	container Tuner tuner opposite tunerStatus
 	double centerFrequency
 	double bandwidth
+	double bandwidthTolerance
 	double sampleRate
+	double sampleRateTolerance
 	boolean enabled
 }

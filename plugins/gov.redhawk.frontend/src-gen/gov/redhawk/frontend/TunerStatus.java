@@ -15,7 +15,9 @@ import org.eclipse.emf.ecore.EObject;
  *   <li>{@link gov.redhawk.frontend.TunerStatus#getTuner <em>Tuner</em>}</li>
  *   <li>{@link gov.redhawk.frontend.TunerStatus#getCenterFrequency <em>Center Frequency</em>}</li>
  *   <li>{@link gov.redhawk.frontend.TunerStatus#getBandwidth <em>Bandwidth</em>}</li>
+ *   <li>{@link gov.redhawk.frontend.TunerStatus#getBandwidthTolerance <em>Bandwidth Tolerance</em>}</li>
  *   <li>{@link gov.redhawk.frontend.TunerStatus#getSampleRate <em>Sample Rate</em>}</li>
+ *   <li>{@link gov.redhawk.frontend.TunerStatus#getSampleRateTolerance <em>Sample Rate Tolerance</em>}</li>
  *   <li>{@link gov.redhawk.frontend.TunerStatus#isEnabled <em>Enabled</em>}</li>
  * </ul>
  * </p>
@@ -108,6 +110,32 @@ public interface TunerStatus extends EObject
   void setBandwidth(double value);
 
   /**
+   * Returns the value of the '<em><b>Bandwidth Tolerance</b></em>' attribute.
+   * <!-- begin-user-doc -->
+   * <p>
+   * If the meaning of the '<em>Bandwidth Tolerance</em>' attribute isn't clear,
+   * there really should be more of a description here...
+   * </p>
+   * <!-- end-user-doc -->
+   * @return the value of the '<em>Bandwidth Tolerance</em>' attribute.
+   * @see #setBandwidthTolerance(double)
+   * @see gov.redhawk.frontend.FrontendPackage#getTunerStatus_BandwidthTolerance()
+   * @model unique="false"
+   * @generated
+   */
+  double getBandwidthTolerance();
+
+  /**
+   * Sets the value of the '{@link gov.redhawk.frontend.TunerStatus#getBandwidthTolerance <em>Bandwidth Tolerance</em>}' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @param value the new value of the '<em>Bandwidth Tolerance</em>' attribute.
+   * @see #getBandwidthTolerance()
+   * @generated
+   */
+  void setBandwidthTolerance(double value);
+
+  /**
    * Returns the value of the '<em><b>Sample Rate</b></em>' attribute.
    * <!-- begin-user-doc -->
    * <p>
@@ -132,6 +160,32 @@ public interface TunerStatus extends EObject
    * @generated
    */
   void setSampleRate(double value);
+
+  /**
+   * Returns the value of the '<em><b>Sample Rate Tolerance</b></em>' attribute.
+   * <!-- begin-user-doc -->
+   * <p>
+   * If the meaning of the '<em>Sample Rate Tolerance</em>' attribute isn't clear,
+   * there really should be more of a description here...
+   * </p>
+   * <!-- end-user-doc -->
+   * @return the value of the '<em>Sample Rate Tolerance</em>' attribute.
+   * @see #setSampleRateTolerance(double)
+   * @see gov.redhawk.frontend.FrontendPackage#getTunerStatus_SampleRateTolerance()
+   * @model unique="false"
+   * @generated
+   */
+  double getSampleRateTolerance();
+
+  /**
+   * Sets the value of the '{@link gov.redhawk.frontend.TunerStatus#getSampleRateTolerance <em>Sample Rate Tolerance</em>}' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @param value the new value of the '<em>Sample Rate Tolerance</em>' attribute.
+   * @see #getSampleRateTolerance()
+   * @generated
+   */
+  void setSampleRateTolerance(double value);
 
   /**
    * Returns the value of the '<em><b>Enabled</b></em>' attribute.

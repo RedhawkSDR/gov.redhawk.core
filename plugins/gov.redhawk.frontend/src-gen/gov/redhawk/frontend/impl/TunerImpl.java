@@ -282,6 +282,7 @@ public class TunerImpl extends MinimalEObjectImpl.Container implements Tuner
     }
   }
 
+
   /**
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
