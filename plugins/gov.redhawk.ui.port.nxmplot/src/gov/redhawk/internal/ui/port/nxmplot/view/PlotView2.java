@@ -16,6 +16,7 @@ import gov.redhawk.internal.ui.port.nxmplot.PlotSettingsDialog;
 import gov.redhawk.model.sca.ScaUsesPort;
 import gov.redhawk.ui.port.nxmplot.AbstractNxmPlotWidget;
 import gov.redhawk.ui.port.nxmplot.FftSettings;
+import gov.redhawk.ui.port.nxmplot.IPlotView;
 import gov.redhawk.ui.port.nxmplot.PlotActivator;
 import gov.redhawk.ui.port.nxmplot.PlotPageBook2;
 import gov.redhawk.ui.port.nxmplot.PlotSettings;
@@ -54,7 +55,7 @@ import org.eclipse.ui.statushandlers.StatusManager;
  * @since 4.2
  * @noreference This class is not intended to be referenced by clients
  */
-public class PlotView2 extends ViewPart {
+public class PlotView2 extends ViewPart implements IPlotView {
 	/** The ID of the view. */
 	public static final String ID = "gov.redhawk.ui.port.nxmplot.PlotView2";
 
