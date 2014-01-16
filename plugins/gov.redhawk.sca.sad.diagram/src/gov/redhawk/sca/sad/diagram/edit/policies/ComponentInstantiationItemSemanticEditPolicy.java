@@ -53,7 +53,7 @@ public class ComponentInstantiationItemSemanticEditPolicy extends mil.jpeojtrs.s
 		final SadComponentInstantiation inst = (SadComponentInstantiation) view.getElement();
 		final SoftwareAssembly sad = SoftwareAssembly.Util.getSoftwareAssembly(inst.eResource());
 
-		if (sad.getExternalProperties() != null) {
+		if (sad != null && sad.getExternalProperties() != null) {
 			int removing = 0;
 			for (ExternalProperty prop : sad.getExternalProperties().getProperties()) {
 				if (PluginUtil.equals(prop.getCompRefID(), inst.getId())) {
@@ -74,7 +74,7 @@ public class ComponentInstantiationItemSemanticEditPolicy extends mil.jpeojtrs.s
 		final SoftwareAssembly sad = SoftwareAssembly.Util.getSoftwareAssembly(inst.eResource());
 		int ports = 0;
 
-		if (sad.getExternalPorts() != null) {
+		if (sad != null && sad.getExternalPorts() != null) {
 			for (final Port port : sad.getExternalPorts().getPort()) {
 				if (port.getComponentInstantiationRef().getRefid().equals(inst.getId())) {
 					final DestroyElementRequest r = new DestroyElementRequest(port, false);
