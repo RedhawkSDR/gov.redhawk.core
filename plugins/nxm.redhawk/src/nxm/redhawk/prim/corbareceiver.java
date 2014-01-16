@@ -314,8 +314,25 @@ public class corbareceiver extends CorbaPrimitive implements IMidasDataWriter { 
 		return newOutputFile;
 	}
 
+	private static boolean isRestartNeed4SriChange(final StreamSRI sri, final StreamSRI lastSRI) {
+		boolean shouldRestart = (lastSRI == null);
+		if (!shouldRestart) {
+			// blocking, hversion, keywords, and streamID changes do not require a restart
+			shouldRestart |= (lastSRI.mode != sri.mode);
+			shouldRestart |= (lastSRI.subsize != sri.subsize);
+			shouldRestart |= (lastSRI.xdelta != sri.xdelta);
+			shouldRestart |= (lastSRI.xstart != sri.xstart);
+			shouldRestart |= (lastSRI.xunits != sri.xunits);
+			shouldRestart |= (lastSRI.ydelta != sri.ydelta);
+			shouldRestart |= (lastSRI.ystart != sri.ystart);
+			shouldRestart |= (lastSRI.yunits != sri.yunits);
+		}
+		return shouldRestart;
+	}
+
 	/**
 	 * @since 10.0
+	 * @noreference This method is not intended to be referenced by clients.
 	 * @deprecated since 10.1 use {@link #setStreamSri(String, StreamSRI, StreamSRI)}
 	 */
 	@Deprecated
@@ -328,15 +345,23 @@ public class corbareceiver extends CorbaPrimitive implements IMidasDataWriter { 
 	 */
 	public synchronized void setStreamSri(String streamID, StreamSRI oldSri, StreamSRI newSri) {
 		this.currentSri = newSri;
+		if (verbose) {
+			M.info(getID() + ": setStreamSri to " + newSri + " id=" + newSri.streamID + " blocking=" + newSri.blocking); // DEBUG
+		}
 		sendMessage("STREAMSRI", 1, this.currentSri);
 		if (state == Commandable.PROCESS) {
-			doRestart();
+			if (isRestartNeed4SriChange(newSri, oldSri)) {
+				doRestart();
+			}
 		} else if (state == Commandable.OPEN) {
 			notifyAll();
 		}
 	}
 
 	private synchronized void doRestart() {
+		if (verbose) {
+			M.info(getID() + ": restarting..." + this.outputFile); // DEBUG
+		}
 		setState(Commandable.RESTART);
 	}
 
@@ -370,12 +395,18 @@ public class corbareceiver extends CorbaPrimitive implements IMidasDataWriter { 
 			return;
 		}
 
-		final int bufferSize = Data.getBPS(type) * size; // in bytes
-		if (!blocking) { // non-blocking option enabled
-			if (localOutputFile.getResource().avail() < bufferSize) {
+		final int bufferSize = Data.getBPS(type) * size; // size of data to write in bytes
+		if (localOutputFile.getPipeSize() < bufferSize) { // fix for ticket #1554
+			if (verbose) {
+				M.info("increasing pipe size from " + localOutputFile.getPipeSize() + " to (2 * " + bufferSize + ") bytes for " + localOutputFile);
+			}
+			localOutputFile.setPipeSize(bufferSize * 2); // increase pipe size to twice bufferSize (i.e. data size)
+		}
+		if (!blocking                                             // 1. non-blocking option enabled
+			&& localOutputFile.getResource().avail() < bufferSize // 2. avail buffer is less than data/packet size
+			&& localOutputFile.getPipeSize() >= bufferSize) {     // 3. drop only if pipe size (buffer) is greater than data size
 				// Time.sleep(0.01); // <-- provide slight back-pressure so we don't spin CPU for Component that does NOT throttle data
 				return; // drop packet since write would block
-			}
 		}
 
 		final Time midasTime;
