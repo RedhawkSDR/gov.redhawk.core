@@ -60,9 +60,9 @@ import BULKIO.dataXMLHelper;
  */
 public class PlotPortHandler extends AbstractHandler {
 
-	private static String PARAM_PLOT_TYPE = "gov.redhawk.ui.port.nxmplot.type";
+	private static final String PARAM_PLOT_TYPE = "gov.redhawk.ui.port.nxmplot.type";
 
-	private static String PARAM_ISFFT = "gov.redhawk.ui.port.nxmplot.isFft";
+	private static final String PARAM_ISFFT = "gov.redhawk.ui.port.nxmplot.isFft";
 
 	public PlotPortHandler() {
 	}
@@ -70,7 +70,7 @@ public class PlotPortHandler extends AbstractHandler {
 	@Override
 	public Object execute(ExecutionEvent event) throws ExecutionException {
 		final IWorkbenchWindow window = HandlerUtil.getActiveWorkbenchWindow(event);
-		String plotTypeStr = event.getParameter(PARAM_PLOT_TYPE);
+		String plotTypeStr = event.getParameter(PlotPortHandler.PARAM_PLOT_TYPE);
 
 		// need to grab Port selections first, otherwise Plot Wizard option below will change the selection
 		IStructuredSelection selection = (IStructuredSelection) HandlerUtil.getActiveMenuSelection(event);
@@ -93,7 +93,7 @@ public class PlotPortHandler extends AbstractHandler {
 
 		if (plotTypeStr != null) {
 			type = PlotType.valueOf(plotTypeStr);
-			isFFT = Boolean.valueOf(event.getParameter(PARAM_ISFFT));
+			isFFT = Boolean.valueOf(event.getParameter(PlotPortHandler.PARAM_ISFFT));
 			plotWizardSettings = null;
 			fftNxmBlockSettings = null;
 
@@ -189,14 +189,14 @@ public class PlotPortHandler extends AbstractHandler {
 									PlotNxmBlockSettings plotBlockSettings = plotWizardSettings.getPlotBlockSettings();
 									if (dataSDDSHelper.id().equals(idl)) { // a BULKIO:dataSDDS Port
 										plotSource = new PlotSource(port, plotWizardSettings.getSddsBlockSettings(), fftNxmBlockSettings, plotBlockSettings,
-										        pipeQualifiers);
+											pipeQualifiers);
 									} else if (!dataFileHelper.id().equals(idl) && !dataXMLHelper.id().equals(idl)) { // BULKIO:dataFile and BULIO:dataXML Ports are currently unsupported
 										plotSource = new PlotSource(port, plotWizardSettings.getBulkIOBlockSettings(), fftNxmBlockSettings, plotBlockSettings,
-										        pipeQualifiers);
+											pipeQualifiers);
 									} else {
 										StatusManager.getManager().handle(
-										        new Status(Status.WARNING, PlotActivator.PLUGIN_ID, "Unsupported Port: " + port + " idl: " + idl),
-										        StatusManager.LOG);
+											new Status(IStatus.WARNING, PlotActivator.PLUGIN_ID, "Unsupported Port: " + port + " idl: " + idl),
+											StatusManager.LOG);
 										continue; // log warning and skip unsupported Port type
 									}
 									plotView.addPlotSource2(plotSource);
@@ -230,8 +230,8 @@ public class PlotPortHandler extends AbstractHandler {
 				job.schedule(0);
 			}
 		} catch (PartInitException e) {
-			StatusManager.getManager().handle(new Status(Status.ERROR, PlotActivator.PLUGIN_ID, "Failed to show Plot View", e),
-			        StatusManager.LOG | StatusManager.SHOW);
+			StatusManager.getManager().handle(new Status(IStatus.ERROR, PlotActivator.PLUGIN_ID, "Failed to show Plot View", e),
+				StatusManager.LOG | StatusManager.SHOW);
 		}
 		return null;
 	}
