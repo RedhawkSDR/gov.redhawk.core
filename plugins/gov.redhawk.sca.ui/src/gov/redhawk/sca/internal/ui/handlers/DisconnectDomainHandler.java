@@ -19,7 +19,7 @@ import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.core.commands.IHandler;
-import org.eclipse.core.expressions.EvaluationContext;
+import org.eclipse.core.expressions.IEvaluationContext;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
@@ -36,8 +36,8 @@ public class DisconnectDomainHandler extends AbstractHandler implements IHandler
 
 	@Override
 	public void setEnabled(final Object evaluationContext) {
-		if ((evaluationContext != null) && (evaluationContext instanceof EvaluationContext)) {
-			final EvaluationContext context = (EvaluationContext) evaluationContext;
+		if ((evaluationContext != null) && (evaluationContext instanceof IEvaluationContext)) {
+			final IEvaluationContext context = (IEvaluationContext) evaluationContext;
 			final Object sel = context.getVariable("selection");
 			if (sel instanceof IStructuredSelection) {
 				final IStructuredSelection ss = (IStructuredSelection) sel;
@@ -80,7 +80,7 @@ public class DisconnectDomainHandler extends AbstractHandler implements IHandler
 							try {
 								domMgr.disconnect();
 								return Status.OK_STATUS;
-							} catch (final Exception e) {  // SUPPRESS CHECKSTYLE Logged Catch all exception
+							} catch (final Exception e) { // SUPPRESS CHECKSTYLE Logged Catch all exception
 								return new Status(IStatus.ERROR, ScaUiPlugin.PLUGIN_ID, "Failed to connect", e);
 							}
 						}

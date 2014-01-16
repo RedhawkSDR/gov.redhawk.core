@@ -22,7 +22,7 @@ import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.core.commands.IHandler;
-import org.eclipse.core.expressions.EvaluationContext;
+import org.eclipse.core.expressions.IEvaluationContext;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.wizard.WizardDialog;
@@ -32,8 +32,8 @@ public class LaunchWaveformHandler extends AbstractHandler implements IHandler {
 
 	@Override
 	public void setEnabled(final Object evaluationContext) {
-		if ((evaluationContext != null) && (evaluationContext instanceof EvaluationContext)) {
-			final EvaluationContext context = (EvaluationContext) evaluationContext;
+		if ((evaluationContext != null) && (evaluationContext instanceof IEvaluationContext)) {
+			final IEvaluationContext context = (IEvaluationContext) evaluationContext;
 			final Object sel = context.getVariable("selection");
 			if (sel instanceof IStructuredSelection) {
 				final IStructuredSelection ss = (IStructuredSelection) sel;

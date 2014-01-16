@@ -23,7 +23,7 @@ import java.util.Set;
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
-import org.eclipse.core.expressions.EvaluationContext;
+import org.eclipse.core.expressions.IEvaluationContext;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.emf.edit.ui.dnd.LocalTransfer;
 import org.eclipse.jface.viewers.ISelection;
@@ -78,8 +78,8 @@ public class ScaFileStorePastActionHandler extends AbstractHandler {
 	@Override
 	public void setEnabled(final Object evaluationContext) {
 		final Display display;
-		if ((evaluationContext != null) && (evaluationContext instanceof EvaluationContext)) {
-			final EvaluationContext context = (EvaluationContext) evaluationContext;
+		if ((evaluationContext != null) && (evaluationContext instanceof IEvaluationContext)) {
+			final IEvaluationContext context = (IEvaluationContext) evaluationContext;
 			final Shell shell = (Shell) context.getVariable("activeShell");
 			if (shell.isDisposed()) {
 				setBaseEnabled(false);
@@ -122,11 +122,8 @@ public class ScaFileStorePastActionHandler extends AbstractHandler {
 					}
 				}
 			}
-			return new Object[] {
-			        (resources == null) ? ScaFileStorePastActionHandler.EMPTY : resources, // SUPPRESS CHECKSTYLE Inline
-			        filesSet.toArray(new String[0]),
-			        stores.toArray(new ScaFileStore[stores.size()])
-			};
+			return new Object[] { (resources == null) ? ScaFileStorePastActionHandler.EMPTY : resources, // SUPPRESS CHECKSTYLE Inline
+				filesSet.toArray(new String[0]), stores.toArray(new ScaFileStore[stores.size()]) };
 		} finally {
 			clipboard.dispose();
 		}

@@ -79,8 +79,7 @@ public class ScaContentDescriber implements IScaContentDescriber, IExecutableExt
 			} else {
 				final EObject profileObject = idAdapter.getScaEObject(contents);
 				if (profileObject != null && profileObject.eResource() != null && profileObject.eResource().getURI() != null
-				        && profileObject.eResource().getURI().lastSegment() != null
-				        && profileObject.eResource().getURI().lastSegment().matches(profileFilename)) {
+						&& profileObject.eResource().getURI().lastSegment() != null && profileObject.eResource().getURI().lastSegment().matches(profileFilename)) {
 					valid = true;
 				} else {
 					return IScaContentDescriber.INVALID;
@@ -130,7 +129,7 @@ public class ScaContentDescriber implements IScaContentDescriber, IExecutableExt
 
 		if ("lightweight".equals(this.params.get(ScaContentDescriber.PARAM_EDITOR_INPUT_TYPE))) {
 			final ICorbaObjectDescriptorAdapter corbaAdapter = (ICorbaObjectDescriptorAdapter) adapterManager.getAdapter(contents,
-			        ICorbaObjectDescriptorAdapter.class);
+				ICorbaObjectDescriptorAdapter.class);
 			final IScaObjectIdentifierAdapter idAdapter = (IScaObjectIdentifierAdapter) adapterManager.getAdapter(contents, IScaObjectIdentifierAdapter.class);
 			String ior = null;
 			if (corbaAdapter != null) {

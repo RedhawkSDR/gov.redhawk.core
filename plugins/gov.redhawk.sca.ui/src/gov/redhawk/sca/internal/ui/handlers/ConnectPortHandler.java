@@ -22,7 +22,7 @@ import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.core.commands.IHandler;
-import org.eclipse.core.expressions.EvaluationContext;
+import org.eclipse.core.expressions.IEvaluationContext;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
@@ -86,7 +86,7 @@ public class ConnectPortHandler extends AbstractHandler implements IHandler {
 		if (sel instanceof IStructuredSelection) {
 			final IStructuredSelection ss = (IStructuredSelection) sel;
 			ScaUsesPort usesPort = null;
-			CorbaObjWrapper<?> target = null;
+			CorbaObjWrapper< ? > target = null;
 			for (final Object obj : ss.toArray()) {
 				if (obj instanceof ScaUsesPort) {
 					usesPort = (ScaUsesPort) obj;
@@ -107,7 +107,7 @@ public class ConnectPortHandler extends AbstractHandler implements IHandler {
 				wizard.setConnectionID(connectionId);
 				WizardDialog dialog = new WizardDialog(HandlerUtil.getActiveShell(event), wizard);
 				if (Window.OK == dialog.open()) {
-					new ConnectJob(wizard.getSource(), wizard.getTarget().getCorbaObj(), wizard.getConnectionID()).schedule();	
+					new ConnectJob(wizard.getSource(), wizard.getTarget().getCorbaObj(), wizard.getConnectionID()).schedule();
 				}
 			}
 		}
@@ -116,8 +116,8 @@ public class ConnectPortHandler extends AbstractHandler implements IHandler {
 
 	@Override
 	public void setEnabled(final Object evaluationContext) {
-		if ((evaluationContext != null) && (evaluationContext instanceof EvaluationContext)) {
-			final EvaluationContext context = (EvaluationContext) evaluationContext;
+		if ((evaluationContext != null) && (evaluationContext instanceof IEvaluationContext)) {
+			final IEvaluationContext context = (IEvaluationContext) evaluationContext;
 			final Object sel = context.getVariable("selection");
 			if (sel instanceof IStructuredSelection) {
 				final IStructuredSelection ss = (IStructuredSelection) sel;
