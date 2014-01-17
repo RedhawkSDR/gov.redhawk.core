@@ -15,7 +15,7 @@ import org.eclipse.emf.ecore.EObject;
  * The following features are supported:
  * <ul>
  *   <li>{@link gov.redhawk.frontend.TunerContainer#getModelDevice <em>Model Device</em>}</li>
- *   <li>{@link gov.redhawk.frontend.TunerContainer#getTuners <em>Tuners</em>}</li>
+ *   <li>{@link gov.redhawk.frontend.TunerContainer#getTunerStatus <em>Tuner Status</em>}</li>
  * </ul>
  * </p>
  *
@@ -54,21 +54,21 @@ public interface TunerContainer extends EObject
   void setModelDevice(ModelDevice value);
 
   /**
-   * Returns the value of the '<em><b>Tuners</b></em>' containment reference list.
-   * The list contents are of type {@link gov.redhawk.frontend.Tuner}.
-   * It is bidirectional and its opposite is '{@link gov.redhawk.frontend.Tuner#getTunerContainer <em>Tuner Container</em>}'.
+   * Returns the value of the '<em><b>Tuner Status</b></em>' containment reference list.
+   * The list contents are of type {@link gov.redhawk.frontend.TunerStatus}.
+   * It is bidirectional and its opposite is '{@link gov.redhawk.frontend.TunerStatus#getTunerContainer <em>Tuner Container</em>}'.
    * <!-- begin-user-doc -->
    * <p>
-   * If the meaning of the '<em>Tuners</em>' containment reference list isn't clear,
+   * If the meaning of the '<em>Tuner Status</em>' containment reference list isn't clear,
    * there really should be more of a description here...
    * </p>
    * <!-- end-user-doc -->
-   * @return the value of the '<em>Tuners</em>' containment reference list.
-   * @see gov.redhawk.frontend.FrontendPackage#getTunerContainer_Tuners()
-   * @see gov.redhawk.frontend.Tuner#getTunerContainer
+   * @return the value of the '<em>Tuner Status</em>' containment reference list.
+   * @see gov.redhawk.frontend.FrontendPackage#getTunerContainer_TunerStatus()
+   * @see gov.redhawk.frontend.TunerStatus#getTunerContainer
    * @model opposite="tunerContainer" containment="true"
    * @generated
    */
-  EList<Tuner> getTuners();
+  EList<TunerStatus> getTunerStatus();
 
 } // TunerContainer

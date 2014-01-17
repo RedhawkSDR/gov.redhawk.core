@@ -107,7 +107,7 @@ public class TunerContainerItemProvider
     if (childrenFeatures == null)
     {
       super.getChildrenFeatures(object);
-      childrenFeatures.add(FrontendPackage.Literals.TUNER_CONTAINER__TUNERS);
+      childrenFeatures.add(FrontendPackage.Literals.TUNER_CONTAINER__TUNER_STATUS);
     }
     return childrenFeatures;
   }
@@ -163,7 +163,7 @@ public class TunerContainerItemProvider
 
     switch (notification.getFeatureID(TunerContainer.class))
     {
-      case FrontendPackage.TUNER_CONTAINER__TUNERS:
+      case FrontendPackage.TUNER_CONTAINER__TUNER_STATUS:
         fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), true, false));
         return;
     }
@@ -184,8 +184,8 @@ public class TunerContainerItemProvider
 
     newChildDescriptors.add
       (createChildParameter
-        (FrontendPackage.Literals.TUNER_CONTAINER__TUNERS,
-         FrontendFactory.eINSTANCE.createTuner()));
+        (FrontendPackage.Literals.TUNER_CONTAINER__TUNER_STATUS,
+         FrontendFactory.eINSTANCE.createTunerStatus()));
   }
 
   /**

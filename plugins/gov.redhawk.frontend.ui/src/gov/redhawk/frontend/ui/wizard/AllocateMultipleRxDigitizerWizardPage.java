@@ -1,7 +1,7 @@
 package gov.redhawk.frontend.ui.wizard;
 
-import gov.redhawk.frontend.Tuner;
 import gov.redhawk.frontend.TunerContainer;
+import gov.redhawk.frontend.TunerStatus;
 
 import java.util.Collections;
 
@@ -25,14 +25,14 @@ import org.eclipse.swt.widgets.TableColumn;
 public class AllocateMultipleRxDigitizerWizardPage extends WizardPage {
 
 	private String[] tableCloumns = new String[] {"Tuner Instance", "RF Flow ID", "Center Frequency", "Bandwidth"};
-	private Tuner[] tuners;
+	private TunerStatus[] tuners;
 
 	protected AllocateMultipleRxDigitizerWizardPage(TunerContainer container) {
 		super("Allocate Multiple RX Digitizer Tuners");
-		this.tuners = container.getTuners().toArray(new Tuner[0]);
+		this.tuners = container.getTunerStatus().toArray(new TunerStatus[0]);
 	}
 	
-	protected AllocateMultipleRxDigitizerWizardPage(Tuner[] tuners) {
+	protected AllocateMultipleRxDigitizerWizardPage(TunerStatus[] tuners) {
 		super("Allocate Multiple RX Digitizer Tuners");
 		this.tuners = tuners;
 	}
@@ -73,8 +73,8 @@ public class AllocateMultipleRxDigitizerWizardPage extends WizardPage {
 
 			@Override
 			public Object[] getElements(Object inputElement) {
-				if (inputElement instanceof Tuner[]) {
-					return (Tuner[]) inputElement;
+				if (inputElement instanceof TunerStatus[]) {
+					return (TunerStatus[]) inputElement;
 				}
 				return Collections.emptyList().toArray(new Object[0]);
 			}
@@ -117,19 +117,19 @@ public class AllocateMultipleRxDigitizerWizardPage extends WizardPage {
 				String retVal = "";
 				switch (columnIndex) {
 				case 0:
-					retVal = ((Tuner) element).getTunerID();
+					retVal = ((TunerStatus) element).getTunerID();
 					break;
 				case 1:
-					retVal = ((Tuner) element).getRfFlowID();
+					retVal = ((TunerStatus) element).getRfFlowID();
 					if (retVal == null || "".equals(retVal)) {
 						retVal = "[None]";
 					}
 					break;
 				case 2:
-					retVal = String.valueOf(((Tuner) element).getTunerStatus().getCenterFrequency());
+					retVal = String.valueOf(((TunerStatus) element).getCenterFrequency());
 					break;
 				case 3:
-					retVal = String.valueOf(((Tuner) element).getTunerStatus().getBandwidth());
+					retVal = String.valueOf(((TunerStatus) element).getBandwidth());
 					break;
 				default:
 				}
@@ -142,9 +142,9 @@ public class AllocateMultipleRxDigitizerWizardPage extends WizardPage {
 			@Override
 			public void checkStateChanged(CheckStateChangedEvent event) {
 				if (event.getChecked()) {
-					((TunerAllocationWizard) getWizard()).addTuner((Tuner) event.getElement());
+					((TunerAllocationWizard) getWizard()).addTuner((TunerStatus) event.getElement());
 				} else {
-					((TunerAllocationWizard) getWizard()).removeTuner((Tuner) event.getElement());
+					((TunerAllocationWizard) getWizard()).removeTuner((TunerStatus) event.getElement());
 				}
 				setPageComplete(validate());
 			}

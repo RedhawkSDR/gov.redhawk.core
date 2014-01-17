@@ -1,12 +1,9 @@
 package gov.redhawk.frontend.ui.wizard;
 
-import gov.redhawk.frontend.FrontendPackage;
-import gov.redhawk.frontend.Tuner;
 import gov.redhawk.frontend.TunerContainer;
+import gov.redhawk.frontend.TunerStatus;
 import gov.redhawk.frontend.ui.wizard.AllocateRxDigitizerWizardPage.ALLOCATION_MODE;
 import gov.redhawk.model.sca.ScaDevice;
-import gov.redhawk.model.sca.ScaFactory;
-import gov.redhawk.model.sca.ScaSimpleProperty;
 import gov.redhawk.model.sca.ScaStructProperty;
 
 import java.util.ArrayList;
@@ -16,7 +13,6 @@ import java.util.Map;
 
 import mil.jpeojtrs.sca.prf.PropertyValueType;
 
-import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.wizard.IWizardPage;
 import org.eclipse.jface.wizard.Wizard;
@@ -28,13 +24,13 @@ import CF.DevicePackage.InvalidState;
 
 public class TunerAllocationWizard extends Wizard {
 
-	private Tuner tuner;
-	private Tuner[] tuners = new Tuner[0];
+	private TunerStatus tuner;
+	private TunerStatus[] tuners = new TunerStatus[0];
 	private AllocateRxDigitizerWizardPage allocateRxDigitizerPage;
 	private AllocateMultipleRxDigitizerWizardPage allocatemultipleRxDigitizersPage;
-	private List<Tuner> selectedTuners = new ArrayList<Tuner>();
-	private Map<Tuner, IWizardPage> tunerMap = new HashMap<Tuner, IWizardPage>();
-	private Map<IWizardPage, Tuner> pageMap = new HashMap<IWizardPage, Tuner>();
+	private List<TunerStatus> selectedTuners = new ArrayList<TunerStatus>();
+	private Map<TunerStatus, IWizardPage> tunerMap = new HashMap<TunerStatus, IWizardPage>();
+	private Map<IWizardPage, TunerStatus> pageMap = new HashMap<IWizardPage, TunerStatus>();
 
 	public enum TunerAllocationProperties {
 		//	instance name			ID														PRF type
@@ -113,15 +109,15 @@ public class TunerAllocationWizard extends Wizard {
 	}
 
 
-	public TunerAllocationWizard(Tuner tuner) {
+	public TunerAllocationWizard(TunerStatus tuner) {
 		this.tuner = tuner;
 	}
 
 	public TunerAllocationWizard(TunerContainer container) {
-		this.tuners = container.getTuners().toArray(new Tuner[0]);
+		this.tuners = container.getTunerStatus().toArray(new TunerStatus[0]);
 	}
 
-	public TunerAllocationWizard(Tuner[] tuners) {
+	public TunerAllocationWizard(TunerStatus[] tuners) {
 		this.tuners  = tuners;
 	}
 
@@ -136,7 +132,7 @@ public class TunerAllocationWizard extends Wizard {
 		} else if (tuners != null && tuners.length > 0) {
 			allocatemultipleRxDigitizersPage = new AllocateMultipleRxDigitizerWizardPage(tuners);
 			addPage(allocatemultipleRxDigitizersPage);
-			for (Tuner tuner : tuners) {
+			for (TunerStatus tuner : tuners) {
 				AllocateRxDigitizerWizardPage page = new AllocateRxDigitizerWizardPage(tuner);
 				addPage(page);
 				tunerMap.put(tuner, page);
@@ -165,11 +161,11 @@ public class TunerAllocationWizard extends Wizard {
 		return getNextTunerPage(page);
 	}
 
-	public void addTuner(Tuner tuner) {
+	public void addTuner(TunerStatus tuner) {
 		this.selectedTuners.add(tuner);
 	}
 
-	public void removeTuner(Tuner tuner) {
+	public void removeTuner(TunerStatus tuner) {
 		this.selectedTuners.remove(tuner);
 	}
 
@@ -182,7 +178,7 @@ public class TunerAllocationWizard extends Wizard {
 		if (page == allocatemultipleRxDigitizersPage) {
 			index = 0;
 		} else {
-			Tuner t = pageMap.get(page);
+			TunerStatus t = pageMap.get(page);
 			index = Integer.parseInt(t.getTunerID()) + 1;
 		}
 		if (index > getMaxIndex()) {
@@ -194,7 +190,7 @@ public class TunerAllocationWizard extends Wizard {
 			}
 			index++;
 		}
-		Tuner t = getTunerById(index);
+		TunerStatus t = getTunerById(index);
 		if (t == null || !tunerSelected(t)) {
 			return null;
 		} else {
@@ -204,7 +200,7 @@ public class TunerAllocationWizard extends Wizard {
 
 	private int getMaxIndex() {
 		int max = 0;
-		for (Tuner t : tuners) {
+		for (TunerStatus t : tuners) {
 			int index = Integer.parseInt(t.getTunerID());
 			if (index > max) {
 				max = index;
@@ -213,11 +209,11 @@ public class TunerAllocationWizard extends Wizard {
 		return max;
 	}
 
-	private boolean tunerSelected(Tuner tuner) {
+	private boolean tunerSelected(TunerStatus tuner) {
 		if (tuner == null) {
 			return false;
 		}
-		for (Tuner t : selectedTuners) {
+		for (TunerStatus t : selectedTuners) {
 			if (t.getTunerID().equals(tuner.getTunerID())) {
 				return true;
 			}
@@ -225,8 +221,8 @@ public class TunerAllocationWizard extends Wizard {
 		return false;
 	}
 
-	private Tuner getTunerById(int index) {
-		for (Tuner t : tuners) {
+	private TunerStatus getTunerById(int index) {
+		for (TunerStatus t : tuners) {
 			if (Integer.parseInt(t.getTunerID()) == index ) {
 				return t;
 			}
@@ -264,7 +260,7 @@ public class TunerAllocationWizard extends Wizard {
 
 
 	private boolean selectedTunerPagesComplete() {
-		for (Tuner tuner : selectedTuners) {
+		for (TunerStatus tuner : selectedTuners) {
 			IWizardPage page = tunerMap.get(tuner);
 			if (!page.isPageComplete()) {
 				return false;
@@ -278,7 +274,7 @@ public class TunerAllocationWizard extends Wizard {
 		ScaDevice<?> device = selectedTuners.get(0).getTunerContainer().getModelDevice().getScaDevice();
 		boolean result = true;
 		StringBuilder sb = new StringBuilder();
-		for (Tuner tuner : selectedTuners) {
+		for (TunerStatus tuner : selectedTuners) {
 			DataType[] props = createAllocationProperties(tuner);
 			String delim = "";
 			try {
@@ -313,7 +309,7 @@ public class TunerAllocationWizard extends Wizard {
 		return result;
 	}
 
-	private DataType[] createAllocationProperties(Tuner tuner) {
+	private DataType[] createAllocationProperties(TunerStatus tuner) {
 		List<DataType> props = new ArrayList<DataType>();
 		AllocateRxDigitizerWizardPage page = ((AllocateRxDigitizerWizardPage) tunerMap.get(tuner));
 		ScaStructProperty struct;

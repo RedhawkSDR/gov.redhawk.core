@@ -4,8 +4,8 @@ package gov.redhawk.frontend.impl;
 
 import gov.redhawk.frontend.FrontendPackage;
 import gov.redhawk.frontend.ModelDevice;
-import gov.redhawk.frontend.Tuner;
 import gov.redhawk.frontend.TunerContainer;
+import gov.redhawk.frontend.TunerStatus;
 
 import java.util.Collection;
 
@@ -32,7 +32,7 @@ import org.eclipse.emf.ecore.util.InternalEList;
  * The following features are implemented:
  * <ul>
  *   <li>{@link gov.redhawk.frontend.impl.TunerContainerImpl#getModelDevice <em>Model Device</em>}</li>
- *   <li>{@link gov.redhawk.frontend.impl.TunerContainerImpl#getTuners <em>Tuners</em>}</li>
+ *   <li>{@link gov.redhawk.frontend.impl.TunerContainerImpl#getTunerStatus <em>Tuner Status</em>}</li>
  * </ul>
  * </p>
  *
@@ -41,14 +41,14 @@ import org.eclipse.emf.ecore.util.InternalEList;
 public class TunerContainerImpl extends MinimalEObjectImpl.Container implements TunerContainer
 {
   /**
-   * The cached value of the '{@link #getTuners() <em>Tuners</em>}' containment reference list.
+   * The cached value of the '{@link #getTunerStatus() <em>Tuner Status</em>}' containment reference list.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @see #getTuners()
+   * @see #getTunerStatus()
    * @generated
    * @ordered
    */
-  protected EList<Tuner> tuners;
+  protected EList<TunerStatus> tunerStatus;
 
   /**
    * <!-- begin-user-doc -->
@@ -132,13 +132,13 @@ public class TunerContainerImpl extends MinimalEObjectImpl.Container implements 
    * <!-- end-user-doc -->
    * @generated
    */
-  public EList<Tuner> getTuners()
+  public EList<TunerStatus> getTunerStatus()
   {
-    if (tuners == null)
+    if (tunerStatus == null)
     {
-      tuners = new EObjectContainmentWithInverseEList<Tuner>(Tuner.class, this, FrontendPackage.TUNER_CONTAINER__TUNERS, FrontendPackage.TUNER__TUNER_CONTAINER);
+      tunerStatus = new EObjectContainmentWithInverseEList<TunerStatus>(TunerStatus.class, this, FrontendPackage.TUNER_CONTAINER__TUNER_STATUS, FrontendPackage.TUNER_STATUS__TUNER_CONTAINER);
     }
-    return tuners;
+    return tunerStatus;
   }
 
   /**
@@ -156,8 +156,8 @@ public class TunerContainerImpl extends MinimalEObjectImpl.Container implements 
         if (eInternalContainer() != null)
           msgs = eBasicRemoveFromContainer(msgs);
         return basicSetModelDevice((ModelDevice)otherEnd, msgs);
-      case FrontendPackage.TUNER_CONTAINER__TUNERS:
-        return ((InternalEList<InternalEObject>)(InternalEList<?>)getTuners()).basicAdd(otherEnd, msgs);
+      case FrontendPackage.TUNER_CONTAINER__TUNER_STATUS:
+        return ((InternalEList<InternalEObject>)(InternalEList<?>)getTunerStatus()).basicAdd(otherEnd, msgs);
     }
     return super.eInverseAdd(otherEnd, featureID, msgs);
   }
@@ -174,8 +174,8 @@ public class TunerContainerImpl extends MinimalEObjectImpl.Container implements 
     {
       case FrontendPackage.TUNER_CONTAINER__MODEL_DEVICE:
         return basicSetModelDevice(null, msgs);
-      case FrontendPackage.TUNER_CONTAINER__TUNERS:
-        return ((InternalEList<?>)getTuners()).basicRemove(otherEnd, msgs);
+      case FrontendPackage.TUNER_CONTAINER__TUNER_STATUS:
+        return ((InternalEList<?>)getTunerStatus()).basicRemove(otherEnd, msgs);
     }
     return super.eInverseRemove(otherEnd, featureID, msgs);
   }
@@ -209,8 +209,8 @@ public class TunerContainerImpl extends MinimalEObjectImpl.Container implements 
       case FrontendPackage.TUNER_CONTAINER__MODEL_DEVICE:
         if (resolve) return getModelDevice();
         return basicGetModelDevice();
-      case FrontendPackage.TUNER_CONTAINER__TUNERS:
-        return getTuners();
+      case FrontendPackage.TUNER_CONTAINER__TUNER_STATUS:
+        return getTunerStatus();
     }
     return super.eGet(featureID, resolve, coreType);
   }
@@ -229,9 +229,9 @@ public class TunerContainerImpl extends MinimalEObjectImpl.Container implements 
       case FrontendPackage.TUNER_CONTAINER__MODEL_DEVICE:
         setModelDevice((ModelDevice)newValue);
         return;
-      case FrontendPackage.TUNER_CONTAINER__TUNERS:
-        getTuners().clear();
-        getTuners().addAll((Collection<? extends Tuner>)newValue);
+      case FrontendPackage.TUNER_CONTAINER__TUNER_STATUS:
+        getTunerStatus().clear();
+        getTunerStatus().addAll((Collection<? extends TunerStatus>)newValue);
         return;
     }
     super.eSet(featureID, newValue);
@@ -250,8 +250,8 @@ public class TunerContainerImpl extends MinimalEObjectImpl.Container implements 
       case FrontendPackage.TUNER_CONTAINER__MODEL_DEVICE:
         setModelDevice((ModelDevice)null);
         return;
-      case FrontendPackage.TUNER_CONTAINER__TUNERS:
-        getTuners().clear();
+      case FrontendPackage.TUNER_CONTAINER__TUNER_STATUS:
+        getTunerStatus().clear();
         return;
     }
     super.eUnset(featureID);
@@ -269,8 +269,8 @@ public class TunerContainerImpl extends MinimalEObjectImpl.Container implements 
     {
       case FrontendPackage.TUNER_CONTAINER__MODEL_DEVICE:
         return basicGetModelDevice() != null;
-      case FrontendPackage.TUNER_CONTAINER__TUNERS:
-        return tuners != null && !tuners.isEmpty();
+      case FrontendPackage.TUNER_CONTAINER__TUNER_STATUS:
+        return tunerStatus != null && !tunerStatus.isEmpty();
     }
     return super.eIsSet(featureID);
   }

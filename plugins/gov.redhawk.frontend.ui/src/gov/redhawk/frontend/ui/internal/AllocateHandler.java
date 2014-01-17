@@ -11,17 +11,12 @@
  */
 package gov.redhawk.frontend.ui.internal;
 
-import gov.redhawk.frontend.Tuner;
 import gov.redhawk.frontend.TunerContainer;
+import gov.redhawk.frontend.TunerStatus;
 import gov.redhawk.frontend.ui.FrontEndUIActivator;
 import gov.redhawk.frontend.ui.wizard.TunerAllocationWizard;
-import gov.redhawk.model.sca.ScaSimpleProperty;
-import gov.redhawk.model.sca.ScaStructProperty;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.LinkedList;
 import java.util.List;
 
 import org.eclipse.core.commands.AbstractHandler;
@@ -54,7 +49,7 @@ public class AllocateHandler extends AbstractHandler implements IHandler {
 		
 		// This check is used to tie the allocation wizard into the view toolbar buttons
 		if (selection == null || selection.getFirstElement() == null) {
-			Tuner currentSelection = FrontEndContentProvider.getCurrentSelection();
+			TunerStatus currentSelection = FrontEndContentProvider.getCurrentSelection();
 			if (currentSelection != null) {
 				selection = new StructuredSelection(new Object[]{currentSelection});
 			}
@@ -73,27 +68,27 @@ public class AllocateHandler extends AbstractHandler implements IHandler {
 			return null;
 		}
 
-		if (selection.getFirstElement() instanceof Tuner && selection.size() > 1) {
+		if (selection.getFirstElement() instanceof TunerStatus && selection.size() > 1) {
 			Object[] selObjects = selection.toArray();
-			Tuner[] tuners = this.<Tuner>castArray(selObjects, new Tuner[0]);
+			TunerStatus[] tuners = this.<TunerStatus>castArray(selObjects, new TunerStatus[0]);
 			tuners = filterUnsupportedTypes(tuners);
 			WizardDialog dialog = new WizardDialog(HandlerUtil.getActiveShell(event), new TunerAllocationWizard(tuners));
 			dialog.open(); 
 		} else {
 			Object obj = selection.getFirstElement();
-			if (obj instanceof Tuner) {
-				Tuner tuner = (Tuner) obj;
+			if (obj instanceof TunerStatus) {
+				TunerStatus tuner = (TunerStatus) obj;
 				WizardDialog dialog = new WizardDialog(HandlerUtil.getActiveShell(event), new TunerAllocationWizard(tuner));
 				dialog.open(); 
 			} else if (obj instanceof TunerContainer) {
 				TunerContainer container = (TunerContainer) obj;
-				List<Tuner> tuners = new ArrayList<Tuner>();
-				for (Tuner tuner : container.getTuners()) {
+				List<TunerStatus> tuners = new ArrayList<TunerStatus>();
+				for (TunerStatus tuner : container.getTunerStatus()) {
 					if (tuner.getAllocationID() == null || "".equals(tuner.getAllocationID().trim())) {
 						tuners.add(tuner);
 					}
 				}
-				Tuner[] tunerArray = filterUnsupportedTypes(tuners.toArray(new Tuner[0]));
+				TunerStatus[] tunerArray = filterUnsupportedTypes(tuners.toArray(new TunerStatus[0]));
 				WizardDialog dialog = new WizardDialog(HandlerUtil.getActiveShell(event), new TunerAllocationWizard(tunerArray));
 				dialog.open(); 
 			}
@@ -101,14 +96,14 @@ public class AllocateHandler extends AbstractHandler implements IHandler {
 		return null;
 	}
 
-	private Tuner[] filterUnsupportedTypes(Tuner[] tuners) {
-		List<Tuner> list = new ArrayList<Tuner>();
-		for (Tuner tuner : tuners) {
+	private TunerStatus[] filterUnsupportedTypes(TunerStatus[] tuners) {
+		List<TunerStatus> list = new ArrayList<TunerStatus>();
+		for (TunerStatus tuner : tuners) {
 			if (FrontEndUIActivator.supportedTunerTypes .contains(tuner.getTunerType())) {
 				list.add(tuner);
 			}
 		}
-		return list.toArray(new Tuner[0]);
+		return list.toArray(new TunerStatus[0]);
 	}
 
 	@SuppressWarnings("unchecked")

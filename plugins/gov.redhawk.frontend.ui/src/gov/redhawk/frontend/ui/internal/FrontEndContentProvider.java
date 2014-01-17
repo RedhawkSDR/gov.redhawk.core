@@ -11,14 +11,17 @@
  */
 package gov.redhawk.frontend.ui.internal;
 
-import gov.redhawk.frontend.Tuner;
 import gov.redhawk.frontend.TunerContainer;
+import gov.redhawk.frontend.TunerStatus;
 import gov.redhawk.frontend.edit.utils.TunerUtils;
-import gov.redhawk.frontend.edit.utils.TunerWrapper;
-import gov.redhawk.frontend.edit.utils.TunerWrapper.TunerProperty;
+import gov.redhawk.frontend.edit.utils.TunerPropertyWrapper;
 import gov.redhawk.frontend.provider.FrontendItemProviderAdapterFactory;
 import gov.redhawk.model.sca.ScaDevice;
+import gov.redhawk.model.sca.ScaSimpleProperty;
 import gov.redhawk.sca.ui.ScaModelAdapterFactoryContentProvider;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import org.eclipse.emf.common.notify.AdapterFactory;
 import org.eclipse.emf.common.notify.Notification;
@@ -38,21 +41,24 @@ public class FrontEndContentProvider extends ScaModelAdapterFactoryContentProvid
 		return new FrontendItemProviderAdapterFactory();
 	}
 
-	public static Tuner currentSelection;
+	public static TunerStatus currentSelection;
 
-	public static Tuner getCurrentSelection() {
+	public static TunerStatus getCurrentSelection() {
 		return currentSelection;
 	}
 
 	@Override
 	public Object[] getElements(Object object) {
 		//Create TunerWrapper object that returns an array of TunerProperty objects to pass to the label provider
-		if (object instanceof Tuner) {
-			Tuner tuner = (Tuner) object;
+		if (object instanceof TunerStatus) {
+			TunerStatus tuner = (TunerStatus) object;
 			currentSelection = tuner; // sets a static variable that is used by the allocate/deallocate handlers
-			TunerWrapper tunerWrapper = new TunerWrapper(tuner);
-			Object[] properties = tunerWrapper.getProperties();
-			return properties;
+			List <TunerPropertyWrapper> tunerProperties = new ArrayList<TunerPropertyWrapper>();
+			for ( ScaSimpleProperty simple : tuner.getTunerStatusStruct().getSimples()) {
+				TunerPropertyWrapper prop = new TunerPropertyWrapper(tuner, simple);
+				tunerProperties.add(prop);
+			}	
+			return tunerProperties.toArray();
 		}
 		return super.getElements(object);
 	}
@@ -65,10 +71,6 @@ public class FrontEndContentProvider extends ScaModelAdapterFactoryContentProvid
 				return TunerUtils.INSTANCE.getTunerContainer(device);
 			}
 		}
-		if (object instanceof TunerWrapper.TunerProperty) {
-			TunerProperty property = (TunerProperty) object;
-			return property.getTunerStatusElements();
-		}
 
 		return super.getChildren(object);
 	}
@@ -78,14 +80,7 @@ public class FrontEndContentProvider extends ScaModelAdapterFactoryContentProvid
 		if (object instanceof TunerContainer) {
 			return true;
 		}
-		if (object instanceof TunerWrapper.TunerProperty) {
-			TunerProperty property = (TunerProperty) object;
-			if (property.getId().equals("Tuner Status")) {
-				return true;
-			}
-			return false;
-		}
-		if (object instanceof Tuner) {
+		if (object instanceof TunerStatus) {
 			return false;
 		}
 		return super.hasChildren(object);

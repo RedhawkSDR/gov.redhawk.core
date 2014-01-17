@@ -11,7 +11,7 @@
  */
 package gov.redhawk.frontend.ui.internal;
 
-import gov.redhawk.frontend.Tuner;
+import gov.redhawk.frontend.TunerStatus;
 import gov.redhawk.frontend.ui.FrontEndUIActivator;
 
 import org.eclipse.core.expressions.PropertyTester;
@@ -24,7 +24,7 @@ public class AllocationPropertyTester extends PropertyTester {
 	@Override
 	public boolean test(Object receiver, String property, Object[] args,
 			Object expectedValue) {
-		Tuner theTuner = (Tuner)receiver;
+		TunerStatus theTuner = (TunerStatus)receiver;
 		if ("hasAllocationID".equals(property)) {
 			String allocationID = theTuner.getAllocationID();
 			if (!(allocationID == null || "".equals(allocationID))) {

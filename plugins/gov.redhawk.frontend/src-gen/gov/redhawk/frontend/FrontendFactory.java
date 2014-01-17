@@ -44,15 +44,6 @@ public interface FrontendFactory extends EFactory
   TunerContainer createTunerContainer();
 
   /**
-   * Returns a new object of class '<em>Tuner</em>'.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return a new object of class '<em>Tuner</em>'.
-   * @generated
-   */
-  Tuner createTuner();
-
-  /**
    * Returns a new object of class '<em>Tuner Status</em>'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
@@ -82,24 +73,24 @@ public interface FrontendFactory extends EFactory
   String convertScaDevice(ScaDevice<?> instanceValue);
 
   /**
-   * Returns an instance of data type '<em>Tuner Struct</em>' corresponding the given literal.
+   * Returns an instance of data type '<em>Tuner Status Struct</em>' corresponding the given literal.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @param literal a literal of the data type.
    * @return a new instance value of the data type.
    * @generated
    */
-  ScaStructProperty createTunerStruct(String literal);
+  ScaStructProperty createTunerStatusStruct(String literal);
 
   /**
-   * Returns a literal representation of an instance of data type '<em>Tuner Struct</em>'.
+   * Returns a literal representation of an instance of data type '<em>Tuner Status Struct</em>'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @param instanceValue an instance value of the data type.
    * @return a literal representation of the instance value.
    * @generated
    */
-  String convertTunerStruct(ScaStructProperty instanceValue);
+  String convertTunerStatusStruct(ScaStructProperty instanceValue);
 
   /**
    * Returns the package supported by this factory.

@@ -86,13 +86,6 @@ public class FrontendSwitch<T> extends Switch<T>
         if (result == null) result = defaultCase(theEObject);
         return result;
       }
-      case FrontendPackage.TUNER:
-      {
-        Tuner tuner = (Tuner)theEObject;
-        T result = caseTuner(tuner);
-        if (result == null) result = defaultCase(theEObject);
-        return result;
-      }
       case FrontendPackage.TUNER_STATUS:
       {
         TunerStatus tunerStatus = (TunerStatus)theEObject;
@@ -132,22 +125,6 @@ public class FrontendSwitch<T> extends Switch<T>
    * @generated
    */
   public T caseTunerContainer(TunerContainer object)
-  {
-    return null;
-  }
-
-  /**
-   * Returns the result of interpreting the object as an instance of '<em>Tuner</em>'.
-   * <!-- begin-user-doc -->
-   * This implementation returns null;
-   * returning a non-null result will terminate the switch.
-   * <!-- end-user-doc -->
-   * @param object the target of the switch.
-   * @return the result of interpreting the object as an instance of '<em>Tuner</em>'.
-   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
-   * @generated
-   */
-  public T caseTuner(Tuner object)
   {
     return null;
   }

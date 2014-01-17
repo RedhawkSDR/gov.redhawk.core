@@ -5,7 +5,6 @@ package gov.redhawk.frontend.impl;
 import gov.redhawk.frontend.FrontendFactory;
 import gov.redhawk.frontend.FrontendPackage;
 import gov.redhawk.frontend.ModelDevice;
-import gov.redhawk.frontend.Tuner;
 import gov.redhawk.frontend.TunerContainer;
 import gov.redhawk.frontend.TunerStatus;
 
@@ -48,13 +47,6 @@ public class FrontendPackageImpl extends EPackageImpl implements FrontendPackage
    * <!-- end-user-doc -->
    * @generated
    */
-  private EClass tunerEClass = null;
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
   private EClass tunerStatusEClass = null;
 
   /**
@@ -69,7 +61,7 @@ public class FrontendPackageImpl extends EPackageImpl implements FrontendPackage
    * <!-- end-user-doc -->
    * @generated
    */
-  private EDataType tunerStructEDataType = null;
+  private EDataType tunerStatusStructEDataType = null;
 
   /**
    * Creates an instance of the model <b>Package</b>, registered with
@@ -192,119 +184,9 @@ public class FrontendPackageImpl extends EPackageImpl implements FrontendPackage
    * <!-- end-user-doc -->
    * @generated
    */
-  public EReference getTunerContainer_Tuners()
+  public EReference getTunerContainer_TunerStatus()
   {
     return (EReference)tunerContainerEClass.getEStructuralFeatures().get(1);
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  public EClass getTuner()
-  {
-    return tunerEClass;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  public EAttribute getTuner_TunerStruct()
-  {
-    return (EAttribute)tunerEClass.getEStructuralFeatures().get(0);
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  public EAttribute getTuner_AllocationID()
-  {
-    return (EAttribute)tunerEClass.getEStructuralFeatures().get(1);
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  public EAttribute getTuner_TunerType()
-  {
-    return (EAttribute)tunerEClass.getEStructuralFeatures().get(2);
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  public EAttribute getTuner_TunerID()
-  {
-    return (EAttribute)tunerEClass.getEStructuralFeatures().get(3);
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  public EAttribute getTuner_DeviceControl()
-  {
-    return (EAttribute)tunerEClass.getEStructuralFeatures().get(4);
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  public EAttribute getTuner_GroupID()
-  {
-    return (EAttribute)tunerEClass.getEStructuralFeatures().get(5);
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  public EAttribute getTuner_RfFlowID()
-  {
-    return (EAttribute)tunerEClass.getEStructuralFeatures().get(6);
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  public EReference getTuner_TunerContainer()
-  {
-    return (EReference)tunerEClass.getEStructuralFeatures().get(7);
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  public EReference getTuner_TunerStatus()
-  {
-    return (EReference)tunerEClass.getEStructuralFeatures().get(8);
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  public EAttribute getTuner_Gain()
-  {
-    return (EAttribute)tunerEClass.getEStructuralFeatures().get(9);
   }
 
   /**
@@ -322,7 +204,7 @@ public class FrontendPackageImpl extends EPackageImpl implements FrontendPackage
    * <!-- end-user-doc -->
    * @generated
    */
-  public EReference getTunerStatus_Tuner()
+  public EReference getTunerStatus_TunerContainer()
   {
     return (EReference)tunerStatusEClass.getEStructuralFeatures().get(0);
   }
@@ -332,7 +214,7 @@ public class FrontendPackageImpl extends EPackageImpl implements FrontendPackage
    * <!-- end-user-doc -->
    * @generated
    */
-  public EAttribute getTunerStatus_CenterFrequency()
+  public EAttribute getTunerStatus_TunerStatusStruct()
   {
     return (EAttribute)tunerStatusEClass.getEStructuralFeatures().get(1);
   }
@@ -342,7 +224,7 @@ public class FrontendPackageImpl extends EPackageImpl implements FrontendPackage
    * <!-- end-user-doc -->
    * @generated
    */
-  public EAttribute getTunerStatus_Bandwidth()
+  public EAttribute getTunerStatus_TunerType()
   {
     return (EAttribute)tunerStatusEClass.getEStructuralFeatures().get(2);
   }
@@ -352,7 +234,7 @@ public class FrontendPackageImpl extends EPackageImpl implements FrontendPackage
    * <!-- end-user-doc -->
    * @generated
    */
-  public EAttribute getTunerStatus_BandwidthTolerance()
+  public EAttribute getTunerStatus_AllocationID()
   {
     return (EAttribute)tunerStatusEClass.getEStructuralFeatures().get(3);
   }
@@ -362,7 +244,7 @@ public class FrontendPackageImpl extends EPackageImpl implements FrontendPackage
    * <!-- end-user-doc -->
    * @generated
    */
-  public EAttribute getTunerStatus_SampleRate()
+  public EAttribute getTunerStatus_CenterFrequency()
   {
     return (EAttribute)tunerStatusEClass.getEStructuralFeatures().get(4);
   }
@@ -372,7 +254,7 @@ public class FrontendPackageImpl extends EPackageImpl implements FrontendPackage
    * <!-- end-user-doc -->
    * @generated
    */
-  public EAttribute getTunerStatus_SampleRateTolerance()
+  public EAttribute getTunerStatus_Bandwidth()
   {
     return (EAttribute)tunerStatusEClass.getEStructuralFeatures().get(5);
   }
@@ -382,9 +264,229 @@ public class FrontendPackageImpl extends EPackageImpl implements FrontendPackage
    * <!-- end-user-doc -->
    * @generated
    */
-  public EAttribute getTunerStatus_Enabled()
+  public EAttribute getTunerStatus_SampleRate()
   {
     return (EAttribute)tunerStatusEClass.getEStructuralFeatures().get(6);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EAttribute getTunerStatus_GroupID()
+  {
+    return (EAttribute)tunerStatusEClass.getEStructuralFeatures().get(7);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EAttribute getTunerStatus_RfFlowID()
+  {
+    return (EAttribute)tunerStatusEClass.getEStructuralFeatures().get(8);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EAttribute getTunerStatus_Enabled()
+  {
+    return (EAttribute)tunerStatusEClass.getEStructuralFeatures().get(9);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EAttribute getTunerStatus_BandwidthTolerance()
+  {
+    return (EAttribute)tunerStatusEClass.getEStructuralFeatures().get(10);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EAttribute getTunerStatus_SampleRateTolerance()
+  {
+    return (EAttribute)tunerStatusEClass.getEStructuralFeatures().get(11);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EAttribute getTunerStatus_Complex()
+  {
+    return (EAttribute)tunerStatusEClass.getEStructuralFeatures().get(12);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EAttribute getTunerStatus_Gain()
+  {
+    return (EAttribute)tunerStatusEClass.getEStructuralFeatures().get(13);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EAttribute getTunerStatus_Agc()
+  {
+    return (EAttribute)tunerStatusEClass.getEStructuralFeatures().get(14);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EAttribute getTunerStatus_Valid()
+  {
+    return (EAttribute)tunerStatusEClass.getEStructuralFeatures().get(15);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EAttribute getTunerStatus_AvailableFrequency()
+  {
+    return (EAttribute)tunerStatusEClass.getEStructuralFeatures().get(16);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EAttribute getTunerStatus_AvailableBandwidth()
+  {
+    return (EAttribute)tunerStatusEClass.getEStructuralFeatures().get(17);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EAttribute getTunerStatus_AvailableGain()
+  {
+    return (EAttribute)tunerStatusEClass.getEStructuralFeatures().get(18);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EAttribute getTunerStatus_AvailableSampleRate()
+  {
+    return (EAttribute)tunerStatusEClass.getEStructuralFeatures().get(19);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EAttribute getTunerStatus_ReferenceSource()
+  {
+    return (EAttribute)tunerStatusEClass.getEStructuralFeatures().get(20);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EAttribute getTunerStatus_OutputFormat()
+  {
+    return (EAttribute)tunerStatusEClass.getEStructuralFeatures().get(21);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EAttribute getTunerStatus_OutputMulticast()
+  {
+    return (EAttribute)tunerStatusEClass.getEStructuralFeatures().get(22);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EAttribute getTunerStatus_OutputVlan()
+  {
+    return (EAttribute)tunerStatusEClass.getEStructuralFeatures().get(23);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EAttribute getTunerStatus_OutputPort()
+  {
+    return (EAttribute)tunerStatusEClass.getEStructuralFeatures().get(24);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EAttribute getTunerStatus_Decimation()
+  {
+    return (EAttribute)tunerStatusEClass.getEStructuralFeatures().get(25);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EAttribute getTunerStatus_Tuner_number()
+  {
+    return (EAttribute)tunerStatusEClass.getEStructuralFeatures().get(26);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EAttribute getTunerStatus_DeviceControl()
+  {
+    return (EAttribute)tunerStatusEClass.getEStructuralFeatures().get(27);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EAttribute getTunerStatus_TunerID()
+  {
+    return (EAttribute)tunerStatusEClass.getEStructuralFeatures().get(28);
   }
 
   /**
@@ -402,9 +504,9 @@ public class FrontendPackageImpl extends EPackageImpl implements FrontendPackage
    * <!-- end-user-doc -->
    * @generated
    */
-  public EDataType getTunerStruct()
+  public EDataType getTunerStatusStruct()
   {
-    return tunerStructEDataType;
+    return tunerStatusStructEDataType;
   }
 
   /**
@@ -443,32 +545,42 @@ public class FrontendPackageImpl extends EPackageImpl implements FrontendPackage
 
     tunerContainerEClass = createEClass(TUNER_CONTAINER);
     createEReference(tunerContainerEClass, TUNER_CONTAINER__MODEL_DEVICE);
-    createEReference(tunerContainerEClass, TUNER_CONTAINER__TUNERS);
-
-    tunerEClass = createEClass(TUNER);
-    createEAttribute(tunerEClass, TUNER__TUNER_STRUCT);
-    createEAttribute(tunerEClass, TUNER__ALLOCATION_ID);
-    createEAttribute(tunerEClass, TUNER__TUNER_TYPE);
-    createEAttribute(tunerEClass, TUNER__TUNER_ID);
-    createEAttribute(tunerEClass, TUNER__DEVICE_CONTROL);
-    createEAttribute(tunerEClass, TUNER__GROUP_ID);
-    createEAttribute(tunerEClass, TUNER__RF_FLOW_ID);
-    createEReference(tunerEClass, TUNER__TUNER_CONTAINER);
-    createEReference(tunerEClass, TUNER__TUNER_STATUS);
-    createEAttribute(tunerEClass, TUNER__GAIN);
+    createEReference(tunerContainerEClass, TUNER_CONTAINER__TUNER_STATUS);
 
     tunerStatusEClass = createEClass(TUNER_STATUS);
-    createEReference(tunerStatusEClass, TUNER_STATUS__TUNER);
+    createEReference(tunerStatusEClass, TUNER_STATUS__TUNER_CONTAINER);
+    createEAttribute(tunerStatusEClass, TUNER_STATUS__TUNER_STATUS_STRUCT);
+    createEAttribute(tunerStatusEClass, TUNER_STATUS__TUNER_TYPE);
+    createEAttribute(tunerStatusEClass, TUNER_STATUS__ALLOCATION_ID);
     createEAttribute(tunerStatusEClass, TUNER_STATUS__CENTER_FREQUENCY);
     createEAttribute(tunerStatusEClass, TUNER_STATUS__BANDWIDTH);
-    createEAttribute(tunerStatusEClass, TUNER_STATUS__BANDWIDTH_TOLERANCE);
     createEAttribute(tunerStatusEClass, TUNER_STATUS__SAMPLE_RATE);
-    createEAttribute(tunerStatusEClass, TUNER_STATUS__SAMPLE_RATE_TOLERANCE);
+    createEAttribute(tunerStatusEClass, TUNER_STATUS__GROUP_ID);
+    createEAttribute(tunerStatusEClass, TUNER_STATUS__RF_FLOW_ID);
     createEAttribute(tunerStatusEClass, TUNER_STATUS__ENABLED);
+    createEAttribute(tunerStatusEClass, TUNER_STATUS__BANDWIDTH_TOLERANCE);
+    createEAttribute(tunerStatusEClass, TUNER_STATUS__SAMPLE_RATE_TOLERANCE);
+    createEAttribute(tunerStatusEClass, TUNER_STATUS__COMPLEX);
+    createEAttribute(tunerStatusEClass, TUNER_STATUS__GAIN);
+    createEAttribute(tunerStatusEClass, TUNER_STATUS__AGC);
+    createEAttribute(tunerStatusEClass, TUNER_STATUS__VALID);
+    createEAttribute(tunerStatusEClass, TUNER_STATUS__AVAILABLE_FREQUENCY);
+    createEAttribute(tunerStatusEClass, TUNER_STATUS__AVAILABLE_BANDWIDTH);
+    createEAttribute(tunerStatusEClass, TUNER_STATUS__AVAILABLE_GAIN);
+    createEAttribute(tunerStatusEClass, TUNER_STATUS__AVAILABLE_SAMPLE_RATE);
+    createEAttribute(tunerStatusEClass, TUNER_STATUS__REFERENCE_SOURCE);
+    createEAttribute(tunerStatusEClass, TUNER_STATUS__OUTPUT_FORMAT);
+    createEAttribute(tunerStatusEClass, TUNER_STATUS__OUTPUT_MULTICAST);
+    createEAttribute(tunerStatusEClass, TUNER_STATUS__OUTPUT_VLAN);
+    createEAttribute(tunerStatusEClass, TUNER_STATUS__OUTPUT_PORT);
+    createEAttribute(tunerStatusEClass, TUNER_STATUS__DECIMATION);
+    createEAttribute(tunerStatusEClass, TUNER_STATUS__TUNER_NUMBER);
+    createEAttribute(tunerStatusEClass, TUNER_STATUS__DEVICE_CONTROL);
+    createEAttribute(tunerStatusEClass, TUNER_STATUS__TUNER_ID);
 
     // Create data types
     scaDeviceEDataType = createEDataType(SCA_DEVICE);
-    tunerStructEDataType = createEDataType(TUNER_STRUCT);
+    tunerStatusStructEDataType = createEDataType(TUNER_STATUS_STRUCT);
   }
 
   /**
@@ -511,32 +623,42 @@ public class FrontendPackageImpl extends EPackageImpl implements FrontendPackage
 
     initEClass(tunerContainerEClass, TunerContainer.class, "TunerContainer", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
     initEReference(getTunerContainer_ModelDevice(), this.getModelDevice(), this.getModelDevice_TunerContainer(), "modelDevice", null, 0, 1, TunerContainer.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-    initEReference(getTunerContainer_Tuners(), this.getTuner(), this.getTuner_TunerContainer(), "tuners", null, 0, -1, TunerContainer.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-
-    initEClass(tunerEClass, Tuner.class, "Tuner", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-    initEAttribute(getTuner_TunerStruct(), this.getTunerStruct(), "tunerStruct", null, 0, 1, Tuner.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-    initEAttribute(getTuner_AllocationID(), theEcorePackage.getEString(), "allocationID", null, 0, 1, Tuner.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-    initEAttribute(getTuner_TunerType(), theEcorePackage.getEString(), "tunerType", null, 0, 1, Tuner.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-    initEAttribute(getTuner_TunerID(), theEcorePackage.getEString(), "tunerID", null, 0, 1, Tuner.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-    initEAttribute(getTuner_DeviceControl(), theEcorePackage.getEBoolean(), "deviceControl", null, 0, 1, Tuner.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-    initEAttribute(getTuner_GroupID(), theEcorePackage.getEString(), "groupID", null, 0, 1, Tuner.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-    initEAttribute(getTuner_RfFlowID(), theEcorePackage.getEString(), "rfFlowID", null, 0, 1, Tuner.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-    initEReference(getTuner_TunerContainer(), this.getTunerContainer(), this.getTunerContainer_Tuners(), "tunerContainer", null, 0, 1, Tuner.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-    initEReference(getTuner_TunerStatus(), this.getTunerStatus(), this.getTunerStatus_Tuner(), "tunerStatus", null, 0, 1, Tuner.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-    initEAttribute(getTuner_Gain(), theEcorePackage.getEDouble(), "gain", null, 0, 1, Tuner.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEReference(getTunerContainer_TunerStatus(), this.getTunerStatus(), this.getTunerStatus_TunerContainer(), "tunerStatus", null, 0, -1, TunerContainer.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     initEClass(tunerStatusEClass, TunerStatus.class, "TunerStatus", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-    initEReference(getTunerStatus_Tuner(), this.getTuner(), this.getTuner_TunerStatus(), "tuner", null, 0, 1, TunerStatus.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEReference(getTunerStatus_TunerContainer(), this.getTunerContainer(), this.getTunerContainer_TunerStatus(), "tunerContainer", null, 0, 1, TunerStatus.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEAttribute(getTunerStatus_TunerStatusStruct(), this.getTunerStatusStruct(), "tunerStatusStruct", null, 0, 1, TunerStatus.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEAttribute(getTunerStatus_TunerType(), theEcorePackage.getEString(), "tunerType", null, 0, 1, TunerStatus.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEAttribute(getTunerStatus_AllocationID(), theEcorePackage.getEString(), "allocationID", null, 0, 1, TunerStatus.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEAttribute(getTunerStatus_CenterFrequency(), theEcorePackage.getEDouble(), "centerFrequency", null, 0, 1, TunerStatus.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEAttribute(getTunerStatus_Bandwidth(), theEcorePackage.getEDouble(), "bandwidth", null, 0, 1, TunerStatus.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-    initEAttribute(getTunerStatus_BandwidthTolerance(), theEcorePackage.getEDouble(), "bandwidthTolerance", null, 0, 1, TunerStatus.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEAttribute(getTunerStatus_SampleRate(), theEcorePackage.getEDouble(), "sampleRate", null, 0, 1, TunerStatus.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-    initEAttribute(getTunerStatus_SampleRateTolerance(), theEcorePackage.getEDouble(), "sampleRateTolerance", null, 0, 1, TunerStatus.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEAttribute(getTunerStatus_GroupID(), theEcorePackage.getEString(), "groupID", null, 0, 1, TunerStatus.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEAttribute(getTunerStatus_RfFlowID(), theEcorePackage.getEString(), "rfFlowID", null, 0, 1, TunerStatus.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEAttribute(getTunerStatus_Enabled(), theEcorePackage.getEBoolean(), "enabled", null, 0, 1, TunerStatus.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEAttribute(getTunerStatus_BandwidthTolerance(), theEcorePackage.getEDouble(), "bandwidthTolerance", null, 0, 1, TunerStatus.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEAttribute(getTunerStatus_SampleRateTolerance(), theEcorePackage.getEDouble(), "sampleRateTolerance", null, 0, 1, TunerStatus.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEAttribute(getTunerStatus_Complex(), theEcorePackage.getEBoolean(), "complex", null, 0, 1, TunerStatus.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEAttribute(getTunerStatus_Gain(), theEcorePackage.getEDouble(), "gain", null, 0, 1, TunerStatus.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEAttribute(getTunerStatus_Agc(), theEcorePackage.getEBoolean(), "agc", null, 0, 1, TunerStatus.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEAttribute(getTunerStatus_Valid(), theEcorePackage.getEBoolean(), "valid", null, 0, 1, TunerStatus.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEAttribute(getTunerStatus_AvailableFrequency(), theEcorePackage.getEString(), "availableFrequency", null, 0, 1, TunerStatus.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEAttribute(getTunerStatus_AvailableBandwidth(), theEcorePackage.getEString(), "availableBandwidth", null, 0, 1, TunerStatus.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEAttribute(getTunerStatus_AvailableGain(), theEcorePackage.getEString(), "availableGain", null, 0, 1, TunerStatus.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEAttribute(getTunerStatus_AvailableSampleRate(), theEcorePackage.getEString(), "availableSampleRate", null, 0, 1, TunerStatus.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEAttribute(getTunerStatus_ReferenceSource(), theEcorePackage.getELong(), "referenceSource", null, 0, 1, TunerStatus.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEAttribute(getTunerStatus_OutputFormat(), theEcorePackage.getEString(), "outputFormat", null, 0, 1, TunerStatus.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEAttribute(getTunerStatus_OutputMulticast(), theEcorePackage.getEString(), "outputMulticast", null, 0, 1, TunerStatus.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEAttribute(getTunerStatus_OutputVlan(), theEcorePackage.getELong(), "outputVlan", null, 0, 1, TunerStatus.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEAttribute(getTunerStatus_OutputPort(), theEcorePackage.getELong(), "outputPort", null, 0, 1, TunerStatus.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEAttribute(getTunerStatus_Decimation(), theEcorePackage.getELong(), "decimation", null, 0, 1, TunerStatus.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEAttribute(getTunerStatus_Tuner_number(), theEcorePackage.getEShort(), "tuner_number", null, 0, 1, TunerStatus.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEAttribute(getTunerStatus_DeviceControl(), theEcorePackage.getEBoolean(), "deviceControl", null, 0, 1, TunerStatus.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEAttribute(getTunerStatus_TunerID(), theEcorePackage.getEString(), "tunerID", null, 0, 1, TunerStatus.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     // Initialize data types
     initEDataType(scaDeviceEDataType, ScaDevice.class, "ScaDevice", IS_SERIALIZABLE, !IS_GENERATED_INSTANCE_CLASS, "gov.redhawk.model.sca.ScaDevice<?>");
-    initEDataType(tunerStructEDataType, ScaStructProperty.class, "TunerStruct", IS_SERIALIZABLE, !IS_GENERATED_INSTANCE_CLASS);
+    initEDataType(tunerStatusStructEDataType, ScaStructProperty.class, "TunerStatusStruct", IS_SERIALIZABLE, !IS_GENERATED_INSTANCE_CLASS);
 
     // Create resource
     createResource(eNS_URI);

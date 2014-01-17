@@ -11,8 +11,20 @@
  */
 package gov.redhawk.frontend.ui.internal;
 
-import gov.redhawk.frontend.Tuner;
 import gov.redhawk.frontend.TunerContainer;
+import gov.redhawk.frontend.TunerStatus;
+import gov.redhawk.frontend.ui.wizard.TunerAllocationWizard.TunerAllocationProperties;
+import gov.redhawk.model.sca.ScaDevice;
+import gov.redhawk.model.sca.ScaFactory;
+import gov.redhawk.model.sca.ScaSimpleProperty;
+import gov.redhawk.model.sca.ScaStructProperty;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import mil.jpeojtrs.sca.prf.PrfFactory;
+import mil.jpeojtrs.sca.prf.PrfPackage;
+import mil.jpeojtrs.sca.prf.Simple;
 
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
@@ -25,10 +37,16 @@ import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.handlers.HandlerUtil;
 
+import CF.DataType;
+import CF.DevicePackage.InvalidCapacity;
+import CF.DevicePackage.InvalidState;
+
 /**
  *
  */
 public class DeallocateHandler extends AbstractHandler implements IHandler {
+
+	private TunerStatus tuner;
 
 	/* (non-Javadoc)
 	 * @see org.eclipse.core.commands.IHandler#execute(org.eclipse.core.commands.ExecutionEvent)
@@ -42,7 +60,7 @@ public class DeallocateHandler extends AbstractHandler implements IHandler {
 
 		// This check is used to tie the allocation wizard into the view toolbar buttons
 		if (selection == null || selection.getFirstElement() == null) {
-			Tuner currentSelection = FrontEndContentProvider.getCurrentSelection();
+			TunerStatus currentSelection = FrontEndContentProvider.getCurrentSelection();
 			if (currentSelection != null) {
 				selection = new StructuredSelection(new Object[] { currentSelection });
 			}
@@ -60,14 +78,23 @@ public class DeallocateHandler extends AbstractHandler implements IHandler {
 			return null;
 		}
 		Object obj = selection.getFirstElement();
-		if (obj instanceof Tuner) {
-			//			Tuner tuner = (Tuner) obj;
+		if (obj instanceof TunerStatus) {
+			TunerStatus tuner = (TunerStatus) obj;
+			ScaDevice< ? > device = tuner.getTunerContainer().getModelDevice().getScaDevice();
+			DataType[] props = createAllocationProperties(tuner);
+			try {
+				device.deallocateCapacity(props);
+				System.out.println("Struct: " + tuner.getTunerStatusStruct().getSimple("FRONTEND::tuner_status::allocation_id_csv").getValue());
+			} catch (InvalidCapacity e) {
+				e.printStackTrace();
+			} catch (InvalidState e) {
+				e.printStackTrace();
+			}
 			//TODO: Unset all the properties of the Tuner
-			//			tuner.setAllocationID(null);
 		}
 		if (obj instanceof TunerContainer) {
 			TunerContainer container = (TunerContainer) obj;
-			for (Tuner tuner : container.getTuners()) {
+			for (TunerStatus tuner : container.getTunerStatus()) {
 				String allocationID = tuner.getAllocationID();
 				if (!(allocationID == null || "".equals(allocationID))) {
 					//TODO: deallocate tuner
@@ -76,5 +103,43 @@ public class DeallocateHandler extends AbstractHandler implements IHandler {
 		}
 		return null;
 	}
+
+	private DataType[] createAllocationProperties(TunerStatus tuner) {
+		this.tuner = tuner;
+		List<DataType> props = new ArrayList<DataType>();
+		ScaStructProperty struct;
+		DataType dt = new DataType();
+		struct = getTunerAllocationStruct();
+//		System.out.println("Struct: " + struct.getSimple("FRONTEND::tuner_status::allocation_id_csv").getValue());
+		dt.id = "FRONTEND::tuner_allocation";
+		dt.value = struct.toAny();
+		props.add(dt);
+		return props.toArray(new DataType[0]);
+	}
+
+	private ScaStructProperty getTunerAllocationStruct() {
+		ScaStructProperty tunerAllocationStruct = ScaFactory.eINSTANCE.createScaStructProperty();
+		TunerAllocationProperties allocPropID = TunerAllocationProperties.valueOf("ALLOCATION_ID");
+		ScaSimpleProperty simple = ScaFactory.eINSTANCE.createScaSimpleProperty();
+		Simple definition = (Simple) PrfFactory.eINSTANCE.create(PrfPackage.Literals.SIMPLE);
+		definition.setType(allocPropID.getType());
+		definition.setId(allocPropID.getType().getLiteral());
+		definition.setName(allocPropID.getType().getName());
+		simple.setDefinition(definition);
+		simple.setId(allocPropID.getId());
+		setValueForProp(allocPropID, simple);
+		tunerAllocationStruct.getSimples().add(simple);
+		return tunerAllocationStruct;
+	}
+
+	private void setValueForProp(TunerAllocationProperties allocPropID, ScaSimpleProperty simple) {
+		System.out.println("Simple: " + simple);
+		System.out.println("TunerStruct: " + tuner.getTunerStatusStruct());
+		System.out.println("GetSimple: " + tuner.getTunerStatusStruct().getSimple("FRONTEND::tuner_status::allocation_id_csv"));
+		System.out.println("getValue: " + tuner.getTunerStatusStruct().getSimple("FRONTEND::tuner_status::allocation_id_csv").getValue());
+		
+		simple.setValue(tuner.getTunerStatusStruct().getSimple("FRONTEND::tuner_status::allocation_id_csv").getValue());
+	}
+	
 
 }

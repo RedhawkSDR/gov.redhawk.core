@@ -1,7 +1,7 @@
 package gov.redhawk.frontend.ui.wizard;
 
 import gov.redhawk.common.ui.widgets.Dval;
-import gov.redhawk.frontend.Tuner;
+import gov.redhawk.frontend.TunerStatus;
 import gov.redhawk.frontend.ui.wizard.TunerAllocationWizard.ListenerAllocationProperties;
 import gov.redhawk.frontend.ui.wizard.TunerAllocationWizard.StatusProperties;
 import gov.redhawk.frontend.ui.wizard.TunerAllocationWizard.TunerAllocationProperties;
@@ -45,7 +45,7 @@ public class AllocateRxDigitizerWizardPage extends WizardPage {
 	private static final double FREQUENCY_VALUE_CONVERSION_FACTOR = 1e6;
 	private static final double TOLERANCE_CONVERSION = 0.01;
 	private static final double ONE = 1;
-	private Tuner tuner;
+	private TunerStatus tuner;
 	private Dval cfVal;
 	private Dval bwVal;
 	private Dval bwTolVal;
@@ -65,7 +65,7 @@ public class AllocateRxDigitizerWizardPage extends WizardPage {
 	private List<Control> tunerControls = new ArrayList<Control>();
 	private List<Control> listenerControls = new ArrayList<Control>();
 
-	protected AllocateRxDigitizerWizardPage(Tuner tuner) {
+	protected AllocateRxDigitizerWizardPage(TunerStatus tuner) {
 		super("Allocate RX Digitizer Tuner");
 		this.tuner = tuner;
 	}
@@ -427,8 +427,8 @@ public class AllocateRxDigitizerWizardPage extends WizardPage {
 
 	}
 
-	private String getAllocationIdCsv(Tuner tuner) {
-		ScaSimpleProperty simple = tuner.getTunerStruct().getSimple(StatusProperties.ALLOCATION_ID_CSV.getId());
+	private String getAllocationIdCsv(TunerStatus tuner) {
+		ScaSimpleProperty simple = tuner.getTunerStatusStruct().getSimple(StatusProperties.ALLOCATION_ID_CSV.getId());
 		if (simple != null) {
 			String val = (String) simple.getValue();
 			if (val != null) {
@@ -438,16 +438,16 @@ public class AllocateRxDigitizerWizardPage extends WizardPage {
 		return "";
 	}
 
-	public Tuner getTuner() {
+	public TunerStatus getTuner() {
 		return this.tuner;
 	}
 
-	public void setTuner(Tuner tuner) {
+	public void setTuner(TunerStatus tuner) {
 		this.tuner = tuner;
 	}
 
 	private void setControlValues(Dval dVal, StatusProperties prop) {
-		ScaStructProperty struct = tuner.getTunerStruct();
+		ScaStructProperty struct = tuner.getTunerStatusStruct();
 		ScaSimpleProperty simple = struct.getSimple(prop.getId());
 		if (simple == null) {
 			applyDefaultSettings(dVal, prop);

@@ -11,7 +11,7 @@
  */
 package gov.redhawk.frontend.ui.internal.section;
 
-import gov.redhawk.frontend.Tuner;
+import gov.redhawk.frontend.TunerStatus;
 
 import org.eclipse.jface.viewers.IFilter;
 
@@ -19,7 +19,7 @@ public class FrontendSectionFilter implements IFilter {
 
 	@Override
 	public boolean select(Object toTest) {
-		if(toTest instanceof Tuner) {
+		if(toTest instanceof TunerStatus) {
 			return true;
 		}
 		return false;

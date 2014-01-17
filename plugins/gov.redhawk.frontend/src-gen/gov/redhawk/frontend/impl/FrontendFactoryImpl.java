@@ -70,7 +70,6 @@ public class FrontendFactoryImpl extends EFactoryImpl implements FrontendFactory
     {
       case FrontendPackage.MODEL_DEVICE: return createModelDevice();
       case FrontendPackage.TUNER_CONTAINER: return createTunerContainer();
-      case FrontendPackage.TUNER: return createTuner();
       case FrontendPackage.TUNER_STATUS: return createTunerStatus();
       default:
         throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier");
@@ -89,8 +88,8 @@ public class FrontendFactoryImpl extends EFactoryImpl implements FrontendFactory
     {
       case FrontendPackage.SCA_DEVICE:
         return createScaDeviceFromString(eDataType, initialValue);
-      case FrontendPackage.TUNER_STRUCT:
-        return createTunerStructFromString(eDataType, initialValue);
+      case FrontendPackage.TUNER_STATUS_STRUCT:
+        return createTunerStatusStructFromString(eDataType, initialValue);
       default:
         throw new IllegalArgumentException("The datatype '" + eDataType.getName() + "' is not a valid classifier");
     }
@@ -108,8 +107,8 @@ public class FrontendFactoryImpl extends EFactoryImpl implements FrontendFactory
     {
       case FrontendPackage.SCA_DEVICE:
         return convertScaDeviceToString(eDataType, instanceValue);
-      case FrontendPackage.TUNER_STRUCT:
-        return convertTunerStructToString(eDataType, instanceValue);
+      case FrontendPackage.TUNER_STATUS_STRUCT:
+        return convertTunerStatusStructToString(eDataType, instanceValue);
       default:
         throw new IllegalArgumentException("The datatype '" + eDataType.getName() + "' is not a valid classifier");
     }
@@ -135,17 +134,6 @@ public class FrontendFactoryImpl extends EFactoryImpl implements FrontendFactory
   {
     TunerContainerImpl tunerContainer = new TunerContainerImpl();
     return tunerContainer;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  public Tuner createTuner()
-  {
-    TunerImpl tuner = new TunerImpl();
-    return tuner;
   }
 
   /**
@@ -206,9 +194,9 @@ public class FrontendFactoryImpl extends EFactoryImpl implements FrontendFactory
    * <!-- end-user-doc -->
    * @generated
    */
-  public ScaStructProperty createTunerStruct(String literal)
+  public ScaStructProperty createTunerStatusStruct(String literal)
   {
-    return (ScaStructProperty)super.createFromString(FrontendPackage.Literals.TUNER_STRUCT, literal);
+    return (ScaStructProperty)super.createFromString(FrontendPackage.Literals.TUNER_STATUS_STRUCT, literal);
   }
 
   /**
@@ -216,9 +204,9 @@ public class FrontendFactoryImpl extends EFactoryImpl implements FrontendFactory
    * <!-- end-user-doc -->
    * @generated
    */
-  public ScaStructProperty createTunerStructFromString(EDataType eDataType, String initialValue)
+  public ScaStructProperty createTunerStatusStructFromString(EDataType eDataType, String initialValue)
   {
-    return createTunerStruct(initialValue);
+    return createTunerStatusStruct(initialValue);
   }
 
   /**
@@ -226,9 +214,9 @@ public class FrontendFactoryImpl extends EFactoryImpl implements FrontendFactory
    * <!-- end-user-doc -->
    * @generated
    */
-  public String convertTunerStruct(ScaStructProperty instanceValue)
+  public String convertTunerStatusStruct(ScaStructProperty instanceValue)
   {
-    return super.convertToString(FrontendPackage.Literals.TUNER_STRUCT, instanceValue);
+    return super.convertToString(FrontendPackage.Literals.TUNER_STATUS_STRUCT, instanceValue);
   }
 
   /**
@@ -236,9 +224,9 @@ public class FrontendFactoryImpl extends EFactoryImpl implements FrontendFactory
    * <!-- end-user-doc -->
    * @generated
    */
-  public String convertTunerStructToString(EDataType eDataType, Object instanceValue)
+  public String convertTunerStatusStructToString(EDataType eDataType, Object instanceValue)
   {
-    return convertTunerStruct((ScaStructProperty)instanceValue);
+    return convertTunerStatusStruct((ScaStructProperty)instanceValue);
   }
 
   /**

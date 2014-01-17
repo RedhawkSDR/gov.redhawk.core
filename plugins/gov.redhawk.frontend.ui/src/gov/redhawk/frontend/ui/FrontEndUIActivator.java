@@ -11,13 +11,13 @@
  */
 package gov.redhawk.frontend.ui;
 
+import gov.redhawk.frontend.TunerStatus;
+import gov.redhawk.sca.ui.ScaUiPlugin;
+import gov.redhawk.sca.ui.filters.AdvancedPropertiesExtensibleFilter;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-
-import gov.redhawk.frontend.Tuner;
-import gov.redhawk.sca.ui.ScaUiPlugin;
-import gov.redhawk.sca.ui.filters.AdvancedPropertiesExtensibleFilter;
 
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
@@ -60,7 +60,7 @@ public class FrontEndUIActivator extends AbstractUIPlugin {
 
 				@Override
 				public boolean select(Object toTest) {
-					if (toTest instanceof Tuner) {
+					if (toTest instanceof TunerStatus) {
 						return false;
 					}
 					return true;

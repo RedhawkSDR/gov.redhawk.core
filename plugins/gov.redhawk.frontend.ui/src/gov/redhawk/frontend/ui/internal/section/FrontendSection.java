@@ -11,9 +11,9 @@
  */
 package gov.redhawk.frontend.ui.internal.section;
 
-import gov.redhawk.frontend.Tuner;
+import gov.redhawk.frontend.TunerStatus;
 import gov.redhawk.frontend.edit.utils.TunerUtils;
-import gov.redhawk.frontend.edit.utils.TunerWrapper;
+import gov.redhawk.frontend.edit.utils.TunerPropertyWrapper;
 import gov.redhawk.frontend.ui.internal.FrontEndContentProvider;
 import gov.redhawk.frontend.ui.internal.FrontEndLabelProvider;
 
@@ -72,11 +72,6 @@ public class FrontendSection extends AbstractPropertySection {
 		viewer.setLabelProvider(new FrontEndLabelProvider());
 		viewer.setAutoExpandLevel(2);
 
-		createToolbar();
-	}
-
-	private void createToolbar() {
-		//TODO - contribute to view toolbar
 	}
 
 	@Override
@@ -99,10 +94,12 @@ public class FrontendSection extends AbstractPropertySection {
 
 			@Override
 			protected void setValue(Object element, Object value) {
-				TunerWrapper.TunerProperty entry = (TunerWrapper.TunerProperty) element;
-				entry.setValue(value.toString());
-
-				TunerUtils.setTunerProperties(entry);
+				if (element instanceof TunerPropertyWrapper) {
+					TunerPropertyWrapper entry = (TunerPropertyWrapper) element;
+					System.out.println("SETVALUE: " + value.toString());
+					entry.updateValue(value.toString());
+					TunerUtils.setTunerProperties(entry);
+				}
 
 				viewer.refresh();
 				viewer.setAutoExpandLevel(2);
@@ -110,9 +107,10 @@ public class FrontendSection extends AbstractPropertySection {
 
 			@Override
 			protected Object getValue(Object element) {
-				if (element instanceof TunerWrapper.TunerProperty) {
-					TunerWrapper.TunerProperty entry = (TunerWrapper.TunerProperty) element;
+				if (element instanceof TunerPropertyWrapper) {
+					TunerPropertyWrapper entry = (TunerPropertyWrapper) element;
 					Object value = entry.getValue();
+					System.out.println("Value: " + value.toString());
 					return value.toString();
 				}
 				return "";
@@ -125,10 +123,19 @@ public class FrontendSection extends AbstractPropertySection {
 
 			@Override
 			protected boolean canEdit(Object element) {
-				TunerWrapper.TunerProperty entry = (TunerWrapper.TunerProperty) element;
-				String ID = entry.getId();
-				if (ID.equals("Tuner Status") || ID.equals("Tuner Type") /* TODO 'add back, this was removed for testing' || ID.equals("Allocation ID")*/)
-					return false;
+				if (element instanceof TunerPropertyWrapper) {
+					TunerPropertyWrapper entry = (TunerPropertyWrapper) element;
+					
+					// If tuner is not allocated, all fields are read only
+					String allocID = entry.getTuner().getAllocationID();
+					if (allocID == null || allocID == "" ||  allocID.isEmpty()) {
+//						return false;
+					}
+					
+					String ID = entry.getID();
+					if (ID.equals("Tuner Type") /* TODO 'add back, this was removed for testing' || ID.equals("Allocation ID")*/)
+						return false;
+				}
 				return true;
 			}
 		});
@@ -137,8 +144,8 @@ public class FrontendSection extends AbstractPropertySection {
 	public void setInput(IWorkbenchPart part, ISelection selection) {
 		if (selection instanceof StructuredSelection) {
 			StructuredSelection sel = (StructuredSelection) selection;
-			if (sel.getFirstElement() instanceof Tuner) {
-				Tuner tuner = (Tuner) sel.getFirstElement();
+			if (sel.getFirstElement() instanceof TunerStatus) {
+				TunerStatus tuner = (TunerStatus) sel.getFirstElement();
 				viewer.setInput(tuner);
 			}
 		}

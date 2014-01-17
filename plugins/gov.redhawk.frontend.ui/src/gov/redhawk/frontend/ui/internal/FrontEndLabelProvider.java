@@ -11,8 +11,7 @@
  */
 package gov.redhawk.frontend.ui.internal;
 
-import gov.redhawk.frontend.edit.utils.TunerWrapper;
-import gov.redhawk.frontend.edit.utils.TunerWrapper.TunerProperty;
+import gov.redhawk.frontend.edit.utils.TunerPropertyWrapper;
 import gov.redhawk.frontend.provider.FrontendItemProviderAdapterFactory;
 import gov.redhawk.sca.ui.ITooltipProvider;
 import gov.redhawk.sca.ui.ScaModelAdapterFactoryLabelProvider;
@@ -34,17 +33,13 @@ public class FrontEndLabelProvider extends ScaModelAdapterFactoryLabelProvider i
 	
 	@Override
 	public String getColumnText(Object object, int columnIndex) {
-		if(object instanceof TunerWrapper.TunerProperty) {
-			TunerProperty property = (TunerProperty) object;
+		if(object instanceof TunerPropertyWrapper) {
+			TunerPropertyWrapper property = (TunerPropertyWrapper) object;
 			switch (columnIndex) {
 			case 0:
-				return property.getId();
+				return property.getID();
 			case 1:
-				if (property.getId().equals("Tuner Status")) {
-					return "";
-				} else {
-					return String.valueOf(property.getValue());
-				}
+				return String.valueOf(property.getValue());
 			}
 		}
 		return "";

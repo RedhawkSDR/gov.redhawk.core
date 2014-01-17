@@ -125,31 +125,6 @@ public class FrontendItemProviderAdapterFactory extends FrontendAdapterFactory i
   }
 
   /**
-   * This keeps track of the one adapter used for all {@link gov.redhawk.frontend.Tuner} instances.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  protected TunerItemProvider tunerItemProvider;
-
-  /**
-   * This creates an adapter for a {@link gov.redhawk.frontend.Tuner}.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  @Override
-  public Adapter createTunerAdapter()
-  {
-    if (tunerItemProvider == null)
-    {
-      tunerItemProvider = new TunerItemProvider(this);
-    }
-
-    return tunerItemProvider;
-  }
-
-  /**
    * This keeps track of the one adapter used for all {@link gov.redhawk.frontend.TunerStatus} instances.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
@@ -287,7 +262,6 @@ public class FrontendItemProviderAdapterFactory extends FrontendAdapterFactory i
   {
     if (modelDeviceItemProvider != null) modelDeviceItemProvider.dispose();
     if (tunerContainerItemProvider != null) tunerContainerItemProvider.dispose();
-    if (tunerItemProvider != null) tunerItemProvider.dispose();
     if (tunerStatusItemProvider != null) tunerStatusItemProvider.dispose();
   }
 

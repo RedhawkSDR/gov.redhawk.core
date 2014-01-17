@@ -114,7 +114,7 @@
                   <or>
                      <and>
                         <instanceof
-                              value="gov.redhawk.frontend.Tuner">
+                              value="gov.redhawk.frontend.TunerStatus">
                         </instanceof>
                         <not>
                            <test

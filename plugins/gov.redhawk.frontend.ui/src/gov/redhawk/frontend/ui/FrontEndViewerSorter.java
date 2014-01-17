@@ -3,7 +3,7 @@
  */
 package gov.redhawk.frontend.ui;
 
-import gov.redhawk.frontend.Tuner;
+import gov.redhawk.frontend.TunerStatus;
 import gov.redhawk.sca.ui.ScaViewerSorter;
 
 import java.text.Collator;
@@ -33,11 +33,11 @@ public class FrontEndViewerSorter extends ScaViewerSorter {
 
 	@Override
 	public int compare(Viewer viewer, Object e1, Object e2) {
-		if (e1 instanceof Tuner) {
-			Tuner t1 = (Tuner) e1;
+		if (e1 instanceof TunerStatus) {
+			TunerStatus t1 = (TunerStatus) e1;
 			String id1 = t1.getAllocationID();
-			if (e2 instanceof Tuner) {
-				Tuner t2 = (Tuner) e2;
+			if (e2 instanceof TunerStatus) {
+				TunerStatus t2 = (TunerStatus) e2;
 				String id2 = t2.getAllocationID();
 				if (id1 == null || "".equals(id1) && !(id2 == null || "".equals(id2))) {
 					return 1;

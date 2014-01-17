@@ -2,16 +2,15 @@ package gov.redhawk.frontend.edit.utils;
 
 import gov.redhawk.frontend.FrontendFactory;
 import gov.redhawk.frontend.ModelDevice;
-import gov.redhawk.frontend.Tuner;
 import gov.redhawk.frontend.TunerContainer;
-import gov.redhawk.frontend.edit.utils.TunerWrapper.TunerProperty;
+import gov.redhawk.frontend.TunerStatus;
 import gov.redhawk.model.sca.ScaDevice;
 import gov.redhawk.model.sca.ScaStructProperty;
 import gov.redhawk.model.sca.ScaStructSequenceProperty;
-import gov.redhawk.model.sca.commands.ScaModelCommand;
 
 import java.util.List;
 
+import mil.jpeojtrs.sca.prf.PropertyValueType;
 import mil.jpeojtrs.sca.scd.Interface;
 
 import org.eclipse.emf.common.notify.Notification;
@@ -22,16 +21,70 @@ import FRONTEND.DigitalTunerHelper;
 public enum TunerUtils {
 	INSTANCE;
 
-	//	private Map<EObject, Object[]> fMap = Collections.synchronizedMap(new HashMap<EObject, Object[]>());
-	//	private final TransactionalEditingDomain editingDomain = TransactionalEditingDomain.Registry.INSTANCE.getEditingDomain("gov.redhawk.sca.editingDomain");
-	//	private Resource tunerStatus;
-
 	private TunerUtils() {
-		//		tunerStatus = editingDomain.getResourceSet().createResource(URI.createURI("null:///tunerStatus.xml"));
 	}
 
 	public void processChange(Notification notification) {
 
+	}
+
+	/**
+	 * Enum of available tuner status properties as defined by specification.
+	 * Includes required and optional properties
+	 */
+	public enum TunerStatusAllocationProperties {
+		//  required properties
+		//	instance name			ID														PRF type				Human Readable Name
+		TUNER_TYPE("FRONTEND::tuner_status::tuner_type", PropertyValueType.STRING, "Tuner Type"),
+		ALLOCATION_ID("FRONTEND::tuner_status::allocation_id_csv", PropertyValueType.STRING, "Allocation ID"),
+		CENTER_FREQUENCY("FRONTEND::tuner_status::center_frequency", PropertyValueType.DOUBLE, "Center Frequency"),
+		BANDWIDTH("FRONTEND::tuner_status::bandwidth", PropertyValueType.DOUBLE, "Bandwidth"),
+		SAMPLE_RATE("FRONTEND::tuner_status::sample_rate", PropertyValueType.DOUBLE, "Sample Rate"),
+		GROUP_ID("FRONTEND::tuner_status::group_id", PropertyValueType.STRING, "Group ID"),
+		RF_FLOW_ID("FRONTEND::tuner_status::rf_flow_id", PropertyValueType.STRING, "RF Flow ID"),
+		ENABLED("FRONTEND::tuner_status::enabled", PropertyValueType.BOOLEAN, "Enabled"),
+
+		//  optional properties
+		//	instance name			ID														PRF type
+		BANDWIDTH_TOLERANCE("FRONTEND::tuner_status::bandwidth_tolerance", PropertyValueType.DOUBLE, "Bandwidth Tolerance"),
+		SAMPLE_RATE_TOLERANCE("FRONTEND::tuner_status::sample_rate_tolerance", PropertyValueType.DOUBLE, "Sample Rate Tolerance"),
+		COMPLEX("FRONTEND::tuner_status::complex", PropertyValueType.BOOLEAN, "Complex"),
+		GAIN("FRONTEND::tuner_status::gain", PropertyValueType.DOUBLE, "Gain"),
+		AGC("FRONTEND::tuner_status::agc", PropertyValueType.BOOLEAN, "AGC"),
+		VALID("FRONTEND::tuner_status::valid", PropertyValueType.BOOLEAN, "Valid"),
+		AVAILABLE_FREQUENCY("FRONTEND::tuner_status::available_frequency", PropertyValueType.STRING, "Available Frequency"),
+		AVAILABLE_BANDWIDTH("FRONTEND::tuner_status::available_bandwidth", PropertyValueType.STRING, "Available Bandwidth"),
+		AVAILABLE_GAIN("FRONTEND::tuner_status::available_gain", PropertyValueType.STRING, "Available Gain"),
+		AVAILABLE_SAMPLE_RATE("FRONTEND::tuner_status::available_sample_rate", PropertyValueType.STRING, "Available Sample Rate"),
+		REFERENCE_SOURCE("FRONTEND::tuner_status::reference_source", PropertyValueType.LONG, "Reference Source"),
+		OUTPUT_FORMAT("FRONTEND::tuner_status::output_format", PropertyValueType.STRING, "Output Format"),
+		OUTPUT_MULTICAST("FRONTEND::tuner_status::output_multicast", PropertyValueType.STRING, "Output Multicast"),
+		OUTPUT_VLAN("FRONTEND::tuner_status::output_vlan", PropertyValueType.LONG, "Output VLan"),
+		OUTPUT_PORT("FRONTEND::tuner_status::output_port", PropertyValueType.LONG, "Output Port"),
+		DECIMATION("FRONTEND::tuner_status::decimation", PropertyValueType.LONG, "Decimation"),
+		TUNER_NUMBER("FRONTEND::tuner_status::tuner_number", PropertyValueType.SHORT, "Tuner Number");
+
+		private String id;
+		private PropertyValueType type;
+		private String name;
+
+		TunerStatusAllocationProperties(String id, PropertyValueType prfType, String name) {
+			this.id = id;
+			this.type = prfType;
+			this.name = name;
+		}
+
+		public String getId() {
+			return this.id;
+		}
+
+		public PropertyValueType getType() {
+			return this.type;
+		}
+
+		public String getName() {
+			return this.name;
+		}
 	}
 
 	/**
@@ -41,7 +94,6 @@ public enum TunerUtils {
 	 * @return container object for the devices tuners
 	 */
 	public Object[] getTunerContainer(final ScaDevice< ? > device) {
-		
 		//Create model device and tuner container
 		ModelDevice modelDevice = FrontendFactory.eINSTANCE.createModelDevice();
 		modelDevice.setScaDevice(device);
@@ -57,15 +109,14 @@ public enum TunerUtils {
 
 				// create TunerContainer model object
 				TunerContainer container = modelDevice.getTunerContainer();
-				EList<Tuner> tunerList = container.getTuners();
+				EList<TunerStatus> tunerList = container.getTunerStatus();
 
 				// populate container object with tuners from device
 				int tunerIndex = 0;
 				for (ScaStructProperty struct : structs) {
-					final Tuner tuner = FrontendFactory.eINSTANCE.createTuner();
-					tuner.setTunerStatus(FrontendFactory.eINSTANCE.createTunerStatus());
+					final TunerStatus tuner = FrontendFactory.eINSTANCE.createTunerStatus();
 					tuner.setTunerContainer(container);
-					tuner.setTunerStruct(struct);
+					tuner.setTunerStatusStruct(struct);
 					tuner.setTunerID(String.valueOf(tunerIndex));
 					tunerList.add(tuner);
 					tunerIndex++;
@@ -86,35 +137,49 @@ public enum TunerUtils {
 	 * @param tuner represents tuner model object
 	 * 
 	 */
-	private void setTunerType(Tuner tuner) {//		
-		ScaStructProperty tunerDevice = tuner.getTunerStruct();
+	private void setTunerType(TunerStatus tuner) {//		
+		ScaStructProperty tunerDevice = tuner.getTunerStatusStruct();
 		String tunerType = tunerDevice.getSimple("FRONTEND::tuner_status::tuner_type").getValue().toString();
 		tuner.setTunerType(tunerType);
 	}
 
 	/**
 	 * TODO
+	 * Update tuner status struct with new property value
 	 * @param entry
 	 */
-	public static void setTunerProperties(final TunerProperty entry) {
-		final ScaStructProperty tunerStruct = entry.getWrapper().getTuner().getTunerStruct();
-		final String newValue = String.valueOf(entry.getValue());
-		
-		//TODO get the port
-		//org.omg.CORBA.Object port = device.getPort("DigitalTuner_in");
-		//narrow to FrontEndPort (or something)
-		//
+	public static void setTunerProperties(final TunerPropertyWrapper entry) {
+//		String allocationID = entry.getTuner().getAllocationID();
+//		ScaDevice< ? > device = entry.getTuner().getTunerContainer().getModelDevice().getScaDevice();
+//		
+//		org.omg.CORBA.Object port = null;
+//		
+//		try {
+//			port = device.getPort("DigitalTuner_in");
+//		} catch (UnknownPort e1) {
+//			// TODO Auto-generated catch block
+//			e1.printStackTrace();
+//		}
+//		
+//		DigitalTuner digitalTunerPort = DigitalTunerHelper.narrow(port);
+//		
+//		try {
+//			if (entry.getID().equals("Gain")) {
+//				digitalTunerPort.setTunerGain(allocationID, Float.parseFloat(String.valueOf(entry.getTuner().getGain())));
+//			}
+//		} catch (NumberFormatException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		} catch (FrontendException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		} catch (BadParameterException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		} catch (NotSupportedException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
 
-		ScaModelCommand.execute(tunerStruct, new ScaModelCommand() {
-			@Override
-			public void execute() {
-				if (entry.getId().equals("Allocation ID")) {
-					tunerStruct.getSimple("FRONTEND::tuner_status::allocation_id_csv").setValue(newValue);
-				}
-				if (entry.getId().equals("Gain")) {
-					tunerStruct.getSimple("FRONTEND::tuner_status::gain").setValue(Double.parseDouble(newValue));
-				}
-			}
-		});
 	}
 }

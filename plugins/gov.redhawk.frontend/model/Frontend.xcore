@@ -7,6 +7,9 @@ package gov.redhawk.frontend
 import gov.redhawk.model.sca.ScaStructProperty
 import gov.redhawk.model.sca.ScaDevice
 
+type ScaDevice wraps ScaDevice < ? >
+type TunerStatusStruct wraps ScaStructProperty
+
 class ModelDevice {
 	contains TunerContainer tunerContainer opposite modelDevice
 	ScaDevice scaDevice
@@ -14,35 +17,44 @@ class ModelDevice {
 
 class TunerContainer {
 	container ModelDevice modelDevice opposite tunerContainer
-	contains Tuner[] tuners opposite tunerContainer
+	contains TunerStatus[] tunerStatus opposite tunerContainer
 }
 
-type ScaDevice wraps ScaDevice < ? >
+class TunerStatus { 
+	container TunerContainer tunerContainer opposite tunerStatus
 
-type TunerStruct wraps ScaStructProperty
+	TunerStatusStruct tunerStatusStruct
 
-class Tuner { 
-	TunerStruct tunerStruct
-    @GenModel(property="Readonly")
-	String allocationID
-	@GenModel(property="Readonly")
+	//Required Status Elements
 	String tunerType
-	String tunerID
-	boolean deviceControl
-	String groupID
-	String rfFlowID
-	container TunerContainer tunerContainer opposite tuners
-	contains TunerStatus tunerStatus opposite tuner
-	double gain
-}
-
-class TunerStatus {
-	@GenModel(property="Readonly")
-	container Tuner tuner opposite tunerStatus
+	String allocationID
 	double centerFrequency
 	double bandwidth
-	double bandwidthTolerance
 	double sampleRate
-	double sampleRateTolerance
+	String groupID
+	String rfFlowID
 	boolean enabled
+	
+	//Optional Status Elements
+	double bandwidthTolerance
+	double sampleRateTolerance
+	boolean complex
+	double gain
+	boolean agc
+	boolean valid
+	String availableFrequency
+	String availableBandwidth
+	String availableGain
+	String availableSampleRate
+	long referenceSource
+	String outputFormat
+	String outputMulticast
+	long outputVlan
+	long outputPort
+	long decimation
+	short tuner_number
+	
+	//Tuner Allocation Properties
+	boolean deviceControl
+	String tunerID	//Model specific property, used for virtual ordering and assignment
 }
