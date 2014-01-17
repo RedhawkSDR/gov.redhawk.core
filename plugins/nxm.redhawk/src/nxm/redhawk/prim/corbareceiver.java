@@ -13,11 +13,13 @@ package nxm.redhawk.prim;
 
 import gov.redhawk.bulkio.util.BulkIOType;
 import gov.redhawk.bulkio.util.BulkIOUtilActivator;
+import gov.redhawk.sca.util.Debug;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
 
+import nxm.redhawk.lib.RedhawkOptActivator;
 import nxm.redhawk.prim.data.BulkIOReceiver;
 import nxm.sys.inc.Commandable;
 import nxm.sys.lib.BaseFile;
@@ -25,6 +27,7 @@ import nxm.sys.lib.Convert;
 import nxm.sys.lib.Data;
 import nxm.sys.lib.DataFile;
 import nxm.sys.lib.FileName;
+import nxm.sys.lib.Midas;
 import nxm.sys.lib.MidasException;
 import nxm.sys.lib.Time;
 
@@ -74,11 +77,26 @@ public class corbareceiver extends CorbaPrimitive { //SUPPRESS CHECKSTYLE ClassN
 	public static final String SW_BLOCKING = "/BLOCKING";
 
 	/**
-	 * Name of switch to grab number of seconds to wait for SRI during open()
+	 * Name of switch to grab number of milliseconds to wait for SRI during open()
 	 * @since 10.0
 	 */
 	public static final String SW_WAIT = "/WAIT";
-	private static final int SLEEP_INTERVAL = 100;
+
+	/**
+	 * Name of switch to enable/disable increasing/growing output file's pipe size when 
+	 * incoming data packet size is larger than it. 
+	 * @since 10.1
+	 */
+	public static final String SW_GROW_PIPE = "/GROWPIPE";
+
+	/**
+	 * Name of switch to set pipe size multiplier based on incoming data packet size (when larger than current pipe size).
+	 * @since 10.1
+	 */
+	public static final String SW_PS_MULTIPLIER = "/PSMULT";
+
+	private static final int SLEEP_INTERVAL_MS = 100;
+	private static final Debug TRACE_LOGGER = new Debug(RedhawkOptActivator.ID, corbareceiver.class.getSimpleName());
 
 	/** the output file to write to */
 	private DataFile outputFile = null;
@@ -106,6 +124,12 @@ public class corbareceiver extends CorbaPrimitive { //SUPPRESS CHECKSTYLE ClassN
 	private boolean connected;
 	private String portIor;
 	private BulkIOType type;
+	
+	/** allow increasing the pipe size when pushPacket data is larger than it. */
+	private boolean canGrowPipe;
+	/** multiplier of data packet size for setting pipe size (on {@link #outputFile} if it is less than data size. */
+	private int pipeSizeMultiplier;
+	private int newPipeSize;
 
 	/**
 	 * @since 8.0
@@ -127,7 +151,6 @@ public class corbareceiver extends CorbaPrimitive { //SUPPRESS CHECKSTYLE ClassN
 		} catch (final UnsupportedEncodingException e) {
 			return idl;
 		}
-
 	}
 
 	@Override
@@ -138,6 +161,8 @@ public class corbareceiver extends CorbaPrimitive { //SUPPRESS CHECKSTYLE ClassN
 		this.frameSizeAttribute = this.MA.getL(A_FRAMESIZE, 0);
 		this.overrideSRISubSize = this.MA.getState(A_OVERRIDE_SRI_SUBSIZE, false);
 		this.blocking = this.MA.getState(SW_BLOCKING, false);
+		this.canGrowPipe = MA.getState(SW_GROW_PIPE, true);
+		setPipeSizeMultiplier(MA.getL(SW_PS_MULTIPLIER, 4));
 
 		BulkIOType newType = BulkIOType.getType(corbareceiver.decodeIDL(encoded_idl));
 		this.type = newType;
@@ -160,14 +185,14 @@ public class corbareceiver extends CorbaPrimitive { //SUPPRESS CHECKSTYLE ClassN
 			}
 		}
 
-		final double maxWaitForSRI = MA.getD(SW_WAIT, 1000);
-		int numLoops = (int) (maxWaitForSRI / SLEEP_INTERVAL); // 0 or positive values will effect timeout
+		final double maxWaitForSRI = MA.getD(SW_WAIT, 1000);      // in milliseconds
+		int numLoops = (int) (maxWaitForSRI / SLEEP_INTERVAL_MS); // 0 or positive values will effect timeout
 		if (maxWaitForSRI < 0) {
-			numLoops = Integer.MAX_VALUE; // effectively infinity
+			numLoops = Integer.MAX_VALUE; // negative wait is effectively infinity
 		}
 		while (this.currentSri == null && (numLoops-- > 0)) {
 			try {
-				wait(SLEEP_INTERVAL);
+				wait(SLEEP_INTERVAL_MS);
 			} catch (InterruptedException e) {
 				break;
 			}
@@ -176,28 +201,31 @@ public class corbareceiver extends CorbaPrimitive { //SUPPRESS CHECKSTYLE ClassN
 		this.outputFile = createOutputFile(this.currentSri, this.receiver);
 		this.outputFile.open();
 
+		TRACE_LOGGER.exitingMethod();
 		return ret;
 	}
 
 	@Override
-	public synchronized int close() {
-		if (this.state != Commandable.RESTART) {
-			//Avoid hanging the UI if the CORBA call to the component fails to return
-			super.close();
-			if (this.outputFile != null) {
-				this.outputFile.close();
-				this.outputFile = null;
-			}
-			this.currentSri = null;
-
-			return Commandable.NORMAL;
-		} else {
-			if (this.outputFile != null) {
-				this.outputFile.close();
-				this.outputFile = null;
-			}
-			return Commandable.NORMAL;
+	public int process() {
+		if (newPipeSize > 0) {
+			setPipeSize(newPipeSize);
+			newPipeSize = 0;
 		}
+		return NOOP;
+	}
+	
+	@Override
+	public synchronized int close() {
+		TRACE_LOGGER.enteringMethod();
+		if (this.state != Commandable.RESTART) {
+			super.close(); // <-- Avoid hanging the UI if the CORBA call to the component fails to return
+			this.currentSri = null;
+		}
+		if (this.outputFile != null) {
+			this.outputFile.close();
+			this.outputFile = null;
+		}
+		return Commandable.NORMAL;
 	}
 
 	/**
@@ -332,10 +360,8 @@ public class corbareceiver extends CorbaPrimitive { //SUPPRESS CHECKSTYLE ClassN
 	 * @since 10.0
 	 * @noreference This method is not intended to be referenced by clients.
 	 */
-	public synchronized void setStreamSri(final StreamSRI sri) {
-		if (verbose) {
-			M.info(getID() + ": setStreamSri to " + sri + " id=" + sri.streamID + " blocking=" + sri.blocking); // DEBUG
-		}
+	public  synchronized void setStreamSri(final StreamSRI sri) {
+		TRACE_LOGGER.message("{0}: setStreamSri to {1} id={2} blocking={3}",  getID(), sri, sri.streamID, sri.blocking);
 		final StreamSRI prevSri = this.currentSri;
 		this.currentSri = sri;
 		sendMessage("STREAMSRI", 1, this.currentSri);
@@ -349,9 +375,7 @@ public class corbareceiver extends CorbaPrimitive { //SUPPRESS CHECKSTYLE ClassN
 	}
 
 	private synchronized void doRestart() {
-		if (verbose) {
-			M.info(getID() + ": restarting..." + this.outputFile); // DEBUG
-		}
+		TRACE_LOGGER.message("{0}: scheduling restart... {1}",  getID(), this.outputFile);
 		setState(Commandable.RESTART);
 	}
 
@@ -374,18 +398,26 @@ public class corbareceiver extends CorbaPrimitive { //SUPPRESS CHECKSTYLE ClassN
 			return;
 		}
 
-		final int bufferSize = Data.getBPS(type) * size; // size of data to write in bytes
-		if (localOutputFile.getPipeSize() < bufferSize) { // fix for ticket #1554
-			if (verbose) {
-				M.info("increasing pipe size from " + localOutputFile.getPipeSize() + " to (2 * " + bufferSize + ") bytes for " + localOutputFile);
+		final int bufferSize = Data.getBPS(type) * size;  // size of data to write in bytes
+		if (this.canGrowPipe && localOutputFile.getPipeSize() < bufferSize) { // increase pipe size if allowed (ticket #1554)
+			if (TRACE_LOGGER.enabled) {
+				TRACE_LOGGER.message("{0}: scheduling pipe size increase from {1} to ({2} x {3}) bytes for {4}",
+					getID(), localOutputFile.getPipeSize(), this.pipeSizeMultiplier, bufferSize, this.outputFile);
 			}
-			localOutputFile.setPipeSize(bufferSize * 2); // increase pipe size to twice bufferSize (i.e. data size)
+			this.newPipeSize = bufferSize * this.pipeSizeMultiplier; // this change will be picked up in the process() method
 		}
-		if (!blocking                                             // 1. non-blocking option enabled
-			&& localOutputFile.getResource().avail() < bufferSize // 2. avail buffer is less than data/packet size
-			&& localOutputFile.getPipeSize() >= bufferSize) {     // 3. drop only if pipe size (buffer) is greater than data size
+		if (!blocking) {                      // === non-blocking option enabled ===
+			if (M.pipeMode == Midas.PPAUSE) { // 1. pipe is PAUSED
+				TRACE_LOGGER.message("Dropping packet b/c pipe is PAUSED");
+				return;                       // 1b. drop packet, as write would block 
+			}
+			if (!this.canGrowPipe && localOutputFile.getPipeSize() < bufferSize) {
+				// PASS - let packet through even though this might block, otherwise no data will ever be written
+			} else if (localOutputFile.getResource().avail() < bufferSize) { // 2. avail buffer is less than data/packet size
 				// Time.sleep(0.01); // <-- provide slight back-pressure so we don't spin CPU for Component that does NOT throttle data
-				return; // drop packet since write would block
+				TRACE_LOGGER.message("Dropping packet b/c not enough avail buffer without blocking write");
+				return; // 2b. drop packet since write would block
+			}
 		}
 
 		final Time midasTime;
@@ -419,7 +451,8 @@ public class corbareceiver extends CorbaPrimitive { //SUPPRESS CHECKSTYLE ClassN
 		if (this.overrideSRISubSize != overrideSRISubSize) {
 			this.overrideSRISubSize = overrideSRISubSize;
 			MA.put(A_OVERRIDE_SRI_SUBSIZE, "" + overrideSRISubSize);
-			if ((this.currentSri != null) && (this.frameSizeAttribute != this.currentSri.subsize)) {
+			final StreamSRI sri = this.currentSri;
+			if ((sri != null) && (this.frameSizeAttribute != sri.subsize)) {
 				doRestart(); // restart since specified subsize is different than in SRI
 			}
 		}
@@ -454,10 +487,11 @@ public class corbareceiver extends CorbaPrimitive { //SUPPRESS CHECKSTYLE ClassN
 
 	/** true if custom sample rate differs from SRI's sample rate, otherwise false. */
 	private boolean isSampleRateDifferent() {
-		if ((this.currentSri != null) && (this.sampleRate != 0)) { // cannot have zero sample rate
+		final StreamSRI sri = this.currentSri;
+		if ((sri != null) && (this.sampleRate != 0)) { // cannot have zero sample rate
 			final double delta = 1.0 / this.sampleRate;
-			final boolean xdDiffers = this.is1000FromSRI && delta != this.currentSri.xdelta;
-			final boolean ydDiffers = !this.is1000FromSRI && delta != this.currentSri.ydelta;
+			final boolean xdDiffers = this.is1000FromSRI && delta != sri.xdelta;
+			final boolean ydDiffers = !this.is1000FromSRI && delta != sri.ydelta;
 			if (xdDiffers || ydDiffers) {
 				return true;
 			}
@@ -522,5 +556,74 @@ public class corbareceiver extends CorbaPrimitive { //SUPPRESS CHECKSTYLE ClassN
 	 */
 	public void setBlocking(boolean blocking) {
 		this.blocking = blocking;
+		MA.put(SW_BLOCKING, "" + blocking);
 	}
+
+	/**
+	 * @since 10.1
+	 */
+	public boolean isCanGrowPipe() {
+		return canGrowPipe;
+	}
+
+	/**
+	 * @since 10.1
+	 */
+	public void setCanGrowPipe(boolean newValue) {
+		this.canGrowPipe = newValue;
+		MA.put(SW_GROW_PIPE, "" + newValue);
+	}
+
+	/**
+	 * @since 10.1
+	 */
+	public int getPipeSizeMultiplier() {
+		return pipeSizeMultiplier;
+	}
+
+	/**
+	 * @param newValue new pipe size multiplier (MUST be >= 1)
+	 * @since 10.1
+	 */
+	public void setPipeSizeMultiplier(int newValue) {
+		if (newValue <= 0) {
+			throw new IllegalArgumentException("data size to pipe size multiplier must be greater than 0");
+		}
+		this.pipeSizeMultiplier = newValue;
+		MA.put(SW_PS_MULTIPLIER, "" + newValue);
+	}
+
+	/** @since 10.1 */
+	public int getPipeSize() {
+		int retval = 0;
+		DataFile df = this.outputFile;
+		if (df != null) {
+			retval = df.getPipeSize();
+		}
+		return retval;
+	}
+	
+	/** 
+	 * Change output file's pipe size (immediately)
+	 * @param newValue new pipe size for output data file/pipe (in bytes)
+	 * @since 10.1
+	 */
+	public synchronized void setPipeSize(int newValue) {
+		if (newValue <= 0) {
+			throw new IllegalArgumentException("pipe size (bytes) must be greater than 0");
+		}
+		DataFile df = this.outputFile;
+		if (df != null && df.getPipeSize() != newValue) {
+			TRACE_LOGGER.message("{0}: changing pipe size from {1} to {2} bytes for {3}", getID(), df.getPipeSize(), newValue, df);
+//			boolean changePipeMode = M.pipeMode == Midas.PRUN;
+//			if (changePipeMode) {
+//				M.pipeMode = Midas.PPAUSE; // change pipe mode to PAUSE to prevent DataFile.setPipeSize(..) from sleeping 0.2 sec
+//			}
+			df.setPipeSize(newValue);
+//			if (changePipeMode) {
+//				M.pipeMode = Midas.PRUN; // restore pipe mode back to RUN
+//			}
+		}
+	}
+	
 }
