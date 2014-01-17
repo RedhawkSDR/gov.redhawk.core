@@ -150,10 +150,16 @@ public class BulkIONxmBlock extends AbstractNxmBlock<corbareceiver2> {
 			boolean blocking = newSettings.isBlocking();
 			Double sampleRate = newSettings.getSampleRate();
 			cmd.setBlocking(blocking);
+			
 			if (sampleRate == null) {
 				sampleRate = 0.0; // zero to use default from input stream
 			}
 			cmd.setSampleRate(sampleRate);
+			
+			Integer pipeSize = newSettings.getPipeSize();
+			if (pipeSize != null) {
+				cmd.setPipeSize(pipeSize);
+			}
 		}
 	}
 
@@ -183,9 +189,9 @@ public class BulkIONxmBlock extends AbstractNxmBlock<corbareceiver2> {
 		String outputName = AbstractNxmPlotWidget.createUniqueName(true);
 		putOutputNameMapping(0, streamID, outputName); // save output name mapping 
 
-		final StringBuilder switches = new StringBuilder("/POLL=1.0");
-		final int pipeSize = settings.getPipeSize(); // in bytes
-		if (pipeSize > 0) {
+		final StringBuilder switches = new StringBuilder("/POLL=0.1");
+		final Integer pipeSize = settings.getPipeSize(); // in bytes
+		if (pipeSize != null) {
 			switches.append("/PS=").append(pipeSize);
 		}
 		final int timeLineLen = settings.getTimelineLength();

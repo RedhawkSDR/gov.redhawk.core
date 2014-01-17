@@ -42,6 +42,7 @@ public class BulkIONxmBlockControls {
 
 	private static final String VALUE_USE_DEFAULT = "default";
 	private static final String SAMPLE_RATE_FIELD_NAME = "Sample Rate";
+	private static final String PIPE_SIZE_FIELD_NAME = "Pipe Size";
 	
 	private final BulkIONxmBlockSettings settings;
 	private final DataBindingContext dataBindingCtx;
@@ -49,6 +50,7 @@ public class BulkIONxmBlockControls {
 	// widgets
 	private Text connectionIDField;
 	private ComboViewer sampleRateField;
+	private Text pipeSizeField;
 	private Button blockingField;
 
 	public BulkIONxmBlockControls(BulkIONxmBlockSettings settings, DataBindingContext dataBindingCtx) {
@@ -82,6 +84,13 @@ public class BulkIONxmBlockControls {
 		this.sampleRateField.setInput(inputValues);
 		this.sampleRateField.setSelection(new StructuredSelection(inputValues[0])); // select first value (which is current value or default)
 
+		// === pipe size ==
+		label = new Label(container, SWT.None);
+		label.setText("Pipe Size:");
+		pipeSizeField = new Text(container, SWT.BORDER);
+		pipeSizeField.setLayoutData(GridDataFactory.fillDefaults().grab(true, false).create());
+		pipeSizeField.setToolTipText("Custom pipe (buffer) size vs default.");
+		
 		// === blocking option ===
 		label = new Label(container, SWT.NONE);
 		label.setText("Blocking:");
@@ -110,7 +119,14 @@ public class BulkIONxmBlockControls {
 		srModelToTarget.setConverter(new ObjectToNullConverter()); // converts null to null, otherwise uses toString()
 		bindingValue = dataBindingCtx.bindValue(srWidgetValue, srModelValue, srTargetToModel, srModelToTarget);
 		ControlDecorationSupport.create(bindingValue, SWT.TOP | SWT.LEFT);
-		
+
+		IObservableValue psWidgetValue = WidgetProperties.text(SWT.Modify).observe(pipeSizeField);
+		IObservableValue psModelValue = PojoProperties.value(BulkIONxmBlockSettings.PROP_PIPE_SIZE).observe(settings);
+		UpdateValueStrategy psTargetToModel = new UpdateValueStrategy();
+		psTargetToModel.setAfterConvertValidator(new NumberRangeValidator<Integer>(PIPE_SIZE_FIELD_NAME, Integer.class, 1, true));
+		bindingValue = dataBindingCtx.bindValue(psWidgetValue, psModelValue, psTargetToModel, null);
+		ControlDecorationSupport.create(bindingValue, SWT.TOP | SWT.LEFT);
+
 		IObservableValue boWidgetValue = WidgetProperties.selection().observe(blockingField); 
 		IObservableValue boModelValue = PojoProperties.value(BulkIONxmBlockSettings.PROP_BLOCKING_OPTION).observe(settings);
 		bindingValue = dataBindingCtx.bindValue(boWidgetValue, boModelValue);

@@ -19,9 +19,10 @@ import org.eclipse.jdt.annotation.NonNull;
  * @since 4.3
  */
 public class BulkIONxmBlockSettings implements Cloneable {
-	public static final String PROP_CONNECTION_ID   = "connectionID";
-	public static final String PROP_SAMPLE_RATE     = "sampleRate";
 	public static final String PROP_BLOCKING_OPTION = "blocking";
+	public static final String PROP_CONNECTION_ID   = "connectionID";
+	public static final String PROP_PIPE_SIZE       = "pipeSize";
+	public static final String PROP_SAMPLE_RATE     = "sampleRate";
 	
 	private static final int DEFAULT_TIMELINE_LENGTTH = 200;
 
@@ -31,8 +32,8 @@ public class BulkIONxmBlockSettings implements Cloneable {
 	private Double sampleRate;
 	/** true to block pushPacket when downstream Command (e.g. Plot) cannot keep up, false to drop packets in this scenario. */
 	private boolean blocking;
-	/** zero to use NeXtMidas default pipe size. */
-	private int pipeSize;
+	/** null to use default pipe size from NeXtMidas (128K) */
+	private Integer pipeSize;
 	/** time line length for output data pipe. */
 	private int timelineLength = DEFAULT_TIMELINE_LENGTTH;
 
@@ -82,7 +83,7 @@ public class BulkIONxmBlockSettings implements Cloneable {
 	/**
 	 * @return the pipeSize
 	 */
-	public int getPipeSize() {
+	public Integer getPipeSize() {
 		return pipeSize;
 	}
 
