@@ -13,10 +13,12 @@ package nxm.redhawk.prim;
 
 import gov.redhawk.bulkio.util.BulkIOType;
 import gov.redhawk.bulkio.util.BulkIOUtilActivator;
+import gov.redhawk.sca.util.Debug;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 
+import nxm.redhawk.lib.RedhawkOptActivator;
 import nxm.redhawk.prim.data.BulkIOReceiver;
 import nxm.sys.inc.Commandable;
 import nxm.sys.lib.BaseFile;
@@ -24,6 +26,7 @@ import nxm.sys.lib.Convert;
 import nxm.sys.lib.Data;
 import nxm.sys.lib.DataFile;
 import nxm.sys.lib.FileName;
+import nxm.sys.lib.Midas;
 import nxm.sys.lib.MidasException;
 import nxm.sys.lib.Time;
 
@@ -63,6 +66,17 @@ public class corbareceiver2 extends CorbaPrimitive implements IMidasDataWriter {
 	/** Name of switch to specify desired connection ID. */
 	public static final String SW_CONNECTION_ID = "/CONNECTIONID";
 	
+	/**
+	 * Name of switch to enable/disable increasing/growing output file's pipe size when 
+	 * incoming data packet size is larger than it. 
+	 */
+	public static final String SW_GROW_PIPE = "/GROWPIPE";
+
+	/** Name of switch to set pipe size multiplier based on incoming data packet size (when larger than current pipe size). */
+	public static final String SW_PS_MULTIPLIER = "/PSMULT";
+
+	private static final Debug TRACE_LOGGER = new Debug(RedhawkOptActivator.ID, corbareceiver2.class.getSimpleName());
+
 	/** sleep interval (milliseconds) for {@link #SW_WAIT}. */
 	private static final int SLEEP_INTERVAL = 100;
 
@@ -91,6 +105,12 @@ public class corbareceiver2 extends CorbaPrimitive implements IMidasDataWriter {
 	/** custom Port connection ID to use (when not null). */
 	private String connectionId;
 
+	/** allow increasing the pipe size when pushPacket data is larger than it. */
+	private boolean canGrowPipe;
+	/** multiplier of data packet size for setting pipe size (on {@link #outputFile} if it is less than data size. */
+	private int pipeSizeMultiplier;
+	private int newPipeSize;
+
 	public static String decodeIDL(final String idl) {
 		try {
 			return URLDecoder.decode(idl, "UTF-8");
@@ -110,6 +130,8 @@ public class corbareceiver2 extends CorbaPrimitive implements IMidasDataWriter {
 		this.blocking = MA.getState(SW_BLOCKING, false);
 		boolean unsignedOctet = MA.getState(SW_TREAT_OCTET_AS_UNSIGNED);
 		this.connectionId = MA.getCS(SW_CONNECTION_ID, null);
+		this.canGrowPipe = MA.getState(SW_GROW_PIPE, true);
+		setPipeSizeMultiplier(MA.getL(SW_PS_MULTIPLIER, 4));
 
 		BulkIOType newType = BulkIOType.getType(this.idl);
 		this.bulkioType = newType;
@@ -139,11 +161,22 @@ public class corbareceiver2 extends CorbaPrimitive implements IMidasDataWriter {
 		this.outputFile = createOutputFile(this.currentSri, this.receiver);
 		this.outputFile.open();
 
+		TRACE_LOGGER.exitingMethod();
 		return NORMAL;
 	}
 
 	@Override
+	public int process() {
+		if (newPipeSize > 0) {
+			setPipeSize(newPipeSize);
+			newPipeSize = 0;
+		}
+		return NOOP;
+	}
+
+	@Override
 	public synchronized int close() {
+		TRACE_LOGGER.enteringMethod();
 		DataFile localOutputFile = this.outputFile;
 		this.outputFile = null;
 		if (localOutputFile != null) {
@@ -257,6 +290,7 @@ public class corbareceiver2 extends CorbaPrimitive implements IMidasDataWriter {
 	 * @noreference This method is not intended to be referenced by clients.
 	 */
 	public synchronized void setStreamSri(String streamID, StreamSRI oldSri, StreamSRI newSri) {
+		TRACE_LOGGER.message("{0}: setStreamSri to {1} id={2} blocking={3}",  getID(), newSri, newSri.streamID, newSri.blocking);
 		if (this.streamId == null || this.streamId.equals(streamID)) {
 			this.currentSri = newSri;
 			if (state == PROCESS) {
@@ -264,7 +298,7 @@ public class corbareceiver2 extends CorbaPrimitive implements IMidasDataWriter {
 					if (oldSri.mode != newSri.mode || oldSri.subsize != newSri.subsize
 						|| oldSri.xdelta != newSri.xdelta ||  oldSri.xstart != newSri.xstart || oldSri.xunits !=  newSri.xunits 
 						|| oldSri.ydelta != newSri.ydelta ||  oldSri.ystart != newSri.ystart || oldSri.yunits !=  newSri.yunits) {
-						doRestart(); // only restart of one of above SRI field changes
+						doRestart(); // only restart if one of above SRI field changes
 					}
 				}
 			} else if (state == OPEN) {
@@ -274,6 +308,7 @@ public class corbareceiver2 extends CorbaPrimitive implements IMidasDataWriter {
 	}
 
 	private synchronized void doRestart() {
+		TRACE_LOGGER.message("{0}: scheduling restart... {1}",  getID(), this.outputFile);
 		setState(RESTART);
 	}
 
@@ -295,11 +330,25 @@ public class corbareceiver2 extends CorbaPrimitive implements IMidasDataWriter {
 			return;
 		}
 
-		final int bufferSize = Data.getBPS(type) * size; // in bytes
-		if (!blocking) { // non-blocking option enabled
-			if (localOutputFile.getResource().avail() < bufferSize) {
+		final int bufferSize = Data.getBPS(type) * size;  // size of data to write in bytes
+		if (this.canGrowPipe && localOutputFile.getPipeSize() < bufferSize) { // increase pipe size if allowed (ticket #1554)
+			if (TRACE_LOGGER.enabled) {
+				TRACE_LOGGER.message("{0}: scheduling pipe size increase from {1} to ({2} x {3}) bytes for {4}",
+					getID(), localOutputFile.getPipeSize(), this.pipeSizeMultiplier, bufferSize, this.outputFile);
+			}
+			this.newPipeSize = bufferSize * this.pipeSizeMultiplier; // this change will be picked up in the process() method
+		}
+		if (!blocking) {                      // === non-blocking option enabled ===
+			if (M.pipeMode == Midas.PPAUSE) { // 1. pipe is PAUSED
+				TRACE_LOGGER.message("Dropping packet b/c pipe is PAUSED");
+				return;                       // 1b. drop packet, as write would block 
+			}
+			if (!this.canGrowPipe && localOutputFile.getPipeSize() < bufferSize) {
+				// PASS - let packet through even though this might block, otherwise no data will ever be written
+			} else if (localOutputFile.getResource().avail() < bufferSize) { // 2. avail buffer is less than data/packet size
 				// Time.sleep(0.01); // <-- provide slight back-pressure so we don't spin CPU for Component that does NOT throttle data
-				return; // drop packet since write would block
+				TRACE_LOGGER.message("Dropping packet b/c not enough avail buffer without blocking write");
+				return; // 2b. drop packet since write would block
 			}
 		}
 
@@ -375,6 +424,67 @@ public class corbareceiver2 extends CorbaPrimitive implements IMidasDataWriter {
 	 */
 	public void setBlocking(boolean blocking) {
 		this.blocking = blocking;
+	}
+
+	/**
+	 * @since 10.1
+	 */
+	public boolean isCanGrowPipe() {
+		return canGrowPipe;
+	}
+
+	/**
+	 * @since 10.1
+	 */
+	public void setCanGrowPipe(boolean newValue) {
+		this.canGrowPipe = newValue;
+		MA.put(SW_GROW_PIPE, "" + newValue);
+	}
+
+	public int getPipeSizeMultiplier() {
+		return pipeSizeMultiplier;
+	}
+
+	/**
+	 * @param newValue new pipe size multiplier (MUST be >= 1)
+	 */
+	public void setPipeSizeMultiplier(int newValue) {
+		if (newValue <= 0) {
+			throw new IllegalArgumentException("data size to pipe size multiplier must be greater than 0");
+		}
+		this.pipeSizeMultiplier = newValue;
+		MA.put(SW_PS_MULTIPLIER, "" + newValue);
+	}
+
+	public int getPipeSize() {
+		int retval = 0;
+		DataFile df = this.outputFile;
+		if (df != null) {
+			retval = df.getPipeSize();
+		}
+		return retval;
+	}
+	
+	/** 
+	 * Change output file's pipe size (immediately)
+	 * @param newValue new pipe size for output data file/pipe (in bytes)
+	 */
+	public synchronized void setPipeSize(int newValue) {
+		if (newValue <= 0) {
+			throw new IllegalArgumentException("pipe size (bytes) must be greater than 0");
+		}
+		DataFile df = this.outputFile;
+		if (df != null && df.getPipeSize() != newValue) {
+			TRACE_LOGGER.message("{0}: changing pipe size from {1} to {2} bytes for {3}", getID(), df.getPipeSize(), newValue, df);
+//			boolean changePipeMode = M.pipeMode == Midas.PRUN;
+//			if (changePipeMode) {
+//				M.pipeMode = Midas.PPAUSE; // change pipe mode to PAUSE to prevent DataFile.setPipeSize(..) from sleeping 0.2 sec
+//			}
+			df.setPipeSize(newValue);
+//			if (changePipeMode) {
+//				M.pipeMode = Midas.PRUN; // restore pipe mode back to RUN
+//			}
+		}
 	}
 
 }

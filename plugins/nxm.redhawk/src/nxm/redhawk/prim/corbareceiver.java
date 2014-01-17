@@ -95,17 +95,15 @@ public class corbareceiver extends CorbaPrimitive implements IMidasDataWriter { 
 	 */
 	public static final String SW_PS_MULTIPLIER = "/PSMULT";
 
-	private static final int SLEEP_INTERVAL_MS = 100;
-	private static final Debug TRACE_LOGGER = new Debug(RedhawkOptActivator.ID, corbareceiver.class.getSimpleName());
-
 	/** treat dataOctet as 8-bit unsigned integer (this will upcast format type to 16-bit signed integer to hold value).  
 	 * @since 10.1
 	 */
 	public static final String SW_TREAT_OCTET_AS_UNSIGNED = "/UNSIGNEDOCTET";
 	
 	/** sleep interval (ms) for {@link #SW_WAIT}. */
-	private static final int SLEEP_INTERVAL = 100;
-	
+	private static final int SLEEP_INTERVAL_MS = 100;
+	private static final Debug TRACE_LOGGER = new Debug(RedhawkOptActivator.ID, corbareceiver.class.getSimpleName());
+
 	/** the output file to write to */
 	private volatile DataFile outputFile = null;
 	private FileName fileName;
