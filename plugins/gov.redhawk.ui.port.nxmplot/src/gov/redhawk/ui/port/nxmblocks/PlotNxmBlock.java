@@ -120,11 +120,14 @@ public class PlotNxmBlock extends AbstractNxmBlock<plot> {
 			IAction action = new Action(streamID, IAction.AS_CHECK_BOX) {
 				@Override
 				public void run() {
-					if (this.isChecked()) {
-						currentPlotWidget.addSource(sourceName, pipeQuals);
-					} else {
-						currentPlotWidget.removeSource(sourceName);
-					}
+					String enableOption = isChecked() ? "+GLOBAL" : "-GLOBAL";
+					String setViaMsgName = "SET.LAYERS." + sourceName + ".enable";
+					currentPlotWidget.sendPlotMessage(setViaMsgName, 0, enableOption);
+//					if (this.isChecked()) {
+//						currentPlotWidget.addSource(sourceName, pipeQuals);
+//					} else {
+//						currentPlotWidget.removeSource(sourceName);
+//					}
 				}
 			};
 			action.setChecked(true);
