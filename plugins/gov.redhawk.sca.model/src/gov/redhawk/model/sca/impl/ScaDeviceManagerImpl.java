@@ -1573,18 +1573,15 @@ public class ScaDeviceManagerImpl extends ScaPropertyContainerImpl<DeviceManager
 		newDevices.keySet().removeAll(scaDevices.keySet());
 
 		// Remove Devices
-		deviceList.removeAll(removeDevices.values());
+		if (!removeDevices.isEmpty() && !deviceList.isEmpty()) {
+			deviceList.removeAll(removeDevices.values());
+		}
 
 		// Add devices
 		for (DeviceData dev : newDevices.values()) {
 			ScaDevice< ? > newDevice = createType(dev.deviceType);
 			deviceList.add(newDevice);
 			newDevice.setCorbaObj(dev.dev);
-		}
-
-		// Do this to ensure we always set the list
-		if (newDevices.isEmpty() && deviceList.isEmpty()) {
-			deviceList.clear();
 		}
 	}
 
