@@ -232,6 +232,9 @@ public class ScaSimpleSequencePropertyImpl extends ScaAbstractPropertyImpl<Simpl
 	@Override
 	public void setValue(Object[] newValue) {
 		// END GENERATED CODE
+		if (Arrays.equals(getValues().toArray(), newValue)) {
+			return;
+		}
 		if (newValue != null && newValue.length > 0) {
 			setIgnoreRemoteSet(true);
 			try {
