@@ -44,10 +44,12 @@ import mil.jpeojtrs.sca.util.DceUuidUtil;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.ListenerList;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.notify.Notification;
+import org.eclipse.emf.common.notify.Notifier;
 import org.eclipse.emf.common.notify.impl.AdapterImpl;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.edit.provider.IItemLabelProvider;
@@ -74,7 +76,7 @@ import BULKIO.dataSDDSHelper;
  * @since 4.2
  */
 public class PlotPageBook2 extends Composite {
-	
+
 	private static final Debug TRACE_LOG = new Debug(PlotActivator.PLUGIN_ID, PlotPageBook2.class.getSimpleName());
 	private static final int PORT_REFRESH_DELAY_MS = 1000;
 
@@ -119,9 +121,66 @@ public class PlotPageBook2 extends Composite {
 	/** The plots. */
 	private Map<PlotType, PlotPage> plots = new HashMap<PlotType, PlotPage>();
 
-	private final PlotListenerAdapter listenerAdapter = new PlotListenerAdapter();
+	private ListenerList plotListeners = new ListenerList();
 
-	private final PlotMessageAdapter plotMessageAdapter = new PlotMessageAdapter(listenerAdapter);
+	private IPlotWidgetListener plotListener = new IPlotWidgetListener() {
+
+		@Override
+		public void zoomX(double xmin, double ymin, double xmax, double ymax, Object data) {
+			for (Object listener : plotListeners.getListeners()) {
+				((IPlotWidgetListener) listener).zoomX(xmin, ymin, xmax, ymax, data);
+			}
+		}
+
+		@Override
+		public void zoomOut(double x1, double y1, double x2, double y2, Object data) {
+			for (Object listener : plotListeners.getListeners()) {
+				((IPlotWidgetListener) listener).zoomOut(x1, y1, x2, y2, data);
+			}
+		}
+
+		@Override
+		public void zoomIn(double xmin, double ymin, double xmax, double ymax, Object data) {
+			for (Object listener : plotListeners.getListeners()) {
+				((IPlotWidgetListener) listener).zoomIn(xmin, ymin, xmax, ymax, data);
+			}
+		}
+
+		@Override
+		public void unzoom(double x1, double y1, double x2, double y2, Object data) {
+			for (Object listener : plotListeners.getListeners()) {
+				((IPlotWidgetListener) listener).unzoom(x1, y1, x2, y2, data);
+			}
+		}
+
+		@Override
+		public void pan(double x1, double y1, double x2, double y2) {
+			for (Object listener : plotListeners.getListeners()) {
+				((IPlotWidgetListener) listener).pan(x1, y1, x2, y2);
+			}
+		}
+
+		@Override
+		public void motion(double x, double y, double t) {
+			for (Object listener : plotListeners.getListeners()) {
+				((IPlotWidgetListener) listener).motion(x, y, t);
+			}
+		}
+
+		@Override
+		public void dragBox(double xmin, double ymin, double xmax, double ymax) {
+			for (Object listener : plotListeners.getListeners()) {
+				((IPlotWidgetListener) listener).dragBox(xmin, ymin, xmax, ymax);
+			}
+		}
+
+		@Override
+		public void click(double x, double y, double t) {
+			for (Object listener : plotListeners.getListeners()) {
+				((IPlotWidgetListener) listener).click(x, y, t);
+			}
+		}
+	};
 
 	private List<PlotSource> sources = Collections.synchronizedList(new ArrayList<PlotSource>());
 
@@ -130,7 +189,10 @@ public class PlotPageBook2 extends Composite {
 	private Adapter portListener = new AdapterImpl() {
 		@Override
 		public void notifyChanged(Notification msg) {
-			switch(msg.getFeatureID(IDisposable.class)) {
+			if (isDisposed()) {
+				((Notifier) msg.getNotifier()).eAdapters().remove(this);
+			}
+			switch (msg.getFeatureID(IDisposable.class)) {
 			case ScaPackage.IDISPOSABLE__DISPOSED:
 				if (!isDisposed()) {
 					PlatformUI.getWorkbench().getDisplay().asyncExec(new Runnable() {
@@ -151,7 +213,7 @@ public class PlotPageBook2 extends Composite {
 	private PlotPage currentPlotPage;
 
 	private Composite nullPage;
-	
+
 	private IMenuManager contextMenu;
 
 	public PlotPageBook2(Composite parent, int style, PlotType type) {
@@ -178,17 +240,16 @@ public class PlotPageBook2 extends Composite {
 
 	protected PlotPage createPlot(PlotType type) {
 		AbstractNxmPlotWidget newPlot = PlotActivator.getDefault().getPlotFactory().createPlotWidget(this.pageBook, SWT.None);
-		newPlot.addMessageHandler(this.plotMessageAdapter);
 
 		final String plotArgs = NxmPlotUtil.getDefaultPlotArgs(type);
 		final String plotSwitches = NxmPlotUtil.getDefaultPlotSwitches(type);
-		PlotPage plotPageSession = new PlotPage(newPlot, plotArgs, plotSwitches);	
+		PlotPage plotPageSession = new PlotPage(newPlot, plotArgs, plotSwitches);
 		this.plots.put(type, plotPageSession);
 
 		for (PlotSource source : this.sources) {
 			plotPageSession.addSource(source);
 		}
-		
+
 		Set<Entry<PlotSource, List<INxmBlock>>> entrySet = source2NxmBlocks.entrySet();
 		for (Entry<PlotSource, List<INxmBlock>> entry : entrySet) {
 			PlotNxmBlockSettings plotBlockSettings = entry.getKey().getPlotBlockSettings();
@@ -201,7 +262,7 @@ public class PlotPageBook2 extends Composite {
 			if (idx4LastNonPlotBlock >= 0) { // must have at least initial NxmBlock + PlotNxmBlock
 				final INxmBlock srcBlock = nxmBlocksForSource.get(idx4LastNonPlotBlock);
 				StreamSRI[] streamSRIs = srcBlock.getLaunchedStreams();
-				
+
 				plotBlock.addInput(srcBlock);
 				try {
 					plotBlock.start();
@@ -209,7 +270,9 @@ public class PlotPageBook2 extends Composite {
 						plotBlock.launch(sri.streamID, sri);
 					}
 				} catch (CoreException e) {
-					StatusManager.getManager().handle(new Status(Status.WARNING, PlotActivator.PLUGIN_ID, "Got Exception trying to plot Port: " + entry.getKey().getInput(), e), StatusManager.LOG);
+					StatusManager.getManager().handle(
+						new Status(IStatus.WARNING, PlotActivator.PLUGIN_ID, "Got Exception trying to plot Port: " + entry.getKey().getInput(), e),
+						StatusManager.LOG);
 				}
 			}
 		}
@@ -223,7 +286,7 @@ public class PlotPageBook2 extends Composite {
 		}
 		this.sources.add(plotSource);
 		ScaModelCommand.execute(plotSource.getInput(), new ScaModelCommand() {
-			
+
 			@Override
 			public void execute() {
 				plotSource.getInput().eAdapters().add(portListener);
@@ -262,14 +325,15 @@ public class PlotPageBook2 extends Composite {
 	 */
 	public org.eclipse.ui.services.IDisposable addSource2(@NonNull final PlotSource plotSource) {
 		final ScaUsesPort scaPort = plotSource.getInput();
-		
+
 		final String pipeQualifiers = plotSource.getQualifiers();
 		FftNxmBlockSettings fftSettings = plotSource.getFftBlockSettings();
-		TRACE_LOG.enteringMethod(scaPort, plotSource.getBulkIOBlockSettings(), plotSource.getSddsBlockSettings(), fftSettings, pipeQualifiers);
-		
+		PlotPageBook2.TRACE_LOG.enteringMethod(scaPort, plotSource.getBulkIOBlockSettings(), plotSource.getSddsBlockSettings(), fftSettings, pipeQualifiers);
+
 		final PlotPage curPlotPage = this.currentPlotPage;
 		if (curPlotPage == null) {
-			StatusManager.getManager().handle(new Status(Status.WARNING, PlotActivator.PLUGIN_ID, "Unable to addSource Port when current PlotPage is null"), StatusManager.LOG);
+			StatusManager.getManager().handle(new Status(IStatus.WARNING, PlotActivator.PLUGIN_ID, "Unable to addSource Port when current PlotPage is null"),
+				StatusManager.LOG);
 			return null;
 		}
 		final AbstractNxmPlotWidget currentPlotWidget = curPlotPage.plot;
@@ -292,7 +356,7 @@ public class PlotPageBook2 extends Composite {
 			BulkIONxmBlock bulkioBlock = new BulkIONxmBlock(currentPlotWidget, scaPort, bulkioSettings);
 			startingBlock = bulkioBlock;
 		}
-		TRACE_LOG.trace("PlotPageBook2.addSource(.) startingBlock = {0}", startingBlock);
+		PlotPageBook2.TRACE_LOG.trace("PlotPageBook2.addSource(.) startingBlock = {0}", startingBlock);
 		nxmBlocksForSource.add(startingBlock);
 
 		PlotNxmBlockSettings plotBlockSettings = plotSource.getPlotBlockSettings();
@@ -304,7 +368,7 @@ public class PlotPageBook2 extends Composite {
 			@SuppressWarnings("deprecation")
 			FftSettings fftOptions = plotSource.getFftOptions(); // check deprecated FftSettings
 			if (fftOptions != null) {
-				fftSettings = toFftNxmBlockSettings(fftOptions);
+				fftSettings = PlotPageBook2.toFftNxmBlockSettings(fftOptions);
 			}
 		}
 		final FftNxmBlock fftBlock;
@@ -323,18 +387,18 @@ public class PlotPageBook2 extends Composite {
 		if (menu != null) {
 			final MenuManager subMenu;
 			String subMenuText = scaPort.getName();
-//			final int numSources = source2NxmBlocks.size();
-//			if (numSources > 0) {
-				EObject eObj = scaPort.eContainer();
-				if (eObj != null) {
-					final ScaItemProviderAdapterFactory factory = new ScaItemProviderAdapterFactory();
-					Adapter adapter = factory.adapt(eObj, IItemLabelProvider.class);
-					if (adapter instanceof IItemLabelProvider) {
-						IItemLabelProvider lp = (IItemLabelProvider) adapter;
-						subMenuText = lp.getText(eObj) + " -> " + subMenuText;
-					}
+			//			final int numSources = source2NxmBlocks.size();
+			//			if (numSources > 0) {
+			EObject eObj = scaPort.eContainer();
+			if (eObj != null) {
+				final ScaItemProviderAdapterFactory factory = new ScaItemProviderAdapterFactory();
+				Adapter adapter = factory.adapt(eObj, IItemLabelProvider.class);
+				if (adapter instanceof IItemLabelProvider) {
+					IItemLabelProvider lp = (IItemLabelProvider) adapter;
+					subMenuText = lp.getText(eObj) + " -> " + subMenuText;
 				}
-//			}
+			}
+			//			}
 			subMenu = new MenuManager(subMenuText, scaPort.getIor()); // subMenu for each Port source
 			menu.add(subMenu);
 			plotBlock.contributeMenuItems(subMenu); // allow NxmBlocks to contribute to subMenu 
@@ -349,9 +413,10 @@ public class PlotPageBook2 extends Composite {
 			}
 			startingBlock.start(); // starting block should be last to start
 		} catch (CoreException e) {
-			StatusManager.getManager().handle(new Status(Status.WARNING, PlotActivator.PLUGIN_ID, "Got Exception trying to plot Port: " + scaPort, e), StatusManager.LOG);
+			StatusManager.getManager().handle(new Status(IStatus.WARNING, PlotActivator.PLUGIN_ID, "Got Exception trying to plot Port: " + scaPort, e),
+				StatusManager.LOG);
 		}
-		
+
 		this.source2NxmBlocks.put(plotSource, nxmBlocksForSource);
 
 		ScaModelCommand.execute(scaPort, new ScaModelCommand() {
@@ -360,19 +425,19 @@ public class PlotPageBook2 extends Composite {
 				scaPort.eAdapters().add(portListener);
 			}
 		});
-		
+
 		org.eclipse.ui.services.IDisposable retVal = new org.eclipse.ui.services.IDisposable() {
 			@Override
 			public void dispose() {
 				removeSource2(plotSource);
 			}
 		};
-		
-		PortHelper.refreshPort(scaPort, null, PORT_REFRESH_DELAY_MS);
-		TRACE_LOG.exitingMethod();
+
+		PortHelper.refreshPort(scaPort, null, PlotPageBook2.PORT_REFRESH_DELAY_MS);
+		PlotPageBook2.TRACE_LOG.exitingMethod();
 		return retVal;
 	}
-	
+
 	private void removeSource2(PlotSource plotSource) {
 		List<INxmBlock> nxmBlocks = source2NxmBlocks.get(plotSource);
 		for (INxmBlock nxmBlock : nxmBlocks) {
@@ -388,6 +453,9 @@ public class PlotPageBook2 extends Composite {
 	 * @param enable true if the raster should be shown
 	 */
 	public void showPlot(PlotType type) {
+		if (currentPlotPage != null) {
+			currentPlotPage.plot.removePlotListener(plotListener);
+		}
 		if (type == null) {
 			pageBook.showPage(nullPage);
 			currentPlotPage = null;
@@ -406,6 +474,9 @@ public class PlotPageBook2 extends Composite {
 			currentPlotPage = newPlot;
 		}
 		this.currentType = type;
+		if (currentPlotPage != null) {
+			currentPlotPage.plot.addPlotListener(plotListener);
+		}
 	}
 
 	public PlotType getCurrentType() {
@@ -427,26 +498,20 @@ public class PlotPageBook2 extends Composite {
 			return;
 		}
 		super.dispose();
-		
+
 		for (PlotPage session : this.plots.values()) {
 			session.dispose();
 		}
 		this.plots.clear();
-		
+
 		for (final PlotSource source : this.sources) {
-			ScaModelCommand.execute(source.getInput(), new ScaModelCommand() {
-				@Override
-				public void execute() {
-					source.getInput().eAdapters().remove(listenerAdapter);
-				}
-			});
-			PortHelper.refreshPort(source.getInput(), null, PORT_REFRESH_DELAY_MS);
+			PortHelper.refreshPort(source.getInput(), null, PlotPageBook2.PORT_REFRESH_DELAY_MS);
 		}
 		this.sources.clear();
-		
+
 		for (PlotSource plotSource : this.source2NxmBlocks.keySet().toArray(new PlotSource[0])) {
 			removeSource2(plotSource);
-			PortHelper.refreshPort(plotSource.getInput(), null, PORT_REFRESH_DELAY_MS);
+			PortHelper.refreshPort(plotSource.getInput(), null, PlotPageBook2.PORT_REFRESH_DELAY_MS);
 		}
 		this.source2NxmBlocks.clear();
 	}
@@ -473,14 +538,14 @@ public class PlotPageBook2 extends Composite {
 	 * @since 3.0
 	 */
 	public void addPlotListener(final IPlotWidgetListener listener) {
-		this.listenerAdapter.getListenerList().add(listener);
+		this.plotListeners.add(listener);
 	}
 
 	/**
 	 * @since 3.0
 	 */
 	public void removePlotListener(final IPlotWidgetListener listener) {
-		this.listenerAdapter.getListenerList().remove(listener);
+		this.plotListeners.remove(listener);
 	}
 
 	public List<PlotSource> getSources() {
@@ -491,7 +556,7 @@ public class PlotPageBook2 extends Composite {
 
 	public List<AbstractNxmPlotWidget> getAllPlotWidgets() {
 		List<AbstractNxmPlotWidget> retVal = new ArrayList<AbstractNxmPlotWidget>(plots.size());
-		for (PlotPage session :plots.values()) {
+		for (PlotPage session : plots.values()) {
 			retVal.add(session.plot);
 		}
 		return retVal;
@@ -501,8 +566,8 @@ public class PlotPageBook2 extends Composite {
 	private static FftNxmBlockSettings toFftNxmBlockSettings(FftSettings fftOptions) {
 		FftNxmBlockSettings settings = new FftNxmBlockSettings();
 		settings.setTransformSize(Integer.parseInt(fftOptions.getTransformSize())); // 1+
-		settings.setOverlap(Integer.parseInt(fftOptions.getOverlap()));             // 0-100
-		settings.setNumAverages(Integer.parseInt(fftOptions.getNumAverages()));     // 1+
+		settings.setOverlap(Integer.parseInt(fftOptions.getOverlap())); // 0-100
+		settings.setNumAverages(Integer.parseInt(fftOptions.getNumAverages())); // 1+
 		settings.setWindow(FftNxmBlockSettings.WindowType.valueOf(fftOptions.getWindowType().name()));
 		settings.setOutputType(FftNxmBlockSettings.OutputType.valueOf(fftOptions.getOutputType().name()));
 		return settings;
@@ -521,9 +586,9 @@ public class PlotPageBook2 extends Composite {
 			@Override
 			public void run() {
 				final NxmBlockSettingsWizard wizard = new NxmBlockSettingsWizard();
-//				PlotPageBook2.this.getAllPlotWidgets() // TODO
+				//				PlotPageBook2.this.getAllPlotWidgets() // TODO
 				wizard.setNxmBlocks(nxmBlocks);
-				
+
 				WizardDialog dialog = new WizardDialog(PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(), wizard);
 				if (Window.OK == dialog.open()) {
 					Job job = new Job("apply plot settings") {
