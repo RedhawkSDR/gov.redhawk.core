@@ -211,6 +211,11 @@ public abstract class AbstractNxmPlotWidget extends Composite {
 	}
 
 	public abstract String addDataFeature(Number xStart, Number xEnd, String color);
+	
+	/**
+	 * @since 4.4
+	 */
+	public abstract String addFeatureByTypeMask(Number xStart, Number xEnd, Number yStart, Number yEnd, String typeMask, String color);
 
 	/**
 	 * @since 4.0

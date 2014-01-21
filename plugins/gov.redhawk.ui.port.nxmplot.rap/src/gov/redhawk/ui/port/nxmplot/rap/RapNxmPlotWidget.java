@@ -171,6 +171,32 @@ public class RapNxmPlotWidget extends AbstractNxmPlotWidget {
 		this.runClientCommand(cmd);
 		return featureId;
 	}
+	
+	@Override
+	public String addFeatureByTypeMask(Number xStart, Number xEnd, Number yStart, Number yEnd, String typeMask, String color) {
+		String featureId = AbstractNxmPlotWidget.createUniqueName(false);
+		final String cmd;
+		if (xStart != null && xEnd != null) {
+			final double dx = xEnd.doubleValue() - xStart.doubleValue();
+			cmd = "FEATURE LABEL=" + featureId + " PLOT=" + PLOT_ID + " TABLE={NAME=\""
+					+ featureId + "\",TYPE=\"" + typeMask +  "\""
+					+ ",X=" + (xStart.doubleValue() + (dx / 2)) + ",DX=" + dx
+					+ ",COLOR=\"" + color + "\"}";
+		} else if (yStart != null && yEnd != null) {
+			final double dy = yEnd.doubleValue() - yStart.doubleValue();
+			cmd = "FEATURE LABEL=" + featureId + " PLOT=" + PLOT_ID + " TABLE={NAME=\""
+					+ featureId + "\",TYPE=\"" + typeMask +  "\""
+					+ ",Y=" + (yStart.doubleValue() + (dy / 2)) + ",DY=" + dy
+					+ ",COLOR=\"" + color + "\"}";
+		} else {
+			cmd = null;
+		}
+
+		if (cmd != null) {
+			this.runClientCommand(cmd);
+		}
+		return featureId;
+	}
 
 	@Override
 	public String addDragboxFeature(Number xmin, Number ymin, Number xmax, Number ymax, String color) {

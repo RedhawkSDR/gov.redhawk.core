@@ -562,8 +562,12 @@ public class PlotPageBook2 extends Composite {
 		return retVal;
 	}
 
+	/**
+	 * @noreference This method is not intended to be referenced by clients.
+	 * @since 4.4
+	 */
 	@NonNull
-	private static FftNxmBlockSettings toFftNxmBlockSettings(FftSettings fftOptions) {
+	public static FftNxmBlockSettings toFftNxmBlockSettings(FftSettings fftOptions) {
 		FftNxmBlockSettings settings = new FftNxmBlockSettings();
 		settings.setTransformSize(Integer.parseInt(fftOptions.getTransformSize())); // 1+
 		settings.setOverlap(Integer.parseInt(fftOptions.getOverlap())); // 0-100

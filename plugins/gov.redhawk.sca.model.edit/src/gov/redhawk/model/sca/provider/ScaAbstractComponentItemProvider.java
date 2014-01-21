@@ -101,7 +101,7 @@ public class ScaAbstractComponentItemProvider extends ScaPropertyContainerItemPr
 	/**
 	 * This adds a property descriptor for the Profile feature.
 	 * <!-- begin-user-doc -->
-	 * @since 12.1
+	 * @since 12.2
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
