@@ -11,6 +11,7 @@
  */
 package gov.redhawk.ui.port.nxmplot;
 
+
 /**
  * @since 4.4
  */

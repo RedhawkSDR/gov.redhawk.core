@@ -17,18 +17,29 @@ import gov.redhawk.internal.ui.port.nxmplot.view.PlotView2;
 import gov.redhawk.model.sca.ScaDomainManagerRegistry;
 import gov.redhawk.model.sca.ScaUsesPort;
 import gov.redhawk.model.sca.provider.ScaItemProviderAdapterFactory;
+import gov.redhawk.model.sca.util.RedhawkEvents;
 import gov.redhawk.sca.util.PluginUtil;
 import gov.redhawk.sca.util.SubMonitor;
 import gov.redhawk.ui.port.PortHelper;
 import gov.redhawk.ui.port.nxmblocks.FftNxmBlockSettings;
 import gov.redhawk.ui.port.nxmblocks.PlotNxmBlockSettings;
 import gov.redhawk.ui.port.nxmplot.FftSettings;
+import gov.redhawk.ui.port.nxmplot.IPlotWidgetListener;
 import gov.redhawk.ui.port.nxmplot.PlotActivator;
+import gov.redhawk.ui.port.nxmplot.PlotEvent;
+import gov.redhawk.ui.port.nxmplot.PlotEvent.Click;
+import gov.redhawk.ui.port.nxmplot.PlotEvent.DragBox;
+import gov.redhawk.ui.port.nxmplot.PlotEvent.Motion;
+import gov.redhawk.ui.port.nxmplot.PlotEvent.Pan;
+import gov.redhawk.ui.port.nxmplot.PlotEvent.ZoomIn;
+import gov.redhawk.ui.port.nxmplot.PlotEvent.ZoomOut;
+import gov.redhawk.ui.port.nxmplot.PlotEvent.ZoomX;
 import gov.redhawk.ui.port.nxmplot.PlotType;
 
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
@@ -204,6 +215,8 @@ public class PlotPortHandler extends AbstractHandler {
 									plotView.addPlotSource(port, fft, null);
 								}
 
+								// Add handler 
+								addEventForward(port, plotView);
 							} else {
 								subMonitor.worked(1);
 							}
@@ -236,4 +249,108 @@ public class PlotPortHandler extends AbstractHandler {
 		return null;
 	}
 
+	protected void addEventForward(final ScaUsesPort port, final PlotView2 plotView) {
+		plotView.getPlotPageBook().addPlotListener(new IPlotWidgetListener() {
+
+			private String getTopic(String subTopic) {
+				return PlotEvent.EventTags.TOPIC + "/" + subTopic;
+			}
+
+			@Override
+			public void zoomX(double xmin, double ymin, double xmax, double ymax, Object data) {
+				String topic = getTopic("zoomX");
+				Map<String, Object> argMap = RedhawkEvents.createMap(port, topic);
+				ZoomX event = new PlotEvent.ZoomX(plotView.getPlotPageBook(), data, xmin, ymin, xmax, ymax);
+				argMap.put(PlotEvent.EventTags.PLOT_EVENT, event);
+				argMap.put(PlotEvent.EventTags.SOURCE_VIEW, plotView);
+				argMap.put(PlotEvent.EventTags.SOURCE_VIEW_ID, plotView.getViewSite().getId());
+				argMap.put(PlotEvent.EventTags.SOURCE_VIEW_SECONDARY_ID, plotView.getViewSite().getSecondaryId());
+				RedhawkEvents.publishEvent(topic, argMap);
+			}
+
+			@Override
+			public void zoomOut(double x1, double y1, double x2, double y2, Object data) {
+				String topic = getTopic("zoomOut");
+				Map<String, Object> argMap = RedhawkEvents.createMap(port, topic);
+				ZoomOut event = new PlotEvent.ZoomOut(plotView.getPlotPageBook(), data, x1, y1, x2, x2);
+				argMap.put(PlotEvent.EventTags.PLOT_EVENT, event);
+				argMap.put(PlotEvent.EventTags.SOURCE_VIEW, plotView);
+				argMap.put(PlotEvent.EventTags.SOURCE_VIEW_ID, plotView.getViewSite().getId());
+				argMap.put(PlotEvent.EventTags.SOURCE_VIEW_SECONDARY_ID, plotView.getViewSite().getSecondaryId());
+				RedhawkEvents.publishEvent(topic, argMap);
+			}
+
+			@Override
+			public void zoomIn(double xmin, double ymin, double xmax, double ymax, Object data) {
+				ZoomIn event = new PlotEvent.ZoomIn(plotView.getPlotPageBook(), data, xmin, ymin, xmax, ymax);
+				String topic = getTopic("zoomIn");
+				Map<String, Object> argMap = RedhawkEvents.createMap(port, topic);
+				argMap.put(PlotEvent.EventTags.PLOT_EVENT, event);
+				argMap.put(PlotEvent.EventTags.SOURCE_VIEW, plotView);
+				argMap.put(PlotEvent.EventTags.SOURCE_VIEW_ID, plotView.getViewSite().getId());
+				argMap.put(PlotEvent.EventTags.SOURCE_VIEW_SECONDARY_ID, plotView.getViewSite().getSecondaryId());
+				RedhawkEvents.publishEvent(topic, argMap);
+			}
+
+			@Override
+			public void unzoom(double x1, double y1, double x2, double y2, Object data) {
+				ZoomIn event = new PlotEvent.ZoomIn(plotView.getPlotPageBook(), data, x1, y1, x2, y2);
+				String topic = getTopic("unzoom");
+				Map<String, Object> argMap = RedhawkEvents.createMap(port, topic);
+				argMap.put(PlotEvent.EventTags.PLOT_EVENT, event);
+				argMap.put(PlotEvent.EventTags.SOURCE_VIEW, plotView);
+				argMap.put(PlotEvent.EventTags.SOURCE_VIEW_ID, plotView.getViewSite().getId());
+				argMap.put(PlotEvent.EventTags.SOURCE_VIEW_SECONDARY_ID, plotView.getViewSite().getSecondaryId());
+				RedhawkEvents.publishEvent(topic, argMap);
+			}
+
+			@Override
+			public void pan(double x1, double y1, double x2, double y2) {
+				Pan event = new PlotEvent.Pan(plotView.getPlotPageBook(), null, x1, y1, x2, y2);
+				String topic = getTopic("pan");
+				Map<String, Object> argMap = RedhawkEvents.createMap(port, topic);
+				argMap.put(PlotEvent.EventTags.PLOT_EVENT, event);
+				argMap.put(PlotEvent.EventTags.SOURCE_VIEW, plotView);
+				argMap.put(PlotEvent.EventTags.SOURCE_VIEW_ID, plotView.getViewSite().getId());
+				argMap.put(PlotEvent.EventTags.SOURCE_VIEW_SECONDARY_ID, plotView.getViewSite().getSecondaryId());
+				RedhawkEvents.publishEvent(topic, argMap);
+			}
+
+			@Override
+			public void motion(double x, double y, double t) {
+				Motion event = new PlotEvent.Motion(plotView.getPlotPageBook(), null, x, y, t);
+				String topic = getTopic("motion");
+				Map<String, Object> argMap = RedhawkEvents.createMap(port, topic);
+				argMap.put(PlotEvent.EventTags.PLOT_EVENT, event);
+				argMap.put(PlotEvent.EventTags.SOURCE_VIEW, plotView);
+				argMap.put(PlotEvent.EventTags.SOURCE_VIEW_ID, plotView.getViewSite().getId());
+				argMap.put(PlotEvent.EventTags.SOURCE_VIEW_SECONDARY_ID, plotView.getViewSite().getSecondaryId());
+				RedhawkEvents.publishEvent(topic, argMap);
+			}
+
+			@Override
+			public void dragBox(double xmin, double ymin, double xmax, double ymax) {
+				DragBox event = new PlotEvent.DragBox(plotView.getPlotPageBook(), null, xmin, ymin, xmax, ymax);
+				String topic = getTopic("dragBox");
+				Map<String, Object> argMap = RedhawkEvents.createMap(port, topic);
+				argMap.put(PlotEvent.EventTags.PLOT_EVENT, event);
+				argMap.put(PlotEvent.EventTags.SOURCE_VIEW, plotView);
+				argMap.put(PlotEvent.EventTags.SOURCE_VIEW_ID, plotView.getViewSite().getId());
+				argMap.put(PlotEvent.EventTags.SOURCE_VIEW_SECONDARY_ID, plotView.getViewSite().getSecondaryId());
+				RedhawkEvents.publishEvent(topic, argMap);
+			}
+
+			@Override
+			public void click(double x, double y, double t) {
+				Click event = new PlotEvent.Click(plotView.getPlotPageBook(), null, x, y, t);
+				String topic = getTopic("click");
+				Map<String, Object> argMap = RedhawkEvents.createMap(port, topic);
+				argMap.put(PlotEvent.EventTags.PLOT_EVENT, event);
+				argMap.put(PlotEvent.EventTags.SOURCE_VIEW, plotView);
+				argMap.put(PlotEvent.EventTags.SOURCE_VIEW_ID, plotView.getViewSite().getId());
+				argMap.put(PlotEvent.EventTags.SOURCE_VIEW_SECONDARY_ID, plotView.getViewSite().getSecondaryId());
+				RedhawkEvents.publishEvent(topic, argMap);
+			}
+		});
+	}
 }

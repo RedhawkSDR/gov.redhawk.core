@@ -13,9 +13,12 @@
 package gov.redhawk.model.sca.impl;
 
 import gov.redhawk.model.sca.IStatusProvider;
+import gov.redhawk.model.sca.ProfileObjectWrapper;
+import gov.redhawk.model.sca.ScaAbstractProperty;
 import gov.redhawk.model.sca.ScaModelPlugin;
 import gov.redhawk.model.sca.ScaPackage;
 import gov.redhawk.model.sca.impl.listeners.DisposableObjectContainerListener;
+import gov.redhawk.model.sca.util.RedhawkEvents;
 
 import java.util.Collections;
 import java.util.HashMap;
@@ -88,7 +91,28 @@ public abstract class IStatusProviderImpl extends EObjectImpl implements IStatus
 	private Map<EStructuralFeature, IStatus> objectStatusMap = Collections.synchronizedMap(new HashMap<EStructuralFeature, IStatus>());
 
 	protected void notifyChanged(Notification msg) {
-
+		if (!msg.isTouch() && eContainer() != null) {
+			if (this instanceof ScaAbstractProperty<?> && ((ScaAbstractProperty<?>)this).getDefinition() != null) {
+				if (msg.getFeature() == ScaPackage.Literals.SCA_ABSTRACT_PROPERTY__IGNORE_REMOTE_SET) {
+					return;
+				}
+				Map<String, Object > argMap = RedhawkEvents.createMap(this, RedhawkEvents.MODEL_TOPIC_BASE);
+				argMap.put(RedhawkEvents.Model.ATTNAME, msg.getFeature());
+				argMap.put(RedhawkEvents.Model.NEW_VALUE, msg.getNewValue());
+				argMap.put(RedhawkEvents.Model.OLD_VALUE, msg.getOldValue());
+				argMap.put(RedhawkEvents.Model.TYPE, msg.getEventType());
+				argMap.put(RedhawkEvents.Model.NOTIFICATION, msg);
+				RedhawkEvents.publishEvent(RedhawkEvents.MODEL_TOPIC_BASE, argMap);
+			} else if (this instanceof ProfileObjectWrapper<?> && ((ProfileObjectWrapper<?>)this).getProfileObj() != null) {
+				Map<String, Object > argMap = RedhawkEvents.createMap(this, RedhawkEvents.MODEL_TOPIC_BASE);
+				argMap.put(RedhawkEvents.Model.ATTNAME, msg.getFeature());
+				argMap.put(RedhawkEvents.Model.NEW_VALUE, msg.getNewValue());
+				argMap.put(RedhawkEvents.Model.OLD_VALUE, msg.getOldValue());
+				argMap.put(RedhawkEvents.Model.TYPE, msg.getEventType());
+				argMap.put(RedhawkEvents.Model.NOTIFICATION, msg);
+				RedhawkEvents.publishEvent(RedhawkEvents.MODEL_TOPIC_BASE, argMap);
+			}
+		}
 	}
 
 	/**

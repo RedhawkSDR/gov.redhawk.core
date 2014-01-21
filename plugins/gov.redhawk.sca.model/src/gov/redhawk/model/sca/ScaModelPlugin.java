@@ -20,6 +20,7 @@ import org.eclipse.core.runtime.Plugin;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
 import org.osgi.framework.BundleContext;
+import org.osgi.service.event.EventAdmin;
 import org.osgi.util.tracker.ServiceTracker;
 
 /**
@@ -32,6 +33,10 @@ public class ScaModelPlugin extends Plugin implements IScaObjectLocator {
 
 	private ServiceTracker<IScaObjectLocator, IScaObjectLocator> locatorTracker;
 
+	private ServiceTracker<EventAdmin, EventAdmin> eventAdminTracker;
+
+	private BundleContext bundleContext;
+
 	public ScaModelPlugin() {
 	}
 
@@ -41,10 +46,29 @@ public class ScaModelPlugin extends Plugin implements IScaObjectLocator {
 
 	@Override
 	public void start(final BundleContext context) throws Exception {
+		bundleContext = context;
 		ScaModelPlugin.instance = this;
 		locatorTracker = new ServiceTracker<IScaObjectLocator, IScaObjectLocator>(context, IScaObjectLocator.class, null);
 		locatorTracker.open(true);
 		super.start(context);
+	}
+	
+	/**
+	 * @since 19.0
+	 */
+	public BundleContext getBundleContext() {
+		return bundleContext;
+	}
+	
+	/**
+	 * @since 19.0
+	 */
+	public EventAdmin getEventAdmin() {
+		if (eventAdminTracker == null) {
+			eventAdminTracker = new ServiceTracker<EventAdmin, EventAdmin>(getBundleContext(), EventAdmin.class, null);
+			eventAdminTracker.open();
+		}
+		return (EventAdmin) eventAdminTracker.getService();
 	}
 
 	/**
@@ -71,11 +95,16 @@ public class ScaModelPlugin extends Plugin implements IScaObjectLocator {
 			locatorTracker.close();
 			locatorTracker = null;
 		}
+		if (eventAdminTracker != null) {
+			eventAdminTracker.close();
+			eventAdminTracker = null;
+		}
 		ScaModelPlugin.instance = null;
 		SilentModelJob.setShouldRun(false);
 		Job.getJobManager().cancel(SilentModelJob.JOB_FAMILY);
 		DataProviderServicesRegistry.INSTANCE.dispose();
 		//		Job.getJobManager().join(SilentModelJob.JOB_FAMILY, null);
+		bundleContext = null;
 		super.stop(context);
 	}
 
