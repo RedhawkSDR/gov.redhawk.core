@@ -2,6 +2,7 @@
  */
 package gov.redhawk.frontend.provider;
 
+import gov.redhawk.frontend.FrontendFactory;
 import gov.redhawk.frontend.FrontendPackage;
 import gov.redhawk.frontend.TunerStatus;
 import java.util.Collection;
@@ -9,6 +10,7 @@ import java.util.List;
 import org.eclipse.emf.common.notify.AdapterFactory;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.util.ResourceLocator;
+import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.edit.provider.ComposeableAdapterFactory;
 import org.eclipse.emf.edit.provider.IEditingDomainItemProvider;
 import org.eclipse.emf.edit.provider.IItemColorProvider;
@@ -702,6 +704,39 @@ public class TunerStatusItemProvider extends ItemProviderAdapter implements IEdi
   }
 
 	/**
+   * This specifies how to implement {@link #getChildren} and is used to deduce an appropriate feature for an
+   * {@link org.eclipse.emf.edit.command.AddCommand}, {@link org.eclipse.emf.edit.command.RemoveCommand} or
+   * {@link org.eclipse.emf.edit.command.MoveCommand} in {@link #createCommand}.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public Collection<? extends EStructuralFeature> getChildrenFeatures(Object object)
+  {
+    if (childrenFeatures == null)
+    {
+      super.getChildrenFeatures(object);
+      childrenFeatures.add(FrontendPackage.Literals.TUNER_STATUS__LISTENER_ALLOCATIONS);
+    }
+    return childrenFeatures;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  protected EStructuralFeature getChildFeature(Object object, Object child)
+  {
+    // Check the type of the specified child object and return the proper feature to use for
+    // adding (see {@link AddCommand}) it as a child.
+
+    return super.getChildFeature(object, child);
+  }
+
+  /**
    * This adds a property descriptor for the Enabled feature.
    * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -727,12 +762,15 @@ public class TunerStatusItemProvider extends ItemProviderAdapter implements IEdi
    * This returns TunerStatus.gif.
    * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-   * @generated
    */
 	@Override
 	public Object getImage(Object object) {
-    return overlayImage(object, getResourceLocator().getImage("full/obj16/TunerStatus"));
-  }
+		String allocationID = ((TunerStatus) object).getAllocationID();
+		if (!(allocationID == null || allocationID.equals(""))) {
+			return overlayImage(object, getResourceLocator().getImage("full/obj16/TunerAllocated"));
+		}
+	    return overlayImage(object, getResourceLocator().getImage("full/obj16/TunerStatus"));
+	}
 
 	/**
 	 * This returns the label text for the adapted class.
@@ -743,8 +781,10 @@ public class TunerStatusItemProvider extends ItemProviderAdapter implements IEdi
 	public String getText(Object object) {
 		if (object instanceof TunerStatus) {
 			TunerStatus tuner = (TunerStatus) object;
+			String allocationID = tuner.getAllocationID();
 			String label = tuner.getTunerType();
-			return label == null || label.length() == 0 ? getString("_UI_TunerStatus_type") : label;
+			return label == null || label.length() == 0 ? getString("_UI_TunerStatus_type") : 
+				(allocationID == null || allocationID.length() == 0 ? label : label + " " + allocationID);
 		}
 		return getString("_UI_TunerStatus_type");
 	}
@@ -792,6 +832,9 @@ public class TunerStatusItemProvider extends ItemProviderAdapter implements IEdi
       case FrontendPackage.TUNER_STATUS__TUNER_ID:
         fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
         return;
+      case FrontendPackage.TUNER_STATUS__LISTENER_ALLOCATIONS:
+        fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), true, false));
+        return;
     }
     super.notifyChanged(notification);
   }
@@ -806,6 +849,11 @@ public class TunerStatusItemProvider extends ItemProviderAdapter implements IEdi
 	@Override
 	protected void collectNewChildDescriptors(Collection<Object> newChildDescriptors, Object object) {
     super.collectNewChildDescriptors(newChildDescriptors, object);
+
+    newChildDescriptors.add
+      (createChildParameter
+        (FrontendPackage.Literals.TUNER_STATUS__LISTENER_ALLOCATIONS,
+         FrontendFactory.eINSTANCE.createListenerAllocation()));
   }
 
 	/**

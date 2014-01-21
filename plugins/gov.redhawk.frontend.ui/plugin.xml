@@ -20,7 +20,7 @@
          <possibleChildren>
             <or>
                <instanceof
-                     value="gov.redhawk.frontend.Tuner">
+                     value="gov.redhawk.frontend.TunerStatus">
                </instanceof>
             </or>
          </possibleChildren>
@@ -85,7 +85,7 @@
                <iterate>
                   <or>
                      <instanceof
-                           value="gov.redhawk.frontend.Tuner">
+                           value="gov.redhawk.frontend.TunerStatus">
                      </instanceof>
                   </or>
                </iterate>
@@ -99,7 +99,7 @@
                <iterate>
                   <or>
                      <instanceof
-                           value="gov.redhawk.frontend.Tuner">
+                           value="gov.redhawk.frontend.TunerStatus">
                      </instanceof>
                   </or>
                </iterate>
@@ -146,7 +146,7 @@
                   <or>
                      <and>
                         <instanceof
-                              value="gov.redhawk.frontend.Tuner">
+                              value="gov.redhawk.frontend.TunerStatus">
                         </instanceof>
                         <test
                               property="gov.redhawk.frontend.hasAllocationID">
@@ -192,7 +192,7 @@
                   <or>
                      <and>
                         <instanceof
-                              value="gov.redhawk.frontend.Tuner">
+                              value="gov.redhawk.frontend.TunerStatus">
                         </instanceof>
                      </and>
                      <and>
@@ -283,7 +283,7 @@
             id="gov.redhawk.frontend.allocationPropertyTester"
             namespace="gov.redhawk.frontend"
             properties="hasAllocationID,supportedTunerType"
-            type="gov.redhawk.frontend.Tuner">
+            type="gov.redhawk.frontend.TunerStatus">
       </propertyTester>
       <propertyTester
             class="gov.redhawk.frontend.ui.internal.TunerContainerPropertyTester"

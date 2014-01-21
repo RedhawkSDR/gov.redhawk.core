@@ -4,6 +4,7 @@ package gov.redhawk.frontend.impl;
 
 import gov.redhawk.frontend.FrontendFactory;
 import gov.redhawk.frontend.FrontendPackage;
+import gov.redhawk.frontend.ListenerAllocation;
 import gov.redhawk.frontend.ModelDevice;
 import gov.redhawk.frontend.TunerContainer;
 import gov.redhawk.frontend.TunerStatus;
@@ -48,6 +49,13 @@ public class FrontendPackageImpl extends EPackageImpl implements FrontendPackage
    * @generated
    */
   private EClass tunerStatusEClass = null;
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  private EClass listenerAllocationEClass = null;
 
   /**
    * <!-- begin-user-doc -->
@@ -494,6 +502,46 @@ public class FrontendPackageImpl extends EPackageImpl implements FrontendPackage
    * <!-- end-user-doc -->
    * @generated
    */
+  public EReference getTunerStatus_ListenerAllocations()
+  {
+    return (EReference)tunerStatusEClass.getEStructuralFeatures().get(29);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EClass getListenerAllocation()
+  {
+    return listenerAllocationEClass;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EReference getListenerAllocation_TunerStatus()
+  {
+    return (EReference)listenerAllocationEClass.getEStructuralFeatures().get(0);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EAttribute getListenerAllocation_ListenerID()
+  {
+    return (EAttribute)listenerAllocationEClass.getEStructuralFeatures().get(1);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
   public EDataType getScaDevice()
   {
     return scaDeviceEDataType;
@@ -577,6 +625,11 @@ public class FrontendPackageImpl extends EPackageImpl implements FrontendPackage
     createEAttribute(tunerStatusEClass, TUNER_STATUS__TUNER_NUMBER);
     createEAttribute(tunerStatusEClass, TUNER_STATUS__DEVICE_CONTROL);
     createEAttribute(tunerStatusEClass, TUNER_STATUS__TUNER_ID);
+    createEReference(tunerStatusEClass, TUNER_STATUS__LISTENER_ALLOCATIONS);
+
+    listenerAllocationEClass = createEClass(LISTENER_ALLOCATION);
+    createEReference(listenerAllocationEClass, LISTENER_ALLOCATION__TUNER_STATUS);
+    createEAttribute(listenerAllocationEClass, LISTENER_ALLOCATION__LISTENER_ID);
 
     // Create data types
     scaDeviceEDataType = createEDataType(SCA_DEVICE);
@@ -655,6 +708,11 @@ public class FrontendPackageImpl extends EPackageImpl implements FrontendPackage
     initEAttribute(getTunerStatus_Tuner_number(), theEcorePackage.getEShort(), "tuner_number", null, 0, 1, TunerStatus.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEAttribute(getTunerStatus_DeviceControl(), theEcorePackage.getEBoolean(), "deviceControl", null, 0, 1, TunerStatus.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEAttribute(getTunerStatus_TunerID(), theEcorePackage.getEString(), "tunerID", null, 0, 1, TunerStatus.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEReference(getTunerStatus_ListenerAllocations(), this.getListenerAllocation(), this.getListenerAllocation_TunerStatus(), "listenerAllocations", null, 0, -1, TunerStatus.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+    initEClass(listenerAllocationEClass, ListenerAllocation.class, "ListenerAllocation", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEReference(getListenerAllocation_TunerStatus(), this.getTunerStatus(), this.getTunerStatus_ListenerAllocations(), "tunerStatus", null, 0, 1, ListenerAllocation.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEAttribute(getListenerAllocation_ListenerID(), theEcorePackage.getEString(), "listenerID", null, 0, 1, ListenerAllocation.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     // Initialize data types
     initEDataType(scaDeviceEDataType, ScaDevice.class, "ScaDevice", IS_SERIALIZABLE, !IS_GENERATED_INSTANCE_CLASS, "gov.redhawk.model.sca.ScaDevice<?>");

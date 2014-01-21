@@ -3,13 +3,18 @@
 package gov.redhawk.frontend.impl;
 
 import gov.redhawk.frontend.FrontendPackage;
+import gov.redhawk.frontend.ListenerAllocation;
 import gov.redhawk.frontend.TunerContainer;
 import gov.redhawk.frontend.TunerStatus;
 
 import gov.redhawk.model.sca.ScaStructProperty;
 
+import java.util.Collection;
+
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
+
+import org.eclipse.emf.common.util.EList;
 
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
@@ -17,7 +22,9 @@ import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
 
+import org.eclipse.emf.ecore.util.EObjectContainmentWithInverseEList;
 import org.eclipse.emf.ecore.util.EcoreUtil;
+import org.eclipse.emf.ecore.util.InternalEList;
 
 /**
  * <!-- begin-user-doc -->
@@ -55,6 +62,7 @@ import org.eclipse.emf.ecore.util.EcoreUtil;
  *   <li>{@link gov.redhawk.frontend.impl.TunerStatusImpl#getTuner_number <em>Tuner number</em>}</li>
  *   <li>{@link gov.redhawk.frontend.impl.TunerStatusImpl#isDeviceControl <em>Device Control</em>}</li>
  *   <li>{@link gov.redhawk.frontend.impl.TunerStatusImpl#getTunerID <em>Tuner ID</em>}</li>
+ *   <li>{@link gov.redhawk.frontend.impl.TunerStatusImpl#getListenerAllocations <em>Listener Allocations</em>}</li>
  * </ul>
  * </p>
  *
@@ -623,6 +631,16 @@ public class TunerStatusImpl extends MinimalEObjectImpl.Container implements Tun
   protected String tunerID = TUNER_ID_EDEFAULT;
 
   /**
+   * The cached value of the '{@link #getListenerAllocations() <em>Listener Allocations</em>}' containment reference list.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see #getListenerAllocations()
+   * @generated
+   * @ordered
+   */
+  protected EList<ListenerAllocation> listenerAllocations;
+
+  /**
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
@@ -758,14 +776,15 @@ public class TunerStatusImpl extends MinimalEObjectImpl.Container implements Tun
   /**
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @generated
    */
   public void setAllocationID(String newAllocationID)
   {
     String oldAllocationID = allocationID;
     allocationID = newAllocationID;
-    if (eNotificationRequired())
+    if (eNotificationRequired()) {
       eNotify(new ENotificationImpl(this, Notification.SET, FrontendPackage.TUNER_STATUS__ALLOCATION_ID, oldAllocationID, allocationID));
+      getTunerContainer().eNotify(new ENotificationImpl((TunerContainerImpl) getTunerContainer(), Notification.MOVE, FrontendPackage.TUNER_CONTAINER__TUNER_STATUS, Notification.NO_INDEX, Notification.NO_INDEX));
+    }
   }
 
   /**
@@ -1348,6 +1367,21 @@ public class TunerStatusImpl extends MinimalEObjectImpl.Container implements Tun
    * <!-- end-user-doc -->
    * @generated
    */
+  public EList<ListenerAllocation> getListenerAllocations()
+  {
+    if (listenerAllocations == null)
+    {
+      listenerAllocations = new EObjectContainmentWithInverseEList<ListenerAllocation>(ListenerAllocation.class, this, FrontendPackage.TUNER_STATUS__LISTENER_ALLOCATIONS, FrontendPackage.LISTENER_ALLOCATION__TUNER_STATUS);
+    }
+    return listenerAllocations;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @SuppressWarnings("unchecked")
   @Override
   public NotificationChain eInverseAdd(InternalEObject otherEnd, int featureID, NotificationChain msgs)
   {
@@ -1357,6 +1391,8 @@ public class TunerStatusImpl extends MinimalEObjectImpl.Container implements Tun
         if (eInternalContainer() != null)
           msgs = eBasicRemoveFromContainer(msgs);
         return basicSetTunerContainer((TunerContainer)otherEnd, msgs);
+      case FrontendPackage.TUNER_STATUS__LISTENER_ALLOCATIONS:
+        return ((InternalEList<InternalEObject>)(InternalEList<?>)getListenerAllocations()).basicAdd(otherEnd, msgs);
     }
     return super.eInverseAdd(otherEnd, featureID, msgs);
   }
@@ -1373,6 +1409,8 @@ public class TunerStatusImpl extends MinimalEObjectImpl.Container implements Tun
     {
       case FrontendPackage.TUNER_STATUS__TUNER_CONTAINER:
         return basicSetTunerContainer(null, msgs);
+      case FrontendPackage.TUNER_STATUS__LISTENER_ALLOCATIONS:
+        return ((InternalEList<?>)getListenerAllocations()).basicRemove(otherEnd, msgs);
     }
     return super.eInverseRemove(otherEnd, featureID, msgs);
   }
@@ -1462,6 +1500,8 @@ public class TunerStatusImpl extends MinimalEObjectImpl.Container implements Tun
         return isDeviceControl();
       case FrontendPackage.TUNER_STATUS__TUNER_ID:
         return getTunerID();
+      case FrontendPackage.TUNER_STATUS__LISTENER_ALLOCATIONS:
+        return getListenerAllocations();
     }
     return super.eGet(featureID, resolve, coreType);
   }
@@ -1471,6 +1511,7 @@ public class TunerStatusImpl extends MinimalEObjectImpl.Container implements Tun
    * <!-- end-user-doc -->
    * @generated
    */
+  @SuppressWarnings("unchecked")
   @Override
   public void eSet(int featureID, Object newValue)
   {
@@ -1562,6 +1603,10 @@ public class TunerStatusImpl extends MinimalEObjectImpl.Container implements Tun
         return;
       case FrontendPackage.TUNER_STATUS__TUNER_ID:
         setTunerID((String)newValue);
+        return;
+      case FrontendPackage.TUNER_STATUS__LISTENER_ALLOCATIONS:
+        getListenerAllocations().clear();
+        getListenerAllocations().addAll((Collection<? extends ListenerAllocation>)newValue);
         return;
     }
     super.eSet(featureID, newValue);
@@ -1664,6 +1709,9 @@ public class TunerStatusImpl extends MinimalEObjectImpl.Container implements Tun
       case FrontendPackage.TUNER_STATUS__TUNER_ID:
         setTunerID(TUNER_ID_EDEFAULT);
         return;
+      case FrontendPackage.TUNER_STATUS__LISTENER_ALLOCATIONS:
+        getListenerAllocations().clear();
+        return;
     }
     super.eUnset(featureID);
   }
@@ -1736,6 +1784,8 @@ public class TunerStatusImpl extends MinimalEObjectImpl.Container implements Tun
         return deviceControl != DEVICE_CONTROL_EDEFAULT;
       case FrontendPackage.TUNER_STATUS__TUNER_ID:
         return TUNER_ID_EDEFAULT == null ? tunerID != null : !TUNER_ID_EDEFAULT.equals(tunerID);
+      case FrontendPackage.TUNER_STATUS__LISTENER_ALLOCATIONS:
+        return listenerAllocations != null && !listenerAllocations.isEmpty();
     }
     return super.eIsSet(featureID);
   }

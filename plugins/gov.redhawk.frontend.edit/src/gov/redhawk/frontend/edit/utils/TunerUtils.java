@@ -1,10 +1,12 @@
 package gov.redhawk.frontend.edit.utils;
 
 import gov.redhawk.frontend.FrontendFactory;
+import gov.redhawk.frontend.ListenerAllocation;
 import gov.redhawk.frontend.ModelDevice;
 import gov.redhawk.frontend.TunerContainer;
 import gov.redhawk.frontend.TunerStatus;
 import gov.redhawk.model.sca.ScaDevice;
+import gov.redhawk.model.sca.ScaSimpleProperty;
 import gov.redhawk.model.sca.ScaStructProperty;
 import gov.redhawk.model.sca.ScaStructSequenceProperty;
 
@@ -120,9 +122,30 @@ public enum TunerUtils {
 					tuner.setTunerID(String.valueOf(tunerIndex));
 					tunerList.add(tuner);
 					tunerIndex++;
-
 					// Assign tuner type to model object - provides tree label
 					setTunerType(tuner);
+					
+					ScaSimpleProperty allocSimple = struct.getSimple("FRONTEND::tuner_status::allocation_id_csv");
+					if (allocSimple == null) {
+						continue;
+					}
+					Object allocationValue = allocSimple.getValue();
+					if (allocationValue == null) {
+						continue;
+					}
+					String allocationIDs = allocationValue.toString();
+					for (String allocationID: allocationIDs.split(",")) {
+						if ("".equals(allocationID)) {
+							continue;
+						}
+						if (tuner.getAllocationID() == null) {
+							tuner.setAllocationID(allocationID);
+							continue;
+						}
+						ListenerAllocation allocation = FrontendFactory.eINSTANCE.createListenerAllocation();
+						allocation.setListenerID(allocationID);
+						tuner.getListenerAllocations().add(allocation);
+					}
 				}
 
 				return new Object[] { container };

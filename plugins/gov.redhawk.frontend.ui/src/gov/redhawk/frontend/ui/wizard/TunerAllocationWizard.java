@@ -1,5 +1,7 @@
 package gov.redhawk.frontend.ui.wizard;
 
+import gov.redhawk.frontend.FrontendFactory;
+import gov.redhawk.frontend.ListenerAllocation;
 import gov.redhawk.frontend.TunerContainer;
 import gov.redhawk.frontend.TunerStatus;
 import gov.redhawk.frontend.ui.wizard.AllocateRxDigitizerWizardPage.ALLOCATION_MODE;
@@ -299,6 +301,13 @@ public class TunerAllocationWizard extends Wizard {
 						" device has insufficient capacity. Message: " + e.getMessage());
 				delim = "\n\n";
 				result = false;
+			}
+			if (result && props[0].id.equals("FRONTEND::listener_allocation")) {
+				ListenerAllocation listener = FrontendFactory.eINSTANCE.createListenerAllocation();
+				AllocateRxDigitizerWizardPage page = ((AllocateRxDigitizerWizardPage) tunerMap.get(tuner));
+				listener.setListenerID(page.getListenerAllocationStruct().getSimple(
+					ListenerAllocationProperties.LISTENER_ALLOCATION_ID.getId()).getValue().toString());
+				tuner.getListenerAllocations().add(listener);
 			}
 		}
 		if (!result) {

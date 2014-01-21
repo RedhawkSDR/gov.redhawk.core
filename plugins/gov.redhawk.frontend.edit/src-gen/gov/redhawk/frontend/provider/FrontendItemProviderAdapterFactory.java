@@ -150,6 +150,31 @@ public class FrontendItemProviderAdapterFactory extends FrontendAdapterFactory i
   }
 
   /**
+   * This keeps track of the one adapter used for all {@link gov.redhawk.frontend.ListenerAllocation} instances.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  protected ListenerAllocationItemProvider listenerAllocationItemProvider;
+
+  /**
+   * This creates an adapter for a {@link gov.redhawk.frontend.ListenerAllocation}.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public Adapter createListenerAllocationAdapter()
+  {
+    if (listenerAllocationItemProvider == null)
+    {
+      listenerAllocationItemProvider = new ListenerAllocationItemProvider(this);
+    }
+
+    return listenerAllocationItemProvider;
+  }
+
+  /**
    * This returns the root adapter factory that contains this factory.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
@@ -263,6 +288,7 @@ public class FrontendItemProviderAdapterFactory extends FrontendAdapterFactory i
     if (modelDeviceItemProvider != null) modelDeviceItemProvider.dispose();
     if (tunerContainerItemProvider != null) tunerContainerItemProvider.dispose();
     if (tunerStatusItemProvider != null) tunerStatusItemProvider.dispose();
+    if (listenerAllocationItemProvider != null) listenerAllocationItemProvider.dispose();
   }
 
 }

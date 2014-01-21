@@ -53,6 +53,15 @@ public interface FrontendFactory extends EFactory
   TunerStatus createTunerStatus();
 
   /**
+   * Returns a new object of class '<em>Listener Allocation</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>Listener Allocation</em>'.
+   * @generated
+   */
+  ListenerAllocation createListenerAllocation();
+
+  /**
    * Returns an instance of data type '<em>Sca Device</em>' corresponding the given literal.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->

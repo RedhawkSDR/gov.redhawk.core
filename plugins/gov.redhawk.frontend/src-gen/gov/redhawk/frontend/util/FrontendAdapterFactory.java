@@ -90,6 +90,11 @@ public class FrontendAdapterFactory extends AdapterFactoryImpl
         return createTunerStatusAdapter();
       }
       @Override
+      public Adapter caseListenerAllocation(ListenerAllocation object)
+      {
+        return createListenerAllocationAdapter();
+      }
+      @Override
       public Adapter defaultCase(EObject object)
       {
         return createEObjectAdapter();
@@ -152,6 +157,21 @@ public class FrontendAdapterFactory extends AdapterFactoryImpl
    * @generated
    */
   public Adapter createTunerStatusAdapter()
+  {
+    return null;
+  }
+
+  /**
+   * Creates a new adapter for an object of class '{@link gov.redhawk.frontend.ListenerAllocation <em>Listener Allocation</em>}'.
+   * <!-- begin-user-doc -->
+   * This default implementation returns null so that we can easily ignore cases;
+   * it's useful to ignore a case when inheritance will catch all the cases anyway.
+   * <!-- end-user-doc -->
+   * @return the new adapter.
+   * @see gov.redhawk.frontend.ListenerAllocation
+   * @generated
+   */
+  public Adapter createListenerAllocationAdapter()
   {
     return null;
   }

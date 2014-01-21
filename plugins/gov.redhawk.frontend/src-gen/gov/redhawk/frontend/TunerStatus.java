@@ -4,6 +4,8 @@ package gov.redhawk.frontend;
 
 import gov.redhawk.model.sca.ScaStructProperty;
 
+import org.eclipse.emf.common.util.EList;
+
 import org.eclipse.emf.ecore.EObject;
 
 /**
@@ -43,6 +45,7 @@ import org.eclipse.emf.ecore.EObject;
  *   <li>{@link gov.redhawk.frontend.TunerStatus#getTuner_number <em>Tuner number</em>}</li>
  *   <li>{@link gov.redhawk.frontend.TunerStatus#isDeviceControl <em>Device Control</em>}</li>
  *   <li>{@link gov.redhawk.frontend.TunerStatus#getTunerID <em>Tuner ID</em>}</li>
+ *   <li>{@link gov.redhawk.frontend.TunerStatus#getListenerAllocations <em>Listener Allocations</em>}</li>
  * </ul>
  * </p>
  *
@@ -807,5 +810,23 @@ public interface TunerStatus extends EObject
    * @generated
    */
   void setTunerID(String value);
+
+  /**
+   * Returns the value of the '<em><b>Listener Allocations</b></em>' containment reference list.
+   * The list contents are of type {@link gov.redhawk.frontend.ListenerAllocation}.
+   * It is bidirectional and its opposite is '{@link gov.redhawk.frontend.ListenerAllocation#getTunerStatus <em>Tuner Status</em>}'.
+   * <!-- begin-user-doc -->
+   * <p>
+   * If the meaning of the '<em>Listener Allocations</em>' containment reference list isn't clear,
+   * there really should be more of a description here...
+   * </p>
+   * <!-- end-user-doc -->
+   * @return the value of the '<em>Listener Allocations</em>' containment reference list.
+   * @see gov.redhawk.frontend.FrontendPackage#getTunerStatus_ListenerAllocations()
+   * @see gov.redhawk.frontend.ListenerAllocation#getTunerStatus
+   * @model opposite="tunerStatus" containment="true"
+   * @generated
+   */
+  EList<ListenerAllocation> getListenerAllocations();
 
 } // TunerStatus

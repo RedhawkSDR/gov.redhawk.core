@@ -57,4 +57,11 @@ class TunerStatus {
 	//Tuner Allocation Properties
 	boolean deviceControl
 	String tunerID	//Model specific property, used for virtual ordering and assignment
+	
+	contains ListenerAllocation[] listenerAllocations opposite tunerStatus
+}
+
+class ListenerAllocation {
+	container TunerStatus tunerStatus opposite listenerAllocations
+	String listenerID
 }

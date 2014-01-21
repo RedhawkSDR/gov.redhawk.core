@@ -71,6 +71,7 @@ public class FrontendFactoryImpl extends EFactoryImpl implements FrontendFactory
       case FrontendPackage.MODEL_DEVICE: return createModelDevice();
       case FrontendPackage.TUNER_CONTAINER: return createTunerContainer();
       case FrontendPackage.TUNER_STATUS: return createTunerStatus();
+      case FrontendPackage.LISTENER_ALLOCATION: return createListenerAllocation();
       default:
         throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier");
     }
@@ -145,6 +146,17 @@ public class FrontendFactoryImpl extends EFactoryImpl implements FrontendFactory
   {
     TunerStatusImpl tunerStatus = new TunerStatusImpl();
     return tunerStatus;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public ListenerAllocation createListenerAllocation()
+  {
+    ListenerAllocationImpl listenerAllocation = new ListenerAllocationImpl();
+    return listenerAllocation;
   }
 
   /**

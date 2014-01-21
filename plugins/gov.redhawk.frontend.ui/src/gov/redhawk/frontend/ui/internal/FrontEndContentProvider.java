@@ -81,7 +81,9 @@ public class FrontEndContentProvider extends ScaModelAdapterFactoryContentProvid
 			return true;
 		}
 		if (object instanceof TunerStatus) {
-			return false;
+			if (((TunerStatus) object).getListenerAllocations().isEmpty())
+				return false;
+			return true;
 		}
 		return super.hasChildren(object);
 	}

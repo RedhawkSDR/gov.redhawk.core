@@ -431,13 +431,22 @@ public interface FrontendPackage extends EPackage
   int TUNER_STATUS__TUNER_ID = 28;
 
   /**
+   * The feature id for the '<em><b>Listener Allocations</b></em>' containment reference list.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int TUNER_STATUS__LISTENER_ALLOCATIONS = 29;
+
+  /**
    * The number of structural features of the '<em>Tuner Status</em>' class.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
    * @ordered
    */
-  int TUNER_STATUS_FEATURE_COUNT = 29;
+  int TUNER_STATUS_FEATURE_COUNT = 30;
 
   /**
    * The number of operations of the '<em>Tuner Status</em>' class.
@@ -449,6 +458,52 @@ public interface FrontendPackage extends EPackage
   int TUNER_STATUS_OPERATION_COUNT = 0;
 
   /**
+   * The meta object id for the '{@link gov.redhawk.frontend.impl.ListenerAllocationImpl <em>Listener Allocation</em>}' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see gov.redhawk.frontend.impl.ListenerAllocationImpl
+   * @see gov.redhawk.frontend.impl.FrontendPackageImpl#getListenerAllocation()
+   * @generated
+   */
+  int LISTENER_ALLOCATION = 3;
+
+  /**
+   * The feature id for the '<em><b>Tuner Status</b></em>' container reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int LISTENER_ALLOCATION__TUNER_STATUS = 0;
+
+  /**
+   * The feature id for the '<em><b>Listener ID</b></em>' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int LISTENER_ALLOCATION__LISTENER_ID = 1;
+
+  /**
+   * The number of structural features of the '<em>Listener Allocation</em>' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int LISTENER_ALLOCATION_FEATURE_COUNT = 2;
+
+  /**
+   * The number of operations of the '<em>Listener Allocation</em>' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int LISTENER_ALLOCATION_OPERATION_COUNT = 0;
+
+  /**
    * The meta object id for the '<em>Sca Device</em>' data type.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
@@ -456,7 +511,7 @@ public interface FrontendPackage extends EPackage
    * @see gov.redhawk.frontend.impl.FrontendPackageImpl#getScaDevice()
    * @generated
    */
-  int SCA_DEVICE = 3;
+  int SCA_DEVICE = 4;
 
   /**
    * The meta object id for the '<em>Tuner Status Struct</em>' data type.
@@ -466,7 +521,7 @@ public interface FrontendPackage extends EPackage
    * @see gov.redhawk.frontend.impl.FrontendPackageImpl#getTunerStatusStruct()
    * @generated
    */
-  int TUNER_STATUS_STRUCT = 4;
+  int TUNER_STATUS_STRUCT = 5;
 
 
   /**
@@ -863,6 +918,49 @@ public interface FrontendPackage extends EPackage
   EAttribute getTunerStatus_TunerID();
 
   /**
+   * Returns the meta object for the containment reference list '{@link gov.redhawk.frontend.TunerStatus#getListenerAllocations <em>Listener Allocations</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the containment reference list '<em>Listener Allocations</em>'.
+   * @see gov.redhawk.frontend.TunerStatus#getListenerAllocations()
+   * @see #getTunerStatus()
+   * @generated
+   */
+  EReference getTunerStatus_ListenerAllocations();
+
+  /**
+   * Returns the meta object for class '{@link gov.redhawk.frontend.ListenerAllocation <em>Listener Allocation</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for class '<em>Listener Allocation</em>'.
+   * @see gov.redhawk.frontend.ListenerAllocation
+   * @generated
+   */
+  EClass getListenerAllocation();
+
+  /**
+   * Returns the meta object for the container reference '{@link gov.redhawk.frontend.ListenerAllocation#getTunerStatus <em>Tuner Status</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the container reference '<em>Tuner Status</em>'.
+   * @see gov.redhawk.frontend.ListenerAllocation#getTunerStatus()
+   * @see #getListenerAllocation()
+   * @generated
+   */
+  EReference getListenerAllocation_TunerStatus();
+
+  /**
+   * Returns the meta object for the attribute '{@link gov.redhawk.frontend.ListenerAllocation#getListenerID <em>Listener ID</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the attribute '<em>Listener ID</em>'.
+   * @see gov.redhawk.frontend.ListenerAllocation#getListenerID()
+   * @see #getListenerAllocation()
+   * @generated
+   */
+  EAttribute getListenerAllocation_ListenerID();
+
+  /**
    * Returns the meta object for data type '{@link gov.redhawk.model.sca.ScaDevice <em>Sca Device</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
@@ -1201,6 +1299,40 @@ public interface FrontendPackage extends EPackage
      * @generated
      */
     EAttribute TUNER_STATUS__TUNER_ID = eINSTANCE.getTunerStatus_TunerID();
+
+    /**
+     * The meta object literal for the '<em><b>Listener Allocations</b></em>' containment reference list feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EReference TUNER_STATUS__LISTENER_ALLOCATIONS = eINSTANCE.getTunerStatus_ListenerAllocations();
+
+    /**
+     * The meta object literal for the '{@link gov.redhawk.frontend.impl.ListenerAllocationImpl <em>Listener Allocation</em>}' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see gov.redhawk.frontend.impl.ListenerAllocationImpl
+     * @see gov.redhawk.frontend.impl.FrontendPackageImpl#getListenerAllocation()
+     * @generated
+     */
+    EClass LISTENER_ALLOCATION = eINSTANCE.getListenerAllocation();
+
+    /**
+     * The meta object literal for the '<em><b>Tuner Status</b></em>' container reference feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EReference LISTENER_ALLOCATION__TUNER_STATUS = eINSTANCE.getListenerAllocation_TunerStatus();
+
+    /**
+     * The meta object literal for the '<em><b>Listener ID</b></em>' attribute feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EAttribute LISTENER_ALLOCATION__LISTENER_ID = eINSTANCE.getListenerAllocation_ListenerID();
 
     /**
      * The meta object literal for the '<em>Sca Device</em>' data type.
