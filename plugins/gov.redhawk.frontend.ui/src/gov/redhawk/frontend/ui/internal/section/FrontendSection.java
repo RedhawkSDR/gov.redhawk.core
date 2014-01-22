@@ -12,10 +12,14 @@
 package gov.redhawk.frontend.ui.internal.section;
 
 import gov.redhawk.frontend.TunerStatus;
-import gov.redhawk.frontend.edit.utils.TunerUtils;
 import gov.redhawk.frontend.edit.utils.TunerPropertyWrapper;
+import gov.redhawk.frontend.edit.utils.TunerStatusAllocationProperties;
+import gov.redhawk.frontend.edit.utils.TunerUtils;
 import gov.redhawk.frontend.ui.internal.FrontEndContentProvider;
 import gov.redhawk.frontend.ui.internal.FrontEndLabelProvider;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import org.eclipse.jface.layout.TreeColumnLayout;
 import org.eclipse.jface.viewers.CellEditor;
@@ -95,10 +99,9 @@ public class FrontendSection extends AbstractPropertySection {
 			@Override
 			protected void setValue(Object element, Object value) {
 				if (element instanceof TunerPropertyWrapper) {
-					TunerPropertyWrapper entry = (TunerPropertyWrapper) element;
-					System.out.println("SETVALUE: " + value.toString());
-					entry.updateValue(value.toString());
-					TunerUtils.setTunerProperties(entry);
+					TunerPropertyWrapper wrapper = (TunerPropertyWrapper) element;
+					wrapper.updateValue(value.toString());
+					TunerUtils.updateTunerProperties(wrapper);
 				}
 
 				viewer.refresh();
@@ -108,9 +111,8 @@ public class FrontendSection extends AbstractPropertySection {
 			@Override
 			protected Object getValue(Object element) {
 				if (element instanceof TunerPropertyWrapper) {
-					TunerPropertyWrapper entry = (TunerPropertyWrapper) element;
-					Object value = entry.getValue();
-					System.out.println("Value: " + value.toString());
+					TunerPropertyWrapper wrapper = (TunerPropertyWrapper) element;
+					Object value = wrapper.getValue();
 					return value.toString();
 				}
 				return "";
@@ -129,14 +131,33 @@ public class FrontendSection extends AbstractPropertySection {
 					// If tuner is not allocated, all fields are read only
 					String allocID = entry.getTuner().getAllocationID();
 					if (allocID == null || allocID == "" ||  allocID.isEmpty()) {
-//						return false;
+						return false;
 					}
 					
-					String ID = entry.getID();
-					if (ID.equals("Tuner Type") /* TODO 'add back, this was removed for testing' || ID.equals("Allocation ID")*/)
-						return false;
+					// Return true for editable properties
+					String id = entry.getID();
+					if (isEditable(id)) {
+						return true;
+					}
 				}
-				return true;
+				return false;
+			}
+
+			private boolean isEditable(Object id) {
+				List<String> editableProperties = new ArrayList<String>();
+				editableProperties.add(TunerStatusAllocationProperties.AGC.getName());
+				editableProperties.add(TunerStatusAllocationProperties.BANDWIDTH.getName());
+				editableProperties.add(TunerStatusAllocationProperties.CENTER_FREQUENCY.getName());
+				editableProperties.add(TunerStatusAllocationProperties.ENABLED.getName());
+				editableProperties.add(TunerStatusAllocationProperties.GAIN.getName());
+				editableProperties.add(TunerStatusAllocationProperties.REFERENCE_SOURCE.getName());
+				
+				for (String prop : editableProperties) {
+					if (id.equals(prop)) {
+						return true;
+					}
+				}
+				return false;
 			}
 		});
 	}

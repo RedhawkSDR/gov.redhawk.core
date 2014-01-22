@@ -34,6 +34,9 @@
     <module>../../plugins/gov.redhawk.eclipsecorba.idl.edit</module>
     <module>../../plugins/gov.redhawk.eclipsecorba.library</module>
     <module>../../plugins/gov.redhawk.eclipsecorba.library.edit</module>
+    <module>../../plugins/gov.redhawk.frontend</module>
+    <module>../../plugins/gov.redhawk.frontend.edit</module>
+    <module>../../plugins/gov.redhawk.frontend.ui</module>
     <module>../../plugins/gov.redhawk.partitioning.validation</module>
     <module>../../plugins/gov.redhawk.prf.ui</module>
     <module>../../plugins/gov.redhawk.prf.validation</module>

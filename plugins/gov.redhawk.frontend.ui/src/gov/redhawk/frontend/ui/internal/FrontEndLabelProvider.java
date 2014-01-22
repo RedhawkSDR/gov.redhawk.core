@@ -33,6 +33,7 @@ public class FrontEndLabelProvider extends ScaModelAdapterFactoryLabelProvider i
 	
 	@Override
 	public String getColumnText(Object object, int columnIndex) {
+
 		if(object instanceof TunerPropertyWrapper) {
 			TunerPropertyWrapper property = (TunerPropertyWrapper) object;
 			switch (columnIndex) {

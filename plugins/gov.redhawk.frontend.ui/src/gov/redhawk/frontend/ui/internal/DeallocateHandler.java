@@ -84,7 +84,6 @@ public class DeallocateHandler extends AbstractHandler implements IHandler {
 			DataType[] props = createAllocationProperties(tuner);
 			try {
 				device.deallocateCapacity(props);
-				System.out.println("Struct: " + tuner.getTunerStatusStruct().getSimple("FRONTEND::tuner_status::allocation_id_csv").getValue());
 			} catch (InvalidCapacity e) {
 				e.printStackTrace();
 			} catch (InvalidState e) {
@@ -133,11 +132,6 @@ public class DeallocateHandler extends AbstractHandler implements IHandler {
 	}
 
 	private void setValueForProp(TunerAllocationProperties allocPropID, ScaSimpleProperty simple) {
-		System.out.println("Simple: " + simple);
-		System.out.println("TunerStruct: " + tuner.getTunerStatusStruct());
-		System.out.println("GetSimple: " + tuner.getTunerStatusStruct().getSimple("FRONTEND::tuner_status::allocation_id_csv"));
-		System.out.println("getValue: " + tuner.getTunerStatusStruct().getSimple("FRONTEND::tuner_status::allocation_id_csv").getValue());
-		
 		simple.setValue(tuner.getTunerStatusStruct().getSimple("FRONTEND::tuner_status::allocation_id_csv").getValue());
 	}
 	
