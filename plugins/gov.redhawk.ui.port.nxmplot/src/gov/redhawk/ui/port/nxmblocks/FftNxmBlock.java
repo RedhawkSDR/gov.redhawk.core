@@ -131,12 +131,21 @@ public class FftNxmBlock extends AbstractNxmBlock<fft> {
 	protected void applySettingsTo(fft cmd, Object settings, String streamId) {
 		if (settings instanceof FftNxmBlockSettings) {
 			FftNxmBlockSettings newSettings = (FftNxmBlockSettings) settings;
+			
+			// update actual FFT Command's settings
 			cmd.setNAvg(newSettings.getNumAverages());
 			cmd.setNExp(newSettings.getNumExpAverages());
 			cmd.setOverlap(newSettings.getOverlap() / 100.0); // SUPPRESS CHECKSTYLE MagicNumber 
 			// fftSettings.getOutputType(); // cannot change: output type (NORMAL, PSD, MAG, MAG & LOG, PSD & LOG) on FFT at this time
 			cmd.setWindow(newSettings.getWindowString());
-			cmd.setNAvg(newSettings.getTransformSize()); // do this last as it can cause restart
+			cmd.setNFft(newSettings.getTransformSize()); // do this last as it can cause restart
+			
+			// update block's settings (model - so that getSettings() returns latest value)
+			this.settings.setNumAverages(newSettings.getNumAverages());
+			this.settings.setNumExpAverages(newSettings.getNumExpAverages());
+			this.settings.setOverlap(newSettings.getOverlap());
+			this.settings.setWindow(newSettings.getWindow());
+			this.settings.setTransformSize(newSettings.getTransformSize());
 		}
 	}
 }
