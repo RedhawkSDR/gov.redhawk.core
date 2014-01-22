@@ -13,7 +13,7 @@ package gov.redhawk.ui.port.playaudio.controller;
 import gov.redhawk.bulkio.util.AbstractBulkIOPort;
 import gov.redhawk.bulkio.util.BulkIOType;
 import gov.redhawk.bulkio.util.BulkIOUtilActivator;
-import gov.redhawk.bulkio.util.StreamXMLSRIUtil;
+import gov.redhawk.bulkio.util.StreamSRIUtil;
 import gov.redhawk.model.sca.ScaPackage;
 import gov.redhawk.model.sca.ScaUsesPort;
 import gov.redhawk.model.sca.commands.ScaModelCommand;
@@ -225,7 +225,7 @@ public class AudioReceiver extends AbstractBulkIOPort implements dataShortOperat
 		float frameRate = sampleRate;
 
 		// Use keywords to override values
-		Map<String, Object> newKeywords = StreamXMLSRIUtil.extractKeyWords(newSri);
+		Map<String, Object> newKeywords = StreamSRIUtil.extractKeyWords(newSri);
 
 		Object value = newKeywords.get("AUDIO_ENCODING");
 		if (value instanceof String) {

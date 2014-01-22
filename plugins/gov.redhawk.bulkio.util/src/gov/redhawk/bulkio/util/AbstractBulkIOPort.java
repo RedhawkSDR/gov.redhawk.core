@@ -156,14 +156,14 @@ public abstract class AbstractBulkIOPort implements ProvidesPortStatisticsProvid
 			String streamId = sri.streamID;
 			if (streamId != null) {
 				StreamSRI oldSri = this.streamSRIMap.put(streamId, sri);
-				if (!StreamXMLSRIUtil.equals(oldSri, sri)) {
+				if (!StreamSRIUtil.equals(oldSri, sri)) {
 					handleStreamSRIChanged(streamId, oldSri, sri);
 				}
 			}
 		}
 		StreamSRI oldSri = this.currentSri;
 		this.currentSri = sri;
-		if (!StreamXMLSRIUtil.equals(oldSri, sri)) {
+		if (!StreamSRIUtil.equals(oldSri, sri)) {
 			handleStreamSRIChanged(oldSri, sri);
 		}
 	}
