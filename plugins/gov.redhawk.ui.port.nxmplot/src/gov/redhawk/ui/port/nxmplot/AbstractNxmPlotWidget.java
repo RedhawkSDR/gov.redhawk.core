@@ -12,6 +12,7 @@
 package gov.redhawk.ui.port.nxmplot;
 
 import gov.redhawk.internal.ui.port.nxmplot.PlotSession;
+import gov.redhawk.ui.port.nxmplot.PlotSettings.PlotMode;
 
 import java.util.Collections;
 import java.util.HashMap;
@@ -386,7 +387,7 @@ public abstract class AbstractNxmPlotWidget extends Composite {
 
 	/**
 	 * Creates a unique name to be used for pipes for variables within the shared NeXtMidas session
-	 * @return A new unique name
+	 * @return A new unique name for a pipe
 	 * @since 4.0
 	 */
 	public static String createUniqueName() {
@@ -437,6 +438,7 @@ public abstract class AbstractNxmPlotWidget extends Composite {
 	public abstract void sendMessageToCommand(String cmdID, String msgName, int info, Object data, Object quals);
 
 	/**
+	 * Get a copy of current Plot Settings
 	 * @since 4.2
 	 */
 	public PlotSettings getPlotSettings() {
@@ -457,6 +459,7 @@ public abstract class AbstractNxmPlotWidget extends Composite {
 	 * @param custom plot settings to apply
 	 * @since 4.2
 	 */
+	@SuppressWarnings("deprecation")
 	public void applySettings(PlotSettings settings) {
 		if (settings != null) {
 			if (this.plotSettings.equals(settings)) {
@@ -480,7 +483,10 @@ public abstract class AbstractNxmPlotWidget extends Composite {
 			}
 			final Boolean blockingOption = settings.getBlockingOption();
 			this.plotSettings.setBlockingOption(blockingOption);
+			final PlotMode plotMode = settings.getPlotMode();			
+			final boolean enablePlotMenu = settings.isEnablePlotMenu();
 
+			// vvvvv DEPRECATED - begin adjust CORBARECEIVER settings vvvvv
 			// apply frame size and sample rate settings change to CORBARECEIVERs
 			Table msgData = new Table();
 			boolean overrideSampleRate = (sampleRate != null);
@@ -503,7 +509,22 @@ public abstract class AbstractNxmPlotWidget extends Composite {
 					sendMessageToCommand(cmdID, "CHANGE_CORBARECEIVER_SETTINGS", 0, msgData, null);
 				}
 			}
+			// ^^^^^ DEPRECATED - end adjust CORBARECEIVER settings ^^^^^
 
+			// adjust PLOT settings
+			if (enablePlotMenu != this.plotSettings.isEnablePlotMenu()) {
+				this.plotSettings.setEnablePlotMenu(enablePlotMenu);
+				String newValue = (enablePlotMenu) ? "-NoMiddleMouse" : "+NoMiddleMouse";
+				sendPlotMessage("SET.MW.EventFilter", 0, newValue);
+			}
+			
+			if (plotMode != this.plotSettings.getPlotMode()) { // can use == comparator for Enums
+				this.plotSettings.setPlotMode(plotMode);
+				if (plotMode != null) { // cannot go back to default as we don't know what it was
+					sendPlotMessage("SET.MODE", 0, plotMode.toModeString());
+				}
+			}
+			
 			if (plotType != null && changedType) {
 				sendPlotMessage("SET.PlotType", 0, plotType.toString());
 			}

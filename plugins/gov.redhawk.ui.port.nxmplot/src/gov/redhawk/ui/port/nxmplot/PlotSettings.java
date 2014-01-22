@@ -12,21 +12,97 @@ package gov.redhawk.ui.port.nxmplot;
 
 
 /** <b>INTERNAL USE ONLY</b>
+ * These setting are intended ONLY for the PLOT widget (not it's data source Port(s)).
  * @noreference This class is not intended to be referenced by clients.
  * @since 4.2
  */
 public class PlotSettings {
 
-	private Integer  frameSize      = null; // null to use default (e.g. from SRI)
-	private Double   sampleRate     = null; // null to use default (e.g. from SRI)
-	private Boolean blockingOption = false; // null to use default
+	private Integer  frameSize      = null; // null to use default (e.g. from SRI) - DEPRECATED (as this is for a source)
+	private Double   sampleRate     = null; // null to use default (e.g. from SRI) - DEPRECATED (as this is for a source)
+	private Boolean blockingOption = false; // null to use default - DEPRECATED (as this is for a source)
+
 	private Double   minValue       = null; // null to use default (i.e. AutoMin)
 	private Double   maxValue       = null; // null to use default (i.e. AutoMax)
-	private PlotType plotType       = null; // null to not change plot type
+	private PlotType plotType       = null; // null to not change plot type (line, raster, etc.)
+	private PlotMode plotMode       = null; // plot mode (i.e. complex mode (CM=)) (null to use default / no change)
+	private boolean  enablePlotMenu = true; // enable/disable middle-mouse-button (MMB) to bring up PLOT's configure menu
 
+	/** plot data mode / complex mode (i.e. CM= arg or MPlot.setMode(..)).
+	 * @since 4.3
+	 */
+	public enum PlotMode {
+		MAGNITUDE {
+			public String toModeString() {
+				return "Mag";
+			}
+		},
+		PHASE {
+			public String toModeString() {
+				return "Phase";
+			}
+		},
+		REAL {
+			public String toModeString() {
+				return "Real";
+			}
+		},
+		IMAGINARY {
+			public String toModeString() {
+				return "Imag";
+			}
+		},
+		REAL_AND_IMAGINARY {
+			public String toModeString() {
+				return "RnI";
+			}
+		}, 
+		REAL_VS_IMAGINARY {
+			public String toModeString() {
+				return "RvI";
+			}
+		},
+		TEN_LOG {
+			public String toModeString() {
+				return "10Log";
+			}
+			@Override
+			public String toString() {
+				return toModeString();
+			}
+		},
+		TWENTY_LOG {
+			public String toModeString() {
+				return "20Log";
+			}
+			@Override
+			public String toString() {
+				return toModeString();
+			}
+		},
+		X {
+			public String toModeString() {
+				return "X";
+			}
+		},
+		Y {
+			public String toModeString() {
+				return "Y";
+			}
+		},
+		Z {
+			public String toModeString() {
+				return "Z";
+			}
+		};
+		
+		public abstract String toModeString();
+	}
+	
 	public PlotSettings() {
 	}
 
+	/** copy constructor */
 	public PlotSettings(PlotSettings settings) {
 		this.frameSize  = settings.frameSize;
 		this.sampleRate = settings.sampleRate;
@@ -34,13 +110,18 @@ public class PlotSettings {
 		this.minValue = settings.minValue;
 		this.maxValue = settings.maxValue;
 		this.plotType = settings.plotType;
+		this.plotMode = settings.plotMode;
+		this.enablePlotMenu = settings.enablePlotMenu;
 	}
 
 	public PlotSettings(final PlotType plotType) {
-		super();
 		this.plotType = plotType;
 	}
 
+	/**
+	 * @deprecated since 4.3 (not used)
+	 */
+	@Deprecated
 	public PlotSettings(final Integer frameSize, final Double minValue, final Double maxValue, final Double sampleRate, final PlotType plotType) {
 		this(frameSize, minValue, maxValue, Boolean.TRUE, sampleRate, plotType);
 	}
@@ -55,10 +136,18 @@ public class PlotSettings {
 		this.plotType = plotType;
 	}
 
+	/**
+	 * @deprecated since 4.3 as this should apply to the source Port(s).
+	 */
+	@Deprecated
 	public Integer getFrameSize() {
 		return this.frameSize;
 	}
 
+	/**
+	 * @deprecated since 4.3 as this should apply to the source Port(s).
+	 */
+	@Deprecated
 	public void setFrameSize(final Integer frameSize) {
 		this.frameSize = frameSize;
 	}
@@ -79,10 +168,18 @@ public class PlotSettings {
 		this.maxValue = maxValue;
 	}
 
+	/**
+	 * @deprecated since 4.3 as this should apply to the source Port(s).
+	 */
+	@Deprecated
 	public Double getSampleRate() {
 		return sampleRate;
 	}
 
+	/**
+	 * @deprecated since 4.3 as this should apply to the source Port(s).
+	 */
+	@Deprecated
 	public void setSampleRate(Double sampleRate) {
 		this.sampleRate = sampleRate;
 	}
@@ -96,17 +193,47 @@ public class PlotSettings {
 	}
 
 	/**
-	 * @return the blockingOption
+	 * @deprecated since 4.3 as this should apply to the source Port(s).
 	 */
+	@Deprecated
 	public Boolean getBlockingOption() {
 		return blockingOption;
 	}
 
 	/**
-	 * @param blockingOption the blockingOption to set
+	 * @deprecated since 4.3 as this should apply to the source Port(s).
 	 */
+	@Deprecated
 	public void setBlockingOption(Boolean blockingOption) {
 		this.blockingOption = blockingOption;
+	}
+
+	/**
+	 * @since 4.3
+	 */
+	public PlotMode getPlotMode() {
+		return plotMode;
+	}
+
+	/** 
+	 * @since 4.3
+	 */
+	public void setPlotMode(PlotMode plotMode) {
+		this.plotMode = plotMode;
+	}
+
+	/** 
+	 * @since 4.3
+	 */
+	public boolean isEnablePlotMenu() {
+		return enablePlotMenu;
+	}
+
+	/** 
+	 * @since 4.3
+	 */
+	public void setEnablePlotMenu(boolean enablePlotMenu) {
+		this.enablePlotMenu = enablePlotMenu;
 	}
 
 	/* (non-Javadoc)
@@ -122,9 +249,11 @@ public class PlotSettings {
 		result = prime * result + ((minValue == null) ? 0 : minValue.hashCode());
 		result = prime * result + ((plotType == null) ? 0 : plotType.hashCode());
 		result = prime * result + ((blockingOption == null) ? 0 : blockingOption.hashCode());
+		result = prime * result + ((plotMode == null) ? 0 : plotMode.hashCode());
+		result = prime * result + ((enablePlotMenu) ? 1231 : 1237);
 		return result;
 	}
-
+	
 	/* (non-Javadoc)
 	 * @see java.lang.Object#equals(java.lang.Object)
 	 */
@@ -178,6 +307,17 @@ public class PlotSettings {
 		if (plotType != other.plotType) {
 			return false;
 		}
+		if (plotMode == null) {
+			if (other.plotMode != null) {
+				return false;
+			}
+		} else if (!plotMode.equals(other.plotMode)) {
+			return false;
+		}
+		if (enablePlotMenu != other.enablePlotMenu) {
+			return false;
+		}
+
 		return true;
 	}
 	

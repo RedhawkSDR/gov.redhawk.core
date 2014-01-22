@@ -12,11 +12,17 @@
 package gov.redhawk.internal.ui.port.nxmplot;
 
 import gov.redhawk.ui.port.nxmplot.PlotSettings;
+import gov.redhawk.ui.port.nxmplot.PlotSettings.PlotMode;
 import gov.redhawk.ui.port.nxmplot.PlotType;
 
+import org.eclipse.core.databinding.DataBindingContext;
+import org.eclipse.core.databinding.beans.PojoProperties;
 import org.eclipse.core.runtime.Assert;
+import org.eclipse.jface.databinding.swt.WidgetProperties;
+import org.eclipse.jface.databinding.viewers.ViewerProperties;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.IDialogConstants;
+import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.jface.resource.StringConverter;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.ComboViewer;
@@ -33,6 +39,7 @@ import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
@@ -63,6 +70,9 @@ public class PlotSettingsDialog extends Dialog {
 	private ComboViewer sampleRateField;
 	private ComboViewer blockingOptionField;
 	private ComboViewer plotTypeField;
+	
+	private DataBindingContext dataBindingContext = new DataBindingContext();
+	
 	/** Error message label widget. */
 	private Text errorMessageText;
 	/** Error message string. */
@@ -84,11 +94,13 @@ public class PlotSettingsDialog extends Dialog {
 		newShell.setText("Adjust/Override PLOT Settings");
 	}
 
+	@SuppressWarnings("deprecation")
 	@Override
 	protected Control createDialogArea(final Composite parent) {
 		final Composite container = (Composite) super.createDialogArea(parent);
 		final GridLayout gridLayout = new GridLayout(2, false);
 		container.setLayout(gridLayout);
+		Label label;
 
 		// === error message ===
 		this.errorMessageText = new Text(container, SWT.READ_ONLY | SWT.WRAP);
@@ -103,9 +115,8 @@ public class PlotSettingsDialog extends Dialog {
 		frameSizeLabel.setText("Frame Size:");
 		this.frameSizeField = new ComboViewer(container, SWT.BORDER); // writable
 		this.frameSizeField.getCombo().setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false, 1, 1));
-		this.frameSizeField.setContentProvider(new ArrayContentProvider());
+		this.frameSizeField.setContentProvider(ArrayContentProvider.getInstance()); // ArrayContentProvider does not store any state, therefore can re-use instances
 		this.frameSizeField.setLabelProvider(new LabelProvider());
-
 		final String otherValidFSValue = FRAME_SIZE_VALIDATOR.getOtherAllowedValue();
 		Assert.isTrue(otherValidFSValue != null);
 		Object currentFS = otherValidFSValue;
@@ -117,10 +128,8 @@ public class PlotSettingsDialog extends Dialog {
 		} else {
 			fsComboInputs = new Object[] { otherValidFSValue, 512, 1024, 2048, 4096, 8192 };
 		}
-
 		this.frameSizeField.setInput(fsComboInputs);
 		this.frameSizeField.setSelection(new StructuredSelection(currentFS));
-
 		final Combo fsCombo = this.frameSizeField.getCombo();
 		fsCombo.addModifyListener(new ComboVerifyAndSetListener(fsCombo, FRAME_SIZE_VALIDATOR, this) {
 			@Override
@@ -137,9 +146,8 @@ public class PlotSettingsDialog extends Dialog {
 		sampleRateValueLabel.setText("Sample rate:");
 		this.sampleRateField = new ComboViewer(container, SWT.BORDER); // writable
 		this.sampleRateField.getCombo().setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false, 1, 1));
-		this.sampleRateField.setContentProvider(new ArrayContentProvider());
+		this.sampleRateField.setContentProvider(ArrayContentProvider.getInstance()); // ArrayContentProvider does not store any state, therefore can re-use instances
 		this.sampleRateField.setLabelProvider(new LabelProvider());
-
 		final String otherValidSRateValue = SAMPLE_RATE_VALIDATOR.getOtherAllowedValue();
 		Assert.isTrue(otherValidSRateValue != null);
 		Object currentSRate = otherValidSRateValue;
@@ -151,10 +159,8 @@ public class PlotSettingsDialog extends Dialog {
 		} else {
 			srateComboInputs = new Object[] { otherValidSRateValue };
 		}
-
 		this.sampleRateField.setInput(srateComboInputs);
 		this.sampleRateField.setSelection(new StructuredSelection(currentSRate));
-
 		final Combo sRateCombo = this.sampleRateField.getCombo();
 		sRateCombo.addModifyListener(new ComboVerifyAndSetListener(sRateCombo, SAMPLE_RATE_VALIDATOR, this) {
 			@Override
@@ -170,9 +176,8 @@ public class PlotSettingsDialog extends Dialog {
 		minValueLabel.setText("Min value:");
 		this.minField = new ComboViewer(container, SWT.BORDER); // writable
 		this.minField.getCombo().setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false, 1, 1));
-		this.minField.setContentProvider(new ArrayContentProvider());
+		this.minField.setContentProvider(ArrayContentProvider.getInstance()); // ArrayContentProvider does not store any state, therefore can re-use instances
 		this.minField.setLabelProvider(new LabelProvider());
-
 		final String otherValidMinValue = MIN_VALUE_VALIDATOR.getOtherAllowedValue();
 		Assert.isTrue(otherValidMinValue != null);
 		Object currentMinVal = otherValidMinValue;
@@ -184,10 +189,8 @@ public class PlotSettingsDialog extends Dialog {
 		} else {
 			minValComboInputs = new Object[] { otherValidMinValue };
 		}
-
 		this.minField.setInput(minValComboInputs);
 		this.minField.setSelection(new StructuredSelection(currentMinVal));
-
 		final Combo minValCombo = this.minField.getCombo();
 		minValCombo.addModifyListener(new ComboVerifyAndSetListener(minValCombo, MIN_VALUE_VALIDATOR, this) {
 			@Override
@@ -203,9 +206,8 @@ public class PlotSettingsDialog extends Dialog {
 		maxValueLabel.setText("Max value:");
 		this.maxField = new ComboViewer(container, SWT.BORDER); // writable
 		this.maxField.getCombo().setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false, 1, 1));
-		this.maxField.setContentProvider(new ArrayContentProvider());
+		this.maxField.setContentProvider(ArrayContentProvider.getInstance()); // ArrayContentProvider does not store any state, therefore can re-use instances
 		this.maxField.setLabelProvider(new LabelProvider());
-
 		final String otherValidMaxValue = MAX_VALUE_VALIDATOR.getOtherAllowedValue();
 		Assert.isTrue(otherValidMaxValue != null);
 		Object currentMaxVal = otherValidMaxValue;
@@ -217,10 +219,8 @@ public class PlotSettingsDialog extends Dialog {
 		} else {
 			maxValComboInputs = new Object[] { otherValidMaxValue };
 		}
-
 		this.maxField.setInput(maxValComboInputs);
 		this.maxField.setSelection(new StructuredSelection(currentMaxVal));
-
 		final Combo maxValCombo = this.maxField.getCombo();
 		maxValCombo.addModifyListener(new ComboVerifyAndSetListener(maxValCombo, MAX_VALUE_VALIDATOR, this) {
 			@Override
@@ -236,10 +236,9 @@ public class PlotSettingsDialog extends Dialog {
 		typeLabel.setText("Plot Type:");
 		this.plotTypeField = new ComboViewer(container, SWT.READ_ONLY);
 		this.plotTypeField.getCombo().setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false, 1, 1));
-		this.plotTypeField.setContentProvider(new ArrayContentProvider());
+		this.plotTypeField.setContentProvider(ArrayContentProvider.getInstance()); // ArrayContentProvider does not store any state, therefore can re-use instances
 		this.plotTypeField.setLabelProvider(new LabelProvider());
 		this.plotTypeField.addFilter(new ViewerFilter() {
-
 			@Override
 			public boolean select(Viewer viewer, Object parentElement, Object element) {
 				switch ((PlotType) element) {
@@ -247,9 +246,8 @@ public class PlotSettingsDialog extends Dialog {
 				case MESH:
 					return false;
 				default:
-					break;
+					return true;
 				}
-				return true;
 			}
 		});
 		this.plotTypeField.setInput(PlotType.values());
@@ -265,27 +263,29 @@ public class PlotSettingsDialog extends Dialog {
 		});
 
 		// === blocking option ===
-		final Label blockingLabel = new Label(container, SWT.NONE);
-		blockingLabel.setLayoutData(new GridData(GridData.BEGINNING, GridData.CENTER, false, false));
-		blockingLabel.setText("Blocking:");
-		this.blockingOptionField = new ComboViewer(container, SWT.READ_ONLY);
-		this.blockingOptionField.getCombo().setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false, 1, 1));
-		this.blockingOptionField.setContentProvider(new ArrayContentProvider());
-		this.blockingOptionField.setLabelProvider(new LabelProvider());
-		this.blockingOptionField.setInput(new Boolean[] { Boolean.TRUE, Boolean.FALSE });
-		Boolean curBlockingOption = this.plotSettings.getBlockingOption();
-		if (curBlockingOption != null) {
-			this.blockingOptionField.setSelection(new StructuredSelection(curBlockingOption));
-		}
-		this.blockingOptionField.addSelectionChangedListener(new ISelectionChangedListener() {
-			@Override
-			public void selectionChanged(final SelectionChangedEvent event) {
-				Object newVal = ((IStructuredSelection) event.getSelection()).getFirstElement();
-				if (newVal instanceof Boolean) {
-					PlotSettingsDialog.this.plotSettings.setBlockingOption((Boolean) newVal);
-				}
-			}
-		});
+		final Button blockingButton = new Button(container, SWT.CHECK);
+		blockingButton.setText("Blocking");
+		blockingButton.setLayoutData(GridDataFactory.fillDefaults().grab(true, false).span(2, 1).create());
+		blockingButton.setToolTipText("On/checked to block pushPacket when Plot is not able to keep up; Off to drop packets in this scenario.");
+		dataBindingContext.bindValue(WidgetProperties.selection().observe(blockingButton), PojoProperties.value("blockingOption").observe(this.plotSettings));
+
+		// === plot mode / complex mode ===
+		label = new Label(container, SWT.NONE);
+		label.setLayoutData(new GridData(GridData.BEGINNING, GridData.CENTER, false, false));
+		label.setText("Plot Mode:");
+		final ComboViewer complexModeWidget = new ComboViewer(container, SWT.READ_ONLY);
+		complexModeWidget.getCombo().setLayoutData(GridDataFactory.fillDefaults().grab(true,  false).create());
+		complexModeWidget.getCombo().setToolTipText("Custom plot mode / complex mode.");
+		complexModeWidget.setContentProvider(ArrayContentProvider.getInstance()); // ArrayContentProvider does not store any state, therefore can re-use instances
+		complexModeWidget.setLabelProvider(new LabelProvider());
+		complexModeWidget.setInput(PlotMode.values());
+		dataBindingContext.bindValue(ViewerProperties.singleSelection().observe(complexModeWidget), PojoProperties.value("complexMode").observe(this.plotSettings));
+
+		// === enable Plot configure menu ===
+		final Button enablePlotMenuButton = new Button(parent, SWT.CHECK);
+		enablePlotMenuButton.setText("Enable Plot Configure Menu");
+		enablePlotMenuButton.setLayoutData(GridDataFactory.fillDefaults().grab(true, false).span(2, 1).create());
+		dataBindingContext.bindValue(WidgetProperties.selection().observe(enablePlotMenuButton), PojoProperties.value("enablePlotMenu").observe(this.plotSettings));
 
 		Dialog.applyDialogFont(container);
 
