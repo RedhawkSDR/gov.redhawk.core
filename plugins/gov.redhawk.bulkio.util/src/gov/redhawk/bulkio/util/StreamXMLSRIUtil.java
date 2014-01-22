@@ -103,11 +103,6 @@ public final class StreamXMLSRIUtil {
 		return metaInfo;
 	}
 
-	public static StreamSRI toStreamSRI(StreamSRIModel sri) {
-		// TODO
-		return null;
-	}
-
 	private static PropertyValueType getPropsValueType(Any anyValue) {
 		Object temp = AnyUtils.convertAny(anyValue);
 		Object value;
