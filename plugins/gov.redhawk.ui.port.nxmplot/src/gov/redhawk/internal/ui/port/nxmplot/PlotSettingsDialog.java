@@ -279,7 +279,7 @@ public class PlotSettingsDialog extends Dialog {
 		complexModeWidget.setContentProvider(ArrayContentProvider.getInstance()); // ArrayContentProvider does not store any state, therefore can re-use instances
 		complexModeWidget.setLabelProvider(new LabelProvider());
 		complexModeWidget.setInput(PlotMode.values());
-		dataBindingContext.bindValue(ViewerProperties.singleSelection().observe(complexModeWidget), PojoProperties.value("complexMode").observe(this.plotSettings));
+		dataBindingContext.bindValue(ViewerProperties.singleSelection().observe(complexModeWidget), PojoProperties.value("plotMode").observe(this.plotSettings));
 
 		// === enable Plot configure menu ===
 		final Button enablePlotMenuButton = new Button(parent, SWT.CHECK);
