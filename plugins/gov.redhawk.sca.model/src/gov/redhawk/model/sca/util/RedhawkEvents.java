@@ -42,6 +42,8 @@ public class RedhawkEvents {
 	public static final String MODEL_TOPIC_BASE = TOPIC_BASE + "/model"; //$NON-NLS-1$
 	
 	public static final String UI_TOPIC_BASE = TOPIC_BASE + "/ui"; //$NON-NLS-1$
+	
+	private RedhawkEvents() { };
 
 	public static interface EventTags {
 		/**
