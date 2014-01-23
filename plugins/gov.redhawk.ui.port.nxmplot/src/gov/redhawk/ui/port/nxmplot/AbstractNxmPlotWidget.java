@@ -12,7 +12,6 @@
 package gov.redhawk.ui.port.nxmplot;
 
 import gov.redhawk.internal.ui.port.nxmplot.PlotSession;
-import gov.redhawk.ui.port.nxmblocks.FftNxmBlockSettings;
 import gov.redhawk.ui.port.nxmplot.PlotSettings.PlotMode;
 
 import java.util.Collections;
