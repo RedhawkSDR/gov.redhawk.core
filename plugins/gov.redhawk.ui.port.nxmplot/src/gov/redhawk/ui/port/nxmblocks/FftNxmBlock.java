@@ -32,6 +32,9 @@ public class FftNxmBlock extends AbstractNxmBlock<fft> {
 	public FftNxmBlock(@NonNull AbstractNxmPlotWidget plotWidget, @NonNull FftNxmBlockSettings settings) {
 		super(fft.class, FftNxmBlockSettings.class, "FFT", plotWidget);
 		this.settings = settings;
+		if (settings.getOutputType() == null) {
+			settings.setOutputType(OutputType.NORMAL);
+		}
 	}
 
 	@Override
@@ -144,6 +147,7 @@ public class FftNxmBlock extends AbstractNxmBlock<fft> {
 			this.settings.setNumAverages(newSettings.getNumAverages());
 			this.settings.setNumExpAverages(newSettings.getNumExpAverages());
 			this.settings.setOverlap(newSettings.getOverlap());
+//			this.settings.setOutputType(newSettings.getOutputType()); // TODO: save output type change for future streams?
 			this.settings.setWindow(newSettings.getWindow());
 			this.settings.setTransformSize(newSettings.getTransformSize());
 		}
