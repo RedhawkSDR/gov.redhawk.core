@@ -433,7 +433,7 @@ public class PlotPageBook2 extends Composite {
 			subMenu = new MenuManager(subMenuText, scaPort.getIor()); // subMenu for each Port source
 			menu.add(subMenu);
 			plotBlock.contributeMenuItems(subMenu); // allow NxmBlocks to contribute to subMenu 
-			subMenu.add(createSettingsMenuActionForSource(scaPort, nxmBlocksForSource.toArray(new INxmBlock[0]))); // add settings menu item
+			subMenu.add(createSettingsMenuActionForSource(subMenuText, scaPort, nxmBlocksForSource.toArray(new INxmBlock[0]))); // add settings menu item
 			subMenu.setVisible(true);
 		}
 
@@ -626,17 +626,17 @@ public class PlotPageBook2 extends Composite {
 		this.contextMenu = menu; // save a reference so that we can make contributions later to the context menu
 	}
 
-	private IAction createSettingsMenuActionForSource(final ScaUsesPort scaPort, final INxmBlock... nxmBlocks) {
+	private IAction createSettingsMenuActionForSource(final String sourceInfo, final ScaUsesPort scaPort, final INxmBlock... nxmBlocks) {
 		IAction action = new Action("Settings...") {
 			@Override
 			public void run() {
-				final NxmBlockSettingsWizard wizard = new NxmBlockSettingsWizard();
+				final NxmBlockSettingsWizard wizard = new NxmBlockSettingsWizard(sourceInfo);
 				//				PlotPageBook2.this.getAllPlotWidgets() // TODO
 				wizard.setNxmBlocks(nxmBlocks);
 
 				WizardDialog dialog = new WizardDialog(PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(), wizard);
 				if (Window.OK == dialog.open()) {
-					Job job = new Job("apply plot settings") {
+					Job job = new Job("apply plot settings for source: " + sourceInfo) {
 						@Override
 						protected IStatus run(IProgressMonitor monitor) {
 							for (INxmBlock nxmBlock : nxmBlocks) {

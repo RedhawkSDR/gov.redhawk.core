@@ -37,9 +37,9 @@ public class NxmBlockSettingsWizard extends Wizard {
 		/** key=INxmBlock, value=Settings for that block. */
 		private ConcurrentHashMap<INxmBlock, Object> nxmBlockToSettingsMap = new ConcurrentHashMap<INxmBlock, Object>();
 		
-		protected BlockWizardPage() {
-			super("nxmBlockSettingspage", "Adjust Plot Settings", null);
-			setDescription("Adjust plot settings.");
+		protected BlockWizardPage(String sourceInfo) {
+			super("nxmBlockSettingspage", "Adjust Plot Settings for Source", null);
+			setDescription("Adjust plot settings for source: " + sourceInfo);
 		}
 
 		@Override
@@ -73,8 +73,13 @@ public class NxmBlockSettingsWizard extends Wizard {
 		}
 	} // end class BlockWizardPage
 	
-	private BlockWizardPage page = new BlockWizardPage();
+	private BlockWizardPage page;
 
+	public NxmBlockSettingsWizard(String sourceInfo) {
+		super();
+		this.page = new BlockWizardPage(sourceInfo);
+	}
+	
 	@Override
 	public void addPages() {
 		addPage(page);
