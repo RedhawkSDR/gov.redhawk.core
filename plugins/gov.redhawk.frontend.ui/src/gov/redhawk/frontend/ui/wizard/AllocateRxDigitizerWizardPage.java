@@ -2,9 +2,6 @@ package gov.redhawk.frontend.ui.wizard;
 
 import gov.redhawk.common.ui.widgets.Dval;
 import gov.redhawk.frontend.TunerStatus;
-import gov.redhawk.frontend.ui.wizard.TunerAllocationWizard.ListenerAllocationProperties;
-import gov.redhawk.frontend.ui.wizard.TunerAllocationWizard.StatusProperties;
-import gov.redhawk.frontend.ui.wizard.TunerAllocationWizard.TunerAllocationProperties;
 import gov.redhawk.model.sca.ScaFactory;
 import gov.redhawk.model.sca.ScaSimpleProperty;
 import gov.redhawk.model.sca.ScaStructProperty;
@@ -31,6 +28,11 @@ import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Text;
+
+import gov.redhawk.frontend.edit.utils.TunerUtils.ListenerAllocationProperties;
+import gov.redhawk.frontend.edit.utils.TunerUtils.StatusProperties;
+import gov.redhawk.frontend.edit.utils.TunerUtils.TunerAllocationProperties;
+import gov.redhawk.frontend.ui.FrontEndUIActivator.ALLOCATION_MODE;
 
 public class AllocateRxDigitizerWizardPage extends WizardPage {
 
@@ -68,11 +70,6 @@ public class AllocateRxDigitizerWizardPage extends WizardPage {
 	protected AllocateRxDigitizerWizardPage(TunerStatus tuner) {
 		super("Allocate RX Digitizer Tuner");
 		this.tuner = tuner;
-	}
-
-	public enum ALLOCATION_MODE {
-		TUNER,
-		LISTENER
 	}
 
 	private ALLOCATION_MODE allocationMode = ALLOCATION_MODE.TUNER;

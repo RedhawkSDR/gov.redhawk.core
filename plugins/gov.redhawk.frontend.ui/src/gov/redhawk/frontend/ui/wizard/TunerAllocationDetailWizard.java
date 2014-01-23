@@ -4,7 +4,8 @@ import gov.redhawk.frontend.FrontendFactory;
 import gov.redhawk.frontend.ListenerAllocation;
 import gov.redhawk.frontend.TunerContainer;
 import gov.redhawk.frontend.TunerStatus;
-import gov.redhawk.frontend.ui.wizard.AllocateRxDigitizerWizardPage.ALLOCATION_MODE;
+import gov.redhawk.frontend.edit.utils.TunerUtils.ListenerAllocationProperties;
+import gov.redhawk.frontend.ui.FrontEndUIActivator.ALLOCATION_MODE;
 import gov.redhawk.model.sca.ScaDevice;
 import gov.redhawk.model.sca.ScaStructProperty;
 
@@ -12,8 +13,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import mil.jpeojtrs.sca.prf.PropertyValueType;
 
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.wizard.IWizardPage;
@@ -24,7 +23,7 @@ import CF.DevicePackage.InsufficientCapacity;
 import CF.DevicePackage.InvalidCapacity;
 import CF.DevicePackage.InvalidState;
 
-public class TunerAllocationWizard extends Wizard {
+public class TunerAllocationDetailWizard extends Wizard {
 
 	private TunerStatus tuner;
 	private TunerStatus[] tuners = new TunerStatus[0];
@@ -34,92 +33,15 @@ public class TunerAllocationWizard extends Wizard {
 	private Map<TunerStatus, IWizardPage> tunerMap = new HashMap<TunerStatus, IWizardPage>();
 	private Map<IWizardPage, TunerStatus> pageMap = new HashMap<IWizardPage, TunerStatus>();
 
-	public enum TunerAllocationProperties {
-		//	instance name			ID														PRF type
-		TUNER_TYPE(				"FRONTEND::tuner_allocation::tuner_type",				PropertyValueType.STRING),
-		ALLOCATION_ID(			"FRONTEND::tuner_allocation::allocation_id",			PropertyValueType.STRING),
-		CENTER_FREQUENCY(		"FRONTEND::tuner_allocation::center_frequency",			PropertyValueType.DOUBLE),
-		BANDWIDTH(				"FRONTEND::tuner_allocation::bandwidth",				PropertyValueType.DOUBLE),
-		BANDWIDTH_TOLERANCE(	"FRONTEND::tuner_allocation::bandwidth_tolerance",		PropertyValueType.DOUBLE),
-		SAMPLE_RATE(			"FRONTEND::tuner_allocation::sample_rate",				PropertyValueType.DOUBLE),
-		SAMPLE_RATE_TOLERANCE(	"FRONTEND::tuner_allocation::sample_rate_tolerance",	PropertyValueType.DOUBLE),
-		DEVICE_CONTROL(			"FRONTEND::tuner_allocation::device_control",			PropertyValueType.BOOLEAN),
-		GROUP_ID(				"FRONTEND::tuner_allocation::group_id",					PropertyValueType.STRING),
-		RF_FLOW_ID(				"FRONTEND::tuner_allocation::rf_flow_id",				PropertyValueType.STRING);
-
-		private String id;
-		private PropertyValueType type;
-
-		private TunerAllocationProperties(String id, PropertyValueType prfType) {
-			this.id = id;
-			this.type = prfType;
-		}
-
-		public String getId() {
-			return this.id;
-		}
-
-		public PropertyValueType getType() {
-			return this.type;
-		}
-	}
-
-	public enum ListenerAllocationProperties {
-		//	instance name			ID																	PRF type
-		EXISTING_ALLOCATION_ID(		"FRONTEND::listener_allocation::existing_allocation_id",			PropertyValueType.STRING),
-		LISTENER_ALLOCATION_ID(		"FRONTEND::listener_allocation::listener_allocation_id",			PropertyValueType.STRING);
-
-		private String id;
-		private PropertyValueType type;
-
-		private ListenerAllocationProperties(String id, PropertyValueType prfType) {
-			this.id = id;
-			this.type = prfType;
-		}
-
-		public String getId() {
-			return this.id;
-		}
-
-		public PropertyValueType getType() {
-			return this.type;
-		}
-	}
-
-	public enum StatusProperties {
-		//	instance name			ID														PRF type
-		ALLOCATION_ID_CSV(		"FRONTEND::tuner_status::allocation_id_csv",			PropertyValueType.STRING),
-		AVAILABLE_FREQUENCY(	"FRONTEND::tuner_status::available_frequency",			PropertyValueType.DOUBLE),
-		AVAILABLE_BANDWIDTH(	"FRONTEND::tuner_status::available_bandwidth",			PropertyValueType.DOUBLE),
-		AVAILABLE_SAMPLE_RATE(	"FRONTEND::tuner_status::available_sample_rate",		PropertyValueType.DOUBLE);
-
-		private String id;
-		private PropertyValueType type;
-
-		private StatusProperties(String id, PropertyValueType prfType) {
-			this.id = id;
-			this.type = prfType;
-		}
-
-		public String getId() {
-			return this.id;
-		}
-
-		public PropertyValueType getType() {
-			return this.type;
-		}
-	}
-
-
-	public TunerAllocationWizard(TunerStatus tuner) {
+	public TunerAllocationDetailWizard(TunerStatus tuner) {
 		this.tuner = tuner;
 	}
 
-	public TunerAllocationWizard(TunerContainer container) {
+	public TunerAllocationDetailWizard(TunerContainer container) {
 		this.tuners = container.getTunerStatus().toArray(new TunerStatus[0]);
 	}
 
-	public TunerAllocationWizard(TunerStatus[] tuners) {
+	public TunerAllocationDetailWizard(TunerStatus[] tuners) {
 		this.tuners  = tuners;
 	}
 
@@ -302,13 +224,14 @@ public class TunerAllocationWizard extends Wizard {
 				delim = "\n\n";
 				result = false;
 			}
-			if (result && props[0].id.equals("FRONTEND::listener_allocation")) {
-				ListenerAllocation listener = FrontendFactory.eINSTANCE.createListenerAllocation();
-				AllocateRxDigitizerWizardPage page = ((AllocateRxDigitizerWizardPage) tunerMap.get(tuner));
-				listener.setListenerID(page.getListenerAllocationStruct().getSimple(
-					ListenerAllocationProperties.LISTENER_ALLOCATION_ID.getId()).getValue().toString());
-				tuner.getListenerAllocations().add(listener);
-			}
+			//TODO check with whomever added this. I don't think the wizard should be setting these values. They should be set by the device
+//			if (result && props[0].id.equals("FRONTEND::listener_allocation")) {
+//				ListenerAllocation listener = FrontendFactory.eINSTANCE.createListenerAllocation();
+//				AllocateRxDigitizerWizardPage page = ((AllocateRxDigitizerWizardPage) tunerMap.get(tuner));
+//				listener.setListenerID(page.getListenerAllocationStruct().getSimple(
+//					ListenerAllocationProperties.LISTENER_ALLOCATION_ID.getId()).getValue().toString());
+//				tuner.getListenerAllocations().add(listener);
+//			}
 		}
 		if (!result) {
 			MessageDialog.openError(getShell(), "The Allocation was not successful", sb.toString());

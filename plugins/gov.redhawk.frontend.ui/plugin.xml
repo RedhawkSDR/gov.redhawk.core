@@ -129,9 +129,6 @@
                         <instanceof
                               value="gov.redhawk.frontend.TunerContainer">
                         </instanceof>
-                        <test
-                              property="gov.redhawk.frontend.hasUnallocatedTuners">
-                        </test>
                      </and>
                   </or>
                </iterate>
@@ -176,6 +173,29 @@
                      </and>
                   </or>
                </iterate>
+            </visibleWhen>
+         </command>
+         <command
+               commandId="gov.redhawk.frontend.commands.allocateDetail"
+               style="push">
+            <visibleWhen
+                  checkEnabled="false">
+            	<iterate>
+                  <and>
+                     <instanceof
+                           value="gov.redhawk.model.sca.ScaDevice">
+                     </instanceof>
+                     <test
+                           property="gov.redhawk.frontend.deviceKindIsFrontendTuner">
+                     </test>
+                     <with
+                           variable="activeMenuSelection">
+                        <count
+                              value="1">
+                        </count>
+                     </with>
+                  </and>
+            	</iterate>
             </visibleWhen>
          </command>
       </menuContribution>
@@ -275,6 +295,11 @@
             id="gov.redhawk.frontend.commands.deallocateall"
             name="Deallocate All">
       </command>
+      <command
+            defaultHandler="gov.redhawk.frontend.ui.internal.AllocateHandler"
+            id="gov.redhawk.frontend.commands.allocateDetail"
+            name="Allocate Detail...">
+      </command>
    </extension>
    <extension
          point="org.eclipse.core.expressions.propertyTesters">
@@ -291,6 +316,13 @@
             namespace="gov.redhawk.frontend"
             properties="hasUnallocatedTuners,hasAllocatedTuners"
             type="gov.redhawk.frontend.TunerContainer">
+      </propertyTester>
+      <propertyTester
+            class="gov.redhawk.frontend.ui.internal.FrontendTunerDeviceKindPropertytester"
+            id="gov.redhawk.frontend.frontendTunerDeviceKindTester"
+            namespace="gov.redhawk.frontend"
+            properties="deviceKindIsFrontendTuner"
+            type="gov.redhawk.model.sca.ScaDevice">
       </propertyTester>
    </extension>
 

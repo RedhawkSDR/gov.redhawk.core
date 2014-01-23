@@ -142,9 +142,9 @@ public class AllocateMultipleRxDigitizerWizardPage extends WizardPage {
 			@Override
 			public void checkStateChanged(CheckStateChangedEvent event) {
 				if (event.getChecked()) {
-					((TunerAllocationWizard) getWizard()).addTuner((TunerStatus) event.getElement());
+					((TunerAllocationDetailWizard) getWizard()).addTuner((TunerStatus) event.getElement());
 				} else {
-					((TunerAllocationWizard) getWizard()).removeTuner((TunerStatus) event.getElement());
+					((TunerAllocationDetailWizard) getWizard()).removeTuner((TunerStatus) event.getElement());
 				}
 				setPageComplete(validate());
 			}
@@ -165,7 +165,7 @@ public class AllocateMultipleRxDigitizerWizardPage extends WizardPage {
 	
 	@Override
 	public boolean canFlipToNextPage() {
-		return ((TunerAllocationWizard) getWizard()).getSelectedTunerCount() > 0;
+		return ((TunerAllocationDetailWizard) getWizard()).getSelectedTunerCount() > 0;
 	}
 	
 	@Override
@@ -176,7 +176,7 @@ public class AllocateMultipleRxDigitizerWizardPage extends WizardPage {
 	private boolean validate() {
 		boolean valid = true;
 		String msg = null;
-		if (((TunerAllocationWizard) getWizard()).getSelectedTunerCount() <= 0) {
+		if (((TunerAllocationDetailWizard) getWizard()).getSelectedTunerCount() <= 0) {
 			valid = false;
 			msg = "Please select a Tuner to allocate";
 		}

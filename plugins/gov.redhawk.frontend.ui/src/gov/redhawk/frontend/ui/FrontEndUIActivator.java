@@ -47,6 +47,11 @@ public class FrontEndUIActivator extends AbstractUIPlugin {
 				FRONTEND.TUNER_TYPE_RX_DIGITIZER.value,
 				FRONTEND.TUNER_TYPE_RX_DIGITIZER_CHANNELIZER.value}
 		));
+	
+	public enum ALLOCATION_MODE {
+		TUNER,
+		LISTENER
+	}
 
 	/*
 	 * (non-Javadoc)

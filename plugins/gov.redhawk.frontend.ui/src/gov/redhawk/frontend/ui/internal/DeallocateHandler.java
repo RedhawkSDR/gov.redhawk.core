@@ -13,7 +13,7 @@ package gov.redhawk.frontend.ui.internal;
 
 import gov.redhawk.frontend.TunerContainer;
 import gov.redhawk.frontend.TunerStatus;
-import gov.redhawk.frontend.ui.wizard.TunerAllocationWizard.TunerAllocationProperties;
+import gov.redhawk.frontend.edit.utils.TunerUtils;
 import gov.redhawk.model.sca.ScaDevice;
 import gov.redhawk.model.sca.ScaFactory;
 import gov.redhawk.model.sca.ScaSimpleProperty;
@@ -118,7 +118,7 @@ public class DeallocateHandler extends AbstractHandler implements IHandler {
 
 	private ScaStructProperty getTunerAllocationStruct() {
 		ScaStructProperty tunerAllocationStruct = ScaFactory.eINSTANCE.createScaStructProperty();
-		TunerAllocationProperties allocPropID = TunerAllocationProperties.valueOf("ALLOCATION_ID");
+		TunerUtils.TunerAllocationProperties allocPropID = TunerUtils.TunerAllocationProperties.valueOf("ALLOCATION_ID");
 		ScaSimpleProperty simple = ScaFactory.eINSTANCE.createScaSimpleProperty();
 		Simple definition = (Simple) PrfFactory.eINSTANCE.create(PrfPackage.Literals.SIMPLE);
 		definition.setType(allocPropID.getType());
@@ -131,7 +131,12 @@ public class DeallocateHandler extends AbstractHandler implements IHandler {
 		return tunerAllocationStruct;
 	}
 
-	private void setValueForProp(TunerAllocationProperties allocPropID, ScaSimpleProperty simple) {
+
+	private void setValueForProp(TunerUtils.TunerAllocationProperties allocPropID, ScaSimpleProperty simple) {
+		System.out.println("Simple: " + simple);
+		System.out.println("TunerStruct: " + tuner.getTunerStatusStruct());
+		System.out.println("GetSimple: " + tuner.getTunerStatusStruct().getSimple("FRONTEND::tuner_status::allocation_id_csv"));
+		System.out.println("getValue: " + tuner.getTunerStatusStruct().getSimple("FRONTEND::tuner_status::allocation_id_csv").getValue());
 		simple.setValue(tuner.getTunerStatusStruct().getSimple("FRONTEND::tuner_status::allocation_id_csv").getValue());
 	}
 	
