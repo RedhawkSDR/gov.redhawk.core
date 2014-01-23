@@ -31,9 +31,9 @@ public class PlotSettings {
 	private String   launchSwitches = null; // additional switches when launching/running PLOT   
 
 	/** plot data mode / complex mode (i.e. CM= arg or MPlot.setMode(..)).
-	 * @since 4.3
+	 * @since 4.4
 	 */
-	public enum PlotMode {
+	public static enum PlotMode {
 		MAGNITUDE {
 			public String toModeString() {
 				return "Mag";
@@ -99,6 +99,16 @@ public class PlotSettings {
 		};
 		
 		public abstract String toModeString();
+		
+		/** convert from plot's mode string (e.g. CM= arg) to this enum. */
+		public static PlotMode of(String modeString) {
+			for (PlotMode plotMode : PlotMode.values()) {
+				if (plotMode.toModeString().equals(modeString)) {
+					return plotMode; // found match
+				}
+			}
+			throw new IllegalArgumentException("Invalid plot mode string: " + modeString);
+		}
 	}
 	
 	public PlotSettings() {

@@ -12,6 +12,7 @@
 package gov.redhawk.ui.port.nxmplot;
 
 import gov.redhawk.internal.ui.port.nxmplot.PlotSession;
+import gov.redhawk.ui.port.nxmblocks.FftNxmBlockSettings;
 import gov.redhawk.ui.port.nxmplot.PlotSettings.PlotMode;
 
 import java.util.Collections;
@@ -27,11 +28,13 @@ import nxm.sys.lib.Message;
 import nxm.sys.lib.Position;
 import nxm.sys.lib.Table;
 import nxm.sys.libg.DragBox;
+import nxm.sys.prim.plot;
 
 import org.eclipse.core.runtime.ISafeRunnable;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.ListenerList;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.jdt.annotation.Nullable;
 import org.eclipse.jface.util.SafeRunnable;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.statushandlers.StatusManager;
@@ -438,10 +441,31 @@ public abstract class AbstractNxmPlotWidget extends Composite {
 	public abstract void sendMessageToCommand(String cmdID, String msgName, int info, Object data, Object quals);
 
 	/**
+	 * FOR INTERNAL USE ONLY.
+	 * @return null, unless implemented in subclass (e.g. RCPNxmPlotWidget) that have direct reference to the PLOT command. 
+	 * @since 4.4
+	 */
+	@Nullable
+	protected plot getPlot() {
+		return null;
+	}
+
+	/**
 	 * Get a copy of current Plot Settings
 	 * @since 4.2
 	 */
 	public PlotSettings getPlotSettings() {
+		plot curPlot = getPlot();
+		if (curPlot != null) {
+			String curPlotModeStr = curPlot.MP.getMode();
+			if (!"".equals(curPlotModeStr)) {
+				plotSettings.setPlotMode(PlotMode.of(curPlotModeStr));
+			}
+			String curPlotTypeStr = curPlot.getPlotType();
+			if (!"".equals(curPlotTypeStr)) {
+				plotSettings.setPlotType(PlotType.valueOf(curPlotTypeStr));
+			}
+		}
 		return new PlotSettings(this.plotSettings);
 	}
 
