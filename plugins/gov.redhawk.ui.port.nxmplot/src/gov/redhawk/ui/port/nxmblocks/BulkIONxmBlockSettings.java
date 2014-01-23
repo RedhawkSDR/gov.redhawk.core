@@ -16,13 +16,14 @@ import org.eclipse.jdt.annotation.NonNull;
 /**
  * BULK IO settings
  * @noreference This class is provisional/beta and is subject to API changes
- * @since 4.3
+ * @since 4.4
  */
 public class BulkIONxmBlockSettings implements Cloneable {
 	public static final String PROP_BLOCKING_OPTION = "blocking";
 	public static final String PROP_CONNECTION_ID   = "connectionID";
 	public static final String PROP_PIPE_SIZE       = "pipeSize";
 	public static final String PROP_SAMPLE_RATE     = "sampleRate";
+	public static final String PROP_REMOVE_ON_EOS   = "removeOnEndOfStream";
 	
 	private static final int DEFAULT_TIMELINE_LENGTTH = 200;
 
@@ -36,6 +37,8 @@ public class BulkIONxmBlockSettings implements Cloneable {
 	private Integer pipeSize;
 	/** time line length for output data pipe. */
 	private int timelineLength = DEFAULT_TIMELINE_LENGTTH;
+	/** remove stream from PLOT (by calling shutdown(streamID) on end-of-stream (EOS) is received in pushPacket */
+	private boolean removeOnEndOfStream = true;
 
 	public BulkIONxmBlockSettings() {
 	}
@@ -106,6 +109,14 @@ public class BulkIONxmBlockSettings implements Cloneable {
 	 */
 	public void setTimelineLength(int timelineLength) {
 		this.timelineLength = timelineLength;
+	}
+
+	public boolean isRemoveOnEndOfStream() {
+		return removeOnEndOfStream;
+	}
+
+	public void setRemoveOnEndOfStream(boolean removeOnEndOfStream) {
+		this.removeOnEndOfStream = removeOnEndOfStream;
 	}
 
 }

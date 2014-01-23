@@ -109,7 +109,6 @@ public class PlotNxmBlock extends AbstractNxmBlock<plot> {
 			pipeQualifiers.append("{PIPESIZE=").append(pipeSize).append('}');
 		}
 		
-		//		PlotSession plotSession = new PlotSession(currentPlotWidget, )
 		final String pipeQuals = pipeQualifiers.toString();
 		currentPlotWidget.addSource(sourceName, pipeQuals);
 
@@ -120,14 +119,9 @@ public class PlotNxmBlock extends AbstractNxmBlock<plot> {
 			IAction action = new Action(streamID, IAction.AS_CHECK_BOX) {
 				@Override
 				public void run() {
-					String enableOption = isChecked() ? "+GLOBAL" : "-GLOBAL";
+					String layerEnableOption = isChecked() ? "+GLOBAL" : "-GLOBAL"; // show/hide layer (i.e source stream)
 					String setViaMsgName = "SET.LAYERS." + sourceName + ".enable";
-					currentPlotWidget.sendPlotMessage(setViaMsgName, 0, enableOption);
-//					if (this.isChecked()) {
-//						currentPlotWidget.addSource(sourceName, pipeQuals);
-//					} else {
-//						currentPlotWidget.removeSource(sourceName);
-//					}
+					currentPlotWidget.sendPlotMessage(setViaMsgName, 0, layerEnableOption);
 				}
 			};
 			action.setChecked(true);

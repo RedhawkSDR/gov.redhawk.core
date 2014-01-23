@@ -52,6 +52,7 @@ public class BulkIONxmBlockControls {
 	private ComboViewer sampleRateField;
 	private Text pipeSizeField;
 	private Button blockingField;
+	private Button removeOnEOSButton;
 
 	public BulkIONxmBlockControls(BulkIONxmBlockSettings settings, DataBindingContext dataBindingCtx) {
 		this.settings = settings;
@@ -98,6 +99,12 @@ public class BulkIONxmBlockControls {
 		this.blockingField.setLayoutData(GridDataFactory.fillDefaults().grab(true, false).create());
 		this.blockingField.setToolTipText("On/checked to block pushPacket when Plot is not able to keep up; Off to drop packets in this scenario.");
 
+		// === remove source from plot on end-of-stream (EOS) ===
+		this.removeOnEOSButton = new Button(container, SWT.CHECK);
+		this.removeOnEOSButton.setText("Remove Stream from Plot on End Of Stream");
+		this.removeOnEOSButton.setLayoutData(GridDataFactory.fillDefaults().grab(true, false).span(2, 1).create());
+		this.removeOnEOSButton.setToolTipText("On/checked to remove streams from plot when an end-of-stream is received in pushPacket.");
+
 		initDataBindings();
 	}
 
@@ -129,8 +136,11 @@ public class BulkIONxmBlockControls {
 
 		IObservableValue boWidgetValue = WidgetProperties.selection().observe(blockingField); 
 		IObservableValue boModelValue = PojoProperties.value(BulkIONxmBlockSettings.PROP_BLOCKING_OPTION).observe(settings);
-		bindingValue = dataBindingCtx.bindValue(boWidgetValue, boModelValue);
-		ControlDecorationSupport.create(bindingValue, SWT.TOP | SWT.LEFT);
+		dataBindingCtx.bindValue(boWidgetValue, boModelValue);
+
+		IObservableValue removeOnEOSWidgetValue = WidgetProperties.selection().observe(removeOnEOSButton); 
+		IObservableValue removeOnEOSModelValue = PojoProperties.value(BulkIONxmBlockSettings.PROP_REMOVE_ON_EOS).observe(settings);
+		dataBindingCtx.bindValue(removeOnEOSWidgetValue, removeOnEOSModelValue);
 	}
 
 }

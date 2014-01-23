@@ -56,45 +56,52 @@ public class BulkIONxmBlock extends AbstractNxmBlock<corbareceiver2> {
 			}
 		}
 
+		private void handlePushPacket(int length, PrecisionUTCTime time, boolean endOfStream, String streamID) {
+			super.pushPacket(length, time, endOfStream, streamID);
+			if (endOfStream && BulkIONxmBlock.this.settings.isRemoveOnEndOfStream()) {
+				shutdown(streamID);
+			}
+		}
+		
 		@Override
 		public void pushPacket(short[] data, PrecisionUTCTime time, boolean eos, String streamID) {
-			super.pushPacket(data.length, time, eos, streamID);
+			handlePushPacket(data.length, time, eos, streamID);
 			// ignore, not receiving data in this class
 		}
 
 		@Override
 		public void pushPacket(char[] data, PrecisionUTCTime time, boolean eos, String streamID) {
-			super.pushPacket(data.length, time, eos, streamID);
+			handlePushPacket(data.length, time, eos, streamID);
 			// ignore, not receiving data in this class
 		}
 
 		@Override
 		public void pushPacket(double[] data, PrecisionUTCTime time, boolean eos, String streamID) {
-			super.pushPacket(data.length, time, eos, streamID);
+			handlePushPacket(data.length, time, eos, streamID);
 			// ignore, not receiving data in this class
 		}
 
 		@Override
 		public void pushPacket(float[] data, PrecisionUTCTime time, boolean eos, String streamID) {
-			super.pushPacket(data.length, time, eos, streamID);
+			handlePushPacket(data.length, time, eos, streamID);
 			// ignore, not receiving data in this class
 		}
 
 		@Override
 		public void pushPacket(long[] data, PrecisionUTCTime time, boolean eos, String streamID) {
-			super.pushPacket(data.length, time, eos, streamID);
+			handlePushPacket(data.length, time, eos, streamID);
 			// ignore, not receiving data in this class
 		}
 
 		@Override
 		public void pushPacket(int[] data, PrecisionUTCTime time, boolean eos, String streamID) {
-			super.pushPacket(data.length, time, eos, streamID);
+			handlePushPacket(data.length, time, eos, streamID);
 			// ignore, not receiving data in this class
 		}
 
 		@Override
 		public void pushPacket(byte[] data, PrecisionUTCTime time, boolean eos, String streamID) {
-			super.pushPacket(data.length, time, eos, streamID);
+			handlePushPacket(data.length, time, eos, streamID);
 			// ignore, not receiving data in this class
 		}
 
