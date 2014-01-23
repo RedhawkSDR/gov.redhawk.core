@@ -460,7 +460,17 @@ public class PlotPageBook2 extends Composite {
 		org.eclipse.ui.services.IDisposable retVal = new org.eclipse.ui.services.IDisposable() {
 			@Override
 			public void dispose() {
-				removeSource2(plotSource);
+				Job job = new Job("Disposing Source " + plotSource) {
+
+					@Override
+					protected IStatus run(IProgressMonitor monitor) {
+						removeSource2(plotSource);
+						return Status.OK_STATUS;
+					}
+
+				};
+				job.schedule();
+
 			}
 		};
 
@@ -471,9 +481,13 @@ public class PlotPageBook2 extends Composite {
 
 	private void removeSource2(PlotSource plotSource) {
 		List<INxmBlock> nxmBlocks = source2NxmBlocks.get(plotSource);
-		for (INxmBlock nxmBlock : nxmBlocks) {
-			nxmBlock.stop();
-			nxmBlock.dispose();
+		if (nxmBlocks != null) {
+			for (INxmBlock nxmBlock : nxmBlocks) {
+				if (nxmBlock != null) {
+					nxmBlock.stop();
+					nxmBlock.dispose();
+				}
+			}
 		}
 		source2NxmBlocks.remove(plotSource);
 	}
@@ -551,7 +565,7 @@ public class PlotPageBook2 extends Composite {
 		this.sources.clear();
 
 		for (final PlotSource plotSource : this.source2NxmBlocks.keySet().toArray(new PlotSource[0])) {
-			Job job = new Job("Dispose Source " + plotSource) {
+			Job job = new Job("Disposing Source " + plotSource) {
 
 				@Override
 				protected IStatus run(IProgressMonitor monitor) {
