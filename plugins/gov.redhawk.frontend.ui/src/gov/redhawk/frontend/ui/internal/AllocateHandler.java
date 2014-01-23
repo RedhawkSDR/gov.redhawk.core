@@ -75,21 +75,19 @@ public class AllocateHandler extends AbstractHandler implements IHandler {
 		}
 
 		if (selection.getFirstElement() instanceof TunerStatus && selection.size() > 1) {
-//			Object[] selObjects = selection.toArray();
-//			TunerStatus[] tuners = this.<TunerStatus>castArray(selObjects, new TunerStatus[0]);
-//			tuners = filterUnsupportedTypes(tuners);
-//			WizardDialog dialog = new WizardDialog(HandlerUtil.getActiveShell(event), new TunerAllocationWizard(tuners));
-//			dialog.open();
-			//No allocate wizard on individual tuners?
+			Object[] items = selection.toArray();
+			TunerStatus[] tuners = castArray(items, new TunerStatus[0]);
+			WizardDialog dialog = new WizardDialog(HandlerUtil.getActiveShell(event), new TunerAllocationSimpleWizard(tuners));
+			dialog.open();
 		} else if (selection.getFirstElement() instanceof ScaDevice) {
 			showAdvancedAllocationWizard((ScaDevice<?>) selection.getFirstElement(), (HandlerUtil.getActiveShell(event)));
 		} else {
 			Object obj = selection.getFirstElement();
 			if (obj instanceof TunerStatus) {
-//				TunerStatus tuner = (TunerStatus) obj;
-//				WizardDialog dialog = new WizardDialog(HandlerUtil.getActiveShell(event), new TunerAllocationWizard(tuner));
-//				dialog.open(); 
-				//No allocate wizard on individual tuners?
+				TunerStatus tuner = (TunerStatus) obj;
+				TunerStatus[] tuners = new TunerStatus[] {tuner};
+				WizardDialog dialog = new WizardDialog(HandlerUtil.getActiveShell(event), new TunerAllocationSimpleWizard(tuners));
+				dialog.open();
 			} else if (obj instanceof TunerContainer) {
 				TunerContainer container = (TunerContainer) obj;
 				TunerStatus[] tuners = container.getTunerStatus().toArray(new TunerStatus[0]);
