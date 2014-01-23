@@ -56,6 +56,7 @@ public class TunerStatusItemProvider extends ItemProviderAdapter implements IEdi
 
       addTunerContainerPropertyDescriptor(object);
       addTunerStatusStructPropertyDescriptor(object);
+      addSimplesPropertyDescriptor(object);
       addTunerTypePropertyDescriptor(object);
       addAllocationIDPropertyDescriptor(object);
       addCenterFrequencyPropertyDescriptor(object);
@@ -132,6 +133,29 @@ public class TunerStatusItemProvider extends ItemProviderAdapter implements IEdi
   }
 
 	/**
+   * This adds a property descriptor for the Simples feature.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  protected void addSimplesPropertyDescriptor(Object object)
+  {
+    itemPropertyDescriptors.add
+      (createItemPropertyDescriptor
+        (((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
+         getResourceLocator(),
+         getString("_UI_TunerStatus_simples_feature"),
+         getString("_UI_PropertyDescriptor_description", "_UI_TunerStatus_simples_feature", "_UI_TunerStatus_type"),
+         FrontendPackage.Literals.TUNER_STATUS__SIMPLES,
+         true,
+         false,
+         false,
+         ItemPropertyDescriptor.GENERIC_VALUE_IMAGE,
+         null,
+         null));
+  }
+
+  /**
    * This adds a property descriptor for the Tuner Type feature.
    * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -803,6 +827,7 @@ public class TunerStatusItemProvider extends ItemProviderAdapter implements IEdi
     switch (notification.getFeatureID(TunerStatus.class))
     {
       case FrontendPackage.TUNER_STATUS__TUNER_STATUS_STRUCT:
+      case FrontendPackage.TUNER_STATUS__SIMPLES:
       case FrontendPackage.TUNER_STATUS__TUNER_TYPE:
       case FrontendPackage.TUNER_STATUS__ALLOCATION_ID:
       case FrontendPackage.TUNER_STATUS__CENTER_FREQUENCY:

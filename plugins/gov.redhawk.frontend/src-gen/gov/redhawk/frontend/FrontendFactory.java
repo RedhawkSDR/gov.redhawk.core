@@ -3,6 +3,7 @@
 package gov.redhawk.frontend;
 
 import gov.redhawk.model.sca.ScaDevice;
+import gov.redhawk.model.sca.ScaSimpleProperty;
 import gov.redhawk.model.sca.ScaStructProperty;
 
 import org.eclipse.emf.ecore.EFactory;
@@ -100,6 +101,26 @@ public interface FrontendFactory extends EFactory
    * @generated
    */
   String convertTunerStatusStruct(ScaStructProperty instanceValue);
+
+  /**
+   * Returns an instance of data type '<em>Sca Simple Property</em>' corresponding the given literal.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @param literal a literal of the data type.
+   * @return a new instance value of the data type.
+   * @generated
+   */
+  ScaSimpleProperty createScaSimpleProperty(String literal);
+
+  /**
+   * Returns a literal representation of an instance of data type '<em>Sca Simple Property</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @param instanceValue an instance value of the data type.
+   * @return a literal representation of the instance value.
+   * @generated
+   */
+  String convertScaSimpleProperty(ScaSimpleProperty instanceValue);
 
   /**
    * Returns the package supported by this factory.

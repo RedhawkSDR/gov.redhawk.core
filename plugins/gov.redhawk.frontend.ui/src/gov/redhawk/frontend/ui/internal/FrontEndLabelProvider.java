@@ -25,44 +25,45 @@ import org.eclipse.ui.IMemento;
 import org.eclipse.ui.navigator.ICommonContentExtensionSite;
 import org.eclipse.ui.navigator.IDescriptionProvider;
 
-public class FrontEndLabelProvider extends ScaModelAdapterFactoryLabelProvider implements IDescriptionProvider, ITooltipProvider{
-	
+public class FrontEndLabelProvider extends ScaModelAdapterFactoryLabelProvider implements IDescriptionProvider, ITooltipProvider {
+
 	public FrontEndLabelProvider() {
 		super(FrontEndLabelProvider.createAdapterFactory());
 	}
-	
+
 	@Override
 	public String getColumnText(Object object, int columnIndex) {
 
-		if(object instanceof TunerPropertyWrapper) {
-			TunerPropertyWrapper property = (TunerPropertyWrapper) object;
+		if (object instanceof TunerPropertyWrapper) {
+			TunerPropertyWrapper wrapper = (TunerPropertyWrapper) object;
 			switch (columnIndex) {
 			case 0:
-				return property.getID();
+				return wrapper.getName();
 			case 1:
-				return String.valueOf(property.getValue());
+				return String.valueOf(wrapper.getValue());
 			}
 		}
+
 		return "";
 	}
 
 	private static AdapterFactory createAdapterFactory() {
 		return new FrontendItemProviderAdapterFactory();
 	}
-	
+
 	@Override
 	public void init(ICommonContentExtensionSite aConfig) {
-		
+
 	}
 
 	@Override
 	public void restoreState(IMemento aMemento) {
-		
+
 	}
 
 	@Override
 	public void saveState(IMemento aMemento) {
-		
+
 	}
 
 	@Override

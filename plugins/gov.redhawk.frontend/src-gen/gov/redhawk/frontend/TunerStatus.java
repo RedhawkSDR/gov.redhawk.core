@@ -2,6 +2,7 @@
  */
 package gov.redhawk.frontend;
 
+import gov.redhawk.model.sca.ScaSimpleProperty;
 import gov.redhawk.model.sca.ScaStructProperty;
 
 import org.eclipse.emf.common.util.EList;
@@ -18,6 +19,7 @@ import org.eclipse.emf.ecore.EObject;
  * <ul>
  *   <li>{@link gov.redhawk.frontend.TunerStatus#getTunerContainer <em>Tuner Container</em>}</li>
  *   <li>{@link gov.redhawk.frontend.TunerStatus#getTunerStatusStruct <em>Tuner Status Struct</em>}</li>
+ *   <li>{@link gov.redhawk.frontend.TunerStatus#getSimples <em>Simples</em>}</li>
  *   <li>{@link gov.redhawk.frontend.TunerStatus#getTunerType <em>Tuner Type</em>}</li>
  *   <li>{@link gov.redhawk.frontend.TunerStatus#getAllocationID <em>Allocation ID</em>}</li>
  *   <li>{@link gov.redhawk.frontend.TunerStatus#getCenterFrequency <em>Center Frequency</em>}</li>
@@ -108,6 +110,22 @@ public interface TunerStatus extends EObject
    * @generated
    */
   void setTunerStatusStruct(ScaStructProperty value);
+
+  /**
+   * Returns the value of the '<em><b>Simples</b></em>' attribute list.
+   * The list contents are of type {@link gov.redhawk.model.sca.ScaSimpleProperty}.
+   * <!-- begin-user-doc -->
+   * <p>
+   * If the meaning of the '<em>Simples</em>' attribute list isn't clear,
+   * there really should be more of a description here...
+   * </p>
+   * <!-- end-user-doc -->
+   * @return the value of the '<em>Simples</em>' attribute list.
+   * @see gov.redhawk.frontend.FrontendPackage#getTunerStatus_Simples()
+   * @model unique="false" dataType="gov.redhawk.frontend.ScaSimpleProperty"
+   * @generated
+   */
+  EList<ScaSimpleProperty> getSimples();
 
   /**
    * Returns the value of the '<em><b>Tuner Type</b></em>' attribute.

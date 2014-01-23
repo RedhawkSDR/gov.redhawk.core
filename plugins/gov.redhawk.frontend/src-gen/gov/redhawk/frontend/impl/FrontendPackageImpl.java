@@ -10,6 +10,7 @@ import gov.redhawk.frontend.TunerContainer;
 import gov.redhawk.frontend.TunerStatus;
 
 import gov.redhawk.model.sca.ScaDevice;
+import gov.redhawk.model.sca.ScaSimpleProperty;
 import gov.redhawk.model.sca.ScaStructProperty;
 
 import org.eclipse.emf.ecore.EAttribute;
@@ -70,6 +71,13 @@ public class FrontendPackageImpl extends EPackageImpl implements FrontendPackage
    * @generated
    */
   private EDataType tunerStatusStructEDataType = null;
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  private EDataType scaSimplePropertyEDataType = null;
 
   /**
    * Creates an instance of the model <b>Package</b>, registered with
@@ -232,7 +240,7 @@ public class FrontendPackageImpl extends EPackageImpl implements FrontendPackage
    * <!-- end-user-doc -->
    * @generated
    */
-  public EAttribute getTunerStatus_TunerType()
+  public EAttribute getTunerStatus_Simples()
   {
     return (EAttribute)tunerStatusEClass.getEStructuralFeatures().get(2);
   }
@@ -242,7 +250,7 @@ public class FrontendPackageImpl extends EPackageImpl implements FrontendPackage
    * <!-- end-user-doc -->
    * @generated
    */
-  public EAttribute getTunerStatus_AllocationID()
+  public EAttribute getTunerStatus_TunerType()
   {
     return (EAttribute)tunerStatusEClass.getEStructuralFeatures().get(3);
   }
@@ -252,7 +260,7 @@ public class FrontendPackageImpl extends EPackageImpl implements FrontendPackage
    * <!-- end-user-doc -->
    * @generated
    */
-  public EAttribute getTunerStatus_CenterFrequency()
+  public EAttribute getTunerStatus_AllocationID()
   {
     return (EAttribute)tunerStatusEClass.getEStructuralFeatures().get(4);
   }
@@ -262,7 +270,7 @@ public class FrontendPackageImpl extends EPackageImpl implements FrontendPackage
    * <!-- end-user-doc -->
    * @generated
    */
-  public EAttribute getTunerStatus_Bandwidth()
+  public EAttribute getTunerStatus_CenterFrequency()
   {
     return (EAttribute)tunerStatusEClass.getEStructuralFeatures().get(5);
   }
@@ -272,7 +280,7 @@ public class FrontendPackageImpl extends EPackageImpl implements FrontendPackage
    * <!-- end-user-doc -->
    * @generated
    */
-  public EAttribute getTunerStatus_SampleRate()
+  public EAttribute getTunerStatus_Bandwidth()
   {
     return (EAttribute)tunerStatusEClass.getEStructuralFeatures().get(6);
   }
@@ -282,7 +290,7 @@ public class FrontendPackageImpl extends EPackageImpl implements FrontendPackage
    * <!-- end-user-doc -->
    * @generated
    */
-  public EAttribute getTunerStatus_GroupID()
+  public EAttribute getTunerStatus_SampleRate()
   {
     return (EAttribute)tunerStatusEClass.getEStructuralFeatures().get(7);
   }
@@ -292,7 +300,7 @@ public class FrontendPackageImpl extends EPackageImpl implements FrontendPackage
    * <!-- end-user-doc -->
    * @generated
    */
-  public EAttribute getTunerStatus_RfFlowID()
+  public EAttribute getTunerStatus_GroupID()
   {
     return (EAttribute)tunerStatusEClass.getEStructuralFeatures().get(8);
   }
@@ -302,7 +310,7 @@ public class FrontendPackageImpl extends EPackageImpl implements FrontendPackage
    * <!-- end-user-doc -->
    * @generated
    */
-  public EAttribute getTunerStatus_Enabled()
+  public EAttribute getTunerStatus_RfFlowID()
   {
     return (EAttribute)tunerStatusEClass.getEStructuralFeatures().get(9);
   }
@@ -312,7 +320,7 @@ public class FrontendPackageImpl extends EPackageImpl implements FrontendPackage
    * <!-- end-user-doc -->
    * @generated
    */
-  public EAttribute getTunerStatus_BandwidthTolerance()
+  public EAttribute getTunerStatus_Enabled()
   {
     return (EAttribute)tunerStatusEClass.getEStructuralFeatures().get(10);
   }
@@ -322,7 +330,7 @@ public class FrontendPackageImpl extends EPackageImpl implements FrontendPackage
    * <!-- end-user-doc -->
    * @generated
    */
-  public EAttribute getTunerStatus_SampleRateTolerance()
+  public EAttribute getTunerStatus_BandwidthTolerance()
   {
     return (EAttribute)tunerStatusEClass.getEStructuralFeatures().get(11);
   }
@@ -332,7 +340,7 @@ public class FrontendPackageImpl extends EPackageImpl implements FrontendPackage
    * <!-- end-user-doc -->
    * @generated
    */
-  public EAttribute getTunerStatus_Complex()
+  public EAttribute getTunerStatus_SampleRateTolerance()
   {
     return (EAttribute)tunerStatusEClass.getEStructuralFeatures().get(12);
   }
@@ -342,7 +350,7 @@ public class FrontendPackageImpl extends EPackageImpl implements FrontendPackage
    * <!-- end-user-doc -->
    * @generated
    */
-  public EAttribute getTunerStatus_Gain()
+  public EAttribute getTunerStatus_Complex()
   {
     return (EAttribute)tunerStatusEClass.getEStructuralFeatures().get(13);
   }
@@ -352,7 +360,7 @@ public class FrontendPackageImpl extends EPackageImpl implements FrontendPackage
    * <!-- end-user-doc -->
    * @generated
    */
-  public EAttribute getTunerStatus_Agc()
+  public EAttribute getTunerStatus_Gain()
   {
     return (EAttribute)tunerStatusEClass.getEStructuralFeatures().get(14);
   }
@@ -362,7 +370,7 @@ public class FrontendPackageImpl extends EPackageImpl implements FrontendPackage
    * <!-- end-user-doc -->
    * @generated
    */
-  public EAttribute getTunerStatus_Valid()
+  public EAttribute getTunerStatus_Agc()
   {
     return (EAttribute)tunerStatusEClass.getEStructuralFeatures().get(15);
   }
@@ -372,7 +380,7 @@ public class FrontendPackageImpl extends EPackageImpl implements FrontendPackage
    * <!-- end-user-doc -->
    * @generated
    */
-  public EAttribute getTunerStatus_AvailableFrequency()
+  public EAttribute getTunerStatus_Valid()
   {
     return (EAttribute)tunerStatusEClass.getEStructuralFeatures().get(16);
   }
@@ -382,7 +390,7 @@ public class FrontendPackageImpl extends EPackageImpl implements FrontendPackage
    * <!-- end-user-doc -->
    * @generated
    */
-  public EAttribute getTunerStatus_AvailableBandwidth()
+  public EAttribute getTunerStatus_AvailableFrequency()
   {
     return (EAttribute)tunerStatusEClass.getEStructuralFeatures().get(17);
   }
@@ -392,7 +400,7 @@ public class FrontendPackageImpl extends EPackageImpl implements FrontendPackage
    * <!-- end-user-doc -->
    * @generated
    */
-  public EAttribute getTunerStatus_AvailableGain()
+  public EAttribute getTunerStatus_AvailableBandwidth()
   {
     return (EAttribute)tunerStatusEClass.getEStructuralFeatures().get(18);
   }
@@ -402,7 +410,7 @@ public class FrontendPackageImpl extends EPackageImpl implements FrontendPackage
    * <!-- end-user-doc -->
    * @generated
    */
-  public EAttribute getTunerStatus_AvailableSampleRate()
+  public EAttribute getTunerStatus_AvailableGain()
   {
     return (EAttribute)tunerStatusEClass.getEStructuralFeatures().get(19);
   }
@@ -412,7 +420,7 @@ public class FrontendPackageImpl extends EPackageImpl implements FrontendPackage
    * <!-- end-user-doc -->
    * @generated
    */
-  public EAttribute getTunerStatus_ReferenceSource()
+  public EAttribute getTunerStatus_AvailableSampleRate()
   {
     return (EAttribute)tunerStatusEClass.getEStructuralFeatures().get(20);
   }
@@ -422,7 +430,7 @@ public class FrontendPackageImpl extends EPackageImpl implements FrontendPackage
    * <!-- end-user-doc -->
    * @generated
    */
-  public EAttribute getTunerStatus_OutputFormat()
+  public EAttribute getTunerStatus_ReferenceSource()
   {
     return (EAttribute)tunerStatusEClass.getEStructuralFeatures().get(21);
   }
@@ -432,7 +440,7 @@ public class FrontendPackageImpl extends EPackageImpl implements FrontendPackage
    * <!-- end-user-doc -->
    * @generated
    */
-  public EAttribute getTunerStatus_OutputMulticast()
+  public EAttribute getTunerStatus_OutputFormat()
   {
     return (EAttribute)tunerStatusEClass.getEStructuralFeatures().get(22);
   }
@@ -442,7 +450,7 @@ public class FrontendPackageImpl extends EPackageImpl implements FrontendPackage
    * <!-- end-user-doc -->
    * @generated
    */
-  public EAttribute getTunerStatus_OutputVlan()
+  public EAttribute getTunerStatus_OutputMulticast()
   {
     return (EAttribute)tunerStatusEClass.getEStructuralFeatures().get(23);
   }
@@ -452,7 +460,7 @@ public class FrontendPackageImpl extends EPackageImpl implements FrontendPackage
    * <!-- end-user-doc -->
    * @generated
    */
-  public EAttribute getTunerStatus_OutputPort()
+  public EAttribute getTunerStatus_OutputVlan()
   {
     return (EAttribute)tunerStatusEClass.getEStructuralFeatures().get(24);
   }
@@ -462,7 +470,7 @@ public class FrontendPackageImpl extends EPackageImpl implements FrontendPackage
    * <!-- end-user-doc -->
    * @generated
    */
-  public EAttribute getTunerStatus_Decimation()
+  public EAttribute getTunerStatus_OutputPort()
   {
     return (EAttribute)tunerStatusEClass.getEStructuralFeatures().get(25);
   }
@@ -472,7 +480,7 @@ public class FrontendPackageImpl extends EPackageImpl implements FrontendPackage
    * <!-- end-user-doc -->
    * @generated
    */
-  public EAttribute getTunerStatus_Tuner_number()
+  public EAttribute getTunerStatus_Decimation()
   {
     return (EAttribute)tunerStatusEClass.getEStructuralFeatures().get(26);
   }
@@ -482,7 +490,7 @@ public class FrontendPackageImpl extends EPackageImpl implements FrontendPackage
    * <!-- end-user-doc -->
    * @generated
    */
-  public EAttribute getTunerStatus_DeviceControl()
+  public EAttribute getTunerStatus_Tuner_number()
   {
     return (EAttribute)tunerStatusEClass.getEStructuralFeatures().get(27);
   }
@@ -492,7 +500,7 @@ public class FrontendPackageImpl extends EPackageImpl implements FrontendPackage
    * <!-- end-user-doc -->
    * @generated
    */
-  public EAttribute getTunerStatus_TunerID()
+  public EAttribute getTunerStatus_DeviceControl()
   {
     return (EAttribute)tunerStatusEClass.getEStructuralFeatures().get(28);
   }
@@ -502,9 +510,19 @@ public class FrontendPackageImpl extends EPackageImpl implements FrontendPackage
    * <!-- end-user-doc -->
    * @generated
    */
+  public EAttribute getTunerStatus_TunerID()
+  {
+    return (EAttribute)tunerStatusEClass.getEStructuralFeatures().get(29);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
   public EReference getTunerStatus_ListenerAllocations()
   {
-    return (EReference)tunerStatusEClass.getEStructuralFeatures().get(29);
+    return (EReference)tunerStatusEClass.getEStructuralFeatures().get(30);
   }
 
   /**
@@ -562,6 +580,16 @@ public class FrontendPackageImpl extends EPackageImpl implements FrontendPackage
    * <!-- end-user-doc -->
    * @generated
    */
+  public EDataType getScaSimpleProperty()
+  {
+    return scaSimplePropertyEDataType;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
   public FrontendFactory getFrontendFactory()
   {
     return (FrontendFactory)getEFactoryInstance();
@@ -598,6 +626,7 @@ public class FrontendPackageImpl extends EPackageImpl implements FrontendPackage
     tunerStatusEClass = createEClass(TUNER_STATUS);
     createEReference(tunerStatusEClass, TUNER_STATUS__TUNER_CONTAINER);
     createEAttribute(tunerStatusEClass, TUNER_STATUS__TUNER_STATUS_STRUCT);
+    createEAttribute(tunerStatusEClass, TUNER_STATUS__SIMPLES);
     createEAttribute(tunerStatusEClass, TUNER_STATUS__TUNER_TYPE);
     createEAttribute(tunerStatusEClass, TUNER_STATUS__ALLOCATION_ID);
     createEAttribute(tunerStatusEClass, TUNER_STATUS__CENTER_FREQUENCY);
@@ -634,6 +663,7 @@ public class FrontendPackageImpl extends EPackageImpl implements FrontendPackage
     // Create data types
     scaDeviceEDataType = createEDataType(SCA_DEVICE);
     tunerStatusStructEDataType = createEDataType(TUNER_STATUS_STRUCT);
+    scaSimplePropertyEDataType = createEDataType(SCA_SIMPLE_PROPERTY);
   }
 
   /**
@@ -681,6 +711,7 @@ public class FrontendPackageImpl extends EPackageImpl implements FrontendPackage
     initEClass(tunerStatusEClass, TunerStatus.class, "TunerStatus", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
     initEReference(getTunerStatus_TunerContainer(), this.getTunerContainer(), this.getTunerContainer_TunerStatus(), "tunerContainer", null, 0, 1, TunerStatus.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEAttribute(getTunerStatus_TunerStatusStruct(), this.getTunerStatusStruct(), "tunerStatusStruct", null, 0, 1, TunerStatus.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEAttribute(getTunerStatus_Simples(), this.getScaSimpleProperty(), "simples", null, 0, -1, TunerStatus.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEAttribute(getTunerStatus_TunerType(), theEcorePackage.getEString(), "tunerType", null, 0, 1, TunerStatus.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEAttribute(getTunerStatus_AllocationID(), theEcorePackage.getEString(), "allocationID", null, 0, 1, TunerStatus.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEAttribute(getTunerStatus_CenterFrequency(), theEcorePackage.getEDouble(), "centerFrequency", null, 0, 1, TunerStatus.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -717,6 +748,7 @@ public class FrontendPackageImpl extends EPackageImpl implements FrontendPackage
     // Initialize data types
     initEDataType(scaDeviceEDataType, ScaDevice.class, "ScaDevice", IS_SERIALIZABLE, !IS_GENERATED_INSTANCE_CLASS, "gov.redhawk.model.sca.ScaDevice<?>");
     initEDataType(tunerStatusStructEDataType, ScaStructProperty.class, "TunerStatusStruct", IS_SERIALIZABLE, !IS_GENERATED_INSTANCE_CLASS);
+    initEDataType(scaSimplePropertyEDataType, ScaSimpleProperty.class, "ScaSimpleProperty", IS_SERIALIZABLE, !IS_GENERATED_INSTANCE_CLASS);
 
     // Create resource
     createResource(eNS_URI);

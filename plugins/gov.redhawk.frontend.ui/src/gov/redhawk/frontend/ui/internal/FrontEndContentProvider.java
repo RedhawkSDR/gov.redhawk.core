@@ -52,15 +52,19 @@ public class FrontEndContentProvider extends ScaModelAdapterFactoryContentProvid
 		//Create TunerWrapper object that returns an array of TunerProperty objects to pass to the label provider
 		if (object instanceof TunerStatus) {
 			TunerStatus tuner = (TunerStatus) object;
-			
+
 			currentSelection = tuner; // sets a static variable that is used by the allocate/deallocate handlers
 
-			List <TunerPropertyWrapper> tunerProperties = new ArrayList<TunerPropertyWrapper>();
-			for ( ScaSimpleProperty simple : tuner.getTunerStatusStruct().getSimples()) {
+			List<TunerPropertyWrapper> tunerProperties = new ArrayList<TunerPropertyWrapper>();
+			for (ScaSimpleProperty simple : tuner.getSimples()) {
 				TunerPropertyWrapper prop = new TunerPropertyWrapper(tuner, simple);
 				tunerProperties.add(prop);
-			}	
-			return tunerProperties.toArray();
+			}
+
+			if (!tunerProperties.isEmpty()) {
+				return tunerProperties.toArray();
+			}
+
 		}
 		return super.getElements(object);
 	}

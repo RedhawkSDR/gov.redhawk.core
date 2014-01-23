@@ -12,9 +12,8 @@
 package gov.redhawk.frontend.ui.internal.section;
 
 import gov.redhawk.frontend.TunerStatus;
+import gov.redhawk.frontend.edit.utils.TunerProperties.TunerStatusAllocationProperties;
 import gov.redhawk.frontend.edit.utils.TunerPropertyWrapper;
-import gov.redhawk.frontend.edit.utils.TunerStatusAllocationProperties;
-import gov.redhawk.frontend.edit.utils.TunerUtils;
 import gov.redhawk.frontend.ui.internal.FrontEndContentProvider;
 import gov.redhawk.frontend.ui.internal.FrontEndLabelProvider;
 
@@ -100,8 +99,13 @@ public class FrontendSection extends AbstractPropertySection {
 			protected void setValue(Object element, Object value) {
 				if (element instanceof TunerPropertyWrapper) {
 					TunerPropertyWrapper wrapper = (TunerPropertyWrapper) element;
-					wrapper.updateValue(value.toString());
-					TunerUtils.updateTunerProperties(wrapper);
+					for (TunerStatusAllocationProperties allocProp : TunerStatusAllocationProperties.values()) {
+						if (allocProp.getId().equals(wrapper.getId())) {
+							TunerStatusAllocationProperties.updateValue(wrapper.getTuner(), wrapper.getSimple());
+						}
+					}
+//					TODO wrapper.updateValue(value.toString());
+//					TunerUtils.updateTunerProperties(wrapper);
 				}
 
 				viewer.refresh();
@@ -126,16 +130,16 @@ public class FrontendSection extends AbstractPropertySection {
 			@Override
 			protected boolean canEdit(Object element) {
 				if (element instanceof TunerPropertyWrapper) {
-					TunerPropertyWrapper entry = (TunerPropertyWrapper) element;
+					TunerPropertyWrapper wrapper = (TunerPropertyWrapper) element;
 					
 					// If tuner is not allocated, all fields are read only
-					String allocID = entry.getTuner().getAllocationID();
+					String allocID = wrapper.getTuner().getAllocationID();
 					if (allocID == null || allocID == "" ||  allocID.isEmpty()) {
 						return false;
 					}
 					
 					// Return true for editable properties
-					String id = entry.getID();
+					String id = wrapper.getName();
 					if (isEditable(id)) {
 						return true;
 					}

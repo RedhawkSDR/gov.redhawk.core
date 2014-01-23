@@ -7,6 +7,7 @@ import gov.redhawk.frontend.ListenerAllocation;
 import gov.redhawk.frontend.TunerContainer;
 import gov.redhawk.frontend.TunerStatus;
 
+import gov.redhawk.model.sca.ScaSimpleProperty;
 import gov.redhawk.model.sca.ScaStructProperty;
 
 import java.util.Collection;
@@ -22,6 +23,7 @@ import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
 
+import org.eclipse.emf.ecore.util.EDataTypeEList;
 import org.eclipse.emf.ecore.util.EObjectContainmentWithInverseEList;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.emf.ecore.util.InternalEList;
@@ -35,6 +37,7 @@ import org.eclipse.emf.ecore.util.InternalEList;
  * <ul>
  *   <li>{@link gov.redhawk.frontend.impl.TunerStatusImpl#getTunerContainer <em>Tuner Container</em>}</li>
  *   <li>{@link gov.redhawk.frontend.impl.TunerStatusImpl#getTunerStatusStruct <em>Tuner Status Struct</em>}</li>
+ *   <li>{@link gov.redhawk.frontend.impl.TunerStatusImpl#getSimples <em>Simples</em>}</li>
  *   <li>{@link gov.redhawk.frontend.impl.TunerStatusImpl#getTunerType <em>Tuner Type</em>}</li>
  *   <li>{@link gov.redhawk.frontend.impl.TunerStatusImpl#getAllocationID <em>Allocation ID</em>}</li>
  *   <li>{@link gov.redhawk.frontend.impl.TunerStatusImpl#getCenterFrequency <em>Center Frequency</em>}</li>
@@ -89,6 +92,16 @@ public class TunerStatusImpl extends MinimalEObjectImpl.Container implements Tun
    * @ordered
    */
   protected ScaStructProperty tunerStatusStruct = TUNER_STATUS_STRUCT_EDEFAULT;
+
+  /**
+   * The cached value of the '{@link #getSimples() <em>Simples</em>}' attribute list.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see #getSimples()
+   * @generated
+   * @ordered
+   */
+  protected EList<ScaSimpleProperty> simples;
 
   /**
    * The default value of the '{@link #getTunerType() <em>Tuner Type</em>}' attribute.
@@ -738,6 +751,20 @@ public class TunerStatusImpl extends MinimalEObjectImpl.Container implements Tun
     tunerStatusStruct = newTunerStatusStruct;
     if (eNotificationRequired())
       eNotify(new ENotificationImpl(this, Notification.SET, FrontendPackage.TUNER_STATUS__TUNER_STATUS_STRUCT, oldTunerStatusStruct, tunerStatusStruct));
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EList<ScaSimpleProperty> getSimples()
+  {
+    if (simples == null)
+    {
+      simples = new EDataTypeEList<ScaSimpleProperty>(ScaSimpleProperty.class, this, FrontendPackage.TUNER_STATUS__SIMPLES);
+    }
+    return simples;
   }
 
   /**
@@ -1445,6 +1472,8 @@ public class TunerStatusImpl extends MinimalEObjectImpl.Container implements Tun
         return basicGetTunerContainer();
       case FrontendPackage.TUNER_STATUS__TUNER_STATUS_STRUCT:
         return getTunerStatusStruct();
+      case FrontendPackage.TUNER_STATUS__SIMPLES:
+        return getSimples();
       case FrontendPackage.TUNER_STATUS__TUNER_TYPE:
         return getTunerType();
       case FrontendPackage.TUNER_STATUS__ALLOCATION_ID:
@@ -1521,6 +1550,10 @@ public class TunerStatusImpl extends MinimalEObjectImpl.Container implements Tun
         return;
       case FrontendPackage.TUNER_STATUS__TUNER_STATUS_STRUCT:
         setTunerStatusStruct((ScaStructProperty)newValue);
+        return;
+      case FrontendPackage.TUNER_STATUS__SIMPLES:
+        getSimples().clear();
+        getSimples().addAll((Collection<? extends ScaSimpleProperty>)newValue);
         return;
       case FrontendPackage.TUNER_STATUS__TUNER_TYPE:
         setTunerType((String)newValue);
@@ -1627,6 +1660,9 @@ public class TunerStatusImpl extends MinimalEObjectImpl.Container implements Tun
       case FrontendPackage.TUNER_STATUS__TUNER_STATUS_STRUCT:
         setTunerStatusStruct(TUNER_STATUS_STRUCT_EDEFAULT);
         return;
+      case FrontendPackage.TUNER_STATUS__SIMPLES:
+        getSimples().clear();
+        return;
       case FrontendPackage.TUNER_STATUS__TUNER_TYPE:
         setTunerType(TUNER_TYPE_EDEFAULT);
         return;
@@ -1729,6 +1765,8 @@ public class TunerStatusImpl extends MinimalEObjectImpl.Container implements Tun
         return basicGetTunerContainer() != null;
       case FrontendPackage.TUNER_STATUS__TUNER_STATUS_STRUCT:
         return TUNER_STATUS_STRUCT_EDEFAULT == null ? tunerStatusStruct != null : !TUNER_STATUS_STRUCT_EDEFAULT.equals(tunerStatusStruct);
+      case FrontendPackage.TUNER_STATUS__SIMPLES:
+        return simples != null && !simples.isEmpty();
       case FrontendPackage.TUNER_STATUS__TUNER_TYPE:
         return TUNER_TYPE_EDEFAULT == null ? tunerType != null : !TUNER_TYPE_EDEFAULT.equals(tunerType);
       case FrontendPackage.TUNER_STATUS__ALLOCATION_ID:
@@ -1802,6 +1840,8 @@ public class TunerStatusImpl extends MinimalEObjectImpl.Container implements Tun
     StringBuffer result = new StringBuffer(super.toString());
     result.append(" (tunerStatusStruct: ");
     result.append(tunerStatusStruct);
+    result.append(", simples: ");
+    result.append(simples);
     result.append(", tunerType: ");
     result.append(tunerType);
     result.append(", allocationID: ");

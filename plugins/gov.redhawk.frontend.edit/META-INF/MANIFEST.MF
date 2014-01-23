@@ -15,6 +15,6 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.emf.edit;visibility:=reexport,
  org.eclipse.xtext;visibility:=reexport,
  org.eclipse.emf.ecore;visibility:=reexport,
- gov.redhawk.sca.model;bundle-version="18.0.0",
+ gov.redhawk.sca.model;bundle-version="19.0.0",
  idl.frontend;bundle-version="1.0.0"
 Bundle-ActivationPolicy: lazy

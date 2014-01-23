@@ -1,15 +1,12 @@
 package gov.redhawk.frontend.ui.wizard;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import gov.redhawk.frontend.FrontendFactory;
-import gov.redhawk.frontend.ListenerAllocation;
 import gov.redhawk.frontend.TunerStatus;
-import gov.redhawk.frontend.edit.utils.TunerUtils.ListenerAllocationProperties;
 import gov.redhawk.frontend.ui.FrontEndUIActivator.ALLOCATION_MODE;
 import gov.redhawk.model.sca.ScaDevice;
 import gov.redhawk.model.sca.ScaStructProperty;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.wizard.Wizard;

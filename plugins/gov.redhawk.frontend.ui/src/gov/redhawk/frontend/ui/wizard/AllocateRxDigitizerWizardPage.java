@@ -2,6 +2,10 @@ package gov.redhawk.frontend.ui.wizard;
 
 import gov.redhawk.common.ui.widgets.Dval;
 import gov.redhawk.frontend.TunerStatus;
+import gov.redhawk.frontend.edit.utils.TunerProperties.ListenerAllocationProperties;
+import gov.redhawk.frontend.edit.utils.TunerProperties.TunerAllocationProperties;
+import gov.redhawk.frontend.edit.utils.TunerProperties.StatusProperties;
+import gov.redhawk.frontend.ui.FrontEndUIActivator.ALLOCATION_MODE;
 import gov.redhawk.model.sca.ScaFactory;
 import gov.redhawk.model.sca.ScaSimpleProperty;
 import gov.redhawk.model.sca.ScaStructProperty;
@@ -28,11 +32,6 @@ import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Text;
-
-import gov.redhawk.frontend.edit.utils.TunerUtils.ListenerAllocationProperties;
-import gov.redhawk.frontend.edit.utils.TunerUtils.StatusProperties;
-import gov.redhawk.frontend.edit.utils.TunerUtils.TunerAllocationProperties;
-import gov.redhawk.frontend.ui.FrontEndUIActivator.ALLOCATION_MODE;
 
 public class AllocateRxDigitizerWizardPage extends WizardPage {
 
@@ -119,8 +118,7 @@ public class AllocateRxDigitizerWizardPage extends WizardPage {
 		}
 	}
 
-	private void setValueForProp(TunerAllocationProperties allocProp,
-			ScaSimpleProperty simple) {
+	private void setValueForProp(TunerAllocationProperties allocProp, ScaSimpleProperty simple) {
 		switch (allocProp) {
 		case GROUP_ID:
 			simple.setValue(groupIdText.getText());
@@ -147,7 +145,7 @@ public class AllocateRxDigitizerWizardPage extends WizardPage {
 			simple.setValue(srVal.getValue() * getUnitsConversionFactor(allocProp));
 			break;
 		case SAMPLE_RATE_TOLERANCE:
-			simple.setValue(srTolVal.getValue() );
+			simple.setValue(srTolVal.getValue());
 			break;
 		case TUNER_TYPE:
 			simple.setValue(typeText.getText());
@@ -156,8 +154,7 @@ public class AllocateRxDigitizerWizardPage extends WizardPage {
 		}
 	}
 
-	private void setValueForProp(ListenerAllocationProperties allocProp,
-			ScaSimpleProperty simple) {
+	private void setValueForProp(ListenerAllocationProperties allocProp, ScaSimpleProperty simple) {
 		switch (allocProp) {
 		case EXISTING_ALLOCATION_ID:
 			simple.setValue(targetAllocText.getText());
@@ -204,12 +201,10 @@ public class AllocateRxDigitizerWizardPage extends WizardPage {
 
 			@Override
 			public void handleEvent(Event event) {
-				setValueForProp(
-						TunerAllocationProperties.ALLOCATION_ID,
-						tunerAllocationStruct.getSimple(TunerAllocationProperties.ALLOCATION_ID.getId()));
-				setValueForProp(
-						ListenerAllocationProperties.LISTENER_ALLOCATION_ID,
-						listenerAllocationStruct.getSimple(ListenerAllocationProperties.LISTENER_ALLOCATION_ID.getId()));
+				setValueForProp(TunerAllocationProperties.ALLOCATION_ID,
+					tunerAllocationStruct.getSimple(TunerAllocationProperties.ALLOCATION_ID.getId()));
+				setValueForProp(ListenerAllocationProperties.LISTENER_ALLOCATION_ID,
+					listenerAllocationStruct.getSimple(ListenerAllocationProperties.LISTENER_ALLOCATION_ID.getId()));
 				setPageComplete(validate());
 			}
 
@@ -225,9 +220,7 @@ public class AllocateRxDigitizerWizardPage extends WizardPage {
 
 			@Override
 			public void handleEvent(Event event) {
-				setValueForProp(
-						TunerAllocationProperties.CENTER_FREQUENCY,
-						tunerAllocationStruct.getSimple(TunerAllocationProperties.CENTER_FREQUENCY.getId()));
+				setValueForProp(TunerAllocationProperties.CENTER_FREQUENCY, tunerAllocationStruct.getSimple(TunerAllocationProperties.CENTER_FREQUENCY.getId()));
 				setPageComplete(validate());
 			}
 
@@ -244,9 +237,7 @@ public class AllocateRxDigitizerWizardPage extends WizardPage {
 
 			@Override
 			public void handleEvent(Event event) {
-				setValueForProp(
-						TunerAllocationProperties.BANDWIDTH,
-						tunerAllocationStruct.getSimple(TunerAllocationProperties.BANDWIDTH.getId()));
+				setValueForProp(TunerAllocationProperties.BANDWIDTH, tunerAllocationStruct.getSimple(TunerAllocationProperties.BANDWIDTH.getId()));
 				setPageComplete(validate());
 			}
 
@@ -267,9 +258,8 @@ public class AllocateRxDigitizerWizardPage extends WizardPage {
 
 			@Override
 			public void handleEvent(Event event) {
-				setValueForProp(
-						TunerAllocationProperties.BANDWIDTH_TOLERANCE,
-						tunerAllocationStruct.getSimple(TunerAllocationProperties.BANDWIDTH_TOLERANCE.getId()));
+				setValueForProp(TunerAllocationProperties.BANDWIDTH_TOLERANCE,
+					tunerAllocationStruct.getSimple(TunerAllocationProperties.BANDWIDTH_TOLERANCE.getId()));
 				setPageComplete(validate());
 			}
 
@@ -286,9 +276,7 @@ public class AllocateRxDigitizerWizardPage extends WizardPage {
 
 			@Override
 			public void handleEvent(Event event) {
-				setValueForProp(
-						TunerAllocationProperties.SAMPLE_RATE,
-						tunerAllocationStruct.getSimple(TunerAllocationProperties.SAMPLE_RATE.getId()));
+				setValueForProp(TunerAllocationProperties.SAMPLE_RATE, tunerAllocationStruct.getSimple(TunerAllocationProperties.SAMPLE_RATE.getId()));
 				setPageComplete(validate());
 			}
 
@@ -309,9 +297,8 @@ public class AllocateRxDigitizerWizardPage extends WizardPage {
 
 			@Override
 			public void handleEvent(Event event) {
-				setValueForProp(
-						TunerAllocationProperties.SAMPLE_RATE_TOLERANCE,
-						tunerAllocationStruct.getSimple(TunerAllocationProperties.SAMPLE_RATE_TOLERANCE.getId()));
+				setValueForProp(TunerAllocationProperties.SAMPLE_RATE_TOLERANCE,
+					tunerAllocationStruct.getSimple(TunerAllocationProperties.SAMPLE_RATE_TOLERANCE.getId()));
 				setPageComplete(validate());
 			}
 
@@ -323,9 +310,7 @@ public class AllocateRxDigitizerWizardPage extends WizardPage {
 		listenerAlloc.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				setValueForProp(
-						TunerAllocationProperties.DEVICE_CONTROL,
-						tunerAllocationStruct.getSimple(TunerAllocationProperties.DEVICE_CONTROL.getId()));
+				setValueForProp(TunerAllocationProperties.DEVICE_CONTROL, tunerAllocationStruct.getSimple(TunerAllocationProperties.DEVICE_CONTROL.getId()));
 				boolean selected = listenerAlloc.getSelection();
 				if (selected) {
 					allocationMode = ((listenById.getSelection()) ? ALLOCATION_MODE.LISTENER : ALLOCATION_MODE.TUNER);
@@ -345,9 +330,7 @@ public class AllocateRxDigitizerWizardPage extends WizardPage {
 		listenById.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				setValueForProp(
-						TunerAllocationProperties.DEVICE_CONTROL,
-						tunerAllocationStruct.getSimple(TunerAllocationProperties.DEVICE_CONTROL.getId()));
+				setValueForProp(TunerAllocationProperties.DEVICE_CONTROL, tunerAllocationStruct.getSimple(TunerAllocationProperties.DEVICE_CONTROL.getId()));
 				boolean selected = listenById.getSelection();
 				allocationMode = ((selected) ? ALLOCATION_MODE.LISTENER : ALLOCATION_MODE.TUNER);
 				updateControlsEnable();
@@ -362,12 +345,10 @@ public class AllocateRxDigitizerWizardPage extends WizardPage {
 		listenByParams.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				setValueForProp(
-						TunerAllocationProperties.DEVICE_CONTROL,
-						tunerAllocationStruct.getSimple(TunerAllocationProperties.DEVICE_CONTROL.getId()));
+				setValueForProp(TunerAllocationProperties.DEVICE_CONTROL, tunerAllocationStruct.getSimple(TunerAllocationProperties.DEVICE_CONTROL.getId()));
 				setPageComplete(validate());
 			}
-			
+
 		});
 		GridDataFactory.fillDefaults().grab(true, false).applyTo(listenByParams);
 
@@ -384,9 +365,8 @@ public class AllocateRxDigitizerWizardPage extends WizardPage {
 
 			@Override
 			public void handleEvent(Event event) {
-				setValueForProp(
-						ListenerAllocationProperties.EXISTING_ALLOCATION_ID,
-						listenerAllocationStruct.getSimple(ListenerAllocationProperties.EXISTING_ALLOCATION_ID.getId()));
+				setValueForProp(ListenerAllocationProperties.EXISTING_ALLOCATION_ID,
+					listenerAllocationStruct.getSimple(ListenerAllocationProperties.EXISTING_ALLOCATION_ID.getId()));
 				setPageComplete(validate());
 			}
 
@@ -411,9 +391,7 @@ public class AllocateRxDigitizerWizardPage extends WizardPage {
 
 			@Override
 			public void handleEvent(Event event) {
-				setValueForProp(
-						TunerAllocationProperties.RF_FLOW_ID,
-						tunerAllocationStruct.getSimple(TunerAllocationProperties.RF_FLOW_ID.getId()));
+				setValueForProp(TunerAllocationProperties.RF_FLOW_ID, tunerAllocationStruct.getSimple(TunerAllocationProperties.RF_FLOW_ID.getId()));
 				setPageComplete(validate());
 			}
 
@@ -458,8 +436,8 @@ public class AllocateRxDigitizerWizardPage extends WizardPage {
 		dVal.setMinimum(min / mult);
 		dVal.setMaximum(max / mult);
 		dVal.setValue(dVal.getMinimum() + (dVal.getMaximum() - dVal.getMinimum()) / 2);
-		dVal.setIncrement((max/mult - min/mult) / 100);
-		dVal.setPageIncrement((max/mult - min/mult) / 10);
+		dVal.setIncrement((max / mult - min / mult) / 100);
+		dVal.setPageIncrement((max / mult - min / mult) / 10);
 	}
 
 	private void applyDefaultSettings(Dval dVal, StatusProperties prop) {
@@ -485,8 +463,8 @@ public class AllocateRxDigitizerWizardPage extends WizardPage {
 		dVal.setMinimum(min / mult);
 		dVal.setMaximum(max / mult);
 		dVal.setValue(dVal.getMinimum() + (dVal.getMaximum() - dVal.getMinimum()) / 2);
-		dVal.setIncrement((max/mult - min/mult) / 100);
-		dVal.setPageIncrement((max/mult - min/mult) / 10);
+		dVal.setIncrement((max / mult - min / mult) / 100);
+		dVal.setPageIncrement((max / mult - min / mult) / 10);
 	}
 
 	private double getUnitsConversionFactor(StatusProperties prop) {
@@ -513,7 +491,7 @@ public class AllocateRxDigitizerWizardPage extends WizardPage {
 			return 1;
 		}
 	}
-	
+
 	private void updateControlsEnable() {
 		if (listenerAlloc.getSelection()) {
 			listenById.setEnabled(true);
@@ -527,13 +505,13 @@ public class AllocateRxDigitizerWizardPage extends WizardPage {
 			enableListenerControls(false);
 		}
 	}
-	
+
 	private void enableTunerControls(boolean enable) {
 		for (Control c : tunerControls) {
 			c.setEnabled(enable);
 		}
 	}
-	
+
 	private void enableListenerControls(boolean enable) {
 		for (Control c : listenerControls) {
 			c.setEnabled(enable);
@@ -566,7 +544,6 @@ public class AllocateRxDigitizerWizardPage extends WizardPage {
 		return this.allocationMode;
 	}
 
-
 	private boolean validate(boolean updateButtons) {
 		boolean valid = true;
 		String msg = null;
@@ -582,7 +559,7 @@ public class AllocateRxDigitizerWizardPage extends WizardPage {
 		} else if ("".equals(allocIdText.getText())) {
 			msg = "Please enter a requested Allocation ID";
 			valid = false;
-		} else if (listenerAlloc.getSelection() && listenById.getSelection()){
+		} else if (listenerAlloc.getSelection() && listenById.getSelection()) {
 			if ("".equals(targetAllocText.getText())) {
 				msg = "Please enter a target allocation ID";
 				valid = false;

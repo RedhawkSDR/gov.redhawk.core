@@ -188,13 +188,22 @@ public interface FrontendPackage extends EPackage
   int TUNER_STATUS__TUNER_STATUS_STRUCT = 1;
 
   /**
+   * The feature id for the '<em><b>Simples</b></em>' attribute list.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int TUNER_STATUS__SIMPLES = 2;
+
+  /**
    * The feature id for the '<em><b>Tuner Type</b></em>' attribute.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
    * @ordered
    */
-  int TUNER_STATUS__TUNER_TYPE = 2;
+  int TUNER_STATUS__TUNER_TYPE = 3;
 
   /**
    * The feature id for the '<em><b>Allocation ID</b></em>' attribute.
@@ -203,7 +212,7 @@ public interface FrontendPackage extends EPackage
    * @generated
    * @ordered
    */
-  int TUNER_STATUS__ALLOCATION_ID = 3;
+  int TUNER_STATUS__ALLOCATION_ID = 4;
 
   /**
    * The feature id for the '<em><b>Center Frequency</b></em>' attribute.
@@ -212,7 +221,7 @@ public interface FrontendPackage extends EPackage
    * @generated
    * @ordered
    */
-  int TUNER_STATUS__CENTER_FREQUENCY = 4;
+  int TUNER_STATUS__CENTER_FREQUENCY = 5;
 
   /**
    * The feature id for the '<em><b>Bandwidth</b></em>' attribute.
@@ -221,7 +230,7 @@ public interface FrontendPackage extends EPackage
    * @generated
    * @ordered
    */
-  int TUNER_STATUS__BANDWIDTH = 5;
+  int TUNER_STATUS__BANDWIDTH = 6;
 
   /**
    * The feature id for the '<em><b>Sample Rate</b></em>' attribute.
@@ -230,7 +239,7 @@ public interface FrontendPackage extends EPackage
    * @generated
    * @ordered
    */
-  int TUNER_STATUS__SAMPLE_RATE = 6;
+  int TUNER_STATUS__SAMPLE_RATE = 7;
 
   /**
    * The feature id for the '<em><b>Group ID</b></em>' attribute.
@@ -239,7 +248,7 @@ public interface FrontendPackage extends EPackage
    * @generated
    * @ordered
    */
-  int TUNER_STATUS__GROUP_ID = 7;
+  int TUNER_STATUS__GROUP_ID = 8;
 
   /**
    * The feature id for the '<em><b>Rf Flow ID</b></em>' attribute.
@@ -248,7 +257,7 @@ public interface FrontendPackage extends EPackage
    * @generated
    * @ordered
    */
-  int TUNER_STATUS__RF_FLOW_ID = 8;
+  int TUNER_STATUS__RF_FLOW_ID = 9;
 
   /**
    * The feature id for the '<em><b>Enabled</b></em>' attribute.
@@ -257,7 +266,7 @@ public interface FrontendPackage extends EPackage
    * @generated
    * @ordered
    */
-  int TUNER_STATUS__ENABLED = 9;
+  int TUNER_STATUS__ENABLED = 10;
 
   /**
    * The feature id for the '<em><b>Bandwidth Tolerance</b></em>' attribute.
@@ -266,7 +275,7 @@ public interface FrontendPackage extends EPackage
    * @generated
    * @ordered
    */
-  int TUNER_STATUS__BANDWIDTH_TOLERANCE = 10;
+  int TUNER_STATUS__BANDWIDTH_TOLERANCE = 11;
 
   /**
    * The feature id for the '<em><b>Sample Rate Tolerance</b></em>' attribute.
@@ -275,7 +284,7 @@ public interface FrontendPackage extends EPackage
    * @generated
    * @ordered
    */
-  int TUNER_STATUS__SAMPLE_RATE_TOLERANCE = 11;
+  int TUNER_STATUS__SAMPLE_RATE_TOLERANCE = 12;
 
   /**
    * The feature id for the '<em><b>Complex</b></em>' attribute.
@@ -284,7 +293,7 @@ public interface FrontendPackage extends EPackage
    * @generated
    * @ordered
    */
-  int TUNER_STATUS__COMPLEX = 12;
+  int TUNER_STATUS__COMPLEX = 13;
 
   /**
    * The feature id for the '<em><b>Gain</b></em>' attribute.
@@ -293,7 +302,7 @@ public interface FrontendPackage extends EPackage
    * @generated
    * @ordered
    */
-  int TUNER_STATUS__GAIN = 13;
+  int TUNER_STATUS__GAIN = 14;
 
   /**
    * The feature id for the '<em><b>Agc</b></em>' attribute.
@@ -302,7 +311,7 @@ public interface FrontendPackage extends EPackage
    * @generated
    * @ordered
    */
-  int TUNER_STATUS__AGC = 14;
+  int TUNER_STATUS__AGC = 15;
 
   /**
    * The feature id for the '<em><b>Valid</b></em>' attribute.
@@ -311,7 +320,7 @@ public interface FrontendPackage extends EPackage
    * @generated
    * @ordered
    */
-  int TUNER_STATUS__VALID = 15;
+  int TUNER_STATUS__VALID = 16;
 
   /**
    * The feature id for the '<em><b>Available Frequency</b></em>' attribute.
@@ -320,7 +329,7 @@ public interface FrontendPackage extends EPackage
    * @generated
    * @ordered
    */
-  int TUNER_STATUS__AVAILABLE_FREQUENCY = 16;
+  int TUNER_STATUS__AVAILABLE_FREQUENCY = 17;
 
   /**
    * The feature id for the '<em><b>Available Bandwidth</b></em>' attribute.
@@ -329,7 +338,7 @@ public interface FrontendPackage extends EPackage
    * @generated
    * @ordered
    */
-  int TUNER_STATUS__AVAILABLE_BANDWIDTH = 17;
+  int TUNER_STATUS__AVAILABLE_BANDWIDTH = 18;
 
   /**
    * The feature id for the '<em><b>Available Gain</b></em>' attribute.
@@ -338,7 +347,7 @@ public interface FrontendPackage extends EPackage
    * @generated
    * @ordered
    */
-  int TUNER_STATUS__AVAILABLE_GAIN = 18;
+  int TUNER_STATUS__AVAILABLE_GAIN = 19;
 
   /**
    * The feature id for the '<em><b>Available Sample Rate</b></em>' attribute.
@@ -347,7 +356,7 @@ public interface FrontendPackage extends EPackage
    * @generated
    * @ordered
    */
-  int TUNER_STATUS__AVAILABLE_SAMPLE_RATE = 19;
+  int TUNER_STATUS__AVAILABLE_SAMPLE_RATE = 20;
 
   /**
    * The feature id for the '<em><b>Reference Source</b></em>' attribute.
@@ -356,7 +365,7 @@ public interface FrontendPackage extends EPackage
    * @generated
    * @ordered
    */
-  int TUNER_STATUS__REFERENCE_SOURCE = 20;
+  int TUNER_STATUS__REFERENCE_SOURCE = 21;
 
   /**
    * The feature id for the '<em><b>Output Format</b></em>' attribute.
@@ -365,7 +374,7 @@ public interface FrontendPackage extends EPackage
    * @generated
    * @ordered
    */
-  int TUNER_STATUS__OUTPUT_FORMAT = 21;
+  int TUNER_STATUS__OUTPUT_FORMAT = 22;
 
   /**
    * The feature id for the '<em><b>Output Multicast</b></em>' attribute.
@@ -374,7 +383,7 @@ public interface FrontendPackage extends EPackage
    * @generated
    * @ordered
    */
-  int TUNER_STATUS__OUTPUT_MULTICAST = 22;
+  int TUNER_STATUS__OUTPUT_MULTICAST = 23;
 
   /**
    * The feature id for the '<em><b>Output Vlan</b></em>' attribute.
@@ -383,7 +392,7 @@ public interface FrontendPackage extends EPackage
    * @generated
    * @ordered
    */
-  int TUNER_STATUS__OUTPUT_VLAN = 23;
+  int TUNER_STATUS__OUTPUT_VLAN = 24;
 
   /**
    * The feature id for the '<em><b>Output Port</b></em>' attribute.
@@ -392,7 +401,7 @@ public interface FrontendPackage extends EPackage
    * @generated
    * @ordered
    */
-  int TUNER_STATUS__OUTPUT_PORT = 24;
+  int TUNER_STATUS__OUTPUT_PORT = 25;
 
   /**
    * The feature id for the '<em><b>Decimation</b></em>' attribute.
@@ -401,7 +410,7 @@ public interface FrontendPackage extends EPackage
    * @generated
    * @ordered
    */
-  int TUNER_STATUS__DECIMATION = 25;
+  int TUNER_STATUS__DECIMATION = 26;
 
   /**
    * The feature id for the '<em><b>Tuner number</b></em>' attribute.
@@ -410,7 +419,7 @@ public interface FrontendPackage extends EPackage
    * @generated
    * @ordered
    */
-  int TUNER_STATUS__TUNER_NUMBER = 26;
+  int TUNER_STATUS__TUNER_NUMBER = 27;
 
   /**
    * The feature id for the '<em><b>Device Control</b></em>' attribute.
@@ -419,7 +428,7 @@ public interface FrontendPackage extends EPackage
    * @generated
    * @ordered
    */
-  int TUNER_STATUS__DEVICE_CONTROL = 27;
+  int TUNER_STATUS__DEVICE_CONTROL = 28;
 
   /**
    * The feature id for the '<em><b>Tuner ID</b></em>' attribute.
@@ -428,7 +437,7 @@ public interface FrontendPackage extends EPackage
    * @generated
    * @ordered
    */
-  int TUNER_STATUS__TUNER_ID = 28;
+  int TUNER_STATUS__TUNER_ID = 29;
 
   /**
    * The feature id for the '<em><b>Listener Allocations</b></em>' containment reference list.
@@ -437,7 +446,7 @@ public interface FrontendPackage extends EPackage
    * @generated
    * @ordered
    */
-  int TUNER_STATUS__LISTENER_ALLOCATIONS = 29;
+  int TUNER_STATUS__LISTENER_ALLOCATIONS = 30;
 
   /**
    * The number of structural features of the '<em>Tuner Status</em>' class.
@@ -446,7 +455,7 @@ public interface FrontendPackage extends EPackage
    * @generated
    * @ordered
    */
-  int TUNER_STATUS_FEATURE_COUNT = 30;
+  int TUNER_STATUS_FEATURE_COUNT = 31;
 
   /**
    * The number of operations of the '<em>Tuner Status</em>' class.
@@ -522,6 +531,16 @@ public interface FrontendPackage extends EPackage
    * @generated
    */
   int TUNER_STATUS_STRUCT = 5;
+
+  /**
+   * The meta object id for the '<em>Sca Simple Property</em>' data type.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see gov.redhawk.model.sca.ScaSimpleProperty
+   * @see gov.redhawk.frontend.impl.FrontendPackageImpl#getScaSimpleProperty()
+   * @generated
+   */
+  int SCA_SIMPLE_PROPERTY = 6;
 
 
   /**
@@ -619,6 +638,17 @@ public interface FrontendPackage extends EPackage
    * @generated
    */
   EAttribute getTunerStatus_TunerStatusStruct();
+
+  /**
+   * Returns the meta object for the attribute list '{@link gov.redhawk.frontend.TunerStatus#getSimples <em>Simples</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the attribute list '<em>Simples</em>'.
+   * @see gov.redhawk.frontend.TunerStatus#getSimples()
+   * @see #getTunerStatus()
+   * @generated
+   */
+  EAttribute getTunerStatus_Simples();
 
   /**
    * Returns the meta object for the attribute '{@link gov.redhawk.frontend.TunerStatus#getTunerType <em>Tuner Type</em>}'.
@@ -983,6 +1013,17 @@ public interface FrontendPackage extends EPackage
   EDataType getTunerStatusStruct();
 
   /**
+   * Returns the meta object for data type '{@link gov.redhawk.model.sca.ScaSimpleProperty <em>Sca Simple Property</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for data type '<em>Sca Simple Property</em>'.
+   * @see gov.redhawk.model.sca.ScaSimpleProperty
+   * @model instanceClass="gov.redhawk.model.sca.ScaSimpleProperty"
+   * @generated
+   */
+  EDataType getScaSimpleProperty();
+
+  /**
    * Returns the factory that creates the instances of the model.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
@@ -1083,6 +1124,14 @@ public interface FrontendPackage extends EPackage
      * @generated
      */
     EAttribute TUNER_STATUS__TUNER_STATUS_STRUCT = eINSTANCE.getTunerStatus_TunerStatusStruct();
+
+    /**
+     * The meta object literal for the '<em><b>Simples</b></em>' attribute list feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EAttribute TUNER_STATUS__SIMPLES = eINSTANCE.getTunerStatus_Simples();
 
     /**
      * The meta object literal for the '<em><b>Tuner Type</b></em>' attribute feature.
@@ -1353,6 +1402,16 @@ public interface FrontendPackage extends EPackage
      * @generated
      */
     EDataType TUNER_STATUS_STRUCT = eINSTANCE.getTunerStatusStruct();
+
+    /**
+     * The meta object literal for the '<em>Sca Simple Property</em>' data type.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see gov.redhawk.model.sca.ScaSimpleProperty
+     * @see gov.redhawk.frontend.impl.FrontendPackageImpl#getScaSimpleProperty()
+     * @generated
+     */
+    EDataType SCA_SIMPLE_PROPERTY = eINSTANCE.getScaSimpleProperty();
 
   }
 

@@ -6,10 +6,12 @@ package gov.redhawk.frontend
 
 import gov.redhawk.model.sca.ScaStructProperty
 import gov.redhawk.model.sca.ScaDevice
+import gov.redhawk.model.sca.ScaSimpleProperty
 
 
 type ScaDevice wraps ScaDevice < ? >
 type TunerStatusStruct wraps ScaStructProperty
+type ScaSimpleProperty wraps ScaSimpleProperty
 
 class ModelDevice {
 	contains TunerContainer tunerContainer opposite modelDevice
@@ -25,6 +27,7 @@ class TunerStatus {
 	container TunerContainer tunerContainer opposite tunerStatus
 
 	TunerStatusStruct tunerStatusStruct // Direct reference to device struct
+	ScaSimpleProperty[] simples
 
 	//Required Status Elements
 	String tunerType

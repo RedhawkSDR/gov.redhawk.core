@@ -5,6 +5,7 @@ package gov.redhawk.frontend.impl;
 import gov.redhawk.frontend.*;
 
 import gov.redhawk.model.sca.ScaDevice;
+import gov.redhawk.model.sca.ScaSimpleProperty;
 import gov.redhawk.model.sca.ScaStructProperty;
 
 import org.eclipse.emf.ecore.EClass;
@@ -91,6 +92,8 @@ public class FrontendFactoryImpl extends EFactoryImpl implements FrontendFactory
         return createScaDeviceFromString(eDataType, initialValue);
       case FrontendPackage.TUNER_STATUS_STRUCT:
         return createTunerStatusStructFromString(eDataType, initialValue);
+      case FrontendPackage.SCA_SIMPLE_PROPERTY:
+        return createScaSimplePropertyFromString(eDataType, initialValue);
       default:
         throw new IllegalArgumentException("The datatype '" + eDataType.getName() + "' is not a valid classifier");
     }
@@ -110,6 +113,8 @@ public class FrontendFactoryImpl extends EFactoryImpl implements FrontendFactory
         return convertScaDeviceToString(eDataType, instanceValue);
       case FrontendPackage.TUNER_STATUS_STRUCT:
         return convertTunerStatusStructToString(eDataType, instanceValue);
+      case FrontendPackage.SCA_SIMPLE_PROPERTY:
+        return convertScaSimplePropertyToString(eDataType, instanceValue);
       default:
         throw new IllegalArgumentException("The datatype '" + eDataType.getName() + "' is not a valid classifier");
     }
@@ -239,6 +244,46 @@ public class FrontendFactoryImpl extends EFactoryImpl implements FrontendFactory
   public String convertTunerStatusStructToString(EDataType eDataType, Object instanceValue)
   {
     return convertTunerStatusStruct((ScaStructProperty)instanceValue);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public ScaSimpleProperty createScaSimpleProperty(String literal)
+  {
+    return (ScaSimpleProperty)super.createFromString(FrontendPackage.Literals.SCA_SIMPLE_PROPERTY, literal);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public ScaSimpleProperty createScaSimplePropertyFromString(EDataType eDataType, String initialValue)
+  {
+    return createScaSimpleProperty(initialValue);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public String convertScaSimpleProperty(ScaSimpleProperty instanceValue)
+  {
+    return super.convertToString(FrontendPackage.Literals.SCA_SIMPLE_PROPERTY, instanceValue);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public String convertScaSimplePropertyToString(EDataType eDataType, Object instanceValue)
+  {
+    return convertScaSimpleProperty((ScaSimpleProperty)instanceValue);
   }
 
   /**

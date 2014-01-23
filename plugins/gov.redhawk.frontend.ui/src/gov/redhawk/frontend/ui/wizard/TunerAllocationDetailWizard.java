@@ -1,10 +1,7 @@
 package gov.redhawk.frontend.ui.wizard;
 
-import gov.redhawk.frontend.FrontendFactory;
-import gov.redhawk.frontend.ListenerAllocation;
 import gov.redhawk.frontend.TunerContainer;
 import gov.redhawk.frontend.TunerStatus;
-import gov.redhawk.frontend.edit.utils.TunerUtils.ListenerAllocationProperties;
 import gov.redhawk.frontend.ui.FrontEndUIActivator.ALLOCATION_MODE;
 import gov.redhawk.model.sca.ScaDevice;
 import gov.redhawk.model.sca.ScaStructProperty;
