@@ -246,7 +246,7 @@ public class PlotPageBook2 extends Composite {
 		PlotSettings plotSettings = new PlotSettings(type);
 		return createPlot(plotSettings);
 	}
-	
+
 	/**
 	 * @since 4.4
 	 */
@@ -260,7 +260,7 @@ public class PlotPageBook2 extends Composite {
 			if (plotArgs == null) {
 				plotArgs = "";
 			}
-			plotArgs += " CM=" + plotSettings.getPlotMode().toModeString(); 
+			plotArgs += " CM=" + plotSettings.getPlotMode().toModeString();
 		}
 		if (plotSettings.getLaunchArgs() != null) {
 			if (plotArgs == null) {
@@ -486,7 +486,7 @@ public class PlotPageBook2 extends Composite {
 		PlotSettings plotSettings = new PlotSettings(type);
 		showPlot(plotSettings);
 	}
-	
+
 	/** NTN: NEW METHOD (from old showPlot(PlotType method)
 	 * Toggle if the raster is visible or not.
 	 * @param enable true if the raster should be shown
@@ -550,9 +550,18 @@ public class PlotPageBook2 extends Composite {
 		}
 		this.sources.clear();
 
-		for (PlotSource plotSource : this.source2NxmBlocks.keySet().toArray(new PlotSource[0])) {
-			removeSource2(plotSource);
-			PortHelper.refreshPort(plotSource.getInput(), null, PlotPageBook2.PORT_REFRESH_DELAY_MS);
+		for (final PlotSource plotSource : this.source2NxmBlocks.keySet().toArray(new PlotSource[0])) {
+			Job job = new Job("Dispose Source " + plotSource) {
+
+				@Override
+				protected IStatus run(IProgressMonitor monitor) {
+					removeSource2(plotSource);
+					PortHelper.refreshPort(plotSource.getInput(), null, PlotPageBook2.PORT_REFRESH_DELAY_MS);
+					return Status.OK_STATUS;
+				}
+
+			};
+			job.schedule();
 		}
 		this.source2NxmBlocks.clear();
 	}
