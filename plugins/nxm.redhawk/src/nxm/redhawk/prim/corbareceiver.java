@@ -350,8 +350,8 @@ public class corbareceiver extends CorbaPrimitive implements IMidasDataWriter { 
 	}
 
 	private static boolean isRestartNeed4SriChange(final StreamSRI sri, final StreamSRI lastSRI) {
-		boolean shouldRestart = (lastSRI == null);
-		if (!shouldRestart) {
+		boolean shouldRestart = false;
+		if (lastSRI != null) {
 			// blocking, hversion, keywords, and streamID changes do not require a restart
 			shouldRestart |= (lastSRI.mode != sri.mode);
 			shouldRestart |= (lastSRI.subsize != sri.subsize);
@@ -361,6 +361,8 @@ public class corbareceiver extends CorbaPrimitive implements IMidasDataWriter { 
 			shouldRestart |= (lastSRI.ydelta != sri.ydelta);
 			shouldRestart |= (lastSRI.ystart != sri.ystart);
 			shouldRestart |= (lastSRI.yunits != sri.yunits);
+		} else {
+			shouldRestart = true;
 		}
 		return shouldRestart;
 	}
