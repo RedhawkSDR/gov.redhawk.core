@@ -497,6 +497,16 @@ public class TunerStatusItemProvider extends ItemProviderAdapter implements IEdi
 		if (object instanceof TunerStatus) {
 			TunerStatus tuner = (TunerStatus) object;
 			String allocationID = tuner.getAllocationID();
+			if (allocationID != null) {
+				int index = allocationID.indexOf(",");
+				if (index > -1) {
+					allocationID = allocationID.substring(0, index);
+				}
+				index = allocationID.indexOf(":");
+				if (index > -1) {
+					allocationID = allocationID.substring(0, index);
+				}
+			}
 			String label = tuner.getTunerType();
 			return label == null || label.length() == 0 ? getString("_UI_TunerStatus_type") : 
 				(allocationID == null || allocationID.length() == 0 ? label : label + " " + allocationID);

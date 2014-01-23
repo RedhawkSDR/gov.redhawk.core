@@ -19,9 +19,11 @@ import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.jface.layout.GridLayoutFactory;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.ComboViewer;
+import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
+import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
@@ -298,7 +300,31 @@ public class SimpleTunerAllocationWizardPage extends WizardPage {
 		rfFlowIdText.setToolTipText("If you would like to allocate tuners for a specific input source, enter the RF Flow ID of the source here");
 		GridDataFactory.fillDefaults().grab(true, false).applyTo(rfFlowIdText);
 
+		if (tuners[0] != null) {
+			String allocID = tuners[0].getAllocationID();
+			if (!(allocID == null || allocID.length() == 0)) {
+				SetupListener(tuners[0]);
+			}
+		}
+		
 		setPageComplete(validate());
+	}
+	
+	private void SetupListener(TunerStatus tuner) {
+		String allocID = tuner.getAllocationID();
+		int index = allocID.indexOf(",");
+		if (index > -1) {
+			allocID = allocID.substring(0, index);
+		}
+		listenerAlloc.setSelection(true);
+		targetAllocText.setText(allocID);
+		allocationMode = ALLOCATION_MODE.LISTENER;
+		ISelection selection = new StructuredSelection(tuner.getTunerType()) {};
+		typeCombo.setSelection(selection, true);;
+		cfText.setText(Double.toString(tuner.getCenterFrequency() / 1000000.0));
+		bwText.setText(Double.toString(tuner.getBandwidth() / 1000000.0));
+		srText.setText(Double.toString(tuner.getSampleRate() / 1000000.0));
+		allocIdText.setFocus();
 	}
 
 	private void setValueForProp(TunerAllocationProperties allocProp,

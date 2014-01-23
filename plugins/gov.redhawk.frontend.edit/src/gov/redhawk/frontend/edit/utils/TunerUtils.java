@@ -87,16 +87,13 @@ public enum TunerUtils {
 						continue;
 					}
 					String allocationIDs = allocationValue.toString();
-					for (String allocationID : allocationIDs.split(",")) {
-						if ("".equals(allocationID)) {
-							continue;
-						}
-						if (tuner.getAllocationID() == null) {
-							tuner.setAllocationID(allocationID);
+					String[] allocations = allocationIDs.split(",");
+					for (int index = 1; index < allocations.length; ++index) {
+						if ("".equals(allocations[index])) {
 							continue;
 						}
 						ListenerAllocation allocation = FrontendFactory.eINSTANCE.createListenerAllocation();
-						allocation.setListenerID(allocationID);
+						allocation.setListenerID(allocations[index]);
 						tuner.getListenerAllocations().add(allocation);
 					}
 				}

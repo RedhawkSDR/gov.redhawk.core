@@ -11,8 +11,10 @@
  */
 package gov.redhawk.frontend.ui.internal;
 
+import gov.redhawk.frontend.ListenerAllocation;
 import gov.redhawk.frontend.TunerContainer;
 import gov.redhawk.frontend.TunerStatus;
+import gov.redhawk.frontend.edit.utils.TunerProperties.ListenerAllocationProperties;
 import gov.redhawk.frontend.edit.utils.TunerProperties.TunerAllocationProperties;
 import gov.redhawk.model.sca.ScaDevice;
 import gov.redhawk.model.sca.ScaFactory;
@@ -100,6 +102,23 @@ public class DeallocateHandler extends AbstractHandler implements IHandler {
 				}
 			}
 		}
+		if (obj instanceof ListenerAllocation) {
+			ListenerAllocation listener = (ListenerAllocation) obj;
+			ScaDevice< ? > device = listener.getTunerStatus().getTunerContainer().getModelDevice().getScaDevice();
+			DataType[] props = new DataType[1];
+			DataType dt = new DataType();
+			dt.id = "FRONTEND::listener_allocation";
+			dt.value = getListenerAllocationStruct(listener).toAny();
+			props[0] = dt;
+			try {
+				device.deallocateCapacity(props);
+			} catch (InvalidCapacity e) {
+				e.printStackTrace();
+			} catch (InvalidState e) {
+				e.printStackTrace();
+			}
+			listener.getTunerStatus().getListenerAllocations().remove(listener);
+		}
 		return null;
 	}
 
@@ -130,6 +149,20 @@ public class DeallocateHandler extends AbstractHandler implements IHandler {
 		return tunerAllocationStruct;
 	}
 
+	private ScaStructProperty getListenerAllocationStruct(ListenerAllocation listener) {
+		ScaStructProperty listenerAllocationStruct = ScaFactory.eINSTANCE.createScaStructProperty();
+		ListenerAllocationProperties allocPropID = ListenerAllocationProperties.LISTENER_ALLOCATION_ID;
+		ScaSimpleProperty simple = ScaFactory.eINSTANCE.createScaSimpleProperty();
+		Simple definition = (Simple) PrfFactory.eINSTANCE.create(PrfPackage.Literals.SIMPLE);
+		definition.setType(allocPropID.getType());
+		definition.setId(allocPropID.getType().getLiteral());
+		definition.setName(allocPropID.getType().getName());
+		simple.setDefinition(definition);
+		simple.setId(allocPropID.getId());
+		simple.setValue(listener.getListenerID());
+		listenerAllocationStruct.getSimples().add(simple);
+		return listenerAllocationStruct;
+	}
 
 	private void setValueForProp(TunerAllocationProperties allocPropID, ScaSimpleProperty simple) {
 		// Deallocates control id and all listeners

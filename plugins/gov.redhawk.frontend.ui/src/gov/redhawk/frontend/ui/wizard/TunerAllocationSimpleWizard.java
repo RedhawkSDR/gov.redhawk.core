@@ -1,6 +1,9 @@
 package gov.redhawk.frontend.ui.wizard;
 
+import gov.redhawk.frontend.FrontendFactory;
+import gov.redhawk.frontend.ListenerAllocation;
 import gov.redhawk.frontend.TunerStatus;
+import gov.redhawk.frontend.edit.utils.TunerProperties.ListenerAllocationProperties;
 import gov.redhawk.frontend.ui.FrontEndUIActivator.ALLOCATION_MODE;
 import gov.redhawk.model.sca.ScaDevice;
 import gov.redhawk.model.sca.ScaStructProperty;
@@ -30,6 +33,9 @@ public class TunerAllocationSimpleWizard extends Wizard {
 	public void addPages() {
 		allocatePage = new SimpleTunerAllocationWizardPage(tuners);
 		addPage(allocatePage);
+		if (tuners.length == 1 && tuners[0].getAllocationID() != null && tuners[0].getAllocationID().length() > 0) {
+
+		}
 	}
 
 	@Override
@@ -58,6 +64,12 @@ public class TunerAllocationSimpleWizard extends Wizard {
 			sb.append(delim + "The Allocation Request failed because the device has insufficient capacity. Message: " + e.getMessage());
 			delim = "\n\n";
 			result = false;
+		}
+		if (result && allocatePage.getAllocationMode() == ALLOCATION_MODE.LISTENER) {
+			String listenerID = allocatePage.getListenerAllocationStruct().getSimple(ListenerAllocationProperties.LISTENER_ALLOCATION_ID.getId()).getValue().toString();
+			ListenerAllocation listener = FrontendFactory.eINSTANCE.createListenerAllocation();
+			listener.setListenerID(listenerID);
+			tuners[0].getListenerAllocations().add(listener);
 		}
 
 		if (!result) {

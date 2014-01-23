@@ -18,10 +18,7 @@ import gov.redhawk.frontend.impl.TunerContainerImpl;
 import gov.redhawk.frontend.ui.FrontEndUIActivator;
 import gov.redhawk.frontend.ui.wizard.TunerAllocationDetailWizard;
 import gov.redhawk.frontend.ui.wizard.TunerAllocationSimpleWizard;
-import gov.redhawk.model.sca.ScaAbstractProperty;
 import gov.redhawk.model.sca.ScaDevice;
-import gov.redhawk.model.sca.ScaStructProperty;
-import gov.redhawk.model.sca.ScaStructSequenceProperty;
 
 import java.util.ArrayList;
 import java.util.List;

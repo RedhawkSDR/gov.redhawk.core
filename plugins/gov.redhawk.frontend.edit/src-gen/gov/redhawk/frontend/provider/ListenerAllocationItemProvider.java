@@ -141,6 +141,10 @@ public class ListenerAllocationItemProvider
   public String getText(Object object)
   {
     String label = ((ListenerAllocation)object).getListenerID();
+    int index = label.indexOf(":");
+    if (index > -1) {
+    	label = label.substring(0, index);
+    }
 //    return label == null || label.length() == 0 ?
 //      getString("_UI_ListenerAllocation_type") :
 //      getString("_UI_ListenerAllocation_type") + " " + label;

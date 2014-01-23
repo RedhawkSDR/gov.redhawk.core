@@ -135,6 +135,26 @@
             </visibleWhen>
          </command>
          <command
+               commandId="gov.redhawk.frontend.commands.allocate"
+               label="Add Listener..."
+               style="push">
+            <visibleWhen
+                  checkEnabled="false">
+               <iterate>
+                  <or>
+                     <and>
+                        <instanceof
+                              value="gov.redhawk.frontend.TunerStatus">
+                        </instanceof>
+                        <test
+                              property="gov.redhawk.frontend.hasAllocationID">
+                        </test>
+                     </and>
+                  </or>
+               </iterate>
+            </visibleWhen>
+         </command>
+         <command
                commandId="gov.redhawk.frontend.commands.deallocate"
                style="push">
             <visibleWhen
@@ -152,6 +172,9 @@
                               property="gov.redhawk.frontend.supportedTunerType">
                         </test>
                      </and>
+                     <instanceof
+                           value="gov.redhawk.frontend.ListenerAllocation">
+                     </instanceof>
                   </or>
                </iterate>
             </visibleWhen>
@@ -234,7 +257,7 @@
                   <or>
                      <and>
                         <instanceof
-                              value="gov.redhawk.frontend.Tuner">
+                              value="gov.redhawk.frontend.TunerStatus">
                         </instanceof></and>
                      <and>
                         <instanceof
@@ -254,7 +277,7 @@
                   <or>
                      <and>
                         <instanceof
-                              value="gov.redhawk.frontend.Tuner">
+                              value="gov.redhawk.frontend.TunerStatus">
                         </instanceof>
                      </and>
                      <and>
