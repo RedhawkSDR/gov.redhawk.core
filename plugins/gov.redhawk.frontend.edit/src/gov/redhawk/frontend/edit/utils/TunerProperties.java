@@ -1,10 +1,21 @@
 package gov.redhawk.frontend.edit.utils;
 
+import gov.redhawk.frontend.FrontendPackage;
 import gov.redhawk.frontend.TunerStatus;
+import gov.redhawk.model.sca.ScaDevice;
 import gov.redhawk.model.sca.ScaSimpleProperty;
+import gov.redhawk.model.sca.commands.ScaModelCommand;
 import mil.jpeojtrs.sca.prf.PropertyValueType;
 
 import org.eclipse.emf.common.notify.Notification;
+import org.eclipse.emf.ecore.EAttribute;
+
+import CF.PortSupplierPackage.UnknownPort;
+import FRONTEND.BadParameterException;
+import FRONTEND.DigitalTuner;
+import FRONTEND.DigitalTunerHelper;
+import FRONTEND.FrontendException;
+import FRONTEND.NotSupportedException;
 
 /**
  * Enum of available tuner status properties as defined by specification.
@@ -14,30 +25,32 @@ public enum TunerProperties {
 	INSTANCE;
 
 	public enum TunerStatusAllocationProperties {
+		// TODO Pull out unneeded properties (basically anything that will not be modified)
+
 		//  required properties
 		//	instance name			ID														PRF type				Human Readable Name
-		TUNER_TYPE("FRONTEND::tuner_status::tuner_type", PropertyValueType.STRING, "Tuner Type"),
-		ALLOCATION_ID("FRONTEND::tuner_status::allocation_id_csv", PropertyValueType.STRING, "Allocation ID"),
-		CENTER_FREQUENCY("FRONTEND::tuner_status::center_frequency", PropertyValueType.DOUBLE, "Center Frequency"),
-		BANDWIDTH("FRONTEND::tuner_status::bandwidth", PropertyValueType.DOUBLE, "Bandwidth"),
-		SAMPLE_RATE("FRONTEND::tuner_status::sample_rate", PropertyValueType.DOUBLE, "Sample Rate"),
-		GROUP_ID("FRONTEND::tuner_status::group_id", PropertyValueType.STRING, "Group ID"),
-		RF_FLOW_ID("FRONTEND::tuner_status::rf_flow_id", PropertyValueType.STRING, "RF Flow ID"),
-		ENABLED("FRONTEND::tuner_status::enabled", PropertyValueType.BOOLEAN, "Enabled"),
+		TUNER_TYPE("FRONTEND::tuner_status::tuner_type", PropertyValueType.STRING, "Tuner Type", FrontendPackage.Literals.TUNER_STATUS__TUNER_TYPE),
+		ALLOCATION_ID("FRONTEND::tuner_status::allocation_id_csv", PropertyValueType.STRING, "Allocation ID", FrontendPackage.Literals.TUNER_STATUS__ALLOCATION_ID),
+		CENTER_FREQUENCY("FRONTEND::tuner_status::center_frequency", PropertyValueType.DOUBLE, "Center Frequency", FrontendPackage.Literals.TUNER_STATUS__CENTER_FREQUENCY),
+		BANDWIDTH("FRONTEND::tuner_status::bandwidth", PropertyValueType.DOUBLE, "Bandwidth", FrontendPackage.Literals.TUNER_STATUS__BANDWIDTH),
+		SAMPLE_RATE("FRONTEND::tuner_status::sample_rate", PropertyValueType.DOUBLE, "Sample Rate", FrontendPackage.Literals.TUNER_STATUS__SAMPLE_RATE),
+		GROUP_ID("FRONTEND::tuner_status::group_id", PropertyValueType.STRING, "Group ID", FrontendPackage.Literals.TUNER_STATUS__GROUP_ID),
+		RF_FLOW_ID("FRONTEND::tuner_status::rf_flow_id", PropertyValueType.STRING, "RF Flow ID", FrontendPackage.Literals.TUNER_STATUS__RF_FLOW_ID),
+		ENABLED("FRONTEND::tuner_status::enabled", PropertyValueType.BOOLEAN, "Enabled", FrontendPackage.Literals.TUNER_STATUS__ENABLED),
 
 		//  optional properties
 		//	instance name			ID														PRF type
 		BANDWIDTH_TOLERANCE("FRONTEND::tuner_status::bandwidth_tolerance", PropertyValueType.DOUBLE, "Bandwidth Tolerance"),
 		SAMPLE_RATE_TOLERANCE("FRONTEND::tuner_status::sample_rate_tolerance", PropertyValueType.DOUBLE, "Sample Rate Tolerance"),
 		COMPLEX("FRONTEND::tuner_status::complex", PropertyValueType.BOOLEAN, "Complex"),
-		GAIN("FRONTEND::tuner_status::gain", PropertyValueType.DOUBLE, "Gain"),
-		AGC("FRONTEND::tuner_status::agc", PropertyValueType.BOOLEAN, "AGC"),
+		GAIN("FRONTEND::tuner_status::gain", PropertyValueType.DOUBLE, "Gain", FrontendPackage.Literals.TUNER_STATUS__GAIN),
+		AGC("FRONTEND::tuner_status::agc", PropertyValueType.BOOLEAN, "AGC", FrontendPackage.Literals.TUNER_STATUS__AGC),
 		VALID("FRONTEND::tuner_status::valid", PropertyValueType.BOOLEAN, "Valid"),
 		AVAILABLE_FREQUENCY("FRONTEND::tuner_status::available_frequency", PropertyValueType.STRING, "Available Frequency"),
 		AVAILABLE_BANDWIDTH("FRONTEND::tuner_status::available_bandwidth", PropertyValueType.STRING, "Available Bandwidth"),
 		AVAILABLE_GAIN("FRONTEND::tuner_status::available_gain", PropertyValueType.STRING, "Available Gain"),
 		AVAILABLE_SAMPLE_RATE("FRONTEND::tuner_status::available_sample_rate", PropertyValueType.STRING, "Available Sample Rate"),
-		REFERENCE_SOURCE("FRONTEND::tuner_status::reference_source", PropertyValueType.LONG, "Reference Source"),
+		REFERENCE_SOURCE("FRONTEND::tuner_status::reference_source", PropertyValueType.LONG, "Reference Source", FrontendPackage.Literals.TUNER_STATUS__REFERENCE_SOURCE),
 		OUTPUT_FORMAT("FRONTEND::tuner_status::output_format", PropertyValueType.STRING, "Output Format"),
 		OUTPUT_MULTICAST("FRONTEND::tuner_status::output_multicast", PropertyValueType.STRING, "Output Multicast"),
 		OUTPUT_VLAN("FRONTEND::tuner_status::output_vlan", PropertyValueType.LONG, "Output VLan"),
@@ -48,6 +61,14 @@ public enum TunerProperties {
 		private String id;
 		private PropertyValueType type;
 		private String name;
+		private EAttribute feiAttr;
+
+		TunerStatusAllocationProperties(String id, PropertyValueType prfType, String name, EAttribute feiAttr) {
+			this.id = id;
+			this.type = prfType;
+			this.name = name;
+			this.feiAttr = feiAttr;
+		}
 
 		TunerStatusAllocationProperties(String id, PropertyValueType prfType, String name) {
 			this.id = id;
@@ -66,25 +87,16 @@ public enum TunerProperties {
 		public String getName() {
 			return this.name;
 		}
+		
+		public EAttribute getFeiAttribute() {
+			return feiAttr;
+		}
 
-		//	public static TunerStatusAllocationProperties getProperty(EAttribute attribute) {
-		//		for (TunerStatusAllocationProperties prop : TunerStatusAllocationProperties.values()) {
-		//			if (prop.feiPropertyAttribute == attribute) {
-		//				return prop;
-		//			}
-		//		}
-		//		return null;
-		//	}
-		//
-		//	public static TunerStatusAllocationProperties getProperty(ScaSimpleProperty scaProp) {
-		//		for (TunerStatusAllocationProperties prop : TunerStatusAllocationProperties.values()) {
-		//			if (prop.getId().equals(scaProp.getId())) {
-		//				return prop;
-		//			}
-		//		}
-		//		return null;
-		//	}
-
+		/**
+		 * Initialized model convenience properties
+		 * @param tuner
+		 * @param simple
+		 */
 		public static void setValue(TunerStatus tuner, ScaSimpleProperty simple) {
 			if (simple.getId().equals(ALLOCATION_ID.getId())) {
 				tuner.setAllocationID(simple.getValue().toString());
@@ -111,17 +123,114 @@ public enum TunerProperties {
 			} else if (simple.getId().equals(TUNER_TYPE.getId())) {
 				tuner.setTunerType(simple.getValue().toString());
 			}
-			//		TunerStatusAllocationProperties property = getProperty(source);
-			//		target.eSet(property.feiPropertyAttribute, source.getValue());
 		}
 
-		public static void updateValue(TunerStatus source, Notification msg) {
-			//		TunerStatusAllocationProperties property = getProperty((EAttribute) msg.getFeature());
-			//		DigitalTuner tuner;
-			//		switch (property) {
-			//		case TUNER_NUMBER:
-			//		}
+		/**
+		 * Updates the model object to a new value
+		 * @param wrapper TunerPropertyWrapper
+		 * @param value New value
+		 */
+		public static void updateValue(final TunerPropertyWrapper wrapper, final Object newValue) {
+			for (final TunerStatusAllocationProperties value : TunerStatusAllocationProperties.values()) {
+				if (wrapper.getId().equals(value.getId())) {
+					ScaModelCommand.execute(wrapper.getTuner(), new ScaModelCommand() {
+
+						@Override
+						public void execute() {
+							// Logic to handle data type conversion
+							if (value.getType().equals(PropertyValueType.DOUBLE)) {
+								wrapper.getSimple().setValue(Double.parseDouble(newValue.toString()));
+							} else if (value.getType().equals(PropertyValueType.LONG)) {
+								wrapper.getSimple().setValue(Integer.parseInt(newValue.toString()));
+							} else if (value.getType().equals(PropertyValueType.BOOLEAN)) {
+								wrapper.getSimple().setValue(Boolean.parseBoolean(newValue.toString()));
+							} else {
+								wrapper.getSimple().setValue(newValue.toString());
+							}
+						}
+					});
+					setValue(wrapper.getTuner(), wrapper.getSimple());
+					break;
+				}
+			}
 		}
+
+		public static void updateDeviceValue(TunerStatus tuner, Notification notification) {
+			// Don't reflect to device on initialization
+			if (notification.getOldValue() == null) {
+				return;
+			}
+			
+			// parse out the control id 
+			String allocationID = tuner.getAllocationID();
+			int endControlIndex = allocationID.indexOf(',');
+			if (endControlIndex > 0 ) {
+				allocationID = allocationID.substring(0, endControlIndex);
+			}
+			
+			ScaDevice < ? > device = tuner.getTunerContainer().getModelDevice().getScaDevice();
+			org.omg.CORBA.Object port = null;
+			
+			try {
+				port = device.getPort("DigitalTuner_in");
+			} catch (UnknownPort e1) {
+				e1.printStackTrace();
+			}
+			
+			DigitalTuner digitalTunerPort = DigitalTunerHelper.narrow(port);
+			
+			// TODO Check if old value is different from new value before reflecting back to device?
+			if (notification.getFeature() instanceof EAttribute) {
+				EAttribute feiAttr = (EAttribute) notification.getFeature();
+				try {
+					if (feiAttr.equals(AGC.getFeiAttribute())) {
+						digitalTunerPort.setTunerAgcEnable(allocationID, tuner.isAgc());
+					} else if (feiAttr.equals(BANDWIDTH.getFeiAttribute())) {
+						digitalTunerPort.setTunerBandwidth(allocationID, tuner.getBandwidth());
+					} else if (feiAttr.equals(CENTER_FREQUENCY.getFeiAttribute())) {
+						digitalTunerPort.setTunerCenterFrequency(allocationID, tuner.getCenterFrequency());
+					} else if (feiAttr.equals(ENABLED.getFeiAttribute())) {
+						digitalTunerPort.setTunerEnable(allocationID, tuner.isEnabled());
+					} else if (feiAttr.equals(GAIN.getFeiAttribute())) {
+						// TODO Gain is double in model and documentation, but float in API
+						float gain = Float.parseFloat(String.valueOf(tuner.getGain()));
+						digitalTunerPort.setTunerGain(allocationID, gain);
+					} else if (feiAttr.equals(REFERENCE_SOURCE.getFeiAttribute())) {
+						// TODO Reference Source is long in model and documentation, but int in API
+						int referenceSource = Integer.parseInt(String.valueOf(tuner.getReferenceSource()));
+						digitalTunerPort.setTunerReferenceSource(allocationID, referenceSource);
+					}
+				} catch (NumberFormatException e) {
+					// TODO - pass these exceptions to UI for transparency to user
+					// TODO - rollback tuner property if the device throws an exception
+					e.printStackTrace();
+				} catch (FrontendException e) {
+					e.printStackTrace();
+				} catch (BadParameterException e) {
+					e.printStackTrace();
+				} catch (NotSupportedException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+
+		//	public static TunerStatusAllocationProperties getProperty(EAttribute attribute) {
+		//		for (TunerStatusAllocationProperties prop : TunerStatusAllocationProperties.values()) {
+		//			if (prop.feiPropertyAttribute == attribute) {
+		//				return prop;
+		//			}
+		//		}
+		//		return null;
+		//	}
+		//
+		//	public static TunerStatusAllocationProperties getProperty(ScaSimpleProperty scaProp) {
+		//		for (TunerStatusAllocationProperties prop : TunerStatusAllocationProperties.values()) {
+		//			if (prop.getId().equals(scaProp.getId())) {
+		//				return prop;
+		//			}
+		//		}
+		//		return null;
+		//	}
 	}
 
 	public enum TunerAllocationProperties {

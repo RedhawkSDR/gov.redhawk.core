@@ -35,8 +35,6 @@ public enum TunerUtils {
 	public void processChange(Notification notification) {
 
 	}
-	
-	
 
 	/**
 	 * Checks device for tuners, and if found returns a TunerContainer object with an Object array
@@ -73,11 +71,10 @@ public enum TunerUtils {
 					tunerList.add(tuner);
 					tunerIndex++;
 
-					
 					for (ScaSimpleProperty simple : tuner.getSimples()) {
 						TunerStatusAllocationProperties.setValue(tuner, simple);
 					}
-					
+
 					addNotificationAdapter(tuner);
 
 					// TODO add comment describing what is going on here
@@ -114,14 +111,12 @@ public enum TunerUtils {
 	 * Creates adapter to fire whenever model is updated
 	 * @param tuner Model Object
 	 */
-	private void addNotificationAdapter(TunerStatus tuner) {
+	private void addNotificationAdapter(final TunerStatus tuner) {
 		EContentAdapter adapter = new EContentAdapter() {
 			@Override
 			public void notifyChanged(Notification notification) {
 				super.notifyChanged(notification);
-				// TODO
-				// if oldValue != new Value... reflect back to device
-				// System.out.println("Old Value: " + notification.getOldValue() + "  --- New Value: " + notification.getNewValue());
+				TunerStatusAllocationProperties.updateDeviceValue(tuner, notification);
 			}
 		};
 		tuner.eAdapters().add(adapter);

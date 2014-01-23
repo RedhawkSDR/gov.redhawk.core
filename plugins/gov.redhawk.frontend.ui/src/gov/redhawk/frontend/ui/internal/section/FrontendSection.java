@@ -96,16 +96,10 @@ public class FrontendSection extends AbstractPropertySection {
 		valueColumn.setEditingSupport(new EditingSupport(viewer) {
 
 			@Override
-			protected void setValue(Object element, Object value) {
+			protected void setValue(Object element, final Object value) {
 				if (element instanceof TunerPropertyWrapper) {
 					TunerPropertyWrapper wrapper = (TunerPropertyWrapper) element;
-					for (TunerStatusAllocationProperties allocProp : TunerStatusAllocationProperties.values()) {
-						if (allocProp.getId().equals(wrapper.getId())) {
-//							TunerStatusAllocationProperties.updateValue(wrapper.getTuner(), wrapper.getSimple());
-						}
-					}
-//					TODO wrapper.updateValue(value.toString());
-//					TunerUtils.updateTunerProperties(wrapper);
+					TunerStatusAllocationProperties.updateValue(wrapper, value);
 				}
 
 				viewer.refresh();
@@ -131,13 +125,13 @@ public class FrontendSection extends AbstractPropertySection {
 			protected boolean canEdit(Object element) {
 				if (element instanceof TunerPropertyWrapper) {
 					TunerPropertyWrapper wrapper = (TunerPropertyWrapper) element;
-					
+
 					// If tuner is not allocated, all fields are read only
 					String allocID = wrapper.getTuner().getAllocationID();
-					if (allocID == null || allocID == "" ||  allocID.isEmpty()) {
+					if (allocID == null || allocID == "" || allocID.isEmpty()) {
 						return false;
 					}
-					
+
 					// Return true for editable properties
 					String id = wrapper.getName();
 					if (isEditable(id)) {
@@ -155,7 +149,7 @@ public class FrontendSection extends AbstractPropertySection {
 				editableProperties.add(TunerStatusAllocationProperties.ENABLED.getName());
 				editableProperties.add(TunerStatusAllocationProperties.GAIN.getName());
 				editableProperties.add(TunerStatusAllocationProperties.REFERENCE_SOURCE.getName());
-				
+
 				for (String prop : editableProperties) {
 					if (id.equals(prop)) {
 						return true;

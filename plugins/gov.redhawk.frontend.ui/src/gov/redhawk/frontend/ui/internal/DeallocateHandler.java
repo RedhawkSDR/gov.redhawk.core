@@ -109,7 +109,6 @@ public class DeallocateHandler extends AbstractHandler implements IHandler {
 		ScaStructProperty struct;
 		DataType dt = new DataType();
 		struct = getTunerAllocationStruct();
-//		System.out.println("Struct: " + struct.getSimple("FRONTEND::tuner_status::allocation_id_csv").getValue());
 		dt.id = "FRONTEND::tuner_allocation";
 		dt.value = struct.toAny();
 		props.add(dt);

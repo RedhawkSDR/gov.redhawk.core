@@ -63,7 +63,7 @@ public class TunerAllocationSimpleWizard extends Wizard {
 		if (!result) {
 			MessageDialog.openError(getShell(), "The Allocation was not successful", sb.toString());
 		} else {
-			MessageDialog.openInformation(getShell(), "Successful allocation", "The requested allocation has been acepted.");
+			MessageDialog.openInformation(getShell(), "Successful allocation", "The requested allocation has been accepted.");
 		}
 		return result;
 	}
