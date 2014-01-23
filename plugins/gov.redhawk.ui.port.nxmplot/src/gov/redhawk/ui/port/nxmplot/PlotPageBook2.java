@@ -247,6 +247,9 @@ public class PlotPageBook2 extends Composite {
 		return createPlot(plotSettings);
 	}
 	
+	/**
+	 * @since 4.4
+	 */
 	protected PlotPage createPlot(@NonNull PlotSettings plotSettings) {
 		PlotType type = plotSettings.getPlotType();
 		AbstractNxmPlotWidget newPlot = PlotActivator.getDefault().getPlotFactory().createPlotWidget(this.pageBook, SWT.None);
