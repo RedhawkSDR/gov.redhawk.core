@@ -115,7 +115,7 @@ public class AbstractResourceImpl extends Resource {
 		}
 	}
 
-	@SuppressWarnings({"unchecked", "deprecation" })
+	@SuppressWarnings("unchecked")
 	protected void initProperties(Properties prf) {
 		for (ValueListIterator<Object> iterator = prf.getProperties().valueListIterator(); iterator.hasNext();) {
 			AbstractProperty prop = (AbstractProperty) iterator.next();
@@ -181,7 +181,6 @@ public class AbstractResourceImpl extends Resource {
 
 	}
 
-	@SuppressWarnings("deprecation")
 	private SimpleSequenceProperty< ? > createSimpleSequenceProperty(SimpleSequence sequence) {
 		List<Object> value = new ArrayList<Object>();
 		String type = sequence.getType().toString();
@@ -207,7 +206,6 @@ public class AbstractResourceImpl extends Resource {
 				kinds.toArray(new String[kinds.size()]));
 	}
 
-	@SuppressWarnings("deprecation")
 	private SimpleProperty< ? > createSimpleProperty(Simple simple) {
 		Object value = AnyUtils.convertString(simple.getValue(), simple.getType().toString(), simple.isComplex());
 		List<String> kinds = new ArrayList<String>(simple.getKind().size());
@@ -234,7 +232,6 @@ public class AbstractResourceImpl extends Resource {
 		}
 	}
 
-	@SuppressWarnings("deprecation")
 	private StructDef createStructDef(Struct struct) {
 		DynamicStuctDef retVal = new DynamicStuctDef();
 		for (Simple simple : struct.getSimple()) {
@@ -245,6 +242,19 @@ public class AbstractResourceImpl extends Resource {
 		}
 
 		return retVal;
+	}
+	
+	/*
+	 * @see org.ossie.component.Resource#softwareProfile()
+	 */
+	@Override
+	public String softwareProfile() {
+		String retVal = super.softwareProfile();
+		if (retVal == null) {
+			return "";
+		} else {
+			return retVal;
+		}
 	}
 
 	@Override

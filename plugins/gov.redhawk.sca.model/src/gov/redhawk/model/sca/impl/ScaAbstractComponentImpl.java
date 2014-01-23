@@ -476,8 +476,7 @@ public abstract class ScaAbstractComponentImpl< R extends Resource > extends Sca
 			} catch (BAD_OPERATION e) {
 				// the started attribute is an extension to SCA
 				// that was added in R.1.7.0...so don't expect it
-				IStatus startedStatus = new Status(Status.WARNING, ScaModelPlugin.ID, "Does not support 'started' extension.");
-				transaction.append(new UnsetLocalAttributeCommand(this, startedStatus, ScaPackage.Literals.SCA_ABSTRACT_COMPONENT__STARTED));
+				transaction.append(new UnsetLocalAttributeCommand(this, null, ScaPackage.Literals.SCA_ABSTRACT_COMPONENT__STARTED));
 			} catch (final SystemException e) {
 				IStatus startedStatus = new Status(Status.ERROR, ScaModelPlugin.ID, "Failed to fetch started.", e);
 				transaction.append(new UnsetLocalAttributeCommand(this, startedStatus, ScaPackage.Literals.SCA_ABSTRACT_COMPONENT__STARTED));
@@ -1063,7 +1062,7 @@ public abstract class ScaAbstractComponentImpl< R extends Resource > extends Sca
 				// the profile attribute was moved from Device to resource in 1.10.0...so don't expect it
 				transaction.append(new SetLocalAttributeCommand(this, null, ScaPackage.Literals.SCA_ABSTRACT_COMPONENT__PROFILE, Status.OK_STATUS));
 			} catch (final SystemException e) {
-				IStatus startedStatus = new Status(Status.ERROR, ScaModelPlugin.ID, "Failed to fetch started.", e);
+				IStatus startedStatus = new Status(Status.ERROR, ScaModelPlugin.ID, "Failed to fetch profile.", e);
 				transaction.append(new UnsetLocalAttributeCommand(this, startedStatus, ScaPackage.Literals.SCA_ABSTRACT_COMPONENT__PROFILE));
 			}
 			subMonitor.worked(1);
