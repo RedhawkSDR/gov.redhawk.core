@@ -7,7 +7,7 @@ Bundle-ClassPath: .
 Bundle-Activator: gov.redhawk.frontend.provider.FrontendEditPlugin$Implementation
 Bundle-Vendor: %providerName
 Bundle-Localization: plugin
-Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Export-Package: gov.redhawk.frontend.edit.utils,
  gov.redhawk.frontend.provider
 Require-Bundle: org.eclipse.core.runtime,

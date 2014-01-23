@@ -4,11 +4,10 @@
   <modelVersion>4.0.0</modelVersion>
   <parent>
     <groupId>gov.redhawk.core</groupId>
-    <artifactId>core</artifactId>
+    <artifactId>releng-rcp</artifactId>
     <version>1.10.0-SNAPSHOT</version>
-    <relativePath>../../releng/core/</relativePath>
+    <relativePath>../../releng/rcp/</relativePath>
   </parent>
-  <groupId>gov.redhawk.core</groupId>
   <artifactId>gov.redhawk.frontend.edit</artifactId>
   <version>1.0.0-SNAPSHOT</version>
   <packaging>eclipse-plugin</packaging>
