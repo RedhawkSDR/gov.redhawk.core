@@ -101,7 +101,7 @@ public class FrontendSection extends AbstractPropertySection {
 					TunerPropertyWrapper wrapper = (TunerPropertyWrapper) element;
 					for (TunerStatusAllocationProperties allocProp : TunerStatusAllocationProperties.values()) {
 						if (allocProp.getId().equals(wrapper.getId())) {
-							TunerStatusAllocationProperties.updateValue(wrapper.getTuner(), wrapper.getSimple());
+//							TunerStatusAllocationProperties.updateValue(wrapper.getTuner(), wrapper.getSimple());
 						}
 					}
 //					TODO wrapper.updateValue(value.toString());

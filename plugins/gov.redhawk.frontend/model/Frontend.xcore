@@ -28,39 +28,39 @@ class TunerStatus {
 
 	TunerStatusStruct tunerStatusStruct // Direct reference to device struct
 	ScaSimpleProperty[] simples
-
-	//Required Status Elements
-	String tunerType
-	String allocationID
-	double centerFrequency
-	double bandwidth
-	double sampleRate
-	String groupID
-	String rfFlowID
-	boolean enabled
-	
-	//Optional Status Elements
-	double bandwidthTolerance
-	double sampleRateTolerance
-	boolean complex
-	double gain
-	boolean agc
-	boolean valid
-	String availableFrequency
-	String availableBandwidth
-	String availableGain
-	String availableSampleRate
-	long referenceSource
-	String outputFormat
-	String outputMulticast
-	long outputVlan
-	long outputPort
-	long decimation
-	short tuner_number
-	
-	//Tuner Allocation Properties
-	boolean deviceControl
 	String tunerID	//Model specific property, used for virtual ordering and assignment
+
+//	//Required Status Elements
+	String tunerType
+	String allocationID		
+	double centerFrequency 	
+	double bandwidth 		
+	double sampleRate		
+	String groupID			
+	String rfFlowID
+	boolean enabled			
+//	
+//	//Optional Status Elements
+//	double bandwidthTolerance
+//	double sampleRateTolerance
+//	boolean complex
+	double gain		
+	boolean agc		
+//	boolean valid
+//	String availableFrequency
+//	String availableBandwidth
+//	String availableGain
+//	String availableSampleRate
+	long referenceSource	
+//	String outputFormat
+//	String outputMulticast
+//	long outputVlan
+//	long outputPort
+//	long decimation
+//	short tuner_number
+//	
+//	//Tuner Allocation Properties
+	boolean deviceControl	
 	
 	contains ListenerAllocation[] listenerAllocations opposite tunerStatus
 }

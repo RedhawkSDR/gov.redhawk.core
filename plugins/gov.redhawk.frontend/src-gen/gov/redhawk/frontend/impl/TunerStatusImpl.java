@@ -38,6 +38,7 @@ import org.eclipse.emf.ecore.util.InternalEList;
  *   <li>{@link gov.redhawk.frontend.impl.TunerStatusImpl#getTunerContainer <em>Tuner Container</em>}</li>
  *   <li>{@link gov.redhawk.frontend.impl.TunerStatusImpl#getTunerStatusStruct <em>Tuner Status Struct</em>}</li>
  *   <li>{@link gov.redhawk.frontend.impl.TunerStatusImpl#getSimples <em>Simples</em>}</li>
+ *   <li>{@link gov.redhawk.frontend.impl.TunerStatusImpl#getTunerID <em>Tuner ID</em>}</li>
  *   <li>{@link gov.redhawk.frontend.impl.TunerStatusImpl#getTunerType <em>Tuner Type</em>}</li>
  *   <li>{@link gov.redhawk.frontend.impl.TunerStatusImpl#getAllocationID <em>Allocation ID</em>}</li>
  *   <li>{@link gov.redhawk.frontend.impl.TunerStatusImpl#getCenterFrequency <em>Center Frequency</em>}</li>
@@ -46,25 +47,10 @@ import org.eclipse.emf.ecore.util.InternalEList;
  *   <li>{@link gov.redhawk.frontend.impl.TunerStatusImpl#getGroupID <em>Group ID</em>}</li>
  *   <li>{@link gov.redhawk.frontend.impl.TunerStatusImpl#getRfFlowID <em>Rf Flow ID</em>}</li>
  *   <li>{@link gov.redhawk.frontend.impl.TunerStatusImpl#isEnabled <em>Enabled</em>}</li>
- *   <li>{@link gov.redhawk.frontend.impl.TunerStatusImpl#getBandwidthTolerance <em>Bandwidth Tolerance</em>}</li>
- *   <li>{@link gov.redhawk.frontend.impl.TunerStatusImpl#getSampleRateTolerance <em>Sample Rate Tolerance</em>}</li>
- *   <li>{@link gov.redhawk.frontend.impl.TunerStatusImpl#isComplex <em>Complex</em>}</li>
  *   <li>{@link gov.redhawk.frontend.impl.TunerStatusImpl#getGain <em>Gain</em>}</li>
  *   <li>{@link gov.redhawk.frontend.impl.TunerStatusImpl#isAgc <em>Agc</em>}</li>
- *   <li>{@link gov.redhawk.frontend.impl.TunerStatusImpl#isValid <em>Valid</em>}</li>
- *   <li>{@link gov.redhawk.frontend.impl.TunerStatusImpl#getAvailableFrequency <em>Available Frequency</em>}</li>
- *   <li>{@link gov.redhawk.frontend.impl.TunerStatusImpl#getAvailableBandwidth <em>Available Bandwidth</em>}</li>
- *   <li>{@link gov.redhawk.frontend.impl.TunerStatusImpl#getAvailableGain <em>Available Gain</em>}</li>
- *   <li>{@link gov.redhawk.frontend.impl.TunerStatusImpl#getAvailableSampleRate <em>Available Sample Rate</em>}</li>
  *   <li>{@link gov.redhawk.frontend.impl.TunerStatusImpl#getReferenceSource <em>Reference Source</em>}</li>
- *   <li>{@link gov.redhawk.frontend.impl.TunerStatusImpl#getOutputFormat <em>Output Format</em>}</li>
- *   <li>{@link gov.redhawk.frontend.impl.TunerStatusImpl#getOutputMulticast <em>Output Multicast</em>}</li>
- *   <li>{@link gov.redhawk.frontend.impl.TunerStatusImpl#getOutputVlan <em>Output Vlan</em>}</li>
- *   <li>{@link gov.redhawk.frontend.impl.TunerStatusImpl#getOutputPort <em>Output Port</em>}</li>
- *   <li>{@link gov.redhawk.frontend.impl.TunerStatusImpl#getDecimation <em>Decimation</em>}</li>
- *   <li>{@link gov.redhawk.frontend.impl.TunerStatusImpl#getTuner_number <em>Tuner number</em>}</li>
  *   <li>{@link gov.redhawk.frontend.impl.TunerStatusImpl#isDeviceControl <em>Device Control</em>}</li>
- *   <li>{@link gov.redhawk.frontend.impl.TunerStatusImpl#getTunerID <em>Tuner ID</em>}</li>
  *   <li>{@link gov.redhawk.frontend.impl.TunerStatusImpl#getListenerAllocations <em>Listener Allocations</em>}</li>
  * </ul>
  * </p>
@@ -102,6 +88,26 @@ public class TunerStatusImpl extends MinimalEObjectImpl.Container implements Tun
    * @ordered
    */
   protected EList<ScaSimpleProperty> simples;
+
+  /**
+   * The default value of the '{@link #getTunerID() <em>Tuner ID</em>}' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see #getTunerID()
+   * @generated
+   * @ordered
+   */
+  protected static final String TUNER_ID_EDEFAULT = null;
+
+  /**
+   * The cached value of the '{@link #getTunerID() <em>Tuner ID</em>}' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see #getTunerID()
+   * @generated
+   * @ordered
+   */
+  protected String tunerID = TUNER_ID_EDEFAULT;
 
   /**
    * The default value of the '{@link #getTunerType() <em>Tuner Type</em>}' attribute.
@@ -264,66 +270,6 @@ public class TunerStatusImpl extends MinimalEObjectImpl.Container implements Tun
   protected boolean enabled = ENABLED_EDEFAULT;
 
   /**
-   * The default value of the '{@link #getBandwidthTolerance() <em>Bandwidth Tolerance</em>}' attribute.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @see #getBandwidthTolerance()
-   * @generated
-   * @ordered
-   */
-  protected static final double BANDWIDTH_TOLERANCE_EDEFAULT = 0.0;
-
-  /**
-   * The cached value of the '{@link #getBandwidthTolerance() <em>Bandwidth Tolerance</em>}' attribute.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @see #getBandwidthTolerance()
-   * @generated
-   * @ordered
-   */
-  protected double bandwidthTolerance = BANDWIDTH_TOLERANCE_EDEFAULT;
-
-  /**
-   * The default value of the '{@link #getSampleRateTolerance() <em>Sample Rate Tolerance</em>}' attribute.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @see #getSampleRateTolerance()
-   * @generated
-   * @ordered
-   */
-  protected static final double SAMPLE_RATE_TOLERANCE_EDEFAULT = 0.0;
-
-  /**
-   * The cached value of the '{@link #getSampleRateTolerance() <em>Sample Rate Tolerance</em>}' attribute.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @see #getSampleRateTolerance()
-   * @generated
-   * @ordered
-   */
-  protected double sampleRateTolerance = SAMPLE_RATE_TOLERANCE_EDEFAULT;
-
-  /**
-   * The default value of the '{@link #isComplex() <em>Complex</em>}' attribute.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @see #isComplex()
-   * @generated
-   * @ordered
-   */
-  protected static final boolean COMPLEX_EDEFAULT = false;
-
-  /**
-   * The cached value of the '{@link #isComplex() <em>Complex</em>}' attribute.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @see #isComplex()
-   * @generated
-   * @ordered
-   */
-  protected boolean complex = COMPLEX_EDEFAULT;
-
-  /**
    * The default value of the '{@link #getGain() <em>Gain</em>}' attribute.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
@@ -364,106 +310,6 @@ public class TunerStatusImpl extends MinimalEObjectImpl.Container implements Tun
   protected boolean agc = AGC_EDEFAULT;
 
   /**
-   * The default value of the '{@link #isValid() <em>Valid</em>}' attribute.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @see #isValid()
-   * @generated
-   * @ordered
-   */
-  protected static final boolean VALID_EDEFAULT = false;
-
-  /**
-   * The cached value of the '{@link #isValid() <em>Valid</em>}' attribute.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @see #isValid()
-   * @generated
-   * @ordered
-   */
-  protected boolean valid = VALID_EDEFAULT;
-
-  /**
-   * The default value of the '{@link #getAvailableFrequency() <em>Available Frequency</em>}' attribute.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @see #getAvailableFrequency()
-   * @generated
-   * @ordered
-   */
-  protected static final String AVAILABLE_FREQUENCY_EDEFAULT = null;
-
-  /**
-   * The cached value of the '{@link #getAvailableFrequency() <em>Available Frequency</em>}' attribute.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @see #getAvailableFrequency()
-   * @generated
-   * @ordered
-   */
-  protected String availableFrequency = AVAILABLE_FREQUENCY_EDEFAULT;
-
-  /**
-   * The default value of the '{@link #getAvailableBandwidth() <em>Available Bandwidth</em>}' attribute.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @see #getAvailableBandwidth()
-   * @generated
-   * @ordered
-   */
-  protected static final String AVAILABLE_BANDWIDTH_EDEFAULT = null;
-
-  /**
-   * The cached value of the '{@link #getAvailableBandwidth() <em>Available Bandwidth</em>}' attribute.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @see #getAvailableBandwidth()
-   * @generated
-   * @ordered
-   */
-  protected String availableBandwidth = AVAILABLE_BANDWIDTH_EDEFAULT;
-
-  /**
-   * The default value of the '{@link #getAvailableGain() <em>Available Gain</em>}' attribute.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @see #getAvailableGain()
-   * @generated
-   * @ordered
-   */
-  protected static final String AVAILABLE_GAIN_EDEFAULT = null;
-
-  /**
-   * The cached value of the '{@link #getAvailableGain() <em>Available Gain</em>}' attribute.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @see #getAvailableGain()
-   * @generated
-   * @ordered
-   */
-  protected String availableGain = AVAILABLE_GAIN_EDEFAULT;
-
-  /**
-   * The default value of the '{@link #getAvailableSampleRate() <em>Available Sample Rate</em>}' attribute.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @see #getAvailableSampleRate()
-   * @generated
-   * @ordered
-   */
-  protected static final String AVAILABLE_SAMPLE_RATE_EDEFAULT = null;
-
-  /**
-   * The cached value of the '{@link #getAvailableSampleRate() <em>Available Sample Rate</em>}' attribute.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @see #getAvailableSampleRate()
-   * @generated
-   * @ordered
-   */
-  protected String availableSampleRate = AVAILABLE_SAMPLE_RATE_EDEFAULT;
-
-  /**
    * The default value of the '{@link #getReferenceSource() <em>Reference Source</em>}' attribute.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
@@ -484,126 +330,6 @@ public class TunerStatusImpl extends MinimalEObjectImpl.Container implements Tun
   protected long referenceSource = REFERENCE_SOURCE_EDEFAULT;
 
   /**
-   * The default value of the '{@link #getOutputFormat() <em>Output Format</em>}' attribute.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @see #getOutputFormat()
-   * @generated
-   * @ordered
-   */
-  protected static final String OUTPUT_FORMAT_EDEFAULT = null;
-
-  /**
-   * The cached value of the '{@link #getOutputFormat() <em>Output Format</em>}' attribute.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @see #getOutputFormat()
-   * @generated
-   * @ordered
-   */
-  protected String outputFormat = OUTPUT_FORMAT_EDEFAULT;
-
-  /**
-   * The default value of the '{@link #getOutputMulticast() <em>Output Multicast</em>}' attribute.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @see #getOutputMulticast()
-   * @generated
-   * @ordered
-   */
-  protected static final String OUTPUT_MULTICAST_EDEFAULT = null;
-
-  /**
-   * The cached value of the '{@link #getOutputMulticast() <em>Output Multicast</em>}' attribute.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @see #getOutputMulticast()
-   * @generated
-   * @ordered
-   */
-  protected String outputMulticast = OUTPUT_MULTICAST_EDEFAULT;
-
-  /**
-   * The default value of the '{@link #getOutputVlan() <em>Output Vlan</em>}' attribute.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @see #getOutputVlan()
-   * @generated
-   * @ordered
-   */
-  protected static final long OUTPUT_VLAN_EDEFAULT = 0L;
-
-  /**
-   * The cached value of the '{@link #getOutputVlan() <em>Output Vlan</em>}' attribute.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @see #getOutputVlan()
-   * @generated
-   * @ordered
-   */
-  protected long outputVlan = OUTPUT_VLAN_EDEFAULT;
-
-  /**
-   * The default value of the '{@link #getOutputPort() <em>Output Port</em>}' attribute.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @see #getOutputPort()
-   * @generated
-   * @ordered
-   */
-  protected static final long OUTPUT_PORT_EDEFAULT = 0L;
-
-  /**
-   * The cached value of the '{@link #getOutputPort() <em>Output Port</em>}' attribute.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @see #getOutputPort()
-   * @generated
-   * @ordered
-   */
-  protected long outputPort = OUTPUT_PORT_EDEFAULT;
-
-  /**
-   * The default value of the '{@link #getDecimation() <em>Decimation</em>}' attribute.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @see #getDecimation()
-   * @generated
-   * @ordered
-   */
-  protected static final long DECIMATION_EDEFAULT = 0L;
-
-  /**
-   * The cached value of the '{@link #getDecimation() <em>Decimation</em>}' attribute.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @see #getDecimation()
-   * @generated
-   * @ordered
-   */
-  protected long decimation = DECIMATION_EDEFAULT;
-
-  /**
-   * The default value of the '{@link #getTuner_number() <em>Tuner number</em>}' attribute.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @see #getTuner_number()
-   * @generated
-   * @ordered
-   */
-  protected static final short TUNER_NUMBER_EDEFAULT = 0;
-
-  /**
-   * The cached value of the '{@link #getTuner_number() <em>Tuner number</em>}' attribute.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @see #getTuner_number()
-   * @generated
-   * @ordered
-   */
-  protected short tuner_number = TUNER_NUMBER_EDEFAULT;
-
-  /**
    * The default value of the '{@link #isDeviceControl() <em>Device Control</em>}' attribute.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
@@ -622,26 +348,6 @@ public class TunerStatusImpl extends MinimalEObjectImpl.Container implements Tun
    * @ordered
    */
   protected boolean deviceControl = DEVICE_CONTROL_EDEFAULT;
-
-  /**
-   * The default value of the '{@link #getTunerID() <em>Tuner ID</em>}' attribute.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @see #getTunerID()
-   * @generated
-   * @ordered
-   */
-  protected static final String TUNER_ID_EDEFAULT = null;
-
-  /**
-   * The cached value of the '{@link #getTunerID() <em>Tuner ID</em>}' attribute.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @see #getTunerID()
-   * @generated
-   * @ordered
-   */
-  protected String tunerID = TUNER_ID_EDEFAULT;
 
   /**
    * The cached value of the '{@link #getListenerAllocations() <em>Listener Allocations</em>}' containment reference list.
@@ -765,6 +471,29 @@ public class TunerStatusImpl extends MinimalEObjectImpl.Container implements Tun
       simples = new EDataTypeEList<ScaSimpleProperty>(ScaSimpleProperty.class, this, FrontendPackage.TUNER_STATUS__SIMPLES);
     }
     return simples;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public String getTunerID()
+  {
+    return tunerID;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public void setTunerID(String newTunerID)
+  {
+    String oldTunerID = tunerID;
+    tunerID = newTunerID;
+    if (eNotificationRequired())
+      eNotify(new ENotificationImpl(this, Notification.SET, FrontendPackage.TUNER_STATUS__TUNER_ID, oldTunerID, tunerID));
   }
 
   /**
@@ -956,75 +685,6 @@ public class TunerStatusImpl extends MinimalEObjectImpl.Container implements Tun
    * <!-- end-user-doc -->
    * @generated
    */
-  public double getBandwidthTolerance()
-  {
-    return bandwidthTolerance;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  public void setBandwidthTolerance(double newBandwidthTolerance)
-  {
-    double oldBandwidthTolerance = bandwidthTolerance;
-    bandwidthTolerance = newBandwidthTolerance;
-    if (eNotificationRequired())
-      eNotify(new ENotificationImpl(this, Notification.SET, FrontendPackage.TUNER_STATUS__BANDWIDTH_TOLERANCE, oldBandwidthTolerance, bandwidthTolerance));
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  public double getSampleRateTolerance()
-  {
-    return sampleRateTolerance;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  public void setSampleRateTolerance(double newSampleRateTolerance)
-  {
-    double oldSampleRateTolerance = sampleRateTolerance;
-    sampleRateTolerance = newSampleRateTolerance;
-    if (eNotificationRequired())
-      eNotify(new ENotificationImpl(this, Notification.SET, FrontendPackage.TUNER_STATUS__SAMPLE_RATE_TOLERANCE, oldSampleRateTolerance, sampleRateTolerance));
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  public boolean isComplex()
-  {
-    return complex;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  public void setComplex(boolean newComplex)
-  {
-    boolean oldComplex = complex;
-    complex = newComplex;
-    if (eNotificationRequired())
-      eNotify(new ENotificationImpl(this, Notification.SET, FrontendPackage.TUNER_STATUS__COMPLEX, oldComplex, complex));
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
   public double getGain()
   {
     return gain;
@@ -1071,121 +731,6 @@ public class TunerStatusImpl extends MinimalEObjectImpl.Container implements Tun
    * <!-- end-user-doc -->
    * @generated
    */
-  public boolean isValid()
-  {
-    return valid;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  public void setValid(boolean newValid)
-  {
-    boolean oldValid = valid;
-    valid = newValid;
-    if (eNotificationRequired())
-      eNotify(new ENotificationImpl(this, Notification.SET, FrontendPackage.TUNER_STATUS__VALID, oldValid, valid));
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  public String getAvailableFrequency()
-  {
-    return availableFrequency;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  public void setAvailableFrequency(String newAvailableFrequency)
-  {
-    String oldAvailableFrequency = availableFrequency;
-    availableFrequency = newAvailableFrequency;
-    if (eNotificationRequired())
-      eNotify(new ENotificationImpl(this, Notification.SET, FrontendPackage.TUNER_STATUS__AVAILABLE_FREQUENCY, oldAvailableFrequency, availableFrequency));
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  public String getAvailableBandwidth()
-  {
-    return availableBandwidth;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  public void setAvailableBandwidth(String newAvailableBandwidth)
-  {
-    String oldAvailableBandwidth = availableBandwidth;
-    availableBandwidth = newAvailableBandwidth;
-    if (eNotificationRequired())
-      eNotify(new ENotificationImpl(this, Notification.SET, FrontendPackage.TUNER_STATUS__AVAILABLE_BANDWIDTH, oldAvailableBandwidth, availableBandwidth));
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  public String getAvailableGain()
-  {
-    return availableGain;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  public void setAvailableGain(String newAvailableGain)
-  {
-    String oldAvailableGain = availableGain;
-    availableGain = newAvailableGain;
-    if (eNotificationRequired())
-      eNotify(new ENotificationImpl(this, Notification.SET, FrontendPackage.TUNER_STATUS__AVAILABLE_GAIN, oldAvailableGain, availableGain));
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  public String getAvailableSampleRate()
-  {
-    return availableSampleRate;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  public void setAvailableSampleRate(String newAvailableSampleRate)
-  {
-    String oldAvailableSampleRate = availableSampleRate;
-    availableSampleRate = newAvailableSampleRate;
-    if (eNotificationRequired())
-      eNotify(new ENotificationImpl(this, Notification.SET, FrontendPackage.TUNER_STATUS__AVAILABLE_SAMPLE_RATE, oldAvailableSampleRate, availableSampleRate));
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
   public long getReferenceSource()
   {
     return referenceSource;
@@ -1209,144 +754,6 @@ public class TunerStatusImpl extends MinimalEObjectImpl.Container implements Tun
    * <!-- end-user-doc -->
    * @generated
    */
-  public String getOutputFormat()
-  {
-    return outputFormat;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  public void setOutputFormat(String newOutputFormat)
-  {
-    String oldOutputFormat = outputFormat;
-    outputFormat = newOutputFormat;
-    if (eNotificationRequired())
-      eNotify(new ENotificationImpl(this, Notification.SET, FrontendPackage.TUNER_STATUS__OUTPUT_FORMAT, oldOutputFormat, outputFormat));
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  public String getOutputMulticast()
-  {
-    return outputMulticast;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  public void setOutputMulticast(String newOutputMulticast)
-  {
-    String oldOutputMulticast = outputMulticast;
-    outputMulticast = newOutputMulticast;
-    if (eNotificationRequired())
-      eNotify(new ENotificationImpl(this, Notification.SET, FrontendPackage.TUNER_STATUS__OUTPUT_MULTICAST, oldOutputMulticast, outputMulticast));
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  public long getOutputVlan()
-  {
-    return outputVlan;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  public void setOutputVlan(long newOutputVlan)
-  {
-    long oldOutputVlan = outputVlan;
-    outputVlan = newOutputVlan;
-    if (eNotificationRequired())
-      eNotify(new ENotificationImpl(this, Notification.SET, FrontendPackage.TUNER_STATUS__OUTPUT_VLAN, oldOutputVlan, outputVlan));
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  public long getOutputPort()
-  {
-    return outputPort;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  public void setOutputPort(long newOutputPort)
-  {
-    long oldOutputPort = outputPort;
-    outputPort = newOutputPort;
-    if (eNotificationRequired())
-      eNotify(new ENotificationImpl(this, Notification.SET, FrontendPackage.TUNER_STATUS__OUTPUT_PORT, oldOutputPort, outputPort));
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  public long getDecimation()
-  {
-    return decimation;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  public void setDecimation(long newDecimation)
-  {
-    long oldDecimation = decimation;
-    decimation = newDecimation;
-    if (eNotificationRequired())
-      eNotify(new ENotificationImpl(this, Notification.SET, FrontendPackage.TUNER_STATUS__DECIMATION, oldDecimation, decimation));
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  public short getTuner_number()
-  {
-    return tuner_number;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  public void setTuner_number(short newTuner_number)
-  {
-    short oldTuner_number = tuner_number;
-    tuner_number = newTuner_number;
-    if (eNotificationRequired())
-      eNotify(new ENotificationImpl(this, Notification.SET, FrontendPackage.TUNER_STATUS__TUNER_NUMBER, oldTuner_number, tuner_number));
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
   public boolean isDeviceControl()
   {
     return deviceControl;
@@ -1363,29 +770,6 @@ public class TunerStatusImpl extends MinimalEObjectImpl.Container implements Tun
     deviceControl = newDeviceControl;
     if (eNotificationRequired())
       eNotify(new ENotificationImpl(this, Notification.SET, FrontendPackage.TUNER_STATUS__DEVICE_CONTROL, oldDeviceControl, deviceControl));
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  public String getTunerID()
-  {
-    return tunerID;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  public void setTunerID(String newTunerID)
-  {
-    String oldTunerID = tunerID;
-    tunerID = newTunerID;
-    if (eNotificationRequired())
-      eNotify(new ENotificationImpl(this, Notification.SET, FrontendPackage.TUNER_STATUS__TUNER_ID, oldTunerID, tunerID));
   }
 
   /**
@@ -1474,6 +858,8 @@ public class TunerStatusImpl extends MinimalEObjectImpl.Container implements Tun
         return getTunerStatusStruct();
       case FrontendPackage.TUNER_STATUS__SIMPLES:
         return getSimples();
+      case FrontendPackage.TUNER_STATUS__TUNER_ID:
+        return getTunerID();
       case FrontendPackage.TUNER_STATUS__TUNER_TYPE:
         return getTunerType();
       case FrontendPackage.TUNER_STATUS__ALLOCATION_ID:
@@ -1490,44 +876,14 @@ public class TunerStatusImpl extends MinimalEObjectImpl.Container implements Tun
         return getRfFlowID();
       case FrontendPackage.TUNER_STATUS__ENABLED:
         return isEnabled();
-      case FrontendPackage.TUNER_STATUS__BANDWIDTH_TOLERANCE:
-        return getBandwidthTolerance();
-      case FrontendPackage.TUNER_STATUS__SAMPLE_RATE_TOLERANCE:
-        return getSampleRateTolerance();
-      case FrontendPackage.TUNER_STATUS__COMPLEX:
-        return isComplex();
       case FrontendPackage.TUNER_STATUS__GAIN:
         return getGain();
       case FrontendPackage.TUNER_STATUS__AGC:
         return isAgc();
-      case FrontendPackage.TUNER_STATUS__VALID:
-        return isValid();
-      case FrontendPackage.TUNER_STATUS__AVAILABLE_FREQUENCY:
-        return getAvailableFrequency();
-      case FrontendPackage.TUNER_STATUS__AVAILABLE_BANDWIDTH:
-        return getAvailableBandwidth();
-      case FrontendPackage.TUNER_STATUS__AVAILABLE_GAIN:
-        return getAvailableGain();
-      case FrontendPackage.TUNER_STATUS__AVAILABLE_SAMPLE_RATE:
-        return getAvailableSampleRate();
       case FrontendPackage.TUNER_STATUS__REFERENCE_SOURCE:
         return getReferenceSource();
-      case FrontendPackage.TUNER_STATUS__OUTPUT_FORMAT:
-        return getOutputFormat();
-      case FrontendPackage.TUNER_STATUS__OUTPUT_MULTICAST:
-        return getOutputMulticast();
-      case FrontendPackage.TUNER_STATUS__OUTPUT_VLAN:
-        return getOutputVlan();
-      case FrontendPackage.TUNER_STATUS__OUTPUT_PORT:
-        return getOutputPort();
-      case FrontendPackage.TUNER_STATUS__DECIMATION:
-        return getDecimation();
-      case FrontendPackage.TUNER_STATUS__TUNER_NUMBER:
-        return getTuner_number();
       case FrontendPackage.TUNER_STATUS__DEVICE_CONTROL:
         return isDeviceControl();
-      case FrontendPackage.TUNER_STATUS__TUNER_ID:
-        return getTunerID();
       case FrontendPackage.TUNER_STATUS__LISTENER_ALLOCATIONS:
         return getListenerAllocations();
     }
@@ -1555,6 +911,9 @@ public class TunerStatusImpl extends MinimalEObjectImpl.Container implements Tun
         getSimples().clear();
         getSimples().addAll((Collection<? extends ScaSimpleProperty>)newValue);
         return;
+      case FrontendPackage.TUNER_STATUS__TUNER_ID:
+        setTunerID((String)newValue);
+        return;
       case FrontendPackage.TUNER_STATUS__TUNER_TYPE:
         setTunerType((String)newValue);
         return;
@@ -1579,62 +938,17 @@ public class TunerStatusImpl extends MinimalEObjectImpl.Container implements Tun
       case FrontendPackage.TUNER_STATUS__ENABLED:
         setEnabled((Boolean)newValue);
         return;
-      case FrontendPackage.TUNER_STATUS__BANDWIDTH_TOLERANCE:
-        setBandwidthTolerance((Double)newValue);
-        return;
-      case FrontendPackage.TUNER_STATUS__SAMPLE_RATE_TOLERANCE:
-        setSampleRateTolerance((Double)newValue);
-        return;
-      case FrontendPackage.TUNER_STATUS__COMPLEX:
-        setComplex((Boolean)newValue);
-        return;
       case FrontendPackage.TUNER_STATUS__GAIN:
         setGain((Double)newValue);
         return;
       case FrontendPackage.TUNER_STATUS__AGC:
         setAgc((Boolean)newValue);
         return;
-      case FrontendPackage.TUNER_STATUS__VALID:
-        setValid((Boolean)newValue);
-        return;
-      case FrontendPackage.TUNER_STATUS__AVAILABLE_FREQUENCY:
-        setAvailableFrequency((String)newValue);
-        return;
-      case FrontendPackage.TUNER_STATUS__AVAILABLE_BANDWIDTH:
-        setAvailableBandwidth((String)newValue);
-        return;
-      case FrontendPackage.TUNER_STATUS__AVAILABLE_GAIN:
-        setAvailableGain((String)newValue);
-        return;
-      case FrontendPackage.TUNER_STATUS__AVAILABLE_SAMPLE_RATE:
-        setAvailableSampleRate((String)newValue);
-        return;
       case FrontendPackage.TUNER_STATUS__REFERENCE_SOURCE:
         setReferenceSource((Long)newValue);
         return;
-      case FrontendPackage.TUNER_STATUS__OUTPUT_FORMAT:
-        setOutputFormat((String)newValue);
-        return;
-      case FrontendPackage.TUNER_STATUS__OUTPUT_MULTICAST:
-        setOutputMulticast((String)newValue);
-        return;
-      case FrontendPackage.TUNER_STATUS__OUTPUT_VLAN:
-        setOutputVlan((Long)newValue);
-        return;
-      case FrontendPackage.TUNER_STATUS__OUTPUT_PORT:
-        setOutputPort((Long)newValue);
-        return;
-      case FrontendPackage.TUNER_STATUS__DECIMATION:
-        setDecimation((Long)newValue);
-        return;
-      case FrontendPackage.TUNER_STATUS__TUNER_NUMBER:
-        setTuner_number((Short)newValue);
-        return;
       case FrontendPackage.TUNER_STATUS__DEVICE_CONTROL:
         setDeviceControl((Boolean)newValue);
-        return;
-      case FrontendPackage.TUNER_STATUS__TUNER_ID:
-        setTunerID((String)newValue);
         return;
       case FrontendPackage.TUNER_STATUS__LISTENER_ALLOCATIONS:
         getListenerAllocations().clear();
@@ -1663,6 +977,9 @@ public class TunerStatusImpl extends MinimalEObjectImpl.Container implements Tun
       case FrontendPackage.TUNER_STATUS__SIMPLES:
         getSimples().clear();
         return;
+      case FrontendPackage.TUNER_STATUS__TUNER_ID:
+        setTunerID(TUNER_ID_EDEFAULT);
+        return;
       case FrontendPackage.TUNER_STATUS__TUNER_TYPE:
         setTunerType(TUNER_TYPE_EDEFAULT);
         return;
@@ -1687,62 +1004,17 @@ public class TunerStatusImpl extends MinimalEObjectImpl.Container implements Tun
       case FrontendPackage.TUNER_STATUS__ENABLED:
         setEnabled(ENABLED_EDEFAULT);
         return;
-      case FrontendPackage.TUNER_STATUS__BANDWIDTH_TOLERANCE:
-        setBandwidthTolerance(BANDWIDTH_TOLERANCE_EDEFAULT);
-        return;
-      case FrontendPackage.TUNER_STATUS__SAMPLE_RATE_TOLERANCE:
-        setSampleRateTolerance(SAMPLE_RATE_TOLERANCE_EDEFAULT);
-        return;
-      case FrontendPackage.TUNER_STATUS__COMPLEX:
-        setComplex(COMPLEX_EDEFAULT);
-        return;
       case FrontendPackage.TUNER_STATUS__GAIN:
         setGain(GAIN_EDEFAULT);
         return;
       case FrontendPackage.TUNER_STATUS__AGC:
         setAgc(AGC_EDEFAULT);
         return;
-      case FrontendPackage.TUNER_STATUS__VALID:
-        setValid(VALID_EDEFAULT);
-        return;
-      case FrontendPackage.TUNER_STATUS__AVAILABLE_FREQUENCY:
-        setAvailableFrequency(AVAILABLE_FREQUENCY_EDEFAULT);
-        return;
-      case FrontendPackage.TUNER_STATUS__AVAILABLE_BANDWIDTH:
-        setAvailableBandwidth(AVAILABLE_BANDWIDTH_EDEFAULT);
-        return;
-      case FrontendPackage.TUNER_STATUS__AVAILABLE_GAIN:
-        setAvailableGain(AVAILABLE_GAIN_EDEFAULT);
-        return;
-      case FrontendPackage.TUNER_STATUS__AVAILABLE_SAMPLE_RATE:
-        setAvailableSampleRate(AVAILABLE_SAMPLE_RATE_EDEFAULT);
-        return;
       case FrontendPackage.TUNER_STATUS__REFERENCE_SOURCE:
         setReferenceSource(REFERENCE_SOURCE_EDEFAULT);
         return;
-      case FrontendPackage.TUNER_STATUS__OUTPUT_FORMAT:
-        setOutputFormat(OUTPUT_FORMAT_EDEFAULT);
-        return;
-      case FrontendPackage.TUNER_STATUS__OUTPUT_MULTICAST:
-        setOutputMulticast(OUTPUT_MULTICAST_EDEFAULT);
-        return;
-      case FrontendPackage.TUNER_STATUS__OUTPUT_VLAN:
-        setOutputVlan(OUTPUT_VLAN_EDEFAULT);
-        return;
-      case FrontendPackage.TUNER_STATUS__OUTPUT_PORT:
-        setOutputPort(OUTPUT_PORT_EDEFAULT);
-        return;
-      case FrontendPackage.TUNER_STATUS__DECIMATION:
-        setDecimation(DECIMATION_EDEFAULT);
-        return;
-      case FrontendPackage.TUNER_STATUS__TUNER_NUMBER:
-        setTuner_number(TUNER_NUMBER_EDEFAULT);
-        return;
       case FrontendPackage.TUNER_STATUS__DEVICE_CONTROL:
         setDeviceControl(DEVICE_CONTROL_EDEFAULT);
-        return;
-      case FrontendPackage.TUNER_STATUS__TUNER_ID:
-        setTunerID(TUNER_ID_EDEFAULT);
         return;
       case FrontendPackage.TUNER_STATUS__LISTENER_ALLOCATIONS:
         getListenerAllocations().clear();
@@ -1767,6 +1039,8 @@ public class TunerStatusImpl extends MinimalEObjectImpl.Container implements Tun
         return TUNER_STATUS_STRUCT_EDEFAULT == null ? tunerStatusStruct != null : !TUNER_STATUS_STRUCT_EDEFAULT.equals(tunerStatusStruct);
       case FrontendPackage.TUNER_STATUS__SIMPLES:
         return simples != null && !simples.isEmpty();
+      case FrontendPackage.TUNER_STATUS__TUNER_ID:
+        return TUNER_ID_EDEFAULT == null ? tunerID != null : !TUNER_ID_EDEFAULT.equals(tunerID);
       case FrontendPackage.TUNER_STATUS__TUNER_TYPE:
         return TUNER_TYPE_EDEFAULT == null ? tunerType != null : !TUNER_TYPE_EDEFAULT.equals(tunerType);
       case FrontendPackage.TUNER_STATUS__ALLOCATION_ID:
@@ -1783,44 +1057,14 @@ public class TunerStatusImpl extends MinimalEObjectImpl.Container implements Tun
         return RF_FLOW_ID_EDEFAULT == null ? rfFlowID != null : !RF_FLOW_ID_EDEFAULT.equals(rfFlowID);
       case FrontendPackage.TUNER_STATUS__ENABLED:
         return enabled != ENABLED_EDEFAULT;
-      case FrontendPackage.TUNER_STATUS__BANDWIDTH_TOLERANCE:
-        return bandwidthTolerance != BANDWIDTH_TOLERANCE_EDEFAULT;
-      case FrontendPackage.TUNER_STATUS__SAMPLE_RATE_TOLERANCE:
-        return sampleRateTolerance != SAMPLE_RATE_TOLERANCE_EDEFAULT;
-      case FrontendPackage.TUNER_STATUS__COMPLEX:
-        return complex != COMPLEX_EDEFAULT;
       case FrontendPackage.TUNER_STATUS__GAIN:
         return gain != GAIN_EDEFAULT;
       case FrontendPackage.TUNER_STATUS__AGC:
         return agc != AGC_EDEFAULT;
-      case FrontendPackage.TUNER_STATUS__VALID:
-        return valid != VALID_EDEFAULT;
-      case FrontendPackage.TUNER_STATUS__AVAILABLE_FREQUENCY:
-        return AVAILABLE_FREQUENCY_EDEFAULT == null ? availableFrequency != null : !AVAILABLE_FREQUENCY_EDEFAULT.equals(availableFrequency);
-      case FrontendPackage.TUNER_STATUS__AVAILABLE_BANDWIDTH:
-        return AVAILABLE_BANDWIDTH_EDEFAULT == null ? availableBandwidth != null : !AVAILABLE_BANDWIDTH_EDEFAULT.equals(availableBandwidth);
-      case FrontendPackage.TUNER_STATUS__AVAILABLE_GAIN:
-        return AVAILABLE_GAIN_EDEFAULT == null ? availableGain != null : !AVAILABLE_GAIN_EDEFAULT.equals(availableGain);
-      case FrontendPackage.TUNER_STATUS__AVAILABLE_SAMPLE_RATE:
-        return AVAILABLE_SAMPLE_RATE_EDEFAULT == null ? availableSampleRate != null : !AVAILABLE_SAMPLE_RATE_EDEFAULT.equals(availableSampleRate);
       case FrontendPackage.TUNER_STATUS__REFERENCE_SOURCE:
         return referenceSource != REFERENCE_SOURCE_EDEFAULT;
-      case FrontendPackage.TUNER_STATUS__OUTPUT_FORMAT:
-        return OUTPUT_FORMAT_EDEFAULT == null ? outputFormat != null : !OUTPUT_FORMAT_EDEFAULT.equals(outputFormat);
-      case FrontendPackage.TUNER_STATUS__OUTPUT_MULTICAST:
-        return OUTPUT_MULTICAST_EDEFAULT == null ? outputMulticast != null : !OUTPUT_MULTICAST_EDEFAULT.equals(outputMulticast);
-      case FrontendPackage.TUNER_STATUS__OUTPUT_VLAN:
-        return outputVlan != OUTPUT_VLAN_EDEFAULT;
-      case FrontendPackage.TUNER_STATUS__OUTPUT_PORT:
-        return outputPort != OUTPUT_PORT_EDEFAULT;
-      case FrontendPackage.TUNER_STATUS__DECIMATION:
-        return decimation != DECIMATION_EDEFAULT;
-      case FrontendPackage.TUNER_STATUS__TUNER_NUMBER:
-        return tuner_number != TUNER_NUMBER_EDEFAULT;
       case FrontendPackage.TUNER_STATUS__DEVICE_CONTROL:
         return deviceControl != DEVICE_CONTROL_EDEFAULT;
-      case FrontendPackage.TUNER_STATUS__TUNER_ID:
-        return TUNER_ID_EDEFAULT == null ? tunerID != null : !TUNER_ID_EDEFAULT.equals(tunerID);
       case FrontendPackage.TUNER_STATUS__LISTENER_ALLOCATIONS:
         return listenerAllocations != null && !listenerAllocations.isEmpty();
     }
@@ -1842,6 +1086,8 @@ public class TunerStatusImpl extends MinimalEObjectImpl.Container implements Tun
     result.append(tunerStatusStruct);
     result.append(", simples: ");
     result.append(simples);
+    result.append(", tunerID: ");
+    result.append(tunerID);
     result.append(", tunerType: ");
     result.append(tunerType);
     result.append(", allocationID: ");
@@ -1858,44 +1104,14 @@ public class TunerStatusImpl extends MinimalEObjectImpl.Container implements Tun
     result.append(rfFlowID);
     result.append(", enabled: ");
     result.append(enabled);
-    result.append(", bandwidthTolerance: ");
-    result.append(bandwidthTolerance);
-    result.append(", sampleRateTolerance: ");
-    result.append(sampleRateTolerance);
-    result.append(", complex: ");
-    result.append(complex);
     result.append(", gain: ");
     result.append(gain);
     result.append(", agc: ");
     result.append(agc);
-    result.append(", valid: ");
-    result.append(valid);
-    result.append(", availableFrequency: ");
-    result.append(availableFrequency);
-    result.append(", availableBandwidth: ");
-    result.append(availableBandwidth);
-    result.append(", availableGain: ");
-    result.append(availableGain);
-    result.append(", availableSampleRate: ");
-    result.append(availableSampleRate);
     result.append(", referenceSource: ");
     result.append(referenceSource);
-    result.append(", outputFormat: ");
-    result.append(outputFormat);
-    result.append(", outputMulticast: ");
-    result.append(outputMulticast);
-    result.append(", outputVlan: ");
-    result.append(outputVlan);
-    result.append(", outputPort: ");
-    result.append(outputPort);
-    result.append(", decimation: ");
-    result.append(decimation);
-    result.append(", tuner_number: ");
-    result.append(tuner_number);
     result.append(", deviceControl: ");
     result.append(deviceControl);
-    result.append(", tunerID: ");
-    result.append(tunerID);
     result.append(')');
     return result.toString();
   }

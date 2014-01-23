@@ -10,7 +10,6 @@ import gov.redhawk.model.sca.ScaDevice;
 import gov.redhawk.model.sca.ScaSimpleProperty;
 import gov.redhawk.model.sca.ScaStructProperty;
 import gov.redhawk.model.sca.ScaStructSequenceProperty;
-import gov.redhawk.model.sca.commands.ScaModelCommand;
 
 import java.util.List;
 
@@ -76,13 +75,7 @@ public enum TunerUtils {
 
 					
 					for (ScaSimpleProperty simple : tuner.getSimples()) {
-						setTunerProperty(tuner, simple);
-						for (TunerStatusAllocationProperties value : TunerStatusAllocationProperties.values()) {
-							if (value.getId().equals(simple.getId())) {
-								//value.setFeiPropertyAttribute(simple);//disabled this because there is no such method
-							}
-						}
-
+						TunerStatusAllocationProperties.setValue(tuner, simple);
 					}
 					
 					addNotificationAdapter(tuner);
@@ -133,81 +126,6 @@ public enum TunerUtils {
 		};
 		tuner.eAdapters().add(adapter);
 
-	}
-
-	/** 
-	 * Initializes properties of model object</br />
-	 * Tuner type provides tree label in SCA Explorer, see TunerStatusItemProvider getText() 
-	 * 
-	 * @param tuner represents tuner model object
-	 * 
-	 */
-	public static void setTunerProperty(final TunerStatus tuner, final ScaSimpleProperty simple) {
-			String name = null;
-			final Object value = simple.getValue();
-			for (TunerProperties.TunerStatusAllocationProperties allocProp : TunerProperties.TunerStatusAllocationProperties.values()) {
-				if (allocProp.getId().equals(simple.getId())) {
-					name = allocProp.getName();
-				}
-			}
-			
-			final String id = name;
-			ScaModelCommand.execute(tuner, new ScaModelCommand() {
-				@Override
-				public void execute() {
-					if (id.equals("Tuner Type"))
-						tuner.setTunerType(value.toString());
-					else if (id.equals("Allocation ID"))
-						tuner.setAllocationID(String.valueOf(value));
-					else if (id.equals("Center Frequency"))
-						tuner.setCenterFrequency(Double.parseDouble(value.toString()));
-					else if (id.equals("Bandwidth"))
-						tuner.setBandwidth(Double.parseDouble(value.toString()));
-					else if (id.equals("Sample Rate"))
-						tuner.setSampleRate(Double.parseDouble(value.toString()));
-					else if (id.equals("Group ID"))
-						tuner.setGroupID(String.valueOf(value));
-					else if (id.equals("RF Flow ID"))
-						tuner.setRfFlowID(String.valueOf(value));
-					else if (id.equals("Enabled"))
-						tuner.setEnabled(Boolean.parseBoolean(value.toString()));
-					else if (id.equals("Bandwidth Tolerance"))
-						tuner.setBandwidthTolerance(Double.parseDouble(value.toString()));
-					else if (id.equals("Sample Rate Tolerance"))
-						tuner.setSampleRateTolerance(Double.parseDouble(value.toString()));
-					else if (id.equals("Complex"))
-						tuner.setComplex(Boolean.parseBoolean(value.toString()));
-					else if (id.equals("Gain"))
-						tuner.setGain(Double.parseDouble(value.toString()));
-					else if (id.equals("AGC"))
-						tuner.setAgc(Boolean.parseBoolean(value.toString()));
-					else if (id.equals("Valid"))
-						tuner.setValid(Boolean.parseBoolean(value.toString()));
-					else if (id.equals("Available Frequency"))
-						tuner.setAvailableFrequency(value.toString());
-					else if (id.equals("Available Bandwidth"))
-						tuner.setAvailableBandwidth(value.toString());
-					else if (id.equals("Available Gain"))
-						tuner.setAvailableGain(value.toString());
-					else if (id.equals("Available Sample Rate"))
-						tuner.setAvailableSampleRate(value.toString());
-					else if (id.equals("Reference Source"))
-						tuner.setReferenceSource(Long.parseLong(value.toString()));
-					else if (id.equals("Output Format"))
-						tuner.setOutputFormat(value.toString());
-					else if (id.equals("Output Multicast"))
-						tuner.setOutputMulticast(value.toString());
-					else if (id.equals("Output VLan"))
-						tuner.setOutputVlan(Long.parseLong(value.toString()));
-					else if (id.equals("Output Port"))
-						tuner.setOutputPort(Long.parseLong(value.toString()));
-					else if (id.equals("Decimation"))
-						tuner.setDecimation(Long.parseLong(value.toString()));
-					else if (id.equals("Tuner Number"))
-						tuner.setTuner_number(Short.parseShort(value.toString()));
-				}
-			});
-	
 	}
 
 	/**

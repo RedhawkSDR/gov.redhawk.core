@@ -197,13 +197,22 @@ public interface FrontendPackage extends EPackage
   int TUNER_STATUS__SIMPLES = 2;
 
   /**
+   * The feature id for the '<em><b>Tuner ID</b></em>' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int TUNER_STATUS__TUNER_ID = 3;
+
+  /**
    * The feature id for the '<em><b>Tuner Type</b></em>' attribute.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
    * @ordered
    */
-  int TUNER_STATUS__TUNER_TYPE = 3;
+  int TUNER_STATUS__TUNER_TYPE = 4;
 
   /**
    * The feature id for the '<em><b>Allocation ID</b></em>' attribute.
@@ -212,7 +221,7 @@ public interface FrontendPackage extends EPackage
    * @generated
    * @ordered
    */
-  int TUNER_STATUS__ALLOCATION_ID = 4;
+  int TUNER_STATUS__ALLOCATION_ID = 5;
 
   /**
    * The feature id for the '<em><b>Center Frequency</b></em>' attribute.
@@ -221,7 +230,7 @@ public interface FrontendPackage extends EPackage
    * @generated
    * @ordered
    */
-  int TUNER_STATUS__CENTER_FREQUENCY = 5;
+  int TUNER_STATUS__CENTER_FREQUENCY = 6;
 
   /**
    * The feature id for the '<em><b>Bandwidth</b></em>' attribute.
@@ -230,7 +239,7 @@ public interface FrontendPackage extends EPackage
    * @generated
    * @ordered
    */
-  int TUNER_STATUS__BANDWIDTH = 6;
+  int TUNER_STATUS__BANDWIDTH = 7;
 
   /**
    * The feature id for the '<em><b>Sample Rate</b></em>' attribute.
@@ -239,7 +248,7 @@ public interface FrontendPackage extends EPackage
    * @generated
    * @ordered
    */
-  int TUNER_STATUS__SAMPLE_RATE = 7;
+  int TUNER_STATUS__SAMPLE_RATE = 8;
 
   /**
    * The feature id for the '<em><b>Group ID</b></em>' attribute.
@@ -248,7 +257,7 @@ public interface FrontendPackage extends EPackage
    * @generated
    * @ordered
    */
-  int TUNER_STATUS__GROUP_ID = 8;
+  int TUNER_STATUS__GROUP_ID = 9;
 
   /**
    * The feature id for the '<em><b>Rf Flow ID</b></em>' attribute.
@@ -257,7 +266,7 @@ public interface FrontendPackage extends EPackage
    * @generated
    * @ordered
    */
-  int TUNER_STATUS__RF_FLOW_ID = 9;
+  int TUNER_STATUS__RF_FLOW_ID = 10;
 
   /**
    * The feature id for the '<em><b>Enabled</b></em>' attribute.
@@ -266,34 +275,7 @@ public interface FrontendPackage extends EPackage
    * @generated
    * @ordered
    */
-  int TUNER_STATUS__ENABLED = 10;
-
-  /**
-   * The feature id for the '<em><b>Bandwidth Tolerance</b></em>' attribute.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   * @ordered
-   */
-  int TUNER_STATUS__BANDWIDTH_TOLERANCE = 11;
-
-  /**
-   * The feature id for the '<em><b>Sample Rate Tolerance</b></em>' attribute.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   * @ordered
-   */
-  int TUNER_STATUS__SAMPLE_RATE_TOLERANCE = 12;
-
-  /**
-   * The feature id for the '<em><b>Complex</b></em>' attribute.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   * @ordered
-   */
-  int TUNER_STATUS__COMPLEX = 13;
+  int TUNER_STATUS__ENABLED = 11;
 
   /**
    * The feature id for the '<em><b>Gain</b></em>' attribute.
@@ -302,7 +284,7 @@ public interface FrontendPackage extends EPackage
    * @generated
    * @ordered
    */
-  int TUNER_STATUS__GAIN = 14;
+  int TUNER_STATUS__GAIN = 12;
 
   /**
    * The feature id for the '<em><b>Agc</b></em>' attribute.
@@ -311,52 +293,7 @@ public interface FrontendPackage extends EPackage
    * @generated
    * @ordered
    */
-  int TUNER_STATUS__AGC = 15;
-
-  /**
-   * The feature id for the '<em><b>Valid</b></em>' attribute.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   * @ordered
-   */
-  int TUNER_STATUS__VALID = 16;
-
-  /**
-   * The feature id for the '<em><b>Available Frequency</b></em>' attribute.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   * @ordered
-   */
-  int TUNER_STATUS__AVAILABLE_FREQUENCY = 17;
-
-  /**
-   * The feature id for the '<em><b>Available Bandwidth</b></em>' attribute.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   * @ordered
-   */
-  int TUNER_STATUS__AVAILABLE_BANDWIDTH = 18;
-
-  /**
-   * The feature id for the '<em><b>Available Gain</b></em>' attribute.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   * @ordered
-   */
-  int TUNER_STATUS__AVAILABLE_GAIN = 19;
-
-  /**
-   * The feature id for the '<em><b>Available Sample Rate</b></em>' attribute.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   * @ordered
-   */
-  int TUNER_STATUS__AVAILABLE_SAMPLE_RATE = 20;
+  int TUNER_STATUS__AGC = 13;
 
   /**
    * The feature id for the '<em><b>Reference Source</b></em>' attribute.
@@ -365,61 +302,7 @@ public interface FrontendPackage extends EPackage
    * @generated
    * @ordered
    */
-  int TUNER_STATUS__REFERENCE_SOURCE = 21;
-
-  /**
-   * The feature id for the '<em><b>Output Format</b></em>' attribute.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   * @ordered
-   */
-  int TUNER_STATUS__OUTPUT_FORMAT = 22;
-
-  /**
-   * The feature id for the '<em><b>Output Multicast</b></em>' attribute.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   * @ordered
-   */
-  int TUNER_STATUS__OUTPUT_MULTICAST = 23;
-
-  /**
-   * The feature id for the '<em><b>Output Vlan</b></em>' attribute.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   * @ordered
-   */
-  int TUNER_STATUS__OUTPUT_VLAN = 24;
-
-  /**
-   * The feature id for the '<em><b>Output Port</b></em>' attribute.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   * @ordered
-   */
-  int TUNER_STATUS__OUTPUT_PORT = 25;
-
-  /**
-   * The feature id for the '<em><b>Decimation</b></em>' attribute.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   * @ordered
-   */
-  int TUNER_STATUS__DECIMATION = 26;
-
-  /**
-   * The feature id for the '<em><b>Tuner number</b></em>' attribute.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   * @ordered
-   */
-  int TUNER_STATUS__TUNER_NUMBER = 27;
+  int TUNER_STATUS__REFERENCE_SOURCE = 14;
 
   /**
    * The feature id for the '<em><b>Device Control</b></em>' attribute.
@@ -428,16 +311,7 @@ public interface FrontendPackage extends EPackage
    * @generated
    * @ordered
    */
-  int TUNER_STATUS__DEVICE_CONTROL = 28;
-
-  /**
-   * The feature id for the '<em><b>Tuner ID</b></em>' attribute.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   * @ordered
-   */
-  int TUNER_STATUS__TUNER_ID = 29;
+  int TUNER_STATUS__DEVICE_CONTROL = 15;
 
   /**
    * The feature id for the '<em><b>Listener Allocations</b></em>' containment reference list.
@@ -446,7 +320,7 @@ public interface FrontendPackage extends EPackage
    * @generated
    * @ordered
    */
-  int TUNER_STATUS__LISTENER_ALLOCATIONS = 30;
+  int TUNER_STATUS__LISTENER_ALLOCATIONS = 16;
 
   /**
    * The number of structural features of the '<em>Tuner Status</em>' class.
@@ -455,7 +329,7 @@ public interface FrontendPackage extends EPackage
    * @generated
    * @ordered
    */
-  int TUNER_STATUS_FEATURE_COUNT = 31;
+  int TUNER_STATUS_FEATURE_COUNT = 17;
 
   /**
    * The number of operations of the '<em>Tuner Status</em>' class.
@@ -651,6 +525,17 @@ public interface FrontendPackage extends EPackage
   EAttribute getTunerStatus_Simples();
 
   /**
+   * Returns the meta object for the attribute '{@link gov.redhawk.frontend.TunerStatus#getTunerID <em>Tuner ID</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the attribute '<em>Tuner ID</em>'.
+   * @see gov.redhawk.frontend.TunerStatus#getTunerID()
+   * @see #getTunerStatus()
+   * @generated
+   */
+  EAttribute getTunerStatus_TunerID();
+
+  /**
    * Returns the meta object for the attribute '{@link gov.redhawk.frontend.TunerStatus#getTunerType <em>Tuner Type</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
@@ -739,39 +624,6 @@ public interface FrontendPackage extends EPackage
   EAttribute getTunerStatus_Enabled();
 
   /**
-   * Returns the meta object for the attribute '{@link gov.redhawk.frontend.TunerStatus#getBandwidthTolerance <em>Bandwidth Tolerance</em>}'.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return the meta object for the attribute '<em>Bandwidth Tolerance</em>'.
-   * @see gov.redhawk.frontend.TunerStatus#getBandwidthTolerance()
-   * @see #getTunerStatus()
-   * @generated
-   */
-  EAttribute getTunerStatus_BandwidthTolerance();
-
-  /**
-   * Returns the meta object for the attribute '{@link gov.redhawk.frontend.TunerStatus#getSampleRateTolerance <em>Sample Rate Tolerance</em>}'.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return the meta object for the attribute '<em>Sample Rate Tolerance</em>'.
-   * @see gov.redhawk.frontend.TunerStatus#getSampleRateTolerance()
-   * @see #getTunerStatus()
-   * @generated
-   */
-  EAttribute getTunerStatus_SampleRateTolerance();
-
-  /**
-   * Returns the meta object for the attribute '{@link gov.redhawk.frontend.TunerStatus#isComplex <em>Complex</em>}'.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return the meta object for the attribute '<em>Complex</em>'.
-   * @see gov.redhawk.frontend.TunerStatus#isComplex()
-   * @see #getTunerStatus()
-   * @generated
-   */
-  EAttribute getTunerStatus_Complex();
-
-  /**
    * Returns the meta object for the attribute '{@link gov.redhawk.frontend.TunerStatus#getGain <em>Gain</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
@@ -794,61 +646,6 @@ public interface FrontendPackage extends EPackage
   EAttribute getTunerStatus_Agc();
 
   /**
-   * Returns the meta object for the attribute '{@link gov.redhawk.frontend.TunerStatus#isValid <em>Valid</em>}'.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return the meta object for the attribute '<em>Valid</em>'.
-   * @see gov.redhawk.frontend.TunerStatus#isValid()
-   * @see #getTunerStatus()
-   * @generated
-   */
-  EAttribute getTunerStatus_Valid();
-
-  /**
-   * Returns the meta object for the attribute '{@link gov.redhawk.frontend.TunerStatus#getAvailableFrequency <em>Available Frequency</em>}'.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return the meta object for the attribute '<em>Available Frequency</em>'.
-   * @see gov.redhawk.frontend.TunerStatus#getAvailableFrequency()
-   * @see #getTunerStatus()
-   * @generated
-   */
-  EAttribute getTunerStatus_AvailableFrequency();
-
-  /**
-   * Returns the meta object for the attribute '{@link gov.redhawk.frontend.TunerStatus#getAvailableBandwidth <em>Available Bandwidth</em>}'.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return the meta object for the attribute '<em>Available Bandwidth</em>'.
-   * @see gov.redhawk.frontend.TunerStatus#getAvailableBandwidth()
-   * @see #getTunerStatus()
-   * @generated
-   */
-  EAttribute getTunerStatus_AvailableBandwidth();
-
-  /**
-   * Returns the meta object for the attribute '{@link gov.redhawk.frontend.TunerStatus#getAvailableGain <em>Available Gain</em>}'.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return the meta object for the attribute '<em>Available Gain</em>'.
-   * @see gov.redhawk.frontend.TunerStatus#getAvailableGain()
-   * @see #getTunerStatus()
-   * @generated
-   */
-  EAttribute getTunerStatus_AvailableGain();
-
-  /**
-   * Returns the meta object for the attribute '{@link gov.redhawk.frontend.TunerStatus#getAvailableSampleRate <em>Available Sample Rate</em>}'.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return the meta object for the attribute '<em>Available Sample Rate</em>'.
-   * @see gov.redhawk.frontend.TunerStatus#getAvailableSampleRate()
-   * @see #getTunerStatus()
-   * @generated
-   */
-  EAttribute getTunerStatus_AvailableSampleRate();
-
-  /**
    * Returns the meta object for the attribute '{@link gov.redhawk.frontend.TunerStatus#getReferenceSource <em>Reference Source</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
@@ -860,72 +657,6 @@ public interface FrontendPackage extends EPackage
   EAttribute getTunerStatus_ReferenceSource();
 
   /**
-   * Returns the meta object for the attribute '{@link gov.redhawk.frontend.TunerStatus#getOutputFormat <em>Output Format</em>}'.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return the meta object for the attribute '<em>Output Format</em>'.
-   * @see gov.redhawk.frontend.TunerStatus#getOutputFormat()
-   * @see #getTunerStatus()
-   * @generated
-   */
-  EAttribute getTunerStatus_OutputFormat();
-
-  /**
-   * Returns the meta object for the attribute '{@link gov.redhawk.frontend.TunerStatus#getOutputMulticast <em>Output Multicast</em>}'.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return the meta object for the attribute '<em>Output Multicast</em>'.
-   * @see gov.redhawk.frontend.TunerStatus#getOutputMulticast()
-   * @see #getTunerStatus()
-   * @generated
-   */
-  EAttribute getTunerStatus_OutputMulticast();
-
-  /**
-   * Returns the meta object for the attribute '{@link gov.redhawk.frontend.TunerStatus#getOutputVlan <em>Output Vlan</em>}'.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return the meta object for the attribute '<em>Output Vlan</em>'.
-   * @see gov.redhawk.frontend.TunerStatus#getOutputVlan()
-   * @see #getTunerStatus()
-   * @generated
-   */
-  EAttribute getTunerStatus_OutputVlan();
-
-  /**
-   * Returns the meta object for the attribute '{@link gov.redhawk.frontend.TunerStatus#getOutputPort <em>Output Port</em>}'.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return the meta object for the attribute '<em>Output Port</em>'.
-   * @see gov.redhawk.frontend.TunerStatus#getOutputPort()
-   * @see #getTunerStatus()
-   * @generated
-   */
-  EAttribute getTunerStatus_OutputPort();
-
-  /**
-   * Returns the meta object for the attribute '{@link gov.redhawk.frontend.TunerStatus#getDecimation <em>Decimation</em>}'.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return the meta object for the attribute '<em>Decimation</em>'.
-   * @see gov.redhawk.frontend.TunerStatus#getDecimation()
-   * @see #getTunerStatus()
-   * @generated
-   */
-  EAttribute getTunerStatus_Decimation();
-
-  /**
-   * Returns the meta object for the attribute '{@link gov.redhawk.frontend.TunerStatus#getTuner_number <em>Tuner number</em>}'.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return the meta object for the attribute '<em>Tuner number</em>'.
-   * @see gov.redhawk.frontend.TunerStatus#getTuner_number()
-   * @see #getTunerStatus()
-   * @generated
-   */
-  EAttribute getTunerStatus_Tuner_number();
-
-  /**
    * Returns the meta object for the attribute '{@link gov.redhawk.frontend.TunerStatus#isDeviceControl <em>Device Control</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
@@ -935,17 +666,6 @@ public interface FrontendPackage extends EPackage
    * @generated
    */
   EAttribute getTunerStatus_DeviceControl();
-
-  /**
-   * Returns the meta object for the attribute '{@link gov.redhawk.frontend.TunerStatus#getTunerID <em>Tuner ID</em>}'.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return the meta object for the attribute '<em>Tuner ID</em>'.
-   * @see gov.redhawk.frontend.TunerStatus#getTunerID()
-   * @see #getTunerStatus()
-   * @generated
-   */
-  EAttribute getTunerStatus_TunerID();
 
   /**
    * Returns the meta object for the containment reference list '{@link gov.redhawk.frontend.TunerStatus#getListenerAllocations <em>Listener Allocations</em>}'.
@@ -1134,6 +854,14 @@ public interface FrontendPackage extends EPackage
     EAttribute TUNER_STATUS__SIMPLES = eINSTANCE.getTunerStatus_Simples();
 
     /**
+     * The meta object literal for the '<em><b>Tuner ID</b></em>' attribute feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EAttribute TUNER_STATUS__TUNER_ID = eINSTANCE.getTunerStatus_TunerID();
+
+    /**
      * The meta object literal for the '<em><b>Tuner Type</b></em>' attribute feature.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -1198,30 +926,6 @@ public interface FrontendPackage extends EPackage
     EAttribute TUNER_STATUS__ENABLED = eINSTANCE.getTunerStatus_Enabled();
 
     /**
-     * The meta object literal for the '<em><b>Bandwidth Tolerance</b></em>' attribute feature.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    EAttribute TUNER_STATUS__BANDWIDTH_TOLERANCE = eINSTANCE.getTunerStatus_BandwidthTolerance();
-
-    /**
-     * The meta object literal for the '<em><b>Sample Rate Tolerance</b></em>' attribute feature.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    EAttribute TUNER_STATUS__SAMPLE_RATE_TOLERANCE = eINSTANCE.getTunerStatus_SampleRateTolerance();
-
-    /**
-     * The meta object literal for the '<em><b>Complex</b></em>' attribute feature.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    EAttribute TUNER_STATUS__COMPLEX = eINSTANCE.getTunerStatus_Complex();
-
-    /**
      * The meta object literal for the '<em><b>Gain</b></em>' attribute feature.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -1238,46 +942,6 @@ public interface FrontendPackage extends EPackage
     EAttribute TUNER_STATUS__AGC = eINSTANCE.getTunerStatus_Agc();
 
     /**
-     * The meta object literal for the '<em><b>Valid</b></em>' attribute feature.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    EAttribute TUNER_STATUS__VALID = eINSTANCE.getTunerStatus_Valid();
-
-    /**
-     * The meta object literal for the '<em><b>Available Frequency</b></em>' attribute feature.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    EAttribute TUNER_STATUS__AVAILABLE_FREQUENCY = eINSTANCE.getTunerStatus_AvailableFrequency();
-
-    /**
-     * The meta object literal for the '<em><b>Available Bandwidth</b></em>' attribute feature.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    EAttribute TUNER_STATUS__AVAILABLE_BANDWIDTH = eINSTANCE.getTunerStatus_AvailableBandwidth();
-
-    /**
-     * The meta object literal for the '<em><b>Available Gain</b></em>' attribute feature.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    EAttribute TUNER_STATUS__AVAILABLE_GAIN = eINSTANCE.getTunerStatus_AvailableGain();
-
-    /**
-     * The meta object literal for the '<em><b>Available Sample Rate</b></em>' attribute feature.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    EAttribute TUNER_STATUS__AVAILABLE_SAMPLE_RATE = eINSTANCE.getTunerStatus_AvailableSampleRate();
-
-    /**
      * The meta object literal for the '<em><b>Reference Source</b></em>' attribute feature.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -1286,68 +950,12 @@ public interface FrontendPackage extends EPackage
     EAttribute TUNER_STATUS__REFERENCE_SOURCE = eINSTANCE.getTunerStatus_ReferenceSource();
 
     /**
-     * The meta object literal for the '<em><b>Output Format</b></em>' attribute feature.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    EAttribute TUNER_STATUS__OUTPUT_FORMAT = eINSTANCE.getTunerStatus_OutputFormat();
-
-    /**
-     * The meta object literal for the '<em><b>Output Multicast</b></em>' attribute feature.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    EAttribute TUNER_STATUS__OUTPUT_MULTICAST = eINSTANCE.getTunerStatus_OutputMulticast();
-
-    /**
-     * The meta object literal for the '<em><b>Output Vlan</b></em>' attribute feature.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    EAttribute TUNER_STATUS__OUTPUT_VLAN = eINSTANCE.getTunerStatus_OutputVlan();
-
-    /**
-     * The meta object literal for the '<em><b>Output Port</b></em>' attribute feature.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    EAttribute TUNER_STATUS__OUTPUT_PORT = eINSTANCE.getTunerStatus_OutputPort();
-
-    /**
-     * The meta object literal for the '<em><b>Decimation</b></em>' attribute feature.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    EAttribute TUNER_STATUS__DECIMATION = eINSTANCE.getTunerStatus_Decimation();
-
-    /**
-     * The meta object literal for the '<em><b>Tuner number</b></em>' attribute feature.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    EAttribute TUNER_STATUS__TUNER_NUMBER = eINSTANCE.getTunerStatus_Tuner_number();
-
-    /**
      * The meta object literal for the '<em><b>Device Control</b></em>' attribute feature.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      */
     EAttribute TUNER_STATUS__DEVICE_CONTROL = eINSTANCE.getTunerStatus_DeviceControl();
-
-    /**
-     * The meta object literal for the '<em><b>Tuner ID</b></em>' attribute feature.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    EAttribute TUNER_STATUS__TUNER_ID = eINSTANCE.getTunerStatus_TunerID();
 
     /**
      * The meta object literal for the '<em><b>Listener Allocations</b></em>' containment reference list feature.

@@ -57,6 +57,7 @@ public class TunerStatusItemProvider extends ItemProviderAdapter implements IEdi
       addTunerContainerPropertyDescriptor(object);
       addTunerStatusStructPropertyDescriptor(object);
       addSimplesPropertyDescriptor(object);
+      addTunerIDPropertyDescriptor(object);
       addTunerTypePropertyDescriptor(object);
       addAllocationIDPropertyDescriptor(object);
       addCenterFrequencyPropertyDescriptor(object);
@@ -65,25 +66,10 @@ public class TunerStatusItemProvider extends ItemProviderAdapter implements IEdi
       addGroupIDPropertyDescriptor(object);
       addRfFlowIDPropertyDescriptor(object);
       addEnabledPropertyDescriptor(object);
-      addBandwidthTolerancePropertyDescriptor(object);
-      addSampleRateTolerancePropertyDescriptor(object);
-      addComplexPropertyDescriptor(object);
       addGainPropertyDescriptor(object);
       addAgcPropertyDescriptor(object);
-      addValidPropertyDescriptor(object);
-      addAvailableFrequencyPropertyDescriptor(object);
-      addAvailableBandwidthPropertyDescriptor(object);
-      addAvailableGainPropertyDescriptor(object);
-      addAvailableSampleRatePropertyDescriptor(object);
       addReferenceSourcePropertyDescriptor(object);
-      addOutputFormatPropertyDescriptor(object);
-      addOutputMulticastPropertyDescriptor(object);
-      addOutputVlanPropertyDescriptor(object);
-      addOutputPortPropertyDescriptor(object);
-      addDecimationPropertyDescriptor(object);
-      addTuner_numberPropertyDescriptor(object);
       addDeviceControlPropertyDescriptor(object);
-      addTunerIDPropertyDescriptor(object);
     }
     return itemPropertyDescriptors;
   }
@@ -158,10 +144,11 @@ public class TunerStatusItemProvider extends ItemProviderAdapter implements IEdi
   /**
    * This adds a property descriptor for the Tuner Type feature.
    * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+   * <!-- end-user-doc -->
    * @generated
    */
-	protected void addTunerTypePropertyDescriptor(Object object) {
+  protected void addTunerTypePropertyDescriptor(Object object)
+  {
     itemPropertyDescriptors.add
       (createItemPropertyDescriptor
         (((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
@@ -177,13 +164,14 @@ public class TunerStatusItemProvider extends ItemProviderAdapter implements IEdi
          null));
   }
 
-	/**
+  /**
    * This adds a property descriptor for the Allocation ID feature.
    * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+   * <!-- end-user-doc -->
    * @generated
    */
-	protected void addAllocationIDPropertyDescriptor(Object object) {
+  protected void addAllocationIDPropertyDescriptor(Object object)
+  {
     itemPropertyDescriptors.add
       (createItemPropertyDescriptor
         (((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
@@ -199,13 +187,14 @@ public class TunerStatusItemProvider extends ItemProviderAdapter implements IEdi
          null));
   }
 
-	/**
+  /**
    * This adds a property descriptor for the Center Frequency feature.
    * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+   * <!-- end-user-doc -->
    * @generated
    */
-	protected void addCenterFrequencyPropertyDescriptor(Object object) {
+  protected void addCenterFrequencyPropertyDescriptor(Object object)
+  {
     itemPropertyDescriptors.add
       (createItemPropertyDescriptor
         (((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
@@ -221,13 +210,14 @@ public class TunerStatusItemProvider extends ItemProviderAdapter implements IEdi
          null));
   }
 
-	/**
+  /**
    * This adds a property descriptor for the Bandwidth feature.
    * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+   * <!-- end-user-doc -->
    * @generated
    */
-	protected void addBandwidthPropertyDescriptor(Object object) {
+  protected void addBandwidthPropertyDescriptor(Object object)
+  {
     itemPropertyDescriptors.add
       (createItemPropertyDescriptor
         (((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
@@ -243,35 +233,14 @@ public class TunerStatusItemProvider extends ItemProviderAdapter implements IEdi
          null));
   }
 
-	/**
-   * This adds a property descriptor for the Bandwidth Tolerance feature.
-   * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-   * @generated
-   */
-	protected void addBandwidthTolerancePropertyDescriptor(Object object) {
-    itemPropertyDescriptors.add
-      (createItemPropertyDescriptor
-        (((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
-         getResourceLocator(),
-         getString("_UI_TunerStatus_bandwidthTolerance_feature"),
-         getString("_UI_PropertyDescriptor_description", "_UI_TunerStatus_bandwidthTolerance_feature", "_UI_TunerStatus_type"),
-         FrontendPackage.Literals.TUNER_STATUS__BANDWIDTH_TOLERANCE,
-         true,
-         false,
-         false,
-         ItemPropertyDescriptor.REAL_VALUE_IMAGE,
-         null,
-         null));
-  }
-
-	/**
+  /**
    * This adds a property descriptor for the Sample Rate feature.
    * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+   * <!-- end-user-doc -->
    * @generated
    */
-	protected void addSampleRatePropertyDescriptor(Object object) {
+  protected void addSampleRatePropertyDescriptor(Object object)
+  {
     itemPropertyDescriptors.add
       (createItemPropertyDescriptor
         (((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
@@ -287,13 +256,14 @@ public class TunerStatusItemProvider extends ItemProviderAdapter implements IEdi
          null));
   }
 
-	/**
+  /**
    * This adds a property descriptor for the Group ID feature.
    * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+   * <!-- end-user-doc -->
    * @generated
    */
-	protected void addGroupIDPropertyDescriptor(Object object) {
+  protected void addGroupIDPropertyDescriptor(Object object)
+  {
     itemPropertyDescriptors.add
       (createItemPropertyDescriptor
         (((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
@@ -309,13 +279,14 @@ public class TunerStatusItemProvider extends ItemProviderAdapter implements IEdi
          null));
   }
 
-	/**
+  /**
    * This adds a property descriptor for the Rf Flow ID feature.
    * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+   * <!-- end-user-doc -->
    * @generated
    */
-	protected void addRfFlowIDPropertyDescriptor(Object object) {
+  protected void addRfFlowIDPropertyDescriptor(Object object)
+  {
     itemPropertyDescriptors.add
       (createItemPropertyDescriptor
         (((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
@@ -331,42 +302,21 @@ public class TunerStatusItemProvider extends ItemProviderAdapter implements IEdi
          null));
   }
 
-	/**
-   * This adds a property descriptor for the Sample Rate Tolerance feature.
+  /**
+   * This adds a property descriptor for the Enabled feature.
    * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+   * <!-- end-user-doc -->
    * @generated
    */
-	protected void addSampleRateTolerancePropertyDescriptor(Object object) {
+  protected void addEnabledPropertyDescriptor(Object object)
+  {
     itemPropertyDescriptors.add
       (createItemPropertyDescriptor
         (((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
          getResourceLocator(),
-         getString("_UI_TunerStatus_sampleRateTolerance_feature"),
-         getString("_UI_PropertyDescriptor_description", "_UI_TunerStatus_sampleRateTolerance_feature", "_UI_TunerStatus_type"),
-         FrontendPackage.Literals.TUNER_STATUS__SAMPLE_RATE_TOLERANCE,
-         true,
-         false,
-         false,
-         ItemPropertyDescriptor.REAL_VALUE_IMAGE,
-         null,
-         null));
-  }
-
-	/**
-   * This adds a property descriptor for the Complex feature.
-   * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-   * @generated
-   */
-	protected void addComplexPropertyDescriptor(Object object) {
-    itemPropertyDescriptors.add
-      (createItemPropertyDescriptor
-        (((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
-         getResourceLocator(),
-         getString("_UI_TunerStatus_complex_feature"),
-         getString("_UI_PropertyDescriptor_description", "_UI_TunerStatus_complex_feature", "_UI_TunerStatus_type"),
-         FrontendPackage.Literals.TUNER_STATUS__COMPLEX,
+         getString("_UI_TunerStatus_enabled_feature"),
+         getString("_UI_PropertyDescriptor_description", "_UI_TunerStatus_enabled_feature", "_UI_TunerStatus_type"),
+         FrontendPackage.Literals.TUNER_STATUS__ENABLED,
          true,
          false,
          false,
@@ -375,13 +325,14 @@ public class TunerStatusItemProvider extends ItemProviderAdapter implements IEdi
          null));
   }
 
-	/**
+  /**
    * This adds a property descriptor for the Gain feature.
    * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+   * <!-- end-user-doc -->
    * @generated
    */
-	protected void addGainPropertyDescriptor(Object object) {
+  protected void addGainPropertyDescriptor(Object object)
+  {
     itemPropertyDescriptors.add
       (createItemPropertyDescriptor
         (((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
@@ -397,13 +348,14 @@ public class TunerStatusItemProvider extends ItemProviderAdapter implements IEdi
          null));
   }
 
-	/**
+  /**
    * This adds a property descriptor for the Agc feature.
    * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+   * <!-- end-user-doc -->
    * @generated
    */
-	protected void addAgcPropertyDescriptor(Object object) {
+  protected void addAgcPropertyDescriptor(Object object)
+  {
     itemPropertyDescriptors.add
       (createItemPropertyDescriptor
         (((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
@@ -419,123 +371,14 @@ public class TunerStatusItemProvider extends ItemProviderAdapter implements IEdi
          null));
   }
 
-	/**
-   * This adds a property descriptor for the Valid feature.
-   * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-   * @generated
-   */
-	protected void addValidPropertyDescriptor(Object object) {
-    itemPropertyDescriptors.add
-      (createItemPropertyDescriptor
-        (((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
-         getResourceLocator(),
-         getString("_UI_TunerStatus_valid_feature"),
-         getString("_UI_PropertyDescriptor_description", "_UI_TunerStatus_valid_feature", "_UI_TunerStatus_type"),
-         FrontendPackage.Literals.TUNER_STATUS__VALID,
-         true,
-         false,
-         false,
-         ItemPropertyDescriptor.BOOLEAN_VALUE_IMAGE,
-         null,
-         null));
-  }
-
-	/**
-   * This adds a property descriptor for the Available Frequency feature.
-   * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-   * @generated
-   */
-	protected void addAvailableFrequencyPropertyDescriptor(Object object) {
-    itemPropertyDescriptors.add
-      (createItemPropertyDescriptor
-        (((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
-         getResourceLocator(),
-         getString("_UI_TunerStatus_availableFrequency_feature"),
-         getString("_UI_PropertyDescriptor_description", "_UI_TunerStatus_availableFrequency_feature", "_UI_TunerStatus_type"),
-         FrontendPackage.Literals.TUNER_STATUS__AVAILABLE_FREQUENCY,
-         true,
-         false,
-         false,
-         ItemPropertyDescriptor.GENERIC_VALUE_IMAGE,
-         null,
-         null));
-  }
-
-	/**
-   * This adds a property descriptor for the Available Bandwidth feature.
-   * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-   * @generated
-   */
-	protected void addAvailableBandwidthPropertyDescriptor(Object object) {
-    itemPropertyDescriptors.add
-      (createItemPropertyDescriptor
-        (((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
-         getResourceLocator(),
-         getString("_UI_TunerStatus_availableBandwidth_feature"),
-         getString("_UI_PropertyDescriptor_description", "_UI_TunerStatus_availableBandwidth_feature", "_UI_TunerStatus_type"),
-         FrontendPackage.Literals.TUNER_STATUS__AVAILABLE_BANDWIDTH,
-         true,
-         false,
-         false,
-         ItemPropertyDescriptor.GENERIC_VALUE_IMAGE,
-         null,
-         null));
-  }
-
-	/**
-   * This adds a property descriptor for the Available Gain feature.
-   * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-   * @generated
-   */
-	protected void addAvailableGainPropertyDescriptor(Object object) {
-    itemPropertyDescriptors.add
-      (createItemPropertyDescriptor
-        (((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
-         getResourceLocator(),
-         getString("_UI_TunerStatus_availableGain_feature"),
-         getString("_UI_PropertyDescriptor_description", "_UI_TunerStatus_availableGain_feature", "_UI_TunerStatus_type"),
-         FrontendPackage.Literals.TUNER_STATUS__AVAILABLE_GAIN,
-         true,
-         false,
-         false,
-         ItemPropertyDescriptor.GENERIC_VALUE_IMAGE,
-         null,
-         null));
-  }
-
-	/**
-   * This adds a property descriptor for the Available Sample Rate feature.
-   * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-   * @generated
-   */
-	protected void addAvailableSampleRatePropertyDescriptor(Object object) {
-    itemPropertyDescriptors.add
-      (createItemPropertyDescriptor
-        (((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
-         getResourceLocator(),
-         getString("_UI_TunerStatus_availableSampleRate_feature"),
-         getString("_UI_PropertyDescriptor_description", "_UI_TunerStatus_availableSampleRate_feature", "_UI_TunerStatus_type"),
-         FrontendPackage.Literals.TUNER_STATUS__AVAILABLE_SAMPLE_RATE,
-         true,
-         false,
-         false,
-         ItemPropertyDescriptor.GENERIC_VALUE_IMAGE,
-         null,
-         null));
-  }
-
-	/**
+  /**
    * This adds a property descriptor for the Reference Source feature.
    * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+   * <!-- end-user-doc -->
    * @generated
    */
-	protected void addReferenceSourcePropertyDescriptor(Object object) {
+  protected void addReferenceSourcePropertyDescriptor(Object object)
+  {
     itemPropertyDescriptors.add
       (createItemPropertyDescriptor
         (((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
@@ -551,145 +394,14 @@ public class TunerStatusItemProvider extends ItemProviderAdapter implements IEdi
          null));
   }
 
-	/**
-   * This adds a property descriptor for the Output Format feature.
-   * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-   * @generated
-   */
-	protected void addOutputFormatPropertyDescriptor(Object object) {
-    itemPropertyDescriptors.add
-      (createItemPropertyDescriptor
-        (((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
-         getResourceLocator(),
-         getString("_UI_TunerStatus_outputFormat_feature"),
-         getString("_UI_PropertyDescriptor_description", "_UI_TunerStatus_outputFormat_feature", "_UI_TunerStatus_type"),
-         FrontendPackage.Literals.TUNER_STATUS__OUTPUT_FORMAT,
-         true,
-         false,
-         false,
-         ItemPropertyDescriptor.GENERIC_VALUE_IMAGE,
-         null,
-         null));
-  }
-
-	/**
-   * This adds a property descriptor for the Output Multicast feature.
-   * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-   * @generated
-   */
-	protected void addOutputMulticastPropertyDescriptor(Object object) {
-    itemPropertyDescriptors.add
-      (createItemPropertyDescriptor
-        (((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
-         getResourceLocator(),
-         getString("_UI_TunerStatus_outputMulticast_feature"),
-         getString("_UI_PropertyDescriptor_description", "_UI_TunerStatus_outputMulticast_feature", "_UI_TunerStatus_type"),
-         FrontendPackage.Literals.TUNER_STATUS__OUTPUT_MULTICAST,
-         true,
-         false,
-         false,
-         ItemPropertyDescriptor.GENERIC_VALUE_IMAGE,
-         null,
-         null));
-  }
-
-	/**
-   * This adds a property descriptor for the Output Vlan feature.
-   * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-   * @generated
-   */
-	protected void addOutputVlanPropertyDescriptor(Object object) {
-    itemPropertyDescriptors.add
-      (createItemPropertyDescriptor
-        (((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
-         getResourceLocator(),
-         getString("_UI_TunerStatus_outputVlan_feature"),
-         getString("_UI_PropertyDescriptor_description", "_UI_TunerStatus_outputVlan_feature", "_UI_TunerStatus_type"),
-         FrontendPackage.Literals.TUNER_STATUS__OUTPUT_VLAN,
-         true,
-         false,
-         false,
-         ItemPropertyDescriptor.INTEGRAL_VALUE_IMAGE,
-         null,
-         null));
-  }
-
-	/**
-   * This adds a property descriptor for the Output Port feature.
-   * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-   * @generated
-   */
-	protected void addOutputPortPropertyDescriptor(Object object) {
-    itemPropertyDescriptors.add
-      (createItemPropertyDescriptor
-        (((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
-         getResourceLocator(),
-         getString("_UI_TunerStatus_outputPort_feature"),
-         getString("_UI_PropertyDescriptor_description", "_UI_TunerStatus_outputPort_feature", "_UI_TunerStatus_type"),
-         FrontendPackage.Literals.TUNER_STATUS__OUTPUT_PORT,
-         true,
-         false,
-         false,
-         ItemPropertyDescriptor.INTEGRAL_VALUE_IMAGE,
-         null,
-         null));
-  }
-
-	/**
-   * This adds a property descriptor for the Decimation feature.
-   * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-   * @generated
-   */
-	protected void addDecimationPropertyDescriptor(Object object) {
-    itemPropertyDescriptors.add
-      (createItemPropertyDescriptor
-        (((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
-         getResourceLocator(),
-         getString("_UI_TunerStatus_decimation_feature"),
-         getString("_UI_PropertyDescriptor_description", "_UI_TunerStatus_decimation_feature", "_UI_TunerStatus_type"),
-         FrontendPackage.Literals.TUNER_STATUS__DECIMATION,
-         true,
-         false,
-         false,
-         ItemPropertyDescriptor.INTEGRAL_VALUE_IMAGE,
-         null,
-         null));
-  }
-
-	/**
-   * This adds a property descriptor for the Tuner number feature.
-   * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-   * @generated
-   */
-	protected void addTuner_numberPropertyDescriptor(Object object) {
-    itemPropertyDescriptors.add
-      (createItemPropertyDescriptor
-        (((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
-         getResourceLocator(),
-         getString("_UI_TunerStatus_tuner_number_feature"),
-         getString("_UI_PropertyDescriptor_description", "_UI_TunerStatus_tuner_number_feature", "_UI_TunerStatus_type"),
-         FrontendPackage.Literals.TUNER_STATUS__TUNER_NUMBER,
-         true,
-         false,
-         false,
-         ItemPropertyDescriptor.INTEGRAL_VALUE_IMAGE,
-         null,
-         null));
-  }
-
-	/**
+  /**
    * This adds a property descriptor for the Device Control feature.
    * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+   * <!-- end-user-doc -->
    * @generated
    */
-	protected void addDeviceControlPropertyDescriptor(Object object) {
+  protected void addDeviceControlPropertyDescriptor(Object object)
+  {
     itemPropertyDescriptors.add
       (createItemPropertyDescriptor
         (((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
@@ -705,13 +417,14 @@ public class TunerStatusItemProvider extends ItemProviderAdapter implements IEdi
          null));
   }
 
-	/**
+  /**
    * This adds a property descriptor for the Tuner ID feature.
    * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+   * <!-- end-user-doc -->
    * @generated
    */
-	protected void addTunerIDPropertyDescriptor(Object object) {
+  protected void addTunerIDPropertyDescriptor(Object object)
+  {
     itemPropertyDescriptors.add
       (createItemPropertyDescriptor
         (((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
@@ -727,7 +440,7 @@ public class TunerStatusItemProvider extends ItemProviderAdapter implements IEdi
          null));
   }
 
-	/**
+  /**
    * This specifies how to implement {@link #getChildren} and is used to deduce an appropriate feature for an
    * {@link org.eclipse.emf.edit.command.AddCommand}, {@link org.eclipse.emf.edit.command.RemoveCommand} or
    * {@link org.eclipse.emf.edit.command.MoveCommand} in {@link #createCommand}.
@@ -761,28 +474,6 @@ public class TunerStatusItemProvider extends ItemProviderAdapter implements IEdi
   }
 
   /**
-   * This adds a property descriptor for the Enabled feature.
-   * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-   * @generated
-   */
-	protected void addEnabledPropertyDescriptor(Object object) {
-    itemPropertyDescriptors.add
-      (createItemPropertyDescriptor
-        (((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
-         getResourceLocator(),
-         getString("_UI_TunerStatus_enabled_feature"),
-         getString("_UI_PropertyDescriptor_description", "_UI_TunerStatus_enabled_feature", "_UI_TunerStatus_type"),
-         FrontendPackage.Literals.TUNER_STATUS__ENABLED,
-         true,
-         false,
-         false,
-         ItemPropertyDescriptor.BOOLEAN_VALUE_IMAGE,
-         null,
-         null));
-  }
-
-	/**
    * This returns TunerStatus.gif.
    * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -828,6 +519,7 @@ public class TunerStatusItemProvider extends ItemProviderAdapter implements IEdi
     {
       case FrontendPackage.TUNER_STATUS__TUNER_STATUS_STRUCT:
       case FrontendPackage.TUNER_STATUS__SIMPLES:
+      case FrontendPackage.TUNER_STATUS__TUNER_ID:
       case FrontendPackage.TUNER_STATUS__TUNER_TYPE:
       case FrontendPackage.TUNER_STATUS__ALLOCATION_ID:
       case FrontendPackage.TUNER_STATUS__CENTER_FREQUENCY:
@@ -836,25 +528,10 @@ public class TunerStatusItemProvider extends ItemProviderAdapter implements IEdi
       case FrontendPackage.TUNER_STATUS__GROUP_ID:
       case FrontendPackage.TUNER_STATUS__RF_FLOW_ID:
       case FrontendPackage.TUNER_STATUS__ENABLED:
-      case FrontendPackage.TUNER_STATUS__BANDWIDTH_TOLERANCE:
-      case FrontendPackage.TUNER_STATUS__SAMPLE_RATE_TOLERANCE:
-      case FrontendPackage.TUNER_STATUS__COMPLEX:
       case FrontendPackage.TUNER_STATUS__GAIN:
       case FrontendPackage.TUNER_STATUS__AGC:
-      case FrontendPackage.TUNER_STATUS__VALID:
-      case FrontendPackage.TUNER_STATUS__AVAILABLE_FREQUENCY:
-      case FrontendPackage.TUNER_STATUS__AVAILABLE_BANDWIDTH:
-      case FrontendPackage.TUNER_STATUS__AVAILABLE_GAIN:
-      case FrontendPackage.TUNER_STATUS__AVAILABLE_SAMPLE_RATE:
       case FrontendPackage.TUNER_STATUS__REFERENCE_SOURCE:
-      case FrontendPackage.TUNER_STATUS__OUTPUT_FORMAT:
-      case FrontendPackage.TUNER_STATUS__OUTPUT_MULTICAST:
-      case FrontendPackage.TUNER_STATUS__OUTPUT_VLAN:
-      case FrontendPackage.TUNER_STATUS__OUTPUT_PORT:
-      case FrontendPackage.TUNER_STATUS__DECIMATION:
-      case FrontendPackage.TUNER_STATUS__TUNER_NUMBER:
       case FrontendPackage.TUNER_STATUS__DEVICE_CONTROL:
-      case FrontendPackage.TUNER_STATUS__TUNER_ID:
         fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
         return;
       case FrontendPackage.TUNER_STATUS__LISTENER_ALLOCATIONS:
