@@ -27,6 +27,8 @@ public class PlotSettings {
 	private PlotType plotType       = null; // null to not change plot type (line, raster, etc.)
 	private PlotMode plotMode       = null; // plot mode (i.e. complex mode (CM=)) (null to use default / no change)
 	private boolean  enablePlotMenu = true; // enable/disable middle-mouse-button (MMB) to bring up PLOT's configure menu
+	private String   launchArgs     = null; // additional arguments when launching/running PLOT   
+	private String   launchSwitches = null; // additional switches when launching/running PLOT   
 
 	/** plot data mode / complex mode (i.e. CM= arg or MPlot.setMode(..)).
 	 * @since 4.3
@@ -116,6 +118,28 @@ public class PlotSettings {
 
 	public PlotSettings(final PlotType plotType) {
 		this.plotType = plotType;
+	}
+
+	/**
+	 * @param plotType
+	 * @param plotMode
+	 * @since 4.4
+	 */
+	public PlotSettings(final PlotType plotType, PlotMode plotMode) {
+		this(plotType, plotMode, null, null);
+	}
+	
+	/**
+	 * @param plotType
+	 * @param launchArgs
+	 * @since 4.4
+	 * @param launchSwitches
+	 */
+	public PlotSettings(final PlotType plotType, PlotMode plotMode, String launchArgs, String launchSwitches) {
+		this.plotType = plotType;
+		this.plotMode = plotMode;
+		this.launchArgs = launchArgs;
+		this.launchSwitches = launchSwitches;
 	}
 
 	/**
@@ -209,31 +233,59 @@ public class PlotSettings {
 	}
 
 	/**
-	 * @since 4.3
+	 * @since 4.4
 	 */
 	public PlotMode getPlotMode() {
 		return plotMode;
 	}
 
 	/** 
-	 * @since 4.3
+	 * @since 4.4
 	 */
 	public void setPlotMode(PlotMode plotMode) {
 		this.plotMode = plotMode;
 	}
 
 	/** 
-	 * @since 4.3
+	 * @since 4.4
 	 */
 	public boolean isEnablePlotMenu() {
 		return enablePlotMenu;
 	}
 
 	/** 
-	 * @since 4.3
+	 * @since 4.4
 	 */
 	public void setEnablePlotMenu(boolean enablePlotMenu) {
 		this.enablePlotMenu = enablePlotMenu;
+	}
+
+	/** 
+	 * @since 4.4
+	 */
+	public String getLaunchArgs() {
+		return launchArgs;
+	}
+
+	/** 
+	 * @since 4.4
+	 */
+	public void setLaunchArgs(String launchArgs) {
+		this.launchArgs = launchArgs;
+	}
+
+	/** 
+	 * @since 4.4
+	 */
+	public String getLaunchSwitches() {
+		return launchSwitches;
+	}
+
+	/** 
+	 * @since 4.4
+	 */
+	public void setLaunchSwitches(String launchSwitches) {
+		this.launchSwitches = launchSwitches;
 	}
 
 	/* (non-Javadoc)
@@ -251,6 +303,8 @@ public class PlotSettings {
 		result = prime * result + ((blockingOption == null) ? 0 : blockingOption.hashCode());
 		result = prime * result + ((plotMode == null) ? 0 : plotMode.hashCode());
 		result = prime * result + ((enablePlotMenu) ? 1231 : 1237);
+		result = prime * result + ((launchArgs == null) ? 0 : launchArgs.hashCode());
+		result = prime * result + ((launchSwitches == null) ? 0 : launchSwitches.hashCode());
 		return result;
 	}
 	
@@ -317,7 +371,20 @@ public class PlotSettings {
 		if (enablePlotMenu != other.enablePlotMenu) {
 			return false;
 		}
-
+		if (launchArgs == null) {
+			if (other.launchArgs != null) {
+				return false;
+			}
+		} else if (!launchArgs.equals(other.launchArgs)) {
+			return false;
+		}
+		if (launchSwitches == null) {
+			if (other.launchSwitches != null) {
+				return false;
+			}
+		} else if (!launchSwitches.equals(other.launchSwitches)) {
+			return false;
+		}
 		return true;
 	}
 	

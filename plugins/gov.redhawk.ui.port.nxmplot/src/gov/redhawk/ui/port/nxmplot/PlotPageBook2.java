@@ -238,11 +238,39 @@ public class PlotPageBook2 extends Composite {
 		this(parent, style, null);
 	}
 
+	/**
+	 * @deprecated use {@link #createPlot(PlotSettings)} instead
+	 */
+	@Deprecated
 	protected PlotPage createPlot(PlotType type) {
+		PlotSettings plotSettings = new PlotSettings(type);
+		return createPlot(plotSettings);
+	}
+	
+	protected PlotPage createPlot(@NonNull PlotSettings plotSettings) {
+		PlotType type = plotSettings.getPlotType();
 		AbstractNxmPlotWidget newPlot = PlotActivator.getDefault().getPlotFactory().createPlotWidget(this.pageBook, SWT.None);
 
-		final String plotArgs = NxmPlotUtil.getDefaultPlotArgs(type);
-		final String plotSwitches = NxmPlotUtil.getDefaultPlotSwitches(type);
+		String plotArgs = NxmPlotUtil.getDefaultPlotArgs(type);
+		String plotSwitches = NxmPlotUtil.getDefaultPlotSwitches(type);
+		if (plotSettings.getPlotMode() != null) {
+			if (plotArgs == null) {
+				plotArgs = "";
+			}
+			plotArgs += " CM=" + plotSettings.getPlotMode().toModeString(); 
+		}
+		if (plotSettings.getLaunchArgs() != null) {
+			if (plotArgs == null) {
+				plotArgs = "";
+			}
+			plotArgs += " " + plotSettings.getLaunchArgs();
+		}
+		if (plotSettings.getLaunchSwitches() != null) {
+			if (plotSwitches == null) {
+				plotSwitches = "";
+			}
+			plotSwitches += plotSettings.getLaunchSwitches();
+		}
 		PlotPage plotPageSession = new PlotPage(newPlot, plotArgs, plotSwitches);
 		this.plots.put(type, plotPageSession);
 
@@ -449,13 +477,23 @@ public class PlotPageBook2 extends Composite {
 
 	/**
 	 * Toggle if the raster is visible or not.
-	 *
 	 * @param enable true if the raster should be shown
 	 */
 	public void showPlot(PlotType type) {
+		PlotSettings plotSettings = new PlotSettings(type);
+		showPlot(plotSettings);
+	}
+	
+	/** NTN: NEW METHOD (from old showPlot(PlotType method)
+	 * Toggle if the raster is visible or not.
+	 * @param enable true if the raster should be shown
+	 * @since 4.4
+	 */
+	public void showPlot(@NonNull PlotSettings plotSettings) {
 		if (currentPlotPage != null) {
 			currentPlotPage.plot.removePlotListener(plotListener);
 		}
+		PlotType type = plotSettings.getPlotType();
 		if (type == null) {
 			pageBook.showPage(nullPage);
 			currentPlotPage = null;
@@ -463,7 +501,7 @@ public class PlotPageBook2 extends Composite {
 			PlotPage newPlot = this.plots.get(type);
 			if (newPlot == null) {
 				AbstractNxmPlotWidget oldPlot = getActivePlotWidget();
-				newPlot = createPlot(type);
+				newPlot = createPlot(plotSettings);
 				if (oldPlot != null) {
 					PlotSettings existingSettings = new PlotSettings(oldPlot.getPlotSettings());
 					existingSettings.setPlotType(type);
