@@ -28,6 +28,7 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.jface.wizard.WizardDialog;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.PlatformUI;
 
 /**
@@ -35,12 +36,24 @@ import org.eclipse.ui.PlatformUI;
  */
 public class DomainConnectionUtil {
 
+
 	private DomainConnectionUtil() {
 	}
-
+	
+	/**
+	 * @since 9.2
+	 * @deprecated Use new {@link #showDialog(Display, String, String)}
+	 */
+	@Deprecated
 	public static void showDialog(final String host, final String domainName) {
+		showDialog(null, host, domainName);
+	}
+	/**
+	 * @since 9.2
+	 */
+	public static void showDialog(Display context, final String host, final String domainName) {
 		final DomainEntryWizard wizard = new DomainEntryWizard();
-		final ScaDomainManagerRegistry registry = ScaPlugin.getDefault().getDomainManagerRegistry(wizard.getShell().getDisplay());
+		final ScaDomainManagerRegistry registry = ScaPlugin.getDefault().getDomainManagerRegistry(context);
 		wizard.setNameServiceInitRef(host);
 		wizard.setRegistry(registry);
 		wizard.setDomainName(domainName);

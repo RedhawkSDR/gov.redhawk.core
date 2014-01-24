@@ -20,6 +20,7 @@ import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.core.commands.IHandler;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
+import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.handlers.HandlerUtil;
 
 /**
@@ -39,7 +40,8 @@ public class ConnectToDomainHandler extends AbstractHandler implements IHandler 
 			for (final Object selected : sel.toList()) {
 				if (selected instanceof BindingNode) {
 					final BindingNode b = (BindingNode) selected;
-					DomainConnectionUtil.showDialog(b.getHost(), b.getPath().split("/")[1]);
+					Shell shell = HandlerUtil.getActiveShell(event);
+					DomainConnectionUtil.showDialog(shell.getDisplay(), b.getHost(), b.getPath().split("/")[1]);
 				}
 			}
 		}
