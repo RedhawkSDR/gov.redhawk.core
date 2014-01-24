@@ -87,8 +87,7 @@ public class BulkIOReceiver extends AbstractBulkIOPort implements dataCharOperat
 	}
 
 	@Override
-	protected void handleStreamSRIChanged(@Nullable StreamSRI oldSri, @Nullable StreamSRI newSri) {
-		super.handleStreamSRIChanged(oldSri, newSri);
+	protected void handleStreamSRIChanged(String streamID, @Nullable StreamSRI oldSri, @Nullable StreamSRI newSri) {
 		receiver.setStreamSri(newSri);
 	}
 

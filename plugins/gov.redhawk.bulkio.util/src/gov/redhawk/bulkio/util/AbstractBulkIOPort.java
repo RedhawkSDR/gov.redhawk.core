@@ -168,7 +168,10 @@ public abstract class AbstractBulkIOPort implements ProvidesPortStatisticsProvid
 		return this.currentSri;
 	}
 	
-	/** callback to notify that SRI has changed from previous SRI */
+	/** callback to notify that SRI has changed from previous SRI.
+	 * @deprecated since 1.1 use {@link #handleStreamSRIChanged(String, StreamSRI, StreamSRI)}
+	 */
+	@Deprecated
 	protected void handleStreamSRIChanged(@Nullable StreamSRI oldSri, @Nullable StreamSRI newSri) {
 		
 	}
