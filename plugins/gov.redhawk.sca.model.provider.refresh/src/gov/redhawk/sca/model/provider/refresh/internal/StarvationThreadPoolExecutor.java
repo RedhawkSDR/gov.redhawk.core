@@ -41,7 +41,7 @@ public class StarvationThreadPoolExecutor extends ThreadPoolExecutor {
 		}
 
 		public boolean isHanging() {
-			return isRunning() && (System.currentTimeMillis() - startTime > RefreshTasker.getTimeout());
+			return isRunning() && (System.currentTimeMillis() - startTime > RefreshProviderPlugin.getRefreshTimeout());
 		}
 
 		@Override

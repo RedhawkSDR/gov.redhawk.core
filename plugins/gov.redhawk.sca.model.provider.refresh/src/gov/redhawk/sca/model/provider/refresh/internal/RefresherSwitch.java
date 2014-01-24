@@ -19,6 +19,7 @@ import gov.redhawk.model.sca.ScaDomainManager;
 import gov.redhawk.model.sca.ScaPropertyContainer;
 import gov.redhawk.model.sca.ScaUsesPort;
 import gov.redhawk.model.sca.util.ScaSwitch;
+import gov.redhawk.sca.model.provider.refresh.RefreshProviderPlugin;
 
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.emf.ecore.EObject;
@@ -33,84 +34,47 @@ public class RefresherSwitch extends ScaSwitch<IRefresher> {
 
 	@Override
 	public IRefresher caseScaDeviceManager(final ScaDeviceManager object) {
-		return new IRefresher() {
-
-			@Override
-			public void refresh(final IProgressMonitor monitor) {
-				try {
-					object.refresh(monitor, RefreshDepth.CHILDREN);
-				} catch (final InterruptedException e) {
-					// PASS
-				}
-			}
-		};
+		return createRefresher(object, RefreshDepth.CHILDREN);
 	}
 
 	@Override
 	public IRefresher caseScaUsesPort(final ScaUsesPort object) {
-		return new IRefresher() {
-
-			@Override
-			public void refresh(final IProgressMonitor monitor) {
-				try {
-					object.refresh(monitor, RefreshDepth.CHILDREN);
-				} catch (final InterruptedException e) {
-					// PASS
-				}
-			}
-		};
+		return createRefresher(object, RefreshDepth.CHILDREN);
 	}
 
 	@Override
 	public IRefresher caseScaDomainManager(final ScaDomainManager object) {
-		return new IRefresher() {
-
-			@Override
-			public void refresh(final IProgressMonitor monitor) {
-				try {
-					object.refresh(monitor, RefreshDepth.CHILDREN);
-				} catch (final InterruptedException e) {
-					// PASS
-				}
-			}
-		};
+		return createRefresher(object, RefreshDepth.CHILDREN);
 	}
 
 	@Override
 	public < P extends Object, E > IRefresher caseScaPropertyContainer(final ScaPropertyContainer<P, E> object) {
-		return new IRefresher() {
-			@Override
-			public void refresh(final IProgressMonitor monitor) {
-				try {
-					object.refresh(null, RefreshDepth.SELF);
-				} catch (final InterruptedException e) {
-					// PASS
-				}
-			}
-		};
+		return createRefresher(object, RefreshDepth.SELF);
 	}
 
 	@Override
 	public < R extends Resource > IRefresher caseScaAbstractComponent(final ScaAbstractComponent<R> object) {
-		return new IRefresher() {
-			@Override
-			public void refresh(final IProgressMonitor monitor) {
-				try {
-					object.refresh(null, RefreshDepth.SELF);
-				} catch (final InterruptedException e) {
-					// PASS
-				}
-			}
-		};
+		return createRefresher(object, RefreshDepth.SELF);
 	}
 
 	@Override
 	public IRefresher caseIRefreshable(final IRefreshable object) {
+		return createRefresher(object, RefreshDepth.SELF);
+	}
+
+	private IRefresher createRefresher(final IRefreshable object, final RefreshDepth defaultDepth) {
+		final RefreshDepth depth;
+		RefreshDepth override = RefreshProviderPlugin.getOverrideDepth();
+		if (override != null) {
+			depth = override;
+		} else {
+			depth = defaultDepth;
+		}
 		return new IRefresher() {
 			@Override
 			public void refresh(final IProgressMonitor monitor) {
 				try {
-					object.refresh(null, RefreshDepth.SELF);
+					object.refresh(monitor, depth);
 				} catch (final InterruptedException e) {
 					// PASS
 				}
@@ -121,17 +85,7 @@ public class RefresherSwitch extends ScaSwitch<IRefresher> {
 	@Override
 	public IRefresher defaultCase(EObject object) {
 		if (object instanceof IRefreshable) {
-			final IRefreshable refreshable = (IRefreshable) object;
-			return new IRefresher() {
-				@Override
-				public void refresh(final IProgressMonitor monitor) {
-					try {
-						refreshable.refresh(null, RefreshDepth.SELF);
-					} catch (final InterruptedException e) {
-						// PASS
-					}
-				}
-			};
+			return createRefresher((IRefreshable) object, RefreshDepth.SELF);
 		}
 		return super.defaultCase(object);
 	}

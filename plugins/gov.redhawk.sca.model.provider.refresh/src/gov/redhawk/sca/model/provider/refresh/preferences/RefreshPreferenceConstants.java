@@ -21,7 +21,15 @@ public final class RefreshPreferenceConstants {
 	 * @since 5.0
 	 */
 	public static final String REFRESH_TIMEOUT = "refreshTimeout";
+	/**
+	 * @deprecated Not used
+	 */
+	@Deprecated
 	public static final String REFRESH_PERMITS = "refreshPermits";
+	/**
+	 * @since 5.0
+	 */
+	public static final String REFRESH_OVERRIDE_DEPTH = "refreshOverrideDepth";
 
 	private RefreshPreferenceConstants() {
 	}

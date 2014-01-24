@@ -18,9 +18,7 @@ import gov.redhawk.model.sca.ScaPackage;
 import gov.redhawk.model.sca.commands.ScaModelCommand;
 import gov.redhawk.model.sca.services.AbstractDataProvider;
 import gov.redhawk.sca.model.provider.refresh.RefreshProviderPlugin;
-import gov.redhawk.sca.model.provider.refresh.preferences.RefreshPreferenceConstants;
 import gov.redhawk.sca.util.Debug;
-import gov.redhawk.sca.util.IPreferenceAccessor;
 
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
@@ -78,7 +76,7 @@ public class RefreshTasker extends AbstractDataProvider implements Runnable {
 		this.refresher = refresher;
 		this.eObject = eObject;
 		addListeners();
-		doSchedule(getInterval());
+		doSchedule(RefreshProviderPlugin.getRefreshInterval());
 	}
 	
 	private synchronized void doSchedule(long delay) {
@@ -178,28 +176,6 @@ public class RefreshTasker extends AbstractDataProvider implements Runnable {
 		}
 	}
 
-	public static long getInterval() {
-		final RefreshProviderPlugin instance = RefreshProviderPlugin.getInstance();
-		if (instance != null) {
-			final IPreferenceAccessor accessor = instance.getPreferenceAccessor();
-			if (accessor != null) {
-				return DEBUG.exitingMethodWithResult(accessor.getLong(RefreshPreferenceConstants.REFRESH_INTERVAL));
-			}
-		}
-		return DEBUG.exitingMethodWithResult(-1);
-	}
-	
-	public static long getTimeout() {
-		final RefreshProviderPlugin instance = RefreshProviderPlugin.getInstance();
-		if (instance != null) {
-			final IPreferenceAccessor accessor = instance.getPreferenceAccessor();
-			if (accessor != null) {
-				return DEBUG.exitingMethodWithResult(accessor.getLong(RefreshPreferenceConstants.REFRESH_TIMEOUT));
-			}
-		}
-		return DEBUG.exitingMethodWithResult(-1);
-	}
-
 	@Override
 	public void run() {
 		if (!shouldRun()) {
@@ -225,13 +201,13 @@ public class RefreshTasker extends AbstractDataProvider implements Runnable {
 					RefreshTasker.this.refresher.refresh(null);
 				} finally {
 					schedule = null;
-					schedule(getInterval());
+					schedule(RefreshProviderPlugin.getRefreshInterval());
 				}
 			}
 
 		});
 		try {
-			task.get(getTimeout(), TimeUnit.MILLISECONDS);
+			task.get(RefreshProviderPlugin.getRefreshTimeout(), TimeUnit.MILLISECONDS);
 			setStatus(Status.OK_STATUS);
 		} catch (final InterruptedException e) {
 			setStatus(Status.CANCEL_STATUS);

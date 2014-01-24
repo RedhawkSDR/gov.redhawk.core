@@ -11,7 +11,9 @@
  */
 package gov.redhawk.sca.model.provider.refresh;
 
+import gov.redhawk.model.sca.RefreshDepth;
 import gov.redhawk.sca.model.provider.refresh.internal.RefreshTasker;
+import gov.redhawk.sca.model.provider.refresh.preferences.RefreshPreferenceConstants;
 import gov.redhawk.sca.util.IPreferenceAccessor;
 import gov.redhawk.sca.util.ScopedPreferenceAccessor;
 
@@ -56,5 +58,87 @@ public class RefreshProviderPlugin extends Plugin {
 	public IPreferenceAccessor getPreferenceAccessor() {
 		return this.refreshPreferenceStore;
 	}
-
+	
+	/**
+	 * @since 5.0
+	 */
+	public static void setOverrideDepth(RefreshDepth depth) {
+		if (instance != null) {
+			final IPreferenceAccessor accessor = instance.getPreferenceAccessor();
+			if (accessor != null) {
+				accessor.setValue(RefreshPreferenceConstants.REFRESH_OVERRIDE_DEPTH, depth.toString());
+			}
+		}
+	}
+	
+	/**
+	 * @since 5.0
+	 */
+	public static void setRefreshInterval(long valueMs) {
+		if (instance != null) {
+			final IPreferenceAccessor accessor = instance.getPreferenceAccessor();
+			if (accessor != null) {
+				accessor.setValue(RefreshPreferenceConstants.REFRESH_INTERVAL, valueMs);
+			}
+		}
+	}
+	
+	/**
+	 * @since 5.0
+	 */
+	public static void setRefreshTimeout(long valueMs) {
+		if (instance != null) {
+			final IPreferenceAccessor accessor = instance.getPreferenceAccessor();
+			if (accessor != null) {
+				accessor.setValue(RefreshPreferenceConstants.REFRESH_TIMEOUT, valueMs);
+			}
+		}
+	}
+	
+	/**
+	 * @since 5.0
+	 */
+	public static long getRefreshInterval() {
+		if (instance != null) {
+			final IPreferenceAccessor accessor = instance.getPreferenceAccessor();
+			if (accessor != null) {
+				return accessor.getLong(RefreshPreferenceConstants.REFRESH_INTERVAL);
+			}
+		}
+		return 500;
+	}
+	
+	/**
+	 * @since 5.0
+	 */
+	public static long getRefreshTimeout() {
+		if (instance != null) {
+			final IPreferenceAccessor accessor = instance.getPreferenceAccessor();
+			if (accessor != null) {
+				return accessor.getLong(RefreshPreferenceConstants.REFRESH_TIMEOUT);
+			}
+		}
+		return 5000;
+	}
+	
+	/**
+	 * @since 5.0
+	 */
+	public static RefreshDepth getOverrideDepth() {
+		String depth = null;
+		if (instance != null) {
+			final IPreferenceAccessor accessor = instance.getPreferenceAccessor();
+			if (accessor != null) {
+				depth = accessor.getString(RefreshPreferenceConstants.REFRESH_OVERRIDE_DEPTH);
+			}
+		}
+		if (depth != null) {
+			try {
+				return RefreshDepth.valueOf(depth);
+			} catch (Exception e) {
+				// PASS
+			}
+		}
+		return null;
+	}
 }
