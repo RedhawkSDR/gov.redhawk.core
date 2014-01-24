@@ -15,6 +15,7 @@ import gov.redhawk.ui.port.nxmplot.INxmBlock;
 import java.util.concurrent.ConcurrentHashMap;
 
 import org.eclipse.core.databinding.DataBindingContext;
+import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jface.databinding.wizard.WizardPageSupport;
 import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.jface.wizard.Wizard;
@@ -37,9 +38,9 @@ public class NxmBlockSettingsWizard extends Wizard {
 		/** key=INxmBlock, value=Settings for that block. */
 		private ConcurrentHashMap<INxmBlock, Object> nxmBlockToSettingsMap = new ConcurrentHashMap<INxmBlock, Object>();
 		
-		protected BlockWizardPage(String sourceInfo) {
+		protected BlockWizardPage(@NonNull String sourceInfo) {
 			super("nxmBlockSettingspage", "Adjust Plot Settings for Source", null);
-			setDescription("Adjust plot settings for source: " + sourceInfo);
+			setDescription("Adjust/override plot settings for source Port: " + sourceInfo);
 		}
 
 		@Override
@@ -75,7 +76,7 @@ public class NxmBlockSettingsWizard extends Wizard {
 	
 	private BlockWizardPage page;
 
-	public NxmBlockSettingsWizard(String sourceInfo) {
+	public NxmBlockSettingsWizard(@NonNull String sourceInfo) {
 		super();
 		this.page = new BlockWizardPage(sourceInfo);
 	}
