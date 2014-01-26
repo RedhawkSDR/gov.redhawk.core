@@ -64,4 +64,42 @@ public class PlotNxmBlockSettings implements Cloneable {
 		this.pipeSize = pipeSize;
 	}
 
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((frameSize == null) ? 0 : frameSize.hashCode());
+		result = prime * result + ((pipeSize == null) ? 0 : pipeSize.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) {
+			return true;
+		}
+		if (obj == null) {
+			return false;
+		}
+		if (getClass() != obj.getClass()) {
+			return false;
+		}
+		PlotNxmBlockSettings other = (PlotNxmBlockSettings) obj;
+		if (frameSize == null) {
+			if (other.frameSize != null) {
+				return false;
+			}
+		} else if (!frameSize.equals(other.frameSize)) {
+			return false;
+		}
+		if (pipeSize == null) {
+			if (other.pipeSize != null) {
+				return false;
+			}
+		} else if (!pipeSize.equals(other.pipeSize)) {
+			return false;
+		}
+		return true;
+	}
+
 }

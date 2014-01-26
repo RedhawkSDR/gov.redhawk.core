@@ -149,25 +149,23 @@ public class BulkIONxmBlock extends AbstractNxmBlock<corbareceiver2> {
 	protected void applySettingsTo(corbareceiver2 cmd, Object settings, String streamId) {
 		if (settings instanceof BulkIONxmBlockSettings) {
 			BulkIONxmBlockSettings newSettings = (BulkIONxmBlockSettings) settings;
+			boolean blocking = newSettings.isBlocking();
+			Double sampleRate = newSettings.getSampleRate();
+			Integer pipeSize = newSettings.getPipeSize();
+			
+			this.settings.setBlocking(blocking);
+			this.settings.setSampleRate(sampleRate);
+			this.settings.setPipeSize(pipeSize);
 			this.settings.setRemoveOnEndOfStream(newSettings.isRemoveOnEndOfStream());
 			
-			boolean blocking = newSettings.isBlocking();
-			this.settings.setBlocking(blocking);
 			cmd.setBlocking(blocking);
-			
-			Double sampleRate = newSettings.getSampleRate();
-			this.settings.setSampleRate(sampleRate);
 			if (sampleRate == null) {
 				sampleRate = 0.0; // zero to use default from input stream
 			}
 			cmd.setSampleRate(sampleRate);
-			
-			Integer pipeSize = newSettings.getPipeSize();
-			this.settings.setPipeSize(pipeSize);
 			if (pipeSize != null) {
 				cmd.setPipeSize(pipeSize);
 			}
-			
 			// cannot change connectionID at this time
 		}
 	}

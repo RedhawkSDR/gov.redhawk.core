@@ -1,11 +1,11 @@
 /*******************************************************************************
- * This file is protected by Copyright. 
+ * This file is protected by Copyright.
  * Please refer to the COPYRIGHT file distributed with this source distribution.
  *
  * This file is part of REDHAWK IDE.
  *
- * All rights reserved.  This program and the accompanying materials are made available under 
- * the terms of the Eclipse Public License v1.0 which accompanies this distribution, and is available at 
+ * All rights reserved.  This program and the accompanying materials are made available under
+ * the terms of the Eclipse Public License v1.0 which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *******************************************************************************/
 package gov.redhawk.ui.port.nxmblocks;
@@ -27,6 +27,7 @@ import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.ui.PlatformUI;
 
 import BULKIO.StreamSRI;
 
@@ -40,6 +41,7 @@ public class PlotNxmBlock extends AbstractNxmBlock<plot> {
 	
 	private PlotNxmBlockSettings settings;
 	private ConcurrentHashMap<String, String> streamIdToSourceNameMap = new ConcurrentHashMap<String, String>();
+	private ConcurrentHashMap<String, StreamSRI> streamIdToSriMap = new ConcurrentHashMap<String, StreamSRI>();
 	private IMenuManager menu;
 
 	public PlotNxmBlock(@NonNull AbstractNxmPlotWidget plotWidget, PlotNxmBlockSettings settings) {
@@ -54,7 +56,7 @@ public class PlotNxmBlock extends AbstractNxmBlock<plot> {
 
 	@Override
 	public int getMaxInputs() {
-		return 1; // only one is support here, create multiple instances for multiple ports 
+		return 1; // only one is support here, create multiple instances for multiple ports
 	}
 
 	@Override
@@ -75,44 +77,45 @@ public class PlotNxmBlock extends AbstractNxmBlock<plot> {
 		final AbstractNxmPlotWidget currentPlotWidget = getContext();
 		final String sourceName = inputBlockInfo.getBlock().getOutputName(inputBlockInfo.getIndex(), streamID);
 
-		StringBuilder pipeQualifiers = new StringBuilder();
-		Integer frameSize = settings.getFrameSize();
-		if (frameSize != null && frameSize > 0) {          // 1. override frame size with value in settings
-			pipeQualifiers.append("{FRAMESIZE=").append(frameSize).append('}');
-		} else { 
-			if (sri != null) {                             // 2. check sri.subsize
-				frameSize = sri.subsize;
-			}
-			String tmpResName = AbstractNxmPlotWidget.createUniqueName(false);
-			currentPlotWidget.runGlobalCommand("TABLE " + tmpResName + " CREATE");
-			currentPlotWidget.runGlobalCommand("STATUS/VERBOSE " + sourceName + " typeCodeClass=" + tmpResName + ".TYPECODECLASS  frameSize=" + tmpResName + ".FRAMESIZE");
-			if (TRACE_LOG.enabled) {
-				currentPlotWidget.runGlobalCommand("RESULTS/ALL " + tmpResName);
-				currentPlotWidget.runGlobalCommand("STATUS/VERBOSE " + sourceName);
-			}
-			currentPlotWidget.runGlobalCommand("RESULTS/GLOBAL " + tmpResName + " " + tmpResName); // put in global results table
-			Table statusResults = NeXtMidas.getGlobalInstance().getMidasContext().getResults().getTable(tmpResName);
-			currentPlotWidget.runGlobalCommand("REMOVE " + tmpResName);        // cleanup tmp results
-			currentPlotWidget.runGlobalCommand("REMOVE/GLOBAL " + tmpResName); // cleanup tmp results
-			int typeCodeClass = 1;
-			if (statusResults != null) {
-				typeCodeClass = statusResults.getL("TYPECODECLASS", typeCodeClass);
-				frameSize = statusResults.getL("FRAMESIZE", frameSize);
-			}
-			if (typeCodeClass == 1 && frameSize <= 0) {    // 3. no frame size and type 1000 data
-				pipeQualifiers.append("{FRAMESIZE=1024}"); //    frame to 1024
-			}
-		}
+//		StringBuilder pipeQualifiers = new StringBuilder();
+//		Integer frameSize = settings.getFrameSize();
+//		if (frameSize != null && frameSize > 0) {          // 1. override frame size with value in settings
+//			pipeQualifiers.append("{FRAMESIZE=").append(frameSize).append('}');
+//		} else {
+//			if (sri != null) {                             // 2. check sri.subsize
+//				frameSize = sri.subsize;
+//			}
+//			String tmpResName = AbstractNxmPlotWidget.createUniqueName(false);
+//			currentPlotWidget.runGlobalCommand("TABLE " + tmpResName + " CREATE");
+//			currentPlotWidget.runGlobalCommand("STATUS/VERBOSE " + sourceName + " typeCodeClass=" + tmpResName + ".TYPECODECLASS  frameSize=" + tmpResName + ".FRAMESIZE");
+//			if (TRACE_LOG.enabled) {
+//				currentPlotWidget.runGlobalCommand("RESULTS/ALL " + tmpResName);
+//				currentPlotWidget.runGlobalCommand("STATUS/VERBOSE " + sourceName);
+//			}
+//			currentPlotWidget.runGlobalCommand("RESULTS/GLOBAL " + tmpResName + " " + tmpResName); // put in global results table
+//			Table statusResults = NeXtMidas.getGlobalInstance().getMidasContext().getResults().getTable(tmpResName);
+//			currentPlotWidget.runGlobalCommand("REMOVE " + tmpResName);        // cleanup tmp results
+//			currentPlotWidget.runGlobalCommand("REMOVE/GLOBAL " + tmpResName); // cleanup tmp results
+//			int typeCodeClass = 1;
+//			if (statusResults != null) {
+//				typeCodeClass = statusResults.getL("TYPECODECLASS", typeCodeClass);
+//				frameSize = statusResults.getL("FRAMESIZE", frameSize);
+//			}
+//			if (typeCodeClass == 1 && frameSize <= 0) {    // 3. no frame size and type 1000 data
+//				pipeQualifiers.append("{FRAMESIZE=1024}"); //    frame to 1024
+//			}
+//		}
+//
+//		final Integer pipeSize = settings.getPipeSize();
+//		if (pipeSize != null && pipeSize > 0) {
+//			pipeQualifiers.append("{PIPESIZE=").append(pipeSize).append('}');
+//		}
 		
-		final Integer pipeSize = settings.getPipeSize();
-		if (pipeSize != null && pipeSize > 0) {
-			pipeQualifiers.append("{PIPESIZE=").append(pipeSize).append('}');
-		}
-		
-		final String pipeQuals = pipeQualifiers.toString();
-		currentPlotWidget.addSource(sourceName, pipeQuals);
+		final String pipeQuals = getPipeQualifiers(settings, sri, currentPlotWidget, sourceName);
+		currentPlotWidget.addSource(sourceName, pipeQuals, null);
 
-		streamIdToSourceNameMap.put(streamID, sourceName); // save mapping for shutdown
+		streamIdToSourceNameMap.put(streamID, sourceName); // save mapping for shutdown, apply settings, etc.
+		streamIdToSriMap.put(streamID, sri);
 
 		final IMenuManager menuManager = this.menu;
 		if (menuManager != null) {
@@ -133,7 +136,7 @@ public class PlotNxmBlock extends AbstractNxmBlock<plot> {
 	}
 
 	@Override
-	public void shutdown(String streamID) {
+	public void shutdown(final String streamID) {
 		TRACE_LOG.enteringMethod(streamID);
 		final AbstractNxmPlotWidget currentPlotWidget = getContext();
 		if (currentPlotWidget == null) {
@@ -144,10 +147,25 @@ public class PlotNxmBlock extends AbstractNxmBlock<plot> {
 		if (sourceName != null) {
 			currentPlotWidget.removeSource(sourceName);
 		}
+		streamIdToSriMap.remove(streamID);
 		
 		final IMenuManager menuManager = this.menu;
 		if (menuManager != null) {
-			menuManager.remove(streamID);
+			PlatformUI.getWorkbench().getDisplay().asyncExec(new Runnable() {
+				@Override
+				public void run() {
+					menuManager.remove(streamID);
+				}
+			});
+			
+//			new UIJob("remove stream from menu") {
+//				@Override
+//				public IStatus runInUIThread(IProgressMonitor monitor) {
+//					menuManager.remove(streamID);
+//					return Status.OK_STATUS;
+//				}
+//			}
+//			.schedule(0);
 		}
 	}
 
@@ -166,6 +184,7 @@ public class PlotNxmBlock extends AbstractNxmBlock<plot> {
 			currentPlotWidget.removeSource(sourceName);
 			valuesIter.remove();
 		}
+		streamIdToSriMap.clear();
 	}
 
 	@Override
@@ -184,7 +203,7 @@ public class PlotNxmBlock extends AbstractNxmBlock<plot> {
 
 	@Override
 	public PlotNxmBlockSettings getSettings() {
-		return settings;
+		return settings.clone();
 	}
 
 	@Override
@@ -193,13 +212,36 @@ public class PlotNxmBlock extends AbstractNxmBlock<plot> {
 	}
 	
 	@Override
+	public void applySettings(Object settings, String streamId) {
+		if (settings instanceof PlotNxmBlockSettings) {
+			if (streamId != null) { // apply to specified stream
+				applySettingsTo(null, settings, streamId);
+			} else {                // apply to all stream IDs
+				Iterator<String> keyIter = streamIdToSourceNameMap.keySet().iterator();
+				while (keyIter.hasNext()) {
+					streamId = keyIter.next();
+					applySettingsTo(null, settings, streamId);
+				}
+			}
+		}
+	}
+
+	@Override
 	protected void applySettingsTo(plot cmd, Object settings, String streamId) {
 		if (settings instanceof PlotNxmBlockSettings) {
 			PlotNxmBlockSettings newSettings = (PlotNxmBlockSettings) settings;
-			Integer frameSize = newSettings.getFrameSize();
-			if (frameSize != null && frameSize > 0) {
-				// PASS TODO: 1. add/remove source?
-				//            2. how else to adjust frameSize on the fly (cause a restart somehow?)
+			
+			if (!newSettings.equals(this.settings)) {
+				this.settings.setFrameSize(newSettings.getFrameSize());
+				this.settings.setPipeSize(newSettings.getPipeSize());
+				
+				String sourceName = streamIdToSourceNameMap.get(streamId);
+				StreamSRI sri = streamIdToSriMap.get(streamId);
+				
+				AbstractNxmPlotWidget plotWidget = getContext();
+				String pipeQuals = getPipeQualifiers(this.settings, sri, plotWidget, sourceName);
+				plotWidget.removeSource(sourceName);
+				plotWidget.addSource(sourceName, pipeQuals, null);
 			}
 		}
 	}
@@ -209,4 +251,40 @@ public class PlotNxmBlock extends AbstractNxmBlock<plot> {
 		return null; // null for no Command to execute
 	}
 
+	private String getPipeQualifiers(PlotNxmBlockSettings settings, StreamSRI sri, AbstractNxmPlotWidget plotWidget, String sourceName) {
+		StringBuilder pipeQualifiers = new StringBuilder();
+		Integer frameSize = settings.getFrameSize();
+		if (frameSize != null && frameSize > 0) {          // 1. override frame size with value in settings
+			pipeQualifiers.append("{FRAMESIZE=").append(frameSize).append('}');
+		} else {
+			if (sri != null) {                             // 2. check sri.subsize
+				frameSize = sri.subsize;
+			}
+			String tmpResName = AbstractNxmPlotWidget.createUniqueName(false);
+			plotWidget.runGlobalCommand("TABLE " + tmpResName + " CREATE");
+			plotWidget.runGlobalCommand("STATUS/VERBOSE " + sourceName + " typeCodeClass=" + tmpResName + ".TYPECODECLASS  frameSize=" + tmpResName + ".FRAMESIZE");
+			if (TRACE_LOG.enabled) {
+				plotWidget.runGlobalCommand("RESULTS/ALL " + tmpResName);
+				plotWidget.runGlobalCommand("STATUS/VERBOSE " + sourceName);
+			}
+			plotWidget.runGlobalCommand("RESULTS/GLOBAL " + tmpResName + " " + tmpResName); // put in global results table
+			Table statusResults = NeXtMidas.getGlobalInstance().getMidasContext().getResults().getTable(tmpResName);
+			plotWidget.runGlobalCommand("REMOVE " + tmpResName);        // cleanup tmp results
+			plotWidget.runGlobalCommand("REMOVE/GLOBAL " + tmpResName); // cleanup tmp results
+			int typeCodeClass = 1;
+			if (statusResults != null) {
+				typeCodeClass = statusResults.getL("TYPECODECLASS", typeCodeClass);
+				frameSize = statusResults.getL("FRAMESIZE", frameSize);
+			}
+			if (typeCodeClass == 1 && frameSize <= 0) {    // 3. no frame size and type 1000 data
+				pipeQualifiers.append("{FRAMESIZE=1024}"); //    frame to 1024
+			}
+		}
+		
+		final Integer pipeSize = settings.getPipeSize();
+		if (pipeSize != null && pipeSize > 0) {
+			pipeQualifiers.append("{PIPESIZE=").append(pipeSize).append('}');
+		}
+		return pipeQualifiers.toString();
+	}
 }

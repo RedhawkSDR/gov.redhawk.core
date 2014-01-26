@@ -371,6 +371,8 @@ public abstract class AbstractNxmPlotWidget extends Composite {
 		IPlotSession session = inputSessions.remove(sourcePipeId);
 		if (session != null) {
 			session.dispose();
+		} else {
+//			sendPlotMessage("CLOSEFILE", 0, sourcePipeId);
 		}
 
 	}
@@ -420,7 +422,7 @@ public abstract class AbstractNxmPlotWidget extends Composite {
 		activeSRI = newSRI;
 	}
 
-	/** 
+	/**
 	 * @since 4.4, was added in 4.2 as protected
 	 */
 	public PlotMessageHandler getPlotMessageHandler() {
@@ -441,7 +443,7 @@ public abstract class AbstractNxmPlotWidget extends Composite {
 
 	/**
 	 * FOR INTERNAL USE ONLY.
-	 * @return null, unless implemented in subclass (e.g. RCPNxmPlotWidget) that have direct reference to the PLOT command. 
+	 * @return null, unless implemented in subclass (e.g. RCPNxmPlotWidget) that have direct reference to the PLOT command.
 	 * @since 4.4
 	 */
 	@Nullable
@@ -506,7 +508,7 @@ public abstract class AbstractNxmPlotWidget extends Composite {
 			}
 			final Boolean blockingOption = settings.getBlockingOption();
 			this.plotSettings.setBlockingOption(blockingOption);
-			final PlotMode plotMode = settings.getPlotMode();			
+			final PlotMode plotMode = settings.getPlotMode();
 			final boolean enablePlotMenu = settings.isEnablePlotMenu();
 
 			// vvvvv DEPRECATED - begin adjust CORBARECEIVER settings vvvvv
