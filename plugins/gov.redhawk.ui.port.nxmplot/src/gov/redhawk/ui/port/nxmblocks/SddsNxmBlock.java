@@ -82,6 +82,8 @@ public class SddsNxmBlock extends AbstractNxmBlock<sourcenic> {
 		if (settings instanceof SddsNxmBlockSettings) {
 			SddsNxmBlockSettings newSettings = (SddsNxmBlockSettings) settings;
 			ByteOrder byteOrder = newSettings.getDataByteOrder();
+			this.settings.setDataByteOrder(byteOrder);
+			
 			cmd.setDataByteOrder(byteOrder);
 		}
 	}
