@@ -1,11 +1,11 @@
 /*******************************************************************************
- * This file is protected by Copyright. 
+ * This file is protected by Copyright.
  * Please refer to the COPYRIGHT file distributed with this source distribution.
  *
  * This file is part of REDHAWK IDE.
  *
- * All rights reserved.  This program and the accompanying materials are made available under 
- * the terms of the Eclipse Public License v1.0 which accompanies this distribution, and is available at 
+ * All rights reserved.  This program and the accompanying materials are made available under
+ * the terms of the Eclipse Public License v1.0 which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *******************************************************************************/
 package gov.redhawk.internal.ui.port.nxmplot.handlers;
@@ -42,7 +42,7 @@ import org.eclipse.swt.widgets.Label;
 
 /**
  * @noreference This class is not intended to be referenced by clients.
- * @since 10.1
+ * @since 4.4
  */
 public class PlotWizardPage extends WizardPage {
 	private PlotWizardSettings settings = new PlotWizardSettings();
@@ -102,7 +102,7 @@ public class PlotWizardPage extends WizardPage {
 		final Button button = new Button(parent, SWT.CHECK);
 		button.setText("Take FFT");
 		button.setLayoutData(GridDataFactory.fillDefaults().grab(true, false).span(2, 1).create());
-		dataBindingContext.bindValue(WidgetProperties.selection().observe(button), PojoProperties.value(PlotWizardSettings.PROP_DO_FFT).observe(settings));		
+		dataBindingContext.bindValue(WidgetProperties.selection().observe(button), PojoProperties.value(PlotWizardSettings.PROP_DO_FFT).observe(settings));
 		FftNxmBlockSettings fftSettings = settings.getFftBlockSettings();
 		if (fftSettings == null) {
 			fftSettings = new FftNxmBlockSettings();
