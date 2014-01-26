@@ -142,11 +142,6 @@ public class BulkIONxmBlock extends AbstractNxmBlock<corbareceiver2> {
 	@Override
 	public BulkIONxmBlockSettings getSettings() {
 		BulkIONxmBlockSettings clone = settings.clone();
-		//		corbareceiver corbareceiver = getNxmCommand(); // we now possibly have multiple commands running per stream ID
-		//		if (corbareceiver != null) {
-		//			clone.setSampleRate(corbareceiver.getSampleRate());
-		//			clone.setBlocking(corbareceiver.isBlocking());
-		//		}
 		return clone;
 	}
 
@@ -154,25 +149,33 @@ public class BulkIONxmBlock extends AbstractNxmBlock<corbareceiver2> {
 	protected void applySettingsTo(corbareceiver2 cmd, Object settings, String streamId) {
 		if (settings instanceof BulkIONxmBlockSettings) {
 			BulkIONxmBlockSettings newSettings = (BulkIONxmBlockSettings) settings;
+			this.settings.setRemoveOnEndOfStream(newSettings.isRemoveOnEndOfStream());
+			
 			boolean blocking = newSettings.isBlocking();
-			Double sampleRate = newSettings.getSampleRate();
+			this.settings.setBlocking(blocking);
 			cmd.setBlocking(blocking);
 			
+			Double sampleRate = newSettings.getSampleRate();
+			this.settings.setSampleRate(sampleRate);
 			if (sampleRate == null) {
 				sampleRate = 0.0; // zero to use default from input stream
 			}
 			cmd.setSampleRate(sampleRate);
 			
 			Integer pipeSize = newSettings.getPipeSize();
+			this.settings.setPipeSize(pipeSize);
 			if (pipeSize != null) {
 				cmd.setPipeSize(pipeSize);
 			}
+			
+			// cannot change connectionID at this time
 		}
 	}
 
 	@Override
 	public void start() throws CoreException {
-		BulkIOUtilActivator.getBulkIOPortConnectionManager().connect(ior, bulkIOType, bulkIOPort, settings.getConnectionID());
+		String connectionID = BulkIOUtilActivator.getBulkIOPortConnectionManager().connect(ior, bulkIOType, bulkIOPort, settings.getConnectionID());
+		this.settings.setConnectionID(connectionID);
 	}
 
 	@Override
@@ -206,7 +209,7 @@ public class BulkIONxmBlock extends AbstractNxmBlock<corbareceiver2> {
 			switches.append("/TLL=").append(timeLineLen);
 		}
 		String customConnectionId = settings.getConnectionID();
-		if (customConnectionId != null) {
+		if (customConnectionId != null && customConnectionId.trim().length() > 0) {
 			customConnectionId = StringUtil.escapeString(customConnectionId, true);
 			switches.append("/CONNECTIONID=\"").append(customConnectionId).append('\"');
 		}

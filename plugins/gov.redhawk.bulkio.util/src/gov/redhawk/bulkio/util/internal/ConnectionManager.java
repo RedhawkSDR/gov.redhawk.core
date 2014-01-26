@@ -32,12 +32,12 @@ public enum ConnectionManager implements IBulkIOPortConnectionManager {
 	private Map<ConnectionKey, Connection> connections = new ConcurrentHashMap<ConnectionKey, Connection>();
 
 	@Override
-	public void connect(String ior, BulkIOType type, updateSRIOperations internalPort) throws CoreException {
-		connect(ior, type, internalPort, null);
+	public String connect(String ior, BulkIOType type, updateSRIOperations internalPort) throws CoreException {
+		return connect(ior, type, internalPort, null);
 	}
 
 	@Override
-	public void connect(String ior, BulkIOType type, updateSRIOperations internalPort, String connectionID) throws CoreException {
+	public String connect(String ior, BulkIOType type, updateSRIOperations internalPort, String connectionID) throws CoreException {
 		if (ior == null || internalPort == null) {
 			throw new IllegalArgumentException("Null ior or port implemention.");
 		}
@@ -57,6 +57,7 @@ public enum ConnectionManager implements IBulkIOPortConnectionManager {
 		if (initConnection) {
 			connection.connectPort();
 		}
+		return connection.getConnectionId();
 	}
 	
 	@Override

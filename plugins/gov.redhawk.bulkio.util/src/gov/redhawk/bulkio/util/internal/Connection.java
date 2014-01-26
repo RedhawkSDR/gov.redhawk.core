@@ -111,6 +111,10 @@ public class Connection extends AbstractUberBulkIOPort {
 		}
 	}
 
+	public String getConnectionId() {
+		return connectionId;
+	}
+
 	private static String createConnectionID() {
 		return System.getProperty("user.name", "user") + "_" + System.currentTimeMillis();
 	}

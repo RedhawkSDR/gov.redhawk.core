@@ -24,12 +24,12 @@ public interface IBulkIOPortConnectionManager {
 	/**
 	 * @since 2.0
 	 */
-	void connect(@NonNull String ior, @NonNull BulkIOType type, @NonNull updateSRIOperations internalPort) throws CoreException;
+	String connect(@NonNull String ior, @NonNull BulkIOType type, @NonNull updateSRIOperations internalPort) throws CoreException;
 	
 	/**
 	 * @since 2.0
 	 */
-	void connect(@NonNull String ior, @NonNull BulkIOType type, @NonNull updateSRIOperations internalPort, @Nullable String connectionID) throws CoreException;
+	String connect(@NonNull String ior, @NonNull BulkIOType type, @NonNull updateSRIOperations internalPort, @Nullable String connectionID) throws CoreException;
 
 	/**
 	 * @since 2.0
