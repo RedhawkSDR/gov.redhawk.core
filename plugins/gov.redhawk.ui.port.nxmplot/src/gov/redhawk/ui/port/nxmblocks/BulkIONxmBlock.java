@@ -42,9 +42,9 @@ public class BulkIONxmBlock extends AbstractNxmBlock<corbareceiver2> {
 	private BulkIONxmBlockSettings settings;
 
 	private ScaUsesPort scaPort;
-	private final BulkIOPort bulkIOPort = new BulkIOPort(); 
+	private final BulkIOPort bulkIOPort = new BulkIOPort();
 	private final String ior;
-	private final BulkIOType bulkIOType; 
+	private final BulkIOType bulkIOType;
 
 	class BulkIOPort extends AbstractUberBulkIOPort {
 
@@ -107,7 +107,7 @@ public class BulkIONxmBlock extends AbstractNxmBlock<corbareceiver2> {
 
 	} // end inner class BulkIOPort
 
-	/** 
+	/**
 	 * @param settings
 	 */
 	public BulkIONxmBlock(@NonNull AbstractNxmPlotWidget plotWidget, @NonNull ScaUsesPort scaUsesPort, @NonNull BulkIONxmBlockSettings settings) {
@@ -175,7 +175,10 @@ public class BulkIONxmBlock extends AbstractNxmBlock<corbareceiver2> {
 	@Override
 	public void start() throws CoreException {
 		String connectionID = BulkIOUtilActivator.getBulkIOPortConnectionManager().connect(ior, bulkIOType, bulkIOPort, settings.getConnectionID());
-		this.settings.setConnectionID(connectionID);
+		if (settings.getConnectionID() == null) {
+			settings.setConnectionID(""); // to make adjust Connection ID field read-only as it cannot be changed dynamically right now
+		}
+//		this.settings.setConnectionID(connectionID); // <-- TODO: why does this cause connection to deadlock later in corbareceiver2.open()?
 	}
 
 	@Override
@@ -193,11 +196,11 @@ public class BulkIONxmBlock extends AbstractNxmBlock<corbareceiver2> {
 	}
 
 	// =========================================================================
-	@Override 
+	@Override
 	protected String formCmdLine(@NonNull AbstractNxmPlotWidget plotWidget, String streamID) {
 
 		String outputName = AbstractNxmPlotWidget.createUniqueName(true);
-		putOutputNameMapping(0, streamID, outputName); // save output name mapping 
+		putOutputNameMapping(0, streamID, outputName); // save output name mapping
 
 		final StringBuilder switches = new StringBuilder("/POLL=0.1");
 		final Integer pipeSize = settings.getPipeSize(); // in bytes

@@ -71,6 +71,7 @@ public class BulkIONxmBlockControls {
 		connectionIDField.setToolTipText("Custom Port connection ID to use vs a generated one.");
 		if (this.settings.getConnectionID() != null) {
 			connectionIDField.setEditable(false); // cannot change custom connection ID after it has been set at this time
+			connectionIDField.setEnabled(false);
 		}
 
 		// === sample rate ===
