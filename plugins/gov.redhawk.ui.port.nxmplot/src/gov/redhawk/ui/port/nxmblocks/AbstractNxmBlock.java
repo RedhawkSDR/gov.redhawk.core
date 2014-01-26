@@ -44,7 +44,7 @@ import BULKIO.StreamSRI;
  * <br>
  * C is the NeXtMidas Command that should have been launch.
  * @noreference This class is provisional/beta and is subject to API changes
- * @since 4.3
+ * @since 4.4
  */
 public abstract class AbstractNxmBlock<C extends Command> implements INxmBlock {
 

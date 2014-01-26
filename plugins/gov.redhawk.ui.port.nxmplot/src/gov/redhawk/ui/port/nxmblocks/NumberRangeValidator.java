@@ -1,11 +1,11 @@
 /*******************************************************************************
- * This file is protected by Copyright. 
+ * This file is protected by Copyright.
  * Please refer to the COPYRIGHT file distributed with this source distribution.
  *
  * This file is part of REDHAWK IDE.
  *
- * All rights reserved.  This program and the accompanying materials are made available under 
- * the terms of the Eclipse Public License v1.0 which accompanies this distribution, and is available at 
+ * All rights reserved.  This program and the accompanying materials are made available under
+ * the terms of the Eclipse Public License v1.0 which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *******************************************************************************/
 package gov.redhawk.ui.port.nxmblocks;
@@ -21,13 +21,13 @@ import org.eclipse.jdt.annotation.NonNull;
  * The min and max range can be inclusive or exclusive independently.
  * <br>
  * C should be a class that extends Number (e.g. Integer, Double).
- * @since 4.3 (package-private for now)
+ * @since 4.4 (package-private for now)
  */
 class NumberRangeValidator<C extends Comparable<? super C>> implements IValidator {
 	private final Class<? extends Number> numberClass;
 	private String fieldName;
 	private boolean allowNull = true;
-	/** minimum number allowed if specified. */ 
+	/** minimum number allowed if specified. */
 	private C minValue;
 	/** maximum number allowed if specified. */
 	private C maxValue;
@@ -65,11 +65,11 @@ class NumberRangeValidator<C extends Comparable<? super C>> implements IValidato
 		} else {
 			@SuppressWarnings("unchecked") // OK: since we do instanceof check above using Class.isAssignableFrom(..)
 			C val = (C) value;
-			if (minValue != null) { 
+			if (minValue != null) {
 				int compareToResults = minValue.compareTo(val);
 				if (inclusiveMin && compareToResults > 0) {           // inclusive min value check
 					return ValidationStatus.error(fieldName + " must be greater than or equal to " + minValue);
-				} else if (!inclusiveMin && compareToResults >= 0) {  // exclusive min value check 
+				} else if (!inclusiveMin && compareToResults >= 0) {  // exclusive min value check
 					return ValidationStatus.error(fieldName + " must be greater than " + minValue);
 				}
 			}

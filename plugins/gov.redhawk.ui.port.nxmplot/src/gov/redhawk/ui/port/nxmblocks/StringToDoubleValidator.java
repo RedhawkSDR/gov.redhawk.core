@@ -1,11 +1,11 @@
 /*******************************************************************************
- * This file is protected by Copyright. 
+ * This file is protected by Copyright.
  * Please refer to the COPYRIGHT file distributed with this source distribution.
  *
  * This file is part of REDHAWK IDE.
  *
- * All rights reserved.  This program and the accompanying materials are made available under 
- * the terms of the Eclipse Public License v1.0 which accompanies this distribution, and is available at 
+ * All rights reserved.  This program and the accompanying materials are made available under
+ * the terms of the Eclipse Public License v1.0 which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *******************************************************************************/
 package gov.redhawk.ui.port.nxmblocks;
@@ -16,7 +16,7 @@ import org.eclipse.core.runtime.IStatus;
 /**
  * Used before custom converter in data bindings (e.g. afterGetValidator when value from widget is still a String).
  * @NonNullByDefault
- * @since 4.3 (package-private for now)
+ * @since 4.4 (package-private for now)
  */
 class StringToDoubleValidator extends AllowableStringValidator {
 	
@@ -60,6 +60,6 @@ class StringToDoubleValidator extends AllowableStringValidator {
 		} catch (NumberFormatException nfe) {
 			return ValidationStatus.error(getFieldName() + " must be a floating point number.");
 		}
-		return ValidationStatus.ok(); 
+		return ValidationStatus.ok();
 	}
 }

@@ -46,7 +46,7 @@ import CF.PortPackage.OccupiedPort;
 
 /**
  * @noreference This class is provisional/beta and is subject to API changes
- * @since 4.3
+ * @since 4.4
  */
 public class BulkIOSddsNxmBlock extends SddsNxmBlock {
 
@@ -86,13 +86,14 @@ public class BulkIOSddsNxmBlock extends SddsNxmBlock {
 			}
 
 			// run in background so we don't further block our caller
-			Job job = new Job("launching bulkio sdds stream " + streamID) {
+			Job job = new Job("launching BULKIO SDDS stream: " + streamID) {
 				@Override
 				protected IStatus run(IProgressMonitor monitor) {
 					launch(streamID, sri);
 					return Status.OK_STATUS;
 				}
 			};
+			job.setUser(false);
 			job.schedule(0);
 		}
 
@@ -111,7 +112,7 @@ public class BulkIOSddsNxmBlock extends SddsNxmBlock {
 		@Override
 		protected void handleStreamSRIChanged(@NonNull String streamID, @Nullable StreamSRI oldSri, @NonNull StreamSRI newSri) {
 			TRACE_LOG.enteringMethod(streamID, oldSri, newSri);
-			// TODO Auto-generated method stub
+			// TODO: what should we do here?
 		}
 
 	} // inner class SddsPort

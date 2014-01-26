@@ -25,7 +25,7 @@ import org.eclipse.swt.widgets.Composite;
 /**
  * SDDS (UDP/Multicast) source NXM block.
  * @noreference This class is provisional/beta and is subject to API changes
- * @since 4.3
+ * @since 4.4
  */
 public class SddsNxmBlock extends AbstractNxmBlock<sourcenic> {
 

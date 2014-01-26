@@ -36,7 +36,7 @@ import org.eclipse.swt.widgets.Text;
  * Adjust/override BULKIO NXM block settings user interface/entry control widgets.
  * @NonNullByDefault
  * @noreference This class is provisional/beta and is subject to API changes
- * @since 4.3
+ * @since 4.4
  */
 public class BulkIONxmBlockControls {
 

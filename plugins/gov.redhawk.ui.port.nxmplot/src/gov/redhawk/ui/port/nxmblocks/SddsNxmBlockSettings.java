@@ -18,7 +18,7 @@ import org.eclipse.jdt.annotation.NonNull;
 /**
  * SDDS (UDP/Multicast) source settings.
  * @noreference This class is provisional/beta and is subject to API changes
- * @since 4.3
+ * @since 4.4
  */
 public class SddsNxmBlockSettings implements Cloneable {
 	public static final String PROP_DATA_BYTE_ORDER = "dataByteOrder";

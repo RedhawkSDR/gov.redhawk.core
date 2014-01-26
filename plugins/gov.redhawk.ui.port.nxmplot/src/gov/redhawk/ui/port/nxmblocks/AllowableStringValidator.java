@@ -17,7 +17,7 @@ import org.eclipse.jdt.annotation.NonNull;
 
 /**
  * Used before custom converter in data bindings (e.g. afterGetValidator when value from widget is still a String).
- * @since 4.3 (package-private for now)
+ * @since 4.4 (package-private for now)
  */
 class AllowableStringValidator implements IValidator {
 
@@ -67,7 +67,7 @@ class AllowableStringValidator implements IValidator {
 
 	/** subclasses should override this to do the actual String to Number validation. */
 	public IStatus doValidate(String value) {
-		return ValidationStatus.ok(); 
+		return ValidationStatus.ok();
 	}
 
 }

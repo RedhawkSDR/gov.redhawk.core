@@ -24,7 +24,7 @@ import org.eclipse.swt.widgets.Composite;
 
 /**
  * @noreference This class is provisional/beta and is subject to API changes
- * @since 4.3
+ * @since 4.4
  */
 public class FftNxmBlock extends AbstractNxmBlock<fft> {
 	private FftNxmBlockSettings settings;
@@ -79,7 +79,7 @@ public class FftNxmBlock extends AbstractNxmBlock<fft> {
 
 		String inputName1  = inBlockIndexPair1.getBlock().getOutputName(inBlockIndexPair1.getIndex(), streamID);
 		String outputName1 = AbstractNxmPlotWidget.createUniqueName(true);
-		putOutputNameMapping(0, streamID, outputName1);     // save output 1 name mapping 
+		putOutputNameMapping(0, streamID, outputName1);     // save output 1 name mapping
 
 		String inputName2;
 		String outputName2;

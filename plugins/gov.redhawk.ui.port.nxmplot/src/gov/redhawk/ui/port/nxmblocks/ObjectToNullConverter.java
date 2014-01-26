@@ -1,11 +1,11 @@
 /*******************************************************************************
- * This file is protected by Copyright. 
+ * This file is protected by Copyright.
  * Please refer to the COPYRIGHT file distributed with this source distribution.
  *
  * This file is part of REDHAWK IDE.
  *
- * All rights reserved.  This program and the accompanying materials are made available under 
- * the terms of the Eclipse Public License v1.0 which accompanies this distribution, and is available at 
+ * All rights reserved.  This program and the accompanying materials are made available under
+ * the terms of the Eclipse Public License v1.0 which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *******************************************************************************/
 package gov.redhawk.ui.port.nxmblocks;
@@ -16,9 +16,9 @@ import org.eclipse.jdt.annotation.NonNull;
 
 /**
  * Wrap an optional existing {@link IConverter} to convert values, overriding it to convert
- * specified Object values (e.g. "default" String) to null. This uses's the value Object's equals(..) 
+ * specified Object values (e.g. "default" String) to null. This uses's the value Object's equals(..)
  * method to compare for equality for converting it to null.
- * If converter is null, it uses the {@link String#valueOf(Object)) conversion of the fromObject 
+ * If converter is null, it uses the {@link String#valueOf(Object)) conversion of the fromObject
  * (i.e. a plain vanilla ObjectToStringConverter).
  * <li>
  *   Has option to convert null fromObject to null (since StringToNumberConverter throws
@@ -27,7 +27,7 @@ import org.eclipse.jdt.annotation.NonNull;
  * <li>
  *   Has option to convert blank/empty String fromObject (regardless of whitespace) to null.
  * </li>
- * @since 4.3 (package-private for now)
+ * @since 4.4 (package-private for now)
  */
 class ObjectToNullConverter extends Converter {
 	private final boolean nullToNull;

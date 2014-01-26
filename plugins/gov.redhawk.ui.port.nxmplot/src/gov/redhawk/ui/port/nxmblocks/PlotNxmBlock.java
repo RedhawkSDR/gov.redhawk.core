@@ -32,7 +32,7 @@ import BULKIO.StreamSRI;
 
 /**
  * @noreference This class is provisional/beta and is subject to API changes
- * @since 4.3
+ * @since 4.4
  */
 public class PlotNxmBlock extends AbstractNxmBlock<plot> {
 

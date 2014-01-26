@@ -29,7 +29,7 @@ import org.eclipse.swt.widgets.Label;
 /**
  * Adjust/override SDDS NXM block settings user entry dialog.
  * @noreference This class is provisional/beta and is subject to API changes
- * @since 4.3
+ * @since 4.4
  */
 public class SddsNxmBlockControls {
 

@@ -15,7 +15,7 @@ import org.eclipse.jdt.annotation.NonNull;
 
 /**
  * @noreference This class is provisional/beta and is subject to API changes
- * @since 4.3
+ * @since 4.4
  */
 public class PlotNxmBlockSettings implements Cloneable {
 	public static final String PROP_FRAME_SIZE = "frameSize";

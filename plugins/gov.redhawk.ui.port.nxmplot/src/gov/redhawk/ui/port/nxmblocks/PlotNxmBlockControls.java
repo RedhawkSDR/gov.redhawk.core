@@ -35,7 +35,7 @@ import org.eclipse.swt.widgets.Label;
  * Adjust/override INxmBlock settings to plot user entry dialog.
  * @NonNullByDefault
  * @noreference This class is provisional/beta and is subject to API changes
- * @since 4.3
+ * @since 4.4
  */
 public class PlotNxmBlockControls {
 
