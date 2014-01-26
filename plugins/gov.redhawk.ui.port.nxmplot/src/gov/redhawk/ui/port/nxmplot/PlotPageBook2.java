@@ -577,7 +577,6 @@ public class PlotPageBook2 extends Composite {
 			};
 			job.schedule();
 		}
-		this.source2NxmBlocks.clear();
 	}
 
 	/**
