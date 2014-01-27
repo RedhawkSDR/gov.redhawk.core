@@ -46,10 +46,10 @@ import BULKIO.StreamSRI;
 public abstract class AbstractNxmPlotWidget extends Composite {
 	/** index to create unique results name. */
 	private static final AtomicInteger NAME_INDEX = new AtomicInteger();
-	
+
 	/** index to create unique pipe name. */
 	private static final AtomicInteger PIPE_NAME_INDEX = new AtomicInteger();
-	
+
 	private StreamSRI activeSRI;
 	private PlotSettings plotSettings = new PlotSettings();
 	private final Map<String, IPlotSession> inputSessions = Collections.synchronizedMap(new HashMap<String, IPlotSession>());
@@ -214,7 +214,7 @@ public abstract class AbstractNxmPlotWidget extends Composite {
 	}
 
 	public abstract String addDataFeature(Number xStart, Number xEnd, String color);
-	
+
 	/**
 	 * @since 4.4
 	 */
@@ -309,7 +309,7 @@ public abstract class AbstractNxmPlotWidget extends Composite {
 	 * @since 4.4
 	 */
 	public abstract Command runGlobalCommand(String command);
-	
+
 	/**
 	 * @param sourcePipeId The nxm source pipe to add
 	 * @deprecated Use {@link #addSource(String, String, IPlotSession)} instead
@@ -318,7 +318,7 @@ public abstract class AbstractNxmPlotWidget extends Composite {
 	public final void addSource(String sourcePipeId) {
 		addSource(sourcePipeId, null);
 	}
-	
+
 	/**
 	 * @param sourcePipeId The nxm source pipe to add
 	 * @param pipeQualifiers The pipe qualifiers to use for this source
@@ -372,7 +372,9 @@ public abstract class AbstractNxmPlotWidget extends Composite {
 		if (session != null) {
 			session.dispose();
 		} else {
-//			sendPlotMessage("CLOSEFILE", 0, sourcePipeId);
+			// PASS
+			// TODO
+			//			sendPlotMessage("CLOSEFILE", 0, sourcePipeId);
 		}
 
 	}
@@ -395,7 +397,7 @@ public abstract class AbstractNxmPlotWidget extends Composite {
 	 * @since 4.0
 	 */
 	public static String createUniqueName() {
-		return createUniqueName(true);
+		return AbstractNxmPlotWidget.createUniqueName(true);
 	}
 
 	/**
@@ -405,9 +407,9 @@ public abstract class AbstractNxmPlotWidget extends Composite {
 	 */
 	public static String createUniqueName(boolean pipe) {
 		if (pipe) {
-			return "_UNIQUE_PIPE" + PIPE_NAME_INDEX.incrementAndGet();
+			return "_UNIQUE_PIPE" + AbstractNxmPlotWidget.PIPE_NAME_INDEX.incrementAndGet();
 		} else {
-			return "UNIQUE_NAME" + NAME_INDEX.incrementAndGet();
+			return "UNIQUE_NAME" + AbstractNxmPlotWidget.NAME_INDEX.incrementAndGet();
 		}
 	}
 
@@ -542,14 +544,14 @@ public abstract class AbstractNxmPlotWidget extends Composite {
 				String newValue = (enablePlotMenu) ? "-NoMiddleMouse" : "+NoMiddleMouse";
 				sendPlotMessage("SET.MW.EventFilter", 0, newValue);
 			}
-			
+
 			if (plotMode != this.plotSettings.getPlotMode()) { // can use == comparator for Enums
 				this.plotSettings.setPlotMode(plotMode);
 				if (plotMode != null) { // cannot go back to default as we don't know what it was
 					sendPlotMessage("SET.MODE", 0, plotMode.toModeString());
 				}
 			}
-			
+
 			if (plotType != null && changedType) {
 				sendPlotMessage("SET.PlotType", 0, plotType.toString());
 			}
@@ -604,7 +606,7 @@ public abstract class AbstractNxmPlotWidget extends Composite {
 			fftSettingsTbl.put("NFFT", fftSettings.getTransformSize()); // do this last as this can cause a restart
 			msgData.put("FFT", fftSettingsTbl);
 
-			for (IPlotSession session: inputSessions.values()) {
+			for (IPlotSession session : inputSessions.values()) {
 				if (session instanceof PlotSession) {
 					String cmdID = ((PlotSession) session).getCommandId();
 					sendMessageToCommand(cmdID, "CHANGE_SETTINGS", 0, msgData, null);
