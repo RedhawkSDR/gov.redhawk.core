@@ -25,6 +25,10 @@ import nxm.sys.lib.StringUtil;
 
 import org.eclipse.core.databinding.DataBindingContext;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
+import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.swt.widgets.Composite;
 
@@ -49,10 +53,18 @@ public class BulkIONxmBlock extends AbstractNxmBlock<corbareceiver2> {
 	class BulkIOPort extends AbstractUberBulkIOPort {
 
 		@Override
-		protected void handleStreamSRIChanged(String streamID, StreamSRI oldSri, StreamSRI newSri) {
+		protected void handleStreamSRIChanged(final String streamID, final StreamSRI oldSri, final StreamSRI newSri) {
 			TRACE_LOG.enteringMethod(streamID, oldSri, newSri);
 			if (oldSri == null) { // only launch for a new stream
-				launch(streamID, newSri);
+				// run in background so we don't further block our caller and cause potential deadlock
+				Job job = new Job("launching stream [" + streamID + "] to plot") {
+					@Override
+					protected IStatus run(IProgressMonitor monitor) {
+						launch(streamID, newSri);
+						return Status.OK_STATUS;
+					}
+				};
+				job.schedule(0);
 			}
 		}
 
@@ -173,10 +185,10 @@ public class BulkIONxmBlock extends AbstractNxmBlock<corbareceiver2> {
 	@Override
 	public void start() throws CoreException {
 		String connectionID = BulkIOUtilActivator.getBulkIOPortConnectionManager().connect(ior, bulkIOType, bulkIOPort, settings.getConnectionID());
-		if (settings.getConnectionID() == null) {
-			settings.setConnectionID(""); // to make adjust Connection ID field read-only as it cannot be changed dynamically right now
+		if (connectionID == null) {
+			connectionID = ""; // set non-null value so that Connection ID field in adjust settings is read-only
 		}
-//		this.settings.setConnectionID(connectionID); // <-- TODO: why does this cause connection to deadlock later in corbareceiver2.open()?
+		this.settings.setConnectionID(connectionID);
 	}
 
 	@Override
