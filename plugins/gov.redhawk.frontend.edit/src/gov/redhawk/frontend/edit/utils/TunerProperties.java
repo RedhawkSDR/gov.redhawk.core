@@ -186,13 +186,17 @@ public enum TunerProperties {
 		}
 
 		public static void updateDeviceValue(TunerStatus tuner, Notification notification) {
-			// Don't reflect to device on initialization
-			if (notification.getOldValue() == null) {
+			// Don't reflect to device on initialization or if no change is being made
+			if (notification.getOldValue() == null || notification.getOldValue().equals(notification.getNewValue())) {
 				return;
 			}
 			
 			// parse out the control id 
 			String allocationID = tuner.getAllocationID();
+			if (allocationID == null || allocationID.equals("") || allocationID.length() == 0) {
+				return;
+			}
+			
 			int endControlIndex = allocationID.indexOf(',');
 			if (endControlIndex > 0) {
 				allocationID = allocationID.substring(0, endControlIndex);
@@ -249,24 +253,6 @@ public enum TunerProperties {
 			alreadyAllocated.setText("Property Not Modified");
 			alreadyAllocated.open();
 		}
-
-		//	public static TunerStatusAllocationProperties getProperty(EAttribute attribute) {
-		//		for (TunerStatusAllocationProperties prop : TunerStatusAllocationProperties.values()) {
-		//			if (prop.feiPropertyAttribute == attribute) {
-		//				return prop;
-		//			}
-		//		}
-		//		return null;
-		//	}
-		//
-		//	public static TunerStatusAllocationProperties getProperty(ScaSimpleProperty scaProp) {
-		//		for (TunerStatusAllocationProperties prop : TunerStatusAllocationProperties.values()) {
-		//			if (prop.getId().equals(scaProp.getId())) {
-		//				return prop;
-		//			}
-		//		}
-		//		return null;
-		//	}
 	}
 
 	public enum TunerAllocationProperties {

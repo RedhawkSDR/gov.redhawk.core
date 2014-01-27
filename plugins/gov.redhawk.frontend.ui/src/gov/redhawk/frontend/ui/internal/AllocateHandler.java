@@ -98,9 +98,9 @@ public class AllocateHandler extends AbstractHandler implements IHandler {
 	}
 
 	private void showAdvancedAllocationWizard(ScaDevice<?> device, Shell shell) {
-		Object[] contents = TunerUtils.INSTANCE.getTunerContainer(device);
-		if (contents.length >= 1 && contents[0] instanceof TunerContainerImpl) {
-			TunerContainerImpl container = (TunerContainerImpl) contents[0];
+		TunerContainer contents = TunerUtils.INSTANCE.getTunerContainer(device);
+		if (contents != null && contents instanceof TunerContainerImpl) {
+			TunerContainerImpl container = (TunerContainerImpl) contents;
 			EList<TunerStatus> tuners = container.getTunerStatus();
 			TunerStatus[] tunerArray = tuners.toArray(new TunerStatus[0]);
 			WizardDialog dialog = new WizardDialog(shell, new TunerAllocationDetailWizard(tunerArray));
@@ -111,7 +111,7 @@ public class AllocateHandler extends AbstractHandler implements IHandler {
 	private TunerStatus[] filterUnsupportedTypes(TunerStatus[] tuners) {
 		List<TunerStatus> list = new ArrayList<TunerStatus>();
 		for (TunerStatus tuner : tuners) {
-			if (FrontEndUIActivator.supportedTunerTypes .contains(tuner.getTunerType())) {
+			if (FrontEndUIActivator.supportedTunerTypes.contains(tuner.getTunerType())) {
 				list.add(tuner);
 			}
 		}

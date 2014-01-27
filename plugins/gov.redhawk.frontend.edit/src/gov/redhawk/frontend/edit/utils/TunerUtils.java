@@ -21,13 +21,10 @@ import org.eclipse.emf.common.notify.impl.AdapterImpl;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.util.EContentAdapter;
+import org.eclipse.swt.widgets.Display;
+import org.eclipse.ui.PlatformUI;
 
-import CF.PortSupplierPackage.UnknownPort;
-import FRONTEND.BadParameterException;
-import FRONTEND.DigitalTuner;
 import FRONTEND.DigitalTunerHelper;
-import FRONTEND.FrontendException;
-import FRONTEND.NotSupportedException;
 
 public enum TunerUtils {
 	INSTANCE;
@@ -45,7 +42,7 @@ public enum TunerUtils {
 	 * @param device
 	 * @return container object for the devices tuners
 	 */
-	public Object[] getTunerContainer(final ScaDevice< ? > device) {
+	public TunerContainer getTunerContainer(final ScaDevice< ? > device) {
 		//Create model device and tuner container
 		ModelDevice modelDevice = FrontendFactory.eINSTANCE.createModelDevice();
 		modelDevice.setScaDevice(device);
@@ -69,7 +66,6 @@ public enum TunerUtils {
 					final TunerStatus tuner = FrontendFactory.eINSTANCE.createTunerStatus();
 					tuner.setTunerContainer(container);
 					tuner.setTunerStatusStruct(struct);
-					addNotificationAdapter(struct);
 					tuner.getSimples().addAll(struct.getSimples());
 					tuner.setTunerID(String.valueOf(tunerIndex));
 					tunerList.add(tuner);
@@ -79,7 +75,7 @@ public enum TunerUtils {
 						TunerStatusAllocationProperties.setValue(tuner, simple);
 					}
 
-					addNotificationAdapter(tuner);
+					addNotificationAdapter(tuner, struct);
 
 					// Create Listener Allocation
 					ScaSimpleProperty allocSimple = struct.getSimple("FRONTEND::tuner_status::allocation_id_csv");
@@ -102,109 +98,46 @@ public enum TunerUtils {
 					}
 				}
 
-				return new Object[] { container };
+				return container;
 			}
 		}
-		return new Object[0];
+		return null;
 	}
 
-	/**
-	 * Creates adapter to fire whenever model is updated
-	 * @param tuner Model Object
-	 */
-	private void addNotificationAdapter(final Object element) {
+	private void addNotificationAdapter(final TunerStatus tuner, ScaStructProperty struct) {
 
-		if (element instanceof TunerStatus) {
-			final TunerStatus tuner = (TunerStatus) element;
-			Adapter adapter = new AdapterImpl() {
-				@Override
-				public void notifyChanged(Notification notification) {
-					super.notifyChanged(notification);
-					TunerStatusAllocationProperties.updateDeviceValue(tuner, notification);
+		Adapter adapter = new AdapterImpl() {
+			@Override
+			public void notifyChanged(Notification notification) {
+				super.notifyChanged(notification);
+				TunerStatusAllocationProperties.updateDeviceValue(tuner, notification);
+			}
+		};
+		tuner.eAdapters().add(adapter);
+
+		Adapter structAdapter = new EContentAdapter() {
+			@Override
+			public void notifyChanged(Notification notification) {
+				super.notifyChanged(notification);
+				EAttribute attr = (EAttribute) notification.getFeature();
+				if (attr.getName().equals("ignoreRemoteSet")) {
+					return;
 				}
-			};
-			tuner.eAdapters().add(adapter);
-		}
-
-		if (element instanceof ScaStructProperty) {
-			ScaStructProperty struct = (ScaStructProperty) element;
-			EContentAdapter adapter = new EContentAdapter() {
 				
-				@Override
-				public void notifyChanged(Notification notification) {
-					super.notifyChanged(notification);
-					EAttribute attr = (EAttribute) notification.getFeature();
-					if (attr.getName().equals("ignoreRemoteSet")) {
-						return;
-					}
-//					if ("ScaSimpleProperty".equals(((EAttribute)notification.getFeature()).getEContainingClass().getName())) {
-//						ScaSimpleProperty simple = (ScaSimpleProperty) ((EAttribute)notification.getFeature()).getEContainingClass();
-//						System.out.println("Simple: " + simple.getId() + " -- " + simple.getValue());
-//					}
-					
-					System.out.println(((EAttribute)notification.getFeature()).getEContainingClass());
-					
-//					System.out.println(((EAttribute)notification.getFeature()).getEContainingClass() + " -- Old: " + notification.getOldValue() + " -- New: " + notification.getNewValue());
+				final Object notifier = notification.getNotifier();
+				if (notifier instanceof ScaSimpleProperty) {
+//					Display display = PlatformUI.getWorkbench().getDisplay();
+//					display.asyncExec(new Runnable() {
+//						
+//						@Override
+//						public void run() {
+							ScaSimpleProperty simple = (ScaSimpleProperty) notifier;
+							TunerStatusAllocationProperties.setValue(tuner, simple);
+//						}
+//					});
 				}
-			};
-			struct.eAdapters().add(adapter);
-		}
-	}
-
-	/**
-	 * TODO
-	 * Update tuner status struct with new property value
-	 * @param wrapper
-	 */
-	public static void updateTunerProperties(final TunerPropertyWrapper wrapper) {
-
-		String allocationID = wrapper.getTuner().getAllocationID();
-
-		// parse out the control id
-		int endChar = allocationID.indexOf(",");
-		if (endChar > 0) {
-			allocationID = allocationID.substring(0, 10);
-		}
-
-		ScaDevice< ? > device = wrapper.getTuner().getTunerContainer().getModelDevice().getScaDevice();
-
-		org.omg.CORBA.Object port = null;
-
-		try {
-			port = device.getPort("DigitalTuner_in");
-		} catch (UnknownPort e1) {
-			e1.printStackTrace();
-		}
-
-		DigitalTuner digitalTunerPort = DigitalTunerHelper.narrow(port);
-		try {
-			if (wrapper.getName().equals("AGC")) {
-				digitalTunerPort.setTunerAgcEnable(allocationID, wrapper.getTuner().isEnabled());
-			} else if (wrapper.getName().equals("Bandwidth")) {
-				digitalTunerPort.setTunerBandwidth(allocationID, wrapper.getTuner().getBandwidth());
-			} else if (wrapper.getName().equals("Center Frequency")) {
-				digitalTunerPort.setTunerCenterFrequency(allocationID, wrapper.getTuner().getCenterFrequency());
-			} else if (wrapper.getName().equals("Enabled")) {
-				digitalTunerPort.setTunerEnable(allocationID, wrapper.getTuner().isEnabled());
-			} else if (wrapper.getName().equals("Gain")) {
-				//Gain is double in model and documentation, but float in API
-				float gain = Float.parseFloat(String.valueOf(wrapper.getTuner().getGain()));
-				digitalTunerPort.setTunerGain(allocationID, gain);
-			} else if (wrapper.getName().equals("Reference Source")) {
-				//Reference Source is long in model and documentation, but int in API
-				int referenceSource = Integer.parseInt(String.valueOf(wrapper.getTuner().getReferenceSource()));
-				digitalTunerPort.setTunerReferenceSource(allocationID, referenceSource);
 			}
-		} catch (NumberFormatException e) {
-			// TODO - pass these exceptions to UI for transparency to user
-			e.printStackTrace();
-		} catch (FrontendException e) {
-			e.printStackTrace();
-		} catch (BadParameterException e) {
-			e.printStackTrace();
-		} catch (NotSupportedException e) {
-			e.printStackTrace();
-		}
+		};
+		struct.eAdapters().add(structAdapter);
 	}
-
 }

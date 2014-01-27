@@ -11,26 +11,54 @@
  */
 package gov.redhawk.frontend.ui.internal;
 
+import java.util.ArrayList;
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.LinkedBlockingQueue;
+
 import gov.redhawk.frontend.ListenerAllocation;
 import gov.redhawk.frontend.TunerStatus;
 import gov.redhawk.frontend.edit.utils.TunerPropertyWrapper;
 import gov.redhawk.frontend.provider.FrontendItemProviderAdapterFactory;
+import gov.redhawk.model.sca.IDisposable;
 import gov.redhawk.sca.ui.ITooltipProvider;
+import gov.redhawk.sca.ui.ScaLabelProvider;
 import gov.redhawk.sca.ui.ScaModelAdapterFactoryLabelProvider;
 
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
+import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.emf.common.notify.AdapterFactory;
+import org.eclipse.emf.common.notify.Notification;
+import org.eclipse.emf.edit.provider.ComposedAdapterFactory;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.Point;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.IMemento;
 import org.eclipse.ui.navigator.ICommonContentExtensionSite;
 import org.eclipse.ui.navigator.IDescriptionProvider;
+import org.eclipse.ui.progress.UIJob;
 
 public class FrontEndLabelProvider extends ScaModelAdapterFactoryLabelProvider implements IDescriptionProvider, ITooltipProvider {
 
+	private boolean disposed;
+
 	public FrontEndLabelProvider() {
 		super(FrontEndLabelProvider.createAdapterFactory());
+		setFireLabelUpdateNotifications(true);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public void dispose() {
+		((ComposedAdapterFactory) this.adapterFactory).dispose();
+		this.adapterFactory = null;
+		this.disposed = true;
+		super.dispose();
 	}
 
 	@Override
@@ -51,6 +79,65 @@ public class FrontEndLabelProvider extends ScaModelAdapterFactoryLabelProvider i
 
 	private static AdapterFactory createAdapterFactory() {
 		return new FrontendItemProviderAdapterFactory();
+	}
+
+	private class LabelRefreshJob extends UIJob {
+		public LabelRefreshJob() {
+			super("Label update");
+			setSystem(true);
+			setPriority(Job.INTERACTIVE);
+		}
+
+		private final BlockingQueue<Notification> notificationQueue = new LinkedBlockingQueue<Notification>();
+
+		public void addNotification(final Notification notification) {
+			this.notificationQueue.offer(notification);
+			schedule();
+		}
+
+		@Override
+		public boolean shouldSchedule() {
+			return super.shouldSchedule() && !disposed;
+		}
+
+		@Override
+		public boolean shouldRun() {
+			return super.shouldRun() && !disposed;
+		}
+
+		@Override
+		public IStatus runInUIThread(final IProgressMonitor monitor) {
+			if (disposed) {
+				return Status.CANCEL_STATUS;
+			}
+			final ArrayList<Notification> notifications = new ArrayList<Notification>();
+			this.notificationQueue.drainTo(notifications);
+			for (final Notification notification : notifications) {
+				if (notification.getNotifier() instanceof IDisposable) {
+					final IDisposable disposable = (IDisposable) notification.getNotifier();
+					if (disposable.isDisposed()) {
+						continue;
+					}
+				}
+				notifyChanged(notification);
+			}
+			return Status.OK_STATUS;
+		}
+
+	}
+
+	private final LabelRefreshJob labelRefresh = new LabelRefreshJob();
+
+	@Override
+	public void notifyChanged(final Notification notification) {
+		if (notification.isTouch()) {
+			return;
+		}
+		if (Display.getCurrent() != null) {
+			super.notifyChanged(notification);
+		} else {
+			this.labelRefresh.addNotification(notification);
+		}
 	}
 
 	@Override

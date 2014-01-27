@@ -74,7 +74,11 @@ public class FrontEndContentProvider extends ScaModelAdapterFactoryContentProvid
 		if (object instanceof ScaDevice< ? >) {
 			ScaDevice< ? > device = (ScaDevice< ? >) object;
 			if (device._is_a(DeviceHelper.id())) {
-				return TunerUtils.INSTANCE.getTunerContainer(device);
+				TunerContainer tunerContainer = TunerUtils.INSTANCE.getTunerContainer(device);
+				if (tunerContainer != null) {
+					return new Object[] { tunerContainer };
+				}
+				return new Object[0];
 			}
 		}
 
