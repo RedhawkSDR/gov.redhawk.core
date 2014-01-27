@@ -76,11 +76,11 @@ public class FrontendSection extends AbstractPropertySection {
 		
 		FrontendItemProviderAdapterFactory adapterFactory = new FrontendItemProviderAdapterFactory();
 
-//		viewer.setContentProvider(new AdapterFactoryContentProvider(adapterFactory));
+		viewer.setContentProvider(new AdapterFactoryContentProvider(adapterFactory));
+		//TODO
 //		viewer.setLabelProvider(new AdapterFactoryLabelProvider(adapterFactory));
-		viewer.setContentProvider(new FrontEndContentProvider());
+//		viewer.setContentProvider(new FrontEndContentProvider());
 		viewer.setLabelProvider(new FrontEndLabelProvider());
-		viewer.setAutoExpandLevel(2);
 
 	}
 

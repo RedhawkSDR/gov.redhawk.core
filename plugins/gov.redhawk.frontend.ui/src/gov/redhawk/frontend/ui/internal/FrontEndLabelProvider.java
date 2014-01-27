@@ -11,18 +11,17 @@
  */
 package gov.redhawk.frontend.ui.internal;
 
-import java.util.ArrayList;
-import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.LinkedBlockingQueue;
-
 import gov.redhawk.frontend.ListenerAllocation;
 import gov.redhawk.frontend.TunerStatus;
 import gov.redhawk.frontend.edit.utils.TunerPropertyWrapper;
 import gov.redhawk.frontend.provider.FrontendItemProviderAdapterFactory;
 import gov.redhawk.model.sca.IDisposable;
 import gov.redhawk.sca.ui.ITooltipProvider;
-import gov.redhawk.sca.ui.ScaLabelProvider;
 import gov.redhawk.sca.ui.ScaModelAdapterFactoryLabelProvider;
+
+import java.util.ArrayList;
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.LinkedBlockingQueue;
 
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;

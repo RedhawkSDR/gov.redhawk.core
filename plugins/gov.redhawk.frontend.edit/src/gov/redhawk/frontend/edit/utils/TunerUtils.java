@@ -21,8 +21,6 @@ import org.eclipse.emf.common.notify.impl.AdapterImpl;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.util.EContentAdapter;
-import org.eclipse.swt.widgets.Display;
-import org.eclipse.ui.PlatformUI;
 
 import FRONTEND.DigitalTunerHelper;
 
@@ -123,18 +121,11 @@ public enum TunerUtils {
 				if (attr.getName().equals("ignoreRemoteSet")) {
 					return;
 				}
-				
+
 				final Object notifier = notification.getNotifier();
 				if (notifier instanceof ScaSimpleProperty) {
-//					Display display = PlatformUI.getWorkbench().getDisplay();
-//					display.asyncExec(new Runnable() {
-//						
-//						@Override
-//						public void run() {
-							ScaSimpleProperty simple = (ScaSimpleProperty) notifier;
-							TunerStatusAllocationProperties.setValue(tuner, simple);
-//						}
-//					});
+					ScaSimpleProperty simple = (ScaSimpleProperty) notifier;
+					TunerStatusAllocationProperties.setValue(tuner, simple);
 				}
 			}
 		};
