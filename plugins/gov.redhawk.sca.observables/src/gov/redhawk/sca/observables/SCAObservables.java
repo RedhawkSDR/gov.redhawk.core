@@ -31,11 +31,14 @@ import mil.jpeojtrs.sca.util.math.ComplexULongLong;
 import mil.jpeojtrs.sca.util.math.ComplexUShort;
 
 import org.eclipse.core.databinding.observable.value.IObservableValue;
+import org.eclipse.emf.databinding.EObjectObservableValue;
 import org.eclipse.emf.databinding.edit.EditingDomainEObjectObservableValue;
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EDataType;
 import org.eclipse.emf.ecore.EcorePackage;
 import org.eclipse.emf.ecore.util.EcoreUtil;
+import org.eclipse.emf.edit.domain.EditingDomain;
+import org.eclipse.emf.transaction.TransactionalEditingDomain;
 import org.eclipse.emf.transaction.util.TransactionUtil;
 
 public class SCAObservables {
@@ -43,8 +46,17 @@ public class SCAObservables {
 	private SCAObservables() {
 		//Prevent instantiation
 	}
-
+	
 	public static IObservableValue observeSimpleProperty(final ScaComponent component, final String id) {
+		TransactionalEditingDomain domain = TransactionUtil.getEditingDomain(component);
+		return observeSimpleProperty(domain, component, id);
+		
+	}
+	
+	/**
+	 * @since 1.2
+	 */
+	public static IObservableValue observeSimpleProperty(EditingDomain domain, final ScaComponent component, final String id) {
 		if (component != null && !component.isDisposed() && id != null) {
 			final ScaSimpleProperty simple = (ScaSimpleProperty) component.getProperty(id);
 			return SCAObservables.observeSimpleProperty(simple);
@@ -52,8 +64,11 @@ public class SCAObservables {
 
 		return null;
 	}
-
-	public static IObservableValue observeSimpleProperty(final ScaSimpleProperty simple) {
+	
+	/**
+	 * @since 1.2
+	 */
+	public static IObservableValue observeSimpleProperty(EditingDomain domain, final ScaSimpleProperty simple) {
 		if (simple != null) {
 			final EDataType type;
 
@@ -69,16 +84,30 @@ public class SCAObservables {
 			} else {
 				attribute = ScaPackage.Literals.SCA_SIMPLE_PROPERTY__VALUE;
 			}
-
-			return new EditingDomainEObjectObservableValue(TransactionUtil.getEditingDomain(simple), simple, ScaPackage.Literals.SCA_SIMPLE_PROPERTY__VALUE) {
+			if (domain != null) {
+			return new EditingDomainEObjectObservableValue(domain, simple, ScaPackage.Literals.SCA_SIMPLE_PROPERTY__VALUE) {
 
 				@Override
 				public Object getValueType() {
 					return attribute;
 				}
 			};
+			} else {
+				return new EObjectObservableValue(simple, ScaPackage.Literals.SCA_SIMPLE_PROPERTY__VALUE) {
+
+					@Override
+					public Object getValueType() {
+						return attribute;
+					}
+				};	
+			}
 		}
 		return null;
+	}
+
+	public static IObservableValue observeSimpleProperty(final ScaSimpleProperty simple) {
+		TransactionalEditingDomain domain = TransactionUtil.getEditingDomain(simple);
+		return observeSimpleProperty(domain, simple);
 	}
 
 	/**
