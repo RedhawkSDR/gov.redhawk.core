@@ -41,9 +41,6 @@ import org.eclipse.ui.handlers.HandlerUtil;
  */
 public class AllocateHandler extends AbstractHandler implements IHandler {
 
-
-	private static final String PROP_FRONTEND_TUNER_STATUS = "FRONTEND::tuner_status";
-
 	/* (non-Javadoc)
 	 * @see org.eclipse.core.commands.IHandler#execute(org.eclipse.core.commands.ExecutionEvent)
 	 */
