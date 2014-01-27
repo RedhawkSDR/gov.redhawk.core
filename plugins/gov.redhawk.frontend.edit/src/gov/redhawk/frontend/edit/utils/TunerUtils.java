@@ -15,8 +15,11 @@ import java.util.List;
 
 import mil.jpeojtrs.sca.scd.Interface;
 
+import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.notify.Notification;
+import org.eclipse.emf.common.notify.impl.AdapterImpl;
 import org.eclipse.emf.common.util.EList;
+import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.util.EContentAdapter;
 
 import CF.PortSupplierPackage.UnknownPort;
@@ -66,6 +69,7 @@ public enum TunerUtils {
 					final TunerStatus tuner = FrontendFactory.eINSTANCE.createTunerStatus();
 					tuner.setTunerContainer(container);
 					tuner.setTunerStatusStruct(struct);
+					addNotificationAdapter(struct);
 					tuner.getSimples().addAll(struct.getSimples());
 					tuner.setTunerID(String.valueOf(tunerIndex));
 					tunerList.add(tuner);
@@ -77,7 +81,7 @@ public enum TunerUtils {
 
 					addNotificationAdapter(tuner);
 
-					// TODO add comment describing what is going on here
+					// Create Listener Allocation
 					ScaSimpleProperty allocSimple = struct.getSimple("FRONTEND::tuner_status::allocation_id_csv");
 					if (allocSimple == null) {
 						continue;
@@ -108,16 +112,43 @@ public enum TunerUtils {
 	 * Creates adapter to fire whenever model is updated
 	 * @param tuner Model Object
 	 */
-	private void addNotificationAdapter(final TunerStatus tuner) {
-		EContentAdapter adapter = new EContentAdapter() {
-			@Override
-			public void notifyChanged(Notification notification) {
-				super.notifyChanged(notification);
-				TunerStatusAllocationProperties.updateDeviceValue(tuner, notification);
-			}
-		};
-		tuner.eAdapters().add(adapter);
+	private void addNotificationAdapter(final Object element) {
 
+		if (element instanceof TunerStatus) {
+			final TunerStatus tuner = (TunerStatus) element;
+			Adapter adapter = new AdapterImpl() {
+				@Override
+				public void notifyChanged(Notification notification) {
+					super.notifyChanged(notification);
+					TunerStatusAllocationProperties.updateDeviceValue(tuner, notification);
+				}
+			};
+			tuner.eAdapters().add(adapter);
+		}
+
+		if (element instanceof ScaStructProperty) {
+			ScaStructProperty struct = (ScaStructProperty) element;
+			EContentAdapter adapter = new EContentAdapter() {
+				
+				@Override
+				public void notifyChanged(Notification notification) {
+					super.notifyChanged(notification);
+					EAttribute attr = (EAttribute) notification.getFeature();
+					if (attr.getName().equals("ignoreRemoteSet")) {
+						return;
+					}
+//					if ("ScaSimpleProperty".equals(((EAttribute)notification.getFeature()).getEContainingClass().getName())) {
+//						ScaSimpleProperty simple = (ScaSimpleProperty) ((EAttribute)notification.getFeature()).getEContainingClass();
+//						System.out.println("Simple: " + simple.getId() + " -- " + simple.getValue());
+//					}
+					
+					System.out.println(((EAttribute)notification.getFeature()).getEContainingClass());
+					
+//					System.out.println(((EAttribute)notification.getFeature()).getEContainingClass() + " -- Old: " + notification.getOldValue() + " -- New: " + notification.getNewValue());
+				}
+			};
+			struct.eAdapters().add(adapter);
+		}
 	}
 
 	/**

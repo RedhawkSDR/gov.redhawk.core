@@ -91,7 +91,6 @@ public class DeallocateHandler extends AbstractHandler implements IHandler {
 			} catch (InvalidState e) {
 				e.printStackTrace();
 			}
-			//TODO: Unset all the properties of the Tuner
 		}
 		if (obj instanceof TunerContainer) {
 			TunerContainer container = (TunerContainer) obj;

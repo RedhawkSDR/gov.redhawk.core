@@ -9,6 +9,10 @@ import mil.jpeojtrs.sca.prf.PropertyValueType;
 
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.ecore.EAttribute;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.widgets.MessageBox;
+import org.eclipse.swt.widgets.Shell;
+import org.eclipse.ui.PlatformUI;
 
 import CF.PortSupplierPackage.UnknownPort;
 import FRONTEND.BadParameterException;
@@ -30,13 +34,35 @@ public enum TunerProperties {
 		//  required properties
 		//	instance name			ID														PRF type				Human Readable Name
 		TUNER_TYPE("FRONTEND::tuner_status::tuner_type", PropertyValueType.STRING, "Tuner Type", FrontendPackage.Literals.TUNER_STATUS__TUNER_TYPE),
-		ALLOCATION_ID("FRONTEND::tuner_status::allocation_id_csv", PropertyValueType.STRING, "Allocation ID", FrontendPackage.Literals.TUNER_STATUS__ALLOCATION_ID),
-		CENTER_FREQUENCY("FRONTEND::tuner_status::center_frequency", PropertyValueType.DOUBLE, "Center Frequency", FrontendPackage.Literals.TUNER_STATUS__CENTER_FREQUENCY),
-		BANDWIDTH("FRONTEND::tuner_status::bandwidth", PropertyValueType.DOUBLE, "Bandwidth", FrontendPackage.Literals.TUNER_STATUS__BANDWIDTH),
-		SAMPLE_RATE("FRONTEND::tuner_status::sample_rate", PropertyValueType.DOUBLE, "Sample Rate", FrontendPackage.Literals.TUNER_STATUS__SAMPLE_RATE),
-		GROUP_ID("FRONTEND::tuner_status::group_id", PropertyValueType.STRING, "Group ID", FrontendPackage.Literals.TUNER_STATUS__GROUP_ID),
-		RF_FLOW_ID("FRONTEND::tuner_status::rf_flow_id", PropertyValueType.STRING, "RF Flow ID", FrontendPackage.Literals.TUNER_STATUS__RF_FLOW_ID),
-		ENABLED("FRONTEND::tuner_status::enabled", PropertyValueType.BOOLEAN, "Enabled", FrontendPackage.Literals.TUNER_STATUS__ENABLED),
+		ALLOCATION_ID(
+				"FRONTEND::tuner_status::allocation_id_csv",
+					PropertyValueType.STRING,
+					"Allocation ID",
+					FrontendPackage.Literals.TUNER_STATUS__ALLOCATION_ID), CENTER_FREQUENCY(
+				"FRONTEND::tuner_status::center_frequency",
+					PropertyValueType.DOUBLE,
+					"Center Frequency",
+					FrontendPackage.Literals.TUNER_STATUS__CENTER_FREQUENCY), BANDWIDTH(
+				"FRONTEND::tuner_status::bandwidth",
+					PropertyValueType.DOUBLE,
+					"Bandwidth",
+					FrontendPackage.Literals.TUNER_STATUS__BANDWIDTH), SAMPLE_RATE(
+				"FRONTEND::tuner_status::sample_rate",
+					PropertyValueType.DOUBLE,
+					"Sample Rate",
+					FrontendPackage.Literals.TUNER_STATUS__SAMPLE_RATE), GROUP_ID(
+				"FRONTEND::tuner_status::group_id",
+					PropertyValueType.STRING,
+					"Group ID",
+					FrontendPackage.Literals.TUNER_STATUS__GROUP_ID), RF_FLOW_ID(
+				"FRONTEND::tuner_status::rf_flow_id",
+					PropertyValueType.STRING,
+					"RF Flow ID",
+					FrontendPackage.Literals.TUNER_STATUS__RF_FLOW_ID), ENABLED(
+				"FRONTEND::tuner_status::enabled",
+					PropertyValueType.BOOLEAN,
+					"Enabled",
+					FrontendPackage.Literals.TUNER_STATUS__ENABLED),
 
 		//  optional properties
 		//	instance name			ID														PRF type
@@ -50,7 +76,11 @@ public enum TunerProperties {
 		AVAILABLE_BANDWIDTH("FRONTEND::tuner_status::available_bandwidth", PropertyValueType.STRING, "Available Bandwidth"),
 		AVAILABLE_GAIN("FRONTEND::tuner_status::available_gain", PropertyValueType.STRING, "Available Gain"),
 		AVAILABLE_SAMPLE_RATE("FRONTEND::tuner_status::available_sample_rate", PropertyValueType.STRING, "Available Sample Rate"),
-		REFERENCE_SOURCE("FRONTEND::tuner_status::reference_source", PropertyValueType.LONG, "Reference Source", FrontendPackage.Literals.TUNER_STATUS__REFERENCE_SOURCE),
+		REFERENCE_SOURCE(
+				"FRONTEND::tuner_status::reference_source",
+					PropertyValueType.LONG,
+					"Reference Source",
+					FrontendPackage.Literals.TUNER_STATUS__REFERENCE_SOURCE),
 		OUTPUT_FORMAT("FRONTEND::tuner_status::output_format", PropertyValueType.STRING, "Output Format"),
 		OUTPUT_MULTICAST("FRONTEND::tuner_status::output_multicast", PropertyValueType.STRING, "Output Multicast"),
 		OUTPUT_VLAN("FRONTEND::tuner_status::output_vlan", PropertyValueType.LONG, "Output VLan"),
@@ -87,7 +117,7 @@ public enum TunerProperties {
 		public String getName() {
 			return this.name;
 		}
-		
+
 		public EAttribute getFeiAttribute() {
 			return feiAttr;
 		}
@@ -164,21 +194,21 @@ public enum TunerProperties {
 			// parse out the control id 
 			String allocationID = tuner.getAllocationID();
 			int endControlIndex = allocationID.indexOf(',');
-			if (endControlIndex > 0 ) {
+			if (endControlIndex > 0) {
 				allocationID = allocationID.substring(0, endControlIndex);
 			}
-			
-			ScaDevice < ? > device = tuner.getTunerContainer().getModelDevice().getScaDevice();
+
+			ScaDevice< ? > device = tuner.getTunerContainer().getModelDevice().getScaDevice();
 			org.omg.CORBA.Object port = null;
-			
+
 			try {
 				port = device.getPort("DigitalTuner_in");
 			} catch (UnknownPort e1) {
 				e1.printStackTrace();
 			}
-			
+
 			DigitalTuner digitalTunerPort = DigitalTunerHelper.narrow(port);
-			
+
 			// TODO Check if old value is different from new value before reflecting back to device?
 			if (notification.getFeature() instanceof EAttribute) {
 				EAttribute feiAttr = (EAttribute) notification.getFeature();
@@ -201,17 +231,23 @@ public enum TunerProperties {
 						digitalTunerPort.setTunerReferenceSource(allocationID, referenceSource);
 					}
 				} catch (NumberFormatException e) {
-					// TODO - pass these exceptions to UI for transparency to user
-					// TODO - rollback tuner property if the device throws an exception
-					e.printStackTrace();
+					displayExceptionDialog(e);
 				} catch (FrontendException e) {
-					e.printStackTrace();
+					displayExceptionDialog(e);
 				} catch (BadParameterException e) {
-					e.printStackTrace();
+					displayExceptionDialog(e);
 				} catch (NotSupportedException e) {
-					e.printStackTrace();
+					displayExceptionDialog(e);
 				}
 			}
+		}
+
+		private static void displayExceptionDialog(Exception e) {
+			Shell shell = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell();
+			MessageBox alreadyAllocated = new MessageBox(shell, SWT.ICON_ERROR | SWT.OK);
+			alreadyAllocated.setMessage("An error has occurred: " + e);
+			alreadyAllocated.setText("Property Not Modified");
+			alreadyAllocated.open();
 		}
 
 		//	public static TunerStatusAllocationProperties getProperty(EAttribute attribute) {
