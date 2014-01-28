@@ -29,7 +29,6 @@ public enum TunerProperties {
 	INSTANCE;
 
 	public enum TunerStatusAllocationProperties {
-		// TODO Pull out unneeded properties (basically anything that will not be modified)
 
 		//  required properties
 		//	instance name			ID														PRF type				Human Readable Name
@@ -190,13 +189,13 @@ public enum TunerProperties {
 			if (notification.getOldValue() == null || notification.getOldValue().equals(notification.getNewValue())) {
 				return;
 			}
-			
+
 			// parse out the control id 
 			String allocationID = tuner.getAllocationID();
 			if (allocationID == null || allocationID.equals("") || allocationID.length() == 0) {
 				return;
 			}
-			
+
 			int endControlIndex = allocationID.indexOf(',');
 			if (endControlIndex > 0) {
 				allocationID = allocationID.substring(0, endControlIndex);
@@ -213,7 +212,6 @@ public enum TunerProperties {
 
 			DigitalTuner digitalTunerPort = DigitalTunerHelper.narrow(port);
 
-			// TODO Check if old value is different from new value before reflecting back to device?
 			if (notification.getFeature() instanceof EAttribute) {
 				EAttribute feiAttr = (EAttribute) notification.getFeature();
 				try {

@@ -155,7 +155,6 @@ public class FrontEndLabelProvider extends ScaModelAdapterFactoryLabelProvider i
 
 	@Override
 	public Image getToolTipImage(Object object) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
@@ -180,25 +179,21 @@ public class FrontEndLabelProvider extends ScaModelAdapterFactoryLabelProvider i
 
 	@Override
 	public Color getToolTipBackgroundColor(Object object) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public Color getToolTipForegroundColor(Object object) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public Font getToolTipFont(Object object) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public Point getToolTipShift(Object object) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
@@ -215,19 +210,16 @@ public class FrontEndLabelProvider extends ScaModelAdapterFactoryLabelProvider i
 
 	@Override
 	public int getToolTipTimeDisplayed(Object object) {
-		// TODO Auto-generated method stub
 		return 0;
 	}
 
 	@Override
 	public int getToolTipDisplayDelayTime(Object object) {
-		// TODO Auto-generated method stub
 		return 0;
 	}
 
 	@Override
 	public int getToolTipStyle(Object object) {
-		// TODO Auto-generated method stub
 		return 0;
 	}
 

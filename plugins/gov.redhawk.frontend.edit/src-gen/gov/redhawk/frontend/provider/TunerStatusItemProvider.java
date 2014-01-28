@@ -353,9 +353,9 @@ public class TunerStatusItemProvider extends ItemProviderAdapter implements IEdi
 	public Object getImage(Object object) {
 		String allocationID = ((TunerStatus) object).getAllocationID();
 		if (!(allocationID == null || allocationID.equals(""))) {
-			return overlayImage(object, getResourceLocator().getImage("full/obj16/TunerAllocated"));
+			return overlayImage(object, getResourceLocator().getImage("full/obj16/PingingFork"));
 		}
-		return overlayImage(object, getResourceLocator().getImage("full/obj16/TunerStatus"));
+		return overlayImage(object, getResourceLocator().getImage("full/obj16/TuningFork"));
 	}
 
 	/**
