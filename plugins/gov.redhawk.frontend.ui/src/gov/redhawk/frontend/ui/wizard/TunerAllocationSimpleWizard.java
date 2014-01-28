@@ -18,17 +18,24 @@ import CF.DevicePackage.InvalidState;
 
 public class TunerAllocationSimpleWizard extends Wizard {
 
-
 	private TunerStatus[] tuners;
 	private SimpleTunerAllocationWizardPage allocatePage;
+	private boolean listener;
+	private String targetId;
 
 	public TunerAllocationSimpleWizard(TunerStatus[] tuners) {
 		this.tuners = tuners;
 	}
+	
+	public TunerAllocationSimpleWizard(TunerStatus tuner, boolean listener, String targetId) {
+		this.tuners = new TunerStatus[] {tuner};
+		this.listener = listener;
+		this.targetId = targetId;
+	}
 
 	@Override
 	public void addPages() {
-		allocatePage = new SimpleTunerAllocationWizardPage(tuners);
+		allocatePage = new SimpleTunerAllocationWizardPage(tuners, listener, targetId);
 		addPage(allocatePage);
 	}
 

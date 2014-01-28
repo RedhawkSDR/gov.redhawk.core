@@ -135,7 +135,7 @@
             </visibleWhen>
          </command>
          <command
-               commandId="gov.redhawk.frontend.commands.allocate"
+               commandId="gov.redhawk.frontend.commands.addListener"
                label="Add Listener..."
                style="push">
             <visibleWhen
@@ -333,6 +333,11 @@
             defaultHandler="gov.redhawk.frontend.ui.internal.AllocateHandler"
             id="gov.redhawk.frontend.commands.allocateDetail"
             name="Allocate Detail...">
+      </command>
+      <command
+            defaultHandler="gov.redhawk.frontend.ui.internal.AddListenerHandler"
+            id="gov.redhawk.frontend.commands.addListener"
+            name="Add Listener...">
       </command>
    </extension>
    <extension
