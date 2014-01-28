@@ -22,6 +22,7 @@ public class TunerAllocationSimpleWizard extends Wizard {
 	private SimpleTunerAllocationWizardPage allocatePage;
 	private boolean listener;
 	private String targetId;
+	private ListenerAllocationWizardPage listenerPage;
 
 	public TunerAllocationSimpleWizard(TunerStatus[] tuners) {
 		this.tuners = tuners;
@@ -35,8 +36,13 @@ public class TunerAllocationSimpleWizard extends Wizard {
 
 	@Override
 	public void addPages() {
-		allocatePage = new SimpleTunerAllocationWizardPage(tuners, listener, targetId);
-		addPage(allocatePage);
+		if (listener) {
+			listenerPage = new ListenerAllocationWizardPage(targetId);
+			addPage(listenerPage);
+		} else {
+			allocatePage = new SimpleTunerAllocationWizardPage(tuners);
+			addPage(allocatePage);
+		}
 	}
 
 	@Override
@@ -44,7 +50,7 @@ public class TunerAllocationSimpleWizard extends Wizard {
 		ScaDevice<?> device = tuners[0].getTunerContainer().getModelDevice().getScaDevice();
 		boolean result = true;
 		StringBuilder sb = new StringBuilder();
-		DataType[] props = createAllocationProperties(allocatePage);
+		DataType[] props = createAllocationProperties();
 		String delim = "";
 		try {
 			if (!device.allocateCapacity(props)) {
@@ -70,23 +76,31 @@ public class TunerAllocationSimpleWizard extends Wizard {
 		if (!result) {
 			MessageDialog.openError(getShell(), "The Allocation was not successful", sb.toString());
 		} else {
-			MessageDialog.openInformation(getShell(), "Successful allocation", "The requested allocation has been accepted.");
+			MessageDialog.openInformation(getShell(), "Successful allocation", "You just allocated a Tuner! You're a Stud.");
 		}
 		return result;
 	}
 	
-	private DataType[] createAllocationProperties(SimpleTunerAllocationWizardPage page) {
+	private DataType[] createAllocationProperties() {
 		List<DataType> props = new ArrayList<DataType>();
 		ScaStructProperty struct;
 		DataType dt = new DataType();
-		if (page.getAllocationMode() == ALLOCATION_MODE.TUNER) {
-			struct = page.getTunerAllocationStruct();
-			dt.id = "FRONTEND::tuner_allocation";
-		} else {
+		if (listener) {
+			ListenerAllocationWizardPage page = listenerPage;
 			struct = page.getListenerAllocationStruct();
 			dt.id = "FRONTEND::listener_allocation";
+			dt.value = struct.toAny();
+		} else {
+			SimpleTunerAllocationWizardPage page = allocatePage;
+			if (page.getAllocationMode() == ALLOCATION_MODE.TUNER) {
+				struct = page.getTunerAllocationStruct();
+				dt.id = "FRONTEND::tuner_allocation";
+			} else {
+				struct = page.getListenerAllocationStruct();
+				dt.id = "FRONTEND::listener_allocation";
+			}
+			dt.value = struct.toAny();
 		}
-		dt.value = struct.toAny();
 		props.add(dt);
 		return props.toArray(new DataType[0]);
 	}
