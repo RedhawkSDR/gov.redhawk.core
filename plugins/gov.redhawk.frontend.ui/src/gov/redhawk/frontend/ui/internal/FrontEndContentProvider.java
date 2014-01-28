@@ -13,15 +13,10 @@ package gov.redhawk.frontend.ui.internal;
 
 import gov.redhawk.frontend.TunerContainer;
 import gov.redhawk.frontend.TunerStatus;
-import gov.redhawk.frontend.edit.utils.TunerPropertyWrapper;
 import gov.redhawk.frontend.edit.utils.TunerUtils;
 import gov.redhawk.frontend.provider.FrontendItemProviderAdapterFactory;
 import gov.redhawk.model.sca.ScaDevice;
-import gov.redhawk.model.sca.ScaSimpleProperty;
 import gov.redhawk.sca.ui.ScaModelAdapterFactoryContentProvider;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import org.eclipse.emf.common.notify.AdapterFactory;
 import org.eclipse.emf.common.notify.Notification;
@@ -39,34 +34,6 @@ public class FrontEndContentProvider extends ScaModelAdapterFactoryContentProvid
 
 	protected static AdapterFactory createAdapterFactory() {
 		return new FrontendItemProviderAdapterFactory();
-	}
-
-	public static TunerStatus currentSelection;
-
-	public static TunerStatus getCurrentSelection() {
-		return currentSelection;
-	}
-
-	@Override
-	public Object[] getElements(Object object) {
-		//Create TunerWrapper object that returns an array of TunerProperty objects to pass to the label provider
-		if (object instanceof TunerStatus) {
-			TunerStatus tuner = (TunerStatus) object;
-
-			currentSelection = tuner; // sets a static variable that is used by the allocate/deallocate handlers
-
-			List<TunerPropertyWrapper> tunerProperties = new ArrayList<TunerPropertyWrapper>();
-			for (ScaSimpleProperty simple : tuner.getSimples()) {
-				TunerPropertyWrapper prop = new TunerPropertyWrapper(tuner, simple);
-				tunerProperties.add(prop);
-			}
-
-			if (!tunerProperties.isEmpty()) {
-				return tunerProperties.toArray();
-			}
-
-		}
-		return super.getElements(object);
 	}
 
 	@Override

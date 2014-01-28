@@ -15,14 +15,12 @@ import gov.redhawk.frontend.TunerStatus;
 import gov.redhawk.frontend.edit.utils.TunerProperties.TunerStatusAllocationProperties;
 import gov.redhawk.frontend.edit.utils.TunerPropertyWrapper;
 import gov.redhawk.frontend.provider.FrontendItemProviderAdapterFactory;
-import gov.redhawk.frontend.ui.internal.FrontEndContentProvider;
 import gov.redhawk.frontend.ui.internal.FrontEndLabelProvider;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.emf.edit.ui.provider.AdapterFactoryContentProvider;
-import org.eclipse.emf.edit.ui.provider.AdapterFactoryLabelProvider;
 import org.eclipse.jface.layout.TreeColumnLayout;
 import org.eclipse.jface.viewers.CellEditor;
 import org.eclipse.jface.viewers.ColumnWeightData;
@@ -73,13 +71,10 @@ public class FrontendSection extends AbstractPropertySection {
 		viewer.getControl().setLayoutData(layoutData);
 
 		initializeColumns();
-		
+
 		FrontendItemProviderAdapterFactory adapterFactory = new FrontendItemProviderAdapterFactory();
 
 		viewer.setContentProvider(new AdapterFactoryContentProvider(adapterFactory));
-		//TODO
-//		viewer.setLabelProvider(new AdapterFactoryLabelProvider(adapterFactory));
-//		viewer.setContentProvider(new FrontEndContentProvider());
 		viewer.setLabelProvider(new FrontEndLabelProvider());
 
 	}

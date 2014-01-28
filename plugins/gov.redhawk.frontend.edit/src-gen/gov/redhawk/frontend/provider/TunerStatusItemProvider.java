@@ -7,11 +7,9 @@ import gov.redhawk.frontend.FrontendPackage;
 import gov.redhawk.frontend.TunerStatus;
 import gov.redhawk.frontend.edit.utils.TunerPropertyWrapper;
 import gov.redhawk.model.sca.ScaSimpleProperty;
-
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-
 import org.eclipse.emf.common.notify.AdapterFactory;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.util.ResourceLocator;
@@ -122,11 +120,11 @@ public class TunerStatusItemProvider extends ItemProviderAdapter implements IEdi
 	}
 
 	/**
-	 * This adds a property descriptor for the Tuner Type feature.
-	 * <!-- begin-user-doc -->
+	* This adds a property descriptor for the Tuner Type feature.
+	* <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+	* @generated
+	*/
 	protected void addTunerTypePropertyDescriptor(Object object) {
 		itemPropertyDescriptors.add(createItemPropertyDescriptor(((ComposeableAdapterFactory) adapterFactory).getRootAdapterFactory(), getResourceLocator(),
 			getString("_UI_TunerStatus_tunerType_feature"),
@@ -135,11 +133,11 @@ public class TunerStatusItemProvider extends ItemProviderAdapter implements IEdi
 	}
 
 	/**
-	 * This adds a property descriptor for the Allocation ID feature.
-	 * <!-- begin-user-doc -->
+	* This adds a property descriptor for the Allocation ID feature.
+	* <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+	* @generated
+	*/
 	protected void addAllocationIDPropertyDescriptor(Object object) {
 		itemPropertyDescriptors.add(createItemPropertyDescriptor(((ComposeableAdapterFactory) adapterFactory).getRootAdapterFactory(), getResourceLocator(),
 			getString("_UI_TunerStatus_allocationID_feature"),
@@ -148,11 +146,11 @@ public class TunerStatusItemProvider extends ItemProviderAdapter implements IEdi
 	}
 
 	/**
-	 * This adds a property descriptor for the Center Frequency feature.
-	 * <!-- begin-user-doc -->
+	* This adds a property descriptor for the Center Frequency feature.
+	* <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+	* @generated
+	*/
 	protected void addCenterFrequencyPropertyDescriptor(Object object) {
 		itemPropertyDescriptors.add(createItemPropertyDescriptor(((ComposeableAdapterFactory) adapterFactory).getRootAdapterFactory(), getResourceLocator(),
 			getString("_UI_TunerStatus_centerFrequency_feature"),
@@ -161,11 +159,11 @@ public class TunerStatusItemProvider extends ItemProviderAdapter implements IEdi
 	}
 
 	/**
-	 * This adds a property descriptor for the Bandwidth feature.
-	 * <!-- begin-user-doc -->
+	* This adds a property descriptor for the Bandwidth feature.
+	* <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+	* @generated
+	*/
 	protected void addBandwidthPropertyDescriptor(Object object) {
 		itemPropertyDescriptors.add(createItemPropertyDescriptor(((ComposeableAdapterFactory) adapterFactory).getRootAdapterFactory(), getResourceLocator(),
 			getString("_UI_TunerStatus_bandwidth_feature"),
@@ -174,11 +172,11 @@ public class TunerStatusItemProvider extends ItemProviderAdapter implements IEdi
 	}
 
 	/**
-	 * This adds a property descriptor for the Sample Rate feature.
-	 * <!-- begin-user-doc -->
+	* This adds a property descriptor for the Sample Rate feature.
+	* <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+	* @generated
+	*/
 	protected void addSampleRatePropertyDescriptor(Object object) {
 		itemPropertyDescriptors.add(createItemPropertyDescriptor(((ComposeableAdapterFactory) adapterFactory).getRootAdapterFactory(), getResourceLocator(),
 			getString("_UI_TunerStatus_sampleRate_feature"),
@@ -187,11 +185,11 @@ public class TunerStatusItemProvider extends ItemProviderAdapter implements IEdi
 	}
 
 	/**
-	 * This adds a property descriptor for the Group ID feature.
-	 * <!-- begin-user-doc -->
+	* This adds a property descriptor for the Group ID feature.
+	* <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+	* @generated
+	*/
 	protected void addGroupIDPropertyDescriptor(Object object) {
 		itemPropertyDescriptors.add(createItemPropertyDescriptor(((ComposeableAdapterFactory) adapterFactory).getRootAdapterFactory(), getResourceLocator(),
 			getString("_UI_TunerStatus_groupID_feature"),
@@ -200,11 +198,11 @@ public class TunerStatusItemProvider extends ItemProviderAdapter implements IEdi
 	}
 
 	/**
-	 * This adds a property descriptor for the Rf Flow ID feature.
-	 * <!-- begin-user-doc -->
+	* This adds a property descriptor for the Rf Flow ID feature.
+	* <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+	* @generated
+	*/
 	protected void addRfFlowIDPropertyDescriptor(Object object) {
 		itemPropertyDescriptors.add(createItemPropertyDescriptor(((ComposeableAdapterFactory) adapterFactory).getRootAdapterFactory(), getResourceLocator(),
 			getString("_UI_TunerStatus_rfFlowID_feature"),
@@ -213,11 +211,11 @@ public class TunerStatusItemProvider extends ItemProviderAdapter implements IEdi
 	}
 
 	/**
-	 * This adds a property descriptor for the Enabled feature.
-	 * <!-- begin-user-doc -->
+	* This adds a property descriptor for the Enabled feature.
+	* <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+	* @generated
+	*/
 	protected void addEnabledPropertyDescriptor(Object object) {
 		itemPropertyDescriptors.add(createItemPropertyDescriptor(((ComposeableAdapterFactory) adapterFactory).getRootAdapterFactory(), getResourceLocator(),
 			getString("_UI_TunerStatus_enabled_feature"),
@@ -226,11 +224,11 @@ public class TunerStatusItemProvider extends ItemProviderAdapter implements IEdi
 	}
 
 	/**
-	 * This adds a property descriptor for the Gain feature.
-	 * <!-- begin-user-doc -->
+	* This adds a property descriptor for the Gain feature.
+	* <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+	* @generated
+	*/
 	protected void addGainPropertyDescriptor(Object object) {
 		itemPropertyDescriptors.add(createItemPropertyDescriptor(((ComposeableAdapterFactory) adapterFactory).getRootAdapterFactory(), getResourceLocator(),
 			getString("_UI_TunerStatus_gain_feature"), getString("_UI_PropertyDescriptor_description", "_UI_TunerStatus_gain_feature", "_UI_TunerStatus_type"),
@@ -238,11 +236,11 @@ public class TunerStatusItemProvider extends ItemProviderAdapter implements IEdi
 	}
 
 	/**
-	 * This adds a property descriptor for the Agc feature.
-	 * <!-- begin-user-doc -->
+	* This adds a property descriptor for the Agc feature.
+	* <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+	* @generated
+	*/
 	protected void addAgcPropertyDescriptor(Object object) {
 		itemPropertyDescriptors.add(createItemPropertyDescriptor(((ComposeableAdapterFactory) adapterFactory).getRootAdapterFactory(), getResourceLocator(),
 			getString("_UI_TunerStatus_agc_feature"), getString("_UI_PropertyDescriptor_description", "_UI_TunerStatus_agc_feature", "_UI_TunerStatus_type"),
@@ -250,11 +248,11 @@ public class TunerStatusItemProvider extends ItemProviderAdapter implements IEdi
 	}
 
 	/**
-	 * This adds a property descriptor for the Reference Source feature.
-	 * <!-- begin-user-doc -->
+	* This adds a property descriptor for the Reference Source feature.
+	* <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+	* @generated
+	*/
 	protected void addReferenceSourcePropertyDescriptor(Object object) {
 		itemPropertyDescriptors.add(createItemPropertyDescriptor(((ComposeableAdapterFactory) adapterFactory).getRootAdapterFactory(), getResourceLocator(),
 			getString("_UI_TunerStatus_referenceSource_feature"),
@@ -263,11 +261,11 @@ public class TunerStatusItemProvider extends ItemProviderAdapter implements IEdi
 	}
 
 	/**
-	 * This adds a property descriptor for the Device Control feature.
-	 * <!-- begin-user-doc -->
+	* This adds a property descriptor for the Device Control feature.
+	* <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+	* @generated
+	*/
 	protected void addDeviceControlPropertyDescriptor(Object object) {
 		itemPropertyDescriptors.add(createItemPropertyDescriptor(((ComposeableAdapterFactory) adapterFactory).getRootAdapterFactory(), getResourceLocator(),
 			getString("_UI_TunerStatus_deviceControl_feature"),
@@ -276,11 +274,11 @@ public class TunerStatusItemProvider extends ItemProviderAdapter implements IEdi
 	}
 
 	/**
-	 * This adds a property descriptor for the Tuner ID feature.
-	 * <!-- begin-user-doc -->
+	* This adds a property descriptor for the Tuner ID feature.
+	* <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+	* @generated
+	*/
 	protected void addTunerIDPropertyDescriptor(Object object) {
 		itemPropertyDescriptors.add(createItemPropertyDescriptor(((ComposeableAdapterFactory) adapterFactory).getRootAdapterFactory(), getResourceLocator(),
 			getString("_UI_TunerStatus_tunerID_feature"),
@@ -289,13 +287,13 @@ public class TunerStatusItemProvider extends ItemProviderAdapter implements IEdi
 	}
 
 	/**
-	 * This specifies how to implement {@link #getChildren} and is used to deduce an appropriate feature for an
-	 * {@link org.eclipse.emf.edit.command.AddCommand}, {@link org.eclipse.emf.edit.command.RemoveCommand} or
-	 * {@link org.eclipse.emf.edit.command.MoveCommand} in {@link #createCommand}.
-	 * <!-- begin-user-doc -->
+	* This specifies how to implement {@link #getChildren} and is used to deduce an appropriate feature for an
+	* {@link org.eclipse.emf.edit.command.AddCommand}, {@link org.eclipse.emf.edit.command.RemoveCommand} or
+	* {@link org.eclipse.emf.edit.command.MoveCommand} in {@link #createCommand}.
+	* <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+	* @generated
+	*/
 	@Override
 	public Collection< ? extends EStructuralFeature> getChildrenFeatures(Object object) {
 		if (childrenFeatures == null) {
@@ -306,10 +304,10 @@ public class TunerStatusItemProvider extends ItemProviderAdapter implements IEdi
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
+	* <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+	* @generated
+	*/
 	@Override
 	protected EStructuralFeature getChildFeature(Object object, Object child) {
 		// Check the type of the specified child object and return the proper feature to use for
@@ -323,9 +321,7 @@ public class TunerStatusItemProvider extends ItemProviderAdapter implements IEdi
 	public static TunerStatus getCurrentSelection() {
 		return currentSelection;
 	}
-	
-	
-	
+
 	@Override
 	public Collection< ? > getElements(Object object) {
 		//Create TunerWrapper object that returns an array of TunerProperty objects to pass to the label provider
@@ -347,7 +343,7 @@ public class TunerStatusItemProvider extends ItemProviderAdapter implements IEdi
 		}
 		return super.getElements(object);
 	}
-	
+
 	/**
 	 * This returns TunerStatus.gif.
 	 * <!-- begin-user-doc -->
@@ -388,29 +384,12 @@ public class TunerStatusItemProvider extends ItemProviderAdapter implements IEdi
 		}
 		return getString("_UI_TunerStatus_type");
 	}
-	
-	@Override
-	public String getColumnText(Object object, int columnIndex) {
-		System.out.println("Here");
-		if (object instanceof TunerPropertyWrapper) {
-			TunerPropertyWrapper wrapper = (TunerPropertyWrapper) object;
-			switch (columnIndex) {
-			case 0:
-				return wrapper.getName();
-			case 1:
-				return String.valueOf(wrapper.getValue());
-			}
-		}
-
-		return "";
-	}
 
 	/**
 	* This handles model notifications by calling {@link #updateChildren} to update any cached
 	* children and by creating a viewer notification, which it passes to {@link #fireNotifyChanged}.
 	* <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	* @generated
 	*/
 	@Override
 	public void notifyChanged(Notification notification) {

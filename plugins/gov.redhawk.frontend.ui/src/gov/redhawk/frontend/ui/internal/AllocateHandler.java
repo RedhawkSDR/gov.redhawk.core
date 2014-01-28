@@ -15,6 +15,7 @@ import gov.redhawk.frontend.TunerContainer;
 import gov.redhawk.frontend.TunerStatus;
 import gov.redhawk.frontend.edit.utils.TunerUtils;
 import gov.redhawk.frontend.impl.TunerContainerImpl;
+import gov.redhawk.frontend.provider.TunerStatusItemProvider;
 import gov.redhawk.frontend.ui.FrontEndUIActivator;
 import gov.redhawk.frontend.ui.wizard.TunerAllocationDetailWizard;
 import gov.redhawk.frontend.ui.wizard.TunerAllocationSimpleWizard;
@@ -53,9 +54,9 @@ public class AllocateHandler extends AbstractHandler implements IHandler {
 
 		// This check is used to tie the allocation wizard into the view toolbar buttons
 		if (selection == null || selection.getFirstElement() == null) {
-			TunerStatus currentSelection = FrontEndContentProvider.getCurrentSelection();
+			TunerStatus currentSelection = TunerStatusItemProvider.getCurrentSelection();
 			if (currentSelection != null) {
-				selection = new StructuredSelection(new Object[]{currentSelection});
+				selection = new StructuredSelection(new Object[] { currentSelection });
 			}
 
 			if (currentSelection.getAllocationID() != null && !currentSelection.getAllocationID().equals("")) {
@@ -74,12 +75,12 @@ public class AllocateHandler extends AbstractHandler implements IHandler {
 			WizardDialog dialog = new WizardDialog(HandlerUtil.getActiveShell(event), new TunerAllocationSimpleWizard(tuners));
 			dialog.open();
 		} else if (selection.getFirstElement() instanceof ScaDevice) {
-			showAdvancedAllocationWizard((ScaDevice<?>) selection.getFirstElement(), (HandlerUtil.getActiveShell(event)));
+			showAdvancedAllocationWizard((ScaDevice< ? >) selection.getFirstElement(), (HandlerUtil.getActiveShell(event)));
 		} else {
 			Object obj = selection.getFirstElement();
 			if (obj instanceof TunerStatus) {
 				TunerStatus tuner = (TunerStatus) obj;
-				TunerStatus[] tuners = new TunerStatus[] {tuner};
+				TunerStatus[] tuners = new TunerStatus[] { tuner };
 				WizardDialog dialog = new WizardDialog(HandlerUtil.getActiveShell(event), new TunerAllocationSimpleWizard(tuners));
 				dialog.open();
 			} else if (obj instanceof TunerContainer) {
@@ -90,11 +91,10 @@ public class AllocateHandler extends AbstractHandler implements IHandler {
 			}
 		}
 
-
 		return null;
 	}
 
-	private void showAdvancedAllocationWizard(ScaDevice<?> device, Shell shell) {
+	private void showAdvancedAllocationWizard(ScaDevice< ? > device, Shell shell) {
 		TunerContainer contents = TunerUtils.INSTANCE.getTunerContainer(device);
 		if (contents != null && contents instanceof TunerContainerImpl) {
 			TunerContainerImpl container = (TunerContainerImpl) contents;
@@ -116,7 +116,7 @@ public class AllocateHandler extends AbstractHandler implements IHandler {
 	}
 
 	@SuppressWarnings("unchecked")
-	private <T> T[] castArray(Object[] objects, T[] array) {
+	private < T > T[] castArray(Object[] objects, T[] array) {
 		List<T> list = new ArrayList<T>();
 		for (Object obj : objects) {
 			list.add((T) obj);

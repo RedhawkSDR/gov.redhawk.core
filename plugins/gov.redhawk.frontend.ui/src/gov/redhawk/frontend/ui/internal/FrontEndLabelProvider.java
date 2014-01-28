@@ -29,7 +29,6 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.emf.common.notify.AdapterFactory;
 import org.eclipse.emf.common.notify.Notification;
-import org.eclipse.emf.edit.provider.ComposedAdapterFactory;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.Image;
@@ -54,7 +53,7 @@ public class FrontEndLabelProvider extends ScaModelAdapterFactoryLabelProvider i
 	 */
 	@Override
 	public void dispose() {
-		((ComposedAdapterFactory) this.adapterFactory).dispose();
+		((FrontendItemProviderAdapterFactory) this.adapterFactory).dispose();
 		this.adapterFactory = null;
 		this.disposed = true;
 		super.dispose();

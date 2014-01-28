@@ -16,6 +16,7 @@ import gov.redhawk.frontend.TunerContainer;
 import gov.redhawk.frontend.TunerStatus;
 import gov.redhawk.frontend.edit.utils.TunerProperties.ListenerAllocationProperties;
 import gov.redhawk.frontend.edit.utils.TunerProperties.TunerAllocationProperties;
+import gov.redhawk.frontend.provider.TunerStatusItemProvider;
 import gov.redhawk.model.sca.ScaDevice;
 import gov.redhawk.model.sca.ScaFactory;
 import gov.redhawk.model.sca.ScaSimpleProperty;
@@ -62,7 +63,7 @@ public class DeallocateHandler extends AbstractHandler implements IHandler {
 
 		// This check is used to tie the allocation wizard into the view toolbar buttons
 		if (selection == null || selection.getFirstElement() == null) {
-			TunerStatus currentSelection = FrontEndContentProvider.getCurrentSelection();
+			TunerStatus currentSelection = TunerStatusItemProvider.getCurrentSelection();
 			if (currentSelection != null) {
 				selection = new StructuredSelection(new Object[] { currentSelection });
 			}
@@ -167,11 +168,10 @@ public class DeallocateHandler extends AbstractHandler implements IHandler {
 		// Deallocates control id and all listeners
 		String value = tuner.getTunerStatusStruct().getSimple("FRONTEND::tuner_status::allocation_id_csv").getValue().toString();
 		int endControlIndex = value.indexOf(',');
-		if (endControlIndex > 0 ) {
+		if (endControlIndex > 0) {
 			value = value.substring(0, endControlIndex);
 		}
 		simple.setValue(value);
 	}
-	
 
 }
