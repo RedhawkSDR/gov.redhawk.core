@@ -1,6 +1,7 @@
 @Ecore(nsURI="http://redhawk.gov/frontend/1.0.0")
 @GenModel(prefix="Frontend", dataTypeConverters="true", binaryCompantibleReflectiveMethods="true", fileExtensions="xml", colorProviders="true", fontProviders="true", tablesProviders="true", resource="XML", templateDirectory="/gov.redhawk.frontend/templates", forceOverwrite="true", modelPluginVariables="org.eclipse.xtext.xbase.lib", tableProviders="true")
 @GenModel(contentTypeIdentifier="http://redhawk.gov/frontend/1.0.0")
+@GenModel(modelDirectory="/gov.redhawk.frontend/src-model")
 @GenModel(editDirectory="/gov.redhawk.frontend.edit/src-gen")
 package gov.redhawk.frontend
 
@@ -38,7 +39,7 @@ class TunerStatus {
 	double sampleRate		
 	String groupID			
 	String rfFlowID
-	boolean enabled			
+	boolean enabled
 
 	// Optional Status Elements
 	double gain		

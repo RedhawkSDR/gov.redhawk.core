@@ -2,11 +2,11 @@
  */
 package gov.redhawk.frontend.impl;
 
+import gov.redhawk.frontend.FrontendFactory;
 import gov.redhawk.frontend.FrontendPackage;
 import gov.redhawk.frontend.ListenerAllocation;
 import gov.redhawk.frontend.TunerContainer;
 import gov.redhawk.frontend.TunerStatus;
-
 import gov.redhawk.model.sca.ScaSimpleProperty;
 import gov.redhawk.model.sca.ScaStructProperty;
 
@@ -14,15 +14,11 @@ import java.util.Collection;
 
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
-
 import org.eclipse.emf.common.util.EList;
-
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
-
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
-
 import org.eclipse.emf.ecore.util.EDataTypeEList;
 import org.eclipse.emf.ecore.util.EObjectContainmentWithInverseEList;
 import org.eclipse.emf.ecore.util.EcoreUtil;
@@ -532,14 +528,27 @@ public class TunerStatusImpl extends MinimalEObjectImpl.Container implements Tun
   /**
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @generated
+   * @generated_NOT
    */
   public void setAllocationID(String newAllocationID)
   {
     String oldAllocationID = allocationID;
     allocationID = newAllocationID;
-    if (eNotificationRequired())
+    if (eNotificationRequired()) {
       eNotify(new ENotificationImpl(this, Notification.SET, FrontendPackage.TUNER_STATUS__ALLOCATION_ID, oldAllocationID, allocationID));
+      getTunerContainer().eNotify(new ENotificationImpl((TunerContainerImpl) getTunerContainer(), Notification.MOVE, FrontendPackage.TUNER_CONTAINER__TUNER_STATUS, Notification.NO_INDEX, Notification.NO_INDEX));
+      getListenerAllocations().clear();
+      if (allocationID != null && allocationID.indexOf(",") > -1) {
+    	  String[] allocations = allocationID.split(",");
+    	  for (int index = 1; index < allocations.length; ++index) {
+    		  if (allocations[index].length() > 0) {
+	    		  ListenerAllocation listener = FrontendFactory.eINSTANCE.createListenerAllocation();
+	    		  listener.setListenerID(allocations[index]);
+	    		  listenerAllocations.add(listener);
+    		  }
+    	  }
+      }
+    }
   }
 
   /**

@@ -1,9 +1,6 @@
 package gov.redhawk.frontend.ui.wizard;
 
-import gov.redhawk.frontend.FrontendFactory;
-import gov.redhawk.frontend.ListenerAllocation;
 import gov.redhawk.frontend.TunerStatus;
-import gov.redhawk.frontend.edit.utils.TunerProperties.ListenerAllocationProperties;
 import gov.redhawk.frontend.ui.FrontEndUIActivator.ALLOCATION_MODE;
 import gov.redhawk.model.sca.ScaDevice;
 import gov.redhawk.model.sca.ScaStructProperty;
@@ -33,10 +30,6 @@ public class TunerAllocationSimpleWizard extends Wizard {
 	public void addPages() {
 		allocatePage = new SimpleTunerAllocationWizardPage(tuners);
 		addPage(allocatePage);
-		//what is intended here?
-//		if (tuners.length == 1 && tuners[0].getAllocationID() != null && tuners[0].getAllocationID().length() > 0) {
-//
-//		}
 	}
 
 	@Override
@@ -66,20 +59,6 @@ public class TunerAllocationSimpleWizard extends Wizard {
 			delim = "\n\n";
 			result = false;
 		}
-		//I don't think we want to manually manipulate the tuners on the UI from the wizard. Even if the model is persisting those changes
-		//back to the device in the domain, that's also what the allocateCapacity call in line 50 does. We don't want to do that twice,
-		//and we should have the UI updated from the device when the device properties are changing. The wizard needs to call allocateCapacity()
-		//on the device in order for the capacity to be allocated, and we should then let the UI model be updated from the device when it makes
-		//that allocation, rather than update the UI directly in parallel with the call to allocateCapacity(). I think the only time we would want
-		//to propagate changes to the device by manipulating the UI model directly is if we expose non-read-only properties to the user and the user
-		//changes those properties in the properties view.
-		
-//		if (result && allocatePage.getAllocationMode() == ALLOCATION_MODE.LISTENER) {
-//			String listenerID = allocatePage.getListenerAllocationStruct().getSimple(ListenerAllocationProperties.LISTENER_ALLOCATION_ID.getId()).getValue().toString();
-//			ListenerAllocation listener = FrontendFactory.eINSTANCE.createListenerAllocation();
-//			listener.setListenerID(listenerID);
-//			tuners[0].getListenerAllocations().add(listener);
-//		}
 
 		if (!result) {
 			MessageDialog.openError(getShell(), "The Allocation was not successful", sb.toString());

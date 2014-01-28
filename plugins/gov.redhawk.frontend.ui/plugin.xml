@@ -237,6 +237,11 @@
                         <instanceof
                               value="gov.redhawk.frontend.TunerStatus">
                         </instanceof>
+                        <not>
+                           <test
+                                 property="gov.redhawk.frontend.hasAllocationID">
+                           </test>
+                        </not>
                      </and>
                      <and>
                         <instanceof
@@ -258,7 +263,10 @@
                      <and>
                         <instanceof
                               value="gov.redhawk.frontend.TunerStatus">
-                        </instanceof></and>
+                        </instanceof>
+                        <test
+                              property="gov.redhawk.frontend.hasAllocationID">
+                        </test></and>
                      <and>
                         <instanceof
                               value="gov.redhawk.frontend.TunerContainer">
@@ -279,6 +287,9 @@
                         <instanceof
                               value="gov.redhawk.frontend.TunerStatus">
                         </instanceof>
+                        <test
+                              property="gov.redhawk.frontend.hasAllocationID">
+                        </test>
                      </and>
                      <and>
                         <instanceof

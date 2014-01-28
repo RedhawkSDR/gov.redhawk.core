@@ -83,6 +83,15 @@ public class DeallocateHandler extends AbstractHandler implements IHandler {
 		Object obj = selection.getFirstElement();
 		if (obj instanceof TunerStatus) {
 			TunerStatus tuner = (TunerStatus) obj;
+			if (tuner.getAllocationID().contains(",")) {
+				MessageBox warning = new MessageBox(HandlerUtil.getActiveWorkbenchWindow(event).getShell(), 
+					SWT.ICON_WARNING | SWT.CANCEL | SWT.OK);
+				warning.setText("Deallocation Warning");
+				warning.setMessage("Deallocating a tuner will also deallocate all of its listeners.  Proceed?");
+				if (warning.open() == SWT.CANCEL) {
+					return null;
+				}
+			}
 			ScaDevice< ? > device = tuner.getTunerContainer().getModelDevice().getScaDevice();
 			DataType[] props = createAllocationProperties(tuner);
 			try {
