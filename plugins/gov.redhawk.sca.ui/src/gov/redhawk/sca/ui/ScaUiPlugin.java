@@ -1,10 +1,10 @@
 /**
- * This file is protected by Copyright. 
+ * This file is protected by Copyright.
  * Please refer to the COPYRIGHT file distributed with this source distribution.
- * 
+ *
  * This file is part of REDHAWK IDE.
- * 
- * All rights reserved.  This program and the accompanying materials are made available under 
+ *
+ * All rights reserved.  This program and the accompanying materials are made available under
  * the terms of the Eclipse Public License v1.0 which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html.
  *
@@ -32,7 +32,6 @@ import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.eclipse.ui.preferences.ScopedPreferenceStore;
 import org.osgi.framework.BundleContext;
 
-// TODO: Auto-generated Javadoc
 /**
  * The activator class controls the plug-in life cycle.
  */
@@ -43,12 +42,10 @@ public class ScaUiPlugin extends AbstractUIPlugin {
 	 */
 	public static final String PROP_SINGLE_DOMAIN = "gov.redhawk.sca.singleDomain";
 
-	// The plug-in ID
-	/** The Constant PLUGIN_ID. */
+	/** The plug-in Constant (PLUGIN_ID). */
 	public static final String PLUGIN_ID = "gov.redhawk.sca.ui";
 
-	// The shared instance
-	/** The plugin. */
+	/** The shared instance for this plug-in. */
 	private static ScaUiPlugin plugin;
 
 	private IPreferenceStore scaPreferenceStore;
@@ -63,13 +60,7 @@ public class ScaUiPlugin extends AbstractUIPlugin {
 
 	/*
 	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * org.eclipse.ui.plugin.AbstractUIPlugin#start(org.osgi.framework.BundleContext
-	 * )
-	 */
-	/**
-	 * {@inheritDoc}
+	 * @see org.eclipse.ui.plugin.AbstractUIPlugin#start(org.osgi.framework.BundleContext)
 	 */
 	@Override
 	public void start(final BundleContext context) throws Exception {
@@ -86,19 +77,16 @@ public class ScaUiPlugin extends AbstractUIPlugin {
 	}
 
 	/**
-	 * @since 3.0
-	 * 
 	 * Returns a Preference store scoped to this plug-in (RCP) or to the current user (RAP).
-	 * 
-	 * @return
-	 * 			The scoped preference store
+	 * @return The scoped preference store
+	 * @since 3.0
 	 */
 	public IPreferenceStore getScaPreferenceStore() {
 		if (SWT.getPlatform().startsWith("rap")) {
 			Assert.isNotNull(Display.getCurrent(), "This method must be called from the UI thread");
 			String currentId = ScaPlugin.getDefault().getCompatibilityUtil().getUserSpecificPath(Display.getCurrent());
 			/**
-			 * If we have not yet done so for the current user, initialize the SettingStore with settings 
+			 * If we have not yet done so for the current user, initialize the SettingStore with settings
 			 * for this user.
 			 */
 			if (currentId != null && !currentId.equals(lastId)) {
@@ -119,13 +107,7 @@ public class ScaUiPlugin extends AbstractUIPlugin {
 
 	/*
 	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * org.eclipse.ui.plugin.AbstractUIPlugin#stop(org.osgi.framework.BundleContext
-	 * )
-	 */
-	/**
-	 * {@inheritDoc}
+	 * @seeorg.eclipse.ui.plugin.AbstractUIPlugin#stop(org.osgi.framework.BundleContext)
 	 */
 	@Override
 	public void stop(final BundleContext context) throws Exception {
@@ -139,7 +121,7 @@ public class ScaUiPlugin extends AbstractUIPlugin {
 
 	/**
 	 * Returns the shared instance.
-	 * 
+	 *
 	 * @return the shared instance
 	 */
 	public static ScaUiPlugin getDefault() {
@@ -148,19 +130,18 @@ public class ScaUiPlugin extends AbstractUIPlugin {
 
 	/**
 	 * Log error.
-	 * 
-	 * @param msg the msg
-	 * @param e the e
+	 *
+	 * @param msg the error msg
+	 * @param e the Throwable (exception)
 	 */
 	public static void logError(final String msg, final Throwable e) {
 		ScaUiPlugin.getDefault().getLog().log(new Status(IStatus.ERROR, ScaUiPlugin.PLUGIN_ID, msg, e));
 	}
 
 	/**
-	 * Log error.
-	 * 
-	 * @param msg the msg
-	 * @param e the e
+	 * Log info.
+	 *
+	 * @param msg the info msg
 	 * @since 5.0
 	 */
 	public static void logInfo(final String msg) {
