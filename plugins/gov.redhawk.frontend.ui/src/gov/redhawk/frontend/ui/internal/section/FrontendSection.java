@@ -15,7 +15,6 @@ import gov.redhawk.frontend.TunerStatus;
 import gov.redhawk.frontend.edit.utils.TunerProperties.TunerStatusAllocationProperties;
 import gov.redhawk.frontend.edit.utils.TunerPropertyWrapper;
 import gov.redhawk.frontend.provider.FrontendItemProviderAdapterFactory;
-import gov.redhawk.frontend.ui.internal.FrontEndLabelProvider;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,13 +26,16 @@ import org.eclipse.jface.viewers.ColumnWeightData;
 import org.eclipse.jface.viewers.EditingSupport;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.StructuredSelection;
+import org.eclipse.jface.viewers.StyledCellLabelProvider;
 import org.eclipse.jface.viewers.TextCellEditor;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.jface.viewers.TreeViewerColumn;
+import org.eclipse.jface.viewers.ViewerCell;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.custom.StyleRange;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.TreeColumn;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.views.properties.PropertySheetPage;
 import org.eclipse.ui.views.properties.tabbed.AbstractPropertySection;
@@ -75,7 +77,7 @@ public class FrontendSection extends AbstractPropertySection {
 		FrontendItemProviderAdapterFactory adapterFactory = new FrontendItemProviderAdapterFactory();
 
 		viewer.setContentProvider(new AdapterFactoryContentProvider(adapterFactory));
-		viewer.setLabelProvider(new FrontEndLabelProvider());
+		//		viewer.setLabelProvider(new FrontEndLabelProvider());
 
 	}
 
@@ -85,14 +87,60 @@ public class FrontendSection extends AbstractPropertySection {
 	}
 
 	private void initializeColumns() {
-		TreeColumn propertyColumn = new TreeColumn(viewer.getTree(), SWT.None);
-		propertyColumn.setWidth(200);
-		propertyColumn.setText("Property");
-		treeLayout.setColumnData(propertyColumn, new ColumnWeightData(40, 50));
+		TreeViewerColumn propertyColumn = new TreeViewerColumn(viewer, SWT.None);
+		propertyColumn.getColumn().setWidth(200);
+		propertyColumn.getColumn().setText("Property");
+		propertyColumn.setLabelProvider(new StyledCellLabelProvider() {
+
+			@Override
+			public void update(ViewerCell cell) {
+				if (cell.getElement() instanceof TunerPropertyWrapper) {
+					TunerPropertyWrapper wrapper = (TunerPropertyWrapper) cell.getElement();
+					cell.setText(wrapper.getName());
+
+					// If this is not an editable field, set label color to dark gray
+					if (!isEditable(wrapper.getName())) {
+						StyleRange styleRange = new StyleRange(0, cell.getText().length(), Display.getCurrent().getSystemColor(SWT.COLOR_DARK_GRAY), null);
+						StyleRange[] range = { styleRange };
+						cell.setStyleRanges(range);
+					}
+				} else {
+					
+					// Default behavior for any object other than a TunerWrapper
+					cell.setText(cell.getElement().toString());
+				}
+				super.update(cell);
+			}
+
+		});
+		treeLayout.setColumnData(propertyColumn.getColumn(), new ColumnWeightData(40, 50));
 
 		TreeViewerColumn valueColumn = new TreeViewerColumn(viewer, SWT.None);
 		valueColumn.getColumn().setWidth(400);
 		valueColumn.getColumn().setText("Value");
+		valueColumn.setLabelProvider(new StyledCellLabelProvider() {
+
+			@Override
+			public void update(ViewerCell cell) {
+				if (cell.getElement() instanceof TunerPropertyWrapper) {
+					TunerPropertyWrapper wrapper = (TunerPropertyWrapper) cell.getElement();
+					cell.setText(String.valueOf(wrapper.getValue()));
+					
+					// If this is not an editable field, set label color to dark gray
+					if (!isEditable(wrapper.getName())) {
+						StyleRange styleRange = new StyleRange(0, cell.getText().length(), Display.getCurrent().getSystemColor(SWT.COLOR_DARK_GRAY), null);
+						StyleRange[] range = { styleRange };
+						cell.setStyleRanges(range);
+					}
+				} else {
+					
+					// Default behavior for any object other than a TunerWrapper
+					cell.setText(cell.getElement().toString());
+				}
+				super.update(cell);
+			}
+
+		});
 		treeLayout.setColumnData(valueColumn.getColumn(), new ColumnWeightData(60, 100));
 		final TextCellEditor cellEditor = new TextCellEditor(viewer.getTree());
 		valueColumn.setEditingSupport(new EditingSupport(viewer) {
@@ -143,26 +191,27 @@ public class FrontendSection extends AbstractPropertySection {
 				return false;
 			}
 
-			private boolean isEditable(Object id) {
-				List<String> editableProperties = new ArrayList<String>();
-				editableProperties.add(TunerStatusAllocationProperties.AGC.getName());
-				editableProperties.add(TunerStatusAllocationProperties.SAMPLE_RATE.getName());
-				editableProperties.add(TunerStatusAllocationProperties.BANDWIDTH.getName());
-				editableProperties.add(TunerStatusAllocationProperties.CENTER_FREQUENCY.getName());
-				editableProperties.add(TunerStatusAllocationProperties.ENABLED.getName());
-				editableProperties.add(TunerStatusAllocationProperties.GAIN.getName());
-				editableProperties.add(TunerStatusAllocationProperties.REFERENCE_SOURCE.getName());
-
-				for (String prop : editableProperties) {
-					if (id.equals(prop)) {
-						return true;
-					}
-				}
-				return false;
-			}
 		});
 	}
 
+	private boolean isEditable(String id) {
+		List<String> editableProperties = new ArrayList<String>();
+		editableProperties.add(TunerStatusAllocationProperties.AGC.getName());
+		editableProperties.add(TunerStatusAllocationProperties.SAMPLE_RATE.getName());
+		editableProperties.add(TunerStatusAllocationProperties.BANDWIDTH.getName());
+		editableProperties.add(TunerStatusAllocationProperties.CENTER_FREQUENCY.getName());
+		editableProperties.add(TunerStatusAllocationProperties.ENABLED.getName());
+		editableProperties.add(TunerStatusAllocationProperties.GAIN.getName());
+		editableProperties.add(TunerStatusAllocationProperties.REFERENCE_SOURCE.getName());
+
+		for (String prop : editableProperties) {
+			if (id.equals(prop)) {
+				return true;
+			}
+		}
+		return false;
+	}
+	
 	public void setInput(IWorkbenchPart part, ISelection selection) {
 		if (selection instanceof StructuredSelection) {
 			StructuredSelection sel = (StructuredSelection) selection;

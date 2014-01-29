@@ -206,8 +206,8 @@ public enum TunerProperties {
 
 			try {
 				port = device.getPort("DigitalTuner_in");
-			} catch (UnknownPort e1) {
-				e1.printStackTrace();
+			} catch (UnknownPort e) {
+				displayExceptionDialog(e);
 			}
 
 			DigitalTuner digitalTunerPort = DigitalTunerHelper.narrow(port);

@@ -59,22 +59,6 @@ public class FrontEndLabelProvider extends ScaModelAdapterFactoryLabelProvider i
 		super.dispose();
 	}
 
-	@Override
-	public String getColumnText(Object object, int columnIndex) {
-
-		if (object instanceof TunerPropertyWrapper) {
-			TunerPropertyWrapper wrapper = (TunerPropertyWrapper) object;
-			switch (columnIndex) {
-			case 0:
-				return wrapper.getName();
-			case 1:
-				return String.valueOf(wrapper.getValue());
-			}
-		}
-
-		return "";
-	}
-
 	private static AdapterFactory createAdapterFactory() {
 		return new FrontendItemProviderAdapterFactory();
 	}
