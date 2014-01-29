@@ -121,12 +121,12 @@ public class ListenerAllocationItemProvider
    * This returns ListenerAllocation.gif.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @generated
+   * @generated_NOT
    */
   @Override
   public Object getImage(Object object)
   {
-    return overlayImage(object, getResourceLocator().getImage("full/obj16/ListenerAllocation"));
+    return overlayImage(object, getResourceLocator().getImage("full/obj16/ListenerEar"));
   }
 
   /**

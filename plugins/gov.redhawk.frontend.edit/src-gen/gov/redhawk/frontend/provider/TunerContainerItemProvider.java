@@ -144,11 +144,11 @@ public class TunerContainerItemProvider extends ItemProviderAdapter implements I
 	* This returns TunerContainer.gif.
 	* <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	* @generated
+	* @generated_NOT
 	*/
 	@Override
 	public Object getImage(Object object) {
-		return overlayImage(object, getResourceLocator().getImage("full/obj16/TunerContainer"));
+		return overlayImage(object, getResourceLocator().getImage("full/obj16/TunerFolder"));
 	}
 
 	/**
