@@ -83,6 +83,7 @@ public class SimpleTunerAllocationWizardPage extends WizardPage {
 	private Button srAnyValue;
 	private Button bwAnyValue;
 	List<Control> tunerControls = new ArrayList<Control>();
+	private NumberFormat nf = NumberFormat.getInstance();
 
 	private static final String TUNER_TYPE_MISSING_ERR_MSG = "Please select a Tuner Type";
 	private static final String TUNER_TYPE_NOT_SUPPORTED_ERR_MSG = "The selected Tuner Type is not supported";
@@ -94,7 +95,11 @@ public class SimpleTunerAllocationWizardPage extends WizardPage {
 	private static final String SAMPLE_RATE_ERR_MSG = "Please specify a Sample Rate";
 	private static final String BANDWIDTH_TOLERANCE_ERR_MSG = "Please specify a Bandwidth Tolerance between 0 and 100";
 	private static final String SAMPLE_RATE_TOLERANCE_ERR_MSG = "Please specify a Sample Rate Tolerance between 0 and 100";
-	
+	private static final String NOT_VALID_NUMBER_ERR_MSG = "You must enter a valid decimal number";
+	private static final String PERCENT_VALUE_ERR_MSG = "Percentage must be entered as a number between 0 and 100";
+	private static final String NEGATIVE_ERR_MSG = "The value must not be negative";
+	private static final String NEGATIVE_OR_ZERO_ERR_MSG = "The value must be a positive non-zero number";
+
 	private class TargetableValidator implements IValidator {
 
 		private Control control;
@@ -208,16 +213,14 @@ public class SimpleTunerAllocationWizardPage extends WizardPage {
 		}
 
 	}
-	
+
 	private class UseAnyValueListener extends SelectionAdapter {
-		private Control control;
 		private String previousBwValue;
 		private String previousSrValue;
 
-		private UseAnyValueListener(Control control) {
-			this.control = control;
+		private UseAnyValueListener() {
 		}
-		
+
 		@Override
 		public void widgetSelected(SelectionEvent e) {
 			Button b = (Button) e.getSource();
@@ -231,8 +234,12 @@ public class SimpleTunerAllocationWizardPage extends WizardPage {
 						@Override
 						public void execute() {
 							bwSimple.setValue(0.0);
+							for (Object b : context.getBindings()) {
+								((Binding) b).updateModelToTarget();
+								((Binding) b).validateModelToTarget();
+							}
 						}
-						
+
 					});
 				} else {
 					final ScaSimpleProperty bwSimple = tunerAllocationStruct.getSimple(TunerAllocationProperties.BANDWIDTH.getId());
@@ -240,9 +247,17 @@ public class SimpleTunerAllocationWizardPage extends WizardPage {
 
 						@Override
 						public void execute() {
-							bwSimple.setValue(Double.parseDouble(previousBwValue));
+							try {
+								bwText.setText(previousBwValue);
+								for (Object b : context.getBindings()) {
+									((Binding) b).updateTargetToModel();
+									((Binding) b).validateTargetToModel();
+								}
+							} catch (NumberFormatException e) {
+								//PASS
+							}
 						}
-						
+
 					});
 				}
 			} else if (b == srAnyValue) {
@@ -255,17 +270,29 @@ public class SimpleTunerAllocationWizardPage extends WizardPage {
 						@Override
 						public void execute() {
 							srSimple.setValue(0.0);
+							for (Object b : context.getBindings()) {
+								((Binding) b).updateModelToTarget();
+								((Binding) b).validateModelToTarget();
+							}
 						}
-						
+
 					});
 				} else {
 					ScaModelCommand.execute(srSimple, new ScaModelCommand() {
 
 						@Override
 						public void execute() {
-							srSimple.setValue(Double.parseDouble(previousSrValue));
+							try {
+								srText.setText(previousSrValue);
+								for (Object b : context.getBindings()) {
+									((Binding) b).updateTargetToModel();
+									((Binding) b).validateTargetToModel();
+								}
+							} catch (NumberFormatException e) {
+								//PASS
+							}
 						}
-						
+
 					});
 				}
 			}
@@ -290,7 +317,7 @@ public class SimpleTunerAllocationWizardPage extends WizardPage {
 		}
 	};
 
-	
+
 
 	private void handleAllocationModeChange() {
 		for (Control c : tunerControls) {
@@ -348,6 +375,15 @@ public class SimpleTunerAllocationWizardPage extends WizardPage {
 			if (value == null || "".equals(value)) {
 				return ValidationStatus.error(CENTER_FREQUENCY_ERR_MSG);
 			}
+			Double val = null;
+			try{
+				val = Double.parseDouble(String.valueOf(value));
+			} catch (NumberFormatException e) {
+				return ValidationStatus.error(NOT_VALID_NUMBER_ERR_MSG);
+			}
+			if (val <= 0) {
+				return ValidationStatus.error(NEGATIVE_OR_ZERO_ERR_MSG);
+			}
 			return ValidationStatus.OK_STATUS;
 		} else if (control == bwText) {
 			if (allocationMode == ALLOCATION_MODE.LISTENER) {
@@ -355,6 +391,15 @@ public class SimpleTunerAllocationWizardPage extends WizardPage {
 			}
 			if (value == null || "".equals(value)) {
 				return ValidationStatus.error(BNDWIDTH_ERR_MSG);
+			}
+			Double val = null;
+			try{
+				val = Double.parseDouble(String.valueOf(value));
+			} catch (NumberFormatException e) {
+				return ValidationStatus.error(NOT_VALID_NUMBER_ERR_MSG);
+			}
+			if (val < 0) {
+				return ValidationStatus.error(NEGATIVE_ERR_MSG);
 			}
 			return ValidationStatus.OK_STATUS;
 		} else if (control == srText) {
@@ -364,6 +409,15 @@ public class SimpleTunerAllocationWizardPage extends WizardPage {
 			if (value == null || "".equals(value)) {
 				return ValidationStatus.error(SAMPLE_RATE_ERR_MSG);
 			}
+			Double val = null;
+			try{
+				val = Double.parseDouble(String.valueOf(value));
+			} catch (NumberFormatException e) {
+				return ValidationStatus.error(NOT_VALID_NUMBER_ERR_MSG);
+			}
+			if (val < 0) {
+				return ValidationStatus.error(NEGATIVE_ERR_MSG);
+			}
 			return ValidationStatus.OK_STATUS;
 		} else if (control == bwTolText) {
 			if (allocationMode == ALLOCATION_MODE.LISTENER) {
@@ -371,6 +425,15 @@ public class SimpleTunerAllocationWizardPage extends WizardPage {
 			}
 			if (value == null || "".equals(value)) {
 				return ValidationStatus.error(BANDWIDTH_TOLERANCE_ERR_MSG);
+			}
+			Double val = null;
+			try{
+				val = Double.parseDouble(String.valueOf(value));
+			} catch (NumberFormatException e) {
+				return ValidationStatus.error(NOT_VALID_NUMBER_ERR_MSG);
+			}
+			if (val < 0 || val > 100) {
+				return ValidationStatus.error(PERCENT_VALUE_ERR_MSG);
 			}
 			return ValidationStatus.OK_STATUS;
 		} else if (control == srTolText) {
@@ -380,6 +443,15 @@ public class SimpleTunerAllocationWizardPage extends WizardPage {
 			if (value == null || "".equals(value)) {
 				return ValidationStatus.error(SAMPLE_RATE_TOLERANCE_ERR_MSG);
 			}
+			Double val = null;
+			try{
+				val = Double.parseDouble(String.valueOf(value));
+			} catch (NumberFormatException e) {
+				return ValidationStatus.error(NOT_VALID_NUMBER_ERR_MSG);
+			}
+			if (val < 0 || val > 100) {
+				return ValidationStatus.error(PERCENT_VALUE_ERR_MSG);
+			}
 			return ValidationStatus.OK_STATUS;
 		}
 		return ValidationStatus.OK_STATUS;
@@ -388,6 +460,7 @@ public class SimpleTunerAllocationWizardPage extends WizardPage {
 	protected SimpleTunerAllocationWizardPage(TunerStatus[] tuners) {
 		super("Allocate A Tuner");
 		this.tuners = tuners;
+		nf.setMinimumFractionDigits(0);
 	}
 
 	@Override
@@ -487,7 +560,8 @@ public class SimpleTunerAllocationWizardPage extends WizardPage {
 					if (((Double) value).intValue() == 0) {
 						return "";
 					}
-					return String.valueOf(value);
+					double retVal = (Double) value / getUnitsConversionFactor(TunerAllocationProperties.CENTER_FREQUENCY);
+					return String.valueOf(nf.format(retVal));
 				}
 				return null;
 			}
@@ -519,7 +593,8 @@ public class SimpleTunerAllocationWizardPage extends WizardPage {
 					if (((Double) value).intValue() == 0) {
 						return "";
 					}
-					return String.valueOf(value);
+					double retVal = (Double) value / getUnitsConversionFactor(TunerAllocationProperties.BANDWIDTH);
+					return String.valueOf(nf.format(retVal));
 				}
 				return null;
 			}
@@ -551,7 +626,8 @@ public class SimpleTunerAllocationWizardPage extends WizardPage {
 					if (((Double) value).intValue() == 0) {
 						return "";
 					}
-					return String.valueOf(value);
+					double retVal = (Double) value / getUnitsConversionFactor(TunerAllocationProperties.SAMPLE_RATE);
+					return String.valueOf(nf.format(retVal));
 				}
 				return null;
 			}
@@ -580,10 +656,11 @@ public class SimpleTunerAllocationWizardPage extends WizardPage {
 			@Override
 			public Object convert(Object value) {
 				if (value instanceof Double) {
-					if (((Double) value).intValue() == 0) {
+					if (((Double) value).doubleValue() == 0.) {
 						return "";
 					}
-					return String.valueOf(value);
+					double retVal = (Double) value / getUnitsConversionFactor(TunerAllocationProperties.BANDWIDTH_TOLERANCE);
+					return String.valueOf(nf.format(retVal));
 				}
 				return null;
 			}
@@ -613,10 +690,11 @@ public class SimpleTunerAllocationWizardPage extends WizardPage {
 			@Override
 			public Object convert(Object value) {
 				if (value instanceof Double) {
-					if (((Double) value).intValue() == 0) {
+					if (((Double) value).doubleValue() == 0.) {
 						return "";
 					}
-					return String.valueOf(value);
+					double retVal = (Double) value / getUnitsConversionFactor(TunerAllocationProperties.SAMPLE_RATE_TOLERANCE);
+					return String.valueOf(nf.format(retVal));
 				}
 				return null;
 			}
@@ -759,7 +837,7 @@ public class SimpleTunerAllocationWizardPage extends WizardPage {
 
 		Label bwLabel = new Label(parent, SWT.NONE);
 		bwLabel.setText("Bandwidth (Mhz)");
-		
+
 		Composite bwComp = new Composite(parent, SWT.NONE);
 		GridDataFactory.fillDefaults().grab(true, false).applyTo(bwComp);
 		GridLayoutFactory.fillDefaults().numColumns(2).applyTo(bwComp);
@@ -768,13 +846,13 @@ public class SimpleTunerAllocationWizardPage extends WizardPage {
 		GridDataFactory.fillDefaults().grab(true, false).applyTo(bwText);
 		bwAnyValue = new Button(bwComp, SWT.CHECK);
 		bwAnyValue.setText("Any Value");
-		bwAnyValue.addSelectionListener(new UseAnyValueListener(bwText));
+		bwAnyValue.addSelectionListener(new UseAnyValueListener());
 		GridDataFactory.fillDefaults().grab(false, false).applyTo(bwAnyValue);
-		
+
 
 		Label srLabel = new Label(parent, SWT.NONE);
 		srLabel.setText("Sample Rate (Msps)");
-		
+
 		Composite srComp = new Composite(parent, SWT.NONE);
 		GridDataFactory.fillDefaults().grab(true, false).applyTo(srComp);
 		GridLayoutFactory.fillDefaults().numColumns(2).applyTo(srComp);
@@ -783,7 +861,7 @@ public class SimpleTunerAllocationWizardPage extends WizardPage {
 		GridDataFactory.fillDefaults().grab(true, false).applyTo(srText);
 		srAnyValue = new Button(srComp, SWT.CHECK);
 		srAnyValue.setText("Any Value");
-		srAnyValue.addSelectionListener(new UseAnyValueListener(srText));
+		srAnyValue.addSelectionListener(new UseAnyValueListener());
 		GridDataFactory.fillDefaults().grab(false, false).applyTo(srAnyValue);
 
 		Label bwTolLabel = new Label(parent, SWT.NONE);

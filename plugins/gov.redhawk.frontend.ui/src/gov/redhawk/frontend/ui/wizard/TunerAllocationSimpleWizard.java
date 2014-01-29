@@ -8,8 +8,14 @@ import gov.redhawk.model.sca.ScaStructProperty;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
+import org.eclipse.core.runtime.jobs.IJobChangeEvent;
+import org.eclipse.core.runtime.jobs.JobChangeAdapter;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.wizard.Wizard;
+import org.eclipse.ui.progress.UIJob;
 
 import CF.DataType;
 import CF.DevicePackage.InsufficientCapacity;
@@ -27,7 +33,7 @@ public class TunerAllocationSimpleWizard extends Wizard {
 	public TunerAllocationSimpleWizard(TunerStatus[] tuners) {
 		this.tuners = tuners;
 	}
-	
+
 	public TunerAllocationSimpleWizard(TunerStatus tuner, boolean listener, String targetId) {
 		this.tuners = new TunerStatus[] {tuner};
 		this.listener = listener;
@@ -47,40 +53,57 @@ public class TunerAllocationSimpleWizard extends Wizard {
 
 	@Override
 	public boolean performFinish() {
-		ScaDevice<?> device = tuners[0].getTunerContainer().getModelDevice().getScaDevice();
-		boolean result = true;
-		StringBuilder sb = new StringBuilder();
-		DataType[] props = createAllocationProperties();
-		String delim = "";
-		try {
-			if (!device.allocateCapacity(props)) {
-				sb.append(delim + "The allocation request was not accepted because resources matching"
-						+ " all aspects of the request were not available.");
-				delim = "\n\n";
-				result = false;
-			}
-		} catch (InvalidCapacity e) {
-			sb.append(delim + "The allocation request was invalid. Message: " + e.getMessage());
-			delim = "\n\n";
-			result = false;
-		} catch (InvalidState e) {
-			sb.append(delim + "The Allocation Request failed because the device is in an invalid state. Message: " + e.getMessage());
-			delim = "\n\n";
-			result = false;
-		} catch (InsufficientCapacity e) {
-			sb.append(delim + "The Allocation Request failed because the device has insufficient capacity. Message: " + e.getMessage());
-			delim = "\n\n";
-			result = false;
-		}
+		final ScaDevice<?> device = tuners[0].getTunerContainer().getModelDevice().getScaDevice();
+		final Boolean[] result = new Boolean[1];
+		final StringBuilder sb = new StringBuilder();
+		final DataType[] props = createAllocationProperties();
 
-		if (!result) {
-			MessageDialog.openError(getShell(), "The Allocation was not successful", sb.toString());
-		} else {
-			MessageDialog.openInformation(getShell(), "Successful allocation", "You just allocated a Tuner! You're a Stud.");
+		UIJob submitAllocRequestJob = new UIJob(getShell().getDisplay(), "Submit Allocation request") {
+
+			@Override
+			public IStatus runInUIThread(IProgressMonitor monitor) {
+				String delim = "";
+				try {
+					if (!device.allocateCapacity(props)) {
+						sb.append(delim + "The allocation request was not accepted because resources matching"
+								+ " all aspects of the request were not available.");
+						delim = "\n\n";
+						result[0] = false;
+					} else {
+						result[0] = true;
+					}
+				} catch (InvalidCapacity e) {
+					sb.append(delim + "The allocation request was invalid. Message: " + e.getMessage());
+					delim = "\n\n";
+					result[0] = false;
+				} catch (InvalidState e) {
+					sb.append(delim + "The Allocation Request failed because the device is in an invalid state. Message: " + e.getMessage());
+					delim = "\n\n";
+					result[0] = false;
+				} catch (InsufficientCapacity e) {
+					sb.append(delim + "The Allocation Request failed because the device has insufficient capacity. Message: " + e.getMessage());
+					delim = "\n\n";
+					result[0] = false;
+				}
+				return Status.OK_STATUS;
+			}
+
+		};
+		submitAllocRequestJob.setUser(true);
+		submitAllocRequestJob.schedule();
+		
+		while (result[0] == null) {
+			if (!getShell().getDisplay().readAndDispatch()) {
+				getShell().getDisplay().sleep();
+			}
 		}
-		return result;
+		boolean success = result[0] == null ? false : result[0];
+		if (!success) {
+			MessageDialog.openError(getShell(), "The Allocation was not successful", sb.toString());
+		}
+		return success;
 	}
-	
+
 	private DataType[] createAllocationProperties() {
 		List<DataType> props = new ArrayList<DataType>();
 		ScaStructProperty struct;
