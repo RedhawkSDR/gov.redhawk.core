@@ -8,8 +8,10 @@ import gov.redhawk.frontend.ui.FrontEndUIActivator.ALLOCATION_MODE;
 import gov.redhawk.model.sca.ScaFactory;
 import gov.redhawk.model.sca.ScaSimpleProperty;
 import gov.redhawk.model.sca.ScaStructProperty;
+import gov.redhawk.model.sca.commands.ScaModelCommand;
 import gov.redhawk.sca.observables.SCAObservables;
 
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -78,6 +80,8 @@ public class SimpleTunerAllocationWizardPage extends WizardPage {
 	private Button listenById;
 	private Button tunerAlloc;
 	private Button listenerAlloc;
+	private Button srAnyValue;
+	private Button bwAnyValue;
 	List<Control> tunerControls = new ArrayList<Control>();
 
 	private static final String TUNER_TYPE_MISSING_ERR_MSG = "Please select a Tuner Type";
@@ -90,24 +94,7 @@ public class SimpleTunerAllocationWizardPage extends WizardPage {
 	private static final String SAMPLE_RATE_ERR_MSG = "Please specify a Sample Rate";
 	private static final String BANDWIDTH_TOLERANCE_ERR_MSG = "Please specify a Bandwidth Tolerance between 0 and 100";
 	private static final String SAMPLE_RATE_TOLERANCE_ERR_MSG = "Please specify a Sample Rate Tolerance between 0 and 100";
-
-	private SelectionAdapter allocationModeListener = new SelectionAdapter() {
-		@Override
-		public void widgetSelected(SelectionEvent e) {
-			boolean listener = listenerAlloc.getSelection() && listenById.getSelection();
-			allocationMode = listener ? ALLOCATION_MODE.LISTENER : ALLOCATION_MODE.TUNER;
-			handleAllocationModeChange();
-		}
-	};
-	private ModifyListener allocIdListener = new ModifyListener() {
-
-		@Override
-		public void modifyText(ModifyEvent e) {
-			setPageComplete(validateAsListener());
-		}
-
-	};
-
+	
 	private class TargetableValidator implements IValidator {
 
 		private Control control;
@@ -134,15 +121,18 @@ public class SimpleTunerAllocationWizardPage extends WizardPage {
 		public void focusGained(FocusEvent e) {
 			//If we don't do this asynchronously, the focus_in event will come afterwards and cancel the selection
 			if (control == allocIdText) {
+				allocIdText.setBackground(null);
 				new UIJob("Select Allocation ID text") {
 
 					@Override
 					public IStatus runInUIThread(IProgressMonitor monitor) {
 						allocIdText.selectAll();return Status.OK_STATUS;
 					}
-					
+
 				}.schedule();
-				
+
+			} else if (control == srText) {
+				srText.setBackground(null);
 			}
 			int pageStatus = DialogPage.NONE;
 			String msg = null;
@@ -176,10 +166,131 @@ public class SimpleTunerAllocationWizardPage extends WizardPage {
 
 		@Override
 		public void focusLost(FocusEvent e) {
-			//PASS
+			if (control == bwText) {
+				if ("".equals(srText.getText())) {
+					Double bwVal = null;
+					String bw_s = bwText.getText();
+					try {
+						bwVal = Double.parseDouble(bw_s);
+					} catch (NumberFormatException ex) {
+						//PASS
+					}
+
+					if (bwVal != null && bwVal.intValue() != 0) {
+						double srVal = bwVal *2;
+						NumberFormat nf = NumberFormat.getInstance();
+						nf.setMinimumFractionDigits(0);
+						srText.setText(nf.format(srVal));
+						new UIJob("Set SR Text Background") {
+
+							@Override
+							public IStatus runInUIThread(
+									IProgressMonitor monitor) {
+								srText.setBackground(srText.getDisplay().getSystemColor(SWT.COLOR_CYAN));
+								return Status.OK_STATUS;
+							}
+
+						}.schedule();
+					}
+				}
+			} else if (control == srText) {
+				new UIJob("Clear SR Text Background") {
+
+					@Override
+					public IStatus runInUIThread(
+							IProgressMonitor monitor) {
+						srText.setBackground(null);
+						return Status.OK_STATUS;
+					}
+
+				}.schedule();
+			}
 		}
 
 	}
+	
+	private class UseAnyValueListener extends SelectionAdapter {
+		private Control control;
+		private String previousBwValue;
+		private String previousSrValue;
+
+		private UseAnyValueListener(Control control) {
+			this.control = control;
+		}
+		
+		@Override
+		public void widgetSelected(SelectionEvent e) {
+			Button b = (Button) e.getSource();
+			if (b == bwAnyValue) {
+				bwText.setEnabled(!b.getSelection());
+				if (b.getSelection()) {
+					previousBwValue = bwText.getText();
+					final ScaSimpleProperty bwSimple = tunerAllocationStruct.getSimple(TunerAllocationProperties.BANDWIDTH.getId());
+					ScaModelCommand.execute(bwSimple, new ScaModelCommand() {
+
+						@Override
+						public void execute() {
+							bwSimple.setValue(0.0);
+						}
+						
+					});
+				} else {
+					final ScaSimpleProperty bwSimple = tunerAllocationStruct.getSimple(TunerAllocationProperties.BANDWIDTH.getId());
+					ScaModelCommand.execute(bwSimple, new ScaModelCommand() {
+
+						@Override
+						public void execute() {
+							bwSimple.setValue(Double.parseDouble(previousBwValue));
+						}
+						
+					});
+				}
+			} else if (b == srAnyValue) {
+				srText.setEnabled(!b.getSelection());
+				final ScaSimpleProperty srSimple = tunerAllocationStruct.getSimple(TunerAllocationProperties.SAMPLE_RATE.getId());
+				if (b.getSelection()) {
+					previousSrValue = srText.getText();
+					ScaModelCommand.execute(srSimple, new ScaModelCommand() {
+
+						@Override
+						public void execute() {
+							srSimple.setValue(0.0);
+						}
+						
+					});
+				} else {
+					ScaModelCommand.execute(srSimple, new ScaModelCommand() {
+
+						@Override
+						public void execute() {
+							srSimple.setValue(Double.parseDouble(previousSrValue));
+						}
+						
+					});
+				}
+			}
+		}
+	}
+
+	private ModifyListener allocIdListener = new ModifyListener() {
+
+		@Override
+		public void modifyText(ModifyEvent e) {
+			setPageComplete(validateAsListener());
+		}
+
+	};
+
+	private SelectionAdapter allocationModeListener = new SelectionAdapter() {
+		@Override
+		public void widgetSelected(SelectionEvent e) {
+			boolean listener = listenerAlloc.getSelection() && listenById.getSelection();
+			allocationMode = listener ? ALLOCATION_MODE.LISTENER : ALLOCATION_MODE.TUNER;
+			handleAllocationModeChange();
+		}
+	};
+
+	
 
 	private void handleAllocationModeChange() {
 		for (Control c : tunerControls) {
@@ -329,7 +440,7 @@ public class SimpleTunerAllocationWizardPage extends WizardPage {
 				null),
 				SWT.TOP | SWT.LEFT);
 		allocIdText.setText(getUsername() + ":" + uuid.toString());
-		allocIdText.setBackground(allocIdText.getDisplay().getSystemColor(SWT.COLOR_WIDGET_LIGHT_SHADOW));
+		allocIdText.setBackground(allocIdText.getDisplay().getSystemColor(SWT.COLOR_CYAN));
 		allocIdText.addFocusListener(new TargetableFocusListener(allocIdText));
 		allocIdText.addModifyListener(allocIdListener);
 
@@ -641,31 +752,48 @@ public class SimpleTunerAllocationWizardPage extends WizardPage {
 		tunerControls.add(typeCombo.getControl());
 
 		Label cfLabel = new Label(parent, SWT.NONE);
-		cfLabel.setText("Requested Center Frequency (Mhz)");
+		cfLabel.setText("Center Frequency (Mhz)");
 		cfText = new Text(parent, SWT.BORDER);
 		tunerControls.add(cfText);
 		GridDataFactory.fillDefaults().grab(true, false).applyTo(cfText);
 
 		Label bwLabel = new Label(parent, SWT.NONE);
-		bwLabel.setText("Requested Bandwidth (Mhz)");
-		bwText = new Text(parent, SWT.BORDER);
+		bwLabel.setText("Bandwidth (Mhz)");
+		
+		Composite bwComp = new Composite(parent, SWT.NONE);
+		GridDataFactory.fillDefaults().grab(true, false).applyTo(bwComp);
+		GridLayoutFactory.fillDefaults().numColumns(2).applyTo(bwComp);
+		bwText = new Text(bwComp, SWT.BORDER);
 		tunerControls.add(bwText);
 		GridDataFactory.fillDefaults().grab(true, false).applyTo(bwText);
+		bwAnyValue = new Button(bwComp, SWT.CHECK);
+		bwAnyValue.setText("Any Value");
+		bwAnyValue.addSelectionListener(new UseAnyValueListener(bwText));
+		GridDataFactory.fillDefaults().grab(false, false).applyTo(bwAnyValue);
+		
 
 		Label srLabel = new Label(parent, SWT.NONE);
-		srLabel.setText("Requested Sample Rate (Msps)");
-		srText = new Text(parent, SWT.BORDER);
+		srLabel.setText("Sample Rate (Msps)");
+		
+		Composite srComp = new Composite(parent, SWT.NONE);
+		GridDataFactory.fillDefaults().grab(true, false).applyTo(srComp);
+		GridLayoutFactory.fillDefaults().numColumns(2).applyTo(srComp);
+		srText = new Text(srComp, SWT.BORDER);
 		tunerControls.add(srText);
 		GridDataFactory.fillDefaults().grab(true, false).applyTo(srText);
+		srAnyValue = new Button(srComp, SWT.CHECK);
+		srAnyValue.setText("Any Value");
+		srAnyValue.addSelectionListener(new UseAnyValueListener(srText));
+		GridDataFactory.fillDefaults().grab(false, false).applyTo(srAnyValue);
 
 		Label bwTolLabel = new Label(parent, SWT.NONE);
-		bwTolLabel.setText("Allowable Bandwidth Tolerance (%)");
+		bwTolLabel.setText("Bandwidth Tolerance (%)");
 		bwTolText = new Text(parent, SWT.BORDER);
 		tunerControls.add(bwTolText);
 		GridDataFactory.fillDefaults().grab(true, false).applyTo(bwTolText);
 
 		Label srTolLabel = new Label(parent, SWT.NONE);
-		srTolLabel.setText("Allowable Sample Rate Tolerance (%)");
+		srTolLabel.setText("Sample Rate Tolerance (%)");
 		srTolText = new Text(parent, SWT.BORDER);
 		tunerControls.add(srTolText);
 		GridDataFactory.fillDefaults().grab(true, false).applyTo(srTolText);
