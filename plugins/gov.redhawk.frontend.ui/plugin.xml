@@ -114,21 +114,16 @@
                   <or>
                      <and>
                         <instanceof
-                              value="gov.redhawk.frontend.TunerStatus">
+                              value="gov.redhawk.frontend.UnallocatedTunerContainer">
                         </instanceof>
-                        <not>
-                           <test
-                                 property="gov.redhawk.frontend.hasAllocationID">
-                           </test>
-                        </not>
-                        <test
-                              property="gov.redhawk.frontend.supportedTunerType">
-                        </test>
                      </and>
                      <and>
                         <instanceof
                               value="gov.redhawk.frontend.TunerContainer">
                         </instanceof>
+                        <test
+                              property="gov.redhawk.frontend.hasUnallocatedTuners">
+                        </test>
                      </and>
                   </or>
                </iterate>

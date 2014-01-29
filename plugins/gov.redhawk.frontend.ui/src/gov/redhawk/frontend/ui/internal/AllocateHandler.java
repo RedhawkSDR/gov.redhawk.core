@@ -13,6 +13,7 @@ package gov.redhawk.frontend.ui.internal;
 
 import gov.redhawk.frontend.TunerContainer;
 import gov.redhawk.frontend.TunerStatus;
+import gov.redhawk.frontend.UnallocatedTunerContainer;
 import gov.redhawk.frontend.edit.utils.TunerUtils;
 import gov.redhawk.frontend.impl.TunerContainerImpl;
 import gov.redhawk.frontend.provider.TunerStatusItemProvider;
@@ -78,9 +79,9 @@ public class AllocateHandler extends AbstractHandler implements IHandler {
 			showAdvancedAllocationWizard((ScaDevice< ? >) selection.getFirstElement(), (HandlerUtil.getActiveShell(event)));
 		} else {
 			Object obj = selection.getFirstElement();
-			if (obj instanceof TunerStatus) {
-				TunerStatus tuner = (TunerStatus) obj;
-				TunerStatus[] tuners = new TunerStatus[] { tuner };
+			if (obj instanceof UnallocatedTunerContainer) {
+				UnallocatedTunerContainer container = (UnallocatedTunerContainer) obj;
+				TunerStatus[] tuners = getUnallocatedTunersOfType(container.getTunerContainer(), container.getTunerType());
 				WizardDialog dialog = new WizardDialog(HandlerUtil.getActiveShell(event), new TunerAllocationSimpleWizard(tuners));
 				dialog.open();
 			} else if (obj instanceof TunerContainer) {
@@ -94,6 +95,17 @@ public class AllocateHandler extends AbstractHandler implements IHandler {
 		return null;
 	}
 
+	private TunerStatus[] getUnallocatedTunersOfType(TunerContainer container, String tunerType) {
+		List <TunerStatus> tuners = new ArrayList <TunerStatus>();
+		for (TunerStatus tuner: container.getTunerStatus()) {
+			if ((tuner.getAllocationID() == null || tuner.getAllocationID().length() == 0) &&
+					tuner.getTunerType().equals(tunerType)) {
+				tuners.add(tuner);
+			}
+		}
+		return tuners.toArray(new TunerStatus[0]);
+	}
+	
 	private void showAdvancedAllocationWizard(ScaDevice< ? > device, Shell shell) {
 		TunerContainer contents = TunerUtils.INSTANCE.getTunerContainer(device);
 		if (contents != null && contents instanceof TunerContainerImpl) {
