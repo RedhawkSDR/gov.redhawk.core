@@ -5,6 +5,7 @@ import gov.redhawk.frontend.ListenerAllocation;
 import gov.redhawk.frontend.ModelDevice;
 import gov.redhawk.frontend.TunerContainer;
 import gov.redhawk.frontend.TunerStatus;
+import gov.redhawk.frontend.UnallocatedTunerContainer;
 import gov.redhawk.frontend.edit.utils.TunerProperties.TunerStatusAllocationProperties;
 import gov.redhawk.model.sca.ScaDevice;
 import gov.redhawk.model.sca.ScaSimpleProperty;
@@ -60,7 +61,7 @@ public enum TunerUtils {
 
 				// populate container object with tuners from device
 				int tunerIndex = 0;
-				for (ScaStructProperty struct : structs) {
+				out: for (ScaStructProperty struct : structs) {
 					final TunerStatus tuner = FrontendFactory.eINSTANCE.createTunerStatus();
 					tuner.setTunerContainer(container);
 					tuner.setTunerStatusStruct(struct);
@@ -94,7 +95,19 @@ public enum TunerUtils {
 						allocation.setListenerID(allocations[index]);
 						tuner.getListenerAllocations().add(allocation);
 					}
-				}
+					
+					// Create Unallocated Tuner Container
+					for (UnallocatedTunerContainer unallocatedContainer : container.getUnallocatedContainer()) {
+						if (unallocatedContainer.getTunerType().equals(tuner.getTunerType())) {
+							continue out; // If there is already an unallocated container with this type, 
+											// go to the next tuner
+						}
+					}
+					UnallocatedTunerContainer unallocatedContainer = FrontendFactory.eINSTANCE.createUnallocatedTunerContainer();
+					unallocatedContainer.setTunerType(tuner.getTunerType());
+					container.getUnallocatedContainer().add(unallocatedContainer);
+					
+				} // end tuner creation loop
 
 				return container;
 			}

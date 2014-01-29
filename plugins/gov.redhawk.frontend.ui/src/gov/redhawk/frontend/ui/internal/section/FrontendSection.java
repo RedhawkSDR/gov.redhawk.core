@@ -146,6 +146,7 @@ public class FrontendSection extends AbstractPropertySection {
 			private boolean isEditable(Object id) {
 				List<String> editableProperties = new ArrayList<String>();
 				editableProperties.add(TunerStatusAllocationProperties.AGC.getName());
+				editableProperties.add(TunerStatusAllocationProperties.SAMPLE_RATE.getName());
 				editableProperties.add(TunerStatusAllocationProperties.BANDWIDTH.getName());
 				editableProperties.add(TunerStatusAllocationProperties.CENTER_FREQUENCY.getName());
 				editableProperties.add(TunerStatusAllocationProperties.ENABLED.getName());

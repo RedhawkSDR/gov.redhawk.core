@@ -9,9 +9,7 @@ import gov.redhawk.frontend.TunerContainer;
 import gov.redhawk.frontend.TunerStatus;
 import gov.redhawk.model.sca.ScaSimpleProperty;
 import gov.redhawk.model.sca.ScaStructProperty;
-
 import java.util.Collection;
-
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
 import org.eclipse.emf.common.util.EList;

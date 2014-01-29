@@ -227,6 +227,8 @@ public enum TunerProperties {
 						// TODO Gain is double in model and documentation, but float in API
 						float gain = Float.parseFloat(String.valueOf(tuner.getGain()));
 						digitalTunerPort.setTunerGain(allocationID, gain);
+					} else if (feiAttr.equals(SAMPLE_RATE.getFeiAttribute())) {
+						digitalTunerPort.setTunerOutputSampleRate(allocationID, tuner.getSampleRate());
 					} else if (feiAttr.equals(REFERENCE_SOURCE.getFeiAttribute())) {
 						// TODO Reference Source is long in model and documentation, but int in API
 						int referenceSource = Integer.parseInt(String.valueOf(tuner.getReferenceSource()));

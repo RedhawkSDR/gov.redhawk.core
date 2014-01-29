@@ -7,6 +7,7 @@ import gov.redhawk.frontend.ModelDevice;
 import gov.redhawk.frontend.TunerContainer;
 import gov.redhawk.frontend.TunerStatus;
 
+import gov.redhawk.frontend.UnallocatedTunerContainer;
 import java.util.Collection;
 
 import org.eclipse.emf.common.notify.Notification;
@@ -32,6 +33,7 @@ import org.eclipse.emf.ecore.util.InternalEList;
  * The following features are implemented:
  * <ul>
  *   <li>{@link gov.redhawk.frontend.impl.TunerContainerImpl#getModelDevice <em>Model Device</em>}</li>
+ *   <li>{@link gov.redhawk.frontend.impl.TunerContainerImpl#getUnallocatedContainer <em>Unallocated Container</em>}</li>
  *   <li>{@link gov.redhawk.frontend.impl.TunerContainerImpl#getTunerStatus <em>Tuner Status</em>}</li>
  * </ul>
  * </p>
@@ -40,6 +42,15 @@ import org.eclipse.emf.ecore.util.InternalEList;
  */
 public class TunerContainerImpl extends MinimalEObjectImpl.Container implements TunerContainer
 {
+  /**
+   * The cached value of the '{@link #getUnallocatedContainer() <em>Unallocated Container</em>}' containment reference list.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see #getUnallocatedContainer()
+   * @generated
+   * @ordered
+   */
+  protected EList<UnallocatedTunerContainer> unallocatedContainer;
   /**
    * The cached value of the '{@link #getTunerStatus() <em>Tuner Status</em>}' containment reference list.
    * <!-- begin-user-doc -->
@@ -132,6 +143,20 @@ public class TunerContainerImpl extends MinimalEObjectImpl.Container implements 
    * <!-- end-user-doc -->
    * @generated
    */
+  public EList<UnallocatedTunerContainer> getUnallocatedContainer()
+  {
+    if (unallocatedContainer == null)
+    {
+      unallocatedContainer = new EObjectContainmentWithInverseEList<UnallocatedTunerContainer>(UnallocatedTunerContainer.class, this, FrontendPackage.TUNER_CONTAINER__UNALLOCATED_CONTAINER, FrontendPackage.UNALLOCATED_TUNER_CONTAINER__TUNER_CONTAINER);
+    }
+    return unallocatedContainer;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
   public EList<TunerStatus> getTunerStatus()
   {
     if (tunerStatus == null)
@@ -156,6 +181,8 @@ public class TunerContainerImpl extends MinimalEObjectImpl.Container implements 
         if (eInternalContainer() != null)
           msgs = eBasicRemoveFromContainer(msgs);
         return basicSetModelDevice((ModelDevice)otherEnd, msgs);
+      case FrontendPackage.TUNER_CONTAINER__UNALLOCATED_CONTAINER:
+        return ((InternalEList<InternalEObject>)(InternalEList<?>)getUnallocatedContainer()).basicAdd(otherEnd, msgs);
       case FrontendPackage.TUNER_CONTAINER__TUNER_STATUS:
         return ((InternalEList<InternalEObject>)(InternalEList<?>)getTunerStatus()).basicAdd(otherEnd, msgs);
     }
@@ -174,6 +201,8 @@ public class TunerContainerImpl extends MinimalEObjectImpl.Container implements 
     {
       case FrontendPackage.TUNER_CONTAINER__MODEL_DEVICE:
         return basicSetModelDevice(null, msgs);
+      case FrontendPackage.TUNER_CONTAINER__UNALLOCATED_CONTAINER:
+        return ((InternalEList<?>)getUnallocatedContainer()).basicRemove(otherEnd, msgs);
       case FrontendPackage.TUNER_CONTAINER__TUNER_STATUS:
         return ((InternalEList<?>)getTunerStatus()).basicRemove(otherEnd, msgs);
     }
@@ -209,6 +238,8 @@ public class TunerContainerImpl extends MinimalEObjectImpl.Container implements 
       case FrontendPackage.TUNER_CONTAINER__MODEL_DEVICE:
         if (resolve) return getModelDevice();
         return basicGetModelDevice();
+      case FrontendPackage.TUNER_CONTAINER__UNALLOCATED_CONTAINER:
+        return getUnallocatedContainer();
       case FrontendPackage.TUNER_CONTAINER__TUNER_STATUS:
         return getTunerStatus();
     }
@@ -228,6 +259,10 @@ public class TunerContainerImpl extends MinimalEObjectImpl.Container implements 
     {
       case FrontendPackage.TUNER_CONTAINER__MODEL_DEVICE:
         setModelDevice((ModelDevice)newValue);
+        return;
+      case FrontendPackage.TUNER_CONTAINER__UNALLOCATED_CONTAINER:
+        getUnallocatedContainer().clear();
+        getUnallocatedContainer().addAll((Collection<? extends UnallocatedTunerContainer>)newValue);
         return;
       case FrontendPackage.TUNER_CONTAINER__TUNER_STATUS:
         getTunerStatus().clear();
@@ -250,6 +285,9 @@ public class TunerContainerImpl extends MinimalEObjectImpl.Container implements 
       case FrontendPackage.TUNER_CONTAINER__MODEL_DEVICE:
         setModelDevice((ModelDevice)null);
         return;
+      case FrontendPackage.TUNER_CONTAINER__UNALLOCATED_CONTAINER:
+        getUnallocatedContainer().clear();
+        return;
       case FrontendPackage.TUNER_CONTAINER__TUNER_STATUS:
         getTunerStatus().clear();
         return;
@@ -269,6 +307,8 @@ public class TunerContainerImpl extends MinimalEObjectImpl.Container implements 
     {
       case FrontendPackage.TUNER_CONTAINER__MODEL_DEVICE:
         return basicGetModelDevice() != null;
+      case FrontendPackage.TUNER_CONTAINER__UNALLOCATED_CONTAINER:
+        return unallocatedContainer != null && !unallocatedContainer.isEmpty();
       case FrontendPackage.TUNER_CONTAINER__TUNER_STATUS:
         return tunerStatus != null && !tunerStatus.isEmpty();
     }

@@ -133,13 +133,22 @@ public interface FrontendPackage extends EPackage
   int TUNER_CONTAINER__MODEL_DEVICE = 0;
 
   /**
+   * The feature id for the '<em><b>Unallocated Container</b></em>' containment reference list.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int TUNER_CONTAINER__UNALLOCATED_CONTAINER = 1;
+
+  /**
    * The feature id for the '<em><b>Tuner Status</b></em>' containment reference list.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
    * @ordered
    */
-  int TUNER_CONTAINER__TUNER_STATUS = 1;
+  int TUNER_CONTAINER__TUNER_STATUS = 2;
 
   /**
    * The number of structural features of the '<em>Tuner Container</em>' class.
@@ -148,7 +157,7 @@ public interface FrontendPackage extends EPackage
    * @generated
    * @ordered
    */
-  int TUNER_CONTAINER_FEATURE_COUNT = 2;
+  int TUNER_CONTAINER_FEATURE_COUNT = 3;
 
   /**
    * The number of operations of the '<em>Tuner Container</em>' class.
@@ -160,6 +169,52 @@ public interface FrontendPackage extends EPackage
   int TUNER_CONTAINER_OPERATION_COUNT = 0;
 
   /**
+   * The meta object id for the '{@link gov.redhawk.frontend.impl.UnallocatedTunerContainerImpl <em>Unallocated Tuner Container</em>}' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see gov.redhawk.frontend.impl.UnallocatedTunerContainerImpl
+   * @see gov.redhawk.frontend.impl.FrontendPackageImpl#getUnallocatedTunerContainer()
+   * @generated
+   */
+  int UNALLOCATED_TUNER_CONTAINER = 2;
+
+  /**
+   * The feature id for the '<em><b>Tuner Container</b></em>' container reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int UNALLOCATED_TUNER_CONTAINER__TUNER_CONTAINER = 0;
+
+  /**
+   * The feature id for the '<em><b>Tuner Type</b></em>' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int UNALLOCATED_TUNER_CONTAINER__TUNER_TYPE = 1;
+
+  /**
+   * The number of structural features of the '<em>Unallocated Tuner Container</em>' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int UNALLOCATED_TUNER_CONTAINER_FEATURE_COUNT = 2;
+
+  /**
+   * The number of operations of the '<em>Unallocated Tuner Container</em>' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int UNALLOCATED_TUNER_CONTAINER_OPERATION_COUNT = 0;
+
+  /**
    * The meta object id for the '{@link gov.redhawk.frontend.impl.TunerStatusImpl <em>Tuner Status</em>}' class.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
@@ -167,7 +222,7 @@ public interface FrontendPackage extends EPackage
    * @see gov.redhawk.frontend.impl.FrontendPackageImpl#getTunerStatus()
    * @generated
    */
-  int TUNER_STATUS = 2;
+  int TUNER_STATUS = 3;
 
   /**
    * The feature id for the '<em><b>Tuner Container</b></em>' container reference.
@@ -348,7 +403,7 @@ public interface FrontendPackage extends EPackage
    * @see gov.redhawk.frontend.impl.FrontendPackageImpl#getListenerAllocation()
    * @generated
    */
-  int LISTENER_ALLOCATION = 3;
+  int LISTENER_ALLOCATION = 4;
 
   /**
    * The feature id for the '<em><b>Tuner Status</b></em>' container reference.
@@ -394,7 +449,7 @@ public interface FrontendPackage extends EPackage
    * @see gov.redhawk.frontend.impl.FrontendPackageImpl#getScaDevice()
    * @generated
    */
-  int SCA_DEVICE = 4;
+  int SCA_DEVICE = 5;
 
   /**
    * The meta object id for the '<em>Tuner Status Struct</em>' data type.
@@ -404,7 +459,7 @@ public interface FrontendPackage extends EPackage
    * @see gov.redhawk.frontend.impl.FrontendPackageImpl#getTunerStatusStruct()
    * @generated
    */
-  int TUNER_STATUS_STRUCT = 5;
+  int TUNER_STATUS_STRUCT = 6;
 
   /**
    * The meta object id for the '<em>Sca Simple Property</em>' data type.
@@ -414,7 +469,7 @@ public interface FrontendPackage extends EPackage
    * @see gov.redhawk.frontend.impl.FrontendPackageImpl#getScaSimpleProperty()
    * @generated
    */
-  int SCA_SIMPLE_PROPERTY = 6;
+  int SCA_SIMPLE_PROPERTY = 7;
 
 
   /**
@@ -471,6 +526,17 @@ public interface FrontendPackage extends EPackage
   EReference getTunerContainer_ModelDevice();
 
   /**
+   * Returns the meta object for the containment reference list '{@link gov.redhawk.frontend.TunerContainer#getUnallocatedContainer <em>Unallocated Container</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the containment reference list '<em>Unallocated Container</em>'.
+   * @see gov.redhawk.frontend.TunerContainer#getUnallocatedContainer()
+   * @see #getTunerContainer()
+   * @generated
+   */
+  EReference getTunerContainer_UnallocatedContainer();
+
+  /**
    * Returns the meta object for the containment reference list '{@link gov.redhawk.frontend.TunerContainer#getTunerStatus <em>Tuner Status</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
@@ -480,6 +546,38 @@ public interface FrontendPackage extends EPackage
    * @generated
    */
   EReference getTunerContainer_TunerStatus();
+
+  /**
+   * Returns the meta object for class '{@link gov.redhawk.frontend.UnallocatedTunerContainer <em>Unallocated Tuner Container</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for class '<em>Unallocated Tuner Container</em>'.
+   * @see gov.redhawk.frontend.UnallocatedTunerContainer
+   * @generated
+   */
+  EClass getUnallocatedTunerContainer();
+
+  /**
+   * Returns the meta object for the container reference '{@link gov.redhawk.frontend.UnallocatedTunerContainer#getTunerContainer <em>Tuner Container</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the container reference '<em>Tuner Container</em>'.
+   * @see gov.redhawk.frontend.UnallocatedTunerContainer#getTunerContainer()
+   * @see #getUnallocatedTunerContainer()
+   * @generated
+   */
+  EReference getUnallocatedTunerContainer_TunerContainer();
+
+  /**
+   * Returns the meta object for the attribute '{@link gov.redhawk.frontend.UnallocatedTunerContainer#getTunerType <em>Tuner Type</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the attribute '<em>Tuner Type</em>'.
+   * @see gov.redhawk.frontend.UnallocatedTunerContainer#getTunerType()
+   * @see #getUnallocatedTunerContainer()
+   * @generated
+   */
+  EAttribute getUnallocatedTunerContainer_TunerType();
 
   /**
    * Returns the meta object for class '{@link gov.redhawk.frontend.TunerStatus <em>Tuner Status</em>}'.
@@ -812,12 +910,46 @@ public interface FrontendPackage extends EPackage
     EReference TUNER_CONTAINER__MODEL_DEVICE = eINSTANCE.getTunerContainer_ModelDevice();
 
     /**
+     * The meta object literal for the '<em><b>Unallocated Container</b></em>' containment reference list feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EReference TUNER_CONTAINER__UNALLOCATED_CONTAINER = eINSTANCE.getTunerContainer_UnallocatedContainer();
+
+    /**
      * The meta object literal for the '<em><b>Tuner Status</b></em>' containment reference list feature.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      */
     EReference TUNER_CONTAINER__TUNER_STATUS = eINSTANCE.getTunerContainer_TunerStatus();
+
+    /**
+     * The meta object literal for the '{@link gov.redhawk.frontend.impl.UnallocatedTunerContainerImpl <em>Unallocated Tuner Container</em>}' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see gov.redhawk.frontend.impl.UnallocatedTunerContainerImpl
+     * @see gov.redhawk.frontend.impl.FrontendPackageImpl#getUnallocatedTunerContainer()
+     * @generated
+     */
+    EClass UNALLOCATED_TUNER_CONTAINER = eINSTANCE.getUnallocatedTunerContainer();
+
+    /**
+     * The meta object literal for the '<em><b>Tuner Container</b></em>' container reference feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EReference UNALLOCATED_TUNER_CONTAINER__TUNER_CONTAINER = eINSTANCE.getUnallocatedTunerContainer_TunerContainer();
+
+    /**
+     * The meta object literal for the '<em><b>Tuner Type</b></em>' attribute feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EAttribute UNALLOCATED_TUNER_CONTAINER__TUNER_TYPE = eINSTANCE.getUnallocatedTunerContainer_TunerType();
 
     /**
      * The meta object literal for the '{@link gov.redhawk.frontend.impl.TunerStatusImpl <em>Tuner Status</em>}' class.

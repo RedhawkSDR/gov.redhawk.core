@@ -15,6 +15,7 @@ import org.eclipse.emf.ecore.EObject;
  * The following features are supported:
  * <ul>
  *   <li>{@link gov.redhawk.frontend.TunerContainer#getModelDevice <em>Model Device</em>}</li>
+ *   <li>{@link gov.redhawk.frontend.TunerContainer#getUnallocatedContainer <em>Unallocated Container</em>}</li>
  *   <li>{@link gov.redhawk.frontend.TunerContainer#getTunerStatus <em>Tuner Status</em>}</li>
  * </ul>
  * </p>
@@ -52,6 +53,24 @@ public interface TunerContainer extends EObject
    * @generated
    */
   void setModelDevice(ModelDevice value);
+
+  /**
+   * Returns the value of the '<em><b>Unallocated Container</b></em>' containment reference list.
+   * The list contents are of type {@link gov.redhawk.frontend.UnallocatedTunerContainer}.
+   * It is bidirectional and its opposite is '{@link gov.redhawk.frontend.UnallocatedTunerContainer#getTunerContainer <em>Tuner Container</em>}'.
+   * <!-- begin-user-doc -->
+   * <p>
+   * If the meaning of the '<em>Unallocated Container</em>' containment reference list isn't clear,
+   * there really should be more of a description here...
+   * </p>
+   * <!-- end-user-doc -->
+   * @return the value of the '<em>Unallocated Container</em>' containment reference list.
+   * @see gov.redhawk.frontend.FrontendPackage#getTunerContainer_UnallocatedContainer()
+   * @see gov.redhawk.frontend.UnallocatedTunerContainer#getTunerContainer
+   * @model opposite="tunerContainer" containment="true"
+   * @generated
+   */
+  EList<UnallocatedTunerContainer> getUnallocatedContainer();
 
   /**
    * Returns the value of the '<em><b>Tuner Status</b></em>' containment reference list.

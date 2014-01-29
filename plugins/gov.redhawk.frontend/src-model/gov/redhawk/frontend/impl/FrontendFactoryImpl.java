@@ -71,6 +71,7 @@ public class FrontendFactoryImpl extends EFactoryImpl implements FrontendFactory
     {
       case FrontendPackage.MODEL_DEVICE: return createModelDevice();
       case FrontendPackage.TUNER_CONTAINER: return createTunerContainer();
+      case FrontendPackage.UNALLOCATED_TUNER_CONTAINER: return createUnallocatedTunerContainer();
       case FrontendPackage.TUNER_STATUS: return createTunerStatus();
       case FrontendPackage.LISTENER_ALLOCATION: return createListenerAllocation();
       default:
@@ -140,6 +141,17 @@ public class FrontendFactoryImpl extends EFactoryImpl implements FrontendFactory
   {
     TunerContainerImpl tunerContainer = new TunerContainerImpl();
     return tunerContainer;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public UnallocatedTunerContainer createUnallocatedTunerContainer()
+  {
+    UnallocatedTunerContainerImpl unallocatedTunerContainer = new UnallocatedTunerContainerImpl();
+    return unallocatedTunerContainer;
   }
 
   /**

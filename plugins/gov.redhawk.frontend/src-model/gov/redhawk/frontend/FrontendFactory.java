@@ -45,6 +45,15 @@ public interface FrontendFactory extends EFactory
   TunerContainer createTunerContainer();
 
   /**
+   * Returns a new object of class '<em>Unallocated Tuner Container</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>Unallocated Tuner Container</em>'.
+   * @generated
+   */
+  UnallocatedTunerContainer createUnallocatedTunerContainer();
+
+  /**
    * Returns a new object of class '<em>Tuner Status</em>'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->

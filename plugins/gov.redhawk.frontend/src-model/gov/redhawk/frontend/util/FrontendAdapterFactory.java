@@ -85,6 +85,11 @@ public class FrontendAdapterFactory extends AdapterFactoryImpl
         return createTunerContainerAdapter();
       }
       @Override
+      public Adapter caseUnallocatedTunerContainer(UnallocatedTunerContainer object)
+      {
+        return createUnallocatedTunerContainerAdapter();
+      }
+      @Override
       public Adapter caseTunerStatus(TunerStatus object)
       {
         return createTunerStatusAdapter();
@@ -142,6 +147,21 @@ public class FrontendAdapterFactory extends AdapterFactoryImpl
    * @generated
    */
   public Adapter createTunerContainerAdapter()
+  {
+    return null;
+  }
+
+  /**
+   * Creates a new adapter for an object of class '{@link gov.redhawk.frontend.UnallocatedTunerContainer <em>Unallocated Tuner Container</em>}'.
+   * <!-- begin-user-doc -->
+   * This default implementation returns null so that we can easily ignore cases;
+   * it's useful to ignore a case when inheritance will catch all the cases anyway.
+   * <!-- end-user-doc -->
+   * @return the new adapter.
+   * @see gov.redhawk.frontend.UnallocatedTunerContainer
+   * @generated
+   */
+  public Adapter createUnallocatedTunerContainerAdapter()
   {
     return null;
   }

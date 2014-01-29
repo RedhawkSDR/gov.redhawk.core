@@ -9,6 +9,7 @@ import gov.redhawk.frontend.ModelDevice;
 import gov.redhawk.frontend.TunerContainer;
 import gov.redhawk.frontend.TunerStatus;
 
+import gov.redhawk.frontend.UnallocatedTunerContainer;
 import gov.redhawk.model.sca.ScaDevice;
 import gov.redhawk.model.sca.ScaSimpleProperty;
 import gov.redhawk.model.sca.ScaStructProperty;
@@ -43,6 +44,13 @@ public class FrontendPackageImpl extends EPackageImpl implements FrontendPackage
    * @generated
    */
   private EClass tunerContainerEClass = null;
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  private EClass unallocatedTunerContainerEClass = null;
 
   /**
    * <!-- begin-user-doc -->
@@ -200,9 +208,49 @@ public class FrontendPackageImpl extends EPackageImpl implements FrontendPackage
    * <!-- end-user-doc -->
    * @generated
    */
-  public EReference getTunerContainer_TunerStatus()
+  public EReference getTunerContainer_UnallocatedContainer()
   {
     return (EReference)tunerContainerEClass.getEStructuralFeatures().get(1);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EReference getTunerContainer_TunerStatus()
+  {
+    return (EReference)tunerContainerEClass.getEStructuralFeatures().get(2);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EClass getUnallocatedTunerContainer()
+  {
+    return unallocatedTunerContainerEClass;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EReference getUnallocatedTunerContainer_TunerContainer()
+  {
+    return (EReference)unallocatedTunerContainerEClass.getEStructuralFeatures().get(0);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EAttribute getUnallocatedTunerContainer_TunerType()
+  {
+    return (EAttribute)unallocatedTunerContainerEClass.getEStructuralFeatures().get(1);
   }
 
   /**
@@ -481,7 +529,12 @@ public class FrontendPackageImpl extends EPackageImpl implements FrontendPackage
 
     tunerContainerEClass = createEClass(TUNER_CONTAINER);
     createEReference(tunerContainerEClass, TUNER_CONTAINER__MODEL_DEVICE);
+    createEReference(tunerContainerEClass, TUNER_CONTAINER__UNALLOCATED_CONTAINER);
     createEReference(tunerContainerEClass, TUNER_CONTAINER__TUNER_STATUS);
+
+    unallocatedTunerContainerEClass = createEClass(UNALLOCATED_TUNER_CONTAINER);
+    createEReference(unallocatedTunerContainerEClass, UNALLOCATED_TUNER_CONTAINER__TUNER_CONTAINER);
+    createEAttribute(unallocatedTunerContainerEClass, UNALLOCATED_TUNER_CONTAINER__TUNER_TYPE);
 
     tunerStatusEClass = createEClass(TUNER_STATUS);
     createEReference(tunerStatusEClass, TUNER_STATUS__TUNER_CONTAINER);
@@ -552,7 +605,12 @@ public class FrontendPackageImpl extends EPackageImpl implements FrontendPackage
 
     initEClass(tunerContainerEClass, TunerContainer.class, "TunerContainer", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
     initEReference(getTunerContainer_ModelDevice(), this.getModelDevice(), this.getModelDevice_TunerContainer(), "modelDevice", null, 0, 1, TunerContainer.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEReference(getTunerContainer_UnallocatedContainer(), this.getUnallocatedTunerContainer(), this.getUnallocatedTunerContainer_TunerContainer(), "unallocatedContainer", null, 0, -1, TunerContainer.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEReference(getTunerContainer_TunerStatus(), this.getTunerStatus(), this.getTunerStatus_TunerContainer(), "tunerStatus", null, 0, -1, TunerContainer.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+    initEClass(unallocatedTunerContainerEClass, UnallocatedTunerContainer.class, "UnallocatedTunerContainer", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEReference(getUnallocatedTunerContainer_TunerContainer(), this.getTunerContainer(), this.getTunerContainer_UnallocatedContainer(), "tunerContainer", null, 0, 1, UnallocatedTunerContainer.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEAttribute(getUnallocatedTunerContainer_TunerType(), theEcorePackage.getEString(), "tunerType", null, 0, 1, UnallocatedTunerContainer.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     initEClass(tunerStatusEClass, TunerStatus.class, "TunerStatus", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
     initEReference(getTunerStatus_TunerContainer(), this.getTunerContainer(), this.getTunerContainer_TunerStatus(), "tunerContainer", null, 0, 1, TunerStatus.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);

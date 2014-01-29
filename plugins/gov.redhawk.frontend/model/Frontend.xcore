@@ -21,7 +21,13 @@ class ModelDevice {
 
 class TunerContainer {
 	container ModelDevice modelDevice opposite tunerContainer
+	contains UnallocatedTunerContainer[] unallocatedContainer opposite tunerContainer
 	contains TunerStatus[] tunerStatus opposite tunerContainer
+}
+
+class UnallocatedTunerContainer {
+	container TunerContainer tunerContainer opposite unallocatedContainer
+	String tunerType
 }
 
 class TunerStatus { 
