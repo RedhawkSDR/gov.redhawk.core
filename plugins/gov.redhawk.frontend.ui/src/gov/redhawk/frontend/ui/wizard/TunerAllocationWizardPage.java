@@ -2,18 +2,25 @@ package gov.redhawk.frontend.ui.wizard;
 
 import gov.redhawk.frontend.TunerStatus;
 import gov.redhawk.frontend.edit.utils.TunerProperties.ListenerAllocationProperties;
+import gov.redhawk.frontend.edit.utils.TunerProperties.StatusProperties;
 import gov.redhawk.frontend.edit.utils.TunerProperties.TunerAllocationProperties;
+import gov.redhawk.frontend.edit.utils.TunerProperties.TunerStatusAllocationProperties;
 import gov.redhawk.frontend.ui.FrontEndUIActivator;
 import gov.redhawk.frontend.ui.FrontEndUIActivator.ALLOCATION_MODE;
+import gov.redhawk.model.sca.ScaAbstractProperty;
+import gov.redhawk.model.sca.ScaDevice;
 import gov.redhawk.model.sca.ScaFactory;
 import gov.redhawk.model.sca.ScaSimpleProperty;
 import gov.redhawk.model.sca.ScaStructProperty;
+import gov.redhawk.model.sca.ScaStructSequenceProperty;
 import gov.redhawk.model.sca.commands.ScaModelCommand;
 import gov.redhawk.sca.observables.SCAObservables;
 
 import java.text.NumberFormat;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 import mil.jpeojtrs.sca.prf.PrfFactory;
@@ -24,6 +31,7 @@ import org.eclipse.core.databinding.Binding;
 import org.eclipse.core.databinding.UpdateValueStrategy;
 import org.eclipse.core.databinding.validation.IValidator;
 import org.eclipse.core.databinding.validation.ValidationStatus;
+import org.eclipse.core.runtime.Assert;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
@@ -57,9 +65,9 @@ import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.progress.UIJob;
 
 
-public class SimpleTunerAllocationWizardPage extends WizardPage {
+public class TunerAllocationWizardPage extends WizardPage {
 
-	private TunerStatus[] tuners;
+	private TunerStatus tuner;
 	private Text allocIdText;
 	private Text cfText;
 	private Text bwText;
@@ -84,6 +92,12 @@ public class SimpleTunerAllocationWizardPage extends WizardPage {
 	private Button bwAnyValue;
 	List<Control> tunerControls = new ArrayList<Control>();
 	private NumberFormat nf = NumberFormat.getInstance();
+	private Double minBw;
+	private Double maxBw;
+	private Double minFreq;
+	private Double maxFreq;
+	private Double minSr;
+	private Double maxSr;
 
 	private static final String TUNER_TYPE_MISSING_ERR_MSG = "Please select a Tuner Type";
 	private static final String TUNER_TYPE_NOT_SUPPORTED_ERR_MSG = "The selected Tuner Type is not supported";
@@ -99,6 +113,12 @@ public class SimpleTunerAllocationWizardPage extends WizardPage {
 	private static final String PERCENT_VALUE_ERR_MSG = "Percentage must be entered as a number between 0 and 100";
 	private static final String NEGATIVE_ERR_MSG = "The value must not be negative";
 	private static final String NEGATIVE_OR_ZERO_ERR_MSG = "The value must be a positive non-zero number";
+	private static final String FREQ_BELOW_MIN = "The selected frequency is below the minimum known supported frequency of ";
+	private static final String FREQ_ABOVE_MAX = "The selected frequency is above the maximum known supported frequency of ";
+	private static final String BW_BELOW_MIN = "The selected bandwidth is below the minimum known supported bandwidth of ";
+	private static final String BW_ABOVE_MAX = "The selected bandwidth is above the maximum known supported bandwidth of ";
+	private static final String SR_BELOW_MIN = "The selected sample rate is below the minimum known supported sample rate of ";
+	private static final String SR_ABOVE_MAX = "The selected sample rate is above the maximum known supported sample rate of ";
 
 	private class TargetableValidator implements IValidator {
 
@@ -160,9 +180,8 @@ public class SimpleTunerAllocationWizardPage extends WizardPage {
 				msg = status.getMessage();
 				break;
 			case Status.ERROR:
-				pageStatus = DialogPage.ERROR;
-				msg = status.getMessage();
-				break;
+				setErrorMessage(status.getMessage());
+				return;
 			default:
 			}
 			setMessage(msg, pageStatus);
@@ -185,6 +204,7 @@ public class SimpleTunerAllocationWizardPage extends WizardPage {
 						double srVal = bwVal *2;
 						NumberFormat nf = NumberFormat.getInstance();
 						nf.setMinimumFractionDigits(0);
+						nf.setGroupingUsed(false);
 						srText.setText(nf.format(srVal));
 						new UIJob("Set SR Text Background") {
 
@@ -317,8 +337,6 @@ public class SimpleTunerAllocationWizardPage extends WizardPage {
 		}
 	};
 
-
-
 	private void handleAllocationModeChange() {
 		for (Control c : tunerControls) {
 			c.setEnabled(allocationMode == ALLOCATION_MODE.TUNER);
@@ -339,127 +357,152 @@ public class SimpleTunerAllocationWizardPage extends WizardPage {
 		return false;
 	}
 
-	public IStatus getValidationStatus(Control control, Object value) {
-		if (control == allocIdText) {
-			String s = (String) value;
-			if (s.contains(",")) {
-				return ValidationStatus.error(ALLOC_ID_CONTAINS_COMMA_ERR_MSG);
-			} if ("".equals(s)) {
-				return ValidationStatus.error(ALLOC_ID_MISSING);
-			}
+	public IStatus getValidationStatus(Control control, Object value) {		if (control == allocIdText) {
+		String s = (String) value;
+		if (s.contains(",")) {
+			return ValidationStatus.error(ALLOC_ID_CONTAINS_COMMA_ERR_MSG);
+		} if ("".equals(s)) {
+			return ValidationStatus.error(ALLOC_ID_MISSING);
+		}
+		return ValidationStatus.OK_STATUS;
+	} else if (control == targetAllocText) {
+		if (allocationMode == ALLOCATION_MODE.TUNER) {
 			return ValidationStatus.OK_STATUS;
-		} else if (control == targetAllocText) {
-			if (allocationMode == ALLOCATION_MODE.TUNER) {
-				return ValidationStatus.OK_STATUS;
-			}
-			String s = (String) value;
-			if ("".equals(s)) {
-				return ValidationStatus.error(EXISTING_LISTENER_ID_MISSING);
-			}
+		}
+		String s = (String) value;
+		if ("".equals(s)) {
+			return ValidationStatus.error(EXISTING_LISTENER_ID_MISSING);
+		}
+		return ValidationStatus.OK_STATUS;
+	} else if (allocationMode == ALLOCATION_MODE.LISTENER) {
+		return ValidationStatus.OK_STATUS;
+	} else if (control == typeCombo.getControl()) {
+		String s = (String) value;
+		if (s == null || "".equals(s)) {
+			return ValidationStatus.error(TUNER_TYPE_MISSING_ERR_MSG);
+		}
+		if (!FrontEndUIActivator.supportedTunerTypes.contains(s)) {
+			return ValidationStatus.error(TUNER_TYPE_NOT_SUPPORTED_ERR_MSG);
+		}
+		return ValidationStatus.OK_STATUS;
+	} else if (control == cfText) {
+		if (allocationMode == ALLOCATION_MODE.LISTENER) {
 			return ValidationStatus.OK_STATUS;
-		} else if (allocationMode == ALLOCATION_MODE.LISTENER) {
+		}
+		if (value == null || "".equals(value)) {
+			return ValidationStatus.error(CENTER_FREQUENCY_ERR_MSG);
+		}
+		Double val = null;
+		try{
+			val = Double.parseDouble(String.valueOf(value)) * getUnitsConversionFactor(TunerAllocationProperties.CENTER_FREQUENCY);
+		} catch (NumberFormatException e) {
+			return ValidationStatus.error(NOT_VALID_NUMBER_ERR_MSG);
+		}
+		if (val <= 0) {
+			return ValidationStatus.error(NEGATIVE_OR_ZERO_ERR_MSG);
+		}
+		if (minFreq != null && val < minFreq) {
+			return ValidationStatus.warning(
+					FREQ_BELOW_MIN + String.valueOf(minFreq / getUnitsConversionFactor(TunerAllocationProperties.CENTER_FREQUENCY)) + " Mhz");
+		}
+		if (maxFreq != null && val > maxFreq) {
+			return ValidationStatus.warning(
+					FREQ_ABOVE_MAX + String.valueOf(maxFreq / getUnitsConversionFactor(TunerAllocationProperties.CENTER_FREQUENCY)) + " Mhz");
+		}
+		return ValidationStatus.OK_STATUS;
+	} else if (control == bwText) {
+		if (allocationMode == ALLOCATION_MODE.LISTENER || bwAnyValue.getSelection()) {
 			return ValidationStatus.OK_STATUS;
-		} else if (control == typeCombo.getControl()) {
-			String s = (String) value;
-			if (s == null || "".equals(s)) {
-				return ValidationStatus.error(TUNER_TYPE_MISSING_ERR_MSG);
-			}
-			if (!FrontEndUIActivator.supportedTunerTypes.contains(s)) {
-				return ValidationStatus.error(TUNER_TYPE_NOT_SUPPORTED_ERR_MSG);
-			}
+		}
+		if (value == null || "".equals(value)) {
+			return ValidationStatus.error(BNDWIDTH_ERR_MSG);
+		}
+		Double val = null;
+		try{
+			val = Double.parseDouble(String.valueOf(value)) * getUnitsConversionFactor(TunerAllocationProperties.BANDWIDTH);
+		} catch (NumberFormatException e) {
+			return ValidationStatus.error(NOT_VALID_NUMBER_ERR_MSG);
+		}
+		if (val < 0) {
+			return ValidationStatus.error(NEGATIVE_ERR_MSG);
+		}
+		if (minBw != null && val < minBw) {
+			return ValidationStatus.warning(
+					BW_BELOW_MIN + String.valueOf(minBw / getUnitsConversionFactor(TunerAllocationProperties.BANDWIDTH)) + " Mhz");
+		}
+		if (maxBw != null && val > maxBw) {
+			return ValidationStatus.warning(
+					BW_ABOVE_MAX + String.valueOf(maxBw / getUnitsConversionFactor(TunerAllocationProperties.BANDWIDTH)) + " Mhz");
+		}
+		return ValidationStatus.OK_STATUS;
+	} else if (control == srText) {
+		if (allocationMode == ALLOCATION_MODE.LISTENER || srAnyValue.getSelection()) {
 			return ValidationStatus.OK_STATUS;
-		} else if (control == cfText) {
-			if (allocationMode == ALLOCATION_MODE.LISTENER) {
-				return ValidationStatus.OK_STATUS;
-			}
-			if (value == null || "".equals(value)) {
-				return ValidationStatus.error(CENTER_FREQUENCY_ERR_MSG);
-			}
-			Double val = null;
-			try{
-				val = Double.parseDouble(String.valueOf(value));
-			} catch (NumberFormatException e) {
-				return ValidationStatus.error(NOT_VALID_NUMBER_ERR_MSG);
-			}
-			if (val <= 0) {
-				return ValidationStatus.error(NEGATIVE_OR_ZERO_ERR_MSG);
-			}
+		}
+		if (value == null || "".equals(value)) {
+			return ValidationStatus.error(SAMPLE_RATE_ERR_MSG);
+		}
+		Double val = null;
+		try{
+			val = Double.parseDouble(String.valueOf(value)) * getUnitsConversionFactor(TunerAllocationProperties.SAMPLE_RATE);
+		} catch (NumberFormatException e) {
+			return ValidationStatus.error(NOT_VALID_NUMBER_ERR_MSG);
+		}
+		if (val < 0) {
+			return ValidationStatus.error(NEGATIVE_ERR_MSG);
+		}
+		if (minSr != null && val < minSr) {
+			return ValidationStatus.warning(
+					SR_BELOW_MIN + String.valueOf(minSr / getUnitsConversionFactor(TunerAllocationProperties.SAMPLE_RATE)) + " Msps");
+		}
+		if (maxSr != null && val > maxSr) {
+			return ValidationStatus.warning(
+					SR_ABOVE_MAX + String.valueOf(maxSr / getUnitsConversionFactor(TunerAllocationProperties.SAMPLE_RATE)) + " Msps");
+		}
+		return ValidationStatus.OK_STATUS;
+	} else if (control == bwTolText) {
+		if (allocationMode == ALLOCATION_MODE.LISTENER) {
 			return ValidationStatus.OK_STATUS;
-		} else if (control == bwText) {
-			if (allocationMode == ALLOCATION_MODE.LISTENER) {
-				return ValidationStatus.OK_STATUS;
-			}
-			if (value == null || "".equals(value)) {
-				return ValidationStatus.error(BNDWIDTH_ERR_MSG);
-			}
-			Double val = null;
-			try{
-				val = Double.parseDouble(String.valueOf(value));
-			} catch (NumberFormatException e) {
-				return ValidationStatus.error(NOT_VALID_NUMBER_ERR_MSG);
-			}
-			if (val < 0) {
-				return ValidationStatus.error(NEGATIVE_ERR_MSG);
-			}
+		}
+		if (value == null || "".equals(value)) {
+			return ValidationStatus.error(BANDWIDTH_TOLERANCE_ERR_MSG);
+		}
+		Double val = null;
+		try{
+			val = Double.parseDouble(String.valueOf(value));
+		} catch (NumberFormatException e) {
+			return ValidationStatus.error(NOT_VALID_NUMBER_ERR_MSG);
+		}
+		if (val < 0 || val > 100) {
+			return ValidationStatus.error(PERCENT_VALUE_ERR_MSG);
+		}
+		return ValidationStatus.OK_STATUS;
+	} else if (control == srTolText) {
+		if (allocationMode == ALLOCATION_MODE.LISTENER) {
 			return ValidationStatus.OK_STATUS;
-		} else if (control == srText) {
-			if (allocationMode == ALLOCATION_MODE.LISTENER) {
-				return ValidationStatus.OK_STATUS;
-			}
-			if (value == null || "".equals(value)) {
-				return ValidationStatus.error(SAMPLE_RATE_ERR_MSG);
-			}
-			Double val = null;
-			try{
-				val = Double.parseDouble(String.valueOf(value));
-			} catch (NumberFormatException e) {
-				return ValidationStatus.error(NOT_VALID_NUMBER_ERR_MSG);
-			}
-			if (val < 0) {
-				return ValidationStatus.error(NEGATIVE_ERR_MSG);
-			}
-			return ValidationStatus.OK_STATUS;
-		} else if (control == bwTolText) {
-			if (allocationMode == ALLOCATION_MODE.LISTENER) {
-				return ValidationStatus.OK_STATUS;
-			}
-			if (value == null || "".equals(value)) {
-				return ValidationStatus.error(BANDWIDTH_TOLERANCE_ERR_MSG);
-			}
-			Double val = null;
-			try{
-				val = Double.parseDouble(String.valueOf(value));
-			} catch (NumberFormatException e) {
-				return ValidationStatus.error(NOT_VALID_NUMBER_ERR_MSG);
-			}
-			if (val < 0 || val > 100) {
-				return ValidationStatus.error(PERCENT_VALUE_ERR_MSG);
-			}
-			return ValidationStatus.OK_STATUS;
-		} else if (control == srTolText) {
-			if (allocationMode == ALLOCATION_MODE.LISTENER) {
-				return ValidationStatus.OK_STATUS;
-			}
-			if (value == null || "".equals(value)) {
-				return ValidationStatus.error(SAMPLE_RATE_TOLERANCE_ERR_MSG);
-			}
-			Double val = null;
-			try{
-				val = Double.parseDouble(String.valueOf(value));
-			} catch (NumberFormatException e) {
-				return ValidationStatus.error(NOT_VALID_NUMBER_ERR_MSG);
-			}
-			if (val < 0 || val > 100) {
-				return ValidationStatus.error(PERCENT_VALUE_ERR_MSG);
-			}
-			return ValidationStatus.OK_STATUS;
+		}
+		if (value == null || "".equals(value)) {
+			return ValidationStatus.error(SAMPLE_RATE_TOLERANCE_ERR_MSG);
+		}
+		Double val = null;
+		try{
+			val = Double.parseDouble(String.valueOf(value));
+		} catch (NumberFormatException e) {
+			return ValidationStatus.error(NOT_VALID_NUMBER_ERR_MSG);
+		}
+		if (val < 0 || val > 100) {
+			return ValidationStatus.error(PERCENT_VALUE_ERR_MSG);
 		}
 		return ValidationStatus.OK_STATUS;
 	}
+	return ValidationStatus.OK_STATUS;
+	}
 
-	protected SimpleTunerAllocationWizardPage(TunerStatus[] tuners) {
+	protected TunerAllocationWizardPage(TunerStatus tuner) {
 		super("Allocate A Tuner");
-		this.tuners = tuners;
+		Assert.isNotNull(tuner, "Tuner must not be null");
+		this.tuner = tuner;
+		setMinMaxValues();
 		nf.setMinimumFractionDigits(0);
 	}
 
@@ -557,7 +600,7 @@ public class SimpleTunerAllocationWizardPage extends WizardPage {
 			@Override
 			public Object convert(Object value) {
 				if (value instanceof Double) {
-					if (((Double) value).intValue() == 0) {
+					if (((Double) value).doubleValue() == 0.) {
 						return "";
 					}
 					double retVal = (Double) value / getUnitsConversionFactor(TunerAllocationProperties.CENTER_FREQUENCY);
@@ -567,11 +610,12 @@ public class SimpleTunerAllocationWizardPage extends WizardPage {
 			}
 		};
 		cfStrategy1.setAfterGetValidator(new TargetableValidator(cfText));
-		cfStrategy2.setAfterGetValidator(new TargetableValidator(cfText));
+		cfStrategy2.setAfterConvertValidator(new TargetableValidator(cfText));
 		ControlDecorationSupport.create(context.bindValue(WidgetProperties.text(SWT.Modify).observe(cfText),
 				SCAObservables.observeSimpleProperty(tunerAllocationStruct.getSimple(TunerAllocationProperties.CENTER_FREQUENCY.getId())),
 				cfStrategy1,
-				cfStrategy2), SWT.TOP | SWT.LEFT);
+				cfStrategy2),
+				SWT.TOP | SWT.LEFT);
 		cfText.addFocusListener(new TargetableFocusListener(cfText));
 
 		//BW Text
@@ -600,7 +644,7 @@ public class SimpleTunerAllocationWizardPage extends WizardPage {
 			}
 		};
 		bwStrategy1.setAfterGetValidator(new TargetableValidator(bwText));
-		bwStrategy2.setAfterGetValidator(new TargetableValidator(bwText));
+		bwStrategy2.setAfterConvertValidator(new TargetableValidator(bwText));
 		ControlDecorationSupport.create( context.bindValue(WidgetProperties.text(SWT.Modify).observe(bwText),
 				SCAObservables.observeSimpleProperty(tunerAllocationStruct.getSimple(TunerAllocationProperties.BANDWIDTH.getId())),
 				bwStrategy1,
@@ -649,7 +693,7 @@ public class SimpleTunerAllocationWizardPage extends WizardPage {
 				} catch (NumberFormatException e) {
 					return null;
 				}
-				return Double.valueOf((String) value) * getUnitsConversionFactor(TunerAllocationProperties.BANDWIDTH_TOLERANCE);
+				return Double.valueOf((String) value);
 			}
 		};
 		UpdateValueStrategy bwTolStrategy2 = new UpdateValueStrategy() {
@@ -659,7 +703,7 @@ public class SimpleTunerAllocationWizardPage extends WizardPage {
 					if (((Double) value).doubleValue() == 0.) {
 						return "";
 					}
-					double retVal = (Double) value / getUnitsConversionFactor(TunerAllocationProperties.BANDWIDTH_TOLERANCE);
+					double retVal = (Double) value;
 					return String.valueOf(nf.format(retVal));
 				}
 				return null;
@@ -683,7 +727,7 @@ public class SimpleTunerAllocationWizardPage extends WizardPage {
 				} catch (NumberFormatException e) {
 					return null;
 				}
-				return Double.valueOf((String) value) * getUnitsConversionFactor(TunerAllocationProperties.SAMPLE_RATE_TOLERANCE);
+				return Double.valueOf((String) value);
 			}
 		};
 		UpdateValueStrategy srTolStrategy2 = new UpdateValueStrategy() {
@@ -693,7 +737,7 @@ public class SimpleTunerAllocationWizardPage extends WizardPage {
 					if (((Double) value).doubleValue() == 0.) {
 						return "";
 					}
-					double retVal = (Double) value / getUnitsConversionFactor(TunerAllocationProperties.SAMPLE_RATE_TOLERANCE);
+					double retVal = (Double) value;
 					return String.valueOf(nf.format(retVal));
 				}
 				return null;
@@ -901,7 +945,7 @@ public class SimpleTunerAllocationWizardPage extends WizardPage {
 				}
 			}
 			if (bw != null) {
-				simple.setValue(bw * getUnitsConversionFactor(allocProp));
+				simple.setValue(bw);
 			}
 			break;
 		case BANDWIDTH_TOLERANCE:
@@ -929,7 +973,7 @@ public class SimpleTunerAllocationWizardPage extends WizardPage {
 				}
 			}
 			if (cf != null) {
-				simple.setValue(cf * getUnitsConversionFactor(allocProp));
+				simple.setValue(cf);
 			}
 			break;
 		case DEVICE_CONTROL:
@@ -949,7 +993,7 @@ public class SimpleTunerAllocationWizardPage extends WizardPage {
 				}
 			}
 			if (sr != null) {
-				simple.setValue(sr * getUnitsConversionFactor(allocProp));
+				simple.setValue(sr);
 			}
 			break;
 		case SAMPLE_RATE_TOLERANCE:
@@ -1004,6 +1048,128 @@ public class SimpleTunerAllocationWizardPage extends WizardPage {
 		default:
 			return 1;
 		}
+	}
+
+	private void setMinMaxValues() {
+		ScaDevice<?> device = tuner.getTunerContainer().getModelDevice().getScaDevice();
+		ScaStructSequenceProperty statusContainer = (ScaStructSequenceProperty) device.getProperty(StatusProperties.FRONTEND_TUNER_STATUS.getId());
+		for (ScaStructProperty struct : statusContainer.getStructs()) {
+			ScaSimpleProperty availFreqSimple = struct.getSimple(StatusProperties.AVAILABLE_FREQUENCY.getId());
+			if (availFreqSimple != null) {
+				updateMinMaxValues(availFreqSimple);
+			}
+			ScaSimpleProperty availBwSimple = struct.getSimple(StatusProperties.AVAILABLE_BANDWIDTH.getId());
+			if (availBwSimple != null) {
+				updateMinMaxValues(availBwSimple);
+			}
+			ScaSimpleProperty availSrSimple = struct.getSimple(StatusProperties.AVAILABLE_SAMPLE_RATE.getId());
+			if (availSrSimple != null) {
+				updateMinMaxValues(availSrSimple);
+			}
+		}
+	}
+
+	private void updateMinMaxValues(ScaSimpleProperty simple) {
+		StatusProperties property = StatusProperties.getValueFor(simple);
+		switch (property) {
+		case AVAILABLE_BANDWIDTH:
+			setMinMaxValue((String) simple.getValue(), property);
+			break;
+		case AVAILABLE_FREQUENCY:
+			setMinMaxValue((String) simple.getValue(), property);
+			break;
+		case AVAILABLE_SAMPLE_RATE:
+			setMinMaxValue((String) simple.getValue(), property);
+			break;
+		default:
+		}
+	}
+
+	private void setMinMaxValue(String value, StatusProperties prop) {
+		value = value.replaceAll("[^\\d\\.\\-,]", "");
+		String[] parts = value.split("\\-");
+		Double candMin = null;
+		Double candMax = null;
+		if (parts.length == 2) {
+			try {
+				candMin = Double.parseDouble(parts[0]);
+				candMax = Double.parseDouble(parts[1]);
+			} catch (NumberFormatException e) {
+				//PASS
+			}
+		} else {
+			parts = value.split(",");
+			if (parts.length == 1) {
+				try {
+					candMin = Double.parseDouble(parts[0]);
+					candMax = candMin;
+				} catch (NumberFormatException e) {
+					//PASS
+				}
+			} else if (parts.length > 1) {
+				Map<String, Double> minMax = getMinMax(parts);
+				candMin = minMax.get("min");
+				candMax = minMax.get("max");
+			}
+		}
+		if (candMin != null && candMax != null) {
+			setMinMaxValue(prop, candMin, candMax);
+		} else {
+			FrontEndUIActivator.getDefault().getLog().log(new Status(Status.WARNING, FrontEndUIActivator.PLUGIN_ID, "Invalid range value for available capacity: "+ value));
+		}
+	}
+
+	private Map<String, Double> getMinMax(String[] items) {
+		Double min = null;
+		Double max = null;
+		for (String item : items) {
+			try {
+				double val = Double.parseDouble(item);
+				if (min == null || val < min.doubleValue()) {
+					min = val;
+				} if (max == null || val > max.doubleValue()) {
+					max = val;
+				}
+			} catch (NumberFormatException e) {
+				continue;
+			}
+		}
+		Map<String, Double> map = new HashMap<String, Double>();
+		map.put("min", min);
+		map.put("max", max);
+		return map;
+	}
+
+
+	private void setMinMaxValue(StatusProperties prop, Double candidateMin, Double candidateMax) {
+		switch (prop) {
+		case AVAILABLE_BANDWIDTH:
+			if (minBw == null || candidateMin < minBw) {
+				minBw = candidateMin;
+			}
+			if (maxBw == null || candidateMax > maxBw) {
+				maxBw = candidateMax;
+			}
+			break;
+		case AVAILABLE_FREQUENCY:
+			if (minFreq == null || candidateMin < minFreq) {
+				minFreq = candidateMin;
+			}
+			if (maxFreq == null || candidateMax > maxFreq) {
+				maxFreq = candidateMax;
+			}
+			break;
+		case AVAILABLE_SAMPLE_RATE:
+			if (minSr == null || candidateMin < minSr) {
+				minSr = candidateMin;
+			}
+			if (maxSr == null || candidateMax > maxSr) {
+				maxSr = candidateMax;
+			}
+			break;
+		default:
+		}
+
 	}
 
 	public ScaStructProperty getTunerAllocationStruct() {

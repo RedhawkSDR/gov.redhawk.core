@@ -2,6 +2,7 @@ package gov.redhawk.frontend.edit.utils;
 
 import gov.redhawk.frontend.FrontendPackage;
 import gov.redhawk.frontend.TunerStatus;
+import gov.redhawk.frontend.edit.utils.TunerProperties.StatusProperties;
 import gov.redhawk.model.sca.ScaDevice;
 import gov.redhawk.model.sca.ScaSimpleProperty;
 import gov.redhawk.model.sca.commands.ScaModelCommand;
@@ -308,11 +309,12 @@ public enum TunerProperties {
 	}
 
 	public enum StatusProperties {
-		//	instance name			ID														PRF type
-		ALLOCATION_ID_CSV("FRONTEND::tuner_status::allocation_id_csv", PropertyValueType.STRING),
-		AVAILABLE_FREQUENCY("FRONTEND::tuner_status::available_frequency", PropertyValueType.DOUBLE),
-		AVAILABLE_BANDWIDTH("FRONTEND::tuner_status::available_bandwidth", PropertyValueType.DOUBLE),
-		AVAILABLE_SAMPLE_RATE("FRONTEND::tuner_status::available_sample_rate", PropertyValueType.DOUBLE);
+	//  instance name			ID														PRF type
+		FRONTEND_TUNER_STATUS(	"FRONTEND::tuner_status",								PropertyValueType.OBJREF),
+		ALLOCATION_ID_CSV(		"FRONTEND::tuner_status::allocation_id_csv", 			PropertyValueType.STRING),
+		AVAILABLE_FREQUENCY(	"FRONTEND::tuner_status::available_frequency", 			PropertyValueType.DOUBLE),
+		AVAILABLE_BANDWIDTH(	"FRONTEND::tuner_status::available_bandwidth", 			PropertyValueType.DOUBLE),
+		AVAILABLE_SAMPLE_RATE(	"FRONTEND::tuner_status::available_sample_rate", 		PropertyValueType.DOUBLE);
 
 		private String id;
 		private PropertyValueType type;
@@ -328,6 +330,15 @@ public enum TunerProperties {
 
 		public PropertyValueType getType() {
 			return this.type;
+		}
+
+		public static StatusProperties getValueFor(ScaSimpleProperty simple) {
+			for (StatusProperties prop : values()) {
+				if (prop.getId().equals(simple.getId())) {
+					return prop;
+				}
+			}
+			return null;
 		}
 	}
 }

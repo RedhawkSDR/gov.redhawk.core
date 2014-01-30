@@ -1,7 +1,7 @@
 package gov.redhawk.frontend.ui.internal;
 
 import gov.redhawk.frontend.TunerStatus;
-import gov.redhawk.frontend.ui.wizard.TunerAllocationSimpleWizard;
+import gov.redhawk.frontend.ui.wizard.TunerAllocationWizard;
 
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
@@ -26,7 +26,7 @@ public class AddListenerHandler extends AbstractHandler implements IHandler {
 			String[] parts = fullId.split(",");
 			if (parts.length > 0) {
 				String id = parts[0];
-				WizardDialog dialog = new WizardDialog(HandlerUtil.getActiveShell(event), new TunerAllocationSimpleWizard(target, true, id));
+				WizardDialog dialog = new WizardDialog(HandlerUtil.getActiveShell(event), new TunerAllocationWizard(target, true, id));
 				dialog.open();
 			}
 		}

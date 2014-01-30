@@ -1,10 +1,12 @@
 package gov.redhawk.frontend.ui.wizard;
 
 import gov.redhawk.frontend.TunerStatus;
+import gov.redhawk.frontend.ui.FrontEndUIActivator;
 import gov.redhawk.frontend.ui.FrontEndUIActivator.ALLOCATION_MODE;
 import gov.redhawk.model.sca.ScaDevice;
 import gov.redhawk.model.sca.ScaStructProperty;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,6 +16,7 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.IJobChangeEvent;
 import org.eclipse.core.runtime.jobs.JobChangeAdapter;
 import org.eclipse.jface.dialogs.MessageDialog;
+import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.jface.wizard.Wizard;
 import org.eclipse.ui.progress.UIJob;
 
@@ -22,22 +25,23 @@ import CF.DevicePackage.InsufficientCapacity;
 import CF.DevicePackage.InvalidCapacity;
 import CF.DevicePackage.InvalidState;
 
-public class TunerAllocationSimpleWizard extends Wizard {
+public class TunerAllocationWizard extends Wizard {
 
 	private TunerStatus[] tuners;
-	private SimpleTunerAllocationWizardPage allocatePage;
+	private TunerAllocationWizardPage allocatePage;
 	private boolean listener;
 	private String targetId;
 	private ListenerAllocationWizardPage listenerPage;
 
-	public TunerAllocationSimpleWizard(TunerStatus[] tuners) {
-		this.tuners = tuners;
+	public TunerAllocationWizard(TunerStatus tuner) {
+		this(tuner, false, null);
 	}
 
-	public TunerAllocationSimpleWizard(TunerStatus tuner, boolean listener, String targetId) {
+	public TunerAllocationWizard(TunerStatus tuner, boolean listener, String targetId) {
 		this.tuners = new TunerStatus[] {tuner};
 		this.listener = listener;
 		this.targetId = targetId;
+		this.setNeedsProgressMonitor(true);
 	}
 
 	@Override
@@ -46,8 +50,13 @@ public class TunerAllocationSimpleWizard extends Wizard {
 			listenerPage = new ListenerAllocationWizardPage(targetId);
 			addPage(listenerPage);
 		} else {
-			allocatePage = new SimpleTunerAllocationWizardPage(tuners);
-			addPage(allocatePage);
+			if (tuners.length > 0) {
+				allocatePage = new TunerAllocationWizardPage(tuners[0]);
+				addPage(allocatePage);
+			} else {
+				FrontEndUIActivator.getDefault().getLog().log(new Status(
+						Status.ERROR, FrontEndUIActivator.PLUGIN_ID, "Unable to launch Allocation wizard because an empty array of tuners was provided."));
+			}
 		}
 	}
 
@@ -57,41 +66,50 @@ public class TunerAllocationSimpleWizard extends Wizard {
 		final Boolean[] result = new Boolean[1];
 		final StringBuilder sb = new StringBuilder();
 		final DataType[] props = createAllocationProperties();
-
-		UIJob submitAllocRequestJob = new UIJob(getShell().getDisplay(), "Submit Allocation request") {
-
-			@Override
-			public IStatus runInUIThread(IProgressMonitor monitor) {
-				String delim = "";
-				try {
-					if (!device.allocateCapacity(props)) {
-						sb.append(delim + "The allocation request was not accepted because resources matching"
-								+ " all aspects of the request were not available.");
+		
+		try {
+			getContainer().run(true, true, new IRunnableWithProgress() {
+				
+				@Override
+				public void run(IProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
+					monitor.beginTask("Allcoate Capacity", 1);
+					String delim = "";
+					try {
+						if (!device.allocateCapacity(props)) {
+							sb.append(delim + "The allocation request was not accepted because resources matching"
+									+ " all aspects of the request were not available.");
+							delim = "\n\n";
+							result[0] = false;
+						} else {
+							result[0] = true;
+						}
+					} catch (InvalidCapacity e) {
+						sb.append(delim + "The allocation request was invalid. Message: " + e.getMessage());
 						delim = "\n\n";
 						result[0] = false;
-					} else {
-						result[0] = true;
+					} catch (InvalidState e) {
+						sb.append(delim + "The Allocation Request failed because the device is in an invalid state. Message: " + e.getMessage());
+						delim = "\n\n";
+						result[0] = false;
+					} catch (InsufficientCapacity e) {
+						sb.append(delim + "The Allocation Request failed because the device has insufficient capacity. Message: " + e.getMessage());
+						delim = "\n\n";
+						result[0] = false;
+					} finally {
+						monitor.worked(1);
 					}
-				} catch (InvalidCapacity e) {
-					sb.append(delim + "The allocation request was invalid. Message: " + e.getMessage());
-					delim = "\n\n";
-					result[0] = false;
-				} catch (InvalidState e) {
-					sb.append(delim + "The Allocation Request failed because the device is in an invalid state. Message: " + e.getMessage());
-					delim = "\n\n";
-					result[0] = false;
-				} catch (InsufficientCapacity e) {
-					sb.append(delim + "The Allocation Request failed because the device has insufficient capacity. Message: " + e.getMessage());
-					delim = "\n\n";
-					result[0] = false;
 				}
-				return Status.OK_STATUS;
-			}
+			});
+		} catch (InvocationTargetException e) {
+			FrontEndUIActivator.getDefault().getLog().log(new Status(
+					Status.ERROR, FrontEndUIActivator.PLUGIN_ID, "Failed to allocate capacity on Fronted Interface Device", e));
+			return false;
+		} catch (InterruptedException e) {
+			FrontEndUIActivator.getDefault().getLog().log(new Status(
+					Status.ERROR, FrontEndUIActivator.PLUGIN_ID, "Failed to allocate capacity on Fronted Interface Device", e));
+			return false;
+		}
 
-		};
-		submitAllocRequestJob.setUser(true);
-		submitAllocRequestJob.schedule();
-		
 		while (result[0] == null) {
 			if (!getShell().getDisplay().readAndDispatch()) {
 				getShell().getDisplay().sleep();
@@ -114,7 +132,7 @@ public class TunerAllocationSimpleWizard extends Wizard {
 			dt.id = "FRONTEND::listener_allocation";
 			dt.value = struct.toAny();
 		} else {
-			SimpleTunerAllocationWizardPage page = allocatePage;
+			TunerAllocationWizardPage page = allocatePage;
 			if (page.getAllocationMode() == ALLOCATION_MODE.TUNER) {
 				struct = page.getTunerAllocationStruct();
 				dt.id = "FRONTEND::tuner_allocation";

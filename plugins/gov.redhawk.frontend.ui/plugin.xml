@@ -179,29 +179,6 @@
                </iterate>
             </visibleWhen>
          </command>
-         <command
-               commandId="gov.redhawk.frontend.commands.allocateDetail"
-               style="push">
-            <visibleWhen
-                  checkEnabled="false">
-            	<iterate>
-                  <and>
-                     <instanceof
-                           value="gov.redhawk.model.sca.ScaDevice">
-                     </instanceof>
-                     <test
-                           property="gov.redhawk.frontend.deviceKindIsFrontendTuner">
-                     </test>
-                     <with
-                           variable="activeMenuSelection">
-                        <count
-                              value="1">
-                        </count>
-                     </with>
-                  </and>
-            	</iterate>
-            </visibleWhen>
-         </command>
       </menuContribution>
       <menuContribution
             allPopups="false"
@@ -309,11 +286,6 @@
             defaultHandler="gov.redhawk.frontend.ui.internal.DeallocateHandler"
             id="gov.redhawk.frontend.commands.deallocateall"
             name="Deallocate All">
-      </command>
-      <command
-            defaultHandler="gov.redhawk.frontend.ui.internal.AllocateHandler"
-            id="gov.redhawk.frontend.commands.allocateDetail"
-            name="Allocate Detail...">
       </command>
       <command
             defaultHandler="gov.redhawk.frontend.ui.internal.AddListenerHandler"
