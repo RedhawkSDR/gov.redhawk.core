@@ -78,20 +78,6 @@
             allPopups="false"
             locationURI="popup:org.eclipse.ui.popup.any?before=additions">
          <command
-               commandId="gov.redhawk.frontend.commands.snapshot"
-               style="push">
-            <visibleWhen
-                  checkEnabled="false">
-               <iterate>
-                  <or>
-                     <instanceof
-                           value="gov.redhawk.frontend.TunerStatus">
-                     </instanceof>
-                  </or>
-               </iterate>
-            </visibleWhen>
-         </command>
-         <command
                commandId="gov.redhawk.frontend.commands.plot"
                style="push">
             <visibleWhen
