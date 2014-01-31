@@ -13,6 +13,9 @@ package gov.redhawk.ui.port.nxmplot;
 
 import gov.redhawk.internal.ui.port.nxmplot.PlotSession;
 import gov.redhawk.model.sca.ScaUsesPort;
+import gov.redhawk.sca.ui.ScaUiPlugin;
+import gov.redhawk.ui.port.nxmplot.PlotSettings.PlotMode;
+import gov.redhawk.ui.port.nxmplot.preferences.PlotPreferenceConstants;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -26,6 +29,7 @@ import nxm.redhawk.prim.corbareceiver;
 import nxm.sys.lib.Data;
 import nxm.sys.lib.Table;
 
+import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.swt.SWT;
 
 /**
@@ -37,6 +41,7 @@ public final class NxmPlotUtil {
 	private static final String KEY_COMMAND = "command";
 	/** key to get NeXtMidas Pipe/File name entry in Map returned from launchInputMacro(..) methods. */
 	private static final String KEY_FILE = "file";
+	private static final String EMPTY_STRING = "";
 
 	private static final int MAX_RMIF_PACKET_SIZE = 32768; // in bytes
 
@@ -44,6 +49,7 @@ public final class NxmPlotUtil {
 	}
 
 	/**
+	 * Get default pipe qualifiers for specified plot type.
 	 * @since 4.2
 	 */
 	public static String getDefaultPlotQualifiers(PlotType type) {
@@ -54,7 +60,7 @@ public final class NxmPlotUtil {
 		case RASTER:
 			return null;
 		default:
-			return "{CL=8}";
+			return "{CL=8}"; // <-- quick data thinning for line plots by skipping (n-1) elements for every 1 element read (for TL=1)
 		}
 	}
 
@@ -101,6 +107,63 @@ public final class NxmPlotUtil {
 
 	}
 
+	/**
+	 * @param plotSettings merge desired plot settings with default plot arguments
+	 * @return never null, an empty string if plotSettings is null,
+	 *         otherwise the default plot args for the specified plotSettings.
+	 * @since 4.4
+	 */
+	@NonNull
+	public static String getDefaultPlotArgs(PlotSettings plotSettings) {
+		if (plotSettings == null) {
+			return EMPTY_STRING;
+		}
+		PlotType plotType = plotSettings.getPlotType();
+		String plotArgs = getDefaultPlotArgs(plotType);
+		if (plotArgs == null) {
+			plotArgs = EMPTY_STRING; // so we can easily append to plot args below
+		}
+		PlotMode plotMode = plotSettings.getPlotMode();
+		if (plotMode != null) {
+			plotArgs += " CM=" + plotSettings.getPlotMode().toModeString();
+		}
+		// user specified launch arguments could override any of the previous settings
+		if (plotSettings.getLaunchArgs() != null) {
+			plotArgs += " " + plotSettings.getLaunchArgs();
+		}
+		return plotArgs;
+	}
+
+	/**
+	 * @param plotSettings merge desired plot settings with default plot switches
+	 * @return never null, an empty string if plotSettings is null or unknown plot type,
+	 *         otherwise the default plot switches for the specified plotSettings.
+	 * @since 4.4
+	 */
+	@NonNull
+	public static String getDefaultPlotSwitches(PlotSettings plotSettings) {
+		if (plotSettings == null) {
+			return EMPTY_STRING;
+		}
+		PlotType plotType = plotSettings.getPlotType();
+		String plotSwitches = getDefaultPlotSwitches(plotType);
+		if (plotSwitches == null) {
+			plotSwitches = EMPTY_STRING; // so we can easily append to plot args below
+		}
+		Boolean enablePlotMenu = plotSettings.getEnablePlotMenu();
+		if (enablePlotMenu == null) { // not set, get user configurable preference for this
+			enablePlotMenu = ScaUiPlugin.getDefault().getPreferenceStore().getDefaultBoolean(PlotPreferenceConstants.P_ENABLE_CONFIGURE_MENU_USING_MOUSE);
+		}
+		if (Boolean.FALSE.equals(enablePlotMenu)) {        // PLOT has configure menu on by default
+			plotSwitches += "/EVENTFILTER=+NoMiddleMouse"; // so only need to disable when false
+		}
+		// user specified launch switches could override any of the previous settings
+		if (plotSettings.getLaunchSwitches() != null) {
+			plotSwitches += plotSettings.getLaunchSwitches();
+		}
+		return plotSwitches;
+	}
+	
 	public static String formatPlotArgs(Map<String, String> args) {
 		StringBuilder sb = new StringBuilder();
 		String delim = "";
@@ -138,8 +201,8 @@ public final class NxmPlotUtil {
 	}
 
 	/**
-	 * 
-	 * @deprecated Use new plot block 
+	 *
+	 * @deprecated Use new plot block
 	 */
 	@Deprecated
 	private static Map<String, String> launchInputMacro(final CorbaConnectionSettings settings, final FftSettings fft, final AbstractNxmPlotWidget plotWidget, String pipeSize) {
@@ -338,7 +401,7 @@ public final class NxmPlotUtil {
 	}
 
 	/**
-	 * 
+	 *
 	 * @deprecated Use new plot blocks
 	 */
 	@Deprecated
@@ -353,7 +416,7 @@ public final class NxmPlotUtil {
 	}
 
 	/**
-	 * 
+	 *
 	 * @deprecated Use new plot blocks
 	 */
 	@Deprecated

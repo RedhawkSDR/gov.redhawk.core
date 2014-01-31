@@ -11,9 +11,8 @@
 package gov.redhawk.ui.port.nxmplot;
 
 
-/** <b>INTERNAL USE ONLY</b>
+/**
  * These setting are intended ONLY for the PLOT widget (not it's data source Port(s)).
- * @noreference This class is not intended to be referenced by clients.
  * @since 4.2
  */
 public class PlotSettings {
@@ -26,9 +25,9 @@ public class PlotSettings {
 	private Double   maxValue       = null; // null to use default (i.e. AutoMax)
 	private PlotType plotType       = null; // null to not change plot type (line, raster, etc.)
 	private PlotMode plotMode       = null; // plot mode (i.e. complex mode (CM=)) (null to use default / no change)
-	private boolean  enablePlotMenu = true; // enable/disable middle-mouse-button (MMB) to bring up PLOT's configure menu
-	private String   launchArgs     = null; // additional arguments when launching/running PLOT   
-	private String   launchSwitches = null; // additional switches when launching/running PLOT   
+	private Boolean  enablePlotMenu = null; // null to use configured preference default - enable/disable middle-mouse-button (MMB) to bring up PLOT's configure menu
+	private String   launchArgs     = null; // additional arguments when launching/running PLOT
+	private String   launchSwitches = null; // additional switches when launching/running PLOT
 
 	/** plot data mode / complex mode (i.e. CM= arg or MPlot.setMode(..)).
 	 * @since 4.4
@@ -58,7 +57,7 @@ public class PlotSettings {
 			public String toModeString() {
 				return "RnI";
 			}
-		}, 
+		},
 		REAL_VS_IMAGINARY {
 			public String toModeString() {
 				return "RvI";
@@ -249,49 +248,49 @@ public class PlotSettings {
 		return plotMode;
 	}
 
-	/** 
+	/**
 	 * @since 4.4
 	 */
 	public void setPlotMode(PlotMode plotMode) {
 		this.plotMode = plotMode;
 	}
 
-	/** 
+	/**
 	 * @since 4.4
 	 */
-	public boolean isEnablePlotMenu() {
+	public Boolean getEnablePlotMenu() {
 		return enablePlotMenu;
 	}
 
-	/** 
+	/**
 	 * @since 4.4
 	 */
-	public void setEnablePlotMenu(boolean enablePlotMenu) {
+	public void setEnablePlotMenu(Boolean enablePlotMenu) {
 		this.enablePlotMenu = enablePlotMenu;
 	}
 
-	/** 
+	/**
 	 * @since 4.4
 	 */
 	public String getLaunchArgs() {
 		return launchArgs;
 	}
 
-	/** 
+	/**
 	 * @since 4.4
 	 */
 	public void setLaunchArgs(String launchArgs) {
 		this.launchArgs = launchArgs;
 	}
 
-	/** 
+	/**
 	 * @since 4.4
 	 */
 	public String getLaunchSwitches() {
 		return launchSwitches;
 	}
 
-	/** 
+	/**
 	 * @since 4.4
 	 */
 	public void setLaunchSwitches(String launchSwitches) {
@@ -305,15 +304,15 @@ public class PlotSettings {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((frameSize == null) ? 0 : frameSize.hashCode());
-		result = prime * result + ((sampleRate == null) ? 0 : sampleRate.hashCode());
-		result = prime * result + ((maxValue == null) ? 0 : maxValue.hashCode());
-		result = prime * result + ((minValue == null) ? 0 : minValue.hashCode());
-		result = prime * result + ((plotType == null) ? 0 : plotType.hashCode());
+		result = prime * result + ((frameSize      == null) ? 0 : frameSize.hashCode());
+		result = prime * result + ((sampleRate     == null) ? 0 : sampleRate.hashCode());
+		result = prime * result + ((maxValue       == null) ? 0 : maxValue.hashCode());
+		result = prime * result + ((minValue       == null) ? 0 : minValue.hashCode());
+		result = prime * result + ((plotType       == null) ? 0 : plotType.hashCode());
 		result = prime * result + ((blockingOption == null) ? 0 : blockingOption.hashCode());
-		result = prime * result + ((plotMode == null) ? 0 : plotMode.hashCode());
-		result = prime * result + ((enablePlotMenu) ? 1231 : 1237);
-		result = prime * result + ((launchArgs == null) ? 0 : launchArgs.hashCode());
+		result = prime * result + ((plotMode       == null) ? 0 : plotMode.hashCode());
+		result = prime * result + ((enablePlotMenu == null) ? 0 : enablePlotMenu.hashCode());
+		result = prime * result + ((launchArgs     == null) ? 0 : launchArgs.hashCode());
 		result = prime * result + ((launchSwitches == null) ? 0 : launchSwitches.hashCode());
 		return result;
 	}
@@ -378,7 +377,11 @@ public class PlotSettings {
 		} else if (!plotMode.equals(other.plotMode)) {
 			return false;
 		}
-		if (enablePlotMenu != other.enablePlotMenu) {
+		if (enablePlotMenu == null) {
+			if (other.enablePlotMenu != null) {
+				return false;
+			}
+		} else if (!enablePlotMenu.equals(other.enablePlotMenu)) {
 			return false;
 		}
 		if (launchArgs == null) {

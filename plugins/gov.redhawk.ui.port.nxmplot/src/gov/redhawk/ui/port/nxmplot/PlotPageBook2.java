@@ -1,10 +1,10 @@
-/** 
- * This file is protected by Copyright. 
+/**
+ * This file is protected by Copyright.
  * Please refer to the COPYRIGHT file distributed with this source distribution.
- * 
+ *
  * This file is part of REDHAWK IDE.
- * 
- * All rights reserved.  This program and the accompanying materials are made available under 
+ *
+ * All rights reserved.  This program and the accompanying materials are made available under
  * the terms of the Eclipse Public License v1.0 which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html.
  *
@@ -252,28 +252,10 @@ public class PlotPageBook2 extends Composite {
 	 */
 	protected PlotPage createPlot(@NonNull PlotSettings plotSettings) {
 		PlotType type = plotSettings.getPlotType();
+		String plotArgs = NxmPlotUtil.getDefaultPlotArgs(plotSettings);
+		String plotSwitches = NxmPlotUtil.getDefaultPlotSwitches(plotSettings);
 		AbstractNxmPlotWidget newPlot = PlotActivator.getDefault().getPlotFactory().createPlotWidget(this.pageBook, SWT.None);
-
-		String plotArgs = NxmPlotUtil.getDefaultPlotArgs(type);
-		String plotSwitches = NxmPlotUtil.getDefaultPlotSwitches(type);
-		if (plotSettings.getPlotMode() != null) {
-			if (plotArgs == null) {
-				plotArgs = "";
-			}
-			plotArgs += " CM=" + plotSettings.getPlotMode().toModeString();
-		}
-		if (plotSettings.getLaunchArgs() != null) {
-			if (plotArgs == null) {
-				plotArgs = "";
-			}
-			plotArgs += " " + plotSettings.getLaunchArgs();
-		}
-		if (plotSettings.getLaunchSwitches() != null) {
-			if (plotSwitches == null) {
-				plotSwitches = "";
-			}
-			plotSwitches += plotSettings.getLaunchSwitches();
-		}
+			
 		PlotPage plotPageSession = new PlotPage(newPlot, plotArgs, plotSwitches);
 		this.plots.put(type, plotPageSession);
 
@@ -432,7 +414,7 @@ public class PlotPageBook2 extends Composite {
 			//			}
 			subMenu = new MenuManager(subMenuText, scaPort.getIor()); // subMenu for each Port source
 			menu.add(subMenu);
-			plotBlock.contributeMenuItems(subMenu); // allow NxmBlocks to contribute to subMenu 
+			plotBlock.contributeMenuItems(subMenu); // allow NxmBlocks to contribute to subMenu
 			subMenu.add(createSettingsMenuActionForSource(subMenuText, scaPort, nxmBlocksForSource.toArray(new INxmBlock[0]))); // add settings menu item
 			subMenu.setVisible(true);
 		}

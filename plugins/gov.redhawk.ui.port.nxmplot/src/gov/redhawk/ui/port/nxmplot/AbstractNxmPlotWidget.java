@@ -238,7 +238,7 @@ public abstract class AbstractNxmPlotWidget extends Composite {
 	 * This method initializes the plot by calling the plot command and any other NextMidas commands necessary for plotting.
 	 * This method should be called once before any other commands are invoked.
 	 * Any additional calls will be ignored.
-	 * @param plotSwtiches Switches to send to the plot command
+	 * @param plotSwtiches Switches to send to the plot command (MUST start with '/' if not empty or null).
 	 * @param plotArgs Arguments to send to the plot command
 	 */
 	public final void initPlot(String plotSwtiches, String plotArgs) {
@@ -511,7 +511,7 @@ public abstract class AbstractNxmPlotWidget extends Composite {
 			final Boolean blockingOption = settings.getBlockingOption();
 			this.plotSettings.setBlockingOption(blockingOption);
 			final PlotMode plotMode = settings.getPlotMode();
-			final boolean enablePlotMenu = settings.isEnablePlotMenu();
+			final Boolean enablePlotMenu = settings.getEnablePlotMenu();
 
 			// vvvvv DEPRECATED - begin adjust CORBARECEIVER settings vvvvv
 			// apply frame size and sample rate settings change to CORBARECEIVERs
@@ -539,10 +539,12 @@ public abstract class AbstractNxmPlotWidget extends Composite {
 			// ^^^^^ DEPRECATED - end adjust CORBARECEIVER settings ^^^^^
 
 			// adjust PLOT settings
-			if (enablePlotMenu != this.plotSettings.isEnablePlotMenu()) {
-				this.plotSettings.setEnablePlotMenu(enablePlotMenu);
-				String newValue = (enablePlotMenu) ? "-NoMiddleMouse" : "+NoMiddleMouse";
-				sendPlotMessage("SET.MW.EventFilter", 0, newValue);
+			if (enablePlotMenu != null) {
+				if (!enablePlotMenu.equals(this.plotSettings.getEnablePlotMenu())) {
+					this.plotSettings.setEnablePlotMenu(enablePlotMenu);
+					String newValue = (enablePlotMenu) ? "-NoMiddleMouse" : "+NoMiddleMouse";
+					sendPlotMessage("SET.MW.EventFilter", 0, newValue);
+				}
 			}
 
 			if (plotMode != this.plotSettings.getPlotMode()) { // can use == comparator for Enums
