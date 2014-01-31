@@ -68,7 +68,7 @@ public class TunerAllocationWizard extends Wizard {
 
 				@Override
 				public void run(IProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
-					monitor.beginTask("Allcoate Capacity", 1);
+					monitor.beginTask("Allocate Capacity", 1);
 					String delim = "";
 					try {
 						if (!device.allocateCapacity(props)) {
