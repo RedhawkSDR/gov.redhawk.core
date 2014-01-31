@@ -33,7 +33,6 @@ public class TunerPropertyWrapper {
 				name = value.getName();
 			}
 		}
-
 	}
 
 	public String getName() {

@@ -166,7 +166,6 @@ public class TunerContainerItemProvider extends ItemProviderAdapter implements I
 	* children and by creating a viewer notification, which it passes to {@link #fireNotifyChanged}.
 	* <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	* @generated
 	*/
 	@Override
 	public void notifyChanged(Notification notification) {

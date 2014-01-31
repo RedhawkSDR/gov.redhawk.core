@@ -8,6 +8,7 @@ import gov.redhawk.frontend.TunerStatus;
 import gov.redhawk.frontend.UnallocatedTunerContainer;
 import gov.redhawk.frontend.edit.utils.TunerProperties.TunerStatusAllocationProperties;
 import gov.redhawk.model.sca.ScaDevice;
+import gov.redhawk.model.sca.ScaFactory;
 import gov.redhawk.model.sca.ScaSimpleProperty;
 import gov.redhawk.model.sca.ScaStructProperty;
 import gov.redhawk.model.sca.ScaStructSequenceProperty;
@@ -65,11 +66,18 @@ public enum TunerUtils {
 					final TunerStatus tuner = FrontendFactory.eINSTANCE.createTunerStatus();
 					tuner.setTunerContainer(container);
 					tuner.setTunerStatusStruct(struct);
-					tuner.getSimples().addAll(struct.getSimples());
 					tuner.setTunerID(String.valueOf(tunerIndex));
 					tunerList.add(tuner);
 					tunerIndex++;
 
+					for (ScaSimpleProperty simple : struct.getSimples()) {
+						ScaSimpleProperty s = ScaFactory.eINSTANCE.createScaSimpleProperty();
+						s.setId(simple.getId());
+						s.setName(simple.getName());
+						s.setValue(simple.getValue());
+						tuner.getSimples().add(s);
+					}
+					
 					for (ScaSimpleProperty simple : tuner.getSimples()) {
 						TunerStatusAllocationProperties.setValue(tuner, simple);
 					}
