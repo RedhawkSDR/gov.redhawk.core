@@ -270,6 +270,10 @@ public class corbareceiver2 extends CorbaPrimitive implements IMidasDataWriter {
 		newOutputFile.setXStart(sri.xstart);
 		newOutputFile.setXDelta(xdelta);
 		newOutputFile.setXUnits(sri.xunits);
+		
+		if (!noSubSizeFromSRI) {
+			newOutputFile.setFrameSize(sri.subsize);
+		}
 
 		double ydelta;
 		if (overrideSampleDelta && !noSubSizeFromSRI) {
@@ -290,16 +294,14 @@ public class corbareceiver2 extends CorbaPrimitive implements IMidasDataWriter {
 	 * @noreference This method is not intended to be referenced by clients.
 	 */
 	public synchronized void setStreamSri(String streamID, StreamSRI oldSri, StreamSRI newSri) {
-		TRACE_LOGGER.message("{0}: setStreamSri to {1} id={2} blocking={3}",  getID(), newSri, newSri.streamID, newSri.blocking);
+		TRACE_LOGGER.message("{0}: setStreamSri to {1} id={2} blocking={3}", getID(), newSri, newSri.streamID, newSri.blocking);
 		if (this.streamId == null || this.streamId.equals(streamID)) {
 			this.currentSri = newSri;
 			if (state == PROCESS) {
-				if (oldSri != null) {
-					if (oldSri.mode != newSri.mode || oldSri.subsize != newSri.subsize
-						|| oldSri.xdelta != newSri.xdelta ||  oldSri.xstart != newSri.xstart || oldSri.xunits !=  newSri.xunits 
-						|| oldSri.ydelta != newSri.ydelta ||  oldSri.ystart != newSri.ystart || oldSri.yunits !=  newSri.yunits) {
-						doRestart(); // only restart if one of above SRI field changes
-					}
+				if (oldSri == null || oldSri.mode != newSri.mode || oldSri.subsize != newSri.subsize || oldSri.xdelta != newSri.xdelta
+				        || oldSri.xstart != newSri.xstart || oldSri.xunits != newSri.xunits || oldSri.ydelta != newSri.ydelta || oldSri.ystart != newSri.ystart
+				        || oldSri.yunits != newSri.yunits) {
+					doRestart(); // only restart if one of above SRI field changes
 				}
 			} else if (state == OPEN) {
 				notifyAll();
