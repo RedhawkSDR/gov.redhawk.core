@@ -539,6 +539,30 @@ public class ScaItemProviderAdapterFactory extends ScaAdapterFactory implements 
 	}
 
 	/**
+	 * This keeps track of the one adapter used for all {@link gov.redhawk.model.sca.ScaEventChannel} instances.
+	 * <!-- begin-user-doc -->
+	 * @since 12.2
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	protected ScaEventChannelItemProvider scaEventChannelItemProvider;
+
+	/**
+	 * This creates an adapter for a {@link gov.redhawk.model.sca.ScaEventChannel}.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public Adapter createScaEventChannelAdapter() {
+		if (scaEventChannelItemProvider == null) {
+			scaEventChannelItemProvider = new ScaEventChannelItemProvider(this);
+		}
+
+		return scaEventChannelItemProvider;
+	}
+
+	/**
 	 * This returns the root adapter factory that contains this factory.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->

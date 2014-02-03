@@ -235,6 +235,16 @@ public interface ScaFactory extends EFactory {
 	ScaStructSequenceProperty createScaStructSequenceProperty();
 
 	/**
+	 * Returns a new object of class '<em>Event Channel</em>'.
+	 * <!-- begin-user-doc -->
+	 * @since 19.0
+	 * <!-- end-user-doc -->
+	 * @return a new object of class '<em>Event Channel</em>'.
+	 * @generated
+	 */
+	ScaEventChannel createScaEventChannel();
+
+	/**
 	 * Returns the package supported by this factory.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->

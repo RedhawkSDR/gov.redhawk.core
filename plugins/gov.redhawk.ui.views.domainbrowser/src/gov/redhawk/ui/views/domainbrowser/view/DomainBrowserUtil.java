@@ -20,6 +20,7 @@ import gov.redhawk.model.sca.ScaFileStore;
 import gov.redhawk.model.sca.ScaWaveform;
 import gov.redhawk.model.sca.ScaWaveformFactory;
 import gov.redhawk.model.sca.provider.ScaDeviceManagersContainerItemProvider;
+import gov.redhawk.model.sca.provider.ScaEventChannelsContainerItemProvider;
 import gov.redhawk.model.sca.provider.ScaWaveformFactoriesContainerItemProvider;
 import gov.redhawk.model.sca.provider.ScaWaveformsContainerItemProvider;
 import gov.redhawk.sca.util.CorbaURIUtil;
@@ -71,7 +72,7 @@ public final class DomainBrowserUtil {
 			final ScaDeviceManager deviceManager = (ScaDeviceManager) object;
 
 			if (!deviceManager.isSetAllDevices() || !deviceManager.isSetFileSystem() || !deviceManager.isSetIdentifier() || !deviceManager.isSetProfile()
-			        || !deviceManager.isSetServices()) {
+				|| !deviceManager.isSetServices()) {
 				Job job = DomainBrowserUtil.jobMap.get(deviceManager);
 				if (job == null) {
 					job = new Job("Loading...") {
@@ -254,7 +255,7 @@ public final class DomainBrowserUtil {
 
 						@Override
 						protected IStatus run(final IProgressMonitor monitor) {
-							dom.fetchDeviceManagers(monitor);
+							dom.fetchWaveformFactories(monitor);
 							return Status.OK_STATUS;
 						}
 
@@ -277,7 +278,30 @@ public final class DomainBrowserUtil {
 
 						@Override
 						protected IStatus run(final IProgressMonitor monitor) {
-							dom.fetchDeviceManagers(monitor);
+							dom.fetchEventChannels(monitor);
+							return Status.OK_STATUS;
+						}
+
+						@Override
+						public String toString() {
+							return getName();
+						};
+					};
+					DomainBrowserUtil.jobMap.put(dom, job);
+					job.schedule();
+				}
+				return job;
+			}
+		} else if (object instanceof ScaEventChannelsContainerItemProvider) {
+			final ScaDomainManager dom = (ScaDomainManager) ((ScaEventChannelsContainerItemProvider) object).getParent(null);
+			if (!dom.isSetEventChannels()) {
+				Job job = DomainBrowserUtil.jobMap.get(dom);
+				if (job == null) {
+					job = new Job("Loading...") {
+
+						@Override
+						protected IStatus run(final IProgressMonitor monitor) {
+							dom.fetchWaveforms(monitor);
 							return Status.OK_STATUS;
 						}
 

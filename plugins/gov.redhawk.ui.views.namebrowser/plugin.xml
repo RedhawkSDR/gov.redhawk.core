@@ -40,6 +40,13 @@
             properties="isType"
             type="gov.redhawk.ui.views.namebrowser.view.BindingNode">
       </propertyTester>
+      <propertyTester
+            class="gov.redhawk.ui.views.namebrowser.internal.command.BindingNodeRepIDTester"
+            id="gov.redhawk.ui.views.namebrowser.command.BindingNodeRepIDTester"
+            namespace="gov.redhawk.ui.views.namebrowser"
+            properties="isRepID"
+            type="gov.redhawk.ui.views.namebrowser.view.BindingNode">
+      </propertyTester>
    </extension>
    <extension
          point="org.eclipse.ui.menus">
@@ -56,11 +63,19 @@
                style="push"
                tooltip="%command.tooltip">
             <visibleWhen
-                  checkEnabled="true">
-                  <iterate>
-                     <instanceof
-                           value="gov.redhawk.ui.views.namebrowser.view.BindingNode">
-                     </instanceof>
+                  checkEnabled="false">
+                  <iterate
+                        ifEmpty="false"
+                        operator="and">
+                     <and>
+                        <instanceof
+                              value="gov.redhawk.ui.views.namebrowser.view.BindingNode">
+                        </instanceof>
+                        <test
+                              args="IDL:CF/DomainManager:1.0"
+                              property="gov.redhawk.ui.views.namebrowser.isRepID">
+                        </test>
+                     </and>
                   </iterate>
             </visibleWhen>
          </command>
@@ -72,7 +87,8 @@
                tooltip="%command.tooltip.0">
             <visibleWhen
                   checkEnabled="false">
-                  <iterate>
+                  <iterate
+                        operator="and">
                      <and>
                         <instanceof
                               value="gov.redhawk.ui.views.namebrowser.view.BindingNode">
@@ -208,7 +224,8 @@
                            value="gov.redhawk.ui.views.namebrowser.view.BindingNode">
                      </instanceof>
                      <test
-                           property="gov.redhawk.ui.views.namebrowser.isDomainManager">
+                           args="IDL:CF/DomainManager:1.0"
+                           property="gov.redhawk.ui.views.namebrowser.isRepID">
                      </test>
                   </and>
                </iterate>
@@ -235,6 +252,22 @@
                type="org.eclipse.ui.progress.IDeferredWorkbenchAdapter">
          </adapter>
       </factory>
+   </extension>
+   <extension
+         point="org.eclipse.ui.decorators">
+      <decorator
+            class="gov.redhawk.ui.views.namebrowser.internal.BindingNodeDecorator"
+            id="gov.redhawk.ui.views.namebrowser.decorator"
+            label="Binding Node Decorator"
+            state="true">
+         <enablement>
+            <and>
+               <objectClass
+                     name="gov.redhawk.ui.views.namebrowser.view.BindingNode">
+               </objectClass>
+            </and>
+         </enablement>
+      </decorator>
    </extension>
 
 </plugin>

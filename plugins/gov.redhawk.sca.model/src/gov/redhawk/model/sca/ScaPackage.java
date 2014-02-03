@@ -12,6 +12,7 @@
 // BEGIN GENERATED CODE
 package gov.redhawk.model.sca;
 
+import mil.jpeojtrs.sca.cf.CfPackage;
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EDataType;
@@ -569,7 +570,7 @@ public interface ScaPackage extends EPackage {
 	 * @see gov.redhawk.model.sca.impl.ScaPackageImpl#getIRefreshable()
 	 * @generated
 	 */
-	int IREFRESHABLE = 35;
+	int IREFRESHABLE = 36;
 	/**
 	 * The number of structural features of the '<em>IRefreshable</em>' class.
 	 * <!-- begin-user-doc -->
@@ -1884,13 +1885,22 @@ public interface ScaPackage extends EPackage {
 	 */
 	int SCA_DOMAIN_MANAGER__PROFILE = SCA_PROPERTY_CONTAINER_FEATURE_COUNT + 12;
 	/**
+	 * The feature id for the '<em><b>Event Channels</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * @since 19.0
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int SCA_DOMAIN_MANAGER__EVENT_CHANNELS = SCA_PROPERTY_CONTAINER_FEATURE_COUNT + 13;
+	/**
 	 * The number of structural features of the '<em>Domain Manager</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int SCA_DOMAIN_MANAGER_FEATURE_COUNT = SCA_PROPERTY_CONTAINER_FEATURE_COUNT + 13;
+	int SCA_DOMAIN_MANAGER_FEATURE_COUNT = SCA_PROPERTY_CONTAINER_FEATURE_COUNT + 14;
 	/**
 	 * The meta object id for the '{@link gov.redhawk.model.sca.impl.ScaFileManagerImpl <em>File Manager</em>}' class.
 	 * <!-- begin-user-doc -->
@@ -3645,6 +3655,116 @@ public interface ScaPackage extends EPackage {
 	 */
 	int SCA_STRUCT_SEQUENCE_PROPERTY_FEATURE_COUNT = SCA_ABSTRACT_PROPERTY_FEATURE_COUNT + 1;
 	/**
+	 * The meta object id for the '{@link org.omg.CosEventChannelAdmin.EventChannel <em>Event Channel</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * @since 19.0
+	 * <!-- end-user-doc -->
+	 * @see org.omg.CosEventChannelAdmin.EventChannel
+	 * @see gov.redhawk.model.sca.impl.ScaPackageImpl#getEventChannel()
+	 * @generated
+	 */
+	int EVENT_CHANNEL = 35;
+	/**
+	 * The number of structural features of the '<em>Event Channel</em>' class.
+	 * <!-- begin-user-doc -->
+	 * @since 19.0
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int EVENT_CHANNEL_FEATURE_COUNT = CfPackage.OBJECT_FEATURE_COUNT + 0;
+	/**
+	 * The meta object id for the '{@link gov.redhawk.model.sca.impl.ScaEventChannelImpl <em>Event Channel</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * @since 19.0
+	 * <!-- end-user-doc -->
+	 * @see gov.redhawk.model.sca.impl.ScaEventChannelImpl
+	 * @see gov.redhawk.model.sca.impl.ScaPackageImpl#getScaEventChannel()
+	 * @generated
+	 */
+	int SCA_EVENT_CHANNEL = 37;
+	/**
+	 * The feature id for the '<em><b>Status</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * @since 19.0
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int SCA_EVENT_CHANNEL__STATUS = CORBA_OBJ_WRAPPER__STATUS;
+	/**
+	 * The feature id for the '<em><b>Disposed</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * @since 19.0
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int SCA_EVENT_CHANNEL__DISPOSED = CORBA_OBJ_WRAPPER__DISPOSED;
+	/**
+	 * The feature id for the '<em><b>Data Providers</b></em>' attribute list.
+	 * <!-- begin-user-doc -->
+	 * @since 19.0
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int SCA_EVENT_CHANNEL__DATA_PROVIDERS = CORBA_OBJ_WRAPPER__DATA_PROVIDERS;
+	/**
+	 * The feature id for the '<em><b>Data Providers Enabled</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * @since 19.0
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int SCA_EVENT_CHANNEL__DATA_PROVIDERS_ENABLED = CORBA_OBJ_WRAPPER__DATA_PROVIDERS_ENABLED;
+	/**
+	 * The feature id for the '<em><b>Ior</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * @since 19.0
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int SCA_EVENT_CHANNEL__IOR = CORBA_OBJ_WRAPPER__IOR;
+	/**
+	 * The feature id for the '<em><b>Obj</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * @since 19.0
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int SCA_EVENT_CHANNEL__OBJ = CORBA_OBJ_WRAPPER__OBJ;
+	/**
+	 * The feature id for the '<em><b>Corba Obj</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * @since 19.0
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int SCA_EVENT_CHANNEL__CORBA_OBJ = CORBA_OBJ_WRAPPER__CORBA_OBJ;
+	/**
+	 * The feature id for the '<em><b>Name</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * @since 19.0
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int SCA_EVENT_CHANNEL__NAME = CORBA_OBJ_WRAPPER_FEATURE_COUNT + 0;
+	/**
+	 * The number of structural features of the '<em>Event Channel</em>' class.
+	 * <!-- begin-user-doc -->
+	 * @since 19.0
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int SCA_EVENT_CHANNEL_FEATURE_COUNT = CORBA_OBJ_WRAPPER_FEATURE_COUNT + 1;
+	/**
 	 * The meta object id for the '{@link gov.redhawk.model.sca.DomainConnectionState <em>Domain Connection State</em>}' enum.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -3652,7 +3772,7 @@ public interface ScaPackage extends EPackage {
 	 * @see gov.redhawk.model.sca.impl.ScaPackageImpl#getDomainConnectionState()
 	 * @generated
 	 */
-	int DOMAIN_CONNECTION_STATE = 36;
+	int DOMAIN_CONNECTION_STATE = 38;
 	/**
 	 * The meta object id for the '{@link gov.redhawk.model.sca.RefreshDepth <em>Refresh Depth</em>}' enum.
 	 * <!-- begin-user-doc -->
@@ -3661,7 +3781,7 @@ public interface ScaPackage extends EPackage {
 	 * @see gov.redhawk.model.sca.impl.ScaPackageImpl#getRefreshDepth()
 	 * @generated
 	 */
-	int REFRESH_DEPTH = 37;
+	int REFRESH_DEPTH = 39;
 	/**
 	 * The meta object id for the '<em>Admin Type</em>' data type.
 	 * <!-- begin-user-doc -->
@@ -3670,7 +3790,7 @@ public interface ScaPackage extends EPackage {
 	 * @see gov.redhawk.model.sca.impl.ScaPackageImpl#getAdminType()
 	 * @generated
 	 */
-	int ADMIN_TYPE = 38;
+	int ADMIN_TYPE = 40;
 	/**
 	 * The meta object id for the '<em>Domain Connection Exception</em>' data type.
 	 * <!-- begin-user-doc -->
@@ -3679,7 +3799,7 @@ public interface ScaPackage extends EPackage {
 	 * @see gov.redhawk.model.sca.impl.ScaPackageImpl#getDomainConnectionException()
 	 * @generated
 	 */
-	int DOMAIN_CONNECTION_EXCEPTION = 39;
+	int DOMAIN_CONNECTION_EXCEPTION = 41;
 	/**
 	 * The meta object id for the '<em>Domain Connection State Object</em>' data type.
 	 * <!-- begin-user-doc -->
@@ -3688,7 +3808,7 @@ public interface ScaPackage extends EPackage {
 	 * @see gov.redhawk.model.sca.impl.ScaPackageImpl#getDomainConnectionStateObject()
 	 * @generated
 	 */
-	int DOMAIN_CONNECTION_STATE_OBJECT = 40;
+	int DOMAIN_CONNECTION_STATE_OBJECT = 42;
 	/**
 	 * The meta object id for the '<em>IFile Store</em>' data type.
 	 * <!-- begin-user-doc -->
@@ -3697,7 +3817,7 @@ public interface ScaPackage extends EPackage {
 	 * @see gov.redhawk.model.sca.impl.ScaPackageImpl#getIFileStore()
 	 * @generated
 	 */
-	int IFILE_STORE = 41;
+	int IFILE_STORE = 43;
 	/**
 	 * The meta object id for the '<em>IProgress Monitor</em>' data type.
 	 * <!-- begin-user-doc -->
@@ -3706,7 +3826,7 @@ public interface ScaPackage extends EPackage {
 	 * @see gov.redhawk.model.sca.impl.ScaPackageImpl#getIProgressMonitor()
 	 * @generated
 	 */
-	int IPROGRESS_MONITOR = 42;
+	int IPROGRESS_MONITOR = 44;
 	/**
 	 * The meta object id for the '<em>ISca Data Provider</em>' data type.
 	 * <!-- begin-user-doc -->
@@ -3715,7 +3835,7 @@ public interface ScaPackage extends EPackage {
 	 * @see gov.redhawk.model.sca.impl.ScaPackageImpl#getIScaDataProvider()
 	 * @generated
 	 */
-	int ISCA_DATA_PROVIDER = 43;
+	int ISCA_DATA_PROVIDER = 45;
 	/**
 	 * The meta object id for the '<em>ISca Data Provider Service</em>' data type.
 	 * <!-- begin-user-doc -->
@@ -3724,7 +3844,7 @@ public interface ScaPackage extends EPackage {
 	 * @see gov.redhawk.model.sca.impl.ScaPackageImpl#getIScaDataProviderService()
 	 * @generated
 	 */
-	int ISCA_DATA_PROVIDER_SERVICE = 44;
+	int ISCA_DATA_PROVIDER_SERVICE = 46;
 	/**
 	 * The meta object id for the '<em>IStatus</em>' data type.
 	 * <!-- begin-user-doc -->
@@ -3733,7 +3853,7 @@ public interface ScaPackage extends EPackage {
 	 * @see gov.redhawk.model.sca.impl.ScaPackageImpl#getIStatus()
 	 * @generated
 	 */
-	int ISTATUS = 45;
+	int ISTATUS = 47;
 	/**
 	 * The meta object id for the '<em>Object</em>' data type.
 	 * <!-- begin-user-doc -->
@@ -3742,7 +3862,7 @@ public interface ScaPackage extends EPackage {
 	 * @see gov.redhawk.model.sca.impl.ScaPackageImpl#getObject()
 	 * @generated
 	 */
-	int OBJECT = 46;
+	int OBJECT = 48;
 	/**
 	 * The meta object id for the '<em>Object Array</em>' data type.
 	 * <!-- begin-user-doc -->
@@ -3750,7 +3870,7 @@ public interface ScaPackage extends EPackage {
 	 * @see gov.redhawk.model.sca.impl.ScaPackageImpl#getObjectArray()
 	 * @generated
 	 */
-	int OBJECT_ARRAY = 47;
+	int OBJECT_ARRAY = 49;
 	/**
 	 * The meta object id for the '<em>Operational Type</em>' data type.
 	 * <!-- begin-user-doc -->
@@ -3759,7 +3879,7 @@ public interface ScaPackage extends EPackage {
 	 * @see gov.redhawk.model.sca.impl.ScaPackageImpl#getOperationalType()
 	 * @generated
 	 */
-	int OPERATIONAL_TYPE = 48;
+	int OPERATIONAL_TYPE = 50;
 	/**
 	 * The meta object id for the '<em>Refresh Depth Object</em>' data type.
 	 * <!-- begin-user-doc -->
@@ -3768,7 +3888,7 @@ public interface ScaPackage extends EPackage {
 	 * @see gov.redhawk.model.sca.impl.ScaPackageImpl#getRefreshDepthObject()
 	 * @generated
 	 */
-	int REFRESH_DEPTH_OBJECT = 49;
+	int REFRESH_DEPTH_OBJECT = 51;
 	/**
 	 * The meta object id for the '<em>POA</em>' data type.
 	 * <!-- begin-user-doc -->
@@ -3777,7 +3897,7 @@ public interface ScaPackage extends EPackage {
 	 * @see gov.redhawk.model.sca.impl.ScaPackageImpl#getPOA()
 	 * @generated
 	 */
-	int POA = 50;
+	int POA = 52;
 	/**
 	 * The meta object id for the '<em>URI</em>' data type.
 	 * <!-- begin-user-doc -->
@@ -3786,7 +3906,7 @@ public interface ScaPackage extends EPackage {
 	 * @see gov.redhawk.model.sca.impl.ScaPackageImpl#getURI()
 	 * @generated
 	 */
-	int URI = 51;
+	int URI = 53;
 	/**
 	 * The meta object id for the '<em>Usage Type</em>' data type.
 	 * <!-- begin-user-doc -->
@@ -3795,7 +3915,7 @@ public interface ScaPackage extends EPackage {
 	 * @see gov.redhawk.model.sca.impl.ScaPackageImpl#getUsageType()
 	 * @generated
 	 */
-	int USAGE_TYPE = 52;
+	int USAGE_TYPE = 54;
 	/**
 	 * The meta object id for the '<em>Data Type Array</em>' data type.
 	 * <!-- begin-user-doc -->
@@ -3803,7 +3923,7 @@ public interface ScaPackage extends EPackage {
 	 * @see gov.redhawk.model.sca.impl.ScaPackageImpl#getDataTypeArray()
 	 * @generated
 	 */
-	int DATA_TYPE_ARRAY = 53;
+	int DATA_TYPE_ARRAY = 55;
 	/**
 	 * The meta object id for the '<em>Any</em>' data type.
 	 * <!-- begin-user-doc -->
@@ -3812,7 +3932,7 @@ public interface ScaPackage extends EPackage {
 	 * @see gov.redhawk.model.sca.impl.ScaPackageImpl#getAny()
 	 * @generated
 	 */
-	int ANY = 54;
+	int ANY = 56;
 
 	/**
 	 * Returns the meta object for class '{@link gov.redhawk.model.sca.CorbaObjWrapper <em>Corba Obj Wrapper</em>}'.
@@ -4670,6 +4790,18 @@ public interface ScaPackage extends EPackage {
 	EAttribute getScaDomainManager_Profile();
 
 	/**
+	 * Returns the meta object for the containment reference list '{@link gov.redhawk.model.sca.ScaDomainManager#getEventChannels <em>Event Channels</em>}'.
+	 * <!-- begin-user-doc -->
+	 * @since 19.0
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the containment reference list '<em>Event Channels</em>'.
+	 * @see gov.redhawk.model.sca.ScaDomainManager#getEventChannels()
+	 * @see #getScaDomainManager()
+	 * @generated
+	 */
+	EReference getScaDomainManager_EventChannels();
+
+	/**
 	 * Returns the meta object for class '{@link gov.redhawk.model.sca.ScaDomainManagerFileSystem <em>Domain Manager File System</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -5239,6 +5371,18 @@ public interface ScaPackage extends EPackage {
 	EAttribute getIStatusProvider_Status();
 
 	/**
+	 * Returns the meta object for class '{@link org.omg.CosEventChannelAdmin.EventChannel <em>Event Channel</em>}'.
+	 * <!-- begin-user-doc -->
+	 * @since 19.0
+	 * <!-- end-user-doc -->
+	 * @return the meta object for class '<em>Event Channel</em>'.
+	 * @see org.omg.CosEventChannelAdmin.EventChannel
+	 * @model instanceClass="org.omg.CosEventChannelAdmin.EventChannel" superTypes="mil.jpeojtrs.sca.cf.Object"
+	 * @generated
+	 */
+	EClass getEventChannel();
+
+	/**
 	 * Returns the meta object for class '{@link gov.redhawk.model.sca.IRefreshable <em>IRefreshable</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -5248,6 +5392,29 @@ public interface ScaPackage extends EPackage {
 	 * @generated
 	 */
 	EClass getIRefreshable();
+
+	/**
+	 * Returns the meta object for class '{@link gov.redhawk.model.sca.ScaEventChannel <em>Event Channel</em>}'.
+	 * <!-- begin-user-doc -->
+	 * @since 19.0
+	 * <!-- end-user-doc -->
+	 * @return the meta object for class '<em>Event Channel</em>'.
+	 * @see gov.redhawk.model.sca.ScaEventChannel
+	 * @generated
+	 */
+	EClass getScaEventChannel();
+
+	/**
+	 * Returns the meta object for the attribute '{@link gov.redhawk.model.sca.ScaEventChannel#getName <em>Name</em>}'.
+	 * <!-- begin-user-doc -->
+	 * @since 19.0
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Name</em>'.
+	 * @see gov.redhawk.model.sca.ScaEventChannel#getName()
+	 * @see #getScaEventChannel()
+	 * @generated
+	 */
+	EAttribute getScaEventChannel_Name();
 
 	/**
 	 * Returns the meta object for enum '{@link gov.redhawk.model.sca.DomainConnectionState <em>Domain Connection State</em>}'.
@@ -6089,6 +6256,14 @@ public interface ScaPackage extends EPackage {
 		 */
 		EAttribute SCA_DOMAIN_MANAGER__PROFILE = eINSTANCE.getScaDomainManager_Profile();
 		/**
+		 * The meta object literal for the '<em><b>Event Channels</b></em>' containment reference list feature.
+		 * <!-- begin-user-doc -->
+		 * @since 19.0
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EReference SCA_DOMAIN_MANAGER__EVENT_CHANNELS = eINSTANCE.getScaDomainManager_EventChannels();
+		/**
 		 * The meta object literal for the '{@link gov.redhawk.model.sca.impl.ScaDomainManagerFileSystemImpl <em>Domain Manager File System</em>}' class.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
@@ -6498,6 +6673,16 @@ public interface ScaPackage extends EPackage {
 		 */
 		EAttribute ISTATUS_PROVIDER__STATUS = eINSTANCE.getIStatusProvider_Status();
 		/**
+		 * The meta object literal for the '{@link org.omg.CosEventChannelAdmin.EventChannel <em>Event Channel</em>}' class.
+		 * <!-- begin-user-doc -->
+		 * @since 19.0
+		 * <!-- end-user-doc -->
+		 * @see org.omg.CosEventChannelAdmin.EventChannel
+		 * @see gov.redhawk.model.sca.impl.ScaPackageImpl#getEventChannel()
+		 * @generated
+		 */
+		EClass EVENT_CHANNEL = eINSTANCE.getEventChannel();
+		/**
 		 * The meta object literal for the '{@link gov.redhawk.model.sca.IRefreshable <em>IRefreshable</em>}' class.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
@@ -6506,6 +6691,24 @@ public interface ScaPackage extends EPackage {
 		 * @generated
 		 */
 		EClass IREFRESHABLE = eINSTANCE.getIRefreshable();
+		/**
+		 * The meta object literal for the '{@link gov.redhawk.model.sca.impl.ScaEventChannelImpl <em>Event Channel</em>}' class.
+		 * <!-- begin-user-doc -->
+		 * @since 19.0
+		 * <!-- end-user-doc -->
+		 * @see gov.redhawk.model.sca.impl.ScaEventChannelImpl
+		 * @see gov.redhawk.model.sca.impl.ScaPackageImpl#getScaEventChannel()
+		 * @generated
+		 */
+		EClass SCA_EVENT_CHANNEL = eINSTANCE.getScaEventChannel();
+		/**
+		 * The meta object literal for the '<em><b>Name</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * @since 19.0
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute SCA_EVENT_CHANNEL__NAME = eINSTANCE.getScaEventChannel_Name();
 		/**
 		 * The meta object literal for the '{@link gov.redhawk.model.sca.DomainConnectionState <em>Domain Connection State</em>}' enum.
 		 * <!-- begin-user-doc -->

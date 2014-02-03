@@ -20,6 +20,7 @@ import gov.redhawk.model.sca.ScaFileStore;
 import gov.redhawk.model.sca.ScaWaveform;
 import gov.redhawk.model.sca.ScaWaveformFactory;
 import gov.redhawk.model.sca.provider.ScaDeviceManagersContainerItemProvider;
+import gov.redhawk.model.sca.provider.ScaEventChannelsContainerItemProvider;
 import gov.redhawk.model.sca.provider.ScaWaveformFactoriesContainerItemProvider;
 import gov.redhawk.model.sca.provider.ScaWaveformsContainerItemProvider;
 import gov.redhawk.sca.util.CorbaURIUtil;
@@ -41,7 +42,7 @@ public class FrontEndDelayedContent {
 
 	private FrontEndDelayedContent() {
 	}
-	
+
 	public static Object delayedContent(final Object object, final StructuredViewer viewer) {
 
 		if (object instanceof ScaFileStore) {
@@ -72,7 +73,7 @@ public class FrontEndDelayedContent {
 			final ScaDeviceManager deviceManager = (ScaDeviceManager) object;
 
 			if (!deviceManager.isSetAllDevices() || !deviceManager.isSetFileSystem() || !deviceManager.isSetIdentifier() || !deviceManager.isSetProfile()
-			        || !deviceManager.isSetServices()) {
+				|| !deviceManager.isSetServices()) {
 				Job job = FrontEndDelayedContent.jobMap.get(deviceManager);
 				if (job == null) {
 					job = new Job("Loading...") {
@@ -261,7 +262,7 @@ public class FrontEndDelayedContent {
 
 						@Override
 						protected IStatus run(final IProgressMonitor monitor) {
-							dom.fetchDeviceManagers(monitor);
+							dom.fetchWaveformFactories(monitor);
 							return Status.OK_STATUS;
 						}
 
@@ -277,6 +278,29 @@ public class FrontEndDelayedContent {
 			}
 		} else if (object instanceof ScaWaveformsContainerItemProvider) {
 			final ScaDomainManager dom = (ScaDomainManager) ((ScaWaveformsContainerItemProvider) object).getParent(null);
+			if (!dom.isSetEventChannels()) {
+				Job job = FrontEndDelayedContent.jobMap.get(dom);
+				if (job == null) {
+					job = new Job("Loading...") {
+
+						@Override
+						protected IStatus run(final IProgressMonitor monitor) {
+							dom.fetchWaveforms(monitor);
+							return Status.OK_STATUS;
+						}
+
+						@Override
+						public String toString() {
+							return getName();
+						};
+					};
+					FrontEndDelayedContent.jobMap.put(dom, job);
+					job.schedule();
+				}
+				return job;
+			}
+		} else if (object instanceof ScaEventChannelsContainerItemProvider) {
+			final ScaDomainManager dom = (ScaDomainManager) ((ScaEventChannelsContainerItemProvider) object).getParent(null);
 			if (!dom.isSetWaveforms()) {
 				Job job = FrontEndDelayedContent.jobMap.get(dom);
 				if (job == null) {
@@ -284,7 +308,7 @@ public class FrontEndDelayedContent {
 
 						@Override
 						protected IStatus run(final IProgressMonitor monitor) {
-							dom.fetchDeviceManagers(monitor);
+							dom.fetchEventChannels(monitor);
 							return Status.OK_STATUS;
 						}
 

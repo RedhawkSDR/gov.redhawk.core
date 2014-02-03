@@ -320,6 +320,13 @@
          </adapter>
       </factory>
       <factory
+            adaptableType="gov.redhawk.model.sca.provider.ScaEventChannelsContainerItemProvider"
+            class="gov.redhawk.sca.internal.ui.ScaEventChannelsContainerItemProviderAdapterFactory">
+         <adapter
+               type="gov.redhawk.model.sca.IRefreshable">
+         </adapter>
+      </factory>
+      <factory
             adaptableType="gov.redhawk.model.sca.provider.ScaWaveformFactoriesContainerItemProvider"
             class="gov.redhawk.sca.internal.ui.ScaWaveformFactoriesContainerItemProviderAdapterFactory">
          <adapter

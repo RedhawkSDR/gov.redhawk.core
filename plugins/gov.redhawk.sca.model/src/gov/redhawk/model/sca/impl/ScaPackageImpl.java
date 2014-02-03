@@ -33,6 +33,7 @@ import gov.redhawk.model.sca.ScaDocumentRoot;
 import gov.redhawk.model.sca.ScaDomainManager;
 import gov.redhawk.model.sca.ScaDomainManagerFileSystem;
 import gov.redhawk.model.sca.ScaDomainManagerRegistry;
+import gov.redhawk.model.sca.ScaEventChannel;
 import gov.redhawk.model.sca.ScaExecutableDevice;
 import gov.redhawk.model.sca.ScaFactory;
 import gov.redhawk.model.sca.ScaFileManager;
@@ -85,6 +86,7 @@ import org.eclipse.emf.ecore.impl.EPackageImpl;
 import org.eclipse.emf.ecore.xml.type.XMLTypePackage;
 import org.omg.CORBA.Any;
 
+import org.omg.CosEventChannelAdmin.EventChannel;
 import CF.DataType;
 import CF.DevicePackage.AdminType;
 import CF.DevicePackage.OperationalType;
@@ -312,7 +314,19 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	private EClass eventChannelEClass = null;
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	private EClass iRefreshableEClass = null;
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass scaEventChannelEClass = null;
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -1298,6 +1312,16 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 
 	/**
 	 * <!-- begin-user-doc -->
+	 * @since 19.0
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EReference getScaDomainManager_EventChannels() {
+		return (EReference) scaDomainManagerEClass.getEStructuralFeatures().get(13);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -1828,12 +1852,42 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 
 	/**
 	 * <!-- begin-user-doc -->
+	 * @since 19.0
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EClass getEventChannel() {
+		return eventChannelEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
 	public EClass getIRefreshable() {
 		return iRefreshableEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * @since 19.0
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EClass getScaEventChannel() {
+		return scaEventChannelEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * @since 19.0
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EAttribute getScaEventChannel_Name() {
+		return (EAttribute) scaEventChannelEClass.getEStructuralFeatures().get(0);
 	}
 
 	/**
@@ -2150,6 +2204,7 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 		createEAttribute(scaDomainManagerEClass, SCA_DOMAIN_MANAGER__ROOT_CONTEXT);
 		createEAttribute(scaDomainManagerEClass, SCA_DOMAIN_MANAGER__STATE);
 		createEAttribute(scaDomainManagerEClass, SCA_DOMAIN_MANAGER__PROFILE);
+		createEReference(scaDomainManagerEClass, SCA_DOMAIN_MANAGER__EVENT_CHANNELS);
 
 		scaDomainManagerFileSystemEClass = createEClass(SCA_DOMAIN_MANAGER_FILE_SYSTEM);
 		createEReference(scaDomainManagerFileSystemEClass, SCA_DOMAIN_MANAGER_FILE_SYSTEM__DOM_MGR);
@@ -2223,7 +2278,12 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 		iStatusProviderEClass = createEClass(ISTATUS_PROVIDER);
 		createEAttribute(iStatusProviderEClass, ISTATUS_PROVIDER__STATUS);
 
+		eventChannelEClass = createEClass(EVENT_CHANNEL);
+
 		iRefreshableEClass = createEClass(IREFRESHABLE);
+
+		scaEventChannelEClass = createEClass(SCA_EVENT_CHANNEL);
+		createEAttribute(scaEventChannelEClass, SCA_EVENT_CHANNEL__NAME);
 
 		// Create enums
 		domainConnectionStateEEnum = createEEnum(DOMAIN_CONNECTION_STATE);
@@ -2479,6 +2539,11 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 		scaStructSequencePropertyEClass.getEGenericSuperTypes().add(g1);
 		g1 = createEGenericType(theCfPackage.getPropertySetOperations());
 		scaStructSequencePropertyEClass.getEGenericSuperTypes().add(g1);
+		eventChannelEClass.getESuperTypes().add(theCfPackage.getObject());
+		g1 = createEGenericType(this.getCorbaObjWrapper());
+		g2 = createEGenericType(this.getEventChannel());
+		g1.getETypeArguments().add(g2);
+		scaEventChannelEClass.getEGenericSuperTypes().add(g1);
 
 		// Initialize classes and features; add operations and parameters
 		initEClass(corbaObjWrapperEClass, CorbaObjWrapper.class, "CorbaObjWrapper", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
@@ -2826,6 +2891,8 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 			IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getScaDomainManager_Profile(), theEcorePackage.getEString(), "profile", null, 0, 1, ScaDomainManager.class, IS_TRANSIENT, !IS_VOLATILE,
 			IS_CHANGEABLE, IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getScaDomainManager_EventChannels(), this.getScaEventChannel(), null, "eventChannels", null, 0, -1, ScaDomainManager.class,
+			!IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, IS_RESOLVE_PROXIES, IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		op = addEOperation(scaDomainManagerEClass, null, "getDevice", 0, 1, IS_UNIQUE, IS_ORDERED);
 		addEParameter(op, theEcorePackage.getEString(), "deviceId", 0, 1, IS_UNIQUE, IS_ORDERED);
@@ -2873,6 +2940,9 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 		addEException(op, theCfPackage.getInvalidIdentifier());
 
 		op = addEOperation(scaDomainManagerEClass, theEcorePackage.getEString(), "fetchProfile", 0, 1, IS_UNIQUE, IS_ORDERED);
+		addEParameter(op, this.getIProgressMonitor(), "monitor", 0, 1, IS_UNIQUE, IS_ORDERED);
+
+		op = addEOperation(scaDomainManagerEClass, this.getScaEventChannel(), "fetchEventChannels", 0, -1, IS_UNIQUE, IS_ORDERED);
 		addEParameter(op, this.getIProgressMonitor(), "monitor", 0, 1, IS_UNIQUE, IS_ORDERED);
 
 		initEClass(scaDomainManagerFileSystemEClass, ScaDomainManagerFileSystem.class, "ScaDomainManagerFileSystem", !IS_ABSTRACT, !IS_INTERFACE,
@@ -3074,7 +3144,13 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 		op = addEOperation(iStatusProviderEClass, this.getIStatus(), "getStatus", 0, 1, IS_UNIQUE, IS_ORDERED);
 		addEParameter(op, theEcorePackage.getEStructuralFeature(), "feature", 0, 1, IS_UNIQUE, IS_ORDERED);
 
+		initEClass(eventChannelEClass, EventChannel.class, "EventChannel", IS_ABSTRACT, IS_INTERFACE, !IS_GENERATED_INSTANCE_CLASS);
+
 		initEClass(iRefreshableEClass, IRefreshable.class, "IRefreshable", IS_ABSTRACT, IS_INTERFACE, !IS_GENERATED_INSTANCE_CLASS);
+
+		initEClass(scaEventChannelEClass, ScaEventChannel.class, "ScaEventChannel", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEAttribute(getScaEventChannel_Name(), ecorePackage.getEString(), "name", null, 0, 1, ScaEventChannel.class, !IS_TRANSIENT, !IS_VOLATILE,
+			IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		// Initialize enums and add enum literals
 		initEEnum(domainConnectionStateEEnum, DomainConnectionState.class, "DomainConnectionState");

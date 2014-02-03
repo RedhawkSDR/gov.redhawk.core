@@ -55,6 +55,7 @@ import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.notify.Notifier;
 import org.eclipse.emf.common.notify.impl.AdapterFactoryImpl;
 import org.eclipse.emf.ecore.EObject;
+import org.omg.CosEventChannelAdmin.EventChannel;
 import CF.ApplicationFactoryOperations;
 import CF.ApplicationOperations;
 import CF.Device;
@@ -74,6 +75,7 @@ import CF.PropertySetOperations;
 import CF.Resource;
 import CF.ResourceOperations;
 import CF.TestableObjectOperations;
+import gov.redhawk.model.sca.*;
 
 /**
  * <!-- begin-user-doc --> The <b>Adapter Factory</b> for the model. It provides
@@ -306,8 +308,18 @@ public class ScaAdapterFactory extends AdapterFactoryImpl {
 		}
 
 		@Override
+		public Adapter caseEventChannel(EventChannel object) {
+			return createEventChannelAdapter();
+		}
+
+		@Override
 		public Adapter caseIRefreshable(IRefreshable object) {
 			return createIRefreshableAdapter();
+		}
+
+		@Override
+		public Adapter caseScaEventChannel(ScaEventChannel object) {
+			return createScaEventChannelAdapter();
 		}
 
 		@Override
@@ -383,6 +395,11 @@ public class ScaAdapterFactory extends AdapterFactoryImpl {
 		@Override
 		public Adapter caseApplicationFactoryOperations(ApplicationFactoryOperations object) {
 			return createApplicationFactoryOperationsAdapter();
+		}
+
+		@Override
+		public Adapter caseObject(org.omg.CORBA.Object object) {
+			return createObjectAdapter();
 		}
 
 		@Override
@@ -895,6 +912,21 @@ public class ScaAdapterFactory extends AdapterFactoryImpl {
 	}
 
 	/**
+	 * Creates a new adapter for an object of class '{@link org.omg.CosEventChannelAdmin.EventChannel <em>Event Channel</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * @since 19.0
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see org.omg.CosEventChannelAdmin.EventChannel
+	 * @generated
+	 */
+	public Adapter createEventChannelAdapter() {
+		return null;
+	}
+
+	/**
 	 * Creates a new adapter for an object of class '{@link gov.redhawk.model.sca.IRefreshable <em>IRefreshable</em>}'.
 	 * <!-- begin-user-doc -->
 	 * This default implementation returns null so that we can easily ignore cases;
@@ -905,6 +937,21 @@ public class ScaAdapterFactory extends AdapterFactoryImpl {
 	 * @generated
 	 */
 	public Adapter createIRefreshableAdapter() {
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link gov.redhawk.model.sca.ScaEventChannel <em>Event Channel</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * @since 19.0
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see gov.redhawk.model.sca.ScaEventChannel
+	 * @generated
+	 */
+	public Adapter createScaEventChannelAdapter() {
 		return null;
 	}
 
@@ -1115,6 +1162,21 @@ public class ScaAdapterFactory extends AdapterFactoryImpl {
 	 * @generated
 	 */
 	public Adapter createApplicationFactoryOperationsAdapter() {
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link org.omg.CORBA.Object <em>Object</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * @since 19.0
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see org.omg.CORBA.Object
+	 * @generated
+	 */
+	public Adapter createObjectAdapter() {
 		return null;
 	}
 

@@ -23,16 +23,13 @@ import gov.redhawk.model.sca.commands.MergePortsCommand;
 import gov.redhawk.model.sca.commands.MergePortsCommand.PortData;
 import gov.redhawk.model.sca.commands.ScaModelCommand;
 import gov.redhawk.model.sca.commands.SetLocalAttributeCommand;
-import gov.redhawk.model.sca.commands.SetStatusCommand;
 import gov.redhawk.model.sca.commands.UnsetLocalAttributeCommand;
 import gov.redhawk.model.sca.commands.VersionedFeature;
 import gov.redhawk.model.sca.commands.VersionedFeature.Transaction;
-
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
-
 import mil.jpeojtrs.sca.prf.AbstractProperty;
 import mil.jpeojtrs.sca.prf.Properties;
 import mil.jpeojtrs.sca.scd.AbstractPort;
@@ -40,7 +37,6 @@ import mil.jpeojtrs.sca.scd.ScdPackage;
 import mil.jpeojtrs.sca.spd.SoftPkg;
 import mil.jpeojtrs.sca.spd.SpdPackage;
 import mil.jpeojtrs.sca.util.ScaEcoreUtils;
-
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.MultiStatus;
@@ -64,7 +60,6 @@ import org.eclipse.emf.transaction.TransactionalEditingDomain;
 import org.eclipse.emf.transaction.util.TransactionUtil;
 import org.omg.CORBA.BAD_OPERATION;
 import org.omg.CORBA.SystemException;
-
 import CF.DataType;
 import CF.LifeCycleOperations;
 import CF.PortSupplierOperations;

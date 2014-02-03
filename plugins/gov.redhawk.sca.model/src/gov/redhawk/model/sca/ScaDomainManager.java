@@ -50,6 +50,7 @@ import CF.DomainManagerPackage.InvalidIdentifier;
  *   <li>{@link gov.redhawk.model.sca.ScaDomainManager#getRootContext <em>Root Context</em>}</li>
  *   <li>{@link gov.redhawk.model.sca.ScaDomainManager#getState <em>State</em>}</li>
  *   <li>{@link gov.redhawk.model.sca.ScaDomainManager#getProfile <em>Profile</em>}</li>
+ *   <li>{@link gov.redhawk.model.sca.ScaDomainManager#getEventChannels <em>Event Channels</em>}</li>
  * </ul>
  * </p>
  *
@@ -553,6 +554,48 @@ public interface ScaDomainManager extends ScaPropertyContainer<DomainManager, Do
 	boolean isSetProfile();
 
 	/**
+	 * Returns the value of the '<em><b>Event Channels</b></em>' containment reference list.
+	 * The list contents are of type {@link gov.redhawk.model.sca.ScaEventChannel}.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Event Channels</em>' containment reference list isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * @since 19.0
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Event Channels</em>' containment reference list.
+	 * @see #isSetEventChannels()
+	 * @see #unsetEventChannels()
+	 * @see gov.redhawk.model.sca.ScaPackage#getScaDomainManager_EventChannels()
+	 * @model containment="true" resolveProxies="true" unsettable="true"
+	 * @generated
+	 */
+	EList<ScaEventChannel> getEventChannels();
+
+	/**
+	 * Unsets the value of the '{@link gov.redhawk.model.sca.ScaDomainManager#getEventChannels <em>Event Channels</em>}' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * @since 19.0
+	 * <!-- end-user-doc -->
+	 * @see #isSetEventChannels()
+	 * @see #getEventChannels()
+	 * @generated
+	 */
+	void unsetEventChannels();
+
+	/**
+	 * Returns whether the value of the '{@link gov.redhawk.model.sca.ScaDomainManager#getEventChannels <em>Event Channels</em>}' containment reference list is set.
+	 * <!-- begin-user-doc -->
+	 * @since 19.0
+	 * <!-- end-user-doc -->
+	 * @return whether the value of the '<em>Event Channels</em>' containment reference list is set.
+	 * @see #unsetEventChannels()
+	 * @see #getEventChannels()
+	 * @generated
+	 */
+	boolean isSetEventChannels();
+
+	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @model
@@ -648,6 +691,15 @@ public interface ScaDomainManager extends ScaPropertyContainer<DomainManager, Do
 	 * @generated
 	 */
 	String fetchProfile(IProgressMonitor monitor);
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * @since 19.0
+	 * <!-- end-user-doc -->
+	 * @model monitorDataType="gov.redhawk.model.sca.IProgressMonitor"
+	 * @generated
+	 */
+	EList<ScaEventChannel> fetchEventChannels(IProgressMonitor monitor);
 
 	/**
 	 * @since 8.0

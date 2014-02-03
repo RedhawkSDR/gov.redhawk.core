@@ -716,7 +716,7 @@ public class ScaComponentImpl extends ScaAbstractComponentImpl<Resource> impleme
 					if (localProfile != null) {
 						final URI newURI = fileSystem.createURI(localProfile);
 						transaction.addCommand(new ScaModelCommand() {
-	
+
 							@Override
 							public void execute() {
 								setProfileURI(newURI);

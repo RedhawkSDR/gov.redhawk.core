@@ -21,12 +21,14 @@ import gov.redhawk.model.sca.ScaDevice;
 import gov.redhawk.model.sca.ScaDeviceManager;
 import gov.redhawk.model.sca.ScaDomainManager;
 import gov.redhawk.model.sca.ScaDomainManagerFileSystem;
+import gov.redhawk.model.sca.ScaEventChannel;
 import gov.redhawk.model.sca.ScaFactory;
 import gov.redhawk.model.sca.ScaModelPlugin;
 import gov.redhawk.model.sca.ScaPackage;
 import gov.redhawk.model.sca.ScaWaveform;
 import gov.redhawk.model.sca.ScaWaveformFactory;
 import gov.redhawk.model.sca.commands.ScaDomainManagerMergeDeviceManagersCommand;
+import gov.redhawk.model.sca.commands.ScaDomainManagerMergeEventChannelsCommand;
 import gov.redhawk.model.sca.commands.ScaDomainManagerMergeWaveformFactoriesCommand;
 import gov.redhawk.model.sca.commands.ScaDomainManagerMergeWaveformsCommand;
 import gov.redhawk.model.sca.commands.ScaModelCommand;
@@ -69,13 +71,19 @@ import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
+import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.EObjectContainmentWithInverseEList;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.emf.ecore.util.FeatureMap.ValueListIterator;
 import org.eclipse.emf.ecore.util.InternalEList;
 import org.eclipse.emf.transaction.RunnableWithResult;
+import org.jacorb.naming.Name;
 import org.omg.CORBA.ORB;
 import org.omg.CORBA.SystemException;
+import org.omg.CosEventChannelAdmin.EventChannelHelper;
+import org.omg.CosNaming.Binding;
+import org.omg.CosNaming.BindingIteratorHolder;
+import org.omg.CosNaming.BindingListHolder;
 import org.omg.CosNaming.NamingContextExt;
 import org.omg.CosNaming.NamingContextExtHelper;
 import org.omg.CosNaming.NamingContextPackage.CannotProceed;
@@ -130,6 +138,7 @@ import CF.PropertySetPackage.PartialConfiguration;
  *   <li>{@link gov.redhawk.model.sca.impl.ScaDomainManagerImpl#getRootContext <em>Root Context</em>}</li>
  *   <li>{@link gov.redhawk.model.sca.impl.ScaDomainManagerImpl#getState <em>State</em>}</li>
  *   <li>{@link gov.redhawk.model.sca.impl.ScaDomainManagerImpl#getProfile <em>Profile</em>}</li>
+ *   <li>{@link gov.redhawk.model.sca.impl.ScaDomainManagerImpl#getEventChannels <em>Event Channels</em>}</li>
  * </ul>
  * </p>
  *
@@ -330,6 +339,16 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 	 * @ordered
 	 */
 	protected boolean profileESet;
+	/**
+	 * The cached value of the '{@link #getEventChannels() <em>Event Channels</em>}' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * @since 19.0
+	 * <!-- end-user-doc -->
+	 * @see #getEventChannels()
+	 * @generated
+	 * @ordered
+	 */
+	protected EList<ScaEventChannel> eventChannels;
 	private static final Debug DEBUG = new Debug(ScaModelPlugin.ID, "scaDomainManager/connect");
 	private static final Debug DEBUG_KEEP_ALIVE_ERRORS = new Debug(ScaModelPlugin.ID, "scaDomainManager/keepAliveErrors");
 
@@ -989,6 +1008,41 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 	@Override
 	public boolean isSetProfile() {
 		return profileESet;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * @since 19.0
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EList<ScaEventChannel> getEventChannels() {
+		if (eventChannels == null) {
+			eventChannels = new EObjectContainmentEList.Unsettable.Resolving<ScaEventChannel>(ScaEventChannel.class, this,
+				ScaPackage.SCA_DOMAIN_MANAGER__EVENT_CHANNELS);
+		}
+		return eventChannels;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * @since 19.0
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public void unsetEventChannels() {
+		if (eventChannels != null)
+			((InternalEList.Unsettable< ? >) eventChannels).unset();
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * @since 19.0
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public boolean isSetEventChannels() {
+		return eventChannels != null && ((InternalEList.Unsettable< ? >) eventChannels).isSet();
 	}
 
 	/**
@@ -1780,6 +1834,8 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 			return basicSetConnectionPropertiesContainer(null, msgs);
 		case ScaPackage.SCA_DOMAIN_MANAGER__CONNECTION_PROPERTIES:
 			return ((InternalEList< ? >) getConnectionProperties()).basicRemove(otherEnd, msgs);
+		case ScaPackage.SCA_DOMAIN_MANAGER__EVENT_CHANNELS:
+			return ((InternalEList< ? >) getEventChannels()).basicRemove(otherEnd, msgs);
 		}
 		return super.eInverseRemove(otherEnd, featureID, msgs);
 	}
@@ -1823,6 +1879,8 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 			return getState();
 		case ScaPackage.SCA_DOMAIN_MANAGER__PROFILE:
 			return getProfile();
+		case ScaPackage.SCA_DOMAIN_MANAGER__EVENT_CHANNELS:
+			return getEventChannels();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -1875,6 +1933,10 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 		case ScaPackage.SCA_DOMAIN_MANAGER__PROFILE:
 			setProfile((String) newValue);
 			return;
+		case ScaPackage.SCA_DOMAIN_MANAGER__EVENT_CHANNELS:
+			getEventChannels().clear();
+			getEventChannels().addAll((Collection< ? extends ScaEventChannel>) newValue);
+			return;
 		}
 		super.eSet(featureID, newValue);
 	}
@@ -1923,6 +1985,9 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 		case ScaPackage.SCA_DOMAIN_MANAGER__PROFILE:
 			unsetProfile();
 			return;
+		case ScaPackage.SCA_DOMAIN_MANAGER__EVENT_CHANNELS:
+			unsetEventChannels();
+			return;
 		}
 		super.eUnset(featureID);
 	}
@@ -1961,6 +2026,8 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 			return state != STATE_EDEFAULT;
 		case ScaPackage.SCA_DOMAIN_MANAGER__PROFILE:
 			return isSetProfile();
+		case ScaPackage.SCA_DOMAIN_MANAGER__EVENT_CHANNELS:
+			return isSetEventChannels();
 		}
 		return super.eIsSet(featureID);
 	}
@@ -2070,10 +2137,11 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 
 	@Override
 	protected void internalFetchChildren(IProgressMonitor monitor) throws InterruptedException {
-		SubMonitor subMonitor = SubMonitor.convert(monitor, 3);
+		SubMonitor subMonitor = SubMonitor.convert(monitor, 4);
 		internalFetchDeviceManagers(subMonitor.newChild(1));
 		internalFetchWaveformFactories(subMonitor.newChild(1));
 		internalFetchWaveforms(subMonitor.newChild(1));
+		internalFetchEventChannels(subMonitor.newChild(1));
 		subMonitor.done();
 	}
 
@@ -2301,6 +2369,91 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 		subMonitor.worked(1);
 		subMonitor.done();
 		return getProfile();
+	}
+
+	private final VersionedFeature eventChannelFeature = new VersionedFeature(this, ScaPackage.Literals.SCA_DOMAIN_MANAGER__EVENT_CHANNELS);
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * @since 19.0
+	 * <!-- end-user-doc -->
+	 * @generated NOT
+	 */
+	public EList<ScaEventChannel> fetchEventChannels(IProgressMonitor monitor) {
+		SubMonitor subMonitor = SubMonitor.convert(monitor, "Fetch Waveforms", 2);
+		internalFetchEventChannels(subMonitor.newChild(1));
+		ScaEventChannel[] array = ScaModelCommandWithResult.execute(this, new ScaModelCommandWithResult<ScaEventChannel[]>() {
+
+			@Override
+			public void execute() {
+				setResult(getEventChannels().toArray(new ScaEventChannel[getEventChannels().size()]));
+			}
+		});
+		if (array != null) {
+			SubMonitor childMonitor = subMonitor.newChild(1);
+			childMonitor.beginTask("Refreshing event channels", array.length);
+			for (ScaEventChannel element : array) {
+				try {
+					element.refresh(childMonitor.newChild(1), RefreshDepth.SELF);
+				} catch (InterruptedException e) {
+					// PASS
+				}
+			}
+		}
+		subMonitor.done();
+		return getEventChannels();
+	}
+
+	/**
+	 * @since 19.0
+	 */
+	protected void internalFetchEventChannels(IProgressMonitor monitor) {
+		// END GENERATED CODE
+		SubMonitor subMonitor = SubMonitor.convert(monitor, 3); //SUPPRESS CHECKSTYLE MagicNumber
+		NamingContextExt localRootContext = getRootContext();
+
+		Transaction transaction = eventChannelFeature.createTransaction();
+		if (localRootContext != null) {
+			try {
+				NamingContextExt context = NamingContextExtHelper.narrow(localRootContext.resolve_str(getName()));
+				BindingIteratorHolder bi = new BindingIteratorHolder();
+				BindingListHolder bl = new BindingListHolder();
+				context.list(-1, bl, bi);
+				List<ScaEventChannel> newChannels = new ArrayList<ScaEventChannel>();
+				for (Binding b : bl.value) {
+					org.omg.CORBA.Object objC = context.resolve(b.binding_name);
+					if (objC._is_a(EventChannelHelper.id())) {
+						ScaEventChannel channel = ScaFactory.eINSTANCE.createScaEventChannel();
+						channel.setName(Name.toString(b.binding_name));
+						channel.setCorbaObj(objC);
+						newChannels.add(channel);
+					}
+				}
+				transaction.addCommand(new ScaDomainManagerMergeEventChannelsCommand(this, newChannels));
+			} catch (SystemException e) {
+				Status status = new Status(Status.ERROR, ScaModelPlugin.ID, "Failed to fetch Event Channels.", e);
+				transaction.addCommand(new UnsetLocalAttributeCommand(this, status, ScaPackage.Literals.SCA_DOMAIN_MANAGER__EVENT_CHANNELS));
+			} catch (NotFound e) {
+				Status status = new Status(Status.ERROR, ScaModelPlugin.ID, "Failed to fetch Event Channels.", e);
+				transaction.addCommand(new UnsetLocalAttributeCommand(this, status, ScaPackage.Literals.SCA_DOMAIN_MANAGER__EVENT_CHANNELS));
+			} catch (CannotProceed e) {
+				Status status = new Status(Status.ERROR, ScaModelPlugin.ID, "Failed to fetch Event Channels.", e);
+				transaction.addCommand(new UnsetLocalAttributeCommand(this, status, ScaPackage.Literals.SCA_DOMAIN_MANAGER__EVENT_CHANNELS));
+			} catch (InvalidName e) {
+				Status status = new Status(Status.ERROR, ScaModelPlugin.ID, "Failed to fetch Event Channels.", e);
+				transaction.addCommand(new UnsetLocalAttributeCommand(this, status, ScaPackage.Literals.SCA_DOMAIN_MANAGER__EVENT_CHANNELS));
+			}
+			subMonitor.worked(1);
+		} else {
+			transaction.addCommand(new UnsetLocalAttributeCommand(this, null, ScaPackage.Literals.SCA_DOMAIN_MANAGER__EVENT_CHANNELS));
+		}
+
+		// Perform Actions
+		subMonitor.setWorkRemaining(1);
+		transaction.commit();
+		subMonitor.worked(1);
+		subMonitor.done();
+		// BEGIN GENERATED CODE
 	}
 
 	private final VersionedFeature profileURIFeature = new VersionedFeature(this, ScaPackage.Literals.PROFILE_OBJECT_WRAPPER__PROFILE_URI);

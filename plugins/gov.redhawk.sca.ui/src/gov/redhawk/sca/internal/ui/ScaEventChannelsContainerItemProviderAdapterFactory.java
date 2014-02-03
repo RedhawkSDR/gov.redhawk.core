@@ -14,7 +14,9 @@ package gov.redhawk.sca.internal.ui;
 import gov.redhawk.model.sca.IRefreshable;
 import gov.redhawk.model.sca.RefreshDepth;
 import gov.redhawk.model.sca.ScaDomainManager;
-import gov.redhawk.model.sca.provider.ScaEventChannelsContainerItemProvider;
+import gov.redhawk.model.sca.ScaWaveform;
+import gov.redhawk.model.sca.commands.ScaModelCommandWithResult;
+import gov.redhawk.model.sca.provider.ScaWaveformsContainerItemProvider;
 
 import org.eclipse.core.runtime.IAdapterFactory;
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -23,9 +25,11 @@ import org.eclipse.core.runtime.SubMonitor;
 /**
  * 
  */
-public class ScaWaveformsContainerItemProviderAdapterFactory implements IAdapterFactory {
+public class ScaEventChannelsContainerItemProviderAdapterFactory implements IAdapterFactory {
 
-	private static final Class< ? >[] LIST = new Class< ? >[] { IRefreshable.class };
+	private static final Class< ? >[] LIST = new Class< ? >[] {
+		IRefreshable.class
+	};
 
 	private static class Refresher implements IRefreshable {
 
@@ -41,6 +45,8 @@ public class ScaWaveformsContainerItemProviderAdapterFactory implements IAdapter
 
 			switch (depth) {
 			case FULL:
+				refreshFull(subMonitor.newChild(100));
+				break;
 			case CHILDREN:
 			case SELF:
 				refreshStandard(subMonitor.newChild(100));
@@ -51,7 +57,27 @@ public class ScaWaveformsContainerItemProviderAdapterFactory implements IAdapter
 		}
 
 		private void refreshStandard(final IProgressMonitor monitor) throws InterruptedException {
-			this.domain.fetchEventChannels(monitor);
+			this.domain.fetchWaveforms(monitor);
+		}
+
+		private void refreshFull(final IProgressMonitor monitor) throws InterruptedException {
+			final SubMonitor subMonitor = SubMonitor.convert(monitor, "Fetching waveforms fully", 2);
+			refreshStandard(subMonitor.newChild(1));
+			final ScaWaveform[] waveforms = ScaModelCommandWithResult.execute(this.domain, new ScaModelCommandWithResult<ScaWaveform[]>() {
+
+				@Override
+				public void execute() {
+					setResult(Refresher.this.domain.getWaveforms().toArray(new ScaWaveform[Refresher.this.domain.getWaveforms().size()]));
+				}
+			});
+			final SubMonitor refreshMonitor = subMonitor.newChild(1);
+			if (waveforms != null) {
+				refreshMonitor.beginTask("Refreshing waveforms", waveforms.length);
+				for (final ScaWaveform waveform : waveforms) {
+					waveform.refresh(refreshMonitor.newChild(1), RefreshDepth.SELF);
+				}
+			}
+
 		}
 
 	}
@@ -61,9 +87,9 @@ public class ScaWaveformsContainerItemProviderAdapterFactory implements IAdapter
 	 */
 	@Override
 	public Object getAdapter(final Object adaptableObject, @SuppressWarnings("rawtypes") final Class adapterType) {
-		if (adaptableObject instanceof ScaEventChannelsContainerItemProvider) {
+		if (adaptableObject instanceof ScaWaveformsContainerItemProvider) {
 			if (adapterType == IRefreshable.class) {
-				return new Refresher((ScaDomainManager) ((ScaEventChannelsContainerItemProvider) adaptableObject).getTarget());
+				return new Refresher((ScaDomainManager) ((ScaWaveformsContainerItemProvider) adaptableObject).getTarget());
 			}
 		}
 		return null;
@@ -74,7 +100,7 @@ public class ScaWaveformsContainerItemProviderAdapterFactory implements IAdapter
 	 */
 	@Override
 	public Class< ? >[] getAdapterList() {
-		return ScaWaveformsContainerItemProviderAdapterFactory.LIST;
+		return ScaEventChannelsContainerItemProviderAdapterFactory.LIST;
 	}
 
 }

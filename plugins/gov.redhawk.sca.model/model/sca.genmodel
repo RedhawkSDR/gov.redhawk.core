@@ -274,6 +274,7 @@
       <genFeatures property="Readonly" notify="false" createChild="false" ecoreFeature="ecore:EAttribute sca.ecore#//ScaDomainManager/rootContext"/>
       <genFeatures property="Readonly" notify="false" createChild="false" ecoreFeature="ecore:EAttribute sca.ecore#//ScaDomainManager/state"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute sca.ecore#//ScaDomainManager/profile"/>
+      <genFeatures property="None" createChild="false" ecoreFeature="ecore:EReference sca.ecore#//ScaDomainManager/eventChannels"/>
       <genOperations ecoreOperation="sca.ecore#//ScaDomainManager/getDevice">
         <genParameters ecoreParameter="sca.ecore#//ScaDomainManager/getDevice/deviceId"/>
       </genOperations>
@@ -308,6 +309,9 @@
       </genOperations>
       <genOperations ecoreOperation="sca.ecore#//ScaDomainManager/fetchProfile">
         <genParameters ecoreParameter="sca.ecore#//ScaDomainManager/fetchProfile/monitor"/>
+      </genOperations>
+      <genOperations ecoreOperation="sca.ecore#//ScaDomainManager/fetchEventChannels">
+        <genParameters ecoreParameter="sca.ecore#//ScaDomainManager/fetchEventChannels/monitor"/>
       </genOperations>
     </genClasses>
     <genClasses image="false" ecoreClass="sca.ecore#//ScaDomainManagerFileSystem">
@@ -459,6 +463,10 @@
         <genParameters ecoreParameter="sca.ecore#//IStatusProvider/getStatus/feature"/>
       </genOperations>
     </genClasses>
+    <genClasses image="false" ecoreClass="sca.ecore#//EventChannel"/>
     <genClasses image="false" ecoreClass="sca.ecore#//IRefreshable"/>
+    <genClasses ecoreClass="sca.ecore#//ScaEventChannel">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute sca.ecore#//ScaEventChannel/name"/>
+    </genClasses>
   </genPackages>
 </genmodel:GenModel>

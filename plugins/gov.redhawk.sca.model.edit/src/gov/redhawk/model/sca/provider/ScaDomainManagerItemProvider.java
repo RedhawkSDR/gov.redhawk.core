@@ -226,6 +226,7 @@ public class ScaDomainManagerItemProvider extends ScaPropertyContainerItemProvid
 	private ScaDeviceManagersContainerItemProvider deviceManagersItemProvider;
 	private ScaWaveformFactoriesContainerItemProvider waveformFactoriesItemProvider;
 	private ScaWaveformsContainerItemProvider waveformItemProvider;
+	private ScaEventChannelsContainerItemProvider eventChannelItemProvider;
 
 	@Override
 	public Collection< ? > getChildren(final Object object) {
@@ -241,6 +242,9 @@ public class ScaDomainManagerItemProvider extends ScaPropertyContainerItemProvid
 			}
 			if (domMgr.isConnected()) {
 				retVal.add(getWaveformContainerItemProvider());
+			}
+			if (domMgr.isConnected()) {
+				retVal.add(getEventChannelContainerItemProvider());
 			}
 			return retVal;
 		} else {
@@ -296,6 +300,7 @@ public class ScaDomainManagerItemProvider extends ScaPropertyContainerItemProvid
 		case ScaPackage.SCA_DOMAIN_MANAGER__CONNECTED:
 		case ScaPackage.SCA_DOMAIN_MANAGER__NAME:
 		case ScaPackage.SCA_DOMAIN_MANAGER__PROFILE:
+		case ScaPackage.SCA_DOMAIN_MANAGER__EVENT_CHANNELS:
 			fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
 			return;
 		case ScaPackage.SCA_DOMAIN_MANAGER__FILE_MANAGER:
@@ -343,6 +348,16 @@ public class ScaDomainManagerItemProvider extends ScaPropertyContainerItemProvid
 			this.deviceManagersItemProvider.dispose();
 			this.deviceManagersItemProvider = null;
 		}
+	}
+	
+	/**
+	 * @since 12.2
+	 */
+	public ScaEventChannelsContainerItemProvider getEventChannelContainerItemProvider() {
+		if (eventChannelItemProvider == null) {
+			eventChannelItemProvider = new ScaEventChannelsContainerItemProvider(adapterFactory, (EObject) target);
+		}
+		return eventChannelItemProvider;
 	}
 
 	/**

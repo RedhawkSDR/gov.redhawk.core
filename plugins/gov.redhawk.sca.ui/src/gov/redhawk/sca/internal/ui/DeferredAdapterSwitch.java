@@ -22,6 +22,7 @@ import gov.redhawk.model.sca.ScaService;
 import gov.redhawk.model.sca.ScaUsesPort;
 import gov.redhawk.model.sca.ScaWaveform;
 import gov.redhawk.model.sca.provider.ScaDeviceManagersContainerItemProvider;
+import gov.redhawk.model.sca.provider.ScaEventChannelsContainerItemProvider;
 import gov.redhawk.model.sca.provider.ScaWaveformFactoriesContainerItemProvider;
 import gov.redhawk.model.sca.provider.ScaWaveformsContainerItemProvider;
 import gov.redhawk.model.sca.util.ScaSwitch;
@@ -50,44 +51,45 @@ public class DeferredAdapterSwitch extends ScaSwitch<IDeferredAdapter> {
 
 		public void fetchDeferredChildren(IProgressMonitor monitor);
 	}
-	
+
 	private static class DeferredAdapter implements IDeferredAdapter {
-		
+
 		private final IRefreshable refreshable;
+
 		DeferredAdapter(IRefreshable refreshable) {
 			this.refreshable = refreshable;
 		}
 
 		@Override
 		public boolean isContainer() {
-	        return true;
-        }
+			return true;
+		}
 
 		@Override
 		public boolean isSet() {
-	        return false;
-        }
+			return false;
+		}
 
 		@Override
 		public void fetchDeferredChildren(IProgressMonitor monitor) {
 			try {
-	            refreshable.refresh(monitor, RefreshDepth.CHILDREN);
-            } catch (InterruptedException e) {
-	            // PASS
-            }
-        }	
+				refreshable.refresh(monitor, RefreshDepth.CHILDREN);
+			} catch (InterruptedException e) {
+				// PASS
+			}
+		}
 	}
-	
+
 	@Override
 	public IDeferredAdapter caseScaService(ScaService object) {
 		return new DeferredAdapter(object);
 	}
-	
+
 	@Override
 	public < D extends Device > IDeferredAdapter caseScaDevice(ScaDevice<D> object) {
 		return new DeferredAdapter(object);
 	}
-	
+
 	@Override
 	public IDeferredAdapter caseScaUsesPort(final ScaUsesPort object) {
 		return new DeferredAdapter(object) {
@@ -97,7 +99,7 @@ public class DeferredAdapterSwitch extends ScaSwitch<IDeferredAdapter> {
 			}
 		};
 	}
-	
+
 	@Override
 	public IDeferredAdapter caseScaFileStore(final ScaFileStore object) {
 		return new IDeferredAdapter() {
@@ -118,12 +120,12 @@ public class DeferredAdapterSwitch extends ScaSwitch<IDeferredAdapter> {
 			}
 		};
 	}
-	
+
 	@Override
 	public IDeferredAdapter caseScaWaveform(ScaWaveform object) {
 		return new DeferredAdapter(object);
 	}
-	
+
 	@Override
 	public IDeferredAdapter caseScaComponent(ScaComponent object) {
 		return new DeferredAdapter(object);
@@ -203,6 +205,29 @@ public class DeferredAdapterSwitch extends ScaSwitch<IDeferredAdapter> {
 		};
 	}
 
+	public IDeferredAdapter caseScaEventChannelsContainerItemProvider(final ScaEventChannelsContainerItemProvider object) {
+		return new IDeferredAdapter() {
+
+			@Override
+			public boolean isContainer() {
+				return true;
+			}
+
+			@Override
+			public boolean isSet() {
+				final ScaDomainManager domMgr = (ScaDomainManager) object.getParent(null);
+				return domMgr.isSetEventChannels();
+			}
+
+			@Override
+			public void fetchDeferredChildren(final IProgressMonitor monitor) {
+				final ScaDomainManager domMgr = (ScaDomainManager) object.getParent(null);
+				domMgr.fetchEventChannels(monitor);
+			}
+
+		};
+	}
+
 	public static IDeferredAdapter doSwitch(final Object obj) {
 		if (obj instanceof ScaDeviceManagersContainerItemProvider) {
 			return DeferredAdapterSwitch.INSTANCE.caseScaDeviceManagersContainerItemProvider((ScaDeviceManagersContainerItemProvider) obj);
@@ -210,6 +235,8 @@ public class DeferredAdapterSwitch extends ScaSwitch<IDeferredAdapter> {
 			return DeferredAdapterSwitch.INSTANCE.caseScaWaveformFactoriesContainerItemProvider((ScaWaveformFactoriesContainerItemProvider) obj);
 		} else if (obj instanceof ScaWaveformsContainerItemProvider) {
 			return DeferredAdapterSwitch.INSTANCE.caseScaWaveformsContainerItemProvider((ScaWaveformsContainerItemProvider) obj);
+		} else if (obj instanceof ScaEventChannelsContainerItemProvider) {
+			return DeferredAdapterSwitch.INSTANCE.caseScaEventChannelsContainerItemProvider((ScaEventChannelsContainerItemProvider) obj);
 		} else if (obj instanceof EObject) {
 			return DeferredAdapterSwitch.INSTANCE.doSwitch((EObject) obj);
 		} else {

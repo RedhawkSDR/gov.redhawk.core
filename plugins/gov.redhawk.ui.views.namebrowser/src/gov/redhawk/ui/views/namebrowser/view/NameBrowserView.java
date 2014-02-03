@@ -34,6 +34,8 @@ import org.eclipse.jface.fieldassist.ContentProposal;
 import org.eclipse.jface.fieldassist.ContentProposalAdapter;
 import org.eclipse.jface.fieldassist.IContentProposal;
 import org.eclipse.jface.fieldassist.IContentProposalProvider;
+import org.eclipse.jface.viewers.DecoratingLabelProvider;
+import org.eclipse.jface.viewers.ILabelDecorator;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.viewers.ViewerComparator;
@@ -52,6 +54,7 @@ import org.eclipse.swt.widgets.Menu;
 import org.eclipse.ui.IMemento;
 import org.eclipse.ui.IViewSite;
 import org.eclipse.ui.PartInitException;
+import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.model.WorkbenchLabelProvider;
 import org.eclipse.ui.part.ViewPart;
 import org.eclipse.ui.progress.WorkbenchJob;
@@ -67,7 +70,6 @@ import org.omg.CosNaming.NamingContextPackage.CannotProceed;
 import org.omg.CosNaming.NamingContextPackage.InvalidName;
 import org.omg.CosNaming.NamingContextPackage.NotFound;
 
-import CF.DomainManager;
 import CF.DomainManagerHelper;
 
 /**
@@ -136,10 +138,11 @@ public class NameBrowserView extends ViewPart {
 		this.nameServerField.setText("");
 		//disable connect button when name server text empty
 		nameServerField.addModifyListener(new ModifyListener() {
-		    public void modifyText(ModifyEvent e) {
-		    	final String newRef = NameBrowserView.this.nameServerField.getText().trim();
-		    	connectButton.setEnabled(!newRef.isEmpty());
-		    }
+			@Override
+			public void modifyText(ModifyEvent e) {
+				final String newRef = NameBrowserView.this.nameServerField.getText().trim();
+				connectButton.setEnabled(!newRef.isEmpty());
+			}
 		});
 		//this listener doesn't seem to do anything.
 		this.nameServerField.addSelectionListener(new SelectionAdapter() {
@@ -171,7 +174,8 @@ public class NameBrowserView extends ViewPart {
 		getSite().setSelectionProvider(this.treeViewer);
 		this.contentProvider = new BindingContentProvider();
 		this.treeViewer.setContentProvider(this.contentProvider);
-		this.treeViewer.setLabelProvider(new WorkbenchLabelProvider());
+		ILabelDecorator decorator = PlatformUI.getWorkbench().getDecoratorManager().getLabelDecorator();
+		this.treeViewer.setLabelProvider(new DecoratingLabelProvider(new WorkbenchLabelProvider(), decorator));
 		this.treeViewer.setComparator(new ViewerComparator() {
 			@Override
 			public int compare(final Viewer viewer, final Object e1, final Object e2) {
@@ -211,7 +215,7 @@ public class NameBrowserView extends ViewPart {
 		for (final String nameServer : this.nameServerHistory) {
 			this.nameServerField.add(nameServer);
 		}
-		
+
 		NameBrowserPlugin.getDefault().setSessionDisplay(getSite().getShell().getDisplay());
 	}
 
@@ -488,24 +492,7 @@ public class NameBrowserView extends ViewPart {
 	}
 
 	public static boolean isDomainManager(final BindingNode node) {
-		// You can remove only a context, doesn't work for an object
-		if (node.getType() == BindingNode.Type.OBJECT) {
-			final NamingContextExt rootContext = node.getNamingContext();
-			try {
-				// Get the path to the node and narrow to the context
-				final String path = node.getPath();
-				final org.omg.CORBA.Object obj = rootContext.resolve_str(path);
-				final DomainManager man = DomainManagerHelper.narrow(obj);
-
-				return man != null;
-			} catch (final UserException e) {
-				// PASS 
-			} catch (final Exception e) { // SUPPRESS CHECKSTYLE Fallback
-				// PASS
-			}
-
-		}
-		return false;
+		return node.is_a(DomainManagerHelper.id());
 	}
 
 }

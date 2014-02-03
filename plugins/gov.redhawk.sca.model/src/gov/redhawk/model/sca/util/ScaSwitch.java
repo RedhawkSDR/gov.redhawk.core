@@ -54,6 +54,7 @@ import mil.jpeojtrs.sca.scd.AbstractPort;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.util.Switch;
+import org.omg.CosEventChannelAdmin.EventChannel;
 import CF.ApplicationFactoryOperations;
 import CF.ApplicationOperations;
 import CF.Device;
@@ -73,6 +74,7 @@ import CF.PropertySetOperations;
 import CF.Resource;
 import CF.ResourceOperations;
 import CF.TestableObjectOperations;
+import gov.redhawk.model.sca.*;
 
 /**
  * <!-- begin-user-doc --> The <b>Switch</b> for the model's inheritance
@@ -797,9 +799,35 @@ public class ScaSwitch< T1 > extends Switch<T1> {
 				result = defaultCase(theEObject);
 			return result;
 		}
+		case ScaPackage.EVENT_CHANNEL: {
+			EventChannel eventChannel = (EventChannel) theEObject;
+			T1 result = caseEventChannel(eventChannel);
+			if (result == null)
+				result = caseObject(eventChannel);
+			if (result == null)
+				result = defaultCase(theEObject);
+			return result;
+		}
 		case ScaPackage.IREFRESHABLE: {
 			IRefreshable iRefreshable = (IRefreshable) theEObject;
 			T1 result = caseIRefreshable(iRefreshable);
+			if (result == null)
+				result = defaultCase(theEObject);
+			return result;
+		}
+		case ScaPackage.SCA_EVENT_CHANNEL: {
+			ScaEventChannel scaEventChannel = (ScaEventChannel) theEObject;
+			T1 result = caseScaEventChannel(scaEventChannel);
+			if (result == null)
+				result = caseCorbaObjWrapper(scaEventChannel);
+			if (result == null)
+				result = caseDataProviderObject(scaEventChannel);
+			if (result == null)
+				result = caseIStatusProvider(scaEventChannel);
+			if (result == null)
+				result = caseIDisposable(scaEventChannel);
+			if (result == null)
+				result = caseIRefreshable(scaEventChannel);
 			if (result == null)
 				result = defaultCase(theEObject);
 			return result;
@@ -1335,6 +1363,22 @@ public class ScaSwitch< T1 > extends Switch<T1> {
 	}
 
 	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Event Channel</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * @since 19.0
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Event Channel</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T1 caseEventChannel(EventChannel object) {
+		return null;
+	}
+
+	/**
 	 * Returns the result of interpreting the object as an instance of '<em>IRefreshable</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
@@ -1346,6 +1390,22 @@ public class ScaSwitch< T1 > extends Switch<T1> {
 	 * @generated
 	 */
 	public T1 caseIRefreshable(IRefreshable object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Event Channel</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * @since 19.0
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Event Channel</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T1 caseScaEventChannel(ScaEventChannel object) {
 		return null;
 	}
 
@@ -1571,6 +1631,22 @@ public class ScaSwitch< T1 > extends Switch<T1> {
 	 * @generated
 	 */
 	public T1 caseApplicationFactoryOperations(ApplicationFactoryOperations object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Object</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * @since 19.0
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Object</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T1 caseObject(org.omg.CORBA.Object object) {
 		return null;
 	}
 

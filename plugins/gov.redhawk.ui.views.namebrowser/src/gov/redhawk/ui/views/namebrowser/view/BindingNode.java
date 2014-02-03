@@ -18,12 +18,18 @@ import gov.redhawk.ui.views.namebrowser.NameBrowserPlugin;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeoutException;
+
+import mil.jpeojtrs.sca.util.ProtectedThreadExecutor;
 
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.ui.views.properties.IPropertyDescriptor;
 import org.eclipse.ui.views.properties.IPropertySource;
-import org.eclipse.ui.views.properties.TextPropertyDescriptor;
 import org.omg.CORBA.ORB;
 import org.omg.CORBA.SystemException;
 import org.omg.CORBA.UserException;
@@ -67,27 +73,29 @@ public class BindingNode implements IPropertySource {
 	private static final Debug DEBUG = new Debug(NameBrowserPlugin.PLUGIN_ID, "contentprovider");
 
 	private static final String HOST_ID = "binding.host";
-	private static final TextPropertyDescriptor HOST_PROPERTY_DESCRIPTOR = new TextPropertyDescriptor(BindingNode.HOST_ID, "Host");
+	private static final ReadOnlyTextPropertyDescriptor HOST_PROPERTY_DESCRIPTOR = new ReadOnlyTextPropertyDescriptor(BindingNode.HOST_ID, "Host");
 
 	private static final String IOR_ID = "binding.ior";
-	private static final TextPropertyDescriptor IOR_PROPERTY_DESCRIPTOR = new TextPropertyDescriptor(BindingNode.IOR_ID, "IOR");
+	private static final ReadOnlyTextPropertyDescriptor IOR_PROPERTY_DESCRIPTOR = new ReadOnlyTextPropertyDescriptor(BindingNode.IOR_ID, "IOR");
 
 	private static final String NAME_ID = "binding.name";
-	private static final TextPropertyDescriptor NAME_PROPERTY_DESCRIPTOR = new TextPropertyDescriptor(BindingNode.NAME_ID, "Name");
+	private static final ReadOnlyTextPropertyDescriptor NAME_PROPERTY_DESCRIPTOR = new ReadOnlyTextPropertyDescriptor(BindingNode.NAME_ID, "Name");
 
 	private static final String PATH_ID = "binding.path";
-	private static final TextPropertyDescriptor PATH_PROPERTY_DESCRIPTOR = new TextPropertyDescriptor(BindingNode.PATH_ID, "Path");
+	private static final ReadOnlyTextPropertyDescriptor PATH_PROPERTY_DESCRIPTOR = new ReadOnlyTextPropertyDescriptor(BindingNode.PATH_ID, "Path");
 
 	private static final IPropertyDescriptor[] DESCRIPTORS = { BindingNode.NAME_PROPERTY_DESCRIPTOR, BindingNode.HOST_PROPERTY_DESCRIPTOR,
-	        BindingNode.PATH_PROPERTY_DESCRIPTOR, BindingNode.IOR_PROPERTY_DESCRIPTOR };
+		BindingNode.PATH_PROPERTY_DESCRIPTOR, BindingNode.IOR_PROPERTY_DESCRIPTOR };
 
 	private static final Binding[] EMPTY = new Binding[0];
 	private static final BindingNode[] NO_CONTENT = new BindingNode[0];
+	private Map<String, Boolean> knownRepIds = new HashMap<String, Boolean>();
 
 	private static class SessionInfo {
 		private final String host;
 		private NamingContextExt namingContext;
 		private OrbSession session;
+
 		private SessionInfo(final String host) {
 			this.host = host;
 		}
@@ -119,21 +127,56 @@ public class BindingNode implements IPropertySource {
 		return this.info.namingContext;
 	}
 
+	/**
+	 * @since 1.2
+	 */
+	public boolean is_a(final String repID) {
+		Boolean retVal = knownRepIds.get(repID);
+		if (retVal == null) {
+			if (getType() == BindingNode.Type.OBJECT) {
+				final NamingContextExt rootContext = getNamingContext();
+				try {
+					retVal = ProtectedThreadExecutor.submit(new Callable<Boolean>() {
+
+						@Override
+						public Boolean call() throws Exception {
+							final String path = getPath();
+							final org.omg.CORBA.Object obj = rootContext.resolve_str(path);
+							return obj._is_a(repID);
+						}
+					});
+				} catch (InterruptedException e) {
+					retVal = false;
+				} catch (ExecutionException e) {
+					retVal = false;
+				} catch (TimeoutException e) {
+					retVal = false;
+				}
+
+			} else {
+				retVal = false;
+			}
+			knownRepIds.put(repID, retVal);
+		}
+		return retVal;
+
+	}
+
 	public void connect() throws InvalidName {
 		// Create the CORBA ORB, overriding the Java ORB's default port if
 		// necessary
-		if (DEBUG.enabled) {
-			DEBUG.enteringMethod();
+		if (BindingNode.DEBUG.enabled) {
+			BindingNode.DEBUG.enteringMethod();
 		}
 
 		final String nameRef = CorbaURIUtil.addDefaultPort(this.info.host);
 		this.info.session = OrbSession.createSession();
-		
+
 		// Lookup the NameService
 		this.info.namingContext = NamingContextExtHelper.narrow(this.info.session.getOrb().string_to_object(nameRef));
 		this.contents = null;
-		if (DEBUG.enabled) {
-			DEBUG.exitingMethod();
+		if (BindingNode.DEBUG.enabled) {
+			BindingNode.DEBUG.exitingMethod();
 		}
 	}
 
@@ -254,8 +297,8 @@ public class BindingNode implements IPropertySource {
 	}
 
 	public BindingNode[] fetchContents() {
-		if (DEBUG.enabled) {
-			DEBUG.enteringMethod();
+		if (BindingNode.DEBUG.enabled) {
+			BindingNode.DEBUG.enteringMethod();
 		}
 		// If the type is ncontext, it has children, otherwise none
 		// We only need to do something to a node that has children
@@ -291,10 +334,10 @@ public class BindingNode implements IPropertySource {
 			}
 			this.contents = retVal.toArray(new BindingNode[retVal.size()]);
 		} else {
-			this.contents = NO_CONTENT;
+			this.contents = BindingNode.NO_CONTENT;
 		}
-		if (DEBUG.enabled) {
-			DEBUG.exitingMethod(Arrays.asList(this.contents));
+		if (BindingNode.DEBUG.enabled) {
+			BindingNode.DEBUG.exitingMethod(Arrays.asList(this.contents));
 		}
 		return this.contents;
 	}
@@ -325,14 +368,14 @@ public class BindingNode implements IPropertySource {
 			}
 
 		}
-		if (DEBUG.enabled) {
-			DEBUG.exitingMethod(str);
+		if (BindingNode.DEBUG.enabled) {
+			BindingNode.DEBUG.exitingMethod(str);
 		}
 		return str.toString();
 	}
 
 	private Binding[] getChildren(final String pathToNode) {
-		Binding[] retVal = EMPTY;
+		Binding[] retVal = BindingNode.EMPTY;
 
 		try {
 			final BindingListHolder bl = new BindingListHolder();
@@ -356,8 +399,8 @@ public class BindingNode implements IPropertySource {
 			// PASS
 		}
 
-		if (DEBUG.enabled) {
-			DEBUG.exitingMethod(Arrays.asList(retVal));
+		if (BindingNode.DEBUG.enabled) {
+			BindingNode.DEBUG.exitingMethod(Arrays.asList(retVal));
 		}
 		return retVal;
 	}

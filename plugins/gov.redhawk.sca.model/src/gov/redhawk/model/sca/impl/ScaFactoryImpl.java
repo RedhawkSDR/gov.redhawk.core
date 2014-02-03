@@ -50,6 +50,7 @@ import org.eclipse.emf.ecore.impl.EFactoryImpl;
 import org.eclipse.emf.ecore.plugin.EcorePlugin;
 import CF.Device;
 import CF.LoadableDevice;
+import gov.redhawk.model.sca.*;
 import CF.DevicePackage.AdminType;
 import CF.DevicePackage.OperationalType;
 import CF.DevicePackage.UsageType;
@@ -143,6 +144,8 @@ public class ScaFactoryImpl extends EFactoryImpl implements ScaFactory {
 			return (EObject) createStringToStringMap();
 		case ScaPackage.SCA_STRUCT_SEQUENCE_PROPERTY:
 			return createScaStructSequenceProperty();
+		case ScaPackage.SCA_EVENT_CHANNEL:
+			return createScaEventChannel();
 		default:
 			throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier");
 		}
@@ -468,6 +471,17 @@ public class ScaFactoryImpl extends EFactoryImpl implements ScaFactory {
 	public ScaStructSequenceProperty createScaStructSequenceProperty() {
 		ScaStructSequencePropertyImpl scaStructSequenceProperty = new ScaStructSequencePropertyImpl();
 		return scaStructSequenceProperty;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * @since 19.0
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public ScaEventChannel createScaEventChannel() {
+		ScaEventChannelImpl scaEventChannel = new ScaEventChannelImpl();
+		return scaEventChannel;
 	}
 
 	/**

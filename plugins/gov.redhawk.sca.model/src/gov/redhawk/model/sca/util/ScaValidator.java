@@ -66,11 +66,13 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.util.EObjectValidator;
 import org.omg.CORBA.Any;
+import org.omg.CosEventChannelAdmin.EventChannel;
 import org.omg.PortableServer.POA;
 import CF.DataType;
 import CF.DevicePackage.AdminType;
 import CF.DevicePackage.OperationalType;
 import CF.DevicePackage.UsageType;
+import gov.redhawk.model.sca.*;
 
 /**
  * <!-- begin-user-doc -->
@@ -213,8 +215,12 @@ public class ScaValidator extends EObjectValidator {
 			return validateScaStructSequenceProperty((ScaStructSequenceProperty) value, diagnostics, context);
 		case ScaPackage.ISTATUS_PROVIDER:
 			return validateIStatusProvider((IStatusProvider) value, diagnostics, context);
+		case ScaPackage.EVENT_CHANNEL:
+			return validateEventChannel((EventChannel) value, diagnostics, context);
 		case ScaPackage.IREFRESHABLE:
 			return validateIRefreshable((IRefreshable) value, diagnostics, context);
+		case ScaPackage.SCA_EVENT_CHANNEL:
+			return validateScaEventChannel((ScaEventChannel) value, diagnostics, context);
 		case ScaPackage.DOMAIN_CONNECTION_STATE:
 			return validateDomainConnectionState((DomainConnectionState) value, diagnostics, context);
 		case ScaPackage.REFRESH_DEPTH:
@@ -579,11 +585,31 @@ public class ScaValidator extends EObjectValidator {
 
 	/**
 	 * <!-- begin-user-doc -->
+	 * @since 19.0
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public boolean validateEventChannel(EventChannel eventChannel, DiagnosticChain diagnostics, Map<Object, Object> context) {
+		return validate_EveryDefaultConstraint((EObject) eventChannel, diagnostics, context);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public boolean validateIRefreshable(IRefreshable iRefreshable, DiagnosticChain diagnostics, Map<Object, Object> context) {
 		return validate_EveryDefaultConstraint((EObject) iRefreshable, diagnostics, context);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * @since 19.0
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public boolean validateScaEventChannel(ScaEventChannel scaEventChannel, DiagnosticChain diagnostics, Map<Object, Object> context) {
+		return validate_EveryDefaultConstraint(scaEventChannel, diagnostics, context);
 	}
 
 	/**

@@ -702,6 +702,9 @@
     <eOperations name="fetchProfile" eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EString">
       <eParameters name="monitor" eType="#//IProgressMonitor"/>
     </eOperations>
+    <eOperations name="fetchEventChannels" upperBound="-1" eType="#//ScaEventChannel">
+      <eParameters name="monitor" eType="#//IProgressMonitor"/>
+    </eOperations>
     <eStructuralFeatures xsi:type="ecore:EReference" name="waveformFactories" upperBound="-1"
         eType="#//ScaWaveformFactory" transient="true" unsettable="true" containment="true"
         resolveProxies="false" eOpposite="#//ScaWaveformFactory/domMgr">
@@ -794,6 +797,8 @@
     </eStructuralFeatures>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="profile" eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EString"
         transient="true" unsettable="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="eventChannels" upperBound="-1"
+        eType="#//ScaEventChannel" unsettable="true" containment="true"/>
     <eGenericSuperTypes eClassifier="#//ScaPropertyContainer">
       <eTypeArguments eClassifier="ecore:EClass platform:/plugin/mil.jpeojtrs.sca.cf/model/cf.ecore#//DomainManager"/>
       <eTypeArguments eClassifier="ecore:EClass platform:/plugin/mil.jpeojtrs.sca.dmd/model/dmd.ecore#//DomainManagerConfiguration"/>
@@ -1245,6 +1250,14 @@
       serializable="false"/>
   <eClassifiers xsi:type="ecore:EDataType" name="Any" instanceClassName="org.omg.CORBA.Any"
       serializable="false"/>
+  <eClassifiers xsi:type="ecore:EClass" name="EventChannel" instanceClassName="org.omg.CosEventChannelAdmin.EventChannel"
+      abstract="true" interface="true" eSuperTypes="platform:/plugin/mil.jpeojtrs.sca.cf/model/cf.ecore#//Object"/>
   <eClassifiers xsi:type="ecore:EClass" name="IRefreshable" instanceClassName="gov.redhawk.model.sca.IRefreshable"
       abstract="true" interface="true"/>
+  <eClassifiers xsi:type="ecore:EClass" name="ScaEventChannel">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eGenericSuperTypes eClassifier="#//CorbaObjWrapper">
+      <eTypeArguments eClassifier="#//EventChannel"/>
+    </eGenericSuperTypes>
+  </eClassifiers>
 </ecore:EPackage>
