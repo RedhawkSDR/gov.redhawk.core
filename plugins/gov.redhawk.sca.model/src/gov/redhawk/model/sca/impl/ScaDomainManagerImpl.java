@@ -82,6 +82,7 @@ import org.omg.CosNaming.NamingContextPackage.CannotProceed;
 import org.omg.CosNaming.NamingContextPackage.InvalidName;
 import org.omg.CosNaming.NamingContextPackage.NotFound;
 
+import CF.AllocationManager;
 import CF.Application;
 import CF.ApplicationFactory;
 import CF.DataType;
@@ -2325,6 +2326,46 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 		}
 		subMonitor.done();
 		return getProfileURI();
+	}
+
+	/**
+	 * @since 19.0
+	 */
+	@Override
+	public AllocationManager allocationMgr() {
+		return getObj().allocationMgr();
+	}
+
+	/**
+	 * @since 19.0
+	 */
+	@Override
+	public String name() {
+		return getName();
+	}
+
+	/**
+	 * @since 19.0
+	 */
+	@Override
+	public DomainManager[] remoteDomainManagers() {
+		return getObj().remoteDomainManagers();
+	}
+
+	/**
+	 * @since 19.0
+	 */
+	@Override
+	public void registerRemoteDomainManager(DomainManager registeringDomainManager) throws InvalidObjectReference, RegisterError {
+		getObj().registerRemoteDomainManager(registeringDomainManager);
+	}
+
+	/**
+	 * @since 19.0
+	 */
+	@Override
+	public void unregisterRemoteDomainManager(DomainManager unregisteringDomainManager) throws InvalidObjectReference, UnregisterError {
+		getObj().unregisterRemoteDomainManager(unregisteringDomainManager);
 	}
 
 } // ScaDomainManagerImpl

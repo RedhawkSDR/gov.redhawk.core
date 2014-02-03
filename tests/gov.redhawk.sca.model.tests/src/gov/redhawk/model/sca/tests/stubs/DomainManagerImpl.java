@@ -30,12 +30,14 @@ import org.omg.PortableServer.POA;
 import org.omg.PortableServer.POAPackage.ServantNotActive;
 import org.omg.PortableServer.POAPackage.WrongPolicy;
 
+import CF.AllocationManager;
 import CF.Application;
 import CF.ApplicationFactory;
 import CF.ApplicationFactoryHelper;
 import CF.ApplicationFactoryPOATie;
 import CF.Device;
 import CF.DeviceManager;
+import CF.DomainManager;
 import CF.DomainManagerOperations;
 import CF.ErrorNumberType;
 import CF.FileManager;
@@ -263,6 +265,36 @@ public class DomainManagerImpl extends AbstractResourceImpl implements DomainMan
 	public void registerApplication(Application retVal) {
 		// TODO Auto-generated method stub
 
+	}
+
+	@Override
+	public AllocationManager allocationMgr() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public String name() {
+		// TODO Auto-generated method stub
+		return "domain";
+	}
+
+	@Override
+	public DomainManager[] remoteDomainManagers() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void registerRemoteDomainManager(DomainManager registeringDomainManager) throws InvalidObjectReference, RegisterError {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void unregisterRemoteDomainManager(DomainManager unregisteringDomainManager) throws InvalidObjectReference, UnregisterError {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

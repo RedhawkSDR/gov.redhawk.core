@@ -53,11 +53,29 @@ public class _DomainManagerStub extends omnijni.ObjectImpl implements CF.DomainM
   }
   private static native CF.FileManager _get_fileMgr (long __ref__);
 
+  public CF.AllocationManager allocationMgr ()
+  {
+    return _get_allocationMgr(this.ref_);
+  }
+  private static native CF.AllocationManager _get_allocationMgr (long __ref__);
+
   public String identifier ()
   {
     return _get_identifier(this.ref_);
   }
   private static native String _get_identifier (long __ref__);
+
+  public String name ()
+  {
+    return _get_name(this.ref_);
+  }
+  private static native String _get_name (long __ref__);
+
+  public CF.DomainManager[] remoteDomainManagers ()
+  {
+    return _get_remoteDomainManagers(this.ref_);
+  }
+  private static native CF.DomainManager[] _get_remoteDomainManagers (long __ref__);
 
   public void registerDevice (CF.Device registeringDevice, CF.DeviceManager registeredDeviceMgr)
   {
@@ -118,6 +136,18 @@ public class _DomainManagerStub extends omnijni.ObjectImpl implements CF.DomainM
     unregisterFromEventChannel(this.ref_, unregisteringId, eventChannelName);
   }
   private static native void unregisterFromEventChannel (long __ref__, String unregisteringId, String eventChannelName);
+
+  public void registerRemoteDomainManager (CF.DomainManager registeringDomainManager)
+  {
+    registerRemoteDomainManager(this.ref_, registeringDomainManager);
+  }
+  private static native void registerRemoteDomainManager (long __ref__, CF.DomainManager registeringDomainManager);
+
+  public void unregisterRemoteDomainManager (CF.DomainManager unregisteringDomainManager)
+  {
+    unregisterRemoteDomainManager(this.ref_, unregisteringDomainManager);
+  }
+  private static native void unregisterRemoteDomainManager (long __ref__, CF.DomainManager unregisteringDomainManager);
 
   private static String __ids[] = {
     "IDL:CF/DomainManager:1.0",

@@ -22,7 +22,11 @@ import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.concurrent.LinkedBlockingQueue;
+
+import mil.jpeojtrs.sca.util.NamedThreadFactory;
 
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.core.runtime.CoreException;
@@ -31,7 +35,6 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.omg.CORBA.Any;
 import org.omg.CORBA.SystemException;
-import org.omg.CORBA.UserException;
 import org.omg.CosEventComm.Disconnected;
 import org.omg.CosEventComm.PushConsumer;
 import org.omg.CosEventComm.PushConsumerHelper;
@@ -42,6 +45,7 @@ import org.omg.PortableServer.POAPackage.ServantNotActive;
 import org.omg.PortableServer.POAPackage.WrongPolicy;
 
 import CF.DomainManager;
+import CF.DomainManagerOperations;
 import CF.InvalidObjectReference;
 import CF.DomainManagerPackage.AlreadyConnected;
 import CF.DomainManagerPackage.InvalidEventChannelName;
@@ -51,6 +55,8 @@ import CF.DomainManagerPackage.NotConnected;
  * 
  */
 public class EventJob extends SilentJob implements PushConsumerOperations {
+
+	private static final ExecutorService EXECUTOR_POOL = Executors.newSingleThreadExecutor(new NamedThreadFactory(EventJob.class.getName()));
 
 	public static final String EVENT_DATA_PROVIDER_FAMILY = DataProviderActivator.ID + ".jobFamily";
 
@@ -74,7 +80,6 @@ public class EventJob extends SilentJob implements PushConsumerOperations {
 		this.channelName = channelName;
 		this.dp = dp;
 
-		
 		try {
 			this.domMgr = domain.fetchNarrowedObject(null);
 			Assert.isNotNull(this.domMgr, "Domain Manager must not be null");
@@ -84,17 +89,17 @@ public class EventJob extends SilentJob implements PushConsumerOperations {
 			this.stub = PushConsumerHelper.narrow(poa.servant_to_reference(new PushConsumerPOATie(this)));
 			this.domMgr.registerWithEventChannel(stub, this.id.toString(), channelName);
 		} catch (ServantNotActive e) {
-			throw new CoreException(new Status(Status.ERROR, DataProviderActivator.ID, "Failed to register with event channel.", e));
+			throw new CoreException(new Status(IStatus.ERROR, DataProviderActivator.ID, "Failed to register with event channel.", e));
 		} catch (WrongPolicy e) {
-			throw new CoreException(new Status(Status.ERROR, DataProviderActivator.ID, "Failed to register with event channel.", e));
+			throw new CoreException(new Status(IStatus.ERROR, DataProviderActivator.ID, "Failed to register with event channel.", e));
 		} catch (InvalidObjectReference e) {
-			throw new CoreException(new Status(Status.ERROR, DataProviderActivator.ID, "Failed to register with event channel.", e));
+			throw new CoreException(new Status(IStatus.ERROR, DataProviderActivator.ID, "Failed to register with event channel.", e));
 		} catch (InvalidEventChannelName e) {
-			throw new CoreException(new Status(Status.ERROR, DataProviderActivator.ID, "Failed to register with event channel.", e));
+			throw new CoreException(new Status(IStatus.ERROR, DataProviderActivator.ID, "Failed to register with event channel.", e));
 		} catch (AlreadyConnected e) {
-			throw new CoreException(new Status(Status.ERROR, DataProviderActivator.ID, "Failed to register with event channel.", e));
+			throw new CoreException(new Status(IStatus.ERROR, DataProviderActivator.ID, "Failed to register with event channel.", e));
 		} catch (SystemException e) {
-			throw new CoreException(new Status(Status.ERROR, DataProviderActivator.ID, "Failed to register with event channel.", e));
+			throw new CoreException(new Status(IStatus.ERROR, DataProviderActivator.ID, "Failed to register with event channel.", e));
 		}
 
 		setSystem(true);
@@ -174,27 +179,42 @@ public class EventJob extends SilentJob implements PushConsumerOperations {
 	public void dispose() {
 		if (!this.disposed) {
 			if (this.domMgr != null) {
-				try {
-					this.domMgr.unregisterFromEventChannel(this.id.toString(), this.channelName);
-				} catch (final UserException e) {
-					// PASS
-				} catch (final SystemException e) {
-					// PASS
-				} finally {
-					this.domMgr = null;
-				}
+				final DomainManagerOperations localDomMgr = domMgr;
+				this.domMgr = null;
+				final String localId = this.id.toString();
+				final String localChannelName = this.channelName;
+				final PushConsumer localStub = stub;
+				stub = null;
+				final OrbSession localSession = session;
+				session = null;
+				EventJob.EXECUTOR_POOL.submit(new Runnable() {
+
+					@Override
+					public void run() {
+						try {
+							if (localDomMgr != null && localId != null && localChannelName != null) {
+								localDomMgr.unregisterFromEventChannel(localId, localChannelName);
+							}
+						} catch (InvalidEventChannelName e) {
+							// PASS
+						} catch (NotConnected e) {
+							// PASS
+						} catch (final SystemException e) {
+							// PASS
+						} finally {
+							if (localStub != null) {
+								localStub._release();
+							}
+							if (localSession != null) {
+								localSession.dispose();
+							}
+						}
+					}
+				});
 			}
 		}
 
-		if (this.stub != null) {
-			this.stub._release();
-			this.stub = null;
-		}
 		this.disposed = true;
-		if (this.session != null) {
-			session.dispose();
-			session = null;
-		}
 		cancel();
 	}
 }
