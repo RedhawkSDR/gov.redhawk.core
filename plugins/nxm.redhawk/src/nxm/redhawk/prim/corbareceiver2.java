@@ -67,8 +67,8 @@ public class corbareceiver2 extends CorbaPrimitive implements IMidasDataWriter {
 	public static final String SW_CONNECTION_ID = "/CONNECTIONID";
 	
 	/**
-	 * Name of switch to enable/disable increasing/growing output file's pipe size when 
-	 * incoming data packet size is larger than it. 
+	 * Name of switch to enable/disable increasing/growing output file's pipe size when
+	 * incoming data packet size is larger than it.
 	 */
 	public static final String SW_GROW_PIPE = "/GROWPIPE";
 
@@ -290,6 +290,24 @@ public class corbareceiver2 extends CorbaPrimitive implements IMidasDataWriter {
 		return newOutputFile;
 	}
 
+	private static boolean isRestartNeed4SriChange(final StreamSRI sri, final StreamSRI lastSRI) {
+		boolean shouldRestart = false;
+		if (lastSRI != null) {
+			shouldRestart |= (lastSRI.mode    != sri.mode);
+			shouldRestart |= (lastSRI.subsize != sri.subsize);
+			shouldRestart |= (lastSRI.xdelta  != sri.xdelta);
+			shouldRestart |= (lastSRI.xstart  != sri.xstart);
+			shouldRestart |= (lastSRI.xunits  != sri.xunits);
+			shouldRestart |= (lastSRI.ydelta  != sri.ydelta);
+			shouldRestart |= (lastSRI.ystart  != sri.ystart);
+			shouldRestart |= (lastSRI.yunits  != sri.yunits);
+			// blocking, hversion, keywords, and streamID changes do not require a restart
+		} else {
+			shouldRestart = true;
+		}
+		return shouldRestart;
+	}
+
 	/**
 	 * @noreference This method is not intended to be referenced by clients.
 	 */
@@ -298,10 +316,8 @@ public class corbareceiver2 extends CorbaPrimitive implements IMidasDataWriter {
 		if (this.streamId == null || this.streamId.equals(streamID)) {
 			this.currentSri = newSri;
 			if (state == PROCESS) {
-				if (oldSri == null || oldSri.mode != newSri.mode || oldSri.subsize != newSri.subsize || oldSri.xdelta != newSri.xdelta
-				        || oldSri.xstart != newSri.xstart || oldSri.xunits != newSri.xunits || oldSri.ydelta != newSri.ydelta || oldSri.ystart != newSri.ystart
-				        || oldSri.yunits != newSri.yunits) {
-					doRestart(); // only restart if one of above SRI field changes
+				if (isRestartNeed4SriChange(newSri, oldSri)) {
+					doRestart();
 				}
 			} else if (state == OPEN) {
 				notifyAll();
@@ -343,7 +359,7 @@ public class corbareceiver2 extends CorbaPrimitive implements IMidasDataWriter {
 		if (!blocking) {                      // === non-blocking option enabled ===
 			if (M.pipeMode == Midas.PPAUSE) { // 1. pipe is PAUSED
 				TRACE_LOGGER.message("Dropping packet b/c pipe is PAUSED");
-				return;                       // 1b. drop packet, as write would block 
+				return;                       // 1b. drop packet, as write would block
 			}
 			if (!this.canGrowPipe && localOutputFile.getPipeSize() < bufferSize) {
 				// PASS - let packet through even though this might block, otherwise no data will ever be written
@@ -467,7 +483,7 @@ public class corbareceiver2 extends CorbaPrimitive implements IMidasDataWriter {
 		return retval;
 	}
 	
-	/** 
+	/**
 	 * Change output file's pipe size (immediately)
 	 * @param newValue new pipe size for output data file/pipe (in bytes)
 	 */
