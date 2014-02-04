@@ -16,13 +16,16 @@ import gov.redhawk.model.sca.ScaModelPlugin;
 import gov.redhawk.model.sca.ScaWaveform;
 
 import java.util.Map;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeoutException;
 
 import mil.jpeojtrs.sca.sad.SadComponentInstantiation;
+import mil.jpeojtrs.sca.util.ProtectedThreadExecutor;
 import mil.jpeojtrs.sca.util.QueryParser;
 import mil.jpeojtrs.sca.util.ScaFileSystemConstants;
 
 import org.eclipse.core.runtime.IAdapterFactory;
-import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.emf.common.util.URI;
 
 public class SadComponentInstantiationAdapterFactory implements IAdapterFactory {
@@ -46,12 +49,29 @@ public class SadComponentInstantiationAdapterFactory implements IAdapterFactory 
 			final ScaWaveform waveform = ScaModelPlugin.getDefault().findEObject(ScaWaveform.class, wfRef);
 			final String myId = compInst.getId();
 			if (waveform != null) {
-				for (final ScaComponent component : waveform.fetchComponents(new NullProgressMonitor())) {
-					final String scaComponentId = component.identifier();
-					if (scaComponentId.startsWith(myId)) {
-						return component;
-					}
+				try {
+					return ProtectedThreadExecutor.submit(new Callable<ScaComponent>() {
+
+						@Override
+						public ScaComponent call() throws Exception {
+							for (final ScaComponent component : waveform.fetchComponents(null)) {
+								final String scaComponentId = component.identifier();
+								if (scaComponentId.startsWith(myId)) {
+									return component;
+								}
+							}
+							return null;
+						}
+
+					});
+				} catch (InterruptedException e) {
+					return null;
+				} catch (ExecutionException e) {
+					return null;
+				} catch (TimeoutException e) {
+					return null;
 				}
+
 			}
 		}
 
