@@ -152,4 +152,21 @@ public enum TunerUtils {
 		};
 		struct.eAdapters().add(structAdapter);
 	}
+	
+	public static int countTuners(UnallocatedTunerContainer container) {
+		if (container == null || container.getTunerContainer() == null) {
+			return -1;
+		}
+		if (container.getTunerContainer().getTunerStatus() == null) {
+			return 0;
+		}
+		int count = 0;
+		for (TunerStatus tuner: container.getTunerContainer().getTunerStatus()) {
+			if (tuner.getAllocationID() == null || tuner.getAllocationID().isEmpty()) {
+				++count;
+			}
+		}
+		return count;
+	}
+	
 }

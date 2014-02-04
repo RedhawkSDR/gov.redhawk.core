@@ -11,7 +11,10 @@
  */
 package gov.redhawk.frontend.ui.internal.section;
 
+import gov.redhawk.frontend.ListenerAllocation;
+import gov.redhawk.frontend.TunerContainer;
 import gov.redhawk.frontend.TunerStatus;
+import gov.redhawk.frontend.UnallocatedTunerContainer;
 
 import org.eclipse.jface.viewers.IFilter;
 
@@ -20,6 +23,15 @@ public class FrontendSectionFilter implements IFilter {
 	@Override
 	public boolean select(Object toTest) {
 		if(toTest instanceof TunerStatus) {
+			return true;
+		}
+		if(toTest instanceof ListenerAllocation) {
+			return true;
+		}
+		if(toTest instanceof TunerContainer) {
+			return true;
+		}
+		if(toTest instanceof UnallocatedTunerContainer) {
 			return true;
 		}
 		return false;

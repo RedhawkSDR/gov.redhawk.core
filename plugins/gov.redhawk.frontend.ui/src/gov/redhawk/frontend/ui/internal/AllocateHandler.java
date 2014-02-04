@@ -33,8 +33,6 @@ import org.eclipse.emf.common.util.EList;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.wizard.WizardDialog;
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.handlers.HandlerUtil;
 
@@ -51,23 +49,6 @@ public class AllocateHandler extends AbstractHandler implements IHandler {
 		IStructuredSelection selection = (IStructuredSelection) HandlerUtil.getActiveMenuSelection(event);
 		if (selection == null) {
 			selection = (IStructuredSelection) HandlerUtil.getCurrentSelection(event);
-		}
-
-		// This check is used to tie the allocation wizard into the view toolbar buttons
-		if (selection == null || selection.getFirstElement() == null) {
-			TunerStatus currentSelection = TunerStatusItemProvider.getCurrentSelection();
-			if (currentSelection != null) {
-				selection = new StructuredSelection(new Object[] { currentSelection });
-			}
-
-			if (currentSelection.getAllocationID() != null && !currentSelection.getAllocationID().equals("")) {
-				Shell shell = HandlerUtil.getActiveWorkbenchWindow(event).getShell();
-				MessageBox alreadyAllocated = new MessageBox(shell, SWT.ICON_ERROR | SWT.OK);
-				alreadyAllocated.setMessage("Tuner is already allocated");
-				alreadyAllocated.setText("Allocation Failed");
-				alreadyAllocated.open();
-				return null;
-			}
 		}
 
 		if (selection.getFirstElement() instanceof TunerStatus && selection.size() > 1) {

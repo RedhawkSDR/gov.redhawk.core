@@ -22,6 +22,9 @@
                <instanceof
                      value="gov.redhawk.frontend.TunerStatus">
                </instanceof>
+               <instanceof
+                     value="gov.redhawk.frontend.ListenerAllocation">
+               </instanceof>
             </or>
          </possibleChildren>
          <commonSorter
@@ -83,11 +86,9 @@
             <visibleWhen
                   checkEnabled="false">
                <iterate>
-                  <or>
-                     <instanceof
-                           value="gov.redhawk.frontend.TunerStatus">
-                     </instanceof>
-                  </or>
+                  <instanceof
+                        value="gov.redhawk.frontend.TunerStatus">
+                  </instanceof>
                </iterate>
             </visibleWhen>
          </command>
@@ -100,17 +101,15 @@
                   <or>
                      <and>
                         <instanceof
-                              value="gov.redhawk.frontend.UnallocatedTunerContainer">
-                        </instanceof>
-                     </and>
-                     <and>
-                        <instanceof
                               value="gov.redhawk.frontend.TunerContainer">
                         </instanceof>
                         <test
                               property="gov.redhawk.frontend.hasUnallocatedTuners">
                         </test>
                      </and>
+                     <instanceof
+                           value="gov.redhawk.frontend.UnallocatedTunerContainer">
+                     </instanceof>
                   </or>
                </iterate>
             </visibleWhen>
@@ -122,16 +121,14 @@
             <visibleWhen
                   checkEnabled="false">
                <iterate>
-                  <or>
-                     <and>
-                        <instanceof
-                              value="gov.redhawk.frontend.TunerStatus">
-                        </instanceof>
-                        <test
-                              property="gov.redhawk.frontend.hasAllocationID">
-                        </test>
-                     </and>
-                  </or>
+                  <and>
+                     <instanceof
+                           value="gov.redhawk.frontend.TunerStatus">
+                     </instanceof>
+                     <test
+                           property="gov.redhawk.frontend.hasAllocationID">
+                     </test>
+                  </and>
                </iterate>
             </visibleWhen>
          </command>
@@ -166,95 +163,14 @@
             <visibleWhen
                   checkEnabled="false">
                <iterate>
-                  <or>
-                     <and>
-                        <instanceof
-                              value="gov.redhawk.frontend.TunerContainer">
-                        </instanceof>
-                        <test
-                              property="gov.redhawk.frontend.hasAllocatedTuners">
-                        </test>
-                     </and>
-                  </or>
-               </iterate>
-            </visibleWhen>
-         </command>
-      </menuContribution>
-      <menuContribution
-            allPopups="false"
-            locationURI="toolbar:org.eclipse.ui.views.PropertySheet ">
-         <command
-               commandId="gov.redhawk.frontend.commands.allocate"
-               icon="icons/allocate.gif"
-               style="push">
-            <visibleWhen
-                  checkEnabled="false">
-               <iterate>
-                  <or>
-                     <and>
-                        <instanceof
-                              value="gov.redhawk.frontend.TunerStatus">
-                        </instanceof>
-                        <not>
-                           <test
-                                 property="gov.redhawk.frontend.hasAllocationID">
-                           </test>
-                        </not>
-                     </and>
-                     <and>
-                        <instanceof
-                              value="gov.redhawk.frontend.TunerContainer">
-                        </instanceof>
-                     </and>
-                  </or>
-               </iterate>
-            </visibleWhen>
-         </command>
-         <command
-               commandId="gov.redhawk.frontend.commands.deallocate"
-               icon="icons/deallocate.gif"
-               style="push">
-            <visibleWhen
-                  checkEnabled="false">
-               <iterate>
-                  <or>
-                     <and>
-                        <instanceof
-                              value="gov.redhawk.frontend.TunerStatus">
-                        </instanceof>
-                        <test
-                              property="gov.redhawk.frontend.hasAllocationID">
-                        </test></and>
-                     <and>
-                        <instanceof
-                              value="gov.redhawk.frontend.TunerContainer">
-                        </instanceof></and>
-                  </or>
-               </iterate>
-            </visibleWhen>
-         </command>
-         <command
-               commandId="gov.redhawk.frontend.commands.plot"
-               icon="icons/plot.gif"
-               style="push">
-            <visibleWhen
-                  checkEnabled="false">
-               <iterate>
-                  <or>
-                     <and>
-                        <instanceof
-                              value="gov.redhawk.frontend.TunerStatus">
-                        </instanceof>
-                        <test
-                              property="gov.redhawk.frontend.hasAllocationID">
-                        </test>
-                     </and>
-                     <and>
-                        <instanceof
-                              value="gov.redhawk.frontend.TunerContainer">
-                        </instanceof>
-                     </and>
-                  </or>
+                  <and>
+                     <instanceof
+                           value="gov.redhawk.frontend.TunerContainer">
+                     </instanceof>
+                     <test
+                           property="gov.redhawk.frontend.hasAllocatedTuners">
+                     </test>
+                  </and>
                </iterate>
             </visibleWhen>
          </command>

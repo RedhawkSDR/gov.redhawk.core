@@ -11,7 +11,10 @@
  */
 package gov.redhawk.frontend.ui;
 
+import gov.redhawk.frontend.ListenerAllocation;
+import gov.redhawk.frontend.TunerContainer;
 import gov.redhawk.frontend.TunerStatus;
+import gov.redhawk.frontend.UnallocatedTunerContainer;
 import gov.redhawk.sca.ui.ScaUiPlugin;
 import gov.redhawk.sca.ui.filters.AdvancedPropertiesExtensibleFilter;
 
@@ -67,6 +70,15 @@ public class FrontEndUIActivator extends AbstractUIPlugin {
 				@Override
 				public boolean select(Object toTest) {
 					if (toTest instanceof TunerStatus) {
+						return false;
+					}
+					if (toTest instanceof ListenerAllocation) {
+						return false;
+					}
+					if (toTest instanceof TunerContainer) {
+						return false;
+					}
+					if (toTest instanceof UnallocatedTunerContainer) {
 						return false;
 					}
 					return true;

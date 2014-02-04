@@ -6,14 +6,13 @@ package gov.redhawk.frontend.provider;
 import gov.redhawk.frontend.FrontendPackage;
 import gov.redhawk.frontend.ListenerAllocation;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
 import org.eclipse.emf.common.notify.AdapterFactory;
 import org.eclipse.emf.common.notify.Notification;
-
 import org.eclipse.emf.common.util.ResourceLocator;
-
 import org.eclipse.emf.edit.provider.ComposeableAdapterFactory;
 import org.eclipse.emf.edit.provider.IEditingDomainItemProvider;
 import org.eclipse.emf.edit.provider.IItemColorProvider;
@@ -193,5 +192,13 @@ public class ListenerAllocationItemProvider
   {
     return FrontendEditPlugin.INSTANCE;
   }
+  
+  @Override
+	public Collection< ? > getElements(Object object) {
+	  List<String[]> elements = new ArrayList<String[]>();
+	  elements.add(new String[] {"Listener ID", ((ListenerAllocation)object).getListenerID()});
+	  elements.add(new String[] {"Existing Tuner ID", ((ListenerAllocation)object).getTunerStatus().getAllocationID()});
+	  return elements;
+	}
 
 }

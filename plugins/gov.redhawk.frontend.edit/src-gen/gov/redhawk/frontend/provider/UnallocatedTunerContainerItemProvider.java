@@ -3,15 +3,15 @@
 package gov.redhawk.frontend.provider;
 
 import gov.redhawk.frontend.FrontendPackage;
-import gov.redhawk.frontend.TunerStatus;
 import gov.redhawk.frontend.UnallocatedTunerContainer;
+import gov.redhawk.frontend.edit.utils.TunerUtils;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
 import org.eclipse.emf.common.notify.AdapterFactory;
 import org.eclipse.emf.common.notify.Notification;
-import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.ResourceLocator;
 import org.eclipse.emf.edit.provider.ComposeableAdapterFactory;
 import org.eclipse.emf.edit.provider.IEditingDomainItemProvider;
@@ -112,15 +112,7 @@ public class UnallocatedTunerContainerItemProvider extends ItemProviderAdapter i
 		UnallocatedTunerContainer container = (UnallocatedTunerContainer) object;
 
 		// Get a count of how many tuners are unallocated
-		int unallocatedCount = 0;
-		EList<TunerStatus> tuners = container.getTunerContainer().getTunerStatus();
-		for (TunerStatus tuner : tuners) {
-			if (tuner.getTunerType().equals(container.getTunerType())) {
-				if (tuner.getAllocationID() == null || tuner.getAllocationID().equals("")) {
-					unallocatedCount++;
-				}
-			}
-		}
+		int unallocatedCount = TunerUtils.countTuners(container);
 
 		String label = container.getTunerType();
 		return label == null || label.length() == 0 ? getString("_UI_UnallocatedTunerContainer_type") : "Unallocated " + label + ": " + unallocatedCount
@@ -169,4 +161,11 @@ public class UnallocatedTunerContainerItemProvider extends ItemProviderAdapter i
 		return FrontendEditPlugin.INSTANCE;
 	}
 
+	@Override
+	public Collection< ? > getElements(Object object) {
+		List<String[]> elements = new ArrayList<String[]>();
+		UnallocatedTunerContainer container = (UnallocatedTunerContainer) object;
+		elements.add(new String[] {"Unallocated " + container.getTunerType(), TunerUtils.countTuners(container) + " available"});
+		return elements;
+	}
 }
