@@ -252,9 +252,9 @@ public class FrontendSection extends AbstractPropertySection {
 	}
 	
 	public void setInput(IWorkbenchPart part, ISelection selection) {
+		super.setInput(part, selection);
 		inputPart = part;
 		if (page == null) {
-			super.setInput(part, selection);
 			return;
 		}
 		if (selection instanceof StructuredSelection) {
@@ -264,14 +264,8 @@ public class FrontendSection extends AbstractPropertySection {
 				viewer.setInput(tuner);
 				theInput = tuner;
 				getToolbar().remove(allocateAction.getId());
-				if (getToolbar().find(deallocateAction.getId()) == null) {
-					getToolbar().add(deallocateAction);
-				}
-				if (getToolbar().find(plotAction.getId()) == null) {
-					getToolbar().add(plotAction);
-				}
-				getToolbar().update(false);
-				return;
+				addToToolbar(deallocateAction);
+				addToToolbar(plotAction);
 			}
 			if (sel.getFirstElement() instanceof ListenerAllocation) {
 				ListenerAllocation tuner = (ListenerAllocation) sel.getFirstElement();
@@ -279,25 +273,15 @@ public class FrontendSection extends AbstractPropertySection {
 				theInput = tuner;
 				getToolbar().remove(allocateAction.getId());
 				getToolbar().remove(plotAction.getId());
-				if (getToolbar().find(deallocateAction.getId()) == null) {
-					getToolbar().add(deallocateAction);
-				}
-				getToolbar().update(false);
-				return;
+				addToToolbar(deallocateAction);
 			}
 			if (sel.getFirstElement() instanceof TunerContainer) {
 				TunerContainer tuner = (TunerContainer) sel.getFirstElement();
 				viewer.setInput(tuner);
 				theInput = tuner;
 				getToolbar().remove(plotAction.getId());
-				if (getToolbar().find(allocateAction.getId()) == null) {
-					getToolbar().add(allocateAction);
-				}
-				if (getToolbar().find(deallocateAction.getId()) == null) {
-					getToolbar().add(deallocateAction);
-				}
-				getToolbar().update(false);
-				return;
+				addToToolbar(allocateAction);
+				addToToolbar(deallocateAction);
 			}
 			if (sel.getFirstElement() instanceof UnallocatedTunerContainer) {
 				UnallocatedTunerContainer tuner = (UnallocatedTunerContainer) sel.getFirstElement();
@@ -305,18 +289,10 @@ public class FrontendSection extends AbstractPropertySection {
 				theInput = tuner;
 				getToolbar().remove(deallocateAction.getId());
 				getToolbar().remove(plotAction.getId());
-				if (getToolbar().find(allocateAction.getId()) == null) {
-					getToolbar().add(allocateAction);
-				}
-				getToolbar().update(false);
-				return;
+				addToToolbar(allocateAction);
 			}
+			getToolbar().update(false);
 		}
-		getToolbar().remove(allocateAction.getId());
-		getToolbar().remove(deallocateAction.getId());
-		getToolbar().remove(plotAction.getId());
-		getToolbar().update(false);
-		super.setInput(part, selection);
 	}
 	
 	public EObject getInput() {
@@ -327,12 +303,34 @@ public class FrontendSection extends AbstractPropertySection {
 		return inputPart;
 	}
 	
-	@Override
-	public void dispose() {
+	public void unsetPageSelection() {
+		page.selectionChanged(inputPart, StructuredSelection.EMPTY);
+		setInput(null, null);
+	}
+	
+	private void hideAllToolbarButtons() {
 		getToolbar().remove(allocateAction.getId());
 		getToolbar().remove(deallocateAction.getId());
 		getToolbar().remove(plotAction.getId());
 		getToolbar().update(false);
+	}
+	
+	private void addToToolbar(IAction action) {
+		if (getToolbar().find(action.getId()) == null) {
+			getToolbar().add(action);
+		}
+	}
+	
+	@Override
+	public void dispose() {
+		hideAllToolbarButtons();
 		super.dispose();
 	}
+	
+	@Override
+	public void aboutToBeHidden() {
+		hideAllToolbarButtons();
+		super.aboutToBeHidden();
+	}
+	
 }

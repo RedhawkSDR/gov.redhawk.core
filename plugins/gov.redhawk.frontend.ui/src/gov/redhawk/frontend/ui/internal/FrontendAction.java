@@ -16,7 +16,6 @@ import gov.redhawk.frontend.ui.internal.section.FrontendSection;
 import org.eclipse.core.commands.Command;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.common.CommandException;
-import org.eclipse.core.commands.common.NotDefinedException;
 import org.eclipse.core.expressions.IEvaluationContext;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.jface.action.Action;
@@ -36,7 +35,6 @@ public class FrontendAction extends Action {
 	private String actionName;
 	private String actionId;
 	private String commandId;
-	private Command command;
 	private ImageDescriptor imageDescriptor;
 	
 	public FrontendAction(FrontendSection theSection, String theActionName, String theActionId, String theCommandId, String iconPath) {
@@ -67,6 +65,7 @@ public class FrontendAction extends Action {
 		final ICommandService commandService = (ICommandService) section.getInputPart()
 				.getSite()
 				.getService(ICommandService.class);
+		Command command = null;
 		if (commandService != null) {
 			command = commandService.getCommand(commandId);
 		}
@@ -82,6 +81,7 @@ public class FrontendAction extends Action {
 		final ExecutionEvent evt;
 		evt = handlerService.createExecutionEvent(command, null);
 		((IEvaluationContext) evt.getApplicationContext()).addVariable(ISources.ACTIVE_CURRENT_SELECTION_NAME, selection);
+		((IEvaluationContext) evt.getApplicationContext()).addVariable("gov.redhawk.frontend.propertySection", section);
 		try {
 			command.executeWithChecks(evt);
 		} catch (CommandException e) {
