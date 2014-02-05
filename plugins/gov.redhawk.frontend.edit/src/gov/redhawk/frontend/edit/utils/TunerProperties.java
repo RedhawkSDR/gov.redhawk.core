@@ -141,7 +141,7 @@ public enum TunerProperties {
 		}
 
 		/**
-		 * Initialized model convenience properties
+		 * Updates model convenience properties
 		 * @param tuner
 		 * @param simple
 		 */
@@ -171,6 +171,9 @@ public enum TunerProperties {
 			} else if (simple.getId().equals(TUNER_TYPE.getId())) {
 				tuner.setTunerType(simple.getValue().toString());
 			}
+			
+			// Updates model simple object
+			updateValue(tuner, simple);
 		}
 
 		/**
@@ -199,6 +202,14 @@ public enum TunerProperties {
 					});
 					setValue(wrapper.getTuner(), wrapper.getSimple());
 					break;
+				}
+			}
+		}
+		
+		public static void updateValue(final TunerStatus tuner, final ScaSimpleProperty newValue) {
+			for (ScaSimpleProperty simple : tuner.getSimples()) {
+				if (simple.getId().equals(newValue.getId())) {
+					simple.setValue(newValue.getValue());
 				}
 			}
 		}

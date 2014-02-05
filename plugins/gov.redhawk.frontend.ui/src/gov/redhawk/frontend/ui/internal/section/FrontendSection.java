@@ -89,7 +89,6 @@ public class FrontendSection extends AbstractPropertySection {
 		FrontendItemProviderAdapterFactory adapterFactory = new FrontendItemProviderAdapterFactory();
 
 		viewer.setContentProvider(new AdapterFactoryContentProvider(adapterFactory));
-		//		viewer.setLabelProvider(new FrontEndLabelProvider());
 
 		allocateAction = new FrontendAction(this, "Allocate...", "gov.redhawk.frontend.actions.allocate", 
 			"gov.redhawk.frontend.commands.allocate", "icons/allocate.gif");
