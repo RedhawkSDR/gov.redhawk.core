@@ -72,6 +72,10 @@ public class DeallocateHandler extends AbstractHandler implements IHandler {
 		Object obj = selection.getFirstElement();
 		if (obj instanceof TunerStatus) {
 			TunerStatus tuner = (TunerStatus) obj;
+			if (tuner.getTunerContainer() == null) {
+				// already deallocated, probably still in a pinned properties view
+				return null;
+			}
 			deallocateTuner(tuner, event);
 		}
 		if (obj instanceof TunerContainer) {
@@ -85,6 +89,10 @@ public class DeallocateHandler extends AbstractHandler implements IHandler {
 		}
 		if (obj instanceof ListenerAllocation) {
 			final ListenerAllocation listener = (ListenerAllocation) obj;
+			if (listener.getTunerStatus() == null) {
+				// already deallocated, probably still in a pinned properties view
+				return null;
+			}
 			final ScaDevice< ? > device = listener.getTunerStatus().getTunerContainer().getModelDevice().getScaDevice();
 			final DataType[] props = new DataType[1];
 			DataType dt = new DataType();

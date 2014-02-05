@@ -14,6 +14,7 @@ package gov.redhawk.frontend.ui.internal;
 import gov.redhawk.frontend.ListenerAllocation;
 import gov.redhawk.frontend.TunerStatus;
 import gov.redhawk.frontend.edit.utils.TunerPropertyWrapper;
+import gov.redhawk.frontend.edit.utils.TunerUtils;
 import gov.redhawk.frontend.provider.FrontendItemProviderAdapterFactory;
 import gov.redhawk.model.sca.IDisposable;
 import gov.redhawk.sca.ui.ITooltipProvider;
@@ -145,15 +146,7 @@ public class FrontEndLabelProvider extends ScaModelAdapterFactoryLabelProvider i
 	@Override
 	public String getToolTipText(Object element) {
 		if (element instanceof TunerStatus) {
-			TunerStatus tuner = (TunerStatus) element;
-			String allocID = tuner.getAllocationID();
-			if (!(allocID == null || allocID.isEmpty())) {
-				int index = allocID.indexOf(",");
-				if (index > -1) {
-					allocID = allocID.substring(0, index);
-				}
-				return allocID;
-			}
+			return TunerUtils.getControlId((TunerStatus) element);
 		}
 		if (element instanceof ListenerAllocation) {
 			return ((ListenerAllocation) element).getListenerID();

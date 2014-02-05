@@ -5,6 +5,7 @@ package gov.redhawk.frontend.provider;
 
 import gov.redhawk.frontend.FrontendPackage;
 import gov.redhawk.frontend.ListenerAllocation;
+import gov.redhawk.frontend.edit.utils.TunerUtils;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -197,7 +198,7 @@ public class ListenerAllocationItemProvider
 	public Collection< ? > getElements(Object object) {
 	  List<String[]> elements = new ArrayList<String[]>();
 	  elements.add(new String[] {"Listener ID", ((ListenerAllocation)object).getListenerID()});
-	  elements.add(new String[] {"Existing Tuner ID", ((ListenerAllocation)object).getTunerStatus().getAllocationID()});
+	  elements.add(new String[] {"Existing Tuner ID", TunerUtils.getControlId(((ListenerAllocation)object).getTunerStatus())});
 	  return elements;
 	}
 

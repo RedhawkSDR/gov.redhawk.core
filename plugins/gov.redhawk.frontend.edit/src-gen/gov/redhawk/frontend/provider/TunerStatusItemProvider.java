@@ -6,10 +6,13 @@ import gov.redhawk.frontend.FrontendFactory;
 import gov.redhawk.frontend.FrontendPackage;
 import gov.redhawk.frontend.TunerStatus;
 import gov.redhawk.frontend.edit.utils.TunerPropertyWrapper;
+import gov.redhawk.frontend.edit.utils.TunerUtils;
 import gov.redhawk.model.sca.ScaSimpleProperty;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+
 import org.eclipse.emf.common.notify.AdapterFactory;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.util.ResourceLocator;
@@ -516,13 +519,9 @@ public class TunerStatusItemProvider extends ItemProviderAdapter implements IEdi
 	public String getText(Object object) {
 		if (object instanceof TunerStatus) {
 			TunerStatus tuner = (TunerStatus) object;
-			String allocationID = tuner.getAllocationID();
+			String allocationID = TunerUtils.getControlId(tuner);
 			if (allocationID != null) {
-				int index = allocationID.indexOf(",");
-				if (index > -1) {
-					allocationID = allocationID.substring(0, index);
-				}
-				index = allocationID.indexOf(":");
+				int index = allocationID.indexOf(":");
 				if (index > -1) {
 					allocationID = allocationID.substring(0, index);
 				}

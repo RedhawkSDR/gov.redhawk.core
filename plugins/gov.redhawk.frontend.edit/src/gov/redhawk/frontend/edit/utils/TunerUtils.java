@@ -169,4 +169,15 @@ public enum TunerUtils {
 		return count;
 	}
 	
+	public static String getControlId(TunerStatus tuner) {
+		String id = tuner.getAllocationID();
+		if (id == null) {
+			return null;
+		}
+		int index = id.indexOf(",");
+		if (index > -1) {
+			id = id.substring(0, index);
+		}
+		return id;
+	}
 }
