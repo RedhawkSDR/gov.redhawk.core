@@ -48,7 +48,6 @@ public class ListenerAllocationWizardPage extends WizardPage {
 	private static final String TARGET_ID_MISSING = "Please enter an existing Allocation ID.";
 
 
-	private Control targetIdText;
 	private Text targetAllocText;
 	private String targetId;	
 
@@ -119,14 +118,11 @@ public class ListenerAllocationWizardPage extends WizardPage {
 			if ("".equals(s)) {
 				return ValidationStatus.error(ALLOC_ID_MISSING);
 			}
-			if (s.contains(":")) {
-				return ValidationStatus.error(ALLOC_ID_CONTINS_COLON_ERR_MSG);
-			}
 			if (s.contains(",")) {
 				return ValidationStatus.error(ALLOC_ID_CONTINS_COMMA_ERR_MSG);
 			}
 			return ValidationStatus.OK_STATUS;
-		} else if (control == targetIdText) {
+		} else if (control == targetAllocText) {
 			if ("".equals(s)) {
 				return ValidationStatus.error(TARGET_ID_MISSING);
 			}
@@ -160,22 +156,24 @@ public class ListenerAllocationWizardPage extends WizardPage {
 		UpdateValueStrategy allocIdStrategy = new UpdateValueStrategy() {
 			@Override
 			public Object convert(Object value) {
-				return (String) value + ":" + uuid.toString();
+				return (String) value;
 			}
 		};
 		allocIdStrategy.setAfterGetValidator(new TargetableValidator(allocIdText));
 		ControlDecorationSupport.create(context.bindValue(WidgetProperties.text(SWT.Modify).observe(allocIdText),
 				SCAObservables.observeSimpleProperty(listenerAllocationStruct.getSimple(ListenerAllocationProperties.LISTENER_ALLOCATION_ID.getId())),
 				allocIdStrategy,
-				null), SWT.TOP | SWT.LEFT);
-		allocIdText.setText(getUsername());
+				null),
+				SWT.TOP | SWT.LEFT);
+		allocIdText.setText(getUsername() + ":" + uuid.toString());
 		allocIdText.addFocusListener(new TargetableFocusListener(allocIdText));
 
 		//Target Allocation ID
 		ControlDecorationSupport.create(context.bindValue(WidgetProperties.text(SWT.Modify).observe(targetAllocText),
 				SCAObservables.observeSimpleProperty(listenerAllocationStruct.getSimple(ListenerAllocationProperties.EXISTING_ALLOCATION_ID.getId())),
 				null,
-				null), SWT.TOP | SWT.LEFT);
+				null),
+				SWT.TOP | SWT.LEFT);
 		targetAllocText.setText(targetId);
 	}
 
@@ -223,7 +221,7 @@ public class ListenerAllocationWizardPage extends WizardPage {
 			simple.setValue(targetAllocText.getText());
 			break;
 		case LISTENER_ALLOCATION_ID:
-			simple.setValue(allocIdText.getText() + ":" + uuid.toString());
+			simple.setValue(allocIdText.getText());
 			break;
 		default:
 		}
