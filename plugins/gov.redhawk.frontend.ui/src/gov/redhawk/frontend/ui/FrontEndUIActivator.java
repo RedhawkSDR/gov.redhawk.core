@@ -45,10 +45,10 @@ public class FrontEndUIActivator extends AbstractUIPlugin {
 	public static List<String> supportedTunerTypes = new ArrayList<String>(Arrays.asList(
 			new String[] {
 				FRONTEND.TUNER_TYPE_RX_DIGITIZER.value
-//				,FRONTEND.TUNER_TYPE_CHANNELIZER.value
-//				,FRONTEND.TUNER_TYPE_DDC.value
-//				,FRONTEND.TUNER_TYPE_RX.value
-//				,FRONTEND.TUNER_TYPE_RX_DIGITIZER_CHANNELIZER.value
+				,FRONTEND.TUNER_TYPE_CHANNELIZER.value
+				,FRONTEND.TUNER_TYPE_DDC.value
+				,FRONTEND.TUNER_TYPE_RX.value
+				,FRONTEND.TUNER_TYPE_RX_DIGITIZER_CHANNELIZER.value
 				}
 		));
 	
