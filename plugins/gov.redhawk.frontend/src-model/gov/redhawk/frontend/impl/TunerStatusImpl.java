@@ -9,7 +9,11 @@ import gov.redhawk.frontend.TunerContainer;
 import gov.redhawk.frontend.TunerStatus;
 import gov.redhawk.model.sca.ScaSimpleProperty;
 import gov.redhawk.model.sca.ScaStructProperty;
+
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
+
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
 import org.eclipse.emf.common.util.EList;
@@ -535,16 +539,38 @@ public class TunerStatusImpl extends MinimalEObjectImpl.Container implements Tun
     if (eNotificationRequired()) {
       eNotify(new ENotificationImpl(this, Notification.SET, FrontendPackage.TUNER_STATUS__ALLOCATION_ID, oldAllocationID, allocationID));
       getTunerContainer().eNotify(new ENotificationImpl((TunerContainerImpl) getTunerContainer(), Notification.MOVE, FrontendPackage.TUNER_CONTAINER__TUNER_STATUS, Notification.NO_INDEX, Notification.NO_INDEX));
-      getListenerAllocations().clear();
+
+      List<String> allocationIDs = new ArrayList<String>();
       if (allocationID != null && allocationID.indexOf(",") > -1) {
     	  String[] allocations = allocationID.split(",");
     	  for (int index = 1; index < allocations.length; ++index) {
     		  if (allocations[index].length() > 0) {
-	    		  ListenerAllocation listener = FrontendFactory.eINSTANCE.createListenerAllocation();
-	    		  listener.setListenerID(allocations[index]);
-	    		  listenerAllocations.add(listener);
+    			  allocationIDs.add(allocations[index]);
     		  }
     	  }
+      }
+      // Following logic is necessary to prevent NPE if one listener is deallocated 
+      //	while another exists in Properties view
+      List<ListenerAllocation> listenersToRemove = new ArrayList<ListenerAllocation>();
+      for (ListenerAllocation listener: getListenerAllocations()){
+    	  if (!allocationIDs.contains(listener.getListenerID())) {
+    		  // Not in list anymore, mark it for removal
+    		  listenersToRemove.add(listener);
+    	  }
+    	  else {
+    		  // Check it off the list of IDs to add
+    		  allocationIDs.remove(listener.getListenerID());
+    	  }
+      }
+      // Remove listeners that have been marked
+      for (ListenerAllocation listener: listenersToRemove) {
+    	  getListenerAllocations().remove(listener);
+      }
+      // Add listeners that weren't already there
+      for (String allocationID: allocationIDs) {
+		  ListenerAllocation listener = FrontendFactory.eINSTANCE.createListenerAllocation();
+		  listener.setListenerID(allocationID);
+		  listenerAllocations.add(listener);
       }
     }
   }

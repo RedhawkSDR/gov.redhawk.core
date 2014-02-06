@@ -162,7 +162,8 @@ public enum TunerUtils {
 		}
 		int count = 0;
 		for (TunerStatus tuner: container.getTunerContainer().getTunerStatus()) {
-			if (tuner.getAllocationID() == null || tuner.getAllocationID().isEmpty()) {
+			if (tuner.getTunerType().equals(container.getTunerType()) && 
+					(tuner.getAllocationID() == null || tuner.getAllocationID().isEmpty())) {
 				++count;
 			}
 		}

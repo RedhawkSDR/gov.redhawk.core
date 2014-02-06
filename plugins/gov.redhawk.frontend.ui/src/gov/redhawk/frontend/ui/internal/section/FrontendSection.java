@@ -258,39 +258,9 @@ public class FrontendSection extends AbstractPropertySection {
 		}
 		if (selection instanceof StructuredSelection) {
 			StructuredSelection sel = (StructuredSelection) selection;
-			if (sel.getFirstElement() instanceof TunerStatus) {
-				TunerStatus tuner = (TunerStatus) sel.getFirstElement();
-				viewer.setInput(tuner);
-				theInput = tuner;
-				getToolbar().remove(allocateAction.getId());
-				addToToolbar(deallocateAction);
-				addToToolbar(plotAction);
-			}
-			if (sel.getFirstElement() instanceof ListenerAllocation) {
-				ListenerAllocation tuner = (ListenerAllocation) sel.getFirstElement();
-				viewer.setInput(tuner);
-				theInput = tuner;
-				getToolbar().remove(allocateAction.getId());
-				getToolbar().remove(plotAction.getId());
-				addToToolbar(deallocateAction);
-			}
-			if (sel.getFirstElement() instanceof TunerContainer) {
-				TunerContainer tuner = (TunerContainer) sel.getFirstElement();
-				viewer.setInput(tuner);
-				theInput = tuner;
-				getToolbar().remove(plotAction.getId());
-				addToToolbar(allocateAction);
-				addToToolbar(deallocateAction);
-			}
-			if (sel.getFirstElement() instanceof UnallocatedTunerContainer) {
-				UnallocatedTunerContainer tuner = (UnallocatedTunerContainer) sel.getFirstElement();
-				viewer.setInput(tuner);
-				theInput = tuner;
-				getToolbar().remove(deallocateAction.getId());
-				getToolbar().remove(plotAction.getId());
-				addToToolbar(allocateAction);
-			}
-			getToolbar().update(false);
+			theInput = (EObject) sel.getFirstElement();
+			viewer.setInput(theInput);
+			showRightToolbarButtons(theInput);
 		}
 	}
 	
@@ -320,6 +290,30 @@ public class FrontendSection extends AbstractPropertySection {
 		}
 	}
 	
+	private void showRightToolbarButtons(Object obj) {
+		if (obj instanceof TunerStatus) {
+			getToolbar().remove(allocateAction.getId());
+			addToToolbar(deallocateAction);
+			addToToolbar(plotAction);
+		}
+		if (obj instanceof ListenerAllocation) {
+			getToolbar().remove(allocateAction.getId());
+			getToolbar().remove(plotAction.getId());
+			addToToolbar(deallocateAction);
+		}
+		if (obj instanceof TunerContainer) {
+			getToolbar().remove(plotAction.getId());
+			addToToolbar(allocateAction);
+			addToToolbar(deallocateAction);
+		}
+		if (obj instanceof UnallocatedTunerContainer) {
+			getToolbar().remove(deallocateAction.getId());
+			getToolbar().remove(plotAction.getId());
+			addToToolbar(allocateAction);
+		}
+		getToolbar().update(false);
+	}
+	
 	@Override
 	public void dispose() {
 		hideAllToolbarButtons();
@@ -332,4 +326,9 @@ public class FrontendSection extends AbstractPropertySection {
 		super.aboutToBeHidden();
 	}
 	
+	@Override
+	public void aboutToBeShown() {
+		showRightToolbarButtons(getInput());
+		super.aboutToBeShown();
+	}
 }
