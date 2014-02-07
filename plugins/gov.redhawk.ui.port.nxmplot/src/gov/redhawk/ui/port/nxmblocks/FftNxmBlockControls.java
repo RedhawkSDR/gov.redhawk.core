@@ -16,11 +16,14 @@ import gov.redhawk.sca.util.ArrayUtil;
 import gov.redhawk.ui.port.nxmblocks.FftNxmBlockSettings.OutputType;
 import gov.redhawk.ui.port.nxmblocks.FftNxmBlockSettings.WindowType;
 
+import org.apache.commons.math.transform.FastFourierTransformer;
 import org.eclipse.core.databinding.Binding;
 import org.eclipse.core.databinding.DataBindingContext;
 import org.eclipse.core.databinding.UpdateValueStrategy;
 import org.eclipse.core.databinding.beans.PojoProperties;
 import org.eclipse.core.databinding.observable.value.IObservableValue;
+import org.eclipse.core.databinding.validation.ValidationStatus;
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jface.databinding.fieldassist.ControlDecorationSupport;
 import org.eclipse.jface.databinding.swt.WidgetProperties;
@@ -43,7 +46,7 @@ import org.eclipse.swt.widgets.Text;
  */
 public class FftNxmBlockControls {
 
-	private static final Object[] FFT_SIZE_COMBO_VALUES = new Object[] { 1024, 2048, 4096, 8192, 16384 };
+	private static final Object[] FFT_SIZE_COMBO_VALUES = new Object[] { 1024, 2048, 4096, 8192, 16384, 32768 };
 	private static final String FFT_SIZE_FIELD_NAME = "Transform Size";
 	private static final String OVERLAP_FIELD_NAME = "Percent Overlap";
 	private static final String NUM_AVERAGES_FIELD_NAME = "Num Averages";
@@ -144,13 +147,13 @@ public class FftNxmBlockControls {
 		IObservableValue fftSizeWidgetValue = WidgetProperties.selection().observe(this.transformSizeField.getCombo());
 		IObservableValue fftSizeModelValue = PojoProperties.value(FftNxmBlockSettings.PROP_TRANSFORM_SIZE).observe(this.settings);
 		UpdateValueStrategy fftSizeTargetToModel = new UpdateValueStrategy();
-		fftSizeTargetToModel.setAfterConvertValidator(new NumberRangeValidator<Integer>(FFT_SIZE_FIELD_NAME, Integer.class, 0, false));
+		fftSizeTargetToModel.setAfterConvertValidator(new FftSizeValidator(FFT_SIZE_FIELD_NAME, 2));
 		bindingValue = dataBindingCtx.bindValue(fftSizeWidgetValue, fftSizeModelValue, fftSizeTargetToModel, null);
 		ControlDecorationSupport.create(bindingValue, SWT.TOP | SWT.LEFT);
 
 		IObservableValue overlapWidgetValue = WidgetProperties.text(SWT.Modify).observe(this.overlapField);
 		IObservableValue overlapModelValue  = PojoProperties.value(FftNxmBlockSettings.PROP_OVERLAP).observe(this.settings);
-		UpdateValueStrategy overlapTargetToModel = new UpdateValueStrategy();		
+		UpdateValueStrategy overlapTargetToModel = new UpdateValueStrategy();
 		overlapTargetToModel.setAfterConvertValidator(new NumberRangeValidator<Integer>(OVERLAP_FIELD_NAME, Integer.class, 0, 100));
 		bindingValue = dataBindingCtx.bindValue(overlapWidgetValue, overlapModelValue, overlapTargetToModel, null);
 		ControlDecorationSupport.create(bindingValue, SWT.TOP | SWT.LEFT);
@@ -180,4 +183,22 @@ public class FftNxmBlockControls {
 		ControlDecorationSupport.create(bindingValue, SWT.TOP | SWT.LEFT);
 	}
 
+	static class FftSizeValidator extends NumberRangeValidator<Integer> {
+		static final int LARGE_SIZE_TO_WARN = 1048576; // 1M
+
+		public FftSizeValidator(String fieldName, Integer minValue) {
+			super(fieldName, Integer.class, minValue, null);
+		}
+
+		@Override
+		protected IStatus validateValueAfter(Integer val) {
+			if (!FastFourierTransformer.isPowerOf2(val)) {
+				return ValidationStatus.warning(getFieldName() + " is not a power of 2 and may be invalid");
+			} else if (val > LARGE_SIZE_TO_WARN) {
+				return ValidationStatus.warning(getFieldName() + " is very large which requires more time to process and display data");
+			}
+			return ValidationStatus.ok();
+		}
+
+	} // end class FftSizeValidator
 }

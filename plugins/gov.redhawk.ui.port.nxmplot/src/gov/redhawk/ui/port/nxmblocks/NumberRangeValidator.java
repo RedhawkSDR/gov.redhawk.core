@@ -44,6 +44,7 @@ class NumberRangeValidator<C extends Comparable<? super C>> implements IValidato
 		this(fieldName, numberClass, true, minValue, inclusiveMin, null, true);
 	}
 
+	/** constructor that allows null and has inclusive min and max values */
 	public NumberRangeValidator(@NonNull String fieldName, @NonNull Class<? extends Number> numberClass, C minValue, C maxValue) {
 		this(fieldName, numberClass, true, minValue, true, maxValue, true);
 	}
@@ -86,7 +87,17 @@ class NumberRangeValidator<C extends Comparable<? super C>> implements IValidato
 					return ValidationStatus.error(fieldName + " must be less than " + maxValue);
 				}
 			}
+			return validateValueAfter(val);
 		}
 		return ValidationStatus.ok(); // or return Status.OK_STATUS; // passed all checks
 	}
+
+	protected IStatus validateValueAfter(C val) {
+		return ValidationStatus.ok();
+	}
+
+	public String getFieldName() {
+		return fieldName;
+	}
+	
 }
