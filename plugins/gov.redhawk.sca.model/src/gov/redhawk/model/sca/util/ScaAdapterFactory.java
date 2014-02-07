@@ -418,7 +418,10 @@ public class ScaAdapterFactory extends AdapterFactoryImpl {
 	 */
 	@Override
 	public Adapter createAdapter(Notifier target) {
-		return modelSwitch.doSwitch((EObject) target);
+		if (target instanceof EObject) {
+			return modelSwitch.doSwitch((EObject) target);
+		}
+		return null;
 	}
 
 	/**
