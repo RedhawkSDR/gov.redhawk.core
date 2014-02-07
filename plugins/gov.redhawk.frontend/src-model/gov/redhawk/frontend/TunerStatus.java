@@ -34,6 +34,7 @@ import org.eclipse.emf.ecore.EObject;
  *   <li>{@link gov.redhawk.frontend.TunerStatus#getReferenceSource <em>Reference Source</em>}</li>
  *   <li>{@link gov.redhawk.frontend.TunerStatus#isDeviceControl <em>Device Control</em>}</li>
  *   <li>{@link gov.redhawk.frontend.TunerStatus#getListenerAllocations <em>Listener Allocations</em>}</li>
+ *   <li>{@link gov.redhawk.frontend.TunerStatus#getPlots <em>Plots</em>}</li>
  * </ul>
  * </p>
  *
@@ -468,5 +469,23 @@ public interface TunerStatus extends EObject
    * @generated
    */
   EList<ListenerAllocation> getListenerAllocations();
+
+  /**
+   * Returns the value of the '<em><b>Plots</b></em>' containment reference list.
+   * The list contents are of type {@link gov.redhawk.frontend.Plot}.
+   * It is bidirectional and its opposite is '{@link gov.redhawk.frontend.Plot#getTunerStatus <em>Tuner Status</em>}'.
+   * <!-- begin-user-doc -->
+   * <p>
+   * If the meaning of the '<em>Plots</em>' containment reference list isn't clear,
+   * there really should be more of a description here...
+   * </p>
+   * <!-- end-user-doc -->
+   * @return the value of the '<em>Plots</em>' containment reference list.
+   * @see gov.redhawk.frontend.FrontendPackage#getTunerStatus_Plots()
+   * @see gov.redhawk.frontend.Plot#getTunerStatus
+   * @model opposite="tunerStatus" containment="true"
+   * @generated
+   */
+  EList<Plot> getPlots();
 
 } // TunerStatus

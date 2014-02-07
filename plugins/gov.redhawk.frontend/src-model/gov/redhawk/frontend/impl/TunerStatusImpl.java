@@ -5,6 +5,7 @@ package gov.redhawk.frontend.impl;
 import gov.redhawk.frontend.FrontendFactory;
 import gov.redhawk.frontend.FrontendPackage;
 import gov.redhawk.frontend.ListenerAllocation;
+import gov.redhawk.frontend.Plot;
 import gov.redhawk.frontend.TunerContainer;
 import gov.redhawk.frontend.TunerStatus;
 import gov.redhawk.model.sca.ScaSimpleProperty;
@@ -50,6 +51,7 @@ import org.eclipse.emf.ecore.util.InternalEList;
  *   <li>{@link gov.redhawk.frontend.impl.TunerStatusImpl#getReferenceSource <em>Reference Source</em>}</li>
  *   <li>{@link gov.redhawk.frontend.impl.TunerStatusImpl#isDeviceControl <em>Device Control</em>}</li>
  *   <li>{@link gov.redhawk.frontend.impl.TunerStatusImpl#getListenerAllocations <em>Listener Allocations</em>}</li>
+ *   <li>{@link gov.redhawk.frontend.impl.TunerStatusImpl#getPlots <em>Plots</em>}</li>
  * </ul>
  * </p>
  *
@@ -356,6 +358,16 @@ public class TunerStatusImpl extends MinimalEObjectImpl.Container implements Tun
    * @ordered
    */
   protected EList<ListenerAllocation> listenerAllocations;
+
+  /**
+   * The cached value of the '{@link #getPlots() <em>Plots</em>}' containment reference list.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see #getPlots()
+   * @generated
+   * @ordered
+   */
+  protected EList<Plot> plots;
 
   /**
    * <!-- begin-user-doc -->
@@ -824,6 +836,20 @@ public class TunerStatusImpl extends MinimalEObjectImpl.Container implements Tun
    * <!-- end-user-doc -->
    * @generated
    */
+  public EList<Plot> getPlots()
+  {
+    if (plots == null)
+    {
+      plots = new EObjectContainmentWithInverseEList<Plot>(Plot.class, this, FrontendPackage.TUNER_STATUS__PLOTS, FrontendPackage.PLOT__TUNER_STATUS);
+    }
+    return plots;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
   @SuppressWarnings("unchecked")
   @Override
   public NotificationChain eInverseAdd(InternalEObject otherEnd, int featureID, NotificationChain msgs)
@@ -836,6 +862,8 @@ public class TunerStatusImpl extends MinimalEObjectImpl.Container implements Tun
         return basicSetTunerContainer((TunerContainer)otherEnd, msgs);
       case FrontendPackage.TUNER_STATUS__LISTENER_ALLOCATIONS:
         return ((InternalEList<InternalEObject>)(InternalEList<?>)getListenerAllocations()).basicAdd(otherEnd, msgs);
+      case FrontendPackage.TUNER_STATUS__PLOTS:
+        return ((InternalEList<InternalEObject>)(InternalEList<?>)getPlots()).basicAdd(otherEnd, msgs);
     }
     return super.eInverseAdd(otherEnd, featureID, msgs);
   }
@@ -854,6 +882,8 @@ public class TunerStatusImpl extends MinimalEObjectImpl.Container implements Tun
         return basicSetTunerContainer(null, msgs);
       case FrontendPackage.TUNER_STATUS__LISTENER_ALLOCATIONS:
         return ((InternalEList<?>)getListenerAllocations()).basicRemove(otherEnd, msgs);
+      case FrontendPackage.TUNER_STATUS__PLOTS:
+        return ((InternalEList<?>)getPlots()).basicRemove(otherEnd, msgs);
     }
     return super.eInverseRemove(otherEnd, featureID, msgs);
   }
@@ -919,6 +949,8 @@ public class TunerStatusImpl extends MinimalEObjectImpl.Container implements Tun
         return isDeviceControl();
       case FrontendPackage.TUNER_STATUS__LISTENER_ALLOCATIONS:
         return getListenerAllocations();
+      case FrontendPackage.TUNER_STATUS__PLOTS:
+        return getPlots();
     }
     return super.eGet(featureID, resolve, coreType);
   }
@@ -987,6 +1019,10 @@ public class TunerStatusImpl extends MinimalEObjectImpl.Container implements Tun
         getListenerAllocations().clear();
         getListenerAllocations().addAll((Collection<? extends ListenerAllocation>)newValue);
         return;
+      case FrontendPackage.TUNER_STATUS__PLOTS:
+        getPlots().clear();
+        getPlots().addAll((Collection<? extends Plot>)newValue);
+        return;
     }
     super.eSet(featureID, newValue);
   }
@@ -1052,6 +1088,9 @@ public class TunerStatusImpl extends MinimalEObjectImpl.Container implements Tun
       case FrontendPackage.TUNER_STATUS__LISTENER_ALLOCATIONS:
         getListenerAllocations().clear();
         return;
+      case FrontendPackage.TUNER_STATUS__PLOTS:
+        getPlots().clear();
+        return;
     }
     super.eUnset(featureID);
   }
@@ -1100,6 +1139,8 @@ public class TunerStatusImpl extends MinimalEObjectImpl.Container implements Tun
         return deviceControl != DEVICE_CONTROL_EDEFAULT;
       case FrontendPackage.TUNER_STATUS__LISTENER_ALLOCATIONS:
         return listenerAllocations != null && !listenerAllocations.isEmpty();
+      case FrontendPackage.TUNER_STATUS__PLOTS:
+        return plots != null && !plots.isEmpty();
     }
     return super.eIsSet(featureID);
   }

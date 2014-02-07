@@ -95,6 +95,11 @@ public class FrontendAdapterFactory extends AdapterFactoryImpl
         return createTunerStatusAdapter();
       }
       @Override
+      public Adapter casePlot(Plot object)
+      {
+        return createPlotAdapter();
+      }
+      @Override
       public Adapter caseListenerAllocation(ListenerAllocation object)
       {
         return createListenerAllocationAdapter();
@@ -177,6 +182,21 @@ public class FrontendAdapterFactory extends AdapterFactoryImpl
    * @generated
    */
   public Adapter createTunerStatusAdapter()
+  {
+    return null;
+  }
+
+  /**
+   * Creates a new adapter for an object of class '{@link gov.redhawk.frontend.Plot <em>Plot</em>}'.
+   * <!-- begin-user-doc -->
+   * This default implementation returns null so that we can easily ignore cases;
+   * it's useful to ignore a case when inheritance will catch all the cases anyway.
+   * <!-- end-user-doc -->
+   * @return the new adapter.
+   * @see gov.redhawk.frontend.Plot
+   * @generated
+   */
+  public Adapter createPlotAdapter()
   {
     return null;
   }

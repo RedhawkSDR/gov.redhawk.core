@@ -3,6 +3,7 @@ package gov.redhawk.frontend.ui.wizard;
 import gov.redhawk.frontend.TunerContainer;
 import gov.redhawk.frontend.TunerStatus;
 import gov.redhawk.frontend.ui.FrontEndUIActivator.ALLOCATION_MODE;
+import gov.redhawk.model.sca.RefreshDepth;
 import gov.redhawk.model.sca.ScaDevice;
 import gov.redhawk.model.sca.ScaStructProperty;
 
@@ -39,7 +40,7 @@ public class TunerAllocationDetailWizard extends Wizard {
 	}
 
 	public TunerAllocationDetailWizard(TunerStatus[] tuners) {
-		this.tuners  = tuners;
+		this.tuners = tuners;
 	}
 
 	@Override
@@ -49,7 +50,7 @@ public class TunerAllocationDetailWizard extends Wizard {
 			addPage(allocateRxDigitizerPage);
 			this.selectedTuners.add(tuner);
 			tunerMap.put(tuner, allocateRxDigitizerPage);
-			pageMap.put(allocateRxDigitizerPage,  tuner);
+			pageMap.put(allocateRxDigitizerPage, tuner);
 		} else if (tuners != null && tuners.length > 0) {
 			allocatemultipleRxDigitizersPage = new AllocateMultipleRxDigitizerWizardPage(tuners);
 			addPage(allocatemultipleRxDigitizersPage);
@@ -57,7 +58,7 @@ public class TunerAllocationDetailWizard extends Wizard {
 				AllocateRxDigitizerWizardPage page = new AllocateRxDigitizerWizardPage(tuner);
 				addPage(page);
 				tunerMap.put(tuner, page);
-				pageMap.put(page,  tuner);
+				pageMap.put(page, tuner);
 			}
 		}
 	}
@@ -144,7 +145,7 @@ public class TunerAllocationDetailWizard extends Wizard {
 
 	private TunerStatus getTunerById(int index) {
 		for (TunerStatus t : tuners) {
-			if (Integer.parseInt(t.getTunerID()) == index ) {
+			if (Integer.parseInt(t.getTunerID()) == index) {
 				return t;
 			}
 		}
@@ -176,9 +177,8 @@ public class TunerAllocationDetailWizard extends Wizard {
 		if (allocatemultipleRxDigitizersPage != null) {
 			canFinish = allocatemultipleRxDigitizersPage.isPageComplete();
 		}
-		return  canFinish && selectedTunerPagesComplete();
+		return canFinish && selectedTunerPagesComplete();
 	}
-
 
 	private boolean selectedTunerPagesComplete() {
 		for (TunerStatus tuner : selectedTuners) {
@@ -192,7 +192,7 @@ public class TunerAllocationDetailWizard extends Wizard {
 
 	@Override
 	public boolean performFinish() {
-		ScaDevice<?> device = selectedTuners.get(0).getTunerContainer().getModelDevice().getScaDevice();
+		ScaDevice< ? > device = selectedTuners.get(0).getTunerContainer().getModelDevice().getScaDevice();
 		boolean result = true;
 		StringBuilder sb = new StringBuilder();
 		for (TunerStatus tuner : selectedTuners) {
@@ -200,35 +200,41 @@ public class TunerAllocationDetailWizard extends Wizard {
 			String delim = "";
 			try {
 				if (!device.allocateCapacity(props)) {
-					sb.append(delim + "The allocation requested for Tuner " + tuner.getTunerID() + 
-							" was not accepted because resources matching all aspects of the request were not available.");
+					sb.append(delim + "The allocation requested for Tuner " + tuner.getTunerID()
+						+ " was not accepted because resources matching all aspects of the request were not available.");
 					delim = "\n\n";
 					result = false;
 				}
+				device.refresh(null, RefreshDepth.SELF);
 			} catch (InvalidCapacity e) {
-				sb.append(delim + "The Allocation Request for Tuner " + tuner.getTunerID() + 
-						" was invalid. Please contact your System Administrator. Message: " + e.getMessage());
+				sb.append(delim + "The Allocation Request for Tuner " + tuner.getTunerID()
+					+ " was invalid. Please contact your System Administrator. Message: " + e.getMessage());
 				delim = "\n\n";
 				result = false;
 			} catch (InvalidState e) {
-				sb.append(delim + "The Allocation Request for Tuner " + tuner.getTunerID() + " failed because the" +
-						" device is in an invalid state. Message: " + e.getMessage());
+				sb.append(delim + "The Allocation Request for Tuner " + tuner.getTunerID() + " failed because the"
+					+ " device is in an invalid state. Message: " + e.getMessage());
 				delim = "\n\n";
 				result = false;
 			} catch (InsufficientCapacity e) {
-				sb.append(delim + "The Allocation Request for Tuner " + tuner.getTunerID() + " failed because the" +
-						" device has insufficient capacity. Message: " + e.getMessage());
+				sb.append(delim + "The Allocation Request for Tuner " + tuner.getTunerID() + " failed because the"
+					+ " device has insufficient capacity. Message: " + e.getMessage());
 				delim = "\n\n";
 				result = false;
 			}
 			//TODO check with whomever added this. I don't think the wizard should be setting these values. They should be set by the device
-//			if (result && props[0].id.equals("FRONTEND::listener_allocation")) {
-//				ListenerAllocation listener = FrontendFactory.eINSTANCE.createListenerAllocation();
-//				AllocateRxDigitizerWizardPage page = ((AllocateRxDigitizerWizardPage) tunerMap.get(tuner));
-//				listener.setListenerID(page.getListenerAllocationStruct().getSimple(
-//					ListenerAllocationProperties.LISTENER_ALLOCATION_ID.getId()).getValue().toString());
-//				tuner.getListenerAllocations().add(listener);
-//			}
+			//			if (result && props[0].id.equals("FRONTEND::listener_allocation")) {
+			//				ListenerAllocation listener = FrontendFactory.eINSTANCE.createListenerAllocation();
+			//				AllocateRxDigitizerWizardPage page = ((AllocateRxDigitizerWizardPage) tunerMap.get(tuner));
+			//				listener.setListenerID(page.getListenerAllocationStruct().getSimple(
+			//					ListenerAllocationProperties.LISTENER_ALLOCATION_ID.getId()).getValue().toString());
+			//				tuner.getListenerAllocations().add(listener);
+			//			}
+			catch (InterruptedException e) {
+				sb.append(delim + "The Allocation Request for Tuner " + tuner.getTunerID() + " was interrupted. Message: " + e.getMessage());
+				delim = "\n\n";
+				result = false;
+			}
 		}
 		if (!result) {
 			MessageDialog.openError(getShell(), "The Allocation was not successful", sb.toString());

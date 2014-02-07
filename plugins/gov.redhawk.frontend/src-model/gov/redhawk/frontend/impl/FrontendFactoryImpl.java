@@ -3,18 +3,14 @@
 package gov.redhawk.frontend.impl;
 
 import gov.redhawk.frontend.*;
-
 import gov.redhawk.model.sca.ScaDevice;
 import gov.redhawk.model.sca.ScaSimpleProperty;
 import gov.redhawk.model.sca.ScaStructProperty;
-
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EDataType;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
-
 import org.eclipse.emf.ecore.impl.EFactoryImpl;
-
 import org.eclipse.emf.ecore.plugin.EcorePlugin;
 
 /**
@@ -73,6 +69,7 @@ public class FrontendFactoryImpl extends EFactoryImpl implements FrontendFactory
       case FrontendPackage.TUNER_CONTAINER: return createTunerContainer();
       case FrontendPackage.UNALLOCATED_TUNER_CONTAINER: return createUnallocatedTunerContainer();
       case FrontendPackage.TUNER_STATUS: return createTunerStatus();
+      case FrontendPackage.PLOT: return createPlot();
       case FrontendPackage.LISTENER_ALLOCATION: return createListenerAllocation();
       default:
         throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier");
@@ -95,6 +92,8 @@ public class FrontendFactoryImpl extends EFactoryImpl implements FrontendFactory
         return createTunerStatusStructFromString(eDataType, initialValue);
       case FrontendPackage.SCA_SIMPLE_PROPERTY:
         return createScaSimplePropertyFromString(eDataType, initialValue);
+      case FrontendPackage.PLOT_OBJECT:
+        return createPlotObjectFromString(eDataType, initialValue);
       default:
         throw new IllegalArgumentException("The datatype '" + eDataType.getName() + "' is not a valid classifier");
     }
@@ -116,6 +115,8 @@ public class FrontendFactoryImpl extends EFactoryImpl implements FrontendFactory
         return convertTunerStatusStructToString(eDataType, instanceValue);
       case FrontendPackage.SCA_SIMPLE_PROPERTY:
         return convertScaSimplePropertyToString(eDataType, instanceValue);
+      case FrontendPackage.PLOT_OBJECT:
+        return convertPlotObjectToString(eDataType, instanceValue);
       default:
         throw new IllegalArgumentException("The datatype '" + eDataType.getName() + "' is not a valid classifier");
     }
@@ -163,6 +164,17 @@ public class FrontendFactoryImpl extends EFactoryImpl implements FrontendFactory
   {
     TunerStatusImpl tunerStatus = new TunerStatusImpl();
     return tunerStatus;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public Plot createPlot()
+  {
+    PlotImpl plot = new PlotImpl();
+    return plot;
   }
 
   /**
@@ -296,6 +308,46 @@ public class FrontendFactoryImpl extends EFactoryImpl implements FrontendFactory
   public String convertScaSimplePropertyToString(EDataType eDataType, Object instanceValue)
   {
     return convertScaSimpleProperty((ScaSimpleProperty)instanceValue);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public Object createPlotObject(String literal)
+  {
+    return super.createFromString(FrontendPackage.Literals.PLOT_OBJECT, literal);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public Object createPlotObjectFromString(EDataType eDataType, String initialValue)
+  {
+    return createPlotObject(initialValue);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public String convertPlotObject(Object instanceValue)
+  {
+    return super.convertToString(FrontendPackage.Literals.PLOT_OBJECT, instanceValue);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public String convertPlotObjectToString(EDataType eDataType, Object instanceValue)
+  {
+    return convertPlotObject((Object)instanceValue);
   }
 
   /**

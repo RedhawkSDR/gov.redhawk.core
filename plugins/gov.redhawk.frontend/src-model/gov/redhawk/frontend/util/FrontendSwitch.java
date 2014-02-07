@@ -100,6 +100,13 @@ public class FrontendSwitch<T> extends Switch<T>
         if (result == null) result = defaultCase(theEObject);
         return result;
       }
+      case FrontendPackage.PLOT:
+      {
+        Plot plot = (Plot)theEObject;
+        T result = casePlot(plot);
+        if (result == null) result = defaultCase(theEObject);
+        return result;
+      }
       case FrontendPackage.LISTENER_ALLOCATION:
       {
         ListenerAllocation listenerAllocation = (ListenerAllocation)theEObject;
@@ -171,6 +178,22 @@ public class FrontendSwitch<T> extends Switch<T>
    * @generated
    */
   public T caseTunerStatus(TunerStatus object)
+  {
+    return null;
+  }
+
+  /**
+   * Returns the result of interpreting the object as an instance of '<em>Plot</em>'.
+   * <!-- begin-user-doc -->
+   * This implementation returns null;
+   * returning a non-null result will terminate the switch.
+   * <!-- end-user-doc -->
+   * @param object the target of the switch.
+   * @return the result of interpreting the object as an instance of '<em>Plot</em>'.
+   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+   * @generated
+   */
+  public T casePlot(Plot object)
   {
     return null;
   }

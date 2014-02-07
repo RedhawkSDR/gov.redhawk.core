@@ -11,12 +11,17 @@
  */
 package gov.redhawk.ui.port.nxmplot;
 
+import org.eclipse.ui.services.IDisposable;
+
 
 /**
  * @since 4.4
  */
-public interface IPlotView {
+public interface IPlotView extends IDisposable {
 
+	/** the ID of the plot view extension */
+	public static final String ID = "gov.redhawk.ui.port.nxmplot.PlotView2";
+	
 	public PlotPageBook2 getPlotPageBook();
 
 	public void setPartName(String partName);

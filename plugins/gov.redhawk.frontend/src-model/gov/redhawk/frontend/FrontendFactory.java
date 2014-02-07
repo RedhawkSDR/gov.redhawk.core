@@ -5,7 +5,6 @@ package gov.redhawk.frontend;
 import gov.redhawk.model.sca.ScaDevice;
 import gov.redhawk.model.sca.ScaSimpleProperty;
 import gov.redhawk.model.sca.ScaStructProperty;
-
 import org.eclipse.emf.ecore.EFactory;
 
 /**
@@ -61,6 +60,15 @@ public interface FrontendFactory extends EFactory
    * @generated
    */
   TunerStatus createTunerStatus();
+
+  /**
+   * Returns a new object of class '<em>Plot</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>Plot</em>'.
+   * @generated
+   */
+  Plot createPlot();
 
   /**
    * Returns a new object of class '<em>Listener Allocation</em>'.
@@ -130,6 +138,26 @@ public interface FrontendFactory extends EFactory
    * @generated
    */
   String convertScaSimpleProperty(ScaSimpleProperty instanceValue);
+
+  /**
+   * Returns an instance of data type '<em>Plot Object</em>' corresponding the given literal.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @param literal a literal of the data type.
+   * @return a new instance value of the data type.
+   * @generated
+   */
+  Object createPlotObject(String literal);
+
+  /**
+   * Returns a literal representation of an instance of data type '<em>Plot Object</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @param instanceValue an instance value of the data type.
+   * @return a literal representation of the instance value.
+   * @generated
+   */
+  String convertPlotObject(Object instanceValue);
 
   /**
    * Returns the package supported by this factory.

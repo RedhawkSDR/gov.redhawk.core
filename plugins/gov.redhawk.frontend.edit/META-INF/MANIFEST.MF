@@ -18,5 +18,7 @@ Require-Bundle: org.eclipse.core.runtime,
  gov.redhawk.sca.model;bundle-version="19.0.0",
  idl.frontend;bundle-version="1.0.0",
  org.eclipse.swt,
- org.eclipse.ui.ide
+ org.eclipse.ui.ide,
+ gov.redhawk.ui.port.nxmplot,
+ org.eclipse.ui.workbench
 Bundle-ActivationPolicy: lazy

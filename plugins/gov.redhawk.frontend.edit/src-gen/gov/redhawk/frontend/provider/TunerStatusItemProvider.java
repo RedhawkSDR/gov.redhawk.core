@@ -8,11 +8,9 @@ import gov.redhawk.frontend.TunerStatus;
 import gov.redhawk.frontend.edit.utils.TunerPropertyWrapper;
 import gov.redhawk.frontend.edit.utils.TunerUtils;
 import gov.redhawk.model.sca.ScaSimpleProperty;
-
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-
 import org.eclipse.emf.common.notify.AdapterFactory;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.util.ResourceLocator;
@@ -442,7 +440,6 @@ public class TunerStatusItemProvider extends ItemProviderAdapter implements IEdi
    * {@link org.eclipse.emf.edit.command.MoveCommand} in {@link #createCommand}.
    * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-   * @generated
    */
 	@Override
 	public Collection<? extends EStructuralFeature> getChildrenFeatures(Object object) {
@@ -450,6 +447,9 @@ public class TunerStatusItemProvider extends ItemProviderAdapter implements IEdi
     {
       super.getChildrenFeatures(object);
       childrenFeatures.add(FrontendPackage.Literals.TUNER_STATUS__LISTENER_ALLOCATIONS);
+      
+      // We do not want plots showing up in the ScaExplorer View
+      // childrenFeatures.add(FrontendPackage.Literals.TUNER_STATUS__PLOTS);
     }
     return childrenFeatures;
   }
@@ -583,6 +583,11 @@ public class TunerStatusItemProvider extends ItemProviderAdapter implements IEdi
       (createChildParameter
         (FrontendPackage.Literals.TUNER_STATUS__LISTENER_ALLOCATIONS,
          FrontendFactory.eINSTANCE.createListenerAllocation()));
+
+    newChildDescriptors.add
+      (createChildParameter
+        (FrontendPackage.Literals.TUNER_STATUS__PLOTS,
+         FrontendFactory.eINSTANCE.createPlot()));
   }
 
 	/**

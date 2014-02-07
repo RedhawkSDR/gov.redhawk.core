@@ -3,6 +3,7 @@ package gov.redhawk.frontend.ui.wizard;
 import gov.redhawk.frontend.TunerStatus;
 import gov.redhawk.frontend.ui.FrontEndUIActivator;
 import gov.redhawk.frontend.ui.FrontEndUIActivator.ALLOCATION_MODE;
+import gov.redhawk.model.sca.RefreshDepth;
 import gov.redhawk.model.sca.ScaDevice;
 import gov.redhawk.model.sca.ScaStructProperty;
 
@@ -79,6 +80,7 @@ public class TunerAllocationWizard extends Wizard {
 						} else {
 							result[0] = true;
 						}
+						device.refresh(null, RefreshDepth.SELF);
 					} catch (InvalidCapacity e) {
 						sb.append(delim + "The allocation request was invalid. Message: " + e.msg);
 						delim = "\n\n";

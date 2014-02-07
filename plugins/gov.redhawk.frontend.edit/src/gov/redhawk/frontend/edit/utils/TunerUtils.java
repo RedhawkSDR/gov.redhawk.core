@@ -3,6 +3,7 @@ package gov.redhawk.frontend.edit.utils;
 import gov.redhawk.frontend.FrontendFactory;
 import gov.redhawk.frontend.ListenerAllocation;
 import gov.redhawk.frontend.ModelDevice;
+import gov.redhawk.frontend.Plot;
 import gov.redhawk.frontend.TunerContainer;
 import gov.redhawk.frontend.TunerStatus;
 import gov.redhawk.frontend.UnallocatedTunerContainer;
@@ -12,17 +13,22 @@ import gov.redhawk.model.sca.ScaFactory;
 import gov.redhawk.model.sca.ScaSimpleProperty;
 import gov.redhawk.model.sca.ScaStructProperty;
 import gov.redhawk.model.sca.ScaStructSequenceProperty;
+import gov.redhawk.ui.port.nxmplot.IPlotView;
 
 import java.util.List;
 
 import mil.jpeojtrs.sca.scd.Interface;
 
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.impl.AdapterImpl;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.util.EContentAdapter;
+import org.eclipse.ui.progress.UIJob;
 
 import FRONTEND.DigitalTunerHelper;
 
@@ -77,7 +83,7 @@ public enum TunerUtils {
 						s.setValue(simple.getValue());
 						tuner.getSimples().add(s);
 					}
-					
+
 					for (ScaSimpleProperty simple : tuner.getSimples()) {
 						TunerStatusAllocationProperties.setValue(tuner, simple);
 					}
@@ -103,7 +109,7 @@ public enum TunerUtils {
 						allocation.setListenerID(allocations[index]);
 						tuner.getListenerAllocations().add(allocation);
 					}
-					
+
 					// Create Unallocated Tuner Container
 					for (UnallocatedTunerContainer unallocatedContainer : container.getUnallocatedContainer()) {
 						if (unallocatedContainer.getTunerType().equals(tuner.getTunerType())) {
@@ -114,7 +120,7 @@ public enum TunerUtils {
 					UnallocatedTunerContainer unallocatedContainer = FrontendFactory.eINSTANCE.createUnallocatedTunerContainer();
 					unallocatedContainer.setTunerType(tuner.getTunerType());
 					container.getUnallocatedContainer().add(unallocatedContainer);
-					
+
 				} // end tuner creation loop
 
 				return container;
@@ -127,10 +133,40 @@ public enum TunerUtils {
 
 		Adapter adapter = new AdapterImpl() {
 			@Override
-			public void notifyChanged(Notification notification) {
+			public void notifyChanged(final Notification notification) {
 				super.notifyChanged(notification);
 				TunerStatusAllocationProperties.updateDeviceValue(tuner, notification);
+
+				// Closes a plot view when an associated listener is deallocated
+				switch (notification.getEventType()) {
+				case Notification.REMOVE:
+
+					UIJob removePlotJob = new UIJob("Disposing of Plot") {
+
+						@Override
+						public IStatus runInUIThread(IProgressMonitor monitor) {
+							if (notification.getOldValue() instanceof ListenerAllocation) {
+								ListenerAllocation listener = (ListenerAllocation) notification.getOldValue();
+								for (int i = 0; i < tuner.getPlots().size(); i++) {
+									Plot plotObject = tuner.getPlots().get(i);
+									if (plotObject.getListenerID().equals(listener.getListenerID())) {
+										if (plotObject.getPlotView() instanceof IPlotView) {
+											IPlotView plot = (IPlotView) plotObject.getPlotView();
+											plot.getPlotPageBook().dispose();
+										}
+										tuner.getPlots().remove(i);
+									}
+								}
+							}
+							return Status.OK_STATUS;
+						}
+					};
+					removePlotJob.setUser(true);
+					removePlotJob.schedule();
+					break;
+				}
 			}
+
 		};
 		tuner.eAdapters().add(adapter);
 
@@ -152,7 +188,7 @@ public enum TunerUtils {
 		};
 		struct.eAdapters().add(structAdapter);
 	}
-	
+
 	public static int countTuners(UnallocatedTunerContainer container) {
 		if (container == null || container.getTunerContainer() == null) {
 			return -1;
@@ -162,14 +198,13 @@ public enum TunerUtils {
 		}
 		int count = 0;
 		for (TunerStatus tuner: container.getTunerContainer().getTunerStatus()) {
-			if (tuner.getTunerType().equals(container.getTunerType()) && 
-					(tuner.getAllocationID() == null || tuner.getAllocationID().isEmpty())) {
+			if (tuner.getTunerType().equals(container.getTunerType()) && (tuner.getAllocationID() == null || tuner.getAllocationID().isEmpty())) {
 				++count;
 			}
 		}
 		return count;
 	}
-	
+
 	public static String getControlId(TunerStatus tuner) {
 		String id = tuner.getAllocationID();
 		if (id == null) {

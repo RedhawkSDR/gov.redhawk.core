@@ -18,6 +18,7 @@ import gov.redhawk.frontend.edit.utils.TunerProperties.ListenerAllocationPropert
 import gov.redhawk.frontend.edit.utils.TunerProperties.TunerAllocationProperties;
 import gov.redhawk.frontend.ui.FrontEndUIActivator;
 import gov.redhawk.frontend.ui.internal.section.FrontendSection;
+import gov.redhawk.model.sca.RefreshDepth;
 import gov.redhawk.model.sca.ScaDevice;
 import gov.redhawk.model.sca.ScaFactory;
 import gov.redhawk.model.sca.ScaSimpleProperty;
@@ -105,20 +106,26 @@ public class DeallocateHandler extends AbstractHandler implements IHandler {
 				@Override
 				protected IStatus run(IProgressMonitor monitor) {
 					try {
-						monitor.beginTask("Deallocating",IProgressMonitor.UNKNOWN);
+						monitor.beginTask("Deallocating", IProgressMonitor.UNKNOWN);
 						device.deallocateCapacity(props);
+						device.refresh(null, RefreshDepth.SELF);
 					} catch (InvalidCapacity e) {
-						return new Status(Status.ERROR, FrontEndUIActivator.PLUGIN_ID, "Invalide Capacity in control deallocation: " + e.msg, e);
+						return new Status(Status.ERROR, FrontEndUIActivator.PLUGIN_ID, "Invalid Capacity in control deallocation: " + e.msg, e);
 					} catch (InvalidState e) {
-						return new Status(Status.ERROR, FrontEndUIActivator.PLUGIN_ID, "Invalide State in control deallocation: " + e.msg, e);
+						return new Status(Status.ERROR, FrontEndUIActivator.PLUGIN_ID, "Invalid State in control deallocation: " + e.msg, e);
+					} catch (InterruptedException e) {
+						return new Status(Status.ERROR, FrontEndUIActivator.PLUGIN_ID, "Interrupted Exception during control deallocation", e);
 					}
 					
-					ScaModelCommand.execute(listener.getTunerStatus(), new ScaModelCommand() {
-						@Override
-						public void execute() {
-							listener.getTunerStatus().getListenerAllocations().remove(listener);
-						}
-					});
+					final TunerStatus tunerStatus = listener.getTunerStatus();
+					if (tunerStatus != null) {
+						ScaModelCommand.execute(tunerStatus, new ScaModelCommand() {
+							@Override
+							public void execute() {
+								tunerStatus.getListenerAllocations().remove(listener);
+							}
+						});
+					}
 					return Status.OK_STATUS;
 				}
 
@@ -152,12 +159,15 @@ public class DeallocateHandler extends AbstractHandler implements IHandler {
 			@Override
 			protected IStatus run(IProgressMonitor monitor) {
 				try {
-					monitor.beginTask("Deallocating",IProgressMonitor.UNKNOWN);
+					monitor.beginTask("Deallocating", IProgressMonitor.UNKNOWN);
 					device.deallocateCapacity(props);
+					device.refresh(null, RefreshDepth.SELF);
 				} catch (InvalidCapacity e) {
-					return new Status(Status.ERROR, FrontEndUIActivator.PLUGIN_ID, "Invalide Capacity in control deallocation: " + e.msg, e);
+					return new Status(Status.ERROR, FrontEndUIActivator.PLUGIN_ID, "Invalid Capacity in control deallocation: " + e.msg, e);
 				} catch (InvalidState e) {
-					return new Status(Status.ERROR, FrontEndUIActivator.PLUGIN_ID, "Invalide State in control deallocation: " + e.msg, e);
+					return new Status(Status.ERROR, FrontEndUIActivator.PLUGIN_ID, "Invalid State in control deallocation: " + e.msg, e);
+				} catch (InterruptedException e) {
+					return new Status(Status.ERROR, FrontEndUIActivator.PLUGIN_ID, "Interrupted Exception during control deallocation", e);
 				}
 				return Status.OK_STATUS;
 			}
@@ -165,9 +175,9 @@ public class DeallocateHandler extends AbstractHandler implements IHandler {
 		};
 		job.setUser(true);
 		job.schedule();
-		
+
 	}
-	
+
 	private DataType[] createAllocationProperties(TunerStatus tuner) {
 		this.tuner = tuner;
 		List<DataType> props = new ArrayList<DataType>();

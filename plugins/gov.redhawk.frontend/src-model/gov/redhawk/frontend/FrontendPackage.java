@@ -378,13 +378,22 @@ public interface FrontendPackage extends EPackage
   int TUNER_STATUS__LISTENER_ALLOCATIONS = 16;
 
   /**
+   * The feature id for the '<em><b>Plots</b></em>' containment reference list.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int TUNER_STATUS__PLOTS = 17;
+
+  /**
    * The number of structural features of the '<em>Tuner Status</em>' class.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
    * @ordered
    */
-  int TUNER_STATUS_FEATURE_COUNT = 17;
+  int TUNER_STATUS_FEATURE_COUNT = 18;
 
   /**
    * The number of operations of the '<em>Tuner Status</em>' class.
@@ -396,6 +405,61 @@ public interface FrontendPackage extends EPackage
   int TUNER_STATUS_OPERATION_COUNT = 0;
 
   /**
+   * The meta object id for the '{@link gov.redhawk.frontend.impl.PlotImpl <em>Plot</em>}' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see gov.redhawk.frontend.impl.PlotImpl
+   * @see gov.redhawk.frontend.impl.FrontendPackageImpl#getPlot()
+   * @generated
+   */
+  int PLOT = 4;
+
+  /**
+   * The feature id for the '<em><b>Tuner Status</b></em>' container reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int PLOT__TUNER_STATUS = 0;
+
+  /**
+   * The feature id for the '<em><b>Listener ID</b></em>' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int PLOT__LISTENER_ID = 1;
+
+  /**
+   * The feature id for the '<em><b>Plot View</b></em>' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int PLOT__PLOT_VIEW = 2;
+
+  /**
+   * The number of structural features of the '<em>Plot</em>' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int PLOT_FEATURE_COUNT = 3;
+
+  /**
+   * The number of operations of the '<em>Plot</em>' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int PLOT_OPERATION_COUNT = 0;
+
+  /**
    * The meta object id for the '{@link gov.redhawk.frontend.impl.ListenerAllocationImpl <em>Listener Allocation</em>}' class.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
@@ -403,7 +467,7 @@ public interface FrontendPackage extends EPackage
    * @see gov.redhawk.frontend.impl.FrontendPackageImpl#getListenerAllocation()
    * @generated
    */
-  int LISTENER_ALLOCATION = 4;
+  int LISTENER_ALLOCATION = 5;
 
   /**
    * The feature id for the '<em><b>Tuner Status</b></em>' container reference.
@@ -449,7 +513,7 @@ public interface FrontendPackage extends EPackage
    * @see gov.redhawk.frontend.impl.FrontendPackageImpl#getScaDevice()
    * @generated
    */
-  int SCA_DEVICE = 5;
+  int SCA_DEVICE = 6;
 
   /**
    * The meta object id for the '<em>Tuner Status Struct</em>' data type.
@@ -459,7 +523,7 @@ public interface FrontendPackage extends EPackage
    * @see gov.redhawk.frontend.impl.FrontendPackageImpl#getTunerStatusStruct()
    * @generated
    */
-  int TUNER_STATUS_STRUCT = 6;
+  int TUNER_STATUS_STRUCT = 7;
 
   /**
    * The meta object id for the '<em>Sca Simple Property</em>' data type.
@@ -469,8 +533,18 @@ public interface FrontendPackage extends EPackage
    * @see gov.redhawk.frontend.impl.FrontendPackageImpl#getScaSimpleProperty()
    * @generated
    */
-  int SCA_SIMPLE_PROPERTY = 7;
+  int SCA_SIMPLE_PROPERTY = 8;
 
+
+  /**
+   * The meta object id for the '<em>Plot Object</em>' data type.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see java.lang.Object
+   * @see gov.redhawk.frontend.impl.FrontendPackageImpl#getPlotObject()
+   * @generated
+   */
+  int PLOT_OBJECT = 9;
 
   /**
    * Returns the meta object for class '{@link gov.redhawk.frontend.ModelDevice <em>Model Device</em>}'.
@@ -777,6 +851,60 @@ public interface FrontendPackage extends EPackage
   EReference getTunerStatus_ListenerAllocations();
 
   /**
+   * Returns the meta object for the containment reference list '{@link gov.redhawk.frontend.TunerStatus#getPlots <em>Plots</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the containment reference list '<em>Plots</em>'.
+   * @see gov.redhawk.frontend.TunerStatus#getPlots()
+   * @see #getTunerStatus()
+   * @generated
+   */
+  EReference getTunerStatus_Plots();
+
+  /**
+   * Returns the meta object for class '{@link gov.redhawk.frontend.Plot <em>Plot</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for class '<em>Plot</em>'.
+   * @see gov.redhawk.frontend.Plot
+   * @generated
+   */
+  EClass getPlot();
+
+  /**
+   * Returns the meta object for the container reference '{@link gov.redhawk.frontend.Plot#getTunerStatus <em>Tuner Status</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the container reference '<em>Tuner Status</em>'.
+   * @see gov.redhawk.frontend.Plot#getTunerStatus()
+   * @see #getPlot()
+   * @generated
+   */
+  EReference getPlot_TunerStatus();
+
+  /**
+   * Returns the meta object for the attribute '{@link gov.redhawk.frontend.Plot#getListenerID <em>Listener ID</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the attribute '<em>Listener ID</em>'.
+   * @see gov.redhawk.frontend.Plot#getListenerID()
+   * @see #getPlot()
+   * @generated
+   */
+  EAttribute getPlot_ListenerID();
+
+  /**
+   * Returns the meta object for the attribute '{@link gov.redhawk.frontend.Plot#getPlotView <em>Plot View</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the attribute '<em>Plot View</em>'.
+   * @see gov.redhawk.frontend.Plot#getPlotView()
+   * @see #getPlot()
+   * @generated
+   */
+  EAttribute getPlot_PlotView();
+
+  /**
    * Returns the meta object for class '{@link gov.redhawk.frontend.ListenerAllocation <em>Listener Allocation</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
@@ -840,6 +968,17 @@ public interface FrontendPackage extends EPackage
    * @generated
    */
   EDataType getScaSimpleProperty();
+
+  /**
+   * Returns the meta object for data type '{@link java.lang.Object <em>Plot Object</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for data type '<em>Plot Object</em>'.
+   * @see java.lang.Object
+   * @model instanceClass="java.lang.Object"
+   * @generated
+   */
+  EDataType getPlotObject();
 
   /**
    * Returns the factory that creates the instances of the model.
@@ -1098,6 +1237,48 @@ public interface FrontendPackage extends EPackage
     EReference TUNER_STATUS__LISTENER_ALLOCATIONS = eINSTANCE.getTunerStatus_ListenerAllocations();
 
     /**
+     * The meta object literal for the '<em><b>Plots</b></em>' containment reference list feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EReference TUNER_STATUS__PLOTS = eINSTANCE.getTunerStatus_Plots();
+
+    /**
+     * The meta object literal for the '{@link gov.redhawk.frontend.impl.PlotImpl <em>Plot</em>}' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see gov.redhawk.frontend.impl.PlotImpl
+     * @see gov.redhawk.frontend.impl.FrontendPackageImpl#getPlot()
+     * @generated
+     */
+    EClass PLOT = eINSTANCE.getPlot();
+
+    /**
+     * The meta object literal for the '<em><b>Tuner Status</b></em>' container reference feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EReference PLOT__TUNER_STATUS = eINSTANCE.getPlot_TunerStatus();
+
+    /**
+     * The meta object literal for the '<em><b>Listener ID</b></em>' attribute feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EAttribute PLOT__LISTENER_ID = eINSTANCE.getPlot_ListenerID();
+
+    /**
+     * The meta object literal for the '<em><b>Plot View</b></em>' attribute feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EAttribute PLOT__PLOT_VIEW = eINSTANCE.getPlot_PlotView();
+
+    /**
      * The meta object literal for the '{@link gov.redhawk.frontend.impl.ListenerAllocationImpl <em>Listener Allocation</em>}' class.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -1152,6 +1333,16 @@ public interface FrontendPackage extends EPackage
      * @generated
      */
     EDataType SCA_SIMPLE_PROPERTY = eINSTANCE.getScaSimpleProperty();
+
+    /**
+     * The meta object literal for the '<em>Plot Object</em>' data type.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see java.lang.Object
+     * @see gov.redhawk.frontend.impl.FrontendPackageImpl#getPlotObject()
+     * @generated
+     */
+    EDataType PLOT_OBJECT = eINSTANCE.getPlotObject();
 
   }
 

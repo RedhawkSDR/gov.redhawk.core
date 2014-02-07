@@ -13,6 +13,7 @@ import gov.redhawk.model.sca.ScaSimpleProperty
 type ScaDevice wraps ScaDevice < ? >
 type TunerStatusStruct wraps ScaStructProperty
 type ScaSimpleProperty wraps ScaSimpleProperty
+type PlotObject wraps Object
 
 class ModelDevice {
 	contains TunerContainer tunerContainer opposite modelDevice
@@ -55,6 +56,13 @@ class TunerStatus {
 	// Tuner Allocation Properties
 	boolean deviceControl
 	contains ListenerAllocation[] listenerAllocations opposite tunerStatus
+	contains Plot[] plots opposite tunerStatus
+}
+
+class Plot {
+	container TunerStatus tunerStatus opposite plots
+	String listenerID
+	PlotObject plotView
 }
 
 class ListenerAllocation {

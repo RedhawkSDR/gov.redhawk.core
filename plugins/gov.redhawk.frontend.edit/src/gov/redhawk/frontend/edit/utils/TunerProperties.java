@@ -271,13 +271,13 @@ public enum TunerProperties {
 							} else if (feiAttr.equals(ENABLED.getFeiAttribute())) {
 								digitalTunerPort.setTunerEnable(finalAllocationId, tuner.isEnabled());
 							} else if (feiAttr.equals(GAIN.getFeiAttribute())) {
-								// TODO Gain is double in model and documentation, but float in API
+								// Gain is double in model and documentation, but float in API
 								float gain = Float.parseFloat(String.valueOf(tuner.getGain()));
 								digitalTunerPort.setTunerGain(finalAllocationId, gain);
 							} else if (feiAttr.equals(SAMPLE_RATE.getFeiAttribute())) {
 								digitalTunerPort.setTunerOutputSampleRate(finalAllocationId, tuner.getSampleRate());
 							} else if (feiAttr.equals(REFERENCE_SOURCE.getFeiAttribute())) {
-								// TODO Reference Source is long in model and documentation, but int in API
+								// Reference Source is long in model and documentation, but int in API
 								int referenceSource = Integer.parseInt(String.valueOf(tuner.getReferenceSource()));
 								digitalTunerPort.setTunerReferenceSource(finalAllocationId, referenceSource);
 							}

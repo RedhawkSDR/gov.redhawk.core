@@ -181,6 +181,31 @@ public class FrontendItemProviderAdapterFactory extends FrontendAdapterFactory i
   }
 
   /**
+   * This keeps track of the one adapter used for all {@link gov.redhawk.frontend.Plot} instances.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  protected PlotItemProvider plotItemProvider;
+
+  /**
+   * This creates an adapter for a {@link gov.redhawk.frontend.Plot}.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public Adapter createPlotAdapter()
+  {
+    if (plotItemProvider == null)
+    {
+      plotItemProvider = new PlotItemProvider(this);
+    }
+
+    return plotItemProvider;
+  }
+
+  /**
    * This keeps track of the one adapter used for all {@link gov.redhawk.frontend.ListenerAllocation} instances.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
@@ -320,6 +345,7 @@ public class FrontendItemProviderAdapterFactory extends FrontendAdapterFactory i
     if (tunerContainerItemProvider != null) tunerContainerItemProvider.dispose();
     if (unallocatedTunerContainerItemProvider != null) unallocatedTunerContainerItemProvider.dispose();
     if (tunerStatusItemProvider != null) tunerStatusItemProvider.dispose();
+    if (plotItemProvider != null) plotItemProvider.dispose();
     if (listenerAllocationItemProvider != null) listenerAllocationItemProvider.dispose();
   }
 

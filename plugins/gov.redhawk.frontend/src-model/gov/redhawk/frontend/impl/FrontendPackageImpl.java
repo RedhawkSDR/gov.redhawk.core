@@ -6,21 +6,19 @@ import gov.redhawk.frontend.FrontendFactory;
 import gov.redhawk.frontend.FrontendPackage;
 import gov.redhawk.frontend.ListenerAllocation;
 import gov.redhawk.frontend.ModelDevice;
+import gov.redhawk.frontend.Plot;
 import gov.redhawk.frontend.TunerContainer;
 import gov.redhawk.frontend.TunerStatus;
-
 import gov.redhawk.frontend.UnallocatedTunerContainer;
 import gov.redhawk.model.sca.ScaDevice;
 import gov.redhawk.model.sca.ScaSimpleProperty;
 import gov.redhawk.model.sca.ScaStructProperty;
-
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EDataType;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.EcorePackage;
-
 import org.eclipse.emf.ecore.impl.EPackageImpl;
 
 /**
@@ -64,6 +62,13 @@ public class FrontendPackageImpl extends EPackageImpl implements FrontendPackage
    * <!-- end-user-doc -->
    * @generated
    */
+  private EClass plotEClass = null;
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
   private EClass listenerAllocationEClass = null;
 
   /**
@@ -86,6 +91,13 @@ public class FrontendPackageImpl extends EPackageImpl implements FrontendPackage
    * @generated
    */
   private EDataType scaSimplePropertyEDataType = null;
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  private EDataType plotObjectEDataType = null;
 
   /**
    * Creates an instance of the model <b>Package</b>, registered with
@@ -438,6 +450,56 @@ public class FrontendPackageImpl extends EPackageImpl implements FrontendPackage
    * <!-- end-user-doc -->
    * @generated
    */
+  public EReference getTunerStatus_Plots()
+  {
+    return (EReference)tunerStatusEClass.getEStructuralFeatures().get(17);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EClass getPlot()
+  {
+    return plotEClass;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EReference getPlot_TunerStatus()
+  {
+    return (EReference)plotEClass.getEStructuralFeatures().get(0);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EAttribute getPlot_ListenerID()
+  {
+    return (EAttribute)plotEClass.getEStructuralFeatures().get(1);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EAttribute getPlot_PlotView()
+  {
+    return (EAttribute)plotEClass.getEStructuralFeatures().get(2);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
   public EClass getListenerAllocation()
   {
     return listenerAllocationEClass;
@@ -491,6 +553,16 @@ public class FrontendPackageImpl extends EPackageImpl implements FrontendPackage
   public EDataType getScaSimpleProperty()
   {
     return scaSimplePropertyEDataType;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EDataType getPlotObject()
+  {
+    return plotObjectEDataType;
   }
 
   /**
@@ -554,6 +626,12 @@ public class FrontendPackageImpl extends EPackageImpl implements FrontendPackage
     createEAttribute(tunerStatusEClass, TUNER_STATUS__REFERENCE_SOURCE);
     createEAttribute(tunerStatusEClass, TUNER_STATUS__DEVICE_CONTROL);
     createEReference(tunerStatusEClass, TUNER_STATUS__LISTENER_ALLOCATIONS);
+    createEReference(tunerStatusEClass, TUNER_STATUS__PLOTS);
+
+    plotEClass = createEClass(PLOT);
+    createEReference(plotEClass, PLOT__TUNER_STATUS);
+    createEAttribute(plotEClass, PLOT__LISTENER_ID);
+    createEAttribute(plotEClass, PLOT__PLOT_VIEW);
 
     listenerAllocationEClass = createEClass(LISTENER_ALLOCATION);
     createEReference(listenerAllocationEClass, LISTENER_ALLOCATION__TUNER_STATUS);
@@ -563,6 +641,7 @@ public class FrontendPackageImpl extends EPackageImpl implements FrontendPackage
     scaDeviceEDataType = createEDataType(SCA_DEVICE);
     tunerStatusStructEDataType = createEDataType(TUNER_STATUS_STRUCT);
     scaSimplePropertyEDataType = createEDataType(SCA_SIMPLE_PROPERTY);
+    plotObjectEDataType = createEDataType(PLOT_OBJECT);
   }
 
   /**
@@ -630,6 +709,12 @@ public class FrontendPackageImpl extends EPackageImpl implements FrontendPackage
     initEAttribute(getTunerStatus_ReferenceSource(), theEcorePackage.getELong(), "referenceSource", null, 0, 1, TunerStatus.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEAttribute(getTunerStatus_DeviceControl(), theEcorePackage.getEBoolean(), "deviceControl", null, 0, 1, TunerStatus.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEReference(getTunerStatus_ListenerAllocations(), this.getListenerAllocation(), this.getListenerAllocation_TunerStatus(), "listenerAllocations", null, 0, -1, TunerStatus.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEReference(getTunerStatus_Plots(), this.getPlot(), this.getPlot_TunerStatus(), "plots", null, 0, -1, TunerStatus.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+    initEClass(plotEClass, Plot.class, "Plot", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEReference(getPlot_TunerStatus(), this.getTunerStatus(), this.getTunerStatus_Plots(), "tunerStatus", null, 0, 1, Plot.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEAttribute(getPlot_ListenerID(), theEcorePackage.getEString(), "listenerID", null, 0, 1, Plot.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEAttribute(getPlot_PlotView(), this.getPlotObject(), "plotView", null, 0, 1, Plot.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     initEClass(listenerAllocationEClass, ListenerAllocation.class, "ListenerAllocation", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
     initEReference(getListenerAllocation_TunerStatus(), this.getTunerStatus(), this.getTunerStatus_ListenerAllocations(), "tunerStatus", null, 0, 1, ListenerAllocation.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -639,6 +724,7 @@ public class FrontendPackageImpl extends EPackageImpl implements FrontendPackage
     initEDataType(scaDeviceEDataType, ScaDevice.class, "ScaDevice", IS_SERIALIZABLE, !IS_GENERATED_INSTANCE_CLASS, "gov.redhawk.model.sca.ScaDevice<?>");
     initEDataType(tunerStatusStructEDataType, ScaStructProperty.class, "TunerStatusStruct", IS_SERIALIZABLE, !IS_GENERATED_INSTANCE_CLASS);
     initEDataType(scaSimplePropertyEDataType, ScaSimpleProperty.class, "ScaSimpleProperty", IS_SERIALIZABLE, !IS_GENERATED_INSTANCE_CLASS);
+    initEDataType(plotObjectEDataType, Object.class, "PlotObject", IS_SERIALIZABLE, !IS_GENERATED_INSTANCE_CLASS);
 
     // Create resource
     createResource(eNS_URI);
