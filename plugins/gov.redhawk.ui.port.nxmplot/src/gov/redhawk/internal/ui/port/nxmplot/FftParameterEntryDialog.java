@@ -191,7 +191,7 @@ public class FftParameterEntryDialog extends Dialog {
 
 		final ComboViewer type = new ComboViewer(container, SWT.READ_ONLY);
 		type.getCombo().setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false, 1, 1));
-		type.setContentProvider(new ArrayContentProvider());
+		type.setContentProvider(ArrayContentProvider.getInstance()); // ArrayContentProvider does not store any state, therefore can re-use instances
 		type.setLabelProvider(new LabelProvider());
 		OutputType currentOutputType = this.fftSettings.getOutputType();
 		if (currentOutputType == null) {
@@ -216,7 +216,7 @@ public class FftParameterEntryDialog extends Dialog {
 
 		final ComboViewer window = new ComboViewer(container, SWT.READ_ONLY);
 		window.getCombo().setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false, 1, 1));
-		window.setContentProvider(new ArrayContentProvider());
+		window.setContentProvider(ArrayContentProvider.getInstance()); // ArrayContentProvider does not store any state, therefore can re-use instances
 		window.setLabelProvider(new LabelProvider());
 		window.setInput(FftNxmBlockSettings.WindowType.values());
 		WindowType currentWindowType = this.fftSettings.getWindow();
