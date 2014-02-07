@@ -20,8 +20,10 @@ import gov.redhawk.model.sca.util.RedhawkEvents;
 import gov.redhawk.sca.util.PluginUtil;
 import gov.redhawk.sca.util.SubMonitor;
 import gov.redhawk.ui.port.PortHelper;
+import gov.redhawk.ui.port.nxmblocks.BulkIONxmBlockSettings;
 import gov.redhawk.ui.port.nxmblocks.FftNxmBlockSettings;
 import gov.redhawk.ui.port.nxmblocks.PlotNxmBlockSettings;
+import gov.redhawk.ui.port.nxmblocks.SddsNxmBlockSettings;
 import gov.redhawk.ui.port.nxmplot.IPlotWidgetListener;
 import gov.redhawk.ui.port.nxmplot.PlotActivator;
 import gov.redhawk.ui.port.nxmplot.PlotEvent;
@@ -61,9 +63,17 @@ import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.handlers.HandlerUtil;
 import org.eclipse.ui.statushandlers.StatusManager;
 
-import BULKIO.dataFileHelper;
+import BULKIO.dataCharHelper;
+import BULKIO.dataDoubleHelper;
+import BULKIO.dataFloatHelper;
+import BULKIO.dataLongHelper;
+import BULKIO.dataLongLongHelper;
+import BULKIO.dataOctetHelper;
 import BULKIO.dataSDDSHelper;
-import BULKIO.dataXMLHelper;
+import BULKIO.dataShortHelper;
+import BULKIO.dataUlongHelper;
+import BULKIO.dataUlongLongHelper;
+import BULKIO.dataUshortHelper;
 
 /**
  * @noreference This class is not intended to be referenced by clients
@@ -98,7 +108,25 @@ public class PlotPortHandler extends AbstractHandler {
 
 		// Either fft gets set, or plotWizardSettings and fftNxmBlockSettings get set (below)
 		final PlotWizardSettings plotWizardSettings;
-		final FftNxmBlockSettings fftNxmBlockSettings;
+		final BulkIONxmBlockSettings bulkIOBlockSettings;
+		final SddsNxmBlockSettings sddsBlockSettings;
+		final FftNxmBlockSettings fftBlockSettings;
+		final PlotNxmBlockSettings plotBlockSettings;
+		final String pipeQualifiers = null;
+		
+		boolean containsBulkIOPort = false;
+		boolean containsSDDSPort = false;
+		for (Object obj : elements) {
+			ScaUsesPort port = PluginUtil.adapt(ScaUsesPort.class, obj, true);
+			if (port != null) {
+				String idl = port.getRepid();
+				if (dataSDDSHelper.id().equals(idl)) { // a BULKIO:dataSDDS Port
+					containsSDDSPort = true;
+				} else if (isBulkIOPortSupported(idl)) { // BULKIO data Port
+					containsBulkIOPort = true;
+				}
+			}
+		}
 
 		if (plotTypeStr != null) {
 			//because this evaluates to true, we do not end up using addSource2 method
@@ -110,27 +138,25 @@ public class PlotPortHandler extends AbstractHandler {
 				final FftParameterEntryDialog fftDialog = new FftParameterEntryDialog(HandlerUtil.getActiveShell(event), new FftNxmBlockSettings());
 				final int result = fftDialog.open();
 				if (result == Window.OK) {
-					fftNxmBlockSettings = fftDialog.getFFTSettings();
+					fftBlockSettings = fftDialog.getFFTSettings();
 				} else {
 					return null;
 				}
 			} else {
-				fftNxmBlockSettings = null;
+				fftBlockSettings = null;
 			}
+			if (containsSDDSPort) {
+				sddsBlockSettings = new SddsNxmBlockSettings();
+			} else {
+				sddsBlockSettings = null;
+			}
+			if (containsBulkIOPort) {
+				bulkIOBlockSettings = new BulkIONxmBlockSettings();
+			} else {
+				bulkIOBlockSettings = null;
+			}
+			plotBlockSettings = new PlotNxmBlockSettings();
 		} else { // run advanced Port plot wizard
-			boolean containsBulkIOPort = false;
-			boolean containsSDDSPort = false;
-			for (Object obj : elements) {
-				ScaUsesPort port = PluginUtil.adapt(ScaUsesPort.class, obj, true);
-				if (port != null) {
-					String idl = port.getRepid();
-					if (dataSDDSHelper.id().equals(idl)) { // a BULKIO:dataSDDS Port
-						containsSDDSPort = true;
-					} else if (!dataFileHelper.id().equals(idl) && !dataXMLHelper.id().equals(idl)) { // BULKIO:dataFile and BULIO:dataXML Ports are currently unsupported
-						containsBulkIOPort = true;
-					}
-				}
-			}
 			PlotWizard wizard = new PlotWizard(containsBulkIOPort, containsSDDSPort); // advanced Port Plot wizard
 			WizardDialog dialog = new WizardDialog(HandlerUtil.getActiveShell(event), wizard);
 			if (dialog.open() != Window.OK) {
@@ -140,10 +166,13 @@ public class PlotPortHandler extends AbstractHandler {
 			type = plotWizardSettings.getType();
 			isFFT = plotWizardSettings.isFft();
 			if (isFFT) {
-				fftNxmBlockSettings = plotWizardSettings.getFftBlockSettings();
+				fftBlockSettings = plotWizardSettings.getFftBlockSettings();
 			} else {
-				fftNxmBlockSettings = null;
+				fftBlockSettings = null;
 			}
+			bulkIOBlockSettings = plotWizardSettings.getBulkIOBlockSettings();
+			sddsBlockSettings = plotWizardSettings.getSddsBlockSettings();
+			plotBlockSettings = plotWizardSettings.getPlotBlockSettings();
 		}
 
 		try {
@@ -190,31 +219,21 @@ public class PlotPortHandler extends AbstractHandler {
 									tooltip.append("\n");
 								}
 
-								if (plotWizardSettings != null) {
-									PlotSource plotSource;
-									String idl = port.getRepid();
-									String pipeQualifiers = null;
-									PlotNxmBlockSettings plotBlockSettings = plotWizardSettings.getPlotBlockSettings();
-									if (dataSDDSHelper.id().equals(idl)) { // a BULKIO:dataSDDS Port
-										plotSource = new PlotSource(port, plotWizardSettings.getSddsBlockSettings(), fftNxmBlockSettings, plotBlockSettings,
-											pipeQualifiers);
-									} else if (!dataFileHelper.id().equals(idl) && !dataXMLHelper.id().equals(idl)) { // BULKIO:dataFile and BULIO:dataXML Ports are currently unsupported
-										plotSource = new PlotSource(port, plotWizardSettings.getBulkIOBlockSettings(), fftNxmBlockSettings, plotBlockSettings,
-											pipeQualifiers);
-									} else {
-										StatusManager.getManager().handle(
-											new Status(IStatus.WARNING, PlotActivator.PLUGIN_ID, "Unsupported Port: " + port + " idl: " + idl),
-											StatusManager.LOG);
-										continue; // log warning and skip unsupported Port type
-									}
-									plotView.getPlotPageBook().addSource(plotSource);
+								final PlotSource plotSource;
+								final String idl = port.getRepid();
+								
+								if (dataSDDSHelper.id().equals(idl)) { // a BULKIO:dataSDDS Port
+									plotSource = new PlotSource(port, sddsBlockSettings, fftBlockSettings, plotBlockSettings, pipeQualifiers);
+								} else if (isBulkIOPortSupported(idl)) { // supported BULKIO data Port
+									plotSource = new PlotSource(port, bulkIOBlockSettings, fftBlockSettings, plotBlockSettings, pipeQualifiers);
 								} else {
-									PlotSource plotSource = new PlotSource(port, fftNxmBlockSettings, null);
-									plotView.addPlotSource(plotSource);
-									//plotView.addPlotSource(port, fft, null);
+									StatusManager.getManager().handle(
+										new Status(IStatus.WARNING, PlotActivator.PLUGIN_ID, "Unsupported Port: " + port + " idl: " + idl), StatusManager.LOG);
+									continue; // log warning and skip unsupported Port type
 								}
+								plotView.addPlotSource(plotSource);
 
-								// Add handler
+								// Add event handler
 								addEventForward(port, plotView);
 							} else {
 								subMonitor.worked(1);
@@ -351,5 +370,16 @@ public class PlotPortHandler extends AbstractHandler {
 				RedhawkEvents.publishEvent(topic, argMap);
 			}
 		});
+	}
+	
+	public static boolean isBulkIOPortSupported(String  idl) {
+		if (dataLongLongHelper.id().equals(idl) || dataUlongLongHelper.id().equals(idl)
+			|| dataFloatHelper.id().equals(idl) || dataDoubleHelper.id().equals(idl)
+			|| dataLongHelper.id().equals(idl)  || dataUlongHelper.id().equals(idl)
+			|| dataShortHelper.id().equals(idl) || dataUshortHelper.id().equals(idl)
+			|| dataOctetHelper.id().equals(idl) || dataCharHelper.id().equals(idl)) {
+			return true;
+		}
+		return false;
 	}
 }
