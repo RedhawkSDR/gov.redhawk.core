@@ -15,9 +15,6 @@ import gov.redhawk.ui.port.nxmplot.AbstractNxmPlotWidget;
 import gov.redhawk.ui.port.nxmplot.INxmBlock;
 import gov.redhawk.ui.port.nxmplot.PlotActivator;
 
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
-import java.beans.PropertyChangeSupport;
 import java.util.AbstractMap.SimpleImmutableEntry;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -29,12 +26,17 @@ import java.util.Map.Entry;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
+import nxm.sys.inc.Commandable;
 import nxm.sys.lib.Command;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.Nullable;
-import org.eclipse.jface.action.IMenuManager;
+import org.eclipse.jface.preference.IPreferencePage;
+import org.eclipse.jface.preference.IPreferenceStore;
+import org.eclipse.jface.preference.PreferenceStore;
+import org.eclipse.jface.util.IPropertyChangeListener;
+import org.eclipse.jface.util.PropertyChangeEvent;
 
 import BULKIO.StreamSRI;
 
@@ -46,38 +48,40 @@ import BULKIO.StreamSRI;
  * @noreference This class is provisional/beta and is subject to API changes
  * @since 4.4
  */
-public abstract class AbstractNxmBlock<C extends Command> implements INxmBlock {
+public abstract class AbstractNxmBlock< C extends Command > implements INxmBlock, IPropertyChangeListener {
 
 	private static final Debug TRACE_LOG = new Debug(PlotActivator.PLUGIN_ID, AbstractNxmBlock.class.getSimpleName());
 	private static final StreamSRI[] EMPTY_STREAMSRI_ARRAY = new StreamSRI[0];
-		
-	private AbstractNxmPlotWidget plotWidget;
+
+	private final AbstractNxmPlotWidget plotWidget;
 	private int defaultInputIndex = 0;
-	private final PropertyChangeSupport pcs = new PropertyChangeSupport(this);
-	private final Class<? extends C> desiredLaunchClass;
-	private final Class<?> desiredSettingsClass;
+	private final Class< ? extends C> desiredLaunchClass;
 
 	// FYI: ConcurrentHashMap does not allow null key or value
 	/** key=streamID value=(cmdline,Command). */
 	private final ConcurrentHashMap<String, SimpleImmutableEntry<String, C>> streamIDToCmdMap = new ConcurrentHashMap<String, SimpleImmutableEntry<String, C>>();
-	private final List<StreamSRI> launchedStreamsList = Collections.synchronizedList(new ArrayList<StreamSRI>()); 
+	private final List<StreamSRI> launchedStreamsList = Collections.synchronizedList(new ArrayList<StreamSRI>());
 
 	private final ConcurrentHashMap<String, String> outIndexStreamIDToOutNameMap = new ConcurrentHashMap<String, String>();
 
 	protected static class BlockIndexPair {
 		private final INxmBlock block;
 		private final int index;
+
 		public BlockIndexPair(INxmBlock block, int index) {
 			super();
 			this.block = block;
 			this.index = index;
 		}
+
 		public INxmBlock getBlock() {
 			return block;
 		}
+
 		public int getIndex() {
 			return index;
 		}
+
 		@Override
 		public int hashCode() {
 			final int prime = 31;
@@ -86,6 +90,7 @@ public abstract class AbstractNxmBlock<C extends Command> implements INxmBlock {
 			result = prime * result + index;
 			return result;
 		}
+
 		@Override
 		public boolean equals(Object obj) {
 			if (this == obj) {
@@ -112,30 +117,41 @@ public abstract class AbstractNxmBlock<C extends Command> implements INxmBlock {
 		}
 
 	}
+
 	/** key=input index;  value=source block & it's output index. */
-	private final ConcurrentHashMap<Integer, BlockIndexPair> inputMap  = new ConcurrentHashMap<Integer, BlockIndexPair>();
+	private final ConcurrentHashMap<Integer, BlockIndexPair> inputMap = new ConcurrentHashMap<Integer, BlockIndexPair>();
 	/** key=output index; value=list of (destination block & it's input index). */
 	private final ConcurrentHashMap<Integer, List<BlockIndexPair>> outputMap = new ConcurrentHashMap<Integer, List<BlockIndexPair>>();
-	private String label;
- 
-	protected AbstractNxmBlock(@NonNull Class<C> desiredLaunchCommandClass, @NonNull Class<?> desiredSettingsClass, 
-		@NonNull String label, @NonNull AbstractNxmPlotWidget plotWidget) {
-		this.desiredLaunchClass = desiredLaunchCommandClass;
-		this.desiredSettingsClass = desiredSettingsClass;
-		this.label = label;
-		this.plotWidget = plotWidget;
-	}
+	private final IPreferenceStore preferenceStore;
 
-	/** any sub-class that overrides this method MUST call super.setContext(..). */
-	@Override
-	public void setContext(AbstractNxmPlotWidget widget) {
-		this.plotWidget = widget;
+	protected AbstractNxmBlock(@NonNull Class<C> desiredLaunchCommandClass, @NonNull AbstractNxmPlotWidget plotWidget, IPreferenceStore store) {
+		this.plotWidget = plotWidget;
+		this.desiredLaunchClass = desiredLaunchCommandClass;
+		if (store == null) {
+			store = new PreferenceStore();
+		}
+		this.preferenceStore = store;
+		this.preferenceStore.addPropertyChangeListener(this);
 	}
 
 	@NonNull
 	@Override
 	public AbstractNxmPlotWidget getContext() {
 		return plotWidget;
+	}
+
+	@Override
+	public IPreferenceStore getPreferences() {
+		return this.preferenceStore;
+	}
+
+	/**
+	 * Create the preference control page for this block
+	 * @return Null if there is no preference control page
+	 */
+	@Override
+	public IPreferencePage createPreferencePage() {
+		return null;
 	}
 
 	@Override
@@ -173,7 +189,7 @@ public abstract class AbstractNxmBlock<C extends Command> implements INxmBlock {
 	}
 
 	@Override
-	public INxmBlock  getInputBlock(int myInIndex) {
+	public INxmBlock getInputBlock(int myInIndex) {
 		final int maxInIndex = getMaxInputs();
 		if (maxInIndex == 0) {
 			throw new UnsupportedOperationException(getClass().getName() + " does not have any inputs.");
@@ -240,7 +256,8 @@ public abstract class AbstractNxmBlock<C extends Command> implements INxmBlock {
 	 * (in background thread) and start PIPE data flow.
 	 * NOTE: subclasses should generally NOT override this implementation.
 	 */
-	@SuppressWarnings("unchecked") // this is checked via Class.isAssignableFrom(..) before casting
+	@SuppressWarnings("unchecked")
+	// this is checked via Class.isAssignableFrom(..) before casting
 	@Override
 	public void launch(String streamID, StreamSRI sri) {
 		checkLaunchParams(streamID, sri);
@@ -249,8 +266,8 @@ public abstract class AbstractNxmBlock<C extends Command> implements INxmBlock {
 		// subclasses specifies the NeXtMidas command line to execute
 		String cmdLine = formCmdLine(currentPlotContext, streamID);
 
-		if (TRACE_LOG.enabled) {
-			TRACE_LOG.message("launch({0}) cmdline: {1} [{2}]", streamID, cmdLine, toString());
+		if (AbstractNxmBlock.TRACE_LOG.enabled) {
+			AbstractNxmBlock.TRACE_LOG.message("launch({0}) cmdline: {1} [{2}]", streamID, cmdLine, toString());
 		}
 		if (cmdLine != null && !cmdLine.trim().isEmpty()) {
 			final Command cmd = currentPlotContext.runGlobalCommand(cmdLine + " /BG");
@@ -262,8 +279,8 @@ public abstract class AbstractNxmBlock<C extends Command> implements INxmBlock {
 					SimpleImmutableEntry<String, C> cmd4Stream = new SimpleImmutableEntry<String, C>(cmdLine, nxmCommand);
 					streamIDToCmdMap.put(streamID, cmd4Stream);
 					launchedStreamsList.add(sri);
-					if (TRACE_LOG.enabled) {
-						TRACE_LOG.message("launched({0}) Command: {1} [{2}]", streamID, nxmCommand, toString());
+					if (AbstractNxmBlock.TRACE_LOG.enabled) {
+						AbstractNxmBlock.TRACE_LOG.message("launched({0}) Command: {1} [{2}]", streamID, nxmCommand, toString());
 					}
 
 				} else {
@@ -273,8 +290,8 @@ public abstract class AbstractNxmBlock<C extends Command> implements INxmBlock {
 			cmd.setMessageHandler(currentPlotContext.getPlotMessageHandler());
 
 			currentPlotContext.runGlobalCommand("PIPE RUN"); // start NeXtMidas pipe data flow (if it has not already started)
-			
-			if (TRACE_LOG.enabled) {
+
+			if (AbstractNxmBlock.TRACE_LOG.enabled) {
 				currentPlotContext.runGlobalCommand("STATUS/VERBOSE " + getOutputName(0, streamID));
 			}
 		}
@@ -307,10 +324,10 @@ public abstract class AbstractNxmBlock<C extends Command> implements INxmBlock {
 
 	@Override
 	public StreamSRI[] getLaunchedStreams() {
-		StreamSRI[] retval = launchedStreamsList.toArray(EMPTY_STREAMSRI_ARRAY);
+		StreamSRI[] retval = launchedStreamsList.toArray(AbstractNxmBlock.EMPTY_STREAMSRI_ARRAY);
 		return retval;
 	}
-	
+
 	@Override
 	public int getMaxOutputs() {
 		return 1;
@@ -359,10 +376,9 @@ public abstract class AbstractNxmBlock<C extends Command> implements INxmBlock {
 		// nothing to stop by default
 	}
 
-
 	@Override
 	public void dispose() {
-		TRACE_LOG.enteringMethod();
+		AbstractNxmBlock.TRACE_LOG.enteringMethod();
 		stop();
 		// shutdown all launched Commands
 		// for (SimpleImmutableEntry<String, C> entry : streamIDToCmdMap.values()) {
@@ -370,68 +386,21 @@ public abstract class AbstractNxmBlock<C extends Command> implements INxmBlock {
 		while (iter.hasNext()) {
 			Entry<String, SimpleImmutableEntry<String, C>> entry = iter.next();
 			C nxmCommand = entry.getValue().getValue();
-			nxmCommand.setState(Command.FINISH); // tell Command it should FINISH/EXIT
+			nxmCommand.setState(Commandable.FINISH); // tell Command it should FINISH/EXIT
 			iter.remove();
 		}
+
+		this.preferenceStore.removePropertyChangeListener(this);
 	}
 
-	@Override
-	@NonNull
-	public String getLabel() {
-		final String tmp = label;
-		if (tmp != null) {
-			return tmp;
-		} else {
-			return "unknown";
+	public List<C> getNxmCommands() {
+		List<C> retVal = new ArrayList<C>();
+		for (SimpleImmutableEntry<String, C> entry : streamIDToCmdMap.values()) {
+			retVal.add(entry.getValue());
 		}
+		return retVal;
 	}
 
-	@Nullable
-	public String setLabel(String newLabel) {
-		String prevLabel = label;
-		label = newLabel;
-		return prevLabel;
-	}
-
-	@Override
-	public void contributeMenuItems(IMenuManager menu) {
-		// sub-classes should override this to contribute menu items
-	}
-	
-	@Override
-	public void addProperChangeListener(PropertyChangeListener nxmCmdSourceListner) {
-		pcs.addPropertyChangeListener(nxmCmdSourceListner);
-	}
-
-	@Override
-	public void removeProperChangeListener(PropertyChangeListener nxmCmdSourceListner) {
-		pcs.removePropertyChangeListener(nxmCmdSourceListner);
-	}
-
-	@Override
-	public void applySettings(Object settings, String streamId) {
-		if (settings == null) {
-			return;
-		}
-		if (!desiredSettingsClass.isAssignableFrom(settings.getClass())) {
-			return;
-		}
-		if (streamId != null) {
-			C cmd = getNxmCommand(streamId);
-			if (cmd != null) {
-				applySettingsTo(cmd, settings, streamId);
-			}
-		} else { // apply to all stream IDs
-			Set<Entry<String, SimpleImmutableEntry<String, C>>> entryValues = streamIDToCmdMap.entrySet();
-			for (Entry<String, SimpleImmutableEntry<String, C>> entry : entryValues) {
-				C cmd = entry.getValue().getValue();
-				if (cmd != null) {
-					applySettingsTo(cmd, settings, entry.getKey());
-				}
-			}
-		}
-	}
-	
 	/**
 	 * @return the NeXtMidas Command for the specified streamID (null if none)
 	 */
@@ -447,14 +416,6 @@ public abstract class AbstractNxmBlock<C extends Command> implements INxmBlock {
 		return nxmCommand;
 	}
 
-	/**
-	 * sub-classes should override this instead of {@link #applySettings(Object, String)} 
-	 * since this classes's implementation does the command lookup and iteration logic.
-	 * The only exception is if the subclass does not support applying settings operations. 
-	 */
-	protected void applySettingsTo(@NonNull C cmd, @NonNull Object settings, @NonNull String streamId) {
-	}
-	
 	protected int getDefaultInputIndex() {
 		return defaultInputIndex;
 	}
@@ -485,12 +446,12 @@ public abstract class AbstractNxmBlock<C extends Command> implements INxmBlock {
 		if (sri != null && !streamID.equals(sri.streamID)) { // sri specified, check that sri.streamID matches streamID
 			throw new IllegalArgumentException("streamID [" + streamID + "] MUST match sri.streamID [" + sri.streamID + "] when sri is specified.");
 		}
-    }
-	
+	}
+
 	protected Map<String, SimpleImmutableEntry<String, C>> getStreamIdToCommandMap() {
 		return Collections.unmodifiableMap(streamIDToCmdMap);
 	}
-	
+
 	// =========================================================================
 	// METHODS that subclasses should implement
 	// =========================================================================
@@ -503,8 +464,10 @@ public abstract class AbstractNxmBlock<C extends Command> implements INxmBlock {
 	@Nullable
 	protected abstract String formCmdLine(@NonNull AbstractNxmPlotWidget plotWidget, @NonNull String streamID);
 
-	protected void firePropertyChangeEvent(PropertyChangeEvent event) {
-		pcs.firePropertyChange(event);
+	@Override
+	public void propertyChange(PropertyChangeEvent event) {
+		// TODO Auto-generated method stub
+
 	}
-	
+
 }

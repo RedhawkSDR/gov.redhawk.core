@@ -115,13 +115,13 @@ public class PlotHandler extends AbstractHandler implements IHandler {
 							device.allocateCapacity(props);
 							device.refresh(null, RefreshDepth.SELF);
 						} catch (InvalidCapacity e) {
-							return new Status(Status.ERROR, FrontEndUIActivator.PLUGIN_ID, "Invalid Capacity in plot allocation: " + e.msg, e);
+							return new Status(IStatus.ERROR, FrontEndUIActivator.PLUGIN_ID, "Invalid Capacity in plot allocation: " + e.msg, e);
 						} catch (InvalidState e) {
-							return new Status(Status.ERROR, FrontEndUIActivator.PLUGIN_ID, "Invalid State in plot allocation: " + e.msg, e);
+							return new Status(IStatus.ERROR, FrontEndUIActivator.PLUGIN_ID, "Invalid State in plot allocation: " + e.msg, e);
 						} catch (InsufficientCapacity e) {
-							return new Status(Status.ERROR, FrontEndUIActivator.PLUGIN_ID, "Insufficient Capacity in plot allocation: " + e.msg, e);
+							return new Status(IStatus.ERROR, FrontEndUIActivator.PLUGIN_ID, "Insufficient Capacity in plot allocation: " + e.msg, e);
 						} catch (InterruptedException e) {
-							return new Status(Status.ERROR, FrontEndUIActivator.PLUGIN_ID, "Interrupted Exception during plot allocation", e);
+							return new Status(IStatus.ERROR, FrontEndUIActivator.PLUGIN_ID, "Interrupted Exception during plot allocation", e);
 						}
 						return Status.OK_STATUS;
 					}
@@ -276,11 +276,11 @@ public class PlotHandler extends AbstractHandler implements IHandler {
 								device.refresh(null, RefreshDepth.SELF);
 							}
 						} catch (InvalidCapacity e) {
-							return new Status(Status.ERROR, FrontEndUIActivator.PLUGIN_ID, "Invalid Capacity in plot deallocation: " + e.msg, e);
+							return new Status(IStatus.ERROR, FrontEndUIActivator.PLUGIN_ID, "Invalid Capacity in plot deallocation: " + e.msg, e);
 						} catch (InvalidState e) {
-							return new Status(Status.ERROR, FrontEndUIActivator.PLUGIN_ID, "Invalid State in plot deallocation: " + e.msg, e);
+							return new Status(IStatus.ERROR, FrontEndUIActivator.PLUGIN_ID, "Invalid State in plot deallocation: " + e.msg, e);
 						} catch (InterruptedException e) {
-							return new Status(Status.ERROR, FrontEndUIActivator.PLUGIN_ID, "Interrupted Exception during plot deallocation", e);
+							return new Status(IStatus.ERROR, FrontEndUIActivator.PLUGIN_ID, "Interrupted Exception during plot deallocation", e);
 						}
 						return Status.OK_STATUS;
 					}
@@ -306,7 +306,7 @@ public class PlotHandler extends AbstractHandler implements IHandler {
 	}
 
 	private String createSecondaryId() {
-		return "FEI" + uniquePlotViewSecondaryId.incrementAndGet();
+		return "FEI" + PlotHandler.uniquePlotViewSecondaryId.incrementAndGet();
 	}
 
 	private void createTooltip(final ScaItemProviderAdapterFactory factory, final StringBuilder name, final StringBuilder tooltip, ScaUsesPort usesPort) {

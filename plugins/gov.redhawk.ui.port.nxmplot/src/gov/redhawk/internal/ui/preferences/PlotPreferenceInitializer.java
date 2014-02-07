@@ -8,9 +8,13 @@
  * the terms of the Eclipse Public License v1.0 which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html.
  */
-package gov.redhawk.ui.port.nxmplot.preferences;
+package gov.redhawk.internal.ui.preferences;
 
 import gov.redhawk.ui.port.nxmplot.PlotActivator;
+import gov.redhawk.ui.port.nxmplot.preferences.BulkIOPreferences;
+import gov.redhawk.ui.port.nxmplot.preferences.FftPreferences;
+import gov.redhawk.ui.port.nxmplot.preferences.PlotPreferences;
+import gov.redhawk.ui.port.nxmplot.preferences.Preference;
 
 import org.eclipse.core.runtime.preferences.AbstractPreferenceInitializer;
 import org.eclipse.jface.preference.IPreferenceStore;
@@ -25,9 +29,21 @@ public class PlotPreferenceInitializer extends AbstractPreferenceInitializer {
 	 *
 	 * @see org.eclipse.core.runtime.preferences.AbstractPreferenceInitializer#initializeDefaultPreferences()
 	 */
+	@Override
 	public void initializeDefaultPreferences() {
 		IPreferenceStore store = PlotActivator.getDefault().getPreferenceStore();
-		store.setDefault(PlotPreferenceConstants.P_ENABLE_CONFIGURE_MENU_USING_MOUSE, false);
+
+		for (Preference< ? > p : BulkIOPreferences.getAllPreferences()) {
+			p.setDefaultValue(store);
+		}
+
+		for (Preference< ? > p : FftPreferences.getAllPreferences()) {
+			p.setDefaultValue(store);
+		}
+
+		for (Preference< ? > p : PlotPreferences.getAllPreferences()) {
+			p.setDefaultValue(store);
+		}
 	}
 
 }

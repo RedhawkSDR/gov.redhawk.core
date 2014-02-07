@@ -11,11 +11,13 @@
 package gov.redhawk.ui.port.nxmblocks;
 
 import gov.redhawk.ui.port.nxmplot.AbstractNxmPlotWidget;
+import gov.redhawk.ui.port.nxmplot.preferences.FileNxmBlockPreferences;
+import gov.redhawk.ui.port.nxmplot.preferences.Preference;
 import nxm.sys.lib.Command;
 
-import org.eclipse.core.databinding.DataBindingContext;
 import org.eclipse.jdt.annotation.NonNull;
-import org.eclipse.swt.widgets.Composite;
+import org.eclipse.jface.preference.IPreferenceStore;
+import org.eclipse.jface.util.PropertyChangeEvent;
 
 /**
  * @noreference This class is provisional/beta and is subject to API changes
@@ -26,8 +28,12 @@ public class FileNxmBlock extends AbstractNxmBlock<Command> {
 	private final String filename;
 
 	public FileNxmBlock(@NonNull String filename, @NonNull AbstractNxmPlotWidget plotWidget) {
-		super(Command.class, String.class, "File", plotWidget);
+		super(Command.class, plotWidget, FileNxmBlock.initStore(null));
 		this.filename = filename;
+	}
+
+	private static IPreferenceStore initStore(IPreferenceStore object) {
+		return Preference.initStoreFromWorkbench(FileNxmBlockPreferences.getAllPreferences(), null);
 	}
 
 	@Override
@@ -48,35 +54,20 @@ public class FileNxmBlock extends AbstractNxmBlock<Command> {
 		return filename;
 	}
 
-	@Override
-	public boolean hasControls() {
-		return false; // no settings controls for file
-	}
-
-	@Override
-	public void createControls(Composite parent, Object currentSettings, DataBindingContext context) {
-		// no settings controls for file
-	}
-
-	/** copy of current settings */
-	@Override
-	public String getSettings() {
-		String clone = filename;
-		if (clone == null) {
-			clone = "";
-		}
-		return clone;
-	}
-
-	@Override
-	public void applySettings(Object settings, String streamId) {
-		// none for file source at this time
+	public String getFilename() {
+		return filename;
 	}
 
 	@Override
 	protected String formCmdLine(AbstractNxmPlotWidget plotWidget, String streamID) {
 		putOutputNameMapping(0, streamID, filename);
 		return null; // return null since no command should be launched
+	}
+
+	@Override
+	public void propertyChange(PropertyChangeEvent event) {
+		// TODO Auto-generated method stub
+
 	}
 
 }

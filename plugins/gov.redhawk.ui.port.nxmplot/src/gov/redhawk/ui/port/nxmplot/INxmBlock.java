@@ -11,14 +11,11 @@
  */
 package gov.redhawk.ui.port.nxmplot;
 
-import java.beans.PropertyChangeListener;
-
-import org.eclipse.core.databinding.DataBindingContext;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jdt.annotation.NonNullByDefault;
 import org.eclipse.jdt.annotation.Nullable;
-import org.eclipse.jface.action.IMenuManager;
-import org.eclipse.swt.widgets.Composite;
+import org.eclipse.jface.preference.IPreferencePage;
+import org.eclipse.jface.preference.IPreferenceStore;
 
 import BULKIO.StreamSRI;
 
@@ -78,11 +75,9 @@ import BULKIO.StreamSRI;
 @NonNullByDefault
 public interface INxmBlock {
 
-	/** if have existing context, it will be shutdown first before associating to the new context. */
-	void setContext(AbstractNxmPlotWidget widget);
-
 	/** get current PlotWidget context. */
-	@Nullable AbstractNxmPlotWidget getContext();
+	@Nullable
+	AbstractNxmPlotWidget getContext();
 
 	/** hook up input to source block's output.
 	 *  This only does the hook up, it will NOT launch things.
@@ -91,7 +86,7 @@ public interface INxmBlock {
 	 *  @param srcBlockOutIndex the source block's output index
 	 *  @throws IllegalArgumentException, e.g. for invalid inIndex and or srcBlockOutIndex
 	 *  @throws UnsupportedOperationException, e.g. if block does not have any input b/c it is the starting point
-	 */ 
+	 */
 	void addInput(int inIndex, INxmBlock srcBlock, int srcBlockOutIndex);
 
 	/** This implementation should call {@link #addInput(int, INxmBlock, int)} with normal case
@@ -116,7 +111,8 @@ public interface INxmBlock {
 	 * @return input/source block (null for none)
 	 * @throws UnsupportedOperationException, e.g. if this block does not have any input b/c it is the starting point
 	 */
-	@Nullable INxmBlock getInputBlock(int inIndex);
+	@Nullable
+	INxmBlock getInputBlock(int inIndex);
 
 	/** this SHOULD only be called by {@link #addInput(int, INxmBlock, int)} to provide forward lookup
 	 *  on the srcBlock to invoke this (destination) block's {@link #launch(String, StreamSRI)} when it's launch is called.
@@ -127,6 +123,7 @@ public interface INxmBlock {
 	 *  @throws UnsupportedOperationException, e.g. if block does not have any output(s)
 	 */
 	void internalAddOutputMapping(int outIndex, INxmBlock destBlock, int destBlockInIndex);
+
 	void internalRemoveOutputMapping(int outIndex, INxmBlock destBlock, int destBlockInIndex);
 
 	/** @return maximum number of inputs allowed by this (usually 1+, 0 for none i.e. for start point) */
@@ -152,7 +149,8 @@ public interface INxmBlock {
 	 *  @return output name (null if none?)
 	 *  @throws IllegalArgumentException, e.g. for invalid outIndex
 	 */
-	@Nullable String getOutputName(int outIndex, String streamID);
+	@Nullable
+	String getOutputName(int outIndex, String streamID);
 
 	/** launches the appropriate NeXtMidas command to acquire the input (e.g. CORBARECEIVER, SOURCENIC)
 	 *  or process it's input(s) (e.g. using FFT, FCALCUALTOR).
@@ -173,54 +171,31 @@ public interface INxmBlock {
 	 * @return empty array if none, otherwise array of launched streams
 	 */
 	StreamSRI[] getLaunchedStreams();
-	
+
 	/** (optional) start any necessary things for this block.
 	 *  e.g. register/connect to BULK IO Port for pushSRI, or BULK IO SDDS Port for attach/detach.
 	 */
 	void start() throws CoreException; // or init()
+
 	/** (optional) stop any necessary things for this block.
 	 *  e.g. de-register/disconnect to BULK IO Port or BULK IO SDDS Port.
 	 *  
 	 */
-	void stop();  // or maybe use dispose() instead
+	void stop(); // or maybe use dispose() instead
 
 	/** tear *ALL* my resources and call my INxmBlock's shutdown() for each stream that I have published.??? */
 	void dispose();
 
-	/** Label for controls (e.g. to be display on menu / sub-menu to user.
-	 * Do not append " Settings" to this return value (that will be done elsewhere). */
-	String getLabel();
+	/**
+	 * The preferences of this block
+	 * @return
+	 */
+	IPreferenceStore getPreferences();
 
 	/**
-	 * @param newLabel
-	 * @return returns previous label (null if not set)
+	 * Create the preference control page for this block
+	 * @return Null if there is no preference control page
 	 */
-	@Nullable String setLabel(String newLabel);
-
-	/** Has settings controls. */
-	boolean hasControls();
-
-	/** create SWT controls for adjusting this input source's settings.
-	 *  @param parent Composite of parent container
-	 *  @param currentSettings the current settings (S) to use for displaying the adjust settings controls
-	 *  @param dataBindingContext the data binding context to use
-	 */
-	void createControls(Composite parent, @Nullable Object currentSettings, DataBindingContext dataBindingContext);
-
-	/** contribute menu items to specified menu */
-	void contributeMenuItems(IMenuManager menu);
-	
-	/** get a copy of current settings. */
-	Object getSettings();
-
-	/** apply settings to this block.
-	 * @param settings
-	 * @param streamId apply settings to specified streams, null to apply to all streams
-     * @throws UnsupportedOperationException, e.g. if block does not support applying settings
-	 */
-	void applySettings(Object settings, @Nullable String streamId);
-
-	void addProperChangeListener(PropertyChangeListener nxmCmdSourceListner);
-	void removeProperChangeListener(PropertyChangeListener nxmCmdSourceListner);
+	IPreferencePage createPreferencePage();
 
 }

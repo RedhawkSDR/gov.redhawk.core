@@ -11,12 +11,14 @@
  */
 package gov.redhawk.ui.port.nxmplot;
 
-import gov.redhawk.internal.ui.port.nxmplot.handlers.NxmBlockSettingsWizard;
+import gov.redhawk.internal.ui.preferences.PlotPreferenceDialog;
+import gov.redhawk.internal.ui.preferences.PlotPreferenceNode;
+import gov.redhawk.internal.ui.preferences.PlotPreferencePage;
+import gov.redhawk.internal.ui.preferences.SourcePreferencePage;
 import gov.redhawk.model.sca.IDisposable;
 import gov.redhawk.model.sca.ScaPackage;
 import gov.redhawk.model.sca.ScaUsesPort;
 import gov.redhawk.model.sca.commands.ScaModelCommand;
-import gov.redhawk.model.sca.provider.ScaItemProviderAdapterFactory;
 import gov.redhawk.sca.util.Debug;
 import gov.redhawk.ui.port.PortHelper;
 import gov.redhawk.ui.port.nxmblocks.BulkIONxmBlock;
@@ -49,15 +51,12 @@ import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.Notifier;
 import org.eclipse.emf.common.notify.impl.AdapterImpl;
-import org.eclipse.emf.ecore.EObject;
-import org.eclipse.emf.edit.provider.IItemLabelProvider;
 import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jface.action.Action;
-import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.action.IMenuManager;
-import org.eclipse.jface.action.MenuManager;
-import org.eclipse.jface.window.Window;
-import org.eclipse.jface.wizard.WizardDialog;
+import org.eclipse.jface.preference.IPreferencePage;
+import org.eclipse.jface.preference.PreferenceManager;
+import org.eclipse.jface.preference.PreferenceNode;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.DisposeEvent;
 import org.eclipse.swt.events.DisposeListener;
@@ -190,8 +189,6 @@ public class PlotPageBook2 extends Composite {
 
 	private Composite nullPage;
 
-	private IMenuManager contextMenu;
-
 	public PlotPageBook2(Composite parent, int style, PlotType type) {
 		super(parent, style);
 		setLayout(new FillLayout());
@@ -231,17 +228,19 @@ public class PlotPageBook2 extends Composite {
 		String plotArgs = NxmPlotUtil.getDefaultPlotArgs(plotSettings);
 		String plotSwitches = NxmPlotUtil.getDefaultPlotSwitches(plotSettings);
 		AbstractNxmPlotWidget newPlot = PlotActivator.getDefault().getPlotFactory().createPlotWidget(this.pageBook, SWT.None);
-			
+
 		PlotPage plotPage = new PlotPage(newPlot, plotArgs, plotSwitches);
 		this.plots.put(type, plotPage);
+
+		// TODO??
+		//		for (PlotSource source : this.sources) {
+		//			plotPageSession.addSource(source);
+		//		}
 
 		Set<Entry<PlotSource, List<INxmBlock>>> entrySet = source2NxmBlocks.entrySet();
 		for (Entry<PlotSource, List<INxmBlock>> entry : entrySet) {
 			PlotNxmBlockSettings plotBlockSettings = entry.getKey().getPlotBlockSettings();
-			if (plotBlockSettings == null) {
-				plotBlockSettings = new PlotNxmBlockSettings();
-			}
-			PlotNxmBlock plotBlock = new PlotNxmBlock(newPlot, plotBlockSettings);
+			PlotNxmBlock plotBlock = new PlotNxmBlock(newPlot, entry.getKey().getStore(), plotBlockSettings);
 			List<INxmBlock> nxmBlocksForSource = entry.getValue();
 			int idx4LastNonPlotBlock = nxmBlocksForSource.size() - 2;
 			if (idx4LastNonPlotBlock >= 0) { // must have at least initial NxmBlock + PlotNxmBlock
@@ -272,14 +271,14 @@ public class PlotPageBook2 extends Composite {
 	public IPlotSession addSource(ScaUsesPort port, FftSettings oldFftsettings, String qualifiers) {
 		final FftNxmBlockSettings fftSettings;
 		if (oldFftsettings != null) {
-			fftSettings = toFftNxmBlockSettings(oldFftsettings);
+			fftSettings = PlotPageBook2.toFftNxmBlockSettings(oldFftsettings);
 		} else {
 			fftSettings = null;
 		}
 		final PlotSource plotSource = new PlotSource(port, fftSettings, qualifiers);
-		
+
 		final org.eclipse.ui.services.IDisposable disposable = addSource(plotSource);
-		
+
 		return new IPlotSession() {
 			private String id = UUID.randomUUID().toString();
 
@@ -338,8 +337,7 @@ public class PlotPageBook2 extends Composite {
 		if (plotBlockSettings == null) {
 			plotBlockSettings = new PlotNxmBlockSettings();
 		}
-		PlotNxmBlock plotBlock = new PlotNxmBlock(currentPlotWidget, plotBlockSettings);
-
+		final PlotNxmBlock plotBlock = new PlotNxmBlock(currentPlotWidget, plotSource.getStore(), plotBlockSettings);
 		final FftNxmBlock fftBlock;
 		if (fftSettings != null) {
 			fftBlock = new FftNxmBlock(currentPlotWidget, fftSettings);
@@ -351,29 +349,6 @@ public class PlotPageBook2 extends Composite {
 			plotBlock.addInput(startingBlock);
 		}
 		nxmBlocksForSource.add(plotBlock); // TODO: remove this and associate with PlotPage?
-
-		IMenuManager menu = this.contextMenu;
-		if (menu != null) {
-			final MenuManager subMenu;
-			String subMenuText = scaPort.getName();
-			//			final int numSources = source2NxmBlocks.size();
-			//			if (numSources > 0) {
-			EObject eObj = scaPort.eContainer();
-			if (eObj != null) {
-				final ScaItemProviderAdapterFactory factory = new ScaItemProviderAdapterFactory();
-				Adapter adapter = factory.adapt(eObj, IItemLabelProvider.class);
-				if (adapter instanceof IItemLabelProvider) {
-					IItemLabelProvider lp = (IItemLabelProvider) adapter;
-					subMenuText = lp.getText(eObj) + " -> " + subMenuText;
-				}
-			}
-			//			}
-			subMenu = new MenuManager(subMenuText, scaPort.getIor()); // subMenu for each Port source
-			menu.add(subMenu);
-			plotBlock.contributeMenuItems(subMenu); // allow NxmBlocks to contribute to subMenu
-			subMenu.add(createSettingsMenuActionForSource(subMenuText, scaPort, nxmBlocksForSource.toArray(new INxmBlock[0]))); // add settings menu item
-			subMenu.setVisible(true);
-		}
 
 		try {
 			plotBlock.start();
@@ -583,34 +558,70 @@ public class PlotPageBook2 extends Composite {
 	 * @noreference This method is not intended to be referenced by clients.
 	 * @since 4.3
 	 */
-	public void contributeMenuItems(IMenuManager menu) {
-		this.contextMenu = menu; // save a reference so that we can make contributions later to the context menu
-	}
+	public void contributeMenuItems(final IMenuManager menu) {
+		if (menu != null) {
 
-	private IAction createSettingsMenuActionForSource(final String sourceInfo, final ScaUsesPort scaPort, final INxmBlock... nxmBlocks) {
-		IAction action = new Action("Settings...") {
-			@Override
-			public void run() {
-				final NxmBlockSettingsWizard wizard = new NxmBlockSettingsWizard(sourceInfo);
-				//				PlotPageBook2.this.getAllPlotWidgets() // TODO
-				wizard.setNxmBlocks(nxmBlocks);
+			menu.add(new Action("Settings...") {
+				// TODO
+				@Override
+				public void run() {
+					PreferenceManager manager = new PreferenceManager();
 
-				WizardDialog dialog = new WizardDialog(PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(), wizard);
-				if (Window.OK == dialog.open()) {
-					Job job = new Job("apply plot settings for source: " + sourceInfo) {
-						@Override
-						protected IStatus run(IProgressMonitor monitor) {
-							for (INxmBlock nxmBlock : nxmBlocks) {
-								Object newBlockSettings = wizard.getSettings(nxmBlock);
-								nxmBlock.applySettings(newBlockSettings, null); // apply settings to all streams
+					if (source2NxmBlocks.size() > 1) {
+						PlotPreferencePage plotPage = new PlotPreferencePage("Plot", false);
+						plotPage.setPreferenceStore(currentPlotPage.plot.getPreferenceStore());
+						PlotPreferenceNode plotNode = new PlotPreferenceNode("plotSettings", plotPage);
+						manager.addToRoot(plotNode);
+
+						for (Map.Entry<PlotSource, List<INxmBlock>> entry : source2NxmBlocks.entrySet()) {
+							String name = entry.getKey().getInput().getName();
+							SourcePreferencePage sourcePrefPage = new SourcePreferencePage(name, PlotPageBook2.this);
+							PreferenceNode sourceNode = new PreferenceNode(entry.getKey().toString(), sourcePrefPage);
+
+							for (INxmBlock block : entry.getValue()) {
+								IPreferencePage page = block.createPreferencePage();
+								if (page != null) {
+									PreferenceNode blockNode = new PreferenceNode(block.toString(), page);
+									sourceNode.add(blockNode);
+								}
 							}
-							return Status.OK_STATUS;
+							manager.addToRoot(sourceNode);
 						}
-					};
-					job.schedule(0);
+					} else if (source2NxmBlocks.size() == 1) {
+						Map.Entry<PlotSource, List<INxmBlock>> entry = source2NxmBlocks.entrySet().iterator().next();
+
+						PlotNxmBlock plotBlock = null;
+						for (INxmBlock block : entry.getValue()) {
+							if (block instanceof PlotNxmBlock) {
+								plotBlock = (PlotNxmBlock) block;
+							}
+						}
+						PlotPreferencePage plotPage = new PlotPreferencePage("Plot", plotBlock.getPreferences());
+						plotPage.setPreferenceStore(currentPlotPage.plot.getPreferenceStore());
+						PlotPreferenceNode plotNode = new PlotPreferenceNode("plotSettings", plotPage);
+						manager.addToRoot(plotNode);
+
+						//						String name = entry.getKey().getInput().getName();
+						//						SourcePreferencePage sourcePrefPage = new SourcePreferencePage(name, PlotPageBook2.this);
+						//						PreferenceNode sourceNode = new PreferenceNode(entry.getKey().toString(), sourcePrefPage);
+						//						manager.addToRoot(sourceNode);
+
+						for (INxmBlock block : entry.getValue()) {
+							if (plotBlock == block) {
+								continue;
+							}
+							IPreferencePage page = block.createPreferencePage();
+							if (page != null) {
+								PreferenceNode blockNode = new PreferenceNode(block.toString(), page);
+								manager.addToRoot(blockNode);
+							}
+						}
+					}
+
+					PlotPreferenceDialog dialog = new PlotPreferenceDialog(getShell(), manager);
+					dialog.open();
 				}
-			}
-		};
-		return action;
+			});
+		}
 	}
 }

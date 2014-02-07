@@ -11,7 +11,10 @@
  */
 package gov.redhawk.ui.port.nxmblocks;
 
+import gov.redhawk.ui.port.nxmplot.preferences.BulkIOPreferences;
+
 import org.eclipse.jdt.annotation.NonNull;
+import org.eclipse.jface.preference.IPreferenceStore;
 
 /**
  * BULK IO settings
@@ -20,12 +23,10 @@ import org.eclipse.jdt.annotation.NonNull;
  */
 public class BulkIONxmBlockSettings implements Cloneable {
 	public static final String PROP_BLOCKING_OPTION = "blocking";
-	public static final String PROP_CONNECTION_ID   = "connectionID";
-	public static final String PROP_PIPE_SIZE       = "pipeSize";
-	public static final String PROP_SAMPLE_RATE     = "sampleRate";
-	public static final String PROP_REMOVE_ON_EOS   = "removeOnEndOfStream";
-	
-	private static final int DEFAULT_TIMELINE_LENGTTH = 200;
+	public static final String PROP_CONNECTION_ID = "connectionID";
+	public static final String PROP_PIPE_SIZE = "pipeSize";
+	public static final String PROP_SAMPLE_RATE = "sampleRate";
+	public static final String PROP_REMOVE_ON_EOS = "removeOnEndOfStream";
 
 	/** custom connection ID to use. */
 	private String connectionID;
@@ -36,11 +37,28 @@ public class BulkIONxmBlockSettings implements Cloneable {
 	/** null to use default pipe size from NeXtMidas (128K) */
 	private Integer pipeSize;
 	/** time line length for output data pipe. */
-	private int timelineLength = DEFAULT_TIMELINE_LENGTTH;
+	private int timelineLength;
 	/** remove stream from PLOT (by calling shutdown(streamID) on end-of-stream (EOS) is received in pushPacket */
 	private boolean removeOnEndOfStream = true;
 
 	public BulkIONxmBlockSettings() {
+	}
+
+	public BulkIONxmBlockSettings(IPreferenceStore store) {
+		connectionID = BulkIOPreferences.CONNECTION_ID.getValue(store);
+		if (BulkIOPreferences.SAMPLE_RATE.isDefault(store)) {
+			sampleRate = null;
+		} else {
+			sampleRate = BulkIOPreferences.SAMPLE_RATE.getValue(store);
+		}
+
+		blocking = BulkIOPreferences.BLOCKING.getValue(store);
+
+		if (BulkIOPreferences.PIPE_SIZE.isDefault(store)) {
+			pipeSize = null;
+		} else {
+			pipeSize = BulkIOPreferences.PIPE_SIZE.getValue(store);
+		}
 	}
 
 	@NonNull
@@ -56,11 +74,11 @@ public class BulkIONxmBlockSettings implements Cloneable {
 	public String getConnectionID() {
 		return connectionID;
 	}
-	
+
 	public void setConnectionID(String connectionID) {
 		this.connectionID = connectionID;
 	}
-	
+
 	/**
 	 * @return the current sample rate (null to use default)
 	 */

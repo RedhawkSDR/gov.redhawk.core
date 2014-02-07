@@ -51,11 +51,10 @@ import CF.PortPackage.OccupiedPort;
 public class BulkIOSddsNxmBlock extends SddsNxmBlock {
 
 	private static final Debug TRACE_LOG = new Debug(PlotActivator.PLUGIN_ID, BulkIOSddsNxmBlock.class.getSimpleName());
-	
+
 	private static OrbSession orbSession = OrbSession.createSession();
 
 	private final ConcurrentHashMap<String, SddsStreamSession> streamIDToSSSMap = new ConcurrentHashMap<String, SddsStreamSession>();
-	private SddsNxmBlockSettings settings;
 
 	private ScaUsesPort scaUsesPort;
 	private org.omg.CORBA.Object corbaObjRef;
@@ -72,7 +71,7 @@ public class BulkIOSddsNxmBlock extends SddsNxmBlock {
 				streamID = id;
 			} else {
 				streamID = sss.getAttachId(); // fall-back to attachment ID
-				TRACE_LOG.message("WARN: no SDDSStreamDefinition.id specified! using attachID: " + streamID);
+				BulkIOSddsNxmBlock.TRACE_LOG.message("WARN: no SDDSStreamDefinition.id specified! using attachID: " + streamID);
 			}
 			streamIDToSSSMap.put(streamID, sss);
 
@@ -99,28 +98,30 @@ public class BulkIOSddsNxmBlock extends SddsNxmBlock {
 
 		@Override
 		protected void handleDetach(SddsStreamSession sss) throws DetachError, StreamInputError {
-			TRACE_LOG.enteringMethod(sss);
+			BulkIOSddsNxmBlock.TRACE_LOG.enteringMethod(sss);
 			String streamID = sss.getSddsStreamDef().id;
 			if (streamID == null) {
 				streamID = sss.getAttachId(); // fall-back to attachment ID
 			}
 			shutdown(streamID);
 			streamIDToSSSMap.remove(streamID);
-			TRACE_LOG.exitingMethod();
+			BulkIOSddsNxmBlock.TRACE_LOG.exitingMethod();
 		}
 
 		@Override
 		protected void handleStreamSRIChanged(@NonNull String streamID, @Nullable StreamSRI oldSri, @NonNull StreamSRI newSri) {
-			TRACE_LOG.enteringMethod(streamID, oldSri, newSri);
+			BulkIOSddsNxmBlock.TRACE_LOG.enteringMethod(streamID, oldSri, newSri);
 			// TODO: what should we do here?
 		}
 
 	} // inner class SddsPort
 
+	public BulkIOSddsNxmBlock(@NonNull AbstractNxmPlotWidget plotWidget, @NonNull ScaUsesPort scaUsesPort) {
+		this(plotWidget, scaUsesPort, null);
+	}
+
 	public BulkIOSddsNxmBlock(@NonNull AbstractNxmPlotWidget plotWidget, @NonNull ScaUsesPort scaUsesPort, @NonNull SddsNxmBlockSettings settings) {
-		super(plotWidget, settings);
-		setLabel("BULKIO SDDS");
-		this.settings = settings;
+		super(plotWidget, settings, null);
 		this.scaUsesPort = scaUsesPort;
 	}
 
@@ -132,60 +133,60 @@ public class BulkIOSddsNxmBlock extends SddsNxmBlock {
 
 		SddsStreamSession sss = streamIDToSSSMap.get(streamID);
 		SDDSStreamDefinition sddsSettings = sss.getSddsStreamDef();
-		String outputFormat = settings.getOutputFormat();
+		String outputFormat = getOutputFormat();
 		if (outputFormat == null) {
-			outputFormat = sddsDigraph2MidasFormatType(sddsSettings.dataFormat);
+			outputFormat = BulkIOSddsNxmBlock.sddsDigraph2MidasFormatType(sddsSettings.dataFormat);
 		}
 		final StringBuilder switches = new StringBuilder("");
-		final int pipeSize = settings.getPipeSize(); // in bytes
+		final int pipeSize = getPipeSize(); // in bytes
 		if (pipeSize > 0) {
 			switches.append("/PS=").append(pipeSize);
 		}
 
-		ByteOrder byteOrder = settings.getDataByteOrder();
+		ByteOrder byteOrder = getDataByteOrder();
 		String pattern = "SOURCENIC{0}/BG/BYTEORDER={1}/FC={2}/MGRP={3}/VLAN={4,number,#}/PORT={5,number,#} OUT={6}";
-		String cmdLine = MessageFormat.format(pattern, switches, byteOrder, outputFormat,
-				sddsSettings.multicastAddress, sddsSettings.vlan, sddsSettings.port, outputName);
+		String cmdLine = MessageFormat.format(pattern, switches, byteOrder, outputFormat, sddsSettings.multicastAddress, sddsSettings.vlan, sddsSettings.port,
+			outputName);
 
 		return cmdLine;
 	}
 
 	private void connect() throws CoreException {
 		sddsPort = new SddsPort();
-		Servant sddsPortServant = sddsPort.toServant(orbSession.getPOA());
+		Servant sddsPortServant = sddsPort.toServant(BulkIOSddsNxmBlock.orbSession.getPOA());
 
 		try {
-			corbaObjRef = orbSession.getPOA().servant_to_reference(sddsPortServant);
-			connectionId = createConnectionID();
+			corbaObjRef = BulkIOSddsNxmBlock.orbSession.getPOA().servant_to_reference(sddsPortServant);
+			connectionId = BulkIOSddsNxmBlock.createConnectionID();
 
 			scaUsesPort.connectPort(corbaObjRef, connectionId);
 		} catch (ServantNotActive e) {
-			throw new CoreException(new Status(Status.ERROR, PlotActivator.PLUGIN_ID, "Failed to register connection (1).", e));
+			throw new CoreException(new Status(IStatus.ERROR, PlotActivator.PLUGIN_ID, "Failed to register connection (1).", e));
 		} catch (WrongPolicy e) {
-			throw new CoreException(new Status(Status.ERROR, PlotActivator.PLUGIN_ID, "Failed to register connection (2).", e));
+			throw new CoreException(new Status(IStatus.ERROR, PlotActivator.PLUGIN_ID, "Failed to register connection (2).", e));
 		} catch (InvalidPort e) {
-			throw new CoreException(new Status(Status.ERROR, PlotActivator.PLUGIN_ID, "Failed to register connection (3).", e));
+			throw new CoreException(new Status(IStatus.ERROR, PlotActivator.PLUGIN_ID, "Failed to register connection (3).", e));
 		} catch (OccupiedPort e) {
-			throw new CoreException(new Status(Status.ERROR, PlotActivator.PLUGIN_ID, "Failed to register connection (4).", e));
+			throw new CoreException(new Status(IStatus.ERROR, PlotActivator.PLUGIN_ID, "Failed to register connection (4).", e));
 		} catch (SystemException e) {
-			throw new CoreException(new Status(Status.ERROR, PlotActivator.PLUGIN_ID, "Failed to register connection (5).", e));
+			throw new CoreException(new Status(IStatus.ERROR, PlotActivator.PLUGIN_ID, "Failed to register connection (5).", e));
 		}
 	}
 
 	@Override
 	public void start() throws CoreException {
-		TRACE_LOG.enteringMethod();
+		BulkIOSddsNxmBlock.TRACE_LOG.enteringMethod();
 		if (sddsPort != null) {
 			// PASS: TODO: disconnect from previous SDDS port impl/servant? or throw IllegalState Exception?
 		}
 
 		connect();
-		TRACE_LOG.exitingMethod();
+		BulkIOSddsNxmBlock.TRACE_LOG.exitingMethod();
 	}
 
 	@Override
 	public void stop() {
-		TRACE_LOG.enteringMethod();
+		BulkIOSddsNxmBlock.TRACE_LOG.enteringMethod();
 		try {
 			if (scaUsesPort != null) {
 				scaUsesPort.disconnectPort(connectionId); // disconnect from BULKIO dataSddsOut Port
@@ -203,12 +204,12 @@ public class BulkIOSddsNxmBlock extends SddsNxmBlock {
 		if (sddsPort != null) {
 			sddsPort = null;
 		}
-		TRACE_LOG.exitingMethod();
+		BulkIOSddsNxmBlock.TRACE_LOG.exitingMethod();
 	}
 
 	private static String sddsDigraph2MidasFormatType(SDDSDataDigraph sddsDataFormat) {
 		String format = null;
-		if        (SDDSDataDigraph.SDDS_SF.equals(sddsDataFormat)) {
+		if (SDDSDataDigraph.SDDS_SF.equals(sddsDataFormat)) {
 			format = "SF";
 		} else if (SDDSDataDigraph.SDDS_SI.equals(sddsDataFormat)) {
 			format = "SI";

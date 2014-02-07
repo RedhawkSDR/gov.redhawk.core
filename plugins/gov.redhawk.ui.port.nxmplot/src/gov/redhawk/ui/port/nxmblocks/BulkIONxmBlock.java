@@ -13,24 +13,29 @@ package gov.redhawk.ui.port.nxmblocks;
 import gov.redhawk.bulkio.util.AbstractUberBulkIOPort;
 import gov.redhawk.bulkio.util.BulkIOType;
 import gov.redhawk.bulkio.util.BulkIOUtilActivator;
+import gov.redhawk.internal.ui.preferences.BulkIOBlockPreferencePage;
 import gov.redhawk.model.sca.ScaUsesPort;
 import gov.redhawk.sca.util.Debug;
 import gov.redhawk.ui.port.nxmplot.AbstractNxmPlotWidget;
 import gov.redhawk.ui.port.nxmplot.PlotActivator;
+import gov.redhawk.ui.port.nxmplot.preferences.BulkIOPreferences;
+import gov.redhawk.ui.port.nxmplot.preferences.Preference;
 
 import java.text.MessageFormat;
 
 import nxm.redhawk.prim.corbareceiver2;
 import nxm.sys.lib.StringUtil;
 
-import org.eclipse.core.databinding.DataBindingContext;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.jdt.annotation.NonNull;
-import org.eclipse.swt.widgets.Composite;
+import org.eclipse.jface.preference.IPreferencePage;
+import org.eclipse.jface.preference.IPreferenceStore;
+import org.eclipse.jface.preference.PreferenceStore;
+import org.eclipse.jface.util.PropertyChangeEvent;
 
 import BULKIO.PrecisionUTCTime;
 import BULKIO.StreamSRI;
@@ -42,8 +47,6 @@ import BULKIO.StreamSRI;
 public class BulkIONxmBlock extends AbstractNxmBlock<corbareceiver2> {
 
 	private static final Debug TRACE_LOG = new Debug(PlotActivator.PLUGIN_ID, BulkIONxmBlock.class.getSimpleName());
-	
-	private BulkIONxmBlockSettings settings;
 
 	private ScaUsesPort scaPort;
 	private final BulkIOPort bulkIOPort = new BulkIOPort();
@@ -56,7 +59,7 @@ public class BulkIONxmBlock extends AbstractNxmBlock<corbareceiver2> {
 
 		@Override
 		protected void handleStreamSRIChanged(final String streamID, final StreamSRI oldSri, final StreamSRI newSri) {
-			TRACE_LOG.enteringMethod(streamID, oldSri, newSri);
+			BulkIONxmBlock.TRACE_LOG.enteringMethod(streamID, oldSri, newSri);
 			if (oldSri == null) { // only launch for a new stream
 				// run in background so we don't further block our caller and cause potential deadlock
 				Job job = new Job("launching stream [" + streamID + "] to plot") {
@@ -72,11 +75,11 @@ public class BulkIONxmBlock extends AbstractNxmBlock<corbareceiver2> {
 
 		private void handlePushPacket(int length, PrecisionUTCTime time, boolean endOfStream, String streamID) {
 			super.pushPacket(length, time, endOfStream, streamID);
-			if (endOfStream && BulkIONxmBlock.this.settings.isRemoveOnEndOfStream()) {
+			if (endOfStream && isRemoveOnEndOfStream()) {
 				shutdown(streamID);
 			}
 		}
-		
+
 		@Override
 		public void pushPacket(short[] data, PrecisionUTCTime time, boolean eos, String streamID) {
 			handlePushPacket(data.length, time, eos, streamID);
@@ -121,72 +124,83 @@ public class BulkIONxmBlock extends AbstractNxmBlock<corbareceiver2> {
 
 	} // end inner class BulkIOPort
 
-	/**
-	 * @param settings
-	 */
-	public BulkIONxmBlock(@NonNull AbstractNxmPlotWidget plotWidget, @NonNull ScaUsesPort scaUsesPort, @NonNull BulkIONxmBlockSettings settings) {
-		super(corbareceiver2.class, BulkIONxmBlockSettings.class, "BULKIO", plotWidget);
-		this.settings = settings;
+	public BulkIONxmBlock(AbstractNxmPlotWidget plotWidget, @NonNull ScaUsesPort scaUsesPort, BulkIONxmBlockSettings settings) {
+		super(corbareceiver2.class, plotWidget, BulkIONxmBlock.initPreferences());
 		this.scaPort = scaUsesPort;
 		this.ior = scaUsesPort.getIor();
 		String idl = scaPort.getRepid();
 		this.bulkIOType = BulkIOType.getType(idl);
-	}
-
-	@Override
-	public boolean hasControls() {
-		return true;
-	}
-
-	/* (non-Javadoc)
-	 * @see gov.redhawk.ui.port.nxmplot.IInputSource#createControls(org.eclipse.swt.widgets.Composite)
-	 */
-	@Override
-	public void createControls(Composite parent, Object settings, DataBindingContext dataBindingContext) {
-		BulkIONxmBlockSettings blockSettings = null;
-		if (settings instanceof BulkIONxmBlockSettings) {
-			blockSettings = (BulkIONxmBlockSettings) settings;
+		if (settings != null) {
+			applySettings(settings);
 		}
-		new BulkIONxmBlockControls(blockSettings, dataBindingContext).createControls(parent);
 	}
 
-	/* (non-Javadoc)
-	 * @see gov.redhawk.ui.port.nxmplot.INxmCmdSource#getSettings()
+	/**
+	 * @param settings
 	 */
-	@Override
+	public BulkIONxmBlock(AbstractNxmPlotWidget plotWidget, @NonNull ScaUsesPort scaUsesPort) {
+		this(plotWidget, scaUsesPort, null);
+	}
+
+	private static IPreferenceStore initPreferences() {
+		return Preference.initStoreFromWorkbench(BulkIOPreferences.getAllPreferences(), new PreferenceStore());
+	}
+
+	public boolean isRemoveOnEndOfStream() {
+		return BulkIOPreferences.REMOVE_ON_EOS.getValue(getPreferences());
+	}
+
 	public BulkIONxmBlockSettings getSettings() {
-		BulkIONxmBlockSettings clone = settings.clone();
+		BulkIONxmBlockSettings clone = new BulkIONxmBlockSettings(getPreferences());
 		return clone;
 	}
 
-	@Override
-	protected void applySettingsTo(corbareceiver2 cmd, Object settings, String streamId) {
-		if (settings instanceof BulkIONxmBlockSettings) {
-			BulkIONxmBlockSettings newSettings = (BulkIONxmBlockSettings) settings;
-			boolean blocking = newSettings.isBlocking();
-			Double sampleRate = newSettings.getSampleRate();
-			Integer pipeSize = newSettings.getPipeSize();
-			
-			this.settings.setBlocking(blocking);
-			this.settings.setSampleRate(sampleRate);
-			this.settings.setPipeSize(pipeSize);
-			this.settings.setRemoveOnEndOfStream(newSettings.isRemoveOnEndOfStream());
-			
-			cmd.setBlocking(blocking);
-			if (sampleRate == null) {
-				sampleRate = 0.0; // zero to use default from input stream
-			}
-			cmd.setSampleRate(sampleRate);
-			if (pipeSize != null) {
-				cmd.setPipeSize(pipeSize);
-			}
-			// cannot change connectionID at this time
+	public void applySettings(BulkIONxmBlockSettings newSettings) {
+		boolean blocking = newSettings.isBlocking();
+		Double sampleRate = newSettings.getSampleRate();
+		Integer pipeSize = newSettings.getPipeSize();
+
+		setBlocking(blocking);
+		if (sampleRate != null) {
+			setSampleRate(sampleRate);
+		} else {
+			unsetSampleRate();
 		}
+		if (pipeSize != null) {
+			setPipeSize(pipeSize);
+		}
+		setRemoveOnEndOfStream(newSettings.isRemoveOnEndOfStream());
+		if (newSettings.getConnectionID() != null && !newSettings.getConnectionID().isEmpty()) {
+			setConnectionID(newSettings.getConnectionID());
+		}
+		setTimelineLength(newSettings.getTimelineLength());
+	}
+
+	public void setSampleRate(double sampleRate) {
+		BulkIOPreferences.SAMPLE_RATE.setValue(getPreferences(), sampleRate);
+		BulkIOPreferences.SAMPLE_RATE_OVERRIDE.setValue(getPreferences(), true);
+	}
+
+	public void unsetSampleRate() {
+		BulkIOPreferences.SAMPLE_RATE.setToDefault(getPreferences());
+		BulkIOPreferences.SAMPLE_RATE_OVERRIDE.setToDefault(getPreferences());
+	}
+
+	public boolean isSetSampleRate() {
+		return BulkIOPreferences.SAMPLE_RATE_OVERRIDE.getValue(getPreferences());
+	}
+
+	public double getSampleRate() {
+		return BulkIOPreferences.SAMPLE_RATE.getValue(getPreferences());
+	}
+
+	public void setBlocking(boolean blocking) {
+		BulkIOPreferences.BLOCKING.setValue(getPreferences(), blocking);
 	}
 
 	@Override
 	public void start() throws CoreException {
-		this.originalConnectionID = settings.getConnectionID();
+		this.originalConnectionID = getConnectionID();
 		if (this.originalConnectionID != null && originalConnectionID.isEmpty()) {
 			this.originalConnectionID = null;
 		}
@@ -194,12 +208,12 @@ public class BulkIONxmBlock extends AbstractNxmBlock<corbareceiver2> {
 		if (connectionID == null) {
 			connectionID = ""; // set non-null value so that Connection ID field in adjust settings is read-only
 		}
-		this.settings.setConnectionID(connectionID);
+		setConnectionID(connectionID);
 	}
 
 	@Override
 	public void stop() {
-		TRACE_LOG.enteringMethod();
+		BulkIONxmBlock.TRACE_LOG.enteringMethod();
 		if (scaPort != null) {
 			BulkIOUtilActivator.getBulkIOPortConnectionManager().disconnect(ior, bulkIOType, bulkIOPort, this.originalConnectionID);
 			scaPort = null;
@@ -220,15 +234,15 @@ public class BulkIONxmBlock extends AbstractNxmBlock<corbareceiver2> {
 		putOutputNameMapping(0, streamID, outputName); // save output name mapping
 
 		final StringBuilder switches = new StringBuilder("/POLL=0.1");
-		final Integer pipeSize = settings.getPipeSize(); // in bytes
-		if (pipeSize != null) {
+		final int pipeSize = getPipeSize(); // in bytes
+		if (pipeSize > 0) {
 			switches.append("/PS=").append(pipeSize);
 		}
-		final int timeLineLen = settings.getTimelineLength();
+		final int timeLineLen = getTimelineLength();
 		if (timeLineLen > 0) {
 			switches.append("/TLL=").append(timeLineLen);
 		}
-		String customConnectionId = settings.getConnectionID();
+		String customConnectionId = getConnectionID();
 		if (customConnectionId != null && customConnectionId.trim().length() > 0) {
 			customConnectionId = StringUtil.escapeString(customConnectionId, true);
 			switches.append("/CONNECTIONID=\"").append(customConnectionId).append('\"');
@@ -238,6 +252,111 @@ public class BulkIONxmBlock extends AbstractNxmBlock<corbareceiver2> {
 		String cmdLine = MessageFormat.format(pattern, switches, outputName, ior, idl, streamID);
 
 		return cmdLine;
+	}
+
+	public String getConnectionID() {
+		return BulkIOPreferences.CONNECTION_ID.getValue(getPreferences());
+	}
+
+	public void setConnectionID(String connectionID) {
+		BulkIOPreferences.CONNECTION_ID.setValue(getPreferences(), connectionID);
+	}
+
+	public int getTimelineLength() {
+		return BulkIOPreferences.TLL.getValue(getPreferences());
+	}
+
+	public void setTimelineLength(int tll) {
+		BulkIOPreferences.TLL.setValue(getPreferences(), tll);
+	}
+
+	public int getPipeSize() {
+		return BulkIOPreferences.PIPE_SIZE.getValue(getPreferences());
+	}
+
+	public void setRemoveOnEndOfStream(boolean removeOnEndOfStream) {
+		BulkIOPreferences.REMOVE_ON_EOS.setValue(getPreferences(), removeOnEndOfStream);
+	}
+
+	public void setPipeSize(int pipeSize) {
+		BulkIOPreferences.PIPE_SIZE.setValue(getPreferences(), pipeSize);
+		BulkIOPreferences.PIPE_SIZE_OVERRIDE.setValue(getPreferences(), true);
+	}
+
+	public boolean isSetPipeSize() {
+		return BulkIOPreferences.PIPE_SIZE_OVERRIDE.getValue(getPreferences());
+	}
+
+	public void unsetPipeSize() {
+		BulkIOPreferences.PIPE_SIZE.setToDefault(getPreferences());
+		BulkIOPreferences.PIPE_SIZE_OVERRIDE.setToDefault(getPreferences());
+	}
+
+	@Override
+	public void propertyChange(PropertyChangeEvent event) {
+		Boolean blocking = null;
+		if (BulkIOPreferences.BLOCKING.isEvent(event)) {
+			blocking = (Boolean) event.getNewValue();
+		}
+
+		Double sampleRate = null;
+		if (BulkIOPreferences.SAMPLE_RATE.isEvent(event) || BulkIOPreferences.SAMPLE_RATE_OVERRIDE.isEvent(event)) {
+			if (isSetSampleRate()) {
+				sampleRate = getSampleRate();
+			} else {
+				sampleRate = 0.0; // zero to use default from input stream
+			}
+		}
+
+		Integer pipeSize = null;
+		if (BulkIOPreferences.PIPE_SIZE.isEvent(event) || BulkIOPreferences.PIPE_SIZE_OVERRIDE.isEvent(event)) {
+			if (isSetPipeSize()) {
+				pipeSize = getPipeSize();
+			} else {
+				pipeSize = BulkIOPreferences.PIPE_SIZE.getDefaultValue();
+			}
+			if (pipeSize <= 0) { // PANIC!!
+				pipeSize = 131072;
+			}
+		}
+
+		Boolean canGrowPipe = null;
+		if (BulkIOPreferences.CAN_GROW_PIPE.isEvent(event)) {
+			canGrowPipe = (Boolean) event.getNewValue();
+		}
+
+		Integer pipeSizeMultiplier = null;
+		if (BulkIOPreferences.PIPE_SIZE_MULTIPLIER.isEvent(event)) {
+			pipeSizeMultiplier = (Integer) event.getNewValue();
+		}
+
+		for (corbareceiver2 cmd : getNxmCommands()) {
+			if (blocking != null) {
+				cmd.setBlocking(blocking);
+			}
+			if (pipeSize != null) {
+				cmd.setPipeSize(pipeSize);
+			}
+
+			if (canGrowPipe != null) {
+				cmd.setCanGrowPipe(canGrowPipe);
+			}
+
+			if (pipeSizeMultiplier != null) {
+				cmd.setPipeSizeMultiplier(pipeSizeMultiplier);
+			}
+
+			if (sampleRate != null) {
+				cmd.setSampleRate(sampleRate);
+			}
+		}
+	}
+
+	@Override
+	public IPreferencePage createPreferencePage() {
+		BulkIOBlockPreferencePage retVal = new BulkIOBlockPreferencePage();
+		retVal.setPreferenceStore(getPreferences());
+		return retVal;
 	}
 
 }

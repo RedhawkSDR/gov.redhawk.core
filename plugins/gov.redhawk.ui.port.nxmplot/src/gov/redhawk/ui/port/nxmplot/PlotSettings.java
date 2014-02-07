@@ -10,6 +10,9 @@
  */
 package gov.redhawk.ui.port.nxmplot;
 
+import gov.redhawk.ui.port.nxmplot.preferences.PlotPreferences;
+
+import org.eclipse.jface.preference.IPreferenceStore;
 
 /**
  * These setting are intended ONLY for the PLOT widget (not it's data source Port(s)).
@@ -17,88 +20,45 @@ package gov.redhawk.ui.port.nxmplot;
  */
 public class PlotSettings {
 
-	private Integer  frameSize      = null; // null to use default (e.g. from SRI) - DEPRECATED (as this is for a source)
-	private Double   sampleRate     = null; // null to use default (e.g. from SRI) - DEPRECATED (as this is for a source)
+	private Integer frameSize = null; // null to use default (e.g. from SRI) - DEPRECATED (as this is for a source)
+	private Double sampleRate = null; // null to use default (e.g. from SRI) - DEPRECATED (as this is for a source)
 	private Boolean blockingOption = false; // null to use default - DEPRECATED (as this is for a source)
 
-	private Double   minValue       = null; // null to use default (i.e. AutoMin)
-	private Double   maxValue       = null; // null to use default (i.e. AutoMax)
-	private PlotType plotType       = null; // null to not change plot type (line, raster, etc.)
-	private PlotMode plotMode       = null; // plot mode (i.e. complex mode (CM=)) (null to use default / no change)
-	private Boolean  enablePlotMenu = null; // null to use configured preference default - enable/disable middle-mouse-button (MMB) to bring up PLOT's configure menu
-	private String   launchArgs     = null; // additional arguments when launching/running PLOT
-	private String   launchSwitches = null; // additional switches when launching/running PLOT
+	private Double minValue = null; // null to use default (i.e. AutoMin)
+	private Double maxValue = null; // null to use default (i.e. AutoMax)
+	private PlotType plotType = null; // null to not change plot type (line, raster, etc.)
+	private PlotMode plotMode = null; // plot mode (i.e. complex mode (CM=)) (null to use default / no change)
+	private Boolean enablePlotMenu = null; // null to use configured preference default - enable/disable middle-mouse-button (MMB) to bring up PLOT's configure menu
+	private String launchArgs = null; // additional arguments when launching/running PLOT
+	private String launchSwitches = null; // additional switches when launching/running PLOT
 
 	/** plot data mode / complex mode (i.e. CM= arg or MPlot.setMode(..)).
 	 * @since 4.4
 	 */
 	public static enum PlotMode {
-		MAGNITUDE {
-			public String toModeString() {
-				return "Mag";
-			}
-		},
-		PHASE {
-			public String toModeString() {
-				return "Phase";
-			}
-		},
-		REAL {
-			public String toModeString() {
-				return "Real";
-			}
-		},
-		IMAGINARY {
-			public String toModeString() {
-				return "Imag";
-			}
-		},
-		REAL_AND_IMAGINARY {
-			public String toModeString() {
-				return "RnI";
-			}
-		},
-		REAL_VS_IMAGINARY {
-			public String toModeString() {
-				return "RvI";
-			}
-		},
-		TEN_LOG {
-			public String toModeString() {
-				return "10Log";
-			}
-			@Override
-			public String toString() {
-				return toModeString();
-			}
-		},
-		TWENTY_LOG {
-			public String toModeString() {
-				return "20Log";
-			}
-			@Override
-			public String toString() {
-				return toModeString();
-			}
-		},
-		X {
-			public String toModeString() {
-				return "X";
-			}
-		},
-		Y {
-			public String toModeString() {
-				return "Y";
-			}
-		},
-		Z {
-			public String toModeString() {
-				return "Z";
-			}
-		};
-		
-		public abstract String toModeString();
-		
+		AUTO(""),
+		MAGNITUDE("Mag"),
+		PHASE("Phase"),
+		REAL("Real"),
+		IMAGINARY("Imag"),
+		REAL_AND_IMAGINARY("RnI"),
+		REAL_VS_IMAGINARY("RvI"),
+		TEN_LOG("10Log"),
+		TWENTY_LOG("20Log"),
+		X("X"),
+		Y("Y"),
+		Z("Z");
+
+		private String modeStr;
+
+		private PlotMode(String modeStr) {
+			this.modeStr = modeStr;
+		}
+
+		public String toModeString() {
+			return modeStr;
+		}
+
 		/** convert from plot's mode string (e.g. CM= arg) to this enum. */
 		public static PlotMode of(String modeString) {
 			for (PlotMode plotMode : PlotMode.values()) {
@@ -109,13 +69,32 @@ public class PlotSettings {
 			throw new IllegalArgumentException("Invalid plot mode string: " + modeString);
 		}
 	}
-	
+
 	public PlotSettings() {
+		this(PlotActivator.getDefault().getPreferenceStore());
+	}
+
+	/**
+	 * @since 4.4
+	 */
+	public PlotSettings(IPreferenceStore store) {
+		//		this.sampleRate = Plot
+		//		this.blockingOption = PlotPreferences.
+		this.enablePlotMenu = PlotPreferences.ENABLE_CONFIGURE_MENU_USING_MOUSE.getValue(store);
+		this.frameSize = PlotPreferences.FRAMESIZE.getValue(store);
+		//		this.launchArgs = PlotPreferences.LAUNCH_ARGS.getValue(store);
+		//		this.launchSwitches = PlotPreferences.LAUNCH_SWITCHES.getValue(store);
+		//		this.maxValue = PlotPreferences.MAX.getValue(store);
+		//		this.minValue = PlotPreferences.MIN.getValue(store);
+		String modeString = PlotPreferences.MODE.getValue(store);
+		this.plotMode = PlotMode.valueOf(PlotPreferences.MODE.getValue(store));
+		//		this.plotType = PlotType.valueOf(PlotPreferences.TYPE.getValue(store));
 	}
 
 	/** copy constructor */
 	public PlotSettings(PlotSettings settings) {
-		this.frameSize  = settings.frameSize;
+		this();
+		this.frameSize = settings.frameSize;
 		this.sampleRate = settings.sampleRate;
 		this.blockingOption = settings.blockingOption;
 		this.minValue = settings.minValue;
@@ -126,6 +105,7 @@ public class PlotSettings {
 	}
 
 	public PlotSettings(final PlotType plotType) {
+		this();
 		this.plotType = plotType;
 	}
 
@@ -137,7 +117,7 @@ public class PlotSettings {
 	public PlotSettings(final PlotType plotType, PlotMode plotMode) {
 		this(plotType, plotMode, null, null);
 	}
-	
+
 	/**
 	 * @param plotType
 	 * @param launchArgs
@@ -145,6 +125,7 @@ public class PlotSettings {
 	 * @param launchSwitches
 	 */
 	public PlotSettings(final PlotType plotType, PlotMode plotMode, String launchArgs, String launchSwitches) {
+		this();
 		this.plotType = plotType;
 		this.plotMode = plotMode;
 		this.launchArgs = launchArgs;
@@ -158,9 +139,10 @@ public class PlotSettings {
 	public PlotSettings(final Integer frameSize, final Double minValue, final Double maxValue, final Double sampleRate, final PlotType plotType) {
 		this(frameSize, minValue, maxValue, Boolean.TRUE, sampleRate, plotType);
 	}
-	
-	PlotSettings(final Integer frameSize, final Double minValue, final Double maxValue, final Boolean blockingOption, final Double sampleRate, final PlotType plotType) {
-		super();
+
+	PlotSettings(final Integer frameSize, final Double minValue, final Double maxValue, final Boolean blockingOption, final Double sampleRate,
+		final PlotType plotType) {
+		this();
 		this.frameSize = frameSize;
 		this.sampleRate = sampleRate;
 		this.blockingOption = blockingOption;
@@ -304,19 +286,19 @@ public class PlotSettings {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((frameSize      == null) ? 0 : frameSize.hashCode());
-		result = prime * result + ((sampleRate     == null) ? 0 : sampleRate.hashCode());
-		result = prime * result + ((maxValue       == null) ? 0 : maxValue.hashCode());
-		result = prime * result + ((minValue       == null) ? 0 : minValue.hashCode());
-		result = prime * result + ((plotType       == null) ? 0 : plotType.hashCode());
+		result = prime * result + ((frameSize == null) ? 0 : frameSize.hashCode());
+		result = prime * result + ((sampleRate == null) ? 0 : sampleRate.hashCode());
+		result = prime * result + ((maxValue == null) ? 0 : maxValue.hashCode());
+		result = prime * result + ((minValue == null) ? 0 : minValue.hashCode());
+		result = prime * result + ((plotType == null) ? 0 : plotType.hashCode());
 		result = prime * result + ((blockingOption == null) ? 0 : blockingOption.hashCode());
-		result = prime * result + ((plotMode       == null) ? 0 : plotMode.hashCode());
+		result = prime * result + ((plotMode == null) ? 0 : plotMode.hashCode());
 		result = prime * result + ((enablePlotMenu == null) ? 0 : enablePlotMenu.hashCode());
-		result = prime * result + ((launchArgs     == null) ? 0 : launchArgs.hashCode());
+		result = prime * result + ((launchArgs == null) ? 0 : launchArgs.hashCode());
 		result = prime * result + ((launchSwitches == null) ? 0 : launchSwitches.hashCode());
 		return result;
 	}
-	
+
 	/* (non-Javadoc)
 	 * @see java.lang.Object#equals(java.lang.Object)
 	 */
@@ -400,5 +382,5 @@ public class PlotSettings {
 		}
 		return true;
 	}
-	
+
 }

@@ -13,6 +13,8 @@ package gov.redhawk.ui.port.nxmplot;
 
 import gov.redhawk.internal.ui.port.nxmplot.PlotSession;
 import gov.redhawk.ui.port.nxmplot.PlotSettings.PlotMode;
+import gov.redhawk.ui.port.nxmplot.preferences.PlotPreferences;
+import gov.redhawk.ui.port.nxmplot.preferences.Preference;
 
 import java.util.Collections;
 import java.util.HashMap;
@@ -34,6 +36,9 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.ListenerList;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jdt.annotation.Nullable;
+import org.eclipse.jface.preference.IPreferenceStore;
+import org.eclipse.jface.util.IPropertyChangeListener;
+import org.eclipse.jface.util.PropertyChangeEvent;
 import org.eclipse.jface.util.SafeRunnable;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.statushandlers.StatusManager;
@@ -51,7 +56,13 @@ public abstract class AbstractNxmPlotWidget extends Composite {
 	private static final AtomicInteger PIPE_NAME_INDEX = new AtomicInteger();
 
 	private StreamSRI activeSRI;
-	private PlotSettings plotSettings = new PlotSettings();
+	private IPreferenceStore store = Preference.initStoreFromWorkbench(PlotPreferences.getAllPreferences(), null);
+	private IPropertyChangeListener listener = new IPropertyChangeListener() {
+		@Override
+		public void propertyChange(PropertyChangeEvent event) {
+			handlePropertyChange(event);
+		}
+	};
 	private final Map<String, IPlotSession> inputSessions = Collections.synchronizedMap(new HashMap<String, IPlotSession>());
 
 	/**
@@ -175,6 +186,7 @@ public abstract class AbstractNxmPlotWidget extends Composite {
 	public AbstractNxmPlotWidget(final Composite parent, int style) {
 		super(parent, style);
 		addMessageHandler(this.plotMessageHandler);
+		store.addPropertyChangeListener(listener);
 	}
 
 	public void addPlotListener(final IPlotWidgetListener listener) {
@@ -238,11 +250,13 @@ public abstract class AbstractNxmPlotWidget extends Composite {
 	 * This method initializes the plot by calling the plot command and any other NextMidas commands necessary for plotting.
 	 * This method should be called once before any other commands are invoked.
 	 * Any additional calls will be ignored.
-	 * @param plotSwtiches Switches to send to the plot command (MUST start with '/' if not empty or null).
+	 * @param plotSwitches Switches to send to the plot command (MUST start with '/' if not empty or null).
 	 * @param plotArgs Arguments to send to the plot command
 	 */
-	public final void initPlot(String plotSwtiches, String plotArgs) {
-		internalInitPlot(plotSwtiches, plotArgs);
+	public final void initPlot(String plotSwitches, String plotArgs) {
+		setPlotSwitches(plotSwitches);
+		setPlotArgs(plotArgs);
+
 		PlotType type = null;
 		if (plotArgs != null) {
 			String upperCase = plotArgs.toUpperCase();
@@ -255,10 +269,72 @@ public abstract class AbstractNxmPlotWidget extends Composite {
 		}
 
 		if (type != null) {
-			plotSettings.setPlotType(type);
+			setPlotType(type);
 		} else {
-			plotSettings.setPlotType(PlotType.RASTER);
+			setPlotType(PlotType.RASTER);
 		}
+
+		internalInitPlot(plotSwitches, plotArgs);
+	}
+
+	/**
+	 * @since 4.4
+	 */
+	public void setPlotArgs(String plotArgs) {
+		PlotPreferences.LAUNCH_ARGS.setValue(store, plotArgs);
+		PlotPreferences.LAUNCH_ARGS_OVERRIDE.setValue(store, true);
+	}
+
+	/**
+	 * @since 4.4
+	 */
+	public String getPlotArgs() {
+		return PlotPreferences.LAUNCH_ARGS.getValue(store);
+	}
+
+	/**
+	 * @since 4.4
+	 */
+	public boolean isSetPlotArgs() {
+		return PlotPreferences.LAUNCH_ARGS_OVERRIDE.getValue(store);
+	}
+
+	/**
+	 * @since 4.4
+	 */
+	public void unsetPlotArgs() {
+		PlotPreferences.LAUNCH_ARGS.setToDefault(store);
+		PlotPreferences.LAUNCH_ARGS_OVERRIDE.setValue(store, false);
+	}
+
+	/**
+	 * @since 4.4
+	 */
+	public void setPlotSwitches(String plotSwitches) {
+		PlotPreferences.LAUNCH_SWITCHES.setValue(store, plotSwitches);
+		PlotPreferences.LAUNCH_SWITCHES_OVERRIDE.setValue(store, true);
+	}
+
+	/**
+	 * @since 4.4
+	 */
+	public String getPlotSwitches() {
+		return PlotPreferences.LAUNCH_SWITCHES.getValue(store);
+	}
+
+	/**
+	 * @since 4.4
+	 */
+	public boolean isSetPlotSwitches() {
+		return PlotPreferences.LAUNCH_SWITCHES_OVERRIDE.getValue(store);
+	}
+
+	/**
+	 * @since 4.4
+	 */
+	public void unsetPlotSwitches() {
+		PlotPreferences.LAUNCH_SWITCHES.setToDefault(store);
+		PlotPreferences.LAUNCH_SWITCHES_OVERRIDE.setValue(store, false);
 	}
 
 	/**
@@ -458,18 +534,19 @@ public abstract class AbstractNxmPlotWidget extends Composite {
 	 * @since 4.2
 	 */
 	public PlotSettings getPlotSettings() {
-		plot curPlot = getPlot();
-		if (curPlot != null) {
-			String curPlotModeStr = curPlot.MP.getMode();
-			if (!"".equals(curPlotModeStr)) {
-				plotSettings.setPlotMode(PlotMode.of(curPlotModeStr));
-			}
-			String curPlotTypeStr = curPlot.getPlotType();
-			if (!"".equals(curPlotTypeStr)) {
-				plotSettings.setPlotType(PlotType.valueOf(curPlotTypeStr));
-			}
-		}
-		return new PlotSettings(this.plotSettings);
+		// TODO should we pull it from the plot?
+		//		plot curPlot = getPlot();
+		//		if (curPlot != null) {
+		//			String curPlotModeStr = curPlot.MP.getMode();
+		//			if (!"".equals(curPlotModeStr)) {
+		//				plotSettings.setPlotMode(PlotMode.of(curPlotModeStr));
+		//			}
+		//			String curPlotTypeStr = curPlot.getPlotType();
+		//			if (!"".equals(curPlotTypeStr)) {
+		//				plotSettings.setPlotType(PlotType.valueOf(curPlotTypeStr));
+		//			}
+		//		}
+		return new PlotSettings(store);
 	}
 
 	/**
@@ -479,6 +556,139 @@ public abstract class AbstractNxmPlotWidget extends Composite {
 	public void dispose() {
 		super.dispose();
 		clearSources();
+		store.removePropertyChangeListener(listener);
+	}
+
+	/**
+	 * @since 4.4
+	 */
+	public double getMinValue() {
+		return PlotPreferences.MIN.getValue(store);
+	}
+
+	/**
+	 * @since 4.4
+	 */
+	public void setMinValue(double minValue) {
+		PlotPreferences.MIN.setValue(store, minValue);
+		PlotPreferences.MIN_OVERRIDE.setValue(store, true);
+	}
+
+	/**
+	 * @since 4.4
+	 */
+	public void unsetMinValue() {
+		PlotPreferences.MIN.setToDefault(store);
+		PlotPreferences.MIN_OVERRIDE.setValue(store, false);
+	}
+
+	/**
+	 * @since 4.4
+	 */
+	public boolean isSetMinValue() {
+		return PlotPreferences.MIN_OVERRIDE.getValue(store);
+	}
+
+	/**
+	 * @since 4.4
+	 */
+	public double getMaxValue() {
+		return PlotPreferences.MAX.getValue(store);
+	}
+
+	/**
+	 * @since 4.4
+	 */
+	public void setMaxValue(double maxValue) {
+		PlotPreferences.MAX.setValue(store, maxValue);
+		PlotPreferences.MAX_OVERRIDE.setValue(store, true);
+	}
+
+	/**
+	 * @since 4.4
+	 */
+	public void unsetMaxValue() {
+		PlotPreferences.MAX.setToDefault(store);
+		PlotPreferences.MAX_OVERRIDE.setValue(store, false);
+	}
+
+	/**
+	 * @since 4.4
+	 */
+	public boolean isSetMaxValue() {
+		return PlotPreferences.MAX_OVERRIDE.getValue(store);
+	}
+
+	/**
+	 * @since 4.4
+	 */
+	public int getFrameSize() {
+		return PlotPreferences.FRAMESIZE.getValue(store);
+	}
+
+	/**
+	 * @since 4.4
+	 */
+	public void setFrameSize(int fs) {
+		PlotPreferences.FRAMESIZE.setValue(store, fs);
+		PlotPreferences.FRAMESIZE_OVERRIDE.setValue(store, true);
+	}
+
+	/**
+	 * @since 4.4
+	 */
+	public void unsetFrameSize() {
+		PlotPreferences.FRAMESIZE.setToDefault(store);
+		PlotPreferences.FRAMESIZE_OVERRIDE.setValue(store, false);
+	}
+
+	/**
+	 * @since 4.4
+	 */
+	public boolean isSetFrameSize() {
+		return PlotPreferences.FRAMESIZE_OVERRIDE.getValue(store);
+	}
+
+	/**
+	 * @since 4.4
+	 */
+	public PlotType getPlotType() {
+		return PlotType.valueOf(PlotPreferences.TYPE.getValue(store));
+	}
+
+	/**
+	 * @since 4.4
+	 */
+	public void setPlotType(PlotType plotType) {
+		PlotPreferences.TYPE.setValue(store, plotType.toString());
+	}
+
+	/**
+	 * @since 4.4
+	 */
+	public PlotMode getPlotMode() {
+		return PlotMode.valueOf(PlotPreferences.MODE.getValue(store));
+	}
+
+	/**
+	 * @since 4.4
+	 */
+	public void setPlotMode(PlotMode plotMode) {
+		PlotPreferences.MODE.setValue(store, plotMode.toString());
+	}
+
+	/**
+	 * @since 4.4
+	 */
+	public boolean isEnablePlotMenu() {
+		return PlotPreferences.ENABLE_CONFIGURE_MENU_USING_MOUSE.getValue(store);
+	}
+
+	/**
+	 * @since 4.4
+	 */
+	public void setEnablePlotMenu(boolean enablePlotMenu) {
+		PlotPreferences.ENABLE_CONFIGURE_MENU_USING_MOUSE.setValue(store, enablePlotMenu);
 	}
 
 	/**
@@ -486,108 +696,69 @@ public abstract class AbstractNxmPlotWidget extends Composite {
 	 * @param custom plot settings to apply
 	 * @since 4.2
 	 */
-	@SuppressWarnings("deprecation")
 	public void applySettings(PlotSettings settings) {
 		if (settings != null) {
-			if (this.plotSettings.equals(settings)) {
-				return;
-			}
-			Integer subsize = settings.getFrameSize();
-			this.plotSettings.setFrameSize(subsize);
-			Double sampleRate = settings.getSampleRate();
-			this.plotSettings.setSampleRate(sampleRate);
+
 			Double minVal = settings.getMinValue();
-			this.plotSettings.setMinValue(minVal);
-			Double maxVal = settings.getMaxValue();
-			this.plotSettings.setMaxValue(maxVal);
-			PlotType plotType = settings.getPlotType();
-			boolean changedType = false;
-			if (plotType != null) {
-				this.plotSettings.setPlotType(plotType);
-				changedType = true;
-			} else {
-				plotType = plotSettings.getPlotType();
-			}
-			final Boolean blockingOption = settings.getBlockingOption();
-			this.plotSettings.setBlockingOption(blockingOption);
-			final PlotMode plotMode = settings.getPlotMode();
-			final Boolean enablePlotMenu = settings.getEnablePlotMenu();
-
-			// vvvvv DEPRECATED - begin adjust CORBARECEIVER settings vvvvv
-			// apply frame size and sample rate settings change to CORBARECEIVERs
-			Table msgData = new Table();
-			boolean overrideSampleRate = (sampleRate != null);
-			boolean overrideSubSize = (subsize != null);
-			if (!overrideSubSize) {
-				subsize = -1; // -1 tells CORBARECEIVER to use it's orig frame size value
-			}
-			msgData.put("OVERRIDESRISUBSIZE", overrideSubSize);
-			msgData.put("FRAMESIZE", subsize);
-			msgData.put("OVERRIDESRISAMPLERATE", overrideSampleRate);
-			if (overrideSampleRate) {
-				msgData.put("SAMPLERATE", sampleRate);
-			}
-			if (blockingOption != null) {
-				msgData.put("BLOCKING", blockingOption);
-			}
-			for (IPlotSession session : inputSessions.values()) {
-				if (session instanceof PlotSession) {
-					String cmdID = ((PlotSession) session).getCommandId();
-					sendMessageToCommand(cmdID, "CHANGE_CORBARECEIVER_SETTINGS", 0, msgData, null);
-				}
-			}
-			// ^^^^^ DEPRECATED - end adjust CORBARECEIVER settings ^^^^^
-
-			// adjust PLOT settings
-			if (enablePlotMenu != null) {
-				if (!enablePlotMenu.equals(this.plotSettings.getEnablePlotMenu())) {
-					this.plotSettings.setEnablePlotMenu(enablePlotMenu);
-					String newValue = (enablePlotMenu) ? "-NoMiddleMouse" : "+NoMiddleMouse";
-					sendPlotMessage("SET.MW.EventFilter", 0, newValue);
-				}
-			}
-
-			if (plotMode != this.plotSettings.getPlotMode()) { // can use == comparator for Enums
-				this.plotSettings.setPlotMode(plotMode);
-				if (plotMode != null) { // cannot go back to default as we don't know what it was
-					sendPlotMessage("SET.MODE", 0, plotMode.toModeString());
-				}
-			}
-
-			if (plotType != null && changedType) {
-				sendPlotMessage("SET.PlotType", 0, plotType.toString());
-			}
-
-			final boolean isRaster = PlotType.RASTER.equals(plotType);
-			String plotScaleSetting;
-			String plotMinProperty = null;
-			String plotMaxProperty = null;
 			if (minVal != null) {
-				if (isRaster) {
-					plotMinProperty = "SET.Z1";
-				} else {
-					plotMinProperty = "SET.Y1";
-				}
-				plotScaleSetting = "-AutoMin";
-			} else {
-				plotScaleSetting = "+AutoMin";
+				setMinValue(minVal);
 			}
+
+			Double maxVal = settings.getMaxValue();
 			if (maxVal != null) {
-				if (isRaster) {
-					plotMaxProperty = "SET.Z2";
-				} else {
-					plotMaxProperty = "SET.Y2";
-				}
-				plotScaleSetting += "|-AutoMax";
-			} else {
-				plotScaleSetting += "|+AutoMax";
+				setMaxValue(maxVal);
 			}
-			sendPlotMessage("SET.SCALE", 0, plotScaleSetting); // should set scale setting before setting min/max
-			if (plotMinProperty != null) {
-				sendPlotMessage(plotMinProperty, 0, minVal);
+
+			PlotType plotType = settings.getPlotType();
+			if (plotType != null) {
+				setPlotType(plotType);
 			}
-			if (plotMaxProperty != null) {
-				sendPlotMessage(plotMaxProperty, 0, maxVal);
+
+			final PlotMode plotMode = settings.getPlotMode();
+			if (plotMode != getPlotMode()) {
+				setPlotMode(plotMode);
+			}
+
+			final Boolean enablePlotMenu = settings.getEnablePlotMenu();
+			if (enablePlotMenu != null) {
+				setEnablePlotMenu(enablePlotMenu);
+			}
+
+			updateCorbaReceiverSettings(settings);
+
+		}
+	}
+
+	/**
+	 * apply frame size and sample rate settings change to CORBARECEIVERs
+	 * @param settings
+	 * @deprecated  begin adjust CORBARECEIVER setting
+	 */
+	@Deprecated
+	private void updateCorbaReceiverSettings(PlotSettings settings) {
+		final Boolean blockingOption = settings.getBlockingOption();
+		Integer subsize = settings.getFrameSize();
+		Double sampleRate = settings.getSampleRate();
+
+		Table msgData = new Table();
+		boolean overrideSampleRate = (sampleRate != null);
+		boolean overrideSubSize = (subsize != null);
+		if (!overrideSubSize) {
+			subsize = -1; // -1 tells CORBARECEIVER to use it's orig frame size value
+		}
+		msgData.put("OVERRIDESRISUBSIZE", overrideSubSize);
+		msgData.put("FRAMESIZE", subsize);
+		msgData.put("OVERRIDESRISAMPLERATE", overrideSampleRate);
+		if (overrideSampleRate) {
+			msgData.put("SAMPLERATE", sampleRate);
+		}
+		if (blockingOption != null) {
+			msgData.put("BLOCKING", blockingOption);
+		}
+		for (IPlotSession session : inputSessions.values()) {
+			if (session instanceof PlotSession) {
+				String cmdID = ((PlotSession) session).getCommandId();
+				sendMessageToCommand(cmdID, "CHANGE_CORBARECEIVER_SETTINGS", 0, msgData, null);
 			}
 		}
 	}
@@ -618,4 +789,103 @@ public abstract class AbstractNxmPlotWidget extends Composite {
 		}
 	}
 
+	/**
+	 * @since 4.4
+	 */
+	public IPreferenceStore getPreferenceStore() {
+		return this.store;
+	}
+
+	/**
+	 * @since 4.4
+	 */
+	protected void handlePropertyChange(PropertyChangeEvent event) {
+		if (PlotPreferences.ENABLE_CONFIGURE_MENU_USING_MOUSE.isEvent(event)) {
+			updateMenu();
+		}
+
+		if (PlotPreferences.LAUNCH_ARGS.isEvent(event) || PlotPreferences.LAUNCH_ARGS_OVERRIDE.isEvent(event)) {
+			updateLaunchArgs();
+		}
+
+		if (PlotPreferences.LAUNCH_SWITCHES.isEvent(event) || PlotPreferences.LAUNCH_SWITCHES_OVERRIDE.isEvent(event)) {
+			updateLaunchSwitches();
+		}
+
+		if (PlotPreferences.MIN.isEvent(event) || PlotPreferences.MIN_OVERRIDE.isEvent(event) || PlotPreferences.MAX.isEvent(event)
+				|| PlotPreferences.MAX_OVERRIDE.isEvent(event)) {
+			updateScale();
+		}
+
+		if (PlotPreferences.MODE.isEvent(event)) {
+			updateMode();
+		}
+
+		if (PlotPreferences.TYPE.isEvent(event)) {
+			updateType();
+		}
+	}
+
+	private void updateLaunchSwitches() {
+		// TODO Auto-generated method stub
+
+	}
+
+	private void updateLaunchArgs() {
+		// TODO Auto-generated method stub
+
+	}
+
+	private void updateType() {
+		sendPlotMessage("SET.PlotType", 0, getPlotType().toString());
+	}
+
+	private void updateMode() {
+		if (getPlotMode().toModeString() != null && !getPlotMode().toModeString().isEmpty()) {
+			sendPlotMessage("SET.MODE", 0, getPlotMode().toModeString());
+		} else {
+			// PASS
+			// TODO Set back to auto mode
+		}
+	}
+
+	private void updateMenu() {
+		String newValue = (isEnablePlotMenu()) ? "-NoMiddleMouse" : "+NoMiddleMouse";
+		sendPlotMessage("SET.MW.EventFilter", 0, newValue);
+	}
+
+	private void updateScale() {
+		final boolean isRaster = PlotType.RASTER.equals(getPlotType());
+		String plotScaleSetting;
+		String plotMinProperty = null;
+		String plotMaxProperty = null;
+		if (isSetMinValue()) {
+			if (isRaster) {
+				plotMinProperty = "SET.Z1";
+			} else {
+				plotMinProperty = "SET.Y1";
+			}
+			plotScaleSetting = "-AutoMin";
+		} else {
+			plotScaleSetting = "+AutoMin";
+		}
+		if (isSetMaxValue()) {
+			if (isRaster) {
+				plotMaxProperty = "SET.Z2";
+			} else {
+				plotMaxProperty = "SET.Y2";
+			}
+			plotScaleSetting += "|-AutoMax";
+		} else {
+			plotScaleSetting += "|+AutoMax";
+		}
+		sendPlotMessage("SET.SCALE", 0, plotScaleSetting); // should set scale setting before setting min/max
+		if (plotMinProperty != null) {
+			sendPlotMessage(plotMinProperty, 0, getMinValue());
+		}
+		if (plotMaxProperty != null) {
+			sendPlotMessage(plotMaxProperty, 0, getMaxValue());
+		}
+
+	}
 }

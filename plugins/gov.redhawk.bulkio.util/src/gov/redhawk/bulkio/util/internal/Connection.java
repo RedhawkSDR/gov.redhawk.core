@@ -17,7 +17,9 @@ import gov.redhawk.bulkio.util.PortReference;
 import gov.redhawk.sca.util.Debug;
 import gov.redhawk.sca.util.OrbSession;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.LinkedBlockingQueue;
@@ -55,6 +57,7 @@ import CF.PortPackage.InvalidPort;
  */
 public class Connection extends AbstractUberBulkIOPort {
 	private static final Debug DEBUG_PUSHPACKET = new Debug(BulkIOUtilActivator.PLUGIN_ID, Connection.class.getSimpleName());
+	private static final SimpleDateFormat FORMAT = new SimpleDateFormat("yyyyMMddHHmmSSSS");
 
 	private OrbSession orbSession = OrbSession.createSession();
 	private final ConnectionKey info;
@@ -107,7 +110,7 @@ public class Connection extends AbstractUberBulkIOPort {
 
 	public Connection(ConnectionKey info) {
 		this.info = info;
-		if (info.getConnectionID() == null) {
+		if (info.getConnectionID() == null || info.getConnectionID().isEmpty()) {
 			connectionId = Connection.createConnectionID();
 		} else {
 			connectionId = info.getConnectionID();
@@ -155,7 +158,7 @@ public class Connection extends AbstractUberBulkIOPort {
 	}
 
 	private static String createConnectionID() {
-		return System.getProperty("user.name", "user") + "_" + System.currentTimeMillis();
+		return System.getProperty("user.name", "user") + "_" + Connection.FORMAT.format(Calendar.getInstance().getTime());
 	}
 
 	public void dispose() {

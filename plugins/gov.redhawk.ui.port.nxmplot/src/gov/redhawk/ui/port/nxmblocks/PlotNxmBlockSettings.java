@@ -11,7 +11,10 @@
  */
 package gov.redhawk.ui.port.nxmblocks;
 
+import gov.redhawk.ui.port.nxmplot.preferences.PlotPreferences;
+
 import org.eclipse.jdt.annotation.NonNull;
+import org.eclipse.jface.preference.IPreferenceStore;
 
 /**
  * @noreference This class is provisional/beta and is subject to API changes
@@ -19,7 +22,6 @@ import org.eclipse.jdt.annotation.NonNull;
  */
 public class PlotNxmBlockSettings implements Cloneable {
 	public static final String PROP_FRAME_SIZE = "frameSize";
-	public static final int DEFAULT_FRAME_SIZE = 1024; // SUPPRESS CHECKSTYLE MAGIC NUMBER
 
 	/** null to use default. */
 	private Integer frameSize;
@@ -27,6 +29,11 @@ public class PlotNxmBlockSettings implements Cloneable {
 	private Integer pipeSize;
 
 	public PlotNxmBlockSettings() {
+	}
+
+	public PlotNxmBlockSettings(IPreferenceStore preferences) {
+		frameSize = PlotPreferences.FRAMESIZE.getValue(preferences);
+		pipeSize = PlotPreferences.PIPESIZE.getValue(preferences);
 	}
 
 	/* (non-Javadoc)

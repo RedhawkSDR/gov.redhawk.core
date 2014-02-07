@@ -17,13 +17,14 @@ import java.util.concurrent.ConcurrentHashMap;
 import org.eclipse.core.databinding.DataBindingContext;
 import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jface.databinding.wizard.WizardPageSupport;
-import org.eclipse.jface.layout.GridDataFactory;
+import org.eclipse.jface.preference.IPreferencePage;
+import org.eclipse.jface.preference.PreferenceManager;
+import org.eclipse.jface.preference.PreferenceNode;
 import org.eclipse.jface.wizard.Wizard;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Group;
 
 /**
  * @noreference This class is not intended to be referenced by clients.
@@ -37,7 +38,7 @@ public class NxmBlockSettingsWizard extends Wizard {
 		private INxmBlock[] nxmBlocks;
 		/** key=INxmBlock, value=Settings for that block. */
 		private ConcurrentHashMap<INxmBlock, Object> nxmBlockToSettingsMap = new ConcurrentHashMap<INxmBlock, Object>();
-		
+
 		protected BlockWizardPage(@NonNull String sourceInfo) {
 			super("nxmBlockSettingspage", "Adjust Plot Settings for Source", null);
 			setDescription("Adjust/override plot settings for source Port: " + sourceInfo);
@@ -48,24 +49,30 @@ public class NxmBlockSettingsWizard extends Wizard {
 			Composite composite = new Composite(parent, SWT.None);
 			composite.setLayout(new GridLayout(1, false));
 			dataBindingContext = new DataBindingContext();
-			
+
 			if (nxmBlocks != null) {
+				//				for (INxmBlock nxmBlock : nxmBlocks) {
+				//					if (nxmBlock.hasControls()) {
+				//						Group group = new Group(composite, SWT.None);
+				//						group.setLayoutData(GridDataFactory.fillDefaults().grab(true, false).create());
+				//						group.setText(nxmBlock.getLabel());
+				//						Object settings = nxmBlock.getSettings();
+				//						nxmBlockToSettingsMap.put(nxmBlock, settings);
+				//						nxmBlock.createControls(group, settings, dataBindingContext);
+				//					}
+				//				} // end for loop
+				PreferenceManager manager = new PreferenceManager();
 				for (INxmBlock nxmBlock : nxmBlocks) {
-					if (nxmBlock.hasControls()) {
-						Group group = new Group(composite, SWT.None);
-						group.setLayoutData(GridDataFactory.fillDefaults().grab(true, false).create());
-						group.setText(nxmBlock.getLabel());
-						Object settings = nxmBlock.getSettings();
-						nxmBlockToSettingsMap.put(nxmBlock, settings);
-						nxmBlock.createControls(group, settings, dataBindingContext);
-					}
-				} // end for loop
+					IPreferencePage prefPage = nxmBlock.createPreferencePage();
+					PreferenceNode prefNode = new PreferenceNode(nxmBlock.toString(), prefPage);
+					manager.addToRoot(prefNode);
+				}
 			}
-			
+
 			support = WizardPageSupport.create(this, dataBindingContext);
 			setControl(composite);
 		}
-		
+
 		@Override
 		public void dispose() {
 			super.dispose();
@@ -73,14 +80,14 @@ public class NxmBlockSettingsWizard extends Wizard {
 			dataBindingContext.dispose();
 		}
 	} // end class BlockWizardPage
-	
+
 	private BlockWizardPage page;
 
 	public NxmBlockSettingsWizard(@NonNull String sourceInfo) {
 		super();
 		this.page = new BlockWizardPage(sourceInfo);
 	}
-	
+
 	@Override
 	public void addPages() {
 		addPage(page);
@@ -93,11 +100,11 @@ public class NxmBlockSettingsWizard extends Wizard {
 	public boolean performFinish() {
 		return true;
 	}
-	
+
 	public void setNxmBlocks(INxmBlock... blocks) {
 		page.nxmBlocks = blocks;
 	}
-	
+
 	public Object getSettings(INxmBlock block) {
 		return page.nxmBlockToSettingsMap.get(block);
 	}

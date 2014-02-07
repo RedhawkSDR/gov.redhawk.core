@@ -247,15 +247,27 @@
          point="org.eclipse.ui.preferencePages">
       <page
             category="gov.redhawk.ui.preferences"
-            class="gov.redhawk.ui.port.nxmplot.preferences.PlotPreferencePage"
+            class="gov.redhawk.internal.ui.preferences.PlotPreferencePage"
             id="gov.redhawk.ui.port.nxmplot.preferences.PlotPreferencePage"
             name="%plot.pref.page.name">
+      </page>
+      <page
+            category="gov.redhawk.ui.port.nxmplot.preferences.PlotPreferencePage"
+            class="gov.redhawk.internal.ui.preferences.FftBlockPreferencePage"
+            id="gov.redhawk.ui.port.nxmplot.page1"
+            name="FFT">
+      </page>
+      <page
+            category="gov.redhawk.ui.port.nxmplot.preferences.PlotPreferencePage"
+            class="gov.redhawk.internal.ui.preferences.BulkIOBlockPreferencePage"
+            id="gov.redhawk.ui.port.nxmplot.page2"
+            name="BulkIO">
       </page>
    </extension>
    <extension
          point="org.eclipse.core.runtime.preferences">
       <initializer
-            class="gov.redhawk.ui.port.nxmplot.preferences.PlotPreferenceInitializer">
+            class="gov.redhawk.internal.ui.preferences.PlotPreferenceInitializer">
       </initializer>
    </extension>
 

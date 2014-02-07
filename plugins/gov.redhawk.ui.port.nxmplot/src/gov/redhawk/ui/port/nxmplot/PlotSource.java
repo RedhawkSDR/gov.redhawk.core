@@ -14,8 +14,11 @@ package gov.redhawk.ui.port.nxmplot;
 import gov.redhawk.model.sca.ScaUsesPort;
 import gov.redhawk.ui.port.nxmblocks.BulkIONxmBlockSettings;
 import gov.redhawk.ui.port.nxmblocks.FftNxmBlockSettings;
+import gov.redhawk.ui.port.nxmblocks.PlotNxmBlock;
 import gov.redhawk.ui.port.nxmblocks.PlotNxmBlockSettings;
 import gov.redhawk.ui.port.nxmblocks.SddsNxmBlockSettings;
+
+import org.eclipse.jface.preference.IPreferenceStore;
 
 /**
  * @since 4.4
@@ -28,28 +31,40 @@ public class PlotSource {
 	private final SddsNxmBlockSettings sddsBlockSettings;
 	private final FftNxmBlockSettings fftBlockSettings;
 	private final PlotNxmBlockSettings plotBlockSettings;
+	private final IPreferenceStore store = PlotNxmBlock.createInitStore();
 
-	public PlotSource(ScaUsesPort input, FftNxmBlockSettings fftSettings, String qualifiers) {
-		this(input, null, null, fftSettings, null, qualifiers);
+	public PlotSource(ScaUsesPort input, FftNxmBlockSettings fftOptions, String qualifiers) {
+		this(input, null, null, fftOptions, null, qualifiers, null);
 	}
 
-	public PlotSource(ScaUsesPort input, BulkIONxmBlockSettings bulkioSettings, FftNxmBlockSettings fftSettings, PlotNxmBlockSettings plotSettings, String qualifiers) {
+	public PlotSource(ScaUsesPort input, BulkIONxmBlockSettings bulkioSettings, FftNxmBlockSettings fftSettings, PlotNxmBlockSettings plotSettings,
+		String qualifiers) {
 		this(input, bulkioSettings, null, fftSettings, plotSettings, qualifiers);
 	}
 
-	public PlotSource(ScaUsesPort input, SddsNxmBlockSettings sddsSettings, FftNxmBlockSettings fftSettings, PlotNxmBlockSettings plotSettings, String qualifiers) {
+	public PlotSource(ScaUsesPort input, SddsNxmBlockSettings sddsSettings, FftNxmBlockSettings fftSettings, PlotNxmBlockSettings plotSettings,
+		String qualifiers) {
 		this(input, null, sddsSettings, fftSettings, plotSettings, qualifiers);
 	}
 
 	/** private as BulkIONxmBlockSettings and SddsNxmBlockSettings should be mutually exclusive */
-	private PlotSource(ScaUsesPort input, BulkIONxmBlockSettings bulkioSettings, SddsNxmBlockSettings sddsSettings,
-		FftNxmBlockSettings fftSettings, PlotNxmBlockSettings plotSettings, String qualifiers) {
+	private PlotSource(ScaUsesPort input, BulkIONxmBlockSettings bulkioSettings, SddsNxmBlockSettings sddsSettings, FftNxmBlockSettings fftSettings,
+		PlotNxmBlockSettings plotSettings, String qualifiers) {
+		this(input, bulkioSettings, sddsSettings, fftSettings, plotSettings, qualifiers, null);
+	}
+
+	private PlotSource(ScaUsesPort input, BulkIONxmBlockSettings bulkioSettings, SddsNxmBlockSettings sddsSettings, FftNxmBlockSettings fftSettings,
+		PlotNxmBlockSettings plotSettings, String qualifiers, FftSettings oldFftOptions) {
 		this.input = input;
 		this.bulkioBlockSettings = bulkioSettings;
 		this.sddsBlockSettings = sddsSettings;
 		this.fftBlockSettings = fftSettings;
 		this.plotBlockSettings = plotSettings;
 		this.qualifiers = qualifiers;
+	}
+
+	public IPreferenceStore getStore() {
+		return store;
 	}
 
 	public ScaUsesPort getInput() {
@@ -75,5 +90,4 @@ public class PlotSource {
 	public PlotNxmBlockSettings getPlotBlockSettings() {
 		return plotBlockSettings;
 	}
-
 }

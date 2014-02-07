@@ -11,9 +11,12 @@
  */
 package gov.redhawk.ui.port.nxmblocks;
 
+import gov.redhawk.ui.port.nxmplot.preferences.SddsPreferences;
+
 import java.nio.ByteOrder;
 
 import org.eclipse.jdt.annotation.NonNull;
+import org.eclipse.jface.preference.IPreferenceStore;
 
 /**
  * SDDS (UDP/Multicast) source settings.
@@ -22,20 +25,39 @@ import org.eclipse.jdt.annotation.NonNull;
  */
 public class SddsNxmBlockSettings implements Cloneable {
 	public static final String PROP_DATA_BYTE_ORDER = "dataByteOrder";
-	
+
 	// SOURCENIC switches
-	private String mcastAddress;  // /MGRP=      [DEF=null]
-	private int    port;          // /PORT=      [DEF=29495]
-	private int    vlan;          // /VLAN=      [DEF=0]
-	private String outputFormat;  // /FC=        [DEF=SI]
+	private String mcastAddress; // /MGRP=      [DEF=null]
+	private int port; // /PORT=      [DEF=29495]
+	private int vlan; // /VLAN=      [DEF=0]
+	private String outputFormat; // /FC=        [DEF=SI]
 
 	private String interfaceName; // /INTERFACE= [DEF=null]
 	// private int    mode;       // /ALT=       [DEF=0] only SDDS_MODE_COMPAT=0 is supported at this time
 
-	private int    pipeSize;      // /PS=
+	private int pipeSize; // /PS=
 	private ByteOrder dataByteOrder = ByteOrder.BIG_ENDIAN; // multi-byte data defaults to big-endian/network byte order per SDDS spec
 
 	public SddsNxmBlockSettings() {
+	}
+
+	public SddsNxmBlockSettings(IPreferenceStore preferences) {
+		this.mcastAddress = SddsPreferences.MCAST_ADDRESS.getValue(preferences);
+		this.port = SddsPreferences.PORT.getValue(preferences);
+		this.vlan = SddsPreferences.VLAN.getValue(preferences);
+		this.outputFormat = SddsPreferences.OUTPUT_FORMAT.getValue(preferences);
+		this.interfaceName = SddsPreferences.INTERFACE_NAME.getValue(preferences);
+		this.pipeSize = SddsPreferences.PIPE_SIZE.getValue(preferences);
+		String newValue = SddsPreferences.BYTE_ORDER.getValue(preferences);
+		if (ByteOrder.BIG_ENDIAN.toString().equals(newValue)) {
+			dataByteOrder = ByteOrder.BIG_ENDIAN;
+		} else if (ByteOrder.LITTLE_ENDIAN.toString().equals(newValue)) {
+			dataByteOrder = ByteOrder.LITTLE_ENDIAN;
+		} else if ("NATIVE".equals(newValue)) {
+			dataByteOrder = ByteOrder.nativeOrder();
+		} else {
+			dataByteOrder = null;
+		}
 	}
 
 	/* (non-Javadoc)

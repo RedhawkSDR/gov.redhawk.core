@@ -15,125 +15,59 @@ package gov.redhawk.ui.port.nxmplot;
  * @since 2.1
  */
 public class FftSettings {
-	public enum WindowType {
-		BARTLETT {
-			@Override
-			public String toString() {
-				return "Bartlett";
-			}
-
-			@Override
-			public String toWindowString() {
-				return "BART";
-			}
-		},
-		HANNING {
-			@Override
-			public String toString() {
-				return "Hanning";
-			}
-
-			@Override
-			public String toWindowString() {
-				return "HANN";
-			}
-		},
-		HAMMING {
-			@Override
-			public String toString() {
-				return "Hamming";
-			}
-
-			@Override
-			public String toWindowString() {
-				return "HAMM";
-			}
-		},
+	public static enum WindowType {
+		BARTLETT("Bartlett", "BART"),
+		HANNING("Hanning", "HANN"),
+		HAMMING("Hamming", "HAMM"),
 		/** @since 4.0 */
-		BH92 {
-			@Override
-			public String toString() {
-				return "Blackman-Harris";
-			}
+		BH92("Blackman-Harris", "BH92"),
+		BLACKMAN("Blackman", "BLAC");
 
-			@Override
-			public String toWindowString() {
-				return "BH92";
-			}
-		},
-		BLACKMAN {
-			@Override
-			public String toString() {
-				return "Blackman";
-			}
+		private String label;
+		private String windowString;
 
-			@Override
-			public String toWindowString() {
-				return "BLAC";
-			}
-		};
+		private WindowType(String label, String windowString) {
+			this.label = label;
+			this.windowString = windowString;
+		}
 
-		public abstract String toWindowString();
+		public String toWindowString() {
+			return this.windowString;
+		}
+
+		/**
+		 * @since 4.4
+		 */
+		public String getLabel() {
+			return label;
+		}
 	}
 
-	public enum OutputType {
-		NORMAL {
-			@Override
-			public String toString() {
-				return "Normal";
-			}
+	public static enum OutputType {
+		NORMAL("Normal", ""),
+		MAG_SQ("Magnitude Squared", "/MAG"),
+		PSD("Power Spectral Density", "/PSD"),
+		MAG_20LOG("20 Log Magnitude", "/MAG/LOG"),
+		PSD_20LOG("20 Log PSD", "/PSD/LOG");
 
-			@Override
-			public String toFlagString() {
-				return "";
-			}
-		},
-		MAG_SQ {
-			@Override
-			public String toString() {
-				return "Magnitude Squared";
-			}
+		private String flagString;
+		private String label;
 
-			@Override
-			public String toFlagString() {
-				return "/MAG";
-			}
-		},
-		PSD {
-			@Override
-			public String toString() {
-				return "Power Spectral Density";
-			}
+		private OutputType(String label, String flagString) {
+			this.label = label;
+			this.flagString = flagString;
+		}
 
-			@Override
-			public String toFlagString() {
-				return "/PSD";
-			}
-		},
-		MAG_20LOG {
-			@Override
-			public String toString() {
-				return "20 Log Magnitude";
-			}
+		public String toFlagString() {
+			return flagString;
+		}
 
-			@Override
-			public String toFlagString() {
-				return "/MAG/LOG";
-			}
-		},
-		PSD_20LOG {
-			@Override
-			public String toString() {
-				return "20 Log PSD";
-			}
-
-			@Override
-			public String toFlagString() {
-				return "/PSD/LOG";
-			}
-		};
-
-		public abstract String toFlagString();
+		/**
+		 * @since 4.4
+		 */
+		public String getLabel() {
+			return label;
+		}
 	}
 
 	private String transformSize = "8192"; // SUPPRESS CHECKSTYLE MagicNumber

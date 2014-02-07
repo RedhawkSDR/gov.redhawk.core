@@ -41,6 +41,9 @@ public enum ConnectionManager implements IBulkIOPortConnectionManager {
 		if (ior == null || internalPort == null) {
 			throw new IllegalArgumentException("Null ior or port implemention.");
 		}
+		if (connectionID != null && connectionID.isEmpty()) {
+			connectionID = null;
+		}
 		ConnectionKey key = new ConnectionKey(ior, type, connectionID);
 		boolean initConnection = false;
 		Connection connection;
@@ -59,7 +62,7 @@ public enum ConnectionManager implements IBulkIOPortConnectionManager {
 		}
 		return connection.getConnectionId();
 	}
-	
+
 	@Override
 	public void disconnect(String ior, BulkIOType type, updateSRIOperations internalPort) {
 		disconnect(ior, type, internalPort, null);
@@ -87,7 +90,7 @@ public enum ConnectionManager implements IBulkIOPortConnectionManager {
 			}
 		}
 	}
-	
+
 	@Override
 	public AbstractBulkIOPort getExternalPort(String ior, BulkIOType type) {
 		return getExternalPort(ior, type, null);

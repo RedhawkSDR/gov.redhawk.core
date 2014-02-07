@@ -58,9 +58,9 @@ public class PlotView2 extends ViewPart implements IPlotView {
 	public static final String ID = "gov.redhawk.ui.port.nxmplot.PlotView2";
 
 	private static final String ADJUST_PLOT_SETTINGS_ACTION_ID = "AdjustPlotSettingsMenuItemAction";
-	
+
 	private static int secondardId;
-	
+
 	/** The private action for toggling raster enabled state. */
 	private IAction plotTypeAction;
 
@@ -128,7 +128,7 @@ public class PlotView2 extends ViewPart implements IPlotView {
 		createToolBars();
 		createMenu();
 	}
-	
+
 	@Override
 	public void dispose() {
 		this.diposed = true;
@@ -156,7 +156,7 @@ public class PlotView2 extends ViewPart implements IPlotView {
 	public IDisposable addPlotSource(@NonNull PlotSource plotSource) {
 		return this.plotPageBook.addSource(plotSource);
 	}
-	
+
 	/**
 	 * {@inheritDoc}
 	 */
@@ -176,9 +176,9 @@ public class PlotView2 extends ViewPart implements IPlotView {
 		if (this.adjustPlotSettingsAction != null) {
 			menu.add(this.adjustPlotSettingsAction);
 		}
-		
+
 		menu.add(new Separator(IWorkbenchActionConstants.MB_ADDITIONS));
-		
+
 		this.plotPageBook.contributeMenuItems(menu);
 	}
 
@@ -195,7 +195,7 @@ public class PlotView2 extends ViewPart implements IPlotView {
 	}
 
 	public static String createSecondaryId() {
-		return String.valueOf(secondardId++);
+		return String.valueOf(PlotView2.secondardId++);
 	}
 
 	/** Creates the actions. **/
@@ -206,7 +206,7 @@ public class PlotView2 extends ViewPart implements IPlotView {
 		this.plotTypeAction.setImageDescriptor(rasterImageDescriptor);
 
 		this.newPlotViewAction = createNewPlotViewAction();
-		this.adjustPlotSettingsAction = createAdjustPlotSettingsAction();
+		//		this.adjustPlotSettingsAction = createAdjustPlotSettingsAction();
 	}
 
 	private IAction createNewPlotViewAction() {
@@ -214,7 +214,7 @@ public class PlotView2 extends ViewPart implements IPlotView {
 			@Override
 			public void run() {
 				try {
-					final IViewPart newView = getSite().getPage().showView(getSite().getId(), createSecondaryId(), IWorkbenchPage.VIEW_ACTIVATE);
+					final IViewPart newView = getSite().getPage().showView(getSite().getId(), PlotView2.createSecondaryId(), IWorkbenchPage.VIEW_ACTIVATE);
 					if (newView instanceof PlotView2) {
 						final PlotView2 newPlotView = (PlotView2) newView;
 						newPlotView.setPartName(getPartName());
@@ -236,10 +236,10 @@ public class PlotView2 extends ViewPart implements IPlotView {
 		action.setEnabled(true);
 		action.setText("New Plot View");
 		action.setToolTipText("Open a new Plot View with all the same plots.");
-		
+
 		return action;
 	}
-	
+
 	private IAction createAdjustPlotSettingsAction() {
 		IAction action = new Action() {
 			@Override
@@ -262,22 +262,25 @@ public class PlotView2 extends ViewPart implements IPlotView {
 			} // end method
 		};
 
-		action.setId(ADJUST_PLOT_SETTINGS_ACTION_ID);
+		action.setId(PlotView2.ADJUST_PLOT_SETTINGS_ACTION_ID);
 		action.setEnabled(true);
 		action.setText("Adjust Plot Settings");
 		action.setToolTipText("Adjust/Override Plot Settings");
-		
+
 		return action;
 	}
 
+	@Override
 	public PlotPageBook2 getPlotPageBook() {
 		return plotPageBook;
 	}
 
+	@Override
 	public void setPartName(String partName) {
 		super.setPartName(partName);
 	}
 
+	@Override
 	public void setTitleToolTip(String toolTip) {
 		super.setTitleToolTip(toolTip);
 	}

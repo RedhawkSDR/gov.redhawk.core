@@ -17,9 +17,8 @@ import java.text.MessageFormat;
 
 import nxm.sys.prim.fcalculator;
 
-import org.eclipse.core.databinding.DataBindingContext;
 import org.eclipse.jdt.annotation.NonNull;
-import org.eclipse.swt.widgets.Composite;
+import org.eclipse.jface.preference.IPreferenceStore;
 
 /**
  * @noreference This class is provisional/beta and is subject to API changes
@@ -35,18 +34,13 @@ public class FCalculatorNxmBlock extends AbstractNxmBlock<fcalculator> {
 	 * @param inputSources input sources (most not have any null inputs)
 	 */
 	public FCalculatorNxmBlock(@NonNull AbstractNxmPlotWidget plotWidget, @NonNull String fcalcExpression) {
-		super(fcalculator.class, String.class, "FCalculator", plotWidget);
+		super(fcalculator.class, plotWidget, FCalculatorNxmBlock.initStore(null));
 		this.calcExpression = fcalcExpression;
 	}
 
-	@Override
-	public boolean hasControls() {
-		return false; // none for now
-	}
-
-	@Override
-	public void createControls(Composite parent, Object settings, DataBindingContext context) {
-		// non-available for fcaculator expression at this time
+	private static IPreferenceStore initStore(IPreferenceStore object) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 	/**
@@ -64,22 +58,11 @@ public class FCalculatorNxmBlock extends AbstractNxmBlock<fcalculator> {
 	}
 
 	@Override
-	@NonNull
-	public String getSettings() {
-		return this.calcExpression;
-	}
-
-	@Override
-	public void applySettings(Object settings, String streamId) {
-		throw new UnsupportedOperationException("settings adjustment not supported for " + getClass());
-	}
-
-	@Override
 	public int getMaxInputs() {
 		return 1; // TODO: support more than one input?
 	}
 
-	@Override 
+	@Override
 	protected String formCmdLine(AbstractNxmPlotWidget plotWidget, String streamID) {
 		if (calcExpression == null) {
 			throw new IllegalStateException("FCALCULATOR expression has not been specified");

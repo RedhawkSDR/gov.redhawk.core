@@ -19,9 +19,8 @@ import java.util.Map;
 
 import nxm.redhawk.prim.dispthin;
 
-import org.eclipse.core.databinding.DataBindingContext;
 import org.eclipse.jdt.annotation.NonNull;
-import org.eclipse.swt.widgets.Composite;
+import org.eclipse.jface.preference.IPreferenceStore;
 
 /**
  * @noreference This class is provisional/beta and is subject to API changes
@@ -35,7 +34,11 @@ public class DispThinNxmBlock extends AbstractNxmBlock<dispthin> {
 	private int refreshRate;
 
 	public DispThinNxmBlock(@NonNull AbstractNxmPlotWidget plotWidget) {
-		super(dispthin.class, Map.class, "Display Thin", plotWidget);
+		super(dispthin.class, plotWidget, DispThinNxmBlock.initStore(null));
+	}
+
+	private static IPreferenceStore initStore(Object object) {
+		return null;
 	}
 
 	@Override
@@ -43,17 +46,6 @@ public class DispThinNxmBlock extends AbstractNxmBlock<dispthin> {
 		return 1;
 	}
 
-	@Override
-	public boolean hasControls() {
-		return false; // none for now
-	}
-
-	@Override
-	public void createControls(Composite parent, Object settings, DataBindingContext context) {
-		// none for now
-	}
-
-	@Override
 	public Map<String, Object> getSettings() {
 		Map<String, Object> clone = settings;
 		if (clone == null) {
@@ -63,21 +55,15 @@ public class DispThinNxmBlock extends AbstractNxmBlock<dispthin> {
 	}
 
 	@Override
-	public void applySettings(Object settings, String streamId) {
-		throw new UnsupportedOperationException("settings adjustment not supported for " + getClass());
-		// TODO: can only set refreshRate at this time on dispthin
-	}
-
-	@Override
 	protected String formCmdLine(AbstractNxmPlotWidget plotWidget, String streamID) {
 
 		BlockIndexPair inBlockIndexPair = getInputBlockInfo(0);
 		if (inBlockIndexPair == null) {
 			throw new IllegalStateException("Input has not been specified");
 		}
-		String inputName  = inBlockIndexPair.getBlock().getOutputName(inBlockIndexPair.getIndex(), streamID);
+		String inputName = inBlockIndexPair.getBlock().getOutputName(inBlockIndexPair.getIndex(), streamID);
 		String outputName = AbstractNxmPlotWidget.createUniqueName(true);
-		putOutputNameMapping(0, streamID, outputName);     // save output name mapping 
+		putOutputNameMapping(0, streamID, outputName); // save output name mapping 
 
 		// DISPTHIN*       P,4     ,INFILE=,OUTFILE=,REFRESHRATE=,FRAMELENGTH=,
 		String pattern = "DISPTHIN/BG/PS={0,number,#}/TL={1,number,#} {0} {1} {2,number,#}";
