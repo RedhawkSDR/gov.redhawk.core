@@ -126,7 +126,10 @@ public class ListenerAllocationItemProvider
   @Override
   public Object getImage(Object object)
   {
-    return overlayImage(object, getResourceLocator().getImage("full/obj16/ListenerEar"));
+	  if (TunerUtils.isPlotListener(object)) {
+		  return overlayImage(object, getResourceLocator().getImage("full/obj16/PlotListener"));
+	  }
+	  return overlayImage(object, getResourceLocator().getImage("full/obj16/ListenerEar"));
   }
 
   /**
@@ -138,13 +141,13 @@ public class ListenerAllocationItemProvider
   public String getText(Object object)
   {
     String label = ((ListenerAllocation)object).getListenerID();
+    if (TunerUtils.isPlotListener(object)) {
+    	return label;
+    }
     int index = label.indexOf(":");
     if (index > -1) {
     	label = label.substring(0, index);
     }
-//    return label == null || label.length() == 0 ?
-//      getString("_UI_ListenerAllocation_type") :
-//      getString("_UI_ListenerAllocation_type") + " " + label;
     return label;
   }
 

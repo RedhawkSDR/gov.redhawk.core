@@ -216,4 +216,16 @@ public enum TunerUtils {
 		}
 		return id;
 	}
+	
+	public static boolean isPlotListener(Object obj) {
+		if (!(obj instanceof ListenerAllocation)) {
+			return false;
+		}
+		ListenerAllocation listener = (ListenerAllocation) obj;
+		if (listener.getListenerID().startsWith("Plot_")) {
+			return true;
+		}
+		return false;
+	}
+	
 }
