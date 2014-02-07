@@ -149,8 +149,7 @@ public class DomainListEditor extends FieldEditor {
 
 			@Override
 			public void widgetSelected(final SelectionEvent e) {
-				final ScaDomainConnectionDef def = (ScaDomainConnectionDef) ((IStructuredSelection) DomainListEditor.this.list.getSelection())
-				        .getFirstElement();
+				final ScaDomainConnectionDef def = (ScaDomainConnectionDef) ((IStructuredSelection) DomainListEditor.this.list.getSelection()).getFirstElement();
 				final DomainEntryWizard wizard = new DomainEntryWizard();
 				wizard.setShowExtraSettings(false);
 				wizard.setDomains(DomainListEditor.this.domainConnectionDefs);
@@ -182,7 +181,7 @@ public class DomainListEditor extends FieldEditor {
 			@Override
 			public void widgetSelected(final SelectionEvent e) {
 				final boolean confirmedDelete = MessageDialog.openConfirm(box.getShell(), "Delete domain connection?",
-				        "Are you sure you want to delete the domain connection?");
+					"Are you sure you want to delete the domain connection?");
 				if (confirmedDelete) {
 					for (final Object obj : ((StructuredSelection) DomainListEditor.this.list.getSelection()).toArray()) {
 						DomainListEditor.this.domainConnectionDefs.remove(obj);
@@ -278,7 +277,7 @@ public class DomainListEditor extends FieldEditor {
 
 		for (final ScaDomainManager manager : this.registry.getDomains()) {
 			final ScaDomainConnectionDef def = new ScaDomainConnectionDef(manager.getName(), manager.getConnectionProperties().get(
-			        ScaDomainManager.NAMING_SERVICE_PROP), manager.isAutoConnect());
+				ScaDomainManager.NAMING_SERVICE_PROP), manager.isAutoConnect());
 			this.domainConnectionDefs.add(def);
 		}
 		if (this.list != null) {
@@ -295,7 +294,7 @@ public class DomainListEditor extends FieldEditor {
 
 		for (final ScaDomainManager manager : ScaPreferenceInitializer.getDefaultScaDomainManagerRegistry().getDomains()) {
 			final ScaDomainConnectionDef def = new ScaDomainConnectionDef(manager.getName(), manager.getConnectionProperties().get(
-			        ScaDomainManager.NAMING_SERVICE_PROP), manager.isAutoConnect());
+				ScaDomainManager.NAMING_SERVICE_PROP), manager.isAutoConnect());
 			this.domainConnectionDefs.add(def);
 		}
 
@@ -323,7 +322,7 @@ public class DomainListEditor extends FieldEditor {
 								@Override
 								public void execute() {
 									newDomain[0] = DomainListEditor.this.registry.createDomain(def.getDomainName(), def.isConnectOnStartup(),
-									        Collections.singletonMap(ScaDomainManager.NAMING_SERVICE_PROP, def.getNameServiceInitRef()));
+										Collections.singletonMap(ScaDomainManager.NAMING_SERVICE_PROP, def.getNameServiceInitRef()));
 
 								}
 
@@ -371,9 +370,9 @@ public class DomainListEditor extends FieldEditor {
 
 		});
 	}
-	
+
 	/**
-	 * @since 9.2
+	 * @since 9.3
 	 */
 	public void setAllAutoConnect(boolean auto) {
 		for (ScaDomainConnectionDef def : this.domainConnectionDefs) {

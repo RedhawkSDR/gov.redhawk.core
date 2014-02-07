@@ -44,9 +44,9 @@ public class CompatibilityUtilImpl implements ICompatibilityUtil {
 	public void runInFakeUIContext(Display display, Runnable runnable) {
 		throw new UnsupportedOperationException();
 	}
-	
+
 	/**
-	 * @since 9.2
+	 * @since 9.3
 	 */
 	@Override
 	public void executeOnRequestThread(Runnable runnable) {

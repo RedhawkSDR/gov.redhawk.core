@@ -22,14 +22,14 @@ import org.eclipse.swt.widgets.Display;
  * @noimplement This interface is not intended to be implemented by clients.
  */
 public interface ICompatibilityUtil {
-	
+
 	public void setFontDataStyle(FontData fontData, int style);
 
 	public void disableComboWheelScrollSelect(ComboViewer viewer);
 
 	/**
-     * @since 9.1
-     */
+	 * @since 9.1
+	 */
 	/**
 	 * Return the Principal for the logged in user (RAP). Returns null in RCP
 	 * or in RAP if the user does not present a valid and trusted certificate.
@@ -37,41 +37,41 @@ public interface ICompatibilityUtil {
 	 * @return the User Principal or null
 	 */
 	public Principal getUserPrincipal(Display display);
-	
+
 	/**
 	 * Execute runnable in a fake UI context (RAP) or in the current thread (RCP).
 	 * In RAP, this is used to enable background (i.e. non-UI) threads to access items
 	 * that are only available in the UI context (e.g. objects stored in the SessionStore
 	 * (RAP 1.x) or UISession (RAP 2.x)).
 	 * 
-     * @since 9.1
+	 * @since 9.1
 	 * @param display the current Display
 	 * @param runnable the Runnable instance to be executed
 	 */
 	public void runInFakeUIContext(Display display, Runnable runnable);
-	
+
 	/**
 	 * Execute runnable in the Request context (RAP) or in the current thread (RCP).
 	 * In RAP, this is required for code that needs to access the current HTTP Request object.
 	 * 
-	 * @since 9.2
+	 * @since 9.3
 	 * @param runnable the Runnable instance to be executed
 	 */
 	public void executeOnRequestThread(Runnable runnable);
-	
+
 	/**
 	 * Used in RAP to ensure UI Updates occur during background thread execution, until
 	 * {@Link #deactivateUIConnection(String)} is invoked. Has no effect in RCP.
-     * @since 9.1
+	 * @since 9.1
 	 * @param id an arbitrary ID used to associate invocations of {@Link #activateUIConnection(String)} and
 	 * {@Link #deactivateUIConnection(String)}
 	 */
 	public void activateUIConnection(String id);
-	
+
 	/**
 	 * Used in RAP to stop UI Updates that were occurring during background thread execution
 	 * as a result of invoking {@Link #activateUIConnection(String)}. Has no effect in RCP.
-     * @since 9.1
+	 * @since 9.1
 	 * @param id an arbitrary ID used to associate invocations of {@Link #activateUIConnection(String)} and
 	 * {@Link #deactivateUIConnection(String)}
 	 */

@@ -36,20 +36,20 @@ import org.eclipse.ui.PlatformUI;
  */
 public class DomainConnectionUtil {
 
-
 	private DomainConnectionUtil() {
 	}
-	
+
 	/**
 	 * @since 9.2
 	 * @deprecated Use new {@link #showDialog(Display, String, String)}
 	 */
 	@Deprecated
 	public static void showDialog(final String host, final String domainName) {
-		showDialog(null, host, domainName);
+		DomainConnectionUtil.showDialog(null, host, domainName);
 	}
+
 	/**
-	 * @since 9.2
+	 * @since 9.3
 	 */
 	public static void showDialog(Display context, final String host, final String domainName) {
 		final DomainEntryWizard wizard = new DomainEntryWizard();

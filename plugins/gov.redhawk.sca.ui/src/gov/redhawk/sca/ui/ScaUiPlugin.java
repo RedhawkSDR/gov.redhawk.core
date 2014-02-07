@@ -36,9 +36,9 @@ import org.osgi.framework.BundleContext;
  * The activator class controls the plug-in life cycle.
  */
 public class ScaUiPlugin extends AbstractUIPlugin {
-	
+
 	/**
-	 * @since 9.2
+	 * @since 9.3
 	 */
 	public static final String PROP_SINGLE_DOMAIN = "gov.redhawk.sca.singleDomain";
 
@@ -72,7 +72,7 @@ public class ScaUiPlugin extends AbstractUIPlugin {
 	protected ImageRegistry createImageRegistry() {
 		final ImageRegistry registry = super.createImageRegistry();
 		registry.put(ScaUiPluginImages.IMG_DEFAULT_DOMAIN_OVR,
-				AbstractUIPlugin.imageDescriptorFromPlugin(ScaUiPlugin.PLUGIN_ID, "icons/ovr16/default_domain_ovr.gif"));
+			AbstractUIPlugin.imageDescriptorFromPlugin(ScaUiPlugin.PLUGIN_ID, "icons/ovr16/default_domain_ovr.gif"));
 		return registry;
 	}
 

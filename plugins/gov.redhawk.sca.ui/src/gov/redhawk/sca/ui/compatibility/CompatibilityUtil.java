@@ -90,9 +90,9 @@ public final class CompatibilityUtil {
 	public static void runInFakeUIContext(Display display, Runnable runnable) {
 		SafeCompatibilityUtil.INSTANCE.runInFakeUIContext(display, runnable);
 	}
-	
+
 	/**
-	 * @since 9.2
+	 * @since 9.3
 	 */
 	public static void executeOnRequestThread(Runnable runnable) {
 		SafeCompatibilityUtil.INSTANCE.executeOnRequestThread(runnable);
