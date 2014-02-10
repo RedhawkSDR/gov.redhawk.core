@@ -11,7 +11,7 @@
  */
 package gov.redhawk.efs.sca.internal;
 
-import gov.redhawk.efs.sca.internal.cache.FileCache;
+import gov.redhawk.efs.sca.internal.cache.IFileCache;
 import gov.redhawk.efs.sca.internal.cache.ScaFileCache;
 import gov.redhawk.sca.efs.ScaFileSystemPlugin;
 import gov.redhawk.sca.util.Debug;
@@ -57,7 +57,11 @@ import CF.FileSystemPackage.FileType;
 public class ScaFileStore extends FileStore {
 
 	private static enum ScaFileInformationDataType {
-		CREATED_TIME, MODIFIED_TIME, LAST_ACCESS_TIME, IOR_AVAILABLE, READ_ONLY
+		CREATED_TIME,
+		MODIFIED_TIME,
+		LAST_ACCESS_TIME,
+		IOR_AVAILABLE,
+		READ_ONLY
 	}
 
 	private static final Debug DEBUG = new Debug(ScaFileSystemPlugin.ID, "fileStore");
@@ -65,14 +69,14 @@ public class ScaFileStore extends FileStore {
 	private final URI fsInitRef;
 	private final ScaFileEntry entry;
 
-	private FileCache cache;
+	private IFileCache cache;
 
 	public ScaFileStore(final URI fsInitRef, final ScaFileEntry entry) {
 		this.fsInitRef = fsInitRef;
 		this.entry = entry;
 		cache = ScaFileCache.INSTANCE.getCache(this);
 	}
-	
+
 	public URI getFsInitRef() {
 		return fsInitRef;
 	}
@@ -219,7 +223,7 @@ public class ScaFileStore extends FileStore {
 				info.setExists(false);
 				retVal = info;
 			} else {
-				retVal = translate(result[0]);
+				retVal = ScaFileStore.translate(result[0]);
 			}
 
 			return retVal;
@@ -297,7 +301,8 @@ public class ScaFileStore extends FileStore {
 			final boolean append = EFS.APPEND == (EFS.APPEND & options);
 
 			if (info.getAttribute(EFS.ATTRIBUTE_READ_ONLY)) {
-				throw new CoreException(new Status(IStatus.ERROR, ScaFileSystemPlugin.ID, NLS.bind(Messages.ScaFileStore__Open_Output_Stream_Error_Read_Only, path)));
+				throw new CoreException(new Status(IStatus.ERROR, ScaFileSystemPlugin.ID, NLS.bind(Messages.ScaFileStore__Open_Output_Stream_Error_Read_Only,
+					path)));
 			}
 
 			if (exists && !append) {
@@ -315,13 +320,16 @@ public class ScaFileStore extends FileStore {
 
 			return new ScaFileOutputStream(file, append);
 		} catch (final InvalidFileName e) {
-			throw new CoreException(new Status(IStatus.ERROR, ScaFileSystemPlugin.ID, NLS.bind(Messages.ScaFileStore__Open_Output_Stream_Error_Invalid_File_Name, path), e));
+			throw new CoreException(new Status(IStatus.ERROR, ScaFileSystemPlugin.ID, NLS.bind(
+				Messages.ScaFileStore__Open_Output_Stream_Error_Invalid_File_Name, path), e));
 		} catch (final FileException e) {
-			throw new CoreException(new Status(IStatus.ERROR, ScaFileSystemPlugin.ID, NLS.bind(Messages.ScaFileStore__Open_Output_Stream_Error_File_System, path), e));
+			throw new CoreException(new Status(IStatus.ERROR, ScaFileSystemPlugin.ID, NLS.bind(Messages.ScaFileStore__Open_Output_Stream_Error_File_System,
+				path), e));
 		} catch (final InvalidFilePointer e) {
 			throw new CoreException(new Status(IStatus.ERROR, ScaFileSystemPlugin.ID, NLS.bind(Messages.ScaFileStore__Open_Output_Stream_Error_IO, path), e));
 		} catch (final SystemException e) {
-			throw new CoreException(new Status(IStatus.ERROR, ScaFileSystemPlugin.ID, NLS.bind(Messages.ScaFileStore__Open_Output_Stream_Error_System, path), e));
+			throw new CoreException(
+				new Status(IStatus.ERROR, ScaFileSystemPlugin.ID, NLS.bind(Messages.ScaFileStore__Open_Output_Stream_Error_System, path), e));
 		} finally {
 			monitor.done();
 		}
@@ -359,7 +367,7 @@ public class ScaFileStore extends FileStore {
 			});
 			final IFileInfo[] retVal = new IFileInfo[result.length];
 			for (int i = 0; i < result.length; i++) {
-				retVal[i] = translate(result[i]);
+				retVal[i] = ScaFileStore.translate(result[i]);
 			}
 			return retVal;
 		} catch (final InterruptedException e) {
@@ -400,7 +408,8 @@ public class ScaFileStore extends FileStore {
 		} catch (final FileException e) {
 			throw new CoreException(new Status(IStatus.ERROR, ScaFileSystemPlugin.ID, NLS.bind(Messages.ScaFileStore__Deleting_Error, path) + " " + e.msg, e));
 		} catch (final InvalidFileName e) {
-			throw new CoreException(new Status(IStatus.ERROR, ScaFileSystemPlugin.ID, NLS.bind(Messages.ScaFileStore__Deleting_Error_Invalid_File_Name, path) + " " + e.msg, e));
+			throw new CoreException(new Status(IStatus.ERROR, ScaFileSystemPlugin.ID, NLS.bind(Messages.ScaFileStore__Deleting_Error_Invalid_File_Name, path)
+				+ " " + e.msg, e));
 		} catch (final SystemException e) {
 			throw new CoreException(new Status(IStatus.ERROR, ScaFileSystemPlugin.ID, NLS.bind(Messages.ScaFileStore__Deleting_Error_System, path), e));
 		} finally {

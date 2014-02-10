@@ -20,6 +20,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
+import mil.jpeojtrs.sca.util.QueryParser;
 import mil.jpeojtrs.sca.util.ScaFileSystemConstants;
 
 import org.eclipse.core.runtime.CoreException;
@@ -37,12 +38,14 @@ public class FileSystemCache {
 	 */
 	private final Map<String, FileCache> fileCacheMap = Collections.synchronizedMap(new HashMap<String, FileCache>());
 	private FileSystem fs;
-	private URI fsInitRef;
-	private OrbSession session;
+	private final URI fsInitRef;
+	private final OrbSession session;
+	private final ScaFileStore store;
 
-	public FileSystemCache(OrbSession session, URI fsInitRef) {
-		this.fsInitRef = fsInitRef;
+	public FileSystemCache(OrbSession session, ScaFileStore store) {
+		this.fsInitRef = store.getFsInitRef();
 		this.session = session;
+		this.store = store;
 	}
 
 	public synchronized FileCache getFileCache(final ScaFileStore store) {
@@ -96,5 +99,24 @@ public class FileSystemCache {
 			throw new CoreException(new Status(IStatus.ERROR, ScaFileSystemPlugin.ID, "Failed to resolve File System: " + fsInitRef, e));
 		}
 		return fs;
+	}
+
+	public String getRoot() {
+		Map<String, String> query = QueryParser.parseQuery(store.toURI().getQuery());
+		String domain = query.get(ScaFileSystemConstants.QUERY_PARAM_DOMAIN_NAME);
+		String devMgr = query.get(ScaFileSystemConstants.QUERY_PARAM_DEVICE_MGR_NAME);
+		if (domain == null) {
+			if (devMgr != null) {
+				return "sdr" + "/dev_" + devMgr + "/";
+			} else {
+				return "sdr/dom/";
+			}
+		} else {
+			if (devMgr != null) {
+				return "sdr_" + domain + "/dev_" + devMgr + "/";
+			} else {
+				return "sdr_" + domain + "/dom/";
+			}
+		}
 	}
 }

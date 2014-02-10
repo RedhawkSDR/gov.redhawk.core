@@ -1829,9 +1829,9 @@ public class ScaDeviceManagerImpl extends ScaPropertyContainerImpl<DeviceManager
 	public void fetchAttributes(IProgressMonitor monitor) {
 		SubMonitor subMonitor = SubMonitor.convert(monitor, 6);
 		fetchNarrowedObject(subMonitor.newChild(1));
+		fetchLocalAttributes(subMonitor.newChild(1));
 		fetchFileSystem(subMonitor.newChild(1));
 		super.fetchAttributes(subMonitor.newChild(1));
-		fetchLocalAttributes(subMonitor.newChild(1));
 		fetchProfileObject(subMonitor.newChild(1));
 		fetchProperties(subMonitor.newChild(1));
 		subMonitor.done();
