@@ -27,7 +27,6 @@ import java.util.List;
 
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
-import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.action.IMenuManager;
@@ -133,7 +132,7 @@ public class PlotView2 extends ViewPart implements IPlotView {
 	
 	/** used to create a new (clone) plot view of current plot view for the "New Plot View" Action / Menu. */ 
 	private IDisposable addPlotSourceInternal(PlotSource source) {
-		return addPlotSource2(source);
+		return this.plotPageBook.addSource2(source);
 //		return addPlotSource(source.getInput(), source.getFftOptions(), source.getQualifiers());
 	}
 
@@ -152,16 +151,13 @@ public class PlotView2 extends ViewPart implements IPlotView {
 	 * @param fftSettings settings to use if an FFT is to be displayed (null for none)
 	 * @param qualifiers
 	 * @return IDisposable (since 4.3, was IPlotSession in 4.2)
+	 * @see PlotPageBook2#addSource2(PlotSource)
 	 */
 	public IDisposable addPlotSource(ScaUsesPort port, final FftSettings fftSettings, String qualifiers) {
 		if (fftSettings != null) {
 			addAdjustFftSettingsMenuIfNotPresent();
 		}
 		return this.plotPageBook.addSource(port, fftSettings, qualifiers);
-	}
-
-	public IDisposable addPlotSource2(@NonNull PlotSource plotSource) {
-		return this.plotPageBook.addSource2(plotSource);
 	}
 	
 	/**

@@ -210,7 +210,7 @@ public class PlotPortHandler extends AbstractHandler {
 											StatusManager.LOG);
 										continue; // log warning and skip unsupported Port type
 									}
-									plotView.addPlotSource2(plotSource);
+									plotView.getPlotPageBook().addSource2(plotSource);
 								} else {
 									plotView.addPlotSource(port, fft, null);
 								}
