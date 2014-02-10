@@ -276,8 +276,10 @@ public class PlotHandler extends AbstractHandler implements IHandler {
 					@Override
 					protected IStatus run(IProgressMonitor monitor) {
 						try {
-							device.deallocateCapacity(props);
-							device.refresh(null, RefreshDepth.SELF);
+							if (device != null) {
+								device.deallocateCapacity(props);
+								device.refresh(null, RefreshDepth.SELF);
+							}
 						} catch (InvalidCapacity e) {
 							return new Status(Status.ERROR, FrontEndUIActivator.PLUGIN_ID, "Invalid Capacity in plot deallocation: " + e.msg, e);
 						} catch (InvalidState e) {
