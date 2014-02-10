@@ -151,9 +151,11 @@ public final class NxmPlotUtil {
 			plotSwitches = EMPTY_STRING; // so we can easily append to plot args below
 		}
 		Boolean enablePlotMenu = plotSettings.getEnablePlotMenu();
-		if (enablePlotMenu == null) { // not set, get user configurable preference for this
-			enablePlotMenu = ScaUiPlugin.getDefault().getPreferenceStore().getDefaultBoolean(PlotPreferenceConstants.P_ENABLE_CONFIGURE_MENU_USING_MOUSE);
+		if (enablePlotMenu == null) { // not set, get user's configured workbench preference for this
+			enablePlotMenu = ScaUiPlugin.getDefault().getPreferenceStore().getBoolean(PlotPreferenceConstants.P_ENABLE_CONFIGURE_MENU_USING_MOUSE);
+			plotSettings.setEnablePlotMenu(enablePlotMenu);
 		}
+
 		if (Boolean.FALSE.equals(enablePlotMenu)) {        // PLOT has configure menu on by default
 			plotSwitches += "/EVENTFILTER=+NoMiddleMouse"; // so only need to disable when false
 		}
