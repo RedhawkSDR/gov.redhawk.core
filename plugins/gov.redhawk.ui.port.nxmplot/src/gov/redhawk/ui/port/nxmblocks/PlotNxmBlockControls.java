@@ -80,7 +80,7 @@ public class PlotNxmBlockControls {
 		UpdateValueStrategy frameSizeTargetToModel = new UpdateValueStrategy();
 		frameSizeTargetToModel.setAfterGetValidator(new StringToIntegerValidator(FRAME_SIZE_FIELD_NAME, VALUE_USE_DEFAULT));
 		frameSizeTargetToModel.setConverter(new ObjectToNullConverter(StringToNumberConverter.toInteger(false), true, true, VALUE_USE_DEFAULT));
-		frameSizeTargetToModel.setAfterConvertValidator(new NumberRangeValidator<Integer>(FRAME_SIZE_FIELD_NAME, Integer.class, 0, false));
+		frameSizeTargetToModel.setAfterConvertValidator(new NumberRangeValidator<Integer>(FRAME_SIZE_FIELD_NAME, Integer.class, 2));
 		UpdateValueStrategy frameSizeModelToTarget = new UpdateValueStrategy();
 		frameSizeModelToTarget.setConverter(new ObjectToNullConverter()); // converts null to null, otherwise uses toString()
 		Binding bindingValue = dataBindingCtx.bindValue(frameSizeWidgetValue, frameSizeModelValue, frameSizeTargetToModel, frameSizeModelToTarget);

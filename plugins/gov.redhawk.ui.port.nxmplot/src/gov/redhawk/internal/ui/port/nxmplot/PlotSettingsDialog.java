@@ -68,7 +68,7 @@ public class PlotSettingsDialog extends Dialog {
 	private ComboViewer minField;
 	private ComboViewer maxField;
 	private ComboViewer sampleRateField;
-	private ComboViewer blockingOptionField;
+//	private ComboViewer blockingOptionField;
 	private ComboViewer plotTypeField;
 	
 	private DataBindingContext dataBindingContext = new DataBindingContext();

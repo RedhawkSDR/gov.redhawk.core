@@ -34,7 +34,12 @@ class NumberRangeValidator<C extends Comparable<? super C>> implements IValidato
 	private boolean inclusiveMin = true;
 	private boolean inclusiveMax = true;
 	
-	/** ctor that defaults allowNull to true and no maxValue constraint. */
+	/** constructor that defaults allowNull to true and no maxValue constraint and is inclusive for minValue. */
+	public NumberRangeValidator(@NonNull String fieldName, @NonNull Class<? extends Number> numberClass, C minValue) {
+		this(fieldName, numberClass, true, minValue, true, null, true);
+	}
+
+	/** constructor that defaults allowNull to true and no maxValue constraint. */
 	public NumberRangeValidator(@NonNull String fieldName, @NonNull Class<? extends Number> numberClass, C minValue, boolean inclusiveMin) {
 		this(fieldName, numberClass, true, minValue, inclusiveMin, null, true);
 	}
