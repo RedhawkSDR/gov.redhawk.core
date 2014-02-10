@@ -414,7 +414,7 @@ public class ScaAdapterFactory extends AdapterFactoryImpl {
 	 * <!-- end-user-doc -->
 	 * @param target the object to adapt.
 	 * @return the adapter for the <code>target</code>.
-	 * @generated
+	 * @generated_NOT
 	 */
 	@Override
 	public Adapter createAdapter(Notifier target) {

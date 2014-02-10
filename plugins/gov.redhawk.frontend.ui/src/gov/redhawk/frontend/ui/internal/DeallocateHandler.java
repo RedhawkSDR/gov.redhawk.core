@@ -41,9 +41,8 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
+import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.IStructuredSelection;
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.ui.handlers.HandlerUtil;
 
 import CF.DataType;
@@ -70,6 +69,7 @@ public class DeallocateHandler extends AbstractHandler implements IHandler {
 		if (selection == null) {
 			return null;
 		}
+		boolean removeSelection = true;
 		Object obj = selection.getFirstElement();
 		if (obj instanceof TunerStatus) {
 			TunerStatus tuner = (TunerStatus) obj;
@@ -77,7 +77,7 @@ public class DeallocateHandler extends AbstractHandler implements IHandler {
 				// already deallocated, probably still in a pinned properties view
 				return null;
 			}
-			deallocateTuner(tuner, event);
+			removeSelection = deallocateTuner(tuner, event);
 		}
 		if (obj instanceof TunerContainer) {
 			TunerContainer container = (TunerContainer) obj;
@@ -87,6 +87,7 @@ public class DeallocateHandler extends AbstractHandler implements IHandler {
 					deallocateTuner(tuner, event);
 				}
 			}
+			removeSelection = false;
 		}
 		if (obj instanceof ListenerAllocation) {
 			final ListenerAllocation listener = (ListenerAllocation) obj;
@@ -135,20 +136,23 @@ public class DeallocateHandler extends AbstractHandler implements IHandler {
 		}
 		// If called from toolbar button, we must unset the property page's selection to clear it
 		Object section = ((IEvaluationContext) event.getApplicationContext()).getVariable("gov.redhawk.frontend.propertySection");
-		if (section != null) {
+		if (section != null && removeSelection) {
 			FrontendSection feSection = (FrontendSection) section;
 			feSection.unsetPageSelection();
 		}
 		return null;
 	}
 
-	private void deallocateTuner(TunerStatus tuner, ExecutionEvent event) {
+	private boolean deallocateTuner(TunerStatus tuner, ExecutionEvent event) {
 		if (tuner.getAllocationID().contains(",")) {
-			MessageBox warning = new MessageBox(HandlerUtil.getActiveWorkbenchWindow(event).getShell(), SWT.ICON_WARNING | SWT.CANCEL | SWT.OK);
-			warning.setText("Deallocation Warning");
-			warning.setMessage("Deallocating a tuner will also deallocate all of its listeners.  Proceed?");
-			if (warning.open() == SWT.CANCEL) {
-				return;
+			MessageDialog warning = new MessageDialog(HandlerUtil.getActiveWorkbenchWindow(event).getShell(), 
+				"Deallocation Warning", null, 
+				"Deallocating a tuner will also deallocate all of its listeners.  Proceed?", 
+				MessageDialog.WARNING, new String[]{"No","Yes"}, 0);
+			int response = warning.open();
+			System.out.println("Response = " + response);
+			if (response != 1) {
+				return false;
 			}
 		}
 		final ScaDevice< ? > device = tuner.getTunerContainer().getModelDevice().getScaDevice();
@@ -176,6 +180,7 @@ public class DeallocateHandler extends AbstractHandler implements IHandler {
 		job.setUser(true);
 		job.schedule();
 
+		return true;
 	}
 
 	private DataType[] createAllocationProperties(TunerStatus tuner) {
