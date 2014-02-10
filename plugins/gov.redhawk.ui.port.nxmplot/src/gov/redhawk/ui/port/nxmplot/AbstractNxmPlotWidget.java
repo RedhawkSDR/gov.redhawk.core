@@ -514,6 +514,7 @@ public abstract class AbstractNxmPlotWidget extends Composite {
 	/**
 	 * @param custom FFT settings to apply
 	 * @since 4.3
+	 * @noreference This method is not intended to be referenced by clients (it will be removed in a future release)
 	 */
 	public void applyFftSettings(FftSettings fftSettings) {
 		if (fftSettings != null) {
