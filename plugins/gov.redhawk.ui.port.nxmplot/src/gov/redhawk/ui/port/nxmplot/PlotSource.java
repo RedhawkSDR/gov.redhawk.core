@@ -22,16 +22,15 @@ import gov.redhawk.ui.port.nxmblocks.SddsNxmBlockSettings;
  */
 public class PlotSource {
 	private final ScaUsesPort input;
-	private final FftSettings fftOptions; // <-- deprecated
 	private final String qualifiers;
-	
+
 	private final BulkIONxmBlockSettings bulkioBlockSettings;
 	private final SddsNxmBlockSettings sddsBlockSettings;
 	private final FftNxmBlockSettings fftBlockSettings;
 	private final PlotNxmBlockSettings plotBlockSettings;
-	
-	public PlotSource(ScaUsesPort input, FftSettings fftOptions, String qualifiers) {
-		this(input, null, null, null, null, qualifiers, fftOptions);
+
+	public PlotSource(ScaUsesPort input, FftNxmBlockSettings fftSettings, String qualifiers) {
+		this(input, null, null, fftSettings, null, qualifiers);
 	}
 
 	public PlotSource(ScaUsesPort input, BulkIONxmBlockSettings bulkioSettings, FftNxmBlockSettings fftSettings, PlotNxmBlockSettings plotSettings, String qualifiers) {
@@ -41,35 +40,20 @@ public class PlotSource {
 	public PlotSource(ScaUsesPort input, SddsNxmBlockSettings sddsSettings, FftNxmBlockSettings fftSettings, PlotNxmBlockSettings plotSettings, String qualifiers) {
 		this(input, null, sddsSettings, fftSettings, plotSettings, qualifiers);
 	}
-	
-	// package-private for now
-	PlotSource(ScaUsesPort input, BulkIONxmBlockSettings bulkioSettings, SddsNxmBlockSettings sddsSettings,
-		FftNxmBlockSettings fftSettings, PlotNxmBlockSettings plotSettings, String qualifiers) {
-		this(input, bulkioSettings, sddsSettings, fftSettings, plotSettings, qualifiers, null);
-	}
-	
+
+	/** private as BulkIONxmBlockSettings and SddsNxmBlockSettings should be mutually exclusive */
 	private PlotSource(ScaUsesPort input, BulkIONxmBlockSettings bulkioSettings, SddsNxmBlockSettings sddsSettings,
-		FftNxmBlockSettings fftSettings, PlotNxmBlockSettings plotSettings, String qualifiers, FftSettings oldFftOptions) {
+		FftNxmBlockSettings fftSettings, PlotNxmBlockSettings plotSettings, String qualifiers) {
 		this.input = input;
 		this.bulkioBlockSettings = bulkioSettings;
 		this.sddsBlockSettings = sddsSettings;
 		this.fftBlockSettings = fftSettings;
 		this.plotBlockSettings = plotSettings;
 		this.qualifiers = qualifiers;
-		this.fftOptions = oldFftOptions;
 	}
 
-	
 	public ScaUsesPort getInput() {
 		return input;
-	}
-
-	/**
-	 * @deprecated since 4.3, use {@link #getFftBlockSettings()}
-	 */
-	@Deprecated
-	public FftSettings getFftOptions() {
-		return fftOptions;
 	}
 
 	public String getQualifiers() {
@@ -91,5 +75,5 @@ public class PlotSource {
 	public PlotNxmBlockSettings getPlotBlockSettings() {
 		return plotBlockSettings;
 	}
-	
+
 }

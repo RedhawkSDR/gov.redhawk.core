@@ -36,9 +36,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
+import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
-
-import mil.jpeojtrs.sca.util.DceUuidUtil;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -81,35 +80,13 @@ public class PlotPageBook2 extends Composite {
 
 	private static class PlotPage {
 		private final AbstractNxmPlotWidget plot;
-		private final Map<PlotSource, IPlotSession> sessionMap = new HashMap<PlotSource, IPlotSession>();
 
 		public PlotPage(AbstractNxmPlotWidget plot, String plotArgs, String plotSwitches) {
 			this.plot = plot;
 			this.plot.initPlot(plotSwitches, plotArgs);
 		}
 
-		private synchronized void addSource(PlotSource newSource) {
-			String qualifiers = newSource.getQualifiers();
-			if (qualifiers == null) {
-				qualifiers = NxmPlotUtil.getDefaultPlotQualifiers(plot.getPlotSettings().getPlotType());
-			}
-			@SuppressWarnings("deprecation")
-			IPlotSession newSession = NxmPlotUtil.addSource(newSource.getInput(), newSource.getFftOptions(), plot, qualifiers);
-			sessionMap.put(newSource, newSession);
-		}
-
-		private synchronized void removeSource(PlotSource source) {
-			IPlotSession session = sessionMap.get(source);
-			if (session != null) {
-				session.dispose();
-			}
-		}
-
 		public synchronized void dispose() {
-			for (IPlotSession session : sessionMap.values()) {
-				session.dispose();
-			}
-			sessionMap.clear();
 			plot.dispose();
 		}
 	} // end inner-class PlotPage
@@ -255,12 +232,8 @@ public class PlotPageBook2 extends Composite {
 		String plotSwitches = NxmPlotUtil.getDefaultPlotSwitches(plotSettings);
 		AbstractNxmPlotWidget newPlot = PlotActivator.getDefault().getPlotFactory().createPlotWidget(this.pageBook, SWT.None);
 			
-		PlotPage plotPageSession = new PlotPage(newPlot, plotArgs, plotSwitches);
-		this.plots.put(type, plotPageSession);
-
-		for (PlotSource source : this.sources) {
-			plotPageSession.addSource(source);
-		}
+		PlotPage plotPage = new PlotPage(newPlot, plotArgs, plotSwitches);
+		this.plots.put(type, plotPage);
 
 		Set<Entry<PlotSource, List<INxmBlock>>> entrySet = source2NxmBlocks.entrySet();
 		for (Entry<PlotSource, List<INxmBlock>> entry : entrySet) {
@@ -289,30 +262,30 @@ public class PlotPageBook2 extends Composite {
 			}
 		}
 
-		return plotPageSession;
+		return plotPage;
 	}
 
-	private IPlotSession addSource(final PlotSource plotSource) {
-		for (PlotPage session : plots.values()) {
-			session.addSource(plotSource);
+	/**
+	 * @deprecated since 4.4., use {@link #addSource(PlotSource)}
+	 */
+	@Deprecated
+	public IPlotSession addSource(ScaUsesPort port, FftSettings oldFftsettings, String qualifiers) {
+		final FftNxmBlockSettings fftSettings;
+		if (oldFftsettings != null) {
+			fftSettings = toFftNxmBlockSettings(oldFftsettings);
+		} else {
+			fftSettings = null;
 		}
-		this.sources.add(plotSource);
-		ScaModelCommand.execute(plotSource.getInput(), new ScaModelCommand() {
-
-			@Override
-			public void execute() {
-				plotSource.getInput().eAdapters().add(portListener);
-			}
-		});
+		final PlotSource plotSource = new PlotSource(port, fftSettings, qualifiers);
+		
+		final org.eclipse.ui.services.IDisposable disposable = addSource(plotSource);
+		
 		return new IPlotSession() {
-
-			private String id = DceUuidUtil.createDceUUID();
+			private String id = UUID.randomUUID().toString();
 
 			@Override
 			public void dispose() {
-				for (PlotPage session : plots.values()) {
-					session.removeSource(plotSource);
-				}
+				disposable.dispose();
 			}
 
 			@Override
@@ -322,20 +295,10 @@ public class PlotPageBook2 extends Composite {
 		};
 	}
 
-	public IPlotSession addSource(ScaUsesPort port, FftSettings settings, String qualifiers) {
-		final PlotSource plotSource = new PlotSource(port, settings, qualifiers);
-		boolean useNxmBlocks = false; // change this to true to use new INxmBlock API
-		if (dataSDDSHelper.id().equals(port.getRepid()) || useNxmBlocks) {
-			return (IPlotSession) addSource2(plotSource);
-		}
-		return addSource(plotSource);
-	}
-
 	/**
-	 * @since 4.3
-	 * @noreference This method is not intended to be referenced by clients? or just subject to API change? (TODO)
+	 * @since 4.4
 	 */
-	public org.eclipse.ui.services.IDisposable addSource2(@NonNull final PlotSource plotSource) {
+	public org.eclipse.ui.services.IDisposable addSource(@NonNull final PlotSource plotSource) {
 		final ScaUsesPort scaPort = plotSource.getInput();
 
 		final String pipeQualifiers = plotSource.getQualifiers();
@@ -376,13 +339,7 @@ public class PlotPageBook2 extends Composite {
 			plotBlockSettings = new PlotNxmBlockSettings();
 		}
 		PlotNxmBlock plotBlock = new PlotNxmBlock(currentPlotWidget, plotBlockSettings);
-		if (fftSettings == null) {
-			@SuppressWarnings("deprecation")
-			FftSettings fftOptions = plotSource.getFftOptions(); // check deprecated FftSettings
-			if (fftOptions != null) {
-				fftSettings = PlotPageBook2.toFftNxmBlockSettings(fftOptions);
-			}
-		}
+
 		final FftNxmBlock fftBlock;
 		if (fftSettings != null) {
 			fftBlock = new FftNxmBlock(currentPlotWidget, fftSettings);
@@ -431,6 +388,7 @@ public class PlotPageBook2 extends Composite {
 
 		this.source2NxmBlocks.put(plotSource, nxmBlocksForSource);
 
+		// register adapter to handle when EMF model disposes of the SCA Port
 		ScaModelCommand.execute(scaPort, new ScaModelCommand() {
 			@Override
 			public void execute() {

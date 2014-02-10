@@ -11,7 +11,6 @@
  */
 package gov.redhawk.internal.ui.port.nxmplot.view;
 
-import gov.redhawk.internal.ui.port.nxmplot.FftParameterEntryDialog;
 import gov.redhawk.internal.ui.port.nxmplot.PlotSettingsDialog;
 import gov.redhawk.model.sca.ScaUsesPort;
 import gov.redhawk.ui.port.nxmplot.AbstractNxmPlotWidget;
@@ -23,10 +22,9 @@ import gov.redhawk.ui.port.nxmplot.PlotSettings;
 import gov.redhawk.ui.port.nxmplot.PlotSource;
 import gov.redhawk.ui.port.nxmplot.PlotType;
 
-import java.util.List;
-
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.action.IMenuManager;
@@ -72,9 +70,6 @@ public class PlotView2 extends ViewPart implements IPlotView {
 	/** The private action for adjusting plot settings. */
 	private IAction adjustPlotSettingsAction;
 
-	/** The private action for adjusting fft settings. */
-	private IAction adjustFftSettingsAction;
-	
 	private IMenuManager menu;
 
 	private class PlotTypeMenuAction extends Action {
@@ -121,21 +116,7 @@ public class PlotView2 extends ViewPart implements IPlotView {
 		createToolBars();
 		createMenu();
 	}
-
-	/** adds the adjust FFT settings menu if not already added */
-	private synchronized void addAdjustFftSettingsMenuIfNotPresent() {
-		if (this.adjustFftSettingsAction == null) {
-			this.adjustFftSettingsAction = createAdjustFftSettingsAction();
-			this.menu.insertAfter(ADJUST_PLOT_SETTINGS_ACTION_ID, this.adjustFftSettingsAction);
-		}
-	}
 	
-	/** used to create a new (clone) plot view of current plot view for the "New Plot View" Action / Menu. */ 
-	private IDisposable addPlotSourceInternal(PlotSource source) {
-		return this.plotPageBook.addSource2(source);
-//		return addPlotSource(source.getInput(), source.getFftOptions(), source.getQualifiers());
-	}
-
 	@Override
 	public void dispose() {
 		this.diposed = true;
@@ -146,18 +127,22 @@ public class PlotView2 extends ViewPart implements IPlotView {
 		super.dispose();
 	}
 
-	/** 
+	/**
 	 * @param port ScaPort object to plot the output from.
 	 * @param fftSettings settings to use if an FFT is to be displayed (null for none)
 	 * @param qualifiers
 	 * @return IDisposable (since 4.3, was IPlotSession in 4.2)
 	 * @see PlotPageBook2#addSource2(PlotSource)
+	 * @deprecated since 4.4, use PlotPageBook2#addSource2(PlotSource)
 	 */
+	@Deprecated
+	@SuppressWarnings("deprecation")
 	public IDisposable addPlotSource(ScaUsesPort port, final FftSettings fftSettings, String qualifiers) {
-		if (fftSettings != null) {
-			addAdjustFftSettingsMenuIfNotPresent();
-		}
 		return this.plotPageBook.addSource(port, fftSettings, qualifiers);
+	}
+
+	public IDisposable addPlotSource(@NonNull PlotSource plotSource) {
+		return this.plotPageBook.addSource(plotSource);
 	}
 	
 	/**
@@ -224,7 +209,7 @@ public class PlotView2 extends ViewPart implements IPlotView {
 						newPlotView.setTitleToolTip(getTitleToolTip());
 						newPlotView.getPlotPageBook().showPlot(plotPageBook.getCurrentType());
 						for (PlotSource source : plotPageBook.getSources()) {
-							newPlotView.addPlotSourceInternal(source);
+							newPlotView.addPlotSource(source);
 						}
 						PlotSettings settings = plotPageBook.getActivePlotWidget().getPlotSettings();
 						settings.setPlotType(null);
@@ -273,40 +258,6 @@ public class PlotView2 extends ViewPart implements IPlotView {
 		return action;
 	}
 
-	private IAction createAdjustFftSettingsAction() {
-		IAction action = new Action() {
-			@Override
-			public void run() {
-				List<PlotSource> plotSources = plotPageBook.getSources();
-				FftSettings fftOptions = null;
-				for (PlotSource source : plotSources) {
-					fftOptions = source.getFftOptions();
-					if (fftOptions != null) {
-						break; // use first found FFT options
-					}
-				} // end for loop
-				if (fftOptions == null) {
-					return; // no source with FFT options
-				}
-				FftParameterEntryDialog dialog = new FftParameterEntryDialog(PlatformUI.getWorkbench().getDisplay().getActiveShell(), fftOptions);
-				dialog.setDisableChangeOutputType(true); // cannot change FFT output type at this time
-				final int result = dialog.open();
-				if (result == Window.OK) {
-					FftSettings newSettings = dialog.getFFTSettings();
-					for (AbstractNxmPlotWidget widget : plotPageBook.getAllPlotWidgets()) {
-						widget.applyFftSettings(newSettings); // apply settings to all plot widgets
-					}
-				} // end for loop
-			} // end method
-		};
-
-		action.setEnabled(true);
-		action.setText("Adjust FFT Settings");
-		action.setToolTipText(action.getText());
-		
-		return action;
-	}
-	
 	public PlotPageBook2 getPlotPageBook() {
 		return plotPageBook;
 	}
