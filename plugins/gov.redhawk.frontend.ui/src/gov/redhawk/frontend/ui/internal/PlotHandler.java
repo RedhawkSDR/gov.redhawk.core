@@ -17,8 +17,6 @@ import gov.redhawk.frontend.TunerStatus;
 import gov.redhawk.frontend.edit.utils.TunerProperties.ListenerAllocationProperties;
 import gov.redhawk.frontend.edit.utils.TunerUtils;
 import gov.redhawk.frontend.ui.FrontEndUIActivator;
-import gov.redhawk.internal.ui.port.nxmplot.view.PlotSource;
-import gov.redhawk.internal.ui.port.nxmplot.view.PlotView2;
 import gov.redhawk.model.sca.RefreshDepth;
 import gov.redhawk.model.sca.ScaDevice;
 import gov.redhawk.model.sca.ScaDomainManagerRegistry;
@@ -37,6 +35,7 @@ import gov.redhawk.ui.port.nxmblocks.PlotNxmBlockSettings;
 import gov.redhawk.ui.port.nxmblocks.SddsNxmBlockSettings;
 import gov.redhawk.ui.port.nxmplot.IPlotView;
 import gov.redhawk.ui.port.nxmplot.PlotActivator;
+import gov.redhawk.ui.port.nxmplot.PlotSource;
 import gov.redhawk.ui.port.nxmplot.PlotType;
 
 import java.util.ArrayList;
@@ -81,10 +80,6 @@ import CF.DevicePackage.InsufficientCapacity;
 import CF.DevicePackage.InvalidCapacity;
 import CF.DevicePackage.InvalidState;
 
-/**
- *
- */
-@SuppressWarnings("restriction")
 public class PlotHandler extends AbstractHandler implements IHandler {
 
 	private static final AtomicInteger uniquePlotViewSecondaryId = new AtomicInteger();
@@ -182,8 +177,8 @@ public class PlotHandler extends AbstractHandler implements IHandler {
 
 		try {
 			final IViewPart view = window.getActivePage().showView(IPlotView.ID, createSecondaryId(), IWorkbenchPage.VIEW_ACTIVATE);
-			if (view instanceof PlotView2) {
-				final PlotView2 plotView = (PlotView2) view;
+			if (view instanceof IPlotView) {
+				final IPlotView plotView = (IPlotView) view;
 				plotView.getPlotPageBook().showPlot(type);
 				plotView.getPlotPageBook().addDisposeListener(getDisposeListener(props));
 
@@ -217,7 +212,7 @@ public class PlotHandler extends AbstractHandler implements IHandler {
 										StatusManager.LOG);
 									continue; // log warning and skip unsupported Port type
 								}
-								plotView.addPlotSource2(plotSource);
+								plotView.getPlotPageBook().addSource2(plotSource);
 
 								// TODO: Add handler - addEventForward(port, plotView) 
 							} else {
@@ -228,7 +223,7 @@ public class PlotHandler extends AbstractHandler implements IHandler {
 
 						factory.dispose();
 						if (name.length() > 0 || tooltip.length() > 0) {
-							Display display = plotView.getSite().getShell().getDisplay();
+							Display display = plotView.getPlotPageBook().getDisplay();
 							display.asyncExec(new Runnable() {
 								@Override
 								public void run() {
