@@ -12,9 +12,17 @@
  // BEGIN GENERATED CODE
 package gov.redhawk.model.sca.impl;
 
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.HashMap;
+import java.util.Map;
+
 import gov.redhawk.model.sca.ScaDeviceManager;
 import gov.redhawk.model.sca.ScaDeviceManagerFileSystem;
+import gov.redhawk.model.sca.ScaDomainManager;
 import gov.redhawk.model.sca.ScaPackage;
+import mil.jpeojtrs.sca.util.QueryParser;
+import mil.jpeojtrs.sca.util.ScaFileSystemConstants;
 
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
@@ -238,5 +246,42 @@ public class ScaDeviceManagerFileSystemImpl extends ScaFileSystemImpl<FileSystem
 		    super.setCorbaObj(newCorbaObj);
 		}
 	}
-	
+
+	@Override
+	protected URI createFileSystemURI() {
+		ScaDeviceManager devMgr = getDeviceManager();
+		String devMgrName = null;
+		String domMgrName = null;
+		if (devMgr != null) {
+			if (devMgr.getDomMgr() != null) {
+				domMgrName = devMgr.getDomMgr().getName();
+			}
+			devMgrName = devMgr.getLabel();
+		}
+		
+		try {
+			return createFileSystemURI(ior, domMgrName, devMgrName);
+		} catch (final URISyntaxException e) {
+			return null;
+		}
+	}
+
+	/**
+	 * @since 19.0
+	 * @param ior
+	 * @param dmName
+	 * @return
+	 * @throws URISyntaxException
+	 */
+	protected static URI createFileSystemURI(String ior, String dmName, String devName) throws URISyntaxException {
+		if (ior == null) {
+			return null;
+		}
+		final Map<String, String> queryParams = new HashMap<String, String>();
+		queryParams.put(ScaFileSystemConstants.QUERY_PARAM_FS, ior);
+		queryParams.put(ScaFileSystemConstants.QUERY_PARAM_DOMAIN_NAME, dmName);
+		queryParams.put(ScaFileSystemConstants.QUERY_PARAM_DEVICE_MGR_NAME, devName);
+		return new URI(ScaFileSystemConstants.SCHEME + "://?" + QueryParser.createQuery(queryParams));
+	}
+
 } //ScaDeviceManagerFileSystemImpl

@@ -1919,9 +1919,9 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 		SubMonitor subMonitor = SubMonitor.convert(monitor, 7);
 		fetchKeepAlive(subMonitor.newChild(1));
 		fetchNarrowedObject(subMonitor.newChild(1)); // Handled by the CORBA obj superclass!
+		fetchLocalAttributes(subMonitor.newChild(1));
 		fetchFileManager(subMonitor.newChild(1));
 		super.fetchAttributes(subMonitor.newChild(1));
-		fetchLocalAttributes(subMonitor.newChild(1));
 		fetchProfileObject(subMonitor.newChild(1));
 		fetchProperties(subMonitor.newChild(1));
 

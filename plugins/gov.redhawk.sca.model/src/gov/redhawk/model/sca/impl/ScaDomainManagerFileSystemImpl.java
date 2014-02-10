@@ -235,11 +235,11 @@ public class ScaDomainManagerFileSystemImpl extends ScaFileManagerImpl implement
 	@Override
 	protected URI createFileSystemURI() {
 		ScaDomainManager localDomMgr = getDomMgr();
-		if (localDomMgr == null) {
-			return null;
+		String dmName = null;
+		if (localDomMgr != null) {
+			dmName = localDomMgr.getName();
 		}
 		try {
-			final String dmName = localDomMgr.getName();
 			return createFileSystemURI(ior, dmName);
 		} catch (final URISyntaxException e) {
 			return null;
@@ -259,6 +259,7 @@ public class ScaDomainManagerFileSystemImpl extends ScaFileManagerImpl implement
 		}
 		final Map<String, String> queryParams = new HashMap<String, String>();
 		queryParams.put(ScaFileSystemConstants.QUERY_PARAM_FS, ior);
+		queryParams.put(ScaFileSystemConstants.QUERY_PARAM_DOMAIN_NAME, dmName);
 		return new URI(ScaFileSystemConstants.SCHEME + "://?" + QueryParser.createQuery(queryParams));
 	}
 	
