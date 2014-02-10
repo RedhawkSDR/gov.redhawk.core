@@ -12,7 +12,6 @@
 package gov.redhawk.ui.port.nxmplot;
 
 import gov.redhawk.internal.ui.port.nxmplot.handlers.NxmBlockSettingsWizard;
-import gov.redhawk.internal.ui.port.nxmplot.view.PlotSource;
 import gov.redhawk.model.sca.IDisposable;
 import gov.redhawk.model.sca.ScaPackage;
 import gov.redhawk.model.sca.ScaUsesPort;

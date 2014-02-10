@@ -12,7 +12,6 @@
 package gov.redhawk.internal.ui.port.nxmplot.handlers;
 
 import gov.redhawk.internal.ui.port.nxmplot.FftParameterEntryDialog;
-import gov.redhawk.internal.ui.port.nxmplot.view.PlotSource;
 import gov.redhawk.internal.ui.port.nxmplot.view.PlotView2;
 import gov.redhawk.model.sca.ScaDomainManagerRegistry;
 import gov.redhawk.model.sca.ScaUsesPort;
@@ -27,6 +26,7 @@ import gov.redhawk.ui.port.nxmplot.FftSettings;
 import gov.redhawk.ui.port.nxmplot.IPlotWidgetListener;
 import gov.redhawk.ui.port.nxmplot.PlotActivator;
 import gov.redhawk.ui.port.nxmplot.PlotEvent;
+import gov.redhawk.ui.port.nxmplot.PlotSource;
 import gov.redhawk.ui.port.nxmplot.PlotEvent.Click;
 import gov.redhawk.ui.port.nxmplot.PlotEvent.DragBox;
 import gov.redhawk.ui.port.nxmplot.PlotEvent.Motion;
