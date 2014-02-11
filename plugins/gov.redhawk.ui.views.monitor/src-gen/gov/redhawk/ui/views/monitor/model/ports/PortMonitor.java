@@ -22,6 +22,7 @@ import BULKIO.PortUsageType;
 /**
  * <!-- begin-user-doc -->
  * A representation of the model object '<em><b>Port Monitor</b></em>'.
+ * @since 4.1
  * <!-- end-user-doc -->
  *
  * <p>

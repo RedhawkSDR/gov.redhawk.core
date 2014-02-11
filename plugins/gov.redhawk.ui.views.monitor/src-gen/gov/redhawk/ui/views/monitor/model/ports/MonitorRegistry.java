@@ -19,6 +19,7 @@ import org.eclipse.emf.ecore.EObject;
 /**
  * <!-- begin-user-doc -->
  * A representation of the model object '<em><b>Monitor Registry</b></em>'.
+ * @since 4.1
  * <!-- end-user-doc -->
  *
  * <p>

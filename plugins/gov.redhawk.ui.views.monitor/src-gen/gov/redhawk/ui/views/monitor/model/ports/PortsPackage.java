@@ -29,6 +29,7 @@ import org.eclipse.emf.ecore.EReference;
  *   <li>each enum,</li>
  *   <li>and each data type</li>
  * </ul>
+ * @since 4.1
  * <!-- end-user-doc -->
  * @see gov.redhawk.ui.views.monitor.model.ports.PortsFactory
  * @model kind="package"

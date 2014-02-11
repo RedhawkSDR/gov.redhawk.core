@@ -29,6 +29,7 @@ import org.eclipse.emf.ecore.EObject;
  * <!-- begin-user-doc -->
  * The <b>Adapter Factory</b> for the model.
  * It provides an adapter <code>createXXX</code> method for each class of the model.
+ * @since 4.1
  * <!-- end-user-doc -->
  * @see gov.redhawk.ui.views.monitor.model.ports.PortsPackage
  * @generated

@@ -3,12 +3,6 @@
     <resource path="META-INF/MANIFEST.MF">
         <filter id="927989779">
             <message_arguments>
-                <message_argument value="12.1.0"/>
-                <message_argument value="mil.jpeojtrs.sca.dmd"/>
-            </message_arguments>
-        </filter>
-        <filter id="927989779">
-            <message_arguments>
                 <message_argument value="12.2.0"/>
                 <message_argument value="mil.jpeojtrs.sca.dmd"/>
             </message_arguments>

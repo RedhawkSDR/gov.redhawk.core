@@ -23,5 +23,12 @@ Require-Bundle: org.eclipse.core.runtime;bundle-version="3.6.0",
  org.eclipse.emf.rap.edit.ui;bundle-version="2.6.1";resolution:=optional
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Bundle-ActivationPolicy: lazy
-Export-Package: gov.redhawk.ui.views.monitor.model.ports.provider,
- gov.redhawk.ui.views.monitor.ports
+Export-Package: gov.redhawk.ui.views.internal.monitor.handler;x-internal:=true,
+ gov.redhawk.ui.views.internal.monitor.ports;x-internal:=true,
+ gov.redhawk.ui.views.internal.monitor.tester;x-internal:=true,
+ gov.redhawk.ui.views.monitor.model.ports,
+ gov.redhawk.ui.views.monitor.model.ports.impl;x-internal:=true,
+ gov.redhawk.ui.views.monitor.model.ports.provider,
+ gov.redhawk.ui.views.monitor.model.ports.util,
+ gov.redhawk.ui.views.monitor.ports,
+ gov.redhawk.ui.views.monitor.provider
