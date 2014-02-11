@@ -75,7 +75,8 @@ public class PlotView2 extends ViewPart implements IPlotView {
 	private class PlotTypeMenuAction extends Action {
 
 		public PlotTypeMenuAction() {
-			super("Change Plot Type", IAction.AS_PUSH_BUTTON | IAction.AS_DROP_DOWN_MENU | SWT.None);
+			super("Change Plot Type", IAction.AS_PUSH_BUTTON | IAction.AS_CHECK_BOX | SWT.None);
+			setChecked(plotPageBook.getCurrentType() == PlotType.RASTER); // updates tool tip to display what action button will do
 		}
 
 		@Override
@@ -83,12 +84,23 @@ public class PlotView2 extends ViewPart implements IPlotView {
 			PlotType currentType = plotPageBook.getCurrentType();
 			if (currentType == PlotType.RASTER) {
 				plotPageBook.showPlot(PlotType.LINE);
+				this.setChecked(false);
 			} else {
 				plotPageBook.showPlot(PlotType.RASTER);
+				this.setChecked(true);
 			}
 		}
 
-	}
+		@Override
+		public void setChecked(final boolean checked) {
+			super.setChecked(checked);
+			if (!checked) {
+				this.setToolTipText("Show Raster");
+			} else {
+				this.setToolTipText("Show Line");
+			}
+		}
+	} // end class PlotTypeMenuAction
 
 	private PlotPageBook2 plotPageBook;
 
