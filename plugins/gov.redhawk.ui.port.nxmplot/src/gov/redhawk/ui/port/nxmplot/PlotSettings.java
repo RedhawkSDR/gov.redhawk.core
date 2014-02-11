@@ -36,13 +36,13 @@ public class PlotSettings {
 	 * @since 4.4
 	 */
 	public static enum PlotMode {
-		AUTO(""),
-		MAGNITUDE("Mag"),
+		AUTO("", "AUTO"),
+		MAGNITUDE("Mag", "Magnitude"),
 		PHASE("Phase"),
 		REAL("Real"),
-		IMAGINARY("Imag"),
-		REAL_AND_IMAGINARY("RnI"),
-		REAL_VS_IMAGINARY("RvI"),
+		IMAGINARY("Imag", "Imaginary"),
+		REAL_AND_IMAGINARY("RnI", "Real & Imaginary"),
+		REAL_VS_IMAGINARY("RvI", "Real vs Imaginary"),
 		TEN_LOG("10Log"),
 		TWENTY_LOG("20Log"),
 		X("X"),
@@ -50,9 +50,19 @@ public class PlotSettings {
 		Z("Z");
 
 		private String modeStr;
+		private String label;
 
 		private PlotMode(String modeStr) {
+			this(modeStr, modeStr);
+		}
+
+		private PlotMode(String modeStr, String label) {
 			this.modeStr = modeStr;
+			this.label = label;
+		}
+
+		public String getLabel() {
+			return label;
 		}
 
 		public String toModeString() {

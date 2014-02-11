@@ -10,7 +10,7 @@
  */
 package gov.redhawk.internal.ui.preferences;
 
-import gov.redhawk.sca.ui.ScaUiPlugin;
+import gov.redhawk.ui.port.nxmplot.PlotActivator;
 import gov.redhawk.ui.port.nxmplot.PlotSettings;
 import gov.redhawk.ui.port.nxmplot.preferences.PlotPreferences;
 
@@ -210,7 +210,7 @@ public class PlotPreferencePage extends FieldEditorPreferencePage implements IWo
 	private ComboFieldEditor createModesField() {
 		List<String[]> modes = new ArrayList<String[]>();
 		for (PlotSettings.PlotMode mode : PlotSettings.PlotMode.values()) {
-			modes.add(new String[] { mode.toString(), mode.toString() });
+			modes.add(new String[] { mode.getLabel(), mode.toString() });
 		}
 		String[][] modeValues = modes.toArray(new String[0][]);
 		ComboFieldEditor modeField = new ComboFieldEditor(PlotPreferences.MODE.getName(), "&Mode:", modeValues, getFieldEditorParent());
@@ -224,7 +224,8 @@ public class PlotPreferencePage extends FieldEditorPreferencePage implements IWo
 	@Override
 	public void init(IWorkbench workbench) {
 		this.workbench = workbench;
-		setPreferenceStore(ScaUiPlugin.getDefault().getScaPreferenceStore());
+		setPreferenceStore(PlotActivator.getDefault().getPreferenceStore());
+		setDescription("Change various default settings on how the data is displayed within the plots.");
 	}
 
 }

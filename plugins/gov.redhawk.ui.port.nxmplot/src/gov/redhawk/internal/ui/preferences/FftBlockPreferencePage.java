@@ -10,8 +10,8 @@
  *******************************************************************************/
 package gov.redhawk.internal.ui.preferences;
 
-import gov.redhawk.sca.ui.ScaUiPlugin;
 import gov.redhawk.ui.port.nxmblocks.FftNxmBlockSettings;
+import gov.redhawk.ui.port.nxmplot.PlotActivator;
 import gov.redhawk.ui.port.nxmplot.preferences.FftPreferences;
 
 import java.util.ArrayList;
@@ -42,7 +42,7 @@ public class FftBlockPreferencePage extends FieldEditorPreferencePage implements
 	 */
 	public FftBlockPreferencePage() {
 		super("FFT", FieldEditorPreferencePage.GRID);
-		setDescription("Change various settigns on the FFT primitive.");
+		setDescription("Change various settings on the FFT primitive.");
 	}
 
 	/* (non-Javadoc)
@@ -51,7 +51,8 @@ public class FftBlockPreferencePage extends FieldEditorPreferencePage implements
 	@Override
 	public void init(IWorkbench workbench) {
 		this.workbench = workbench;
-		setPreferenceStore(ScaUiPlugin.getDefault().getScaPreferenceStore());
+		setPreferenceStore(PlotActivator.getDefault().getPreferenceStore());
+		setDescription("Change various default settings for the FFT primitive.");
 	}
 
 	@Override

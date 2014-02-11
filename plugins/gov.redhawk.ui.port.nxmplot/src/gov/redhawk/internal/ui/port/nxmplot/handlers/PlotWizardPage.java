@@ -20,6 +20,9 @@ import gov.redhawk.ui.port.nxmblocks.SddsNxmBlockControls;
 import gov.redhawk.ui.port.nxmblocks.SddsNxmBlockSettings;
 import gov.redhawk.ui.port.nxmplot.PlotType;
 
+import java.util.Arrays;
+import java.util.List;
+
 import org.eclipse.core.databinding.DataBindingContext;
 import org.eclipse.core.databinding.beans.PojoProperties;
 import org.eclipse.jface.databinding.swt.WidgetProperties;
@@ -37,6 +40,7 @@ import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 
@@ -57,10 +61,10 @@ public class PlotWizardPage extends WizardPage {
 	public void createControl(Composite root) {
 		Composite parent = new Composite(root, SWT.None);
 		parent.setLayout(new GridLayout(2, false));
-		
+
 		Label label;
 		Group group;
-		
+
 		// === plot type ===
 		label = new Label(parent, SWT.None);
 		label.setText("Plot Type:");
@@ -69,7 +73,8 @@ public class PlotWizardPage extends WizardPage {
 		viewer.setContentProvider(new ArrayContentProvider());
 		viewer.setInput(PlotType.values());
 		viewer.getControl().setLayoutData(GridDataFactory.fillDefaults().grab(true, false).create());
-		dataBindingContext.bindValue(ViewerProperties.singleSelection().observe(viewer), PojoProperties.value(PlotWizardSettings.PROP_PLOT_TYPE).observe(settings));
+		dataBindingContext.bindValue(ViewerProperties.singleSelection().observe(viewer),
+			PojoProperties.value(PlotWizardSettings.PROP_PLOT_TYPE).observe(settings));
 
 		// == PLOT Block settings (e.g. frame size) ==
 		PlotNxmBlockSettings plotSettings = settings.getPlotBlockSettings();
@@ -88,7 +93,7 @@ public class PlotWizardPage extends WizardPage {
 			group.setText("BULKIO");
 			new BulkIONxmBlockControls(bulkioSettings, dataBindingContext).createControls(group);
 		}
-		
+
 		// == BULKIO SDDS settings ===
 		SddsNxmBlockSettings sddsSettings = settings.getSddsBlockSettings();
 		if (sddsSettings != null) {
@@ -97,9 +102,12 @@ public class PlotWizardPage extends WizardPage {
 			group.setText("BULKIO SDDS");
 			new SddsNxmBlockControls(sddsSettings, dataBindingContext).createControls(group);
 		}
-		
+
 		// == FFT settings ==
-		final Button button = new Button(parent, SWT.CHECK);
+
+		final Group fftGroup = new Group(parent, SWT.None);
+
+		final Button button = new Button(fftGroup, SWT.CHECK);
 		button.setText("Take FFT");
 		button.setLayoutData(GridDataFactory.fillDefaults().grab(true, false).span(2, 1).create());
 		dataBindingContext.bindValue(WidgetProperties.selection().observe(button), PojoProperties.value(PlotWizardSettings.PROP_DO_FFT).observe(settings));
@@ -108,21 +116,35 @@ public class PlotWizardPage extends WizardPage {
 			fftSettings = new FftNxmBlockSettings();
 			settings.setFftBlockSettings(fftSettings);
 		}
-		final Group fftGroup = new Group(parent, SWT.None);
+
 		fftGroup.setLayoutData(GridDataFactory.fillDefaults().grab(true, false).span(2, 1).create());
 		fftGroup.setText("FFT");
-		fftGroup.setVisible(button.getSelection());
+
+		final List<Control> skip = Arrays.asList(fftGroup, button);
+
 		new FftNxmBlockControls(fftSettings, dataBindingContext).createControls(fftGroup);
 		button.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				fftGroup.setVisible(button.getSelection()); // hide/show fft settings controls based on take FFT checkbox button
+				setFftEnabled(fftGroup, button.getSelection(), skip);
 			}
 		});
-		
+		setFftEnabled(fftGroup, button.getSelection(), skip);
+
 		WizardPageSupport.create(this, dataBindingContext);
-		
+
 		setControl(parent);
+	}
+
+	private void setFftEnabled(Composite control, boolean selection, List<Control> skip) {
+		for (Control c : control.getChildren()) {
+			if (c instanceof Composite) {
+				setFftEnabled((Composite) c, selection, skip);
+			}
+			if (!skip.contains(c)) {
+				c.setEnabled(selection);
+			}
+		}
 	}
 
 	public PlotWizardSettings getPlotSettings() {

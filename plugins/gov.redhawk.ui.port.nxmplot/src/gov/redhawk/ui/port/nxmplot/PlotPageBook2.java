@@ -232,11 +232,6 @@ public class PlotPageBook2 extends Composite {
 		PlotPage plotPage = new PlotPage(newPlot, plotArgs, plotSwitches);
 		this.plots.put(type, plotPage);
 
-		// TODO??
-		//		for (PlotSource source : this.sources) {
-		//			plotPageSession.addSource(source);
-		//		}
-
 		Set<Entry<PlotSource, List<INxmBlock>>> entrySet = source2NxmBlocks.entrySet();
 		for (Entry<PlotSource, List<INxmBlock>> entry : entrySet) {
 			PlotNxmBlockSettings plotBlockSettings = entry.getKey().getPlotBlockSettings();
@@ -575,7 +570,7 @@ public class PlotPageBook2 extends Composite {
 
 						for (Map.Entry<PlotSource, List<INxmBlock>> entry : source2NxmBlocks.entrySet()) {
 							String name = entry.getKey().getInput().getName();
-							SourcePreferencePage sourcePrefPage = new SourcePreferencePage(name, PlotPageBook2.this);
+							SourcePreferencePage sourcePrefPage = new SourcePreferencePage(name, PlotPageBook2.this, entry.getValue());
 							PreferenceNode sourceNode = new PreferenceNode(entry.getKey().toString(), sourcePrefPage);
 
 							for (INxmBlock block : entry.getValue()) {

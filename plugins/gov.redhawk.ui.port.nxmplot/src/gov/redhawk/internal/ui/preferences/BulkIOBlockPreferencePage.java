@@ -10,7 +10,7 @@
  *******************************************************************************/
 package gov.redhawk.internal.ui.preferences;
 
-import gov.redhawk.sca.ui.ScaUiPlugin;
+import gov.redhawk.ui.port.nxmplot.PlotActivator;
 import gov.redhawk.ui.port.nxmplot.preferences.BulkIOPreferences;
 
 import org.eclipse.jface.layout.GridDataFactory;
@@ -45,7 +45,8 @@ public class BulkIOBlockPreferencePage extends FieldEditorPreferencePage impleme
 	@Override
 	public void init(IWorkbench workbench) {
 		this.workbench = workbench;
-		setPreferenceStore(ScaUiPlugin.getDefault().getScaPreferenceStore());
+		setPreferenceStore(PlotActivator.getDefault().getPreferenceStore());
+		setDescription("Change various default settings for how the data is being received via CORBA Bulk IO.");
 	}
 
 	@Override

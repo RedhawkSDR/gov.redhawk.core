@@ -343,4 +343,24 @@ public class PlotNxmBlock extends AbstractNxmBlock<plot> {
 		retVal.setPreferenceStore(getPreferences());
 		return retVal;
 	}
+
+	public void hide() {
+		AbstractNxmPlotWidget context = getContext();
+		Iterator<String> keyIter = streamIdToSourceNameMap.keySet().iterator();
+		while (keyIter.hasNext()) {
+			String streamId = keyIter.next();
+			String sourceName = streamIdToSourceNameMap.get(streamId);
+			context.sendPlotMessage("SET.LAYERS." + sourceName + ".ENABLE", 0, "-GLOBAL");
+		}
+	}
+
+	public void show() {
+		AbstractNxmPlotWidget context = getContext();
+		Iterator<String> keyIter = streamIdToSourceNameMap.keySet().iterator();
+		while (keyIter.hasNext()) {
+			String streamId = keyIter.next();
+			String sourceName = streamIdToSourceNameMap.get(streamId);
+			context.sendPlotMessage("SET.LAYERS." + sourceName + ".ENABLE", 0, "+GLOBAL");
+		}
+	}
 }
