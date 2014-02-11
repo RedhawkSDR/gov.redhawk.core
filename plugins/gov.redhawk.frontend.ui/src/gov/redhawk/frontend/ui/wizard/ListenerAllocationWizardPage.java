@@ -42,7 +42,6 @@ public class ListenerAllocationWizardPage extends WizardPage {
 	private UUID uuid;
 	private EMFDataBindingContext context;
 
-	private static final String ALLOC_ID_CONTINS_COLON_ERR_MSG = "Allocation ID must not contain a colon";
 	private static final String ALLOC_ID_CONTINS_COMMA_ERR_MSG = "Allocation ID must not contain a comma";
 	private static final String ALLOC_ID_MISSING = "Please provide an allocation ID. Any text, excludig commas and colons is acceptable.";
 	private static final String TARGET_ID_MISSING = "Please enter an existing Allocation ID.";
