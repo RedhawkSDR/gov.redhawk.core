@@ -19,6 +19,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jdt.annotation.NonNullByDefault;
+import org.eclipse.jdt.annotation.Nullable;
 
 import BULKIO.updateSRIOperations;
 
@@ -37,12 +38,10 @@ public enum ConnectionManager implements IBulkIOPortConnectionManager {
 	}
 
 	@Override
-	public String connect(String ior, BulkIOType type, updateSRIOperations internalPort, String connectionID) throws CoreException {
+	public String connect(final String ior, final BulkIOType type, final updateSRIOperations internalPort, @Nullable final String connectionID)
+		throws CoreException {
 		if (ior == null || internalPort == null) {
 			throw new IllegalArgumentException("Null ior or port implemention.");
-		}
-		if (connectionID != null && connectionID.isEmpty()) {
-			connectionID = null;
 		}
 		ConnectionKey key = new ConnectionKey(ior, type, connectionID);
 		boolean initConnection = false;
@@ -69,7 +68,7 @@ public enum ConnectionManager implements IBulkIOPortConnectionManager {
 	}
 
 	@Override
-	public void disconnect(String ior, BulkIOType type, updateSRIOperations internalPort, String connectionID) {
+	public void disconnect(String ior, BulkIOType type, updateSRIOperations internalPort, @Nullable String connectionID) {
 		if (ior == null || internalPort == null) {
 			return;
 		}
@@ -97,7 +96,7 @@ public enum ConnectionManager implements IBulkIOPortConnectionManager {
 	}
 
 	@Override
-	public AbstractBulkIOPort getExternalPort(String ior, BulkIOType type, String connectionID) {
+	public AbstractBulkIOPort getExternalPort(String ior, BulkIOType type, @Nullable String connectionID) {
 		ConnectionKey key = new ConnectionKey(ior, type, connectionID);
 		return connections.get(key);
 	}
