@@ -10,7 +10,7 @@
  */
 package gov.redhawk.ui.port.nxmplot.preferences;
 
-import gov.redhawk.sca.ui.ScaUiPlugin;
+import gov.redhawk.ui.port.nxmplot.PlotActivator;
 
 import org.eclipse.core.runtime.preferences.AbstractPreferenceInitializer;
 import org.eclipse.jface.preference.IPreferenceStore;
@@ -26,7 +26,7 @@ public class PlotPreferenceInitializer extends AbstractPreferenceInitializer {
 	 * @see org.eclipse.core.runtime.preferences.AbstractPreferenceInitializer#initializeDefaultPreferences()
 	 */
 	public void initializeDefaultPreferences() {
-		IPreferenceStore store = ScaUiPlugin.getDefault().getPreferenceStore();
+		IPreferenceStore store = PlotActivator.getDefault().getPreferenceStore();
 		store.setDefault(PlotPreferenceConstants.P_ENABLE_CONFIGURE_MENU_USING_MOUSE, false);
 	}
 

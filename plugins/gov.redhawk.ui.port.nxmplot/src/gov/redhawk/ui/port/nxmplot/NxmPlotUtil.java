@@ -13,7 +13,6 @@ package gov.redhawk.ui.port.nxmplot;
 
 import gov.redhawk.internal.ui.port.nxmplot.PlotSession;
 import gov.redhawk.model.sca.ScaUsesPort;
-import gov.redhawk.sca.ui.ScaUiPlugin;
 import gov.redhawk.ui.port.nxmplot.PlotSettings.PlotMode;
 import gov.redhawk.ui.port.nxmplot.preferences.PlotPreferenceConstants;
 
@@ -152,7 +151,7 @@ public final class NxmPlotUtil {
 		}
 		Boolean enablePlotMenu = plotSettings.getEnablePlotMenu();
 		if (enablePlotMenu == null) { // not set, get user's configured workbench preference for this
-			enablePlotMenu = ScaUiPlugin.getDefault().getPreferenceStore().getBoolean(PlotPreferenceConstants.P_ENABLE_CONFIGURE_MENU_USING_MOUSE);
+			enablePlotMenu = PlotActivator.getDefault().getPreferenceStore().getBoolean(PlotPreferenceConstants.P_ENABLE_CONFIGURE_MENU_USING_MOUSE);
 			plotSettings.setEnablePlotMenu(enablePlotMenu);
 		}
 
