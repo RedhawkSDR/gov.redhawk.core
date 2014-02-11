@@ -50,6 +50,8 @@ public class BulkIONxmBlock extends AbstractNxmBlock<corbareceiver2> {
 	private final String ior;
 	private final BulkIOType bulkIOType;
 
+	private String originalConnectionID;
+
 	class BulkIOPort extends AbstractUberBulkIOPort {
 
 		@Override
@@ -184,7 +186,11 @@ public class BulkIONxmBlock extends AbstractNxmBlock<corbareceiver2> {
 
 	@Override
 	public void start() throws CoreException {
-		String connectionID = BulkIOUtilActivator.getBulkIOPortConnectionManager().connect(ior, bulkIOType, bulkIOPort, settings.getConnectionID());
+		this.originalConnectionID = settings.getConnectionID();
+		if (this.originalConnectionID != null && originalConnectionID.isEmpty()) {
+			this.originalConnectionID = null;
+		}
+		String connectionID = BulkIOUtilActivator.getBulkIOPortConnectionManager().connect(ior, bulkIOType, bulkIOPort, this.originalConnectionID);
 		if (connectionID == null) {
 			connectionID = ""; // set non-null value so that Connection ID field in adjust settings is read-only
 		}
@@ -195,8 +201,9 @@ public class BulkIONxmBlock extends AbstractNxmBlock<corbareceiver2> {
 	public void stop() {
 		TRACE_LOG.enteringMethod();
 		if (scaPort != null) {
-			BulkIOUtilActivator.getBulkIOPortConnectionManager().disconnect(ior, bulkIOType, bulkIOPort, settings.getConnectionID());
+			BulkIOUtilActivator.getBulkIOPortConnectionManager().disconnect(ior, bulkIOType, bulkIOPort, this.originalConnectionID);
 			scaPort = null;
+			this.originalConnectionID = null;
 		}
 	}
 
