@@ -821,7 +821,7 @@ public abstract class AbstractNxmPlotWidget extends Composite {
 		}
 
 		if (PlotPreferences.MIN.isEvent(event) || PlotPreferences.MIN_OVERRIDE.isEvent(event) || PlotPreferences.MAX.isEvent(event)
-				|| PlotPreferences.MAX_OVERRIDE.isEvent(event)) {
+			|| PlotPreferences.MAX_OVERRIDE.isEvent(event)) {
 			updateScale();
 		}
 
