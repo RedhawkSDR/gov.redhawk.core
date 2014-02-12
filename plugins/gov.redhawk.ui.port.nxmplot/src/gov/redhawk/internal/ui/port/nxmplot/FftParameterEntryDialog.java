@@ -192,7 +192,12 @@ public class FftParameterEntryDialog extends Dialog {
 		final ComboViewer type = new ComboViewer(container, SWT.READ_ONLY);
 		type.getCombo().setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false, 1, 1));
 		type.setContentProvider(ArrayContentProvider.getInstance()); // ArrayContentProvider does not store any state, therefore can re-use instances
-		type.setLabelProvider(new LabelProvider());
+		type.setLabelProvider(new LabelProvider() {
+			@Override
+			public String getText(Object element) {
+				return ((FftNxmBlockSettings.OutputType) element).getLabel();
+			}
+		});
 		OutputType currentOutputType = this.fftSettings.getOutputType();
 		if (currentOutputType == null) {
 			currentOutputType = FftNxmBlockSettings.OutputType.PSD; // default to PSD
@@ -217,7 +222,12 @@ public class FftParameterEntryDialog extends Dialog {
 		final ComboViewer window = new ComboViewer(container, SWT.READ_ONLY);
 		window.getCombo().setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false, 1, 1));
 		window.setContentProvider(ArrayContentProvider.getInstance()); // ArrayContentProvider does not store any state, therefore can re-use instances
-		window.setLabelProvider(new LabelProvider());
+		window.setLabelProvider(new LabelProvider() {
+			@Override
+			public String getText(Object element) {
+				return ((FftNxmBlockSettings.WindowType) element).getLabel();
+			}
+		});
 		window.setInput(FftNxmBlockSettings.WindowType.values());
 		WindowType currentWindowType = this.fftSettings.getWindow();
 		if (currentWindowType == null) {
