@@ -3,7 +3,7 @@ Bundle-ManifestVersion: 2
 Implementation-Version: 3.2.0
 Bundle-Name: %Bundle-Name
 Bundle-SymbolicName: nxm.redhawk;singleton:=true
-Bundle-Version: 10.1.0.qualifier
+Bundle-Version: 10.2.0.qualifier
 Bundle-Vendor: %Bundle-Vendor
 Bundle-Localization: plugin
 Require-Bundle: mil.jpeojtrs.sca.cf;bundle-version="2.2.2",

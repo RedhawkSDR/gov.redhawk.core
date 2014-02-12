@@ -39,7 +39,7 @@ import BULKIO.StreamSRI;
  * This class connects to the specified CORBA host and receives data and writes
  * it to a file. Generics are used to receive all types of data(Scalar/Complex,
  * Char/Byte(octet),Short/Integer/Long/Float/Double).
- * @since 10.1
+ * @since 10.2
  */
 public class corbareceiver2 extends CorbaPrimitive implements IMidasDataWriter { //SUPPRESS CHECKSTYLE ClassName
 	/** name of FILE= argument. */

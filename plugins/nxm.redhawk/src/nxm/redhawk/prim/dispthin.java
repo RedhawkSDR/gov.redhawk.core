@@ -169,7 +169,7 @@ public class dispthin extends Primitive { // SUPPRESS CHECKSTYLE ClassName
 
 	/**
 	 * @return the refreshRate
-	 * @since 10.1
+	 * @since 10.2
 	 */
 	public double getRefreshRate() {
 		return refreshRate;
@@ -177,7 +177,7 @@ public class dispthin extends Primitive { // SUPPRESS CHECKSTYLE ClassName
 
 	/**
 	 * @param refreshRate the refreshRate to set
-	 * @since 10.1
+	 * @since 10.2
 	 */
 	public void setRefreshRate(double refreshRate) {
 		this.refreshRate = refreshRate;

@@ -527,21 +527,21 @@ public class sourcenic extends Primitive { //SUPPRESS CHECKSTYLE ClassName
 	}
 
 	/**
-     * @since 10.1
+     * @since 10.2
      */
 	public ByteOrder getDataByteOrder() {
 		return packetDataByteOrder;
 	}
 
 	/**
-     * @since 10.1
+     * @since 10.2
      */
 	public void setDataByteOrder(ByteOrder byteOrder) {
 		packetDataByteOrder = byteOrder;
 	}
 
 	/**
-     * @since 10.1
+     * @since 10.2
      */
 	public void setDataByteOrder(String byteOrderStr) {
 		if (ByteOrder.BIG_ENDIAN.toString().equals(byteOrderStr)) {

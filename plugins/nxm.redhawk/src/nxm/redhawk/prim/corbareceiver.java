@@ -85,18 +85,18 @@ public class corbareceiver extends CorbaPrimitive implements IMidasDataWriter { 
 	/**
 	 * Name of switch to enable/disable increasing/growing output file's pipe size when 
 	 * incoming data packet size is larger than it. 
-	 * @since 10.1
+	 * @since 10.2
 	 */
 	public static final String SW_GROW_PIPE = "/GROWPIPE";
 
 	/**
 	 * Name of switch to set pipe size multiplier based on incoming data packet size (when larger than current pipe size).
-	 * @since 10.1
+	 * @since 10.2
 	 */
 	public static final String SW_PS_MULTIPLIER = "/PSMULT";
 
 	/** treat dataOctet as 8-bit unsigned integer (this will upcast format type to 16-bit signed integer to hold value).  
-	 * @since 10.1
+	 * @since 10.2
 	 */
 	public static final String SW_TREAT_OCTET_AS_UNSIGNED = "/UNSIGNEDOCTET";
 	
@@ -377,9 +377,10 @@ public class corbareceiver extends CorbaPrimitive implements IMidasDataWriter { 
 	}
 	
 	/**
-	 * @since 10.1
+	 * @since 10.2
 	 * @noreference This method is not intended to be referenced by clients.
 	 */
+	@Override
 	public synchronized void setStreamSri(String streamID, StreamSRI oldSri, StreamSRI newSri) {
 		TRACE_LOGGER.message("{0}: setStreamSri to {1} id={2} blocking={3}",  getID(), newSri, newSri.streamID, newSri.blocking);
 		this.currentSri = newSri;
@@ -415,9 +416,10 @@ public class corbareceiver extends CorbaPrimitive implements IMidasDataWriter { 
 	 * @param dataArray the array of data to plot
 	 * @param size the length of the data in the array
 	 * @param type the NeXtMidas type of the data to plot (eg. Data.FLOAT)
-	 * @since 10.0
+	 * @since 10.2
 	 * @noreference This method is not intended to be referenced by clients.
 	 */
+	@Override
 	public void write(final Object dataArray, final int size, final byte type, final boolean endOfStream, PrecisionUTCTime time, final String streamId) {
 		if (!shouldProcessPacket(endOfStream, type)) {
 			return;
@@ -590,14 +592,14 @@ public class corbareceiver extends CorbaPrimitive implements IMidasDataWriter { 
 	}
 
 	/**
-	 * @since 10.1
+	 * @since 10.2
 	 */
 	public boolean isCanGrowPipe() {
 		return canGrowPipe;
 	}
 
 	/**
-	 * @since 10.1
+	 * @since 10.2
 	 */
 	public void setCanGrowPipe(boolean newValue) {
 		this.canGrowPipe = newValue;
@@ -605,7 +607,7 @@ public class corbareceiver extends CorbaPrimitive implements IMidasDataWriter { 
 	}
 
 	/**
-	 * @since 10.1
+	 * @since 10.2
 	 */
 	public int getPipeSizeMultiplier() {
 		return pipeSizeMultiplier;
@@ -613,7 +615,7 @@ public class corbareceiver extends CorbaPrimitive implements IMidasDataWriter { 
 
 	/**
 	 * @param newValue new pipe size multiplier (MUST be >= 1)
-	 * @since 10.1
+	 * @since 10.2
 	 */
 	public void setPipeSizeMultiplier(int newValue) {
 		if (newValue <= 0) {
@@ -623,7 +625,7 @@ public class corbareceiver extends CorbaPrimitive implements IMidasDataWriter { 
 		MA.put(SW_PS_MULTIPLIER, "" + newValue);
 	}
 
-	/** @since 10.1 */
+	/** @since 10.2*/
 	public int getPipeSize() {
 		int retval = 0;
 		DataFile df = this.outputFile;
@@ -636,7 +638,7 @@ public class corbareceiver extends CorbaPrimitive implements IMidasDataWriter { 
 	/** 
 	 * Change output file's pipe size (immediately)
 	 * @param newValue new pipe size for output data file/pipe (in bytes)
-	 * @since 10.1
+	 * @since 10.2
 	 */
 	public synchronized void setPipeSize(int newValue) {
 		if (newValue <= 0) {
