@@ -16,10 +16,11 @@ import gov.redhawk.ui.port.nxmplot.PlotType;
 import java.util.List;
 
 /**
- * 
+ * @since 4.4
  */
 public class PlotPreferences {
 	public static final Preference<Boolean> ENABLE_CONFIGURE_MENU_USING_MOUSE = new Preference<Boolean>("plotSettings.enablePlotConfigureMenuUsingMouse", false);
+	public static final Preference<Boolean> ENABLE_QUICK_CONTROLS = new Preference<Boolean>("plotSettings.enableQuickControls", false);
 	public static final Preference<String> MODE = new Preference<String>("plotSettings.mode", PlotMode.AUTO.toString());
 	public static final Preference<Integer> FRAMESIZE = new Preference<Integer>("plotSettings.framesize", 1024);
 	public static final Preference<Boolean> FRAMESIZE_OVERRIDE = new Preference<Boolean>("plotSettings.framesize.override", false);
