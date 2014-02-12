@@ -13,7 +13,7 @@ package gov.redhawk.ui.port.nxmplot.preferences;
 import java.util.List;
 
 /**
- * 
+ * @since 4.4
  */
 public class SddsPreferences {
 	public static final Preference<String> BYTE_ORDER = new Preference<String>("sddsBlock.byteOrder", "NATIVE");

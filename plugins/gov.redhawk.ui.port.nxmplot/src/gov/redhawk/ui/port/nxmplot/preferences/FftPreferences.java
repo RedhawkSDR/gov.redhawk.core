@@ -15,7 +15,7 @@ import gov.redhawk.ui.port.nxmplot.FftSettings;
 import java.util.List;
 
 /**
- * 
+ * @since 4.4
  */
 public class FftPreferences {
 

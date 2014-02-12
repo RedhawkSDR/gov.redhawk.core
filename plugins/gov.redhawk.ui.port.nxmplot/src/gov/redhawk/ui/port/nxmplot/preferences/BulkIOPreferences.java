@@ -13,6 +13,7 @@ package gov.redhawk.ui.port.nxmplot.preferences;
 import java.util.List;
 
 /**
+ * @since 4.4
  * 
  */
 public class BulkIOPreferences {
