@@ -76,9 +76,9 @@ public class NameBrowserPlugin extends AbstractUIPlugin {
 			this.displayHolderService = null;
 		}
 	}
-	
+
 	/**
-	 * @since 1.2
+	 * @since 1.3
 	 */
 	public void setSessionDisplay(Display display) {
 		/**
@@ -91,8 +91,9 @@ public class NameBrowserPlugin extends AbstractUIPlugin {
 			this.displayHolderService.getService().setSessionDisplay(display);
 		}
 	}
+
 	/**
-	 * @since 1.2
+	 * @since 1.3
 	 */
 	public Display getDisplay() {
 		if (this.displayHolderService != null && this.displayHolderService.getService() != null) {
@@ -113,12 +114,12 @@ public class NameBrowserPlugin extends AbstractUIPlugin {
 	@Override
 	protected ImageRegistry createImageRegistry() {
 		final ImageRegistry registry = super.createImageRegistry();
-		registry.put(ADD, imageDescriptorFromPlugin(PLUGIN_ID, "icons/add.png"));
-		registry.put(CONNECT, imageDescriptorFromPlugin(PLUGIN_ID, "icons/connect.png"));
-		registry.put(DISCONNECT, imageDescriptorFromPlugin(PLUGIN_ID, "icons/disconnect.png"));
-		registry.put(CONTEXT, imageDescriptorFromPlugin(PLUGIN_ID, "icons/NSContext.gif"));
-		registry.put(NAMESERVER, imageDescriptorFromPlugin(PLUGIN_ID, "icons/nameServer.gif"));
-		registry.put(OBJECT, imageDescriptorFromPlugin(PLUGIN_ID, "icons/NSObject.gif"));
+		registry.put(NameBrowserPlugin.ADD, AbstractUIPlugin.imageDescriptorFromPlugin(NameBrowserPlugin.PLUGIN_ID, "icons/add.png"));
+		registry.put(NameBrowserPlugin.CONNECT, AbstractUIPlugin.imageDescriptorFromPlugin(NameBrowserPlugin.PLUGIN_ID, "icons/connect.png"));
+		registry.put(NameBrowserPlugin.DISCONNECT, AbstractUIPlugin.imageDescriptorFromPlugin(NameBrowserPlugin.PLUGIN_ID, "icons/disconnect.png"));
+		registry.put(NameBrowserPlugin.CONTEXT, AbstractUIPlugin.imageDescriptorFromPlugin(NameBrowserPlugin.PLUGIN_ID, "icons/NSContext.gif"));
+		registry.put(NameBrowserPlugin.NAMESERVER, AbstractUIPlugin.imageDescriptorFromPlugin(NameBrowserPlugin.PLUGIN_ID, "icons/nameServer.gif"));
+		registry.put(NameBrowserPlugin.OBJECT, AbstractUIPlugin.imageDescriptorFromPlugin(NameBrowserPlugin.PLUGIN_ID, "icons/NSObject.gif"));
 		return registry;
 	}
 

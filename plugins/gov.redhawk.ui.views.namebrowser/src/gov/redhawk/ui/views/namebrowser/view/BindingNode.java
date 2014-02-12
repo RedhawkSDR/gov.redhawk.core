@@ -128,7 +128,7 @@ public class BindingNode implements IPropertySource {
 	}
 
 	/**
-	 * @since 1.2
+	 * @since 1.3
 	 */
 	public boolean is_a(final String repID) {
 		Boolean retVal = knownRepIds.get(repID);

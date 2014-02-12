@@ -18,7 +18,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.views.properties.PropertyDescriptor;
 
 /**
- * @since 1.2
+ * @since 1.3
  */
 public class ReadOnlyTextPropertyDescriptor extends PropertyDescriptor {
 
