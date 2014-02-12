@@ -23,7 +23,7 @@ import org.eclipse.jface.preference.PreferenceStore;
 import org.eclipse.jface.util.PropertyChangeEvent;
 
 /**
- * 
+ * @since 4.4
  */
 public class Preference< T > {
 	private final String name;
@@ -100,15 +100,15 @@ public class Preference< T > {
 			if (newValue instanceof Boolean) {
 				store.setValue(name, (Boolean) newValue);
 			} else if (newValue instanceof Double) {
-				store.setDefault(name, (Double) newValue);
+				store.setValue(name, (Double) newValue);
 			} else if (newValue instanceof Float) {
-				store.setDefault(name, (Float) newValue);
+				store.setValue(name, (Float) newValue);
 			} else if (newValue instanceof Integer) {
-				store.setDefault(name, (Integer) newValue);
+				store.setValue(name, (Integer) newValue);
 			} else if (newValue instanceof Long) {
-				store.setDefault(name, (Long) newValue);
+				store.setValue(name, (Long) newValue);
 			} else if (newValue instanceof String) {
-				store.setDefault(name, (String) newValue);
+				store.setValue(name, (String) newValue);
 			} else {
 				throw new IllegalStateException("Unsupported preference type " + type.getCanonicalName());
 			}
