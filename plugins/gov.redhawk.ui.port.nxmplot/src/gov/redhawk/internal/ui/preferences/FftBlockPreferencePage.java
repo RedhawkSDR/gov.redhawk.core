@@ -1,11 +1,11 @@
 /*******************************************************************************
- * This file is protected by Copyright. 
+ * This file is protected by Copyright.
  * Please refer to the COPYRIGHT file distributed with this source distribution.
  *
  * This file is part of REDHAWK IDE.
  *
- * All rights reserved.  This program and the accompanying materials are made available under 
- * the terms of the Eclipse Public License v1.0 which accompanies this distribution, and is available at 
+ * All rights reserved.  This program and the accompanying materials are made available under
+ * the terms of the Eclipse Public License v1.0 which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *******************************************************************************/
 package gov.redhawk.internal.ui.preferences;
@@ -31,14 +31,14 @@ import org.eclipse.ui.forms.widgets.ExpandableComposite;
 import org.eclipse.ui.forms.widgets.Section;
 
 /**
- * 
+ *
  */
 public class FftBlockPreferencePage extends FieldEditorPreferencePage implements IWorkbenchPreferencePage {
 
 	private IWorkbench workbench;
 
 	/**
-	 * 
+	 *
 	 */
 	public FftBlockPreferencePage() {
 		super("FFT", FieldEditorPreferencePage.GRID);
@@ -70,6 +70,9 @@ public class FftBlockPreferencePage extends FieldEditorPreferencePage implements
 		String[][] nameValue = values.toArray(new String[0][]);
 		ComboFieldEditor outputType = new ComboFieldEditor(FftPreferences.OUTPUT_TYPE.getName(), "&Output Type:", nameValue, getFieldEditorParent());
 		addField(outputType);
+		if (workbench == null) {
+			outputType.setEnabled(false, getFieldEditorParent());
+		}
 
 		IntegerFieldEditor overlapField = new IntegerFieldEditor(FftPreferences.OVERLAP.getName(), "O&verlap:", getFieldEditorParent());
 		overlapField.setValidRange(0, 100);
