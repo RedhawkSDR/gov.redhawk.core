@@ -11,6 +11,7 @@
  */
 package gov.redhawk.ui.port.nxmblocks;
 
+import gov.redhawk.ui.port.nxmplot.PlotActivator;
 import gov.redhawk.ui.port.nxmplot.preferences.BulkIOPreferences;
 
 import org.eclipse.jdt.annotation.NonNull;
@@ -42,21 +43,22 @@ public class BulkIONxmBlockSettings implements Cloneable {
 	private boolean removeOnEndOfStream = true;
 
 	public BulkIONxmBlockSettings() {
+		this(null);
 	}
 
 	public BulkIONxmBlockSettings(IPreferenceStore store) {
+		if (store == null) {
+			store = PlotActivator.getDefault().getPreferenceStore();
+		}
 		connectionID = BulkIOPreferences.CONNECTION_ID.getValue(store);
-		if (BulkIOPreferences.SAMPLE_RATE.isDefault(store)) {
-			sampleRate = null;
-		} else {
+
+		if (BulkIOPreferences.SAMPLE_RATE_OVERRIDE.getValue(store)) {
 			sampleRate = BulkIOPreferences.SAMPLE_RATE.getValue(store);
 		}
 
 		blocking = BulkIOPreferences.BLOCKING.getValue(store);
 
-		if (BulkIOPreferences.PIPE_SIZE.isDefault(store)) {
-			pipeSize = null;
-		} else {
+		if (BulkIOPreferences.PIPE_SIZE_OVERRIDE.getValue(store)) {
 			pipeSize = BulkIOPreferences.PIPE_SIZE.getValue(store);
 		}
 	}

@@ -11,6 +11,7 @@
  */
 package gov.redhawk.ui.port.nxmblocks;
 
+import gov.redhawk.ui.port.nxmplot.PlotActivator;
 import gov.redhawk.ui.port.nxmplot.preferences.FftPreferences;
 
 import org.eclipse.jdt.annotation.NonNull;
@@ -88,9 +89,13 @@ public class FftNxmBlockSettings implements Cloneable {
 	private int pipeSize; // /PS=
 
 	public FftNxmBlockSettings() {
+		this(null);
 	}
 
 	public FftNxmBlockSettings(IPreferenceStore preferences) {
+		if (preferences == null) {
+			preferences = PlotActivator.getDefault().getPreferenceStore();
+		}
 		this.numAverages = FftPreferences.NUM_AVERAGES.getValue(preferences);
 		this.numExpAverages = FftPreferences.SLIDING_NUM_AVERAGES.getValue(preferences);
 		this.outputType = OutputType.valueOf(FftPreferences.OUTPUT_TYPE.getValue(preferences));

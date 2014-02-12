@@ -11,6 +11,7 @@
  */
 package gov.redhawk.ui.port.nxmblocks;
 
+import gov.redhawk.ui.port.nxmplot.PlotActivator;
 import gov.redhawk.ui.port.nxmplot.preferences.PlotPreferences;
 
 import org.eclipse.jdt.annotation.NonNull;
@@ -29,11 +30,19 @@ public class PlotNxmBlockSettings implements Cloneable {
 	private Integer pipeSize;
 
 	public PlotNxmBlockSettings() {
+		this(null);
 	}
 
 	public PlotNxmBlockSettings(IPreferenceStore preferences) {
-		frameSize = PlotPreferences.FRAMESIZE.getValue(preferences);
-		pipeSize = PlotPreferences.PIPESIZE.getValue(preferences);
+		if (preferences == null) {
+			preferences = PlotActivator.getDefault().getPreferenceStore();
+		}
+		if (PlotPreferences.FRAMESIZE_OVERRIDE.getValue(preferences)) {
+			frameSize = PlotPreferences.FRAMESIZE.getValue(preferences);
+		}
+		if (PlotPreferences.PIPESIZE_OVERRIDE.getValue(preferences)) {
+			pipeSize = PlotPreferences.PIPESIZE.getValue(preferences);
+		}
 	}
 
 	/* (non-Javadoc)
