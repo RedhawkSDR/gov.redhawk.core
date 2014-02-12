@@ -10,7 +10,7 @@
  */
 package gov.redhawk.ui.port.nxmplot.preferences;
 
-import gov.redhawk.sca.ui.ScaUiPlugin;
+import gov.redhawk.ui.port.nxmplot.PlotActivator;
 
 import org.eclipse.jface.preference.BooleanFieldEditor;
 import org.eclipse.jface.preference.FieldEditorPreferencePage;
@@ -56,7 +56,7 @@ public class PlotPreferencePage extends FieldEditorPreferencePage implements IWo
 	 * @see org.eclipse.ui.IWorkbenchPreferencePage#init(org.eclipse.ui.IWorkbench)
 	 */
 	public void init(IWorkbench workbench) {
-		setPreferenceStore(ScaUiPlugin.getDefault().getScaPreferenceStore());
+		setPreferenceStore(PlotActivator.getDefault().getPreferenceStore());
 	}
 
 }
