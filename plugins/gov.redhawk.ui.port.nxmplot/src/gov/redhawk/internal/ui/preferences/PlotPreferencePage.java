@@ -26,7 +26,6 @@ import org.eclipse.jface.preference.ComboFieldEditor;
 import org.eclipse.jface.preference.FieldEditor;
 import org.eclipse.jface.preference.FieldEditorPreferencePage;
 import org.eclipse.jface.preference.IPreferenceStore;
-import org.eclipse.jface.preference.IntegerFieldEditor;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.IWorkbench;
@@ -133,7 +132,13 @@ public class PlotPreferencePage extends FieldEditorPreferencePage implements IWo
 	public void createFieldEditors() {
 		if (workbench != null) {
 			addField(createModesField());
-			addField(new IntegerFieldEditor(PlotPreferences.FRAMESIZE.getName(), "&Default Framesize:", getFieldEditorParent()));
+
+			OverridableIntegerFieldEditor frameSizeField = new OverridableIntegerFieldEditor(PlotPreferences.FRAMESIZE.getName(),
+				PlotPreferences.FRAMESIZE_OVERRIDE.getName(), "&Framesize:", getFieldEditorParent());
+			frameSizeField.setErrorMessage("Framesize must be a positive integer >= 2");
+			frameSizeField.setValidRange(2, Integer.MAX_VALUE);
+			addField(frameSizeField);
+
 			addField(new BooleanFieldEditor(PlotPreferences.ENABLE_CONFIGURE_MENU_USING_MOUSE.getName(), "&Enable plot configure menu using mouse",
 				getFieldEditorParent()));
 			addField(new BooleanFieldEditor(PlotPreferences.ENABLE_QUICK_CONTROLS.getName(), "Enable &quick access control widgets", getFieldEditorParent()));
@@ -149,7 +154,8 @@ public class PlotPreferencePage extends FieldEditorPreferencePage implements IWo
 				if (blockPreferenceStore != null) {
 					OverridableIntegerFieldEditor frameSizeField = new OverridableIntegerFieldEditor(PlotPreferences.FRAMESIZE.getName(),
 						PlotPreferences.FRAMESIZE_OVERRIDE.getName(), "&Framesize:", getFieldEditorParent());
-					frameSizeField.setErrorMessage("Framesize must be a positive integer.");
+					frameSizeField.setErrorMessage("Framesize must be a positive integer >= 2");
+					frameSizeField.setValidRange(2, Integer.MAX_VALUE);
 					blockPreferences.add(frameSizeField);
 				}
 
@@ -213,7 +219,7 @@ public class PlotPreferencePage extends FieldEditorPreferencePage implements IWo
 		return blockPreferenceStore;
 	}
 
-	private static List<PlotMode> supportedModes = Arrays.asList(PlotMode.IMAGINARY, PlotMode.MAGNITUDE, PlotMode.PHASE, PlotMode.REAL,
+	private static List<PlotMode> supportedModes = Arrays.asList(PlotMode.AUTO, PlotMode.MAGNITUDE, PlotMode.PHASE, PlotMode.REAL, PlotMode.IMAGINARY,
 		PlotMode.REAL_AND_IMAGINARY, PlotMode.REAL_VS_IMAGINARY, PlotMode.TEN_LOG, PlotMode.TWENTY_LOG);
 
 	private ComboFieldEditor createModesField() {

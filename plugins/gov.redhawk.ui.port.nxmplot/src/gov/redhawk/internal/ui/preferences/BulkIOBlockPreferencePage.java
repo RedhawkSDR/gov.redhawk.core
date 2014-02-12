@@ -52,11 +52,17 @@ public class BulkIOBlockPreferencePage extends FieldEditorPreferencePage impleme
 	@Override
 	protected void createFieldEditors() {
 		if (workbench != null) {
-			addField(new IntegerFieldEditor(BulkIOPreferences.TLL.getName(), "&Time line length:", getFieldEditorParent()));
+			IntegerFieldEditor tllField = new IntegerFieldEditor(BulkIOPreferences.TLL.getName(), "&Time line length:", getFieldEditorParent());
+			tllField.setErrorMessage("Time line length be an integer >= 1");
+			tllField.setValidRange(1, Integer.MAX_VALUE);
+			addField(tllField);
 		} else {
 			addField(new ReadOnlyStringFieldEditor(BulkIOPreferences.CONNECTION_ID.getName(), "&Connection ID:", getFieldEditorParent()));
-			addField(new OverridableIntegerFieldEditor(BulkIOPreferences.SAMPLE_RATE.getName(), BulkIOPreferences.SAMPLE_RATE_OVERRIDE.getName(),
-				"&Sample Rate:", getFieldEditorParent()));
+			OverridableIntegerFieldEditor sampleRateField = new OverridableIntegerFieldEditor(BulkIOPreferences.SAMPLE_RATE.getName(),
+				BulkIOPreferences.SAMPLE_RATE_OVERRIDE.getName(), "&Sample Rate:", getFieldEditorParent());
+			sampleRateField.setValidRange(1, Integer.MAX_VALUE);
+			sampleRateField.setErrorMessage("Sample rate must be an integer >= 1");
+			addField(sampleRateField);
 		}
 
 		final Composite booleanControls = new Composite(getFieldEditorParent(), SWT.None);

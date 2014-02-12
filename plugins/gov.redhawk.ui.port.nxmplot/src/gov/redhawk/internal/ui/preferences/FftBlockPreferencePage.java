@@ -21,10 +21,10 @@ import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.jface.preference.ComboFieldEditor;
 import org.eclipse.jface.preference.FieldEditorPreferencePage;
 import org.eclipse.jface.preference.IntegerFieldEditor;
-import org.eclipse.jface.preference.StringFieldEditor;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPreferencePage;
 import org.eclipse.ui.forms.widgets.ExpandableComposite;
@@ -58,8 +58,8 @@ public class FftBlockPreferencePage extends FieldEditorPreferencePage implements
 	@Override
 	protected void createFieldEditors() {
 		IntegerFieldEditor numAvgs = new IntegerFieldEditor(FftPreferences.NUM_AVERAGES.getName(), "&Num Averages:", getFieldEditorParent());
-		numAvgs.setValidRange(0, Integer.MAX_VALUE);
-		numAvgs.setErrorMessage("Must be greater than or equal to '0'");
+		numAvgs.setValidRange(1, Integer.MAX_VALUE);
+		numAvgs.setErrorMessage("Number of averages must be integer >= 1");
 		addField(numAvgs);
 
 		List<String[]> values = new ArrayList<String[]>();
@@ -70,9 +70,29 @@ public class FftBlockPreferencePage extends FieldEditorPreferencePage implements
 		String[][] nameValue = values.toArray(new String[0][]);
 		ComboFieldEditor outputType = new ComboFieldEditor(FftPreferences.OUTPUT_TYPE.getName(), "&Output Type:", nameValue, getFieldEditorParent());
 		addField(outputType);
-		addField(new StringFieldEditor(FftPreferences.OVERLAP.getName(), "O&verlap:", getFieldEditorParent()));
-		addField(new IntegerFieldEditor(FftPreferences.SLIDING_NUM_AVERAGES.getName(), "&Sliding Num Averages:", getFieldEditorParent()));
-		addField(new IntegerFieldEditor(FftPreferences.TRANSFORM_SIZE.getName(), "&Transform Size:", getFieldEditorParent()));
+
+		IntegerFieldEditor overlapField = new IntegerFieldEditor(FftPreferences.OVERLAP.getName(), "O&verlap:", getFieldEditorParent());
+		overlapField.setValidRange(0, 100);
+		overlapField.setErrorMessage("Overlap must be an integer between 0 - 100");
+		addField(overlapField);
+
+		IntegerFieldEditor slidingAvgField = new IntegerFieldEditor(FftPreferences.SLIDING_NUM_AVERAGES.getName(), "&Sliding Num Averages:",
+			getFieldEditorParent());
+		slidingAvgField.setValidRange(1, Integer.MAX_VALUE);
+		slidingAvgField.setErrorMessage("Sliding number of averages must be integer >= 1");
+		addField(slidingAvgField);
+
+		IntegerFieldEditor transformSizeField = new IntegerFieldEditor(FftPreferences.TRANSFORM_SIZE.getName(), "&Transform Size:", getFieldEditorParent()) {
+			@Override
+			public Text getTextControl(Composite parent) {
+				Text retVal = super.getTextControl(parent);
+				retVal.setToolTipText("For best performance should be a power of 2");
+				return retVal;
+			}
+		};
+		transformSizeField.setValidRange(2, Integer.MAX_VALUE);
+		transformSizeField.setErrorMessage("Transform Size must be integer >= 2");
+		addField(transformSizeField);
 
 		List<String[]> windowTypeValues = new ArrayList<String[]>();
 		for (FftNxmBlockSettings.WindowType type : FftNxmBlockSettings.WindowType.values()) {
@@ -82,6 +102,7 @@ public class FftBlockPreferencePage extends FieldEditorPreferencePage implements
 		ComboFieldEditor windowTypeField = new ComboFieldEditor(FftPreferences.WINDOW_TYPE.getName(), "&Window Type:", windowValue, getFieldEditorParent());
 		addField(windowTypeField);
 
+		// TODO
 		//		createAdvancedFields();
 	}
 
