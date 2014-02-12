@@ -56,11 +56,13 @@ public abstract class AbstractNxmPlotWidget extends Composite {
 	private static final AtomicInteger PIPE_NAME_INDEX = new AtomicInteger();
 
 	private StreamSRI activeSRI;
-	private IPreferenceStore store = Preference.initStoreFromWorkbench(PlotPreferences.getAllPreferences(), null);
-	private IPropertyChangeListener listener = new IPropertyChangeListener() {
+	private final IPreferenceStore store = Preference.initStoreFromWorkbench(PlotPreferences.getAllPreferences(), null);
+	private final IPropertyChangeListener listener = new IPropertyChangeListener() {
 		@Override
 		public void propertyChange(PropertyChangeEvent event) {
-			handlePropertyChange(event);
+			if (isInitialized()) {
+				handlePropertyChange(event);
+			}
 		}
 	};
 	private final Map<String, IPlotSession> inputSessions = Collections.synchronizedMap(new HashMap<String, IPlotSession>());
@@ -341,6 +343,11 @@ public abstract class AbstractNxmPlotWidget extends Composite {
 	 * @since 4.2
 	 */
 	protected abstract void internalInitPlot(String plotSwtiches, String plotArgs);
+
+	/**
+	 * @since 4.4
+	 */
+	public abstract boolean isInitialized();
 
 	/**
 	 * Runs a command headlessly within the NmSession. TODO: renamed runServerCommand(..)
@@ -766,9 +773,10 @@ public abstract class AbstractNxmPlotWidget extends Composite {
 	/**
 	 * @noreference This method is not intended to be referenced by clients.
 	 * @param custom FFT settings to apply
-	 * @since 4.3
-	 * @noreference This method is not intended to be referenced by clients (it will be removed in a future release)
+	 * @since 4.4
+	 * @deprecated since 4.4 use FftNxmBlock.applySettings(...) instead
 	 */
+	@Deprecated
 	public void applyFftSettings(FftSettings fftSettings) {
 		if (fftSettings != null) {
 			Table msgData = new Table();
