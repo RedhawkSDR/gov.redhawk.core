@@ -121,7 +121,7 @@ public class BulkIOSddsNxmBlock extends SddsNxmBlock {
 	}
 
 	public BulkIOSddsNxmBlock(@NonNull AbstractNxmPlotWidget plotWidget, @NonNull ScaUsesPort scaUsesPort, @NonNull SddsNxmBlockSettings settings) {
-		super(plotWidget, settings, null);
+		super(plotWidget, settings);
 		this.scaUsesPort = scaUsesPort;
 	}
 

@@ -12,6 +12,7 @@
 package gov.redhawk.ui.port.nxmblocks;
 
 import gov.redhawk.ui.port.nxmplot.AbstractNxmPlotWidget;
+import gov.redhawk.ui.port.nxmplot.preferences.Preference;
 
 import java.text.MessageFormat;
 
@@ -34,13 +35,12 @@ public class FCalculatorNxmBlock extends AbstractNxmBlock<fcalculator> {
 	 * @param inputSources input sources (most not have any null inputs)
 	 */
 	public FCalculatorNxmBlock(@NonNull AbstractNxmPlotWidget plotWidget, @NonNull String fcalcExpression) {
-		super(fcalculator.class, plotWidget, FCalculatorNxmBlock.initStore(null));
+		super(fcalculator.class, plotWidget, FCalculatorNxmBlock.initStore());
 		this.calcExpression = fcalcExpression;
 	}
 
-	private static IPreferenceStore initStore(IPreferenceStore object) {
-		// TODO Auto-generated method stub
-		return null;
+	private static IPreferenceStore initStore() {
+		return Preference.createRuntimeStore();
 	}
 
 	/**

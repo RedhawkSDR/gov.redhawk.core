@@ -56,7 +56,7 @@ public abstract class AbstractNxmPlotWidget extends Composite {
 	private static final AtomicInteger PIPE_NAME_INDEX = new AtomicInteger();
 
 	private StreamSRI activeSRI;
-	private final IPreferenceStore store = Preference.initStoreFromWorkbench(PlotPreferences.getAllPreferences(), null);
+	private final IPreferenceStore store = Preference.initStoreFromWorkbench(PlotPreferences.getAllPreferences());
 	private final IPropertyChangeListener listener = new IPropertyChangeListener() {
 		@Override
 		public void propertyChange(PropertyChangeEvent event) {
@@ -821,7 +821,7 @@ public abstract class AbstractNxmPlotWidget extends Composite {
 		}
 
 		if (PlotPreferences.MIN.isEvent(event) || PlotPreferences.MIN_OVERRIDE.isEvent(event) || PlotPreferences.MAX.isEvent(event)
-			|| PlotPreferences.MAX_OVERRIDE.isEvent(event)) {
+				|| PlotPreferences.MAX_OVERRIDE.isEvent(event)) {
 			updateScale();
 		}
 

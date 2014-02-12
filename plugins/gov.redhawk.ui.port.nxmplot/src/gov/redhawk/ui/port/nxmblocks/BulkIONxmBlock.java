@@ -34,7 +34,6 @@ import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jface.preference.IPreferencePage;
 import org.eclipse.jface.preference.IPreferenceStore;
-import org.eclipse.jface.preference.PreferenceStore;
 import org.eclipse.jface.util.PropertyChangeEvent;
 
 import BULKIO.PrecisionUTCTime;
@@ -143,7 +142,7 @@ public class BulkIONxmBlock extends AbstractNxmBlock<corbareceiver2> {
 	}
 
 	private static IPreferenceStore initPreferences() {
-		return Preference.initStoreFromWorkbench(BulkIOPreferences.getAllPreferences(), new PreferenceStore());
+		return Preference.initStoreFromWorkbench(BulkIOPreferences.getAllPreferences());
 	}
 
 	public boolean isRemoveOnEndOfStream() {

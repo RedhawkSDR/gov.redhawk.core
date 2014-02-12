@@ -14,6 +14,7 @@ import gov.redhawk.sca.util.Debug;
 import gov.redhawk.ui.port.nxmplot.AbstractNxmPlotWidget;
 import gov.redhawk.ui.port.nxmplot.INxmBlock;
 import gov.redhawk.ui.port.nxmplot.PlotActivator;
+import gov.redhawk.ui.port.nxmplot.preferences.Preference;
 
 import java.util.AbstractMap.SimpleImmutableEntry;
 import java.util.ArrayList;
@@ -34,7 +35,6 @@ import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.Nullable;
 import org.eclipse.jface.preference.IPreferencePage;
 import org.eclipse.jface.preference.IPreferenceStore;
-import org.eclipse.jface.preference.PreferenceStore;
 import org.eclipse.jface.util.IPropertyChangeListener;
 import org.eclipse.jface.util.PropertyChangeEvent;
 
@@ -128,7 +128,7 @@ public abstract class AbstractNxmBlock< C extends Command > implements INxmBlock
 		this.plotWidget = plotWidget;
 		this.desiredLaunchClass = desiredLaunchCommandClass;
 		if (store == null) {
-			store = new PreferenceStore();
+			store = Preference.createRuntimeStore();
 		}
 		this.preferenceStore = store;
 		this.preferenceStore.addPropertyChangeListener(this);

@@ -33,14 +33,14 @@ import org.eclipse.jface.util.PropertyChangeEvent;
 public class FftNxmBlock extends AbstractNxmBlock<fft> {
 
 	public FftNxmBlock(@NonNull AbstractNxmPlotWidget plotWidget, @NonNull FftNxmBlockSettings settings) {
-		super(fft.class, plotWidget, FftNxmBlock.initStore(null));
+		super(fft.class, plotWidget, FftNxmBlock.initStore());
 		if (settings != null) {
 			applySettings(settings);
 		}
 	}
 
-	private static IPreferenceStore initStore(IPreferenceStore store) {
-		return Preference.initStoreFromWorkbench(FftPreferences.getAllPreferences(), store);
+	private static IPreferenceStore initStore() {
+		return Preference.initStoreFromWorkbench(FftPreferences.getAllPreferences());
 	}
 
 	@Override

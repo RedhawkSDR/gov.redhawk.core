@@ -12,6 +12,7 @@
 package gov.redhawk.ui.port.nxmblocks;
 
 import gov.redhawk.ui.port.nxmplot.AbstractNxmPlotWidget;
+import gov.redhawk.ui.port.nxmplot.preferences.Preference;
 
 import java.text.MessageFormat;
 import java.util.HashMap;
@@ -34,11 +35,11 @@ public class DispThinNxmBlock extends AbstractNxmBlock<dispthin> {
 	private int refreshRate;
 
 	public DispThinNxmBlock(@NonNull AbstractNxmPlotWidget plotWidget) {
-		super(dispthin.class, plotWidget, DispThinNxmBlock.initStore(null));
+		super(dispthin.class, plotWidget, DispThinNxmBlock.initStore());
 	}
 
-	private static IPreferenceStore initStore(Object object) {
-		return null;
+	private static IPreferenceStore initStore() {
+		return Preference.createRuntimeStore();
 	}
 
 	@Override

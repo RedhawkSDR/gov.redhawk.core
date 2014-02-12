@@ -28,12 +28,12 @@ public class FileNxmBlock extends AbstractNxmBlock<Command> {
 	private final String filename;
 
 	public FileNxmBlock(@NonNull String filename, @NonNull AbstractNxmPlotWidget plotWidget) {
-		super(Command.class, plotWidget, FileNxmBlock.initStore(null));
+		super(Command.class, plotWidget, FileNxmBlock.initStore());
 		this.filename = filename;
 	}
 
-	private static IPreferenceStore initStore(IPreferenceStore object) {
-		return Preference.initStoreFromWorkbench(FileNxmBlockPreferences.getAllPreferences(), null);
+	private static IPreferenceStore initStore() {
+		return Preference.initStoreFromWorkbench(FileNxmBlockPreferences.getAllPreferences());
 	}
 
 	@Override

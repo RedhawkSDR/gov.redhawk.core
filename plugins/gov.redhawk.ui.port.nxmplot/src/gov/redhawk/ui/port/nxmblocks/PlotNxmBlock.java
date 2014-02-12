@@ -67,7 +67,7 @@ public class PlotNxmBlock extends AbstractNxmBlock<plot> {
 	}
 
 	public static IPreferenceStore createInitStore() {
-		return Preference.initStoreFromWorkbench(PlotPreferences.getAllPreferences(), null);
+		return Preference.initStoreFromWorkbench(PlotPreferences.getAllPreferences());
 	}
 
 	@Override

@@ -21,6 +21,7 @@ import java.text.MessageFormat;
 import nxm.redhawk.prim.sourcenic;
 
 import org.eclipse.jdt.annotation.NonNull;
+import org.eclipse.jdt.annotation.Nullable;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.util.PropertyChangeEvent;
 
@@ -32,10 +33,14 @@ import org.eclipse.jface.util.PropertyChangeEvent;
 public class SddsNxmBlock extends AbstractNxmBlock<sourcenic> {
 
 	public SddsNxmBlock(@NonNull AbstractNxmPlotWidget plotWidget) {
+		this(plotWidget, null);
+	}
+
+	public SddsNxmBlock(@NonNull AbstractNxmPlotWidget plotWidget, @Nullable SddsNxmBlockSettings settings) {
 		this(plotWidget, null, null);
 	}
 
-	public SddsNxmBlock(@NonNull AbstractNxmPlotWidget plotWidget, @NonNull SddsNxmBlockSettings settings, IPreferenceStore store) {
+	public SddsNxmBlock(@NonNull AbstractNxmPlotWidget plotWidget, @Nullable SddsNxmBlockSettings settings, IPreferenceStore store) {
 		super(sourcenic.class, plotWidget, SddsNxmBlock.initPreferenceStore(store));
 		if (settings != null) {
 			applySettings(settings);

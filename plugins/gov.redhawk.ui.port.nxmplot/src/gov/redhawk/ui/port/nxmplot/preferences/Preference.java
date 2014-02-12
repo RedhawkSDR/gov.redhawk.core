@@ -12,6 +12,7 @@ package gov.redhawk.ui.port.nxmplot.preferences;
 
 import gov.redhawk.ui.port.nxmplot.PlotActivator;
 
+import java.io.IOException;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -194,9 +195,14 @@ public class Preference< T > {
 		return Collections.unmodifiableList(retVal);
 	}
 
+	public static IPreferenceStore initStoreFromWorkbench(List<Preference< ? >> prefs) {
+		return Preference.initStoreFromWorkbench(prefs, null);
+	}
+
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public static IPreferenceStore initStoreFromWorkbench(List<Preference< ? >> prefs, IPreferenceStore newStore) {
 		if (newStore == null) {
-			newStore = new PreferenceStore();
+			newStore = Preference.createRuntimeStore();
 		}
 
 		IPreferenceStore workbenchStore = PlotActivator.getDefault().getPreferenceStore();
@@ -206,6 +212,15 @@ public class Preference< T > {
 		}
 
 		return newStore;
+	}
+
+	public static IPreferenceStore createRuntimeStore() {
+		return new PreferenceStore() {
+			@Override
+			public void save() throws IOException {
+
+			}
+		};
 	}
 
 }
