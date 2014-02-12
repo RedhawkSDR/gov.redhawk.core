@@ -47,11 +47,10 @@ public class PlotModeMenuAction extends Action implements IMenuCreator {
 	private Menu fMenu;
 
 	public PlotModeMenuAction(PlotPageBook2 plotPageBook) {
-		super("Mode:", IAction.AS_DROP_DOWN_MENU);
-		setImageDescriptor(AbstractUIPlugin.imageDescriptorFromPlugin(PlotActivator.PLUGIN_ID, "icons/plotMode.png"));
+		super("&Plot Mode", IAction.AS_DROP_DOWN_MENU);
 		setId(PlotView2.ID + ".mode");
-		setText("&Plot Mode");
-		setImageDescriptor(null);
+		setImageDescriptor(AbstractUIPlugin.imageDescriptorFromPlugin(PlotActivator.PLUGIN_ID, "icons/plotMode.png"));
+		setToolTipText("Change the plot's mode (" + PlotMode.IMAGINARY.getLabel() + ", " + PlotMode.TEN_LOG.getLabel() + ", etc.)");
 		setMenuCreator(this);
 		this.plotPageBook = plotPageBook;
 	}

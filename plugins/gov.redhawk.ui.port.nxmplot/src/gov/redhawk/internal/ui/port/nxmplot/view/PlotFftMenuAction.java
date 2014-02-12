@@ -59,11 +59,10 @@ public class PlotFftMenuAction extends Action implements IMenuCreator {
 	private final PlotPageBook2 plotPageBook;
 
 	public PlotFftMenuAction(PlotPageBook2 plotPageBook) {
-		super("fft:", IAction.AS_DROP_DOWN_MENU);
-		setImageDescriptor(AbstractUIPlugin.imageDescriptorFromPlugin(PlotActivator.PLUGIN_ID, "icons/fftSize.png"));
+		super("&FFT Size", IAction.AS_DROP_DOWN_MENU);
 		setId(PlotView2.ID + ".mode");
-		setText("&FFT Size");
-		setImageDescriptor(null);
+		setImageDescriptor(AbstractUIPlugin.imageDescriptorFromPlugin(PlotActivator.PLUGIN_ID, "icons/fftSize.png"));
+		setToolTipText("Change the FFT transform size");
 		setMenuCreator(this);
 		this.plotPageBook = plotPageBook;
 	}
