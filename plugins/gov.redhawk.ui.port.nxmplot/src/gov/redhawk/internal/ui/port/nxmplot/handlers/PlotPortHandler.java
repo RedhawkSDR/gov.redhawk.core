@@ -16,7 +16,6 @@ import gov.redhawk.internal.ui.port.nxmplot.view.PlotView2;
 import gov.redhawk.model.sca.ScaDomainManagerRegistry;
 import gov.redhawk.model.sca.ScaUsesPort;
 import gov.redhawk.model.sca.provider.ScaItemProviderAdapterFactory;
-import gov.redhawk.model.sca.util.RedhawkEvents;
 import gov.redhawk.sca.util.PluginUtil;
 import gov.redhawk.sca.util.SubMonitor;
 import gov.redhawk.ui.port.PortHelper;
@@ -24,23 +23,13 @@ import gov.redhawk.ui.port.nxmblocks.BulkIONxmBlockSettings;
 import gov.redhawk.ui.port.nxmblocks.FftNxmBlockSettings;
 import gov.redhawk.ui.port.nxmblocks.PlotNxmBlockSettings;
 import gov.redhawk.ui.port.nxmblocks.SddsNxmBlockSettings;
-import gov.redhawk.ui.port.nxmplot.IPlotWidgetListener;
 import gov.redhawk.ui.port.nxmplot.PlotActivator;
-import gov.redhawk.ui.port.nxmplot.PlotEvent;
-import gov.redhawk.ui.port.nxmplot.PlotEvent.Click;
-import gov.redhawk.ui.port.nxmplot.PlotEvent.DragBox;
-import gov.redhawk.ui.port.nxmplot.PlotEvent.Motion;
-import gov.redhawk.ui.port.nxmplot.PlotEvent.Pan;
-import gov.redhawk.ui.port.nxmplot.PlotEvent.ZoomIn;
-import gov.redhawk.ui.port.nxmplot.PlotEvent.ZoomOut;
-import gov.redhawk.ui.port.nxmplot.PlotEvent.ZoomX;
 import gov.redhawk.ui.port.nxmplot.PlotSource;
 import gov.redhawk.ui.port.nxmplot.PlotType;
 
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
@@ -113,7 +102,7 @@ public class PlotPortHandler extends AbstractHandler {
 		final FftNxmBlockSettings fftBlockSettings;
 		final PlotNxmBlockSettings plotBlockSettings;
 		final String pipeQualifiers = null;
-		
+
 		boolean containsBulkIOPort = false;
 		boolean containsSDDSPort = false;
 		for (Object obj : elements) {
@@ -122,7 +111,7 @@ public class PlotPortHandler extends AbstractHandler {
 				String idl = port.getRepid();
 				if (dataSDDSHelper.id().equals(idl)) { // a BULKIO:dataSDDS Port
 					containsSDDSPort = true;
-				} else if (isBulkIOPortSupported(idl)) { // BULKIO data Port
+				} else if (PlotPortHandler.isBulkIOPortSupported(idl)) { // BULKIO data Port
 					containsBulkIOPort = true;
 				}
 			}
@@ -221,10 +210,10 @@ public class PlotPortHandler extends AbstractHandler {
 
 								final PlotSource plotSource;
 								final String idl = port.getRepid();
-								
+
 								if (dataSDDSHelper.id().equals(idl)) { // a BULKIO:dataSDDS Port
 									plotSource = new PlotSource(port, sddsBlockSettings, fftBlockSettings, plotBlockSettings, pipeQualifiers);
-								} else if (isBulkIOPortSupported(idl)) { // supported BULKIO data Port
+								} else if (PlotPortHandler.isBulkIOPortSupported(idl)) { // supported BULKIO data Port
 									plotSource = new PlotSource(port, bulkIOBlockSettings, fftBlockSettings, plotBlockSettings, pipeQualifiers);
 								} else {
 									StatusManager.getManager().handle(
@@ -232,9 +221,6 @@ public class PlotPortHandler extends AbstractHandler {
 									continue; // log warning and skip unsupported Port type
 								}
 								plotView.addPlotSource(plotSource);
-
-								// Add event handler
-								addEventForward(port, plotView);
 							} else {
 								subMonitor.worked(1);
 							}
@@ -267,117 +253,10 @@ public class PlotPortHandler extends AbstractHandler {
 		return null;
 	}
 
-	protected void addEventForward(final ScaUsesPort port, final PlotView2 plotView) {
-		plotView.getPlotPageBook().addPlotListener(new IPlotWidgetListener() {
-
-			private String getTopic(String subTopic) {
-				return PlotEvent.EventTags.TOPIC + "/" + subTopic;
-			}
-
-			@Override
-			public void zoomX(double xmin, double ymin, double xmax, double ymax, Object data) {
-				String topic = getTopic("zoomX");
-				Map<String, Object> argMap = RedhawkEvents.createMap(port, topic);
-				ZoomX event = new PlotEvent.ZoomX(plotView.getPlotPageBook(), data, xmin, ymin, xmax, ymax);
-				argMap.put(PlotEvent.EventTags.PLOT_EVENT, event);
-				argMap.put(PlotEvent.EventTags.SOURCE_VIEW, plotView);
-				argMap.put(PlotEvent.EventTags.SOURCE_VIEW_ID, plotView.getViewSite().getId());
-				argMap.put(PlotEvent.EventTags.SOURCE_VIEW_SECONDARY_ID, plotView.getViewSite().getSecondaryId());
-				RedhawkEvents.publishEvent(topic, argMap);
-			}
-
-			@Override
-			public void zoomOut(double x1, double y1, double x2, double y2, Object data) {
-				String topic = getTopic("zoomOut");
-				Map<String, Object> argMap = RedhawkEvents.createMap(port, topic);
-				ZoomOut event = new PlotEvent.ZoomOut(plotView.getPlotPageBook(), data, x1, y1, x2, x2);
-				argMap.put(PlotEvent.EventTags.PLOT_EVENT, event);
-				argMap.put(PlotEvent.EventTags.SOURCE_VIEW, plotView);
-				argMap.put(PlotEvent.EventTags.SOURCE_VIEW_ID, plotView.getViewSite().getId());
-				argMap.put(PlotEvent.EventTags.SOURCE_VIEW_SECONDARY_ID, plotView.getViewSite().getSecondaryId());
-				RedhawkEvents.publishEvent(topic, argMap);
-			}
-
-			@Override
-			public void zoomIn(double xmin, double ymin, double xmax, double ymax, Object data) {
-				ZoomIn event = new PlotEvent.ZoomIn(plotView.getPlotPageBook(), data, xmin, ymin, xmax, ymax);
-				String topic = getTopic("zoomIn");
-				Map<String, Object> argMap = RedhawkEvents.createMap(port, topic);
-				argMap.put(PlotEvent.EventTags.PLOT_EVENT, event);
-				argMap.put(PlotEvent.EventTags.SOURCE_VIEW, plotView);
-				argMap.put(PlotEvent.EventTags.SOURCE_VIEW_ID, plotView.getViewSite().getId());
-				argMap.put(PlotEvent.EventTags.SOURCE_VIEW_SECONDARY_ID, plotView.getViewSite().getSecondaryId());
-				RedhawkEvents.publishEvent(topic, argMap);
-			}
-
-			@Override
-			public void unzoom(double x1, double y1, double x2, double y2, Object data) {
-				ZoomIn event = new PlotEvent.ZoomIn(plotView.getPlotPageBook(), data, x1, y1, x2, y2);
-				String topic = getTopic("unzoom");
-				Map<String, Object> argMap = RedhawkEvents.createMap(port, topic);
-				argMap.put(PlotEvent.EventTags.PLOT_EVENT, event);
-				argMap.put(PlotEvent.EventTags.SOURCE_VIEW, plotView);
-				argMap.put(PlotEvent.EventTags.SOURCE_VIEW_ID, plotView.getViewSite().getId());
-				argMap.put(PlotEvent.EventTags.SOURCE_VIEW_SECONDARY_ID, plotView.getViewSite().getSecondaryId());
-				RedhawkEvents.publishEvent(topic, argMap);
-			}
-
-			@Override
-			public void pan(double x1, double y1, double x2, double y2) {
-				Pan event = new PlotEvent.Pan(plotView.getPlotPageBook(), null, x1, y1, x2, y2);
-				String topic = getTopic("pan");
-				Map<String, Object> argMap = RedhawkEvents.createMap(port, topic);
-				argMap.put(PlotEvent.EventTags.PLOT_EVENT, event);
-				argMap.put(PlotEvent.EventTags.SOURCE_VIEW, plotView);
-				argMap.put(PlotEvent.EventTags.SOURCE_VIEW_ID, plotView.getViewSite().getId());
-				argMap.put(PlotEvent.EventTags.SOURCE_VIEW_SECONDARY_ID, plotView.getViewSite().getSecondaryId());
-				RedhawkEvents.publishEvent(topic, argMap);
-			}
-
-			@Override
-			public void motion(double x, double y, double t) {
-				Motion event = new PlotEvent.Motion(plotView.getPlotPageBook(), null, x, y, t);
-				String topic = getTopic("motion");
-				Map<String, Object> argMap = RedhawkEvents.createMap(port, topic);
-				argMap.put(PlotEvent.EventTags.PLOT_EVENT, event);
-				argMap.put(PlotEvent.EventTags.SOURCE_VIEW, plotView);
-				argMap.put(PlotEvent.EventTags.SOURCE_VIEW_ID, plotView.getViewSite().getId());
-				argMap.put(PlotEvent.EventTags.SOURCE_VIEW_SECONDARY_ID, plotView.getViewSite().getSecondaryId());
-				RedhawkEvents.publishEvent(topic, argMap);
-			}
-
-			@Override
-			public void dragBox(double xmin, double ymin, double xmax, double ymax) {
-				DragBox event = new PlotEvent.DragBox(plotView.getPlotPageBook(), null, xmin, ymin, xmax, ymax);
-				String topic = getTopic("dragBox");
-				Map<String, Object> argMap = RedhawkEvents.createMap(port, topic);
-				argMap.put(PlotEvent.EventTags.PLOT_EVENT, event);
-				argMap.put(PlotEvent.EventTags.SOURCE_VIEW, plotView);
-				argMap.put(PlotEvent.EventTags.SOURCE_VIEW_ID, plotView.getViewSite().getId());
-				argMap.put(PlotEvent.EventTags.SOURCE_VIEW_SECONDARY_ID, plotView.getViewSite().getSecondaryId());
-				RedhawkEvents.publishEvent(topic, argMap);
-			}
-
-			@Override
-			public void click(double x, double y, double t) {
-				Click event = new PlotEvent.Click(plotView.getPlotPageBook(), null, x, y, t);
-				String topic = getTopic("click");
-				Map<String, Object> argMap = RedhawkEvents.createMap(port, topic);
-				argMap.put(PlotEvent.EventTags.PLOT_EVENT, event);
-				argMap.put(PlotEvent.EventTags.SOURCE_VIEW, plotView);
-				argMap.put(PlotEvent.EventTags.SOURCE_VIEW_ID, plotView.getViewSite().getId());
-				argMap.put(PlotEvent.EventTags.SOURCE_VIEW_SECONDARY_ID, plotView.getViewSite().getSecondaryId());
-				RedhawkEvents.publishEvent(topic, argMap);
-			}
-		});
-	}
-	
-	public static boolean isBulkIOPortSupported(String  idl) {
-		if (dataLongLongHelper.id().equals(idl) || dataUlongLongHelper.id().equals(idl)
-			|| dataFloatHelper.id().equals(idl) || dataDoubleHelper.id().equals(idl)
-			|| dataLongHelper.id().equals(idl)  || dataUlongHelper.id().equals(idl)
-			|| dataShortHelper.id().equals(idl) || dataUshortHelper.id().equals(idl)
-			|| dataOctetHelper.id().equals(idl) || dataCharHelper.id().equals(idl)) {
+	public static boolean isBulkIOPortSupported(String idl) {
+		if (dataLongLongHelper.id().equals(idl) || dataUlongLongHelper.id().equals(idl) || dataFloatHelper.id().equals(idl)
+			|| dataDoubleHelper.id().equals(idl) || dataLongHelper.id().equals(idl) || dataUlongHelper.id().equals(idl) || dataShortHelper.id().equals(idl)
+			|| dataUshortHelper.id().equals(idl) || dataOctetHelper.id().equals(idl) || dataCharHelper.id().equals(idl)) {
 			return true;
 		}
 		return false;

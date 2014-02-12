@@ -29,7 +29,7 @@ public class PlotEvent {
 	public static class ZoomX extends PlotEvent {
 		public final double xmin, ymin, xmax, ymax;
 
-		public ZoomX(PlotPageBook2 source, Object data, double xmin, double ymin, double xmax, double ymax) {
+		public ZoomX(AbstractNxmPlotWidget source, Object data, double xmin, double ymin, double xmax, double ymax) {
 			super(source, data);
 			this.xmin = xmin;
 			this.ymin = ymin;
@@ -41,7 +41,7 @@ public class PlotEvent {
 	public static class ZoomOut extends PlotEvent {
 		public final double x1, y1, x2, y2;
 
-		public ZoomOut(PlotPageBook2 source, Object data, double x1, double y1, double x2, double y2) {
+		public ZoomOut(AbstractNxmPlotWidget source, Object data, double x1, double y1, double x2, double y2) {
 			super(source, data);
 			this.x1 = x1;
 			this.y1 = y1;
@@ -54,7 +54,7 @@ public class PlotEvent {
 	public static class ZoomIn extends PlotEvent {
 		public final double xmin, ymin, xmax, ymax;
 
-		public ZoomIn(PlotPageBook2 source, Object data, double xmin, double ymin, double xmax, double ymax) {
+		public ZoomIn(AbstractNxmPlotWidget source, Object data, double xmin, double ymin, double xmax, double ymax) {
 			super(source, data);
 			this.xmin = xmin;
 			this.ymin = ymin;
@@ -67,7 +67,7 @@ public class PlotEvent {
 	public static class Unzoom extends PlotEvent {
 		public final double x1, y1, x2, y2;
 
-		public Unzoom(PlotPageBook2 source, Object data, double x1, double y1, double x2, double y2) {
+		public Unzoom(AbstractNxmPlotWidget source, Object data, double x1, double y1, double x2, double y2) {
 			super(source, data);
 			this.x1 = x1;
 			this.y1 = y1;
@@ -80,7 +80,7 @@ public class PlotEvent {
 	public static class Pan extends PlotEvent {
 		public final double x1, y1, x2, y2;
 
-		public Pan(PlotPageBook2 source, Object data, double x1, double y1, double x2, double y2) {
+		public Pan(AbstractNxmPlotWidget source, Object data, double x1, double y1, double x2, double y2) {
 			super(source, data);
 			this.x1 = x1;
 			this.y1 = y1;
@@ -92,7 +92,7 @@ public class PlotEvent {
 	public static class Motion extends PlotEvent {
 		public final double x, y, t;
 
-		public Motion(PlotPageBook2 source, Object data, double x, double y, double t) {
+		public Motion(AbstractNxmPlotWidget source, Object data, double x, double y, double t) {
 			super(source, data);
 			this.x = x;
 			this.y = y;
@@ -104,7 +104,7 @@ public class PlotEvent {
 	public static class DragBox extends PlotEvent {
 		public final double xmin, ymin, xmax, ymax;
 
-		public DragBox(PlotPageBook2 source, Object data, double xmin, double ymin, double xmax, double ymax) {
+		public DragBox(AbstractNxmPlotWidget source, Object data, double xmin, double ymin, double xmax, double ymax) {
 			super(source, data);
 			this.xmin = xmin;
 			this.ymin = ymin;
@@ -117,7 +117,7 @@ public class PlotEvent {
 	public static class Click extends PlotEvent {
 		public final double x, y, t;
 
-		public Click(PlotPageBook2 source, Object data, double x, double y, double t) {
+		public Click(AbstractNxmPlotWidget source, Object data, double x, double y, double t) {
 			super(source, data);
 			this.x = x;
 			this.y = y;
@@ -126,10 +126,10 @@ public class PlotEvent {
 
 	}
 
-	public final PlotPageBook2 source;
+	public final AbstractNxmPlotWidget source;
 	public final Object data;
 
-	public PlotEvent(PlotPageBook2 source, Object data) {
+	public PlotEvent(AbstractNxmPlotWidget source, Object data) {
 		super();
 		this.source = source;
 		this.data = data;

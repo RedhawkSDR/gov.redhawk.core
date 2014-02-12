@@ -16,6 +16,7 @@ import gov.redhawk.ui.port.nxmplot.FftNumAvgControls;
 import gov.redhawk.ui.port.nxmplot.FftSettings;
 import gov.redhawk.ui.port.nxmplot.IPlotView;
 import gov.redhawk.ui.port.nxmplot.PlotActivator;
+import gov.redhawk.ui.port.nxmplot.PlotEventChannelForwarder;
 import gov.redhawk.ui.port.nxmplot.PlotPageBook2;
 import gov.redhawk.ui.port.nxmplot.PlotSettings;
 import gov.redhawk.ui.port.nxmplot.PlotSource;
@@ -134,6 +135,10 @@ public class PlotView2 extends ViewPart implements IPlotView {
 						}
 
 					});
+					if (evt.getNewValue() instanceof PlotSource) {
+						PlotSource source = (PlotSource) evt.getNewValue();
+						PlotEventChannelForwarder.forwardEvents(plotPageBook, source.getInput(), PlotView2.this);
+					}
 				}
 			}
 		});
