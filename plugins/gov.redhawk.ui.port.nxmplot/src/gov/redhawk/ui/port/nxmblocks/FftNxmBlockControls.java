@@ -11,7 +11,6 @@
  */
 package gov.redhawk.ui.port.nxmblocks;
 
-
 import gov.redhawk.sca.util.ArrayUtil;
 import gov.redhawk.ui.port.nxmblocks.FftNxmBlockSettings.OutputType;
 import gov.redhawk.ui.port.nxmblocks.FftNxmBlockSettings.WindowType;
@@ -51,14 +50,14 @@ public class FftNxmBlockControls {
 	private static final String OVERLAP_FIELD_NAME = "Percent Overlap";
 	private static final String NUM_AVERAGES_FIELD_NAME = "Num Averages";
 	private static final String SLIDING_NUM_AVERAGES_FIELD_NAME = "Sliding Num Averages";
-	
+
 	private final FftNxmBlockSettings settings;
 	private DataBindingContext dataBindingCtx;
-	
+
 	private ComboViewer transformSizeField;
-	private Text        overlapField;
-	private Text        numAveragesField;
-	private Text        slidingNumAveragesField;
+	private Text overlapField;
+	private Text numAveragesField;
+	private Text slidingNumAveragesField;
 	private ComboViewer fftType;
 	private ComboViewer fftWindow;
 
@@ -73,36 +72,36 @@ public class FftNxmBlockControls {
 
 		// === FFT transform size ===
 		label = new Label(container, SWT.NONE);
-		label.setText(FFT_SIZE_FIELD_NAME + ":");
+		label.setText(FftNxmBlockControls.FFT_SIZE_FIELD_NAME + ":");
 		this.transformSizeField = new ComboViewer(container, SWT.BORDER); // writable
-		this.transformSizeField.getCombo().setLayoutData(GridDataFactory.fillDefaults().grab(true,  false).create());
+		this.transformSizeField.getCombo().setLayoutData(GridDataFactory.fillDefaults().grab(true, false).create());
 		this.transformSizeField.getCombo().setToolTipText("Performance is best if factorable by 2, 3, 4 and 5.");
 		this.transformSizeField.setContentProvider(ArrayContentProvider.getInstance()); // ArrayContentProvider does not store any state, therefore can re-use instances
 		this.transformSizeField.setLabelProvider(new LabelProvider());
-		Object[] inputValues = ArrayUtil.copyAndPrependIfNotNull(this.settings.getTransformSize(), FFT_SIZE_COMBO_VALUES);
+		Object[] inputValues = ArrayUtil.copyAndPrependIfNotNull(this.settings.getTransformSize(), FftNxmBlockControls.FFT_SIZE_COMBO_VALUES);
 		this.transformSizeField.setInput(inputValues);
 		this.transformSizeField.setSelection(new StructuredSelection(inputValues[0])); // select first value (which is current value or default)
 
 		// === percent overlap ===
 		label = new Label(container, SWT.NONE);
-		label.setText(OVERLAP_FIELD_NAME + ":");
+		label.setText(FftNxmBlockControls.OVERLAP_FIELD_NAME + ":");
 		this.overlapField = new Text(container, SWT.BORDER);
-		this.overlapField.setLayoutData(GridDataFactory.fillDefaults().grab(true,  false).create());
+		this.overlapField.setLayoutData(GridDataFactory.fillDefaults().grab(true, false).create());
 		this.overlapField.setText(Integer.toString(this.settings.getOverlap()));
 
 		// === num averages (NAVG=) ===
 		label = new Label(container, SWT.NONE);
-		label.setText(NUM_AVERAGES_FIELD_NAME + ":");
+		label.setText(FftNxmBlockControls.NUM_AVERAGES_FIELD_NAME + ":");
 		this.numAveragesField = new Text(container, SWT.BORDER);
-		this.numAveragesField.setLayoutData(GridDataFactory.fillDefaults().grab(true,  false).create());
+		this.numAveragesField.setLayoutData(GridDataFactory.fillDefaults().grab(true, false).create());
 		this.numAveragesField.setText(Integer.toString(this.settings.getNumAverages()));
 		this.numAveragesField.setToolTipText("Avoid using large value as it will cause highlighted energy to remain longer.");
 
 		// === num sliding averages (/NEXP=) ===
 		label = new Label(container, SWT.NONE);
-		label.setText(SLIDING_NUM_AVERAGES_FIELD_NAME + ":");
+		label.setText(FftNxmBlockControls.SLIDING_NUM_AVERAGES_FIELD_NAME + ":");
 		this.slidingNumAveragesField = new Text(container, SWT.BORDER);
-		this.slidingNumAveragesField.setLayoutData(GridDataFactory.fillDefaults().grab(true,  false).create());
+		this.slidingNumAveragesField.setLayoutData(GridDataFactory.fillDefaults().grab(true, false).create());
 		this.slidingNumAveragesField.setText(Integer.toString(this.settings.getNumExpAverages()));
 		this.slidingNumAveragesField.setToolTipText("Avoid using large value as it will cause highlighted energy to remain longer.");
 
@@ -110,13 +109,18 @@ public class FftNxmBlockControls {
 		label = new Label(container, SWT.NONE);
 		label.setText("Output Type:");
 		this.fftType = new ComboViewer(container, SWT.READ_ONLY);
-		fftType.getCombo().setLayoutData(GridDataFactory.fillDefaults().grab(true,  false).create());
+		fftType.getCombo().setLayoutData(GridDataFactory.fillDefaults().grab(true, false).create());
 		fftType.setContentProvider(ArrayContentProvider.getInstance()); // ArrayContentProvider does not store any state, therefore can re-use instances
-		fftType.setLabelProvider(new LabelProvider());
+		fftType.setLabelProvider(new LabelProvider() {
+			@Override
+			public String getText(Object element) {
+				return ((FftNxmBlockSettings.OutputType) element).getLabel();
+			}
+		});
 		fftType.setInput(FftNxmBlockSettings.OutputType.values());
 		OutputType currentOutputType = this.settings.getOutputType();
 		if (currentOutputType == null) {
-			currentOutputType = OutputType.PSD;   // default to PSD output
+			currentOutputType = OutputType.PSD; // default to PSD output
 			settings.setOutputType(currentOutputType);
 		} else {
 			fftType.getCombo().setEnabled(false); // disable: cannot change FFT output type at this time
@@ -127,9 +131,14 @@ public class FftNxmBlockControls {
 		label = new Label(container, SWT.NONE);
 		label.setText("Window:");
 		fftWindow = new ComboViewer(container, SWT.READ_ONLY);
-		fftWindow.getCombo().setLayoutData(GridDataFactory.fillDefaults().grab(true,  false).create());
+		fftWindow.getCombo().setLayoutData(GridDataFactory.fillDefaults().grab(true, false).create());
 		fftWindow.setContentProvider(ArrayContentProvider.getInstance()); // ArrayContentProvider does not store any state, therefore can re-use instances
-		fftWindow.setLabelProvider(new LabelProvider());
+		fftWindow.setLabelProvider(new LabelProvider() {
+			@Override
+			public String getText(Object element) {
+				return ((FftNxmBlockSettings.WindowType) element).getLabel();
+			}
+		});
 		fftWindow.setInput(FftNxmBlockSettings.WindowType.values());
 		WindowType windowType = this.settings.getWindow();
 		if (windowType == null) {
@@ -137,7 +146,7 @@ public class FftNxmBlockControls {
 			settings.setWindow(windowType);
 		}
 		fftWindow.setSelection(new StructuredSelection(windowType));
-		
+
 		initDataBindings();
 	}
 
@@ -147,28 +156,29 @@ public class FftNxmBlockControls {
 		IObservableValue fftSizeWidgetValue = WidgetProperties.selection().observe(this.transformSizeField.getCombo());
 		IObservableValue fftSizeModelValue = PojoProperties.value(FftNxmBlockSettings.PROP_TRANSFORM_SIZE).observe(this.settings);
 		UpdateValueStrategy fftSizeTargetToModel = new UpdateValueStrategy();
-		fftSizeTargetToModel.setAfterConvertValidator(new FftSizeValidator(FFT_SIZE_FIELD_NAME, 2));
+		fftSizeTargetToModel.setAfterConvertValidator(new FftSizeValidator(FftNxmBlockControls.FFT_SIZE_FIELD_NAME, 2));
 		bindingValue = dataBindingCtx.bindValue(fftSizeWidgetValue, fftSizeModelValue, fftSizeTargetToModel, null);
 		ControlDecorationSupport.create(bindingValue, SWT.TOP | SWT.LEFT);
 
 		IObservableValue overlapWidgetValue = WidgetProperties.text(SWT.Modify).observe(this.overlapField);
-		IObservableValue overlapModelValue  = PojoProperties.value(FftNxmBlockSettings.PROP_OVERLAP).observe(this.settings);
+		IObservableValue overlapModelValue = PojoProperties.value(FftNxmBlockSettings.PROP_OVERLAP).observe(this.settings);
 		UpdateValueStrategy overlapTargetToModel = new UpdateValueStrategy();
-		overlapTargetToModel.setAfterConvertValidator(new NumberRangeValidator<Integer>(OVERLAP_FIELD_NAME, Integer.class, 0, 100));
+		overlapTargetToModel.setAfterConvertValidator(new NumberRangeValidator<Integer>(FftNxmBlockControls.OVERLAP_FIELD_NAME, Integer.class, 0, 100));
 		bindingValue = dataBindingCtx.bindValue(overlapWidgetValue, overlapModelValue, overlapTargetToModel, null);
 		ControlDecorationSupport.create(bindingValue, SWT.TOP | SWT.LEFT);
 
 		IObservableValue numAvgWidgetValue = WidgetProperties.text(SWT.Modify).observe(this.numAveragesField);
 		IObservableValue numAvgModelValue = PojoProperties.value(FftNxmBlockSettings.PROP_NUM_AVERAGES).observe(this.settings);
 		UpdateValueStrategy numAvgTargetToModel = new UpdateValueStrategy();
-		numAvgTargetToModel.setAfterConvertValidator(new NumberRangeValidator<Integer>(NUM_AVERAGES_FIELD_NAME, Integer.class, 0, false));
+		numAvgTargetToModel.setAfterConvertValidator(new NumberRangeValidator<Integer>(FftNxmBlockControls.NUM_AVERAGES_FIELD_NAME, Integer.class, 0, false));
 		bindingValue = dataBindingCtx.bindValue(numAvgWidgetValue, numAvgModelValue, numAvgTargetToModel, null);
 		ControlDecorationSupport.create(bindingValue, SWT.TOP | SWT.LEFT);
 
 		IObservableValue numExpAvgWidgetValue = WidgetProperties.text(SWT.Modify).observe(this.slidingNumAveragesField);
 		IObservableValue numExpAvgModelValue = PojoProperties.value(FftNxmBlockSettings.PROP_SLIDING_NUM_AVERAGES).observe(this.settings);
 		UpdateValueStrategy numExpAvgTargetToModel = new UpdateValueStrategy();
-		numAvgTargetToModel.setAfterConvertValidator(new NumberRangeValidator<Integer>(SLIDING_NUM_AVERAGES_FIELD_NAME, Integer.class, 0, false));
+		numAvgTargetToModel.setAfterConvertValidator(new NumberRangeValidator<Integer>(FftNxmBlockControls.SLIDING_NUM_AVERAGES_FIELD_NAME, Integer.class, 0,
+				false));
 		bindingValue = dataBindingCtx.bindValue(numExpAvgWidgetValue, numExpAvgModelValue, numExpAvgTargetToModel, null);
 		ControlDecorationSupport.create(bindingValue, SWT.TOP | SWT.LEFT);
 
@@ -176,7 +186,7 @@ public class FftNxmBlockControls {
 		IObservableValue outputTypeModelValue = PojoProperties.value(FftNxmBlockSettings.PROP_OUTPUT_TYPE).observe(this.settings);
 		bindingValue = dataBindingCtx.bindValue(outputTypeWidgetValue, outputTypeModelValue);
 		ControlDecorationSupport.create(bindingValue, SWT.TOP | SWT.LEFT);
-		
+
 		IObservableValue windowWidgetValue = ViewerProperties.singleSelection().observe(this.fftWindow);
 		IObservableValue windowModelValue = PojoProperties.value(FftNxmBlockSettings.PROP_WINDOW_TYPE).observe(this.settings);
 		bindingValue = dataBindingCtx.bindValue(windowWidgetValue, windowModelValue);
@@ -194,7 +204,7 @@ public class FftNxmBlockControls {
 		protected IStatus validateValueAfter(Integer val) {
 			if (!FastFourierTransformer.isPowerOf2(val)) {
 				return ValidationStatus.warning(getFieldName() + " is not a power of 2 and may be invalid");
-			} else if (val > LARGE_SIZE_TO_WARN) {
+			} else if (val > FftSizeValidator.LARGE_SIZE_TO_WARN) {
 				return ValidationStatus.warning(getFieldName() + " is very large which requires more time to process and display data");
 			}
 			return ValidationStatus.ok();
