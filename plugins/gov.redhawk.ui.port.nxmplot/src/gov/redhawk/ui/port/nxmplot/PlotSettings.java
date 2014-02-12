@@ -36,37 +36,34 @@ public class PlotSettings {
 	 * @since 4.4
 	 */
 	public static enum PlotMode {
+		//  Instance			mode			Label
 		AUTO("", "AUTO"),
 		MAGNITUDE("Mag", "Magnitude"),
-		PHASE("Phase"),
-		REAL("Real"),
+		PHASE("Phase", "Phase"),
+		REAL("Real", "Real"),
 		IMAGINARY("Imag", "Imaginary"),
-		REAL_AND_IMAGINARY("RnI", "Real & Imaginary"),
+		REAL_AND_IMAGINARY("RnI", "Real and Imaginary"),
 		REAL_VS_IMAGINARY("RvI", "Real vs Imaginary"),
-		TEN_LOG("10Log"),
-		TWENTY_LOG("20Log"),
-		X("X"),
-		Y("Y"),
-		Z("Z");
+		TEN_LOG("10Log", "10 Log"),
+		TWENTY_LOG("20Log", "20 Log"),
+		X("X", "X"),
+		Y("Y", "Y"),
+		Z("Z", "Z");
 
-		private String modeStr;
+		private String modeString;
 		private String label;
 
-		private PlotMode(String modeStr) {
-			this(modeStr, modeStr);
-		}
-
-		private PlotMode(String modeStr, String label) {
-			this.modeStr = modeStr;
+		private PlotMode(String modeString, String label) {
+			this.modeString = modeString;
 			this.label = label;
 		}
 
-		public String getLabel() {
-			return label;
+		public String toModeString() {
+			return this.modeString;
 		}
 
-		public String toModeString() {
-			return modeStr;
+		public String getLabel() {
+			return this.label;
 		}
 
 		/** convert from plot's mode string (e.g. CM= arg) to this enum. */

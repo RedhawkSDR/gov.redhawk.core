@@ -11,9 +11,9 @@
  */
 package gov.redhawk.internal.ui.port.nxmplot;
 
-import gov.redhawk.ui.port.nxmplot.FftSettings;
-import gov.redhawk.ui.port.nxmplot.FftSettings.OutputType;
-import gov.redhawk.ui.port.nxmplot.FftSettings.WindowType;
+import gov.redhawk.ui.port.nxmblocks.FftNxmBlockSettings;
+import gov.redhawk.ui.port.nxmblocks.FftNxmBlockSettings.OutputType;
+import gov.redhawk.ui.port.nxmblocks.FftNxmBlockSettings.WindowType;
 
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.IDialogConstants;
@@ -67,9 +67,9 @@ public class FftParameterEntryDialog extends Dialog {
 	private static final MinIntegerValidator TRANSFORM_SIZE_VALIDATOR = new MinIntegerValidator("Transform Size", 2, null);
 	/** The validator for the {@link #numAveragesField}. */
 	private static final MinIntegerValidator NUM_AVERAGES_VALIDATOR = new MinIntegerValidator("Num Averages", 1, null);
-	
+
 	/** The settings for calculating the FFT */
-	private final FftSettings fftSettings;
+	private final FftNxmBlockSettings fftSettings;
 	/** The size of the transform to perform */
 	private Text transformSizeField;
 	/** The percentage of overlap for FFTing */
@@ -87,7 +87,7 @@ public class FftParameterEntryDialog extends Dialog {
 	 *
 	 * @param parentShell the parent shell
 	 */
-	public FftParameterEntryDialog(final Shell parentShell, final FftSettings settings) {
+	public FftParameterEntryDialog(final Shell parentShell, final FftNxmBlockSettings settings) {
 		super(parentShell);
 		this.fftSettings = settings;
 	}
@@ -118,12 +118,21 @@ public class FftParameterEntryDialog extends Dialog {
 
 		this.transformSizeField = new Text(container, SWT.BORDER);
 		this.transformSizeField.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false));
-		this.transformSizeField.setText(this.fftSettings.getTransformSize());
+		this.transformSizeField.setText(String.valueOf(this.fftSettings.getTransformSize()));
 		this.transformSizeField.setToolTipText("Performance is best if factorable by 2, 3, 4 and 5.");
 		this.transformSizeField.addModifyListener(new ModifyListener() {
 			@Override
 			public void modifyText(final ModifyEvent e) {
-				FftParameterEntryDialog.this.fftSettings.setTransformSize(FftParameterEntryDialog.this.transformSizeField.getText().trim());
+				String transformSizeString = FftParameterEntryDialog.this.transformSizeField.getText().trim();
+				Integer transformSize = null;
+				try {
+					transformSize = Integer.parseInt(transformSizeString);
+				} catch (NumberFormatException ex) {
+					// PASS
+				}
+				if (transformSize != null) {
+					FftParameterEntryDialog.this.fftSettings.setTransformSize(transformSize);
+				}
 				validateInputs();
 			}
 		});
@@ -134,12 +143,20 @@ public class FftParameterEntryDialog extends Dialog {
 
 		this.overlapField = new Text(container, SWT.BORDER);
 		this.overlapField.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false));
-		this.overlapField.setText(this.fftSettings.getOverlap());
+		this.overlapField.setText(String.valueOf(this.fftSettings.getOverlap()));
 		this.overlapField.addModifyListener(new ModifyListener() {
 			@Override
 			public void modifyText(final ModifyEvent e) {
 				final String newText = FftParameterEntryDialog.this.overlapField.getText();
-				FftParameterEntryDialog.this.fftSettings.setOverlap(newText.trim());
+				Integer overlap = null;
+				try {
+					overlap = Integer.parseInt(newText.trim());
+				} catch (NumberFormatException ex) {
+					// PASS
+				}
+				if (overlap != null) {
+					FftParameterEntryDialog.this.fftSettings.setOverlap(overlap);
+				}
 				validateInputs();
 			}
 		});
@@ -150,12 +167,20 @@ public class FftParameterEntryDialog extends Dialog {
 
 		this.numAveragesField = new Text(container, SWT.BORDER);
 		this.numAveragesField.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false, 1, 1));
-		this.numAveragesField.setText(this.fftSettings.getNumAverages());
+		this.numAveragesField.setText(String.valueOf(this.fftSettings.getNumAverages()));
 		this.numAveragesField.setToolTipText("Avoid using large value as it will cause highlighted energy to remain longer.");
 		this.numAveragesField.addModifyListener(new ModifyListener() {
 			@Override
 			public void modifyText(final ModifyEvent e) {
-				FftParameterEntryDialog.this.fftSettings.setNumAverages(FftParameterEntryDialog.this.numAveragesField.getText().trim());
+				Integer numAverages = null;
+				try {
+					numAverages = Integer.parseInt(FftParameterEntryDialog.this.numAveragesField.getText().trim());
+				} catch (NumberFormatException ex) {
+					//PASS
+				}
+				if (numAverages != null) {
+					FftParameterEntryDialog.this.fftSettings.setNumAverages(numAverages);
+				}
 				validateInputs();
 			}
 		});
@@ -170,9 +195,9 @@ public class FftParameterEntryDialog extends Dialog {
 		type.setLabelProvider(new LabelProvider());
 		OutputType currentOutputType = this.fftSettings.getOutputType();
 		if (currentOutputType == null) {
-			currentOutputType = FftSettings.OutputType.PSD; // default to PSD
+			currentOutputType = FftNxmBlockSettings.OutputType.PSD; // default to PSD
 		}
-		type.setInput(FftSettings.OutputType.values());
+		type.setInput(FftNxmBlockSettings.OutputType.values());
 		type.setSelection(new StructuredSelection(currentOutputType));
 		if (disableChangeOutputType) {
 			type.getCombo().setEnabled(false); // disable changing output type
@@ -180,8 +205,7 @@ public class FftParameterEntryDialog extends Dialog {
 			type.addSelectionChangedListener(new ISelectionChangedListener() {
 				@Override
 				public void selectionChanged(final SelectionChangedEvent event) {
-					FftParameterEntryDialog.this.fftSettings
-					        .setOutputType((FftSettings.OutputType) ((IStructuredSelection) event.getSelection()).getFirstElement());
+					FftParameterEntryDialog.this.fftSettings.setOutputType((FftNxmBlockSettings.OutputType) ((IStructuredSelection) event.getSelection()).getFirstElement());
 				}
 			});
 		}
@@ -194,16 +218,16 @@ public class FftParameterEntryDialog extends Dialog {
 		window.getCombo().setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false, 1, 1));
 		window.setContentProvider(new ArrayContentProvider());
 		window.setLabelProvider(new LabelProvider());
-		window.setInput(FftSettings.WindowType.values());
-		WindowType currentWindowType = this.fftSettings.getWindowType();
+		window.setInput(FftNxmBlockSettings.WindowType.values());
+		WindowType currentWindowType = this.fftSettings.getWindow();
 		if (currentWindowType == null) {
-			currentWindowType = FftSettings.WindowType.HANNING;
-		} 
+			currentWindowType = FftNxmBlockSettings.WindowType.HANNING;
+		}
 		window.setSelection(new StructuredSelection(currentWindowType));
 		window.addSelectionChangedListener(new ISelectionChangedListener() {
 			@Override
 			public void selectionChanged(final SelectionChangedEvent event) {
-				FftParameterEntryDialog.this.fftSettings.setWindow((FftSettings.WindowType) ((IStructuredSelection) event.getSelection()).getFirstElement());
+				FftParameterEntryDialog.this.fftSettings.setWindow((FftNxmBlockSettings.WindowType) ((IStructuredSelection) event.getSelection()).getFirstElement());
 			}
 		});
 
@@ -217,7 +241,7 @@ public class FftParameterEntryDialog extends Dialog {
 	 *
 	 * @return the FFT settings
 	 */
-	public FftSettings getFFTSettings() {
+	public FftNxmBlockSettings getFFTSettings() {
 		return this.fftSettings;
 	}
 
@@ -226,10 +250,10 @@ public class FftParameterEntryDialog extends Dialog {
 	 * calls {@link #setErrorMessage(String)} with combined error messages for those input fields.
 	 */
 	private void validateInputs() {
-		String overlapErrMsg = OVERLAP_VALIDATOR.isValid(overlapField.getText());
-		String fftSizeErrmsg = TRANSFORM_SIZE_VALIDATOR.isValid(transformSizeField.getText());
-		String numAvgErrMsg  = NUM_AVERAGES_VALIDATOR.isValid(numAveragesField.getText());
-		String errorMsg      = overlapErrMsg;
+		String overlapErrMsg = FftParameterEntryDialog.OVERLAP_VALIDATOR.isValid(overlapField.getText());
+		String fftSizeErrmsg = FftParameterEntryDialog.TRANSFORM_SIZE_VALIDATOR.isValid(transformSizeField.getText());
+		String numAvgErrMsg = FftParameterEntryDialog.NUM_AVERAGES_VALIDATOR.isValid(numAveragesField.getText());
+		String errorMsg = overlapErrMsg;
 		if (fftSizeErrmsg != null) {
 			if (errorMsg == null) {
 				errorMsg = fftSizeErrmsg;
@@ -282,5 +306,4 @@ public class FftParameterEntryDialog extends Dialog {
 		this.disableChangeOutputType = disableChangeOutputType;
 	}
 
-	
 }

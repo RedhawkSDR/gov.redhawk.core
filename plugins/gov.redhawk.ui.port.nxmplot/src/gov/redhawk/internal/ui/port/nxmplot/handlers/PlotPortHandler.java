@@ -22,7 +22,6 @@ import gov.redhawk.sca.util.SubMonitor;
 import gov.redhawk.ui.port.PortHelper;
 import gov.redhawk.ui.port.nxmblocks.FftNxmBlockSettings;
 import gov.redhawk.ui.port.nxmblocks.PlotNxmBlockSettings;
-import gov.redhawk.ui.port.nxmplot.FftSettings;
 import gov.redhawk.ui.port.nxmplot.IPlotWidgetListener;
 import gov.redhawk.ui.port.nxmplot.PlotActivator;
 import gov.redhawk.ui.port.nxmplot.PlotEvent;
@@ -98,26 +97,25 @@ public class PlotPortHandler extends AbstractHandler {
 		final boolean isFFT;
 
 		// Either fft gets set, or plotWizardSettings and fftNxmBlockSettings get set (below)
-		final FftSettings fft;
 		final PlotWizardSettings plotWizardSettings;
 		final FftNxmBlockSettings fftNxmBlockSettings;
 
 		if (plotTypeStr != null) {
+			//because this evaluates to true, we do not end up using addSource2 method
 			type = PlotType.valueOf(plotTypeStr);
 			isFFT = Boolean.valueOf(event.getParameter(PlotPortHandler.PARAM_ISFFT));
 			plotWizardSettings = null;
-			fftNxmBlockSettings = null;
 
 			if (isFFT) {
-				final FftParameterEntryDialog fftDialog = new FftParameterEntryDialog(HandlerUtil.getActiveShell(event), new FftSettings());
+				final FftParameterEntryDialog fftDialog = new FftParameterEntryDialog(HandlerUtil.getActiveShell(event), new FftNxmBlockSettings());
 				final int result = fftDialog.open();
 				if (result == Window.OK) {
-					fft = fftDialog.getFFTSettings();
+					fftNxmBlockSettings = fftDialog.getFFTSettings();
 				} else {
 					return null;
 				}
 			} else {
-				fft = null;
+				fftNxmBlockSettings = null;
 			}
 		} else { // run advanced Port plot wizard
 			boolean containsBulkIOPort = false;
@@ -146,7 +144,6 @@ public class PlotPortHandler extends AbstractHandler {
 			} else {
 				fftNxmBlockSettings = null;
 			}
-			fft = null;
 		}
 
 		try {
@@ -212,7 +209,9 @@ public class PlotPortHandler extends AbstractHandler {
 									}
 									plotView.getPlotPageBook().addSource(plotSource);
 								} else {
-									plotView.addPlotSource(port, fft, null);
+									PlotSource plotSource = new PlotSource(port, fftNxmBlockSettings, null);
+									plotView.addPlotSource(plotSource);
+									//plotView.addPlotSource(port, fft, null);
 								}
 
 								// Add handler

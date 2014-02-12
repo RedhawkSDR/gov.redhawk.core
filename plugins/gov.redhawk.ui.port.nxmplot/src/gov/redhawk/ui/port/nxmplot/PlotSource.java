@@ -34,7 +34,7 @@ public class PlotSource {
 	private final IPreferenceStore store = PlotNxmBlock.createInitStore();
 
 	public PlotSource(ScaUsesPort input, FftNxmBlockSettings fftOptions, String qualifiers) {
-		this(input, null, null, fftOptions, null, qualifiers, null);
+		this(input, null, null, fftOptions, null, qualifiers);
 	}
 
 	public PlotSource(ScaUsesPort input, BulkIONxmBlockSettings bulkioSettings, FftNxmBlockSettings fftSettings, PlotNxmBlockSettings plotSettings,
@@ -50,11 +50,6 @@ public class PlotSource {
 	/** private as BulkIONxmBlockSettings and SddsNxmBlockSettings should be mutually exclusive */
 	private PlotSource(ScaUsesPort input, BulkIONxmBlockSettings bulkioSettings, SddsNxmBlockSettings sddsSettings, FftNxmBlockSettings fftSettings,
 		PlotNxmBlockSettings plotSettings, String qualifiers) {
-		this(input, bulkioSettings, sddsSettings, fftSettings, plotSettings, qualifiers, null);
-	}
-
-	private PlotSource(ScaUsesPort input, BulkIONxmBlockSettings bulkioSettings, SddsNxmBlockSettings sddsSettings, FftNxmBlockSettings fftSettings,
-		PlotNxmBlockSettings plotSettings, String qualifiers, FftSettings oldFftOptions) {
 		this.input = input;
 		this.bulkioBlockSettings = bulkioSettings;
 		this.sddsBlockSettings = sddsSettings;

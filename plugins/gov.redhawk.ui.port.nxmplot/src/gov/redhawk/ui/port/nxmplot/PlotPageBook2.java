@@ -11,10 +11,6 @@
  */
 package gov.redhawk.ui.port.nxmplot;
 
-import gov.redhawk.internal.ui.preferences.PlotPreferenceDialog;
-import gov.redhawk.internal.ui.preferences.PlotPreferenceNode;
-import gov.redhawk.internal.ui.preferences.PlotPreferencePage;
-import gov.redhawk.internal.ui.preferences.SourcePreferencePage;
 import gov.redhawk.model.sca.IDisposable;
 import gov.redhawk.model.sca.ScaPackage;
 import gov.redhawk.model.sca.ScaUsesPort;
@@ -52,15 +48,12 @@ import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.Notifier;
 import org.eclipse.emf.common.notify.impl.AdapterImpl;
 import org.eclipse.jdt.annotation.NonNull;
-import org.eclipse.jface.action.Action;
-import org.eclipse.jface.action.IMenuManager;
-import org.eclipse.jface.preference.IPreferencePage;
-import org.eclipse.jface.preference.PreferenceManager;
-import org.eclipse.jface.preference.PreferenceNode;
+import org.eclipse.jface.layout.GridDataFactory;
+import org.eclipse.jface.layout.GridLayoutFactory;
+import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.DisposeEvent;
 import org.eclipse.swt.events.DisposeListener;
-import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.part.PageBook;
@@ -76,6 +69,16 @@ public class PlotPageBook2 extends Composite {
 
 	private static final Debug TRACE_LOG = new Debug(PlotActivator.PLUGIN_ID, PlotPageBook2.class.getSimpleName());
 	private static final int PORT_REFRESH_DELAY_MS = 1000;
+	/**
+	 * @since 4.4
+	 */
+	public static final String PROP_SOURCES = "sources";
+	/**
+	 * @since 4.4
+	 */
+	public static final String PROP_TYPE = "type";
+
+	private java.beans.PropertyChangeSupport pcs = new java.beans.PropertyChangeSupport(this);
 
 	private static class PlotPage {
 		private final AbstractNxmPlotWidget plot;
@@ -161,6 +164,8 @@ public class PlotPageBook2 extends Composite {
 
 	private final Map<PlotSource, List<INxmBlock>> source2NxmBlocks = new ConcurrentHashMap<PlotSource, List<INxmBlock>>();
 
+	private final IPreferenceStore sharedBlockStore = PlotNxmBlock.createInitStore();
+
 	private Adapter portListener = new AdapterImpl() {
 		@Override
 		public void notifyChanged(Notification msg) {
@@ -189,17 +194,19 @@ public class PlotPageBook2 extends Composite {
 
 	private Composite nullPage;
 
+	/**
+	 * @since 4.4
+	 */
 	public PlotPageBook2(Composite parent, int style, PlotType type) {
 		super(parent, style);
-		setLayout(new FillLayout());
+		GridLayoutFactory.fillDefaults().spacing(0, 0).numColumns(1).applyTo(this);
 		this.pageBook = new PageBook(this, SWT.NONE);
+		GridDataFactory.fillDefaults().grab(true, true).applyTo(pageBook);
 		parent.addDisposeListener(new DisposeListener() {
-
 			@Override
 			public void widgetDisposed(DisposeEvent e) {
 				dispose();
 			}
-
 		});
 
 		nullPage = new Composite(pageBook, SWT.None);
@@ -235,7 +242,7 @@ public class PlotPageBook2 extends Composite {
 		Set<Entry<PlotSource, List<INxmBlock>>> entrySet = source2NxmBlocks.entrySet();
 		for (Entry<PlotSource, List<INxmBlock>> entry : entrySet) {
 			PlotNxmBlockSettings plotBlockSettings = entry.getKey().getPlotBlockSettings();
-			PlotNxmBlock plotBlock = new PlotNxmBlock(newPlot, entry.getKey().getStore(), plotBlockSettings);
+			PlotNxmBlock plotBlock = new PlotNxmBlock(newPlot, sharedBlockStore, plotBlockSettings);
 			List<INxmBlock> nxmBlocksForSource = entry.getValue();
 			int idx4LastNonPlotBlock = nxmBlocksForSource.size() - 2;
 			if (idx4LastNonPlotBlock >= 0) { // must have at least initial NxmBlock + PlotNxmBlock
@@ -255,7 +262,6 @@ public class PlotPageBook2 extends Composite {
 				}
 			}
 		}
-
 		return plotPage;
 	}
 
@@ -332,7 +338,7 @@ public class PlotPageBook2 extends Composite {
 		if (plotBlockSettings == null) {
 			plotBlockSettings = new PlotNxmBlockSettings();
 		}
-		final PlotNxmBlock plotBlock = new PlotNxmBlock(currentPlotWidget, plotSource.getStore(), plotBlockSettings);
+		final PlotNxmBlock plotBlock = new PlotNxmBlock(currentPlotWidget, sharedBlockStore, plotBlockSettings);
 		final FftNxmBlock fftBlock;
 		if (fftSettings != null) {
 			fftBlock = new FftNxmBlock(currentPlotWidget, fftSettings);
@@ -385,7 +391,20 @@ public class PlotPageBook2 extends Composite {
 
 		PortHelper.refreshPort(scaPort, null, PlotPageBook2.PORT_REFRESH_DELAY_MS);
 		PlotPageBook2.TRACE_LOG.exitingMethod();
+		pcs.firePropertyChange(PlotPageBook2.PROP_SOURCES, null, plotSource);
 		return retVal;
+	}
+
+	/**
+	 * @since 4.4
+	 */
+	public List<INxmBlock> getBlockChain(PlotSource source) {
+		List<INxmBlock> list = source2NxmBlocks.get(source);
+		if (list == null) {
+			return Collections.emptyList();
+		}
+		return Collections.unmodifiableList(list);
+
 	}
 
 	private void removeSource2(PlotSource plotSource) {
@@ -399,6 +418,7 @@ public class PlotPageBook2 extends Composite {
 			}
 		}
 		source2NxmBlocks.remove(plotSource);
+		pcs.firePropertyChange(PlotPageBook2.PROP_SOURCES, plotSource, null);
 	}
 
 	/**
@@ -437,10 +457,12 @@ public class PlotPageBook2 extends Composite {
 			pageBook.showPage(newPlot.plot);
 			currentPlotPage = newPlot;
 		}
+		PlotType oldType = this.currentType;
 		this.currentType = type;
 		if (currentPlotPage != null) {
 			currentPlotPage.plot.addPlotListener(plotListener);
 		}
+		pcs.firePropertyChange(PlotPageBook2.PROP_TYPE, oldType, this.currentType);
 	}
 
 	public PlotType getCurrentType() {
@@ -550,73 +572,24 @@ public class PlotPageBook2 extends Composite {
 	}
 
 	/**
-	 * @noreference This method is not intended to be referenced by clients.
-	 * @since 4.3
+	 * @since 4.4
 	 */
-	public void contributeMenuItems(final IMenuManager menu) {
-		if (menu != null) {
-
-			menu.add(new Action("Settings...") {
-				// TODO
-				@Override
-				public void run() {
-					PreferenceManager manager = new PreferenceManager();
-
-					if (source2NxmBlocks.size() > 1) {
-						PlotPreferencePage plotPage = new PlotPreferencePage("Plot", false);
-						plotPage.setPreferenceStore(currentPlotPage.plot.getPreferenceStore());
-						PlotPreferenceNode plotNode = new PlotPreferenceNode("plotSettings", plotPage);
-						manager.addToRoot(plotNode);
-
-						for (Map.Entry<PlotSource, List<INxmBlock>> entry : source2NxmBlocks.entrySet()) {
-							String name = entry.getKey().getInput().getName();
-							SourcePreferencePage sourcePrefPage = new SourcePreferencePage(name, PlotPageBook2.this, entry.getValue());
-							PreferenceNode sourceNode = new PreferenceNode(entry.getKey().toString(), sourcePrefPage);
-
-							for (INxmBlock block : entry.getValue()) {
-								IPreferencePage page = block.createPreferencePage();
-								if (page != null) {
-									PreferenceNode blockNode = new PreferenceNode(block.toString(), page);
-									sourceNode.add(blockNode);
-								}
-							}
-							manager.addToRoot(sourceNode);
-						}
-					} else if (source2NxmBlocks.size() == 1) {
-						Map.Entry<PlotSource, List<INxmBlock>> entry = source2NxmBlocks.entrySet().iterator().next();
-
-						PlotNxmBlock plotBlock = null;
-						for (INxmBlock block : entry.getValue()) {
-							if (block instanceof PlotNxmBlock) {
-								plotBlock = (PlotNxmBlock) block;
-							}
-						}
-						PlotPreferencePage plotPage = new PlotPreferencePage("Plot", plotBlock.getPreferences());
-						plotPage.setPreferenceStore(currentPlotPage.plot.getPreferenceStore());
-						PlotPreferenceNode plotNode = new PlotPreferenceNode("plotSettings", plotPage);
-						manager.addToRoot(plotNode);
-
-						//						String name = entry.getKey().getInput().getName();
-						//						SourcePreferencePage sourcePrefPage = new SourcePreferencePage(name, PlotPageBook2.this);
-						//						PreferenceNode sourceNode = new PreferenceNode(entry.getKey().toString(), sourcePrefPage);
-						//						manager.addToRoot(sourceNode);
-
-						for (INxmBlock block : entry.getValue()) {
-							if (plotBlock == block) {
-								continue;
-							}
-							IPreferencePage page = block.createPreferencePage();
-							if (page != null) {
-								PreferenceNode blockNode = new PreferenceNode(block.toString(), page);
-								manager.addToRoot(blockNode);
-							}
-						}
-					}
-
-					PlotPreferenceDialog dialog = new PlotPreferenceDialog(getShell(), manager);
-					dialog.open();
-				}
-			});
-		}
+	public void addPropertyChangeListener(java.beans.PropertyChangeListener listener) {
+		pcs.addPropertyChangeListener(listener);
 	}
+
+	/**
+	 * @since 4.4
+	 */
+	public void removePropertyChangeListener(java.beans.PropertyChangeListener listener) {
+		pcs.removePropertyChangeListener(listener);
+	}
+
+	/**
+	 * @since 4.4
+	 */
+	public IPreferenceStore getSharedPlotBlockPreferences() {
+		return sharedBlockStore;
+	}
+
 }

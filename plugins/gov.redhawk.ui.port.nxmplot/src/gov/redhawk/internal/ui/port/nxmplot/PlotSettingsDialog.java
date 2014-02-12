@@ -64,6 +64,7 @@ public class PlotSettingsDialog extends Dialog {
 	private static final CustomDoubleValidator SAMPLE_RATE_VALIDATOR = new CustomDoubleValidator("Sample Rate", "default");
 	
 	private final PlotSettings plotSettings;
+	private boolean enablePageBookQuickControls;
 	private ComboViewer frameSizeField;
 	private ComboViewer minField;
 	private ComboViewer maxField;
@@ -285,8 +286,16 @@ public class PlotSettingsDialog extends Dialog {
 		final Button enablePlotMenuButton = new Button(parent, SWT.CHECK);
 		enablePlotMenuButton.setText("Enable Plot Configure Menu");
 		enablePlotMenuButton.setLayoutData(GridDataFactory.fillDefaults().grab(true, false).span(2, 1).create());
-		dataBindingContext.bindValue(WidgetProperties.selection().observe(enablePlotMenuButton), PojoProperties.value("enablePlotMenu").observe(this.plotSettings));
+		dataBindingContext.bindValue(WidgetProperties.selection().observe(enablePlotMenuButton),
+			PojoProperties.value("enablePlotMenu").observe(this.plotSettings));
 
+		// === enable quick access control widgets ===
+		final Button enableQuickControlsButton = new Button(parent, SWT.CHECK);
+		enableQuickControlsButton.setText("Enable Quick Access Controls");
+		enableQuickControlsButton.setLayoutData(GridDataFactory.fillDefaults().grab(true, false).span(2, 1).create());
+		dataBindingContext.bindValue(WidgetProperties.selection().observe(enableQuickControlsButton),
+			PojoProperties.value("enablePageBookQuickControls").observe(this));
+		
 		Dialog.applyDialogFont(container);
 
 		return container;
@@ -299,6 +308,14 @@ public class PlotSettingsDialog extends Dialog {
 	 */
 	public PlotSettings getSettings() {
 		return this.plotSettings;
+	}
+
+	public boolean isEnablePageBookQuickControls() {
+		return enablePageBookQuickControls;
+	}
+
+	public void setEnablePageBookQuickControls(boolean enablePageBookQuickControls) {
+		this.enablePageBookQuickControls = enablePageBookQuickControls;
 	}
 
 	/**

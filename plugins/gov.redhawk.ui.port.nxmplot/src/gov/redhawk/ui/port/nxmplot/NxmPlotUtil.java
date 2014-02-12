@@ -13,6 +13,7 @@ package gov.redhawk.ui.port.nxmplot;
 
 import gov.redhawk.internal.ui.port.nxmplot.PlotSession;
 import gov.redhawk.model.sca.ScaUsesPort;
+import gov.redhawk.ui.port.nxmblocks.FftNxmBlockSettings;
 import gov.redhawk.ui.port.nxmplot.PlotSettings.PlotMode;
 import gov.redhawk.ui.port.nxmplot.preferences.PlotPreferences;
 
@@ -159,6 +160,7 @@ public final class NxmPlotUtil {
 		if (Boolean.FALSE.equals(enablePlotMenu)) { // PLOT has configure menu on by default
 			plotSwitches += "/EVENTFILTER=+NoMiddleMouse"; // so only need to disable when false
 		}
+
 		// user specified launch switches could override any of the previous settings
 		if (plotSettings.getLaunchSwitches() != null) {
 			plotSwitches += plotSettings.getLaunchSwitches();
@@ -276,7 +278,7 @@ public final class NxmPlotUtil {
 		return map;
 	}
 
-	private static Map<String, String> launchInputMacro(final SddsSource sdds, final Integer magExponent, final FftSettings fft,
+	private static Map<String, String> launchInputMacro(final SddsSource sdds, final Integer magExponent, final FftNxmBlockSettings fft,
 		final AbstractNxmPlotWidget plotWidget, String pipeSize) {
 		final String outName = AbstractNxmPlotWidget.createUniqueName(true);
 		final String transformIn = AbstractNxmPlotWidget.createUniqueName(true);
@@ -457,6 +459,10 @@ public final class NxmPlotUtil {
 		return NxmPlotUtil.addSource(port, null, plotWidget, qualifers);
 	}
 
+	/**
+	 * @deprecated Use new plot blocks
+	 */
+	@Deprecated
 	public static IPlotSession addSource(final ScaUsesPort port, final FftSettings fft, final AbstractNxmPlotWidget plotWidget, final String qualifiers) {
 		final Map<String, String> outputIds = NxmPlotUtil.launchInputMacro(NxmPlotUtil.createConnectionSettings(port), fft, plotWidget, null);
 		PlotSession session = new PlotSession(plotWidget, outputIds.get(NxmPlotUtil.KEY_COMMAND), outputIds.get(NxmPlotUtil.KEY_FILE));
@@ -482,15 +488,41 @@ public final class NxmPlotUtil {
 	}
 
 	public static IPlotSession addSource(final SddsSource sdds, final AbstractNxmPlotWidget plotWidget, final String qualifers) {
-		return NxmPlotUtil.addSource(sdds, null, plotWidget, qualifers);
+		return NxmPlotUtil.addSource(sdds, (FftNxmBlockSettings) null, plotWidget, qualifers);
 	}
 
-	public static IPlotSession addSource(final SddsSource sdds, final FftSettings fft, final AbstractNxmPlotWidget plotWidget, final String qualifers) {
+	/**
+	 * @deprecated Use {@link #addSource(SddsSource, FftNxmBlockSettings, AbstractNxmPlotWidget, String)}
+	 * @return
+	 */
+	@Deprecated
+	public static IPlotSession addSource(final SddsSource sdds, final FftSettings fft, final AbstractNxmPlotWidget plotWidget, final String qualifiers) {
+		return NxmPlotUtil.addSource(sdds, PlotPageBook2.toFftNxmBlockSettings(fft), plotWidget, qualifiers);
+	}
+
+	/**
+	 * @since 4.4
+	 */
+	public static IPlotSession addSource(final SddsSource sdds, final FftNxmBlockSettings fft, final AbstractNxmPlotWidget plotWidget, final String qualifers) {
 		return NxmPlotUtil.addSource(sdds, null, fft, plotWidget, qualifers);
+
 	}
 
+	/**
+	 * @deprecated Use {@link #addSource(SddsSource, Integer, FftNxmBlockSettings, AbstractNxmPlotWidget, String)}
+	 * @return
+	 */
+	@Deprecated
 	public static IPlotSession addSource(final SddsSource sdds, final Integer magExponent, final FftSettings fft, final AbstractNxmPlotWidget plotWidget,
 		final String qualifiers) {
+		return NxmPlotUtil.addSource(sdds, magExponent, PlotPageBook2.toFftNxmBlockSettings(fft), plotWidget, qualifiers);
+	}
+
+	/**
+	 * @since 4.4
+	 */
+	public static IPlotSession addSource(final SddsSource sdds, final Integer magExponent, final FftNxmBlockSettings fft,
+		final AbstractNxmPlotWidget plotWidget, final String qualifiers) {
 		final Map<String, String> outputIds = NxmPlotUtil.launchInputMacro(sdds, magExponent, fft, plotWidget, null);
 		PlotSession session = new PlotSession(plotWidget, outputIds.get(NxmPlotUtil.KEY_COMMAND), outputIds.get(NxmPlotUtil.KEY_FILE));
 		plotWidget.addSource(session.getSourceId(), ((qualifiers == null) ? "" : qualifiers), session);

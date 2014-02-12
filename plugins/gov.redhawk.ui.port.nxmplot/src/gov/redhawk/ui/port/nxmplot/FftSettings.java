@@ -13,8 +13,14 @@ package gov.redhawk.ui.port.nxmplot;
 
 /**
  * @since 2.1
+ * @deprecated Use {@link gov.redhawk.ui.port.nxmblocks.FftNxmBlockSettings}
  */
+@Deprecated
 public class FftSettings {
+	/**
+	 * @deprecated Use {@link gov.redhawk.ui.port.nxmblocks.FftNxmBlockSettings.WindowType}
+	 */
+	@Deprecated
 	public static enum WindowType {
 		BARTLETT("Bartlett", "BART"),
 		HANNING("Hanning", "HANN"),
@@ -43,6 +49,10 @@ public class FftSettings {
 		}
 	}
 
+	/**
+	 * @deprecated Use {@link gov.redhawk.ui.port.nxmblocks.FftNxmBlockSettings.OutputType}
+	 */
+	@Deprecated
 	public static enum OutputType {
 		NORMAL("Normal", ""),
 		MAG_SQ("Magnitude Squared", "/MAG"),

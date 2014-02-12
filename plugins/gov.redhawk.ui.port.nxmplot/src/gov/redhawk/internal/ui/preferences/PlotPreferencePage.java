@@ -12,9 +12,11 @@ package gov.redhawk.internal.ui.preferences;
 
 import gov.redhawk.ui.port.nxmplot.PlotActivator;
 import gov.redhawk.ui.port.nxmplot.PlotSettings;
+import gov.redhawk.ui.port.nxmplot.PlotSettings.PlotMode;
 import gov.redhawk.ui.port.nxmplot.preferences.PlotPreferences;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 
@@ -134,6 +136,7 @@ public class PlotPreferencePage extends FieldEditorPreferencePage implements IWo
 			addField(new IntegerFieldEditor(PlotPreferences.FRAMESIZE.getName(), "&Default Framesize:", getFieldEditorParent()));
 			addField(new BooleanFieldEditor(PlotPreferences.ENABLE_CONFIGURE_MENU_USING_MOUSE.getName(), "&Enable plot configure menu using mouse",
 				getFieldEditorParent()));
+			addField(new BooleanFieldEditor(PlotPreferences.ENABLE_QUICK_CONTROLS.getName(), "Enable &quick access control widgets", getFieldEditorParent()));
 		} else {
 			if (isBlock) {
 				addField(new OverridableIntegerFieldEditor(PlotPreferences.FRAMESIZE.getName(), PlotPreferences.FRAMESIZE_OVERRIDE.getName(), "&Framesize:",
@@ -162,7 +165,10 @@ public class PlotPreferencePage extends FieldEditorPreferencePage implements IWo
 				booleanControls.setLayoutData(GridDataFactory.fillDefaults().grab(true, false).span(2, 1).create());
 				addField(new BooleanFieldEditor(PlotPreferences.ENABLE_CONFIGURE_MENU_USING_MOUSE.getName(), "&Enable plot configure menu using mouse",
 					booleanControls));
-
+				if (blockPreferenceStore != null) {
+					blockPreferences.add(new BooleanFieldEditor(PlotPreferences.ENABLE_QUICK_CONTROLS.getName(), "Enable &quick access control widgets",
+						getFieldEditorParent()));
+				}
 				//				createAdvancedFields();
 			}
 		}
@@ -207,9 +213,12 @@ public class PlotPreferencePage extends FieldEditorPreferencePage implements IWo
 		return blockPreferenceStore;
 	}
 
+	private static List<PlotMode> supportedModes = Arrays.asList(PlotMode.IMAGINARY, PlotMode.MAGNITUDE, PlotMode.PHASE, PlotMode.REAL,
+		PlotMode.REAL_AND_IMAGINARY, PlotMode.REAL_VS_IMAGINARY, PlotMode.TEN_LOG, PlotMode.TWENTY_LOG);
+
 	private ComboFieldEditor createModesField() {
 		List<String[]> modes = new ArrayList<String[]>();
-		for (PlotSettings.PlotMode mode : PlotSettings.PlotMode.values()) {
+		for (PlotSettings.PlotMode mode : PlotPreferencePage.supportedModes) {
 			modes.add(new String[] { mode.getLabel(), mode.toString() });
 		}
 		String[][] modeValues = modes.toArray(new String[0][]);

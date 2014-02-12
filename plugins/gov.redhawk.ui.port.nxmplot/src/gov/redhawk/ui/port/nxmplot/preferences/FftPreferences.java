@@ -10,7 +10,7 @@
  *******************************************************************************/
 package gov.redhawk.ui.port.nxmplot.preferences;
 
-import gov.redhawk.ui.port.nxmplot.FftSettings;
+import gov.redhawk.ui.port.nxmblocks.FftNxmBlockSettings;
 
 import java.util.List;
 
@@ -23,9 +23,9 @@ public class FftPreferences {
 	public static final Preference<Integer> SLIDING_NUM_AVERAGES = new Preference<Integer>("fftBlock.numExpAverages", 1);
 	public static final Preference<Integer> OVERLAP = new Preference<Integer>("fftBlock.overlap", 50);
 
-	public static final Preference<String> OUTPUT_TYPE = new Preference<String>("fftBlock.outputType", FftSettings.OutputType.PSD_20LOG.toString());
+	public static final Preference<String> OUTPUT_TYPE = new Preference<String>("fftBlock.outputType", FftNxmBlockSettings.OutputType.PSD_20LOG.toString());
 	public static final Preference<Integer> TRANSFORM_SIZE = new Preference<Integer>("fftBlock.transformSize", 8192);
-	public static final Preference<String> WINDOW_TYPE = new Preference<String>("fftBlock.windowType", FftSettings.WindowType.HAMMING.toString());
+	public static final Preference<String> WINDOW_TYPE = new Preference<String>("fftBlock.windowType", FftNxmBlockSettings.WindowType.HAMMING.toString());
 
 	public static final Preference<Boolean> PIPE_SIZE_OVERRIDE = new Preference<Boolean>("fftBlock.pipeSize.override", false);
 	public static final Preference<Integer> PIPE_SIZE = new Preference<Integer>("fftBlock.pipeSize", 131072);

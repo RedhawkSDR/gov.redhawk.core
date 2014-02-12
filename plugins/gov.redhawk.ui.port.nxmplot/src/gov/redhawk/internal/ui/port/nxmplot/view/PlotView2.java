@@ -11,16 +11,18 @@
  */
 package gov.redhawk.internal.ui.port.nxmplot.view;
 
-import gov.redhawk.internal.ui.port.nxmplot.PlotSettingsDialog;
 import gov.redhawk.model.sca.ScaUsesPort;
-import gov.redhawk.ui.port.nxmplot.AbstractNxmPlotWidget;
+import gov.redhawk.ui.port.nxmplot.FftNumAvgControls;
 import gov.redhawk.ui.port.nxmplot.FftSettings;
 import gov.redhawk.ui.port.nxmplot.IPlotView;
 import gov.redhawk.ui.port.nxmplot.PlotActivator;
 import gov.redhawk.ui.port.nxmplot.PlotPageBook2;
 import gov.redhawk.ui.port.nxmplot.PlotSettings;
 import gov.redhawk.ui.port.nxmplot.PlotSource;
-import gov.redhawk.ui.port.nxmplot.PlotType;
+import gov.redhawk.ui.port.nxmplot.preferences.PlotPreferences;
+
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
@@ -30,11 +32,13 @@ import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.jface.action.Separator;
+import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.jface.resource.ImageDescriptor;
-import org.eclipse.jface.window.Window;
+import org.eclipse.jface.util.IPropertyChangeListener;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.DisposeEvent;
 import org.eclipse.swt.events.DisposeListener;
+import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.IActionBars;
 import org.eclipse.ui.IViewPart;
@@ -57,7 +61,7 @@ public class PlotView2 extends ViewPart implements IPlotView {
 	/** The ID of the view. */
 	public static final String ID = "gov.redhawk.ui.port.nxmplot.PlotView2";
 
-	private static final String ADJUST_PLOT_SETTINGS_ACTION_ID = "AdjustPlotSettingsMenuItemAction";
+	public static final String ID_CHANGE_PLOT_TYPE_ACTION = "gov.redhawk.ChangePlotType";
 
 	private static int secondardId;
 
@@ -72,35 +76,8 @@ public class PlotView2 extends ViewPart implements IPlotView {
 
 	private IMenuManager menu;
 
-	private class PlotTypeMenuAction extends Action {
-
-		public PlotTypeMenuAction() {
-			super("Change Plot Type", IAction.AS_PUSH_BUTTON | IAction.AS_CHECK_BOX | SWT.None);
-			setChecked(plotPageBook.getCurrentType() == PlotType.RASTER); // updates tool tip to display what action button will do
-		}
-
-		@Override
-		public void run() {
-			PlotType currentType = plotPageBook.getCurrentType();
-			if (currentType == PlotType.RASTER) {
-				plotPageBook.showPlot(PlotType.LINE);
-				this.setChecked(false);
-			} else {
-				plotPageBook.showPlot(PlotType.RASTER);
-				this.setChecked(true);
-			}
-		}
-
-		@Override
-		public void setChecked(final boolean checked) {
-			super.setChecked(checked);
-			if (!checked) {
-				this.setToolTipText("Show Raster");
-			} else {
-				this.setToolTipText("Show Line");
-			}
-		}
-	} // end class PlotTypeMenuAction
+	private PlotFftMenuAction fftSizeMenu;
+	private PlotModeMenuAction plotModeMenu;
 
 	private PlotPageBook2 plotPageBook;
 
@@ -116,14 +93,74 @@ public class PlotView2 extends ViewPart implements IPlotView {
 
 	private boolean diposed;
 
+	private FftNumAvgControls fftControls;
+
+	private PlotSettingsAction plotSettingsAction;
+
+	private Composite parent;
+
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
 	public void createPartControl(final Composite parent) {
+		this.parent = parent;
+		GridLayout layout = new GridLayout(2, false);
+		layout.marginBottom = 0;
+		layout.marginHeight = 0;
+		layout.marginLeft = 0;
+		layout.marginRight = 0;
+		layout.marginTop = 0;
+		layout.marginWidth = 0;
+		layout.horizontalSpacing = 0;
+		layout.verticalSpacing = 0;
+		parent.setLayout(layout);
 		this.plotPageBook = new PlotPageBook2(parent, SWT.None);
-		this.plotPageBook.addDisposeListener(disposeListener);
+		this.plotPageBook.addPropertyChangeListener(new PropertyChangeListener() {
 
+			@Override
+			public void propertyChange(PropertyChangeEvent evt) {
+				if (PlotPageBook2.PROP_SOURCES.equals(evt.getPropertyName())) {
+					final boolean hasFft = hasFft();
+					if (parent == null || parent.isDisposed()) {
+						return;
+					}
+					parent.getDisplay().asyncExec(new Runnable() {
+
+						@Override
+						public void run() {
+							updateFftSizeMenu(hasFft);
+							updateFftControls(hasFft);
+						}
+
+					});
+				}
+			}
+		});
+		this.plotPageBook.setLayoutData(GridDataFactory.fillDefaults().indent(0, 0).grab(true, true).create());
+
+		this.plotPageBook.addDisposeListener(disposeListener);
+		this.plotPageBook.getSharedPlotBlockPreferences().addPropertyChangeListener(new IPropertyChangeListener() {
+
+			@Override
+			public void propertyChange(org.eclipse.jface.util.PropertyChangeEvent event) {
+				if (PlotPreferences.ENABLE_QUICK_CONTROLS.isEvent(event)) {
+					final boolean hasFft = hasFft();
+					if (parent == null || parent.isDisposed()) {
+						return;
+					}
+					parent.getDisplay().asyncExec(new Runnable() {
+
+						@Override
+						public void run() {
+							updateFftControls(hasFft);
+						}
+
+					});
+					updateFftControls(hasFft);
+				}
+			}
+		});
 		createActions();
 		createToolBars();
 		createMenu();
@@ -148,7 +185,6 @@ public class PlotView2 extends ViewPart implements IPlotView {
 	 * @deprecated since 4.4, use PlotPageBook2#addSource2(PlotSource)
 	 */
 	@Deprecated
-	@SuppressWarnings("deprecation")
 	public IDisposable addPlotSource(ScaUsesPort port, final FftSettings fftSettings, String qualifiers) {
 		return this.plotPageBook.addSource(port, fftSettings, qualifiers);
 	}
@@ -179,7 +215,9 @@ public class PlotView2 extends ViewPart implements IPlotView {
 
 		menu.add(new Separator(IWorkbenchActionConstants.MB_ADDITIONS));
 
-		this.plotPageBook.contributeMenuItems(menu);
+		if (this.plotSettingsAction != null) {
+			menu.add(plotSettingsAction);
+		}
 	}
 
 	/**
@@ -189,7 +227,15 @@ public class PlotView2 extends ViewPart implements IPlotView {
 		final IActionBars bars = getViewSite().getActionBars();
 
 		final IToolBarManager toolBarManager = bars.getToolBarManager();
-		toolBarManager.add(this.plotTypeAction);
+		if (this.plotModeMenu != null) {
+			toolBarManager.add(plotModeMenu);
+		}
+		if (this.fftSizeMenu != null) {
+			toolBarManager.add(this.fftSizeMenu);
+		}
+		if (this.plotTypeAction != null) {
+			toolBarManager.add(this.plotTypeAction);
+		}
 		toolBarManager.add(new Separator());
 		toolBarManager.add(new Separator(IWorkbenchActionConstants.MB_ADDITIONS));
 	}
@@ -200,13 +246,69 @@ public class PlotView2 extends ViewPart implements IPlotView {
 
 	/** Creates the actions. **/
 	private void createActions() {
-		this.plotTypeAction = new PlotTypeMenuAction();
+		this.plotTypeAction = new PlotTypeMenuAction(this.plotPageBook);
 
 		final ImageDescriptor rasterImageDescriptor = AbstractUIPlugin.imageDescriptorFromPlugin(PlotActivator.PLUGIN_ID, "icons/raster.png");
 		this.plotTypeAction.setImageDescriptor(rasterImageDescriptor);
 
 		this.newPlotViewAction = createNewPlotViewAction();
+
+		this.plotModeMenu = new PlotModeMenuAction(plotPageBook);
+		this.fftSizeMenu = new PlotFftMenuAction(plotPageBook);
+		this.plotSettingsAction = new PlotSettingsAction(plotPageBook);
+		boolean hasFft = hasFft();
+		updateFftSizeMenu(hasFft);
+		updateFftControls(hasFft);
 		//		this.adjustPlotSettingsAction = createAdjustPlotSettingsAction();
+	}
+
+	private boolean hasFft() {
+		for (PlotSource s : plotPageBook.getSources()) {
+			if (s.getFftBlockSettings() != null) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	private void updateFftSizeMenu(boolean hasFft) {
+		if (fftSizeMenu == null) {
+			return;
+		}
+		fftSizeMenu.setEnabled(hasFft);
+	}
+
+	private void updateFftControls(boolean hasFft) {
+		if (parent == null || parent.isDisposed()) {
+			return;
+		}
+		if (!hasFft) {
+			if (this.fftControls != null) {
+				this.fftControls.dispose();
+				this.fftControls = null;
+				this.parent.layout(true, true);
+			}
+			return;
+		}
+		boolean controlsEnabled = false;
+		controlsEnabled = PlotPreferences.ENABLE_QUICK_CONTROLS.getValue(plotPageBook.getSharedPlotBlockPreferences());
+
+		if (!controlsEnabled) {
+			if (this.fftControls != null) {
+				this.fftControls.dispose();
+				this.fftControls = null;
+				this.parent.layout(true, true);
+			}
+			return;
+		}
+
+		if (this.fftControls != null) {
+			return;
+		}
+		this.fftControls = new FftNumAvgControls(plotPageBook, parent);
+		this.fftControls.setLayoutData(GridDataFactory.fillDefaults().grab(false, true).create());
+		this.parent.layout(true, true);
+		return;
 	}
 
 	private IAction createNewPlotViewAction() {
@@ -236,37 +338,6 @@ public class PlotView2 extends ViewPart implements IPlotView {
 		action.setEnabled(true);
 		action.setText("New Plot View");
 		action.setToolTipText("Open a new Plot View with all the same plots.");
-
-		return action;
-	}
-
-	private IAction createAdjustPlotSettingsAction() {
-		IAction action = new Action() {
-			@Override
-			public void run() {
-				AbstractNxmPlotWidget activeWidget = plotPageBook.getActivePlotWidget();
-				PlotSettings plotSettings = activeWidget.getPlotSettings();
-				PlotSettingsDialog dialog = new PlotSettingsDialog(PlatformUI.getWorkbench().getDisplay().getActiveShell(), plotSettings);
-				final int result = dialog.open();
-				if (result == Window.OK) {
-					PlotSettings newSettings = dialog.getSettings();
-					PlotType newType = newSettings.getPlotType();
-					// Ignore Plot type in settings use page book.showPlot(type) instead
-					newSettings.setPlotType(null);
-
-					for (AbstractNxmPlotWidget widget : plotPageBook.getAllPlotWidgets()) {
-						widget.applySettings(newSettings); // apply settings to all plot widgets
-					} // end for loop
-					plotPageBook.showPlot(newType);
-				}
-			} // end method
-		};
-
-		action.setId(PlotView2.ADJUST_PLOT_SETTINGS_ACTION_ID);
-		action.setEnabled(true);
-		action.setText("Adjust Plot Settings");
-		action.setToolTipText("Adjust/Override Plot Settings");
-
 		return action;
 	}
 
