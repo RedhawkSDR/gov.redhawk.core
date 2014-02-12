@@ -241,4 +241,9 @@ public class RapNxmPlotWidget extends AbstractNxmPlotWidget {
 		return nxmComp.runGlobalCommand(command);
 	}
 
+	@Override
+	public boolean isInitialized() {
+		return initialized;
+	}
+
 }
