@@ -19,6 +19,7 @@ import gov.redhawk.ui.port.nxmplot.PlotSettings.PlotMode;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.eclipse.core.runtime.Platform;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.ActionContributionItem;
 import org.eclipse.jface.action.IAction;
@@ -26,6 +27,7 @@ import org.eclipse.jface.action.IMenuCreator;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
+import org.osgi.framework.Bundle;
 
 public class PlotModeMenuAction extends Action implements IMenuCreator {
 
@@ -49,7 +51,12 @@ public class PlotModeMenuAction extends Action implements IMenuCreator {
 	public PlotModeMenuAction(PlotPageBook2 plotPageBook) {
 		super("&Plot Mode", IAction.AS_DROP_DOWN_MENU);
 		setId(PlotView2.ID + ".mode");
-		setImageDescriptor(AbstractUIPlugin.imageDescriptorFromPlugin(PlotActivator.PLUGIN_ID, "icons/plotMode.png"));
+
+		Bundle platformBundle = Platform.getBundle("org.eclipse.platform");
+		if (platformBundle != null && platformBundle.getVersion().getMajor() < 4) {
+			setImageDescriptor(AbstractUIPlugin.imageDescriptorFromPlugin(PlotActivator.PLUGIN_ID, "icons/plotMode.png"));
+		}
+
 		setToolTipText("Change the plot's mode (" + PlotMode.IMAGINARY.getLabel() + ", " + PlotMode.TEN_LOG.getLabel() + ", etc.)");
 		setMenuCreator(this);
 		this.plotPageBook = plotPageBook;

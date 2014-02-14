@@ -20,6 +20,7 @@ import gov.redhawk.ui.port.nxmplot.PlotSource;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.eclipse.core.runtime.Platform;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.ActionContributionItem;
 import org.eclipse.jface.action.IAction;
@@ -27,6 +28,7 @@ import org.eclipse.jface.action.IMenuCreator;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
+import org.osgi.framework.Bundle;
 
 public class PlotFftMenuAction extends Action implements IMenuCreator {
 
@@ -61,7 +63,12 @@ public class PlotFftMenuAction extends Action implements IMenuCreator {
 	public PlotFftMenuAction(PlotPageBook2 plotPageBook) {
 		super("&FFT Size", IAction.AS_DROP_DOWN_MENU);
 		setId(PlotView2.ID + ".mode");
-		setImageDescriptor(AbstractUIPlugin.imageDescriptorFromPlugin(PlotActivator.PLUGIN_ID, "icons/fftSize.png"));
+
+		Bundle platformBundle = Platform.getBundle("org.eclipse.platform");
+		if (platformBundle != null && platformBundle.getVersion().getMajor() < 4) {
+			setImageDescriptor(AbstractUIPlugin.imageDescriptorFromPlugin(PlotActivator.PLUGIN_ID, "icons/fftSize.png"));
+		}
+
 		setToolTipText("Change the FFT transform size");
 		setMenuCreator(this);
 		this.plotPageBook = plotPageBook;
