@@ -80,7 +80,7 @@ import CF.DevicePackage.InsufficientCapacity;
 import CF.DevicePackage.InvalidCapacity;
 import CF.DevicePackage.InvalidState;
 
-public class PlotHandler extends AbstractHandler implements IHandler {
+public class FeiPlotHandler extends AbstractHandler implements IHandler {
 
 	private static final AtomicInteger uniquePlotViewSecondaryId = new AtomicInteger();
 	private static final String PARAM_ISFFT = "gov.redhawk.frontend.ui.isFft";
@@ -175,7 +175,7 @@ public class PlotHandler extends AbstractHandler implements IHandler {
 		final SddsNxmBlockSettings sddsBlockSettings = new SddsNxmBlockSettings();
 		final FftNxmBlockSettings fftBlockSettings;
 		
-		final boolean isFFT = Boolean.valueOf(event.getParameter(PlotHandler.PARAM_ISFFT));
+		final boolean isFFT = Boolean.valueOf(event.getParameter(FeiPlotHandler.PARAM_ISFFT));
 		if(isFFT) {
 			System.out.println("is FFT");
 			fftBlockSettings = new FftNxmBlockSettings();
@@ -315,7 +315,7 @@ public class PlotHandler extends AbstractHandler implements IHandler {
 	}
 
 	private String createSecondaryId() {
-		return "FEI" + PlotHandler.uniquePlotViewSecondaryId.incrementAndGet();
+		return "FEI" + FeiPlotHandler.uniquePlotViewSecondaryId.incrementAndGet();
 	}
 
 	private void createTooltip(final ScaItemProviderAdapterFactory factory, final StringBuilder name, final StringBuilder tooltip, ScaUsesPort usesPort) {

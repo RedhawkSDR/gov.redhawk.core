@@ -88,7 +88,7 @@
             name="Deallocate">
       </command>
       <command
-            defaultHandler="gov.redhawk.frontend.ui.internal.PlotHandler"
+            defaultHandler="gov.redhawk.frontend.ui.internal.FeiPlotHandler"
             id="gov.redhawk.frontend.commands.plot"
             name="Plot Port">
          <commandParameter
