@@ -463,8 +463,14 @@ public class PlotPageBook2 extends Composite {
 	 * @param enable true if the raster should be shown
 	 */
 	public void showPlot(PlotType type) {
-		PlotSettings plotSettings = new PlotSettings(type);
-		showPlot(plotSettings);
+		PlotSettings settings;
+		if (type == PlotType.RASTER) {
+			settings = new PlotSettings(rasterPlotStore);
+		} else {
+			settings = new PlotSettings(sharedLinePlotStore);
+		}
+		settings.setPlotType(type);
+		showPlot(settings);
 	}
 
 	/** NTN: NEW METHOD (from old showPlot(PlotType method)
@@ -627,6 +633,20 @@ public class PlotPageBook2 extends Composite {
 	 */
 	public IPreferenceStore getSharedPlotBlockPreferences() {
 		return sharedBlockStore;
+	}
+
+	/**
+	 * @since 4.4
+	 */
+	public IPreferenceStore getSharedLinePlotStore() {
+		return sharedLinePlotStore;
+	}
+
+	/**
+	 * @since 4.4
+	 */
+	public IPreferenceStore getRasterPlotStore() {
+		return rasterPlotStore;
 	}
 
 }

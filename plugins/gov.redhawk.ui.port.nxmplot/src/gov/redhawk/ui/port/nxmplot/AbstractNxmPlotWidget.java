@@ -543,18 +543,6 @@ public abstract class AbstractNxmPlotWidget extends Composite {
 	 * @since 4.2
 	 */
 	public PlotSettings getPlotSettings() {
-		// TODO should we pull it from the plot?
-		//		plot curPlot = getPlot();
-		//		if (curPlot != null) {
-		//			String curPlotModeStr = curPlot.MP.getMode();
-		//			if (!"".equals(curPlotModeStr)) {
-		//				plotSettings.setPlotMode(PlotMode.of(curPlotModeStr));
-		//			}
-		//			String curPlotTypeStr = curPlot.getPlotType();
-		//			if (!"".equals(curPlotTypeStr)) {
-		//				plotSettings.setPlotType(PlotType.valueOf(curPlotTypeStr));
-		//			}
-		//		}
 		return new PlotSettings(store);
 	}
 
@@ -826,7 +814,7 @@ public abstract class AbstractNxmPlotWidget extends Composite {
 		}
 
 		if (PlotPreferences.MIN.isEvent(event) || PlotPreferences.MIN_OVERRIDE.isEvent(event) || PlotPreferences.MAX.isEvent(event)
-			|| PlotPreferences.MAX_OVERRIDE.isEvent(event)) {
+				|| PlotPreferences.MAX_OVERRIDE.isEvent(event)) {
 			updateScale();
 		}
 

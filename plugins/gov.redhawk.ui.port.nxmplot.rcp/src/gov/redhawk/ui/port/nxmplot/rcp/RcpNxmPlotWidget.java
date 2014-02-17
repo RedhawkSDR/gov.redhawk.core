@@ -12,6 +12,8 @@
 package gov.redhawk.ui.port.nxmplot.rcp;
 
 import gov.redhawk.ui.port.nxmplot.AbstractNxmPlotWidget;
+import gov.redhawk.ui.port.nxmplot.PlotSettings;
+import gov.redhawk.ui.port.nxmplot.PlotType;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -22,6 +24,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 import nxm.rcp.ui.core.NeXtMidasComposite;
 import nxm.redhawk.lib.RedhawkNxmUtil;
+import nxm.sys.inc.Commandable;
 import nxm.sys.lib.Command;
 import nxm.sys.lib.Midas;
 import nxm.sys.lib.NeXtMidas;
@@ -88,6 +91,7 @@ public class RcpNxmPlotWidget extends AbstractNxmPlotWidget {
 		plotCommand.setMessageHandler(getPlotMessageHandler());
 	}
 
+	@Override
 	public boolean isInitialized() {
 		return initialized;
 	}
@@ -118,7 +122,7 @@ public class RcpNxmPlotWidget extends AbstractNxmPlotWidget {
 		}
 		this.sources.clear();
 		if (plotCommand != null) {
-			plotCommand.setState(Command.FINISH); // tell PLOT to FINISH/EXIT
+			plotCommand.setState(Commandable.FINISH); // tell PLOT to FINISH/EXIT
 		}
 		rootMidasContext.getRegistry().remove(msgHandlerId);
 		super.dispose();
@@ -132,6 +136,27 @@ public class RcpNxmPlotWidget extends AbstractNxmPlotWidget {
 		}
 		nxmComp.runGlobalCommand("SENDTO " + plotCommand.id + " OPENFILE " + sourcePipeId + ((pipeQualifiers == null) ? "" : pipeQualifiers), false);
 		this.sources.add(sourcePipeId);
+	}
+
+	/**
+	 * Get a copy of current Plot Settings
+	 * @since 4.2
+	 */
+	@Override
+	public PlotSettings getPlotSettings() {
+		plot curPlot = getPlot();
+		PlotSettings retVal = new PlotSettings(getPreferenceStore());
+		if (curPlot != null) {
+			String curPlotModeStr = curPlot.MP.getMode();
+			if (!"".equals(curPlotModeStr)) {
+				retVal.setPlotMode(PlotSettings.PlotMode.of(curPlotModeStr));
+			}
+			String curPlotTypeStr = curPlot.getPlotType();
+			if (!"".equals(curPlotTypeStr)) {
+				retVal.setPlotType(PlotType.valueOf(curPlotTypeStr));
+			}
+		}
+		return retVal;
 	}
 
 	@Override
@@ -156,14 +181,15 @@ public class RcpNxmPlotWidget extends AbstractNxmPlotWidget {
 			throw new IllegalStateException("Plot not initialized");
 		}
 		// PLOT is running on same instance as server/processing side
-		sendMessageToCommand(plotCommand.id , msgName, info, data, null);
+		sendMessageToCommand(plotCommand.id, msgName, info, data, null);
 	}
 
 	private static String createUniqueResName() {
-		return "_TEMPRES_" + uniqueCounter.incrementAndGet();
+		return "_TEMPRES_" + RcpNxmPlotWidget.uniqueCounter.incrementAndGet();
 	}
 
 	//This method available only in the RCP plot widget
+	@Override
 	public plot getPlot() {
 		return this.plotCommand;
 	}
@@ -172,8 +198,8 @@ public class RcpNxmPlotWidget extends AbstractNxmPlotWidget {
 	public String addDataFeature(Number xStart, Number xEnd, String color) {
 		String featureId = AbstractNxmPlotWidget.createUniqueName(false);
 		final double dx = xEnd.doubleValue() - xStart.doubleValue();
-		final String cmd = "FEATURE LABEL=" + featureId + " PLOT=" + plotCommand.id + " TABLE={NAME=\""
-				+ featureId + "\",TYPE=\"DATA\",X=" + (xStart.doubleValue() + (dx / 2)) + ",DX=" + dx + ",COLOR=\"" + color + "\"}";
+		final String cmd = "FEATURE LABEL=" + featureId + " PLOT=" + plotCommand.id + " TABLE={NAME=\"" + featureId + "\",TYPE=\"DATA\",X="
+				+ (xStart.doubleValue() + (dx / 2)) + ",DX=" + dx + ",COLOR=\"" + color + "\"}";
 		this.runClientCommand(cmd);
 		return featureId;
 	}
@@ -184,16 +210,12 @@ public class RcpNxmPlotWidget extends AbstractNxmPlotWidget {
 		final String cmd;
 		if (xStart != null && xEnd != null) {
 			final double dx = xEnd.doubleValue() - xStart.doubleValue();
-			cmd = "FEATURE LABEL=" + featureId + " PLOT=" + plotCommand.id + " TABLE={NAME=\""
-					+ featureId + "\",TYPE=\"" + typeMask +  "\""
-					+ ",X=" + (xStart.doubleValue() + (dx / 2)) + ",DX=" + dx
-					+ ",COLOR=\"" + color + "\"}";
+			cmd = "FEATURE LABEL=" + featureId + " PLOT=" + plotCommand.id + " TABLE={NAME=\"" + featureId + "\",TYPE=\"" + typeMask + "\"" + ",X="
+					+ (xStart.doubleValue() + (dx / 2)) + ",DX=" + dx + ",COLOR=\"" + color + "\"}";
 		} else if (yStart != null && yEnd != null) {
 			final double dy = yEnd.doubleValue() - yStart.doubleValue();
-			cmd = "FEATURE LABEL=" + featureId + " PLOT=" + plotCommand.id + " TABLE={NAME=\""
-					+ featureId + "\",TYPE=\"" + typeMask +  "\""
-					+ ",Y=" + (yStart.doubleValue() + (dy / 2)) + ",DY=" + dy
-					+ ",COLOR=\"" + color + "\"}";
+			cmd = "FEATURE LABEL=" + featureId + " PLOT=" + plotCommand.id + " TABLE={NAME=\"" + featureId + "\",TYPE=\"" + typeMask + "\"" + ",Y="
+					+ (yStart.doubleValue() + (dy / 2)) + ",DY=" + dy + ",COLOR=\"" + color + "\"}";
 		} else {
 			cmd = null;
 		}
@@ -211,8 +233,8 @@ public class RcpNxmPlotWidget extends AbstractNxmPlotWidget {
 		final double y = (ymax.doubleValue() + ymin.doubleValue()) / 2d;
 		final double dx = xmax.doubleValue() - xmin.doubleValue();
 		final double dy = ymax.doubleValue() - ymin.doubleValue();
-		final String command = "FEATURE LABEL=" + featureId + " PLOT=" + plotCommand.id + " TABLE={NAME=\"" + featureId
-				+ "\",TYPE=\"BOX\",X=" + x + ",DX=" + dx + ",Y=" + y + ",DY=" + dy + ",COLOR=\"" + color + "\"}";
+		final String command = "FEATURE LABEL=" + featureId + " PLOT=" + plotCommand.id + " TABLE={NAME=\"" + featureId + "\",TYPE=\"BOX\",X=" + x + ",DX="
+				+ dx + ",Y=" + y + ",DY=" + dy + ",COLOR=\"" + color + "\"}";
 		this.runClientCommand(command);
 		return featureId;
 	}
@@ -228,7 +250,7 @@ public class RcpNxmPlotWidget extends AbstractNxmPlotWidget {
 		if (!isInitialized()) {
 			throw new IllegalStateException("Plot not initialized");
 		}
-		for (Map.Entry<String, String> entry: configuration.entrySet()) {
+		for (Map.Entry<String, String> entry : configuration.entrySet()) {
 			nxmComp.runGlobalCommand("SET " + "REG." + plotCommand.id + "." + entry.getKey() + " " + entry.getValue(), false);
 		}
 	}
@@ -242,14 +264,13 @@ public class RcpNxmPlotWidget extends AbstractNxmPlotWidget {
 
 	@Override
 	public void sendMessageToCommand(String cmdID, String msgName, int info, Object data, Object quals) {
-		final String tempRes4Data  = createUniqueResName();
-		final String tempRes4Quals = createUniqueResName();
+		final String tempRes4Data = RcpNxmPlotWidget.createUniqueResName();
+		final String tempRes4Quals = RcpNxmPlotWidget.createUniqueResName();
 		final Results resultsTable = rootNxmShell.M.results;
-		resultsTable.put(tempRes4Data, data);   //to pass object reference for DATA=  below
+		resultsTable.put(tempRes4Data, data); //to pass object reference for DATA=  below
 		resultsTable.put(tempRes4Quals, quals); //to pass object reference for QUALS= below
-		nxmComp.runGlobalCommand("MESSAGE SEND ID=" + cmdID + " NAME=" + msgName + " INFO=" + info
-				+ " DATA=" + tempRes4Data + " QUALS=" + tempRes4Quals, false);
-		resultsTable.remove(tempRes4Data);  // cleanup
+		nxmComp.runGlobalCommand("MESSAGE SEND ID=" + cmdID + " NAME=" + msgName + " INFO=" + info + " DATA=" + tempRes4Data + " QUALS=" + tempRes4Quals, false);
+		resultsTable.remove(tempRes4Data); // cleanup
 		resultsTable.remove(tempRes4Quals); // cleanup
 	}
 
