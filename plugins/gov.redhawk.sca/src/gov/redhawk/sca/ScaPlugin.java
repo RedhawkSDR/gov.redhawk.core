@@ -24,8 +24,14 @@ import gov.redhawk.sca.util.OrbSession;
 import gov.redhawk.sca.util.ScopedPreferenceAccessor;
 
 import java.util.ArrayList;
+import java.util.concurrent.Callable;
 
+import mil.jpeojtrs.sca.util.CorbaUtils;
+
+import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.Plugin;
+import org.eclipse.core.runtime.SubMonitor;
 import org.eclipse.core.runtime.preferences.InstanceScope;
 import org.omg.CosNaming.Binding;
 import org.omg.CosNaming.BindingIteratorHolder;
@@ -50,7 +56,7 @@ public class ScaPlugin extends Plugin {
 	 * @since 4.0
 	 */
 	public static final String PLUGIN_ID = "gov.redhawk.sca";
-	
+
 	/**
 	 * @since 6.0
 	 */
@@ -61,11 +67,11 @@ public class ScaPlugin extends Plugin {
 	private static ScaPlugin plugin;
 
 	private ScopedPreferenceAccessor scaPreferenceStore;
-	
+
 	private ServiceTracker<IScaDomainManagerRegistryFactoryService, IScaDomainManagerRegistryFactoryService> registryService;
 
 	private ServiceRegistration<IScaObjectLocator> serviceReg;
-	
+
 	private ServiceTracker<ICompatibilityUtil, ICompatibilityUtil> compatibilityUtil;
 
 	/**
@@ -90,7 +96,8 @@ public class ScaPlugin extends Plugin {
 		this.serviceReg = context.registerService(IScaObjectLocator.class, new ScaDomainRegistryObjectLocator(), null);
 		this.compatibilityUtil = new ServiceTracker<ICompatibilityUtil, ICompatibilityUtil>(getBundle().getBundleContext(), ICompatibilityUtil.class, null);
 		this.compatibilityUtil.open(true);
-		this.registryService = new ServiceTracker<IScaDomainManagerRegistryFactoryService, IScaDomainManagerRegistryFactoryService>(context, IScaDomainManagerRegistryFactoryService.class, null);
+		this.registryService = new ServiceTracker<IScaDomainManagerRegistryFactoryService, IScaDomainManagerRegistryFactoryService>(context,
+				IScaDomainManagerRegistryFactoryService.class, null);
 		this.registryService.open();
 	}
 
@@ -111,7 +118,7 @@ public class ScaPlugin extends Plugin {
 		}
 		return null;
 	}
-	
+
 	/**
 	 * @since 3.0
 	 * @deprecated Use {@link #getDomainManagerRegistry(Object) instead. In RAP, the domain registry cannot be retrieved without the active Display instance}
@@ -120,7 +127,7 @@ public class ScaPlugin extends Plugin {
 	public ScaDomainManagerRegistry getDomainManagerRegistry() {
 		return getDomainManagerRegistry(null);
 	}
-	
+
 	/**
 	 * @since 7.0
 	 *
@@ -183,7 +190,7 @@ public class ScaPlugin extends Plugin {
 	public static ScaPlugin getDefault() {
 		return ScaPlugin.plugin;
 	}
-	
+
 	/**
 	 * @since 3.0
 	 *
@@ -195,13 +202,13 @@ public class ScaPlugin extends Plugin {
 	 * dependencies, there is no way to access a user context.
 	 */
 	public IPreferenceAccessor getScaPreferenceAccessor() {
-		
+
 		if (this.scaPreferenceStore == null) {
 			this.scaPreferenceStore = new ScopedPreferenceAccessor(InstanceScope.INSTANCE, ScaPlugin.getPluginId());
 		}
 		return this.scaPreferenceStore;
 	}
-	
+
 	/**
 	 * @since 7.0
 	 *
@@ -219,7 +226,7 @@ public class ScaPlugin extends Plugin {
 	 * @since 3.0
 	 */
 	public static String getPluginId() {
-		return PLUGIN_ID;
+		return ScaPlugin.PLUGIN_ID;
 	}
 
 	/**
@@ -233,21 +240,60 @@ public class ScaPlugin extends Plugin {
 	 * Determines if a domain of the given name is bound to the default naming service and
 	 * appears to be existant.
 	 * @since 6.0
+	 * @deprecated Use {@link #isDomainOnline(String, IProgressMonitor)}
 	 */
+	@Deprecated
 	public static boolean isDomainOnline(final String domainName) {
+		try {
+			return ScaPlugin.isDomainOnline(domainName, (IProgressMonitor) null);
+		} catch (CoreException e) {
+			return false;
+		} catch (InterruptedException e) {
+			return false;
+		}
+	}
+
+	/**
+	 * Determines if a domain of the given name is bound to the default naming service and
+	 * appears to be existant.
+	 * @throws InterruptedException 
+	 * @throws CoreException 
+	 * @since 7.0
+	 */
+	public static boolean isDomainOnline(final String domainName, IProgressMonitor monitor) throws CoreException, InterruptedException {
 		IPreferenceAccessor prefs = ScaPlugin.getDefault().getScaPreferenceAccessor();
 		final String namingService = prefs.getString(ScaPreferenceConstants.SCA_DEFAULT_NAMING_SERVICE);
 		//final String namingService = Platform.getPreferencesService().getString(ScaPreferenceConstants.SCA_DEFAULT_NAMING_SERVICE);
-		return isDomainOnline(domainName, namingService);
+		return ScaPlugin.isDomainOnline(domainName, namingService, monitor);
 	}
 
 	/**
 	 * Determines if a domain of the given name is bound to the naming service and
 	 * appears to be existant.
 	 * @since 6.0
+	 * @deprecated {@link #isDomainOnline(String, String, IProgressMonitor)}
 	 */
+	@Deprecated
 	public static boolean isDomainOnline(final String domainName, final String namingService) {
-		return nameServiceObjectExists(domainName, namingService);
+		try {
+			return ScaPlugin.isDomainOnline(domainName, namingService, null);
+		} catch (CoreException e) {
+			return false;
+		} catch (InterruptedException e) {
+			return false;
+		}
+	}
+
+	/**
+	 * Determines if a domain of the given name is bound to the naming service and
+	 * appears to be existant.
+	 * @throws InterruptedException 
+	 * @throws CoreException 
+	 * @since 7.0
+	 */
+	public static boolean isDomainOnline(final String domainName, final String namingService, IProgressMonitor monitor) throws CoreException,
+	InterruptedException {
+		return ScaPlugin.nameServiceObjectExists(domainName, namingService, monitor);
 	}
 
 	/**
@@ -255,8 +301,30 @@ public class ScaPlugin extends Plugin {
 	 * the object exists.
 	 * 
 	 * @since 6.0
+	 * @deprecated {@link #nameServiceObjectExists(String, String, IProgressMonitor)}
 	 */
+	@Deprecated
 	public static boolean nameServiceObjectExists(final String name, final String nameServiceInitRef) {
+		try {
+			return ScaPlugin.nameServiceObjectExists(name, nameServiceInitRef, null);
+		} catch (CoreException e) {
+			return false;
+		} catch (InterruptedException e) {
+			return false;
+		}
+	}
+
+	/**
+	 * Determine's if an object with a given name is bound to the provided nameservice and
+	 * the object exists.
+	 * @throws InterruptedException 
+	 * @throws CoreException 
+	 * 
+	 * @since 7.0
+	 */
+	public static boolean nameServiceObjectExists(final String name, final String nameServiceInitRef, IProgressMonitor parentMonitor) throws CoreException,
+	InterruptedException {
+		SubMonitor subMonitor = SubMonitor.convert(parentMonitor, "Checking if name service object exists...", 2);
 		final String nameServiceRef = CorbaURIUtil.addDefaultPort(nameServiceInitRef);
 		OrbSession session = OrbSession.createSession();
 
@@ -275,11 +343,10 @@ public class ScaPlugin extends Plugin {
 
 		try {
 			rootContext = NamingContextExtHelper.narrow(session.getOrb().string_to_object(nameServiceRef));
-			object = rootContext.resolve_str(orbName);
-			return (!object._non_existent());
-		} catch (final Exception e) { // SUPPRESS CHECKSTYLE Fallback
-			return false;
+			object = CorbaUtils.resolve_str(rootContext, orbName, subMonitor.newChild(1));
+			return !CorbaUtils.non_existent(object, subMonitor.newChild(1));
 		} finally {
+			subMonitor.done();
 			if (rootContext != null) {
 				rootContext._release();
 				rootContext = null;
@@ -294,32 +361,77 @@ public class ScaPlugin extends Plugin {
 
 	/**
 	 * Scan the naming service to find available domains
+	 * @param monitor Progress monitor to interrupt the opperations with
+	 * @throws InterruptedException 
+	 * @throws CoreException 
 	 * 
-	 * @since 6.0
+	 * @since 7.0
 	 */
-	public static String[] findDomainNamesOnDefaultNameServer() {
+	public static String[] findDomainNamesOnDefaultNameServer(IProgressMonitor monitor) throws CoreException, InterruptedException {
 		IPreferenceAccessor prefs = ScaPlugin.getDefault().getScaPreferenceAccessor();
 		final String namingService = prefs.getString(ScaPreferenceConstants.SCA_DEFAULT_NAMING_SERVICE);
-		return findDomainNamesOnNameServer(namingService);
+		return ScaPlugin.findDomainNamesOnNameServer(namingService, monitor);
 	}
 
 	/**
 	 * Scan the naming service to find available domains
 	 * 
 	 * @since 6.0
+	 * @deprecated Use {@link #findDomainNamesOnDefaultNameServer(IProgressMonitor)}
 	 */
+	@Deprecated
+	public static String[] findDomainNamesOnDefaultNameServer() {
+		try {
+			return ScaPlugin.findDomainNamesOnDefaultNameServer(null);
+		} catch (CoreException e) {
+			return new String[0];
+		} catch (InterruptedException e) {
+			return new String[0];
+		}
+	}
+
+	/**
+	 * Scan the naming service to find available domains
+	 * 
+	 * @since 6.0
+	 * @deprecated {@link #findDomainNamesOnDefaultNameServer(String, IProgressMonitor)}
+	 */
+	@Deprecated
 	public static String[] findDomainNamesOnNameServer(final String nameServiceInitRef) {
+		try {
+			return ScaPlugin.findDomainNamesOnNameServer(nameServiceInitRef, null);
+		} catch (CoreException e) {
+			return new String[0];
+		} catch (InterruptedException e) {
+			return new String[0];
+		}
+	}
+
+	/**
+	 * Scan the naming service to find available domains
+	 * @throws InterruptedException 
+	 * @throws CoreException 
+	 * 
+	 * @since 7.0
+	 */
+	public static String[] findDomainNamesOnNameServer(final String nameServiceInitRef, IProgressMonitor parentMonitor) throws CoreException,
+		InterruptedException {
+		SubMonitor subMonitor = SubMonitor.convert(parentMonitor, "Finding domains on name server...", 5);
 		final ArrayList<String> retVal = new ArrayList<String>();
 
 		final String nameServiceRef = CorbaURIUtil.addDefaultPort(nameServiceInitRef);
 		OrbSession session = OrbSession.createSession();
 		NamingContextExt rootContext = null;
 		try {
+			final org.omg.CORBA.Object rootContextRef = CorbaUtils.string_to_object(session.getOrb(), nameServiceRef, subMonitor.newChild(1));
+			rootContext = CorbaUtils.invoke(new Callable<NamingContextExt>() {
 
-			rootContext = NamingContextExtHelper.narrow(session.getOrb().string_to_object(nameServiceRef));
-			if (rootContext == null) {
-				return new String[0];
-			}
+				@Override
+				public NamingContextExt call() throws Exception {
+					return NamingContextExtHelper.narrow(rootContextRef);
+				}
+
+			}, subMonitor.newChild(1));
 
 			final BindingListHolder bl = new BindingListHolder();
 			// Get a listing of root names
@@ -330,12 +442,11 @@ public class ScaPlugin extends Plugin {
 					String guessedDomainName = b.binding_name[0].id + "/" + b.binding_name[0].id;
 					org.omg.CORBA.Object object = null;
 					try {
-						object = rootContext.resolve_str(guessedDomainName);
-						if ((!object._non_existent()) && (object._is_a(DomainManagerHelper.id()))) {
+						object = CorbaUtils.resolve_str(rootContext, guessedDomainName, subMonitor.newChild(1));
+						if (!CorbaUtils.non_existent(object, subMonitor.newChild(1))
+							&& CorbaUtils.is_a(object, DomainManagerHelper.id(), subMonitor.newChild(1))) {
 							retVal.add(b.binding_name[0].id);
 						}
-					} catch (final Exception e) { // SUPPRESS CHECKSTYLE Fallback
-						continue;
 					} finally {
 						if (object != null) {
 							object._release();
@@ -345,9 +456,8 @@ public class ScaPlugin extends Plugin {
 				}
 			}
 			return retVal.toArray(new String[retVal.size()]);
-		} catch (final Exception e) { // SUPPRESS CHECKSTYLE Logged Catch all exception
-			return new String[0];
 		} finally {
+			subMonitor.done();
 			if (rootContext != null) {
 				rootContext._release();
 			}
