@@ -110,7 +110,7 @@ public class TunerAllocationWizard extends Wizard {
 								sb.append(delim + "Failed to refresh device after allocating capacity. Message: " + e.getMessage());
 								delim = "\n\n";
 								//because only refresh will throw this exception, keep the result set by the return from allocateCapacity
-								//but just in case, make sure it got set, since otherwise 
+								//but just in case, make sure it got set.
 								if (result[0] == null) {
 									result[0] = true;
 								}
