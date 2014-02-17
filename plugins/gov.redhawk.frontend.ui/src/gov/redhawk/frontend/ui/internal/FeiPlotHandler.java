@@ -177,10 +177,8 @@ public class FeiPlotHandler extends AbstractHandler implements IHandler {
 		
 		final boolean isFFT = Boolean.valueOf(event.getParameter(FeiPlotHandler.PARAM_ISFFT));
 		if(isFFT) {
-			System.out.println("is FFT");
 			fftBlockSettings = new FftNxmBlockSettings();
 		} else {
-			System.out.println("NOT FFT");
 			fftBlockSettings = null;
 		}
 
@@ -191,7 +189,7 @@ public class FeiPlotHandler extends AbstractHandler implements IHandler {
 				plotView.getPlotPageBook().showPlot(type);
 				plotView.getPlotPageBook().addDisposeListener(getDisposeListener(props));
 
-				Job job = new Job("Adding plot sources...") {
+				Job job = new Job("Fei Adding plot sources...") {
 					@Override
 					protected IStatus run(IProgressMonitor monitor) {
 						final ScaItemProviderAdapterFactory factory = new ScaItemProviderAdapterFactory();
@@ -276,7 +274,7 @@ public class FeiPlotHandler extends AbstractHandler implements IHandler {
 
 			@Override
 			public void widgetDisposed(DisposeEvent e) {
-				Job job = new Job("Deallocate Listener") {
+				Job job = new Job("Fei Deallocate Listener") {
 					@Override
 					protected IStatus run(IProgressMonitor monitor) {
 						try {
