@@ -74,7 +74,7 @@ public class PlotSettingsAction extends Action {
 					plotBlock = (PlotNxmBlock) block;
 				}
 			}
-			PlotPreferencePage plotPage = new PlotPreferencePage("Plot", plotBlock.getPreferences());
+			PlotPreferencePage plotPage = new PlotPreferencePage("Plot", pageBook.getActivePlotWidget().getPreferenceStore());
 			plotPage.setPreferenceStore(pageBook.getSharedPlotBlockPreferences());
 			PlotPreferenceNode plotNode = new PlotPreferenceNode("plotSettings", plotPage);
 			manager.addToRoot(plotNode);

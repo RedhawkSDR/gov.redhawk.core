@@ -33,20 +33,6 @@ import org.eclipse.ui.IWorkbenchPreferencePage;
 import org.eclipse.ui.forms.widgets.ExpandableComposite;
 import org.eclipse.ui.forms.widgets.Section;
 
-/**
- * This class represents a Port Plot preference page that
- * is contributed to the Preferences dialog. By
- * subclassing <samp>FieldEditorPreferencePage</samp>, we
- * can use the field support built into JFace that allows
- * us to create a page that is small and knows how to
- * save, restore and apply itself.
- * <p>
- * This page is used to modify preferences only. They
- * are stored in the preference store that belongs to
- * the main plug-in class. That way, preferences can
- * be accessed directly via the preference store.
- */
-
 public class PlotPreferencePage extends FieldEditorPreferencePage implements IWorkbenchPreferencePage {
 
 	private boolean isBlock;
@@ -146,12 +132,12 @@ public class PlotPreferencePage extends FieldEditorPreferencePage implements IWo
 			if (isBlock) {
 				addField(new OverridableIntegerFieldEditor(PlotPreferences.FRAMESIZE.getName(), PlotPreferences.FRAMESIZE_OVERRIDE.getName(), "&Framesize:",
 					getFieldEditorParent()));
+				addField(createModesField());
 				//				creatBlockAdancedFields();
 
 			} else {
-				addField(createModesField());
-
 				if (blockPreferenceStore != null) {
+					blockPreferences.add(createModesField());
 					OverridableIntegerFieldEditor frameSizeField = new OverridableIntegerFieldEditor(PlotPreferences.FRAMESIZE.getName(),
 						PlotPreferences.FRAMESIZE_OVERRIDE.getName(), "&Framesize:", getFieldEditorParent());
 					frameSizeField.setErrorMessage("Framesize must be a positive integer >= 2");
@@ -169,9 +155,9 @@ public class PlotPreferencePage extends FieldEditorPreferencePage implements IWo
 
 				final Composite booleanControls = new Composite(getFieldEditorParent(), SWT.None);
 				booleanControls.setLayoutData(GridDataFactory.fillDefaults().grab(true, false).span(2, 1).create());
-				addField(new BooleanFieldEditor(PlotPreferences.ENABLE_CONFIGURE_MENU_USING_MOUSE.getName(), "&Enable plot configure menu using mouse",
-					booleanControls));
 				if (blockPreferenceStore != null) {
+					blockPreferences.add(new BooleanFieldEditor(PlotPreferences.ENABLE_CONFIGURE_MENU_USING_MOUSE.getName(),
+						"&Enable plot configure menu using mouse", booleanControls));
 					blockPreferences.add(new BooleanFieldEditor(PlotPreferences.ENABLE_QUICK_CONTROLS.getName(), "Enable &quick access control widgets",
 						getFieldEditorParent()));
 				}
