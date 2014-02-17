@@ -128,4 +128,5 @@
     </plugins>
   </build>
 
+<version>1.11.0-SNAPSHOT</version>
 </project>
