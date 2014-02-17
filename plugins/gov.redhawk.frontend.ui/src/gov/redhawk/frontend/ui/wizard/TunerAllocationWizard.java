@@ -148,7 +148,7 @@ public class TunerAllocationWizard extends Wizard {
 			return false;
 		}
 
-		if (result[0] = false) {
+		if (result[0] == false) {
 			MessageDialog.openError(getShell(), "The Allocation was not successful", sb.toString());
 		}
 		return result[0];

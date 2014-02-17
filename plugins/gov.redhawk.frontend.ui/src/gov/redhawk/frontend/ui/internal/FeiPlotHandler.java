@@ -80,9 +80,10 @@ import CF.DevicePackage.InsufficientCapacity;
 import CF.DevicePackage.InvalidCapacity;
 import CF.DevicePackage.InvalidState;
 
-public class PlotHandler extends AbstractHandler implements IHandler {
+public class FeiPlotHandler extends AbstractHandler implements IHandler {
 
 	private static final AtomicInteger uniquePlotViewSecondaryId = new AtomicInteger();
+	private static final String PARAM_ISFFT = "gov.redhawk.frontend.ui.isFft";
 	private ScaDevice< ? > device;
 	private TunerStatus tuner;
 
@@ -128,7 +129,7 @@ public class PlotHandler extends AbstractHandler implements IHandler {
 				};
 				job.setUser(true);
 				job.schedule();
-				createPlotView(window, elements, props);
+				createPlotView(window, elements, props, event);
 			}
 		}
 
@@ -167,13 +168,21 @@ public class PlotHandler extends AbstractHandler implements IHandler {
 		return listenerCapacity.toArray(new DataType[0]);
 	}
 
-	private void createPlotView(IWorkbenchWindow window, final List< ? > elements, final DataType[] props) {
+	private void createPlotView(IWorkbenchWindow window, final List< ? > elements, final DataType[] props, ExecutionEvent event) {
 		PlotType type = PlotType.LINE;
 		final BulkIONxmBlockSettings bulkIOBlockSettings = new BulkIONxmBlockSettings();
 		final PlotNxmBlockSettings plotBlockSettings = new PlotNxmBlockSettings();
 		final SddsNxmBlockSettings sddsBlockSettings = new SddsNxmBlockSettings();
-		//		final FftNxmBlockSettings fftBlockSettings = new FftNxmBlockSettings();
-		final FftNxmBlockSettings fftBlockSettings = null;
+		final FftNxmBlockSettings fftBlockSettings;
+		
+		final boolean isFFT = Boolean.valueOf(event.getParameter(FeiPlotHandler.PARAM_ISFFT));
+		if(isFFT) {
+			System.out.println("is FFT");
+			fftBlockSettings = new FftNxmBlockSettings();
+		} else {
+			System.out.println("NOT FFT");
+			fftBlockSettings = null;
+		}
 
 		try {
 			final IViewPart view = window.getActivePage().showView(IPlotView.ID, createSecondaryId(), IWorkbenchPage.VIEW_ACTIVATE);
@@ -306,7 +315,7 @@ public class PlotHandler extends AbstractHandler implements IHandler {
 	}
 
 	private String createSecondaryId() {
-		return "FEI" + PlotHandler.uniquePlotViewSecondaryId.incrementAndGet();
+		return "FEI" + FeiPlotHandler.uniquePlotViewSecondaryId.incrementAndGet();
 	}
 
 	private void createTooltip(final ScaItemProviderAdapterFactory factory, final StringBuilder name, final StringBuilder tooltip, ScaUsesPort usesPort) {

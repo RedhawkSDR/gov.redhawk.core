@@ -76,12 +76,51 @@
       </propertySections>
    </extension>
    <extension
+         point="org.eclipse.ui.commands">
+      <command
+            defaultHandler="gov.redhawk.frontend.ui.internal.AllocateHandler"
+            id="gov.redhawk.frontend.commands.allocate"
+            name="Allocate...">
+      </command>
+      <command
+            defaultHandler="gov.redhawk.frontend.ui.internal.DeallocateHandler"
+            id="gov.redhawk.frontend.commands.deallocate"
+            name="Deallocate">
+      </command>
+      <command
+            defaultHandler="gov.redhawk.frontend.ui.internal.FeiPlotHandler"
+            id="gov.redhawk.frontend.commands.plot"
+            name="Plot Port">
+         <commandParameter
+               id="gov.redhawk.frontend.ui.isFft"
+               name="Use FFT"
+               optional="true">
+         </commandParameter>
+      </command>
+      <command
+            defaultHandler="gov.redhawk.frontend.ui.internal.SnapshotHandler"
+            id="gov.redhawk.frontend.commands.snapshot"
+            name="Snapshot">
+      </command>
+      <command
+            defaultHandler="gov.redhawk.frontend.ui.internal.DeallocateHandler"
+            id="gov.redhawk.frontend.commands.deallocateall"
+            name="Deallocate All">
+      </command>
+      <command
+            defaultHandler="gov.redhawk.frontend.ui.internal.AddListenerHandler"
+            id="gov.redhawk.frontend.commands.addListener"
+            name="Add Listener...">
+      </command>
+   </extension>
+   <extension
          point="org.eclipse.ui.menus">
       <menuContribution
             allPopups="false"
             locationURI="popup:org.eclipse.ui.popup.any?before=additions">
          <command
                commandId="gov.redhawk.frontend.commands.plot"
+               label="Plot Port Data"
                style="push">
             <visibleWhen
                   checkEnabled="false">
@@ -93,7 +132,25 @@
             </visibleWhen>
          </command>
          <command
+               commandId="gov.redhawk.frontend.commands.plot"
+               label="Plot Port FFT"
+               style="push">
+            <parameter
+                  name="gov.redhawk.frontend.ui.isFft"
+                  value="true">
+            </parameter>
+            <visibleWhen
+                  checkEnabled="false">
+               <iterate>
+                  <instanceof
+                        value="gov.redhawk.frontend.TunerStatus">
+                  </instanceof>
+               </iterate>
+            </visibleWhen>
+         </command>
+         <command
                commandId="gov.redhawk.frontend.commands.allocate"
+               label="Allocate"
                style="push">
             <visibleWhen
                   checkEnabled="false">
@@ -134,6 +191,7 @@
          </command>
          <command
                commandId="gov.redhawk.frontend.commands.deallocate"
+               label="Deallocate"
                style="push">
             <visibleWhen
                   checkEnabled="false">
@@ -159,6 +217,7 @@
          </command>
          <command
                commandId="gov.redhawk.frontend.commands.deallocateall"
+               label="Deallocate All"
                style="push">
             <visibleWhen
                   checkEnabled="false">
@@ -175,39 +234,6 @@
             </visibleWhen>
          </command>
       </menuContribution>
-   </extension>
-   <extension
-         point="org.eclipse.ui.commands">
-      <command
-            defaultHandler="gov.redhawk.frontend.ui.internal.AllocateHandler"
-            id="gov.redhawk.frontend.commands.allocate"
-            name="Allocate...">
-      </command>
-      <command
-            defaultHandler="gov.redhawk.frontend.ui.internal.DeallocateHandler"
-            id="gov.redhawk.frontend.commands.deallocate"
-            name="Deallocate">
-      </command>
-      <command
-            defaultHandler="gov.redhawk.frontend.ui.internal.PlotHandler"
-            id="gov.redhawk.frontend.commands.plot"
-            name="Plot...">
-      </command>
-      <command
-            defaultHandler="gov.redhawk.frontend.ui.internal.SnapshotHandler"
-            id="gov.redhawk.frontend.commands.snapshot"
-            name="Snapshot">
-      </command>
-      <command
-            defaultHandler="gov.redhawk.frontend.ui.internal.DeallocateHandler"
-            id="gov.redhawk.frontend.commands.deallocateall"
-            name="Deallocate All">
-      </command>
-      <command
-            defaultHandler="gov.redhawk.frontend.ui.internal.AddListenerHandler"
-            id="gov.redhawk.frontend.commands.addListener"
-            name="Add Listener...">
-      </command>
    </extension>
    <extension
          point="org.eclipse.core.expressions.propertyTesters">
