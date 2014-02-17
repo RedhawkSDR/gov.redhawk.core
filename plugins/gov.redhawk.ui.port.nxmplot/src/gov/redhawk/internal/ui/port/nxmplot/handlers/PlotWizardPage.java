@@ -71,7 +71,7 @@ public class PlotWizardPage extends WizardPage {
 		ComboViewer viewer = new ComboViewer(parent, SWT.READ_ONLY);
 		viewer.setLabelProvider(new LabelProvider());
 		viewer.setContentProvider(new ArrayContentProvider());
-		viewer.setInput(PlotType.values());
+		viewer.setInput(PlotType.getStandardPlotTypes());
 		viewer.getControl().setLayoutData(GridDataFactory.fillDefaults().grab(true, false).create());
 		dataBindingContext.bindValue(ViewerProperties.singleSelection().observe(viewer),
 			PojoProperties.value(PlotWizardSettings.PROP_PLOT_TYPE).observe(settings));

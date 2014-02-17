@@ -41,25 +41,20 @@ public class PlotPreferencePage extends FieldEditorPreferencePage implements IWo
 	private List<FieldEditor> blockPreferences = new ArrayList<FieldEditor>();
 
 	public PlotPreferencePage() {
-		this(null, false, null);
+		this(null, false);
 	}
 
-	protected PlotPreferencePage(String label, boolean isBlock, IPreferenceStore plotBlockStore) {
+	public PlotPreferencePage(String label) {
+		this(label, false);
+	}
+
+	public PlotPreferencePage(String label, boolean isBlock) {
 		super("Plot", FieldEditorPreferencePage.GRID);
 		this.isBlock = isBlock;
-		this.blockPreferenceStore = plotBlockStore;
 		if (label != null) {
 			setTitle(label);
 		}
 		setDescription("Change various settings on how the data is displayed within the plot.");
-	}
-
-	public PlotPreferencePage(String label, boolean isBlock) {
-		this(label, isBlock, null);
-	}
-
-	public PlotPreferencePage(String label, IPreferenceStore plotBlockStore) {
-		this(label, false, plotBlockStore);
 	}
 
 	@Override
@@ -119,10 +114,7 @@ public class PlotPreferencePage extends FieldEditorPreferencePage implements IWo
 		if (workbench != null) {
 			addField(createModesField());
 
-			OverridableIntegerFieldEditor frameSizeField = new OverridableIntegerFieldEditor(PlotPreferences.FRAMESIZE.getName(),
-				PlotPreferences.FRAMESIZE_OVERRIDE.getName(), "&Framesize:", getFieldEditorParent());
-			frameSizeField.setErrorMessage("Framesize must be a positive integer >= 2");
-			frameSizeField.setValidRange(2, Integer.MAX_VALUE);
+			OverridableIntegerFieldEditor frameSizeField = createFrameSizeField();
 			addField(frameSizeField);
 
 			addField(new BooleanFieldEditor(PlotPreferences.ENABLE_CONFIGURE_MENU_USING_MOUSE.getName(), "&Enable plot configure menu using mouse",
@@ -130,18 +122,17 @@ public class PlotPreferencePage extends FieldEditorPreferencePage implements IWo
 			addField(new BooleanFieldEditor(PlotPreferences.ENABLE_QUICK_CONTROLS.getName(), "Enable &quick access control widgets", getFieldEditorParent()));
 		} else {
 			if (isBlock) {
-				addField(new OverridableIntegerFieldEditor(PlotPreferences.FRAMESIZE.getName(), PlotPreferences.FRAMESIZE_OVERRIDE.getName(), "&Framesize:",
-					getFieldEditorParent()));
-				addField(createModesField());
+				addField(createFrameSizeField());
 				//				creatBlockAdancedFields();
 
 			} else {
+				/*
+				 * Page settings store is Plot Settings
+				 * Block Store is Nxm Block Settings
+				 */
+				addField(createModesField());
 				if (blockPreferenceStore != null) {
-					blockPreferences.add(createModesField());
-					OverridableIntegerFieldEditor frameSizeField = new OverridableIntegerFieldEditor(PlotPreferences.FRAMESIZE.getName(),
-						PlotPreferences.FRAMESIZE_OVERRIDE.getName(), "&Framesize:", getFieldEditorParent());
-					frameSizeField.setErrorMessage("Framesize must be a positive integer >= 2");
-					frameSizeField.setValidRange(2, Integer.MAX_VALUE);
+					OverridableIntegerFieldEditor frameSizeField = createFrameSizeField();
 					blockPreferences.add(frameSizeField);
 				}
 
@@ -154,16 +145,24 @@ public class PlotPreferencePage extends FieldEditorPreferencePage implements IWo
 				addField(maxField);
 
 				final Composite booleanControls = new Composite(getFieldEditorParent(), SWT.None);
+				addField(new BooleanFieldEditor(PlotPreferences.ENABLE_CONFIGURE_MENU_USING_MOUSE.getName(), "&Enable plot configure menu using mouse",
+					booleanControls));
 				booleanControls.setLayoutData(GridDataFactory.fillDefaults().grab(true, false).span(2, 1).create());
 				if (blockPreferenceStore != null) {
-					blockPreferences.add(new BooleanFieldEditor(PlotPreferences.ENABLE_CONFIGURE_MENU_USING_MOUSE.getName(),
-						"&Enable plot configure menu using mouse", booleanControls));
 					blockPreferences.add(new BooleanFieldEditor(PlotPreferences.ENABLE_QUICK_CONTROLS.getName(), "Enable &quick access control widgets",
 						getFieldEditorParent()));
 				}
 				//				createAdvancedFields();
 			}
 		}
+	}
+
+	private OverridableIntegerFieldEditor createFrameSizeField() {
+		OverridableIntegerFieldEditor frameSizeField = new OverridableIntegerFieldEditor(PlotPreferences.FRAMESIZE.getName(),
+			PlotPreferences.FRAMESIZE_OVERRIDE.getName(), "&Framesize:", getFieldEditorParent());
+		frameSizeField.setErrorMessage("Framesize must be a positive integer >= 2");
+		frameSizeField.setValidRange(2, Integer.MAX_VALUE);
+		return frameSizeField;
 	}
 
 	private void creatBlockAdancedFields() {
@@ -198,6 +197,7 @@ public class PlotPreferencePage extends FieldEditorPreferencePage implements IWo
 	}
 
 	public void setBlockPreferenceStore(IPreferenceStore store) {
+		this.isBlock = false;
 		this.blockPreferenceStore = store;
 	}
 

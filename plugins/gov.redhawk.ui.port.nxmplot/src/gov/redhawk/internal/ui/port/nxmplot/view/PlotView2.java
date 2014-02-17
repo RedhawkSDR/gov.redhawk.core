@@ -34,7 +34,6 @@ import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.jface.action.Separator;
 import org.eclipse.jface.layout.GridDataFactory;
-import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.util.IPropertyChangeListener;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.DisposeEvent;
@@ -48,7 +47,6 @@ import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.part.ViewPart;
-import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.eclipse.ui.services.IDisposable;
 import org.eclipse.ui.statushandlers.StatusManager;
 
@@ -217,6 +215,9 @@ public class PlotView2 extends ViewPart implements IPlotView {
 		if (this.adjustPlotSettingsAction != null) {
 			menu.add(this.adjustPlotSettingsAction);
 		}
+		if (this.plotTypeAction != null) {
+			menu.add(this.plotTypeAction);
+		}
 
 		menu.add(new Separator(IWorkbenchActionConstants.MB_ADDITIONS));
 
@@ -253,14 +254,12 @@ public class PlotView2 extends ViewPart implements IPlotView {
 	private void createActions() {
 		this.plotTypeAction = new PlotTypeMenuAction(this.plotPageBook);
 
-		final ImageDescriptor rasterImageDescriptor = AbstractUIPlugin.imageDescriptorFromPlugin(PlotActivator.PLUGIN_ID, "icons/raster.png");
-		this.plotTypeAction.setImageDescriptor(rasterImageDescriptor);
-
 		this.newPlotViewAction = createNewPlotViewAction();
 
 		this.plotModeMenu = new PlotModeMenuAction(plotPageBook);
 		this.fftSizeMenu = new PlotFftMenuAction(plotPageBook);
 		this.plotSettingsAction = new PlotSettingsAction(plotPageBook);
+
 		boolean hasFft = hasFft();
 		updateFftSizeMenu(hasFft);
 		updateFftControls(hasFft);

@@ -11,7 +11,6 @@
 package gov.redhawk.ui.port.nxmplot.preferences;
 
 import gov.redhawk.ui.port.nxmplot.PlotSettings.PlotMode;
-import gov.redhawk.ui.port.nxmplot.PlotType;
 
 import java.util.List;
 
@@ -37,7 +36,7 @@ public class PlotPreferences {
 	public static final Preference<String> LAUNCH_SWITCHES = new Preference<String>("plotSettings.launchSwitches", "");
 	public static final Preference<Boolean> LAUNCH_SWITCHES_OVERRIDE = new Preference<Boolean>("plotSettings.launchSwitches.override", false);
 
-	public static final Preference<String> TYPE = new Preference<String>("plotSettings.type", PlotType.LINE.toString());
+	//	public static final Preference<String> TYPE = new Preference<String>("plotSettings.type", PlotType.LINE.toString());
 
 	public static List<Preference< ? >> getAllPreferences() {
 		return Preference.gettAllPreferencesFor(PlotPreferences.class);

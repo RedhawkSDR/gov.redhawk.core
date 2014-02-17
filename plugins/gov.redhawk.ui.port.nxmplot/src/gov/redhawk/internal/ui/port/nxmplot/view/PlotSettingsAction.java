@@ -46,7 +46,8 @@ public class PlotSettingsAction extends Action {
 
 		if (pageBook.getSources().size() > 1) {
 			PlotPreferencePage plotPage = new PlotPreferencePage("Plot", false);
-			plotPage.setPreferenceStore(pageBook.getSharedPlotBlockPreferences());
+			plotPage.setPreferenceStore(pageBook.getActivePlotWidget().getPreferenceStore());
+
 			PlotPreferenceNode plotNode = new PlotPreferenceNode("plotSettings", plotPage);
 			manager.addToRoot(plotNode);
 			for (PlotSource source : pageBook.getSources()) {
@@ -74,8 +75,9 @@ public class PlotSettingsAction extends Action {
 					plotBlock = (PlotNxmBlock) block;
 				}
 			}
-			PlotPreferencePage plotPage = new PlotPreferencePage("Plot", pageBook.getActivePlotWidget().getPreferenceStore());
-			plotPage.setPreferenceStore(pageBook.getSharedPlotBlockPreferences());
+			PlotPreferencePage plotPage = new PlotPreferencePage("Plot");
+			plotPage.setPreferenceStore(pageBook.getActivePlotWidget().getPreferenceStore());
+			plotPage.setBlockPreferenceStore(pageBook.getSharedPlotBlockPreferences());
 			PlotPreferenceNode plotNode = new PlotPreferenceNode("plotSettings", plotPage);
 			manager.addToRoot(plotNode);
 
