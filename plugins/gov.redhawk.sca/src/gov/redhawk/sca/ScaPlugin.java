@@ -307,8 +307,6 @@ public class ScaPlugin extends Plugin {
 	public static boolean nameServiceObjectExists(final String name, final String nameServiceInitRef) {
 		try {
 			return nameServiceObjectExists(name, nameServiceInitRef, null);
-		} catch (CoreException e) {
-			return false;
 		} catch (InterruptedException e) {
 			return false;
 		}
@@ -322,9 +320,9 @@ public class ScaPlugin extends Plugin {
 	 * 
 	 * @since 7.0
 	 */
-	public static boolean nameServiceObjectExists(final String name, final String nameServiceInitRef, IProgressMonitor parentMonitor) throws CoreException,
+	public static boolean nameServiceObjectExists(final String name, final String nameServiceInitRef, IProgressMonitor parentMonitor) throws 
 		InterruptedException {
-		SubMonitor subMonitor = SubMonitor.convert(parentMonitor, "Checking if name service object exists...", 2);
+		SubMonitor subMonitor = SubMonitor.convert(parentMonitor, "Checking if name service object exists...", 4);
 		final String nameServiceRef = CorbaURIUtil.addDefaultPort(nameServiceInitRef);
 		OrbSession session = OrbSession.createSession();
 
@@ -342,9 +340,21 @@ public class ScaPlugin extends Plugin {
 		org.omg.CORBA.Object object = null;
 
 		try {
-			rootContext = NamingContextExtHelper.narrow(session.getOrb().string_to_object(nameServiceRef));
+			final org.omg.CORBA.Object ref = CorbaUtils.string_to_object(session.getOrb(), nameServiceRef, subMonitor.newChild(1));
+			rootContext = CorbaUtils.invoke(new Callable<NamingContextExt>() {
+
+				@Override
+				public NamingContextExt call() throws Exception {
+					return NamingContextExtHelper.narrow(ref);
+				}
+
+			}, subMonitor.newChild(1));
 			object = CorbaUtils.resolve_str(rootContext, orbName, subMonitor.newChild(1));
+			
+			
 			return !CorbaUtils.non_existent(object, subMonitor.newChild(1));
+		} catch (CoreException e1) {
+			return false;
 		} finally {
 			subMonitor.done();
 			if (rootContext != null) {
