@@ -12,6 +12,9 @@ package gov.redhawk.ui.port.nxmplot;
 
 import gov.redhawk.ui.port.nxmplot.preferences.PlotPreferences;
 
+import java.util.Arrays;
+import java.util.List;
+
 import org.eclipse.jface.preference.IPreferenceStore;
 
 /**
@@ -37,7 +40,7 @@ public class PlotSettings {
 	 */
 	public static enum PlotMode {
 		//  Instance			mode			Label
-		AUTO("", "AUTO"),
+		AUTO("", "Auto"),
 		MAGNITUDE("Mag", "Magnitude"),
 		PHASE("Phase", "Phase"),
 		REAL("Real", "Real"),
@@ -75,6 +78,12 @@ public class PlotSettings {
 			}
 			throw new IllegalArgumentException("Invalid plot mode string: " + modeString);
 		}
+
+		public static List<PlotMode> getStandardModes() {
+			return Arrays.asList(PlotMode.AUTO, PlotMode.IMAGINARY, PlotMode.MAGNITUDE, PlotMode.PHASE, PlotMode.REAL, PlotMode.REAL_AND_IMAGINARY,
+				PlotMode.REAL_VS_IMAGINARY, PlotMode.TEN_LOG, PlotMode.TWENTY_LOG);
+		}
+
 	}
 
 	public PlotSettings() {

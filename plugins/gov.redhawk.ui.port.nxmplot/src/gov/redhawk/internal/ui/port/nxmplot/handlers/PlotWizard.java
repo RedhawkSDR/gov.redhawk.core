@@ -10,11 +10,13 @@
  *******************************************************************************/
 package gov.redhawk.internal.ui.port.nxmplot.handlers;
 
-import java.nio.ByteOrder;
-
 import gov.redhawk.ui.port.nxmblocks.BulkIONxmBlockSettings;
+import gov.redhawk.ui.port.nxmblocks.FftNxmBlockSettings;
 import gov.redhawk.ui.port.nxmblocks.PlotNxmBlockSettings;
 import gov.redhawk.ui.port.nxmblocks.SddsNxmBlockSettings;
+import gov.redhawk.ui.port.nxmplot.PlotSettings;
+
+import java.nio.ByteOrder;
 
 import org.eclipse.jface.wizard.Wizard;
 
@@ -24,20 +26,19 @@ import org.eclipse.jface.wizard.Wizard;
  */
 public class PlotWizard extends Wizard {
 	private PlotWizardPage page = new PlotWizardPage("settings", "Plot Port Settings", null);
-	
+
 	public PlotWizard(boolean containsBulkIOPort, boolean containsSDDSPort) {
 		setWindowTitle("Plot Port");
 		if (containsBulkIOPort) {
-			getPlotSettings().setBulkIOBlockSettings(new BulkIONxmBlockSettings());
+			page.setBulkIOBlockSettings(new BulkIONxmBlockSettings());
 		}
 		if (containsSDDSPort) {
 			SddsNxmBlockSettings sddsSettings = new SddsNxmBlockSettings();
 			sddsSettings.setDataByteOrder(ByteOrder.nativeOrder()); // <-- workaround for REDHAWK SinkNic Component
-			getPlotSettings().setSddsBlockSettings(sddsSettings);
+			page.setSddsBlockSettings(sddsSettings);
 		}
-		getPlotSettings().setPlotBlockSettings(new PlotNxmBlockSettings());
 	}
-	
+
 	@Override
 	public void addPages() {
 		addPage(page);
@@ -51,7 +52,27 @@ public class PlotWizard extends Wizard {
 		return true;
 	}
 
-	public PlotWizardSettings getPlotSettings() {
+	public PlotSettings getPlotSettings() {
 		return page.getPlotSettings();
+	}
+
+	public boolean isFft() {
+		return page.isFft();
+	}
+
+	public FftNxmBlockSettings getFftBlockSettings() {
+		return page.getFftBlockSettings();
+	}
+
+	public BulkIONxmBlockSettings getBulkIOBlockSettings() {
+		return page.getBulkIOBlockSettings();
+	}
+
+	public SddsNxmBlockSettings getSddsBlockSettings() {
+		return page.getSddsBlockSettings();
+	}
+
+	public PlotNxmBlockSettings getPlotBlockSettings() {
+		return page.getPlotBlockSettings();
 	}
 }

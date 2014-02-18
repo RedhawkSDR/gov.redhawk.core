@@ -11,6 +11,7 @@
 package gov.redhawk.ui.port.nxmplot.preferences;
 
 import gov.redhawk.ui.port.nxmblocks.FftNxmBlockSettings;
+import gov.redhawk.ui.port.nxmplot.PlotSettings.PlotMode;
 
 import java.util.List;
 
@@ -23,7 +24,8 @@ public class FftPreferences {
 	public static final Preference<Integer> SLIDING_NUM_AVERAGES = new Preference<Integer>("fftBlock.numExpAverages", 1);
 	public static final Preference<Integer> OVERLAP = new Preference<Integer>("fftBlock.overlap", 50);
 
-	public static final Preference<String> OUTPUT_TYPE = new Preference<String>("fftBlock.outputType", FftNxmBlockSettings.OutputType.PSD_20LOG.toString());
+	public static final Preference<String> FFT_MODE = new Preference<String>("fftBlock.plotMode", PlotMode.TWENTY_LOG.toString());
+	public static final Preference<String> OUTPUT_TYPE = new Preference<String>("fftBlock.outputType", FftNxmBlockSettings.OutputType.NORMAL.toString());
 	public static final Preference<Integer> TRANSFORM_SIZE = new Preference<Integer>("fftBlock.transformSize", 8192);
 	public static final Preference<String> WINDOW_TYPE = new Preference<String>("fftBlock.windowType", FftNxmBlockSettings.WindowType.HAMMING.toString());
 

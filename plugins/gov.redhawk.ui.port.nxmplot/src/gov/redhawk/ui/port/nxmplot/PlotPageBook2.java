@@ -470,6 +470,7 @@ public class PlotPageBook2 extends Composite {
 			settings = new PlotSettings(sharedLinePlotStore);
 		}
 		settings.setPlotType(type);
+
 		showPlot(settings);
 	}
 
@@ -489,14 +490,9 @@ public class PlotPageBook2 extends Composite {
 		} else {
 			PlotPage newPlot = this.plots.get(type);
 			if (newPlot == null) {
-				AbstractNxmPlotWidget oldPlot = getActivePlotWidget();
 				newPlot = createPlot(plotSettings);
-				if (oldPlot != null) {
-					PlotSettings existingSettings = new PlotSettings(oldPlot.getPlotSettings());
-					existingSettings.setPlotType(type);
-					newPlot.plot.applySettings(existingSettings);
-				}
 			}
+			newPlot.plot.applySettings(plotSettings);
 			pageBook.showPage(newPlot.plot);
 			currentPlotPage = newPlot;
 		}
