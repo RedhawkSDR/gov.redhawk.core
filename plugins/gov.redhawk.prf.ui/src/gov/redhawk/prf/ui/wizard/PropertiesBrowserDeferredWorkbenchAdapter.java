@@ -11,6 +11,7 @@
  */
 package gov.redhawk.prf.ui.wizard;
 
+import gov.redhawk.prf.ui.PrfUiPlugin;
 import gov.redhawk.sca.ScaPlugin;
 import gov.redhawk.sca.properties.IPropertiesProvider;
 
@@ -21,13 +22,14 @@ import java.util.Map;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.jobs.ISchedulingRule;
 import org.eclipse.jface.resource.ImageDescriptor;
+import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.eclipse.ui.progress.IDeferredWorkbenchAdapter;
 import org.eclipse.ui.progress.IElementCollector;
 
 public class PropertiesBrowserDeferredWorkbenchAdapter implements IDeferredWorkbenchAdapter {
-	
+
 	private final Map<Object, List<IPropertiesProvider>> map;;
-	
+
 	public PropertiesBrowserDeferredWorkbenchAdapter(final Map<Object, List<IPropertiesProvider>> map) {
 		this.map = map;
 	}
@@ -45,7 +47,7 @@ public class PropertiesBrowserDeferredWorkbenchAdapter implements IDeferredWorkb
 	 */
 	@Override
 	public ImageDescriptor getImageDescriptor(Object object) {
-		return null;
+		return AbstractUIPlugin.imageDescriptorFromPlugin(PrfUiPlugin.PLUGIN_ID, "icons/SdrRoot.gif");
 	}
 
 	/**
@@ -91,7 +93,7 @@ public class PropertiesBrowserDeferredWorkbenchAdapter implements IDeferredWorkb
 	public ISchedulingRule getRule(Object object) {
 		return null;
 	}
-	
+
 	public List<IPropertiesProvider> loadPropertiesProviders(final IProgressMonitor monitor) {
 		return ScaPlugin.getPropertiesProviderRegistry().getPropertiesProviders();
 	}

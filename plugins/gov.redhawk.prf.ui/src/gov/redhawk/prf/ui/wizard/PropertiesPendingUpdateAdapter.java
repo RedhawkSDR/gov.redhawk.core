@@ -11,7 +11,10 @@
  */
 package gov.redhawk.prf.ui.wizard;
 
+import gov.redhawk.prf.ui.PrfUiPlugin;
+
 import org.eclipse.jface.resource.ImageDescriptor;
+import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.eclipse.ui.progress.PendingUpdateAdapter;
 
 /**
@@ -32,6 +35,6 @@ public class PropertiesPendingUpdateAdapter extends PendingUpdateAdapter {
 	 */
 	@Override
 	public ImageDescriptor getImageDescriptor(final Object object) {
-		return null;
+		return AbstractUIPlugin.imageDescriptorFromPlugin(PrfUiPlugin.PLUGIN_ID, "icons/SdrRoot.gif");
 	}
 }
