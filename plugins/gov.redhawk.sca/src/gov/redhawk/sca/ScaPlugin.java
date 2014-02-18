@@ -97,7 +97,7 @@ public class ScaPlugin extends Plugin {
 		this.compatibilityUtil = new ServiceTracker<ICompatibilityUtil, ICompatibilityUtil>(getBundle().getBundleContext(), ICompatibilityUtil.class, null);
 		this.compatibilityUtil.open(true);
 		this.registryService = new ServiceTracker<IScaDomainManagerRegistryFactoryService, IScaDomainManagerRegistryFactoryService>(context,
-				IScaDomainManagerRegistryFactoryService.class, null);
+			IScaDomainManagerRegistryFactoryService.class, null);
 		this.registryService.open();
 	}
 
@@ -292,7 +292,7 @@ public class ScaPlugin extends Plugin {
 	 * @since 7.0
 	 */
 	public static boolean isDomainOnline(final String domainName, final String namingService, IProgressMonitor monitor) throws CoreException,
-	InterruptedException {
+		InterruptedException {
 		return ScaPlugin.nameServiceObjectExists(domainName, namingService, monitor);
 	}
 
@@ -323,7 +323,7 @@ public class ScaPlugin extends Plugin {
 	 * @since 7.0
 	 */
 	public static boolean nameServiceObjectExists(final String name, final String nameServiceInitRef, IProgressMonitor parentMonitor) throws CoreException,
-	InterruptedException {
+		InterruptedException {
 		SubMonitor subMonitor = SubMonitor.convert(parentMonitor, "Checking if name service object exists...", 2);
 		final String nameServiceRef = CorbaURIUtil.addDefaultPort(nameServiceInitRef);
 		OrbSession session = OrbSession.createSession();
@@ -342,9 +342,20 @@ public class ScaPlugin extends Plugin {
 		org.omg.CORBA.Object object = null;
 
 		try {
-			rootContext = NamingContextExtHelper.narrow(session.getOrb().string_to_object(nameServiceRef));
+			final org.omg.CORBA.Object ref = CorbaUtils.string_to_object(session.getOrb(), nameServiceRef, subMonitor.newChild(1));
+			rootContext = CorbaUtils.invoke(new Callable<NamingContextExt>() {
+
+				@Override
+				public NamingContextExt call() throws Exception {
+					return NamingContextExtHelper.narrow(ref);
+				}
+
+			}, subMonitor.newChild(1));
 			object = CorbaUtils.resolve_str(rootContext, orbName, subMonitor.newChild(1));
+
 			return !CorbaUtils.non_existent(object, subMonitor.newChild(1));
+		} catch (CoreException e1) {
+			return false;
 		} finally {
 			subMonitor.done();
 			if (rootContext != null) {
@@ -415,7 +426,7 @@ public class ScaPlugin extends Plugin {
 	 * @since 7.0
 	 */
 	public static String[] findDomainNamesOnNameServer(final String nameServiceInitRef, IProgressMonitor parentMonitor) throws CoreException,
-		InterruptedException {
+	InterruptedException {
 		SubMonitor subMonitor = SubMonitor.convert(parentMonitor, "Finding domains on name server...", 5);
 		final ArrayList<String> retVal = new ArrayList<String>();
 
@@ -444,7 +455,7 @@ public class ScaPlugin extends Plugin {
 					try {
 						object = CorbaUtils.resolve_str(rootContext, guessedDomainName, subMonitor.newChild(1));
 						if (!CorbaUtils.non_existent(object, subMonitor.newChild(1))
-							&& CorbaUtils.is_a(object, DomainManagerHelper.id(), subMonitor.newChild(1))) {
+								&& CorbaUtils.is_a(object, DomainManagerHelper.id(), subMonitor.newChild(1))) {
 							retVal.add(b.binding_name[0].id);
 						}
 					} finally {
