@@ -23,7 +23,11 @@ import gov.redhawk.ui.views.monitor.model.ports.PortsPackage;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.Callable;
 
+import mil.jpeojtrs.sca.util.CorbaUtils;
+
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
@@ -255,26 +259,35 @@ public class PortMonitorImpl extends EObjectImpl implements PortMonitor {
 	}
 
 	private final Job fetchJob = new Job("Fetching stats") {
-		
+		// END GENERATED CODE
+
 		{
 			setSystem(true);
 			setUser(false);
 		}
 
 		@Override
-        protected IStatus run(final IProgressMonitor monitor) {
+		protected IStatus run(final IProgressMonitor monitor) {
 			monitor.beginTask("Fetching stats for " + PortMonitorImpl.this.port.getName(), IProgressMonitor.UNKNOWN);
 			final org.omg.CORBA.Object portObj = PortMonitorImpl.this.port.getObj();
 			if (portObj == null) {
 				return Status.CANCEL_STATUS;
 			}
+
 			try {
-				if (portObj._non_existent()) {
+				if (CorbaUtils.non_existent(portObj, monitor)) {
 					return Status.CANCEL_STATUS;
 				}
 				
-				if (portObj._is_a(ProvidesPortStatisticsProviderHelper.id())) {
-					final ProvidesPortStatisticsProvider provider = ProvidesPortStatisticsProviderHelper.narrow(portObj);
+				if (CorbaUtils.is_a(portObj, ProvidesPortStatisticsProviderHelper.id(), monitor)) {
+					final ProvidesPortStatisticsProvider provider = CorbaUtils.invoke(new Callable<ProvidesPortStatisticsProvider>() {
+
+						@Override
+						public ProvidesPortStatisticsProvider call() throws Exception {
+							return ProvidesPortStatisticsProviderHelper.narrow(portObj);
+						}
+
+					}, monitor);
 					setState(provider.state());
 					setData(provider.statistics());
 				} else {
@@ -282,8 +295,7 @@ public class PortMonitorImpl extends EObjectImpl implements PortMonitor {
 					setData(null);
 				}
 				
-				
-				if (portObj._is_a(UsesPortStatisticsProviderHelper.id())) {
+				if (CorbaUtils.is_a(portObj, UsesPortStatisticsProviderHelper.id(), monitor)) {
 					final Map<String, PortConnectionMonitor> currentMap = new HashMap<String, PortConnectionMonitor>();
 					for (final PortConnectionMonitor pcm : getConnections()) {
 						currentMap.put(pcm.getConnectionId(), pcm);
@@ -291,7 +303,14 @@ public class PortMonitorImpl extends EObjectImpl implements PortMonitor {
 					final Map<String, PortConnectionMonitor> toRemove = new HashMap<String, PortConnectionMonitor>();
 					toRemove.putAll(currentMap);
 
-					final UsesPortStatisticsProvider provider = UsesPortStatisticsProviderHelper.narrow(portObj);
+					final UsesPortStatisticsProvider provider = CorbaUtils.invoke(new Callable<UsesPortStatisticsProvider>() {
+
+						@Override
+						public UsesPortStatisticsProvider call() throws Exception {
+							return UsesPortStatisticsProviderHelper.narrow(portObj);
+						}
+						
+					}, monitor);
 					final UsesPortStatistics[] stats = provider.statistics();
 
 					final Map<String, UsesPortStatistics> newStatsMap = new HashMap<String, UsesPortStatistics>();
@@ -311,15 +330,15 @@ public class PortMonitorImpl extends EObjectImpl implements PortMonitor {
 				} else {
 					getConnections().clear();
 				}
-			} catch (final SystemException e) {
+			} catch (CoreException e) {
+				return Status.CANCEL_STATUS;
+			} catch (InterruptedException e) {
 				return Status.CANCEL_STATUS;
 			}
-					
-			
-			
-	        return Status.OK_STATUS;
-        }
-		
+
+			return Status.OK_STATUS;
+		}
+		// BEGIN GENERATED CODE
 	};
 
 	/**

@@ -44,6 +44,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -51,9 +52,11 @@ import mil.jpeojtrs.sca.dmd.DmdPackage;
 import mil.jpeojtrs.sca.dmd.DomainManagerConfiguration;
 import mil.jpeojtrs.sca.prf.AbstractProperty;
 import mil.jpeojtrs.sca.spd.SpdPackage;
+import mil.jpeojtrs.sca.util.CorbaUtils;
 import mil.jpeojtrs.sca.util.NamedThreadFactory;
 import mil.jpeojtrs.sca.util.ScaEcoreUtils;
 
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Platform;
@@ -1032,7 +1035,7 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 			java.util.Properties orbProperties = createProperties();
 			java.util.Properties systemProps = System.getProperties();
 			systemProps.putAll(orbProperties);
-			
+
 			String tmpName = getName();
 			if (tmpName == null) {
 				tmpName = "";
@@ -1058,11 +1061,24 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 
 			monitor.subTask("Resolving Naming Service...");
 			//			String nameService = orbProperties.getProperty("ORBInitRef.NameService");
-			ORB orb = orbSession.getOrb();
-			org.omg.CORBA.Object objRef = orb.resolve_initial_references("NameService");
-			monitor.worked(RESOLVE_NAMINGCONTEXT_WORK);
+			final ORB orb = orbSession.getOrb();
+			final org.omg.CORBA.Object objRef = CorbaUtils.invoke(new Callable<org.omg.CORBA.Object>() {
 
-			final NamingContextExt newNamingContext = NamingContextExtHelper.narrow(objRef);
+				@Override
+				public org.omg.CORBA.Object call() throws Exception {
+					return orb.resolve_initial_references("NameService");
+				}
+
+			}, monitor.newChild(RESOLVE_NAMINGCONTEXT_WORK));
+
+			final NamingContextExt newNamingContext = CorbaUtils.invoke(new Callable<NamingContextExt>() {
+
+				@Override
+				public NamingContextExt call() throws Exception {
+					return NamingContextExtHelper.narrow(objRef);
+				}
+
+			}, monitor.newChild(SET_NAMINGCONTEXT_WORK));
 			command.append(new ScaModelCommand() {
 
 				@Override
@@ -1071,10 +1087,9 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 				}
 
 			});
-			monitor.worked(SET_NAMINGCONTEXT_WORK);
 
 			monitor.subTask("Resolving Domain " + domMgrName);
-			final org.omg.CORBA.Object newCorbaObj = newNamingContext.resolve_str(domMgrName);
+			final org.omg.CORBA.Object newCorbaObj = CorbaUtils.resolve_str(newNamingContext, domMgrName, monitor.newChild(DOMAIN_MGR_WORK));
 			command.append(new ScaModelCommand() {
 
 				@Override
@@ -1084,7 +1099,6 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 				}
 
 			});
-			monitor.worked(DOMAIN_MGR_WORK);
 
 			ScaModelCommand.execute(this, command);
 
@@ -2053,7 +2067,7 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 		if (shouldProceed != null && shouldProceed) {
 			try {
 				Transaction transaction = keepAliveFeature.createTransaction();
-				final org.omg.CORBA.Object newRootContext = namingContext.resolve_str(domMgrname);
+				final org.omg.CORBA.Object newRootContext = CorbaUtils.resolve_str(namingContext, domMgrname, monitor);
 				transaction.addCommand(new ScaModelCommand() {
 
 					@Override
@@ -2066,26 +2080,13 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 
 				});
 				transaction.commit();
-			} catch (NotFound e) {
+			} catch (CoreException e) {
 				if (DEBUG_KEEP_ALIVE_ERRORS.enabled) {
 					DEBUG_KEEP_ALIVE_ERRORS.message("Errors durring fetch keep alive.");
 					DEBUG_KEEP_ALIVE_ERRORS.catching(e);
 				}
-			} catch (CannotProceed e) {
-				if (DEBUG_KEEP_ALIVE_ERRORS.enabled) {
-					DEBUG_KEEP_ALIVE_ERRORS.message("Errors durring fetch keep alive.");
-					DEBUG_KEEP_ALIVE_ERRORS.catching(e);
-				}
-			} catch (InvalidName e) {
-				if (DEBUG_KEEP_ALIVE_ERRORS.enabled) {
-					DEBUG_KEEP_ALIVE_ERRORS.message("Errors durring fetch keep alive.");
-					DEBUG_KEEP_ALIVE_ERRORS.catching(e);
-				}
-			} catch (SystemException e) {
-				if (DEBUG_KEEP_ALIVE_ERRORS.enabled) {
-					DEBUG_KEEP_ALIVE_ERRORS.message("Errors durring fetch keep alive.");
-					DEBUG_KEEP_ALIVE_ERRORS.catching(e);
-				}
+			} catch (InterruptedException e) {
+				return;
 			}
 		}
 		subMonitor.worked(1);
