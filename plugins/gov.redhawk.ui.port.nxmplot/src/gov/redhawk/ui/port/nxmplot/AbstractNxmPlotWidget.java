@@ -56,7 +56,7 @@ public abstract class AbstractNxmPlotWidget extends Composite {
 	private static final AtomicInteger PIPE_NAME_INDEX = new AtomicInteger();
 
 	private StreamSRI activeSRI;
-	private final IPreferenceStore store = Preference.initStoreFromWorkbench(PlotPreferences.getAllPreferences());
+	private IPreferenceStore store = Preference.initStoreFromWorkbench(PlotPreferences.getAllPreferences());
 	private final IPropertyChangeListener listener = new IPropertyChangeListener() {
 		@Override
 		public void propertyChange(PropertyChangeEvent event) {
@@ -184,6 +184,8 @@ public abstract class AbstractNxmPlotWidget extends Composite {
 	private final PlotMessageHandler plotMessageHandler = new PlotMessageHandler();
 
 	private final ListenerList messageHandlers = new ListenerList(ListenerList.IDENTITY);
+
+	private PlotType plotType;
 
 	public AbstractNxmPlotWidget(final Composite parent, int style) {
 		super(parent, style);
@@ -541,18 +543,6 @@ public abstract class AbstractNxmPlotWidget extends Composite {
 	 * @since 4.2
 	 */
 	public PlotSettings getPlotSettings() {
-		// TODO should we pull it from the plot?
-		//		plot curPlot = getPlot();
-		//		if (curPlot != null) {
-		//			String curPlotModeStr = curPlot.MP.getMode();
-		//			if (!"".equals(curPlotModeStr)) {
-		//				plotSettings.setPlotMode(PlotMode.of(curPlotModeStr));
-		//			}
-		//			String curPlotTypeStr = curPlot.getPlotType();
-		//			if (!"".equals(curPlotTypeStr)) {
-		//				plotSettings.setPlotType(PlotType.valueOf(curPlotTypeStr));
-		//			}
-		//		}
 		return new PlotSettings(store);
 	}
 
@@ -660,14 +650,17 @@ public abstract class AbstractNxmPlotWidget extends Composite {
 	 * @since 4.4
 	 */
 	public PlotType getPlotType() {
-		return PlotType.valueOf(PlotPreferences.TYPE.getValue(store));
+		return this.plotType;
 	}
 
 	/**
 	 * @since 4.4
 	 */
 	public void setPlotType(PlotType plotType) {
-		PlotPreferences.TYPE.setValue(store, plotType.toString());
+		this.plotType = plotType;
+		if (isInitialized()) {
+			sendPlotMessage("SET.PlotType", 0, plotType.toString());
+		}
 	}
 
 	/**
@@ -716,9 +709,9 @@ public abstract class AbstractNxmPlotWidget extends Composite {
 				setMaxValue(maxVal);
 			}
 
-			PlotType plotType = settings.getPlotType();
-			if (plotType != null) {
-				setPlotType(plotType);
+			PlotType newPlotType = settings.getPlotType();
+			if (newPlotType != null) {
+				setPlotType(newPlotType);
 			}
 
 			final PlotMode plotMode = settings.getPlotMode();
@@ -828,10 +821,6 @@ public abstract class AbstractNxmPlotWidget extends Composite {
 		if (PlotPreferences.MODE.isEvent(event)) {
 			updateMode();
 		}
-
-		if (PlotPreferences.TYPE.isEvent(event)) {
-			updateType();
-		}
 	}
 
 	private void updateLaunchSwitches() {
@@ -842,10 +831,6 @@ public abstract class AbstractNxmPlotWidget extends Composite {
 	private void updateLaunchArgs() {
 		// TODO Auto-generated method stub
 
-	}
-
-	private void updateType() {
-		sendPlotMessage("SET.PlotType", 0, getPlotType().toString());
 	}
 
 	private void updateMode() {
@@ -895,5 +880,19 @@ public abstract class AbstractNxmPlotWidget extends Composite {
 			sendPlotMessage(plotMaxProperty, 0, getMaxValue());
 		}
 
+	}
+
+	/**
+	 * @since 4.4
+	 */
+	public void setStore(IPreferenceStore store) {
+		if (store == null) {
+			store = Preference.initStoreFromWorkbench(PlotPreferences.getAllPreferences());
+		}
+		if (this.store != null) {
+			this.store.removePropertyChangeListener(listener);
+		}
+		this.store = store;
+		this.store.addPropertyChangeListener(listener);
 	}
 }

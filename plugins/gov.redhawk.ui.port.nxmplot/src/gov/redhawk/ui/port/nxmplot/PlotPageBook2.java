@@ -25,6 +25,8 @@ import gov.redhawk.ui.port.nxmblocks.FftNxmBlockSettings;
 import gov.redhawk.ui.port.nxmblocks.PlotNxmBlock;
 import gov.redhawk.ui.port.nxmblocks.PlotNxmBlockSettings;
 import gov.redhawk.ui.port.nxmblocks.SddsNxmBlockSettings;
+import gov.redhawk.ui.port.nxmplot.preferences.PlotPreferences;
+import gov.redhawk.ui.port.nxmplot.preferences.Preference;
 
 import java.nio.ByteOrder;
 import java.util.ArrayList;
@@ -51,6 +53,8 @@ import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.jface.layout.GridLayoutFactory;
 import org.eclipse.jface.preference.IPreferenceStore;
+import org.eclipse.jface.util.IPropertyChangeListener;
+import org.eclipse.jface.util.PropertyChangeEvent;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.DisposeEvent;
 import org.eclipse.swt.events.DisposeListener;
@@ -165,6 +169,8 @@ public class PlotPageBook2 extends Composite {
 	private final Map<PlotSource, List<INxmBlock>> source2NxmBlocks = new ConcurrentHashMap<PlotSource, List<INxmBlock>>();
 
 	private final IPreferenceStore sharedBlockStore = PlotNxmBlock.createInitStore();
+	private IPreferenceStore sharedLinePlotStore = Preference.initStoreFromWorkbench(PlotPreferences.getAllPreferences());
+	private IPreferenceStore rasterPlotStore = Preference.initStoreFromWorkbench(PlotPreferences.getAllPreferences());
 
 	private Adapter portListener = new AdapterImpl() {
 		@Override
@@ -188,6 +194,28 @@ public class PlotPageBook2 extends Composite {
 			}
 		}
 	};
+	private IPropertyChangeListener plotSyncListener = new IPropertyChangeListener() {
+
+		@Override
+		public void propertyChange(PropertyChangeEvent event) {
+			if (PlotPreferences.MODE.isEvent(event)) {
+				if (event.getSource() != sharedLinePlotStore) {
+					PlotPreferences.MODE.setValue(sharedLinePlotStore, (String) event.getNewValue());
+				}
+				if (event.getSource() != rasterPlotStore) {
+					PlotPreferences.MODE.setValue(rasterPlotStore, (String) event.getNewValue());
+				}
+			} else if (PlotPreferences.ENABLE_CONFIGURE_MENU_USING_MOUSE.isEvent(event)) {
+				if (event.getSource() != sharedLinePlotStore) {
+					PlotPreferences.ENABLE_CONFIGURE_MENU_USING_MOUSE.setValue(sharedLinePlotStore, (Boolean) event.getNewValue());
+				}
+				if (event.getSource() != rasterPlotStore) {
+					PlotPreferences.ENABLE_CONFIGURE_MENU_USING_MOUSE.setValue(rasterPlotStore, (Boolean) event.getNewValue());
+				}
+			}
+
+		}
+	};
 
 	private PlotType currentType;
 	private PlotPage currentPlotPage;
@@ -200,6 +228,10 @@ public class PlotPageBook2 extends Composite {
 	public PlotPageBook2(Composite parent, int style, PlotType type) {
 		super(parent, style);
 		GridLayoutFactory.fillDefaults().spacing(0, 0).numColumns(1).applyTo(this);
+
+		this.rasterPlotStore.addPropertyChangeListener(plotSyncListener);
+		this.sharedLinePlotStore.addPropertyChangeListener(plotSyncListener);
+
 		this.pageBook = new PageBook(this, SWT.NONE);
 		GridDataFactory.fillDefaults().grab(true, true).applyTo(pageBook);
 		parent.addDisposeListener(new DisposeListener() {
@@ -235,6 +267,11 @@ public class PlotPageBook2 extends Composite {
 		String plotArgs = NxmPlotUtil.getDefaultPlotArgs(plotSettings);
 		String plotSwitches = NxmPlotUtil.getDefaultPlotSwitches(plotSettings);
 		AbstractNxmPlotWidget newPlot = PlotActivator.getDefault().getPlotFactory().createPlotWidget(this.pageBook, SWT.None);
+		if (type == PlotType.RASTER) {
+			newPlot.setStore(rasterPlotStore);
+		} else {
+			newPlot.setStore(sharedLinePlotStore);
+		}
 
 		PlotPage plotPage = new PlotPage(newPlot, plotArgs, plotSwitches);
 		this.plots.put(type, plotPage);
@@ -426,8 +463,14 @@ public class PlotPageBook2 extends Composite {
 	 * @param enable true if the raster should be shown
 	 */
 	public void showPlot(PlotType type) {
-		PlotSettings plotSettings = new PlotSettings(type);
-		showPlot(plotSettings);
+		PlotSettings settings;
+		if (type == PlotType.RASTER) {
+			settings = new PlotSettings(rasterPlotStore);
+		} else {
+			settings = new PlotSettings(sharedLinePlotStore);
+		}
+		settings.setPlotType(type);
+		showPlot(settings);
 	}
 
 	/** NTN: NEW METHOD (from old showPlot(PlotType method)
@@ -590,6 +633,20 @@ public class PlotPageBook2 extends Composite {
 	 */
 	public IPreferenceStore getSharedPlotBlockPreferences() {
 		return sharedBlockStore;
+	}
+
+	/**
+	 * @since 4.4
+	 */
+	public IPreferenceStore getSharedLinePlotStore() {
+		return sharedLinePlotStore;
+	}
+
+	/**
+	 * @since 4.4
+	 */
+	public IPreferenceStore getRasterPlotStore() {
+		return rasterPlotStore;
 	}
 
 }

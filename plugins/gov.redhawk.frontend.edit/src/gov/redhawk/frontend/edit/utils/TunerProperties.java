@@ -214,7 +214,7 @@ public enum TunerProperties {
 			}
 		}
 
-		public static void updateDeviceValue(final TunerStatus tuner, Notification notification) {
+		public static void updateDeviceValue(final TunerStatus tuner, final Notification notification) {
 			// Don't reflect to device on initialization or if no change is being made
 			if (notification.isTouch() || notification.getOldValue() == null || notification.getOldValue().equals(notification.getNewValue())) {
 				return;
@@ -244,14 +244,26 @@ public enum TunerProperties {
 				}
 
 				// Get the related Simple and check the current value of the simple to see if we should update
-				ScaSimpleProperty simple = tuner.getTunerStatusStruct().getSimple(prop.id);
+				final ScaSimpleProperty simple = tuner.getTunerStatusStruct().getSimple(prop.id);
 				if (simple == null || PluginUtil.equals(simple.getValue(), notification.getNewValue())) {
 					return;
 				}
 				Job job = new Job("Update device property value" + prop) {
+					
+					protected IStatus run (IProgressMonitor monitor) {
+						IStatus retVal = doRun(monitor);
+						device.fetchProperties(monitor);
+						ScaModelCommand.execute(simple, new ScaModelCommand() {
+							
+							@Override
+							public void execute() {
+								TunerStatusAllocationProperties.setValue(tuner, simple);
+							}
+						});
+						return retVal;
+					}
 
-					@Override
-					protected IStatus run(IProgressMonitor monitor) {
+					protected IStatus doRun(IProgressMonitor monitor) {
 						try {
 							org.omg.CORBA.Object port = null;
 
@@ -294,7 +306,8 @@ public enum TunerProperties {
 					}
 
 				};
-				job.setUser(true);
+				job.setUser(false);
+				job.setSystem(true);
 				job.schedule();
 
 			}

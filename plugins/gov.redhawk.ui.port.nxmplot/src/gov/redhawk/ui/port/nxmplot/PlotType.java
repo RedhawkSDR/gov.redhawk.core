@@ -10,9 +10,25 @@
  *
  */
 package gov.redhawk.ui.port.nxmplot;
+
+import java.util.Arrays;
+import java.util.List;
+
 /**
  * @since 3.0
  */
 public enum PlotType {
-	LINE, RASTER, CONTOUR, MESH, POINT, DOT
+	LINE,
+	RASTER,
+	CONTOUR,
+	MESH,
+	POINT,
+	DOT;
+
+	/**
+	 * @since 4.4
+	 */
+	public static List<PlotType> getStandardPlotTypes() {
+		return Arrays.asList(PlotType.DOT, PlotType.LINE, PlotType.POINT, PlotType.RASTER);
+	}
 }

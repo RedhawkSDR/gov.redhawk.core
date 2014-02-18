@@ -1,6 +1,7 @@
 package gov.redhawk.frontend.edit.utils;
 
 import gov.redhawk.frontend.FrontendFactory;
+import gov.redhawk.frontend.FrontendPackage;
 import gov.redhawk.frontend.ListenerAllocation;
 import gov.redhawk.frontend.ModelDevice;
 import gov.redhawk.frontend.Plot;
@@ -10,6 +11,7 @@ import gov.redhawk.frontend.UnallocatedTunerContainer;
 import gov.redhawk.frontend.edit.utils.TunerProperties.TunerStatusAllocationProperties;
 import gov.redhawk.model.sca.ScaDevice;
 import gov.redhawk.model.sca.ScaFactory;
+import gov.redhawk.model.sca.ScaPackage;
 import gov.redhawk.model.sca.ScaSimpleProperty;
 import gov.redhawk.model.sca.ScaStructProperty;
 import gov.redhawk.model.sca.ScaStructSequenceProperty;
@@ -26,7 +28,6 @@ import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.impl.AdapterImpl;
 import org.eclipse.emf.common.util.EList;
-import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.util.EContentAdapter;
 import org.eclipse.ui.progress.UIJob;
 
@@ -131,58 +132,68 @@ public enum TunerUtils {
 
 	private void addNotificationAdapter(final TunerStatus tuner, ScaStructProperty struct) {
 
+		// Model to Device
 		Adapter adapter = new AdapterImpl() {
 			@Override
 			public void notifyChanged(final Notification notification) {
 				super.notifyChanged(notification);
 				TunerStatusAllocationProperties.updateDeviceValue(tuner, notification);
+				switch (notification.getFeatureID(TunerStatus.class)) {
+				case FrontendPackage.TUNER_STATUS__LISTENER_ALLOCATIONS:
+					// Closes a plot view when an associated listener is deallocated
+					switch (notification.getEventType()) {
+					case Notification.REMOVE:
+						UIJob removePlotJob = new UIJob("Disposing of FEI Plot") {
 
-				// Closes a plot view when an associated listener is deallocated
-				switch (notification.getEventType()) {
-				case Notification.REMOVE:
-
-					UIJob removePlotJob = new UIJob("Disposing of Plot") {
-
-						@Override
-						public IStatus runInUIThread(IProgressMonitor monitor) {
-							if (notification.getOldValue() instanceof ListenerAllocation) {
-								ListenerAllocation listener = (ListenerAllocation) notification.getOldValue();
-								for (int i = 0; i < tuner.getPlots().size(); i++) {
-									Plot plotObject = tuner.getPlots().get(i);
-									if (plotObject.getListenerID().equals(listener.getListenerID())) {
-										if (plotObject.getPlotView() instanceof IPlotView) {
-											IPlotView plot = (IPlotView) plotObject.getPlotView();
-											plot.getPlotPageBook().dispose();
+							@Override
+							public IStatus runInUIThread(IProgressMonitor monitor) {
+								if (notification.getOldValue() instanceof ListenerAllocation) {
+									ListenerAllocation listener = (ListenerAllocation) notification.getOldValue();
+									for (int i = 0; i < tuner.getPlots().size(); i++) {
+										Plot plotObject = tuner.getPlots().get(i);
+										if (plotObject.getListenerID().equals(listener.getListenerID())) {
+											if (plotObject.getPlotView() instanceof IPlotView) {
+												IPlotView plot = (IPlotView) plotObject.getPlotView();
+												plot.getPlotPageBook().dispose();
+											}
+											tuner.getPlots().remove(i);
 										}
-										tuner.getPlots().remove(i);
 									}
 								}
+								return Status.OK_STATUS;
 							}
-							return Status.OK_STATUS;
-						}
-					};
-					removePlotJob.setUser(true);
-					removePlotJob.schedule();
+						};
+						removePlotJob.setSystem(true);
+						removePlotJob.setUser(false);
+						removePlotJob.schedule();
+						break;
+					}
 					break;
+					default:
+						break;
 				}
+
 			}
 
 		};
 		tuner.eAdapters().add(adapter);
 
+		// Device to Model
 		Adapter structAdapter = new EContentAdapter() {
 			@Override
 			public void notifyChanged(Notification notification) {
 				super.notifyChanged(notification);
-				EAttribute attr = (EAttribute) notification.getFeature();
-				if (attr.getName().equals("ignoreRemoteSet")) {
+				if (notification.isTouch()) {
 					return;
 				}
-
-				final Object notifier = notification.getNotifier();
-				if (notifier instanceof ScaSimpleProperty) {
-					ScaSimpleProperty simple = (ScaSimpleProperty) notifier;
+				
+				switch(notification.getFeatureID(ScaSimpleProperty.class)) {
+				case ScaPackage.SCA_SIMPLE_PROPERTY__VALUE:
+					ScaSimpleProperty simple = (ScaSimpleProperty) notification.getNotifier();
 					TunerStatusAllocationProperties.setValue(tuner, simple);
+					break;
+				default:
+					break;
 				}
 			}
 		};
