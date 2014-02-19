@@ -1204,7 +1204,9 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 		} catch (final DomainConnectionException e) {
 			// Failure occurred in another thread and we're reporting that failure to this thread
 			throw e;
-		} catch (final Exception e) { // SUPPRESS CHECKSTYLE Logged Catch all exception
+		} catch (InterruptedException e) {
+			// PASS
+		} catch (final CoreException e) { // SUPPRESS CHECKSTYLE Logged Catch all exception
 			ScaModelCommand.execute(this, new ScaModelCommand() {
 
 				@Override
