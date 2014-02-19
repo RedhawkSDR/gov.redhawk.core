@@ -12,6 +12,8 @@ package gov.redhawk.internal.ui.preferences;
 
 import gov.redhawk.ui.port.nxmblocks.FftNxmBlockSettings;
 import gov.redhawk.ui.port.nxmplot.PlotActivator;
+import gov.redhawk.ui.port.nxmplot.PlotSettings;
+import gov.redhawk.ui.port.nxmplot.PlotSettings.PlotMode;
 import gov.redhawk.ui.port.nxmplot.preferences.FftPreferences;
 
 import java.util.ArrayList;
@@ -19,6 +21,7 @@ import java.util.List;
 
 import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.jface.preference.ComboFieldEditor;
+import org.eclipse.jface.preference.FieldEditor;
 import org.eclipse.jface.preference.FieldEditorPreferencePage;
 import org.eclipse.jface.preference.IntegerFieldEditor;
 import org.eclipse.swt.SWT;
@@ -57,18 +60,17 @@ public class FftBlockPreferencePage extends FieldEditorPreferencePage implements
 
 	@Override
 	protected void createFieldEditors() {
+
+		if (workbench != null) {
+			addField(createFftModesField());
+		}
+
 		IntegerFieldEditor numAvgs = new IntegerFieldEditor(FftPreferences.NUM_AVERAGES.getName(), "&Num Averages:", getFieldEditorParent());
 		numAvgs.setValidRange(1, Integer.MAX_VALUE);
 		numAvgs.setErrorMessage("Number of averages must be integer >= 1");
 		addField(numAvgs);
 
-		List<String[]> values = new ArrayList<String[]>();
-		for (FftNxmBlockSettings.OutputType type : FftNxmBlockSettings.OutputType.values()) {
-			values.add(new String[] { type.getLabel(), type.toString() });
-		}
-
-		String[][] nameValue = values.toArray(new String[0][]);
-		ComboFieldEditor outputType = new ComboFieldEditor(FftPreferences.OUTPUT_TYPE.getName(), "&Output Type:", nameValue, getFieldEditorParent());
+		ComboFieldEditor outputType = createOutputTypeField();
 		addField(outputType);
 		if (workbench == null) {
 			outputType.setEnabled(false, getFieldEditorParent());
@@ -107,6 +109,28 @@ public class FftBlockPreferencePage extends FieldEditorPreferencePage implements
 
 		// TODO
 		//		createAdvancedFields();
+	}
+
+	private ComboFieldEditor createOutputTypeField() {
+		List<String[]> values = new ArrayList<String[]>();
+		for (FftNxmBlockSettings.OutputType type : FftNxmBlockSettings.OutputType.getStandardTypes()) {
+			values.add(new String[] { type.getLabel(), type.toString() });
+		}
+
+		String[][] nameValue = values.toArray(new String[0][]);
+		ComboFieldEditor outputType = new ComboFieldEditor(FftPreferences.OUTPUT_TYPE.getName(), "&Output Type:", nameValue, getFieldEditorParent());
+		return outputType;
+	}
+
+	private FieldEditor createFftModesField() {
+		List<String[]> modes = new ArrayList<String[]>();
+		for (PlotSettings.PlotMode mode : PlotMode.getStandardModes()) {
+			modes.add(new String[] { mode.getLabel(), mode.toString() });
+		}
+		String[][] modeValues = modes.toArray(new String[0][]);
+		ComboFieldEditor modeField = new ComboFieldEditor(FftPreferences.FFT_MODE.getName(), "&Plot Mode:", modeValues, getFieldEditorParent());
+
+		return modeField;
 	}
 
 	private void createAdvancedFields() {

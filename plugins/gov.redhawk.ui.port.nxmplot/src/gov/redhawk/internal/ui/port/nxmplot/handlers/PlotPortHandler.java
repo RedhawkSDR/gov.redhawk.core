@@ -11,7 +11,6 @@
  */
 package gov.redhawk.internal.ui.port.nxmplot.handlers;
 
-import gov.redhawk.internal.ui.port.nxmplot.FftParameterEntryDialog;
 import gov.redhawk.internal.ui.port.nxmplot.view.PlotView2;
 import gov.redhawk.model.sca.ScaDomainManagerRegistry;
 import gov.redhawk.model.sca.ScaUsesPort;
@@ -24,8 +23,11 @@ import gov.redhawk.ui.port.nxmblocks.FftNxmBlockSettings;
 import gov.redhawk.ui.port.nxmblocks.PlotNxmBlockSettings;
 import gov.redhawk.ui.port.nxmblocks.SddsNxmBlockSettings;
 import gov.redhawk.ui.port.nxmplot.PlotActivator;
+import gov.redhawk.ui.port.nxmplot.PlotSettings;
+import gov.redhawk.ui.port.nxmplot.PlotSettings.PlotMode;
 import gov.redhawk.ui.port.nxmplot.PlotSource;
 import gov.redhawk.ui.port.nxmplot.PlotType;
+import gov.redhawk.ui.port.nxmplot.preferences.FftPreferences;
 
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -92,11 +94,10 @@ public class PlotPortHandler extends AbstractHandler {
 		final List< ? > elements = selection.toList();
 
 		// Both of these are always set (below)
-		final PlotType type;
 		final boolean isFFT;
+		PlotSettings plotSettings = new PlotSettings();
 
 		// Either fft gets set, or plotWizardSettings and fftNxmBlockSettings get set (below)
-		final PlotWizardSettings plotWizardSettings;
 		final BulkIONxmBlockSettings bulkIOBlockSettings;
 		final SddsNxmBlockSettings sddsBlockSettings;
 		final FftNxmBlockSettings fftBlockSettings;
@@ -119,18 +120,12 @@ public class PlotPortHandler extends AbstractHandler {
 
 		if (plotTypeStr != null) {
 			//because this evaluates to true, we do not end up using addSource2 method
-			type = PlotType.valueOf(plotTypeStr);
+			plotSettings.setPlotType(PlotType.valueOf(plotTypeStr));
 			isFFT = Boolean.valueOf(event.getParameter(PlotPortHandler.PARAM_ISFFT));
-			plotWizardSettings = null;
 
 			if (isFFT) {
-				final FftParameterEntryDialog fftDialog = new FftParameterEntryDialog(HandlerUtil.getActiveShell(event), new FftNxmBlockSettings());
-				final int result = fftDialog.open();
-				if (result == Window.OK) {
-					fftBlockSettings = fftDialog.getFFTSettings();
-				} else {
-					return null;
-				}
+				plotSettings.setPlotMode(PlotMode.valueOf(FftPreferences.FFT_MODE.getValue(PlotActivator.getDefault().getPreferenceStore())));
+				fftBlockSettings = new FftNxmBlockSettings();
 			} else {
 				fftBlockSettings = null;
 			}
@@ -151,24 +146,23 @@ public class PlotPortHandler extends AbstractHandler {
 			if (dialog.open() != Window.OK) {
 				return null;
 			}
-			plotWizardSettings = wizard.getPlotSettings();
-			type = plotWizardSettings.getType();
-			isFFT = plotWizardSettings.isFft();
+			plotSettings = wizard.getPlotSettings();
+			isFFT = wizard.isFft();
 			if (isFFT) {
-				fftBlockSettings = plotWizardSettings.getFftBlockSettings();
+				fftBlockSettings = wizard.getFftBlockSettings();
 			} else {
 				fftBlockSettings = null;
 			}
-			bulkIOBlockSettings = plotWizardSettings.getBulkIOBlockSettings();
-			sddsBlockSettings = plotWizardSettings.getSddsBlockSettings();
-			plotBlockSettings = plotWizardSettings.getPlotBlockSettings();
+			bulkIOBlockSettings = wizard.getBulkIOBlockSettings();
+			sddsBlockSettings = wizard.getSddsBlockSettings();
+			plotBlockSettings = wizard.getPlotBlockSettings();
 		}
 
 		try {
 			final IViewPart view = window.getActivePage().showView(PlotView2.ID, PlotView2.createSecondaryId(), IWorkbenchPage.VIEW_ACTIVATE);
 			if (view instanceof PlotView2) {
 				final PlotView2 plotView = (PlotView2) view;
-				plotView.getPlotPageBook().showPlot(type);
+				plotView.getPlotPageBook().showPlot(plotSettings);
 
 				Job job = new Job("Adding plot sources...") {
 					@Override

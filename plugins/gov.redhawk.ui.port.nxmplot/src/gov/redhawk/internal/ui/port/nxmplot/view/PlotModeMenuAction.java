@@ -78,7 +78,7 @@ public class PlotModeMenuAction extends Action implements IMenuCreator {
 		List<PlotModeAction> modeActions = new ArrayList<PlotModeMenuAction.PlotModeAction>();
 
 		fMenu = new Menu(parent);
-		for (final PlotSettings.PlotMode mode : PlotSettings.PlotMode.values()) {
+		for (final PlotSettings.PlotMode mode : PlotSettings.PlotMode.getStandardModes()) {
 			PlotModeAction plotModeAction = new PlotModeAction(mode);
 			modeActions.add(plotModeAction);
 			addActionToMenu(fMenu, plotModeAction);

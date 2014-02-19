@@ -93,40 +93,6 @@ public class PlotNxmBlock extends AbstractNxmBlock<plot> {
 		final AbstractNxmPlotWidget currentPlotWidget = getContext();
 		final String sourceName = inputBlockInfo.getBlock().getOutputName(inputBlockInfo.getIndex(), streamID);
 
-		//		StringBuilder pipeQualifiers = new StringBuilder();
-		//		Integer frameSize = settings.getFrameSize();
-		//		if (frameSize != null && frameSize > 0) {          // 1. override frame size with value in settings
-		//			pipeQualifiers.append("{FRAMESIZE=").append(frameSize).append('}');
-		//		} else {
-		//			if (sri != null) {                             // 2. check sri.subsize
-		//				frameSize = sri.subsize;
-		//			}
-		//			String tmpResName = AbstractNxmPlotWidget.createUniqueName(false);
-		//			currentPlotWidget.runGlobalCommand("TABLE " + tmpResName + " CREATE");
-		//			currentPlotWidget.runGlobalCommand("STATUS/VERBOSE " + sourceName + " typeCodeClass=" + tmpResName + ".TYPECODECLASS  frameSize=" + tmpResName + ".FRAMESIZE");
-		//			if (TRACE_LOG.enabled) {
-		//				currentPlotWidget.runGlobalCommand("RESULTS/ALL " + tmpResName);
-		//				currentPlotWidget.runGlobalCommand("STATUS/VERBOSE " + sourceName);
-		//			}
-		//			currentPlotWidget.runGlobalCommand("RESULTS/GLOBAL " + tmpResName + " " + tmpResName); // put in global results table
-		//			Table statusResults = NeXtMidas.getGlobalInstance().getMidasContext().getResults().getTable(tmpResName);
-		//			currentPlotWidget.runGlobalCommand("REMOVE " + tmpResName);        // cleanup tmp results
-		//			currentPlotWidget.runGlobalCommand("REMOVE/GLOBAL " + tmpResName); // cleanup tmp results
-		//			int typeCodeClass = 1;
-		//			if (statusResults != null) {
-		//				typeCodeClass = statusResults.getL("TYPECODECLASS", typeCodeClass);
-		//				frameSize = statusResults.getL("FRAMESIZE", frameSize);
-		//			}
-		//			if (typeCodeClass == 1 && frameSize <= 0) {    // 3. no frame size and type 1000 data
-		//				pipeQualifiers.append("{FRAMESIZE=1024}"); //    frame to 1024
-		//			}
-		//		}
-		//
-		//		final Integer pipeSize = settings.getPipeSize();
-		//		if (pipeSize != null && pipeSize > 0) {
-		//			pipeQualifiers.append("{PIPESIZE=").append(pipeSize).append('}');
-		//		}
-
 		final String pipeQuals = getPipeQualifiers(sri, currentPlotWidget, sourceName);
 		currentPlotWidget.addSource(sourceName, pipeQuals, null);
 

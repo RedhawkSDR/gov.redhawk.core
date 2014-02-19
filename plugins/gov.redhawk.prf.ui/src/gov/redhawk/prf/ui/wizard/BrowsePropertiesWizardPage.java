@@ -21,11 +21,10 @@ import mil.jpeojtrs.sca.prf.AbstractProperty;
 import mil.jpeojtrs.sca.prf.provider.PrfItemProviderAdapterFactory;
 
 import org.eclipse.core.databinding.DataBindingContext;
-import org.eclipse.emf.common.notify.AdapterFactory;
 import org.eclipse.emf.databinding.EMFDataBindingContext;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.util.EcoreUtil;
-import org.eclipse.jface.databinding.wizard.WizardPageSupport;
+import org.eclipse.emf.edit.provider.ComposedAdapterFactory;
 import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.jface.layout.GridLayoutFactory;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
@@ -99,7 +98,7 @@ public class BrowsePropertiesWizardPage extends WizardPage {
 
 		final Control tree = createPropertyTree(client);
 		tree.setLayoutData(this.dataFactory.hint(400, SWT.DEFAULT).grab(true, true).create()); // SUPPRESS CHECKSTYLE MagicNumber
-		WizardPageSupport.create(this, this.context);
+		setPageComplete(false);
 		this.setControl(client);
 	}
 
@@ -118,7 +117,8 @@ public class BrowsePropertiesWizardPage extends WizardPage {
 		this.propertyTree = tree.getViewer();
 		this.propertyTree.getControl().setLayoutData(this.dataFactory.span(1, 1).grab(true, true).create());
 
-		final AdapterFactory myAdapterFactory = new PrfItemProviderAdapterFactory();
+		ComposedAdapterFactory myAdapterFactory = new ComposedAdapterFactory(ComposedAdapterFactory.Descriptor.Registry.INSTANCE);
+		myAdapterFactory.addAdapterFactory(new PrfItemProviderAdapterFactory());
 		final PropertiesBrowserContentProvider contentProvider = new PropertiesBrowserContentProvider(myAdapterFactory);
 
 		this.propertyTree.setContentProvider(contentProvider);
@@ -140,10 +140,18 @@ public class BrowsePropertiesWizardPage extends WizardPage {
 
 					}
 				}
+				if (properties.isEmpty()) {
+					setErrorMessage("Select at least one property");
+					setPageComplete(false);
+				} else {
+					setErrorMessage(null);
+					setPageComplete(true);
+				}
 			}
 		});
 		this.propertyTree.setInput(this.descriptors);
 		this.propertyTree.getControl().setLayoutData(this.dataFactory.grab(true, true).create());
 		return treeGroup;
 	}
+
 }

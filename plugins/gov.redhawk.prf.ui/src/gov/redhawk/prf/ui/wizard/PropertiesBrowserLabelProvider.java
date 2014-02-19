@@ -11,23 +11,29 @@
  */
 package gov.redhawk.prf.ui.wizard;
 
+import gov.redhawk.prf.ui.PrfUiPlugin;
 import gov.redhawk.sca.properties.Category;
 import gov.redhawk.sca.properties.IPropertiesProvider;
 import gov.redhawk.sca.properties.PropertiesProviderRegistry;
+import gov.redhawk.sca.util.PluginUtil;
 
 import org.eclipse.emf.common.notify.AdapterFactory;
 import org.eclipse.emf.edit.ui.provider.AdapterFactoryLabelProvider;
+import org.eclipse.jface.resource.ImageDescriptor;
+import org.eclipse.jface.resource.JFaceResources;
+import org.eclipse.jface.resource.LocalResourceManager;
+import org.eclipse.jface.resource.ResourceManager;
 import org.eclipse.jface.viewers.ILabelProvider;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.ui.model.IWorkbenchAdapter;
-import org.eclipse.ui.model.WorkbenchLabelProvider;
+import org.eclipse.ui.plugin.AbstractUIPlugin;
 
 /**
  * 
  */
 public class PropertiesBrowserLabelProvider extends AdapterFactoryLabelProvider implements ILabelProvider {
 
-	private final WorkbenchLabelProvider workbenchLabelProvider = new WorkbenchLabelProvider();
+	private ResourceManager resourceManager;
 
 	/**
 	 * @param adapterFactory
@@ -36,12 +42,23 @@ public class PropertiesBrowserLabelProvider extends AdapterFactoryLabelProvider 
 		super(factory);
 	}
 
+	private ResourceManager getResourceManager() {
+		if (resourceManager == null) {
+			resourceManager = new LocalResourceManager(JFaceResources.getResources());
+		}
+
+		return resourceManager;
+	}
+
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
 	public void dispose() {
-		this.workbenchLabelProvider.dispose();
+		if (resourceManager != null) {
+			resourceManager.dispose();
+			resourceManager = null;
+		}
 		super.dispose();
 	}
 
@@ -50,8 +67,20 @@ public class PropertiesBrowserLabelProvider extends AdapterFactoryLabelProvider 
 	 */
 	@Override
 	public Image getImage(final Object object) {
-		if (object instanceof IWorkbenchAdapter) {
-			return this.workbenchLabelProvider.getImage(object);
+		IWorkbenchAdapter workbenchAdapter = PluginUtil.adapt(IWorkbenchAdapter.class, object, true);
+		if (workbenchAdapter != null) {
+			ImageDescriptor desc = workbenchAdapter.getImageDescriptor(object);
+			if (desc != null) {
+				return (Image) getResourceManager().get(desc);
+			} else {
+				return null;
+			}
+		} else if (object instanceof IPropertiesProvider) {
+			ImageDescriptor desc = AbstractUIPlugin.imageDescriptorFromPlugin(PrfUiPlugin.PLUGIN_ID, "icons/folder.gif");
+			return (Image) getResourceManager().get(desc);
+		} else if (object instanceof Category) {
+			ImageDescriptor desc = AbstractUIPlugin.imageDescriptorFromPlugin(PrfUiPlugin.PLUGIN_ID, "icons/folder.gif");
+			return (Image) getResourceManager().get(desc);
 		}
 		return super.getImage(object);
 	}
@@ -61,8 +90,9 @@ public class PropertiesBrowserLabelProvider extends AdapterFactoryLabelProvider 
 	 */
 	@Override
 	public String getText(final Object object) {
-		if (object instanceof IWorkbenchAdapter) {
-			return this.workbenchLabelProvider.getText(object);
+		IWorkbenchAdapter workbenchAdapter = PluginUtil.adapt(IWorkbenchAdapter.class, object, true);
+		if (workbenchAdapter != null) {
+			return workbenchAdapter.getLabel(object);
 		} else if (object instanceof IPropertiesProvider) {
 			return PropertiesProviderRegistry.INSTANCE.getName((IPropertiesProvider) object);
 		} else if (object instanceof Category) {

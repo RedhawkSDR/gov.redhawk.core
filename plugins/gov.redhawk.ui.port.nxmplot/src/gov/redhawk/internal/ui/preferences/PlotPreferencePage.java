@@ -16,7 +16,6 @@ import gov.redhawk.ui.port.nxmplot.PlotSettings.PlotMode;
 import gov.redhawk.ui.port.nxmplot.preferences.PlotPreferences;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 
@@ -205,12 +204,9 @@ public class PlotPreferencePage extends FieldEditorPreferencePage implements IWo
 		return blockPreferenceStore;
 	}
 
-	private static List<PlotMode> supportedModes = Arrays.asList(PlotMode.AUTO, PlotMode.MAGNITUDE, PlotMode.PHASE, PlotMode.REAL, PlotMode.IMAGINARY,
-		PlotMode.REAL_AND_IMAGINARY, PlotMode.REAL_VS_IMAGINARY, PlotMode.TEN_LOG, PlotMode.TWENTY_LOG);
-
 	private ComboFieldEditor createModesField() {
 		List<String[]> modes = new ArrayList<String[]>();
-		for (PlotSettings.PlotMode mode : PlotPreferencePage.supportedModes) {
+		for (PlotSettings.PlotMode mode : PlotMode.getStandardModes()) {
 			modes.add(new String[] { mode.getLabel(), mode.toString() });
 		}
 		String[][] modeValues = modes.toArray(new String[0][]);

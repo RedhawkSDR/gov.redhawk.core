@@ -117,13 +117,11 @@ public class FftNxmBlockControls {
 				return ((FftNxmBlockSettings.OutputType) element).getLabel();
 			}
 		});
-		fftType.setInput(FftNxmBlockSettings.OutputType.values());
+		fftType.setInput(FftNxmBlockSettings.OutputType.getStandardTypes());
 		OutputType currentOutputType = this.settings.getOutputType();
 		if (currentOutputType == null) {
-			currentOutputType = OutputType.PSD; // default to PSD output
+			currentOutputType = OutputType.NORMAL;
 			settings.setOutputType(currentOutputType);
-		} else {
-			fftType.getCombo().setEnabled(false); // disable: cannot change FFT output type at this time
 		}
 		fftType.setSelection(new StructuredSelection(currentOutputType));
 
@@ -178,7 +176,7 @@ public class FftNxmBlockControls {
 		IObservableValue numExpAvgModelValue = PojoProperties.value(FftNxmBlockSettings.PROP_SLIDING_NUM_AVERAGES).observe(this.settings);
 		UpdateValueStrategy numExpAvgTargetToModel = new UpdateValueStrategy();
 		numAvgTargetToModel.setAfterConvertValidator(new NumberRangeValidator<Integer>(FftNxmBlockControls.SLIDING_NUM_AVERAGES_FIELD_NAME, Integer.class, 0,
-				false));
+			false));
 		bindingValue = dataBindingCtx.bindValue(numExpAvgWidgetValue, numExpAvgModelValue, numExpAvgTargetToModel, null);
 		ControlDecorationSupport.create(bindingValue, SWT.TOP | SWT.LEFT);
 

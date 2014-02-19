@@ -18,6 +18,8 @@ import gov.redhawk.ui.port.nxmblocks.PlotNxmBlockControls;
 import gov.redhawk.ui.port.nxmblocks.PlotNxmBlockSettings;
 import gov.redhawk.ui.port.nxmblocks.SddsNxmBlockControls;
 import gov.redhawk.ui.port.nxmblocks.SddsNxmBlockSettings;
+import gov.redhawk.ui.port.nxmplot.PlotSettings;
+import gov.redhawk.ui.port.nxmplot.PlotSettings.PlotMode;
 import gov.redhawk.ui.port.nxmplot.PlotType;
 
 import java.util.Arrays;
@@ -49,7 +51,13 @@ import org.eclipse.swt.widgets.Label;
  * @since 4.4
  */
 public class PlotWizardPage extends WizardPage {
-	private PlotWizardSettings settings = new PlotWizardSettings();
+	private BulkIONxmBlockSettings bulkIOBlockSettings = null;
+	private SddsNxmBlockSettings sddsBlockSettings = null;
+	private FftNxmBlockSettings fftBlockSettings = new FftNxmBlockSettings();
+	private PlotNxmBlockSettings plotBlockSettings = new PlotNxmBlockSettings();
+	private boolean fft;
+	private PlotSettings plotSettings = new PlotSettings();
+
 	private DataBindingContext dataBindingContext = new DataBindingContext();
 
 	protected PlotWizardPage(String pageName, String title, ImageDescriptor titleImage) {
@@ -65,42 +73,52 @@ public class PlotWizardPage extends WizardPage {
 		Label label;
 		Group group;
 
-		// === plot type ===
-		label = new Label(parent, SWT.None);
-		label.setText("Plot Type:");
-		ComboViewer viewer = new ComboViewer(parent, SWT.READ_ONLY);
+		// == PLOT Block settings (e.g. frame size) ==
+		group = new Group(parent, SWT.None);
+		group.setLayoutData(GridDataFactory.fillDefaults().grab(true, false).span(2, 1).create());
+		group.setText("PLOT");
+		label = new Label(group, SWT.None);
+		label.setText("Type:");
+		ComboViewer viewer = new ComboViewer(group, SWT.READ_ONLY);
 		viewer.setLabelProvider(new LabelProvider());
 		viewer.setContentProvider(new ArrayContentProvider());
 		viewer.setInput(PlotType.getStandardPlotTypes());
 		viewer.getControl().setLayoutData(GridDataFactory.fillDefaults().grab(true, false).create());
-		dataBindingContext.bindValue(ViewerProperties.singleSelection().observe(viewer),
-			PojoProperties.value(PlotWizardSettings.PROP_PLOT_TYPE).observe(settings));
-
-		// == PLOT Block settings (e.g. frame size) ==
-		PlotNxmBlockSettings plotSettings = settings.getPlotBlockSettings();
-		if (plotSettings != null) {
-			group = new Group(parent, SWT.None);
-			group.setLayoutData(GridDataFactory.fillDefaults().grab(true, false).span(2, 1).create());
-			group.setText("PLOT");
-			new PlotNxmBlockControls(plotSettings, dataBindingContext).createControls(group);
+		if (plotSettings.getPlotType() == null) {
+			plotSettings.setPlotType(PlotType.LINE);
 		}
+		dataBindingContext.bindValue(ViewerProperties.singleSelection().observe(viewer), PojoProperties.value("plotType").observe(plotSettings));
+
+		label = new Label(group, SWT.None);
+		label.setText("Mode:");
+		viewer = new ComboViewer(group, SWT.READ_ONLY);
+		viewer.setLabelProvider(new LabelProvider() {
+			@Override
+			public String getText(Object element) {
+				return ((PlotMode) element).getLabel();
+			}
+		});
+		viewer.setContentProvider(new ArrayContentProvider());
+		viewer.setInput(PlotMode.getStandardModes());
+		viewer.getControl().setLayoutData(GridDataFactory.fillDefaults().grab(true, false).create());
+		dataBindingContext.bindValue(ViewerProperties.singleSelection().observe(viewer), PojoProperties.value("plotMode").observe(plotSettings));
+
+		new PlotNxmBlockControls(plotBlockSettings, dataBindingContext).createControls(group);
 
 		// === BULKIO settings ===
-		BulkIONxmBlockSettings bulkioSettings = settings.getBulkIOBlockSettings();
-		if (bulkioSettings != null) {
+		if (bulkIOBlockSettings != null) {
 			group = new Group(parent, SWT.None);
 			group.setLayoutData(GridDataFactory.fillDefaults().grab(true, false).span(2, 1).create());
 			group.setText("BULKIO");
-			new BulkIONxmBlockControls(bulkioSettings, dataBindingContext).createControls(group);
+			new BulkIONxmBlockControls(bulkIOBlockSettings, dataBindingContext).createControls(group);
 		}
 
 		// == BULKIO SDDS settings ===
-		SddsNxmBlockSettings sddsSettings = settings.getSddsBlockSettings();
-		if (sddsSettings != null) {
+		if (sddsBlockSettings != null) {
 			group = new Group(parent, SWT.None);
 			group.setLayoutData(GridDataFactory.fillDefaults().grab(true, false).span(2, 1).create());
 			group.setText("BULKIO SDDS");
-			new SddsNxmBlockControls(sddsSettings, dataBindingContext).createControls(group);
+			new SddsNxmBlockControls(sddsBlockSettings, dataBindingContext).createControls(group);
 		}
 
 		// == FFT settings ==
@@ -110,19 +128,13 @@ public class PlotWizardPage extends WizardPage {
 		final Button button = new Button(fftGroup, SWT.CHECK);
 		button.setText("Take FFT");
 		button.setLayoutData(GridDataFactory.fillDefaults().grab(true, false).span(2, 1).create());
-		dataBindingContext.bindValue(WidgetProperties.selection().observe(button), PojoProperties.value(PlotWizardSettings.PROP_DO_FFT).observe(settings));
-		FftNxmBlockSettings fftSettings = settings.getFftBlockSettings();
-		if (fftSettings == null) {
-			fftSettings = new FftNxmBlockSettings();
-			settings.setFftBlockSettings(fftSettings);
-		}
-
+		dataBindingContext.bindValue(WidgetProperties.selection().observe(button), PojoProperties.value("fft").observe(this));
 		fftGroup.setLayoutData(GridDataFactory.fillDefaults().grab(true, false).span(2, 1).create());
 		fftGroup.setText("FFT");
 
 		final List<Control> skip = Arrays.asList(fftGroup, button);
 
-		new FftNxmBlockControls(fftSettings, dataBindingContext).createControls(fftGroup);
+		new FftNxmBlockControls(fftBlockSettings, dataBindingContext).createControls(fftGroup);
 		button.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
@@ -147,8 +159,52 @@ public class PlotWizardPage extends WizardPage {
 		}
 	}
 
-	public PlotWizardSettings getPlotSettings() {
-		return settings;
+	public void setFft(boolean fft) {
+		this.fft = fft;
+	}
+
+	public boolean isFft() {
+		return fft;
+	}
+
+	public BulkIONxmBlockSettings getBulkIOBlockSettings() {
+		return bulkIOBlockSettings;
+	}
+
+	public void setBulkIOBlockSettings(BulkIONxmBlockSettings bulkIOBlockSettings) {
+		this.bulkIOBlockSettings = bulkIOBlockSettings;
+	}
+
+	public SddsNxmBlockSettings getSddsBlockSettings() {
+		return sddsBlockSettings;
+	}
+
+	public void setSddsBlockSettings(SddsNxmBlockSettings sddsBlockSettings) {
+		this.sddsBlockSettings = sddsBlockSettings;
+	}
+
+	public FftNxmBlockSettings getFftBlockSettings() {
+		return fftBlockSettings;
+	}
+
+	public void setFftBlockSettings(FftNxmBlockSettings fftBlockSettings) {
+		this.fftBlockSettings = fftBlockSettings;
+	}
+
+	public PlotNxmBlockSettings getPlotBlockSettings() {
+		return plotBlockSettings;
+	}
+
+	public void setPlotBlockSettings(PlotNxmBlockSettings plotBlockSettings) {
+		this.plotBlockSettings = plotBlockSettings;
+	}
+
+	public PlotSettings getPlotSettings() {
+		return plotSettings;
+	}
+
+	public void setPlotSettings(PlotSettings plotSettings) {
+		this.plotSettings = plotSettings;
 	}
 
 }

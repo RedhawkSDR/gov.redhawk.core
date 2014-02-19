@@ -14,6 +14,9 @@ package gov.redhawk.ui.port.nxmblocks;
 import gov.redhawk.ui.port.nxmplot.PlotActivator;
 import gov.redhawk.ui.port.nxmplot.preferences.FftPreferences;
 
+import java.util.Arrays;
+import java.util.List;
+
 import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jface.preference.IPreferenceStore;
 
@@ -76,6 +79,10 @@ public class FftNxmBlockSettings implements Cloneable {
 
 		public String getLabel() {
 			return this.label;
+		}
+
+		public static List<OutputType> getStandardTypes() {
+			return Arrays.asList(OutputType.NORMAL, OutputType.PSD, OutputType.MAG_SQ);
 		}
 	}
 
