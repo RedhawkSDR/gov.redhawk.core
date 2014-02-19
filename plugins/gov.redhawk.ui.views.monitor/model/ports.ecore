@@ -18,7 +18,7 @@
   <eClassifiers xsi:type="ecore:EClass" name="PortConnectionMonitor" eSuperTypes="#//PortStatisticsProvider">
     <eStructuralFeatures xsi:type="ecore:EReference" name="port" eType="#//PortMonitor"
         eOpposite="#//PortMonitor/connections"/>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="connectionId" eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="connectionId" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EDataType" name="PortUsageType" instanceClassName="BULKIO.PortUsageType"
       serializable="false"/>
