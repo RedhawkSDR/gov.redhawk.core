@@ -23,10 +23,10 @@
       <eGenericType eTypeParameter="#//CorbaObjWrapper/T"/>
       <eParameters name="monitor" eType="#//IProgressMonitor"/>
     </eOperations>
-    <eOperations name="_is_a" eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EBoolean">
-      <eParameters name="repId" eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EString"/>
+    <eOperations name="_is_a" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean">
+      <eParameters name="repId" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     </eOperations>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="ior" eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EString"
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="ior" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"
         transient="true" unsettable="true" derived="true">
       <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
         <details key="kind" value="attribute"/>
@@ -42,6 +42,8 @@
     </eStructuralFeatures>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="corbaObj" eType="#//Object"
         transient="true" unsettable="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="featureData" upperBound="-1"
+        eType="#//StringToObjectMap" containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="DataProviderObject" abstract="true"
       eSuperTypes="#//IStatusProvider #//IDisposable #//IRefreshable">
@@ -58,7 +60,7 @@
         <details key="name" value="dataProviders"/>
       </eAnnotations>
     </eStructuralFeatures>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="dataProvidersEnabled" eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EBoolean"
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="dataProvidersEnabled" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"
         defaultValueLiteral="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EEnum" name="DomainConnectionState">
@@ -84,7 +86,7 @@
       <details key="kind" value="empty"/>
     </eAnnotations>
     <eOperations name="dispose"/>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="disposed" eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EBoolean"
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="disposed" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"
         changeable="false" transient="true">
       <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
         <details key="kind" value="attribute"/>
@@ -145,7 +147,7 @@
       <details key="kind" value="empty"/>
     </eAnnotations>
     <eTypeParameters name="O">
-      <eBounds eClassifier="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EJavaObject"/>
+      <eBounds eClassifier="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EJavaObject"/>
     </eTypeParameters>
     <eOperations name="fetchProfileObject">
       <eGenericType eTypeParameter="#//ProfileObjectWrapper/O"/>
@@ -208,16 +210,16 @@
     <eTypeParameters name="R">
       <eBounds eClassifier="ecore:EClass platform:/plugin/mil.jpeojtrs.sca.cf/model/cf.ecore#//Resource"/>
     </eTypeParameters>
-    <eOperations name="fetchIdentifier" eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EString">
+    <eOperations name="fetchIdentifier" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString">
       <eParameters name="monitor" eType="#//IProgressMonitor"/>
     </eOperations>
-    <eOperations name="fetchStarted" eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EBooleanObject">
+    <eOperations name="fetchStarted" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBooleanObject">
       <eParameters name="monitor" eType="#//IProgressMonitor"/>
     </eOperations>
-    <eOperations name="fetchProfile" eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EString">
+    <eOperations name="fetchProfile" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString">
       <eParameters name="monitor" eType="#//IProgressMonitor"/>
     </eOperations>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="identifier" eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EString"
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="identifier" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"
         unsettable="true" derived="true" iD="true">
       <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
         <details key="kind" value="attribute"/>
@@ -226,7 +228,7 @@
     </eStructuralFeatures>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="started" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//BooleanObject"
         transient="true" unsettable="true"/>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="profile" eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EString"
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="profile" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"
         transient="true" unsettable="true"/>
     <eGenericSuperTypes eClassifier="#//ScaPropertyContainer">
       <eTypeArguments eTypeParameter="#//ScaAbstractComponent/R"/>
@@ -244,7 +246,7 @@
       <eBounds eClassifier="#//Object"/>
     </eTypeParameters>
     <eTypeParameters name="E">
-      <eBounds eClassifier="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EJavaObject"/>
+      <eBounds eClassifier="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EJavaObject"/>
     </eTypeParameters>
     <eOperations name="fetchProperties" upperBound="-1">
       <eGenericType eClassifier="#//ScaAbstractProperty">
@@ -256,7 +258,7 @@
       <eGenericType eClassifier="#//ScaAbstractProperty">
         <eTypeArguments/>
       </eGenericType>
-      <eParameters name="identifier" eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EString"/>
+      <eParameters name="identifier" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     </eOperations>
     <eStructuralFeatures xsi:type="ecore:EReference" name="properties" upperBound="-1"
         transient="true" unsettable="true" containment="true" resolveProxies="false">
@@ -283,7 +285,7 @@
         <eTypeArguments/>
         <eTypeArguments/>
       </eGenericType>
-      <eParameters name="name" eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EString"/>
+      <eParameters name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     </eOperations>
     <eOperations name="fetchPorts" upperBound="-1">
       <eGenericType eClassifier="#//ScaPort">
@@ -318,9 +320,9 @@
       <eParameters name="any" eType="#//Any"/>
     </eOperations>
     <eOperations name="getProperty" eType="ecore:EDataType platform:/plugin/mil.jpeojtrs.sca.cf/model/cf.ecore#//DataType"/>
-    <eOperations name="isDefaultValue" eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EBoolean"/>
+    <eOperations name="isDefaultValue" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
     <eOperations name="restoreDefaultValue"/>
-    <eOperations name="valueEquals" eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EBoolean">
+    <eOperations name="valueEquals" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean">
       <eParameters name="any" eType="ecore:EDataType platform:/plugin/mil.jpeojtrs.sca.prf/model/prf.ecore#//Any"/>
     </eOperations>
     <eStructuralFeatures xsi:type="ecore:EReference" name="definition" transient="true">
@@ -330,14 +332,14 @@
       </eAnnotations>
       <eGenericType eTypeParameter="#//ScaAbstractProperty/T"/>
     </eStructuralFeatures>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="description" eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EString"
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="description" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"
         transient="true">
       <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
         <details key="kind" value="attribute"/>
         <details key="name" value="description"/>
       </eAnnotations>
     </eStructuralFeatures>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="id" eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EString"
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="id" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"
         transient="true">
       <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
         <details key="kind" value="attribute"/>
@@ -351,14 +353,14 @@
         <details key="name" value="mode"/>
       </eAnnotations>
     </eStructuralFeatures>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EString"
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"
         transient="true">
       <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
         <details key="kind" value="attribute"/>
         <details key="name" value="name"/>
       </eAnnotations>
     </eStructuralFeatures>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="ignoreRemoteSet" eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EBoolean"
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="ignoreRemoteSet" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"
         volatile="true" transient="true" derived="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="ScaComponent">
@@ -391,8 +393,8 @@
       </eGenericType>
     </eStructuralFeatures>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="instantiationIdentifier"
-        eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EString"
-        changeable="false" volatile="true" transient="true" unsettable="true" derived="true">
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString" changeable="false"
+        volatile="true" transient="true" unsettable="true" derived="true">
       <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
         <details key="kind" value="attribute"/>
         <details key="name" value="instantiationIdentifier"/>
@@ -405,7 +407,7 @@
         <details key="name" value="waveform"/>
       </eAnnotations>
     </eStructuralFeatures>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     <eGenericSuperTypes eClassifier="#//ScaAbstractComponent">
       <eTypeArguments eClassifier="ecore:EClass platform:/plugin/mil.jpeojtrs.sca.cf/model/cf.ecore#//Resource"/>
     </eGenericSuperTypes>
@@ -427,7 +429,7 @@
     <eOperations name="fetchAdminState" eType="#//AdminType">
       <eParameters name="monitor" eType="#//IProgressMonitor"/>
     </eOperations>
-    <eOperations name="fetchLabel" eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EString">
+    <eOperations name="fetchLabel" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString">
       <eParameters name="monitor" eType="#//IProgressMonitor"/>
     </eOperations>
     <eOperations name="fetchOperationalState" eType="#//OperationalType">
@@ -496,7 +498,7 @@
       <eGenericType eClassifier="#//ScaDevice">
         <eTypeArguments/>
       </eGenericType>
-      <eParameters name="deviceId" eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EString"/>
+      <eParameters name="deviceId" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     </eOperations>
     <eOperations name="fetchDevices" upperBound="-1">
       <eGenericType eClassifier="#//ScaDevice">
@@ -507,10 +509,10 @@
     <eOperations name="fetchFileSystem" eType="#//ScaDeviceManagerFileSystem">
       <eParameters name="monitor" eType="#//IProgressMonitor"/>
     </eOperations>
-    <eOperations name="fetchIdentifier" eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EString">
+    <eOperations name="fetchIdentifier" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString">
       <eParameters name="monitor" eType="#//IProgressMonitor"/>
     </eOperations>
-    <eOperations name="fetchLabel" eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EString">
+    <eOperations name="fetchLabel" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString">
       <eParameters name="monitor" eType="#//IProgressMonitor"/>
     </eOperations>
     <eOperations name="fetchServices" upperBound="-1" eType="#//ScaService">
@@ -518,16 +520,16 @@
     </eOperations>
     <eOperations name="registerScaService" eType="#//ScaService" eExceptions="ecore:EDataType platform:/plugin/mil.jpeojtrs.sca.cf/model/cf.ecore#//InvalidObjectReference">
       <eParameters name="registeringService" eType="#//Object"/>
-      <eParameters name="name" eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EString"/>
+      <eParameters name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     </eOperations>
     <eOperations name="getScaService" eType="#//ScaService">
-      <eParameters name="name" eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EString"/>
+      <eParameters name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     </eOperations>
-    <eOperations name="fetchProfile" eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EString">
+    <eOperations name="fetchProfile" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString">
       <eParameters name="monitor" eType="#//IProgressMonitor"/>
     </eOperations>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="devices" unique="false"
-        upperBound="-1" eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EFeatureMapEntry"
+        upperBound="-1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EFeatureMapEntry"
         transient="true" unsettable="true">
       <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
         <details key="kind" value="group"/>
@@ -573,14 +575,14 @@
         <details key="name" value="domMgr"/>
       </eAnnotations>
     </eStructuralFeatures>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="identifier" eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EString"
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="identifier" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"
         unsettable="true" derived="true" iD="true">
       <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
         <details key="kind" value="attribute"/>
         <details key="name" value="identifier"/>
       </eAnnotations>
     </eStructuralFeatures>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="label" eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EString"
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="label" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"
         transient="true" unsettable="true" derived="true">
       <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
         <details key="kind" value="attribute"/>
@@ -590,7 +592,7 @@
     <eStructuralFeatures xsi:type="ecore:EReference" name="services" ordered="false"
         upperBound="-1" eType="#//ScaService" transient="true" unsettable="true" containment="true"
         resolveProxies="false" eOpposite="#//ScaService/devMgr"/>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="profile" eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EString"
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="profile" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"
         transient="true" unsettable="true"/>
     <eGenericSuperTypes eClassifier="#//ScaPropertyContainer">
       <eTypeArguments eClassifier="ecore:EClass platform:/plugin/mil.jpeojtrs.sca.cf/model/cf.ecore#//DeviceManager"/>
@@ -600,7 +602,7 @@
     <eGenericSuperTypes eClassifier="#//ScaPortContainer"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="ScaService">
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="devMgr" ordered="false"
         eType="#//ScaDeviceManager" changeable="false" transient="true" resolveProxies="false"
         eOpposite="#//ScaDeviceManager/services"/>
@@ -668,7 +670,7 @@
       <eGenericType eClassifier="#//ScaDevice">
         <eTypeArguments/>
       </eGenericType>
-      <eParameters name="deviceId" eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EString"/>
+      <eParameters name="deviceId" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     </eOperations>
     <eOperations name="connect" eExceptions="#//DomainConnectionException">
       <eParameters name="monitor" eType="#//IProgressMonitor"/>
@@ -690,16 +692,16 @@
     <eOperations name="fetchFileManager" eType="#//ScaDomainManagerFileSystem">
       <eParameters name="monitor" eType="#//IProgressMonitor"/>
     </eOperations>
-    <eOperations name="fetchIdentifier" eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EString">
+    <eOperations name="fetchIdentifier" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString">
       <eParameters name="monitor" eType="#//IProgressMonitor"/>
     </eOperations>
     <eOperations name="installScaWaveformFactory" eType="#//ScaWaveformFactory" eExceptions="ecore:EDataType platform:/plugin/mil.jpeojtrs.sca.cf/model/cf.ecore#//InvalidProfile ecore:EDataType platform:/plugin/mil.jpeojtrs.sca.cf/model/cf.ecore#//InvalidFileName ecore:EDataType platform:/plugin/mil.jpeojtrs.sca.cf/model/cf.ecore#//ApplicationInstallationError ecore:EDataType platform:/plugin/mil.jpeojtrs.sca.cf/model/cf.ecore#//ApplicationAlreadyInstalled">
-      <eParameters name="profilePath" eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EString"/>
+      <eParameters name="profilePath" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     </eOperations>
     <eOperations name="uninstallScaWaveformFactory" eExceptions="ecore:EDataType platform:/plugin/mil.jpeojtrs.sca.cf/model/cf.ecore#//ApplicationUninstallationError ecore:EDataType platform:/plugin/mil.jpeojtrs.sca.cf/model/cf.ecore#//InvalidIdentifier">
       <eParameters name="factory" eType="#//ScaWaveformFactory"/>
     </eOperations>
-    <eOperations name="fetchProfile" eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EString">
+    <eOperations name="fetchProfile" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString">
       <eParameters name="monitor" eType="#//IProgressMonitor"/>
     </eOperations>
     <eOperations name="fetchEventChannels" upperBound="-1" eType="#//ScaEventChannel">
@@ -752,28 +754,28 @@
         <details key="name" value="connectionPropertiesTransient"/>
       </eAnnotations>
     </eStructuralFeatures>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="autoConnect" eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EBoolean">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="autoConnect" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean">
       <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
         <details key="kind" value="attribute"/>
         <details key="name" value="autoConnect"/>
       </eAnnotations>
     </eStructuralFeatures>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="connected" lowerBound="1"
-        eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EBoolean"
-        changeable="false" volatile="true" transient="true" derived="true">
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean" changeable="false"
+        volatile="true" transient="true" derived="true">
       <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
         <details key="kind" value="attribute"/>
         <details key="name" value="connected"/>
       </eAnnotations>
     </eStructuralFeatures>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="identifier" eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EString"
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="identifier" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"
         transient="true" unsettable="true">
       <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
         <details key="kind" value="attribute"/>
         <details key="name" value="identifier"/>
       </eAnnotations>
     </eStructuralFeatures>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" lowerBound="1" eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EString"
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"
         iD="true">
       <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
         <details key="kind" value="attribute"/>
@@ -795,7 +797,7 @@
         <details key="name" value="state"/>
       </eAnnotations>
     </eStructuralFeatures>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="profile" eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EString"
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="profile" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"
         transient="true" unsettable="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="eventChannels" upperBound="-1"
         eType="#//ScaEventChannel" unsettable="true" containment="true"/>
@@ -826,15 +828,15 @@
       <details key="kind" value="elementOnly"/>
     </eAnnotations>
     <eOperations name="findDomain" eType="#//ScaDomainManager">
-      <eParameters name="domainName" eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EString"/>
+      <eParameters name="domainName" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     </eOperations>
     <eOperations name="createDomain" eType="#//ScaDomainManager">
-      <eParameters name="name" eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EString"/>
-      <eParameters name="autoConnect" eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EBoolean"/>
+      <eParameters name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+      <eParameters name="autoConnect" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
       <eParameters name="connectionProperties">
-        <eGenericType eClassifier="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EMap">
-          <eTypeArguments eClassifier="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EString"/>
-          <eTypeArguments eClassifier="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EString"/>
+        <eGenericType eClassifier="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EMap">
+          <eTypeArguments eClassifier="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+          <eTypeArguments eClassifier="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
         </eGenericType>
       </eParameters>
     </eOperations>
@@ -888,11 +890,11 @@
         <details key="name" value="children"/>
       </eAnnotations>
     </eStructuralFeatures>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="imageDesc" eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EJavaObject"
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="imageDesc" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EJavaObject"
         unsettable="true"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="directory" unique="false"
-        eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EBoolean"/>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EString"/>
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="ScaFileSystem" abstract="true">
     <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
@@ -903,7 +905,7 @@
       <eBounds eClassifier="ecore:EClass platform:/plugin/mil.jpeojtrs.sca.cf/model/cf.ecore#//FileSystem"/>
     </eTypeParameters>
     <eOperations name="createURI" eType="ecore:EDataType platform:/plugin/mil.jpeojtrs.sca.spd/model/spd.ecore#//URI">
-      <eParameters name="path" eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EString"/>
+      <eParameters name="path" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     </eOperations>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="fileSystemURI" lowerBound="1"
         eType="#//URI" transient="true" defaultValueLiteral="" derived="true">
@@ -942,7 +944,7 @@
     <eTypeParameters name="P2">
       <eBounds eClassifier="ecore:EClass platform:/plugin/mil.jpeojtrs.sca.cf/model/cf.ecore#//Object"/>
     </eTypeParameters>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" lowerBound="1" eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EString">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString">
       <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
         <details key="kind" value="attribute"/>
         <details key="name" value="name"/>
@@ -955,7 +957,7 @@
       </eAnnotations>
       <eGenericType eTypeParameter="#//ScaPort/P"/>
     </eStructuralFeatures>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="repid" lowerBound="1" eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EString"
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="repid" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"
         changeable="false" volatile="true" transient="true" derived="true">
       <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
         <details key="kind" value="attribute"/>
@@ -983,7 +985,7 @@
       <details key="name" value="ScaSimpleProperty"/>
       <details key="kind" value="empty"/>
     </eAnnotations>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="value" eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EJavaObject"
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="value" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EJavaObject"
         transient="true">
       <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
         <details key="kind" value="attribute"/>
@@ -1004,7 +1006,7 @@
     </eOperations>
     <eOperations name="getValue" eType="#//ObjectArray"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="values" unique="false"
-        upperBound="-1" eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EJavaObject"
+        upperBound="-1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EJavaObject"
         transient="true">
       <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
         <details key="kind" value="attribute"/>
@@ -1021,7 +1023,7 @@
       <details key="kind" value="empty"/>
     </eAnnotations>
     <eOperations name="getSimple" eType="#//ScaSimpleProperty">
-      <eParameters name="id" eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EString"/>
+      <eParameters name="id" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     </eOperations>
     <eStructuralFeatures xsi:type="ecore:EReference" name="simples" upperBound="-1"
         eType="#//ScaSimpleProperty" transient="true" containment="true">
@@ -1058,7 +1060,7 @@
   <eClassifiers xsi:type="ecore:EClass" name="ScaConnection">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="data" eType="ecore:EDataType platform:/plugin/mil.jpeojtrs.sca.cf/model/extended.ecore#//UsesConnection"
         transient="true"/>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="id" eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EString"
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="id" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"
         changeable="false" volatile="true" transient="true" derived="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="port" lowerBound="1" eType="#//ScaUsesPort"
         transient="true" eOpposite="#//ScaUsesPort/connections"/>
@@ -1071,22 +1073,22 @@
     <eOperations name="fetchComponents" upperBound="-1" eType="#//ScaComponent">
       <eParameters name="monitor" eType="#//IProgressMonitor"/>
     </eOperations>
-    <eOperations name="fetchIdentifier" eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EString">
+    <eOperations name="fetchIdentifier" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString">
       <eParameters name="monitor" eType="#//IProgressMonitor"/>
     </eOperations>
-    <eOperations name="fetchName" eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EString">
+    <eOperations name="fetchName" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString">
       <eParameters name="monitor" eType="#//IProgressMonitor"/>
     </eOperations>
-    <eOperations name="fetchStarted" eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EBooleanObject">
+    <eOperations name="fetchStarted" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBooleanObject">
       <eParameters name="monitor" eType="#//IProgressMonitor"/>
     </eOperations>
     <eOperations name="findComponent" eType="#//ScaComponent">
-      <eParameters name="instantiationId" eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EString"/>
+      <eParameters name="instantiationId" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     </eOperations>
     <eOperations name="getScaComponent" eType="#//ScaComponent">
-      <eParameters name="instantiationId" eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EString"/>
+      <eParameters name="instantiationId" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     </eOperations>
-    <eOperations name="fetchProfile" eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EString">
+    <eOperations name="fetchProfile" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString">
       <eParameters name="monitor" eType="#//IProgressMonitor"/>
     </eOperations>
     <eStructuralFeatures xsi:type="ecore:EReference" name="components" upperBound="-1"
@@ -1111,14 +1113,14 @@
         <details key="name" value="domMgr"/>
       </eAnnotations>
     </eStructuralFeatures>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="identifier" eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EString"
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="identifier" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"
         unsettable="true" derived="true" iD="true">
       <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
         <details key="kind" value="attribute"/>
         <details key="name" value="identifier"/>
       </eAnnotations>
     </eStructuralFeatures>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EString"
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"
         unsettable="true" derived="true">
       <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
         <details key="kind" value="attribute"/>
@@ -1127,7 +1129,7 @@
     </eStructuralFeatures>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="started" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//BooleanObject"
         transient="true" unsettable="true"/>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="profile" eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EString"
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="profile" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"
         transient="true" unsettable="true"/>
     <eGenericSuperTypes eClassifier="#//ScaPropertyContainer">
       <eTypeArguments eClassifier="ecore:EClass platform:/plugin/mil.jpeojtrs.sca.cf/model/cf.ecore#//Application"/>
@@ -1143,17 +1145,17 @@
     </eAnnotations>
     <eOperations name="createWaveform" eType="#//ScaWaveform" eExceptions="ecore:EDataType platform:/plugin/mil.jpeojtrs.sca.cf/model/cf.ecore#//CreateApplicationError ecore:EDataType platform:/plugin/mil.jpeojtrs.sca.cf/model/cf.ecore#//CreateApplicationRequestError ecore:EDataType platform:/plugin/mil.jpeojtrs.sca.cf/model/cf.ecore#//InvalidInitConfiguration ecore:EDataType platform:/plugin/mil.jpeojtrs.sca.cf/model/cf.ecore#//CreateApplicationInsufficientCapacityError">
       <eParameters name="monitor" eType="#//IProgressMonitor"/>
-      <eParameters name="name" eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EString"/>
+      <eParameters name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
       <eParameters name="initConfiguration" eType="ecore:EDataType platform:/plugin/mil.jpeojtrs.sca.cf/model/cf.ecore#//DataTypeArray"/>
       <eParameters name="deviceAssignments" eType="ecore:EDataType platform:/plugin/mil.jpeojtrs.sca.cf/model/cf.ecore#//DeviceAssignmentTypeArray"/>
     </eOperations>
-    <eOperations name="fetchIdentifier" eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EString">
+    <eOperations name="fetchIdentifier" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString">
       <eParameters name="monitor" eType="#//IProgressMonitor"/>
     </eOperations>
-    <eOperations name="fetchName" eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EString">
+    <eOperations name="fetchName" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString">
       <eParameters name="monitor" eType="#//IProgressMonitor"/>
     </eOperations>
-    <eOperations name="fetchProfile" eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EString">
+    <eOperations name="fetchProfile" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString">
       <eParameters name="monitor" eType="#//IProgressMonitor"/>
     </eOperations>
     <eStructuralFeatures xsi:type="ecore:EReference" name="domMgr" lowerBound="1"
@@ -1163,21 +1165,21 @@
         <details key="name" value="domMgr"/>
       </eAnnotations>
     </eStructuralFeatures>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="identifier" eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EString"
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="identifier" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"
         unsettable="true" derived="true" iD="true">
       <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
         <details key="kind" value="attribute"/>
         <details key="name" value="identifier"/>
       </eAnnotations>
     </eStructuralFeatures>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EString"
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"
         unsettable="true" derived="true">
       <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
         <details key="kind" value="attribute"/>
         <details key="name" value="name"/>
       </eAnnotations>
     </eStructuralFeatures>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="profile" eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EString"
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="profile" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"
         transient="true" unsettable="true"/>
     <eGenericSuperTypes eClassifier="#//CorbaObjWrapper">
       <eTypeArguments eClassifier="ecore:EClass platform:/plugin/mil.jpeojtrs.sca.cf/model/cf.ecore#//ApplicationFactory"/>
@@ -1192,13 +1194,13 @@
       <details key="name" value="StringToStringMap"/>
       <details key="kind" value="empty"/>
     </eAnnotations>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="key" lowerBound="1" eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EString">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="key" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString">
       <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
         <details key="kind" value="attribute"/>
         <details key="name" value="key"/>
       </eAnnotations>
     </eStructuralFeatures>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="value" lowerBound="1" eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EString">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="value" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString">
       <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
         <details key="kind" value="attribute"/>
         <details key="name" value="value"/>
@@ -1259,5 +1261,10 @@
     <eGenericSuperTypes eClassifier="#//CorbaObjWrapper">
       <eTypeArguments eClassifier="#//EventChannel"/>
     </eGenericSuperTypes>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="StringToObjectMap" instanceClassName="java.util.Map$Entry">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="key" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="value" eType="ecore:EClass platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EObject"
+        containment="true"/>
   </eClassifiers>
 </ecore:EPackage>

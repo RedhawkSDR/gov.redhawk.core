@@ -37,30 +37,33 @@ public enum RefreshDepth implements Enumerator {
 	 * @generated
 	 * @ordered
 	 */
-	NONE(0, "NONE", "NONE"), /**
-								* The '<em><b>SELF</b></em>' literal object.
-								* <!-- begin-user-doc -->
-								* <!-- end-user-doc -->
-								* @see #SELF_VALUE
-								* @generated
-								* @ordered
-								*/
-	SELF(1, "SELF", "SELF"), /**
-								* The '<em><b>CHILDREN</b></em>' literal object.
-								* <!-- begin-user-doc -->
-								* <!-- end-user-doc -->
-								* @see #CHILDREN_VALUE
-								* @generated
-								* @ordered
-								*/
-	CHILDREN(2, "CHILDREN", "CHILDREN"), /**
-											* The '<em><b>FULL</b></em>' literal object.
-											* <!-- begin-user-doc -->
-											* <!-- end-user-doc -->
-											* @see #FULL_VALUE
-											* @generated
-											* @ordered
-											*/
+	NONE(0, "NONE", "NONE"),
+	/**
+	 * The '<em><b>SELF</b></em>' literal object.
+	 * <!-- begin-user-doc -->
+	* <!-- end-user-doc -->
+	 * @see #SELF_VALUE
+	 * @generated
+	 * @ordered
+	 */
+	SELF(1, "SELF", "SELF"),
+	/**
+	 * The '<em><b>CHILDREN</b></em>' literal object.
+	 * <!-- begin-user-doc -->
+	* <!-- end-user-doc -->
+	 * @see #CHILDREN_VALUE
+	 * @generated
+	 * @ordered
+	 */
+	CHILDREN(2, "CHILDREN", "CHILDREN"),
+	/**
+	 * The '<em><b>FULL</b></em>' literal object.
+	 * <!-- begin-user-doc -->
+	* <!-- end-user-doc -->
+	 * @see #FULL_VALUE
+	 * @generated
+	 * @ordered
+	 */
 	FULL(3, "FULL", "FULL");
 
 	/**

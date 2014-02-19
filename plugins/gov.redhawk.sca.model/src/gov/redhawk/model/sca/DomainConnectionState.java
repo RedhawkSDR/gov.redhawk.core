@@ -45,30 +45,33 @@ public enum DomainConnectionState implements Enumerator {
 	 * @generated
 	 * @ordered
 	 */
-	CONNECTING(2, "connecting", "connecting"), /**
-												* The '<em><b>Connected</b></em>' literal object.
-												* <!-- begin-user-doc -->
-												* <!-- end-user-doc -->
-												* @see #CONNECTED_VALUE
-												* @generated
-												* @ordered
-												*/
-	CONNECTED(3, "connected", "connected"), /**
-											* The '<em><b>Disconnecting</b></em>' literal object.
-											* <!-- begin-user-doc -->
-											* <!-- end-user-doc -->
-											* @see #DISCONNECTING_VALUE
-											* @generated
-											* @ordered
-											*/
-	DISCONNECTING(4, "disconnecting", "disconnecting"), /**
-														* The '<em><b>Failed</b></em>' literal object.
-														* <!-- begin-user-doc -->
-														* <!-- end-user-doc -->
-														* @see #FAILED_VALUE
-														* @generated
-														* @ordered
-														*/
+	CONNECTING(2, "connecting", "connecting"),
+	/**
+	 * The '<em><b>Connected</b></em>' literal object.
+	 * <!-- begin-user-doc -->
+	* <!-- end-user-doc -->
+	 * @see #CONNECTED_VALUE
+	 * @generated
+	 * @ordered
+	 */
+	CONNECTED(3, "connected", "connected"),
+	/**
+	 * The '<em><b>Disconnecting</b></em>' literal object.
+	 * <!-- begin-user-doc -->
+	* <!-- end-user-doc -->
+	 * @see #DISCONNECTING_VALUE
+	 * @generated
+	 * @ordered
+	 */
+	DISCONNECTING(4, "disconnecting", "disconnecting"),
+	/**
+	 * The '<em><b>Failed</b></em>' literal object.
+	 * <!-- begin-user-doc -->
+	* <!-- end-user-doc -->
+	 * @see #FAILED_VALUE
+	 * @generated
+	 * @ordered
+	 */
 	FAILED(-1, "failed", "failed");
 
 	/**

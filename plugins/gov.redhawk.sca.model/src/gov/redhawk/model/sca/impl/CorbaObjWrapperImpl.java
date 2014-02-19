@@ -20,16 +20,13 @@ import gov.redhawk.model.sca.commands.SetLocalAttributeCommand;
 import gov.redhawk.model.sca.commands.UnsetLocalAttributeCommand;
 import gov.redhawk.model.sca.commands.VersionedFeature;
 import gov.redhawk.model.sca.commands.VersionedFeature.Transaction;
-
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeoutException;
-
 import mil.jpeojtrs.sca.util.ProtectedThreadExecutor;
-
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
@@ -37,8 +34,15 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.SubMonitor;
 import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.emf.common.notify.Notification;
+import org.eclipse.emf.common.notify.NotificationChain;
+import org.eclipse.emf.common.util.EMap;
 import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.EStructuralFeature;
+import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
+import org.eclipse.emf.ecore.util.EcoreEMap;
+import org.eclipse.emf.ecore.util.InternalEList;
 import org.omg.CORBA.SystemException;
 
 /**
@@ -52,6 +56,7 @@ import org.omg.CORBA.SystemException;
  *   <li>{@link gov.redhawk.model.sca.impl.CorbaObjWrapperImpl#getIor <em>Ior</em>}</li>
  *   <li>{@link gov.redhawk.model.sca.impl.CorbaObjWrapperImpl#getObj <em>Obj</em>}</li>
  *   <li>{@link gov.redhawk.model.sca.impl.CorbaObjWrapperImpl#getCorbaObj <em>Corba Obj</em>}</li>
+ *   <li>{@link gov.redhawk.model.sca.impl.CorbaObjWrapperImpl#getFeatureData <em>Feature Data</em>}</li>
  * </ul>
  * </p>
  *
@@ -128,6 +133,17 @@ public abstract class CorbaObjWrapperImpl< T extends org.omg.CORBA.Object > exte
 	 * @ordered
 	 */
 	protected boolean corbaObjESet;
+
+	/**
+	 * The cached value of the '{@link #getFeatureData() <em>Feature Data</em>}' map.
+	 * <!-- begin-user-doc -->
+	 * @since 19.0
+	 * <!-- end-user-doc -->
+	 * @see #getFeatureData()
+	 * @generated
+	 * @ordered
+	 */
+	protected EMap<String, EObject> featureData;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -296,6 +312,20 @@ public abstract class CorbaObjWrapperImpl< T extends org.omg.CORBA.Object > exte
 	@Override
 	public boolean isSetCorbaObj() {
 		return corbaObjESet;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * @since 19.0
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EMap<String, EObject> getFeatureData() {
+		if (featureData == null) {
+			featureData = new EcoreEMap<String, EObject>(ScaPackage.Literals.STRING_TO_OBJECT_MAP, StringToObjectMapImpl.class, this,
+				ScaPackage.CORBA_OBJ_WRAPPER__FEATURE_DATA);
+		}
+		return featureData;
 	}
 
 	private Map<String, Boolean> isAMap = Collections.synchronizedMap(new HashMap<String, Boolean>());
@@ -467,6 +497,20 @@ public abstract class CorbaObjWrapperImpl< T extends org.omg.CORBA.Object > exte
 	 * @generated
 	 */
 	@Override
+	public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
+		switch (featureID) {
+		case ScaPackage.CORBA_OBJ_WRAPPER__FEATURE_DATA:
+			return ((InternalEList< ? >) getFeatureData()).basicRemove(otherEnd, msgs);
+		}
+		return super.eInverseRemove(otherEnd, featureID, msgs);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
 		case ScaPackage.CORBA_OBJ_WRAPPER__IOR:
@@ -475,6 +519,11 @@ public abstract class CorbaObjWrapperImpl< T extends org.omg.CORBA.Object > exte
 			return getObj();
 		case ScaPackage.CORBA_OBJ_WRAPPER__CORBA_OBJ:
 			return getCorbaObj();
+		case ScaPackage.CORBA_OBJ_WRAPPER__FEATURE_DATA:
+			if (coreType)
+				return getFeatureData();
+			else
+				return getFeatureData().map();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -497,6 +546,9 @@ public abstract class CorbaObjWrapperImpl< T extends org.omg.CORBA.Object > exte
 		case ScaPackage.CORBA_OBJ_WRAPPER__CORBA_OBJ:
 			setCorbaObj((org.omg.CORBA.Object) newValue);
 			return;
+		case ScaPackage.CORBA_OBJ_WRAPPER__FEATURE_DATA:
+			((EStructuralFeature.Setting) getFeatureData()).set(newValue);
+			return;
 		}
 		super.eSet(featureID, newValue);
 	}
@@ -518,6 +570,9 @@ public abstract class CorbaObjWrapperImpl< T extends org.omg.CORBA.Object > exte
 		case ScaPackage.CORBA_OBJ_WRAPPER__CORBA_OBJ:
 			unsetCorbaObj();
 			return;
+		case ScaPackage.CORBA_OBJ_WRAPPER__FEATURE_DATA:
+			getFeatureData().clear();
+			return;
 		}
 		super.eUnset(featureID);
 	}
@@ -536,6 +591,8 @@ public abstract class CorbaObjWrapperImpl< T extends org.omg.CORBA.Object > exte
 			return isSetObj();
 		case ScaPackage.CORBA_OBJ_WRAPPER__CORBA_OBJ:
 			return isSetCorbaObj();
+		case ScaPackage.CORBA_OBJ_WRAPPER__FEATURE_DATA:
+			return featureData != null && !featureData.isEmpty();
 		}
 		return super.eIsSet(featureID);
 	}
@@ -596,8 +653,8 @@ public abstract class CorbaObjWrapperImpl< T extends org.omg.CORBA.Object > exte
 	@Override
 	public void dispose() {
 		// END GENERATED CODE
-		unsetCorbaObj();
 		super.dispose();
+		unsetCorbaObj();
 		// BEGIN GENERATED CODE
 	}
 

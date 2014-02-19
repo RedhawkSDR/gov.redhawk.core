@@ -16,21 +16,17 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.HashMap;
 import java.util.Map;
-
 import gov.redhawk.model.sca.ScaDeviceManager;
 import gov.redhawk.model.sca.ScaDeviceManagerFileSystem;
-import gov.redhawk.model.sca.ScaDomainManager;
 import gov.redhawk.model.sca.ScaPackage;
 import mil.jpeojtrs.sca.util.QueryParser;
 import mil.jpeojtrs.sca.util.ScaFileSystemConstants;
-
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.util.EcoreUtil;
-
 import CF.FileSystem;
 import CF.FileSystemHelper;
 
@@ -264,7 +260,7 @@ public class ScaDeviceManagerFileSystemImpl extends ScaFileSystemImpl<FileSystem
 			}
 			devMgrName = devMgr.getLabel();
 		}
-		
+
 		try {
 			return createFileSystemURI(ior, domMgrName, devMgrName);
 		} catch (final URISyntaxException e) {

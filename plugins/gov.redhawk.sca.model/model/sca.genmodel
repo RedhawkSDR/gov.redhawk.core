@@ -67,6 +67,7 @@
       <genFeatures property="Readonly" notify="false" createChild="false" ecoreFeature="ecore:EAttribute sca.ecore#//CorbaObjWrapper/ior"/>
       <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EAttribute sca.ecore#//CorbaObjWrapper/obj"/>
       <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EAttribute sca.ecore#//CorbaObjWrapper/corbaObj"/>
+      <genFeatures property="None" createChild="false" ecoreFeature="ecore:EReference sca.ecore#//CorbaObjWrapper/featureData"/>
       <genOperations ecoreOperation="sca.ecore#//CorbaObjWrapper/exists"/>
       <genOperations ecoreOperation="sca.ecore#//CorbaObjWrapper/fetchAttributes">
         <genParameters ecoreParameter="sca.ecore#//CorbaObjWrapper/fetchAttributes/monitor"/>
@@ -467,6 +468,10 @@
     <genClasses image="false" ecoreClass="sca.ecore#//IRefreshable"/>
     <genClasses ecoreClass="sca.ecore#//ScaEventChannel">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute sca.ecore#//ScaEventChannel/name"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="sca.ecore#//StringToObjectMap">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute sca.ecore#//StringToObjectMap/key"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute sca.ecore#//StringToObjectMap/value"/>
     </genClasses>
   </genPackages>
 </genmodel:GenModel>
