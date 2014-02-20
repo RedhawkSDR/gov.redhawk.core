@@ -565,6 +565,7 @@ public class ScaItemProviderAdapterFactory extends ScaAdapterFactory implements 
 	/**
 	 * This keeps track of the one adapter used for all {@link java.util.Map.Entry} instances.
 	 * <!-- begin-user-doc -->
+	 * @since 12.2
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
