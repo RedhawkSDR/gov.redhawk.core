@@ -96,7 +96,7 @@ public class PlotPreferencePage extends FieldEditorPreferencePage implements IWo
 				FieldEditor pe = e.next();
 				pe.store();
 				// TODO How do we we do this for block preferences, I don't have access to the method
-				//				pe.setPresentsDefaultValue(false);   
+				//				pe.setPresentsDefaultValue(false);
 			}
 		}
 		return true;
@@ -112,13 +112,9 @@ public class PlotPreferencePage extends FieldEditorPreferencePage implements IWo
 	public void createFieldEditors() {
 		if (workbench != null) {
 			addField(createModesField());
-
-			OverridableIntegerFieldEditor frameSizeField = createFrameSizeField();
-			addField(frameSizeField);
-
-			addField(new BooleanFieldEditor(PlotPreferences.ENABLE_CONFIGURE_MENU_USING_MOUSE.getName(), "&Enable plot configure menu using mouse",
-				getFieldEditorParent()));
-			addField(new BooleanFieldEditor(PlotPreferences.ENABLE_QUICK_CONTROLS.getName(), "Enable &quick access control widgets", getFieldEditorParent()));
+			addField(createFrameSizeField());
+			addField(createConfigureMenuField(getFieldEditorParent()));
+			addField(createQuickControlsField());
 		} else {
 			if (isBlock) {
 				addField(createFrameSizeField());
@@ -127,33 +123,37 @@ public class PlotPreferencePage extends FieldEditorPreferencePage implements IWo
 			} else {
 				/*
 				 * Page settings store is Plot Settings
-				 * Block Store is Nxm Block Settings
+				 * Block setting store is Nxm Block Settings
 				 */
 				addField(createModesField());
 				if (blockPreferenceStore != null) {
-					OverridableIntegerFieldEditor frameSizeField = createFrameSizeField();
-					blockPreferences.add(frameSizeField);
+					blockPreferences.add(createFrameSizeField());
 				}
 
-				OverridableDoubleFieldEditor minField = new OverridableDoubleFieldEditor(PlotPreferences.MIN.getName(), PlotPreferences.MIN_OVERRIDE.getName(),
-					"&Min:", getFieldEditorParent());
+				OverridableDoubleFieldEditor minField = new OverridableDoubleFieldEditor(PlotPreferences.MIN.getName(),
+					PlotPreferences.MIN_OVERRIDE.getName(), "&Min:", getFieldEditorParent());
 				addField(minField);
 
-				OverridableDoubleFieldEditor maxField = new OverridableDoubleFieldEditor(PlotPreferences.MAX.getName(), PlotPreferences.MAX_OVERRIDE.getName(),
-					"&Max:", getFieldEditorParent());
+				OverridableDoubleFieldEditor maxField = new OverridableDoubleFieldEditor(PlotPreferences.MAX.getName(),
+					PlotPreferences.MAX_OVERRIDE.getName(), "&Max:", getFieldEditorParent());
 				addField(maxField);
 
 				final Composite booleanControls = new Composite(getFieldEditorParent(), SWT.None);
-				addField(new BooleanFieldEditor(PlotPreferences.ENABLE_CONFIGURE_MENU_USING_MOUSE.getName(), "&Enable plot configure menu using mouse",
-					booleanControls));
+				addField(createConfigureMenuField(booleanControls));
 				booleanControls.setLayoutData(GridDataFactory.fillDefaults().grab(true, false).span(2, 1).create());
+
 				if (blockPreferenceStore != null) {
-					blockPreferences.add(new BooleanFieldEditor(PlotPreferences.ENABLE_QUICK_CONTROLS.getName(), "Enable &quick access control widgets",
-						getFieldEditorParent()));
+					blockPreferences.add(createQuickControlsField());
 				}
 				//				createAdvancedFields();
 			}
 		}
+	}
+
+	private BooleanFieldEditor createConfigureMenuField(Composite parent) {
+		return new BooleanFieldEditor(PlotPreferences.ENABLE_CONFIGURE_MENU_USING_MOUSE.getName(),
+			"&Enable plot configure menu using mouse",
+			parent);
 	}
 
 	private OverridableIntegerFieldEditor createFrameSizeField() {
@@ -162,6 +162,12 @@ public class PlotPreferencePage extends FieldEditorPreferencePage implements IWo
 		frameSizeField.setErrorMessage("Framesize must be a positive integer >= 2");
 		frameSizeField.setValidRange(2, Integer.MAX_VALUE);
 		return frameSizeField;
+	}
+
+	private BooleanFieldEditor createQuickControlsField() {
+		return new BooleanFieldEditor(PlotPreferences.ENABLE_QUICK_CONTROLS.getName(),
+			"Enable &quick access control widgets",
+			getFieldEditorParent());
 	}
 
 	private void creatBlockAdancedFields() {
