@@ -11,6 +11,7 @@
  */
 package gov.redhawk.ui.port.nxmplot;
 
+import gov.redhawk.internal.ui.port.nxmplot.handlers.PlotPortHandler;
 import gov.redhawk.model.sca.IDisposable;
 import gov.redhawk.model.sca.ScaPackage;
 import gov.redhawk.model.sca.ScaUsesPort;
@@ -352,7 +353,9 @@ public class PlotPageBook2 extends Composite {
 
 		final ArrayList<INxmBlock> nxmBlocksForSource = new ArrayList<INxmBlock>();
 		INxmBlock startingBlock;
-		if (scaPort._is_a(dataSDDSHelper.id())) {
+		String idl = scaPort.getRepid();
+		if (dataSDDSHelper.id().equals(idl)) {
+//		if (scaPort._is_a(dataSDDSHelper.id())) { // <-- TODO: why does not this NOT work
 			SddsNxmBlockSettings sddsSettings = plotSource.getSddsBlockSettings();
 			if (sddsSettings == null) {
 				sddsSettings = new SddsNxmBlockSettings();
@@ -360,13 +363,17 @@ public class PlotPageBook2 extends Composite {
 			}
 			BulkIOSddsNxmBlock sddsBlock = new BulkIOSddsNxmBlock(currentPlotWidget, scaPort, sddsSettings);
 			startingBlock = sddsBlock;
-		} else {
+		} else if (PlotPortHandler.isBulkIOPortSupported(idl)) {
 			BulkIONxmBlockSettings bulkioSettings = plotSource.getBulkIOBlockSettings();
 			if (bulkioSettings == null) {
 				bulkioSettings = new BulkIONxmBlockSettings();
 			}
 			BulkIONxmBlock bulkioBlock = new BulkIONxmBlock(currentPlotWidget, scaPort, bulkioSettings);
 			startingBlock = bulkioBlock;
+		} else {
+			StatusManager.getManager().handle(new Status(IStatus.WARNING, PlotActivator.PLUGIN_ID,
+				"Not adding source for unsupported Port: " + idl), StatusManager.LOG);
+			return null;
 		}
 		PlotPageBook2.TRACE_LOG.trace("PlotPageBook2.addSource(.) startingBlock = {0}", startingBlock);
 		nxmBlocksForSource.add(startingBlock);
