@@ -82,7 +82,7 @@ public class FftNxmBlockSettings implements Cloneable {
 		}
 
 		public static List<OutputType> getStandardTypes() {
-			return Arrays.asList(OutputType.NORMAL, OutputType.PSD, OutputType.MAG_SQ);
+			return Arrays.asList(OutputType.NORMAL, OutputType.MAG_SQ, OutputType.PSD);
 		}
 	}
 

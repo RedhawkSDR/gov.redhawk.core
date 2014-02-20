@@ -832,6 +832,14 @@ public class ScaSwitch< T1 > extends Switch<T1> {
 				result = defaultCase(theEObject);
 			return result;
 		}
+		case ScaPackage.STRING_TO_OBJECT_MAP: {
+			@SuppressWarnings("unchecked")
+			Map.Entry<String, EObject> stringToObjectMap = (Map.Entry<String, EObject>) theEObject;
+			T1 result = caseStringToObjectMap(stringToObjectMap);
+			if (result == null)
+				result = defaultCase(theEObject);
+			return result;
+		}
 		default:
 			return defaultCase(theEObject);
 		}
@@ -1406,6 +1414,22 @@ public class ScaSwitch< T1 > extends Switch<T1> {
 	 * @generated
 	 */
 	public T1 caseScaEventChannel(ScaEventChannel object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>String To Object Map</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * @since 19.0
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>String To Object Map</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T1 caseStringToObjectMap(Map.Entry<String, EObject> object) {
 		return null;
 	}
 

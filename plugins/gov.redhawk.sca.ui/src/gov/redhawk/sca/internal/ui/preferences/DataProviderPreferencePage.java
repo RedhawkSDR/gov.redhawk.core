@@ -14,13 +14,12 @@ package gov.redhawk.sca.internal.ui.preferences;
 import gov.redhawk.model.sca.IScaDataProviderServiceDescriptor;
 import gov.redhawk.model.sca.ScaModelPlugin;
 import gov.redhawk.sca.model.preferences.ScaModelPreferenceContants;
-import gov.redhawk.sca.ui.ScaUiPlugin;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import org.eclipse.jface.preference.IPreferenceStore;
+import org.eclipse.core.runtime.preferences.InstanceScope;
 import org.eclipse.jface.preference.PreferencePage;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.CheckStateChangedEvent;
@@ -33,6 +32,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPreferencePage;
+import org.eclipse.ui.preferences.ScopedPreferenceStore;
 
 /**
  * 
@@ -61,7 +61,7 @@ public class DataProviderPreferencePage extends PreferencePage implements IWorkb
 	 * 
 	 */
 	public DataProviderPreferencePage() {
-		
+
 	}
 
 	/**
@@ -76,7 +76,7 @@ public class DataProviderPreferencePage extends PreferencePage implements IWorkb
 			d.enabled = !disabledProviders.contains(d.desc.getId());
 			this.dataProviders.add(d);
 		}
-		
+
 		this.viewer = CheckboxTableViewer.newCheckList(parent, SWT.BORDER);
 		this.viewer.setContentProvider(new ArrayContentProvider());
 		this.viewer.setLabelProvider(new LabelProvider());
@@ -122,11 +122,6 @@ public class DataProviderPreferencePage extends PreferencePage implements IWorkb
 
 	@Override
 	public void init(final IWorkbench workbench) {
-		setPreferenceStore(ScaUiPlugin.getDefault().getScaPreferenceStore());
-	}
-
-	@Override
-	public IPreferenceStore getPreferenceStore() {
-		return super.getPreferenceStore();
+		setPreferenceStore(new ScopedPreferenceStore(InstanceScope.INSTANCE, ScaModelPlugin.ID));
 	}
 }

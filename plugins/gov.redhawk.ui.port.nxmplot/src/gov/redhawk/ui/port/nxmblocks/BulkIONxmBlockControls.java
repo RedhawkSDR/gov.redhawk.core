@@ -69,12 +69,11 @@ public class BulkIONxmBlockControls {
 		connectionIDField = new Text(container, SWT.BORDER);
 		connectionIDField.setLayoutData(GridDataFactory.fillDefaults().grab(true, false).create());
 		connectionIDField.setToolTipText("Custom Port connection ID to use vs a generated one.");
-		/**
-		if (this.settings.getConnectionID() != null) {
+
+		if (this.settings.getConnectionID() != null && !this.settings.getConnectionID().isEmpty()) {
 			connectionIDField.setEditable(false); // cannot change custom connection ID after it has been set at this time
 			connectionIDField.setEnabled(false);
 		}
-		 */
 
 		// === sample rate ===
 		label = new Label(container, SWT.NONE);

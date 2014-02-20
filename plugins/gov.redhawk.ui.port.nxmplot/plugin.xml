@@ -47,6 +47,16 @@
                name="Use FFT"
                optional="true">
          </commandParameter>
+         <commandParameter
+               id="gov.redhawk.ui.port.nxmplot.connectionID"
+               name="Connection ID to use"
+               optional="true">
+         </commandParameter>
+         <commandParameter
+               id="gov.redhawk.ui.port.nxmplot.secondaryId"
+               name="Secondary ID to use"
+               optional="true">
+         </commandParameter>
       </command>
       
    </extension>
@@ -55,6 +65,10 @@
       <menuContribution
             allPopups="true"
             locationURI="popup:org.eclipse.ui.popup.any?before=additions">
+         <separator
+               name="gov.redhawk.ui.port.nxmplot.separator.start"
+               visible="true">
+         </separator>
          <command
                commandId="gov.redhawk.ui.port.nxmplot.command.plot"
                icon="icons/SDU.gif"
@@ -228,6 +242,10 @@
                </iterate>
             </visibleWhen>
          </command>
+         <separator
+               name="gov.redhawk.ui.port.nxmplot.separator.end"
+               visible="false">
+         </separator>
       </menuContribution>
    </extension>
    <extension

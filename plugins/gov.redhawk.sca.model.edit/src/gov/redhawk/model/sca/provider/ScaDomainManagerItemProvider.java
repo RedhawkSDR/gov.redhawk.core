@@ -349,7 +349,7 @@ public class ScaDomainManagerItemProvider extends ScaPropertyContainerItemProvid
 			this.deviceManagersItemProvider = null;
 		}
 	}
-	
+
 	/**
 	 * @since 12.2
 	 */

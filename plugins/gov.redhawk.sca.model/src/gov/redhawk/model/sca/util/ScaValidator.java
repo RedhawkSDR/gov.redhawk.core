@@ -221,6 +221,8 @@ public class ScaValidator extends EObjectValidator {
 			return validateIRefreshable((IRefreshable) value, diagnostics, context);
 		case ScaPackage.SCA_EVENT_CHANNEL:
 			return validateScaEventChannel((ScaEventChannel) value, diagnostics, context);
+		case ScaPackage.STRING_TO_OBJECT_MAP:
+			return validateStringToObjectMap((Map.Entry< ? , ? >) value, diagnostics, context);
 		case ScaPackage.DOMAIN_CONNECTION_STATE:
 			return validateDomainConnectionState((DomainConnectionState) value, diagnostics, context);
 		case ScaPackage.REFRESH_DEPTH:
@@ -610,6 +612,16 @@ public class ScaValidator extends EObjectValidator {
 	 */
 	public boolean validateScaEventChannel(ScaEventChannel scaEventChannel, DiagnosticChain diagnostics, Map<Object, Object> context) {
 		return validate_EveryDefaultConstraint(scaEventChannel, diagnostics, context);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * @since 19.0
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public boolean validateStringToObjectMap(Map.Entry< ? , ? > stringToObjectMap, DiagnosticChain diagnostics, Map<Object, Object> context) {
+		return validate_EveryDefaultConstraint((EObject) stringToObjectMap, diagnostics, context);
 	}
 
 	/**

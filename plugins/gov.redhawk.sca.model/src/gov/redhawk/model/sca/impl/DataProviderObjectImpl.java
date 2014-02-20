@@ -306,6 +306,9 @@ public abstract class DataProviderObjectImpl extends IStatusProviderImpl impleme
 		List<IScaDataProviderServiceDescriptor> descriptors = DataProviderServicesRegistry.INSTANCE.getDataProvidersDescriptors();
 		final List<IScaDataProvider> newProviders = new ArrayList<IScaDataProvider>();
 		for (final IScaDataProviderServiceDescriptor desc : descriptors) {
+			if (desc.getService() == null) {
+				continue;
+			}
 			SafeRunner.run(new ISafeRunnable() {
 
 				@Override
@@ -488,9 +491,9 @@ public abstract class DataProviderObjectImpl extends IStatusProviderImpl impleme
 	@Override
 	public void dispose() {
 		// END GENERATED CODE
+		this.disposed = true;
 		detachDataProviders();
 		clearAllStatus();
-		this.disposed = true;
 		if (eNotificationRequired()) {
 			eNotify(new ENotificationImpl(this, Notification.SET, ScaPackage.DATA_PROVIDER_OBJECT__DISPOSED, false, this.disposed));
 		}

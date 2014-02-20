@@ -13,6 +13,8 @@
 package gov.redhawk.model.sca;
 
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.emf.common.util.EMap;
+import org.eclipse.emf.ecore.EObject;
 
 /**
  * <!-- begin-user-doc --> 
@@ -27,6 +29,7 @@ import org.eclipse.core.runtime.IProgressMonitor;
  *   <li>{@link gov.redhawk.model.sca.CorbaObjWrapper#getIor <em>Ior</em>}</li>
  *   <li>{@link gov.redhawk.model.sca.CorbaObjWrapper#getObj <em>Obj</em>}</li>
  *   <li>{@link gov.redhawk.model.sca.CorbaObjWrapper#getCorbaObj <em>Corba Obj</em>}</li>
+ *   <li>{@link gov.redhawk.model.sca.CorbaObjWrapper#getFeatureData <em>Feature Data</em>}</li>
  * </ul>
  * </p>
  *
@@ -199,6 +202,21 @@ public interface CorbaObjWrapper< T extends org.omg.CORBA.Object > extends DataP
 	 * @generated
 	 */
 	boolean isSetCorbaObj();
+
+	/**
+	 * Returns the value of the '<em><b>Feature Data</b></em>' map.
+	 * The key is of type {@link java.lang.String},
+	 * and the value is of type {@link org.eclipse.emf.ecore.EObject},
+	 * <!-- begin-user-doc -->
+	 * An extension point for contribute data related to the associated object.
+	 * @since 19.0
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Feature Data</em>' map.
+	 * @see gov.redhawk.model.sca.ScaPackage#getCorbaObjWrapper_FeatureData()
+	 * @model mapType="gov.redhawk.model.sca.StringToObjectMap<org.eclipse.emf.ecore.EString, org.eclipse.emf.ecore.EObject>"
+	 * @generated
+	 */
+	EMap<String, EObject> getFeatureData();
 
 	/**
 	 * <!-- begin-user-doc -->

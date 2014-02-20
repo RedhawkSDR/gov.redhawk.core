@@ -113,13 +113,13 @@ public class FftBlockPreferencePage extends FieldEditorPreferencePage implements
 
 	private ComboFieldEditor createOutputTypeField() {
 		List<String[]> values = new ArrayList<String[]>();
-		for (FftNxmBlockSettings.OutputType type : FftNxmBlockSettings.OutputType.getStandardTypes()) {
-			values.add(new String[] { type.getLabel(), type.toString() });
+		for (FftNxmBlockSettings.OutputType outputType : FftNxmBlockSettings.OutputType.getStandardTypes()) {
+			values.add(new String[] { outputType.getLabel(), outputType.toString() });
 		}
 
-		String[][] nameValue = values.toArray(new String[0][]);
-		ComboFieldEditor outputType = new ComboFieldEditor(FftPreferences.OUTPUT_TYPE.getName(), "&Output Type:", nameValue, getFieldEditorParent());
-		return outputType;
+		String[][] outputValues = values.toArray(new String[0][]);
+		ComboFieldEditor outputTypeField = new ComboFieldEditor(FftPreferences.OUTPUT_TYPE.getName(), "&Output Type:", outputValues, getFieldEditorParent());
+		return outputTypeField;
 	}
 
 	private FieldEditor createFftModesField() {

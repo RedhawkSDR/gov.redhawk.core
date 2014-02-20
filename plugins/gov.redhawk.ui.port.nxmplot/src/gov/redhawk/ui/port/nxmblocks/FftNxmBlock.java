@@ -154,8 +154,12 @@ public class FftNxmBlock extends AbstractNxmBlock<fft> {
 		setWindow(newSettings.getWindow());
 		setTransformSize(newSettings.getTransformSize());
 
-		//		this.settings.setOutputType(newSettings.getOutputType()); // TODO: save output type change for future streams?
-		//		setPipeSize(newSettings.getPipeSize()); // TODO can not change pipe size
+		setOutputType(newSettings.getOutputType());
+		setPipeSize(newSettings.getPipeSize());
+	}
+
+	protected void setOutputType(OutputType outputType) {
+		FftPreferences.OUTPUT_TYPE.setValue(getPreferences(), outputType.toString());
 	}
 
 	public void setTransformSize(int transformSize) {
@@ -219,12 +223,29 @@ public class FftNxmBlock extends AbstractNxmBlock<fft> {
 			window = windowType.toWindowString();
 		}
 
+		OutputType outputType = null;
+		if (FftPreferences.OUTPUT_TYPE.isEvent(event)) {
+			outputType = getOutputType();
+		}
+
 		Integer nfft = null;
 		if (FftPreferences.TRANSFORM_SIZE.isEvent(event)) {
 			nfft = getTransformSize();
 		}
 
-		// update actual FFT Command's settings
+		Integer pipeSize = null;
+		if (FftPreferences.PIPE_SIZE.isEvent(event) || FftPreferences.PIPE_SIZE_OVERRIDE.isEvent(event)) {
+			if (isSetPipeSize()) {
+				pipeSize = getPipeSize();
+			} else {
+				pipeSize = FftPreferences.PIPE_SIZE.getDefaultValue();
+			}
+			if (pipeSize <= 0) { // PANIC!!
+				pipeSize = 131072;
+			}
+		}
+
+		// update actual FFT Command's settings for each stream
 		for (fft cmd : getNxmCommands()) {
 			if (numAvg != null) {
 				cmd.setNAvg(numAvg);
@@ -238,17 +259,24 @@ public class FftNxmBlock extends AbstractNxmBlock<fft> {
 				cmd.setOverlap(overlap / 100.0); // SUPPRESS CHECKSTYLE MagicNumber
 			}
 
-			// fftSettings.getOutputType(); // cannot change: output type (NORMAL, PSD, MAG, MAG & LOG, PSD & LOG) on FFT at this time
-
 			if (window != null) {
 				cmd.setWindow(window);
 			}
 
+// TODO: change PIPE_SIZE for input1? output1? output2?, etc.
+//			if (pipeSize != null) {
+//			}
+
+			if (outputType != null) {
+// PASS TODO: cannot change: output type (NORMAL, PSD, MAG, MAG & LOG, PSD & LOG) on FFT at this time
+// 1. this could cause a restart (when switching from NORMAL to any of the other output types
+// 2. could always force the FFT command to restart with new launch switches
+			}
+
 			if (nfft != null) {
-				cmd.setNFft(nfft); // do this last as it can cause restart
+				cmd.setNFft(nfft); // do this last as it can cause FFT to restart
 			}
 		}
-
 	}
 
 	@Override

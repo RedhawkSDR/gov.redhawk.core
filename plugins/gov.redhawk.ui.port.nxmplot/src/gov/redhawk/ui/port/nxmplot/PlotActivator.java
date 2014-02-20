@@ -10,6 +10,7 @@
  */
 package gov.redhawk.ui.port.nxmplot;
 
+import gov.redhawk.internal.ui.port.nxmplot.handlers.PlotPortHandler;
 import gov.redhawk.internal.ui.port.nxmplot.view.PlotView;
 import gov.redhawk.internal.ui.port.nxmplot.view.PlotView2;
 import gov.redhawk.model.sca.ScaUsesPort;
@@ -19,6 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
@@ -238,4 +240,10 @@ public class PlotActivator extends AbstractUIPlugin {
 
 	}
 
+	/**
+	 * @since 4.4
+	 */
+	public IPlotView showPlotView(ExecutionEvent event) {
+		return PlotPortHandler.showView(event);
+	}
 }

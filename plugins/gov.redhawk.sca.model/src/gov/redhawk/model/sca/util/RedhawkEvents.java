@@ -252,7 +252,14 @@ public class RedhawkEvents {
 		if (element == null || !(element instanceof EObject)) {
 			return false;
 		}
-		EventAdmin eventAdmin = ScaModelPlugin.getDefault().getEventAdmin();
+		ScaModelPlugin plugin = ScaModelPlugin.getDefault();
+		if (plugin == null) {
+			return false;
+		}
+		EventAdmin eventAdmin = plugin.getEventAdmin();
+		if (eventAdmin == null) {
+			return false;
+		}
 		eventAdmin.postEvent(new Event(topic, argMap));
 		return true;
 	}

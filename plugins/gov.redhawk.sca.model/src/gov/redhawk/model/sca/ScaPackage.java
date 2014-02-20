@@ -213,13 +213,22 @@ public interface ScaPackage extends EPackage {
 	 */
 	int CORBA_OBJ_WRAPPER__CORBA_OBJ = DATA_PROVIDER_OBJECT_FEATURE_COUNT + 2;
 	/**
+	 * The feature id for the '<em><b>Feature Data</b></em>' map.
+	 * <!-- begin-user-doc -->
+	 * @since 19.0
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CORBA_OBJ_WRAPPER__FEATURE_DATA = DATA_PROVIDER_OBJECT_FEATURE_COUNT + 3;
+	/**
 	 * The number of structural features of the '<em>Corba Obj Wrapper</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int CORBA_OBJ_WRAPPER_FEATURE_COUNT = DATA_PROVIDER_OBJECT_FEATURE_COUNT + 3;
+	int CORBA_OBJ_WRAPPER_FEATURE_COUNT = DATA_PROVIDER_OBJECT_FEATURE_COUNT + 4;
 	/**
 	 * The meta object id for the '{@link gov.redhawk.model.sca.IDisposable <em>IDisposable</em>}' class.
 	 * <!-- begin-user-doc -->
@@ -385,6 +394,15 @@ public interface ScaPackage extends EPackage {
 	 */
 	int SCA_PROPERTY_CONTAINER__CORBA_OBJ = CORBA_OBJ_WRAPPER__CORBA_OBJ;
 	/**
+	 * The feature id for the '<em><b>Feature Data</b></em>' map.
+	 * <!-- begin-user-doc -->
+	 * @since 19.0
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int SCA_PROPERTY_CONTAINER__FEATURE_DATA = CORBA_OBJ_WRAPPER__FEATURE_DATA;
+	/**
 	 * The feature id for the '<em><b>Profile URI</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -490,6 +508,15 @@ public interface ScaPackage extends EPackage {
 	 */
 	int SCA_ABSTRACT_COMPONENT__CORBA_OBJ = SCA_PROPERTY_CONTAINER__CORBA_OBJ;
 	/**
+	 * The feature id for the '<em><b>Feature Data</b></em>' map.
+	 * <!-- begin-user-doc -->
+	 * @since 19.0
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int SCA_ABSTRACT_COMPONENT__FEATURE_DATA = SCA_PROPERTY_CONTAINER__FEATURE_DATA;
+	/**
 	 * The feature id for the '<em><b>Profile URI</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -552,7 +579,6 @@ public interface ScaPackage extends EPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
-	 * @since 19.0
 	 */
 	int SCA_ABSTRACT_COMPONENT__PROFILE = SCA_PROPERTY_CONTAINER_FEATURE_COUNT + 3;
 	/**
@@ -752,6 +778,15 @@ public interface ScaPackage extends EPackage {
 	 */
 	int SCA_COMPONENT__CORBA_OBJ = SCA_ABSTRACT_COMPONENT__CORBA_OBJ;
 	/**
+	 * The feature id for the '<em><b>Feature Data</b></em>' map.
+	 * <!-- begin-user-doc -->
+	 * @since 19.0
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int SCA_COMPONENT__FEATURE_DATA = SCA_ABSTRACT_COMPONENT__FEATURE_DATA;
+	/**
 	 * The feature id for the '<em><b>Profile URI</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -814,7 +849,6 @@ public interface ScaPackage extends EPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
-	 * @since 19.0
 	 */
 	int SCA_COMPONENT__PROFILE = SCA_ABSTRACT_COMPONENT__PROFILE;
 	/**
@@ -930,6 +964,15 @@ public interface ScaPackage extends EPackage {
 	 * @ordered
 	 */
 	int SCA_DEVICE__CORBA_OBJ = SCA_ABSTRACT_COMPONENT__CORBA_OBJ;
+	/**
+	 * The feature id for the '<em><b>Feature Data</b></em>' map.
+	 * <!-- begin-user-doc -->
+	 * @since 19.0
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int SCA_DEVICE__FEATURE_DATA = SCA_ABSTRACT_COMPONENT__FEATURE_DATA;
 	/**
 	 * The feature id for the '<em><b>Profile URI</b></em>' attribute.
 	 * <!-- begin-user-doc -->
@@ -1124,6 +1167,15 @@ public interface ScaPackage extends EPackage {
 	 */
 	int SCA_DEVICE_MANAGER__CORBA_OBJ = SCA_PROPERTY_CONTAINER__CORBA_OBJ;
 	/**
+	 * The feature id for the '<em><b>Feature Data</b></em>' map.
+	 * <!-- begin-user-doc -->
+	 * @since 19.0
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int SCA_DEVICE_MANAGER__FEATURE_DATA = SCA_PROPERTY_CONTAINER__FEATURE_DATA;
+	/**
 	 * The feature id for the '<em><b>Profile URI</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -1317,6 +1369,15 @@ public interface ScaPackage extends EPackage {
 	 */
 	int SCA_SERVICE__CORBA_OBJ = SCA_PROPERTY_CONTAINER__CORBA_OBJ;
 	/**
+	 * The feature id for the '<em><b>Feature Data</b></em>' map.
+	 * <!-- begin-user-doc -->
+	 * @since 19.0
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int SCA_SERVICE__FEATURE_DATA = SCA_PROPERTY_CONTAINER__FEATURE_DATA;
+	/**
 	 * The feature id for the '<em><b>Profile URI</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * @since 18.0
@@ -1452,6 +1513,15 @@ public interface ScaPackage extends EPackage {
 	 */
 	int SCA_FILE_SYSTEM__CORBA_OBJ = CORBA_OBJ_WRAPPER__CORBA_OBJ;
 	/**
+	 * The feature id for the '<em><b>Feature Data</b></em>' map.
+	 * <!-- begin-user-doc -->
+	 * @since 19.0
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int SCA_FILE_SYSTEM__FEATURE_DATA = CORBA_OBJ_WRAPPER__FEATURE_DATA;
+	/**
 	 * The feature id for the '<em><b>File Store</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -1572,6 +1642,15 @@ public interface ScaPackage extends EPackage {
 	 * @ordered
 	 */
 	int SCA_DEVICE_MANAGER_FILE_SYSTEM__CORBA_OBJ = SCA_FILE_SYSTEM__CORBA_OBJ;
+	/**
+	 * The feature id for the '<em><b>Feature Data</b></em>' map.
+	 * <!-- begin-user-doc -->
+	 * @since 19.0
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int SCA_DEVICE_MANAGER_FILE_SYSTEM__FEATURE_DATA = SCA_FILE_SYSTEM__FEATURE_DATA;
 	/**
 	 * The feature id for the '<em><b>File Store</b></em>' attribute.
 	 * <!-- begin-user-doc -->
@@ -1750,6 +1829,15 @@ public interface ScaPackage extends EPackage {
 	 * @ordered
 	 */
 	int SCA_DOMAIN_MANAGER__CORBA_OBJ = SCA_PROPERTY_CONTAINER__CORBA_OBJ;
+	/**
+	 * The feature id for the '<em><b>Feature Data</b></em>' map.
+	 * <!-- begin-user-doc -->
+	 * @since 19.0
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int SCA_DOMAIN_MANAGER__FEATURE_DATA = SCA_PROPERTY_CONTAINER__FEATURE_DATA;
 	/**
 	 * The feature id for the '<em><b>Profile URI</b></em>' attribute.
 	 * <!-- begin-user-doc -->
@@ -1969,6 +2057,15 @@ public interface ScaPackage extends EPackage {
 	 */
 	int SCA_FILE_MANAGER__CORBA_OBJ = SCA_FILE_SYSTEM__CORBA_OBJ;
 	/**
+	 * The feature id for the '<em><b>Feature Data</b></em>' map.
+	 * <!-- begin-user-doc -->
+	 * @since 19.0
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int SCA_FILE_MANAGER__FEATURE_DATA = SCA_FILE_SYSTEM__FEATURE_DATA;
+	/**
 	 * The feature id for the '<em><b>File Store</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -2089,6 +2186,15 @@ public interface ScaPackage extends EPackage {
 	 * @ordered
 	 */
 	int SCA_DOMAIN_MANAGER_FILE_SYSTEM__CORBA_OBJ = SCA_FILE_MANAGER__CORBA_OBJ;
+	/**
+	 * The feature id for the '<em><b>Feature Data</b></em>' map.
+	 * <!-- begin-user-doc -->
+	 * @since 19.0
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int SCA_DOMAIN_MANAGER_FILE_SYSTEM__FEATURE_DATA = SCA_FILE_MANAGER__FEATURE_DATA;
 	/**
 	 * The feature id for the '<em><b>File Store</b></em>' attribute.
 	 * <!-- begin-user-doc -->
@@ -2251,6 +2357,15 @@ public interface ScaPackage extends EPackage {
 	 * @ordered
 	 */
 	int SCA_LOADABLE_DEVICE__CORBA_OBJ = SCA_DEVICE__CORBA_OBJ;
+	/**
+	 * The feature id for the '<em><b>Feature Data</b></em>' map.
+	 * <!-- begin-user-doc -->
+	 * @since 19.0
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int SCA_LOADABLE_DEVICE__FEATURE_DATA = SCA_DEVICE__FEATURE_DATA;
 	/**
 	 * The feature id for the '<em><b>Profile URI</b></em>' attribute.
 	 * <!-- begin-user-doc -->
@@ -2444,6 +2559,15 @@ public interface ScaPackage extends EPackage {
 	 * @ordered
 	 */
 	int SCA_EXECUTABLE_DEVICE__CORBA_OBJ = SCA_LOADABLE_DEVICE__CORBA_OBJ;
+	/**
+	 * The feature id for the '<em><b>Feature Data</b></em>' map.
+	 * <!-- begin-user-doc -->
+	 * @since 19.0
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int SCA_EXECUTABLE_DEVICE__FEATURE_DATA = SCA_LOADABLE_DEVICE__FEATURE_DATA;
 	/**
 	 * The feature id for the '<em><b>Profile URI</b></em>' attribute.
 	 * <!-- begin-user-doc -->
@@ -2703,6 +2827,15 @@ public interface ScaPackage extends EPackage {
 	 */
 	int SCA_PORT__CORBA_OBJ = CORBA_OBJ_WRAPPER__CORBA_OBJ;
 	/**
+	 * The feature id for the '<em><b>Feature Data</b></em>' map.
+	 * <!-- begin-user-doc -->
+	 * @since 19.0
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int SCA_PORT__FEATURE_DATA = CORBA_OBJ_WRAPPER__FEATURE_DATA;
+	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -2807,6 +2940,15 @@ public interface ScaPackage extends EPackage {
 	 * @ordered
 	 */
 	int SCA_PROVIDES_PORT__CORBA_OBJ = SCA_PORT__CORBA_OBJ;
+	/**
+	 * The feature id for the '<em><b>Feature Data</b></em>' map.
+	 * <!-- begin-user-doc -->
+	 * @since 19.0
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int SCA_PROVIDES_PORT__FEATURE_DATA = SCA_PORT__FEATURE_DATA;
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
 	 * <!-- begin-user-doc -->
@@ -3156,6 +3298,15 @@ public interface ScaPackage extends EPackage {
 	 */
 	int SCA_USES_PORT__CORBA_OBJ = SCA_PORT__CORBA_OBJ;
 	/**
+	 * The feature id for the '<em><b>Feature Data</b></em>' map.
+	 * <!-- begin-user-doc -->
+	 * @since 19.0
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int SCA_USES_PORT__FEATURE_DATA = SCA_PORT__FEATURE_DATA;
+	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -3309,6 +3460,15 @@ public interface ScaPackage extends EPackage {
 	 * @ordered
 	 */
 	int SCA_WAVEFORM__CORBA_OBJ = SCA_PROPERTY_CONTAINER__CORBA_OBJ;
+	/**
+	 * The feature id for the '<em><b>Feature Data</b></em>' map.
+	 * <!-- begin-user-doc -->
+	 * @since 19.0
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int SCA_WAVEFORM__FEATURE_DATA = SCA_PROPERTY_CONTAINER__FEATURE_DATA;
 	/**
 	 * The feature id for the '<em><b>Profile URI</b></em>' attribute.
 	 * <!-- begin-user-doc -->
@@ -3478,6 +3638,15 @@ public interface ScaPackage extends EPackage {
 	 * @ordered
 	 */
 	int SCA_WAVEFORM_FACTORY__CORBA_OBJ = CORBA_OBJ_WRAPPER__CORBA_OBJ;
+	/**
+	 * The feature id for the '<em><b>Feature Data</b></em>' map.
+	 * <!-- begin-user-doc -->
+	 * @since 19.0
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int SCA_WAVEFORM_FACTORY__FEATURE_DATA = CORBA_OBJ_WRAPPER__FEATURE_DATA;
 	/**
 	 * The feature id for the '<em><b>Profile URI</b></em>' attribute.
 	 * <!-- begin-user-doc -->
@@ -3749,6 +3918,15 @@ public interface ScaPackage extends EPackage {
 	 */
 	int SCA_EVENT_CHANNEL__CORBA_OBJ = CORBA_OBJ_WRAPPER__CORBA_OBJ;
 	/**
+	 * The feature id for the '<em><b>Feature Data</b></em>' map.
+	 * <!-- begin-user-doc -->
+	 * @since 19.0
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int SCA_EVENT_CHANNEL__FEATURE_DATA = CORBA_OBJ_WRAPPER__FEATURE_DATA;
+	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * @since 19.0
@@ -3767,6 +3945,43 @@ public interface ScaPackage extends EPackage {
 	 */
 	int SCA_EVENT_CHANNEL_FEATURE_COUNT = CORBA_OBJ_WRAPPER_FEATURE_COUNT + 1;
 	/**
+	 * The meta object id for the '{@link gov.redhawk.model.sca.impl.StringToObjectMapImpl <em>String To Object Map</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * @since 19.0
+	 * <!-- end-user-doc -->
+	 * @see gov.redhawk.model.sca.impl.StringToObjectMapImpl
+	 * @see gov.redhawk.model.sca.impl.ScaPackageImpl#getStringToObjectMap()
+	 * @generated
+	 */
+	int STRING_TO_OBJECT_MAP = 38;
+	/**
+	 * The feature id for the '<em><b>Key</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * @since 19.0
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int STRING_TO_OBJECT_MAP__KEY = 0;
+	/**
+	 * The feature id for the '<em><b>Value</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * @since 19.0
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int STRING_TO_OBJECT_MAP__VALUE = 1;
+	/**
+	 * The number of structural features of the '<em>String To Object Map</em>' class.
+	 * <!-- begin-user-doc -->
+	 * @since 19.0
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int STRING_TO_OBJECT_MAP_FEATURE_COUNT = 2;
+	/**
 	 * The meta object id for the '{@link gov.redhawk.model.sca.DomainConnectionState <em>Domain Connection State</em>}' enum.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -3774,7 +3989,7 @@ public interface ScaPackage extends EPackage {
 	 * @see gov.redhawk.model.sca.impl.ScaPackageImpl#getDomainConnectionState()
 	 * @generated
 	 */
-	int DOMAIN_CONNECTION_STATE = 38;
+	int DOMAIN_CONNECTION_STATE = 39;
 	/**
 	 * The meta object id for the '{@link gov.redhawk.model.sca.RefreshDepth <em>Refresh Depth</em>}' enum.
 	 * <!-- begin-user-doc -->
@@ -3783,7 +3998,7 @@ public interface ScaPackage extends EPackage {
 	 * @see gov.redhawk.model.sca.impl.ScaPackageImpl#getRefreshDepth()
 	 * @generated
 	 */
-	int REFRESH_DEPTH = 39;
+	int REFRESH_DEPTH = 40;
 	/**
 	 * The meta object id for the '<em>Admin Type</em>' data type.
 	 * <!-- begin-user-doc -->
@@ -3792,7 +4007,7 @@ public interface ScaPackage extends EPackage {
 	 * @see gov.redhawk.model.sca.impl.ScaPackageImpl#getAdminType()
 	 * @generated
 	 */
-	int ADMIN_TYPE = 40;
+	int ADMIN_TYPE = 41;
 	/**
 	 * The meta object id for the '<em>Domain Connection Exception</em>' data type.
 	 * <!-- begin-user-doc -->
@@ -3801,7 +4016,7 @@ public interface ScaPackage extends EPackage {
 	 * @see gov.redhawk.model.sca.impl.ScaPackageImpl#getDomainConnectionException()
 	 * @generated
 	 */
-	int DOMAIN_CONNECTION_EXCEPTION = 41;
+	int DOMAIN_CONNECTION_EXCEPTION = 42;
 	/**
 	 * The meta object id for the '<em>Domain Connection State Object</em>' data type.
 	 * <!-- begin-user-doc -->
@@ -3810,7 +4025,7 @@ public interface ScaPackage extends EPackage {
 	 * @see gov.redhawk.model.sca.impl.ScaPackageImpl#getDomainConnectionStateObject()
 	 * @generated
 	 */
-	int DOMAIN_CONNECTION_STATE_OBJECT = 42;
+	int DOMAIN_CONNECTION_STATE_OBJECT = 43;
 	/**
 	 * The meta object id for the '<em>IFile Store</em>' data type.
 	 * <!-- begin-user-doc -->
@@ -3819,7 +4034,7 @@ public interface ScaPackage extends EPackage {
 	 * @see gov.redhawk.model.sca.impl.ScaPackageImpl#getIFileStore()
 	 * @generated
 	 */
-	int IFILE_STORE = 43;
+	int IFILE_STORE = 44;
 	/**
 	 * The meta object id for the '<em>IProgress Monitor</em>' data type.
 	 * <!-- begin-user-doc -->
@@ -3828,7 +4043,7 @@ public interface ScaPackage extends EPackage {
 	 * @see gov.redhawk.model.sca.impl.ScaPackageImpl#getIProgressMonitor()
 	 * @generated
 	 */
-	int IPROGRESS_MONITOR = 44;
+	int IPROGRESS_MONITOR = 45;
 	/**
 	 * The meta object id for the '<em>ISca Data Provider</em>' data type.
 	 * <!-- begin-user-doc -->
@@ -3837,7 +4052,7 @@ public interface ScaPackage extends EPackage {
 	 * @see gov.redhawk.model.sca.impl.ScaPackageImpl#getIScaDataProvider()
 	 * @generated
 	 */
-	int ISCA_DATA_PROVIDER = 45;
+	int ISCA_DATA_PROVIDER = 46;
 	/**
 	 * The meta object id for the '<em>ISca Data Provider Service</em>' data type.
 	 * <!-- begin-user-doc -->
@@ -3846,7 +4061,7 @@ public interface ScaPackage extends EPackage {
 	 * @see gov.redhawk.model.sca.impl.ScaPackageImpl#getIScaDataProviderService()
 	 * @generated
 	 */
-	int ISCA_DATA_PROVIDER_SERVICE = 46;
+	int ISCA_DATA_PROVIDER_SERVICE = 47;
 	/**
 	 * The meta object id for the '<em>IStatus</em>' data type.
 	 * <!-- begin-user-doc -->
@@ -3855,7 +4070,7 @@ public interface ScaPackage extends EPackage {
 	 * @see gov.redhawk.model.sca.impl.ScaPackageImpl#getIStatus()
 	 * @generated
 	 */
-	int ISTATUS = 47;
+	int ISTATUS = 48;
 	/**
 	 * The meta object id for the '<em>Object</em>' data type.
 	 * <!-- begin-user-doc -->
@@ -3864,7 +4079,7 @@ public interface ScaPackage extends EPackage {
 	 * @see gov.redhawk.model.sca.impl.ScaPackageImpl#getObject()
 	 * @generated
 	 */
-	int OBJECT = 48;
+	int OBJECT = 49;
 	/**
 	 * The meta object id for the '<em>Object Array</em>' data type.
 	 * <!-- begin-user-doc -->
@@ -3872,7 +4087,7 @@ public interface ScaPackage extends EPackage {
 	 * @see gov.redhawk.model.sca.impl.ScaPackageImpl#getObjectArray()
 	 * @generated
 	 */
-	int OBJECT_ARRAY = 49;
+	int OBJECT_ARRAY = 50;
 	/**
 	 * The meta object id for the '<em>Operational Type</em>' data type.
 	 * <!-- begin-user-doc -->
@@ -3881,7 +4096,7 @@ public interface ScaPackage extends EPackage {
 	 * @see gov.redhawk.model.sca.impl.ScaPackageImpl#getOperationalType()
 	 * @generated
 	 */
-	int OPERATIONAL_TYPE = 50;
+	int OPERATIONAL_TYPE = 51;
 	/**
 	 * The meta object id for the '<em>Refresh Depth Object</em>' data type.
 	 * <!-- begin-user-doc -->
@@ -3890,7 +4105,7 @@ public interface ScaPackage extends EPackage {
 	 * @see gov.redhawk.model.sca.impl.ScaPackageImpl#getRefreshDepthObject()
 	 * @generated
 	 */
-	int REFRESH_DEPTH_OBJECT = 51;
+	int REFRESH_DEPTH_OBJECT = 52;
 	/**
 	 * The meta object id for the '<em>POA</em>' data type.
 	 * <!-- begin-user-doc -->
@@ -3899,7 +4114,7 @@ public interface ScaPackage extends EPackage {
 	 * @see gov.redhawk.model.sca.impl.ScaPackageImpl#getPOA()
 	 * @generated
 	 */
-	int POA = 52;
+	int POA = 53;
 	/**
 	 * The meta object id for the '<em>URI</em>' data type.
 	 * <!-- begin-user-doc -->
@@ -3908,7 +4123,7 @@ public interface ScaPackage extends EPackage {
 	 * @see gov.redhawk.model.sca.impl.ScaPackageImpl#getURI()
 	 * @generated
 	 */
-	int URI = 53;
+	int URI = 54;
 	/**
 	 * The meta object id for the '<em>Usage Type</em>' data type.
 	 * <!-- begin-user-doc -->
@@ -3917,7 +4132,7 @@ public interface ScaPackage extends EPackage {
 	 * @see gov.redhawk.model.sca.impl.ScaPackageImpl#getUsageType()
 	 * @generated
 	 */
-	int USAGE_TYPE = 54;
+	int USAGE_TYPE = 55;
 	/**
 	 * The meta object id for the '<em>Data Type Array</em>' data type.
 	 * <!-- begin-user-doc -->
@@ -3925,7 +4140,7 @@ public interface ScaPackage extends EPackage {
 	 * @see gov.redhawk.model.sca.impl.ScaPackageImpl#getDataTypeArray()
 	 * @generated
 	 */
-	int DATA_TYPE_ARRAY = 55;
+	int DATA_TYPE_ARRAY = 56;
 	/**
 	 * The meta object id for the '<em>Any</em>' data type.
 	 * <!-- begin-user-doc -->
@@ -3934,7 +4149,7 @@ public interface ScaPackage extends EPackage {
 	 * @see gov.redhawk.model.sca.impl.ScaPackageImpl#getAny()
 	 * @generated
 	 */
-	int ANY = 56;
+	int ANY = 57;
 
 	/**
 	 * Returns the meta object for class '{@link gov.redhawk.model.sca.CorbaObjWrapper <em>Corba Obj Wrapper</em>}'.
@@ -3978,6 +4193,18 @@ public interface ScaPackage extends EPackage {
 	 * @generated
 	 */
 	EAttribute getCorbaObjWrapper_CorbaObj();
+
+	/**
+	 * Returns the meta object for the map '{@link gov.redhawk.model.sca.CorbaObjWrapper#getFeatureData <em>Feature Data</em>}'.
+	 * <!-- begin-user-doc -->
+	 * @since 19.0
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the map '<em>Feature Data</em>'.
+	 * @see gov.redhawk.model.sca.CorbaObjWrapper#getFeatureData()
+	 * @see #getCorbaObjWrapper()
+	 * @generated
+	 */
+	EReference getCorbaObjWrapper_FeatureData();
 
 	/**
 	 * Returns the meta object for class '{@link gov.redhawk.model.sca.DataProviderObject <em>Data Provider Object</em>}'.
@@ -4137,7 +4364,6 @@ public interface ScaPackage extends EPackage {
 	 * @see gov.redhawk.model.sca.ScaAbstractComponent#getProfile()
 	 * @see #getScaAbstractComponent()
 	 * @generated
-	 * @since 19.0
 	 */
 	EAttribute getScaAbstractComponent_Profile();
 
@@ -5420,6 +5646,43 @@ public interface ScaPackage extends EPackage {
 	EAttribute getScaEventChannel_Name();
 
 	/**
+	 * Returns the meta object for class '{@link java.util.Map.Entry <em>String To Object Map</em>}'.
+	 * <!-- begin-user-doc -->
+	 * @since 19.0
+	 * <!-- end-user-doc -->
+	 * @return the meta object for class '<em>String To Object Map</em>'.
+	 * @see java.util.Map.Entry
+	 * @model keyDataType="org.eclipse.emf.ecore.EString"
+	 *        valueType="org.eclipse.emf.ecore.EObject" valueContainment="true" valueResolveProxies="true"
+	 * @generated
+	 */
+	EClass getStringToObjectMap();
+
+	/**
+	 * Returns the meta object for the attribute '{@link java.util.Map.Entry <em>Key</em>}'.
+	 * <!-- begin-user-doc -->
+	 * @since 19.0
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Key</em>'.
+	 * @see java.util.Map.Entry
+	 * @see #getStringToObjectMap()
+	 * @generated
+	 */
+	EAttribute getStringToObjectMap_Key();
+
+	/**
+	 * Returns the meta object for the containment reference '{@link java.util.Map.Entry <em>Value</em>}'.
+	 * <!-- begin-user-doc -->
+	 * @since 19.0
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the containment reference '<em>Value</em>'.
+	 * @see java.util.Map.Entry
+	 * @see #getStringToObjectMap()
+	 * @generated
+	 */
+	EReference getStringToObjectMap_Value();
+
+	/**
 	 * Returns the meta object for enum '{@link gov.redhawk.model.sca.DomainConnectionState <em>Domain Connection State</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -5702,6 +5965,14 @@ public interface ScaPackage extends EPackage {
 		 */
 		EAttribute CORBA_OBJ_WRAPPER__CORBA_OBJ = eINSTANCE.getCorbaObjWrapper_CorbaObj();
 		/**
+		 * The meta object literal for the '<em><b>Feature Data</b></em>' map feature.
+		 * <!-- begin-user-doc -->
+		 * @since 19.0
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EReference CORBA_OBJ_WRAPPER__FEATURE_DATA = eINSTANCE.getCorbaObjWrapper_FeatureData();
+		/**
 		 * The meta object literal for the '{@link gov.redhawk.model.sca.impl.DataProviderObjectImpl <em>Data Provider Object</em>}' class.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
@@ -5815,7 +6086,6 @@ public interface ScaPackage extends EPackage {
 		 * @since 19.0
 		 * <!-- end-user-doc -->
 		 * @generated
-		 * @since 19.0
 		 */
 		EAttribute SCA_ABSTRACT_COMPONENT__PROFILE = eINSTANCE.getScaAbstractComponent_Profile();
 		/**
@@ -6713,6 +6983,32 @@ public interface ScaPackage extends EPackage {
 		 * @generated
 		 */
 		EAttribute SCA_EVENT_CHANNEL__NAME = eINSTANCE.getScaEventChannel_Name();
+		/**
+		 * The meta object literal for the '{@link gov.redhawk.model.sca.impl.StringToObjectMapImpl <em>String To Object Map</em>}' class.
+		 * <!-- begin-user-doc -->
+		 * @since 19.0
+		 * <!-- end-user-doc -->
+		 * @see gov.redhawk.model.sca.impl.StringToObjectMapImpl
+		 * @see gov.redhawk.model.sca.impl.ScaPackageImpl#getStringToObjectMap()
+		 * @generated
+		 */
+		EClass STRING_TO_OBJECT_MAP = eINSTANCE.getStringToObjectMap();
+		/**
+		 * The meta object literal for the '<em><b>Key</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * @since 19.0
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute STRING_TO_OBJECT_MAP__KEY = eINSTANCE.getStringToObjectMap_Key();
+		/**
+		 * The meta object literal for the '<em><b>Value</b></em>' containment reference feature.
+		 * <!-- begin-user-doc -->
+		 * @since 19.0
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EReference STRING_TO_OBJECT_MAP__VALUE = eINSTANCE.getStringToObjectMap_Value();
 		/**
 		 * The meta object literal for the '{@link gov.redhawk.model.sca.DomainConnectionState <em>Domain Connection State</em>}' enum.
 		 * <!-- begin-user-doc -->

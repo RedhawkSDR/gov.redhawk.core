@@ -146,6 +146,8 @@ public class ScaFactoryImpl extends EFactoryImpl implements ScaFactory {
 			return createScaStructSequenceProperty();
 		case ScaPackage.SCA_EVENT_CHANNEL:
 			return createScaEventChannel();
+		case ScaPackage.STRING_TO_OBJECT_MAP:
+			return (EObject) createStringToObjectMap();
 		default:
 			throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier");
 		}
@@ -482,6 +484,17 @@ public class ScaFactoryImpl extends EFactoryImpl implements ScaFactory {
 	public ScaEventChannel createScaEventChannel() {
 		ScaEventChannelImpl scaEventChannel = new ScaEventChannelImpl();
 		return scaEventChannel;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * @since 19.0
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public Map.Entry<String, EObject> createStringToObjectMap() {
+		StringToObjectMapImpl stringToObjectMap = new StringToObjectMapImpl();
+		return stringToObjectMap;
 	}
 
 	/**
