@@ -22,6 +22,7 @@ import gov.redhawk.ui.port.nxmblocks.BulkIONxmBlockSettings;
 import gov.redhawk.ui.port.nxmblocks.FftNxmBlockSettings;
 import gov.redhawk.ui.port.nxmblocks.PlotNxmBlockSettings;
 import gov.redhawk.ui.port.nxmblocks.SddsNxmBlockSettings;
+import gov.redhawk.ui.port.nxmplot.IPlotView;
 import gov.redhawk.ui.port.nxmplot.PlotActivator;
 import gov.redhawk.ui.port.nxmplot.PlotSettings;
 import gov.redhawk.ui.port.nxmplot.PlotSettings.PlotMode;
@@ -71,17 +72,18 @@ import BULKIO.dataUshortHelper;
  */
 public class PlotPortHandler extends AbstractHandler {
 
-	private static final String PARAM_PLOT_TYPE = "gov.redhawk.ui.port.nxmplot.type";
-
-	private static final String PARAM_ISFFT = "gov.redhawk.ui.port.nxmplot.isFft";
-
 	public PlotPortHandler() {
 	}
 
 	@Override
 	public Object execute(ExecutionEvent event) throws ExecutionException {
+		PlotPortHandler.showView(event);
+		return null;
+	}
+
+	public static IPlotView showView(ExecutionEvent event) {
 		final IWorkbenchWindow window = HandlerUtil.getActiveWorkbenchWindow(event);
-		String plotTypeStr = event.getParameter(PlotPortHandler.PARAM_PLOT_TYPE);
+		String plotTypeStr = event.getParameter(IPlotView.PARAM_PLOT_TYPE);
 
 		// need to grab Port selections first, otherwise Plot Wizard option below will change the selection
 		IStructuredSelection selection = (IStructuredSelection) HandlerUtil.getActiveMenuSelection(event);
@@ -121,7 +123,7 @@ public class PlotPortHandler extends AbstractHandler {
 		if (plotTypeStr != null) {
 			//because this evaluates to true, we do not end up using addSource2 method
 			plotSettings.setPlotType(PlotType.valueOf(plotTypeStr));
-			isFFT = Boolean.valueOf(event.getParameter(PlotPortHandler.PARAM_ISFFT));
+			isFFT = Boolean.valueOf(event.getParameter(IPlotView.PARAM_ISFFT));
 
 			if (isFFT) {
 				plotSettings.setPlotMode(PlotMode.valueOf(FftPreferences.FFT_MODE.getValue(PlotActivator.getDefault().getPreferenceStore())));
@@ -136,12 +138,18 @@ public class PlotPortHandler extends AbstractHandler {
 			}
 			if (containsBulkIOPort) {
 				bulkIOBlockSettings = new BulkIONxmBlockSettings();
+				bulkIOBlockSettings.setConnectionID(event.getParameter(IPlotView.PARAM_CONNECTION_ID));
 			} else {
 				bulkIOBlockSettings = null;
 			}
 			plotBlockSettings = new PlotNxmBlockSettings();
 		} else { // run advanced Port plot wizard
 			PlotWizard wizard = new PlotWizard(containsBulkIOPort, containsSDDSPort); // advanced Port Plot wizard
+			bulkIOBlockSettings = wizard.getBulkIOBlockSettings();
+			if (bulkIOBlockSettings != null) {
+				bulkIOBlockSettings.setConnectionID(event.getParameter(IPlotView.PARAM_CONNECTION_ID));
+			}
+
 			WizardDialog dialog = new WizardDialog(HandlerUtil.getActiveShell(event), wizard);
 			if (dialog.open() != Window.OK) {
 				return null;
@@ -153,13 +161,17 @@ public class PlotPortHandler extends AbstractHandler {
 			} else {
 				fftBlockSettings = null;
 			}
-			bulkIOBlockSettings = wizard.getBulkIOBlockSettings();
+
 			sddsBlockSettings = wizard.getSddsBlockSettings();
 			plotBlockSettings = wizard.getPlotBlockSettings();
 		}
 
 		try {
-			final IViewPart view = window.getActivePage().showView(PlotView2.ID, PlotView2.createSecondaryId(), IWorkbenchPage.VIEW_ACTIVATE);
+			String secondaryID = event.getParameter(IPlotView.PARAM_SECONDARY_ID);
+			if (secondaryID == null || secondaryID.isEmpty()) {
+				secondaryID = PlotView2.createSecondaryId();
+			}
+			final IViewPart view = window.getActivePage().showView(PlotView2.ID, secondaryID, IWorkbenchPage.VIEW_ACTIVATE);
 			if (view instanceof PlotView2) {
 				final PlotView2 plotView = (PlotView2) view;
 				plotView.getPlotPageBook().showPlot(plotSettings);
@@ -167,78 +179,13 @@ public class PlotPortHandler extends AbstractHandler {
 				Job job = new Job("Adding plot sources...") {
 					@Override
 					protected IStatus run(IProgressMonitor monitor) {
-						final ScaItemProviderAdapterFactory factory = new ScaItemProviderAdapterFactory();
-						final StringBuilder name = new StringBuilder();
-						final StringBuilder tooltip = new StringBuilder();
-						SubMonitor subMonitor = SubMonitor.convert(monitor, "Plotting...", elements.size());
-						for (Object obj : elements) {
-							ScaUsesPort port = PluginUtil.adapt(ScaUsesPort.class, obj, true);
-							if (port != null) {
-								port.fetchAttributes(subMonitor.newChild(1));
-								List<String> tmpList4Tooltip = new LinkedList<String>();
-								for (EObject eObj = port; !(eObj instanceof ScaDomainManagerRegistry) && eObj != null; eObj = eObj.eContainer()) {
-									Adapter adapter = factory.adapt(eObj, IItemLabelProvider.class);
-									if (adapter instanceof IItemLabelProvider) {
-										IItemLabelProvider lp = (IItemLabelProvider) adapter;
-										String text = lp.getText(eObj);
-										if (text != null && !text.isEmpty()) {
-											tmpList4Tooltip.add(0, text);
-										}
-									}
-								}
-
-								String nameStr = port.getName();
-								if (nameStr != null && !nameStr.isEmpty()) {
-									name.append(nameStr).append(" ");
-								}
-
-								if (!tmpList4Tooltip.isEmpty()) {
-									for (Iterator<String> i = tmpList4Tooltip.iterator(); i.hasNext();) {
-										tooltip.append(i.next());
-										if (i.hasNext()) {
-											tooltip.append(" -> ");
-										}
-									}
-									tooltip.append("\n");
-								}
-
-								final PlotSource plotSource;
-								final String idl = port.getRepid();
-
-								if (dataSDDSHelper.id().equals(idl)) { // a BULKIO:dataSDDS Port
-									plotSource = new PlotSource(port, sddsBlockSettings, fftBlockSettings, plotBlockSettings, pipeQualifiers);
-								} else if (PlotPortHandler.isBulkIOPortSupported(idl)) { // supported BULKIO data Port
-									plotSource = new PlotSource(port, bulkIOBlockSettings, fftBlockSettings, plotBlockSettings, pipeQualifiers);
-								} else {
-									StatusManager.getManager().handle(
-										new Status(IStatus.WARNING, PlotActivator.PLUGIN_ID, "Unsupported Port: " + port + " idl: " + idl), StatusManager.LOG);
-									continue; // log warning and skip unsupported Port type
-								}
-								plotView.addPlotSource(plotSource);
-							} else {
-								subMonitor.worked(1);
-							}
-						} // end for loop
-						PortHelper.refreshPorts(elements, subMonitor);
-						factory.dispose();
-						if (name.length() > 0 || tooltip.length() > 0) {
-							Display display = plotView.getSite().getShell().getDisplay();
-							display.asyncExec(new Runnable() {
-								@Override
-								public void run() {
-									if (name.length() > 0) {
-										plotView.setPartName(name.substring(0, name.length() - 1)); // remove trailing space from view's name
-									}
-									if (tooltip.length() > 0) {
-										plotView.setTitleToolTip(tooltip.substring(0, tooltip.length() - 1)); // remove trailing newline from view's tooltip
-									}
-								}
-							});
-						}
-						return Status.OK_STATUS;
+						return PlotPortHandler.addPlotSources(elements, bulkIOBlockSettings, sddsBlockSettings, fftBlockSettings, plotBlockSettings,
+							pipeQualifiers, plotView, monitor);
 					}
 				};
-				job.schedule(0);
+				job.setUser(true);
+				job.schedule();
+				return plotView;
 			}
 		} catch (PartInitException e) {
 			StatusManager.getManager().handle(new Status(IStatus.ERROR, PlotActivator.PLUGIN_ID, "Failed to show Plot View", e),
@@ -249,10 +196,84 @@ public class PlotPortHandler extends AbstractHandler {
 
 	public static boolean isBulkIOPortSupported(String idl) {
 		if (dataLongLongHelper.id().equals(idl) || dataUlongLongHelper.id().equals(idl) || dataFloatHelper.id().equals(idl)
-			|| dataDoubleHelper.id().equals(idl) || dataLongHelper.id().equals(idl) || dataUlongHelper.id().equals(idl) || dataShortHelper.id().equals(idl)
-			|| dataUshortHelper.id().equals(idl) || dataOctetHelper.id().equals(idl) || dataCharHelper.id().equals(idl)) {
+				|| dataDoubleHelper.id().equals(idl) || dataLongHelper.id().equals(idl) || dataUlongHelper.id().equals(idl) || dataShortHelper.id().equals(idl)
+				|| dataUshortHelper.id().equals(idl) || dataOctetHelper.id().equals(idl) || dataCharHelper.id().equals(idl)) {
 			return true;
 		}
 		return false;
+	}
+
+	private static IStatus addPlotSources(final List< ? > elements, final BulkIONxmBlockSettings bulkIOBlockSettings,
+		final SddsNxmBlockSettings sddsBlockSettings, final FftNxmBlockSettings fftBlockSettings, final PlotNxmBlockSettings plotBlockSettings,
+		final String pipeQualifiers, final PlotView2 plotView, IProgressMonitor monitor) {
+		final ScaItemProviderAdapterFactory factory = new ScaItemProviderAdapterFactory();
+		final StringBuilder name = new StringBuilder();
+		final StringBuilder tooltip = new StringBuilder();
+		SubMonitor subMonitor = SubMonitor.convert(monitor, "Plotting...", elements.size());
+		for (Object obj : elements) {
+			ScaUsesPort port = PluginUtil.adapt(ScaUsesPort.class, obj, true);
+			if (port != null) {
+				port.fetchAttributes(subMonitor.newChild(1));
+				List<String> tmpList4Tooltip = new LinkedList<String>();
+				for (EObject eObj = port; !(eObj instanceof ScaDomainManagerRegistry) && eObj != null; eObj = eObj.eContainer()) {
+					Adapter adapter = factory.adapt(eObj, IItemLabelProvider.class);
+					if (adapter instanceof IItemLabelProvider) {
+						IItemLabelProvider lp = (IItemLabelProvider) adapter;
+						String text = lp.getText(eObj);
+						if (text != null && !text.isEmpty()) {
+							tmpList4Tooltip.add(0, text);
+						}
+					}
+				}
+
+				String nameStr = port.getName();
+				if (nameStr != null && !nameStr.isEmpty()) {
+					name.append(nameStr).append(" ");
+				}
+
+				if (!tmpList4Tooltip.isEmpty()) {
+					for (Iterator<String> i = tmpList4Tooltip.iterator(); i.hasNext();) {
+						tooltip.append(i.next());
+						if (i.hasNext()) {
+							tooltip.append(" -> ");
+						}
+					}
+					tooltip.append("\n");
+				}
+
+				final PlotSource plotSource;
+				final String idl = port.getRepid();
+
+				if (dataSDDSHelper.id().equals(idl)) { // a BULKIO:dataSDDS Port
+					plotSource = new PlotSource(port, sddsBlockSettings, fftBlockSettings, plotBlockSettings, pipeQualifiers);
+				} else if (PlotPortHandler.isBulkIOPortSupported(idl)) { // supported BULKIO data Port
+					plotSource = new PlotSource(port, bulkIOBlockSettings, fftBlockSettings, plotBlockSettings, pipeQualifiers);
+				} else {
+					StatusManager.getManager().handle(new Status(IStatus.WARNING, PlotActivator.PLUGIN_ID, "Unsupported Port: " + port + " idl: " + idl),
+						StatusManager.LOG);
+					continue; // log warning and skip unsupported Port type
+				}
+				plotView.addPlotSource(plotSource);
+			} else {
+				subMonitor.worked(1);
+			}
+		} // end for loop
+		PortHelper.refreshPorts(elements, subMonitor);
+		factory.dispose();
+		if (name.length() > 0 || tooltip.length() > 0) {
+			Display display = plotView.getSite().getShell().getDisplay();
+			display.asyncExec(new Runnable() {
+				@Override
+				public void run() {
+					if (name.length() > 0) {
+						plotView.setPartName(name.substring(0, name.length() - 1)); // remove trailing space from view's name
+					}
+					if (tooltip.length() > 0) {
+						plotView.setTitleToolTip(tooltip.substring(0, tooltip.length() - 1)); // remove trailing newline from view's tooltip
+					}
+				}
+			});
+		}
+		return Status.OK_STATUS;
 	}
 }

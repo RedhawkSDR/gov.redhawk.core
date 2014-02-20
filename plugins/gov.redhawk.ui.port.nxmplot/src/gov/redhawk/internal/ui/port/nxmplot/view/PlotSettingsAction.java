@@ -97,7 +97,11 @@ public class PlotSettingsAction extends Action {
 				}
 			}
 		} else {
-			return;
+			PlotPreferencePage plotPage = new PlotPreferencePage("Plot");
+			plotPage.setPreferenceStore(pageBook.getActivePlotWidget().getPreferenceStore());
+			plotPage.setBlockPreferenceStore(pageBook.getSharedPlotBlockPreferences());
+			PlotPreferenceNode plotNode = new PlotPreferenceNode("plotSettings", plotPage);
+			manager.addToRoot(plotNode);
 		}
 
 		PlotPreferenceDialog dialog = new PlotPreferenceDialog(pageBook.getShell(), manager);

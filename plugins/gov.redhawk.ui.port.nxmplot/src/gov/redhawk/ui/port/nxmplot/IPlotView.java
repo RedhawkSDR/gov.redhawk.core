@@ -13,15 +13,19 @@ package gov.redhawk.ui.port.nxmplot;
 
 import org.eclipse.ui.services.IDisposable;
 
-
 /**
  * @since 4.4
  */
 public interface IPlotView extends IDisposable {
+	String PARAM_PLOT_TYPE = "gov.redhawk.ui.port.nxmplot.type";
+	String PARAM_ISFFT = "gov.redhawk.ui.port.nxmplot.isFft";
+	String PARAM_CONNECTION_ID = "gov.redhawk.ui.port.nxmplot.connectionID";
+	String PARAM_SECONDARY_ID = "gov.redhawk.ui.port.nxmplot.secondaryID";
+	String COMMAND_ID = "gov.redhawk.ui.port.nxmplot.command.plot";
 
 	/** the ID of the plot view extension */
-	public static final String ID = "gov.redhawk.ui.port.nxmplot.PlotView2";
-	
+	public static final String ID = PlotActivator.VIEW_PLOT_2;
+
 	public PlotPageBook2 getPlotPageBook();
 
 	public void setPartName(String partName);
