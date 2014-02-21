@@ -11,7 +11,7 @@
  */
 package nxm.redhawk.prim.data;
 
-import gov.redhawk.bulkio.util.AbstractBulkIOPort;
+import gov.redhawk.bulkio.util.AbstractUberBulkIOPort;
 import gov.redhawk.bulkio.util.BulkIOType;
 import mil.jpeojtrs.sca.util.UnsignedUtils;
 import nxm.redhawk.prim.IMidasDataWriter;
@@ -22,23 +22,12 @@ import org.eclipse.jdt.annotation.Nullable;
 
 import BULKIO.PrecisionUTCTime;
 import BULKIO.StreamSRI;
-import BULKIO.dataCharOperations;
-import BULKIO.dataDoubleOperations;
-import BULKIO.dataFloatOperations;
-import BULKIO.dataLongLongOperations;
-import BULKIO.dataLongOperations;
-import BULKIO.dataOctetOperations;
-import BULKIO.dataShortOperations;
-import BULKIO.dataUlongLongOperations;
-import BULKIO.dataUlongOperations;
-import BULKIO.dataUshortOperations;
 
 /**
  * uber BULKIO Port (CORBA) data receiver
  * @noreference This class is not intended to be referenced by clients.
  */
-public class BulkIOReceiver extends AbstractBulkIOPort implements dataCharOperations, dataDoubleOperations, dataFloatOperations, dataLongLongOperations,
-		dataLongOperations, dataOctetOperations, dataShortOperations, dataUlongLongOperations, dataUlongOperations, dataUshortOperations {
+public class BulkIOReceiver extends AbstractUberBulkIOPort {
 
 	private final IMidasDataWriter receiver;
 	private final char midasType;
@@ -48,7 +37,7 @@ public class BulkIOReceiver extends AbstractBulkIOPort implements dataCharOperat
 	public BulkIOReceiver(@NonNull final IMidasDataWriter receiver, @NonNull BulkIOType type) {
 		this(receiver, type, false, null);
 	}
-	
+
 	/**
 	 * @since 10.1
 	 */
@@ -62,7 +51,7 @@ public class BulkIOReceiver extends AbstractBulkIOPort implements dataCharOperat
 			this.signed = !type.isUnsigned();
 			this.midasType = type.getMidasType();
 		}
-		this.filterStreamId = streamId; 
+		this.filterStreamId = streamId;
 	}
 
 	public char getMidasType() {
@@ -73,7 +62,7 @@ public class BulkIOReceiver extends AbstractBulkIOPort implements dataCharOperat
 	protected void handleStreamSRIChanged(@NonNull String streamID, @Nullable StreamSRI oldSri, @NonNull StreamSRI newSri) {
 		receiver.setStreamSri(streamID, oldSri, newSri);
 	}
-	
+
 	/**
 	 * {@inheritDoc}
 	 */
@@ -171,5 +160,5 @@ public class BulkIOReceiver extends AbstractBulkIOPort implements dataCharOperat
 			receiver.write(newDataArray, newDataArray.length, DataTypes.INT, endOfStream, time, streamId);
 		}
 	}
-	
+
 }
