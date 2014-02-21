@@ -59,13 +59,13 @@ public class corbareceiver2 extends CorbaPrimitive implements IMidasDataWriter {
 
 	/** Name of switch to grab number of seconds to wait for SRI during open(). */
 	public static final String SW_WAIT = "/WAIT";
-	
+
 	/** Name of switch to treat dataOctet as 8-bit unsigned integer (this will upcast format type to 16-bit signed integer to hold value). */
 	public static final String SW_TREAT_OCTET_AS_UNSIGNED = "/UNSIGNEDOCTET";
-	
+
 	/** Name of switch to specify desired connection ID. */
 	public static final String SW_CONNECTION_ID = "/CONNECTIONID";
-	
+
 	/**
 	 * Name of switch to enable/disable increasing/growing output file's pipe size when
 	 * incoming data packet size is larger than it.
@@ -85,11 +85,11 @@ public class corbareceiver2 extends CorbaPrimitive implements IMidasDataWriter {
 	private FileName fileName;
 
 	private String idl;
-	
+
 	/** The configured SRI */
 	private volatile StreamSRI currentSri;
 	private BulkIOReceiver receiver;
-	
+
 	/** the streamID to only receive data from (null for all streams). */
 	private String streamId;
 
@@ -122,37 +122,37 @@ public class corbareceiver2 extends CorbaPrimitive implements IMidasDataWriter {
 	@Override
 	public synchronized int open() {
 		// MA is the argument list
-		this.fileName = MA.getFileName(A_FILE);
-		this.portIor  = MA.getCS(A_IOR);
-		final String encoded_idl = MA.getCS(A_IDL);
-		this.idl      = decodeIDL(encoded_idl);
-		this.streamId = MA.getCS(A_STREAM_ID, null);
-		this.blocking = MA.getState(SW_BLOCKING, false);
-		boolean unsignedOctet = MA.getState(SW_TREAT_OCTET_AS_UNSIGNED);
-		this.connectionId = MA.getCS(SW_CONNECTION_ID, null);
-		this.canGrowPipe = MA.getState(SW_GROW_PIPE, true);
-		setPipeSizeMultiplier(MA.getL(SW_PS_MULTIPLIER, 4));
+		this.fileName = MA.getFileName(corbareceiver2.A_FILE);
+		this.portIor = MA.getCS(corbareceiver2.A_IOR);
+		final String encoded_idl = MA.getCS(corbareceiver2.A_IDL);
+		this.idl = corbareceiver2.decodeIDL(encoded_idl);
+		this.streamId = MA.getCS(corbareceiver2.A_STREAM_ID, null);
+		this.blocking = MA.getState(corbareceiver2.SW_BLOCKING, false);
+		boolean unsignedOctet = MA.getState(corbareceiver2.SW_TREAT_OCTET_AS_UNSIGNED);
+		this.connectionId = MA.getCS(corbareceiver2.SW_CONNECTION_ID, null);
+		this.canGrowPipe = MA.getState(corbareceiver2.SW_GROW_PIPE, true);
+		setPipeSizeMultiplier(MA.getL(corbareceiver2.SW_PS_MULTIPLIER, 4));
 
 		BulkIOType newType = BulkIOType.getType(this.idl);
 		this.bulkioType = newType;
-		
+
 		if (this.receiver == null) {
 			this.receiver = new BulkIOReceiver(this, newType, unsignedOctet, this.streamId);
 		}
 
 		// Check if we were able to connect to the Port
 		if (!initConnections()) {
-			return ABORT; // since we are unable to connect to the Port
+			return Commandable.ABORT; // since we are unable to connect to the Port
 		}
 
-		final double maxWaitForSRI = MA.getD(SW_WAIT, 1000);   // in milliseconds
-		int numLoops = (int) (maxWaitForSRI / SLEEP_INTERVAL); // 0 or positive values will effect timeout
+		final double maxWaitForSRI = MA.getD(corbareceiver2.SW_WAIT, 1000); // in milliseconds
+		int numLoops = (int) (maxWaitForSRI / corbareceiver2.SLEEP_INTERVAL); // 0 or positive values will effect timeout
 		if (maxWaitForSRI < 0) {
 			numLoops = Integer.MAX_VALUE; // effectively infinity
 		}
 		while (this.currentSri == null && (numLoops-- > 0)) {
 			try {
-				wait(SLEEP_INTERVAL);
+				wait(corbareceiver2.SLEEP_INTERVAL);
 			} catch (InterruptedException e) {
 				break;
 			}
@@ -161,8 +161,8 @@ public class corbareceiver2 extends CorbaPrimitive implements IMidasDataWriter {
 		this.outputFile = createOutputFile(this.currentSri, this.receiver);
 		this.outputFile.open();
 
-		TRACE_LOGGER.exitingMethod();
-		return NORMAL;
+		corbareceiver2.TRACE_LOGGER.exitingMethod();
+		return Commandable.NORMAL;
 	}
 
 	@Override
@@ -171,12 +171,12 @@ public class corbareceiver2 extends CorbaPrimitive implements IMidasDataWriter {
 			setPipeSize(newPipeSize);
 			newPipeSize = 0;
 		}
-		return NOOP;
+		return Commandable.NOOP;
 	}
 
 	@Override
 	public synchronized int close() {
-		TRACE_LOGGER.enteringMethod();
+		corbareceiver2.TRACE_LOGGER.enteringMethod();
 		DataFile localOutputFile = this.outputFile;
 		this.outputFile = null;
 		if (localOutputFile != null) {
@@ -221,7 +221,11 @@ public class corbareceiver2 extends CorbaPrimitive implements IMidasDataWriter {
 		if (ior != null && !ior.trim().isEmpty() && type != null && receiver2 != null) {
 			BulkIOUtilActivator.getBulkIOPortConnectionManager().disconnect(ior, type, receiver2, this.connectionId);
 		}
-		connected = false;
+		this.connectionId = null;
+		this.receiver = null;
+		this.connected = false;
+		this.portIor = null;
+		this.bulkioType = null;
 	}
 
 	/**
@@ -233,7 +237,7 @@ public class corbareceiver2 extends CorbaPrimitive implements IMidasDataWriter {
 	 * @return true if we should process the data
 	 */
 	private final boolean shouldProcessPacket(final boolean endOfStream, final byte type) {
-		if (this.state != PROCESS || isStateChanged() || this.currentSri == null || this.outputFile == null) {
+		if (this.state != Commandable.PROCESS || isStateChanged() || this.currentSri == null || this.outputFile == null) {
 			return false;
 		}
 		return true;
@@ -252,11 +256,11 @@ public class corbareceiver2 extends CorbaPrimitive implements IMidasDataWriter {
 
 		boolean noSubSizeFromSRI = (sri.subsize <= 0); // true for 1000 stream, false for 2000 stream
 
-		final String fileType = (noSubSizeFromSRI) ?  "1000" : "2000"; // SUPPRESS CHECKSTYLE AvoidInline
+		final String fileType = (noSubSizeFromSRI) ? "1000" : "2000"; // SUPPRESS CHECKSTYLE AvoidInline
 		final String format = ((sri.mode == 0) ? "S" : "C") + receiver.getMidasType(); // SUPPRESS CHECKSTYLE AvoidInline
 		final DataFile newOutputFile = new DataFile(MA.cmd, fileName, fileType, format, BaseFile.OUTPUT);
 
-		final double sampleDelta = 1 / getSampleRateFor(this.sampleRate, sri); // zero will be ignored (not used)
+		final double sampleDelta = 1 / corbareceiver2.getSampleRateFor(this.sampleRate, sri); // zero will be ignored (not used)
 
 		double xdelta;
 		final boolean overrideSampleDelta = (this.sampleRate > 0);
@@ -270,7 +274,7 @@ public class corbareceiver2 extends CorbaPrimitive implements IMidasDataWriter {
 		newOutputFile.setXStart(sri.xstart);
 		newOutputFile.setXDelta(xdelta);
 		newOutputFile.setXUnits(sri.xunits);
-		
+
 		if (!noSubSizeFromSRI) {
 			newOutputFile.setFrameSize(sri.subsize);
 		}
@@ -293,14 +297,14 @@ public class corbareceiver2 extends CorbaPrimitive implements IMidasDataWriter {
 	private static boolean isRestartNeed4SriChange(final StreamSRI sri, final StreamSRI lastSRI) {
 		boolean shouldRestart = false;
 		if (lastSRI != null) {
-			shouldRestart |= (lastSRI.mode    != sri.mode);
+			shouldRestart |= (lastSRI.mode != sri.mode);
 			shouldRestart |= (lastSRI.subsize != sri.subsize);
-			shouldRestart |= (lastSRI.xdelta  != sri.xdelta);
-			shouldRestart |= (lastSRI.xstart  != sri.xstart);
-			shouldRestart |= (lastSRI.xunits  != sri.xunits);
-			shouldRestart |= (lastSRI.ydelta  != sri.ydelta);
-			shouldRestart |= (lastSRI.ystart  != sri.ystart);
-			shouldRestart |= (lastSRI.yunits  != sri.yunits);
+			shouldRestart |= (lastSRI.xdelta != sri.xdelta);
+			shouldRestart |= (lastSRI.xstart != sri.xstart);
+			shouldRestart |= (lastSRI.xunits != sri.xunits);
+			shouldRestart |= (lastSRI.ydelta != sri.ydelta);
+			shouldRestart |= (lastSRI.ystart != sri.ystart);
+			shouldRestart |= (lastSRI.yunits != sri.yunits);
 			// blocking, hversion, keywords, and streamID changes do not require a restart
 		} else {
 			shouldRestart = true;
@@ -311,23 +315,24 @@ public class corbareceiver2 extends CorbaPrimitive implements IMidasDataWriter {
 	/**
 	 * @noreference This method is not intended to be referenced by clients.
 	 */
+	@Override
 	public synchronized void setStreamSri(String streamID, StreamSRI oldSri, StreamSRI newSri) {
-		TRACE_LOGGER.message("{0}: setStreamSri to {1} id={2} blocking={3}", getID(), newSri, newSri.streamID, newSri.blocking);
+		corbareceiver2.TRACE_LOGGER.message("{0}: setStreamSri to {1} id={2} blocking={3}", getID(), newSri, newSri.streamID, newSri.blocking);
 		if (this.streamId == null || this.streamId.equals(streamID)) {
 			this.currentSri = newSri;
-			if (state == PROCESS) {
-				if (isRestartNeed4SriChange(newSri, oldSri)) {
+			if (state == Commandable.PROCESS) {
+				if (corbareceiver2.isRestartNeed4SriChange(newSri, oldSri)) {
 					doRestart();
 				}
-			} else if (state == OPEN) {
+			} else if (state == Commandable.OPEN) {
 				notifyAll();
 			}
 		}
 	}
 
 	private synchronized void doRestart() {
-		TRACE_LOGGER.message("{0}: scheduling restart... {1}",  getID(), this.outputFile);
-		setState(RESTART);
+		corbareceiver2.TRACE_LOGGER.message("{0}: scheduling restart... {1}", getID(), this.outputFile);
+		setState(Commandable.RESTART);
 	}
 
 	/**
@@ -338,6 +343,7 @@ public class corbareceiver2 extends CorbaPrimitive implements IMidasDataWriter {
 	 * @param size the length of the data in the array
 	 * @param type the NeXtMidas type of the data to plot (eg. Data.FLOAT)
 	 */
+	@Override
 	public void write(final Object dataArray, final int size, final byte type, final boolean endOfStream, PrecisionUTCTime time, final String streamId) {
 		if (!shouldProcessPacket(endOfStream, type)) {
 			return;
@@ -348,24 +354,24 @@ public class corbareceiver2 extends CorbaPrimitive implements IMidasDataWriter {
 			return;
 		}
 
-		final int bufferSize = Data.getBPS(type) * size;  // size of data to write in bytes
+		final int bufferSize = Data.getBPS(type) * size; // size of data to write in bytes
 		if (this.canGrowPipe && localOutputFile.getPipeSize() < bufferSize) { // increase pipe size if allowed (ticket #1554)
-			if (TRACE_LOGGER.enabled) {
-				TRACE_LOGGER.message("{0}: scheduling pipe size increase from {1} to ({2} x {3}) bytes for {4}",
-					getID(), localOutputFile.getPipeSize(), this.pipeSizeMultiplier, bufferSize, this.outputFile);
+			if (corbareceiver2.TRACE_LOGGER.enabled) {
+				corbareceiver2.TRACE_LOGGER.message("{0}: scheduling pipe size increase from {1} to ({2} x {3}) bytes for {4}", getID(),
+					localOutputFile.getPipeSize(), this.pipeSizeMultiplier, bufferSize, this.outputFile);
 			}
 			this.newPipeSize = bufferSize * this.pipeSizeMultiplier; // this change will be picked up in the process() method
 		}
-		if (!blocking) {                      // === non-blocking option enabled ===
+		if (!blocking) { // === non-blocking option enabled ===
 			if (M.pipeMode == Midas.PPAUSE) { // 1. pipe is PAUSED
-				TRACE_LOGGER.message("Dropping packet b/c pipe is PAUSED");
-				return;                       // 1b. drop packet, as write would block
+				corbareceiver2.TRACE_LOGGER.message("Dropping packet b/c pipe is PAUSED");
+				return; // 1b. drop packet, as write would block
 			}
 			if (!this.canGrowPipe && localOutputFile.getPipeSize() < bufferSize) {
 				// PASS - let packet through even though this might block, otherwise no data will ever be written
 			} else if (localOutputFile.getResource().avail() < bufferSize) { // 2. avail buffer is less than data/packet size
 				// Time.sleep(0.01); // <-- provide slight back-pressure so we don't spin CPU for Component that does NOT throttle data
-				TRACE_LOGGER.message("Dropping packet b/c not enough avail buffer without blocking write");
+				corbareceiver2.TRACE_LOGGER.message("Dropping packet b/c not enough avail buffer without blocking write");
 				return; // 2b. drop packet since write would block
 			}
 		}
@@ -383,7 +389,7 @@ public class corbareceiver2 extends CorbaPrimitive implements IMidasDataWriter {
 		localOutputFile.write(byteBuffer, 0, byteBuffer.length);
 		return;
 	}
-	
+
 	/**
 	 * @return the current custom sample rate to override in SRI.
 	 */
@@ -403,11 +409,11 @@ public class corbareceiver2 extends CorbaPrimitive implements IMidasDataWriter {
 				sampleDelta = 1.0;
 			}
 		} else { // type 1000 stream
-				if (sri.xdelta > 0) {
-					sampleDelta = 1 / sri.xdelta;
-				} else {
-					sampleDelta = 1.0;
-				}
+			if (sri.xdelta > 0) {
+				sampleDelta = 1 / sri.xdelta;
+			} else {
+				sampleDelta = 1.0;
+			}
 		}
 		return sampleDelta;
 	}
@@ -420,10 +426,10 @@ public class corbareceiver2 extends CorbaPrimitive implements IMidasDataWriter {
 		if (newSRate <= 0) {
 			newSRate = 0;
 		}
-		double oldValue = getSampleRateFor(this.sampleRate, currentSri);
+		double oldValue = corbareceiver2.getSampleRateFor(this.sampleRate, currentSri);
 		if (this.sampleRate != newSRate) {
 			this.sampleRate = newSRate;
-			double newValue = getSampleRateFor(this.sampleRate, currentSri);
+			double newValue = corbareceiver2.getSampleRateFor(this.sampleRate, currentSri);
 			if (oldValue != newValue) {
 				doRestart(); // restart since specified sample rate is different than in SRI
 			}
@@ -456,7 +462,7 @@ public class corbareceiver2 extends CorbaPrimitive implements IMidasDataWriter {
 	 */
 	public void setCanGrowPipe(boolean newValue) {
 		this.canGrowPipe = newValue;
-		MA.put(SW_GROW_PIPE, "" + newValue);
+		MA.put(corbareceiver2.SW_GROW_PIPE, "" + newValue);
 	}
 
 	public int getPipeSizeMultiplier() {
@@ -471,7 +477,7 @@ public class corbareceiver2 extends CorbaPrimitive implements IMidasDataWriter {
 			throw new IllegalArgumentException("data size to pipe size multiplier must be greater than 0");
 		}
 		this.pipeSizeMultiplier = newValue;
-		MA.put(SW_PS_MULTIPLIER, "" + newValue);
+		MA.put(corbareceiver2.SW_PS_MULTIPLIER, "" + newValue);
 	}
 
 	public int getPipeSize() {
@@ -482,7 +488,7 @@ public class corbareceiver2 extends CorbaPrimitive implements IMidasDataWriter {
 		}
 		return retval;
 	}
-	
+
 	/**
 	 * Change output file's pipe size (immediately)
 	 * @param newValue new pipe size for output data file/pipe (in bytes)
@@ -493,15 +499,15 @@ public class corbareceiver2 extends CorbaPrimitive implements IMidasDataWriter {
 		}
 		DataFile df = this.outputFile;
 		if (df != null && df.getPipeSize() != newValue) {
-			TRACE_LOGGER.message("{0}: changing pipe size from {1} to {2} bytes for {3}", getID(), df.getPipeSize(), newValue, df);
-//			boolean changePipeMode = M.pipeMode == Midas.PRUN;
-//			if (changePipeMode) {
-//				M.pipeMode = Midas.PPAUSE; // change pipe mode to PAUSE to prevent DataFile.setPipeSize(..) from sleeping 0.2 sec
-//			}
+			corbareceiver2.TRACE_LOGGER.message("{0}: changing pipe size from {1} to {2} bytes for {3}", getID(), df.getPipeSize(), newValue, df);
+			//			boolean changePipeMode = M.pipeMode == Midas.PRUN;
+			//			if (changePipeMode) {
+			//				M.pipeMode = Midas.PPAUSE; // change pipe mode to PAUSE to prevent DataFile.setPipeSize(..) from sleeping 0.2 sec
+			//			}
 			df.setPipeSize(newValue);
-//			if (changePipeMode) {
-//				M.pipeMode = Midas.PRUN; // restore pipe mode back to RUN
-//			}
+			//			if (changePipeMode) {
+			//				M.pipeMode = Midas.PRUN; // restore pipe mode back to RUN
+			//			}
 		}
 	}
 
