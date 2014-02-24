@@ -13,9 +13,8 @@ package gov.redhawk.frontend.ui.internal;
 
 import gov.redhawk.frontend.ListenerAllocation;
 import gov.redhawk.frontend.TunerStatus;
-import gov.redhawk.frontend.edit.utils.TunerPropertyWrapper;
-import gov.redhawk.frontend.edit.utils.TunerUtils;
 import gov.redhawk.frontend.provider.FrontendItemProviderAdapterFactory;
+import gov.redhawk.frontend.util.TunerUtils;
 import gov.redhawk.model.sca.IDisposable;
 import gov.redhawk.sca.ui.ITooltipProvider;
 import gov.redhawk.sca.ui.ScaModelAdapterFactoryLabelProvider;

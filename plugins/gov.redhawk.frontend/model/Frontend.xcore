@@ -1,68 +1,68 @@
 @Ecore(nsURI="http://redhawk.gov/frontend/1.0.0")
-@GenModel(prefix="Frontend", dataTypeConverters="true", binaryCompantibleReflectiveMethods="true", fileExtensions="xml", colorProviders="true", fontProviders="true", tablesProviders="true", resource="XML", templateDirectory="/gov.redhawk.frontend/templates", forceOverwrite="true", modelPluginVariables="org.eclipse.xtext.xbase.lib", tableProviders="true")
+@GenModel(prefix="Frontend", dataTypeConverters="true", binaryCompantibleReflectiveMethods="true", fileExtensions="xml", colorProviders="true", fontProviders="true", tablesProviders="true", resource="XML", templateDirectory="/gov.redhawk.frontend/templates", forceOverwrite="true", modelPluginVariables="org.eclipse.xtext.xbase.lib", tableProviders="true", runtimeVersion="2.9", codeFormatting="true", commentFormatting="true", dynamicTemplates="true")
 @GenModel(contentTypeIdentifier="http://redhawk.gov/frontend/1.0.0")
 @GenModel(modelDirectory="/gov.redhawk.frontend/src-model")
 @GenModel(editDirectory="/gov.redhawk.frontend.edit/src-gen")
 package gov.redhawk.frontend
 
 import gov.redhawk.model.sca.ScaStructProperty
-import gov.redhawk.model.sca.ScaDevice
 import gov.redhawk.model.sca.ScaSimpleProperty
 
 
-type ScaDevice wraps ScaDevice < ? >
-type TunerStatusStruct wraps ScaStructProperty
+type ScaStructProperty wraps ScaStructProperty
 type ScaSimpleProperty wraps ScaSimpleProperty
-type PlotObject wraps Object
-
-class ModelDevice {
-	contains TunerContainer tunerContainer opposite modelDevice
-	ScaDevice scaDevice
-}
 
 class TunerContainer {
-	container ModelDevice modelDevice opposite tunerContainer
-	contains UnallocatedTunerContainer[] unallocatedContainer opposite tunerContainer
 	contains TunerStatus[] tunerStatus opposite tunerContainer
+	contains UnallocatedTunerContainer[] unallocatedContainer opposite tunerContainer
 }
 
 class UnallocatedTunerContainer {
 	container TunerContainer tunerContainer opposite unallocatedContainer
 	String tunerType
+	int count
 }
 
 class TunerStatus { 
 	container TunerContainer tunerContainer opposite tunerStatus
-
-	TunerStatusStruct tunerStatusStruct // Direct reference to device struct
-	ScaSimpleProperty[] simples
-	String tunerID	// Model specific property, used for virtual ordering and assignment
-
+	/**
+	 * Direct reference to device struct
+	 */
+	@GenModel(property="Readonly")
+	ScaStructProperty tunerStatusStruct
+	
+	@GenModel(property="Readonly")
+	derived readonly transient volatile ScaSimpleProperty[] simples
+	
+	op ScaSimpleProperty getSimple(String propID)
+	
+	@GenModel(property="Readonly")
+	derived readonly transient volatile boolean allocated
+	
+	@GenModel(property="Readonly")
+	derived readonly transient volatile String tunerID
+	
+	// Model specific property, used for virtual ordering and assignment
 	// Required Status Elements
-	String tunerType
-	String allocationID		
-	double centerFrequency 	
-	double bandwidth 		
-	double sampleRate		
-	String groupID			
-	String rfFlowID
-	boolean enabled
+	unsettable String tunerType
+	unsettable String allocationID
+	unsettable double centerFrequency
+	unsettable double bandwidth
+	unsettable double sampleRate
+	unsettable String groupID
+	unsettable String rfFlowID
+	unsettable boolean enabled
 
 	// Optional Status Elements
-	double gain		
-	boolean agc		
-	long referenceSource	
+	unsettable double gain
+	unsettable boolean agc
+	unsettable long referenceSource	
 
 	// Tuner Allocation Properties
-	boolean deviceControl
+	unsettable boolean deviceControl
+	
+	@GenModel(property="Readonly")
 	contains ListenerAllocation[] listenerAllocations opposite tunerStatus
-	contains Plot[] plots opposite tunerStatus
-}
-
-class Plot {
-	container TunerStatus tunerStatus opposite plots
-	String listenerID
-	PlotObject plotView
 }
 
 class ListenerAllocation {

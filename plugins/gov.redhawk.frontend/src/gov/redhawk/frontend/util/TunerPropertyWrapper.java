@@ -9,7 +9,7 @@
  * http://www.eclipse.org/legal/epl-v10.html.
  *
  */
-package gov.redhawk.frontend.edit.utils;
+package gov.redhawk.frontend.util;
 
 import gov.redhawk.frontend.TunerStatus;
 import gov.redhawk.model.sca.ScaSimpleProperty;
@@ -28,9 +28,9 @@ public class TunerPropertyWrapper {
 		this.id = simple.getId();
 		this.value = simple.getValue();
 
-		for (TunerProperties.TunerStatusAllocationProperties value : TunerProperties.TunerStatusAllocationProperties.values()) {
-			if (value.getId().equals(simple.getId())) {
-				name = value.getName();
+		for (TunerProperties.TunerStatusAllocationProperties v : TunerProperties.TunerStatusAllocationProperties.values()) {
+			if (v.getId().equals(simple.getId())) {
+				name = v.getName();
 			}
 		}
 	}

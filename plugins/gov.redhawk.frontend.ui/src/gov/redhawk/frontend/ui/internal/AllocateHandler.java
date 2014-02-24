@@ -14,13 +14,7 @@ package gov.redhawk.frontend.ui.internal;
 import gov.redhawk.frontend.TunerContainer;
 import gov.redhawk.frontend.TunerStatus;
 import gov.redhawk.frontend.UnallocatedTunerContainer;
-import gov.redhawk.frontend.edit.utils.TunerUtils;
-import gov.redhawk.frontend.impl.TunerContainerImpl;
-import gov.redhawk.frontend.provider.TunerStatusItemProvider;
-import gov.redhawk.frontend.ui.FrontEndUIActivator;
-import gov.redhawk.frontend.ui.wizard.TunerAllocationDetailWizard;
 import gov.redhawk.frontend.ui.wizard.TunerAllocationWizard;
-import gov.redhawk.model.sca.ScaDevice;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,11 +23,8 @@ import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.core.commands.IHandler;
-import org.eclipse.emf.common.util.EList;
 import org.eclipse.jface.viewers.IStructuredSelection;
-import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.wizard.WizardDialog;
-import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.handlers.HandlerUtil;
 
 /**
@@ -81,10 +72,9 @@ public class AllocateHandler extends AbstractHandler implements IHandler {
 	}
 
 	private TunerStatus[] getUnallocatedTunersOfType(TunerContainer container, String tunerType) {
-		List <TunerStatus> tuners = new ArrayList <TunerStatus>();
-		for (TunerStatus tuner: container.getTunerStatus()) {
-			if ((tuner.getAllocationID() == null || tuner.getAllocationID().length() == 0) &&
-					tuner.getTunerType().equals(tunerType)) {
+		List<TunerStatus> tuners = new ArrayList<TunerStatus>();
+		for (TunerStatus tuner : container.getTunerStatus()) {
+			if ((tuner.getAllocationID() == null || tuner.getAllocationID().length() == 0) && tuner.getTunerType().equals(tunerType)) {
 				tuners.add(tuner);
 			}
 		}
@@ -97,7 +87,7 @@ public class AllocateHandler extends AbstractHandler implements IHandler {
 		for (Object obj : objects) {
 			list.add((T) obj);
 		}
-		return (T[]) list.toArray(array);
+		return list.toArray(array);
 	}
 
 }

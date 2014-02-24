@@ -17,6 +17,8 @@ import org.eclipse.core.commands.Command;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.common.CommandException;
 import org.eclipse.core.expressions.IEvaluationContext;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.resource.ImageDescriptor;
@@ -25,6 +27,8 @@ import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.ui.ISources;
 import org.eclipse.ui.commands.ICommandService;
 import org.eclipse.ui.handlers.IHandlerService;
+import org.eclipse.ui.plugin.AbstractUIPlugin;
+import org.eclipse.ui.statushandlers.StatusManager;
 
 /**
  * 
@@ -36,35 +40,33 @@ public class FrontendAction extends Action {
 	private String actionId;
 	private String commandId;
 	private ImageDescriptor imageDescriptor;
-	
+
 	public FrontendAction(FrontendSection theSection, String theActionName, String theActionId, String theCommandId, String iconPath) {
 		section = theSection;
 		actionName = theActionName;
 		actionId = theActionId;
 		commandId = theCommandId;
-		imageDescriptor = FrontEndUIActivator.imageDescriptorFromPlugin(FrontEndUIActivator.PLUGIN_ID, iconPath);
+		imageDescriptor = AbstractUIPlugin.imageDescriptorFromPlugin(FrontEndUIActivator.PLUGIN_ID, iconPath);
 	}
-	
+
 	@Override
 	public String getId() {
 		return actionId;
 	}
-	
+
 	@Override
 	public ImageDescriptor getImageDescriptor() {
 		return imageDescriptor;
 	}
-	
+
 	@Override
 	public String getText() {
 		return actionName;
 	}
-	
+
 	@Override
 	public void run() {
-		final ICommandService commandService = (ICommandService) section.getInputPart()
-				.getSite()
-				.getService(ICommandService.class);
+		final ICommandService commandService = (ICommandService) section.getInputPart().getSite().getService(ICommandService.class);
 		Command command = null;
 		if (commandService != null) {
 			command = commandService.getCommand(commandId);
@@ -85,7 +87,8 @@ public class FrontendAction extends Action {
 		try {
 			command.executeWithChecks(evt);
 		} catch (CommandException e) {
-			e.printStackTrace();
+			StatusManager.getManager().handle(new Status(IStatus.ERROR, FrontEndUIActivator.PLUGIN_ID, "Action failed", e),
+				StatusManager.SHOW | StatusManager.LOG);
 		}
 	}
 }

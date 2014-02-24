@@ -38,16 +38,15 @@ public class TunerContainerPropertyTester extends PropertyTester {
 		if ("hasUnallocatedTuners".equals(property)) {
 			for (TunerStatus tuner : container.getTunerStatus()) {
 				String allocationID = tuner.getAllocationID();
-				if (((allocationID == null || "".equals(allocationID))) && 
-						FrontEndUIActivator.supportedTunerTypes.contains(tuner.getTunerType())) {
+				if (((allocationID == null || "".equals(allocationID))) && FrontEndUIActivator.SUPPORTED_TUNER_TYPES.contains(tuner.getTunerType())) {
 					return true;
 				}
 			}
 		}
-		
+
 		if ("hasAllocatedTuners".equals(property)) {
 			for (TunerStatus tuner : container.getTunerStatus()) {
-				if (!FrontEndUIActivator.supportedTunerTypes.contains(tuner.getTunerType())) {
+				if (!FrontEndUIActivator.SUPPORTED_TUNER_TYPES.contains(tuner.getTunerType())) {
 					return false;
 				}
 				String allocationID = tuner.getAllocationID();
@@ -56,7 +55,7 @@ public class TunerContainerPropertyTester extends PropertyTester {
 				}
 			}
 		}
-		
+
 		return false;
 	}
 

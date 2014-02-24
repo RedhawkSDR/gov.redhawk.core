@@ -1,11 +1,22 @@
+/** 
+ * This file is protected by Copyright. 
+ * Please refer to the COPYRIGHT file distributed with this source distribution.
+ * 
+ * This file is part of REDHAWK IDE.
+ * 
+ * All rights reserved.  This program and the accompanying materials are made available under 
+ * the terms of the Eclipse Public License v1.0 which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html.
+ *
+ */
 package gov.redhawk.frontend.ui.wizard;
 
 import gov.redhawk.common.ui.widgets.Dval;
 import gov.redhawk.frontend.TunerStatus;
-import gov.redhawk.frontend.edit.utils.TunerProperties.ListenerAllocationProperties;
-import gov.redhawk.frontend.edit.utils.TunerProperties.TunerAllocationProperties;
-import gov.redhawk.frontend.edit.utils.TunerProperties.StatusProperties;
 import gov.redhawk.frontend.ui.FrontEndUIActivator.ALLOCATION_MODE;
+import gov.redhawk.frontend.util.TunerProperties.ListenerAllocationProperties;
+import gov.redhawk.frontend.util.TunerProperties.StatusProperties;
+import gov.redhawk.frontend.util.TunerProperties.TunerAllocationProperties;
 import gov.redhawk.model.sca.ScaFactory;
 import gov.redhawk.model.sca.ScaSimpleProperty;
 import gov.redhawk.model.sca.ScaStructProperty;
@@ -201,8 +212,7 @@ public class AllocateRxDigitizerWizardPage extends WizardPage {
 
 			@Override
 			public void handleEvent(Event event) {
-				setValueForProp(TunerAllocationProperties.ALLOCATION_ID,
-					tunerAllocationStruct.getSimple(TunerAllocationProperties.ALLOCATION_ID.getId()));
+				setValueForProp(TunerAllocationProperties.ALLOCATION_ID, tunerAllocationStruct.getSimple(TunerAllocationProperties.ALLOCATION_ID.getId()));
 				setValueForProp(ListenerAllocationProperties.LISTENER_ALLOCATION_ID,
 					listenerAllocationStruct.getSimple(ListenerAllocationProperties.LISTENER_ALLOCATION_ID.getId()));
 				setPageComplete(validate());
@@ -446,16 +456,16 @@ public class AllocateRxDigitizerWizardPage extends WizardPage {
 		double max = 0;
 		switch (prop) {
 		case AVAILABLE_BANDWIDTH:
-			min = MIN_BANDWIDTH;
-			max = MAX_BANDWIDTH;
+			min = AllocateRxDigitizerWizardPage.MIN_BANDWIDTH;
+			max = AllocateRxDigitizerWizardPage.MAX_BANDWIDTH;
 			break;
 		case AVAILABLE_FREQUENCY:
-			min = MIN_FREQUENCY;
-			max = MAX_FREQUENCY;
+			min = AllocateRxDigitizerWizardPage.MIN_FREQUENCY;
+			max = AllocateRxDigitizerWizardPage.MAX_FREQUENCY;
 			break;
 		case AVAILABLE_SAMPLE_RATE:
-			min = MIN_SAMPLERATE;
-			max = MAX_SAMPLERATE;
+			min = AllocateRxDigitizerWizardPage.MIN_SAMPLERATE;
+			max = AllocateRxDigitizerWizardPage.MAX_SAMPLERATE;
 			break;
 		default:
 		}
@@ -472,9 +482,9 @@ public class AllocateRxDigitizerWizardPage extends WizardPage {
 		case AVAILABLE_BANDWIDTH:
 		case AVAILABLE_FREQUENCY:
 		case AVAILABLE_SAMPLE_RATE:
-			return FREQUENCY_VALUE_CONVERSION_FACTOR;
+			return AllocateRxDigitizerWizardPage.FREQUENCY_VALUE_CONVERSION_FACTOR;
 		default:
-			return ONE;
+			return AllocateRxDigitizerWizardPage.ONE;
 		}
 	}
 
@@ -483,10 +493,10 @@ public class AllocateRxDigitizerWizardPage extends WizardPage {
 		case BANDWIDTH:
 		case CENTER_FREQUENCY:
 		case SAMPLE_RATE:
-			return FREQUENCY_VALUE_CONVERSION_FACTOR;
+			return AllocateRxDigitizerWizardPage.FREQUENCY_VALUE_CONVERSION_FACTOR;
 		case BANDWIDTH_TOLERANCE:
 		case SAMPLE_RATE_TOLERANCE:
-			return TOLERANCE_CONVERSION;
+			return AllocateRxDigitizerWizardPage.TOLERANCE_CONVERSION;
 		default:
 			return 1;
 		}

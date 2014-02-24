@@ -12,19 +12,15 @@
 package gov.redhawk.frontend.ui.internal;
 
 import gov.redhawk.frontend.TunerContainer;
-import gov.redhawk.frontend.TunerStatus;
-import gov.redhawk.frontend.edit.utils.TunerUtils;
 import gov.redhawk.frontend.provider.FrontendItemProviderAdapterFactory;
+import gov.redhawk.frontend.util.TunerUtils;
 import gov.redhawk.model.sca.ScaDevice;
 import gov.redhawk.sca.ui.ScaModelAdapterFactoryContentProvider;
 
 import org.eclipse.emf.common.notify.AdapterFactory;
-import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.ui.IMemento;
 import org.eclipse.ui.navigator.ICommonContentExtensionSite;
 import org.eclipse.ui.navigator.ICommonContentProvider;
-
-import CF.DeviceHelper;
 
 public class FrontEndContentProvider extends ScaModelAdapterFactoryContentProvider implements ICommonContentProvider {
 
@@ -40,29 +36,14 @@ public class FrontEndContentProvider extends ScaModelAdapterFactoryContentProvid
 	public Object[] getChildren(Object object) {
 		if (object instanceof ScaDevice< ? >) {
 			ScaDevice< ? > device = (ScaDevice< ? >) object;
-			if (device._is_a(DeviceHelper.id())) {
-				TunerContainer tunerContainer = TunerUtils.INSTANCE.getTunerContainer(device);
-				if (tunerContainer != null) {
-					return new Object[] { tunerContainer };
-				}
-				return new Object[0];
+			TunerContainer tunerContainer = TunerUtils.INSTANCE.getTunerContainer(device);
+			if (tunerContainer != null) {
+				return new Object[] { tunerContainer };
 			}
+			return new Object[0];
 		}
 
 		return super.getChildren(object);
-	}
-
-	@Override
-	public boolean hasChildren(Object object) {
-		if (object instanceof TunerContainer) {
-			return true;
-		}
-		if (object instanceof TunerStatus) {
-			if (((TunerStatus) object).getListenerAllocations().isEmpty())
-				return false;
-			return true;
-		}
-		return super.hasChildren(object);
 	}
 
 	@Override
@@ -80,8 +61,4 @@ public class FrontEndContentProvider extends ScaModelAdapterFactoryContentProvid
 
 	}
 
-	@Override
-	public void notifyChanged(Notification notification) {
-		super.notifyChanged(notification);
-	}
 }

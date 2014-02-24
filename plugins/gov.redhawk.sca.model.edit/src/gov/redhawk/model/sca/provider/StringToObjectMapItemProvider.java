@@ -95,7 +95,7 @@ public class StringToObjectMapItemProvider extends ItemProviderAdapter implement
 		itemPropertyDescriptors.add(createItemPropertyDescriptor(((ComposeableAdapterFactory) adapterFactory).getRootAdapterFactory(), getResourceLocator(),
 			getString("_UI_StringToObjectMap_value_feature"),
 			getString("_UI_PropertyDescriptor_description", "_UI_StringToObjectMap_value_feature", "_UI_StringToObjectMap_type"),
-			ScaPackage.Literals.STRING_TO_OBJECT_MAP__VALUE, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
+			ScaPackage.Literals.STRING_TO_OBJECT_MAP__VALUE, true, false, false, null, null, null));
 	}
 
 	/**

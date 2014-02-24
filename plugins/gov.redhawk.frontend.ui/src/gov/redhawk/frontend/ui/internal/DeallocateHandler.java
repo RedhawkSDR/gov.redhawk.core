@@ -14,10 +14,10 @@ package gov.redhawk.frontend.ui.internal;
 import gov.redhawk.frontend.ListenerAllocation;
 import gov.redhawk.frontend.TunerContainer;
 import gov.redhawk.frontend.TunerStatus;
-import gov.redhawk.frontend.edit.utils.TunerProperties.ListenerAllocationProperties;
-import gov.redhawk.frontend.edit.utils.TunerProperties.TunerAllocationProperties;
 import gov.redhawk.frontend.ui.FrontEndUIActivator;
 import gov.redhawk.frontend.ui.internal.section.FrontendSection;
+import gov.redhawk.frontend.util.TunerProperties.ListenerAllocationProperties;
+import gov.redhawk.frontend.util.TunerProperties.TunerAllocationProperties;
 import gov.redhawk.model.sca.RefreshDepth;
 import gov.redhawk.model.sca.ScaDevice;
 import gov.redhawk.model.sca.ScaFactory;
@@ -31,6 +31,7 @@ import java.util.List;
 import mil.jpeojtrs.sca.prf.PrfFactory;
 import mil.jpeojtrs.sca.prf.PrfPackage;
 import mil.jpeojtrs.sca.prf.Simple;
+import mil.jpeojtrs.sca.util.ScaEcoreUtils;
 
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
@@ -53,8 +54,6 @@ import CF.DevicePackage.InvalidState;
  *
  */
 public class DeallocateHandler extends AbstractHandler implements IHandler {
-
-	private TunerStatus tuner;
 
 	/* (non-Javadoc)
 	 * @see org.eclipse.core.commands.IHandler#execute(org.eclipse.core.commands.ExecutionEvent)
@@ -95,7 +94,10 @@ public class DeallocateHandler extends AbstractHandler implements IHandler {
 				// already deallocated, probably still in a pinned properties view
 				return null;
 			}
-			final ScaDevice< ? > device = listener.getTunerStatus().getTunerContainer().getModelDevice().getScaDevice();
+			final ScaDevice< ? > device = ScaEcoreUtils.getEContainerOfType(listener, ScaDevice.class);
+			if (device == null) {
+				return null;
+			}
 			final DataType[] props = new DataType[1];
 			DataType dt = new DataType();
 			dt.id = "FRONTEND::listener_allocation";
@@ -111,13 +113,13 @@ public class DeallocateHandler extends AbstractHandler implements IHandler {
 						device.deallocateCapacity(props);
 						device.refresh(null, RefreshDepth.SELF);
 					} catch (InvalidCapacity e) {
-						return new Status(Status.ERROR, FrontEndUIActivator.PLUGIN_ID, "Invalid Capacity in control deallocation: " + e.msg, e);
+						return new Status(IStatus.ERROR, FrontEndUIActivator.PLUGIN_ID, "Invalid Capacity in control deallocation: " + e.msg, e);
 					} catch (InvalidState e) {
-						return new Status(Status.ERROR, FrontEndUIActivator.PLUGIN_ID, "Invalid State in control deallocation: " + e.msg, e);
+						return new Status(IStatus.ERROR, FrontEndUIActivator.PLUGIN_ID, "Invalid State in control deallocation: " + e.msg, e);
 					} catch (InterruptedException e) {
-						return new Status(Status.ERROR, FrontEndUIActivator.PLUGIN_ID, "Interrupted Exception during control deallocation", e);
+						return new Status(IStatus.ERROR, FrontEndUIActivator.PLUGIN_ID, "Interrupted Exception during control deallocation", e);
 					}
-					
+
 					final TunerStatus tunerStatus = listener.getTunerStatus();
 					if (tunerStatus != null) {
 						ScaModelCommand.execute(tunerStatus, new ScaModelCommand() {
@@ -136,7 +138,7 @@ public class DeallocateHandler extends AbstractHandler implements IHandler {
 		}
 		// If called from toolbar button, we must unset the property page's selection to clear it
 		Object section = ((IEvaluationContext) event.getApplicationContext()).getVariable("gov.redhawk.frontend.propertySection");
-		if (section != null && removeSelection) {
+		if (section instanceof FrontendSection && removeSelection) {
 			FrontendSection feSection = (FrontendSection) section;
 			feSection.unsetPageSelection();
 		}
@@ -145,17 +147,14 @@ public class DeallocateHandler extends AbstractHandler implements IHandler {
 
 	private boolean deallocateTuner(TunerStatus tuner, ExecutionEvent event) {
 		if (tuner.getAllocationID().contains(",")) {
-			MessageDialog warning = new MessageDialog(HandlerUtil.getActiveWorkbenchWindow(event).getShell(), 
-				"Deallocation Warning", null, 
-				"Deallocating a tuner will also deallocate all of its listeners.  Proceed?", 
-				MessageDialog.WARNING, new String[]{"No","Yes"}, 0);
+			MessageDialog warning = new MessageDialog(HandlerUtil.getActiveWorkbenchWindow(event).getShell(), "Deallocation Warning", null,
+				"Deallocating a tuner will also deallocate all of its listeners.  Proceed?", MessageDialog.WARNING, new String[] { "No", "Yes" }, 0);
 			int response = warning.open();
-			System.out.println("Response = " + response);
 			if (response != 1) {
 				return false;
 			}
 		}
-		final ScaDevice< ? > device = tuner.getTunerContainer().getModelDevice().getScaDevice();
+		final ScaDevice< ? > device = ScaEcoreUtils.getEContainerOfType(tuner, ScaDevice.class);
 		final DataType[] props = createAllocationProperties(tuner);
 
 		Job job = new Job("Deallocate FEI control") {
@@ -167,11 +166,11 @@ public class DeallocateHandler extends AbstractHandler implements IHandler {
 					device.deallocateCapacity(props);
 					device.refresh(null, RefreshDepth.SELF);
 				} catch (InvalidCapacity e) {
-					return new Status(Status.ERROR, FrontEndUIActivator.PLUGIN_ID, "Invalid Capacity in control deallocation: " + e.msg, e);
+					return new Status(IStatus.ERROR, FrontEndUIActivator.PLUGIN_ID, "Invalid Capacity in control deallocation: " + e.msg, e);
 				} catch (InvalidState e) {
-					return new Status(Status.ERROR, FrontEndUIActivator.PLUGIN_ID, "Invalid State in control deallocation: " + e.msg, e);
+					return new Status(IStatus.ERROR, FrontEndUIActivator.PLUGIN_ID, "Invalid State in control deallocation: " + e.msg, e);
 				} catch (InterruptedException e) {
-					return new Status(Status.ERROR, FrontEndUIActivator.PLUGIN_ID, "Interrupted Exception during control deallocation", e);
+					return new Status(IStatus.ERROR, FrontEndUIActivator.PLUGIN_ID, "Interrupted Exception during control deallocation", e);
 				}
 				return Status.OK_STATUS;
 			}
@@ -184,18 +183,17 @@ public class DeallocateHandler extends AbstractHandler implements IHandler {
 	}
 
 	private DataType[] createAllocationProperties(TunerStatus tuner) {
-		this.tuner = tuner;
 		List<DataType> props = new ArrayList<DataType>();
 		ScaStructProperty struct;
 		DataType dt = new DataType();
-		struct = getTunerAllocationStruct();
+		struct = getTunerAllocationStruct(tuner);
 		dt.id = "FRONTEND::tuner_allocation";
 		dt.value = struct.toAny();
 		props.add(dt);
 		return props.toArray(new DataType[0]);
 	}
 
-	private ScaStructProperty getTunerAllocationStruct() {
+	private ScaStructProperty getTunerAllocationStruct(TunerStatus tuner) {
 		ScaStructProperty tunerAllocationStruct = ScaFactory.eINSTANCE.createScaStructProperty();
 		TunerAllocationProperties allocPropID = TunerAllocationProperties.valueOf("ALLOCATION_ID");
 		ScaSimpleProperty simple = ScaFactory.eINSTANCE.createScaSimpleProperty();
@@ -205,7 +203,7 @@ public class DeallocateHandler extends AbstractHandler implements IHandler {
 		definition.setName(allocPropID.getType().getName());
 		simple.setDefinition(definition);
 		simple.setId(allocPropID.getId());
-		setValueForProp(allocPropID, simple);
+		setValueForProp(tuner, allocPropID, simple);
 		tunerAllocationStruct.getSimples().add(simple);
 		return tunerAllocationStruct;
 	}
@@ -225,7 +223,7 @@ public class DeallocateHandler extends AbstractHandler implements IHandler {
 		return listenerAllocationStruct;
 	}
 
-	private void setValueForProp(TunerAllocationProperties allocPropID, ScaSimpleProperty simple) {
+	private void setValueForProp(TunerStatus tuner, TunerAllocationProperties allocPropID, ScaSimpleProperty simple) {
 		// Deallocates control id and all listeners
 		String value = tuner.getTunerStatusStruct().getSimple("FRONTEND::tuner_status::allocation_id_csv").getValue().toString();
 		int endControlIndex = value.indexOf(',');
