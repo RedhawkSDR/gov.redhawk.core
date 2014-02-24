@@ -819,7 +819,7 @@ public abstract class AbstractNxmPlotWidget extends Composite {
 		}
 
 		if (PlotPreferences.MODE.isEvent(event)) {
-			updateMode();
+			updatePlotMode();
 		}
 	}
 
@@ -833,12 +833,12 @@ public abstract class AbstractNxmPlotWidget extends Composite {
 
 	}
 
-	private void updateMode() {
+	private void updatePlotMode() {
 		if (getPlotMode().toModeString() != null && !getPlotMode().toModeString().isEmpty()) {
-			sendPlotMessage("SET.MODE", 0, getPlotMode().toModeString());
+			sendPlotMessage("SET.MODE", 0, getPlotMode().toModeString());        // TODO: remove this line once nxm342 is released
+			sendPlotMessage("SET.ComplexMode", 0, getPlotMode().toModeString()); // requires nxm342, otherwise fails silently
 		} else {
-			// PASS
-			// TODO Set back to auto mode
+			sendPlotMessage("SET.ComplexMode", 0, ""); // set plot mode to auto (requires nxm342)
 		}
 	}
 
