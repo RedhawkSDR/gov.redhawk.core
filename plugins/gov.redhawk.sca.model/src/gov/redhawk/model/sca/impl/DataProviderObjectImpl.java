@@ -352,6 +352,9 @@ public abstract class DataProviderObjectImpl extends IStatusProviderImpl impleme
 	@Override
 	public void refresh(IProgressMonitor monitor, RefreshDepth depth) throws InterruptedException {
 		// END GENERATED CODE
+		if (isDisposed()) {
+			return;
+		}
 		Assert.isNotNull(depth);
 		if (depth == RefreshDepth.NONE) {
 			return;

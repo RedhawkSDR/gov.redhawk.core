@@ -65,6 +65,7 @@ import org.eclipse.core.runtime.SubMonitor;
 import org.eclipse.emf.common.command.Command;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
+import org.eclipse.emf.common.util.ECollections;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EClass;
@@ -730,6 +731,9 @@ public class ScaWaveformImpl extends ScaPropertyContainerImpl<Application, Softw
 	 */
 	@Override
 	public EList<ScaComponent> fetchComponents(IProgressMonitor monitor) {
+		if (isDisposed()) {
+			return ECollections.emptyEList();
+		}
 		SubMonitor subMonitor = SubMonitor.convert(monitor, "Fetching components", 2);
 		internalFetchComponents(subMonitor.newChild(1));
 		IRefreshable[] array = ScaModelCommandWithResult.execute(this, new ScaModelCommandWithResult<IRefreshable[]>() {
@@ -766,6 +770,9 @@ public class ScaWaveformImpl extends ScaPropertyContainerImpl<Application, Softw
 	@Override
 	public String fetchIdentifier(IProgressMonitor monitor) {
 		// END GENERATED CODE
+		if (isDisposed()) {
+			return null;
+		}
 		if (isSetIdentifier()) {
 			return getIdentifier();
 		}
@@ -802,6 +809,9 @@ public class ScaWaveformImpl extends ScaPropertyContainerImpl<Application, Softw
 	@Override
 	public String fetchName(IProgressMonitor monitor) {
 		// END GENERATED CODE
+		if (isDisposed()) {
+			return null;
+		}
 		if (isSetName()) {
 			return getName();
 		}
@@ -838,6 +848,9 @@ public class ScaWaveformImpl extends ScaPropertyContainerImpl<Application, Softw
 	@Override
 	public Boolean fetchStarted(IProgressMonitor monitor) {
 		// END GENERATED CODE
+		if (isDisposed()) {
+			return null;
+		}
 		SubMonitor subMonitor = SubMonitor.convert(monitor, "Fetching started", 4);
 		Application localObj = fetchNarrowedObject(subMonitor.newChild(1));
 		Transaction transaction = startedFeature.createTransaction();
@@ -889,7 +902,7 @@ public class ScaWaveformImpl extends ScaPropertyContainerImpl<Application, Softw
 	 */
 	protected void internalFetchComponents(IProgressMonitor monitor) {
 		// END GENERATED CODE
-		if (isSetComponents()) {
+		if (isSetComponents() || isDisposed()) {
 			return;
 		}
 		SubMonitor subMonitor = SubMonitor.convert(monitor, 6); //SUPPRESS CHECKSTYLE MagicNumber
@@ -959,6 +972,9 @@ public class ScaWaveformImpl extends ScaPropertyContainerImpl<Application, Softw
 	 */
 	@Override
 	public EList<ScaPort< ? , ? >> fetchPorts(IProgressMonitor monitor) {
+		if (isDisposed()) {
+			return ECollections.emptyEList();
+		}
 		SubMonitor subMonitor = SubMonitor.convert(monitor, "Fetching ports", 2);
 		internalFetchPorts(subMonitor.newChild(1));
 		IRefreshable[] array = ScaModelCommandWithResult.execute(this, new ScaModelCommandWithResult<IRefreshable[]>() {
@@ -1000,7 +1016,7 @@ public class ScaWaveformImpl extends ScaPropertyContainerImpl<Application, Softw
 	 */
 	protected void internalFetchPorts(IProgressMonitor monitor) {
 		// END GENERATED CODE
-		if (isSetPorts()) {
+		if (isSetPorts() || isDisposed()) {
 			return;
 		}
 
@@ -1121,6 +1137,9 @@ public class ScaWaveformImpl extends ScaPropertyContainerImpl<Application, Softw
 	}
 
 	private void fetchLocalAttributes(IProgressMonitor monitor) {
+		if (isDisposed()) {
+			return;
+		}
 		SubMonitor subMonitor = SubMonitor.convert(monitor, 5);
 		fetchIdentifier(subMonitor.newChild(1));
 		fetchStarted(subMonitor.newChild(1));
@@ -1141,7 +1160,11 @@ public class ScaWaveformImpl extends ScaPropertyContainerImpl<Application, Softw
 	@Override
 	protected void notifyChanged(Notification msg) {
 		super.notifyChanged(msg);
+		if (msg.isTouch()) {
+			return;
+		}
 		switch (msg.getFeatureID(ScaWaveform.class)) {
+		case ScaPackage.SCA_WAVEFORM__DISPOSED:
 		case ScaPackage.SCA_WAVEFORM__OBJ:
 			unsetProfile();
 			unsetIdentifier();
@@ -1765,6 +1788,9 @@ public class ScaWaveformImpl extends ScaPropertyContainerImpl<Application, Softw
 
 	@Override
 	protected List<AbstractProperty> fetchPropertyDefinitions(IProgressMonitor monitor) {
+		if (isDisposed()) {
+			return Collections.emptyList();
+		}
 		SoftwareAssembly localProfile = fetchProfileObject(monitor);
 		mil.jpeojtrs.sca.prf.Properties propDefintions = ScaEcoreUtils.getFeature(localProfile, PRF_PATH);
 		List<AbstractProperty> retVal = new ArrayList<AbstractProperty>();
@@ -1811,6 +1837,9 @@ public class ScaWaveformImpl extends ScaPropertyContainerImpl<Application, Softw
 	 */
 	@Override
 	public SoftwareAssembly fetchProfileObject(IProgressMonitor monitor) {
+		if (isDisposed()) {
+			return null;
+		}
 		if (isSetProfileObj()) {
 			return getProfileObj();
 		}
@@ -1840,6 +1869,9 @@ public class ScaWaveformImpl extends ScaPropertyContainerImpl<Application, Softw
 	 */
 	@Override
 	public String fetchProfile(IProgressMonitor monitor) {
+		if (isDisposed()) {
+			return null;
+		}
 		if (isSetProfile()) {
 			return getProfile();
 		}
@@ -1868,6 +1900,9 @@ public class ScaWaveformImpl extends ScaPropertyContainerImpl<Application, Softw
 
 	@Override
 	public URI fetchProfileURI(IProgressMonitor monitor) {
+		if (isDisposed()) {
+			return null;
+		}
 		if (isSetProfileURI()) {
 			return getProfileURI();
 		}
