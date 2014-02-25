@@ -1,3 +1,14 @@
+/** 
+ * This file is protected by Copyright. 
+ * Please refer to the COPYRIGHT file distributed with this source distribution.
+ * 
+ * This file is part of REDHAWK IDE.
+ * 
+ * All rights reserved.  This program and the accompanying materials are made available under 
+ * the terms of the Eclipse Public License v1.0 which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html.
+ *
+ */
 package gov.redhawk.frontend.ui.wizard;
 
 import gov.redhawk.frontend.TunerContainer;
@@ -11,6 +22,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import mil.jpeojtrs.sca.util.ScaEcoreUtils;
 
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.wizard.IWizardPage;
@@ -54,11 +67,11 @@ public class TunerAllocationDetailWizard extends Wizard {
 		} else if (tuners != null && tuners.length > 0) {
 			allocatemultipleRxDigitizersPage = new AllocateMultipleRxDigitizerWizardPage(tuners);
 			addPage(allocatemultipleRxDigitizersPage);
-			for (TunerStatus tuner : tuners) {
-				AllocateRxDigitizerWizardPage page = new AllocateRxDigitizerWizardPage(tuner);
+			for (TunerStatus t : tuners) {
+				AllocateRxDigitizerWizardPage page = new AllocateRxDigitizerWizardPage(t);
 				addPage(page);
-				tunerMap.put(tuner, page);
-				pageMap.put(page, tuner);
+				tunerMap.put(t, page);
+				pageMap.put(page, t);
 			}
 		}
 	}
@@ -181,8 +194,8 @@ public class TunerAllocationDetailWizard extends Wizard {
 	}
 
 	private boolean selectedTunerPagesComplete() {
-		for (TunerStatus tuner : selectedTuners) {
-			IWizardPage page = tunerMap.get(tuner);
+		for (TunerStatus t : selectedTuners) {
+			IWizardPage page = tunerMap.get(t);
 			if (!page.isPageComplete()) {
 				return false;
 			}
@@ -192,32 +205,33 @@ public class TunerAllocationDetailWizard extends Wizard {
 
 	@Override
 	public boolean performFinish() {
-		ScaDevice< ? > device = selectedTuners.get(0).getTunerContainer().getModelDevice().getScaDevice();
+		ScaDevice< ? > device = ScaEcoreUtils.getEContainerOfType(selectedTuners.get(0), ScaDevice.class);
+
 		boolean result = true;
 		StringBuilder sb = new StringBuilder();
-		for (TunerStatus tuner : selectedTuners) {
-			DataType[] props = createAllocationProperties(tuner);
+		for (TunerStatus t : selectedTuners) {
+			DataType[] props = createAllocationProperties(t);
 			String delim = "";
 			try {
 				if (!device.allocateCapacity(props)) {
-					sb.append(delim + "The allocation requested for Tuner " + tuner.getTunerID()
+					sb.append(delim + "The allocation requested for Tuner " + t.getTunerID()
 						+ " was not accepted because resources matching all aspects of the request were not available.");
 					delim = "\n\n";
 					result = false;
 				}
 				device.refresh(null, RefreshDepth.SELF);
 			} catch (InvalidCapacity e) {
-				sb.append(delim + "The Allocation Request for Tuner " + tuner.getTunerID()
+				sb.append(delim + "The Allocation Request for Tuner " + t.getTunerID()
 					+ " was invalid. Please contact your System Administrator. Message: " + e.getMessage());
 				delim = "\n\n";
 				result = false;
 			} catch (InvalidState e) {
-				sb.append(delim + "The Allocation Request for Tuner " + tuner.getTunerID() + " failed because the"
+				sb.append(delim + "The Allocation Request for Tuner " + t.getTunerID() + " failed because the"
 					+ " device is in an invalid state. Message: " + e.getMessage());
 				delim = "\n\n";
 				result = false;
 			} catch (InsufficientCapacity e) {
-				sb.append(delim + "The Allocation Request for Tuner " + tuner.getTunerID() + " failed because the"
+				sb.append(delim + "The Allocation Request for Tuner " + t.getTunerID() + " failed because the"
 					+ " device has insufficient capacity. Message: " + e.getMessage());
 				delim = "\n\n";
 				result = false;
@@ -231,7 +245,7 @@ public class TunerAllocationDetailWizard extends Wizard {
 			//				tuner.getListenerAllocations().add(listener);
 			//			}
 			catch (InterruptedException e) {
-				sb.append(delim + "The Allocation Request for Tuner " + tuner.getTunerID() + " was interrupted. Message: " + e.getMessage());
+				sb.append(delim + "The Allocation Request for Tuner " + t.getTunerID() + " was interrupted. Message: " + e.getMessage());
 				delim = "\n\n";
 				result = false;
 			}

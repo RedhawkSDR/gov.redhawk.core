@@ -36,6 +36,13 @@
             </parentExpression>
          </commonSorter>
       </navigatorContent>
+      <commonFilter
+            activeByDefault="true"
+            class="gov.redhawk.frontend.ui.internal.TunerStatusFilter"
+            id="gov.redhawk.frontend.ui.commonFilter"
+            name="Tuner Status Filter"
+            visibleInUI="false">
+      </commonFilter>
    </extension>
    <extension
          point="org.eclipse.ui.navigator.viewer">
@@ -45,6 +52,10 @@
             <contentExtension
                   isRoot="false"
                   pattern="gov.redhawk.frontend.ui.navigatorContent">
+            </contentExtension>
+            <contentExtension
+                  isRoot="false"
+                  pattern="gov.redhawk.frontend.ui.commonFilter">
             </contentExtension>
          </includes>
       </viewerContentBinding>
@@ -88,16 +99,6 @@
             name="Deallocate">
       </command>
       <command
-            defaultHandler="gov.redhawk.frontend.ui.internal.FeiPlotHandler"
-            id="gov.redhawk.frontend.commands.plot"
-            name="Plot Port">
-         <commandParameter
-               id="gov.redhawk.frontend.ui.isFft"
-               name="Use FFT"
-               optional="true">
-         </commandParameter>
-      </command>
-      <command
             defaultHandler="gov.redhawk.frontend.ui.internal.SnapshotHandler"
             id="gov.redhawk.frontend.commands.snapshot"
             name="Snapshot">
@@ -118,36 +119,6 @@
       <menuContribution
             allPopups="false"
             locationURI="popup:org.eclipse.ui.popup.any?before=additions">
-         <command
-               commandId="gov.redhawk.frontend.commands.plot"
-               label="Plot Port Data"
-               style="push">
-            <visibleWhen
-                  checkEnabled="false">
-               <iterate>
-                  <instanceof
-                        value="gov.redhawk.frontend.TunerStatus">
-                  </instanceof>
-               </iterate>
-            </visibleWhen>
-         </command>
-         <command
-               commandId="gov.redhawk.frontend.commands.plot"
-               label="Plot Port FFT"
-               style="push">
-            <parameter
-                  name="gov.redhawk.frontend.ui.isFft"
-                  value="true">
-            </parameter>
-            <visibleWhen
-                  checkEnabled="false">
-               <iterate>
-                  <instanceof
-                        value="gov.redhawk.frontend.TunerStatus">
-                  </instanceof>
-               </iterate>
-            </visibleWhen>
-         </command>
          <command
                commandId="gov.redhawk.frontend.commands.allocate"
                label="Allocate"
@@ -234,6 +205,168 @@
             </visibleWhen>
          </command>
       </menuContribution>
+      <menuContribution
+            allPopups="true"
+            locationURI="popup:org.eclipse.ui.popup.any?before=additions">
+         <separator
+               name="gov.redhawk.ui.port.nxmplot.separator.start"
+               visible="true">
+         </separator>
+         <command
+               commandId="gov.redhawk.ui.port.nxmplot.command.plot"
+               icon="icons/plot.gif"
+               label="Plot Port Data"
+               style="push">
+            <parameter
+                  name="gov.redhawk.ui.port.nxmplot.type"
+                  value="LINE">
+            </parameter>
+            <visibleWhen
+                  checkEnabled="false">
+               <iterate
+                     ifEmpty="false"
+                     operator="and">
+                  <instanceof
+                        value="gov.redhawk.frontend.TunerStatus">
+                  </instanceof>
+               </iterate>
+            </visibleWhen>
+         </command>
+         <menu
+               icon="icons/plot.gif"
+               label="Plot Port Data As">
+            <visibleWhen
+                  checkEnabled="false">
+               <iterate
+                     ifEmpty="false"
+                     operator="and">
+                  <instanceof
+                        value="gov.redhawk.frontend.TunerStatus">
+                  </instanceof>
+               </iterate>
+            </visibleWhen>
+            <command
+                  commandId="gov.redhawk.ui.port.nxmplot.command.plot"
+                  label="Line"
+                  style="push">
+               <parameter
+                     name="gov.redhawk.ui.port.nxmplot.type"
+                     value="LINE">
+               </parameter>
+            </command>
+            <command
+                  commandId="gov.redhawk.ui.port.nxmplot.command.plot"
+                  label="Raster"
+                  style="push">
+               <parameter
+                     name="gov.redhawk.ui.port.nxmplot.type"
+                     value="RASTER">
+               </parameter>
+            </command>
+            <command
+                  commandId="gov.redhawk.ui.port.nxmplot.command.plot"
+                  label="Point"
+                  style="push">
+               <parameter
+                     name="gov.redhawk.ui.port.nxmplot.type"
+                     value="POINT">
+               </parameter>
+            </command>
+            <command
+                  commandId="gov.redhawk.ui.port.nxmplot.command.plot"
+                  label="Dot"
+                  style="push">
+               <parameter
+                     name="gov.redhawk.ui.port.nxmplot.type"
+                     value="DOT">
+               </parameter>
+            </command>
+         </menu>
+         <command
+               commandId="gov.redhawk.ui.port.nxmplot.command.plot"
+               icon="icons/plot.gif"
+               label="Plot Port FFT"
+               style="push">
+            <parameter
+                  name="gov.redhawk.ui.port.nxmplot.type"
+                  value="LINE">
+            </parameter>
+            <parameter
+                  name="gov.redhawk.ui.port.nxmplot.isFft"
+                  value="true">
+            </parameter>
+            <visibleWhen
+                  checkEnabled="false">
+               <iterate
+                     ifEmpty="false"
+                     operator="and">
+                  <instanceof
+                        value="gov.redhawk.frontend.TunerStatus">
+                  </instanceof>
+               </iterate>
+            </visibleWhen>
+         </command>
+         <menu
+               icon="icons/plot.gif"
+               label="Plot Port FFT As">
+            <visibleWhen
+                  checkEnabled="false">
+               <iterate
+                     ifEmpty="false"
+                     operator="and">
+                  <instanceof
+                        value="gov.redhawk.frontend.TunerStatus">
+                  </instanceof>
+               </iterate>
+            </visibleWhen>
+            <command
+                  commandId="gov.redhawk.ui.port.nxmplot.command.plot"
+                  label="Line"
+                  style="push">
+               <parameter
+                     name="gov.redhawk.ui.port.nxmplot.type"
+                     value="LINE">
+               </parameter>
+               <parameter
+                     name="gov.redhawk.ui.port.nxmplot.isFft"
+                     value="true">
+               </parameter>
+            </command>
+            <command
+                  commandId="gov.redhawk.ui.port.nxmplot.command.plot"
+                  label="Raster"
+                  style="push">
+               <parameter
+                     name="gov.redhawk.ui.port.nxmplot.type"
+                     value="RASTER">
+               </parameter>
+               <parameter
+                     name="gov.redhawk.ui.port.nxmplot.isFft"
+                     value="true">
+               </parameter>
+            </command>
+         </menu>
+         <command
+               commandId="gov.redhawk.ui.port.nxmplot.command.plot"
+               icon="icons/plot.gif"
+               label="Plot Port ..."
+               style="push">
+            <visibleWhen
+                  checkEnabled="false">
+               <iterate
+                     ifEmpty="false"
+                     operator="and">
+                  <instanceof
+                        value="gov.redhawk.frontend.TunerStatus">
+                  </instanceof>
+               </iterate>
+            </visibleWhen>
+         </command>
+         <separator
+               name="gov.redhawk.ui.port.nxmplot.separator.end"
+               visible="false">
+         </separator>
+      </menuContribution>
    </extension>
    <extension
          point="org.eclipse.core.expressions.propertyTesters">
@@ -258,6 +391,22 @@
             properties="deviceKindIsFrontendTuner"
             type="gov.redhawk.model.sca.ScaDevice">
       </propertyTester>
+   </extension>
+   <extension
+         point="org.eclipse.ui.handlers">
+      <handler
+            class="gov.redhawk.frontend.ui.internal.FeiPlotHandler"
+            commandId="gov.redhawk.ui.port.nxmplot.command.plot">
+         <activeWhen>
+            <iterate
+                  ifEmpty="false"
+                  operator="and">
+               <instanceof
+                     value="gov.redhawk.frontend.TunerStatus">
+               </instanceof>
+            </iterate>
+         </activeWhen>
+      </handler>
    </extension>
 
 </plugin>

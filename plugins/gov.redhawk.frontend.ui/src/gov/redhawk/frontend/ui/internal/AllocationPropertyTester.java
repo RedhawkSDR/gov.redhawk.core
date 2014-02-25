@@ -22,16 +22,15 @@ import org.eclipse.core.expressions.PropertyTester;
 public class AllocationPropertyTester extends PropertyTester {
 
 	@Override
-	public boolean test(Object receiver, String property, Object[] args,
-			Object expectedValue) {
-		TunerStatus theTuner = (TunerStatus)receiver;
+	public boolean test(Object receiver, String property, Object[] args, Object expectedValue) {
+		TunerStatus theTuner = (TunerStatus) receiver;
 		if ("hasAllocationID".equals(property)) {
 			String allocationID = theTuner.getAllocationID();
 			if (!(allocationID == null || "".equals(allocationID))) {
 				return true;
 			}
 		} else if ("supportedTunerType".equals(property)) {
-			if (FrontEndUIActivator.supportedTunerTypes.contains(theTuner.getTunerType())) {
+			if (FrontEndUIActivator.SUPPORTED_TUNER_TYPES.contains(theTuner.getTunerType())) {
 				return true;
 			}
 		}

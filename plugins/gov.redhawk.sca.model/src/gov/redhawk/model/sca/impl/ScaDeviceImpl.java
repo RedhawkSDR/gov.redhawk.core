@@ -37,6 +37,7 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.SubMonitor;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
+import org.eclipse.emf.common.util.ECollections;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EClass;
@@ -570,6 +571,9 @@ public class ScaDeviceImpl< D extends Device > extends ScaAbstractComponentImpl<
 	protected void notifyChanged(Notification msg) {
 		// END GENERATED CODE
 		super.notifyChanged(msg);
+		if (msg.isTouch()) {
+			return;
+		}
 		switch (msg.getFeatureID(ScaDevice.class)) {
 		case ScaPackage.SCA_DEVICE__OBJ:
 			unsetAdminState();
@@ -600,6 +604,9 @@ public class ScaDeviceImpl< D extends Device > extends ScaAbstractComponentImpl<
 	 */
 	@Override
 	public EList<ScaDevice< ? >> fetchAggregateDevices(IProgressMonitor monitor) throws InterruptedException {
+		if (isDisposed()) {
+			return ECollections.emptyEList();
+		}
 		SubMonitor subMonitor = SubMonitor.convert(monitor, "Fetch Aggregate Devices", 2);
 		internalFetchAggregateDevices(subMonitor.newChild(1));
 		ScaDevice< ? >[] devices = ScaModelCommandWithResult.execute(this, new ScaModelCommandWithResult<ScaDevice< ? >[]>() {
@@ -631,6 +638,9 @@ public class ScaDeviceImpl< D extends Device > extends ScaAbstractComponentImpl<
 	@Override
 	public AdminType fetchAdminState(IProgressMonitor monitor) {
 		// END GENERATED CODE
+		if (isDisposed()) {
+			return null;
+		}
 		SubMonitor subMonitor = SubMonitor.convert(monitor, "Fetching admin state", 3);
 		D localObj = fetchNarrowedObject(subMonitor.newChild(1));
 		Transaction transaction = adminStateFeature.createTransaction();
@@ -665,6 +675,9 @@ public class ScaDeviceImpl< D extends Device > extends ScaAbstractComponentImpl<
 	@Override
 	public String fetchLabel(IProgressMonitor monitor) {
 		// END GENERATED CODE
+		if (isDisposed()) {
+			return null;
+		}
 		if (isSetLabel()) {
 			return getLabel();
 		}
@@ -700,6 +713,9 @@ public class ScaDeviceImpl< D extends Device > extends ScaAbstractComponentImpl<
 	@Override
 	public OperationalType fetchOperationalState(IProgressMonitor monitor) {
 		// END GENERATED CODE
+		if (isDisposed()) {
+			return null;
+		}
 		SubMonitor subMonitor = SubMonitor.convert(monitor, "Fetching operational state", 3);
 		D localObj = fetchNarrowedObject(subMonitor.newChild(1));
 		Transaction transaction = opStateFeature.createTransaction();
@@ -732,6 +748,9 @@ public class ScaDeviceImpl< D extends Device > extends ScaAbstractComponentImpl<
 	@Override
 	public UsageType fetchUsageState(IProgressMonitor monitor) {
 		// END GENERATED CODE
+		if (isDisposed()) {
+			return null;
+		}
 		SubMonitor subMonitor = SubMonitor.convert(monitor, "Fetching usage state", 3);
 		D localObj = fetchNarrowedObject(subMonitor.newChild(1));
 		Transaction transaction = usageStateFeature.createTransaction();
@@ -763,6 +782,9 @@ public class ScaDeviceImpl< D extends Device > extends ScaAbstractComponentImpl<
 	 */
 	protected void internalFetchAggregateDevices(IProgressMonitor monitor) {
 		// END GENERATED CODE
+		if (isDisposed()) {
+			return;
+		}
 		if (isSetChildDevices()) {
 			if (monitor != null) {
 				monitor.done();
@@ -1147,6 +1169,9 @@ public class ScaDeviceImpl< D extends Device > extends ScaAbstractComponentImpl<
 
 	@Override
 	public URI fetchProfileURI(IProgressMonitor monitor) {
+		if (isDisposed()) {
+			return null;
+		}
 		if (isSetProfileURI()) {
 			return getProfileURI();
 		}

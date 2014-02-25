@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension
+         point="gov.redhawk.sca.model.dataProviderService">
+      <provider
+            class="gov.redhawk.frontend.provider.FrontEndDataProviderFactory"
+            id="gov.redhawk.frontend.provider"
+            name="Front End Interfaces 2.0 Data Provider">
+      </provider>
+   </extension>
+
+</plugin>

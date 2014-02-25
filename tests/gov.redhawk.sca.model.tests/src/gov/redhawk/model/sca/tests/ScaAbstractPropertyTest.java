@@ -19,6 +19,7 @@ import mil.jpeojtrs.sca.prf.AccessType;
 
 import org.eclipse.core.runtime.Status;
 import org.eclipse.emf.ecore.util.EcoreUtil;
+import org.eclipse.emf.transaction.util.TransactionUtil;
 import org.junit.Assert;
 import org.omg.CORBA.Any;
 
@@ -359,12 +360,24 @@ public abstract class ScaAbstractPropertyTest extends IStatusProviderTest {
 
 	@Override
 	public void testProtected() {
+		Assert.assertNotNull(TransactionUtil.getEditingDomain(getFixture()));
+		final String oldId = getFixture().getId();
 		try {
-			getFixture().fromAny(null);
+			getFixture().setId("hello");
+			getFixture().setId("world");
 			Assert.fail("Object not protected");
 		} catch (final IllegalStateException e) {
 			Assert.assertEquals("Cannot modify resource set without a write transaction", e.getMessage());
+		} finally {
+			ScaModelCommand.execute(getFixture(), new ScaModelCommand() {
+				
+				@Override
+				public void execute() {
+					getFixture().setId(oldId);
+				}
+			});
 		}
 	}
 
 } //ScaAbstractPropertyTest
+

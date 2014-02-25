@@ -31,6 +31,7 @@ import gov.redhawk.sca.util.PluginUtil;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 import mil.jpeojtrs.sca.dcd.DcdComponentInstantiation;
@@ -51,6 +52,7 @@ import org.eclipse.core.runtime.SubMonitor;
 import org.eclipse.emf.common.command.Command;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
+import org.eclipse.emf.common.util.ECollections;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EClass;
@@ -441,6 +443,9 @@ public class ScaServiceImpl extends ScaPropertyContainerImpl<org.omg.CORBA.Objec
 	 */
 	@Override
 	public EList<ScaPort< ? , ? >> fetchPorts(IProgressMonitor monitor) {
+		if (isDisposed()) {
+			return ECollections.emptyEList();
+		}
 		SubMonitor subMonitor = SubMonitor.convert(monitor, "Fetching ports", 2);
 		internalFetchPorts(subMonitor.newChild(1));
 		ScaPort< ? , ? >[] ports = null;
@@ -486,6 +491,9 @@ public class ScaServiceImpl extends ScaPropertyContainerImpl<org.omg.CORBA.Objec
 	 */
 	protected void internalFetchPorts(IProgressMonitor monitor) {
 		// END GENERATED CODE
+		if (isDisposed()) {
+			return;
+		}
 		SubMonitor subMonitor = SubMonitor.convert(monitor, 4);
 		PortSupplierOperations currentObj = getPortSupplier();
 		Transaction transaction = portRevision.createTransaction();
@@ -566,6 +574,9 @@ public class ScaServiceImpl extends ScaPropertyContainerImpl<org.omg.CORBA.Objec
 	 */
 	@Override
 	public SoftPkg fetchProfileObject(IProgressMonitor monitor) {
+		if (isDisposed()) {
+			return null;
+		}
 		Transaction transaction = profileObjectRevision.createTransaction();
 		Command command = ProfileObjectWrapper.Util.fetchProfileObject(monitor, this, SoftPkg.class, SoftPkg.EOBJECT_PATH);
 		transaction.addCommand(command);
@@ -577,6 +588,9 @@ public class ScaServiceImpl extends ScaPropertyContainerImpl<org.omg.CORBA.Objec
 
 	@Override
 	public URI fetchProfileURI(IProgressMonitor monitor) {
+		if (isDisposed()) {
+			return null;
+		}
 		if (isSetProfileURI()) {
 			return getProfileURI();
 		}
@@ -641,6 +655,9 @@ public class ScaServiceImpl extends ScaPropertyContainerImpl<org.omg.CORBA.Objec
 
 	@Override
 	protected List<AbstractProperty> fetchPropertyDefinitions(IProgressMonitor monitor) {
+		if (isDisposed()) {
+			return Collections.emptyList();
+		}
 		EObject localProfile = fetchProfileObject(monitor);
 		mil.jpeojtrs.sca.prf.Properties propDefintions = ScaEcoreUtils.getFeature(localProfile, PRF_PATH);
 		List<AbstractProperty> retVal = new ArrayList<AbstractProperty>();

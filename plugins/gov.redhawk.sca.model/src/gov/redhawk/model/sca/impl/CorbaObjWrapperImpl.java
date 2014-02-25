@@ -409,6 +409,9 @@ public abstract class CorbaObjWrapperImpl< T extends org.omg.CORBA.Object > exte
 	 */
 	@Override
 	public void fetchAttributes(IProgressMonitor monitor) {
+		if (isDisposed()) {
+			return;
+		}
 		fetchNarrowedObject(monitor);
 	}
 
@@ -427,6 +430,9 @@ public abstract class CorbaObjWrapperImpl< T extends org.omg.CORBA.Object > exte
 	 */
 	@Override
 	public T fetchNarrowedObject(IProgressMonitor monitor) {
+		if (isDisposed()) {
+			return null;
+		}
 		if (isSetObj()) {
 			return getObj();
 		}

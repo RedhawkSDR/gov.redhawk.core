@@ -1,12 +1,12 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: Ui
+Bundle-Name: Frontend Interfaces UI
 Bundle-SymbolicName: gov.redhawk.frontend.ui;singleton:=true
 Bundle-Version: 1.0.0.qualifier
 Bundle-Activator: gov.redhawk.frontend.ui.FrontEndUIActivator
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
- gov.redhawk.frontend;bundle-version="0.1.0",
+ gov.redhawk.frontend;bundle-version="1.0.0",
  gov.redhawk.frontend.edit;bundle-version="1.0.0",
  org.eclipse.ui.navigator;bundle-version="3.5.200",
  gov.redhawk.sca.model;bundle-version="19.0.0",
@@ -29,7 +29,9 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.jface,
  gov.redhawk.ui.port.nxmplot,
  idl.bulkio,
- gov.redhawk.ui.port
+ gov.redhawk.ui.port,
+ gov.redhawk.frontend.provider
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Bundle-ActivationPolicy: lazy
 Export-Package: gov.redhawk.frontend.ui
+Bundle-Vendor: REDHAWK

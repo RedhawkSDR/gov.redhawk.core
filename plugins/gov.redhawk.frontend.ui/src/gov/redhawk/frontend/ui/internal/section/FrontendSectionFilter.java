@@ -22,16 +22,16 @@ public class FrontendSectionFilter implements IFilter {
 
 	@Override
 	public boolean select(Object toTest) {
-		if(toTest instanceof TunerStatus) {
+		if (toTest instanceof TunerStatus) {
 			return true;
 		}
-		if(toTest instanceof ListenerAllocation) {
+		if (toTest instanceof ListenerAllocation) {
 			return true;
 		}
-		if(toTest instanceof TunerContainer) {
+		if (toTest instanceof TunerContainer) {
 			return true;
 		}
-		if(toTest instanceof UnallocatedTunerContainer) {
+		if (toTest instanceof UnallocatedTunerContainer) {
 			return true;
 		}
 		return false;

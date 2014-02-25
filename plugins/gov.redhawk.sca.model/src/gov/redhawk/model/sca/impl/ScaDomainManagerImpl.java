@@ -44,6 +44,7 @@ import gov.redhawk.sca.util.SilentJob;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.Callable;
@@ -67,6 +68,7 @@ import org.eclipse.core.runtime.SubMonitor;
 import org.eclipse.emf.common.command.CompoundCommand;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
+import org.eclipse.emf.common.util.ECollections;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.EMap;
 import org.eclipse.emf.common.util.URI;
@@ -696,6 +698,9 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 	protected void notifyChanged(Notification msg) {
 		// END GENERATED CODE
 		super.notifyChanged(msg);
+		if (msg.isTouch()) {
+			return;
+		}
 		switch (msg.getFeatureID(ScaDomainManager.class)) {
 		case ScaPackage.SCA_DOMAIN_MANAGER__OBJ:
 			unsetWaveforms();
@@ -1337,6 +1342,9 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 	 */
 	protected void internalFetchDeviceManagers(IProgressMonitor monitor) {
 		// END GENERATED CODE
+		if (isDisposed()) {
+			return;
+		}
 		final SubMonitor subMonitor = SubMonitor.convert(monitor, 3);
 		final DomainManager domMgr = fetchNarrowedObject(subMonitor.newChild(1));
 		Transaction transaction = devicemanagers.createTransaction();
@@ -1371,6 +1379,9 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 	 */
 	@Override
 	public EList<ScaWaveformFactory> fetchWaveformFactories(IProgressMonitor monitor) {
+		if (isDisposed()) {
+			return ECollections.emptyEList();
+		}
 		SubMonitor subMonitor = SubMonitor.convert(monitor, "Fetch Waveform Factories", 2);
 		internalFetchWaveformFactories(subMonitor.newChild(1));
 		ScaWaveformFactory[] array = ScaModelCommandWithResult.execute(this, new ScaModelCommandWithResult<ScaWaveformFactory[]>() {
@@ -1402,6 +1413,9 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 	 */
 	protected void internalFetchWaveformFactories(IProgressMonitor monitor) {
 		// END GENERATED CODE
+		if (isDisposed()) {
+			return;
+		}
 		SubMonitor subMonitor = SubMonitor.convert(monitor, 3);
 		final DomainManager domMgr = fetchNarrowedObject(subMonitor.newChild(1));
 		Transaction transaction = waveformFactoriesFeature.createTransaction();
@@ -1435,6 +1449,9 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 	 */
 	@Override
 	public EList<ScaWaveform> fetchWaveforms(IProgressMonitor monitor) {
+		if (isDisposed()) {
+			return ECollections.emptyEList();
+		}
 		SubMonitor subMonitor = SubMonitor.convert(monitor, "Fetch Waveforms", 2);
 		internalFetchWaveforms(subMonitor.newChild(1));
 		ScaWaveform[] array = ScaModelCommandWithResult.execute(this, new ScaModelCommandWithResult<ScaWaveform[]>() {
@@ -1466,6 +1483,9 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 	 */
 	protected void internalFetchWaveforms(IProgressMonitor monitor) {
 		// END GENERATED CODE
+		if (isDisposed()) {
+			return;
+		}
 		SubMonitor subMonitor = SubMonitor.convert(monitor, 3); //SUPPRESS CHECKSTYLE MagicNumber
 		final DomainManager domMgr = fetchNarrowedObject(subMonitor.newChild(1));
 		Transaction transaction = waveformsFeature.createTransaction();
@@ -2311,6 +2331,9 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 
 	@Override
 	protected List<AbstractProperty> fetchPropertyDefinitions(IProgressMonitor monitor) {
+		if (isDisposed()) {
+			return Collections.emptyList();
+		}
 		DomainManagerConfiguration dmd = fetchProfileObject(monitor);
 		mil.jpeojtrs.sca.prf.Properties propDefintions = ScaEcoreUtils.getFeature(dmd, PRF_PATH);
 		List<AbstractProperty> retVal = new ArrayList<AbstractProperty>();
@@ -2335,6 +2358,9 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 	 */
 	@Override
 	public DomainManagerConfiguration fetchProfileObject(IProgressMonitor monitor) {
+		if (isDisposed()) {
+			return null;
+		}
 		Transaction transaction = profileObjectFeature.createTransaction();
 		transaction.addCommand(ProfileObjectWrapper.Util.fetchProfileObject(monitor, this, DomainManagerConfiguration.class,
 			DomainManagerConfiguration.EOBJECT_PATH));
@@ -2350,6 +2376,9 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 	 */
 	@Override
 	public String fetchProfile(IProgressMonitor monitor) {
+		if (isDisposed()) {
+			return null;
+		}
 		if (isSetProfile()) {
 			return getProfile();
 		}
@@ -2412,6 +2441,9 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 	 */
 	protected void internalFetchEventChannels(IProgressMonitor monitor) {
 		// END GENERATED CODE
+		if (isDisposed()) {
+			return;
+		}
 		SubMonitor subMonitor = SubMonitor.convert(monitor, 3); //SUPPRESS CHECKSTYLE MagicNumber
 		NamingContextExt localRootContext = getRootContext();
 
@@ -2463,6 +2495,9 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 
 	@Override
 	public URI fetchProfileURI(IProgressMonitor monitor) {
+		if (isDisposed()) {
+			return null;
+		}
 		if (isSetProfileURI()) {
 			return getProfileURI();
 		}

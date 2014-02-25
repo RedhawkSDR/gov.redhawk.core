@@ -15,11 +15,13 @@ import gov.redhawk.frontend.ListenerAllocation;
 import gov.redhawk.frontend.TunerContainer;
 import gov.redhawk.frontend.TunerStatus;
 import gov.redhawk.frontend.UnallocatedTunerContainer;
-import gov.redhawk.frontend.edit.utils.TunerProperties.TunerStatusAllocationProperties;
-import gov.redhawk.frontend.edit.utils.TunerPropertyWrapper;
-import gov.redhawk.frontend.edit.utils.TunerUtils;
 import gov.redhawk.frontend.provider.FrontendItemProviderAdapterFactory;
 import gov.redhawk.frontend.ui.internal.FrontendAction;
+import gov.redhawk.frontend.ui.internal.TunerStatusFilter;
+import gov.redhawk.frontend.util.TunerProperties.TunerStatusAllocationProperties;
+import gov.redhawk.frontend.util.TunerPropertyWrapper;
+import gov.redhawk.frontend.util.TunerUtils;
+import gov.redhawk.model.sca.ScaSimpleProperty;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,6 +41,7 @@ import org.eclipse.jface.viewers.TextCellEditor;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.jface.viewers.TreeViewerColumn;
 import org.eclipse.jface.viewers.ViewerCell;
+import org.eclipse.jface.viewers.ViewerFilter;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.StyleRange;
 import org.eclipse.swt.layout.GridData;
@@ -61,7 +64,7 @@ public class FrontendSection extends AbstractPropertySection {
 	/**
 	 * The Property Sheet Page.
 	 */
-	protected TabbedPropertySheetPage page;
+	private TabbedPropertySheetPage page;
 
 	public FrontendSection() {
 	}
@@ -85,18 +88,42 @@ public class FrontendSection extends AbstractPropertySection {
 		viewer.getControl().setLayoutData(layoutData);
 
 		initializeColumns();
-		
+
 		FrontendItemProviderAdapterFactory adapterFactory = new FrontendItemProviderAdapterFactory();
 
-		viewer.setContentProvider(new AdapterFactoryContentProvider(adapterFactory));
+		viewer.setContentProvider(new AdapterFactoryContentProvider(adapterFactory) {
+			@Override
+			public Object[] getElements(Object object) {
+				if (object instanceof TunerStatus) {
+					List<TunerPropertyWrapper> tunerProperties = new ArrayList<TunerPropertyWrapper>();
+					TunerStatus tuner = (TunerStatus) object;
+					for (ScaSimpleProperty simple : tuner.getSimples()) {
+						TunerPropertyWrapper prop = new TunerPropertyWrapper(tuner, simple);
+						tunerProperties.add(prop);
+					}
+					return tunerProperties.toArray();
+				} else if (object instanceof UnallocatedTunerContainer) {
+					List<String[]> elements = new ArrayList<String[]>();
+					UnallocatedTunerContainer container = (UnallocatedTunerContainer) object;
+					elements.add(new String[] { "Unallocated " + container.getTunerType(), container.getCount() + " available" });
+					return elements.toArray();
+				} else if (object instanceof ListenerAllocation) {
+					List<String[]> elements = new ArrayList<String[]>();
+					elements.add(new String[] { "Listener ID", ((ListenerAllocation) object).getListenerID() });
+					elements.add(new String[] { "Existing Tuner ID", TunerUtils.getControlId(((ListenerAllocation) object).getTunerStatus()) });
+					return elements.toArray();
+				}
+				return super.getElements(object);
+			}
+		});
+		viewer.setFilters(new ViewerFilter[] {new TunerStatusFilter()});
 
-		allocateAction = new FrontendAction(this, "Allocate...", "gov.redhawk.frontend.actions.allocate", 
-			"gov.redhawk.frontend.commands.allocate", "icons/allocate.gif");
-		deallocateAction = new FrontendAction(this, "Deallocate", "gov.redhawk.frontend.actions.deallocate", 
-			"gov.redhawk.frontend.commands.deallocate", "icons/deallocate.gif");
-		plotAction = new FrontendAction(this, "Plot", "gov.redhawk.frontend.actions.plot", 
-			"gov.redhawk.frontend.commands.plot", "icons/plot.gif");
-		
+		allocateAction = new FrontendAction(this, "Allocate...", "gov.redhawk.frontend.actions.allocate", "gov.redhawk.frontend.commands.allocate",
+			"icons/allocate.gif");
+		deallocateAction = new FrontendAction(this, "Deallocate", "gov.redhawk.frontend.actions.deallocate", "gov.redhawk.frontend.commands.deallocate",
+			"icons/deallocate.gif");
+		plotAction = new FrontendAction(this, "Plot", "gov.redhawk.frontend.actions.plot", "gov.redhawk.frontend.commands.plot", "icons/plot.gif");
+
 		page = aTabbedPropertySheetPage;
 	}
 
@@ -123,14 +150,14 @@ public class FrontendSection extends AbstractPropertySection {
 						StyleRange[] range = { styleRange };
 						cell.setStyleRanges(range);
 					}
-				} else if (cell.getElement() instanceof String[]){
+				} else if (cell.getElement() instanceof String[]) {
 					cell.setText(((String[]) cell.getElement())[0]);
-				} else if (cell.getElement() instanceof TunerStatus){
+				} else if (cell.getElement() instanceof TunerStatus) {
 					cell.setText("Allocated " + ((TunerStatus) cell.getElement()).getTunerType());
-				} else if (cell.getElement() instanceof ListenerAllocation){
-					cell.setText("Listener");
-				} else if (cell.getElement() instanceof UnallocatedTunerContainer){
+				} else if (cell.getElement() instanceof UnallocatedTunerContainer) {
 					cell.setText("Unallocated " + ((UnallocatedTunerContainer) cell.getElement()).getTunerType());
+				} else if (cell.getElement() instanceof ListenerAllocation) {
+					cell.setText("Listener");
 				} else {
 					// Default behavior for any object other than a TunerWrapper
 					cell.setText(cell.getElement().toString());
@@ -151,22 +178,22 @@ public class FrontendSection extends AbstractPropertySection {
 				if (cell.getElement() instanceof TunerPropertyWrapper) {
 					TunerPropertyWrapper wrapper = (TunerPropertyWrapper) cell.getElement();
 					cell.setText(String.valueOf(wrapper.getValue()));
-					
+
 					// If this is not an editable field, set label color to dark gray
 					if (!isEditable(wrapper.getName())) {
 						StyleRange styleRange = new StyleRange(0, cell.getText().length(), Display.getCurrent().getSystemColor(SWT.COLOR_DARK_GRAY), null);
 						StyleRange[] range = { styleRange };
 						cell.setStyleRanges(range);
 					}
-				} else if (cell.getElement() instanceof String[]){
+				} else if (cell.getElement() instanceof String[]) {
 					cell.setText(((String[]) cell.getElement())[1]);
-				} else if (cell.getElement() instanceof TunerStatus){
+				} else if (cell.getElement() instanceof TunerStatus) {
 					cell.setText(((TunerStatus) cell.getElement()).getAllocationID());
-				} else if (cell.getElement() instanceof ListenerAllocation){
+				} else if (cell.getElement() instanceof ListenerAllocation) {
 					cell.setText(((ListenerAllocation) cell.getElement()).getListenerID());
-				} else if (cell.getElement() instanceof UnallocatedTunerContainer){
+				} else if (cell.getElement() instanceof UnallocatedTunerContainer) {
 					UnallocatedTunerContainer container = (UnallocatedTunerContainer) cell.getElement();
-					cell.setText(TunerUtils.countTuners(container) + " available");
+					cell.setText(container.getCount() + " available");
 				} else {
 					// Default behavior for any object other than a TunerWrapper
 					cell.setText(cell.getElement().toString());
@@ -212,7 +239,7 @@ public class FrontendSection extends AbstractPropertySection {
 
 					// If tuner is not allocated, all fields are read only
 					String allocID = wrapper.getTuner().getAllocationID();
-					if (allocID == null || allocID == "" || allocID.isEmpty()) {
+					if (allocID == null || allocID.isEmpty()) {
 						return false;
 					}
 
@@ -245,11 +272,16 @@ public class FrontendSection extends AbstractPropertySection {
 		}
 		return false;
 	}
-	
+
 	private IToolBarManager getToolbar() {
-		return page.getSite().getActionBars().getToolBarManager();
+		if (page != null && page.getSite() != null && page.getSite().getActionBars() != null) {
+			return page.getSite().getActionBars().getToolBarManager();
+		} else {
+			return null;
+		}
 	}
-	
+
+	@Override
 	public void setInput(IWorkbenchPart part, ISelection selection) {
 		super.setInput(part, selection);
 		inputPart = part;
@@ -263,34 +295,43 @@ public class FrontendSection extends AbstractPropertySection {
 			showRightToolbarButtons(theInput);
 		}
 	}
-	
+
 	public EObject getInput() {
 		return theInput;
 	}
-	
+
 	public IWorkbenchPart getInputPart() {
 		return inputPart;
 	}
-	
+
 	public void unsetPageSelection() {
 		page.selectionChanged(inputPart, StructuredSelection.EMPTY);
 		setInput(null, null);
 	}
-	
+
 	private void hideAllToolbarButtons() {
+		if (getToolbar() == null) {
+			return;
+		}
 		getToolbar().remove(allocateAction.getId());
 		getToolbar().remove(deallocateAction.getId());
 		getToolbar().remove(plotAction.getId());
 		getToolbar().update(false);
 	}
-	
+
 	private void addToToolbar(IAction action) {
+		if (getToolbar() == null) {
+			return;
+		}
 		if (getToolbar().find(action.getId()) == null) {
 			getToolbar().add(action);
 		}
 	}
-	
+
 	private void showRightToolbarButtons(Object obj) {
+		if (getToolbar() == null) {
+			return;
+		}
 		if (obj instanceof TunerStatus) {
 			getToolbar().remove(allocateAction.getId());
 			addToToolbar(deallocateAction);
@@ -306,26 +347,21 @@ public class FrontendSection extends AbstractPropertySection {
 			addToToolbar(allocateAction);
 			addToToolbar(deallocateAction);
 		}
-		if (obj instanceof UnallocatedTunerContainer) {
-			getToolbar().remove(deallocateAction.getId());
-			getToolbar().remove(plotAction.getId());
-			addToToolbar(allocateAction);
-		}
 		getToolbar().update(false);
 	}
-	
+
 	@Override
 	public void dispose() {
 		hideAllToolbarButtons();
 		super.dispose();
 	}
-	
+
 	@Override
 	public void aboutToBeHidden() {
 		hideAllToolbarButtons();
 		super.aboutToBeHidden();
 	}
-	
+
 	@Override
 	public void aboutToBeShown() {
 		showRightToolbarButtons(getInput());

@@ -433,7 +433,8 @@ public class ScaWaveformTest extends ScaPropertyContainerTest {
 				}
 				Assert.assertEquals(size[0], getFixture().getComponents().size());
 				((ScaDomainManagerImpl) ScaWaveformTest.this.env.getDomMgr()).setCorbaObj(null);
-				Assert.assertTrue(getFixture().getComponents().isEmpty());
+				Assert.assertTrue(getFixture().isDisposed());
+				Assert.assertEquals(0, getFixture().getComponents().size());
 			}
 		});
 		// BEGIN GENERATED CODE

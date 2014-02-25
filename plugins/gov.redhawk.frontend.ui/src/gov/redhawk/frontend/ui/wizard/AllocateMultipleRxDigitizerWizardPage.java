@@ -1,3 +1,14 @@
+/** 
+ * This file is protected by Copyright. 
+ * Please refer to the COPYRIGHT file distributed with this source distribution.
+ * 
+ * This file is part of REDHAWK IDE.
+ * 
+ * All rights reserved.  This program and the accompanying materials are made available under 
+ * the terms of the Eclipse Public License v1.0 which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html.
+ *
+ */
 package gov.redhawk.frontend.ui.wizard;
 
 import gov.redhawk.frontend.TunerContainer;
@@ -24,14 +35,14 @@ import org.eclipse.swt.widgets.TableColumn;
 
 public class AllocateMultipleRxDigitizerWizardPage extends WizardPage {
 
-	private String[] tableCloumns = new String[] {"Tuner Instance", "RF Flow ID", "Center Frequency", "Bandwidth"};
+	private String[] tableCloumns = new String[] { "Tuner Instance", "RF Flow ID", "Center Frequency", "Bandwidth" };
 	private TunerStatus[] tuners;
 
 	protected AllocateMultipleRxDigitizerWizardPage(TunerContainer container) {
 		super("Allocate Multiple RX Digitizer Tuners");
 		this.tuners = container.getTunerStatus().toArray(new TunerStatus[0]);
 	}
-	
+
 	protected AllocateMultipleRxDigitizerWizardPage(TunerStatus[] tuners) {
 		super("Allocate Multiple RX Digitizer Tuners");
 		this.tuners = tuners;
@@ -42,11 +53,10 @@ public class AllocateMultipleRxDigitizerWizardPage extends WizardPage {
 		Composite comp = new Composite(parent, SWT.NONE);
 		createGroupControls(comp);
 		setControl(comp);
-		
+
 		setTitle("Tuner Selection");
-		setDescription("Select the Tuners you would like to allocate. Click \"Next\" to specify" +
-				" the allocation parameters for each selected Tuner.");
-		
+		setDescription("Select the Tuners you would like to allocate. Click \"Next\" to specify" + " the allocation parameters for each selected Tuner.");
+
 	}
 
 	private void createGroupControls(Composite parent) {
@@ -65,8 +75,7 @@ public class AllocateMultipleRxDigitizerWizardPage extends WizardPage {
 			}
 
 			@Override
-			public void inputChanged(Viewer viewer, Object oldInput,
-					Object newInput) {
+			public void inputChanged(Viewer viewer, Object oldInput, Object newInput) {
 				// TODO Auto-generated method stub
 
 			}
@@ -148,12 +157,11 @@ public class AllocateMultipleRxDigitizerWizardPage extends WizardPage {
 				}
 				setPageComplete(validate());
 			}
-			
+
 		});
 		viewer.setInput(tuners);
 		setPageComplete(validate());
 	}
-	
 
 	private void addColumns(Table table) {
 		for (String name : tableCloumns) {
@@ -162,17 +170,17 @@ public class AllocateMultipleRxDigitizerWizardPage extends WizardPage {
 			col.setWidth(200);
 		}
 	}
-	
+
 	@Override
 	public boolean canFlipToNextPage() {
 		return ((TunerAllocationDetailWizard) getWizard()).getSelectedTunerCount() > 0;
 	}
-	
+
 	@Override
 	public IWizardPage getPreviousPage() {
 		return null;
 	}
-	
+
 	private boolean validate() {
 		boolean valid = true;
 		String msg = null;
@@ -182,6 +190,6 @@ public class AllocateMultipleRxDigitizerWizardPage extends WizardPage {
 		}
 		setErrorMessage(msg);
 		return valid;
-	}		
-	
+	}
+
 }

@@ -42,6 +42,7 @@ import gov.redhawk.sca.util.PluginUtil;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -60,10 +61,12 @@ import org.eclipse.core.runtime.MultiStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.SubMonitor;
 import org.eclipse.emf.common.command.Command;
+import org.eclipse.emf.common.command.UnexecutableCommand;
 import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
 import org.eclipse.emf.common.notify.impl.AdapterImpl;
+import org.eclipse.emf.common.util.ECollections;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EClass;
@@ -1420,6 +1423,9 @@ public class ScaDeviceManagerImpl extends ScaPropertyContainerImpl<DeviceManager
 	 */
 	@Override
 	public EList<ScaDevice< ? >> fetchDevices(IProgressMonitor monitor) {
+		if (isDisposed()) {
+			return ECollections.emptyEList();
+		}
 		SubMonitor subMonitor = SubMonitor.convert(monitor, "Fetching Devices", 2);
 		internalFetchDevices(subMonitor.newChild(1));
 		IRefreshable[] array = ScaModelCommandWithResult.execute(this, new ScaModelCommandWithResult<IRefreshable[]>() {
@@ -1452,6 +1458,9 @@ public class ScaDeviceManagerImpl extends ScaPropertyContainerImpl<DeviceManager
 	 */
 	protected void internalFetchDevices(IProgressMonitor monitor) {
 		// END GENERATED CODE
+		if (isDisposed()) {
+			return;
+		}
 		SubMonitor subMonitor = SubMonitor.convert(monitor, 4);
 		final DeviceManager devMgr = fetchNarrowedObject(subMonitor.newChild(1));
 
@@ -1528,6 +1537,9 @@ public class ScaDeviceManagerImpl extends ScaPropertyContainerImpl<DeviceManager
 	 */
 	protected Command fetchDevices(IProgressMonitor monitor, final ScaPropertyContainer< ? , ? > container, final List<ScaDevice< ? >> deviceList,
 		Device[] corbaDevices) {
+		if (isDisposed()) {
+			return UnexecutableCommand.INSTANCE;
+		}
 		SubMonitor subMonitor = SubMonitor.convert(monitor, 2);
 		final Map<String, DeviceData> newDevices = new HashMap<String, DeviceData>();
 		if (corbaDevices != null) {
@@ -1614,6 +1626,9 @@ public class ScaDeviceManagerImpl extends ScaPropertyContainerImpl<DeviceManager
 	 */
 	@Override
 	public EList<ScaPort< ? , ? >> fetchPorts(IProgressMonitor monitor) {
+		if (isDisposed()) {
+			return ECollections.emptyEList();
+		}
 		SubMonitor subMonitor = SubMonitor.convert(monitor, "Fetching ports", 2);
 		internalFetchPorts(subMonitor.newChild(1));
 		ScaPort< ? , ? >[] tmpPorts = ScaModelCommandWithResult.execute(this, new ScaModelCommandWithResult<ScaPort< ? , ? >[]>() {
@@ -1651,7 +1666,7 @@ public class ScaDeviceManagerImpl extends ScaPropertyContainerImpl<DeviceManager
 	 */
 	protected void internalFetchPorts(IProgressMonitor monitor) {
 		// END GENERATED CODE
-		if (isSetPorts()) {
+		if (isSetPorts() || isDisposed()) {
 			return;
 		}
 		SubMonitor subMonitor = SubMonitor.convert(monitor, 4);
@@ -1709,6 +1724,9 @@ public class ScaDeviceManagerImpl extends ScaPropertyContainerImpl<DeviceManager
 	 */
 	@Override
 	public EList<ScaService> fetchServices(IProgressMonitor monitor) {
+		if (isDisposed()) {
+			return ECollections.emptyEList();
+		}
 		internalFetchServices(monitor);
 		return getServices();
 	}
@@ -1720,6 +1738,9 @@ public class ScaDeviceManagerImpl extends ScaPropertyContainerImpl<DeviceManager
 	 */
 	protected void internalFetchServices(IProgressMonitor monitor) {
 		// END GENERATED CODE
+		if (isDisposed()) {
+			return;
+		}
 		SubMonitor subMonitor = SubMonitor.convert(monitor, "Fetching services", 3);
 		final DeviceManager currentObj = fetchNarrowedObject(subMonitor.newChild(1));
 		Transaction transaction = serviceFeature.createTransaction();
@@ -1856,6 +1877,9 @@ public class ScaDeviceManagerImpl extends ScaPropertyContainerImpl<DeviceManager
 	 */
 	@Override
 	public ScaDeviceManagerFileSystem fetchFileSystem(IProgressMonitor monitor) {
+		if (isDisposed()) {
+			return null;
+		}
 		if (isSetFileSystem()) {
 			return getFileSystem();
 		}
@@ -1891,6 +1915,9 @@ public class ScaDeviceManagerImpl extends ScaPropertyContainerImpl<DeviceManager
 	@Override
 	public String fetchIdentifier(IProgressMonitor monitor) {
 		// END GENERATED CODE
+		if (isDisposed()) {
+			return null;
+		}
 		if (isSetIdentifier()) {
 			return getIdentifier();
 		}
@@ -1926,6 +1953,9 @@ public class ScaDeviceManagerImpl extends ScaPropertyContainerImpl<DeviceManager
 	@Override
 	public String fetchLabel(IProgressMonitor monitor) {
 		// END GENERATED CODE
+		if (isDisposed()) {
+			return null;
+		}
 		if (isSetLabel()) {
 			return getLabel();
 		}
@@ -1956,6 +1986,9 @@ public class ScaDeviceManagerImpl extends ScaPropertyContainerImpl<DeviceManager
 	@Override
 	protected void notifyChanged(Notification msg) {
 		super.notifyChanged(msg);
+		if (msg.isTouch()) {
+			return;
+		}
 		switch (msg.getFeatureID(ScaDeviceManager.class)) {
 		case ScaPackage.SCA_DEVICE_MANAGER__OBJ:
 			unsetFileSystem();
@@ -1990,6 +2023,9 @@ public class ScaDeviceManagerImpl extends ScaPropertyContainerImpl<DeviceManager
 
 	@Override
 	protected List<AbstractProperty> fetchPropertyDefinitions(IProgressMonitor monitor) {
+		if (isDisposed()) {
+			return Collections.emptyList();
+		}
 		EObject localProfile = fetchProfileObject(monitor);
 		mil.jpeojtrs.sca.prf.Properties propDefintions = ScaEcoreUtils.getFeature(localProfile, PRF_PATH);
 		List<AbstractProperty> retVal = new ArrayList<AbstractProperty>();
@@ -2011,6 +2047,9 @@ public class ScaDeviceManagerImpl extends ScaPropertyContainerImpl<DeviceManager
 	 */
 	@Override
 	public DeviceConfiguration fetchProfileObject(IProgressMonitor monitor) {
+		if (isDisposed()) {
+			return null;
+		}
 		Transaction transaction = profileObjectFeature.createTransaction();
 		transaction.addCommand(ProfileObjectWrapper.Util.fetchProfileObject(monitor, ScaDeviceManagerImpl.this, DeviceConfiguration.class,
 			DeviceConfiguration.EOBJECT_PATH));
@@ -2033,6 +2072,9 @@ public class ScaDeviceManagerImpl extends ScaPropertyContainerImpl<DeviceManager
 	 */
 	@Override
 	public String fetchProfile(IProgressMonitor monitor) {
+		if (isDisposed()) {
+			return null;
+		}
 		if (isSetProfile()) {
 			return getProfile();
 		}
@@ -2060,6 +2102,9 @@ public class ScaDeviceManagerImpl extends ScaPropertyContainerImpl<DeviceManager
 
 	@Override
 	public URI fetchProfileURI(IProgressMonitor monitor) {
+		if (isDisposed()) {
+			return null;
+		}
 		if (isSetProfileURI()) {
 			return getProfileURI();
 		}

@@ -26,10 +26,12 @@ import gov.redhawk.model.sca.commands.SetLocalAttributeCommand;
 import gov.redhawk.model.sca.commands.UnsetLocalAttributeCommand;
 import gov.redhawk.model.sca.commands.VersionedFeature;
 import gov.redhawk.model.sca.commands.VersionedFeature.Transaction;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+
 import mil.jpeojtrs.sca.prf.AbstractProperty;
 import mil.jpeojtrs.sca.prf.Properties;
 import mil.jpeojtrs.sca.scd.AbstractPort;
@@ -37,6 +39,7 @@ import mil.jpeojtrs.sca.scd.ScdPackage;
 import mil.jpeojtrs.sca.spd.SoftPkg;
 import mil.jpeojtrs.sca.spd.SpdPackage;
 import mil.jpeojtrs.sca.util.ScaEcoreUtils;
+
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.MultiStatus;
@@ -45,6 +48,7 @@ import org.eclipse.core.runtime.SubMonitor;
 import org.eclipse.emf.common.command.Command;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
+import org.eclipse.emf.common.util.ECollections;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EStructuralFeature;
@@ -60,6 +64,7 @@ import org.eclipse.emf.transaction.TransactionalEditingDomain;
 import org.eclipse.emf.transaction.util.TransactionUtil;
 import org.omg.CORBA.BAD_OPERATION;
 import org.omg.CORBA.SystemException;
+
 import CF.DataType;
 import CF.LifeCycleOperations;
 import CF.PortSupplierOperations;
@@ -461,6 +466,9 @@ public abstract class ScaAbstractComponentImpl< R extends Resource > extends Sca
 	@Override
 	public Boolean fetchStarted(IProgressMonitor monitor) {
 		// END GENERATED CODE
+		if (isDisposed()) {
+			return false;
+		}
 		SubMonitor subMonitor = SubMonitor.convert(monitor, "Fetching Started", 3);
 		R resource = fetchNarrowedObject(subMonitor.newChild(1));
 		Transaction transaction = startedRevision.createTransaction();
@@ -545,7 +553,7 @@ public abstract class ScaAbstractComponentImpl< R extends Resource > extends Sca
 		// END GENERATED CODE
 		R resource = fetchNarrowedObject(null);
 		TransactionalEditingDomain domain = TransactionUtil.getEditingDomain(this);
-		if (isDisposed() || resource == null || domain == null) {
+		if (resource == null || domain == null) {
 			return;
 		}
 		Command command = new ScaModelCommand() {
@@ -850,6 +858,9 @@ public abstract class ScaAbstractComponentImpl< R extends Resource > extends Sca
 	 */
 	@Override
 	public EList<ScaPort< ? , ? >> fetchPorts(IProgressMonitor monitor) {
+		if (isDisposed()) {
+			return ECollections.emptyEList();
+		}
 		SubMonitor subMonitor = SubMonitor.convert(monitor, "Fetching ports", 2);
 		internalFetchPorts(subMonitor.newChild(1));
 		ScaPort< ? , ? >[] ports = null;
@@ -893,6 +904,9 @@ public abstract class ScaAbstractComponentImpl< R extends Resource > extends Sca
 	 */
 	protected void internalFetchPorts(IProgressMonitor monitor) {
 		// END GENERATED CODE
+		if (isDisposed()) {
+			return;
+		}
 		SubMonitor subMonitor = SubMonitor.convert(monitor, 4);
 		R currentObj = this.fetchNarrowedObject(subMonitor.newChild(1));
 		Transaction transaction = portRevision.createTransaction();
@@ -971,6 +985,9 @@ public abstract class ScaAbstractComponentImpl< R extends Resource > extends Sca
 	 */
 	@Override
 	public void fetchAttributes(IProgressMonitor monitor) {
+		if (isDisposed()) {
+			return;
+		}
 		SubMonitor subMonitor = SubMonitor.convert(monitor, 5);
 		super.fetchAttributes(subMonitor.newChild(1));
 		fetchIdentifier(subMonitor.newChild(1));
@@ -1001,6 +1018,9 @@ public abstract class ScaAbstractComponentImpl< R extends Resource > extends Sca
 
 	@Override
 	protected List<AbstractProperty> fetchPropertyDefinitions(IProgressMonitor monitor) {
+		if (isDisposed()) {
+			return Collections.emptyList();
+		}
 		Properties propertyDefs = ScaEcoreUtils.getFeature(fetchProfileObject(monitor), PRF_PATH);
 		List<AbstractProperty> retVal;
 		if (propertyDefs != null) {
@@ -1026,6 +1046,9 @@ public abstract class ScaAbstractComponentImpl< R extends Resource > extends Sca
 	 */
 	@Override
 	public SoftPkg fetchProfileObject(IProgressMonitor monitor) {
+		if (isDisposed()) {
+			return null;
+		}
 		Transaction transaction = profileObjectRevision.createTransaction();
 		Command command = ProfileObjectWrapper.Util.fetchProfileObject(monitor, this, SoftPkg.class, SoftPkg.EOBJECT_PATH);
 		transaction.addCommand(command);
@@ -1042,6 +1065,9 @@ public abstract class ScaAbstractComponentImpl< R extends Resource > extends Sca
 	 */
 	@Override
 	public String fetchProfile(IProgressMonitor monitor) {
+		if (isDisposed()) {
+			return null;
+		}
 		if (isSetProfile()) {
 			return getProfile();
 		}

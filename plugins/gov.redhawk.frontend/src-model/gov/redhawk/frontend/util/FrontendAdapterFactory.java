@@ -1,5 +1,14 @@
-/**
- */
+/*******************************************************************************
+ * This file is protected by Copyright. 
+ * Please refer to the COPYRIGHT file distributed with this source distribution.
+ *
+ * This file is part of REDHAWK IDE.
+ *
+ * All rights reserved.  This program and the accompanying materials are made available under 
+ * the terms of the Eclipse Public License v1.0 which accompanies this distribution, and is available at 
+ * http://www.eclipse.org/legal/epl-v10.html
+ *******************************************************************************/
+// BEGIN GENERATED CODE
 package gov.redhawk.frontend.util;
 
 import gov.redhawk.frontend.*;
@@ -19,214 +28,162 @@ import org.eclipse.emf.ecore.EObject;
  * @see gov.redhawk.frontend.FrontendPackage
  * @generated
  */
-public class FrontendAdapterFactory extends AdapterFactoryImpl
-{
-  /**
-   * The cached model package.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  protected static FrontendPackage modelPackage;
+public class FrontendAdapterFactory extends AdapterFactoryImpl {
+	/**
+	 * The cached model package.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	protected static FrontendPackage modelPackage;
 
-  /**
-   * Creates an instance of the adapter factory.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  public FrontendAdapterFactory()
-  {
-    if (modelPackage == null)
-    {
-      modelPackage = FrontendPackage.eINSTANCE;
-    }
-  }
+	/**
+	 * Creates an instance of the adapter factory.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public FrontendAdapterFactory() {
+		if (modelPackage == null) {
+			modelPackage = FrontendPackage.eINSTANCE;
+		}
+	}
 
-  /**
-   * Returns whether this factory is applicable for the type of the object.
-   * <!-- begin-user-doc -->
-   * This implementation returns <code>true</code> if the object is either the model's package or is an instance object of the model.
-   * <!-- end-user-doc -->
-   * @return whether this factory is applicable for the type of the object.
-   * @generated
-   */
-  @Override
-  public boolean isFactoryForType(Object object)
-  {
-    if (object == modelPackage)
-    {
-      return true;
-    }
-    if (object instanceof EObject)
-    {
-      return ((EObject)object).eClass().getEPackage() == modelPackage;
-    }
-    return false;
-  }
+	/**
+	 * Returns whether this factory is applicable for the type of the object.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns <code>true</code> if the object is either the model's package or is an instance
+	 * object of the model.
+	 * <!-- end-user-doc -->
+	 * @return whether this factory is applicable for the type of the object.
+	 * @generated
+	 */
+	@Override
+	public boolean isFactoryForType(Object object) {
+		if (object == modelPackage) {
+			return true;
+		}
+		if (object instanceof EObject) {
+			return ((EObject) object).eClass().getEPackage() == modelPackage;
+		}
+		return false;
+	}
 
-  /**
-   * The switch that delegates to the <code>createXXX</code> methods.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  protected FrontendSwitch<Adapter> modelSwitch =
-    new FrontendSwitch<Adapter>()
-    {
-      @Override
-      public Adapter caseModelDevice(ModelDevice object)
-      {
-        return createModelDeviceAdapter();
-      }
-      @Override
-      public Adapter caseTunerContainer(TunerContainer object)
-      {
-        return createTunerContainerAdapter();
-      }
-      @Override
-      public Adapter caseUnallocatedTunerContainer(UnallocatedTunerContainer object)
-      {
-        return createUnallocatedTunerContainerAdapter();
-      }
-      @Override
-      public Adapter caseTunerStatus(TunerStatus object)
-      {
-        return createTunerStatusAdapter();
-      }
-      @Override
-      public Adapter casePlot(Plot object)
-      {
-        return createPlotAdapter();
-      }
-      @Override
-      public Adapter caseListenerAllocation(ListenerAllocation object)
-      {
-        return createListenerAllocationAdapter();
-      }
-      @Override
-      public Adapter defaultCase(EObject object)
-      {
-        return createEObjectAdapter();
-      }
-    };
+	/**
+	 * The switch that delegates to the <code>createXXX</code> methods.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	protected FrontendSwitch<Adapter> modelSwitch = new FrontendSwitch<Adapter>() {
+		@Override
+		public Adapter caseTunerContainer(TunerContainer object) {
+			return createTunerContainerAdapter();
+		}
 
-  /**
-   * Creates an adapter for the <code>target</code>.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @param target the object to adapt.
-   * @return the adapter for the <code>target</code>.
-   * @generated
-   */
-  @Override
-  public Adapter createAdapter(Notifier target)
-  {
-    return modelSwitch.doSwitch((EObject)target);
-  }
+		@Override
+		public Adapter caseUnallocatedTunerContainer(UnallocatedTunerContainer object) {
+			return createUnallocatedTunerContainerAdapter();
+		}
 
+		@Override
+		public Adapter caseTunerStatus(TunerStatus object) {
+			return createTunerStatusAdapter();
+		}
 
-  /**
-   * Creates a new adapter for an object of class '{@link gov.redhawk.frontend.ModelDevice <em>Model Device</em>}'.
-   * <!-- begin-user-doc -->
-   * This default implementation returns null so that we can easily ignore cases;
-   * it's useful to ignore a case when inheritance will catch all the cases anyway.
-   * <!-- end-user-doc -->
-   * @return the new adapter.
-   * @see gov.redhawk.frontend.ModelDevice
-   * @generated
-   */
-  public Adapter createModelDeviceAdapter()
-  {
-    return null;
-  }
+		@Override
+		public Adapter caseListenerAllocation(ListenerAllocation object) {
+			return createListenerAllocationAdapter();
+		}
 
-  /**
-   * Creates a new adapter for an object of class '{@link gov.redhawk.frontend.TunerContainer <em>Tuner Container</em>}'.
-   * <!-- begin-user-doc -->
-   * This default implementation returns null so that we can easily ignore cases;
-   * it's useful to ignore a case when inheritance will catch all the cases anyway.
-   * <!-- end-user-doc -->
-   * @return the new adapter.
-   * @see gov.redhawk.frontend.TunerContainer
-   * @generated
-   */
-  public Adapter createTunerContainerAdapter()
-  {
-    return null;
-  }
+		@Override
+		public Adapter defaultCase(EObject object) {
+			return createEObjectAdapter();
+		}
+	};
 
-  /**
-   * Creates a new adapter for an object of class '{@link gov.redhawk.frontend.UnallocatedTunerContainer <em>Unallocated Tuner Container</em>}'.
-   * <!-- begin-user-doc -->
-   * This default implementation returns null so that we can easily ignore cases;
-   * it's useful to ignore a case when inheritance will catch all the cases anyway.
-   * <!-- end-user-doc -->
-   * @return the new adapter.
-   * @see gov.redhawk.frontend.UnallocatedTunerContainer
-   * @generated
-   */
-  public Adapter createUnallocatedTunerContainerAdapter()
-  {
-    return null;
-  }
+	/**
+	 * Creates an adapter for the <code>target</code>.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param target the object to adapt.
+	 * @return the adapter for the <code>target</code>.
+	 * @generated
+	 */
+	@Override
+	public Adapter createAdapter(Notifier target) {
+		return modelSwitch.doSwitch((EObject) target);
+	}
 
-  /**
-   * Creates a new adapter for an object of class '{@link gov.redhawk.frontend.TunerStatus <em>Tuner Status</em>}'.
-   * <!-- begin-user-doc -->
-   * This default implementation returns null so that we can easily ignore cases;
-   * it's useful to ignore a case when inheritance will catch all the cases anyway.
-   * <!-- end-user-doc -->
-   * @return the new adapter.
-   * @see gov.redhawk.frontend.TunerStatus
-   * @generated
-   */
-  public Adapter createTunerStatusAdapter()
-  {
-    return null;
-  }
+	/**
+	 * Creates a new adapter for an object of class '{@link gov.redhawk.frontend.TunerContainer <em>Tuner
+	 * Container</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see gov.redhawk.frontend.TunerContainer
+	 * @generated
+	 */
+	public Adapter createTunerContainerAdapter() {
+		return null;
+	}
 
-  /**
-   * Creates a new adapter for an object of class '{@link gov.redhawk.frontend.Plot <em>Plot</em>}'.
-   * <!-- begin-user-doc -->
-   * This default implementation returns null so that we can easily ignore cases;
-   * it's useful to ignore a case when inheritance will catch all the cases anyway.
-   * <!-- end-user-doc -->
-   * @return the new adapter.
-   * @see gov.redhawk.frontend.Plot
-   * @generated
-   */
-  public Adapter createPlotAdapter()
-  {
-    return null;
-  }
+	/**
+	 * Creates a new adapter for an object of class '{@link gov.redhawk.frontend.UnallocatedTunerContainer
+	 * <em>Unallocated Tuner Container</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see gov.redhawk.frontend.UnallocatedTunerContainer
+	 * @generated
+	 */
+	public Adapter createUnallocatedTunerContainerAdapter() {
+		return null;
+	}
 
-  /**
-   * Creates a new adapter for an object of class '{@link gov.redhawk.frontend.ListenerAllocation <em>Listener Allocation</em>}'.
-   * <!-- begin-user-doc -->
-   * This default implementation returns null so that we can easily ignore cases;
-   * it's useful to ignore a case when inheritance will catch all the cases anyway.
-   * <!-- end-user-doc -->
-   * @return the new adapter.
-   * @see gov.redhawk.frontend.ListenerAllocation
-   * @generated
-   */
-  public Adapter createListenerAllocationAdapter()
-  {
-    return null;
-  }
+	/**
+	 * Creates a new adapter for an object of class '{@link gov.redhawk.frontend.TunerStatus <em>Tuner Status</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see gov.redhawk.frontend.TunerStatus
+	 * @generated
+	 */
+	public Adapter createTunerStatusAdapter() {
+		return null;
+	}
 
-  /**
-   * Creates a new adapter for the default case.
-   * <!-- begin-user-doc -->
-   * This default implementation returns null.
-   * <!-- end-user-doc -->
-   * @return the new adapter.
-   * @generated
-   */
-  public Adapter createEObjectAdapter()
-  {
-    return null;
-  }
+	/**
+	 * Creates a new adapter for an object of class '{@link gov.redhawk.frontend.ListenerAllocation <em>Listener
+	 * Allocation</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see gov.redhawk.frontend.ListenerAllocation
+	 * @generated
+	 */
+	public Adapter createListenerAllocationAdapter() {
+		return null;
+	}
 
-} //FrontendAdapterFactory
+	/**
+	 * Creates a new adapter for the default case.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @generated
+	 */
+	public Adapter createEObjectAdapter() {
+		return null;
+	}
+
+} // FrontendAdapterFactory

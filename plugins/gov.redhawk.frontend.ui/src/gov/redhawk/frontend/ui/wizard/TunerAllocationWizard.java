@@ -1,3 +1,14 @@
+/** 
+ * This file is protected by Copyright. 
+ * Please refer to the COPYRIGHT file distributed with this source distribution.
+ * 
+ * This file is part of REDHAWK IDE.
+ * 
+ * All rights reserved.  This program and the accompanying materials are made available under 
+ * the terms of the Eclipse Public License v1.0 which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html.
+ *
+ */
 package gov.redhawk.frontend.ui.wizard;
 
 import gov.redhawk.frontend.TunerStatus;
@@ -11,10 +22,8 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.print.attribute.standard.JobState;
-import javax.swing.ProgressMonitor;
+import mil.jpeojtrs.sca.util.ScaEcoreUtils;
 
-import org.eclipse.core.internal.jobs.JobStatus;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
@@ -22,7 +31,6 @@ import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.jface.wizard.Wizard;
-import org.eclipse.jface.wizard.WizardDialog;
 
 import CF.DataType;
 import CF.DevicePackage.InsufficientCapacity;
@@ -59,14 +67,15 @@ public class TunerAllocationWizard extends Wizard {
 				addPage(allocatePage);
 			} else {
 				FrontEndUIActivator.getDefault().getLog().log(
-						new Status(Status.ERROR, FrontEndUIActivator.PLUGIN_ID, "Unable to launch Allocation wizard because an empty array of tuners was provided."));
+					new Status(IStatus.ERROR, FrontEndUIActivator.PLUGIN_ID,
+							"Unable to launch Allocation wizard because an empty array of tuners was provided."));
 			}
 		}
 	}
 
 	@Override
 	public boolean performFinish() {
-		final ScaDevice< ? > device = tuners[0].getTunerContainer().getModelDevice().getScaDevice();
+		final ScaDevice< ? > device = ScaEcoreUtils.getEContainerOfType(tuners[0], ScaDevice.class);
 		final Boolean[] result = new Boolean[1];
 		final StringBuilder sb = new StringBuilder();
 		final DataType[] props = createAllocationProperties();
@@ -77,7 +86,6 @@ public class TunerAllocationWizard extends Wizard {
 				@Override
 				public void run(IProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
 					monitor.beginTask("Allocate Capacity", 1);
-
 
 					Job allocateJob = new Job("Allocate Capacity") {
 
@@ -124,7 +132,7 @@ public class TunerAllocationWizard extends Wizard {
 					allocateJob.setUser(false);
 					allocateJob.setSystem(true);
 					allocateJob.schedule();
-					
+
 					while (allocateJob.getState() == Job.RUNNING) {
 						if (monitor.isCanceled()) {
 							return;
@@ -135,11 +143,11 @@ public class TunerAllocationWizard extends Wizard {
 			});
 		} catch (InvocationTargetException e) {
 			FrontEndUIActivator.getDefault().getLog().log(
-					new Status(Status.ERROR, FrontEndUIActivator.PLUGIN_ID, "Failed to allocate capacity on Fronted Interface Device", e));
+				new Status(IStatus.ERROR, FrontEndUIActivator.PLUGIN_ID, "Failed to allocate capacity on Fronted Interface Device", e));
 			return false;
 		} catch (InterruptedException e) {
 			FrontEndUIActivator.getDefault().getLog().log(
-					new Status(Status.ERROR, FrontEndUIActivator.PLUGIN_ID, "Failed to allocate capacity on Fronted Interface Device", e));
+				new Status(IStatus.ERROR, FrontEndUIActivator.PLUGIN_ID, "Failed to allocate capacity on Fronted Interface Device", e));
 			return false;
 		}
 
@@ -153,7 +161,6 @@ public class TunerAllocationWizard extends Wizard {
 		}
 		return result[0];
 	}
-
 
 	private DataType[] createAllocationProperties() {
 		List<DataType> props = new ArrayList<DataType>();

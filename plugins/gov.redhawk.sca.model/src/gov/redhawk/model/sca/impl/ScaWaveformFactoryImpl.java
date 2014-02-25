@@ -385,6 +385,9 @@ public class ScaWaveformFactoryImpl extends CorbaObjWrapperImpl<ApplicationFacto
 	protected void notifyChanged(Notification msg) {
 		// END GENERATED CODE
 		super.notifyChanged(msg);
+		if (msg.isTouch()) {
+			return;
+		}
 		switch (msg.getFeatureID(ScaWaveformFactory.class)) {
 		case ScaPackage.SCA_WAVEFORM_FACTORY__PROFILE:
 			if (!PluginUtil.equals(msg.getOldValue(), msg.getNewValue())) {
@@ -731,6 +734,9 @@ public class ScaWaveformFactoryImpl extends CorbaObjWrapperImpl<ApplicationFacto
 	@Override
 	public String fetchIdentifier(IProgressMonitor monitor) {
 		// END GENERATED CODE
+		if (isDisposed()) {
+			return null;
+		}
 		if (isSetIdentifier()) {
 			return getIdentifier();
 		}
@@ -768,6 +774,9 @@ public class ScaWaveformFactoryImpl extends CorbaObjWrapperImpl<ApplicationFacto
 	@Override
 	public String fetchName(IProgressMonitor monitor) {
 		// END GENERATED CODE
+		if (isDisposed()) {
+			return null;
+		}
 		if (isSetName()) {
 			return getName();
 		}
@@ -806,6 +815,9 @@ public class ScaWaveformFactoryImpl extends CorbaObjWrapperImpl<ApplicationFacto
 	@Override
 	public SoftwareAssembly fetchProfileObject(IProgressMonitor monitor) {
 		// END GENERATED CODE
+		if (isDisposed()) {
+			return null;
+		}
 		Transaction transaction = profileObjFeature.createTransaction();
 		transaction.addCommand(ProfileObjectWrapper.Util.fetchProfileObject(monitor, this, SoftwareAssembly.class, SoftwareAssembly.EOBJECT_PATH));
 		transaction.commit();
@@ -824,6 +836,9 @@ public class ScaWaveformFactoryImpl extends CorbaObjWrapperImpl<ApplicationFacto
 	@Override
 	public String fetchProfile(IProgressMonitor monitor) {
 		// END GENERATED CODE
+		if (isDisposed()) {
+			return null;
+		}
 		if (isSetProfile()) {
 			return getProfile();
 		}
@@ -1181,6 +1196,9 @@ public class ScaWaveformFactoryImpl extends CorbaObjWrapperImpl<ApplicationFacto
 	 */
 	@Override
 	public URI fetchProfileURI(IProgressMonitor monitor) {
+		if (isDisposed()) {
+			return null;
+		}
 		if (isSetProfileURI()) {
 			return getProfileURI();
 		}

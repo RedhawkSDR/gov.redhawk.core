@@ -33,6 +33,7 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.SubMonitor;
 import org.eclipse.emf.common.notify.NotificationChain;
+import org.eclipse.emf.common.util.ECollections;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
@@ -169,6 +170,9 @@ public class ScaUsesPortImpl extends ScaPortImpl<Uses, Port> implements ScaUsesP
 	@Override
 	public EList<ScaConnection> fetchConnections(IProgressMonitor monitor) {
 		// END GENERATED CODE
+		if (isDisposed()) {
+			return ECollections.emptyEList();
+		}
 		SubMonitor subMonitor = SubMonitor.convert(monitor, 2);
 		Port portObj = fetchNarrowedObject(subMonitor.newChild(1));
 		if (portObj instanceof QueryablePort) {

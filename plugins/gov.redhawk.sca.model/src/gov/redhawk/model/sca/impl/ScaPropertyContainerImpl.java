@@ -38,6 +38,7 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.SubMonitor;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
+import org.eclipse.emf.common.util.ECollections;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EClass;
@@ -280,6 +281,9 @@ public abstract class ScaPropertyContainerImpl< P extends org.omg.CORBA.Object, 
 	protected void notifyChanged(Notification msg) {
 		// END GENERATED CODE
 		super.notifyChanged(msg);
+		if (msg.isTouch()) {
+			return;
+		}
 		switch (msg.getFeatureID(ScaPropertyContainer.class)) {
 		case ScaPackage.SCA_PROPERTY_CONTAINER__PROFILE_OBJ:
 			if (!PluginUtil.equals(msg.getOldValue(), msg.getNewValue())) {
@@ -568,6 +572,9 @@ public abstract class ScaPropertyContainerImpl< P extends org.omg.CORBA.Object, 
 	@Override
 	public EList<ScaAbstractProperty< ? >> fetchProperties(IProgressMonitor monitor) {
 		// END GENERATED CODE
+		if (isDisposed()) {
+			return ECollections.emptyEList();
+		}
 		final SubMonitor subMonitor = SubMonitor.convert(monitor, 4);
 		Transaction transaction = propertiesFeature.createTransaction();
 		IStatus fetchStatus = Status.OK_STATUS;

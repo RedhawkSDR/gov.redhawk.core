@@ -20,6 +20,7 @@ import gov.redhawk.sca.ui.filters.AdvancedPropertiesExtensibleFilter;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import org.eclipse.ui.plugin.AbstractUIPlugin;
@@ -35,24 +36,18 @@ public class FrontEndUIActivator extends AbstractUIPlugin {
 
 	// The shared instance
 	private static FrontEndUIActivator plugin;
-	
+
 	/**
 	 * The constructor
 	 */
 	public FrontEndUIActivator() {
 	}
-	
-	public static List<String> supportedTunerTypes = new ArrayList<String>(Arrays.asList(
-			new String[] {
-				FRONTEND.TUNER_TYPE_RX_DIGITIZER.value
-				,FRONTEND.TUNER_TYPE_CHANNELIZER.value
-				,FRONTEND.TUNER_TYPE_DDC.value
-				,FRONTEND.TUNER_TYPE_RX.value
-				,FRONTEND.TUNER_TYPE_RX_DIGITIZER_CHANNELIZER.value
-				}
-		));
-	
-	public enum ALLOCATION_MODE {
+
+	public static final List<String> SUPPORTED_TUNER_TYPES = Collections.unmodifiableList(new ArrayList<String>(Arrays.asList(new String[] {
+		FRONTEND.TUNER_TYPE_RX_DIGITIZER.value, FRONTEND.TUNER_TYPE_CHANNELIZER.value, FRONTEND.TUNER_TYPE_DDC.value, FRONTEND.TUNER_TYPE_RX.value,
+		FRONTEND.TUNER_TYPE_RX_DIGITIZER_CHANNELIZER.value })));
+
+	public static enum ALLOCATION_MODE {
 		TUNER,
 		LISTENER
 	}
@@ -61,9 +56,10 @@ public class FrontEndUIActivator extends AbstractUIPlugin {
 	 * (non-Javadoc)
 	 * @see org.eclipse.ui.plugin.AbstractUIPlugin#start(org.osgi.framework.BundleContext)
 	 */
+	@Override
 	public void start(BundleContext context) throws Exception {
 		super.start(context);
-		plugin = this;
+		FrontEndUIActivator.plugin = this;
 		if (ScaUiPlugin.getDefault() != null) {
 			AdvancedPropertiesExtensibleFilter.addSubFilter(new org.eclipse.jface.viewers.IFilter() {
 
@@ -83,7 +79,7 @@ public class FrontEndUIActivator extends AbstractUIPlugin {
 					}
 					return true;
 				}
-				
+
 			});
 		}
 	}
@@ -92,8 +88,9 @@ public class FrontEndUIActivator extends AbstractUIPlugin {
 	 * (non-Javadoc)
 	 * @see org.eclipse.ui.plugin.AbstractUIPlugin#stop(org.osgi.framework.BundleContext)
 	 */
+	@Override
 	public void stop(BundleContext context) throws Exception {
-		plugin = null;
+		FrontEndUIActivator.plugin = null;
 		super.stop(context);
 	}
 
@@ -103,7 +100,7 @@ public class FrontEndUIActivator extends AbstractUIPlugin {
 	 * @return the shared instance
 	 */
 	public static FrontEndUIActivator getDefault() {
-		return plugin;
+		return FrontEndUIActivator.plugin;
 	}
 
 }

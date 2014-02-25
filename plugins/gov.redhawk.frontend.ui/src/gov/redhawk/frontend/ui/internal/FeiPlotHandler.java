@@ -11,12 +11,12 @@
  */
 package gov.redhawk.frontend.ui.internal;
 
-import gov.redhawk.frontend.FrontendFactory;
-import gov.redhawk.frontend.Plot;
+import gov.redhawk.frontend.FrontendPackage;
+import gov.redhawk.frontend.ListenerAllocation;
 import gov.redhawk.frontend.TunerStatus;
-import gov.redhawk.frontend.edit.utils.TunerProperties.ListenerAllocationProperties;
-import gov.redhawk.frontend.edit.utils.TunerUtils;
 import gov.redhawk.frontend.ui.FrontEndUIActivator;
+import gov.redhawk.frontend.util.TunerProperties.ListenerAllocationProperties;
+import gov.redhawk.frontend.util.TunerUtils;
 import gov.redhawk.model.sca.RefreshDepth;
 import gov.redhawk.model.sca.ScaDevice;
 import gov.redhawk.model.sca.ScaDomainManagerRegistry;
@@ -25,55 +25,58 @@ import gov.redhawk.model.sca.ScaPort;
 import gov.redhawk.model.sca.ScaSimpleProperty;
 import gov.redhawk.model.sca.ScaStructProperty;
 import gov.redhawk.model.sca.ScaUsesPort;
+import gov.redhawk.model.sca.commands.ScaModelCommand;
 import gov.redhawk.model.sca.provider.ScaItemProviderAdapterFactory;
-import gov.redhawk.sca.util.PluginUtil;
-import gov.redhawk.sca.util.SubMonitor;
-import gov.redhawk.ui.port.PortHelper;
-import gov.redhawk.ui.port.nxmblocks.BulkIONxmBlockSettings;
-import gov.redhawk.ui.port.nxmblocks.FftNxmBlockSettings;
-import gov.redhawk.ui.port.nxmblocks.PlotNxmBlockSettings;
-import gov.redhawk.ui.port.nxmblocks.SddsNxmBlockSettings;
 import gov.redhawk.ui.port.nxmplot.IPlotView;
 import gov.redhawk.ui.port.nxmplot.PlotActivator;
-import gov.redhawk.ui.port.nxmplot.PlotSource;
-import gov.redhawk.ui.port.nxmplot.PlotType;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
+import java.util.concurrent.Callable;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import mil.jpeojtrs.sca.prf.PrfFactory;
 import mil.jpeojtrs.sca.prf.PrfPackage;
 import mil.jpeojtrs.sca.prf.Simple;
+import mil.jpeojtrs.sca.util.CorbaUtils;
+import mil.jpeojtrs.sca.util.ScaEcoreUtils;
 
 import org.eclipse.core.commands.AbstractHandler;
+import org.eclipse.core.commands.Command;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.core.commands.IHandler;
+import org.eclipse.core.expressions.EvaluationContext;
+import org.eclipse.core.expressions.IEvaluationContext;
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.core.runtime.SubMonitor;
 import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.emf.common.notify.Adapter;
-import org.eclipse.emf.common.util.EList;
+import org.eclipse.emf.common.notify.Notifier;
+import org.eclipse.emf.common.notify.impl.AdapterImpl;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.edit.provider.IItemLabelProvider;
+import org.eclipse.emf.edit.ui.provider.AdapterFactoryLabelProvider;
+import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.IStructuredSelection;
+import org.eclipse.jface.viewers.StructuredSelection;
+import org.eclipse.jface.window.Window;
 import org.eclipse.swt.events.DisposeEvent;
 import org.eclipse.swt.events.DisposeListener;
-import org.eclipse.swt.widgets.Display;
-import org.eclipse.ui.IViewPart;
-import org.eclipse.ui.IWorkbenchPage;
+import org.eclipse.ui.ISources;
 import org.eclipse.ui.IWorkbenchWindow;
-import org.eclipse.ui.PartInitException;
+import org.eclipse.ui.commands.ICommandService;
+import org.eclipse.ui.dialogs.ListSelectionDialog;
 import org.eclipse.ui.handlers.HandlerUtil;
-import org.eclipse.ui.statushandlers.StatusManager;
+import org.eclipse.ui.progress.UIJob;
 
-import BULKIO.dataFileHelper;
-import BULKIO.dataSDDSHelper;
-import BULKIO.dataXMLHelper;
 import CF.DataType;
 import CF.PropertiesHelper;
 import CF.DevicePackage.InsufficientCapacity;
@@ -81,19 +84,15 @@ import CF.DevicePackage.InvalidCapacity;
 import CF.DevicePackage.InvalidState;
 
 public class FeiPlotHandler extends AbstractHandler implements IHandler {
+	private static final AtomicInteger SECONDARY_ID = new AtomicInteger();
 
-	private static final AtomicInteger uniquePlotViewSecondaryId = new AtomicInteger();
-	private static final String PARAM_ISFFT = "gov.redhawk.frontend.ui.isFft";
-	private ScaDevice< ? > device;
-	private TunerStatus tuner;
+	private IEvaluationContext context;
 
 	/* (non-Javadoc)
 	 * @see org.eclipse.core.commands.IHandler#execute(org.eclipse.core.commands.ExecutionEvent)
 	 */
 	@Override
-	public Object execute(ExecutionEvent event) throws ExecutionException {
-		final IWorkbenchWindow window = HandlerUtil.getActiveWorkbenchWindow(event);
-
+	public Object execute(final ExecutionEvent event) throws ExecutionException {
 		// need to grab Port selections first, otherwise Plot Wizard option below will change the selection
 		IStructuredSelection selection = (IStructuredSelection) HandlerUtil.getActiveMenuSelection(event);
 		if (selection == null) {
@@ -106,37 +105,80 @@ public class FeiPlotHandler extends AbstractHandler implements IHandler {
 		final List< ? > elements = selection.toList();
 		for (Object obj : elements) {
 			if (obj instanceof TunerStatus) {
-				tuner = (TunerStatus) obj;
-				device = tuner.getTunerContainer().getModelDevice().getScaDevice();
-				final DataType[] props = createAllocationProperties();
-				Job job = new Job("Allocate Capacity") {
+				final TunerStatus tuner = (TunerStatus) obj;
+				final ScaDevice< ? > device = ScaEcoreUtils.getEContainerOfType(tuner, ScaDevice.class);
+				final DataType[] props = createAllocationProperties(tuner);
+				Job job = new Job("Plotting tuner " + tuner.getAllocationID()) {
 					@Override
-					protected IStatus run(IProgressMonitor monitor) {
+					protected IStatus run(IProgressMonitor parentMonitor) {
+						final SubMonitor subMonitor = SubMonitor.convert(parentMonitor, "Plotting tuner " + tuner.getAllocationID(), IProgressMonitor.UNKNOWN);
 						try {
-							device.allocateCapacity(props);
-							device.refresh(null, RefreshDepth.SELF);
-						} catch (InvalidCapacity e) {
-							return new Status(IStatus.ERROR, FrontEndUIActivator.PLUGIN_ID, "Invalid Capacity in plot allocation: " + e.msg, e);
-						} catch (InvalidState e) {
-							return new Status(IStatus.ERROR, FrontEndUIActivator.PLUGIN_ID, "Invalid State in plot allocation: " + e.msg, e);
-						} catch (InsufficientCapacity e) {
-							return new Status(IStatus.ERROR, FrontEndUIActivator.PLUGIN_ID, "Insufficient Capacity in plot allocation: " + e.msg, e);
+							IStatus status = CorbaUtils.invoke(new Callable<IStatus>() {
+
+								@Override
+								public IStatus call() throws Exception {
+									try {
+										subMonitor.subTask("Allocating capacity...");
+										if (device.allocateCapacity(props)) {
+											return Status.OK_STATUS;
+										} else {
+											return new Status(IStatus.ERROR, FrontEndUIActivator.PLUGIN_ID, "Allocation failed, plot could not launch.", null);
+										}
+									} catch (InvalidCapacity e) {
+										return new Status(IStatus.ERROR, FrontEndUIActivator.PLUGIN_ID, "Invalid Capacity in plot allocation: " + e.msg, e);
+									} catch (InvalidState e) {
+										return new Status(IStatus.ERROR, FrontEndUIActivator.PLUGIN_ID, "Invalid State in plot allocation: " + e.msg, e);
+									} catch (InsufficientCapacity e) {
+										return new Status(IStatus.ERROR, FrontEndUIActivator.PLUGIN_ID, "Insufficient Capacity in plot allocation: " + e.msg, e);
+									}
+								}
+
+							}, subMonitor.newChild(1));
+							if (!status.isOK()) {
+								return status;
+							}
+							subMonitor.subTask("Refeshing device...");
+							device.refresh(subMonitor.newChild(1), RefreshDepth.SELF);
 						} catch (InterruptedException e) {
-							return new Status(IStatus.ERROR, FrontEndUIActivator.PLUGIN_ID, "Interrupted Exception during plot allocation", e);
+							return Status.CANCEL_STATUS;
+						} catch (CoreException e) {
+							return e.getStatus();
+						} finally {
+							subMonitor.done();
 						}
+						UIJob uiJob = new UIJob("Launching Plot View...") {
+
+							@Override
+							public IStatus runInUIThread(IProgressMonitor monitor) {
+								try {
+									IStatus retVal = createPlotView(event, props, device, tuner);
+									if (!retVal.isOK()) {
+										deallocate(tuner, props, device);
+									}
+
+									return retVal;
+								} catch (ExecutionException e) {
+									deallocate(tuner, props, device);
+									return new Status(IStatus.ERROR, FrontEndUIActivator.PLUGIN_ID, "Failed to open plot view", e);
+								}
+							}
+
+						};
+						uiJob.setUser(false);
+						uiJob.setSystem(true);
+						uiJob.schedule();
 						return Status.OK_STATUS;
 					}
 				};
 				job.setUser(true);
 				job.schedule();
-				createPlotView(window, elements, props, event);
 			}
 		}
 
 		return null;
 	}
 
-	private DataType[] createAllocationProperties() {
+	private DataType[] createAllocationProperties(TunerStatus tuner) {
 		List<DataType> listenerCapacity = new ArrayList<DataType>();
 		ScaStructProperty struct;
 		DataType dt = new DataType();
@@ -168,100 +210,119 @@ public class FeiPlotHandler extends AbstractHandler implements IHandler {
 		return listenerCapacity.toArray(new DataType[0]);
 	}
 
-	private void createPlotView(IWorkbenchWindow window, final List< ? > elements, final DataType[] props, ExecutionEvent event) {
-		PlotType type = PlotType.LINE;
-		final BulkIONxmBlockSettings bulkIOBlockSettings = new BulkIONxmBlockSettings();
-		final PlotNxmBlockSettings plotBlockSettings = new PlotNxmBlockSettings();
-		final SddsNxmBlockSettings sddsBlockSettings = new SddsNxmBlockSettings();
-		final FftNxmBlockSettings fftBlockSettings;
-		
-		final boolean isFFT = Boolean.valueOf(event.getParameter(FeiPlotHandler.PARAM_ISFFT));
-		if(isFFT) {
-			fftBlockSettings = new FftNxmBlockSettings();
+	private IStatus createPlotView(final ExecutionEvent event, final DataType[] props, final ScaDevice< ? > device, final TunerStatus tuner)
+			throws ExecutionException {
+		List<ScaPort< ? , ? >> devicePorts = device.getPorts();
+		List<ScaUsesPort> usesPorts = new ArrayList<ScaUsesPort>();
+		for (ScaPort< ? , ? > port : devicePorts) {
+			if (port instanceof ScaUsesPort) {
+				usesPorts.add((ScaUsesPort) port);
+			}
+		}
+		final ScaItemProviderAdapterFactory factory = new ScaItemProviderAdapterFactory();
+		final ScaUsesPort usesPort;
+		if (usesPorts.size() == 1) {
+			usesPort = usesPorts.get(0);
+		} else if (usesPorts.size() > 1) {
+			ListSelectionDialog dialog = new ListSelectionDialog(HandlerUtil.getActiveShellChecked(event), usesPorts, new ArrayContentProvider(),
+				new AdapterFactoryLabelProvider(factory), "Select output port to use:");
+			if (dialog.open() == Window.OK) {
+				Object[] result = dialog.getResult();
+				if (result.length >= 1) {
+					usesPort = (ScaUsesPort) result[0];
+				} else {
+					usesPort = null;
+				}
+			} else {
+				usesPort = null;
+			}
 		} else {
-			fftBlockSettings = null;
+			usesPort = null;
 		}
 
-		try {
-			final IViewPart view = window.getActivePage().showView(IPlotView.ID, createSecondaryId(), IWorkbenchPage.VIEW_ACTIVATE);
-			if (view instanceof IPlotView) {
-				final IPlotView plotView = (IPlotView) view;
-				plotView.getPlotPageBook().showPlot(type);
-				plotView.getPlotPageBook().addDisposeListener(getDisposeListener(props));
+		if (usesPort == null) {
+			return Status.CANCEL_STATUS;
+		}
 
-				Job job = new Job("Fei Adding plot sources...") {
-					@Override
-					protected IStatus run(IProgressMonitor monitor) {
-						final ScaItemProviderAdapterFactory factory = new ScaItemProviderAdapterFactory();
-						final StringBuilder name = new StringBuilder();
-						final StringBuilder tooltip = new StringBuilder();
-						SubMonitor subMonitor = SubMonitor.convert(monitor, "Plotting...", elements.size());
+		final StringBuilder name = new StringBuilder();
+		final StringBuilder tooltip = new StringBuilder();
 
-						EList<ScaPort< ? , ? >> devicePorts = device.getPorts();
-						for (ScaPort< ? , ? > port : devicePorts) {
-							ScaUsesPort usesPort = PluginUtil.adapt(ScaUsesPort.class, port, true);
+		createTooltip(factory, name, tooltip, usesPort);
+		factory.dispose();
 
-							if (usesPort != null) {
-								usesPort.fetchAttributes(subMonitor.newChild(1));
-								createTooltip(factory, name, tooltip, usesPort);
-								bulkIOBlockSettings.setConnectionID(getListenerID(props));
+		// Connect the port
+		final List<ScaUsesPort> ports = new ArrayList<ScaUsesPort>();
+		ports.add(usesPort);
+		EvaluationContext exContext = new EvaluationContext(context, ports);
+		exContext.addVariable(ISources.ACTIVE_CURRENT_SELECTION_NAME, new StructuredSelection(ports));
+		exContext.addVariable(ISources.ACTIVE_MENU_SELECTION_NAME, new StructuredSelection(ports));
+		exContext.addVariable(ISources.ACTIVE_WORKBENCH_WINDOW_NAME, HandlerUtil.getActiveWorkbenchWindowChecked(event));
 
-								PlotSource plotSource;
-								String idl = usesPort.getRepid();
-								String pipeQualifiers = null;
-								if (dataSDDSHelper.id().equals(idl)) { // a BULKIO:dataSDDS Port
-									plotSource = new PlotSource(usesPort, sddsBlockSettings, fftBlockSettings, plotBlockSettings, pipeQualifiers);
-								} else if (!dataFileHelper.id().equals(idl) && !dataXMLHelper.id().equals(idl)) { // BULKIO:dataFile and BULIO:dataXML Ports are currently unsupported
-									plotSource = new PlotSource(usesPort, bulkIOBlockSettings, fftBlockSettings, plotBlockSettings, pipeQualifiers);
-								} else {
-									StatusManager.getManager().handle(
-										new Status(IStatus.WARNING, PlotActivator.PLUGIN_ID, "Unsupported Port: " + usesPort + " idl: " + idl),
-										StatusManager.LOG);
-									continue; // log warning and skip unsupported Port type
-								}
-								plotView.getPlotPageBook().addSource(plotSource);
+		Map<String, Object> exParam = new HashMap<String, Object>();
+		exParam.put(IPlotView.PARAM_PLOT_TYPE, event.getParameter(IPlotView.PARAM_PLOT_TYPE));
+		exParam.put(IPlotView.PARAM_ISFFT, event.getParameter(IPlotView.PARAM_ISFFT));
+		final String listenerID = getListenerID(props);
+		exParam.put(IPlotView.PARAM_CONNECTION_ID, listenerID);
+		exParam.put(IPlotView.PARAM_SECONDARY_ID, createSecondaryId());
 
-								// TODO: Add handler - addEventForward(port, plotView)
-							} else {
-								subMonitor.worked(1);
-							}
-						} // end for loop
-						PortHelper.refreshPorts(elements, subMonitor);
+		IWorkbenchWindow window = HandlerUtil.getActiveWorkbenchWindow(event);
+		ICommandService svc = (ICommandService) window.getService(ICommandService.class);
+		Command comm = svc.getCommand(IPlotView.COMMAND_ID);
+		ExecutionEvent ex = new ExecutionEvent(comm, exParam, null, exContext);
+		final IPlotView view = PlotActivator.getDefault().showPlotView(ex);
+		if (view != null) {
+			view.setPartName(name.toString());
+			view.setTitleToolTip(tooltip.toString());
+			view.getPlotPageBook().addDisposeListener(getDisposeListener(tuner, props, device));
 
-						factory.dispose();
-						if (name.length() > 0 || tooltip.length() > 0) {
-							Display display = plotView.getPlotPageBook().getDisplay();
-							display.asyncExec(new Runnable() {
+			ScaModelCommand.execute(tuner, new ScaModelCommand() {
+
+				@Override
+				public void execute() {
+					for (ListenerAllocation a : tuner.getListenerAllocations()) {
+						if (a.getListenerID().equals(listenerID)) {
+							a.eAdapters().add(new AdapterImpl() {
 								@Override
-								public void run() {
-									if (name.length() > 0) {
-										plotView.setPartName(name.substring(0, name.length() - 1)); // remove trailing space from view's name
+								public void notifyChanged(org.eclipse.emf.common.notify.Notification msg) {
+									if (msg.isTouch()) {
+										return;
 									}
-									if (tooltip.length() > 0) {
-										plotView.setTitleToolTip(tooltip.substring(0, tooltip.length() - 1)); // remove trailing newline from view's tooltip
+									switch (msg.getFeatureID(ListenerAllocation.class)) {
+									case FrontendPackage.LISTENER_ALLOCATION__TUNER_STATUS:
+										if (msg.getNewValue() == null) {
+											((Notifier) msg.getNotifier()).eAdapters().remove(this);
+											if (view.getPlotPageBook().isDisposed()) {
+												return;
+											}
+											view.getPlotPageBook().getDisplay().asyncExec(new Runnable() {
+
+												@Override
+												public void run() {
+													view.getPlotPageBook().dispose();
+												}
+
+											});
+										}
 									}
 								}
 							});
 						}
-
-						// Creates a plot model object with reference to the listener ID and plotview for later manipulation
-						// Including deallocation and disposal
-						Plot plotModelObject = FrontendFactory.eINSTANCE.createPlot();
-						plotModelObject.setListenerID(getListenerID(props));
-						plotModelObject.setPlotView(plotView);
-						tuner.getPlots().add(plotModelObject);
-
-						return Status.OK_STATUS;
-
 					}
-				};
-				job.schedule(0);
-			}
-		} catch (PartInitException e) {
-			StatusManager.getManager().handle(new Status(IStatus.ERROR, PlotActivator.PLUGIN_ID, "Failed to show Plot View", e),
-				StatusManager.LOG | StatusManager.SHOW);
+				}
+			});
+		} else {
+			return Status.CANCEL_STATUS;
 		}
 
+		return Status.OK_STATUS;
+	}
+
+	@Override
+	public void setEnabled(Object evaluationContext) {
+		if (evaluationContext instanceof IEvaluationContext) {
+			this.context = (IEvaluationContext) evaluationContext;
+		}
+		super.setEnabled(evaluationContext);
 	}
 
 	/**
@@ -269,34 +330,70 @@ public class FeiPlotHandler extends AbstractHandler implements IHandler {
 	 * @param props Listener Capacity to pass to deallocateCapacity()
 	 * @return
 	 */
-	private DisposeListener getDisposeListener(final DataType[] props) {
+	private DisposeListener getDisposeListener(final TunerStatus tuner, final DataType[] props, final ScaDevice< ? > device) {
 		DisposeListener disposeListener = new DisposeListener() {
 
 			@Override
 			public void widgetDisposed(DisposeEvent e) {
-				Job job = new Job("Fei Deallocate Listener") {
-					@Override
-					protected IStatus run(IProgressMonitor monitor) {
-						try {
-							if (device != null) {
-								device.deallocateCapacity(props);
-								device.refresh(null, RefreshDepth.SELF);
-							}
-						} catch (InvalidCapacity e) {
-							return new Status(IStatus.ERROR, FrontEndUIActivator.PLUGIN_ID, "Invalid Capacity in plot deallocation: " + e.msg, e);
-						} catch (InvalidState e) {
-							return new Status(IStatus.ERROR, FrontEndUIActivator.PLUGIN_ID, "Invalid State in plot deallocation: " + e.msg, e);
-						} catch (InterruptedException e) {
-							return new Status(IStatus.ERROR, FrontEndUIActivator.PLUGIN_ID, "Interrupted Exception during plot deallocation", e);
-						}
-						return Status.OK_STATUS;
-					}
-				};
-				job.setUser(true);
-				job.schedule();
+				if (containsListener(tuner, props)) {
+					deallocate(tuner, props, device);
+				}
 			}
 		};
 		return disposeListener;
+	}
+
+	private boolean containsListener(TunerStatus tuner, DataType[] props) {
+		String listenerId = getListenerID(props);
+		for (ListenerAllocation a : tuner.getListenerAllocations()) {
+			if (a.getListenerID().equals(listenerId)) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	private void deallocate(final TunerStatus tuner, final DataType[] props, final ScaDevice< ? > device) {
+		if (!containsListener(tuner, props)) {
+			return;
+		}
+		Job job = new Job("Fei Deallocate Listener") {
+			@Override
+			protected IStatus run(IProgressMonitor parentMonitor) {
+				if (!containsListener(tuner, props)) {
+					return Status.CANCEL_STATUS;
+				}
+				try {
+					SubMonitor subMonitor = SubMonitor.convert(parentMonitor, "Deallocating listener...", 2);
+					if (device != null && !device.isDisposed()) {
+						CorbaUtils.invoke(new Callable<IStatus>() {
+
+							@Override
+							public IStatus call() throws Exception {
+								try {
+									device.deallocateCapacity(props);
+									return Status.OK_STATUS;
+								} catch (InvalidCapacity e) {
+									return new Status(IStatus.ERROR, FrontEndUIActivator.PLUGIN_ID, "Invalid Capacity in plot deallocation: " + e.msg, e);
+								} catch (InvalidState e) {
+									return new Status(IStatus.ERROR, FrontEndUIActivator.PLUGIN_ID, "Invalid State in plot deallocation: " + e.msg, e);
+								}
+							}
+
+						}, subMonitor.newChild(1));
+						device.refresh(subMonitor.newChild(1), RefreshDepth.SELF);
+					}
+				} catch (InterruptedException e) {
+					return new Status(IStatus.ERROR, FrontEndUIActivator.PLUGIN_ID, "Interrupted Exception during plot deallocation", e);
+				} catch (CoreException e) {
+					return e.getStatus();
+				}
+				return Status.OK_STATUS;
+			}
+		};
+		job.setUser(false);
+		job.setSystem(true);
+		job.schedule();
 	}
 
 	private String getListenerID(DataType[] props) {
@@ -306,14 +403,13 @@ public class FeiPlotHandler extends AbstractHandler implements IHandler {
 				if (d.id.equals(ListenerAllocationProperties.LISTENER_ALLOCATION_ID.getId())) {
 					return (d.value.toString());
 				}
-				;
 			}
 		}
 		return "";
 	}
 
 	private String createSecondaryId() {
-		return "FEI" + FeiPlotHandler.uniquePlotViewSecondaryId.incrementAndGet();
+		return "FEI" + FeiPlotHandler.SECONDARY_ID.incrementAndGet();
 	}
 
 	private void createTooltip(final ScaItemProviderAdapterFactory factory, final StringBuilder name, final StringBuilder tooltip, ScaUsesPort usesPort) {

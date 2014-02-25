@@ -41,6 +41,7 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.SubMonitor;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
+import org.eclipse.emf.common.util.ECollections;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EClass;
@@ -387,6 +388,9 @@ public class ScaComponentImpl extends ScaAbstractComponentImpl<Resource> impleme
 	 */
 	@Override
 	public void fetchAttributes(IProgressMonitor monitor) {
+		if (isDisposed()) {
+			return;
+		}
 		SubMonitor subMonitor = SubMonitor.convert(monitor, 3);
 		super.fetchAttributes(subMonitor.newChild(1));
 		fetchProfileObject(subMonitor.newChild(1));
@@ -406,6 +410,9 @@ public class ScaComponentImpl extends ScaAbstractComponentImpl<Resource> impleme
 	protected void notifyChanged(Notification msg) {
 		// END GENERATED CODE
 		super.notifyChanged(msg);
+		if (msg.isTouch()) {
+			return;
+		}
 		switch (msg.getFeatureID(ScaComponent.class)) {
 		case ScaPackage.SCA_COMPONENT__OBJ:
 			unsetDevices();
@@ -437,6 +444,9 @@ public class ScaComponentImpl extends ScaAbstractComponentImpl<Resource> impleme
 	 */
 	@Override
 	public EList<ScaDevice< ? >> fetchDevices(IProgressMonitor monitor) {
+		if (isDisposed()) {
+			return ECollections.emptyEList();
+		}
 		SubMonitor subMonitor = SubMonitor.convert(monitor, "Fetch Devices", 2);
 		internalFetchDevices(subMonitor.newChild(1));
 		ScaDevice< ? >[] devices = ScaModelCommandWithResult.execute(this, new ScaModelCommandWithResult<ScaDevice< ? >[]>() {
@@ -626,7 +636,7 @@ public class ScaComponentImpl extends ScaAbstractComponentImpl<Resource> impleme
 	 * @since 14.0
 	 */
 	protected void internalFetchDevices(IProgressMonitor monitor) {
-		if (isSetDevices()) {
+		if (isSetDevices() || isDisposed()) {
 			return;
 		}
 		Transaction transaction = devicesRevision.createTransaction();
@@ -701,6 +711,9 @@ public class ScaComponentImpl extends ScaAbstractComponentImpl<Resource> impleme
 
 	@Override
 	public URI fetchProfileURI(IProgressMonitor monitor) {
+		if (isDisposed()) {
+			return null;
+		}
 		if (isSetProfileURI()) {
 			return getProfileURI();
 		}
