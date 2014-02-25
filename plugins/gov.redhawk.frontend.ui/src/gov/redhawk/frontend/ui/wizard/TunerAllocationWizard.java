@@ -133,7 +133,7 @@ public class TunerAllocationWizard extends Wizard {
 					allocateJob.setSystem(true);
 					allocateJob.schedule();
 
-					while (allocateJob.getState() == Job.RUNNING) {
+					while (allocateJob.getState() == Job.WAITING || allocateJob.getState() == Job.RUNNING) {
 						if (monitor.isCanceled()) {
 							return;
 						}
