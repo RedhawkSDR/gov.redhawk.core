@@ -78,6 +78,7 @@ import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.EValidator;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
+import org.eclipse.emf.ecore.util.EContentAdapter;
 import org.eclipse.emf.ecore.xmi.XMLResource;
 import org.eclipse.emf.edit.domain.AdapterFactoryEditingDomain;
 import org.eclipse.emf.edit.domain.EditingDomain;
@@ -468,8 +469,9 @@ public abstract class SCAFormEditor extends FormEditor implements IEditingDomain
 
 		@Override
 		protected void handleSelectionChanged(SelectionChangedEvent event) {
-			super.handleSelectionChanged(event);
-			super.handlePostSelectionChanged(event);
+			//TODO: bwhoff2 had to comment this out because of an error, investigate further
+			//super.handleSelectionChanged(event);
+			//super.handlePostSelectionChanged(event);
 		}
 	}
 
@@ -497,27 +499,15 @@ public abstract class SCAFormEditor extends FormEditor implements IEditingDomain
 		}
 	}
 
+	
+	
 	/**
 	 * This sets up the editing domain for the model editor.
 	 */
 	protected void initializeEditingDomain() {
-		// Create the editing domain with a special command stack.
-		//
-		TransactionalEditingDomain domain = TransactionalEditingDomain.Registry.INSTANCE.getEditingDomain(getEditingDomainId());
-
-		if (domain == null) {
-			domain = TransactionalEditingDomain.Factory.INSTANCE.createEditingDomain();
-			domain.setID(getEditingDomainId());
-
-			// Create an adapter factory that yields item providers.
-			//
-			final ComposedAdapterFactory localAdapterFactory = new ComposedAdapterFactory(ComposedAdapterFactory.Descriptor.Registry.INSTANCE);
-
-			localAdapterFactory.addAdapterFactory(new ResourceItemProviderAdapterFactory());
-			localAdapterFactory.addAdapterFactory(getSpecificAdapterFactory());
-			localAdapterFactory.addAdapterFactory(new ReflectiveItemProviderAdapterFactory());
-			((AdapterFactoryEditingDomain) domain).setAdapterFactory(localAdapterFactory);
-		}
+		
+		TransactionalEditingDomain domain = createEditingDomain();
+		
 
 		final Map<String, Boolean> myOptions = new HashMap<String, Boolean>();
 		myOptions.put(Transaction.OPTION_NO_VALIDATION, Boolean.TRUE);
@@ -558,6 +548,17 @@ public abstract class SCAFormEditor extends FormEditor implements IEditingDomain
 			}
 
 		});
+		
+		domain.getResourceSet().eAdapters().add(new EContentAdapter() {
+			  @Override
+			  public void notifyChanged(Notification notification) {
+			    selfAdapt(notification);
+
+			    super.notifyChanged(notification);
+			  }
+		});
+		
+		
 
 		// Add a listener to set the most recent command's affected objects to
 		// be the selection of the viewer with focus.
@@ -566,6 +567,26 @@ public abstract class SCAFormEditor extends FormEditor implements IEditingDomain
 
 		this.editingDomain = domain;
 	}
+
+	protected TransactionalEditingDomain createEditingDomain() {
+		TransactionalEditingDomain domain = TransactionalEditingDomain.Registry.INSTANCE.getEditingDomain(getEditingDomainId());
+
+		if (domain == null) {
+			domain = TransactionalEditingDomain.Factory.INSTANCE.createEditingDomain();
+			domain.setID(getEditingDomainId());
+
+			// Create an adapter factory that yields item providers.
+			//
+			final ComposedAdapterFactory localAdapterFactory = new ComposedAdapterFactory(ComposedAdapterFactory.Descriptor.Registry.INSTANCE);
+
+			localAdapterFactory.addAdapterFactory(new ResourceItemProviderAdapterFactory());
+			localAdapterFactory.addAdapterFactory(getSpecificAdapterFactory());
+			localAdapterFactory.addAdapterFactory(new ReflectiveItemProviderAdapterFactory());
+			((AdapterFactoryEditingDomain) domain).setAdapterFactory(localAdapterFactory);
+		}
+		
+		return domain;
+    }
 
 	/**
 	 * Provide access to the command stack listener so that subclasses may remove if so desired.
