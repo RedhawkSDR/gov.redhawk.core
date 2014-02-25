@@ -310,14 +310,6 @@ public class PlotNxmBlock extends AbstractNxmBlock<plot> {
 
 	@Override
 	public void propertyChange(PropertyChangeEvent event) {
-		if (PlotPreferences.LINE_PLOT_CONSUMELENGTH.isEvent(event) && isSetLinePlotConsumeLength()) {
-			updatePipeQualifiers();
-		}
-
-		if (PlotPreferences.LINE_PLOT_CONSUMELENGTH_OVERRIDE.isEvent(event) && getLinePlotConsumeLength() != PlotPreferences.LINE_PLOT_CONSUMELENGTH.getDefaultValue(getPreferences())) {
-			updatePipeQualifiers();
-		}
-
 		if (PlotPreferences.FRAMESIZE.isEvent(event) && isSetFrameSize()) {
 			updatePipeQualifiers();
 		}
@@ -331,6 +323,17 @@ public class PlotNxmBlock extends AbstractNxmBlock<plot> {
 		}
 
 		if (PlotPreferences.PIPESIZE_OVERRIDE.isEvent(event) && getPipeSize() != PlotPreferences.PIPESIZE.getDefaultValue(getPreferences())) {
+			updatePipeQualifiers();
+		}
+
+		if (PlotPreferences.LINE_PLOT_CONSUMELENGTH.isEvent(event) && isSetLinePlotConsumeLength()
+				&& PlotType.LINE.equals(getContext().getPlotType())) {
+			updatePipeQualifiers();
+		}
+		
+		if (PlotPreferences.LINE_PLOT_CONSUMELENGTH_OVERRIDE.isEvent(event)
+				&& getLinePlotConsumeLength() != PlotPreferences.LINE_PLOT_CONSUMELENGTH.getDefaultValue(getPreferences())
+				&& PlotType.LINE.equals(getContext().getPlotType())) {
 			updatePipeQualifiers();
 		}
 	}

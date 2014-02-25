@@ -113,6 +113,7 @@ public class PlotPreferencePage extends FieldEditorPreferencePage implements IWo
 		if (workbench != null) {
 			addField(createPlotModesField());
 			addField(createFrameSizeField());
+			addField(createLinePlotConsumeLengthField(getFieldEditorParent()));
 			addField(createConfigureMenuField(getFieldEditorParent()));
 			addField(createQuickControlsField());
 		} else {
@@ -145,7 +146,8 @@ public class PlotPreferencePage extends FieldEditorPreferencePage implements IWo
 				if (blockPreferenceStore != null) {
 					blockPreferences.add(createQuickControlsField());
 				}
-				//				createAdvancedFields();
+
+				createAdvancedFields();
 			}
 		}
 	}
@@ -164,11 +166,21 @@ public class PlotPreferencePage extends FieldEditorPreferencePage implements IWo
 		return frameSizeField;
 	}
 
+	private OverridableIntegerFieldEditor createLinePlotConsumeLengthField(Composite parent) {
+		OverridableIntegerFieldEditor linePlotConsLenField = new OverridableIntegerFieldEditor(PlotPreferences.LINE_PLOT_CONSUMELENGTH.getName(),
+			PlotPreferences.LINE_PLOT_CONSUMELENGTH_OVERRIDE.getName(), "&Line Plot\nConsume Length:", parent);
+		linePlotConsLenField.setErrorMessage("Consume Length must a an integer >= -1");
+		linePlotConsLenField.setValidRange(-1, Integer.MAX_VALUE);
+		linePlotConsLenField.setToolTipText("Frames of data to consume (e.g. discard/thin) for each frame displayed. -1 for none.");
+		return linePlotConsLenField;
+	}
+	
 	private BooleanFieldEditor createQuickControlsField() {
 		return new BooleanFieldEditor(PlotPreferences.ENABLE_QUICK_CONTROLS.getName(),
 			"Enable &quick access control widgets",
 			getFieldEditorParent());
 	}
+
 
 	private void creatBlockAdancedFields() {
 		final Composite parent = getFieldEditorParent();
@@ -194,9 +206,13 @@ public class PlotPreferencePage extends FieldEditorPreferencePage implements IWo
 		advancedComposite.setClient(section);
 
 		if (blockPreferenceStore != null) {
-			blockPreferences.add(new OverridableIntegerFieldEditor(PlotPreferences.PIPESIZE.getName(), PlotPreferences.PIPESIZE_OVERRIDE.getName(),
-				"&Pipe Size:", section));
+			addField(new ReadOnlyStringFieldEditor(PlotPreferences.PIPESIZE.getName(), "&Pipe Size:", section));
+//			blockPreferences.add(new OverridableIntegerFieldEditor(PlotPreferences.PIPESIZE.getName(), PlotPreferences.PIPESIZE_OVERRIDE.getName(),
+//				"&Pipe Size:", section));
+			
+			blockPreferences.add(createLinePlotConsumeLengthField(section));
 		}
+		
 		addField(new ReadOnlyStringFieldEditor(PlotPreferences.LAUNCH_ARGS.getName(), "&Launch Args:", section));
 		addField(new ReadOnlyStringFieldEditor(PlotPreferences.LAUNCH_SWITCHES.getName(), "&Launch Switches:", section));
 	}
