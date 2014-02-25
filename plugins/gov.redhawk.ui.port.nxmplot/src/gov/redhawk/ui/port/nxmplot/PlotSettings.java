@@ -103,7 +103,7 @@ public class PlotSettings {
 		//		this.maxValue = PlotPreferences.MAX.getValue(store);
 		//		this.minValue = PlotPreferences.MIN.getValue(store);
 		String modeString = PlotPreferences.MODE.getValue(store);
-		this.plotMode = PlotMode.valueOf(PlotPreferences.MODE.getValue(store));
+		this.plotMode = PlotMode.valueOf(modeString);
 		//		this.plotType = PlotType.valueOf(PlotPreferences.TYPE.getValue(store));
 	}
 
