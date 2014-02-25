@@ -14,6 +14,7 @@ import gov.redhawk.internal.ui.preferences.PlotPreferencePage;
 import gov.redhawk.sca.util.Debug;
 import gov.redhawk.ui.port.nxmplot.AbstractNxmPlotWidget;
 import gov.redhawk.ui.port.nxmplot.PlotActivator;
+import gov.redhawk.ui.port.nxmplot.PlotType;
 import gov.redhawk.ui.port.nxmplot.preferences.PlotPreferences;
 import gov.redhawk.ui.port.nxmplot.preferences.Preference;
 
@@ -173,14 +174,17 @@ public class PlotNxmBlock extends AbstractNxmBlock<plot> {
 		return new PlotNxmBlockSettings(getPreferences());
 	}
 
-	public void applySettings(PlotNxmBlockSettings settings) {
-		PlotNxmBlockSettings newSettings = settings;
+	public void applySettings(PlotNxmBlockSettings newSettings) {
 		if (newSettings.getFrameSize() != null) {
 			setFrameSize(newSettings.getFrameSize());
 		}
 
 		if (newSettings.getPipeSize() != null) {
 			setPipeSize(newSettings.getPipeSize());
+		}
+
+		if (newSettings.getLinePlotConsumeLength() != null) {
+			setLinePlotConsumeLength(newSettings.getLinePlotConsumeLength());
 		}
 	}
 
@@ -203,7 +207,7 @@ public class PlotNxmBlock extends AbstractNxmBlock<plot> {
 			}
 			String tmpResName = AbstractNxmPlotWidget.createUniqueName(false);
 			plotWidget.runGlobalCommand("TABLE " + tmpResName + " CREATE");
-			plotWidget.runGlobalCommand("STATUS/VERBOSE " + sourceName + " typeCodeClass=" + tmpResName + ".TYPECODECLASS  frameSize=" + tmpResName
+			plotWidget.runGlobalCommand("STATUS " + sourceName + " typeCodeClass=" + tmpResName + ".TYPECODECLASS  frameSize=" + tmpResName
 				+ ".FRAMESIZE");
 			if (PlotNxmBlock.TRACE_LOG.enabled) {
 				plotWidget.runGlobalCommand("RESULTS/ALL " + tmpResName);
@@ -227,11 +231,45 @@ public class PlotNxmBlock extends AbstractNxmBlock<plot> {
 			}
 		}
 
-		final int pipeSize = getPipeSize();
 		if (isSetPipeSize()) {
+			int pipeSize = getPipeSize();
 			pipeQualifiers.append("{PIPESIZE=").append(pipeSize).append('}');
 		}
+		
+		// only apply consume length (quick data thinning for line plot)
+		if (PlotType.LINE.equals(plotWidget.getPlotType())) {
+			int consumeLength;
+			if (isSetLinePlotConsumeLength()) {
+				consumeLength = getLinePlotConsumeLength();
+			} else {
+				consumeLength = PlotPreferences.LINE_PLOT_CONSUMELENGTH.getDefaultValue(getPreferences());
+			}
+			if (consumeLength > 0) {
+				pipeQualifiers.append("{CL=").append(consumeLength).append('}');
+			}
+		}
+
+		PlotNxmBlock.TRACE_LOG.exitingMethod(pipeQualifiers);
 		return pipeQualifiers.toString();
+	}
+
+	public int getLinePlotConsumeLength() {
+		return PlotPreferences.LINE_PLOT_CONSUMELENGTH.getValue(getPreferences());
+	}
+
+	public boolean isSetLinePlotConsumeLength() {
+		return PlotPreferences.LINE_PLOT_CONSUMELENGTH_OVERRIDE.getValue(getPreferences());
+	}
+
+	public void unsetLinePlotConsumeLength() {
+		PlotPreferences.LINE_PLOT_CONSUMELENGTH.setToDefault(getPreferences());
+		PlotPreferences.LINE_PLOT_CONSUMELENGTH_OVERRIDE.setValue(getPreferences(), false);
+	}
+
+	/** set to -1 to NOT do any frame thinning of line plots */
+	public void setLinePlotConsumeLength(int val) {
+		PlotPreferences.LINE_PLOT_CONSUMELENGTH.setValue(getPreferences(), val);
+		PlotPreferences.LINE_PLOT_CONSUMELENGTH_OVERRIDE.setValue(getPreferences(), true);
 	}
 
 	public int getPipeSize() {
@@ -272,6 +310,14 @@ public class PlotNxmBlock extends AbstractNxmBlock<plot> {
 
 	@Override
 	public void propertyChange(PropertyChangeEvent event) {
+		if (PlotPreferences.LINE_PLOT_CONSUMELENGTH.isEvent(event) && isSetLinePlotConsumeLength()) {
+			updatePipeQualifiers();
+		}
+
+		if (PlotPreferences.LINE_PLOT_CONSUMELENGTH_OVERRIDE.isEvent(event) && getLinePlotConsumeLength() != PlotPreferences.LINE_PLOT_CONSUMELENGTH.getDefaultValue(getPreferences())) {
+			updatePipeQualifiers();
+		}
+
 		if (PlotPreferences.FRAMESIZE.isEvent(event) && isSetFrameSize()) {
 			updatePipeQualifiers();
 		}

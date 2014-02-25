@@ -111,7 +111,7 @@ public class PlotPreferencePage extends FieldEditorPreferencePage implements IWo
 	@Override
 	public void createFieldEditors() {
 		if (workbench != null) {
-			addField(createModesField());
+			addField(createPlotModesField());
 			addField(createFrameSizeField());
 			addField(createConfigureMenuField(getFieldEditorParent()));
 			addField(createQuickControlsField());
@@ -125,7 +125,7 @@ public class PlotPreferencePage extends FieldEditorPreferencePage implements IWo
 				 * Page settings store is Plot Settings
 				 * Block setting store is Nxm Block Settings
 				 */
-				addField(createModesField());
+				addField(createPlotModesField());
 				if (blockPreferenceStore != null) {
 					blockPreferences.add(createFrameSizeField());
 				}
@@ -210,7 +210,7 @@ public class PlotPreferencePage extends FieldEditorPreferencePage implements IWo
 		return blockPreferenceStore;
 	}
 
-	private ComboFieldEditor createModesField() {
+	private ComboFieldEditor createPlotModesField() {
 		List<String[]> modes = new ArrayList<String[]>();
 		for (PlotSettings.PlotMode mode : PlotMode.getStandardModes()) {
 			modes.add(new String[] { mode.getLabel(), mode.toString() });
