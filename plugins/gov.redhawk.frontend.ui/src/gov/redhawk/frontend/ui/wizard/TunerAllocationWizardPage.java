@@ -555,6 +555,7 @@ public class TunerAllocationWizardPage extends WizardPage {
 		this.tuner = tuner;
 		setMinMaxValues();
 		nf.setMinimumFractionDigits(0);
+		nf.setGroupingUsed(false);
 	}
 
 	@Override
