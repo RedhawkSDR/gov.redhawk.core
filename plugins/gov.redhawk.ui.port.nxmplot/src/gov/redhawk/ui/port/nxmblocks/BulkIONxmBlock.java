@@ -232,7 +232,7 @@ public class BulkIONxmBlock extends AbstractNxmBlock<corbareceiver2> {
 		String outputName = AbstractNxmPlotWidget.createUniqueName(true);
 		putOutputNameMapping(0, streamID, outputName); // save output name mapping
 
-		final StringBuilder switches = new StringBuilder("/POLL=0.1");
+		final StringBuilder switches = new StringBuilder("/POLL=0.1"); // reading & writing of data is done in thread calling pushPacket(..)
 		final int pipeSize = getPipeSize(); // in bytes
 		if (pipeSize > 0) {
 			switches.append("/PS=").append(pipeSize);

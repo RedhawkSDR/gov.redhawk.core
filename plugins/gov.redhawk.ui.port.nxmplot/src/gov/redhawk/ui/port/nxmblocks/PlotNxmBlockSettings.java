@@ -28,6 +28,8 @@ public class PlotNxmBlockSettings implements Cloneable {
 	private Integer frameSize;
 	/** null to use default. */
 	private Integer pipeSize;
+	/** null to use default. */
+	private Integer linePlotConsumeLength;
 
 	public PlotNxmBlockSettings() {
 		this(null);
@@ -42,6 +44,9 @@ public class PlotNxmBlockSettings implements Cloneable {
 		}
 		if (PlotPreferences.PIPESIZE_OVERRIDE.getValue(preferences)) {
 			pipeSize = PlotPreferences.PIPESIZE.getValue(preferences);
+		}
+		if (PlotPreferences.LINE_PLOT_CONSUMELENGTH_OVERRIDE.getValue(preferences)) {
+			linePlotConsumeLength = PlotPreferences.LINE_PLOT_CONSUMELENGTH.getValue(preferences);
 		}
 	}
 
@@ -66,18 +71,20 @@ public class PlotNxmBlockSettings implements Cloneable {
 		return frameSize;
 	}
 
-	/**
-	 * @return the pipeSize
-	 */
 	public Integer getPipeSize() {
 		return pipeSize;
 	}
 
-	/**
-	 * @param pipeSize the pipeSize to set
-	 */
 	public void setPipeSize(Integer pipeSize) {
 		this.pipeSize = pipeSize;
+	}
+
+	public Integer getLinePlotConsumeLength() {
+		return linePlotConsumeLength;
+	}
+
+	public void setLinePlotConsumeLength(Integer consumeLength) {
+		this.linePlotConsumeLength = consumeLength;
 	}
 
 	@Override
@@ -86,6 +93,7 @@ public class PlotNxmBlockSettings implements Cloneable {
 		int result = 1;
 		result = prime * result + ((frameSize == null) ? 0 : frameSize.hashCode());
 		result = prime * result + ((pipeSize == null) ? 0 : pipeSize.hashCode());
+		result = prime * result + ((linePlotConsumeLength == null) ? 0 : linePlotConsumeLength.hashCode());
 		return result;
 	}
 
@@ -113,6 +121,13 @@ public class PlotNxmBlockSettings implements Cloneable {
 				return false;
 			}
 		} else if (!pipeSize.equals(other.pipeSize)) {
+			return false;
+		}
+		if (linePlotConsumeLength == null) {
+			if (other.linePlotConsumeLength != null) {
+				return false;
+			}
+		} else if (!linePlotConsumeLength.equals(other.linePlotConsumeLength)) {
 			return false;
 		}
 		return true;

@@ -25,6 +25,8 @@ public class PlotPreferences {
 	public static final Preference<Boolean> FRAMESIZE_OVERRIDE = new Preference<Boolean>("plotSettings.framesize.override", false);
 	public static final Preference<Integer> PIPESIZE = new Preference<Integer>("plotSettings.pipeSize", 131072);
 	public static final Preference<Boolean> PIPESIZE_OVERRIDE = new Preference<Boolean>("plotSettings.pipeSize.override", false);
+	public static final Preference<Integer> LINE_PLOT_CONSUMELENGTH = new Preference<Integer>("plotSettings.linePlotConsumeLength", 8);
+	public static final Preference<Boolean> LINE_PLOT_CONSUMELENGTH_OVERRIDE = new Preference<Boolean>("plotSettings.linePlotConsumeLength.override", false);
 
 	public static final Preference<Double>  MIN = new Preference<Double>("plotSettings.min", 0.0);
 	public static final Preference<Boolean> MIN_OVERRIDE = new Preference<Boolean>("plotSettings.min.override", false);
@@ -38,6 +40,7 @@ public class PlotPreferences {
 
 	//	public static final Preference<String> TYPE = new Preference<String>("plotSettings.type", PlotType.LINE.toString());
 
+	/** prevent instantiation as this class only contains constants and/or utility methods. */
 	private PlotPreferences() {
 	}
 	

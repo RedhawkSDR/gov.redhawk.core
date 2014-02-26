@@ -21,13 +21,15 @@ import gov.redhawk.model.sca.ScaStructProperty;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.Callable;
 
+import mil.jpeojtrs.sca.util.CorbaUtils;
 import mil.jpeojtrs.sca.util.ScaEcoreUtils;
 
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
-import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.jface.wizard.Wizard;
@@ -76,90 +78,66 @@ public class TunerAllocationWizard extends Wizard {
 	@Override
 	public boolean performFinish() {
 		final ScaDevice< ? > device = ScaEcoreUtils.getEContainerOfType(tuners[0], ScaDevice.class);
-		final Boolean[] result = new Boolean[1];
 		final StringBuilder sb = new StringBuilder();
 		final DataType[] props = createAllocationProperties();
-
+		final boolean[] retVal = {false};
 		try {
 			getContainer().run(true, true, new IRunnableWithProgress() {
-
+				
 				@Override
 				public void run(IProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
-					monitor.beginTask("Allocate Capacity", 1);
+					try {
+						retVal[0] = CorbaUtils.invoke(new Callable<Boolean>() {
 
-					Job allocateJob = new Job("Allocate Capacity") {
-
-						@Override
-						protected IStatus run(IProgressMonitor monitor) {
-							String delim = "";
-							try {
-								if (!device.allocateCapacity(props)) {
-									sb.append(delim + "The allocation request was not accepted because resources matching"
-											+ " all aspects of the request were not available.");
-									delim = "\n\n";
-									result[0] = false;
-								} else {
-									result[0] = true;
+							@Override
+							public Boolean call() throws Exception {
+								try {
+									if (!device.allocateCapacity(props)) {
+										sb.append("The allocation request was not accepted because resources matching"
+												+ " all aspects of the request were not available.");
+										return false;
+									} else {
+										device.refresh(null, RefreshDepth.SELF);
+										return true;
+									}
+								} catch (InvalidCapacity e) {
+									sb.append("The allocation request was invalid. Message: " + e.msg);
+									return false;
+								} catch (InvalidState e) {
+									sb.append("The Allocation Request failed because the device is in an invalid state. Message: " + e.msg);
+									return false;
+								} catch (InsufficientCapacity e) {
+									sb.append("The Allocation Request failed because the device has insufficient capacity. Message: " + e.msg);
+									return false;
+								} catch (InterruptedException e) {
+									sb.append("Failed to refresh device after allocating capacity. Message: " + e.getMessage());
+									//Only refresh will throw this exception
+									return true;
 								}
-								device.refresh(null, RefreshDepth.SELF);
-							} catch (InvalidCapacity e) {
-								sb.append(delim + "The allocation request was invalid. Message: " + e.msg);
-								delim = "\n\n";
-								result[0] = false;
-							} catch (InvalidState e) {
-								sb.append(delim + "The Allocation Request failed because the device is in an invalid state. Message: " + e.msg);
-								delim = "\n\n";
-								result[0] = false;
-							} catch (InsufficientCapacity e) {
-								sb.append(delim + "The Allocation Request failed because the device has insufficient capacity. Message: " + e.msg);
-								delim = "\n\n";
-								result[0] = false;
-							} catch (InterruptedException e) {
-								sb.append(delim + "Failed to refresh device after allocating capacity. Message: " + e.getMessage());
-								delim = "\n\n";
-								//because only refresh will throw this exception, keep the result set by the return from allocateCapacity
-								//but just in case, make sure it got set.
-								if (result[0] == null) {
-									result[0] = true;
-								}
-							} finally {
-								monitor.worked(1);
 							}
-							return Status.OK_STATUS;
-						}
 
-					};
-					allocateJob.setUser(false);
-					allocateJob.setSystem(true);
-					allocateJob.schedule();
-
-					while (allocateJob.getState() == Job.RUNNING) {
-						if (monitor.isCanceled()) {
-							return;
-						}
-						Thread.sleep(500);
+						}, monitor);
+					} catch (CoreException e) {
+						sb.append("An error occurred during the invocation of the allocation request. Message: " + e.getMessage());
+						retVal[0] = false;
+					} catch (InterruptedException e) {
+						throw e;
 					}
 				}
 			});
+			
 		} catch (InvocationTargetException e) {
-			FrontEndUIActivator.getDefault().getLog().log(
-				new Status(IStatus.ERROR, FrontEndUIActivator.PLUGIN_ID, "Failed to allocate capacity on Fronted Interface Device", e));
-			return false;
+			sb.append("An error occurred during the invocation of the allocation request. Message: " + e.getMessage());
+			retVal[0] = false;
 		} catch (InterruptedException e) {
-			FrontEndUIActivator.getDefault().getLog().log(
-				new Status(IStatus.ERROR, FrontEndUIActivator.PLUGIN_ID, "Failed to allocate capacity on Fronted Interface Device", e));
-			return false;
+			sb.append("The allocation request was cancelled");
+			retVal[0] = false;
 		}
-
-		if (result[0] == null) {
-			//user cancelled the job
-			return false;
+		
+		if (!retVal[0]) {
+			MessageDialog.openError(getShell(), "Tuner not Allocated", sb.toString());
 		}
-
-		if (result[0] == false) {
-			MessageDialog.openError(getShell(), "The Allocation was not successful", sb.toString());
-		}
-		return result[0];
+		return retVal[0];
 	}
 
 	private DataType[] createAllocationProperties() {
