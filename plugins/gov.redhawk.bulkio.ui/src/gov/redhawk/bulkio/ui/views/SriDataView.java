@@ -16,7 +16,7 @@ import gov.redhawk.bulkio.ui.internal.SriDataViewContentProvider;
 import gov.redhawk.bulkio.ui.internal.SriDataViewLabelProvider;
 import gov.redhawk.bulkio.ui.internal.SriDataViewReceiver;
 import gov.redhawk.bulkio.ui.internal.SriWrapper;
-import gov.redhawk.bulkio.ui.writer.SriWriter;
+import gov.redhawk.bulkio.ui.writer.SriFileWriter;
 import gov.redhawk.bulkio.ui.writer.SriXmlWriter;
 import gov.redhawk.bulkio.util.BulkIOType;
 import gov.redhawk.model.sca.IDisposable;
@@ -219,18 +219,26 @@ public class SriDataView extends ViewPart {
 
 				Map<String, SriWrapper> streamMapToSave = sriReceiver.getStreamMap();
 				List<String> filesWritten = new ArrayList<String>();
-				SriWriter writer = new SriWriter();
+				SriFileWriter writer = new SriFileWriter();
 				SriXmlWriter xmlWriter = new SriXmlWriter();
 				try {
 					String nl = System.getProperty("line.separator");
 					BulkIOType bulkioType = sriReceiver.getBulkIOType();
+
 					writer.performSave(streamMapToSave, saveLocation, bulkioType, parent);
-					filesWritten.add(nl + writer.getSaveLocation());
+					if (writer.getFileName() != null) {
+						filesWritten.add(nl + writer.getFileName());
+					}
+					
 					xmlWriter.performSave(streamMapToSave, saveLocation, bulkioType, parent);
-					filesWritten.add(nl + xmlWriter.getSaveLocation());
-					if (saveLocation != null) {
+					if (xmlWriter.getFileName() != null) {					
+						filesWritten.add(nl + xmlWriter.getFileName());
+					}
+					
+					if (saveLocation != null && !filesWritten.isEmpty()) {
 						displayFiles(filesWritten);
 					}
+					
 				} catch (IOException e) {
 					MessageBox error = new MessageBox(getSite().getShell(), SWT.ICON_ERROR | SWT.OK);
 					error.setMessage("Error during save operation.  Files were not saved");
