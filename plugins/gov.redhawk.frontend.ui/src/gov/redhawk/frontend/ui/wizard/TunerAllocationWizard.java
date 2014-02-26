@@ -18,6 +18,7 @@ import gov.redhawk.model.sca.RefreshDepth;
 import gov.redhawk.model.sca.ScaDevice;
 import gov.redhawk.model.sca.ScaStructProperty;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Callable;
@@ -26,10 +27,12 @@ import mil.jpeojtrs.sca.util.CorbaUtils;
 import mil.jpeojtrs.sca.util.ScaEcoreUtils;
 
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.dialogs.MessageDialog;
+import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.jface.wizard.Wizard;
 
 import CF.DataType;
@@ -78,50 +81,64 @@ public class TunerAllocationWizard extends Wizard {
 		final ScaDevice< ? > device = ScaEcoreUtils.getEContainerOfType(tuners[0], ScaDevice.class);
 		final StringBuilder sb = new StringBuilder();
 		final DataType[] props = createAllocationProperties();
-		boolean retVal;
+		final boolean[] retVal = {false};
 		try {
-			retVal = CorbaUtils.invoke(new Callable<Boolean>() {
-
+			getContainer().run(true, true, new IRunnableWithProgress() {
+				
 				@Override
-				public Boolean call() throws Exception {
+				public void run(IProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
 					try {
-						if (!device.allocateCapacity(props)) {
-							sb.append("The allocation request was not accepted because resources matching"
-									+ " all aspects of the request were not available.");
-							return false;
-						} else {
-							device.refresh(null, RefreshDepth.SELF);
-							return true;
-						}
-					} catch (InvalidCapacity e) {
-						sb.append("The allocation request was invalid. Message: " + e.msg);
-						return false;
-					} catch (InvalidState e) {
-						sb.append("The Allocation Request failed because the device is in an invalid state. Message: " + e.msg);
-						return false;
-					} catch (InsufficientCapacity e) {
-						sb.append("The Allocation Request failed because the device has insufficient capacity. Message: " + e.msg);
-						return false;
+						retVal[0] = CorbaUtils.invoke(new Callable<Boolean>() {
+
+							@Override
+							public Boolean call() throws Exception {
+								try {
+									if (!device.allocateCapacity(props)) {
+										sb.append("The allocation request was not accepted because resources matching"
+												+ " all aspects of the request were not available.");
+										return false;
+									} else {
+										device.refresh(null, RefreshDepth.SELF);
+										return true;
+									}
+								} catch (InvalidCapacity e) {
+									sb.append("The allocation request was invalid. Message: " + e.msg);
+									return false;
+								} catch (InvalidState e) {
+									sb.append("The Allocation Request failed because the device is in an invalid state. Message: " + e.msg);
+									return false;
+								} catch (InsufficientCapacity e) {
+									sb.append("The Allocation Request failed because the device has insufficient capacity. Message: " + e.msg);
+									return false;
+								} catch (InterruptedException e) {
+									sb.append("Failed to refresh device after allocating capacity. Message: " + e.getMessage());
+									//Only refresh will throw this exception
+									return true;
+								}
+							}
+
+						}, monitor);
+					} catch (CoreException e) {
+						sb.append("An error occurred during the invocation of the allocation request. Message: " + e.getMessage());
+						retVal[0] = false;
 					} catch (InterruptedException e) {
-						sb.append("Failed to refresh device after allocating capacity. Message: " + e.getMessage());
-						//Only refresh will throw this exception
-						return true;
+						throw e;
 					}
 				}
-
-			}, new NullProgressMonitor());
-		} catch (CoreException e) {
+			});
+			
+		} catch (InvocationTargetException e) {
 			sb.append("An error occurred during the invocation of the allocation request. Message: " + e.getMessage());
-			retVal = false;
+			retVal[0] = false;
 		} catch (InterruptedException e) {
-			sb.append("The allocation request was cancelled. Message: " + e.getMessage());
-			retVal = false;
+			sb.append("The allocation request was cancelled");
+			retVal[0] = false;
 		}
 		
-		if (!retVal) {
+		if (!retVal[0]) {
 			MessageDialog.openError(getShell(), "Tuner not Allocated", sb.toString());
 		}
-		return retVal;
+		return retVal[0];
 	}
 
 	private DataType[] createAllocationProperties() {
