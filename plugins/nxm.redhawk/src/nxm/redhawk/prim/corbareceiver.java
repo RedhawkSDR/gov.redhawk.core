@@ -76,6 +76,10 @@ public class corbareceiver extends CorbaPrimitive implements IMidasDataWriter { 
 	 */
 	public static final String SW_BLOCKING = "/BLOCKING";
 
+	/** max seconds allowed since UTC (J1950) */ 
+	private static final double MAX_UTC_WSEC = Time.MAX_INPUT_WSEC + Time.J1950TOJ1970;
+	private static final double MIN_UTC_WSEC = Time.J1950TOJ1970;
+
 	/**
 	 * Name of switch to grab number of milliseconds to wait for SRI during open()
 	 * @since 10.0
@@ -329,7 +333,7 @@ public class corbareceiver extends CorbaPrimitive implements IMidasDataWriter { 
 		double xdelta = 1.0;
 		if (overrideSampleDelta && this.is1000FromSRI) {
 			xdelta = sampleDelta;
-		} else if (sri.xdelta > 0) {
+		} else if (sri.xdelta > 0 && sri.xdelta <= Double.MAX_VALUE) { // ignore <= 0, Infinity and NaN
 			xdelta = sri.xdelta;
 		}
 		newOutputFile.setXStart(sri.xstart);
@@ -339,7 +343,7 @@ public class corbareceiver extends CorbaPrimitive implements IMidasDataWriter { 
 		double ydelta = 1.0;
 		if (overrideSampleDelta && !this.is1000FromSRI) {
 			ydelta = sampleDelta;
-		} else if (sri.ydelta > 0) {
+		} else if (sri.ydelta > 0 && sri.ydelta <= Double.MAX_VALUE) { // ignore <= 0, Infinity and NaN
 			ydelta = sri.ydelta;
 		}
 		newOutputFile.setYStart(sri.ystart);
@@ -453,7 +457,7 @@ public class corbareceiver extends CorbaPrimitive implements IMidasDataWriter { 
 		}
 
 		final Time midasTime;
-		if (time != null) {
+		if (time != null && time.twsec <= MAX_UTC_WSEC && time.twsec >= MIN_UTC_WSEC && time.tfsec <= MAX_UTC_WSEC && time.tfsec >= MIN_UTC_WSEC) {
 			midasTime = new Time(time.twsec + Time.J1970TOJ1950, time.tfsec);
 		} else {
 			midasTime = null;
