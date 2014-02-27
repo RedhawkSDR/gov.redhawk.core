@@ -12,39 +12,36 @@
 package gov.redhawk.frontend.util;
 
 import gov.redhawk.frontend.TunerStatus;
+import gov.redhawk.frontend.util.TunerProperties.TunerStatusAllocationProperties;
 import gov.redhawk.model.sca.ScaSimpleProperty;
 
 public class TunerPropertyWrapper {
 
 	private TunerStatus tuner;
 	private ScaSimpleProperty simple;
-	private String name;
-	private String id;
-	private Object value;
 
 	public TunerPropertyWrapper(TunerStatus tuner, ScaSimpleProperty simple) {
 		this.tuner = tuner;
 		this.simple = simple;
-		this.id = simple.getId();
-		this.value = simple.getValue();
-
-		for (TunerProperties.TunerStatusAllocationProperties v : TunerProperties.TunerStatusAllocationProperties.values()) {
-			if (v.getId().equals(simple.getId())) {
-				name = v.getName();
-			}
-		}
 	}
 
 	public String getName() {
-		return name;
+		TunerStatusAllocationProperties prop = TunerStatusAllocationProperties.fromPropID(simple.getId());
+		if (prop != null) {
+			return prop.getName();
+		}
+		if (simple.getName() != null) {
+			return simple.getName();
+		} 
+		return simple.getId();
 	}
 
 	public String getId() {
-		return id;
+		return simple.getId();
 	}
 
 	public Object getValue() {
-		return value;
+		return simple.getValue();
 	}
 
 	public TunerStatus getTuner() {

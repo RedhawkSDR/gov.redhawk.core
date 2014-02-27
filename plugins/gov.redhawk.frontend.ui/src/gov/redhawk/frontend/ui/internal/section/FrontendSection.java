@@ -11,6 +11,7 @@
  */
 package gov.redhawk.frontend.ui.internal.section;
 
+import gov.redhawk.frontend.FrontendPackage;
 import gov.redhawk.frontend.ListenerAllocation;
 import gov.redhawk.frontend.TunerContainer;
 import gov.redhawk.frontend.TunerStatus;
@@ -22,10 +23,18 @@ import gov.redhawk.frontend.util.TunerProperties.TunerStatusAllocationProperties
 import gov.redhawk.frontend.util.TunerPropertyWrapper;
 import gov.redhawk.frontend.util.TunerUtils;
 import gov.redhawk.model.sca.ScaSimpleProperty;
+import gov.redhawk.model.sca.commands.ScaModelCommand;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import mil.jpeojtrs.sca.util.AnyUtils;
+
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
+import org.eclipse.emf.common.notify.Adapter;
+import org.eclipse.emf.common.notify.impl.AdapterImpl;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.edit.ui.provider.AdapterFactoryContentProvider;
 import org.eclipse.jface.action.IAction;
@@ -48,6 +57,7 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.IWorkbenchPart;
+import org.eclipse.ui.progress.UIJob;
 import org.eclipse.ui.views.properties.tabbed.AbstractPropertySection;
 import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetPage;
 
@@ -60,11 +70,26 @@ public class FrontendSection extends AbstractPropertySection {
 	private IAction allocateAction;
 	private IAction plotAction;
 	private IWorkbenchPart inputPart;
+	private UIJob job;
 
 	/**
 	 * The Property Sheet Page.
 	 */
 	private TabbedPropertySheetPage page;
+	private Adapter inputListener = new AdapterImpl() {
+		public void notifyChanged(org.eclipse.emf.common.notify.Notification msg) {
+			if (msg.isTouch()) {
+				return;
+			}
+			if (msg.getFeature() == FrontendPackage.Literals.TUNER_STATUS__TUNER_STATUS_STRUCT) {
+				return;
+			}
+			// TODO Be more efficient
+			if (viewer != null && !viewer.getControl().isDisposed() && job != null) {
+				job.schedule();
+			}
+		}
+	};
 
 	public FrontendSection() {
 	}
@@ -116,7 +141,7 @@ public class FrontendSection extends AbstractPropertySection {
 				return super.getElements(object);
 			}
 		});
-		viewer.setFilters(new ViewerFilter[] {new TunerStatusFilter()});
+		viewer.setFilters(new ViewerFilter[] { new TunerStatusFilter() });
 
 		allocateAction = new FrontendAction(this, "Allocate...", "gov.redhawk.frontend.actions.allocate", "gov.redhawk.frontend.commands.allocate",
 			"icons/allocate.gif");
@@ -125,6 +150,22 @@ public class FrontendSection extends AbstractPropertySection {
 		plotAction = new FrontendAction(this, "Plot", "gov.redhawk.frontend.actions.plot", "gov.redhawk.frontend.commands.plot", "icons/plot.gif");
 
 		page = aTabbedPropertySheetPage;
+
+		job = new UIJob(viewer.getControl().getDisplay(), "Refreshing view") {
+
+			{
+				setUser(false);
+				setSystem(true);
+			}
+
+			@Override
+			public IStatus runInUIThread(IProgressMonitor monitor) {
+				if (viewer != null && !viewer.getControl().isDisposed()) {
+					viewer.refresh();
+				}
+				return Status.OK_STATUS;
+			}
+		};
 	}
 
 	@Override
@@ -207,14 +248,14 @@ public class FrontendSection extends AbstractPropertySection {
 		valueColumn.setEditingSupport(new EditingSupport(viewer) {
 
 			@Override
-			protected void setValue(Object element, final Object value) {
+			protected void setValue(Object element, Object value) {
 				if (element instanceof TunerPropertyWrapper) {
 					TunerPropertyWrapper wrapper = (TunerPropertyWrapper) element;
+					if (value instanceof String) {
+						value = AnyUtils.convertString((String) value, wrapper.getSimple().getDefinition().getType().toString());
+					}
 					TunerStatusAllocationProperties.updateValue(wrapper, value);
 				}
-
-				viewer.refresh();
-				viewer.setAutoExpandLevel(2);
 			}
 
 			@Override
@@ -284,14 +325,35 @@ public class FrontendSection extends AbstractPropertySection {
 	@Override
 	public void setInput(IWorkbenchPart part, ISelection selection) {
 		super.setInput(part, selection);
+		if (theInput != null) {
+			ScaModelCommand.execute(theInput, new ScaModelCommand() {
+
+				@Override
+				public void execute() {
+					theInput.eAdapters().remove(inputListener);
+				}
+			});
+		}
 		inputPart = part;
 		if (page == null) {
 			return;
 		}
 		if (selection instanceof StructuredSelection) {
 			StructuredSelection sel = (StructuredSelection) selection;
-			theInput = (EObject) sel.getFirstElement();
-			viewer.setInput(theInput);
+			if (sel.getFirstElement() instanceof EObject) {
+				theInput = (EObject) sel.getFirstElement();
+				ScaModelCommand.execute(theInput, new ScaModelCommand() {
+
+					@Override
+					public void execute() {
+						theInput.eAdapters().add(inputListener);
+					}
+				});
+				viewer.setInput(theInput);
+			} else {
+				theInput = null;
+				viewer.setInput(null);
+			}
 			showRightToolbarButtons(theInput);
 		}
 	}

@@ -144,25 +144,27 @@ public enum TunerProperties {
 			return null;
 		}
 
+		public static void setValue(final TunerStatus tuner, final ScaSimpleProperty simple) {
+			TunerStatusAllocationProperties prop = TunerStatusAllocationProperties.fromPropID(simple.getId());
+			setValue(tuner, prop, simple.getValue());
+		}
+
 		/**
 		 * Updates model convenience properties
 		 * @param tuner
 		 * @param simple
 		 */
-		public static void setValue(final TunerStatus tuner, final ScaSimpleProperty simple) {
-			if (simple.getValue() == null) {
-				return;
-			}
-			final TunerStatusAllocationProperties tunerStatusAllocProperty = TunerStatusAllocationProperties.fromPropID(simple.getId());
-			if (tunerStatusAllocProperty == null || tunerStatusAllocProperty.getFeiAttribute() == null) {
+		public static void setValue(final TunerStatus tuner, final TunerStatusAllocationProperties prop, final Object newValue) {
+			if (prop == null || prop.getFeiAttribute() == null) {
 				return;
 			}
 			ScaModelCommand.execute(tuner, new ScaModelCommand() {
 
 				@Override
 				public void execute() {
-					if (!PluginUtil.equals(tuner.eGet(tunerStatusAllocProperty.getFeiAttribute()), simple.getValue())) {
-						tuner.eSet(tunerStatusAllocProperty.getFeiAttribute(), simple.getValue());
+					boolean equals = PluginUtil.equals(tuner.eGet(prop.getFeiAttribute()), newValue);
+					if (!equals && newValue != null) {
+						tuner.eSet(prop.getFeiAttribute(), newValue);
 					}
 				}
 
@@ -175,28 +177,25 @@ public enum TunerProperties {
 		 * @param value New value
 		 */
 		public static void updateValue(final TunerPropertyWrapper wrapper, final Object newValue) {
-			for (final TunerStatusAllocationProperties value : TunerStatusAllocationProperties.values()) {
-				if (wrapper.getId().equals(value.getId())) {
-					TunerStatusAllocationProperties.setValue(wrapper.getTuner(), wrapper.getSimple());
-					ScaModelCommand.execute(wrapper.getTuner(), new ScaModelCommand() {
-
-						@Override
-						public void execute() {
-							// Logic to handle data type conversion
-							if (value.getType().equals(PropertyValueType.DOUBLE)) {
-								wrapper.getSimple().setValue(Double.parseDouble(newValue.toString()));
-							} else if (value.getType().equals(PropertyValueType.LONG)) {
-								wrapper.getSimple().setValue(Integer.parseInt(newValue.toString()));
-							} else if (value.getType().equals(PropertyValueType.BOOLEAN)) {
-								wrapper.getSimple().setValue(Boolean.parseBoolean(newValue.toString()));
-							} else {
-								wrapper.getSimple().setValue(newValue.toString());
-							}
-						}
-					});
-					break;
-				}
+			final TunerStatusAllocationProperties value = TunerStatusAllocationProperties.fromPropID(wrapper.getId());
+			if (value == null) {
+				// TODO PANIC!!
+				return;
 			}
+			TunerStatusAllocationProperties.setValue(wrapper.getTuner(), value, newValue);
+			ScaModelCommand.execute(wrapper.getSimple(), new ScaModelCommand() {
+
+				@Override
+				public void execute() {
+					try {
+						wrapper.getSimple().setIgnoreRemoteSet(true);
+						wrapper.getSimple().setValue(newValue);
+					} finally {
+						wrapper.getSimple().setIgnoreRemoteSet(false);
+					}
+				}
+			});
+
 		}
 
 		public static void updateDeviceValue(final TunerStatus tuner, final Notification notification) {
@@ -226,28 +225,29 @@ public enum TunerProperties {
 				final EAttribute feiAttr = (EAttribute) notification.getFeature();
 
 				// Translate into Tuner Status Prop, if translation fails it isn't writable
-				TunerStatusAllocationProperties prop = TunerStatusAllocationProperties.fromAttribute(feiAttr);
+				final TunerStatusAllocationProperties prop = TunerStatusAllocationProperties.fromAttribute(feiAttr);
 				if (prop == null) {
 					return;
 				}
 
 				// Get the related Simple and check the current value of the simple to see if we should update
 				final ScaSimpleProperty simple = tuner.getTunerStatusStruct().getSimple(prop.id);
-				if (simple == null) {
+				if (simple == null || PluginUtil.equals(simple.getValue(), notification.getNewValue())) {
 					return;
 				}
-				Job job = new Job("Update device property value" + prop) {
+				Job job = new Job("Update device property: " + prop.getName()) {
 
 					@Override
 					protected IStatus run(IProgressMonitor parentMonitor) {
-						final SubMonitor subMonitor = SubMonitor.convert(parentMonitor, "Setting value to device...", 4);
+						final SubMonitor subMonitor = SubMonitor.convert(parentMonitor, "Setting value of " + prop.getName() + " to " + notification.getNewValue(),
+							IProgressMonitor.UNKNOWN);
 						IStatus retVal;
 						try {
 							retVal = CorbaUtils.invoke(new Callable<IStatus>() {
 
 								@Override
 								public IStatus call() throws Exception {
-									return doRun(subMonitor.newChild(1));
+									return doRun(device, feiAttr, finalAllocationId, tuner);
 								}
 
 							}, subMonitor.newChild(1));
@@ -257,64 +257,54 @@ public enum TunerProperties {
 							return Status.CANCEL_STATUS;
 						}
 						device.fetchProperties(subMonitor.newChild(1));
-						ScaModelCommand.execute(simple, new ScaModelCommand() {
-
-							@Override
-							public void execute() {
-								TunerStatusAllocationProperties.setValue(tuner, simple);
-							}
-						});
 						return retVal;
 					}
 
-					protected IStatus doRun(IProgressMonitor monitor) {
-						try {
-							org.omg.CORBA.Object port = null;
-
-							try {
-								port = device.getPort("DigitalTuner_in");
-							} catch (UnknownPort e) {
-								return new Status(IStatus.ERROR, "gov.redhawk.frontend.edit", "Unknown Port Exception", e);
-							}
-
-							DigitalTuner digitalTunerPort = DigitalTunerHelper.narrow(port);
-							if (feiAttr.equals(AGC.getFeiAttribute())) {
-								digitalTunerPort.setTunerAgcEnable(finalAllocationId, tuner.isAgc());
-							} else if (feiAttr.equals(BANDWIDTH.getFeiAttribute())) {
-								digitalTunerPort.setTunerBandwidth(finalAllocationId, tuner.getBandwidth());
-							} else if (feiAttr.equals(CENTER_FREQUENCY.getFeiAttribute())) {
-								digitalTunerPort.setTunerCenterFrequency(finalAllocationId, tuner.getCenterFrequency());
-							} else if (feiAttr.equals(ENABLED.getFeiAttribute())) {
-								digitalTunerPort.setTunerEnable(finalAllocationId, tuner.isEnabled());
-							} else if (feiAttr.equals(GAIN.getFeiAttribute())) {
-								// Gain is double in model and documentation, but float in API
-								float gain = Float.parseFloat(String.valueOf(tuner.getGain()));
-								digitalTunerPort.setTunerGain(finalAllocationId, gain);
-							} else if (feiAttr.equals(SAMPLE_RATE.getFeiAttribute())) {
-								digitalTunerPort.setTunerOutputSampleRate(finalAllocationId, tuner.getSampleRate());
-							} else if (feiAttr.equals(REFERENCE_SOURCE.getFeiAttribute())) {
-								// Reference Source is long in model and documentation, but int in API
-								int referenceSource = Integer.parseInt(String.valueOf(tuner.getReferenceSource()));
-								digitalTunerPort.setTunerReferenceSource(finalAllocationId, referenceSource);
-							}
-						} catch (NumberFormatException e) {
-							return new Status(IStatus.ERROR, "gov.redhawk.frontend.edit", "Number Format Exception in property assignment", e);
-						} catch (FrontendException e) {
-							return new Status(IStatus.ERROR, "gov.redhawk.frontend.edit", "Frontend Exception in property assignment: " + e.msg, e);
-						} catch (BadParameterException e) {
-							return new Status(IStatus.ERROR, "gov.redhawk.frontend.edit", "Bad Parameter Exception in property assignment: " + e.msg, e);
-						} catch (NotSupportedException e) {
-							return new Status(IStatus.ERROR, "gov.redhawk.frontend.edit", "Not Supported Exception in property assignment: " + e.msg, e);
-						}
-						return Status.OK_STATUS;
-					}
-
 				};
-				job.setUser(false);
-				job.setSystem(true);
+				job.setUser(true);
+				job.setSystem(false);
 				job.schedule();
 
 			}
+		}
+
+		private static IStatus doRun(ScaDevice< ? > device, final EAttribute feiAttr, String finalAllocationId, final TunerStatus tuner) {
+			try {
+				org.omg.CORBA.Object port = null;
+
+				try {
+					port = device.getPort("DigitalTuner_in");
+				} catch (UnknownPort e) {
+					return new Status(IStatus.ERROR, "gov.redhawk.frontend.edit", "Unknown Port Exception", e);
+				}
+				DigitalTuner digitalTunerPort = DigitalTunerHelper.narrow(port);
+				if (feiAttr.equals(AGC.getFeiAttribute())) {
+					digitalTunerPort.setTunerAgcEnable(finalAllocationId, tuner.isAgc());
+				} else if (feiAttr.equals(BANDWIDTH.getFeiAttribute())) {
+					digitalTunerPort.setTunerBandwidth(finalAllocationId, tuner.getBandwidth());
+				} else if (feiAttr.equals(CENTER_FREQUENCY.getFeiAttribute())) {
+					digitalTunerPort.setTunerCenterFrequency(finalAllocationId, tuner.getCenterFrequency());
+				} else if (feiAttr.equals(ENABLED.getFeiAttribute())) {
+					digitalTunerPort.setTunerEnable(finalAllocationId, tuner.isEnabled());
+				} else if (feiAttr.equals(GAIN.getFeiAttribute())) {
+					// Gain is double in model and documentation, but float in API
+					float gain = Double.valueOf(tuner.getGain()).floatValue();
+					digitalTunerPort.setTunerGain(finalAllocationId, gain);
+				} else if (feiAttr.equals(SAMPLE_RATE.getFeiAttribute())) {
+					digitalTunerPort.setTunerOutputSampleRate(finalAllocationId, tuner.getSampleRate());
+				} else if (feiAttr.equals(REFERENCE_SOURCE.getFeiAttribute())) {
+					digitalTunerPort.setTunerReferenceSource(finalAllocationId, tuner.getReferenceSource());
+				}
+			} catch (NumberFormatException e) {
+				return new Status(IStatus.ERROR, "gov.redhawk.frontend.edit", "Number Format Exception in property assignment", e);
+			} catch (FrontendException e) {
+				return new Status(IStatus.ERROR, "gov.redhawk.frontend.edit", "Frontend Exception in property assignment: " + e.msg, e);
+			} catch (BadParameterException e) {
+				return new Status(IStatus.ERROR, "gov.redhawk.frontend.edit", "Bad Parameter Exception in property assignment: " + e.msg, e);
+			} catch (NotSupportedException e) {
+				return new Status(IStatus.ERROR, "gov.redhawk.frontend.edit", "Not Supported Exception in property assignment: " + e.msg, e);
+			}
+			return Status.OK_STATUS;
 		}
 	}
 

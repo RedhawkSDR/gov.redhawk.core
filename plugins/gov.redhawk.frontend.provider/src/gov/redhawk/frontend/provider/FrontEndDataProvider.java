@@ -272,11 +272,13 @@ public class FrontEndDataProvider extends AbstractDataProvider {
 		// Update all
 		for (int i = 0; i < container.getTunerStatus().size(); i++) {
 			TunerStatus tuner = container.getTunerStatus().get(i);
-			tuner.setTunerStatusStruct(prop.getStructs().get(i));
-			updateAllocationListeners(tuner);
+			if (tuner.getTunerStatusStruct() != prop.getStructs().get(i)) {
+				tuner.setTunerStatusStruct(prop.getStructs().get(i));
+			}
 			for (ScaSimpleProperty simple : tuner.getSimples()) {
 				TunerStatusAllocationProperties.setValue(tuner, simple);
 			}
+			updateAllocationListeners(tuner);
 			boolean allocated = tuner.isAllocated();
 			if (!allocated) {
 				int current;
