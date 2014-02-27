@@ -76,6 +76,10 @@ public class corbareceiver extends CorbaPrimitive { //SUPPRESS CHECKSTYLE ClassN
 	 */
 	public static final String A_BLOCKING = "/BLOCKING";
 
+	/** max seconds allowed since UTC (J1950) */ 
+	private static final double MAX_UTC_WSEC = Time.MAX_INPUT_WSEC + Time.J1950TOJ1970;
+	private static final double MIN_UTC_WSEC = Time.J1950TOJ1970;
+
 	/**
 	 * @since 10.0
 	 */
@@ -319,7 +323,7 @@ public class corbareceiver extends CorbaPrimitive { //SUPPRESS CHECKSTYLE ClassN
 		}
 
 		newOutputFile.setXStart(sri.xstart);
-		if (sri.xdelta > 0) {
+		if (sri.xdelta > 0 && sri.xdelta <= Double.MAX_VALUE) { // ignore <= 0, Infinity and NaN
 			newOutputFile.setXDelta(sri.xdelta);
 		} else {
 			newOutputFile.setXDelta(1);
@@ -327,7 +331,7 @@ public class corbareceiver extends CorbaPrimitive { //SUPPRESS CHECKSTYLE ClassN
 		newOutputFile.setXUnits(sri.xunits);
 
 		newOutputFile.setYStart(sri.ystart);
-		if (sri.ydelta > 0) {
+		if (sri.ydelta > 0 && sri.ydelta <= Double.MAX_VALUE) { // ignore <= 0, Infinity and NaN
 			newOutputFile.setYDelta(sri.ydelta);
 		} else {
 			newOutputFile.setYDelta(1);
@@ -420,7 +424,7 @@ public class corbareceiver extends CorbaPrimitive { //SUPPRESS CHECKSTYLE ClassN
 		}
 
 		final Time midasTime;
-		if (time != null) {
+		if (time != null && time.twsec <= MAX_UTC_WSEC && time.twsec >= MIN_UTC_WSEC && time.tfsec <= MAX_UTC_WSEC && time.tfsec >= MIN_UTC_WSEC) {
 			midasTime = new Time(time.twsec + Time.J1970TOJ1950, time.tfsec);
 		} else {
 			midasTime = null;
