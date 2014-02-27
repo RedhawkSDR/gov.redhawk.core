@@ -380,13 +380,10 @@ public class corbareceiver2 extends CorbaPrimitive implements IMidasDataWriter {
 			}
 		}
 
-		final Time midasTime;
 		if (time != null && time.twsec <= MAX_UTC_WSEC && time.twsec >= MIN_UTC_WSEC && time.tfsec <= MAX_UTC_WSEC && time.tfsec >= MIN_UTC_WSEC) {
-			midasTime = new Time(time.twsec + Time.J1970TOJ1950, time.tfsec);
-		} else {
-			midasTime = null;
+			Time midasTime = new Time(time.twsec + Time.J1970TOJ1950, time.tfsec);
+			localOutputFile.setTimeAt(midasTime);
 		}
-		localOutputFile.setTimeAt(midasTime);
 
 		byte[] byteBuffer = new byte[bufferSize];
 		Convert.ja2bb(dataArray, 0, type, byteBuffer, 0, localOutputFile.dataType, size);
