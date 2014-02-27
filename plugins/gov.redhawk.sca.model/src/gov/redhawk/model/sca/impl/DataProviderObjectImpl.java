@@ -500,7 +500,8 @@ public abstract class DataProviderObjectImpl extends IStatusProviderImpl impleme
 		if (eNotificationRequired()) {
 			eNotify(new ENotificationImpl(this, Notification.SET, ScaPackage.DATA_PROVIDER_OBJECT__DISPOSED, false, this.disposed));
 		}
-		eAdapters().clear();
+//		TODO Can we not clear adapters since this seems to cause problems
+//		eAdapters().clear();
 		// BEGIN GENERATED CODE
 	}
 
