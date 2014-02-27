@@ -22,7 +22,7 @@ import org.eclipse.emf.ecore.EObject;
  * <!-- begin-user-doc -->
  * A representation of the model object '<em><b>Tuner Status</b></em>'.
  * <!-- end-user-doc -->
- *
+ * 
  * <p>
  * The following features are supported:
  * <ul>
@@ -46,7 +46,7 @@ import org.eclipse.emf.ecore.EObject;
  * <li>{@link gov.redhawk.frontend.TunerStatus#getListenerAllocations <em>Listener Allocations</em>}</li>
  * </ul>
  * </p>
- *
+ * 
  * @see gov.redhawk.frontend.FrontendPackage#getTunerStatus()
  * @model
  * @generated
@@ -718,12 +718,12 @@ public interface TunerStatus extends EObject {
 	 * @return the value of the '<em>Reference Source</em>' attribute.
 	 * @see #isSetReferenceSource()
 	 * @see #unsetReferenceSource()
-	 * @see #setReferenceSource(long)
+	 * @see #setReferenceSource(int)
 	 * @see gov.redhawk.frontend.FrontendPackage#getTunerStatus_ReferenceSource()
 	 * @model unique="false" unsettable="true"
 	 * @generated
 	 */
-	long getReferenceSource();
+	int getReferenceSource();
 
 	/**
 	 * Sets the value of the '{@link gov.redhawk.frontend.TunerStatus#getReferenceSource <em>Reference Source</em>}'
@@ -736,7 +736,7 @@ public interface TunerStatus extends EObject {
 	 * @see #getReferenceSource()
 	 * @generated
 	 */
-	void setReferenceSource(long value);
+	void setReferenceSource(int value);
 
 	/**
 	 * Unsets the value of the '{@link gov.redhawk.frontend.TunerStatus#getReferenceSource <em>Reference Source</em>}'
@@ -745,7 +745,7 @@ public interface TunerStatus extends EObject {
 	 * <!-- end-user-doc -->
 	 * @see #isSetReferenceSource()
 	 * @see #getReferenceSource()
-	 * @see #setReferenceSource(long)
+	 * @see #setReferenceSource(int)
 	 * @generated
 	 */
 	void unsetReferenceSource();
@@ -758,7 +758,7 @@ public interface TunerStatus extends EObject {
 	 * @return whether the value of the '<em>Reference Source</em>' attribute is set.
 	 * @see #unsetReferenceSource()
 	 * @see #getReferenceSource()
-	 * @see #setReferenceSource(long)
+	 * @see #setReferenceSource(int)
 	 * @generated
 	 */
 	boolean isSetReferenceSource();

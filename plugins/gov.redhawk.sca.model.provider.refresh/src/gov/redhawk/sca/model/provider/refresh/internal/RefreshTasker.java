@@ -125,6 +125,11 @@ public class RefreshTasker extends AbstractDataProvider implements Runnable {
 	}
 
 	protected boolean shouldRun() {
+		if (eObject instanceof IDisposable) {
+			if (((IDisposable) eObject).isDisposed()) {
+				return false;
+			}
+		}
 		return DEBUG.exitingMethodWithResult(!isDisposed() && isEnabled() && this.active);
 	}
 

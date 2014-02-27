@@ -56,7 +56,7 @@ class TunerStatus {
 	// Optional Status Elements
 	unsettable double gain
 	unsettable boolean agc
-	unsettable long referenceSource	
+	unsettable int referenceSource	
 
 	// Tuner Allocation Properties
 	unsettable boolean deviceControl
