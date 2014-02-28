@@ -37,7 +37,7 @@ import org.eclipse.emf.ecore.util.EcoreUtil;
  * <li>{@link gov.redhawk.frontend.impl.ListenerAllocationImpl#getListenerID <em>Listener ID</em>}</li>
  * </ul>
  * </p>
- * 
+ *
  * @generated
  */
 public class ListenerAllocationImpl extends MinimalEObjectImpl.Container implements ListenerAllocation {

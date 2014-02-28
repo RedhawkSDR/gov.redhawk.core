@@ -80,6 +80,7 @@ import org.eclipse.emf.ecore.util.InternalEList;
 import org.eclipse.emf.transaction.TransactionalEditingDomain;
 import org.eclipse.emf.transaction.util.TransactionUtil;
 import org.omg.CORBA.BAD_OPERATION;
+import org.omg.CORBA.IntHolder;
 import org.omg.CORBA.SystemException;
 
 import CF.Application;
@@ -89,10 +90,12 @@ import CF.ComponentType;
 import CF.DataType;
 import CF.DeviceAssignmentType;
 import CF.LifeCycleOperations;
+import CF.LogEvent;
 import CF.PortSupplierOperations;
 import CF.PropertiesHolder;
 import CF.ResourceOperations;
 import CF.TestableObjectOperations;
+import CF.UnknownIdentifier;
 import CF.UnknownProperties;
 import CF.ApplicationPackage.ComponentElementType;
 import CF.ApplicationPackage.ComponentProcessIdType;
@@ -1944,5 +1947,78 @@ public class ScaWaveformImpl extends ScaPropertyContainerImpl<Application, Softw
 	@Override
 	public String softwareProfile() {
 		return profile();
+	}
+	
+
+	/**
+	 * @since 19.0
+	 */
+	@Override
+	public LogEvent[] retrieve_records(IntHolder howMany, int startingRecord) {
+		return getObj().retrieve_records(howMany, startingRecord);
+	}
+
+	/**
+	 * @since 19.0
+	 */
+	@Override
+	public LogEvent[] retrieve_records_by_date(IntHolder howMany, long to_timeStamp) {
+		return getObj().retrieve_records_by_date(howMany, to_timeStamp);
+	}
+
+	/**
+	 * @since 19.0
+	 */
+	@Override
+	public LogEvent[] retrieve_records_from_date(IntHolder howMany, long from_timeStamp) {
+		return getObj().retrieve_records_from_date(howMany, from_timeStamp);
+	}
+
+	/**
+	 * @since 19.0
+	 */
+	@Override
+	public int log_level() {
+		return getObj().log_level();
+	}
+
+	/**
+	 * @since 19.0
+	 */
+	@Override
+	public void log_level(int newLog_level) {
+		getObj().log_level(newLog_level);
+	}
+
+	/**
+	 * @since 19.0
+	 */
+	@Override
+	public void setLogLevel(String logger_id, int newLevel) throws UnknownIdentifier {
+		getObj().setLogLevel(logger_id, newLevel);
+	}
+
+	/**
+	 * @since 19.0
+	 */
+	@Override
+	public String getLogConfig() {
+		return getObj().getLogConfig();
+	}
+
+	/**
+	 * @since 19.0
+	 */
+	@Override
+	public void setLogConfig(String config_contents) {
+		getObj().setLogConfig(config_contents);
+	}
+
+	/**
+	 * @since 19.0
+	 */
+	@Override
+	public void setLogConfigURL(String config_url) {
+		getObj().setLogConfigURL(config_url);
 	}
 } //ScaWaveformImpl

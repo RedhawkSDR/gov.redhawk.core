@@ -122,10 +122,7 @@ public abstract class StructDef {
             throw new IllegalArgumentException("Invalid Any type for struct");
         }
         for (final DataType prop : PropertiesHelper.extract(any)) {
-            IProperty element = this.getElement(prop.id);
-            if (element != null) {
-                element.fromAny(prop.value);
-            }
+            this.getElement(prop.id).fromAny(prop.value);
         }
     }
 
@@ -136,5 +133,12 @@ public abstract class StructDef {
         sb.append(super.toString());
         sb.append(this.getElementsMap());
         return sb.toString();
+    }
+
+    public String getId() {
+        // Ideally, this would be an abstract method; however, since there are
+        // existing Java components whose structs do not override this method,
+        // return an empty string to avoid breaking source compatibility.
+        return "";
     }
 };
