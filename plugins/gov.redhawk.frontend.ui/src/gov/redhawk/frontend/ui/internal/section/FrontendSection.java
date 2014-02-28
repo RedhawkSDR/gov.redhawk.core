@@ -41,7 +41,7 @@ import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.jface.layout.TreeColumnLayout;
 import org.eclipse.jface.viewers.CellEditor;
-import org.eclipse.jface.viewers.ColumnWeightData;
+import org.eclipse.jface.viewers.ColumnPixelData;
 import org.eclipse.jface.viewers.EditingSupport;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.StructuredSelection;
@@ -207,7 +207,7 @@ public class FrontendSection extends AbstractPropertySection {
 			}
 
 		});
-		treeLayout.setColumnData(propertyColumn.getColumn(), new ColumnWeightData(40, 50));
+		treeLayout.setColumnData(propertyColumn.getColumn(), new ColumnPixelData(300));
 
 		TreeViewerColumn valueColumn = new TreeViewerColumn(viewer, SWT.None);
 		valueColumn.getColumn().setWidth(400);
@@ -243,7 +243,7 @@ public class FrontendSection extends AbstractPropertySection {
 			}
 
 		});
-		treeLayout.setColumnData(valueColumn.getColumn(), new ColumnWeightData(60, 100));
+		treeLayout.setColumnData(valueColumn.getColumn(), new ColumnPixelData(600));
 		final TextCellEditor cellEditor = new TextCellEditor(viewer.getTree());
 		valueColumn.setEditingSupport(new EditingSupport(viewer) {
 
