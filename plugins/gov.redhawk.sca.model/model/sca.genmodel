@@ -467,11 +467,11 @@
     <genClasses image="false" ecoreClass="sca.ecore#//EventChannel"/>
     <genClasses image="false" ecoreClass="sca.ecore#//IRefreshable"/>
     <genClasses ecoreClass="sca.ecore#//ScaEventChannel">
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute sca.ecore#//ScaEventChannel/name"/>
+      <genFeatures property="Readonly" createChild="false" ecoreFeature="ecore:EAttribute sca.ecore#//ScaEventChannel/name"/>
     </genClasses>
     <genClasses image="false" ecoreClass="sca.ecore#//StringToObjectMap">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute sca.ecore#//StringToObjectMap/key"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute sca.ecore#//StringToObjectMap/value"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EReference sca.ecore#//StringToObjectMap/value"/>
     </genClasses>
   </genPackages>
 </genmodel:GenModel>
