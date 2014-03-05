@@ -242,7 +242,7 @@ public class FrontEndDataProvider extends AbstractDataProvider {
 			if (plugin != null) {
 				plugin.getLog().log(
 					new Status(IStatus.ERROR, "Device " + device.getIdentifier() + " is not a valid front end device, missing property: "
-						+ StatusProperties.FRONTEND_TUNER_STATUS.getId(), null));
+							+ StatusProperties.FRONTEND_TUNER_STATUS.getId(), null));
 			}
 			return;
 		}
@@ -276,7 +276,8 @@ public class FrontEndDataProvider extends AbstractDataProvider {
 				tuner.setTunerStatusStruct(prop.getStructs().get(i));
 			}
 			for (ScaSimpleProperty simple : tuner.getSimples()) {
-				TunerStatusAllocationProperties.setValue(tuner, simple);
+				TunerStatusAllocationProperties statusProp = TunerStatusAllocationProperties.fromPropID(simple.getId());
+				TunerStatusAllocationProperties.updateTunerStatusValue(tuner, statusProp, simple.getValue());
 			}
 			updateAllocationListeners(tuner);
 			boolean allocated = tuner.isAllocated();

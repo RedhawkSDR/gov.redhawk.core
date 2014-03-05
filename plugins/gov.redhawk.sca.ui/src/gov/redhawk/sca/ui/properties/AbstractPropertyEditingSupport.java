@@ -11,6 +11,9 @@
  */
 package gov.redhawk.sca.ui.properties;
 
+import gov.redhawk.model.sca.ScaAbstractProperty;
+import gov.redhawk.model.sca.util.ModelUtil;
+
 import org.eclipse.jface.viewers.CellEditor;
 import org.eclipse.jface.viewers.ColumnViewer;
 import org.eclipse.jface.viewers.EditingSupport;
@@ -30,11 +33,11 @@ public abstract class AbstractPropertyEditingSupport extends EditingSupport {
 	 * given property source provider and property ID.
 	 * 
 	 * @param viewer
-	 *            the column viewer
+	 * the column viewer
 	 * @param propertySourceProvider
-	 *            the property source provider
+	 * the property source provider
 	 * @param propertyID
-	 *            the property ID
+	 * the property ID
 	 */
 	public AbstractPropertyEditingSupport(final ColumnViewer viewer, final IPropertySourceProvider propertySourceProvider) {
 		super(viewer);
@@ -46,21 +49,38 @@ public abstract class AbstractPropertyEditingSupport extends EditingSupport {
 	@Override
 	protected boolean canEdit(final Object object) {
 		final IPropertySource propertySource = this.propertySourceProvider.getPropertySource(object);
-		final IPropertyDescriptor[] propertyDescriptors = propertySource.getPropertyDescriptors();
-		for (int i = 0; i < propertyDescriptors.length; i++) {
-			final IPropertyDescriptor propertyDescriptor = propertyDescriptors[i];
-			if (propertyDescriptor != null) {
-				final Object propertyID = getPropertyID(object);
-				if (propertyID != null && propertyID.equals(propertyDescriptor.getId())) {
-					return true;
+		boolean retVal = false;
+		if (propertySource != null) {
+			final IPropertyDescriptor[] propertyDescriptors = propertySource.getPropertyDescriptors();
+			for (int i = 0; i < propertyDescriptors.length; i++) {
+				final IPropertyDescriptor propertyDescriptor = propertyDescriptors[i];
+				if (propertyDescriptor != null) {
+					final Object propertyID = getPropertyID(object);
+					if (propertyID != null && propertyID.equals(propertyDescriptor.getId())) {
+						retVal = true;
+						break;
+					}
 				}
 			}
 		}
-		return false;
+		if (retVal && object instanceof ScaAbstractProperty< ? >) {
+			return canEdit((ScaAbstractProperty< ? >) object);
+		}
+		return retVal;
+	}
+
+	/**
+	 * @since 9.3
+	 */
+	protected boolean canEdit(ScaAbstractProperty< ? > prop) {
+		return ModelUtil.isSettable(prop);
 	}
 
 	@Override
 	protected CellEditor getCellEditor(final Object object) {
+		if (!canEdit(object)) {
+			return null;
+		}
 		final IPropertySource propertySource = this.propertySourceProvider.getPropertySource(object);
 		final IPropertyDescriptor[] propertyDescriptors = propertySource.getPropertyDescriptors();
 		for (int i = 0; i < propertyDescriptors.length; i++) {

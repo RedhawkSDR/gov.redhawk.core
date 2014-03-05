@@ -12,7 +12,6 @@
 package gov.redhawk.sca.internal.ui.properties;
 
 import gov.redhawk.model.sca.ScaSimpleProperty;
-import gov.redhawk.model.sca.util.ModelUtil;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -61,10 +60,6 @@ public class ScaSimplePropertyValuePropertyDescriptor extends PropertyValueTypeP
 
 		final Object genericFeature = this.itemPropertyDescriptor.getFeature(this.object);
 		final ScaSimpleProperty property = (ScaSimpleProperty) this.object;
-
-		if (!ModelUtil.isSettable(property)) {
-			return null;
-		}
 
 		if (genericFeature instanceof EReference[]) {
 			result = new ExtendedComboBoxCellEditor(composite, new ArrayList<Object>(this.itemPropertyDescriptor.getChoiceOfValues(this.object)),
