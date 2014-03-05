@@ -409,6 +409,11 @@ public class FrontendSection extends AbstractPropertySection {
 			addToToolbar(allocateAction);
 			addToToolbar(deallocateAction);
 		}
+		if (obj instanceof TunerContainer) {
+			getToolbar().remove(plotAction.getId());
+			getToolbar().remove(deallocateAction.getId());
+			addToToolbar(allocateAction);
+		}
 		getToolbar().update(false);
 	}
 
