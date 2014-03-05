@@ -14,6 +14,7 @@ package gov.redhawk.frontend.ui.internal.section;
 import gov.redhawk.frontend.ListenerAllocation;
 import gov.redhawk.frontend.TunerContainer;
 import gov.redhawk.frontend.TunerStatus;
+import gov.redhawk.frontend.UnallocatedTunerContainer;
 import gov.redhawk.frontend.ui.internal.FrontendAction;
 
 import org.eclipse.emf.ecore.EObject;
@@ -56,9 +57,9 @@ public class FrontendSection extends AbstractPropertySection {
 		factory.adapt(viewer.getViewer().getControl(), false, false);
 
 		allocateAction = new FrontendAction(this, "Allocate...", "gov.redhawk.frontend.actions.allocate", "gov.redhawk.frontend.commands.allocate",
-				"icons/allocate.gif");
+			"icons/allocate.gif");
 		deallocateAction = new FrontendAction(this, "Deallocate", "gov.redhawk.frontend.actions.deallocate", "gov.redhawk.frontend.commands.deallocate",
-				"icons/deallocate.gif");
+			"icons/deallocate.gif");
 		plotAction = new FrontendAction(this, "Plot", "gov.redhawk.frontend.actions.plot", "gov.redhawk.frontend.commands.plot", "icons/plot.gif");
 
 		page = aTabbedPropertySheetPage;

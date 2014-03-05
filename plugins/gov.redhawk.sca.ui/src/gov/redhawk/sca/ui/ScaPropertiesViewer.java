@@ -21,6 +21,8 @@ import gov.redhawk.sca.ui.properties.ScaPropertiesContentProvider;
 
 import org.eclipse.emf.common.notify.AdapterFactory;
 import org.eclipse.jface.action.Action;
+import org.eclipse.jface.action.ActionContributionItem;
+import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.layout.TreeColumnLayout;
 import org.eclipse.jface.viewers.CellLabelProvider;
@@ -225,15 +227,14 @@ public class ScaPropertiesViewer extends Composite {
 
 	protected void createContextMenu() {
 		final MenuManager menuMgr = new MenuManager("#Popup");
-		menuMgr.setRemoveAllWhenShown(true);
 		contributeContextMenuActions(menuMgr);
 
 		final Menu menu = menuMgr.createContextMenu(viewer.getTree());
 		viewer.getTree().setMenu(menu);
 	}
 
-	protected void contributeContextMenuActions(MenuManager menuMgr) {
-		menuMgr.add(revertAction);
+	protected void contributeContextMenuActions(IMenuManager menuMgr) {
+		menuMgr.add(new ActionContributionItem(revertAction));
 	}
 
 	protected void addEditorActivationListener() {
