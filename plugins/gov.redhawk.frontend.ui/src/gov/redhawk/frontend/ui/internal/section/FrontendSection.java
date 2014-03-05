@@ -57,10 +57,10 @@ public class FrontendSection extends AbstractPropertySection {
 		factory.adapt(viewer.getViewer().getControl(), false, false);
 
 		allocateAction = new FrontendAction(this, "Allocate...", "gov.redhawk.frontend.actions.allocate", "gov.redhawk.frontend.commands.allocate",
-			"icons/allocate.gif");
+				"icons/allocate.gif");
 		deallocateAction = new FrontendAction(this, "Deallocate", "gov.redhawk.frontend.actions.deallocate", "gov.redhawk.frontend.commands.deallocate",
-			"icons/deallocate.gif");
-		plotAction = new FrontendAction(this, "Plot", "gov.redhawk.frontend.actions.plot", "gov.redhawk.frontend.commands.plot", "icons/plot.gif");
+				"icons/deallocate.gif");
+		plotAction = new FrontendAction(this, "Plot", "gov.redhawk.frontend.actions.plot", "gov.redhawk.ui.port.nxmplot.command.plot", "icons/plot.gif");
 
 		page = aTabbedPropertySheetPage;
 	}
