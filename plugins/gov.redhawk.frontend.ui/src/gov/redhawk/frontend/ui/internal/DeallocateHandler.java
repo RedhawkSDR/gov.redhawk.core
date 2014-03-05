@@ -27,10 +27,12 @@ import gov.redhawk.model.sca.commands.ScaModelCommand;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.Callable;
 
 import mil.jpeojtrs.sca.prf.PrfFactory;
 import mil.jpeojtrs.sca.prf.PrfPackage;
 import mil.jpeojtrs.sca.prf.Simple;
+import mil.jpeojtrs.sca.util.CorbaUtils;
 import mil.jpeojtrs.sca.util.ScaEcoreUtils;
 
 import org.eclipse.core.commands.AbstractHandler;
@@ -38,6 +40,7 @@ import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.core.commands.IHandler;
 import org.eclipse.core.expressions.IEvaluationContext;
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
@@ -110,14 +113,27 @@ public class DeallocateHandler extends AbstractHandler implements IHandler {
 				protected IStatus run(IProgressMonitor monitor) {
 					try {
 						monitor.beginTask("Deallocating", IProgressMonitor.UNKNOWN);
-						device.deallocateCapacity(props);
+						CorbaUtils.invoke(new Callable<Object>() {
+
+							@Override
+							public Object call() throws Exception {
+								try {
+									device.deallocateCapacity(props);
+								} catch (InvalidCapacity e) {
+									throw new CoreException(new Status(IStatus.ERROR, FrontEndUIActivator.PLUGIN_ID, "Invalid Capacity in control deallocation: " + e.msg, e));
+								} catch (InvalidState e) {
+									throw new CoreException(new Status(IStatus.ERROR, FrontEndUIActivator.PLUGIN_ID, "Invalid State in control deallocation: " + e.msg, e));
+								} 
+								return null;
+							}
+							
+						}, monitor);
+						
 						device.refresh(null, RefreshDepth.SELF);
-					} catch (InvalidCapacity e) {
-						return new Status(IStatus.ERROR, FrontEndUIActivator.PLUGIN_ID, "Invalid Capacity in control deallocation: " + e.msg, e);
-					} catch (InvalidState e) {
-						return new Status(IStatus.ERROR, FrontEndUIActivator.PLUGIN_ID, "Invalid State in control deallocation: " + e.msg, e);
 					} catch (InterruptedException e) {
 						return new Status(IStatus.ERROR, FrontEndUIActivator.PLUGIN_ID, "Interrupted Exception during control deallocation", e);
+					} catch (CoreException e) {
+						return e.getStatus();
 					}
 
 					final TunerStatus tunerStatus = listener.getTunerStatus();
