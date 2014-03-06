@@ -58,7 +58,9 @@ import CF.DevicePackage.InvalidState;
  */
 public class DeallocateHandler extends AbstractHandler implements IHandler {
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see org.eclipse.core.commands.IHandler#execute(org.eclipse.core.commands.ExecutionEvent)
 	 */
 	@Override
@@ -120,15 +122,17 @@ public class DeallocateHandler extends AbstractHandler implements IHandler {
 								try {
 									device.deallocateCapacity(props);
 								} catch (InvalidCapacity e) {
-									throw new CoreException(new Status(IStatus.ERROR, FrontEndUIActivator.PLUGIN_ID, "Invalid Capacity in control deallocation: " + e.msg, e));
+									throw new CoreException(new Status(IStatus.ERROR, FrontEndUIActivator.PLUGIN_ID,
+										"Invalid Capacity in control deallocation: " + e.msg, e));
 								} catch (InvalidState e) {
-									throw new CoreException(new Status(IStatus.ERROR, FrontEndUIActivator.PLUGIN_ID, "Invalid State in control deallocation: " + e.msg, e));
-								} 
+									throw new CoreException(new Status(IStatus.ERROR, FrontEndUIActivator.PLUGIN_ID, "Invalid State in control deallocation: "
+										+ e.msg, e));
+								}
 								return null;
 							}
-							
+
 						}, monitor);
-						
+
 						device.refresh(null, RefreshDepth.SELF);
 					} catch (InterruptedException e) {
 						return new Status(IStatus.ERROR, FrontEndUIActivator.PLUGIN_ID, "Interrupted Exception during control deallocation", e);
@@ -179,16 +183,30 @@ public class DeallocateHandler extends AbstractHandler implements IHandler {
 			protected IStatus run(IProgressMonitor monitor) {
 				try {
 					monitor.beginTask("Deallocating", IProgressMonitor.UNKNOWN);
-					device.deallocateCapacity(props);
-					device.refresh(null, RefreshDepth.SELF);
-				} catch (InvalidCapacity e) {
-					return new Status(IStatus.ERROR, FrontEndUIActivator.PLUGIN_ID, "Invalid Capacity in control deallocation: " + e.msg, e);
-				} catch (InvalidState e) {
-					return new Status(IStatus.ERROR, FrontEndUIActivator.PLUGIN_ID, "Invalid State in control deallocation: " + e.msg, e);
+					CorbaUtils.invoke(new Callable<Object>() {
+
+						@Override
+						public Object call() throws Exception {
+							try {
+								device.deallocateCapacity(props);
+								return null;
+							} catch (InvalidCapacity e) {
+								throw new CoreException(new Status(IStatus.ERROR, FrontEndUIActivator.PLUGIN_ID, "Invalid Capacity in control deallocation: "
+									+ e.msg, e));
+							} catch (InvalidState e) {
+								throw new CoreException(new Status(IStatus.ERROR, FrontEndUIActivator.PLUGIN_ID, "Invalid State in control deallocation: "
+									+ e.msg, e));
+							}
+						}
+
+					}, monitor);
+					device.refresh(monitor, RefreshDepth.SELF);
+					return Status.OK_STATUS;
 				} catch (InterruptedException e) {
 					return new Status(IStatus.ERROR, FrontEndUIActivator.PLUGIN_ID, "Interrupted Exception during control deallocation", e);
+				} catch (CoreException e) {
+					return e.getStatus();
 				}
-				return Status.OK_STATUS;
 			}
 
 		};
