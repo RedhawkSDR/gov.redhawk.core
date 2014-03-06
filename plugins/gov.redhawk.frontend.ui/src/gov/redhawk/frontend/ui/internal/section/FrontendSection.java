@@ -15,8 +15,9 @@ import gov.redhawk.frontend.ListenerAllocation;
 import gov.redhawk.frontend.TunerContainer;
 import gov.redhawk.frontend.TunerStatus;
 import gov.redhawk.frontend.UnallocatedTunerContainer;
-import gov.redhawk.frontend.ui.internal.FrontendAction;
-
+import gov.redhawk.frontend.ui.internal.AllocateAction;
+import gov.redhawk.frontend.ui.internal.DeallocateAction;
+import gov.redhawk.frontend.ui.internal.FeiPlotAction;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.action.IToolBarManager;
@@ -56,11 +57,14 @@ public class FrontendSection extends AbstractPropertySection {
 		factory.adapt(viewer);
 		factory.adapt(viewer.getViewer().getControl(), false, false);
 
-		allocateAction = new FrontendAction(this, "Allocate...", "gov.redhawk.frontend.actions.allocate", "gov.redhawk.frontend.commands.allocate",
-				"icons/allocate.gif");
-		deallocateAction = new FrontendAction(this, "Deallocate", "gov.redhawk.frontend.actions.deallocate", "gov.redhawk.frontend.commands.deallocate",
-				"icons/deallocate.gif");
-		plotAction = new FrontendAction(this, "Plot", "gov.redhawk.frontend.actions.plot", "gov.redhawk.ui.port.nxmplot.command.plot", "icons/plot.gif");
+		allocateAction = new AllocateAction(this);
+		deallocateAction = new DeallocateAction(this);
+		plotAction = new FeiPlotAction(this);
+//		allocateAction = new FrontendAction(this, "Allocate...", "gov.redhawk.frontend.actions.allocate", "gov.redhawk.frontend.commands.allocate",
+//				"icons/allocate.gif");
+//		deallocateAction = new FrontendAction(this, "Deallocate", "gov.redhawk.frontend.actions.deallocate", "gov.redhawk.frontend.commands.deallocate",
+//				"icons/deallocate.gif");
+//		plotAction = new FrontendAction(this, "Plot", "gov.redhawk.frontend.actions.plot", "gov.redhawk.ui.port.nxmplot.command.plot", "icons/plot.gif");
 
 		page = aTabbedPropertySheetPage;
 	}

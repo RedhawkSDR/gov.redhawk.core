@@ -72,4 +72,8 @@ public class FrontendAction extends Action {
 				StatusManager.SHOW | StatusManager.LOG);
 		}
 	}
+	
+	protected FrontendSection getSection() {
+		return section;
+	}
 }
