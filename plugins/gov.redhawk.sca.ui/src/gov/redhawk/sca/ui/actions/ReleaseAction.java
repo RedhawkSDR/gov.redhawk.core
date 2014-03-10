@@ -11,11 +11,12 @@
  */
 package gov.redhawk.sca.ui.actions;
 
-import java.util.concurrent.Callable;
-
 import gov.redhawk.model.sca.ScaWaveform;
 import gov.redhawk.sca.ui.ScaUiPlugin;
 import gov.redhawk.sca.util.PluginUtil;
+
+import java.util.concurrent.Callable;
+
 import mil.jpeojtrs.sca.util.CorbaUtils;
 
 import org.eclipse.core.runtime.CoreException;
@@ -77,7 +78,7 @@ public class ReleaseAction extends Action {
 						releaseName = scaWaveform.getName();
 					}
 					final String finalReleaseName = releaseName;
-					monitor.beginTask("Releasing: " + releaseName, IProgressMonitor.UNKNOWN);
+					monitor.beginTask("Releasing: " + finalReleaseName, IProgressMonitor.UNKNOWN);
 					try {
 						CorbaUtils.invoke(new Callable<Object>() {
 
@@ -85,18 +86,21 @@ public class ReleaseAction extends Action {
 								try {
 									op.releaseObject();
 								} catch (final ReleaseError e) {
-									return new Status(IStatus.ERROR, ScaUiPlugin.PLUGIN_ID, "Failed to release: " + finalReleaseName, e);
-								} 
+									throw new CoreException(new Status(IStatus.ERROR, ScaUiPlugin.PLUGIN_ID, "Failed to release: " + finalReleaseName, e));
+								}
 								return null;
 							}
-							
+
 						}, monitor);
 						return Status.OK_STATUS;
 					} catch (CoreException e) {
 						return e.getStatus();
 					} catch (InterruptedException e) {
 						return Status.CANCEL_STATUS;
+					} finally {
+						monitor.done();
 					}
+
 				}
 
 			};
