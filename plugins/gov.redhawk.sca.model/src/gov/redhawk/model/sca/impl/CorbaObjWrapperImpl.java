@@ -473,6 +473,9 @@ public abstract class CorbaObjWrapperImpl< T extends org.omg.CORBA.Object > exte
 		}
 		Boolean isA = this.isAMap.get(repId);
 		if (isA == null) {
+			// Put a placeholder in so that if the call fails we assume it as false.  
+			// This will stop additional threads from being spawned
+			isAMap.put(repId, false);
 			Callable<Boolean> callable = new Callable<Boolean>() {
 
 				@Override

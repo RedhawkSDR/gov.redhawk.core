@@ -98,6 +98,8 @@ public class ReleaseAction extends Action {
 						return e.getStatus();
 					} catch (InterruptedException e) {
 						return Status.CANCEL_STATUS;
+					} finally {
+						monitor.done();
 					}
 
 				}

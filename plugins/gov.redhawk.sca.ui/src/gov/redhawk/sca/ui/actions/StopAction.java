@@ -11,9 +11,13 @@
  */
 package gov.redhawk.sca.ui.actions;
 
+import java.util.concurrent.Callable;
+
 import gov.redhawk.sca.ui.ScaUiPlugin;
 import gov.redhawk.sca.util.PluginUtil;
+import mil.jpeojtrs.sca.util.CorbaUtils;
 
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
@@ -60,10 +64,26 @@ public class StopAction extends Action {
 				protected IStatus run(final IProgressMonitor monitor) {
 					monitor.beginTask("Stopping: " + device.identifier(), IProgressMonitor.UNKNOWN);
 					try {
-						device.stop();
+						CorbaUtils.invoke(new Callable<Object>() {
+
+							public Object call() throws Exception {
+								try {
+									device.stop();
+								} catch (final StopError e) {
+									throw new CoreException(new Status(IStatus.ERROR, ScaUiPlugin.PLUGIN_ID, "Failed to stop: " + device.identifier(), e));
+								}
+								return null;
+							}
+
+						}, monitor);
+
 						return Status.OK_STATUS;
-					} catch (final StopError e) {
-						return new Status(IStatus.ERROR, ScaUiPlugin.PLUGIN_ID, "Failed to stop: " + device.identifier(), e);
+					} catch (CoreException e) {
+						return e.getStatus();
+					} catch (InterruptedException e) {
+						return Status.CANCEL_STATUS;
+					} finally {
+						monitor.done();
 					}
 				}
 
