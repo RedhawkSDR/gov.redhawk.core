@@ -16,7 +16,11 @@ import gov.redhawk.model.sca.ScaDevice;
 import gov.redhawk.model.sca.ScaDeviceManager;
 import gov.redhawk.model.sca.ScaModelPlugin;
 import gov.redhawk.model.sca.ScaPropertyContainer;
+import gov.redhawk.model.sca.commands.ScaModelCommand;
+import gov.redhawk.sca.dcd.diagram.DcdDiagramPluginActivator;
 
+import java.lang.reflect.InvocationTargetException;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.Callable;
@@ -25,19 +29,25 @@ import java.util.concurrent.TimeoutException;
 
 import mil.jpeojtrs.sca.dcd.DcdComponentInstantiation;
 import mil.jpeojtrs.sca.partitioning.ComponentInstantiation;
+import mil.jpeojtrs.sca.util.CorbaUtils;
 import mil.jpeojtrs.sca.util.ProtectedThreadExecutor;
 import mil.jpeojtrs.sca.util.QueryParser;
 import mil.jpeojtrs.sca.util.ScaFileSystemConstants;
 
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IAdapterFactory;
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.gef.GraphicalEditPart;
+import org.eclipse.jface.dialogs.ProgressMonitorDialog;
+import org.eclipse.jface.operation.IRunnableWithProgress;
+import org.eclipse.swt.widgets.Display;
+import org.eclipse.ui.statushandlers.StatusManager;
 
 @SuppressWarnings("rawtypes")
 public class DcdComponentInstantiationEditPartAdapterFactory implements IAdapterFactory {
-	private static final Class< ? >[] LIST = new Class< ? >[] {
-	        ScaDevice.class, ScaAbstractComponent.class, ScaPropertyContainer.class
-	};
+	private static final Class< ? >[] LIST = new Class< ? >[] { ScaDevice.class, ScaAbstractComponent.class, ScaPropertyContainer.class };
 
 	public Object getAdapter(final Object adaptableObject, final Class adapterType) {
 		if (adaptableObject instanceof GraphicalEditPart) {
@@ -52,24 +62,76 @@ public class DcdComponentInstantiationEditPartAdapterFactory implements IAdapter
 					final ScaDeviceManager manager = ScaModelPlugin.getDefault().findEObject(ScaDeviceManager.class, ior);
 					final String deviceId = ci.getId();
 					if (manager != null) {
-						final Callable<List<ScaDevice< ? >>> callable = new Callable<List<ScaDevice< ? >>>() {
+						List<ScaDevice< ? >> devices = Collections.emptyList();
+						if (manager.isSetDevices()) {
+							devices = manager.getAllDevices();
+						} else {
+							final Callable<List<ScaDevice< ? >>> callable = new Callable<List<ScaDevice< ? >>>() {
 
-							public List<ScaDevice< ? >> call() throws Exception {
-								return manager.fetchDevices(null);
-							}
-						};
-						try {
-							for (final ScaDevice< ? > device : ProtectedThreadExecutor.submit(callable)) {
-								if (deviceId.equals(device.getIdentifier())) {
-									return device;
+								public List<ScaDevice< ? >> call() throws Exception {
+									manager.fetchDevices(null);
+									return manager.getAllDevices();
+								}
+							};
+							if (Display.getCurrent() != null) {
+								ProgressMonitorDialog dialog = new ProgressMonitorDialog(Display.getCurrent().getActiveShell());
+								try {
+									dialog.run(true, true, new IRunnableWithProgress() {
+
+										public void run(IProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
+											monitor.beginTask("Fetching devices for " + manager.getLabel(), IProgressMonitor.UNKNOWN);
+											try {
+												CorbaUtils.invoke(callable, monitor);
+											} catch (CoreException e) {
+												throw new InvocationTargetException(e);
+											}
+										}
+									});
+								} catch (InvocationTargetException e) {
+									StatusManager.getManager().handle(
+										new Status(Status.ERROR, DcdDiagramPluginActivator.PLUGIN_ID, "Failed to fetch devices for " + manager.getLabel(), e),
+										StatusManager.SHOW | StatusManager.LOG);
+								} catch (InterruptedException e) {
+									// PASS
+								}
+
+							} else {
+								try {
+									ProtectedThreadExecutor.submit(callable);
+								} catch (final InterruptedException e) {
+									StatusManager.getManager().handle(
+										new Status(Status.ERROR, DcdDiagramPluginActivator.PLUGIN_ID, "Failed to fetch devices for " + manager.getLabel(), e),
+										StatusManager.SHOW | StatusManager.LOG);
+								} catch (final ExecutionException e) {
+									StatusManager.getManager().handle(
+										new Status(Status.ERROR, DcdDiagramPluginActivator.PLUGIN_ID, "Failed to fetch devices for " + manager.getLabel(), e),
+										StatusManager.SHOW | StatusManager.LOG);
+								} catch (final TimeoutException e) {
+									StatusManager.getManager().handle(
+										new Status(Status.ERROR, DcdDiagramPluginActivator.PLUGIN_ID, "Failed to fetch devices for " + manager.getLabel(), e),
+										StatusManager.SHOW | StatusManager.LOG);
 								}
 							}
-						} catch (final InterruptedException e) {
-							// PASS
-						} catch (final ExecutionException e) {
-							// PASS
-						} catch (final TimeoutException e) {
-							// PASS
+
+							// Ensure the manager devices are "set" to avoid future zombie threads
+							if (!manager.isSetAllDevices()) {
+								ScaModelCommand.execute(manager, new ScaModelCommand() {
+
+									public void execute() {
+										if (!manager.isSetAllDevices()) {
+											manager.getDevices().clear();
+										}
+									}
+								});
+							}
+
+							devices = manager.getAllDevices();
+						}
+
+						for (final ScaDevice< ? > device : devices) {
+							if (deviceId.equals(device.getIdentifier())) {
+								return device;
+							}
 						}
 					}
 				}

@@ -1290,23 +1290,7 @@ public class ScaWaveformImpl extends ScaPropertyContainerImpl<Application, Softw
 					EcoreUtil.delete(ScaWaveformImpl.this);
 				}
 			};
-			Callable<Void> callable = new Callable<Void>() {
-
-				public Void call() throws ReleaseError {
-					waveform.releaseObject();
-					return null;
-				}
-			};
-			
-            try {
-                ProtectedThreadExecutor.submit(callable);
-            } catch (InterruptedException e) {
-            	ScaModelPlugin.getDefault().getLog().log(new Status(IStatus.ERROR, ScaModelPlugin.ID, "Failed to release Waveform", e));
-            } catch (ExecutionException e) {
-            	ScaModelPlugin.getDefault().getLog().log(new Status(IStatus.ERROR, ScaModelPlugin.ID, "Failed to release Waveform", e));
-            } catch (TimeoutException e) {
-            	ScaModelPlugin.getDefault().getLog().log(new Status(IStatus.ERROR, ScaModelPlugin.ID, "Failed to release Waveform", e));
-            }
+			waveform.releaseObject();
 
 			// The domain may be null if the waveform has already been released.
 			if (domain != null) {
