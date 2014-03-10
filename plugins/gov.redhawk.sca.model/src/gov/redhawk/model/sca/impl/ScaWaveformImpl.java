@@ -38,9 +38,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
-import java.util.concurrent.Callable;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.TimeoutException;
 
 import mil.jpeojtrs.sca.partitioning.PartitioningPackage;
 import mil.jpeojtrs.sca.prf.AbstractProperty;
@@ -54,7 +51,6 @@ import mil.jpeojtrs.sca.sad.SoftwareAssembly;
 import mil.jpeojtrs.sca.scd.AbstractPort;
 import mil.jpeojtrs.sca.scd.ScdPackage;
 import mil.jpeojtrs.sca.spd.SpdPackage;
-import mil.jpeojtrs.sca.util.ProtectedThreadExecutor;
 import mil.jpeojtrs.sca.util.ScaEcoreUtils;
 
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -1358,24 +1354,7 @@ public class ScaWaveformImpl extends ScaPropertyContainerImpl<Application, Softw
 					EcoreUtil.delete(ScaWaveformImpl.this);
 				}
 			};
-			Callable<Void> callable = new Callable<Void>() {
-
-				@Override
-				public Void call() throws ReleaseError {
-					waveform.releaseObject();
-					return null;
-				}
-			};
-
-			try {
-				ProtectedThreadExecutor.submit(callable);
-			} catch (InterruptedException e) {
-				ScaModelPlugin.getDefault().getLog().log(new Status(IStatus.ERROR, ScaModelPlugin.ID, "Failed to release Waveform", e));
-			} catch (ExecutionException e) {
-				ScaModelPlugin.getDefault().getLog().log(new Status(IStatus.ERROR, ScaModelPlugin.ID, "Failed to release Waveform", e));
-			} catch (TimeoutException e) {
-				ScaModelPlugin.getDefault().getLog().log(new Status(IStatus.ERROR, ScaModelPlugin.ID, "Failed to release Waveform", e));
-			}
+			waveform.releaseObject();
 
 			// The domain may be null if the waveform has already been released.
 			if (domain != null) {

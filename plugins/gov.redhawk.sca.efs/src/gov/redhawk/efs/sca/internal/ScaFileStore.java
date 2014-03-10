@@ -22,10 +22,8 @@ import java.io.UnsupportedEncodingException;
 import java.net.URI;
 import java.net.URLEncoder;
 import java.util.concurrent.Callable;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.TimeoutException;
 
-import mil.jpeojtrs.sca.util.ProtectedThreadExecutor;
+import mil.jpeojtrs.sca.util.CorbaUtils;
 
 import org.eclipse.core.filesystem.EFS;
 import org.eclipse.core.filesystem.IFileInfo;
@@ -114,13 +112,13 @@ public class ScaFileStore extends FileStore {
 			if (!isDirectory()) {
 				return FileStore.EMPTY_STRING_ARRAY;
 			}
-			final FileInformationType[] result = ProtectedThreadExecutor.submit(new Callable<FileInformationType[]>() {
+			final FileInformationType[] result = CorbaUtils.invoke(new Callable<FileInformationType[]>() {
 
 				@Override
 				public FileInformationType[] call() throws Exception {
 					return getScaFileSystem().list(path + "/*"); //$NON-NLS-1$
 				}
-			});
+			}, monitor);
 			final String[] children = new String[result.length];
 			for (int i = 0; i < result.length; i++) {
 				final FileInformationType file = result[i];
@@ -128,10 +126,6 @@ public class ScaFileStore extends FileStore {
 			}
 			return children;
 		} catch (final InterruptedException e) {
-			throw new CoreException(new Status(IStatus.ERROR, ScaFileSystemPlugin.ID, NLS.bind(Messages.ScaFileStore__Child_Names_Error, path), e));
-		} catch (final ExecutionException e) {
-			throw new CoreException(new Status(IStatus.ERROR, ScaFileSystemPlugin.ID, NLS.bind(Messages.ScaFileStore__Child_Names_Error, path), e));
-		} catch (final TimeoutException e) {
 			throw new CoreException(new Status(IStatus.ERROR, ScaFileSystemPlugin.ID, NLS.bind(Messages.ScaFileStore__Child_Names_Error, path), e));
 		} finally {
 			monitor.done();
@@ -209,13 +203,13 @@ public class ScaFileStore extends FileStore {
 		monitor = SubMonitor.convert(monitor, Messages.ScaFileStore__Fetch_Info_Task_Name, IProgressMonitor.UNKNOWN);
 		try {
 			IFileInfo retVal;
-			final FileInformationType[] result = ProtectedThreadExecutor.submit(new Callable<FileInformationType[]>() {
+			final FileInformationType[] result = CorbaUtils.invoke(new Callable<FileInformationType[]>() {
 
 				@Override
 				public FileInformationType[] call() throws Exception {
 					return getScaFileSystem().list(path);
 				}
-			});
+			}, monitor);
 
 			if (result.length == 0) {
 				final FileInfo info = new FileInfo(getName());
@@ -227,10 +221,6 @@ public class ScaFileStore extends FileStore {
 
 			return retVal;
 		} catch (final InterruptedException e) {
-			throw new CoreException(new Status(IStatus.ERROR, ScaFileSystemPlugin.ID, NLS.bind(Messages.ScaFileStore__Fetch_Info_Error, path), e));
-		} catch (final ExecutionException e) {
-			throw new CoreException(new Status(IStatus.ERROR, ScaFileSystemPlugin.ID, NLS.bind(Messages.ScaFileStore__Fetch_Info_Error, path), e));
-		} catch (final TimeoutException e) {
 			throw new CoreException(new Status(IStatus.ERROR, ScaFileSystemPlugin.ID, NLS.bind(Messages.ScaFileStore__Fetch_Info_Error, path), e));
 		} finally {
 			monitor.done();
@@ -353,23 +343,19 @@ public class ScaFileStore extends FileStore {
 			if (!isDirectory()) {
 				return FileStore.EMPTY_FILE_INFO_ARRAY;
 			}
-			final FileInformationType[] result = ProtectedThreadExecutor.submit(new Callable<FileInformationType[]>() {
+			final FileInformationType[] result = CorbaUtils.invoke(new Callable<FileInformationType[]>() {
 
 				@Override
 				public FileInformationType[] call() throws Exception {
 					return getScaFileSystem().list(path + "/*"); //$NON-NLS-1$
 				}
-			});
+			}, monitor);
 			final IFileInfo[] retVal = new IFileInfo[result.length];
 			for (int i = 0; i < result.length; i++) {
 				retVal[i] = translate(result[i]);
 			}
 			return retVal;
 		} catch (final InterruptedException e) {
-			throw new CoreException(new Status(IStatus.ERROR, ScaFileSystemPlugin.ID, NLS.bind(Messages.ScaFileStore__Child_Info_Error, path), e));
-		} catch (final ExecutionException e) {
-			throw new CoreException(new Status(IStatus.ERROR, ScaFileSystemPlugin.ID, NLS.bind(Messages.ScaFileStore__Child_Info_Error, path), e));
-		} catch (final TimeoutException e) {
 			throw new CoreException(new Status(IStatus.ERROR, ScaFileSystemPlugin.ID, NLS.bind(Messages.ScaFileStore__Child_Info_Error, path), e));
 		} finally {
 			monitor.done();
