@@ -581,12 +581,13 @@ public abstract class ScaPropertyContainerImpl< P extends org.omg.CORBA.Object, 
 		final PropertiesHolder propHolder = new PropertiesHolder(EMPTY_DATA_TYPE_ARRAY);
 		try {
 			subMonitor.worked(1);
+			List<AbstractProperty> defs = fetchPropertyDefinitions(subMonitor.newChild(1));
 			if (!isSetProperties()) {
-				transaction.append(new MergePropertiesCommand(this, fetchPropertyDefinitions(subMonitor.newChild(1))));
+				transaction.append(new MergePropertiesCommand(this, defs));
 			}
 			query(propHolder);
 			subMonitor.worked(1);
-			transaction.append(new SetPropertiesValuesCommand(this, propHolder));
+			transaction.append(new SetPropertiesValuesCommand(this, propHolder, defs));
 		} catch (UnknownProperties e) {
 			fetchStatus = new Status(Status.ERROR, ScaModelPlugin.ID, "Failed to query property values.", e);
 			transaction.append(new UnsetLocalAttributeCommand(this, fetchStatus, ScaPackage.Literals.SCA_PROPERTY_CONTAINER__PROPERTIES));
