@@ -131,9 +131,6 @@
                         <instanceof
                               value="gov.redhawk.frontend.TunerContainer">
                         </instanceof>
-                        <test
-                              property="gov.redhawk.frontend.hasUnallocatedTuners">
-                        </test>
                      </and>
                      <instanceof
                            value="gov.redhawk.frontend.UnallocatedTunerContainer">
