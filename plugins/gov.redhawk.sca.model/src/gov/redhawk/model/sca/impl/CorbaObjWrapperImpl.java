@@ -537,7 +537,7 @@ public abstract class CorbaObjWrapperImpl< T extends org.omg.CORBA.Object > exte
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
+	 * @generated not
 	 */
 	@Override
 	public String toString() {
@@ -547,9 +547,11 @@ public abstract class CorbaObjWrapperImpl< T extends org.omg.CORBA.Object > exte
 		result.append(" (ior: ");
 		if (iorESet) result.append(ior); else result.append("<unset>");
 		result.append(", obj: ");
-		if (objESet) result.append(obj); else result.append("<unset>");
+		// NOTE: DO NOT DO TO STRING on a CORBA Object, this is a potentially blocking operation.  Just return if the value is set
+		if (objESet) result.append("<set>"); else result.append("<unset>");
 		result.append(", corbaObj: ");
-		if (corbaObjESet) result.append(corbaObj); else result.append("<unset>");
+		// NOTE: DO NOT DO TO STRING on a CORBA Object, this is a potentially blocking operation.  Just return if the value is set
+		if (corbaObjESet) result.append("<set>"); else result.append("<unset>");
 		result.append(')');
 		return result.toString();
 	}
