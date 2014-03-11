@@ -76,7 +76,7 @@ public class ScaWaveformControlPanel< T extends EObject > extends AbstractScaCon
 							return;
 						}
 						final UIJob job = new UIJob(ScaWaveformControlPanel.this.parent.getDisplay(), "Close Editor job") {
-	
+
 							@Override
 							public IStatus runInUIThread(final IProgressMonitor monitor) {
 								getSite().getPage().closeEditor(ScaWaveformControlPanel.this, true);
@@ -164,20 +164,24 @@ public class ScaWaveformControlPanel< T extends EObject > extends AbstractScaCon
 			this.form.setText(title);
 
 			//ensure assembly controller is first component displayed
+			Section compSection = null;
+			Composite propertyComp = null;
 			final ScaComponent assemblyController = inputWaveform.getAssemblyController();
-			Section compSection = this.toolkit.createSection(this.body, Section.DESCRIPTION | ExpandableComposite.TITLE_BAR | ExpandableComposite.EXPANDED
-			        | ExpandableComposite.TWISTIE);
-			Composite propertyComp = createScaComponentPropertyComp(compSection, assemblyController);
-			compSection.setText(assemblyController.getProfileObj().getName());
-			compSection.setClient(propertyComp);
-			GridDataFactory.fillDefaults().grab(true, false).applyTo(propertyComp);
+			if (assemblyController != null) {
+				compSection = this.toolkit.createSection(this.body, Section.DESCRIPTION | ExpandableComposite.TITLE_BAR | ExpandableComposite.EXPANDED
+						| ExpandableComposite.TWISTIE);
+				propertyComp = createScaComponentPropertyComp(compSection, assemblyController);
+				compSection.setText(assemblyController.getProfileObj().getName());
+				compSection.setClient(propertyComp);
+				GridDataFactory.fillDefaults().grab(true, false).applyTo(propertyComp);
+			}
 
 			final EList<ScaComponent> components = inputWaveform.getComponents();
 			for (final Iterator<ScaComponent> it = components.iterator(); it.hasNext();) {
 				final ScaComponent comp = it.next();
 				if (!comp.equals(assemblyController)) {
 					compSection = this.toolkit.createSection(this.body, Section.DESCRIPTION | ExpandableComposite.TITLE_BAR | ExpandableComposite.EXPANDED
-					        | ExpandableComposite.TWISTIE);
+							| ExpandableComposite.TWISTIE);
 					propertyComp = createScaComponentPropertyComp(compSection, comp);
 					compSection.setText(comp.getProfileObj().getName());
 					compSection.setClient(propertyComp);
@@ -238,7 +242,7 @@ public class ScaWaveformControlPanel< T extends EObject > extends AbstractScaCon
 	public EObject getInput() {
 		return this.waveform;
 	}
-	
+
 	@Override
 	public int hashCode() {
 		if (this.getPartName() != null) {

@@ -81,12 +81,12 @@ public class PropertyEditorFactory {
 //				case STRING:
 //					return new StringPropertyEditor(name, String.valueOf(value), simpleProp);
 				case LONG:
-				case ULONG:
 					return new IntegerPropertyEditor<Integer>(name,  (Integer) value, simpleProp);
 				case SHORT:
 				case USHORT:
 					return new IntegerPropertyEditor<Short>(name,  (Short) value, simpleProp);
 				case LONGLONG:
+				case ULONG:
 					return new IntegerPropertyEditor<Long>(name,  (Long) value, simpleProp);
 				case FLOAT:
 					return new DecimalPropertyEditor<Float>(name, (Float) value, simpleProp);
