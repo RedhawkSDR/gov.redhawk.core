@@ -83,8 +83,8 @@ public class corbareceiver extends CorbaPrimitive implements IMidasDataWriter { 
 	public static final String SW_WAIT = "/WAIT";
 
 	/**
-	 * Name of switch to enable/disable increasing/growing output file's pipe size when 
-	 * incoming data packet size is larger than it. 
+	 * Name of switch to enable/disable increasing/growing output file's pipe size when
+	 * incoming data packet size is larger than it.
 	 * @since 10.2
 	 */
 	public static final String SW_GROW_PIPE = "/GROWPIPE";
@@ -95,11 +95,15 @@ public class corbareceiver extends CorbaPrimitive implements IMidasDataWriter { 
 	 */
 	public static final String SW_PS_MULTIPLIER = "/PSMULT";
 
-	/** treat dataOctet as 8-bit unsigned integer (this will upcast format type to 16-bit signed integer to hold value).  
+	/** treat dataOctet as 8-bit unsigned integer (this will upcast format type to 16-bit signed integer to hold value).
 	 * @since 10.2
 	 */
 	public static final String SW_TREAT_OCTET_AS_UNSIGNED = "/UNSIGNEDOCTET";
-	
+
+	/** max seconds allowed since UTC (J1950) */
+	private static final double MAX_UTC_WSEC = Time.MAX_INPUT_WSEC + Time.J1950TOJ1970;
+	private static final double MIN_UTC_WSEC = Time.J1950TOJ1970;
+
 	/** sleep interval (ms) for {@link #SW_WAIT}. */
 	private static final int SLEEP_INTERVAL_MS = 100;
 	private static final Debug TRACE_LOGGER = new Debug(RedhawkOptActivator.ID, corbareceiver.class.getSimpleName());
@@ -167,7 +171,7 @@ public class corbareceiver extends CorbaPrimitive implements IMidasDataWriter { 
 		this.frameSizeAttribute = this.MA.getL(A_FRAMESIZE, 0);
 		this.overrideSRISubSize = this.MA.getState(A_OVERRIDE_SRI_SUBSIZE, false);
 		this.blocking = this.MA.getState(SW_BLOCKING, false);
-		boolean unsignedOctet = MA.getState(SW_TREAT_OCTET_AS_UNSIGNED); 
+		boolean unsignedOctet = MA.getState(SW_TREAT_OCTET_AS_UNSIGNED);
 		this.canGrowPipe = MA.getState(SW_GROW_PIPE, true);
 		setPipeSizeMultiplier(MA.getL(SW_PS_MULTIPLIER, 4));
 
@@ -329,7 +333,7 @@ public class corbareceiver extends CorbaPrimitive implements IMidasDataWriter { 
 		double xdelta = 1.0;
 		if (overrideSampleDelta && this.is1000FromSRI) {
 			xdelta = sampleDelta;
-		} else if (sri.xdelta > 0) {
+		} else if (sri.xdelta > 0 && sri.xdelta <= Double.MAX_VALUE) { // ignore <= 0, Infinity and NaN
 			xdelta = sri.xdelta;
 		}
 		newOutputFile.setXStart(sri.xstart);
@@ -339,7 +343,7 @@ public class corbareceiver extends CorbaPrimitive implements IMidasDataWriter { 
 		double ydelta = 1.0;
 		if (overrideSampleDelta && !this.is1000FromSRI) {
 			ydelta = sampleDelta;
-		} else if (sri.ydelta > 0) {
+		} else if (sri.ydelta > 0 && sri.ydelta <= Double.MAX_VALUE) { // ignore <= 0, Infinity and NaN
 			ydelta = sri.ydelta;
 		}
 		newOutputFile.setYStart(sri.ystart);
@@ -441,7 +445,7 @@ public class corbareceiver extends CorbaPrimitive implements IMidasDataWriter { 
 		if (!blocking) {                      // === non-blocking option enabled ===
 			if (M.pipeMode == Midas.PPAUSE) { // 1. pipe is PAUSED
 				TRACE_LOGGER.message("Dropping packet b/c pipe is PAUSED");
-				return;                       // 1b. drop packet, as write would block 
+				return;                       // 1b. drop packet, as write would block
 			}
 			if (!this.canGrowPipe && localOutputFile.getPipeSize() < bufferSize) {
 				// PASS - let packet through even though this might block, otherwise no data will ever be written
@@ -452,13 +456,10 @@ public class corbareceiver extends CorbaPrimitive implements IMidasDataWriter { 
 			}
 		}
 
-		final Time midasTime;
-		if (time != null) {
-			midasTime = new Time(time.twsec + Time.J1970TOJ1950, time.tfsec);
-		} else {
-			midasTime = null;
+		if (time != null && time.twsec <= MAX_UTC_WSEC && time.twsec >= MIN_UTC_WSEC && time.tfsec <= MAX_UTC_WSEC && time.tfsec >= MIN_UTC_WSEC) {
+			Time midasTime = new Time(time.twsec + Time.J1970TOJ1950, time.tfsec);
+			localOutputFile.setTimeAt(midasTime);
 		}
-		localOutputFile.setTimeAt(midasTime);
 
 		byte[] byteBuffer = new byte[bufferSize];
 		Convert.ja2bb(dataArray, 0, type, byteBuffer, 0, localOutputFile.dataType, size);
@@ -635,7 +636,7 @@ public class corbareceiver extends CorbaPrimitive implements IMidasDataWriter { 
 		return retval;
 	}
 	
-	/** 
+	/**
 	 * Change output file's pipe size (immediately)
 	 * @param newValue new pipe size for output data file/pipe (in bytes)
 	 * @since 10.2

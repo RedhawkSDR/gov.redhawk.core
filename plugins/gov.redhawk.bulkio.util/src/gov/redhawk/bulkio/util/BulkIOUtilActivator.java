@@ -16,7 +16,9 @@ import gov.redhawk.sca.util.Debug;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -27,8 +29,12 @@ import java.util.concurrent.TimeoutException;
 import mil.jpeojtrs.sca.util.NamedThreadFactory;
 
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Plugin;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.core.runtime.preferences.DefaultScope;
+import org.eclipse.core.runtime.preferences.IEclipsePreferences;
+import org.eclipse.core.runtime.preferences.InstanceScope;
 import org.eclipse.jdt.annotation.NonNull;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceReference;
@@ -44,53 +50,57 @@ public class BulkIOUtilActivator extends Plugin {
 	// The plug-in ID
 	public static final String PLUGIN_ID = "gov.redhawk.bulkio.util"; //$NON-NLS-1$
 
+	/**
+	 * @since 2.0
+	 */
+	public static final String BULKIO_ORB_TYPE = "orbType";
+	/**
+	 * @since 2.0
+	 */
+	public static final String SYSTEM_PROPERTY_BULKIO_ORB_TYPE = "gov.redhawk.bulkio.orbType";
+
 	private static final ExecutorService EXECUTOR_POOL = Executors.newSingleThreadExecutor(new NamedThreadFactory(BulkIOUtilActivator.class.getName()));
-	private static final Debug DEBUG = new Debug(PLUGIN_ID, "PortFactory");
+	private static final Debug DEBUG = new Debug(BulkIOUtilActivator.PLUGIN_ID, "PortFactory");
 
 	// The shared instance
 	private static BulkIOUtilActivator plugin;
 
 	private ServiceTracker<IPortFactory, IPortFactory> portFactoryTracker;
 
-	private IPortFactory deligatingFactory = new IPortFactory() {
+	private final IPortFactory deligatingFactory = new IPortFactory() {
 
 		@Override
 		public PortReference connect(String connectionID, String portIor, BulkIOType type, updateSRIOperations handler) throws CoreException {
-			List<ServiceReference<IPortFactory>> refs = new ArrayList<ServiceReference<IPortFactory>>(Arrays.asList(portFactoryTracker.getServiceReferences()));
-			Collections.sort(refs);
+			IEclipsePreferences defaultNode = DefaultScope.INSTANCE.getNode(BulkIOUtilActivator.PLUGIN_ID);
+			IEclipsePreferences node = InstanceScope.INSTANCE.getNode(BulkIOUtilActivator.PLUGIN_ID);
+			String orbType = node.get(BulkIOUtilActivator.BULKIO_ORB_TYPE, defaultNode.get(BulkIOUtilActivator.BULKIO_ORB_TYPE, null));
 
-			String orbType = System.getProperty("gov.redhawk.bulkio.orbType", "default");
-
-			IPortFactory factory = null;
-			for (ServiceReference<IPortFactory> ref : refs) {
-				if (orbType.equals(ref.getProperty("orbType"))) {
-					factory = portFactoryTracker.getService(ref);
-					break;
-				}
+			if (System.getProperty(BulkIOUtilActivator.SYSTEM_PROPERTY_BULKIO_ORB_TYPE, null) != null) {
+				orbType = System.getProperty(BulkIOUtilActivator.SYSTEM_PROPERTY_BULKIO_ORB_TYPE, "default");
 			}
+
+			Map<String, IPortFactory> factories = getPortFactories();
+
+			IPortFactory factory = factories.get(orbType);
+
 			if (factory == null) {
-				if (DEBUG.enabled) {
-					DEBUG.trace("WARNING: No factory of type {0} using 'default'", orbType);
+				if (BulkIOUtilActivator.DEBUG.enabled) {
+					BulkIOUtilActivator.DEBUG.trace("WARNING: No factory of type {0} using 'default'", orbType);
 				}
 				orbType = "default";
-				for (ServiceReference<IPortFactory> ref : refs) {
-					if (orbType.equals(ref.getProperty("gov.redhawk.bulkio.orbType"))) {
-						factory = portFactoryTracker.getService(ref);
-						break;
-					}
-				}
+				factory = factories.get(orbType);
 			}
 			if (factory != null) {
-				if (DEBUG.enabled) {
-					DEBUG.message("DEBUG: Creating factory of type {0}", orbType);
+				if (BulkIOUtilActivator.DEBUG.enabled) {
+					BulkIOUtilActivator.DEBUG.message("DEBUG: Creating factory of type {0}", orbType);
 				}
 				PortReference retVal = factory.connect(connectionID, portIor, type, handler);
-				if (DEBUG.enabled) {
-					DEBUG.message("DEBUG: SUCCESS Created factory of type {0}", orbType);
+				if (BulkIOUtilActivator.DEBUG.enabled) {
+					BulkIOUtilActivator.DEBUG.message("DEBUG: SUCCESS Created factory of type {0}", orbType);
 				}
 				return retVal;
 			}
-			throw new CoreException(new Status(Status.ERROR, PLUGIN_ID, "No port factories available."));
+			throw new CoreException(new Status(IStatus.ERROR, BulkIOUtilActivator.PLUGIN_ID, "No port factories available."));
 		}
 	};
 
@@ -102,29 +112,31 @@ public class BulkIOUtilActivator extends Plugin {
 
 	/*
 	 * (non-Javadoc)
+	 * 
 	 * @see org.eclipse.ui.plugin.AbstractUIPlugin#start(org.osgi.framework.BundleContext)
 	 */
 	@Override
 	public void start(BundleContext context) throws Exception {
 		super.start(context);
-		plugin = this;
+		BulkIOUtilActivator.plugin = this;
 		portFactoryTracker = new ServiceTracker<IPortFactory, IPortFactory>(context, IPortFactory.class, null);
 		portFactoryTracker.open();
 	}
 
 	/*
 	 * (non-Javadoc)
+	 * 
 	 * @see org.eclipse.ui.plugin.AbstractUIPlugin#stop(org.osgi.framework.BundleContext)
 	 */
 	@Override
 	public void stop(BundleContext context) throws Exception {
 		super.stop(context);
-		plugin = null;
+		BulkIOUtilActivator.plugin = null;
 		if (portFactoryTracker != null) {
 			portFactoryTracker.close();
 			portFactoryTracker = null;
 		}
-		Future< ? > future = EXECUTOR_POOL.submit(new Runnable() {
+		Future< ? > future = BulkIOUtilActivator.EXECUTOR_POOL.submit(new Runnable() {
 
 			@Override
 			public void run() {
@@ -144,12 +156,25 @@ public class BulkIOUtilActivator extends Plugin {
 	}
 
 	/**
+	 * @since 2.0
+	 */
+	public Map<String, IPortFactory> getPortFactories() {
+		List<ServiceReference<IPortFactory>> refs = new ArrayList<ServiceReference<IPortFactory>>(Arrays.asList(portFactoryTracker.getServiceReferences()));
+		Collections.sort(refs);
+		Map<String, IPortFactory> retVal = new HashMap<String, IPortFactory>();
+		for (ServiceReference<IPortFactory> ref : refs) {
+			retVal.put(String.valueOf(ref.getProperty(BulkIOUtilActivator.BULKIO_ORB_TYPE)), portFactoryTracker.getService(ref));
+		}
+		return Collections.unmodifiableMap(retVal);
+	}
+
+	/**
 	 * Returns the shared instance
 	 *
 	 * @return the shared instance
 	 */
 	public static BulkIOUtilActivator getDefault() {
-		return plugin;
+		return BulkIOUtilActivator.plugin;
 	}
 
 	public static IBulkIOPortConnectionManager getBulkIOPortConnectionManager() {

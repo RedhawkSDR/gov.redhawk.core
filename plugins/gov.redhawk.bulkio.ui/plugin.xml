@@ -64,5 +64,14 @@
          </command>
       </menuContribution>
    </extension>
+   <extension
+         point="org.eclipse.ui.preferencePages">
+      <page
+            category="gov.redhawk.ui.preferences"
+            class="gov.redhawk.bulkio.ui.internal.BulkIOPreferencePage"
+            id="gov.redhawk.bulkio.ui.preferences"
+            name="BulkIO">
+      </page>
+   </extension>
 
 </plugin>

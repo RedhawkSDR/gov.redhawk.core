@@ -42,5 +42,11 @@
          </describer>
       </content-type>
    </extension>
+   <extension
+         point="org.eclipse.core.runtime.preferences">
+      <initializer
+            class="gov.redhawk.bulkio.util.internal.BulkIOUtilPreferenceInitializer">
+      </initializer>
+   </extension>
 
 </plugin>

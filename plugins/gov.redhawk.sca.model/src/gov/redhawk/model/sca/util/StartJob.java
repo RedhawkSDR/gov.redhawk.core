@@ -11,8 +11,12 @@
  */
 package gov.redhawk.model.sca.util;
 
-import gov.redhawk.model.sca.ScaModelPlugin;
+import java.util.concurrent.Callable;
 
+import gov.redhawk.model.sca.ScaModelPlugin;
+import mil.jpeojtrs.sca.util.CorbaUtils;
+
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
@@ -43,9 +47,23 @@ public class StartJob extends Job {
 	protected IStatus run(IProgressMonitor monitor) {
 		monitor.beginTask(getName(), IProgressMonitor.UNKNOWN);
 		try {
-			resource.start();
-		} catch (StartError e) {
-			return new Status(IStatus.ERROR, ScaModelPlugin.ID, "Failed to start: " + resourceName, e);
+			CorbaUtils.invoke(new Callable<Object>() {
+
+				public Object call() throws Exception {
+					try {
+						resource.start();
+					} catch (StartError e) {
+						throw new CoreException(new Status(IStatus.ERROR, ScaModelPlugin.ID, "Failed to start: " + resourceName, e));
+					}
+					return null;
+				}
+
+			}, monitor);
+
+		} catch (CoreException e) {
+			return e.getStatus();
+		} catch (InterruptedException e) {
+			return Status.CANCEL_STATUS;
 		} finally {
 			monitor.done();
 		}

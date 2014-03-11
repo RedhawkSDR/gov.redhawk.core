@@ -13,16 +13,22 @@
  *******************************************************************************/
 package gov.redhawk.sca.internal.ui.actions;
 
+import java.util.concurrent.Callable;
+
 import gov.redhawk.model.sca.IRefreshable;
 import gov.redhawk.model.sca.RefreshDepth;
 import gov.redhawk.sca.internal.ui.ScaContentTypeRegistry;
 import gov.redhawk.sca.ui.IScaEditorDescriptor;
 import gov.redhawk.sca.ui.ScaUiPlugin;
+import mil.jpeojtrs.sca.util.CorbaUtils;
 
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
+import org.eclipse.emf.edit.provider.ComposedAdapterFactory;
+import org.eclipse.emf.edit.provider.IItemLabelProvider;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.IWorkbenchPage;
@@ -55,6 +61,10 @@ public class OpenFileAction extends BaseSelectionListenerAction {
 
 	private Object selectObj;
 
+	private IScaEditorDescriptor descriptor;
+	
+	private ComposedAdapterFactory factory = new ComposedAdapterFactory(ComposedAdapterFactory.Descriptor.Registry.INSTANCE);
+
 	/**
 	 * Creates a new action that will open editors on the then-selected file 
 	 * resources. Equivalent to <code>OpenFileAction(page,null)</code>.
@@ -75,6 +85,7 @@ public class OpenFileAction extends BaseSelectionListenerAction {
 	public OpenFileAction(final IWorkbenchPage page, final IScaEditorDescriptor descriptor) {
 		super("&Open");
 		this.page = page;
+		this.descriptor = descriptor;
 		setText((descriptor == null) ? "&Open" : descriptor.getEditorDescriptor().getLabel());
 		setToolTipText("Edit File");
 		this.editorDescriptor = descriptor;
@@ -87,26 +98,40 @@ public class OpenFileAction extends BaseSelectionListenerAction {
 		}
 		if (this.selectObj instanceof IRefreshable) {
 			final IRefreshable refreshable = (IRefreshable) this.selectObj;
-			final Job job = new Job("Opening...") {
+			final Display display = page.getWorkbenchWindow().getShell().getDisplay();
+			
+			final Job job = new Job(getDescription()) {
 
 				@Override
 				protected IStatus run(final IProgressMonitor monitor) {
+					monitor.beginTask("Fetching state...", IProgressMonitor.UNKNOWN);
+					monitor.subTask("Refreshing...");
 					try {
-						refreshable.refresh(null, RefreshDepth.FULL);
-						Display display = page.getWorkbenchWindow().getShell().getDisplay();
-						if (display != null) {
-							final WorkbenchJob openJob = new WorkbenchJob(display, "Open") {
+						CorbaUtils.invoke(new Callable<Object>() {
 
-								@Override
-								public IStatus runInUIThread(final IProgressMonitor monitor) {
-									open();
-									return Status.OK_STATUS;
-								}
-							};
-							openJob.schedule();
-						}
-					} catch (final InterruptedException e) {
-						// PASS
+							public Object call() throws Exception {
+								refreshable.refresh(null, RefreshDepth.FULL);
+								return null;
+							}
+
+						}, monitor);
+					} catch (CoreException e) {
+						return e.getStatus();
+					} catch (InterruptedException e) {
+						return Status.CANCEL_STATUS;
+					}
+
+					if (display != null) {
+						monitor.subTask(getDescription());
+						final WorkbenchJob openJob = new WorkbenchJob(display, "Open ") {
+
+							@Override
+							public IStatus runInUIThread(final IProgressMonitor monitor) {
+								open();
+								return Status.OK_STATUS;
+							}
+						};
+						openJob.schedule();
 					}
 					return Status.OK_STATUS;
 				}
@@ -123,7 +148,7 @@ public class OpenFileAction extends BaseSelectionListenerAction {
 	private void open() {
 		try {
 			this.page.openEditor(this.editorDescriptor.getEditorInput(), this.editorDescriptor.getEditorDescriptor().getId(), true, IWorkbenchPage.MATCH_ID
-					| IWorkbenchPage.MATCH_INPUT);
+				| IWorkbenchPage.MATCH_INPUT);
 		} catch (final PartInitException e) {
 			StatusManager.getManager().handle(e, ScaUiPlugin.PLUGIN_ID);
 		}
@@ -134,7 +159,16 @@ public class OpenFileAction extends BaseSelectionListenerAction {
 		this.selectObj = selection.getFirstElement();
 		setImageDescriptor(null);
 		this.editorDescriptor = ScaContentTypeRegistry.INSTANCE.getScaEditorDescriptor(this.selectObj);
+		IItemLabelProvider lp = (IItemLabelProvider) factory.adapt(this.selectObj, IItemLabelProvider.class);
+		
 		setText("&Open");
+		setDescription("Open editor");
+		if (lp != null) {
+			String text = lp.getText(this.selectObj);
+			if (text != null) {
+				setDescription("Open editor on " + text);
+			}
+		}
 		setImageDescriptor(null);
 		if (this.editorDescriptor != null) {
 			setText(this.editorDescriptor.getEditorDescriptor().getLabel());

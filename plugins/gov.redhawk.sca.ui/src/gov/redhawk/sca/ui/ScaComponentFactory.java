@@ -11,20 +11,13 @@
  */
 package gov.redhawk.sca.ui;
 
-import gov.redhawk.model.sca.ScaAbstractProperty;
-import gov.redhawk.model.sca.ScaPackage;
 import gov.redhawk.model.sca.ScaSimpleProperty;
-import gov.redhawk.model.sca.ScaSimpleSequenceProperty;
-import gov.redhawk.model.sca.ScaStructProperty;
 import gov.redhawk.model.sca.ScaStructSequenceProperty;
-import gov.redhawk.model.sca.commands.ScaModelCommand;
 import gov.redhawk.model.sca.provider.ScaSimplePropertyItemProvider;
-import gov.redhawk.model.sca.util.ModelUtil;
 import gov.redhawk.sca.internal.ui.properties.StructFieldPropertyColumnLabelProvider;
 import gov.redhawk.sca.internal.ui.properties.StructFieldPropertyEditingSupport;
 import gov.redhawk.sca.ui.compatibility.ColumnViewerToolTipSupport;
 import gov.redhawk.sca.ui.compatibility.CompatibilityUtil;
-import gov.redhawk.sca.ui.properties.AbstractPropertyEditingSupport;
 import gov.redhawk.sca.ui.properties.ScaPropertiesContentProvider;
 
 import java.util.ArrayList;
@@ -35,41 +28,19 @@ import mil.jpeojtrs.sca.prf.Simple;
 import mil.jpeojtrs.sca.util.AnyUtils;
 
 import org.eclipse.emf.common.notify.AdapterFactory;
-import org.eclipse.jface.action.Action;
-import org.eclipse.jface.action.IMenuListener;
-import org.eclipse.jface.action.IMenuManager;
-import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.layout.TableColumnLayout;
-import org.eclipse.jface.layout.TreeColumnLayout;
 import org.eclipse.jface.viewers.ArrayContentProvider;
-import org.eclipse.jface.viewers.CheckboxTreeViewer;
 import org.eclipse.jface.viewers.ColumnPixelData;
-import org.eclipse.jface.viewers.ColumnViewerEditorActivationEvent;
-import org.eclipse.jface.viewers.ColumnViewerEditorActivationListener;
-import org.eclipse.jface.viewers.ColumnViewerEditorDeactivationEvent;
 import org.eclipse.jface.viewers.ComboViewer;
-import org.eclipse.jface.viewers.ISelectionChangedListener;
-import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.LabelProvider;
-import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TableViewerColumn;
-import org.eclipse.jface.viewers.TreeColumnViewerLabelProvider;
 import org.eclipse.jface.viewers.TreeViewer;
-import org.eclipse.jface.viewers.TreeViewerColumn;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.viewers.ViewerComparator;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.SelectionAdapter;
-import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.graphics.Font;
-import org.eclipse.swt.graphics.FontData;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Display;
-import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.Tree;
-import org.eclipse.ui.ISharedImages;
-import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetWidgetFactory;
 
 /**
@@ -99,10 +70,7 @@ public final class ScaComponentFactory {
 	 * @since 9.0
 	 */
 	public static TreeViewer createPropertyTable(final Composite parent, final int style, final AdapterFactory adapterFactory) {
-		final TreeColumnLayout layout = new TreeColumnLayout();
-		parent.setLayout(layout);
-		final Tree tree = new Tree(parent, style | SWT.FULL_SELECTION);
-		return ScaComponentFactory.createPropertyTreeViewer(tree, adapterFactory, layout);
+		return new ScaPropertiesViewer(parent, SWT.None, style | SWT.H_SCROLL | SWT.V_SCROLL | SWT.FULL_SELECTION | SWT.SINGLE, adapterFactory).getViewer();
 	}
 
 	/**
@@ -110,226 +78,11 @@ public final class ScaComponentFactory {
 	 */
 	public static TreeViewer createPropertyTable(final TabbedPropertySheetWidgetFactory widgetFactory, final Composite parent, final int style,
 		final AdapterFactory adapterFactory) {
-		final TreeColumnLayout layout = new TreeColumnLayout();
-		parent.setLayout(layout);
-		final Tree tree = widgetFactory.createTree(parent, style | SWT.FULL_SELECTION);
-		return ScaComponentFactory.createPropertyTreeViewer(tree, adapterFactory, layout);
-	}
-
-	private static TreeViewer createPropertyTreeViewer(final Tree tree, final AdapterFactory adapterFactory, final TreeColumnLayout layout) {
-		final TreeViewer viewer;
-		if ((SWT.CHECK & tree.getStyle()) == SWT.CHECK) {
-			viewer = new CheckboxTreeViewer(tree);
-		} else {
-			viewer = new TreeViewer(tree);
-		}
-		viewer.getTree().setHeaderVisible(true);
-		viewer.getTree().setLinesVisible(true);
-
-		ColumnViewerToolTipSupport.enableFor(viewer);
-		final Action revert = new Action("Revert to default") {
-			@Override
-			public void run() {
-				final IStructuredSelection ss = (IStructuredSelection) viewer.getSelection();
-				for (final Object o : ss.toList()) {
-					if (o instanceof ScaAbstractProperty< ? >) {
-						final ScaAbstractProperty< ? > prop = (ScaAbstractProperty< ? >) o;
-						ScaModelCommand.execute(prop, new ScaModelCommand() {
-							@Override
-							public void execute() {
-								prop.restoreDefaultValue();
-							}
-						});
-					}
-				}
-				viewer.refresh();
-				viewer.setSelection(viewer.getSelection());
-			}
-		};
-
-		viewer.getColumnViewerEditor().addEditorActivationListener(new ColumnViewerEditorActivationListener() {
-
-			@Override
-			public void beforeEditorDeactivated(final ColumnViewerEditorDeactivationEvent event) {
-
-			}
-
-			@Override
-			public void beforeEditorActivated(final ColumnViewerEditorActivationEvent event) {
-
-			}
-
-			@Override
-			public void afterEditorDeactivated(final ColumnViewerEditorDeactivationEvent event) {
-				if (event.eventType == ColumnViewerEditorDeactivationEvent.EDITOR_SAVED) {
-					viewer.refresh();
-					viewer.setSelection(viewer.getSelection());
-				}
-			}
-
-			@Override
-			public void afterEditorActivated(final ColumnViewerEditorActivationEvent event) {
-
-			}
-		});
-
-		revert.setImageDescriptor(PlatformUI.getWorkbench().getSharedImages().getImageDescriptor(ISharedImages.IMG_TOOL_UNDO));
-		revert.setDisabledImageDescriptor(PlatformUI.getWorkbench().getSharedImages().getImageDescriptor(ISharedImages.IMG_TOOL_UNDO_DISABLED));
-
-		viewer.addSelectionChangedListener(new ISelectionChangedListener() {
-
-			@Override
-			public void selectionChanged(final SelectionChangedEvent event) {
-				if (event.getSelection() instanceof IStructuredSelection) {
-					final IStructuredSelection ss = (IStructuredSelection) event.getSelection();
-					boolean enabled = true;
-					for (final Object o : ss.toList()) {
-						if (o instanceof ScaAbstractProperty< ? >) {
-							final ScaAbstractProperty< ? > prop = (ScaAbstractProperty< ? >) o;
-							enabled = !prop.isDefaultValue() && ModelUtil.isSettable(prop);
-						} else {
-							enabled = false;
-						}
-						if (!enabled) {
-							break;
-						}
-					}
-					revert.setEnabled(enabled);
-				}
-			}
-		});
-
-		final MenuManager menuMgr = new MenuManager("#Popup");
-		menuMgr.setRemoveAllWhenShown(true);
-		menuMgr.addMenuListener(new IMenuListener() {
-
-			@Override
-			public void menuAboutToShow(final IMenuManager manager) {
-				manager.add(revert);
-			}
-		});
-		final Menu menu = menuMgr.createContextMenu(viewer.getTree());
-		viewer.getTree().setMenu(menu);
-
-		//		this.viewer.getColumnViewerEditor().addEditorActivationListener(this.listener);
-		final ScaPropertiesContentProvider contentProvider = new ScaPropertiesContentProvider(adapterFactory);
-		viewer.setContentProvider(contentProvider);
-
-		viewer.setComparator(new PropertyViewerComparator());
-		viewer.getTree().setSortDirection(SWT.UP);
-
-		final FontData[] fontData = viewer.getControl().getFont().getFontData();
-		for (final FontData d : fontData) {
-			CompatibilityUtil.setFontDataStyle(d, SWT.BOLD);
-		}
-		final Font nonDefaultFont = new Font(Display.getCurrent(), fontData);
-		final ScaModelAdapterFactoryLabelProvider baseLabelProvider = new ScaModelAdapterFactoryLabelProvider(adapterFactory, viewer) {
-			@Override
-			public Font getFont(final Object object, final int columnIndex) {
-				return getFont(object);
-			}
-
-			@Override
-			public Font getFont(final Object object) {
-				if (object instanceof ScaAbstractProperty< ? >) {
-					final ScaAbstractProperty< ? > property = (ScaAbstractProperty< ? >) object;
-					if (ModelUtil.isSettable(property) && !property.isDefaultValue()) {
-						return nonDefaultFont;
-					}
-				}
-				return super.getFont(object);
-			}
-
-			@Override
-			public void dispose() {
-				nonDefaultFont.dispose();
-				super.dispose();
-			}
-		};
-		viewer.setLabelProvider(baseLabelProvider);
-
-		final TreeColumnViewerLabelProvider lp = new TreeColumnViewerLabelProvider(baseLabelProvider) {
-			@Override
-			public String getToolTipText(final Object element) {
-				final ScaAbstractProperty< ? > prop = (ScaAbstractProperty< ? >) element;
-				if (prop.getDefinition() == null) {
-					return null;
-				}
-				String retVal = prop.getDescription();
-				if (prop instanceof ScaSimpleProperty) {
-					final String typeString = "< " + ((ScaSimpleProperty) prop).getDefinition().getType().getLiteral() + " >";
-					if (retVal == null) {
-						retVal = typeString;
-					} else {
-						retVal = typeString + "\n" + retVal;
-					}
-				} else if (prop instanceof ScaSimpleSequenceProperty) {
-					final String typeString = "< " + ((ScaSimpleSequenceProperty) prop).getDefinition().getType().getLiteral() + " >";
-					if (retVal == null) {
-						retVal = typeString;
-					} else {
-						retVal = typeString + "\n" + retVal;
-					}
-				}
-				return retVal;
-			}
-
-			@Override
-			public int getToolTipDisplayDelayTime(final Object object) {
-				return 100;
-			}
-
-			@Override
-			public int getToolTipTimeDisplayed(final Object object) {
-				return 5000;
-			}
-		};
-		TreeViewerColumn column = new TreeViewerColumn(viewer, SWT.None);
-		viewer.getTree().setSortColumn(column.getColumn());
-		column.getColumn().setMoveable(false);
-		column.getColumn().setResizable(true);
-		column.getColumn().setText("Property");
-		layout.setColumnData(column.getColumn(), new ColumnPixelData(250, column.getColumn().getResizable()));
-		column.setLabelProvider(lp);
-		column.getColumn().addSelectionListener(new SelectionAdapter() {
-
-			@Override
-			public void widgetSelected(final SelectionEvent e) {
-				final Tree tree = viewer.getTree();
-				if (tree.getSortDirection() == SWT.UP) {
-					tree.setSortDirection(SWT.DOWN);
-				} else {
-					tree.setSortDirection(SWT.UP);
-				}
-				viewer.refresh();
-			}
-		});
-
-		column = new TreeViewerColumn(viewer, SWT.None);
-		column.getColumn().setMoveable(false);
-		column.getColumn().setResizable(true);
-		column.getColumn().setText("Value");
-		layout.setColumnData(column.getColumn(), new ColumnPixelData(50, column.getColumn().getResizable()));
-		column.setLabelProvider(lp);
-		column.setEditingSupport(new AbstractPropertyEditingSupport(viewer, contentProvider) {
-
-			@Override
-			protected Object getPropertyID(final Object object) {
-				if (object instanceof ScaSimpleProperty) {
-					return ScaPackage.Literals.SCA_SIMPLE_PROPERTY__VALUE.getName();
-				} else if (object instanceof ScaSimpleSequenceProperty) {
-					return ScaPackage.Literals.SCA_SIMPLE_SEQUENCE_PROPERTY__VALUES.getName();
-				} else if (object instanceof ScaStructProperty) {
-					return ScaPackage.Literals.SCA_STRUCT_PROPERTY__SIMPLES.getName();
-				} else if (object instanceof ScaStructSequenceProperty) {
-					return ScaPackage.Literals.SCA_STRUCT_SEQUENCE_PROPERTY__STRUCTS.getName();
-				}
-				return null;
-			}
-
-		});
-
-		return viewer;
+		ScaPropertiesViewer viewer = new ScaPropertiesViewer(parent, SWT.None, style | widgetFactory.getOrientation() | widgetFactory.getBorderStyle()
+			| SWT.H_SCROLL | SWT.V_SCROLL | SWT.FULL_SELECTION | SWT.SINGLE, adapterFactory);
+		widgetFactory.adapt(viewer);
+		widgetFactory.adapt(viewer.getViewer().getControl(), false, false);
+		return viewer.getViewer();
 	}
 
 	/**

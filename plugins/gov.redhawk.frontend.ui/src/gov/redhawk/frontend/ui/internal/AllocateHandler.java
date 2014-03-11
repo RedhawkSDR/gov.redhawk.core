@@ -15,6 +15,7 @@ import gov.redhawk.frontend.TunerContainer;
 import gov.redhawk.frontend.TunerStatus;
 import gov.redhawk.frontend.UnallocatedTunerContainer;
 import gov.redhawk.frontend.ui.wizard.TunerAllocationWizard;
+import gov.redhawk.sca.util.PluginUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -74,7 +75,7 @@ public class AllocateHandler extends AbstractHandler implements IHandler {
 	private TunerStatus[] getUnallocatedTunersOfType(TunerContainer container, String tunerType) {
 		List<TunerStatus> tuners = new ArrayList<TunerStatus>();
 		for (TunerStatus tuner : container.getTunerStatus()) {
-			if ((tuner.getAllocationID() == null || tuner.getAllocationID().length() == 0) && tuner.getTunerType().equals(tunerType)) {
+			if ((tuner.getAllocationID() == null || tuner.getAllocationID().length() == 0) && PluginUtil.equals(tuner.getTunerType(), tunerType)) {
 				tuners.add(tuner);
 			}
 		}

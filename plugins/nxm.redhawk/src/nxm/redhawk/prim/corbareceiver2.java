@@ -80,6 +80,10 @@ public class corbareceiver2 extends CorbaPrimitive implements IMidasDataWriter {
 	/** sleep interval (milliseconds) for {@link #SW_WAIT}. */
 	private static final int SLEEP_INTERVAL = 100;
 
+	/** max seconds allowed since UTC (J1950) */
+	private static final double MAX_UTC_WSEC = Time.MAX_INPUT_WSEC + Time.J1950TOJ1970;
+	private static final double MIN_UTC_WSEC = Time.J1950TOJ1970;
+
 	/** the output file to write to */
 	private volatile DataFile outputFile = null;
 	private FileName fileName;
@@ -266,7 +270,7 @@ public class corbareceiver2 extends CorbaPrimitive implements IMidasDataWriter {
 		final boolean overrideSampleDelta = (this.sampleRate > 0);
 		if (overrideSampleDelta && noSubSizeFromSRI) {
 			xdelta = sampleDelta;
-		} else if (sri.xdelta > 0) {
+		} else if (sri.xdelta > 0 && sri.xdelta <= Double.MAX_VALUE) { // ignore <= 0, Infinity and NaN
 			xdelta = sri.xdelta;
 		} else {
 			xdelta = 1.0;
@@ -282,7 +286,7 @@ public class corbareceiver2 extends CorbaPrimitive implements IMidasDataWriter {
 		double ydelta;
 		if (overrideSampleDelta && !noSubSizeFromSRI) {
 			ydelta = sampleDelta;
-		} else if (sri.ydelta > 0) {
+		} else if (sri.ydelta > 0 && sri.ydelta <= Double.MAX_VALUE) { // ignore <= 0, Infinity and NaN
 			ydelta = sri.ydelta;
 		} else {
 			ydelta = 1.0;
@@ -357,8 +361,8 @@ public class corbareceiver2 extends CorbaPrimitive implements IMidasDataWriter {
 		final int bufferSize = Data.getBPS(type) * size; // size of data to write in bytes
 		if (this.canGrowPipe && localOutputFile.getPipeSize() < bufferSize) { // increase pipe size if allowed (ticket #1554)
 			if (corbareceiver2.TRACE_LOGGER.enabled) {
-				corbareceiver2.TRACE_LOGGER.message("{0}: scheduling pipe size increase from {1} to ({2} x {3}) bytes for {4}", getID(),
-					localOutputFile.getPipeSize(), this.pipeSizeMultiplier, bufferSize, this.outputFile);
+				corbareceiver2.TRACE_LOGGER.message("{0}: scheduling pipe size increase from {1} to ({2} x {3}) bytes for {4}",
+					getID(), localOutputFile.getPipeSize(), this.pipeSizeMultiplier, bufferSize, this.outputFile);
 			}
 			this.newPipeSize = bufferSize * this.pipeSizeMultiplier; // this change will be picked up in the process() method
 		}
@@ -376,13 +380,10 @@ public class corbareceiver2 extends CorbaPrimitive implements IMidasDataWriter {
 			}
 		}
 
-		final Time midasTime;
-		if (time != null) {
-			midasTime = new Time(time.twsec + Time.J1970TOJ1950, time.tfsec);
-		} else {
-			midasTime = null;
+		if (time != null && time.twsec <= MAX_UTC_WSEC && time.twsec >= MIN_UTC_WSEC && time.tfsec <= MAX_UTC_WSEC && time.tfsec >= MIN_UTC_WSEC) {
+			Time midasTime = new Time(time.twsec + Time.J1970TOJ1950, time.tfsec);
+			localOutputFile.setTimeAt(midasTime);
 		}
-		localOutputFile.setTimeAt(midasTime);
 
 		byte[] byteBuffer = new byte[bufferSize];
 		Convert.ja2bb(dataArray, 0, type, byteBuffer, 0, localOutputFile.dataType, size);
@@ -403,13 +404,13 @@ public class corbareceiver2 extends CorbaPrimitive implements IMidasDataWriter {
 		}
 		final double sampleDelta; // zero will be ignored (not used)
 		if (sri.subsize > 1) { // type 2000 stream
-			if (sri.ydelta > 0) {
+			if (sri.ydelta > 0 && sri.ydelta <= Double.MAX_VALUE) { // ignore <= 0, Infinity and NaN
 				sampleDelta = 1 / sri.ydelta;
 			} else {
 				sampleDelta = 1.0;
 			}
 		} else { // type 1000 stream
-			if (sri.xdelta > 0) {
+			if (sri.xdelta > 0 && sri.xdelta <= Double.MAX_VALUE) { // ignore <= 0, Infinity and NaN
 				sampleDelta = 1 / sri.xdelta;
 			} else {
 				sampleDelta = 1.0;

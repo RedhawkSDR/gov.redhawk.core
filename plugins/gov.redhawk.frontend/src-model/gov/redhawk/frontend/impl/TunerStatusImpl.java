@@ -400,7 +400,7 @@ public class TunerStatusImpl extends MinimalEObjectImpl.Container implements Tun
 	 * @generated
 	 * @ordered
 	 */
-	protected static final long REFERENCE_SOURCE_EDEFAULT = 0L;
+	protected static final int REFERENCE_SOURCE_EDEFAULT = 0;
 
 	/**
 	 * The cached value of the '{@link #getReferenceSource() <em>Reference Source</em>}' attribute.
@@ -410,7 +410,7 @@ public class TunerStatusImpl extends MinimalEObjectImpl.Container implements Tun
 	 * @generated
 	 * @ordered
 	 */
-	protected long referenceSource = REFERENCE_SOURCE_EDEFAULT;
+	protected int referenceSource = REFERENCE_SOURCE_EDEFAULT;
 
 	/**
 	 * This is true if the Reference Source attribute has been set.
@@ -1108,7 +1108,7 @@ public class TunerStatusImpl extends MinimalEObjectImpl.Container implements Tun
 	 * @generated
 	 */
 	@Override
-	public long getReferenceSource() {
+	public int getReferenceSource() {
 		return referenceSource;
 	}
 
@@ -1117,9 +1117,8 @@ public class TunerStatusImpl extends MinimalEObjectImpl.Container implements Tun
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	@Override
-	public void setReferenceSource(long newReferenceSource) {
-		long oldReferenceSource = referenceSource;
+	public void setReferenceSource(int newReferenceSource) {
+		int oldReferenceSource = referenceSource;
 		referenceSource = newReferenceSource;
 		boolean oldReferenceSourceESet = referenceSourceESet;
 		referenceSourceESet = true;
@@ -1135,7 +1134,7 @@ public class TunerStatusImpl extends MinimalEObjectImpl.Container implements Tun
 	 */
 	@Override
 	public void unsetReferenceSource() {
-		long oldReferenceSource = referenceSource;
+		int oldReferenceSource = referenceSource;
 		boolean oldReferenceSourceESet = referenceSourceESet;
 		referenceSource = REFERENCE_SOURCE_EDEFAULT;
 		referenceSourceESet = false;
@@ -1381,7 +1380,7 @@ public class TunerStatusImpl extends MinimalEObjectImpl.Container implements Tun
 			setAgc((Boolean) newValue);
 			return;
 		case FrontendPackage.TUNER_STATUS__REFERENCE_SOURCE:
-			setReferenceSource((Long) newValue);
+			setReferenceSource((Integer) newValue);
 			return;
 		case FrontendPackage.TUNER_STATUS__DEVICE_CONTROL:
 			setDeviceControl((Boolean) newValue);

@@ -78,7 +78,7 @@ public class ScaEventChannelItemProvider extends CorbaObjWrapperItemProvider imp
 		itemPropertyDescriptors.add(createItemPropertyDescriptor(((ComposeableAdapterFactory) adapterFactory).getRootAdapterFactory(), getResourceLocator(),
 			getString("_UI_ScaEventChannel_name_feature"),
 			getString("_UI_PropertyDescriptor_description", "_UI_ScaEventChannel_name_feature", "_UI_ScaEventChannel_type"),
-			ScaPackage.Literals.SCA_EVENT_CHANNEL__NAME, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
+			ScaPackage.Literals.SCA_EVENT_CHANNEL__NAME, false, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
 	}
 
 	/**

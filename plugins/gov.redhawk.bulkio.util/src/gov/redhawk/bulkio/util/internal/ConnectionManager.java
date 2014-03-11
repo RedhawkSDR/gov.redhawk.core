@@ -14,8 +14,9 @@ import gov.redhawk.bulkio.util.AbstractBulkIOPort;
 import gov.redhawk.bulkio.util.BulkIOType;
 import gov.redhawk.bulkio.util.IBulkIOPortConnectionManager;
 
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jdt.annotation.NonNullByDefault;
@@ -30,28 +31,51 @@ import BULKIO.updateSRIOperations;
 public enum ConnectionManager implements IBulkIOPortConnectionManager {
 	INSTANCE;
 
-	private Map<ConnectionKey, Connection> connections = new ConcurrentHashMap<ConnectionKey, Connection>();
+	private List<Connection> connections = Collections.synchronizedList(new ArrayList<Connection>());
 
 	@Override
 	public String connect(String ior, BulkIOType type, updateSRIOperations internalPort) throws CoreException {
 		return connect(ior, type, internalPort, null);
 	}
 
+	@Nullable
+	private Connection getConnection(final String ior, final BulkIOType type, @Nullable final String connectionID) {
+		synchronized (connections) {
+			for (Connection c : connections) {
+				String connectIor = c.getIor();
+				BulkIOType connectBulkIO = c.getBulkIOType();
+				String connectConnectionId = c.getConnectionId();
+				boolean isGenerated = c.isGeneratedID();
+				if (connectIor.equals(ior) && connectBulkIO.equals(type)) {
+					if (connectionID == null) {
+						if (isGenerated) {
+							return c;
+						}
+					} else {
+						if (connectionID.equals(connectConnectionId)) {
+							return c;
+						}
+					}
+				}
+			}
+		}
+		return null;
+	}
+
 	@Override
 	public String connect(final String ior, final BulkIOType type, final updateSRIOperations internalPort, @Nullable final String connectionID)
-		throws CoreException {
+			throws CoreException {
 		if (ior == null || internalPort == null) {
 			throw new IllegalArgumentException("Null ior or port implemention.");
 		}
-		ConnectionKey key = new ConnectionKey(ior, type, connectionID);
 		boolean initConnection = false;
 		Connection connection;
-		synchronized (this) {
-			connection = connections.get(key);
+		synchronized (connections) {
+			connection = getConnection(ior, type, connectionID);
 			if (connection == null) {
 				initConnection = true;
-				connection = new Connection(key); // create stub
-				connections.put(key, connection);
+				connection = new Connection(ior, type, connectionID); // create stub
+				connections.add(connection);
 			}
 			connection.registerDataReceiver(internalPort);
 		}
@@ -72,14 +96,13 @@ public enum ConnectionManager implements IBulkIOPortConnectionManager {
 		if (ior == null || internalPort == null) {
 			return;
 		}
-		ConnectionKey key = new ConnectionKey(ior, type, connectionID);
-		Connection connection = connections.get(key);
+		Connection connection = getConnection(ior, type, connectionID);
 		boolean disposeConnection = false;
 		if (connection != null) {
-			synchronized (this) {
+			synchronized (connections) {
 				connection.deregisterDataReceiver(internalPort);
 				if (connection.isEmpty()) {
-					connections.remove(key);
+					connections.remove(connection);
 					disposeConnection = true;
 				}
 			}
@@ -90,21 +113,25 @@ public enum ConnectionManager implements IBulkIOPortConnectionManager {
 		}
 	}
 
+	@Nullable
 	@Override
 	public AbstractBulkIOPort getExternalPort(String ior, BulkIOType type) {
 		return getExternalPort(ior, type, null);
 	}
 
+	@Nullable
 	@Override
 	public AbstractBulkIOPort getExternalPort(String ior, BulkIOType type, @Nullable String connectionID) {
-		ConnectionKey key = new ConnectionKey(ior, type, connectionID);
-		return connections.get(key);
+		Connection retVal = getConnection(ior, type, connectionID);
+		return retVal;
 	}
 
-	public synchronized void dispose() {
-		for (Connection connection : connections.values()) {
-			connection.dispose();
+	public void dispose() {
+		synchronized (connections) {
+			for (Connection connection : connections) {
+				connection.dispose();
+			}
+			connections.clear();
 		}
-		connections.clear();
 	}
 }

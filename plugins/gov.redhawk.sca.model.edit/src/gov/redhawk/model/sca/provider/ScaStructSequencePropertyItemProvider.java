@@ -42,7 +42,7 @@ import org.eclipse.emf.edit.provider.ViewerNotification;
 /**
  * This is the item provider adapter for a {@link gov.redhawk.model.sca.ScaStructSequenceProperty} object.
  * <!-- begin-user-doc -->
- *  @since 9.0
+ * @since 9.0
  * <!-- end-user-doc -->
  * @generated
  */

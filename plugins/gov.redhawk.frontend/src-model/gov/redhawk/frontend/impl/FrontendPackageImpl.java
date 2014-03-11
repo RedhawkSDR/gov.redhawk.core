@@ -582,7 +582,7 @@ public class FrontendPackageImpl extends EPackageImpl implements FrontendPackage
 			IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getTunerStatus_Agc(), theEcorePackage.getEBoolean(), "agc", null, 0, 1, TunerStatus.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE,
 			IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEAttribute(getTunerStatus_ReferenceSource(), theEcorePackage.getELong(), "referenceSource", null, 0, 1, TunerStatus.class, !IS_TRANSIENT,
+		initEAttribute(getTunerStatus_ReferenceSource(), theEcorePackage.getEInt(), "referenceSource", null, 0, 1, TunerStatus.class, !IS_TRANSIENT,
 			!IS_VOLATILE, IS_CHANGEABLE, IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getTunerStatus_DeviceControl(), theEcorePackage.getEBoolean(), "deviceControl", null, 0, 1, TunerStatus.class, !IS_TRANSIENT,
 			!IS_VOLATILE, IS_CHANGEABLE, IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);

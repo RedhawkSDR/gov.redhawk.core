@@ -101,6 +101,12 @@ public class FrontEndDataProvider extends AbstractDataProvider {
 			}
 			if (msg.getNotifier() instanceof ScaDevice< ? >) {
 				switch (msg.getFeatureID(ScaDevice.class)) {
+				case ScaPackage.SCA_DEVICE__DISPOSED:
+					if (msg.getNewBooleanValue()) {
+						removeTunerContainer();
+						((Notifier) msg.getNotifier()).eAdapters().remove(this);
+					}
+					break;
 				case ScaPackage.SCA_DEVICE__PROPERTIES:
 					updateTunerContainer();
 					break;
@@ -220,7 +226,7 @@ public class FrontEndDataProvider extends AbstractDataProvider {
 	}
 
 	private void updateTunerContainer() {
-		if (!supportsFei) {
+		if (!supportsFei || device.isDisposed()) {
 			removeTunerContainer();
 			return;
 		}
@@ -254,7 +260,7 @@ public class FrontEndDataProvider extends AbstractDataProvider {
 				removed.setTunerStatusStruct(null);
 			}
 		}
- 
+
 		// Add new
 		for (int i = 0; i < numAdd; i++) {
 			final TunerStatus tuner = FrontendFactory.eINSTANCE.createTunerStatus();
@@ -266,11 +272,14 @@ public class FrontEndDataProvider extends AbstractDataProvider {
 		// Update all
 		for (int i = 0; i < container.getTunerStatus().size(); i++) {
 			TunerStatus tuner = container.getTunerStatus().get(i);
-			tuner.setTunerStatusStruct(prop.getStructs().get(i));
-			updateAllocationListeners(tuner);
-			for (ScaSimpleProperty simple : tuner.getSimples()) {
-				TunerStatusAllocationProperties.setValue(tuner, simple);
+			if (tuner.getTunerStatusStruct() != prop.getStructs().get(i)) {
+				tuner.setTunerStatusStruct(prop.getStructs().get(i));
 			}
+			for (ScaSimpleProperty simple : tuner.getSimples()) {
+				TunerStatusAllocationProperties statusProp = TunerStatusAllocationProperties.fromPropID(simple.getId());
+				TunerStatusAllocationProperties.updateTunerStatusValue(tuner, statusProp, simple.getValue());
+			}
+			updateAllocationListeners(tuner);
 			boolean allocated = tuner.isAllocated();
 			if (!allocated) {
 				int current;
@@ -280,26 +289,26 @@ public class FrontEndDataProvider extends AbstractDataProvider {
 					current = 0;
 				}
 				tunerTypeMap.put(tuner.getTunerType(), current + 1);
-			} 
+			}
 		}
-		
+
 		Map<String, UnallocatedTunerContainer> current = new HashMap<String, UnallocatedTunerContainer>();
 		for (UnallocatedTunerContainer c : container.getUnallocatedContainer()) {
 			current.put(c.getTunerType(), c);
 		}
-		
+
 		Map<String, UnallocatedTunerContainer> remove = new HashMap<String, UnallocatedTunerContainer>(current);
-		
+
 		Map<String, UnallocatedTunerContainer> newItems = new HashMap<String, UnallocatedTunerContainer>();
 		for (String s : tunerTypeMap.keySet()) {
 			UnallocatedTunerContainer newC = FrontendFactory.eINSTANCE.createUnallocatedTunerContainer();
 			newC.setTunerType(s);
 			newItems.put(s, newC);
 		}
-		
+
 		remove.keySet().removeAll(newItems.keySet());
 		newItems.keySet().removeAll(current.keySet());
-		
+
 		for (UnallocatedTunerContainer i : container.getUnallocatedContainer()) {
 			Integer count = tunerTypeMap.get(i.getTunerType());
 			if (count == null) {
@@ -307,7 +316,7 @@ public class FrontEndDataProvider extends AbstractDataProvider {
 			}
 			i.setCount(count);
 		}
-		
+
 		if (!remove.isEmpty()) {
 			container.getUnallocatedContainer().removeAll(remove.values());
 		}

@@ -21,7 +21,6 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.jface.action.Action;
-import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.ui.ISources;
@@ -36,32 +35,14 @@ import org.eclipse.ui.statushandlers.StatusManager;
 public class FrontendAction extends Action {
 
 	private FrontendSection section;
-	private String actionName;
-	private String actionId;
 	private String commandId;
-	private ImageDescriptor imageDescriptor;
 
 	public FrontendAction(FrontendSection theSection, String theActionName, String theActionId, String theCommandId, String iconPath) {
 		section = theSection;
-		actionName = theActionName;
-		actionId = theActionId;
 		commandId = theCommandId;
-		imageDescriptor = AbstractUIPlugin.imageDescriptorFromPlugin(FrontEndUIActivator.PLUGIN_ID, iconPath);
-	}
-
-	@Override
-	public String getId() {
-		return actionId;
-	}
-
-	@Override
-	public ImageDescriptor getImageDescriptor() {
-		return imageDescriptor;
-	}
-
-	@Override
-	public String getText() {
-		return actionName;
+		setImageDescriptor(AbstractUIPlugin.imageDescriptorFromPlugin(FrontEndUIActivator.PLUGIN_ID, iconPath));
+		setId(theActionId);
+		setText(theActionName);
 	}
 
 	@Override
@@ -90,5 +71,9 @@ public class FrontendAction extends Action {
 			StatusManager.getManager().handle(new Status(IStatus.ERROR, FrontEndUIActivator.PLUGIN_ID, "Action failed", e),
 				StatusManager.SHOW | StatusManager.LOG);
 		}
+	}
+	
+	protected FrontendSection getSection() {
+		return section;
 	}
 }

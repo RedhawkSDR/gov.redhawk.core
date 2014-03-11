@@ -38,7 +38,7 @@ import org.eclipse.emf.edit.provider.ViewerNotification;
 /**
  * This is the item provider adapter for a {@link gov.redhawk.model.sca.ScaDomainManagerRegistry} object.
  * <!-- begin-user-doc -->
- *  @since 6.0
+ * @since 6.0
  * <!-- end-user-doc -->
  * @generated
  */

@@ -40,6 +40,9 @@ public enum TunerUtils {
 	}
 
 	public static String getControlId(TunerStatus tuner) {
+		if (tuner == null) {
+			return null;
+		}
 		String id = tuner.getAllocationID();
 		if (id == null) {
 			return null;
