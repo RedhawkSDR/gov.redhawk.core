@@ -626,12 +626,14 @@ public abstract class CorbaObjWrapperImpl< T extends org.omg.CORBA.Object > exte
 			result.append("<unset>");
 		}
 		result.append(", obj: ");
+		//NOTE: DO NOT DO TO STRING on a CORBA Object, this is a potentially blocking operation.  Just return if the value is set
 		if (objESet) {
 			result.append("<set>");
 		} else {
 			result.append("<unset>");
 		}
 		result.append(", corbaObj: ");
+		// NOTE: DO NOT DO TO STRING on a CORBA Object, this is a potentially blocking operation.  Just return if the value is set
 		if (corbaObjESet) {
 			result.append("<set>");
 		} else {
