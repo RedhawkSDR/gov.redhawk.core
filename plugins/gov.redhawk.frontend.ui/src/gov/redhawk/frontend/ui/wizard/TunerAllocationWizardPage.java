@@ -606,7 +606,6 @@ public class TunerAllocationWizardPage extends WizardPage {
 		allocIdText.setText(getUsername() + ":" + uuid.toString());
 		allocIdText.setBackground(allocIdText.getDisplay().getSystemColor(SWT.COLOR_CYAN));
 		allocIdText.addFocusListener(new TargetableFocusListener(allocIdText));
-		allocIdText.addModifyListener(allocIdListener);
 
 		//Existing allocation ID Text
 		UpdateValueStrategy existingAllocIdStrategy1 = new UpdateValueStrategy() {
