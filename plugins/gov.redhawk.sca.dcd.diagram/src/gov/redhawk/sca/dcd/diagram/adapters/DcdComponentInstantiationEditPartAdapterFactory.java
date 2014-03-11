@@ -67,24 +67,22 @@ public class DcdComponentInstantiationEditPartAdapterFactory implements IAdapter
 						if (manager.isSetDevices()) {
 							devices = manager.getAllDevices();
 						} else {
-							final Callable<List<ScaDevice< ? >>> callable = new Callable<List<ScaDevice< ? >>>() {
-
-								@Override
-								public List<ScaDevice< ? >> call() throws Exception {
-									manager.fetchDevices(null);
-									return manager.getAllDevices();
-								}
-							};
 							if (Display.getCurrent() != null) {
 								ProgressMonitorDialog dialog = new ProgressMonitorDialog(Display.getCurrent().getActiveShell());
 								try {
 									dialog.run(true, true, new IRunnableWithProgress() {
 
 										@Override
-										public void run(IProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
+										public void run(final IProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
 											monitor.beginTask("Fetching devices for " + manager.getLabel(), IProgressMonitor.UNKNOWN);
 											try {
-												CorbaUtils.invoke(callable, monitor);
+												CorbaUtils.invoke(new Callable<List<ScaDevice< ? >>>() {
+
+													public List<ScaDevice< ? >> call() throws Exception {
+														manager.fetchDevices(monitor);
+														return manager.getAllDevices();
+													}
+												}, monitor);
 											} catch (CoreException e) {
 												throw new InvocationTargetException(e);
 											}
@@ -100,18 +98,22 @@ public class DcdComponentInstantiationEditPartAdapterFactory implements IAdapter
 
 							} else {
 								try {
-									ProtectedThreadExecutor.submit(callable);
+									ProtectedThreadExecutor.submit(new Callable<List<ScaDevice< ? >>>() {
+
+										public List<ScaDevice< ? >> call() throws Exception {
+											manager.fetchDevices(null);
+											return manager.getAllDevices();
+										}
+									});
 								} catch (final InterruptedException e) {
-									StatusManager.getManager().handle(
-										new Status(Status.ERROR, DcdDiagramPluginActivator.PLUGIN_ID, "Failed to fetch devices for " + manager.getLabel(), e),
-										StatusManager.SHOW | StatusManager.LOG);
+									// PASS
 								} catch (final ExecutionException e) {
 									StatusManager.getManager().handle(
 										new Status(Status.ERROR, DcdDiagramPluginActivator.PLUGIN_ID, "Failed to fetch devices for " + manager.getLabel(), e),
 										StatusManager.SHOW | StatusManager.LOG);
 								} catch (final TimeoutException e) {
 									StatusManager.getManager().handle(
-										new Status(Status.ERROR, DcdDiagramPluginActivator.PLUGIN_ID, "Failed to fetch devices for " + manager.getLabel(), e),
+										new Status(Status.WARNING, DcdDiagramPluginActivator.PLUGIN_ID, "Timed out trying to fetch devices for " + manager.getLabel(), e),
 										StatusManager.SHOW | StatusManager.LOG);
 								}
 							}

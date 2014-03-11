@@ -146,6 +146,9 @@ public class OpenFileAction extends BaseSelectionListenerAction {
 	}
 
 	private void open() {
+		if (this.editorDescriptor == null || this.editorDescriptor.getEditorInput() == null || this.editorDescriptor.getEditorDescriptor().getId() == null) {
+			return;
+		}
 		try {
 			this.page.openEditor(this.editorDescriptor.getEditorInput(), this.editorDescriptor.getEditorDescriptor().getId(), true, IWorkbenchPage.MATCH_ID
 				| IWorkbenchPage.MATCH_INPUT);
