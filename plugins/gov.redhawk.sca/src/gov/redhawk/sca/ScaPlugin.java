@@ -11,7 +11,11 @@
  */
 package gov.redhawk.sca;
 
+import gov.redhawk.model.sca.ScaDomainManager;
 import gov.redhawk.model.sca.ScaDomainManagerRegistry;
+import gov.redhawk.model.sca.ScaFactory;
+import gov.redhawk.model.sca.ScaPackage;
+import gov.redhawk.model.sca.commands.ScaModelCommand;
 import gov.redhawk.model.sca.services.IScaObjectLocator;
 import gov.redhawk.sca.compatibility.ICompatibilityUtil;
 import gov.redhawk.sca.internal.ScaDomainRegistryObjectLocator;
@@ -24,6 +28,8 @@ import gov.redhawk.sca.util.OrbSession;
 import gov.redhawk.sca.util.ScopedPreferenceAccessor;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Map;
 import java.util.concurrent.Callable;
 
 import mil.jpeojtrs.sca.util.CorbaUtils;
@@ -33,6 +39,12 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.Plugin;
 import org.eclipse.core.runtime.SubMonitor;
 import org.eclipse.core.runtime.preferences.InstanceScope;
+import org.eclipse.emf.common.notify.Notification;
+import org.eclipse.emf.common.notify.impl.AdapterImpl;
+import org.eclipse.emf.common.util.URI;
+import org.eclipse.emf.ecore.resource.Resource;
+import org.eclipse.emf.ecore.resource.ResourceSet;
+import org.eclipse.emf.transaction.TransactionalEditingDomain;
 import org.omg.CosNaming.Binding;
 import org.omg.CosNaming.BindingIteratorHolder;
 import org.omg.CosNaming.BindingListHolder;
@@ -97,7 +109,7 @@ public class ScaPlugin extends Plugin {
 		this.compatibilityUtil = new ServiceTracker<ICompatibilityUtil, ICompatibilityUtil>(getBundle().getBundleContext(), ICompatibilityUtil.class, null);
 		this.compatibilityUtil.open(true);
 		this.registryService = new ServiceTracker<IScaDomainManagerRegistryFactoryService, IScaDomainManagerRegistryFactoryService>(context,
-			IScaDomainManagerRegistryFactoryService.class, null);
+				IScaDomainManagerRegistryFactoryService.class, null);
 		this.registryService.open();
 	}
 
@@ -121,7 +133,8 @@ public class ScaPlugin extends Plugin {
 
 	/**
 	 * @since 3.0
-	 * @deprecated Use {@link #getDomainManagerRegistry(Object) instead. In RAP, the domain registry cannot be retrieved without the active Display instance}
+	 * @deprecated Use {@link #getDomainManagerRegistry(Object) instead. In RAP, the domain registry cannot be retrieved
+	 * without the active Display instance}
 	 */
 	@Deprecated
 	public ScaDomainManagerRegistry getDomainManagerRegistry() {
@@ -133,9 +146,9 @@ public class ScaPlugin extends Plugin {
 	 *
 	 * Returns the SCA Domain Manager registry.
 	 * @param context
-	 * 			the current Display (meaningful in RAP only), used to ensure user-specific context.
+	 * the current Display (meaningful in RAP only), used to ensure user-specific context.
 	 * @return
-	 * 			the SCA Domain Manager registry
+	 * the SCA Domain Manager registry
 	 */
 	public ScaDomainManagerRegistry getDomainManagerRegistry(Object context) {
 		IScaDomainManagerRegistryFactoryService service = this.registryService.getService();
@@ -146,6 +159,54 @@ public class ScaPlugin extends Plugin {
 			}
 		}
 		return null;
+	}
+
+	/**
+	 * @since 7.0
+	 *
+	 * Creates a domain outside of the domain manager registry, this domain will not be saved by the domain manager
+	 * registry service
+	 */
+	public ScaDomainManager createTransientDomain(final String domainName, Map<String, String> connectionProperties) {
+		TransactionalEditingDomain editingDomain = TransactionalEditingDomain.Registry.INSTANCE.getEditingDomain(ScaPlugin.EDITING_DOMAIN_ID);
+		final ResourceSet scaModelResourceSet = editingDomain.getResourceSet();
+
+		URI uri = org.eclipse.emf.common.util.URI.createURI("virtual://transientDomains.sca");
+
+		final Resource resource = scaModelResourceSet.createResource(uri);
+
+		final ScaDomainManager newDomain = ScaFactory.eINSTANCE.createScaDomainManager();
+		newDomain.setName(domainName);
+		if (connectionProperties == null) {
+			connectionProperties = Collections.emptyMap();
+		}
+		newDomain.getConnectionProperties().putAll(connectionProperties);
+
+		editingDomain.getCommandStack().execute(new ScaModelCommand() {
+
+			@Override
+			public void execute() {
+				resource.getContents().add(newDomain);
+				newDomain.eAdapters().add(new AdapterImpl() {
+					@Override
+					public void notifyChanged(Notification msg) {
+						switch (msg.getFeatureID(ScaDomainManager.class)) {
+						case ScaPackage.SCA_DOMAIN_MANAGER__DISPOSED:
+							if (msg.getNewBooleanValue()) {
+								resource.getContents().remove(newDomain);
+							}
+							newDomain.eAdapters().remove(this);
+							scaModelResourceSet.getResources().remove(resource);
+							break;
+						default:
+							break;
+						}
+					}
+				});
+			}
+		});
+
+		return newDomain;
 	}
 
 	/*
@@ -195,9 +256,9 @@ public class ScaPlugin extends Plugin {
 	 * @since 3.0
 	 *
 	 * Returns an object that can be used to read and write system Preferences.
-	 *  
-	 * @return 
-	 * 			an object used to access system preferences. For RAP, preferences are generally scoped and
+	 * 
+	 * @return
+	 * an object used to access system preferences. For RAP, preferences are generally scoped and
 	 * persisted on a per-user basis. That is not the case with this plug-in. Because there are no UI
 	 * dependencies, there is no way to access a user context.
 	 */
@@ -215,8 +276,8 @@ public class ScaPlugin extends Plugin {
 	 * Returns a utility class that provides platform-specific implementations for RAP
 	 * and RCP runtime environments.
 	 * 
-	 * @return 
-	 * 			the utility class
+	 * @return
+	 * the utility class
 	 */
 	public ICompatibilityUtil getCompatibilityUtil() {
 		return compatibilityUtil.getService();
@@ -256,8 +317,8 @@ public class ScaPlugin extends Plugin {
 	/**
 	 * Determines if a domain of the given name is bound to the default naming service and
 	 * appears to be existant.
-	 * @throws InterruptedException 
-	 * @throws CoreException 
+	 * @throws InterruptedException
+	 * @throws CoreException
 	 * @since 7.0
 	 */
 	public static boolean isDomainOnline(final String domainName, IProgressMonitor monitor) throws CoreException, InterruptedException {
@@ -287,12 +348,12 @@ public class ScaPlugin extends Plugin {
 	/**
 	 * Determines if a domain of the given name is bound to the naming service and
 	 * appears to be existant.
-	 * @throws InterruptedException 
-	 * @throws CoreException 
+	 * @throws InterruptedException
+	 * @throws CoreException
 	 * @since 7.0
 	 */
 	public static boolean isDomainOnline(final String domainName, final String namingService, IProgressMonitor monitor) throws CoreException,
-		InterruptedException {
+	InterruptedException {
 		return ScaPlugin.nameServiceObjectExists(domainName, namingService, monitor);
 	}
 
@@ -317,13 +378,13 @@ public class ScaPlugin extends Plugin {
 	/**
 	 * Determine's if an object with a given name is bound to the provided nameservice and
 	 * the object exists.
-	 * @throws InterruptedException 
-	 * @throws CoreException 
+	 * @throws InterruptedException
+	 * @throws CoreException
 	 * 
 	 * @since 7.0
 	 */
 	public static boolean nameServiceObjectExists(final String name, final String nameServiceInitRef, IProgressMonitor parentMonitor) throws CoreException,
-		InterruptedException {
+	InterruptedException {
 		SubMonitor subMonitor = SubMonitor.convert(parentMonitor, "Checking if name service object exists...", 2);
 		final String nameServiceRef = CorbaURIUtil.addDefaultPort(nameServiceInitRef);
 		OrbSession session = OrbSession.createSession();
@@ -373,8 +434,8 @@ public class ScaPlugin extends Plugin {
 	/**
 	 * Scan the naming service to find available domains
 	 * @param monitor Progress monitor to interrupt the opperations with
-	 * @throws InterruptedException 
-	 * @throws CoreException 
+	 * @throws InterruptedException
+	 * @throws CoreException
 	 * 
 	 * @since 7.0
 	 */
@@ -420,13 +481,13 @@ public class ScaPlugin extends Plugin {
 
 	/**
 	 * Scan the naming service to find available domains
-	 * @throws InterruptedException 
-	 * @throws CoreException 
+	 * @throws InterruptedException
+	 * @throws CoreException
 	 * 
 	 * @since 7.0
 	 */
 	public static String[] findDomainNamesOnNameServer(final String nameServiceInitRef, IProgressMonitor parentMonitor) throws CoreException,
-	InterruptedException {
+		InterruptedException {
 		SubMonitor subMonitor = SubMonitor.convert(parentMonitor, "Finding domains on name server...", 5);
 		final ArrayList<String> retVal = new ArrayList<String>();
 
@@ -455,7 +516,7 @@ public class ScaPlugin extends Plugin {
 					try {
 						object = CorbaUtils.resolve_str(rootContext, guessedDomainName, subMonitor.newChild(1));
 						if (!CorbaUtils.non_existent(object, subMonitor.newChild(1))
-								&& CorbaUtils.is_a(object, DomainManagerHelper.id(), subMonitor.newChild(1))) {
+							&& CorbaUtils.is_a(object, DomainManagerHelper.id(), subMonitor.newChild(1))) {
 							retVal.add(b.binding_name[0].id);
 						}
 					} finally {
