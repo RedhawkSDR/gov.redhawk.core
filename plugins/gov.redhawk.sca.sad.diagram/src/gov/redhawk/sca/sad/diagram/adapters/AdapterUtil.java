@@ -46,23 +46,22 @@ final class AdapterUtil {
 		if (waveform.isSetComponents()) {
 			retVal = waveform.getComponents();
 		} else {
-			final Callable<List<ScaComponent>> callable = new Callable<List<ScaComponent>>() {
-
-				public List<ScaComponent> call() throws Exception {
-					return waveform.fetchComponents(null);
-				}
-
-			};
 
 			if (Display.getCurrent() != null) {
 				ProgressMonitorDialog dialog = new ProgressMonitorDialog(Display.getCurrent().getActiveShell());
 				try {
 					dialog.run(true, true, new IRunnableWithProgress() {
 
-						public void run(IProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
+						public void run(final IProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
 							monitor.beginTask("Fetching components for " + waveform.getName(), IProgressMonitor.UNKNOWN);
 							try {
-								CorbaUtils.invoke(callable, monitor);
+								CorbaUtils.invoke(new Callable<List<ScaComponent>>() {
+
+									public List<ScaComponent> call() throws Exception {
+										return waveform.fetchComponents(monitor);
+									}
+
+								}, monitor);
 							} catch (CoreException e) {
 								throw new InvocationTargetException(e);
 							}
@@ -78,18 +77,22 @@ final class AdapterUtil {
 				retVal = waveform.getComponents();
 			} else {
 				try {
-					retVal = ProtectedThreadExecutor.submit(callable);
+					retVal = ProtectedThreadExecutor.submit(new Callable<List<ScaComponent>>() {
+
+						public List<ScaComponent> call() throws Exception {
+							return waveform.fetchComponents(null);
+						}
+
+					});
 				} catch (final InterruptedException e) {
-					StatusManager.getManager().handle(
-						new Status(Status.ERROR, RedhawkSadDiagramPlugin.PLUGIN_ID, "Failed to fetch components for " + waveform.getName(), e),
-						StatusManager.SHOW | StatusManager.LOG);
+					// PASS
 				} catch (final ExecutionException e) {
 					StatusManager.getManager().handle(
 						new Status(Status.ERROR, RedhawkSadDiagramPlugin.PLUGIN_ID, "Failed to fetch components for " + waveform.getName(), e),
 						StatusManager.SHOW | StatusManager.LOG);
 				} catch (final TimeoutException e) {
 					StatusManager.getManager().handle(
-						new Status(Status.ERROR, RedhawkSadDiagramPlugin.PLUGIN_ID, "Failed to fetch components for " + waveform.getName(), e),
+						new Status(Status.WARNING, RedhawkSadDiagramPlugin.PLUGIN_ID, "Timed out trying to fetch components for " + waveform.getName(), e),
 						StatusManager.SHOW | StatusManager.LOG);
 				}
 			}
@@ -114,50 +117,53 @@ final class AdapterUtil {
 		if (component.isSetPorts()) {
 			retVal = component.getPorts();
 		} else {
-			final Callable<List<ScaPort< ? , ? >>> callable = new Callable<List<ScaPort< ? , ? >>>() {
-
-				public List<ScaPort< ? , ? >> call() throws Exception {
-					return component.fetchPorts(null);
-				}
-
-			};
 
 			if (Display.getCurrent() != null) {
 				ProgressMonitorDialog dialog = new ProgressMonitorDialog(Display.getCurrent().getActiveShell());
-					try {
-						dialog.run(true, true, new IRunnableWithProgress() {
-
-							public void run(IProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
-								monitor.beginTask("Fetching ports for " + component.getName(), IProgressMonitor.UNKNOWN);
-								try {
-									CorbaUtils.invoke(callable, monitor);
-								} catch (CoreException e) {
-									throw new InvocationTargetException(e);
-								}
-							}
-						});
-					} catch (InvocationTargetException e) {
-						StatusManager.getManager().handle(
-							new Status(Status.ERROR, RedhawkSadDiagramPlugin.PLUGIN_ID, "Failed to fetch ports for " + component.getName(), e),
-							StatusManager.SHOW | StatusManager.LOG);
-					} catch (InterruptedException e) {
-						// PASS
-					}
-					retVal = component.getPorts();
-			} else {
 				try {
-					retVal = ProtectedThreadExecutor.submit(callable);
-				} catch (final InterruptedException e) {
+					dialog.run(true, true, new IRunnableWithProgress() {
+
+						public void run(final IProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
+							monitor.beginTask("Fetching ports for " + component.getName(), IProgressMonitor.UNKNOWN);
+							try {
+								CorbaUtils.invoke(new Callable<List<ScaPort< ? , ? >>>() {
+
+									public List<ScaPort< ? , ? >> call() throws Exception {
+										return component.fetchPorts(monitor);
+									}
+
+								}, monitor);
+							} catch (CoreException e) {
+								throw new InvocationTargetException(e);
+							}
+						}
+					});
+				} catch (InvocationTargetException e) {
 					StatusManager.getManager().handle(
 						new Status(Status.ERROR, RedhawkSadDiagramPlugin.PLUGIN_ID, "Failed to fetch ports for " + component.getName(), e),
 						StatusManager.SHOW | StatusManager.LOG);
+				} catch (InterruptedException e) {
+					// PASS
+				}
+				retVal = component.getPorts();
+			} else {
+				try {
+					retVal = ProtectedThreadExecutor.submit(new Callable<List<ScaPort< ? , ? >>>() {
+
+						public List<ScaPort< ? , ? >> call() throws Exception {
+							return component.fetchPorts(null);
+						}
+
+					});
+				} catch (final InterruptedException e) {
+					// PASS
 				} catch (final ExecutionException e) {
 					StatusManager.getManager().handle(
 						new Status(Status.ERROR, RedhawkSadDiagramPlugin.PLUGIN_ID, "Failed to fetch ports for " + component.getName(), e),
 						StatusManager.SHOW | StatusManager.LOG);
 				} catch (final TimeoutException e) {
 					StatusManager.getManager().handle(
-						new Status(Status.ERROR, RedhawkSadDiagramPlugin.PLUGIN_ID, "Failed to fetch ports for " + component.getName(), e),
+						new Status(Status.WARNING, RedhawkSadDiagramPlugin.PLUGIN_ID, "Timed out trying to fetch ports for " + component.getName(), e),
 						StatusManager.SHOW | StatusManager.LOG);
 				}
 			}
