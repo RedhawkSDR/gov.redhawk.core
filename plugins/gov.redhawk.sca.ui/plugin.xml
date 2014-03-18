@@ -964,7 +964,7 @@
       <contentType
             id="mil.jpeojtrs.sca.sad.contentType"
             name="SAD Content Type"
-            priority="LOWEST">
+            priority="LOW">
          <describer
                class="gov.redhawk.sca.ui.editors.EObjectContentDescriber"
                plugin="gov.redhawk.sca.ui">
@@ -976,7 +976,7 @@
        <contentType
             id="gov.redhawk.ui.sad.contentType"
             name="SAD Content Type"
-            priority="LOWEST">
+            priority="LOW">
          <describer
                class="gov.redhawk.sca.ui.editors.ScaObjectWrapperContentDescriber"
                plugin="gov.redhawk.sca.ui">
@@ -989,7 +989,7 @@
       <contentType
             id="gov.redhawk.ui.scd.contentType"
             name="SCD Content Type"
-            priority="LOWEST">
+            priority="LOW">
          <describer
                class="gov.redhawk.sca.ui.editors.EObjectContentDescriber"
                plugin="gov.redhawk.sca.ui">
@@ -1002,7 +1002,7 @@
       <contentType
             id="gov.redhawk.ui.prf.prf.contentType"
             name="PRF Content Type"
-            priority="LOWEST">
+            priority="LOW">
          <describer
                class="gov.redhawk.sca.ui.editors.EObjectContentDescriber"
                plugin="gov.redhawk.sca.ui">
@@ -1015,7 +1015,7 @@
       <contentType
             id="mil.jpeojtrs.sca.spd.contentType"
             name="SPD Content Type"
-            priority="LOWEST">
+            priority="LOW">
          <describer
                class="gov.redhawk.sca.ui.editors.EObjectContentDescriber"
                plugin="gov.redhawk.sca.ui">
@@ -1028,7 +1028,7 @@
       <contentType
             id="mil.jpeojtrs.sca.dmd.contentType"
             name="DMD Content Type"
-            priority="LOWEST">
+            priority="LOW">
          <describer
                class="gov.redhawk.sca.ui.editors.EObjectContentDescriber"
                plugin="gov.redhawk.sca.ui">
@@ -1041,7 +1041,7 @@
       <contentType
             id="mil.jpeojtrs.sca.dcd.contentType"
             name="DCD Content Type"
-            priority="LOWEST">
+            priority="LOW">
          <describer
                class="gov.redhawk.sca.ui.editors.EObjectContentDescriber"
                plugin="gov.redhawk.sca.ui">
@@ -1054,7 +1054,7 @@
       <contentType
             id="mil.jpeojtrs.sca.dpd.contentType"
             name="DPD Content Type"
-            priority="LOWEST">
+            priority="LOW">
          <describer
                class="gov.redhawk.sca.ui.editors.EObjectContentDescriber"
                plugin="gov.redhawk.sca.ui">
@@ -1067,7 +1067,7 @@
       <contentType
             id="gov.redhawk.idl.contentType"
             name="IDL Content Type"
-            priority="LOWEST">
+            priority="LOW">
          <describer
                class="gov.redhawk.sca.ui.editors.EObjectContentDescriber"
                plugin="gov.redhawk.sca.ui">
@@ -1080,7 +1080,7 @@
       <contentTypeBinding
             contentTypeId="gov.redhawk.idl.contentType"
             editorId="org.eclipse.ui.DefaultTextEditor"
-            priority="LOWEST">
+            priority="LOW">
       </contentTypeBinding>
    </extension>
 </plugin>
