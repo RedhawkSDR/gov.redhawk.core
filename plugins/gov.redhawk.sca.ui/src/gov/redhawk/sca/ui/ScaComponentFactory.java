@@ -39,6 +39,7 @@ import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.viewers.ViewerComparator;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Tree;
 import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetWidgetFactory;
@@ -70,6 +71,9 @@ public final class ScaComponentFactory {
 	 * @since 9.0
 	 */
 	public static TreeViewer createPropertyTable(final Composite parent, final int style, final AdapterFactory adapterFactory) {
+		if (parent.getLayout() == null) {
+			parent.setLayout(new FillLayout());
+		}
 		return new ScaPropertiesViewer(parent, SWT.None, style | SWT.H_SCROLL | SWT.V_SCROLL | SWT.FULL_SELECTION | SWT.SINGLE, adapterFactory).getViewer();
 	}
 
