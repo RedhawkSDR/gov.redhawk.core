@@ -15,6 +15,8 @@ import gov.redhawk.frontend.TunerContainer;
 import gov.redhawk.frontend.TunerStatus;
 import gov.redhawk.frontend.UnallocatedTunerContainer;
 import gov.redhawk.frontend.ui.wizard.TunerAllocationWizard;
+import gov.redhawk.frontend.util.TunerUtils;
+import gov.redhawk.model.sca.ScaDevice;
 import gov.redhawk.sca.util.PluginUtil;
 
 import java.util.ArrayList;
@@ -61,6 +63,14 @@ public class AllocateHandler extends AbstractHandler implements IHandler {
 				}
 			} else if (obj instanceof TunerContainer) {
 				TunerContainer container = (TunerContainer) obj;
+				TunerStatus[] tuners = container.getTunerStatus().toArray(new TunerStatus[0]);
+				if (tuners.length > 0) {
+					WizardDialog dialog = new WizardDialog(HandlerUtil.getActiveShell(event), new TunerAllocationWizard(tuners[0]));
+					dialog.open();
+				}
+			} else if (obj instanceof ScaDevice< ? >) {
+				ScaDevice< ? > device = (ScaDevice< ? >) obj;
+				TunerContainer container = TunerUtils.INSTANCE.getTunerContainer(device);
 				TunerStatus[] tuners = container.getTunerStatus().toArray(new TunerStatus[0]);
 				if (tuners.length > 0) {
 					WizardDialog dialog = new WizardDialog(HandlerUtil.getActiveShell(event), new TunerAllocationWizard(tuners[0]));

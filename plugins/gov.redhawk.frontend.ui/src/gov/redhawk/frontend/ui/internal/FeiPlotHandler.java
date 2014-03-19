@@ -303,6 +303,8 @@ public class FeiPlotHandler extends AbstractHandler implements IHandler {
 
 											});
 										}
+										break;
+									default:
 									}
 								}
 							});
