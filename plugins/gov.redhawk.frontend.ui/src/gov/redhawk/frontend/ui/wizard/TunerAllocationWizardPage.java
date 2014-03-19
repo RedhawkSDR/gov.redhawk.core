@@ -454,11 +454,11 @@ public class TunerAllocationWizardPage extends WizardPage {
 			}
 			if (minFreq != null && val < minFreq) {
 				return ValidationStatus.warning(TunerAllocationWizardPage.FREQ_BELOW_MIN
-					+ String.valueOf(minFreq / getUnitsConversionFactor(TunerAllocationProperties.CENTER_FREQUENCY)) + " Mhz");
+					+ String.valueOf(minFreq / getUnitsConversionFactor(TunerAllocationProperties.CENTER_FREQUENCY)) + " MHz");
 			}
 			if (maxFreq != null && val > maxFreq) {
 				return ValidationStatus.warning(TunerAllocationWizardPage.FREQ_ABOVE_MAX
-					+ String.valueOf(maxFreq / getUnitsConversionFactor(TunerAllocationProperties.CENTER_FREQUENCY)) + " Mhz");
+					+ String.valueOf(maxFreq / getUnitsConversionFactor(TunerAllocationProperties.CENTER_FREQUENCY)) + " MHz");
 			}
 			return Status.OK_STATUS;
 		} else if (control == bwText) {
@@ -479,11 +479,11 @@ public class TunerAllocationWizardPage extends WizardPage {
 			}
 			if (minBw != null && val < minBw) {
 				return ValidationStatus.warning(TunerAllocationWizardPage.BW_BELOW_MIN
-					+ String.valueOf(minBw / getUnitsConversionFactor(TunerAllocationProperties.BANDWIDTH)) + " Mhz");
+					+ String.valueOf(minBw / getUnitsConversionFactor(TunerAllocationProperties.BANDWIDTH)) + " MHz");
 			}
 			if (maxBw != null && val > maxBw) {
 				return ValidationStatus.warning(TunerAllocationWizardPage.BW_ABOVE_MAX
-					+ String.valueOf(maxBw / getUnitsConversionFactor(TunerAllocationProperties.BANDWIDTH)) + " Mhz");
+					+ String.valueOf(maxBw / getUnitsConversionFactor(TunerAllocationProperties.BANDWIDTH)) + " MHz");
 			}
 			return Status.OK_STATUS;
 		} else if (control == srText) {
@@ -915,13 +915,13 @@ public class TunerAllocationWizardPage extends WizardPage {
 		tunerControls.add(typeCombo.getControl());
 
 		Label cfLabel = new Label(parent, SWT.NONE);
-		cfLabel.setText("Center Frequency (Mhz)");
+		cfLabel.setText("Center Frequency (MHz)");
 		cfText = new Text(parent, SWT.BORDER);
 		tunerControls.add(cfText);
 		GridDataFactory.fillDefaults().grab(true, false).applyTo(cfText);
 
 		Label bwLabel = new Label(parent, SWT.NONE);
-		bwLabel.setText("Bandwidth (Mhz)");
+		bwLabel.setText("Bandwidth (MHz)");
 
 		Composite bwComp = new Composite(parent, SWT.NONE);
 		GridDataFactory.fillDefaults().grab(true, false).applyTo(bwComp);
