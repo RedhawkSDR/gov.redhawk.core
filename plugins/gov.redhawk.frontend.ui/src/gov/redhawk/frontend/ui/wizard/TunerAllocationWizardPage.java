@@ -909,7 +909,7 @@ public class TunerAllocationWizardPage extends WizardPage {
 
 		Label typeLabel = new Label(parent, SWT.NONE);
 		typeLabel.setText("Tuner Type");
-		typeCombo = new ComboViewer(parent, SWT.NONE);
+		typeCombo = new ComboViewer(parent, SWT.NONE | SWT.READ_ONLY);
 		typeCombo.setContentProvider(new ArrayContentProvider());
 		GridDataFactory.fillDefaults().grab(true, false).applyTo(typeCombo.getControl());
 		tunerControls.add(typeCombo.getControl());
