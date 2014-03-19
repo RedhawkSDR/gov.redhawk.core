@@ -585,7 +585,11 @@ public class TunerAllocationWizardPage extends WizardPage {
 				SWT.TOP | SWT.LEFT);
 		typeCombo.addSelectionChangedListener(tunerTypeListener);
 		typeCombo.setInput(FrontEndUIActivator.SUPPORTED_TUNER_TYPES.toArray(new String[0]));
-		typeCombo.setSelection(new StructuredSelection(FRONTEND.TUNER_TYPE_RX_DIGITIZER.value));
+		if (tuner.getTunerType() != null) {
+			typeCombo.setSelection(new StructuredSelection(tuner.getTunerType()));
+		} else {
+			typeCombo.setSelection(new StructuredSelection(FRONTEND.TUNER_TYPE_RX_DIGITIZER.value));
+		}
 
 		//allocation ID Text
 		UpdateValueStrategy allocIdStrategy = new UpdateValueStrategy() {
