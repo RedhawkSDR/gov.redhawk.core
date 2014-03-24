@@ -1,10 +1,10 @@
 /**
- * This file is protected by Copyright. 
+ * This file is protected by Copyright.
  * Please refer to the COPYRIGHT file distributed with this source distribution.
- * 
+ *
  * This file is part of REDHAWK IDE.
- * 
- * All rights reserved.  This program and the accompanying materials are made available under 
+ *
+ * All rights reserved.  This program and the accompanying materials are made available under
  * the terms of the Eclipse Public License v1.0 which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html.
  *
@@ -69,7 +69,7 @@ public class SriDataViewReceiver extends AbstractUberBulkIOPort {
 						viewer.refresh();
 					}
 
-					//Rebuild expanded state 
+					//Rebuild expanded state
 					viewer.setExpandedElements(expandedItems);
 					viewer.getControl().setRedraw(true);
 
@@ -158,16 +158,22 @@ public class SriDataViewReceiver extends AbstractUberBulkIOPort {
 			return;
 		}
 		if (time != null) {
-			//Build precision time stamp
-			Date precisionTime = new Date((long) (time.twsec * 1000 + time.tfsec));
-			String precisionString = new SimpleDateFormat("hh:mm:ss.S").format(precisionTime);
+			//Build packet's precision time stamp
+			final String precisionString;
+			final double seconds = (time.twsec * 1000 + time.tfsec);
+			if (Double.isInfinite(seconds) || Double.isNaN(seconds)) {
+				precisionString = Double.toString(seconds);
+			} else {
+				Date precisionTime = new Date((long) seconds);
+				precisionString = new SimpleDateFormat(SriDataViewLabelProvider.ISO_8601_TIME_FORMAT).format(precisionTime);
+			}
 
 			//Assign to SriWrapper object
 			modelStreamMap.get(streamID).setPrecisionTime(precisionString);
 
 			if (!sriDataView.isPaused()) {
 				viewStreamMap.get(streamID).setPrecisionTime(precisionString);
-				refreshView.schedule(100);
+				refreshView.schedule(250);
 			}
 		}
 	}
