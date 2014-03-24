@@ -94,6 +94,7 @@ public class InSDDSPort extends BULKIO.jni.dataSDDSPOA {
 
     protected bulkio.time.Comparator   time_cmp;
 
+    protected bulkio.SriListener       streamCB;
 
     public InSDDSPort( String portName ) {
 	this( portName, 
@@ -132,6 +133,7 @@ public class InSDDSPort extends BULKIO.jni.dataSDDSPOA {
 	attach_detach_callback = actionCB;
 	sri_cmp = sriCmp;
 	time_cmp = timeCmp;
+	streamCB = null;
 	logger = logger;
 
 	if ( logger != null  ){
@@ -139,6 +141,33 @@ public class InSDDSPort extends BULKIO.jni.dataSDDSPOA {
 	}
 
     }
+
+
+    public void setLogger( Logger newlogger ){
+        synchronized (this.sriUpdateLock) {
+	    logger = newlogger;
+	}
+    }
+
+    /**
+     * 
+     */
+    public void setNewStreamListener( bulkio.SriListener streamCB ) {
+        synchronized(this.sriUpdateLock) {
+	    this.streamCB = streamCB;
+	}
+    }
+
+    /**
+     * 
+     */
+    public void setAttachDetachCallback( Callback newCB ) {
+        synchronized(this.sriUpdateLock) {
+	    this.attach_detach_callback = newCB;
+	}
+    }
+
+
 
     /**
      * @generated
@@ -244,10 +273,12 @@ public class InSDDSPort extends BULKIO.jni.dataSDDSPOA {
                 this.sriChanged = ( s_same == false ) || ( t_same == false ) ;
 		if ( this.sriChanged )  {
 		    this.currentHs.put(H.streamID, new streamTimePair(H, T));		
+		    if ( streamCB != null ) { streamCB.changedSRI(H); }
 		}
             } else {
                 this.currentHs.put(H.streamID, new streamTimePair(H, T));
                 this.sriChanged = true;
+                if ( streamCB != null ) { streamCB.newSRI(H); }
             }
         }
 

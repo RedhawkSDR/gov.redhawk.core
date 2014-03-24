@@ -160,6 +160,12 @@ public class InUInt8Port extends BULKIO.jni.dataOctetPOA {
 
     }
 
+    public void setLogger( Logger newlogger ){
+        synchronized (this.sriUpdateLock) {
+	    logger = newlogger;
+	}
+    }
+
     /**
      * 
      */

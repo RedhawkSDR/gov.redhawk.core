@@ -156,6 +156,12 @@ public class InXMLPort extends BULKIO.jni.dataXMLPOA {
 	}	
     }
 
+    public void setLogger( Logger newlogger ){
+        synchronized (this.sriUpdateLock) {
+	    logger = newlogger;
+	}
+    }
+
     /**
      * 
      */

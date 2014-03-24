@@ -157,6 +157,13 @@ public class InDoublePort extends BULKIO.jni.dataDoublePOA {
 
     }
 
+    public void setLogger( Logger newlogger ){
+        synchronized (this.sriUpdateLock) {
+	    logger = newlogger;
+	}
+    }
+
+
 
     /**
      *

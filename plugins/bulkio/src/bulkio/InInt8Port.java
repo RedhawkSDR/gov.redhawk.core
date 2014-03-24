@@ -95,20 +95,17 @@ public class InInt8Port extends BULKIO.jni.dataCharPOA {
     /**
      *
      */
-    protected Logger   logger = null;
+    protected Logger                  logger = null;
 
     protected bulkio.sri.Comparator    sri_cmp;
 
-    protected bulkio.SriListener   streamCB;
-
+    protected bulkio.SriListener       streamCB;
 
     /**
      * This queue stores all packets received from pushPacket.
      * 
      */
-    private ArrayDeque< Packet > workQueue;
-    
-
+    private ArrayDeque< Packet >       workQueue;
     
     /**
      * 
@@ -161,6 +158,13 @@ public class InInt8Port extends BULKIO.jni.dataCharPOA {
 
     }
 
+    public void setLogger( Logger newlogger ){
+        synchronized (this.sriUpdateLock) {
+	    logger = newlogger;
+	}
+    }
+
+
     /**
      * 
      */
@@ -177,8 +181,6 @@ public class InInt8Port extends BULKIO.jni.dataCharPOA {
         return this.name;
     }
      
-
-
     /**
      * 
      */
@@ -252,7 +254,6 @@ public class InInt8Port extends BULKIO.jni.dataCharPOA {
             queueSem = new Semaphore(newDepth);
         }
     }
-
 
     /**
      * 

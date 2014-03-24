@@ -167,6 +167,14 @@ public class InFloatPort extends BULKIO.jni.dataFloatPOA {
 	}
     }
 
+    public void setLogger( Logger newlogger ){
+        synchronized (this.sriUpdateLock) {
+	    logger = newlogger;
+	}
+    }
+
+
+
     /**
      * 
      */
@@ -437,6 +445,10 @@ public class InFloatPort extends BULKIO.jni.dataFloatPOA {
         if (p != null) {
             if (p.getEndOfStream()) {
                 synchronized (this.sriUpdateLock) {
+		    if ( logger != null ) {
+			logger.trace("bulkio.InPort getPacket containsKey " + p.getStreamID() + " res:" +
+				 this.currentHs.containsKey(p.getStreamID()) );
+		    }
                     if (this.currentHs.containsKey(p.getStreamID())) {
                         sriState rem = this.currentHs.remove(p.getStreamID());
 

@@ -155,6 +155,13 @@ public class InUInt16Port extends BULKIO.jni.dataUshortPOA {
 	}	
     }
 
+    public void setLogger( Logger newlogger ){
+        synchronized (this.sriUpdateLock) {
+	    logger = newlogger;
+	}
+    }
+
+
     /**
      * 
      */

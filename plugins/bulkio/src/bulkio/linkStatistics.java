@@ -70,6 +70,10 @@ public class linkStatistics  {
 	}
     }
 
+    public List< String > getActiveStreamIDs() {
+        return this.activeStreamIDs;
+    }
+
     /**
      * @generated
      */

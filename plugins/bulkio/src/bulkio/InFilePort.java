@@ -160,6 +160,14 @@ public class InFilePort extends BULKIO.jni.dataFilePOA {
 	
     }
 
+    public void setLogger( Logger newlogger ){
+        synchronized (this.sriUpdateLock) {
+	    logger = newlogger;
+	}
+    }
+
+
+
     /**
      * 
      */

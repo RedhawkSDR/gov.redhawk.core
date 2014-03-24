@@ -11,18 +11,18 @@ public class OutUShortPort extends OutUInt16Port  {
      */
     public OutUShortPort(String portName)
     {
-	super(portName );
+        super(portName );
     }
 
     public OutUShortPort(String portName, Logger logger)
     {
-	super(portName, logger );
+        super(portName, logger );
     }
 
 
     public OutUShortPort(String portName, Logger logger, ConnectionEventListener eventCB )
     {
-	super(portName, logger, eventCB );
+        super(portName, logger, eventCB );
     }
 
 }

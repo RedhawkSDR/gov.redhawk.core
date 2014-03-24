@@ -22,6 +22,9 @@ import BULKIO.dataCharOperations;
 import bulkio.linkStatistics;
 import bulkio.Int8Size;
 import bulkio.ConnectionEventListener;
+import bulkio.connection_descriptor_struct;
+import bulkio.utils;
+import org.ossie.properties.*;
 
 /**
  * 
@@ -77,6 +80,8 @@ public class OutInt8Port extends BULKIO.UsesPortStatisticsProviderPOA {
      */
     protected ConnectionEventListener   callback = null;
 
+    protected List<connection_descriptor_struct> filterTable = null;
+
 
     public OutInt8Port(String portName ){
 	this( portName, null, null );
@@ -100,10 +105,23 @@ public class OutInt8Port extends BULKIO.UsesPortStatisticsProviderPOA {
         stats = new HashMap<String, linkStatistics >();
         currentSRIs = new HashMap<String, StreamSRI>();
 	callback = eventCB;
-	logger = logger;
-
+	this.logger = logger;
+        filterTable = null;
 	if ( this.logger != null ) {
 	    this.logger.debug( "bulkio::OutPort CTOR port: " + portName ); 
+	}
+    }
+
+
+    public void setLogger( Logger newlogger ){
+        synchronized (this.updatingPortsLock) {
+	    logger = newlogger;
+	}
+    }
+
+    public void setConnectionEventListener( ConnectionEventListener newListener ){
+        synchronized (this.updatingPortsLock) {
+	    callback = newListener;
 	}
     }
 
@@ -218,17 +236,50 @@ public class OutInt8Port extends BULKIO.UsesPortStatisticsProviderPOA {
         if (header.keywords == null) header.keywords = new DataType[0];
 
         synchronized(this.updatingPortsLock) {    // don't want to process while command information is coming in
-            if (this.active) {
 
+            if (this.active) {
+		// state if this port is not listed in the filter table... then pushSRI down stream
+		boolean portListed = false;
+
+		// for each connection
                 for (Entry<String, dataCharOperations> p : this.outConnections.entrySet()) {
-                    try {
-                        p.getValue().pushSRI(header);
-                    } catch(Exception e) {
-			if ( logger != null ) {
-			    logger.error("Call to pushSRI failed on port " + name + " connection " + p.getKey() );
+		    
+		    // if connection is in the filter table
+                    for (connection_descriptor_struct ftPtr : bulkio.utils.emptyIfNull(this.filterTable) ) {
+
+			// if there is an entry for this port in the filter table....so save that state
+			if (ftPtr.port_name.getValue().equals(this.name)) {
+			    portListed = true;		    
 			}
+
+			if ( (ftPtr.port_name.getValue().equals(this.name)) &&
+			     (ftPtr.connection_id.getValue().equals(p.getKey())) &&
+			     (ftPtr.stream_id.getValue().equals(header.streamID))) {
+                            try {
+				p.getValue().pushSRI(header);
+                            } catch(Exception e) {
+                                if ( logger != null ) {
+				    logger.error("Call to pushSRI failed on port " + name + " connection " + p.getKey() );
+                                }
+                            }
+                        }
+                    }
+		}
+
+		// no entry exists for this port in the filter table so all connections get SRI data
+		if (!portListed ) {
+		    for (Entry<String, dataCharOperations> p : this.outConnections.entrySet()) {
+                        try {
+			    p.getValue().pushSRI(header);
+			} catch(Exception e) {
+			    if ( logger != null ) {
+				logger.error("Call to pushSRI failed on port " + name + " connection " + p.getKey() );
+			    }
+                        }
                     }
                 }
+
+
             }
 
             this.currentSRIs.put(header.streamID, header);
@@ -241,6 +292,10 @@ public class OutInt8Port extends BULKIO.UsesPortStatisticsProviderPOA {
 	    logger.trace("bulkio.OutPort pushSRI  EXIT (port=" + name +")" );
 	}
         return;
+    }
+
+    public void updateConnectionFilter(List<connection_descriptor_struct> _filterTable) {
+        this.filterTable = _filterTable;
     }
 
     /**
@@ -270,14 +325,39 @@ public class OutInt8Port extends BULKIO.UsesPortStatisticsProviderPOA {
         synchronized(this.updatingPortsLock) {    // don't want to process while command information is coming in
             char[] odata = data;
             if (this.active) {
+		boolean portListed = false;
                 for (Entry<String, dataCharOperations> p : this.outConnections.entrySet()) {
-                    try {
-                        p.getValue().pushPacket( odata, time, endOfStream, streamID);
-                        this.stats.get(p.getKey()).update( odata.length, (float)0.0, endOfStream, streamID, false);
-                    } catch(Exception e) {
-			if ( logger != null ) {
-			    logger.error("Call to pushPacket failed on port " + name + " connection " + p.getKey() );
+
+                    for (connection_descriptor_struct ftPtr : bulkio.utils.emptyIfNull(this.filterTable))  {
+
+			if (ftPtr.port_name.getValue().equals(this.name)) {
+			    portListed = true;		    
 			}
+                        if ( (ftPtr.port_name.getValue().equals(this.name)) && 
+			     (ftPtr.connection_id.getValue().equals(p.getKey())) && 
+			     (ftPtr.stream_id.getValue().equals(streamID)) ) {
+                            try {
+                                p.getValue().pushPacket( odata, time, endOfStream, streamID);
+                                this.stats.get(p.getKey()).update( odata.length, (float)0.0, endOfStream, streamID, false);
+                            } catch(Exception e) {
+                                if ( logger != null ) {
+                                    logger.error("Call to pushPacket failed on port " + name + " connection " + p.getKey() );
+                                }
+                            }
+                        }
+                    }
+                }
+
+		if (!portListed ){
+		    for (Entry<String, dataCharOperations> p : this.outConnections.entrySet()) {
+                        try {
+                            p.getValue().pushPacket( odata, time, endOfStream, streamID);
+                            this.stats.get(p.getKey()).update( odata.length, (float)0.0, endOfStream, streamID, false);
+                        } catch(Exception e) {
+                            if ( logger != null ) {
+                                logger.error("Call to pushPacket failed on port " + name + " connection " + p.getKey() );
+                            }
+                        }
                     }
                 }
             }
@@ -340,7 +420,49 @@ public class OutInt8Port extends BULKIO.UsesPortStatisticsProviderPOA {
 	    logger.trace("bulkio.OutPort disconnectPort ENTER (port=" + name +")" );
 	}
         synchronized (this.updatingPortsLock) {
+            boolean portListed = false;
+            for (connection_descriptor_struct ftPtr : bulkio.utils.emptyIfNull(this.filterTable)) {
+                if (ftPtr.port_name.getValue().equals(this.name)) {
+                    portListed = true;
+                    break;
+                }
+            }
             dataCharOperations port = this.outConnections.remove(connectionId);
+            if (port != null)
+            {
+                char[] odata = new char[0];
+                BULKIO.PrecisionUTCTime tstamp = bulkio.time.utils.now();
+                for (StreamSRI cSriSid : this.activeSRIs()) {
+                    String streamID = cSriSid.streamID;
+                    for (String aSIDs : this.stats.get(connectionId).getActiveStreamIDs()) {
+                        if (streamID.equals(aSIDs)) {
+                            if (portListed) {
+                                for (connection_descriptor_struct ftPtr : bulkio.utils.emptyIfNull(this.filterTable)) {
+                                    if ( (ftPtr.port_name.getValue().equals(this.name)) &&
+					 (ftPtr.connection_id.getValue().equals(connectionId)) &&
+					 (ftPtr.stream_id.getValue().equals(streamID))) {
+                                        try {
+                                            port.pushPacket(odata,tstamp,true,streamID);
+                                        } catch(Exception e) {
+                                            if ( logger != null ) {
+                                                logger.error("Call to pushPacket failed on port " + name + " connection " + connectionId );
+                                            }
+                                        }
+                                    }
+                                }
+                            } else {
+                                try {
+                                    port.pushPacket(odata,tstamp,true,streamID);
+                                } catch(Exception e) {
+                                    if ( logger != null ) {
+                                        logger.error("Call to pushPacket failed on port " + name + " connection " + connectionId );
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
             this.stats.remove(connectionId);
             this.active = (this.outConnections.size() != 0);
 	    if ( logger != null ) {

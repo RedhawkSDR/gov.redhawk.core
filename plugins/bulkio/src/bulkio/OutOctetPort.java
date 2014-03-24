@@ -11,18 +11,18 @@ public class OutOctetPort extends OutUInt8Port  {
      */
     public OutOctetPort(String portName)
     {
-	super(portName );
+        super(portName );
     }
 
     public OutOctetPort(String portName, Logger logger)
     {
-	super(portName, logger );
+        super(portName, logger );
     }
 
 
     public OutOctetPort(String portName, Logger logger, ConnectionEventListener eventCB )
     {
-	super(portName, logger, eventCB );
+        super(portName, logger, eventCB );
     }
 
 }
