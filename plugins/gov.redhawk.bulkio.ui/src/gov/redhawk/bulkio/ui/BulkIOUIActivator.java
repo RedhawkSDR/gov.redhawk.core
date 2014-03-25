@@ -11,6 +11,9 @@
  */
 package gov.redhawk.bulkio.ui;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
 
@@ -21,6 +24,9 @@ public class BulkIOUIActivator extends AbstractUIPlugin {
 
 	// The plug-in ID
 	public static final String PLUGIN_ID = "gov.redhawk.bulkio.ui"; //$NON-NLS-1$
+
+	/** ISO 8601 date/time format, using space instead of 'T' between date and time for readability on UI. */
+	public static final String ISO_8601_TIME_FORMAT = "YYYY-MM-dd HH:mm:ss.SSSX";
 
 	// The shared instance
 	private static BulkIOUIActivator plugin;
@@ -66,4 +72,14 @@ public class BulkIOUIActivator extends AbstractUIPlugin {
 		return BulkIOUIActivator.plugin;
 	}
 
+	/** converts Date to ISO 8601 date/time format string.
+	 *  @return if date is null, then empty string is return, otherwise returns date/time in ISO 8601 format
+	 **/
+	public static String toISO8601TimeStr(Date date) {
+		if (date == null) {
+			return "";
+		} else {
+			return new SimpleDateFormat(BulkIOUIActivator.ISO_8601_TIME_FORMAT).format(date);
+		}
+	}
 }

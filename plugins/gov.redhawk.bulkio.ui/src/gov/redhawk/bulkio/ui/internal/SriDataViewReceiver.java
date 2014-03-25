@@ -11,13 +11,13 @@
  */
 package gov.redhawk.bulkio.ui.internal;
 
+import gov.redhawk.bulkio.ui.BulkIOUIActivator;
 import gov.redhawk.bulkio.ui.views.SriDataView;
 import gov.redhawk.bulkio.util.AbstractUberBulkIOPort;
 import gov.redhawk.bulkio.util.BulkIOType;
 import gov.redhawk.bulkio.util.BulkIOUtilActivator;
 import gov.redhawk.model.sca.ScaUsesPort;
 
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -165,7 +165,7 @@ public class SriDataViewReceiver extends AbstractUberBulkIOPort {
 				precisionString = Double.toString(seconds);
 			} else {
 				Date precisionTime = new Date((long) seconds);
-				precisionString = new SimpleDateFormat(SriDataViewLabelProvider.ISO_8601_TIME_FORMAT).format(precisionTime);
+				precisionString = BulkIOUIActivator.toISO8601TimeStr(precisionTime);
 			}
 
 			//Assign to SriWrapper object

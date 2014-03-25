@@ -14,7 +14,6 @@ package gov.redhawk.bulkio.ui.internal;
 import gov.redhawk.bulkio.ui.BulkIOUIActivator;
 import gov.redhawk.bulkio.ui.BulkioDataTypes;
 
-import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Date;
 
@@ -30,9 +29,6 @@ import org.eclipse.ui.plugin.AbstractUIPlugin;
 import CF.DataType;
 
 public class SriDataViewLabelProvider implements ITableLabelProvider {
-
-	/** ISO 8601 date/time format, using space instead of 'T' between date and time for readability */
-	static final String ISO_8601_TIME_FORMAT = "YYYY-MM-dd HH:mm:ss.SSSX";
 
 	@Override
 	public void addListener(ILabelProviderListener listener) {
@@ -151,7 +147,7 @@ public class SriDataViewLabelProvider implements ITableLabelProvider {
 				// Default behavior for populated rows
 				if (sri.getValue() != null) {
 					if (sri.getValue() instanceof Date) {
-						return new SimpleDateFormat(ISO_8601_TIME_FORMAT).format(sri.getValue());
+						return BulkIOUIActivator.toISO8601TimeStr((Date) sri.getValue());
 					} else {
 						return sri.getValue().toString();
 					}
