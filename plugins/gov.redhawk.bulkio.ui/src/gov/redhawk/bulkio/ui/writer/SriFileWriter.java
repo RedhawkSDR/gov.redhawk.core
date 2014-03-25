@@ -11,6 +11,7 @@
  */
 package gov.redhawk.bulkio.ui.writer;
 
+import gov.redhawk.bulkio.ui.BulkIOUIActivator;
 import gov.redhawk.bulkio.ui.internal.SriWrapper;
 import gov.redhawk.bulkio.util.StreamSRIUtil;
 
@@ -52,13 +53,13 @@ public class SriFileWriter extends AbstractSriWriter {
 			Table rootTable = new Table();
 
 			Table genInfoTable = (Table) rootTable.addTable("General Information");
-			putGenInfo(nextStream.getValue(), genInfoTable);
+			putGeneralInfo(nextStream.getValue(), genInfoTable);
 
 			StreamSRIUtil.putSriInfo(nextStream.getValue().getSri(), rootTable);
 
 			List<String> list = rootTable.toConfigFile();
 
-			// Print to file
+			// Print/save to text file
 			try {
 				for (String s : list) {
 					out.println(s);
@@ -69,9 +70,9 @@ public class SriFileWriter extends AbstractSriWriter {
 		}
 	}
 
-	private void putGenInfo(SriWrapper value, Table genInfoTable) {
+	private void putGeneralInfo(SriWrapper value, Table genInfoTable) {
 		genInfoTable.put("BulkIOType", getBulkioType());
-		genInfoTable.put("Most recent Push SRI", value.getPushSriDate());
+		genInfoTable.put("Most recent Push SRI", BulkIOUIActivator.toISO8601TimeStr(value.getPushSriDate()));
 		genInfoTable.put("Most recent push packet", value.getPrecisionTime());
 	}
 }

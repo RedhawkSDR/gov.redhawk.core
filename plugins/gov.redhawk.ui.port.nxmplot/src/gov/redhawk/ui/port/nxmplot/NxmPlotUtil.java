@@ -95,13 +95,13 @@ public final class NxmPlotUtil {
 		}
 		switch (type) {
 		case RASTER:
-			return "/LPS=200/RT/NICE";
+			return "/LPS=200/RT/NICE/FOCUS=FALSE";
 		case CONTOUR: // fall-through
 		case DOT: // fall-through
 		case MESH: // fall-through
 		case LINE: // fall-through
 		case POINT:
-			return "/RT/NICE";
+			return "/RT/NICE/FOCUS=FALSE";
 		default:
 			return null;
 		}
