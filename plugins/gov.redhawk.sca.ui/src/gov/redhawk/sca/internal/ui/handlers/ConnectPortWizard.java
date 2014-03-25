@@ -15,18 +15,28 @@ import gov.redhawk.model.sca.ScaComponent;
 import gov.redhawk.model.sca.ScaProvidesPort;
 import gov.redhawk.model.sca.ScaUsesPort;
 import gov.redhawk.sca.ScaPlugin;
+import gov.redhawk.sca.ui.ScaUiPlugin;
 import gov.redhawk.sca.ui.views.ScaExplorer;
+
+import java.lang.reflect.InvocationTargetException;
+import java.util.concurrent.Callable;
+
+import mil.jpeojtrs.sca.util.CorbaUtils;
 
 import org.eclipse.core.databinding.DataBindingContext;
 import org.eclipse.core.databinding.UpdateValueStrategy;
 import org.eclipse.core.databinding.beans.PojoProperties;
 import org.eclipse.core.databinding.validation.IValidator;
 import org.eclipse.core.databinding.validation.ValidationStatus;
+import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.databinding.swt.WidgetProperties;
 import org.eclipse.jface.databinding.viewers.ViewerProperties;
 import org.eclipse.jface.databinding.wizard.WizardPageSupport;
 import org.eclipse.jface.layout.GridDataFactory;
+import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.viewers.ViewerFilter;
 import org.eclipse.jface.wizard.Wizard;
@@ -40,6 +50,7 @@ import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.navigator.CommonViewer;
+import org.eclipse.ui.statushandlers.StatusManager;
 
 /**
  * 
@@ -75,7 +86,7 @@ public class ConnectPortWizard extends Wizard {
 				@Override
 				public boolean select(Viewer viewer, Object parentElement, Object element) {
 					// This is a hack to filter out the sdr root.
-					if (element.getClass().getName().equals(SDR_ROOT_CLASS)) {
+					if (element.getClass().getName().equals(ConnectWizardPage.SDR_ROOT_CLASS)) {
 						return false;
 					}
 					return true;
@@ -93,7 +104,7 @@ public class ConnectPortWizard extends Wizard {
 				@Override
 				public boolean select(Viewer viewer, Object parentElement, Object element) {
 					// This is a hack to filter out the sdr root.
-					if (element.getClass().getName().equals(SDR_ROOT_CLASS)) {
+					if (element.getClass().getName().equals(ConnectWizardPage.SDR_ROOT_CLASS)) {
 						return false;
 					}
 					return true;
@@ -122,7 +133,7 @@ public class ConnectPortWizard extends Wizard {
 			if (target != null) {
 				targetViewer.reveal(target);
 			}
-			
+
 			support = WizardPageSupport.create(this, context);
 		}
 
@@ -214,6 +225,7 @@ public class ConnectPortWizard extends Wizard {
 
 	public ConnectPortWizard() {
 		setWindowTitle("Connect");
+		setNeedsProgressMonitor(true);
 	}
 
 	@Override
@@ -221,11 +233,41 @@ public class ConnectPortWizard extends Wizard {
 		addPage(page);
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see org.eclipse.jface.wizard.Wizard#performFinish()
 	 */
 	@Override
 	public boolean performFinish() {
+		try {
+			getContainer().run(true, true, new IRunnableWithProgress() {
+
+				@Override
+				public void run(IProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
+					monitor.beginTask("Connecting...", IProgressMonitor.UNKNOWN);
+					try {
+						CorbaUtils.invoke(new Callable<Object>() {
+
+							@Override
+							public Object call() throws Exception {
+								page.source.connectPort(page.target.getCorbaObj(), page.connectionID);
+								return null;
+							}
+
+						}, monitor);
+					} catch (CoreException e) {
+						throw new InvocationTargetException(e);
+					}
+				}
+			});
+		} catch (InvocationTargetException e) {
+			StatusManager.getManager().handle(new Status(IStatus.ERROR, ScaUiPlugin.PLUGIN_ID, "Failed to make connection.", e.getCause()));
+			return false;
+		} catch (InterruptedException e) {
+			return true;
+		}
+
 		return true;
 	}
 
