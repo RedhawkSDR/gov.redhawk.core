@@ -71,7 +71,7 @@ public class SriFileWriter extends AbstractSriWriter {
 
 	private void putGenInfo(SriWrapper value, Table genInfoTable) {
 		genInfoTable.put("BulkIOType", getBulkioType());
-		genInfoTable.put("Most recent Push SRI", value.getDate());
+		genInfoTable.put("Most recent Push SRI", value.getPushSriDate());
 		genInfoTable.put("Most recent push packet", value.getPrecisionTime());
 	}
 }

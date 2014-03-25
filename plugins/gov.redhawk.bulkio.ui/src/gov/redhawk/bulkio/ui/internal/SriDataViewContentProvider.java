@@ -69,7 +69,7 @@ public class SriDataViewContentProvider implements ITreeContentProvider {
 			} else {
 				attributes.add(new SriBuilder("streamID: ", sri.streamID, sriWrapper));
 			}
-			attributes.add(new SriBuilder("Most recent push SRI: ", sriWrapper.getDate(), sriWrapper));
+			attributes.add(new SriBuilder("Most recent push SRI: ", sriWrapper.getPushSriDate(), sriWrapper));
 			attributes.add(new SriBuilder("Most recent push packet: ", sriWrapper.getPrecisionTime(), sriWrapper));
 			attributes.add(new SriBuilder("blocking: ", sri.blocking, sriWrapper));
 			attributes.add(new SriBuilder("h version: ", sri.hversion, sriWrapper));

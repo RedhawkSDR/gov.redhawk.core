@@ -20,18 +20,18 @@ import BULKIO.StreamSRI;
 public class SriWrapper {
 
 	private StreamSRI sri;
-	private Date date;
-	private String precisionTime;
-	private boolean eos;
+	private Date pushSriDate;      // time when SRI was received in local machine time
+	private String precisionTime;  // time specified in pushPacket
+	private boolean eos;           // end of stream
 
 	public SriWrapper(@NonNull StreamSRI streamSRI, @NonNull Date date) {
 		this.setSri(streamSRI);
-		this.setDate(date);
+		this.setPushSriDate(date);
 	}
 
 	public SriWrapper(SriWrapper value) {
 		this.sri = value.getSri();
-		this.date = value.getDate();
+		this.pushSriDate = value.getPushSriDate();
 		this.precisionTime = value.getPrecisionTime();
 		this.eos = value.isEOS();
 	}
@@ -45,15 +45,17 @@ public class SriWrapper {
 		this.sri = sri;
 	}
 
+	/** Get most recent pushSRI date (local machine time). */
 	@NonNull
-	public Date getDate() {
-		return date;
+	public Date getPushSriDate() {
+		return pushSriDate;
 	}
 
-	public void setDate(Date date) {
-		this.date = date;
+	public void setPushSriDate(Date date) {
+		this.pushSriDate = date;
 	}
 
+	/** Get most recent packet's precision time (received in pushPacket call). */ 
 	@NonNull
 	public String getPrecisionTime() {
 		return precisionTime;

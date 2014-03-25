@@ -106,7 +106,7 @@ public class SriDataViewReceiver extends AbstractUberBulkIOPort {
 		if (modelStreamMap.containsKey(streamID)) {
 			SriWrapper stream = modelStreamMap.get(streamID);
 			stream.setSri(newSri);
-			stream.setDate(new Date());
+			stream.setPushSriDate(new Date());
 		} else {
 			SriWrapper sriWrapper = new SriWrapper(newSri, new Date());
 			modelStreamMap.put(streamID, sriWrapper);
