@@ -29,7 +29,6 @@ import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.ui.handlers.HandlerUtil;
 
-// TODO: Auto-generated Javadoc
 /**
  * The Class InitHandler.
  */
@@ -37,7 +36,6 @@ public class ConnectDomainHandler extends AbstractHandler implements IHandler {
 
 	@Override
 	public void setEnabled(final Object evaluationContext) {
-		// TODO Auto-generated method stub
 		if ((evaluationContext != null) && (evaluationContext instanceof EvaluationContext)) {
 			final EvaluationContext context = (EvaluationContext) evaluationContext;
 			final Object sel = context.getVariable("selection");
@@ -62,7 +60,6 @@ public class ConnectDomainHandler extends AbstractHandler implements IHandler {
 	/**
 	 * {@inheritDoc}
 	 */
-
 	public Object execute(final ExecutionEvent event) throws ExecutionException {
 		final ISelection selection = HandlerUtil.getActiveMenuSelection(event);
 		if (selection instanceof IStructuredSelection) {
@@ -78,8 +75,8 @@ public class ConnectDomainHandler extends AbstractHandler implements IHandler {
 							try {
 								domMgr.connect(monitor, RefreshDepth.SELF);
 								return Status.OK_STATUS;
-							} catch (final Exception e) {
-								return new Status(IStatus.ERROR, ScaUiPlugin.PLUGIN_ID, "Failed to connect", e);
+							} catch (final Exception e) { // SUPPRESS CHECKSTYLE Logged Catch all exception
+								return new Status(IStatus.ERROR, ScaUiPlugin.PLUGIN_ID, "Failed to connect to Domain " + domMgr.getName(), e);
 							}
 						}
 
@@ -90,7 +87,6 @@ public class ConnectDomainHandler extends AbstractHandler implements IHandler {
 				}
 			}
 		}
-		// TODO Auto-generated method stub
 		return null;
 	}
 
