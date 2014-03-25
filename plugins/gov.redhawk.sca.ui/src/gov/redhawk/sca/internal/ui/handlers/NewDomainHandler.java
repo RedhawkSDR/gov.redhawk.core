@@ -64,7 +64,7 @@ public class NewDomainHandler extends AbstractHandler implements IHandler {
 			// for the "AUTO" or "NOW" case we need to connect ourselves
 			final ConnectionMode mode = wizard.getConnectionMode();
 
-			final Job connectionJob = new Job("Creating domain connection") {
+			final Job connectionJob = new Job("Creating Domain connection to " + domainName) {
 
 				@Override
 				protected IStatus run(final IProgressMonitor monitor) {
@@ -83,7 +83,7 @@ public class NewDomainHandler extends AbstractHandler implements IHandler {
 							domain[0].connect(monitor, RefreshDepth.SELF);
 						}
 					} catch (final DomainConnectionException e) {
-						return new Status(IStatus.ERROR, ScaUiPlugin.PLUGIN_ID, "Failed to connect to domain", e);
+						return new Status(IStatus.ERROR, ScaUiPlugin.PLUGIN_ID, "Failed to connect to Domain " + domainName, e);
 					}
 					return Status.OK_STATUS;
 				}
