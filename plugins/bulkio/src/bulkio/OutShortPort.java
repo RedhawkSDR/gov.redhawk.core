@@ -11,18 +11,18 @@ public class OutShortPort extends OutInt16Port  {
      */
     public OutShortPort(String portName)
     {
-	super(portName );
+        super(portName );
     }
 
     public OutShortPort(String portName, Logger logger)
     {
-	super(portName, logger );
+        super(portName, logger );
     }
 
 
     public OutShortPort(String portName, Logger logger, ConnectionEventListener eventCB )
     {
-	super(portName, logger, eventCB );
+        super(portName, logger, eventCB );
     }
 
 }

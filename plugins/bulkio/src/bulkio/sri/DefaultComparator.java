@@ -7,6 +7,9 @@ import BULKIO.StreamSRI;
 public class DefaultComparator implements bulkio.sri.Comparator {
 
     public boolean compare(StreamSRI SRI_1, StreamSRI SRI_2){
+	
+	if ( SRI_1 == null || SRI_2 == null ) 
+	    return false;
         if (SRI_1.hversion != SRI_2.hversion)
             return false;
         if (SRI_1.xstart != SRI_2.xstart)
@@ -25,8 +28,12 @@ public class DefaultComparator implements bulkio.sri.Comparator {
             return false;
         if (SRI_1.mode != SRI_2.mode)
             return false;
-        if (SRI_1.streamID != SRI_2.streamID)
+        if (SRI_1.blocking != SRI_2.blocking)
             return false;
+        if (!SRI_1.streamID.equals(SRI_2.streamID))
+            return false;
+        if (SRI_1.keywords == null || SRI_2.keywords == null )
+	    return false;
         if (SRI_1.keywords.length != SRI_2.keywords.length)
             return false;
         String action = "eq";
@@ -37,7 +44,7 @@ public class DefaultComparator implements bulkio.sri.Comparator {
             if (!SRI_1.keywords[i].value.type().equivalent(SRI_2.keywords[i].value.type())) {
                 return false;
             }
-            if (AnyUtils.compareAnys(SRI_1.keywords[i].value, SRI_2.keywords[i].value, action)) {
+            if (!AnyUtils.compareAnys(SRI_1.keywords[i].value, SRI_2.keywords[i].value, action)) {
                 return false;
             }
         }

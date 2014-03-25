@@ -127,16 +127,19 @@
                   checkEnabled="false">
                <iterate>
                   <or>
+                     <instanceof
+                           value="gov.redhawk.frontend.UnallocatedTunerContainer">
+                     </instanceof>
                      <and>
                         <instanceof
-                              value="gov.redhawk.frontend.TunerContainer">
+                              value="gov.redhawk.model.sca.ScaDevice">
                         </instanceof>
                         <test
-                              property="gov.redhawk.frontend.hasUnallocatedTuners">
+                              property="gov.redhawk.frontend.deviceKindIsFrontendTuner">
                         </test>
                      </and>
                      <instanceof
-                           value="gov.redhawk.frontend.UnallocatedTunerContainer">
+                           value="gov.redhawk.frontend.TunerContainer">
                      </instanceof>
                   </or>
                </iterate>
@@ -155,6 +158,9 @@
                      </instanceof>
                      <test
                            property="gov.redhawk.frontend.hasAllocationID">
+                     </test>
+                     <test
+                           property="gov.redhawk.frontend.isRxDigitizer">
                      </test>
                   </and>
                </iterate>
@@ -226,9 +232,14 @@
                <iterate
                      ifEmpty="false"
                      operator="and">
-                  <instanceof
-                        value="gov.redhawk.frontend.TunerStatus">
-                  </instanceof>
+                  <and>
+                     <instanceof
+                           value="gov.redhawk.frontend.TunerStatus">
+                     </instanceof>
+                     <test
+                           property="gov.redhawk.frontend.isRxDigitizer">
+                     </test>
+                  </and>
                </iterate>
             </visibleWhen>
          </command>
@@ -240,9 +251,14 @@
                <iterate
                      ifEmpty="false"
                      operator="and">
-                  <instanceof
-                        value="gov.redhawk.frontend.TunerStatus">
-                  </instanceof>
+                  <and>
+                     <instanceof
+                           value="gov.redhawk.frontend.TunerStatus">
+                     </instanceof>
+                     <test
+                           property="gov.redhawk.frontend.isRxDigitizer">
+                     </test>
+                  </and>
                </iterate>
             </visibleWhen>
             <command
@@ -300,9 +316,14 @@
                <iterate
                      ifEmpty="false"
                      operator="and">
-                  <instanceof
-                        value="gov.redhawk.frontend.TunerStatus">
-                  </instanceof>
+                  <and>
+                     <instanceof
+                           value="gov.redhawk.frontend.TunerStatus">
+                     </instanceof>
+                     <test
+                           property="gov.redhawk.frontend.isRxDigitizer">
+                     </test>
+                  </and>
                </iterate>
             </visibleWhen>
          </command>
@@ -314,9 +335,14 @@
                <iterate
                      ifEmpty="false"
                      operator="and">
-                  <instanceof
-                        value="gov.redhawk.frontend.TunerStatus">
-                  </instanceof>
+                  <and>
+                     <instanceof
+                           value="gov.redhawk.frontend.TunerStatus">
+                     </instanceof>
+                     <test
+                           property="gov.redhawk.frontend.isRxDigitizer">
+                     </test>
+                  </and>
                </iterate>
             </visibleWhen>
             <command
@@ -356,9 +382,14 @@
                <iterate
                      ifEmpty="false"
                      operator="and">
-                  <instanceof
-                        value="gov.redhawk.frontend.TunerStatus">
-                  </instanceof>
+                  <and>
+                     <instanceof
+                           value="gov.redhawk.frontend.TunerStatus">
+                     </instanceof>
+                     <test
+                           property="gov.redhawk.frontend.isRxDigitizer">
+                     </test>
+                  </and>
                </iterate>
             </visibleWhen>
          </command>
@@ -390,6 +421,13 @@
             namespace="gov.redhawk.frontend"
             properties="deviceKindIsFrontendTuner"
             type="gov.redhawk.model.sca.ScaDevice">
+      </propertyTester>
+      <propertyTester
+            class="gov.redhawk.frontend.ui.internal.TunerTypeTester"
+            id="gov.redhawk.frontend.tunerTypeTester"
+            namespace="gov.redhawk.frontend"
+            properties="isRxDigitizer"
+            type="gov.redhawk.frontend.TunerStatus">
       </propertyTester>
    </extension>
    <extension

@@ -155,6 +155,14 @@ public class InInt32Port extends BULKIO.jni.dataLongPOA {
 	}	
     }
 
+
+    public void setLogger( Logger newlogger ){
+        synchronized (this.sriUpdateLock) {
+	    logger = newlogger;
+	}
+    }
+
+
     /**
      * 
      */

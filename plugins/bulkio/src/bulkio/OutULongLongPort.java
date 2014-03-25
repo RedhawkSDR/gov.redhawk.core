@@ -11,18 +11,18 @@ public class OutULongLongPort extends OutUInt64Port  {
      */
     public OutULongLongPort(String portName)
     {
-	super(portName );
+        super(portName );
     }
 
     public OutULongLongPort(String portName, Logger logger)
     {
-	super(portName, logger );
+        super(portName, logger );
     }
 
 
     public OutULongLongPort(String portName, Logger logger, ConnectionEventListener eventCB )
     {
-	super(portName, logger, eventCB );
+        super(portName, logger, eventCB );
     }
 
 }

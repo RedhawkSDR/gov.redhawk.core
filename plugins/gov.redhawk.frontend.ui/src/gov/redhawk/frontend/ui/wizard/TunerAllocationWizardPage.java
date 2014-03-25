@@ -454,11 +454,11 @@ public class TunerAllocationWizardPage extends WizardPage {
 			}
 			if (minFreq != null && val < minFreq) {
 				return ValidationStatus.warning(TunerAllocationWizardPage.FREQ_BELOW_MIN
-					+ String.valueOf(minFreq / getUnitsConversionFactor(TunerAllocationProperties.CENTER_FREQUENCY)) + " Mhz");
+					+ String.valueOf(minFreq / getUnitsConversionFactor(TunerAllocationProperties.CENTER_FREQUENCY)) + " MHz");
 			}
 			if (maxFreq != null && val > maxFreq) {
 				return ValidationStatus.warning(TunerAllocationWizardPage.FREQ_ABOVE_MAX
-					+ String.valueOf(maxFreq / getUnitsConversionFactor(TunerAllocationProperties.CENTER_FREQUENCY)) + " Mhz");
+					+ String.valueOf(maxFreq / getUnitsConversionFactor(TunerAllocationProperties.CENTER_FREQUENCY)) + " MHz");
 			}
 			return Status.OK_STATUS;
 		} else if (control == bwText) {
@@ -479,11 +479,11 @@ public class TunerAllocationWizardPage extends WizardPage {
 			}
 			if (minBw != null && val < minBw) {
 				return ValidationStatus.warning(TunerAllocationWizardPage.BW_BELOW_MIN
-					+ String.valueOf(minBw / getUnitsConversionFactor(TunerAllocationProperties.BANDWIDTH)) + " Mhz");
+					+ String.valueOf(minBw / getUnitsConversionFactor(TunerAllocationProperties.BANDWIDTH)) + " MHz");
 			}
 			if (maxBw != null && val > maxBw) {
 				return ValidationStatus.warning(TunerAllocationWizardPage.BW_ABOVE_MAX
-					+ String.valueOf(maxBw / getUnitsConversionFactor(TunerAllocationProperties.BANDWIDTH)) + " Mhz");
+					+ String.valueOf(maxBw / getUnitsConversionFactor(TunerAllocationProperties.BANDWIDTH)) + " MHz");
 			}
 			return Status.OK_STATUS;
 		} else if (control == srText) {
@@ -585,7 +585,11 @@ public class TunerAllocationWizardPage extends WizardPage {
 				SWT.TOP | SWT.LEFT);
 		typeCombo.addSelectionChangedListener(tunerTypeListener);
 		typeCombo.setInput(FrontEndUIActivator.SUPPORTED_TUNER_TYPES.toArray(new String[0]));
-		typeCombo.setSelection(new StructuredSelection(FRONTEND.TUNER_TYPE_RX_DIGITIZER.value));
+		if (tuner.getTunerType() != null) {
+			typeCombo.setSelection(new StructuredSelection(tuner.getTunerType()));
+		} else {
+			typeCombo.setSelection(new StructuredSelection(FRONTEND.TUNER_TYPE_RX_DIGITIZER.value));
+		}
 
 		//allocation ID Text
 		UpdateValueStrategy allocIdStrategy = new UpdateValueStrategy() {
@@ -606,7 +610,6 @@ public class TunerAllocationWizardPage extends WizardPage {
 		allocIdText.setText(getUsername() + ":" + uuid.toString());
 		allocIdText.setBackground(allocIdText.getDisplay().getSystemColor(SWT.COLOR_CYAN));
 		allocIdText.addFocusListener(new TargetableFocusListener(allocIdText));
-		allocIdText.addModifyListener(allocIdListener);
 
 		//Existing allocation ID Text
 		UpdateValueStrategy existingAllocIdStrategy1 = new UpdateValueStrategy() {
@@ -910,19 +913,19 @@ public class TunerAllocationWizardPage extends WizardPage {
 
 		Label typeLabel = new Label(parent, SWT.NONE);
 		typeLabel.setText("Tuner Type");
-		typeCombo = new ComboViewer(parent, SWT.NONE);
+		typeCombo = new ComboViewer(parent, SWT.NONE | SWT.READ_ONLY);
 		typeCombo.setContentProvider(new ArrayContentProvider());
 		GridDataFactory.fillDefaults().grab(true, false).applyTo(typeCombo.getControl());
 		tunerControls.add(typeCombo.getControl());
 
 		Label cfLabel = new Label(parent, SWT.NONE);
-		cfLabel.setText("Center Frequency (Mhz)");
+		cfLabel.setText("Center Frequency (MHz)");
 		cfText = new Text(parent, SWT.BORDER);
 		tunerControls.add(cfText);
 		GridDataFactory.fillDefaults().grab(true, false).applyTo(cfText);
 
 		Label bwLabel = new Label(parent, SWT.NONE);
-		bwLabel.setText("Bandwidth (Mhz)");
+		bwLabel.setText("Bandwidth (MHz)");
 
 		Composite bwComp = new Composite(parent, SWT.NONE);
 		GridDataFactory.fillDefaults().grab(true, false).applyTo(bwComp);

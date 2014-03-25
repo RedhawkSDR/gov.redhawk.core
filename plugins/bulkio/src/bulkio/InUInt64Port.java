@@ -157,6 +157,12 @@ public class InUInt64Port extends BULKIO.jni.dataUlongLongPOA {
 	}	
     }
 
+    public void setLogger( Logger newlogger ){
+        synchronized (this.sriUpdateLock) {
+	    logger = newlogger;
+	}
+    }
+
     /**
      * 
      */

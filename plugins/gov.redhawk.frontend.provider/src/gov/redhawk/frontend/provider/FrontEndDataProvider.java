@@ -19,6 +19,7 @@ import gov.redhawk.frontend.UnallocatedTunerContainer;
 import gov.redhawk.frontend.util.TunerProperties.StatusProperties;
 import gov.redhawk.frontend.util.TunerProperties.TunerStatusAllocationProperties;
 import gov.redhawk.frontend.util.TunerUtils;
+import gov.redhawk.model.sca.RefreshDepth;
 import gov.redhawk.model.sca.ScaAbstractProperty;
 import gov.redhawk.model.sca.ScaDevice;
 import gov.redhawk.model.sca.ScaPackage;
@@ -134,12 +135,24 @@ public class FrontEndDataProvider extends AbstractDataProvider {
 		@Override
 		protected IStatus run(IProgressMonitor monitor) {
 			if (!device.isDisposed()) {
-				device.fetchPorts(monitor);
-				device.fetchProperties(monitor);
+				try {
+					device.refresh(monitor, RefreshDepth.FULL);
+				} catch (InterruptedException e) {
+					return Status.CANCEL_STATUS;
+				}
+//				device.fetchPorts(monitor);
+//				device.fetchProperties(monitor);
 			} else {
 				return Status.CANCEL_STATUS;
 			}
 			supportsFei = calculateSupport();
+			ScaModelCommand.execute(device, new ScaModelCommand() {
+
+				@Override
+				public void execute() {
+					device.eAdapters().add(deviceAdapter);
+				}
+			});
 			ScaModelCommand.execute(device, new ScaModelCommand() {
 
 				@Override
@@ -192,13 +205,6 @@ public class FrontEndDataProvider extends AbstractDataProvider {
 	public void setEnabled(boolean enabled) {
 		super.setEnabled(enabled);
 		if (enabled) {
-			ScaModelCommand.execute(device, new ScaModelCommand() {
-
-				@Override
-				public void execute() {
-					device.eAdapters().add(deviceAdapter);
-				}
-			});
 			fetchAndPopulate.schedule();
 		} else {
 			ScaModelCommand.execute(device, new ScaModelCommand() {

@@ -134,8 +134,8 @@ public class InInt16Port extends BULKIO.jni.dataShortPOA {
 		       Logger logger,
 		       bulkio.sri.Comparator compareSRI, 
 		       bulkio.SriListener streamCB ) {
-
         this.name = portName;
+	this.logger = logger;
         this.stats = new linkStatistics(this.name, new Int16Size() );
         this.sriUpdateLock = new Object();
         this.statUpdateLock = new Object();
@@ -154,6 +154,13 @@ public class InInt16Port extends BULKIO.jni.dataShortPOA {
 	    this.logger.debug( "bulkio::InPort CTOR port: " + portName ); 
 	}	
     }
+
+    public void setLogger( Logger newlogger ){
+        synchronized (this.sriUpdateLock) {
+	    logger = newlogger;
+	}
+    }
+
 
     /**
      * 

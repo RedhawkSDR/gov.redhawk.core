@@ -126,7 +126,7 @@ public class FrontendSection extends AbstractPropertySection {
 		getToolbar().remove(allocateAction.getId());
 		getToolbar().remove(deallocateAction.getId());
 		getToolbar().remove(plotAction.getId());
-		getToolbar().update(false);
+		page.getSite().getActionBars().updateActionBars();
 	}
 
 	private void addToToolbar(IAction action) {
@@ -162,7 +162,7 @@ public class FrontendSection extends AbstractPropertySection {
 			getToolbar().remove(deallocateAction.getId());
 			addToToolbar(allocateAction);
 		}
-		getToolbar().update(false);
+		page.getSite().getActionBars().updateActionBars();
 	}
 
 	/**

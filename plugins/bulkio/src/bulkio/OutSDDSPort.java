@@ -144,6 +144,18 @@ public class OutSDDSPort extends BULKIO.UsesPortStatisticsProviderPOA {
 	}
     }
 
+    public void setLogger( Logger newlogger ){
+        synchronized (this.updatingPortsLock) {
+	    logger = newlogger;
+	}
+    }
+
+    public void setConnectionEventListener( ConnectionEventListener newListener ){
+        synchronized (this.updatingPortsLock) {
+	    callback = newListener;
+	}
+    }
+
     /**
      * @generated
      */

@@ -1,10 +1,10 @@
 /**
- * This file is protected by Copyright. 
+ * This file is protected by Copyright.
  * Please refer to the COPYRIGHT file distributed with this source distribution.
- * 
+ *
  * This file is part of REDHAWK IDE.
- * 
- * All rights reserved.  This program and the accompanying materials are made available under 
+ *
+ * All rights reserved.  This program and the accompanying materials are made available under
  * the terms of the Eclipse Public License v1.0 which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html.
  *
@@ -69,7 +69,7 @@ public class SriDataViewContentProvider implements ITreeContentProvider {
 			} else {
 				attributes.add(new SriBuilder("streamID: ", sri.streamID, sriWrapper));
 			}
-			attributes.add(new SriBuilder("Most recent push SRI: ", sriWrapper.getDate(), sriWrapper));
+			attributes.add(new SriBuilder("Most recent push SRI: ", sriWrapper.getPushSriDate(), sriWrapper));
 			attributes.add(new SriBuilder("Most recent push packet: ", sriWrapper.getPrecisionTime(), sriWrapper));
 			attributes.add(new SriBuilder("blocking: ", sri.blocking, sriWrapper));
 			attributes.add(new SriBuilder("h version: ", sri.hversion, sriWrapper));
@@ -172,11 +172,7 @@ public class SriDataViewContentProvider implements ITreeContentProvider {
 	public boolean hasChildren(Object element) {
 		if (element instanceof SriBuilder) {
 			SriBuilder attribute = (SriBuilder) element;
-			if (attribute.getName().equals("keywords: ")) {
-				return true;
-			} else {
-				return false;
-			}
+			return "keywords: ".equals(attribute.getName());
 		}
 
 		if (element instanceof SriDataTypeWrapper) {

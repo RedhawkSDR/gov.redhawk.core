@@ -19,10 +19,13 @@ import gov.redhawk.model.sca.ScaSimpleProperty;
 import gov.redhawk.model.sca.ScaSimpleSequenceProperty;
 import gov.redhawk.model.sca.ScaStructProperty;
 import gov.redhawk.model.sca.ScaStructSequenceProperty;
+import gov.redhawk.sca.util.PluginUtil;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
+import mil.jpeojtrs.sca.prf.AbstractProperty;
 import mil.jpeojtrs.sca.util.AnyUtils;
 import CF.DataType;
 import CF.PropertiesHolder;
@@ -34,15 +37,32 @@ import CF.PropertiesHolder;
 public class SetPropertiesValuesCommand extends SetStatusCommand<ScaPropertyContainer< ? , ? >> {
 
 	private PropertiesHolder propHolder;
-
+	private List<AbstractProperty> defs;
+	
+	/**
+	 * @deprecated Use {@link #SetPropertiesValuesCommand(ScaPropertyContainer, PropertiesHolder, List)}
+	 * @param container
+	 * @param propHolder
+	 * @since 19.0
+	 */
+	@Deprecated
 	public SetPropertiesValuesCommand(ScaPropertyContainer< ? , ? > container, PropertiesHolder propHolder) {
+		this(container, propHolder, null);
+	}
+
+	/**
+	 * @since 19.0
+	 */
+	public SetPropertiesValuesCommand(ScaPropertyContainer< ? , ? > container, PropertiesHolder propHolder, List<AbstractProperty> defs) {
 		super(container, ScaPackage.Literals.SCA_PROPERTY_CONTAINER__PROPERTIES, null);
 		this.propHolder = propHolder;
+		this.defs = defs;
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
+	@SuppressWarnings("unchecked")
 	@Override
 	public void execute() {
 		if (propHolder.value != null && propHolder.value.length > 0) {
@@ -54,6 +74,10 @@ public class SetPropertiesValuesCommand extends SetStatusCommand<ScaPropertyCont
 			for (final DataType dt : propHolder.value) {
 				final ScaAbstractProperty< ? > prop = props.get(dt.id);
 				if (prop != null) {
+					if (prop.getDefinition() == null) {
+						AbstractProperty def = getDefinition(prop.getId());
+						((ScaAbstractProperty) prop).setDefinition(def);
+					}
 					prop.fromAny(dt.value);
 				} else {
 					ScaAbstractProperty< ? > newProp = createProperty(dt);
@@ -66,6 +90,18 @@ public class SetPropertiesValuesCommand extends SetStatusCommand<ScaPropertyCont
 			}
 		}
 		super.execute();
+	}
+
+	private AbstractProperty getDefinition(String id) {
+		if (id == null) {
+			return null;
+		}
+		for (AbstractProperty prop : defs) {
+			if (PluginUtil.equals(prop.getId(), id)) {
+				return prop;
+			}
+		}
+		return null;
 	}
 
 	private static ScaAbstractProperty< ? > createProperty(DataType dt) {

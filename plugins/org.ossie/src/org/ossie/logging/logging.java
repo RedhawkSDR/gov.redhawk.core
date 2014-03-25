@@ -51,7 +51,7 @@ import org.omg.CORBA.ORB;
 import CF.LogLevels;
 
 
-public class  logging {
+public class logging {
 
     //
     // This keys of the table are tokens to perform a match search against a stream of data. The values for the
@@ -622,7 +622,7 @@ public class  logging {
 		fileContents = GetConfigFileContents(logcfgUri);
 	    }
 	    catch( Exception e ) {
-		System.out.println("ossie.logging.Configure,  Exception:" + e.getMessage() );
+		System.out.println("org.ossie.logging.logging.Configure,  Exception:" + e.getMessage() );
 	    }
 
             if ( fileContents.length() != 0 ) {
@@ -633,7 +633,7 @@ public class  logging {
 		    PropertyConfigurator.configure(props);
 		}
 		catch(Exception e  ){
-		    System.out.println("ossie.logging.Configure,  Exception:" + e.getMessage() );
+		    System.out.println("org.ossie.logging.logging.Configure,  Exception:" + e.getMessage() );
 
 		}
             }
