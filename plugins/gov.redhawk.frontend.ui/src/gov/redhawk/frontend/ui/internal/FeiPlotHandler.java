@@ -17,6 +17,7 @@ import gov.redhawk.frontend.TunerStatus;
 import gov.redhawk.frontend.ui.FrontEndUIActivator;
 import gov.redhawk.frontend.util.TunerProperties.ListenerAllocationProperties;
 import gov.redhawk.frontend.util.TunerUtils;
+import gov.redhawk.internal.ui.port.nxmplot.handlers.PlotPortHandler;
 import gov.redhawk.model.sca.RefreshDepth;
 import gov.redhawk.model.sca.ScaDevice;
 import gov.redhawk.model.sca.ScaDomainManagerRegistry;
@@ -215,60 +216,57 @@ public class FeiPlotHandler extends AbstractHandler implements IHandler {
 		List<ScaPort< ? , ? >> devicePorts = device.getPorts();
 		List<ScaUsesPort> usesPorts = new ArrayList<ScaUsesPort>();
 		for (ScaPort< ? , ? > port : devicePorts) {
-			if (port instanceof ScaUsesPort) {
+			if (port instanceof ScaUsesPort && PlotPortHandler.isBulkIOPortSupported(port.getRepid())) {
 				usesPorts.add((ScaUsesPort) port);
 			}
 		}
-		final ScaItemProviderAdapterFactory factory = new ScaItemProviderAdapterFactory();
-		final ScaUsesPort usesPort;
-		if (usesPorts.size() == 1) {
-			usesPort = usesPorts.get(0);
-		} else if (usesPorts.size() > 1) {
-			ListSelectionDialog dialog = new ListSelectionDialog(HandlerUtil.getActiveShellChecked(event), usesPorts, new ArrayContentProvider(),
-				new AdapterFactoryLabelProvider(factory), "Select output port to use:");
-			if (dialog.open() == Window.OK) {
-				Object[] result = dialog.getResult();
-				if (result.length >= 1) {
-					usesPort = (ScaUsesPort) result[0];
-				} else {
-					usesPort = null;
-				}
-			} else {
-				usesPort = null;
-			}
-		} else {
-			usesPort = null;
-		}
 
-		if (usesPort == null) {
-			return Status.CANCEL_STATUS;
-		}
-
-		final StringBuilder name = new StringBuilder();
-		final StringBuilder tooltip = new StringBuilder();
-
-		createTooltip(factory, name, tooltip, usesPort);
-		factory.dispose();
-
-		// Connect the port
+		//Must copy info from event to a new EvaluationContext before opening the ListSelectionDialog
+		//After the dialog closes, some variables from the event's execution context are invalid
 		final List<ScaUsesPort> ports = new ArrayList<ScaUsesPort>();
-		ports.add(usesPort);
 		EvaluationContext exContext = new EvaluationContext(context, ports);
 		exContext.addVariable(ISources.ACTIVE_CURRENT_SELECTION_NAME, new StructuredSelection(ports));
 		exContext.addVariable(ISources.ACTIVE_MENU_SELECTION_NAME, new StructuredSelection(ports));
 		exContext.addVariable(ISources.ACTIVE_WORKBENCH_WINDOW_NAME, HandlerUtil.getActiveWorkbenchWindowChecked(event));
-
 		Map<String, Object> exParam = new HashMap<String, Object>();
 		exParam.put(IPlotView.PARAM_PLOT_TYPE, event.getParameter(IPlotView.PARAM_PLOT_TYPE));
 		exParam.put(IPlotView.PARAM_ISFFT, event.getParameter(IPlotView.PARAM_ISFFT));
 		final String listenerID = getListenerID(props);
 		exParam.put(IPlotView.PARAM_CONNECTION_ID, listenerID);
 		exParam.put(IPlotView.PARAM_SECONDARY_ID, createSecondaryId());
-
 		IWorkbenchWindow window = HandlerUtil.getActiveWorkbenchWindow(event);
 		ICommandService svc = (ICommandService) window.getService(ICommandService.class);
 		Command comm = svc.getCommand(IPlotView.COMMAND_ID);
 		ExecutionEvent ex = new ExecutionEvent(comm, exParam, null, exContext);
+
+
+		final ScaItemProviderAdapterFactory factory = new ScaItemProviderAdapterFactory();
+		if (usesPorts.size() == 1) {
+			ports.add(usesPorts.get(0));
+		} else if (usesPorts.size() > 1) {
+			ListSelectionDialog dialog = new ListSelectionDialog(HandlerUtil.getActiveShellChecked(event), usesPorts, new ArrayContentProvider(),
+				new AdapterFactoryLabelProvider(factory), "Select output port to use:");
+			if (dialog.open() == Window.OK) {
+				Object[] result = dialog.getResult();
+				if (result.length >= 1) {
+					ports.addAll(this.<ScaUsesPort>castArrayItemsInList(result));
+				} else {
+					return Status.CANCEL_STATUS;
+				}
+			} else {
+				return Status.CANCEL_STATUS;
+			}
+		} else {
+			return Status.CANCEL_STATUS;
+		}
+
+
+		final StringBuilder name = new StringBuilder();
+		final StringBuilder tooltip = new StringBuilder();
+
+		createTooltip(factory, name, tooltip, ports);
+		factory.dispose();
+
 		final IPlotView view = PlotActivator.getDefault().showPlotView(ex);
 		if (view != null) {
 			view.setPartName(name.toString());
@@ -414,32 +412,50 @@ public class FeiPlotHandler extends AbstractHandler implements IHandler {
 		return "FEI" + FeiPlotHandler.SECONDARY_ID.incrementAndGet();
 	}
 
-	private void createTooltip(final ScaItemProviderAdapterFactory factory, final StringBuilder name, final StringBuilder tooltip, ScaUsesPort usesPort) {
+	private void createTooltip(final ScaItemProviderAdapterFactory factory, final StringBuilder name, final StringBuilder tooltip, List<ScaUsesPort> usesPorts) {
 		List<String> tmpList4Tooltip = new LinkedList<String>();
-		for (EObject eObj = usesPort; !(eObj instanceof ScaDomainManagerRegistry) && eObj != null; eObj = eObj.eContainer()) {
-			Adapter adapter = factory.adapt(eObj, IItemLabelProvider.class);
-			if (adapter instanceof IItemLabelProvider) {
-				IItemLabelProvider lp = (IItemLabelProvider) adapter;
-				String text = lp.getText(eObj);
-				if (text != null && !text.isEmpty()) {
-					tmpList4Tooltip.add(0, text);
+		int loopCount = 0;
+		for (ScaUsesPort usesPort : usesPorts) {
+			loopCount++;
+			if (loopCount >= 2) {
+				tmpList4Tooltip.add(0, "\n");
+			}
+			for (EObject eObj = usesPort; !(eObj instanceof ScaDomainManagerRegistry) && eObj != null; eObj = eObj.eContainer()) {
+				Adapter adapter = factory.adapt(eObj, IItemLabelProvider.class);
+				if (adapter instanceof IItemLabelProvider) {
+					IItemLabelProvider lp = (IItemLabelProvider) adapter;
+					String text = lp.getText(eObj);
+					if (text != null && !text.isEmpty()) {
+						tmpList4Tooltip.add(0, text);
+					}
 				}
 			}
+			String nameStr = usesPort.getName();
+			if (nameStr != null && !nameStr.isEmpty()) {
+				name.append(nameStr).append(" ");
+			}
 		}
-
-		String nameStr = usesPort.getName();
-		if (nameStr != null && !nameStr.isEmpty()) {
-			name.append(nameStr).append(" ");
-		}
-
+		String delim = "";
 		if (!tmpList4Tooltip.isEmpty()) {
+			tooltip.append(delim);
+			delim = "\n";
 			for (Iterator<String> i = tmpList4Tooltip.iterator(); i.hasNext();) {
-				tooltip.append(i.next());
-				if (i.hasNext()) {
+				String s = i.next();
+				tooltip.append(s);
+				if (i.hasNext() && !("\n").equals(s)) {
 					tooltip.append(" -> ");
 				}
 			}
-			tooltip.append("\n");
+			
 		}
+	}
+
+	@SuppressWarnings("unchecked")
+	private < T > List<T> castArrayItemsInList(Object[] objects) {
+		List<T> list = new ArrayList<T>();
+		for (Object obj : objects) {
+			list.add((T) obj);
+		}
+		return list;
 	}
 }

@@ -131,6 +131,23 @@ public class ScaPortItemProvider extends CorbaObjWrapperItemProvider implements 
 	}
 
 	/**
+	 * This returns the label text for the adapted class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated NOT
+	 */
+	@Override
+	public String getColumnText(final Object object, int columnIndex) {
+		// END GENERATED CODE
+		String label = "";
+		if (columnIndex == 0) {
+			label = ((ScaPort< ? , ? >) object).getName();
+		}
+		return label;
+		// BEGIN GENERATED CODE
+	}
+
+	/**
 	 * This handles model notifications by calling {@link #updateChildren} to update any cached
 	 * children and by creating a viewer notification, which it passes to {@link #fireNotifyChanged}.
 	 * <!-- begin-user-doc -->
