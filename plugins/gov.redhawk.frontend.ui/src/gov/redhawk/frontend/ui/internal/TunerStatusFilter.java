@@ -31,7 +31,7 @@ public class TunerStatusFilter extends ViewerFilter {
 		public void notifyChanged(org.eclipse.emf.common.notify.Notification msg) {
 			switch (msg.getFeatureID(TunerStatus.class)) {
 			case FrontendPackage.TUNER_STATUS__ALLOCATION_ID:
-				Control control = viewer.getControl();
+				final Control control = viewer.getControl();
 				if (control.isDisposed()) {
 					((Notifier) msg.getNotifier()).eAdapters().remove(this);
 				} else {
@@ -39,7 +39,9 @@ public class TunerStatusFilter extends ViewerFilter {
 
 						@Override
 						public void run() {
-							viewer.refresh();
+							if (!control.isDisposed()) {
+								viewer.refresh();
+							}
 						}
 
 					});
