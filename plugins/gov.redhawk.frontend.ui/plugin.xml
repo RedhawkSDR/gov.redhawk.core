@@ -395,8 +395,30 @@
          </command>
          <separator
                name="gov.redhawk.ui.port.nxmplot.separator.end"
-               visible="false">
+               visible="true">
          </separator>
+      </menuContribution>
+      <menuContribution
+            allPopups="true"
+            locationURI="popup:org.eclipse.ui.popup.any?before=additions">
+         <separator
+               name="gov.redhawk.ui.port.nxmplot.separator.start"
+               visible="true">
+         </separator>
+         <command
+               commandId="gov.redhawk.bulkio.ui.getsri"
+               icon="icons/sri.gif"
+               label="Display SRI"
+               style="push">
+            <visibleWhen
+                  checkEnabled="false">
+               <iterate>
+                  <adapt
+                        type="gov.redhawk.frontend.TunerStatus">
+                  </adapt>
+               </iterate>
+            </visibleWhen>
+         </command>
       </menuContribution>
    </extension>
    <extension
@@ -439,6 +461,17 @@
             <iterate
                   ifEmpty="false"
                   operator="and">
+               <instanceof
+                     value="gov.redhawk.frontend.TunerStatus">
+               </instanceof>
+            </iterate>
+         </activeWhen>
+      </handler>
+      <handler
+            class="gov.redhawk.frontend.ui.internal.FeiSriHandler"
+            commandId="gov.redhawk.bulkio.ui.getsri">
+         <activeWhen>
+            <iterate>
                <instanceof
                      value="gov.redhawk.frontend.TunerStatus">
                </instanceof>
