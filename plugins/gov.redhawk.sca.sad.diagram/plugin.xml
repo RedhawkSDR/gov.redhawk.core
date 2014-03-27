@@ -270,6 +270,14 @@
                               value="gov.redhawk.sca.sad.diagram.edit.parts.SadComponentInstantiationEditPart">
                         </instanceof></or>
                   </iterate>
+                  <with
+                        variable="activePartId">
+                     <not>
+                        <equals
+                              value="gov.redhawk.ide.debug.ui.diagram.editor.localSca">
+                        </equals>
+                     </not>
+                  </with>
                </and>
             </visibleWhen>
          </command>
@@ -296,6 +304,14 @@
                         </instanceof>
                      </or>
                   </iterate>
+                  <with
+                        variable="activePartId">
+                     <not>
+                        <equals
+                              value="gov.redhawk.ide.debug.ui.diagram.editor.localSca">
+                        </equals>
+                     </not>
+                  </with>
                </and>
             </visibleWhen>
             <command

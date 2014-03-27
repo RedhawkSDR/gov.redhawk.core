@@ -13,18 +13,20 @@ package gov.redhawk.bulkio.ui.handlers;
 
 import gov.redhawk.bulkio.ui.BulkIOUIActivator;
 import gov.redhawk.bulkio.ui.views.SriDataView;
-import gov.redhawk.internal.ui.port.nxmplot.view.PlotView2;
 import gov.redhawk.model.sca.ScaDomainManagerRegistry;
 import gov.redhawk.model.sca.ScaUsesPort;
 import gov.redhawk.model.sca.provider.ScaItemProviderAdapterFactory;
 import gov.redhawk.sca.util.PluginUtil;
 import gov.redhawk.sca.util.SubMonitor;
+import gov.redhawk.ui.port.nxmplot.IPlotView;
 import gov.redhawk.ui.port.nxmplot.PlotSource;
 
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import org.eclipse.core.commands.AbstractHandler;
@@ -47,7 +49,6 @@ import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.handlers.HandlerUtil;
 import org.eclipse.ui.statushandlers.StatusManager;
 
-@SuppressWarnings("restriction")
 public class GetSriHandler extends AbstractHandler {
 
 	public GetSriHandler() {
@@ -58,18 +59,22 @@ public class GetSriHandler extends AbstractHandler {
 		final IWorkbenchWindow window = HandlerUtil.getActiveWorkbenchWindow(event);
 		IStructuredSelection selection = (IStructuredSelection) HandlerUtil.getActiveMenuSelection(event);
 		final Set<ScaUsesPort> elements = new HashSet<ScaUsesPort>();
-
+		final Map<ScaUsesPort, PlotSource> portToPlotSourceMap = new HashMap<ScaUsesPort, PlotSource>(); 
+		
+		// Launches from an plot view dropdown
 		IWorkbenchPart activePart = HandlerUtil.getActivePart(event);
-		if (activePart instanceof PlotView2) {
-			PlotView2 view = (PlotView2) HandlerUtil.getActivePart(event);
+		if (activePart instanceof IPlotView) {
+			IPlotView view = (IPlotView) HandlerUtil.getActivePart(event);
 			List<PlotSource> sources = view.getPlotPageBook().getSources();
 			for (PlotSource source : sources) {
 				elements.add(source.getInput());
+				portToPlotSourceMap.put(source.getInput(), source);
 			}
 		} else if (selection == null) {
 			selection = (IStructuredSelection) HandlerUtil.getCurrentSelection(event);
 		}
 
+		// Launches from a context menu 
 		if (selection != null) {
 			for (Object obj : selection.toArray()) {
 				ScaUsesPort port = PluginUtil.adapt(ScaUsesPort.class, obj);
@@ -133,8 +138,15 @@ public class GetSriHandler extends AbstractHandler {
 								}
 								tooltip.append("\n");
 							}
-
-							sriView.activateReceiver(port);
+							
+							PlotSource source = portToPlotSourceMap.get(port);
+							
+							if (source != null) { 
+								String connectionId = source.getBulkIOBlockSettings().getConnectionID();
+								sriView.activateReceiver(port, connectionId);
+							} else {
+								sriView.activateReceiver(port);
+							}
 
 							factory.dispose();
 							if (name.length() > 0 || tooltip.length() > 0) {

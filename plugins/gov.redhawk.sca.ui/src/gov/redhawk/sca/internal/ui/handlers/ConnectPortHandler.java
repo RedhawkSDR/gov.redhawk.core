@@ -16,13 +16,18 @@ import gov.redhawk.model.sca.ScaComponent;
 import gov.redhawk.model.sca.ScaProvidesPort;
 import gov.redhawk.model.sca.ScaUsesPort;
 import gov.redhawk.sca.ui.ScaUiPlugin;
+
+import java.util.concurrent.Callable;
+
 import mil.jpeojtrs.sca.scd.SupportsInterface;
+import mil.jpeojtrs.sca.util.CorbaUtils;
 
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.core.commands.IHandler;
 import org.eclipse.core.expressions.IEvaluationContext;
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
@@ -30,7 +35,6 @@ import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
-import org.eclipse.jface.window.Window;
 import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.ui.handlers.HandlerUtil;
 import org.omg.CORBA.SystemException;
@@ -62,19 +66,33 @@ public class ConnectPortHandler extends AbstractHandler implements IHandler {
 
 		@Override
 		protected IStatus run(final IProgressMonitor monitor) {
-			monitor.beginTask("Connecting", IProgressMonitor.UNKNOWN);
+			monitor.beginTask("Connecting " + usesPort.getName(), IProgressMonitor.UNKNOWN);
 			try {
-				this.usesPort.connectPort(this.target, connectionID);
-			} catch (final InvalidPort e) {
-				return new Status(IStatus.ERROR, ScaUiPlugin.PLUGIN_ID, "Failed to connect " + e.msg, e);
-			} catch (final OccupiedPort e) {
-				return new Status(IStatus.ERROR, ScaUiPlugin.PLUGIN_ID, "Failed to connect", e);
-			} catch (final SystemException e) {
-				return new Status(IStatus.ERROR, ScaUiPlugin.PLUGIN_ID, "Failed to connect", e);
+				CorbaUtils.invoke(new Callable<Object>() {
+
+					@Override
+					public Object call() throws Exception {
+						try {
+							usesPort.connectPort(target, connectionID);
+						} catch (final InvalidPort e) {
+							throw new CoreException(new Status(IStatus.ERROR, ScaUiPlugin.PLUGIN_ID, "Failed to connect " + e.msg, e));
+						} catch (final OccupiedPort e) {
+							throw new CoreException(new Status(IStatus.ERROR, ScaUiPlugin.PLUGIN_ID, "Failed to connect", e));
+						} catch (final SystemException e) {
+							throw new CoreException(new Status(IStatus.ERROR, ScaUiPlugin.PLUGIN_ID, "Failed to connect", e));
+						}
+						return null;
+					}
+
+				}, monitor);
+			} catch (CoreException e) {
+				return e.getStatus();
+			} catch (InterruptedException e) {
+				return Status.CANCEL_STATUS;
 			}
+
 			return Status.OK_STATUS;
 		}
-
 	}
 
 	/**
@@ -106,9 +124,7 @@ public class ConnectPortHandler extends AbstractHandler implements IHandler {
 				wizard.setTarget(target);
 				wizard.setConnectionID(connectionId);
 				WizardDialog dialog = new WizardDialog(HandlerUtil.getActiveShell(event), wizard);
-				if (Window.OK == dialog.open()) {
-					new ConnectJob(wizard.getSource(), wizard.getTarget().getCorbaObj(), wizard.getConnectionID()).schedule();
-				}
+				dialog.open();
 			}
 		}
 		return null;

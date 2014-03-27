@@ -41,6 +41,7 @@ public class SriDataViewReceiver extends AbstractUberBulkIOPort {
 	private TreeViewer viewer;
 	private SriDataView sriDataView;
 	private String activeSriStreamID;
+	private String connectionId;
 	private Map<String, SriWrapper> modelStreamMap = new HashMap<String, SriWrapper>(); //contains real time stream data
 	private Map<String, SriWrapper> viewStreamMap = modelStreamMap; //contains stream data available to the view UI
 	protected Object[] expandedItems;
@@ -140,11 +141,19 @@ public class SriDataViewReceiver extends AbstractUberBulkIOPort {
 		return copy;
 	}
 
+	public void setConnectionID(String connectionId) {
+		this.connectionId = connectionId;
+	}
+
 	public void connect() throws CoreException {
 		if (port == null) {
 			throw new IllegalStateException("Port must not be null");
 		}
-		BulkIOUtilActivator.getBulkIOPortConnectionManager().connect(port.getIor(), getBulkIOType(), this);
+		if (connectionId == null) {
+			BulkIOUtilActivator.getBulkIOPortConnectionManager().connect(port.getIor(), getBulkIOType(), this);
+		} else {
+			BulkIOUtilActivator.getBulkIOPortConnectionManager().connect(port.getIor(), getBulkIOType(), this, connectionId);
+		}
 	}
 
 	public void disconnect() {

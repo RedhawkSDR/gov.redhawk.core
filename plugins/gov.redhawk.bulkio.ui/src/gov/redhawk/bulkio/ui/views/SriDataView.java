@@ -409,20 +409,25 @@ public class SriDataView extends ViewPart {
 			service.warnOfContentChange();
 		}
 	}
-
-	public void activateReceiver(@NonNull ScaUsesPort port) {
+	
+	public void activateReceiver(@NonNull ScaUsesPort port, @NonNull String connectionId) {
 		if (sriReceiver != null) {
 			return;
 		}
 		BulkIOType type = BulkIOType.getType(port.getRepid());
 		sriReceiver = new SriDataViewReceiver(type, viewer, this);
 		sriReceiver.setPort(port);
+		sriReceiver.setConnectionID(connectionId);
 		try {
 			sriReceiver.connect();
 			port.eAdapters().add(SriDataView.this.portListener);
 		} catch (CoreException e) {
 			StatusManager.getManager().handle(new Status(Status.ERROR, BulkIOUIActivator.PLUGIN_ID, "Could not connect to port", e));
 		}
+	}
+
+	public void activateReceiver(@NonNull ScaUsesPort port) {
+		activateReceiver(port, null);
 	}
 
 	@Override
@@ -456,6 +461,10 @@ public class SriDataView extends ViewPart {
 		return paused;
 	}
 
+	public TreeViewer getTreeViewer() {
+		return viewer;
+	}
+	
 	public void setTerminatedStreams(boolean flag) {
 		terminatedStreams = flag;
 	}

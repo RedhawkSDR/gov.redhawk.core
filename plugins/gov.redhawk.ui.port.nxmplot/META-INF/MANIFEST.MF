@@ -32,7 +32,7 @@ Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Bundle-ActivationPolicy: lazy
 Export-Package: gov.redhawk.internal.ui;x-internal:=true,
  gov.redhawk.internal.ui.port.nxmplot;x-internal:=true,
- gov.redhawk.internal.ui.port.nxmplot.handlers;x-internal:=true,
+ gov.redhawk.internal.ui.port.nxmplot.handlers;x-friends:="gov.redhawk.frontend.ui",
  gov.redhawk.internal.ui.port.nxmplot.view;x-internal:=true,
  gov.redhawk.internal.ui.preferences;x-internal:=true,
  gov.redhawk.ui.port.nxmblocks,
