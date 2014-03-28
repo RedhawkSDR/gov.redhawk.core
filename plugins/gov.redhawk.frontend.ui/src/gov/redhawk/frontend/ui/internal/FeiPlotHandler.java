@@ -224,20 +224,9 @@ public class FeiPlotHandler extends AbstractHandler implements IHandler {
 			}
 		}
 
-		//Must copy info from event to a new EvaluationContext before opening the ListSelectionDialog
-		//After the dialog closes, some variables from the event's execution context are invalid
-		EvaluationContext exContext = new EvaluationContext(context, usesPorts);
-		exContext.addVariable(ISources.ACTIVE_WORKBENCH_WINDOW_NAME, HandlerUtil.getActiveWorkbenchWindowChecked(event));
-		Map<String, Object> exParam = new HashMap<String, Object>();
-		exParam.put(IPlotView.PARAM_PLOT_TYPE, event.getParameter(IPlotView.PARAM_PLOT_TYPE));
-		exParam.put(IPlotView.PARAM_ISFFT, event.getParameter(IPlotView.PARAM_ISFFT));
-		final String listenerID = getListenerID(props);
-		exParam.put(IPlotView.PARAM_CONNECTION_ID, listenerID);
-		exParam.put(IPlotView.PARAM_SECONDARY_ID, createSecondaryId());
-		IWorkbenchWindow window = HandlerUtil.getActiveWorkbenchWindow(event);
-		ICommandService svc = (ICommandService) window.getService(ICommandService.class);
-		Command comm = svc.getCommand(IPlotView.COMMAND_ID);
-		ExecutionEvent ex = new ExecutionEvent(comm, exParam, null, exContext);
+		IWorkbenchWindow window = HandlerUtil.getActiveWorkbenchWindowChecked(event);
+		String plotType = event.getParameter(IPlotView.PARAM_PLOT_TYPE);
+		String isFft = event.getParameter(IPlotView.PARAM_ISFFT);
 
 		final ScaItemProviderAdapterFactory factory = new ScaItemProviderAdapterFactory();
 		if (usesPorts.size() > 1) {
@@ -256,6 +245,18 @@ public class FeiPlotHandler extends AbstractHandler implements IHandler {
 		} else {
 			return new Status(IStatus.ERROR, FrontEndUIActivator.PLUGIN_ID, "Failed to find port to plot.");
 		}
+
+		EvaluationContext exContext = new EvaluationContext(context, usesPorts);
+		exContext.addVariable(ISources.ACTIVE_WORKBENCH_WINDOW_NAME, window);
+		Map<String, Object> exParam = new HashMap<String, Object>();
+		exParam.put(IPlotView.PARAM_PLOT_TYPE, plotType);
+		exParam.put(IPlotView.PARAM_ISFFT, isFft);
+		final String listenerID = getListenerID(props);
+		exParam.put(IPlotView.PARAM_CONNECTION_ID, listenerID);
+		exParam.put(IPlotView.PARAM_SECONDARY_ID, createSecondaryId());
+		ICommandService svc = (ICommandService) window.getService(ICommandService.class);
+		Command comm = svc.getCommand(IPlotView.COMMAND_ID);
+		ExecutionEvent ex = new ExecutionEvent(comm, exParam, null, exContext);
 		exContext.addVariable(ISources.ACTIVE_CURRENT_SELECTION_NAME, new StructuredSelection(usesPorts));
 		exContext.addVariable(ISources.ACTIVE_MENU_SELECTION_NAME, new StructuredSelection(usesPorts));
 
