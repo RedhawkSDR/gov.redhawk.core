@@ -74,7 +74,7 @@ public class ScaContentProvider extends ScaModelAdapterFactoryContentProvider im
 			return null;
 		}
 		final Object retVal = super.getParent(object);
-		if (!(retVal instanceof EObject) || (retVal instanceof ScaDocumentRoot) || (retVal instanceof ScaDomainManagerRegistry)) {
+		if (!(retVal instanceof EObject) || (retVal instanceof ScaDocumentRoot)) {
 			return null;
 		}
 		return retVal;
@@ -143,9 +143,7 @@ public class ScaContentProvider extends ScaModelAdapterFactoryContentProvider im
 				};
 				job.schedule();
 
-				return new Object[] {
-					job
-				};
+				return new Object[] { job };
 			}
 		}
 		return super.getChildren(object);

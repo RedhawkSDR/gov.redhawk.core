@@ -18,6 +18,8 @@ import gov.redhawk.sca.ScaPlugin;
 import gov.redhawk.sca.ui.ScaUiPlugin;
 import gov.redhawk.sca.ui.views.ScaExplorer;
 
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
 import java.lang.reflect.InvocationTargetException;
 import java.util.concurrent.Callable;
 
@@ -25,7 +27,7 @@ import mil.jpeojtrs.sca.util.CorbaUtils;
 
 import org.eclipse.core.databinding.DataBindingContext;
 import org.eclipse.core.databinding.UpdateValueStrategy;
-import org.eclipse.core.databinding.beans.PojoProperties;
+import org.eclipse.core.databinding.beans.BeanProperties;
 import org.eclipse.core.databinding.validation.IValidator;
 import org.eclipse.core.databinding.validation.ValidationStatus;
 import org.eclipse.core.runtime.CoreException;
@@ -64,16 +66,35 @@ public class ConnectPortWizard extends Wizard {
 		private String connectionID;
 		private WizardPageSupport support;
 		private DataBindingContext context;
+		private PropertyChangeSupport pcs = new PropertyChangeSupport(this);
 
 		protected ConnectWizardPage() {
 			super("connectPage", "Create new connection", null);
-			setDescription("Select the source and target connection elements.  Also enter a connection id");
+			setDescription("Select the source and target connection elements.\nAlso enter a connection id.");
+		}
+
+		/**
+		 * @param listener
+		 * @see java.beans.PropertyChangeSupport#addPropertyChangeListener(java.beans.PropertyChangeListener)
+		 */
+		@SuppressWarnings("unused")
+		public void addPropertyChangeListener(PropertyChangeListener listener) {
+			pcs.addPropertyChangeListener(listener);
+		}
+
+		/**
+		 * @param listener
+		 * @see java.beans.PropertyChangeSupport#removePropertyChangeListener(java.beans.PropertyChangeListener)
+		 */
+		@SuppressWarnings("unused")
+		public void removePropertyChangeListener(PropertyChangeListener listener) {
+			pcs.removePropertyChangeListener(listener);
 		}
 
 		@Override
 		public void createControl(Composite parent) {
 			Composite composite = new Composite(parent, SWT.None);
-			composite.setLayout(new GridLayout(4, false));
+			composite.setLayout(new GridLayout(4, true));
 
 			Group sourceGroup = new Group(composite, SWT.None);
 			sourceGroup.setText("Source");
@@ -119,20 +140,12 @@ public class ConnectPortWizard extends Wizard {
 			setControl(composite);
 
 			context = new DataBindingContext();
-			context.bindValue(ViewerProperties.singleSelection().observe(sourceViewer), PojoProperties.value("source").observe(this),
+			context.bindValue(ViewerProperties.singleSelection().observe(sourceViewer), BeanProperties.value("source").observe(this),
 				createSourceTargetToModel(), null);
-			context.bindValue(ViewerProperties.singleSelection().observe(targetViewer), PojoProperties.value("target").observe(this),
+			context.bindValue(ViewerProperties.singleSelection().observe(targetViewer), BeanProperties.value("target").observe(this),
 				createTargetTargetToModel(), null);
-			context.bindValue(WidgetProperties.text(SWT.Modify).observe(idText), PojoProperties.value("connectionID").observe(this),
+			context.bindValue(WidgetProperties.text(SWT.Modify).observe(idText), BeanProperties.value("connectionID").observe(this),
 				createConnectionIDTargetToModel(), null);
-
-			if (source != null) {
-				sourceViewer.reveal(source);
-			}
-
-			if (target != null) {
-				targetViewer.reveal(target);
-			}
 
 			support = WizardPageSupport.create(this, context);
 		}
@@ -195,28 +208,39 @@ public class ConnectPortWizard extends Wizard {
 			return strategy;
 		}
 
+		@SuppressWarnings("unused")
 		public String getConnectionID() {
 			return connectionID;
 		}
 
 		public void setConnectionID(String connectionID) {
+			String oldValue = this.connectionID;
 			this.connectionID = connectionID;
+			pcs.firePropertyChange("connectionID", oldValue, connectionID);
 		}
 
+		@SuppressWarnings("unused")
 		public ScaUsesPort getSource() {
 			return source;
 		}
 
+		@SuppressWarnings("unused")
 		public void setSource(ScaUsesPort source) {
+			ScaUsesPort oldValue = this.source;
 			this.source = source;
+			pcs.firePropertyChange("source", oldValue, source);
 		}
 
+		@SuppressWarnings("unused")
 		public CorbaObjWrapper< ? > getTarget() {
 			return target;
 		}
 
+		@SuppressWarnings("unused")
 		public void setTarget(CorbaObjWrapper< ? > target) {
+			CorbaObjWrapper< ? > oldValue = this.target;
 			this.target = target;
+			pcs.firePropertyChange("target", oldValue, target);
 		}
 
 	}
