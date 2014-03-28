@@ -236,6 +236,7 @@ public class ScaPlugin extends Plugin {
 		return PropertiesProviderRegistry.INSTANCE;
 	}
 
+
 	/**
 	 * Determines if a domain of the given name is bound to the default naming service and
 	 * appears to be existant.
