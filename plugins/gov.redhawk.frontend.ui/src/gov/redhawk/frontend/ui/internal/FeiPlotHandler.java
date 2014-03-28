@@ -32,6 +32,7 @@ import gov.redhawk.ui.port.nxmplot.IPlotView;
 import gov.redhawk.ui.port.nxmplot.PlotActivator;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -89,7 +90,9 @@ public class FeiPlotHandler extends AbstractHandler implements IHandler {
 
 	private IEvaluationContext context;
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see org.eclipse.core.commands.IHandler#execute(org.eclipse.core.commands.ExecutionEvent)
 	 */
 	@Override
@@ -223,10 +226,7 @@ public class FeiPlotHandler extends AbstractHandler implements IHandler {
 
 		//Must copy info from event to a new EvaluationContext before opening the ListSelectionDialog
 		//After the dialog closes, some variables from the event's execution context are invalid
-		final List<ScaUsesPort> ports = new ArrayList<ScaUsesPort>();
-		EvaluationContext exContext = new EvaluationContext(context, ports);
-		exContext.addVariable(ISources.ACTIVE_CURRENT_SELECTION_NAME, new StructuredSelection(ports));
-		exContext.addVariable(ISources.ACTIVE_MENU_SELECTION_NAME, new StructuredSelection(ports));
+		EvaluationContext exContext = new EvaluationContext(context, usesPorts);
 		exContext.addVariable(ISources.ACTIVE_WORKBENCH_WINDOW_NAME, HandlerUtil.getActiveWorkbenchWindowChecked(event));
 		Map<String, Object> exParam = new HashMap<String, Object>();
 		exParam.put(IPlotView.PARAM_PLOT_TYPE, event.getParameter(IPlotView.PARAM_PLOT_TYPE));
@@ -239,17 +239,14 @@ public class FeiPlotHandler extends AbstractHandler implements IHandler {
 		Command comm = svc.getCommand(IPlotView.COMMAND_ID);
 		ExecutionEvent ex = new ExecutionEvent(comm, exParam, null, exContext);
 
-
 		final ScaItemProviderAdapterFactory factory = new ScaItemProviderAdapterFactory();
-		if (usesPorts.size() == 1) {
-			ports.add(usesPorts.get(0));
-		} else if (usesPorts.size() > 1) {
+		if (usesPorts.size() > 1) {
 			ListSelectionDialog dialog = new ListSelectionDialog(HandlerUtil.getActiveShellChecked(event), usesPorts, new ArrayContentProvider(),
 				new AdapterFactoryLabelProvider(factory), "Select output port to use:");
 			if (dialog.open() == Window.OK) {
 				Object[] result = dialog.getResult();
 				if (result.length >= 1) {
-					ports.addAll(this.<ScaUsesPort>castArrayItemsInList(result));
+					usesPorts.retainAll(Arrays.asList(result));
 				} else {
 					return Status.CANCEL_STATUS;
 				}
@@ -257,14 +254,15 @@ public class FeiPlotHandler extends AbstractHandler implements IHandler {
 				return Status.CANCEL_STATUS;
 			}
 		} else {
-			return Status.CANCEL_STATUS;
+			return new Status(IStatus.ERROR, FrontEndUIActivator.PLUGIN_ID, "Failed to find port to plot.");
 		}
-
+		exContext.addVariable(ISources.ACTIVE_CURRENT_SELECTION_NAME, new StructuredSelection(usesPorts));
+		exContext.addVariable(ISources.ACTIVE_MENU_SELECTION_NAME, new StructuredSelection(usesPorts));
 
 		final StringBuilder name = new StringBuilder();
 		final StringBuilder tooltip = new StringBuilder();
 
-		createTooltip(factory, name, tooltip, ports);
+		createTooltip(factory, name, tooltip, usesPorts);
 		factory.dispose();
 
 		final IPlotView view = PlotActivator.getDefault().showPlotView(ex);
@@ -446,7 +444,7 @@ public class FeiPlotHandler extends AbstractHandler implements IHandler {
 					tooltip.append(" -> ");
 				}
 			}
-			
+
 		}
 	}
 
