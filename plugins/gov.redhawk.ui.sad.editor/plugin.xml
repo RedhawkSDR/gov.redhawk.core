@@ -26,6 +26,11 @@
             editorId="gov.redhawk.ui.sad.editor.presentation.SadEditorID"
             priority="LOW">
       </contentTypeBinding>
+         <contentTypeBinding
+               contentTypeId="gov.redhawk.ide.debug.ui.contentType.localSca"
+               editorId="gov.redhawk.ui.sad.editor.presentation.SadEditorID"
+               priority="NORMAL">
+         </contentTypeBinding>
    </extension>
 
 </plugin>
