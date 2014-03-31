@@ -27,7 +27,6 @@ import gov.redhawk.sca.util.IPreferenceAccessor;
 import gov.redhawk.sca.util.ORBUtil;
 import gov.redhawk.sca.util.OrbSession;
 import gov.redhawk.sca.util.ScopedPreferenceAccessor;
-import gov.redhawk.sca.util.SubMonitor;
 
 import java.util.ArrayList;
 import java.util.Collections;
