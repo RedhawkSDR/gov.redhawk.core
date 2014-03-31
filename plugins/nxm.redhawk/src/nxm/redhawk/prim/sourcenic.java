@@ -51,6 +51,8 @@ public class sourcenic extends Primitive { //SUPPRESS CHECKSTYLE ClassName
 	private static final int BITS_PER_SAMPLE_16 = 16;
 	/** this is used by REDHAWK SinkNic Component to send out float data (32-bit) since SDDS header only allows 5 bit to represent bits per sample (bps). */
 	private static final int BITS_PER_SAMPLE_32 = 32;
+	/** SDDS packets defaults to using Big Endian for the data's byte order */
+	private static final ByteOrder DEFAULT_SDDS_DATA_BYTE_ORDER = ByteOrder.BIG_ENDIAN;
 
 	/** the output file to write to */
 	private DataFile outputFile = null;
@@ -73,7 +75,7 @@ public class sourcenic extends Primitive { //SUPPRESS CHECKSTYLE ClassName
 	private boolean warn;
 
 	/** is SDDS packet payload data in big-endian/IEEE (network) byte order per spec? or in little-endian/EEEI byte-order. */
-	private ByteOrder packetDataByteOrder = ByteOrder.BIG_ENDIAN;
+	private ByteOrder packetDataByteOrder = DEFAULT_SDDS_DATA_BYTE_ORDER;
 
 	/**
 	 * Gets the number of socket read timeouts.
@@ -111,7 +113,7 @@ public class sourcenic extends Primitive { //SUPPRESS CHECKSTYLE ClassName
 			packet = new DatagramPacket(outputData.getBuf(), outputData.buf.length); // use dataBuffer
 
 			// switch to allow workaround for REDHAWK SinkNic Component sending data in little-endian byte order
-			setDataByteOrder(MA.getS("/BYTEORDER", ByteOrder.BIG_ENDIAN.toString()));
+			setDataByteOrder(MA.getS("/BYTEORDER", DEFAULT_SDDS_DATA_BYTE_ORDER.toString()));
 
 			// SDDS 4-bit data is packed in NXM IEEE sub-byte order, i,e. byte0:(sample0, sample1), byte1:(sample2, sample3),...
 			if (outputFile.getFormatType() == Data.NIBBLE) {
@@ -537,23 +539,35 @@ public class sourcenic extends Primitive { //SUPPRESS CHECKSTYLE ClassName
      * @since 10.2
      */
 	public void setDataByteOrder(ByteOrder byteOrder) {
-		packetDataByteOrder = byteOrder;
+		if (byteOrder == null) {
+			packetDataByteOrder = DEFAULT_SDDS_DATA_BYTE_ORDER;
+		} else {
+			packetDataByteOrder = byteOrder;
+		}
+		if (outputData != null) {
+			if (packetDataByteOrder == ByteOrder.LITTLE_ENDIAN) {
+				outputData.rep = Data.EEEI;
+			} else { // BIG_ENDIAN
+				outputData.rep = Data.IEEE;
+			}
+		}
 	}
 
 	/**
      * @since 10.2
      */
 	public void setDataByteOrder(String byteOrderStr) {
+		final ByteOrder newByteOrder;
 		if (ByteOrder.BIG_ENDIAN.toString().equals(byteOrderStr)) {
-			packetDataByteOrder = ByteOrder.BIG_ENDIAN;
+			newByteOrder = ByteOrder.BIG_ENDIAN;
 		} else if (ByteOrder.LITTLE_ENDIAN.toString().equals(byteOrderStr)) {
-			packetDataByteOrder = ByteOrder.LITTLE_ENDIAN;
+			newByteOrder = ByteOrder.LITTLE_ENDIAN;
+		} else if ("NATIVE".equals(byteOrderStr)) {
+			newByteOrder = ByteOrder.nativeOrder();
 		} else {
 			throw new IllegalArgumentException("Invalid data byte order specified: " + byteOrderStr);
 		}
-		if (outputData != null) {
-			outputData.rep = (packetDataByteOrder == ByteOrder.BIG_ENDIAN) ? Data.IEEE : Data.EEEI; // SUPPRESS CHECKSTYLE AvoidInline
-		}
+		setDataByteOrder(newByteOrder);
 	}
 
 }
