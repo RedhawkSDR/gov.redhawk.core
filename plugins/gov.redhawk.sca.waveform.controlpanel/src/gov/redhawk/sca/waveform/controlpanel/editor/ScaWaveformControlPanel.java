@@ -12,7 +12,6 @@
 
 package gov.redhawk.sca.waveform.controlpanel.editor;
 
-import gov.redhawk.model.sca.RefreshDepth;
 import gov.redhawk.model.sca.ScaAbstractProperty;
 import gov.redhawk.model.sca.ScaComponent;
 import gov.redhawk.model.sca.ScaPackage;
@@ -145,15 +144,11 @@ public class ScaWaveformControlPanel< T extends EObject > extends AbstractScaCon
 
 		if (input instanceof ScaWaveform) {
 			final ScaWaveform inputWaveform = (ScaWaveform) input;
-			try {
-				inputWaveform.refresh(null, RefreshDepth.FULL);
-			} catch (final InterruptedException e) {
-				// PASS
-			}
 			final String name = (inputWaveform.getName() == null) ? inputWaveform.getIdentifier() : inputWaveform.getName();
-			/* Previously there was a bug with GTK on Linux, wherein last word in title is not displayed. Seems to be
+			/*
+			 * Previously there was a bug with GTK on Linux, wherein last word in title is not displayed. Seems to be
 			 * fixed now, but leaving the workaround as comment in case the bug re-appears
-			 **/
+			 */
 			//			String title = "";
 			//			if (SWT.getPlatform().startsWith("gtk")) {
 			//				title = "Waveform " + name + " Properties x";
@@ -169,7 +164,7 @@ public class ScaWaveformControlPanel< T extends EObject > extends AbstractScaCon
 			final ScaComponent assemblyController = inputWaveform.getAssemblyController();
 			if (assemblyController != null) {
 				compSection = this.toolkit.createSection(this.body, Section.DESCRIPTION | ExpandableComposite.TITLE_BAR | ExpandableComposite.EXPANDED
-						| ExpandableComposite.TWISTIE);
+					| ExpandableComposite.TWISTIE);
 				propertyComp = createScaComponentPropertyComp(compSection, assemblyController);
 				compSection.setText(assemblyController.getProfileObj().getName());
 				compSection.setClient(propertyComp);
@@ -181,7 +176,7 @@ public class ScaWaveformControlPanel< T extends EObject > extends AbstractScaCon
 				final ScaComponent comp = it.next();
 				if (!comp.equals(assemblyController)) {
 					compSection = this.toolkit.createSection(this.body, Section.DESCRIPTION | ExpandableComposite.TITLE_BAR | ExpandableComposite.EXPANDED
-							| ExpandableComposite.TWISTIE);
+						| ExpandableComposite.TWISTIE);
 					propertyComp = createScaComponentPropertyComp(compSection, comp);
 					compSection.setText(comp.getProfileObj().getName());
 					compSection.setClient(propertyComp);
