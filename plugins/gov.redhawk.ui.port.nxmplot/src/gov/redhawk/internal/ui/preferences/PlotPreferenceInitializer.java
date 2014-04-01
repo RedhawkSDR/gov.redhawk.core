@@ -15,6 +15,7 @@ import gov.redhawk.ui.port.nxmplot.preferences.BulkIOPreferences;
 import gov.redhawk.ui.port.nxmplot.preferences.FftPreferences;
 import gov.redhawk.ui.port.nxmplot.preferences.PlotPreferences;
 import gov.redhawk.ui.port.nxmplot.preferences.Preference;
+import gov.redhawk.ui.port.nxmplot.preferences.SddsPreferences;
 
 import org.eclipse.core.runtime.preferences.AbstractPreferenceInitializer;
 import org.eclipse.jface.preference.IPreferenceStore;
@@ -42,6 +43,10 @@ public class PlotPreferenceInitializer extends AbstractPreferenceInitializer {
 		}
 
 		for (Preference< ? > p : PlotPreferences.getAllPreferences()) {
+			p.setDefaultValue(store);
+		}
+		
+		for (Preference< ? > p : SddsPreferences.getAllPreferences()) {
 			p.setDefaultValue(store);
 		}
 	}

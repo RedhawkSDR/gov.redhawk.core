@@ -196,8 +196,8 @@ public class PlotPortHandler extends AbstractHandler {
 
 	public static boolean isBulkIOPortSupported(String idl) {
 		if (dataLongLongHelper.id().equals(idl) || dataUlongLongHelper.id().equals(idl) || dataFloatHelper.id().equals(idl)
-				|| dataDoubleHelper.id().equals(idl) || dataLongHelper.id().equals(idl) || dataUlongHelper.id().equals(idl) || dataShortHelper.id().equals(idl)
-				|| dataUshortHelper.id().equals(idl) || dataOctetHelper.id().equals(idl) || dataCharHelper.id().equals(idl)) {
+			|| dataDoubleHelper.id().equals(idl) || dataLongHelper.id().equals(idl) || dataUlongHelper.id().equals(idl) || dataShortHelper.id().equals(idl)
+			|| dataUshortHelper.id().equals(idl) || dataOctetHelper.id().equals(idl) || dataCharHelper.id().equals(idl) || dataSDDSHelper.id().equals(idl)) {
 			return true;
 		}
 		return false;

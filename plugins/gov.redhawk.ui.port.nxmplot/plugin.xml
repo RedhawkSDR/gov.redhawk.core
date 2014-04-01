@@ -281,6 +281,12 @@
             id="gov.redhawk.ui.port.nxmplot.page2"
             name="BulkIO">
       </page>
+      <page
+            category="gov.redhawk.ui.port.nxmplot.preferences.PlotPreferencePage"
+            class="gov.redhawk.internal.ui.preferences.SddsBlockPreferencePage"
+            id="gov.redhawk.ui.port.nxmplot.page_sdds"
+            name="SDDS">
+      </page>
    </extension>
    <extension
          point="org.eclipse.core.runtime.preferences">

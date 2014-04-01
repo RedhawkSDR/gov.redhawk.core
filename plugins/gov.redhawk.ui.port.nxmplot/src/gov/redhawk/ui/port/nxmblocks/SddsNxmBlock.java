@@ -11,6 +11,7 @@
  */
 package gov.redhawk.ui.port.nxmblocks;
 
+import gov.redhawk.internal.ui.preferences.SddsBlockPreferencePage;
 import gov.redhawk.ui.port.nxmplot.AbstractNxmPlotWidget;
 import gov.redhawk.ui.port.nxmplot.preferences.Preference;
 import gov.redhawk.ui.port.nxmplot.preferences.SddsPreferences;
@@ -22,6 +23,7 @@ import nxm.redhawk.prim.sourcenic;
 
 import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.Nullable;
+import org.eclipse.jface.preference.IPreferencePage;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.util.PropertyChangeEvent;
 
@@ -98,6 +100,7 @@ public class SddsNxmBlock extends AbstractNxmBlock<sourcenic> {
 		return SddsPreferences.OUTPUT_FORMAT.getValue(getPreferences());
 	}
 
+	@Nullable
 	public ByteOrder getDataByteOrder() {
 		String newValue = SddsPreferences.BYTE_ORDER.getValue(getPreferences());
 		if (ByteOrder.BIG_ENDIAN.toString().equals(newValue)) {
@@ -146,4 +149,10 @@ public class SddsNxmBlock extends AbstractNxmBlock<sourcenic> {
 		}
 	}
 
+	@Override
+	public IPreferencePage createPreferencePage() {
+		SddsBlockPreferencePage retVal = new SddsBlockPreferencePage();
+		retVal.setPreferenceStore(getPreferences());
+		return retVal;
+	}
 }

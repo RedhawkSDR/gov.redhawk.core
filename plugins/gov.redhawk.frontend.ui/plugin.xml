@@ -160,7 +160,7 @@
                            property="gov.redhawk.frontend.hasAllocationID">
                      </test>
                      <test
-                           property="gov.redhawk.frontend.isRxDigitizer">
+                           property="gov.redhawk.frontend.supportsAddListenerAction">
                      </test>
                   </and>
                </iterate>
@@ -199,14 +199,24 @@
             <visibleWhen
                   checkEnabled="false">
                <iterate>
-                  <and>
-                     <instanceof
-                           value="gov.redhawk.frontend.TunerContainer">
-                     </instanceof>
-                     <test
-                           property="gov.redhawk.frontend.hasAllocatedTuners">
-                     </test>
-                  </and>
+                  <or>
+                     <and>
+                        <instanceof
+                              value="gov.redhawk.frontend.TunerContainer">
+                        </instanceof>
+                        <test
+                              property="gov.redhawk.frontend.hasAllocatedTuners">
+                        </test>
+                     </and>
+                     <and>
+                        <instanceof
+                              value="gov.redhawk.model.sca.ScaDevice">
+                        </instanceof>
+                        <test
+                              property="gov.redhawk.frontend.deviceKindIsFrontendTuner">
+                        </test>
+                     </and>
+                  </or>
                </iterate>
             </visibleWhen>
          </command>
@@ -237,7 +247,7 @@
                            value="gov.redhawk.frontend.TunerStatus">
                      </instanceof>
                      <test
-                           property="gov.redhawk.frontend.isRxDigitizer">
+                           property="gov.redhawk.frontend.supportsPlotActions">
                      </test>
                   </and>
                </iterate>
@@ -256,7 +266,7 @@
                            value="gov.redhawk.frontend.TunerStatus">
                      </instanceof>
                      <test
-                           property="gov.redhawk.frontend.isRxDigitizer">
+                           property="gov.redhawk.frontend.supportsPlotActions">
                      </test>
                   </and>
                </iterate>
@@ -321,7 +331,7 @@
                            value="gov.redhawk.frontend.TunerStatus">
                      </instanceof>
                      <test
-                           property="gov.redhawk.frontend.isRxDigitizer">
+                           property="gov.redhawk.frontend.supportsPlotActions">
                      </test>
                   </and>
                </iterate>
@@ -340,7 +350,7 @@
                            value="gov.redhawk.frontend.TunerStatus">
                      </instanceof>
                      <test
-                           property="gov.redhawk.frontend.isRxDigitizer">
+                           property="gov.redhawk.frontend.supportsPlotActions">
                      </test>
                   </and>
                </iterate>
@@ -387,7 +397,7 @@
                            value="gov.redhawk.frontend.TunerStatus">
                      </instanceof>
                      <test
-                           property="gov.redhawk.frontend.isRxDigitizer">
+                           property="gov.redhawk.frontend.supportsPlotActions">
                      </test>
                   </and>
                </iterate>
@@ -448,7 +458,7 @@
             class="gov.redhawk.frontend.ui.internal.TunerTypeTester"
             id="gov.redhawk.frontend.tunerTypeTester"
             namespace="gov.redhawk.frontend"
-            properties="isRxDigitizer"
+            properties="isRxDigitizer,supportsAddListenerAction,supportsPlotActions"
             type="gov.redhawk.frontend.TunerStatus">
       </propertyTester>
    </extension>

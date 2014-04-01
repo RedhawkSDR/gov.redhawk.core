@@ -55,6 +55,7 @@ public class BulkIOSddsNxmBlock extends SddsNxmBlock {
 	private static OrbSession orbSession = OrbSession.createSession();
 
 	private final ConcurrentHashMap<String, SddsStreamSession> streamIDToSSSMap = new ConcurrentHashMap<String, SddsStreamSession>();
+	private final ConcurrentHashMap<String, StreamSRI> streamIDToSriMap = new ConcurrentHashMap<String, StreamSRI>();
 
 	private ScaUsesPort scaUsesPort;
 	private org.omg.CORBA.Object corbaObjRef;
@@ -66,26 +67,33 @@ public class BulkIOSddsNxmBlock extends SddsNxmBlock {
 		@Override
 		protected void handleAttach(SddsStreamSession sss) throws AttachError, StreamInputError {
 			final String streamID;
-			String id = sss.getSddsStreamDef().id; // SDDSStreamDefinition.id matches StreamSRI.streamID
+			final String id = sss.getSddsStreamDef().id; // SDDSStreamDefinition.id matches StreamSRI.streamID
 			if (id != null) {
 				streamID = id;
 			} else {
 				streamID = sss.getAttachId(); // fall-back to attachment ID
 				BulkIOSddsNxmBlock.TRACE_LOG.message("WARN: no SDDSStreamDefinition.id specified! using attachID: " + streamID);
 			}
+			if (BulkIOSddsNxmBlock.TRACE_LOG.enabled) {
+				BulkIOSddsNxmBlock.TRACE_LOG.message("SDDSStreamDefinition.id = [{0}] attachID = [{1}] SddsStreamSession = {2}", id, sss.getAttachId(), sss);
+			}
 			streamIDToSSSMap.put(streamID, sss);
 
-			final StreamSRI sri;
+			StreamSRI streamSRI = streamIDToSriMap.get(streamID);
+			if (streamSRI == null) {
+				streamSRI = new StreamSRI();
+				streamSRI.streamID = streamID;
+				streamIDToSriMap.put(streamID, streamSRI);
+			}
+			
 			int sr = sss.getSddsStreamDef().sampleRate;
-			if (sr != 0) {
-				sri = new StreamSRI();
-				sri.xdelta = 1 / sr;
-			} else {
-				sri = null;
+			if (sr > 0) {
+				streamSRI.xdelta = 1.0 / sr;
 			}
 
+			final StreamSRI sri = streamSRI;
 			// run in background so we don't further block our caller
-			Job job = new Job("launching BULKIO SDDS stream: " + streamID) {
+			Job job = new Job("launching BulkIO SDDS stream: " + streamID) {
 				@Override
 				protected IStatus run(IProgressMonitor monitor) {
 					launch(streamID, sri);
@@ -105,6 +113,7 @@ public class BulkIOSddsNxmBlock extends SddsNxmBlock {
 			}
 			shutdown(streamID);
 			streamIDToSSSMap.remove(streamID);
+			streamIDToSriMap.remove(streamID);
 			BulkIOSddsNxmBlock.TRACE_LOG.exitingMethod();
 		}
 

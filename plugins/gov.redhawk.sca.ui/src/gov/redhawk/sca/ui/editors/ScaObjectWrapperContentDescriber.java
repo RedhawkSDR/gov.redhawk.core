@@ -65,7 +65,7 @@ public class ScaObjectWrapperContentDescriber implements IScaContentDescriber, I
 					final EObject eObj = (EObject) scaObj;
 					final Resource resource = eObj.eResource();
 					if (resource != null && resource.getURI() != null && resource.getURI().lastSegment() != null
-					        && resource.getURI().lastSegment().matches(profileFileName)) {
+						&& resource.getURI().lastSegment().matches(profileFileName)) {
 						return IScaContentDescriber.VALID;
 					}
 				}
@@ -81,13 +81,28 @@ public class ScaObjectWrapperContentDescriber implements IScaContentDescriber, I
 	 */
 	@Override
 	public IEditorInput getEditorInput(final Object contents) {
-		final ProfileObjectWrapper< ? > obj = (ProfileObjectWrapper< ? >) contents;
+		if (!(contents instanceof ProfileObjectWrapper)) {
+			return null;
+		}
+		IFileStore store;
+		try {
+			store = ScaObjectWrapperContentDescriber.getFileStore((ProfileObjectWrapper< ? >) contents);
+		} catch (CoreException e) {
+			return null;
+		}
+		if (contents instanceof CorbaObjWrapper< ? >) {
+			return new ScaFileStoreEditorInput((CorbaObjWrapper< ? >) contents, store);
+		}
+		return ScaUI.getEditorInput(store);
+	}
 
+	/**
+	 * @since 9.3
+	 */
+	public static IFileStore getFileStore(ProfileObjectWrapper< ? > obj) throws CoreException {
 		URI uri = null;
-		final Object profileObj = ((ProfileObjectWrapper< ? >) obj).getProfileObj();
-		if (profileObj instanceof EObject && ((EObject) profileObj).eResource() != null) {
-			final EObject scaObj = (EObject) profileObj;
-			uri = scaObj.eResource().getURI();
+		if (obj.getProfileURI() != null) {
+			uri = obj.getProfileURI();
 			final String query = uri.query();
 			final Map<String, String> oldtParams = QueryParser.parseQuery(query);
 			final Map<String, String> queryParams = new HashMap<String, String>();
@@ -101,20 +116,14 @@ public class ScaObjectWrapperContentDescriber implements IScaContentDescriber, I
 		if (uri == null) {
 			return null;
 		}
-		IFileStore store;
-		try {
-			if (uri.isPlatform()) {
-				store = EFS.getStore(java.net.URI.create(CommonPlugin.resolve(uri).toString()));
-			} else {
-				store = EFS.getStore(java.net.URI.create(uri.toString()));
-			}
-		} catch (final CoreException e) {
-			return null;
+		IFileStore store = null;
+		if (uri.isPlatform()) {
+			store = EFS.getStore(java.net.URI.create(CommonPlugin.resolve(uri).toString()));
+		} else {
+			store = EFS.getStore(java.net.URI.create(uri.toString()));
 		}
-		if (obj instanceof CorbaObjWrapper< ? >) {
-			return new ScaFileStoreEditorInput((CorbaObjWrapper< ? >) obj, store);
-		}
-		return ScaUI.getEditorInput(store);
+
+		return store;
 	}
 
 	/**

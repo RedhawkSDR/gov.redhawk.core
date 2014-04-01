@@ -84,9 +84,11 @@ import CF.DevicePackage.InvalidState;
 
 public class FeiSriHandler extends AbstractHandler implements IHandler {
 	private SriDataView sriViewLocalRef; // Needed for declaration of dispose logic
-
+	private IWorkbenchWindow window;
 	@Override
 	public Object execute(final ExecutionEvent event) throws ExecutionException {
+		window = HandlerUtil.getActiveWorkbenchWindow(event);
+		
 		// Launches from the plot view menu
 		IWorkbenchPart activePart = HandlerUtil.getActivePart(event);
 		if (activePart instanceof IPlotView) {
@@ -451,8 +453,6 @@ public class FeiSriHandler extends AbstractHandler implements IHandler {
 		final StringBuilder name = new StringBuilder();
 		final StringBuilder tooltip = new StringBuilder();
 		createTooltip(factory, name, tooltip, usesPort);
-
-		final IWorkbenchWindow window = HandlerUtil.getActiveWorkbenchWindow(event);
 		try {
 			IViewPart view = window.getActivePage().showView(SriDataView.ID, SriDataView.createSecondaryId(usesPort), IWorkbenchPage.VIEW_ACTIVATE);
 
