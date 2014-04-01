@@ -215,7 +215,7 @@ public class FeiPlotHandler extends AbstractHandler implements IHandler {
 	}
 
 	private IStatus createPlotView(final ExecutionEvent event, final DataType[] props, final ScaDevice< ? > device, final TunerStatus tuner)
-			throws ExecutionException {
+		throws ExecutionException {
 		List<ScaPort< ? , ? >> devicePorts = device.getPorts();
 		List<ScaUsesPort> usesPorts = new ArrayList<ScaUsesPort>();
 		for (ScaPort< ? , ? > port : devicePorts) {
@@ -243,7 +243,7 @@ public class FeiPlotHandler extends AbstractHandler implements IHandler {
 			} else {
 				return Status.CANCEL_STATUS;
 			}
-		} else if (usesPorts.size() <= 0) {
+		} else if (usesPorts.isEmpty()) {
 			return new Status(IStatus.ERROR, FrontEndUIActivator.PLUGIN_ID, "Failed to find port to plot.");
 		}
 
