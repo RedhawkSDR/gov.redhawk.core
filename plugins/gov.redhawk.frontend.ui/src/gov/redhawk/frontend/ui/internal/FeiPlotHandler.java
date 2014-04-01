@@ -232,6 +232,7 @@ public class FeiPlotHandler extends AbstractHandler implements IHandler {
 		if (usesPorts.size() > 1) {
 			ListSelectionDialog dialog = new ListSelectionDialog(HandlerUtil.getActiveShellChecked(event), usesPorts, new ArrayContentProvider(),
 				new AdapterFactoryLabelProvider(factory), "Select output port to use:");
+			dialog.setTitle("Ambiguous Data Port");
 			if (dialog.open() == Window.OK) {
 				Object[] result = dialog.getResult();
 				if (result.length >= 1) {
@@ -242,7 +243,7 @@ public class FeiPlotHandler extends AbstractHandler implements IHandler {
 			} else {
 				return Status.CANCEL_STATUS;
 			}
-		} else {
+		} else if (usesPorts.size() <= 0) {
 			return new Status(IStatus.ERROR, FrontEndUIActivator.PLUGIN_ID, "Failed to find port to plot.");
 		}
 
