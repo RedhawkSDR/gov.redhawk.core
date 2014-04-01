@@ -229,7 +229,7 @@ public class FeiPlotHandler extends AbstractHandler implements IHandler {
 		String isFft = event.getParameter(IPlotView.PARAM_ISFFT);
 
 		final ScaItemProviderAdapterFactory factory = new ScaItemProviderAdapterFactory();
-		if (usesPorts.size() > 1) {
+		if (usesPorts.size() >= 1) {
 			ListSelectionDialog dialog = new ListSelectionDialog(HandlerUtil.getActiveShellChecked(event), usesPorts, new ArrayContentProvider(),
 				new AdapterFactoryLabelProvider(factory), "Select output port to use:");
 			dialog.setTitle("Ambiguous Data Port");
