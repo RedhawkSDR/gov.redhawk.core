@@ -20,6 +20,8 @@ import org.eclipse.core.expressions.PropertyTester;
 public class TunerTypeTester extends PropertyTester {
 
 	private static final String PROP_IS_RX_DIGITIZER = "isRxDigitizer";
+	private static final String PROP_SUPPORTS_ADD_LISTENER_ACTION = "supportsAddListenerAction";
+	private static final String PROP_SUPPORTS_PLOT_ACTIONS = "supportsPlotActions";
 	
 	/**
 	 * 
@@ -33,9 +35,25 @@ public class TunerTypeTester extends PropertyTester {
 	 */
 	@Override
 	public boolean test(Object receiver, String property, Object[] args, Object expectedValue) {
+		TunerStatus tuner = (TunerStatus) receiver;
 		if (PROP_IS_RX_DIGITIZER.equals(property)) {
-			TunerStatus tuner = (TunerStatus) receiver;
 			if (FRONTEND.TUNER_TYPE_RX_DIGITIZER.value.equals(tuner.getTunerType())) {
+				return true;
+			}
+		}
+		if (PROP_SUPPORTS_ADD_LISTENER_ACTION.equals(property)) {
+			if (FRONTEND.TUNER_TYPE_RX_DIGITIZER.value.equals(tuner.getTunerType())
+					|| FRONTEND.TUNER_TYPE_DDC.value.equals(tuner.getTunerType())
+					|| FRONTEND.TUNER_TYPE_RX.value.equals(tuner.getTunerType())
+					|| FRONTEND.TUNER_TYPE_RX_DIGITIZER_CHANNELIZER.value.equals(tuner.getTunerType())) {
+				return true;
+			}
+		}
+		if (PROP_SUPPORTS_PLOT_ACTIONS.equals(property)) {
+			if (FRONTEND.TUNER_TYPE_RX_DIGITIZER.value.equals(tuner.getTunerType())
+					|| FRONTEND.TUNER_TYPE_DDC.value.equals(tuner.getTunerType())
+					|| FRONTEND.TUNER_TYPE_RX.value.equals(tuner.getTunerType())
+					|| FRONTEND.TUNER_TYPE_RX_DIGITIZER_CHANNELIZER.value.equals(tuner.getTunerType())) {
 				return true;
 			}
 		}
