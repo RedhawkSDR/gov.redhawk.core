@@ -26,7 +26,7 @@ public class BulkIOUIActivator extends AbstractUIPlugin {
 	public static final String PLUGIN_ID = "gov.redhawk.bulkio.ui"; //$NON-NLS-1$
 
 	/** ISO 8601 date/time format, using space instead of 'T' between date and time for readability on UI. */
-	public static final String ISO_8601_TIME_FORMAT = "YYYY-MM-dd HH:mm:ss.SSSX";
+	public static final String ISO_8601_TIME_FORMAT = "yyyy-MM-dd HH:mm:ss.SSSX";
 
 	// The shared instance
 	private static BulkIOUIActivator plugin;
