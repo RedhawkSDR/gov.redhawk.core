@@ -10,6 +10,7 @@
  *******************************************************************************/
 package gov.redhawk.efs.sca.internal.cache;
 
+import java.io.File;
 import java.io.InputStream;
 
 import org.eclipse.core.filesystem.IFileInfo;
@@ -32,5 +33,9 @@ public interface IFileCache {
 	InputStream openInputStream() throws CoreException;
 
 	IFileInfo[] childInfos(int options, IProgressMonitor monitor) throws CoreException;
+
+	void update() throws CoreException;
+
+	File toLocalFile() throws CoreException;
 
 }
