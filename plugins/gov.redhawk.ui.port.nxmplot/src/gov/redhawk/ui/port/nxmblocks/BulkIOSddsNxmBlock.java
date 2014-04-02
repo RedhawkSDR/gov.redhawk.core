@@ -84,6 +84,9 @@ public class BulkIOSddsNxmBlock extends SddsNxmBlock {
 				streamSRI = new StreamSRI();
 				streamSRI.streamID = streamID;
 				streamIDToSriMap.put(streamID, streamSRI);
+				BulkIOSddsNxmBlock.TRACE_LOG.message("handleAttach creating new StreamSRI for map: {0}", streamSRI);
+			} else {
+				BulkIOSddsNxmBlock.TRACE_LOG.message("handleAttach using StreamSRI found in map: {0}", streamSRI); 
 			}
 			
 			int sr = sss.getSddsStreamDef().sampleRate;
@@ -141,21 +144,27 @@ public class BulkIOSddsNxmBlock extends SddsNxmBlock {
 		putOutputNameMapping(0, streamID, outputName); // save output name mapping
 
 		SddsStreamSession sss = streamIDToSSSMap.get(streamID);
-		SDDSStreamDefinition sddsSettings = sss.getSddsStreamDef();
-		String outputFormat = getOutputFormat();
-		if (outputFormat == null) {
-			outputFormat = BulkIOSddsNxmBlock.sddsDigraph2MidasFormatType(sddsSettings.dataFormat);
-		}
+		SDDSStreamDefinition sddsStreamDef = sss.getSddsStreamDef();
+		
 		final StringBuilder switches = new StringBuilder("");
+		ByteOrder byteOrder = getDataByteOrder();
+		if (byteOrder != null) {
+			switches.append("/BYTEORDER=").append(byteOrder);
+		}
 		final int pipeSize = getPipeSize(); // in bytes
 		if (pipeSize > 0) {
 			switches.append("/PS=").append(pipeSize);
 		}
+		
+		// use values from SDDSStreamDefinition as each attach might be from different source mcastAddr, port, vlan, format, etc. 
+		String outputFormat = BulkIOSddsNxmBlock.sddsDigraph2MidasFormatType(sddsStreamDef.dataFormat);
+		switches.append("/FC=").append(outputFormat);
+		switches.append("/MGRP=").append(sddsStreamDef.multicastAddress);
+		switches.append("/PORT=").append(sddsStreamDef.port);
+		switches.append("/VLAN=").append(sddsStreamDef.vlan);
 
-		ByteOrder byteOrder = getDataByteOrder();
-		String pattern = "SOURCENIC{0}/BG/BYTEORDER={1}/FC={2}/MGRP={3}/VLAN={4,number,#}/PORT={5,number,#} OUT={6}";
-		String cmdLine = MessageFormat.format(pattern, switches, byteOrder, outputFormat, sddsSettings.multicastAddress, sddsSettings.vlan, sddsSettings.port,
-			outputName);
+		String pattern = "SOURCENIC{0}/BG OUT={1}";
+		String cmdLine = MessageFormat.format(pattern, switches, outputName);
 
 		return cmdLine;
 	}
