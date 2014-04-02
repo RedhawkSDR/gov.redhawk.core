@@ -42,8 +42,8 @@ public class SriDataViewReceiver extends AbstractUberBulkIOPort {
 	private SriDataView sriDataView;
 	private String activeSriStreamID;
 	private String connectionId;
-	private Map<String, SriWrapper> modelStreamMap = new HashMap<String, SriWrapper>(); //contains real time stream data
-	private Map<String, SriWrapper> viewStreamMap = modelStreamMap; //contains stream data available to the view UI
+	private Map<String, SriWrapper> modelStreamMap = new HashMap<String, SriWrapper>(); // contains real time stream data
+	private Map<String, SriWrapper> viewStreamMap = modelStreamMap; // contains stream data available to the view UI
 	protected Object[] expandedItems;
 	private boolean inputSet;
 	private final Job refreshView;
@@ -58,11 +58,11 @@ public class SriDataViewReceiver extends AbstractUberBulkIOPort {
 			public IStatus runInUIThread(IProgressMonitor monitor) {
 				if (viewer != null & !viewer.getControl().isDisposed()) {
 
-					//Capture expanded state to persist after setInput
+					// Capture expanded state to persist after setInput
 					expandedItems = viewer.getExpandedElements();
 					viewer.getControl().setRedraw(false);
 
-					//Send input to content provider
+					// Send input to content provider
 					if (!inputSet) {
 						viewer.setInput(viewStreamMap);
 						inputSet = true;
@@ -70,11 +70,11 @@ public class SriDataViewReceiver extends AbstractUberBulkIOPort {
 						viewer.refresh();
 					}
 
-					//Rebuild expanded state
+					// Rebuild expanded state
 					viewer.setExpandedElements(expandedItems);
 					viewer.getControl().setRedraw(true);
 
-					//Bold tabs of views with modified content, rebuild menus and toolbars
+					// Bold tabs of views with modified content, rebuild menus and toolbars
 					sriDataView.contentChanged();
 				}
 				return Status.OK_STATUS;
@@ -103,7 +103,7 @@ public class SriDataViewReceiver extends AbstractUberBulkIOPort {
 	protected void handleStreamSRIChanged(@NonNull String streamID, @Nullable final StreamSRI oldSri, @NonNull final StreamSRI newSri) {
 		super.handleStreamSRIChanged(streamID, oldSri, newSri);
 
-		//store the incoming SRI data in the modelStreamMap
+		// store the incoming SRI data in the modelStreamMap
 		if (modelStreamMap.containsKey(streamID)) {
 			SriWrapper stream = modelStreamMap.get(streamID);
 			stream.setSri(newSri);
@@ -121,7 +121,7 @@ public class SriDataViewReceiver extends AbstractUberBulkIOPort {
 		}
 	}
 
-	//updates the viewStreamMap from modelStreamMap when the pause button is selected
+	// updates the viewStreamMap from modelStreamMap when the pause button is selected
 	public void updateViewStreamMap() {
 		if (sriDataView.isPaused()) {
 			viewStreamMap = deepcopy(modelStreamMap);
@@ -157,17 +157,27 @@ public class SriDataViewReceiver extends AbstractUberBulkIOPort {
 	}
 
 	public void disconnect() {
-		BulkIOUtilActivator.getBulkIOPortConnectionManager().disconnect(port.getIor(), getBulkIOType(), this);
+		final SriDataViewReceiver receiver = this;
+		Job disconnectJob = new Job("Disconnecting SRI Receiver...") {
+			@Override
+			protected IStatus run(IProgressMonitor monitor) {
+				BulkIOUtilActivator.getBulkIOPortConnectionManager().disconnect(port.getIor(), getBulkIOType(), receiver);
+				return Status.OK_STATUS;
+			}
+		};
+		disconnectJob.setUser(false);
+		disconnectJob.setSystem(true);
+		disconnectJob.schedule();
 	}
 
 	private void setPrecisionTime(@NonNull PrecisionUTCTime time, String streamID) {
-		//sets precision time to latest pushPacket
+		// sets precision time to latest pushPacket
 		SriWrapper stream = modelStreamMap.get(streamID);
 		if (stream == null) {
 			return;
 		}
 		if (time != null) {
-			//Build packet's precision time stamp
+			// Build packet's precision time stamp
 			final String precisionString;
 			final double seconds = (time.twsec * 1000 + time.tfsec);
 			if (Double.isInfinite(seconds) || Double.isNaN(seconds)) {
@@ -177,7 +187,7 @@ public class SriDataViewReceiver extends AbstractUberBulkIOPort {
 				precisionString = BulkIOUIActivator.toISO8601TimeStr(precisionTime);
 			}
 
-			//Assign to SriWrapper object
+			// Assign to SriWrapper object
 			modelStreamMap.get(streamID).setPrecisionTime(precisionString);
 
 			if (!sriDataView.isPaused()) {

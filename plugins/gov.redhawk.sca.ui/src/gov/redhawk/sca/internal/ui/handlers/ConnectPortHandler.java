@@ -15,6 +15,7 @@ import gov.redhawk.model.sca.CorbaObjWrapper;
 import gov.redhawk.model.sca.ScaComponent;
 import gov.redhawk.model.sca.ScaProvidesPort;
 import gov.redhawk.model.sca.ScaUsesPort;
+import gov.redhawk.sca.ui.ConnectPortWizard;
 import gov.redhawk.sca.ui.ScaUiPlugin;
 
 import java.util.concurrent.Callable;
@@ -36,6 +37,7 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.wizard.WizardDialog;
+import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.handlers.HandlerUtil;
 import org.omg.CORBA.SystemException;
 
@@ -48,8 +50,6 @@ import CF.PortPackage.OccupiedPort;
 public class ConnectPortHandler extends AbstractHandler implements IHandler {
 
 	private static class ConnectJob extends Job {
-		private static int number = 1;
-
 		private final org.omg.CORBA.Object target;
 		private final ScaUsesPort usesPort;
 
@@ -101,6 +101,7 @@ public class ConnectPortHandler extends AbstractHandler implements IHandler {
 	@Override
 	public Object execute(final ExecutionEvent event) throws ExecutionException {
 		final ISelection sel = HandlerUtil.getActiveMenuSelection(event);
+		Shell shell = HandlerUtil.getActiveShell(event);
 		if (sel instanceof IStructuredSelection) {
 			final IStructuredSelection ss = (IStructuredSelection) sel;
 			ScaUsesPort usesPort = null;
@@ -114,16 +115,13 @@ public class ConnectPortHandler extends AbstractHandler implements IHandler {
 					target = ((ScaComponent) obj);
 				}
 			}
-			final String username = System.getProperty("user.name", "user");
-			final String connectionId = username + "_" + (ConnectJob.number++);
 			if (usesPort != null && target != null) {
-				new ConnectJob(usesPort, target.getCorbaObj(), connectionId).schedule();
+				new ConnectJob(usesPort, target.getCorbaObj(), ConnectPortWizard.generateDefaultConnectionID()).schedule();
 			} else {
 				ConnectPortWizard wizard = new ConnectPortWizard();
 				wizard.setSource(usesPort);
 				wizard.setTarget(target);
-				wizard.setConnectionID(connectionId);
-				WizardDialog dialog = new WizardDialog(HandlerUtil.getActiveShell(event), wizard);
+				WizardDialog dialog = new WizardDialog(shell, wizard);
 				dialog.open();
 			}
 		}

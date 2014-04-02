@@ -113,7 +113,7 @@ public class sourcenic extends Primitive { //SUPPRESS CHECKSTYLE ClassName
 			packet = new DatagramPacket(outputData.getBuf(), outputData.buf.length); // use dataBuffer
 
 			// switch to allow workaround for REDHAWK SinkNic Component sending data in little-endian byte order
-			setDataByteOrder(MA.getS("/BYTEORDER", DEFAULT_SDDS_DATA_BYTE_ORDER.toString()));
+			setByteOrder(MA.getS("/BYTEORDER", DEFAULT_SDDS_DATA_BYTE_ORDER.toString()));
 
 			// SDDS 4-bit data is packed in NXM IEEE sub-byte order, i,e. byte0:(sample0, sample1), byte1:(sample2, sample3),...
 			if (outputFile.getFormatType() == Data.NIBBLE) {
@@ -553,10 +553,18 @@ public class sourcenic extends Primitive { //SUPPRESS CHECKSTYLE ClassName
 		}
 	}
 
-	/**
-     * @since 10.2
-     */
-	public void setDataByteOrder(String byteOrderStr) {
+	/** get packet data byte order
+	 * @since 10.2
+	 */
+	public String getByteOrder() {
+		return packetDataByteOrder.toString();
+	}
+
+	/** set packet data byte order
+	 * @param byteOrderStr possible values: BIG_ENDIAN, LITTLE_ENDIAN, or NATIVE (to use local machine's byte order)
+	 * @since 10.2
+	 */
+	public void setByteOrder(String byteOrderStr) {
 		final ByteOrder newByteOrder;
 		if (ByteOrder.BIG_ENDIAN.toString().equals(byteOrderStr)) {
 			newByteOrder = ByteOrder.BIG_ENDIAN;
