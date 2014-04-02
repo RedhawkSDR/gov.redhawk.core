@@ -311,6 +311,7 @@ public enum TunerProperties {
 		// instance name ID PRF type
 		EXISTING_ALLOCATION_ID("FRONTEND::listener_allocation::existing_allocation_id", PropertyValueType.STRING),
 		LISTENER_ALLOCATION_ID("FRONTEND::listener_allocation::listener_allocation_id", PropertyValueType.STRING);
+		public static final String LISTENER_ALLOCATION_STRUCT_ID = "FRONTEND::listener_allocation";
 
 		private String id;
 		private PropertyValueType type;

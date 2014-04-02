@@ -430,6 +430,29 @@
             </visibleWhen>
          </command>
       </menuContribution>
+      <menuContribution
+            allPopups="true"
+            locationURI="popup:org.eclipse.ui.popup.any?after=group.control">
+            <command
+               commandId="gov.redhawk.ui.command.connect"
+               style="push">
+            <visibleWhen
+                  checkEnabled="true">
+               <and>
+                  <iterate
+                        ifEmpty="false"
+                        operator="and">
+                     <instanceof
+                           value="gov.redhawk.frontend.TunerStatus">
+                     </instanceof>
+                  </iterate>
+                  <count
+                        value="1">
+                  </count>
+               </and>
+            </visibleWhen>
+         </command>
+      </menuContribution>
    </extension>
    <extension
          point="org.eclipse.core.expressions.propertyTesters">
@@ -486,6 +509,23 @@
                      value="gov.redhawk.frontend.TunerStatus">
                </instanceof>
             </iterate>
+         </activeWhen>
+      </handler>
+      <handler
+            class="gov.redhawk.frontend.ui.internal.ConnectTunerHandler"
+            commandId="gov.redhawk.ui.command.connect">
+         <activeWhen>
+            <and>
+               <count
+                     value="1">
+               </count>
+               <iterate
+                     ifEmpty="false"
+                     operator="and">
+                  <instanceof
+                        value="gov.redhawk.frontend.TunerStatus">
+                  </instanceof>
+               </iterate></and>
          </activeWhen>
       </handler>
    </extension>
