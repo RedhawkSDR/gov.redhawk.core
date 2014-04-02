@@ -10,6 +10,8 @@
  *******************************************************************************/
 package gov.redhawk.bulkio.util;
 
+import gov.redhawk.sca.util.Debug;
+
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
@@ -36,7 +38,8 @@ import CF.DataType;
  * @since 2.0
  */
 public abstract class AbstractBulkIOSDDSPort implements dataSDDSOperations {
-
+	private static final Debug TRACE_LOG = new Debug(BulkIOUtilActivator.getDefault(), AbstractBulkIOSDDSPort.class.getSimpleName());
+	
 	public static class SddsStreamSession {
 		private final SDDSStreamDefinition sddsStreamDef;
 		private final String userId;
@@ -71,13 +74,19 @@ public abstract class AbstractBulkIOSDDSPort implements dataSDDSOperations {
 		}
 
 		public String toString() {
-			return super.toString()
-					+ " addr=" + sddsStreamDef.multicastAddress
+			return "( SDDSStreamDefinition ["
+					+ " id=" + sddsStreamDef.id
+					+ " multicastAddress=" + sddsStreamDef.multicastAddress
 					+ " port=" + sddsStreamDef.port
 					+ " vlan=" + sddsStreamDef.vlan
-					+ " format=" + sddsStreamDef.dataFormat.value()
+					+ " dataFormat=" + sddsStreamDef.dataFormat.value()
 					+ " sampleRate=" + sddsStreamDef.sampleRate
-					+ " timeTagValid=" + sddsStreamDef.timeTagValid;
+					+ " timeTagValid=" + sddsStreamDef.timeTagValid
+					+ " privateInfo=" + sddsStreamDef.privateInfo
+					+ " ]; userID = " + userId
+					+ " attachID = " + attachId
+					+ " ; " + super.toString()
+					+ " ) " + hashCode();
 		}
 	}
 
@@ -159,14 +168,15 @@ public abstract class AbstractBulkIOSDDSPort implements dataSDDSOperations {
 	 * @see BULKIO.dataSDDSOperations#attach(BULKIO.SDDSStreamDefinition, java.lang.String)
 	 */
 	@Override
-	public String attach(SDDSStreamDefinition stream, String userid) throws AttachError, StreamInputError {
-		if (stream == null) {
+	public String attach(SDDSStreamDefinition sddsStreamDef, String userid) throws AttachError, StreamInputError {
+		TRACE_LOG.enteringMethod(sddsStreamDef, userid);
+		if (sddsStreamDef == null) {
 			throw new AttachError("Invalid/null SDDSStreamDefinition");
 		} else if (userid == null) {
 			throw new AttachError("Invalid/null userid");
 		}
 		String attachUuid = UUID.randomUUID().toString();
-		SddsStreamSession sss = new SddsStreamSession(stream, userid, attachUuid);
+		SddsStreamSession sss = new SddsStreamSession(sddsStreamDef, userid, attachUuid);
 
 		handleAttach(sss);
 		sddsSessionMap.put(attachUuid, sss);
@@ -178,6 +188,7 @@ public abstract class AbstractBulkIOSDDSPort implements dataSDDSOperations {
 	 */
 	@Override
 	public void detach(String attachId) throws DetachError, StreamInputError {
+		TRACE_LOG.enteringMethod(attachId);
 		SddsStreamSession sss = sddsSessionMap.get(attachId);
 		if (sss == null) {
 			return;
@@ -225,7 +236,10 @@ public abstract class AbstractBulkIOSDDSPort implements dataSDDSOperations {
 	 */
 	@Override
 	public void pushSRI(StreamSRI sri, PrecisionUTCTime time) {
-		// TODO: what is the point of this API and how would StreamSRI correlate to a SDDSStreamDefinition?
+		if (TRACE_LOG.enabled) {
+			TRACE_LOG.enteringMethod(StreamSRIUtil.toString(sri), time);
+		}
+		// FYI: StreamSRI <=> SDDSStreamDefinition.id
 		if (sri != null) {
 			String streamId = sri.streamID;
 			if (streamId != null) {
@@ -234,6 +248,8 @@ public abstract class AbstractBulkIOSDDSPort implements dataSDDSOperations {
 					handleStreamSRIChanged(streamId, oldSri, sri);
 				}
 			}
+		} else {
+			TRACE_LOG.message("Ignoring null StreamSRI");
 		}
 	}
 

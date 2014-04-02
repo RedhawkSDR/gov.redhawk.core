@@ -1,3 +1,5 @@
 gov.redhawk.bulkio.util/debug=false
+gov.redhawk.bulkio.util/debug/AbstractBulkIOPort=false
+gov.redhawk.bulkio.util/debug/AbstractBulkIOSDDSPort=false
 gov.redhawk.bulkio.util/debug/Connection=false
 gov.redhawk.bulkio.util/debug/PortFactory=false

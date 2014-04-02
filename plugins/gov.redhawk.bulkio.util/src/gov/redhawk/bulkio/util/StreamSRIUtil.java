@@ -23,6 +23,7 @@ import mil.jpeojtrs.sca.util.AnyUtils;
 import nxm.sys.lib.Table;
 
 import org.eclipse.jdt.annotation.NonNull;
+import org.eclipse.jdt.annotation.Nullable;
 
 import BULKIO.StreamSRI;
 import CF.DataType;
@@ -137,5 +138,36 @@ public final class StreamSRIUtil {
 			}
 		}
 		return true;
+	}
+	
+	/** Useful for debugging info in StreamSRI
+	 * @since 2.0
+	 */
+	public static CharSequence toString(@Nullable final StreamSRI sri) {
+		final StringBuilder sb = new StringBuilder();
+		if (sri == null) {
+			sb.append(sri);
+		} else {
+			sb.append(sri.toString());
+			sb.append(" hversion=").append(sri.hversion);
+			sb.append(" xstart=").append(sri.xstart);
+			sb.append(" xdelta=").append(sri.xdelta);
+			sb.append(" xunits=").append(sri.xunits);
+			sb.append(" subsize=").append(sri.subsize);
+			sb.append(" ystart=").append(sri.ystart);
+			sb.append(" ydelta=").append(sri.ydelta);
+			sb.append(" yunits=").append(sri.yunits);
+			sb.append(" mode=").append(sri.mode);
+			sb.append(" streamID=").append(sri.streamID);
+			sb.append(" blocking=").append(sri.blocking);
+			sb.append(" keywords=").append(sri.keywords);
+			if (sri.keywords != null) {
+				sb.append("[length=").append(sri.keywords.length).append("] {");
+				for (CF.DataType cfDataType : sri.keywords) {
+					sb.append(cfDataType.id).append('=').append(cfDataType.value).append(',');
+				}
+			}
+		}
+		return sb;
 	}
 }

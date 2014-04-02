@@ -1,14 +1,16 @@
 /*******************************************************************************
- * This file is protected by Copyright. 
+ * This file is protected by Copyright.
  * Please refer to the COPYRIGHT file distributed with this source distribution.
  *
  * This file is part of REDHAWK IDE.
  *
- * All rights reserved.  This program and the accompanying materials are made available under 
- * the terms of the Eclipse Public License v1.0 which accompanies this distribution, and is available at 
+ * All rights reserved.  This program and the accompanying materials are made available under
+ * the terms of the Eclipse Public License v1.0 which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *******************************************************************************/
 package gov.redhawk.bulkio.util;
+
+import gov.redhawk.sca.util.Debug;
 
 import java.util.Collections;
 import java.util.HashMap;
@@ -28,9 +30,11 @@ import BULKIO.updateSRIOperations;
 import CF.DataType;
 
 /**
- * 
+ *
  */
 public abstract class AbstractBulkIOPort implements ProvidesPortStatisticsProviderOperations, updateSRIOperations {
+
+	private static final Debug TRACE_LOG = new Debug(BulkIOUtilActivator.getDefault(), AbstractBulkIOPort.class.getSimpleName());
 
 	private final Map<String, StreamSRI> streamSRIMap = Collections.synchronizedMap(new HashMap<String, StreamSRI>());
 	private StreamSRI currentSri;
@@ -152,8 +156,10 @@ public abstract class AbstractBulkIOPort implements ProvidesPortStatisticsProvid
 	 */
 	@Override
 	public final void pushSRI(@Nullable StreamSRI sri) {
+		AbstractBulkIOPort.TRACE_LOG.enteringMethod(sri);
 		if (sri != null) {
 			String streamId = sri.streamID;
+			AbstractBulkIOPort.TRACE_LOG.message("pushSRI: StreamSRI.streamID=" + streamId);
 			if (streamId != null) {
 				StreamSRI oldSri = this.streamSRIMap.put(streamId, sri);
 				if (!StreamSRIUtil.equals(oldSri, sri)) {
@@ -166,6 +172,7 @@ public abstract class AbstractBulkIOPort implements ProvidesPortStatisticsProvid
 		if (!StreamSRIUtil.equals(oldSri, sri)) {
 			handleStreamSRIChanged(oldSri, sri);
 		}
+		AbstractBulkIOPort.TRACE_LOG.exitingMethod(sri);
 	}
 	
 	/**
@@ -184,14 +191,14 @@ public abstract class AbstractBulkIOPort implements ProvidesPortStatisticsProvid
 		
 	}
 
-	/** callback to notify that SRI has changed for specified streamID (this is method that sub-classes should override). 
+	/** callback to notify that SRI has changed for specified streamID (this is method that sub-classes should override).
 	 * @since 2.0*/
 	protected void handleStreamSRIChanged(@NonNull String streamID, @Nullable StreamSRI oldSri, @NonNull StreamSRI newSri) {
 		
 	}
 
-	/** 
-	 * @param streamID 
+	/**
+	 * @param streamID
 	 * @return SRI for specified stream ID (null if it does not exist or has reached end-of-stream (EOS)).
 	 */
 	@Nullable
