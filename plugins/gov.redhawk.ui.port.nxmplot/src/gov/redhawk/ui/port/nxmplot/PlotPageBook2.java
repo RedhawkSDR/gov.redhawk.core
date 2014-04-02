@@ -355,7 +355,6 @@ public class PlotPageBook2 extends Composite {
 		INxmBlock startingBlock;
 		String idl = scaPort.getRepid();
 		if (dataSDDSHelper.id().equals(idl)) {
-//		if (scaPort._is_a(dataSDDSHelper.id())) { // <-- TODO: why does not this NOT work
 			SddsNxmBlockSettings sddsSettings = plotSource.getSddsBlockSettings();
 			if (sddsSettings == null) {
 				sddsSettings = new SddsNxmBlockSettings();
@@ -606,6 +605,7 @@ public class PlotPageBook2 extends Composite {
 	 * @noreference This method is not intended to be referenced by clients.
 	 * @since 4.4
 	 */
+	@SuppressWarnings("deprecation")
 	@NonNull
 	public static FftNxmBlockSettings toFftNxmBlockSettings(FftSettings fftOptions) {
 		FftNxmBlockSettings settings = new FftNxmBlockSettings();
