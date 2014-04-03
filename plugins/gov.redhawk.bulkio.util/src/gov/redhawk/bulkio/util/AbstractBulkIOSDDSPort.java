@@ -17,6 +17,7 @@ import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
 import org.eclipse.jdt.annotation.NonNull;
+import org.eclipse.jdt.annotation.NonNullByDefault;
 import org.eclipse.jdt.annotation.Nullable;
 import org.omg.PortableServer.POA;
 import org.omg.PortableServer.Servant;
@@ -40,56 +41,6 @@ import CF.DataType;
 public abstract class AbstractBulkIOSDDSPort implements dataSDDSOperations {
 	private static final Debug TRACE_LOG = new Debug(BulkIOUtilActivator.getDefault(), AbstractBulkIOSDDSPort.class.getSimpleName());
 	
-	public static class SddsStreamSession {
-		private final SDDSStreamDefinition sddsStreamDef;
-		private final String userId;
-		private final String attachId;
-
-		public SddsStreamSession(SDDSStreamDefinition sddsStreamDef, String userId, String attachId) {
-			super();
-			this.sddsStreamDef = sddsStreamDef;
-			this.userId = userId;
-			this.attachId = attachId;
-		}
-
-		/**
-		 * @return the sddsStreamDef
-		 */
-		public SDDSStreamDefinition getSddsStreamDef() {
-			return sddsStreamDef;
-		}
-
-		/**
-		 * @return the userId
-		 */
-		public String getUserId() {
-			return userId;
-		}
-
-		/**
-		 * @return the attachId
-		 */
-		public String getAttachId() {
-			return attachId;
-		}
-
-		public String toString() {
-			return "( SDDSStreamDefinition ["
-					+ " id=" + sddsStreamDef.id
-					+ " multicastAddress=" + sddsStreamDef.multicastAddress
-					+ " port=" + sddsStreamDef.port
-					+ " vlan=" + sddsStreamDef.vlan
-					+ " dataFormat=" + sddsStreamDef.dataFormat.value()
-					+ " sampleRate=" + sddsStreamDef.sampleRate
-					+ " timeTagValid=" + sddsStreamDef.timeTagValid
-					+ " privateInfo=" + sddsStreamDef.privateInfo
-					+ " ]; userID = " + userId
-					+ " attachID = " + attachId
-					+ " ; " + super.toString()
-					+ " ) " + hashCode();
-		}
-	}
-
 	private final PortStatistics stats = new PortStatistics();
 
 	/** key=attachUuid value=SddsStreamSession */
@@ -97,19 +48,25 @@ public abstract class AbstractBulkIOSDDSPort implements dataSDDSOperations {
 	/** key=streamID value=StreamSRI */
 	private final Map<String, StreamSRI> streamSRIMap = new ConcurrentHashMap<String, StreamSRI>();
 
+	// static initializer for PortStatisticsstats field
 	{
 		stats.callsPerSecond = -1;
 		stats.elementsPerSecond = -1;
 		stats.timeSinceLastCall = -1;
 		stats.bitsPerSecond = -1;
 		stats.keywords = new DataType[0];
-		stats.portName = "sddsPort_" + System.getProperty("user.name", "user") + "_" + System.currentTimeMillis();
+		stats.portName = "sddsPort_" + System.getProperty("user.name", "user").replace(' ', '_') + "_" + System.currentTimeMillis();
 		stats.streamIDs = new String[0];
 	}
 
 	protected AbstractBulkIOSDDSPort() {
 	}
 
+	/* (non-Javadoc)
+	 * @see BULKIO.ProvidesPortStatisticsProviderOperations#state()
+	 */
+	
+	@Override
 	public PortUsageType state() {
 		if (sddsSessionMap.isEmpty()) {
 			return PortUsageType.IDLE;
@@ -117,6 +74,10 @@ public abstract class AbstractBulkIOSDDSPort implements dataSDDSOperations {
 		return PortUsageType.ACTIVE;
 	}
 
+	/* (non-Javadoc)
+	 * @see BULKIO.ProvidesPortStatisticsProviderOperations#statistics()
+	 */
+	@Override
 	public PortStatistics statistics() {
 		// updateStatitics(); // TODO: what do we do here?
 		return stats;
@@ -196,6 +157,7 @@ public abstract class AbstractBulkIOSDDSPort implements dataSDDSOperations {
 		handleDetach(sss);
 
 		sddsSessionMap.remove(attachId);
+		streamSRIMap.remove(sss.getSddsStreamDef().id);
 	}
 
 	/* (non-Javadoc)
@@ -257,15 +219,85 @@ public abstract class AbstractBulkIOSDDSPort implements dataSDDSOperations {
 	public Servant toServant(POA poa) {
 		return new dataSDDSPOATie(this, poa);
 	}
+	
+	/**
+	 * @param streamID stream ID
+	 * @return StreamSRI for specified stream ID (null if it does not exist or has been detached)
+	 */
+	@Nullable
+	public StreamSRI getSri(@NonNull String streamID) {
+		return this.streamSRIMap.get(streamID);
+	}
+	
+	protected StreamSRI putSri(@NonNull String streamID, StreamSRI sri) {
+		return this.streamSRIMap.put(streamID, sri);
+	}
+
+	// =========================================================================
+	// Methods that sub-classes MUST implement
 	// =========================================================================
 
 	/** callback to notify when there is a new SDDSStreamDefinition attach request. */
 	protected abstract void handleAttach(@NonNull SddsStreamSession sss) throws AttachError, StreamInputError;
 
-	/** callback to notify when there is a SDDSStreamDefinition dettach request. */
+	/** callback to notify when there is a SDDSStreamDefinition detach request. */
 	protected abstract void handleDetach(@NonNull SddsStreamSession sss) throws DetachError, StreamInputError;
 
 	/** callback to notify that SRI has changed for specified streamID. */
 	protected abstract void handleStreamSRIChanged(@NonNull String streamID, @Nullable StreamSRI oldSri, @NonNull StreamSRI newSri);
 
+	// =========================================================================
+	// Inner classes
+	// =========================================================================
+
+	@NonNullByDefault
+	public static class SddsStreamSession {
+		private final SDDSStreamDefinition sddsStreamDef;
+		private final String userId;
+		private final String attachId;
+
+		public SddsStreamSession(SDDSStreamDefinition sddsStreamDef, String userId, String attachId) {
+			super();
+			this.sddsStreamDef = sddsStreamDef;
+			this.userId = userId;
+			this.attachId = attachId;
+		}
+
+		/**
+		 * @return the sddsStreamDef
+		 */
+		public SDDSStreamDefinition getSddsStreamDef() {
+			return sddsStreamDef;
+		}
+
+		/**
+		 * @return the userId
+		 */
+		public String getUserId() {
+			return userId;
+		}
+
+		/**
+		 * @return the attachId
+		 */
+		public String getAttachId() {
+			return attachId;
+		}
+
+		public String toString() {
+			return "( SDDSStreamDefinition ["
+					+ " id=" + sddsStreamDef.id
+					+ " multicastAddress=" + sddsStreamDef.multicastAddress
+					+ " port=" + sddsStreamDef.port
+					+ " vlan=" + sddsStreamDef.vlan
+					+ " dataFormat=" + sddsStreamDef.dataFormat.value()
+					+ " sampleRate=" + sddsStreamDef.sampleRate
+					+ " timeTagValid=" + sddsStreamDef.timeTagValid
+					+ " privateInfo=" + sddsStreamDef.privateInfo
+					+ " ]; userID = " + userId
+					+ " attachID = " + attachId
+					+ " ; " + super.toString()
+					+ " ) " + hashCode();
+		}
+	} // end class SddsStreamSession 
 }
