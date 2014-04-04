@@ -10,11 +10,11 @@
  *******************************************************************************/
 package gov.redhawk.ui.port.nxmplot;
 
+import gov.redhawk.sca.util.PropertyChangeSupport;
 import gov.redhawk.ui.port.nxmblocks.FftNxmBlock;
 import gov.redhawk.ui.port.nxmplot.preferences.FftPreferences;
 
 import java.beans.PropertyChangeListener;
-import java.beans.PropertyChangeSupport;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.ArrayList;

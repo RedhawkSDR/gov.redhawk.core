@@ -17,12 +17,12 @@ import gov.redhawk.bulkio.util.StreamSRIUtil;
 import gov.redhawk.model.sca.ScaPackage;
 import gov.redhawk.model.sca.ScaUsesPort;
 import gov.redhawk.model.sca.commands.ScaModelCommand;
+import gov.redhawk.sca.util.PropertyChangeSupport;
 import gov.redhawk.ui.port.PortHelper;
 import gov.redhawk.ui.port.playaudio.internal.Activator;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import java.beans.PropertyChangeSupport;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.CharBuffer;
@@ -38,6 +38,7 @@ import javax.sound.sampled.SourceDataLine;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.ISafeRunnable;
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.SafeRunner;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.emf.common.notify.Adapter;
@@ -60,7 +61,7 @@ import BULKIO.dataUshortOperations;
  * @since 2.0
  */
 public class AudioReceiver extends AbstractBulkIOPort implements dataShortOperations, dataCharOperations, dataLongOperations, dataLongLongOperations,
-		dataFloatOperations, dataDoubleOperations, dataOctetOperations, dataUlongOperations, dataUshortOperations {
+dataFloatOperations, dataDoubleOperations, dataOctetOperations, dataUlongOperations, dataUshortOperations {
 	private AudioFormat audioFormat;
 	private final PropertyChangeSupport pcs = new PropertyChangeSupport(this);
 
@@ -124,7 +125,7 @@ public class AudioReceiver extends AbstractBulkIOPort implements dataShortOperat
 					try {
 						play();
 					} catch (LineUnavailableException e) {
-						Activator.getDefault().getLog().log(new Status(Status.ERROR, Activator.PLUGIN_ID, "Failed to play audio", e));
+						Activator.getDefault().getLog().log(new Status(IStatus.ERROR, Activator.PLUGIN_ID, "Failed to play audio", e));
 					}
 				}
 			}
@@ -543,7 +544,8 @@ public class AudioReceiver extends AbstractBulkIOPort implements dataShortOperat
 	/**
 	 * @param propertyName
 	 * @param listener
-	 * @see java.beans.PropertyChangeSupport#addPropertyChangeListener(java.lang.String, java.beans.PropertyChangeListener)
+	 * @see java.beans.PropertyChangeSupport#addPropertyChangeListener(java.lang.String,
+	 * java.beans.PropertyChangeListener)
 	 */
 	public void addPropertyChangeListener(String propertyName, PropertyChangeListener listener) {
 		pcs.addPropertyChangeListener(propertyName, listener);
@@ -552,7 +554,8 @@ public class AudioReceiver extends AbstractBulkIOPort implements dataShortOperat
 	/**
 	 * @param propertyName
 	 * @param listener
-	 * @see java.beans.PropertyChangeSupport#removePropertyChangeListener(java.lang.String, java.beans.PropertyChangeListener)
+	 * @see java.beans.PropertyChangeSupport#removePropertyChangeListener(java.lang.String,
+	 * java.beans.PropertyChangeListener)
 	 */
 	public void removePropertyChangeListener(String propertyName, PropertyChangeListener listener) {
 		pcs.removePropertyChangeListener(propertyName, listener);

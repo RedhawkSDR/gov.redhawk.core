@@ -14,7 +14,6 @@ package gov.redhawk.sca.util;
 import gov.redhawk.sca.util.internal.ScaUtilPluginActivator;
 
 import java.beans.PropertyChangeListener;
-import java.beans.PropertyChangeSupport;
 
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
@@ -98,9 +97,11 @@ public abstract class SilentJob extends Job {
 	}
 
 	/**
-	 * Client is excepted to override this method.  This method is wrapped in a protected call such that the Job result is always Status.Ok
+	 * Client is excepted to override this method. This method is wrapped in a protected call such that the Job result
+	 * is always Status.Ok
 	 * @param monitor
-	 * @return The result of the run, must not be null, can be any status and the Job will not show an error in the dialog.
+	 * @return The result of the run, must not be null, can be any status and the Job will not show an error in the
+	 * dialog.
 	 */
 	protected abstract IStatus runSilent(final IProgressMonitor monitor);
 
@@ -182,7 +183,7 @@ public abstract class SilentJob extends Job {
 		if (plugin != null) {
 			bundleId = plugin.getBundleId(this);
 		}
-		
+
 		if (bundleId == null) {
 			bundleId = "unknown";
 		}

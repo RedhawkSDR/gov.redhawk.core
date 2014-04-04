@@ -13,9 +13,9 @@ package gov.redhawk.sca.ui.preferences;
 
 import gov.redhawk.sca.preferences.ScaPreferenceConstants;
 import gov.redhawk.sca.ui.ScaUiPlugin;
+import gov.redhawk.sca.util.PropertyChangeSupport;
 
 import java.beans.PropertyChangeListener;
-import java.beans.PropertyChangeSupport;
 
 /**
  * @since 7.0
@@ -23,7 +23,9 @@ import java.beans.PropertyChangeSupport;
 public class DomainSettingModel {
 
 	public static enum ConnectionMode {
-		MANUAL, NOW, AUTO
+		MANUAL,
+		NOW,
+		AUTO
 	};
 
 	public static final String PROP_DOMAIN_NAME = "domainName";
