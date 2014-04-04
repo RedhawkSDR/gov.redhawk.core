@@ -19,9 +19,9 @@ import gov.redhawk.sca.launch.ui.ScaUIImages;
 import gov.redhawk.sca.ui.parts.FormFilteredTree;
 import gov.redhawk.sca.ui.wizards.InstallApplicationContentProvider;
 import gov.redhawk.sca.ui.wizards.WizardSadItemProviderAdapterFactory;
+import gov.redhawk.sca.util.PropertyChangeSupport;
 
 import java.beans.PropertyChangeListener;
-import java.beans.PropertyChangeSupport;
 import java.util.Comparator;
 
 import mil.jpeojtrs.sca.sad.SoftwareAssembly;

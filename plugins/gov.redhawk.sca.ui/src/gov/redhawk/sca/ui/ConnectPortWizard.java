@@ -16,9 +16,9 @@ import gov.redhawk.model.sca.ScaProvidesPort;
 import gov.redhawk.model.sca.ScaUsesPort;
 import gov.redhawk.sca.ScaPlugin;
 import gov.redhawk.sca.ui.views.ScaExplorer;
+import gov.redhawk.sca.util.PropertyChangeSupport;
 
 import java.beans.PropertyChangeListener;
-import java.beans.PropertyChangeSupport;
 import java.lang.reflect.InvocationTargetException;
 import java.text.SimpleDateFormat;
 import java.util.Date;

@@ -16,10 +16,10 @@ import gov.redhawk.core.resourcefactory.IResourceFactoryProvider;
 import gov.redhawk.core.resourcefactory.IResourceFactoryRegistry;
 import gov.redhawk.core.resourcefactory.ResourceDesc;
 import gov.redhawk.core.resourcefactory.ResourceFactoryPlugin;
+import gov.redhawk.sca.util.PropertyChangeSupport;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import java.beans.PropertyChangeSupport;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -131,7 +131,7 @@ public enum ResourceFactoryRegistry implements IResourceFactoryRegistry {
 	private void addResourceDesc(final ResourceDesc desc, int priority) throws CoreException {
 		mount(desc, priority);
 		this.registry.add(desc);
-		pcs.firePropertyChange(PROP_RESOURCES, null, desc);
+		pcs.firePropertyChange(IResourceFactoryRegistry.PROP_RESOURCES, null, desc);
 	}
 
 	private void mount(final ResourceDesc desc, int priority) throws CoreException {
@@ -147,7 +147,7 @@ public enum ResourceFactoryRegistry implements IResourceFactoryRegistry {
 			unmount(desc);
 			desc.dispose();
 		}
-		pcs.firePropertyChange(PROP_RESOURCES, desc, null);
+		pcs.firePropertyChange(IResourceFactoryRegistry.PROP_RESOURCES, desc, null);
 	}
 
 	@Override

@@ -11,10 +11,10 @@
  */
 package gov.redhawk.model.sca.services;
 
+import gov.redhawk.sca.util.PropertyChangeSupport;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import java.beans.PropertyChangeSupport;
 
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
