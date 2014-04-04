@@ -53,7 +53,7 @@ public class PropertyChangeSupport extends java.beans.PropertyChangeSupport {
 		if (listener == null) {
 			return;
 		}
-		if (contains(null, listener)) {
+		if (contains(propertyName, listener)) {
 			return;
 		}
 		super.addPropertyChangeListener(propertyName, listener);
