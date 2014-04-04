@@ -73,6 +73,7 @@ public class RefreshDataProviderDecorator extends LabelProvider implements ILigh
 						if (provider instanceof RefreshTask) {
 							final RefreshTask job = (RefreshTask) provider;
 							setResult(job);
+							return;
 						}
 					}
 				}
@@ -80,6 +81,12 @@ public class RefreshDataProviderDecorator extends LabelProvider implements ILigh
 			if (task != null) {
 				if (!task.isActive()) {
 					decoration.addOverlay(RefreshProviderUIActivator.getDefault().getImageDescriptor("icons/stock-media-pause.png"), IDecoration.TOP_RIGHT);
+				}
+				// Don't add a second listener if we have already added one
+				for (PropertyChangeListener l : task.getPropertyChangeListeners()) {
+					if (l instanceof PropertyListener && ((PropertyListener) l).element == dataProvider) {
+						return;
+					}
 				}
 				task.addPropertyChangeListener(new PropertyListener(dataProvider));
 			}
