@@ -90,8 +90,13 @@ public class RefreshDataProviderDecorator extends LabelProvider implements ILigh
 				if (!task.isActive()) {
 					decoration.addOverlay(RefreshProviderUIActivator.getDefault().getImageDescriptor("icons/stock-media-pause.png"), IDecoration.TOP_RIGHT);
 				}
-				// TODO Support notification without causing memory leak
-//				task.addPropertyChangeListener(new PropertyListener(dataProvider));
+				// Don't add a second listener if we have already added one
+				for (PropertyChangeListener l : task.getPropertyChangeListeners()) {
+					if (l instanceof PropertyListener && ((PropertyListener) l).element == dataProvider) {
+						return;
+					}
+				}
+				task.addPropertyChangeListener(new PropertyListener(dataProvider));
 			}
 		}
 	}
