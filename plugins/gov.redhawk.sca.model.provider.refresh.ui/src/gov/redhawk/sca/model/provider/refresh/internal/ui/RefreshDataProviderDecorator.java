@@ -81,6 +81,7 @@ public class RefreshDataProviderDecorator extends LabelProvider implements ILigh
 						if (provider instanceof RefreshTasker) {
 							final RefreshTasker job = (RefreshTasker) provider;
 							setResult(job);
+							return;
 						}
 					}
 				}
@@ -89,7 +90,8 @@ public class RefreshDataProviderDecorator extends LabelProvider implements ILigh
 				if (!task.isActive()) {
 					decoration.addOverlay(RefreshProviderUIActivator.getDefault().getImageDescriptor("icons/stock-media-pause.png"), IDecoration.TOP_RIGHT);
 				}
-				task.addPropertyChangeListener(new PropertyListener(dataProvider));
+				// TODO Support notification without causing memory leak
+//				task.addPropertyChangeListener(new PropertyListener(dataProvider));
 			}
 		}
 	}
