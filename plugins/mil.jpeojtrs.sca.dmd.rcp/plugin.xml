@@ -11,16 +11,16 @@
  
 -->
 <?eclipse version="3.4"?>
-<fragment>
-   <extension
+<plugin>
+  <extension
          point="org.eclipse.wst.xml.core.catalogContributions">
       <catalogContribution
             id="sca">
          <public
-               publicId="-//JTRS//DTD SCA V2.2.2 SCD//EN"
-               uri="dtd/softwarecomponent.dtd">
+               publicId="-//JTRS//DTD SCA V2.2.2 DMD//EN"
+               uri="dtd/domainmanagerconfiguration.dtd">
          </public>
       </catalogContribution>
    </extension>
 
-</fragment>
+</plugin>
