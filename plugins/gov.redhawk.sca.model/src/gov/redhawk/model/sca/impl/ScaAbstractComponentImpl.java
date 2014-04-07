@@ -910,15 +910,14 @@ public abstract class ScaAbstractComponentImpl< R extends Resource > extends Sca
 		if (isDisposed()) {
 			return;
 		}
+		if (isSetPorts()) {
+			return;
+		}
 		SubMonitor subMonitor = SubMonitor.convert(monitor, 4);
 		R currentObj = this.fetchNarrowedObject(subMonitor.newChild(1));
 		Transaction transaction = portRevision.createTransaction();
 		if (currentObj != null) {
-			if (!isSetProfileObj()) {
-				fetchProfileObject(subMonitor.newChild(1));
-			} else {
-				subMonitor.setWorkRemaining(2);
-			}
+			fetchProfileObject(subMonitor.newChild(1));
 
 			FeatureMap portGroup = ScaEcoreUtils.getFeature(this, PORTS_GROUP_PATH);
 			List<MergePortsCommand.PortData> newPorts = new ArrayList<MergePortsCommand.PortData>();
