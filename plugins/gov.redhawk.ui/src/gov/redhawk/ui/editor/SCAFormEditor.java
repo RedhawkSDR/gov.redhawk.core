@@ -20,6 +20,7 @@ import gov.redhawk.ui.RedhawkUiActivator;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.StringReader;
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -30,7 +31,9 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.Callable;
 
+import mil.jpeojtrs.sca.util.CorbaUtils;
 import mil.jpeojtrs.sca.validator.AdvancedEObjectValidator;
 
 import org.eclipse.core.databinding.Binding;
@@ -104,6 +107,8 @@ import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.dialogs.IDialogSettings;
 import org.eclipse.jface.dialogs.MessageDialog;
+import org.eclipse.jface.dialogs.ProgressMonitorDialog;
+import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.jface.text.DocumentEvent;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.IDocumentListener;
@@ -128,6 +133,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Menu;
+import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IEditorSite;
@@ -254,8 +260,8 @@ public abstract class SCAFormEditor extends FormEditor implements IEditingDomain
 					// If the resource has been changed on disk and the editor is dirty we will prompt the user before blowing away its changes.
 					if (SCAFormEditor.this.isDirty() && !SCAFormEditor.this.editorSaving) {
 						boolean confirmOverwrite = MessageDialog.openConfirm(SCAFormEditor.this.getSite().getShell(), "File Changed", "The file '"
-							+ delta.getResource().getFullPath().toOSString()
-							+ "' has been changed on the file system. Do you want to replace the editor contents with these changes?");
+								+ delta.getResource().getFullPath().toOSString()
+								+ "' has been changed on the file system. Do you want to replace the editor contents with these changes?");
 
 						SCAFormEditor.this.setFocus();
 
@@ -518,7 +524,7 @@ public abstract class SCAFormEditor extends FormEditor implements IEditingDomain
 
 		final NotificationFilter resourceModifiedFilter = NotificationFilter.createNotifierFilter(domain.getResourceSet()).and(
 			NotificationFilter.createEventTypeFilter(Notification.ADD)).and(
-			NotificationFilter.createFeatureFilter(ResourceSet.class, ResourceSet.RESOURCE_SET__RESOURCES));
+				NotificationFilter.createFeatureFilter(ResourceSet.class, ResourceSet.RESOURCE_SET__RESOURCES));
 		domain.getResourceSet().eAdapters().add(new Adapter() {
 
 			private Notifier myTarget;
@@ -855,7 +861,7 @@ public abstract class SCAFormEditor extends FormEditor implements IEditingDomain
 			 * Checks to see if the given resource is within the same project as the SCAFormEditor.
 			 * This fixes bug # 266
 			 * @param resource The resource to be checked
-			 * @return 
+			 * @return
 			 */
 			private boolean isLocal(final Resource resource) {
 				// If the resource isn't located in the workspace it isn't local
@@ -998,12 +1004,32 @@ public abstract class SCAFormEditor extends FormEditor implements IEditingDomain
 		final URI resourceURI = EditUIUtil.getURI(getEditorInput());
 		// For safety we'll decode the URI to make sure escape sequences have been correctly represented
 		String decodedURIString = URI.decode(resourceURI.toString());
-		URI decodedURI = URI.createURI(decodedURIString);
+		final URI decodedURI = URI.createURI(decodedURIString);
 		Exception exception = null;
 		try {
 			// Load the resource through the editing domain.
 			//
-			this.mainResource = this.editingDomain.getResourceSet().getResource(decodedURI, true);
+			Shell shell = Display.getCurrent().getActiveShell();
+			ProgressMonitorDialog dialog = new ProgressMonitorDialog(shell);
+			dialog.run(true, true, new IRunnableWithProgress() {
+
+				@Override
+				public void run(IProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
+					try {
+						monitor.beginTask("Loading XML...", IProgressMonitor.UNKNOWN);
+						mainResource = CorbaUtils.invoke(new Callable<Resource>() {
+							@Override
+							public Resource call() throws Exception {
+								return editingDomain.getResourceSet().getResource(decodedURI, true);
+							}
+
+						}, monitor);
+					} catch (CoreException e) {
+						throw new InvocationTargetException(e);
+					}
+
+				}
+			});
 		} catch (final Exception e) { // SUPPRESS CHECKSTYLE Logged Catch all exception
 			exception = e;
 			this.mainResource = this.editingDomain.getResourceSet().getResource(decodedURI, false);
@@ -1741,8 +1767,8 @@ public abstract class SCAFormEditor extends FormEditor implements IEditingDomain
 	}
 
 	/**
-	 * Updates the document that maps to the given resource.  
-	 * @param resource The EMF Resource object which has been changed.  This resource must be
+	 * Updates the document that maps to the given resource.
+	 * @param resource The EMF Resource object which has been changed. This resource must be
 	 * within the resource to document map in order to pull up the corresponding document.
 	 */
 	private void updateDocument(final Resource resource) {
