@@ -133,7 +133,6 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Menu;
-import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IEditorSite;
@@ -260,8 +259,8 @@ public abstract class SCAFormEditor extends FormEditor implements IEditingDomain
 					// If the resource has been changed on disk and the editor is dirty we will prompt the user before blowing away its changes.
 					if (SCAFormEditor.this.isDirty() && !SCAFormEditor.this.editorSaving) {
 						boolean confirmOverwrite = MessageDialog.openConfirm(SCAFormEditor.this.getSite().getShell(), "File Changed", "The file '"
-								+ delta.getResource().getFullPath().toOSString()
-								+ "' has been changed on the file system. Do you want to replace the editor contents with these changes?");
+							+ delta.getResource().getFullPath().toOSString()
+							+ "' has been changed on the file system. Do you want to replace the editor contents with these changes?");
 
 						SCAFormEditor.this.setFocus();
 
@@ -524,7 +523,7 @@ public abstract class SCAFormEditor extends FormEditor implements IEditingDomain
 
 		final NotificationFilter resourceModifiedFilter = NotificationFilter.createNotifierFilter(domain.getResourceSet()).and(
 			NotificationFilter.createEventTypeFilter(Notification.ADD)).and(
-				NotificationFilter.createFeatureFilter(ResourceSet.class, ResourceSet.RESOURCE_SET__RESOURCES));
+			NotificationFilter.createFeatureFilter(ResourceSet.class, ResourceSet.RESOURCE_SET__RESOURCES));
 		domain.getResourceSet().eAdapters().add(new Adapter() {
 
 			private Notifier myTarget;
@@ -1009,27 +1008,30 @@ public abstract class SCAFormEditor extends FormEditor implements IEditingDomain
 		try {
 			// Load the resource through the editing domain.
 			//
-			Shell shell = Display.getCurrent().getActiveShell();
-			ProgressMonitorDialog dialog = new ProgressMonitorDialog(shell);
-			dialog.run(true, true, new IRunnableWithProgress() {
+			if (Display.getCurrent() != null) {
+				ProgressMonitorDialog dialog = new ProgressMonitorDialog(Display.getCurrent().getActiveShell());
+				dialog.run(true, true, new IRunnableWithProgress() {
 
-				@Override
-				public void run(IProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
-					try {
-						monitor.beginTask("Loading XML...", IProgressMonitor.UNKNOWN);
-						mainResource = CorbaUtils.invoke(new Callable<Resource>() {
-							@Override
-							public Resource call() throws Exception {
-								return editingDomain.getResourceSet().getResource(decodedURI, true);
-							}
+					@Override
+					public void run(IProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
+						try {
+							monitor.beginTask("Loading XML...", IProgressMonitor.UNKNOWN);
+							mainResource = CorbaUtils.invoke(new Callable<Resource>() {
+								@Override
+								public Resource call() throws Exception {
+									return editingDomain.getResourceSet().getResource(decodedURI, true);
+								}
 
-						}, monitor);
-					} catch (CoreException e) {
-						throw new InvocationTargetException(e);
+							}, monitor);
+						} catch (CoreException e) {
+							throw new InvocationTargetException(e);
+						}
+
 					}
-
-				}
-			});
+				});
+			} else {
+				mainResource = editingDomain.getResourceSet().getResource(decodedURI, true);
+			}
 		} catch (final Exception e) { // SUPPRESS CHECKSTYLE Logged Catch all exception
 			exception = e;
 			this.mainResource = this.editingDomain.getResourceSet().getResource(decodedURI, false);
