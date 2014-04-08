@@ -11,11 +11,11 @@
  */
 package gov.redhawk.ui.port.playaudio.controls;
 
+import gov.redhawk.sca.util.PropertyChangeSupport;
 import gov.redhawk.ui.port.playaudio.controller.AudioReceiver;
 import gov.redhawk.ui.port.playaudio.internal.Activator;
 
 import java.beans.PropertyChangeListener;
-import java.beans.PropertyChangeSupport;
 
 import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.LineUnavailableException;
@@ -24,6 +24,7 @@ import org.eclipse.core.databinding.DataBindingContext;
 import org.eclipse.core.databinding.UpdateValueStrategy;
 import org.eclipse.core.databinding.beans.BeansObservables;
 import org.eclipse.core.databinding.conversion.Converter;
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.databinding.swt.WidgetProperties;
 import org.eclipse.jface.databinding.viewers.ViewersObservables;
@@ -231,7 +232,8 @@ public class PlaybackInfo extends Composite {
 		/**
 		 * @param propertyName
 		 * @param listener
-		 * @see java.beans.PropertyChangeSupport#addPropertyChangeListener(java.lang.String, java.beans.PropertyChangeListener)
+		 * @see java.beans.PropertyChangeSupport#addPropertyChangeListener(java.lang.String,
+		 * java.beans.PropertyChangeListener)
 		 */
 		public void addPropertyChangeListener(String propertyName, PropertyChangeListener listener) {
 			pcs.addPropertyChangeListener(propertyName, listener);
@@ -240,7 +242,8 @@ public class PlaybackInfo extends Composite {
 		/**
 		 * @param propertyName
 		 * @param listener
-		 * @see java.beans.PropertyChangeSupport#removePropertyChangeListener(java.lang.String, java.beans.PropertyChangeListener)
+		 * @see java.beans.PropertyChangeSupport#removePropertyChangeListener(java.lang.String,
+		 * java.beans.PropertyChangeListener)
 		 */
 		public void removePropertyChangeListener(String propertyName, PropertyChangeListener listener) {
 			pcs.removePropertyChangeListener(propertyName, listener);
@@ -356,7 +359,7 @@ public class PlaybackInfo extends Composite {
 					try {
 						receiver.play();
 					} catch (LineUnavailableException e1) {
-						Status status = new Status(Status.ERROR, Activator.PLUGIN_ID, "Failed to play audio", e1);
+						Status status = new Status(IStatus.ERROR, Activator.PLUGIN_ID, "Failed to play audio", e1);
 						StatusManager.getManager().handle(status, StatusManager.SHOW | StatusManager.LOG);
 					}
 				}

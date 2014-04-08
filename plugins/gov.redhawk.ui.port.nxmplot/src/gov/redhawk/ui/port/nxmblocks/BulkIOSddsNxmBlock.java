@@ -55,7 +55,6 @@ public class BulkIOSddsNxmBlock extends SddsNxmBlock {
 	private static OrbSession orbSession = OrbSession.createSession();
 
 	private final ConcurrentHashMap<String, SddsStreamSession> streamIDToSSSMap = new ConcurrentHashMap<String, SddsStreamSession>();
-	private final ConcurrentHashMap<String, StreamSRI> streamIDToSriMap = new ConcurrentHashMap<String, StreamSRI>();
 
 	private ScaUsesPort scaUsesPort;
 	private org.omg.CORBA.Object corbaObjRef;
@@ -75,15 +74,18 @@ public class BulkIOSddsNxmBlock extends SddsNxmBlock {
 				BulkIOSddsNxmBlock.TRACE_LOG.message("WARN: no SDDSStreamDefinition.id specified! using attachID: " + streamID);
 			}
 			if (BulkIOSddsNxmBlock.TRACE_LOG.enabled) {
-				BulkIOSddsNxmBlock.TRACE_LOG.message("SDDSStreamDefinition.id = [{0}] attachID = [{1}] SddsStreamSession = {2}", id, sss.getAttachId(), sss);
+				BulkIOSddsNxmBlock.TRACE_LOG.message("handleAttach: SDDSStreamDefinition.id = [{0}] attachID = [{1}] SddsStreamSession = {2}", id, sss.getAttachId(), sss);
 			}
 			streamIDToSSSMap.put(streamID, sss);
 
-			StreamSRI streamSRI = streamIDToSriMap.get(streamID);
+			StreamSRI streamSRI = getSri(streamID);
 			if (streamSRI == null) {
 				streamSRI = new StreamSRI();
 				streamSRI.streamID = streamID;
-				streamIDToSriMap.put(streamID, streamSRI);
+				putSri(streamID, streamSRI);
+				BulkIOSddsNxmBlock.TRACE_LOG.message("handleAttach: creating new StreamSRI for map: {0}", streamSRI);
+			} else {
+				BulkIOSddsNxmBlock.TRACE_LOG.message("handleAttach: using StreamSRI found in map: {0}", streamSRI); 
 			}
 			
 			int sr = sss.getSddsStreamDef().sampleRate;
@@ -113,7 +115,6 @@ public class BulkIOSddsNxmBlock extends SddsNxmBlock {
 			}
 			shutdown(streamID);
 			streamIDToSSSMap.remove(streamID);
-			streamIDToSriMap.remove(streamID);
 			BulkIOSddsNxmBlock.TRACE_LOG.exitingMethod();
 		}
 
@@ -141,21 +142,27 @@ public class BulkIOSddsNxmBlock extends SddsNxmBlock {
 		putOutputNameMapping(0, streamID, outputName); // save output name mapping
 
 		SddsStreamSession sss = streamIDToSSSMap.get(streamID);
-		SDDSStreamDefinition sddsSettings = sss.getSddsStreamDef();
-		String outputFormat = getOutputFormat();
-		if (outputFormat == null) {
-			outputFormat = BulkIOSddsNxmBlock.sddsDigraph2MidasFormatType(sddsSettings.dataFormat);
-		}
+		SDDSStreamDefinition sddsStreamDef = sss.getSddsStreamDef();
+		
 		final StringBuilder switches = new StringBuilder("");
+		ByteOrder byteOrder = getDataByteOrder();
+		if (byteOrder != null) {
+			switches.append("/BYTEORDER=").append(byteOrder);
+		}
 		final int pipeSize = getPipeSize(); // in bytes
 		if (pipeSize > 0) {
 			switches.append("/PS=").append(pipeSize);
 		}
+		
+		// use values from SDDSStreamDefinition as each attach might be from different source mcastAddr, port, vlan, format, etc. 
+		String outputFormat = BulkIOSddsNxmBlock.sddsDigraph2MidasFormatType(sddsStreamDef.dataFormat);
+		switches.append("/FC=").append(outputFormat);
+		switches.append("/MGRP=").append(sddsStreamDef.multicastAddress);
+		switches.append("/PORT=").append(sddsStreamDef.port);
+		switches.append("/VLAN=").append(sddsStreamDef.vlan);
 
-		ByteOrder byteOrder = getDataByteOrder();
-		String pattern = "SOURCENIC{0}/BG/BYTEORDER={1}/FC={2}/MGRP={3}/VLAN={4,number,#}/PORT={5,number,#} OUT={6}";
-		String cmdLine = MessageFormat.format(pattern, switches, byteOrder, outputFormat, sddsSettings.multicastAddress, sddsSettings.vlan, sddsSettings.port,
-			outputName);
+		String pattern = "SOURCENIC{0}/BG OUT={1}";
+		String cmdLine = MessageFormat.format(pattern, switches, outputName);
 
 		return cmdLine;
 	}
@@ -186,7 +193,7 @@ public class BulkIOSddsNxmBlock extends SddsNxmBlock {
 	public void start() throws CoreException {
 		BulkIOSddsNxmBlock.TRACE_LOG.enteringMethod();
 		if (sddsPort != null) {
-			// PASS: TODO: disconnect from previous SDDS port impl/servant? or throw IllegalState Exception?
+			throw new IllegalStateException("This block has already started! " + this);
 		}
 
 		connect();
@@ -195,11 +202,21 @@ public class BulkIOSddsNxmBlock extends SddsNxmBlock {
 
 	@Override
 	public void stop() {
-		BulkIOSddsNxmBlock.TRACE_LOG.enteringMethod();
+		BulkIOSddsNxmBlock.TRACE_LOG.enteringMethod(isStopped());
+		if (isStopped()) {
+			return; // It is valid to attempt to stop a block more than once, so just return
+		}
+		super.stop();
 		try {
-			if (scaUsesPort != null) {
-				scaUsesPort.disconnectPort(connectionId); // disconnect from BULKIO dataSddsOut Port
-				scaUsesPort = null;
+			ScaUsesPort scaPort;
+			synchronized (this) {
+				scaPort = scaUsesPort;
+				if (scaUsesPort != null) {
+					scaUsesPort = null;
+				}
+			}
+			if (!scaPort.isDisposed()) {
+				scaPort.disconnectPort(connectionId); // disconnect from BULKIO dataSddsOut Port
 			}
 		} catch (InvalidPort e) {
 			// PASS

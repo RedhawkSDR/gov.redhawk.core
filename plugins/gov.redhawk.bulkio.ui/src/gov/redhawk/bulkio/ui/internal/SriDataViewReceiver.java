@@ -44,7 +44,7 @@ public class SriDataViewReceiver extends AbstractUberBulkIOPort {
 	private String connectionId;
 	private Map<String, SriWrapper> modelStreamMap = new HashMap<String, SriWrapper>(); // contains real time stream data
 	private Map<String, SriWrapper> viewStreamMap = modelStreamMap; // contains stream data available to the view UI
-	protected Object[] expandedItems;
+	private Object[] expandedItems;
 	private boolean inputSet;
 	private final Job refreshView;
 
@@ -59,7 +59,7 @@ public class SriDataViewReceiver extends AbstractUberBulkIOPort {
 				if (viewer != null & !viewer.getControl().isDisposed()) {
 
 					// Capture expanded state to persist after setInput
-					expandedItems = viewer.getExpandedElements();
+					setExpandedItems(viewer.getExpandedElements());
 					viewer.getControl().setRedraw(false);
 
 					// Send input to content provider
@@ -71,7 +71,7 @@ public class SriDataViewReceiver extends AbstractUberBulkIOPort {
 					}
 
 					// Rebuild expanded state
-					viewer.setExpandedElements(expandedItems);
+					viewer.setExpandedElements(getExpandedItems());
 					viewer.getControl().setRedraw(true);
 
 					// Bold tabs of views with modified content, rebuild menus and toolbars
@@ -252,5 +252,13 @@ public class SriDataViewReceiver extends AbstractUberBulkIOPort {
 	public void pushPacket(byte[] data, PrecisionUTCTime time, boolean eos, String streamID) {
 		setPrecisionTime(time, streamID);
 		checkForEOS(eos, streamID);
+	}
+
+	public Object[] getExpandedItems() {
+		return expandedItems;
+	}
+
+	public void setExpandedItems(Object[] expandedItems) {
+		this.expandedItems = expandedItems;
 	}
 }

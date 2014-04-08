@@ -20,11 +20,9 @@ public class SddsPreferences {
 	public static final Preference<Integer> PIPE_SIZE = new Preference<Integer>("sddsBlock.pipeSize", 0);
 	public static final Preference<Integer> VLAN = new Preference<Integer>("sddsBlock.vlan", 0);
 	public static final Preference<String>  MCAST_ADDRESS = new Preference<String>("sddsBlock.mcastAddress", "");
-	public static final Preference<Boolean> MCAST_ADDRESS_OVERRIDE = new Preference<Boolean>("sddsBlock.mcastAddress.override", false);
 	public static final Preference<Integer> PORT = new Preference<Integer>("sddsBlock.port", 29495);
 	public static final Preference<String>  OUTPUT_FORMAT = new Preference<String>("sddsBlock.outputFormat", "SI");
 	public static final Preference<String>  INTERFACE_NAME = new Preference<String>("sddsBlock.interfaceName", "");
-	public static final Preference<Boolean> INTERFACE_NAME_OVERRIDE = new Preference<Boolean>("sddsBlock.interfaceName.override", false);
 
 	/** prevent instantiation as this class only contains constants and/or utility methods. */
 	private SddsPreferences() {

@@ -7,7 +7,7 @@ public interface SriListener {
 
     public void     newSRI( StreamSRI sri );
 
-    public void     changedSRI( StreamSRI sri );
+    public boolean  changedSRI( StreamSRI sri );
 
 }
 

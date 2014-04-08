@@ -17,6 +17,7 @@ import gov.redhawk.model.sca.ScaPackage;
 import gov.redhawk.model.sca.ScaUsesPort;
 import gov.redhawk.model.sca.commands.ScaModelCommand;
 import gov.redhawk.sca.util.Debug;
+import gov.redhawk.sca.util.PropertyChangeSupport;
 import gov.redhawk.ui.port.PortHelper;
 import gov.redhawk.ui.port.nxmblocks.BulkIONxmBlock;
 import gov.redhawk.ui.port.nxmblocks.BulkIONxmBlockSettings;
@@ -83,7 +84,7 @@ public class PlotPageBook2 extends Composite {
 	 */
 	public static final String PROP_TYPE = "type";
 
-	private java.beans.PropertyChangeSupport pcs = new java.beans.PropertyChangeSupport(this);
+	private PropertyChangeSupport pcs = new PropertyChangeSupport(this);
 
 	private static class PlotPage {
 		private final AbstractNxmPlotWidget plot;
@@ -370,8 +371,8 @@ public class PlotPageBook2 extends Composite {
 			BulkIONxmBlock bulkioBlock = new BulkIONxmBlock(currentPlotWidget, scaPort, bulkioSettings);
 			startingBlock = bulkioBlock;
 		} else {
-			StatusManager.getManager().handle(new Status(IStatus.WARNING, PlotActivator.PLUGIN_ID,
-				"Not adding source for unsupported Port: " + idl), StatusManager.LOG);
+			StatusManager.getManager().handle(new Status(IStatus.WARNING, PlotActivator.PLUGIN_ID, "Not adding source for unsupported Port: " + idl),
+				StatusManager.LOG);
 			return null;
 		}
 		PlotPageBook2.TRACE_LOG.trace("PlotPageBook2.addSource(.) startingBlock = {0}", startingBlock);
@@ -480,7 +481,8 @@ public class PlotPageBook2 extends Composite {
 		showPlot(settings);
 	}
 
-	/** NTN: NEW METHOD (from old showPlot(PlotType method)
+	/**
+	 * NTN: NEW METHOD (from old showPlot(PlotType method)
 	 * Toggle if the raster is visible or not.
 	 * @param enable true if the raster should be shown
 	 * @since 4.4

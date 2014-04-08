@@ -4,5 +4,4 @@ Bundle-Name: %Bundle-Name
 Bundle-SymbolicName: mil.jpeojtrs.sca.dcd.rcp;singleton:=true
 Bundle-Version: 1.0.0.qualifier
 Bundle-Vendor: %Bundle-Vendor
-Fragment-Host: mil.jpeojtrs.sca.dcd;bundle-version="2.2.2"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6

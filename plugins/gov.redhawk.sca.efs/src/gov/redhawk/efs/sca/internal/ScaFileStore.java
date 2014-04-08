@@ -139,6 +139,10 @@ public class ScaFileStore extends FileStore {
 		// If path is a directory we will get the contents of the
 		// directory
 		info.setLength(typeInfo.size);
+
+		// TODO since there is no way to determine executable bit or permissions
+//		info.setAttribute(EFS.ATTRIBUTE_EXECUTABLE, true);
+
 		for (final DataType t : typeInfo.fileProperties) {
 			ScaFileInformationDataType scaDataType;
 			try {
@@ -437,7 +441,8 @@ public class ScaFileStore extends FileStore {
 
 	@Override
 	public java.io.File toLocalFile(final int options, final IProgressMonitor monitor) throws CoreException {
-		return super.toLocalFile(options | EFS.CACHE, monitor);
+		return cache.toLocalFile();
+//		return super.toLocalFile(options | EFS.CACHE, monitor);
 	}
 
 	@Override

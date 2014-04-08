@@ -2,6 +2,8 @@ package bulkio;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.List;
 import java.util.Iterator;
 import java.util.Map;
@@ -24,6 +26,7 @@ import bulkio.linkStatistics;
 import bulkio.Int8Size;
 import bulkio.ConnectionEventListener;
 import bulkio.connection_descriptor_struct;
+import bulkio.SriMapStruct;
 import org.ossie.properties.*;
 
 /**
@@ -47,11 +50,6 @@ public class OutFilePort extends BULKIO.UsesPortStatisticsProviderPOA {
     protected boolean active;
 
     /**
-     * @generated
-     */
-    protected boolean refreshSRI;
-
-    /**
      * Map of connection Ids to port objects
      * @generated
      */
@@ -67,7 +65,7 @@ public class OutFilePort extends BULKIO.UsesPortStatisticsProviderPOA {
      * Map of stream IDs to streamSRI's
      * @generated
      */
-    protected Map<String, StreamSRI > currentSRIs;
+    protected Map<String, SriMapStruct > currentSRIs;
 
     /**
      *
@@ -103,13 +101,13 @@ public class OutFilePort extends BULKIO.UsesPortStatisticsProviderPOA {
         active = false;
 	outConnections = new HashMap<String, dataFileOperations>();
         stats = new HashMap<String, linkStatistics >();
-        currentSRIs = new HashMap<String, StreamSRI>();
-	callback = eventCB;
-	this.logger = logger;
+        currentSRIs = new HashMap<String, SriMapStruct>();
+        callback = eventCB;
+        this.logger = logger;
         filterTable = null;
-	if ( this.logger != null ) {
-	    this.logger.debug( "bulkio::OutPort CTOR port: " + portName ); 
-	}
+        if ( this.logger != null ) {
+            this.logger.debug( "bulkio.OutPort CTOR port: " + portName ); 
+        }
     }
 
     public void setLogger( Logger newlogger ){
@@ -157,7 +155,7 @@ public class OutFilePort extends BULKIO.UsesPortStatisticsProviderPOA {
 
         synchronized (this.updatingPortsLock) {
             for (String connId : this.outConnections.keySet()) {
-                portStats[i] = new UsesPortStatistics(connId, this.stats.get(connId).retrieve());
+                portStats[i++] = new UsesPortStatistics(connId, this.stats.get(connId).retrieve());
             }
         }
 
@@ -169,7 +167,12 @@ public class OutFilePort extends BULKIO.UsesPortStatisticsProviderPOA {
      */
     public StreamSRI[] activeSRIs()
     {
-        return this.currentSRIs.values().toArray(new StreamSRI[0]);
+        ArrayList<StreamSRI> sriList = new ArrayList<StreamSRI>();
+        for(Map.Entry<String, SriMapStruct > entry: this.currentSRIs.entrySet()) {
+            SriMapStruct srimap = entry.getValue();
+            sriList.add(srimap.sri);
+        }
+        return sriList.toArray(new StreamSRI[0]);
     }
 
     /**
@@ -204,7 +207,7 @@ public class OutFilePort extends BULKIO.UsesPortStatisticsProviderPOA {
      * pushSRI
      *     description: send out SRI describing the data payload
      *
-     *  H: structure of type BULKIO::StreamSRI with the SRI for this stream
+     *  H: structure of type BULKIO.StreamSRI with the SRI for this stream
      *    hversion
      *    xstart: start time of the stream
      *    xdelta: delta between two samples
@@ -236,7 +239,7 @@ public class OutFilePort extends BULKIO.UsesPortStatisticsProviderPOA {
         if (header.keywords == null) header.keywords = new DataType[0];
 
         synchronized(this.updatingPortsLock) {    // don't want to process while command information is coming in
-
+            this.currentSRIs.put(header.streamID, new SriMapStruct(header));
             if (this.active) {
 		// state if this port is not listed in the filter table... then pushSRI down stream
 		boolean portListed = false;
@@ -248,7 +251,7 @@ public class OutFilePort extends BULKIO.UsesPortStatisticsProviderPOA {
                     for (connection_descriptor_struct ftPtr : bulkio.utils.emptyIfNull(this.filterTable) ) {
 
 			// if there is an entry for this port in the filter table....so save that state
-			if (ftPtr.port_name.equals(this.name)) {
+			if (ftPtr.port_name.getValue().equals(this.name)) {
 			    portListed = true;		    
 			}
 
@@ -266,6 +269,9 @@ public class OutFilePort extends BULKIO.UsesPortStatisticsProviderPOA {
 						  " streamID:" + header.streamID ); 
 				}
 				p.getValue().pushSRI(header);
+                                //Update entry in currentSRIs
+                                this.currentSRIs.get(header.streamID).connections.add(p.getKey());
+
                             } catch(Exception e) {
                                 if ( logger != null ) {
 				    logger.error("Call to pushSRI failed on port " + name + " connection " + p.getKey() );
@@ -284,6 +290,8 @@ public class OutFilePort extends BULKIO.UsesPortStatisticsProviderPOA {
 					      " streamID:" + header.streamID ); 
 			    }
 			    p.getValue().pushSRI(header);
+                            //Update entry in currentSRIs
+                            this.currentSRIs.get(header.streamID).connections.add(p.getKey());
 			} catch(Exception e) {
 			    if ( logger != null ) {
 				logger.error("Call to pushSRI failed on port " + name + " connection " + p.getKey() );
@@ -295,8 +303,6 @@ public class OutFilePort extends BULKIO.UsesPortStatisticsProviderPOA {
 
             }
 
-            this.currentSRIs.put(header.streamID, header);
-            this.refreshSRI = false;
 
         }    // don't want to process while command information is coming in
 
@@ -320,19 +326,12 @@ public class OutFilePort extends BULKIO.UsesPortStatisticsProviderPOA {
 	    logger.trace("bulkio.OutPort pushPacket  ENTER (port=" + name +")" );
 	}
 
-        if (this.refreshSRI) {
-            if (!this.currentSRIs.containsKey(streamID)) {
-                StreamSRI sri = new StreamSRI();
-                sri.mode = 0;
-                sri.xdelta = 1.0;
-                sri.ydelta = 0.0;
-                sri.subsize = 0;
-                sri.xunits = 1; // TIME_S
-                sri.streamID = streamID;
-                this.currentSRIs.put(streamID, sri);
-            }
-            this.pushSRI(this.currentSRIs.get(streamID));
+        if (!this.currentSRIs.containsKey(streamID)) {
+            StreamSRI header = bulkio.sri.utils.create();
+            header.streamID = streamID;
+            this.pushSRI(header);
         }
+        SriMapStruct sriStruct = this.currentSRIs.get(streamID);
 
         synchronized(this.updatingPortsLock) {    // don't want to process while command information is coming in
             String odata = data;
@@ -349,6 +348,11 @@ public class OutFilePort extends BULKIO.UsesPortStatisticsProviderPOA {
 			     (ftPtr.connection_id.getValue().equals(p.getKey())) && 
 			     (ftPtr.stream_id.getValue().equals(streamID)) ) {
                             try {
+                                //If SRI for given streamID has not been pushed to this connection, push it
+                                if (!sriStruct.connections.contains(p.getKey())){
+                                    p.getValue().pushSRI(sriStruct.sri);
+                                    sriStruct.connections.add(p.getKey());
+                                }
                                 p.getValue().pushPacket( odata, time, endOfStream, streamID);
                                 this.stats.get(p.getKey()).update( odata.length(), (float)0.0, endOfStream, streamID, false);
                             } catch(Exception e) {
@@ -363,6 +367,11 @@ public class OutFilePort extends BULKIO.UsesPortStatisticsProviderPOA {
 		if (!portListed ){
 		    for (Entry<String, dataFileOperations> p : this.outConnections.entrySet()) {
                         try {
+                            //If SRI for given streamID has not been pushed to this connection, push it
+                            if (!sriStruct.connections.contains(p.getKey())){
+                                p.getValue().pushSRI(sriStruct.sri);
+                                sriStruct.connections.add(p.getKey());
+                            }
                             p.getValue().pushPacket( odata, time, endOfStream, streamID);
                             this.stats.get(p.getKey()).update( odata.length(), (float)0.0, endOfStream, streamID, false);
                         } catch(Exception e) {
@@ -405,18 +414,18 @@ public class OutFilePort extends BULKIO.UsesPortStatisticsProviderPOA {
             try {
                 port = BULKIO.jni.dataFileHelper.narrow(connection);
             } catch (final Exception ex) {
-		if ( logger != null ) {
-		    logger.error("bulkio::OutPort CONNECT PORT: " + name + " PORT NARROW FAILED");
-		}
+                if ( logger != null ) {
+                    logger.error("bulkio.OutPort CONNECT PORT: " + name + " PORT NARROW FAILED");
+                }
                 throw new CF.PortPackage.InvalidPort((short)1, "Invalid port for connection '" + connectionId + "'");
             }
             this.outConnections.put(connectionId, port);
             this.active = true;
             this.stats.put(connectionId, new linkStatistics( this.name, new Int8Size() ) );
-            this.refreshSRI = true;
-	    if ( logger != null ) {
-		logger.debug("bulkio::OutPort CONNECT PORT: " + name + " CONNECTION '" + connectionId + "'");
-	    }
+
+            if ( logger != null ) {
+                logger.debug("bulkio.OutPort CONNECT PORT: " + name + " CONNECTION '" + connectionId + "'");
+            }
         }
 
 	if ( logger != null ) {
@@ -448,31 +457,29 @@ public class OutFilePort extends BULKIO.UsesPortStatisticsProviderPOA {
             {
                 String odata = "";
                 BULKIO.PrecisionUTCTime tstamp = bulkio.time.utils.now();
-                for (StreamSRI cSriSid : this.activeSRIs()) {
-                    String streamID = cSriSid.streamID;
-                    for (String aSIDs : this.stats.get(connectionId).getActiveStreamIDs()) {
-                        if (streamID.equals(aSIDs)) {
-                            if (portListed) {
-                                for (connection_descriptor_struct ftPtr : bulkio.utils.emptyIfNull(this.filterTable)) {
-                                    if ( (ftPtr.port_name.getValue().equals(this.name)) &&
-					 (ftPtr.connection_id.getValue().equals(connectionId)) &&
+                for (Map.Entry<String, SriMapStruct > entry: this.currentSRIs.entrySet()) {
+                    String streamID = entry.getKey();
+                    if (entry.getValue().connections.contains(connectionId)) {
+                        if (portListed) {
+                            for (connection_descriptor_struct ftPtr : bulkio.utils.emptyIfNull(this.filterTable)) {
+                                if ( (ftPtr.port_name.getValue().equals(this.name)) &&
+	                        	 (ftPtr.connection_id.getValue().equals(connectionId)) &&
 					 (ftPtr.stream_id.getValue().equals(streamID))) {
-                                        try {
-                                            port.pushPacket(odata,tstamp,true,streamID);
-                                        } catch(Exception e) {
-                                            if ( logger != null ) {
-                                                logger.error("Call to pushPacket failed on port " + name + " connection " + connectionId );
-                                            }
+                                    try {
+                                        port.pushPacket(odata,tstamp,true,streamID);
+                                    } catch(Exception e) {
+                                        if ( logger != null ) {
+                                            logger.error("Call to pushPacket failed on port " + name + " connection " + connectionId );
                                         }
                                     }
                                 }
-                            } else {
-                                try {
-                                    port.pushPacket(odata,tstamp,true,streamID);
-                                } catch(Exception e) {
-                                    if ( logger != null ) {
-                                        logger.error("Call to pushPacket failed on port " + name + " connection " + connectionId );
-                                    }
+                            }
+                        } else {
+                            try {
+                                port.pushPacket(odata,tstamp,true,streamID);
+                            } catch(Exception e) {
+                                if ( logger != null ) {
+                                    logger.error("Call to pushPacket failed on port " + name + " connection " + connectionId );
                                 }
                             }
                         }
@@ -481,9 +488,18 @@ public class OutFilePort extends BULKIO.UsesPortStatisticsProviderPOA {
             }
             this.stats.remove(connectionId);
             this.active = (this.outConnections.size() != 0);
-	    if ( logger != null ) {
-		logger.trace("bulkio.OutPort DISCONNECT PORT:" + name + " CONNECTION '" + connectionId + "'");
-	    }
+
+            // Remove connectionId from any sets in the currentSRIs.connections values
+            for(Map.Entry<String, SriMapStruct > entry :  this.currentSRIs.entrySet()) {
+                entry.getValue().connections.remove(connectionId);
+            }
+
+            if ( logger != null ) {
+                logger.trace("bulkio.OutPort DISCONNECT PORT:" + name + " CONNECTION '" + connectionId + "'");
+                for(Map.Entry<String, SriMapStruct > entry: this.currentSRIs.entrySet()) {
+                    logger.trace("bulkio.OutPort updated currentSRIs key=" + entry.getKey() + ", value.sri=" + entry.getValue().sri + ", value.connections=" + entry.getValue().connections);
+                }
+            }
         }
 
 	if ( callback != null ) {

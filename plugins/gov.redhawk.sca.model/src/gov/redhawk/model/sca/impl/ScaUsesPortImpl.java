@@ -211,13 +211,22 @@ public class ScaUsesPortImpl extends ScaPortImpl<Uses, Port> implements ScaUsesP
 					connectionToRemove.keySet().removeAll(newConnectionMaps.keySet());
 
 					// Remove old connections
-					getConnections().removeAll(connectionToRemove.values());
+					if (!connectionToRemove.isEmpty()) {
+						getConnections().removeAll(connectionToRemove.values());
+					}
 
 					// Remove duplicates
 					newConnectionMaps.keySet().removeAll(currentConnections.keySet());
 
 					// Add new connections
-					getConnections().addAll(newConnectionMaps.values());
+					if (!newConnectionMaps.isEmpty()) {
+						getConnections().addAll(newConnectionMaps.values());
+					}
+					
+					// Do this to "Set" the connections
+					if (!isSetConnections()) {
+						getConnections().clear();
+					}
 
 					setStatus(ScaPackage.Literals.SCA_USES_PORT__CONNECTIONS, fetchStatus);
 				}

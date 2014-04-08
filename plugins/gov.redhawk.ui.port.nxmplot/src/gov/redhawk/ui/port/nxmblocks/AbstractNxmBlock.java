@@ -50,12 +50,19 @@ import BULKIO.StreamSRI;
  */
 public abstract class AbstractNxmBlock< C extends Command > implements INxmBlock, IPropertyChangeListener {
 
+	/** state flag: for block is disposed. */
+	protected static final int DISPOSED = 1 << 0;
+	/** state flag: for block is stopped. */
+	protected static final int STOPPED  = 1 << 1;
+	
 	private static final Debug TRACE_LOG = new Debug(PlotActivator.PLUGIN_ID, AbstractNxmBlock.class.getSimpleName());
 	private static final StreamSRI[] EMPTY_STREAMSRI_ARRAY = new StreamSRI[0];
 
 	private final AbstractNxmPlotWidget plotWidget;
-	private int defaultInputIndex = 0;
 	private final Class< ? extends C> desiredLaunchClass;
+	private int defaultInputIndex = 0;
+	/** state mask of this block */
+	private int state = 0;
 
 	// FYI: ConcurrentHashMap does not allow null key or value
 	/** key=streamID value=(cmdline,Command). */
@@ -63,60 +70,6 @@ public abstract class AbstractNxmBlock< C extends Command > implements INxmBlock
 	private final List<StreamSRI> launchedStreamsList = Collections.synchronizedList(new ArrayList<StreamSRI>());
 
 	private final ConcurrentHashMap<String, String> outIndexStreamIDToOutNameMap = new ConcurrentHashMap<String, String>();
-
-	protected static class BlockIndexPair {
-		private final INxmBlock block;
-		private final int index;
-
-		public BlockIndexPair(INxmBlock block, int index) {
-			super();
-			this.block = block;
-			this.index = index;
-		}
-
-		public INxmBlock getBlock() {
-			return block;
-		}
-
-		public int getIndex() {
-			return index;
-		}
-
-		@Override
-		public int hashCode() {
-			final int prime = 31;
-			int result = 1;
-			result = prime * result + ((block == null) ? 0 : block.hashCode()); // SUPPRESS CHECKSTYLE AvoidInline
-			result = prime * result + index;
-			return result;
-		}
-
-		@Override
-		public boolean equals(Object obj) {
-			if (this == obj) {
-				return true;
-			}
-			if (obj == null) {
-				return false;
-			}
-			if (getClass() != obj.getClass()) {
-				return false;
-			}
-			BlockIndexPair other = (BlockIndexPair) obj;
-			if (block == null) {
-				if (other.block != null) {
-					return false;
-				}
-			} else if (!block.equals(other.block)) {
-				return false;
-			}
-			if (index != other.index) {
-				return false;
-			}
-			return true;
-		}
-
-	}
 
 	/** key=input index;  value=source block & it's output index. */
 	private final ConcurrentHashMap<Integer, BlockIndexPair> inputMap = new ConcurrentHashMap<Integer, BlockIndexPair>();
@@ -373,12 +326,29 @@ public abstract class AbstractNxmBlock< C extends Command > implements INxmBlock
 
 	@Override
 	public void stop() {
-		// nothing to stop by default
+		if (isStopped()) {
+			return; // It is valid to attempt to stop a block more than once, so just return
+		}
+		state |= STOPPED;
+	}
+	
+	@Override
+	public boolean isStopped() {
+		return (state & STOPPED) != 0;
+	}
+
+	@Override
+	public boolean isDisposed() {
+		return (state & DISPOSED) != 0;
 	}
 
 	@Override
 	public void dispose() {
-		AbstractNxmBlock.TRACE_LOG.enteringMethod();
+		AbstractNxmBlock.TRACE_LOG.enteringMethod(isDisposed());
+		if (isDisposed()) {
+			return; // It is valid to attempt to dispose a block more than once, so just return
+		}
+		state |= DISPOSED;
 		stop();
 		// shutdown all launched Commands
 		// for (SimpleImmutableEntry<String, C> entry : streamIDToCmdMap.values()) {
@@ -470,4 +440,60 @@ public abstract class AbstractNxmBlock< C extends Command > implements INxmBlock
 
 	}
 
+	// =========================================================================
+	// Begin Inner classes
+	// =========================================================================
+	protected static class BlockIndexPair {
+		private final INxmBlock block;
+		private final int index;
+
+		public BlockIndexPair(INxmBlock block, int index) {
+			super();
+			this.block = block;
+			this.index = index;
+		}
+
+		public INxmBlock getBlock() {
+			return block;
+		}
+
+		public int getIndex() {
+			return index;
+		}
+
+		@Override
+		public int hashCode() {
+			final int prime = 31;
+			int result = 1;
+			result = prime * result + ((block == null) ? 0 : block.hashCode()); // SUPPRESS CHECKSTYLE AvoidInline
+			result = prime * result + index;
+			return result;
+		}
+
+		@Override
+		public boolean equals(Object obj) {
+			if (this == obj) {
+				return true;
+			}
+			if (obj == null) {
+				return false;
+			}
+			if (getClass() != obj.getClass()) {
+				return false;
+			}
+			BlockIndexPair other = (BlockIndexPair) obj;
+			if (block == null) {
+				if (other.block != null) {
+					return false;
+				}
+			} else if (!block.equals(other.block)) {
+				return false;
+			}
+			if (index != other.index) {
+				return false;
+			}
+			return true;
+		}
+
+	} // end class BlockIndexPair 
 }

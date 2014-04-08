@@ -19,7 +19,7 @@ import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jface.preference.IPreferenceStore;
 
 /**
- * SDDS (UDP/Multicast) source settings.
+ * SDDS (Multicast) source settings.
  * @noreference This class is provisional/beta and is subject to API changes
  * @since 4.4
  */
@@ -27,16 +27,18 @@ public class SddsNxmBlockSettings implements Cloneable {
 	public static final String PROP_DATA_BYTE_ORDER = "dataByteOrder";
 
 	// SOURCENIC switches
-	private String mcastAddress; // /MGRP=      [DEF=null]
-	private int port; // /PORT=      [DEF=29495]
-	private int vlan; // /VLAN=      [DEF=0]
-	private String outputFormat; // /FC=        [DEF=SI]
+	private String mcastAddress;  // /MGRP=      [DEF=null] // MUST be multicast addresss (224.0.x.x - 239.255.x.x)
+	private int port;             // /PORT=      [DEF=29495]
+	private int vlan;             // /VLAN=      [DEF=0]
+	private String outputFormat;  // /FC=        [DEF=SI]
 
 	private String interfaceName; // /INTERFACE= [DEF=null]
 	// private int    mode;       // /ALT=       [DEF=0] only SDDS_MODE_COMPAT=0 is supported at this time
+	
+	/** multi-byte data defaults to big-endian/network byte order per SDDS spec. */
+	private ByteOrder dataByteOrder = ByteOrder.BIG_ENDIAN; // /BYTEORDER=          [DEF=BIG_ENDIAN]
 
-	private int pipeSize; // /PS=
-	private ByteOrder dataByteOrder = ByteOrder.BIG_ENDIAN; // multi-byte data defaults to big-endian/network byte order per SDDS spec
+	private int pipeSize;         // /PS=
 
 	public SddsNxmBlockSettings() {
 	}

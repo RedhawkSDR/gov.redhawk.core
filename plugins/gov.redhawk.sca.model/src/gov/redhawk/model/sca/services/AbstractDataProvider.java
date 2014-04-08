@@ -11,9 +11,10 @@
  */
 package gov.redhawk.model.sca.services;
 
+import gov.redhawk.sca.util.PropertyChangeSupport;
+
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import java.beans.PropertyChangeSupport;
 
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
@@ -37,6 +38,17 @@ public abstract class AbstractDataProvider implements IScaDataProvider {
 	public void addPropertyChangeListener(PropertyChangeListener listener) {
 		propertyChangeSupport.addPropertyChangeListener(listener);
 	}
+	
+
+	/**
+	 * @return
+	 * @see java.beans.PropertyChangeSupport#getPropertyChangeListeners()
+	 * @since 19.0
+	 */
+	public PropertyChangeListener[] getPropertyChangeListeners() {
+		return propertyChangeSupport.getPropertyChangeListeners();
+	}
+
 
 	/**
 	 * {@inheritDoc}

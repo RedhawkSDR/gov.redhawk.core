@@ -58,7 +58,12 @@ public class BulkIONxmBlock extends AbstractNxmBlock<corbareceiver2> {
 
 		@Override
 		protected void handleStreamSRIChanged(final String streamID, final StreamSRI oldSri, final StreamSRI newSri) {
-			BulkIONxmBlock.TRACE_LOG.enteringMethod(streamID, oldSri, newSri);
+			if (BulkIONxmBlock.TRACE_LOG.enabled) {
+				BulkIONxmBlock.TRACE_LOG.enteringMethod(streamID, oldSri, newSri);
+				if (Double.isInfinite(newSri.xdelta)) {
+					BulkIONxmBlock.TRACE_LOG.message("WARN: streamID={0} BAD xdelta={1}", newSri.streamID, newSri.xdelta);
+				}
+			}
 			if (oldSri == null) { // only launch for a new stream
 				// run in background so we don't further block our caller and cause potential deadlock
 				Job job = new Job("launching stream [" + streamID + "] to plot") {
@@ -73,6 +78,10 @@ public class BulkIONxmBlock extends AbstractNxmBlock<corbareceiver2> {
 		}
 
 		private void handlePushPacket(int length, PrecisionUTCTime time, boolean endOfStream, String streamID) {
+//			BulkIONxmBlock.TRACE_LOG.message("BulkIO block got pushPacket: {0} len={1} eos={2}", streamID, length, endOfStream);
+//			if (time != null && Double.isInfinite(time.twsec)) {
+//				BulkIONxmBlock.TRACE_LOG.message("WARN: streamID={0} BAD twsec={1}", streamID, time.twsec);
+//			}
 			super.pushPacket(length, time, endOfStream, streamID);
 			if (endOfStream && isRemoveOnEndOfStream()) {
 				shutdown(streamID);

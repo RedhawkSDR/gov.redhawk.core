@@ -136,7 +136,7 @@ public class InDoublePort extends BULKIO.jni.dataDoublePOA {
 
         this.name = portName;
 	this.logger = logger;
-        this.stats = new linkStatistics(this.name, new FloatSize() );
+        this.stats = new linkStatistics(this.name, new DoubleSize() );
         this.sriUpdateLock = new Object();
         this.statUpdateLock = new Object();
         this.currentHs = new HashMap<String, sriState>();
@@ -365,7 +365,7 @@ public class InDoublePort extends BULKIO.jni.dataDoublePOA {
             }
 
             synchronized (this.dataBufferLock) {
-                this.stats.update(data.length, this.workQueue.size()/this.maxQueueDepth, eos, streamID, false);
+                this.stats.update(data.length, this.workQueue.size()/(float)this.maxQueueDepth, eos, streamID, false);
                 this.workQueue.add(p);
                 this.dataSem.release();
             }
@@ -390,7 +390,7 @@ public class InDoublePort extends BULKIO.jni.dataDoublePOA {
                     this.stats.update(data.length, 0, eos, streamID, true);
                 } else {
                     p = new Packet(data, time, eos, streamID, tmpH, sriChanged, false);
-                    this.stats.update(data.length, this.workQueue.size()/this.maxQueueDepth, eos, streamID, false);
+                    this.stats.update(data.length, this.workQueue.size()/(float)this.maxQueueDepth, eos, streamID, false);
                 }
 		if ( logger != null ) {
 		    logger.trace( "bulkio::InPort pushPacket NEW Packet (QUEUE=" + workQueue.size() + ")");

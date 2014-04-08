@@ -11,8 +11,9 @@
  */
 package gov.redhawk.core.resourcefactory;
 
+import gov.redhawk.sca.util.PropertyChangeSupport;
+
 import java.beans.PropertyChangeListener;
-import java.beans.PropertyChangeSupport;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -38,7 +39,7 @@ public abstract class AbstractResourceFactoryProvider implements IResourceFactor
 	@Override
 	public void setInitializationData(final IConfigurationElement config, final String propertyName, final Object data) throws CoreException {
 		String propVal = config.getAttribute("priority");
-		int value =  Integer.MAX_VALUE;
+		int value = Integer.MAX_VALUE;
 		if (propVal != null) {
 			try {
 				value = Integer.valueOf(propVal);
@@ -69,14 +70,14 @@ public abstract class AbstractResourceFactoryProvider implements IResourceFactor
 	 * @since 2.0
 	 */
 	protected void fireRemoveResourceDescriptor(ResourceDesc desc) {
-		pcs.firePropertyChange(PROPERTY_RESOURCE_DESCRIPTORS, desc, null);
+		pcs.firePropertyChange(IResourceFactoryProvider.PROPERTY_RESOURCE_DESCRIPTORS, desc, null);
 	}
 
 	/**
 	 * @since 2.0
 	 */
 	protected void fireAddResourceDescriptor(ResourceDesc desc) {
-		pcs.firePropertyChange(PROPERTY_RESOURCE_DESCRIPTORS, null, desc);
+		pcs.firePropertyChange(IResourceFactoryProvider.PROPERTY_RESOURCE_DESCRIPTORS, null, desc);
 	}
 
 	/**

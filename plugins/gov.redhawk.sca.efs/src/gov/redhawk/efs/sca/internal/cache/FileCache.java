@@ -32,7 +32,9 @@ import mil.jpeojtrs.sca.util.ProtectedThreadExecutor;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
+import org.eclipse.core.filesystem.EFS;
 import org.eclipse.core.filesystem.IFileInfo;
+import org.eclipse.core.filesystem.IFileStore;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -65,11 +67,20 @@ public class FileCache implements IFileCache {
 	}
 
 	@Override
-	public synchronized InputStream openInputStream() throws CoreException {
+	public void update() throws CoreException {
 		final IFileInfo info = store.fetchInfo();
 		if (!isValid(info)) {
 			downloadFile(info);
 		}
+	}
+
+	@Override
+	public synchronized InputStream openInputStream() throws CoreException {
+		if (isDirectory()) {
+			throw new CoreException(new Status(IStatus.ERROR, ScaFileSystemPlugin.ID, "Can not open input stream on directory.",
+				new IOException().fillInStackTrace()));
+		}
+		update();
 		try {
 			return new FileInputStream(this.localFile);
 		} catch (final FileNotFoundException e) {
@@ -80,7 +91,7 @@ public class FileCache implements IFileCache {
 	private void downloadFile(IFileInfo info) throws CoreException {
 		FileOutputStream fileStream = null;
 		InputStream scaInputStream = null;
-		File tmpFile;
+		File tmpFile = null;
 		File parentDir = new File(FileCache.getTempDir() + "/" + parent.getRoot() + store.getEntry().getAbsolutePath()).getParentFile();
 		if (!parentDir.exists()) {
 			try {
@@ -91,22 +102,34 @@ public class FileCache implements IFileCache {
 			}
 		}
 		localFile = new File(parentDir, store.getEntry().getName());
-		try {
-			tmpFile = File.createTempFile(localFile.getName(), ".tmp", parentDir);
-		} catch (IOException e) {
-			throw new CoreException(new Status(IStatus.ERROR, ScaFileSystemPlugin.ID, "File cache error: Failed to create temporary file " + localFile, e));
+		if (localFile.exists() && localFile.lastModified() == info.getLastModified()) {
+			if ((localFile.isDirectory() && info.isDirectory()) || (localFile.length() == info.getLength())) {
+				return;
+			}
 		}
-		tmpFile.deleteOnExit();
 
 		boolean error = false;
 		try {
-			scaInputStream = createScaInputStream();
-			fileStream = new FileOutputStream(tmpFile);
-			FileCache.copyLarge(scaInputStream, fileStream);
-			if (localFile.exists()) {
-				localFile.delete();
+			if (info.isDirectory()) {
+				if (!info.exists()) {
+					FileUtils.forceMkdir(localFile);
+				}
+			} else {
+				FileUtils.deleteQuietly(localFile);
+				try {
+					tmpFile = File.createTempFile(localFile.getName(), ".tmp", parentDir);
+				} catch (IOException e) {
+					throw new CoreException(new Status(IStatus.ERROR, ScaFileSystemPlugin.ID, "File cache error: Failed to create temporary file " + localFile,
+						e));
+				}
+				tmpFile.deleteOnExit();
+				scaInputStream = createScaInputStream();
+				fileStream = new FileOutputStream(tmpFile);
+				FileCache.copyLarge(scaInputStream, fileStream);
+				localFile.setExecutable(info.getAttribute(EFS.ATTRIBUTE_EXECUTABLE));
+
+				FileUtils.moveFile(tmpFile, localFile);
 			}
-			FileUtils.moveFile(tmpFile, localFile);
 			localFile.setLastModified(info.getLastModified());
 		} catch (final FileNotFoundException e) {
 			error = true;
@@ -130,9 +153,11 @@ public class FileCache implements IFileCache {
 		} finally {
 			IOUtils.closeQuietly(fileStream);
 			IOUtils.closeQuietly(scaInputStream);
-			tmpFile.delete();
+			FileUtils.deleteQuietly(tmpFile);
 			if (error) {
-				localFile.delete();
+				if (localFile != null && localFile.exists()) {
+					FileUtils.deleteQuietly(localFile);
+				}
 				localFile = null;
 			}
 		}
@@ -241,5 +266,20 @@ public class FileCache implements IFileCache {
 			childInfos = store.internalChildInfos(options, monitor);
 		}
 		return childInfos;
+	}
+
+	@Override
+	public File toLocalFile() throws CoreException {
+		update();
+		if (isDirectory()) {
+			IFileStore[] children = store.childStores(0, null);
+			for (IFileStore child : children) {
+				if (child instanceof ScaFileStore) {
+					IFileCache cache = ScaFileCache.INSTANCE.getCache((ScaFileStore) child);
+					cache.update();
+				}
+			}
+		}
+		return localFile;
 	}
 }

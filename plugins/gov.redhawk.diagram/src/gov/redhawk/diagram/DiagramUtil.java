@@ -165,6 +165,6 @@ public final class DiagramUtil {
 	 * @since 4.0
 	 */
 	public static boolean isDiagramLocalSandbox(final Resource resource) {
-		return ".LocalSca.sad.xml".equals(resource.getURI().lastSegment());
+		return "LocalSca.sad.xml".equals(resource.getURI().lastSegment());
 	}
 }
