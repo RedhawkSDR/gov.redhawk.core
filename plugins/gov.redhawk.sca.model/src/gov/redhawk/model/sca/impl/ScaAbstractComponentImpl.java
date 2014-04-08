@@ -245,7 +245,7 @@ public abstract class ScaAbstractComponentImpl< R extends Resource > extends Sca
 	public EList<ScaPort< ? , ? >> getPorts() {
 		if (ports == null) {
 			ports = new EObjectContainmentWithInverseEList.Unsettable<ScaPort< ? , ? >>(ScaPort.class, this, ScaPackage.SCA_ABSTRACT_COMPONENT__PORTS,
-				ScaPackage.SCA_PORT__PORT_CONTAINER);
+					ScaPackage.SCA_PORT__PORT_CONTAINER);
 		}
 		return ports;
 	}
@@ -910,14 +910,15 @@ public abstract class ScaAbstractComponentImpl< R extends Resource > extends Sca
 		if (isDisposed()) {
 			return;
 		}
-		if (isSetPorts()) {
-			return;
-		}
 		SubMonitor subMonitor = SubMonitor.convert(monitor, 4);
 		R currentObj = this.fetchNarrowedObject(subMonitor.newChild(1));
 		Transaction transaction = portRevision.createTransaction();
 		if (currentObj != null) {
-			fetchProfileObject(subMonitor.newChild(1));
+			if (!isSetProfileObj()) {
+				fetchProfileObject(subMonitor.newChild(1));
+			} else {
+				subMonitor.setWorkRemaining(2);
+			}
 
 			FeatureMap portGroup = ScaEcoreUtils.getFeature(this, PORTS_GROUP_PATH);
 			List<MergePortsCommand.PortData> newPorts = new ArrayList<MergePortsCommand.PortData>();
@@ -1104,7 +1105,7 @@ public abstract class ScaAbstractComponentImpl< R extends Resource > extends Sca
 	public String softwareProfile() {
 		return getProfile();
 	}
-	
+
 	/**
 	 * @since 19.0
 	 */
