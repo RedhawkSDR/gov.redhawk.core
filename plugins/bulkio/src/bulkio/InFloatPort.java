@@ -366,7 +366,7 @@ public class InFloatPort extends BULKIO.jni.dataFloatPOA {
             }
 
             synchronized (this.dataBufferLock) {
-                this.stats.update(data.length, this.workQueue.size()/this.maxQueueDepth, eos, streamID, false);
+                this.stats.update(data.length, this.workQueue.size()/(float)this.maxQueueDepth, eos, streamID, false);
                 this.workQueue.add(p);
                 this.dataSem.release();
             }
@@ -391,7 +391,7 @@ public class InFloatPort extends BULKIO.jni.dataFloatPOA {
                     this.stats.update(data.length, 0, eos, streamID, true);
                 } else {
                     p = new Packet(data, time, eos, streamID, tmpH, sriChanged, false);
-                    this.stats.update(data.length, this.workQueue.size()/this.maxQueueDepth, eos, streamID, false);
+                    this.stats.update(data.length, this.workQueue.size()/(float)this.maxQueueDepth, eos, streamID, false);
                 }
 		if ( logger != null ) {
 		    logger.trace( "bulkio::InPort pushPacket NEW Packet (QUEUE=" + workQueue.size() + ")");

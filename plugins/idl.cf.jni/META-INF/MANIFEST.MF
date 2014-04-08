@@ -13,4 +13,6 @@ Import-Package: org.omg.CosEventChannelAdmin;version="3.3.0",
 Export-Package: CF.jni,
  ExtendedCF.jni,
  ExtendedEvent.jni,
+ org.omg.CosEventChannelAdmin.jni,
+ org.omg.CosEventComm.jni,
  org.omg.CosNaming.jni
