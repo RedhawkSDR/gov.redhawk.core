@@ -26,6 +26,7 @@ import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.core.commands.IHandler;
+import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.ui.handlers.HandlerUtil;
@@ -67,6 +68,8 @@ public class AllocateHandler extends AbstractHandler implements IHandler {
 				if (tuners.length > 0) {
 					WizardDialog dialog = new WizardDialog(HandlerUtil.getActiveShell(event), new TunerAllocationWizard(tuners[0]));
 					dialog.open();
+				} else {
+					warnNoTuners(event);
 				}
 			} else if (obj instanceof ScaDevice< ? >) {
 				ScaDevice< ? > device = (ScaDevice< ? >) obj;
@@ -75,6 +78,8 @@ public class AllocateHandler extends AbstractHandler implements IHandler {
 				if (tuners.length > 0) {
 					WizardDialog dialog = new WizardDialog(HandlerUtil.getActiveShell(event), new TunerAllocationWizard(tuners[0]));
 					dialog.open();
+				} else {
+					warnNoTuners(event);
 				}
 			}
 		}
@@ -82,6 +87,12 @@ public class AllocateHandler extends AbstractHandler implements IHandler {
 		return null;
 	}
 
+	private void warnNoTuners(ExecutionEvent event) {
+		MessageDialog warning = new MessageDialog(HandlerUtil.getActiveShell(event), "Error - No Tuners Available", null,
+			"Cannot allocate; the selected device has no tuners.", MessageDialog.ERROR, new String[] { "OK" }, 0);
+		warning.open();		
+	}
+	
 	private TunerStatus[] getUnallocatedTunersOfType(TunerContainer container, String tunerType) {
 		List<TunerStatus> tuners = new ArrayList<TunerStatus>();
 		for (TunerStatus tuner : container.getTunerStatus()) {
