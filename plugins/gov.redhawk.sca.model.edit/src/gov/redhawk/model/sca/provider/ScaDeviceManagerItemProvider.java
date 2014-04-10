@@ -15,7 +15,6 @@ package gov.redhawk.model.sca.provider;
 import gov.redhawk.model.sca.ScaDeviceManager;
 import gov.redhawk.model.sca.ScaDomainManager;
 import gov.redhawk.model.sca.ScaPackage;
-import gov.redhawk.model.sca.ScaWaveform;
 
 import java.util.Collection;
 import java.util.List;
