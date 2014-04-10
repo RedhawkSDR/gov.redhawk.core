@@ -11,6 +11,7 @@
 // BEGIN GENERATED CODE
 package gov.redhawk.model.sca.provider;
 
+import gov.redhawk.model.sca.ScaDomainManager;
 import gov.redhawk.model.sca.ScaEventChannel;
 import gov.redhawk.model.sca.ScaPackage;
 
@@ -19,7 +20,6 @@ import java.util.List;
 
 import org.eclipse.emf.common.notify.AdapterFactory;
 import org.eclipse.emf.common.notify.Notification;
-
 import org.eclipse.emf.edit.provider.ComposeableAdapterFactory;
 import org.eclipse.emf.edit.provider.IEditingDomainItemProvider;
 import org.eclipse.emf.edit.provider.IItemColorProvider;
@@ -133,6 +133,21 @@ public class ScaEventChannelItemProvider extends CorbaObjWrapperItemProvider imp
 	@Override
 	protected void collectNewChildDescriptors(Collection<Object> newChildDescriptors, Object object) {
 		super.collectNewChildDescriptors(newChildDescriptors, object);
+	}
+	
+	@Override
+	public Object getParent(Object object) {
+		Object parent = super.getParent(object);
+		if (parent instanceof ScaDomainManager) {
+			ITreeItemContentProvider cp = (ITreeItemContentProvider) adapterFactory.adapt(parent, ITreeItemContentProvider.class);
+			Collection< ? > children = cp.getChildren(parent);
+			for (Object obj : children) {
+				if (obj instanceof ScaEventChannelsContainerItemProvider) {
+					return obj;
+				}
+			}
+		}
+		return parent;
 	}
 
 }

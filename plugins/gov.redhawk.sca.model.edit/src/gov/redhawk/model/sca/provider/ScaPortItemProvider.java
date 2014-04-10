@@ -14,6 +14,7 @@ package gov.redhawk.model.sca.provider;
 
 import gov.redhawk.model.sca.ScaPackage;
 import gov.redhawk.model.sca.ScaPort;
+import gov.redhawk.model.sca.ScaWaveform;
 
 import java.util.Collection;
 import java.util.List;
@@ -176,6 +177,21 @@ public class ScaPortItemProvider extends CorbaObjWrapperItemProvider implements 
 	@Override
 	protected void collectNewChildDescriptors(Collection<Object> newChildDescriptors, Object object) {
 		super.collectNewChildDescriptors(newChildDescriptors, object);
+	}
+	
+	@Override
+	public Object getParent(Object object) {
+		Object parent = super.getParent(object);
+		if (parent instanceof ScaWaveform) {
+			ITreeItemContentProvider cp = (ITreeItemContentProvider) adapterFactory.adapt(parent, ITreeItemContentProvider.class);
+			Collection< ? > children = cp.getChildren(parent);
+			for (Object obj : children) {
+				if (obj instanceof ScaWaveformExternalPortsItemProvider) {
+					return obj;
+				}
+			}
+		}
+		return parent;
 	}
 
 }

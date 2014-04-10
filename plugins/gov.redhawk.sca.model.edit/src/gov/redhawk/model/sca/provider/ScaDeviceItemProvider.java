@@ -227,5 +227,11 @@ public class ScaDeviceItemProvider extends ScaAbstractComponentItemProvider impl
 	protected void collectNewChildDescriptors(Collection<Object> newChildDescriptors, Object object) {
 		super.collectNewChildDescriptors(newChildDescriptors, object);
 	}
+	
+	@Override
+	public Object getParent(Object object) {
+		Object parent = super.getParent(object);
+		return parent;
+	}
 
 }

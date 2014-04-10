@@ -33,73 +33,71 @@ import org.eclipse.emf.edit.provider.ItemProviderAdapter;
  * @since 10.0
  * 
  */
-public class TransientItemProvider extends ItemProviderAdapter implements IEditingDomainItemProvider, IStructuredItemContentProvider,
-        ITreeItemContentProvider, IItemLabelProvider, IItemPropertySource {
+public class TransientItemProvider extends ItemProviderAdapter implements IEditingDomainItemProvider, IStructuredItemContentProvider, ITreeItemContentProvider,
+		IItemLabelProvider, IItemPropertySource {
 	public TransientItemProvider(AdapterFactory adapterFactory, EObject object) {
 		super(adapterFactory);
 		object.eAdapters().add(this);
 	}
-	
+
 	@Override
 	public boolean hasChildren(Object object) {
-	    return super.hasChildren(target);
+		boolean retVal = super.hasChildren(target);
+		return retVal;
 	}
-	
+
 	@Override
 	public Collection< ? > getNewChildDescriptors(Object object, EditingDomain editingDomain, Object sibling) {
-	    return super.getNewChildDescriptors(target, editingDomain, sibling);
+		return super.getNewChildDescriptors(target, editingDomain, sibling);
 	}
-	
+
 	@Override
 	protected ResourceLocator getResourceLocator() {
-	    return ScaEditPlugin.INSTANCE;
+		return ScaEditPlugin.INSTANCE;
 	}
-	
+
 	@Override
 	public Command createCommand(Object object, EditingDomain domain, Class< ? extends Command> commandClass, CommandParameter commandParameter) {
 		commandParameter.setOwner(target);
-	    return super.createCommand(target, domain, commandClass, commandParameter);
+		return super.createCommand(target, domain, commandClass, commandParameter);
 	}
-	
+
 	@Override
 	protected Command createRemoveCommand(EditingDomain domain, EObject owner, EStructuralFeature feature, Collection< ? > collection) {
 		return createWrappedCommand(super.createRemoveCommand(domain, owner, feature, collection), owner);
 	}
-	
+
 	@Override
 	protected Command createAddCommand(EditingDomain domain, EObject owner, EStructuralFeature feature, Collection< ? > collection, int index) {    // TODO Auto-generated method stub
-	    return createWrappedCommand(super.createAddCommand(domain, owner, feature, collection, index), owner);
+		return createWrappedCommand(super.createAddCommand(domain, owner, feature, collection, index), owner);
 	}
-	
-	protected Command createWrappedCommand(Command command , final EObject owner) {
+
+	protected Command createWrappedCommand(Command command, final EObject owner) {
 		return new CommandWrapper(command) {
 			@Override
 			public Collection< ? > getAffectedObjects() {
-			    Collection<?> affected = super.getAffectedObjects();
-			    if (affected.contains(owner)) {
-			    	affected = Collections.singleton(TransientItemProvider.this);
-			    }
-			    return affected;
+				Collection< ? > affected = super.getAffectedObjects();
+				if (affected.contains(owner)) {
+					affected = Collections.singleton(TransientItemProvider.this);
+				}
+				return affected;
 			}
 		};
 	}
-	
+
 	@Override
 	public Collection< ? > getChildren(Object object) {
-	    return super.getChildren(target);
-	}
-	
-	@Override
-	public Collection< ? > getElements(Object object) {
-	    return super.getElements(target);
-	}
-	
-	
-	@Override
-	public Object getParent(Object object) {
-	    return target;
+		return super.getChildren(target);
 	}
 
-	
-	
+	@Override
+	public Collection< ? > getElements(Object object) {
+		return super.getElements(target);
+	}
+
+	@Override
+	public Object getParent(Object object) {
+		return target;
+	}
+
 }

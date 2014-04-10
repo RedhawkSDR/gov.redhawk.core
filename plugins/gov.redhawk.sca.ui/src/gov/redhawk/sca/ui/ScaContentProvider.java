@@ -14,6 +14,7 @@ package gov.redhawk.sca.ui;
 import gov.redhawk.model.sca.ScaDocumentRoot;
 import gov.redhawk.model.sca.ScaDomainManagerRegistry;
 import gov.redhawk.model.sca.provider.ScaItemProviderAdapterFactory;
+import gov.redhawk.model.sca.provider.TransientItemProvider;
 import gov.redhawk.sca.internal.ui.DeferredAdapterSwitch;
 import gov.redhawk.sca.internal.ui.DeferredAdapterSwitch.IDeferredAdapter;
 
@@ -74,7 +75,9 @@ public class ScaContentProvider extends ScaModelAdapterFactoryContentProvider im
 			return null;
 		}
 		final Object retVal = super.getParent(object);
-		if (!(retVal instanceof EObject) || (retVal instanceof ScaDocumentRoot)) {
+		if (retVal instanceof TransientItemProvider) {
+			return retVal;
+		} else if (!(retVal instanceof EObject) || (retVal instanceof ScaDocumentRoot)) {
 			return null;
 		}
 		return retVal;

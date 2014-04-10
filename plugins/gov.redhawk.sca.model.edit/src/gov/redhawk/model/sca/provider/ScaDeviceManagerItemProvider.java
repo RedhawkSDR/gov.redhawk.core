@@ -13,9 +13,13 @@
 package gov.redhawk.model.sca.provider;
 
 import gov.redhawk.model.sca.ScaDeviceManager;
+import gov.redhawk.model.sca.ScaDomainManager;
 import gov.redhawk.model.sca.ScaPackage;
+import gov.redhawk.model.sca.ScaWaveform;
+
 import java.util.Collection;
 import java.util.List;
+
 import org.eclipse.emf.common.notify.AdapterFactory;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.ecore.EStructuralFeature;
@@ -235,6 +239,21 @@ public class ScaDeviceManagerItemProvider extends ScaPropertyContainerItemProvid
 			return getText(object);
 		}
 		return super.getColumnText(object, columnIndex);
+	}
+	
+	@Override
+	public Object getParent(Object object) {
+		Object parent = super.getParent(object);
+		if (parent instanceof ScaDomainManager) {
+			ITreeItemContentProvider cp = (ITreeItemContentProvider) adapterFactory.adapt(parent, ITreeItemContentProvider.class);
+			Collection< ? > children = cp.getChildren(parent);
+			for (Object obj : children) {
+				if (obj instanceof ScaDeviceManagersContainerItemProvider) {
+					return obj;
+				}
+			}
+		}
+		return parent;
 	}
 
 }
