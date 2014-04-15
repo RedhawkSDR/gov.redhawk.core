@@ -29,6 +29,7 @@ import java.nio.CharBuffer;
 import java.nio.IntBuffer;
 import java.nio.ShortBuffer;
 import java.util.Map;
+import java.util.concurrent.Callable;
 
 import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioSystem;
@@ -36,11 +37,15 @@ import javax.sound.sampled.DataLine;
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.SourceDataLine;
 
+import mil.jpeojtrs.sca.util.CorbaUtils;
+
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.ISafeRunnable;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.SafeRunner;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.notify.impl.AdapterImpl;
 import org.eclipse.jdt.annotation.Nullable;
@@ -90,7 +95,7 @@ dataFloatOperations, dataDoubleOperations, dataOctetOperations, dataUlongOperati
 	};
 	private boolean playing;
 
-	public AudioReceiver(final ScaUsesPort port) throws CoreException {
+	public AudioReceiver(final ScaUsesPort port) {
 		super(BulkIOType.getType(port.getRepid()));
 		this.port = port;
 		ScaModelCommand.execute(port, new ScaModelCommand() {
@@ -131,19 +136,45 @@ dataFloatOperations, dataDoubleOperations, dataOctetOperations, dataUlongOperati
 			}
 		});
 
-		connect();
+		Job connectJob = new Job("Connecting...") {
+
+			@Override
+			protected IStatus run(IProgressMonitor monitor) {
+				try {
+					connect(monitor);
+				} catch (CoreException e) {
+					return e.getStatus();
+				}
+				return Status.OK_STATUS;
+			}
+			
+		};
+		connectJob.schedule();
 
 	}
 
-	private void connect() throws CoreException {
-		BulkIOType type2 = getBulkIOType();
-		String ior2 = ior;
+	private void connect(IProgressMonitor monitor) throws CoreException {
+		final BulkIOType type2 = getBulkIOType();
+		final String ior2 = ior;
 		if (type2 != null && ior2 != null) {
-			BulkIOUtilActivator.getBulkIOPortConnectionManager().connect(ior2, type2, this);
+			try {
+				CorbaUtils.invoke(new Callable<Object>() {
+
+					@Override
+					public Object call() throws Exception {
+						BulkIOUtilActivator.getBulkIOPortConnectionManager().connect(ior2, type2, AudioReceiver.this);
+						return null;
+					}
+					
+				}, monitor);
+			} catch (InterruptedException e) {
+				// PASS
+			}
+			
 		}
 	}
 
-	private void disconnect() {
+	private void disconnect(IProgressMonitor monitor) {
 		BulkIOType type2 = getBulkIOType();
 		String ior2 = ior;
 		if (type2 != null && ior2 != null) {
@@ -487,19 +518,18 @@ dataFloatOperations, dataDoubleOperations, dataOctetOperations, dataUlongOperati
 			return;
 		}
 		disposed = true;
-		SafeRunner.run(new ISafeRunnable() {
+		Job job = new Job("Disconnect") {
 
 			@Override
-			public void run() throws Exception {
-				disconnect();
-				PortHelper.refreshPort(port, null);
+			protected IStatus run(IProgressMonitor monitor) {
+				disconnect(monitor);
+				PortHelper.refreshPort(port, monitor);
+				return Status.OK_STATUS;
 			}
+			
+		};
+		job.schedule();
 
-			@Override
-			public void handleException(Throwable exception) {
-
-			}
-		});
 		setAudioFormat(null);
 		ScaModelCommand.execute(port, new ScaModelCommand() {
 

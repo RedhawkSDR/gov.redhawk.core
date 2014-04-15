@@ -23,7 +23,10 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.List;
+import java.util.concurrent.Callable;
 import java.util.concurrent.LinkedBlockingQueue;
+
+import mil.jpeojtrs.sca.util.CorbaUtils;
 
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.core.runtime.CoreException;
@@ -181,15 +184,40 @@ public class Connection extends AbstractUberBulkIOPort {
 			}
 			disposed = true;
 		}
-		try {
-			if (port != null) {
-				port.disconnectPort(connectionId);
-				port = null;
-			}
-		} catch (InvalidPort e) {
-			// PASS
-		} catch (SystemException e) {
-			// PASS
+		if (port != null) {
+			final Port localPort = port;
+			final String localConnectionId = connectionId;
+			Job job = new Job("Disconnect") {
+
+				@Override
+				protected IStatus run(IProgressMonitor monitor) {
+					try {
+						CorbaUtils.invoke(new Callable<Object>() {
+
+							@Override
+							public Object call() throws Exception {
+								try {
+									localPort.disconnectPort(localConnectionId);
+								} catch (InvalidPort e) {
+									// PASS
+								} catch (SystemException e) {
+									// PASS
+								}
+								return null;
+							}
+
+						}, monitor);
+					} catch (CoreException e) {
+						return e.getStatus();
+					} catch (InterruptedException e) {
+						return Status.CANCEL_STATUS;
+					}
+					return Status.OK_STATUS;
+				}
+
+			};
+			job.schedule();
+			port = null;
 		}
 		if (ref != null) {
 			ref.dispose();

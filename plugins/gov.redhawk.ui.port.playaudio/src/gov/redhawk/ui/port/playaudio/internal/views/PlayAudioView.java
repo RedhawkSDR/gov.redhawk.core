@@ -23,7 +23,6 @@ import mil.jpeojtrs.sca.scd.provider.ScdItemProviderAdapterFactory;
 import mil.jpeojtrs.sca.spd.provider.SpdItemProviderAdapterFactory;
 
 import org.eclipse.core.databinding.observable.list.WritableList;
-import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
@@ -141,31 +140,10 @@ public class PlayAudioView extends ViewPart {
 	 * @since 1.2
 	 */
 	public void playPort(final ScaUsesPort port) {
-		Job job = new Job("Connection to port") {
-
-			@Override
-			protected IStatus run(IProgressMonitor monitor) {
-				try {
-					final AudioReceiver receiver = new AudioReceiver(port);
-					receiver.addPropertyChangeListener(listener);
-					connections.getRealm().exec(new Runnable() {
-
-						@Override
-						public void run() {
-							connections.add(receiver);
-							treeViewer.setSelection(new StructuredSelection(receiver), true);
-						}
-
-					});
-				} catch (CoreException e) {
-					return e.getStatus();
-				}
-				return Status.OK_STATUS;
-			}
-
-		};
-		job.schedule();
-
+		final AudioReceiver receiver = new AudioReceiver(port);
+		receiver.addPropertyChangeListener(listener);
+		connections.add(receiver);
+		treeViewer.setSelection(new StructuredSelection(receiver), true);
 	}
 
 	@Override
@@ -178,18 +156,9 @@ public class PlayAudioView extends ViewPart {
 		final Object[] oldConnections = connections.toArray();
 		connections.clear();
 		if (oldConnections.length > 0) {
-			Job job = new Job("Disposing Controller") {
-
-				@Override
-				protected IStatus run(IProgressMonitor monitor) {
-					for (Object receiver : oldConnections) {
-						((AudioReceiver) receiver).dispose();
-					}
-					return Status.OK_STATUS;
-				}
-
-			};
-			job.schedule();
+			for (Object receiver : oldConnections) {
+				((AudioReceiver) receiver).dispose();
+			}
 		}
 		super.dispose();
 	}
