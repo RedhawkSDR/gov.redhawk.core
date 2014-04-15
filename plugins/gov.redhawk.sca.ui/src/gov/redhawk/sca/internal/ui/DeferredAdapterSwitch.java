@@ -197,6 +197,27 @@ public class DeferredAdapterSwitch extends ScaSwitch<IDeferredAdapter> {
 
 		};
 	}
+	@Override
+	public IDeferredAdapter caseScaDomainManager(ScaDomainManager object) {
+		return new IDeferredAdapter() {
+
+			@Override
+			public boolean isContainer() {
+				return true;
+			}
+
+			@Override
+			public boolean isSet() {
+				return true;
+			}
+
+			@Override
+			public void fetchDeferredChildren(final IProgressMonitor monitor) {
+				// PASS
+			}
+
+		};
+	}
 
 	public IDeferredAdapter caseScaWaveformFactoriesContainerItemProvider(final ScaWaveformFactoriesContainerItemProvider object) {
 		return new IDeferredAdapter() {
@@ -287,6 +308,10 @@ public class DeferredAdapterSwitch extends ScaSwitch<IDeferredAdapter> {
 			return DeferredAdapterSwitch.INSTANCE.caseScaDevice((ScaDevice< ? >) obj);
 		} else if (obj instanceof ScaComponent) {
 			return DeferredAdapterSwitch.INSTANCE.caseScaComponent((ScaComponent) obj);
+		} else if (obj instanceof ScaDomainManager) {
+			return DeferredAdapterSwitch.INSTANCE.caseScaDomainManager((ScaDomainManager) obj);
+		} else if (obj instanceof ScaDeviceManager) {
+			return DeferredAdapterSwitch.INSTANCE.caseScaDeviceManager((ScaDeviceManager) obj);
 		} else if (obj instanceof EObject) {
 			return DeferredAdapterSwitch.INSTANCE.doSwitch((EObject) obj);
 		} else {

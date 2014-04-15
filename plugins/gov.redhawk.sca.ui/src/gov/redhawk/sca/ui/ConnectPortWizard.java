@@ -11,13 +11,19 @@
 package gov.redhawk.sca.ui;
 
 import gov.redhawk.model.sca.CorbaObjWrapper;
-import gov.redhawk.model.sca.ScaComponent;
+import gov.redhawk.model.sca.ScaEventChannel;
+import gov.redhawk.model.sca.ScaFileStore;
+import gov.redhawk.model.sca.ScaFileSystem;
 import gov.redhawk.model.sca.ScaProvidesPort;
 import gov.redhawk.model.sca.ScaUsesPort;
+import gov.redhawk.model.sca.ScaWaveformFactory;
+import gov.redhawk.model.sca.provider.ScaEventChannelsContainerItemProvider;
+import gov.redhawk.model.sca.provider.ScaWaveformFactoriesContainerItemProvider;
 import gov.redhawk.sca.ScaPlugin;
 import gov.redhawk.sca.ui.views.ScaExplorer;
 import gov.redhawk.sca.util.PropertyChangeSupport;
 
+import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.lang.reflect.InvocationTargetException;
 import java.text.SimpleDateFormat;
@@ -28,7 +34,12 @@ import mil.jpeojtrs.sca.util.CorbaUtils;
 
 import org.eclipse.core.databinding.DataBindingContext;
 import org.eclipse.core.databinding.UpdateValueStrategy;
+import org.eclipse.core.databinding.ValidationStatusProvider;
 import org.eclipse.core.databinding.beans.BeanProperties;
+import org.eclipse.core.databinding.observable.list.IObservableList;
+import org.eclipse.core.databinding.observable.list.WritableList;
+import org.eclipse.core.databinding.observable.value.IObservableValue;
+import org.eclipse.core.databinding.observable.value.WritableValue;
 import org.eclipse.core.databinding.validation.IValidator;
 import org.eclipse.core.databinding.validation.ValidationStatus;
 import org.eclipse.core.runtime.CoreException;
@@ -63,7 +74,42 @@ public class ConnectPortWizard extends Wizard {
 	private static final SimpleDateFormat FORMAT = new SimpleDateFormat("yyyyMMddHHmmss");
 
 	private static class ConnectWizardPage extends WizardPage {
+		
+		private class SourceTargetValidator extends ValidationStatusProvider implements PropertyChangeListener {
+			private final WritableValue status = new WritableValue();
+			private IObservableList list = new WritableList();
+			{
+				list.add(status);
+			}
+			
+			@Override
+			public IObservableValue getValidationStatus() {
+				return status;
+			}
+			
+			@Override
+			public IObservableList getTargets() {
+				return list;
+			}
+			
+			@Override
+			public IObservableList getModels() {
+				return null;
+			}
 
+			@Override
+			public void propertyChange(PropertyChangeEvent evt) {
+				if (source != null && target != null) {
+					if (!target._is_a(source.getRepid())) {
+						status.setValue(ValidationStatus.warning("Invalid connection.\nTarget is not of type: " + source.getRepid()));
+						return;
+					}
+				}
+				status.setValue(ValidationStatus.ok());
+			}
+		}
+
+		private SourceTargetValidator connectionValidator = new SourceTargetValidator();
 		private static final String SDR_ROOT_CLASS = "gov.redhawk.ide.sdr.impl.SdrRootImpl";
 		private ScaUsesPort source;
 		private CorbaObjWrapper< ? > target;
@@ -78,6 +124,7 @@ public class ConnectPortWizard extends Wizard {
 		protected ConnectWizardPage() {
 			super("connectPage", "Create new connection", null);
 			setDescription("Select the source and target connection elements.\nAlso enter a connection id.");
+			pcs.addPropertyChangeListener(connectionValidator);
 		}
 
 		/**
@@ -115,8 +162,17 @@ public class ConnectPortWizard extends Wizard {
 					// This is a hack to filter out the sdr root.
 					if (element.getClass().getName().equals(ConnectWizardPage.SDR_ROOT_CLASS)) {
 						return false;
-					}
-					if (element instanceof ScaProvidesPort) {
+					} else if (element instanceof ScaProvidesPort) {
+						return false;
+					} else if (element instanceof ScaFileStore) {
+						return false;
+					} else if (element instanceof ScaWaveformFactory) {
+						return false;
+					} else if (element instanceof ScaWaveformFactoriesContainerItemProvider) {
+						return false;
+					} else if (element instanceof ScaEventChannelsContainerItemProvider) {
+						return false;
+					} else if (element instanceof ScaEventChannel) {
 						return false;
 					}
 					return true;
@@ -135,8 +191,13 @@ public class ConnectPortWizard extends Wizard {
 					// This is a hack to filter out the sdr root.
 					if (element.getClass().getName().equals(ConnectWizardPage.SDR_ROOT_CLASS)) {
 						return false;
-					}
-					if (element instanceof ScaUsesPort) {
+					} else if (element instanceof ScaUsesPort) {
+						return false;
+					} else if (element instanceof ScaWaveformFactoriesContainerItemProvider) {
+						return false;
+					} else if (element instanceof ScaFileSystem<?>) {
+						return true;
+					} else if (element instanceof ScaFileStore) {
 						return false;
 					}
 					return true;
@@ -160,6 +221,7 @@ public class ConnectPortWizard extends Wizard {
 			context.bindValue(WidgetProperties.text(SWT.Modify).observe(idText), BeanProperties.value("connectionID").observe(this),
 				createConnectionIDTargetToModel(), null);
 			context.bindValue(WidgetProperties.enabled().observe(idText), BeanProperties.value("connectionIDReadOnly").observe(this));
+			context.addValidationStatusProvider(connectionValidator);
 
 			support = WizardPageSupport.create(this, context);
 		}
@@ -193,13 +255,10 @@ public class ConnectPortWizard extends Wizard {
 
 				@Override
 				public IStatus validate(Object value) {
-					if (value instanceof ScaProvidesPort) {
-						return ValidationStatus.ok();
+					if (!(value instanceof CorbaObjWrapper<?>)) {
+						return ValidationStatus.error("Target not specified.");
 					}
-					if (value instanceof ScaComponent) {
-						return ValidationStatus.ok();
-					}
-					return ValidationStatus.error("Target must be of type 'Provides Port' or 'Resource'");
+					return ValidationStatus.ok();
 				}
 
 			});

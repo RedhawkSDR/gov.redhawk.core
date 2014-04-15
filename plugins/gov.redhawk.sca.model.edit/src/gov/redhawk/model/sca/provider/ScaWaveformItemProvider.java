@@ -12,6 +12,7 @@
 // BEGIN GENERATED CODE
 package gov.redhawk.model.sca.provider;
 
+import gov.redhawk.model.sca.ScaDomainManager;
 import gov.redhawk.model.sca.ScaPackage;
 import gov.redhawk.model.sca.ScaWaveform;
 
@@ -51,6 +52,21 @@ public class ScaWaveformItemProvider extends ScaPropertyContainerItemProvider im
 	 */
 	public ScaWaveformItemProvider(AdapterFactory adapterFactory) {
 		super(adapterFactory);
+	}
+	
+	@Override
+	public Object getParent(Object object) {
+		Object parent = super.getParent(object);
+		if (parent instanceof ScaDomainManager) {
+			ITreeItemContentProvider cp = (ITreeItemContentProvider) adapterFactory.adapt(parent, ITreeItemContentProvider.class);
+			Collection< ? > children = cp.getChildren(parent);
+			for (Object obj : children) {
+				if (obj instanceof ScaWaveformsContainerItemProvider) {
+					return obj;
+				}
+			}
+		}
+		return parent;
 	}
 
 	/**

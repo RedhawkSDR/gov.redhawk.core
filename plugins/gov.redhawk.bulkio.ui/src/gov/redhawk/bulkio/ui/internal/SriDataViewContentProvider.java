@@ -50,6 +50,9 @@ public class SriDataViewContentProvider implements ITreeContentProvider {
 		if (inputElement instanceof Map< ? , ? >) {
 			@SuppressWarnings("unchecked")
 			Map<String, SriWrapper> streamMap = (Map<String, SriWrapper>) inputElement;
+			if (streamMap.size() == 0) {
+				return new Object[0];
+			}
 			//If activeSriID has not been set, grab the first item in the map
 			if (activeSriID == null) {
 				activeSriID = streamMap.entrySet().iterator().next().getKey();

@@ -46,6 +46,7 @@ public class TunerAllocationWizard extends Wizard {
 	private boolean listener;
 	private String targetId;
 	private ListenerAllocationWizardPage listenerPage;
+	private ScaDevice<?> feiDevice;
 
 	public TunerAllocationWizard(TunerStatus tuner) {
 		this(tuner, false, null);
@@ -58,6 +59,18 @@ public class TunerAllocationWizard extends Wizard {
 		this.setNeedsProgressMonitor(true);
 	}
 
+	public TunerAllocationWizard(TunerStatus tuner, ScaDevice<?> device) {
+		this(tuner, false, null, device);
+	}
+
+	public TunerAllocationWizard(TunerStatus tuner, boolean listener, String targetId, ScaDevice<?> device) {
+		this.tuners = new TunerStatus[] { tuner };
+		this.listener = listener;
+		this.targetId = targetId;
+		this.setNeedsProgressMonitor(true);
+		this.feiDevice = device;
+	}
+
 	@Override
 	public void addPages() {
 		if (listener) {
@@ -65,7 +78,7 @@ public class TunerAllocationWizard extends Wizard {
 			addPage(listenerPage);
 		} else {
 			if (tuners.length > 0) {
-				allocatePage = new TunerAllocationWizardPage(tuners[0]);
+				allocatePage = new TunerAllocationWizardPage(tuners[0], feiDevice);
 				addPage(allocatePage);
 			} else {
 				FrontEndUIActivator.getDefault().getLog().log(
@@ -77,7 +90,12 @@ public class TunerAllocationWizard extends Wizard {
 
 	@Override
 	public boolean performFinish() {
-		final ScaDevice< ? > device = ScaEcoreUtils.getEContainerOfType(tuners[0], ScaDevice.class);
+		ScaDevice<?> tmpDevice = ScaEcoreUtils.getEContainerOfType(tuners[0], ScaDevice.class);
+		if (tmpDevice == null) {
+			tmpDevice = this.feiDevice;
+		}
+		final ScaDevice< ? > device = tmpDevice;
+//		final ScaDevice< ? > device = ScaEcoreUtils.getEContainerOfType(tuners[0], ScaDevice.class);
 		final StringBuilder sb = new StringBuilder();
 		final DataType[] props = createAllocationProperties();
 		final boolean[] retVal = {false};

@@ -17,6 +17,7 @@ import gov.redhawk.model.sca.ScaProvidesPort;
 import gov.redhawk.model.sca.ScaUsesPort;
 import gov.redhawk.sca.ui.ConnectPortWizard;
 import gov.redhawk.sca.ui.ScaUiPlugin;
+import gov.redhawk.sca.util.PluginUtil;
 
 import java.util.concurrent.Callable;
 
@@ -107,12 +108,13 @@ public class ConnectPortHandler extends AbstractHandler implements IHandler {
 			ScaUsesPort usesPort = null;
 			CorbaObjWrapper< ? > target = null;
 			for (final Object obj : ss.toArray()) {
-				if (obj instanceof ScaUsesPort) {
-					usesPort = (ScaUsesPort) obj;
-				} else if (obj instanceof ScaProvidesPort) {
-					target = ((ScaProvidesPort) obj);
-				} else if (obj instanceof ScaComponent) {
-					target = ((ScaComponent) obj);
+				
+				if (PluginUtil.adapt(ScaUsesPort.class, obj, true) != null) {
+					usesPort = PluginUtil.adapt(ScaUsesPort.class, obj, true);
+				} else if (PluginUtil.adapt(ScaProvidesPort.class, obj, true) != null) {
+					target = PluginUtil.adapt(ScaProvidesPort.class, obj, true);
+				} else if (PluginUtil.adapt(ScaComponent.class, obj, true) != null) {
+					target = PluginUtil.adapt(ScaComponent.class, obj, true);
 				}
 			}
 			if (usesPort != null && target != null) {
@@ -138,12 +140,12 @@ public class ConnectPortHandler extends AbstractHandler implements IHandler {
 				ScaUsesPort usesPort = null;
 				EObject target = null;
 				for (final Object obj : ss.toArray()) {
-					if (obj instanceof ScaUsesPort) {
-						usesPort = (ScaUsesPort) obj;
-					} else if (obj instanceof ScaProvidesPort) {
-						target = (EObject) obj;
-					} else if (obj instanceof ScaComponent) {
-						target = (EObject) obj;
+					if (PluginUtil.adapt(ScaUsesPort.class, obj, true) != null) {
+						usesPort = PluginUtil.adapt(ScaUsesPort.class, true);
+					} else if (PluginUtil.adapt(ScaProvidesPort.class, obj, true) != null) {
+						target = PluginUtil.adapt(ScaProvidesPort.class, true);
+					} else if (PluginUtil.adapt(ScaComponent.class, obj, true) != null) {
+						target = PluginUtil.adapt(ScaComponent.class, true);
 					}
 				}
 				if (usesPort != null && usesPort.getProfileObj() != null && usesPort.getProfileObj().getInterface() != null) {

@@ -36,14 +36,21 @@ public class ScaPropertiesViewerColumnLabelProvider extends TreeColumnViewerLabe
 		}
 		String retVal = prop.getDescription();
 		if (prop instanceof ScaSimpleProperty) {
-			final String typeString = prop.getId() + " < " + ((ScaSimpleProperty) prop).getDefinition().getType().getLiteral() + " >";
+			ScaSimpleProperty simple = ((ScaSimpleProperty) prop);
+			final String typeString;
+			if (simple.getDefinition().getEnumerations() != null) {
+				typeString = prop.getId() + " enum < " + simple.getDefinition().getType().getLiteral() + " >";
+			} else {
+				typeString = prop.getId() + " < " + simple.getDefinition().getType().getLiteral() + " >";
+			}
 			if (retVal == null) {
 				retVal = typeString;
 			} else {
 				retVal = typeString + "\n" + retVal;
 			}
 		} else if (prop instanceof ScaSimpleSequenceProperty) {
-			final String typeString = prop.getId() + " < " + ((ScaSimpleSequenceProperty) prop).getDefinition().getType().getLiteral() + " >";
+			ScaSimpleSequenceProperty sequence = ((ScaSimpleSequenceProperty) prop);
+			final String typeString = prop.getId() + " < " + sequence.getDefinition().getType().getLiteral() + " >";
 			if (retVal == null) {
 				retVal = typeString;
 			} else {
