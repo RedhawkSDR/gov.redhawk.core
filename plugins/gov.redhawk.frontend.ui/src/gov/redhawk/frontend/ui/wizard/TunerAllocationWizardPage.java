@@ -109,6 +109,7 @@ public class TunerAllocationWizardPage extends WizardPage {
 	private Double maxFreq;
 	private Double minSr;
 	private Double maxSr;
+	private ScaDevice<?> feiDevice;
 
 	private static final String TUNER_TYPE_MISSING_ERR_MSG = "Please select a Tuner Type";
 	private static final String TUNER_TYPE_NOT_SUPPORTED_ERR_MSG = "The selected Tuner Type is not supported";
@@ -553,6 +554,16 @@ public class TunerAllocationWizardPage extends WizardPage {
 		super("Allocate A Tuner");
 		Assert.isNotNull(tuner, "Tuner must not be null");
 		this.tuner = tuner;
+		setMinMaxValues();
+		nf.setMinimumFractionDigits(0);
+		nf.setGroupingUsed(false);
+	}
+
+	protected TunerAllocationWizardPage(TunerStatus tuner, ScaDevice<?> device) {
+		super("Allocate A Tuner");
+		Assert.isNotNull(tuner, "Tuner must not be null");
+		this.tuner = tuner;
+		this.feiDevice = device;
 		setMinMaxValues();
 		nf.setMinimumFractionDigits(0);
 		nf.setGroupingUsed(false);
@@ -1096,6 +1107,15 @@ public class TunerAllocationWizardPage extends WizardPage {
 
 	private void setMinMaxValues() {
 		ScaDevice< ? > device = ScaEcoreUtils.getEContainerOfType(tuner, ScaDevice.class);
+		if (device == null) {
+			device = this.feiDevice;
+		}
+		if (device == null) {
+			FrontEndUIActivator.getDefault().getLog().log(
+				new Status(IStatus.ERROR, FrontEndUIActivator.PLUGIN_ID,
+						"Unable to add Allocation wizard page because no Device was found."));
+			return;
+		}
 		ScaStructSequenceProperty statusContainer = (ScaStructSequenceProperty) device.getProperty(StatusProperties.FRONTEND_TUNER_STATUS.getId());
 		for (ScaStructProperty struct : statusContainer.getStructs()) {
 			ScaSimpleProperty availFreqSimple = struct.getSimple(StatusProperties.AVAILABLE_FREQUENCY.getId());

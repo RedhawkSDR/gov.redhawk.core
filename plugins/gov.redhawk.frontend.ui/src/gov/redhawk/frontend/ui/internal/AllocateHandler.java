@@ -11,6 +11,7 @@
  */
 package gov.redhawk.frontend.ui.internal;
 
+import gov.redhawk.frontend.FrontendFactory;
 import gov.redhawk.frontend.TunerContainer;
 import gov.redhawk.frontend.TunerStatus;
 import gov.redhawk.frontend.UnallocatedTunerContainer;
@@ -69,7 +70,10 @@ public class AllocateHandler extends AbstractHandler implements IHandler {
 					WizardDialog dialog = new WizardDialog(HandlerUtil.getActiveShell(event), new TunerAllocationWizard(tuners[0]));
 					dialog.open();
 				} else {
+					ScaDevice< ? > device = (ScaDevice< ? >) container.eContainer().eContainer();
+					WizardDialog dialog = new WizardDialog(HandlerUtil.getActiveShell(event), new TunerAllocationWizard(FrontendFactory.eINSTANCE.createTunerStatus(), device));
 					warnNoTuners(event);
+					dialog.open();
 				}
 			} else if (obj instanceof ScaDevice< ? >) {
 				ScaDevice< ? > device = (ScaDevice< ? >) obj;
@@ -79,7 +83,9 @@ public class AllocateHandler extends AbstractHandler implements IHandler {
 					WizardDialog dialog = new WizardDialog(HandlerUtil.getActiveShell(event), new TunerAllocationWizard(tuners[0]));
 					dialog.open();
 				} else {
+					WizardDialog dialog = new WizardDialog(HandlerUtil.getActiveShell(event), new TunerAllocationWizard(FrontendFactory.eINSTANCE.createTunerStatus(), device));
 					warnNoTuners(event);
+					dialog.open();
 				}
 			}
 		}
@@ -88,8 +94,8 @@ public class AllocateHandler extends AbstractHandler implements IHandler {
 	}
 
 	private void warnNoTuners(ExecutionEvent event) {
-		MessageDialog warning = new MessageDialog(HandlerUtil.getActiveShell(event), "Error - No Tuners Available", null,
-			"Cannot allocate; the selected device has no tuners.", MessageDialog.ERROR, new String[] { "OK" }, 0);
+		MessageDialog warning = new MessageDialog(HandlerUtil.getActiveShell(event), "Warning - No Tuners Available", null,
+			"The selected device has no tuners.  Dynamic tuner creation may not be supported.", MessageDialog.WARNING, new String[] { "OK" }, 0);
 		warning.open();		
 	}
 	
