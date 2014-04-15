@@ -478,15 +478,15 @@
                         ifEmpty="false"
                         operator="or">
                      <or>
-                        <instanceof
-                              value="gov.redhawk.model.sca.ScaProvidesPort">
-                        </instanceof>
-                        <instanceof
-                              value="gov.redhawk.model.sca.ScaDomainManager">
-                        </instanceof>
-                        <instanceof
-                              value="gov.redhawk.model.sca.ScaUsesPort">
-                        </instanceof></or>
+                        <adapt
+                              type="gov.redhawk.model.sca.ScaProvidesPort">
+                        </adapt>
+                        <adapt
+                              type="gov.redhawk.model.sca.ScaDomainManager">
+                        </adapt>
+                        <adapt
+                              type="gov.redhawk.model.sca.ScaUsesPort">
+                        </adapt></or>
                   </iterate>
                </and>
             </visibleWhen>
@@ -775,20 +775,20 @@
                   <iterate
                         ifEmpty="false"
                         operator="or">
-                     <instanceof
-                           value="gov.redhawk.model.sca.ScaUsesPort">
-                     </instanceof>
+                     <adapt
+                           type="gov.redhawk.model.sca.ScaUsesPort">
+                     </adapt>
                   </iterate>
                   <iterate
                         ifEmpty="false"
                         operator="or">
                      <or>
-                        <instanceof
-                              value="gov.redhawk.model.sca.ScaProvidesPort">
-                        </instanceof>
-                        <instanceof
-                              value="gov.redhawk.model.sca.ScaComponent">
-                        </instanceof>
+                        <adapt
+                              type="gov.redhawk.model.sca.ScaProvidesPort">
+                        </adapt>
+                        <adapt
+                              type="gov.redhawk.model.sca.ScaComponent">
+                        </adapt>
                      </or></iterate></and>
             </and>
             <and>
@@ -799,15 +799,15 @@
                      ifEmpty="false"
                      operator="and">
                   <or>
-                     <instanceof
-                           value="gov.redhawk.model.sca.ScaUsesPort">
-                     </instanceof>
-                     <instanceof
-                           value="gov.redhawk.model.sca.ScaProvidesPort">
-                     </instanceof>
-                     <instanceof
-                           value="gov.redhawk.model.sca.ScaComponent">
-                     </instanceof>
+                     <adapt
+                           type="gov.redhawk.model.sca.ScaUsesPort">
+                     </adapt>
+                     <adapt
+                           type="gov.redhawk.model.sca.ScaProvidesPort">
+                     </adapt>
+                     <adapt
+                           type="gov.redhawk.model.sca.ScaComponent">
+                     </adapt>
                   </or>
                </iterate>
             </and>

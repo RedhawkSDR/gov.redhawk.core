@@ -15,6 +15,7 @@ import gov.redhawk.model.sca.DomainConnectionState;
 import gov.redhawk.model.sca.RefreshDepth;
 import gov.redhawk.model.sca.ScaDomainManager;
 import gov.redhawk.sca.ui.ScaUiPlugin;
+import gov.redhawk.sca.util.PluginUtil;
 
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
@@ -43,8 +44,8 @@ public class ConnectDomainHandler extends AbstractHandler implements IHandler {
 				final IStructuredSelection ss = (IStructuredSelection) sel;
 				boolean enabled = true;
 				for (final Object obj : ss.toArray()) {
-					if (obj instanceof ScaDomainManager) {
-						final ScaDomainManager domMgr = (ScaDomainManager) obj;
+					if (PluginUtil.adapt(ScaDomainManager.class, true) != null) {
+						final ScaDomainManager domMgr = PluginUtil.adapt(ScaDomainManager.class, true);
 						if (domMgr.getState().equals(DomainConnectionState.CONNECTED) || domMgr.getState().equals(DomainConnectionState.CONNECTING)) {
 							enabled = false;
 						}
