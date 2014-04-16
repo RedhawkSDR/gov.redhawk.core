@@ -13,7 +13,12 @@ package gov.redhawk.sca.util;
 
 import gov.redhawk.sca.util.internal.ScaUtilPluginActivator;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
 import java.util.WeakHashMap;
@@ -37,6 +42,41 @@ import org.omg.PortableServer.POAManagerPackage.AdapterInactive;
 public class OrbSession {
 
 	private static Map<String, OrbSession> sessionMap = Collections.synchronizedMap(new WeakHashMap<String, OrbSession>());
+	
+	private static final Map<String, String> OMNIORB_INIT_REFS;
+	static {
+		OMNIORB_INIT_REFS = new HashMap<String, String>();
+
+		File file = new File("/etc/omniORB.cfg");
+		if (file.exists()) {
+			BufferedReader reader = null;
+			try {
+				reader = new BufferedReader(new FileReader(file));
+				for (String line = reader.readLine(); line != null; line = reader.readLine()) {
+					if (line.startsWith("InitRef")) {
+						String[] split = line.split("=");
+						if (split.length == 3) {
+							OMNIORB_INIT_REFS.put(split[1].trim(), split[2].trim());
+						}
+					}
+				}
+			} catch (IOException e) {
+				try {
+					reader.close();
+				} catch (Exception e1) {
+					// PASS
+				}
+			}
+		}
+	}
+
+	/**
+	 * Get all the Init Refs defined in the omniORB config file.
+	 * @since 3.4
+	 */
+	public static Map<String, String> getOmniORBInitRefs() {
+		return Collections.unmodifiableMap(OMNIORB_INIT_REFS);
+	}
 
 	/**
 	 * Returns a "global" orb session
