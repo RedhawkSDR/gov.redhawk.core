@@ -17,6 +17,7 @@ import gov.redhawk.model.sca.ScaFactory;
 import gov.redhawk.sca.ScaPlugin;
 import gov.redhawk.sca.util.CorbaURIUtil;
 import gov.redhawk.sca.util.IPreferenceAccessor;
+import gov.redhawk.sca.util.OrbSession;
 
 import java.io.IOException;
 import java.net.URL;
@@ -52,7 +53,13 @@ public class ScaPreferenceInitializer extends AbstractPreferenceInitializer {
 		final IPreferenceAccessor accessor = ScaPlugin.getDefault().getScaPreferenceAccessor();
 
 		accessor.setDefault(ScaPreferenceConstants.SCA_CORBA_AUTOCONNECT_PREFERENCE, true);
-		accessor.setDefault(ScaPreferenceConstants.SCA_DEFAULT_NAMING_SERVICE, "corbaname::127.0.0.1:2809");
+		
+		String defaultNameService = "corbaname::127.0.0.1:2809";
+		Map<String, String> initRefs = OrbSession.getOmniORBInitRefs();
+		if (initRefs.containsKey("NameService")) {
+			defaultNameService = initRefs.get("NameService");
+		}
+		accessor.setDefault(ScaPreferenceConstants.SCA_DEFAULT_NAMING_SERVICE, defaultNameService);
 		accessor.setDefault(ScaPreferenceConstants.SCA_DOMAIN_WAVEFORMS_SEARCH_PATH, ScaPreferenceConstants.createPath(new String[] { "waveforms" }));
 	}
 
