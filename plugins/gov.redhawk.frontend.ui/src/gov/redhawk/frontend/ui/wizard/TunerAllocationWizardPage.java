@@ -388,10 +388,11 @@ public class TunerAllocationWizardPage extends WizardPage {
 		listenBySearch.setEnabled(listenerAlloc.getSelection());
 		listenById.setEnabled(listenerAlloc.getSelection());
 		targetAllocText.setEnabled(listenerAlloc.getSelection() && listenById.getSelection());
-		setPageComplete(validateAsListener());
 		for (Object binding : context.getBindings()) {
 			((Binding) binding).validateModelToTarget();
+			((Binding) binding).validateTargetToModel();
 		}
+		setPageComplete(validateAsListener());
 	}
 
 	private boolean validateAsListener() {
