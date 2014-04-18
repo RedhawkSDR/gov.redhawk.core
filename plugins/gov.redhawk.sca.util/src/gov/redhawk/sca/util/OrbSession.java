@@ -42,7 +42,7 @@ import org.omg.PortableServer.POAManagerPackage.AdapterInactive;
 public class OrbSession {
 
 	private static Map<String, OrbSession> sessionMap = Collections.synchronizedMap(new WeakHashMap<String, OrbSession>());
-	
+
 	private static final Map<String, String> OMNIORB_INIT_REFS;
 	static {
 		OMNIORB_INIT_REFS = new HashMap<String, String>();
@@ -182,6 +182,10 @@ public class OrbSession {
 
 	@NonNull
 	public synchronized POA getPOA() throws CoreException {
+		if (orb == null) {
+			throw new CoreException(new Status(Status.ERROR, ScaUtilPluginActivator.ID, "ORB not available or ORB Session is disposed.",
+				new IllegalStateException().fillInStackTrace()));
+		}
 		if (this.poa == null) {
 			try {
 				this.poa = POAHelper.narrow(orb.resolve_initial_references("RootPOA"));

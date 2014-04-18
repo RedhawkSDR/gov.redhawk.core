@@ -5,7 +5,9 @@ Bundle-SymbolicName: gov.redhawk.sca.util
 Bundle-Version: 3.4.0.qualifier
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Export-Package: gov.redhawk.sca.util
-Require-Bundle: org.eclipse.core.runtime;bundle-version="3.4.0"
+Require-Bundle: org.eclipse.core.runtime;bundle-version="3.4.0",
+ org.jacorb;bundle-version="3.3.0",
+ org.jacorb.eclipse;bundle-version="1.1.0"
 Bundle-Localization: plugin
 Bundle-Vendor: %Bundle-Provider.0
 Bundle-Activator: gov.redhawk.sca.util.internal.ScaUtilPluginActivator

@@ -16,6 +16,8 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Properties;
 
+import org.eclipse.core.runtime.ISafeRunnable;
+import org.eclipse.core.runtime.SafeRunner;
 import org.omg.CORBA.ORB;
 
 /**
@@ -32,7 +34,7 @@ public final class ORBUtil {
 	/**
 	 * @since 3.1
 	 */
-	public static ORB init(final String[] args, Properties properties) {
+	public static ORB init(final String[] args, final Properties properties) {
 		if (properties != null) {
 			Map<Object, Object> newElements = new HashMap<Object, Object>();
 			for (Entry<Object, Object> entry : properties.entrySet()) {
@@ -43,8 +45,20 @@ public final class ORBUtil {
 			}
 			properties.putAll(newElements);
 		}
-		ORB retVal = ORB.init(args, properties);
-		return retVal;
+		final ORB [] retVal = new ORB[1];
+		SafeRunner.run(new ISafeRunnable() {
+			
+			@Override
+			public void run() throws Exception {
+				retVal[0] = ORB.init(args, properties);
+			}
+			
+			@Override
+			public void handleException(Throwable exception) {
+				
+			}
+		});
+		return retVal[0];
 	}
 
 	public static ORB init(final Properties properties) {
