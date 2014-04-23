@@ -49,6 +49,7 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.databinding.swt.WidgetProperties;
 import org.eclipse.jface.databinding.viewers.ViewerProperties;
 import org.eclipse.jface.databinding.wizard.WizardPageSupport;
+import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.jface.viewers.Viewer;
@@ -64,6 +65,7 @@ import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.navigator.CommonViewer;
+import org.eclipse.ui.progress.UIJob;
 import org.eclipse.ui.statushandlers.StatusManager;
 
 /**
@@ -74,24 +76,24 @@ public class ConnectPortWizard extends Wizard {
 	private static final SimpleDateFormat FORMAT = new SimpleDateFormat("yyyyMMddHHmmss");
 
 	private static class ConnectWizardPage extends WizardPage {
-		
+
 		private class SourceTargetValidator extends ValidationStatusProvider implements PropertyChangeListener {
 			private final WritableValue status = new WritableValue();
 			private IObservableList list = new WritableList();
 			{
 				list.add(status);
 			}
-			
+
 			@Override
 			public IObservableValue getValidationStatus() {
 				return status;
 			}
-			
+
 			@Override
 			public IObservableList getTargets() {
 				return list;
 			}
-			
+
 			@Override
 			public IObservableList getModels() {
 				return null;
@@ -195,7 +197,7 @@ public class ConnectPortWizard extends Wizard {
 						return false;
 					} else if (element instanceof ScaWaveformFactoriesContainerItemProvider) {
 						return false;
-					} else if (element instanceof ScaFileSystem<?>) {
+					} else if (element instanceof ScaFileSystem< ? >) {
 						return true;
 					} else if (element instanceof ScaFileStore) {
 						return false;
@@ -255,7 +257,7 @@ public class ConnectPortWizard extends Wizard {
 
 				@Override
 				public IStatus validate(Object value) {
-					if (!(value instanceof CorbaObjWrapper<?>)) {
+					if (!(value instanceof CorbaObjWrapper< ? >)) {
 						return ValidationStatus.error("Target not specified.");
 					}
 					return ValidationStatus.ok();
@@ -457,10 +459,22 @@ public class ConnectPortWizard extends Wizard {
 					page.source.connectPort(page.target.getCorbaObj(), page.connectionID);
 					return null;
 				}
-
 			}, monitor);
-		} catch (CoreException e) {
+		} catch (final CoreException e) {
+			UIJob uiJob = new UIJob("Port connection error") {
+				@Override
+				public IStatus runInUIThread(IProgressMonitor monitor) {
+					Throwable cause = e.getCause();
+					MessageDialog errorDialog = new MessageDialog(getShell(), "Error", null, "Error completing connection: " + cause.getMessage(),
+						MessageDialog.ERROR, new String[] { "OK" }, 0);
+					errorDialog.open();
+					return Status.OK_STATUS;
+				}
+			};
+			uiJob.schedule();
+
 			throw new InvocationTargetException(e);
+
 		}
 	}
 
