@@ -156,7 +156,7 @@ public class ConnectPortWizard extends Wizard {
 			sourceGroup.setText("Source");
 			sourceGroup.setLayout(new FillLayout());
 			sourceGroup.setLayoutData(GridDataFactory.fillDefaults().grab(true, false).span(2, 1).hint(SWT.DEFAULT, 200).create());
-			CommonViewer sourceViewer = new CommonViewer(ScaExplorer.VIEW_ID, sourceGroup, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL);
+			CommonViewer sourceViewer = new CommonViewer(ScaExplorer.VIEW_ID, sourceGroup, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL | SWT.SINGLE | SWT.FULL_SELECTION);
 			sourceViewer.addFilter(new ViewerFilter() {
 
 				@Override
@@ -185,7 +185,7 @@ public class ConnectPortWizard extends Wizard {
 			targetGroup.setText("Target");
 			targetGroup.setLayout(new FillLayout());
 			targetGroup.setLayoutData(GridDataFactory.fillDefaults().grab(true, false).span(2, 1).hint(SWT.DEFAULT, 200).create());
-			CommonViewer targetViewer = new CommonViewer(ScaExplorer.VIEW_ID, targetGroup, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL);
+			CommonViewer targetViewer = new CommonViewer(ScaExplorer.VIEW_ID, targetGroup, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL | SWT.SINGLE | SWT.FULL_SELECTION);
 			targetViewer.addFilter(new ViewerFilter() {
 
 				@Override
