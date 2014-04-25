@@ -13,6 +13,7 @@ package gov.redhawk.frontend.ui.internal;
 
 //TODO: reflection for access to the SriDataView code
 import gov.redhawk.bulkio.ui.views.SriDataView;
+import gov.redhawk.bulkio.util.BulkIOType;
 import gov.redhawk.frontend.FrontendPackage;
 import gov.redhawk.frontend.ListenerAllocation;
 import gov.redhawk.frontend.TunerStatus;
@@ -88,7 +89,7 @@ public class FeiSriHandler extends AbstractHandler implements IHandler {
 	@Override
 	public Object execute(final ExecutionEvent event) throws ExecutionException {
 		window = HandlerUtil.getActiveWorkbenchWindow(event);
-		
+
 		// Launches from the plot view menu
 		IWorkbenchPart activePart = HandlerUtil.getActivePart(event);
 		if (activePart instanceof IPlotView) {
@@ -140,7 +141,7 @@ public class FeiSriHandler extends AbstractHandler implements IHandler {
 									return Status.OK_STATUS;
 								}
 							}
-							
+
 							// Allocate capacity on the device for the listener if no SRI View is found
 							IStatus status = CorbaUtils.invoke(new Callable<IStatus>() {
 								@Override
@@ -220,10 +221,10 @@ public class FeiSriHandler extends AbstractHandler implements IHandler {
 		final TunerStatus tuner) throws ExecutionException {
 		// Get all SCA Ports on the containing device
 		List<ScaPort< ? , ? >> devicePorts = device.getPorts();
-		// Get all the uses ports from the preceding list
+		// Get all the "supported" uses ports from the preceding list
 		List<ScaUsesPort> usesPorts = new ArrayList<ScaUsesPort>();
 		for (ScaPort< ? , ? > port : devicePorts) {
-			if (port instanceof ScaUsesPort) {
+			if (port instanceof ScaUsesPort && BulkIOType.isTypeSupported(port.getRepid())) {
 				usesPorts.add((ScaUsesPort) port);
 			}
 		}
@@ -235,8 +236,8 @@ public class FeiSriHandler extends AbstractHandler implements IHandler {
 			usesPort = usesPorts.get(0);
 		} else if (usesPorts.size() > 1) {
 			// If there is more than one uses port, let the user specify which one they want
-			ListSelectionDialog dialog = new ListSelectionDialog(HandlerUtil.getActiveShellChecked(event), usesPorts, new ArrayContentProvider(),
-				new AdapterFactoryLabelProvider(factory), "Select output port to use: ");
+			ListSelectionDialog dialog = new ListSelectionDialog(HandlerUtil.getActiveShellChecked(event), usesPorts,
+				ArrayContentProvider.getInstance(), new AdapterFactoryLabelProvider(factory), "Select output Port to use: ");
 			if (dialog.open() == Window.OK) {
 				Object[] result = dialog.getResult();
 				if (result.length >= 1) {
