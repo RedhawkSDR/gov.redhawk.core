@@ -172,6 +172,20 @@ public enum BulkIOType {
 			throw new IllegalArgumentException("Unknown type: " + idl);
 		}
 	}
+	
+	/**
+	 * @since 2.0
+	 */
+	public static boolean isTypeSupported(String idl) {
+		if (dataLongLongHelper.id().equals(idl) || dataUlongLongHelper.id().equals(idl)
+				|| dataFloatHelper.id().equals(idl) || dataDoubleHelper.id().equals(idl)
+				|| dataLongHelper.id().equals(idl)  || dataUlongHelper.id().equals(idl)
+				|| dataShortHelper.id().equals(idl) || dataUshortHelper.id().equals(idl)
+				|| dataOctetHelper.id().equals(idl) || dataCharHelper.id().equals(idl)) {
+			return true;
+		}
+		return false;
+	}
 
 	/**
 	 * @return The non upcasted Java class container type
