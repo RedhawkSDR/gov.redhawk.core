@@ -78,6 +78,13 @@ public class AllocateHandler extends AbstractHandler implements IHandler {
 			} else if (obj instanceof ScaDevice< ? >) {
 				ScaDevice< ? > device = (ScaDevice< ? >) obj;
 				TunerContainer container = TunerUtils.INSTANCE.getTunerContainer(device);
+				if (container == null) {
+					MessageDialog warning = new MessageDialog(HandlerUtil.getActiveShell(event), "Error - No Tuner Container Found", null, 
+						"The device's tuner container could not be found.  Make sure the device's \"Data Providers Enabled\" property is set to \"true\".", 
+						MessageDialog.ERROR, new String[] {"OK"}, 0);
+					warning.open();
+					return null;
+				}
 				TunerStatus[] tuners = container.getTunerStatus().toArray(new TunerStatus[0]);
 				if (tuners.length > 0) {
 					WizardDialog dialog = new WizardDialog(HandlerUtil.getActiveShell(event), new TunerAllocationWizard(tuners[0]));
