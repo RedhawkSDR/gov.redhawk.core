@@ -11,61 +11,50 @@
  */
 package gov.redhawk.bulkio.ui;
 
+import java.util.HashMap;
+import java.util.Map;
+
+import org.eclipse.jdt.annotation.NonNull;
+import org.eclipse.jdt.annotation.Nullable;
+
 public enum BulkioDataTypes {
-	UNITS_NONE(0),
-	UNITS_TIME(1),
-	UNITS_DELAY(2),
-	UNITS_FREQUENCY(3),
-	UNITS_TIMECODE(4),
-	UNITS_DISTANCE(5),
-	UNITS_VELOCITY(6),
-	UNITS_ACCELERATION(7),
-	UNITS_JERK(8),
-	UNITS_DOPPLER(9),
-	UNITS_DOPPLERRATE(10),
-	UNITS_ENERGY(11),
-	UNITS_POWER(12),
-	UNITS_MASS(13);
+	UNITS_NONE        (0,  "N/A"),
+	UNITS_TIME        (1,  "Time (sec)"),
+	UNITS_DELAY       (2,  "Delay (sec)"),
+	UNITS_FREQUENCY   (3,  "Frequency (Hz)"),
+	UNITS_TIMECODE    (4,  "Time code format"),
+	UNITS_DISTANCE    (5,  "Distance (m)"),
+	UNITS_VELOCITY    (6,  "Velocity (m/sec)"),
+	UNITS_ACCELERATION(7,  "Acceleration (m/sec^2)"),
+	UNITS_JERK        (8,  "Jerk (m/sec^3)"),
+	UNITS_DOPPLER     (9,  "Doppler (Hz)"),
+	UNITS_DOPPLERRATE (10, "Doppler rate (Hz/sec)"),
+	UNITS_ENERGY      (11, "Energy (J)"),
+	UNITS_POWER       (12, "Power (W)"),
+	UNITS_MASS        (13, "Mass (g)");
 
-	private int value;
-
-	private BulkioDataTypes(int value) {
-		this.value = value;
+	private static final Map<Integer, BulkioDataTypes> INT_TO_ENUM_TYPE_MAP = new HashMap<Integer, BulkioDataTypes>();
+	static {
+		for (BulkioDataTypes type : BulkioDataTypes.values()) {
+			INT_TO_ENUM_TYPE_MAP.put(type.value, type);
+		}
 	}
 
-	@Override
-	public String toString() {
-		switch (value) {
-		case 0:
-			return "N/A";
-		case 1:
-			return "Time (sec)";
-		case 2:
-			return "Delay (sec)";
-		case 3:
-			return "Frequency (Hz)";
-		case 4:
-			return "Time code format";
-		case 5:
-			return "Distance (m)";
-		case 6:
-			return "Velocity (m/sec)";
-		case 7:
-			return "Acceleration (m/sec^2)";
-		case 8:
-			return "Jerk (m/sec^3)";
-		case 9:
-			return "Doppler (Hz)";
-		case 10:
-			return "Doppler rate (Hz/sec)";
-		case 11:
-			return "Energy (J)";
-		case 12:
-			return "Power (W)";
-		case 13:
-			return "Mass (g)";
-		default:
-			return "";
-		}
+	private final int value;
+	private final String unitsName;
+
+	private BulkioDataTypes(int value, @NonNull String unitsName) {
+		this.value = value;
+		this.unitsName = unitsName;
+	}
+
+	public String getUnitsName() {
+		return this.unitsName;
+	}
+	
+	@Nullable
+	public static BulkioDataTypes fromInt(int value) {
+		BulkioDataTypes type = INT_TO_ENUM_TYPE_MAP.get(value);
+		return type;
 	}
 }
