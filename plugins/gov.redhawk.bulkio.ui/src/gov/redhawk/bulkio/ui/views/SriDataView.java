@@ -411,7 +411,7 @@ public class SriDataView extends ViewPart {
 	}
 	
 	public void activateReceiver(@NonNull ScaUsesPort port, @NonNull String connectionId) {
-		if (sriReceiver != null) {
+		if (sriReceiver != null || !BulkIOType.isTypeSupported(port.getRepid())) {
 			return;
 		}
 		BulkIOType type = BulkIOType.getType(port.getRepid());
