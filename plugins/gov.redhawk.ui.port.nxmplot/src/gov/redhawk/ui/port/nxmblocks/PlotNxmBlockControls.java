@@ -77,7 +77,7 @@ public class PlotNxmBlockControls {
 
 		// === line plot frame thinning ===
 		label = new Label(container, SWT.NONE);
-		label.setText("Line Plot Frame Thining:");
+		label.setText("&Line Plot Frame Thinning:");
 		this.linePlotConsumeLengthField = new Text(container, SWT.BORDER);
 		this.linePlotConsumeLengthField.setLayoutData(GridDataFactory.fillDefaults().grab(true, false).create());
 		this.linePlotConsumeLengthField.setToolTipText("Thin line plot by displaying 1 out of every n frames. "
