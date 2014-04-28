@@ -120,8 +120,11 @@ public class ConnectPortWizard extends Wizard {
 		private DataBindingContext context;
 		private PropertyChangeSupport pcs = new PropertyChangeSupport(this);
 		private boolean connectionIDEnabled = true;
-		private Object sourceInput = ScaPlugin.getDefault().getDomainManagerRegistry(Display.getCurrent());
-		private Object targetInput = ScaPlugin.getDefault().getDomainManagerRegistry(Display.getCurrent());
+		private Object defaultInput = ScaPlugin.getDefault().getDomainManagerRegistry(Display.getCurrent());
+		private boolean showAllInputs = true;
+		private boolean showAllOutputs = true;
+		private Object sourceInput = defaultInput;
+		private Object targetInput = defaultInput;
 
 		protected ConnectWizardPage() {
 			super("connectPage", "Create new connection", null);
@@ -156,11 +159,18 @@ public class ConnectPortWizard extends Wizard {
 			sourceGroup.setText("Source");
 			sourceGroup.setLayout(new FillLayout());
 			sourceGroup.setLayoutData(GridDataFactory.fillDefaults().grab(true, false).span(2, 1).hint(SWT.DEFAULT, 200).create());
-			CommonViewer sourceViewer = new CommonViewer(ScaExplorer.VIEW_ID, sourceGroup, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL | SWT.SINGLE | SWT.FULL_SELECTION);
+			int sourceViewerStyle = SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL | SWT.SINGLE | SWT.FULL_SELECTION;
+			if (!isShowAllInputs() && getSource() != null) {
+				sourceViewerStyle = sourceViewerStyle | SWT.READ_ONLY;
+			}
+			CommonViewer sourceViewer = new CommonViewer(ScaExplorer.VIEW_ID, sourceGroup, sourceViewerStyle);
 			sourceViewer.addFilter(new ViewerFilter() {
 
 				@Override
 				public boolean select(Viewer viewer, Object parentElement, Object element) {
+					if (!isShowAllInputs()) {
+						return element == source;
+					}
 					// This is a hack to filter out the sdr root.
 					if (element.getClass().getName().equals(ConnectWizardPage.SDR_ROOT_CLASS)) {
 						return false;
@@ -185,11 +195,18 @@ public class ConnectPortWizard extends Wizard {
 			targetGroup.setText("Target");
 			targetGroup.setLayout(new FillLayout());
 			targetGroup.setLayoutData(GridDataFactory.fillDefaults().grab(true, false).span(2, 1).hint(SWT.DEFAULT, 200).create());
-			CommonViewer targetViewer = new CommonViewer(ScaExplorer.VIEW_ID, targetGroup, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL | SWT.SINGLE | SWT.FULL_SELECTION);
+			int targetViewerStyle = SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL | SWT.SINGLE | SWT.FULL_SELECTION;
+			if (!isShowAllOutputs() && getTarget() != null) {
+				targetViewerStyle = targetViewerStyle | SWT.READ_ONLY;
+			}
+			CommonViewer targetViewer = new CommonViewer(ScaExplorer.VIEW_ID, targetGroup, targetViewerStyle);
 			targetViewer.addFilter(new ViewerFilter() {
 
 				@Override
 				public boolean select(Viewer viewer, Object parentElement, Object element) {
+					if (!isShowAllOutputs()) {
+						return element == target;
+					}
 					// This is a hack to filter out the sdr root.
 					if (element.getClass().getName().equals(ConnectWizardPage.SDR_ROOT_CLASS)) {
 						return false;
@@ -325,6 +342,9 @@ public class ConnectPortWizard extends Wizard {
 		}
 
 		public void setSourceInput(Object sourceInput) {
+			if (sourceInput == null) {
+				sourceInput = defaultInput;
+			}
 			Object oldValue = this.sourceInput;
 			this.sourceInput = sourceInput;
 			pcs.firePropertyChange("sourceInput", oldValue, sourceInput);
@@ -335,6 +355,9 @@ public class ConnectPortWizard extends Wizard {
 		}
 
 		public void setTargetInput(Object targetInput) {
+			if (targetInput == null) {
+				targetInput = defaultInput;
+			}
 			Object oldValue = this.targetInput;
 			this.targetInput = targetInput;
 			pcs.firePropertyChange("targetInput", oldValue, targetInput);
@@ -342,6 +365,22 @@ public class ConnectPortWizard extends Wizard {
 
 		public Object getTargetInput() {
 			return targetInput;
+		}
+
+		public boolean isShowAllInputs() {
+			return showAllInputs;
+		}
+
+		public void setShowAllInputs(boolean showAllInputs) {
+			this.showAllInputs = showAllInputs;
+		}
+
+		public boolean isShowAllOutputs() {
+			return showAllOutputs;
+		}
+
+		public void setShowAllOutputs(boolean showAllOutputs) {
+			this.showAllOutputs = showAllOutputs;
 		}
 	}
 
@@ -448,6 +487,22 @@ public class ConnectPortWizard extends Wizard {
 	 */
 	public Object getTargetInput() {
 		return page.getTargetInput();
+	}
+	
+	public boolean isShowAllInputs() {
+		return page.isShowAllInputs();
+	}
+
+	public void setShowAllInputs(boolean showAllInputs) {
+		page.setShowAllInputs(showAllInputs);
+	}
+
+	public boolean isShowAllOutputs() {
+		return page.isShowAllOutputs();
+	}
+
+	public void setShowAllOutputs(boolean showAllOutputs) {
+		page.setShowAllOutputs(showAllOutputs);
 	}
 
 	protected void performFinish(IProgressMonitor monitor) throws InterruptedException, InvocationTargetException {
