@@ -300,6 +300,7 @@ public class ConnectPortWizard extends Wizard {
 		public void setSource(ScaUsesPort source) {
 			ScaUsesPort oldValue = this.source;
 			this.source = source;
+			
 			pcs.firePropertyChange("source", oldValue, source);
 		}
 
