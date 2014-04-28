@@ -122,7 +122,7 @@ public class SriDataViewLabelProvider implements ITableLabelProvider {
 					case 4:
 						return "[" + String.valueOf(sri.getValue()) + "] " + BulkioDataTypes.UNITS_TIMECODE;
 					case 5:
-						return "[" + String.valueOf(sri.getValue()) + "] " + BulkioDataTypes.DISTANCE;
+						return "[" + String.valueOf(sri.getValue()) + "] " + BulkioDataTypes.UNITS_DISTANCE;
 					case 6:
 						return "[" + String.valueOf(sri.getValue()) + "] " + BulkioDataTypes.UNITS_VELOCITY;
 					case 7:
