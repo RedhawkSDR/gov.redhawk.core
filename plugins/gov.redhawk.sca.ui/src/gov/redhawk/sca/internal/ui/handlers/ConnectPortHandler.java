@@ -128,8 +128,8 @@ public class ConnectPortHandler extends AbstractHandler implements IHandler {
 				}
 				if (target != null) {
 					wizard.setTarget(target);
-					wizard.setSourceInput(target.eContainer());
-					wizard.setShowAllInputs(false);
+					wizard.setTargetInput(target.eContainer());
+					wizard.setShowAllOutputs(false);
 				}
 				WizardDialog dialog = new WizardDialog(shell, wizard);
 				dialog.open();
