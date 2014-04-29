@@ -1,10 +1,10 @@
 /**
- * This file is protected by Copyright. 
+ * This file is protected by Copyright.
  * Please refer to the COPYRIGHT file distributed with this source distribution.
- * 
+ *
  * This file is part of REDHAWK IDE.
- * 
- * All rights reserved.  This program and the accompanying materials are made available under 
+ *
+ * All rights reserved.  This program and the accompanying materials are made available under
  * the terms of the Eclipse Public License v1.0 which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html.
  *
@@ -175,7 +175,7 @@ public class SriDataView extends ViewPart {
 		final ImageDescriptor switchStreamImageDescriptor = AbstractUIPlugin.imageDescriptorFromPlugin(BulkIOUIActivator.PLUGIN_ID, "icons/sri.gif");
 		this.switchStreamAction.setImageDescriptor(switchStreamImageDescriptor);
 
-		//Action to turn on or off notification of a change in the SRI content (bolding of the tab text) 
+		//Action to turn on or off notification of a change in the SRI content (bolding of the tab text)
 		this.getNotificationsAction = new Action("Notify on receiving new Push SRI", IAction.AS_CHECK_BOX) {
 			@Override
 			public void run() {
@@ -219,26 +219,26 @@ public class SriDataView extends ViewPart {
 
 				Map<String, SriWrapper> streamMapToSave = sriReceiver.getStreamMap();
 				List<String> filesWritten = new ArrayList<String>();
-				SriFileWriter writer = new SriFileWriter();
+				SriFileWriter sriWriter = new SriFileWriter();
 				SriXmlWriter xmlWriter = new SriXmlWriter();
 				try {
 					String nl = System.getProperty("line.separator");
 					BulkIOType bulkioType = sriReceiver.getBulkIOType();
 
-					writer.performSave(streamMapToSave, saveLocation, bulkioType, parent);
-					if (writer.getFileName() != null) {
-						filesWritten.add(nl + writer.getFileName());
+					sriWriter.performSave(streamMapToSave, saveLocation, bulkioType, parent);
+					for (String filename : sriWriter.getFilesWritten()) {
+						filesWritten.add(nl + filename);
 					}
-					
+
 					xmlWriter.performSave(streamMapToSave, saveLocation, bulkioType, parent);
-					if (xmlWriter.getFileName() != null) {					
-						filesWritten.add(nl + xmlWriter.getFileName());
+					for (String filename : xmlWriter.getFilesWritten()) {
+						filesWritten.add(nl + filename);
 					}
-					
-					if (saveLocation != null && !filesWritten.isEmpty()) {
-						displayFiles(filesWritten);
+
+					if (saveLocation != null) {
+						displayFiles(filesWritten, streamMapToSave.keySet().size());
 					}
-					
+
 				} catch (IOException e) {
 					MessageBox error = new MessageBox(getSite().getShell(), SWT.ICON_ERROR | SWT.OK);
 					error.setMessage("Error during save operation.  Files were not saved");
@@ -246,13 +246,20 @@ public class SriDataView extends ViewPart {
 				}
 			}
 
-			private void displayFiles(List<String> filesWritten) {
-				MessageBox confirmation = new MessageBox(getSite().getShell(), SWT.ICON_INFORMATION | SWT.OK);
-				String savedFiles = "";
-				for (String s : filesWritten) {
-					savedFiles += s;
+			private void displayFiles(@NonNull List<String> filesWritten, int numStreams) {
+				final int style;
+				if (filesWritten.isEmpty()) {
+					style = SWT.OK | SWT.ICON_WARNING;
+				} else {
+					style = SWT.OK | SWT.ICON_INFORMATION;
 				}
-				confirmation.setMessage("Files Saved Successfully: " + savedFiles);
+				MessageBox confirmation = new MessageBox(getSite().getShell(), style);
+				StringBuilder sb = new StringBuilder(256);
+				sb.append(filesWritten.size()).append(" files saved for ").append(numStreams).append(" SRI streams: \n");
+				for (String filename : filesWritten) {
+					sb.append(filename);
+				}
+				confirmation.setMessage(sb.toString());
 				confirmation.open();
 			}
 		};
@@ -409,7 +416,7 @@ public class SriDataView extends ViewPart {
 			service.warnOfContentChange();
 		}
 	}
-	
+
 	public void activateReceiver(@NonNull ScaUsesPort port, @NonNull String connectionId) {
 		if (sriReceiver != null || !BulkIOType.isTypeSupported(port.getRepid())) {
 			return;
@@ -464,7 +471,7 @@ public class SriDataView extends ViewPart {
 	public TreeViewer getTreeViewer() {
 		return viewer;
 	}
-	
+
 	public void setTerminatedStreams(boolean flag) {
 		terminatedStreams = flag;
 	}
@@ -486,7 +493,7 @@ public class SriDataView extends ViewPart {
 		}
 
 		retVal.append("_" + port.getName());
-		
+
 		return retVal.toString().replace(':', '_');
 	}
 }
