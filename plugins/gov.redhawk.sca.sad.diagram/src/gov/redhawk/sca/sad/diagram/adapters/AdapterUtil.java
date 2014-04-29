@@ -43,7 +43,9 @@ final class AdapterUtil {
 
 	public static List<ScaComponent> safeFetchComponents(final ScaWaveform waveform) {
 		List<ScaComponent> retVal = Collections.emptyList();
-		if (waveform.isSetComponents()) {
+		if (waveform == null) {
+			return Collections.emptyList();
+		} else if (waveform.isSetComponents()) {
 			retVal = waveform.getComponents();
 		} else {
 
