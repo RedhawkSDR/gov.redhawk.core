@@ -21,6 +21,8 @@ import org.eclipse.emf.ecore.EObject;
  * 
  */
 public class EventServiceDataProviderService extends AbstractDataProviderService {
+	
+	public static final String ID = "gov.redhawk.sca.model.provider.event"; 
 
 	private final EventServiceProviderSwitch s = new EventServiceProviderSwitch();
 
@@ -31,6 +33,11 @@ public class EventServiceDataProviderService extends AbstractDataProviderService
 
 	public void refresh(final EObject object, final IProgressMonitor monitor) {
 		// Pass...this data provider has no refresh concept
+	}
+	
+	@Override
+	public String getID() {
+		return ID;
 	}
 
 }

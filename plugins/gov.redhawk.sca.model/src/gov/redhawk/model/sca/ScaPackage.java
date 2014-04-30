@@ -99,7 +99,8 @@ public interface ScaPackage extends EPackage {
 	 */
 	int ISTATUS_PROVIDER_FEATURE_COUNT = 1;
 	/**
-	 * The meta object id for the '{@link gov.redhawk.model.sca.impl.DataProviderObjectImpl <em>Data Provider Object</em>}' class.
+	 * The meta object id for the '{@link gov.redhawk.model.sca.impl.DataProviderObjectImpl <em>Data Provider
+	 * Object</em>}' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @see gov.redhawk.model.sca.impl.DataProviderObjectImpl
@@ -140,13 +141,21 @@ public interface ScaPackage extends EPackage {
 	 */
 	int DATA_PROVIDER_OBJECT__DATA_PROVIDERS_ENABLED = ISTATUS_PROVIDER_FEATURE_COUNT + 2;
 	/**
+	 * The feature id for the '<em><b>Enabled Data Providers</b></em>' attribute list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int DATA_PROVIDER_OBJECT__ENABLED_DATA_PROVIDERS = ISTATUS_PROVIDER_FEATURE_COUNT + 3;
+	/**
 	 * The number of structural features of the '<em>Data Provider Object</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int DATA_PROVIDER_OBJECT_FEATURE_COUNT = ISTATUS_PROVIDER_FEATURE_COUNT + 3;
+	int DATA_PROVIDER_OBJECT_FEATURE_COUNT = ISTATUS_PROVIDER_FEATURE_COUNT + 4;
 	/**
 	 * The meta object id for the '{@link gov.redhawk.model.sca.impl.CorbaObjWrapperImpl <em>Corba Obj Wrapper</em>}' class.
 	 * <!-- begin-user-doc -->
@@ -188,6 +197,14 @@ public interface ScaPackage extends EPackage {
 	 * @ordered
 	 */
 	int CORBA_OBJ_WRAPPER__DATA_PROVIDERS_ENABLED = DATA_PROVIDER_OBJECT__DATA_PROVIDERS_ENABLED;
+	/**
+	 * The feature id for the '<em><b>Enabled Data Providers</b></em>' attribute list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CORBA_OBJ_WRAPPER__ENABLED_DATA_PROVIDERS = DATA_PROVIDER_OBJECT__ENABLED_DATA_PROVIDERS;
 	/**
 	 * The feature id for the '<em><b>Ior</b></em>' attribute.
 	 * <!-- begin-user-doc -->
@@ -370,6 +387,14 @@ public interface ScaPackage extends EPackage {
 	 */
 	int SCA_PROPERTY_CONTAINER__DATA_PROVIDERS_ENABLED = CORBA_OBJ_WRAPPER__DATA_PROVIDERS_ENABLED;
 	/**
+	 * The feature id for the '<em><b>Enabled Data Providers</b></em>' attribute list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int SCA_PROPERTY_CONTAINER__ENABLED_DATA_PROVIDERS = CORBA_OBJ_WRAPPER__ENABLED_DATA_PROVIDERS;
+	/**
 	 * The feature id for the '<em><b>Ior</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -483,6 +508,14 @@ public interface ScaPackage extends EPackage {
 	 * @ordered
 	 */
 	int SCA_ABSTRACT_COMPONENT__DATA_PROVIDERS_ENABLED = SCA_PROPERTY_CONTAINER__DATA_PROVIDERS_ENABLED;
+	/**
+	 * The feature id for the '<em><b>Enabled Data Providers</b></em>' attribute list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int SCA_ABSTRACT_COMPONENT__ENABLED_DATA_PROVIDERS = SCA_PROPERTY_CONTAINER__ENABLED_DATA_PROVIDERS;
 	/**
 	 * The feature id for the '<em><b>Ior</b></em>' attribute.
 	 * <!-- begin-user-doc -->
@@ -754,6 +787,14 @@ public interface ScaPackage extends EPackage {
 	 */
 	int SCA_COMPONENT__DATA_PROVIDERS_ENABLED = SCA_ABSTRACT_COMPONENT__DATA_PROVIDERS_ENABLED;
 	/**
+	 * The feature id for the '<em><b>Enabled Data Providers</b></em>' attribute list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int SCA_COMPONENT__ENABLED_DATA_PROVIDERS = SCA_ABSTRACT_COMPONENT__ENABLED_DATA_PROVIDERS;
+	/**
 	 * The feature id for the '<em><b>Ior</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -940,6 +981,14 @@ public interface ScaPackage extends EPackage {
 	 * @ordered
 	 */
 	int SCA_DEVICE__DATA_PROVIDERS_ENABLED = SCA_ABSTRACT_COMPONENT__DATA_PROVIDERS_ENABLED;
+	/**
+	 * The feature id for the '<em><b>Enabled Data Providers</b></em>' attribute list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int SCA_DEVICE__ENABLED_DATA_PROVIDERS = SCA_ABSTRACT_COMPONENT__ENABLED_DATA_PROVIDERS;
 	/**
 	 * The feature id for the '<em><b>Ior</b></em>' attribute.
 	 * <!-- begin-user-doc -->
@@ -1143,6 +1192,14 @@ public interface ScaPackage extends EPackage {
 	 */
 	int SCA_DEVICE_MANAGER__DATA_PROVIDERS_ENABLED = SCA_PROPERTY_CONTAINER__DATA_PROVIDERS_ENABLED;
 	/**
+	 * The feature id for the '<em><b>Enabled Data Providers</b></em>' attribute list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int SCA_DEVICE_MANAGER__ENABLED_DATA_PROVIDERS = SCA_PROPERTY_CONTAINER__ENABLED_DATA_PROVIDERS;
+	/**
 	 * The feature id for the '<em><b>Ior</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -1345,6 +1402,14 @@ public interface ScaPackage extends EPackage {
 	 */
 	int SCA_SERVICE__DATA_PROVIDERS_ENABLED = SCA_PROPERTY_CONTAINER__DATA_PROVIDERS_ENABLED;
 	/**
+	 * The feature id for the '<em><b>Enabled Data Providers</b></em>' attribute list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int SCA_SERVICE__ENABLED_DATA_PROVIDERS = SCA_PROPERTY_CONTAINER__ENABLED_DATA_PROVIDERS;
+	/**
 	 * The feature id for the '<em><b>Ior</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -1489,6 +1554,14 @@ public interface ScaPackage extends EPackage {
 	 */
 	int SCA_FILE_SYSTEM__DATA_PROVIDERS_ENABLED = CORBA_OBJ_WRAPPER__DATA_PROVIDERS_ENABLED;
 	/**
+	 * The feature id for the '<em><b>Enabled Data Providers</b></em>' attribute list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int SCA_FILE_SYSTEM__ENABLED_DATA_PROVIDERS = CORBA_OBJ_WRAPPER__ENABLED_DATA_PROVIDERS;
+	/**
 	 * The feature id for the '<em><b>Ior</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -1618,6 +1691,14 @@ public interface ScaPackage extends EPackage {
 	 * @ordered
 	 */
 	int SCA_DEVICE_MANAGER_FILE_SYSTEM__DATA_PROVIDERS_ENABLED = SCA_FILE_SYSTEM__DATA_PROVIDERS_ENABLED;
+	/**
+	 * The feature id for the '<em><b>Enabled Data Providers</b></em>' attribute list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int SCA_DEVICE_MANAGER_FILE_SYSTEM__ENABLED_DATA_PROVIDERS = SCA_FILE_SYSTEM__ENABLED_DATA_PROVIDERS;
 	/**
 	 * The feature id for the '<em><b>Ior</b></em>' attribute.
 	 * <!-- begin-user-doc -->
@@ -1805,6 +1886,14 @@ public interface ScaPackage extends EPackage {
 	 * @ordered
 	 */
 	int SCA_DOMAIN_MANAGER__DATA_PROVIDERS_ENABLED = SCA_PROPERTY_CONTAINER__DATA_PROVIDERS_ENABLED;
+	/**
+	 * The feature id for the '<em><b>Enabled Data Providers</b></em>' attribute list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int SCA_DOMAIN_MANAGER__ENABLED_DATA_PROVIDERS = SCA_PROPERTY_CONTAINER__ENABLED_DATA_PROVIDERS;
 	/**
 	 * The feature id for the '<em><b>Ior</b></em>' attribute.
 	 * <!-- begin-user-doc -->
@@ -2033,6 +2122,14 @@ public interface ScaPackage extends EPackage {
 	 */
 	int SCA_FILE_MANAGER__DATA_PROVIDERS_ENABLED = SCA_FILE_SYSTEM__DATA_PROVIDERS_ENABLED;
 	/**
+	 * The feature id for the '<em><b>Enabled Data Providers</b></em>' attribute list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int SCA_FILE_MANAGER__ENABLED_DATA_PROVIDERS = SCA_FILE_SYSTEM__ENABLED_DATA_PROVIDERS;
+	/**
 	 * The feature id for the '<em><b>Ior</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -2162,6 +2259,14 @@ public interface ScaPackage extends EPackage {
 	 * @ordered
 	 */
 	int SCA_DOMAIN_MANAGER_FILE_SYSTEM__DATA_PROVIDERS_ENABLED = SCA_FILE_MANAGER__DATA_PROVIDERS_ENABLED;
+	/**
+	 * The feature id for the '<em><b>Enabled Data Providers</b></em>' attribute list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int SCA_DOMAIN_MANAGER_FILE_SYSTEM__ENABLED_DATA_PROVIDERS = SCA_FILE_MANAGER__ENABLED_DATA_PROVIDERS;
 	/**
 	 * The feature id for the '<em><b>Ior</b></em>' attribute.
 	 * <!-- begin-user-doc -->
@@ -2333,6 +2438,14 @@ public interface ScaPackage extends EPackage {
 	 * @ordered
 	 */
 	int SCA_LOADABLE_DEVICE__DATA_PROVIDERS_ENABLED = SCA_DEVICE__DATA_PROVIDERS_ENABLED;
+	/**
+	 * The feature id for the '<em><b>Enabled Data Providers</b></em>' attribute list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int SCA_LOADABLE_DEVICE__ENABLED_DATA_PROVIDERS = SCA_DEVICE__ENABLED_DATA_PROVIDERS;
 	/**
 	 * The feature id for the '<em><b>Ior</b></em>' attribute.
 	 * <!-- begin-user-doc -->
@@ -2535,6 +2648,14 @@ public interface ScaPackage extends EPackage {
 	 * @ordered
 	 */
 	int SCA_EXECUTABLE_DEVICE__DATA_PROVIDERS_ENABLED = SCA_LOADABLE_DEVICE__DATA_PROVIDERS_ENABLED;
+	/**
+	 * The feature id for the '<em><b>Enabled Data Providers</b></em>' attribute list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int SCA_EXECUTABLE_DEVICE__ENABLED_DATA_PROVIDERS = SCA_LOADABLE_DEVICE__ENABLED_DATA_PROVIDERS;
 	/**
 	 * The feature id for the '<em><b>Ior</b></em>' attribute.
 	 * <!-- begin-user-doc -->
@@ -2809,6 +2930,14 @@ public interface ScaPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
+	int SCA_PORT__ENABLED_DATA_PROVIDERS = CORBA_OBJ_WRAPPER__ENABLED_DATA_PROVIDERS;
+	/**
+	 * The feature id for the '<em><b>Ior</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
 	int SCA_PORT__IOR = CORBA_OBJ_WRAPPER__IOR;
 	/**
 	 * The feature id for the '<em><b>Obj</b></em>' attribute.
@@ -2916,6 +3045,14 @@ public interface ScaPackage extends EPackage {
 	 * @ordered
 	 */
 	int SCA_PROVIDES_PORT__DATA_PROVIDERS_ENABLED = SCA_PORT__DATA_PROVIDERS_ENABLED;
+	/**
+	 * The feature id for the '<em><b>Enabled Data Providers</b></em>' attribute list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int SCA_PROVIDES_PORT__ENABLED_DATA_PROVIDERS = SCA_PORT__ENABLED_DATA_PROVIDERS;
 	/**
 	 * The feature id for the '<em><b>Ior</b></em>' attribute.
 	 * <!-- begin-user-doc -->
@@ -3274,6 +3411,14 @@ public interface ScaPackage extends EPackage {
 	 */
 	int SCA_USES_PORT__DATA_PROVIDERS_ENABLED = SCA_PORT__DATA_PROVIDERS_ENABLED;
 	/**
+	 * The feature id for the '<em><b>Enabled Data Providers</b></em>' attribute list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int SCA_USES_PORT__ENABLED_DATA_PROVIDERS = SCA_PORT__ENABLED_DATA_PROVIDERS;
+	/**
 	 * The feature id for the '<em><b>Ior</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -3436,6 +3581,14 @@ public interface ScaPackage extends EPackage {
 	 * @ordered
 	 */
 	int SCA_WAVEFORM__DATA_PROVIDERS_ENABLED = SCA_PROPERTY_CONTAINER__DATA_PROVIDERS_ENABLED;
+	/**
+	 * The feature id for the '<em><b>Enabled Data Providers</b></em>' attribute list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int SCA_WAVEFORM__ENABLED_DATA_PROVIDERS = SCA_PROPERTY_CONTAINER__ENABLED_DATA_PROVIDERS;
 	/**
 	 * The feature id for the '<em><b>Ior</b></em>' attribute.
 	 * <!-- begin-user-doc -->
@@ -3614,6 +3767,14 @@ public interface ScaPackage extends EPackage {
 	 * @ordered
 	 */
 	int SCA_WAVEFORM_FACTORY__DATA_PROVIDERS_ENABLED = CORBA_OBJ_WRAPPER__DATA_PROVIDERS_ENABLED;
+	/**
+	 * The feature id for the '<em><b>Enabled Data Providers</b></em>' attribute list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int SCA_WAVEFORM_FACTORY__ENABLED_DATA_PROVIDERS = CORBA_OBJ_WRAPPER__ENABLED_DATA_PROVIDERS;
 	/**
 	 * The feature id for the '<em><b>Ior</b></em>' attribute.
 	 * <!-- begin-user-doc -->
@@ -3890,6 +4051,14 @@ public interface ScaPackage extends EPackage {
 	 * @ordered
 	 */
 	int SCA_EVENT_CHANNEL__DATA_PROVIDERS_ENABLED = CORBA_OBJ_WRAPPER__DATA_PROVIDERS_ENABLED;
+	/**
+	 * The feature id for the '<em><b>Enabled Data Providers</b></em>' attribute list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int SCA_EVENT_CHANNEL__ENABLED_DATA_PROVIDERS = CORBA_OBJ_WRAPPER__ENABLED_DATA_PROVIDERS;
 	/**
 	 * The feature id for the '<em><b>Ior</b></em>' attribute.
 	 * <!-- begin-user-doc -->
@@ -4207,7 +4376,8 @@ public interface ScaPackage extends EPackage {
 	EReference getCorbaObjWrapper_FeatureData();
 
 	/**
-	 * Returns the meta object for class '{@link gov.redhawk.model.sca.DataProviderObject <em>Data Provider Object</em>}'.
+	 * Returns the meta object for class '{@link gov.redhawk.model.sca.DataProviderObject <em>Data Provider Object</em>}
+	 * '.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @return the meta object for class '<em>Data Provider Object</em>'.
@@ -4237,6 +4407,18 @@ public interface ScaPackage extends EPackage {
 	 * @generated
 	 */
 	EAttribute getDataProviderObject_DataProvidersEnabled();
+
+	/**
+	 * Returns the meta object for the attribute list '
+	 * {@link gov.redhawk.model.sca.DataProviderObject#getEnabledDataProviders <em>Enabled Data Providers</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute list '<em>Enabled Data Providers</em>'.
+	 * @see gov.redhawk.model.sca.DataProviderObject#getEnabledDataProviders()
+	 * @see #getDataProviderObject()
+	 * @generated
+	 */
+	EAttribute getDataProviderObject_EnabledDataProviders();
 
 	/**
 	 * Returns the meta object for class '{@link gov.redhawk.model.sca.IDisposable <em>IDisposable</em>}'.
@@ -4281,7 +4463,8 @@ public interface ScaPackage extends EPackage {
 	EAttribute getProfileObjectWrapper_ProfileURI();
 
 	/**
-	 * Returns the meta object for the reference '{@link gov.redhawk.model.sca.ProfileObjectWrapper#getProfileObj <em>Profile Obj</em>}'.
+	 * Returns the meta object for the reference '{@link gov.redhawk.model.sca.ProfileObjectWrapper#getProfileObj
+	 * <em>Profile Obj</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @return the meta object for the reference '<em>Profile Obj</em>'.
@@ -4292,7 +4475,8 @@ public interface ScaPackage extends EPackage {
 	EReference getProfileObjectWrapper_ProfileObj();
 
 	/**
-	 * Returns the meta object for the attribute '{@link gov.redhawk.model.sca.ProfileObjectWrapper#getRootFileStore <em>Root File Store</em>}'.
+	 * Returns the meta object for the attribute '{@link gov.redhawk.model.sca.ProfileObjectWrapper#getRootFileStore
+	 * <em>Root File Store</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @return the meta object for the attribute '<em>Root File Store</em>'.
@@ -5995,6 +6179,13 @@ public interface ScaPackage extends EPackage {
 		 * @generated
 		 */
 		EAttribute DATA_PROVIDER_OBJECT__DATA_PROVIDERS_ENABLED = eINSTANCE.getDataProviderObject_DataProvidersEnabled();
+		/**
+		 * The meta object literal for the '<em><b>Enabled Data Providers</b></em>' attribute list feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute DATA_PROVIDER_OBJECT__ENABLED_DATA_PROVIDERS = eINSTANCE.getDataProviderObject_EnabledDataProviders();
 		/**
 		 * The meta object literal for the '{@link gov.redhawk.model.sca.IDisposable <em>IDisposable</em>}' class.
 		 * <!-- begin-user-doc -->

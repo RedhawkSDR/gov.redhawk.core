@@ -20,6 +20,8 @@ import org.eclipse.emf.ecore.EObject;
  * 
  */
 public class FrontEndDataProviderFactory extends AbstractDataProviderService {
+	
+	public static final String ID = "gov.redhawk.frontend.provider";
 
 	@Override
 	protected IScaDataProvider createDataProvider(EObject object) {
@@ -27,6 +29,11 @@ public class FrontEndDataProviderFactory extends AbstractDataProviderService {
 			return new FrontEndDataProvider((ScaDevice< ? >) object);
 		}
 		return null;
+	}
+	
+	@Override
+	public String getID() {
+		return ID;
 	}
 
 }

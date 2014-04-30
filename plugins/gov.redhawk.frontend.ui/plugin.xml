@@ -5,6 +5,7 @@
          point="org.eclipse.ui.navigator.navigatorContent">
       <navigatorContent
             activeByDefault="true"
+            appearsBefore="gov.redhawk.ui.navigatorContent"
             contentProvider="gov.redhawk.frontend.ui.internal.FrontEndContentProvider"
             id="gov.redhawk.frontend.ui.navigatorContent"
             labelProvider="gov.redhawk.frontend.ui.internal.FrontEndLabelProvider"
