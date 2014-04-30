@@ -35,5 +35,8 @@ public interface IScaDataProviderService {
 	 */
 	public void dispose();
 	
+	/**
+	 * @since 19.0
+	 */
 	public String getID();
 }

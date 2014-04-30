@@ -143,6 +143,7 @@ public interface ScaPackage extends EPackage {
 	/**
 	 * The feature id for the '<em><b>Enabled Data Providers</b></em>' attribute list.
 	 * <!-- begin-user-doc -->
+	 * @since 19.0
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
@@ -200,6 +201,7 @@ public interface ScaPackage extends EPackage {
 	/**
 	 * The feature id for the '<em><b>Enabled Data Providers</b></em>' attribute list.
 	 * <!-- begin-user-doc -->
+	 * @since 19.0
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
@@ -389,6 +391,7 @@ public interface ScaPackage extends EPackage {
 	/**
 	 * The feature id for the '<em><b>Enabled Data Providers</b></em>' attribute list.
 	 * <!-- begin-user-doc -->
+	 * @since 19.0
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
@@ -511,6 +514,7 @@ public interface ScaPackage extends EPackage {
 	/**
 	 * The feature id for the '<em><b>Enabled Data Providers</b></em>' attribute list.
 	 * <!-- begin-user-doc -->
+	 * @since 19.0
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
@@ -789,6 +793,7 @@ public interface ScaPackage extends EPackage {
 	/**
 	 * The feature id for the '<em><b>Enabled Data Providers</b></em>' attribute list.
 	 * <!-- begin-user-doc -->
+	 * @since 19.0
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
@@ -984,6 +989,7 @@ public interface ScaPackage extends EPackage {
 	/**
 	 * The feature id for the '<em><b>Enabled Data Providers</b></em>' attribute list.
 	 * <!-- begin-user-doc -->
+	 * @since 19.0
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
@@ -1194,6 +1200,7 @@ public interface ScaPackage extends EPackage {
 	/**
 	 * The feature id for the '<em><b>Enabled Data Providers</b></em>' attribute list.
 	 * <!-- begin-user-doc -->
+	 * @since 19.0
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
@@ -1404,6 +1411,7 @@ public interface ScaPackage extends EPackage {
 	/**
 	 * The feature id for the '<em><b>Enabled Data Providers</b></em>' attribute list.
 	 * <!-- begin-user-doc -->
+	 * @since 19.0
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
@@ -1556,6 +1564,7 @@ public interface ScaPackage extends EPackage {
 	/**
 	 * The feature id for the '<em><b>Enabled Data Providers</b></em>' attribute list.
 	 * <!-- begin-user-doc -->
+	 * @since 19.0
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
@@ -1694,6 +1703,7 @@ public interface ScaPackage extends EPackage {
 	/**
 	 * The feature id for the '<em><b>Enabled Data Providers</b></em>' attribute list.
 	 * <!-- begin-user-doc -->
+	 * @since 19.0
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
@@ -1889,6 +1899,7 @@ public interface ScaPackage extends EPackage {
 	/**
 	 * The feature id for the '<em><b>Enabled Data Providers</b></em>' attribute list.
 	 * <!-- begin-user-doc -->
+	 * @since 19.0
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
@@ -2124,6 +2135,7 @@ public interface ScaPackage extends EPackage {
 	/**
 	 * The feature id for the '<em><b>Enabled Data Providers</b></em>' attribute list.
 	 * <!-- begin-user-doc -->
+	 * @since 19.0
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
@@ -2262,6 +2274,7 @@ public interface ScaPackage extends EPackage {
 	/**
 	 * The feature id for the '<em><b>Enabled Data Providers</b></em>' attribute list.
 	 * <!-- begin-user-doc -->
+	 * @since 19.0
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
@@ -2441,6 +2454,7 @@ public interface ScaPackage extends EPackage {
 	/**
 	 * The feature id for the '<em><b>Enabled Data Providers</b></em>' attribute list.
 	 * <!-- begin-user-doc -->
+	 * @since 19.0
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
@@ -2651,6 +2665,7 @@ public interface ScaPackage extends EPackage {
 	/**
 	 * The feature id for the '<em><b>Enabled Data Providers</b></em>' attribute list.
 	 * <!-- begin-user-doc -->
+	 * @since 19.0
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
@@ -2926,6 +2941,7 @@ public interface ScaPackage extends EPackage {
 	/**
 	 * The feature id for the '<em><b>Ior</b></em>' attribute.
 	 * <!-- begin-user-doc -->
+	 * @since 19.0
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
@@ -3048,6 +3064,7 @@ public interface ScaPackage extends EPackage {
 	/**
 	 * The feature id for the '<em><b>Enabled Data Providers</b></em>' attribute list.
 	 * <!-- begin-user-doc -->
+	 * @since 19.0
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
@@ -3413,6 +3430,7 @@ public interface ScaPackage extends EPackage {
 	/**
 	 * The feature id for the '<em><b>Enabled Data Providers</b></em>' attribute list.
 	 * <!-- begin-user-doc -->
+	 * @since 19.0
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
@@ -3584,6 +3602,7 @@ public interface ScaPackage extends EPackage {
 	/**
 	 * The feature id for the '<em><b>Enabled Data Providers</b></em>' attribute list.
 	 * <!-- begin-user-doc -->
+	 * @since 19.0
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
@@ -3770,6 +3789,7 @@ public interface ScaPackage extends EPackage {
 	/**
 	 * The feature id for the '<em><b>Enabled Data Providers</b></em>' attribute list.
 	 * <!-- begin-user-doc -->
+	 * @since 19.0
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
@@ -4054,6 +4074,7 @@ public interface ScaPackage extends EPackage {
 	/**
 	 * The feature id for the '<em><b>Enabled Data Providers</b></em>' attribute list.
 	 * <!-- begin-user-doc -->
+	 * @since 19.0
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
@@ -4412,6 +4433,7 @@ public interface ScaPackage extends EPackage {
 	 * Returns the meta object for the attribute list '
 	 * {@link gov.redhawk.model.sca.DataProviderObject#getEnabledDataProviders <em>Enabled Data Providers</em>}'.
 	 * <!-- begin-user-doc -->
+	 * @since 19.0
 	 * <!-- end-user-doc -->
 	 * @return the meta object for the attribute list '<em>Enabled Data Providers</em>'.
 	 * @see gov.redhawk.model.sca.DataProviderObject#getEnabledDataProviders()
@@ -6182,6 +6204,7 @@ public interface ScaPackage extends EPackage {
 		/**
 		 * The meta object literal for the '<em><b>Enabled Data Providers</b></em>' attribute list feature.
 		 * <!-- begin-user-doc -->
+		 * @since 19.0
 		 * <!-- end-user-doc -->
 		 * @generated
 		 */
