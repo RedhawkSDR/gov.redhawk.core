@@ -512,7 +512,7 @@ public class OutFloatPort extends BULKIO.UsesPortStatisticsProviderPOA {
             if (port != null)
             {
                 float[] odata = new float[0];
-                BULKIO.PrecisionUTCTime tstamp = bulkio.time.utils.now();
+                BULKIO.PrecisionUTCTime tstamp = bulkio.time.utils.notSet();
                 for (Map.Entry<String, SriMapStruct > entry: this.currentSRIs.entrySet()) {
                     String streamID = entry.getKey();
                     if (entry.getValue().connections.contains(connectionId)) {
@@ -559,7 +559,7 @@ public class OutFloatPort extends BULKIO.UsesPortStatisticsProviderPOA {
         }
 
         if ( callback != null ) {
-            callback.connect(connectionId);
+            callback.disconnect(connectionId);
         }
 
         if ( logger != null ) {
