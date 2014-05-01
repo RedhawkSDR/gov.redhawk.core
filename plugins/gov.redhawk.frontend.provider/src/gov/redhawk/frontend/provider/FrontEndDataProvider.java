@@ -149,7 +149,7 @@ public class FrontEndDataProvider extends AbstractDataProvider {
 
 	private final TunerContainer container = FrontendFactory.eINSTANCE.createTunerContainer();
 
-	private Job fetchAndPopulate = new Job("Fetch and populate Front End Device") {
+	private Job fetchAndPopulate = new Job("Fetch and populate FrontEnd Device") {
 		{
 			setUser(false);
 			setSystem(true);
@@ -300,7 +300,7 @@ public class FrontEndDataProvider extends AbstractDataProvider {
 			FrontEndDataActivator plugin = FrontEndDataActivator.getInstance();
 			if (plugin != null) {
 				plugin.getLog().log(
-					new Status(IStatus.ERROR, "Device " + device.getIdentifier() + " is not a valid front end device, missing property: "
+					new Status(IStatus.ERROR, "Device " + device.getIdentifier() + " is not a valid FrontEnd device, missing property: "
 							+ StatusProperties.FRONTEND_TUNER_STATUS.getId(), null));
 			}
 			return;
