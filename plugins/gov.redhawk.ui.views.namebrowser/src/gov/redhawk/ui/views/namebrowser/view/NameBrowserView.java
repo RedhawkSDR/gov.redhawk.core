@@ -136,7 +136,7 @@ public class NameBrowserView extends ViewPart {
 		this.nameServerField.setToolTipText("The CORBA URI of the NameServer");
 		this.nameServerField.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false, 1, 1));
 		this.nameServerField.setText("");
-		//disable connect button when name server text empty
+		// disable connect button when name server text empty
 		nameServerField.addModifyListener(new ModifyListener() {
 			@Override
 			public void modifyText(ModifyEvent e) {
@@ -144,7 +144,7 @@ public class NameBrowserView extends ViewPart {
 				connectButton.setEnabled(!newRef.isEmpty());
 			}
 		});
-		//this listener doesn't seem to do anything.
+		// this listener doesn't seem to do anything.
 		this.nameServerField.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetDefaultSelected(final SelectionEvent e) {
@@ -327,6 +327,21 @@ public class NameBrowserView extends ViewPart {
 			}
 		}
 
+		// Local-host can be connected to by multiple strings.
+		// Check to make sure duplicate connections are not made to local-host.
+		List<String> localhostVariants = new ArrayList<String>(Arrays.asList("corbaname::", "corbaname::localhost", "corbaname::127.0.0.1"));
+		for (String localhostVariant : localhostVariants) {
+			if (localhostVariant.equals(newRef)) {
+				for (final BindingNode node : this.connectedHosts) {
+					if (localhostVariants.contains(node.getHost())) {
+						return;
+					}
+				}
+				// Set all local-host connections to the same string
+				newRef = "corbaname::127.0.0.1";
+			}
+		}
+
 		connect(newRef);
 		this.nameServerHistory.add(newRef);
 		final List<String> tmpList = new ArrayList<String>(this.nameServerHistory);
@@ -473,9 +488,9 @@ public class NameBrowserView extends ViewPart {
 						// Destroy the context
 						c.destroy();
 					} catch (final UserException e) {
-						// PASS 
+						// PASS
 					} catch (final SystemException e) {
-						// PASS 
+						// PASS
 					}
 				}
 
@@ -483,7 +498,7 @@ public class NameBrowserView extends ViewPart {
 				try {
 					context.unbind(b.binding_name);
 				} catch (final UserException e) {
-					// PASS 
+					// PASS
 				} catch (final SystemException e) {
 					// PASS
 				}
