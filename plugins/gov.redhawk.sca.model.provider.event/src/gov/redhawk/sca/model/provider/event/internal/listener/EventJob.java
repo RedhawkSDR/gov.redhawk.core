@@ -14,6 +14,7 @@ package gov.redhawk.sca.model.provider.event.internal.listener;
 import gov.redhawk.model.sca.ScaDomainManager;
 import gov.redhawk.sca.model.provider.event.AbstractEventChannelDataProvider;
 import gov.redhawk.sca.model.provider.event.DataProviderActivator;
+import gov.redhawk.sca.util.ORBUtil;
 import gov.redhawk.sca.util.OrbSession;
 import gov.redhawk.sca.util.SilentJob;
 
@@ -203,7 +204,7 @@ public class EventJob extends SilentJob implements PushConsumerOperations {
 							// PASS
 						} finally {
 							if (localStub != null) {
-								localStub._release();
+								ORBUtil.release(localStub);
 							}
 							if (localSession != null) {
 								localSession.dispose();

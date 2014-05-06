@@ -11,6 +11,7 @@
  */
 package gov.redhawk.ui.port.playaudio.internal.corba;
 
+import gov.redhawk.sca.util.ORBUtil;
 import gov.redhawk.sca.util.OrbSession;
 import gov.redhawk.sca.util.PluginUtil;
 import gov.redhawk.ui.port.playaudio.controller.AudioController;
@@ -336,7 +337,7 @@ public class CorbaReceiver implements dataShortOperations, dataCharOperations, d
 				} catch (final WrongAdapter e) {
 					// PASS
 				}
-				port._release();
+				ORBUtil.release(port);
 			}
 		} else {
 			// loop through all the ports and disconnect/release

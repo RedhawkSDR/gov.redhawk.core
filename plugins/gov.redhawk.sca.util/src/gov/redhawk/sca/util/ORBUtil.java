@@ -13,6 +13,9 @@ package gov.redhawk.sca.util;
 
 import java.util.Properties;
 
+import mil.jpeojtrs.sca.util.ProtectedThreadExecutor;
+
+import org.eclipse.jdt.annotation.Nullable;
 import org.omg.CORBA.ORB;
 
 /**
@@ -33,5 +36,23 @@ public final class ORBUtil {
 
 	public static ORB init(final Properties properties) {
 		return org.jacorb.JacorbUtil.init(properties);
+	}
+	
+	/**
+	 * Releases the CORBA object in a background thread asyncronously
+	 * @since 3.4
+	 */
+	public static void release(@Nullable final org.omg.CORBA.Object obj) {
+		if (obj == null) {
+			return;
+		}
+		ProtectedThreadExecutor.async(new Runnable() {
+
+			@Override
+			public void run() {
+				obj._release();
+			}
+			
+		});
 	}
 }

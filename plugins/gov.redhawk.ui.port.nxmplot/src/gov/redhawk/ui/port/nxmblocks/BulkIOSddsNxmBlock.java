@@ -15,6 +15,7 @@ import gov.redhawk.bulkio.util.AbstractBulkIOSDDSPort;
 import gov.redhawk.bulkio.util.AbstractBulkIOSDDSPort.SddsStreamSession;
 import gov.redhawk.model.sca.ScaUsesPort;
 import gov.redhawk.sca.util.Debug;
+import gov.redhawk.sca.util.ORBUtil;
 import gov.redhawk.sca.util.OrbSession;
 import gov.redhawk.ui.port.nxmplot.AbstractNxmPlotWidget;
 import gov.redhawk.ui.port.nxmplot.PlotActivator;
@@ -224,7 +225,7 @@ public class BulkIOSddsNxmBlock extends SddsNxmBlock {
 			// PASS
 		}
 		if (corbaObjRef != null) {
-			corbaObjRef._release(); // release corba object reference
+			ORBUtil.release(corbaObjRef); // release corba object reference
 			corbaObjRef = null;
 		}
 		if (sddsPort != null) {

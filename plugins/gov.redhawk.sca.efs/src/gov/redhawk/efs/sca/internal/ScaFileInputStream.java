@@ -11,6 +11,8 @@
  */
 package gov.redhawk.efs.sca.internal;
 
+import gov.redhawk.sca.util.ORBUtil;
+
 import java.io.IOException;
 import java.io.InputStream;
 
@@ -61,7 +63,7 @@ public class ScaFileInputStream extends InputStream {
 			throw ex;
 		} finally {
 			if (this.file != null) {
-				this.file._release();
+				ORBUtil.release(this.file);
 			}
 			this.file = null;
 		}

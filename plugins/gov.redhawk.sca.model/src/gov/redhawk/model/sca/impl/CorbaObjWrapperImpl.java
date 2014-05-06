@@ -20,13 +20,17 @@ import gov.redhawk.model.sca.commands.SetLocalAttributeCommand;
 import gov.redhawk.model.sca.commands.UnsetLocalAttributeCommand;
 import gov.redhawk.model.sca.commands.VersionedFeature;
 import gov.redhawk.model.sca.commands.VersionedFeature.Transaction;
+import gov.redhawk.sca.util.ORBUtil;
+
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeoutException;
+
 import mil.jpeojtrs.sca.util.ProtectedThreadExecutor;
+
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
@@ -361,7 +365,7 @@ public abstract class CorbaObjWrapperImpl< T extends org.omg.CORBA.Object > exte
 
 						@Override
 						protected IStatus runSilent(IProgressMonitor monitor) {
-							((org.omg.CORBA.Object) msg.getOldValue())._release();
+							ORBUtil.release(((org.omg.CORBA.Object) msg.getOldValue()));
 							return Status.OK_STATUS;
 						}
 					};

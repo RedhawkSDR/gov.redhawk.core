@@ -16,6 +16,7 @@ import java.io.File;
 import gov.redhawk.core.filemanager.filesystem.BundleFileSystem;
 import gov.redhawk.core.filemanager.filesystem.FileStoreFileSystem;
 import gov.redhawk.core.filemanager.filesystem.JavaFileSystem;
+import gov.redhawk.sca.util.ORBUtil;
 import gov.redhawk.sca.util.OrbSession;
 
 import org.eclipse.core.filesystem.EFS;
@@ -177,11 +178,11 @@ public abstract class ResourceDesc {
 			}
 		}
 		if (fileSystemRef != null) {
-			fileSystemRef._release();
+			ORBUtil.release(fileSystemRef);
 			fileSystemRef = null;
 		}
 		if (factoryRef != null) {
-			factoryRef._release();
+			ORBUtil.release(factoryRef);
 			factoryRef = null;
 		}
 		if (session != null) {

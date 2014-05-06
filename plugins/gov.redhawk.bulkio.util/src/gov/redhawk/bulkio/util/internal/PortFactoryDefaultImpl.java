@@ -10,11 +10,11 @@
  *******************************************************************************/
 package gov.redhawk.bulkio.util.internal;
 
-
 import gov.redhawk.bulkio.util.BulkIOType;
 import gov.redhawk.bulkio.util.BulkIOUtilActivator;
 import gov.redhawk.bulkio.util.IPortFactory;
 import gov.redhawk.bulkio.util.PortReference;
+import gov.redhawk.sca.util.ORBUtil;
 import gov.redhawk.sca.util.OrbSession;
 
 import org.eclipse.core.runtime.CoreException;
@@ -34,7 +34,7 @@ import CF.PortPackage.OccupiedPort;
  * 
  */
 public class PortFactoryDefaultImpl implements IPortFactory {
-	
+
 	private static final OrbSession SESSION = OrbSession.createSession();
 
 	/*
@@ -43,14 +43,14 @@ public class PortFactoryDefaultImpl implements IPortFactory {
 	@Override
 	public PortReference connect(final String connectionID, String portIor, BulkIOType type, updateSRIOperations handler) throws CoreException {
 		Servant tie = createTie(type, handler);
-		
+
 		try {
 			org.omg.CORBA.Object portRef = SESSION.getOrb().string_to_object(portIor);
 			final Port port = PortHelper.narrow(portRef);
 			final org.omg.CORBA.Object ref = SESSION.getPOA().servant_to_reference(tie);
 			port.connectPort(ref, connectionID);
 			return new PortReference() {
-				
+
 				@Override
 				public void dispose() {
 					try {
@@ -60,11 +60,8 @@ public class PortFactoryDefaultImpl implements IPortFactory {
 					} catch (SystemException e) {
 						// PASS
 					}
-					try {
-						ref._release();
-					} catch (SystemException e) {
-						// PASS
-					}
+					ORBUtil.release(ref);
+
 				}
 			};
 		} catch (ServantNotActive e) {

@@ -24,6 +24,7 @@ import gov.redhawk.sca.properties.IPropertiesProviderRegistry;
 import gov.redhawk.sca.properties.PropertiesProviderRegistry;
 import gov.redhawk.sca.util.CorbaURIUtil;
 import gov.redhawk.sca.util.IPreferenceAccessor;
+import gov.redhawk.sca.util.ORBUtil;
 import gov.redhawk.sca.util.OrbSession;
 import gov.redhawk.sca.util.ScopedPreferenceAccessor;
 
@@ -421,11 +422,11 @@ public class ScaPlugin extends Plugin {
 		} finally {
 			subMonitor.done();
 			if (rootContext != null) {
-				rootContext._release();
+				ORBUtil.release(rootContext);
 				rootContext = null;
 			}
 			if (object != null) {
-				object._release();
+				ORBUtil.release(object);
 				object = null;
 			}
 			session.dispose();
@@ -521,19 +522,15 @@ public class ScaPlugin extends Plugin {
 							retVal.add(b.binding_name[0].id);
 						}
 					} finally {
-						if (object != null) {
-							object._release();
-							object = null;
-						}
+						ORBUtil.release(object);
+						object = null;
 					}
 				}
 			}
 			return retVal.toArray(new String[retVal.size()]);
 		} finally {
 			subMonitor.done();
-			if (rootContext != null) {
-				rootContext._release();
-			}
+			ORBUtil.release(rootContext);
 			session.dispose();
 		}
 	}

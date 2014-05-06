@@ -13,6 +13,7 @@ package gov.redhawk.ui.views.namebrowser.view;
 
 import gov.redhawk.sca.util.CorbaURIUtil;
 import gov.redhawk.sca.util.Debug;
+import gov.redhawk.sca.util.ORBUtil;
 import gov.redhawk.sca.util.OrbSession;
 import gov.redhawk.ui.views.namebrowser.NameBrowserPlugin;
 
@@ -186,7 +187,7 @@ public class BindingNode implements IPropertySource {
 			this.info.session = null;
 		}
 		if (this.info.namingContext != null) {
-			this.info.namingContext._release();
+			ORBUtil.release(this.info.namingContext);
 			this.info.namingContext = null;
 		}
 	}
@@ -327,7 +328,7 @@ public class BindingNode implements IPropertySource {
 					continue;
 				} finally {
 					if (objRef != null) {
-						objRef._release();
+						ORBUtil.release(objRef);
 						objRef = null;
 					}
 				}
