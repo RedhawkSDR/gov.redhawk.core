@@ -30,7 +30,6 @@ import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.Nullable;
-import org.jacorb.eclipse.JacorbEclipseActivator;
 import org.omg.CORBA.ORB;
 import org.omg.CORBA.ORBPackage.InvalidName;
 import org.omg.PortableServer.POA;
@@ -98,10 +97,6 @@ public class OrbSession {
 		return createSession(id, Platform.getApplicationArgs(), System.getProperties());
 	}
 	
-	static {
-		JacorbEclipseActivator.getDefault().init();
-	}
-
 	/**
 	 * Returns an orb session with a given ID
 	 * @param id id of the session

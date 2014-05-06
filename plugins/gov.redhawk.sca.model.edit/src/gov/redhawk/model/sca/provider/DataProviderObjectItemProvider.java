@@ -87,6 +87,7 @@ public class DataProviderObjectItemProvider extends IStatusProviderItemProvider 
 	/**
 	 * This adds a property descriptor for the Enabled Data Providers feature.
 	 * <!-- begin-user-doc -->
+	 * @since 12.2
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */

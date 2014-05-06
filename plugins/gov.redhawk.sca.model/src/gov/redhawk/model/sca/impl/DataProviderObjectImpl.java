@@ -118,6 +118,7 @@ public abstract class DataProviderObjectImpl extends IStatusProviderImpl impleme
 	/**
 	 * The cached value of the '{@link #getEnabledDataProviders() <em>Enabled Data Providers</em>}' attribute list.
 	 * <!-- begin-user-doc -->
+	 * @since 19.0
 	 * <!-- end-user-doc -->
 	 * @see #getEnabledDataProviders()
 	 * @generated
@@ -222,6 +223,7 @@ public abstract class DataProviderObjectImpl extends IStatusProviderImpl impleme
 
 	/**
 	 * <!-- begin-user-doc -->
+	 * @since 19.0
 	 * <!-- end-user-doc -->
 	 * @generated NOT
 	 */
@@ -632,6 +634,7 @@ public abstract class DataProviderObjectImpl extends IStatusProviderImpl impleme
 
 	/**
 	 * <!-- begin-user-doc -->
+	 * @since 19.0
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */

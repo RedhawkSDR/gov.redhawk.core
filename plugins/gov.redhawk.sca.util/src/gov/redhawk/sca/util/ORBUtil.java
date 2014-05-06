@@ -11,13 +11,8 @@
  */
 package gov.redhawk.sca.util;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Map.Entry;
 import java.util.Properties;
 
-import org.eclipse.core.runtime.ISafeRunnable;
-import org.eclipse.core.runtime.SafeRunner;
 import org.omg.CORBA.ORB;
 
 /**
@@ -29,39 +24,14 @@ public final class ORBUtil {
 
 	}
 
-	private static final String CORBA_NAMESPACE = "org.omg.CORBA.";
-
 	/**
 	 * @since 3.1
 	 */
 	public static ORB init(final String[] args, final Properties properties) {
-		if (properties != null) {
-			Map<Object, Object> newElements = new HashMap<Object, Object>();
-			for (Entry<Object, Object> entry : properties.entrySet()) {
-				Object key = entry.getKey();
-				if (key instanceof String && ((String) key).startsWith(CORBA_NAMESPACE)) {
-					newElements.put(((String) key).substring(CORBA_NAMESPACE.length()), entry.getValue());
-				}
-			}
-			properties.putAll(newElements);
-		}
-		final ORB [] retVal = new ORB[1];
-		SafeRunner.run(new ISafeRunnable() {
-			
-			@Override
-			public void run() throws Exception {
-				retVal[0] = ORB.init(args, properties);
-			}
-			
-			@Override
-			public void handleException(Throwable exception) {
-				
-			}
-		});
-		return retVal[0];
+		return org.jacorb.JacorbUtil.init(args, properties);
 	}
 
 	public static ORB init(final Properties properties) {
-		return ORBUtil.init((String[]) null, properties);
+		return org.jacorb.JacorbUtil.init(properties);
 	}
 }

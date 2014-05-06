@@ -6,9 +6,7 @@ Bundle-Version: 1.10.0.qualifier
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Require-Bundle: omnijni;bundle-version="1.10.0";visibility:=reexport,
  idl.cf;bundle-version="1.10.0";visibility:=reexport,
- org.jacorb.eclipse;bundle-version="1.1.0";visibility:=reexport,
- org.jacorb;bundle-version="3.3.0";visibility:=reexport,
- org.jacorb.services;bundle-version="3.3.0";visibility:=reexport
+ org.jacorb;bundle-version="3.3.0";visibility:=reexport
 Bundle-Vendor: REDHAWK
 Export-Package: CF.jni,
  ExtendedCF.jni,

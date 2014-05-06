@@ -114,10 +114,7 @@ public interface DataProviderObject extends IStatusProvider, IDisposable, IRefre
 	 * Returns the value of the '<em><b>Enabled Data Providers</b></em>' attribute list.
 	 * The list contents are of type {@link java.lang.String}.
 	 * <!-- begin-user-doc -->
-	 * <p>
-	 * If the meaning of the '<em>Enabled Data Providers</em>' attribute list isn't clear,
-	 * there really should be more of a description here...
-	 * </p>
+	 * @since 19.0
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Enabled Data Providers</em>' attribute list.
 	 * @see gov.redhawk.model.sca.ScaPackage#getDataProviderObject_EnabledDataProviders()
