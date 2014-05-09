@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <site>
-   <feature url="features/gov.redhawk.core.sdk_1.8.6.qualifier.jar" id="gov.redhawk.core.sdk" version="1.8.6.qualifier">
+   <feature url="features/gov.redhawk.core.sdk_1.8.7.qualifier.jar" id="gov.redhawk.core.sdk" version="1.8.7.qualifier">
       <category name="gov.redhawk.core"/>
    </feature>
    <category-def name="gov.redhawk.core" label="REDHAWK Core"/>

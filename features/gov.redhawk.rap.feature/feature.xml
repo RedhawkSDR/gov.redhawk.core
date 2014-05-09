@@ -12,7 +12,7 @@
 <feature
       id="gov.redhawk.rap.feature"
       label="%featureName"
-      version="1.8.6.qualifier"
+      version="1.8.7.qualifier"
       provider-name="%providerName"
       plugin="gov.redhawk.rap">
 

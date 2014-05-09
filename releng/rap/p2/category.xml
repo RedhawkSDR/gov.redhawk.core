@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <site>
-   <feature url="features/gov.redhawk.rap.feature_1.8.6.qualifier.jar" id="gov.redhawk.rap.feature" version="1.8.6.qualifier">
+   <feature url="features/gov.redhawk.rap.feature_1.8.7.qualifier.jar" id="gov.redhawk.rap.feature" version="1.8.7.qualifier">
       <category name="gov.redhawk.core"/>
    </feature>
-   <feature url="features/gov.redhawk.rap.sdk_1.8.6.qualifier.jar" id="gov.redhawk.rap.sdk" version="1.8.6.qualifier">
+   <feature url="features/gov.redhawk.rap.sdk_1.8.7.qualifier.jar" id="gov.redhawk.rap.sdk" version="1.8.7.qualifier">
       <category name="gov.redhawk.core"/>
    </feature>
       <category-def name="gov.redhawk.core.rap" label="REDHAWK RAP Core"/>
