@@ -22,18 +22,20 @@ import org.eclipse.emf.common.util.EList;
  * @noimplement This interface is not intended to be implemented by clients.
  * @since 9.0
  * <!-- end-user-doc -->
- *
+ * 
  * <p>
  * The following features are supported:
  * <ul>
- *   <li>{@link gov.redhawk.model.sca.DataProviderObject#getDataProviders <em>Data Providers</em>}</li>
- *   <li>{@link gov.redhawk.model.sca.DataProviderObject#isDataProvidersEnabled <em>Data Providers Enabled</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.DataProviderObject#getDataProviders <em>Data Providers</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.DataProviderObject#isDataProvidersEnabled <em>Data Providers Enabled</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.DataProviderObject#getEnabledDataProviders <em>Enabled Data Providers</em>}</li>
  * </ul>
  * </p>
- *
+ * 
  * @see gov.redhawk.model.sca.ScaPackage#getDataProviderObject()
- * @model abstract="true" superTypes="gov.redhawk.model.sca.IStatusProvider gov.redhawk.model.sca.IDisposable gov.redhawk.model.sca.IRefreshable"
- *        extendedMetaData="name='DataProviderObject' kind='empty'"
+ * @model abstract="true" superTypes=
+ * "gov.redhawk.model.sca.IStatusProvider gov.redhawk.model.sca.IDisposable gov.redhawk.model.sca.IRefreshable"
+ * extendedMetaData="name='DataProviderObject' kind='empty'"
  * @generated
  */
 public interface DataProviderObject extends IStatusProvider, IDisposable, IRefreshable {
@@ -52,13 +54,14 @@ public interface DataProviderObject extends IStatusProvider, IDisposable, IRefre
 	 * @see #unsetDataProviders()
 	 * @see gov.redhawk.model.sca.ScaPackage#getDataProviderObject_DataProviders()
 	 * @model unsettable="true" dataType="gov.redhawk.model.sca.IScaDataProvider" transient="true"
-	 *        extendedMetaData="kind='attribute' name='dataProviders'"
+	 * extendedMetaData="kind='attribute' name='dataProviders'"
 	 * @generated
 	 */
 	EList<IScaDataProvider> getDataProviders();
 
 	/**
-	 * Unsets the value of the '{@link gov.redhawk.model.sca.DataProviderObject#getDataProviders <em>Data Providers</em>}' attribute list.
+	 * Unsets the value of the '{@link gov.redhawk.model.sca.DataProviderObject#getDataProviders <em>Data
+	 * Providers</em>}' attribute list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @see #isSetDataProviders()
@@ -68,7 +71,8 @@ public interface DataProviderObject extends IStatusProvider, IDisposable, IRefre
 	void unsetDataProviders();
 
 	/**
-	 * Returns whether the value of the '{@link gov.redhawk.model.sca.DataProviderObject#getDataProviders <em>Data Providers</em>}' attribute list is set.
+	 * Returns whether the value of the '{@link gov.redhawk.model.sca.DataProviderObject#getDataProviders <em>Data
+	 * Providers</em>}' attribute list is set.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @return whether the value of the '<em>Data Providers</em>' attribute list is set.
@@ -96,7 +100,8 @@ public interface DataProviderObject extends IStatusProvider, IDisposable, IRefre
 	boolean isDataProvidersEnabled();
 
 	/**
-	 * Sets the value of the '{@link gov.redhawk.model.sca.DataProviderObject#isDataProvidersEnabled <em>Data Providers Enabled</em>}' attribute.
+	 * Sets the value of the '{@link gov.redhawk.model.sca.DataProviderObject#isDataProvidersEnabled <em>Data Providers
+	 * Enabled</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @param value the new value of the '<em>Data Providers Enabled</em>' attribute.
@@ -104,6 +109,19 @@ public interface DataProviderObject extends IStatusProvider, IDisposable, IRefre
 	 * @generated
 	 */
 	void setDataProvidersEnabled(boolean value);
+
+	/**
+	 * Returns the value of the '<em><b>Enabled Data Providers</b></em>' attribute list.
+	 * The list contents are of type {@link java.lang.String}.
+	 * <!-- begin-user-doc -->
+	 * @since 19.0
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Enabled Data Providers</em>' attribute list.
+	 * @see gov.redhawk.model.sca.ScaPackage#getDataProviderObject_EnabledDataProviders()
+	 * @model
+	 * @generated
+	 */
+	EList<String> getEnabledDataProviders();
 
 	/**
 	 * <!-- begin-user-doc -->

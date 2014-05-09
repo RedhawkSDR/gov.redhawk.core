@@ -73,12 +73,12 @@ public class PlotWizardPage extends WizardPage {
 		Label label;
 		Group group;
 
-		// == PLOT Block settings (e.g. frame size) ==
+		// == PLOT Block settings (e.g. plot type, plot mode, frame size, etc.) ==
 		group = new Group(parent, SWT.None);
 		group.setLayoutData(GridDataFactory.fillDefaults().grab(true, false).span(2, 1).create());
 		group.setText("PLOT");
 		label = new Label(group, SWT.None);
-		label.setText("Type:");
+		label.setText("&Type:");
 		ComboViewer viewer = new ComboViewer(group, SWT.READ_ONLY);
 		viewer.setLabelProvider(new LabelProvider());
 		viewer.setContentProvider(new ArrayContentProvider());
@@ -90,7 +90,7 @@ public class PlotWizardPage extends WizardPage {
 		dataBindingContext.bindValue(ViewerProperties.singleSelection().observe(viewer), PojoProperties.value("plotType").observe(plotSettings));
 
 		label = new Label(group, SWT.None);
-		label.setText("Mode:");
+		label.setText("&Mode:");
 		viewer = new ComboViewer(group, SWT.READ_ONLY);
 		viewer.setLabelProvider(new LabelProvider() {
 			@Override
@@ -126,7 +126,7 @@ public class PlotWizardPage extends WizardPage {
 		final Group fftGroup = new Group(parent, SWT.None);
 
 		final Button button = new Button(fftGroup, SWT.CHECK);
-		button.setText("Take FFT");
+		button.setText("Take &FFT");
 		button.setLayoutData(GridDataFactory.fillDefaults().grab(true, false).span(2, 1).create());
 		dataBindingContext.bindValue(WidgetProperties.selection().observe(button), PojoProperties.value("fft").observe(this));
 		fftGroup.setLayoutData(GridDataFactory.fillDefaults().grab(true, false).span(2, 1).create());

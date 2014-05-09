@@ -45,8 +45,8 @@
     <module>../../plugins/idl.cf.jni</module>
     <module>../../plugins/omnijni</module>
     <module>../../plugins/org.ossie</module>
-    <module>../../tests/gov.redhawk.sca.efs.tests</module>
-    <module>../../tests/gov.redhawk.sca.model.tests</module>
+     <!-- <module>../../tests/gov.redhawk.sca.efs.tests</module>
+    <module>../../tests/gov.redhawk.sca.model.tests</module> -->
     <module>p2</module>
   </modules>
 

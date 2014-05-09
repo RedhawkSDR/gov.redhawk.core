@@ -237,5 +237,10 @@ public class RefreshTasker extends AbstractDataProvider implements Runnable {
 	public boolean isActive() {
 		return this.active;
 	}
+	
+	@Override
+	public String getID() {
+		return ScaRefreshableDataProviderService.ID;
+	}
 
 }

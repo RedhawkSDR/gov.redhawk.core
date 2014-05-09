@@ -31,6 +31,7 @@ import BULKIO.dataLongLongHelper;
 import BULKIO.dataLongLongOperations;
 import BULKIO.dataLongLongPOATie;
 import BULKIO.dataLongOperations;
+import BULKIO.dataLongPOATie;
 import BULKIO.dataOctetHelper;
 import BULKIO.dataOctetOperations;
 import BULKIO.dataOctetPOATie;
@@ -174,6 +175,20 @@ public enum BulkIOType {
 	}
 
 	/**
+	 * @since 2.0
+	 */
+	public static boolean isTypeSupported(String idl) {
+		if (dataLongLongHelper.id().equals(idl) || dataUlongLongHelper.id().equals(idl)
+				|| dataFloatHelper.id().equals(idl) || dataDoubleHelper.id().equals(idl)
+				|| dataLongHelper.id().equals(idl)  || dataUlongHelper.id().equals(idl)
+				|| dataShortHelper.id().equals(idl) || dataUshortHelper.id().equals(idl)
+				|| dataOctetHelper.id().equals(idl) || dataCharHelper.id().equals(idl)) {
+			return true;
+		}
+		return false;
+	}
+
+	/**
 	 * @return The non upcasted Java class container type
 	 * @since 2.0
 	 */
@@ -230,7 +245,7 @@ public enum BulkIOType {
 		case FLOAT:
 			return new dataFloatPOATie((dataFloatOperations) handler);
 		case LONG:
-			return new dataLongLongPOATie((dataLongLongOperations) handler);
+			return new dataLongPOATie((dataLongOperations) handler);
 		case LONG_LONG:
 			return new dataLongLongPOATie((dataLongLongOperations) handler);
 		case OCTET:

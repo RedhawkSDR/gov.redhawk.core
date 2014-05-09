@@ -132,11 +132,11 @@ public class PlotPreferencePage extends FieldEditorPreferencePage implements IWo
 				}
 
 				OverridableDoubleFieldEditor minField = new OverridableDoubleFieldEditor(PlotPreferences.MIN.getName(),
-					PlotPreferences.MIN_OVERRIDE.getName(), "&Min:", getFieldEditorParent());
+					PlotPreferences.MIN_OVERRIDE.getName(), "Mi&n:", getFieldEditorParent());
 				addField(minField);
 
 				OverridableDoubleFieldEditor maxField = new OverridableDoubleFieldEditor(PlotPreferences.MAX.getName(),
-					PlotPreferences.MAX_OVERRIDE.getName(), "&Max:", getFieldEditorParent());
+					PlotPreferences.MAX_OVERRIDE.getName(), "Ma&x:", getFieldEditorParent());
 				addField(maxField);
 
 				final Composite booleanControls = new Composite(getFieldEditorParent(), SWT.None);
@@ -168,10 +168,11 @@ public class PlotPreferencePage extends FieldEditorPreferencePage implements IWo
 
 	private OverridableIntegerFieldEditor createLinePlotConsumeLengthField(Composite parent) {
 		OverridableIntegerFieldEditor linePlotConsLenField = new OverridableIntegerFieldEditor(PlotPreferences.LINE_PLOT_CONSUMELENGTH.getName(),
-			PlotPreferences.LINE_PLOT_CONSUMELENGTH_OVERRIDE.getName(), "&Line Plot\nConsume Length:", parent);
+			PlotPreferences.LINE_PLOT_CONSUMELENGTH_OVERRIDE.getName(), "&Line Plot Frame Thinning:", parent);
 		linePlotConsLenField.setErrorMessage("Consume Length must a an integer >= -1");
 		linePlotConsLenField.setValidRange(-1, Integer.MAX_VALUE);
-		linePlotConsLenField.setToolTipText("Frames of data to consume (e.g. discard/thin) for each frame displayed. -1 for none.");
+		linePlotConsLenField.setToolTipText("Thin line plot by displaying 1 out of every n frames. "
+			+ "Use -1 for no thinning. Leave blank to use default of " + PlotPreferences.LINE_PLOT_CONSUMELENGTH.getDefaultValue() + ".");
 		return linePlotConsLenField;
 	}
 	
@@ -213,8 +214,8 @@ public class PlotPreferencePage extends FieldEditorPreferencePage implements IWo
 			blockPreferences.add(createLinePlotConsumeLengthField(section));
 		}
 		
-		addField(new ReadOnlyStringFieldEditor(PlotPreferences.LAUNCH_ARGS.getName(), "&Launch Args:", section));
-		addField(new ReadOnlyStringFieldEditor(PlotPreferences.LAUNCH_SWITCHES.getName(), "&Launch Switches:", section));
+		addField(new ReadOnlyStringFieldEditor(PlotPreferences.LAUNCH_ARGS.getName(), "Launch &Args:", section));
+		addField(new ReadOnlyStringFieldEditor(PlotPreferences.LAUNCH_SWITCHES.getName(), "Launch &Switches:", section));
 	}
 
 	public void setBlockPreferenceStore(IPreferenceStore store) {

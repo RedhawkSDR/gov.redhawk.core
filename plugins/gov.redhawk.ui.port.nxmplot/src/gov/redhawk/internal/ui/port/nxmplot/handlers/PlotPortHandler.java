@@ -11,6 +11,7 @@
  */
 package gov.redhawk.internal.ui.port.nxmplot.handlers;
 
+import gov.redhawk.bulkio.util.BulkIOType;
 import gov.redhawk.internal.ui.port.nxmplot.view.PlotView2;
 import gov.redhawk.model.sca.ScaDomainManagerRegistry;
 import gov.redhawk.model.sca.ScaUsesPort;
@@ -55,17 +56,7 @@ import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.handlers.HandlerUtil;
 import org.eclipse.ui.statushandlers.StatusManager;
 
-import BULKIO.dataCharHelper;
-import BULKIO.dataDoubleHelper;
-import BULKIO.dataFloatHelper;
-import BULKIO.dataLongHelper;
-import BULKIO.dataLongLongHelper;
-import BULKIO.dataOctetHelper;
 import BULKIO.dataSDDSHelper;
-import BULKIO.dataShortHelper;
-import BULKIO.dataUlongHelper;
-import BULKIO.dataUlongLongHelper;
-import BULKIO.dataUshortHelper;
 
 /**
  * @noreference This class is not intended to be referenced by clients
@@ -195,9 +186,7 @@ public class PlotPortHandler extends AbstractHandler {
 	}
 
 	public static boolean isBulkIOPortSupported(String idl) {
-		if (dataLongLongHelper.id().equals(idl) || dataUlongLongHelper.id().equals(idl) || dataFloatHelper.id().equals(idl)
-			|| dataDoubleHelper.id().equals(idl) || dataLongHelper.id().equals(idl) || dataUlongHelper.id().equals(idl) || dataShortHelper.id().equals(idl)
-			|| dataUshortHelper.id().equals(idl) || dataOctetHelper.id().equals(idl) || dataCharHelper.id().equals(idl) || dataSDDSHelper.id().equals(idl)) {
+		if (BulkIOType.isTypeSupported(idl) || dataSDDSHelper.id().equals(idl)) {
 			return true;
 		}
 		return false;

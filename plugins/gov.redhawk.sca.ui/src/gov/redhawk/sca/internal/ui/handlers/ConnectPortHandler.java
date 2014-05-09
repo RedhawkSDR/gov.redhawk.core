@@ -121,8 +121,16 @@ public class ConnectPortHandler extends AbstractHandler implements IHandler {
 				new ConnectJob(usesPort, target.getCorbaObj(), ConnectPortWizard.generateDefaultConnectionID()).schedule();
 			} else {
 				ConnectPortWizard wizard = new ConnectPortWizard();
-				wizard.setSource(usesPort);
-				wizard.setTarget(target);
+				if (usesPort != null) {
+					wizard.setSource(usesPort);
+					wizard.setSourceInput(usesPort.eContainer());
+					wizard.setShowAllInputs(false);
+				}
+				if (target != null) {
+					wizard.setTarget(target);
+					wizard.setTargetInput(target.eContainer());
+					wizard.setShowAllOutputs(false);
+				}
 				WizardDialog dialog = new WizardDialog(shell, wizard);
 				dialog.open();
 			}

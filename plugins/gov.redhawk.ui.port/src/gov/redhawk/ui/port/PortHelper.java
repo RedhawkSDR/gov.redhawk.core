@@ -16,12 +16,16 @@ import gov.redhawk.model.sca.RefreshDepth;
 
 import java.util.Collection;
 import java.util.Map;
+import java.util.concurrent.Callable;
+
+import mil.jpeojtrs.sca.util.CorbaUtils;
 
 import org.eclipse.core.commands.Command;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ParameterizedCommand;
 import org.eclipse.core.commands.common.CommandException;
 import org.eclipse.core.expressions.IEvaluationContext;
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
@@ -110,12 +114,27 @@ public class PortHelper {
 			}
 			
 			@Override
-			protected IStatus run(IProgressMonitor monitor) {
+			protected IStatus run(final IProgressMonitor monitor) {
 				try {
-					refreshable.refresh(null, RefreshDepth.FULL);
-				} catch (InterruptedException e) {
-					// PASS - ignore
+					CorbaUtils.invoke(new Callable<Object>() {
+
+						@Override
+						public Object call() throws Exception {
+							try {
+								refreshable.refresh(monitor, RefreshDepth.FULL);
+							} catch (InterruptedException e) {
+								// PASS - ignore
+							}
+							return null;
+						}
+						
+					}, monitor);
+				} catch (CoreException e1) {
+					return e1.getStatus();
+				} catch (InterruptedException e1) {
+					return Status.CANCEL_STATUS;
 				}
+				
 				return Status.OK_STATUS;
 			}
 

@@ -15,6 +15,7 @@ import java.util.Date;
 
 import org.eclipse.core.runtime.Plugin;
 import org.eclipse.core.runtime.Status;
+import org.jacorb.JacorbActivator;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
@@ -34,6 +35,7 @@ public class ScaUtilPluginActivator extends Plugin implements BundleActivator {
 	public void start(final BundleContext context) throws Exception {
 		instance = this;
 		super.start(context);
+		JacorbActivator.getDefault().init();
 	}
 
 	public static ScaUtilPluginActivator getDefault() {

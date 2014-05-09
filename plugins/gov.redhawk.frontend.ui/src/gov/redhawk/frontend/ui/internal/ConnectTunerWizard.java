@@ -50,7 +50,9 @@ public class ConnectTunerWizard extends ConnectPortWizard {
 				usesPorts.add((ScaUsesPort) port);
 			}
 		}
-		setSource(usesPorts.get(0));
+		if (!usesPorts.isEmpty()) {
+			setSource(usesPorts.get(0));
+		}
 	}
 
 	public TunerStatus getTuner() {

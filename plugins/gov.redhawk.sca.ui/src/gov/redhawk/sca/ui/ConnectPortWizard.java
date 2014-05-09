@@ -49,6 +49,7 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.databinding.swt.WidgetProperties;
 import org.eclipse.jface.databinding.viewers.ViewerProperties;
 import org.eclipse.jface.databinding.wizard.WizardPageSupport;
+import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.jface.viewers.Viewer;
@@ -64,6 +65,7 @@ import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.navigator.CommonViewer;
+import org.eclipse.ui.progress.UIJob;
 import org.eclipse.ui.statushandlers.StatusManager;
 
 /**
@@ -74,24 +76,24 @@ public class ConnectPortWizard extends Wizard {
 	private static final SimpleDateFormat FORMAT = new SimpleDateFormat("yyyyMMddHHmmss");
 
 	private static class ConnectWizardPage extends WizardPage {
-		
+
 		private class SourceTargetValidator extends ValidationStatusProvider implements PropertyChangeListener {
 			private final WritableValue status = new WritableValue();
 			private IObservableList list = new WritableList();
 			{
 				list.add(status);
 			}
-			
+
 			@Override
 			public IObservableValue getValidationStatus() {
 				return status;
 			}
-			
+
 			@Override
 			public IObservableList getTargets() {
 				return list;
 			}
-			
+
 			@Override
 			public IObservableList getModels() {
 				return null;
@@ -118,8 +120,11 @@ public class ConnectPortWizard extends Wizard {
 		private DataBindingContext context;
 		private PropertyChangeSupport pcs = new PropertyChangeSupport(this);
 		private boolean connectionIDEnabled = true;
-		private Object sourceInput = ScaPlugin.getDefault().getDomainManagerRegistry(Display.getCurrent());
-		private Object targetInput = ScaPlugin.getDefault().getDomainManagerRegistry(Display.getCurrent());
+		private Object defaultInput = ScaPlugin.getDefault().getDomainManagerRegistry(Display.getCurrent());
+		private boolean showAllInputs = true;
+		private boolean showAllOutputs = true;
+		private Object sourceInput = defaultInput;
+		private Object targetInput = defaultInput;
 
 		protected ConnectWizardPage() {
 			super("connectPage", "Create new connection", null);
@@ -154,11 +159,18 @@ public class ConnectPortWizard extends Wizard {
 			sourceGroup.setText("Source");
 			sourceGroup.setLayout(new FillLayout());
 			sourceGroup.setLayoutData(GridDataFactory.fillDefaults().grab(true, false).span(2, 1).hint(SWT.DEFAULT, 200).create());
-			CommonViewer sourceViewer = new CommonViewer(ScaExplorer.VIEW_ID, sourceGroup, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL);
+			int sourceViewerStyle = SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL | SWT.SINGLE | SWT.FULL_SELECTION;
+			if (!isShowAllInputs() && getSource() != null) {
+				sourceViewerStyle = sourceViewerStyle | SWT.READ_ONLY;
+			}
+			CommonViewer sourceViewer = new CommonViewer(ScaExplorer.VIEW_ID, sourceGroup, sourceViewerStyle);
 			sourceViewer.addFilter(new ViewerFilter() {
 
 				@Override
 				public boolean select(Viewer viewer, Object parentElement, Object element) {
+					if (!isShowAllInputs()) {
+						return element == source;
+					}
 					// This is a hack to filter out the sdr root.
 					if (element.getClass().getName().equals(ConnectWizardPage.SDR_ROOT_CLASS)) {
 						return false;
@@ -183,11 +195,18 @@ public class ConnectPortWizard extends Wizard {
 			targetGroup.setText("Target");
 			targetGroup.setLayout(new FillLayout());
 			targetGroup.setLayoutData(GridDataFactory.fillDefaults().grab(true, false).span(2, 1).hint(SWT.DEFAULT, 200).create());
-			CommonViewer targetViewer = new CommonViewer(ScaExplorer.VIEW_ID, targetGroup, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL);
+			int targetViewerStyle = SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL | SWT.SINGLE | SWT.FULL_SELECTION;
+			if (!isShowAllOutputs() && getTarget() != null) {
+				targetViewerStyle = targetViewerStyle | SWT.READ_ONLY;
+			}
+			CommonViewer targetViewer = new CommonViewer(ScaExplorer.VIEW_ID, targetGroup, targetViewerStyle);
 			targetViewer.addFilter(new ViewerFilter() {
 
 				@Override
 				public boolean select(Viewer viewer, Object parentElement, Object element) {
+					if (!isShowAllOutputs()) {
+						return element == target;
+					}
 					// This is a hack to filter out the sdr root.
 					if (element.getClass().getName().equals(ConnectWizardPage.SDR_ROOT_CLASS)) {
 						return false;
@@ -195,7 +214,7 @@ public class ConnectPortWizard extends Wizard {
 						return false;
 					} else if (element instanceof ScaWaveformFactoriesContainerItemProvider) {
 						return false;
-					} else if (element instanceof ScaFileSystem<?>) {
+					} else if (element instanceof ScaFileSystem< ? >) {
 						return true;
 					} else if (element instanceof ScaFileStore) {
 						return false;
@@ -255,7 +274,7 @@ public class ConnectPortWizard extends Wizard {
 
 				@Override
 				public IStatus validate(Object value) {
-					if (!(value instanceof CorbaObjWrapper<?>)) {
+					if (!(value instanceof CorbaObjWrapper< ? >)) {
 						return ValidationStatus.error("Target not specified.");
 					}
 					return ValidationStatus.ok();
@@ -298,6 +317,7 @@ public class ConnectPortWizard extends Wizard {
 		public void setSource(ScaUsesPort source) {
 			ScaUsesPort oldValue = this.source;
 			this.source = source;
+			
 			pcs.firePropertyChange("source", oldValue, source);
 		}
 
@@ -322,6 +342,9 @@ public class ConnectPortWizard extends Wizard {
 		}
 
 		public void setSourceInput(Object sourceInput) {
+			if (sourceInput == null) {
+				sourceInput = defaultInput;
+			}
 			Object oldValue = this.sourceInput;
 			this.sourceInput = sourceInput;
 			pcs.firePropertyChange("sourceInput", oldValue, sourceInput);
@@ -332,6 +355,9 @@ public class ConnectPortWizard extends Wizard {
 		}
 
 		public void setTargetInput(Object targetInput) {
+			if (targetInput == null) {
+				targetInput = defaultInput;
+			}
 			Object oldValue = this.targetInput;
 			this.targetInput = targetInput;
 			pcs.firePropertyChange("targetInput", oldValue, targetInput);
@@ -339,6 +365,22 @@ public class ConnectPortWizard extends Wizard {
 
 		public Object getTargetInput() {
 			return targetInput;
+		}
+
+		public boolean isShowAllInputs() {
+			return showAllInputs;
+		}
+
+		public void setShowAllInputs(boolean showAllInputs) {
+			this.showAllInputs = showAllInputs;
+		}
+
+		public boolean isShowAllOutputs() {
+			return showAllOutputs;
+		}
+
+		public void setShowAllOutputs(boolean showAllOutputs) {
+			this.showAllOutputs = showAllOutputs;
 		}
 	}
 
@@ -446,6 +488,22 @@ public class ConnectPortWizard extends Wizard {
 	public Object getTargetInput() {
 		return page.getTargetInput();
 	}
+	
+	public boolean isShowAllInputs() {
+		return page.isShowAllInputs();
+	}
+
+	public void setShowAllInputs(boolean showAllInputs) {
+		page.setShowAllInputs(showAllInputs);
+	}
+
+	public boolean isShowAllOutputs() {
+		return page.isShowAllOutputs();
+	}
+
+	public void setShowAllOutputs(boolean showAllOutputs) {
+		page.setShowAllOutputs(showAllOutputs);
+	}
 
 	protected void performFinish(IProgressMonitor monitor) throws InterruptedException, InvocationTargetException {
 		monitor.beginTask("Connecting...", IProgressMonitor.UNKNOWN);
@@ -457,10 +515,22 @@ public class ConnectPortWizard extends Wizard {
 					page.source.connectPort(page.target.getCorbaObj(), page.connectionID);
 					return null;
 				}
-
 			}, monitor);
-		} catch (CoreException e) {
+		} catch (final CoreException e) {
+			UIJob uiJob = new UIJob("Port connection error") {
+				@Override
+				public IStatus runInUIThread(IProgressMonitor monitor) {
+					Throwable cause = e.getCause();
+					MessageDialog errorDialog = new MessageDialog(getShell(), "Error", null, "Error completing connection: " + cause.getMessage(),
+						MessageDialog.ERROR, new String[] { "OK" }, 0);
+					errorDialog.open();
+					return Status.OK_STATUS;
+				}
+			};
+			uiJob.schedule();
+
 			throw new InvocationTargetException(e);
+
 		}
 	}
 

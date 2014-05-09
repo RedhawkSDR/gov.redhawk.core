@@ -11,6 +11,7 @@
  */
 package nxm.redhawk.prim;
 
+import gov.redhawk.sca.util.ORBUtil;
 import gov.redhawk.sca.util.OrbSession;
 
 import java.lang.Thread.UncaughtExceptionHandler;
@@ -144,10 +145,10 @@ public class CorbaPrimitive extends Primitive {
 				throw new MidasException("Failed to find Port.", e);
 			} finally {
 				if (ncRef != null) {
-					ncRef._release();
+					ORBUtil.release(ncRef);
 				}
 				if (portRef != null) {
-					portRef._release();
+					ORBUtil.release(portRef);
 				}
 				session.dispose();
 			}

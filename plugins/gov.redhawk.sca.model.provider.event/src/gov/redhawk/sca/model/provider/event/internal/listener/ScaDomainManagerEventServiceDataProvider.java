@@ -21,6 +21,7 @@ import gov.redhawk.model.sca.commands.ScaModelCommand;
 import gov.redhawk.model.sca.commands.ScaModelCommandWithResult;
 import gov.redhawk.model.sca.services.IScaDataProvider;
 import gov.redhawk.sca.model.provider.event.AbstractEventChannelDataProvider;
+import gov.redhawk.sca.model.provider.event.internal.EventServiceDataProviderService;
 import gov.redhawk.sca.util.PluginUtil;
 
 import org.omg.CORBA.Any;
@@ -47,6 +48,11 @@ public class ScaDomainManagerEventServiceDataProvider extends AbstractEventChann
 	public ScaDomainManagerEventServiceDataProvider(final ScaDomainManager domain) {
 		super(domain, domain);
 		addChannel(domain.getName() + ".ODM_Channel");
+	}
+	
+	@Override
+	public String getID() {
+		return EventServiceDataProviderService.ID;
 	}
 
 	@Override

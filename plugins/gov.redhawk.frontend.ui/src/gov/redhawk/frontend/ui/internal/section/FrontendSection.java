@@ -18,13 +18,16 @@ import gov.redhawk.frontend.UnallocatedTunerContainer;
 import gov.redhawk.frontend.ui.internal.AllocateAction;
 import gov.redhawk.frontend.ui.internal.DeallocateAction;
 import gov.redhawk.frontend.ui.internal.FeiPlotAction;
+
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.jface.action.ActionContributionItem;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Widget;
 import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.views.properties.tabbed.AbstractPropertySection;
 import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetPage;
@@ -138,6 +141,17 @@ public class FrontendSection extends AbstractPropertySection {
 		}
 	}
 
+	private void setComponentName(IAction action) {
+		ActionContributionItem item = (ActionContributionItem) getToolbar().find(action.getId());
+		if (item == null) {
+			return;
+		}
+		Widget w = item.getWidget();
+		if (w != null) {
+			w.setData("TEST_COMP_NAME", action.getId());
+		}
+	}
+	
 	private void showRightToolbarButtons(Object obj) {
 		if (getToolbar() == null) {
 			return;
@@ -163,6 +177,9 @@ public class FrontendSection extends AbstractPropertySection {
 			addToToolbar(allocateAction);
 		}
 		page.getSite().getActionBars().updateActionBars();
+		setComponentName(allocateAction);
+		setComponentName(deallocateAction);
+		setComponentName(plotAction);
 	}
 
 	/**

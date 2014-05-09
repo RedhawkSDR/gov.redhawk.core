@@ -109,7 +109,7 @@ public class FrontEndDataProvider extends AbstractDataProvider {
 					}
 					break;
 				case ScaPackage.SCA_DEVICE__PROPERTIES:
-					updateTunerContainer();
+					updateTunerContainerJob.schedule(100);
 					break;
 				default:
 					break;
@@ -117,16 +117,14 @@ public class FrontEndDataProvider extends AbstractDataProvider {
 			} else if (msg.getNotifier() instanceof ScaAbstractProperty< ? >) {
 				ScaAbstractProperty< ? > prop = (ScaAbstractProperty< ? >) msg.getNotifier();
 				if (FrontEndDataProvider.PROP_PATTERN.matcher(prop.getId()).matches()) {
-					updateTunerContainer();
+					updateTunerContainerJob.schedule(500);
 				}
 			}
 		}
 
 	};
-
-	private final TunerContainer container = FrontendFactory.eINSTANCE.createTunerContainer();
-
-	private Job fetchAndPopulate = new Job("Fetch and populate Front End Device") {
+	
+	private Job updateTunerContainerJob = new Job("Update Tuner Container") {
 		{
 			setUser(false);
 			setSystem(true);
@@ -134,6 +132,34 @@ public class FrontEndDataProvider extends AbstractDataProvider {
 
 		@Override
 		protected IStatus run(IProgressMonitor monitor) {
+			if (isDisposed()) {
+				return Status.CANCEL_STATUS;
+			}
+			ScaModelCommand.execute(device, new ScaModelCommand() {
+
+				@Override
+				public void execute() {
+					updateTunerContainer();
+				}
+			});
+			return Status.OK_STATUS;
+		}
+		
+	};
+
+	private final TunerContainer container = FrontendFactory.eINSTANCE.createTunerContainer();
+
+	private Job fetchAndPopulate = new Job("Fetch and populate FrontEnd Device") {
+		{
+			setUser(false);
+			setSystem(true);
+		}
+
+		@Override
+		protected IStatus run(IProgressMonitor monitor) {
+			if (isDisposed()) {
+				return Status.CANCEL_STATUS;
+			}
 			if (!device.isDisposed()) {
 				try {
 					device.refresh(monitor, RefreshDepth.FULL);
@@ -145,21 +171,44 @@ public class FrontEndDataProvider extends AbstractDataProvider {
 			} else {
 				return Status.CANCEL_STATUS;
 			}
+			if (device.getProfileObj() == null) {
+				ScaModelCommand.execute(device, new ScaModelCommand() {
+					
+					@Override
+					public void execute() {
+						if (device.getProfileObj() == null) {
+							device.eAdapters().add(new AdapterImpl() {
+								public void notifyChanged(Notification msg) {
+									switch(msg.getFeatureID(ScaDevice.class)) {
+									case ScaPackage.SCA_DEVICE__PROFILE_URI:
+										if (msg.getNewValue() != null) {
+											device.eAdapters().remove(this);
+											schedule();
+										}
+										break;
+									default:
+										break;
+									}
+								}
+							});
+						} else {
+							schedule();
+						}
+					}
+				});
+				return Status.CANCEL_STATUS;
+			}
 			supportsFei = calculateSupport();
-			ScaModelCommand.execute(device, new ScaModelCommand() {
-
-				@Override
-				public void execute() {
-					device.eAdapters().add(deviceAdapter);
-				}
-			});
-			ScaModelCommand.execute(device, new ScaModelCommand() {
-
-				@Override
-				public void execute() {
-					updateTunerContainer();
-				}
-			});
+			if (supportsFei) {
+				ScaModelCommand.execute(device, new ScaModelCommand() {
+	
+					@Override
+					public void execute() {
+						device.eAdapters().add(deviceAdapter);
+						updateTunerContainer();
+					}
+				});
+			}
 			return Status.OK_STATUS;
 		}
 
@@ -232,6 +281,10 @@ public class FrontEndDataProvider extends AbstractDataProvider {
 	}
 
 	private void updateTunerContainer() {
+		if (isDisposed()) {
+			removeTunerContainer();
+			return;
+		}
 		if (!supportsFei || device.isDisposed()) {
 			removeTunerContainer();
 			return;
@@ -247,7 +300,7 @@ public class FrontEndDataProvider extends AbstractDataProvider {
 			FrontEndDataActivator plugin = FrontEndDataActivator.getInstance();
 			if (plugin != null) {
 				plugin.getLog().log(
-					new Status(IStatus.ERROR, "Device " + device.getIdentifier() + " is not a valid front end device, missing property: "
+					new Status(IStatus.ERROR, "Device " + device.getIdentifier() + " is not a valid FrontEnd device, missing property: "
 							+ StatusProperties.FRONTEND_TUNER_STATUS.getId(), null));
 			}
 			return;
@@ -376,6 +429,11 @@ public class FrontEndDataProvider extends AbstractDataProvider {
 		if (!listenersToAdd.isEmpty()) {
 			tuner.getListenerAllocations().addAll(listenersToAdd.values());
 		}
+	}
+	
+	@Override
+	public String getID() {
+		return FrontEndDataProviderFactory.ID;
 	}
 
 }

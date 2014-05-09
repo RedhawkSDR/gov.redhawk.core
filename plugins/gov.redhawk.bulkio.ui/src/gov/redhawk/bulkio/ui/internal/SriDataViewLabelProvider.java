@@ -12,12 +12,12 @@
 package gov.redhawk.bulkio.ui.internal;
 
 import gov.redhawk.bulkio.ui.BulkIOUIActivator;
-import gov.redhawk.bulkio.ui.BulkioDataTypes;
 
 import java.util.Arrays;
 import java.util.Date;
 
 import mil.jpeojtrs.sca.util.AnyUtils;
+import nxm.sys.lib.DataFile;
 
 import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.Nullable;
@@ -105,54 +105,29 @@ public class SriDataViewLabelProvider implements ITableLabelProvider {
 				} else if ("mode: ".equals(sri.getName())) {
 					Short value = (Short) sri.getValue();
 					if (value == 0) {
-						return "[" + String.valueOf(sri.getValue()) + "] scalar";
+						return "[" + value + "] scalar";
 					} else if (value == 1) {
-						return "[" + String.valueOf(sri.getValue()) + "] complex";
+						return "[" + value + "] complex";
 					}
 				} else if ("xunits: ".equals(sri.getName()) || "yunits: ".equals(sri.getName())) {
-					switch ((Short) sri.getValue()) {
-					case 0:
-						return "[" + String.valueOf(sri.getValue()) + "] " + BulkioDataTypes.UNITS_NONE;
-					case 1:
-						return "[" + String.valueOf(sri.getValue()) + "] " + BulkioDataTypes.UNITS_TIME;
-					case 2:
-						return "[" + String.valueOf(sri.getValue()) + "] " + BulkioDataTypes.UNITS_DELAY;
-					case 3:
-						return "[" + String.valueOf(sri.getValue()) + "] " + BulkioDataTypes.UNITS_FREQUENCY;
-					case 4:
-						return "[" + String.valueOf(sri.getValue()) + "] " + BulkioDataTypes.UNITS_TIMECODE;
-					case 5:
-						return "[" + String.valueOf(sri.getValue()) + "] " + BulkioDataTypes.DISTANCE;
-					case 6:
-						return "[" + String.valueOf(sri.getValue()) + "] " + BulkioDataTypes.UNITS_VELOCITY;
-					case 7:
-						return "[" + String.valueOf(sri.getValue()) + "] " + BulkioDataTypes.UNITS_ACCELERATION;
-					case 8:
-						return "[" + String.valueOf(sri.getValue()) + "] " + BulkioDataTypes.UNITS_JERK;
-					case 9:
-						return "[" + String.valueOf(sri.getValue()) + "] " + BulkioDataTypes.UNITS_DOPPLER;
-					case 10:
-						return "[" + String.valueOf(sri.getValue()) + "] " + BulkioDataTypes.UNITS_DOPPLERRATE;
-					case 11:
-						return "[" + String.valueOf(sri.getValue()) + "] " + BulkioDataTypes.UNITS_ENERGY;
-					case 12:
-						return "[" + String.valueOf(sri.getValue()) + "] " + BulkioDataTypes.UNITS_POWER;
-					case 13:
-						return "[" + String.valueOf(sri.getValue()) + "] " + BulkioDataTypes.UNITS_MASS;
-					default:
-						return sri.getValue().toString();
-					}
-				}
-
-				// Default behavior for populated rows
-				if (sri.getValue() != null) {
-					if (sri.getValue() instanceof Date) {
-						return BulkIOUIActivator.toISO8601TimeStr((Date) sri.getValue());
+					Short value = (Short) sri.getValue();
+					String unitsName = DataFile.getUnitsName(value);
+					if (unitsName != null) {
+						return "[" + value + "] " + unitsName;
 					} else {
-						return sri.getValue().toString();
+						return value.toString();
 					}
-				} else {
-					return "";
+				} else { // Default behavior for populated rows
+					Object value = sri.getValue();
+					if (value != null) {
+						if (value instanceof Date) {
+							return BulkIOUIActivator.toISO8601TimeStr((Date) sri.getValue());
+						} else {
+							return value.toString();
+						}
+					} else {
+						return "";
+					}
 				}
 			default:
 				return "";

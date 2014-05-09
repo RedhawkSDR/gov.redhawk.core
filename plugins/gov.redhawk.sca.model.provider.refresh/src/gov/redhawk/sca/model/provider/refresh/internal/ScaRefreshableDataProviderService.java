@@ -20,6 +20,8 @@ import org.eclipse.emf.ecore.EObject;
  * 
  */
 public class ScaRefreshableDataProviderService extends AbstractDataProviderService {
+	
+	public static final String ID = "gov.redhawk.sca.model.provider.refresh";
 
 	private static final RefresherSwitch SWITCH = new RefresherSwitch();
 
@@ -33,6 +35,11 @@ public class ScaRefreshableDataProviderService extends AbstractDataProviderServi
 			return new RefreshTasker(object, refresher);
 		}
 		return null;
+	}
+	
+	@Override
+	public String getID() {
+		return ID;
 	}
 
 }

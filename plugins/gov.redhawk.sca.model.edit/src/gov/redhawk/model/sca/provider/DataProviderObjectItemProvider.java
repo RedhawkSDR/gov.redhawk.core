@@ -66,6 +66,7 @@ public class DataProviderObjectItemProvider extends IStatusProviderItemProvider 
 			super.getPropertyDescriptors(object);
 
 			addDataProvidersEnabledPropertyDescriptor(object);
+			addEnabledDataProvidersPropertyDescriptor(object);
 		}
 		return itemPropertyDescriptors;
 	}
@@ -81,6 +82,20 @@ public class DataProviderObjectItemProvider extends IStatusProviderItemProvider 
 			getString("_UI_DataProviderObject_dataProvidersEnabled_feature"),
 			getString("_UI_PropertyDescriptor_description", "_UI_DataProviderObject_dataProvidersEnabled_feature", "_UI_DataProviderObject_type"),
 			ScaPackage.Literals.DATA_PROVIDER_OBJECT__DATA_PROVIDERS_ENABLED, true, false, false, ItemPropertyDescriptor.BOOLEAN_VALUE_IMAGE, null, null));
+	}
+
+	/**
+	 * This adds a property descriptor for the Enabled Data Providers feature.
+	 * <!-- begin-user-doc -->
+	 * @since 12.2
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	protected void addEnabledDataProvidersPropertyDescriptor(Object object) {
+		itemPropertyDescriptors.add(createItemPropertyDescriptor(((ComposeableAdapterFactory) adapterFactory).getRootAdapterFactory(), getResourceLocator(),
+			getString("_UI_DataProviderObject_enabledDataProviders_feature"),
+			getString("_UI_PropertyDescriptor_description", "_UI_DataProviderObject_enabledDataProviders_feature", "_UI_DataProviderObject_type"),
+			ScaPackage.Literals.DATA_PROVIDER_OBJECT__ENABLED_DATA_PROVIDERS, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
 	}
 
 	/**
@@ -109,6 +124,7 @@ public class DataProviderObjectItemProvider extends IStatusProviderItemProvider 
 
 		switch (notification.getFeatureID(DataProviderObject.class)) {
 		case ScaPackage.DATA_PROVIDER_OBJECT__DATA_PROVIDERS_ENABLED:
+		case ScaPackage.DATA_PROVIDER_OBJECT__ENABLED_DATA_PROVIDERS:
 			fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
 			return;
 		}

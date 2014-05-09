@@ -55,4 +55,9 @@ public interface IScaDataProvider {
 	 * @since 14.0
 	 */
 	public boolean isEnabled();
+	
+	/**
+	 * @since 19.0
+	 */
+	public String getID();
 }

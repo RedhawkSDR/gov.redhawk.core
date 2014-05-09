@@ -607,6 +607,16 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 
 	/**
 	 * <!-- begin-user-doc -->
+	 * @since 19.0
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EAttribute getDataProviderObject_EnabledDataProviders() {
+		return (EAttribute) dataProviderObjectEClass.getEStructuralFeatures().get(2);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -2165,6 +2175,7 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 		dataProviderObjectEClass = createEClass(DATA_PROVIDER_OBJECT);
 		createEAttribute(dataProviderObjectEClass, DATA_PROVIDER_OBJECT__DATA_PROVIDERS);
 		createEAttribute(dataProviderObjectEClass, DATA_PROVIDER_OBJECT__DATA_PROVIDERS_ENABLED);
+		createEAttribute(dataProviderObjectEClass, DATA_PROVIDER_OBJECT__ENABLED_DATA_PROVIDERS);
 
 		iDisposableEClass = createEClass(IDISPOSABLE);
 		createEAttribute(iDisposableEClass, IDISPOSABLE__DISPOSED);
@@ -2626,6 +2637,8 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 			!IS_VOLATILE, IS_CHANGEABLE, IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getDataProviderObject_DataProvidersEnabled(), ecorePackage.getEBoolean(), "dataProvidersEnabled", "true", 0, 1,
 			DataProviderObject.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getDataProviderObject_EnabledDataProviders(), ecorePackage.getEString(), "enabledDataProviders", null, 0, -1, DataProviderObject.class,
+			!IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		addEOperation(dataProviderObjectEClass, null, "attachDataProviders", 0, 1, IS_UNIQUE, IS_ORDERED);
 

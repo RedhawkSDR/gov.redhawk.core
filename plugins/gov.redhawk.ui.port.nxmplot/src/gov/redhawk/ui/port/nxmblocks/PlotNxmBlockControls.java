@@ -12,6 +12,7 @@
 package gov.redhawk.ui.port.nxmblocks;
 
 import gov.redhawk.sca.util.ArrayUtil;
+import gov.redhawk.ui.port.nxmplot.preferences.PlotPreferences;
 
 import org.eclipse.core.databinding.Binding;
 import org.eclipse.core.databinding.DataBindingContext;
@@ -30,6 +31,7 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.Text;
 
 /**
  * Adjust/override INxmBlock settings to plot user entry dialog.
@@ -47,7 +49,9 @@ public class PlotNxmBlockControls {
 	private final PlotNxmBlockSettings settings;
 	private final DataBindingContext dataBindingCtx;
 
+	// widgets
 	private ComboViewer frameSizeField;
+	private Text linePlotConsumeLengthField;
 
 	public PlotNxmBlockControls(PlotNxmBlockSettings settings, DataBindingContext dataBindingCtx) {
 		this.settings = settings;
@@ -70,7 +74,15 @@ public class PlotNxmBlockControls {
 		this.frameSizeField.setInput(inputValues);
 		this.frameSizeField.setSelection(new StructuredSelection(inputValues[0])); // select first value (which is current value or default)
 		this.frameSizeField.addSelectionChangedListener(new SelectAllTextComboTextListener(this.frameSizeField.getCombo()));
-		
+
+		// === line plot frame thinning ===
+		label = new Label(container, SWT.NONE);
+		label.setText("&Line Plot Frame Thinning:");
+		this.linePlotConsumeLengthField = new Text(container, SWT.BORDER);
+		this.linePlotConsumeLengthField.setLayoutData(GridDataFactory.fillDefaults().grab(true, false).create());
+		this.linePlotConsumeLengthField.setToolTipText("Thin line plot by displaying 1 out of every n frames. "
+			+ "Use -1 for no thinning. Leave blank to use default of " + PlotPreferences.LINE_PLOT_CONSUMELENGTH.getDefaultValue() + ".");
+
 		initDataBindings();
 	}
 
@@ -84,6 +96,11 @@ public class PlotNxmBlockControls {
 		UpdateValueStrategy frameSizeModelToTarget = new UpdateValueStrategy();
 		frameSizeModelToTarget.setConverter(new ObjectToNullConverter()); // converts null to null, otherwise uses toString()
 		Binding bindingValue = dataBindingCtx.bindValue(frameSizeWidgetValue, frameSizeModelValue, frameSizeTargetToModel, frameSizeModelToTarget);
+		ControlDecorationSupport.create(bindingValue, SWT.TOP | SWT.LEFT);
+		
+		bindingValue = dataBindingCtx.bindValue(
+			WidgetProperties.text(SWT.Modify).observe(linePlotConsumeLengthField),
+			PojoProperties.value("linePlotConsumeLength").observe(this.settings));
 		ControlDecorationSupport.create(bindingValue, SWT.TOP | SWT.LEFT);
 	}
 }
