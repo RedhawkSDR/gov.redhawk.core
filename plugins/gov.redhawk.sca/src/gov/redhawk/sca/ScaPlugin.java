@@ -104,8 +104,8 @@ public class ScaPlugin extends Plugin {
 	 */
 	@Override
 	public void start(final BundleContext context) throws Exception {
-		super.start(context);
 		ScaPlugin.plugin = this;
+		super.start(context);
 		this.serviceReg = context.registerService(IScaObjectLocator.class, new ScaDomainRegistryObjectLocator(), null);
 		this.compatibilityUtil = new ServiceTracker<ICompatibilityUtil, ICompatibilityUtil>(getBundle().getBundleContext(), ICompatibilityUtil.class, null);
 		this.compatibilityUtil.open(true);
