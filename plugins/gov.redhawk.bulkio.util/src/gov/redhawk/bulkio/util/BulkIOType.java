@@ -31,6 +31,7 @@ import BULKIO.dataLongLongHelper;
 import BULKIO.dataLongLongOperations;
 import BULKIO.dataLongLongPOATie;
 import BULKIO.dataLongOperations;
+import BULKIO.dataLongPOATie;
 import BULKIO.dataOctetHelper;
 import BULKIO.dataOctetOperations;
 import BULKIO.dataOctetPOATie;
@@ -85,7 +86,7 @@ public enum BulkIOType {
 			tie = new dataFloatPOATie((dataFloatOperations) obj);
 			break;
 		case LONG:
-			tie = new dataLongLongPOATie((dataLongLongOperations) obj);
+			tie = new dataLongPOATie((dataLongOperations) obj);
 			break;
 		case LONG_LONG:
 			tie = new dataLongLongPOATie((dataLongLongOperations) obj);
