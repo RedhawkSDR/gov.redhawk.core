@@ -10,7 +10,6 @@
  *******************************************************************************/
 package gov.redhawk.bulkio.util;
 
-import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.NonNullByDefault;
 import org.omg.PortableServer.POA;
 import org.omg.PortableServer.Servant;
@@ -192,7 +191,6 @@ public enum BulkIOType {
 	 * @return The non upcasted Java class container type
 	 * @since 2.0
 	 */
-	@NonNull
 	public Class< ? > getJavaType() {
 		return this.javaType;
 	}
@@ -223,8 +221,7 @@ public enum BulkIOType {
 	 * @deprecated since 2.0 use {@link #createServant(Object)} then call {@link POA#servant_to_reference(Servant)} instead.
 	 */
 	@Deprecated
-	@NonNull
-	public org.omg.CORBA.Object createRef(@NonNull POA poa, @NonNull Object handler) throws ServantNotActive, WrongPolicy {
+	public org.omg.CORBA.Object createRef(POA poa, Object handler) throws ServantNotActive, WrongPolicy {
 		Servant tie = createServant(handler);
 		return poa.servant_to_reference(tie);
 	}
@@ -232,7 +229,6 @@ public enum BulkIOType {
 	/**
 	 * @since 2.0
 	 */
-	@NonNull
 	public Servant createServant(Object handler) {
 		if (!portType.isAssignableFrom(handler.getClass())) {
 			throw new IllegalArgumentException(this + " can not create servant.  Handler must be of type " + portType);
