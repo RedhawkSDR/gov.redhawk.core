@@ -31,6 +31,7 @@ import BULKIO.dataLongLongHelper;
 import BULKIO.dataLongLongOperations;
 import BULKIO.dataLongLongPOATie;
 import BULKIO.dataLongOperations;
+import BULKIO.dataLongPOATie;
 import BULKIO.dataOctetHelper;
 import BULKIO.dataOctetOperations;
 import BULKIO.dataOctetPOATie;
@@ -172,7 +173,7 @@ public enum BulkIOType {
 			throw new IllegalArgumentException("Unknown type: " + idl);
 		}
 	}
-	
+
 	/**
 	 * @since 2.0
 	 */
@@ -244,7 +245,7 @@ public enum BulkIOType {
 		case FLOAT:
 			return new dataFloatPOATie((dataFloatOperations) handler);
 		case LONG:
-			return new dataLongLongPOATie((dataLongLongOperations) handler);
+			return new dataLongPOATie((dataLongOperations) handler);
 		case LONG_LONG:
 			return new dataLongLongPOATie((dataLongLongOperations) handler);
 		case OCTET:
