@@ -30,5 +30,6 @@ Require-Bundle: org.eclipse.core.runtime;bundle-version="3.6.0",
  gov.redhawk.core.filemanager;bundle-version="1.0.0",
  org.apache.log4j;bundle-version="1.2.13",
  gov.redhawk.sca.efs;bundle-version="1.1.0",
- gov.redhawk.sca;bundle-version="6.0.0"
+ gov.redhawk.sca;bundle-version="6.0.0",
+ org.jacorb
 Bundle-ActivationPolicy: lazy
