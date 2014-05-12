@@ -45,32 +45,14 @@
     <module>../../plugins/idl.cf.jni</module>
     <module>../../plugins/omnijni</module>
     <module>../../plugins/org.ossie</module>
-     <!-- <module>../../tests/gov.redhawk.sca.efs.tests</module>
-    <module>../../tests/gov.redhawk.sca.model.tests</module> -->
+    <module>../../tests/gov.redhawk.sca.efs.tests</module>
+    <module>../../tests/gov.redhawk.sca.model.tests</module>
     <module>p2</module>
   </modules>
 
 
   <build>
     <plugins>
-      <plugin>
-        <groupId>org.eclipse.tycho</groupId>
-        <artifactId>tycho-surefire-plugin</artifactId>
-        <version>${tycho-version}</version>
-        <configuration>
-          <!-- <argLine>-Xmx512m -Djava.net.preferIPv4Stack=true -Dorg.omg.CORBA.ORBClass=org.jacorb.orb.ORB 
-            -Dorg.omg.CORBA.ORBSingletonClass=org.jacorb.orb.ORBSingleton -Dorg.omg.PortableInterceptor.ORBInitializerClass.standard_init=org.jacorb.orb.standardInterceptors.IORInterceptorInitializer</argLine> -->
-          <argLine>-Xmx512m -Djava.net.preferIPv4Stack=true -Djava.util.logging.config.file=${basedir}/javalogger.properties</argLine>
-          <appArgLine>-nl en</appArgLine>
-          <dependencies>
-            <dependency>
-              <type>eclipse-feature</type>
-              <artifactId>org.jacorb</artifactId>
-              <version>0.0.0</version>
-            </dependency>
-          </dependencies>
-        </configuration>
-      </plugin>
       <plugin>
         <groupId>org.eclipse.tycho</groupId>
         <artifactId>target-platform-configuration</artifactId>

@@ -20,6 +20,7 @@ import mil.jpeojtrs.sca.prf.AccessType;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.emf.transaction.util.TransactionUtil;
+import org.jacorb.JacorbUtil;
 import org.junit.Assert;
 import org.omg.CORBA.Any;
 
