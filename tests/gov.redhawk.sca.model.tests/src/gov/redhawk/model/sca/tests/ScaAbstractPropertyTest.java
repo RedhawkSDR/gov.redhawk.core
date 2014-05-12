@@ -19,6 +19,7 @@ import mil.jpeojtrs.sca.prf.AccessType;
 
 import org.eclipse.core.runtime.Status;
 import org.eclipse.emf.ecore.util.EcoreUtil;
+import org.jacorb.JacorbUtil;
 import org.junit.Assert;
 import org.omg.CORBA.Any;
 import org.omg.CORBA.ORB;
@@ -349,7 +350,7 @@ public abstract class ScaAbstractPropertyTest extends IStatusProviderTest {
 	@Override
 	public void testProtected() {
 		try {
-			getFixture().fromAny(ORB.init().create_any());
+			getFixture().fromAny(JacorbUtil.init().create_any());
 			Assert.fail("Object not protected");
 		} catch (final IllegalStateException e) {
 			Assert.assertEquals("Cannot modify resource set without a write transaction", e.getMessage());

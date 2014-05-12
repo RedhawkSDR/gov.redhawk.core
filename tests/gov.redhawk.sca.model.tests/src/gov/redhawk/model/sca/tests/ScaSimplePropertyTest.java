@@ -22,6 +22,7 @@ import junit.framework.Assert;
 import junit.textui.TestRunner;
 
 import org.eclipse.emf.transaction.util.TransactionUtil;
+import org.jacorb.JacorbUtil;
 import org.omg.CORBA.ORB;
 
 import CF.PropertySetPackage.InvalidConfiguration;
@@ -168,7 +169,7 @@ public class ScaSimplePropertyTest extends ScaAbstractPropertyTest {
 	 */
 	public void testSetRemoteValue__Object() throws PartialConfiguration, InvalidConfiguration {
 		// END GENERATED CODE
-		getFixture().setRemoteValue(ORB.init().create_any());
+		getFixture().setRemoteValue(JacorbUtil.init().create_any());
 		// BEGIN GENERATED CODE
 	}
 
