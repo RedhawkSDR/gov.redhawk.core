@@ -16,7 +16,6 @@ import java.util.Properties;
 import mil.jpeojtrs.sca.util.ProtectedThreadExecutor;
 
 import org.eclipse.jdt.annotation.Nullable;
-import org.jacorb.JacorbUtil;
 import org.omg.CORBA.ORB;
 
 /**
