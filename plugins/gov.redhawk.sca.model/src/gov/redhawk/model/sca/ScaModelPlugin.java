@@ -19,6 +19,7 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Plugin;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
+import org.jacorb.JacorbActivator;
 import org.osgi.framework.BundleContext;
 import org.osgi.util.tracker.ServiceTracker;
 
@@ -45,6 +46,7 @@ public class ScaModelPlugin extends Plugin implements IScaObjectLocator {
 		locatorTracker = new ServiceTracker<IScaObjectLocator, IScaObjectLocator>(context, IScaObjectLocator.class, null);
 		locatorTracker.open(true);
 		super.start(context);
+		JacorbActivator.getDefault().init();
 	}
 
 	/**
