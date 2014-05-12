@@ -17,7 +17,7 @@ import org.eclipse.emf.ecore.EObject;
  * <!-- begin-user-doc -->
  * A representation of the model object '<em><b>Listener Allocation</b></em>'.
  * <!-- end-user-doc -->
- * 
+ *
  * <p>
  * The following features are supported:
  * <ul>
@@ -25,7 +25,7 @@ import org.eclipse.emf.ecore.EObject;
  * <li>{@link gov.redhawk.frontend.ListenerAllocation#getListenerID <em>Listener ID</em>}</li>
  * </ul>
  * </p>
- * 
+ *
  * @see gov.redhawk.frontend.FrontendPackage#getListenerAllocation()
  * @model
  * @generated
