@@ -40,6 +40,7 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.util.EContentAdapter;
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.InternalEList;
+import org.jacorb.JacorbUtil;
 import org.omg.CORBA.Any;
 import org.omg.CORBA.ORB;
 import CF.DataType;
@@ -262,7 +263,7 @@ public class ScaStructPropertyImpl extends ScaAbstractPropertyImpl<Struct> imple
 	@Override
 	public Any toAny() {
 		// END GENERATED CODE
-		Any retVal = ORB.init().create_any();
+		Any retVal = JacorbUtil.init().create_any();
 		List<DataType> fields = new ArrayList<DataType>(getSimples().size());
 		for (ScaSimpleProperty prop : getSimples()) {
 			fields.add(new DataType(prop.getId(), prop.toAny()));
@@ -313,7 +314,7 @@ public class ScaStructPropertyImpl extends ScaAbstractPropertyImpl<Struct> imple
 			}
 			simpleValues.add(new DataType(prop.getId(), simpleAny));
 		}
-		Any any = ORB.init().create_any();
+		Any any = JacorbUtil.init().create_any();
 		PropertiesHelper.insert(any, simpleValues.toArray(new DataType[simpleValues.size()]));
 		setRemoteValue(any);
 		// BEGIN GENERATED CODE

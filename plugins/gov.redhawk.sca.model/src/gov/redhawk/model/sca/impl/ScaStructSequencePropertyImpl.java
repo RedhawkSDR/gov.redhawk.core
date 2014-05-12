@@ -43,6 +43,7 @@ import org.eclipse.emf.ecore.util.EContentAdapter;
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.emf.ecore.util.InternalEList;
+import org.jacorb.JacorbUtil;
 import org.omg.CORBA.Any;
 import org.omg.CORBA.AnySeqHelper;
 import org.omg.CORBA.ORB;
@@ -267,7 +268,7 @@ public class ScaStructSequencePropertyImpl extends ScaAbstractPropertyImpl<Struc
 			structAnys.add(structAny);
 		}
 
-		Any any = ORB.init().create_any();
+		Any any = JacorbUtil.init().create_any();
 		AnySeqHelper.insert(any, structAnys.toArray(new Any[structAnys.size()]));
 		setRemoteValue(any);
 		// BEGIN GENERATED CODE
@@ -369,7 +370,7 @@ public class ScaStructSequencePropertyImpl extends ScaAbstractPropertyImpl<Struc
 	@Override
 	public Any toAny() {
 		// END GENERATED CODE
-		Any retVal = ORB.init().create_any();
+		Any retVal = JacorbUtil.init().create_any();
 		List<Any> structVals = new ArrayList<Any>();
 		for (ScaStructProperty structProp : getStructs()) {
 			structVals.add(structProp.toAny());
