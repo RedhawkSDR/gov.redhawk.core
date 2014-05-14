@@ -1,10 +1,10 @@
 /**
- * This file is protected by Copyright. 
+ * This file is protected by Copyright.
  * Please refer to the COPYRIGHT file distributed with this source distribution.
- * 
+ *
  * This file is part of REDHAWK IDE.
- * 
- * All rights reserved.  This program and the accompanying materials are made available under 
+ *
+ * All rights reserved.  This program and the accompanying materials are made available under
  * the terms of the Eclipse Public License v1.0 which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html.
  *
@@ -68,10 +68,12 @@ public class CorbaPrimitive extends Primitive {
 	}
 
 	/**
+	 * This is done in another background thread since any CORBA call(s) in {@link #shutdown()} can
+	 * block forever. So we do not want to block the Primitive from closing in those cases.
 	 * @since 9.0
 	 */
 	protected final void shutdownNonBlocking() {
-		Thread shutdownThread = new Thread("Corba Shutdown") {
+		Thread shutdownThread = new Thread("CorbaPrimitive Shutdown for " + getID()) {
 			@Override
 			public void run() {
 				shutdown();
@@ -157,7 +159,7 @@ public class CorbaPrimitive extends Primitive {
 			// port. Use this to directly resolve the port.
 			retVal = portName;
 		}
-		
+
 		if (retVal == null) {
 			throw new IllegalStateException("Failed to resolve port ior");
 		}
