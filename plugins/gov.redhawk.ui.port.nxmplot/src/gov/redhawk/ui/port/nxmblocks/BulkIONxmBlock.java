@@ -165,7 +165,7 @@ public class BulkIONxmBlock extends AbstractNxmBlock<corbareceiver2> {
 
 	public void applySettings(BulkIONxmBlockSettings newSettings) {
 		boolean blocking = newSettings.isBlocking();
-		Double sampleRate = newSettings.getSampleRate();
+		Integer sampleRate = newSettings.getSampleRate();
 		Integer pipeSize = newSettings.getPipeSize();
 
 		setBlocking(blocking);
@@ -184,7 +184,7 @@ public class BulkIONxmBlock extends AbstractNxmBlock<corbareceiver2> {
 		setTimelineLength(newSettings.getTimelineLength());
 	}
 
-	public void setSampleRate(double sampleRate) {
+	public void setSampleRate(int sampleRate) {
 		BulkIOPreferences.SAMPLE_RATE.setValue(getPreferences(), sampleRate);
 		BulkIOPreferences.SAMPLE_RATE_OVERRIDE.setValue(getPreferences(), true);
 	}
@@ -198,7 +198,7 @@ public class BulkIONxmBlock extends AbstractNxmBlock<corbareceiver2> {
 		return BulkIOPreferences.SAMPLE_RATE_OVERRIDE.getValue(getPreferences());
 	}
 
-	public double getSampleRate() {
+	public int getSampleRate() {
 		return BulkIOPreferences.SAMPLE_RATE.getValue(getPreferences());
 	}
 
@@ -255,6 +255,13 @@ public class BulkIONxmBlock extends AbstractNxmBlock<corbareceiver2> {
 			customConnectionId = StringUtil.escapeString(customConnectionId, true);
 			switches.append("/CONNECTIONID=\"").append(customConnectionId).append('\"');
 		}
+		if (isSetSampleRate()) {
+			int sampleRate = getSampleRate();
+			if (sampleRate > 0) { // ignore negative or zero sample rates
+				switches.append(corbareceiver2.SW_SAMPLE_RATE).append('=').append(sampleRate);
+			}
+		}
+
 		final String idl = scaPort.getRepid();
 		String pattern = "CORBARECEIVER2{0}/BG FILE={1} IOR={2} IDL=\"{3}\" STREAMID=\"{4}\"";
 		String cmdLine = MessageFormat.format(pattern, switches, outputName, ior, idl, streamID);
@@ -307,12 +314,12 @@ public class BulkIONxmBlock extends AbstractNxmBlock<corbareceiver2> {
 			blocking = (Boolean) event.getNewValue();
 		}
 
-		Double sampleRate = null;
+		Integer sampleRate = null;
 		if (BulkIOPreferences.SAMPLE_RATE.isEvent(event) || BulkIOPreferences.SAMPLE_RATE_OVERRIDE.isEvent(event)) {
 			if (isSetSampleRate()) {
 				sampleRate = getSampleRate();
 			} else {
-				sampleRate = 0.0; // zero to use default from input stream
+				sampleRate = 0; // zero to use default from input stream
 			}
 		}
 

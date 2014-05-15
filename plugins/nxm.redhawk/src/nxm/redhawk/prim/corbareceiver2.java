@@ -75,6 +75,9 @@ public class corbareceiver2 extends CorbaPrimitive implements IMidasDataWriter {
 	/** Name of switch to set pipe size multiplier based on incoming data packet size (when larger than current pipe size). */
 	public static final String SW_PS_MULTIPLIER = "/PSMULT";
 
+	/** Name of switch to set override sample rate (use 0.0 for auto based on StreamSRI). */
+	public static final String SW_SAMPLE_RATE = "/SAMPLERATE";
+
 	private static final Debug TRACE_LOGGER = new Debug(RedhawkOptActivator.ID, corbareceiver2.class.getSimpleName());
 
 	/** sleep interval (milliseconds) for {@link #SW_WAIT}. */
@@ -100,9 +103,8 @@ public class corbareceiver2 extends CorbaPrimitive implements IMidasDataWriter {
 	/** blocking option when output pipe is full. */
 	private boolean blocking;
 
-	/** override SRI's sample rate (1/xdelta for 1000, 1/ydelta for 2000). */
-	/** custom sample rate to use for output file/pipe. zero for none. */
-	private double sampleRate = 0.0;
+	/** override SRI's sample rate (1/xdelta for type 1000, 1/ydelta for type 2000). zero for none. */
+	private int sampleRate = 0;
 	private boolean connected;
 	private String portIor;
 	private BulkIOType bulkioType;
@@ -135,6 +137,7 @@ public class corbareceiver2 extends CorbaPrimitive implements IMidasDataWriter {
 		boolean unsignedOctet = MA.getState(corbareceiver2.SW_TREAT_OCTET_AS_UNSIGNED);
 		this.connectionId = MA.getCS(corbareceiver2.SW_CONNECTION_ID, null);
 		this.canGrowPipe = MA.getState(corbareceiver2.SW_GROW_PIPE, true);
+		this.sampleRate = MA.getL(corbareceiver2.SW_SAMPLE_RATE, sampleRate);
 		setPipeSizeMultiplier(MA.getL(corbareceiver2.SW_PS_MULTIPLIER, 4));
 
 		BulkIOType newType = BulkIOType.getType(this.idl);
@@ -264,7 +267,7 @@ public class corbareceiver2 extends CorbaPrimitive implements IMidasDataWriter {
 		final String format = ((sri.mode == 0) ? "S" : "C") + receiver.getMidasType(); // SUPPRESS CHECKSTYLE AvoidInline
 		final DataFile newOutputFile = new DataFile(MA.cmd, fileName, fileType, format, BaseFile.OUTPUT);
 
-		final double sampleDelta = 1 / corbareceiver2.getSampleRateFor(this.sampleRate, sri); // zero will be ignored (not used)
+		final double sampleDelta = 1.0 / corbareceiver2.getSampleRateFor(this.sampleRate, sri); // zero will be ignored (not used)
 
 		double xdelta;
 		final boolean overrideSampleDelta = (this.sampleRate > 0);
@@ -392,45 +395,45 @@ public class corbareceiver2 extends CorbaPrimitive implements IMidasDataWriter {
 	}
 
 	/**
-	 * @return the current custom sample rate to override in SRI.
+	 * @return the current custom sample rate to override in SRI, zero for no override.
 	 */
-	public double getSampleRate() {
+	public int getSampleRate() {
 		return sampleRate;
 	}
 
-	private static double getSampleRateFor(double sr, StreamSRI sri) {
+	private static int getSampleRateFor(int sr, StreamSRI sri) {
 		if (sr > 0) {
 			return sr;
 		}
-		final double sampleDelta; // zero will be ignored (not used)
+		final int sampleRateFromSRI;
 		if (sri.subsize > 1) { // type 2000 stream
 			if (sri.ydelta > 0 && sri.ydelta <= Double.MAX_VALUE) { // ignore <= 0, Infinity and NaN
-				sampleDelta = 1 / sri.ydelta;
+				sampleRateFromSRI = (int) Math.rint(1 / sri.ydelta);
 			} else {
-				sampleDelta = 1.0;
+				sampleRateFromSRI = 1; // invalid value from SRI, fallback to 1
 			}
 		} else { // type 1000 stream
 			if (sri.xdelta > 0 && sri.xdelta <= Double.MAX_VALUE) { // ignore <= 0, Infinity and NaN
-				sampleDelta = 1 / sri.xdelta;
+				sampleRateFromSRI = (int) Math.rint(1 / sri.xdelta);
 			} else {
-				sampleDelta = 1.0;
+				sampleRateFromSRI = 1; // invalid value from SRI, fallback to 1
 			}
 		}
-		return sampleDelta;
+		return sampleRateFromSRI;
 	}
 
 	/**
 	 * @param newSRate the custom sample rate to override in SRI (zero for none);
 	 *                 (1/xdelta for 1000 stream; 1/ydelta for 2000 stream).
 	 */
-	public void setSampleRate(double newSRate) {
+	public void setSampleRate(int newSRate) {
 		if (newSRate <= 0) {
 			newSRate = 0;
 		}
-		double oldValue = corbareceiver2.getSampleRateFor(this.sampleRate, currentSri);
+		int oldValue = corbareceiver2.getSampleRateFor(this.sampleRate, currentSri);
 		if (this.sampleRate != newSRate) {
 			this.sampleRate = newSRate;
-			double newValue = corbareceiver2.getSampleRateFor(this.sampleRate, currentSri);
+			int newValue = corbareceiver2.getSampleRateFor(this.sampleRate, currentSri);
 			if (oldValue != newValue) {
 				doRestart(); // restart since specified sample rate is different than in SRI
 			}

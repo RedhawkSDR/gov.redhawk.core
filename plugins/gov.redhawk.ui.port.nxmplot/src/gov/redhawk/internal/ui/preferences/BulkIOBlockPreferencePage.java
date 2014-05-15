@@ -1,11 +1,11 @@
 /*******************************************************************************
- * This file is protected by Copyright. 
+ * This file is protected by Copyright.
  * Please refer to the COPYRIGHT file distributed with this source distribution.
  *
  * This file is part of REDHAWK IDE.
  *
- * All rights reserved.  This program and the accompanying materials are made available under 
- * the terms of the Eclipse Public License v1.0 which accompanies this distribution, and is available at 
+ * All rights reserved.  This program and the accompanying materials are made available under
+ * the terms of the Eclipse Public License v1.0 which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *******************************************************************************/
 package gov.redhawk.internal.ui.preferences;
@@ -25,14 +25,14 @@ import org.eclipse.ui.forms.widgets.ExpandableComposite;
 import org.eclipse.ui.forms.widgets.Section;
 
 /**
- * 
+ *
  */
 public class BulkIOBlockPreferencePage extends FieldEditorPreferencePage implements IWorkbenchPreferencePage {
 
 	private IWorkbench workbench;
 
 	/**
-	 * 
+	 *
 	 */
 	public BulkIOBlockPreferencePage() {
 		super("BULKIO", FieldEditorPreferencePage.GRID);
@@ -53,15 +53,16 @@ public class BulkIOBlockPreferencePage extends FieldEditorPreferencePage impleme
 	protected void createFieldEditors() {
 		if (workbench != null) {
 			IntegerFieldEditor tllField = new IntegerFieldEditor(BulkIOPreferences.TLL.getName(), "&Time line length:", getFieldEditorParent());
-			tllField.setErrorMessage("Time line length be an integer >= 1");
+			tllField.setErrorMessage("Time line length must be an integer >= 1");
 			tllField.setValidRange(1, Integer.MAX_VALUE);
 			addField(tllField);
 		} else {
 			addField(new ReadOnlyStringFieldEditor(BulkIOPreferences.CONNECTION_ID.getName(), "&Connection ID:", getFieldEditorParent()));
 			OverridableIntegerFieldEditor sampleRateField = new OverridableIntegerFieldEditor(BulkIOPreferences.SAMPLE_RATE.getName(),
 				BulkIOPreferences.SAMPLE_RATE_OVERRIDE.getName(), "&Sample Rate:", getFieldEditorParent());
-			sampleRateField.setValidRange(1, Integer.MAX_VALUE);
-			sampleRateField.setErrorMessage("Sample rate must be an integer >= 1");
+			sampleRateField.setToolTipText("Custom sample rate to override value in StreamSRI. Use 0 or leave blank (AUTO) to use value from StreamSRI.");
+			sampleRateField.setValidRange(0, Integer.MAX_VALUE);
+			sampleRateField.setErrorMessage("Sample rate must be an integer >= 0");
 			addField(sampleRateField);
 		}
 

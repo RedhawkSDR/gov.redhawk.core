@@ -80,7 +80,7 @@ public class BulkIONxmBlockControls {
 		label.setText(BulkIONxmBlockControls.SAMPLE_RATE_FIELD_NAME + ":");
 		this.sampleRateField = new ComboViewer(container, SWT.BORDER); // writable
 		this.sampleRateField.getCombo().setLayoutData(GridDataFactory.fillDefaults().grab(true, false).create());
-		this.sampleRateField.getCombo().setToolTipText("Custom sample rate to override value in StreamSRI. Default uses value from StreamSRI.");
+		this.sampleRateField.getCombo().setToolTipText("Custom sample rate to override value in StreamSRI. Use default or 0 to use value from StreamSRI.");
 		this.sampleRateField.setContentProvider(ArrayContentProvider.getInstance()); // ArrayContentProvider does not store any state, therefore can re-use instances
 		this.sampleRateField.setLabelProvider(new LabelProvider());
 		Object[] inputValues = ArrayUtil.copyAndPrependIfNotNull(this.settings.getSampleRate(), BulkIONxmBlockControls.VALUE_USE_DEFAULT);
@@ -122,10 +122,10 @@ public class BulkIONxmBlockControls {
 		IObservableValue srWidgetValue = WidgetProperties.selection().observe(sampleRateField.getCombo());
 		IObservableValue srModelValue = PojoProperties.value(BulkIONxmBlockSettings.PROP_SAMPLE_RATE).observe(settings);
 		UpdateValueStrategy srTargetToModel = new UpdateValueStrategy();
-		srTargetToModel.setAfterGetValidator(new StringToDoubleValidator(BulkIONxmBlockControls.SAMPLE_RATE_FIELD_NAME,
+		srTargetToModel.setAfterGetValidator(new StringToIntegerValidator(BulkIONxmBlockControls.SAMPLE_RATE_FIELD_NAME,
 			BulkIONxmBlockControls.VALUE_USE_DEFAULT));
-		srTargetToModel.setConverter(new ObjectToNullConverter(StringToNumberConverter.toDouble(false), true, true, BulkIONxmBlockControls.VALUE_USE_DEFAULT));
-		srTargetToModel.setAfterConvertValidator(new NumberRangeValidator<Double>(BulkIONxmBlockControls.SAMPLE_RATE_FIELD_NAME, Double.class, 0.0, false));
+		srTargetToModel.setConverter(new ObjectToNullConverter(StringToNumberConverter.toInteger(false), true, true, BulkIONxmBlockControls.VALUE_USE_DEFAULT));
+		srTargetToModel.setAfterConvertValidator(new NumberRangeValidator<Integer>(BulkIONxmBlockControls.SAMPLE_RATE_FIELD_NAME, Integer.class, 0, true));
 		UpdateValueStrategy srModelToTarget = new UpdateValueStrategy();
 		srModelToTarget.setConverter(new ObjectToNullConverter()); // converts null to null, otherwise uses toString()
 		bindingValue = dataBindingCtx.bindValue(srWidgetValue, srModelValue, srTargetToModel, srModelToTarget);
