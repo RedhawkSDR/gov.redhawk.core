@@ -68,12 +68,12 @@ public class ReadOnlyStringFieldEditor extends StringFieldEditor {
 	}
 
 	@Override
-	protected void doStore() {
+	public void loadDefault() {
 		// ignore for read only field
 	}
 
 	@Override
-	protected void doLoadDefault() {
+	public void store() {
 		// ignore for read only field
 	}
 }
