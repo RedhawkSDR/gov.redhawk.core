@@ -13,6 +13,7 @@ package gov.redhawk.ui.port.nxmblocks;
 import gov.redhawk.bulkio.util.AbstractUberBulkIOPort;
 import gov.redhawk.bulkio.util.BulkIOType;
 import gov.redhawk.bulkio.util.BulkIOUtilActivator;
+import gov.redhawk.internal.ui.BooleanUtil;
 import gov.redhawk.internal.ui.preferences.BulkIOBlockPreferencePage;
 import gov.redhawk.model.sca.ScaUsesPort;
 import gov.redhawk.sca.util.Debug;
@@ -311,7 +312,7 @@ public class BulkIONxmBlock extends AbstractNxmBlock<corbareceiver2> {
 	public void propertyChange(PropertyChangeEvent event) {
 		Boolean blocking = null;
 		if (BulkIOPreferences.BLOCKING.isEvent(event)) {
-			blocking = (Boolean) event.getNewValue();
+			blocking = BooleanUtil.toBoolean(event.getNewValue());
 		}
 
 		Integer sampleRate = null;
@@ -337,7 +338,7 @@ public class BulkIONxmBlock extends AbstractNxmBlock<corbareceiver2> {
 
 		Boolean canGrowPipe = null;
 		if (BulkIOPreferences.CAN_GROW_PIPE.isEvent(event)) {
-			canGrowPipe = (Boolean) event.getNewValue();
+			canGrowPipe = BooleanUtil.toBoolean(event.getNewValue());
 		}
 
 		Integer pipeSizeMultiplier = null;
