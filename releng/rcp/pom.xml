@@ -12,6 +12,7 @@
 
   <properties>
     <gov.redhawk.core>http://download.redhawksdr.org/gov.redhawk.core/releases/1.10</gov.redhawk.core>
+    <gov.redhawk.core.rcp>http://download.redhawksdr.org/gov.redhawk.core.rcp/releases/1.10</gov.redhawk.core.rcp>
   </properties>
 
   <repositories>
@@ -19,6 +20,11 @@
       <id>gov.redhawk.core</id>
       <layout>p2</layout>
       <url>${gov.redhawk.core}</url>
+    </repository>
+    <repository>
+      <id>gov.redhawk.core.rcp</id>
+      <layout>p2</layout>
+      <url>${gov.redhawk.core.rcp}</url>
     </repository>
   </repositories>
 
@@ -72,6 +78,10 @@
     <module>../../plugins/org.anarres.cpp</module>
     <module>../../tests/gov.redhawk.eclipsecorba.idl.tests</module>
     <module>../../tests/gov.redhawk.eclipsecorba.library.tests</module>
+    <module>../../tests/gov.redhawk.partitioning.validation.tests</module>
+    <module>../../tests/gov.redhawk.prf.validation.tests</module>
+    <module>../../tests/gov.redhawk.scd.validation.tests</module>
+    <module>../../tests/gov.redhawk.validation.tests</module>
     <module>p2</module>
   </modules>
 
