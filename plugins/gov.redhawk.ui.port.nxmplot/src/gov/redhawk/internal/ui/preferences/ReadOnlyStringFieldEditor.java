@@ -66,4 +66,14 @@ public class ReadOnlyStringFieldEditor extends StringFieldEditor {
 		}
 		getTextControl().setForeground(textColor);
 	}
+
+	@Override
+	public void loadDefault() {
+		// ignore for read only field
+	}
+
+	@Override
+	public void store() {
+		// ignore for read only field
+	}
 }

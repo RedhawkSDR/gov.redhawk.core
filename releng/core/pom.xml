@@ -13,6 +13,18 @@
     <version>1.10.0-SNAPSHOT</version>
   </parent>
 
+  <properties>
+    <gov.redhawk.core>http://download.redhawksdr.org/gov.redhawk.core/releases/1.10</gov.redhawk.core>
+  </properties>
+
+  <repositories>
+    <repository>
+      <id>gov.redhawk.core</id>
+      <layout>p2</layout>
+      <url>${gov.redhawk.core}</url>
+    </repository>
+  </repositories>
+
   <modules>
     <module>../../features/gov.redhawk.core.feature</module>
     <module>../../features/gov.redhawk.core.ui.feature</module>
@@ -45,6 +57,7 @@
     <module>../../plugins/idl.cf.jni</module>
     <module>../../plugins/omnijni</module>
     <module>../../plugins/org.ossie</module>
+    <module>../../tests/gov.redhawk.bulkio.util.tests</module>
     <module>../../tests/gov.redhawk.sca.efs.tests</module>
     <module>../../tests/gov.redhawk.sca.model.tests</module>
     <module>p2</module>

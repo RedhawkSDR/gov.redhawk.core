@@ -20,8 +20,8 @@ public class BulkIOPreferences {
 	public static final Preference<Boolean> BLOCKING = new Preference<Boolean>("bulkIOBlock.blocking", false);
 	public static final Preference<Integer> PIPE_SIZE = new Preference<Integer>("bulkIOBlock.pipeSize", 131072);
 	public static final Preference<Boolean> PIPE_SIZE_OVERRIDE = new Preference<Boolean>("bulkIOBlock.pipeSize.override", false);
-	public static final Preference<Boolean> REMOVE_ON_EOS = new Preference<Boolean>("bulkIOBlock.removeOnEndOfStream", false);
-	public static final Preference<Double>  SAMPLE_RATE = new Preference<Double>("bulkIOBlock.sampleRate", 0.0);
+	public static final Preference<Boolean> REMOVE_ON_EOS = new Preference<Boolean>("bulkIOBlock.removeOnEndOfStream", true);
+	public static final Preference<Integer> SAMPLE_RATE = new Preference<Integer>("bulkIOBlock.sampleRate", 0);
 	public static final Preference<Boolean> SAMPLE_RATE_OVERRIDE = new Preference<Boolean>("bulkIOBlock.sampleRate.override", false);
 	public static final Preference<String>  CONNECTION_ID = new Preference<String>("bulkIOBlock.connectionID", "");
 	public static final Preference<Boolean> CONNECTION_ID_OVERRIDE = new Preference<Boolean>("bulkIOBlock.connectionID.override", false);

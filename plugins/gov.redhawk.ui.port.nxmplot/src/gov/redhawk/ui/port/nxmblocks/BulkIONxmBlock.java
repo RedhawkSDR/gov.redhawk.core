@@ -13,6 +13,7 @@ package gov.redhawk.ui.port.nxmblocks;
 import gov.redhawk.bulkio.util.AbstractUberBulkIOPort;
 import gov.redhawk.bulkio.util.BulkIOType;
 import gov.redhawk.bulkio.util.BulkIOUtilActivator;
+import gov.redhawk.internal.ui.BooleanUtil;
 import gov.redhawk.internal.ui.preferences.BulkIOBlockPreferencePage;
 import gov.redhawk.model.sca.ScaUsesPort;
 import gov.redhawk.sca.util.Debug;
@@ -165,7 +166,7 @@ public class BulkIONxmBlock extends AbstractNxmBlock<corbareceiver2> {
 
 	public void applySettings(BulkIONxmBlockSettings newSettings) {
 		boolean blocking = newSettings.isBlocking();
-		Double sampleRate = newSettings.getSampleRate();
+		Integer sampleRate = newSettings.getSampleRate();
 		Integer pipeSize = newSettings.getPipeSize();
 
 		setBlocking(blocking);
@@ -184,7 +185,7 @@ public class BulkIONxmBlock extends AbstractNxmBlock<corbareceiver2> {
 		setTimelineLength(newSettings.getTimelineLength());
 	}
 
-	public void setSampleRate(double sampleRate) {
+	public void setSampleRate(int sampleRate) {
 		BulkIOPreferences.SAMPLE_RATE.setValue(getPreferences(), sampleRate);
 		BulkIOPreferences.SAMPLE_RATE_OVERRIDE.setValue(getPreferences(), true);
 	}
@@ -198,7 +199,7 @@ public class BulkIONxmBlock extends AbstractNxmBlock<corbareceiver2> {
 		return BulkIOPreferences.SAMPLE_RATE_OVERRIDE.getValue(getPreferences());
 	}
 
-	public double getSampleRate() {
+	public int getSampleRate() {
 		return BulkIOPreferences.SAMPLE_RATE.getValue(getPreferences());
 	}
 
@@ -255,6 +256,13 @@ public class BulkIONxmBlock extends AbstractNxmBlock<corbareceiver2> {
 			customConnectionId = StringUtil.escapeString(customConnectionId, true);
 			switches.append("/CONNECTIONID=\"").append(customConnectionId).append('\"');
 		}
+		if (isSetSampleRate()) {
+			int sampleRate = getSampleRate();
+			if (sampleRate > 0) { // ignore negative or zero sample rates
+				switches.append(corbareceiver2.SW_SAMPLE_RATE).append('=').append(sampleRate);
+			}
+		}
+
 		final String idl = scaPort.getRepid();
 		String pattern = "CORBARECEIVER2{0}/BG FILE={1} IOR={2} IDL=\"{3}\" STREAMID=\"{4}\"";
 		String cmdLine = MessageFormat.format(pattern, switches, outputName, ior, idl, streamID);
@@ -304,15 +312,15 @@ public class BulkIONxmBlock extends AbstractNxmBlock<corbareceiver2> {
 	public void propertyChange(PropertyChangeEvent event) {
 		Boolean blocking = null;
 		if (BulkIOPreferences.BLOCKING.isEvent(event)) {
-			blocking = (Boolean) event.getNewValue();
+			blocking = BooleanUtil.toBoolean(event.getNewValue());
 		}
 
-		Double sampleRate = null;
+		Integer sampleRate = null;
 		if (BulkIOPreferences.SAMPLE_RATE.isEvent(event) || BulkIOPreferences.SAMPLE_RATE_OVERRIDE.isEvent(event)) {
 			if (isSetSampleRate()) {
 				sampleRate = getSampleRate();
 			} else {
-				sampleRate = 0.0; // zero to use default from input stream
+				sampleRate = 0; // zero to use default from input stream
 			}
 		}
 
@@ -330,7 +338,7 @@ public class BulkIONxmBlock extends AbstractNxmBlock<corbareceiver2> {
 
 		Boolean canGrowPipe = null;
 		if (BulkIOPreferences.CAN_GROW_PIPE.isEvent(event)) {
-			canGrowPipe = (Boolean) event.getNewValue();
+			canGrowPipe = BooleanUtil.toBoolean(event.getNewValue());
 		}
 
 		Integer pipeSizeMultiplier = null;

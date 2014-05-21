@@ -11,6 +11,7 @@
  */
 package gov.redhawk.ui.port.nxmplot;
 
+import gov.redhawk.internal.ui.BooleanUtil;
 import gov.redhawk.internal.ui.port.nxmplot.handlers.PlotPortHandler;
 import gov.redhawk.model.sca.IDisposable;
 import gov.redhawk.model.sca.ScaPackage;
@@ -208,11 +209,12 @@ public class PlotPageBook2 extends Composite {
 					PlotPreferences.MODE.setValue(rasterPlotStore, (String) event.getNewValue());
 				}
 			} else if (PlotPreferences.ENABLE_CONFIGURE_MENU_USING_MOUSE.isEvent(event)) {
+				Boolean newValue = BooleanUtil.toBoolean(event.getNewValue());
 				if (event.getSource() != sharedLinePlotStore) {
-					PlotPreferences.ENABLE_CONFIGURE_MENU_USING_MOUSE.setValue(sharedLinePlotStore, (Boolean) event.getNewValue());
+					PlotPreferences.ENABLE_CONFIGURE_MENU_USING_MOUSE.setValue(sharedLinePlotStore, newValue);
 				}
 				if (event.getSource() != rasterPlotStore) {
-					PlotPreferences.ENABLE_CONFIGURE_MENU_USING_MOUSE.setValue(rasterPlotStore, (Boolean) event.getNewValue());
+					PlotPreferences.ENABLE_CONFIGURE_MENU_USING_MOUSE.setValue(rasterPlotStore, newValue);
 				}
 			}
 

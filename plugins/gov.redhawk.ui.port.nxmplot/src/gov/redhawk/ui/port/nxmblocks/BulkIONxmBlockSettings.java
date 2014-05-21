@@ -31,8 +31,8 @@ public class BulkIONxmBlockSettings implements Cloneable {
 
 	/** custom connection ID to use. */
 	private String connectionID;
-	/** null to use default from StreamSRI. */
-	private Double sampleRate;
+	/** null (or zero) to use default from StreamSRI. */
+	private Integer sampleRate;
 	/** true to block pushPacket when downstream Command (e.g. Plot) cannot keep up, false to drop packets in this scenario. */
 	private boolean blocking;
 	/** null to use default pipe size from NeXtMidas (128K) */
@@ -84,14 +84,14 @@ public class BulkIONxmBlockSettings implements Cloneable {
 	/**
 	 * @return the current sample rate (null to use default)
 	 */
-	public Double getSampleRate() {
+	public Integer getSampleRate() {
 		return sampleRate;
 	}
 
 	/**
 	 * @param sampleRate the sampleRate to set (null to use default)
 	 */
-	public void setSampleRate(Double sampleRate) {
+	public void setSampleRate(Integer sampleRate) {
 		this.sampleRate = sampleRate;
 	}
 
