@@ -34,7 +34,7 @@ import org.eclipse.emf.ecore.util.EcoreUtil;
  * <li>{@link gov.redhawk.frontend.impl.UnallocatedTunerContainerImpl#getCount <em>Count</em>}</li>
  * </ul>
  * </p>
- *
+ * 
  * @generated
  */
 public class UnallocatedTunerContainerImpl extends MinimalEObjectImpl.Container implements UnallocatedTunerContainer {
