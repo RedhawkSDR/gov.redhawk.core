@@ -9,7 +9,6 @@
 	<packaging>pom</packaging>
 
 	<parent>
-		<relativePath>parent</relativePath>
 		<groupId>gov.redhawk.development.configuration</groupId>
 		<artifactId>parent</artifactId>
 		<version>0.0.1-SNAPSHOT</version>
@@ -68,27 +67,4 @@
 			<url>${jacorb}</url>
 		</repository>
 	</repositories>
-
-	<build>
-		<plugins>
-			 <plugin>
-                <groupId>org.eclipse.tycho</groupId>
-                <artifactId>tycho-surefire-plugin</artifactId>
-                <version>${tycho-version}</version>
-                <configuration>
-                    <!-- <argLine>-Djava.endorsed.dirs=${project.build.directory}/work/plugins/org.jacorb_3.3.0.201405091806/lib -Xmx512m -Djava.net.preferIPv4Stack=true -Dorg.omg.CORBA.ORBClass=org.jacorb.orb.ORB -Dorg.omg.CORBA.ORBSingletonClass=org.jacorb.orb.ORBSingleton -Dorg.omg.PortableInterceptor.ORBInitializerClass.standard_init=org.jacorb.orb.standardInterceptors.IORInterceptorInitializer</argLine>  -->
-                    <argLine>-Djava.endorsed.dirs=/usr/share/java/jacorb -Xmx512m -Djava.net.preferIPv4Stack=true -Dorg.omg.CORBA.ORBClass=org.jacorb.orb.ORB -Dorg.omg.CORBA.ORBSingletonClass=org.jacorb.orb.ORBSingleton -Dorg.omg.PortableInterceptor.ORBInitializerClass.standard_init=org.jacorb.orb.standardInterceptors.IORInterceptorInitializer</argLine>
-                    <appArgLine>-nl en</appArgLine>
-                    <dependencies>
-                        <dependency>
-                            <type>eclipse-feature</type>
-                            <artifactId>org.jacorb</artifactId>
-                            <version>0.0.0</version>
-                        </dependency>
-                    </dependencies>
-                </configuration>
-            </plugin>
-		</plugins>
-	</build>
-
 </project>
