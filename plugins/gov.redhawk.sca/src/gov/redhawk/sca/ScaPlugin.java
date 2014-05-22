@@ -16,9 +16,7 @@ import gov.redhawk.model.sca.ScaDomainManagerRegistry;
 import gov.redhawk.model.sca.ScaFactory;
 import gov.redhawk.model.sca.ScaPackage;
 import gov.redhawk.model.sca.commands.ScaModelCommand;
-import gov.redhawk.model.sca.services.IScaObjectLocator;
 import gov.redhawk.sca.compatibility.ICompatibilityUtil;
-import gov.redhawk.sca.internal.ScaDomainRegistryObjectLocator;
 import gov.redhawk.sca.preferences.ScaPreferenceConstants;
 import gov.redhawk.sca.properties.IPropertiesProviderRegistry;
 import gov.redhawk.sca.properties.PropertiesProviderRegistry;
@@ -46,6 +44,7 @@ import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.transaction.TransactionalEditingDomain;
+import org.jacorb.JacorbActivator;
 import org.omg.CosNaming.Binding;
 import org.omg.CosNaming.BindingIteratorHolder;
 import org.omg.CosNaming.BindingListHolder;
@@ -55,7 +54,6 @@ import org.omg.CosNaming.NamingContextExtHelper;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.FrameworkUtil;
-import org.osgi.framework.ServiceRegistration;
 import org.osgi.util.tracker.ServiceTracker;
 
 import CF.DomainManagerHelper;
@@ -83,8 +81,6 @@ public class ScaPlugin extends Plugin {
 
 	private ServiceTracker<IScaDomainManagerRegistryFactoryService, IScaDomainManagerRegistryFactoryService> registryService;
 
-	private ServiceRegistration<IScaObjectLocator> serviceReg;
-
 	private ServiceTracker<ICompatibilityUtil, ICompatibilityUtil> compatibilityUtil;
 
 	/**
@@ -106,7 +102,7 @@ public class ScaPlugin extends Plugin {
 	public void start(final BundleContext context) throws Exception {
 		ScaPlugin.plugin = this;
 		super.start(context);
-		this.serviceReg = context.registerService(IScaObjectLocator.class, new ScaDomainRegistryObjectLocator(), null);
+		JacorbActivator.getDefault().init();
 		this.compatibilityUtil = new ServiceTracker<ICompatibilityUtil, ICompatibilityUtil>(getBundle().getBundleContext(), ICompatibilityUtil.class, null);
 		this.compatibilityUtil.open(true);
 		this.registryService = new ServiceTracker<IScaDomainManagerRegistryFactoryService, IScaDomainManagerRegistryFactoryService>(context,
@@ -229,14 +225,6 @@ public class ScaPlugin extends Plugin {
 			if (this.registryService != null) {
 				this.registryService.close();
 				this.registryService = null;
-			}
-			if (this.serviceReg != null) {
-				try {
-					this.serviceReg.unregister();
-				} catch (final Exception e) { // SUPPRESS CHECKSTYLE Fallback
-					// PASS
-				}
-				this.serviceReg = null;
 			}
 			ScaPlugin.plugin = null;
 		} finally {
