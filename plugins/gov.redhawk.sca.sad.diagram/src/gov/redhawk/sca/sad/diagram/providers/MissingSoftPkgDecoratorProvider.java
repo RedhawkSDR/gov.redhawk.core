@@ -19,13 +19,13 @@ import gov.redhawk.sca.sad.diagram.part.SadDiagramEditor;
 import java.util.List;
 
 import mil.jpeojtrs.sca.diagram.figures.ComponentInstantiationFigure;
+import mil.jpeojtrs.sca.partitioning.ComponentFile;
 import mil.jpeojtrs.sca.sad.SadComponentInstantiation;
 import mil.jpeojtrs.sca.sad.SadComponentPlacement;
 import mil.jpeojtrs.sca.sad.SadPackage;
 import mil.jpeojtrs.sca.sad.SoftwareAssembly;
 import mil.jpeojtrs.sca.sad.diagram.edit.parts.ComponentPlacementEditPart;
 import mil.jpeojtrs.sca.sad.diagram.part.SadVisualIDRegistry;
-import mil.jpeojtrs.sca.spd.SoftPkg;
 
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
@@ -127,9 +127,9 @@ public class MissingSoftPkgDecoratorProvider extends AbstractProvider implements
 					}
 					if (!comp.getComponentInstantiation().isEmpty()) {
 						final SadComponentInstantiation inst = comp.getComponentInstantiation().get(0);
-						final SoftPkg softPkg = comp.getComponentFileRef().getFile().getSoftPkg();
+						final ComponentFile softPkgFile = comp.getComponentFileRef().getFile();
 
-						if ((softPkg == null || softPkg.eIsProxy()) && compPart instanceof org.eclipse.gef.GraphicalEditPart) {
+						if ((softPkgFile == null || softPkgFile.getSoftPkg() == null || softPkgFile.getSoftPkg().eIsProxy()) && compPart instanceof org.eclipse.gef.GraphicalEditPart) {
 							int margin = -12; // SUPPRESS CHECKSTYLE MagicNumber
 							if (compPart instanceof org.eclipse.gef.GraphicalEditPart) {
 								margin = MapModeUtil.getMapMode(((org.eclipse.gef.GraphicalEditPart) compPart).getFigure()).DPtoLP(margin);
