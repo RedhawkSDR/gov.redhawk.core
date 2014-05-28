@@ -16,4 +16,3 @@ Export-Package: gov.redhawk.sca,
  gov.redhawk.sca.compatibility,
  gov.redhawk.sca.preferences,
  gov.redhawk.sca.properties
-Service-Component: OSGI-INF/locator.xml

@@ -16,7 +16,9 @@ import gov.redhawk.model.sca.ScaDomainManagerRegistry;
 import gov.redhawk.model.sca.ScaFactory;
 import gov.redhawk.model.sca.ScaPackage;
 import gov.redhawk.model.sca.commands.ScaModelCommand;
+import gov.redhawk.model.sca.services.IScaObjectLocator;
 import gov.redhawk.sca.compatibility.ICompatibilityUtil;
+import gov.redhawk.sca.internal.ScaDomainRegistryObjectLocator;
 import gov.redhawk.sca.preferences.ScaPreferenceConstants;
 import gov.redhawk.sca.properties.IPropertiesProviderRegistry;
 import gov.redhawk.sca.properties.PropertiesProviderRegistry;
@@ -54,6 +56,7 @@ import org.omg.CosNaming.NamingContextExtHelper;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.FrameworkUtil;
+import org.osgi.framework.ServiceRegistration;
 import org.osgi.util.tracker.ServiceTracker;
 
 import CF.DomainManagerHelper;
@@ -83,6 +86,8 @@ public class ScaPlugin extends Plugin {
 
 	private ServiceTracker<ICompatibilityUtil, ICompatibilityUtil> compatibilityUtil;
 
+	private ServiceRegistration< ? > serviceReg;
+
 	/**
 	 * The constructor.
 	 */
@@ -108,6 +113,8 @@ public class ScaPlugin extends Plugin {
 		this.registryService = new ServiceTracker<IScaDomainManagerRegistryFactoryService, IScaDomainManagerRegistryFactoryService>(context,
 				IScaDomainManagerRegistryFactoryService.class, null);
 		this.registryService.open();
+		
+		this.serviceReg = context.registerService(IScaObjectLocator.class.getName(), new ScaDomainRegistryObjectLocator(), null);
 	}
 
 	/**
@@ -225,6 +232,10 @@ public class ScaPlugin extends Plugin {
 			if (this.registryService != null) {
 				this.registryService.close();
 				this.registryService = null;
+			}
+			if (this.serviceReg != null) {
+				this.serviceReg.unregister();
+				this.serviceReg = null;
 			}
 			ScaPlugin.plugin = null;
 		} finally {
