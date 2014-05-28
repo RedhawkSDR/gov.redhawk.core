@@ -46,6 +46,7 @@ import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.transaction.TransactionalEditingDomain;
+import org.jacorb.JacorbActivator;
 import org.omg.CosNaming.Binding;
 import org.omg.CosNaming.BindingIteratorHolder;
 import org.omg.CosNaming.BindingListHolder;
@@ -83,9 +84,9 @@ public class ScaPlugin extends Plugin {
 
 	private ServiceTracker<IScaDomainManagerRegistryFactoryService, IScaDomainManagerRegistryFactoryService> registryService;
 
-	private ServiceRegistration<IScaObjectLocator> serviceReg;
-
 	private ServiceTracker<ICompatibilityUtil, ICompatibilityUtil> compatibilityUtil;
+
+	private ServiceRegistration< ? > serviceReg;
 
 	/**
 	 * The constructor.
@@ -106,12 +107,14 @@ public class ScaPlugin extends Plugin {
 	public void start(final BundleContext context) throws Exception {
 		ScaPlugin.plugin = this;
 		super.start(context);
-		this.serviceReg = context.registerService(IScaObjectLocator.class, new ScaDomainRegistryObjectLocator(), null);
+		JacorbActivator.getDefault().init();
 		this.compatibilityUtil = new ServiceTracker<ICompatibilityUtil, ICompatibilityUtil>(getBundle().getBundleContext(), ICompatibilityUtil.class, null);
 		this.compatibilityUtil.open(true);
 		this.registryService = new ServiceTracker<IScaDomainManagerRegistryFactoryService, IScaDomainManagerRegistryFactoryService>(context,
 				IScaDomainManagerRegistryFactoryService.class, null);
 		this.registryService.open();
+		
+		this.serviceReg = context.registerService(IScaObjectLocator.class.getName(), new ScaDomainRegistryObjectLocator(), null);
 	}
 
 	/**
@@ -231,11 +234,7 @@ public class ScaPlugin extends Plugin {
 				this.registryService = null;
 			}
 			if (this.serviceReg != null) {
-				try {
-					this.serviceReg.unregister();
-				} catch (final Exception e) { // SUPPRESS CHECKSTYLE Fallback
-					// PASS
-				}
+				this.serviceReg.unregister();
 				this.serviceReg = null;
 			}
 			ScaPlugin.plugin = null;

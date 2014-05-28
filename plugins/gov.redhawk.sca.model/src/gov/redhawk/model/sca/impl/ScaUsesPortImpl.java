@@ -175,6 +175,11 @@ public class ScaUsesPortImpl extends ScaPortImpl<Uses, Port> implements ScaUsesP
 		}
 		SubMonitor subMonitor = SubMonitor.convert(monitor, 2);
 		Port portObj = fetchNarrowedObject(subMonitor.newChild(1));
+		if (!(portObj instanceof QueryablePort)) {
+			if (_is_a(QueryablePortHelper.id())) {
+				portObj = QueryablePortHelper.narrow(portObj);
+			}
+		}
 		if (portObj instanceof QueryablePort) {
 			Transaction transaction = connectionsFeature.createTransaction();
 			QueryablePort queryPort = (QueryablePort) portObj;
