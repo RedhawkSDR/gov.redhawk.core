@@ -15,12 +15,13 @@
     </parent>
 
     <properties>
+	<tycho.scmUrl>scm:git:https://github.com/RedhawkSDR/eclipse-gov.redhawk.core.git</tycho.scmUrl>
         <eclipse-support>http://download.eclipse.org/eclipse/updates/3.8/</eclipse-support>
         <eclipse>http://download.eclipse.org/releases/juno</eclipse>
         <eclipse-updates>http://download.eclipse.org/eclipse/updates/4.2</eclipse-updates>
         <orbit>http://download.eclipse.org/tools/orbit/downloads/drops/R20130118183705/repository</orbit>
         <mil.jpeojtrs.sca>http://download.redhawksdr.org/mil.jpeojtrs.sca/releases/1.9</mil.jpeojtrs.sca>
-	    <nxm>http://nextmidas.techma.com/p2/nxm/updates/stable</nxm>
+	<nxm>http://nextmidas.techma.com/p2/nxm/updates/stable</nxm>
         <nxm-ui>http://download.redhawksdr.org/nxm-rcp/releases/1.0</nxm-ui>
         <jacorb>http://download.redhawksdr.org/jacorb/releases/3.1</jacorb>
     </properties>
