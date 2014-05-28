@@ -213,11 +213,11 @@ public abstract class DataProviderObjectImpl extends IStatusProviderImpl impleme
 				dataProvidersEnabled));
 	}
 	
-	private void setEnabledDataProviderToDefault() {
+	private static void setEnabledDataProviderToDefault(List<String> list) {
 		List<IScaDataProviderServiceDescriptor> descriptors = DataProviderServicesRegistry.INSTANCE.getDataProvidersDescriptors();
-		getEnabledDataProviders().clear();
+		list.clear();
 		for (IScaDataProviderServiceDescriptor provider : descriptors) {
-			getEnabledDataProviders().add(provider.getId());
+			list.add(provider.getId());
 		}
 	}
 
@@ -229,8 +229,31 @@ public abstract class DataProviderObjectImpl extends IStatusProviderImpl impleme
 	 */
 	public EList<String> getEnabledDataProviders() {
 		if (enabledDataProviders == null) {
-			enabledDataProviders = new EDataTypeUniqueEList<String>(String.class, this, ScaPackage.DATA_PROVIDER_OBJECT__ENABLED_DATA_PROVIDERS);
-			setEnabledDataProviderToDefault();
+			enabledDataProviders = new EDataTypeUniqueEList<String>(String.class, this, ScaPackage.DATA_PROVIDER_OBJECT__ENABLED_DATA_PROVIDERS){
+				
+				private boolean init;
+				
+				@Override
+				protected boolean isNotificationRequired() {
+					if (init) {
+						return super.isNotificationRequired();
+					} else {
+						return false;
+					}
+				}
+				
+				{
+					setEnabledDataProviderToDefault(this);
+					init = true;
+				}
+				
+				@Override
+				public void unset() {
+					setEnabledDataProviderToDefault(this);
+				}
+				
+			};
+			
 		}
 		return enabledDataProviders;
 	}
@@ -480,7 +503,7 @@ public abstract class DataProviderObjectImpl extends IStatusProviderImpl impleme
 					detachDataProviders();
 					getEnabledDataProviders().clear();
 				} else {
-					setEnabledDataProviderToDefault();
+					setEnabledDataProviderToDefault(getEnabledDataProviders());
 				}
 			}
 			break;
