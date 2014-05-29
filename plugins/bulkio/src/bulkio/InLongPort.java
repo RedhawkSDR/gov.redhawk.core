@@ -19,8 +19,8 @@ public class InLongPort extends InInt32Port {
 
     public InLongPort( String portName, 
 			bulkio.sri.Comparator compareSRI, 
-		       bulkio.SriListener streamCB ) {
-	super(portName, compareSRI, streamCB );
+		       bulkio.SriListener sriCallback ) {
+	super(portName, compareSRI, sriCallback );
     }
 
 

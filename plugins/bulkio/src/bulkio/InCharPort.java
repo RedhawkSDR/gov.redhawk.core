@@ -19,8 +19,8 @@ public class InCharPort extends InInt8Port {
 
     public InCharPort( String portName, 
 		       bulkio.sri.Comparator compareSRI, 
-		       bulkio.SriListener streamCB ) {
-	super( portName, null, compareSRI, streamCB);
+		       bulkio.SriListener sriCallback ) {
+	super( portName, null, compareSRI, sriCallback);
     }
 
     public InCharPort( String portName, Logger logger ) {
@@ -30,8 +30,8 @@ public class InCharPort extends InInt8Port {
     public InCharPort( String portName, 
 		       Logger logger,
 		       bulkio.sri.Comparator compareSRI, 
-		       bulkio.SriListener streamCB ) {
-	super( portName, logger, compareSRI, streamCB);
+		       bulkio.SriListener sriCallback ) {
+	super( portName, logger, compareSRI, sriCallback);
     }
 
 

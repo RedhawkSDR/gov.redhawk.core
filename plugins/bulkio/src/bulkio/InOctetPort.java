@@ -16,8 +16,8 @@ public class InOctetPort extends InUInt8Port {
 
     public InOctetPort( String portName, 
 			bulkio.sri.Comparator compareSRI, 
-			bulkio.SriListener streamCB ) {
-	super( portName, null, compareSRI, streamCB);
+			bulkio.SriListener sriCallback ) {
+	super( portName, null, compareSRI, sriCallback);
     }
 
     public InOctetPort( String portName, Logger logger ) {
@@ -27,8 +27,8 @@ public class InOctetPort extends InUInt8Port {
     public InOctetPort( String portName, 
 			Logger logger,
 			bulkio.sri.Comparator compareSRI, 
-			bulkio.SriListener streamCB ) {
-	super( portName, logger, compareSRI, streamCB);
+			bulkio.SriListener sriCallback ) {
+	super( portName, logger, compareSRI, sriCallback);
     }
 
 }
