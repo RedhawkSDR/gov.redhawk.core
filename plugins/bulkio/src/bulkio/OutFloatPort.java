@@ -94,7 +94,7 @@ public class OutFloatPort extends BULKIO.UsesPortStatisticsProviderPOA {
     /**
      * CORBA transfer limit in samples
      */
-    protected static final int MAX_SAMPLES_PER_PUSH = MAX_PAYLOAD_SIZE/FloatSize.bytes();
+    protected static int MAX_SAMPLES_PER_PUSH = MAX_PAYLOAD_SIZE/FloatSize.bytes();
 
 
     public OutFloatPort(String portName ){
@@ -110,7 +110,7 @@ public class OutFloatPort extends BULKIO.UsesPortStatisticsProviderPOA {
      * @generated
      */
     public OutFloatPort(String portName,
-                       Logger tlogger,
+                       Logger logger,
                        ConnectionEventListener  eventCB ) {
         name = portName;
         updatingPortsLock = new Object();
@@ -121,6 +121,10 @@ public class OutFloatPort extends BULKIO.UsesPortStatisticsProviderPOA {
         callback = eventCB;
         this.logger = logger;
         filterTable = null;
+        // make sure MAX_SAMPLES_PER_PUSH is even so that complex data case is handled properly 
+        if (MAX_SAMPLES_PER_PUSH%2 != 0){
+            MAX_SAMPLES_PER_PUSH--;
+        }
         if ( this.logger != null ) {
             this.logger.debug( "bulkio.OutPort CTOR port: " + portName ); 
         }
@@ -407,6 +411,15 @@ public class OutFloatPort extends BULKIO.UsesPortStatisticsProviderPOA {
             return;
         }
 
+        // Determine xdelta for this streamID to be used for time increment for subpackets
+        SriMapStruct sriMap = this.currentSRIs.get(streamID);
+        double xdelta = 0.0;
+        if (sriMap != null){
+            xdelta = sriMap.sri.xdelta;
+        }
+
+        // Initialize time of first subpacket
+        PrecisionUTCTime packetTime = time;
         for (int offset = 0; offset < data.length;) {
             // Don't send more samples than are remaining
             int pushSize = java.lang.Math.min(data.length-offset, MAX_SAMPLES_PER_PUSH);
@@ -423,7 +436,11 @@ public class OutFloatPort extends BULKIO.UsesPortStatisticsProviderPOA {
                 packetEOS = endOfStream;
             }
 
-            this._pushPacket(subPacket, time, packetEOS, streamID);
+            if ( logger != null ) {
+                logger.trace("bulkio.OutPort pushOversizedPacket() calling pushPacket with pushSize " + pushSize + " and packetTime twsec: " + packetTime.twsec + " tfsec: " + packetTime.tfsec);
+            }
+            this._pushPacket(subPacket, packetTime, packetEOS, streamID);
+            packetTime = bulkio.time.utils.addSampleOffset(packetTime, pushSize, xdelta);
         }
     }
 

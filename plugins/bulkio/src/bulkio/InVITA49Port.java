@@ -16,11 +16,11 @@ import BULKIO.PrecisionUTCTime;
 import BULKIO.StreamSRI;
 import BULKIO.PortStatistics;
 import BULKIO.PortUsageType;
-import BULKIO.SDDSStreamDefinition;
-import BULKIO.dataSDDSPackage.AttachError;
-import BULKIO.dataSDDSPackage.DetachError;
-import BULKIO.dataSDDSPackage.InputUsageState;
-import BULKIO.dataSDDSPackage.StreamInputError;
+import BULKIO.VITA49StreamDefinition;
+import BULKIO.dataVITA49Package.AttachError;
+import BULKIO.dataVITA49Package.DetachError;
+import BULKIO.dataVITA49Package.InputUsageState;
+import BULKIO.dataVITA49Package.StreamInputError;
 
 import bulkio.sriState;
 import bulkio.linkStatistics;
@@ -31,15 +31,15 @@ import bulkio.Int16Size;
 /**
  * @generated
  */
-public class InSDDSPort extends BULKIO.jni.dataSDDSPOA {
+public class InVITA49Port extends BULKIO.jni.dataVITA49POA {
 
     public interface Callback  {
 
-	public String attach(BULKIO.SDDSStreamDefinition stream, String userid)
-	    throws BULKIO.dataSDDSPackage.AttachError, BULKIO.dataSDDSPackage.StreamInputError;
+	public String attach(BULKIO.VITA49StreamDefinition stream, String userid)
+	    throws BULKIO.dataVITA49Package.AttachError, BULKIO.dataVITA49Package.StreamInputError;
 
         public void detach(String attachId) 
-	    throws BULKIO.dataSDDSPackage.DetachError, BULKIO.dataSDDSPackage.StreamInputError;
+	    throws BULKIO.dataVITA49Package.DetachError, BULKIO.dataVITA49Package.StreamInputError;
     };
 
     /**
@@ -65,7 +65,7 @@ public class InSDDSPort extends BULKIO.jni.dataSDDSPOA {
     /**
      * @generated
      */
-    protected Map<String, SDDSStreamDefinition> attachedStreamMap;
+    protected Map<String, VITA49StreamDefinition> attachedStreamMap;
 
     /**
      * @generated
@@ -87,7 +87,7 @@ public class InSDDSPort extends BULKIO.jni.dataSDDSPOA {
      */
     protected Logger   logger = null;
 
-    // callback when SDDS Stream Requests happen
+    // callback when VITA49 Stream Requests happen
     protected Callback                 attach_detach_callback;
 
     protected bulkio.sri.Comparator    sri_cmp;
@@ -96,7 +96,7 @@ public class InSDDSPort extends BULKIO.jni.dataSDDSPOA {
 
     protected bulkio.SriListener       sriCallback;
 
-    public InSDDSPort( String portName ) {
+    public InVITA49Port( String portName ) {
 	this( portName, 
 	      null,
 	      null, 
@@ -104,7 +104,7 @@ public class InSDDSPort extends BULKIO.jni.dataSDDSPOA {
 	      new bulkio.time.DefaultComparator() );
     }
     
-   public InSDDSPort( String portName, Callback actionCB ) {
+   public InVITA49Port( String portName, Callback actionCB ) {
 	this( portName, 
 	      null,
 	      actionCB,
@@ -115,7 +115,7 @@ public class InSDDSPort extends BULKIO.jni.dataSDDSPOA {
     /**
      * @generated
      */
-    public InSDDSPort( String                   portName, 
+    public InVITA49Port( String                   portName, 
 		       Logger                   logger,
 		       Callback                 actionCB, 
 		       bulkio.sri.Comparator    sriCmp,
@@ -125,7 +125,7 @@ public class InSDDSPort extends BULKIO.jni.dataSDDSPOA {
         this.stats = new linkStatistics(this.name, new Int8Size() );
 	this.sriUpdateLock = new Object();
 	this.statUpdateLock = new Object();
-	this.attachedStreamMap = new HashMap<String, SDDSStreamDefinition>();
+	this.attachedStreamMap = new HashMap<String, VITA49StreamDefinition>();
 	this.attachedUsers = new HashMap<String, String>();
 	this.currentHs = new HashMap<String, streamTimePair>();
 	this.sriChanged = false;
@@ -137,7 +137,7 @@ public class InSDDSPort extends BULKIO.jni.dataSDDSPOA {
 	logger = logger;
 
 	if ( logger != null  ){
-	    logger.debug( "bulkio::InSDDSPort  CTOR port:" + name  );
+	    logger.debug( "bulkio::InVITA49Port  CTOR port:" + name  );
 	}
 
     }
@@ -298,24 +298,24 @@ public class InSDDSPort extends BULKIO.jni.dataSDDSPOA {
     /**
      * @generated
      */
-    public String attach(SDDSStreamDefinition stream, String userid) throws AttachError, StreamInputError {
+    public String attach(VITA49StreamDefinition stream, String userid) throws AttachError, StreamInputError {
 
 	if ( logger != null ) {
 	    logger.trace("bulkio.InPort attach  ENTER (port=" + name +")" );
-	    logger.debug("SDDS PORT: ATTACH REQUEST STREAM/USER:" + stream.id +"/" + userid );
+	    logger.debug("VITA49 PORT: ATTACH REQUEST STREAM/USER:" + stream.id +"/" + userid );
 	}
 
 	String attachId = null;
 	if ( attach_detach_callback != null ) {
 	    if ( logger != null ) {
-		logger.debug("SDDS PORT: CALLING ATTACH CALLBACK, STREAM/USER:" + stream.id +"/" + userid );
+		logger.debug("VITA49 PORT: CALLING ATTACH CALLBACK, STREAM/USER:" + stream.id +"/" + userid );
 	    }
 	    try {
 		attachId = attach_detach_callback.attach(stream, userid);
 	    }
 	    catch(Exception e) {
 		if ( logger != null ) {
-		    logger.error("SDDS PORT: CALLING ATTACH EXCEPTION, STREAM/USER:" + stream.id +"/" + userid );
+		    logger.error("VITA49 PORT: CALLING ATTACH EXCEPTION, STREAM/USER:" + stream.id +"/" + userid );
 		}
 		throw new AttachError("Callback Failed");		
 	    }
@@ -328,7 +328,7 @@ public class InSDDSPort extends BULKIO.jni.dataSDDSPOA {
 
 
 	if ( logger != null ) {
-	    logger.debug("SDDS PORT: ATTACH COMPLETED, ID:" + attachId + " STREAM/USER:" + stream.id +"/" + userid );
+	    logger.debug("VITA49 PORT: ATTACH COMPLETED, ID:" + attachId + " STREAM/USER:" + stream.id +"/" + userid );
 	    logger.trace("bulkio.InPort attach  EXIT (port=" + name +")" );
 	}
 
@@ -342,19 +342,19 @@ public class InSDDSPort extends BULKIO.jni.dataSDDSPOA {
 
 	if ( logger != null ) {
 	    logger.trace("bulkio.InPort detach  ENTER (port=" + name +")" );
-	    logger.debug("SDDS PORT: DETACH REQUEST ID:" + attachId  );
+	    logger.debug("VITA49 PORT: DETACH REQUEST ID:" + attachId  );
 	}
 
 	if ( attach_detach_callback != null ) {
 	    try {
 		if ( logger != null ) {
-		    logger.debug("SDDS PORT: CALLING DETACH CALLBACK ID:" + attachId  );
+		    logger.debug("VITA49 PORT: CALLING DETACH CALLBACK ID:" + attachId  );
 		}
 		attach_detach_callback.detach(attachId);
 	    }
 	    catch( Exception e ) {
 		if ( logger != null ) {
-		    logger.error("SDDS PORT: DETACH CALLBACK EXCEPTION, ID:" + attachId  );
+		    logger.error("VITA49 PORT: DETACH CALLBACK EXCEPTION, ID:" + attachId  );
 		}
 		throw new DetachError();
 	    }
@@ -363,7 +363,7 @@ public class InSDDSPort extends BULKIO.jni.dataSDDSPOA {
         this.attachedUsers.remove(attachId);
 
 	if ( logger != null ) {
-	    logger.debug("SDDS PORT: DETACH SUCCESS, ID:" + attachId  );
+	    logger.debug("VITA49 PORT: DETACH SUCCESS, ID:" + attachId  );
 	    logger.trace("bulkio.InPort detach  EXIT (port=" + name +")" );
 	}
     }
@@ -378,7 +378,7 @@ public class InSDDSPort extends BULKIO.jni.dataSDDSPOA {
     /**
      * @generated
      */
-    public SDDSStreamDefinition getStreamDefinition(String attachId) throws StreamInputError {
+    public VITA49StreamDefinition getStreamDefinition(String attachId) throws StreamInputError {
         return this.attachedStreamMap.get(attachId);
     }
 
@@ -386,8 +386,8 @@ public class InSDDSPort extends BULKIO.jni.dataSDDSPOA {
     /**
      * @generated
      */
-    public SDDSStreamDefinition[] attachedStreams() {
-        return this.attachedStreamMap.values().toArray(new SDDSStreamDefinition[0]);
+    public VITA49StreamDefinition[] attachedStreams() {
+        return this.attachedStreamMap.values().toArray(new VITA49StreamDefinition[0]);
     }
 
     /**

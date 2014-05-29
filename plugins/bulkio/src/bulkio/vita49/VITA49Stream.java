@@ -1,49 +1,49 @@
-package bulkio.sdds;
+package bulkio.vita49;
 
 import BULKIO.StreamSRI;
-import BULKIO.SDDSStreamDefinition;
-import BULKIO.dataSDDSOperations;
-import bulkio.sdds.SDDSStreamAttachment;
+import BULKIO.VITA49StreamDefinition;
+import BULKIO.dataVITA49Operations;
+import bulkio.vita49.VITA49StreamAttachment;
 import java.util.Iterator;
 import java.util.Set;
 import java.util.HashSet;
 import java.util.Arrays;
 import java.util.ArrayList;
-import BULKIO.dataSDDSPackage.AttachError;
-import BULKIO.dataSDDSPackage.DetachError;
-import BULKIO.dataSDDSPackage.StreamInputError;
+import BULKIO.dataVITA49Package.AttachError;
+import BULKIO.dataVITA49Package.DetachError;
+import BULKIO.dataVITA49Package.StreamInputError;
 import BULKIO.PrecisionUTCTime;
 import org.apache.log4j.Logger;
 
 //
 // Streams represent the flow of a single stream
 //
-public class SDDSStream {
-        public SDDSStream()  {
+public class VITA49Stream {
+        public VITA49Stream()  {
             this(null, null, null, null, null, null);
         }
 
-        public SDDSStream(BULKIO.SDDSStreamDefinition streamDef)  {
+        public VITA49Stream(BULKIO.VITA49StreamDefinition streamDef)  {
             this(streamDef, null , streamDef.id, null, null, null);
         }
 
-        public SDDSStream(BULKIO.SDDSStreamDefinition streamDef, String name)  {
+        public VITA49Stream(BULKIO.VITA49StreamDefinition streamDef, String name)  {
             this(streamDef, name, streamDef.id, null, null, null);
         }
 
-        public SDDSStream(BULKIO.SDDSStreamDefinition streamDef, String name, String streamId)  {
+        public VITA49Stream(BULKIO.VITA49StreamDefinition streamDef, String name, String streamId)  {
             this(streamDef, name, streamId, null, null, null);
             logger = null;
         }
 
-        public SDDSStream(BULKIO.SDDSStreamDefinition streamDef, String name, String streamId, SDDSStreamAttachment[] streamAttachments, StreamSRI sri, PrecisionUTCTime time)  {
+        public VITA49Stream(BULKIO.VITA49StreamDefinition streamDef, String name, String streamId, VITA49StreamAttachment[] streamAttachments, StreamSRI sri, PrecisionUTCTime time)  {
             this.streamDef = streamDef;
             this.name = name;
             this.streamId = streamId;
             if (streamAttachments != null){
-                this.streamAttachments = new HashSet<SDDSStreamAttachment>(Arrays.asList(streamAttachments));
+                this.streamAttachments = new HashSet<VITA49StreamAttachment>(Arrays.asList(streamAttachments));
             }else{
-                this.streamAttachments = new HashSet<SDDSStreamAttachment>();
+                this.streamAttachments = new HashSet<VITA49StreamAttachment>();
             }
             this.sri = sri;
             this.time = time;
@@ -51,9 +51,9 @@ public class SDDSStream {
 
         // detach all attachments with given attachId and connectionId for this stream
         public void detachByAttachIdConnectionId(String attachId, String connectionId) throws DetachError, StreamInputError {
-            Iterator<SDDSStreamAttachment> iterator = this.streamAttachments.iterator();
+            Iterator<VITA49StreamAttachment> iterator = this.streamAttachments.iterator();
             while(iterator.hasNext()){
-                SDDSStreamAttachment nextAttachment = iterator.next();
+                VITA49StreamAttachment nextAttachment = iterator.next();
                 if (nextAttachment.connectionId.equals(connectionId) && 
                    nextAttachment.attachId != null &&
                    nextAttachment.attachId.equals(attachId)){
@@ -65,9 +65,9 @@ public class SDDSStream {
 
         // detach all attachments with given connectionId for this stream
         public void detachByConnectionId(String connectionId) throws DetachError, StreamInputError {
-            Iterator<SDDSStreamAttachment> iterator = this.streamAttachments.iterator();
+            Iterator<VITA49StreamAttachment> iterator = this.streamAttachments.iterator();
             while(iterator.hasNext()){
-                SDDSStreamAttachment nextAttachment = iterator.next();
+                VITA49StreamAttachment nextAttachment = iterator.next();
                 if (nextAttachment.connectionId.equals(connectionId) && nextAttachment.attachId != null){
                     nextAttachment.detach();
                     iterator.remove(); 
@@ -76,9 +76,9 @@ public class SDDSStream {
         }
 
         public void detachByAttachId(String attachId) throws DetachError, StreamInputError {
-            Iterator<SDDSStreamAttachment> iterator = this.streamAttachments.iterator();
+            Iterator<VITA49StreamAttachment> iterator = this.streamAttachments.iterator();
             while(iterator.hasNext()){
-                SDDSStreamAttachment nextAttachment = iterator.next();
+                VITA49StreamAttachment nextAttachment = iterator.next();
                 if (nextAttachment.attachId != null && nextAttachment.attachId.equals(attachId)){
                     nextAttachment.detach();
                     iterator.remove(); 
@@ -88,9 +88,9 @@ public class SDDSStream {
 
         // detach all attachments for this stream
         public void detachAll() throws DetachError, StreamInputError {
-            Iterator<SDDSStreamAttachment> iterator = this.streamAttachments.iterator();
+            Iterator<VITA49StreamAttachment> iterator = this.streamAttachments.iterator();
             while(iterator.hasNext()){
-                SDDSStreamAttachment nextAttachment = iterator.next();
+                VITA49StreamAttachment nextAttachment = iterator.next();
                 if (nextAttachment.attachId != null){
                     nextAttachment.detach();
                     iterator.remove(); 
@@ -98,23 +98,23 @@ public class SDDSStream {
             }
         }
 
-        public void createNewAttachment(String connectionId, dataSDDSOperations inputPort) throws AttachError, StreamInputError {
-            SDDSStreamAttachment newAttachment = new SDDSStreamAttachment(connectionId, inputPort);
+        public void createNewAttachment(String connectionId, dataVITA49Operations inputPort) throws AttachError, StreamInputError {
+            VITA49StreamAttachment newAttachment = new VITA49StreamAttachment(connectionId, inputPort);
             newAttachment.attachId = newAttachment.inputPort.attach(this.streamDef, this.name);
             this.streamAttachments.add(newAttachment);
         }
 
         public String[] getAttachIds(){
             ArrayList<String> attachIdList = new ArrayList<String>();
-            Iterator<SDDSStreamAttachment> iterator = this.streamAttachments.iterator();
+            Iterator<VITA49StreamAttachment> iterator = this.streamAttachments.iterator();
             while(iterator.hasNext()){
-                SDDSStreamAttachment nextAttachment = iterator.next();
+                VITA49StreamAttachment nextAttachment = iterator.next();
                 attachIdList.add(nextAttachment.attachId);
             }
             return attachIdList.toArray(new String[0]);
         }
 
-        public BULKIO.SDDSStreamDefinition getStreamDefinition(){
+        public BULKIO.VITA49StreamDefinition getStreamDefinition(){
             return this.streamDef;
         }
 
@@ -136,14 +136,14 @@ public class SDDSStream {
 
         public Set<String> getConnectionIds() {
             Set<String> connIds = new HashSet<String>();
-            Iterator<SDDSStreamAttachment> iterator = this.streamAttachments.iterator();
+            Iterator<VITA49StreamAttachment> iterator = this.streamAttachments.iterator();
             while (iterator.hasNext()){
                 connIds.add(iterator.next().getConnectionId());
             }
             return connIds;
         }
 
-        public void setStreamDefinition(BULKIO.SDDSStreamDefinition def){
+        public void setStreamDefinition(BULKIO.VITA49StreamDefinition def){
             this.streamDef = def;
         }
 
@@ -164,9 +164,9 @@ public class SDDSStream {
         }
 
         public boolean hasAttachId(String attachId){
-            Iterator<SDDSStreamAttachment> iterator = this.streamAttachments.iterator();
+            Iterator<VITA49StreamAttachment> iterator = this.streamAttachments.iterator();
             while(iterator.hasNext()){
-                SDDSStreamAttachment nextAttachment = iterator.next();
+                VITA49StreamAttachment nextAttachment = iterator.next();
                 if (nextAttachment.attachId != null && nextAttachment.attachId.equals(attachId)){
                     return true;
                 }
@@ -175,9 +175,9 @@ public class SDDSStream {
         }
 
         public boolean hasConnectionId(String connectionId){
-            Iterator<SDDSStreamAttachment> iterator = this.streamAttachments.iterator();
+            Iterator<VITA49StreamAttachment> iterator = this.streamAttachments.iterator();
             while(iterator.hasNext()){
-                SDDSStreamAttachment nextAttachment = iterator.next();
+                VITA49StreamAttachment nextAttachment = iterator.next();
                 if (nextAttachment.connectionId != null && nextAttachment.connectionId.equals(connectionId)){
                     return true;
                 }
@@ -193,40 +193,40 @@ public class SDDSStream {
             }
         }
 
-        public SDDSStreamAttachment[] findAttachmentsByAttachId(String attachId){
-            ArrayList<SDDSStreamAttachment> streamAttList = new ArrayList<SDDSStreamAttachment>();
+        public VITA49StreamAttachment[] findAttachmentsByAttachId(String attachId){
+            ArrayList<VITA49StreamAttachment> streamAttList = new ArrayList<VITA49StreamAttachment>();
             if (this.streamAttachments != null){
-                Iterator<SDDSStreamAttachment> iterator = this.streamAttachments.iterator();
+                Iterator<VITA49StreamAttachment> iterator = this.streamAttachments.iterator();
                 while (iterator.hasNext()){
-                    SDDSStreamAttachment nextAttachment = iterator.next();
+                    VITA49StreamAttachment nextAttachment = iterator.next();
                     if (nextAttachment.attachId != null && nextAttachment.attachId.equals(attachId)){
                        streamAttList.add(nextAttachment);
                     }
                 }
             }
-            return streamAttList.toArray(new SDDSStreamAttachment[0]);
+            return streamAttList.toArray(new VITA49StreamAttachment[0]);
         }
 
-        public SDDSStreamAttachment[] findAttachmentsByConnectionId(String connectionId){
-            ArrayList<SDDSStreamAttachment> streamAttList = new ArrayList<SDDSStreamAttachment>();
+        public VITA49StreamAttachment[] findAttachmentsByConnectionId(String connectionId){
+            ArrayList<VITA49StreamAttachment> streamAttList = new ArrayList<VITA49StreamAttachment>();
             if (this.streamAttachments != null){
-                Iterator<SDDSStreamAttachment> iterator = this.streamAttachments.iterator();
+                Iterator<VITA49StreamAttachment> iterator = this.streamAttachments.iterator();
                 while (iterator.hasNext()){
-                    SDDSStreamAttachment nextAttachment = iterator.next();
+                    VITA49StreamAttachment nextAttachment = iterator.next();
                     if (nextAttachment.connectionId != null && nextAttachment.connectionId.equals(connectionId)){
                        streamAttList.add(nextAttachment);
                     }
                 }
             }
-            return streamAttList.toArray(new SDDSStreamAttachment[0]);
+            return streamAttList.toArray(new VITA49StreamAttachment[0]);
         }
 
-        public void updateAttachments(SDDSStreamAttachment[] expectedAttachments) throws DetachError, AttachError, StreamInputError {
+        public void updateAttachments(VITA49StreamAttachment[] expectedAttachments) throws DetachError, AttachError, StreamInputError {
             Set<String> expectedConnectionIds = new HashSet<String>();
             Set<String> connectionsToRemove = new HashSet<String>();
 
             // Add new attachments that do not already exist
-            for (SDDSStreamAttachment att: expectedAttachments){
+            for (VITA49StreamAttachment att: expectedAttachments){
                 if (!this.hasConnectionId(att.getConnectionId())){
                     this.createNewAttachment(att.getConnectionId(), att.getInputPort());
                 }
@@ -236,9 +236,9 @@ public class SDDSStream {
             // Remove unnecessary attachments
             // Iterate through attachments and compare to expected connectionIds
             if (this.streamAttachments != null){
-                Iterator<SDDSStreamAttachment> streamAttIter = this.streamAttachments.iterator();
+                Iterator<VITA49StreamAttachment> streamAttIter = this.streamAttachments.iterator();
                 while (streamAttIter.hasNext()){
-                    SDDSStreamAttachment nextAttachment = streamAttIter.next();
+                    VITA49StreamAttachment nextAttachment = streamAttIter.next();
                     String existingConnectionId = nextAttachment.getConnectionId();
 
                     boolean detachConnection = true;
@@ -263,10 +263,10 @@ public class SDDSStream {
             logger = newlogger;
         }
 
-        protected BULKIO.SDDSStreamDefinition streamDef;
+        protected BULKIO.VITA49StreamDefinition streamDef;
         protected String name;
         protected String streamId;
-        protected Set<SDDSStreamAttachment> streamAttachments;
+        protected Set<VITA49StreamAttachment> streamAttachments;
         protected StreamSRI sri;
         protected PrecisionUTCTime time; 
         protected Logger logger;

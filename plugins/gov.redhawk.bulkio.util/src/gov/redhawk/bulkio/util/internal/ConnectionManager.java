@@ -102,8 +102,7 @@ public enum ConnectionManager implements IBulkIOPortConnectionManager {
 			synchronized (connections) {
 				connection.deregisterDataReceiver(internalPort);
 				if (connection.isEmpty()) {
-					connections.remove(connection);
-					disposeConnection = true;
+					disposeConnection = connections.remove(connection);
 				}
 			}
 

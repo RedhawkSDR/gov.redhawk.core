@@ -24,26 +24,26 @@ import BULKIO.StreamSRI;
 import BULKIO.UsesPortStatistics;
 import ExtendedCF.UsesConnection;
 import BULKIO.PortUsageType;
-import BULKIO.dataSDDSPackage.AttachError;
-import BULKIO.dataSDDSPackage.DetachError;
-import BULKIO.dataSDDSPackage.InputUsageState;
-import BULKIO.dataSDDSPackage.StreamInputError;
-import BULKIO.dataSDDSOperations;
-import BULKIO.SDDSStreamDefinition;
+import BULKIO.dataVITA49Package.AttachError;
+import BULKIO.dataVITA49Package.DetachError;
+import BULKIO.dataVITA49Package.InputUsageState;
+import BULKIO.dataVITA49Package.StreamInputError;
+import BULKIO.dataVITA49Operations;
+import BULKIO.VITA49StreamDefinition;
 
 import bulkio.linkStatistics;
 import bulkio.Int8Size;
 import bulkio.connection_descriptor_struct;
 import bulkio.SriMapStruct;
-import bulkio.sdds.SDDSStreamContainer;
-import bulkio.sdds.SDDSStream;
-import bulkio.sdds.SDDSStreamAttachment;
+import bulkio.vita49.VITA49StreamContainer;
+import bulkio.vita49.VITA49Stream;
+import bulkio.vita49.VITA49StreamAttachment;
 
 
 /**
  * @generated
  */
-public class OutSDDSPort extends BULKIO.UsesPortStatisticsProviderPOA {
+public class OutVITA49Port extends BULKIO.UsesPortStatisticsProviderPOA {
 
     /**
      * @generated
@@ -70,7 +70,7 @@ public class OutSDDSPort extends BULKIO.UsesPortStatisticsProviderPOA {
      * Map of connection Ids to port objects
      * @generated
      */
-    protected Map<String, dataSDDSOperations> outConnections = null;
+    protected Map<String, dataVITA49Operations> outConnections = null;
 
     /**
      * Map of connection ID to statistics
@@ -87,7 +87,7 @@ public class OutSDDSPort extends BULKIO.UsesPortStatisticsProviderPOA {
     /**
      * @generated
      */
-    protected SDDSStreamContainer streamContainer;
+    protected VITA49StreamContainer streamContainer;
 
     /**
      *
@@ -102,11 +102,11 @@ public class OutSDDSPort extends BULKIO.UsesPortStatisticsProviderPOA {
 
     protected List<connection_descriptor_struct> filterTable = null;
 
-    public OutSDDSPort(String portName ){
+    public OutVITA49Port(String portName ){
 	this( portName, null, null );
     }
 
-    public OutSDDSPort(String portName,
+    public OutVITA49Port(String portName,
 		       Logger logger ) {
 	this( portName, logger, null );
     }
@@ -114,19 +114,19 @@ public class OutSDDSPort extends BULKIO.UsesPortStatisticsProviderPOA {
     /**
      * @generated
      */
-    public OutSDDSPort(String portName,
+    public OutVITA49Port(String portName,
 		       Logger logger,
 		       ConnectionEventListener  eventCB ) {
         this.name = portName;
         this.updatingPortsLock = new Object();
         this.active = false;
-        this.outConnections = new HashMap<String, BULKIO.dataSDDSOperations>();
+        this.outConnections = new HashMap<String, BULKIO.dataVITA49Operations>();
         this.stats = new HashMap<String, linkStatistics>();
         this.currentSRIs = new HashMap<String, SriMapStruct>();
 	this.logger = logger;
         this.filterTable = null;
 	this.callback = eventCB;
-        this.streamContainer = new SDDSStreamContainer();
+        this.streamContainer = new VITA49StreamContainer();
         this.userId = new String("defaultUserId");
 	if ( this.logger != null ) {
 	    this.logger.debug( "bulkio::OutPort CTOR port: " + portName ); 
@@ -223,8 +223,8 @@ public class OutSDDSPort extends BULKIO.UsesPortStatisticsProviderPOA {
     /**
      * @generated
      */
-    public HashMap<String, BULKIO.dataSDDSOperations> getPorts() {
-        return new HashMap<String, dataSDDSOperations>();
+    public HashMap<String, BULKIO.dataVITA49Operations> getPorts() {
+        return new HashMap<String, dataVITA49Operations>();
     }
  
     /**
@@ -278,7 +278,7 @@ public class OutSDDSPort extends BULKIO.UsesPortStatisticsProviderPOA {
                 boolean portListed = false;
 
                 // for each connection
-                for (Entry<String, dataSDDSOperations> p : this.outConnections.entrySet()) {
+                for (Entry<String, dataVITA49Operations> p : this.outConnections.entrySet()) {
 
                     // if connection is in the filter table
                     for (connection_descriptor_struct ftPtr : bulkio.utils.emptyIfNull(this.filterTable) ) {
@@ -312,7 +312,7 @@ public class OutSDDSPort extends BULKIO.UsesPortStatisticsProviderPOA {
 
                 // no entry exists for this port in the filter table so all connections get SRI data
                 if (!portListed ) {
-                    for (Entry<String, dataSDDSOperations> p : this.outConnections.entrySet()) {
+                    for (Entry<String, dataVITA49Operations> p : this.outConnections.entrySet()) {
                         try {
                             if ( logger != null ) {
                                 logger.trace( "pushSRI - NO Filter port:" + this.name + " connection:" + p.getKey() +
@@ -348,8 +348,8 @@ public class OutSDDSPort extends BULKIO.UsesPortStatisticsProviderPOA {
         //
         boolean hasPortEntry = false;
         Map<String, Boolean> streamsFound = new HashMap<String, Boolean>();
-        Map<String, ArrayList<SDDSStreamAttachment>> streamAttMap = new HashMap<String, ArrayList<SDDSStreamAttachment>>();
-        ArrayList<SDDSStreamAttachment> list = new ArrayList<SDDSStreamAttachment>();
+        Map<String, ArrayList<VITA49StreamAttachment>> streamAttMap = new HashMap<String, ArrayList<VITA49StreamAttachment>>();
+        ArrayList<VITA49StreamAttachment> list = new ArrayList<VITA49StreamAttachment>();
 
         // Populate streamsFound
         List<String> streamIds = new ArrayList<String>(Arrays.asList(this.streamContainer.getStreamIds()));
@@ -365,21 +365,21 @@ public class OutSDDSPort extends BULKIO.UsesPortStatisticsProviderPOA {
             }
 
             hasPortEntry = true;
-            dataSDDSOperations connectedPort = this.outConnections.get(ftPtr.connection_id.getValue());
+            dataVITA49Operations connectedPort = this.outConnections.get(ftPtr.connection_id.getValue());
             if (connectedPort == null){
-                if ( logger != null ) {
-                    logger.debug("bulkio.OutPort updateConnectionFilter() did not find connected port for connection_id " + ftPtr.connection_id.getValue());
-                }
+	        if ( logger != null ) {
+	            logger.debug("bulkio.OutPort updateConnectionFilter() did not find connected port for connection_id " + ftPtr.connection_id +")" );
+	        }
                 continue;
             }
             
             // Keep track of which attachments are supposed to exist
             if (this.streamContainer.hasStreamId(ftPtr.stream_id.getValue())){
                 streamsFound.put(ftPtr.stream_id.getValue(),Boolean.TRUE);
-                SDDSStreamAttachment expectedAttachment = new SDDSStreamAttachment(ftPtr.connection_id.getValue(),connectedPort);
-                ArrayList<SDDSStreamAttachment> streamAttList;
+                VITA49StreamAttachment expectedAttachment = new VITA49StreamAttachment(ftPtr.connection_id.getValue(),connectedPort);
+                ArrayList<VITA49StreamAttachment> streamAttList;
                 if (streamAttMap.get(ftPtr.stream_id.getValue()) == null){
-                    streamAttList = new ArrayList<SDDSStreamAttachment>();
+                    streamAttList = new ArrayList<VITA49StreamAttachment>();
                 }else{
                     streamAttList = streamAttMap.get(ftPtr.stream_id.getValue());
                 }
@@ -389,12 +389,12 @@ public class OutSDDSPort extends BULKIO.UsesPortStatisticsProviderPOA {
         }
 
         // Iterate through all attachment associations definted by filterEntries
-        for(Map.Entry<String,ArrayList<SDDSStreamAttachment>> entry: streamAttMap.entrySet()){
+        for(Map.Entry<String,ArrayList<VITA49StreamAttachment>> entry: streamAttMap.entrySet()){
             String streamId = entry.getKey();
-            SDDSStream foundStream = this.streamContainer.findByStreamId(streamId);
+            VITA49Stream foundStream = this.streamContainer.findByStreamId(streamId);
             if (foundStream != null){
                 try{
-                    foundStream.updateAttachments(entry.getValue().toArray(new SDDSStreamAttachment[0]));
+                    foundStream.updateAttachments(entry.getValue().toArray(new VITA49StreamAttachment[0]));
                 }catch (AttachError e){
 	            if ( logger != null ) {
                         logger.error("bulkio::OutPort updateConnectionFilter() AttachError on updateAttachments() for streamId " + streamId);
@@ -415,7 +415,7 @@ public class OutSDDSPort extends BULKIO.UsesPortStatisticsProviderPOA {
             // If there's a valid port entry, we need to detach unmentioned streams
             for(Map.Entry<String,Boolean> entry: streamsFound.entrySet()){
                 if (!entry.getValue().booleanValue()){
-                    SDDSStream stream = this.streamContainer.findByStreamId(entry.getKey());
+                    VITA49Stream stream = this.streamContainer.findByStreamId(entry.getKey());
                     if(stream != null){
                         try{
                             stream.detachAll();
@@ -436,7 +436,7 @@ public class OutSDDSPort extends BULKIO.UsesPortStatisticsProviderPOA {
             }
         } else{
             // No port entry = All connections on
-            for (Entry<String, dataSDDSOperations> p : this.outConnections.entrySet()) {
+            for (Entry<String, dataVITA49Operations> p : this.outConnections.entrySet()) {
                 try{
                     this.streamContainer.addConnectionToAllStreams(p.getKey(),p.getValue());
 	            if ( logger != null ) {
@@ -476,7 +476,7 @@ public class OutSDDSPort extends BULKIO.UsesPortStatisticsProviderPOA {
         Iterator connIdIter;
 
         // Iterate through all registered streams
-        for (SDDSStream s: this.streamContainer.getStreams()){
+        for (VITA49Stream s: this.streamContainer.getStreams()){
             streamId = s.getStreamId();
             streamConnIds = s.getConnectionIds();
 
@@ -492,7 +492,7 @@ public class OutSDDSPort extends BULKIO.UsesPortStatisticsProviderPOA {
                     if (!currentSRIConnIds.contains(connId)) {
 
                         // Grab the port
-                        dataSDDSOperations connectedPort = this.outConnections.get(connId);
+                        dataVITA49Operations connectedPort = this.outConnections.get(connId);
                         if (connectedPort == null) {
 		            if ( logger != null ) {
                                 logger.debug("updateSRIForAllConnections() Unable to find connected port with connectionId: " + connId);
@@ -519,9 +519,9 @@ public class OutSDDSPort extends BULKIO.UsesPortStatisticsProviderPOA {
 	}
 
         synchronized (this.updatingPortsLock) {
-            final dataSDDSOperations port;
+            final dataVITA49Operations port;
             try {
-                port = BULKIO.jni.dataSDDSHelper.narrow(connection);
+                port = BULKIO.jni.dataVITA49Helper.narrow(connection);
             } catch (final Exception ex) {
 		if ( logger != null ) {
 		    logger.error("bulkio::OutPort CONNECT PORT: " + name + " PORT NARROW FAILED");
@@ -639,7 +639,7 @@ public class OutSDDSPort extends BULKIO.UsesPortStatisticsProviderPOA {
         final UsesConnection[] connList = new UsesConnection[this.outConnections.size()];
         int i = 0;
         synchronized (this.updatingPortsLock) {
-            for (Entry<String, dataSDDSOperations> ent : this.outConnections.entrySet()) {
+            for (Entry<String, dataVITA49Operations> ent : this.outConnections.entrySet()) {
                 connList[i++] = new UsesConnection(ent.getKey(), (org.omg.CORBA.Object) ent.getValue());
             }
         }
@@ -649,14 +649,14 @@ public class OutSDDSPort extends BULKIO.UsesPortStatisticsProviderPOA {
     /**
      * @generated
      */
-    public BULKIO.SDDSStreamDefinition[] getStreamDefinition(final String attachId)
+    public BULKIO.VITA49StreamDefinition[] getStreamDefinition(final String attachId)
     {
-        ArrayList<SDDSStream> streamList  = new ArrayList<SDDSStream>(Arrays.asList(this.streamContainer.findByAttachId(attachId)));
-        ArrayList<BULKIO.SDDSStreamDefinition> streamDefList  = new ArrayList<BULKIO.SDDSStreamDefinition>();
-        for (SDDSStream s: streamList){
+        ArrayList<VITA49Stream> streamList  = new ArrayList<VITA49Stream>(Arrays.asList(this.streamContainer.findByAttachId(attachId)));
+        ArrayList<BULKIO.VITA49StreamDefinition> streamDefList  = new ArrayList<BULKIO.VITA49StreamDefinition>();
+        for (VITA49Stream s: streamList){
             streamDefList.add(s.getStreamDefinition());
         }
-        return streamDefList.toArray(new BULKIO.SDDSStreamDefinition[0]); 
+        return streamDefList.toArray(new BULKIO.VITA49StreamDefinition[0]); 
     }
 
     /**
@@ -664,9 +664,9 @@ public class OutSDDSPort extends BULKIO.UsesPortStatisticsProviderPOA {
      */
     public String[] getUser(final String attachId)
     {
-        ArrayList<SDDSStream> streamList  = new ArrayList<SDDSStream>(Arrays.asList(this.streamContainer.findByAttachId(attachId)));
+        ArrayList<VITA49Stream> streamList  = new ArrayList<VITA49Stream>(Arrays.asList(this.streamContainer.findByAttachId(attachId)));
         ArrayList<String> nameList  = new ArrayList<String>();
-        for (SDDSStream s: streamList){
+        for (VITA49Stream s: streamList){
             nameList.add(s.getName());
         }
         return nameList.toArray(new String[0]); 
@@ -687,7 +687,7 @@ public class OutSDDSPort extends BULKIO.UsesPortStatisticsProviderPOA {
     /**
      * @generated
      */
-    public BULKIO.SDDSStreamDefinition[] attachedStreams()
+    public BULKIO.VITA49StreamDefinition[] attachedStreams()
     {
         return this.streamContainer.getCurrentStreamDefinitions(); 
     }
@@ -698,7 +698,7 @@ public class OutSDDSPort extends BULKIO.UsesPortStatisticsProviderPOA {
     public String[] attachmentIds()
     {
         ArrayList<String> attachIdList  = new ArrayList<String>();
-        for (SDDSStream s: this.streamContainer.getStreams()){
+        for (VITA49Stream s: this.streamContainer.getStreams()){
             attachIdList.addAll(Arrays.asList(s.getAttachIds()));           
         }
         return attachIdList.toArray(new String[0]);
@@ -710,7 +710,7 @@ public class OutSDDSPort extends BULKIO.UsesPortStatisticsProviderPOA {
     public String[] attachmentIds(String streamId)
     {
         ArrayList<String> attachIdList  = new ArrayList<String>();
-        for (SDDSStream s: this.streamContainer.getStreams()){
+        for (VITA49Stream s: this.streamContainer.getStreams()){
             if(s.getStreamId().equals(streamId)){
                 attachIdList.addAll(Arrays.asList(s.getAttachIds()));
             }
@@ -721,7 +721,7 @@ public class OutSDDSPort extends BULKIO.UsesPortStatisticsProviderPOA {
     /**
      * @generated
      */
-    public String[] attach(final BULKIO.SDDSStreamDefinition streamDef, final String userId) throws AttachError, StreamInputError, DetachError
+    public String[] attach(final BULKIO.VITA49StreamDefinition streamDef, final String userId) throws AttachError, StreamInputError, DetachError
     {
         // Eventually deprecate this method
         this.userId = userId;
@@ -733,7 +733,7 @@ public class OutSDDSPort extends BULKIO.UsesPortStatisticsProviderPOA {
     /**
      * @generated
      */
-    public boolean updateStream(final BULKIO.SDDSStreamDefinition streamDef) throws AttachError, StreamInputError, DetachError
+    public boolean updateStream(final BULKIO.VITA49StreamDefinition streamDef) throws AttachError, StreamInputError, DetachError
     {
         synchronized (this.updatingPortsLock) {
             if (!this.streamContainer.hasStreamId(streamDef.id)){
@@ -747,27 +747,27 @@ public class OutSDDSPort extends BULKIO.UsesPortStatisticsProviderPOA {
     /**
      * @generated
      */
-    public boolean addStream(final BULKIO.SDDSStreamDefinition streamDef) throws AttachError, StreamInputError, DetachError
+    public boolean addStream(final BULKIO.VITA49StreamDefinition streamDef) throws AttachError, StreamInputError, DetachError
     {
 	if ( logger != null ) {
 	    logger.trace("bulkio.OutPort addStream ENTER (port=" + name +")" );
 	}
 
         String attachId = null;
-        SDDSStream stream;
+        VITA49Stream stream;
         synchronized (this.updatingPortsLock) {
             stream = this.streamContainer.findByStreamId(streamDef.id);
             if (stream != null){
                 //if stream already exists return false
                 return false;
             }else{
-                stream = new SDDSStream(streamDef, this.userId, streamDef.id, null, null, null);
+                stream = new VITA49Stream(streamDef, this.userId, streamDef.id, null, null, null);
                 this.streamContainer.addStream(stream);
             }
 
             boolean portListed = false;
             // for each connection
-            for (Entry<String, dataSDDSOperations> p : this.outConnections.entrySet()) {
+            for (Entry<String, dataVITA49Operations> p : this.outConnections.entrySet()) {
                 // if connection is in the filter table
                 for (connection_descriptor_struct ftPtr : bulkio.utils.emptyIfNull(this.filterTable) ) {
                     // if there is an entry for this port in the filter table....so save that state
@@ -793,7 +793,7 @@ public class OutSDDSPort extends BULKIO.UsesPortStatisticsProviderPOA {
                     stream.setSRI(sriMap.sri);
                     stream.setTime(sriMap.time);
                 }
-                for (Entry<String, dataSDDSOperations> p : this.outConnections.entrySet()) {
+                for (Entry<String, dataVITA49Operations> p : this.outConnections.entrySet()) {
                     stream.createNewAttachment(p.getKey(),p.getValue());
                 }
             }
@@ -802,7 +802,7 @@ public class OutSDDSPort extends BULKIO.UsesPortStatisticsProviderPOA {
         String[] attachIds = stream.getAttachIds();
 	if ( logger != null ) {
             for(String str: attachIds){ 
-	        logger.trace("SDDS PORT: addStream() ATTACHMENT COMPLETED ATTACH ID:" + str + " NAME(userid):" + stream.getName() );
+	        logger.trace("VITA49 PORT: addStream() ATTACHMENT COMPLETED ATTACH ID:" + str + " NAME(userid):" + stream.getName() );
             }
 	    logger.trace("bulkio.OutPort addStream() EXIT (port=" + name +")" );
 	}
@@ -862,19 +862,20 @@ public class OutSDDSPort extends BULKIO.UsesPortStatisticsProviderPOA {
         this.streamContainer.printState("After detach");
     }
 
+
     /**
      * @generated
      */
     public class streamdefUseridPair {
         /** @generated */
-        BULKIO.SDDSStreamDefinition streamDef;
+        BULKIO.VITA49StreamDefinition streamDef;
         /** @generated */
         String userId;
         
         /** 
          * @generated
          */
-        public streamdefUseridPair(final BULKIO.SDDSStreamDefinition streamDef, final String userId) {
+        public streamdefUseridPair(final BULKIO.VITA49StreamDefinition streamDef, final String userId) {
             this.streamDef = streamDef;
             this.userId = userId;
         }

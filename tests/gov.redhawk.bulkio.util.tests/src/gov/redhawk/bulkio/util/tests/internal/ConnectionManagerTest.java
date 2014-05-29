@@ -5,11 +5,11 @@ import gov.redhawk.bulkio.util.BulkIOType;
 import gov.redhawk.bulkio.util.BulkIOUtilActivator;
 import gov.redhawk.bulkio.util.IBulkIOPortConnectionManager;
 import gov.redhawk.sca.util.OrbSession;
-import junit.framework.Assert;
 
 import org.eclipse.core.runtime.CoreException;
 import org.junit.After;
 import org.junit.AfterClass;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -33,12 +33,12 @@ public class ConnectionManagerTest {
 
 		@Override
 		public void connectPort(Object connection, String connectionId) throws InvalidPort, OccupiedPort {
-			connections++;
+			System.out.println("New Connection: " + connections + " " + (++connections));
 		}
 
 		@Override
 		public void disconnectPort(String connectionId) throws InvalidPort {
-			connections--;
+			System.out.println("Remove Connection: " + connections + " " + (--connections));
 		}
 
 	}
@@ -140,8 +140,15 @@ public class ConnectionManagerTest {
 
 		TestDataDoublePort receivePort = new TestDataDoublePort();
 		connectionManager.connect(portRef.toString(), BulkIOType.DOUBLE, receivePort);
+		
 		Assert.assertEquals("Only one connection expected", 1, port.connections);
 		Assert.assertNotNull(connectionManager.getExternalPort(portRef.toString(), BulkIOType.DOUBLE));
+		
+		connectionManager.disconnect(portRef.toString(), BulkIOType.DOUBLE, receivePort);
+		Assert.assertEquals("No connections expected", 0, port.connections);
+		
+		Assert.assertNull(connectionManager.getExternalPort(null, BulkIOType.DOUBLE));
+		Assert.assertNull(connectionManager.getExternalPort(portRef.toString(), BulkIOType.DOUBLE));
 	}
 
 }

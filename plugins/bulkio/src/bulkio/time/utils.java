@@ -39,4 +39,15 @@ public class  utils {
     return tstamp;
     }
 
+    public static PrecisionUTCTime addSampleOffset(final PrecisionUTCTime T, int numSamples, double xdelta) {
+	PrecisionUTCTime tstamp = new PrecisionUTCTime();
+        tstamp = T;
+	tstamp.twsec += (int)(numSamples*xdelta);
+	tstamp.tfsec += numSamples*xdelta-(int)(numSamples*xdelta);
+        if (tstamp.tfsec >= 1.0){
+	    tstamp.twsec += 1;
+	    tstamp.tfsec -= 1.0;
+        }
+	return tstamp;
+    }
 }

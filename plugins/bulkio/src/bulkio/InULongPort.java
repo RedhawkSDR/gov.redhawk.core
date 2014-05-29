@@ -20,8 +20,8 @@ public class InULongPort extends InUInt32Port {
 
     public InULongPort( String portName, 
 		       bulkio.sri.Comparator compareSRI, 
-		       bulkio.SriListener streamCB ) {
-	super( portName, null, compareSRI, streamCB);
+		       bulkio.SriListener sriCallback ) {
+	super( portName, null, compareSRI, sriCallback);
     }
 
     public InULongPort( String portName, Logger logger ) {
@@ -31,8 +31,8 @@ public class InULongPort extends InUInt32Port {
     public InULongPort( String portName, 
 		       Logger logger,
 		       bulkio.sri.Comparator compareSRI, 
-		       bulkio.SriListener streamCB ) {
-	super( portName, logger, compareSRI, streamCB);
+		       bulkio.SriListener sriCallback ) {
+	super( portName, logger, compareSRI, sriCallback);
     }
 
 }

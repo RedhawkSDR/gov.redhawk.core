@@ -97,7 +97,7 @@ public class InInt16Port extends BULKIO.jni.dataShortPOA {
 
     protected bulkio.sri.Comparator    sri_cmp;
 
-    protected bulkio.SriListener   streamCB;
+    protected bulkio.SriListener   sriCallback;
 
 
     /**
@@ -121,9 +121,9 @@ public class InInt16Port extends BULKIO.jni.dataShortPOA {
 
     public InInt16Port( String portName, 
 			bulkio.sri.Comparator compareSRI, 
-			bulkio.SriListener streamCB
+			bulkio.SriListener sriCallback
 		       ) {
-	this( portName, null, compareSRI, streamCB );
+	this( portName, null, compareSRI, sriCallback );
     }
 
     public InInt16Port( String portName, Logger logger ) {
@@ -133,7 +133,7 @@ public class InInt16Port extends BULKIO.jni.dataShortPOA {
     public InInt16Port( String portName, 
 		       Logger logger,
 		       bulkio.sri.Comparator compareSRI, 
-		       bulkio.SriListener streamCB ) {
+		       bulkio.SriListener sriCallback ) {
         this.name = portName;
 	this.logger = logger;
         this.stats = new linkStatistics(this.name, new Int16Size() );
@@ -149,7 +149,7 @@ public class InInt16Port extends BULKIO.jni.dataShortPOA {
 	this.workQueue = new  ArrayDeque< Packet >();
 
 	sri_cmp = compareSRI;	
-	streamCB = streamCB;
+	sriCallback = sriCallback;
 	if ( this.logger != null ) {
 	    this.logger.debug( "bulkio::InPort CTOR port: " + portName ); 
 	}	
@@ -165,9 +165,9 @@ public class InInt16Port extends BULKIO.jni.dataShortPOA {
     /**
      * 
      */
-    public void setNewStreamListener( bulkio.SriListener streamCB ) {
+    public void setSriListener( bulkio.SriListener sriCallback ) {
         synchronized(this.sriUpdateLock) {
-	    this.streamCB = streamCB;
+	    this.sriCallback = sriCallback;
 	}
     }
 
@@ -269,7 +269,7 @@ public class InInt16Port extends BULKIO.jni.dataShortPOA {
 		    logger.debug("pushSRI PORT:" + name + " NEW SRI:" + 
 				 header.streamID );
 		}
-                if ( streamCB != null ) { streamCB.newSRI(header); }
+                if ( sriCallback != null ) { sriCallback.newSRI(header); }
                 currentHs.put(header.streamID, new sriState(header, true));
                 if (header.blocking) {
                     //If switching to blocking we have to set the semaphore
@@ -291,7 +291,7 @@ public class InInt16Port extends BULKIO.jni.dataShortPOA {
 		    cval = sri_cmp.compare( header, oldSri );
 		}
                 if ( cval == false ) {
-		    if ( streamCB != null ) { streamCB.changedSRI(header); }
+		    if ( sriCallback != null ) { sriCallback.changedSRI(header); }
                     this.currentHs.put(header.streamID, new sriState(header, true));
                     if (header.blocking) {
                         //If switching to blocking we have to set the semaphore
