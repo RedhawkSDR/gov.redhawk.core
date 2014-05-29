@@ -33,12 +33,12 @@ public class ConnectionManagerTest {
 
 		@Override
 		public void connectPort(Object connection, String connectionId) throws InvalidPort, OccupiedPort {
-			connections++;
+			System.out.println("New Connection: " + connections + " " + (++connections));
 		}
 
 		@Override
 		public void disconnectPort(String connectionId) throws InvalidPort {
-			connections--;
+			System.out.println("Remove Connection: " + connections + " " + (--connections));
 		}
 
 	}
@@ -140,8 +140,15 @@ public class ConnectionManagerTest {
 
 		TestDataDoublePort receivePort = new TestDataDoublePort();
 		connectionManager.connect(portRef.toString(), BulkIOType.DOUBLE, receivePort);
+		
 		Assert.assertEquals("Only one connection expected", 1, port.connections);
 		Assert.assertNotNull(connectionManager.getExternalPort(portRef.toString(), BulkIOType.DOUBLE));
+		
+		connectionManager.disconnect(portRef.toString(), BulkIOType.DOUBLE, receivePort);
+		Assert.assertEquals("No connections expected", 0, port.connections);
+		
+		Assert.assertNull(connectionManager.getExternalPort(null, BulkIOType.DOUBLE));
+		Assert.assertNull(connectionManager.getExternalPort(portRef.toString(), BulkIOType.DOUBLE));
 	}
 
 }

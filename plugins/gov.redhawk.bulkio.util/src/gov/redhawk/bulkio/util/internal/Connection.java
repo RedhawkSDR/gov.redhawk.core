@@ -23,10 +23,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.List;
-import java.util.concurrent.Callable;
 import java.util.concurrent.LinkedBlockingQueue;
-
-import mil.jpeojtrs.sca.util.CorbaUtils;
 
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.core.runtime.CoreException;
@@ -38,7 +35,6 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.Nullable;
-import org.omg.CORBA.SystemException;
 
 import BULKIO.PrecisionUTCTime;
 import BULKIO.StreamSRI;
@@ -53,9 +49,6 @@ import BULKIO.dataUlongLongOperations;
 import BULKIO.dataUlongOperations;
 import BULKIO.dataUshortOperations;
 import BULKIO.updateSRIOperations;
-import CF.Port;
-import CF.PortHelper;
-import CF.PortPackage.InvalidPort;
 
 /**
  * @since 1.1
@@ -68,7 +61,6 @@ public class Connection extends AbstractUberBulkIOPort {
 	private final String ior;
 	private final String connectionId;
 	private final boolean generatedID;
-	private Port port;
 	private PortReference ref;
 	private final List<updateSRIOperations> children = Collections.synchronizedList(new ArrayList<updateSRIOperations>());
 	private LinkedBlockingQueue<StreamSRIEvent> sriChanges = new LinkedBlockingQueue<Connection.StreamSRIEvent>();
@@ -140,10 +132,6 @@ public class Connection extends AbstractUberBulkIOPort {
 			// Connection is disposed, do nothing
 			return;
 		}
-		this.port = PortHelper.narrow(orbSession.getOrb().string_to_object(ior));
-		if (port == null) {
-			throw new IllegalStateException("Failed to narrow to port.");
-		}
 		IPortFactory factory = BulkIOUtilActivator.getDefault().getPortFactory();
 		if (factory == null) {
 			throw new CoreException(new Status(IStatus.ERROR, BulkIOUtilActivator.PLUGIN_ID, "Failed to find Port Factory", null));
@@ -182,41 +170,6 @@ public class Connection extends AbstractUberBulkIOPort {
 			return;
 		}
 		disposed = true;
-		if (port != null) {
-			final Port localPort = port;
-			final String localConnectionId = connectionId;
-			Job job = new Job("Disconnect") {
-
-				@Override
-				protected IStatus run(IProgressMonitor monitor) {
-					try {
-						CorbaUtils.invoke(new Callable<Object>() {
-
-							@Override
-							public Object call() throws Exception {
-								try {
-									localPort.disconnectPort(localConnectionId);
-								} catch (InvalidPort e) {
-									// PASS
-								} catch (SystemException e) {
-									// PASS
-								}
-								return null;
-							}
-
-						}, monitor);
-					} catch (CoreException e) {
-						return e.getStatus();
-					} catch (InterruptedException e) {
-						return Status.CANCEL_STATUS;
-					}
-					return Status.OK_STATUS;
-				}
-
-			};
-			job.schedule();
-			port = null;
-		}
 		if (ref != null) {
 			ref.dispose();
 			ref = null;
