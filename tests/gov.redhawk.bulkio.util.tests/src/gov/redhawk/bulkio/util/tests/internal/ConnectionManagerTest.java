@@ -5,11 +5,11 @@ import gov.redhawk.bulkio.util.BulkIOType;
 import gov.redhawk.bulkio.util.BulkIOUtilActivator;
 import gov.redhawk.bulkio.util.IBulkIOPortConnectionManager;
 import gov.redhawk.sca.util.OrbSession;
-import junit.framework.Assert;
 
 import org.eclipse.core.runtime.CoreException;
 import org.junit.After;
 import org.junit.AfterClass;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;

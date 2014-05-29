@@ -177,13 +177,11 @@ public class Connection extends AbstractUberBulkIOPort {
 		return System.getProperty("user.name", "user") + "_" + Connection.FORMAT.format(Calendar.getInstance().getTime());
 	}
 
-	public void dispose() {
-		synchronized (this) {
-			if (disposed) {
-				return;
-			}
-			disposed = true;
+	public synchronized void dispose() {
+		if (disposed) {
+			return;
 		}
+		disposed = true;
 		if (port != null) {
 			final Port localPort = port;
 			final String localConnectionId = connectionId;
@@ -252,10 +250,17 @@ public class Connection extends AbstractUberBulkIOPort {
 		}
 	}
 
+	/**
+	 * 
+	 * Disconnect an internal connection
+	 */
 	public void deregisterDataReceiver(@NonNull updateSRIOperations receiver) {
 		children.remove(receiver);
 	}
 
+	/**
+	 * @return True if there are no internal connections
+	 */
 	public boolean isEmpty() {
 		return children.isEmpty();
 	}
