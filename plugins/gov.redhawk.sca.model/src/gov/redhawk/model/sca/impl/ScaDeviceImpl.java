@@ -27,6 +27,7 @@ import gov.redhawk.model.sca.commands.VersionedFeature;
 import gov.redhawk.model.sca.commands.VersionedFeature.Transaction;
 import gov.redhawk.sca.util.PluginUtil;
 
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
@@ -37,6 +38,7 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.SubMonitor;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
+import org.eclipse.emf.common.util.BasicEList;
 import org.eclipse.emf.common.util.ECollections;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.URI;
@@ -624,7 +626,11 @@ public class ScaDeviceImpl< D extends Device > extends ScaAbstractComponentImpl<
 			}
 		}
 		subMonitor.done();
-		return getChildDevices();
+		if (devices != null) {
+			return ECollections.unmodifiableEList(new BasicEList<ScaDevice< ? >>(Arrays.asList(devices)));
+		} else {
+			return ECollections.emptyEList();
+		}
 	}
 
 	private final VersionedFeature adminStateFeature = new VersionedFeature(this, ScaPackage.Literals.SCA_DEVICE__ADMIN_STATE);

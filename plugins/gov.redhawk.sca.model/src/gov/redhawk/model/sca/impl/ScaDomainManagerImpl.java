@@ -43,6 +43,7 @@ import gov.redhawk.sca.util.PluginUtil;
 import gov.redhawk.sca.util.SilentJob;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
@@ -68,6 +69,7 @@ import org.eclipse.core.runtime.SubMonitor;
 import org.eclipse.emf.common.command.CompoundCommand;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
+import org.eclipse.emf.common.util.BasicEList;
 import org.eclipse.emf.common.util.ECollections;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.EMap;
@@ -1332,7 +1334,11 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 			}
 		}
 		subMonitor.done();
-		return getDeviceManagers();
+		if (array != null) {
+			return ECollections.unmodifiableEList(new BasicEList<ScaDeviceManager>(Arrays.asList(array)));
+		} else {
+			return ECollections.emptyEList();
+		}
 	}
 
 	private final VersionedFeature devicemanagers = new VersionedFeature(this, ScaPackage.Literals.SCA_DOMAIN_MANAGER__DEVICE_MANAGERS);
@@ -1403,7 +1409,11 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 			}
 		}
 		subMonitor.done();
-		return getWaveformFactories();
+		if (array != null) {
+			return ECollections.unmodifiableEList(new BasicEList<ScaWaveformFactory>(Arrays.asList(array)));
+		} else {
+			return ECollections.emptyEList();
+		}
 	}
 
 	private final VersionedFeature waveformFactoriesFeature = new VersionedFeature(this, ScaPackage.Literals.SCA_DOMAIN_MANAGER__WAVEFORM_FACTORIES);
@@ -1473,7 +1483,11 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 			}
 		}
 		subMonitor.done();
-		return getWaveforms();
+		if (array != null) {
+			return ECollections.unmodifiableEList(new BasicEList<ScaWaveform>(Arrays.asList(array)));
+		} else {
+			return ECollections.emptyEList();
+		}
 	}
 
 	private final VersionedFeature waveformsFeature = new VersionedFeature(this, ScaPackage.Literals.SCA_DOMAIN_MANAGER__WAVEFORMS);
@@ -2433,7 +2447,11 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 			}
 		}
 		subMonitor.done();
-		return getEventChannels();
+		if (array != null) {
+			return ECollections.unmodifiableEList(new BasicEList<ScaEventChannel>(Arrays.asList(array)));
+		} else {
+			return ECollections.emptyEList();
+		}
 	}
 
 	/**

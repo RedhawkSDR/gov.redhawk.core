@@ -14,6 +14,7 @@ package gov.redhawk.model.sca.impl;
 
 import gov.redhawk.model.sca.ScaConnection;
 import gov.redhawk.model.sca.ScaFactory;
+import gov.redhawk.model.sca.ScaFileStore;
 import gov.redhawk.model.sca.ScaModelPlugin;
 import gov.redhawk.model.sca.ScaPackage;
 import gov.redhawk.model.sca.ScaUsesPort;
@@ -33,12 +34,14 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.SubMonitor;
 import org.eclipse.emf.common.notify.NotificationChain;
+import org.eclipse.emf.common.util.BasicEList;
 import org.eclipse.emf.common.util.ECollections;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.util.EObjectContainmentWithInverseEList;
 import org.eclipse.emf.ecore.util.InternalEList;
+import org.eclipse.emf.transaction.RunnableWithResult;
 import org.omg.CORBA.SystemException;
 
 import CF.Port;
@@ -240,7 +243,18 @@ public class ScaUsesPortImpl extends ScaPortImpl<Uses, Port> implements ScaUsesP
 		}
 
 		subMonitor.done();
-		return getConnections();
+		try {
+			return ScaModelCommand.runExclusive(this, new RunnableWithResult.Impl<EList<ScaConnection>>() {
+
+				@Override
+				public void run() {
+					setResult(ECollections.unmodifiableEList(new BasicEList<ScaConnection>(getConnections())));
+				}
+				
+			});
+		} catch (InterruptedException e) {
+			return ECollections.emptyEList();
+		}
 		// BEGIN GENERATED CODE
 	}
 

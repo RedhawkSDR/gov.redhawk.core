@@ -29,12 +29,15 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.SubMonitor;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
+import org.eclipse.emf.common.util.BasicEList;
+import org.eclipse.emf.common.util.ECollections;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.InternalEList;
+import org.eclipse.emf.transaction.RunnableWithResult;
 
 /**
  * <!-- begin-user-doc -->
@@ -337,7 +340,18 @@ public class ScaFileStoreImpl extends IStatusProviderImpl implements ScaFileStor
 	public EList<ScaFileStore> fetchChildren(IProgressMonitor monitor) {
 		// END GENERATED CODE
 		ScaFileStoreImpl.internalFetchChildren(monitor, this);
-		return getChildren();
+		try {
+			return ScaModelCommand.runExclusive(this, new RunnableWithResult.Impl<EList<ScaFileStore>>() {
+
+				@Override
+				public void run() {
+					setResult(ECollections.unmodifiableEList(new BasicEList<ScaFileStore>(getChildren())));
+				}
+				
+			});
+		} catch (InterruptedException e) {
+			return ECollections.emptyEList();
+		}
 		// BEGIN GENERATED CODE
 	}
 
