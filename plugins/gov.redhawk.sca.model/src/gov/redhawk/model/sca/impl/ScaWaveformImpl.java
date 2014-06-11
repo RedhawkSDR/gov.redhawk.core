@@ -32,6 +32,7 @@ import gov.redhawk.model.sca.commands.SetLocalAttributeCommand;
 import gov.redhawk.model.sca.commands.UnsetLocalAttributeCommand;
 import gov.redhawk.model.sca.commands.VersionedFeature;
 import gov.redhawk.model.sca.commands.VersionedFeature.Transaction;
+import gov.redhawk.model.sca.util.ModelUtil;
 import gov.redhawk.sca.util.PluginUtil;
 
 import java.util.ArrayList;
@@ -115,14 +116,14 @@ import CF.TestableObjectPackage.UnknownTest;
  * <p>
  * The following features are implemented:
  * <ul>
- *   <li>{@link gov.redhawk.model.sca.impl.ScaWaveformImpl#getPorts <em>Ports</em>}</li>
- *   <li>{@link gov.redhawk.model.sca.impl.ScaWaveformImpl#getComponents <em>Components</em>}</li>
- *   <li>{@link gov.redhawk.model.sca.impl.ScaWaveformImpl#getAssemblyController <em>Assembly Controller</em>}</li>
- *   <li>{@link gov.redhawk.model.sca.impl.ScaWaveformImpl#getDomMgr <em>Dom Mgr</em>}</li>
- *   <li>{@link gov.redhawk.model.sca.impl.ScaWaveformImpl#getIdentifier <em>Identifier</em>}</li>
- *   <li>{@link gov.redhawk.model.sca.impl.ScaWaveformImpl#getName <em>Name</em>}</li>
- *   <li>{@link gov.redhawk.model.sca.impl.ScaWaveformImpl#getStarted <em>Started</em>}</li>
- *   <li>{@link gov.redhawk.model.sca.impl.ScaWaveformImpl#getProfile <em>Profile</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.impl.ScaWaveformImpl#getPorts <em>Ports</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.impl.ScaWaveformImpl#getComponents <em>Components</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.impl.ScaWaveformImpl#getAssemblyController <em>Assembly Controller</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.impl.ScaWaveformImpl#getDomMgr <em>Dom Mgr</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.impl.ScaWaveformImpl#getIdentifier <em>Identifier</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.impl.ScaWaveformImpl#getName <em>Name</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.impl.ScaWaveformImpl#getStarted <em>Started</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.impl.ScaWaveformImpl#getProfile <em>Profile</em>}</li>
  * </ul>
  * </p>
  *
@@ -728,7 +729,7 @@ public class ScaWaveformImpl extends ScaPropertyContainerImpl<Application, Softw
 	 * <!-- begin-user-doc -->
 	 * @since 14.0
 	 * <!-- end-user-doc -->
-	 * @throws InterruptedException 
+	 * @throws InterruptedException
 	 * @generated NOT
 	 */
 	@Override
@@ -882,7 +883,7 @@ public class ScaWaveformImpl extends ScaPropertyContainerImpl<Application, Softw
 		if (isSetComponents() || isDisposed()) {
 			return;
 		}
-		SubMonitor subMonitor = SubMonitor.convert(monitor, 6); //SUPPRESS CHECKSTYLE MagicNumber
+		SubMonitor subMonitor = SubMonitor.convert(monitor, 6); // SUPPRESS CHECKSTYLE MagicNumber
 		final Application app = fetchNarrowedObject(subMonitor.newChild(1));
 
 		Transaction transaction = componentsFeature.createTransaction();
@@ -944,7 +945,7 @@ public class ScaWaveformImpl extends ScaPropertyContainerImpl<Application, Softw
 	 * <!-- begin-user-doc -->
 	 * @since 14.0
 	 * <!-- end-user-doc -->
-	 * @throws InterruptedException 
+	 * @throws InterruptedException
 	 * @generated NOT
 	 */
 	@Override
@@ -1107,7 +1108,7 @@ public class ScaWaveformImpl extends ScaPropertyContainerImpl<Application, Softw
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @throws InterruptedException 
+	 * @throws InterruptedException
 	 * @generated NOT
 	 */
 	@Override
@@ -1321,6 +1322,9 @@ public class ScaWaveformImpl extends ScaPropertyContainerImpl<Application, Softw
 		}
 		waveform.start();
 		fetchStarted(null);
+		for (Object c : ModelUtil.getAsImmutableList(this, ScaPackage.Literals.SCA_WAVEFORM__COMPONENTS)) {
+			((ScaComponent) c).fetchStarted(null);
+		}
 		// BEGIN GENERATED CODE
 	}
 
@@ -1333,6 +1337,9 @@ public class ScaWaveformImpl extends ScaPropertyContainerImpl<Application, Softw
 		}
 		waveform.stop();
 		fetchStarted(null);
+		for (Object c : ModelUtil.getAsImmutableList(this, ScaPackage.Literals.SCA_WAVEFORM__COMPONENTS)) {
+			((ScaComponent) c).fetchStarted(null);
+		}
 		// BEGIN GENERATED CODE
 	}
 
@@ -1912,7 +1919,6 @@ public class ScaWaveformImpl extends ScaPropertyContainerImpl<Application, Softw
 	public String softwareProfile() {
 		return profile();
 	}
-	
 
 	/**
 	 * @since 19.0
@@ -2018,4 +2024,4 @@ public class ScaWaveformImpl extends ScaPropertyContainerImpl<Application, Softw
 		subMonitor.done();
 		return getComponents();
 	}
-} //ScaWaveformImpl
+} // ScaWaveformImpl

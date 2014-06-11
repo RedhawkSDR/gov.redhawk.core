@@ -42,6 +42,7 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.SubMonitor;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
+import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
@@ -1177,7 +1178,7 @@ public class ScaWaveformFactoryImpl extends CorbaObjWrapperImpl<ApplicationFacto
 			DEBUG.enteringMethod(name, Arrays.toString(initConfiguration), Arrays.toString(deviceAssignments));
 		}
 		ApplicationFactory factory = fetchNarrowedObject(null);
-		SubMonitor subMonitor = SubMonitor.convert(monitor, "Create Waveform" + name, 3); 
+		SubMonitor subMonitor = SubMonitor.convert(monitor, "Create Waveform" + name, 3);
 		try {
 			if (factory == null) {
 				throw new IllegalStateException("App Factory is null");
@@ -1188,33 +1189,19 @@ public class ScaWaveformFactoryImpl extends CorbaObjWrapperImpl<ApplicationFacto
 				if (deviceAssignments == null) {
 					deviceAssignments = DEVICE_EMPTY_TYPE;
 				}
+
 				final Application app = factory.create(name, initConfiguration, deviceAssignments);
 
 				ScaWaveform retVal = null;
 				if (app != null) {
 					final String ior = app.toString();
-					retVal = ScaModelCommandWithResult.execute(this, new ScaModelCommandWithResult<ScaWaveform>() {
-						@Override
-						public void execute() {
-
-							if (getDomMgr() != null) {
-								// Check to be sure someone else didn't already add the waveform
-								for (ScaWaveform w : getDomMgr().getWaveforms()) {
-									if (ior.equals(w.getIor())) {
-										setResult(w);
-										return;
-									}
-								}
-
-								ScaWaveform newWaveform = ScaFactory.eINSTANCE.createScaWaveform();
-								newWaveform.setCorbaObj(app);
-								getDomMgr().getWaveforms().add(newWaveform);
-								setResult(newWaveform);
-							}
+					EList<ScaWaveform> waveforms = getDomMgr().fetchWaveforms(subMonitor.newChild(1), null);
+					for (ScaWaveform w : waveforms) {
+						if (ior.equals(w.getIor())) {
+							retVal = w;
+							break;
 						}
-
-					});
-					subMonitor.worked(1);
+					}
 				}
 				if (retVal != null && depth != null) {
 					try {
