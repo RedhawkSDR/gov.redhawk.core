@@ -1313,32 +1313,7 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 	 */
 	@Override
 	public EList<ScaDeviceManager> fetchDeviceManagers(IProgressMonitor monitor) {
-		SubMonitor subMonitor = SubMonitor.convert(monitor, "Fetch Device Managers", 2);
-		internalFetchDeviceManagers(subMonitor.newChild(1));
-		ScaDeviceManager[] array = ScaModelCommandWithResult.execute(this, new ScaModelCommandWithResult<ScaDeviceManager[]>() {
-
-			@Override
-			public void execute() {
-				setResult(getDeviceManagers().toArray(new ScaDeviceManager[getDeviceManagers().size()]));
-			}
-		});
-		if (array != null) {
-			SubMonitor deviceMonitor = subMonitor.newChild(1);
-			deviceMonitor.beginTask("Refreshing device Managers", array.length);
-			for (ScaDeviceManager element : array) {
-				try {
-					element.refresh(deviceMonitor.newChild(1), RefreshDepth.SELF);
-				} catch (InterruptedException e) {
-					// PASS
-				}
-			}
-		}
-		subMonitor.done();
-		if (array != null) {
-			return ECollections.unmodifiableEList(new BasicEList<ScaDeviceManager>(Arrays.asList(array)));
-		} else {
-			return ECollections.emptyEList();
-		}
+		return fetchDeviceManagers(monitor, RefreshDepth.SELF);
 	}
 
 	private final VersionedFeature devicemanagers = new VersionedFeature(this, ScaPackage.Literals.SCA_DOMAIN_MANAGER__DEVICE_MANAGERS);
@@ -1385,35 +1360,7 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 	 */
 	@Override
 	public EList<ScaWaveformFactory> fetchWaveformFactories(IProgressMonitor monitor) {
-		if (isDisposed()) {
-			return ECollections.emptyEList();
-		}
-		SubMonitor subMonitor = SubMonitor.convert(monitor, "Fetch Waveform Factories", 2);
-		internalFetchWaveformFactories(subMonitor.newChild(1));
-		ScaWaveformFactory[] array = ScaModelCommandWithResult.execute(this, new ScaModelCommandWithResult<ScaWaveformFactory[]>() {
-
-			@Override
-			public void execute() {
-				setResult(getWaveformFactories().toArray(new ScaWaveformFactory[getWaveformFactories().size()]));
-			}
-		});
-		if (array != null) {
-			SubMonitor childMonitor = subMonitor.newChild(1);
-			childMonitor.beginTask("Refreshing waveform factory", array.length);
-			for (ScaWaveformFactory element : array) {
-				try {
-					element.refresh(childMonitor.newChild(1), RefreshDepth.SELF);
-				} catch (InterruptedException e) {
-					// PASS
-				}
-			}
-		}
-		subMonitor.done();
-		if (array != null) {
-			return ECollections.unmodifiableEList(new BasicEList<ScaWaveformFactory>(Arrays.asList(array)));
-		} else {
-			return ECollections.emptyEList();
-		}
+		return fetchWaveformFactories(monitor, RefreshDepth.SELF);
 	}
 
 	private final VersionedFeature waveformFactoriesFeature = new VersionedFeature(this, ScaPackage.Literals.SCA_DOMAIN_MANAGER__WAVEFORM_FACTORIES);
@@ -1459,35 +1406,7 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 	 */
 	@Override
 	public EList<ScaWaveform> fetchWaveforms(IProgressMonitor monitor) {
-		if (isDisposed()) {
-			return ECollections.emptyEList();
-		}
-		SubMonitor subMonitor = SubMonitor.convert(monitor, "Fetch Waveforms", 2);
-		internalFetchWaveforms(subMonitor.newChild(1));
-		ScaWaveform[] array = ScaModelCommandWithResult.execute(this, new ScaModelCommandWithResult<ScaWaveform[]>() {
-
-			@Override
-			public void execute() {
-				setResult(getWaveforms().toArray(new ScaWaveform[getWaveforms().size()]));
-			}
-		});
-		if (array != null) {
-			SubMonitor childMonitor = subMonitor.newChild(1);
-			childMonitor.beginTask("Refreshing waveforms", array.length);
-			for (ScaWaveform element : array) {
-				try {
-					element.refresh(childMonitor.newChild(1), RefreshDepth.SELF);
-				} catch (InterruptedException e) {
-					// PASS
-				}
-			}
-		}
-		subMonitor.done();
-		if (array != null) {
-			return ECollections.unmodifiableEList(new BasicEList<ScaWaveform>(Arrays.asList(array)));
-		} else {
-			return ECollections.emptyEList();
-		}
+		return fetchWaveforms(monitor, RefreshDepth.SELF);
 	}
 
 	private final VersionedFeature waveformsFeature = new VersionedFeature(this, ScaPackage.Literals.SCA_DOMAIN_MANAGER__WAVEFORMS);
@@ -2253,48 +2172,7 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 	 */
 	@Override
 	public ScaDomainManagerFileSystem fetchFileManager(IProgressMonitor monitor) {
-		if (isSetFileManager()) {
-			return getFileManager();
-		}
-		SubMonitor subMonitor = SubMonitor.convert(monitor, 4);
-		final DomainManager localObj = fetchNarrowedObject(subMonitor.newChild(1));
-		Transaction transaction = fileManagerFeature.createTransaction();
-		if (localObj != null) {
-			try {
-				final FileManager newFileMgr = localObj.fileMgr();
-				transaction.addCommand(new ScaModelCommand() {
-
-					@Override
-					public void execute() {
-						if (fileManager == null) {
-							setFileManager(ScaFactory.eINSTANCE.createScaDomainManagerFileSystem());
-						}
-						fileManager.setCorbaObj(newFileMgr);
-
-						setStatus(ScaPackage.Literals.SCA_DOMAIN_MANAGER__FILE_MANAGER, null);
-					}
-
-				});
-			} catch (SystemException e) {
-				transaction.addCommand(new UnsetLocalAttributeCommand(this, new Status(Status.ERROR, ScaModelPlugin.ID, "Failed to fetch file manager.", e),
-					ScaPackage.Literals.SCA_DOMAIN_MANAGER__FILE_MANAGER));
-			}
-			subMonitor.worked(1);
-		} else {
-			transaction.addCommand(new UnsetLocalAttributeCommand(this, null, ScaPackage.Literals.SCA_DOMAIN_MANAGER__FILE_MANAGER));
-		}
-		subMonitor.setWorkRemaining(2);
-		transaction.commit();
-		ScaDomainManagerFileSystem localFileManager = getFileManager();
-		if (localFileManager != null) {
-			try {
-				localFileManager.refresh(subMonitor.newChild(1), RefreshDepth.SELF);
-			} catch (InterruptedException e) {
-				// PASS
-			}
-		}
-		subMonitor.done();
-		return getFileManager();
+		return fetchFileManager(monitor, RefreshDepth.SELF);
 	}
 
 	private final VersionedFeature identifierRevision = new VersionedFeature(this, ScaPackage.Literals.SCA_DOMAIN_MANAGER__IDENTIFIER);
@@ -2375,6 +2253,9 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 		if (isDisposed()) {
 			return null;
 		}
+		if (isSetProfileObj()) {
+			return getProfileObj();
+		}
 		Transaction transaction = profileObjectFeature.createTransaction();
 		transaction.addCommand(ProfileObjectWrapper.Util.fetchProfileObject(monitor, this, DomainManagerConfiguration.class,
 			DomainManagerConfiguration.EOBJECT_PATH));
@@ -2426,32 +2307,7 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 	 * @generated NOT
 	 */
 	public EList<ScaEventChannel> fetchEventChannels(IProgressMonitor monitor) {
-		SubMonitor subMonitor = SubMonitor.convert(monitor, "Fetch Waveforms", 2);
-		internalFetchEventChannels(subMonitor.newChild(1));
-		ScaEventChannel[] array = ScaModelCommandWithResult.execute(this, new ScaModelCommandWithResult<ScaEventChannel[]>() {
-
-			@Override
-			public void execute() {
-				setResult(getEventChannels().toArray(new ScaEventChannel[getEventChannels().size()]));
-			}
-		});
-		if (array != null) {
-			SubMonitor childMonitor = subMonitor.newChild(1);
-			childMonitor.beginTask("Refreshing event channels", array.length);
-			for (ScaEventChannel element : array) {
-				try {
-					element.refresh(childMonitor.newChild(1), RefreshDepth.SELF);
-				} catch (InterruptedException e) {
-					// PASS
-				}
-			}
-		}
-		subMonitor.done();
-		if (array != null) {
-			return ECollections.unmodifiableEList(new BasicEList<ScaEventChannel>(Arrays.asList(array)));
-		} else {
-			return ECollections.emptyEList();
-		}
+		return fetchEventChannels(monitor, RefreshDepth.SELF);
 	}
 
 	/**
@@ -2575,6 +2431,193 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 	@Override
 	public void unregisterRemoteDomainManager(DomainManager unregisteringDomainManager) throws InvalidObjectReference, UnregisterError {
 		getObj().unregisterRemoteDomainManager(unregisteringDomainManager);
+	}
+
+	/**
+	 * @since 19.0
+	 */
+	@Override
+	public EList<ScaDeviceManager> fetchDeviceManagers(IProgressMonitor monitor, RefreshDepth depth) {
+		SubMonitor subMonitor = SubMonitor.convert(monitor, "Fetch Device Managers", 2);
+		internalFetchDeviceManagers(subMonitor.newChild(1));
+		ScaDeviceManager[] array = ScaModelCommandWithResult.execute(this, new ScaModelCommandWithResult<ScaDeviceManager[]>() {
+
+			@Override
+			public void execute() {
+				setResult(getDeviceManagers().toArray(new ScaDeviceManager[getDeviceManagers().size()]));
+			}
+		});
+		if (array != null && depth != null) {
+			SubMonitor deviceMonitor = subMonitor.newChild(1);
+			deviceMonitor.beginTask("Refreshing device Managers", array.length);
+			for (ScaDeviceManager element : array) {
+				try {
+					element.refresh(deviceMonitor.newChild(1), depth);
+				} catch (InterruptedException e) {
+					// PASS
+				}
+			}
+		}
+		subMonitor.done();
+		if (array != null) {
+			return ECollections.unmodifiableEList(new BasicEList<ScaDeviceManager>(Arrays.asList(array)));
+		} else {
+			return ECollections.emptyEList();
+		}
+	}
+
+	/**
+	 * @since 19.0
+	 */
+	@Override
+	public EList<ScaWaveformFactory> fetchWaveformFactories(IProgressMonitor monitor, RefreshDepth depth) {
+		if (isDisposed()) {
+			return ECollections.emptyEList();
+		}
+		SubMonitor subMonitor = SubMonitor.convert(monitor, "Fetch Waveform Factories", 2);
+		internalFetchWaveformFactories(subMonitor.newChild(1));
+		ScaWaveformFactory[] array = ScaModelCommandWithResult.execute(this, new ScaModelCommandWithResult<ScaWaveformFactory[]>() {
+
+			@Override
+			public void execute() {
+				setResult(getWaveformFactories().toArray(new ScaWaveformFactory[getWaveformFactories().size()]));
+			}
+		});
+		if (array != null && depth != null) {
+			SubMonitor childMonitor = subMonitor.newChild(1);
+			childMonitor.beginTask("Refreshing waveform factory", array.length);
+			for (ScaWaveformFactory element : array) {
+				try {
+					element.refresh(childMonitor.newChild(1), depth);
+				} catch (InterruptedException e) {
+					// PASS
+				}
+			}
+		}
+		subMonitor.done();
+		if (array != null) {
+			return ECollections.unmodifiableEList(new BasicEList<ScaWaveformFactory>(Arrays.asList(array)));
+		} else {
+			return ECollections.emptyEList();
+		}
+	}
+
+	/**
+	 * @since 19.0
+	 */
+	@Override
+	public EList<ScaWaveform> fetchWaveforms(IProgressMonitor monitor, RefreshDepth depth) {
+		if (isDisposed()) {
+			return ECollections.emptyEList();
+		}
+		SubMonitor subMonitor = SubMonitor.convert(monitor, "Fetch Waveforms", 2);
+		internalFetchWaveforms(subMonitor.newChild(1));
+		ScaWaveform[] array = ScaModelCommandWithResult.execute(this, new ScaModelCommandWithResult<ScaWaveform[]>() {
+
+			@Override
+			public void execute() {
+				setResult(getWaveforms().toArray(new ScaWaveform[getWaveforms().size()]));
+			}
+		});
+		if (array != null && depth != null) {
+			SubMonitor childMonitor = subMonitor.newChild(1);
+			childMonitor.beginTask("Refreshing waveforms", array.length);
+			for (ScaWaveform element : array) {
+				try {
+					element.refresh(childMonitor.newChild(1), depth);
+				} catch (InterruptedException e) {
+					// PASS
+				}
+			}
+		}
+		subMonitor.done();
+		if (array != null) {
+			return ECollections.unmodifiableEList(new BasicEList<ScaWaveform>(Arrays.asList(array)));
+		} else {
+			return ECollections.emptyEList();
+		}
+	}
+
+	/**
+	 * @since 19.0
+	 */
+	@Override
+	public ScaDomainManagerFileSystem fetchFileManager(IProgressMonitor monitor, RefreshDepth depth) {
+		if (isSetFileManager()) {
+			return getFileManager();
+		}
+		SubMonitor subMonitor = SubMonitor.convert(monitor, 4);
+		final DomainManager localObj = fetchNarrowedObject(subMonitor.newChild(1));
+		Transaction transaction = fileManagerFeature.createTransaction();
+		if (localObj != null) {
+			try {
+				final FileManager newFileMgr = localObj.fileMgr();
+				transaction.addCommand(new ScaModelCommand() {
+
+					@Override
+					public void execute() {
+						if (fileManager == null) {
+							setFileManager(ScaFactory.eINSTANCE.createScaDomainManagerFileSystem());
+						}
+						fileManager.setCorbaObj(newFileMgr);
+
+						setStatus(ScaPackage.Literals.SCA_DOMAIN_MANAGER__FILE_MANAGER, null);
+					}
+
+				});
+			} catch (SystemException e) {
+				transaction.addCommand(new UnsetLocalAttributeCommand(this, new Status(Status.ERROR, ScaModelPlugin.ID, "Failed to fetch file manager.", e),
+					ScaPackage.Literals.SCA_DOMAIN_MANAGER__FILE_MANAGER));
+			}
+			subMonitor.worked(1);
+		} else {
+			transaction.addCommand(new UnsetLocalAttributeCommand(this, null, ScaPackage.Literals.SCA_DOMAIN_MANAGER__FILE_MANAGER));
+		}
+		subMonitor.setWorkRemaining(2);
+		transaction.commit();
+		ScaDomainManagerFileSystem localFileManager = getFileManager();
+		if (localFileManager != null && depth != null) {
+			try {
+				localFileManager.refresh(subMonitor.newChild(1), depth);
+			} catch (InterruptedException e) {
+				// PASS
+			}
+		}
+		subMonitor.done();
+		return getFileManager();
+	}
+
+	/**
+	 * @since 19.0
+	 */
+	@Override
+	public EList<ScaEventChannel> fetchEventChannels(IProgressMonitor monitor, RefreshDepth depth) {
+		SubMonitor subMonitor = SubMonitor.convert(monitor, "Fetch Waveforms", 2);
+		internalFetchEventChannels(subMonitor.newChild(1));
+		ScaEventChannel[] array = ScaModelCommandWithResult.execute(this, new ScaModelCommandWithResult<ScaEventChannel[]>() {
+
+			@Override
+			public void execute() {
+				setResult(getEventChannels().toArray(new ScaEventChannel[getEventChannels().size()]));
+			}
+		});
+		if (array != null && depth != null) {
+			SubMonitor childMonitor = subMonitor.newChild(1);
+			childMonitor.beginTask("Refreshing event channels", array.length);
+			for (ScaEventChannel element : array) {
+				try {
+					element.refresh(childMonitor.newChild(1), depth);
+				} catch (InterruptedException e) {
+					// PASS
+				}
+			}
+		}
+		subMonitor.done();
+		if (array != null) {
+			return ECollections.unmodifiableEList(new BasicEList<ScaEventChannel>(Arrays.asList(array)));
+		} else {
+			return ECollections.emptyEList();
+		}
 	}
 
 } // ScaDomainManagerImpl

@@ -251,6 +251,12 @@ public interface ScaWaveformFactory extends CorbaObjWrapper<ApplicationFactory>,
 	 */
 	ScaWaveform createWaveform(IProgressMonitor monitor, String name, DataType[] initConfiguration, DeviceAssignmentType[] deviceAssignments)
 		throws CreateApplicationError, CreateApplicationRequestError, InvalidInitConfiguration, CreateApplicationInsufficientCapacityError;
+	
+	/**
+	 * @since 19.0
+	 */
+	ScaWaveform createWaveform(IProgressMonitor monitor, String name, DataType[] initConfiguration, DeviceAssignmentType[] deviceAssignments, RefreshDepth depth)
+			throws CreateApplicationError, CreateApplicationRequestError, InvalidInitConfiguration, CreateApplicationInsufficientCapacityError;
 
 	/**
 	 * <!-- begin-user-doc -->

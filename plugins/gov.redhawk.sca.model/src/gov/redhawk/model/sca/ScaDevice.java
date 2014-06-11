@@ -362,7 +362,11 @@ public interface ScaDevice< D extends Device > extends ScaAbstractComponent<D>, 
 	 * @model monitorDataType="gov.redhawk.model.sca.IProgressMonitor"
 	 * @generated
 	 */
-	EList<ScaDevice< ? >> fetchAggregateDevices(IProgressMonitor monitor) throws InterruptedException;
+	EList<ScaDevice< ? >> fetchAggregateDevices(IProgressMonitor monitor);
+	/**
+	 * @since 19.0
+	 */
+	EList<ScaDevice< ? >> fetchAggregateDevices(IProgressMonitor monitor, RefreshDepth depth);
 
 	/**
 	 * <!-- begin-user-doc -->

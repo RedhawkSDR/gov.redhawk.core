@@ -733,32 +733,7 @@ public class ScaWaveformImpl extends ScaPropertyContainerImpl<Application, Softw
 	 */
 	@Override
 	public EList<ScaComponent> fetchComponents(IProgressMonitor monitor) {
-		if (isDisposed()) {
-			return ECollections.emptyEList();
-		}
-		SubMonitor subMonitor = SubMonitor.convert(monitor, "Fetching components", 2);
-		internalFetchComponents(subMonitor.newChild(1));
-		IRefreshable[] array = ScaModelCommandWithResult.execute(this, new ScaModelCommandWithResult<IRefreshable[]>() {
-
-			@Override
-			public void execute() {
-				setResult(getComponents().toArray(new IRefreshable[getComponents().size()]));
-			}
-
-		});
-		if (array != null) {
-			SubMonitor portRefresh = subMonitor.newChild(1);
-			portRefresh.beginTask("Refreshing components", array.length);
-			for (IRefreshable element : array) {
-				try {
-					element.refresh(portRefresh.newChild(1), RefreshDepth.SELF);
-				} catch (InterruptedException e) {
-					// PASS
-				}
-			}
-		}
-		subMonitor.done();
-		return getComponents();
+		return fetchComponents(monitor, RefreshDepth.SELF);
 	}
 
 	private final VersionedFeature identifierFeature = new VersionedFeature(this, ScaPackage.Literals.SCA_WAVEFORM__IDENTIFIER);
@@ -2009,5 +1984,38 @@ public class ScaWaveformImpl extends ScaPropertyContainerImpl<Application, Softw
 	@Override
 	public void setLogConfigURL(String config_url) {
 		getObj().setLogConfigURL(config_url);
+	}
+
+	/**
+	 * @since 19.0
+	 */
+	@Override
+	public EList<ScaComponent> fetchComponents(IProgressMonitor monitor, RefreshDepth depth) {
+		if (isDisposed()) {
+			return ECollections.emptyEList();
+		}
+		SubMonitor subMonitor = SubMonitor.convert(monitor, "Fetching components", 2);
+		internalFetchComponents(subMonitor.newChild(1));
+		IRefreshable[] array = ScaModelCommandWithResult.execute(this, new ScaModelCommandWithResult<IRefreshable[]>() {
+
+			@Override
+			public void execute() {
+				setResult(getComponents().toArray(new IRefreshable[getComponents().size()]));
+			}
+
+		});
+		if (array != null && depth != null) {
+			SubMonitor portRefresh = subMonitor.newChild(1);
+			portRefresh.beginTask("Refreshing components", array.length);
+			for (IRefreshable element : array) {
+				try {
+					element.refresh(portRefresh.newChild(1), depth);
+				} catch (InterruptedException e) {
+					// PASS
+				}
+			}
+		}
+		subMonitor.done();
+		return getComponents();
 	}
 } //ScaWaveformImpl
