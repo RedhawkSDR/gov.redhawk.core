@@ -464,6 +464,7 @@ public final class ModelUtil {
 	 * @param obj
 	 * @param feature
 	 * @return A Immutable copy of the list. 
+	 * @since 19.0
 	 */
 	public static <T extends Object> List<T> getAsImmutableList(final EObject obj, final EStructuralFeature feature) {
 		try {
