@@ -83,8 +83,7 @@ public class Connection extends AbstractUberBulkIOPort {
 				} catch (InterruptedException e) {
 					break;
 				}
-				Object[] childrenArray = children.toArray();
-				for (final Object child : childrenArray) {
+				for (final Object child : getSafeChildren()) {
 					SafeRunner.run(new ISafeRunnable() {
 
 						@Override
@@ -223,7 +222,7 @@ public class Connection extends AbstractUberBulkIOPort {
 		if (!super.pushPacket(data.length, time, eos, streamID)) {
 			return;
 		}
-		for (updateSRIOperations child : children) {
+		for (updateSRIOperations child : getSafeChildren()) {
 			try {
 				((dataCharOperations) child).pushPacket(data, time, eos, streamID);
 			} catch (Exception e) { // SUPPRESS CHECKSTYLE IllegalCatch
@@ -240,12 +239,18 @@ public class Connection extends AbstractUberBulkIOPort {
 		}
 	}
 
+	private updateSRIOperations[] getSafeChildren() {
+		synchronized (children) {
+			return children.toArray(new updateSRIOperations[children.size()]);
+		}
+	}
+
 	@Override
 	public void pushPacket(double[] data, PrecisionUTCTime time, boolean eos, String streamID) {
 		if (!super.pushPacket(data.length, time, eos, streamID)) {
 			return;
 		}
-		for (updateSRIOperations child : children) {
+		for (updateSRIOperations child : getSafeChildren()) {
 			try {
 				((dataDoubleOperations) child).pushPacket(data, time, eos, streamID);
 			} catch (Exception e) { // SUPPRESS CHECKSTYLE IllegalCatch
@@ -267,7 +272,7 @@ public class Connection extends AbstractUberBulkIOPort {
 		if (!super.pushPacket(data.length, time, eos, streamID)) {
 			return;
 		}
-		for (updateSRIOperations child : children) {
+		for (updateSRIOperations child : getSafeChildren()) {
 			try {
 				((dataFloatOperations) child).pushPacket(data, time, eos, streamID);
 			} catch (Exception e) { // SUPPRESS CHECKSTYLE IllegalCatch
@@ -289,7 +294,7 @@ public class Connection extends AbstractUberBulkIOPort {
 		if (!super.pushPacket(data.length, time, eos, streamID)) {
 			return;
 		}
-		for (updateSRIOperations child : children) {
+		for (updateSRIOperations child : getSafeChildren()) {
 			try {
 				((dataOctetOperations) child).pushPacket(data, time, eos, streamID);
 			} catch (Exception e) { // SUPPRESS CHECKSTYLE IllegalCatch
@@ -311,7 +316,7 @@ public class Connection extends AbstractUberBulkIOPort {
 		if (!super.pushPacket(data.length, time, eos, streamID)) {
 			return;
 		}
-		for (final updateSRIOperations child : children) {
+		for (final updateSRIOperations child : getSafeChildren()) {
 			try {
 				if (getBulkIOType().isUnsigned()) {
 					((dataUshortOperations) child).pushPacket(data, time, eos, streamID);
@@ -337,7 +342,7 @@ public class Connection extends AbstractUberBulkIOPort {
 		if (!super.pushPacket(data.length, time, eos, streamID)) {
 			return;
 		}
-		for (updateSRIOperations child : children) {
+		for (updateSRIOperations child : getSafeChildren()) {
 			try {
 				if (getBulkIOType().isUnsigned()) {
 					((dataUlongOperations) child).pushPacket(data, time, eos, streamID);
@@ -363,7 +368,7 @@ public class Connection extends AbstractUberBulkIOPort {
 		if (!super.pushPacket(data.length, time, eos, streamID)) {
 			return;
 		}
-		for (updateSRIOperations child : children) {
+		for (updateSRIOperations child : getSafeChildren()) {
 			try {
 				if (getBulkIOType().isUnsigned()) {
 					((dataUlongLongOperations) child).pushPacket(data, time, eos, streamID);

@@ -28,6 +28,7 @@ import gov.redhawk.model.sca.commands.VersionedFeature;
 import gov.redhawk.model.sca.commands.VersionedFeature.Transaction;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
@@ -48,6 +49,7 @@ import org.eclipse.core.runtime.SubMonitor;
 import org.eclipse.emf.common.command.Command;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
+import org.eclipse.emf.common.util.BasicEList;
 import org.eclipse.emf.common.util.ECollections;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClass;
@@ -889,7 +891,11 @@ public abstract class ScaAbstractComponentImpl< R extends Resource > extends Sca
 			}
 		}
 		subMonitor.done();
-		return getPorts();
+		if (ports != null) {
+			return ECollections.unmodifiableEList(new BasicEList<ScaPort< ? , ? >>(Arrays.asList(ports)));
+		} else {
+			return ECollections.emptyEList();
+		}
 	}
 
 	private static final EStructuralFeature[] PORTS_GROUP_PATH = { ScaPackage.Literals.PROFILE_OBJECT_WRAPPER__PROFILE_OBJ,

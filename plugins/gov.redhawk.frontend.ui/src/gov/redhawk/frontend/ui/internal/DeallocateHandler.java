@@ -18,6 +18,7 @@ import gov.redhawk.frontend.ui.FrontEndUIActivator;
 import gov.redhawk.frontend.ui.internal.section.FrontendSection;
 import gov.redhawk.frontend.util.TunerProperties.ListenerAllocationProperties;
 import gov.redhawk.frontend.util.TunerProperties.TunerAllocationProperties;
+import gov.redhawk.frontend.util.TunerUtils;
 import gov.redhawk.model.sca.RefreshDepth;
 import gov.redhawk.model.sca.ScaDevice;
 import gov.redhawk.model.sca.ScaFactory;
@@ -92,6 +93,16 @@ public class DeallocateHandler extends AbstractHandler implements IHandler {
 				}
 			}
 			removeSelection = false;
+		}
+		if (obj instanceof ScaDevice) {
+			ScaDevice< ? > device = (ScaDevice< ? >) obj;
+			TunerContainer container = TunerUtils.INSTANCE.getTunerContainer(device);
+			for (TunerStatus tuner : container.getTunerStatus()) {
+				String allocationID = tuner.getAllocationID();
+				if (!(allocationID == null || "".equals(allocationID))) {
+					deallocateTuner(tuner, event);
+				}
+			}
 		}
 		if (obj instanceof ListenerAllocation) {
 			final ListenerAllocation listener = (ListenerAllocation) obj;

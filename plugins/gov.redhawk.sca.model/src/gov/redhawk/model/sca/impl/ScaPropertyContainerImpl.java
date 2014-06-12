@@ -14,10 +14,12 @@ package gov.redhawk.model.sca.impl;
 
 import gov.redhawk.model.sca.ProfileObjectWrapper;
 import gov.redhawk.model.sca.ScaAbstractProperty;
+import gov.redhawk.model.sca.ScaFileStore;
 import gov.redhawk.model.sca.ScaModelPlugin;
 import gov.redhawk.model.sca.ScaPackage;
 import gov.redhawk.model.sca.ScaPropertyContainer;
 import gov.redhawk.model.sca.commands.MergePropertiesCommand;
+import gov.redhawk.model.sca.commands.ScaModelCommand;
 import gov.redhawk.model.sca.commands.SetPropertiesValuesCommand;
 import gov.redhawk.model.sca.commands.UnsetLocalAttributeCommand;
 import gov.redhawk.model.sca.commands.VersionedFeature;
@@ -38,6 +40,7 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.SubMonitor;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
+import org.eclipse.emf.common.util.BasicEList;
 import org.eclipse.emf.common.util.ECollections;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.URI;
@@ -47,6 +50,7 @@ import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.InternalEList;
+import org.eclipse.emf.transaction.RunnableWithResult;
 import org.omg.CORBA.SystemException;
 
 import CF.DataType;
@@ -601,7 +605,18 @@ public abstract class ScaPropertyContainerImpl< P extends org.omg.CORBA.Object, 
 		transaction.commit();
 		subMonitor.worked(1);
 		subMonitor.done();
-		return getProperties();
+		try {
+			return ScaModelCommand.runExclusive(this, new RunnableWithResult.Impl<EList<ScaAbstractProperty< ? >>>() {
+
+				@Override
+				public void run() {
+					setResult(ECollections.unmodifiableEList(new BasicEList<ScaAbstractProperty< ? >>(getProperties())));
+				}
+				
+			});
+		} catch (InterruptedException e) {
+			return ECollections.emptyEList();
+		}
 		// BEGIN GENERATED CODE
 	}
 

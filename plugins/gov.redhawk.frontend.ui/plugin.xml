@@ -126,7 +126,8 @@
                style="push">
             <visibleWhen
                   checkEnabled="false">
-               <iterate>
+               <iterate
+                     ifEmpty="false">
                   <or>
                      <instanceof
                            value="gov.redhawk.frontend.UnallocatedTunerContainer">
@@ -152,7 +153,8 @@
                style="push">
             <visibleWhen
                   checkEnabled="false">
-               <iterate>
+               <iterate
+                     ifEmpty="false">
                   <and>
                      <instanceof
                            value="gov.redhawk.frontend.TunerStatus">
@@ -173,7 +175,8 @@
                style="push">
             <visibleWhen
                   checkEnabled="false">
-               <iterate>
+               <iterate
+                     ifEmpty="false">
                   <or>
                      <and>
                         <instanceof
@@ -199,7 +202,8 @@
                style="push">
             <visibleWhen
                   checkEnabled="false">
-               <iterate>
+               <iterate
+                     ifEmpty="false">
                   <or>
                      <and>
                         <instanceof
@@ -423,7 +427,8 @@
                style="push">
             <visibleWhen
                   checkEnabled="false">
-               <iterate>
+               <iterate
+                     ifEmpty="false">
                   <adapt
                         type="gov.redhawk.frontend.TunerStatus">
                   </adapt>

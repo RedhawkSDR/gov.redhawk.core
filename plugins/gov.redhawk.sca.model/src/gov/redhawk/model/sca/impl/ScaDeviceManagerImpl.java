@@ -16,6 +16,7 @@ import gov.redhawk.model.sca.IRefreshable;
 import gov.redhawk.model.sca.IStatusProvider;
 import gov.redhawk.model.sca.ProfileObjectWrapper;
 import gov.redhawk.model.sca.RefreshDepth;
+import gov.redhawk.model.sca.ScaConnection;
 import gov.redhawk.model.sca.ScaDevice;
 import gov.redhawk.model.sca.ScaDeviceManager;
 import gov.redhawk.model.sca.ScaDeviceManagerFileSystem;
@@ -41,6 +42,7 @@ import gov.redhawk.model.sca.commands.VersionedFeature.Transaction;
 import gov.redhawk.sca.util.PluginUtil;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
@@ -66,6 +68,7 @@ import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
 import org.eclipse.emf.common.notify.impl.AdapterImpl;
+import org.eclipse.emf.common.util.BasicEList;
 import org.eclipse.emf.common.util.ECollections;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.URI;
@@ -83,6 +86,7 @@ import org.eclipse.emf.ecore.util.FeatureMap.Entry;
 import org.eclipse.emf.ecore.util.FeatureMap.ValueListIterator;
 import org.eclipse.emf.ecore.util.InternalEList;
 import org.eclipse.emf.edit.command.DeleteCommand;
+import org.eclipse.emf.transaction.RunnableWithResult;
 import org.eclipse.emf.transaction.TransactionalEditingDomain;
 import org.eclipse.emf.transaction.util.TransactionUtil;
 import org.omg.CORBA.SystemException;
@@ -1448,7 +1452,18 @@ public class ScaDeviceManagerImpl extends ScaPropertyContainerImpl<DeviceManager
 			}
 		}
 		subMonitor.done();
-		return getAllDevices();
+		try {
+			return ScaModelCommand.runExclusive(this, new RunnableWithResult.Impl<EList<ScaDevice< ? >>>() {
+
+				@Override
+				public void run() {
+					setResult(ECollections.unmodifiableEList(new BasicEList<ScaDevice< ? >>(getAllDevices())));
+				}
+				
+			});
+		} catch (InterruptedException e) {
+			return ECollections.emptyEList();
+		}
 	}
 
 	private final VersionedFeature devicesRevision = new VersionedFeature(this, ScaPackage.Literals.SCA_DEVICE_MANAGER__DEVICES);

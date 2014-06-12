@@ -28,6 +28,7 @@ import gov.redhawk.model.sca.commands.UnsetLocalAttributeCommand;
 import gov.redhawk.model.sca.commands.VersionedFeature;
 import gov.redhawk.model.sca.commands.VersionedFeature.Transaction;
 
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
@@ -41,6 +42,7 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.SubMonitor;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
+import org.eclipse.emf.common.util.BasicEList;
 import org.eclipse.emf.common.util.ECollections;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.URI;
@@ -468,7 +470,11 @@ public class ScaComponentImpl extends ScaAbstractComponentImpl<Resource> impleme
 			}
 		}
 		subMonitor.done();
-		return getDevices();
+		if (devices != null) {
+			return ECollections.unmodifiableEList(new BasicEList<ScaDevice< ? >>(Arrays.asList(devices)));
+		} else {
+			return ECollections.emptyEList();
+		}
 	}
 
 	/**

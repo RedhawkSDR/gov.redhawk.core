@@ -35,6 +35,7 @@ import gov.redhawk.model.sca.commands.VersionedFeature.Transaction;
 import gov.redhawk.sca.util.PluginUtil;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
@@ -61,6 +62,7 @@ import org.eclipse.core.runtime.SubMonitor;
 import org.eclipse.emf.common.command.Command;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
+import org.eclipse.emf.common.util.BasicEList;
 import org.eclipse.emf.common.util.ECollections;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.URI;
@@ -73,6 +75,7 @@ import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.emf.ecore.util.FeatureMap;
 import org.eclipse.emf.ecore.util.FeatureMap.ValueListIterator;
 import org.eclipse.emf.ecore.util.InternalEList;
+import org.eclipse.emf.transaction.RunnableWithResult;
 import org.eclipse.emf.transaction.TransactionalEditingDomain;
 import org.eclipse.emf.transaction.util.TransactionUtil;
 import org.omg.CORBA.BAD_OPERATION;
@@ -976,27 +979,34 @@ public class ScaWaveformImpl extends ScaPropertyContainerImpl<Application, Softw
 		}
 		SubMonitor subMonitor = SubMonitor.convert(monitor, "Fetching ports", 2);
 		internalFetchPorts(subMonitor.newChild(1));
-		IRefreshable[] array = ScaModelCommandWithResult.execute(this, new ScaModelCommandWithResult<IRefreshable[]>() {
-
-			@Override
-			public void execute() {
-				setResult(getPorts().toArray(new IRefreshable[getPorts().size()]));
-			}
-
-		});
-		if (array != null) {
+		ScaPort< ? , ? >[] ports = null;
+		try {
+			ports = ScaModelCommand.runExclusive(this, new RunnableWithResult.Impl<ScaPort< ? , ? >[]>() {
+				@Override
+				public void run() {
+					setResult(getPorts().toArray(new ScaPort< ? , ? >[getPorts().size()]));
+				}
+			});
+		} catch (InterruptedException e) {
+			// PASS
+		}
+		if (ports != null) {
 			SubMonitor portRefresh = subMonitor.newChild(1);
-			portRefresh.beginTask("Refreshing ports", array.length);
-			for (IRefreshable element : array) {
+			portRefresh.beginTask("Refreshing state of ports", ports.length);
+			for (ScaPort< ? , ? > port : ports) {
 				try {
-					element.refresh(portRefresh.newChild(1), RefreshDepth.SELF);
+					port.refresh(portRefresh.newChild(1), RefreshDepth.SELF);
 				} catch (InterruptedException e) {
 					// PASS
 				}
 			}
 		}
 		subMonitor.done();
-		return getPorts();
+		if (ports != null) {
+			return ECollections.unmodifiableEList(new BasicEList<ScaPort< ? , ? >>(Arrays.asList(ports)));
+		} else {
+			return ECollections.emptyEList();
+		}
 	}
 
 	private static final EStructuralFeature[] EXTERNAL_PORTS_PATH = { SadPackage.Literals.SOFTWARE_ASSEMBLY__EXTERNAL_PORTS,
