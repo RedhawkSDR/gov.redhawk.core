@@ -469,9 +469,8 @@ public abstract class SCAFormEditor extends FormEditor implements IEditingDomain
 
 		@Override
 		protected void handleSelectionChanged(SelectionChangedEvent event) {
-			//TODO: bwhoff2 had to comment this out because of an error, investigate further
-			//super.handleSelectionChanged(event);
-			//super.handlePostSelectionChanged(event);
+			super.handleSelectionChanged(event);
+			super.handlePostSelectionChanged(event);
 		}
 	}
 
@@ -568,6 +567,9 @@ public abstract class SCAFormEditor extends FormEditor implements IEditingDomain
 		this.editingDomain = domain;
 	}
 
+	/**
+	 * @since 7.0
+	 */
 	protected TransactionalEditingDomain createEditingDomain() {
 		TransactionalEditingDomain domain = TransactionalEditingDomain.Registry.INSTANCE.getEditingDomain(getEditingDomainId());
 
