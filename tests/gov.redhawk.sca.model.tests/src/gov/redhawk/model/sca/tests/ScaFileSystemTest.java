@@ -227,7 +227,8 @@ public abstract class ScaFileSystemTest extends CorbaObjWrapperTest {
 	 */
 	public void testExists__String() throws InvalidFileName {
 		// END GENERATED CODE
-		getFixture().exists("");
+		Assert.assertTrue(getFixture().exists(""));
+		Assert.assertFalse(getFixture().exists("/blah/blah/blah/blah/file"));
 		// BEGIN GENERATED CODE
 	}
 	
