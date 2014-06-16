@@ -63,9 +63,9 @@ public class ComponentDesc extends ResourceDesc {
 			if (type != null) {
 				switch (type) {
 				case DEVICE:
-					return createPathFrom(spd, path, "devices");
+					return createPathFrom(spd, path, "devices", true);
 				case RESOURCE:
-					return createPathFrom(spd, path, "components");
+					return createPathFrom(spd, path, "components", true);
 				case DEVICE_MANAGER:
 					return "/dev/mgr/" + spd.getName() + "/" + spd.eResource().getURI().lastSegment();
 				case DOMAIN_MANAGER:
@@ -73,7 +73,7 @@ public class ComponentDesc extends ResourceDesc {
 				case EVENT_SERVICE:
 				case SERVICE:
 				case NAMING_SERVICE:
-					return createPathFrom(spd, path, "services");
+					return createPathFrom(spd, path, "services", true);
 				default:
 					break;
 				}
@@ -88,7 +88,7 @@ public class ComponentDesc extends ResourceDesc {
 		};
 		String retVal = null;
 		for (String s : roots) {
-			retVal = createPathFrom(spd, path, s);
+			retVal = createPathFrom(spd, path, s, false);
 			if (retVal != null) {
 				break;
 			}
@@ -99,7 +99,7 @@ public class ComponentDesc extends ResourceDesc {
 		return retVal;
 	}
 
-	private static String createPathFrom(SoftPkg spd, Path path, String root) {
+	private static String createPathFrom(SoftPkg spd, Path path, String root, boolean force) {
 		int i = 0;
 		boolean found = false;
 		for (String s : path.segments()) {
@@ -111,6 +111,8 @@ public class ComponentDesc extends ResourceDesc {
 		}
 		if (found) {
 			return path.removeFirstSegments(i).toString();
+		} else if (force) {
+			return "/" + root + "/" + spd.getName() + "/" + spd.eResource().getURI().lastSegment();
 		} else {
 			return null;
 		}
