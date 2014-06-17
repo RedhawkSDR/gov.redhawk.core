@@ -256,7 +256,8 @@ public abstract class SCAFormEditor extends FormEditor implements IEditingDomain
 				if (delta.getResource() instanceof IFile) {
 					final IFile newFile = (IFile) delta.getResource();
 
-					// If the resource has been changed on disk and the editor is dirty we will prompt the user before blowing away its changes.
+					// If the resource has been changed on disk and the editor is dirty we will prompt the user before
+					// blowing away its changes.
 					if (SCAFormEditor.this.isDirty() && !SCAFormEditor.this.editorSaving) {
 						boolean confirmOverwrite = MessageDialog.openConfirm(SCAFormEditor.this.getSite().getShell(), "File Changed", "The file '"
 							+ delta.getResource().getFullPath().toOSString()
@@ -266,15 +267,18 @@ public abstract class SCAFormEditor extends FormEditor implements IEditingDomain
 
 						if (confirmOverwrite) {
 							SCAFormEditor.this.resourceChanged(newFile, delta);
-							// Since the document gets changed within the resourceChanged function, the document will be marked dirty
-							// even though the document matches what is on disk.  Currently I cannot figure out a good way to get rid
-							// of this dirty flag.  It's a small bug that should not happen often though.
+							// Since the document gets changed within the resourceChanged function, the document will be
+							// marked dirty
+							// even though the document matches what is on disk. Currently I cannot figure out a good
+							// way to get rid
+							// of this dirty flag. It's a small bug that should not happen often though.
 
 						}
 					}
 
-					// If the editor is not dirty and the editor is not in the middle of saving then we'll take the changes.
-					// This will cause the editor to appear dirty erroneously as mentioned in the note above.  
+					// If the editor is not dirty and the editor is not in the middle of saving then we'll take the
+					// changes.
+					// This will cause the editor to appear dirty erroneously as mentioned in the note above.
 					if (!SCAFormEditor.this.isDirty() && !SCAFormEditor.this.editorSaving) {
 						SCAFormEditor.this.resourceChanged(newFile, delta);
 					}
@@ -667,7 +671,7 @@ public abstract class SCAFormEditor extends FormEditor implements IEditingDomain
 	 * begin-user-doc --> <!-- end-user-doc -->
 	 */
 	protected void hideTabs() {
-		if (getPageCount() <= 1) {
+		if (getPageCount() == 1) {
 			setPageText(0, "");
 			if (getContainer() instanceof CTabFolder) {
 				((CTabFolder) getContainer()).setTabHeight(1);
@@ -842,7 +846,7 @@ public abstract class SCAFormEditor extends FormEditor implements IEditingDomain
 				for (final Resource resource : SCAFormEditor.this.editingDomain.getResourceSet().getResources()) {
 					if (isPersisted(resource) && !SCAFormEditor.this.editingDomain.isReadOnly(resource)) {
 						// Lastly, check to make sure this resource is not only local to the current workspace
-						// but is also local to the project we're currently saving.  This fixes bug # 266
+						// but is also local to the project we're currently saving. This fixes bug # 266
 						if (isPersisted(resource) && isLocal(resource)) {
 							try {
 								resource.save(saveOptions);
@@ -1420,7 +1424,8 @@ public abstract class SCAFormEditor extends FormEditor implements IEditingDomain
 	public void init(final IEditorSite site, final IEditorInput input) throws PartInitException {
 		super.init(site, input);
 
-		//		ResourcesPlugin.getWorkspace().addResourceChangeListener(this.resourceChangeListener, IResourceChangeEvent.POST_CHANGE);
+		// ResourcesPlugin.getWorkspace().addResourceChangeListener(this.resourceChangeListener,
+		// IResourceChangeEvent.POST_CHANGE);
 	}
 
 	@Override
@@ -1445,7 +1450,7 @@ public abstract class SCAFormEditor extends FormEditor implements IEditingDomain
 			previousFile = ((IFileEditorInput) getEditorInput()).getFile();
 		}
 
-		// Remove the previous tracker...not technically necessary but 
+		// Remove the previous tracker...not technically necessary but
 		// implemented for the sake of completeness
 		if (previousFile != null) {
 			this.resourceTracker.clearTrackedResources();
@@ -1558,7 +1563,7 @@ public abstract class SCAFormEditor extends FormEditor implements IEditingDomain
 			job.setSystem(true);
 			job.setUser(false);
 
-			//Validation Job should be DECORATE Priority; schedule for future to allow resource reload to complete.
+			// Validation Job should be DECORATE Priority; schedule for future to allow resource reload to complete.
 			job.setPriority(Job.DECORATE);
 			job.schedule();
 		}
@@ -1704,7 +1709,7 @@ public abstract class SCAFormEditor extends FormEditor implements IEditingDomain
 							handleDocumentChange(resource);
 						}
 					} catch (final Exception exception) { // SUPPRESS CHECKSTYLE Fallback
-						//PASS
+						// PASS
 					}
 				}
 			});
@@ -1727,7 +1732,7 @@ public abstract class SCAFormEditor extends FormEditor implements IEditingDomain
 			}
 			xmlResource.load(new InputSource(new StringReader(document.get())), xmlResource.getDefaultLoadOptions());
 		} catch (final Exception exception) { // SUPPRESS CHECKSTYLE Fallback
-			//PASS - Allow the validators to do their job rather than prevent invalid xml
+			// PASS - Allow the validators to do their job rather than prevent invalid xml
 		}
 
 	}
@@ -1778,7 +1783,7 @@ public abstract class SCAFormEditor extends FormEditor implements IEditingDomain
 
 			final IDocument document = this.resourceToDocumentMap.get(resource);
 
-			//taken from org.eclipse.xsd.presentation.XSDEditor
+			// taken from org.eclipse.xsd.presentation.XSDEditor
 			final ByteArrayOutputStream out = new ByteArrayOutputStream();
 			try {
 				resource.save(out, null);
@@ -1798,12 +1803,12 @@ public abstract class SCAFormEditor extends FormEditor implements IEditingDomain
 				final String replacement = newContent.substring(startIndex, newEndIndex + 1);
 				final int length = oldEndIndex - startIndex + 1;
 				this.handledStructuredModelChange = true;
-				//Only replace if there is actually a change
+				// Only replace if there is actually a change
 				if (!"".equals(replacement) || length != 0) {
 					document.replace(startIndex, length, replacement);
 				}
 			} catch (final Exception exception) { // SUPPRESS CHECKSTYLE Fallback
-				//PASS
+				// PASS
 			}
 		}
 	}

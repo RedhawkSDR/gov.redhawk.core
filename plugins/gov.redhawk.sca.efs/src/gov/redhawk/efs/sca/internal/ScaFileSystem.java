@@ -94,6 +94,7 @@ public class ScaFileSystem extends FileSystem {
 					return new ScaWrappedFileStore(uri, rootStore);
 				}
 			} catch (final CoreException e) {
+				ScaFileSystemPlugin.logError("Failed to resolve: " + uri, e);
 				return EFS.getNullFileSystem().getStore(uri);
 			}
 		}

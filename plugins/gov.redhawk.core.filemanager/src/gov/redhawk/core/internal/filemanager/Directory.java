@@ -223,7 +223,9 @@ public class Directory implements Node {
 			return true;
 		}
 		final List< ? extends Node> nodes = this.mounts.get(fileName.get(0));
-		if (fileName.size() == 1) {
+		if (nodes == null) {
+			return false;
+		} else if (fileName.size() == 1) {
 			return nodes != null;
 		} else {
 			final List<String> subList = fileName.subList(1, fileName.size());
