@@ -2592,7 +2592,7 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 	 */
 	@Override
 	public EList<ScaEventChannel> fetchEventChannels(IProgressMonitor monitor, RefreshDepth depth) {
-		SubMonitor subMonitor = SubMonitor.convert(monitor, "Fetch Waveforms", 2);
+		SubMonitor subMonitor = SubMonitor.convert(monitor, "Fetch Event Channels", 2);
 		internalFetchEventChannels(subMonitor.newChild(1));
 		ScaEventChannel[] array = ScaModelCommandWithResult.execute(this, new ScaModelCommandWithResult<ScaEventChannel[]>() {
 
