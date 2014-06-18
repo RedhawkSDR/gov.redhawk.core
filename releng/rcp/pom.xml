@@ -12,7 +12,6 @@
 
   <properties>
     <gov.redhawk.core>http://download.redhawksdr.org/gov.redhawk.core/releases/1.10</gov.redhawk.core>
-    <gov.redhawk.core.rcp>http://download.redhawksdr.org/gov.redhawk.core.rcp/releases/1.10</gov.redhawk.core.rcp>
   </properties>
 
   <repositories>
@@ -20,11 +19,6 @@
       <id>gov.redhawk.core</id>
       <layout>p2</layout>
       <url>${gov.redhawk.core}</url>
-    </repository>
-    <repository>
-      <id>gov.redhawk.core.rcp</id>
-      <layout>p2</layout>
-      <url>${gov.redhawk.core.rcp}</url>
     </repository>
   </repositories>
 
