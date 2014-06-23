@@ -40,6 +40,7 @@ import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.util.EObjectContainmentWithInverseEList;
+import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.emf.ecore.util.InternalEList;
 import org.eclipse.emf.transaction.RunnableWithResult;
 import org.omg.CORBA.SystemException;
@@ -60,7 +61,7 @@ import ExtendedCF.UsesConnection;
  * <p>
  * The following features are implemented:
  * <ul>
- *   <li>{@link gov.redhawk.model.sca.impl.ScaUsesPortImpl#getConnections <em>Connections</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.impl.ScaUsesPortImpl#getConnections <em>Connections</em>}</li>
  * </ul>
  * </p>
  *
@@ -230,7 +231,7 @@ public class ScaUsesPortImpl extends ScaPortImpl<Uses, Port> implements ScaUsesP
 					if (!newConnectionMaps.isEmpty()) {
 						getConnections().addAll(newConnectionMaps.values());
 					}
-					
+
 					// Do this to "Set" the connections
 					if (!isSetConnections()) {
 						getConnections().clear();
@@ -250,7 +251,7 @@ public class ScaUsesPortImpl extends ScaPortImpl<Uses, Port> implements ScaUsesP
 				public void run() {
 					setResult(ECollections.unmodifiableEList(new BasicEList<ScaConnection>(getConnections())));
 				}
-				
+
 			});
 		} catch (InterruptedException e) {
 			return ECollections.emptyEList();
@@ -281,14 +282,30 @@ public class ScaUsesPortImpl extends ScaPortImpl<Uses, Port> implements ScaUsesP
 	 * @generated NOT
 	 */
 	@Override
-	public void connectPort(org.omg.CORBA.Object connection, String connectionId) throws InvalidPort, OccupiedPort {
+	public void connectPort(org.omg.CORBA.Object target, String connectionId) throws InvalidPort, OccupiedPort {
 		// END GENERATED CODE
 		Port usesPort = fetchNarrowedObject(null);
 		if (usesPort == null) {
 			throw new IllegalStateException("Not connected to a CORBA Object instance.");
 		}
-		usesPort.connectPort(connection, connectionId);
+		usesPort.connectPort(target, connectionId);
 		fetchConnections(null);
+
+		// Create a stub connection object for ports that don't support queryable port operations
+		if (!_is_a(QueryablePortHelper.id())) {
+			UsesConnection data = new UsesConnection();
+			data.connectionId = connectionId;
+			data.port = target;
+			final ScaConnection newConnection = ScaFactory.eINSTANCE.createScaConnection();
+			newConnection.setData(data);
+			ScaModelCommand.execute(this, new ScaModelCommand() {
+
+				@Override
+				public void execute() {
+					getConnections().add(newConnection);
+				}
+			});
+		}
 		// BEGIN GENERATED CODE
 	}
 
@@ -299,14 +316,32 @@ public class ScaUsesPortImpl extends ScaPortImpl<Uses, Port> implements ScaUsesP
 	 * @generated NOT
 	 */
 	@Override
-	public void disconnectPort(String connectionId) throws InvalidPort {
+	public void disconnectPort(final String connectionId) throws InvalidPort {
 		// END GENERATED CODE
+		if (connectionId == null) {
+			return;
+		}
 		Port usesPort = fetchNarrowedObject(null);
 		if (usesPort == null) {
 			throw new IllegalStateException("Not connected to a CORBA Object instance.");
 		}
 		usesPort.disconnectPort(connectionId);
 		fetchConnections(null);
+		// Remove a stub connection object for ports that don't support queryable port operations
+		if (!_is_a(QueryablePortHelper.id())) {
+			ScaModelCommand.execute(this, new ScaModelCommand() {
+
+				@Override
+				public void execute() {
+					for (ScaConnection conn : getConnections()) {
+						if (connectionId.equals(conn.getId())) {
+							EcoreUtil.delete(conn);
+							return;
+						}
+					}
+				}
+			});
+		}
 		// BEGIN GENERATED CODE
 	}
 
@@ -424,4 +459,4 @@ public class ScaUsesPortImpl extends ScaPortImpl<Uses, Port> implements ScaUsesP
 		}
 	}
 
-} //ScaUsesPortImpl
+} // ScaUsesPortImpl
