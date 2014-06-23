@@ -22,7 +22,6 @@ import gov.redhawk.model.sca.ScaFactory;
 import gov.redhawk.model.sca.ScaSimpleProperty;
 import gov.redhawk.model.sca.ScaStructProperty;
 import gov.redhawk.model.sca.ScaStructSequenceProperty;
-import gov.redhawk.model.sca.commands.ScaModelCommand;
 import gov.redhawk.sca.observables.SCAObservables;
 
 import java.text.NumberFormat;
@@ -293,71 +292,18 @@ public class TunerAllocationWizardPage extends WizardPage {
 				if (b.getSelection()) {
 					previousBwValue = bwText.getText();
 					final ScaSimpleProperty bwSimple = tunerAllocationStruct.getSimple(TunerAllocationProperties.BANDWIDTH.getId());
-					ScaModelCommand.execute(bwSimple, new ScaModelCommand() {
-
-						@Override
-						public void execute() {
-							bwSimple.setValue(0.0);
-							for (Object b : context.getBindings()) {
-								((Binding) b).updateModelToTarget();
-								((Binding) b).validateModelToTarget();
-							}
-						}
-
-					});
+					bwSimple.setValue(0.0);
 				} else {
-					final ScaSimpleProperty bwSimple = tunerAllocationStruct.getSimple(TunerAllocationProperties.BANDWIDTH.getId());
-					ScaModelCommand.execute(bwSimple, new ScaModelCommand() {
-
-						@Override
-						public void execute() {
-							try {
-								bwText.setText(previousBwValue);
-								for (Object b : context.getBindings()) {
-									((Binding) b).updateTargetToModel();
-									((Binding) b).validateTargetToModel();
-								}
-							} catch (NumberFormatException e) {
-								// PASS
-							}
-						}
-
-					});
+					bwText.setText(previousBwValue);
 				}
 			} else if (b == srAnyValue) {
 				srText.setEnabled(!b.getSelection());
 				final ScaSimpleProperty srSimple = tunerAllocationStruct.getSimple(TunerAllocationProperties.SAMPLE_RATE.getId());
 				if (b.getSelection()) {
 					previousSrValue = srText.getText();
-					ScaModelCommand.execute(srSimple, new ScaModelCommand() {
-
-						@Override
-						public void execute() {
-							srSimple.setValue(0.0);
-							for (Object b : context.getBindings()) {
-								((Binding) b).updateModelToTarget();
-								((Binding) b).validateModelToTarget();
-							}
-						}
-
-					});
+					srSimple.setValue(0.0);
 				} else {
-					ScaModelCommand.execute(srSimple, new ScaModelCommand() {
-
-						@Override
-						public void execute() {
-							try {
-								srText.setText(previousSrValue);
-								for (Object b : context.getBindings()) {
-									((Binding) b).updateTargetToModel();
-									((Binding) b).validateTargetToModel();
-								}
-							} catch (NumberFormatException e) {
-								// PASS
-							}
-						}
-
-					});
+					srText.setText(previousSrValue);
 				}
 			}
 		}
