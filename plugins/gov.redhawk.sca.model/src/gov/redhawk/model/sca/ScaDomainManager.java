@@ -634,6 +634,10 @@ public interface ScaDomainManager extends ScaPropertyContainer<DomainManager, Do
 	 * @generated
 	 */
 	EList<ScaDeviceManager> fetchDeviceManagers(IProgressMonitor monitor);
+	/**
+	 * @since 19.0
+	 */
+	EList<ScaDeviceManager> fetchDeviceManagers(IProgressMonitor monitor, RefreshDepth depth);
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -642,6 +646,10 @@ public interface ScaDomainManager extends ScaPropertyContainer<DomainManager, Do
 	 * @generated
 	 */
 	EList<ScaWaveformFactory> fetchWaveformFactories(IProgressMonitor monitor);
+	/**
+	 * @since 19.0
+	 */
+	EList<ScaWaveformFactory> fetchWaveformFactories(IProgressMonitor monitor, RefreshDepth depth);
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -650,6 +658,10 @@ public interface ScaDomainManager extends ScaPropertyContainer<DomainManager, Do
 	 * @generated
 	 */
 	EList<ScaWaveform> fetchWaveforms(IProgressMonitor monitor);
+	/**
+	 * @since 19.0
+	 */
+	EList<ScaWaveform> fetchWaveforms(IProgressMonitor monitor, RefreshDepth depth);
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -658,6 +670,10 @@ public interface ScaDomainManager extends ScaPropertyContainer<DomainManager, Do
 	 * @generated
 	 */
 	ScaDomainManagerFileSystem fetchFileManager(IProgressMonitor monitor);
+	/**
+	 * @since 19.0
+	 */
+	ScaDomainManagerFileSystem fetchFileManager(IProgressMonitor monitor, RefreshDepth depth);
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -700,6 +716,10 @@ public interface ScaDomainManager extends ScaPropertyContainer<DomainManager, Do
 	 * @generated
 	 */
 	EList<ScaEventChannel> fetchEventChannels(IProgressMonitor monitor);
+	/**
+	 * @since 19.0
+	 */
+	EList<ScaEventChannel> fetchEventChannels(IProgressMonitor monitor, RefreshDepth depth);
 
 	/**
 	 * @since 8.0

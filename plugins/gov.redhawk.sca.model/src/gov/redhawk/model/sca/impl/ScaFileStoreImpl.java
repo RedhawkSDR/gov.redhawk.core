@@ -511,6 +511,9 @@ public class ScaFileStoreImpl extends IStatusProviderImpl implements ScaFileStor
 	@Override
 	public void refresh(IProgressMonitor monitor, RefreshDepth depth) throws InterruptedException {
 		// END GENERATED CODE	
+		if (depth == null) {
+			return;
+		}
 		switch (depth) {
 		case FULL:
 		case CHILDREN:

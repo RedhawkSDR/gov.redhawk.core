@@ -32,6 +32,7 @@ import gov.redhawk.model.sca.commands.SetLocalAttributeCommand;
 import gov.redhawk.model.sca.commands.UnsetLocalAttributeCommand;
 import gov.redhawk.model.sca.commands.VersionedFeature;
 import gov.redhawk.model.sca.commands.VersionedFeature.Transaction;
+import gov.redhawk.model.sca.util.ModelUtil;
 import gov.redhawk.sca.util.PluginUtil;
 
 import java.util.ArrayList;
@@ -115,14 +116,14 @@ import CF.TestableObjectPackage.UnknownTest;
  * <p>
  * The following features are implemented:
  * <ul>
- *   <li>{@link gov.redhawk.model.sca.impl.ScaWaveformImpl#getPorts <em>Ports</em>}</li>
- *   <li>{@link gov.redhawk.model.sca.impl.ScaWaveformImpl#getComponents <em>Components</em>}</li>
- *   <li>{@link gov.redhawk.model.sca.impl.ScaWaveformImpl#getAssemblyController <em>Assembly Controller</em>}</li>
- *   <li>{@link gov.redhawk.model.sca.impl.ScaWaveformImpl#getDomMgr <em>Dom Mgr</em>}</li>
- *   <li>{@link gov.redhawk.model.sca.impl.ScaWaveformImpl#getIdentifier <em>Identifier</em>}</li>
- *   <li>{@link gov.redhawk.model.sca.impl.ScaWaveformImpl#getName <em>Name</em>}</li>
- *   <li>{@link gov.redhawk.model.sca.impl.ScaWaveformImpl#getStarted <em>Started</em>}</li>
- *   <li>{@link gov.redhawk.model.sca.impl.ScaWaveformImpl#getProfile <em>Profile</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.impl.ScaWaveformImpl#getPorts <em>Ports</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.impl.ScaWaveformImpl#getComponents <em>Components</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.impl.ScaWaveformImpl#getAssemblyController <em>Assembly Controller</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.impl.ScaWaveformImpl#getDomMgr <em>Dom Mgr</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.impl.ScaWaveformImpl#getIdentifier <em>Identifier</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.impl.ScaWaveformImpl#getName <em>Name</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.impl.ScaWaveformImpl#getStarted <em>Started</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.impl.ScaWaveformImpl#getProfile <em>Profile</em>}</li>
  * </ul>
  * </p>
  *
@@ -728,37 +729,12 @@ public class ScaWaveformImpl extends ScaPropertyContainerImpl<Application, Softw
 	 * <!-- begin-user-doc -->
 	 * @since 14.0
 	 * <!-- end-user-doc -->
-	 * @throws InterruptedException 
+	 * @throws InterruptedException
 	 * @generated NOT
 	 */
 	@Override
 	public EList<ScaComponent> fetchComponents(IProgressMonitor monitor) {
-		if (isDisposed()) {
-			return ECollections.emptyEList();
-		}
-		SubMonitor subMonitor = SubMonitor.convert(monitor, "Fetching components", 2);
-		internalFetchComponents(subMonitor.newChild(1));
-		IRefreshable[] array = ScaModelCommandWithResult.execute(this, new ScaModelCommandWithResult<IRefreshable[]>() {
-
-			@Override
-			public void execute() {
-				setResult(getComponents().toArray(new IRefreshable[getComponents().size()]));
-			}
-
-		});
-		if (array != null) {
-			SubMonitor portRefresh = subMonitor.newChild(1);
-			portRefresh.beginTask("Refreshing components", array.length);
-			for (IRefreshable element : array) {
-				try {
-					element.refresh(portRefresh.newChild(1), RefreshDepth.SELF);
-				} catch (InterruptedException e) {
-					// PASS
-				}
-			}
-		}
-		subMonitor.done();
-		return getComponents();
+		return fetchComponents(monitor, RefreshDepth.SELF);
 	}
 
 	private final VersionedFeature identifierFeature = new VersionedFeature(this, ScaPackage.Literals.SCA_WAVEFORM__IDENTIFIER);
@@ -907,7 +883,7 @@ public class ScaWaveformImpl extends ScaPropertyContainerImpl<Application, Softw
 		if (isSetComponents() || isDisposed()) {
 			return;
 		}
-		SubMonitor subMonitor = SubMonitor.convert(monitor, 6); //SUPPRESS CHECKSTYLE MagicNumber
+		SubMonitor subMonitor = SubMonitor.convert(monitor, 6); // SUPPRESS CHECKSTYLE MagicNumber
 		final Application app = fetchNarrowedObject(subMonitor.newChild(1));
 
 		Transaction transaction = componentsFeature.createTransaction();
@@ -969,7 +945,7 @@ public class ScaWaveformImpl extends ScaPropertyContainerImpl<Application, Softw
 	 * <!-- begin-user-doc -->
 	 * @since 14.0
 	 * <!-- end-user-doc -->
-	 * @throws InterruptedException 
+	 * @throws InterruptedException
 	 * @generated NOT
 	 */
 	@Override
@@ -1132,7 +1108,7 @@ public class ScaWaveformImpl extends ScaPropertyContainerImpl<Application, Softw
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @throws InterruptedException 
+	 * @throws InterruptedException
 	 * @generated NOT
 	 */
 	@Override
@@ -1346,6 +1322,9 @@ public class ScaWaveformImpl extends ScaPropertyContainerImpl<Application, Softw
 		}
 		waveform.start();
 		fetchStarted(null);
+		for (Object c : ModelUtil.getAsImmutableList(this, ScaPackage.Literals.SCA_WAVEFORM__COMPONENTS)) {
+			((ScaComponent) c).fetchStarted(null);
+		}
 		// BEGIN GENERATED CODE
 	}
 
@@ -1358,6 +1337,9 @@ public class ScaWaveformImpl extends ScaPropertyContainerImpl<Application, Softw
 		}
 		waveform.stop();
 		fetchStarted(null);
+		for (Object c : ModelUtil.getAsImmutableList(this, ScaPackage.Literals.SCA_WAVEFORM__COMPONENTS)) {
+			((ScaComponent) c).fetchStarted(null);
+		}
 		// BEGIN GENERATED CODE
 	}
 
@@ -1937,7 +1919,6 @@ public class ScaWaveformImpl extends ScaPropertyContainerImpl<Application, Softw
 	public String softwareProfile() {
 		return profile();
 	}
-	
 
 	/**
 	 * @since 19.0
@@ -2010,4 +1991,37 @@ public class ScaWaveformImpl extends ScaPropertyContainerImpl<Application, Softw
 	public void setLogConfigURL(String config_url) {
 		getObj().setLogConfigURL(config_url);
 	}
-} //ScaWaveformImpl
+
+	/**
+	 * @since 19.0
+	 */
+	@Override
+	public EList<ScaComponent> fetchComponents(IProgressMonitor monitor, RefreshDepth depth) {
+		if (isDisposed()) {
+			return ECollections.emptyEList();
+		}
+		SubMonitor subMonitor = SubMonitor.convert(monitor, "Fetching components", 2);
+		internalFetchComponents(subMonitor.newChild(1));
+		IRefreshable[] array = ScaModelCommandWithResult.execute(this, new ScaModelCommandWithResult<IRefreshable[]>() {
+
+			@Override
+			public void execute() {
+				setResult(getComponents().toArray(new IRefreshable[getComponents().size()]));
+			}
+
+		});
+		if (array != null && depth != null) {
+			SubMonitor portRefresh = subMonitor.newChild(1);
+			portRefresh.beginTask("Refreshing components", array.length);
+			for (IRefreshable element : array) {
+				try {
+					element.refresh(portRefresh.newChild(1), depth);
+				} catch (InterruptedException e) {
+					// PASS
+				}
+			}
+		}
+		subMonitor.done();
+		return getComponents();
+	}
+} // ScaWaveformImpl

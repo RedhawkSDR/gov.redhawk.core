@@ -583,6 +583,9 @@ public class ScaServiceImpl extends ScaPropertyContainerImpl<org.omg.CORBA.Objec
 		if (isDisposed()) {
 			return null;
 		}
+		if (isSetProfileObj()) {
+			return getProfileObj();
+		}
 		Transaction transaction = profileObjectRevision.createTransaction();
 		Command command = ProfileObjectWrapper.Util.fetchProfileObject(monitor, this, SoftPkg.class, SoftPkg.EOBJECT_PATH);
 		transaction.addCommand(command);

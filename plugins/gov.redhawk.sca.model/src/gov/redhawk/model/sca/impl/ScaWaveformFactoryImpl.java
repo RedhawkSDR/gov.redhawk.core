@@ -42,6 +42,7 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.SubMonitor;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
+import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
@@ -64,18 +65,18 @@ import CF.ApplicationFactoryPackage.InvalidInitConfiguration;
 /**
  * <!-- begin-user-doc --> An implementation of the model object '
  * <em><b>Waveform Factory</b></em>'.
- * @since 12.0 
+ * @since 12.0
  * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
  * <ul>
- *   <li>{@link gov.redhawk.model.sca.impl.ScaWaveformFactoryImpl#getProfileURI <em>Profile URI</em>}</li>
- *   <li>{@link gov.redhawk.model.sca.impl.ScaWaveformFactoryImpl#getProfileObj <em>Profile Obj</em>}</li>
- *   <li>{@link gov.redhawk.model.sca.impl.ScaWaveformFactoryImpl#getRootFileStore <em>Root File Store</em>}</li>
- *   <li>{@link gov.redhawk.model.sca.impl.ScaWaveformFactoryImpl#getDomMgr <em>Dom Mgr</em>}</li>
- *   <li>{@link gov.redhawk.model.sca.impl.ScaWaveformFactoryImpl#getIdentifier <em>Identifier</em>}</li>
- *   <li>{@link gov.redhawk.model.sca.impl.ScaWaveformFactoryImpl#getName <em>Name</em>}</li>
- *   <li>{@link gov.redhawk.model.sca.impl.ScaWaveformFactoryImpl#getProfile <em>Profile</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.impl.ScaWaveformFactoryImpl#getProfileURI <em>Profile URI</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.impl.ScaWaveformFactoryImpl#getProfileObj <em>Profile Obj</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.impl.ScaWaveformFactoryImpl#getRootFileStore <em>Root File Store</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.impl.ScaWaveformFactoryImpl#getDomMgr <em>Dom Mgr</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.impl.ScaWaveformFactoryImpl#getIdentifier <em>Identifier</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.impl.ScaWaveformFactoryImpl#getName <em>Name</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.impl.ScaWaveformFactoryImpl#getProfile <em>Profile</em>}</li>
  * </ul>
  * </p>
  *
@@ -635,8 +636,7 @@ public class ScaWaveformFactoryImpl extends CorbaObjWrapperImpl<ApplicationFacto
 	}
 
 	/**
-	 * @since 14.0 
-	 * {@inheritDoc}
+	 * @since 14.0 {@inheritDoc}
 	 */
 	@Override
 	protected ApplicationFactory narrow(final org.omg.CORBA.Object obj) {
@@ -649,7 +649,7 @@ public class ScaWaveformFactoryImpl extends CorbaObjWrapperImpl<ApplicationFacto
 	}
 
 	/**
-	 * <!-- begin-user-doc --> 
+	 * <!-- begin-user-doc -->
 	 * @since 14.0
 	 * <!-- end-user-doc -->
 	 * 
@@ -661,66 +661,7 @@ public class ScaWaveformFactoryImpl extends CorbaObjWrapperImpl<ApplicationFacto
 	@Override
 	public ScaWaveform createWaveform(IProgressMonitor monitor, final String name, DataType[] initConfiguration, DeviceAssignmentType[] deviceAssignments)
 		throws CreateApplicationError, CreateApplicationRequestError, InvalidInitConfiguration, CreateApplicationInsufficientCapacityError {
-		// END GENERATED CODE
-		if (DEBUG.enabled) {
-			DEBUG.enteringMethod(name, Arrays.toString(initConfiguration), Arrays.toString(deviceAssignments));
-		}
-		ApplicationFactory factory = fetchNarrowedObject(null);
-		SubMonitor subMonitor = SubMonitor.convert(monitor, "Create Waveform" + name, 3); //SUPPRESS CHECKSTYLE MagicNumber
-		try {
-			if (factory == null) {
-				throw new IllegalStateException("App Factory is null");
-			} else {
-				if (initConfiguration == null) {
-					initConfiguration = DATA_EMPTY_TYPE;
-				}
-				if (deviceAssignments == null) {
-					deviceAssignments = DEVICE_EMPTY_TYPE;
-				}
-				final Application app = factory.create(name, initConfiguration, deviceAssignments);
-
-				ScaWaveform retVal = null;
-				if (app != null) {
-					final String ior = app.toString();
-					retVal = ScaModelCommandWithResult.execute(this, new ScaModelCommandWithResult<ScaWaveform>() {
-						@Override
-						public void execute() {
-
-							if (getDomMgr() != null) {
-								// Check to be sure someone else didn't already add the waveform
-								for (ScaWaveform w : getDomMgr().getWaveforms()) {
-									if (ior.equals(w.getIor())) {
-										setResult(w);
-										return;
-									}
-								}
-
-								ScaWaveform newWaveform = ScaFactory.eINSTANCE.createScaWaveform();
-								newWaveform.setCorbaObj(app);
-								getDomMgr().getWaveforms().add(newWaveform);
-								setResult(newWaveform);
-							}
-						}
-
-					});
-					subMonitor.worked(1);
-				}
-				if (retVal != null) {
-					try {
-						retVal.refresh(subMonitor.newChild(1), RefreshDepth.SELF);
-					} catch (InterruptedException e) {
-						// PASS
-					}
-				}
-				if (DEBUG.enabled) {
-					DEBUG.exitingMethod(retVal);
-				}
-				return retVal;
-			}
-		} finally {
-			subMonitor.done();
-		}
-		// BEGIN GENERATED CODE
+		return createWaveform(monitor, name, initConfiguration, deviceAssignments, RefreshDepth.SELF);
 	}
 
 	private final VersionedFeature idFeature = new VersionedFeature(this, ScaPackage.Literals.SCA_WAVEFORM_FACTORY__IDENTIFIER);
@@ -818,6 +759,9 @@ public class ScaWaveformFactoryImpl extends CorbaObjWrapperImpl<ApplicationFacto
 		if (isDisposed()) {
 			return null;
 		}
+		if (isSetProfileObj()) {
+			return getProfileObj();
+		}
 		Transaction transaction = profileObjFeature.createTransaction();
 		transaction.addCommand(ProfileObjectWrapper.Util.fetchProfileObject(monitor, this, SoftwareAssembly.class, SoftwareAssembly.EOBJECT_PATH));
 		transaction.commit();
@@ -868,7 +812,7 @@ public class ScaWaveformFactoryImpl extends CorbaObjWrapperImpl<ApplicationFacto
 	/**
 	 * 
 	 * {@inheritDoc}
-	 * @throws InterruptedException 
+	 * @throws InterruptedException
 	 * 
 	 * @generated NOT
 	 */
@@ -901,7 +845,7 @@ public class ScaWaveformFactoryImpl extends CorbaObjWrapperImpl<ApplicationFacto
 	public Application create(final String name, final DataType[] initConfiguration, final DeviceAssignmentType[] deviceAssignments)
 		throws CreateApplicationError, CreateApplicationRequestError, InvalidInitConfiguration, CreateApplicationInsufficientCapacityError {
 		// END GENERATED CODE
-		ScaWaveform result = createWaveform(null, name, initConfiguration, deviceAssignments);
+		ScaWaveform result = createWaveform(null, name, initConfiguration, deviceAssignments, null);
 		if (result != null) {
 			return result.fetchNarrowedObject(null);
 		}
@@ -1221,6 +1165,60 @@ public class ScaWaveformFactoryImpl extends CorbaObjWrapperImpl<ApplicationFacto
 			subMonitor.done();
 		}
 		return getProfileURI();
+	}
+
+	/**
+	 * @since 19.0
+	 */
+	@Override
+	public ScaWaveform createWaveform(IProgressMonitor monitor, String name, DataType[] initConfiguration, DeviceAssignmentType[] deviceAssignments,
+		RefreshDepth depth) throws CreateApplicationError, CreateApplicationRequestError, InvalidInitConfiguration, CreateApplicationInsufficientCapacityError {
+		// END GENERATED CODE
+		if (DEBUG.enabled) {
+			DEBUG.enteringMethod(name, Arrays.toString(initConfiguration), Arrays.toString(deviceAssignments));
+		}
+		ApplicationFactory factory = fetchNarrowedObject(null);
+		SubMonitor subMonitor = SubMonitor.convert(monitor, "Create Waveform" + name, 3);
+		try {
+			if (factory == null) {
+				throw new IllegalStateException("App Factory is null");
+			} else {
+				if (initConfiguration == null) {
+					initConfiguration = DATA_EMPTY_TYPE;
+				}
+				if (deviceAssignments == null) {
+					deviceAssignments = DEVICE_EMPTY_TYPE;
+				}
+
+				final Application app = factory.create(name, initConfiguration, deviceAssignments);
+
+				ScaWaveform retVal = null;
+				if (app != null) {
+					final String ior = app.toString();
+					EList<ScaWaveform> waveforms = getDomMgr().fetchWaveforms(subMonitor.newChild(1), null);
+					for (ScaWaveform w : waveforms) {
+						if (ior.equals(w.getIor())) {
+							retVal = w;
+							break;
+						}
+					}
+				}
+				if (retVal != null && depth != null) {
+					try {
+						retVal.refresh(subMonitor.newChild(1), depth);
+					} catch (InterruptedException e) {
+						// PASS
+					}
+				}
+				if (DEBUG.enabled) {
+					DEBUG.exitingMethod(retVal);
+				}
+				return retVal;
+			}
+		} finally {
+			subMonitor.done();
+		}
+		// BEGIN GENERATED CODE
 	}
 
 } // ScaWaveformFactoryImpl

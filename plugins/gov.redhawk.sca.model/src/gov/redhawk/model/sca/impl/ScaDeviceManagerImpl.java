@@ -116,17 +116,17 @@ import CF.PropertySetPackage.PartialConfiguration;
  * <p>
  * The following features are implemented:
  * <ul>
- *   <li>{@link gov.redhawk.model.sca.impl.ScaDeviceManagerImpl#getPorts <em>Ports</em>}</li>
- *   <li>{@link gov.redhawk.model.sca.impl.ScaDeviceManagerImpl#getDevices <em>Devices</em>}</li>
- *   <li>{@link gov.redhawk.model.sca.impl.ScaDeviceManagerImpl#getRootDevices <em>Root Devices</em>}</li>
- *   <li>{@link gov.redhawk.model.sca.impl.ScaDeviceManagerImpl#getChildDevices <em>Child Devices</em>}</li>
- *   <li>{@link gov.redhawk.model.sca.impl.ScaDeviceManagerImpl#getAllDevices <em>All Devices</em>}</li>
- *   <li>{@link gov.redhawk.model.sca.impl.ScaDeviceManagerImpl#getFileSystem <em>File System</em>}</li>
- *   <li>{@link gov.redhawk.model.sca.impl.ScaDeviceManagerImpl#getDomMgr <em>Dom Mgr</em>}</li>
- *   <li>{@link gov.redhawk.model.sca.impl.ScaDeviceManagerImpl#getIdentifier <em>Identifier</em>}</li>
- *   <li>{@link gov.redhawk.model.sca.impl.ScaDeviceManagerImpl#getLabel <em>Label</em>}</li>
- *   <li>{@link gov.redhawk.model.sca.impl.ScaDeviceManagerImpl#getServices <em>Services</em>}</li>
- *   <li>{@link gov.redhawk.model.sca.impl.ScaDeviceManagerImpl#getProfile <em>Profile</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.impl.ScaDeviceManagerImpl#getPorts <em>Ports</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.impl.ScaDeviceManagerImpl#getDevices <em>Devices</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.impl.ScaDeviceManagerImpl#getRootDevices <em>Root Devices</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.impl.ScaDeviceManagerImpl#getChildDevices <em>Child Devices</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.impl.ScaDeviceManagerImpl#getAllDevices <em>All Devices</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.impl.ScaDeviceManagerImpl#getFileSystem <em>File System</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.impl.ScaDeviceManagerImpl#getDomMgr <em>Dom Mgr</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.impl.ScaDeviceManagerImpl#getIdentifier <em>Identifier</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.impl.ScaDeviceManagerImpl#getLabel <em>Label</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.impl.ScaDeviceManagerImpl#getServices <em>Services</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.impl.ScaDeviceManagerImpl#getProfile <em>Profile</em>}</li>
  * </ul>
  * </p>
  *
@@ -1427,43 +1427,7 @@ public class ScaDeviceManagerImpl extends ScaPropertyContainerImpl<DeviceManager
 	 */
 	@Override
 	public EList<ScaDevice< ? >> fetchDevices(IProgressMonitor monitor) {
-		if (isDisposed()) {
-			return ECollections.emptyEList();
-		}
-		SubMonitor subMonitor = SubMonitor.convert(monitor, "Fetching Devices", 2);
-		internalFetchDevices(subMonitor.newChild(1));
-		IRefreshable[] array = ScaModelCommandWithResult.execute(this, new ScaModelCommandWithResult<IRefreshable[]>() {
-
-			@Override
-			public void execute() {
-				setResult(getRootDevices().toArray(new IRefreshable[getRootDevices().size()]));
-			}
-
-		});
-		if (array != null) {
-			SubMonitor portRefresh = subMonitor.newChild(1);
-			portRefresh.beginTask("Refreshing devices ", array.length);
-			for (IRefreshable element : array) {
-				try {
-					element.refresh(portRefresh.newChild(1), RefreshDepth.SELF);
-				} catch (InterruptedException e) {
-					// PASS
-				}
-			}
-		}
-		subMonitor.done();
-		try {
-			return ScaModelCommand.runExclusive(this, new RunnableWithResult.Impl<EList<ScaDevice< ? >>>() {
-
-				@Override
-				public void run() {
-					setResult(ECollections.unmodifiableEList(new BasicEList<ScaDevice< ? >>(getAllDevices())));
-				}
-				
-			});
-		} catch (InterruptedException e) {
-			return ECollections.emptyEList();
-		}
+		return fetchDevices(monitor, RefreshDepth.SELF);
 	}
 
 	private final VersionedFeature devicesRevision = new VersionedFeature(this, ScaPackage.Literals.SCA_DEVICE_MANAGER__DEVICES);
@@ -1739,11 +1703,7 @@ public class ScaDeviceManagerImpl extends ScaPropertyContainerImpl<DeviceManager
 	 */
 	@Override
 	public EList<ScaService> fetchServices(IProgressMonitor monitor) {
-		if (isDisposed()) {
-			return ECollections.emptyEList();
-		}
-		internalFetchServices(monitor);
-		return getServices();
+		return fetchServices(monitor, RefreshDepth.SELF);
 	}
 
 	private final VersionedFeature serviceFeature = new VersionedFeature(this, ScaPackage.Literals.SCA_DEVICE_MANAGER__SERVICES);
@@ -1892,31 +1852,7 @@ public class ScaDeviceManagerImpl extends ScaPropertyContainerImpl<DeviceManager
 	 */
 	@Override
 	public ScaDeviceManagerFileSystem fetchFileSystem(IProgressMonitor monitor) {
-		if (isDisposed()) {
-			return null;
-		}
-		if (isSetFileSystem()) {
-			return getFileSystem();
-		}
-		Transaction transaction = fileSystemRevision.createTransaction();
-		SubMonitor subMonitor = SubMonitor.convert(monitor, "Fetching File system", 3);
-		final DeviceManager localObj = fetchNarrowedObject(subMonitor.newChild(1));
-		if (localObj != null) {
-			try {
-				FileSystem fileSys = localObj.fileSys();
-				transaction.addCommand(new SetDeviceManagerFileSystemCommand(this, fileSys));
-			} catch (SystemException e) {
-				transaction.addCommand(new UnsetLocalAttributeCommand(this, new Status(Status.ERROR, ScaModelPlugin.ID, "Failed to fetch file sys.", e),
-					ScaPackage.Literals.SCA_DEVICE_MANAGER__FILE_SYSTEM));
-			}
-		} else {
-			transaction.addCommand(new UnsetLocalAttributeCommand(this, null, ScaPackage.Literals.SCA_DEVICE_MANAGER__FILE_SYSTEM));
-		}
-		subMonitor.worked(1);
-		transaction.commit();
-		subMonitor.worked(1);
-		subMonitor.done();
-		return getFileSystem();
+		return fetchFileSystem(monitor, RefreshDepth.SELF);
 	}
 
 	private final VersionedFeature idFeature = new VersionedFeature(this, ScaPackage.Literals.SCA_DEVICE_MANAGER__IDENTIFIER);
@@ -2065,6 +2001,9 @@ public class ScaDeviceManagerImpl extends ScaPropertyContainerImpl<DeviceManager
 		if (isDisposed()) {
 			return null;
 		}
+		if (isSetProfileObj()) {
+			return getProfileObj();
+		}
 		Transaction transaction = profileObjectFeature.createTransaction();
 		transaction.addCommand(ProfileObjectWrapper.Util.fetchProfileObject(monitor, ScaDeviceManagerImpl.this, DeviceConfiguration.class,
 			DeviceConfiguration.EOBJECT_PATH));
@@ -2141,4 +2080,119 @@ public class ScaDeviceManagerImpl extends ScaPropertyContainerImpl<DeviceManager
 		return getProfileURI();
 	}
 
-} //ScaDeviceManagerImpl
+	/**
+	 * @since 19.0
+	 */
+	@Override
+	public EList<ScaDevice< ? >> fetchDevices(IProgressMonitor monitor, RefreshDepth depth) {
+		if (isDisposed()) {
+			return ECollections.emptyEList();
+		}
+		SubMonitor subMonitor = SubMonitor.convert(monitor, "Fetching Devices", 2);
+		internalFetchDevices(subMonitor.newChild(1));
+		IRefreshable[] array = ScaModelCommandWithResult.execute(this, new ScaModelCommandWithResult<IRefreshable[]>() {
+
+			@Override
+			public void execute() {
+				setResult(getRootDevices().toArray(new IRefreshable[getRootDevices().size()]));
+			}
+
+		});
+		if (array != null && depth != null) {
+			SubMonitor portRefresh = subMonitor.newChild(1);
+			portRefresh.beginTask("Refreshing devices ", array.length);
+			for (IRefreshable element : array) {
+				try {
+					element.refresh(portRefresh.newChild(1), depth);
+				} catch (InterruptedException e) {
+					// PASS
+				}
+			}
+		}
+		subMonitor.done();
+		try {
+			return ScaModelCommand.runExclusive(this, new RunnableWithResult.Impl<EList<ScaDevice< ? >>>() {
+
+				@Override
+				public void run() {
+					setResult(ECollections.unmodifiableEList(new BasicEList<ScaDevice< ? >>(getAllDevices())));
+				}
+
+			});
+		} catch (InterruptedException e) {
+			return ECollections.emptyEList();
+		}
+	}
+
+	/**
+	 * @since 19.0
+	 */
+	@Override
+	public ScaDeviceManagerFileSystem fetchFileSystem(IProgressMonitor monitor, RefreshDepth depth) {
+		if (isDisposed()) {
+			return null;
+		}
+		if (isSetFileSystem()) {
+			return getFileSystem();
+		}
+		Transaction transaction = fileSystemRevision.createTransaction();
+		SubMonitor subMonitor = SubMonitor.convert(monitor, "Fetching File system", 4);
+		final DeviceManager localObj = fetchNarrowedObject(subMonitor.newChild(1));
+		if (localObj != null) {
+			try {
+				FileSystem fileSys = localObj.fileSys();
+				transaction.addCommand(new SetDeviceManagerFileSystemCommand(this, fileSys));
+			} catch (SystemException e) {
+				transaction.addCommand(new UnsetLocalAttributeCommand(this, new Status(Status.ERROR, ScaModelPlugin.ID, "Failed to fetch file sys.", e),
+					ScaPackage.Literals.SCA_DEVICE_MANAGER__FILE_SYSTEM));
+			}
+		} else {
+			transaction.addCommand(new UnsetLocalAttributeCommand(this, null, ScaPackage.Literals.SCA_DEVICE_MANAGER__FILE_SYSTEM));
+		}
+		ScaDeviceManagerFileSystem fs = getFileSystem();
+		if (depth != null && fs != null) {
+			try {
+				fs.refresh(subMonitor.newChild(1), depth);
+			} catch (InterruptedException e) {
+				// PASS
+			}
+		}
+		subMonitor.worked(1);
+		transaction.commit();
+		subMonitor.worked(1);
+		subMonitor.done();
+		return fs;
+	}
+
+	/**
+	 * @since 19.0
+	 */
+	@Override
+	public EList<ScaService> fetchServices(IProgressMonitor monitor, RefreshDepth depth) {
+		if (isDisposed()) {
+			return ECollections.emptyEList();
+		}
+		internalFetchServices(monitor);
+		EList<ScaService> retVal = ScaModelCommandWithResult.execute(this, new ScaModelCommandWithResult<EList<ScaService>>() {
+
+			@Override
+			public void execute() {
+				BasicEList<ScaService> list = new BasicEList<ScaService>();
+				list.addAll(getServices());
+				setResult(list);
+			}
+
+		});
+		if (depth != null) {
+			for (ScaService service : retVal) {
+				try {
+					service.refresh(monitor, depth);
+				} catch (InterruptedException e) {
+					// PASS
+				}
+			}
+		}
+		return retVal;
+	}
+
+} // ScaDeviceManagerImpl

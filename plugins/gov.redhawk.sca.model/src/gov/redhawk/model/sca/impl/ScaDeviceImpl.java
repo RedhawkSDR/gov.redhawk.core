@@ -605,32 +605,8 @@ public class ScaDeviceImpl< D extends Device > extends ScaAbstractComponentImpl<
 	 * @generated NOT
 	 */
 	@Override
-	public EList<ScaDevice< ? >> fetchAggregateDevices(IProgressMonitor monitor) throws InterruptedException {
-		if (isDisposed()) {
-			return ECollections.emptyEList();
-		}
-		SubMonitor subMonitor = SubMonitor.convert(monitor, "Fetch Aggregate Devices", 2);
-		internalFetchAggregateDevices(subMonitor.newChild(1));
-		ScaDevice< ? >[] devices = ScaModelCommandWithResult.execute(this, new ScaModelCommandWithResult<ScaDevice< ? >[]>() {
-
-			@Override
-			public void execute() {
-				setResult(getChildDevices().toArray(new ScaDevice< ? >[getChildDevices().size()]));
-			}
-		});
-		if (devices != null) {
-			SubMonitor deviceMonitor = subMonitor.newChild(1);
-			deviceMonitor.beginTask("Refreshing devices", devices.length);
-			for (ScaDevice< ? > device : devices) {
-				device.refresh(deviceMonitor.newChild(1), RefreshDepth.SELF);
-			}
-		}
-		subMonitor.done();
-		if (devices != null) {
-			return ECollections.unmodifiableEList(new BasicEList<ScaDevice< ? >>(Arrays.asList(devices)));
-		} else {
-			return ECollections.emptyEList();
-		}
+	public EList<ScaDevice< ? >> fetchAggregateDevices(IProgressMonitor monitor) {
+		return fetchAggregateDevices(monitor, RefreshDepth.SELF);
 	}
 
 	private final VersionedFeature adminStateFeature = new VersionedFeature(this, ScaPackage.Literals.SCA_DEVICE__ADMIN_STATE);
@@ -1200,6 +1176,42 @@ public class ScaDeviceImpl< D extends Device > extends ScaAbstractComponentImpl<
 		}
 		subMonitor.done();
 		return getProfileURI();
+	}
+
+	/**
+	 * @since 19.0
+	 */
+	@Override
+	public EList<ScaDevice< ? >> fetchAggregateDevices(IProgressMonitor monitor, RefreshDepth depth) {
+		if (isDisposed()) {
+			return ECollections.emptyEList();
+		}
+		SubMonitor subMonitor = SubMonitor.convert(monitor, "Fetch Aggregate Devices", 2);
+		internalFetchAggregateDevices(subMonitor.newChild(1));
+		ScaDevice< ? >[] devices = ScaModelCommandWithResult.execute(this, new ScaModelCommandWithResult<ScaDevice< ? >[]>() {
+
+			@Override
+			public void execute() {
+				setResult(getChildDevices().toArray(new ScaDevice< ? >[getChildDevices().size()]));
+			}
+		});
+		if (devices != null && depth != null) {
+			SubMonitor deviceMonitor = subMonitor.newChild(1);
+			deviceMonitor.beginTask("Refreshing devices", devices.length);
+			for (ScaDevice< ? > device : devices) {
+				try {
+					device.refresh(deviceMonitor.newChild(1), depth);
+				} catch (InterruptedException e) {
+					// PASS
+				}
+			}
+		}
+		subMonitor.done();
+		if (devices != null) {
+			return ECollections.unmodifiableEList(new BasicEList<ScaDevice< ? >>(Arrays.asList(devices)));
+		} else {
+			return ECollections.emptyEList();
+		}
 	}
 
 } // ScaDeviceImpl

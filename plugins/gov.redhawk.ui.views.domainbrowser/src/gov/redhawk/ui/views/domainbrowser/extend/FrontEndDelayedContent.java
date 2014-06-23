@@ -161,14 +161,10 @@ public class FrontEndDelayedContent {
 
 						@Override
 						protected IStatus run(final IProgressMonitor monitor) {
-							try {
-								device.fetchAggregateDevices(monitor);
-								device.fetchOperationalState(monitor);
-								device.fetchProperties(monitor);
-								device.fetchPorts(monitor);
-							} catch (final InterruptedException e) {
-								// PASS
-							}
+							device.fetchAggregateDevices(monitor);
+							device.fetchOperationalState(monitor);
+							device.fetchProperties(monitor);
+							device.fetchPorts(monitor);
 
 							return Status.OK_STATUS;
 						}

@@ -13,9 +13,13 @@ package gov.redhawk.model.sca.util;
 
 import gov.redhawk.model.sca.ScaAbstractProperty;
 import gov.redhawk.model.sca.ScaModelPlugin;
+import gov.redhawk.model.sca.commands.ScaModelCommand;
 import gov.redhawk.sca.util.Debug;
 
 import java.net.URISyntaxException;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 import mil.jpeojtrs.sca.dcd.DeviceConfiguration;
 import mil.jpeojtrs.sca.prf.Properties;
@@ -41,9 +45,11 @@ import org.eclipse.core.runtime.Path;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.common.util.WrappedException;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.xmi.impl.XMLResourceFactoryImpl;
+import org.eclipse.emf.transaction.RunnableWithResult;
 import org.eclipse.emf.transaction.TransactionalEditingDomain;
 import org.eclipse.emf.transaction.util.TransactionUtil;
 import org.eclipse.emf.workspace.util.WorkspaceSynchronizer;
@@ -450,6 +456,36 @@ public final class ModelUtil {
 			return PropertiesUtil.canOverride(prop.getDefinition());
 		} else {
 			return PropertiesUtil.canConfigure(prop.getDefinition());
+		}
+	}
+	
+	/**
+	 * 
+	 * @param obj
+	 * @param feature
+	 * @return A Immutable copy of the list. 
+	 * @since 19.0
+	 */
+	public static <T extends Object> List<T> getAsImmutableList(final EObject obj, final EStructuralFeature feature) {
+		try {
+			List<T> retVal = ScaModelCommand.runExclusive(obj, new RunnableWithResult.Impl<List<T>>() {
+
+				@SuppressWarnings("unchecked")
+				@Override
+				public void run() {
+					Object value = obj.eGet(feature);
+					if (value instanceof List<?>) {
+						setResult(Collections.unmodifiableList(new ArrayList<T>((List<T>) value)));
+					}
+				}
+			});
+			if (retVal == null) {
+				return Collections.emptyList();
+			} else {
+				return retVal;
+			}
+		} catch (InterruptedException e) {
+			return Collections.emptyList();
 		}
 	}
 }

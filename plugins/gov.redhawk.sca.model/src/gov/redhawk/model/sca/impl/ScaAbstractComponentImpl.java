@@ -1059,6 +1059,9 @@ public abstract class ScaAbstractComponentImpl< R extends Resource > extends Sca
 		if (isDisposed()) {
 			return null;
 		}
+		if (isSetProfileObj()) {
+			return getProfileObj();
+		}
 		Transaction transaction = profileObjectRevision.createTransaction();
 		Command command = ProfileObjectWrapper.Util.fetchProfileObject(monitor, this, SoftPkg.class, SoftPkg.EOBJECT_PATH);
 		transaction.addCommand(command);

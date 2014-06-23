@@ -437,7 +437,9 @@ public abstract class DataProviderObjectImpl extends IStatusProviderImpl impleme
 		if (isDisposed()) {
 			return;
 		}
-		Assert.isNotNull(depth);
+		if (depth == null) {
+			return;
+		}
 		if (depth == RefreshDepth.NONE) {
 			return;
 		}

@@ -446,35 +446,7 @@ public class ScaComponentImpl extends ScaAbstractComponentImpl<Resource> impleme
 	 */
 	@Override
 	public EList<ScaDevice< ? >> fetchDevices(IProgressMonitor monitor) {
-		if (isDisposed()) {
-			return ECollections.emptyEList();
-		}
-		SubMonitor subMonitor = SubMonitor.convert(monitor, "Fetch Devices", 2);
-		internalFetchDevices(subMonitor.newChild(1));
-		ScaDevice< ? >[] devices = ScaModelCommandWithResult.execute(this, new ScaModelCommandWithResult<ScaDevice< ? >[]>() {
-
-			@Override
-			public void execute() {
-				setResult(getDevices().toArray(new ScaDevice< ? >[getDevices().size()]));
-			}
-		});
-		if (devices != null) {
-			SubMonitor deviceMonitor = subMonitor.newChild(1);
-			deviceMonitor.beginTask("Refreshing Devices", devices.length);
-			for (ScaDevice< ? > device : devices) {
-				try {
-					device.refresh(deviceMonitor.newChild(1), RefreshDepth.SELF);
-				} catch (InterruptedException e) {
-					// PASS
-				}
-			}
-		}
-		subMonitor.done();
-		if (devices != null) {
-			return ECollections.unmodifiableEList(new BasicEList<ScaDevice< ? >>(Arrays.asList(devices)));
-		} else {
-			return ECollections.emptyEList();
-		}
+		return fetchDevices(monitor, RefreshDepth.SELF);
 	}
 
 	/**
@@ -748,6 +720,42 @@ public class ScaComponentImpl extends ScaAbstractComponentImpl<Resource> impleme
 		}
 		subMonitor.done();
 		return getProfileURI();
+	}
+
+	/**
+	 * @since 19.0
+	 */
+	@Override
+	public EList<ScaDevice< ? >> fetchDevices(IProgressMonitor monitor, RefreshDepth depth) {
+		if (isDisposed()) {
+			return ECollections.emptyEList();
+		}
+		SubMonitor subMonitor = SubMonitor.convert(monitor, "Fetch Devices", 2);
+		internalFetchDevices(subMonitor.newChild(1));
+		ScaDevice< ? >[] devices = ScaModelCommandWithResult.execute(this, new ScaModelCommandWithResult<ScaDevice< ? >[]>() {
+
+			@Override
+			public void execute() {
+				setResult(getDevices().toArray(new ScaDevice< ? >[getDevices().size()]));
+			}
+		});
+		if (devices != null && depth != null) {
+			SubMonitor deviceMonitor = subMonitor.newChild(1);
+			deviceMonitor.beginTask("Refreshing Devices", devices.length);
+			for (ScaDevice< ? > device : devices) {
+				try {
+					device.refresh(deviceMonitor.newChild(1), depth);
+				} catch (InterruptedException e) {
+					// PASS
+				}
+			}
+		}
+		subMonitor.done();
+		if (devices != null) {
+			return ECollections.unmodifiableEList(new BasicEList<ScaDevice< ? >>(Arrays.asList(devices)));
+		} else {
+			return ECollections.emptyEList();
+		}
 	}
 
 } //ScaComponentImpl
