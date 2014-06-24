@@ -60,7 +60,10 @@ public class ResourceFactoryRegistryFileManager extends FileManagerImpl {
 				} catch (NonExistentMount e) {
 					// PASS
 				}
-				proxies.remove(proxy);
+				ProxyFileSystem removed = proxies.remove(mountPoint);
+				if (removed == null) {
+					ResourceFactoryPlugin.getDefault().getLog().log(new Status(Status.ERROR, ResourceFactoryPlugin.ID, "Failed to remove empty file system proxy.", null));
+				}
 			}
 		}
 
