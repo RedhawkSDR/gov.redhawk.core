@@ -19,6 +19,7 @@ import gov.redhawk.ui.views.monitor.provider.PortsEditPlugin;
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.ui.IWorkbenchWindow;
@@ -42,7 +43,7 @@ public class MonitorPortHandler extends AbstractHandler {
 					}
 				}
 			} catch (final PartInitException e) {
-				PortsEditPlugin.getPlugin().getLog().log(e.getStatus());
+				PortsEditPlugin.getPlugin().getLog().log(new Status(e.getStatus().getSeverity(), "gov.redhawk.ui.views.monitor.ports", e.getLocalizedMessage(), e));
 			}
 
 		}

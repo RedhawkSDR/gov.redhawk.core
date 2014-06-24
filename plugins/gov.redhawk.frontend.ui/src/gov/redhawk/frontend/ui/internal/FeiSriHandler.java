@@ -172,7 +172,7 @@ public class FeiSriHandler extends AbstractHandler implements IHandler {
 						} catch (InterruptedException e) {
 							return Status.CANCEL_STATUS;
 						} catch (CoreException e) {
-							return e.getStatus();
+							return new Status(e.getStatus().getSeverity(), FrontEndUIActivator.PLUGIN_ID, "Failed to allocate for SRI", e);
 						} finally {
 							subMonitor.done();
 						}
@@ -397,7 +397,7 @@ public class FeiSriHandler extends AbstractHandler implements IHandler {
 				} catch (InterruptedException e) {
 					return new Status(IStatus.ERROR, FrontEndUIActivator.PLUGIN_ID, "Interrupted Exception during SRI View deallocation", e);
 				} catch (CoreException e) {
-					return e.getStatus();
+					return new Status(e.getStatus().getSeverity(), FrontEndUIActivator.PLUGIN_ID, "Failed to deallocate", e);
 				}
 				return Status.OK_STATUS;
 			}

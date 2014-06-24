@@ -148,7 +148,7 @@ public class DeallocateHandler extends AbstractHandler implements IHandler {
 					} catch (InterruptedException e) {
 						return new Status(IStatus.ERROR, FrontEndUIActivator.PLUGIN_ID, "Interrupted Exception during control deallocation", e);
 					} catch (CoreException e) {
-						return e.getStatus();
+						return new Status(e.getStatus().getSeverity(), FrontEndUIActivator.PLUGIN_ID, "Failed to deallocate", e);
 					}
 
 					final TunerStatus tunerStatus = listener.getTunerStatus();
@@ -216,7 +216,7 @@ public class DeallocateHandler extends AbstractHandler implements IHandler {
 				} catch (InterruptedException e) {
 					return new Status(IStatus.ERROR, FrontEndUIActivator.PLUGIN_ID, "Interrupted Exception during control deallocation", e);
 				} catch (CoreException e) {
-					return e.getStatus();
+					return new Status(e.getStatus().getSeverity(), FrontEndUIActivator.PLUGIN_ID, "Failed to deallocate", e);
 				}
 			}
 

@@ -130,7 +130,7 @@ public class PortHelper {
 						
 					}, monitor);
 				} catch (CoreException e1) {
-					return e1.getStatus();
+					return new Status(e1.getStatus().getSeverity(), Activator.PLUGIN_ID, e1.getLocalizedMessage(), e1);
 				} catch (InterruptedException e1) {
 					return Status.CANCEL_STATUS;
 				}

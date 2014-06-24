@@ -17,8 +17,8 @@ import java.lang.reflect.InvocationTargetException;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.emf.ecore.resource.Resource;
-import org.eclipse.jface.dialogs.ErrorDialog;
 import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.wizard.Wizard;
@@ -26,6 +26,7 @@ import org.eclipse.ui.INewWizard;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.actions.WorkspaceModifyOperation;
+import org.eclipse.ui.statushandlers.StatusManager;
 
 /**
  * @generated
@@ -153,9 +154,9 @@ public class SadCreationWizard extends Wizard implements INewWizard {
 					try {
 						SadDiagramEditorUtil.openDiagram(diagram);
 					} catch (PartInitException e) {
-						ErrorDialog.openError(getContainer().getShell(),
-								Messages.SadCreationWizardOpenEditorError,
-								null, e.getStatus());
+						StatusManager.getManager().handle(
+							new Status(e.getStatus().getSeverity(), "mil.jpeojtrs.sca.dcd.diagram", Messages.SadCreationWizardOpenEditorError, e),
+							StatusManager.SHOW | StatusManager.LOG);
 					}
 				}
 			}
@@ -166,9 +167,10 @@ public class SadCreationWizard extends Wizard implements INewWizard {
 			return false;
 		} catch (InvocationTargetException e) {
 			if (e.getTargetException() instanceof CoreException) {
-				ErrorDialog.openError(getContainer().getShell(),
-						Messages.SadCreationWizardCreationError, null,
-						((CoreException) e.getTargetException()).getStatus());
+				CoreException ce = (CoreException) e.getTargetException();
+				StatusManager.getManager().handle(
+					new Status(ce.getStatus().getSeverity(), "mil.jpeojtrs.sca.dcd.diagram", Messages.SadCreationWizardCreationError, e),
+					StatusManager.SHOW | StatusManager.LOG);
 			} else {
 				SadDiagramEditorPlugin.getInstance().logError(
 						"Error creating diagram", e.getTargetException()); //$NON-NLS-1$

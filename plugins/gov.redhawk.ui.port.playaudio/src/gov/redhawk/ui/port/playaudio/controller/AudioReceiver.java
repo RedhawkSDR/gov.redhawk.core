@@ -143,7 +143,7 @@ dataFloatOperations, dataDoubleOperations, dataOctetOperations, dataUlongOperati
 				try {
 					connect(monitor);
 				} catch (CoreException e) {
-					return e.getStatus();
+					return new Status(e.getStatus().getSeverity(), Activator.PLUGIN_ID, "Failed to connect.", e);
 				}
 				return Status.OK_STATUS;
 			}

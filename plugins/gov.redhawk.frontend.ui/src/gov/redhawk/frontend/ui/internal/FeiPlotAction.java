@@ -133,7 +133,7 @@ public class FeiPlotAction extends FrontendAction {
 					} catch (InterruptedException e) {
 						return Status.CANCEL_STATUS;
 					} catch (CoreException e) {
-						return e.getStatus();
+						return new Status(e.getStatus().getSeverity(), FrontEndUIActivator.PLUGIN_ID, "Failed to plot allocation", e);
 					} finally {
 						subMonitor.done();
 					}
@@ -371,7 +371,7 @@ public class FeiPlotAction extends FrontendAction {
 				} catch (InterruptedException e) {
 					return new Status(IStatus.ERROR, FrontEndUIActivator.PLUGIN_ID, "Interrupted Exception during plot deallocation", e);
 				} catch (CoreException e) {
-					return e.getStatus();
+					return new Status(e.getStatus().getSeverity(), FrontEndUIActivator.PLUGIN_ID, "Failed to deallocate", e);
 				}
 				return Status.OK_STATUS;
 			}

@@ -135,7 +135,7 @@ public final class TunerStatusUtil {
 				} catch (InterruptedException e) {
 					return new Status(IStatus.ERROR, FrontEndUIActivator.PLUGIN_ID, "Interrupted Exception during deallocation", e);
 				} catch (CoreException e) {
-					return e.getStatus();
+					return new Status(e.getStatus().getSeverity(), FrontEndUIActivator.PLUGIN_ID, "Failed to deallocate tuner", e);
 				}
 				return Status.OK_STATUS;
 			}
@@ -177,7 +177,7 @@ public final class TunerStatusUtil {
 		} catch (InterruptedException e) {
 			return Status.CANCEL_STATUS;
 		} catch (CoreException e) {
-			return e.getStatus();
+			return new Status(e.getStatus().getSeverity(), FrontEndUIActivator.PLUGIN_ID, "Failed to allocate tuner.", e);
 		} finally {
 			subMonitor.done();
 		}

@@ -215,7 +215,7 @@ public class InstallApplicationContentProvider implements ITreeContentProvider {
 		try {
 			info = fileStore.fetchInfo(EFS.NONE, null);
 		} catch (final CoreException e1) {
-			status.add(e1.getStatus());
+			status.add(new Status(e1.getStatus().getSeverity(), ScaUiPlugin.PLUGIN_ID, e1.getLocalizedMessage(), e1));
 			return Collections.emptyList();
 		}
 		boolean proceed = false;
@@ -256,7 +256,7 @@ public class InstallApplicationContentProvider implements ITreeContentProvider {
 					}
 				}
 			} catch (final CoreException e) {
-				status.add(e.getStatus());
+				status.add(new Status(e.getStatus().getSeverity(), ScaUiPlugin.PLUGIN_ID, e.getLocalizedMessage(), e));
 			}
 			return retVal;
 		} else {

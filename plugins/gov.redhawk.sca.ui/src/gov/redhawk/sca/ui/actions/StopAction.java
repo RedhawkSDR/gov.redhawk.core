@@ -79,7 +79,7 @@ public class StopAction extends Action {
 
 						return Status.OK_STATUS;
 					} catch (CoreException e) {
-						return e.getStatus();
+						return new Status(e.getStatus().getSeverity(), ScaUiPlugin.PLUGIN_ID, "Failed to stop: " + device.identifier(), e);
 					} catch (InterruptedException e) {
 						return Status.CANCEL_STATUS;
 					} finally {

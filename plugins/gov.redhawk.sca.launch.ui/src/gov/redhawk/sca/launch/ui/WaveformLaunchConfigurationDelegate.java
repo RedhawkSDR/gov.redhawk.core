@@ -129,7 +129,7 @@ public class WaveformLaunchConfigurationDelegate extends LaunchConfigurationDele
 										final IWorkbenchPage activePage = workbench.getActiveWorkbenchWindow().getActivePage();
 										ScaUI.openEditorOnEObject(activePage, job.getWaveform(), useUri);
 									} catch (final CoreException e) {
-										return e.getStatus();
+										return new Status(e.getStatus().getSeverity(), ScaLauncherActivator.PLUGIN_ID, e.getLocalizedMessage(), e);
 									}
 									return Status.OK_STATUS;
 								}

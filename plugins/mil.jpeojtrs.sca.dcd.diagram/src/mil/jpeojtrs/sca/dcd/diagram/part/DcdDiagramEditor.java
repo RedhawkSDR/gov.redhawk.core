@@ -22,6 +22,7 @@ import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.NullProgressMonitor;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.emf.common.ui.URIEditorInput;
 import org.eclipse.emf.transaction.TransactionalEditingDomain;
 import org.eclipse.gef.palette.PaletteRoot;
@@ -47,6 +48,7 @@ import org.eclipse.ui.dialogs.SaveAsDialog;
 import org.eclipse.ui.ide.IGotoMarker;
 import org.eclipse.ui.part.FileEditorInput;
 import org.eclipse.ui.part.ShowInContext;
+import org.eclipse.ui.statushandlers.StatusManager;
 
 /**
  * @generated
@@ -222,10 +224,9 @@ public class DcdDiagramEditor extends DiagramDocumentEditor implements
 		} catch (CoreException x) {
 			IStatus status = x.getStatus();
 			if (status == null || status.getSeverity() != IStatus.CANCEL) {
-				ErrorDialog.openError(shell,
-						Messages.DcdDiagramEditor_SaveErrorTitle,
-						Messages.DcdDiagramEditor_SaveErrorMessage,
-						x.getStatus());
+				StatusManager.getManager().handle(
+					new Status(x.getStatus().getSeverity(), "mil.jpeojtrs.sca.dcd.diagram", Messages.DcdDiagramEditor_SaveErrorMessage, x),
+					StatusManager.SHOW | StatusManager.LOG);
 			}
 		} finally {
 			provider.changed(newInput);

@@ -67,7 +67,7 @@ public class MonitorPortSupplierHandler extends AbstractHandler {
 					}
 				}
 			} catch (final PartInitException e) {
-				PortsEditPlugin.getPlugin().getLog().log(e.getStatus());
+				PortsEditPlugin.getPlugin().getLog().log(new Status(e.getStatus().getSeverity(), "gov.redhawk.ui.views.monitor.ports", e.getLocalizedMessage(), e));
 			}
 
 		}

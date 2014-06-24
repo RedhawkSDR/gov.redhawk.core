@@ -95,7 +95,7 @@ public class ReleaseAction extends Action {
 						}, monitor);
 						return Status.OK_STATUS;
 					} catch (CoreException e) {
-						return e.getStatus();
+						return new Status(e.getStatus().getSeverity(), ScaUiPlugin.PLUGIN_ID, "Failed to release: " + finalReleaseName, e);
 					} catch (InterruptedException e) {
 						return Status.CANCEL_STATUS;
 					} finally {

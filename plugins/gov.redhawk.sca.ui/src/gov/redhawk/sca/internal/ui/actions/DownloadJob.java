@@ -106,7 +106,7 @@ public class DownloadJob extends Job {
 			}
 			ResourcesPlugin.getWorkspace().run(runnable, rule, 0, subMonitor.newChild(99));
 		} catch (final CoreException e) {
-			return e.getStatus();
+			return new Status(e.getStatus().getSeverity(), ScaUiPlugin.PLUGIN_ID, e.getLocalizedMessage(), e);
 		}
 		return Status.OK_STATUS;
 	}
@@ -140,7 +140,7 @@ public class DownloadJob extends Job {
 			}
 			return childStoreStatus;
 		} catch (final CoreException e) {
-			return e.getStatus();
+			return new Status(e.getStatus().getSeverity(), ScaUiPlugin.PLUGIN_ID, e.getLocalizedMessage(), e);
 		}
 	}
 
