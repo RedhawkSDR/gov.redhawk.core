@@ -23,6 +23,8 @@
  *******************************************************************************/
 package gov.redhawk.ui.parts;
 
+import gov.redhawk.ui.RedhawkUiActivator;
+
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.lang.reflect.InvocationTargetException;
@@ -45,6 +47,7 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.OperationCanceledException;
 import org.eclipse.core.runtime.Platform;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.ISchedulingRule;
 import org.eclipse.jface.dialogs.ErrorDialog;
 import org.eclipse.jface.dialogs.IMessageProvider;
@@ -162,10 +165,8 @@ public class WizardNewFileCreationPage extends WizardPage implements Listener {
 	 * @param parent the parent composite
 	 */
 	protected void createAdvancedControls(final Composite parent) {
-		final boolean disableLinking = Platform.getPreferencesService().getBoolean(ResourcesPlugin.PI_RESOURCES,
-		        ResourcesPlugin.PREF_DISABLE_LINKING,
-		        false,
-		        null);
+		final boolean disableLinking = Platform.getPreferencesService().getBoolean(ResourcesPlugin.PI_RESOURCES, ResourcesPlugin.PREF_DISABLE_LINKING, false,
+			null);
 		if (!disableLinking) {
 			this.linkedResourceParent = new Composite(parent, SWT.NONE);
 			this.linkedResourceParent.setFont(parent.getFont());
@@ -227,13 +228,8 @@ public class WizardNewFileCreationPage extends WizardPage implements Listener {
 		PlatformUI.getWorkbench().getHelpSystem().setHelp(topLevel, IIDEHelpContextIds.NEW_FILE_WIZARD_PAGE);
 
 		// resource and container group
-		this.resourceGroup = new ResourceAndContainerGroup(topLevel,
-		        this,
-		        this.project,
-		        getNewFileLabel(),
-		        IDEWorkbenchMessages.WizardNewFileCreationPage_file,
-		        false,
-		        WizardNewFileCreationPage.SIZING_CONTAINER_GROUP_HEIGHT);
+		this.resourceGroup = new ResourceAndContainerGroup(topLevel, this, this.project, getNewFileLabel(),
+			IDEWorkbenchMessages.WizardNewFileCreationPage_file, false, WizardNewFileCreationPage.SIZING_CONTAINER_GROUP_HEIGHT);
 		this.resourceGroup.setAllowExistingResources(this.initialAllowExistingResources);
 		initialPopulateContainerNameField();
 		createAdvancedControls(topLevel);
@@ -255,14 +251,13 @@ public class WizardNewFileCreationPage extends WizardPage implements Listener {
 	 * 
 	 * @param fileHandle the file handle to create a file resource with
 	 * @param contents the initial contents of the new file resource, or
-	 *            <code>null</code> if none (equivalent to an empty stream)
+	 * <code>null</code> if none (equivalent to an empty stream)
 	 * @param monitor the progress monitor to show visual progress with
 	 * @exception CoreException if the operation fails
 	 * @exception OperationCanceledException if the operation is canceled
 	 * @deprecated As of 3.3, use or override {@link #createNewFile()} which
-	 *             uses the undoable operation support. To supply customized
-	 *             file content for a subclass, use
-	 *             {@link #getInitialContents()}.
+	 * uses the undoable operation support. To supply customized
+	 * file content for a subclass, use {@link #getInitialContents()}.
 	 */
 	@Deprecated
 	protected void createFile(final IFile fileHandle, InputStream contents, final IProgressMonitor monitor) throws CoreException {
@@ -345,7 +340,7 @@ public class WizardNewFileCreationPage extends WizardPage implements Listener {
 	 * </p>
 	 * 
 	 * @return the created file resource, or <code>null</code> if the file was
-	 *         not created
+	 * not created
 	 */
 	public IFile createNewFile() {
 		if (this.newFile != null) {
@@ -363,10 +358,8 @@ public class WizardNewFileCreationPage extends WizardPage implements Listener {
 		final IRunnableWithProgress op = new IRunnableWithProgress() {
 			@Override
 			public void run(final IProgressMonitor monitor) {
-				final CreateFileOperation op = new CreateFileOperation(newFileHandle,
-				        WizardNewFileCreationPage.this.linkTargetPath,
-				        initialContents,
-				        IDEWorkbenchMessages.WizardNewFileCreationPage_title);
+				final CreateFileOperation op = new CreateFileOperation(newFileHandle, WizardNewFileCreationPage.this.linkTargetPath, initialContents,
+					IDEWorkbenchMessages.WizardNewFileCreationPage_title);
 				try {
 					PlatformUI.getWorkbench().getOperationSupport().getOperationHistory().execute(op, monitor, WorkspaceUndoUtil.getUIInfoAdapter(getShell()));
 				} catch (final ExecutionException e) {
@@ -374,17 +367,15 @@ public class WizardNewFileCreationPage extends WizardPage implements Listener {
 						@Override
 						public void run() {
 							if (e.getCause() instanceof CoreException) {
+								CoreException ce = (CoreException) e.getCause();
 								ErrorDialog.openError(getContainer().getShell(), // Was
-								        // Utilities.getFocusShell()
-								        IDEWorkbenchMessages.WizardNewFileCreationPage_errorTitle,
-								        null, // no special
-								        // message
-								        ((CoreException) e.getCause()).getStatus());
+									// Utilities.getFocusShell()
+									IDEWorkbenchMessages.WizardNewFileCreationPage_errorTitle, null, new Status(ce.getStatus().getSeverity(),
+										RedhawkUiActivator.PLUGIN_ID, ce.getLocalizedMessage(), e));
 							} else {
 								IDEWorkbenchPlugin.log(getClass(), "createNewFile()", e.getCause()); //$NON-NLS-1$
-								MessageDialog.openError(getContainer().getShell(),
-								        IDEWorkbenchMessages.WizardNewFileCreationPage_internalErrorTitle,
-								        NLS.bind(IDEWorkbenchMessages.WizardNewFileCreationPage_internalErrorMessage, e.getCause().getMessage()));
+								MessageDialog.openError(getContainer().getShell(), IDEWorkbenchMessages.WizardNewFileCreationPage_internalErrorTitle,
+									NLS.bind(IDEWorkbenchMessages.WizardNewFileCreationPage_internalErrorMessage, e.getCause().getMessage()));
 							}
 						}
 					});
@@ -399,9 +390,8 @@ public class WizardNewFileCreationPage extends WizardPage implements Listener {
 			// Execution Exceptions are handled above but we may still get
 			// unexpected runtime errors.
 			IDEWorkbenchPlugin.log(getClass(), "createNewFile()", e.getTargetException()); //$NON-NLS-1$
-			MessageDialog.openError(getContainer().getShell(),
-			        IDEWorkbenchMessages.WizardNewFileCreationPage_internalErrorTitle,
-			        NLS.bind(IDEWorkbenchMessages.WizardNewFileCreationPage_internalErrorMessage, e.getTargetException().getMessage()));
+			MessageDialog.openError(getContainer().getShell(), IDEWorkbenchMessages.WizardNewFileCreationPage_internalErrorTitle,
+				NLS.bind(IDEWorkbenchMessages.WizardNewFileCreationPage_internalErrorMessage, e.getTargetException().getMessage()));
 
 			return null;
 		}
@@ -419,7 +409,7 @@ public class WizardNewFileCreationPage extends WizardPage implements Listener {
 	 * @param resource The resource being created
 	 * @return The scheduling rule for creating the given resource
 	 * @deprecated As of 3.3, scheduling rules are provided by the undoable
-	 *             operation that this page creates and executes.
+	 * operation that this page creates and executes.
 	 */
 	@Deprecated
 	protected ISchedulingRule createRule(IResource resource) {
@@ -439,7 +429,7 @@ public class WizardNewFileCreationPage extends WizardPage implements Listener {
 	 * selected by the user, or its anticipated initial value.
 	 * 
 	 * @return the container's full path, anticipated initial value, or
-	 *         <code>null</code> if no path is known
+	 * <code>null</code> if no path is known
 	 */
 	public IPath getContainerFullPath() {
 		return this.resourceGroup.getContainerFullPath();
@@ -454,7 +444,7 @@ public class WizardNewFileCreationPage extends WizardPage implements Listener {
 	 * 
 	 * @see WizardNewFileCreationPage#setFileExtension(String)
 	 * @return the file name, its anticipated initial value, or
-	 *         <code>null</code> if no file name is known
+	 * <code>null</code> if no file name is known
 	 */
 	public String getFileName() {
 		if (this.resourceGroup == null) {
@@ -496,7 +486,7 @@ public class WizardNewFileCreationPage extends WizardPage implements Listener {
 	 * </p>
 	 * 
 	 * @return the label to display in the file name specification visual
-	 *         component group
+	 * component group
 	 */
 	protected String getNewFileLabel() {
 		return IDEWorkbenchMessages.WizardNewFileCreationPage_fileLabel;
@@ -573,7 +563,7 @@ public class WizardNewFileCreationPage extends WizardPage implements Listener {
 	 * specified on this page.
 	 * 
 	 * @param value <code>true</code> if existing resources are permitted, and
-	 *            <code>false</code> otherwise
+	 * <code>false</code> otherwise
 	 */
 	public void setAllowExistingResources(final boolean value) {
 		if (this.resourceGroup == null) {
@@ -628,7 +618,7 @@ public class WizardNewFileCreationPage extends WizardPage implements Listener {
 	 * until the file name field loses focus.
 	 * 
 	 * @param value The file extension without the '.' prefix (e.g. 'java',
-	 *            'xml')
+	 * 'xml')
 	 */
 	public void setFileExtension(final String value) {
 		if (this.resourceGroup == null) {
@@ -667,7 +657,7 @@ public class WizardNewFileCreationPage extends WizardPage implements Listener {
 	 * Returns whether this page's controls currently all contain valid values.
 	 * 
 	 * @return <code>true</code> if all controls are valid, and
-	 *         <code>false</code> if at least one is invalid
+	 * <code>false</code> if at least one is invalid
 	 */
 	protected boolean validatePage() {
 		boolean valid = true;
@@ -675,7 +665,7 @@ public class WizardNewFileCreationPage extends WizardPage implements Listener {
 		if (!this.resourceGroup.areAllValuesValid()) {
 			// if blank name then fail silently
 			if (this.resourceGroup.getProblemType() == ResourceAndContainerGroup.PROBLEM_RESOURCE_EMPTY
-			        || this.resourceGroup.getProblemType() == ResourceAndContainerGroup.PROBLEM_CONTAINER_EMPTY) {
+				|| this.resourceGroup.getProblemType() == ResourceAndContainerGroup.PROBLEM_CONTAINER_EMPTY) {
 				setMessage(this.resourceGroup.getProblemMessage());
 				setErrorMessage(null);
 			} else {
@@ -704,7 +694,7 @@ public class WizardNewFileCreationPage extends WizardPage implements Listener {
 			setMessage(null);
 			setErrorMessage(null);
 
-			//perform "resource exists" check if it was skipped in ResourceAndContainerGroup
+			// perform "resource exists" check if it was skipped in ResourceAndContainerGroup
 			if (this.resourceGroup.getAllowExistingResources()) {
 				final String problemMessage = NLS.bind(IDEWorkbenchMessages.ResourceGroup_nameExists, getFileName());
 				final IPath resourcePath = getContainerFullPath().append(getFileName());

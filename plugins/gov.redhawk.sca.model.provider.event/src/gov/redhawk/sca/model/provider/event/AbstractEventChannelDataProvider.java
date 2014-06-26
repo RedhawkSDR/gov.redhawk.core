@@ -158,7 +158,7 @@ public abstract class AbstractEventChannelDataProvider< T > extends AbstractData
 						job = new EventJob(channelName, this, this.domain);
 						this.connectedChannels.put(channelName, job);
 					} catch (CoreException e) {
-						return e.getStatus();
+						return new Status(e.getStatus().getSeverity(), DataProviderActivator.ID, e.getLocalizedMessage(), e);
 					}
 				}
 			}

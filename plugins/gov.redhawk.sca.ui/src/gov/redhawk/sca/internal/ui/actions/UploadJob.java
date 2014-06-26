@@ -93,7 +93,7 @@ public class UploadJob extends Job {
 			try {
 				store.getFileStore().copy(this.targetContainer.getFileStore().getFileStore(new Path(store.getName())), EFS.NONE, subMonitor.newChild(1));
 			} catch (final CoreException e) {
-				status.add(e.getStatus());
+				status.add(new Status(e.getStatus().getSeverity(), ScaUiPlugin.PLUGIN_ID, e.getLocalizedMessage(), e));
 			}
 		}
 		try {
@@ -122,7 +122,7 @@ public class UploadJob extends Job {
 			IOUtils.copy(inputStream, outputStream);
 			return Status.OK_STATUS;
 		} catch (final CoreException e) {
-			return e.getStatus();
+			return new Status(e.getStatus().getSeverity(), ScaUiPlugin.PLUGIN_ID, e.getLocalizedMessage(), e);
 		} catch (final IOException e) {
 			return new Status(IStatus.ERROR, ScaUiPlugin.PLUGIN_ID, "Failed to copy " + file + " to " + target, e);
 		} finally {
@@ -155,7 +155,7 @@ public class UploadJob extends Job {
 				return new Status(IStatus.ERROR, ScaUiPlugin.PLUGIN_ID, "File of the same name exists: " + directory.getName(), null);
 			}
 		} catch (final CoreException e) {
-			return e.getStatus();
+			return new Status(e.getStatus().getSeverity(), ScaUiPlugin.PLUGIN_ID, e.getLocalizedMessage(), e);
 		}
 	}
 
@@ -193,7 +193,7 @@ public class UploadJob extends Job {
 				return new Status(IStatus.ERROR, ScaUiPlugin.PLUGIN_ID, "File of the same name exists: " + container.getName(), null);
 			}
 		} catch (final CoreException e) {
-			return e.getStatus();
+			return new Status(e.getStatus().getSeverity(), ScaUiPlugin.PLUGIN_ID, e.getLocalizedMessage(), e);
 		}
 	}
 
@@ -207,7 +207,7 @@ public class UploadJob extends Job {
 			IOUtils.copy(inputStream, outputStream);
 			return Status.OK_STATUS;
 		} catch (final CoreException e) {
-			return e.getStatus();
+			return new Status(e.getStatus().getSeverity(), ScaUiPlugin.PLUGIN_ID, e.getLocalizedMessage(), e);
 		} catch (final IOException e) {
 			return new Status(IStatus.ERROR, ScaUiPlugin.PLUGIN_ID, "Failed to copy " + file + " to " + target, e);
 		} finally {

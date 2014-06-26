@@ -14,6 +14,7 @@ package gov.redhawk.model.sca.impl;
 
 import gov.redhawk.model.sca.RefreshDepth;
 import gov.redhawk.model.sca.ScaFileStore;
+import gov.redhawk.model.sca.ScaModelPlugin;
 import gov.redhawk.model.sca.ScaPackage;
 import gov.redhawk.model.sca.commands.ScaModelCommand;
 
@@ -593,7 +594,7 @@ public class ScaFileStoreImpl extends IStatusProviderImpl implements ScaFileStor
 				@Override
 				public void execute() {
 					parentStore.unsetChildren();
-					parentStore.setStatus(ScaPackage.Literals.SCA_FILE_STORE__CHILDREN, e.getStatus());
+					parentStore.setStatus(ScaPackage.Literals.SCA_FILE_STORE__CHILDREN, new Status(e.getStatus().getSeverity(), ScaModelPlugin.ID, e.getLocalizedMessage(), e));
 				}
 
 			});

@@ -219,7 +219,7 @@ public enum TunerProperties {
 
 							}, subMonitor.newChild(1));
 						} catch (CoreException e) {
-							return e.getStatus();
+							return new Status(e.getStatus().getSeverity(), "gov.redhawk.frontend", "Failed to update device property: " + prop.getName(), e);
 						} catch (InterruptedException e) {
 							return Status.CANCEL_STATUS;
 						}

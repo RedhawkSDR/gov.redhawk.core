@@ -61,7 +61,7 @@ public class StartJob extends Job {
 			}, monitor);
 
 		} catch (CoreException e) {
-			return e.getStatus();
+			return new Status(e.getStatus().getSeverity(), ScaModelPlugin.ID, e.getLocalizedMessage(), e);
 		} catch (InterruptedException e) {
 			return Status.CANCEL_STATUS;
 		} finally {

@@ -87,7 +87,7 @@ public class ConnectPortHandler extends AbstractHandler implements IHandler {
 
 				}, monitor);
 			} catch (CoreException e) {
-				return e.getStatus();
+				return new Status(e.getStatus().getSeverity(), ScaUiPlugin.PLUGIN_ID, e.getLocalizedMessage(), e);
 			} catch (InterruptedException e) {
 				return Status.CANCEL_STATUS;
 			}

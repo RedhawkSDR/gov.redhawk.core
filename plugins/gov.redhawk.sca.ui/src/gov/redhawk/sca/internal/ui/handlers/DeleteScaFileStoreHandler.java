@@ -28,6 +28,7 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.MultiStatus;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.SubMonitor;
 import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.jface.viewers.ISelection;
@@ -61,7 +62,7 @@ public class DeleteScaFileStoreHandler extends AbstractHandler implements IHandl
 					store.getFileStore().delete(EFS.NONE, storeMonitor.newChild(1));
 					((IRefreshable) store.eContainer()).refresh(storeMonitor.newChild(1), RefreshDepth.CHILDREN);
 				} catch (final CoreException e) {
-					retVal.add(e.getStatus());
+					retVal.add(new Status(e.getStatus().getSeverity(), ScaUiPlugin.PLUGIN_ID, e.getLocalizedMessage(), e));
 				} catch (final InterruptedException e) {
 					// PASS
 				}
