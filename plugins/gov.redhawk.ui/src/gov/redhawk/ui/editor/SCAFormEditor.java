@@ -1295,7 +1295,10 @@ public abstract class SCAFormEditor extends FormEditor implements IEditingDomain
 		if ((this.editingDomain != null) && ((BasicCommandStack) this.editingDomain.getCommandStack()).isSaveNeeded()) {
 			return true;
 		}
-		return super.isDirty();
+		if (this.editingDomain != null) {
+			return super.isDirty();
+		}
+		return false;
 	}
 
 	/**
