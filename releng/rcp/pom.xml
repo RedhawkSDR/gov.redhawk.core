@@ -134,6 +134,11 @@
             <extraRequirements>
               <requirement>
                 <type>eclipse-plugin</type>
+                <id>org.eclipse.jdt.annotation</id>
+                <versionRange>[1.1.0,2.0.0)</versionRange>
+              </requirement>
+              <requirement>
+                <type>eclipse-plugin</type>
                 <id>org.eclipse.ui</id>
                 <versionRange>0.0.0</versionRange>
               </requirement>
