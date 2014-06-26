@@ -51,7 +51,7 @@ public final class ScaLaunchConfigurationUtil {
 		final List<DeviceAssignmentType> retVal = new ArrayList<DeviceAssignmentType>();
 		@SuppressWarnings("unchecked")
 		final Map<String, String> deviceAssignments = configuration.getAttribute(ScaLaunchConfigurationConstants.ATT_WAVEFORM_DEVICE_ASSIGNMENT,
-			Collections.emptyMap());
+			(Map<String, String>) Collections.EMPTY_MAP);
 		for (final Map.Entry<String, String> entry : deviceAssignments.entrySet()) {
 			if (entry.getValue().length() > 0) {
 				retVal.add(new DeviceAssignmentType(entry.getKey(), entry.getValue()));

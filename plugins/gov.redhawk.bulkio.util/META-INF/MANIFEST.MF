@@ -15,7 +15,8 @@ Require-Bundle: org.eclipse.core.runtime;bundle-version="3.8.0",
  mil.jpeojtrs.sca.prf;bundle-version="3.0.0",
  org.eclipse.emf.edit;visibility:=reexport,
  org.eclipse.emf.ecore.edit;visibility:=reexport,
- mil.jpeojtrs.sca.prf.edit;visibility:=reexport
+ mil.jpeojtrs.sca.prf.edit;visibility:=reexport,
+ org.eclipse.jdt.annotation;bundle-version="[1.1.0,2.0.0)";resolution:=optional
 Service-Component: OSGI-INF/portFactory.xml
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6

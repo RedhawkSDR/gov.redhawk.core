@@ -58,7 +58,7 @@ import org.eclipse.emf.ecore.util.InternalEList;
  * <li>{@link gov.redhawk.frontend.impl.TunerStatusImpl#getListenerAllocations <em>Listener Allocations</em>}</li>
  * </ul>
  * </p>
- * 
+ *
  * @generated
  */
 public class TunerStatusImpl extends MinimalEObjectImpl.Container implements TunerStatus {

@@ -13,7 +13,8 @@ Require-Bundle: mil.jpeojtrs.sca.cf;bundle-version="2.2.2",
  nxm.dsp;bundle-version="3.3.3",
  gov.redhawk.sca.util;bundle-version="3.2.0",
  org.eclipse.core.runtime;bundle-version="3.6.0",
- gov.redhawk.bulkio.util;bundle-version="2.0.0"
+ gov.redhawk.bulkio.util;bundle-version="2.0.0",
+ org.eclipse.jdt.annotation;bundle-version="[1.1.0,2.0.0)";resolution:=optional
 DynamicImport-Package: *
 Bundle-ActivationPolicy: lazy
 Eclipse-RegisterBuddy: nxm.sys

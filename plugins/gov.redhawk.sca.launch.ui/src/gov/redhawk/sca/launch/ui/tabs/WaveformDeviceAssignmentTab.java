@@ -118,7 +118,7 @@ public class WaveformDeviceAssignmentTab extends AbstractLaunchConfigurationTab 
 	@SuppressWarnings("unchecked")
 	public void initializeFrom(final ILaunchConfiguration configuration) {
 		try {
-			final Map< ? , ? > deviceAssignment = configuration.getAttribute(ScaLaunchConfigurationConstants.ATT_WAVEFORM_DEVICE_ASSIGNMENT, Collections.emptyMap());
+			final Map< ? , ? > deviceAssignment = configuration.getAttribute(ScaLaunchConfigurationConstants.ATT_WAVEFORM_DEVICE_ASSIGNMENT, (Map<String, String>) Collections.EMPTY_MAP);
 			this.deviceAssignmentComposite.restoreSettings((Map<String, String>) deviceAssignment);
 		} catch (final CoreException e) {
 			// PASS
