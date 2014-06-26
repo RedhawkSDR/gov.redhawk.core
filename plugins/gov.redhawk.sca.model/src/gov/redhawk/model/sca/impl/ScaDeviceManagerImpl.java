@@ -1600,7 +1600,7 @@ public class ScaDeviceManagerImpl extends ScaPropertyContainerImpl<DeviceManager
 		newDevices.keySet().removeAll(scaDevices.keySet());
 
 		// Remove Devices
-		if (!removeDevices.isEmpty() && !deviceList.isEmpty()) {
+		if (!removeDevices.isEmpty()) {
 			deviceList.removeAll(removeDevices.values());
 		}
 
