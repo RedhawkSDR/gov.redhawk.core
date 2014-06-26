@@ -114,6 +114,7 @@ public class ScaWaveformTest extends ScaPropertyContainerTest {
 		this.env = TestEnvirornment.getInstance();
 
 		final ScaWaveform waveform = this.env.getDomMgr().getWaveformFactories().get(0).createWaveform(null, "testWaveform", null, null);
+		Assert.assertNotNull(waveform);
 		waveform.refresh(null, RefreshDepth.FULL);
 		this.env.validateStartState();
 		setFixture(waveform);
@@ -396,6 +397,13 @@ public class ScaWaveformTest extends ScaPropertyContainerTest {
 		// END GENERATED CODE
 		Assert.assertTrue(getFixture().isSetName());
 		// BEGIN GENERATED CODE
+	}
+	
+	/**
+	 * @generated NOT
+	 */
+	public void testFetchComponents__IProgressMonitor__RefreshDepth() throws InterruptedException {
+		getFixture().fetchComponents(null, null);
 	}
 
 	/**

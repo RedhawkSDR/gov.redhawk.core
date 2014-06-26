@@ -29,13 +29,14 @@ import CF.ResourceHelper;
  * <p>
  * The following features are tested:
  * <ul>
- *   <li>{@link gov.redhawk.model.sca.ScaComponent#getInstantiationIdentifier() <em>Instantiation Identifier</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.ScaComponent#getInstantiationIdentifier() <em>Instantiation Identifier</em>}</li>
  * </ul>
  * </p>
  * <p>
  * The following operations are tested:
  * <ul>
- *   <li>{@link gov.redhawk.model.sca.ScaComponent#fetchDevices(org.eclipse.core.runtime.IProgressMonitor) <em>Fetch Devices</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.ScaComponent#fetchDevices(org.eclipse.core.runtime.IProgressMonitor) <em>Fetch
+ * Devices</em>}</li>
  * </ul>
  * </p>
  * @generated
@@ -69,7 +70,7 @@ public class ScaComponentTest extends ScaAbstractComponentTest {
 	 */
 	@Override
 	protected ScaComponent getFixture() {
-		return (ScaComponent)fixture;
+		return (ScaComponent) fixture;
 	}
 
 	private TestEnvirornment env;
@@ -84,6 +85,7 @@ public class ScaComponentTest extends ScaAbstractComponentTest {
 	protected void setUp() throws Exception {
 		this.env = TestEnvirornment.getInstance();
 		final ScaWaveform waveform = this.env.getDomMgr().getWaveformFactories().get(0).createWaveform(null, "name", null, null);
+		Assert.assertNotNull(waveform);
 		waveform.refresh(null, RefreshDepth.FULL);
 		this.env.validateStartState();
 		ScaModelCommand.execute(waveform, new ScaModelCommand() {
@@ -114,7 +116,8 @@ public class ScaComponentTest extends ScaAbstractComponentTest {
 	}
 
 	/**
-	 * Tests the '{@link gov.redhawk.model.sca.ScaComponent#getInstantiationIdentifier() <em>Instantiation Identifier</em>}' feature getter.
+	 * Tests the '{@link gov.redhawk.model.sca.ScaComponent#getInstantiationIdentifier() <em>Instantiation
+	 * Identifier</em>}' feature getter.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @see gov.redhawk.model.sca.ScaComponent#getInstantiationIdentifier()
@@ -134,7 +137,8 @@ public class ScaComponentTest extends ScaAbstractComponentTest {
 	}
 
 	/**
-	 * Tests the '{@link gov.redhawk.model.sca.ScaComponent#isSetInstantiationIdentifier() <em>isSetInstantiationIdentifier()</em>}' method.
+	 * Tests the '{@link gov.redhawk.model.sca.ScaComponent#isSetInstantiationIdentifier()
+	 * <em>isSetInstantiationIdentifier()</em>}' method.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @see gov.redhawk.model.sca.ScaComponent#isSetInstantiationIdentifier()
@@ -156,7 +160,8 @@ public class ScaComponentTest extends ScaAbstractComponentTest {
 	}
 
 	/**
-	 * Tests the '{@link gov.redhawk.model.sca.ScaComponent#fetchDevices(org.eclipse.core.runtime.IProgressMonitor) <em>Fetch Devices</em>}' operation.
+	 * Tests the '{@link gov.redhawk.model.sca.ScaComponent#fetchDevices(org.eclipse.core.runtime.IProgressMonitor)
+	 * <em>Fetch Devices</em>}' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @see gov.redhawk.model.sca.ScaComponent#fetchDevices(org.eclipse.core.runtime.IProgressMonitor)
@@ -164,13 +169,27 @@ public class ScaComponentTest extends ScaAbstractComponentTest {
 	 */
 	public void testFetchDevices__IProgressMonitor() {
 		// END GENERATED CODE
-		Assert.assertEquals(1, getFixture().getDevices().size());
+		Assert.assertEquals(1, getFixture().fetchDevices(null).size());
 		// BEGIN GENERATED CODE
 	}
-	
+
+	/**
+	 * Tests the '{@link gov.redhawk.model.sca.ScaComponent#fetchDevices(org.eclipse.core.runtime.IProgressMonitor)
+	 * <em>Fetch Devices</em>}' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see gov.redhawk.model.sca.ScaComponent#fetchDevices(org.eclipse.core.runtime.IProgressMonitor, RefreshDepth)
+	 * @generated NOT
+	 */
+	public void testFetchDevices__IProgressMonitor__RefreshDepth() {
+		// END GENERATED CODE
+		Assert.assertEquals(1, getFixture().fetchDevices(null, null).size());
+		// BEGIN GENERATED CODE
+	}
+
 	@Override
 	protected String getRepId() {
 		return ResourceHelper.id();
 	}
 
-} //ScaComponentTest
+} // ScaComponentTest

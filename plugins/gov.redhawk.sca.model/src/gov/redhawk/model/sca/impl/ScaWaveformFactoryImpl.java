@@ -1189,21 +1189,38 @@ public class ScaWaveformFactoryImpl extends CorbaObjWrapperImpl<ApplicationFacto
 				if (deviceAssignments == null) {
 					deviceAssignments = DEVICE_EMPTY_TYPE;
 				}
-
 				final Application app = factory.create(name, initConfiguration, deviceAssignments);
 
 				ScaWaveform retVal = null;
 				if (app != null) {
 					final String ior = app.toString();
-					EList<ScaWaveform> waveforms = getDomMgr().fetchWaveforms(subMonitor.newChild(1), null);
-					for (ScaWaveform w : waveforms) {
-						if (ior.equals(w.getIor())) {
-							retVal = w;
-							break;
+					retVal = ScaModelCommandWithResult.execute(this, new ScaModelCommandWithResult<ScaWaveform>() {
+						@Override
+						public void execute() {
+
+							if (getDomMgr() != null) {
+								// Check to be sure someone else didn't already add the waveform
+								for (ScaWaveform w : getDomMgr().getWaveforms()) {
+									if (ior.equals(w.getIor())) {
+										setResult(w);
+										return;
+									}
+								}
+
+								ScaWaveform newWaveform = ScaFactory.eINSTANCE.createScaWaveform();
+								newWaveform.setCorbaObj(app);
+								getDomMgr().getWaveforms().add(newWaveform);
+								setResult(newWaveform);
+							}
 						}
-					}
+
+					});
+					subMonitor.worked(1);
 				}
-				if (retVal != null && depth != null) {
+				if (retVal == null) {
+					throw new IllegalStateException("Unable to find Waveform after successful create.");
+				}
+				if (depth != null) {
 					try {
 						retVal.refresh(subMonitor.newChild(1), depth);
 					} catch (InterruptedException e) {

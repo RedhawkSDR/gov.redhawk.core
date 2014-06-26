@@ -270,6 +270,15 @@ public class ScaDomainManagerTest extends ScaPropertyContainerTest {
 		getFixture().fetchDeviceManagers(null);
 		// BEGIN GENERATED CODE
 	}
+	
+	/**
+	 * @generated NOT
+	 */
+	public void testFetchDeviceManagers__IProgressMonitor__RefreshDepth() throws InterruptedException {
+		// END GENERATED CODE
+		getFixture().fetchDeviceManagers(null, null);
+		// BEGIN GENERATED CODE
+	}
 
 	/**
 	 * Tests the '{@link gov.redhawk.model.sca.ScaDomainManager#fetchWaveformFactories(org.eclipse.core.runtime.IProgressMonitor) <em>Fetch Waveform Factories</em>}' operation.
@@ -282,6 +291,15 @@ public class ScaDomainManagerTest extends ScaPropertyContainerTest {
 	public void testFetchWaveformFactories__IProgressMonitor() throws InterruptedException {
 		// END GENERATED CODE
 		getFixture().fetchWaveformFactories(null);
+		// BEGIN GENERATED CODE
+	}
+	
+	/**
+	 * @generated NOT
+	 */
+	public void testFetchWaveformFactories__IProgressMonitor__RefreshDepth() throws InterruptedException {
+		// END GENERATED CODE
+		getFixture().fetchWaveformFactories(null, null);
 		// BEGIN GENERATED CODE
 	}
 
@@ -298,6 +316,15 @@ public class ScaDomainManagerTest extends ScaPropertyContainerTest {
 		getFixture().fetchWaveforms(null);
 		// BEGIN GENERATED CODE
 	}
+	
+	/**
+	 * @generated NOT
+	 */
+	public void testFetchWaveforms__IProgressMonitor__RefreshDepth() throws InterruptedException {
+		// END GENERATED CODE
+		getFixture().fetchWaveforms(null, null);
+		// BEGIN GENERATED CODE
+	}
 
 	/**
 	 * Tests the '{@link gov.redhawk.model.sca.ScaDomainManager#fetchFileManager(org.eclipse.core.runtime.IProgressMonitor) <em>Fetch File Manager</em>}' operation.
@@ -309,6 +336,15 @@ public class ScaDomainManagerTest extends ScaPropertyContainerTest {
 	public void testFetchFileManager__IProgressMonitor() {
 		// END GENERATED CODE
 		getFixture().fetchFileManager(null);
+		// BEGIN GENERATED CODE
+	}
+	
+	/**
+	 * @generated NOT
+	 */
+	public void testFetchFileManager__IProgressMonitor__RefreshDepth() {
+		// END GENERATED CODE
+		getFixture().fetchFileManager(null, null);
 		// BEGIN GENERATED CODE
 	}
 

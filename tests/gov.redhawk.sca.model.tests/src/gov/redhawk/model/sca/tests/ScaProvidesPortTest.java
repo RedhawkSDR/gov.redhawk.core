@@ -72,6 +72,7 @@ public class ScaProvidesPortTest extends ScaPortTest {
 	protected void setUp() throws Exception {
 		this.env = TestEnvirornment.getInstance();
 		final ScaWaveform waveform = this.env.getDomMgr().getWaveformFactories().get(0).createWaveform(null, "testWave", null, null);
+		Assert.assertNotNull(waveform);
 		waveform.refresh(null, RefreshDepth.FULL);
 		this.env.validateStartState();
 		ScaModelCommand.execute(waveform, new ScaModelCommand() {

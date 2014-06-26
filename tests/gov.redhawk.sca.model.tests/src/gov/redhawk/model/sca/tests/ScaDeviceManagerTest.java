@@ -413,6 +413,14 @@ public class ScaDeviceManagerTest extends ScaPropertyContainerTest {
 		Assert.assertNull(getFixture().getDevice("badPort"));
 		// BEGIN GENERATED CODE
 	}
+	
+	/**
+	 * @generated NOT
+	 */
+	public void testFetchDevices__IProgressMonitor__RefreshDepth() throws InterruptedException {
+		getFixture().fetchDevices(null, null);
+		
+	}
 
 	/**
 	 * Tests the '{@link gov.redhawk.model.sca.ScaDeviceManager#fetchDevices(org.eclipse.core.runtime.IProgressMonitor) <em>Fetch Devices</em>}' operation.

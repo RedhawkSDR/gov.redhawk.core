@@ -204,12 +204,10 @@ public abstract class ProfileObjectWrapperTest extends IStatusProviderTest {
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @see gov.redhawk.model.sca.ProfileObjectWrapper#fetchProfileURI(org.eclipse.core.runtime.IProgressMonitor)
-	 * @generated
+	 * @generated NOT
 	 */
 	public void testFetchProfileURI__IProgressMonitor() {
-		// TODO: implement this operation test method
-		// Ensure that you remove @generated or mark it @generated NOT
-		fail();
+		getFixture().fetchProfileURI(null);
 	}
 
 } //ProfileObjectWrapperTest
