@@ -11,7 +11,7 @@
   </parent>
 
   <properties>
-    <gov.redhawk.core>http://download.redhawksdr.org/gov.redhawk.core/releases/1.10</gov.redhawk.core>
+    <gov.redhawk.core>http://download.redhawksdr.org/gov.redhawk.core/releases/1.11</gov.redhawk.core>
     <rap-cnf>http://download.eclipse.org/rt/rap/incubator/nightly/cnf/</rap-cnf>
     <rap-tab>http://download.eclipse.org/rt/rap/incubator/nightly/tabbed-properties/</rap-tab>
     <org.eclipse.emf.transaction.ui>http://download.redhawksdr.org/org.eclipse.emf.transaction.ui/</org.eclipse.emf.transaction.ui>
