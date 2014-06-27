@@ -64,8 +64,8 @@ public class ApplicationCreationPropertyEditWizardPage extends WizardPage {
 
 	public ApplicationCreationPropertyEditWizardPage(final String pageName) {
 		super(pageName);
-		setTitle("Assign initial properties");
-		this.setDescription("Provide the initial configuration for the waveform");
+		setTitle("Assign Initial Properties");
+		this.setDescription("Provide the initial configuration for the Waveform");
 		this.adapterFactory = new ScaPropertiesAdapterFactory();
 	}
 
