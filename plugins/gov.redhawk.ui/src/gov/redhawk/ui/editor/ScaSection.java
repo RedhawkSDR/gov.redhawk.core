@@ -13,6 +13,7 @@ package gov.redhawk.ui.editor;
 
 import gov.redhawk.common.ui.editor.FormLayoutFactory;
 
+import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.forms.SectionPart;
@@ -24,7 +25,7 @@ import org.eclipse.ui.forms.widgets.Section;
 /**
  * The Class ScaSection.
  */
-public abstract class ScaSection extends SectionPart implements IContextPart {
+public abstract class ScaSection extends SectionPart implements IContextPart, IAdaptable {
 	private final ScaFormPage fPage;
 
 	/**
@@ -48,9 +49,10 @@ public abstract class ScaSection extends SectionPart implements IContextPart {
 	 */
 	public ScaSection(final ScaFormPage page, final Composite parent, final int style, final boolean titleBar) {
 		super(parent, page.getManagedForm().getToolkit(), (titleBar) ? (ExpandableComposite.TITLE_BAR | style) : style); // SUPPRESS CHECKSTYLE AvoidInLine
-		this.fPage = page;
+		fPage = page;
 		initialize(page.getManagedForm());
 		getSection().clientVerticalSpacing = FormLayoutFactory.SECTION_HEADER_VERTICAL_SPACING;
+		getSection().setData("part", this); //$NON-NLS-1$
 	}
 
 	/**
@@ -76,5 +78,9 @@ public abstract class ScaSection extends SectionPart implements IContextPart {
 	@Override
 	public ScaFormPage getPage() {
 		return this.fPage;
+	}
+	
+	public Object getAdapter(Class adapter) {
+		return null;
 	}
 }

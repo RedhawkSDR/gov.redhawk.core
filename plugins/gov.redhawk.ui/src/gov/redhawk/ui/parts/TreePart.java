@@ -58,22 +58,20 @@ public class TreePart extends StructuredViewerPart {
 	 */
 	@Override
 	protected StructuredViewer createStructuredViewer(final Composite parent, int style, final FormToolkit toolkit) {
-		style |= SWT.H_SCROLL | SWT.V_SCROLL;
+		style |= SWT.H_SCROLL | SWT.V_SCROLL | SWT.BORDER;
 		if (toolkit == null) {
 			style |= SWT.BORDER;
 		} else {
 			style |= toolkit.getBorderStyle();
 		}
-		final TreeViewer treeViewer = createTreeViewer(parent, style);
+		TreeViewer treeViewer = createTreeViewer(parent, style);
 		treeViewer.addSelectionChangedListener(new ISelectionChangedListener() {
-			@Override
-			public void selectionChanged(final SelectionChangedEvent e) {
+			public void selectionChanged(SelectionChangedEvent e) {
 				TreePart.this.selectionChanged((IStructuredSelection) e.getSelection());
 			}
 		});
 		treeViewer.addDoubleClickListener(new IDoubleClickListener() {
-			@Override
-			public void doubleClick(final DoubleClickEvent e) {
+			public void doubleClick(DoubleClickEvent e) {
 				TreePart.this.handleDoubleClick((IStructuredSelection) e.getSelection());
 			}
 		});
