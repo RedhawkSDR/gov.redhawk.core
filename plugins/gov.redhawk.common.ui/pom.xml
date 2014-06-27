@@ -28,7 +28,7 @@
                 <configuration>
                   <target>
                     <replace file="about.properties">
-                      <replacefilter value="1.10.0" token="@buildLabel@" />
+                      <replacefilter value="1.11.0" token="@buildLabel@" />
                       <replacefilter value="${buildQualifier}" token="@buildId@" />
                       <replacefilter value="${commitHash}" token="@commitHash@"/>
                     </replace>
