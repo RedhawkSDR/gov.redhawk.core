@@ -11,11 +11,17 @@
 // BEGIN GENERATED CODE
 package gov.redhawk.model.sca.tests;
 
+import gov.redhawk.model.sca.ScaDeviceManager;
 import gov.redhawk.model.sca.ScaDomainManager;
+import gov.redhawk.model.sca.ScaWaveform;
+import gov.redhawk.model.sca.ScaWaveformFactory;
 import gov.redhawk.model.sca.tests.stubs.ScaTestConstaints;
+
 import org.junit.Assert;
+
 import junit.textui.TestRunner;
 
+import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EObject;
 
 import CF.DeviceManager;
@@ -267,7 +273,13 @@ public class ScaDomainManagerTest extends ScaPropertyContainerTest {
 	 */
 	public void testFetchDeviceManagers__IProgressMonitor() throws InterruptedException {
 		// END GENERATED CODE
-		getFixture().fetchDeviceManagers(null);
+		EList<ScaDeviceManager> deviceManagersEList = getFixture().fetchDeviceManagers(null);
+		try {
+			deviceManagersEList.clear();
+			Assert.fail("fetched Device Managers list should be unmodifiable");
+		} catch (UnsupportedOperationException e) {
+			Assert.assertTrue("fetched Device Managers list is unmodifiable", true);
+		}
 		// BEGIN GENERATED CODE
 	}
 
@@ -281,7 +293,13 @@ public class ScaDomainManagerTest extends ScaPropertyContainerTest {
 	 */
 	public void testFetchWaveformFactories__IProgressMonitor() throws InterruptedException {
 		// END GENERATED CODE
-		getFixture().fetchWaveformFactories(null);
+		EList<ScaWaveformFactory> waveformFactoriesEList = getFixture().fetchWaveformFactories(null);
+		try {
+			waveformFactoriesEList.clear();
+			Assert.fail("fetched Waveform Factories list should be unmodifiable");
+		} catch (UnsupportedOperationException e) {
+			Assert.assertTrue("fetched Waveform Factories list is unmodifiable", true);
+		}
 		// BEGIN GENERATED CODE
 	}
 
@@ -295,7 +313,13 @@ public class ScaDomainManagerTest extends ScaPropertyContainerTest {
 	 */
 	public void testFetchWaveforms__IProgressMonitor() throws InterruptedException {
 		// END GENERATED CODE
-		getFixture().fetchWaveforms(null);
+		EList<ScaWaveform> waveformsEList = getFixture().fetchWaveforms(null);
+		try {
+			waveformsEList.clear();
+			Assert.fail("fetched Waveforms list should be unmodifiable");
+		} catch (UnsupportedOperationException e) {
+			Assert.assertTrue("fetched Waveforms list is unmodifiable", true);
+		}
 		// BEGIN GENERATED CODE
 	}
 

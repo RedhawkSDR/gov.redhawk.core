@@ -14,9 +14,12 @@ package gov.redhawk.model.sca.tests;
 import gov.redhawk.model.sca.ScaDevice;
 import gov.redhawk.model.sca.commands.ScaModelCommand;
 import gov.redhawk.model.sca.tests.stubs.ScaTestConstaints;
+
 import org.junit.Assert;
+
 import junit.textui.TestRunner;
 
+import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.transaction.util.TransactionUtil;
 
 import CF.AggregateDevice;
@@ -497,7 +500,7 @@ public class ScaDeviceTest extends ScaAbstractComponentTest {
 				Assert.assertEquals(numChildren[0], getFixture().getChildDevices().size());
 			}
 		});
-		getFixture().fetchAggregateDevices(null);
+		EList<ScaDevice< ? >> aggregateDevicesEList = getFixture().fetchAggregateDevices(null);
 		ScaModelCommand.execute(getFixture(), new ScaModelCommand() {
 
 			@Override
@@ -507,6 +510,12 @@ public class ScaDeviceTest extends ScaAbstractComponentTest {
 				Assert.assertEquals(0, getFixture().getChildDevices().size());
 			}
 		});
+		try {
+			aggregateDevicesEList.clear();
+			Assert.fail("fetched AggregateDevices list should be unmodifiable");
+		} catch (UnsupportedOperationException e) {
+			Assert.assertTrue("fetched AggregateDevices list is unmodifiable", true);
+		}
 		// BEGIN GENERATED CODE
 	}
 

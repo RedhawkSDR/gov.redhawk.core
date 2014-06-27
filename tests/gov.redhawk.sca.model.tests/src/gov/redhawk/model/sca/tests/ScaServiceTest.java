@@ -13,9 +13,13 @@ package gov.redhawk.model.sca.tests;
 
 import gov.redhawk.model.sca.RefreshDepth;
 import gov.redhawk.model.sca.ScaDeviceManager;
+import gov.redhawk.model.sca.ScaPort;
 import gov.redhawk.model.sca.ScaService;
 import gov.redhawk.model.sca.tests.stubs.ScaTestConstaints;
+
+import org.eclipse.emf.common.util.EList;
 import org.junit.Assert;
+
 import junit.textui.TestRunner;
 import CF.DeviceHelper;
 
@@ -112,8 +116,14 @@ public class ScaServiceTest extends ScaPropertyContainerTest {
 	 * @generated NOT
 	 */
 	public void testFetchPorts__IProgressMonitor() {
-		getFixture().fetchPorts(null);
+		EList<ScaPort< ? , ? >> portsEList = getFixture().fetchPorts(null);
 		Assert.assertTrue(getFixture().isSetPorts());
+		try {
+			portsEList.clear();
+			Assert.fail("fetched Ports list should be unmodifiable");
+		} catch (UnsupportedOperationException e) {
+			Assert.assertTrue("fetched Ports list is unmodifiable", true);
+		}
 	}
 
 	@Override

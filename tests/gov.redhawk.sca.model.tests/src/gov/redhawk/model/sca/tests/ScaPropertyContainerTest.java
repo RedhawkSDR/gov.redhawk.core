@@ -14,8 +14,9 @@ package gov.redhawk.model.sca.tests;
 import gov.redhawk.model.sca.ScaAbstractProperty;
 import gov.redhawk.model.sca.ScaPropertyContainer;
 import gov.redhawk.model.sca.commands.ScaModelCommand;
-import org.junit.Assert;
 
+import org.junit.Assert;
+import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.URI;
 
 import CF.DataType;
@@ -260,8 +261,14 @@ public abstract class ScaPropertyContainerTest extends CorbaObjWrapperTest {
 				Assert.assertEquals(0, getFixture().getProperties().size());
 			}
 		});
-		getFixture().fetchProperties(null);
+		EList<ScaAbstractProperty< ? >> propertiesEList = getFixture().fetchProperties(null);
 		Assert.assertEquals(size, getFixture().getProperties().size());
+		try {
+			propertiesEList.clear();
+			Assert.fail("fetched Properties list should be unmodifiable");
+		} catch (UnsupportedOperationException e) {
+			Assert.assertTrue("fetched Properties list is unmodifiable", true);
+		}
 		// BEGIN GENERATED CODE
 	}
 

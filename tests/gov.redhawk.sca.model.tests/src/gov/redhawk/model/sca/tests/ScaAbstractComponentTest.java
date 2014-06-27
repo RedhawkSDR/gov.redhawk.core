@@ -16,7 +16,10 @@ import gov.redhawk.model.sca.ScaPort;
 import gov.redhawk.model.sca.commands.ScaModelCommand;
 import gov.redhawk.model.sca.commands.ScaModelCommandWithResult;
 import gov.redhawk.model.sca.impl.ScaAbstractComponentImpl;
+
+import org.eclipse.emf.common.util.EList;
 import org.junit.Assert;
+
 import CF.DataType;
 import CF.PropertiesHolder;
 import CF.Resource;
@@ -241,7 +244,7 @@ public abstract class ScaAbstractComponentTest extends ScaPropertyContainerTest 
 			}
 		});
 
-		getFixture().fetchPorts(null);
+		EList<ScaPort< ? , ? >> portsEList = getFixture().fetchPorts(null);
 		ScaModelCommand.execute(getFixture(), new ScaModelCommand() {
 
 			@Override
@@ -249,6 +252,12 @@ public abstract class ScaAbstractComponentTest extends ScaPropertyContainerTest 
 				Assert.assertEquals(ports, getFixture().getPorts().size());
 			}
 		});
+		try {
+			portsEList.clear();
+			Assert.fail("fetched Ports list should be unmodifiable");
+		} catch (UnsupportedOperationException e) {
+			Assert.assertTrue("fetched Ports list is unmodifiable", true);
+		}
 		// BEGIN GENERATED CODE
 	}
 

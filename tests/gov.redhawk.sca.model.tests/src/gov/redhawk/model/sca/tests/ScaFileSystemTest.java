@@ -11,11 +11,13 @@
 // BEGIN GENERATED CODE
 package gov.redhawk.model.sca.tests;
 
+import gov.redhawk.model.sca.ScaFileStore;
 import gov.redhawk.model.sca.ScaFileSystem;
 import gov.redhawk.model.sca.commands.ScaModelCommand;
 
 import java.net.URI;
 
+import org.eclipse.emf.common.util.EList;
 import org.junit.Assert;
 
 import CF.DataType;
@@ -164,7 +166,13 @@ public abstract class ScaFileSystemTest extends CorbaObjWrapperTest {
 	 */
 	public void testFetchChildren__IProgressMonitor() {
 		// END GENERATED CODE
-		getFixture().fetchChildren(null);
+		EList<ScaFileStore> childrenEList = getFixture().fetchChildren(null);
+		try {
+			childrenEList.clear();
+			Assert.fail("fetched Children list should be unmodifiable");
+		} catch (UnsupportedOperationException e) {
+			Assert.assertTrue("fetched Children list is unmodifiable", true);
+		}
 		// BEGIN GENERATED CODE
 	}
 	
