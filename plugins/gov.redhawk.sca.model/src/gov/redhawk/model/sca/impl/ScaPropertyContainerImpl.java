@@ -14,7 +14,6 @@ package gov.redhawk.model.sca.impl;
 
 import gov.redhawk.model.sca.ProfileObjectWrapper;
 import gov.redhawk.model.sca.ScaAbstractProperty;
-import gov.redhawk.model.sca.ScaFileStore;
 import gov.redhawk.model.sca.ScaModelPlugin;
 import gov.redhawk.model.sca.ScaPackage;
 import gov.redhawk.model.sca.ScaPropertyContainer;

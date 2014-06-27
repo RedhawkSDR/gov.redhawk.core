@@ -16,7 +16,6 @@ import gov.redhawk.model.sca.IRefreshable;
 import gov.redhawk.model.sca.IStatusProvider;
 import gov.redhawk.model.sca.ProfileObjectWrapper;
 import gov.redhawk.model.sca.RefreshDepth;
-import gov.redhawk.model.sca.ScaConnection;
 import gov.redhawk.model.sca.ScaDevice;
 import gov.redhawk.model.sca.ScaDeviceManager;
 import gov.redhawk.model.sca.ScaDeviceManagerFileSystem;
@@ -42,7 +41,6 @@ import gov.redhawk.model.sca.commands.VersionedFeature.Transaction;
 import gov.redhawk.sca.util.PluginUtil;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;

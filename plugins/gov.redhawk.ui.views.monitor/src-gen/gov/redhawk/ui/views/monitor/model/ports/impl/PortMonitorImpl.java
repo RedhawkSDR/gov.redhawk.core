@@ -41,7 +41,6 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.impl.EObjectImpl;
 import org.eclipse.emf.ecore.util.EObjectContainmentWithInverseEList;
 import org.eclipse.emf.ecore.util.InternalEList;
-import org.omg.CORBA.SystemException;
 
 import BULKIO.PortStatistics;
 import BULKIO.PortUsageType;
