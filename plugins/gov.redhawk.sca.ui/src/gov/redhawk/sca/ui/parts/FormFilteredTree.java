@@ -13,8 +13,6 @@ package gov.redhawk.sca.ui.parts;
 
 import gov.redhawk.common.ui.editor.FormLayoutFactory;
 import gov.redhawk.common.ui.parts.FormEntry;
-import gov.redhawk.ui.editor.FormEntryAdapter;
-import gov.redhawk.ui.editor.IContextPart;
 
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.swt.SWT;
@@ -23,7 +21,6 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.dialogs.FilteredTree;
 import org.eclipse.ui.dialogs.PatternFilter;
-import org.eclipse.ui.forms.events.HyperlinkEvent;
 import org.eclipse.ui.forms.widgets.FormToolkit;
 
 public class FormFilteredTree extends FilteredTree {
@@ -77,10 +74,7 @@ public class FormFilteredTree extends FilteredTree {
 		toolkit.paintBordersFor(viewer.getTree().getParent());
 		return viewer;
 	}
-
-	/**
-	 * @param part
-	 */
+/**
 	public void createUIListenerEntryFilter(IContextPart part) {
 		// Required to enable Ctrl-V initiated paste operation on first focus
 		// See Bug # 157973
@@ -116,7 +110,7 @@ public class FormFilteredTree extends FilteredTree {
 			}
 		});
 	}
-
+*/
 	/**
 	 * @return a boolean indicating whether the tree is filtered or not.
 	 */
