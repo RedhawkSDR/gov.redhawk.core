@@ -168,7 +168,7 @@ public class ScaComponentTest extends ScaAbstractComponentTest {
 	 */
 	public void testFetchDevices__IProgressMonitor() {
 		// END GENERATED CODE
-		EList<ScaDevice< ? >> devicesEList = getFixture().getDevices();
+		EList<ScaDevice< ? >> devicesEList = getFixture().fetchDevices(null);
 		Assert.assertEquals(1, devicesEList.size());
 		try {
 			devicesEList.clear();
