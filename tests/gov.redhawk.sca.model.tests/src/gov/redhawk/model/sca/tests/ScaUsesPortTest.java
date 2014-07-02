@@ -21,6 +21,7 @@ import gov.redhawk.model.sca.commands.ScaModelCommand;
 import gov.redhawk.model.sca.tests.stubs.ScaTestConstaints;
 import junit.textui.TestRunner;
 
+import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.transaction.util.TransactionUtil;
 import org.junit.Assert;
 
@@ -135,7 +136,13 @@ public class ScaUsesPortTest extends ScaPortTest {
 	 */
 	public void testFetchConnections__IProgressMonitor() throws InterruptedException {
 		// END GENERATED CODE
-		getFixture().fetchConnections(null);
+		EList<ScaConnection> connectionsEList = getFixture().fetchConnections(null);
+		try {
+			connectionsEList.clear();
+			Assert.fail("fetched Connections list should be unmodifiable");
+		} catch (UnsupportedOperationException e) {
+			Assert.assertTrue("fetched Connections list is unmodifiable", true);
+		}
 		// BEGIN GENERATED CODE
 	}
 

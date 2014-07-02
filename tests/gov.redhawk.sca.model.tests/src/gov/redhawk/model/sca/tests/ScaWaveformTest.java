@@ -13,14 +13,18 @@ package gov.redhawk.model.sca.tests;
 
 import gov.redhawk.model.sca.RefreshDepth;
 import gov.redhawk.model.sca.ScaComponent;
+import gov.redhawk.model.sca.ScaPort;
 import gov.redhawk.model.sca.ScaWaveform;
 import gov.redhawk.model.sca.commands.ScaModelCommand;
 import gov.redhawk.model.sca.impl.ScaDomainManagerImpl;
 import gov.redhawk.model.sca.impl.ScaWaveformImpl;
 import gov.redhawk.model.sca.tests.stubs.ScaTestConstaints;
+
 import org.junit.Assert;
+
 import junit.textui.TestRunner;
 
+import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.transaction.util.TransactionUtil;
 
 import CF.ApplicationHelper;
@@ -518,7 +522,13 @@ public class ScaWaveformTest extends ScaPropertyContainerTest {
 	 */
 	public void testFetchPorts__IProgressMonitor() throws InterruptedException {
 		// END GENERATED CODE
-		getFixture().fetchPorts(null);
+		EList<ScaPort< ? , ? >> portsEList = getFixture().fetchPorts(null);
+		try {
+			portsEList.clear();
+			Assert.fail("fetched Ports list should be unmodifiable");
+		} catch (UnsupportedOperationException e) {
+			Assert.assertTrue("fetched Ports list is unmodifiable", true);
+		}
 		// BEGIN GENERATED CODE
 	}
 

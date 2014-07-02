@@ -13,11 +13,15 @@ package gov.redhawk.model.sca.tests;
 
 import gov.redhawk.model.sca.RefreshDepth;
 import gov.redhawk.model.sca.ScaComponent;
+import gov.redhawk.model.sca.ScaDevice;
 import gov.redhawk.model.sca.ScaWaveform;
 import gov.redhawk.model.sca.commands.ScaModelCommand;
+
 import org.junit.Assert;
+
 import junit.textui.TestRunner;
 
+import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.transaction.util.TransactionUtil;
 
 import CF.ResourceHelper;
@@ -169,7 +173,14 @@ public class ScaComponentTest extends ScaAbstractComponentTest {
 	 */
 	public void testFetchDevices__IProgressMonitor() {
 		// END GENERATED CODE
-		Assert.assertEquals(1, getFixture().fetchDevices(null).size());
+		EList<ScaDevice< ? >> devicesEList = getFixture().fetchDevices(null);
+		Assert.assertEquals(1, devicesEList.size());
+		try {
+			devicesEList.clear();
+			Assert.fail("fetched Devices list should be unmodifiable");
+		} catch (UnsupportedOperationException e) {
+			Assert.assertTrue("fetched Devices list is unmodifiable", true);
+		}
 		// BEGIN GENERATED CODE
 	}
 

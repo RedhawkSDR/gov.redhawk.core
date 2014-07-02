@@ -76,7 +76,7 @@ public class WaveformSelectionWizardPage extends WizardPage {
 	public WaveformSelectionWizardPage(final String pageName) {
 		super(pageName);
 		setTitle("Select a Waveform");
-		setDescription("Select a waveform to launch");
+		setDescription("Select a Waveform to launch");
 	}
 
 	public void init(final ScaDomainManager domMgr) {
@@ -202,7 +202,7 @@ public class WaveformSelectionWizardPage extends WizardPage {
 		});
 
 		this.startWaveform = new Button(composite, SWT.CHECK);
-		this.startWaveform.setText("Start the waveform after launching");
+		this.startWaveform.setText("Start the Waveform after launching");
 		this.startWaveform.setLayoutData(GridDataFactory.fillDefaults().span(2, 1).grab(false, false).create());
 		restoreShouldAutoStartWaveform();
 

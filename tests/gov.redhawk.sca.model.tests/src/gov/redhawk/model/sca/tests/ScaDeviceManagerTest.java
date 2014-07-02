@@ -11,12 +11,16 @@
 // BEGIN GENERATED CODE
 package gov.redhawk.model.sca.tests;
 
+import gov.redhawk.model.sca.ScaDevice;
 import gov.redhawk.model.sca.ScaDeviceManager;
 import gov.redhawk.model.sca.commands.ScaModelCommand;
 import gov.redhawk.model.sca.tests.stubs.ScaTestConstaints;
+
 import org.junit.Assert;
+
 import junit.textui.TestRunner;
 
+import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.transaction.RunnableWithResult;
 import org.omg.PortableServer.POAPackage.ServantNotActive;
@@ -453,7 +457,7 @@ public class ScaDeviceManagerTest extends ScaPropertyContainerTest {
 			}
 
 		});
-		getFixture().fetchDevices(null);
+		EList<ScaDevice< ? >> devicesEList = getFixture().fetchDevices(null);
 		ScaModelCommand.execute(getFixture(), new ScaModelCommand() {
 
 			@Override
@@ -462,6 +466,12 @@ public class ScaDeviceManagerTest extends ScaPropertyContainerTest {
 			}
 
 		});
+		try {
+			devicesEList.clear();
+			Assert.fail("fetched Devices list should be unmodifiable");
+		} catch (UnsupportedOperationException e) {
+			Assert.assertTrue("fetched Devices list is unmodifiable", true);
+		}
 		// BEGIN GENERATED CODE
 	}
 	

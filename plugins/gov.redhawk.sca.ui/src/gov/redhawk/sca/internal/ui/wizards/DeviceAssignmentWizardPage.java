@@ -34,8 +34,8 @@ public class DeviceAssignmentWizardPage extends WizardPage {
 	public DeviceAssignmentWizardPage(final String pageName, final ScaDomainManager domain) {
 		super(pageName);
 		this.domain = domain;
-		setTitle("Assign components to devices");
-		setDescription("Select device assignment for components.");
+		setTitle("Assign Components to Devices");
+		setDescription("Select Device assignment for Components.");
 	}
 
 	@Override
