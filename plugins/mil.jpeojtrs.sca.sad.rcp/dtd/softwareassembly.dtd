@@ -1,3 +1,23 @@
+<!--
+This file is protected by Copyright. Please refer to the COPYRIGHT file 
+distributed with this source distribution.
+
+This file is part of REDHAWK core.
+
+REDHAWK core is free software: you can redistribute it and/or modify it under 
+the terms of the GNU Lesser General Public License as published by the Free 
+Software Foundation, either version 3 of the License, or (at your option) any 
+later version.
+
+REDHAWK core is distributed in the hope that it will be useful, but WITHOUT ANY 
+WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR 
+A PARTICULAR PURPOSE.  See the GNU Lesser General Public License for more 
+details.
+
+You should have received a copy of the GNU Lesser General Public License along 
+with this program.  If not, see http://www.gnu.org/licenses/.
+-->
+
 <!ELEMENT softwareassembly
 	( description?
 	, componentfiles
@@ -5,10 +25,13 @@
 	, assemblycontroller
 	, connections?
 	, externalports?
+	, externalproperties?
+	, usesdevicedependencies?
 	)>
 <!ATTLIST softwareassembly
 	id		ID	#REQUIRED
-	name		CDATA	#IMPLIED>
+	name		CDATA	#IMPLIED
+	version		CDATA	#IMPLIED>
 
 <!ELEMENT description (#PCDATA)>
 
@@ -47,7 +70,8 @@
 	, findcomponent?
 	)>
 <!ATTLIST componentinstantiation
-	id		ID 	#REQUIRED>
+	id		ID 	#REQUIRED
+	startorder	CDATA	#IMPLIED>
 
 <!ELEMENT usagename (#PCDATA)>
 
@@ -76,6 +100,10 @@
 <!ELEMENT deviceusedbythiscomponentref EMPTY>
 <!ATTLIST deviceusedbythiscomponentref 
 	refid		CDATA	#REQUIRED
+	usesrefid	CDATA	#REQUIRED>
+
+<!ELEMENT deviceusedbyapplication EMPTY>
+<!ATTLIST deviceusedbyapplication
 	usesrefid	CDATA	#REQUIRED>
 
 <!ELEMENT resourcefactoryproperties 
@@ -169,6 +197,7 @@
 	, (componentinstantiationref
 	   | devicethatloadedthiscomponentref
 	   | deviceusedbythiscomponentref
+	   | deviceusedbyapplication
 	   | findby
 	   )
 	)>
@@ -180,6 +209,7 @@
 	, ( componentinstantiationref
 	  | devicethatloadedthiscomponentref
 	  | deviceusedbythiscomponentref
+	  | deviceusedbyapplication
 	  | findby 
         )
 	)>
@@ -189,6 +219,9 @@
 <!ELEMENT componentsupportedinterface
 	( supportedidentifier
 	, ( componentinstantiationref
+	  | devicethatloadedthiscomponentref
+	  | deviceusedbythiscomponentref
+	  | deviceusedbyapplication
 	  | findby
 	  )
 	)>
@@ -204,3 +237,35 @@
 	, (usesidentifier | providesidentifier | supportedidentifier)
 	, componentinstantiationref
 	)>
+<!ATTLIST port
+	externalname 		CDATA	#IMPLIED>
+
+<!ELEMENT externalproperties
+	(property+
+	)>
+
+<!ELEMENT property EMPTY>
+<!ATTLIST property
+	comprefid			CDATA	#REQUIRED
+	propid				CDATA	#REQUIRED
+	externalpropid		CDATA	#IMPLIED>
+
+<!ELEMENT usesdevicedependencies
+	(usesdevice+
+	)>
+
+<!ELEMENT usesdevice
+	( propertyref
+	  | simpleref
+	  | simplesequenceref
+	  | structref
+	  | structsequenceref
+	)+ >
+<!ATTLIST usesdevice
+	id			CDATA	#REQUIRED
+	type		CDATA	#IMPLIED>
+
+<!ELEMENT propertyref EMPTY>
+<!ATTLIST propertyref
+	refid		CDATA	#REQUIRED
+	value		CDATA	#REQUIRED>
