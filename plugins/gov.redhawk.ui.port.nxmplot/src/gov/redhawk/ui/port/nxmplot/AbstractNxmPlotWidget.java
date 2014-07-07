@@ -79,7 +79,7 @@ public abstract class AbstractNxmPlotWidget extends Composite {
 			int retVal = Commandable.NORMAL;
 
 			if ("STREAMSRI".equals(msg.name) && msg.info == 1) {
-				activeSRI = (StreamSRI) msg.data;
+				setActiveSRI((StreamSRI) msg.data);
 			} else if ("MARK".equals(msg.name) && msg.info == 1) { //left click
 				final Position p = (Position) msg.data;
 				final Object[] listeners = this.plotListeners.getListeners();
@@ -498,13 +498,20 @@ public abstract class AbstractNxmPlotWidget extends Composite {
 		}
 	}
 
+	/**
+	 * @deprecated Since plots can have multiple inputs there is no active SRI.
+	 * @return null
+	 */
+	@Deprecated
 	public StreamSRI getActiveSRI() {
 		return activeSRI;
 	}
 
 	/**
 	 * @since 4.2
+	 * @deprecated Since plots can have multiple inputs there is no active SRI.
 	 */
+	@Deprecated
 	protected void setActiveSRI(StreamSRI newSRI) {
 		activeSRI = newSRI;
 	}
