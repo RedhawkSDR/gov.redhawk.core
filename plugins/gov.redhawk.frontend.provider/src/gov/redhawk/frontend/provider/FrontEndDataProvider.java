@@ -49,6 +49,7 @@ import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.util.EContentAdapter;
 
+import FRONTEND.AnalogTunerHelper;
 import FRONTEND.DigitalTunerHelper;
 
 /**
@@ -273,6 +274,8 @@ public class FrontEndDataProvider extends AbstractDataProvider {
 			for (Interface i : interfaceList) {
 				// Check to see if this is a frontEndInterface
 				if (i.getRepid().equals(DigitalTunerHelper.id())) {
+					return true;
+				} else if (i.getRepid().equals(AnalogTunerHelper.id())) {
 					return true;
 				}
 			}

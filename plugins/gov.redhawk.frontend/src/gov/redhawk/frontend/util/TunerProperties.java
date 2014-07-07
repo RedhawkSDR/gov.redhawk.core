@@ -14,6 +14,8 @@ package gov.redhawk.frontend.util;
 import gov.redhawk.frontend.FrontendPackage;
 import gov.redhawk.frontend.TunerStatus;
 import gov.redhawk.model.sca.ScaDevice;
+import gov.redhawk.model.sca.ScaPort;
+import gov.redhawk.model.sca.ScaProvidesPort;
 import gov.redhawk.model.sca.ScaSimpleProperty;
 import gov.redhawk.sca.util.PluginUtil;
 import gov.redhawk.sca.util.SubMonitor;
@@ -30,9 +32,11 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.emf.common.notify.Notification;
+import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EAttribute;
 
-import CF.PortSupplierPackage.UnknownPort;
+import FRONTEND.AnalogTuner;
+import FRONTEND.AnalogTunerHelper;
 import FRONTEND.BadParameterException;
 import FRONTEND.DigitalTuner;
 import FRONTEND.DigitalTunerHelper;
@@ -56,13 +60,13 @@ public enum TunerProperties {
 					PropertyValueType.STRING,
 					"Allocation ID",
 					FrontendPackage.Literals.TUNER_STATUS__ALLOCATION_ID,
-			false),
+					false),
 		CENTER_FREQUENCY(
 				"FRONTEND::tuner_status::center_frequency",
 					PropertyValueType.DOUBLE,
 					"Center Frequency",
 					FrontendPackage.Literals.TUNER_STATUS__CENTER_FREQUENCY,
-				true),
+					true),
 		BANDWIDTH("FRONTEND::tuner_status::bandwidth", PropertyValueType.DOUBLE, "Bandwidth", FrontendPackage.Literals.TUNER_STATUS__BANDWIDTH, true),
 		SAMPLE_RATE("FRONTEND::tuner_status::sample_rate", PropertyValueType.DOUBLE, "Sample Rate", FrontendPackage.Literals.TUNER_STATUS__SAMPLE_RATE, true),
 		GROUP_ID("FRONTEND::tuner_status::group_id", PropertyValueType.STRING, "Group ID", FrontendPackage.Literals.TUNER_STATUS__GROUP_ID, false),
@@ -213,8 +217,9 @@ public enum TunerProperties {
 							retVal = CorbaUtils.invoke(new Callable<IStatus>() {
 
 								@Override
-								public IStatus call() throws Exception {
-									return TunerStatusAllocationProperties.doRun(device, feiAttr, finalAllocationId, notification.getNewValue());
+								public IStatus call() throws CoreException {
+									TunerStatusAllocationProperties.doRun(device, feiAttr, finalAllocationId, notification.getNewValue());
+									return Status.OK_STATUS;
 								}
 
 							}, subMonitor.newChild(1));
@@ -235,45 +240,69 @@ public enum TunerProperties {
 			}
 		}
 
-		private static IStatus doRun(ScaDevice< ? > device, final EAttribute feiAttr, String controlID, Object newValue) {
-			try {
-				// TODO
-//				System.out.println("Setting: " + feiAttr.getName() + " " + newValue);
-				org.omg.CORBA.Object port = null;
+		private static void doRun(ScaDevice< ? > device, final EAttribute feiAttr, String controlID, Object newValue) throws CoreException {
 
-				try {
-					port = device.getPort("DigitalTuner_in");
-				} catch (UnknownPort e) {
-					return new Status(IStatus.ERROR, "gov.redhawk.frontend.edit", "Unknown Port Exception", e);
+			EList<ScaPort< ? , ? >> ports = device.getPorts();
+			for (ScaPort< ? , ? > p : ports) {
+				if (p instanceof ScaProvidesPort) {
+					ScaProvidesPort pp = (ScaProvidesPort) p;
+					if (pp._is_a(DigitalTunerHelper.id())) {
+						doRunDigital(DigitalTunerHelper.narrow(pp.getObj()), feiAttr, controlID, newValue);
+						return;
+					} else if (pp._is_a(AnalogTunerHelper.id())) {
+						doRunAnalog(AnalogTunerHelper.narrow(pp.getObj()), feiAttr, controlID, newValue);
+						return;
+					}
 				}
-				DigitalTuner digitalTunerPort = DigitalTunerHelper.narrow(port);
+			}
+
+			throw new CoreException(new Status(IStatus.ERROR, "gov.redhawk.frontend", "Failed to find tuner control port", null));
+		}
+
+		private static void doRunDigital(DigitalTuner digitalTunerPort, final EAttribute feiAttr, String controlID, Object newValue) throws CoreException {
+			try {
+				if (feiAttr.equals(SAMPLE_RATE.getFeiAttribute())) {
+					digitalTunerPort.setTunerOutputSampleRate(controlID, (Double) newValue);
+				} else {
+					doRunAnalog(digitalTunerPort, feiAttr, controlID, newValue);
+				}
+			} catch (NumberFormatException e) {
+				throw new CoreException(new Status(IStatus.ERROR, "gov.redhawk.frontend", "Number Format Exception in property assignment", e));
+			} catch (FrontendException e) {
+				throw new CoreException(new Status(IStatus.ERROR, "gov.redhawk.frontend", "Frontend Exception in property assignment: " + e.msg, e));
+			} catch (BadParameterException e) {
+				throw new CoreException(new Status(IStatus.ERROR, "gov.redhawk.frontend", "Bad Parameter Exception in property assignment: " + e.msg, e));
+			} catch (NotSupportedException e) {
+				throw new CoreException(new Status(IStatus.ERROR, "gov.redhawk.frontend", "Not Supported Exception in property assignment: " + e.msg, e));
+			}
+		}
+
+		private static void doRunAnalog(AnalogTuner analogTunerPort, final EAttribute feiAttr, String controlID, Object newValue) throws CoreException {
+			try {
 				if (feiAttr.equals(AGC.getFeiAttribute())) {
-					digitalTunerPort.setTunerAgcEnable(controlID, (Boolean) newValue);
+					analogTunerPort.setTunerAgcEnable(controlID, (Boolean) newValue);
 				} else if (feiAttr.equals(BANDWIDTH.getFeiAttribute())) {
-					digitalTunerPort.setTunerBandwidth(controlID, (Double) newValue);
+					analogTunerPort.setTunerBandwidth(controlID, (Double) newValue);
 				} else if (feiAttr.equals(CENTER_FREQUENCY.getFeiAttribute())) {
-					digitalTunerPort.setTunerCenterFrequency(controlID, (Double) newValue);
+					analogTunerPort.setTunerCenterFrequency(controlID, (Double) newValue);
 				} else if (feiAttr.equals(ENABLED.getFeiAttribute())) {
-					digitalTunerPort.setTunerEnable(controlID, (Boolean) newValue);
+					analogTunerPort.setTunerEnable(controlID, (Boolean) newValue);
 				} else if (feiAttr.equals(GAIN.getFeiAttribute())) {
 					// Gain is double in model and documentation, but float in API
 					float gain = ((Double) newValue).floatValue();
-					digitalTunerPort.setTunerGain(controlID, gain);
-				} else if (feiAttr.equals(SAMPLE_RATE.getFeiAttribute())) {
-					digitalTunerPort.setTunerOutputSampleRate(controlID, (Double) newValue);
+					analogTunerPort.setTunerGain(controlID, gain);
 				} else if (feiAttr.equals(REFERENCE_SOURCE.getFeiAttribute())) {
-					digitalTunerPort.setTunerReferenceSource(controlID, (Integer) newValue);
+					analogTunerPort.setTunerReferenceSource(controlID, (Integer) newValue);
 				}
 			} catch (NumberFormatException e) {
-				return new Status(IStatus.ERROR, "gov.redhawk.frontend.edit", "Number Format Exception in property assignment", e);
+				throw new CoreException(new Status(IStatus.ERROR, "gov.redhawk.frontend", "Number Format Exception in property assignment", e));
 			} catch (FrontendException e) {
-				return new Status(IStatus.ERROR, "gov.redhawk.frontend.edit", "Frontend Exception in property assignment: " + e.msg, e);
+				throw new CoreException(new Status(IStatus.ERROR, "gov.redhawk.frontend", "Frontend Exception in property assignment: " + e.msg, e));
 			} catch (BadParameterException e) {
-				return new Status(IStatus.ERROR, "gov.redhawk.frontend.edit", "Bad Parameter Exception in property assignment: " + e.msg, e);
+				throw new CoreException(new Status(IStatus.ERROR, "gov.redhawk.frontend", "Bad Parameter Exception in property assignment: " + e.msg, e));
 			} catch (NotSupportedException e) {
-				return new Status(IStatus.ERROR, "gov.redhawk.frontend.edit", "Not Supported Exception in property assignment: " + e.msg, e);
+				throw new CoreException(new Status(IStatus.ERROR, "gov.redhawk.frontend", "Not Supported Exception in property assignment: " + e.msg, e));
 			}
-			return Status.OK_STATUS;
 		}
 	}
 
