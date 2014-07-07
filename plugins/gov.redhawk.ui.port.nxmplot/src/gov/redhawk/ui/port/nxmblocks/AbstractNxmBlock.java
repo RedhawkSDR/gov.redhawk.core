@@ -385,6 +385,10 @@ public abstract class AbstractNxmBlock< C extends Command > implements INxmBlock
 		}
 		return nxmCommand;
 	}
+	
+	public List<String> getStreamIDs() {
+		return Collections.unmodifiableList(new ArrayList<String>(streamIDToCmdMap.keySet()));
+	}
 
 	protected int getDefaultInputIndex() {
 		return defaultInputIndex;
