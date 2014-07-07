@@ -515,5 +515,9 @@ public class corbareceiver2 extends CorbaPrimitive implements IMidasDataWriter {
 			//			}
 		}
 	}
+	
+	public StreamSRI getCurrentSri() {
+		return currentSri;
+	}
 
 }
