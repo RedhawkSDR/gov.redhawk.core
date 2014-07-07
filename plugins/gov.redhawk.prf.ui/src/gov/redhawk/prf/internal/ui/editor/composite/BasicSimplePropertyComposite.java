@@ -416,9 +416,9 @@ public abstract class BasicSimplePropertyComposite extends AbstractPropertyCompo
 		if (this.rangeButton != null) {
 			this.rangeButton.setEnabled(canEdit);
 		}
-		if (this.enumViewer != null) {
-			this.enumViewer.getControl().setEnabled(canEdit);
-		}
+//		if (this.enumViewer != null) {
+//			this.enumViewer.getControl().setEnabled(canEdit);
+//		}
 		if (this.addEnumButton != null) {
 			this.addEnumButton.setEnabled(canEdit);
 		}

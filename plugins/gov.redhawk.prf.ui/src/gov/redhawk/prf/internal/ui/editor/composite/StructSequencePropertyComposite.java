@@ -185,9 +185,9 @@ public class StructSequencePropertyComposite extends BasicStructPropertyComposit
 	@Override
 	public void setEditable(final boolean canEdit) {
 		super.setEditable(canEdit);
-		if (this.structValueViewer != null) {
-			this.structValueViewer.getTree().setEnabled(canEdit);
-		}
+//		if (this.structValueViewer != null) {
+//			this.structValueViewer.getTree().setEnabled(canEdit);
+//		}
 		//		this.addButton.setEnabled(canEdit);
 	}
 
