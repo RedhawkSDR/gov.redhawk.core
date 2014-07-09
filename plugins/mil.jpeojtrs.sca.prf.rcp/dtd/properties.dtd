@@ -1,10 +1,30 @@
+<!--
+This file is protected by Copyright. Please refer to the COPYRIGHT file 
+distributed with this source distribution.
+
+This file is part of REDHAWK core.
+
+REDHAWK core is free software: you can redistribute it and/or modify it under 
+the terms of the GNU Lesser General Public License as published by the Free 
+Software Foundation, either version 3 of the License, or (at your option) any 
+later version.
+
+REDHAWK core is distributed in the hope that it will be useful, but WITHOUT ANY 
+WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR 
+A PARTICULAR PURPOSE.  See the GNU Lesser General Public License for more 
+details.
+
+You should have received a copy of the GNU Lesser General Public License along 
+with this program.  If not, see http://www.gnu.org/licenses/.
+-->
+
 <!ELEMENT properties
      	 ( description?
      	 , 	( simple
 		| simplesequence
 		| test
 		| struct
-		| structsequence)+
+		| structsequence)*
        )> 
 
 <!ELEMENT simple 
@@ -24,6 +44,7 @@
 		| short	| long	| longlong | objref | octet
 		| string	| ulong	| ushort )		#REQUIRED
 	name	CDATA							#IMPLIED
+	complex ( false | true ) "false"
 	mode	( readonly	| readwrite | writeonly)	"readwrite">
 
 <!ELEMENT description (#PCDATA)>
@@ -48,7 +69,7 @@
 
 <!ELEMENT kind EMPTY>
 <!ATTLIST kind
-	kindtype	(allocation | configure | test | execparam | factoryparam) 
+	kindtype	(allocation | configure | test | execparam | factoryparam | event | message) 
 "configure">
 
 <!ELEMENT action EMPTY>
@@ -66,9 +87,10 @@
 <!ATTLIST simplesequence
 	id	ID						#REQUIRED
 	type  ( boolean | char   | double | float
-	      | short  | long   | longlong | objref | octet
+	      | short  | long   | objref | octet
 	      | string | ulong  | ushort )		#REQUIRED
 	name	CDATA						#IMPLIED
+	complex ( false | true ) "false"
 	mode	(readonly | readwrite | writeonly)	"readwrite">
 
 <!ELEMENT values
@@ -94,7 +116,7 @@
 <!ELEMENT struct 
 	( description?
 	, simple+
-	, configurationkind?
+	, configurationkind*
 	)>
 <!ATTLIST struct
 	id		ID	#REQUIRED
@@ -103,13 +125,14 @@
 
 <!ELEMENT configurationkind EMPTY>
 <!ATTLIST configurationkind
-	kindtype	(configure | factoryparam | allocation)	"configure">
+	kindtype	(allocation | configure | test | factoryparam | event | message)
+"configure">
 
 <!ELEMENT structsequence
 	( description?
 	, struct
 	, structvalue*
-	, configurationkind?
+	, configurationkind*
 	)>
 <!ATTLIST structsequence
 	id       	ID	#REQUIRED

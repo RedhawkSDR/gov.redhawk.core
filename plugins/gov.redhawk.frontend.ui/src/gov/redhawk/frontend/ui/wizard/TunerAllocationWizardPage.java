@@ -118,10 +118,9 @@ public class TunerAllocationWizardPage extends WizardPage {
 	private static final String CENTER_FREQUENCY_ERR_MSG = "Please specify a Center Frequency";
 	private static final String BNDWIDTH_ERR_MSG = "Please specify a Bandwidth";
 	private static final String SAMPLE_RATE_ERR_MSG = "Please specify a Sample Rate";
-	private static final String BANDWIDTH_TOLERANCE_ERR_MSG = "Please specify a Bandwidth Tolerance between 0 and 100";
-	private static final String SAMPLE_RATE_TOLERANCE_ERR_MSG = "Please specify a Sample Rate Tolerance between 0 and 100";
+	private static final String BANDWIDTH_TOLERANCE_ERR_MSG = "Please specify a Bandwidth Tolerance greater than 0";
+	private static final String SAMPLE_RATE_TOLERANCE_ERR_MSG = "Please specify a Sample Rate Tolerance greater than 0";
 	private static final String NOT_VALID_NUMBER_ERR_MSG = "You must enter a valid decimal number";
-	private static final String PERCENT_VALUE_ERR_MSG = "Percentage must be entered as a number between 0 and 100";
 	private static final String NEGATIVE_ERR_MSG = "The value must not be negative";
 	private static final String NEGATIVE_OR_ZERO_ERR_MSG = "The value must be a positive non-zero number";
 	private static final String FREQ_BELOW_MIN = "The selected frequency is below the minimum known supported frequency of ";
@@ -479,8 +478,8 @@ public class TunerAllocationWizardPage extends WizardPage {
 			} catch (NumberFormatException e) {
 				return ValidationStatus.error(TunerAllocationWizardPage.NOT_VALID_NUMBER_ERR_MSG);
 			}
-			if (val < 0 || val > 100) {
-				return ValidationStatus.error(TunerAllocationWizardPage.PERCENT_VALUE_ERR_MSG);
+			if (val < 0) {
+				return ValidationStatus.error(TunerAllocationWizardPage.BANDWIDTH_TOLERANCE_ERR_MSG);
 			}
 			return Status.OK_STATUS;
 		} else if (control == srTolText) {
@@ -496,8 +495,8 @@ public class TunerAllocationWizardPage extends WizardPage {
 			} catch (NumberFormatException e) {
 				return ValidationStatus.error(TunerAllocationWizardPage.NOT_VALID_NUMBER_ERR_MSG);
 			}
-			if (val < 0 || val > 100) {
-				return ValidationStatus.error(TunerAllocationWizardPage.PERCENT_VALUE_ERR_MSG);
+			if (val < 0) {
+				return ValidationStatus.error(TunerAllocationWizardPage.SAMPLE_RATE_TOLERANCE_ERR_MSG);
 			}
 			return Status.OK_STATUS;
 		}

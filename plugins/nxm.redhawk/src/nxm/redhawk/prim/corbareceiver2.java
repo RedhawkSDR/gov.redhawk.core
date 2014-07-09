@@ -327,6 +327,7 @@ public class corbareceiver2 extends CorbaPrimitive implements IMidasDataWriter {
 		corbareceiver2.TRACE_LOGGER.message("{0}: setStreamSri to {1} id={2} blocking={3}", getID(), newSri, newSri.streamID, newSri.blocking);
 		if (this.streamId == null || this.streamId.equals(streamID)) {
 			this.currentSri = newSri;
+			sendMessage("STREAMSRI", 1, this.currentSri);
 			if (state == Commandable.PROCESS) {
 				if (corbareceiver2.isRestartNeed4SriChange(newSri, oldSri)) {
 					doRestart();
@@ -513,6 +514,10 @@ public class corbareceiver2 extends CorbaPrimitive implements IMidasDataWriter {
 			//				M.pipeMode = Midas.PRUN; // restore pipe mode back to RUN
 			//			}
 		}
+	}
+	
+	public StreamSRI getCurrentSri() {
+		return currentSri;
 	}
 
 }

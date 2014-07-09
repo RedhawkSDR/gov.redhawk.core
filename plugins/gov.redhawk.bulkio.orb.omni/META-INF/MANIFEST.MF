@@ -5,10 +5,10 @@ Bundle-SymbolicName: gov.redhawk.bulkio.orb.omni
 Bundle-Version: 1.0.0.qualifier
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Bundle-ClassPath: .
-Require-Bundle: gov.redhawk.bulkio.util;bundle-version="1.0.0",
+Require-Bundle: gov.redhawk.bulkio.util;bundle-version="1.0.0";visibility:=reexport,
  org.eclipse.core.runtime,
- gov.redhawk.sca.util,
- bulkio;bundle-version="1.0.0"
+ gov.redhawk.sca.util;visibility:=reexport,
+ bulkio;bundle-version="1.0.0";visibility:=reexport
 Service-Component: OSGI-INF/portFactory.xml
 Bundle-Activator: gov.redhawk.bulkio.orb.omni.internal.BulkIOOmniActivator
 Bundle-ActivationPolicy: lazy
