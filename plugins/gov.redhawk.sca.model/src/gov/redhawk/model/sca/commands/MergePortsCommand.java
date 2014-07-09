@@ -70,7 +70,11 @@ public class MergePortsCommand extends SetStatusCommand<ScaPortContainer> {
 		public PortHash(PortData data) {
 			this.portType = data.portProfile.getClass();
 			this.name = data.portName;
-			this.ior = data.portObj.toString();
+			if (data.portObj != null) {
+				this.ior = data.portObj.toString();
+			} else {
+				this.ior = null;
+			}
 		}
 
 		public PortHash(ScaPort< ? , ? > port) {
