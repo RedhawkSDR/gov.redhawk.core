@@ -22,10 +22,10 @@ public final class ColumnViewerToolTipSupport {
 	}
 
 	public static void enableFor(final ColumnViewer viewer) {
-		throw new UnsupportedOperationException();
+		org.eclipse.jface.viewers.ColumnViewerToolTipSupport.enableFor(viewer);
 	}
 
 	public static void enableFor(final ColumnViewer viewer, final int style) {
-		throw new UnsupportedOperationException();
+		org.eclipse.jface.viewers.ColumnViewerToolTipSupport.enableFor(viewer, style);
 	}
 }

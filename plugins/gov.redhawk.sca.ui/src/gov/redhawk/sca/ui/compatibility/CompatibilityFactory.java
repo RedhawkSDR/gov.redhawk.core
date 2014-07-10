@@ -28,7 +28,7 @@ public final class CompatibilityFactory {
 
 	public static ContentProposalAdapter createContentProposalAdapter(final Control control, final IControlContentAdapter controlContentAdapter,
 	        final IContentProposalProvider proposalProvider, final char[] autoActivationCharacters) {
-		throw new UnsupportedOperationException();
+		return new ContentProposalAdapter(control, controlContentAdapter, proposalProvider, null, autoActivationCharacters);
 	}
 
 }
