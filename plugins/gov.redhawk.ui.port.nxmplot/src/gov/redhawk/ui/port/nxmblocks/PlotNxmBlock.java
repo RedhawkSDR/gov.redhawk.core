@@ -310,7 +310,7 @@ public class PlotNxmBlock extends AbstractNxmBlock<plot> {
 
 	@Override
 	public void propertyChange(PropertyChangeEvent event) {
-		if (PlotPreferences.FRAMESIZE.isEvent(event) && isSetFrameSize()) {
+		if ((PlotPreferences.FRAMESIZE.isEvent(event) || PlotPreferences.FRAMESIZE_OVERRIDE.isEvent(event)) && isSetFrameSize()) {
 			updatePipeQualifiers();
 		}
 

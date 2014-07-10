@@ -55,7 +55,6 @@ public abstract class AbstractNxmPlotWidget extends Composite {
 	/** index to create unique pipe name. */
 	private static final AtomicInteger PIPE_NAME_INDEX = new AtomicInteger();
 
-	private StreamSRI activeSRI;
 	private IPreferenceStore store = Preference.initStoreFromWorkbench(PlotPreferences.getAllPreferences());
 	private final IPropertyChangeListener listener = new IPropertyChangeListener() {
 		@Override
@@ -78,9 +77,7 @@ public abstract class AbstractNxmPlotWidget extends Composite {
 		public int processMessage(Message msg) {
 			int retVal = Commandable.NORMAL;
 
-			if ("STREAMSRI".equals(msg.name) && msg.info == 1) {
-				setActiveSRI((StreamSRI) msg.data);
-			} else if ("MARK".equals(msg.name) && msg.info == 1) { //left click
+			if ("MARK".equals(msg.name) && msg.info == 1) { //left click
 				final Position p = (Position) msg.data;
 				final Object[] listeners = this.plotListeners.getListeners();
 				for (final Object obj : listeners) {
@@ -504,7 +501,7 @@ public abstract class AbstractNxmPlotWidget extends Composite {
 	 */
 	@Deprecated
 	public StreamSRI getActiveSRI() {
-		return activeSRI;
+		return null;
 	}
 
 	/**
@@ -513,7 +510,7 @@ public abstract class AbstractNxmPlotWidget extends Composite {
 	 */
 	@Deprecated
 	protected void setActiveSRI(StreamSRI newSRI) {
-		activeSRI = newSRI;
+		
 	}
 
 	/**
@@ -621,36 +618,6 @@ public abstract class AbstractNxmPlotWidget extends Composite {
 	 */
 	public boolean isSetMaxValue() {
 		return PlotPreferences.MAX_OVERRIDE.getValue(store);
-	}
-
-	/**
-	 * @since 4.4
-	 */
-	public int getFrameSize() {
-		return PlotPreferences.FRAMESIZE.getValue(store);
-	}
-
-	/**
-	 * @since 4.4
-	 */
-	public void setFrameSize(int fs) {
-		PlotPreferences.FRAMESIZE.setValue(store, fs);
-		PlotPreferences.FRAMESIZE_OVERRIDE.setValue(store, true);
-	}
-
-	/**
-	 * @since 4.4
-	 */
-	public void unsetFrameSize() {
-		PlotPreferences.FRAMESIZE.setToDefault(store);
-		PlotPreferences.FRAMESIZE_OVERRIDE.setValue(store, false);
-	}
-
-	/**
-	 * @since 4.4
-	 */
-	public boolean isSetFrameSize() {
-		return PlotPreferences.FRAMESIZE_OVERRIDE.getValue(store);
 	}
 
 	/**
