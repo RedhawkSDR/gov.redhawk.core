@@ -34,5 +34,8 @@ Require-Bundle: org.eclipse.ui,
  gov.redhawk.bulkio.util
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Bundle-ActivationPolicy: lazy
-Export-Package: gov.redhawk.frontend.ui
+Export-Package: gov.redhawk.frontend.ui,
+ gov.redhawk.frontend.ui.internal;x-internal:=true,
+ gov.redhawk.frontend.ui.internal.section;x-internal:=true,
+ gov.redhawk.frontend.ui.wizard
 Bundle-Vendor: REDHAWK
