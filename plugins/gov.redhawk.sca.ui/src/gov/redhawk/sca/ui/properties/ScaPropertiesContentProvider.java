@@ -21,12 +21,17 @@ import gov.redhawk.sca.internal.ui.properties.SequencePropertyValueDescriptor;
 import gov.redhawk.sca.ui.ScaModelAdapterFactoryContentProvider;
 import gov.redhawk.sca.ui.ScaUiPlugin;
 
+import java.util.concurrent.Callable;
+
+import mil.jpeojtrs.sca.util.CorbaUtils;
+import mil.jpeojtrs.sca.util.ScaEcoreUtils;
+
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.emf.common.notify.AdapterFactory;
-import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.edit.provider.IItemPropertyDescriptor;
 import org.eclipse.emf.edit.provider.IItemPropertySource;
 import org.eclipse.emf.edit.ui.provider.PropertySource;
@@ -82,28 +87,48 @@ public class ScaPropertiesContentProvider extends ScaModelAdapterFactoryContentP
 			});
 			try {
 				if (any != null) {
-					final Job setJob = new Job("Setting property value") {
+					final Job setJob = new Job("Setting property value " + prop.getId()) {
 
 						@Override
 						protected IStatus run(final IProgressMonitor monitor) {
 							try {
-								prop.setRemoteValue(any);
-							} catch (final PartialConfiguration e) {
-								return new Status(IStatus.WARNING, ScaUiPlugin.PLUGIN_ID, "Setting property: " + prop.getId() + " partial configuration. "
-								        + e.getMessage(), e);
-							} catch (final InvalidConfiguration e) {
-								return new Status(IStatus.ERROR, ScaUiPlugin.PLUGIN_ID, "Failed to set property '" + prop.getId()
-								        + "', due to Invalid Configuration. " + e.msg, e);
-							} finally {
-								for (EObject parent = prop.eContainer(); parent != null; parent = parent.eContainer()) {
-									if (parent instanceof ScaPropertyContainer< ? , ? >) {
-										final ScaPropertyContainer< ? , ? > container = (ScaPropertyContainer< ? , ? >) parent;
-										container.fetchProperties(monitor);
-										break;
+								return CorbaUtils.invoke(new Callable<IStatus>() {
+
+									@Override
+									public IStatus call() throws Exception {
+										try {
+											prop.setRemoteValue(any);
+											return Status.OK_STATUS;
+										} catch (final PartialConfiguration e) {
+											return new Status(IStatus.WARNING, ScaUiPlugin.PLUGIN_ID, "Setting property: " + prop.getId()
+												+ " partial configuration. " + e.getMessage(), e);
+										} catch (final InvalidConfiguration e) {
+											return new Status(IStatus.ERROR, ScaUiPlugin.PLUGIN_ID, "Failed to set property '" + prop.getId()
+												+ "', due to Invalid Configuration. " + e.msg, e);
+										}
 									}
+								}, monitor);
+							} catch (CoreException e) {
+								return new Status(e.getStatus().getSeverity(), ScaUiPlugin.PLUGIN_ID, e.getStatus().getMessage(), e);
+							} catch (InterruptedException e) {
+								return Status.CANCEL_STATUS;
+							} finally {
+								final ScaPropertyContainer< ? , ? > parent = ScaEcoreUtils.getEContainerOfType(prop, ScaPropertyContainer.class);
+								try {
+									CorbaUtils.invoke(new Callable<Object>() {
+
+										@Override
+										public Object call() throws Exception {
+											parent.fetchProperties(monitor);
+											return null;
+										}
+									}, monitor);
+								} catch (CoreException e) {
+									// PASS
+								} catch (InterruptedException e) {
+									// PASS
 								}
 							}
-							return Status.OK_STATUS;
 						}
 
 					};
