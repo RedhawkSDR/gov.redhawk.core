@@ -23,6 +23,8 @@ import gov.redhawk.sca.util.PluginUtil;
 import java.util.ArrayList;
 import java.util.List;
 
+import mil.jpeojtrs.sca.util.ScaEcoreUtils;
+
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
@@ -70,10 +72,18 @@ public class AllocateHandler extends AbstractHandler implements IHandler {
 					WizardDialog dialog = new WizardDialog(HandlerUtil.getActiveShell(event), new TunerAllocationWizard(tuners[0]));
 					dialog.open();
 				} else {
-					ScaDevice< ? > device = (ScaDevice< ? >) container.eContainer().eContainer();
-					WizardDialog dialog = new WizardDialog(HandlerUtil.getActiveShell(event), new TunerAllocationWizard(FrontendFactory.eINSTANCE.createTunerStatus(), device));
-					warnNoTuners(event);
-					dialog.open();
+					ScaDevice< ? > device = ScaEcoreUtils.getEContainerOfType(container, ScaDevice.class);
+					if (device != null) {
+						WizardDialog dialog = new WizardDialog(HandlerUtil.getActiveShell(event), new TunerAllocationWizard(FrontendFactory.eINSTANCE.createTunerStatus(), device));
+						warnNoTuners(event);
+						dialog.open();
+					} else {
+						MessageDialog warning = new MessageDialog(HandlerUtil.getActiveShell(event), "Error - No Device Found", null, 
+							"The device could not be found.", 
+							MessageDialog.ERROR, new String[] {"OK"}, 0);
+						warning.open();
+						return null;
+					}
 				}
 			} else if (obj instanceof ScaDevice< ? >) {
 				ScaDevice< ? > device = (ScaDevice< ? >) obj;
