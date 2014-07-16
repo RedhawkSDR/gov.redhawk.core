@@ -449,8 +449,8 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 	private EDataType anyEDataType = null;
 
 	/**
-	 * Creates an instance of the model <b>Package</b>, registered with
-	 * {@link org.eclipse.emf.ecore.EPackage.Registry EPackage.Registry} by the package
+	 * Creates an instance of the model <b>Package</b>, registered with {@link org.eclipse.emf.ecore.EPackage.Registry
+	 * EPackage.Registry} by the package
 	 * package URI value.
 	 * <p>Note: the correct way to create the package is via the static
 	 * factory method {@link #init init()}, which also performs
@@ -1351,6 +1351,15 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public EAttribute getScaDomainManager_LocalName() {
+		return (EAttribute) scaDomainManagerEClass.getEStructuralFeatures().get(14);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	@Override
 	public EClass getScaDomainManagerFileSystem() {
 		return scaDomainManagerFileSystemEClass;
@@ -2154,7 +2163,7 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 	private boolean isCreated = false;
 
 	/**
-	 * Creates the meta-model objects for the package.  This method is
+	 * Creates the meta-model objects for the package. This method is
 	 * guarded to have no affect on any invocation but its first.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -2263,6 +2272,7 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 		createEAttribute(scaDomainManagerEClass, SCA_DOMAIN_MANAGER__STATE);
 		createEAttribute(scaDomainManagerEClass, SCA_DOMAIN_MANAGER__PROFILE);
 		createEReference(scaDomainManagerEClass, SCA_DOMAIN_MANAGER__EVENT_CHANNELS);
+		createEAttribute(scaDomainManagerEClass, SCA_DOMAIN_MANAGER__LOCAL_NAME);
 
 		scaDomainManagerFileSystemEClass = createEClass(SCA_DOMAIN_MANAGER_FILE_SYSTEM);
 		createEReference(scaDomainManagerFileSystemEClass, SCA_DOMAIN_MANAGER_FILE_SYSTEM__DOM_MGR);
@@ -2379,7 +2389,7 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 	private boolean isInitialized = false;
 
 	/**
-	 * Complete the initialization of the package and its meta-model.  This
+	 * Complete the initialization of the package and its meta-model. This
 	 * method is guarded to have no affect on any invocation but its first.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -2959,6 +2969,8 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 			IS_CHANGEABLE, IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getScaDomainManager_EventChannels(), this.getScaEventChannel(), null, "eventChannels", null, 0, -1, ScaDomainManager.class,
 			!IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, IS_RESOLVE_PROXIES, IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getScaDomainManager_LocalName(), ecorePackage.getEString(), "localName", null, 0, 1, ScaDomainManager.class, !IS_TRANSIENT,
+			!IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		op = addEOperation(scaDomainManagerEClass, null, "getDevice", 0, 1, IS_UNIQUE, IS_ORDERED);
 		addEParameter(op, ecorePackage.getEString(), "deviceId", 0, 1, IS_UNIQUE, IS_ORDERED);
@@ -3026,6 +3038,7 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 		addEParameter(op, ecorePackage.getEString(), "domainName", 0, 1, IS_UNIQUE, IS_ORDERED);
 
 		op = addEOperation(scaDomainManagerRegistryEClass, this.getScaDomainManager(), "createDomain", 0, 1, IS_UNIQUE, IS_ORDERED);
+		addEParameter(op, ecorePackage.getEString(), "localName", 0, 1, IS_UNIQUE, IS_ORDERED);
 		addEParameter(op, ecorePackage.getEString(), "name", 0, 1, IS_UNIQUE, IS_ORDERED);
 		addEParameter(op, ecorePackage.getEBoolean(), "autoConnect", 0, 1, IS_UNIQUE, IS_ORDERED);
 		g1 = createEGenericType(ecorePackage.getEMap());

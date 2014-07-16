@@ -21,20 +21,21 @@ import CF.PropertySetOperations;
 /**
  * <!-- begin-user-doc -->
  * A representation of the model object '<em><b>Struct Property</b></em>'.
- *  @since 9.0
- *  @noimplement This interface is not intended to be implemented by clients.
+ * @since 9.0
+ * @noimplement This interface is not intended to be implemented by clients.
  * <!-- end-user-doc -->
  *
  * <p>
  * The following features are supported:
  * <ul>
- *   <li>{@link gov.redhawk.model.sca.ScaStructProperty#getSimples <em>Simples</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.ScaStructProperty#getSimples <em>Simples</em>}</li>
  * </ul>
  * </p>
  *
  * @see gov.redhawk.model.sca.ScaPackage#getScaStructProperty()
- * @model superTypes="gov.redhawk.model.sca.ScaAbstractProperty<mil.jpeojtrs.sca.prf.Struct> mil.jpeojtrs.sca.cf.PropertySetOperations"
- *        extendedMetaData="name='ScaStructProperty' kind='empty'"
+ * @model superTypes=
+ * "gov.redhawk.model.sca.ScaAbstractProperty<mil.jpeojtrs.sca.prf.Struct> mil.jpeojtrs.sca.cf.PropertySetOperations"
+ * extendedMetaData="name='ScaStructProperty' kind='empty'"
  * @generated
  */
 public interface ScaStructProperty extends ScaAbstractProperty<Struct>, PropertySetOperations {
@@ -51,7 +52,7 @@ public interface ScaStructProperty extends ScaAbstractProperty<Struct>, Property
 	 * @return the value of the '<em>Simples</em>' containment reference list.
 	 * @see gov.redhawk.model.sca.ScaPackage#getScaStructProperty_Simples()
 	 * @model containment="true" resolveProxies="true" transient="true"
-	 *        extendedMetaData="kind='attribute' name='simples'"
+	 * extendedMetaData="kind='attribute' name='simples'"
 	 * @generated
 	 */
 	EList<ScaSimpleProperty> getSimples();

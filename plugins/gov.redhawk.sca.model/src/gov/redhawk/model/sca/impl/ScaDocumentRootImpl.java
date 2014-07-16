@@ -32,15 +32,16 @@ import org.eclipse.emf.ecore.util.InternalEList;
 /**
  * <!-- begin-user-doc -->
  * An implementation of the model object '<em><b>Document Root</b></em>'.
- *  @since 12.0
+ * @since 12.0
  * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
  * <ul>
- *   <li>{@link gov.redhawk.model.sca.impl.ScaDocumentRootImpl#getMixed <em>Mixed</em>}</li>
- *   <li>{@link gov.redhawk.model.sca.impl.ScaDocumentRootImpl#getXMLNSPrefixMap <em>XMLNS Prefix Map</em>}</li>
- *   <li>{@link gov.redhawk.model.sca.impl.ScaDocumentRootImpl#getXSISchemaLocation <em>XSI Schema Location</em>}</li>
- *   <li>{@link gov.redhawk.model.sca.impl.ScaDocumentRootImpl#getDomainManagerRegistry <em>Domain Manager Registry</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.impl.ScaDocumentRootImpl#getMixed <em>Mixed</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.impl.ScaDocumentRootImpl#getXMLNSPrefixMap <em>XMLNS Prefix Map</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.impl.ScaDocumentRootImpl#getXSISchemaLocation <em>XSI Schema Location</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.impl.ScaDocumentRootImpl#getDomainManagerRegistry <em>Domain Manager Registry</em>}
+ * </li>
  * </ul>
  * </p>
  *
@@ -298,4 +299,4 @@ public class ScaDocumentRootImpl extends EObjectImpl implements ScaDocumentRoot 
 		return result.toString();
 	}
 
-} //ScaDocumentRootImpl
+} // ScaDocumentRootImpl

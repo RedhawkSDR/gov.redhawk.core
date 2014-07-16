@@ -59,12 +59,12 @@ import CF.FileSystemPackage.UnknownFileSystemProperties;
  * <p>
  * The following features are implemented:
  * <ul>
- *   <li>{@link gov.redhawk.model.sca.impl.ScaFileSystemImpl#getFileStore <em>File Store</em>}</li>
- *   <li>{@link gov.redhawk.model.sca.impl.ScaFileSystemImpl#getChildren <em>Children</em>}</li>
- *   <li>{@link gov.redhawk.model.sca.impl.ScaFileSystemImpl#getImageDesc <em>Image Desc</em>}</li>
- *   <li>{@link gov.redhawk.model.sca.impl.ScaFileSystemImpl#isDirectory <em>Directory</em>}</li>
- *   <li>{@link gov.redhawk.model.sca.impl.ScaFileSystemImpl#getName <em>Name</em>}</li>
- *   <li>{@link gov.redhawk.model.sca.impl.ScaFileSystemImpl#getFileSystemURI <em>File System URI</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.impl.ScaFileSystemImpl#getFileStore <em>File Store</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.impl.ScaFileSystemImpl#getChildren <em>Children</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.impl.ScaFileSystemImpl#getImageDesc <em>Image Desc</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.impl.ScaFileSystemImpl#isDirectory <em>Directory</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.impl.ScaFileSystemImpl#getName <em>Name</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.impl.ScaFileSystemImpl#getFileSystemURI <em>File System URI</em>}</li>
  * </ul>
  * </p>
  *
@@ -475,7 +475,7 @@ public abstract class ScaFileSystemImpl< F extends FileSystem > extends CorbaObj
 				public void run() {
 					setResult(ECollections.unmodifiableEList(new BasicEList<ScaFileStore>(getChildren())));
 				}
-				
+
 			});
 		} catch (InterruptedException e) {
 			return ECollections.emptyEList();
@@ -828,4 +828,4 @@ public abstract class ScaFileSystemImpl< F extends FileSystem > extends CorbaObj
 		}
 		// BEGIN GENERATED CODE
 	}
-} //ScaFileSystemImpl
+} // ScaFileSystemImpl

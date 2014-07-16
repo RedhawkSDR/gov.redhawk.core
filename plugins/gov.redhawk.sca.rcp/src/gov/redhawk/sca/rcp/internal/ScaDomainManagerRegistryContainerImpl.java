@@ -331,14 +331,14 @@ public class ScaDomainManagerRegistryContainerImpl implements IScaDomainManagerR
 					}
 					for (final ScaDomainManager domain : domains) {
 						if (domain.isAutoConnect()) {
-							final Job job = new Job("Connecting to: " + domain.getName()) {
+							final Job job = new Job("Connecting to: " + domain.getLabel()) {
 
 								@Override
 								protected IStatus run(final IProgressMonitor monitor) {
 									try {
 										domain.connect(monitor, RefreshDepth.SELF);
 									} catch (final DomainConnectionException e) {
-										return new Status(IStatus.ERROR, ScaPlugin.getPluginId(), "Failed to connect to domain " + domain.getName() + ".", e);
+										return new Status(IStatus.ERROR, ScaPlugin.getPluginId(), "Failed to connect to domain " + domain.getLabel() + ".", e);
 									}
 									return Status.OK_STATUS;
 								}

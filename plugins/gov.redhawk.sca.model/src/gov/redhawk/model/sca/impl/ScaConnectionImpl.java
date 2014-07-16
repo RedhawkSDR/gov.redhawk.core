@@ -34,9 +34,9 @@ import ExtendedCF.UsesConnection;
  * <p>
  * The following features are implemented:
  * <ul>
- *   <li>{@link gov.redhawk.model.sca.impl.ScaConnectionImpl#getData <em>Data</em>}</li>
- *   <li>{@link gov.redhawk.model.sca.impl.ScaConnectionImpl#getId <em>Id</em>}</li>
- *   <li>{@link gov.redhawk.model.sca.impl.ScaConnectionImpl#getPort <em>Port</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.impl.ScaConnectionImpl#getData <em>Data</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.impl.ScaConnectionImpl#getId <em>Id</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.impl.ScaConnectionImpl#getPort <em>Port</em>}</li>
  * </ul>
  * </p>
  *
@@ -137,7 +137,7 @@ public class ScaConnectionImpl extends EObjectImpl implements ScaConnection {
 	public String getId() {
 		// END GENERATED CODE
 		UsesConnection tmp = getData();
-		return (tmp != null) ? tmp.connectionId : null; //SUPPRESS CHECKSTYLE Terinary Op
+		return (tmp != null) ? tmp.connectionId : null; // SUPPRESS CHECKSTYLE Terinary Op
 		// BEGIN GENERATED CODE
 	}
 
@@ -331,4 +331,4 @@ public class ScaConnectionImpl extends EObjectImpl implements ScaConnection {
 		return result.toString();
 	}
 
-} //ScaConnectionImpl
+} // ScaConnectionImpl

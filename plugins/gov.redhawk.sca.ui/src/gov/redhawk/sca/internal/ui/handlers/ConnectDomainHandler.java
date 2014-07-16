@@ -73,12 +73,12 @@ public class ConnectDomainHandler extends AbstractHandler implements IHandler {
 
 						@Override
 						protected IStatus run(final IProgressMonitor monitor) {
-							monitor.beginTask("Connecting to domain " + domMgr.getName(), IProgressMonitor.UNKNOWN);
+							monitor.beginTask("Connecting to domain " + domMgr.getLabel(), IProgressMonitor.UNKNOWN);
 							try {
 								domMgr.connect(monitor, RefreshDepth.SELF);
 								return Status.OK_STATUS;
 							} catch (final Exception e) { // SUPPRESS CHECKSTYLE Logged Catch all exception
-								return new Status(IStatus.ERROR, ScaUiPlugin.PLUGIN_ID, "Failed to connect to Domain " + domMgr.getName(), e);
+								return new Status(IStatus.ERROR, ScaUiPlugin.PLUGIN_ID, "Failed to connect to Domain " + domMgr.getLabel(), e);
 							}
 						}
 

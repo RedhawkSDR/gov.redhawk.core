@@ -37,10 +37,10 @@ import org.omg.CORBA.SystemException;
  * <p>
  * The following features are implemented:
  * <ul>
- *   <li>{@link gov.redhawk.model.sca.impl.ScaPortImpl#getName <em>Name</em>}</li>
- *   <li>{@link gov.redhawk.model.sca.impl.ScaPortImpl#getProfileObj <em>Profile Obj</em>}</li>
- *   <li>{@link gov.redhawk.model.sca.impl.ScaPortImpl#getRepid <em>Repid</em>}</li>
- *   <li>{@link gov.redhawk.model.sca.impl.ScaPortImpl#getPortContainer <em>Port Container</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.impl.ScaPortImpl#getName <em>Name</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.impl.ScaPortImpl#getProfileObj <em>Profile Obj</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.impl.ScaPortImpl#getRepid <em>Repid</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.impl.ScaPortImpl#getPortContainer <em>Port Container</em>}</li>
  * </ul>
  * </p>
  *
@@ -472,4 +472,4 @@ public abstract class ScaPortImpl< P extends AbstractPort, P2 extends org.omg.CO
 		return true;
 	}
 
-} //ScaPortImpl
+} // ScaPortImpl

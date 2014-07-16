@@ -12,6 +12,7 @@
 package gov.redhawk.ui.views.domainbrowser.view;
 
 import gov.redhawk.sca.ui.preferences.DomainSettingModel;
+import gov.redhawk.sca.ui.preferences.DomainSettingModel.ConnectionMode;
 
 import org.eclipse.core.databinding.Binding;
 import org.eclipse.core.databinding.DataBindingContext;
@@ -139,6 +140,14 @@ public class DomainEntryWizardPage extends WizardPage {
 
 	public String getDomainName() {
 		return this.model.getDomainName();
+	}
+	
+	public String getLocalDomainName() {
+		return this.model.getLocalDomainName();
+	}
+	
+	public ConnectionMode getConnectionMode() {
+		return this.model.getConnectionMode();
 	}
 	
 	/**

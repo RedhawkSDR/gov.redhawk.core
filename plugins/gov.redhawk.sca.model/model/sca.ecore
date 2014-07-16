@@ -803,6 +803,7 @@
         transient="true" unsettable="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="eventChannels" upperBound="-1"
         eType="#//ScaEventChannel" unsettable="true" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="localName" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     <eGenericSuperTypes eClassifier="#//ScaPropertyContainer">
       <eTypeArguments eClassifier="ecore:EClass platform:/plugin/mil.jpeojtrs.sca.cf/model/cf.ecore#//DomainManager"/>
       <eTypeArguments eClassifier="ecore:EClass platform:/plugin/mil.jpeojtrs.sca.dmd/model/dmd.ecore#//DomainManagerConfiguration"/>
@@ -833,6 +834,7 @@
       <eParameters name="domainName" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     </eOperations>
     <eOperations name="createDomain" eType="#//ScaDomainManager">
+      <eParameters name="localName" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
       <eParameters name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
       <eParameters name="autoConnect" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
       <eParameters name="connectionProperties">

@@ -201,7 +201,7 @@ public class InstallApplicationContentProvider implements ITreeContentProvider {
 						status.add(new Status(IStatus.ERROR, ScaUiPlugin.PLUGIN_ID, "Failed to load SAD files: " + exception.getMessage(), exception));
 					}
 				} catch (final DomainConnectionException e1) {
-					status.add(new Status(IStatus.ERROR, ScaUiPlugin.PLUGIN_ID, "Failed to connect to domain: " + domMgr.getName(), e1));
+					status.add(new Status(IStatus.ERROR, ScaUiPlugin.PLUGIN_ID, "Failed to connect to domain: " + domMgr.getLabel(), e1));
 				}
 			}
 			return Collections.emptyList();
@@ -252,7 +252,7 @@ public class InstallApplicationContentProvider implements ITreeContentProvider {
 					} catch (WrappedException we) {
 						String uriPath = child.toURI().getPath();
 						status.add(new Status(Status.WARNING, ScaUiPlugin.PLUGIN_ID,
-								"Failed to load SAD file: " + uriPath + " from Domain: " + domMgr.getName(), we));
+								"Failed to load SAD file: " + uriPath + " from Domain: " + domMgr.getLabel(), we));
 					}
 				}
 			} catch (final CoreException e) {

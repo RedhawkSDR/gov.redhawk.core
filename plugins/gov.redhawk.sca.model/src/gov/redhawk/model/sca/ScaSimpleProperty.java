@@ -24,7 +24,7 @@ import mil.jpeojtrs.sca.prf.Simple;
  * <p>
  * The following features are supported:
  * <ul>
- *   <li>{@link gov.redhawk.model.sca.ScaSimpleProperty#getValue <em>Value</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.ScaSimpleProperty#getValue <em>Value</em>}</li>
  * </ul>
  * </p>
  *
@@ -46,7 +46,7 @@ public interface ScaSimpleProperty extends ScaAbstractProperty<Simple> {
 	 * @see #setValue(Object)
 	 * @see gov.redhawk.model.sca.ScaPackage#getScaSimpleProperty_Value()
 	 * @model transient="true"
-	 *        extendedMetaData="kind='attribute' name='currentValue'"
+	 * extendedMetaData="kind='attribute' name='currentValue'"
 	 * @generated
 	 */
 	Object getValue();

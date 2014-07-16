@@ -67,7 +67,7 @@ public class ScaFileStoreEditorInput extends FileStoreEditorInput {
 	public String getToolTipText() {
 		ScaDomainManager domMgr = ScaEcoreUtils.getEContainerOfType(this.scaObject, ScaDomainManager.class);
 		if (domMgr != null) {
-			return domMgr.getName() + " - " + getURI().getPath();
+			return domMgr.getLabel() + " - " + getURI().getPath();
 		}
 		return getURI().getPath();
 	}

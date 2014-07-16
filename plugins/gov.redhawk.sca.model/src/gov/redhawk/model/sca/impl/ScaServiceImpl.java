@@ -88,9 +88,9 @@ import CF.PropertySetPackage.PartialConfiguration;
  * <p>
  * The following features are implemented:
  * <ul>
- *   <li>{@link gov.redhawk.model.sca.impl.ScaServiceImpl#getPorts <em>Ports</em>}</li>
- *   <li>{@link gov.redhawk.model.sca.impl.ScaServiceImpl#getName <em>Name</em>}</li>
- *   <li>{@link gov.redhawk.model.sca.impl.ScaServiceImpl#getDevMgr <em>Dev Mgr</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.impl.ScaServiceImpl#getPorts <em>Ports</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.impl.ScaServiceImpl#getName <em>Name</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.impl.ScaServiceImpl#getDevMgr <em>Dev Mgr</em>}</li>
  * </ul>
  * </p>
  *
@@ -492,7 +492,7 @@ public class ScaServiceImpl extends ScaPropertyContainerImpl<org.omg.CORBA.Objec
 	 * <!-- begin-user-doc -->
 	 * @since 18.0
 	 * <!-- end-user-doc -->
-	 * @throws InterruptedException 
+	 * @throws InterruptedException
 	 * @generated NOT
 	 */
 	protected void internalFetchPorts(IProgressMonitor monitor) {
@@ -688,7 +688,7 @@ public class ScaServiceImpl extends ScaPropertyContainerImpl<org.omg.CORBA.Objec
 
 	@Override
 	public void fetchAttributes(IProgressMonitor monitor) {
-		SubMonitor subMonitor = SubMonitor.convert(monitor, 2); //SUPPRESS CHECKSTYLE MagicNumber
+		SubMonitor subMonitor = SubMonitor.convert(monitor, 2); // SUPPRESS CHECKSTYLE MagicNumber
 		super.fetchAttributes(subMonitor.newChild(1));
 		fetchProfileObject(subMonitor.newChild(1));
 		fetchProperties(subMonitor.newChild(1));
@@ -709,4 +709,4 @@ public class ScaServiceImpl extends ScaPropertyContainerImpl<org.omg.CORBA.Objec
 		}
 	}
 
-} //ScaServiceImpl
+} // ScaServiceImpl

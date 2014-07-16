@@ -51,7 +51,7 @@ public class ActiveDomainPreferencePage extends FieldEditorPreferencePage implem
 					switch (msg.getEventType()) {
 					case Notification.REMOVE:
 						ScaDomainManager domainRemoved = (ScaDomainManager) msg.getOldValue();
-						if (domainRemoved.getName().equals(getActiveDomainName())) {
+						if (domainRemoved.getLabel().equals(getActiveDomainName())) {
 							setActiveDomain("");
 						}
 						activeDomainField.load();
@@ -59,7 +59,7 @@ public class ActiveDomainPreferencePage extends FieldEditorPreferencePage implem
 					case Notification.ADD:
 						if (getPreferenceStore().getBoolean(ScaSingleDomainPreferenceConstants.SCA_SET_NEW_DOMAIN_ACTIVE)) {
 							ScaDomainManager newDomain = (ScaDomainManager) msg.getNewValue();
-							setActiveDomain(newDomain.getName());
+							setActiveDomain(newDomain.getLabel());
 						} else {
 							setActiveDomain("");
 						}
@@ -125,8 +125,8 @@ public class ActiveDomainPreferencePage extends FieldEditorPreferencePage implem
 		domains.add(new String[] {"", ""});
 	    for (ScaDomainManager  domain : ScaPlugin.getDefault().getDomainManagerRegistry(getFieldEditorParent().getDisplay()).getDomains()) {
 	    	String[] nameValue = new String[2];
-	    	nameValue[0] = domain.getName();
-	    	nameValue[1] = domain.getName();
+	    	nameValue[0] = domain.getLabel();
+	    	nameValue[1] = domain.getLabel();
 	    	domains.add(nameValue);
 	    }
 	    return domains.toArray(new String[0][0]);

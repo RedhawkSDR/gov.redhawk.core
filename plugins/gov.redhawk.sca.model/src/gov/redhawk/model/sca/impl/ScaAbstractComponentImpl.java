@@ -96,10 +96,10 @@ import CF.TestableObjectPackage.UnknownTest;
  * <p>
  * The following features are implemented:
  * <ul>
- *   <li>{@link gov.redhawk.model.sca.impl.ScaAbstractComponentImpl#getPorts <em>Ports</em>}</li>
- *   <li>{@link gov.redhawk.model.sca.impl.ScaAbstractComponentImpl#getIdentifier <em>Identifier</em>}</li>
- *   <li>{@link gov.redhawk.model.sca.impl.ScaAbstractComponentImpl#getStarted <em>Started</em>}</li>
- *   <li>{@link gov.redhawk.model.sca.impl.ScaAbstractComponentImpl#getProfile <em>Profile</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.impl.ScaAbstractComponentImpl#getPorts <em>Ports</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.impl.ScaAbstractComponentImpl#getIdentifier <em>Identifier</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.impl.ScaAbstractComponentImpl#getStarted <em>Started</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.impl.ScaAbstractComponentImpl#getProfile <em>Profile</em>}</li>
  * </ul>
  * </p>
  *
@@ -247,7 +247,7 @@ public abstract class ScaAbstractComponentImpl< R extends Resource > extends Sca
 	public EList<ScaPort< ? , ? >> getPorts() {
 		if (ports == null) {
 			ports = new EObjectContainmentWithInverseEList.Unsettable<ScaPort< ? , ? >>(ScaPort.class, this, ScaPackage.SCA_ABSTRACT_COMPONENT__PORTS,
-					ScaPackage.SCA_PORT__PORT_CONTAINER);
+				ScaPackage.SCA_PORT__PORT_CONTAINER);
 		}
 		return ports;
 	}
@@ -858,7 +858,7 @@ public abstract class ScaAbstractComponentImpl< R extends Resource > extends Sca
 	 * <!-- begin-user-doc -->
 	 * @since 14.0
 	 * <!-- end-user-doc -->
-	 * @throws InterruptedException 
+	 * @throws InterruptedException
 	 * @generated NOT
 	 */
 	@Override
@@ -908,7 +908,7 @@ public abstract class ScaAbstractComponentImpl< R extends Resource > extends Sca
 	 * <!-- begin-user-doc -->
 	 * @since 14.0
 	 * <!-- end-user-doc -->
-	 * @throws InterruptedException 
+	 * @throws InterruptedException
 	 * @generated NOT
 	 */
 	protected void internalFetchPorts(IProgressMonitor monitor) {
@@ -990,7 +990,7 @@ public abstract class ScaAbstractComponentImpl< R extends Resource > extends Sca
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @throws InterruptedException 
+	 * @throws InterruptedException
 	 * @generated NOT
 	 */
 	@Override
@@ -1015,7 +1015,7 @@ public abstract class ScaAbstractComponentImpl< R extends Resource > extends Sca
 		super.notifyChanged(msg);
 		switch (msg.getFeatureID(ScaAbstractComponent.class)) {
 		case ScaPackage.SCA_ABSTRACT_COMPONENT__OBJ:
-			//			unsetIdentifier();
+			// unsetIdentifier();
 			unsetStarted();
 			unsetPorts();
 			break;
@@ -1050,8 +1050,7 @@ public abstract class ScaAbstractComponentImpl< R extends Resource > extends Sca
 	private final VersionedFeature profileObjectRevision = new VersionedFeature(this, ScaPackage.Literals.PROFILE_OBJECT_WRAPPER__PROFILE_OBJ);
 
 	/**
-	 * @generated NOT
-	 * {@inheritDoc}
+	 * @generated NOT {@inheritDoc}
 	 * @since 14.0
 	 */
 	@Override
@@ -1073,8 +1072,7 @@ public abstract class ScaAbstractComponentImpl< R extends Resource > extends Sca
 
 	/**
 	 * @since 19.0
-	 * @generated NOT
-	 * {@inheritDoc}
+	 * @generated NOT {@inheritDoc}
 	 */
 	@Override
 	public String fetchProfile(IProgressMonitor monitor) {

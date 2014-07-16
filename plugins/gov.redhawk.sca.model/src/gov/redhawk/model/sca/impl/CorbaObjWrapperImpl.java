@@ -57,10 +57,10 @@ import org.omg.CORBA.SystemException;
  * <p>
  * The following features are implemented:
  * <ul>
- *   <li>{@link gov.redhawk.model.sca.impl.CorbaObjWrapperImpl#getIor <em>Ior</em>}</li>
- *   <li>{@link gov.redhawk.model.sca.impl.CorbaObjWrapperImpl#getObj <em>Obj</em>}</li>
- *   <li>{@link gov.redhawk.model.sca.impl.CorbaObjWrapperImpl#getCorbaObj <em>Corba Obj</em>}</li>
- *   <li>{@link gov.redhawk.model.sca.impl.CorbaObjWrapperImpl#getFeatureData <em>Feature Data</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.impl.CorbaObjWrapperImpl#getIor <em>Ior</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.impl.CorbaObjWrapperImpl#getObj <em>Obj</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.impl.CorbaObjWrapperImpl#getCorbaObj <em>Corba Obj</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.impl.CorbaObjWrapperImpl#getFeatureData <em>Feature Data</em>}</li>
  * </ul>
  * </p>
  *
@@ -428,7 +428,7 @@ public abstract class CorbaObjWrapperImpl< T extends org.omg.CORBA.Object > exte
 
 	/**
 	 * <!-- begin-user-doc -->
-	 * @since 14.0 
+	 * @since 14.0
 	 * <!-- end-user-doc -->
 	 * @generated NOT
 	 */
@@ -477,7 +477,7 @@ public abstract class CorbaObjWrapperImpl< T extends org.omg.CORBA.Object > exte
 		}
 		Boolean isA = this.isAMap.get(repId);
 		if (isA == null) {
-			// Put a placeholder in so that if the call fails we assume it as false.  
+			// Put a placeholder in so that if the call fails we assume it as false.
 			// This will stop additional threads from being spawned
 			isAMap.put(repId, false);
 			Callable<Boolean> callable = new Callable<Boolean>() {
@@ -630,14 +630,16 @@ public abstract class CorbaObjWrapperImpl< T extends org.omg.CORBA.Object > exte
 			result.append("<unset>");
 		}
 		result.append(", obj: ");
-		//NOTE: DO NOT DO TO STRING on a CORBA Object, this is a potentially blocking operation.  Just return if the value is set
+		// NOTE: DO NOT DO TO STRING on a CORBA Object, this is a potentially blocking operation. Just return if the
+		// value is set
 		if (objESet) {
 			result.append("<set>");
 		} else {
 			result.append("<unset>");
 		}
 		result.append(", corbaObj: ");
-		// NOTE: DO NOT DO TO STRING on a CORBA Object, this is a potentially blocking operation.  Just return if the value is set
+		// NOTE: DO NOT DO TO STRING on a CORBA Object, this is a potentially blocking operation. Just return if the
+		// value is set
 		if (corbaObjESet) {
 			result.append("<set>");
 		} else {
@@ -651,11 +653,10 @@ public abstract class CorbaObjWrapperImpl< T extends org.omg.CORBA.Object > exte
 	/**
 	 * Called by {@link #setObj(org.omg.CORBA.Object)}. Sub classes should
 	 * return the narrowed version of the passed in obj. The returned value will
-	 * be assigned as the new value and be able to be fetched by
-	 * {@link #getObj()}.
+	 * be assigned as the new value and be able to be fetched by {@link #getObj()}.
 	 * 
 	 * @param obj
-	 *            Object to narrow
+	 * Object to narrow
 	 * @return The narrowed object
 	 */
 	protected abstract T narrow(org.omg.CORBA.Object obj);

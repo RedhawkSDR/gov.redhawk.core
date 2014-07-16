@@ -22,7 +22,7 @@ import org.omg.CosEventChannelAdmin.EventChannel;
  * <p>
  * The following features are supported:
  * <ul>
- *   <li>{@link gov.redhawk.model.sca.ScaEventChannel#getName <em>Name</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.ScaEventChannel#getName <em>Name</em>}</li>
  * </ul>
  * </p>
  *

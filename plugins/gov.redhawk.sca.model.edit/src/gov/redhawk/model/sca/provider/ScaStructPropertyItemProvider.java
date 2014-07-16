@@ -15,23 +15,13 @@ package gov.redhawk.model.sca.provider;
 import gov.redhawk.model.sca.ScaPackage;
 import gov.redhawk.model.sca.ScaStructProperty;
 import gov.redhawk.model.sca.ScaStructSequenceProperty;
-
 import java.util.Collection;
 import java.util.List;
-
 import org.eclipse.emf.common.notify.AdapterFactory;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.edit.provider.ComposeableAdapterFactory;
-import org.eclipse.emf.edit.provider.IEditingDomainItemProvider;
-import org.eclipse.emf.edit.provider.IItemColorProvider;
-import org.eclipse.emf.edit.provider.IItemLabelProvider;
 import org.eclipse.emf.edit.provider.IItemPropertyDescriptor;
-import org.eclipse.emf.edit.provider.IItemPropertySource;
-import org.eclipse.emf.edit.provider.IStructuredItemContentProvider;
-import org.eclipse.emf.edit.provider.ITableItemColorProvider;
-import org.eclipse.emf.edit.provider.ITableItemLabelProvider;
-import org.eclipse.emf.edit.provider.ITreeItemContentProvider;
 import org.eclipse.emf.edit.provider.ItemPropertyDescriptor;
 import org.eclipse.emf.edit.provider.ViewerNotification;
 
@@ -42,8 +32,7 @@ import org.eclipse.emf.edit.provider.ViewerNotification;
  * <!-- end-user-doc -->
  * @generated
  */
-public class ScaStructPropertyItemProvider extends ScaAbstractPropertyItemProvider implements IEditingDomainItemProvider, IStructuredItemContentProvider,
-		ITreeItemContentProvider, IItemLabelProvider, IItemPropertySource, ITableItemLabelProvider, ITableItemColorProvider, IItemColorProvider {
+public class ScaStructPropertyItemProvider extends ScaAbstractPropertyItemProvider {
 
 	/**
 	 * This constructs an instance from a factory and a notifier.
@@ -147,7 +136,9 @@ public class ScaStructPropertyItemProvider extends ScaAbstractPropertyItemProvid
 			ScaStructSequenceProperty parent = (ScaStructSequenceProperty) prop.eContainer();
 			int max = parent.getStructs().size();
 			int index = parent.getStructs().indexOf(prop);
-			final String fmt = (max < 10) ? "%s [%d]" : "%s [%0" + (int) Math.ceil(Math.log10(max)) + "d]"; // SUPPRESS CHECKSTYLE AvoidInline
+			final String fmt = (max < 10) ? "%s [%d]" : "%s [%0" + (int) Math.ceil(Math.log10(max)) + "d]"; // SUPPRESS
+																											// CHECKSTYLE
+																											// AvoidInline
 			label = String.format(fmt, label, index);
 		}
 		return label;

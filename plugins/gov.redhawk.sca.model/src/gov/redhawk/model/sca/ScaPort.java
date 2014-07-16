@@ -23,16 +23,16 @@ import mil.jpeojtrs.sca.scd.AbstractPort;
  * <p>
  * The following features are supported:
  * <ul>
- *   <li>{@link gov.redhawk.model.sca.ScaPort#getName <em>Name</em>}</li>
- *   <li>{@link gov.redhawk.model.sca.ScaPort#getProfileObj <em>Profile Obj</em>}</li>
- *   <li>{@link gov.redhawk.model.sca.ScaPort#getRepid <em>Repid</em>}</li>
- *   <li>{@link gov.redhawk.model.sca.ScaPort#getPortContainer <em>Port Container</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.ScaPort#getName <em>Name</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.ScaPort#getProfileObj <em>Profile Obj</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.ScaPort#getRepid <em>Repid</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.ScaPort#getPortContainer <em>Port Container</em>}</li>
  * </ul>
  * </p>
  *
  * @see gov.redhawk.model.sca.ScaPackage#getScaPort()
  * @model abstract="true" P2Bounds="mil.jpeojtrs.sca.cf.Object"
- *        extendedMetaData="name='ScaPort' kind='empty'"
+ * extendedMetaData="name='ScaPort' kind='empty'"
  * @generated
  */
 public interface ScaPort< P extends AbstractPort, P2 extends org.omg.CORBA.Object > extends CorbaObjWrapper<P2> {
@@ -49,7 +49,7 @@ public interface ScaPort< P extends AbstractPort, P2 extends org.omg.CORBA.Objec
 	 * @see #setName(String)
 	 * @see gov.redhawk.model.sca.ScaPackage#getScaPort_Name()
 	 * @model required="true"
-	 *        extendedMetaData="kind='attribute' name='name'"
+	 * extendedMetaData="kind='attribute' name='name'"
 	 * @generated
 	 */
 	String getName();
@@ -77,7 +77,7 @@ public interface ScaPort< P extends AbstractPort, P2 extends org.omg.CORBA.Objec
 	 * @see #setProfileObj(AbstractPort)
 	 * @see gov.redhawk.model.sca.ScaPackage#getScaPort_ProfileObj()
 	 * @model transient="true"
-	 *        extendedMetaData="kind='attribute' name='profileObj'"
+	 * extendedMetaData="kind='attribute' name='profileObj'"
 	 * @generated
 	 */
 	P getProfileObj();
@@ -103,7 +103,7 @@ public interface ScaPort< P extends AbstractPort, P2 extends org.omg.CORBA.Objec
 	 * @return the value of the '<em>Repid</em>' attribute.
 	 * @see gov.redhawk.model.sca.ScaPackage#getScaPort_Repid()
 	 * @model required="true" transient="true" changeable="false" volatile="true" derived="true"
-	 *        extendedMetaData="kind='attribute' name='repid'"
+	 * extendedMetaData="kind='attribute' name='repid'"
 	 * @generated
 	 */
 	String getRepid();
@@ -127,7 +127,8 @@ public interface ScaPort< P extends AbstractPort, P2 extends org.omg.CORBA.Objec
 	ScaPortContainer getPortContainer();
 
 	/**
-	 * Sets the value of the '{@link gov.redhawk.model.sca.ScaPort#getPortContainer <em>Port Container</em>}' container reference.
+	 * Sets the value of the '{@link gov.redhawk.model.sca.ScaPort#getPortContainer <em>Port Container</em>}' container
+	 * reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @param value the new value of the '<em>Port Container</em>' container reference.

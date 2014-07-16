@@ -66,11 +66,13 @@ import CF.ResourceHelper;
  * <p>
  * The following features are implemented:
  * <ul>
- *   <li>{@link gov.redhawk.model.sca.impl.ScaComponentImpl#getComponentInstantiation <em>Component Instantiation</em>}</li>
- *   <li>{@link gov.redhawk.model.sca.impl.ScaComponentImpl#getDevices <em>Devices</em>}</li>
- *   <li>{@link gov.redhawk.model.sca.impl.ScaComponentImpl#getInstantiationIdentifier <em>Instantiation Identifier</em>}</li>
- *   <li>{@link gov.redhawk.model.sca.impl.ScaComponentImpl#getWaveform <em>Waveform</em>}</li>
- *   <li>{@link gov.redhawk.model.sca.impl.ScaComponentImpl#getName <em>Name</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.impl.ScaComponentImpl#getComponentInstantiation <em>Component Instantiation</em>}
+ * </li>
+ * <li>{@link gov.redhawk.model.sca.impl.ScaComponentImpl#getDevices <em>Devices</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.impl.ScaComponentImpl#getInstantiationIdentifier <em>Instantiation Identifier</em>}
+ * </li>
+ * <li>{@link gov.redhawk.model.sca.impl.ScaComponentImpl#getWaveform <em>Waveform</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.impl.ScaComponentImpl#getName <em>Name</em>}</li>
  * </ul>
  * </p>
  *
@@ -385,7 +387,7 @@ public class ScaComponentImpl extends ScaAbstractComponentImpl<Resource> impleme
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @throws InterruptedException 
+	 * @throws InterruptedException
 	 * @generated NOT
 	 */
 	@Override
@@ -441,7 +443,7 @@ public class ScaComponentImpl extends ScaAbstractComponentImpl<Resource> impleme
 	 * <!-- begin-user-doc -->
 	 * @since 14.0
 	 * <!-- end-user-doc -->
-	 * @throws InterruptedException 
+	 * @throws InterruptedException
 	 * @generated NOT
 	 */
 	@Override
@@ -758,4 +760,4 @@ public class ScaComponentImpl extends ScaAbstractComponentImpl<Resource> impleme
 		}
 	}
 
-} //ScaComponentImpl
+} // ScaComponentImpl

@@ -154,7 +154,7 @@ public class ScaPreferenceInitializer extends AbstractPreferenceInitializer {
 			nameServiceRef = CorbaURIUtil.addDefaultPrefix(nameServiceRef);
 			nameServiceRef = CorbaURIUtil.addDefaultPort(nameServiceRef);
 			final Map<String, String> connectionProperties = Collections.singletonMap(ScaDomainManager.NAMING_SERVICE_PROP, nameServiceRef);
-			retVal.createDomain(def.getDomainName(), false, connectionProperties);
+			retVal.createDomain(def.getLocalDomainName(), def.getDomainName(), false, connectionProperties);
 		}
 
 	}

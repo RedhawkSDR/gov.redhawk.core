@@ -64,18 +64,18 @@ import CF.DevicePackage.UsageType;
 /**
  * <!-- begin-user-doc --> An implementation of the model object '
  * <em><b>Device</b></em>'.
- * @since 12.0 
+ * @since 12.0
  * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
  * <ul>
- *   <li>{@link gov.redhawk.model.sca.impl.ScaDeviceImpl#getChildDevices <em>Child Devices</em>}</li>
- *   <li>{@link gov.redhawk.model.sca.impl.ScaDeviceImpl#getAdminState <em>Admin State</em>}</li>
- *   <li>{@link gov.redhawk.model.sca.impl.ScaDeviceImpl#getLabel <em>Label</em>}</li>
- *   <li>{@link gov.redhawk.model.sca.impl.ScaDeviceImpl#getOperationalState <em>Operational State</em>}</li>
- *   <li>{@link gov.redhawk.model.sca.impl.ScaDeviceImpl#getUsageState <em>Usage State</em>}</li>
- *   <li>{@link gov.redhawk.model.sca.impl.ScaDeviceImpl#getParentDevice <em>Parent Device</em>}</li>
- *   <li>{@link gov.redhawk.model.sca.impl.ScaDeviceImpl#getDevMgr <em>Dev Mgr</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.impl.ScaDeviceImpl#getChildDevices <em>Child Devices</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.impl.ScaDeviceImpl#getAdminState <em>Admin State</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.impl.ScaDeviceImpl#getLabel <em>Label</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.impl.ScaDeviceImpl#getOperationalState <em>Operational State</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.impl.ScaDeviceImpl#getUsageState <em>Usage State</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.impl.ScaDeviceImpl#getParentDevice <em>Parent Device</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.impl.ScaDeviceImpl#getDevMgr <em>Dev Mgr</em>}</li>
  * </ul>
  * </p>
  *
@@ -542,13 +542,13 @@ public class ScaDeviceImpl< D extends Device > extends ScaAbstractComponentImpl<
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @throws InterruptedException 
+	 * @throws InterruptedException
 	 * @generated NOT
 	 */
 	@Override
 	public void fetchAttributes(IProgressMonitor monitor) {
 		// END GENERATED CODE
-		SubMonitor subMonitor = SubMonitor.convert(monitor, 6); //SUPPRESS CHECKSTYLE MagicNumber
+		SubMonitor subMonitor = SubMonitor.convert(monitor, 6); // SUPPRESS CHECKSTYLE MagicNumber
 		super.fetchAttributes(subMonitor.newChild(1));
 		fetchAdminState(subMonitor.newChild(1));
 		fetchLabel(subMonitor.newChild(1));
@@ -774,7 +774,7 @@ public class ScaDeviceImpl< D extends Device > extends ScaAbstractComponentImpl<
 			return;
 		}
 
-		SubMonitor subMonitor = SubMonitor.convert(monitor, 2); //SUPPRESS CHECKSTYLE MagicNumber
+		SubMonitor subMonitor = SubMonitor.convert(monitor, 2); // SUPPRESS CHECKSTYLE MagicNumber
 		final org.omg.CORBA.Object localObj = getCorbaObj();
 		Transaction transaction = aggregateDevicesRevision.createTransaction();
 		if (localObj != null) {

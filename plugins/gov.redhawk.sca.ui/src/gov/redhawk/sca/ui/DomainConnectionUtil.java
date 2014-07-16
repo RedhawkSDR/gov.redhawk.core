@@ -44,19 +44,29 @@ public class DomainConnectionUtil {
 	 * @deprecated Use new {@link #showDialog(Display, String, String)}
 	 */
 	@Deprecated
-	public static void showDialog(final String host, final String domainName) {
-		DomainConnectionUtil.showDialog(null, host, domainName);
+	public static void showDialog(final String host, final String domainName, String localName) {
+		DomainConnectionUtil.showDialog(null, host, domainName, localName);
+	}
+	
+	/**
+	 * @deprecated Use {@link #showDialog(Display, String, String, String)} instead.
+	 * @since 9.3
+	 */
+	@Deprecated
+	public static void showDialog(Display context, final String host, final String domainName) {
+		showDialog(context, host, domainName, null);
 	}
 
 	/**
 	 * @since 9.3
 	 */
-	public static void showDialog(Display context, final String host, final String domainName) {
+	public static void showDialog(Display context, final String host, final String domainName, final String localName) {
 		final DomainEntryWizard wizard = new DomainEntryWizard();
 		final ScaDomainManagerRegistry registry = ScaPlugin.getDefault().getDomainManagerRegistry(context);
 		wizard.setNameServiceInitRef(host);
 		wizard.setRegistry(registry);
 		wizard.setDomainName(domainName);
+		wizard.setLocalDomainName(localName);
 		wizard.setShowExtraSettings(true);
 		wizard.setWindowTitle("Edit Domain Manager");
 
@@ -76,7 +86,7 @@ public class DomainConnectionUtil {
 						final ScaDomainManager domain = ScaModelCommandWithResult.execute(registry, new ScaModelCommandWithResult<ScaDomainManager>() {
 							@Override
 							public void execute() {
-								setResult(registry.createDomain(domainName, autoConnect, connectionProperties));
+								setResult(registry.createDomain(localName, domainName, autoConnect, connectionProperties));
 							}
 						});
 						if (domain != null) {

@@ -26,9 +26,9 @@ import ExtendedCF.UsesConnection;
  * <p>
  * The following features are supported:
  * <ul>
- *   <li>{@link gov.redhawk.model.sca.ScaConnection#getData <em>Data</em>}</li>
- *   <li>{@link gov.redhawk.model.sca.ScaConnection#getId <em>Id</em>}</li>
- *   <li>{@link gov.redhawk.model.sca.ScaConnection#getPort <em>Port</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.ScaConnection#getData <em>Data</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.ScaConnection#getId <em>Id</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.ScaConnection#getPort <em>Port</em>}</li>
  * </ul>
  * </p>
  *
@@ -81,7 +81,8 @@ public interface ScaConnection extends EObject {
 
 	/**
 	 * Returns the value of the '<em><b>Port</b></em>' container reference.
-	 * It is bidirectional and its opposite is '{@link gov.redhawk.model.sca.ScaUsesPort#getConnections <em>Connections</em>}'.
+	 * It is bidirectional and its opposite is '{@link gov.redhawk.model.sca.ScaUsesPort#getConnections
+	 * <em>Connections</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <p>
 	 * If the meaning of the '<em>Port</em>' container reference isn't clear,

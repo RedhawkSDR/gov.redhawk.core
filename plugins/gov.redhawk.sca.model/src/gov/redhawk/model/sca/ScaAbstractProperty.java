@@ -31,18 +31,18 @@ import CF.PropertySetPackage.PartialConfiguration;
  * <p>
  * The following features are supported:
  * <ul>
- *   <li>{@link gov.redhawk.model.sca.ScaAbstractProperty#getDefinition <em>Definition</em>}</li>
- *   <li>{@link gov.redhawk.model.sca.ScaAbstractProperty#getDescription <em>Description</em>}</li>
- *   <li>{@link gov.redhawk.model.sca.ScaAbstractProperty#getId <em>Id</em>}</li>
- *   <li>{@link gov.redhawk.model.sca.ScaAbstractProperty#getMode <em>Mode</em>}</li>
- *   <li>{@link gov.redhawk.model.sca.ScaAbstractProperty#getName <em>Name</em>}</li>
- *   <li>{@link gov.redhawk.model.sca.ScaAbstractProperty#isIgnoreRemoteSet <em>Ignore Remote Set</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.ScaAbstractProperty#getDefinition <em>Definition</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.ScaAbstractProperty#getDescription <em>Description</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.ScaAbstractProperty#getId <em>Id</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.ScaAbstractProperty#getMode <em>Mode</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.ScaAbstractProperty#getName <em>Name</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.ScaAbstractProperty#isIgnoreRemoteSet <em>Ignore Remote Set</em>}</li>
  * </ul>
  * </p>
  *
  * @see gov.redhawk.model.sca.ScaPackage#getScaAbstractProperty()
  * @model abstract="true"
- *        extendedMetaData="name='ScaProperty' kind='empty'"
+ * extendedMetaData="name='ScaProperty' kind='empty'"
  * @generated
  */
 public interface ScaAbstractProperty< T extends AbstractProperty > extends IStatusProvider {
@@ -59,13 +59,14 @@ public interface ScaAbstractProperty< T extends AbstractProperty > extends IStat
 	 * @see #setDefinition(AbstractProperty)
 	 * @see gov.redhawk.model.sca.ScaPackage#getScaAbstractProperty_Definition()
 	 * @model transient="true"
-	 *        extendedMetaData="kind='attribute' name='definition'"
+	 * extendedMetaData="kind='attribute' name='definition'"
 	 * @generated
 	 */
 	T getDefinition();
 
 	/**
-	 * Sets the value of the '{@link gov.redhawk.model.sca.ScaAbstractProperty#getDefinition <em>Definition</em>}' reference.
+	 * Sets the value of the '{@link gov.redhawk.model.sca.ScaAbstractProperty#getDefinition <em>Definition</em>}'
+	 * reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @param value the new value of the '<em>Definition</em>' reference.
@@ -86,13 +87,14 @@ public interface ScaAbstractProperty< T extends AbstractProperty > extends IStat
 	 * @see #setDescription(String)
 	 * @see gov.redhawk.model.sca.ScaPackage#getScaAbstractProperty_Description()
 	 * @model transient="true"
-	 *        extendedMetaData="kind='attribute' name='description'"
+	 * extendedMetaData="kind='attribute' name='description'"
 	 * @generated
 	 */
 	String getDescription();
 
 	/**
-	 * Sets the value of the '{@link gov.redhawk.model.sca.ScaAbstractProperty#getDescription <em>Description</em>}' attribute.
+	 * Sets the value of the '{@link gov.redhawk.model.sca.ScaAbstractProperty#getDescription <em>Description</em>}'
+	 * attribute.
 	 * <!-- begin-user-doc -->
 	 * @since 16.0
 	 * <!-- end-user-doc -->
@@ -114,7 +116,7 @@ public interface ScaAbstractProperty< T extends AbstractProperty > extends IStat
 	 * @see #setId(String)
 	 * @see gov.redhawk.model.sca.ScaPackage#getScaAbstractProperty_Id()
 	 * @model transient="true"
-	 *        extendedMetaData="kind='attribute' name='id'"
+	 * extendedMetaData="kind='attribute' name='id'"
 	 * @generated
 	 */
 	String getId();
@@ -144,7 +146,7 @@ public interface ScaAbstractProperty< T extends AbstractProperty > extends IStat
 	 * @see #setMode(AccessType)
 	 * @see gov.redhawk.model.sca.ScaPackage#getScaAbstractProperty_Mode()
 	 * @model transient="true"
-	 *        extendedMetaData="kind='attribute' name='mode'"
+	 * extendedMetaData="kind='attribute' name='mode'"
 	 * @generated
 	 */
 	AccessType getMode();
@@ -173,7 +175,7 @@ public interface ScaAbstractProperty< T extends AbstractProperty > extends IStat
 	 * @see #setName(String)
 	 * @see gov.redhawk.model.sca.ScaPackage#getScaAbstractProperty_Name()
 	 * @model transient="true"
-	 *        extendedMetaData="kind='attribute' name='name'"
+	 * extendedMetaData="kind='attribute' name='name'"
 	 * @generated
 	 */
 	String getName();
@@ -206,7 +208,8 @@ public interface ScaAbstractProperty< T extends AbstractProperty > extends IStat
 	boolean isIgnoreRemoteSet();
 
 	/**
-	 * Sets the value of the '{@link gov.redhawk.model.sca.ScaAbstractProperty#isIgnoreRemoteSet <em>Ignore Remote Set</em>}' attribute.
+	 * Sets the value of the '{@link gov.redhawk.model.sca.ScaAbstractProperty#isIgnoreRemoteSet <em>Ignore Remote
+	 * Set</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @param value the new value of the '<em>Ignore Remote Set</em>' attribute.
@@ -234,7 +237,8 @@ public interface ScaAbstractProperty< T extends AbstractProperty > extends IStat
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @model exceptions="mil.jpeojtrs.sca.cf.PartialConfiguration mil.jpeojtrs.sca.cf.InvalidConfiguration" anyDataType="gov.redhawk.model.sca.Any"
+	 * @model exceptions="mil.jpeojtrs.sca.cf.PartialConfiguration mil.jpeojtrs.sca.cf.InvalidConfiguration"
+	 * anyDataType="gov.redhawk.model.sca.Any"
 	 * @generated
 	 */
 	void setRemoteValue(Any any) throws PartialConfiguration, InvalidConfiguration;

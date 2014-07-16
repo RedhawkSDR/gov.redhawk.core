@@ -36,12 +36,12 @@ import CF.FileManager;
 /**
  * <!-- begin-user-doc -->
  * An implementation of the model object '<em><b>Domain Manager File System</b></em>'.
- *  @since 12.0
+ * @since 12.0
  * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
  * <ul>
- *   <li>{@link gov.redhawk.model.sca.impl.ScaDomainManagerFileSystemImpl#getDomMgr <em>Dom Mgr</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.impl.ScaDomainManagerFileSystemImpl#getDomMgr <em>Dom Mgr</em>}</li>
  * </ul>
  * </p>
  *
@@ -242,7 +242,7 @@ public class ScaDomainManagerFileSystemImpl extends ScaFileManagerImpl implement
 		ScaDomainManager localDomMgr = getDomMgr();
 		String dmName = null;
 		if (localDomMgr != null) {
-			dmName = localDomMgr.getName();
+			dmName = localDomMgr.getLabel();
 		}
 		try {
 			return createFileSystemURI(ior, dmName);
@@ -278,4 +278,4 @@ public class ScaDomainManagerFileSystemImpl extends ScaFileManagerImpl implement
 		}
 	}
 
-} //ScaDomainManagerFileSystemImpl
+} // ScaDomainManagerFileSystemImpl

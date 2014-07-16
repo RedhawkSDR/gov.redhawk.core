@@ -23,10 +23,10 @@ import org.eclipse.core.databinding.UpdateValueStrategy;
 import org.eclipse.core.databinding.beans.BeansObservables;
 import org.eclipse.core.databinding.validation.IValidator;
 import org.eclipse.core.databinding.validation.ValidationStatus;
-import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
-import org.eclipse.core.runtime.Status;
+import org.eclipse.jface.databinding.fieldassist.ControlDecorationSupport;
 import org.eclipse.jface.databinding.swt.SWTObservables;
+import org.eclipse.jface.databinding.wizard.WizardPageSupport;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionEvent;
@@ -39,7 +39,6 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
-import org.eclipse.ui.progress.UIJob;
 
 /**
  * @since 7.0
@@ -51,9 +50,17 @@ public class DomainEntryWizardPage extends WizardPage {
 	private boolean showExtraSettings;
 	private final DataBindingContext context = new DataBindingContext();
 	private List<String> domainNames;
-	private String editDomainName = null;
-	private String editInitRef = null;
-	private final String[] errors;
+	private String editLocalDomainName = null;
+	private static final IValidator NON_EMPTY_STRING = new IValidator() {
+
+		@Override
+		public IStatus validate(Object value) {
+			if (((String) value).isEmpty()) {
+				return ValidationStatus.error("Missing value.");
+			}
+			return ValidationStatus.ok();
+		}
+	};
 
 	/**
 	 * Instantiates a host entry dialog.
@@ -65,7 +72,6 @@ public class DomainEntryWizardPage extends WizardPage {
 		super(pageName, "Domain Manager Connection Settings", null);
 		this.setDescription("Enter the settings for the Domain Manager.");
 		this.domainNames = new ArrayList<String>();
-		this.errors = new String[2];
 	}
 
 	public void setShowExtraSettings(final boolean showExtraSettings) {
@@ -91,99 +97,77 @@ public class DomainEntryWizardPage extends WizardPage {
 		container.setLayout(gridLayout);
 		container.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
 
+		final Label localDomainNameLabel = new Label(container, SWT.NONE);
+		localDomainNameLabel.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, false));
+		localDomainNameLabel.setText("Domaing Name:");
+
+		final Text localDomainNameField = new Text(container, SWT.BORDER);
+		localDomainNameField.setToolTipText("Name that this domain will be displayed as locally.");
+		localDomainNameField.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false, 1, 1));
+
 		final Label domainNameLabel = new Label(container, SWT.NONE);
 		domainNameLabel.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, false));
-		domainNameLabel.setText("Domain Name:");
+		domainNameLabel.setText("Domain Naming Service Reference:");
 
 		final Text domainNameField = new Text(container, SWT.BORDER);
+		domainNameField.setToolTipText("Name the domain is registered as within the naming service.");
 		domainNameField.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false, 1, 1));
-		UpdateValueStrategy validator = new UpdateValueStrategy();
+
+		context.bindValue(SWTObservables.observeText(localDomainNameField, SWT.Modify), SWTObservables.observeText(domainNameField, SWT.Modify), null,
+			new UpdateValueStrategy(UpdateValueStrategy.POLICY_NEVER));
 
 		final Label nameServiceLabel = new Label(container, SWT.NONE);
 		nameServiceLabel.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, false));
 		nameServiceLabel.setText("Name Service Initial Reference:");
 
 		final Text nameServiceField = new Text(container, SWT.BORDER);
+		nameServiceField.setToolTipText("The CORBA URI that points to the naming service.  This is usually of the form 'corbaname::<hostname>'");
 		nameServiceField.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 
 		// Add the domainName validator, needs to reference the initref
+		UpdateValueStrategy validator = new UpdateValueStrategy();
 		validator.setAfterConvertValidator(new IValidator() {
 
 			@Override
 			public IStatus validate(final Object value) {
-				try {
-					final String name = (String) value;
-					if ((name == null) || (name.length() == 0)) {
-						DomainEntryWizardPage.this.errors[0] = "Must enter a domain name.";
-						return ValidationStatus.error(DomainEntryWizardPage.this.errors[0]);
-					}
-
-					final boolean contained = DomainEntryWizardPage.this.domainNames.contains(name);
-					// if we're not editing, the domain name must be different
-					if (DomainEntryWizardPage.this.editDomainName == null) {
-						if (contained) {
-							DomainEntryWizardPage.this.errors[0] = "Domain Name already exists, please enter another.";
-							return ValidationStatus.error(DomainEntryWizardPage.this.errors[0]);
-						}
-					} else {
-						// If we are editing, the domain name can be the same, but it must
-						// match the edited domain name and the initRef must be different
-						final boolean initRefSame = DomainEntryWizardPage.this.editInitRef.equals(DomainEntryWizardPage.this.model.getNameServiceInitRef());
-						if (contained && !(name.equals(DomainEntryWizardPage.this.editDomainName) && !initRefSame)) {
-							DomainEntryWizardPage.this.errors[0] = "Domain Name already exists, please enter another.";
-							return ValidationStatus.error(DomainEntryWizardPage.this.errors[0]);
-						}
-					}
-					DomainEntryWizardPage.this.errors[0] = null;
-
-					return ValidationStatus.ok();
-				} finally {
-					DomainEntryWizardPage.this.updateMessage();
+				final String name = (String) value;
+				if ((name == null) || (name.length() == 0)) {
+					return ValidationStatus.error("Must enter a domain name.");
 				}
+
+				// if we're not editing, the domain name must be different
+				if (name.equals(DomainEntryWizardPage.this.editLocalDomainName)) {
+					return ValidationStatus.ok();
+				} else if (DomainEntryWizardPage.this.domainNames.contains(name)) {
+					return ValidationStatus.error("Domain Name already exists, please enter another.");
+				}
+
+				return ValidationStatus.ok();
 			}
 		});
-		final Binding nameBinding = this.context.bindValue(SWTObservables.observeText(domainNameField, SWT.Modify),
-		        BeansObservables.observeValue(this.model, DomainSettingModel.PROP_DOMAIN_NAME), validator, null);
+		Binding binding = this.context.bindValue(SWTObservables.observeText(localDomainNameField, SWT.Modify),
+			BeansObservables.observeValue(this.model, DomainSettingModel.PROP_LOCAL_DOMAIN_NAME), validator, null);
+		ControlDecorationSupport.create(binding, SWT.TOP | SWT.LEFT);
 
-		// Add the InitRef validator
 		validator = new UpdateValueStrategy();
-		validator.setAfterConvertValidator(new IValidator() {
+		validator.setAfterConvertValidator(NON_EMPTY_STRING);
+		binding = this.context.bindValue(SWTObservables.observeText(domainNameField, SWT.Modify),
+			BeansObservables.observeValue(this.model, DomainSettingModel.PROP_DOMAIN_NAME), validator, null);
+		ControlDecorationSupport.create(binding, SWT.TOP | SWT.LEFT);
 
-			@Override
-			public IStatus validate(final Object value) {
-				final int WAIT_TIME = 100;
-				try {
-					final String newValue = (String) value;
-					if (newValue == null || newValue.length() == 0) {
-						DomainEntryWizardPage.this.errors[1] = "Must enter a Name Service Initial Reference.";
-						return ValidationStatus.error(DomainEntryWizardPage.this.errors[1]);
-					}
-					DomainEntryWizardPage.this.errors[1] = null;
-
-					if (DomainEntryWizardPage.this.editDomainName != null) {
-						final UIJob j = new UIJob(getShell().getDisplay(), "Revalidate Domain Name") {
-							@Override
-							public IStatus runInUIThread(final IProgressMonitor monitor) {
-								nameBinding.validateTargetToModel();
-								return Status.OK_STATUS;
-							}
-						};
-						j.schedule(WAIT_TIME);
-					}
-					return ValidationStatus.ok();
-				} finally {
-					DomainEntryWizardPage.this.updateMessage();
-				}
-			}
-		});
-		this.context.bindValue(SWTObservables.observeText(nameServiceField, SWT.Modify),
-		        BeansObservables.observeValue(this.model, DomainSettingModel.PROP_NAME_SERVICE_INIT_REF), validator, null);
+		validator = new UpdateValueStrategy();
+		validator.setAfterConvertValidator(NON_EMPTY_STRING);
+		binding = this.context.bindValue(SWTObservables.observeText(nameServiceField, SWT.Modify),
+			BeansObservables.observeValue(this.model, DomainSettingModel.PROP_NAME_SERVICE_INIT_REF), validator, null);
+		ControlDecorationSupport.create(binding, SWT.TOP | SWT.LEFT);
 
 		if (this.showExtraSettings) {
 			createConnectionSettingsGroup(container);
 		}
 
 		setControl(container);
+
+		WizardPageSupport.create(this, context);
 	}
 
 	private void createConnectionSettingsGroup(final Composite parent) {
@@ -263,6 +247,14 @@ public class DomainEntryWizardPage extends WizardPage {
 		this.model.setDomainName(domainName);
 	}
 
+	public void setLocalDomainName(String name) {
+		model.setLocalDomainName(name);
+	}
+
+	public String getLocalDomainName() {
+		return model.getLocalDomainName();
+	}
+
 	public ConnectionMode getConnectionMode() {
 		return this.model.getConnectionMode();
 	}
@@ -272,7 +264,7 @@ public class DomainEntryWizardPage extends WizardPage {
 	}
 
 	/**
-	 * This sets the list of domain names that are to be checked against for 
+	 * This sets the list of domain names that are to be checked against for
 	 * duplicates.
 	 * 
 	 * @param domainNames a List of domain names
@@ -283,36 +275,23 @@ public class DomainEntryWizardPage extends WizardPage {
 	}
 
 	/**
-	 * This updates the page's error message and completion status. It is used
-	 * to validate two fields at the same time since editing the initRef could
-	 * make two domain names being the same a valid scenario (the original one
-	 * is removed).
-	 * @since 8.0
-	 */
-	protected void updateMessage() {
-		final boolean error = (this.errors[0] != null) || (this.errors[1] != null);
-		if (error) {
-			setErrorMessage((this.errors[0] != null) ? this.errors[0] : this.errors[1]); // SUPPRESS CHECKSTYLE AvoidInline
-		} else {
-			setErrorMessage(null);
-		}
-
-		setPageComplete(!error);
-	}
-
-	/**
-	 * This configures the wizard page to edit a connection, as opposed to 
+	 * This configures the wizard page to edit a connection, as opposed to
 	 * creating a new one.
 	 * 
 	 * @param domainName the Domain Name of the connection
 	 * @param initRef the NameService Initial Reference of the connection
 	 * @since 8.0
 	 */
-	public void setEdit(final String domainName, final String initRef) {
-		this.model.setNameServiceInitRef(initRef);
+	public void setEdit(final String name, final String domainName, final String initRef) {
+		if (name != null) {
+			this.model.setLocalDomainName(name);
+			this.editLocalDomainName = name;
+		} else {
+			this.model.setLocalDomainName(domainName);
+			this.editLocalDomainName = domainName;
+		}
 		this.model.setDomainName(domainName);
-		this.editDomainName = domainName;
-		this.editInitRef = initRef;
+		this.model.setNameServiceInitRef(initRef);
 	}
 
 }

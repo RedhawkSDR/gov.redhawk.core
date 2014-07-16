@@ -29,19 +29,20 @@ import CF.ApplicationOperations;
  * <p>
  * The following features are supported:
  * <ul>
- *   <li>{@link gov.redhawk.model.sca.ScaWaveform#getComponents <em>Components</em>}</li>
- *   <li>{@link gov.redhawk.model.sca.ScaWaveform#getAssemblyController <em>Assembly Controller</em>}</li>
- *   <li>{@link gov.redhawk.model.sca.ScaWaveform#getDomMgr <em>Dom Mgr</em>}</li>
- *   <li>{@link gov.redhawk.model.sca.ScaWaveform#getIdentifier <em>Identifier</em>}</li>
- *   <li>{@link gov.redhawk.model.sca.ScaWaveform#getName <em>Name</em>}</li>
- *   <li>{@link gov.redhawk.model.sca.ScaWaveform#getStarted <em>Started</em>}</li>
- *   <li>{@link gov.redhawk.model.sca.ScaWaveform#getProfile <em>Profile</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.ScaWaveform#getComponents <em>Components</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.ScaWaveform#getAssemblyController <em>Assembly Controller</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.ScaWaveform#getDomMgr <em>Dom Mgr</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.ScaWaveform#getIdentifier <em>Identifier</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.ScaWaveform#getName <em>Name</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.ScaWaveform#getStarted <em>Started</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.ScaWaveform#getProfile <em>Profile</em>}</li>
  * </ul>
  * </p>
  *
  * @see gov.redhawk.model.sca.ScaPackage#getScaWaveform()
- * @model superTypes="gov.redhawk.model.sca.ScaPropertyContainer<mil.jpeojtrs.sca.cf.Application, mil.jpeojtrs.sca.sad.SoftwareAssembly> mil.jpeojtrs.sca.cf.ApplicationOperations gov.redhawk.model.sca.ScaPortContainer"
- *        extendedMetaData="name='ScaWaveform' kind='elementOnly'"
+ * @model superTypes=
+ * "gov.redhawk.model.sca.ScaPropertyContainer<mil.jpeojtrs.sca.cf.Application, mil.jpeojtrs.sca.sad.SoftwareAssembly> mil.jpeojtrs.sca.cf.ApplicationOperations gov.redhawk.model.sca.ScaPortContainer"
+ * extendedMetaData="name='ScaWaveform' kind='elementOnly'"
  * @generated
  */
 public interface ScaWaveform extends ScaPropertyContainer<Application, SoftwareAssembly>, ApplicationOperations, ScaPortContainer {
@@ -49,7 +50,8 @@ public interface ScaWaveform extends ScaPropertyContainer<Application, SoftwareA
 	/**
 	 * Returns the value of the '<em><b>Components</b></em>' containment reference list.
 	 * The list contents are of type {@link gov.redhawk.model.sca.ScaComponent}.
-	 * It is bidirectional and its opposite is '{@link gov.redhawk.model.sca.ScaComponent#getWaveform <em>Waveform</em>}'.
+	 * It is bidirectional and its opposite is '{@link gov.redhawk.model.sca.ScaComponent#getWaveform <em>Waveform</em>}
+	 * '.
 	 * <!-- begin-user-doc -->
 	 * <p>
 	 * If the meaning of the '<em>Components</em>' containment reference list isn't clear,
@@ -62,13 +64,14 @@ public interface ScaWaveform extends ScaPropertyContainer<Application, SoftwareA
 	 * @see gov.redhawk.model.sca.ScaPackage#getScaWaveform_Components()
 	 * @see gov.redhawk.model.sca.ScaComponent#getWaveform
 	 * @model opposite="waveform" containment="true" unsettable="true" keys="identifier" transient="true"
-	 *        extendedMetaData="kind='element' name='components'"
+	 * extendedMetaData="kind='element' name='components'"
 	 * @generated
 	 */
 	EList<ScaComponent> getComponents();
 
 	/**
-	 * Unsets the value of the '{@link gov.redhawk.model.sca.ScaWaveform#getComponents <em>Components</em>}' containment reference list.
+	 * Unsets the value of the '{@link gov.redhawk.model.sca.ScaWaveform#getComponents <em>Components</em>}' containment
+	 * reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @see #isSetComponents()
@@ -78,7 +81,8 @@ public interface ScaWaveform extends ScaPropertyContainer<Application, SoftwareA
 	void unsetComponents();
 
 	/**
-	 * Returns whether the value of the '{@link gov.redhawk.model.sca.ScaWaveform#getComponents <em>Components</em>}' containment reference list is set.
+	 * Returns whether the value of the '{@link gov.redhawk.model.sca.ScaWaveform#getComponents <em>Components</em>}'
+	 * containment reference list is set.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @return whether the value of the '<em>Components</em>' containment reference list is set.
@@ -102,13 +106,14 @@ public interface ScaWaveform extends ScaPropertyContainer<Application, SoftwareA
 	 * @see #setAssemblyController(ScaComponent)
 	 * @see gov.redhawk.model.sca.ScaPackage#getScaWaveform_AssemblyController()
 	 * @model unsettable="true" transient="true" derived="true"
-	 *        extendedMetaData="kind='attribute' name='assemblyController'"
+	 * extendedMetaData="kind='attribute' name='assemblyController'"
 	 * @generated
 	 */
 	ScaComponent getAssemblyController();
 
 	/**
-	 * Sets the value of the '{@link gov.redhawk.model.sca.ScaWaveform#getAssemblyController <em>Assembly Controller</em>}' reference.
+	 * Sets the value of the '{@link gov.redhawk.model.sca.ScaWaveform#getAssemblyController <em>Assembly
+	 * Controller</em>}' reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @param value the new value of the '<em>Assembly Controller</em>' reference.
@@ -120,7 +125,8 @@ public interface ScaWaveform extends ScaPropertyContainer<Application, SoftwareA
 	void setAssemblyController(ScaComponent value);
 
 	/**
-	 * Unsets the value of the '{@link gov.redhawk.model.sca.ScaWaveform#getAssemblyController <em>Assembly Controller</em>}' reference.
+	 * Unsets the value of the '{@link gov.redhawk.model.sca.ScaWaveform#getAssemblyController <em>Assembly
+	 * Controller</em>}' reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @see #isSetAssemblyController()
@@ -131,7 +137,8 @@ public interface ScaWaveform extends ScaPropertyContainer<Application, SoftwareA
 	void unsetAssemblyController();
 
 	/**
-	 * Returns whether the value of the '{@link gov.redhawk.model.sca.ScaWaveform#getAssemblyController <em>Assembly Controller</em>}' reference is set.
+	 * Returns whether the value of the '{@link gov.redhawk.model.sca.ScaWaveform#getAssemblyController <em>Assembly
+	 * Controller</em>}' reference is set.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @return whether the value of the '<em>Assembly Controller</em>' reference is set.
@@ -144,7 +151,8 @@ public interface ScaWaveform extends ScaPropertyContainer<Application, SoftwareA
 
 	/**
 	 * Returns the value of the '<em><b>Dom Mgr</b></em>' container reference.
-	 * It is bidirectional and its opposite is '{@link gov.redhawk.model.sca.ScaDomainManager#getWaveforms <em>Waveforms</em>}'.
+	 * It is bidirectional and its opposite is '{@link gov.redhawk.model.sca.ScaDomainManager#getWaveforms
+	 * <em>Waveforms</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <p>
 	 * If the meaning of the '<em>Dom Mgr</em>' container reference isn't clear,
@@ -156,7 +164,7 @@ public interface ScaWaveform extends ScaPropertyContainer<Application, SoftwareA
 	 * @see gov.redhawk.model.sca.ScaPackage#getScaWaveform_DomMgr()
 	 * @see gov.redhawk.model.sca.ScaDomainManager#getWaveforms
 	 * @model opposite="waveforms"
-	 *        extendedMetaData="kind='attribute' name='domMgr'"
+	 * extendedMetaData="kind='attribute' name='domMgr'"
 	 * @generated
 	 */
 	ScaDomainManager getDomMgr();
@@ -185,7 +193,7 @@ public interface ScaWaveform extends ScaPropertyContainer<Application, SoftwareA
 	 * @see #setIdentifier(String)
 	 * @see gov.redhawk.model.sca.ScaPackage#getScaWaveform_Identifier()
 	 * @model unsettable="true" id="true" derived="true"
-	 *        extendedMetaData="kind='attribute' name='identifier'"
+	 * extendedMetaData="kind='attribute' name='identifier'"
 	 * @generated
 	 */
 	String getIdentifier();
@@ -216,7 +224,8 @@ public interface ScaWaveform extends ScaPropertyContainer<Application, SoftwareA
 	void unsetIdentifier();
 
 	/**
-	 * Returns whether the value of the '{@link gov.redhawk.model.sca.ScaWaveform#getIdentifier <em>Identifier</em>}' attribute is set.
+	 * Returns whether the value of the '{@link gov.redhawk.model.sca.ScaWaveform#getIdentifier <em>Identifier</em>}'
+	 * attribute is set.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @return whether the value of the '<em>Identifier</em>' attribute is set.
@@ -241,7 +250,7 @@ public interface ScaWaveform extends ScaPropertyContainer<Application, SoftwareA
 	 * @see #setName(String)
 	 * @see gov.redhawk.model.sca.ScaPackage#getScaWaveform_Name()
 	 * @model unsettable="true" derived="true"
-	 *        extendedMetaData="kind='attribute' name='name'"
+	 * extendedMetaData="kind='attribute' name='name'"
 	 * @generated
 	 */
 	String getName();
@@ -272,7 +281,8 @@ public interface ScaWaveform extends ScaPropertyContainer<Application, SoftwareA
 	void unsetName();
 
 	/**
-	 * Returns whether the value of the '{@link gov.redhawk.model.sca.ScaWaveform#getName <em>Name</em>}' attribute is set.
+	 * Returns whether the value of the '{@link gov.redhawk.model.sca.ScaWaveform#getName <em>Name</em>}' attribute is
+	 * set.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @return whether the value of the '<em>Name</em>' attribute is set.
@@ -327,7 +337,8 @@ public interface ScaWaveform extends ScaPropertyContainer<Application, SoftwareA
 	void unsetStarted();
 
 	/**
-	 * Returns whether the value of the '{@link gov.redhawk.model.sca.ScaWaveform#getStarted <em>Started</em>}' attribute is set.
+	 * Returns whether the value of the '{@link gov.redhawk.model.sca.ScaWaveform#getStarted <em>Started</em>}'
+	 * attribute is set.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @return whether the value of the '<em>Started</em>' attribute is set.
@@ -380,7 +391,8 @@ public interface ScaWaveform extends ScaPropertyContainer<Application, SoftwareA
 	void unsetProfile();
 
 	/**
-	 * Returns whether the value of the '{@link gov.redhawk.model.sca.ScaWaveform#getProfile <em>Profile</em>}' attribute is set.
+	 * Returns whether the value of the '{@link gov.redhawk.model.sca.ScaWaveform#getProfile <em>Profile</em>}'
+	 * attribute is set.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @return whether the value of the '<em>Profile</em>' attribute is set.
@@ -398,6 +410,7 @@ public interface ScaWaveform extends ScaPropertyContainer<Application, SoftwareA
 	 * @generated
 	 */
 	EList<ScaComponent> fetchComponents(IProgressMonitor monitor);
+
 	/**
 	 * @since 19.0
 	 */

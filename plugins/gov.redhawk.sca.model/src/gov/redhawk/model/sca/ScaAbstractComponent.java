@@ -29,15 +29,17 @@ import CF.ResourceOperations;
  * <p>
  * The following features are supported:
  * <ul>
- *   <li>{@link gov.redhawk.model.sca.ScaAbstractComponent#getIdentifier <em>Identifier</em>}</li>
- *   <li>{@link gov.redhawk.model.sca.ScaAbstractComponent#getStarted <em>Started</em>}</li>
- *   <li>{@link gov.redhawk.model.sca.ScaAbstractComponent#getProfile <em>Profile</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.ScaAbstractComponent#getIdentifier <em>Identifier</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.ScaAbstractComponent#getStarted <em>Started</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.ScaAbstractComponent#getProfile <em>Profile</em>}</li>
  * </ul>
  * </p>
  *
  * @see gov.redhawk.model.sca.ScaPackage#getScaAbstractComponent()
- * @model abstract="true" superTypes="gov.redhawk.model.sca.ScaPropertyContainer<R, mil.jpeojtrs.sca.spd.SoftPkg> mil.jpeojtrs.sca.cf.ResourceOperations gov.redhawk.model.sca.ScaPortContainer" RBounds="mil.jpeojtrs.sca.cf.Resource"
- *        extendedMetaData="name='ScaAbstractComponent' kind='elementOnly'"
+ * @model abstract="true" superTypes=
+ * "gov.redhawk.model.sca.ScaPropertyContainer<R, mil.jpeojtrs.sca.spd.SoftPkg> mil.jpeojtrs.sca.cf.ResourceOperations gov.redhawk.model.sca.ScaPortContainer"
+ * RBounds="mil.jpeojtrs.sca.cf.Resource"
+ * extendedMetaData="name='ScaAbstractComponent' kind='elementOnly'"
  * @generated
  */
 public interface ScaAbstractComponent< R extends Resource > extends ScaPropertyContainer<R, SoftPkg>, ResourceOperations, ScaPortContainer {
@@ -56,13 +58,14 @@ public interface ScaAbstractComponent< R extends Resource > extends ScaPropertyC
 	 * @see #setIdentifier(String)
 	 * @see gov.redhawk.model.sca.ScaPackage#getScaAbstractComponent_Identifier()
 	 * @model unsettable="true" id="true" derived="true"
-	 *        extendedMetaData="kind='attribute' name='identifier'"
+	 * extendedMetaData="kind='attribute' name='identifier'"
 	 * @generated
 	 */
 	String getIdentifier();
 
 	/**
-	 * Sets the value of the '{@link gov.redhawk.model.sca.ScaAbstractComponent#getIdentifier <em>Identifier</em>}' attribute.
+	 * Sets the value of the '{@link gov.redhawk.model.sca.ScaAbstractComponent#getIdentifier <em>Identifier</em>}'
+	 * attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @param value the new value of the '<em>Identifier</em>' attribute.
@@ -74,7 +77,8 @@ public interface ScaAbstractComponent< R extends Resource > extends ScaPropertyC
 	void setIdentifier(String value);
 
 	/**
-	 * Unsets the value of the '{@link gov.redhawk.model.sca.ScaAbstractComponent#getIdentifier <em>Identifier</em>}' attribute.
+	 * Unsets the value of the '{@link gov.redhawk.model.sca.ScaAbstractComponent#getIdentifier <em>Identifier</em>}'
+	 * attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @see #isSetIdentifier()
@@ -85,7 +89,8 @@ public interface ScaAbstractComponent< R extends Resource > extends ScaPropertyC
 	void unsetIdentifier();
 
 	/**
-	 * Returns whether the value of the '{@link gov.redhawk.model.sca.ScaAbstractComponent#getIdentifier <em>Identifier</em>}' attribute is set.
+	 * Returns whether the value of the '{@link gov.redhawk.model.sca.ScaAbstractComponent#getIdentifier
+	 * <em>Identifier</em>}' attribute is set.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @return whether the value of the '<em>Identifier</em>' attribute is set.
@@ -128,7 +133,8 @@ public interface ScaAbstractComponent< R extends Resource > extends ScaPropertyC
 	void setStarted(Boolean value);
 
 	/**
-	 * Unsets the value of the '{@link gov.redhawk.model.sca.ScaAbstractComponent#getStarted <em>Started</em>}' attribute.
+	 * Unsets the value of the '{@link gov.redhawk.model.sca.ScaAbstractComponent#getStarted <em>Started</em>}'
+	 * attribute.
 	 * <!-- begin-user-doc -->
 	 * @since 16.0
 	 * <!-- end-user-doc -->
@@ -140,7 +146,8 @@ public interface ScaAbstractComponent< R extends Resource > extends ScaPropertyC
 	void unsetStarted();
 
 	/**
-	 * Returns whether the value of the '{@link gov.redhawk.model.sca.ScaAbstractComponent#getStarted <em>Started</em>}' attribute is set.
+	 * Returns whether the value of the '{@link gov.redhawk.model.sca.ScaAbstractComponent#getStarted <em>Started</em>}'
+	 * attribute is set.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @return whether the value of the '<em>Started</em>' attribute is set.
@@ -182,7 +189,8 @@ public interface ScaAbstractComponent< R extends Resource > extends ScaPropertyC
 	void setProfile(String value);
 
 	/**
-	 * Unsets the value of the '{@link gov.redhawk.model.sca.ScaAbstractComponent#getProfile <em>Profile</em>}' attribute.
+	 * Unsets the value of the '{@link gov.redhawk.model.sca.ScaAbstractComponent#getProfile <em>Profile</em>}'
+	 * attribute.
 	 * <!-- begin-user-doc -->
 	 * @since 19.0
 	 * <!-- end-user-doc -->
@@ -194,7 +202,8 @@ public interface ScaAbstractComponent< R extends Resource > extends ScaPropertyC
 	void unsetProfile();
 
 	/**
-	 * Returns whether the value of the '{@link gov.redhawk.model.sca.ScaAbstractComponent#getProfile <em>Profile</em>}' attribute is set.
+	 * Returns whether the value of the '{@link gov.redhawk.model.sca.ScaAbstractComponent#getProfile <em>Profile</em>}'
+	 * attribute is set.
 	 * <!-- begin-user-doc -->
 	 * @since 19.0
 	 * <!-- end-user-doc -->

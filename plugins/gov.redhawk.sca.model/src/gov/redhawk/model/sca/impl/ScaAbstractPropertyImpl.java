@@ -46,12 +46,12 @@ import CF.PropertySetPackage.PartialConfiguration;
  * <p>
  * The following features are implemented:
  * <ul>
- *   <li>{@link gov.redhawk.model.sca.impl.ScaAbstractPropertyImpl#getDefinition <em>Definition</em>}</li>
- *   <li>{@link gov.redhawk.model.sca.impl.ScaAbstractPropertyImpl#getDescription <em>Description</em>}</li>
- *   <li>{@link gov.redhawk.model.sca.impl.ScaAbstractPropertyImpl#getId <em>Id</em>}</li>
- *   <li>{@link gov.redhawk.model.sca.impl.ScaAbstractPropertyImpl#getMode <em>Mode</em>}</li>
- *   <li>{@link gov.redhawk.model.sca.impl.ScaAbstractPropertyImpl#getName <em>Name</em>}</li>
- *   <li>{@link gov.redhawk.model.sca.impl.ScaAbstractPropertyImpl#isIgnoreRemoteSet <em>Ignore Remote Set</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.impl.ScaAbstractPropertyImpl#getDefinition <em>Definition</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.impl.ScaAbstractPropertyImpl#getDescription <em>Description</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.impl.ScaAbstractPropertyImpl#getId <em>Id</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.impl.ScaAbstractPropertyImpl#getMode <em>Mode</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.impl.ScaAbstractPropertyImpl#getName <em>Name</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.impl.ScaAbstractPropertyImpl#isIgnoreRemoteSet <em>Ignore Remote Set</em>}</li>
  * </ul>
  * </p>
  *
@@ -705,4 +705,4 @@ public abstract class ScaAbstractPropertyImpl< T extends AbstractProperty > exte
 		}
 	}
 
-} //ScaAbstractPropertyImpl
+} // ScaAbstractPropertyImpl

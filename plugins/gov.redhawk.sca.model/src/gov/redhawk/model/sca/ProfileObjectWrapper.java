@@ -36,15 +36,15 @@ import org.eclipse.emf.ecore.resource.ResourceSet;
  * <p>
  * The following features are supported:
  * <ul>
- *   <li>{@link gov.redhawk.model.sca.ProfileObjectWrapper#getProfileURI <em>Profile URI</em>}</li>
- *   <li>{@link gov.redhawk.model.sca.ProfileObjectWrapper#getProfileObj <em>Profile Obj</em>}</li>
- *   <li>{@link gov.redhawk.model.sca.ProfileObjectWrapper#getRootFileStore <em>Root File Store</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.ProfileObjectWrapper#getProfileURI <em>Profile URI</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.ProfileObjectWrapper#getProfileObj <em>Profile Obj</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.ProfileObjectWrapper#getRootFileStore <em>Root File Store</em>}</li>
  * </ul>
  * </p>
  *
  * @see gov.redhawk.model.sca.ScaPackage#getProfileObjectWrapper()
  * @model interface="true" abstract="true" OBounds="org.eclipse.emf.ecore.EJavaObject"
- *        extendedMetaData="name='ProfileObjectWrapper' kind='empty'"
+ * extendedMetaData="name='ProfileObjectWrapper' kind='empty'"
  * @generated
  */
 public interface ProfileObjectWrapper< O extends Object > extends IStatusProvider {
@@ -62,13 +62,14 @@ public interface ProfileObjectWrapper< O extends Object > extends IStatusProvide
 	 * @see #setProfileURI(URI)
 	 * @see gov.redhawk.model.sca.ScaPackage#getProfileObjectWrapper_ProfileURI()
 	 * @model unsettable="true" dataType="mil.jpeojtrs.sca.spd.URI" transient="true" derived="true"
-	 *        extendedMetaData="kind='attribute' name='profile'"
+	 * extendedMetaData="kind='attribute' name='profile'"
 	 * @generated
 	 */
 	URI getProfileURI();
 
 	/**
-	 * Sets the value of the '{@link gov.redhawk.model.sca.ProfileObjectWrapper#getProfileURI <em>Profile URI</em>}' attribute.
+	 * Sets the value of the '{@link gov.redhawk.model.sca.ProfileObjectWrapper#getProfileURI <em>Profile URI</em>}'
+	 * attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @param value the new value of the '<em>Profile URI</em>' attribute.
@@ -80,7 +81,8 @@ public interface ProfileObjectWrapper< O extends Object > extends IStatusProvide
 	void setProfileURI(URI value);
 
 	/**
-	 * Unsets the value of the '{@link gov.redhawk.model.sca.ProfileObjectWrapper#getProfileURI <em>Profile URI</em>}' attribute.
+	 * Unsets the value of the '{@link gov.redhawk.model.sca.ProfileObjectWrapper#getProfileURI <em>Profile URI</em>}'
+	 * attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @see #isSetProfileURI()
@@ -91,7 +93,8 @@ public interface ProfileObjectWrapper< O extends Object > extends IStatusProvide
 	void unsetProfileURI();
 
 	/**
-	 * Returns whether the value of the '{@link gov.redhawk.model.sca.ProfileObjectWrapper#getProfileURI <em>Profile URI</em>}' attribute is set.
+	 * Returns whether the value of the '{@link gov.redhawk.model.sca.ProfileObjectWrapper#getProfileURI <em>Profile
+	 * URI</em>}' attribute is set.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @return whether the value of the '<em>Profile URI</em>' attribute is set.
@@ -116,13 +119,14 @@ public interface ProfileObjectWrapper< O extends Object > extends IStatusProvide
 	 * @see #setProfileObj(Object)
 	 * @see gov.redhawk.model.sca.ScaPackage#getProfileObjectWrapper_ProfileObj()
 	 * @model kind="reference" unsettable="true" transient="true" derived="true"
-	 *        extendedMetaData="kind='attribute' name='profileObj'"
+	 * extendedMetaData="kind='attribute' name='profileObj'"
 	 * @generated
 	 */
 	O getProfileObj();
 
 	/**
-	 * Sets the value of the '{@link gov.redhawk.model.sca.ProfileObjectWrapper#getProfileObj <em>Profile Obj</em>}' reference.
+	 * Sets the value of the '{@link gov.redhawk.model.sca.ProfileObjectWrapper#getProfileObj <em>Profile Obj</em>}'
+	 * reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @param value the new value of the '<em>Profile Obj</em>' reference.
@@ -134,7 +138,8 @@ public interface ProfileObjectWrapper< O extends Object > extends IStatusProvide
 	void setProfileObj(O value);
 
 	/**
-	 * Unsets the value of the '{@link gov.redhawk.model.sca.ProfileObjectWrapper#getProfileObj <em>Profile Obj</em>}' reference.
+	 * Unsets the value of the '{@link gov.redhawk.model.sca.ProfileObjectWrapper#getProfileObj <em>Profile Obj</em>}'
+	 * reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @see #isSetProfileObj()
@@ -145,7 +150,8 @@ public interface ProfileObjectWrapper< O extends Object > extends IStatusProvide
 	void unsetProfileObj();
 
 	/**
-	 * Returns whether the value of the '{@link gov.redhawk.model.sca.ProfileObjectWrapper#getProfileObj <em>Profile Obj</em>}' reference is set.
+	 * Returns whether the value of the '{@link gov.redhawk.model.sca.ProfileObjectWrapper#getProfileObj <em>Profile
+	 * Obj</em>}' reference is set.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @return whether the value of the '<em>Profile Obj</em>' reference is set.
@@ -166,7 +172,8 @@ public interface ProfileObjectWrapper< O extends Object > extends IStatusProvide
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Root File Store</em>' attribute.
 	 * @see gov.redhawk.model.sca.ScaPackage#getProfileObjectWrapper_RootFileStore()
-	 * @model dataType="gov.redhawk.model.sca.IFileStore" transient="true" changeable="false" volatile="true" derived="true"
+	 * @model dataType="gov.redhawk.model.sca.IFileStore" transient="true" changeable="false" volatile="true"
+	 * derived="true"
 	 * @generated
 	 */
 	IFileStore getRootFileStore();

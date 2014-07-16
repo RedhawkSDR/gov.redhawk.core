@@ -131,7 +131,7 @@ public class DomainListEditor extends FieldEditor {
 				wizard.setWindowTitle("New Domain Manager");
 				final WizardDialog dialog = new WizardDialog(box.getShell(), wizard);
 				if (dialog.open() == IStatus.OK) {
-					final ScaDomainConnectionDef def = new ScaDomainConnectionDef(wizard.getDomainName(), wizard.getNameServiceInitRef(), false);
+					final ScaDomainConnectionDef def = new ScaDomainConnectionDef(wizard.getLocalDomainName(), wizard.getDomainName(), wizard.getNameServiceInitRef(), false);
 					DomainListEditor.this.domainConnectionDefs.add(def);
 					DomainListEditor.this.list.refresh();
 				}
@@ -154,11 +154,11 @@ public class DomainListEditor extends FieldEditor {
 				wizard.setShowExtraSettings(false);
 				wizard.setDomains(DomainListEditor.this.domainConnectionDefs);
 				wizard.setWindowTitle("Edit Domain Manager");
-				wizard.setEdit(def.getDomainName(), def.getNameServiceInitRef());
+				wizard.setEdit(def.getLocalName(), def.getDomainName(), def.getNameServiceInitRef());
 				wizard.setConnectionMode(def.isConnectOnStartup());
 				final WizardDialog dialog = new WizardDialog(box.getShell(), wizard);
 				if (dialog.open() == IStatus.OK) {
-					final ScaDomainConnectionDef newDef = new ScaDomainConnectionDef(wizard.getDomainName(), wizard.getNameServiceInitRef(), false);
+					final ScaDomainConnectionDef newDef = new ScaDomainConnectionDef(wizard.getLocalDomainName(), wizard.getDomainName(), wizard.getNameServiceInitRef(), false);
 					if (!def.equals(newDef)) {
 						final int index = DomainListEditor.this.domainConnectionDefs.indexOf(def);
 						DomainListEditor.this.domainConnectionDefs.remove(index);
@@ -276,7 +276,7 @@ public class DomainListEditor extends FieldEditor {
 		this.domainConnectionDefs.clear();
 
 		for (final ScaDomainManager manager : this.registry.getDomains()) {
-			final ScaDomainConnectionDef def = new ScaDomainConnectionDef(manager.getName(), manager.getConnectionProperties().get(
+			final ScaDomainConnectionDef def = new ScaDomainConnectionDef(manager.getLocalName(), manager.getName(), manager.getConnectionProperties().get(
 				ScaDomainManager.NAMING_SERVICE_PROP), manager.isAutoConnect());
 			this.domainConnectionDefs.add(def);
 		}
@@ -293,7 +293,7 @@ public class DomainListEditor extends FieldEditor {
 		this.domainConnectionDefs.clear();
 
 		for (final ScaDomainManager manager : ScaPreferenceInitializer.getDefaultScaDomainManagerRegistry().getDomains()) {
-			final ScaDomainConnectionDef def = new ScaDomainConnectionDef(manager.getName(), manager.getConnectionProperties().get(
+			final ScaDomainConnectionDef def = new ScaDomainConnectionDef(manager.getLocalName(), manager.getName(), manager.getConnectionProperties().get(
 				ScaDomainManager.NAMING_SERVICE_PROP), manager.isAutoConnect());
 			this.domainConnectionDefs.add(def);
 		}
@@ -321,7 +321,7 @@ public class DomainListEditor extends FieldEditor {
 
 								@Override
 								public void execute() {
-									newDomain[0] = DomainListEditor.this.registry.createDomain(def.getDomainName(), def.isConnectOnStartup(),
+									newDomain[0] = DomainListEditor.this.registry.createDomain(def.getLocalName(), def.getDomainName(), def.isConnectOnStartup(),
 										Collections.singletonMap(ScaDomainManager.NAMING_SERVICE_PROP, def.getNameServiceInitRef()));
 
 								}
@@ -351,7 +351,7 @@ public class DomainListEditor extends FieldEditor {
 		for (final ScaDomainManager domain : this.registry.getDomains()) {
 			boolean found = false;
 			for (final ScaDomainConnectionDef def : this.domainConnectionDefs) {
-				if (domain.getName().equals(def.getDomainName())) {
+				if (domain.getLabel().equals(def.getDomainName())) {
 					found = true;
 					break;
 				}

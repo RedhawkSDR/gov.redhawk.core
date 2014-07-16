@@ -14,26 +14,16 @@ package gov.redhawk.model.sca.provider;
 
 import gov.redhawk.model.sca.ScaDomainManager;
 import gov.redhawk.model.sca.ScaPackage;
-
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
-
 import org.eclipse.emf.common.notify.AdapterFactory;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.edit.provider.ComposeableAdapterFactory;
-import org.eclipse.emf.edit.provider.IEditingDomainItemProvider;
-import org.eclipse.emf.edit.provider.IItemColorProvider;
-import org.eclipse.emf.edit.provider.IItemLabelProvider;
 import org.eclipse.emf.edit.provider.IItemPropertyDescriptor;
-import org.eclipse.emf.edit.provider.IItemPropertySource;
-import org.eclipse.emf.edit.provider.IStructuredItemContentProvider;
-import org.eclipse.emf.edit.provider.ITableItemColorProvider;
-import org.eclipse.emf.edit.provider.ITableItemLabelProvider;
-import org.eclipse.emf.edit.provider.ITreeItemContentProvider;
 import org.eclipse.emf.edit.provider.ItemPropertyDescriptor;
 import org.eclipse.emf.edit.provider.ViewerNotification;
 
@@ -43,8 +33,7 @@ import org.eclipse.emf.edit.provider.ViewerNotification;
  * --> <!-- end-user-doc -->
  * @generated
  */
-public class ScaDomainManagerItemProvider extends ScaPropertyContainerItemProvider implements IEditingDomainItemProvider, IStructuredItemContentProvider,
-		ITreeItemContentProvider, IItemLabelProvider, IItemPropertySource, ITableItemLabelProvider, ITableItemColorProvider, IItemColorProvider {
+public class ScaDomainManagerItemProvider extends ScaPropertyContainerItemProvider {
 	/**
 	 * This constructs an instance from a factory and a notifier.
 	 * <!-- begin-user-doc -->
@@ -74,6 +63,7 @@ public class ScaDomainManagerItemProvider extends ScaPropertyContainerItemProvid
 			addRootContextPropertyDescriptor(object);
 			addStatePropertyDescriptor(object);
 			addProfilePropertyDescriptor(object);
+			addLocalNamePropertyDescriptor(object);
 		}
 		return itemPropertyDescriptors;
 	}
@@ -183,6 +173,19 @@ public class ScaDomainManagerItemProvider extends ScaPropertyContainerItemProvid
 	}
 
 	/**
+	 * This adds a property descriptor for the Local Name feature.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	protected void addLocalNamePropertyDescriptor(Object object) {
+		itemPropertyDescriptors.add(createItemPropertyDescriptor(((ComposeableAdapterFactory) adapterFactory).getRootAdapterFactory(), getResourceLocator(),
+			getString("_UI_ScaDomainManager_localName_feature"),
+			getString("_UI_PropertyDescriptor_description", "_UI_ScaDomainManager_localName_feature", "_UI_ScaDomainManager_type"),
+			ScaPackage.Literals.SCA_DOMAIN_MANAGER__LOCAL_NAME, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
+	}
+
+	/**
 	 * This specifies how to implement {@link #getChildren} and is used to deduce an appropriate feature for an
 	 * {@link org.eclipse.emf.edit.command.AddCommand}, {@link org.eclipse.emf.edit.command.RemoveCommand} or
 	 * {@link org.eclipse.emf.edit.command.MoveCommand} in {@link #createCommand}.
@@ -259,7 +262,7 @@ public class ScaDomainManagerItemProvider extends ScaPropertyContainerItemProvid
 	 * @generated
 	 */
 	public String getTextGen(Object object) {
-		String label = ((ScaDomainManager) object).getName();
+		String label = ((ScaDomainManager) object).getLabel();
 		return label == null || label.length() == 0 ? getString("_UI_ScaDomainManager_type") : getString("_UI_ScaDomainManager_type") + " " + label;
 	}
 
@@ -272,8 +275,7 @@ public class ScaDomainManagerItemProvider extends ScaPropertyContainerItemProvid
 	@Override
 	public String getText(final Object object) {
 		// END GENERATED CODE
-		final String label = ((ScaDomainManager) object).getName();
-		return label;
+		return ((ScaDomainManager) object).getLabel();
 		// BEGIN GENERATED CODE
 	}
 
@@ -301,6 +303,7 @@ public class ScaDomainManagerItemProvider extends ScaPropertyContainerItemProvid
 		case ScaPackage.SCA_DOMAIN_MANAGER__NAME:
 		case ScaPackage.SCA_DOMAIN_MANAGER__PROFILE:
 		case ScaPackage.SCA_DOMAIN_MANAGER__EVENT_CHANNELS:
+		case ScaPackage.SCA_DOMAIN_MANAGER__LOCAL_NAME:
 			fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
 			return;
 		case ScaPackage.SCA_DOMAIN_MANAGER__FILE_MANAGER:

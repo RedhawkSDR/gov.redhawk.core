@@ -201,8 +201,7 @@ public abstract class ScaFileManagerImpl extends ScaFileSystemImpl<FileManager> 
 	}
 
 	/**
-	 * @since 14.0
-	 * {@inheritDoc}
+	 * @since 14.0 {@inheritDoc}
 	 */
 	@Override
 	protected FileManager narrow(final org.omg.CORBA.Object obj) {
@@ -215,4 +214,4 @@ public abstract class ScaFileManagerImpl extends ScaFileSystemImpl<FileManager> 
 	protected Class<FileManager> getCorbaType() {
 		return FileManager.class;
 	}
-} //ScaFileManagerImpl
+} // ScaFileManagerImpl

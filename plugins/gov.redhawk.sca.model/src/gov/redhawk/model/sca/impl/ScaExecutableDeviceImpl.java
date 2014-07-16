@@ -42,7 +42,7 @@ public class ScaExecutableDeviceImpl extends ScaLoadableDeviceImpl<ExecutableDev
 
 	/**
 	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc --> 
+	 * <!-- end-user-doc -->
 	 */
 	protected ScaExecutableDeviceImpl() {
 		super();
@@ -111,4 +111,4 @@ public class ScaExecutableDeviceImpl extends ScaLoadableDeviceImpl<ExecutableDev
 		// BEGIN GENERATED CODE
 	}
 
-} //ScaExecutableDeviceImpl
+} // ScaExecutableDeviceImpl

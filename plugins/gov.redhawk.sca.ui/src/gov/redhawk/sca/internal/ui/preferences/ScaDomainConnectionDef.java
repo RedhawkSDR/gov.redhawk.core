@@ -12,21 +12,22 @@
 package gov.redhawk.sca.internal.ui.preferences;
 
 public class ScaDomainConnectionDef {
-	private static final int NUM_PREFERENCES = 3;
-
 	private boolean connectOnStartup;
 
 	private String nameServiceInitRef;
 
 	private String domainName;
+	
+	private String localName;
 
 	public ScaDomainConnectionDef() {
 	}
 
-	public ScaDomainConnectionDef(final String domainName, final String nameServiceInitRef, final boolean connectOnStartup) {
+	public ScaDomainConnectionDef(final String localName, final String domainName, final String nameServiceInitRef, final boolean connectOnStartup) {
 		super();
 
 		this.domainName = domainName;
+		this.localName = localName;
 		this.nameServiceInitRef = nameServiceInitRef;
 		this.connectOnStartup = connectOnStartup;
 	}
@@ -58,8 +59,15 @@ public class ScaDomainConnectionDef {
 	@Override
 	public String toString() {
 		final StringBuffer buffer = new StringBuffer();
-		buffer.append(this.domainName);
+		if (this.localName != null) {
+			buffer.append(this.localName);
+		} else {
+			buffer.append(this.domainName);
+		}
+		
 		buffer.append(" [");
+		buffer.append(this.domainName);
+		buffer.append("@");
 		buffer.append(this.nameServiceInitRef);
 		buffer.append(']');
 		if (this.connectOnStartup) {
@@ -83,27 +91,68 @@ public class ScaDomainConnectionDef {
 
 	public void fromPreferenceValue(final String preferenceValue) {
 		final String[] values = preferenceValue.split(",");
-		if (values.length == ScaDomainConnectionDef.NUM_PREFERENCES) {
+		if (values.length > 0) {
 			this.domainName = values[0];
+		}
+		if (values.length > 1) {
 			this.nameServiceInitRef = values[1];
+		}
+		if (values.length > 2) {
 			this.connectOnStartup = Boolean.parseBoolean(values[2]);
 		}
+		
+		if (values.length > 3) {
+			this.localName = values[3];
+		}
+	}
+	
+	public String getLocalName() {
+		return localName;
+	}
+	
+	public void setLocalName(String localName) {
+		this.localName = localName;
 	}
 
 	@Override
 	public int hashCode() {
-		assert false : "hashCode not designed";
-		return 42; // any arbitrary constant will do
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((connectOnStartup) ? 1231 : 1237);
+		result = prime * result + ((domainName == null) ? 0 : domainName.hashCode());
+		result = prime * result + ((localName == null) ? 0 : localName.hashCode());
+		result = prime * result + ((nameServiceInitRef == null) ? 0 : nameServiceInitRef.hashCode());
+		return result;
 	}
 
 	@Override
-	public boolean equals(final Object obj) {
-		if ((obj == null) || !(obj instanceof ScaDomainConnectionDef)) {
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
 			return false;
-		}
-
-		final ScaDomainConnectionDef def = (ScaDomainConnectionDef) obj;
-		return this.domainName.equals(def.getDomainName()) && this.nameServiceInitRef.equals(def.getNameServiceInitRef())
-		        && (this.connectOnStartup == def.isConnectOnStartup());
+		if (getClass() != obj.getClass())
+			return false;
+		ScaDomainConnectionDef other = (ScaDomainConnectionDef) obj;
+		if (connectOnStartup != other.connectOnStartup)
+			return false;
+		if (domainName == null) {
+			if (other.domainName != null)
+				return false;
+		} else if (!domainName.equals(other.domainName))
+			return false;
+		if (localName == null) {
+			if (other.localName != null)
+				return false;
+		} else if (!localName.equals(other.localName))
+			return false;
+		if (nameServiceInitRef == null) {
+			if (other.nameServiceInitRef != null)
+				return false;
+		} else if (!nameServiceInitRef.equals(other.nameServiceInitRef))
+			return false;
+		return true;
 	}
+
+
 }

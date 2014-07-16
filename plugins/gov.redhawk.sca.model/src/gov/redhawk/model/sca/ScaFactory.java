@@ -18,10 +18,10 @@ import CF.Device;
 import CF.LoadableDevice;
 
 /**
- * <!-- begin-user-doc --> 
+ * <!-- begin-user-doc -->
  * The <b>Factory</b> for the model. It provides a
  * create method for each non-abstract class of the model.
- * @noimplement This interface is not intended to be implemented by clients. 
+ * @noimplement This interface is not intended to be implemented by clients.
  * <!-- end-user-doc -->
  * @see gov.redhawk.model.sca.ScaPackage
  * @generated

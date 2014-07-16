@@ -24,12 +24,13 @@ import org.eclipse.emf.common.util.EList;
  * <p>
  * The following features are supported:
  * <ul>
- *   <li>{@link gov.redhawk.model.sca.ScaPortContainer#getPorts <em>Ports</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.ScaPortContainer#getPorts <em>Ports</em>}</li>
  * </ul>
  * </p>
  *
  * @see gov.redhawk.model.sca.ScaPackage#getScaPortContainer()
- * @model interface="true" abstract="true" superTypes="gov.redhawk.model.sca.IRefreshable gov.redhawk.model.sca.IStatusProvider"
+ * @model interface="true" abstract="true"
+ * superTypes="gov.redhawk.model.sca.IRefreshable gov.redhawk.model.sca.IStatusProvider"
  * @generated
  */
 public interface ScaPortContainer extends IRefreshable, IStatusProvider {
@@ -37,7 +38,8 @@ public interface ScaPortContainer extends IRefreshable, IStatusProvider {
 	/**
 	 * Returns the value of the '<em><b>Ports</b></em>' containment reference list.
 	 * The list contents are of type {@link gov.redhawk.model.sca.ScaPort}&lt;?, ?>.
-	 * It is bidirectional and its opposite is '{@link gov.redhawk.model.sca.ScaPort#getPortContainer <em>Port Container</em>}'.
+	 * It is bidirectional and its opposite is '{@link gov.redhawk.model.sca.ScaPort#getPortContainer <em>Port
+	 * Container</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <p>
 	 * If the meaning of the '<em>Ports</em>' containment reference list isn't clear,
@@ -55,7 +57,8 @@ public interface ScaPortContainer extends IRefreshable, IStatusProvider {
 	EList<ScaPort< ? , ? >> getPorts();
 
 	/**
-	 * Unsets the value of the '{@link gov.redhawk.model.sca.ScaPortContainer#getPorts <em>Ports</em>}' containment reference list.
+	 * Unsets the value of the '{@link gov.redhawk.model.sca.ScaPortContainer#getPorts <em>Ports</em>}' containment
+	 * reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @see #isSetPorts()
@@ -65,7 +68,8 @@ public interface ScaPortContainer extends IRefreshable, IStatusProvider {
 	void unsetPorts();
 
 	/**
-	 * Returns whether the value of the '{@link gov.redhawk.model.sca.ScaPortContainer#getPorts <em>Ports</em>}' containment reference list is set.
+	 * Returns whether the value of the '{@link gov.redhawk.model.sca.ScaPortContainer#getPorts <em>Ports</em>}'
+	 * containment reference list is set.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @return whether the value of the '<em>Ports</em>' containment reference list is set.

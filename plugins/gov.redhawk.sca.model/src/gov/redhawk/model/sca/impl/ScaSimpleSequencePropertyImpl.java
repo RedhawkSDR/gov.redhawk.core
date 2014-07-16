@@ -36,12 +36,12 @@ import org.omg.CORBA.Any;
  * <!-- begin-user-doc --> An implementation of the model object '
  * <em><b>Simple Sequence Property</b></em>'.
  * 
- * @since 12.0 
+ * @since 12.0
  * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
  * <ul>
- *   <li>{@link gov.redhawk.model.sca.impl.ScaSimpleSequencePropertyImpl#getValues <em>Values</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.impl.ScaSimpleSequencePropertyImpl#getValues <em>Values</em>}</li>
  * </ul>
  * </p>
  *
@@ -224,7 +224,7 @@ public class ScaSimpleSequencePropertyImpl extends ScaAbstractPropertyImpl<Simpl
 	}
 
 	/**
-	 * <!-- begin-user-doc --> 
+	 * <!-- begin-user-doc -->
 	 * @since 13.0
 	 * <!-- end-user-doc -->
 	 * @generated NOT

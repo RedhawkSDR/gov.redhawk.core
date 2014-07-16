@@ -84,9 +84,9 @@ public class ScaExplorerSingleDomain extends ScaExplorer {
 					switch (msg.getEventType()) {
 					case Notification.REMOVE:
 						ScaDomainManager domainRemoved = (ScaDomainManager) msg.getOldValue();
-						if (domainRemoved.getName().equals(getActiveDomainName())) {
+						if (domainRemoved.getLabel().equals(getActiveDomainName())) {
 							if (registry.getDomains().size() > 0) {
-								setActiveDomain(registry.getDomains().get(0).getName());
+								setActiveDomain(registry.getDomains().get(0).getLabel());
 							} else {
 								setActiveDomain("");
 								dialog.checkHyperlinkEnabled(null);
@@ -101,7 +101,7 @@ public class ScaExplorerSingleDomain extends ScaExplorer {
 					case Notification.ADD:
 						if (ScaExplorerSingleDomain.this.setNewDomainActive) {
 							ScaDomainManager domainAdded = (ScaDomainManager) msg.getNewValue();
-							setActiveDomain(domainAdded.getName());
+							setActiveDomain(domainAdded.getLabel());
 							dialog.checkHyperlinkEnabled(domainAdded);
 						}
 						break;
@@ -150,7 +150,7 @@ public class ScaExplorerSingleDomain extends ScaExplorer {
 						try {
 							domain.connect(new NullProgressMonitor(), RefreshDepth.SELF);
 						} catch (DomainConnectionException e) {
-							ScaSingleDomainPlugin.logError("Unable to connect to domain" + domain.getName(), e);
+							ScaSingleDomainPlugin.logError("Unable to connect to domain" + domain.getLabel(), e);
 						}
 					}
 				}
@@ -159,7 +159,7 @@ public class ScaExplorerSingleDomain extends ScaExplorer {
 
 						@Override
 						public void run() {
-							fillToolBar(activeDomain.getName().trim().isEmpty() ? "NO ACTIVE DOMAIN" : activeDomain.getName());
+							fillToolBar(activeDomain.getLabel().trim().isEmpty() ? "NO ACTIVE DOMAIN" : activeDomain.getLabel());
 							getViewSite().getActionBars().updateActionBars();
 							viewer.setInput(activeDomain);
 							viewer.refresh(true);
@@ -258,7 +258,7 @@ public class ScaExplorerSingleDomain extends ScaExplorer {
 	@Override
 	protected Object getInitialInput() {
 		for (ScaDomainManager domain : ScaPlugin.getDefault().getDomainManagerRegistry(getSite().getShell().getDisplay()).getDomains()) {
-			if (domain.getName() != null && domain.getName().equals(getActiveDomainName())) {
+			if (domain.getLabel() != null && domain.getLabel().equals(getActiveDomainName())) {
 				if (!domain.isConnected() && domain.isAutoConnect()) {
 					try {
 						domain.connect(new NullProgressMonitor(), RefreshDepth.CHILDREN);
@@ -266,7 +266,7 @@ public class ScaExplorerSingleDomain extends ScaExplorer {
 						ScaSingleDomainPlugin.logError("Unable to connect to domain", e);
 					}
 				}
-				domains.setLabelText(domain.getName().trim().isEmpty() ? "NO ACTIVE DOMAIN" : domain.getName());
+				domains.setLabelText(domain.getLabel().trim().isEmpty() ? "NO ACTIVE DOMAIN" : domain.getLabel());
 				getViewSite().getActionBars().updateActionBars();
 				return domain;
 			}

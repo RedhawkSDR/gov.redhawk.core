@@ -147,11 +147,9 @@ public class DomainsDialog extends Dialog {
 			@Override
 			public void run() {
 				FontData fontData = label.getFont().getFontData()[0];
-				font = new Font(label.getDisplay(), new FontData(fontData
-						.getName(), fontData.getHeight(), SWT.ITALIC));
+				font = new Font(label.getDisplay(), new FontData(fontData.getName(), fontData.getHeight(), SWT.ITALIC));
 				label.setFont(font);
-				label.setForeground(label.getDisplay().getSystemColor(
-						SWT.COLOR_BLACK));
+				label.setForeground(label.getDisplay().getSystemColor(SWT.COLOR_BLACK));
 				((GridData) label.getLayoutData()).horizontalIndent = 3;
 				if (label instanceof TrackableLabelAndHyperlink) {
 					TrackableLabelAndHyperlink link = (TrackableLabelAndHyperlink) label;
@@ -177,11 +175,9 @@ public class DomainsDialog extends Dialog {
 					return;
 				}
 				FontData fontData = label.getFont().getFontData()[0];
-				font = new Font(label.getDisplay(), new FontData(fontData
-						.getName(), fontData.getHeight(), SWT.NORMAL));
+				font = new Font(label.getDisplay(), new FontData(fontData.getName(), fontData.getHeight(), SWT.NORMAL));
 				label.getLabel().setFont(font);
-				label.getLabel().setForeground(
-						label.getDisplay().getSystemColor(SWT.COLOR_DARK_BLUE));
+				label.getLabel().setForeground(label.getDisplay().getSystemColor(SWT.COLOR_DARK_BLUE));
 				((GridData) label.getLayoutData()).horizontalIndent = 0;
 				if (label instanceof TrackableLabelAndHyperlink) {
 					TrackableLabelAndHyperlink link = (TrackableLabelAndHyperlink) label;
@@ -203,8 +199,7 @@ public class DomainsDialog extends Dialog {
 		private ScaDomainManager domain;
 		private TrackableLabel label;
 
-		private DomainSelectionListener(ScaDomainManager domain,
-				TrackableLabel label2) {
+		private DomainSelectionListener(ScaDomainManager domain, TrackableLabel label2) {
 			this.domain = domain;
 			this.label = label2;
 		}
@@ -218,9 +213,7 @@ public class DomainsDialog extends Dialog {
 
 				@Override
 				public void run() {
-					prefs.setValue(
-							ScaSingleDomainPreferenceConstants.SCA_ACTIVE_DOMAIN,
-							domain.getName());
+					prefs.setValue(ScaSingleDomainPreferenceConstants.SCA_ACTIVE_DOMAIN, domain.getLabel());
 					if (!DomainsDialog.this.getShell().isDisposed()) {
 						setActiveLabel(label);
 						Point loc = shell.getLocation();
@@ -254,8 +247,7 @@ public class DomainsDialog extends Dialog {
 		super(shell);
 		prefs = ScaUiPlugin.getDefault().getScaPreferenceStore();
 		colorBackground = shell.getDisplay().getSystemColor(SWT.COLOR_WHITE);
-		colorDomainLabel = shell.getDisplay().getSystemColor(
-				SWT.COLOR_DARK_BLUE);
+		colorDomainLabel = shell.getDisplay().getSystemColor(SWT.COLOR_DARK_BLUE);
 		colorNewDomainLink = shell.getDisplay().getSystemColor(SWT.COLOR_BLUE);
 	}
 
@@ -274,9 +266,8 @@ public class DomainsDialog extends Dialog {
 	}
 
 	public boolean isActiveDomain(ScaDomainManager domain) {
-		String activeDOmain = prefs
-				.getString(ScaSingleDomainPreferenceConstants.SCA_ACTIVE_DOMAIN);
-		return domain.getName().equals(activeDOmain);
+		String activeDOmain = prefs.getString(ScaSingleDomainPreferenceConstants.SCA_ACTIVE_DOMAIN);
+		return domain.getLabel().equals(activeDOmain);
 	}
 
 	public void flash(Control label, final Runnable runnable) {
@@ -302,8 +293,7 @@ public class DomainsDialog extends Dialog {
 
 	private void createComposite() {
 		composite = new Composite(shell, SWT.BORDER);
-		composite.setBackground(composite.getDisplay().getSystemColor(
-				SWT.COLOR_WHITE));
+		composite.setBackground(composite.getDisplay().getSystemColor(SWT.COLOR_WHITE));
 		GridLayoutFactory.fillDefaults().applyTo(shell);
 		GridLayoutFactory.fillDefaults().margins(15, 10).applyTo(composite);
 		GridDataFactory gdf = GridDataFactory.fillDefaults().grab(true, true);
@@ -311,22 +301,18 @@ public class DomainsDialog extends Dialog {
 	}
 
 	private void fillComposite() {
-		TrackableLabel head = new TrackableLabel(composite,
-				"Specify the active domain", SWT.NONE, false);
+		TrackableLabel head = new TrackableLabel(composite, "Specify the active domain", SWT.NONE, false);
 		head.setBackground(head.getDisplay().getSystemColor(SWT.COLOR_WHITE));
-		composite.setBackground(head.getDisplay().getSystemColor(
-				SWT.COLOR_WHITE));
+		composite.setBackground(head.getDisplay().getSystemColor(SWT.COLOR_WHITE));
 		GridDataFactory gdf = GridDataFactory.fillDefaults().grab(true, true);
 		gdf.align(SWT.FILL, SWT.FILL).grab(true, true).applyTo(head.getLabel());
 		Label sep = new Label(composite, SWT.SEPARATOR | SWT.HORIZONTAL);
 		gdf.applyTo(sep);
 		gdf.align(SWT.BEGINNING, SWT.CENTER).grab(true, false);
-		for (ScaDomainManager domain : ScaPlugin.getDefault()
-				.getDomainManagerRegistry(getShell().getDisplay()).getDomains()) {
+		for (ScaDomainManager domain : ScaPlugin.getDefault().getDomainManagerRegistry(getShell().getDisplay()).getDomains()) {
 			String suffix = getActiveLabel(domain);
-			final TrackableLabelAndHyperlink label = new TrackableLabelAndHyperlink(
-					composite, domain.getName() + suffix, "delete",
-					colorBackground, SWT.NONE, false);
+			final TrackableLabelAndHyperlink label = new TrackableLabelAndHyperlink(composite, domain.getLabel() + suffix, "delete", colorBackground, SWT.NONE,
+				false);
 			label.addHyperlinkListener(new IHyperlinkListener() {
 
 				@Override
@@ -352,9 +338,7 @@ public class DomainsDialog extends Dialog {
 			if (SWT.getPlatform().startsWith("rap")) {
 				label.addMouseTrackListener(new RAPDomainHoverListener(label));
 			} else {
-				CustomControlItem.addMouseTrackListenerToControl(
-						label.getLabel(),
-						(MouseTrackListener) new RCPDomainHoverListener(label));
+				CustomControlItem.addMouseTrackListenerToControl(label.getLabel(), (MouseTrackListener) new RCPDomainHoverListener(label));
 			}
 			label.addMouseListener(new DomainSelectionListener(domain, label));
 			label.hideLink();
@@ -382,20 +366,16 @@ public class DomainsDialog extends Dialog {
 			}
 
 			@Override
-			public void linkActivated(
-					org.eclipse.ui.forms.events.HyperlinkEvent e) {
-				EvaluationContext context = new EvaluationContext(null,
-						getShell());
+			public void linkActivated(org.eclipse.ui.forms.events.HyperlinkEvent e) {
+				EvaluationContext context = new EvaluationContext(null, getShell());
 				context.addVariable(ISources.ACTIVE_SHELL_NAME, getShell());
-				ExecutionEvent event = new ExecutionEvent(null,
-						new HashMap<String, String>(), null, context);
+				ExecutionEvent event = new ExecutionEvent(null, new HashMap<String, String>(), null, context);
 
 				try {
 					DomainsDialog.this.hide();
 					new NewDomainHandler().execute(event);
 				} catch (ExecutionException e2) {
-					ScaUiPlugin.logError("Unable to launch New Domain Wizard",
-							e2);
+					ScaUiPlugin.logError("Unable to launch New Domain Wizard", e2);
 				}
 			}
 		});
@@ -421,13 +401,13 @@ public class DomainsDialog extends Dialog {
 			@Override
 			public void linkActivated(org.eclipse.ui.forms.events.HyperlinkEvent e) {
 				ScaDomainManager domain = ScaPlugin.getDefault().getDomainManagerRegistry(getShell().getDisplay()).findDomain(
-						ScaExplorerSingleDomain.getActiveDomainName());
+					ScaExplorerSingleDomain.getActiveDomainName());
 				if (domain != null && !domain.isConnected()) {
 					try {
 						domain.connect(new NullProgressMonitor(), RefreshDepth.SELF);
 						checkHyperlinkEnabled(domain);
 					} catch (DomainConnectionException ex) {
-						ScaSingleDomainPlugin.logError("Unable to connect to domain" + domain.getName(), ex);
+						ScaSingleDomainPlugin.logError("Unable to connect to domain" + domain.getLabel(), ex);
 					}
 				}
 			}
@@ -454,7 +434,7 @@ public class DomainsDialog extends Dialog {
 			@Override
 			public void linkActivated(org.eclipse.ui.forms.events.HyperlinkEvent e) {
 				ScaDomainManager domain = ScaPlugin.getDefault().getDomainManagerRegistry(getShell().getDisplay()).findDomain(
-						ScaExplorerSingleDomain.getActiveDomainName());
+					ScaExplorerSingleDomain.getActiveDomainName());
 				if (domain != null && domain.isConnected()) {
 					domain.disconnect();
 					checkHyperlinkEnabled(domain);
@@ -483,12 +463,12 @@ public class DomainsDialog extends Dialog {
 			@Override
 			public void linkActivated(org.eclipse.ui.forms.events.HyperlinkEvent e) {
 				ScaDomainManager domain = ScaPlugin.getDefault().getDomainManagerRegistry(getShell().getDisplay()).findDomain(
-						ScaExplorerSingleDomain.getActiveDomainName());
+					ScaExplorerSingleDomain.getActiveDomainName());
 				if (domain != null && domain.isConnected()) {
 					try {
 						domain.refresh(new NullProgressMonitor(), RefreshDepth.SELF);
 					} catch (InterruptedException ex) {
-						ScaSingleDomainPlugin.logError("Unable to refresh domain" + domain.getName(), ex);
+						ScaSingleDomainPlugin.logError("Unable to refresh domain" + domain.getLabel(), ex);
 					}
 				}
 			}
@@ -509,8 +489,7 @@ public class DomainsDialog extends Dialog {
 	}
 
 	protected void deleteDomain(String domainName) {
-		ScaDomainManagerRegistry registry = ScaPlugin.getDefault()
-				.getDomainManagerRegistry(getShell().getDisplay());
+		ScaDomainManagerRegistry registry = ScaPlugin.getDefault().getDomainManagerRegistry(getShell().getDisplay());
 		final ScaDomainManager domMgr = registry.findDomain(domainName);
 		if (domMgr != null) {
 			domMgr.disconnect();
@@ -518,8 +497,7 @@ public class DomainsDialog extends Dialog {
 
 				@Override
 				public void execute() {
-					ScaPlugin.getDefault().getDomainManagerRegistry(getShell().getDisplay())
-					.getDomains().remove(domMgr);
+					ScaPlugin.getDefault().getDomainManagerRegistry(getShell().getDisplay()).getDomains().remove(domMgr);
 				}
 
 			});
@@ -527,13 +505,7 @@ public class DomainsDialog extends Dialog {
 	}
 
 	private String getActiveLabel(ScaDomainManager domain) {
-		if (domain
-				.getName()
-				.equals(ScaUiPlugin
-						.getDefault()
-						.getScaPreferenceStore()
-						.getString(
-								ScaSingleDomainPreferenceConstants.SCA_ACTIVE_DOMAIN))) {
+		if (domain.getLabel().equals(ScaUiPlugin.getDefault().getScaPreferenceStore().getString(ScaSingleDomainPreferenceConstants.SCA_ACTIVE_DOMAIN))) {
 			return " (active)";
 		}
 		return "";
@@ -563,14 +535,12 @@ public class DomainsDialog extends Dialog {
 	public void hide() {
 		if (shell != null && !shell.isDisposed()) {
 			if (SWT.getPlatform().startsWith("rap")) {
-				invokeUICallback("activate",
-						String.valueOf(this.hashCode()));
+				invokeUICallback("activate", String.valueOf(this.hashCode()));
 			}
 			shell.setVisible(false);
 			shell.close();
 			if (SWT.getPlatform().startsWith("rap")) {
-				invokeUICallback("deactivate",
-						String.valueOf(this.hashCode()));
+				invokeUICallback("deactivate", String.valueOf(this.hashCode()));
 			}
 		}
 		if (this.closeListenerJob != null) {
@@ -580,7 +550,7 @@ public class DomainsDialog extends Dialog {
 
 	private void invokeUICallback(String method, String id) {
 		try {
-			Class<?> clazz = Class.forName(CLASS_UICALLBACK);
+			Class< ? > clazz = Class.forName(CLASS_UICALLBACK);
 			Method m = clazz.getMethod(method, String.class);
 			m.invoke(null, id);
 		} catch (ClassNotFoundException e) {

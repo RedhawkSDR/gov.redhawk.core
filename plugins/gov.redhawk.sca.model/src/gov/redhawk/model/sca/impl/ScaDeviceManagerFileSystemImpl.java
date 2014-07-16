@@ -33,12 +33,12 @@ import CF.FileSystemHelper;
 /**
  * <!-- begin-user-doc -->
  * An implementation of the model object '<em><b>Device Manager File System</b></em>'.
- *  @since 12.0
+ * @since 12.0
  * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
  * <ul>
- *   <li>{@link gov.redhawk.model.sca.impl.ScaDeviceManagerFileSystemImpl#getDeviceManager <em>Device Manager</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.impl.ScaDeviceManagerFileSystemImpl#getDeviceManager <em>Device Manager</em>}</li>
  * </ul>
  * </p>
  *
@@ -231,7 +231,7 @@ public class ScaDeviceManagerFileSystemImpl extends ScaFileSystemImpl<FileSystem
 	protected FileSystem narrow(final org.omg.CORBA.Object obj) {
 		// END GENERATED CODE
 		return FileSystemHelper.narrow(obj);
-		// BEGIN GENERATED CODE	    
+		// BEGIN GENERATED CODE
 	}
 
 	@Override
@@ -256,7 +256,7 @@ public class ScaDeviceManagerFileSystemImpl extends ScaFileSystemImpl<FileSystem
 		String domMgrName = null;
 		if (devMgr != null) {
 			if (devMgr.getDomMgr() != null) {
-				domMgrName = devMgr.getDomMgr().getName();
+				domMgrName = devMgr.getDomMgr().getLabel();
 			}
 			devMgrName = devMgr.getLabel();
 		}
@@ -286,4 +286,4 @@ public class ScaDeviceManagerFileSystemImpl extends ScaFileSystemImpl<FileSystem
 		return new URI(ScaFileSystemConstants.SCHEME + "://?" + QueryParser.createQuery(queryParams));
 	}
 
-} //ScaDeviceManagerFileSystemImpl
+} // ScaDeviceManagerFileSystemImpl

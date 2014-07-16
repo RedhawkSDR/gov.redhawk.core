@@ -31,7 +31,10 @@ public class DomainSettingModel {
 	public static final String PROP_DOMAIN_NAME = "domainName";
 	public static final String PROP_NAME_SERVICE_INIT_REF = "nameServiceInitRef";
 	public static final String PROP_CONNECTION_MODE = "connectionMode";
+	public static final String PROP_LOCAL_DOMAIN_NAME = "localDomainName";
+	
 	private String domainName;
+	private String localDomainName;
 	private String nameServiceInitRef = "localhost";
 	private ConnectionMode connectionMode = ConnectionMode.NOW;
 	private final PropertyChangeSupport propertyChangeSupport = new PropertyChangeSupport(this);
@@ -51,6 +54,16 @@ public class DomainSettingModel {
 		final String oldValue = this.domainName;
 		this.domainName = domainName;
 		this.propertyChangeSupport.firePropertyChange(DomainSettingModel.PROP_DOMAIN_NAME, oldValue, domainName);
+	}
+	
+	public String getLocalDomainName() {
+		return localDomainName;
+	}
+	
+	public void setLocalDomainName(String localDomainName) {
+		final String oldValue = this.localDomainName;
+		this.localDomainName = localDomainName;
+		this.propertyChangeSupport.firePropertyChange(DomainSettingModel.PROP_LOCAL_DOMAIN_NAME, oldValue, domainName);
 	}
 
 	public String getNameServiceInitRef() {

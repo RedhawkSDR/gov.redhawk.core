@@ -23,8 +23,9 @@ import CF.ExecutableDeviceOperations;
  *
  *
  * @see gov.redhawk.model.sca.ScaPackage#getScaExecutableDevice()
- * @model superTypes="gov.redhawk.model.sca.ScaLoadableDevice<mil.jpeojtrs.sca.cf.ExecutableDevice> mil.jpeojtrs.sca.cf.ExecutableDeviceOperations"
- *        extendedMetaData="name='ScaExecutableDevice' kind='elementOnly'"
+ * @model superTypes=
+ * "gov.redhawk.model.sca.ScaLoadableDevice<mil.jpeojtrs.sca.cf.ExecutableDevice> mil.jpeojtrs.sca.cf.ExecutableDeviceOperations"
+ * extendedMetaData="name='ScaExecutableDevice' kind='elementOnly'"
  * @generated
  */
 public interface ScaExecutableDevice extends ScaLoadableDevice<ExecutableDevice>, ExecutableDeviceOperations {

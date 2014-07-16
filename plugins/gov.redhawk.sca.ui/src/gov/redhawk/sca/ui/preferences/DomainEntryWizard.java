@@ -55,7 +55,7 @@ public class DomainEntryWizard extends Wizard {
 	public void setRegistry(final ScaDomainManagerRegistry registry) {
 		final List<String> domainNames = new ArrayList<String>();
 		for (final ScaDomainManager domain : registry.getDomains()) {
-			domainNames.add(domain.getName());
+			domainNames.add(domain.getLabel());
 		}
 		this.wizardPage.setDomains(domainNames);
 	}
@@ -66,7 +66,11 @@ public class DomainEntryWizard extends Wizard {
 	public void setDomains(final List<ScaDomainConnectionDef> domains) {
 		final List<String> domainNames = new ArrayList<String>();
 		for (final ScaDomainConnectionDef domain : domains) {
-			domainNames.add(domain.getDomainName());
+			if (domain.getLocalName() != null) {
+				domainNames.add(domain.getLocalName());
+			} else {
+				domainNames.add(domain.getDomainName());
+			}
 		}
 		this.wizardPage.setDomains(domainNames);
 	}
@@ -101,8 +105,16 @@ public class DomainEntryWizard extends Wizard {
 	/**
 	 * @since 8.0
 	 */
-	public void setEdit(final String domainName, final String initRef) {
-		this.wizardPage.setEdit(domainName, initRef);
+	public void setEdit(final String name, final String domainName, final String initRef) {
+		this.wizardPage.setEdit(name, domainName, initRef);
+	}
+
+	public void setLocalDomainName(String localName) {
+		this.wizardPage.setLocalDomainName(localName);
+	}
+
+	public String getLocalDomainName() {
+		return this.wizardPage.getLocalDomainName();
 	}
 
 }

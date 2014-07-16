@@ -25,17 +25,17 @@ import org.eclipse.emf.common.util.EList;
  * <p>
  * The following features are supported:
  * <ul>
- *   <li>{@link gov.redhawk.model.sca.ScaFileStore#getFileStore <em>File Store</em>}</li>
- *   <li>{@link gov.redhawk.model.sca.ScaFileStore#getChildren <em>Children</em>}</li>
- *   <li>{@link gov.redhawk.model.sca.ScaFileStore#getImageDesc <em>Image Desc</em>}</li>
- *   <li>{@link gov.redhawk.model.sca.ScaFileStore#isDirectory <em>Directory</em>}</li>
- *   <li>{@link gov.redhawk.model.sca.ScaFileStore#getName <em>Name</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.ScaFileStore#getFileStore <em>File Store</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.ScaFileStore#getChildren <em>Children</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.ScaFileStore#getImageDesc <em>Image Desc</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.ScaFileStore#isDirectory <em>Directory</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.ScaFileStore#getName <em>Name</em>}</li>
  * </ul>
  * </p>
  *
  * @see gov.redhawk.model.sca.ScaPackage#getScaFileStore()
  * @model superTypes="gov.redhawk.model.sca.IStatusProvider gov.redhawk.model.sca.IRefreshable"
- *        extendedMetaData="name='ScaFileStore' kind='empty'"
+ * extendedMetaData="name='ScaFileStore' kind='empty'"
  * @generated
  */
 public interface ScaFileStore extends IStatusProvider, IRefreshable {
@@ -52,7 +52,7 @@ public interface ScaFileStore extends IStatusProvider, IRefreshable {
 	 * @see #setFileStore(IFileStore)
 	 * @see gov.redhawk.model.sca.ScaPackage#getScaFileStore_FileStore()
 	 * @model dataType="gov.redhawk.model.sca.IFileStore" transient="true"
-	 *        extendedMetaData="kind='attribute' name='fileStore'"
+	 * extendedMetaData="kind='attribute' name='fileStore'"
 	 * @generated
 	 */
 	IFileStore getFileStore();
@@ -81,13 +81,14 @@ public interface ScaFileStore extends IStatusProvider, IRefreshable {
 	 * @see #unsetChildren()
 	 * @see gov.redhawk.model.sca.ScaPackage#getScaFileStore_Children()
 	 * @model containment="true" resolveProxies="true" unsettable="true" transient="true"
-	 *        extendedMetaData="kind='attribute' name='children'"
+	 * extendedMetaData="kind='attribute' name='children'"
 	 * @generated
 	 */
 	EList<ScaFileStore> getChildren();
 
 	/**
-	 * Unsets the value of the '{@link gov.redhawk.model.sca.ScaFileStore#getChildren <em>Children</em>}' containment reference list.
+	 * Unsets the value of the '{@link gov.redhawk.model.sca.ScaFileStore#getChildren <em>Children</em>}' containment
+	 * reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @see #isSetChildren()
@@ -97,7 +98,8 @@ public interface ScaFileStore extends IStatusProvider, IRefreshable {
 	void unsetChildren();
 
 	/**
-	 * Returns whether the value of the '{@link gov.redhawk.model.sca.ScaFileStore#getChildren <em>Children</em>}' containment reference list is set.
+	 * Returns whether the value of the '{@link gov.redhawk.model.sca.ScaFileStore#getChildren <em>Children</em>}'
+	 * containment reference list is set.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @return whether the value of the '<em>Children</em>' containment reference list is set.
@@ -149,7 +151,8 @@ public interface ScaFileStore extends IStatusProvider, IRefreshable {
 	void unsetImageDesc();
 
 	/**
-	 * Returns whether the value of the '{@link gov.redhawk.model.sca.ScaFileStore#getImageDesc <em>Image Desc</em>}' attribute is set.
+	 * Returns whether the value of the '{@link gov.redhawk.model.sca.ScaFileStore#getImageDesc <em>Image Desc</em>}'
+	 * attribute is set.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @return whether the value of the '<em>Image Desc</em>' attribute is set.

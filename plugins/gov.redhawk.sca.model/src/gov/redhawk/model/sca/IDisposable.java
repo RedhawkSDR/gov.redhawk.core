@@ -24,13 +24,13 @@ import org.eclipse.emf.ecore.EObject;
  * <p>
  * The following features are supported:
  * <ul>
- *   <li>{@link gov.redhawk.model.sca.IDisposable#isDisposed <em>Disposed</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.IDisposable#isDisposed <em>Disposed</em>}</li>
  * </ul>
  * </p>
  *
  * @see gov.redhawk.model.sca.ScaPackage#getIDisposable()
  * @model interface="true" abstract="true"
- *        extendedMetaData="name='IDisposable' kind='empty'"
+ * extendedMetaData="name='IDisposable' kind='empty'"
  * @generated
  */
 public interface IDisposable extends EObject {
@@ -46,7 +46,7 @@ public interface IDisposable extends EObject {
 	 * @return the value of the '<em>Disposed</em>' attribute.
 	 * @see gov.redhawk.model.sca.ScaPackage#getIDisposable_Disposed()
 	 * @model transient="true" changeable="false"
-	 *        extendedMetaData="kind='attribute' name='disposed'"
+	 * extendedMetaData="kind='attribute' name='disposed'"
 	 * @generated
 	 */
 	boolean isDisposed();

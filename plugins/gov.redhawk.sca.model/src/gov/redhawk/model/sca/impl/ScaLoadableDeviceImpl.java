@@ -82,8 +82,7 @@ public class ScaLoadableDeviceImpl< L extends LoadableDevice > extends ScaDevice
 	}
 
 	/**
-	 * @since 14.0
-	 * {@inheritDoc}
+	 * @since 14.0 {@inheritDoc}
 	 */
 	@SuppressWarnings("unchecked")
 	@Override
@@ -99,4 +98,4 @@ public class ScaLoadableDeviceImpl< L extends LoadableDevice > extends ScaDevice
 		return (Class<L>) LoadableDevice.class;
 	}
 
-} //ScaLoadableDeviceImpl
+} // ScaLoadableDeviceImpl

@@ -18,7 +18,7 @@ import org.eclipse.emf.ecore.xmi.impl.XMLResourceImpl;
 /**
  * <!-- begin-user-doc -->
  * The <b>Resource </b> associated with the package.
- *  @since 8.0
+ * @since 8.0
  * <!-- end-user-doc -->
  * @see gov.redhawk.model.sca.util.ScaResourceFactoryImpl
  * @generated
@@ -36,4 +36,4 @@ public class ScaResourceImpl extends XMLResourceImpl {
 		super(uri);
 	}
 
-} //ScaResourceImpl
+} // ScaResourceImpl

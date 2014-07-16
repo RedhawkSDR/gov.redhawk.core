@@ -23,8 +23,9 @@ import CF.FileManagerOperations;
  *
  *
  * @see gov.redhawk.model.sca.ScaPackage#getScaFileManager()
- * @model abstract="true" superTypes="gov.redhawk.model.sca.ScaFileSystem<mil.jpeojtrs.sca.cf.FileManager> mil.jpeojtrs.sca.cf.FileManagerOperations"
- *        extendedMetaData="name='ScaFileManager' kind='empty'"
+ * @model abstract="true" superTypes=
+ * "gov.redhawk.model.sca.ScaFileSystem<mil.jpeojtrs.sca.cf.FileManager> mil.jpeojtrs.sca.cf.FileManagerOperations"
+ * extendedMetaData="name='ScaFileManager' kind='empty'"
  * @generated
  */
 public interface ScaFileManager extends ScaFileSystem<FileManager>, FileManagerOperations {

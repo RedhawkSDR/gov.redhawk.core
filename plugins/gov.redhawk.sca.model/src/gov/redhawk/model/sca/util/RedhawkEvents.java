@@ -208,7 +208,7 @@ public class RedhawkEvents {
 					retVal.put(EventTags.WAVEFORM_TYPE, ((ScaWaveform) obj).getProfileObj().getId());
 				}
 			} else if (obj instanceof ScaDomainManager) {
-				retVal.put(EventTags.DOMAIN_NAME, ((ScaDomainManager) obj).getName());
+				retVal.put(EventTags.DOMAIN_NAME, ((ScaDomainManager) obj).getLabel());
 			} else if (obj instanceof ScaService) {
 				retVal.put(EventTags.SERVICE_NAME, ((ScaService) obj).getName());
 				if (((ScaService) obj).getProfileObj() != null) {

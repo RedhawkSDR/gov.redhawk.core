@@ -28,17 +28,17 @@ import CF.Resource;
  * <p>
  * The following features are supported:
  * <ul>
- *   <li>{@link gov.redhawk.model.sca.ScaComponent#getComponentInstantiation <em>Component Instantiation</em>}</li>
- *   <li>{@link gov.redhawk.model.sca.ScaComponent#getDevices <em>Devices</em>}</li>
- *   <li>{@link gov.redhawk.model.sca.ScaComponent#getInstantiationIdentifier <em>Instantiation Identifier</em>}</li>
- *   <li>{@link gov.redhawk.model.sca.ScaComponent#getWaveform <em>Waveform</em>}</li>
- *   <li>{@link gov.redhawk.model.sca.ScaComponent#getName <em>Name</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.ScaComponent#getComponentInstantiation <em>Component Instantiation</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.ScaComponent#getDevices <em>Devices</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.ScaComponent#getInstantiationIdentifier <em>Instantiation Identifier</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.ScaComponent#getWaveform <em>Waveform</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.ScaComponent#getName <em>Name</em>}</li>
  * </ul>
  * </p>
  *
  * @see gov.redhawk.model.sca.ScaPackage#getScaComponent()
  * @model superTypes="gov.redhawk.model.sca.ScaAbstractComponent<mil.jpeojtrs.sca.cf.Resource>"
- *        extendedMetaData="name='ScaComponent' kind='elementOnly'"
+ * extendedMetaData="name='ScaComponent' kind='elementOnly'"
  * @generated
  */
 public interface ScaComponent extends ScaAbstractComponent<Resource> {
@@ -57,13 +57,14 @@ public interface ScaComponent extends ScaAbstractComponent<Resource> {
 	 * @see #setComponentInstantiation(SadComponentInstantiation)
 	 * @see gov.redhawk.model.sca.ScaPackage#getScaComponent_ComponentInstantiation()
 	 * @model unsettable="true" required="true" transient="true"
-	 *        extendedMetaData="kind='attribute' name='componentInstantiation'"
+	 * extendedMetaData="kind='attribute' name='componentInstantiation'"
 	 * @generated
 	 */
 	SadComponentInstantiation getComponentInstantiation();
 
 	/**
-	 * Sets the value of the '{@link gov.redhawk.model.sca.ScaComponent#getComponentInstantiation <em>Component Instantiation</em>}' reference.
+	 * Sets the value of the '{@link gov.redhawk.model.sca.ScaComponent#getComponentInstantiation <em>Component
+	 * Instantiation</em>}' reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @param value the new value of the '<em>Component Instantiation</em>' reference.
@@ -75,7 +76,8 @@ public interface ScaComponent extends ScaAbstractComponent<Resource> {
 	void setComponentInstantiation(SadComponentInstantiation value);
 
 	/**
-	 * Unsets the value of the '{@link gov.redhawk.model.sca.ScaComponent#getComponentInstantiation <em>Component Instantiation</em>}' reference.
+	 * Unsets the value of the '{@link gov.redhawk.model.sca.ScaComponent#getComponentInstantiation <em>Component
+	 * Instantiation</em>}' reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @see #isSetComponentInstantiation()
@@ -86,7 +88,8 @@ public interface ScaComponent extends ScaAbstractComponent<Resource> {
 	void unsetComponentInstantiation();
 
 	/**
-	 * Returns whether the value of the '{@link gov.redhawk.model.sca.ScaComponent#getComponentInstantiation <em>Component Instantiation</em>}' reference is set.
+	 * Returns whether the value of the '{@link gov.redhawk.model.sca.ScaComponent#getComponentInstantiation
+	 * <em>Component Instantiation</em>}' reference is set.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @return whether the value of the '<em>Component Instantiation</em>' reference is set.
@@ -111,7 +114,7 @@ public interface ScaComponent extends ScaAbstractComponent<Resource> {
 	 * @see #unsetDevices()
 	 * @see gov.redhawk.model.sca.ScaPackage#getScaComponent_Devices()
 	 * @model unsettable="true" transient="true"
-	 *        extendedMetaData="kind='attribute' name='devices'"
+	 * extendedMetaData="kind='attribute' name='devices'"
 	 * @generated
 	 */
 	EList<ScaDevice< ? >> getDevices();
@@ -127,7 +130,8 @@ public interface ScaComponent extends ScaAbstractComponent<Resource> {
 	void unsetDevices();
 
 	/**
-	 * Returns whether the value of the '{@link gov.redhawk.model.sca.ScaComponent#getDevices <em>Devices</em>}' reference list is set.
+	 * Returns whether the value of the '{@link gov.redhawk.model.sca.ScaComponent#getDevices <em>Devices</em>}'
+	 * reference list is set.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @return whether the value of the '<em>Devices</em>' reference list is set.
@@ -149,13 +153,14 @@ public interface ScaComponent extends ScaAbstractComponent<Resource> {
 	 * @see #isSetInstantiationIdentifier()
 	 * @see gov.redhawk.model.sca.ScaPackage#getScaComponent_InstantiationIdentifier()
 	 * @model unsettable="true" transient="true" changeable="false" volatile="true" derived="true"
-	 *        extendedMetaData="kind='attribute' name='instantiationIdentifier'"
+	 * extendedMetaData="kind='attribute' name='instantiationIdentifier'"
 	 * @generated
 	 */
 	String getInstantiationIdentifier();
 
 	/**
-	 * Returns whether the value of the '{@link gov.redhawk.model.sca.ScaComponent#getInstantiationIdentifier <em>Instantiation Identifier</em>}' attribute is set.
+	 * Returns whether the value of the '{@link gov.redhawk.model.sca.ScaComponent#getInstantiationIdentifier
+	 * <em>Instantiation Identifier</em>}' attribute is set.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @return whether the value of the '<em>Instantiation Identifier</em>' attribute is set.
@@ -166,7 +171,8 @@ public interface ScaComponent extends ScaAbstractComponent<Resource> {
 
 	/**
 	 * Returns the value of the '<em><b>Waveform</b></em>' container reference.
-	 * It is bidirectional and its opposite is '{@link gov.redhawk.model.sca.ScaWaveform#getComponents <em>Components</em>}'.
+	 * It is bidirectional and its opposite is '{@link gov.redhawk.model.sca.ScaWaveform#getComponents
+	 * <em>Components</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <p>
 	 * If the meaning of the '<em>Waveform</em>' container reference isn't clear,
@@ -178,13 +184,14 @@ public interface ScaComponent extends ScaAbstractComponent<Resource> {
 	 * @see gov.redhawk.model.sca.ScaPackage#getScaComponent_Waveform()
 	 * @see gov.redhawk.model.sca.ScaWaveform#getComponents
 	 * @model opposite="components"
-	 *        extendedMetaData="kind='attribute' name='waveform'"
+	 * extendedMetaData="kind='attribute' name='waveform'"
 	 * @generated
 	 */
 	ScaWaveform getWaveform();
 
 	/**
-	 * Sets the value of the '{@link gov.redhawk.model.sca.ScaComponent#getWaveform <em>Waveform</em>}' container reference.
+	 * Sets the value of the '{@link gov.redhawk.model.sca.ScaComponent#getWaveform <em>Waveform</em>}' container
+	 * reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @param value the new value of the '<em>Waveform</em>' container reference.
@@ -226,6 +233,7 @@ public interface ScaComponent extends ScaAbstractComponent<Resource> {
 	 * @generated
 	 */
 	EList<ScaDevice< ? >> fetchDevices(IProgressMonitor monitor);
+
 	/**
 	 * @since 19.0
 	 */

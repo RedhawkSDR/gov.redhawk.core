@@ -291,7 +291,7 @@ public class WaveformMainTab extends AbstractLaunchConfigurationTab {
 			final boolean openEditor = configuration.getAttribute(ScaLaunchConfigurationConstants.ATT_OPEN,
 				ScaLaunchConfigurationConstants.DEFAULT_VALUE_ATT_OPEN);
 			for (final ScaDomainManager domain : ScaPlugin.getDefault().getDomainManagerRegistry(Display.getCurrent()).getDomains()) {
-				if (domainName.equals(domain.getName())) {
+				if (domainName.equals(domain.getLabel())) {
 					this.domainCombo.setSelection(new StructuredSelection(domain));
 					break;
 				}
@@ -314,7 +314,7 @@ public class WaveformMainTab extends AbstractLaunchConfigurationTab {
 		final IStructuredSelection domainSelection = (IStructuredSelection) this.domainCombo.getSelection();
 		final Object domain = domainSelection.getFirstElement();
 		if (domain instanceof ScaDomainManager) {
-			domainName = ((ScaDomainManager) domain).getName();
+			domainName = ((ScaDomainManager) domain).getLabel();
 		}
 		configuration.setAttribute(ScaLaunchConfigurationConstants.ATT_DOMAIN_NAME, domainName);
 		configuration.setAttribute(ScaLaunchConfigurationConstants.ATT_START, this.startWaveform.getSelection());

@@ -11,6 +11,8 @@
  */
 package gov.redhawk.ui.views.domainbrowser.view;
 
+import gov.redhawk.sca.ui.preferences.DomainSettingModel.ConnectionMode;
+
 import org.eclipse.jface.wizard.Wizard;
 
 /**
@@ -20,8 +22,6 @@ import org.eclipse.jface.wizard.Wizard;
 public class DomainEntryWizard extends Wizard {
 
 	private final DomainEntryWizardPage wizardPage = new DomainEntryWizardPage("ENTRY_PAGE");
-	private String domainName = null;
-	private String nameService = null;
 	
 	public DomainEntryWizard() {
 		this.setNeedsProgressMonitor(false);
@@ -35,16 +35,22 @@ public class DomainEntryWizard extends Wizard {
 
 	@Override
 	public boolean performFinish() {
-		this.domainName = this.wizardPage.getDomainName();
-		this.nameService = this.wizardPage.getNameServiceInitRef();
 		return true;
 	}
 
 	public String getNameServiceInitRef() {
-		return this.nameService;
+		return this.wizardPage.getNameServiceInitRef();
 	}
 
 	public String getDomainName() {
-		return this.domainName;
+		return wizardPage.getDomainName();
+	}
+	
+	public String getLocalDomainName() {
+		return wizardPage.getLocalDomainName();
+	}
+	
+	public ConnectionMode getConnectionMode() {
+		return wizardPage.getConnectionMode();
 	}
 }

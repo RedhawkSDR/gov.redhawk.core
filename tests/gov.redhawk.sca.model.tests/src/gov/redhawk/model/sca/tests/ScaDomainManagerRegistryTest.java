@@ -31,6 +31,7 @@ import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
  * <ul>
  *   <li>{@link gov.redhawk.model.sca.ScaDomainManagerRegistry#findDomain(java.lang.String) <em>Find Domain</em>}</li>
  *   <li>{@link gov.redhawk.model.sca.ScaDomainManagerRegistry#createDomain(java.lang.String, boolean, java.util.Map) <em>Create Domain</em>}</li>
+ *   <li>{@link gov.redhawk.model.sca.ScaDomainManagerRegistry#createDomain(java.lang.String, java.lang.String, boolean, java.util.Map) <em>Create Domain</em>}</li>
  *   <li>{@link gov.redhawk.model.sca.IDisposable#dispose() <em>Dispose</em>}</li>
  * </ul>
  * </p>
@@ -169,7 +170,21 @@ public class ScaDomainManagerRegistryTest extends TestCase {
 	 * @see gov.redhawk.model.sca.ScaDomainManagerRegistry#createDomain(java.lang.String, boolean, java.util.Map)
 	 * @generated NOT
 	 */
+	@Deprecated
 	public void testCreateDomain__String_boolean_Map() {
+		// END GENERATED CODE
+
+		// BEGIN GENERATED CODE
+	}
+	
+	/**
+	 * Tests the '{@link gov.redhawk.model.sca.ScaDomainManagerRegistry#createDomain(java.lang.String, java.lang.String, boolean, java.util.Map) <em>Create Domain</em>}' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see gov.redhawk.model.sca.ScaDomainManagerRegistry#createDomain(java.lang.String, java.lang.String, boolean, java.util.Map)
+	 * @generated NOT
+	 */
+	public void testCreateDomain__String_String_boolean_Map() {
 		// END GENERATED CODE
 
 		// BEGIN GENERATED CODE

@@ -56,4 +56,4 @@ public class ScaXMLProcessor extends XMLProcessor {
 		return registrations;
 	}
 
-} //ScaXMLProcessor
+} // ScaXMLProcessor

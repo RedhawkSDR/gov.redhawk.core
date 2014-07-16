@@ -32,12 +32,12 @@ import org.omg.CORBA.Any;
  * <!-- begin-user-doc --> An implementation of the model object '
  * <em><b>Simple Property</b></em>'.
  * 
- * @since 12.0 
+ * @since 12.0
  * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
  * <ul>
- *   <li>{@link gov.redhawk.model.sca.impl.ScaSimplePropertyImpl#getValue <em>Value</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.impl.ScaSimplePropertyImpl#getValue <em>Value</em>}</li>
  * </ul>
  * </p>
  *

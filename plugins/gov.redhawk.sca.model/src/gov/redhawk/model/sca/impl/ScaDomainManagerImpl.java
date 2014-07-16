@@ -127,25 +127,28 @@ import CF.PropertySetPackage.PartialConfiguration;
 /**
  * <!-- begin-user-doc --> An implementation of the model object '
  * <em><b>Domain Manager</b></em>'.
- * @since 12.0 
+ * @since 12.0
  * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
  * <ul>
- *   <li>{@link gov.redhawk.model.sca.impl.ScaDomainManagerImpl#getWaveformFactories <em>Waveform Factories</em>}</li>
- *   <li>{@link gov.redhawk.model.sca.impl.ScaDomainManagerImpl#getWaveforms <em>Waveforms</em>}</li>
- *   <li>{@link gov.redhawk.model.sca.impl.ScaDomainManagerImpl#getDeviceManagers <em>Device Managers</em>}</li>
- *   <li>{@link gov.redhawk.model.sca.impl.ScaDomainManagerImpl#getFileManager <em>File Manager</em>}</li>
- *   <li>{@link gov.redhawk.model.sca.impl.ScaDomainManagerImpl#getConnectionPropertiesContainer <em>Connection Properties Container</em>}</li>
- *   <li>{@link gov.redhawk.model.sca.impl.ScaDomainManagerImpl#getConnectionProperties <em>Connection Properties</em>}</li>
- *   <li>{@link gov.redhawk.model.sca.impl.ScaDomainManagerImpl#isAutoConnect <em>Auto Connect</em>}</li>
- *   <li>{@link gov.redhawk.model.sca.impl.ScaDomainManagerImpl#isConnected <em>Connected</em>}</li>
- *   <li>{@link gov.redhawk.model.sca.impl.ScaDomainManagerImpl#getIdentifier <em>Identifier</em>}</li>
- *   <li>{@link gov.redhawk.model.sca.impl.ScaDomainManagerImpl#getName <em>Name</em>}</li>
- *   <li>{@link gov.redhawk.model.sca.impl.ScaDomainManagerImpl#getRootContext <em>Root Context</em>}</li>
- *   <li>{@link gov.redhawk.model.sca.impl.ScaDomainManagerImpl#getState <em>State</em>}</li>
- *   <li>{@link gov.redhawk.model.sca.impl.ScaDomainManagerImpl#getProfile <em>Profile</em>}</li>
- *   <li>{@link gov.redhawk.model.sca.impl.ScaDomainManagerImpl#getEventChannels <em>Event Channels</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.impl.ScaDomainManagerImpl#getWaveformFactories <em>Waveform Factories</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.impl.ScaDomainManagerImpl#getWaveforms <em>Waveforms</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.impl.ScaDomainManagerImpl#getDeviceManagers <em>Device Managers</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.impl.ScaDomainManagerImpl#getFileManager <em>File Manager</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.impl.ScaDomainManagerImpl#getConnectionPropertiesContainer <em>Connection Properties
+ * Container</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.impl.ScaDomainManagerImpl#getConnectionProperties <em>Connection Properties</em>}
+ * </li>
+ * <li>{@link gov.redhawk.model.sca.impl.ScaDomainManagerImpl#isAutoConnect <em>Auto Connect</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.impl.ScaDomainManagerImpl#isConnected <em>Connected</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.impl.ScaDomainManagerImpl#getIdentifier <em>Identifier</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.impl.ScaDomainManagerImpl#getName <em>Name</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.impl.ScaDomainManagerImpl#getRootContext <em>Root Context</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.impl.ScaDomainManagerImpl#getState <em>State</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.impl.ScaDomainManagerImpl#getProfile <em>Profile</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.impl.ScaDomainManagerImpl#getEventChannels <em>Event Channels</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.impl.ScaDomainManagerImpl#getLocalName <em>Local Name</em>}</li>
  * </ul>
  * </p>
  *
@@ -197,7 +200,8 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 	 */
 	protected boolean fileManagerESet;
 	/**
-	 * The cached value of the '{@link #getConnectionPropertiesContainer() <em>Connection Properties Container</em>}' containment reference.
+	 * The cached value of the '{@link #getConnectionPropertiesContainer() <em>Connection Properties Container</em>}'
+	 * containment reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @see #getConnectionPropertiesContainer()
@@ -356,6 +360,24 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 	 * @ordered
 	 */
 	protected EList<ScaEventChannel> eventChannels;
+	/**
+	 * The default value of the '{@link #getLocalName() <em>Local Name</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getLocalName()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final String LOCAL_NAME_EDEFAULT = null;
+	/**
+	 * The cached value of the '{@link #getLocalName() <em>Local Name</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getLocalName()
+	 * @generated
+	 * @ordered
+	 */
+	protected String localName = LOCAL_NAME_EDEFAULT;
 	private static final Debug DEBUG = new Debug(ScaModelPlugin.ID, "scaDomainManager/connect");
 	private static final Debug DEBUG_KEEP_ALIVE_ERRORS = new Debug(ScaModelPlugin.ID, "scaDomainManager/keepAliveErrors");
 
@@ -929,7 +951,7 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 	/**
 	 * <!-- begin-user-doc -->
 	 * @since 14.0
-	 *  <!-- end-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public void setStateGen(DomainConnectionState newState) {
@@ -1056,13 +1078,34 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 	}
 
 	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public String getLocalName() {
+		return localName;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public void setLocalName(String newLocalName) {
+		String oldLocalName = localName;
+		localName = newLocalName;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, ScaPackage.SCA_DOMAIN_MANAGER__LOCAL_NAME, oldLocalName, localName));
+	}
+
+	/**
 	 * Waits for a connect that is in progress to complete. This method assumes it is running in the protected context
 	 * that can access the model.
-	 *  
+	 * 
 	 * @param monitor the progress monitor to use for reporting progress to the user. It is the caller's responsibility
-	 *  to call done() on the given monitor. Accepts null, indicating that no progress should be
-	 *  reported and that the operation cannot be canceled.
-	 * @throws InterruptedException 
+	 * to call done() on the given monitor. Accepts null, indicating that no progress should be
+	 * reported and that the operation cannot be canceled.
+	 * @throws InterruptedException
 	 */
 	private void waitOnConnect(final IProgressMonitor monitor) throws InterruptedException {
 		SubMonitor progress = SubMonitor.convert(monitor, SubMonitor.UNKNOWN);
@@ -1078,7 +1121,7 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 
 	/**
 	 * <!-- begin-user-doc -->
-	 * @since 14.0 
+	 * @since 14.0
 	 * <!-- end-user-doc -->
 	 * 
 	 * @generated NOT
@@ -1155,7 +1198,7 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 			final String domMgrName = getDomMgrName();
 
 			monitor.subTask("Resolving Naming Service...");
-			//			String nameService = orbProperties.getProperty("ORBInitRef.NameService");
+			// String nameService = orbProperties.getProperty("ORBInitRef.NameService");
 			final ORB orb = orbSession.getOrb();
 			final org.omg.CORBA.Object objRef = CorbaUtils.invoke(new Callable<org.omg.CORBA.Object>() {
 
@@ -1242,8 +1285,7 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 
 	/**
 	 * <!-- begin-user-doc -->
-	 * @deprecated Use {@link #connect(IProgressMonitor, RefreshDepth)}
-	 * <!-- end-user-doc -->
+	 * @deprecated Use {@link #connect(IProgressMonitor, RefreshDepth)} <!-- end-user-doc -->
 	 * @generated NOT
 	 */
 	@Override
@@ -1266,11 +1308,11 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 
 	private String getDomMgrName() {
 		// END GENERATED CODE
-		String localName = this.name;
-		if (localName != null && localName.indexOf('/') == -1) {
-			return localName + "/" + localName;
+		String tmpString = this.name;
+		if (tmpString != null && tmpString.indexOf('/') == -1) {
+			return tmpString + "/" + tmpString;
 		} else {
-			return localName;
+			return tmpString;
 		}
 		// BEGIN GENERATED CODE
 	}
@@ -1306,7 +1348,7 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 
 	/**
 	 * <!-- begin-user-doc -->
-	 * @throws InterruptedException 
+	 * @throws InterruptedException
 	 * @since 14.0
 	 * <!-- end-user-doc -->
 	 * @generated NOT
@@ -1399,7 +1441,7 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 
 	/**
 	 * <!-- begin-user-doc -->
-	 * @throws InterruptedException 
+	 * @throws InterruptedException
 	 * @since 14.0
 	 * <!-- end-user-doc -->
 	 * @generated NOT
@@ -1419,7 +1461,7 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 		if (isDisposed()) {
 			return;
 		}
-		SubMonitor subMonitor = SubMonitor.convert(monitor, 3); //SUPPRESS CHECKSTYLE MagicNumber
+		SubMonitor subMonitor = SubMonitor.convert(monitor, 3); // SUPPRESS CHECKSTYLE MagicNumber
 		final DomainManager domMgr = fetchNarrowedObject(subMonitor.newChild(1));
 		Transaction transaction = waveformsFeature.createTransaction();
 
@@ -1850,6 +1892,8 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 			return getProfile();
 		case ScaPackage.SCA_DOMAIN_MANAGER__EVENT_CHANNELS:
 			return getEventChannels();
+		case ScaPackage.SCA_DOMAIN_MANAGER__LOCAL_NAME:
+			return getLocalName();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -1906,6 +1950,9 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 			getEventChannels().clear();
 			getEventChannels().addAll((Collection< ? extends ScaEventChannel>) newValue);
 			return;
+		case ScaPackage.SCA_DOMAIN_MANAGER__LOCAL_NAME:
+			setLocalName((String) newValue);
+			return;
 		}
 		super.eSet(featureID, newValue);
 	}
@@ -1957,6 +2004,9 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 		case ScaPackage.SCA_DOMAIN_MANAGER__EVENT_CHANNELS:
 			unsetEventChannels();
 			return;
+		case ScaPackage.SCA_DOMAIN_MANAGER__LOCAL_NAME:
+			setLocalName(LOCAL_NAME_EDEFAULT);
+			return;
 		}
 		super.eUnset(featureID);
 	}
@@ -1997,6 +2047,8 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 			return isSetProfile();
 		case ScaPackage.SCA_DOMAIN_MANAGER__EVENT_CHANNELS:
 			return isSetEventChannels();
+		case ScaPackage.SCA_DOMAIN_MANAGER__LOCAL_NAME:
+			return LOCAL_NAME_EDEFAULT == null ? localName != null : !LOCAL_NAME_EDEFAULT.equals(localName);
 		}
 		return super.eIsSet(featureID);
 	}
@@ -2033,6 +2085,8 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 			result.append(profile);
 		else
 			result.append("<unset>");
+		result.append(", localName: ");
+		result.append(localName);
 		result.append(')');
 		return result.toString();
 	}
@@ -2087,7 +2141,7 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @throws InterruptedException 
+	 * @throws InterruptedException
 	 * @generated NOT
 	 */
 	@Override
@@ -2318,7 +2372,7 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 		if (isDisposed()) {
 			return;
 		}
-		SubMonitor subMonitor = SubMonitor.convert(monitor, 3); //SUPPRESS CHECKSTYLE MagicNumber
+		SubMonitor subMonitor = SubMonitor.convert(monitor, 3); // SUPPRESS CHECKSTYLE MagicNumber
 		NamingContextExt localRootContext = getRootContext();
 
 		Transaction transaction = eventChannelFeature.createTransaction();
@@ -2617,6 +2671,14 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 			return ECollections.unmodifiableEList(new BasicEList<ScaEventChannel>(Arrays.asList(array)));
 		} else {
 			return ECollections.emptyEList();
+		}
+	}
+	
+	public String getLabel() {
+		if (getLocalName() != null) {
+			return getLocalName();
+		} else {
+			return getName();
 		}
 	}
 

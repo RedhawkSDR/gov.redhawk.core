@@ -24,20 +24,21 @@ import CF.FileSystem;
  * <p>
  * The following features are supported:
  * <ul>
- *   <li>{@link gov.redhawk.model.sca.ScaDeviceManagerFileSystem#getDeviceManager <em>Device Manager</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.ScaDeviceManagerFileSystem#getDeviceManager <em>Device Manager</em>}</li>
  * </ul>
  * </p>
  *
  * @see gov.redhawk.model.sca.ScaPackage#getScaDeviceManagerFileSystem()
  * @model superTypes="gov.redhawk.model.sca.ScaFileSystem<mil.jpeojtrs.sca.cf.FileSystem>"
- *        extendedMetaData="name='ScaDeviceManagerFileSystem' kind='empty'"
+ * extendedMetaData="name='ScaDeviceManagerFileSystem' kind='empty'"
  * @generated
  */
 public interface ScaDeviceManagerFileSystem extends ScaFileSystem<FileSystem> {
 
 	/**
 	 * Returns the value of the '<em><b>Device Manager</b></em>' container reference.
-	 * It is bidirectional and its opposite is '{@link gov.redhawk.model.sca.ScaDeviceManager#getFileSystem <em>File System</em>}'.
+	 * It is bidirectional and its opposite is '{@link gov.redhawk.model.sca.ScaDeviceManager#getFileSystem <em>File
+	 * System</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <p>
 	 * If the meaning of the '<em>Device Manager</em>' container reference isn't clear,
@@ -54,7 +55,8 @@ public interface ScaDeviceManagerFileSystem extends ScaFileSystem<FileSystem> {
 	ScaDeviceManager getDeviceManager();
 
 	/**
-	 * Sets the value of the '{@link gov.redhawk.model.sca.ScaDeviceManagerFileSystem#getDeviceManager <em>Device Manager</em>}' container reference.
+	 * Sets the value of the '{@link gov.redhawk.model.sca.ScaDeviceManagerFileSystem#getDeviceManager <em>Device
+	 * Manager</em>}' container reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @param value the new value of the '<em>Device Manager</em>' container reference.

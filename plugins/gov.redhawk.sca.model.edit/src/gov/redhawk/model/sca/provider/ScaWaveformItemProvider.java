@@ -15,23 +15,14 @@ package gov.redhawk.model.sca.provider;
 import gov.redhawk.model.sca.ScaDomainManager;
 import gov.redhawk.model.sca.ScaPackage;
 import gov.redhawk.model.sca.ScaWaveform;
-
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-
 import org.eclipse.emf.common.notify.AdapterFactory;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.edit.provider.ComposeableAdapterFactory;
-import org.eclipse.emf.edit.provider.IEditingDomainItemProvider;
-import org.eclipse.emf.edit.provider.IItemColorProvider;
-import org.eclipse.emf.edit.provider.IItemLabelProvider;
 import org.eclipse.emf.edit.provider.IItemPropertyDescriptor;
-import org.eclipse.emf.edit.provider.IItemPropertySource;
-import org.eclipse.emf.edit.provider.IStructuredItemContentProvider;
-import org.eclipse.emf.edit.provider.ITableItemColorProvider;
-import org.eclipse.emf.edit.provider.ITableItemLabelProvider;
 import org.eclipse.emf.edit.provider.ITreeItemContentProvider;
 import org.eclipse.emf.edit.provider.ItemPropertyDescriptor;
 import org.eclipse.emf.edit.provider.ViewerNotification;
@@ -42,8 +33,7 @@ import org.eclipse.emf.edit.provider.ViewerNotification;
  * <!-- end-user-doc -->
  * @generated
  */
-public class ScaWaveformItemProvider extends ScaPropertyContainerItemProvider implements IEditingDomainItemProvider, IStructuredItemContentProvider,
-		ITreeItemContentProvider, IItemLabelProvider, IItemPropertySource, ITableItemLabelProvider, ITableItemColorProvider, IItemColorProvider {
+public class ScaWaveformItemProvider extends ScaPropertyContainerItemProvider {
 	/**
 	 * This constructs an instance from a factory and a notifier.
 	 * <!-- begin-user-doc -->
@@ -53,7 +43,7 @@ public class ScaWaveformItemProvider extends ScaPropertyContainerItemProvider im
 	public ScaWaveformItemProvider(AdapterFactory adapterFactory) {
 		super(adapterFactory);
 	}
-	
+
 	@Override
 	public Object getParent(Object object) {
 		Object parent = super.getParent(object);
@@ -208,7 +198,7 @@ public class ScaWaveformItemProvider extends ScaPropertyContainerItemProvider im
 	public Object getImage(Object object) {
 		// END GENERATED CODE
 		// Don't overlayImage because it adds a link decoration for controlled objects.
-		//return overlayImage(object, getResourceLocator().getImage("full/obj16/ScaWaveform"));
+		// return overlayImage(object, getResourceLocator().getImage("full/obj16/ScaWaveform"));
 		return getResourceLocator().getImage("full/obj16/ScaWaveform");
 		// BEGIN GENERATED CODE
 	}

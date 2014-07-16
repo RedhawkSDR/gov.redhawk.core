@@ -92,7 +92,8 @@ public class ScaValidator extends EObjectValidator {
 	 */
 	public static final ScaValidator INSTANCE = new ScaValidator();
 	/**
-	 * A constant for the {@link org.eclipse.emf.common.util.Diagnostic#getSource() source} of diagnostic {@link org.eclipse.emf.common.util.Diagnostic#getCode() codes} from this package.
+	 * A constant for the {@link org.eclipse.emf.common.util.Diagnostic#getSource() source} of diagnostic
+	 * {@link org.eclipse.emf.common.util.Diagnostic#getCode() codes} from this package.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @see org.eclipse.emf.common.util.Diagnostic#getSource()
@@ -108,7 +109,8 @@ public class ScaValidator extends EObjectValidator {
 	 */
 	private static final int GENERATED_DIAGNOSTIC_CODE_COUNT = 0;
 	/**
-	 * A constant with a fixed name that can be used as the base value for additional hand written constants in a derived class.
+	 * A constant with a fixed name that can be used as the base value for additional hand written constants in a
+	 * derived class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
@@ -885,4 +887,4 @@ public class ScaValidator extends EObjectValidator {
 		return super.getResourceLocator();
 	}
 
-} //ScaValidator
+} // ScaValidator

@@ -29,7 +29,7 @@ import org.omg.CosEventChannelAdmin.EventChannelHelper;
  * <p>
  * The following features are implemented:
  * <ul>
- *   <li>{@link gov.redhawk.model.sca.impl.ScaEventChannelImpl#getName <em>Name</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.impl.ScaEventChannelImpl#getName <em>Name</em>}</li>
  * </ul>
  * </p>
  *
@@ -191,4 +191,4 @@ public class ScaEventChannelImpl extends CorbaObjWrapperImpl<EventChannel> imple
 		return EventChannelHelper.narrow(obj);
 	}
 
-} //ScaEventChannelImpl
+} // ScaEventChannelImpl

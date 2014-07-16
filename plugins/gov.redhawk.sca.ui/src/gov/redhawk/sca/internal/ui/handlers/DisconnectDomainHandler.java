@@ -76,7 +76,7 @@ public class DisconnectDomainHandler extends AbstractHandler implements IHandler
 
 						@Override
 						protected IStatus run(final IProgressMonitor monitor) {
-							monitor.beginTask("Disconnecting from domain " + domMgr.getName(), IProgressMonitor.UNKNOWN);
+							monitor.beginTask("Disconnecting from domain " + domMgr.getLabel(), IProgressMonitor.UNKNOWN);
 							try {
 								domMgr.disconnect();
 								return Status.OK_STATUS;

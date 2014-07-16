@@ -27,12 +27,12 @@ import org.eclipse.emf.ecore.util.InternalEList;
 /**
  * <!-- begin-user-doc -->
  * An implementation of the model object '<em><b>Properties</b></em>'.
- *  @since 12.0
+ * @since 12.0
  * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
  * <ul>
- *   <li>{@link gov.redhawk.model.sca.impl.PropertiesImpl#getProperty <em>Property</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.impl.PropertiesImpl#getProperty <em>Property</em>}</li>
  * </ul>
  * </p>
  *
@@ -158,4 +158,4 @@ public class PropertiesImpl extends EObjectImpl implements Properties {
 		return super.eIsSet(featureID);
 	}
 
-} //PropertiesImpl
+} // PropertiesImpl

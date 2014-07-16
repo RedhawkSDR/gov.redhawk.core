@@ -28,7 +28,7 @@ import org.eclipse.emf.ecore.resource.Resource;
  * <p>
  * The following features are supported:
  * <ul>
- *   <li>{@link gov.redhawk.model.sca.ScaDomainManagerRegistry#getDomains <em>Domains</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.ScaDomainManagerRegistry#getDomains <em>Domains</em>}</li>
  * </ul>
  * </p>
  *
@@ -49,7 +49,7 @@ public interface ScaDomainManagerRegistry extends IDisposable {
 	 * @return the value of the '<em>Domains</em>' containment reference list.
 	 * @see gov.redhawk.model.sca.ScaPackage#getScaDomainManagerRegistry_Domains()
 	 * @model containment="true" resolveProxies="true"
-	 *        extendedMetaData="kind='element' name='domain'"
+	 * extendedMetaData="kind='element' name='domain'"
 	 * @generated
 	 */
 	EList<ScaDomainManager> getDomains();
@@ -63,12 +63,18 @@ public interface ScaDomainManagerRegistry extends IDisposable {
 	ScaDomainManager findDomain(String domainName);
 
 	/**
+	 * @deprecated Use {@link #createDomain(String, String, boolean, Map)} instead.
+	 */
+	@Deprecated
+	ScaDomainManager createDomain(String name, boolean autoConnect, Map<String, String> connectionProperties);
+
+	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @model
 	 * @generated
 	 */
-	ScaDomainManager createDomain(String name, boolean autoConnect, Map<String, String> connectionProperties);
+	ScaDomainManager createDomain(String localName, String name, boolean autoConnect, Map<String, String> connectionProperties);
 
 	public static class Util {
 		// END GENERATED CODE

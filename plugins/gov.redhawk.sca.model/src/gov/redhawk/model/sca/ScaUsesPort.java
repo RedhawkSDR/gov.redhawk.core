@@ -30,13 +30,14 @@ import CF.PortPackage.InvalidPort;
  * <p>
  * The following features are supported:
  * <ul>
- *   <li>{@link gov.redhawk.model.sca.ScaUsesPort#getConnections <em>Connections</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.ScaUsesPort#getConnections <em>Connections</em>}</li>
  * </ul>
  * </p>
  *
  * @see gov.redhawk.model.sca.ScaPackage#getScaUsesPort()
- * @model superTypes="gov.redhawk.model.sca.ScaPort<mil.jpeojtrs.sca.scd.Uses, mil.jpeojtrs.sca.cf.Port> mil.jpeojtrs.sca.cf.PortOperations"
- *        extendedMetaData="name='ScaUsesPort' kind='empty'"
+ * @model superTypes=
+ * "gov.redhawk.model.sca.ScaPort<mil.jpeojtrs.sca.scd.Uses, mil.jpeojtrs.sca.cf.Port> mil.jpeojtrs.sca.cf.PortOperations"
+ * extendedMetaData="name='ScaUsesPort' kind='empty'"
  * @generated
  */
 public interface ScaUsesPort extends ScaPort<Uses, Port>, PortOperations {
@@ -62,7 +63,8 @@ public interface ScaUsesPort extends ScaPort<Uses, Port>, PortOperations {
 	EList<ScaConnection> getConnections();
 
 	/**
-	 * Unsets the value of the '{@link gov.redhawk.model.sca.ScaUsesPort#getConnections <em>Connections</em>}' containment reference list.
+	 * Unsets the value of the '{@link gov.redhawk.model.sca.ScaUsesPort#getConnections <em>Connections</em>}'
+	 * containment reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @see #isSetConnections()
@@ -72,7 +74,8 @@ public interface ScaUsesPort extends ScaPort<Uses, Port>, PortOperations {
 	void unsetConnections();
 
 	/**
-	 * Returns whether the value of the '{@link gov.redhawk.model.sca.ScaUsesPort#getConnections <em>Connections</em>}' containment reference list is set.
+	 * Returns whether the value of the '{@link gov.redhawk.model.sca.ScaUsesPort#getConnections <em>Connections</em>}'
+	 * containment reference list is set.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @return whether the value of the '<em>Connections</em>' containment reference list is set.

@@ -59,6 +59,7 @@ public class NewDomainHandler extends AbstractHandler implements IHandler {
 		if (dialog.open() == IStatus.OK) {
 			final boolean autoConnect = wizard.getConnectionMode() == ConnectionMode.AUTO;
 			final String domainName = wizard.getDomainName();
+			final String localDomainName = wizard.getLocalDomainName();
 			final Map<String, String> connectionProperties = Collections.singletonMap(ScaDomainManager.NAMING_SERVICE_PROP, wizard.getNameServiceInitRef());
 
 			// for the "AUTO" or "NOW" case we need to connect ourselves
@@ -74,7 +75,7 @@ public class NewDomainHandler extends AbstractHandler implements IHandler {
 
 							@Override
 							public void execute() {
-								domain[0] = registry.createDomain(domainName, autoConnect, connectionProperties);
+								domain[0] = registry.createDomain(localDomainName, domainName, autoConnect, connectionProperties);
 							}
 
 						});

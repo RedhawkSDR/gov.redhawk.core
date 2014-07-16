@@ -110,4 +110,4 @@ public class ScaProvidesPortImpl extends ScaPortImpl<Provides, org.omg.CORBA.Obj
 		return false;
 	}
 
-} //ScaProvidesPortImpl
+} // ScaProvidesPortImpl

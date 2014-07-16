@@ -57,7 +57,7 @@ import CF.DevicePackage.UsageType;
 
 /**
  * <!-- begin-user-doc --> An implementation of the model <b>Factory</b>.
- * @since 12.0 
+ * @since 12.0
  * <!-- end-user-doc -->
  * @generated
  */
@@ -590,7 +590,7 @@ public class ScaFactoryImpl extends EFactoryImpl implements ScaFactory {
 
 	/**
 	 * <!-- begin-user-doc -->
-	 *  @since 14.0
+	 * @since 14.0
 	 * <!-- end-user-doc -->
 	 * @generated NOT
 	 */
@@ -605,7 +605,7 @@ public class ScaFactoryImpl extends EFactoryImpl implements ScaFactory {
 
 	/**
 	 * <!-- begin-user-doc -->
-	 *  @since 10.0
+	 * @since 10.0
 	 * <!-- end-user-doc -->
 	 * @generated NOT
 	 */
@@ -638,7 +638,7 @@ public class ScaFactoryImpl extends EFactoryImpl implements ScaFactory {
 
 	/**
 	 * <!-- begin-user-doc -->
-	 *  @since 14.0
+	 * @since 14.0
 	 * <!-- end-user-doc -->
 	 * @generated NOT
 	 *
@@ -694,7 +694,7 @@ public class ScaFactoryImpl extends EFactoryImpl implements ScaFactory {
 
 	/**
 	 * <!-- begin-user-doc -->
-	 *  @since 14.0
+	 * @since 14.0
 	 * <!-- end-user-doc -->
 	 * @generated NOT
 	 */
@@ -711,7 +711,7 @@ public class ScaFactoryImpl extends EFactoryImpl implements ScaFactory {
 
 	/**
 	 * <!-- begin-user-doc -->
-	 *  @since 10.0
+	 * @since 10.0
 	 * <!-- end-user-doc -->
 	 * @generated NOT
 	 */

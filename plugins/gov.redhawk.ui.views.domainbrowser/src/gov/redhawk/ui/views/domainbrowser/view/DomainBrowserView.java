@@ -213,7 +213,7 @@ public class DomainBrowserView extends ViewPart {
 				if (e1 instanceof ScaDomainManager) {
 					ScaDomainManager dom = ((ScaDomainManager) e1);
 					String[] tokens = dom.getConnectionProperties().get(ScaDomainManager.NAMING_SERVICE_PROP).split("::");
-					s1 = ((ScaDomainManager) e1).getName() + "@" + tokens[1];
+					s1 = ((ScaDomainManager) e1).getLabel() + "@" + tokens[1];
 				}
 
 				if (e2 instanceof String) {
@@ -223,7 +223,7 @@ public class DomainBrowserView extends ViewPart {
 				if (e2 instanceof ScaDomainManager) {
 					ScaDomainManager dom = ((ScaDomainManager) e2);
 					String[] tokens = dom.getConnectionProperties().get(ScaDomainManager.NAMING_SERVICE_PROP).split("::");
-					s2 = dom.getName() + "@" + tokens[1];
+					s2 = dom.getLabel() + "@" + tokens[1];
 				}
 
 				if (s1 != null && s2 != null) {
@@ -244,9 +244,9 @@ public class DomainBrowserView extends ViewPart {
 					ScaDomainManager domain = (ScaDomainManager) element;
 					tokens = domain.getConnectionProperties().get(ScaDomainManager.NAMING_SERVICE_PROP).split("::");
 					if (tokens.length == 2) {
-						return domain.getName() + "@" + tokens[1]; // Is this a safe way of doing this?
+						return domain.getLabel() + "@" + tokens[1]; // Is this a safe way of doing this?
 					} else {
-						return domain.getName();
+						return domain.getLabel();
 					}
 				}
 				return super.getText(element);
@@ -439,7 +439,7 @@ public class DomainBrowserView extends ViewPart {
 
 			for (String name : domainNamesInCombo) {
 				String[] tokens = newDomain.getConnectionProperties().get(ScaDomainManager.NAMING_SERVICE_PROP).split("::");
-				if (name.equals(newDomain.getName() + "@" + tokens[1])) {
+				if (name.equals(newDomain.getLabel() + "@" + tokens[1])) {
 					nameFound = true;
 				}
 			}
@@ -494,7 +494,7 @@ public class DomainBrowserView extends ViewPart {
 			} catch (final DomainConnectionException e) {
 				// TODO: This is not causing any sort of pop-up.  It should since it is an ERROR status.
 				return new Status(IStatus.ERROR, Activator.PLUGIN_ID, "Problems experienced while connecting to domain "
-					+ DomainBrowserView.this.domainManager.getName(), e);
+					+ DomainBrowserView.this.domainManager.getLabel(), e);
 			}
 			return Status.OK_STATUS;
 		}
@@ -520,7 +520,7 @@ public class DomainBrowserView extends ViewPart {
 		public IStatus runInUIThread(final IProgressMonitor monitor) {
 			if (DomainBrowserView.this.domainManager.isConnected() && DomainBrowserView.this.domainManager.getProfileObj() != null) {
 				updateWidgets(true);
-				setContentDescription("Domain: " + DomainBrowserView.this.domainManager.getName() + " (" + DomainBrowserView.this.domainManager.getIdentifier()
+				setContentDescription("Domain: " + DomainBrowserView.this.domainManager.getLabel() + " (" + DomainBrowserView.this.domainManager.getIdentifier()
 					+ ")");
 				setTitleToolTip("ID: " + DomainBrowserView.this.domainManager.getIdentifier());
 

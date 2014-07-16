@@ -63,7 +63,7 @@ import org.eclipse.emf.transaction.RunnableWithResult;
  * </li>
  * </ul>
  * </p>
- * 
+ *
  * @generated
  */
 public abstract class DataProviderObjectImpl extends IStatusProviderImpl implements DataProviderObject {
@@ -210,7 +210,7 @@ public abstract class DataProviderObjectImpl extends IStatusProviderImpl impleme
 			eNotify(new ENotificationImpl(this, Notification.SET, ScaPackage.DATA_PROVIDER_OBJECT__DATA_PROVIDERS_ENABLED, oldDataProvidersEnabled,
 				dataProvidersEnabled));
 	}
-	
+
 	private static void setEnabledDataProviderToDefault(List<String> list) {
 		List<IScaDataProviderServiceDescriptor> descriptors = DataProviderServicesRegistry.INSTANCE.getDataProvidersDescriptors();
 		list.clear();
@@ -227,10 +227,10 @@ public abstract class DataProviderObjectImpl extends IStatusProviderImpl impleme
 	 */
 	public EList<String> getEnabledDataProviders() {
 		if (enabledDataProviders == null) {
-			enabledDataProviders = new EDataTypeUniqueEList<String>(String.class, this, ScaPackage.DATA_PROVIDER_OBJECT__ENABLED_DATA_PROVIDERS){
-				
+			enabledDataProviders = new EDataTypeUniqueEList<String>(String.class, this, ScaPackage.DATA_PROVIDER_OBJECT__ENABLED_DATA_PROVIDERS) {
+
 				private boolean init;
-				
+
 				@Override
 				protected boolean isNotificationRequired() {
 					if (init) {
@@ -239,19 +239,19 @@ public abstract class DataProviderObjectImpl extends IStatusProviderImpl impleme
 						return false;
 					}
 				}
-				
+
 				{
 					setEnabledDataProviderToDefault(this);
 					init = true;
 				}
-				
+
 				@Override
 				public void unset() {
 					setEnabledDataProviderToDefault(this);
 				}
-				
+
 			};
-			
+
 		}
 		return enabledDataProviders;
 	}
@@ -332,8 +332,7 @@ public abstract class DataProviderObjectImpl extends IStatusProviderImpl impleme
 	}
 
 	/**
-	 * TODO I'm still not convinced we should be doing this
-	 * {@inheritDoc}
+	 * TODO I'm still not convinced we should be doing this {@inheritDoc}
 	 */
 	@Override
 	public void eNotify(Notification notification) {
@@ -366,7 +365,7 @@ public abstract class DataProviderObjectImpl extends IStatusProviderImpl impleme
 		}
 		// BEGIN GENERATED CODE
 	}
-	
+
 	private void attachDataProvider(String id) {
 		for (IScaDataProvider provider : getDataProviders()) {
 			if (provider.getID().equals(id)) {
@@ -399,7 +398,7 @@ public abstract class DataProviderObjectImpl extends IStatusProviderImpl impleme
 			break;
 		}
 	}
-	
+
 	private void detachDataProvider(String id) {
 		for (IScaDataProvider provider : getDataProviders()) {
 			if (PluginUtil.equals(provider.getID(), id)) {
@@ -426,7 +425,7 @@ public abstract class DataProviderObjectImpl extends IStatusProviderImpl impleme
 	 * <!-- begin-user-doc -->
 	 * Ask all data providers connected to this object to do an immediate refresh.
 	 * <!-- end-user-doc -->
-	 * @throws InterruptedException 
+	 * @throws InterruptedException
 	 * @generated NOT
 	 */
 	@Override
@@ -513,7 +512,7 @@ public abstract class DataProviderObjectImpl extends IStatusProviderImpl impleme
 				detachDataProvider(msg.getOldStringValue());
 				break;
 			case Notification.REMOVE_MANY:
-				for (Object value : (Collection<?>) msg.getOldValue()) {
+				for (Object value : (Collection< ? >) msg.getOldValue()) {
 					detachDataProvider((String) value);
 				}
 				break;
@@ -521,7 +520,7 @@ public abstract class DataProviderObjectImpl extends IStatusProviderImpl impleme
 				attachDataProvider(msg.getNewStringValue());
 				break;
 			case Notification.ADD_MANY:
-				for (Object value : (Collection<?>) msg.getNewValue()) {
+				for (Object value : (Collection< ? >) msg.getNewValue()) {
 					attachDataProvider((String) value);
 				}
 				break;
@@ -604,8 +603,8 @@ public abstract class DataProviderObjectImpl extends IStatusProviderImpl impleme
 		if (eNotificationRequired()) {
 			eNotify(new ENotificationImpl(this, Notification.SET, ScaPackage.DATA_PROVIDER_OBJECT__DISPOSED, false, this.disposed));
 		}
-//		TODO Can we not clear adapters since this seems to cause problems
-//		eAdapters().clear();
+		// TODO Can we not clear adapters since this seems to cause problems
+		// eAdapters().clear();
 		// BEGIN GENERATED CODE
 	}
 
@@ -653,7 +652,6 @@ public abstract class DataProviderObjectImpl extends IStatusProviderImpl impleme
 		}
 		eSetGen(featureID, newValue);
 	}
-	
 
 	/**
 	 * <!-- begin-user-doc -->

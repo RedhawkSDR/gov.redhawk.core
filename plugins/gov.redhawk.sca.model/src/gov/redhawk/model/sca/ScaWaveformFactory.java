@@ -34,23 +34,25 @@ import CF.ApplicationFactoryPackage.InvalidInitConfiguration;
  * <p>
  * The following features are supported:
  * <ul>
- *   <li>{@link gov.redhawk.model.sca.ScaWaveformFactory#getDomMgr <em>Dom Mgr</em>}</li>
- *   <li>{@link gov.redhawk.model.sca.ScaWaveformFactory#getIdentifier <em>Identifier</em>}</li>
- *   <li>{@link gov.redhawk.model.sca.ScaWaveformFactory#getName <em>Name</em>}</li>
- *   <li>{@link gov.redhawk.model.sca.ScaWaveformFactory#getProfile <em>Profile</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.ScaWaveformFactory#getDomMgr <em>Dom Mgr</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.ScaWaveformFactory#getIdentifier <em>Identifier</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.ScaWaveformFactory#getName <em>Name</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.ScaWaveformFactory#getProfile <em>Profile</em>}</li>
  * </ul>
  * </p>
  *
  * @see gov.redhawk.model.sca.ScaPackage#getScaWaveformFactory()
- * @model superTypes="gov.redhawk.model.sca.CorbaObjWrapper<mil.jpeojtrs.sca.cf.ApplicationFactory> mil.jpeojtrs.sca.cf.ApplicationFactoryOperations gov.redhawk.model.sca.ProfileObjectWrapper<mil.jpeojtrs.sca.sad.SoftwareAssembly>"
- *        extendedMetaData="name='ScaWaveformFactory' kind='empty'"
+ * @model superTypes=
+ * "gov.redhawk.model.sca.CorbaObjWrapper<mil.jpeojtrs.sca.cf.ApplicationFactory> mil.jpeojtrs.sca.cf.ApplicationFactoryOperations gov.redhawk.model.sca.ProfileObjectWrapper<mil.jpeojtrs.sca.sad.SoftwareAssembly>"
+ * extendedMetaData="name='ScaWaveformFactory' kind='empty'"
  * @generated
  */
 public interface ScaWaveformFactory extends CorbaObjWrapper<ApplicationFactory>, ApplicationFactoryOperations, ProfileObjectWrapper<SoftwareAssembly> {
 
 	/**
 	 * Returns the value of the '<em><b>Dom Mgr</b></em>' container reference.
-	 * It is bidirectional and its opposite is '{@link gov.redhawk.model.sca.ScaDomainManager#getWaveformFactories <em>Waveform Factories</em>}'.
+	 * It is bidirectional and its opposite is '{@link gov.redhawk.model.sca.ScaDomainManager#getWaveformFactories
+	 * <em>Waveform Factories</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <p>
 	 * If the meaning of the '<em>Dom Mgr</em>' container reference isn't clear,
@@ -62,13 +64,14 @@ public interface ScaWaveformFactory extends CorbaObjWrapper<ApplicationFactory>,
 	 * @see gov.redhawk.model.sca.ScaPackage#getScaWaveformFactory_DomMgr()
 	 * @see gov.redhawk.model.sca.ScaDomainManager#getWaveformFactories
 	 * @model opposite="waveformFactories" required="true"
-	 *        extendedMetaData="kind='attribute' name='domMgr'"
+	 * extendedMetaData="kind='attribute' name='domMgr'"
 	 * @generated
 	 */
 	ScaDomainManager getDomMgr();
 
 	/**
-	 * Sets the value of the '{@link gov.redhawk.model.sca.ScaWaveformFactory#getDomMgr <em>Dom Mgr</em>}' container reference.
+	 * Sets the value of the '{@link gov.redhawk.model.sca.ScaWaveformFactory#getDomMgr <em>Dom Mgr</em>}' container
+	 * reference.
 	 * <!-- begin-user-doc -->
 	 * @since 16.0
 	 * <!-- end-user-doc -->
@@ -92,13 +95,14 @@ public interface ScaWaveformFactory extends CorbaObjWrapper<ApplicationFactory>,
 	 * @see #setIdentifier(String)
 	 * @see gov.redhawk.model.sca.ScaPackage#getScaWaveformFactory_Identifier()
 	 * @model unsettable="true" id="true" derived="true"
-	 *        extendedMetaData="kind='attribute' name='identifier'"
+	 * extendedMetaData="kind='attribute' name='identifier'"
 	 * @generated
 	 */
 	String getIdentifier();
 
 	/**
-	 * Sets the value of the '{@link gov.redhawk.model.sca.ScaWaveformFactory#getIdentifier <em>Identifier</em>}' attribute.
+	 * Sets the value of the '{@link gov.redhawk.model.sca.ScaWaveformFactory#getIdentifier <em>Identifier</em>}'
+	 * attribute.
 	 * <!-- begin-user-doc -->
 	 * @since 16.0
 	 * <!-- end-user-doc -->
@@ -111,7 +115,8 @@ public interface ScaWaveformFactory extends CorbaObjWrapper<ApplicationFactory>,
 	void setIdentifier(String value);
 
 	/**
-	 * Unsets the value of the '{@link gov.redhawk.model.sca.ScaWaveformFactory#getIdentifier <em>Identifier</em>}' attribute.
+	 * Unsets the value of the '{@link gov.redhawk.model.sca.ScaWaveformFactory#getIdentifier <em>Identifier</em>}'
+	 * attribute.
 	 * <!-- begin-user-doc -->
 	 * @since 16.0
 	 * <!-- end-user-doc -->
@@ -123,7 +128,8 @@ public interface ScaWaveformFactory extends CorbaObjWrapper<ApplicationFactory>,
 	void unsetIdentifier();
 
 	/**
-	 * Returns whether the value of the '{@link gov.redhawk.model.sca.ScaWaveformFactory#getIdentifier <em>Identifier</em>}' attribute is set.
+	 * Returns whether the value of the '{@link gov.redhawk.model.sca.ScaWaveformFactory#getIdentifier
+	 * <em>Identifier</em>}' attribute is set.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @return whether the value of the '<em>Identifier</em>' attribute is set.
@@ -148,7 +154,7 @@ public interface ScaWaveformFactory extends CorbaObjWrapper<ApplicationFactory>,
 	 * @see #setName(String)
 	 * @see gov.redhawk.model.sca.ScaPackage#getScaWaveformFactory_Name()
 	 * @model unsettable="true" derived="true"
-	 *        extendedMetaData="kind='attribute' name='name'"
+	 * extendedMetaData="kind='attribute' name='name'"
 	 * @generated
 	 */
 	String getName();
@@ -179,7 +185,8 @@ public interface ScaWaveformFactory extends CorbaObjWrapper<ApplicationFactory>,
 	void unsetName();
 
 	/**
-	 * Returns whether the value of the '{@link gov.redhawk.model.sca.ScaWaveformFactory#getName <em>Name</em>}' attribute is set.
+	 * Returns whether the value of the '{@link gov.redhawk.model.sca.ScaWaveformFactory#getName <em>Name</em>}'
+	 * attribute is set.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @return whether the value of the '<em>Name</em>' attribute is set.
@@ -232,7 +239,8 @@ public interface ScaWaveformFactory extends CorbaObjWrapper<ApplicationFactory>,
 	void unsetProfile();
 
 	/**
-	 * Returns whether the value of the '{@link gov.redhawk.model.sca.ScaWaveformFactory#getProfile <em>Profile</em>}' attribute is set.
+	 * Returns whether the value of the '{@link gov.redhawk.model.sca.ScaWaveformFactory#getProfile <em>Profile</em>}'
+	 * attribute is set.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @return whether the value of the '<em>Profile</em>' attribute is set.
@@ -246,17 +254,21 @@ public interface ScaWaveformFactory extends CorbaObjWrapper<ApplicationFactory>,
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @model exceptions="mil.jpeojtrs.sca.cf.CreateApplicationError mil.jpeojtrs.sca.cf.CreateApplicationRequestError mil.jpeojtrs.sca.cf.InvalidInitConfiguration mil.jpeojtrs.sca.cf.CreateApplicationInsufficientCapacityError" monitorDataType="gov.redhawk.model.sca.IProgressMonitor" initConfigurationDataType="mil.jpeojtrs.sca.cf.DataTypeArray" deviceAssignmentsDataType="mil.jpeojtrs.sca.cf.DeviceAssignmentTypeArray"
+	 * @model exceptions=
+	 * "mil.jpeojtrs.sca.cf.CreateApplicationError mil.jpeojtrs.sca.cf.CreateApplicationRequestError mil.jpeojtrs.sca.cf.InvalidInitConfiguration mil.jpeojtrs.sca.cf.CreateApplicationInsufficientCapacityError"
+	 * monitorDataType="gov.redhawk.model.sca.IProgressMonitor"
+	 * initConfigurationDataType="mil.jpeojtrs.sca.cf.DataTypeArray"
+	 * deviceAssignmentsDataType="mil.jpeojtrs.sca.cf.DeviceAssignmentTypeArray"
 	 * @generated
 	 */
 	ScaWaveform createWaveform(IProgressMonitor monitor, String name, DataType[] initConfiguration, DeviceAssignmentType[] deviceAssignments)
 		throws CreateApplicationError, CreateApplicationRequestError, InvalidInitConfiguration, CreateApplicationInsufficientCapacityError;
-	
+
 	/**
 	 * @since 19.0
 	 */
 	ScaWaveform createWaveform(IProgressMonitor monitor, String name, DataType[] initConfiguration, DeviceAssignmentType[] deviceAssignments, RefreshDepth depth)
-			throws CreateApplicationError, CreateApplicationRequestError, InvalidInitConfiguration, CreateApplicationInsufficientCapacityError;
+		throws CreateApplicationError, CreateApplicationRequestError, InvalidInitConfiguration, CreateApplicationInsufficientCapacityError;
 
 	/**
 	 * <!-- begin-user-doc -->

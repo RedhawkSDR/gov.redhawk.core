@@ -26,7 +26,7 @@ import org.eclipse.emf.ecore.EStructuralFeature;
  * <p>
  * The following features are supported:
  * <ul>
- *   <li>{@link gov.redhawk.model.sca.IStatusProvider#getStatus <em>Status</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.IStatusProvider#getStatus <em>Status</em>}</li>
  * </ul>
  * </p>
  *
@@ -46,7 +46,8 @@ public interface IStatusProvider extends EObject {
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Status</em>' attribute.
 	 * @see gov.redhawk.model.sca.ScaPackage#getIStatusProvider_Status()
-	 * @model dataType="gov.redhawk.model.sca.IStatus" transient="true" changeable="false" volatile="true" derived="true"
+	 * @model dataType="gov.redhawk.model.sca.IStatus" transient="true" changeable="false" volatile="true"
+	 * derived="true"
 	 * @generated
 	 */
 	IStatus getStatus();

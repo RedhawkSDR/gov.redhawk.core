@@ -16,13 +16,13 @@ package gov.redhawk.sca.preferences;
  */
 @Deprecated
 public class ScaDomainConnectionDef {
-	private static final int NUM_PREFERENCES = 3;
-
 	private boolean connectOnStartup;
 
 	private String nameServiceInitRef;
 
 	private String domainName;
+	
+	private String localDomainName;
 
 	public ScaDomainConnectionDef() {
 	}
@@ -81,16 +81,35 @@ public class ScaDomainConnectionDef {
 		buffer.append(",");
 		buffer.append(this.connectOnStartup);
 		buffer.append(",");
+		if (this.localDomainName != null) {
+			buffer.append(this.localDomainName);
+			buffer.append(",");
+		}
 
 		return buffer.toString();
 	}
 
 	public void fromPreferenceValue(final String preferenceValue) {
 		final String[] values = preferenceValue.split(",");
-		if (values.length == ScaDomainConnectionDef.NUM_PREFERENCES) {
+		if (values.length > 0) {
 			this.domainName = values[0];
+		}
+		if (values.length > 1) {
 			this.nameServiceInitRef = values[1];
+		}
+		if (values.length > 2) {
 			this.connectOnStartup = Boolean.parseBoolean(values[2]);
 		}
+		if (values.length > 3) {
+			this.localDomainName = values[3];
+		}
+	}
+	
+	public String getLocalDomainName() {
+		return localDomainName;
+	}
+	
+	public void setLocalDomainName(String localDomainName) {
+		this.localDomainName = localDomainName;
 	}
 }

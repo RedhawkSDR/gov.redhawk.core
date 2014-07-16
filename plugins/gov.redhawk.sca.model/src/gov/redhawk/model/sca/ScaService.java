@@ -24,13 +24,14 @@ import mil.jpeojtrs.sca.spd.SoftPkg;
  * <p>
  * The following features are supported:
  * <ul>
- *   <li>{@link gov.redhawk.model.sca.ScaService#getName <em>Name</em>}</li>
- *   <li>{@link gov.redhawk.model.sca.ScaService#getDevMgr <em>Dev Mgr</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.ScaService#getName <em>Name</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.ScaService#getDevMgr <em>Dev Mgr</em>}</li>
  * </ul>
  * </p>
  *
  * @see gov.redhawk.model.sca.ScaPackage#getScaService()
- * @model superTypes="gov.redhawk.model.sca.ScaPropertyContainer<gov.redhawk.model.sca.Object, mil.jpeojtrs.sca.spd.SoftPkg> gov.redhawk.model.sca.ScaPortContainer"
+ * @model superTypes=
+ * "gov.redhawk.model.sca.ScaPropertyContainer<gov.redhawk.model.sca.Object, mil.jpeojtrs.sca.spd.SoftPkg> gov.redhawk.model.sca.ScaPortContainer"
  * @generated
  */
 public interface ScaService extends ScaPropertyContainer<org.omg.CORBA.Object, SoftPkg>, ScaPortContainer {
@@ -63,7 +64,8 @@ public interface ScaService extends ScaPropertyContainer<org.omg.CORBA.Object, S
 
 	/**
 	 * Returns the value of the '<em><b>Dev Mgr</b></em>' container reference.
-	 * It is bidirectional and its opposite is '{@link gov.redhawk.model.sca.ScaDeviceManager#getServices <em>Services</em>}'.
+	 * It is bidirectional and its opposite is '{@link gov.redhawk.model.sca.ScaDeviceManager#getServices
+	 * <em>Services</em>}'.
 	 * <!-- begin-user-doc -->
 	 * @since 18.0
 	 * <!-- end-user-doc -->

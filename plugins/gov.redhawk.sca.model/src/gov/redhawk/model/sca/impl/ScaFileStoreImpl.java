@@ -48,11 +48,11 @@ import org.eclipse.emf.transaction.RunnableWithResult;
  * <p>
  * The following features are implemented:
  * <ul>
- *   <li>{@link gov.redhawk.model.sca.impl.ScaFileStoreImpl#getFileStore <em>File Store</em>}</li>
- *   <li>{@link gov.redhawk.model.sca.impl.ScaFileStoreImpl#getChildren <em>Children</em>}</li>
- *   <li>{@link gov.redhawk.model.sca.impl.ScaFileStoreImpl#getImageDesc <em>Image Desc</em>}</li>
- *   <li>{@link gov.redhawk.model.sca.impl.ScaFileStoreImpl#isDirectory <em>Directory</em>}</li>
- *   <li>{@link gov.redhawk.model.sca.impl.ScaFileStoreImpl#getName <em>Name</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.impl.ScaFileStoreImpl#getFileStore <em>File Store</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.impl.ScaFileStoreImpl#getChildren <em>Children</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.impl.ScaFileStoreImpl#getImageDesc <em>Image Desc</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.impl.ScaFileStoreImpl#isDirectory <em>Directory</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.impl.ScaFileStoreImpl#getName <em>Name</em>}</li>
  * </ul>
  * </p>
  *
@@ -348,7 +348,7 @@ public class ScaFileStoreImpl extends IStatusProviderImpl implements ScaFileStor
 				public void run() {
 					setResult(ECollections.unmodifiableEList(new BasicEList<ScaFileStore>(getChildren())));
 				}
-				
+
 			});
 		} catch (InterruptedException e) {
 			return ECollections.emptyEList();
@@ -511,7 +511,7 @@ public class ScaFileStoreImpl extends IStatusProviderImpl implements ScaFileStor
 	 */
 	@Override
 	public void refresh(IProgressMonitor monitor, RefreshDepth depth) throws InterruptedException {
-		// END GENERATED CODE	
+		// END GENERATED CODE
 		if (depth == null) {
 			return;
 		}
@@ -543,9 +543,13 @@ public class ScaFileStoreImpl extends IStatusProviderImpl implements ScaFileStor
 			if (store == null) {
 				return;
 			}
-			SubMonitor subMonitor = SubMonitor.convert(monitor, "Fetching children of " + store.getName(), 100); //SUPPRESS CHECKSTYLE MagicNumber
+			SubMonitor subMonitor = SubMonitor.convert(monitor, "Fetching children of " + store.getName(), 100); // SUPPRESS
+																													// CHECKSTYLE
+																													// MagicNumber
 			final IFileStore[] childStores = store.childStores(EFS.NONE, subMonitor.newChild(45));
-			SubMonitor setupStoreMap = subMonitor.newChild(45).setWorkRemaining(childStores.length); //SUPPRESS CHECKSTYLE MagicNumbers
+			SubMonitor setupStoreMap = subMonitor.newChild(45).setWorkRemaining(childStores.length); // SUPPRESS
+																										// CHECKSTYLE
+																										// MagicNumbers
 			final Map<String, FileStoreData> newChildrenMap = new HashMap<String, FileStoreData>();
 			for (final IFileStore childStore : childStores) {
 				boolean isDirectory = childStore.fetchInfo(EFS.NONE, setupStoreMap.newChild(1)).isDirectory();
@@ -586,7 +590,7 @@ public class ScaFileStoreImpl extends IStatusProviderImpl implements ScaFileStor
 				}
 
 			});
-			subMonitor.worked(10); //SUPPRESS CHECKSTYLE MagicNumbers
+			subMonitor.worked(10); // SUPPRESS CHECKSTYLE MagicNumbers
 			subMonitor.done();
 		} catch (final CoreException e) {
 			ScaModelCommand.execute(parentStore, new ScaModelCommand() {
@@ -594,7 +598,8 @@ public class ScaFileStoreImpl extends IStatusProviderImpl implements ScaFileStor
 				@Override
 				public void execute() {
 					parentStore.unsetChildren();
-					parentStore.setStatus(ScaPackage.Literals.SCA_FILE_STORE__CHILDREN, new Status(e.getStatus().getSeverity(), ScaModelPlugin.ID, e.getLocalizedMessage(), e));
+					parentStore.setStatus(ScaPackage.Literals.SCA_FILE_STORE__CHILDREN,
+						new Status(e.getStatus().getSeverity(), ScaModelPlugin.ID, e.getLocalizedMessage(), e));
 				}
 
 			});
@@ -602,4 +607,4 @@ public class ScaFileStoreImpl extends IStatusProviderImpl implements ScaFileStor
 		// BEGIN GENERATED CODE
 	}
 
-} //ScaFileStoreImpl
+} // ScaFileStoreImpl

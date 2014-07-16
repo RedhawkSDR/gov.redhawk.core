@@ -62,15 +62,15 @@ import CF.PropertySetPackage.PartialConfiguration;
 /**
  * <!-- begin-user-doc --> An implementation of the model object '
  * <em><b>Property Container</b></em>'.
- * @since 12.0 
+ * @since 12.0
  * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
  * <ul>
- *   <li>{@link gov.redhawk.model.sca.impl.ScaPropertyContainerImpl#getProfileURI <em>Profile URI</em>}</li>
- *   <li>{@link gov.redhawk.model.sca.impl.ScaPropertyContainerImpl#getProfileObj <em>Profile Obj</em>}</li>
- *   <li>{@link gov.redhawk.model.sca.impl.ScaPropertyContainerImpl#getRootFileStore <em>Root File Store</em>}</li>
- *   <li>{@link gov.redhawk.model.sca.impl.ScaPropertyContainerImpl#getProperties <em>Properties</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.impl.ScaPropertyContainerImpl#getProfileURI <em>Profile URI</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.impl.ScaPropertyContainerImpl#getProfileObj <em>Profile Obj</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.impl.ScaPropertyContainerImpl#getRootFileStore <em>Root File Store</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.impl.ScaPropertyContainerImpl#getProperties <em>Properties</em>}</li>
  * </ul>
  * </p>
  *
@@ -567,7 +567,7 @@ public abstract class ScaPropertyContainerImpl< P extends org.omg.CORBA.Object, 
 
 	/**
 	 * <!-- begin-user-doc -->
-	 * @since 14.0 
+	 * @since 14.0
 	 * <!-- end-user-doc -->
 	 * 
 	 * @generated NOT
@@ -611,7 +611,7 @@ public abstract class ScaPropertyContainerImpl< P extends org.omg.CORBA.Object, 
 				public void run() {
 					setResult(ECollections.unmodifiableEList(new BasicEList<ScaAbstractProperty< ? >>(getProperties())));
 				}
-				
+
 			});
 		} catch (InterruptedException e) {
 			return ECollections.emptyEList();
@@ -643,7 +643,7 @@ public abstract class ScaPropertyContainerImpl< P extends org.omg.CORBA.Object, 
 	}
 
 	/**
-	 * <!-- begin-user-doc --> 
+	 * <!-- begin-user-doc -->
 	 * @since 14.0
 	 * <!-- end-user-doc -->
 	 * @generated NOT

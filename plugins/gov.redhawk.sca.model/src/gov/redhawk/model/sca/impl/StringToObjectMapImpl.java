@@ -34,8 +34,8 @@ import org.eclipse.emf.ecore.impl.EObjectImpl;
  * <p>
  * The following features are implemented:
  * <ul>
- *   <li>{@link gov.redhawk.model.sca.impl.StringToObjectMapImpl#getTypedKey <em>Key</em>}</li>
- *   <li>{@link gov.redhawk.model.sca.impl.StringToObjectMapImpl#getTypedValue <em>Value</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.impl.StringToObjectMapImpl#getTypedKey <em>Key</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.impl.StringToObjectMapImpl#getTypedValue <em>Value</em>}</li>
  * </ul>
  * </p>
  *
@@ -361,4 +361,4 @@ public class StringToObjectMapImpl extends EObjectImpl implements BasicEMap.Entr
 		return container == null ? null : (EMap<String, EObject>) container.eGet(eContainmentFeature());
 	}
 
-} //StringToObjectMapImpl
+} // StringToObjectMapImpl

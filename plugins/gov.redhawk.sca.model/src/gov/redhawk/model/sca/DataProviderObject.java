@@ -22,7 +22,7 @@ import org.eclipse.emf.common.util.EList;
  * @noimplement This interface is not intended to be implemented by clients.
  * @since 9.0
  * <!-- end-user-doc -->
- * 
+ *
  * <p>
  * The following features are supported:
  * <ul>
@@ -31,7 +31,7 @@ import org.eclipse.emf.common.util.EList;
  * <li>{@link gov.redhawk.model.sca.DataProviderObject#getEnabledDataProviders <em>Enabled Data Providers</em>}</li>
  * </ul>
  * </p>
- * 
+ *
  * @see gov.redhawk.model.sca.ScaPackage#getDataProviderObject()
  * @model abstract="true" superTypes=
  * "gov.redhawk.model.sca.IStatusProvider gov.redhawk.model.sca.IDisposable gov.redhawk.model.sca.IRefreshable"

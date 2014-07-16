@@ -23,7 +23,7 @@ import mil.jpeojtrs.sca.scd.Provides;
  *
  * @see gov.redhawk.model.sca.ScaPackage#getScaProvidesPort()
  * @model superTypes="gov.redhawk.model.sca.ScaPort<mil.jpeojtrs.sca.scd.Provides, mil.jpeojtrs.sca.cf.Object>"
- *        extendedMetaData="name='ScaProvidesPort' kind='empty'"
+ * extendedMetaData="name='ScaProvidesPort' kind='empty'"
  * @generated
  */
 public interface ScaProvidesPort extends ScaPort<Provides, org.omg.CORBA.Object> {

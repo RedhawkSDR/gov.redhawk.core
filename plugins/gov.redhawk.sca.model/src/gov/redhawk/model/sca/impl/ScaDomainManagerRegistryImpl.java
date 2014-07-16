@@ -42,8 +42,8 @@ import org.eclipse.emf.ecore.util.InternalEList;
  * <p>
  * The following features are implemented:
  * <ul>
- *   <li>{@link gov.redhawk.model.sca.impl.ScaDomainManagerRegistryImpl#isDisposed <em>Disposed</em>}</li>
- *   <li>{@link gov.redhawk.model.sca.impl.ScaDomainManagerRegistryImpl#getDomains <em>Domains</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.impl.ScaDomainManagerRegistryImpl#isDisposed <em>Disposed</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.impl.ScaDomainManagerRegistryImpl#getDomains <em>Domains</em>}</li>
  * </ul>
  * </p>
  *
@@ -141,9 +141,16 @@ public class ScaDomainManagerRegistryImpl extends EObjectImpl implements ScaDoma
 
 		if (retVal == null) {
 			for (final ScaDomainManager domain : getDomains()) {
-				if (domain.getName().equals(domainName)) {
-					retVal = domain;
-					break;
+				if (domain.getLocalName() != null) {
+					if (domain.getLocalName().equals(domainName)) {
+						retVal = domain;
+						break;
+					}
+				} else {
+					if (domain.getLabel().equals(domainName)) {
+						retVal = domain;
+						break;
+					}
 				}
 			}
 		}
@@ -268,15 +275,23 @@ public class ScaDomainManagerRegistryImpl extends EObjectImpl implements ScaDoma
 		return result.toString();
 	}
 
+	@Deprecated
+	@Override
+	public ScaDomainManager createDomain(final String domainName, final boolean autoConnect, Map<String, String> connectionProperties) {
+		return createDomain(null, domainName, autoConnect, connectionProperties);
+	}
+
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated NOT
 	 */
 	@Override
-	public ScaDomainManager createDomain(final String domainName, final boolean autoConnect, Map<String, String> connectionProperties) {
+	public ScaDomainManager createDomain(String localName, final String domainName, final boolean autoConnect, Map<String, String> connectionProperties) {
 		// END GENERATED CODE
 		final ScaDomainManager newDomain = ScaFactory.eINSTANCE.createScaDomainManager();
+
+		newDomain.setLocalName(localName);
 		newDomain.setName(domainName);
 		newDomain.setAutoConnect(autoConnect);
 		if (connectionProperties == null) {
@@ -290,4 +305,4 @@ public class ScaDomainManagerRegistryImpl extends EObjectImpl implements ScaDoma
 		// BEGIN GENERATED CODE
 	}
 
-} //ScaDomainManagerRegistryImpl
+} // ScaDomainManagerRegistryImpl

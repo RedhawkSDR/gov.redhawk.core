@@ -67,7 +67,7 @@ public class WaveformLaunchConfigurationDelegate extends LaunchConfigurationDele
 			final SubMonitor monitor = SubMonitor.convert(mainMonitor, "Launch Waveform...", 3);
 			final String domainName = configuration.getAttribute(ScaLaunchConfigurationConstants.ATT_DOMAIN_NAME, (String) null);
 			for (final ScaDomainManager domain : domainManagerRegistry.getDomains()) {
-				if (domain.getName().equals(domainName)) {
+				if (domain.getLabel().equals(domainName)) {
 					if (!domain.isConnected()) {
 						try {
 							domain.connect(monitor.newChild(1), RefreshDepth.SELF);

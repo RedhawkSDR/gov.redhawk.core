@@ -42,7 +42,7 @@ import org.eclipse.emf.ecore.impl.EObjectImpl;
  * <p>
  * The following features are implemented:
  * <ul>
- *   <li>{@link gov.redhawk.model.sca.impl.IStatusProviderImpl#getStatus <em>Status</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.impl.IStatusProviderImpl#getStatus <em>Status</em>}</li>
  * </ul>
  * </p>
  *
@@ -218,4 +218,4 @@ public abstract class IStatusProviderImpl extends EObjectImpl implements IStatus
 		return super.eIsSet(featureID);
 	}
 
-} //IStatusProviderImpl
+} // IStatusProviderImpl
