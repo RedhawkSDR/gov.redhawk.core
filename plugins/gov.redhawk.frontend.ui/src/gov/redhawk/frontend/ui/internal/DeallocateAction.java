@@ -15,6 +15,7 @@ import gov.redhawk.frontend.TunerContainer;
 import gov.redhawk.frontend.TunerStatus;
 import gov.redhawk.frontend.ui.FrontEndUIActivator;
 import gov.redhawk.frontend.ui.internal.section.FrontendSection;
+import gov.redhawk.frontend.util.TunerUtils;
 import gov.redhawk.frontend.util.TunerProperties.ListenerAllocationProperties;
 import gov.redhawk.frontend.util.TunerProperties.TunerAllocationProperties;
 import gov.redhawk.model.sca.RefreshDepth;
@@ -57,6 +58,8 @@ public class DeallocateAction extends FrontendAction {
 			"icons/deallocate.gif");
 	}
 	
+	private enum ConfirmDeallocation { DEALL_ASK, DEALL_CANCEL, DEALL_SKIP, DEALL_PROCEED };
+	
 	@Override
 	public void run() {
 		EObject obj = getSection().getInput();
@@ -67,17 +70,38 @@ public class DeallocateAction extends FrontendAction {
 				// already deallocated, probably still in a pinned properties view
 				return;
 			}
-			removeSelection = deallocateTuner(tuner);
+			ConfirmDeallocation confirm = deallocateTuner(tuner, ConfirmDeallocation.DEALL_ASK);
+			if (confirm == ConfirmDeallocation.DEALL_CANCEL || confirm == ConfirmDeallocation.DEALL_SKIP) {
+				removeSelection = false;
+			}
 		}
 		if (obj instanceof TunerContainer) {
 			TunerContainer container = (TunerContainer) obj;
-			for (TunerStatus tuner : container.getTunerStatus()) {
+			ConfirmDeallocation confirm = ConfirmDeallocation.DEALL_ASK;
+			for (TunerStatus tuner : container.getTunerStatus().toArray(new TunerStatus[0])) {
 				String allocationID = tuner.getAllocationID();
 				if (!(allocationID == null || "".equals(allocationID))) {
-					deallocateTuner(tuner);
+					confirm = deallocateTuner(tuner, confirm);
+					if (confirm == ConfirmDeallocation.DEALL_CANCEL) {
+						break;
+					}
 				}
 			}
 			removeSelection = false;
+		}
+		if (obj instanceof ScaDevice) {
+			ScaDevice< ? > device = (ScaDevice< ? >) obj;
+			TunerContainer container = TunerUtils.INSTANCE.getTunerContainer(device);
+			ConfirmDeallocation confirm = ConfirmDeallocation.DEALL_ASK;
+			for (TunerStatus tuner : container.getTunerStatus().toArray(new TunerStatus[0])) {
+				String allocationID = tuner.getAllocationID();
+				if (!(allocationID == null || "".equals(allocationID))) {
+					confirm = deallocateTuner(tuner, confirm);
+					if (confirm == ConfirmDeallocation.DEALL_CANCEL) {
+						break;
+					}
+				}
+			}
 		}
 		if (obj instanceof ListenerAllocation) {
 			final ListenerAllocation listener = (ListenerAllocation) obj;
@@ -145,15 +169,25 @@ public class DeallocateAction extends FrontendAction {
 		}
 	}
 	
-	private boolean deallocateTuner(TunerStatus tuner) {
+	private ConfirmDeallocation deallocateTuner(TunerStatus tuner, ConfirmDeallocation confirm) {
+		ConfirmDeallocation retval = confirm;
 		if (tuner.getAllocationID().contains(",")) {
-			MessageDialog warning = new MessageDialog(Display.getCurrent().getActiveShell(), "Deallocation Warning", null,
-				"Deallocating a tuner will also deallocate all of its listeners.  Proceed?", MessageDialog.WARNING, new String[] { "No", "Yes" }, 0);
-			int response = warning.open();
-			if (response != 1) {
-				return false;
+			if (confirm == ConfirmDeallocation.DEALL_SKIP) {
+				return ConfirmDeallocation.DEALL_SKIP;
 			}
+			if (confirm == ConfirmDeallocation.DEALL_ASK) {
+			MessageDialog warning = new MessageDialog(Display.getCurrent().getActiveShell(), "Deallocation Warning", null,
+				"Some selected tuners have listeners.  Deallocating them will also deallocate all of their listeners.  Deallocate them anyway?", 
+				MessageDialog.WARNING, new String[] { "Cancel", "No", "Yes" }, 0);
+			int response = warning.open();
+			if (response == 0) {
+				return ConfirmDeallocation.DEALL_CANCEL;
+			} else if (response == 1) {
+				return ConfirmDeallocation.DEALL_SKIP;
+			}
+			retval = ConfirmDeallocation.DEALL_PROCEED;
 		}
+	}
 		final ScaDevice< ? > device = ScaEcoreUtils.getEContainerOfType(tuner, ScaDevice.class);
 		final DataType[] props = createAllocationProperties(tuner);
 
@@ -179,7 +213,7 @@ public class DeallocateAction extends FrontendAction {
 		job.setUser(true);
 		job.schedule();
 
-		return true;
+		return retval;
 	}
 
 	private DataType[] createAllocationProperties(TunerStatus tuner) {
