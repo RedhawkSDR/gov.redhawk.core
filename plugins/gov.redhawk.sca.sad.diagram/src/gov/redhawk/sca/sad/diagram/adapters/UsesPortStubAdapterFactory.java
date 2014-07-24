@@ -52,8 +52,12 @@ public class UsesPortStubAdapterFactory implements IAdapterFactory {
 					final String scaComponentId = component.identifier();
 					if (scaComponentId.startsWith(myId)) {
 						for (final ScaPort< ? , ? > port : AdapterUtil.safeFetchPorts(component)) {
-							if (port.getName().startsWith(uses.getName())) {
-								return port;
+							if (port != null && (port instanceof ScaUsesPort)) {
+								final String name = port.getName();
+								if (name != null && name.equals(uses.getName())) {
+									return port;
+								}
+								
 							}
 						}
 					}
