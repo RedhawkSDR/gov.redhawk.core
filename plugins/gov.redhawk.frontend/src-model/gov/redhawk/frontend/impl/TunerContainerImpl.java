@@ -35,7 +35,7 @@ import org.eclipse.emf.ecore.util.InternalEList;
  * <li>{@link gov.redhawk.frontend.impl.TunerContainerImpl#getUnallocatedContainer <em>Unallocated Container</em>}</li>
  * </ul>
  * </p>
- * 
+ *
  * @generated
  */
 public class TunerContainerImpl extends MinimalEObjectImpl.Container implements TunerContainer {

@@ -17,7 +17,7 @@ import org.eclipse.emf.ecore.EObject;
  * <!-- begin-user-doc -->
  * A representation of the model object '<em><b>Unallocated Tuner Container</b></em>'.
  * <!-- end-user-doc -->
- * 
+ *
  * <p>
  * The following features are supported:
  * <ul>
@@ -26,7 +26,7 @@ import org.eclipse.emf.ecore.EObject;
  * <li>{@link gov.redhawk.frontend.UnallocatedTunerContainer#getCount <em>Count</em>}</li>
  * </ul>
  * </p>
- * 
+ *
  * @see gov.redhawk.frontend.FrontendPackage#getUnallocatedTunerContainer()
  * @model
  * @generated
