@@ -179,7 +179,12 @@ public class ScaStructSequencePropertyImpl extends ScaAbstractPropertyImpl<Struc
 				}
 			}
 
-			clear();
+			try {
+				setIgnoreRemoteSet(true);
+				clear();
+			} finally {
+				setIgnoreRemoteSet(false);
+			}
 			addAll(props);
 		}
 
