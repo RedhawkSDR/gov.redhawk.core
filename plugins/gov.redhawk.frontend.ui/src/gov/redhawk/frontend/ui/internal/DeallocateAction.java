@@ -178,14 +178,13 @@ public class DeallocateAction extends FrontendAction {
 			if (confirm == ConfirmDeallocation.DEALL_ASK) {
 			MessageDialog warning = new MessageDialog(Display.getCurrent().getActiveShell(), "Deallocation Warning", null,
 				"Some selected tuners have listeners.  Deallocating them will also deallocate all of their listeners.  Deallocate them anyway?", 
-				MessageDialog.WARNING, new String[] { "Cancel", "No", "Yes" }, 0);
+				MessageDialog.WARNING, new String[] { "Cancel", "Yes" }, 0);
 			int response = warning.open();
 			if (response == 0) {
 				return ConfirmDeallocation.DEALL_CANCEL;
-			} else if (response == 1) {
-				return ConfirmDeallocation.DEALL_SKIP;
+			} else {
+				retval = ConfirmDeallocation.DEALL_PROCEED;
 			}
-			retval = ConfirmDeallocation.DEALL_PROCEED;
 		}
 	}
 		final ScaDevice< ? > device = ScaEcoreUtils.getEContainerOfType(tuner, ScaDevice.class);
