@@ -9,8 +9,10 @@ Require-Bundle: idl.bulkio.jni;bundle-version="1.0.0";visibility:=reexport,
  org.apache.log4j;bundle-version="1.2.15"
 Import-Package: org.omg.CosEventChannelAdmin,
  org.omg.CosEventComm
-Export-Package: org.ossie.component,
+Export-Package: org.ossie,
+ org.ossie.component,
  org.ossie.events,
+ org.ossie.logging,
  org.ossie.properties
 Bundle-Vendor: REDHAWK
 Bundle-ClassPath: .
