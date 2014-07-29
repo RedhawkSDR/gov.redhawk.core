@@ -1384,20 +1384,19 @@ public class ScaWaveformImpl extends ScaPropertyContainerImpl<Application, Softw
 		if (waveform == null) {
 			return;
 		} else {
-			TransactionalEditingDomain domain = TransactionUtil.getEditingDomain(this);
-			Command command = new ScaModelCommand() {
-
-				@Override
-				public void execute() {
-					EcoreUtil.delete(ScaWaveformImpl.this);
-				}
-			};
 			waveform.releaseObject();
+		}
+		TransactionalEditingDomain domain = TransactionUtil.getEditingDomain(this);
+		Command command = new ScaModelCommand() {
 
-			// The domain may be null if the waveform has already been released.
-			if (domain != null) {
-				domain.getCommandStack().execute(command);
+			@Override
+			public void execute() {
+				EcoreUtil.delete(ScaWaveformImpl.this);
 			}
+		};
+		// The domain may be null if the waveform has already been released.
+		if (domain != null) {
+			domain.getCommandStack().execute(command);
 		}
 		// BEGIN GENERATED CODE
 	}
