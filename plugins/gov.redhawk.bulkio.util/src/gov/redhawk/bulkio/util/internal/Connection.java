@@ -55,7 +55,7 @@ import BULKIO.updateSRIOperations;
  */
 public class Connection extends AbstractUberBulkIOPort {
 	private static final Debug DEBUG_PUSHPACKET = new Debug(BulkIOUtilActivator.PLUGIN_ID, Connection.class.getSimpleName());
-	private static final SimpleDateFormat FORMAT = new SimpleDateFormat("yyyyMMddHHmmSSSS");
+	private static final String FORMAT_STR = "yyyyMMddHHmmSSSS";
 
 	private OrbSession orbSession = OrbSession.createSession();
 	private final String ior;
@@ -161,7 +161,8 @@ public class Connection extends AbstractUberBulkIOPort {
 	}
 
 	private static String createConnectionID() {
-		return System.getProperty("user.name", "user") + "_" + Connection.FORMAT.format(Calendar.getInstance().getTime());
+		SimpleDateFormat formater = new SimpleDateFormat(FORMAT_STR);
+		return System.getProperty("user.name", "user") + "_" + formater.format(Calendar.getInstance().getTime());
 	}
 
 	public synchronized void dispose() {

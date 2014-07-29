@@ -160,7 +160,7 @@ public final class StreamSRIUtil {
 			sb.append(" mode=").append(sri.mode);
 			sb.append(" streamID=").append(sri.streamID);
 			sb.append(" blocking=").append(sri.blocking);
-			sb.append(" keywords=").append(sri.keywords);
+			sb.append(" keywords=");
 			if (sri.keywords != null) {
 				sb.append("[length=").append(sri.keywords.length).append("] {");
 				for (CF.DataType cfDataType : sri.keywords) {

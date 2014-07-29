@@ -42,7 +42,7 @@ public class PlotPreferenceNode extends PreferenceNode implements IComparableCon
 
 	@Override
 	public String getLabel() {
-		return getLabel();
+		return "Plot";
 	}
 
 	@Override

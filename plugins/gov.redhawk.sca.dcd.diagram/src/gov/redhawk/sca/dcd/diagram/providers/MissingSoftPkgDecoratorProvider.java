@@ -28,9 +28,6 @@ import mil.jpeojtrs.sca.dcd.diagram.part.DcdVisualIDRegistry;
 import mil.jpeojtrs.sca.diagram.figures.ComponentInstantiationFigure;
 import mil.jpeojtrs.sca.spd.SoftPkg;
 
-import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.core.runtime.IStatus;
-import org.eclipse.core.runtime.Status;
 import org.eclipse.draw2d.Label;
 import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.notify.Notification;
@@ -56,7 +53,7 @@ import org.eclipse.gmf.runtime.notation.Edge;
 import org.eclipse.gmf.runtime.notation.View;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Image;
-import org.eclipse.ui.progress.WorkbenchJob;
+import org.eclipse.swt.widgets.Display;
 
 /**
  * @since 2.0
@@ -97,6 +94,8 @@ public class MissingSoftPkgDecoratorProvider extends AbstractProvider implements
 			}
 		};
 
+		private boolean refreshing;
+
 		public MissingSoftPkgProvider(final IDecoratorTarget decoratorTarget) {
 			super(decoratorTarget);
 		}
@@ -115,60 +114,70 @@ public class MissingSoftPkgDecoratorProvider extends AbstractProvider implements
 		 */
 		@Override
 		public void refresh() {
-			removeDecoration();
-			final View view = (View) getDecoratorTarget().getAdapter(View.class);
-			if (view == null || view.eResource() == null) {
+			if (refreshing) {
 				return;
 			}
-			final EditPart editPart = (EditPart) getDecoratorTarget().getAdapter(EditPart.class);
-			if (editPart instanceof DcdComponentPlacementEditPart) {
-				final DcdComponentPlacementEditPart compPart = (DcdComponentPlacementEditPart) editPart;
-				try {
-					if (compPart.getViewer() == null) {
-						return;
-					}
-				} catch (NullPointerException e) {
+			refreshing = true;
+			try {
+				removeDecoration();
+				final View view = (View) getDecoratorTarget().getAdapter(View.class);
+				if (view == null || view.eResource() == null) {
 					return;
 				}
-
-				if (view.getElement() instanceof DcdComponentPlacement) {
-					final DcdComponentPlacement comp = (DcdComponentPlacement) view.getElement();
-					if (comp.eResource() == null) {
+				final EditPart editPart = (EditPart) getDecoratorTarget().getAdapter(EditPart.class);
+				if (editPart instanceof DcdComponentPlacementEditPart) {
+					final DcdComponentPlacementEditPart compPart = (DcdComponentPlacementEditPart) editPart;
+					try {
+						if (compPart.getViewer() == null) {
+							return;
+						}
+					} catch (NullPointerException e) {
 						return;
 					}
-					final DeviceConfiguration dcd = DeviceConfiguration.Util.getDeviceConfiguration(comp.eResource());
-					if (DiagramUtil.isDiagramLocalSandbox(dcd.eResource())) {
-						return;
-					}
-					if (!comp.getComponentInstantiation().isEmpty()) {
-						final DcdComponentInstantiation inst = comp.getComponentInstantiation().get(0);
-						if (comp.getComponentFileRef() != null && comp.getComponentFileRef().getFile() != null) {
-							final SoftPkg softPkg = comp.getComponentFileRef().getFile().getSoftPkg();
 
-							if (((softPkg == null) || softPkg.eIsProxy()) && compPart instanceof org.eclipse.gef.GraphicalEditPart) {
-								int margin = -12; // SUPPRESS CHECKSTYLE MagicNumber
-								if (compPart instanceof org.eclipse.gef.GraphicalEditPart) {
-									margin = MapModeUtil.getMapMode(((org.eclipse.gef.GraphicalEditPart) compPart).getFigure()).DPtoLP(margin);
+					if (view.getElement() instanceof DcdComponentPlacement) {
+						final DcdComponentPlacement comp = (DcdComponentPlacement) view.getElement();
+						if (comp.eResource() == null) {
+							return;
+						}
+						final DeviceConfiguration dcd = DeviceConfiguration.Util.getDeviceConfiguration(comp.eResource());
+						if (DiagramUtil.isDiagramLocalSandbox(dcd.eResource())) {
+							return;
+						}
+						if (!comp.getComponentInstantiation().isEmpty()) {
+							final DcdComponentInstantiation inst = comp.getComponentInstantiation().get(0);
+							if (comp.getComponentFileRef() != null && comp.getComponentFileRef().getFile() != null) {
+								final SoftPkg softPkg = comp.getComponentFileRef().getFile().getSoftPkg();
+
+								if (((softPkg == null) || softPkg.eIsProxy()) && compPart instanceof org.eclipse.gef.GraphicalEditPart) {
+									int margin = -12; // SUPPRESS CHECKSTYLE MagicNumber
+									if (compPart instanceof org.eclipse.gef.GraphicalEditPart) {
+										margin = MapModeUtil.getMapMode(((org.eclipse.gef.GraphicalEditPart) compPart).getFigure()).DPtoLP(margin);
+									}
+
+									setDecoration(getDecoratorTarget().addShapeDecoration(getImage(), IDecoratorTarget.Direction.NORTH_WEST, margin - 30, false)); // SUPPRESS
+																																									// CHECKSTYLE
+																																									// MagicNumber
+									getDecoration().setToolTip(this.toolTip);
+
+									final EditPart foundPart = MissingSoftPkgDecoratorProvider.getEditPartFor(editPart, inst, INodeEditPart.class);
+
+									if (foundPart != null) {
+										final ComponentInstantiationFigure figure = (ComponentInstantiationFigure) ((DcdComponentInstantiationEditPart) foundPart).getContentPane();
+										figure.setLineStyle(SWT.LINE_DASH);
+									}
 								}
 
-								setDecoration(getDecoratorTarget().addShapeDecoration(getImage(), IDecoratorTarget.Direction.NORTH_WEST, margin - 30, false)); // SUPPRESS CHECKSTYLE MagicNumber
-								getDecoration().setToolTip(this.toolTip);
-
-								final EditPart foundPart = MissingSoftPkgDecoratorProvider.getEditPartFor(editPart, inst, INodeEditPart.class);
-
-								if (foundPart != null) {
-									final ComponentInstantiationFigure figure = (ComponentInstantiationFigure) ((DcdComponentInstantiationEditPart) foundPart).getContentPane();
-									figure.setLineStyle(SWT.LINE_DASH);
+								if (!dcd.eAdapters().contains(this.listener)) {
+									dcd.eAdapters().add(this.listener);
 								}
-							}
-
-							if (!dcd.eAdapters().contains(this.listener)) {
-								dcd.eAdapters().add(this.listener);
 							}
 						}
-					}
 
+					}
 				}
+			} finally {
+				refreshing = false;
 			}
 		}
 	}
@@ -187,17 +196,15 @@ public class MissingSoftPkgDecoratorProvider extends AbstractProvider implements
 					// to refresh
 					final EObject container = element.eContainer();
 					final EditPart containerEP = MissingSoftPkgDecoratorProvider.getEditPartFor(hostPart, container, INodeEditPart.class);
-					if (containerEP != null) {
-						final WorkbenchJob job = new WorkbenchJob("Refresh container") {
-
-							@Override
-							public IStatus runInUIThread(final IProgressMonitor monitor) {
+					if (Display.getCurrent() != null) {
+						if (containerEP != null) {
+							try {
 								containerEP.refresh();
-								return Status.OK_STATUS;
+							} catch (NullPointerException e) {
+								// PASS Ignore bug in GMF
 							}
-						};
-						job.schedule();
-						parts = ((IDiagramGraphicalViewer) viewer).findEditPartsForElement(EMFCoreUtil.getProxyID(element), INodeEditPart.class);
+							parts = ((IDiagramGraphicalViewer) viewer).findEditPartsForElement(EMFCoreUtil.getProxyID(element), INodeEditPart.class);
+						}
 					}
 				}
 

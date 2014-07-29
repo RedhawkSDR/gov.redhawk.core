@@ -65,8 +65,6 @@ public class DeallocateHandler extends AbstractHandler implements IHandler {
 	 * @see org.eclipse.core.commands.IHandler#execute(org.eclipse.core.commands.ExecutionEvent)
 	 */
 	
-	private enum ConfirmDeallocation { DEALL_ASK, DEALL_CANCEL, DEALL_SKIP, DEALL_PROCEED };
-	
 	@Override
 	public Object execute(ExecutionEvent event) throws ExecutionException {
 		IStructuredSelection selection = (IStructuredSelection) HandlerUtil.getActiveMenuSelection(event);
@@ -85,37 +83,36 @@ public class DeallocateHandler extends AbstractHandler implements IHandler {
 				// already deallocated, probably still in a pinned properties view
 				return null;
 			}
-			ConfirmDeallocation confirm = deallocateTuner(tuner, event, ConfirmDeallocation.DEALL_ASK);
-			if (confirm == ConfirmDeallocation.DEALL_CANCEL || confirm == ConfirmDeallocation.DEALL_SKIP) {
-				removeSelection = false;
+			boolean proceed = true;
+			if (tuner.getAllocationID() != null && !tuner.getAllocationID().isEmpty() 
+					&& tuner.getAllocationID().contains(",")) {
+				if (confirmDeallocate(tuner, event) == 0) {
+					proceed = false;
+					removeSelection = false;
+				}
+				if (proceed) {
+					deallocateTuner(tuner);
+				}
 			}
 		}
 		if (obj instanceof TunerContainer) {
 			TunerContainer container = (TunerContainer) obj;
-			ConfirmDeallocation confirm = ConfirmDeallocation.DEALL_ASK;
+			if (!confirmDeallocate(container, event)) {
+				return null;
+			}
 			for (TunerStatus tuner : container.getTunerStatus().toArray(new TunerStatus[0])) {
-				String allocationID = tuner.getAllocationID();
-				if (!(allocationID == null || "".equals(allocationID))) {
-					confirm = deallocateTuner(tuner, event, confirm);
-					if (confirm == ConfirmDeallocation.DEALL_CANCEL) {
-						break;
-					}
-				}
+				deallocateTuner(tuner);
 			}
 			removeSelection = false;
 		}
 		if (obj instanceof ScaDevice) {
 			ScaDevice< ? > device = (ScaDevice< ? >) obj;
 			TunerContainer container = TunerUtils.INSTANCE.getTunerContainer(device);
-			ConfirmDeallocation confirm = ConfirmDeallocation.DEALL_ASK;
+			if (!confirmDeallocate(container, event)) {
+				return null;
+			}
 			for (TunerStatus tuner : container.getTunerStatus().toArray(new TunerStatus[0])) {
-				String allocationID = tuner.getAllocationID();
-				if (!(allocationID == null || "".equals(allocationID))) {
-					confirm = deallocateTuner(tuner, event, confirm);
-					if (confirm == ConfirmDeallocation.DEALL_CANCEL) {
-						break;
-					}
-				}
+				deallocateTuner(tuner);
 			}
 		}
 		if (obj instanceof ListenerAllocation) {
@@ -190,25 +187,28 @@ public class DeallocateHandler extends AbstractHandler implements IHandler {
 		return null;
 	}
 
-	private ConfirmDeallocation deallocateTuner(TunerStatus tuner, ExecutionEvent event, ConfirmDeallocation confirm) {
-		ConfirmDeallocation retval = confirm;
-		if (tuner.getAllocationID().contains(",")) {
-			if (confirm == ConfirmDeallocation.DEALL_SKIP) {
-				return ConfirmDeallocation.DEALL_SKIP;
-			}
-			if (confirm == ConfirmDeallocation.DEALL_ASK) {
-				MessageDialog warning = new MessageDialog(HandlerUtil.getActiveWorkbenchWindow(event).getShell(), "Deallocation Warning", null,
-					"Some selected tuners have listeners.  Deallocating them will also deallocate all of their listeners.  Deallocate them anyway?", 
-					MessageDialog.WARNING, new String[] { "Cancel", "No", "Yes" }, 0);
-				int response = warning.open();
+	private int confirmDeallocate(TunerStatus tuner, ExecutionEvent event) {
+		MessageDialog warning = new MessageDialog(HandlerUtil.getActiveWorkbenchWindow(event).getShell(), "Deallocation Warning", null,
+			"Some selected tuners have listeners.  Deallocating them will also deallocate all of their listeners.  Deallocate them anyway?", 
+			MessageDialog.WARNING, new String[] { "Cancel", "Yes" }, 0);
+		return warning.open();
+	}
+	
+	private boolean confirmDeallocate(TunerContainer container, ExecutionEvent event) {
+		for (TunerStatus tuner : container.getTunerStatus()) {
+			if (tuner.getAllocationID() != null && !tuner.getAllocationID().isEmpty() 
+					&& tuner.getAllocationID().contains(",")) {
+				int response = confirmDeallocate(tuner, event);
 				if (response == 0) {
-					return ConfirmDeallocation.DEALL_CANCEL;
-				} else if (response == 1) {
-					return ConfirmDeallocation.DEALL_SKIP;
+					return false;
 				}
-				retval = ConfirmDeallocation.DEALL_PROCEED;
+				return true;
 			}
 		}
+		return true;
+	}
+	
+	private boolean deallocateTuner(TunerStatus tuner) {
 		final ScaDevice< ? > device = ScaEcoreUtils.getEContainerOfType(tuner, ScaDevice.class);
 		final DataType[] props = createAllocationProperties(tuner);
 
@@ -248,7 +248,7 @@ public class DeallocateHandler extends AbstractHandler implements IHandler {
 		job.setUser(true);
 		job.schedule();
 
-		return retval;
+		return true;
 	}
 
 	private DataType[] createAllocationProperties(TunerStatus tuner) {

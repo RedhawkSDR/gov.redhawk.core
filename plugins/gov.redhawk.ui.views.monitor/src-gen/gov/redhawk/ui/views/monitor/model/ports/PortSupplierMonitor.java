@@ -20,7 +20,7 @@ import org.eclipse.emf.common.util.EList;
 /**
  * <!-- begin-user-doc -->
  * A representation of the model object '<em><b>Port Supplier Monitor</b></em>'.
- * @since 4.1
+ * @since 5.0
  * <!-- end-user-doc -->
  *
  * <p>

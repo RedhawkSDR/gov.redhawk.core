@@ -33,7 +33,7 @@ import org.eclipse.emf.ecore.util.Switch;
  * and proceeding up the inheritance hierarchy
  * until a non-null result is returned,
  * which is the result of the switch.
- * @since 4.1
+ * @since 5.0
  * <!-- end-user-doc -->
  * @see gov.redhawk.ui.views.monitor.model.ports.PortsPackage
  * @generated

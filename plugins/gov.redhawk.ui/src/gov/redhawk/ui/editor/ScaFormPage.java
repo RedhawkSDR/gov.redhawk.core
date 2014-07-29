@@ -147,6 +147,9 @@ public abstract class ScaFormPage extends FormPage implements IMenuListener, IEd
 	 * @return the common command stack provided by the parent editor
 	 */
 	protected BasicCommandStack getCommandStack() {
+		if (getEditingDomain() == null) {
+			return null;
+		}
 		return ((BasicCommandStack) getEditingDomain().getCommandStack());
 	}
 
@@ -422,6 +425,9 @@ public abstract class ScaFormPage extends FormPage implements IMenuListener, IEd
 	 */
 	@Override
 	public boolean isDirty() {
+		if (getCommandStack() == null) {
+			return false;
+		}
 		return getCommandStack().isSaveNeeded();
 	}
 

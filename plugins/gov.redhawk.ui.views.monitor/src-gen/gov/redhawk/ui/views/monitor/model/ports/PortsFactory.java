@@ -19,7 +19,7 @@ import org.eclipse.emf.ecore.EFactory;
  * <!-- begin-user-doc -->
  * The <b>Factory</b> for the model.
  * It provides a create method for each non-abstract class of the model.
- * @since 4.1
+ * @since 5.0
  * <!-- end-user-doc -->
  * @see gov.redhawk.ui.views.monitor.model.ports.PortsPackage
  * @generated

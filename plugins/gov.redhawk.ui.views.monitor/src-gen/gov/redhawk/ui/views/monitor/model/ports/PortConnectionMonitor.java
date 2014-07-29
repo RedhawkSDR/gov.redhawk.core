@@ -17,7 +17,7 @@ package gov.redhawk.ui.views.monitor.model.ports;
 /**
  * <!-- begin-user-doc -->
  * A representation of the model object '<em><b>Port Connection Monitor</b></em>'.
- * @since 4.1
+ * @since 5.0
  * <!-- end-user-doc -->
  *
  * <p>
