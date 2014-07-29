@@ -27,9 +27,6 @@ import mil.jpeojtrs.sca.sad.SoftwareAssembly;
 import mil.jpeojtrs.sca.sad.diagram.edit.parts.ComponentPlacementEditPart;
 import mil.jpeojtrs.sca.sad.diagram.part.SadVisualIDRegistry;
 
-import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.core.runtime.IStatus;
-import org.eclipse.core.runtime.Status;
 import org.eclipse.draw2d.Label;
 import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.notify.Notification;
@@ -55,7 +52,7 @@ import org.eclipse.gmf.runtime.notation.Edge;
 import org.eclipse.gmf.runtime.notation.View;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Image;
-import org.eclipse.ui.progress.WorkbenchJob;
+import org.eclipse.swt.widgets.Display;
 
 /**
  * @since 2.0
@@ -169,17 +166,15 @@ public class MissingSoftPkgDecoratorProvider extends AbstractProvider implements
 					// to refresh
 					final EObject container = element.eContainer();
 					final EditPart containerEP = MissingSoftPkgDecoratorProvider.getEditPartFor(hostPart, container, INodeEditPart.class);
-					if (containerEP != null) {
-						final WorkbenchJob job = new WorkbenchJob("Refresh container") {
-
-							@Override
-							public IStatus runInUIThread(final IProgressMonitor monitor) {
+					if (Display.getCurrent() != null) {
+						if (containerEP != null) {
+							try {
 								containerEP.refresh();
-								return Status.OK_STATUS;
+							} catch (NullPointerException e) {
+								// PASS Ignore bug in GMF
 							}
-						};
-						job.schedule();
-						parts = ((IDiagramGraphicalViewer) viewer).findEditPartsForElement(EMFCoreUtil.getProxyID(element), INodeEditPart.class);
+							parts = ((IDiagramGraphicalViewer) viewer).findEditPartsForElement(EMFCoreUtil.getProxyID(element), INodeEditPart.class);
+						}
 					}
 				}
 
