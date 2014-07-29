@@ -62,7 +62,7 @@ public class MissingSoftPkgDecoratorProvider extends AbstractProvider implements
 	private static class MissingSoftPkgProvider extends AbstractDecorator {
 
 		private final Label toolTip = new Label("Component not found in the target SDR", //$NON-NLS-1$
-		        getImage());
+			getImage());
 
 		private final Adapter listener = new EContentAdapter() {
 			/**
@@ -98,56 +98,69 @@ public class MissingSoftPkgDecoratorProvider extends AbstractProvider implements
 			return RedhawkSadDiagramPlugin.getDefault().getBundledImage("icons/obj16/error_x12.png");
 		}
 
+		private boolean refreshing;
+
 		/**
 		 * {@inheritDoc}
 		 */
 		@Override
 		public void refresh() {
-			removeDecoration();
-			final View view = (View) getDecoratorTarget().getAdapter(View.class);
-			if (view == null || view.eResource() == null) {
+			if (refreshing) {
 				return;
 			}
-			final EditPart editPart = (EditPart) getDecoratorTarget().getAdapter(EditPart.class);
-			if (editPart instanceof ComponentPlacementEditPart) {
-				final ComponentPlacementEditPart compPart = (ComponentPlacementEditPart) editPart;
-
-				if (compPart.getRoot() == null) {
+			refreshing = true;
+			try {
+				removeDecoration();
+				final View view = (View) getDecoratorTarget().getAdapter(View.class);
+				if (view == null || view.eResource() == null) {
 					return;
 				}
+				final EditPart editPart = (EditPart) getDecoratorTarget().getAdapter(EditPart.class);
+				if (editPart instanceof ComponentPlacementEditPart) {
+					final ComponentPlacementEditPart compPart = (ComponentPlacementEditPart) editPart;
 
-				if (view.getElement() instanceof SadComponentPlacement) {
-					final SadComponentPlacement comp = (SadComponentPlacement) view.getElement();
-					final SoftwareAssembly sad = SoftwareAssembly.Util.getSoftwareAssembly(comp.eResource());
-					if (sad != null && DiagramUtil.isDiagramLocalSandbox(sad.eResource())) {
+					if (compPart.getRoot() == null) {
 						return;
 					}
-					if (!comp.getComponentInstantiation().isEmpty()) {
-						final SadComponentInstantiation inst = comp.getComponentInstantiation().get(0);
-						final ComponentFile softPkgFile = comp.getComponentFileRef().getFile();
 
-						if ((softPkgFile == null || softPkgFile.getSoftPkg() == null || softPkgFile.getSoftPkg().eIsProxy()) && compPart instanceof org.eclipse.gef.GraphicalEditPart) {
-							int margin = -12; // SUPPRESS CHECKSTYLE MagicNumber
-							if (compPart instanceof org.eclipse.gef.GraphicalEditPart) {
-								margin = MapModeUtil.getMapMode(((org.eclipse.gef.GraphicalEditPart) compPart).getFigure()).DPtoLP(margin);
-							}
+					if (view.getElement() instanceof SadComponentPlacement) {
+						final SadComponentPlacement comp = (SadComponentPlacement) view.getElement();
+						final SoftwareAssembly sad = SoftwareAssembly.Util.getSoftwareAssembly(comp.eResource());
+						if (sad != null && DiagramUtil.isDiagramLocalSandbox(sad.eResource())) {
+							return;
+						}
+						if (!comp.getComponentInstantiation().isEmpty()) {
+							final SadComponentInstantiation inst = comp.getComponentInstantiation().get(0);
+							final ComponentFile softPkgFile = comp.getComponentFileRef().getFile();
 
-							setDecoration(getDecoratorTarget().addShapeDecoration(getImage(), IDecoratorTarget.Direction.NORTH_WEST, margin - 30, false)); // SUPPRESS CHECKSTYLE MagicNumber
-							getDecoration().setToolTip(this.toolTip);
+							if ((softPkgFile == null || softPkgFile.getSoftPkg() == null || softPkgFile.getSoftPkg().eIsProxy())
+								&& compPart instanceof org.eclipse.gef.GraphicalEditPart) {
+								int margin = -12; // SUPPRESS CHECKSTYLE MagicNumber
+								if (compPart instanceof org.eclipse.gef.GraphicalEditPart) {
+									margin = MapModeUtil.getMapMode(((org.eclipse.gef.GraphicalEditPart) compPart).getFigure()).DPtoLP(margin);
+								}
 
-							final EditPart foundPart = MissingSoftPkgDecoratorProvider.getEditPartFor(editPart, inst, INodeEditPart.class);
+								setDecoration(getDecoratorTarget().addShapeDecoration(getImage(), IDecoratorTarget.Direction.NORTH_WEST, margin - 30, false)); // SUPPRESS
+																																								// CHECKSTYLE
+																																								// MagicNumber
+								getDecoration().setToolTip(this.toolTip);
 
-							if (foundPart != null) {
-								final ComponentInstantiationFigure figure = (ComponentInstantiationFigure) ((SadComponentInstantiationEditPart) foundPart).getContentPane();
-								figure.setLineStyle(SWT.LINE_DASH);
+								final EditPart foundPart = MissingSoftPkgDecoratorProvider.getEditPartFor(editPart, inst, INodeEditPart.class);
+
+								if (foundPart != null) {
+									final ComponentInstantiationFigure figure = (ComponentInstantiationFigure) ((SadComponentInstantiationEditPart) foundPart).getContentPane();
+									figure.setLineStyle(SWT.LINE_DASH);
+								}
 							}
 						}
-					}
 
-					if (sad != null && !sad.eAdapters().contains(this.listener)) {
-						sad.eAdapters().add(this.listener);
+						if (sad != null && !sad.eAdapters().contains(this.listener)) {
+							sad.eAdapters().add(this.listener);
+						}
 					}
 				}
+			} finally {
+				refreshing = false;
 			}
 		}
 	}
