@@ -45,10 +45,10 @@ public class StringPropertyEditor extends PropertyEditor {
 		final Label label = new Label(parent, SWT.NONE);
 		label.setText(this.name);
 		this.text = new Text(parent, SWT.BORDER);
-		if (this.value instanceof String) {
+		if (this.value != null) {
 			this.text.setText(this.value);
 		} else {
-			this.text.setText(this.value);
+			this.text.setText("");
 		}
 		GridDataFactory.fillDefaults().grab(false, false).applyTo(label);
 		GridDataFactory.fillDefaults().grab(true, false).applyTo(this.text);
