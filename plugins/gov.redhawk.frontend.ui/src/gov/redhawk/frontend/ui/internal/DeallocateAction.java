@@ -15,9 +15,9 @@ import gov.redhawk.frontend.TunerContainer;
 import gov.redhawk.frontend.TunerStatus;
 import gov.redhawk.frontend.ui.FrontEndUIActivator;
 import gov.redhawk.frontend.ui.internal.section.FrontendSection;
-import gov.redhawk.frontend.util.TunerUtils;
 import gov.redhawk.frontend.util.TunerProperties.ListenerAllocationProperties;
 import gov.redhawk.frontend.util.TunerProperties.TunerAllocationProperties;
+import gov.redhawk.frontend.util.TunerUtils;
 import gov.redhawk.model.sca.RefreshDepth;
 import gov.redhawk.model.sca.ScaDevice;
 import gov.redhawk.model.sca.ScaFactory;
@@ -58,8 +58,6 @@ public class DeallocateAction extends FrontendAction {
 			"icons/deallocate.gif");
 	}
 	
-	private enum ConfirmDeallocation { DEALL_ASK, DEALL_CANCEL, DEALL_SKIP, DEALL_PROCEED };
-	
 	@Override
 	public void run() {
 		EObject obj = getSection().getInput();
@@ -70,37 +68,36 @@ public class DeallocateAction extends FrontendAction {
 				// already deallocated, probably still in a pinned properties view
 				return;
 			}
-			ConfirmDeallocation confirm = deallocateTuner(tuner, ConfirmDeallocation.DEALL_ASK);
-			if (confirm == ConfirmDeallocation.DEALL_CANCEL || confirm == ConfirmDeallocation.DEALL_SKIP) {
-				removeSelection = false;
+			boolean proceed = true;
+			if (tuner.getAllocationID() != null && !tuner.getAllocationID().isEmpty() 
+					&& tuner.getAllocationID().contains(",")) {
+				if (confirmDeallocate(tuner) == 0) {
+					proceed = false;
+					removeSelection = false;
+				}
+				if (proceed) {
+					deallocateTuner(tuner);
+				}
 			}
 		}
 		if (obj instanceof TunerContainer) {
 			TunerContainer container = (TunerContainer) obj;
-			ConfirmDeallocation confirm = ConfirmDeallocation.DEALL_ASK;
+			if (!confirmDeallocate(container)) {
+				return;
+			}
 			for (TunerStatus tuner : container.getTunerStatus().toArray(new TunerStatus[0])) {
-				String allocationID = tuner.getAllocationID();
-				if (!(allocationID == null || "".equals(allocationID))) {
-					confirm = deallocateTuner(tuner, confirm);
-					if (confirm == ConfirmDeallocation.DEALL_CANCEL) {
-						break;
-					}
-				}
+				deallocateTuner(tuner);
 			}
 			removeSelection = false;
 		}
 		if (obj instanceof ScaDevice) {
 			ScaDevice< ? > device = (ScaDevice< ? >) obj;
 			TunerContainer container = TunerUtils.INSTANCE.getTunerContainer(device);
-			ConfirmDeallocation confirm = ConfirmDeallocation.DEALL_ASK;
+			if (!confirmDeallocate(container)) {
+				return;
+			}
 			for (TunerStatus tuner : container.getTunerStatus().toArray(new TunerStatus[0])) {
-				String allocationID = tuner.getAllocationID();
-				if (!(allocationID == null || "".equals(allocationID))) {
-					confirm = deallocateTuner(tuner, confirm);
-					if (confirm == ConfirmDeallocation.DEALL_CANCEL) {
-						break;
-					}
-				}
+				deallocateTuner(tuner);
 			}
 		}
 		if (obj instanceof ListenerAllocation) {
@@ -168,25 +165,29 @@ public class DeallocateAction extends FrontendAction {
 			getSection().unsetPageSelection();
 		}
 	}
+
+	private int confirmDeallocate(TunerStatus tuner) {
+		MessageDialog warning = new MessageDialog(Display.getCurrent().getActiveShell(), "Deallocation Warning", null,
+			"Some selected tuners have listeners.  Deallocating them will also deallocate all of their listeners.  Deallocate them anyway?", 
+			MessageDialog.WARNING, new String[] { "Cancel", "Yes" }, 0);
+		return warning.open();
+	}
 	
-	private ConfirmDeallocation deallocateTuner(TunerStatus tuner, ConfirmDeallocation confirm) {
-		ConfirmDeallocation retval = confirm;
-		if (tuner.getAllocationID().contains(",")) {
-			if (confirm == ConfirmDeallocation.DEALL_SKIP) {
-				return ConfirmDeallocation.DEALL_SKIP;
-			}
-			if (confirm == ConfirmDeallocation.DEALL_ASK) {
-			MessageDialog warning = new MessageDialog(Display.getCurrent().getActiveShell(), "Deallocation Warning", null,
-				"Some selected tuners have listeners.  Deallocating them will also deallocate all of their listeners.  Deallocate them anyway?", 
-				MessageDialog.WARNING, new String[] { "Cancel", "Yes" }, 0);
-			int response = warning.open();
-			if (response == 0) {
-				return ConfirmDeallocation.DEALL_CANCEL;
-			} else {
-				retval = ConfirmDeallocation.DEALL_PROCEED;
+	private boolean confirmDeallocate(TunerContainer container) {
+		for (TunerStatus tuner : container.getTunerStatus()) {
+			if (tuner.getAllocationID() != null && !tuner.getAllocationID().isEmpty() 
+					&& tuner.getAllocationID().contains(",")) {
+				int response = confirmDeallocate(tuner);
+				if (response == 0) {
+					return false;
+				}
+				return true;
 			}
 		}
+		return true;
 	}
+	
+	private boolean deallocateTuner(TunerStatus tuner) {
 		final ScaDevice< ? > device = ScaEcoreUtils.getEContainerOfType(tuner, ScaDevice.class);
 		final DataType[] props = createAllocationProperties(tuner);
 
@@ -212,7 +213,7 @@ public class DeallocateAction extends FrontendAction {
 		job.setUser(true);
 		job.schedule();
 
-		return retval;
+		return true;
 	}
 
 	private DataType[] createAllocationProperties(TunerStatus tuner) {
