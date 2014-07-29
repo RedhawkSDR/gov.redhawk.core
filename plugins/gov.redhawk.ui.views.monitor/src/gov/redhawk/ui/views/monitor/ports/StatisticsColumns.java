@@ -19,6 +19,8 @@ import gov.redhawk.ui.views.monitor.model.ports.provider.PortsItemProviderAdapte
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 
 import org.eclipse.emf.common.notify.AdapterFactory;
 import org.eclipse.emf.edit.provider.ComposedAdapterFactory;
@@ -153,7 +155,7 @@ public final class StatisticsColumns {
 		        }
 	        });
 
-	public static final Column[] DEFAULT_COLUMNS = new Column[] {
+	public static final List<Column> DEFAULT_COLUMNS = Collections.unmodifiableList(Arrays.asList(
 	        StatisticsColumns.NAME,
 	        StatisticsColumns.ELEMENTS_PER_SEC,
 	        StatisticsColumns.BITS_PER_SECOND,
@@ -161,5 +163,5 @@ public final class StatisticsColumns {
 	        StatisticsColumns.STREAM_IDS,
 	        StatisticsColumns.AVG_QUEUE_DEPTH,
 	        StatisticsColumns.TIME
-	};
+	));
 }

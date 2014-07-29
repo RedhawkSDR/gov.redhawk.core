@@ -23,7 +23,6 @@ import gov.redhawk.ui.views.monitor.ports.PortMonitorView;
 import gov.redhawk.ui.views.monitor.ports.StatisticsColumns;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -260,7 +259,7 @@ public class PortMonitorViewConfigDialog extends ViewSettingsDialog {
 		super.performDefaults();
 		refreshText.setText("10");
 		initializeColumnMap();
-		HashSet<Column> newSet = new HashSet<Column>(Arrays.asList(StatisticsColumns.DEFAULT_COLUMNS));
+		HashSet<Column> newSet = new HashSet<Column>(StatisticsColumns.DEFAULT_COLUMNS);
 		state.setChecked(newSet);
 	}
 }

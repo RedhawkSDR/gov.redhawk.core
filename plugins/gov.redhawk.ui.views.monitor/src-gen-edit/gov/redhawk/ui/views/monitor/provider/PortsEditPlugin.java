@@ -32,7 +32,7 @@ import org.osgi.framework.BundleContext;
 /**
  * This is the central singleton for the ports edit plugin.
  * <!-- begin-user-doc -->
- * @since 4.1
+ * @since 5.0
  * <!-- end-user-doc -->
  * @generated
  */
