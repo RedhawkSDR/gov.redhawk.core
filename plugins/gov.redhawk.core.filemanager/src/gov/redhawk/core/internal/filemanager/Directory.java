@@ -226,7 +226,7 @@ public class Directory implements Node {
 		if (nodes == null) {
 			return false;
 		} else if (fileName.size() == 1) {
-			return nodes != null;
+			return true;
 		} else {
 			final List<String> subList = fileName.subList(1, fileName.size());
 			if (nodes.get(0) instanceof Directory) {
