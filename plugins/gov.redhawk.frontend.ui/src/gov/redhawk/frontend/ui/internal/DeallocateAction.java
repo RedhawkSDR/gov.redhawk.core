@@ -75,9 +75,9 @@ public class DeallocateAction extends FrontendAction {
 					proceed = false;
 					removeSelection = false;
 				}
-				if (proceed) {
-					deallocateTuner(tuner);
-				}
+			}
+			if (proceed) {
+				deallocateTuner(tuner);
 			}
 		}
 		if (obj instanceof TunerContainer) {
