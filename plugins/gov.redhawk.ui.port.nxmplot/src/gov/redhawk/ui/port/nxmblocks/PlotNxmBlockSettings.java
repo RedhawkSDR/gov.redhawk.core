@@ -30,6 +30,8 @@ public class PlotNxmBlockSettings implements Cloneable {
 	private Integer pipeSize;
 	/** null to use default. */
 	private Integer linePlotConsumeLength;
+	/** null to use default. */
+	private Integer refreshRate;
 
 	public PlotNxmBlockSettings() {
 		this(null);
@@ -47,6 +49,9 @@ public class PlotNxmBlockSettings implements Cloneable {
 		}
 		if (PlotPreferences.LINE_PLOT_CONSUMELENGTH_OVERRIDE.getValue(preferences)) {
 			linePlotConsumeLength = PlotPreferences.LINE_PLOT_CONSUMELENGTH.getValue(preferences);
+		}
+		if (PlotPreferences.REFRESH_RATE_OVERRIDE.getValue(preferences)) {
+			refreshRate = PlotPreferences.REFRESH_RATE.getValue(preferences);
 		}
 	}
 
@@ -87,6 +92,20 @@ public class PlotNxmBlockSettings implements Cloneable {
 		this.linePlotConsumeLength = consumeLength;
 	}
 
+	/**
+	 * @since 4.4
+	 */
+	public Integer getRefreshRate() {
+		return refreshRate;
+	}
+
+	/**
+	 * @since 4.4
+	 */
+	public void setRefreshRate(Integer refreshRate) {
+		this.refreshRate = refreshRate;
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -94,6 +113,7 @@ public class PlotNxmBlockSettings implements Cloneable {
 		result = prime * result + ((frameSize == null) ? 0 : frameSize.hashCode());
 		result = prime * result + ((pipeSize == null) ? 0 : pipeSize.hashCode());
 		result = prime * result + ((linePlotConsumeLength == null) ? 0 : linePlotConsumeLength.hashCode());
+		result = prime * result + ((refreshRate == null) ? 0 : refreshRate.hashCode());
 		return result;
 	}
 
@@ -128,6 +148,13 @@ public class PlotNxmBlockSettings implements Cloneable {
 				return false;
 			}
 		} else if (!linePlotConsumeLength.equals(other.linePlotConsumeLength)) {
+			return false;
+		}
+		if (refreshRate == null) {
+			if (other.refreshRate != null) {
+				return false;
+			}
+		} else if (!refreshRate.equals(other.refreshRate)) {
 			return false;
 		}
 		return true;

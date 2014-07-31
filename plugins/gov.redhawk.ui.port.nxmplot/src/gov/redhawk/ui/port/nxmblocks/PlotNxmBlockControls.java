@@ -52,6 +52,7 @@ public class PlotNxmBlockControls {
 	// widgets
 	private ComboViewer frameSizeField;
 	private Text linePlotConsumeLengthField;
+	private Text refreshRateField;
 
 	public PlotNxmBlockControls(PlotNxmBlockSettings settings, DataBindingContext dataBindingCtx) {
 		this.settings = settings;
@@ -83,6 +84,14 @@ public class PlotNxmBlockControls {
 		this.linePlotConsumeLengthField.setToolTipText("Thin line plot by displaying 1 out of every n frames. "
 			+ "Use -1 for no thinning. Leave blank to use default of " + PlotPreferences.LINE_PLOT_CONSUMELENGTH.getDefaultValue() + ".");
 
+		// === refresh rate (FPS) smart thinning ===
+		label = new Label(container, SWT.NONE);
+		label.setText("&Refresh Rate:");
+		this.refreshRateField = new Text(container, SWT.BORDER);
+		this.refreshRateField.setLayoutData(GridDataFactory.fillDefaults().grab(true, false).create());
+		this.refreshRateField.setToolTipText("Attempt desired refresh rate (screen frames per second (FPS)) to do smart thinning of data. "
+			+ "Use 0 to disable smart thinning. Leave blank to use default of " + PlotPreferences.REFRESH_RATE.getDefaultValue() + ".");
+
 		initDataBindings();
 	}
 
@@ -101,6 +110,11 @@ public class PlotNxmBlockControls {
 		bindingValue = dataBindingCtx.bindValue(
 			WidgetProperties.text(SWT.Modify).observe(linePlotConsumeLengthField),
 			PojoProperties.value("linePlotConsumeLength").observe(this.settings));
+		ControlDecorationSupport.create(bindingValue, SWT.TOP | SWT.LEFT);
+
+		bindingValue = dataBindingCtx.bindValue(
+			WidgetProperties.text(SWT.Modify).observe(refreshRateField),
+			PojoProperties.value("refreshRate").observe(this.settings));
 		ControlDecorationSupport.create(bindingValue, SWT.TOP | SWT.LEFT);
 	}
 }

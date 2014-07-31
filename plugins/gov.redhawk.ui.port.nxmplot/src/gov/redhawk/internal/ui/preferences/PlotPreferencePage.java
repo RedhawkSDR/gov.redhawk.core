@@ -113,6 +113,7 @@ public class PlotPreferencePage extends FieldEditorPreferencePage implements IWo
 		if (workbench != null) {
 			addField(createPlotModesField());
 			addField(createFrameSizeField());
+			addField(createRefreshRateField(getFieldEditorParent()));
 			addField(createLinePlotConsumeLengthField(getFieldEditorParent()));
 			addField(createConfigureMenuField(getFieldEditorParent()));
 			addField(createQuickControlsField());
@@ -182,7 +183,15 @@ public class PlotPreferencePage extends FieldEditorPreferencePage implements IWo
 			getFieldEditorParent());
 	}
 
-
+	private OverridableIntegerFieldEditor createRefreshRateField(Composite parent) {
+		OverridableIntegerFieldEditor refreshRateField = new OverridableIntegerFieldEditor(PlotPreferences.REFRESH_RATE.getName(),
+			PlotPreferences.REFRESH_RATE_OVERRIDE.getName(), "&Refresh Rate:", parent);
+		refreshRateField.setErrorMessage("Refresh Rate must a an integer >= 0");
+		refreshRateField.setValidRange(0, Integer.MAX_VALUE);
+		refreshRateField.setToolTipText("Desired refresh rate (screen frames per second (FPS)) to do smart thinning of data. "
+			+ "Use 0 to disable smart thinning. Leave blank to use default of " + PlotPreferences.REFRESH_RATE.getDefaultValue() + ".");
+		return refreshRateField;
+	}
 	private void creatBlockAdancedFields() {
 		final Composite parent = getFieldEditorParent();
 		Section advancedComposite = new Section(parent, ExpandableComposite.TWISTIE);
@@ -211,6 +220,7 @@ public class PlotPreferencePage extends FieldEditorPreferencePage implements IWo
 //			blockPreferences.add(new OverridableIntegerFieldEditor(PlotPreferences.PIPESIZE.getName(), PlotPreferences.PIPESIZE_OVERRIDE.getName(),
 //				"&Pipe Size:", section));
 			
+			blockPreferences.add(createRefreshRateField(section));
 			blockPreferences.add(createLinePlotConsumeLengthField(section));
 		}
 		

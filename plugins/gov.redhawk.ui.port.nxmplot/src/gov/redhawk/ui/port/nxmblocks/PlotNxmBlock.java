@@ -186,6 +186,10 @@ public class PlotNxmBlock extends AbstractNxmBlock<plot> {
 		if (newSettings.getLinePlotConsumeLength() != null) {
 			setLinePlotConsumeLength(newSettings.getLinePlotConsumeLength());
 		}
+		
+		if (newSettings.getRefreshRate() != null) {
+			setRefreshRate(newSettings.getRefreshRate());
+		}
 	}
 
 	@Override
@@ -201,7 +205,7 @@ public class PlotNxmBlock extends AbstractNxmBlock<plot> {
 				frameSize = 1024;
 			}
 			pipeQualifiers.append("{FRAMESIZE=").append(frameSize).append('}');
-		} else { // Frame size not overriden
+		} else { // Frame size not overridden
 			if (sri != null) { // 2. check sri.subsize
 				frameSize = sri.subsize;
 			}
@@ -249,6 +253,14 @@ public class PlotNxmBlock extends AbstractNxmBlock<plot> {
 			}
 		}
 
+		// screen frames per second (FPS) / refresh rate smart thinning of input data stream
+		if (isSetRefreshRate()) {
+			int refreshRate = getRefreshRate();
+			if (refreshRate >= 0) {
+				pipeQualifiers.append("{LAYER={REFRESHRATE=").append(refreshRate).append("}}");
+			}
+		}
+		
 		PlotNxmBlock.TRACE_LOG.exitingMethod(pipeQualifiers);
 		return pipeQualifiers.toString();
 	}
@@ -308,6 +320,25 @@ public class PlotNxmBlock extends AbstractNxmBlock<plot> {
 		PlotPreferences.FRAMESIZE_OVERRIDE.setValue(getPreferences(), true);
 	}
 
+	public int getRefreshRate() {
+		return PlotPreferences.REFRESH_RATE.getValue(getPreferences());
+	}
+
+	public boolean isSetRefreshRate() {
+		return PlotPreferences.REFRESH_RATE_OVERRIDE.getValue(getPreferences());
+	}
+
+	public void unsetRefreshRate() {
+		PlotPreferences.REFRESH_RATE.setToDefault(getPreferences());
+		PlotPreferences.REFRESH_RATE_OVERRIDE.setValue(getPreferences(), false);
+	}
+
+	/** set to 0 to NOT do any smart thinning of plots based on desired refresh rate. */
+	public void setRefreshRate(int val) {
+		PlotPreferences.REFRESH_RATE.setValue(getPreferences(), val);
+		PlotPreferences.REFRESH_RATE_OVERRIDE.setValue(getPreferences(), true);
+	}
+
 	@Override
 	public void propertyChange(PropertyChangeEvent event) {
 		if ((PlotPreferences.FRAMESIZE.isEvent(event) || PlotPreferences.FRAMESIZE_OVERRIDE.isEvent(event)) && isSetFrameSize()) {
@@ -336,6 +367,17 @@ public class PlotNxmBlock extends AbstractNxmBlock<plot> {
 				&& PlotType.LINE.equals(getContext().getPlotType())) {
 			updatePipeQualifiers();
 		}
+
+		if (PlotPreferences.REFRESH_RATE.isEvent(event) && isSetRefreshRate()) {
+			setPropertyOnAllLayers("REFRESHRATE", 0, "" + getRefreshRate()); 
+			// above works better (don't have to remove/add source) vs calling updatePipeQualifiers();
+		}
+
+		if (PlotPreferences.REFRESH_RATE_OVERRIDE.isEvent(event)
+				&& getRefreshRate() != PlotPreferences.REFRESH_RATE.getDefaultValue(getPreferences())) {
+			setPropertyOnAllLayers("REFRESHRATE", 0, "" + getRefreshRate());
+			// above works better (don't have to remove/add source) vs calling updatePipeQualifiers();
+		}
 	}
 
 	private void updatePipeQualifiers() {
@@ -360,22 +402,21 @@ public class PlotNxmBlock extends AbstractNxmBlock<plot> {
 	}
 
 	public void hide() {
-		AbstractNxmPlotWidget context = getContext();
-		Iterator<String> keyIter = streamIdToSourceNameMap.keySet().iterator();
-		while (keyIter.hasNext()) {
-			String streamId = keyIter.next();
-			String sourceName = streamIdToSourceNameMap.get(streamId);
-			context.sendPlotMessage("SET.LAYERS." + sourceName + ".ENABLE", 0, "-GLOBAL");
-		}
+		setPropertyOnAllLayers("ENABLE", 0, "-GLOBAL");
 	}
 
 	public void show() {
+		setPropertyOnAllLayers("ENABLE", 0, "+GLOBAL");
+	}
+	
+	/** set property of all layers on this block by sending a message so that this can work in both RCP and RAP. */
+	private void setPropertyOnAllLayers(String properyName, int info, String data) {
 		AbstractNxmPlotWidget context = getContext();
 		Iterator<String> keyIter = streamIdToSourceNameMap.keySet().iterator();
 		while (keyIter.hasNext()) {
 			String streamId = keyIter.next();
 			String sourceName = streamIdToSourceNameMap.get(streamId);
-			context.sendPlotMessage("SET.LAYERS." + sourceName + ".ENABLE", 0, "+GLOBAL");
+			context.sendPlotMessage("SET.LAYERS." + sourceName + "." + properyName, info, data);
 		}
 	}
 }
