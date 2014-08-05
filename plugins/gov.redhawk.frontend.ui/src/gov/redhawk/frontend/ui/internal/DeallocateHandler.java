@@ -90,9 +90,9 @@ public class DeallocateHandler extends AbstractHandler implements IHandler {
 					proceed = false;
 					removeSelection = false;
 				}
-				if (proceed) {
-					deallocateTuner(tuner);
-				}
+			}
+			if (proceed) {
+				deallocateTuner(tuner);
 			}
 		}
 		if (obj instanceof TunerContainer) {
