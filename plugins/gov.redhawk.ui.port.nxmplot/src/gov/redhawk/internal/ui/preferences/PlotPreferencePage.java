@@ -140,6 +140,10 @@ public class PlotPreferencePage extends FieldEditorPreferencePage implements IWo
 					PlotPreferences.MAX_OVERRIDE.getName(), "Ma&x:", getFieldEditorParent());
 				addField(maxField);
 
+				if (blockPreferenceStore != null) {
+					blockPreferences.add(createRefreshRateField(getFieldEditorParent()));
+				}
+				
 				final Composite booleanControls = new Composite(getFieldEditorParent(), SWT.None);
 				addField(createConfigureMenuField(booleanControls));
 				booleanControls.setLayoutData(GridDataFactory.fillDefaults().grab(true, false).span(2, 1).create());
@@ -185,7 +189,7 @@ public class PlotPreferencePage extends FieldEditorPreferencePage implements IWo
 
 	private OverridableIntegerFieldEditor createRefreshRateField(Composite parent) {
 		OverridableIntegerFieldEditor refreshRateField = new OverridableIntegerFieldEditor(PlotPreferences.REFRESH_RATE.getName(),
-			PlotPreferences.REFRESH_RATE_OVERRIDE.getName(), "&Refresh Rate:", parent);
+			PlotPreferences.REFRESH_RATE_OVERRIDE.getName(), "&Refresh Rate (fps):", parent);
 		refreshRateField.setErrorMessage("Refresh Rate must a an integer >= 0");
 		refreshRateField.setValidRange(0, Integer.MAX_VALUE);
 		refreshRateField.setToolTipText("Desired refresh rate (screen frames per second (FPS)) to do smart thinning of data. "
@@ -220,7 +224,6 @@ public class PlotPreferencePage extends FieldEditorPreferencePage implements IWo
 //			blockPreferences.add(new OverridableIntegerFieldEditor(PlotPreferences.PIPESIZE.getName(), PlotPreferences.PIPESIZE_OVERRIDE.getName(),
 //				"&Pipe Size:", section));
 			
-			blockPreferences.add(createRefreshRateField(section));
 			blockPreferences.add(createLinePlotConsumeLengthField(section));
 		}
 		

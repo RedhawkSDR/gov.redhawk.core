@@ -25,12 +25,12 @@ public class PlotPreferences {
 	public static final Preference<Boolean> FRAMESIZE_OVERRIDE = new Preference<Boolean>("plotSettings.framesize.override", false);
 	public static final Preference<Integer> PIPESIZE = new Preference<Integer>("plotSettings.pipeSize", 131072);
 	public static final Preference<Boolean> PIPESIZE_OVERRIDE = new Preference<Boolean>("plotSettings.pipeSize.override", false);
-	public static final Preference<Integer> LINE_PLOT_CONSUMELENGTH = new Preference<Integer>("plotSettings.linePlotConsumeLength", 8);
+	public static final Preference<Integer> LINE_PLOT_CONSUMELENGTH = new Preference<Integer>("plotSettings.linePlotConsumeLength", -1);
 	public static final Preference<Boolean> LINE_PLOT_CONSUMELENGTH_OVERRIDE = new Preference<Boolean>("plotSettings.linePlotConsumeLength.override", false);
 	/**
 	 * @since 4.5
 	 */
-	public static final Preference<Integer> REFRESH_RATE = new Preference<Integer>("plotSettings.refreshRate", 0);
+	public static final Preference<Integer> REFRESH_RATE = new Preference<Integer>("plotSettings.refreshRate", 30);
 	/**
 	 * @since 4.5
 	 */
