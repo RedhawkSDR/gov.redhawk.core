@@ -254,11 +254,14 @@ public class PlotNxmBlock extends AbstractNxmBlock<plot> {
 		}
 
 		// screen frames per second (FPS) / refresh rate smart thinning of input data stream
+		int refreshRate;
 		if (isSetRefreshRate()) {
-			int refreshRate = getRefreshRate();
-			if (refreshRate >= 0) {
-				pipeQualifiers.append("{LAYER={REFRESHRATE=").append(refreshRate).append("}}");
-			}
+			refreshRate = getRefreshRate();
+		} else {
+			refreshRate = PlotPreferences.REFRESH_RATE.getDefaultValue(getPreferences());
+		}
+		if (refreshRate >= 0) {
+			pipeQualifiers.append("{LAYER={REFRESHRATE=").append(refreshRate).append("}}");
 		}
 		
 		PlotNxmBlock.TRACE_LOG.exitingMethod(pipeQualifiers);
