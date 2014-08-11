@@ -14,13 +14,10 @@ package gov.redhawk.ui.editor;
 import gov.redhawk.internal.ui.SubActionBarsExt;
 
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
-import java.util.Set;
 
 import org.eclipse.emf.edit.domain.IEditingDomainProvider;
 import org.eclipse.emf.edit.ui.action.EditingDomainActionBarContributor;
-import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.action.IMenuListener;
 import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.ui.IActionBars2;
@@ -157,26 +154,12 @@ public abstract class ScaMultipageActionBarContributor extends MultiPageEditorAc
 	private void setActiveActionBars(final SubActionBarsExt actionBars, final IEditorPart activeEditor) {
 		if (this.myActiveEditorActionBars != null && this.myActiveEditorActionBars != actionBars) {
 			this.myActiveEditorActionBars.deactivate();
-			getActionBars().clearGlobalActionHandlers();
-			//			this.myActiveEditorActionBars.clearGlobalActionHandlers();
 		}
 		this.myActiveEditorActionBars = actionBars;
 		if (this.myActiveEditorActionBars != null) {
 			this.myActiveEditorActionBars.setEditorPart(activeEditor);
 			this.myActiveEditorActionBars.activate();
 			this.myActiveEditorActionBars.updateActionBars();
-
-			// Set new actions.
-			final Map< ? , ? > newActionHandlers = this.myActiveEditorActionBars.getGlobalActionHandlers();
-			if (newActionHandlers != null) {
-				final Set< ? > keys = newActionHandlers.entrySet();
-				final Iterator< ? > iter = keys.iterator();
-				while (iter.hasNext()) {
-					final Map.Entry< ? , ? > entry = (Map.Entry< ? , ? >) iter.next();
-					getActionBars().setGlobalActionHandler((String) entry.getKey(), (IAction) entry.getValue());
-				}
-			}
-			getActionBars().updateActionBars();
 		}
 	}
 

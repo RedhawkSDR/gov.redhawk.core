@@ -11,7 +11,10 @@
  */
 package gov.redhawk.internal.ui;
 
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
+import java.util.Set;
 
 import org.eclipse.jface.action.ContributionManager;
 import org.eclipse.jface.action.IAction;
@@ -45,6 +48,9 @@ public class SubActionBarsExt extends SubActionBars2 {
 	private ToolBarContributionItem myToolBarContributionItem;
 
 	private PartListener myPartListener;
+	
+	// Place to store global action handlers added by init() for safekeeping
+	private Map<String, IAction> globalActions = new HashMap<String, IAction>();
 
 	/**
 	 * Default constructor.
@@ -64,8 +70,28 @@ public class SubActionBarsExt extends SubActionBars2 {
 		assert subContributor != null;
 		this.myContributor = subContributor;
 		this.myContributor.init(this, page);
+		// init() adds global action handlers which must be stored for later
+		final Map< ? , ? > newActionHandlers = super.getGlobalActionHandlers();
+		if (newActionHandlers != null) {
+			final Set< ? > keys = newActionHandlers.entrySet();
+			final Iterator< ? > iter = keys.iterator();
+			while (iter.hasNext()) {
+				final Map.Entry< ? , ? > entry = (Map.Entry< ? , ? >) iter.next();
+				this.globalActions.put((String) entry.getKey(), (IAction) entry.getValue());
+			}
+		}
+		// Global action handlers removed until activation
+		this.clearGlobalActionHandlers();
 	}
 
+	/**
+	 * Overridden to return stored, not necessarily active, action handlers
+	 */
+	@Override
+	public Map<?, ?> getGlobalActionHandlers() {
+		return this.globalActions;
+	}
+	
 	/**
 	 * @return the action bar contributor
 	 */
@@ -187,13 +213,16 @@ public class SubActionBarsExt extends SubActionBars2 {
 					final Object entryValue = nextEntry.getValue();
 					if (key instanceof String && entryValue instanceof IAction) {
 						getParent().setGlobalActionHandler((String) key, (IAction) entryValue);
+//						setGlobalActionHandler((String) key, (IAction) entryValue);
 					}
 				}
 			}
 		} else {
 			getParent().clearGlobalActionHandlers();
+//			clearGlobalActionHandlers();
 		}
 		getParent().updateActionBars();
+//		updateActionBars();
 	}
 
 	/**
