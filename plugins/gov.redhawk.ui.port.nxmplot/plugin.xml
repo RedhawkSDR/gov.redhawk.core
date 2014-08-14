@@ -304,5 +304,18 @@
             class="gov.redhawk.internal.ui.preferences.PlotPreferenceInitializer">
       </initializer>
    </extension>
+   <extension
+         point="org.eclipse.ui.perspectiveExtensions">
+      <perspectiveExtension
+            targetID="gov.redhawk.ide.ui.perspectives.sca">
+         <view
+               id="gov.redhawk.ui.port.nxmplot.PlotView2"
+               minimized="false"
+               ratio="0.25"
+               relationship="bottom"
+               relative="org.eclipse.ui.editorss">
+         </view>
+      </perspectiveExtension>
+   </extension>
 
 </plugin>
