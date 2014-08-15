@@ -313,7 +313,8 @@
                minimized="false"
                ratio="0.25"
                relationship="bottom"
-               relative="org.eclipse.ui.editorss">
+               relative="org.eclipse.ui.editorss"
+               visible="false">
          </view>
       </perspectiveExtension>
    </extension>
