@@ -47,6 +47,7 @@ public class StructPropertyComposite extends BasicStructPropertyComposite {
 		createDescription(parent, toolkit);
 		
 		tabList.add(getIdEntry().getText());
+		tabList.add(getNameEntry().getText());
 		tabList.add(getConfigurationKindViewer().getControl());
 		tabList.add(getModeViewer().getControl());
 		tabList.add(getDescriptionText());

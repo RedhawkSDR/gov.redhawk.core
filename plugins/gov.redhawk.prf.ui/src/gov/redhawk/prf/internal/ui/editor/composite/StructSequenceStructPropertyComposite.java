@@ -43,6 +43,7 @@ public class StructSequenceStructPropertyComposite extends StructPropertyComposi
 		createDescription(parent, toolkit);
 		
 		tabList.add(getIdEntry().getText());
+		tabList.add(getNameEntry().getText());
 		tabList.add(getDescriptionText());
 		
 		parent.setTabList(tabList.toArray(new Control[tabList.size()]));
