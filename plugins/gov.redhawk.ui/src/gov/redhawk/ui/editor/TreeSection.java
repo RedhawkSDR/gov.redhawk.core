@@ -41,8 +41,9 @@ public abstract class TreeSection extends StructuredViewerSection {
 
 		public void buttonSelected(Button button, int index) {
 			TreeSection.this.buttonSelected(index);
-			if (fHandleDefaultButton)
+			if (fHandleDefaultButton) {
 				button.getShell().setDefaultButton(null);
+			}
 		}
 
 		protected void createButtons(Composite parent, FormToolkit toolkit) {
@@ -54,8 +55,10 @@ public abstract class TreeSection extends StructuredViewerSection {
 			}
 		}
 
-		protected TreeViewer createTreeViewer(Composite parent, int style) {
-			return TreeSection.this.createTreeViewer(parent, style);
+		protected TreeViewer createTreeViewer(final Composite parent, final int style) {
+			final TreeViewer viewer = TreeSection.this.createTreeViewer(parent, style);
+			getPage().getEditor().createContextMenuFor(viewer);
+			return viewer;
 		}
 
 	}
@@ -76,8 +79,9 @@ public abstract class TreeSection extends StructuredViewerSection {
 		return (TreePart) fViewerPart;
 	}
 
-	protected TreeViewer createTreeViewer(Composite parent, int style) {
-		return new TreeViewer(parent, style);
+	protected TreeViewer createTreeViewer(final Composite parent, final int style) {
+		final TreeViewer viewer = new TreeViewer(parent, style);
+		return viewer;
 	}
 
 	protected void selectionChanged(IStructuredSelection selection) {
