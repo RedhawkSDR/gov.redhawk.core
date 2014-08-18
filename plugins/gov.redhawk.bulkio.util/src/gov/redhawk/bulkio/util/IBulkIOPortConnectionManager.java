@@ -22,11 +22,13 @@ import BULKIO.updateSRIOperations;
 public interface IBulkIOPortConnectionManager {
 
 	/**
+	 * @return connection id
 	 * @since 2.0
 	 */
 	String connect(@NonNull String ior, @NonNull BulkIOType type, @NonNull updateSRIOperations internalPort) throws CoreException;
 	
 	/**
+	 * @return connection id
 	 * @since 2.0
 	 */
 	String connect(@NonNull String ior, @NonNull BulkIOType type, @NonNull updateSRIOperations internalPort, @Nullable String connectionID) throws CoreException;
