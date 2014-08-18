@@ -25,6 +25,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.LinkedBlockingQueue;
 
+import org.apache.commons.lang.RandomStringUtils;
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -55,7 +56,7 @@ import BULKIO.updateSRIOperations;
  */
 public class Connection extends AbstractUberBulkIOPort {
 	private static final Debug DEBUG_PUSHPACKET = new Debug(BulkIOUtilActivator.PLUGIN_ID, Connection.class.getSimpleName());
-	private static final String FORMAT_STR = "yyyyMMddHHmmSSSS";
+	private static final String FORMAT_STR = "MMdd'_'HHmmss";
 
 	private OrbSession orbSession = OrbSession.createSession();
 	private final String ior;
@@ -162,7 +163,10 @@ public class Connection extends AbstractUberBulkIOPort {
 
 	private static String createConnectionID() {
 		SimpleDateFormat formater = new SimpleDateFormat(FORMAT_STR);
-		return System.getProperty("user.name", "user") + "_" + formater.format(Calendar.getInstance().getTime());
+		String user = System.getProperty("user.name", "user");
+		String randomAlphanumeric = RandomStringUtils.random(3, true, true); // 62^3 = 238,328
+		String dateTime = formater.format(Calendar.getInstance().getTime());
+		return "IDE_" + user + "_" + randomAlphanumeric + "_" + dateTime;
 	}
 
 	public synchronized void dispose() {

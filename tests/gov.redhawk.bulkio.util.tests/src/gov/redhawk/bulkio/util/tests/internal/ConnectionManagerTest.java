@@ -11,6 +11,7 @@ package gov.redhawk.bulkio.util.tests.internal;
  *
  */
 
+import static org.hamcrest.CoreMatchers.startsWith;
 import gov.redhawk.bulkio.util.AbstractBulkIOPort;
 import gov.redhawk.bulkio.util.BulkIOType;
 import gov.redhawk.bulkio.util.BulkIOUtilActivator;
@@ -91,8 +92,9 @@ public class ConnectionManagerTest {
 	public void testConnectionManagerConnectDisconnect() throws CoreException {
 		IBulkIOPortConnectionManager connectionManager = BulkIOUtilActivator.getBulkIOPortConnectionManager();
 		TestDataDoublePort receivePort = new TestDataDoublePort();
-		connectionManager.connect(portRef.toString(), BulkIOType.DOUBLE, receivePort);
+		String generatedConnId = connectionManager.connect(portRef.toString(), BulkIOType.DOUBLE, receivePort);
 		Assert.assertEquals("Only one connection expected", 1, port.connections);
+		Assert.assertThat(generatedConnId, startsWith("IDE_")); // test for IDE-825
 
 		TestDataDoublePort receivePort2 = new TestDataDoublePort();
 		connectionManager.connect(portRef.toString(), BulkIOType.DOUBLE, receivePort2);
