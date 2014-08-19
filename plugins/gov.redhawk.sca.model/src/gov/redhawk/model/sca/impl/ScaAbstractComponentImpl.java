@@ -557,10 +557,10 @@ public abstract class ScaAbstractComponentImpl< R extends Resource > extends Sca
 	public void releaseObject() throws ReleaseError {
 		// END GENERATED CODE
 		R resource = fetchNarrowedObject(null);
-		TransactionalEditingDomain domain = TransactionUtil.getEditingDomain(this);
-		if (resource == null || domain == null) {
-			return;
+		if (resource != null) {
+			resource.releaseObject();
 		}
+		TransactionalEditingDomain domain = TransactionUtil.getEditingDomain(this);
 		Command command = new ScaModelCommand() {
 
 			@Override
@@ -568,8 +568,11 @@ public abstract class ScaAbstractComponentImpl< R extends Resource > extends Sca
 				EcoreUtil.delete(ScaAbstractComponentImpl.this);
 			}
 		};
-		resource.releaseObject();
-		domain.getCommandStack().execute(command);
+		if (domain != null) {
+			domain.getCommandStack().execute(command);
+		} else {
+			ScaModelCommand.execute(this, command);
+		}
 		// BEGIN GENERATED CODE
 	}
 
