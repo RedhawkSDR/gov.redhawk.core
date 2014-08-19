@@ -50,7 +50,11 @@ public class ControlCommandBinder {
 			@Override
 			public void commandChanged(final CommandEvent commandEvent) {
 				if (commandEvent.isEnabledChanged()) {
-					this.enabled = !this.enabled;
+					if (commandEvent.getCommand() != null) {
+						this.enabled = commandEvent.getCommand().isEnabled();
+					} else {
+						this.enabled = !this.enabled;
+					}
 					myButton.setEnabled(this.enabled);
 				}
 			}
