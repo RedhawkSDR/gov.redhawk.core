@@ -283,6 +283,7 @@ public class ScaDomainManagerRegistryImpl extends EObjectImpl implements ScaDoma
 
 	/**
 	 * <!-- begin-user-doc -->
+	 * @since 19.1
 	 * <!-- end-user-doc -->
 	 * @generated NOT
 	 */

@@ -376,7 +376,7 @@ public interface ScaDevice< D extends Device > extends ScaAbstractComponent<D>, 
 	EList<ScaDevice< ? >> fetchAggregateDevices(IProgressMonitor monitor);
 
 	/**
-	 * @since 19.0
+	 * @since 19.1
 	 */
 	EList<ScaDevice< ? >> fetchAggregateDevices(IProgressMonitor monitor, RefreshDepth depth);
 

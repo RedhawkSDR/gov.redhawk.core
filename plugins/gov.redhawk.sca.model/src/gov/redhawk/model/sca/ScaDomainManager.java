@@ -626,10 +626,7 @@ public interface ScaDomainManager extends ScaPropertyContainer<DomainManager, Do
 	/**
 	 * Returns the value of the '<em><b>Local Name</b></em>' attribute.
 	 * <!-- begin-user-doc -->
-	 * <p>
-	 * If the meaning of the '<em>Local Name</em>' attribute isn't clear,
-	 * there really should be more of a description here...
-	 * </p>
+	 * @since 19.1
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Local Name</em>' attribute.
 	 * @see #setLocalName(String)
@@ -643,6 +640,7 @@ public interface ScaDomainManager extends ScaPropertyContainer<DomainManager, Do
 	 * Sets the value of the '{@link gov.redhawk.model.sca.ScaDomainManager#getLocalName <em>Local Name</em>}'
 	 * attribute.
 	 * <!-- begin-user-doc -->
+	 * @since 19.1
 	 * <!-- end-user-doc -->
 	 * @param value the new value of the '<em>Local Name</em>' attribute.
 	 * @see #getLocalName()
@@ -693,7 +691,7 @@ public interface ScaDomainManager extends ScaPropertyContainer<DomainManager, Do
 	EList<ScaDeviceManager> fetchDeviceManagers(IProgressMonitor monitor);
 
 	/**
-	 * @since 19.0
+	 * @since 19.1
 	 */
 	EList<ScaDeviceManager> fetchDeviceManagers(IProgressMonitor monitor, RefreshDepth depth);
 
@@ -706,7 +704,7 @@ public interface ScaDomainManager extends ScaPropertyContainer<DomainManager, Do
 	EList<ScaWaveformFactory> fetchWaveformFactories(IProgressMonitor monitor);
 
 	/**
-	 * @since 19.0
+	 * @since 19.1
 	 */
 	EList<ScaWaveformFactory> fetchWaveformFactories(IProgressMonitor monitor, RefreshDepth depth);
 
@@ -719,7 +717,7 @@ public interface ScaDomainManager extends ScaPropertyContainer<DomainManager, Do
 	EList<ScaWaveform> fetchWaveforms(IProgressMonitor monitor);
 
 	/**
-	 * @since 19.0
+	 * @since 19.1
 	 */
 	EList<ScaWaveform> fetchWaveforms(IProgressMonitor monitor, RefreshDepth depth);
 
@@ -732,7 +730,7 @@ public interface ScaDomainManager extends ScaPropertyContainer<DomainManager, Do
 	ScaDomainManagerFileSystem fetchFileManager(IProgressMonitor monitor);
 
 	/**
-	 * @since 19.0
+	 * @since 19.1
 	 */
 	ScaDomainManagerFileSystem fetchFileManager(IProgressMonitor monitor, RefreshDepth depth);
 
@@ -780,7 +778,7 @@ public interface ScaDomainManager extends ScaPropertyContainer<DomainManager, Do
 	EList<ScaEventChannel> fetchEventChannels(IProgressMonitor monitor);
 
 	/**
-	 * @since 19.0
+	 * @since 19.1
 	 */
 	EList<ScaEventChannel> fetchEventChannels(IProgressMonitor monitor, RefreshDepth depth);
 
@@ -789,6 +787,9 @@ public interface ScaDomainManager extends ScaPropertyContainer<DomainManager, Do
 	 */
 	public static final String NAMING_SERVICE_PROP = "ORBInitRef.NameService";
 	
+	/**
+	 * @since 19.1
+	 */
 	String getLabel();
 
 } // ScaDomainManager

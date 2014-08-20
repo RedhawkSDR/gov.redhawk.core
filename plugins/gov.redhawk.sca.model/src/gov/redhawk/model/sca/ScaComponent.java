@@ -235,7 +235,7 @@ public interface ScaComponent extends ScaAbstractComponent<Resource> {
 	EList<ScaDevice< ? >> fetchDevices(IProgressMonitor monitor);
 
 	/**
-	 * @since 19.0
+	 * @since 19.1
 	 */
 	EList<ScaDevice< ? >> fetchDevices(IProgressMonitor monitor, RefreshDepth depth);
 

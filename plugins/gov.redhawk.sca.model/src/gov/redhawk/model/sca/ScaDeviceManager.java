@@ -491,7 +491,7 @@ public interface ScaDeviceManager extends ScaPropertyContainer<DeviceManager, De
 	EList<ScaDevice< ? >> fetchDevices(IProgressMonitor monitor);
 
 	/**
-	 * @since 19.0
+	 * @since 19.1
 	 */
 	EList<ScaDevice< ? >> fetchDevices(IProgressMonitor monitor, RefreshDepth depth);
 
@@ -504,7 +504,7 @@ public interface ScaDeviceManager extends ScaPropertyContainer<DeviceManager, De
 	ScaDeviceManagerFileSystem fetchFileSystem(IProgressMonitor monitor);
 
 	/**
-	 * @since 19.0
+	 * @since 19.1
 	 */
 	ScaDeviceManagerFileSystem fetchFileSystem(IProgressMonitor monitor, RefreshDepth depth);
 
@@ -533,7 +533,7 @@ public interface ScaDeviceManager extends ScaPropertyContainer<DeviceManager, De
 	EList<ScaService> fetchServices(IProgressMonitor monitor);
 
 	/**
-	 * @since 19.0
+	 * @since 19.1
 	 */
 	EList<ScaService> fetchServices(IProgressMonitor monitor, RefreshDepth depth);
 

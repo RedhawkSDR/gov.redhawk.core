@@ -2079,7 +2079,7 @@ public class ScaDeviceManagerImpl extends ScaPropertyContainerImpl<DeviceManager
 	}
 
 	/**
-	 * @since 19.0
+	 * @since 19.1
 	 */
 	@Override
 	public EList<ScaDevice< ? >> fetchDevices(IProgressMonitor monitor, RefreshDepth depth) {
@@ -2123,7 +2123,7 @@ public class ScaDeviceManagerImpl extends ScaPropertyContainerImpl<DeviceManager
 	}
 
 	/**
-	 * @since 19.0
+	 * @since 19.1
 	 */
 	@Override
 	public ScaDeviceManagerFileSystem fetchFileSystem(IProgressMonitor monitor, RefreshDepth depth) {
@@ -2163,7 +2163,7 @@ public class ScaDeviceManagerImpl extends ScaPropertyContainerImpl<DeviceManager
 	}
 
 	/**
-	 * @since 19.0
+	 * @since 19.1
 	 */
 	@Override
 	public EList<ScaService> fetchServices(IProgressMonitor monitor, RefreshDepth depth) {

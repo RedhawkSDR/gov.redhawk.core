@@ -1993,7 +1993,7 @@ public class ScaWaveformImpl extends ScaPropertyContainerImpl<Application, Softw
 	}
 
 	/**
-	 * @since 19.0
+	 * @since 19.1
 	 */
 	@Override
 	public EList<ScaComponent> fetchComponents(IProgressMonitor monitor, RefreshDepth depth) {

@@ -1167,7 +1167,7 @@ public class ScaWaveformFactoryImpl extends CorbaObjWrapperImpl<ApplicationFacto
 	}
 
 	/**
-	 * @since 19.0
+	 * @since 19.1
 	 */
 	@Override
 	public ScaWaveform createWaveform(IProgressMonitor monitor, String name, DataType[] initConfiguration, DeviceAssignmentType[] deviceAssignments,

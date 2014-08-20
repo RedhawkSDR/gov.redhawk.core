@@ -1179,7 +1179,7 @@ public class ScaDeviceImpl< D extends Device > extends ScaAbstractComponentImpl<
 	}
 
 	/**
-	 * @since 19.0
+	 * @since 19.1
 	 */
 	@Override
 	public EList<ScaDevice< ? >> fetchAggregateDevices(IProgressMonitor monitor, RefreshDepth depth) {

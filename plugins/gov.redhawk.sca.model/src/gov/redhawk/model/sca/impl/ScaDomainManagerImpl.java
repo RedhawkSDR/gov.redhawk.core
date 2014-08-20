@@ -363,6 +363,7 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 	/**
 	 * The default value of the '{@link #getLocalName() <em>Local Name</em>}' attribute.
 	 * <!-- begin-user-doc -->
+	 * @since 19.1
 	 * <!-- end-user-doc -->
 	 * @see #getLocalName()
 	 * @generated
@@ -372,6 +373,7 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 	/**
 	 * The cached value of the '{@link #getLocalName() <em>Local Name</em>}' attribute.
 	 * <!-- begin-user-doc -->
+	 * @since 19.1
 	 * <!-- end-user-doc -->
 	 * @see #getLocalName()
 	 * @generated
@@ -1079,6 +1081,7 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 
 	/**
 	 * <!-- begin-user-doc -->
+	 * @since 19.1
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -1088,6 +1091,7 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 
 	/**
 	 * <!-- begin-user-doc -->
+	 * @since 19.1
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -2488,7 +2492,7 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 	}
 
 	/**
-	 * @since 19.0
+	 * @since 19.1
 	 */
 	@Override
 	public EList<ScaDeviceManager> fetchDeviceManagers(IProgressMonitor monitor, RefreshDepth depth) {
@@ -2521,7 +2525,7 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 	}
 
 	/**
-	 * @since 19.0
+	 * @since 19.1
 	 */
 	@Override
 	public EList<ScaWaveformFactory> fetchWaveformFactories(IProgressMonitor monitor, RefreshDepth depth) {
@@ -2557,7 +2561,7 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 	}
 
 	/**
-	 * @since 19.0
+	 * @since 19.1
 	 */
 	@Override
 	public EList<ScaWaveform> fetchWaveforms(IProgressMonitor monitor, RefreshDepth depth) {
@@ -2593,7 +2597,7 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 	}
 
 	/**
-	 * @since 19.0
+	 * @since 19.1
 	 */
 	@Override
 	public ScaDomainManagerFileSystem fetchFileManager(IProgressMonitor monitor, RefreshDepth depth) {
@@ -2642,7 +2646,7 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 	}
 
 	/**
-	 * @since 19.0
+	 * @since 19.1
 	 */
 	@Override
 	public EList<ScaEventChannel> fetchEventChannels(IProgressMonitor monitor, RefreshDepth depth) {
@@ -2674,6 +2678,9 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 		}
 	}
 	
+	/**
+	 * @since 19.1
+	 */
 	public String getLabel() {
 		if (getLocalName() != null) {
 			return getLocalName();

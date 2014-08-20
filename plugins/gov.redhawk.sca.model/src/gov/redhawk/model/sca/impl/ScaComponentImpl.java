@@ -725,7 +725,7 @@ public class ScaComponentImpl extends ScaAbstractComponentImpl<Resource> impleme
 	}
 
 	/**
-	 * @since 19.0
+	 * @since 19.1
 	 */
 	@Override
 	public EList<ScaDevice< ? >> fetchDevices(IProgressMonitor monitor, RefreshDepth depth) {

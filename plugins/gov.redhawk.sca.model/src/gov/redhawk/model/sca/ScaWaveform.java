@@ -412,7 +412,7 @@ public interface ScaWaveform extends ScaPropertyContainer<Application, SoftwareA
 	EList<ScaComponent> fetchComponents(IProgressMonitor monitor);
 
 	/**
-	 * @since 19.0
+	 * @since 19.1
 	 */
 	EList<ScaComponent> fetchComponents(IProgressMonitor monitor, RefreshDepth depth);
 
