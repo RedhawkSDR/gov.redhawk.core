@@ -103,7 +103,7 @@ public class DomainEntryWizard extends Wizard {
 	}
 
 	/**
-	 * @since 9.3
+	 * @since 10.0
 	 */
 	public void setEdit(final String name, final String domainName, final String initRef) {
 		this.wizardPage.setEdit(name, domainName, initRef);
@@ -120,14 +120,14 @@ public class DomainEntryWizard extends Wizard {
 	}
 
 	/**
-	 * @since 9.3
+	 * @since 10.0
 	 */
 	public void setLocalDomainName(String localName) {
 		this.wizardPage.setLocalDomainName(localName);
 	}
 
 	/**
-	 * @since 9.3
+	 * @since 10.0
 	 */
 	public String getLocalDomainName() {
 		return this.wizardPage.getLocalDomainName();
