@@ -19,6 +19,7 @@ import java.util.Collections;
 import java.util.List;
 
 import org.eclipse.core.runtime.Assert;
+import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.preference.PreferenceStore;
 import org.eclipse.jface.util.PropertyChangeEvent;
@@ -31,7 +32,7 @@ public class Preference< T > {
 	private final Class<T> type;
 	private final T defaultValue;
 
-	public Preference(String name, T defaultValue) {
+	public Preference(@NonNull String name, @NonNull T defaultValue) {
 		super();
 		Assert.isNotNull(defaultValue);
 		this.name = name;
@@ -169,11 +170,11 @@ public class Preference< T > {
 		return false;
 	}
 
-	public void setToDefault(IPreferenceStore preferences) {
+	public void setToDefault(@NonNull IPreferenceStore preferences) {
 		preferences.setToDefault(getName());
 	}
 
-	public boolean isDefault(IPreferenceStore store) {
+	public boolean isDefault(@NonNull IPreferenceStore store) {
 		return store.isDefault(getName());
 	}
 
@@ -214,6 +215,7 @@ public class Preference< T > {
 		return newStore;
 	}
 
+	@NonNull
 	public static IPreferenceStore createRuntimeStore() {
 		return new PreferenceStore() {
 			@Override

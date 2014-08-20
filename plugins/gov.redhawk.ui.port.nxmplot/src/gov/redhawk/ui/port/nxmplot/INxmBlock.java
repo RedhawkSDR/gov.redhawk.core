@@ -211,8 +211,9 @@ public interface INxmBlock {
 
 	/**
 	 * Create the preference control page for this block
-	 * @return Null if there is no preference control page
+	 * @return null if there is no preference control page
 	 */
+	@Nullable
 	IPreferencePage createPreferencePage();
 
 }
