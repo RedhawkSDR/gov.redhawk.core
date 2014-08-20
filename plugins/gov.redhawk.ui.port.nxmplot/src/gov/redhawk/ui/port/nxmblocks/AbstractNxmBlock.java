@@ -98,10 +98,6 @@ public abstract class AbstractNxmBlock< C extends Command > implements INxmBlock
 		return this.preferenceStore;
 	}
 
-	/**
-	 * Create the preference control page for this block
-	 * @return Null if there is no preference control page
-	 */
 	@Override
 	public IPreferencePage createPreferencePage() {
 		return null;
