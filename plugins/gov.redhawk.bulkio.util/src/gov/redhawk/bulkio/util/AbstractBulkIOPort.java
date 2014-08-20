@@ -156,10 +156,11 @@ public abstract class AbstractBulkIOPort implements ProvidesPortStatisticsProvid
 	 */
 	@Override
 	public final void pushSRI(@Nullable StreamSRI sri) {
-		AbstractBulkIOPort.TRACE_LOG.enteringMethod(sri);
+		if (AbstractBulkIOPort.TRACE_LOG.enabled) {
+			AbstractBulkIOPort.TRACE_LOG.enteringMethod(StreamSRIUtil.toString(sri));
+		}
 		if (sri != null) {
 			String streamId = sri.streamID;
-			AbstractBulkIOPort.TRACE_LOG.message("pushSRI: StreamSRI.streamID=" + streamId);
 			if (streamId != null) {
 				StreamSRI oldSri = this.streamSRIMap.put(streamId, sri);
 				if (!StreamSRIUtil.equals(oldSri, sri)) {
