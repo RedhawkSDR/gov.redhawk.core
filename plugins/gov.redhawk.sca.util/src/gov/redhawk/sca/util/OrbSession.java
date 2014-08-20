@@ -62,8 +62,10 @@ public class OrbSession {
 				}
 			} catch (IOException e) {
 				try {
-					reader.close();
-				} catch (Exception e1) {
+					if (reader != null) {
+						reader.close();
+					}
+				} catch (IOException e1) {
 					// PASS
 				}
 			}
