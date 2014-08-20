@@ -27,7 +27,7 @@ import org.eclipse.ui.navigator.ICommonLabelProvider;
 import org.eclipse.ui.navigator.INavigatorContentExtension;
 
 /**
- * Extends the Common Navigator framework to support extensiable tooltips
+ * Extends the Common Navigator framework to support extensible tooltips
  * 
  * @see gov.redhawk.sca.ui.ITooltipProvider
  * @since 9.2
