@@ -175,6 +175,7 @@ public class ScaDomainManagerItemProvider extends ScaPropertyContainerItemProvid
 	/**
 	 * This adds a property descriptor for the Local Name feature.
 	 * <!-- begin-user-doc -->
+	 * @since 12.3
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */

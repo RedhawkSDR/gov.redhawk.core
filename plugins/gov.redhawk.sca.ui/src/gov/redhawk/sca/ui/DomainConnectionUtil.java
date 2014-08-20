@@ -40,7 +40,7 @@ public class DomainConnectionUtil {
 	}
 
 	/**
-	 * @since 9.2
+	 * @since 10.0
 	 * @deprecated Use new {@link #showDialog(Display, String, String)}
 	 */
 	@Deprecated
@@ -58,7 +58,7 @@ public class DomainConnectionUtil {
 	}
 
 	/**
-	 * @since 9.3
+	 * @since 10.0
 	 */
 	public static void showDialog(Display context, final String host, final String domainName, final String localName) {
 		final DomainEntryWizard wizard = new DomainEntryWizard();

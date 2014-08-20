@@ -80,6 +80,9 @@ public abstract class ScaSection extends SectionPart implements IContextPart, IA
 		return this.fPage;
 	}
 	
+	/**
+	 * @since 7.1
+	 */
 	public Object getAdapter(Class adapter) {
 		return null;
 	}

@@ -105,10 +105,16 @@ public class ScaDomainConnectionDef {
 		}
 	}
 	
+	/**
+	 * @since 7.1
+	 */
 	public String getLocalDomainName() {
 		return localDomainName;
 	}
 	
+	/**
+	 * @since 7.1
+	 */
 	public void setLocalDomainName(String localDomainName) {
 		this.localDomainName = localDomainName;
 	}

@@ -568,7 +568,7 @@ public abstract class SCAFormEditor extends FormEditor implements IEditingDomain
 	}
 
 	/**
-	 * @since 7.0
+	 * @since 7.1
 	 */
 	protected TransactionalEditingDomain createEditingDomain() {
 		TransactionalEditingDomain domain = TransactionalEditingDomain.Registry.INSTANCE.getEditingDomain(getEditingDomainId());

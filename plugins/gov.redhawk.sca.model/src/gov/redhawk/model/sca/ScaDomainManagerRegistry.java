@@ -70,6 +70,7 @@ public interface ScaDomainManagerRegistry extends IDisposable {
 
 	/**
 	 * <!-- begin-user-doc -->
+	 * @since 19.1
 	 * <!-- end-user-doc -->
 	 * @model
 	 * @generated

@@ -103,16 +103,32 @@ public class DomainEntryWizard extends Wizard {
 	}
 
 	/**
-	 * @since 8.0
+	 * @since 9.3
 	 */
 	public void setEdit(final String name, final String domainName, final String initRef) {
 		this.wizardPage.setEdit(name, domainName, initRef);
 	}
+	
+	/**
+	 * @deprecated Use {@link #setEdit(String, String, String)}
+	 * @param domainName
+	 * @param initRef
+	 */
+	@Deprecated
+	public void setEdit(final String domainName, final String initRef) {
+		this.wizardPage.setEdit(domainName, domainName, initRef);
+	}
 
+	/**
+	 * @since 9.3
+	 */
 	public void setLocalDomainName(String localName) {
 		this.wizardPage.setLocalDomainName(localName);
 	}
 
+	/**
+	 * @since 9.3
+	 */
 	public String getLocalDomainName() {
 		return this.wizardPage.getLocalDomainName();
 	}
