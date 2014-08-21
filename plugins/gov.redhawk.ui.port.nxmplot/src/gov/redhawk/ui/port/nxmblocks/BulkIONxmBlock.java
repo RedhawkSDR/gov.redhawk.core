@@ -206,6 +206,10 @@ public class BulkIONxmBlock extends AbstractNxmBlock<corbareceiver2> {
 	public void setBlocking(boolean blocking) {
 		BulkIOPreferences.BLOCKING.setValue(getPreferences(), blocking);
 	}
+	
+	boolean isBlocking() {
+		return BulkIOPreferences.BLOCKING.getValue(getPreferences());
+	}
 
 	@Override
 	public void start() throws CoreException {
@@ -261,6 +265,9 @@ public class BulkIONxmBlock extends AbstractNxmBlock<corbareceiver2> {
 			if (sampleRate > 0) { // ignore negative or zero sample rates
 				switches.append(corbareceiver2.SW_SAMPLE_RATE).append('=').append(sampleRate);
 			}
+		}
+		if (isBlocking()) {
+			switches.append(corbareceiver2.SW_BLOCKING);
 		}
 
 		final String idl = scaPort.getRepid();
