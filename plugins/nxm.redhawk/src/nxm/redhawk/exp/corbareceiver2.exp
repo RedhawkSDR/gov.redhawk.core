@@ -1,0 +1,32 @@
+CORBARECEIVER2 - Output data from a REDHAWK SCA Port to Midas file/pipe
+
+<FILE>      - Name of the Midas output file/pipe (destination)
+<IOR>       - CORBA IOR to Port (source)
+<IDL>       - CORBA IDL for Port (type of data)
+<STREAMID>  - Stream ID to let data through (ignore all other streams)
+
+Body - Detailed description here
+TODO
+
+Examples:
+
+Switches:
+  /BLOCKING - Block pushPacket(..) call when pipe does not have enough room.
+              Set to false to not block (which will drop data packet when pipe
+              is full). Deprecated since 11.0                       [DEF=false]
+  /BLOCKINGOPTION= - Blocking option for pushPacket(..) call when pipe does
+                   not have enough room:             (Since 11.0) [DEF=FromSRI]
+                     BLOCKING or TRUE - block pushPacket call until there is
+                                        room to write to the pipe.
+                     NONBLOCKING or FALSE - drop data if pipe is full.
+                     FROMSRI - use setting from StreamSRI.blocking (true/false)
+  /CONNECTIONID= - Connection ID to use to connect to Port           [DEF=auto]
+  /GROWPIPE      - enable/disable increasing/growing output file's pipe size
+                   when incoming data packet size is larger than it. [DEF=true]
+  /PSMULT=       - If /GROWPIPE=true, increase  pipe size based on this
+                   multiplier * incoming data packet size.              [DEF=4]
+  /SAMPLERATE=   - override sample rate (0 to base on StreamSRI)        [DEF=0]
+  /UNSIGNEDOCTET - treat BULKIO dataOctet as 8-bit unsigned integer which will
+                   upcast format type to 16-bit signed integer (i.e. SI) to
+                   hold data values)                                [DEF=false]
+  /WAIT=n        - milliseconds to wait for a StreamSRI during open  [DEF=1000]

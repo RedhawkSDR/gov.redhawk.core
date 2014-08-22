@@ -54,8 +54,17 @@ public class corbareceiver2 extends CorbaPrimitive implements IMidasDataWriter {
 	/**
 	 * Name of switch to set to false to NOT block pushPacket/write(..) when pipe doesn't have enough room,
 	 * which will cause that pushPacket data to get drop
+	 * @deprecated since 11.0, use {@link #SW_BLOCKING_OPTION} instead.
 	 */
+	@Deprecated
 	public static final String SW_BLOCKING = "/BLOCKING";
+	
+	/**
+	 * Name of switch to set the blocking option (Blocking, NonBlocking (drop data), FromSRI (use setting from StreamSRI.blocking)
+	 * on what to do in pushPacket/write(..) when pipe doesn't have enough room.
+	 * @since 11.0 
+	 */
+	public static final String SW_BLOCKING_OPTION = "/BLOCKINGOPTION";
 
 	/** Name of switch to grab number of seconds to wait for SRI during open(). */
 	public static final String SW_WAIT = "/WAIT";
@@ -87,6 +96,13 @@ public class corbareceiver2 extends CorbaPrimitive implements IMidasDataWriter {
 	private static final double MAX_UTC_WSEC = Time.MAX_INPUT_WSEC + Time.J1950TOJ1970;
 	private static final double MIN_UTC_WSEC = Time.J1950TOJ1970;
 
+	/** blocking option for what to do when pipe is full */
+	static enum BlockingOption {
+		NONBLOCKING, FALSE, // <-- drop data
+		BLOCKING,    TRUE,
+		FROMSRI             // <-- use setting from current StreamSRI.blocking
+	};
+	
 	/** the output file to write to */
 	private volatile DataFile outputFile = null;
 	private FileName fileName;
@@ -101,8 +117,8 @@ public class corbareceiver2 extends CorbaPrimitive implements IMidasDataWriter {
 	private String streamId;
 
 	/** blocking option when output pipe is full. */
-	private boolean blocking;
-
+	private BlockingOption blockingOption;
+	
 	/** override SRI's sample rate (1/xdelta for type 1000, 1/ydelta for type 2000). zero for none. */
 	private int sampleRate = 0;
 	private boolean connected;
@@ -133,7 +149,15 @@ public class corbareceiver2 extends CorbaPrimitive implements IMidasDataWriter {
 		final String encoded_idl = MA.getCS(corbareceiver2.A_IDL);
 		this.idl = corbareceiver2.decodeIDL(encoded_idl);
 		this.streamId = MA.getCS(corbareceiver2.A_STREAM_ID, null);
-		this.blocking = MA.getState(corbareceiver2.SW_BLOCKING, false);
+		BlockingOption defBlockingOption = BlockingOption.FROMSRI;
+		if (MA.isPresent(SW_BLOCKING)) { // backwards compatible mode
+			if (MA.getState(SW_BLOCKING, false)) {
+				defBlockingOption = BlockingOption.BLOCKING;
+			} else {
+				defBlockingOption = BlockingOption.NONBLOCKING;
+			}
+		}
+		this.blockingOption = MA.getSelection(corbareceiver2.SW_BLOCKING_OPTION, defBlockingOption);
 		boolean unsignedOctet = MA.getState(corbareceiver2.SW_TREAT_OCTET_AS_UNSIGNED);
 		this.connectionId = MA.getCS(corbareceiver2.SW_CONNECTION_ID, null);
 		this.canGrowPipe = MA.getState(corbareceiver2.SW_GROW_PIPE, true);
@@ -370,7 +394,7 @@ public class corbareceiver2 extends CorbaPrimitive implements IMidasDataWriter {
 			}
 			this.newPipeSize = bufferSize * this.pipeSizeMultiplier; // this change will be picked up in the process() method
 		}
-		if (!blocking) { // === non-blocking option enabled ===
+		if (!isBlocking()) { // === non-blocking option enabled (drop data if pipe is full) ===
 			if (M.pipeMode == Midas.PPAUSE) { // 1. pipe is PAUSED
 				corbareceiver2.TRACE_LOGGER.message("Dropping packet b/c pipe is PAUSED");
 				return; // 1b. drop packet, as write would block
@@ -445,14 +469,41 @@ public class corbareceiver2 extends CorbaPrimitive implements IMidasDataWriter {
 	 * @return the blocking option for when output pipe is full
 	 */
 	public boolean isBlocking() {
-		return blocking;
+		switch (this.blockingOption) {
+			case FROMSRI:
+				StreamSRI sri = this.currentSri;
+				boolean retval = (sri != null) ? sri.blocking : false;
+				return retval;
+			case TRUE:  /** fallthrough, same as Blocking */
+			case BLOCKING:
+				return true;
+			default:    /** fallthrough, same as NonBlocking */
+			case FALSE: /** fallthrough, same as NonBlocking */
+			case NONBLOCKING:
+				return false;
+		}
 	}
 
-	/**
-	 * @param blocking the blocking option to set for when output pipe is full
-	 */
-	public void setBlocking(boolean blocking) {
-		this.blocking = blocking;
+	public void setBlocking(boolean block) {
+		if (block) {
+			this.blockingOption = BlockingOption.BLOCKING;
+		} else {
+			this.blockingOption = BlockingOption.NONBLOCKING;
+		}
+	}
+
+	void setBlocking(BlockingOption blockingOption) {
+		this.blockingOption = blockingOption;
+	}
+
+	/** @since 11.0 */
+	public void setBlockingOption(String blockingOptionStrVal) {
+		this.blockingOption = BlockingOption.valueOf(blockingOptionStrVal);
+	}
+
+	/** @since 11.0 */
+	public BlockingOption getBlockingOption() {
+		return this.blockingOption;
 	}
 
 	/**
