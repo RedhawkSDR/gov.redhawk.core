@@ -23,18 +23,35 @@ import org.eclipse.jface.preference.IPreferenceStore;
  * @since 4.4
  */
 public class BulkIONxmBlockSettings implements Cloneable {
-	public static final String PROP_BLOCKING_OPTION = "blocking";
+	public static final String PROP_BLOCKING_OPTION = "blockingOption";
 	public static final String PROP_CONNECTION_ID = "connectionID";
 	public static final String PROP_PIPE_SIZE = "pipeSize";
 	public static final String PROP_SAMPLE_RATE = "sampleRate";
 	public static final String PROP_REMOVE_ON_EOS = "removeOnEndOfStream";
 
+	// NOTE1: these enum names MUST matches those in corbareceiver2$BlockingOption
+	// NOTE2: we only contain a subset here to simply UI as corbareceiver2.BlockingOption.TRUE is same as BLOCKING, etc.
+	public static enum BlockingOption {
+		NONBLOCKING("non-blocking"),
+		BLOCKING("blocking"),
+		FROMSRI("use SRI.blocking");
+
+		private final String label;
+
+		BlockingOption(String label) {
+			this.label = label;
+		}
+
+		public String getLabel() {
+			return this.label;
+		}
+	}
+
 	/** custom connection ID to use. */
 	private String connectionID;
 	/** null (or zero) to use default from StreamSRI. */
 	private Integer sampleRate;
-	/** true to block pushPacket when downstream Command (e.g. Plot) cannot keep up, false to drop packets in this scenario. */
-	private boolean blocking;
+	private BlockingOption blocking;
 	/** null to use default pipe size from NeXtMidas (128K) */
 	private Integer pipeSize;
 	/** time line length for output data pipe. */
@@ -56,7 +73,7 @@ public class BulkIONxmBlockSettings implements Cloneable {
 			sampleRate = BulkIOPreferences.SAMPLE_RATE.getValue(store);
 		}
 
-		blocking = BulkIOPreferences.BLOCKING.getValue(store);
+		blocking = BlockingOption.valueOf(BulkIOPreferences.BLOCKING_OPTION.getValue(store));
 
 		if (BulkIOPreferences.PIPE_SIZE_OVERRIDE.getValue(store)) {
 			pipeSize = BulkIOPreferences.PIPE_SIZE.getValue(store);
@@ -95,11 +112,23 @@ public class BulkIONxmBlockSettings implements Cloneable {
 		this.sampleRate = sampleRate;
 	}
 
-	public boolean isBlocking() {
+	/** @deprecated since 5.0, use {@link #setBlockingOption(BlockingOption)} */
+	@Deprecated
+	public void setBlocking(boolean blocking) {
+		if (blocking) {
+			this.blocking = BlockingOption.BLOCKING;
+		} else {
+			this.blocking = BlockingOption.NONBLOCKING;
+		}
+	}
+
+	/** @since 5.0 */
+	public BlockingOption getBlockingOption() {
 		return this.blocking;
 	}
 
-	public void setBlocking(boolean blocking) {
+	/** @since 5.0 */
+	public void setBlockingOption(BlockingOption blocking) {
 		this.blocking = blocking;
 	}
 

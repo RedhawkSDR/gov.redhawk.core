@@ -10,6 +10,8 @@
  *******************************************************************************/
 package gov.redhawk.ui.port.nxmplot.preferences;
 
+import gov.redhawk.ui.port.nxmblocks.BulkIONxmBlockSettings.BlockingOption;
+
 import java.util.List;
 
 /**
@@ -17,7 +19,8 @@ import java.util.List;
  */
 public class BulkIOPreferences {
 
-	public static final Preference<Boolean> BLOCKING = new Preference<Boolean>("bulkIOBlock.blocking", false);
+	/** @since 5.0*/
+	public static final Preference<String>  BLOCKING_OPTION = new Preference<String>("bulkIOBlock.blockingOption", BlockingOption.FROMSRI.name());
 	public static final Preference<Integer> PIPE_SIZE = new Preference<Integer>("bulkIOBlock.pipeSize", 131072);
 	public static final Preference<Boolean> PIPE_SIZE_OVERRIDE = new Preference<Boolean>("bulkIOBlock.pipeSize.override", false);
 	public static final Preference<Boolean> REMOVE_ON_EOS = new Preference<Boolean>("bulkIOBlock.removeOnEndOfStream", true);

@@ -17,6 +17,7 @@ import gov.redhawk.internal.ui.BooleanUtil;
 import gov.redhawk.internal.ui.preferences.BulkIOBlockPreferencePage;
 import gov.redhawk.model.sca.ScaUsesPort;
 import gov.redhawk.sca.util.Debug;
+import gov.redhawk.ui.port.nxmblocks.BulkIONxmBlockSettings.BlockingOption;
 import gov.redhawk.ui.port.nxmplot.AbstractNxmPlotWidget;
 import gov.redhawk.ui.port.nxmplot.PlotActivator;
 import gov.redhawk.ui.port.nxmplot.preferences.BulkIOPreferences;
@@ -133,7 +134,7 @@ public class BulkIONxmBlock extends AbstractNxmBlock<corbareceiver2> {
 
 	} // end inner class BulkIOPort
 
-	public BulkIONxmBlock(AbstractNxmPlotWidget plotWidget, @NonNull ScaUsesPort scaUsesPort, BulkIONxmBlockSettings settings) {
+	public BulkIONxmBlock(@NonNull AbstractNxmPlotWidget plotWidget, @NonNull ScaUsesPort scaUsesPort, BulkIONxmBlockSettings settings) {
 		super(corbareceiver2.class, plotWidget, BulkIONxmBlock.initPreferences());
 		this.scaPort = scaUsesPort;
 		this.ior = scaUsesPort.getIor();
@@ -147,7 +148,7 @@ public class BulkIONxmBlock extends AbstractNxmBlock<corbareceiver2> {
 	/**
 	 * @param settings
 	 */
-	public BulkIONxmBlock(AbstractNxmPlotWidget plotWidget, @NonNull ScaUsesPort scaUsesPort) {
+	public BulkIONxmBlock(@NonNull AbstractNxmPlotWidget plotWidget, @NonNull ScaUsesPort scaUsesPort) {
 		this(plotWidget, scaUsesPort, null);
 	}
 
@@ -164,12 +165,11 @@ public class BulkIONxmBlock extends AbstractNxmBlock<corbareceiver2> {
 		return clone;
 	}
 
-	public void applySettings(BulkIONxmBlockSettings newSettings) {
-		boolean blocking = newSettings.isBlocking();
+	public void applySettings(@NonNull BulkIONxmBlockSettings newSettings) {
 		Integer sampleRate = newSettings.getSampleRate();
 		Integer pipeSize = newSettings.getPipeSize();
 
-		setBlocking(blocking);
+		setBlockingOption(newSettings.getBlockingOption());
 		if (sampleRate != null) {
 			setSampleRate(sampleRate);
 		} else {
@@ -203,12 +203,29 @@ public class BulkIONxmBlock extends AbstractNxmBlock<corbareceiver2> {
 		return BulkIOPreferences.SAMPLE_RATE.getValue(getPreferences());
 	}
 
+	/** @deprecated since 5.0, use {@link #setBlockingOption(BlockingOption)} */
+	@Deprecated
 	public void setBlocking(boolean blocking) {
-		BulkIOPreferences.BLOCKING.setValue(getPreferences(), blocking);
+		if (blocking) {
+			setBlockingOption(BlockingOption.BLOCKING);
+		} else {
+			setBlockingOption(BlockingOption.NONBLOCKING);
+		}
+	}
+
+	/** @since 5.0 */
+	public void setBlockingOption(@NonNull BlockingOption blocking) {
+		BulkIOPreferences.BLOCKING_OPTION.setValue(getPreferences(), blocking.name());
 	}
 	
-	boolean isBlocking() {
-		return BulkIOPreferences.BLOCKING.getValue(getPreferences());
+	/** @since 5.0 */
+	public BlockingOption getBlockingOption() {
+		try {
+			String blockingOptAsStr = BulkIOPreferences.BLOCKING_OPTION.getValue(getPreferences());
+			return BlockingOption.valueOf(blockingOptAsStr);
+		} catch (IllegalArgumentException e) {
+			return BlockingOption.FROMSRI; // fall-back scenario in case a bad value was stored in preferences
+		}
 	}
 
 	@Override
@@ -266,9 +283,8 @@ public class BulkIONxmBlock extends AbstractNxmBlock<corbareceiver2> {
 				switches.append(corbareceiver2.SW_SAMPLE_RATE).append('=').append(sampleRate);
 			}
 		}
-		if (isBlocking()) {
-			switches.append(corbareceiver2.SW_BLOCKING);
-		}
+		BlockingOption blockingOption = getBlockingOption();
+		switches.append(corbareceiver2.SW_BLOCKING_OPTION).append('=').append(blockingOption);
 
 		final String idl = scaPort.getRepid();
 		String pattern = "CORBARECEIVER2{0}/BG FILE={1} IOR={2} IDL=\"{3}\" STREAMID=\"{4}\"";
@@ -317,9 +333,14 @@ public class BulkIONxmBlock extends AbstractNxmBlock<corbareceiver2> {
 
 	@Override
 	public void propertyChange(PropertyChangeEvent event) {
-		Boolean blocking = null;
-		if (BulkIOPreferences.BLOCKING.isEvent(event)) {
-			blocking = BooleanUtil.toBoolean(event.getNewValue());
+		BlockingOption blockingOption = null;
+		if (BulkIOPreferences.BLOCKING_OPTION.isEvent(event)) {
+			Object newVal = event.getNewValue();
+			if (newVal instanceof BlockingOption) {
+				blockingOption = (BlockingOption) newVal;
+			} else if (newVal != null) {
+				blockingOption = BlockingOption.valueOf(newVal.toString());
+			}
 		}
 
 		Integer sampleRate = null;
@@ -354,8 +375,8 @@ public class BulkIONxmBlock extends AbstractNxmBlock<corbareceiver2> {
 		}
 
 		for (corbareceiver2 cmd : getNxmCommands()) {
-			if (blocking != null) {
-				cmd.setBlocking(blocking);
+			if (blockingOption != null) {
+				cmd.setBlockingOption(blockingOption.name());
 			}
 			if (pipeSize != null) {
 				cmd.setPipeSize(pipeSize);

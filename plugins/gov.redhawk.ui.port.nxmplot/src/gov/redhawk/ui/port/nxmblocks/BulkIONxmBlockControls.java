@@ -11,6 +11,7 @@
 package gov.redhawk.ui.port.nxmblocks;
 
 import gov.redhawk.sca.util.ArrayUtil;
+import gov.redhawk.ui.port.nxmblocks.BulkIONxmBlockSettings.BlockingOption;
 
 import org.eclipse.core.databinding.Binding;
 import org.eclipse.core.databinding.DataBindingContext;
@@ -18,7 +19,9 @@ import org.eclipse.core.databinding.UpdateValueStrategy;
 import org.eclipse.core.databinding.beans.PojoProperties;
 import org.eclipse.core.databinding.conversion.StringToNumberConverter;
 import org.eclipse.core.databinding.observable.value.IObservableValue;
+import org.eclipse.core.databinding.observable.value.SelectObservableValue;
 import org.eclipse.jface.databinding.fieldassist.ControlDecorationSupport;
+import org.eclipse.jface.databinding.swt.SWTObservables;
 import org.eclipse.jface.databinding.swt.WidgetProperties;
 import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.jface.viewers.ArrayContentProvider;
@@ -27,8 +30,10 @@ import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.layout.RowLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 
@@ -42,7 +47,7 @@ public class BulkIONxmBlockControls {
 
 	private static final String VALUE_USE_DEFAULT = "default";
 	private static final String SAMPLE_RATE_FIELD_NAME = "Sample Rate";
-	private static final String PIPE_SIZE_FIELD_NAME = "Pipe Size";
+//	private static final String PIPE_SIZE_FIELD_NAME = "Pipe Size";
 
 	private final BulkIONxmBlockSettings settings;
 	private final DataBindingContext dataBindingCtx;
@@ -50,8 +55,7 @@ public class BulkIONxmBlockControls {
 	// widgets
 	private Text connectionIDField;
 	private ComboViewer sampleRateField;
-	private Text pipeSizeField;
-	private Button blockingField;
+//	private Text pipeSizeField;
 	private Button removeOnEOSButton;
 
 	public BulkIONxmBlockControls(BulkIONxmBlockSettings settings, DataBindingContext dataBindingCtx) {
@@ -97,10 +101,24 @@ public class BulkIONxmBlockControls {
 		 */
 
 		// === blocking option ===
-		this.blockingField = new Button(container, SWT.CHECK);
-		this.blockingField.setText("Blocking");
-		this.blockingField.setLayoutData(GridDataFactory.fillDefaults().span(2, 1).grab(true, false).create());
-		this.blockingField.setToolTipText("On/checked to block pushPacket when Plot is not able to keep up; Off to drop packets in this scenario.");
+		label = new Label(container, SWT.NONE);
+		label.setText("Blocking option:");
+		Group blockingOptionGroup = new Group(container, SWT.SHADOW_NONE | SWT.NO_TRIM | SWT.NO_BACKGROUND);
+		blockingOptionGroup.setLayoutData(GridDataFactory.fillDefaults().grab(true, false).create());
+		RowLayout rowLayout = new RowLayout(SWT.HORIZONTAL);
+		blockingOptionGroup.setLayout(rowLayout);
+		// add blocking options into radio group
+		BlockingOption[] blockingOptions = BlockingOption.values();
+		SelectObservableValue radioBtnGroupWidgetValue = new SelectObservableValue(BlockingOption.class);
+		for (BlockingOption b : blockingOptions) {
+			Button button = new Button(blockingOptionGroup, SWT.RADIO);
+			button.setText(b.getLabel());
+			IObservableValue btnWidgetValue = SWTObservables.observeSelection(button);
+			radioBtnGroupWidgetValue.addOption(b, btnWidgetValue);
+		}
+		// do data binding here since we need the above radioBtnGroupWidgetValue
+		IObservableValue blockingModelValue = PojoProperties.value(BulkIONxmBlockSettings.PROP_BLOCKING_OPTION).observe(settings);
+		dataBindingCtx.bindValue(radioBtnGroupWidgetValue, blockingModelValue);
 
 		// === remove source from plot on end-of-stream (EOS) ===
 		this.removeOnEOSButton = new Button(container, SWT.CHECK);
@@ -139,10 +157,6 @@ public class BulkIONxmBlockControls {
 		bindingValue = dataBindingCtx.bindValue(psWidgetValue, psModelValue, psTargetToModel, null);
 		ControlDecorationSupport.create(bindingValue, SWT.TOP | SWT.LEFT);
 		 */
-
-		IObservableValue boWidgetValue = WidgetProperties.selection().observe(blockingField);
-		IObservableValue boModelValue = PojoProperties.value(BulkIONxmBlockSettings.PROP_BLOCKING_OPTION).observe(settings);
-		dataBindingCtx.bindValue(boWidgetValue, boModelValue);
 
 		IObservableValue removeOnEOSWidgetValue = WidgetProperties.selection().observe(removeOnEOSButton);
 		IObservableValue removeOnEOSModelValue = PojoProperties.value(BulkIONxmBlockSettings.PROP_REMOVE_ON_EOS).observe(settings);

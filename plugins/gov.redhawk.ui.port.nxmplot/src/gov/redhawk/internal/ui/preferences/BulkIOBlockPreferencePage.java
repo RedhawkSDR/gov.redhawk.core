@@ -10,6 +10,7 @@
  *******************************************************************************/
 package gov.redhawk.internal.ui.preferences;
 
+import gov.redhawk.ui.port.nxmblocks.BulkIONxmBlockSettings.BlockingOption;
 import gov.redhawk.ui.port.nxmplot.PlotActivator;
 import gov.redhawk.ui.port.nxmplot.preferences.BulkIOPreferences;
 
@@ -17,6 +18,7 @@ import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.jface.preference.BooleanFieldEditor;
 import org.eclipse.jface.preference.FieldEditorPreferencePage;
 import org.eclipse.jface.preference.IntegerFieldEditor;
+import org.eclipse.jface.preference.RadioGroupFieldEditor;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.IWorkbench;
@@ -68,11 +70,22 @@ public class BulkIOBlockPreferencePage extends FieldEditorPreferencePage impleme
 
 		final Composite booleanControls = new Composite(getFieldEditorParent(), SWT.None);
 		booleanControls.setLayoutData(GridDataFactory.fillDefaults().grab(true, false).span(2, 1).create());
-		addField(new BooleanFieldEditor(BulkIOPreferences.BLOCKING.getName(), "&Blocking", booleanControls));
+		
+		// blocking option
+		final BlockingOption[] blockingOptionValues = BlockingOption.values();
+		final int numBlockingOptions = blockingOptionValues.length;
+		final String[][] blockingLabelsAndValues = new String[numBlockingOptions][];
+		int ii = 0;
+		for (BlockingOption b : blockingOptionValues) {
+			blockingLabelsAndValues[ii++] = new String[] { b.getLabel(), b.name() };
+		}
+		RadioGroupFieldEditor blockingRadioGroupFieldEditor = new RadioGroupFieldEditor(
+			BulkIOPreferences.BLOCKING_OPTION.getName(), "Blocking Option", numBlockingOptions, blockingLabelsAndValues, getFieldEditorParent(), true);
+		addField(blockingRadioGroupFieldEditor);
+		
 		addField(new BooleanFieldEditor(BulkIOPreferences.REMOVE_ON_EOS.getName(), "&Remove on 'End of Stream'", booleanControls));
 
 		//		createAdvancedFields();
-
 	}
 
 	private void createAdvancedFields() {
