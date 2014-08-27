@@ -39,7 +39,7 @@ public class SCAEditorUtil {
 	 */
 	public static boolean isEditableResource(ScaFormPage page, Resource resource) {
 		boolean retVal = false;
-		if (resource != null && resource.getURI().isPlatform()) {
+		if (resource != null) {
 			retVal = !page.getEditingDomain().isReadOnly(resource);
 		}
 		return retVal;

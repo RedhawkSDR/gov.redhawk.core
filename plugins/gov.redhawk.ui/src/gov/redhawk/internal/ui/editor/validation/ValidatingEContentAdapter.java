@@ -29,6 +29,7 @@ import gov.redhawk.ui.editor.FormOutlinePage;
 import gov.redhawk.ui.editor.SCAFormEditor;
 import gov.redhawk.ui.validation.ValidatingService;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -214,7 +215,8 @@ public class ValidatingEContentAdapter extends EContentAdapter {
 	 * @param messageManager
 	 */
 	private void validateResourceSet(final ResourceSet resourceSet, final IMessageManager messageManager, final DiagnosticChain diagnosticChain) {
-		for (final Object o : resourceSet.getResources().toArray()) {
+		List<Resource> resources = new ArrayList<Resource>(resourceSet.getResources());
+		for (final Object o : resources) {
 			final Resource resource = (Resource) o;
 			validateResource(resource, messageManager, diagnosticChain);
 		}
