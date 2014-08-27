@@ -19,6 +19,7 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.jface.wizard.Wizard;
 
 /**
+ * @since 3.1
  * 
  */
 public class BrowsePropertiesWizard extends Wizard {

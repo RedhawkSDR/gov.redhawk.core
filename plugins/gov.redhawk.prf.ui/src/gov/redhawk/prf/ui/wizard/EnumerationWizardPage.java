@@ -34,6 +34,7 @@ import org.eclipse.swt.widgets.Text;
 
 /**
  * The Class OsWizardPage.
+ * @since 3.1
  */
 public class EnumerationWizardPage extends WizardPage {
 

@@ -39,7 +39,7 @@ import org.eclipse.ui.progress.PendingUpdateAdapter;
  * ILabelProvider.
  * 
  * @see org.eclipse.ui.dialogs.FilteredTree
- * @since 3.2
+ * @since 3.1
  */
 @SuppressWarnings("restriction")
 public class BrowsePatternFilter extends PatternFilter {

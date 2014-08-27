@@ -36,6 +36,9 @@ import org.eclipse.ui.progress.DeferredTreeContentManager;
 import org.eclipse.ui.progress.IDeferredWorkbenchAdapter;
 import org.eclipse.ui.progress.PendingUpdateAdapter;
 
+/**
+ * @since 3.1
+ */
 public class PropertiesBrowserContentProvider extends AdapterFactoryContentProvider {
 
 	private DeferredTreeContentManager deferredContentManager;

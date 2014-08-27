@@ -26,6 +26,9 @@ import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.eclipse.ui.progress.IDeferredWorkbenchAdapter;
 import org.eclipse.ui.progress.IElementCollector;
 
+/**
+ * @since 3.1
+ */
 public class PropertiesBrowserDeferredWorkbenchAdapter implements IDeferredWorkbenchAdapter {
 
 	private final Map<Object, List<IPropertiesProvider>> map;;

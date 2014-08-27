@@ -29,6 +29,7 @@ import org.eclipse.ui.model.IWorkbenchAdapter;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 
 /**
+ * @since 3.1
  * 
  */
 public class PropertiesBrowserLabelProvider extends AdapterFactoryLabelProvider implements ILabelProvider {

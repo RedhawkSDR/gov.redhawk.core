@@ -18,6 +18,7 @@ import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.eclipse.ui.progress.PendingUpdateAdapter;
 
 /**
+ * @since 3.1
  * 
  */
 public class PropertiesPendingUpdateAdapter extends PendingUpdateAdapter {

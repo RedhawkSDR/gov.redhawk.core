@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: %Bundle-Name
 Bundle-SymbolicName: gov.redhawk.prf.ui;singleton:=true
-Bundle-Version: 3.0.1.qualifier
+Bundle-Version: 3.1.0.qualifier
 Bundle-Activator: gov.redhawk.prf.ui.PrfUiPlugin
 Require-Bundle: org.eclipse.ui;bundle-version="3.6.1",
  org.eclipse.core.runtime;bundle-version="3.6.0",
@@ -19,7 +19,14 @@ Require-Bundle: org.eclipse.ui;bundle-version="3.6.1",
  gov.redhawk.prf.validation;bundle-version="1.0.0"
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
-Export-Package: gov.redhawk.prf.ui,
+Export-Package: gov.redhawk.prf.internal.ui;x-internal:=true,
+ gov.redhawk.prf.internal.ui.dialogs;x-internal:=true,
+ gov.redhawk.prf.internal.ui.editor;x-internal:=true,
+ gov.redhawk.prf.internal.ui.editor.composite;x-internal:=true,
+ gov.redhawk.prf.internal.ui.editor.detailspart;x-internal:=true,
+ gov.redhawk.prf.internal.ui.handlers;x-internal:=true,
+ gov.redhawk.prf.ui,
  gov.redhawk.prf.ui.editor.page,
- gov.redhawk.prf.ui.provider
+ gov.redhawk.prf.ui.provider,
+ gov.redhawk.prf.ui.wizard
 Bundle-Vendor: %Bundle-Vendor

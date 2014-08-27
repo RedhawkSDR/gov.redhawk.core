@@ -16,6 +16,7 @@ import mil.jpeojtrs.sca.prf.Enumeration;
 import org.eclipse.jface.wizard.Wizard;
 
 /**
+ * @since 3.1
  * 
  */
 public class EnumerationWizard extends Wizard {
