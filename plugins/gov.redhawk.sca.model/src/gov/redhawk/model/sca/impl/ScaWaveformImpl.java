@@ -996,6 +996,8 @@ public class ScaWaveformImpl extends ScaPropertyContainerImpl<Application, Softw
 
 	private final VersionedFeature portsFeature = new VersionedFeature(this, ScaPackage.Literals.SCA_PORT_CONTAINER__PORTS);
 
+	private boolean released;
+
 	/**
 	 * @since 14.0
 	 */
@@ -1362,9 +1364,13 @@ public class ScaWaveformImpl extends ScaPropertyContainerImpl<Application, Softw
 	@Override
 	public void releaseObject() throws ReleaseError {
 		// END GENERATED CODE
+		if (released) {
+			return;
+		}
 		final Application waveform = fetchNarrowedObject(null);
 		if (waveform != null) {
 			waveform.releaseObject();
+			released = true;
 		}
 		TransactionalEditingDomain domain = TransactionUtil.getEditingDomain(this);
 		Command command = new ScaModelCommand() {
