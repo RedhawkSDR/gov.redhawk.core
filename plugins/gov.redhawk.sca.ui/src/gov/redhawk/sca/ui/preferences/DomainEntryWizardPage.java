@@ -99,7 +99,7 @@ public class DomainEntryWizardPage extends WizardPage {
 
 		final Label localDomainNameLabel = new Label(container, SWT.NONE);
 		localDomainNameLabel.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, false));
-		localDomainNameLabel.setText("Domaing Name:");
+		localDomainNameLabel.setText("Display Name:");
 
 		final Text localDomainNameField = new Text(container, SWT.BORDER);
 		localDomainNameField.setToolTipText("Name that this domain will be displayed as locally.");
@@ -107,7 +107,7 @@ public class DomainEntryWizardPage extends WizardPage {
 
 		final Label domainNameLabel = new Label(container, SWT.NONE);
 		domainNameLabel.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, false));
-		domainNameLabel.setText("Domain Naming Service Reference:");
+		domainNameLabel.setText("Domain Name:");
 
 		final Text domainNameField = new Text(container, SWT.BORDER);
 		domainNameField.setToolTipText("Name the domain is registered as within the naming service.");
@@ -118,7 +118,7 @@ public class DomainEntryWizardPage extends WizardPage {
 
 		final Label nameServiceLabel = new Label(container, SWT.NONE);
 		nameServiceLabel.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, false));
-		nameServiceLabel.setText("Name Service Initial Reference:");
+		nameServiceLabel.setText("Name Service:");
 
 		final Text nameServiceField = new Text(container, SWT.BORDER);
 		nameServiceField.setToolTipText("The CORBA URI that points to the naming service.  This is usually of the form 'corbaname::<hostname>'");
