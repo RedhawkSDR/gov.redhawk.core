@@ -12,46 +12,16 @@
 package gov.redhawk.model.sca.tests;
 
 import gov.redhawk.sca.util.Debug;
-import junit.framework.Test;
-import junit.framework.TestSuite;
-import junit.textui.TestRunner;
 
 /**
  * <!-- begin-user-doc -->
  * A test suite for the '<em><b>sca</b></em>' package.
  * <!-- end-user-doc -->
- * @generated
+ * @generated NOT
  */
-public class ScaTests extends TestSuite {
+public class ScaTests {
 
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public static void main(String[] args) {
-		TestRunner.run(suite());
-	}
 
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated NOT
-	 */
-	public static Test suite() {
-		TestSuite suite = new ScaTests("sca Tests");
-		// Remove all tests to make it so tests are run only once
-		return suite;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public ScaTests(String name) {
-		super(name);
-	}
 
 	static final Debug DEBUG = new Debug("gov.redhawk.sca.model.tests");
 
