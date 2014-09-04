@@ -404,15 +404,17 @@ public class PlotNxmBlock extends AbstractNxmBlock<plot> {
 		return retVal;
 	}
 
+	/** hide all streams on PLOT */
 	public void hide() {
 		setPropertyOnAllLayers("ENABLE", 0, "-GLOBAL");
 	}
 
+	/** show all streams on PLOT */
 	public void show() {
 		setPropertyOnAllLayers("ENABLE", 0, "+GLOBAL");
 	}
 	
-	/** set property of all layers on this block by sending a message so that this can work in both RCP and RAP. */
+	/** set property of all layers (streams) on this block by sending a message so that this can work in both RCP and RAP. */
 	private void setPropertyOnAllLayers(String properyName, int info, String data) {
 		AbstractNxmPlotWidget context = getContext();
 		Iterator<String> keyIter = streamIdToSourceNameMap.keySet().iterator();
@@ -421,5 +423,26 @@ public class PlotNxmBlock extends AbstractNxmBlock<plot> {
 			String sourceName = streamIdToSourceNameMap.get(streamId);
 			context.sendPlotMessage("SET.LAYERS." + sourceName + "." + properyName, info, data);
 		}
+	}
+
+	/** set property of a single layer (stream) on this block by sending a message so that this can work in both RCP and RAP. */
+	void setPropertyOnLayer(String streamId, String properyName, int info, String data) {
+		AbstractNxmPlotWidget context = getContext();
+		String sourceName = streamIdToSourceNameMap.get(streamId);
+		context.sendPlotMessage("SET.LAYERS." + sourceName + "." + properyName, info, data);
+	}
+
+	/** hide specified Stream ID on PLOT.
+	 *  @since 5.0 
+	 */
+	public void hideStream(@NonNull String streamId) {
+		setPropertyOnLayer(streamId, "ENABLE", 0, "-GLOBAL");
+	}
+	
+	/** show (un-hide) specified Stream ID on PLOT.
+	 *  @since 5.0 
+	 */
+	public void showStream(@NonNull String streamId) {
+		setPropertyOnLayer(streamId, "ENABLE", 0, "+GLOBAL");
 	}
 }
