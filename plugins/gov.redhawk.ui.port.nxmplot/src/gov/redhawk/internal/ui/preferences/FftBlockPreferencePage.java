@@ -103,8 +103,8 @@ public class FftBlockPreferencePage extends FieldEditorPreferencePage implements
 		for (FftNxmBlockSettings.WindowType type : FftNxmBlockSettings.WindowType.values()) {
 			windowTypeValues.add(new String[] { type.getLabel(), type.toString() });
 		}
-		String[][] windowValue = windowTypeValues.toArray(new String[0][]);
-		ComboFieldEditor windowTypeField = new ComboFieldEditor(FftPreferences.WINDOW_TYPE.getName(), "&Window Type:", windowValue, getFieldEditorParent());
+		String[][] windowValues = windowTypeValues.toArray(new String[0][]);
+		ComboFieldEditor windowTypeField = new ComboFieldEditor(FftPreferences.WINDOW_TYPE.getName(), "&Window Type:", windowValues, getFieldEditorParent());
 		addField(windowTypeField);
 
 		// TODO
