@@ -42,6 +42,7 @@ import org.eclipse.ui.dialogs.FilteredTree;
 
 /**
  * This {@link WizardPage} provides a way to browse known properties.
+ * @since 3.1
  */
 public class BrowsePropertiesWizardPage extends WizardPage {
 
