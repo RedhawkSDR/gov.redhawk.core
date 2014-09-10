@@ -1,4 +1,5 @@
-bin
-target
+bin/
+target/
 library.jar
 *.class
+screenshots/
