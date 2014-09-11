@@ -16,8 +16,9 @@ import gov.redhawk.ui.port.nxmplot.PlotSettings.PlotMode;
 import gov.redhawk.ui.port.nxmplot.preferences.PlotPreferences;
 import gov.redhawk.ui.port.nxmplot.preferences.Preference;
 
+import java.awt.Color;
 import java.util.Collections;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -29,12 +30,16 @@ import nxm.sys.lib.Message;
 import nxm.sys.lib.Position;
 import nxm.sys.lib.Table;
 import nxm.sys.libg.DragBox;
+import nxm.sys.libg.Layer;
+import nxm.sys.libg.MColor;
+import nxm.sys.libg.MPlot;
 import nxm.sys.prim.plot;
 
 import org.eclipse.core.runtime.ISafeRunnable;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.ListenerList;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.Nullable;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.util.IPropertyChangeListener;
@@ -64,7 +69,8 @@ public abstract class AbstractNxmPlotWidget extends Composite {
 			}
 		}
 	};
-	private final Map<String, IPlotSession> inputSessions = Collections.synchronizedMap(new HashMap<String, IPlotSession>());
+	/** key=sourcePipeId, value=IPlotSession */
+	private final Map<String, IPlotSession> inputSessions = Collections.synchronizedMap(new LinkedHashMap<String, IPlotSession>());
 
 	/**
 	 * This class handles all plot clicks and mouse moves and forwards the relevant ones to
@@ -536,9 +542,10 @@ public abstract class AbstractNxmPlotWidget extends Composite {
 	 * FOR INTERNAL USE ONLY.
 	 * @return null, unless implemented in subclass (e.g. RCPNxmPlotWidget) that have direct reference to the PLOT command.
 	 * @since 4.4
+	 * @noreference This method is not intended to be referenced by clients.
 	 */
 	@Nullable
-	protected plot getPlot() {
+	public plot getPlot() {
 		return null;
 	}
 
@@ -869,4 +876,48 @@ public abstract class AbstractNxmPlotWidget extends Composite {
 		this.store = store;
 		this.store.addPropertyChangeListener(listener);
 	}
+	
+	/**
+	 * @since 5.0
+	 */
+	public void setPropertyOnLayer(String sourcePipeId, String properyName, int info, String data) {
+		sendPlotMessage("SET.LAYERS." + sourcePipeId + "." + properyName, info, data);
+	}
+	
+	/**
+	 * Get line color for specified source/layer on PLOT. 
+	 * @since 5.0
+	 */
+	public Color getLineColor(@NonNull String sourcePipeId) {
+		Color retColor = null;
+		plot plot = getPlot();
+		if (plot != null) { // have local PLOT (i.e. RcpNxmPlotWidget)
+			MPlot mplot = plot.MP;
+			if (mplot != null) {
+				Object lay = mplot.getLayers().get(sourcePipeId);
+				if (lay instanceof Layer) {
+					retColor = ((Layer) lay).getColor();
+				}
+			}
+		}
+		if (retColor == null) { // probably have remote PLOT (i.e. RapNxmPlotWidget)
+			int index = 1;      // try to figure out the source's layer index
+			for (String key : inputSessions.keySet()) {
+				if (sourcePipeId.equals(key)) {
+					break;
+				}
+				index++;
+			}
+			retColor = MColor.getColorByIndex(index); // <-- PLOT/Layer1D uses this as default color
+		}
+		return retColor;
+	}
+	
+	/**
+	 * @since 5.0
+	 */
+	public void setLineColor(@NonNull String sourcePipeId, String colorStr) {
+		setPropertyOnLayer(sourcePipeId, "COLOR", 0, colorStr);
+	}
+	
 }

@@ -18,6 +18,7 @@ import gov.redhawk.ui.port.nxmplot.PlotType;
 import gov.redhawk.ui.port.nxmplot.preferences.PlotPreferences;
 import gov.redhawk.ui.port.nxmplot.preferences.Preference;
 
+import java.awt.Color;
 import java.util.Iterator;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -374,13 +375,13 @@ public class PlotNxmBlock extends AbstractNxmBlock<plot> {
 
 		if (PlotPreferences.REFRESH_RATE.isEvent(event) && isSetRefreshRate()) {
 			setPropertyOnAllLayers("REFRESHRATE", 0, "" + getRefreshRate()); 
-			// above works better (don't have to remove/add source) vs calling updatePipeQualifiers();
+			// above works better than calling calling updatePipeQualifiers() (don't have to remove/add source)
 		}
 
 		if (PlotPreferences.REFRESH_RATE_OVERRIDE.isEvent(event)
 				&& getRefreshRate() != PlotPreferences.REFRESH_RATE.getDefaultValue(getPreferences())) {
 			setPropertyOnAllLayers("REFRESHRATE", 0, "" + getRefreshRate());
-			// above works better (don't have to remove/add source) vs calling updatePipeQualifiers();
+			// above works better than calling calling updatePipeQualifiers() (don't have to remove/add source)
 		}
 	}
 
@@ -405,6 +406,24 @@ public class PlotNxmBlock extends AbstractNxmBlock<plot> {
 		return retVal;
 	}
 
+	/** set property of all layers (streams) on this block by sending a message so that this can work in both RCP and RAP. */
+	void setPropertyOnAllLayers(String properyName, int info, String data) {
+		AbstractNxmPlotWidget plotWidget = getContext();
+		Iterator<String> keyIter = streamIdToSourceNameMap.keySet().iterator();
+		while (keyIter.hasNext()) {
+			String streamId = keyIter.next();
+			String sourceName = streamIdToSourceNameMap.get(streamId);
+			plotWidget.sendPlotMessage("SET.LAYERS." + sourceName + "." + properyName, info, data);
+		}
+	}
+	
+	/** set property of a single layer (stream) on this block by sending a message so that this can work in both RCP and RAP. */
+	void setPropertyOnLayer(String streamId, String properyName, int info, String data) {
+		AbstractNxmPlotWidget plotWidget = getContext();
+		String sourceName = streamIdToSourceNameMap.get(streamId);
+		plotWidget.setPropertyOnLayer(sourceName, properyName, 0, data);
+	}
+	
 	/** hide all streams on PLOT */
 	public void hide() {
 		Iterator<String> keyIter = streamIdToSourceNameMap.keySet().iterator();
@@ -421,24 +440,6 @@ public class PlotNxmBlock extends AbstractNxmBlock<plot> {
 		setPropertyOnAllLayers("ENABLE", 0, "+GLOBAL");
 	}
 	
-	/** set property of all layers (streams) on this block by sending a message so that this can work in both RCP and RAP. */
-	private void setPropertyOnAllLayers(String properyName, int info, String data) {
-		AbstractNxmPlotWidget context = getContext();
-		Iterator<String> keyIter = streamIdToSourceNameMap.keySet().iterator();
-		while (keyIter.hasNext()) {
-			String streamId = keyIter.next();
-			String sourceName = streamIdToSourceNameMap.get(streamId);
-			context.sendPlotMessage("SET.LAYERS." + sourceName + "." + properyName, info, data);
-		}
-	}
-
-	/** set property of a single layer (stream) on this block by sending a message so that this can work in both RCP and RAP. */
-	void setPropertyOnLayer(String streamId, String properyName, int info, String data) {
-		AbstractNxmPlotWidget context = getContext();
-		String sourceName = streamIdToSourceNameMap.get(streamId);
-		context.sendPlotMessage("SET.LAYERS." + sourceName + "." + properyName, info, data);
-	}
-
 	/** hide specified Stream ID on PLOT.
 	 *  @since 5.0 
 	 */
@@ -459,7 +460,23 @@ public class PlotNxmBlock extends AbstractNxmBlock<plot> {
 	 * @since 5.0
 	 */
 	public boolean isStreamShown(@NonNull String streamId) {
-		return streamIdToIsHidden.containsKey(streamId);
+		return !streamIdToIsHidden.containsKey(streamId);
 	}
 	
+	/** set the line color of the specified stream ID on the line plot. 
+	 * @param colorStr color string (e.g. "red", "#RGB", "#ff0022", "0xARGB", etc.)
+	 * @since 5.0
+	 */
+	public void setStreamLineColor(@NonNull String streamId, String colorStr) {
+		setPropertyOnLayer(streamId, "COLOR", 0, colorStr);
+	}
+	
+	/** get the current line color of the specified stream ID on the line plot.
+	 * @since 5.0
+	 */
+	public Color getStreamLineColor(@NonNull String streamId) {
+		AbstractNxmPlotWidget plotWidget = getContext();
+		String sourceName = streamIdToSourceNameMap.get(streamId);
+		return plotWidget.getLineColor(sourceName);
+	}
 }
