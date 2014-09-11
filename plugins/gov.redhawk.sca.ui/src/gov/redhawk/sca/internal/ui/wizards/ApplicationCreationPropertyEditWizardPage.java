@@ -73,7 +73,7 @@ public class ApplicationCreationPropertyEditWizardPage extends WizardPage {
 	public void createControl(final Composite parent) {
 		final Composite main = new Composite(parent, SWT.None);
 		main.setLayout(new GridLayout());
-		final Composite propComposite = new Composite(main, SWT.BORDER);
+		final Composite propComposite = new Composite(main, SWT.None);
 		propComposite.setLayoutData(GridDataFactory.fillDefaults().grab(true, true).create());
 		this.viewer = ScaComponentFactory.createPropertyTable(propComposite, SWT.BORDER | SWT.FULL_SELECTION | SWT.SINGLE, this.adapterFactory);
 		this.viewer.addFilter(new ViewerFilter() {
