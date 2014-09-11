@@ -876,14 +876,14 @@ public abstract class AbstractNxmPlotWidget extends Composite {
 		this.store = store;
 		this.store.addPropertyChangeListener(listener);
 	}
-	
+
 	/**
 	 * @since 5.0
 	 */
 	public void setPropertyOnLayer(String sourcePipeId, String properyName, int info, String data) {
 		sendPlotMessage("SET.LAYERS." + sourcePipeId + "." + properyName, info, data);
 	}
-	
+
 	/**
 	 * Get line color for specified source/layer on PLOT. 
 	 * @since 5.0
@@ -912,12 +912,12 @@ public abstract class AbstractNxmPlotWidget extends Composite {
 		}
 		return retColor;
 	}
-	
-	/**
+
+	/** set the line color of the specified sourcePipeId on the line plot. 
 	 * @since 5.0
 	 */
-	public void setLineColor(@NonNull String sourcePipeId, String colorStr) {
+	public void setLineColor(@NonNull String sourcePipeId, @NonNull Color color) {
+		String colorStr = MColor.toString(color);
 		setPropertyOnLayer(sourcePipeId, "COLOR", 0, colorStr);
 	}
-	
 }

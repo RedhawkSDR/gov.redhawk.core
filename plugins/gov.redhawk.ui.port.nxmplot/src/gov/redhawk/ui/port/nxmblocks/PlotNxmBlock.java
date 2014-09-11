@@ -464,11 +464,12 @@ public class PlotNxmBlock extends AbstractNxmBlock<plot> {
 	}
 	
 	/** set the line color of the specified stream ID on the line plot. 
-	 * @param colorStr color string (e.g. "red", "#RGB", "#ff0022", "0xARGB", etc.)
 	 * @since 5.0
 	 */
-	public void setStreamLineColor(@NonNull String streamId, String colorStr) {
-		setPropertyOnLayer(streamId, "COLOR", 0, colorStr);
+	public void setStreamLineColor(@NonNull String streamId, Color color) {
+		AbstractNxmPlotWidget plotWidget = getContext();
+		String sourceName = streamIdToSourceNameMap.get(streamId);
+		plotWidget.getLineColor(sourceName);
 	}
 	
 	/** get the current line color of the specified stream ID on the line plot.
