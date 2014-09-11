@@ -46,6 +46,7 @@ public class PlotNxmBlock extends AbstractNxmBlock<plot> {
 
 	private ConcurrentHashMap<String, String> streamIdToSourceNameMap = new ConcurrentHashMap<String, String>();
 	private ConcurrentHashMap<String, StreamSRI> streamIdToSriMap = new ConcurrentHashMap<String, StreamSRI>();
+	private ConcurrentHashMap<String, Boolean> streamIdToIsHidden = new ConcurrentHashMap<String, Boolean>();
 	private IMenuManager menu;
 
 	public PlotNxmBlock(@NonNull AbstractNxmPlotWidget plotWidget) {
@@ -406,11 +407,17 @@ public class PlotNxmBlock extends AbstractNxmBlock<plot> {
 
 	/** hide all streams on PLOT */
 	public void hide() {
+		Iterator<String> keyIter = streamIdToSourceNameMap.keySet().iterator();
+		while (keyIter.hasNext()) {
+			String streamId = keyIter.next();
+			streamIdToIsHidden.put(streamId, Boolean.TRUE);
+		}
 		setPropertyOnAllLayers("ENABLE", 0, "-GLOBAL");
 	}
 
 	/** show all streams on PLOT */
 	public void show() {
+		streamIdToIsHidden.clear();
 		setPropertyOnAllLayers("ENABLE", 0, "+GLOBAL");
 	}
 	
@@ -436,6 +443,7 @@ public class PlotNxmBlock extends AbstractNxmBlock<plot> {
 	 *  @since 5.0 
 	 */
 	public void hideStream(@NonNull String streamId) {
+		streamIdToIsHidden.put(streamId, Boolean.TRUE);
 		setPropertyOnLayer(streamId, "ENABLE", 0, "-GLOBAL");
 	}
 	
@@ -443,6 +451,15 @@ public class PlotNxmBlock extends AbstractNxmBlock<plot> {
 	 *  @since 5.0 
 	 */
 	public void showStream(@NonNull String streamId) {
+		streamIdToIsHidden.remove(streamId);
 		setPropertyOnLayer(streamId, "ENABLE", 0, "+GLOBAL");
 	}
+	
+	/** is the specified stream shown on the PLOT?
+	 * @since 5.0
+	 */
+	public boolean isStreamShown(@NonNull String streamId) {
+		return streamIdToIsHidden.containsKey(streamId);
+	}
+	
 }
