@@ -469,7 +469,7 @@ public class PlotNxmBlock extends AbstractNxmBlock<plot> {
 	public void setStreamLineColor(@NonNull String streamId, Color color) {
 		AbstractNxmPlotWidget plotWidget = getContext();
 		String sourceName = streamIdToSourceNameMap.get(streamId);
-		plotWidget.getLineColor(sourceName);
+		plotWidget.setLineColor(sourceName, color);
 	}
 	
 	/** get the current line color of the specified stream ID on the line plot.

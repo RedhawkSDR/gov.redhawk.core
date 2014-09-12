@@ -14,7 +14,8 @@ import gov.redhawk.internal.ui.preferences.PlotPreferenceDialog;
 import gov.redhawk.internal.ui.preferences.PlotPreferenceNode;
 import gov.redhawk.internal.ui.preferences.PlotPreferencePage;
 import gov.redhawk.internal.ui.preferences.SourcePreferencePage;
-import gov.redhawk.ui.port.nxmblocks.PlotNxmBlock;
+import gov.redhawk.model.sca.ScaAbstractComponent;
+import gov.redhawk.model.sca.ScaPortContainer;
 import gov.redhawk.ui.port.nxmplot.INxmBlock;
 import gov.redhawk.ui.port.nxmplot.PlotPageBook2;
 import gov.redhawk.ui.port.nxmplot.PlotSource;
@@ -44,7 +45,7 @@ public class PlotSettingsAction extends Action {
 	public void run() {
 		PreferenceManager manager = new PreferenceManager();
 
-		if (pageBook.getSources().size() > 1) {
+		if (pageBook.getSources().size() > 0) {
 			PlotPreferencePage plotPage = new PlotPreferencePage("Plot", false);
 			plotPage.setPreferenceStore(pageBook.getActivePlotWidget().getPreferenceStore());
 
@@ -53,6 +54,12 @@ public class PlotSettingsAction extends Action {
 			for (PlotSource source : pageBook.getSources()) {
 				List<INxmBlock> blockChain = pageBook.getBlockChain(source);
 				String name = source.getInput().getName();
+				ScaPortContainer container = source.getInput().getPortContainer();
+				if (container instanceof ScaAbstractComponent<?>) {
+					ScaAbstractComponent<?> component = (ScaAbstractComponent<?>) container;
+					String qualifier = component.getIdentifier();
+					name = qualifier.substring(0, qualifier.indexOf(':')) + " -> " + name;
+				}
 				SourcePreferencePage sourcePrefPage = new SourcePreferencePage(name, pageBook, blockChain);
 				PreferenceNode sourceNode = new PreferenceNode(source.toString(), sourcePrefPage);
 
@@ -64,37 +71,6 @@ public class PlotSettingsAction extends Action {
 					}
 				}
 				manager.addToRoot(sourceNode);
-			}
-		} else if (pageBook.getSources().size() == 1) {
-			PlotSource source = pageBook.getSources().get(0);
-			List<INxmBlock> blockChain = pageBook.getBlockChain(source);
-
-			PlotNxmBlock plotBlock = null;
-			for (INxmBlock block : blockChain) {
-				if (block instanceof PlotNxmBlock) {
-					plotBlock = (PlotNxmBlock) block;
-				}
-			}
-			PlotPreferencePage plotPage = new PlotPreferencePage("Plot");
-			plotPage.setPreferenceStore(pageBook.getActivePlotWidget().getPreferenceStore());
-			plotPage.setBlockPreferenceStore(pageBook.getSharedPlotBlockPreferences());
-			PlotPreferenceNode plotNode = new PlotPreferenceNode("plotSettings", plotPage);
-			manager.addToRoot(plotNode);
-
-			//						String name = entry.getKey().getInput().getName();
-			//						SourcePreferencePage sourcePrefPage = new SourcePreferencePage(name, PlotPageBook2.this);
-			//						PreferenceNode sourceNode = new PreferenceNode(entry.getKey().toString(), sourcePrefPage);
-			//						manager.addToRoot(sourceNode);
-
-			for (INxmBlock block : blockChain) {
-				if (plotBlock == block) {
-					continue;
-				}
-				IPreferencePage page = block.createPreferencePage();
-				if (page != null) {
-					PreferenceNode blockNode = new PreferenceNode(block.toString(), page);
-					manager.addToRoot(blockNode);
-				}
 			}
 		} else {
 			PlotPreferencePage plotPage = new PlotPreferencePage("Plot");
