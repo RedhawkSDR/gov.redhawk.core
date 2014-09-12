@@ -14,18 +14,14 @@ package gov.redhawk.sca.launch.ui.tabs;
 import gov.redhawk.model.sca.ScaAbstractProperty;
 import gov.redhawk.model.sca.ScaComponent;
 import gov.redhawk.model.sca.ScaFactory;
-import gov.redhawk.sca.launch.ScaLaunchConfigurationConstants;
 import gov.redhawk.sca.launch.ScaLaunchConfigurationUtil;
-import gov.redhawk.sca.launch.ui.ScaLauncherActivator;
 import gov.redhawk.sca.launch.ui.ScaUIImages;
 import gov.redhawk.sca.ui.ScaComponentFactory;
 import gov.redhawk.sca.ui.properties.ScaPropertiesAdapterFactory;
 import mil.jpeojtrs.sca.sad.SoftwareAssembly;
 import mil.jpeojtrs.sca.util.ScaResourceFactoryUtil;
 
-import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
-import org.eclipse.core.runtime.Path;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
 import org.eclipse.debug.ui.AbstractLaunchConfigurationTab;
@@ -75,13 +71,7 @@ public class WaveformPropertiesTab extends AbstractLaunchConfigurationTab {
 			setErrorMessage("Invalid Software Assembly Descriptor");
 		} else if (sad.getAssemblyController().getComponentInstantiationRef() != null) {
 			this.assemblyController = ScaFactory.eINSTANCE.createScaComponent();
-			this.assemblyController.setProfileObj(sad.getAssemblyController()
-			        .getComponentInstantiationRef()
-			        .getInstantiation()
-			        .getPlacement()
-			        .getComponentFileRef()
-			        .getFile()
-			        .getSoftPkg());
+			this.assemblyController.setProfileObj(sad.getAssemblyController().getComponentInstantiationRef().getInstantiation().getPlacement().getComponentFileRef().getFile().getSoftPkg());
 			for (final ScaAbstractProperty< ? > prop : this.assemblyController.fetchProperties(null)) {
 				prop.setIgnoreRemoteSet(true);
 			}
@@ -170,24 +160,14 @@ public class WaveformPropertiesTab extends AbstractLaunchConfigurationTab {
 
 	private void updateSoftwareAssembly(final ILaunchConfiguration configuration) {
 		try {
-			final String sadPath = configuration.getAttribute(ScaLaunchConfigurationConstants.ATT_PROFILE, "");
-			if (sadPath == null || sadPath.length() == 0) {
-				setSoftwareAssembly(null, configuration);
-				return;
-			}
-			if (ResourcesPlugin.getWorkspace().getRoot().getFile(new Path(sadPath)).exists()) {
-				final ResourceSet resourceSet = ScaResourceFactoryUtil.createResourceSet();
-				final Resource resource = resourceSet.getResource(URI.createPlatformResourceURI(sadPath, true), true);
-				setSoftwareAssembly(SoftwareAssembly.Util.getSoftwareAssembly(resource), configuration);
-			} else {
-				setSoftwareAssembly(null, configuration);
-			}
+			URI uri = ScaLaunchConfigurationUtil.getProfileURI(configuration);
+			final ResourceSet resourceSet = ScaResourceFactoryUtil.createResourceSet();
+			final Resource resource = resourceSet.getResource(uri, true);
+			setSoftwareAssembly(SoftwareAssembly.Util.getSoftwareAssembly(resource), configuration);
 		} catch (final CoreException e) {
 			setSoftwareAssembly(null, configuration);
-			ScaLauncherActivator.log(e);
 		} catch (final Exception e) { // SUPPRESS CHECKSTYLE Logged Catch all exception
 			setSoftwareAssembly(null, configuration);
-			ScaLauncherActivator.log(e);
 		}
 	}
 

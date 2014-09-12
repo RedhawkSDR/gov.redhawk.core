@@ -142,14 +142,6 @@
          unpack="false"/>
 
    <plugin
-         id="gov.redhawk.sca.ui.rcp"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         fragment="true"
-         unpack="false"/>
-
-   <plugin
          id="mil.jpeojtrs.sca.dcd.rcp"
          download-size="0"
          install-size="0"

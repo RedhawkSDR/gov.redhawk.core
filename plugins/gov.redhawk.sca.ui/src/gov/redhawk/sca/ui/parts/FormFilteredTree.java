@@ -16,6 +16,7 @@ import gov.redhawk.common.ui.parts.FormEntry;
 
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Text;
@@ -23,102 +24,106 @@ import org.eclipse.ui.dialogs.FilteredTree;
 import org.eclipse.ui.dialogs.PatternFilter;
 import org.eclipse.ui.forms.widgets.FormToolkit;
 
+/**
+ * The Class FormFilteredTree.
+ * @since 9.2
+ */
 public class FormFilteredTree extends FilteredTree {
 
 	private FormToolkit toolkit;
 
 	private FormEntry fEntryFilter;
 
-	public FormFilteredTree(Composite parent, int treeStyle, PatternFilter filter) {
+	/**
+	 * Instantiates a new form filtered tree.
+	 * 
+	 * @param parent the parent
+	 * @param treeStyle the tree style
+	 * @param filter the filter
+	 */
+	public FormFilteredTree(final Composite parent, final int treeStyle, final PatternFilter filter) {
 		super(parent, treeStyle, filter, true);
 	}
 
-	protected void createControl(Composite parent, int treeStyle) {
-		toolkit = new FormToolkit(parent.getDisplay());
-		GridLayout layout = FormLayoutFactory.createClearGridLayout(false, 1);
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	protected void createControl(final Composite parent, final int treeStyle) {
+		this.toolkit = new FormToolkit(parent.getDisplay());
+		final GridLayout layout = FormLayoutFactory.createClearGridLayout(false, 1);
 		// Space between filter text field and tree viewer
-		layout.verticalSpacing = 3;
-		super.createControl(parent, treeStyle);
+		layout.verticalSpacing = 3; // SUPPRESS CHECKSTYLE MagicNumber
 		setLayout(layout);
+		setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
+
+		if (this.showFilterControls) {
+			this.filterComposite = new Composite(this, SWT.NONE);
+			final GridLayout filterLayout = FormLayoutFactory.createClearGridLayout(false, 2);
+			filterLayout.horizontalSpacing = 5; // SUPPRESS CHECKSTYLE MagicNumber
+			this.filterComposite.setLayout(filterLayout);
+			this.filterComposite.setFont(parent.getFont());
+			createFilterControls(this.filterComposite);
+			this.filterComposite.setLayoutData(new GridData(SWT.FILL, SWT.BEGINNING, true, false));
+		}
+
+		this.treeComposite = new Composite(this, SWT.NONE);
+		this.treeComposite.setLayout(FormLayoutFactory.createClearGridLayout(false, 1));
+		final GridData data = new GridData(SWT.FILL, SWT.FILL, true, true);
+		this.treeComposite.setLayoutData(data);
+		createTreeControl(this.treeComposite, treeStyle);
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see org.eclipse.swt.widgets.Widget#dispose()
 	 */
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
 	public void dispose() {
-		if (toolkit != null) {
-			toolkit.dispose();
-			toolkit = null;
+		if (this.toolkit != null) {
+			this.toolkit.dispose();
+			this.toolkit = null;
 		}
 		super.dispose();
 	}
 
-	protected Text doCreateFilterText(Composite parent) {
-		int borderStyle = toolkit.getBorderStyle();
-
-		toolkit.setBorderStyle(SWT.NONE); // we don't want Forms border around tree filter
-
-		Text temp = super.doCreateFilterText(parent);
-		int style = temp.getStyle();
-		temp.dispose();
-
-		fEntryFilter = new FormEntry(parent, toolkit, null, style);
-		toolkit.setBorderStyle(borderStyle); // restore Forms border settings
-
-		setBackground(toolkit.getColors().getBackground());
-		return fEntryFilter.getText();
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	protected Text doCreateFilterText(final Composite parent) {
+		final int style = SWT.SINGLE | this.toolkit.getBorderStyle();
+		this.fEntryFilter = new FormEntry(parent, this.toolkit, null, style);
+		// Needed otherwise borders are missing on Windows Classic Theme
+		this.toolkit.paintBordersFor(parent);
+		setBackground(this.toolkit.getColors().getBackground());
+		return this.fEntryFilter.getText();
 	}
 
-	protected TreeViewer doCreateTreeViewer(Composite parent, int style) {
-		TreeViewer viewer = super.doCreateTreeViewer(parent, toolkit.getBorderStyle() | style);
-		toolkit.paintBordersFor(viewer.getTree().getParent());
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	protected TreeViewer doCreateTreeViewer(final Composite parent, final int style) {
+		final TreeViewer viewer = super.doCreateTreeViewer(parent, this.toolkit.getBorderStyle() | style);
+		this.toolkit.paintBordersFor(viewer.getTree().getParent());
 		return viewer;
 	}
-/**
-	public void createUIListenerEntryFilter(IContextPart part) {
-		// Required to enable Ctrl-V initiated paste operation on first focus
-		// See Bug # 157973
-		fEntryFilter.setFormEntryListener(new FormEntryAdapter() {
-			// Override all callback methods except focusGained
-			// See Bug # 184085
-			public void browseButtonSelected(FormEntry entry) {
-				// NO-OP
-			}
 
-			public void linkActivated(HyperlinkEvent e) {
-				// NO-OP
-			}
-
-			public void linkEntered(HyperlinkEvent e) {
-				// NO-OP
-			}
-
-			public void linkExited(HyperlinkEvent e) {
-				// NO-OP
-			}
-
-			public void selectionChanged(FormEntry entry) {
-				// NO-OP
-			}
-
-			public void textDirty(FormEntry entry) {
-				// NO-OP
-			}
-
-			public void textValueChanged(FormEntry entry) {
-				// NO-OP
-			}
-		});
-	}
-*/
 	/**
+	 * Checks if is filtered.
+	 * 
 	 * @return a boolean indicating whether the tree is filtered or not.
 	 */
 	public boolean isFiltered() {
-		Text filterText = getFilterControl();
+		final Text filterText = getFilterControl();
 		if (filterText != null) {
-			String filterString = filterText.getText();
-			boolean filtered = (filterString != null && filterString.length() > 0 && !filterString.equals(getInitialText()));
+			final String filterString = filterText.getText();
+			final boolean filtered = (filterString != null && filterString.length() > 0 && !filterString.equals(getInitialText()));
 			return filtered;
 		}
 		return false;

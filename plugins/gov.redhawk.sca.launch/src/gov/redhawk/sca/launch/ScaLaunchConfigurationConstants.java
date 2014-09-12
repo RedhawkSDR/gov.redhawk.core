@@ -27,10 +27,6 @@ public interface ScaLaunchConfigurationConstants { // SUPPRESS CHECKSTYLE Ignore
 	 */
 	public static final String ATT_PROFILE = ScaLaunchActivator.ID + ".profile";
 	/**
-     * @since 1.1
-     */
-	public static final String ATT_WORKSPACE = ScaLaunchActivator.ID + ".workspace";
-	/**
 	 * Attribute to indicate the resource should be started after launching
 	 */
 	public static final String ATT_START = ScaLaunchActivator.ID + ".autoStart";

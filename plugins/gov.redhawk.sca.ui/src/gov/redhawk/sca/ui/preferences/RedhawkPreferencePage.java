@@ -13,21 +13,30 @@ package gov.redhawk.sca.ui.preferences;
 
 import gov.redhawk.sca.ui.ScaUiPlugin;
 
+import org.eclipse.jface.dialogs.MessageDialogWithToggle;
 import org.eclipse.jface.preference.FieldEditorPreferencePage;
+import org.eclipse.jface.preference.RadioGroupFieldEditor;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPreferencePage;
 
+/**
+ * @since 10.0
+ */
 public class RedhawkPreferencePage extends FieldEditorPreferencePage implements IWorkbenchPreferencePage {
 	public static final String PREFERENCES_PAGE_ID = "gov.redhawk.ui.preferences";
 
 	@Override
 	public void init(final IWorkbench workbench) {
-		setPreferenceStore(ScaUiPlugin.getDefault().getScaPreferenceStore());
+		setPreferenceStore(ScaUiPlugin.getDefault().getPreferenceStore());
 	}
 
 	@Override
 	protected void createFieldEditors() {
-
+		final RadioGroupFieldEditor field = new RadioGroupFieldEditor(RedhawkUIPreferenceConstants.CREATE_WAVEFORM_LAUNCH_CONFIGURATION,
+			"Create new launch shortcut after Waveform Launch", 3, new String[][] { new String[] { "Always", MessageDialogWithToggle.ALWAYS },
+			new String[] { "Never", MessageDialogWithToggle.NEVER }, new String[] { "Prompt", MessageDialogWithToggle.PROMPT } }, getFieldEditorParent(),
+			true);
+		addField(field);
 	}
 
 }

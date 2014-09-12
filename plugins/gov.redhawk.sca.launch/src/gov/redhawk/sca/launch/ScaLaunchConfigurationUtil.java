@@ -14,6 +14,7 @@ package gov.redhawk.sca.launch;
 import gov.redhawk.model.sca.ScaAbstractComponent;
 import gov.redhawk.model.sca.ScaPropertyContainer;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -22,9 +23,18 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import org.eclipse.core.filesystem.EFS;
+import org.eclipse.core.filesystem.IFileStore;
+import org.eclipse.core.resources.IResource;
+import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.Path;
+import org.eclipse.core.runtime.Status;
+import org.eclipse.core.variables.IStringVariableManager;
+import org.eclipse.core.variables.VariablesPlugin;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
+import org.eclipse.emf.common.util.URI;
 
 import CF.DeviceAssignmentType;
 
@@ -104,6 +114,105 @@ public final class ScaLaunchConfigurationUtil {
 		if (properties != null) {
 			ScaPropertyUtil.load(component, properties);
 		}
+	}
+
+	/**
+	 * @since 2.0
+	 */
+	public static String uriToLocation(URI uri) {
+		if (uri.isPlatform()) {
+			return "${workspace_loc:" + uri.toPlatformString(true) + "}";
+		} else if (uri.isFile()) {
+			return uri.path();
+		} else {
+			try {
+				IFileStore store = EFS.getStore(java.net.URI.create(uri.toString()));
+				File localFile = store.toLocalFile(0, null);
+				String sdrPathString = getValue("${SdrRoot}");
+				if (localFile.getAbsolutePath().startsWith(sdrPathString)) {
+					return "${SdrRoot}" + localFile.getAbsolutePath().substring(sdrPathString.length());
+				}
+				return localFile.getAbsolutePath();
+			} catch (CoreException e) {
+				throw new IllegalArgumentException("Can not convert uri to location: " + uri, e);
+			}
+		}
+	}
+
+	/**
+	 * @since 2.0
+	 */
+	public static File locationToFile(String location) {
+		if (location == null || location.length() < 1) {
+			return null;
+		}
+
+		String expandedLocation = null;
+		try {
+			expandedLocation = resolveValue(location);
+		} catch (CoreException e) {
+			return null;
+		}
+
+		File file = new File(expandedLocation);
+		if (file.exists()) {
+			return file;
+		}
+
+		// Try and see if the location is a path within the workspace, this is for backwards compatibility
+		IResource member = ResourcesPlugin.getWorkspace().getRoot().findMember(new Path(location));
+		if (member != null && member.exists()) {
+			file = new File(member.getFullPath().toOSString());
+			if (file.exists()) {
+				return file;
+			}
+		}
+		return null;
+	}
+
+	/**
+	 * @since 2.0
+	 */
+	public static URI getProfileURI(ILaunchConfiguration config) throws CoreException {
+		String profile = config.getAttribute(ScaLaunchConfigurationConstants.ATT_PROFILE, (String) null);
+		File file = locationToFile(profile);
+		if (file != null) {
+			return URI.createFileURI(file.getAbsolutePath());
+		}
+		throw new CoreException(new Status(Status.ERROR, ScaLaunchActivator.ID, "Failed to load profile uri: " + profile, new Exception().fillInStackTrace()));
+	}
+
+	/**
+	 * @since 2.0
+	 */
+	public static void setProfileURI(ILaunchConfigurationWorkingCopy config, URI uri) throws CoreException {
+		config.setAttribute(ScaLaunchConfigurationConstants.ATT_PROFILE, uriToLocation(uri));
+	}
+
+	/**
+	 * @since 2.0
+	 */
+	public static String resolveValue(String expression) throws CoreException {
+		String expanded = null;
+		try {
+			expanded = getValue(expression);
+		} catch (CoreException e) { // possibly just a variable that needs to be resolved at runtime
+			return null;
+		}
+		return expanded;
+	}
+
+	/**
+	 * Validates the value of the given string to determine if any/all variables are valid
+	 *
+	 * @param expression expression with variables
+	 * @return whether the expression contained any variable values
+	 * @exception CoreException if variable resolution fails
+	 * @since 2.0
+	 */
+	public static String getValue(String expression) throws CoreException {
+		IStringVariableManager manager = VariablesPlugin.getDefault().getStringVariableManager();
+		return manager.performStringSubstitution(expression);
 	}
 
 }

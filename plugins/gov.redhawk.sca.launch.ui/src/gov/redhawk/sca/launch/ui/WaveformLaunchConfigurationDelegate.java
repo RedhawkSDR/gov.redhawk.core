@@ -119,7 +119,7 @@ public class WaveformLaunchConfigurationDelegate extends LaunchConfigurationDele
 						}
 
 						if (job.getWaveform() != null && openEditor) {
-							final UIJob openEditorJob = new UIJob("Open SCA Waveform Editor") {
+							final UIJob openEditorJob = new UIJob("Open Waveform Editor") {
 
 								@Override
 								public IStatus runInUIThread(final IProgressMonitor monitor) {

@@ -17,7 +17,7 @@ import org.eclipse.jface.fieldassist.IControlContentAdapter;
 import org.eclipse.swt.widgets.Control;
 
 /**
- * @since 9.0
+ * @since 9.2
  * 
  */
 public final class CompatibilityFactory {
@@ -26,8 +26,11 @@ public final class CompatibilityFactory {
 
 	}
 
+	/**
+	 * @since 10.0
+	 */
 	public static ContentProposalAdapter createContentProposalAdapter(final Control control, final IControlContentAdapter controlContentAdapter,
-	        final IContentProposalProvider proposalProvider, final char[] autoActivationCharacters) {
+		final IContentProposalProvider proposalProvider, final char[] autoActivationCharacters) {
 		return new ContentProposalAdapter(control, controlContentAdapter, proposalProvider, null, autoActivationCharacters);
 	}
 

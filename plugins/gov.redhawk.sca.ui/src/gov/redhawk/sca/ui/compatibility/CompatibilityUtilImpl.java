@@ -70,8 +70,8 @@ public class CompatibilityUtilImpl implements ICompatibilityUtil {
 	 */
 	@Override
 	public void runInFakeUIContext(Display display, Runnable runnable) {
-		// PASS
-		// No RCP implementation needed
+		//PASS
+		//No RCP implementation needed
 	}
 
 	/**
@@ -82,8 +82,8 @@ public class CompatibilityUtilImpl implements ICompatibilityUtil {
 	 */
 	@Override
 	public void activateUIConnection(String id) {
-		// PASS
-		// No RCP implementation needed
+		//PASS
+		//No RCP implementation needed
 	}
 
 	/* (non-Javadoc)
@@ -91,8 +91,8 @@ public class CompatibilityUtilImpl implements ICompatibilityUtil {
 	 */
 	@Override
 	public void deactivateUIConnection(String id) {
-		// PASS
-		// No RCP implementation needed
+		//PASS
+		//No RCP implementation needed
 	}
 
 	/* (non-Javadoc)
@@ -100,7 +100,7 @@ public class CompatibilityUtilImpl implements ICompatibilityUtil {
 	 */
 	@Override
 	public void executeOnRequestThread(Runnable runnable) {
-		// Run on Request Thread only in RAP
+		//Run on Request Thread only in RAP
 		runnable.run();
 	}
 }

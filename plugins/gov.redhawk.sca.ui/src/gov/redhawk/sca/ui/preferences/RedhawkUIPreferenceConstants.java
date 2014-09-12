@@ -1,4 +1,4 @@
-/**
+/** 
  * This file is protected by Copyright. 
  * Please refer to the COPYRIGHT file distributed with this source distribution.
  * 
@@ -9,13 +9,16 @@
  * http://www.eclipse.org/legal/epl-v10.html.
  *
  */
-package gov.redhawk.sca.internal.ui.wizards;
+package gov.redhawk.sca.ui.preferences;
 
-import gov.redhawk.model.sca.ScaDomainManager;
+/**
+ * @since 10.0
+ * 
+ */
+public final class RedhawkUIPreferenceConstants {
+	private RedhawkUIPreferenceConstants() {
 
-public class LaunchWaveformWizard extends BasicLaunchWaveformWizard {
-
-	public LaunchWaveformWizard(final ScaDomainManager domMgr) {
-		super(domMgr);
 	}
+
+	public static final String CREATE_WAVEFORM_LAUNCH_CONFIGURATION = "createLaunchConfiguration";
 }

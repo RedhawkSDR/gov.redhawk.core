@@ -1,4 +1,4 @@
-/**
+/** 
  * This file is protected by Copyright. 
  * Please refer to the COPYRIGHT file distributed with this source distribution.
  * 
@@ -14,13 +14,17 @@ package gov.redhawk.sca.ui.compatibility;
 import org.eclipse.jface.viewers.ColumnViewer;
 
 /**
- * @since 9.0
+ * @since 9.2
+ * 
  */
 public final class ColumnViewerToolTipSupport {
 	private ColumnViewerToolTipSupport() {
 
 	}
 
+	/**
+	 * @since 10.0
+	 */
 	public static void enableFor(final ColumnViewer viewer) {
 		org.eclipse.jface.viewers.ColumnViewerToolTipSupport.enableFor(viewer);
 	}
@@ -28,4 +32,5 @@ public final class ColumnViewerToolTipSupport {
 	public static void enableFor(final ColumnViewer viewer, final int style) {
 		org.eclipse.jface.viewers.ColumnViewerToolTipSupport.enableFor(viewer, style);
 	}
+
 }
