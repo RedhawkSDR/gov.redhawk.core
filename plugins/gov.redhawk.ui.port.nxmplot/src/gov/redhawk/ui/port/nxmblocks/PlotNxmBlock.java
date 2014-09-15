@@ -19,7 +19,10 @@ import gov.redhawk.ui.port.nxmplot.preferences.PlotPreferences;
 import gov.redhawk.ui.port.nxmplot.preferences.Preference;
 
 import java.awt.Color;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Iterator;
+import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 
 import nxm.sys.lib.NeXtMidas;
@@ -480,4 +483,10 @@ public class PlotNxmBlock extends AbstractNxmBlock<plot> {
 		String sourceName = streamIdToSourceNameMap.get(streamId);
 		return plotWidget.getLineColor(sourceName);
 	}
+	
+	@Override
+	public List<String> getStreamIDs() {
+		return Collections.unmodifiableList(new ArrayList<String>(streamIdToSriMap.keySet()));
+	}
+	
 }
