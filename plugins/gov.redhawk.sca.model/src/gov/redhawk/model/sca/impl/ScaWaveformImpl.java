@@ -996,8 +996,6 @@ public class ScaWaveformImpl extends ScaPropertyContainerImpl<Application, Softw
 
 	private final VersionedFeature portsFeature = new VersionedFeature(this, ScaPackage.Literals.SCA_PORT_CONTAINER__PORTS);
 
-	private boolean released;
-
 	/**
 	 * @since 14.0
 	 */

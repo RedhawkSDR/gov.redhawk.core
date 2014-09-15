@@ -462,8 +462,6 @@ public abstract class ScaAbstractComponentImpl< R extends Resource > extends Sca
 
 	private final VersionedFeature startedRevision = new VersionedFeature(this, ScaPackage.Literals.SCA_ABSTRACT_COMPONENT__STARTED);
 
-	private boolean released;
-
 	/**
 	 * <!-- begin-user-doc -->
 	 * @since 14.0
