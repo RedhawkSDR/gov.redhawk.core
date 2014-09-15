@@ -553,13 +553,19 @@ public abstract class ScaAbstractComponentImpl< R extends Resource > extends Sca
 		// BEGIN GENERATED CODE
 	}
 
+	private boolean released;
+	
 	@Override
 	public void releaseObject() throws ReleaseError {
 		// END GENERATED CODE
+		if (released) {
+			return;
+		}
 		R resource = fetchNarrowedObject(null);
 		if (resource != null) {
 			resource.releaseObject();
 		}
+		released = true;
 		TransactionalEditingDomain domain = TransactionUtil.getEditingDomain(this);
 		Command command = new ScaModelCommand() {
 
