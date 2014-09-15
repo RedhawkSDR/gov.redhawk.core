@@ -22,7 +22,9 @@ import java.awt.Color;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 import nxm.sys.lib.NeXtMidas;
@@ -47,9 +49,12 @@ import BULKIO.StreamSRI;
 public class PlotNxmBlock extends AbstractNxmBlock<plot> {
 
 	private static final Debug TRACE_LOG = new Debug(PlotActivator.PLUGIN_ID, PlotNxmBlock.class.getSimpleName());
+	/** zero-length arrays are immutable. For more info see Effective Java, Item 27: Return zero-length arrays, not null. */
+	private static final StreamSRI[] EMPTY_STREAMSRI_ARRAY = new StreamSRI[0];
 
+	/** using a "synchronized" LinkedHashMap to keep order of launched streams. */
+	private Map<String, StreamSRI> streamIdToSriMap = Collections.synchronizedMap(new LinkedHashMap<String, StreamSRI>());
 	private ConcurrentHashMap<String, String> streamIdToSourceNameMap = new ConcurrentHashMap<String, String>();
-	private ConcurrentHashMap<String, StreamSRI> streamIdToSriMap = new ConcurrentHashMap<String, StreamSRI>();
 	private ConcurrentHashMap<String, Boolean> streamIdToIsHidden = new ConcurrentHashMap<String, Boolean>();
 	private IMenuManager menu;
 
@@ -84,6 +89,17 @@ public class PlotNxmBlock extends AbstractNxmBlock<plot> {
 	@Override
 	public int getMaxOutputs() {
 		return 0; // this is the end point to plot so it has no outputs
+	}
+
+	@Override
+	public List<String> getStreamIDs() {
+		return Collections.unmodifiableList(new ArrayList<String>(streamIdToSriMap.keySet()));
+	}
+
+	@Override
+	public StreamSRI[] getLaunchedStreams() {
+		StreamSRI[] retval = streamIdToSriMap.values().toArray(EMPTY_STREAMSRI_ARRAY);
+		return retval;
 	}
 
 	@Override
@@ -483,10 +499,4 @@ public class PlotNxmBlock extends AbstractNxmBlock<plot> {
 		String sourceName = streamIdToSourceNameMap.get(streamId);
 		return plotWidget.getLineColor(sourceName);
 	}
-	
-	@Override
-	public List<String> getStreamIDs() {
-		return Collections.unmodifiableList(new ArrayList<String>(streamIdToSriMap.keySet()));
-	}
-	
 }
