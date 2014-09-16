@@ -211,7 +211,7 @@ public class SourcePreferencePage extends PreferencePage {
 
 			@Override
 			protected Object getValue(Object element) {
-				Color currentColor = plotBlock.getStreamLineColor((String) element);
+				Color currentColor = getStreamColor((String) element);
 				return new RGB(currentColor.getRed(), currentColor.getGreen(), currentColor.getBlue());
 			}
 
@@ -244,7 +244,7 @@ public class SourcePreferencePage extends PreferencePage {
 	private List<String> getAllStreamIds() {
 		List<String> retval = new ArrayList<String>();
 		for (INxmBlock block: sourceBlocks) {
-			if (block instanceof AbstractNxmBlock<?>) {
+			if (block != plotBlock && block instanceof AbstractNxmBlock<?>) {
 				retval.addAll(((AbstractNxmBlock<?>) block).getStreamIDs());
 			}
 		}
@@ -308,6 +308,17 @@ public class SourcePreferencePage extends PreferencePage {
 			}
 		}
 		return super.performOk();
+	}
+	
+	@Override
+	protected void performDefaults() {
+		List<String> streamIDs = getAllStreamIds();
+		for (String streamID: streamIDs) {
+			streamShows.put(streamID, Boolean.TRUE);
+			setStreamColor(streamID, plotBlock.getStreamDefaultLineColor(streamID));
+		}
+		streamsViewer.update(streamIDs.toArray(), null);
+		super.performDefaults();
 	}
 	
 }
