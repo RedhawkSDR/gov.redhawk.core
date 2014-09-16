@@ -58,7 +58,10 @@ public class PlotSettingsAction extends Action {
 				if (container instanceof ScaAbstractComponent<?>) {
 					ScaAbstractComponent<?> component = (ScaAbstractComponent<?>) container;
 					String qualifier = component.getIdentifier();
-					name = qualifier.substring(0, qualifier.indexOf(':')) + " -> " + name;
+					int colonIndex = qualifier.indexOf(':');
+					if (colonIndex > -1) {
+						name = qualifier.substring(0, colonIndex) + " -> " + name;
+					}
 				}
 				SourcePreferencePage sourcePrefPage = new SourcePreferencePage(name, pageBook, blockChain);
 				PreferenceNode sourceNode = new PreferenceNode(source.toString(), sourcePrefPage);
