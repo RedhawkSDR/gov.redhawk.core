@@ -901,14 +901,7 @@ public abstract class AbstractNxmPlotWidget extends Composite {
 			}
 		}
 		if (retColor == null) { // probably have remote PLOT (i.e. RapNxmPlotWidget)
-			int index = 1;      // try to figure out the source's layer index
-			for (String key : inputSessions.keySet()) {
-				if (sourcePipeId.equals(key)) {
-					break;
-				}
-				index++;
-			}
-			retColor = MColor.getColorByIndex(index); // <-- PLOT/Layer1D uses this as default color
+			retColor = getDefaultLineColor(sourcePipeId); // use default colors here
 		}
 		return retColor;
 	}
@@ -919,5 +912,21 @@ public abstract class AbstractNxmPlotWidget extends Composite {
 	public void setLineColor(@NonNull String sourcePipeId, @NonNull Color color) {
 		String colorStr = MColor.toString(color);
 		setPropertyOnLayer(sourcePipeId, "COLOR", 0, colorStr);
+	}
+	
+	/** Get PLOT's default line color for specified source.
+	 * @noreference This method is not intended to be referenced by clients.
+	 */
+	public Color getDefaultLineColor(@NonNull String sourcePipeId) {
+		Color retColor = null;
+		int index = 1;      // try to figure out the source's layer index
+		for (String key : inputSessions.keySet()) {
+			if (sourcePipeId.equals(key)) {
+				break;
+			}
+			index++;
+		}
+		retColor = MColor.getColorByIndex(index); // <-- PLOT/Layer1D uses this as default color
+		return retColor;
 	}
 }

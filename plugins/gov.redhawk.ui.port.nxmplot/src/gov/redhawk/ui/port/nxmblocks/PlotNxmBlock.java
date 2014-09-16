@@ -499,4 +499,14 @@ public class PlotNxmBlock extends AbstractNxmBlock<plot> {
 		String sourceName = streamIdToSourceNameMap.get(streamId);
 		return plotWidget.getLineColor(sourceName);
 	}
+	
+	/**
+	 * @noreference This method is not intended to be referenced by clients.
+	 * @since 5.0
+	 */
+	public Color getStreamDefaultLineColor(@NonNull String streamId) {
+		AbstractNxmPlotWidget plotWidget = getContext();
+		String sourceName = streamIdToSourceNameMap.get(streamId);
+		return plotWidget.getDefaultLineColor(sourceName);
+	}
 }
