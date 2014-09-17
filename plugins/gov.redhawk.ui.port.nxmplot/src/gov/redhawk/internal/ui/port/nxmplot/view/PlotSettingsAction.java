@@ -13,15 +13,19 @@ package gov.redhawk.internal.ui.port.nxmplot.view;
 import gov.redhawk.internal.ui.preferences.PlotPreferenceDialog;
 import gov.redhawk.internal.ui.preferences.PlotPreferenceNode;
 import gov.redhawk.internal.ui.preferences.PlotPreferencePage;
+import gov.redhawk.internal.ui.preferences.SourcePreferenceNode;
 import gov.redhawk.internal.ui.preferences.SourcePreferencePage;
 import gov.redhawk.model.sca.ScaAbstractComponent;
+import gov.redhawk.model.sca.ScaDomainManager;
 import gov.redhawk.model.sca.ScaPortContainer;
+import gov.redhawk.model.sca.ScaWaveform;
 import gov.redhawk.ui.port.nxmplot.INxmBlock;
 import gov.redhawk.ui.port.nxmplot.PlotPageBook2;
 import gov.redhawk.ui.port.nxmplot.PlotSource;
 
 import java.util.List;
 
+import org.eclipse.emf.ecore.EObject;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.preference.IPreferencePage;
@@ -54,17 +58,34 @@ public class PlotSettingsAction extends Action {
 			for (PlotSource source : pageBook.getSources()) {
 				List<INxmBlock> blockChain = pageBook.getBlockChain(source);
 				String name = source.getInput().getName();
+				String nodeName = name;
 				ScaPortContainer container = source.getInput().getPortContainer();
 				if (container instanceof ScaAbstractComponent<?>) {
 					ScaAbstractComponent<?> component = (ScaAbstractComponent<?>) container;
 					String qualifier = component.getIdentifier();
 					int colonIndex = qualifier.indexOf(':');
 					if (colonIndex > -1) {
-						name = qualifier.substring(0, colonIndex) + " -> " + name;
+						name = qualifier.substring(0, colonIndex) + " > " + name;
+					} else {
+						name = qualifier + " > " + name;
+					}
+					nodeName = name;
+					EObject wave = component.eContainer();
+					if (wave instanceof ScaWaveform) {
+						qualifier = ((ScaWaveform) wave).getName();
+						name = qualifier + " > " + name;
+						ScaDomainManager domain = ((ScaWaveform) wave).getDomMgr();
+						if (domain != null) {
+							qualifier = domain.getName();
+							name = qualifier + " > " + name;
+						} else {
+							name = "Sandbox > " + name;
+						}
 					}
 				}
 				SourcePreferencePage sourcePrefPage = new SourcePreferencePage(name, pageBook, blockChain);
-				PreferenceNode sourceNode = new PreferenceNode(source.toString(), sourcePrefPage);
+				SourcePreferenceNode sourceNode = new SourcePreferenceNode(source.toString(), nodeName, null, "gov.redhawk.internal.ui.preferences.SourcePreferencePage");
+				sourceNode.setPage(sourcePrefPage);
 
 				for (INxmBlock block : blockChain) {
 					IPreferencePage page = block.createPreferencePage();
@@ -84,6 +105,8 @@ public class PlotSettingsAction extends Action {
 		}
 
 		PlotPreferenceDialog dialog = new PlotPreferenceDialog(pageBook.getShell(), manager);
+		dialog.create();
+		dialog.getTreeViewer().expandToLevel(2);
 		dialog.open();
 	}
 }
