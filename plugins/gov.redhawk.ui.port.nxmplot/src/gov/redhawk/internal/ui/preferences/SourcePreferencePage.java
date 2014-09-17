@@ -123,6 +123,9 @@ public class SourcePreferencePage extends PreferencePage {
 		showButton.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
+				for (String streamID: getAllStreamIds()) {
+					streamShows.put(streamID, Boolean.TRUE);
+				}
 				streamsViewer.setAllChecked(true);
 			}
 		});
@@ -132,6 +135,9 @@ public class SourcePreferencePage extends PreferencePage {
 		hideButton.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
+				for (String streamID: getAllStreamIds()) {
+					streamShows.put(streamID, Boolean.FALSE);
+				}
 				streamsViewer.setAllChecked(false);
 			}
 		});
@@ -157,12 +163,20 @@ public class SourcePreferencePage extends PreferencePage {
 
 			@Override
 			protected Object getValue(Object element) {
-				return plotBlock.isStreamShown((String) element);
+				String streamID = (String) element;
+				Boolean shouldShow = streamShows.get(streamID);
+				if (shouldShow == null) {
+					shouldShow = new Boolean(plotBlock.isStreamShown(streamID));
+					streamShows.put(streamID, shouldShow);
+				}
+				return shouldShow;
 			}
 
 			@Override
 			protected void setValue(Object element, Object value) {
+				String streamID = (String) element;
 				boolean shouldShow = ((Boolean) value).booleanValue();
+				streamShows.put(streamID, new Boolean(shouldShow));
 				streamsViewer.setChecked(element, shouldShow);
 				getViewer().update(element, null);
 			}
