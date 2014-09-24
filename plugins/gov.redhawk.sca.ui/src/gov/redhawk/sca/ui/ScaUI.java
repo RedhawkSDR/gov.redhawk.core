@@ -39,6 +39,12 @@ import org.eclipse.ui.part.FileEditorInput;
  * 
  */
 public final class ScaUI {
+	
+	/**
+	 * @since 10.0
+	 */
+	public static final String WIDGET_TEST_ID = "org.eclipse.swtbot.search.defaultKey";
+	
 	private ScaUI() {
 
 	}

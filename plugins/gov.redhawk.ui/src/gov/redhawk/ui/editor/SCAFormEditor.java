@@ -58,6 +58,7 @@ import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.SubProgressMonitor;
 import org.eclipse.core.runtime.jobs.Job;
+import org.eclipse.core.runtime.jobs.JobChangeAdapter;
 import org.eclipse.emf.common.command.BasicCommandStack;
 import org.eclipse.emf.common.command.Command;
 import org.eclipse.emf.common.command.CommandStack;
@@ -1558,11 +1559,18 @@ public abstract class SCAFormEditor extends FormEditor implements IEditingDomain
 		}
 		return null;
 	}
-
+	
 	/**
-	 * @since 6.0
+	 * @since 7.1
 	 */
-	protected void validate() {
+	public void validate() {
+		validate(null);
+	}
+	
+	/**
+	 * @since 7.1
+	 */
+	public void validate(JobChangeAdapter adapter) {
 		if (this.validator != null) {
 			Display display = null;
 			if (getSite() != null) {
@@ -1591,6 +1599,9 @@ public abstract class SCAFormEditor extends FormEditor implements IEditingDomain
 
 			// Validation Job should be DECORATE Priority; schedule for future to allow resource reload to complete.
 			job.setPriority(Job.DECORATE);
+			if (adapter != null) {
+				job.addJobChangeListener(adapter);
+			}
 			job.schedule();
 		}
 	}

@@ -15,6 +15,7 @@ import gov.redhawk.common.ui.doc.HelpConstants;
 import gov.redhawk.common.ui.editor.FormLayoutFactory;
 import gov.redhawk.common.ui.parts.FormEntry;
 import gov.redhawk.model.sca.commands.ScaModelCommand;
+import gov.redhawk.sca.ui.ScaUI;
 import gov.redhawk.ui.doc.HelpUtil;
 import gov.redhawk.ui.util.SWTUtil;
 
@@ -74,6 +75,8 @@ import org.eclipse.ui.forms.widgets.FormToolkit;
  *
  */
 public abstract class BasicSimplePropertyComposite extends AbstractPropertyComposite {
+	public static final String ENUM_REMOVE_BUTTON_ID = "gov.redhawk.prf.internal.ui.editor.composite.BasicSimplePropertyComposite.enum.removeButton";
+
 	protected static final int NUM_COLUMNS = 3;
 
 	private static final GridDataFactory FACTORY = GridDataFactory.fillDefaults().span(2, 1).grab(true, false);
@@ -556,6 +559,7 @@ public abstract class BasicSimplePropertyComposite extends AbstractPropertyCompo
 		this.editEnumButton.setLayoutData(GridDataFactory.fillDefaults().align(SWT.FILL, SWT.TOP).create());
 		this.editEnumButton.setEnabled(false);
 		this.removeEnumButton = this.toolkit.createButton(tableComp, "Remove", SWT.PUSH);
+		this.removeEnumButton.setData(ScaUI.WIDGET_TEST_ID, ENUM_REMOVE_BUTTON_ID);
 		this.removeEnumButton.setLayoutData(GridDataFactory.fillDefaults().align(SWT.FILL, SWT.TOP).create());
 		this.removeEnumButton.setEnabled(!this.enumViewer.getSelection().isEmpty());
 		this.enumViewer.addSelectionChangedListener(new ISelectionChangedListener() {
