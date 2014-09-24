@@ -16,12 +16,11 @@
   <parent>
     <groupId>gov.redhawk.core</groupId>
     <artifactId>core</artifactId>
-    <version>1.10.0-SNAPSHOT</version>
+    <version>1.10.1-SNAPSHOT</version>
     <relativePath>../../releng/core</relativePath>
   </parent>
   <artifactId>omnijni</artifactId>
   <packaging>eclipse-plugin</packaging>
-
 
   <properties>
     <checkstyle.skip>true</checkstyle.skip>
