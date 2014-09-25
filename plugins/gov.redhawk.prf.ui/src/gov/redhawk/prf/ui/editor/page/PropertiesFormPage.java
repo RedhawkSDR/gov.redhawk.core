@@ -50,6 +50,13 @@ public class PropertiesFormPage extends ScaFormPage implements IViewerProvider {
 		super(editor, PropertiesFormPage.PAGE_ID, "Properties");
 		this.fBlock = new PropertiesBlock(this);
 	}
+	
+	/**
+	 * @since 3.1
+	 */
+	public PropertiesBlock getPropertiesBlock() {
+		return fBlock;
+	}
 
 	/**
 	 * {@inheritDoc}

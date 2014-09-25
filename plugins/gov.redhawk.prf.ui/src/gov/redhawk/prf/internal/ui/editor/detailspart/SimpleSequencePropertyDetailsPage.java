@@ -211,6 +211,10 @@ public class SimpleSequencePropertyDetailsPage extends BasicSimplePropertyDetail
 			}
 		}
 	}
+	
+	public SimpleSequencePropertyComposite getComposite() {
+		return composite;
+	}
 
 	/**
 	 * 
