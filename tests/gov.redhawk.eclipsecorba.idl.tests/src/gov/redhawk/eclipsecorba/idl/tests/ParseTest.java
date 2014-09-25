@@ -31,7 +31,7 @@ import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 
-public class ParseTests extends TestCase {
+public class ParseTest extends TestCase {
 
 	private ResourceSet resourceSet;
 

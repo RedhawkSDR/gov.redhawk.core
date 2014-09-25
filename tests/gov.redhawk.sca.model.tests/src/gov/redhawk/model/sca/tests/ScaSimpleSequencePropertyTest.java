@@ -91,15 +91,15 @@ public class ScaSimpleSequencePropertyTest extends ScaAbstractPropertyTest {
 			@Override
 			public void execute() {
 				final ScaComponent kitchenSink = waveform.findComponent(ScaTestConstaints.DCE_KITCHEN_SINK_COMPONENT);
-				if (kitchenSink == null && ScaTests.DEBUG.enabled) {
-					ScaTests.DEBUG.message("Invalid Object State: {0}", waveform);
+				if (kitchenSink == null && ScaTestsUtil.DEBUG.enabled) {
+					ScaTestsUtil.DEBUG.message("Invalid Object State: {0}", waveform);
 				}
 				if (kitchenSink == null) {
 					return;
 				}
 				final ScaAbstractProperty< ? > prop = kitchenSink.getProperty(ScaTestConstaints.DCE_SIMPLE_SEQUENCE_STRING_PROP);
-				if (prop == null && ScaTests.DEBUG.enabled) {
-					ScaTests.DEBUG.message("Invalid Object State: {0}", kitchenSink);
+				if (prop == null && ScaTestsUtil.DEBUG.enabled) {
+					ScaTestsUtil.DEBUG.message("Invalid Object State: {0}", kitchenSink);
 				}
 				setFixture(prop);
 			}

@@ -99,15 +99,15 @@ public class ScaStructPropertyTest extends ScaAbstractPropertyTest {
 			@Override
 			public void execute() {
 				final ScaComponent kitchenSink = waveform.findComponent(ScaTestConstaints.DCE_KITCHEN_SINK_COMPONENT);
-				if (kitchenSink == null && ScaTests.DEBUG.enabled) {
-					ScaTests.DEBUG.message("Invalid state: {0}", waveform);
+				if (kitchenSink == null && ScaTestsUtil.DEBUG.enabled) {
+					ScaTestsUtil.DEBUG.message("Invalid state: {0}", waveform);
 				}
 				if (kitchenSink == null) {
 					return;
 				}
 				final ScaAbstractProperty< ? > prop = kitchenSink.getProperty(ScaTestConstaints.DCE_STRUCT_PROP);
-				if (prop == null && ScaTests.DEBUG.enabled) {
-					ScaTests.DEBUG.message("Invalid state: {0}", kitchenSink);
+				if (prop == null && ScaTestsUtil.DEBUG.enabled) {
+					ScaTestsUtil.DEBUG.message("Invalid state: {0}", kitchenSink);
 				}
 				setFixture(prop);
 			}

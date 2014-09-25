@@ -96,8 +96,8 @@ public class ScaComponentTest extends ScaAbstractComponentTest {
 
 			@Override
 			public void execute() {
-				if (waveform.getComponents().isEmpty() && ScaTests.DEBUG.enabled) {
-					ScaTests.DEBUG.message("Invalid state: {0}", waveform);
+				if (waveform.getComponents().isEmpty() && ScaTestsUtil.DEBUG.enabled) {
+					ScaTestsUtil.DEBUG.message("Invalid state: {0}", waveform);
 				}
 				Assert.assertFalse(waveform.getComponents().isEmpty());
 				setFixture(waveform.getComponents().get(0));

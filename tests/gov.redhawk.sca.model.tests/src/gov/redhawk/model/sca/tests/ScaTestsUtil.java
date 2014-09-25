@@ -19,7 +19,7 @@ import gov.redhawk.sca.util.Debug;
  * <!-- end-user-doc -->
  * @generated NOT
  */
-public class ScaTests {
+public class ScaTestsUtil {
 
 
 

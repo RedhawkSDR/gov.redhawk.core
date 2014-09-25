@@ -98,12 +98,12 @@ public class ScaUsesPortTest extends ScaPortTest {
 			public void execute() {
 				final ScaComponent kitchenSinkComp = waveform.findComponent(ScaTestConstaints.DCE_KITCHEN_SINK_COMPONENT);
 				if (kitchenSinkComp == null) {
-					ScaTests.DEBUG.message("Invalid Object State: {0}", waveform);
+					ScaTestsUtil.DEBUG.message("Invalid Object State: {0}", waveform);
 					return;
 				}
 				final ScaPort< ? , ? > port = kitchenSinkComp.getScaPort("outDouble");
 				if (port == null) {
-					ScaTests.DEBUG.message("Invalid Object State: {0}", kitchenSinkComp);
+					ScaTestsUtil.DEBUG.message("Invalid Object State: {0}", kitchenSinkComp);
 					return;
 				}
 				setFixture(port);

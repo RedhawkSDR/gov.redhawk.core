@@ -80,15 +80,15 @@ public class ScaProvidesPortTest extends ScaPortTest {
 			@Override
 			public void execute() {
 				final ScaComponent kitchenSinkComp = waveform.findComponent(ScaTestConstaints.DCE_KITCHEN_SINK_COMPONENT);
-				if (kitchenSinkComp == null && ScaTests.DEBUG.enabled) {
-					ScaTests.DEBUG.message("Invalid Object State: {0}", waveform);
+				if (kitchenSinkComp == null && ScaTestsUtil.DEBUG.enabled) {
+					ScaTestsUtil.DEBUG.message("Invalid Object State: {0}", waveform);
 				}
 				if (kitchenSinkComp == null) {
 					return;
 				}
 				final ScaPort< ? , ? > port = kitchenSinkComp.getScaPort("inDouble");
-				if (port == null && ScaTests.DEBUG.enabled) {
-					ScaTests.DEBUG.message("Invalid Object State: {0}", kitchenSinkComp);
+				if (port == null && ScaTestsUtil.DEBUG.enabled) {
+					ScaTestsUtil.DEBUG.message("Invalid Object State: {0}", kitchenSinkComp);
 				}
 				setFixture(port);
 			}
