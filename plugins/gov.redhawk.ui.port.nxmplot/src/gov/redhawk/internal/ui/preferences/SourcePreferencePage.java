@@ -14,6 +14,7 @@ import gov.redhawk.ui.port.nxmblocks.AbstractNxmBlock;
 import gov.redhawk.ui.port.nxmblocks.PlotNxmBlock;
 import gov.redhawk.ui.port.nxmplot.INxmBlock;
 import gov.redhawk.ui.port.nxmplot.PlotPageBook2;
+import gov.redhawk.ui.port.nxmplot.preferences.PlotPreferences;
 
 import java.awt.Color;
 import java.util.ArrayList;
@@ -62,6 +63,7 @@ public class SourcePreferencePage extends PreferencePage {
 	private PlotNxmBlock plotBlock;
 	private Map<String, Color> streamColors = new HashMap<String, Color>();
 	private Map<String, Boolean> streamShows = new HashMap<String, Boolean>();
+	private OverridableIntegerFieldEditor frameSizeEditor;
 
 	public SourcePreferencePage(String label, PlotPageBook2 pageBook, List<INxmBlock> sourceBlocks) {
 		super(label);
@@ -252,7 +254,29 @@ public class SourcePreferencePage extends PreferencePage {
 		});
 		plotBlock = getPlotBlock();
 		streamsViewer.setInput(plotBlock);
+		Composite field = new Composite(main, SWT.NONE);
+		field.setLayout(new GridLayout(2, false));
+		field.setLayoutData(GridDataFactory.fillDefaults().grab(true, false).create());
+//		createFrameSizeField(field);
+		for (INxmBlock block: sourceBlocks) {
+			if (block instanceof PlotNxmBlock) {
+				frameSizeEditor = createFrameSizeField(block, field);
+				break;
+			}
+		}
 		return main;
+	}
+
+	private OverridableIntegerFieldEditor createFrameSizeField(INxmBlock block, Composite parent) {
+		OverridableIntegerFieldEditor frameSizeField = new OverridableIntegerFieldEditor(PlotPreferences.FRAMESIZE.getName(),
+			PlotPreferences.FRAMESIZE_OVERRIDE.getName(), "&Framesize:", parent);
+		frameSizeField.setErrorMessage("Framesize must be a positive integer >= 2");
+		frameSizeField.setValidRange(2, Integer.MAX_VALUE);
+		frameSizeField.setPage(this);
+		frameSizeField.setPreferenceStore(block.getPreferences());
+		frameSizeField.fillIntoGrid(parent, 2);
+		frameSizeField.load();
+		return frameSizeField;
 	}
 
 	private List<String> getAllStreamIds() {
@@ -306,6 +330,7 @@ public class SourcePreferencePage extends PreferencePage {
 	
 	@Override
 	public boolean performOk() {
+		frameSizeEditor.store();
 		for (String streamID: getAllStreamIds()) {
 			Color streamColor = streamColors.get(streamID);
 			if (streamColor != null) {
@@ -332,6 +357,7 @@ public class SourcePreferencePage extends PreferencePage {
 			setStreamColor(streamID, plotBlock.getStreamDefaultLineColor(streamID));
 		}
 		streamsViewer.update(streamIDs.toArray(), null);
+		frameSizeEditor.loadDefault();
 		super.performDefaults();
 	}
 	

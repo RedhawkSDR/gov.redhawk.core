@@ -19,6 +19,7 @@ import gov.redhawk.model.sca.ScaAbstractComponent;
 import gov.redhawk.model.sca.ScaDomainManager;
 import gov.redhawk.model.sca.ScaPortContainer;
 import gov.redhawk.model.sca.ScaWaveform;
+import gov.redhawk.ui.port.nxmblocks.PlotNxmBlock;
 import gov.redhawk.ui.port.nxmplot.INxmBlock;
 import gov.redhawk.ui.port.nxmplot.PlotPageBook2;
 import gov.redhawk.ui.port.nxmplot.PlotSource;
@@ -88,6 +89,10 @@ public class PlotSettingsAction extends Action {
 				sourceNode.setPage(sourcePrefPage);
 
 				for (INxmBlock block : blockChain) {
+					if (block instanceof PlotNxmBlock) {
+						// This is now handled in sourcePrefPage
+						continue;
+					}
 					IPreferencePage page = block.createPreferencePage();
 					if (page != null) {
 						PreferenceNode blockNode = new PreferenceNode(block.toString(), page);
