@@ -499,15 +499,12 @@ public abstract class SCAFormEditor extends FormEditor implements IEditingDomain
 		}
 	}
 
-	
-	
 	/**
 	 * This sets up the editing domain for the model editor.
 	 */
 	protected void initializeEditingDomain() {
-		
+
 		TransactionalEditingDomain domain = createEditingDomain();
-		
 
 		final Map<String, Boolean> myOptions = new HashMap<String, Boolean>();
 		myOptions.put(Transaction.OPTION_NO_VALIDATION, Boolean.TRUE);
@@ -548,17 +545,15 @@ public abstract class SCAFormEditor extends FormEditor implements IEditingDomain
 			}
 
 		});
-		
-		domain.getResourceSet().eAdapters().add(new EContentAdapter() {
-			  @Override
-			  public void notifyChanged(Notification notification) {
-			    selfAdapt(notification);
 
-			    super.notifyChanged(notification);
-			  }
+		domain.getResourceSet().eAdapters().add(new EContentAdapter() {
+			@Override
+			public void notifyChanged(Notification notification) {
+				selfAdapt(notification);
+
+				super.notifyChanged(notification);
+			}
 		});
-		
-		
 
 		// Add a listener to set the most recent command's affected objects to
 		// be the selection of the viewer with focus.
@@ -587,9 +582,9 @@ public abstract class SCAFormEditor extends FormEditor implements IEditingDomain
 			localAdapterFactory.addAdapterFactory(new ReflectiveItemProviderAdapterFactory());
 			((AdapterFactoryEditingDomain) domain).setAdapterFactory(localAdapterFactory);
 		}
-		
+
 		return domain;
-    }
+	}
 
 	/**
 	 * Provide access to the command stack listener so that subclasses may remove if so desired.
@@ -1559,14 +1554,14 @@ public abstract class SCAFormEditor extends FormEditor implements IEditingDomain
 		}
 		return null;
 	}
-	
+
 	/**
 	 * @since 7.1
 	 */
 	public void validate() {
 		validate(null);
 	}
-	
+
 	/**
 	 * @since 7.1
 	 */
@@ -1938,10 +1933,8 @@ public abstract class SCAFormEditor extends FormEditor implements IEditingDomain
 	 * @since 6.0
 	 */
 	protected void resourceDeleted(final IResource resource) {
-		// close the editor if it's not dirty
-		if (!isDirty()) {
-			closeEditor(false);
-		}
+		// close the editor if the resource is deleted
+		closeEditor(false);
 	}
 
 	/**
