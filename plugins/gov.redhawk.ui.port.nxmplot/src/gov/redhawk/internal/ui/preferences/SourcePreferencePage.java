@@ -330,7 +330,9 @@ public class SourcePreferencePage extends PreferencePage {
 	
 	@Override
 	public boolean performOk() {
-		frameSizeEditor.store();
+		if (frameSizeEditor != null) {
+			frameSizeEditor.store();
+		}
 		for (String streamID: getAllStreamIds()) {
 			Color streamColor = streamColors.get(streamID);
 			if (streamColor != null) {
