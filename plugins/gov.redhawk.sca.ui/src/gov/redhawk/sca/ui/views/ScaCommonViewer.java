@@ -157,6 +157,7 @@ public class ScaCommonViewer extends CommonViewer {
 	protected void init() {
 		super.init();
 		setLabelProvider(new DelegatingTooltipLabelProvider(getNavigatorContentService().createCommonLabelProvider()));
+		setAutoExpandLevel(2);
 	}
 
 }
