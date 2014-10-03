@@ -56,7 +56,8 @@ public class ConnectionsConstraint extends AbstractModelConstraint {
 	 * Validate whether or not there are any duplicate connect interfaces contained in the connections container
 	 * @param connections The container that holds all connect interfaces found in the waveform
 	 * @param ctx The validation context which we shall report our results to
-	 * @return IStatus Return OK Status if the connection container holds no duplicates or throw failure notice if it does
+	 * @return IStatus Return OK Status if the connection container holds no duplicates or throw failure notice if it
+	 * does
 	 */
 	public static IStatus validate(final SadConnections connections, final IValidationContext ctx) {
 		final HashMap<String, Integer> idsMap = new HashMap<String, Integer>();
@@ -86,7 +87,7 @@ public class ConnectionsConstraint extends AbstractModelConstraint {
 
 			if (connectMap.size() > 0) {
 				return new EnhancedConstraintStatus((ConstraintStatus) ctx.createFailureStatus(ConnectionsConstraint.getMessage(idsMap, connectMap)),
-				        SadPackage.Literals.SOFTWARE_ASSEMBLY__CONNECTIONS);
+					SadPackage.Literals.SOFTWARE_ASSEMBLY__CONNECTIONS);
 			}
 		}
 
@@ -160,7 +161,8 @@ public class ConnectionsConstraint extends AbstractModelConstraint {
 	}
 
 	/**
-	 * Return unique name that is of pattern <source_port_name> <parent_component> <target_port_name> <target_parent_component>
+	 * Return unique name that is of pattern <source_port_name> <parent_component> <target_port_name>
+	 * <target_parent_component>
 	 * @param connect The connect interface that we shall make a unique name for
 	 * @return String Return the unique name as a string
 	 */
@@ -173,8 +175,10 @@ public class ConnectionsConstraint extends AbstractModelConstraint {
 			retVal.append(uses.getUsesIndentifier() + " " + uses.getComponentInstantiationRef().getRefid() + " ");
 		} else if (connect.getSource() != null && connect.getSource().eContainer() instanceof FindByStub) {
 			final SadUsesPort uses = connect.getUsesPort();
-			
-			retVal.append(uses.getUsesIndentifier() + " " + uses.getFindBy().getNamingService().getName() + " ");
+
+			String findByName = uses.getFindBy().getNamingService() != null ? uses.getFindBy().getNamingService().getName()
+				: uses.getFindBy().getDomainFinder().getName();
+			retVal.append(uses.getUsesIndentifier() + " " + findByName + " ");
 		}
 
 		if (connect.getTarget() != null) {
@@ -192,11 +196,16 @@ public class ConnectionsConstraint extends AbstractModelConstraint {
 				if (connect.getTarget() instanceof ProvidesPortStub) {
 					final SadProvidesPort provides = connect.getProvidesPort();
 
-					retVal.append(provides.getProvidesIdentifier() + " " + provides.getFindBy().getNamingService().getName());
+					String findByName = provides.getFindBy().getNamingService() != null ? provides.getFindBy().getNamingService().getName()
+						: provides.getFindBy().getDomainFinder().getName();
+					retVal.append(provides.getProvidesIdentifier() + " " + findByName);
 				} else if (connect.getTarget() instanceof ComponentSupportedInterfaceStub) {
 					final ComponentSupportedInterface inter = connect.getComponentSupportedInterface();
+					
+					String findByName = inter.getFindBy().getNamingService() != null ? inter.getFindBy().getNamingService().getName()
+						: inter.getFindBy().getDomainFinder().getName();
 
-					retVal.append(inter.getSupportedIdentifier() + " " + inter.getFindBy().getNamingService().getName());
+					retVal.append(inter.getSupportedIdentifier() + " " + findByName);
 				}
 			}
 		}
