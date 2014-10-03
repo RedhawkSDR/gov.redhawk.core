@@ -160,39 +160,4 @@
     <module>p2</module>
   </modules>
 
-  <build>
-    <plugins>
-      <plugin>
-        <groupId>org.eclipse.tycho</groupId>
-        <artifactId>tycho-surefire-plugin</artifactId>
-        <version>${tycho-version}</version>
-        <configuration>
-          <failIfNoTests>false</failIfNoTests>
-          <testFailureIgnore>${testFailureIgnore}</testFailureIgnore>
-          <argLine>${test-argLine}</argLine>
-          <appArgLine>-nl en</appArgLine>
-          <dependencies>
-            <dependency>
-              <type>eclipse-feature</type>
-              <artifactId>org.jacorb</artifactId>
-              <version>0.0.0</version>
-            </dependency>
-            <dependency>
-              <type>eclipse-plugin</type>
-              <artifactId>org.eclipse.equinox.ds</artifactId>
-              <version>0.0.0</version>
-            </dependency>
-          </dependencies>
-          <bundleStartLevel>
-            <bundle>
-              <id>org.eclipse.equinox.ds</id>
-              <level>1</level>
-              <autoStart>true</autoStart>
-            </bundle>
-          </bundleStartLevel>
-        </configuration>
-      </plugin>
-    </plugins>
-  </build>
-
 </project>
