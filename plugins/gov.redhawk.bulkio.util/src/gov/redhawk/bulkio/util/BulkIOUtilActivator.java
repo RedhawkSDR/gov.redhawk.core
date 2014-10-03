@@ -159,7 +159,14 @@ public class BulkIOUtilActivator extends Plugin {
 	 * @since 2.0
 	 */
 	public Map<String, IPortFactory> getPortFactories() {
-		List<ServiceReference<IPortFactory>> refs = new ArrayList<ServiceReference<IPortFactory>>(Arrays.asList(portFactoryTracker.getServiceReferences()));
+		ServiceReference<IPortFactory>[] refsArray = portFactoryTracker.getServiceReferences();
+		List<ServiceReference<IPortFactory>> refsList;
+		if (refsArray != null) {
+			refsList = Arrays.asList(refsArray);
+		} else {
+			refsList = Collections.emptyList();
+		}
+		List<ServiceReference<IPortFactory>> refs = new ArrayList<ServiceReference<IPortFactory>>(refsList);
 		Collections.sort(refs);
 		Map<String, IPortFactory> retVal = new HashMap<String, IPortFactory>();
 		for (ServiceReference<IPortFactory> ref : refs) {

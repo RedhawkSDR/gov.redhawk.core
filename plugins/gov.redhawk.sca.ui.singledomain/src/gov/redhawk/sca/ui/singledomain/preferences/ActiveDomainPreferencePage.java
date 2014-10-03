@@ -11,13 +11,12 @@
  */
 package gov.redhawk.sca.ui.singledomain.preferences;
 
-import gov.redhawk.common.ui.doc.HelpConstants;
-
 /**
  * ++++++++++++++++++ TROUBLESHOOTING +++++++++++++++++++++
  * Preferences are being stored as #store/gov.redhawk.sca/<pref name>, but they are being loaded as #session/gov.redhawk.sca/<pref name>
  */
 
+import gov.redhawk.common.ui.doc.HelpConstants;
 import gov.redhawk.model.sca.ScaDomainManager;
 import gov.redhawk.model.sca.ScaDomainManagerRegistry;
 import gov.redhawk.model.sca.ScaPackage;

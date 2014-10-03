@@ -28,6 +28,14 @@
    <license url="http://redhawksdr.org">
       %license
    </license>
+   
+   <includes
+         id="gov.redhawk.validation"
+         version="0.0.0"/>
+
+   <includes
+         id="gov.redhawk.idl"
+         version="0.0.0"/>
 
    <plugin
          id="gov.redhawk.sca"
