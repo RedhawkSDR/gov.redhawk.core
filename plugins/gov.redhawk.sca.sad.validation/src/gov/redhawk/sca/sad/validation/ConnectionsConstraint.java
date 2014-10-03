@@ -171,6 +171,10 @@ public class ConnectionsConstraint extends AbstractModelConstraint {
 			final SadUsesPort uses = connect.getUsesPort();
 
 			retVal.append(uses.getUsesIndentifier() + " " + uses.getComponentInstantiationRef().getRefid() + " ");
+		} else if (connect.getSource() != null && connect.getSource().eContainer() instanceof FindByStub) {
+			final SadUsesPort uses = connect.getUsesPort();
+			
+			retVal.append(uses.getUsesIndentifier() + " " + uses.getFindBy().getNamingService().getName() + " ");
 		}
 
 		if (connect.getTarget() != null) {
@@ -183,6 +187,16 @@ public class ConnectionsConstraint extends AbstractModelConstraint {
 					final ComponentSupportedInterface inter = connect.getComponentSupportedInterface();
 
 					retVal.append(inter.getSupportedIdentifier() + " " + inter.getComponentInstantiationRef().getRefid());
+				}
+			} else if (connect.getTarget().eContainer() instanceof FindByStub) {
+				if (connect.getTarget() instanceof ProvidesPortStub) {
+					final SadProvidesPort provides = connect.getProvidesPort();
+
+					retVal.append(provides.getProvidesIdentifier() + " " + provides.getFindBy().getNamingService().getName());
+				} else if (connect.getTarget() instanceof ComponentSupportedInterfaceStub) {
+					final ComponentSupportedInterface inter = connect.getComponentSupportedInterface();
+
+					retVal.append(inter.getSupportedIdentifier() + " " + inter.getFindBy().getNamingService().getName());
 				}
 			}
 		}
