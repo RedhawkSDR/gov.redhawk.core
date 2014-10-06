@@ -74,10 +74,30 @@ public class OrbSession {
 
 	/**
 	 * Get all the Init Refs defined in the omniORB config file.
+	 * <p>
+	 * <b>NOTE</b> The result of this method should not be used to create a properties object for 
+	 * {@link #createSession(String, String[], Properties)} as the key will not be correct.
+	 * <p>
+	 * Use {@link #getOmniORBInitRefsAsProperties()} instead
+	 * 
 	 * @since 3.4
 	 */
 	public static Map<String, String> getOmniORBInitRefs() {
 		return Collections.unmodifiableMap(OMNIORB_INIT_REFS);
+	}
+	
+	/**
+	 * Get all the Init Refs defined in the omniORB config file as a properties object that can be consumed by {@link #createSession(String, String[], Properties)}
+	 * @since 3.5
+	 */
+	public static Properties getOmniORBInitRefsAsProperties() {
+		Map<String, String> initRefs = OrbSession.getOmniORBInitRefs();
+		Properties props = new Properties();
+		props.clear();
+		for (Map.Entry<String, String> entry : initRefs.entrySet()) {
+			props.put("ORBInitRef." + entry.getKey(), entry.getValue());
+		}
+		return props;
 	}
 
 	/**
