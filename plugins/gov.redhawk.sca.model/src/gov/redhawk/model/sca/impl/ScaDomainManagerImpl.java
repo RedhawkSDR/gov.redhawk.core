@@ -1175,7 +1175,7 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 			final SubMonitor monitor = SubMonitor.convert(parentMonitor, "Connecting to domain: " + getName(), 100);
 			monitor.subTask("Initializing ORB...");
 			java.util.Properties orbProperties = createProperties();
-			java.util.Properties systemProps = System.getProperties();
+			java.util.Properties systemProps = new java.util.Properties(System.getProperties());
 			systemProps.putAll(orbProperties);
 
 			String tmpName = getName();
