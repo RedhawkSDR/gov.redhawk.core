@@ -179,6 +179,12 @@ public class ConnectionsConstraint extends AbstractModelConstraint {
 			String findByName = uses.getFindBy().getNamingService() != null ? uses.getFindBy().getNamingService().getName()
 				: uses.getFindBy().getDomainFinder().getName();
 			retVal.append(uses.getUsesIndentifier() + " " + findByName + " ");
+		} else if (connect.getUsesPort().getFindBy() != null) {
+			final SadUsesPort uses = connect.getUsesPort();
+
+			String findByName = uses.getFindBy().getNamingService() != null ? uses.getFindBy().getNamingService().getName()
+				: uses.getFindBy().getDomainFinder().getName();
+			retVal.append(uses.getUsesIndentifier() + " " + findByName + " ");
 		}
 
 		if (connect.getTarget() != null) {
@@ -208,6 +214,12 @@ public class ConnectionsConstraint extends AbstractModelConstraint {
 					retVal.append(inter.getSupportedIdentifier() + " " + findByName);
 				}
 			}
+		} else if (connect.getProvidesPort().getFindBy() != null) {
+			final SadProvidesPort provides = connect.getProvidesPort();
+
+			String findByName = provides.getFindBy().getNamingService() != null ? provides.getFindBy().getNamingService().getName()
+				: provides.getFindBy().getDomainFinder().getName();
+			retVal.append(provides.getProvidesIdentifier() + " " + findByName);
 		}
 		return retVal.toString();
 	}
