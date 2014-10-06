@@ -10,17 +10,12 @@
  *******************************************************************************/
 package gov.redhawk.internal.ui.preferences;
 
-import gov.redhawk.ui.port.nxmblocks.AbstractNxmBlock;
-import gov.redhawk.ui.port.nxmblocks.BulkIONxmBlock;
-import gov.redhawk.ui.port.nxmblocks.FftNxmBlock;
 import gov.redhawk.ui.port.nxmblocks.PlotNxmBlock;
-import gov.redhawk.ui.port.nxmblocks.SddsNxmBlock;
 import gov.redhawk.ui.port.nxmplot.INxmBlock;
 import gov.redhawk.ui.port.nxmplot.PlotPageBook2;
 import gov.redhawk.ui.port.nxmplot.preferences.PlotPreferences;
 
 import java.awt.Color;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
