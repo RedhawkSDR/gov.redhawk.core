@@ -11,7 +11,10 @@
 package gov.redhawk.internal.ui.preferences;
 
 import gov.redhawk.ui.port.nxmblocks.AbstractNxmBlock;
+import gov.redhawk.ui.port.nxmblocks.BulkIONxmBlock;
+import gov.redhawk.ui.port.nxmblocks.FftNxmBlock;
 import gov.redhawk.ui.port.nxmblocks.PlotNxmBlock;
+import gov.redhawk.ui.port.nxmblocks.SddsNxmBlock;
 import gov.redhawk.ui.port.nxmplot.INxmBlock;
 import gov.redhawk.ui.port.nxmplot.PlotPageBook2;
 import gov.redhawk.ui.port.nxmplot.preferences.PlotPreferences;
@@ -280,13 +283,7 @@ public class SourcePreferencePage extends PreferencePage {
 	}
 
 	private List<String> getAllStreamIds() {
-		List<String> retval = new ArrayList<String>();
-		for (INxmBlock block: sourceBlocks) {
-			if (block != plotBlock && block instanceof AbstractNxmBlock<?>) {
-				retval.addAll(((AbstractNxmBlock<?>) block).getStreamIDs());
-			}
-		}
-		return retval;
+		return plotBlock.getStreamIDs();
 	}
 	
 	private PlotNxmBlock getPlotBlock() {
