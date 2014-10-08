@@ -36,7 +36,7 @@ import mil.jpeojtrs.sca.util.CorbaUtils;
 import mil.jpeojtrs.sca.util.ProtectedThreadExecutor;
 
 /**
- * @since 3.2
+ * @since 3.3
  */
 public final class AdapterUtil {
 
