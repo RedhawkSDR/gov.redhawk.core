@@ -446,7 +446,10 @@ public abstract class SCAFormEditor extends FormEditor implements IEditingDomain
 
 	private final Map<Resource, IDocument> resourceToDocumentMap = new HashMap<Resource, IDocument>();
 
-	private boolean editorSaving;
+	/**
+	 * @since 7.1
+	 */
+	protected boolean editorSaving;
 
 	private RefreshIdlLibraryJob reloadLibraryJob;
 
@@ -1291,8 +1294,9 @@ public abstract class SCAFormEditor extends FormEditor implements IEditingDomain
 	 * Compute dirty state.
 	 * 
 	 * @return true, if successful
+	 * @since 7.1
 	 */
-	private boolean computeDirtyState() {
+	protected boolean computeDirtyState() {
 		if ((this.editingDomain != null) && ((BasicCommandStack) this.editingDomain.getCommandStack()).isSaveNeeded()) {
 			return true;
 		}
