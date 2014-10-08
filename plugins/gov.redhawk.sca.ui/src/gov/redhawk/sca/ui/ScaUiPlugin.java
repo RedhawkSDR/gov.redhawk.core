@@ -64,8 +64,8 @@ public class ScaUiPlugin extends AbstractUIPlugin {
 	 */
 	@Override
 	public void start(final BundleContext context) throws Exception {
-		super.start(context);
 		ScaUiPlugin.plugin = this;
+		super.start(context);
 	}
 
 	@Override
@@ -111,12 +111,12 @@ public class ScaUiPlugin extends AbstractUIPlugin {
 	 */
 	@Override
 	public void stop(final BundleContext context) throws Exception {
-		ScaUiPlugin.plugin = null;
 		ScaUiModelJob.setShouldRun(false);
 		Job.getJobManager().cancel(ScaUiModelJob.JOB_FAMILY);
 		ResourceRegistry.INSTANCE.dispose();
 		//		Job.getJobManager().join(ScaUiModelJob.JOB_FAMILY, null);
 		super.stop(context);
+		ScaUiPlugin.plugin = null;
 	}
 
 	/**
