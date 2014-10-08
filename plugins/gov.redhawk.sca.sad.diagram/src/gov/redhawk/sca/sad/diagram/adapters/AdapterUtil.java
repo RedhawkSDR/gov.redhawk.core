@@ -35,7 +35,10 @@ import org.eclipse.ui.statushandlers.StatusManager;
 import mil.jpeojtrs.sca.util.CorbaUtils;
 import mil.jpeojtrs.sca.util.ProtectedThreadExecutor;
 
-final class AdapterUtil {
+/**
+ * @since 3.2
+ */
+public final class AdapterUtil {
 
 	private AdapterUtil() {
 
