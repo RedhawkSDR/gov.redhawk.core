@@ -1364,15 +1364,17 @@ public class ScaWaveformImpl extends ScaPropertyContainerImpl<Application, Softw
 	@Override
 	public void releaseObject() throws ReleaseError {
 		// END GENERATED CODE
+
+		// Ensure we only call releaseObject() once (assuming no exception thrown) 
 		if (released) {
 			return;
 		}
 		final Application waveform = fetchNarrowedObject(null);
 		if (waveform != null) {
 			waveform.releaseObject();
-			released = true;
 		}
 		released = true;
+
 		TransactionalEditingDomain domain = TransactionUtil.getEditingDomain(this);
 		Command command = new ScaModelCommand() {
 
@@ -1388,6 +1390,7 @@ public class ScaWaveformImpl extends ScaPropertyContainerImpl<Application, Softw
 		} else {
 			ScaModelCommand.execute(this, command);
 		}
+
 		// BEGIN GENERATED CODE
 	}
 
