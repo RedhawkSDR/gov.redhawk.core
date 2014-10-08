@@ -322,6 +322,9 @@ public class SourcePreferencePage extends PreferencePage {
 	
 	@Override
 	public boolean performOk() {
+		if (plotBlock == null) {
+			return super.performOk();
+		}
 		if (frameSizeEditor != null) {
 			frameSizeEditor.store();
 		}
