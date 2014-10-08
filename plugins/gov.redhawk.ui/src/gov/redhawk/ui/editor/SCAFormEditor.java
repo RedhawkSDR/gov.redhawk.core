@@ -240,6 +240,9 @@ public abstract class SCAFormEditor extends FormEditor implements IEditingDomain
 
 		@Override
 		public boolean visit(final IResourceDelta delta) throws CoreException {
+			if (reloading) {
+				return false;
+			}
 			if ((delta == null) || (!this.trackedResources.contains(delta.getResource()))) {
 				return true;
 			}
@@ -298,6 +301,8 @@ public abstract class SCAFormEditor extends FormEditor implements IEditingDomain
 	 * @since 6.0
 	 */
 	private ResourceTracker resourceTracker = new ResourceTracker();
+
+	private boolean reloading = false;
 
 	/**
 	 * Updates the OutlinePage selection.
@@ -1946,6 +1951,35 @@ public abstract class SCAFormEditor extends FormEditor implements IEditingDomain
 		// reopen the editor on the new file
 		if (to instanceof IFile) {
 			setInput(new FileEditorInput((IFile) to));
+		}
+	}
+
+	/**
+	 * @since 7.1
+	 */
+	public void reload() {
+		reloading = true;
+		try {
+			if (getEditingDomain() != null) {
+				for (final Resource r : getEditingDomain().getResourceSet().getResources().toArray(new Resource[0])) {
+					if (r.getURI().isPlatformResource()) {
+						try {
+							WorkspaceSynchronizer.getFile(r).refreshLocal(IResource.DEPTH_ONE, null);
+						} catch (CoreException e) {
+							// PASS
+						}
+					}
+					r.unload();
+					try {
+						r.load(getEditingDomain().getResourceSet().getLoadOptions());
+					} catch (final IOException e) {
+						// PASS
+					}
+				}
+				getEditingDomain().getCommandStack().flush();
+			}
+		} finally {
+			reloading = false;
 		}
 	}
 
