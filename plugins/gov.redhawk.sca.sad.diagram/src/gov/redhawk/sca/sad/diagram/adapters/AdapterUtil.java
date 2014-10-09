@@ -38,7 +38,7 @@ import mil.jpeojtrs.sca.util.ProtectedThreadExecutor;
 /**
  * @since 3.3
  */
-public final class AdapterUtil {
+final class AdapterUtil {
 
 	private AdapterUtil() {
 
