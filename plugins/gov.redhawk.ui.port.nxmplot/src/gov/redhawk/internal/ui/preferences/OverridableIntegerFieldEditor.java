@@ -132,7 +132,7 @@ public class OverridableIntegerFieldEditor extends IntegerFieldEditor {
 		if (textControl != null) {
 			String str;
 			if (override) {
-				str = "" + getPreferenceStore().getDouble(getPreferenceName());
+				str = "" + getPreferenceStore().getInt(getPreferenceName());
 			} else {
 				str = getAutoValueForText();
 			}
