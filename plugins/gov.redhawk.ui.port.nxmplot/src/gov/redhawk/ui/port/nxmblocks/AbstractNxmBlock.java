@@ -382,6 +382,7 @@ public abstract class AbstractNxmBlock< C extends Command > implements INxmBlock
 		return nxmCommand;
 	}
 	
+	@NonNull
 	public List<String> getStreamIDs() {
 		return Collections.unmodifiableList(new ArrayList<String>(streamIDToCmdMap.keySet()));
 	}
