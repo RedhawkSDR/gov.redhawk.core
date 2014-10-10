@@ -13,9 +13,8 @@ package gov.redhawk.internal.ui;
 
 import org.eclipse.core.runtime.QualifiedName;
 
-// TODO: Auto-generated Javadoc
 /**
- * The Class ScaIdeConstants.
+ * Constants for this plugin.
  */
 public final class ScaIdeConstants {
 
@@ -30,7 +29,7 @@ public final class ScaIdeConstants {
 	        "editor-page-key"); //$NON-NLS-1$
 
 	/**
-	 * Instantiates a new sca ide constants.
+	 * Prevent instantiation for this class since this only contains constants.
 	 */
 	private ScaIdeConstants() {
 
