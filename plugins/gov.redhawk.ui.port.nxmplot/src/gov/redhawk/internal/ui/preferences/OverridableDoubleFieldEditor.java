@@ -10,6 +10,7 @@
  *******************************************************************************/
 package gov.redhawk.internal.ui.preferences;
 
+import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jface.resource.ColorRegistry;
 import org.eclipse.jface.resource.JFaceResources;
 import org.eclipse.swt.events.FocusEvent;
@@ -26,13 +27,14 @@ import org.eclipse.swt.widgets.Text;
  */
 public class OverridableDoubleFieldEditor extends DoubleFieldEditor {
 
-	private String overridePref;
+	private String overridePrefName;
 	private boolean override;
 	private ModifyListener listener = new ModifyListener() {
 
 		@Override
 		public void modifyText(ModifyEvent e) {
-			if (getTextControl().getText().isEmpty() || "AUTO".equalsIgnoreCase(getTextControl().getText())) {
+			String textStr = getTextControl().getText();
+			if (textStr.isEmpty() || textStr.toUpperCase().startsWith("AUTO")) {
 				override = false;
 			} else {
 				override = true;
@@ -42,35 +44,41 @@ public class OverridableDoubleFieldEditor extends DoubleFieldEditor {
 	};
 	private Color defaultForeground;
 	private Color disabledForeground;
+	private String autoTextValue;
 
 	public OverridableDoubleFieldEditor(String name, String nameOverride, String labelText, Composite parent) {
+		this(name, nameOverride, labelText, null, parent);
+	}
+	
+	public OverridableDoubleFieldEditor(String name, String nameOverride, String labelText, String autoValue, Composite parent) {
 		super(name, labelText, parent);
-		this.overridePref = nameOverride;
-		final Text control = getTextControl();
-		control.addModifyListener(listener);
-		control.addFocusListener(new FocusListener() {
+		this.overridePrefName = nameOverride;
+		setAutoValue(autoValue);
+		final Text textControl = getTextControl();
+		textControl.addModifyListener(listener);
+		textControl.addFocusListener(new FocusListener() {
 
 			@Override
 			public void focusLost(FocusEvent e) {
 				if (!override) {
-					control.setText("AUTO");
+					textControl.setText(getAutoValueForText());
 				}
 			}
 
 			@Override
 			public void focusGained(FocusEvent e) {
 				if (!override) {
-					control.setText("");
+					textControl.setText("");
 				}
 			}
 		});
 		setEmptyStringAllowed(true);
-		initColors(control);
+		initColors(textControl);
 		updateTextFieldColor();
 	}
 
-	private void initColors(Text retVal) {
-		defaultForeground = retVal.getForeground();
+	private void initColors(Text textControl) {
+		defaultForeground = textControl.getForeground();
 		ColorRegistry colorRegistry = JFaceResources.getColorRegistry();
 		disabledForeground = colorRegistry.get("DarkGray");
 		if (disabledForeground == null) {
@@ -81,17 +89,26 @@ public class OverridableDoubleFieldEditor extends DoubleFieldEditor {
 		}
 	}
 
+	private void updateTextFieldColor() {
+		Text textControl = getTextControl();
+		if (textControl == null) {
+			return;
+		}
+		Color color = (this.override) ? defaultForeground : disabledForeground;
+		textControl.setForeground(color);
+	}
+
 	@Override
 	protected boolean checkState() {
-		Text text = getTextControl();
-
-		if (text == null) {
+		Text textControl = getTextControl();
+		if (textControl == null) {
 			return false;
 		}
 
-		if ("AUTO".equals(text.getText())) {
+		String textStr = textControl.getText();
+		if (textStr.toUpperCase().startsWith("AUTO")) {
 			return true;
-		} else if ("".equals(text.getText())) {
+		} else if ("".equals(textStr)) {
 			return true;
 		}
 		return super.checkState();
@@ -99,59 +116,73 @@ public class OverridableDoubleFieldEditor extends DoubleFieldEditor {
 
 	@Override
 	protected void doLoad() {
-		this.override = getPreferenceStore().getBoolean(overridePref);
-		Text text = getTextControl();
-		if (text != null) {
+		this.override = getPreferenceStore().getBoolean(overridePrefName);
+		Text textControl = getTextControl();
+		if (textControl != null) {
+			String str;
 			if (override) {
-				double value = getPreferenceStore().getDouble(getPreferenceName());
-				text.setText("" + value); //$NON-NLS-1$
-				oldValue = "" + value; //$NON-NLS-1$
+				str = "" + getPreferenceStore().getDouble(getPreferenceName());
 			} else {
-				text.setText("AUTO");
-				oldValue = "AUTO"; //$NON-NLS-1$
+				str = getAutoValueForText();
 			}
-		}
-	}
+			textControl.setText(str);
+			oldValue = str; 
 
-	private void updateTextFieldColor() {
-		Text control = getTextControl();
-		if (control == null) {
-			return;
-		}
-		if (!this.override) {
-			getTextControl().setForeground(disabledForeground);
-		} else {
-			getTextControl().setForeground(defaultForeground);
 		}
 	}
 
 	@Override
 	protected void doLoadDefault() {
-		this.override = getPreferenceStore().getDefaultBoolean(overridePref);
-		Text text = getTextControl();
-		if (text != null) {
+		this.override = getPreferenceStore().getDefaultBoolean(overridePrefName);
+		Text textControl = getTextControl();
+		if (textControl != null) {
+			String str;
 			if (override) {
-				double value = getPreferenceStore().getDefaultDouble(getPreferenceName());
-				text.setText("" + value); //$NON-NLS-1$
+				str = "" + getPreferenceStore().getDefaultDouble(getPreferenceName());
 			} else {
-				text.setText("AUTO"); //$NON-NLS-1$
+				str = getAutoValueForText();
 			}
+			textControl.setText(str);
 		}
 		valueChanged();
 	}
 
 	@Override
 	protected void doStore() {
-		Text text = getTextControl();
-		if (text != null) {
+		Text textControl = getTextControl();
+		if (textControl != null) {
 			if (override) {
-				Double i = new Double(text.getText());
-				getPreferenceStore().setValue(getPreferenceName(), i.doubleValue());
-				getPreferenceStore().setValue(overridePref, true);
+				Double val = Double.valueOf(textControl.getText());
+				getPreferenceStore().setValue(getPreferenceName(), val);
+				getPreferenceStore().setValue(overridePrefName, true);
 			} else {
-				getPreferenceStore().setValue(overridePref, false);
+				getPreferenceStore().setValue(overridePrefName, false);
 				getPreferenceStore().setToDefault(getPreferenceName());
 			}
 		}
 	}
+
+	@NonNull
+	private String getAutoValueForText() {
+		if (autoTextValue != null && !autoTextValue.isEmpty()) {
+			return "AUTO (" + autoTextValue + ")";
+		} else {
+			return "AUTO";
+		}
+	}
+	
+	public void setAutoValue(String autoValue) {
+		this.autoTextValue = autoValue;
+		if (autoValue != null) {
+			int autoValueLen = getAutoValueForText().length();
+			if (autoValueLen > DEFAULT_TEXT_LIMIT) {
+				setTextLimit(autoValueLen); // increase text limit otherwise it gets truncated
+			}
+		}
+	}
+	
+	public String getAutoValue() {
+		return this.autoTextValue;
+	}
+	
 }

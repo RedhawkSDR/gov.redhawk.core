@@ -19,11 +19,13 @@ import org.eclipse.swt.widgets.Text;
  * 
  */
 public class DoubleFieldEditor extends StringFieldEditor {
+	/** a 64-bit double has 15-17 decimal digit precision 
+	 *  + 7 (1 for decimal point, 1 for negative sign, 5 for E-xxx)
+	 */
+	static final int DEFAULT_TEXT_LIMIT = 24;
+	
 	private Double minValidValue;
-
 	private Double maxValidValue;
-
-	private static final int DEFAULT_TEXT_LIMIT = 10;
 
 	/**
 	 * Creates a new double field editor 
@@ -68,7 +70,7 @@ public class DoubleFieldEditor extends StringFieldEditor {
 		minValidValue = min;
 		maxValidValue = max;
 		setErrorMessage(JFaceResources.format("Must be a value between {0} {1}", //$NON-NLS-1$
-			new Object[] { new Double(min), new Double(max) }));
+			new Object[] { min, max }));
 	}
 
 	/* (non-Javadoc)
@@ -150,6 +152,13 @@ public class DoubleFieldEditor extends StringFieldEditor {
 	 */
 	public double getDoubleValue() throws NumberFormatException {
 		return new Double(getStringValue()).doubleValue();
+	}
+
+	public void setToolTipText(String toolTipText) {
+		Text textControl = getTextControl();
+		if (textControl != null) {
+			textControl.setToolTipText(toolTipText);
+		}
 	}
 
 }
