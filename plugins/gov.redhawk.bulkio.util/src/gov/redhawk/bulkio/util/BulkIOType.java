@@ -11,6 +11,7 @@
 package gov.redhawk.bulkio.util;
 
 import org.eclipse.jdt.annotation.NonNullByDefault;
+import org.eclipse.jdt.annotation.Nullable;
 import org.omg.PortableServer.POA;
 import org.omg.PortableServer.Servant;
 import org.omg.PortableServer.POAPackage.ServantNotActive;
@@ -147,7 +148,7 @@ public enum BulkIOType {
 		return retVal;
 	}
 
-	public static BulkIOType getType(String idl) {
+	public static BulkIOType getType(@Nullable String idl) {
 		if (dataCharHelper.id().equals(idl)) {
 			return BulkIOType.CHAR;
 		} else if (dataDoubleHelper.id().equals(idl)) {
@@ -176,7 +177,7 @@ public enum BulkIOType {
 	/**
 	 * @since 2.0
 	 */
-	public static boolean isTypeSupported(String idl) {
+	public static boolean isTypeSupported(@Nullable String idl) {
 		if (dataLongLongHelper.id().equals(idl) || dataUlongLongHelper.id().equals(idl)
 				|| dataFloatHelper.id().equals(idl) || dataDoubleHelper.id().equals(idl)
 				|| dataLongHelper.id().equals(idl)  || dataUlongHelper.id().equals(idl)
