@@ -102,6 +102,22 @@ public class PlotNxmBlock extends AbstractNxmBlock<plot> {
 		return retval;
 	}
 
+	/** get StreamSRI for specified stream ID.
+	 * @param streamID stream ID to get SRI
+	 * @return StreamID of launched streamID, otherwise null for none
+	 */
+	public StreamSRI getSRI(String streamID) {
+		return streamIdToSriMap.get(streamID);
+	}
+	
+	public StreamSRI getFirstSRI() {
+		Iterator<StreamSRI> iter = streamIdToSriMap.values().iterator();
+		if (iter.hasNext()) {
+			return iter.next();
+		}
+		return null;
+	}
+	
 	@Override
 	public void launch(String streamID, StreamSRI sri) {
 		PlotNxmBlock.TRACE_LOG.enteringMethod(streamID, sri);

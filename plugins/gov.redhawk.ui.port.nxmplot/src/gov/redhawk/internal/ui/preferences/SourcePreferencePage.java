@@ -10,6 +10,7 @@
  *******************************************************************************/
 package gov.redhawk.internal.ui.preferences;
 
+import gov.redhawk.ui.port.nxmblocks.FftNxmBlock;
 import gov.redhawk.ui.port.nxmblocks.PlotNxmBlock;
 import gov.redhawk.ui.port.nxmplot.INxmBlock;
 import gov.redhawk.ui.port.nxmplot.PlotPageBook2;
@@ -49,6 +50,8 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
+
+import BULKIO.StreamSRI;
 
 /**
  * 
@@ -96,7 +99,7 @@ public class SourcePreferencePage extends PreferencePage {
 			@Override
 			public void checkStateChanged(CheckStateChangedEvent event) {
 				String streamID = (String) event.getElement();
-				streamShows.put(streamID, new Boolean(event.getChecked()));
+				streamShows.put(streamID, event.getChecked());
 			}
 			
 		});
@@ -166,7 +169,7 @@ public class SourcePreferencePage extends PreferencePage {
 				String streamID = (String) element;
 				Boolean shouldShow = streamShows.get(streamID);
 				if (shouldShow == null) {
-					shouldShow = new Boolean(plotBlock.isStreamShown(streamID));
+					shouldShow = plotBlock.isStreamShown(streamID);
 					streamShows.put(streamID, shouldShow);
 				}
 				return shouldShow;
@@ -176,7 +179,7 @@ public class SourcePreferencePage extends PreferencePage {
 			protected void setValue(Object element, Object value) {
 				String streamID = (String) element;
 				boolean shouldShow = ((Boolean) value).booleanValue();
-				streamShows.put(streamID, new Boolean(shouldShow));
+				streamShows.put(streamID, shouldShow);
 				streamsViewer.setChecked(element, shouldShow);
 				getViewer().update(element, null);
 			}
@@ -188,7 +191,7 @@ public class SourcePreferencePage extends PreferencePage {
 				String streamID = (String) element;
 				Boolean shouldShow = streamShows.get(streamID);
 				if (shouldShow == null) {
-					shouldShow = new Boolean(plotBlock.isStreamShown(streamID));
+					shouldShow = plotBlock.isStreamShown(streamID);
 					streamShows.put(streamID, shouldShow);
 				}
 				streamsViewer.setChecked(element, shouldShow.booleanValue());
@@ -252,22 +255,29 @@ public class SourcePreferencePage extends PreferencePage {
 		});
 		plotBlock = getPlotBlock();
 		streamsViewer.setInput(plotBlock);
+
 		Composite field = new Composite(main, SWT.NONE);
 		field.setLayout(new GridLayout(2, false));
 		field.setLayoutData(GridDataFactory.fillDefaults().grab(true, false).create());
-//		createFrameSizeField(field);
-		for (INxmBlock block: sourceBlocks) {
-			if (block instanceof PlotNxmBlock) {
-				frameSizeEditor = createFrameSizeField(block, field);
-				break;
-			}
+		if (plotBlock != null) {
+			StreamSRI sri = getFirstStreamSRI();
+			frameSizeEditor = createFrameSizeField(plotBlock, sri, plotBlock.getInputBlock(0), field);
 		}
 		return main;
 	}
 
-	private OverridableIntegerFieldEditor createFrameSizeField(INxmBlock block, Composite parent) {
+	private OverridableIntegerFieldEditor createFrameSizeField(INxmBlock block, StreamSRI sri, INxmBlock inputBlock, Composite parent) {
+		String autoValue;
+		if (inputBlock instanceof FftNxmBlock) {
+			int framesize = ((FftNxmBlock) inputBlock).getOutFramesize(sri.mode);
+			autoValue = Integer.toString(framesize);
+		} else if (sri.subsize > 0) {
+			autoValue = Integer.toString(sri.subsize);
+		} else {
+			autoValue = PlotPreferences.FRAMESIZE.getDefaultValue().toString();
+		}
 		OverridableIntegerFieldEditor frameSizeField = new OverridableIntegerFieldEditor(PlotPreferences.FRAMESIZE.getName(),
-			PlotPreferences.FRAMESIZE_OVERRIDE.getName(), "&Framesize:", parent);
+			PlotPreferences.FRAMESIZE_OVERRIDE.getName(), "&Framesize:", autoValue, parent);
 		frameSizeField.setErrorMessage("Framesize must be a positive integer >= 2");
 		frameSizeField.setValidRange(2, Integer.MAX_VALUE);
 		frameSizeField.setPage(this);
@@ -279,6 +289,10 @@ public class SourcePreferencePage extends PreferencePage {
 
 	private List<String> getAllStreamIds() {
 		return plotBlock.getStreamIDs();
+	}
+	
+	private StreamSRI getFirstStreamSRI() {
+		return plotBlock.getFirstSRI();
 	}
 	
 	private PlotNxmBlock getPlotBlock() {

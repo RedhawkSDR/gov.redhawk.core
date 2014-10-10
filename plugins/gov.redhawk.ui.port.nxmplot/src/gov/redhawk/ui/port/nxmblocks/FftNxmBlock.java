@@ -26,6 +26,8 @@ import org.eclipse.jface.preference.IPreferencePage;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.util.PropertyChangeEvent;
 
+import BULKIO.StreamSRI;
+
 /**
  * @noreference This class is provisional/beta and is subject to API changes
  * @since 4.4
@@ -284,5 +286,13 @@ public class FftNxmBlock extends AbstractNxmBlock<fft> {
 		FftBlockPreferencePage retVal = new FftBlockPreferencePage();
 		retVal.setPreferenceStore(getPreferences());
 		return retVal;
+	}
+	
+	public int getOutFramesize(int sriMode) {
+		int size = getTransformSize();
+		if (sriMode == 0) {  // for scalar data
+			size = size / 2; // framesize is half fft size
+		}
+		return size;
 	}
 }
