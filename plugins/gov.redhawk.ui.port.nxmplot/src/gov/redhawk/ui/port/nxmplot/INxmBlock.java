@@ -162,7 +162,7 @@ public interface INxmBlock {
 	 *  or process it's input(s) (e.g. using FFT, FCALCUALTOR).
 	 *  Called every time when a new or changed StreamSRI comes in.
 	 *  NOTE: This *MUST* launch hooked/connected follow on blocks.
-	 * @param sriStreamID
+	 * @param streamID stream ID to launch
 	 * @param sri (StreamSRI for this streamID - this can be null)
 	 */
 	void launch(String streamID, @Nullable StreamSRI sri);
@@ -170,6 +170,7 @@ public interface INxmBlock {
 	/** Disposes of input source for specified stream ID. All resources MUST be freed. Any launched
 	 *  commands/processing should be closed/exited and cleaned for this stream.
 	 *  NOTE: This *MUST* shutdown hooked/connected follow on blocks.
+	 *  @param treamID stream ID to shutdown
 	 */
 	void shutdown(String streamID);
 
@@ -177,7 +178,7 @@ public interface INxmBlock {
 	 * @return empty array if none, otherwise array of launched streams
 	 */
 	StreamSRI[] getLaunchedStreams();
-
+	
 	/** (optional) start any necessary things for this block.
 	 *  e.g. register/connect to BulkIO Port for pushSRI, or BulkIO SDDS Port for attach/detach/pushSRI.
 	 */
