@@ -27,11 +27,13 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+import nxm.sys.inc.Units;
 import nxm.sys.lib.NeXtMidas;
 import nxm.sys.lib.Table;
 import nxm.sys.prim.plot;
 
 import org.eclipse.jdt.annotation.NonNull;
+import org.eclipse.jdt.annotation.Nullable;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.action.IMenuManager;
@@ -39,8 +41,11 @@ import org.eclipse.jface.preference.IPreferencePage;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.util.PropertyChangeEvent;
 import org.eclipse.ui.PlatformUI;
+import org.omg.CORBA.Any;
+import org.omg.CORBA.BAD_OPERATION;
 
 import BULKIO.StreamSRI;
+import CF.DataType;
 
 /**
  * @noreference This class is provisional/beta and is subject to API changes
@@ -51,6 +56,8 @@ public class PlotNxmBlock extends AbstractNxmBlock<plot> {
 	private static final Debug TRACE_LOG = new Debug(PlotActivator.PLUGIN_ID, PlotNxmBlock.class.getSimpleName());
 	/** zero-length arrays are immutable. For more info see Effective Java, Item 27: Return zero-length arrays, not null. */
 	private static final StreamSRI[] EMPTY_STREAMSRI_ARRAY = new StreamSRI[0];
+	/** center frequency keywords from StreamSRI in highest to lowest order of precedence */
+	private static final String[] CENTER_FREQ_KEYWORDS = {"CHAN_RF", "COL_RF"};
 
 	/** using a "synchronized" LinkedHashMap to keep order of launched streams. */
 	private Map<String, StreamSRI> streamIdToSriMap = Collections.synchronizedMap(new LinkedHashMap<String, StreamSRI>());
@@ -301,6 +308,27 @@ public class PlotNxmBlock extends AbstractNxmBlock<plot> {
 			pipeQualifiers.append("{LAYER={REFRESHRATE=").append(refreshRate).append("}}");
 		}
 		
+		// adjust xstart based on RF center frequency from SRI keywords or override
+		if (isEnableCenterFreqKeywords() && canOverrideCenterFrequency(sri)) {
+			double xstart = Double.NaN; // NaN means not to set the xstart qualifier (since we don't have center freq)
+			if (isSetCenterFrequency()) {
+				xstart = calcXStart(getCenterFrequency(), sri);
+			} else {
+				Object[] results = this.getCenterFreqFromKeyword(sri);
+				if (results != null && results.length == 2) {
+					Object valObj = results[1];
+					if (valObj instanceof Number) {
+						double centerFreq = ((Number) valObj).doubleValue();
+						xstart = calcXStart(centerFreq, sri);
+					}
+				}
+			}
+			if (!Double.isNaN(xstart)) {
+				pipeQualifiers.append("{XSTART=").append(xstart).append('}');
+			}
+		}
+		
+		
 		PlotNxmBlock.TRACE_LOG.exitingMethod(pipeQualifiers);
 		return pipeQualifiers.toString();
 	}
@@ -378,6 +406,52 @@ public class PlotNxmBlock extends AbstractNxmBlock<plot> {
 		PlotPreferences.REFRESH_RATE.setValue(getPreferences(), val);
 		PlotPreferences.REFRESH_RATE_OVERRIDE.setValue(getPreferences(), true);
 	}
+	
+	public boolean canOverrideCenterFrequency(@Nullable StreamSRI sri) {
+		boolean retVal = false;
+		if (sri != null) {
+			if (sri.xunits == Units.FREQUENCY_HZ && sri.subsize > 1) {
+				retVal = true;
+			} else if (sri.xunits == Units.TIME_S && getInputBlock(0) instanceof FftNxmBlock) {
+				retVal = true;
+			}
+		}
+		return retVal;
+	}
+
+	/**
+	 * @since 5.0
+	 */
+	public boolean isEnableCenterFreqKeywords() {
+		return !PlotPreferences.DISABLE_CENTERFREQ_KEYWORDS.getValue(getPreferences());
+	}
+
+	/**
+	 * @since 5.0
+	 */
+	public void setEnableCenterFreqKeywords(boolean val) {
+		PlotPreferences.DISABLE_CENTERFREQ_KEYWORDS.setValue(getPreferences(), !val);
+	}
+
+	/** get override center frequency. */
+	public double getCenterFrequency() {
+		return PlotPreferences.CENTERFREQ.getValue(getPreferences());
+	}
+
+	/** set override center frequency (applied to all streams). */
+	public void setCenterFrequency(double val) {
+		PlotPreferences.CENTERFREQ.setValue(getPreferences(), val);
+		PlotPreferences.CENTERFREQ_OVERRIDE.setValue(getPreferences(), true);
+	}
+
+	public boolean isSetCenterFrequency() {
+		return PlotPreferences.CENTERFREQ_OVERRIDE.getValue(getPreferences());
+	}
+
+	public void unsetCenterFrequency() {
+		PlotPreferences.CENTERFREQ.setToDefault(getPreferences());
+		PlotPreferences.CENTERFREQ_OVERRIDE.setValue(getPreferences(), false);
+	}
 
 	@Override
 	public void propertyChange(PropertyChangeEvent event) {
@@ -408,18 +482,31 @@ public class PlotNxmBlock extends AbstractNxmBlock<plot> {
 			updatePipeQualifiers();
 		}
 
+		if (PlotPreferences.DISABLE_CENTERFREQ_KEYWORDS.isEvent(event)) {
+			updatePipeQualifiers();
+		}
+		
+		if (isSetCenterFrequency() && (PlotPreferences.CENTERFREQ.isEvent(event) || PlotPreferences.CENTERFREQ_OVERRIDE.isEvent(event))) {
+			updatePipeQualifiers();
+		}
+
+		if (PlotPreferences.CENTERFREQ_OVERRIDE.isEvent(event) && getCenterFrequency() != PlotPreferences.CENTERFREQ.getDefaultValue(getPreferences())) {
+			updatePipeQualifiers();
+		}
+
 		if (PlotPreferences.REFRESH_RATE.isEvent(event) && isSetRefreshRate()) {
+			// below works better than calling calling updatePipeQualifiers() (don't have to remove/add source)
 			setPropertyOnAllLayers("REFRESHRATE", 0, "" + getRefreshRate()); 
-			// above works better than calling calling updatePipeQualifiers() (don't have to remove/add source)
 		}
 
 		if (PlotPreferences.REFRESH_RATE_OVERRIDE.isEvent(event)
 				&& getRefreshRate() != PlotPreferences.REFRESH_RATE.getDefaultValue(getPreferences())) {
+			// below works better than calling calling updatePipeQualifiers() (don't have to remove/add source)
 			setPropertyOnAllLayers("REFRESHRATE", 0, "" + getRefreshRate());
-			// above works better than calling calling updatePipeQualifiers() (don't have to remove/add source)
 		}
 	}
 
+	/** update Pipe qualifiers on all streams */
 	private void updatePipeQualifiers() {
 		Iterator<String> keyIter = streamIdToSourceNameMap.keySet().iterator();
 		while (keyIter.hasNext()) {
@@ -494,8 +581,14 @@ public class PlotNxmBlock extends AbstractNxmBlock<plot> {
 	/** is the specified stream shown on the PLOT?
 	 * @since 5.0
 	 */
-	public boolean isStreamShown(@NonNull String streamId) {
-		return !streamIdToIsHidden.containsKey(streamId);
+	public boolean isStreamShown(@Nullable String streamId) {
+		boolean retval;
+		if (streamId != null) {
+		  retval = !streamIdToIsHidden.containsKey(streamId);
+		} else {
+			retval = false;
+		}
+		return retval;
 	}
 	
 	/** set the line color of the specified stream ID on the line plot. 
@@ -524,5 +617,58 @@ public class PlotNxmBlock extends AbstractNxmBlock<plot> {
 		AbstractNxmPlotWidget plotWidget = getContext();
 		String sourceName = streamIdToSourceNameMap.get(streamId);
 		return plotWidget.getDefaultLineColor(sourceName);
+	}
+	
+	/** get default center freq info
+	 * @noreference This method is not intended to be referenced by clients.
+	 */
+	public String getCenterFreqInfo(@NonNull String streamId) {
+		final StreamSRI sri = streamIdToSriMap.get(streamId);
+		if (sri != null) { 
+			Object[] result = getCenterFreqFromKeyword(sri); // 1. use keywords in order of precedence
+			if (result != null && result.length == 2) {
+				return "" + result[0] + " : " + result[1]; 
+			}
+		}
+		return null; // 2. none (no sri, no keywords, no matching keywords, user specified override value)
+	}
+	
+	private Object[] getCenterFreqFromKeyword(@NonNull StreamSRI sri) {
+		if (sri.keywords != null) {
+			for (DataType kw : sri.keywords) { // use value from keywords in order of precedence
+				for (String centerFreqKeyword : CENTER_FREQ_KEYWORDS) {
+					if (centerFreqKeyword.equals(kw.id)) { // found matching keyword
+						if (kw.value instanceof Any) {
+							try {
+								double centerFreq = ((Any) (kw.value)).extract_double();
+								return new Object[] { kw.id, centerFreq };
+							} catch (BAD_OPERATION ex) {
+								TRACE_LOG.message("WARN: Unable to extract double from [{0}] keyword, value=[{1}]. Got exception: {2}", kw.id, kw.value, ex);
+							}
+						}
+
+					}
+				}
+			}
+		}
+		return null;
+	}
+	
+	/** returns NaN if unable to calculate/figure out appropriate xstart value. */
+	private double calcXStart(double centerFreq, @Nullable StreamSRI sri) {
+		double xstart = Double.NaN;
+		if (sri != null) {
+			if (sri.xunits == 3 && sri.subsize > 1) { // frequency domain data
+				xstart = centerFreq - (sri.subsize * sri.xdelta) / 2.0;
+			} else if (sri.xunits == 1) {     // time domain data
+				double fs = 1.0 / sri.xdelta; // sample rate
+				if (sri.mode == 0) {          // real (scalar)
+					xstart = centerFreq - (fs / 4.0);
+				} else if (sri.mode == 1) {   // complex
+					xstart = centerFreq - (fs / 2.0);
+				}
+			}
+		}
+		return xstart;
 	}
 }

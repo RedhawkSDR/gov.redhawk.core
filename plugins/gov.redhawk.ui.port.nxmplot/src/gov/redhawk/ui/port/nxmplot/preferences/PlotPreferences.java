@@ -31,6 +31,12 @@ public class PlotPreferences {
 	public static final Preference<Integer> REFRESH_RATE = new Preference<Integer>("plotSettings.refreshRate", 30);
 	/** @since 5.0 */
 	public static final Preference<Boolean> REFRESH_RATE_OVERRIDE = new Preference<Boolean>("plotSettings.refreshRate.override", false);
+	/** @since 5.0 */
+	public static final Preference<Boolean> DISABLE_CENTERFREQ_KEYWORDS = new Preference<Boolean>("plotSettings.disableCenterFreq.keywords", false);
+	/** @since 5.0 */
+	public static final Preference<Double>  CENTERFREQ = new Preference<Double>("plotSettings.centerFreq", -1.0);
+	/** @since 5.0 */
+	public static final Preference<Boolean> CENTERFREQ_OVERRIDE = new Preference<Boolean>("plotSettings.Freq.override", false);
 
 	public static final Preference<Double>  MIN = new Preference<Double>("plotSettings.min", 0.0);
 	public static final Preference<Boolean> MIN_OVERRIDE = new Preference<Boolean>("plotSettings.min.override", false);

@@ -21,7 +21,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jface.layout.GridDataFactory;
+import org.eclipse.jface.layout.GridLayoutFactory;
 import org.eclipse.jface.preference.PreferencePage;
 import org.eclipse.jface.viewers.CellEditor;
 import org.eclipse.jface.viewers.CheckStateChangedEvent;
@@ -32,11 +34,17 @@ import org.eclipse.jface.viewers.ColumnLabelProvider;
 import org.eclipse.jface.viewers.ColumnWeightData;
 import org.eclipse.jface.viewers.EditingSupport;
 import org.eclipse.jface.viewers.ICheckStateListener;
+import org.eclipse.jface.viewers.ISelection;
+import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.IStructuredContentProvider;
+import org.eclipse.jface.viewers.SelectionChangedEvent;
+import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TableLayout;
 import org.eclipse.jface.viewers.TableViewerColumn;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.FocusEvent;
+import org.eclipse.swt.events.FocusListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.Image;
@@ -65,6 +73,9 @@ public class SourcePreferencePage extends PreferencePage {
 	private Map<String, Color> streamColors = new HashMap<String, Color>();
 	private Map<String, Boolean> streamShows = new HashMap<String, Boolean>();
 	private OverridableIntegerFieldEditor frameSizeEditor;
+	private OverridableDoubleFieldEditor  centerFreqEditor;
+	private Button ifRadioBtn;
+	private Button rfRadioBtn;
 
 	public SourcePreferencePage(String label, PlotPageBook2 pageBook, List<INxmBlock> sourceBlocks) {
 		super(label);
@@ -93,7 +104,7 @@ public class SourcePreferencePage extends PreferencePage {
 		idColumn.setText("Stream ID");
 		TableColumn colorColumn = new TableColumn(streamsTable, SWT.NONE);
 		colorColumn.setText("Color");
-		streamsViewer = new CheckboxTableViewer(streamsTable);
+		streamsViewer = new CheckboxTableViewer(streamsTable);		
 		streamsViewer.addCheckStateListener(new ICheckStateListener() {
 
 			@Override
@@ -256,28 +267,79 @@ public class SourcePreferencePage extends PreferencePage {
 		plotBlock = getPlotBlock();
 		streamsViewer.setInput(plotBlock);
 
-		Composite field = new Composite(main, SWT.NONE);
-		field.setLayout(new GridLayout(2, false));
-		field.setLayoutData(GridDataFactory.fillDefaults().grab(true, false).create());
+		Composite fields = new Composite(main, SWT.NONE);
+		fields.setLayout(GridLayoutFactory.fillDefaults().numColumns(2).create());
+		fields.setLayoutData(GridDataFactory.fillDefaults().grab(true, false).create());
 		if (plotBlock != null) {
-			StreamSRI sri = getFirstStreamSRI();
-			frameSizeEditor = createFrameSizeField(plotBlock, sri, plotBlock.getInputBlock(0), field);
+			final StreamSRI sri = plotBlock.getFirstSRI();
+			final INxmBlock inputBlock = plotBlock.getInputBlock(0);
+			frameSizeEditor = createFrameSizeField(plotBlock, sri, inputBlock, fields);
+			
+			createCenterFreqFields(plotBlock, sri, fields);
+			updateRfIfControls(sri.streamID, sri);
+			
+			streamsViewer.addSelectionChangedListener(createSelChangeListenerToUpdateRfIFControls(inputBlock));
 		}
 		return main;
 	}
 
-	private OverridableIntegerFieldEditor createFrameSizeField(INxmBlock block, StreamSRI sri, INxmBlock inputBlock, Composite parent) {
-		String autoValue;
+	private ISelectionChangedListener createSelChangeListenerToUpdateRfIFControls(final INxmBlock inputBlock) {
+		return new ISelectionChangedListener() {
+			@Override
+			public void selectionChanged(SelectionChangedEvent event) {
+				ISelection sel = event.getSelection();
+				if (sel instanceof StructuredSelection) {
+					StructuredSelection ssel = (StructuredSelection) sel;
+					Object id = ssel.getFirstElement();
+					if (id instanceof String) {
+						String streamId = (String) id;
+						StreamSRI sri = plotBlock.getSRI(streamId);
+						if (sri != null) {
+							String defaultFrameSizeAutoVal = getFrameSizeDefaultAutoVal(sri, inputBlock);
+							frameSizeEditor.setAutoValue(defaultFrameSizeAutoVal);
+							updateRfIfControls(streamId, sri);
+						}
+					}
+				}
+			}
+		};
+	}
+
+	private String getFrameSizeDefaultAutoVal(StreamSRI sri, INxmBlock inputBlock) {
+		String retval;
 		if (inputBlock instanceof FftNxmBlock) {
 			int framesize = ((FftNxmBlock) inputBlock).getOutFramesize(sri.mode);
-			autoValue = Integer.toString(framesize);
+			retval = Integer.toString(framesize);
 		} else if (sri.subsize > 0) {
-			autoValue = Integer.toString(sri.subsize);
+			retval = Integer.toString(sri.subsize);
 		} else {
-			autoValue = PlotPreferences.FRAMESIZE.getDefaultValue().toString();
+			retval = PlotPreferences.FRAMESIZE.getDefaultValue().toString();
 		}
+		return retval;
+	}
+
+	private void updateRfIfControls(@NonNull String streamId, StreamSRI sri) {
+		boolean enableCenterFreqOption = plotBlock.canOverrideCenterFrequency(sri);
+		boolean selectRFradioBtn = enableCenterFreqOption && plotBlock.isEnableCenterFreqKeywords();
+		ifRadioBtn.setSelection(!selectRFradioBtn);
+		rfRadioBtn.setSelection(selectRFradioBtn);
+		ifRadioBtn.setEnabled(enableCenterFreqOption);
+		rfRadioBtn.setEnabled(enableCenterFreqOption);
+		String centerFreqDefaultAutoVal = null;
+		if (!enableCenterFreqOption) {
+			centerFreqDefaultAutoVal = "N/A";
+		} else if (sri != null) {
+			centerFreqDefaultAutoVal = plotBlock.getCenterFreqInfo(streamId);
+		}
+		centerFreqEditor.setAutoValue(centerFreqDefaultAutoVal);
+		centerFreqEditor.setEnabled(enableCenterFreqOption);
+	}
+
+	private OverridableIntegerFieldEditor createFrameSizeField(INxmBlock block, StreamSRI sri, INxmBlock inputBlock, Composite parent) {
+		String defaultFrameSizeAutoVal = getFrameSizeDefaultAutoVal(sri, inputBlock);
 		OverridableIntegerFieldEditor frameSizeField = new OverridableIntegerFieldEditor(PlotPreferences.FRAMESIZE.getName(),
-			PlotPreferences.FRAMESIZE_OVERRIDE.getName(), "&Framesize:", autoValue, parent);
+			PlotPreferences.FRAMESIZE_OVERRIDE.getName(), "&Framesize:", defaultFrameSizeAutoVal, parent);
+		frameSizeField.setToolTipText("Set override frame size");
 		frameSizeField.setErrorMessage("Framesize must be a positive integer >= 2");
 		frameSizeField.setValidRange(2, Integer.MAX_VALUE);
 		frameSizeField.setPage(this);
@@ -286,13 +348,44 @@ public class SourcePreferencePage extends PreferencePage {
 		frameSizeField.load();
 		return frameSizeField;
 	}
+	
+	private void createCenterFreqFields(PlotNxmBlock plotNxmBlock, StreamSRI sri, Composite parent) {
+		// IF / RF center frequency settings
+		Composite container1 = new Composite(parent, SWT.NONE);
+		container1.setLayout(GridLayoutFactory.fillDefaults().numColumns(2).create());
+		ifRadioBtn = new Button(container1, SWT.RADIO);
+		ifRadioBtn.setText("IF");
+		rfRadioBtn = new Button(container1, SWT.RADIO);
+		rfRadioBtn.setText("RF");
+		
+		Composite container2 = new Composite(parent, SWT.NONE);
+		container2.setLayoutData(GridDataFactory.fillDefaults().grab(true, false).create());
+		container2.setLayout(GridLayoutFactory.fillDefaults().numColumns(2).create());
+		OverridableDoubleFieldEditor centerFreqField = new OverridableDoubleFieldEditor(PlotPreferences.CENTERFREQ.getName(),
+			PlotPreferences.CENTERFREQ_OVERRIDE.getName(), "Center Freq:", container2);
+		centerFreqField.setToolTipText("Set override RF center frequency");
+		centerFreqField.setPage(this);
+		centerFreqField.setPreferenceStore(plotNxmBlock.getPreferences());
+		centerFreqField.fillIntoGrid(container2, 2);
+		centerFreqField.load();
+		centerFreqField.addFocusListener(new FocusListener() {
+			
+			@Override
+			public void focusLost(FocusEvent e) {
+				// ignore
+			}
+			
+			@Override
+			public void focusGained(FocusEvent e) {
+				ifRadioBtn.setSelection(false);
+				rfRadioBtn.setSelection(true);
+			}
+		});
+		centerFreqEditor = centerFreqField;
+	}
 
 	private List<String> getAllStreamIds() {
 		return plotBlock.getStreamIDs();
-	}
-	
-	private StreamSRI getFirstStreamSRI() {
-		return plotBlock.getFirstSRI();
 	}
 	
 	private PlotNxmBlock getPlotBlock() {
@@ -342,6 +435,13 @@ public class SourcePreferencePage extends PreferencePage {
 		if (frameSizeEditor != null) {
 			frameSizeEditor.store();
 		}
+		if (centerFreqEditor != null) {
+			centerFreqEditor.store();
+		}
+		if (rfRadioBtn != null) {
+			boolean isRF = rfRadioBtn.getSelection();
+			plotBlock.setEnableCenterFreqKeywords(isRF);
+		}
 		for (String streamID: getAllStreamIds()) {
 			Color streamColor = streamColors.get(streamID);
 			if (streamColor != null) {
@@ -368,8 +468,12 @@ public class SourcePreferencePage extends PreferencePage {
 			setStreamColor(streamID, plotBlock.getStreamDefaultLineColor(streamID));
 		}
 		streamsViewer.update(streamIDs.toArray(), null);
-		frameSizeEditor.loadDefault();
+		if (frameSizeEditor != null) {
+			frameSizeEditor.loadDefault();
+		}
+		if (centerFreqEditor != null) {
+			centerFreqEditor.loadDefault();
+		}
 		super.performDefaults();
-	}
-	
+	}	
 }
