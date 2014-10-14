@@ -128,32 +128,26 @@ public class OverridableIntegerFieldEditor extends IntegerFieldEditor {
 	@Override
 	protected void doLoad() {
 		this.override = getPreferenceStore().getBoolean(overridePrefName);
-		Text textControl = getTextControl();
-		if (textControl != null) {
-			String str;
-			if (override) {
-				str = "" + getPreferenceStore().getInt(getPreferenceName());
-			} else {
-				str = getAutoValueForText();
-			}
-			textControl.setText(str);
-			oldValue = str; 
+		String str;
+		if (override) {
+			str = "" + getPreferenceStore().getInt(getPreferenceName());
+		} else {
+			str = getAutoValueForText();
 		}
+		setText(str);
+		oldValue = str; 
 	}
 
 	@Override
 	protected void doLoadDefault() {
 		this.override = getPreferenceStore().getDefaultBoolean(overridePrefName);
-		Text textControl = getTextControl();
-		if (textControl != null) {
-			String str;
-			if (override) {
-				str = "" + getPreferenceStore().getDefaultInt(getPreferenceName());
-			} else {
-				str = getAutoValueForText();
-			}
-			textControl.setText(str);
+		String str;
+		if (override) {
+			str = "" + getPreferenceStore().getDefaultInt(getPreferenceName());
+		} else {
+			str = getAutoValueForText();
 		}
+		setText(str);
 		valueChanged();
 	}
 
@@ -182,16 +176,40 @@ public class OverridableIntegerFieldEditor extends IntegerFieldEditor {
 	}
 	
 	public void setAutoValue(String autoValue) {
-		this.autoTextValue = autoValue;
-		if (autoValue != null) {
+		if (autoValue != null && !autoValue.equals(this.autoTextValue)) {
+			this.autoTextValue = autoValue;
 			int autoValueLen = getAutoValueForText().length();
 			if (autoValueLen > DEFAULT_TEXT_LIMIT) {
 				setTextLimit(autoValueLen); // increase text limit otherwise it gets truncated
+			}
+			if (!override) { // update text control
+				String str = getAutoValueForText();
+				Text textControl = getTextControl();
+				if (textControl != null) {
+					textControl.setText(str);
+				}
 			}
 		}
 	}
 	
 	public String getAutoValue() {
 		return this.autoTextValue;
+	}
+	
+	/**
+	 * @param str new text to display, if null, then ({@link #getAutoValueForText()} will be used 
+	 * @return true if able to set new text on text control, otherwise false
+	 * @noreference This method is not intended to be referenced by clients.
+	 */
+	public boolean setText(String str) {
+		Text textControl = getTextControl();
+		if (textControl != null) {
+			if (str == null) {
+				str = getAutoValueForText();
+			}
+			textControl.setText(str);
+			return true;
+		}
+		return false;
 	}
 }
