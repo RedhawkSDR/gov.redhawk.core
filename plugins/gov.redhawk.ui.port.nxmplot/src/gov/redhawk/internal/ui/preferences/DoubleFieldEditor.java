@@ -12,6 +12,7 @@ package gov.redhawk.internal.ui.preferences;
 
 import org.eclipse.jface.preference.StringFieldEditor;
 import org.eclipse.jface.resource.JFaceResources;
+import org.eclipse.swt.events.FocusListener;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Text;
 
@@ -26,12 +27,7 @@ public class DoubleFieldEditor extends StringFieldEditor {
 	
 	private Double minValidValue;
 	private Double maxValidValue;
-
-	/**
-	 * Creates a new double field editor 
-	 */
-	protected DoubleFieldEditor() {
-	}
+	private final Composite parent;
 
 	/**
 	 * Creates an double field editor.
@@ -54,9 +50,10 @@ public class DoubleFieldEditor extends StringFieldEditor {
 	 */
 	public DoubleFieldEditor(String name, String labelText, Composite parent, int textLimit) {
 		init(name, labelText);
+		this.parent = parent;
 		setTextLimit(textLimit);
 		setEmptyStringAllowed(false);
-		setErrorMessage(JFaceResources.getString("Not a valid double")); //$NON-NLS-1$
+		setErrorMessage(labelText + " " + JFaceResources.getString("not a valid double")); //$NON-NLS-1$
 		createControl(parent);
 	}
 
@@ -69,8 +66,9 @@ public class DoubleFieldEditor extends StringFieldEditor {
 	public void setValidRange(Double min, Double max) {
 		minValidValue = min;
 		maxValidValue = max;
-		setErrorMessage(JFaceResources.format("Must be a value between {0} {1}", //$NON-NLS-1$
-			new Object[] { min, max }));
+		
+		setErrorMessage(JFaceResources.format("{0} must be a value between {1} {2}", //$NON-NLS-1$
+			new Object[] { getLabelText(), min, max }));
 	}
 
 	/* (non-Javadoc)
@@ -147,8 +145,7 @@ public class DoubleFieldEditor extends StringFieldEditor {
 	 * Returns this field editor's current value as an double.
 	 *
 	 * @return the value
-	 * @exception NumberFormatException if the <code>String</code> does not
-	 *   contain a parsable double
+	 * @exception NumberFormatException if the <code>String</code> does not contain a parsable double
 	 */
 	public double getDoubleValue() throws NumberFormatException {
 		return new Double(getStringValue()).doubleValue();
@@ -161,4 +158,15 @@ public class DoubleFieldEditor extends StringFieldEditor {
 		}
 	}
 
+	public void addFocusListener(FocusListener listener) {
+		getTextControl().addFocusListener(listener);
+	}
+	
+	public void removeFocusListener(FocusListener listener) {
+		getTextControl().removeFocusListener(listener);
+	}
+	
+	public void setEnabled(boolean enabled) {
+		setEnabled(enabled, this.parent);
+	}
 }
