@@ -15,8 +15,6 @@ import gov.redhawk.model.sca.ScaDomainManager;
 import gov.redhawk.model.sca.ScaPackage;
 import gov.redhawk.model.sca.ScaWaveformFactory;
 import gov.redhawk.model.sca.commands.ScaModelCommand;
-import gov.redhawk.sca.ui.ScaUiPlugin;
-import gov.redhawk.sca.ui.ScaUiPluginImages;
 
 import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.notify.Notification;
@@ -64,8 +62,6 @@ public class ScaDomainManagerDecorator extends LabelProvider implements ILightwe
 	@Override
 	public void decorate(final Object element, final IDecoration decoration) {
 		if (element instanceof ScaDomainManager) {
-			ScaUiPlugin.getDefault().getImageRegistry().getDescriptor(ScaUiPluginImages.IMG_DEFAULT_DOMAIN_OVR);
-
 			final ScaDomainManager domMgr = (ScaDomainManager) element;
 			ScaModelCommand.execute(domMgr, new ScaModelCommand() {
 
