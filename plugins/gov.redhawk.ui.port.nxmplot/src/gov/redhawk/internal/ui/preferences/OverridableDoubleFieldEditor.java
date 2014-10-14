@@ -172,11 +172,20 @@ public class OverridableDoubleFieldEditor extends DoubleFieldEditor {
 	}
 	
 	public void setAutoValue(String autoValue) {
-		this.autoTextValue = autoValue;
-		if (autoValue != null) {
-			int autoValueLen = getAutoValueForText().length();
-			if (autoValueLen > DEFAULT_TEXT_LIMIT) {
-				setTextLimit(autoValueLen); // increase text limit otherwise it gets truncated
+		if (autoValue != null && !autoValue.equals(this.autoTextValue)) {
+			this.autoTextValue = autoValue;
+			if (autoValue != null) {
+				int autoValueLen = getAutoValueForText().length();
+				if (autoValueLen > DEFAULT_TEXT_LIMIT) {
+					setTextLimit(autoValueLen); // increase text limit otherwise it gets truncated
+				}
+			}
+			if (!override) { // update text control
+				String str = getAutoValueForText();
+				Text textControl = getTextControl();
+				if (textControl != null) {
+					textControl.setText(str);
+				}
 			}
 		}
 	}
