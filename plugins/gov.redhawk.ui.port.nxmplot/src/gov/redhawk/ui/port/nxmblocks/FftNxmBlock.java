@@ -26,8 +26,6 @@ import org.eclipse.jface.preference.IPreferencePage;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.util.PropertyChangeEvent;
 
-import BULKIO.StreamSRI;
-
 /**
  * @noreference This class is provisional/beta and is subject to API changes
  * @since 4.4
