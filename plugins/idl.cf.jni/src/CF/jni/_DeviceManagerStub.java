@@ -53,6 +53,12 @@ public class _DeviceManagerStub extends omnijni.ObjectImpl implements CF.DeviceM
   }
   private static native String _get_label (long __ref__);
 
+  public CF.DomainManager domMgr ()
+  {
+    return _get_domMgr(this.ref_);
+  }
+  private static native CF.DomainManager _get_domMgr (long __ref__);
+
   public CF.Device[] registeredDevices ()
   {
     return _get_registeredDevices(this.ref_);

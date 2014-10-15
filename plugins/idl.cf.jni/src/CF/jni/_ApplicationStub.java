@@ -173,6 +173,12 @@ public class _ApplicationStub extends omnijni.ObjectImpl implements CF.Applicati
   }
   private static native String _get_name (long __ref__);
 
+  public boolean trusted ()
+  {
+    return _get_trusted(this.ref_);
+  }
+  private static native boolean _get_trusted (long __ref__);
+
   private static String __ids[] = {
     "IDL:CF/Application:1.0",
     "IDL:CF/Resource:1.0",

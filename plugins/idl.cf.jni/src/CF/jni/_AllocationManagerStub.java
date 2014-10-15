@@ -29,6 +29,12 @@ public class _AllocationManagerStub extends omnijni.ObjectImpl implements CF.All
   }
   private static native CF.AllocationManagerPackage.DeviceLocationType[] _get_localDevices (long __ref__);
 
+  public void listDevices (CF.AllocationManagerPackage.DeviceScopeType deviceScope, int count, CF.AllocationManagerPackage.DeviceLocationSequenceHolder devices, CF.DeviceLocationIteratorHolder dl)
+  {
+    listDevices(this.ref_, deviceScope, count, devices, dl);
+  }
+  private static native void listDevices (long __ref__, CF.AllocationManagerPackage.DeviceScopeType deviceScope, int count, CF.AllocationManagerPackage.DeviceLocationSequenceHolder devices, CF.DeviceLocationIteratorHolder dl);
+
   public CF.DomainManager domainMgr ()
   {
     return _get_domainMgr(this.ref_);
@@ -64,6 +70,12 @@ public class _AllocationManagerStub extends omnijni.ObjectImpl implements CF.All
     return localAllocations(this.ref_, allocationIDs);
   }
   private static native CF.AllocationManagerPackage.AllocationStatusType[] localAllocations (long __ref__, String[] allocationIDs);
+
+  public void listAllocations (CF.AllocationManagerPackage.AllocationScopeType allocScope, int how_many, CF.AllocationManagerPackage.AllocationStatusSequenceHolder allocs, CF.AllocationStatusIteratorHolder ai)
+  {
+    listAllocations(this.ref_, allocScope, how_many, allocs, ai);
+  }
+  private static native void listAllocations (long __ref__, CF.AllocationManagerPackage.AllocationScopeType allocScope, int how_many, CF.AllocationManagerPackage.AllocationStatusSequenceHolder allocs, CF.AllocationStatusIteratorHolder ai);
 
   private static String __ids[] = {
     "IDL:CF/AllocationManager:1.0",
