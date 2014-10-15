@@ -90,5 +90,7 @@ public class PrfEmptyNameConstraintTest {
 		final URL url = FileLocator.toFileURL(FileLocator.find(Platform.getBundle("gov.redhawk.prf.validation.tests"), new Path(filePath), null));
 		return URI.createURI(url.toString());
 	}
+	
+	
 
 }

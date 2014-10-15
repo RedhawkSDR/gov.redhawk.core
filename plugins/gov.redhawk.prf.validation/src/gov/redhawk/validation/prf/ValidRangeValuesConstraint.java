@@ -51,7 +51,7 @@ public class ValidRangeValuesConstraint extends AbstractModelConstraint {
 				return checkValues(ctx, min, max, type, complex);
 			}
 		}
-		return null;
+		return ctx.createSuccessStatus();
 	}
 
 	private IStatus checkValues(IValidationContext ctx, String min, String max, PropertyValueType type, boolean complex) {
@@ -62,7 +62,7 @@ public class ValidRangeValuesConstraint extends AbstractModelConstraint {
 				return new EnhancedConstraintStatus((ConstraintStatus) ctx.createFailureStatus(min, max), PrfPackage.Literals.RANGE__MIN);
 			}
 		}
-		return null;
+		return ctx.createSuccessStatus();
 	}
 
 }

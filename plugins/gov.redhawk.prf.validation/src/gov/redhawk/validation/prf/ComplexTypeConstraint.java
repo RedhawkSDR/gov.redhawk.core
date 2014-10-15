@@ -43,7 +43,7 @@ public class ComplexTypeConstraint extends AbstractModelConstraint {
 			if (!check(complex, type)) {
 				return new EnhancedConstraintStatus((ConstraintStatus) this.ctx.createFailureStatus(type), PrfPackage.Literals.SIMPLE__COMPLEX);
 			}
-			return null;
+			return ctx.createSuccessStatus();
 		}
 		
 		private boolean check(boolean complex, PropertyValueType type) {
@@ -68,7 +68,7 @@ public class ComplexTypeConstraint extends AbstractModelConstraint {
 			if (!check(complex, type)) {
 				return new EnhancedConstraintStatus((ConstraintStatus) this.ctx.createFailureStatus(type), PrfPackage.Literals.SIMPLE_SEQUENCE__COMPLEX);
 			}
-			return null;
+			return ctx.createSuccessStatus();
 		}
 
 		@Override

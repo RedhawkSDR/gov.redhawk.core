@@ -8,7 +8,8 @@ Require-Bundle: org.eclipse.core.runtime;bundle-version="3.6.0",
  gov.redhawk.validation;bundle-version="2.0.0",
  mil.jpeojtrs.sca.prf;bundle-version="2.2.2",
  org.eclipse.emf;bundle-version="2.6.0",
- org.junit;bundle-version="4.8.1"
+ org.junit;bundle-version="4.8.1",
+ gov.redhawk.prf.validation
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Export-Package: gov.redhawk.prf.validation.tests
 Bundle-Vendor: %Bundle-Vendor
