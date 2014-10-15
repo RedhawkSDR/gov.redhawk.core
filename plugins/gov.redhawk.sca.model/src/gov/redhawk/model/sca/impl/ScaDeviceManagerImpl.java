@@ -94,6 +94,7 @@ import CF.Device;
 import CF.DeviceManager;
 import CF.DeviceManagerHelper;
 import CF.DeviceManagerOperations;
+import CF.DomainManager;
 import CF.ExecutableDeviceHelper;
 import CF.FileSystem;
 import CF.InvalidObjectReference;
@@ -2191,6 +2192,14 @@ public class ScaDeviceManagerImpl extends ScaPropertyContainerImpl<DeviceManager
 			}
 		}
 		return retVal;
+	}
+
+	/**
+	 * @since 19.1
+	 */
+	@Override
+	public DomainManager domMgr() {
+		return getObj().domMgr();
 	}
 
 } // ScaDeviceManagerImpl

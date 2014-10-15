@@ -2034,4 +2034,12 @@ public class ScaWaveformImpl extends ScaPropertyContainerImpl<Application, Softw
 		subMonitor.done();
 		return getComponents();
 	}
+
+	/**
+	 * @since 19.1
+	 */
+	@Override
+	public boolean trusted() {
+		return getObj().trusted();
+	}
 } // ScaWaveformImpl
