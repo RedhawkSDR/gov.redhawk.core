@@ -17,6 +17,7 @@ import gov.redhawk.model.sca.provider.ScaItemProviderAdapterFactory;
 import gov.redhawk.model.sca.provider.TransientItemProvider;
 import gov.redhawk.sca.internal.ui.DeferredAdapterSwitch;
 import gov.redhawk.sca.internal.ui.DeferredAdapterSwitch.IDeferredAdapter;
+import gov.redhawk.sca.util.SilentJob;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -83,7 +84,7 @@ public class ScaContentProvider extends ScaModelAdapterFactoryContentProvider im
 		return retVal;
 	}
 
-	private abstract static class FetchJob extends Job {
+	private abstract static class FetchJob extends SilentJob {
 
 		private final Object element;
 		private final Viewer viewer;
@@ -98,7 +99,7 @@ public class ScaContentProvider extends ScaModelAdapterFactoryContentProvider im
 		protected abstract IStatus doFetch(IProgressMonitor monitor);
 
 		@Override
-		protected final IStatus run(final IProgressMonitor monitor) {
+		protected final IStatus runSilent(final IProgressMonitor monitor) {
 			try {
 				return doFetch(monitor);
 			} finally {

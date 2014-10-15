@@ -11,6 +11,7 @@
  */
 package gov.redhawk.sca.model.provider.refresh.internal;
 
+import gov.redhawk.model.sca.CorbaObjWrapper;
 import gov.redhawk.model.sca.IRefreshable;
 import gov.redhawk.model.sca.RefreshDepth;
 import gov.redhawk.model.sca.ScaAbstractComponent;
@@ -73,13 +74,31 @@ public class RefresherSwitch extends ScaSwitch<IRefresher> {
 		return new IRefresher() {
 			@Override
 			public void refresh(final IProgressMonitor monitor) {
-				try {
-					object.refresh(monitor, depth);
-				} catch (final InterruptedException e) {
-					// PASS
-				}
+				internalRefresh(object, depth, monitor);
 			}
 		};
+	}
+
+	private void internalRefresh(IRefreshable object, RefreshDepth depth, IProgressMonitor monitor) {
+		if (!(object instanceof ScaDomainManager) && object instanceof CorbaObjWrapper< ? >) {
+			CorbaObjWrapper< ? > wrapper = (CorbaObjWrapper< ? >) object;
+			if (!wrapper.exists()) {
+				EObject container = wrapper.eContainer();
+				if (container instanceof IRefreshable) {
+					IRefreshable parent = (IRefreshable) container;
+					internalRefresh(parent, RefreshDepth.CHILDREN, monitor);
+					return;
+				} else if (container == null) {
+					return;
+				}
+			}
+		}
+		
+		try {
+			object.refresh(monitor, depth);
+		} catch (final InterruptedException e) {
+			// PASS
+		}
 	}
 
 	@Override

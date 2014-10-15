@@ -11,9 +11,7 @@
  */
 package gov.redhawk.sca.model.provider.refresh.internal;
 
-import gov.redhawk.model.sca.CorbaObjWrapper;
 import gov.redhawk.model.sca.IDisposable;
-import gov.redhawk.model.sca.ProfileObjectWrapper;
 import gov.redhawk.model.sca.ScaPackage;
 import gov.redhawk.model.sca.commands.ScaModelCommand;
 import gov.redhawk.model.sca.services.AbstractDataProvider;
@@ -26,6 +24,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
+import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
@@ -41,18 +40,22 @@ public class RefreshTasker extends AbstractDataProvider implements Runnable {
 	private static final Debug DEBUG = new Debug(RefreshProviderPlugin.PLUGIN_ID, "tasker");
 
 	/**
-	 * One global tasking thread pool  The actual CORBA invocation is handled by the refresher
+	 * One global tasking thread pool The actual CORBA invocation is handled by the refresher
 	 */
-	public static final ScheduledExecutorService TASKER_POOL = Executors.newScheduledThreadPool(4, new NamedThreadFactory(
-		ScaRefreshableDataProviderService.class.getName()));
-
+	public static final ScheduledExecutorService TASKER_POOL = Executors.newScheduledThreadPool(1, new NamedThreadFactory(
+		ScaRefreshableDataProviderService.class.getName() + ":TaskerPool"));
+	static {
+		ScheduledThreadPoolExecutor executor = (ScheduledThreadPoolExecutor) TASKER_POOL;
+		executor.setMaximumPoolSize(20);
+	}
 	/**
 	 * @since 4.0
 	 */
 	public static final String PROP_ACTIVE = "active";
 
-	public static final ExecutorService WORKER_POOL = new StarvationThreadPoolExecutor(new NamedThreadFactory(ScaRefreshableDataProviderService.class.getName()
+	public static final ExecutorService WORKER_POOL = Executors.newCachedThreadPool(new NamedThreadFactory(ScaRefreshableDataProviderService.class.getName()
 		+ ":WorkerPool"));
+
 	private final EObject eObject;
 	private final IRefresher refresher;
 	private ScheduledFuture< ? > schedule;
@@ -72,34 +75,40 @@ public class RefreshTasker extends AbstractDataProvider implements Runnable {
 		}
 	};
 
+	private long lastDelay;
+
+	private Future< ? > workerJob;
+
 	public RefreshTasker(final EObject eObject, final IRefresher refresher) {
 		this.refresher = refresher;
 		this.eObject = eObject;
 		addListeners();
 		doSchedule(RefreshProviderPlugin.getRefreshInterval());
 	}
-	
-	private synchronized void doSchedule(long delay) {
-		if (this.schedule == null) {
+
+	private void doSchedule(long delay) {
+		this.lastDelay = delay;
+		ScheduledFuture< ? > localSchedule = this.schedule;
+		if (localSchedule == null) {
 			if (DEBUG.enabled) {
 				DEBUG.enteringMethod(delay);
 				DEBUG.message("Scheduled (" + delay + " " + TimeUnit.MILLISECONDS + "): " + this.eObject);
 			}
 			this.schedule = TASKER_POOL.schedule(RefreshTasker.this, delay, TimeUnit.MILLISECONDS);
 		} else {
-			long remaining = this.schedule.getDelay(TimeUnit.MILLISECONDS);
-			if (remaining > delay && remaining > 500) {
+			long remaining = localSchedule.getDelay(TimeUnit.MILLISECONDS);
+			if (remaining > delay) {
 				if (DEBUG.enabled) {
 					DEBUG.enteringMethod(delay);
 					DEBUG.message("ReScheduled (" + delay + " " + TimeUnit.MILLISECONDS + "): " + this.eObject);
 				}
-				this.schedule.cancel(false);
+				localSchedule.cancel(false);
 				this.schedule = TASKER_POOL.schedule(RefreshTasker.this, delay, TimeUnit.MILLISECONDS);
 			}
 		}
 	}
-	
-	public synchronized void schedule() {
+
+	public void schedule() {
 		schedule(0);
 	}
 
@@ -113,29 +122,30 @@ public class RefreshTasker extends AbstractDataProvider implements Runnable {
 
 	protected boolean shouldSchedule() {
 		boolean shouldSchedule = shouldRun();
-		if (shouldSchedule && this.eObject instanceof CorbaObjWrapper< ? >) {
-			final CorbaObjWrapper< ? > wrapper = (CorbaObjWrapper< ? >) this.eObject;
-			shouldSchedule = wrapper.getCorbaObj() != null;
-		}
-		if (shouldSchedule && this.eObject instanceof ProfileObjectWrapper< ? >) {
-			final ProfileObjectWrapper< ? > wrapper = (ProfileObjectWrapper< ? >) this.eObject;
-			shouldSchedule |= wrapper.getProfileURI() != null;
-		}
 		return DEBUG.exitingMethodWithResult(shouldSchedule);
 	}
 
 	protected boolean shouldRun() {
 		if (eObject instanceof IDisposable) {
 			if (((IDisposable) eObject).isDisposed()) {
-				return false;
+				setEnabled(false);
+				dispose();
+				return DEBUG.exitingMethodWithResult(false);
 			}
 		}
+
 		return DEBUG.exitingMethodWithResult(!isDisposed() && isEnabled() && this.active);
 	}
 
-	public synchronized void cancel() {
-		if (this.schedule != null) {
-			this.schedule.cancel(true);
+	public void cancel() {
+		Future< ? > localWorkerJob = workerJob;
+		if (localWorkerJob != null) {
+			localWorkerJob.cancel(true);
+			workerJob = null;
+		}
+		ScheduledFuture< ? > localSchedule = schedule;
+		if (localSchedule != null) {
+			localSchedule.cancel(true);
 		}
 		this.schedule = null;
 	}
@@ -164,6 +174,9 @@ public class RefreshTasker extends AbstractDataProvider implements Runnable {
 
 	@Override
 	public void dispose() {
+		if (isDisposed()) {
+			return;
+		}
 		removeListeners();
 		cancel();
 		super.dispose();
@@ -183,44 +196,40 @@ public class RefreshTasker extends AbstractDataProvider implements Runnable {
 
 	@Override
 	public void run() {
-		if (!shouldRun()) {
-			return;
-		}
-		if (this.eObject instanceof IDisposable) {
-			final IDisposable disposable = (IDisposable) this.eObject;
-			if (disposable.isDisposed()) {
-				setEnabled(false);
+		long nextScheduleDelay = RefreshProviderPlugin.getRefreshInterval();
+		try {
+			if (!shouldRun()) {
+				cancel();
 				return;
 			}
-		}
 
-		final Future< ? > task;
-		task = WORKER_POOL.submit(new Runnable() {
+			Future< ? > localWorker = WORKER_POOL.submit(new Runnable() {
 
-			@Override
-			public void run() {
-				if (!shouldRun()) {
-					return;
-				}
-				try {
+				@Override
+				public void run() {
 					RefreshTasker.this.refresher.refresh(null);
-				} finally {
-					schedule = null;
-					schedule(RefreshProviderPlugin.getRefreshInterval());
 				}
-			}
+			});
+			workerJob = localWorker;
 
-		});
-		try {
-			task.get(RefreshProviderPlugin.getRefreshTimeout(), TimeUnit.MILLISECONDS);
+			localWorker.get(RefreshProviderPlugin.getRefreshTimeout(), TimeUnit.MILLISECONDS);
 			setStatus(Status.OK_STATUS);
 		} catch (final InterruptedException e) {
 			setStatus(Status.CANCEL_STATUS);
 		} catch (final ExecutionException e) {
-			setStatus(new Status(IStatus.ERROR, RefreshProviderPlugin.PLUGIN_ID, "Refresh failed.", e));
+			long nextCall = lastDelay * 2;
+			setStatus(new Status(IStatus.ERROR, RefreshProviderPlugin.PLUGIN_ID, "Refresh failed: refreshing in (" + (nextCall / 1000) + " sec)", e));
+			nextScheduleDelay = lastDelay * 2;
 		} catch (final TimeoutException e) {
-			setStatus(new Status(IStatus.WARNING, RefreshProviderPlugin.PLUGIN_ID, "Refresh timed out.", e));
+			long nextCall = lastDelay * 2;
+			setStatus(new Status(IStatus.WARNING, RefreshProviderPlugin.PLUGIN_ID, "Refresh timed out: refreshing in (" + (nextCall / 1000) + " sec)", e));
+			nextScheduleDelay = lastDelay * 2;
+		} finally {
+			schedule = null;
+			schedule(nextScheduleDelay);
+			workerJob = null;
 		}
+
 	}
 
 	public void setActive(final boolean active) {
@@ -237,7 +246,7 @@ public class RefreshTasker extends AbstractDataProvider implements Runnable {
 	public boolean isActive() {
 		return this.active;
 	}
-	
+
 	@Override
 	public String getID() {
 		return ScaRefreshableDataProviderService.ID;
