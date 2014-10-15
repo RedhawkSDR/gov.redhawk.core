@@ -36,6 +36,11 @@ import org.eclipse.emf.validation.model.ConstraintStatus;
  * 
  */
 public class KindTypeConstraint extends AbstractModelConstraint {
+	
+	/**
+	 * @since 1.2
+	 */
+	public static final String ID = "gov.redhawk.prf.validation.constraint.kind";
 
 	/* (non-Javadoc)
 	 * @see org.eclipse.emf.validation.AbstractModelConstraint#validate(org.eclipse.emf.validation.IValidationContext)
@@ -56,7 +61,7 @@ public class KindTypeConstraint extends AbstractModelConstraint {
 			StructSequence ss = (StructSequence) target;
 			return validateConfigurationKindList(ctx, ss.getConfigurationKind(), PrfPackage.Literals.STRUCT_SEQUENCE__CONFIGURATION_KIND);
 		}
-		return null;
+		return ctx.createSuccessStatus();
 	}
 
 	private IStatus validatePropertyConfigurationTypeList(IValidationContext ctx, List<PropertyConfigurationType> list, EStructuralFeature feature) {
@@ -68,14 +73,15 @@ public class KindTypeConstraint extends AbstractModelConstraint {
 		}
 
 		if (list.contains(PropertyConfigurationType.EVENT)) {
-			if (!list.contains(PropertyConfigurationType.CONFIGURE) && !list.contains(PropertyConfigurationType.EXECPARAM)) {
+			if (!list.contains(PropertyConfigurationType.CONFIGURE) && !list.contains(PropertyConfigurationType.EXECPARAM)
+				&& !list.contains(PropertyConfigurationType.ALLOCATION)) {
 				return new EnhancedConstraintStatus(
-					(ConstraintStatus) ctx.createFailureStatus("Property kind 'EVENT' can be added to a 'CONFIGURE' or an 'EXEC_PARAM' but not be by itself."),
+					(ConstraintStatus) ctx.createFailureStatus("Property kind 'EVENT' can be added to a 'CONFIGURE', or 'ALLOCATION', or an 'EXEC_PARAM' but not be by itself."),
 					feature);
 			}
 		}
 
-		return null;
+		return ctx.createSuccessStatus();
 	}
 
 	private IStatus validateConfigurationKindList(IValidationContext ctx, EList<ConfigurationKind> configurationKind, EStructuralFeature feature) {

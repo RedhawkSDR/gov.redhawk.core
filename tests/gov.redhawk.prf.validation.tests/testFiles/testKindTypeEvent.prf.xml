@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE properties PUBLIC "-//JTRS//DTD SCA V2.2.2 PRF//EN" "properties.dtd">
+<properties>
+  <simple id="simple" mode="readwrite" type="string">
+    <kind kindtype="event"/>
+    <kind kindtype="allocation"/>
+    <kind kindtype="configure"/>
+    <action type="external"/>
+  </simple>
+  <simple id="simple2" mode="readwrite" type="string">
+    <kind kindtype="event"/>
+    <kind kindtype="allocation"/>
+    <action type="external"/>
+  </simple>
+  <simple id="simple3" mode="readwrite" type="string">
+    <kind kindtype="event"/>
+    <kind kindtype="allocation"/>
+    <kind kindtype="configure"/>
+  </simple>
+  <simple id="simple4" mode="readwrite" type="string">
+    <kind kindtype="event"/>
+    <kind kindtype="configure"/>
+    <action type="external"/>
+  </simple>
+  <simple id="simple5" mode="readwrite" type="string">
+    <kind kindtype="event"/>
+    <kind kindtype="configure"/>
+  </simple>
+  <simple id="simple6" mode="readwrite" type="string">
+    <kind kindtype="event"/>
+    <action type="external"/>
+  </simple>
+  <simple id="simple7" mode="readwrite" type="string">
+    <kind kindtype="event"/>
+  </simple>
+</properties>

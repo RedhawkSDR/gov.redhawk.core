@@ -72,7 +72,7 @@ public class ValueWithinRangeTypeConstraint extends AbstractModelConstraint {
 						feature);
 				}
 			}
-			return null;
+			return ctx.createSuccessStatus();
 		}
 
 		@Override
