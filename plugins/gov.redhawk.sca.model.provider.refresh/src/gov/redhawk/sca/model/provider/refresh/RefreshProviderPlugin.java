@@ -38,7 +38,7 @@ public class RefreshProviderPlugin extends Plugin {
 	@Override
 	public void stop(final BundleContext context) throws Exception {
 		RefreshTasker.TASKER_POOL.shutdownNow();
-		RefreshTasker.WORKER_POOL.shutdown();
+		RefreshTasker.WORKER_POOL.shutdownNow();
 		super.stop(context);
 		savePluginPreferences();
 		RefreshProviderPlugin.instance = null;
