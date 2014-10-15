@@ -57,6 +57,7 @@ import CF.AggregateDeviceHelper;
 import CF.DataType;
 import CF.DeviceHelper;
 import CF.DeviceManager;
+import CF.DomainManager;
 import CF.DeviceManagerHelper;
 import CF.DeviceOperations;
 import CF.DevicePOATie;
@@ -82,6 +83,8 @@ import StandardEvent.StateChangeType;
 public abstract class Device extends Resource implements DeviceOperations {
 
     protected DeviceManager devMgr;
+    protected DeviceManager _devMgr = null;
+    protected DomainManager _domMgr = null;
     protected AggregateDevice compositeDevice;
     protected CF.Device device;
 
@@ -240,6 +243,8 @@ public abstract class Device extends Resource implements DeviceOperations {
 
         this.devMgr = devMgr;
         if (devMgr != null) {
+            this._devMgr = devMgr;
+            this._domMgr = devMgr.domMgr();
             devMgr.registerDevice(device);
         }
 
@@ -708,7 +713,7 @@ public abstract class Device extends Resource implements DeviceOperations {
      * 
      * @param newUsageState
      */
-    private void setUsageState(UsageType newUsageState){
+    protected void setUsageState(UsageType newUsageState){
         /* Checks to see if the usageState has change */
         if (newUsageState.value() != this.usageState().value()){
 
@@ -814,7 +819,7 @@ public abstract class Device extends Resource implements DeviceOperations {
      * 
      * @param newAdminState
      */
-    private void setAdminState(AdminType newAdminState){
+    protected void setAdminState(AdminType newAdminState){
         /* Checks to see if the admin state has changed */
         if (newAdminState.value() != this.adminState().value()){
             /* Keep a copy of the actual admin state */
@@ -865,7 +870,7 @@ public abstract class Device extends Resource implements DeviceOperations {
      * Sets a new operation state and sends an event if it has changed
      * @param newOperationState
      */
-    private void setOperationState(OperationalType newOperationState){
+    protected void setOperationState(OperationalType newOperationState){
         /* Checks to see if the operational state has changed */
         if (newOperationState.value() != this.operationalState().value()){
             /* Keep a copy of the actual operational state */

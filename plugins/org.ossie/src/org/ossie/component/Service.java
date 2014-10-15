@@ -51,6 +51,7 @@ import org.omg.PortableServer.POAPackage.WrongPolicy;
 import org.ossie.logging.logging;
 
 import CF.DeviceManager;
+import CF.DomainManager;
 import CF.DeviceManagerHelper;
 import CF.InvalidObjectReference;
 
@@ -62,6 +63,8 @@ public abstract class Service
     protected org.omg.CORBA.Object serviceObj = null;
     /** The Device Manager the service is registered with */
     protected DeviceManager devMgr = null;
+    protected DeviceManager _devMgr = null;
+    protected DomainManager _domMgr = null;
     /** The service name */
     protected String serviceName;
 
@@ -221,6 +224,8 @@ public abstract class Service
         Servant tie = service_i.newServant(rootpoa);
         tie._this_object(orb);
         service_i.devMgr = deviceMgr;
+        service_i._devMgr = deviceMgr;
+        service_i._domMgr = deviceMgr.domMgr();
 
         if (service_i.devMgr != null) {
             logger.debug("Registering service with device manager");
