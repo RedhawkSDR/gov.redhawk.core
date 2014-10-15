@@ -200,5 +200,10 @@ public class ApplicationImpl extends AbstractResourceImpl implements
 		return retVal.toArray(new ComponentType[retVal.size()]);
 	}
 
+	@Override
+	public boolean trusted() {
+		return true;
+	}
+
 
 }

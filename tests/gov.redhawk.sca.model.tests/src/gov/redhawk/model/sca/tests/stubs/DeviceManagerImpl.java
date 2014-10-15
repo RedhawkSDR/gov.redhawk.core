@@ -21,6 +21,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.junit.Assert;
+
 import mil.jpeojtrs.sca.dcd.DcdComponentInstantiation;
 import mil.jpeojtrs.sca.dcd.DcdComponentPlacement;
 import mil.jpeojtrs.sca.dcd.DeviceConfiguration;
@@ -41,6 +42,7 @@ import CF.Device;
 import CF.DeviceHelper;
 import CF.DeviceManagerOperations;
 import CF.DevicePOATie;
+import CF.DomainManager;
 import CF.ExecutableDeviceHelper;
 import CF.ExecutableDevicePOATie;
 import CF.FileSystem;
@@ -277,6 +279,11 @@ public class DeviceManagerImpl extends AbstractResourceImpl implements DeviceMan
 			e.printStackTrace(); // CHECKSTYLE: DEBUG CODE
 		}
 		
+	}
+
+	@Override
+	public DomainManager domMgr() {
+		return null;
 	}
 
 }
