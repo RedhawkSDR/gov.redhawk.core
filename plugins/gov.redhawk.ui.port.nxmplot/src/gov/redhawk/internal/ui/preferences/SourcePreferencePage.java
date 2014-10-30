@@ -474,6 +474,9 @@ public class SourcePreferencePage extends PreferencePage {
 		if (centerFreqEditor != null) {
 			centerFreqEditor.loadDefault();
 		}
+		if (plotBlock != null) {
+			PlotPreferences.DISABLE_CENTERFREQ_KEYWORDS.setToDefault(plotBlock.getPreferences());
+		}
 		super.performDefaults();
 	}	
 }
