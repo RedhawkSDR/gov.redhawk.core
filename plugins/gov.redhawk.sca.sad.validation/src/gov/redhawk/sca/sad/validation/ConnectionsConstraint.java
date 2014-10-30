@@ -214,7 +214,7 @@ public class ConnectionsConstraint extends AbstractModelConstraint {
 					retVal.append(inter.getSupportedIdentifier() + " " + findByName);
 				}
 			}
-		} else if (connect.getProvidesPort().getFindBy() != null) {
+		} else if (connect.getProvidesPort() != null && connect.getProvidesPort().getFindBy() != null) {
 			final SadProvidesPort provides = connect.getProvidesPort();
 
 			String findByName = provides.getFindBy().getNamingService() != null ? provides.getFindBy().getNamingService().getName()
