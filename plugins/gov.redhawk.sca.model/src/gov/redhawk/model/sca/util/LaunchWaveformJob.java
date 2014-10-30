@@ -58,11 +58,20 @@ public class LaunchWaveformJob extends SilentJob {
 	private final DeviceAssignmentType[] deviceAssn;
 	private final DataType[] configProps;
 	private final boolean autoStart;
+	private final boolean uninstallExistingApplicationFactory;
 	private final Object waitLock;
 	private ScaWaveform waveform = null;
 
 	public LaunchWaveformJob(final ScaDomainManager domMgr, final String waveformName, final IPath waveformPath, final DeviceAssignmentType[] deviceAssn,
 		final DataType[] configProps, final boolean autoStart, final Object waitLock) {
+		this(domMgr, waveformName, waveformPath, deviceAssn, configProps, autoStart, waitLock, false);
+	}
+
+	/**
+	 * @since 19.1
+	 */
+	public LaunchWaveformJob(final ScaDomainManager domMgr, final String waveformName, final IPath waveformPath, final DeviceAssignmentType[] deviceAssn,
+		final DataType[] configProps, final boolean autoStart, final Object waitLock, final boolean uninstallExistingAppFactory) {
 		super("Launching waveform " + waveformName);
 		this.domMgr = domMgr;
 		this.waveformName = waveformName;
@@ -70,6 +79,7 @@ public class LaunchWaveformJob extends SilentJob {
 		this.deviceAssn = deviceAssn;
 		this.configProps = configProps;
 		this.autoStart = autoStart;
+		this.uninstallExistingApplicationFactory = uninstallExistingAppFactory;
 		this.waitLock = waitLock;
 		this.setSystem(true);
 		this.setUser(false);
@@ -85,26 +95,41 @@ public class LaunchWaveformJob extends SilentJob {
 		// Track whether we installed the ApplicationFactory ourselves.
 		final SubMonitor subMonitor = SubMonitor.convert(m, "Launching Application: " + this.waveformName, IProgressMonitor.UNKNOWN);
 		ScaWaveformFactory factory = null;
-		boolean installed = false;
+		boolean installedAppFactory = false;
+		
 		try {
-			final String profile = this.waveformPath.toPortableString();
+			final String profilePath = this.waveformPath.toPortableString();
+			// use existing Application Factory if exists, since only ONE can exist per Waveform profilePath in Domain
 			for (final ScaWaveformFactory temp : LaunchWaveformJob.this.domMgr.fetchWaveformFactories(null)) {
-				if (temp.getProfile().equals(profile)) {
+				if (temp.getProfile().equals(profilePath)) {
 					factory = temp;
+				}
+			}
+			
+			// unless power user specified to uninstall existing Application Factory
+			if (factory != null && uninstallExistingApplicationFactory) {
+				try {
+					this.domMgr.uninstallScaWaveformFactory(factory);
+					factory = null;
+				} catch (ApplicationUninstallationError | InvalidIdentifier | SystemException ex) {
+					DEBUG.catching("Failed to uninstall existing Waveform factory before launching a waveform.", ex);
+					return new Status(Status.ERROR, ScaModelPlugin.ID,
+						"Failed to uninstall existing Waveform factory before launching a waveform: " + waveformName, ex);
 				}
 			}
 
 			////////////////////
-			// INSTALL WAVEFORM
-			subMonitor.subTask("Installing SCA Waveform: " + profile);
+			// INSTALL WAVEFORM (Application) Factory
+			subMonitor.subTask("Installing SCA Waveform Factory: " + profilePath);
 			while (factory == null) {
+				DEBUG.message("Installing SCA Waveform Factory...");
 				if (subMonitor.isCanceled()) {
 					throw new OperationCanceledException();
 				}
 
 				try {
-					factory = this.domMgr.installScaWaveformFactory(profile);
-					installed = true;
+					factory = this.domMgr.installScaWaveformFactory(profilePath);
+					installedAppFactory = true;
 				} catch (final ApplicationAlreadyInstalled a) {
 					try {
 						factory = ScaModelCommand.runExclusive(this.domMgr, new RunnableWithResult.Impl<ScaWaveformFactory>() {
@@ -112,7 +137,7 @@ public class LaunchWaveformJob extends SilentJob {
 							@Override
 							public void run() {
 								for (final ScaWaveformFactory factory : LaunchWaveformJob.this.domMgr.fetchWaveformFactories(null)) {
-									if (factory.getProfile().equals(profile)) {
+									if (factory.getProfile().equals(profilePath)) {
 										setResult(factory);
 									}
 								}
@@ -123,6 +148,7 @@ public class LaunchWaveformJob extends SilentJob {
 						// PASS
 					}
 				}
+				
 			}
 			subMonitor.worked(1);
 
@@ -130,12 +156,12 @@ public class LaunchWaveformJob extends SilentJob {
 				throw new OperationCanceledException();
 			}
 
-			Assert.isNotNull(factory, "Failed to get SCA Waveform Factory");
+			Assert.isNotNull(factory, "Failed to get/install SCA Waveform Factory");
 
 			////////////////////
 			// CREATE WAVEFORM
 			final IProgressMonitor createMonitor = subMonitor.newChild(1);
-			createMonitor.beginTask("Creating application: " + this.waveformName, IProgressMonitor.UNKNOWN);
+			createMonitor.beginTask("Creating Waveform (application): " + this.waveformName, IProgressMonitor.UNKNOWN);
 			this.waveform = factory.createWaveform(createMonitor, LaunchWaveformJob.this.waveformName, LaunchWaveformJob.this.configProps,
 				LaunchWaveformJob.this.deviceAssn);
 
@@ -185,23 +211,13 @@ public class LaunchWaveformJob extends SilentJob {
 						this.waveform = null;
 					}
 				}
-				if (installed && factory != null) {
+				if (installedAppFactory && factory != null) {
+					DEBUG.message("Uninstall ScaWaveformFactory factory = {0}", factory);
 					try {
 						this.domMgr.uninstallScaWaveformFactory(factory);
-					} catch (final ApplicationUninstallationError a) {
+					} catch (ApplicationUninstallationError | InvalidIdentifier | SystemException ex) {
 						if (DEBUG.enabled) {
-							DEBUG.message("Failed to uninstall Waveform factory after launching a waveform.");
-							DEBUG.catching(a);
-						}
-					} catch (final InvalidIdentifier i) {
-						if (DEBUG.enabled) {
-							DEBUG.message("Failed to uninstall Waveform factory after launching a waveform.");
-							DEBUG.catching(i);
-						}
-					} catch (final SystemException e) {
-						if (DEBUG.enabled) {
-							DEBUG.message("Failed to uninstall Waveform factory after launching a waveform.");
-							DEBUG.catching(e);
+							DEBUG.catching("Failed to uninstall existing Waveform factory before launching a waveform.", ex);
 						}
 					}
 				}
