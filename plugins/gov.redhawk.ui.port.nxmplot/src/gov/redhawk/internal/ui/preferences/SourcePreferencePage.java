@@ -22,6 +22,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.eclipse.jdt.annotation.NonNull;
+import org.eclipse.jdt.annotation.Nullable;
 import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.jface.layout.GridLayoutFactory;
 import org.eclipse.jface.preference.PreferencePage;
@@ -264,19 +265,20 @@ public class SourcePreferencePage extends PreferencePage {
 			}
 			
 		});
-		plotBlock = getPlotBlock();
-		streamsViewer.setInput(plotBlock);
+		PlotNxmBlock plotBlockLocal = getPlotBlock();
+		this.plotBlock = plotBlockLocal;
+		streamsViewer.setInput(plotBlockLocal);
 
 		Composite fields = new Composite(main, SWT.NONE);
 		fields.setLayout(GridLayoutFactory.fillDefaults().numColumns(2).create());
 		fields.setLayoutData(GridDataFactory.fillDefaults().grab(true, false).create());
-		if (plotBlock != null) {
-			final StreamSRI sri = plotBlock.getFirstSRI();
-			final INxmBlock inputBlock = plotBlock.getInputBlock(0);
-			frameSizeEditor = createFrameSizeField(plotBlock, sri, inputBlock, fields);
+		if (plotBlockLocal != null) {
+			final StreamSRI sri = plotBlockLocal.getFirstSRI();
+			final INxmBlock inputBlock = plotBlockLocal.getInputBlock(0);
+			frameSizeEditor = createFrameSizeField(plotBlockLocal, sri, inputBlock, fields);
 			
-			createCenterFreqFields(plotBlock, sri, fields);
-			updateRfIfControls(sri.streamID, sri);
+			createCenterFreqFields(plotBlockLocal, fields);
+			updateRfIfControls(sri);
 			
 			streamsViewer.addSelectionChangedListener(createSelChangeListenerToUpdateRfIFControls(inputBlock));
 		}
@@ -297,7 +299,7 @@ public class SourcePreferencePage extends PreferencePage {
 						if (sri != null) {
 							String defaultFrameSizeAutoVal = getFrameSizeDefaultAutoVal(sri, inputBlock);
 							frameSizeEditor.setAutoValue(defaultFrameSizeAutoVal);
-							updateRfIfControls(streamId, sri);
+							updateRfIfControls(sri);
 						}
 					}
 				}
@@ -305,12 +307,13 @@ public class SourcePreferencePage extends PreferencePage {
 		};
 	}
 
-	private String getFrameSizeDefaultAutoVal(StreamSRI sri, INxmBlock inputBlock) {
+	private String getFrameSizeDefaultAutoVal(@Nullable StreamSRI sri, @Nullable INxmBlock inputBlock) {
 		String retval;
 		if (inputBlock instanceof FftNxmBlock) {
-			int framesize = ((FftNxmBlock) inputBlock).getOutFramesize(sri.mode);
+			int sriMode = (sri != null) ? sri.mode : 0;
+			int framesize = ((FftNxmBlock) inputBlock).getOutFramesize(sriMode);
 			retval = Integer.toString(framesize);
-		} else if (sri.subsize > 0) {
+		} else if (sri != null && sri.subsize > 0) {
 			retval = Integer.toString(sri.subsize);
 		} else {
 			retval = PlotPreferences.FRAMESIZE.getDefaultValue().toString();
@@ -318,7 +321,7 @@ public class SourcePreferencePage extends PreferencePage {
 		return retval;
 	}
 
-	private void updateRfIfControls(@NonNull String streamId, StreamSRI sri) {
+	private void updateRfIfControls(@Nullable StreamSRI sri) {
 		boolean enableCenterFreqOption = plotBlock.canOverrideCenterFrequency(sri);
 		boolean selectRFradioBtn = enableCenterFreqOption && plotBlock.isEnableCenterFreqKeywords();
 		ifRadioBtn.setSelection(!selectRFradioBtn);
@@ -329,13 +332,13 @@ public class SourcePreferencePage extends PreferencePage {
 		if (!enableCenterFreqOption) {
 			centerFreqDefaultAutoVal = "N/A";
 		} else if (sri != null) {
-			centerFreqDefaultAutoVal = plotBlock.getCenterFreqInfo(streamId);
+			centerFreqDefaultAutoVal = plotBlock.getCenterFreqInfo(sri.streamID);
 		}
 		centerFreqEditor.setAutoValue(centerFreqDefaultAutoVal);
 		centerFreqEditor.setEnabled(enableCenterFreqOption);
 	}
 
-	private OverridableIntegerFieldEditor createFrameSizeField(INxmBlock block, StreamSRI sri, INxmBlock inputBlock, Composite parent) {
+	private OverridableIntegerFieldEditor createFrameSizeField(@NonNull INxmBlock block, StreamSRI sri, INxmBlock inputBlock, @NonNull Composite parent) {
 		String defaultFrameSizeAutoVal = getFrameSizeDefaultAutoVal(sri, inputBlock);
 		OverridableIntegerFieldEditor frameSizeField = new OverridableIntegerFieldEditor(PlotPreferences.FRAMESIZE.getName(),
 			PlotPreferences.FRAMESIZE_OVERRIDE.getName(), "&Framesize:", defaultFrameSizeAutoVal, parent);
@@ -349,7 +352,7 @@ public class SourcePreferencePage extends PreferencePage {
 		return frameSizeField;
 	}
 	
-	private void createCenterFreqFields(PlotNxmBlock plotNxmBlock, StreamSRI sri, Composite parent) {
+	private void createCenterFreqFields(@NonNull PlotNxmBlock plotNxmBlock, @NonNull Composite parent) {
 		// IF / RF center frequency settings
 		Composite container1 = new Composite(parent, SWT.NONE);
 		container1.setLayout(GridLayoutFactory.fillDefaults().numColumns(2).create());
