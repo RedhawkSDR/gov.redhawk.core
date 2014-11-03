@@ -12,7 +12,7 @@
 <feature
       id="gov.redhawk.rcp.feature"
       label="RCP Feature"
-      version="1.8.7.qualifier"
+      version="1.8.8.qualifier"
       provider-name="%providerName"
       plugin="gov.redhawk.ui">
 

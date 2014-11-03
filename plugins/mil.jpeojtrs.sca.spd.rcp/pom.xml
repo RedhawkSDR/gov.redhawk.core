@@ -5,7 +5,7 @@
   <parent>
     <groupId>gov.redhawk.core</groupId>
     <artifactId>core</artifactId>
-    <version>1.8.7-SNAPSHOT</version>
+    <version>1.8.8-SNAPSHOT</version>
     <relativePath>../../releng/core/</relativePath>
   </parent>
   <artifactId>mil.jpeojtrs.sca.spd.rcp</artifactId>

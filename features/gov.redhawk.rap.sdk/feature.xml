@@ -2,7 +2,7 @@
 <feature
       id="gov.redhawk.rap.sdk"
       label="%featureName"
-      version="1.8.7.qualifier"
+      version="1.8.8.qualifier"
       provider-name="%featureProvider">
 
    <description url="http://redhawksdr.org">

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <site>
-   <feature url="features/gov.redhawk.sca.rap.sdk_1.8.5.qualifier.jar" id="gov.redhawk.sca.rap.sdk" version="1.8.5.qualifier">
+   <feature url="features/gov.redhawk.sca.rap.sdk_1.8.8.qualifier.jar" id="gov.redhawk.sca.rap.sdk" version="1.8.8.qualifier">
       <category name="RAP SDK"/>
    </feature>
    <category-def name="RAP SDK" label="RAP SDK"/>

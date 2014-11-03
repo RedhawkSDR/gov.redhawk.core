@@ -5,7 +5,7 @@
   <parent>
     <groupId>gov.redhawk.core</groupId>
     <artifactId>releng-rap</artifactId>
-    <version>1.8.7-SNAPSHOT</version>
+    <version>1.8.8-SNAPSHOT</version>
     <relativePath>../../releng/rap/</relativePath>
   </parent>
   <artifactId>gov.redhawk.rap</artifactId>
@@ -27,7 +27,7 @@
                 <configuration>
                   <target>
                     <replace file="about.properties">
-                      <replacefilter value="1.8.7" token="@buildLabel@" />
+                      <replacefilter value="1.8.8" token="@buildLabel@" />
                       <replacefilter value="${buildQualifier}" token="@buildId@" />
                       <replacefilter value="${commitHash}" token="@commitHash@"/>
                     </replace>
