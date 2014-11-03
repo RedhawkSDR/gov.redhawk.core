@@ -193,5 +193,16 @@ public class OverridableDoubleFieldEditor extends DoubleFieldEditor {
 	public String getAutoValue() {
 		return this.autoTextValue;
 	}
-	
+
+	public void grayTextControl(boolean grey) {
+		Text textControl = getTextControl();
+		if (textControl == null) {
+			return;
+		}
+		if (grey || !this.override) {
+			textControl.setForeground(disabledForeground);
+		} else {
+			textControl.setForeground(defaultForeground);
+		}
+	}
 }

@@ -48,6 +48,7 @@ import org.eclipse.swt.events.FocusEvent;
 import org.eclipse.swt.events.FocusListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.ImageData;
 import org.eclipse.swt.graphics.PaletteData;
@@ -336,6 +337,7 @@ public class SourcePreferencePage extends PreferencePage {
 		}
 		centerFreqEditor.setAutoValue(centerFreqDefaultAutoVal);
 		centerFreqEditor.setEnabled(enableCenterFreqOption);
+		centerFreqEditor.grayTextControl(ifRadioBtn.getSelection());
 	}
 
 	private OverridableIntegerFieldEditor createFrameSizeField(@NonNull INxmBlock block, StreamSRI sri, INxmBlock inputBlock, @NonNull Composite parent) {
@@ -364,7 +366,7 @@ public class SourcePreferencePage extends PreferencePage {
 		Composite container2 = new Composite(parent, SWT.NONE);
 		container2.setLayoutData(GridDataFactory.fillDefaults().grab(true, false).create());
 		container2.setLayout(GridLayoutFactory.fillDefaults().numColumns(2).create());
-		OverridableDoubleFieldEditor centerFreqField = new OverridableDoubleFieldEditor(PlotPreferences.CENTERFREQ.getName(),
+		final OverridableDoubleFieldEditor centerFreqField = new OverridableDoubleFieldEditor(PlotPreferences.CENTERFREQ.getName(),
 			PlotPreferences.CENTERFREQ_OVERRIDE.getName(), "Center Freq:", container2);
 		centerFreqField.setToolTipText("Set override RF center frequency");
 		centerFreqField.setPage(this);
@@ -382,6 +384,31 @@ public class SourcePreferencePage extends PreferencePage {
 			public void focusGained(FocusEvent e) {
 				ifRadioBtn.setSelection(false);
 				rfRadioBtn.setSelection(true);
+				centerFreqField.grayTextControl(false);
+			}
+		});
+		
+		ifRadioBtn.addSelectionListener(new SelectionListener() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				centerFreqField.grayTextControl(true);
+			}
+			
+			@Override
+			public void widgetDefaultSelected(SelectionEvent e) {
+				// ignore
+			}
+		});
+
+		rfRadioBtn.addSelectionListener(new SelectionListener() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				centerFreqField.grayTextControl(false);
+			}
+			
+			@Override
+			public void widgetDefaultSelected(SelectionEvent e) {
+				// ignore
 			}
 		});
 		centerFreqEditor = centerFreqField;
