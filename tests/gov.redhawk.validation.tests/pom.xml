@@ -5,9 +5,9 @@
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
 		<groupId>gov.redhawk.core</groupId>
-		<artifactId>core</artifactId>
-		<version>0.0.1-SNAPSHOT</version>
-		<relativePath>../../releng/core/</relativePath>
+		<artifactId>releng-rcp</artifactId>
+		<version>1.9.1-SNAPSHOT</version>
+		<relativePath>../../releng/rcp/</relativePath>
 	</parent>
 	<groupId>gov.redhawk.core</groupId>
 	<artifactId>gov.redhawk.validation.tests</artifactId>
