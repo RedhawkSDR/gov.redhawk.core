@@ -39,8 +39,11 @@ public class ComponentDesc extends ResourceDesc {
 	private final String componentType;
 	private final List<String> implementationIds;
 
+	private SoftPkg spd;
+
 	public ComponentDesc(SoftPkg spd, ResourceFactoryOperations factory) {
 		super(spd.getId(), spd.eResource().getURI(), createProfile(spd), spd.getVersion(), factory);
+		setSoftPkg(spd);
 		setName(spd.getName());
 		setDescription(spd.getDescription());
 		this.componentType = ScaEcoreUtils.getFeature(spd, PATH);
@@ -79,13 +82,7 @@ public class ComponentDesc extends ResourceDesc {
 				}
 			}
 		}
-		String [] roots = new String []{ 
-			"components",
-			"dom",
-			"devices",
-			"services",
-			"dev",
-		};
+		String[] roots = new String[] { "components", "dom", "devices", "services", "dev", };
 		String retVal = null;
 		for (String s : roots) {
 			retVal = createPathFrom(spd, path, s, false);
@@ -126,4 +123,14 @@ public class ComponentDesc extends ResourceDesc {
 		return Collections.unmodifiableList(implementationIds);
 	}
 
+	private void setSoftPkg(SoftPkg spd) {
+		this.spd = spd;
+	}
+
+	/**
+	 * @since 3.0
+	 */
+	public SoftPkg getSoftPkg() {
+		return spd;
+	}
 }
