@@ -68,6 +68,8 @@ import org.eclipse.ui.navigator.CommonViewer;
 import org.eclipse.ui.progress.UIJob;
 import org.eclipse.ui.statushandlers.StatusManager;
 
+import CF.PortPackage.InvalidPort;
+
 /**
  * @since 9.3
  * 
@@ -103,7 +105,7 @@ public class ConnectPortWizard extends Wizard {
 			public void propertyChange(PropertyChangeEvent evt) {
 				if (source != null && target != null) {
 					if (!target._is_a(source.getRepid())) {
-						status.setValue(ValidationStatus.warning("Invalid connection.\nTarget is not of type: " + source.getRepid()));
+						status.setValue(ValidationStatus.warning("Warning: Connection types are not an exact match, connection may not be possible. Target is not of type: " + source.getRepid()));
 						return;
 					}
 				}
@@ -521,8 +523,15 @@ public class ConnectPortWizard extends Wizard {
 				@Override
 				public IStatus runInUIThread(IProgressMonitor monitor) {
 					Throwable cause = e.getCause();
-					MessageDialog errorDialog = new MessageDialog(getShell(), "Error", null, "Error completing connection: " + cause.getMessage(),
-						MessageDialog.ERROR, new String[] { "OK" }, 0);
+					String errorMsg;
+					if (cause instanceof InvalidPort) {
+						InvalidPort invalidPort = ((InvalidPort) cause);
+						errorMsg = "The source port refused to connect to the target.\n";
+						errorMsg += String.format("Received an InvalidPort exception (code %d, message '%s')", invalidPort.errorCode, invalidPort.msg); 
+					} else {
+						errorMsg = "Error completing connection: " + cause.getMessage();
+					}
+					MessageDialog errorDialog = new MessageDialog(getShell(), "Error", null, errorMsg, MessageDialog.ERROR, new String[] { "OK" }, 0);
 					errorDialog.open();
 					return Status.OK_STATUS;
 				}
