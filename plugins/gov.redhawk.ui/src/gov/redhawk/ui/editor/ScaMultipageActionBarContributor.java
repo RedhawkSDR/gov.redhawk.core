@@ -152,13 +152,20 @@ public abstract class ScaMultipageActionBarContributor extends MultiPageEditorAc
 	 * Switches the active action bars.
 	 */
 	private void setActiveActionBars(final SubActionBarsExt actionBars, final IEditorPart activeEditor) {
-		if (this.myActiveEditorActionBars != null && this.myActiveEditorActionBars != actionBars) {
+		boolean barsChanged = false;
+		if (this.myActiveEditorActionBars != null && !this.myActiveEditorActionBars.equals(actionBars)) {
 			this.myActiveEditorActionBars.deactivate();
+			this.myActiveEditorActionBars.updateActionBars();
+			barsChanged = true;
+		} else if (this.myActiveEditorActionBars == null && actionBars != null) {
+			barsChanged = true;
 		}
 		this.myActiveEditorActionBars = actionBars;
 		if (this.myActiveEditorActionBars != null) {
 			this.myActiveEditorActionBars.setEditorPart(activeEditor);
-			this.myActiveEditorActionBars.activate();
+			if (barsChanged) {
+				this.myActiveEditorActionBars.activate();
+			}
 			this.myActiveEditorActionBars.updateActionBars();
 		}
 	}
@@ -173,5 +180,4 @@ public abstract class ScaMultipageActionBarContributor extends MultiPageEditorAc
 			((IMenuListener) actionBars.getContributor()).menuAboutToShow(manager);
 		}
 	}
-
 }

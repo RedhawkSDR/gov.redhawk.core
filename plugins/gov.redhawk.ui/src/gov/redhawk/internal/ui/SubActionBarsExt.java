@@ -92,6 +92,12 @@ public class SubActionBarsExt extends SubActionBars2 {
 		return this.globalActions;
 	}
 	
+	@Override
+	public void setGlobalActionHandler(String actionID, IAction handler) {
+		super.setGlobalActionHandler(actionID, handler);
+		globalActions.put(actionID, handler);
+	}
+	
 	/**
 	 * @return the action bar contributor
 	 */
@@ -114,6 +120,7 @@ public class SubActionBarsExt extends SubActionBars2 {
 	 */
 	@Override
 	public IToolBarManager getToolBarManager() {
+		this.myToolBarManager = super.getToolBarManager();
 		if (this.myToolBarManager == null) {
 			final ICoolBarManager parentCoolBarManager = getTopCoolBarManager();
 			if (parentCoolBarManager == null) {
@@ -136,9 +143,10 @@ public class SubActionBarsExt extends SubActionBars2 {
 				}
 			}
 			this.myToolBarContributionItem.setVisible(getActive());
-			this.myToolBarManager.markDirty();
+		} else {
+			getTopCoolBarManager().markDirty();
 		}
-
+		this.myToolBarManager.markDirty();
 		return this.myToolBarManager;
 	}
 
