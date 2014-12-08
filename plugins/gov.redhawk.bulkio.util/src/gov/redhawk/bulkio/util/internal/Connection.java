@@ -133,10 +133,6 @@ public class Connection extends AbstractUberBulkIOPort {
 			return;
 		}
 		IPortFactory factory = BulkIOUtilActivator.getDefault().getPortFactory();
-		if (factory == null) {
-			throw new CoreException(new Status(IStatus.ERROR, BulkIOUtilActivator.PLUGIN_ID, "Failed to find Port Factory", null));
-		}
-
 		ref = factory.connect(connectionId, ior, getBulkIOType(), this);
 	}
 
