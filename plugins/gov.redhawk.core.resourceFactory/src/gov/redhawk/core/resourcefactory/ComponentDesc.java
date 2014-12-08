@@ -128,7 +128,7 @@ public class ComponentDesc extends ResourceDesc {
 	}
 
 	/**
-	 * @since 3.0
+	 * @since 3.1
 	 */
 	public SoftPkg getSoftPkg() {
 		return spd;
