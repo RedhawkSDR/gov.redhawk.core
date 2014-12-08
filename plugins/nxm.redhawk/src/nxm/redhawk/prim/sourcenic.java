@@ -190,7 +190,7 @@ public class sourcenic extends Primitive { //SUPPRESS CHECKSTYLE ClassName
 
 			final byte packetDataType;
 			final int dataBitSize = sddsHeader.getDataFieldBps();
-			switch(dataBitSize) {
+			switch (dataBitSize) {
 			case BITS_PER_SAMPLE_4:
 				packetDataType = Data.NIBBLE;
 				break;
@@ -481,7 +481,7 @@ public class sourcenic extends Primitive { //SUPPRESS CHECKSTYLE ClassName
 		}
 
 		public boolean isComplex() {
-			switch(mode) {
+			switch (mode) {
 			case SDDS_MODE_COMPAT:
 				return ((dmode == DMODE_TEN_IN_SIXTEEN_AD) || (cx));
 			case SDDS_MODE_STRICT:
@@ -503,7 +503,7 @@ public class sourcenic extends Primitive { //SUPPRESS CHECKSTYLE ClassName
 				return BITS_PER_SAMPLE_32;
 			}
 			int x = (dmode & 0x3); // SUPPRESS CHECKSTYLE MAGIC NUMBER
-			switch(x) {
+			switch (x) {
 			case 0:
 				return BITS_PER_SAMPLE_4;
 			case 1:

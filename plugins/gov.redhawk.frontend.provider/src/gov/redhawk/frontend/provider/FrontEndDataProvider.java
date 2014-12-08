@@ -180,7 +180,7 @@ public class FrontEndDataProvider extends AbstractDataProvider {
 						if (device.getProfileObj() == null) {
 							device.eAdapters().add(new AdapterImpl() {
 								public void notifyChanged(Notification msg) {
-									switch(msg.getFeatureID(ScaDevice.class)) {
+									switch (msg.getFeatureID(ScaDevice.class)) {
 									case ScaPackage.SCA_DEVICE__PROFILE_URI:
 										if (msg.getNewValue() != null) {
 											device.eAdapters().remove(this);
