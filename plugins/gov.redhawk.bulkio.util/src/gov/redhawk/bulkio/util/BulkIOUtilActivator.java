@@ -67,7 +67,7 @@ public class BulkIOUtilActivator extends Plugin {
 
 	private ServiceTracker<IPortFactory, IPortFactory> portFactoryTracker;
 
-	private final IPortFactory deligatingFactory = new IPortFactory() {
+	private final IPortFactory delegatingFactory = new IPortFactory() {
 
 		@Override
 		public PortReference connect(String connectionID, String portIor, BulkIOType type, updateSRIOperations handler) throws CoreException {
@@ -194,7 +194,7 @@ public class BulkIOUtilActivator extends Plugin {
 	 */
 	@NonNull
 	public IPortFactory getPortFactory() {
-		return deligatingFactory;
+		return delegatingFactory;
 	}
 
 }
