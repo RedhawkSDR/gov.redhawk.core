@@ -15,25 +15,12 @@ import gov.redhawk.frontend.TunerStatus;
 import gov.redhawk.frontend.UnallocatedTunerContainer;
 import gov.redhawk.sca.ui.ScaViewerSorter;
 
-import java.text.Collator;
-
 import org.eclipse.jface.viewers.Viewer;
 
 public class FrontEndViewerSorter extends ScaViewerSorter {
 
-	/**
-	 * 
-	 */
 	public FrontEndViewerSorter() {
-		// TODO Auto-generated constructor stub
-	}
-
-	/**
-	 * @param collator
-	 */
-	public FrontEndViewerSorter(Collator collator) {
-		super(collator);
-		// TODO Auto-generated constructor stub
+		super();
 	}
 
 	@Override
@@ -55,11 +42,13 @@ public class FrontEndViewerSorter extends ScaViewerSorter {
 				}
 			}
 		}
+
 		if (e1 instanceof UnallocatedTunerContainer) {
 			if (e2 instanceof TunerStatus) {
 				return 1;
 			}
 		}
+
 		return super.compare(viewer, e1, e2);
 	}
 }

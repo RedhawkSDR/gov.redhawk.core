@@ -16,8 +16,6 @@ import gov.redhawk.model.sca.ScaProvidesPort;
 import gov.redhawk.model.sca.ScaService;
 import gov.redhawk.model.sca.provider.ScaWaveformExternalPortsItemProvider;
 
-import java.text.Collator;
-
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.viewers.ViewerSorter;
 
@@ -27,19 +25,8 @@ import org.eclipse.jface.viewers.ViewerSorter;
  */
 public class ScaViewerSorter extends ViewerSorter {
 
-	/**
-	 *
-	 */
 	public ScaViewerSorter() {
-		// TODO Auto-generated constructor stub
-	}
-
-	/**
-	 * @param collator
-	 */
-	public ScaViewerSorter(final Collator collator) {
-		super(collator);
-		// TODO Auto-generated constructor stub
+		super();
 	}
 
 	@Override
@@ -84,7 +71,7 @@ public class ScaViewerSorter extends ViewerSorter {
 			}
 			return 1;
 		}
-		// TODO Auto-generated method stub
+
 		return super.compare(viewer, e1, e2);
 	}
 
