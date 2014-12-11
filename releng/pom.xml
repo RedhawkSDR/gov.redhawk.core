@@ -27,11 +27,11 @@
   <properties>
     <tycho.scmUrl>scm:git:https://github.com/RedhawkSDR/eclipse-gov.redhawk.core.git</tycho.scmUrl>
     <eclipse>http://download.eclipse.org/releases/juno</eclipse>
-    <orbit>http://download.eclipse.org/tools/orbit/downloads/drops/R20130118183705/repository</orbit>
+    <orbit>http://download.eclipse.org/tools/orbit/downloads/drops/R20140525021250/repository</orbit>
     <mil.jpeojtrs.sca>http://download.redhawksdr.org/mil.jpeojtrs.sca/releases/1.10</mil.jpeojtrs.sca>
     <nxm>http://nextmidas.techma.com/p2/nxm/updates/stable</nxm>
     <nxm-ui>http://nextmidas.techma.com/p2/nxm.ui/updates/latest/</nxm-ui>
-    <jacorb>http://download.redhawksdr.org/jacorb/releases/3.1</jacorb>
+    <jacorb>http://download.redhawksdr.org/jacorb/updates/stable</jacorb>
   </properties>
 
   <repositories>
