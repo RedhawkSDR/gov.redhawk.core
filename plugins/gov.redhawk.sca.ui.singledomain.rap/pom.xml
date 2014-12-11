@@ -6,7 +6,7 @@
 	<parent>
 		<groupId>gov.redhawk.core</groupId>
 		<artifactId>releng-rap</artifactId>
-		<version>1.8.8-SNAPSHOT</version>
+		<version>1.8.9-SNAPSHOT</version>
 		<relativePath>../../releng/rap/</relativePath>
 	</parent>
 	<artifactId>gov.redhawk.sca.ui.singledomain.rap</artifactId>
