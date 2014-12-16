@@ -23,6 +23,7 @@
 		<nxm>http://nextmidas.techma.com/p2/nxm/updates/stable</nxm>
 		<nxm-ui>http://download.redhawksdr.org/nxm-ui/releases/1.0</nxm-ui>
 		<jacorb>http://download.redhawksdr.org/jacorb/updates/stable</jacorb>
+		<logback>http://download.redhawksdr.org/logback/latest</logback>
 	</properties>
 
 	<repositories>
@@ -66,6 +67,12 @@
 			<id>org.omg.jacorb</id>
 			<layout>p2</layout>
 			<url>${jacorb}</url>
+		</repository>
+
+		<repository>
+			<id>logback</id>
+			<layout>p2</layout>
+			<url>${logback}</url>
 		</repository>
 	</repositories>
 </project>
