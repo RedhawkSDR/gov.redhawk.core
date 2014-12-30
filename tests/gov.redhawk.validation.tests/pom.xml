@@ -16,7 +16,7 @@
 	<parent>
 		<groupId>gov.redhawk.core</groupId>
 		<artifactId>releng-rcp</artifactId>
-		<version>1.10.1-SNAPSHOT</version>
+		<version>1.10.2-SNAPSHOT</version>
 		<relativePath>../../releng/rcp/</relativePath>
 	</parent>
 	<artifactId>gov.redhawk.validation.tests</artifactId>

@@ -15,7 +15,7 @@
   <parent>
     <groupId>gov.redhawk.core</groupId>
     <artifactId>releng-rcp</artifactId>
-    <version>1.10.1-SNAPSHOT</version>
+    <version>1.10.2-SNAPSHOT</version>
     <relativePath>../../releng/rcp/</relativePath>
   </parent>
   <artifactId>gov.redhawk.eclipsecorba.idl</artifactId>
@@ -37,7 +37,7 @@
                 <configuration>
                   <target>
                     <replace file="about.properties">
-                      <replacefilter value="1.10.1" token="@buildLabel@" />
+                      <replacefilter value="1.10.2" token="@buildLabel@" />
                       <replacefilter value="${buildQualifier}" token="@buildId@" />
                       <replacefilter value="${commitHash}" token="@commitHash@"/>
                     </replace>
