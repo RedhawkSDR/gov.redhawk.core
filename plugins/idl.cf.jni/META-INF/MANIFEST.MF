@@ -8,9 +8,5 @@ Require-Bundle: omnijni;bundle-version="1.11.0";visibility:=reexport,
  idl.cf;bundle-version="1.11.0";visibility:=reexport,
  org.jacorb;bundle-version="3.3.0";visibility:=reexport
 Bundle-Vendor: REDHAWK
-Export-Package: CF.jni,
- ExtendedCF.jni,
- ExtendedEvent.jni,
- org.omg.CosEventChannelAdmin.jni,
- org.omg.CosEventComm.jni,
- org.omg.CosNaming.jni
+Export-Package: CF.jni,ExtendedCF.jni,ExtendedEvent.jni,org.omg.CosEve
+ ntChannelAdmin.jni,org.omg.CosEventComm.jni,org.omg.CosNaming.jni
