@@ -411,7 +411,7 @@ public class ScaPlugin extends Plugin {
 	 * appears to be existant.
 	 * @throws InterruptedException 
 	 * @throws CoreException 
-	 * @since 6.0
+	 * @since 6.1
 	 */
 	public static boolean isDomainOnline(final String domainName, IProgressMonitor monitor) throws CoreException, InterruptedException {
 		IPreferenceAccessor prefs = ScaPlugin.getDefault().getScaPreferenceAccessor();
@@ -442,7 +442,7 @@ public class ScaPlugin extends Plugin {
 	 * appears to be existant.
 	 * @throws InterruptedException 
 	 * @throws CoreException 
-	 * @since 6.0
+	 * @since 6.1
 	 */
 	public static boolean isDomainOnline(final String domainName, final String namingService, IProgressMonitor monitor) throws CoreException,
 		InterruptedException {
@@ -471,7 +471,7 @@ public class ScaPlugin extends Plugin {
 	 * @throws InterruptedException 
 	 * @throws CoreException 
 	 * 
-	 * @since 6.0
+	 * @since 6.1
 	 */
 	public static boolean nameServiceObjectExists(final String name, final String nameServiceInitRef, IProgressMonitor parentMonitor) throws 
 		InterruptedException {
@@ -527,7 +527,7 @@ public class ScaPlugin extends Plugin {
 	 * @throws InterruptedException 
 	 * @throws CoreException 
 	 * 
-	 * @since 6.0
+	 * @since 6.1
 	 */
 	public static String[] findDomainNamesOnDefaultNameServer(IProgressMonitor monitor) throws CoreException, InterruptedException {
 		IPreferenceAccessor prefs = ScaPlugin.getDefault().getScaPreferenceAccessor();
@@ -574,7 +574,7 @@ public class ScaPlugin extends Plugin {
 	 * @throws InterruptedException 
 	 * @throws CoreException 
 	 * 
-	 * @since 6.0
+	 * @since 6.1
 	 */
 	public static String[] findDomainNamesOnNameServer(final String nameServiceInitRef, IProgressMonitor parentMonitor) throws CoreException, InterruptedException {
 		SubMonitor subMonitor = SubMonitor.convert(parentMonitor, "Finding domains on name server...", 5);
