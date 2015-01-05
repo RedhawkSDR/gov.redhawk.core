@@ -15,18 +15,12 @@ import gov.redhawk.frontend.TunerContainer;
 import gov.redhawk.frontend.TunerStatus;
 import gov.redhawk.model.sca.ScaDevice;
 
-import org.eclipse.emf.common.notify.Notification;
-
 public enum TunerUtils {
 	INSTANCE;
 
 	public static final String TUNER_CONTAINER_ID = TunerContainer.class.getCanonicalName();
 
 	private TunerUtils() {
-	}
-
-	public void processChange(Notification notification) {
-
 	}
 
 	/**
