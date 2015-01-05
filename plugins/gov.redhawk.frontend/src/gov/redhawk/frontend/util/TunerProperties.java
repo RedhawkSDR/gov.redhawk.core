@@ -22,7 +22,9 @@ import gov.redhawk.sca.util.SubMonitor;
 
 import java.util.concurrent.Callable;
 
+import mil.jpeojtrs.sca.prf.PrfFactory;
 import mil.jpeojtrs.sca.prf.PropertyValueType;
+import mil.jpeojtrs.sca.prf.Simple;
 import mil.jpeojtrs.sca.util.CorbaUtils;
 import mil.jpeojtrs.sca.util.ScaEcoreUtils;
 
@@ -308,31 +310,111 @@ public enum TunerProperties {
 
 	public static enum TunerAllocationProperties {
 		// instance name ID PRF type
-		TUNER_TYPE("FRONTEND::tuner_allocation::tuner_type", PropertyValueType.STRING),
-		ALLOCATION_ID("FRONTEND::tuner_allocation::allocation_id", PropertyValueType.STRING),
-		CENTER_FREQUENCY("FRONTEND::tuner_allocation::center_frequency", PropertyValueType.DOUBLE),
-		BANDWIDTH("FRONTEND::tuner_allocation::bandwidth", PropertyValueType.DOUBLE),
-		BANDWIDTH_TOLERANCE("FRONTEND::tuner_allocation::bandwidth_tolerance", PropertyValueType.DOUBLE),
-		SAMPLE_RATE("FRONTEND::tuner_allocation::sample_rate", PropertyValueType.DOUBLE),
-		SAMPLE_RATE_TOLERANCE("FRONTEND::tuner_allocation::sample_rate_tolerance", PropertyValueType.DOUBLE),
-		DEVICE_CONTROL("FRONTEND::tuner_allocation::device_control", PropertyValueType.BOOLEAN),
-		GROUP_ID("FRONTEND::tuner_allocation::group_id", PropertyValueType.STRING),
-		RF_FLOW_ID("FRONTEND::tuner_allocation::rf_flow_id", PropertyValueType.STRING);
+		TUNER_TYPE(
+				"tuner_type",
+					PropertyValueType.STRING,
+					null,
+					"Tuner type",
+					"Example Tuner Types: TX, RX, CHANNELIZER, DDC, RX_DIGITIZER, RX_DIGTIZIER_CHANNELIZER"),
+		ALLOCATION_ID(
+				"allocation_id",
+					PropertyValueType.STRING,
+					null,
+					"Allocation ID",
+					"The allocation_id set by the caller. Used by the caller to reference the allocation uniquely"),
+		CENTER_FREQUENCY("center_frequency", PropertyValueType.DOUBLE, "Hz", "Center frequency", "Requested center frequency"),
+		BANDWIDTH("bandwidth", PropertyValueType.DOUBLE, "Bandwidth", "Hz", "Requested bandwidth (plus or minus the tolerance)"),
+		BANDWIDTH_TOLERANCE(
+				"bandwidth_tolerance",
+					PropertyValueType.DOUBLE,
+					"percent",
+					"Bandwidth tolerance",
+					"Allowable Percent above requested bandwidth  (ie - 100 would be up to twice)"),
+		SAMPLE_RATE(
+				"sample_rate",
+					PropertyValueType.DOUBLE,
+					"Sample rate",
+					"Hz",
+					"Requested sample rate. This can be ignored for such devices as analog tuners"),
+		SAMPLE_RATE_TOLERANCE(
+				"sample_rate_tolerance",
+					PropertyValueType.DOUBLE,
+					"percent",
+					"Sample rate tolerance",
+					"Allowable Percent above requested sample rate (ie - 100 would be up to twice)"),
+		DEVICE_CONTROL(
+				"device_control",
+					PropertyValueType.BOOLEAN,
+					null,
+					"Device control",
+					"True: Has control over the device to make changes\nFalse: Does not need control and can just attach to any currently tasked device that satisfies the parameters (essentually a listener)"),
+		GROUP_ID(
+				"group_id",
+					PropertyValueType.STRING,
+					"Group ID",
+					null,
+					"Unique identifier that specifies a group of device. Must match group_id on the device"),
+		RF_FLOW_ID(
+				"rf_flow_id",
+					PropertyValueType.STRING,
+					null,
+					"RF flow ID",
+					"Optional. Specifies a certain RF flow to allocate against. If left empty, it will match all frontend devices.");
 
 		private String id;
 		private PropertyValueType type;
+		private String shortId;
+		private String name;
+		private String description;
+		private String units;
 
-		private TunerAllocationProperties(String id, PropertyValueType prfType) {
-			this.id = id;
+		private TunerAllocationProperties(String shortId, PropertyValueType prfType, String units, String name, String description) {
+			this.id = "FRONTEND::tuner_allocation::" + shortId;
 			this.type = prfType;
+			this.shortId = shortId;
+			this.name = name;
+			this.description = description;
+			this.units = units;
 		}
 
+		/**
+		 * @return The fully qualified ID of the property
+		 */
 		public String getId() {
 			return this.id;
 		}
 
+		/**
+		 * @return The property's type
+		 */
 		public PropertyValueType getType() {
 			return this.type;
+		}
+
+		/**
+		 * @return A human-readable name
+		 */
+		public String getName() {
+			return this.name;
+		}
+
+		/**
+		 * @return A human-readable description of the property
+		 */
+		public String getDescription() {
+			return this.description;
+		}
+
+		public Simple createSimple() {
+			Simple simple = PrfFactory.eINSTANCE.createSimple();
+			simple.setId(this.id);
+			simple.setName(this.shortId);
+			simple.setDescription(this.description);
+			simple.setType(this.type);
+			if (this.units != null) {
+				simple.setUnits(this.units);
+			}
+			return simple;
 		}
 	}
 
