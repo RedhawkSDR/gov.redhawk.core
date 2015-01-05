@@ -13,7 +13,7 @@ package gov.redhawk.frontend.ui.wizard;
 
 import gov.redhawk.frontend.TunerContainer;
 import gov.redhawk.frontend.TunerStatus;
-import gov.redhawk.frontend.ui.FrontEndUIActivator.ALLOCATION_MODE;
+import gov.redhawk.frontend.ui.FrontEndUIActivator.AllocationMode;
 import gov.redhawk.model.sca.RefreshDepth;
 import gov.redhawk.model.sca.ScaDevice;
 import gov.redhawk.model.sca.ScaStructProperty;
@@ -254,7 +254,7 @@ public class TunerAllocationDetailWizard extends Wizard {
 		AllocateRxDigitizerWizardPage page = ((AllocateRxDigitizerWizardPage) tunerMap.get(tuner));
 		ScaStructProperty struct;
 		DataType dt = new DataType();
-		if (page.getAllocationMode() == ALLOCATION_MODE.TUNER) {
+		if (page.getAllocationMode() == AllocationMode.TUNER) {
 			struct = page.getTunerAllocationStruct();
 			dt.id = "FRONTEND::tuner_allocation";
 		} else {

@@ -13,7 +13,7 @@ package gov.redhawk.frontend.ui.wizard;
 
 import gov.redhawk.frontend.TunerStatus;
 import gov.redhawk.frontend.ui.FrontEndUIActivator;
-import gov.redhawk.frontend.ui.FrontEndUIActivator.ALLOCATION_MODE;
+import gov.redhawk.frontend.ui.FrontEndUIActivator.AllocationMode;
 import gov.redhawk.frontend.util.TunerProperties.ListenerAllocationProperties;
 import gov.redhawk.frontend.util.TunerProperties.StatusProperties;
 import gov.redhawk.frontend.util.TunerProperties.TunerAllocationProperties;
@@ -93,7 +93,7 @@ public class TunerAllocationWizardPage extends WizardPage {
 	private static final double TOLERANCE_CONVERSION = 0.01;
 	private UUID uuid;
 	private ComboViewer typeCombo;
-	private ALLOCATION_MODE allocationMode = ALLOCATION_MODE.TUNER;
+	private AllocationMode allocationMode = AllocationMode.TUNER;
 	private EMFDataBindingContext context;
 	private Button listenById;
 	private Button tunerAlloc;
@@ -321,14 +321,14 @@ public class TunerAllocationWizardPage extends WizardPage {
 		@Override
 		public void widgetSelected(SelectionEvent e) {
 			boolean listener = listenerAlloc.getSelection() && listenById.getSelection();
-			allocationMode = (listener) ? ALLOCATION_MODE.LISTENER : ALLOCATION_MODE.TUNER;
+			allocationMode = (listener) ? AllocationMode.LISTENER : AllocationMode.TUNER;
 			handleAllocationModeChange();
 		}
 	};
 
 	private void handleAllocationModeChange() {
 		for (Control c : tunerControls) {
-			c.setEnabled(allocationMode == ALLOCATION_MODE.TUNER);
+			c.setEnabled(allocationMode == AllocationMode.TUNER);
 		}
 		if (bwAnyValue.getSelection()) {
 			bwText.setEnabled(false);
@@ -347,7 +347,7 @@ public class TunerAllocationWizardPage extends WizardPage {
 	}
 
 	private boolean validatePageComplete() {
-		if (allocationMode == ALLOCATION_MODE.LISTENER) {
+		if (allocationMode == AllocationMode.LISTENER) {
 			return !"".equals(allocIdText.getText()) && !"".equals(targetAllocText.getText());
 		} else {
 			return getErrorMessage() == null;
@@ -371,7 +371,7 @@ public class TunerAllocationWizardPage extends WizardPage {
 			}
 			return Status.OK_STATUS;
 		} else if (control == targetAllocText) {
-			if (allocationMode == ALLOCATION_MODE.TUNER) {
+			if (allocationMode == AllocationMode.TUNER) {
 				return Status.OK_STATUS;
 			}
 			String s = (String) value;
@@ -379,7 +379,7 @@ public class TunerAllocationWizardPage extends WizardPage {
 				return ValidationStatus.error(TunerAllocationWizardPage.EXISTING_LISTENER_ID_MISSING);
 			}
 			return Status.OK_STATUS;
-		} else if (allocationMode == ALLOCATION_MODE.LISTENER) {
+		} else if (allocationMode == AllocationMode.LISTENER) {
 			return Status.OK_STATUS;
 		} else if (control == typeCombo.getControl()) {
 			String s = (String) value;
@@ -391,7 +391,7 @@ public class TunerAllocationWizardPage extends WizardPage {
 			}
 			return Status.OK_STATUS;
 		} else if (control == cfText) {
-			if (allocationMode == ALLOCATION_MODE.LISTENER) {
+			if (allocationMode == AllocationMode.LISTENER) {
 				return Status.OK_STATUS;
 			}
 			if (value == null || "".equals(value)) {
@@ -416,7 +416,7 @@ public class TunerAllocationWizardPage extends WizardPage {
 			}
 			return Status.OK_STATUS;
 		} else if (control == bwText) {
-			if (allocationMode == ALLOCATION_MODE.LISTENER || bwAnyValue.getSelection()) {
+			if (allocationMode == AllocationMode.LISTENER || bwAnyValue.getSelection()) {
 				return Status.OK_STATUS;
 			}
 			if (value == null || "".equals(value)) {
@@ -441,7 +441,7 @@ public class TunerAllocationWizardPage extends WizardPage {
 			}
 			return Status.OK_STATUS;
 		} else if (control == srText) {
-			if (allocationMode == ALLOCATION_MODE.LISTENER || srAnyValue.getSelection()) {
+			if (allocationMode == AllocationMode.LISTENER || srAnyValue.getSelection()) {
 				return Status.OK_STATUS;
 			}
 			if (value == null || "".equals(value)) {
@@ -466,7 +466,7 @@ public class TunerAllocationWizardPage extends WizardPage {
 			}
 			return Status.OK_STATUS;
 		} else if (control == bwTolText) {
-			if (allocationMode == ALLOCATION_MODE.LISTENER) {
+			if (allocationMode == AllocationMode.LISTENER) {
 				return Status.OK_STATUS;
 			}
 			if (value == null || "".equals(value)) {
@@ -483,7 +483,7 @@ public class TunerAllocationWizardPage extends WizardPage {
 			}
 			return Status.OK_STATUS;
 		} else if (control == srTolText) {
-			if (allocationMode == ALLOCATION_MODE.LISTENER) {
+			if (allocationMode == AllocationMode.LISTENER) {
 				return Status.OK_STATUS;
 			}
 			if (value == null || "".equals(value)) {
@@ -1197,7 +1197,7 @@ public class TunerAllocationWizardPage extends WizardPage {
 		return this.listenerAllocationStruct;
 	}
 
-	public ALLOCATION_MODE getAllocationMode() {
+	public AllocationMode getAllocationMode() {
 		return this.allocationMode;
 	}
 }

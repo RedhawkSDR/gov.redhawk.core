@@ -36,7 +36,7 @@ import CF.PropertiesHelper;
  * @since 2.0
  */
 public final class StreamXMLSRIUtil {
-	protected enum type {
+	protected enum type { // SUPPRESS CHECKSTYLE INLINE
 		STRUCT_SEQUENCE, STRUCT, SIMPLE_SEQUENCE, SIMPLE
 	};
 

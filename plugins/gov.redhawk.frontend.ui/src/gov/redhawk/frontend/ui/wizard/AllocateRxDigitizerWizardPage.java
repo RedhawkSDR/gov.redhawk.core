@@ -13,7 +13,7 @@ package gov.redhawk.frontend.ui.wizard;
 
 import gov.redhawk.common.ui.widgets.Dval;
 import gov.redhawk.frontend.TunerStatus;
-import gov.redhawk.frontend.ui.FrontEndUIActivator.ALLOCATION_MODE;
+import gov.redhawk.frontend.ui.FrontEndUIActivator.AllocationMode;
 import gov.redhawk.frontend.util.TunerProperties.ListenerAllocationProperties;
 import gov.redhawk.frontend.util.TunerProperties.StatusProperties;
 import gov.redhawk.frontend.util.TunerProperties.TunerAllocationProperties;
@@ -82,7 +82,7 @@ public class AllocateRxDigitizerWizardPage extends WizardPage {
 		this.tuner = tuner;
 	}
 
-	private ALLOCATION_MODE allocationMode = ALLOCATION_MODE.TUNER;
+	private AllocationMode allocationMode = AllocationMode.TUNER;
 	private Button listenByParams;
 	private Text targetAllocText;
 	private Label targetAllocLabel;
@@ -323,9 +323,9 @@ public class AllocateRxDigitizerWizardPage extends WizardPage {
 				setValueForProp(TunerAllocationProperties.DEVICE_CONTROL, tunerAllocationStruct.getSimple(TunerAllocationProperties.DEVICE_CONTROL.getId()));
 				boolean selected = listenerAlloc.getSelection();
 				if (selected) {
-					allocationMode = ((listenById.getSelection()) ? ALLOCATION_MODE.LISTENER : ALLOCATION_MODE.TUNER);
+					allocationMode = ((listenById.getSelection()) ? AllocationMode.LISTENER : AllocationMode.TUNER);
 				} else {
-					allocationMode = ALLOCATION_MODE.TUNER;
+					allocationMode = AllocationMode.TUNER;
 				}
 				updateControlsEnable();
 				setPageComplete(validate());
@@ -342,7 +342,7 @@ public class AllocateRxDigitizerWizardPage extends WizardPage {
 			public void widgetSelected(SelectionEvent e) {
 				setValueForProp(TunerAllocationProperties.DEVICE_CONTROL, tunerAllocationStruct.getSimple(TunerAllocationProperties.DEVICE_CONTROL.getId()));
 				boolean selected = listenById.getSelection();
-				allocationMode = ((selected) ? ALLOCATION_MODE.LISTENER : ALLOCATION_MODE.TUNER);
+				allocationMode = ((selected) ? AllocationMode.LISTENER : AllocationMode.TUNER);
 				updateControlsEnable();
 				setPageComplete(validate());
 			}
@@ -550,7 +550,7 @@ public class AllocateRxDigitizerWizardPage extends WizardPage {
 		return this.listenerAllocationStruct;
 	}
 
-	public ALLOCATION_MODE getAllocationMode() {
+	public AllocationMode getAllocationMode() {
 		return this.allocationMode;
 	}
 
