@@ -53,6 +53,7 @@ public class PlotSettingsAction extends Action {
 		if (pageBook.getSources().size() > 0) {
 			PlotPreferencePage plotPage = new PlotPreferencePage("Plot", false);
 			plotPage.setPreferenceStore(pageBook.getActivePlotWidget().getPreferenceStore());
+			plotPage.setBlockPreferenceStore(pageBook.getSharedPlotBlockPreferences());
 
 			PlotPreferenceNode plotNode = new PlotPreferenceNode("plotSettings", plotPage);
 			manager.addToRoot(plotNode);

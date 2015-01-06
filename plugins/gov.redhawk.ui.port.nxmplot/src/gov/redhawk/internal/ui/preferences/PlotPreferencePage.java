@@ -128,9 +128,10 @@ public class PlotPreferencePage extends FieldEditorPreferencePage implements IWo
 				 * Block setting store is Nxm Block Settings
 				 */
 				addField(createPlotModesField());
-				if (blockPreferenceStore != null) {
-					blockPreferences.add(createFrameSizeField());
-				}
+// adjusting of Frame Size has been moved to the Source Preferences Page
+//				if (blockPreferenceStore != null) {
+//					blockPreferences.add(createFrameSizeField());
+//				}
 
 				OverridableDoubleFieldEditor minField = new OverridableDoubleFieldEditor(PlotPreferences.MIN.getName(),
 					PlotPreferences.MIN_OVERRIDE.getName(), "Mi&n:", getFieldEditorParent());
