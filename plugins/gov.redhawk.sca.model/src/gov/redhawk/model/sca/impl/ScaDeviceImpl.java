@@ -579,12 +579,10 @@ public class ScaDeviceImpl< D extends Device > extends ScaAbstractComponentImpl<
 		switch (msg.getFeatureID(ScaDevice.class)) {
 		case ScaPackage.SCA_DEVICE__OBJ:
 			unsetAdminState();
-			unsetIdentifier();
 			unsetLabel();
 			unsetOperationalState();
 			unsetStarted();
 			unsetUsageState();
-			unsetProfile();
 			unsetChildDevices();
 			break;
 		case ScaPackage.SCA_DEVICE__PROFILE:
