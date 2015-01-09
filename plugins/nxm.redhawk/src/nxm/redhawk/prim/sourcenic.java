@@ -177,7 +177,7 @@ public class sourcenic extends Primitive { //SUPPRESS CHECKSTYLE ClassName
 			System.arraycopy(packet.getData(), packet.getOffset() + SDDS_HEADER_SIZE, outputData.buf, 0, SDDS_PAYLOAD_SIZE);
 
 			int dataSize = sddsHeader.getDataFieldBps();
-			switch(dataSize) {
+			switch (dataSize) {
 			case BITS_PER_SAMPLE_4:
 				warn(WarnBit.WARN2, "4-bit SDDS data is not yet supported");
 				break;
@@ -456,7 +456,7 @@ public class sourcenic extends Primitive { //SUPPRESS CHECKSTYLE ClassName
 		}
 
 		public boolean isComplex() {
-			switch(mode) {
+			switch (mode) {
 			case SDDS_MODE_COMPAT:
 				return ((dmode == DMODE_TEN_IN_SIXTEEN_AD) || (cx));
 			case SDDS_MODE_STRICT:
@@ -475,7 +475,7 @@ public class sourcenic extends Primitive { //SUPPRESS CHECKSTYLE ClassName
 		 */
 		public int getDataFieldBps() {
 			int x = (dmode & 0x3); // SUPPRESS CHECKSTYLE MAGIC NUMBER
-			switch(x) {
+			switch (x) {
 			case 0:
 				return BITS_PER_SAMPLE_4;
 			case 1:

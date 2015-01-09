@@ -268,11 +268,12 @@ public abstract class ScaPropertyContainerImpl< P extends org.omg.CORBA.Object, 
 
 	private static final DataType[] EMPTY_DATA_TYPE_ARRAY = new DataType[0];
 	private static final Debug DEBUG = new Debug(ScaModelPlugin.ID, "profileObj");
+
 	@Override
 	protected void notifyChanged(Notification msg) {
 		// END GENERATED CODE
 	    super.notifyChanged(msg);
-	    switch(msg.getFeatureID(ScaPropertyContainer.class)) {
+	    switch (msg.getFeatureID(ScaPropertyContainer.class)) {
 	    case ScaPackage.SCA_PROPERTY_CONTAINER__PROFILE_OBJ:
 	    	if (!PluginUtil.equals(msg.getOldValue(), msg.getNewValue())) {
 	    		unsetProperties();

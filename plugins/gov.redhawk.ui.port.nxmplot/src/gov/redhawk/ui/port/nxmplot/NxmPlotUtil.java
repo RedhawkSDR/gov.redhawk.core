@@ -45,7 +45,7 @@ public final class NxmPlotUtil {
 		if (type == null) {
 			return null;
 		}
-		switch(type) {
+		switch (type) {
 		case RASTER:
 			return "TYPE=RASTER View=iYX SCALE=AutoMin|AutoMax|NoAverage AUTOL=16";
 		case CONTOUR: // fall-through
@@ -66,7 +66,7 @@ public final class NxmPlotUtil {
 		if (type == null) {
 			return null;
 		}
-		switch(type) {
+		switch (type) {
 		case RASTER:
 			return "/LPS=200/RT/NICE";
 		case CONTOUR: // fall-through
