@@ -313,6 +313,48 @@ public enum TunerProperties {
 			}
 		}
 	}
+	
+	public static enum ListenerAllocationProperty {
+		INSTANCE;
+
+		/**
+		 * @return The fully qualified ID of the property
+		 */
+		public String getId() {
+			return "FRONTEND::listener_allocation";
+		}
+
+		/**
+		 * @return A human-readable description of the property
+		 */
+		public String getDescription() {
+			return "Frontend Interfaces v2 listener allocation structure";
+		}
+
+		/**
+		 * @return A new {@link Struct} instance for the property
+		 */
+		public Struct createStruct() {
+			Struct listenerAllocStruct = PrfFactory.eINSTANCE.createStruct();
+			listenerAllocStruct.setDescription(getDescription());
+			listenerAllocStruct.setId(getId());
+			listenerAllocStruct.setName("frontend_listener_allocation");
+			final ConfigurationKind kind = PrfFactory.eINSTANCE.createConfigurationKind();
+			kind.setType(StructPropertyConfigurationType.ALLOCATION);
+			listenerAllocStruct.getConfigurationKind().add(kind);
+			listenerAllocStruct.getSimple().addAll(createListenerAllocationSimples());
+
+			return listenerAllocStruct;
+		}
+
+		private Collection< ? extends Simple> createListenerAllocationSimples() {
+			List<Simple> listenerAllocSimpleList = new ArrayList<Simple>();
+			listenerAllocSimpleList.add(ListenerAllocationProperties.EXISTING_ALLOCATION_ID.createSimple());
+			listenerAllocSimpleList.add(ListenerAllocationProperties.LISTENER_ALLOCATION_ID.createSimple());
+			
+			return listenerAllocSimpleList;
+		}
+	}
 
 	public static enum TunerAllocationProperty {
 		INSTANCE;
@@ -401,7 +443,7 @@ public enum TunerProperties {
 					"Allocation ID",
 					"The allocation_id set by the caller. Used by the caller to reference the allocation uniquely"),
 		CENTER_FREQUENCY("center_frequency", PropertyValueType.DOUBLE, "Hz", "Center frequency", "Requested center frequency"),
-		BANDWIDTH("bandwidth", PropertyValueType.DOUBLE, "Bandwidth", "Hz", "Requested bandwidth (plus or minus the tolerance)"),
+		BANDWIDTH("bandwidth", PropertyValueType.DOUBLE, "Hz", "Bandwidth", "Requested bandwidth (plus or minus the tolerance)"),
 		BANDWIDTH_TOLERANCE(
 				"bandwidth_tolerance",
 					PropertyValueType.DOUBLE,
@@ -411,8 +453,8 @@ public enum TunerProperties {
 		SAMPLE_RATE(
 				"sample_rate",
 					PropertyValueType.DOUBLE,
-					"Sample rate",
 					"Hz",
+					"Sample rate",
 					"Requested sample rate. This can be ignored for such devices as analog tuners"),
 		SAMPLE_RATE_TOLERANCE(
 				"sample_rate_tolerance",
@@ -429,8 +471,8 @@ public enum TunerProperties {
 		GROUP_ID(
 				"group_id",
 					PropertyValueType.STRING,
-					"Group ID",
 					null,
+					"Group ID",
 					"Unique identifier that specifies a group of device. Must match group_id on the device"),
 		RF_FLOW_ID(
 				"rf_flow_id",
@@ -503,7 +545,6 @@ public enum TunerProperties {
 		// instance name ID PRF type
 		EXISTING_ALLOCATION_ID("FRONTEND::listener_allocation::existing_allocation_id", PropertyValueType.STRING),
 		LISTENER_ALLOCATION_ID("FRONTEND::listener_allocation::listener_allocation_id", PropertyValueType.STRING);
-		public static final String LISTENER_ALLOCATION_STRUCT_ID = "FRONTEND::listener_allocation";
 
 		private String id;
 		private PropertyValueType type;
@@ -519,6 +560,13 @@ public enum TunerProperties {
 
 		public PropertyValueType getType() {
 			return this.type;
+		}
+		
+		public Simple createSimple() {
+			Simple simple = PrfFactory.eINSTANCE.createSimple();
+			simple.setId(this.id);
+			simple.setType(this.type);
+			return simple;
 		}
 	}
 

@@ -18,6 +18,7 @@ import mil.jpeojtrs.sca.partitioning.ComponentSupportedInterfaceStub;
 import mil.jpeojtrs.sca.partitioning.FindByStub;
 import mil.jpeojtrs.sca.partitioning.PartitioningPackage;
 import mil.jpeojtrs.sca.partitioning.ProvidesPortStub;
+import mil.jpeojtrs.sca.partitioning.UsesDeviceStub;
 import mil.jpeojtrs.sca.partitioning.UsesPortStub;
 import mil.jpeojtrs.sca.scd.ScdPackage;
 import mil.jpeojtrs.sca.scd.SupportsInterface;
@@ -50,6 +51,8 @@ public class InterfacesUtil {
 		if (source == null || target == null) {
 			return false;
 		} else if (source.eContainer() instanceof FindByStub || target.eContainer() instanceof FindByStub) {
+			return true;
+		} else if (source.eContainer() instanceof UsesDeviceStub || target.eContainer() instanceof UsesDeviceStub) {
 			return true;
 		}
 

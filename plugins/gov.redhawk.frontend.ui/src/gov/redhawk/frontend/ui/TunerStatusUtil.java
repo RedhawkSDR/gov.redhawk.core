@@ -13,6 +13,7 @@ package gov.redhawk.frontend.ui;
 import gov.redhawk.frontend.ListenerAllocation;
 import gov.redhawk.frontend.TunerStatus;
 import gov.redhawk.frontend.util.TunerProperties.ListenerAllocationProperties;
+import gov.redhawk.frontend.util.TunerProperties.ListenerAllocationProperty;
 import gov.redhawk.frontend.util.TunerUtils;
 import gov.redhawk.model.sca.RefreshDepth;
 import gov.redhawk.model.sca.ScaDevice;
@@ -76,7 +77,7 @@ public final class TunerStatusUtil {
 			}
 			struct.getSimples().add(simple);
 		}
-		dt.id = ListenerAllocationProperties.LISTENER_ALLOCATION_STRUCT_ID;
+		dt.id = ListenerAllocationProperty.INSTANCE.getId();
 		dt.value = struct.toAny();
 		listenerCapacity.add(dt);
 		return listenerCapacity.toArray(new DataType[0]);
