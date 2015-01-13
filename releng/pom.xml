@@ -141,17 +141,9 @@
     <module>../plugins/gov.redhawk.ui.port.playaudio</module>
     <module>../plugins/gov.redhawk.ui.views.domainbrowser</module>
     <module>../plugins/gov.redhawk.validation</module>
-    <module>../plugins/mil.jpeojtrs.sca.dcd.rcp</module>
     <module>../plugins/mil.jpeojtrs.sca.dcd.diagram</module>
     <module>../plugins/mil.jpeojtrs.sca.diagram</module>
-    <module>../plugins/mil.jpeojtrs.sca.dmd.rcp</module>
-    <module>../plugins/mil.jpeojtrs.sca.dpd.rcp</module>
-    <module>../plugins/mil.jpeojtrs.sca.prf.rcp</module>
-    <module>../plugins/mil.jpeojtrs.sca.profile.rcp</module>
-    <module>../plugins/mil.jpeojtrs.sca.sad.rcp</module>
     <module>../plugins/mil.jpeojtrs.sca.sad.diagram</module>
-    <module>../plugins/mil.jpeojtrs.sca.scd.rcp</module>
-    <module>../plugins/mil.jpeojtrs.sca.spd.rcp</module>
     <module>../plugins/org.anarres.cpp</module>
 
     <module>../tests/gov.redhawk.bulkio.util.tests</module>

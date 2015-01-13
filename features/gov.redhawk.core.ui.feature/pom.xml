@@ -31,18 +31,6 @@
             </goals>
           </execution>
         </executions>
-        <configuration>
-          <excludes>
-            <plugin id="mil.jpeojtrs.sca.dcd.rcp" />
-            <plugin id="mil.jpeojtrs.sca.dmd.rcp" />
-            <plugin id="mil.jpeojtrs.sca.dpd.rcp" />
-            <plugin id="mil.jpeojtrs.sca.prf.rcp" />
-            <plugin id="mil.jpeojtrs.sca.profile.rcp" />
-            <plugin id="mil.jpeojtrs.sca.sad.rcp" />
-            <plugin id="mil.jpeojtrs.sca.scd.rcp" />
-            <plugin id="mil.jpeojtrs.sca.spd.rcp" />
-          </excludes>
-        </configuration>
       </plugin>
     </plugins>
   </build>
