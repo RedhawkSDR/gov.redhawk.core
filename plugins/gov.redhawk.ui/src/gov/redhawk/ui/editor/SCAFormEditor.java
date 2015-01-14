@@ -2019,4 +2019,13 @@ public abstract class SCAFormEditor extends FormEditor implements IEditingDomain
 	public ResourceTracker getResourceTracker() {
 		return this.resourceTracker;
 	}
+
+	/**
+	 * @since 7.1
+	 */
+	public Map<Resource, IDocument> getResourceToDocumentMap() {
+		return resourceToDocumentMap;
+	}
+	
+	
 }
