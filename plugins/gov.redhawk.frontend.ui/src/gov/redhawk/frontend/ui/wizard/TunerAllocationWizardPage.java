@@ -574,6 +574,7 @@ public class TunerAllocationWizardPage extends WizardPage {
 
 		allocationComboViewer.addSelectionChangedListener(allocationModeListener);
 		allocationComboViewer.setInput(TUNER_ALLOCATION_TYPES);
+		allocationComboViewer.setSelection(new StructuredSelection(TUNER_ALLOCATION_TYPES[0]));
 		//set selection
 		if (ListenerAllocationProperty.INSTANCE.getId().equals(listenerAllocationStruct.getId())) {
 			//listener_allocation
@@ -891,7 +892,7 @@ public class TunerAllocationWizardPage extends WizardPage {
 		
 		Label allocationComboViewerLabel = new Label(comp2, SWT.NONE);
 		allocationComboViewerLabel.setText("Allocation:");
-		Combo allocationCombo = new Combo(comp2, SWT.SINGLE | SWT.LEAD | SWT.BORDER);
+		Combo allocationCombo = new Combo(comp2, SWT.READ_ONLY | SWT.SINGLE | SWT.LEAD | SWT.BORDER);
 		allocationComboViewer = new ComboViewer(allocationCombo);
 		allocationComboViewer.setContentProvider(new ArrayContentProvider());
 		GridData allocationComboViewerGridData = GridDataFactory.fillDefaults().grab(false, false).create();
@@ -928,6 +929,7 @@ public class TunerAllocationWizardPage extends WizardPage {
 		Label typeLabel = new Label(group, SWT.NONE);
 		typeLabel.setText("Tuner Type");
 		typeCombo = new ComboViewer(group, SWT.NONE | SWT.READ_ONLY);
+		
 		typeCombo.setContentProvider(new ArrayContentProvider());
 		GridDataFactory.fillDefaults().grab(true, false).applyTo(typeCombo.getControl());
 		tunerControls.add(typeCombo.getControl());
