@@ -25,12 +25,20 @@ import org.eclipse.emf.ecore.util.EContentAdapter;
 import BULKIO.PortStatistics;
 
 /**
- * Provides notification of new/update/removed statistics for ports.
+ * Provides notification of new/updated or removed statistics for ports. Intended to adapt a
+ * {@link gov.redhawk.monitor.model.ports.MonitorRegistry}.
+ *
+ * @see MonitorPlugin#getMonitorRegistry()
  */
 public class MonitorPortAdapter extends EContentAdapter {
 
 	private IPortStatListener statListener;
 
+	/**
+	 * Creates the adapter. It will deliver updates to the provided listener.
+	 *
+	 * @param statListener A listener to receive updates
+	 */
 	public MonitorPortAdapter(IPortStatListener statListener) {
 		this.statListener = statListener;
 	}
@@ -49,13 +57,14 @@ public class MonitorPortAdapter extends EContentAdapter {
 					statListener.newStatistics(port, stats);
 				}
 			}
-		} else if (notifier instanceof PortConnectionMonitor && notification.getFeatureID(PortConnectionMonitor.class) == PortsPackage.PORT_CONNECTION_MONITOR__DATA) {
+		} else if (notifier instanceof PortConnectionMonitor
+			&& notification.getFeatureID(PortConnectionMonitor.class) == PortsPackage.PORT_CONNECTION_MONITOR__DATA) {
 			final PortConnectionMonitor portConnection = (PortConnectionMonitor) notifier;
 			final PortStatistics stats = portConnection.getData();
 			if (stats == null) {
 				statListener.noStatistics(portConnection.getPort().getPort(), portConnection.getConnectionId());
 			} else {
-				statListener.newStatistics(portConnection.getPort().getPort(), stats);
+				statListener.newStatistics(portConnection.getPort().getPort(), portConnection.getConnectionId(), stats);
 			}
 		}
 		super.notifyChanged(notification);
@@ -70,7 +79,7 @@ public class MonitorPortAdapter extends EContentAdapter {
 				for (final PortConnectionMonitor portConnection : portMonitor.getConnections()) {
 					final PortStatistics stats = portConnection.getData();
 					if (stats != null) {
-						statListener.newStatistics(port, stats);
+						statListener.newStatistics(port, portConnection.getConnectionId(), stats);
 					}
 				}
 			} else if (port instanceof ScaProvidesPort) {

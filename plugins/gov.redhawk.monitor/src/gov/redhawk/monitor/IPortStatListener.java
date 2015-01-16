@@ -17,29 +17,39 @@ import BULKIO.PortStatistics;
 public interface IPortStatListener {
 
 	/**
-	 * Provides notification of new/updated statistics for a port
+	 * Provides notification of new/updated statistics for a port (only provides ports)
 	 * 
 	 * @param port The port statistics were received for
-	 * @param portStatistics The latest statics for the port. These are reported once per-connection for uses ports, but
-	 * only for the whole port with provides ports.
+	 * @param portStatistics The latest statistics for the port.
 	 * @see PortStatistics#streamIDs
 	 */
 	void newStatistics(ScaPort< ? , ? > port, PortStatistics portStatistics);
 
 	/**
-	 * Provides notification that monitoring has stopped on a port. No more statistics will be provided.
+	 * Provides notification of new/updated statistics for a port's connection (only uses ports)
+	 *
+	 * @param port The port for the connection
+	 * @param connectionId The connection statistics were received for
+	 * @param portStatistics The latest statics for the connection. These are reported once per-connection.
+	 * @see PortStatistics#streamIDs
+	 */
+	void newStatistics(ScaPort< ? , ? > port, String connectionId, PortStatistics portStatistics);
+
+	/**
+	 * Provides notification that monitoring has stopped on a port (only provides ports). No more statistics will be
+	 * provided.
 	 *
 	 * @param port The port for which no more statistics will be provided
 	 */
 	void noStatistics(ScaPort< ? , ? > port);
 
 	/**
-	 * Provides notification that statistics are no longer available for a uses port's connection (i.e. the connection
-	 * no longer exists).
+	 * Provides notification that monitoring has stopped on a port's connection (only uses ports). No more statistics
+	 * will be provided.
 	 *
 	 * @param port The port for the connection
-	 * @param connection The connection that no longer has statistics
+	 * @param connectionId The connection that no longer has statistics
 	 */
-	void noStatistics(ScaPort< ? , ? > port, String connection);
+	void noStatistics(ScaPort< ? , ? > port, String connectionId);
 
 }
