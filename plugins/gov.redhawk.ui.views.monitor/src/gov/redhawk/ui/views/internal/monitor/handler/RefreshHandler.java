@@ -11,8 +11,8 @@
  */
 package gov.redhawk.ui.views.internal.monitor.handler;
 
-import gov.redhawk.ui.views.monitor.model.ports.Monitor;
-import gov.redhawk.ui.views.monitor.model.ports.PortConnectionMonitor;
+import gov.redhawk.monitor.model.ports.Monitor;
+import gov.redhawk.monitor.model.ports.PortConnectionMonitor;
 
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;

@@ -11,12 +11,12 @@
  */
 package gov.redhawk.ui.views.internal.monitor.handler;
 
+import gov.redhawk.monitor.model.ports.Monitor;
 import gov.redhawk.ui.views.monitor.ports.PortMonitorView;
 
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
-import org.eclipse.emf.ecore.EObject;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.ui.IViewReference;
@@ -38,8 +38,8 @@ public class StopMonitorHandler extends AbstractHandler {
 					final PortMonitorView view = (PortMonitorView) viewReference.getView(true);
 					if (view != null) {
 						for (final Object obj : ss.toList()) {
-							if (obj instanceof EObject) {
-								view.removeMonitor((EObject) obj);
+							if (obj instanceof Monitor) {
+								view.removeMonitor((Monitor) obj);
 							}
 						}
 					}

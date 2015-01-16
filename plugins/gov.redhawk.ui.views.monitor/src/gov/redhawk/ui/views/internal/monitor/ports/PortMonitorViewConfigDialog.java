@@ -12,12 +12,12 @@
 package gov.redhawk.ui.views.internal.monitor.ports;
 
 import gov.redhawk.sca.util.PropertyChangeSupport;
-import gov.redhawk.ui.views.monitor.model.ports.Monitor;
-import gov.redhawk.ui.views.monitor.model.ports.MonitorRegistry;
-import gov.redhawk.ui.views.monitor.model.ports.PortConnectionMonitor;
-import gov.redhawk.ui.views.monitor.model.ports.PortMonitor;
-import gov.redhawk.ui.views.monitor.model.ports.PortStatisticsProvider;
-import gov.redhawk.ui.views.monitor.model.ports.PortSupplierMonitor;
+import gov.redhawk.monitor.model.ports.Monitor;
+import gov.redhawk.monitor.model.ports.MonitorRegistry;
+import gov.redhawk.monitor.model.ports.PortConnectionMonitor;
+import gov.redhawk.monitor.model.ports.PortMonitor;
+import gov.redhawk.monitor.model.ports.PortStatisticsProvider;
+import gov.redhawk.monitor.model.ports.PortSupplierMonitor;
 import gov.redhawk.ui.views.monitor.ports.Column;
 import gov.redhawk.ui.views.monitor.ports.PortMonitorView;
 import gov.redhawk.ui.views.monitor.ports.StatisticsColumns;

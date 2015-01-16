@@ -11,7 +11,7 @@
  */
 package gov.redhawk.ui.views.internal.monitor.ports;
 
-import gov.redhawk.ui.views.monitor.model.ports.PortStatisticsProvider;
+import gov.redhawk.monitor.model.ports.PortStatisticsProvider;
 import mil.jpeojtrs.sca.util.AnyUtils;
 
 import org.eclipse.jface.viewers.CellLabelProvider;

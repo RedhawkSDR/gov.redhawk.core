@@ -14,29 +14,23 @@ package gov.redhawk.ui.views.monitor.ports;
 import gov.redhawk.model.sca.ScaPort;
 import gov.redhawk.model.sca.ScaPortContainer;
 import gov.redhawk.model.sca.provider.ScaItemProviderAdapterFactory;
+import gov.redhawk.monitor.MonitorPlugin;
+import gov.redhawk.monitor.MonitorUtils;
 import gov.redhawk.ui.views.internal.monitor.ports.PortMonitorViewConfigDialog;
-import gov.redhawk.ui.views.monitor.model.ports.Monitor;
-import gov.redhawk.ui.views.monitor.model.ports.MonitorRegistry;
-import gov.redhawk.ui.views.monitor.model.ports.PortMonitor;
-import gov.redhawk.ui.views.monitor.model.ports.PortSupplierMonitor;
-import gov.redhawk.ui.views.monitor.model.ports.PortsFactory;
-import gov.redhawk.ui.views.monitor.model.ports.PortsPackage;
-import gov.redhawk.ui.views.monitor.model.ports.provider.MonitorRegistryItemProvider;
-import gov.redhawk.ui.views.monitor.model.ports.provider.PortsItemProviderAdapterFactory;
+import gov.redhawk.monitor.model.ports.Monitor;
+import gov.redhawk.monitor.model.ports.MonitorRegistry;
+import gov.redhawk.monitor.model.ports.PortMonitor;
+import gov.redhawk.monitor.model.ports.PortSupplierMonitor;
+import gov.redhawk.monitor.model.ports.PortsPackage;
+import gov.redhawk.monitor.model.ports.provider.MonitorRegistryItemProvider;
+import gov.redhawk.monitor.model.ports.provider.PortsItemProviderAdapterFactory;
 
 import java.util.ArrayList;
 import java.util.Collection;
 
-import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.core.runtime.IStatus;
-import org.eclipse.core.runtime.Status;
-import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.notify.AdapterFactory;
-import org.eclipse.emf.common.notify.impl.AdapterImpl;
-import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EStructuralFeature;
-import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.emf.edit.provider.ComposedAdapterFactory;
 import org.eclipse.emf.edit.ui.provider.AdapterFactoryContentProvider;
 import org.eclipse.jface.action.Action;
@@ -66,54 +60,12 @@ public class PortMonitorView extends ViewPart {
 	public static final String ID = "gov.redhawk.ui.views.monitor.ports.PortMonitorView";
 
 	private TreeViewer viewer;
+
 	private Action configAction;
-	private MonitorRegistry input = PortsFactory.eINSTANCE.createMonitorRegistry();
-	private final Adapter jobScheduler = new AdapterImpl() {
-		@Override
-		public void notifyChanged(final org.eclipse.emf.common.notify.Notification msg) {
-			switch (msg.getFeatureID(MonitorRegistry.class)) {
-			case PortsPackage.MONITOR_REGISTRY__MONITORS:
-				if (PortMonitorView.this.input.getMonitors().isEmpty()) {
-					PortMonitorView.this.refreshJob.cancel();
-				} else {
-					PortMonitorView.this.refreshJob.schedule(PortMonitorView.this.refreshDelta);
-				}
-				break;
-			default:
-				break;
-			}
-		}
-	};
-	private Job refreshJob = new Job("Refreshing all port stats") {
-		{
-			setUser(false);
-			setSystem(true);
-		}
 
-		@Override
-		public boolean shouldSchedule() {
-			return !PortMonitorView.this.input.getMonitors().isEmpty() && super.shouldSchedule();
-		}
-
-		@Override
-		public boolean shouldRun() {
-			return !PortMonitorView.this.input.getMonitors().isEmpty() && super.shouldRun();
-		}
-
-		@Override
-		protected IStatus run(final IProgressMonitor monitor) {
-			for (final Monitor m : PortMonitorView.this.input.getMonitors()) {
-				m.fetchStats();
-			}
-			schedule(PortMonitorView.this.refreshDelta);
-			return Status.OK_STATUS;
-		}
-
-	};
+	private MonitorRegistry input;
 
 	private ComposedAdapterFactory adapterFactory;
-
-	private long refreshDelta = 10000;
 
 	private TreeColumnLayout treeLayout;
 
@@ -162,12 +114,12 @@ public class PortMonitorView extends ViewPart {
 		        providesPortAdapterFactory, new ScaItemProviderAdapterFactory()
 		});
 		this.viewer.setContentProvider(new AdapterFactoryContentProvider(this.adapterFactory));
+		this.input = MonitorPlugin.getDefault().getMonitorRegistry();
 		this.viewer.setInput(this.input);
 		makeActions();
 		hookContextMenu();
 		contributeToActionBars();
 		this.getSite().setSelectionProvider(this.viewer);
-		this.input.eAdapters().add(this.jobScheduler);
 	}
 
 	private void initializeColumns() {
@@ -203,29 +155,21 @@ public class PortMonitorView extends ViewPart {
 	}
 
 	public void setRefreshDelta(final long msec) {
-		this.refreshDelta = msec;
+		MonitorPlugin.getDefault().setRefreshInterval(msec);
 	}
 
 	public long getRefreshDelta() {
-		return this.refreshDelta;
+		return MonitorPlugin.getDefault().getRefreshInterval();
 	}
 
 	@Override
 	public void dispose() {
 		super.dispose();
+		MonitorPlugin.getDefault().getMonitorRegistry().getMonitors().clear();
 		if (this.adapterFactory != null) {
 			this.adapterFactory.dispose();
 		}
 		this.adapterFactory = null;
-		this.input.eAdapters().remove(this.jobScheduler);
-		if (this.refreshJob != null) {
-			this.refreshJob.cancel();
-			this.refreshJob = null;
-		}
-		if (this.input != null) {
-			this.input.getMonitors().clear();
-			this.input = null;
-		}
 		this.viewer = null;
 		this.configAction = null;
 	}
@@ -234,55 +178,22 @@ public class PortMonitorView extends ViewPart {
 	 * @since 3.0
 	 */
 	public void addMonitor(final ScaPortContainer portContainer) {
-		PortSupplierMonitor monitor = findMonitor(portContainer);
-		if (monitor == null) {
-			monitor = PortsFactory.eINSTANCE.createPortSupplierMonitor();
-			monitor.setPortContainer(portContainer);
-			this.input.getMonitors().add(monitor);
-		}
-		monitor.fetchStats();
+		PortSupplierMonitor monitor = MonitorUtils.addMonitor(portContainer);
 		this.viewer.reveal(monitor);
 		this.viewer.expandToLevel(monitor, AbstractTreeViewer.ALL_LEVELS);
 	}
 
-	private PortSupplierMonitor findMonitor(final ScaPortContainer portContainer) {
-		for (final Monitor m : this.input.getMonitors()) {
-			if (m instanceof PortSupplierMonitor) {
-				final PortSupplierMonitor ps = (PortSupplierMonitor) m;
-				if (ps.getPortContainer() == portContainer) {
-					return ps;
-				}
-			}
-		}
-		return null;
-	}
-
 	public void addMonitor(final ScaPort< ? , ? > port) {
-		PortMonitor portMonitor = findMonitor(port);
-		if (portMonitor == null) {
-			portMonitor = PortsFactory.eINSTANCE.createPortMonitor();
-			portMonitor.setPort(port);
-			this.input.getMonitors().add(portMonitor);
-		}
-		portMonitor.fetchStats();
+		PortMonitor portMonitor = MonitorUtils.addMonitor(port);
 		this.viewer.reveal(portMonitor);
 		this.viewer.expandToLevel(portMonitor, AbstractTreeViewer.ALL_LEVELS);
 	}
 
-	private PortMonitor findMonitor(final ScaPort< ? , ? > port) {
-		for (final Monitor m : this.input.getMonitors()) {
-			if (m instanceof PortMonitor) {
-				final PortMonitor ps = (PortMonitor) m;
-				if (ps.getPort() == port) {
-					return ps;
-				}
-			}
-		}
-		return null;
-	}
-
-	public void removeMonitor(final EObject monitor) {
-		EcoreUtil.remove(monitor);
+	/**
+	 * @since 6.0
+	 */
+	public void removeMonitor(final Monitor monitor) {
+		MonitorUtils.removeMonitor(monitor);
 	}
 
 	private void hookContextMenu() {

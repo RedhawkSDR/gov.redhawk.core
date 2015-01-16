@@ -13,8 +13,8 @@ package gov.redhawk.ui.views.monitor.ports;
 
 import gov.redhawk.common.ui.AdapterFactoryCellLabelProvider;
 import gov.redhawk.model.sca.provider.ScaItemProviderAdapterFactory;
-import gov.redhawk.ui.views.monitor.model.ports.PortStatisticsProvider;
-import gov.redhawk.ui.views.monitor.model.ports.provider.PortsItemProviderAdapterFactory;
+import gov.redhawk.monitor.model.ports.PortStatisticsProvider;
+import gov.redhawk.monitor.model.ports.provider.PortsItemProviderAdapterFactory;
 
 import java.text.DecimalFormat;
 import java.text.NumberFormat;

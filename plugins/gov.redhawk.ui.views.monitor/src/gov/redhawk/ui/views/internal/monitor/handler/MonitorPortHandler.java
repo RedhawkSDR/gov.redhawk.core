@@ -13,8 +13,8 @@ package gov.redhawk.ui.views.internal.monitor.handler;
 
 import gov.redhawk.model.sca.ScaPort;
 import gov.redhawk.sca.util.PluginUtil;
+import gov.redhawk.ui.views.monitor.MonitorViewPlugin;
 import gov.redhawk.ui.views.monitor.ports.PortMonitorView;
-import gov.redhawk.ui.views.monitor.provider.PortsEditPlugin;
 
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
@@ -43,11 +43,10 @@ public class MonitorPortHandler extends AbstractHandler {
 					}
 				}
 			} catch (final PartInitException e) {
-				PortsEditPlugin.getPlugin().getLog().log(new Status(e.getStatus().getSeverity(), "gov.redhawk.ui.views.monitor.ports", e.getLocalizedMessage(), e));
+				MonitorViewPlugin.getDefault().getLog().log(new Status(e.getStatus().getSeverity(), MonitorViewPlugin.PLUGIN_ID, e.getLocalizedMessage(), e));
 			}
 
 		}
-		// TODO Auto-generated method stub
 		return null;
 	}
 

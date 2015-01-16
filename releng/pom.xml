@@ -91,6 +91,8 @@
     <module>../plugins/gov.redhawk.sca.model.provider.refresh</module>
     <module>../plugins/gov.redhawk.core.resourceFactory</module>
     <module>../plugins/gov.redhawk.interceptor.client</module>
+    <module>../plugins/gov.redhawk.monitor</module>
+    <module>../plugins/gov.redhawk.monitor.edit</module>
     <module>../plugins/gov.redhawk.sca</module>
     <module>../plugins/gov.redhawk.sca.efs</module>
     <module>../plugins/gov.redhawk.sca.model</module>

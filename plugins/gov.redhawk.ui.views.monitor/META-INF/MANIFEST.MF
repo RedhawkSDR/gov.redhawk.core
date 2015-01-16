@@ -1,18 +1,16 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: %pluginName
+Bundle-Name: Port Monitor View Plugin
 Bundle-SymbolicName: gov.redhawk.ui.views.monitor;singleton:=true
-Bundle-Version: 5.0.0.qualifier
+Bundle-Version: 6.0.0.qualifier
 Bundle-ClassPath: .
-Bundle-Activator: gov.redhawk.ui.views.monitor.provider.PortsEditPlugin$Implementation
-Bundle-Vendor: %providerName
-Bundle-Localization: plugin
+Bundle-Vendor: REDHAWK
 Require-Bundle: org.eclipse.core.runtime;bundle-version="3.6.0",
- gov.redhawk.sca.model;bundle-version="11.0.0";visibility:=reexport,
+ gov.redhawk.sca.model;bundle-version="11.0.0",
  gov.redhawk.sca.model.edit;bundle-version="9.0.0",
  gov.redhawk.sca.util;bundle-version="2.1.0",
  org.eclipse.core.expressions;bundle-version="3.4.200",
- idl.bulkio;bundle-version="1.7.0";visibility:=reexport,
+ idl.bulkio;bundle-version="1.7.0",
  org.eclipse.core.commands;bundle-version="3.6.0",
  gov.redhawk.common.ui;bundle-version="3.0.0",
  org.eclipse.ui;bundle-version="3.6.1",
@@ -21,15 +19,13 @@ Require-Bundle: org.eclipse.core.runtime;bundle-version="3.6.0",
  org.eclipse.core.databinding;bundle-version="1.4.1",
  org.eclipse.core.databinding.beans;bundle-version="1.2.200",
  org.eclipse.core.databinding.property;bundle-version="1.4.100",
- org.eclipse.jface.databinding;bundle-version="1.6.0"
+ org.eclipse.jface.databinding;bundle-version="1.6.0",
+ gov.redhawk.monitor;bundle-version="1.0.0",
+ gov.redhawk.monitor.edit;bundle-version="1.0.0"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Bundle-ActivationPolicy: lazy
 Export-Package: gov.redhawk.ui.views.internal.monitor.handler;x-internal:=true,
  gov.redhawk.ui.views.internal.monitor.ports;x-internal:=true,
  gov.redhawk.ui.views.internal.monitor.tester;x-internal:=true,
- gov.redhawk.ui.views.monitor.model.ports,
- gov.redhawk.ui.views.monitor.model.ports.impl;x-internal:=true,
- gov.redhawk.ui.views.monitor.model.ports.provider,
- gov.redhawk.ui.views.monitor.model.ports.util,
- gov.redhawk.ui.views.monitor.ports,
- gov.redhawk.ui.views.monitor.provider
+ gov.redhawk.ui.views.monitor.ports
+Bundle-Activator: gov.redhawk.ui.views.monitor.MonitorViewPlugin
