@@ -35,6 +35,10 @@ public class DataTypeColumn extends Column {
 		@Override
 		public void update(final ViewerCell cell) {
 			final PortStatisticsProvider statProvider = (PortStatisticsProvider) cell.getElement();
+			if (statProvider == null || statProvider.getData() == null) {
+				cell.setText("");
+				return;
+			}
 			final DataType[] keywords = statProvider.getData().keywords;
 			for (final DataType keyword : keywords) {
 				if (keyword.id.equals(this.id)) {
