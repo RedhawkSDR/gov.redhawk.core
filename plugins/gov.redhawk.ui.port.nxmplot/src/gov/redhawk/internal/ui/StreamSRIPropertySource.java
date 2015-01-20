@@ -31,7 +31,7 @@ import CF.DataType;
  */
 public class StreamSRIPropertySource implements IPropertySource2 {
 
-	private enum SRI_PROP implements IPropertyDescriptor {
+	private enum SRIPROP implements IPropertyDescriptor {
 		hversion, xstart, xdelta, xunits, subsize, ystart, ydelta, yunits, mode, streamID, blocking, keywords;
 
 		@Override
@@ -115,7 +115,7 @@ public class StreamSRIPropertySource implements IPropertySource2 {
 	 */
 	@Override
 	public IPropertyDescriptor[] getPropertyDescriptors() {
-		return SRI_PROP.values();
+		return SRIPROP.values();
 	}
 
 	/**
@@ -123,7 +123,7 @@ public class StreamSRIPropertySource implements IPropertySource2 {
 	 */
 	@Override
 	public Object getPropertyValue(final Object id) {
-		switch (SRI_PROP.valueOf((String) id)) {
+		switch (SRIPROP.valueOf((String) id)) {
 		case blocking:
 			return this.sri.blocking;
 		case hversion:
