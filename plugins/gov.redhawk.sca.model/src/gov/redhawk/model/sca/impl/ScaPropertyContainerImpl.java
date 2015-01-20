@@ -273,6 +273,7 @@ public abstract class ScaPropertyContainerImpl< P extends org.omg.CORBA.Object, 
 	}
 
 	private static final DataType[] EMPTY_DATA_TYPE_ARRAY = new DataType[0];
+
 	@Override
 	protected void notifyChanged(Notification msg) {
 		// END GENERATED CODE

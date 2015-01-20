@@ -84,10 +84,14 @@ public class sourcenic extends Primitive { //SUPPRESS CHECKSTYLE ClassName
 
 	@Override
 	public int open() {
-		if (TRACE_LOGGER.enabled) { TRACE_LOGGER.enteringMethod(); }
+		if (TRACE_LOGGER.enabled) {
+			TRACE_LOGGER.enteringMethod();
+		}
 		warn = MA.getState("/WARN", true);
 		verbose = MA.getState("/VERBOSE", false);
-		if (verbose) { M.info("Hello"); }
+		if (verbose) {
+			M.info("sourcenic.open()");
+		}
 		int ret = super.open();
 
 		if (ret == Commandable.NORMAL) {
@@ -133,14 +137,22 @@ public class sourcenic extends Primitive { //SUPPRESS CHECKSTYLE ClassName
 						M.error("Couldn't find usable network interface for vlan, try using the INTERFACE switch");
 					}
 				}
-				if (verbose) { M.info("Using default multicast interface"); }
-				if (TRACE_LOGGER.enabled) { TRACE_LOGGER.message("Using default multicast interface"); }
+				if (verbose) {
+					M.info("Using default multicast interface");
+				}
+				if (TRACE_LOGGER.enabled) {
+					TRACE_LOGGER.message("Using default multicast interface");
+				}
 			}
 
 			// If requested, join the group immediately
 			if (mgrp != null) {
-				if (verbose) { M.info("Joining " + mgrp); }
-				if (TRACE_LOGGER.enabled) { TRACE_LOGGER.message("Joining " + mgrp); }
+				if (verbose) {
+					M.info("Joining " + mgrp);
+				}
+				if (TRACE_LOGGER.enabled) {
+					TRACE_LOGGER.message("Joining " + mgrp);
+				}
 				this.setMgrp(mgrp);
 			}
 		}
@@ -177,7 +189,7 @@ public class sourcenic extends Primitive { //SUPPRESS CHECKSTYLE ClassName
 			System.arraycopy(packet.getData(), packet.getOffset() + SDDS_HEADER_SIZE, outputData.buf, 0, SDDS_PAYLOAD_SIZE);
 
 			int dataSize = sddsHeader.getDataFieldBps();
-			switch(dataSize) {
+			switch (dataSize) {
 			case BITS_PER_SAMPLE_4:
 				warn(WarnBit.WARN2, "4-bit SDDS data is not yet supported");
 				break;
@@ -221,8 +233,12 @@ public class sourcenic extends Primitive { //SUPPRESS CHECKSTYLE ClassName
 
 	@Override
 	public int close() {
-		if (TRACE_LOGGER.enabled) { TRACE_LOGGER.enteringMethod(); }
-		if (verbose) { M.info("Goodbye"); }
+		if (TRACE_LOGGER.enabled) {
+			TRACE_LOGGER.enteringMethod();
+		}
+		if (verbose) {
+			M.info("Goodbye");
+		}
 		outputFile.close();
 		if (this.maddr != null) {
 			try {
@@ -246,7 +262,7 @@ public class sourcenic extends Primitive { //SUPPRESS CHECKSTYLE ClassName
 			this.maddr = null;
 		}
 
-		if ((mgrp == null) || (mgrp.trim().equals(""))) {
+		if ((mgrp == null) || ("".equals(mgrp.trim()))) {
 			return;
 		}
 
@@ -456,7 +472,7 @@ public class sourcenic extends Primitive { //SUPPRESS CHECKSTYLE ClassName
 		}
 
 		public boolean isComplex() {
-			switch(mode) {
+			switch (mode) {
 			case SDDS_MODE_COMPAT:
 				return ((dmode == DMODE_TEN_IN_SIXTEEN_AD) || (cx));
 			case SDDS_MODE_STRICT:
@@ -475,7 +491,7 @@ public class sourcenic extends Primitive { //SUPPRESS CHECKSTYLE ClassName
 		 */
 		public int getDataFieldBps() {
 			int x = (dmode & 0x3); // SUPPRESS CHECKSTYLE MAGIC NUMBER
-			switch(x) {
+			switch (x) {
 			case 0:
 				return BITS_PER_SAMPLE_4;
 			case 1:
