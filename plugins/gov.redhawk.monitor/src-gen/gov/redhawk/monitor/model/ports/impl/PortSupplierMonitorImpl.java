@@ -12,9 +12,13 @@
 package gov.redhawk.monitor.model.ports.impl;
 
 import gov.redhawk.model.sca.IDisposable;
+import gov.redhawk.model.sca.ScaComponent;
+import gov.redhawk.model.sca.ScaDevice;
+import gov.redhawk.model.sca.ScaDeviceManager;
 import gov.redhawk.model.sca.ScaPackage;
 import gov.redhawk.model.sca.ScaPort;
 import gov.redhawk.model.sca.ScaPortContainer;
+import gov.redhawk.model.sca.ScaWaveform;
 import gov.redhawk.monitor.model.ports.PortMonitor;
 import gov.redhawk.monitor.model.ports.PortSupplierMonitor;
 import gov.redhawk.monitor.model.ports.PortsFactory;
@@ -156,7 +160,26 @@ public class PortSupplierMonitorImpl extends EObjectImpl implements PortSupplier
 
 	private void updateMonitors() {
 		getMonitors().clear();
-		if (this.portContainer != null) {
+		if (this.portContainer != null && this.portContainer instanceof ScaWaveform) {
+			ScaWaveform waveform = (ScaWaveform) portContainer;
+			for (ScaComponent component : waveform.getComponents()) {
+				for (final ScaPort< ? , ? > port : component.getPorts()) {
+					final PortMonitor pm = PortsFactory.eINSTANCE.createPortMonitor();
+					pm.setPort(port);
+					getMonitors().add(pm);
+				}
+			}
+		} else if (this.portContainer != null && this.portContainer instanceof ScaDeviceManager) {
+			ScaDeviceManager deviceManager = (ScaDeviceManager) portContainer;
+			for (ScaDevice< ? > device : deviceManager.getAllDevices()) {
+				for (final ScaPort< ? , ? > port : device.getPorts()) {
+					final PortMonitor pm = PortsFactory.eINSTANCE.createPortMonitor();
+					pm.setPort(port);
+					getMonitors().add(pm);
+				}
+			}
+		} else if (this.portContainer != null) {
+
 			for (final ScaPort< ? , ? > port : this.portContainer.getPorts()) {
 				final PortMonitor pm = PortsFactory.eINSTANCE.createPortMonitor();
 				pm.setPort(port);
