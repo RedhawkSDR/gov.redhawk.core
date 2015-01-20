@@ -200,7 +200,7 @@ public class sourcenic extends Primitive { //SUPPRESS CHECKSTYLE ClassName
 
 			final byte packetDataType;
 			final int dataBitSize = sddsHeader.getDataFieldBps();
-			switch(dataBitSize) {
+			switch (dataBitSize) {
 			case BITS_PER_SAMPLE_4:
 				packetDataType = Data.NIBBLE;
 				break;
