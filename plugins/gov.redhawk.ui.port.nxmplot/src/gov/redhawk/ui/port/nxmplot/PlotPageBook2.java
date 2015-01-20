@@ -91,7 +91,7 @@ public class PlotPageBook2 extends Composite {
 	private Adapter portListener = new AdapterImpl() {
 		@Override
 		public void notifyChanged(Notification msg) {
-			switch(msg.getFeatureID(IDisposable.class)) {
+			switch (msg.getFeatureID(IDisposable.class)) {
 			case ScaPackage.IDISPOSABLE__DISPOSED:
 				if (!isDisposed()) {
 					PlatformUI.getWorkbench().getDisplay().asyncExec(new Runnable() {

@@ -45,7 +45,7 @@ public final class NxmPlotUtil {
 		if (type == null) {
 			return null;
 		}
-		switch(type) {
+		switch (type) {
 		case RASTER:
 			return null;
 		default:
