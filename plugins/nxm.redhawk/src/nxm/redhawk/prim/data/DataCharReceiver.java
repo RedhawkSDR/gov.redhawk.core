@@ -29,9 +29,6 @@ public class DataCharReceiver extends BaseBulkIOReceiver implements dataCharOper
 		super(receiver);
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	public void pushPacket(final char[] charArray, final PrecisionUTCTime time, final boolean endOfStream, final String arg3) {
 		getReceiver().write(charArray, charArray.length, DataTypes.INT, endOfStream, time);
 	}

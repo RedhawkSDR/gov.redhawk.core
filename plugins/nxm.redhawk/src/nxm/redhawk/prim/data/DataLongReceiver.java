@@ -32,9 +32,6 @@ public class DataLongReceiver extends BaseBulkIOReceiver implements dataLongOper
 		super(receiver);
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	public void pushPacket(final int[] dataArray, final PrecisionUTCTime time, final boolean endOfStream, final String arg3) {
 		getReceiver().write(dataArray, dataArray.length, DataTypes.LONG, endOfStream, time);
 	}

@@ -33,9 +33,6 @@ public class DataULongReceiver extends BaseBulkIOReceiver implements dataUlongOp
 		super(receiver);
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	public void pushPacket(final int[] arg0, final PrecisionUTCTime time, final boolean endOfStream, final String arg3) {
 		final long[] dataArray = UnsignedUtils.toSigned(arg0);
 		getReceiver().write(dataArray, dataArray.length, DataTypes.XLONG, endOfStream, time);

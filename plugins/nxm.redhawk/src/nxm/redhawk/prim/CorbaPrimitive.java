@@ -148,7 +148,7 @@ public class CorbaPrimitive extends Primitive {
 			// information to connect to a host and resolve the port.
 			// Second, we're given an IOR to the port. The IOR doesn't
 			// require the NameService so skip all that setup.
-			if (host != null && !host.equals("")) {
+			if (host != null && !"".equals(host)) {
 				// get the root naming context
 				// Use NamingContextExt which is part of the Interoperable Naming
 				// Service (INS) specification.

@@ -29,9 +29,6 @@ public class DataDoubleReceiver extends BaseBulkIOReceiver implements dataDouble
 		super(receiver);
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	public void pushPacket(final double[] dataArray, final PrecisionUTCTime time, final boolean endOfStream, final String arg3) {
 		getReceiver().write(dataArray, dataArray.length, DataTypes.DOUBLE, endOfStream, time);
 	}

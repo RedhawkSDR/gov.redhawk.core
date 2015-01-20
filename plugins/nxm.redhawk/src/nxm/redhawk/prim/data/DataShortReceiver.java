@@ -32,9 +32,6 @@ public class DataShortReceiver extends BaseBulkIOReceiver implements dataShortOp
 		super(receiver);
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	public void pushPacket(final short[] dataArray, final PrecisionUTCTime time, final boolean endOfStream, final String arg3) {
 		getReceiver().write(dataArray, dataArray.length, DataTypes.INT, endOfStream, time);
 	}

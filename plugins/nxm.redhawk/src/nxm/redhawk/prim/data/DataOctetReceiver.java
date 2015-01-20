@@ -30,9 +30,6 @@ public class DataOctetReceiver extends BaseBulkIOReceiver implements dataOctetOp
 		super(receiver);
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	public void pushPacket(final byte[] dataArray, final PrecisionUTCTime time, final boolean endOfStream, final String arg3) {
 		final short[] data = UnsignedUtils.toSigned(dataArray);
 		getReceiver().write(data, data.length, DataTypes.INT, endOfStream, time);

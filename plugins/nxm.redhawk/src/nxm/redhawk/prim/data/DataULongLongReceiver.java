@@ -29,9 +29,6 @@ public class DataULongLongReceiver extends BaseBulkIOReceiver implements dataUlo
 		super(receiver);
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	public void pushPacket(final long[] arg0, final PrecisionUTCTime time, final boolean endOfStream, final String arg3) {
 		final long[] dataArray = new long[arg0.length];
 		for (int i = 0; i < dataArray.length; i++) {

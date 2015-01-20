@@ -30,9 +30,6 @@ public class DataUShortReceiver extends BaseBulkIOReceiver implements dataUshort
 		super(receiver);
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	public void pushPacket(final short[] arg0, final PrecisionUTCTime time, final boolean endOfStream, final String arg3) {
 		final int[] dataArray = UnsignedUtils.toSigned(arg0);
 		getReceiver().write(dataArray, dataArray.length, DataTypes.LONG, endOfStream, time);

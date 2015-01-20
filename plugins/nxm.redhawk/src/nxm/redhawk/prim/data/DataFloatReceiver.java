@@ -29,9 +29,6 @@ public class DataFloatReceiver extends BaseBulkIOReceiver implements dataFloatOp
 		super(receiver);
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	public void pushPacket(final float[] dataArray, final PrecisionUTCTime time, final boolean endOfStream, final String arg3) {
 		getReceiver().write(dataArray, dataArray.length, DataTypes.FLOAT, endOfStream, time);
 	}
