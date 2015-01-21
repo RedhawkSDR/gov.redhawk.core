@@ -36,7 +36,7 @@ import CF.PropertiesHelper;
  * @since 2.0
  */
 public final class StreamXMLSRIUtil {
-	protected enum type { // SUPPRESS CHECKSTYLE TypeName - This is now API
+	private enum PropertyType {
 		STRUCT_SEQUENCE, STRUCT, SIMPLE_SEQUENCE, SIMPLE
 	};
 
@@ -138,17 +138,17 @@ public final class StreamXMLSRIUtil {
 		//		return PropertyValueType.VALUES
 	}
 
-	private static type getPropsType(DataType dt) {
+	private static PropertyType getPropsType(DataType dt) {
 		if (AnySeqHelper.type().equal(dt.value.type())) {
-			return type.STRUCT_SEQUENCE;
+			return PropertyType.STRUCT_SEQUENCE;
 		} else if (PropertiesHelper.type().equal(dt.value.type())) {
-			return type.STRUCT;
+			return PropertyType.STRUCT;
 		} else {
 			Object anyValue = AnyUtils.convertAny(dt.value);
 			if (anyValue instanceof Object[]) {
-				return type.SIMPLE_SEQUENCE;
+				return PropertyType.SIMPLE_SEQUENCE;
 			} else {
-				return type.SIMPLE;
+				return PropertyType.SIMPLE;
 			}
 		}
 	}

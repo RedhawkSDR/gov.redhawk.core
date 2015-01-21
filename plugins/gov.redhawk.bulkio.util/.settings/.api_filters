@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<component id="gov.redhawk.bulkio.util" version="2">
+    <resource path="src/gov/redhawk/bulkio/util/StreamXMLSRIUtil.java" type="gov.redhawk.bulkio.util.StreamXMLSRIUtil">
+        <filter id="338886760">
+            <message_arguments>
+                <message_argument value="gov.redhawk.bulkio.util.StreamXMLSRIUtil.type"/>
+                <message_argument value="gov.redhawk.bulkio.util_2.1.0"/>
+            </message_arguments>
+        </filter>
+    </resource>
+</component>
