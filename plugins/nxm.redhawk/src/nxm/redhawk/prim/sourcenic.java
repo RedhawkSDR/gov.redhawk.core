@@ -87,7 +87,9 @@ public class sourcenic extends Primitive { //SUPPRESS CHECKSTYLE ClassName
 
 	@Override
 	public int open() {
-		if (TRACE_LOGGER.enabled) { TRACE_LOGGER.enteringMethod(); }
+		if (TRACE_LOGGER.enabled) {
+			TRACE_LOGGER.enteringMethod();
+		}
 		warn = MA.getState("/WARN", true);
 		verbose = MA.getState("/VERBOSE", false);
 		int ret = super.open();
@@ -149,14 +151,22 @@ public class sourcenic extends Primitive { //SUPPRESS CHECKSTYLE ClassName
 						M.error("Couldn't find usable network interface for vlan, try using the INTERFACE switch");
 					}
 				}
-				if (verbose) { M.info("Using default multicast interface"); }
-				if (TRACE_LOGGER.enabled) { TRACE_LOGGER.message("Using default multicast interface"); }
+				if (verbose) {
+					M.info("Using default multicast interface");
+				}
+				if (TRACE_LOGGER.enabled) {
+					TRACE_LOGGER.message("Using default multicast interface");
+				}
 			}
 
 			// If requested, join the group immediately
 			if (mgrp != null) {
-				if (verbose) { M.info("Joining " + mgrp); }
-				if (TRACE_LOGGER.enabled) { TRACE_LOGGER.message("Joining " + mgrp); }
+				if (verbose) {
+					M.info("Joining " + mgrp);
+				}
+				if (TRACE_LOGGER.enabled) {
+					TRACE_LOGGER.message("Joining " + mgrp);
+				}
 				this.setMgrp(mgrp);
 			}
 		}
@@ -231,7 +241,9 @@ public class sourcenic extends Primitive { //SUPPRESS CHECKSTYLE ClassName
 
 	@Override
 	public int close() {
-		if (TRACE_LOGGER.enabled) { TRACE_LOGGER.enteringMethod(); }
+		if (TRACE_LOGGER.enabled) {
+			TRACE_LOGGER.enteringMethod();
+		}
 		outputFile.close();
 		if (this.maddr != null) {
 			try {
