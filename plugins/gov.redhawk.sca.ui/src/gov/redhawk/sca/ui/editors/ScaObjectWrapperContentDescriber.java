@@ -13,23 +13,17 @@ package gov.redhawk.sca.ui.editors;
 
 import gov.redhawk.model.sca.CorbaObjWrapper;
 import gov.redhawk.model.sca.ProfileObjectWrapper;
+import gov.redhawk.model.sca.util.ScaFileSystemUtil;
 import gov.redhawk.sca.ui.ScaFileStoreEditorInput;
 import gov.redhawk.sca.ui.ScaUI;
 
 import java.io.IOException;
-import java.util.HashMap;
 import java.util.Map;
 
-import mil.jpeojtrs.sca.util.QueryParser;
-import mil.jpeojtrs.sca.util.ScaFileSystemConstants;
-
-import org.eclipse.core.filesystem.EFS;
 import org.eclipse.core.filesystem.IFileStore;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExecutableExtension;
-import org.eclipse.emf.common.CommonPlugin;
-import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.ui.IEditorInput;
@@ -86,7 +80,7 @@ public class ScaObjectWrapperContentDescriber implements IScaContentDescriber, I
 		}
 		IFileStore store;
 		try {
-			store = ScaObjectWrapperContentDescriber.getFileStore((ProfileObjectWrapper< ? >) contents);
+			store = ScaFileSystemUtil.getFileStore((ProfileObjectWrapper< ? >) contents);
 		} catch (CoreException e) {
 			return null;
 		}
@@ -98,32 +92,11 @@ public class ScaObjectWrapperContentDescriber implements IScaContentDescriber, I
 
 	/**
 	 * @since 9.3
+	 * @deprecated Use {@link ScaFileSystemUtil#getFileStore(ProfileObjectWrapper)}
 	 */
+	@Deprecated
 	public static IFileStore getFileStore(ProfileObjectWrapper< ? > obj) throws CoreException {
-		URI uri = null;
-		if (obj.getProfileURI() != null) {
-			uri = obj.getProfileURI();
-			final String query = uri.query();
-			final Map<String, String> oldtParams = QueryParser.parseQuery(query);
-			final Map<String, String> queryParams = new HashMap<String, String>();
-			queryParams.putAll(oldtParams);
-			if (obj instanceof CorbaObjWrapper< ? >) {
-				final CorbaObjWrapper< ? > wrapper = (CorbaObjWrapper< ? >) obj;
-				queryParams.put(ScaFileSystemConstants.QUERY_PARAM_WF, wrapper.getIor());
-			}
-			uri = uri.trimQuery().appendQuery(QueryParser.createQuery(queryParams));
-		}
-		if (uri == null) {
-			return null;
-		}
-		IFileStore store = null;
-		if (uri.isPlatform()) {
-			store = EFS.getStore(java.net.URI.create(CommonPlugin.resolve(uri).toString()));
-		} else {
-			store = EFS.getStore(java.net.URI.create(uri.toString()));
-		}
-
-		return store;
+		return ScaFileSystemUtil.getFileStore(obj);
 	}
 
 	/**
