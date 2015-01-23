@@ -112,9 +112,9 @@ public class TunerAllocationWizardPage extends WizardPage {
 	private Double maxSr;
 	private ScaDevice< ? > feiDevice;
 
-	private static final String ALLOCATE_TUNER = "New Tuner";
-	private static final String LISTEN_TUNER_BY_ID = "Listen to Existing by Id";
-	private static final String LISTEN_TUNER_BY_PROPERTIES = "Listen to Existing by Properties";
+	private static final String ALLOCATE_TUNER = "Control New Tuner";
+	private static final String LISTEN_TUNER_BY_ID = "Listen to Existing Tuner by Id";
+	private static final String LISTEN_TUNER_BY_PROPERTIES = "Listen to Existing Tuner by Properties";
 	private static final String[] TUNER_ALLOCATION_TYPES = new String[] {ALLOCATE_TUNER, LISTEN_TUNER_BY_ID, LISTEN_TUNER_BY_PROPERTIES};
 	private static final String TUNER_TYPE_MISSING_ERR_MSG = "Please select a Tuner Type";
 	private static final String TUNER_TYPE_NOT_SUPPORTED_ERR_MSG = "The selected Tuner Type is not supported";
