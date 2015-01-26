@@ -233,7 +233,7 @@ public class WaveformSelectionWizardPage extends WizardPage {
 		advancedSection.setLayout(GridLayoutFactory.fillDefaults().create());
 
 		this.uninstallExistAppFactory = new Button(advancedSection, SWT.CHECK);
-		this.uninstallExistAppFactory.setText("Uninstall exiting Application Factory");
+		this.uninstallExistAppFactory.setText("Uninstall existing Application Factory");
 		
 		this.waveformSelectionList.getViewer().addSelectionChangedListener(new ISelectionChangedListener() {
 
