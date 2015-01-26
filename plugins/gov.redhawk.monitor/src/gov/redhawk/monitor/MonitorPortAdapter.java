@@ -101,7 +101,9 @@ public class MonitorPortAdapter extends EContentAdapter {
 			}
 		} else if (notifier instanceof PortConnectionMonitor) {
 			final PortConnectionMonitor portConnection = (PortConnectionMonitor) notifier;
-			statListener.noStatistics(portConnection.getPort().getPort(), portConnection.getConnectionId());
+			if (portConnection.getPort() != null) {
+				statListener.noStatistics(portConnection.getPort().getPort(), portConnection.getConnectionId());
+			}
 		}
 		super.removeAdapter(notifier);
 	}
