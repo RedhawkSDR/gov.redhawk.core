@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension
+         point="org.eclipse.ui.menus">
+      <menuContribution
+            allPopups="false"
+            locationURI="popup:org.eclipse.ui.popup.any?after=group.control">
+         <menu
+               label="Logging">
+            <visibleWhen
+                  checkEnabled="false">
+               <and>
+                  <count
+                        value="1">
+                  </count>
+                  <iterate>
+                     <adapt
+                           type="CF.LoggingOperations">
+                     </adapt>
+                  </iterate>
+               </and>
+            </visibleWhen>
+            <command
+                  commandId="gov.redhawk.logging.ui.setlevel"
+                  style="push">
+            </command>
+         </menu>
+      </menuContribution>
+   </extension>
+   <extension
+         point="org.eclipse.ui.commands">
+      <command
+            categoryId="gov.redhawk.ui.commands.category.sca"
+            defaultHandler="gov.redhawk.logging.ui.handlers.SetLoggingLevel"
+            id="gov.redhawk.logging.ui.setlevel"
+            name="Log Level">
+      </command>
+   </extension>
+
+</plugin>

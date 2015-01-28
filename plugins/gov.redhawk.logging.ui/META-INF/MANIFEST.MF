@@ -1,0 +1,15 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: %pluginName
+Bundle-SymbolicName: gov.redhawk.logging.ui;singleton:=true
+Bundle-Version: 1.0.0.qualifier
+Bundle-Activator: gov.redhawk.logging.ui.LoggingUiPlugin
+Bundle-Vendor: %providerName
+Require-Bundle: org.eclipse.ui,
+ org.eclipse.core.runtime,
+ gov.redhawk.sca;bundle-version="7.0.0",
+ gov.redhawk.ide.debug;bundle-version="7.0.0",
+ gov.redhawk.sca.model,
+ idl.cf
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Bundle-ActivationPolicy: lazy
