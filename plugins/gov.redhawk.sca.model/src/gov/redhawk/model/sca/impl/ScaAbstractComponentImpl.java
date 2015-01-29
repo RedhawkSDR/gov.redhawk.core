@@ -1153,7 +1153,13 @@ public abstract class ScaAbstractComponentImpl< R extends Resource > extends Sca
 	 */
 	@Override
 	public int log_level() {
-		return getObj().log_level();
+		// END GENERATED CODE
+		R resource = fetchNarrowedObject(null);
+		if (resource == null) {
+			throw new IllegalStateException("CORBA Object is Null");
+		}
+		return resource.log_level();
+		// BEGIN GENERATED CODE
 	}
 
 	/**
@@ -1161,7 +1167,13 @@ public abstract class ScaAbstractComponentImpl< R extends Resource > extends Sca
 	 */
 	@Override
 	public void log_level(int newLog_level) {
-		getObj().log_level(newLog_level);
+		// END GENERATED CODE
+		R resource = fetchNarrowedObject(null);
+		if (resource == null) {
+			throw new IllegalStateException("CORBA Object is Null");
+		}
+		resource.log_level(newLog_level);
+		// BEGIN GENERATED CODE
 	}
 
 	/**
@@ -1169,7 +1181,13 @@ public abstract class ScaAbstractComponentImpl< R extends Resource > extends Sca
 	 */
 	@Override
 	public void setLogLevel(String logger_id, int newLevel) throws UnknownIdentifier {
-		getObj().setLogLevel(logger_id, newLevel);
+		// END GENERATED CODE
+		R resource = fetchNarrowedObject(null);
+		if (resource == null) {
+			throw new IllegalStateException("CORBA Object is Null");
+		}
+		resource.setLogLevel(logger_id, newLevel);
+		// BEGIN GENERATED CODE
 	}
 
 	/**
@@ -1177,7 +1195,13 @@ public abstract class ScaAbstractComponentImpl< R extends Resource > extends Sca
 	 */
 	@Override
 	public String getLogConfig() {
-		return getObj().getLogConfig();
+		// END GENERATED CODE
+		R resource = fetchNarrowedObject(null);
+		if (resource == null) {
+			throw new IllegalStateException("CORBA Object is Null");
+		}
+		return resource.getLogConfig();
+		// BEGIN GENERATED CODE
 	}
 
 	/**
@@ -1185,7 +1209,13 @@ public abstract class ScaAbstractComponentImpl< R extends Resource > extends Sca
 	 */
 	@Override
 	public void setLogConfig(String config_contents) {
-		getObj().setLogConfig(config_contents);
+		// END GENERATED CODE
+		R resource = fetchNarrowedObject(null);
+		if (resource == null) {
+			throw new IllegalStateException("CORBA Object is Null");
+		}
+		resource.setLogConfig(config_contents);
+		// BEGIN GENERATED CODE
 	}
 
 	/**
@@ -1193,6 +1223,12 @@ public abstract class ScaAbstractComponentImpl< R extends Resource > extends Sca
 	 */
 	@Override
 	public void setLogConfigURL(String config_url) {
-		getObj().setLogConfigURL(config_url);
+		// END GENERATED CODE
+		R resource = fetchNarrowedObject(null);
+		if (resource == null) {
+			throw new IllegalStateException("CORBA Object is Null");
+		}
+		resource.setLogConfigURL(config_url);
+		// BEGIN GENERATED CODE
 	}
 } // ScaAbstractComponentImpl

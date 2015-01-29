@@ -222,6 +222,9 @@
          <adapter
                type="gov.redhawk.model.sca.ScaPortContainer">
          </adapter>
+         <adapter
+               type="CF.LoggingOperations">
+         </adapter>
       </factory>
       <factory
             adaptableType="mil.jpeojtrs.sca.sad.diagram.edit.parts.ProvidesPortStubEditPart"
