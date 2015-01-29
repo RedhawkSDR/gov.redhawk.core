@@ -52,22 +52,25 @@ public class InterfacesUtil {
 			return false;
 		} else if (source.eContainer() instanceof FindByStub || target.eContainer() instanceof FindByStub) {
 			return true;
-		} else if (source.eContainer() instanceof UsesDeviceStub || target.eContainer() instanceof UsesDeviceStub) {
-			return true;
 		}
 
-		if (source instanceof UsesPortStub && source.eContainer() instanceof ComponentInstantiation) {
+		if (source instanceof UsesPortStub) {
 			final UsesPortStub usesStub = (UsesPortStub) source;
 
 			if (target instanceof ProvidesPortStub) {
 				final ProvidesPortStub providesStub = (ProvidesPortStub) target;
 
-				if (providesStub.getProvides() != null && usesStub.getUses() != null) {
+				if (source.eContainer() instanceof ComponentInstantiation && providesStub.getProvides() != null && usesStub.getUses() != null) {
+					//connection between components provides and uses stubs
 					if (providesStub.getProvides().getInterface() != null && usesStub.getUses().getInterface() != null) {
 						return providesStub.getProvides().getInterface().isInstance(usesStub.getUses().getInterface());
 					}
+				} else if (source.eContainer() instanceof UsesDeviceStub || target.eContainer() instanceof UsesDeviceStub) {
+					//connection involves UsesDeviceStub
+					//perform name comparison, uses port name should exist within provides port name   (ex. "dataFloat_out".contains.("dataFloat")
+					return usesStub.getName().contains(providesStub.getName());
 				}
-			} else if (target instanceof ComponentSupportedInterfaceStub) {
+			} else if (target instanceof ComponentSupportedInterfaceStub && usesStub.getUses() != null) {
 				final ComponentSupportedInterfaceStub compStub = (ComponentSupportedInterfaceStub) target;
 
 				if (compStub.eContainer() != null) {
