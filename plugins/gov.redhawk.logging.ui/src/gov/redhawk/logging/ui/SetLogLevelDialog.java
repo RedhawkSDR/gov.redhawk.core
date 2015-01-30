@@ -46,6 +46,12 @@ public class SetLogLevelDialog extends TitleAreaDialog {
 	}
 	
 	@Override
+	protected void configureShell(Shell newShell) {
+		super.configureShell(newShell);
+		newShell.setText("Set Debug Level");
+	}
+	
+	@Override
 	protected Control createDialogArea(Composite parent) {
 		Composite area = (Composite) super.createDialogArea(parent);
 	    Composite container = new Composite(area, SWT.NONE);
