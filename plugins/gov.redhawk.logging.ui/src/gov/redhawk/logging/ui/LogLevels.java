@@ -12,14 +12,14 @@ package gov.redhawk.logging.ui;
 
 
 public enum LogLevels {
-	  OFF("OFF", 60000),
-	  FATAL("FATAL", 50000),
-	  ERROR("ERROR", 40000),
-	  WARN("WARN", 30000),
-	  INFO("INFO", 20000),
-	  DEBUG("DEBUG", 10000),
-	  TRACE("TRACE", 5000),
-	  ALL("ALL", 0);
+	  OFF("OFF", CF.LogLevels.OFF),
+	  FATAL("FATAL", CF.LogLevels.FATAL),
+	  ERROR("ERROR", CF.LogLevels.ERROR),
+	  WARN("WARN", CF.LogLevels.WARN),
+	  INFO("INFO", CF.LogLevels.INFO),
+	  DEBUG("DEBUG", CF.LogLevels.DEBUG),
+	  TRACE("TRACE", CF.LogLevels.TRACE),
+	  ALL("ALL", CF.LogLevels.ALL);
 	  
 	  private int level;
 	  private String label;
