@@ -617,8 +617,11 @@ public class TunerAllocationWizardPage extends WizardPage {
 		ControlDecorationSupport.create(context.bindValue(WidgetProperties.text(SWT.Modify).observe(allocIdText),
 			SCAObservables.observeSimpleProperty(listenerAllocationStruct.getSimple(ListenerAllocationProperties.LISTENER_ALLOCATION_ID.getId())),
 			allocIdStrategy, null), SWT.TOP | SWT.LEFT);
-		allocIdText.setText(getUsername() + ":" + uuid.toString());
-		allocIdText.setBackground(allocIdText.getDisplay().getSystemColor(SWT.COLOR_CYAN));
+		if (allocIdText.getText().isEmpty()) {
+			//initialize and color cyan
+			allocIdText.setText(getUsername() + ":" + uuid.toString());
+			allocIdText.setBackground(allocIdText.getDisplay().getSystemColor(SWT.COLOR_CYAN));
+		}
 		allocIdText.addFocusListener(new TargetableFocusListener(allocIdText));
 
 		// Existing allocation ID Text
@@ -1009,7 +1012,7 @@ public class TunerAllocationWizardPage extends WizardPage {
 	private void setValueForProp(TunerAllocationProperties allocProp, ScaSimpleProperty simple) {
 		switch (allocProp) {
 		case ALLOCATION_ID:
-			simple.setValue(allocIdText.getText() + ":" + uuid.toString());
+			simple.setValue(allocIdText.getText());
 			break;
 		case BANDWIDTH:
 			String bwString = bwText.getText();
@@ -1117,7 +1120,7 @@ public class TunerAllocationWizardPage extends WizardPage {
 			simple.setValue(targetAllocText.getText());
 			break;
 		case LISTENER_ALLOCATION_ID:
-			simple.setValue(allocIdText.getText() + ":" + uuid.toString());
+			simple.setValue(allocIdText.getText());
 			break;
 		default:
 		}
