@@ -515,7 +515,7 @@
          </command>
          <command
                commandId="gov.redhawk.ui.command.resource.stop"
-               icon="icons/clcl16/stop.png"
+               icon="icons/clcl16/stop.gif"
                style="push">
             <visibleWhen
                   checkEnabled="false">

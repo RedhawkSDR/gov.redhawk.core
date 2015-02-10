@@ -36,7 +36,7 @@ public class StopAction extends Action {
 	private Object context;
 
 	public StopAction() {
-		setImageDescriptor(AbstractUIPlugin.imageDescriptorFromPlugin(ScaUiPlugin.PLUGIN_ID, "icons/clcl16/stop.png"));
+		setImageDescriptor(AbstractUIPlugin.imageDescriptorFromPlugin(ScaUiPlugin.PLUGIN_ID, "icons/clcl16/stop.gif"));
 		setText("Stop");
 		setToolTipText("Stop");
 		this.setEnabled(false);
