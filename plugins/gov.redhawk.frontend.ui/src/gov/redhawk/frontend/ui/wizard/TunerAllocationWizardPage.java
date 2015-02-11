@@ -91,6 +91,7 @@ public class TunerAllocationWizardPage extends WizardPage {
 	private Text srTolText;
 	private Text targetAllocText;
 	private Text rfFlowIdText;
+	private Text groupIdText;
 	private ScaStructProperty tunerAllocationStruct;
 	private ScaStructProperty listenerAllocationStruct;
 	private static final double FREQUENCY_VALUE_CONVERSION_FACTOR = 1e6;
@@ -577,9 +578,7 @@ public class TunerAllocationWizardPage extends WizardPage {
 		WizardPageSupport.create(this, context);
 	}
 
-	public void addBindings() {
-
-		// Tuner Type combo
+	private void addTunerTypeBindings() {
 		UpdateValueStrategy tunerTypeStrategy = new UpdateValueStrategy();
 		tunerTypeStrategy.setAfterGetValidator(new TargetableValidator(typeCombo.getControl()));
 		ControlDecorationSupport.create(
@@ -600,8 +599,10 @@ public class TunerAllocationWizardPage extends WizardPage {
 				typeCombo.setSelection(new StructuredSelection(tunerAllocationStruct.getSimple(TunerAllocationProperties.TUNER_TYPE.getId()).getValue()));
 			}
 		}
-
-		// allocation ID Text
+		
+	}
+	
+	private void addAllocIdBindings() {
 		UpdateValueStrategy allocIdStrategy = new UpdateValueStrategy() {
 			@Override
 			public Object convert(Object value) {
@@ -623,8 +624,10 @@ public class TunerAllocationWizardPage extends WizardPage {
 			allocIdText.setBackground(allocIdText.getDisplay().getSystemColor(SWT.COLOR_CYAN));
 		}
 		allocIdText.addFocusListener(new TargetableFocusListener(allocIdText));
-
-		// Existing allocation ID Text
+		
+	}
+	
+	private void addExistingAllocIdBindings() {
 		UpdateValueStrategy existingAllocIdStrategy1 = new UpdateValueStrategy() {
 			@Override
 			public Object convert(Object value) {
@@ -645,8 +648,10 @@ public class TunerAllocationWizardPage extends WizardPage {
 			existingAllocIdStrategy1, existingAllocIdStrategy2), SWT.TOP | SWT.LEFT);
 		targetAllocText.addFocusListener(new TargetableFocusListener(targetAllocText));
 		targetAllocText.addModifyListener(allocIdListener);
-
-		// CF Text
+		
+	}
+	
+	private void addCfBindings() {
 		UpdateValueStrategy cfStrategy1 = new UpdateValueStrategy() {
 			@Override
 			public Object convert(Object value) {
@@ -678,8 +683,10 @@ public class TunerAllocationWizardPage extends WizardPage {
 				SCAObservables.observeSimpleProperty(tunerAllocationStruct.getSimple(TunerAllocationProperties.CENTER_FREQUENCY.getId())), cfStrategy1,
 				cfStrategy2), SWT.TOP | SWT.LEFT);
 		cfText.addFocusListener(new TargetableFocusListener(cfText));
-
-		// BW Text
+		
+	}
+	
+	private void addBwBindings() {
 		UpdateValueStrategy bwStrategy1 = new UpdateValueStrategy() {
 			@Override
 			public Object convert(Object value) {
@@ -716,8 +723,43 @@ public class TunerAllocationWizardPage extends WizardPage {
 		if (tunerAllocationStruct.getSimple(TunerAllocationProperties.BANDWIDTH.getId()).getValue() != null) {
 			bwAnyValue.setSelection((Double) tunerAllocationStruct.getSimple(TunerAllocationProperties.BANDWIDTH.getId()).getValue() == 0);
 		}
+		
+		// BW Tolerance Text
+		UpdateValueStrategy bwTolStrategy1 = new UpdateValueStrategy() {
+			@Override
+			public Object convert(Object value) {
+				try {
+					Double.parseDouble((String) value);
+				} catch (NumberFormatException e) {
+					return null;
+				}
+				return Double.valueOf((String) value);
+			}
+		};
+		UpdateValueStrategy bwTolStrategy2 = new UpdateValueStrategy() {
+			@Override
+			public Object convert(Object value) {
+				if (value instanceof Double) {
+					if (((Double) value).doubleValue() == 0.) {
+						return "";
+					}
+					double retVal = (Double) value;
+					return String.valueOf(nf.format(retVal));
+				}
+				return null;
+			}
+		};
+		bwTolStrategy1.setAfterGetValidator(new TargetableValidator(bwTolText));
+		bwTolStrategy2.setAfterGetValidator(new TargetableValidator(bwTolText));
+		ControlDecorationSupport.create(context.bindValue(WidgetProperties.text(SWT.Modify).observe(bwTolText),
+			SCAObservables.observeSimpleProperty(tunerAllocationStruct.getSimple(TunerAllocationProperties.BANDWIDTH_TOLERANCE.getId())), bwTolStrategy1,
+			bwTolStrategy2), SWT.TOP | SWT.LEFT);
+		bwTolText.setText("20");
+		bwTolText.addFocusListener(new TargetableFocusListener(bwTolText));
 
-		// SR Text
+	}
+	
+	private void addSrBindings() {
 		UpdateValueStrategy srStrategy1 = new UpdateValueStrategy() {
 			@Override
 			public Object convert(Object value) {
@@ -754,39 +796,7 @@ public class TunerAllocationWizardPage extends WizardPage {
 		if (tunerAllocationStruct.getSimple(TunerAllocationProperties.SAMPLE_RATE.getId()).getValue() != null) {
 			srAnyValue.setSelection((Double) tunerAllocationStruct.getSimple(TunerAllocationProperties.SAMPLE_RATE.getId()).getValue() == 0);
 		}
-		// BW Tolerance Text
-		UpdateValueStrategy bwTolStrategy1 = new UpdateValueStrategy() {
-			@Override
-			public Object convert(Object value) {
-				try {
-					Double.parseDouble((String) value);
-				} catch (NumberFormatException e) {
-					return null;
-				}
-				return Double.valueOf((String) value);
-			}
-		};
-		UpdateValueStrategy bwTolStrategy2 = new UpdateValueStrategy() {
-			@Override
-			public Object convert(Object value) {
-				if (value instanceof Double) {
-					if (((Double) value).doubleValue() == 0.) {
-						return "";
-					}
-					double retVal = (Double) value;
-					return String.valueOf(nf.format(retVal));
-				}
-				return null;
-			}
-		};
-		bwTolStrategy1.setAfterGetValidator(new TargetableValidator(bwTolText));
-		bwTolStrategy2.setAfterGetValidator(new TargetableValidator(bwTolText));
-		ControlDecorationSupport.create(context.bindValue(WidgetProperties.text(SWT.Modify).observe(bwTolText),
-			SCAObservables.observeSimpleProperty(tunerAllocationStruct.getSimple(TunerAllocationProperties.BANDWIDTH_TOLERANCE.getId())), bwTolStrategy1,
-			bwTolStrategy2), SWT.TOP | SWT.LEFT);
-		bwTolText.setText("20");
-		bwTolText.addFocusListener(new TargetableFocusListener(bwTolText));
-
+		
 		// SR Tolerance Text
 		UpdateValueStrategy srTolStrategy1 = new UpdateValueStrategy() {
 			@Override
@@ -821,13 +831,9 @@ public class TunerAllocationWizardPage extends WizardPage {
 		srTolText.addFocusListener(new TargetableFocusListener(srTolText));
 
 
-		// RF FLow ID Text
-		ControlDecorationSupport.create(
-			context.bindValue(WidgetProperties.text(SWT.Modify).observe(rfFlowIdText),
-				SCAObservables.observeSimpleProperty(tunerAllocationStruct.getSimple(TunerAllocationProperties.RF_FLOW_ID.getId())), null, null), SWT.TOP
-				| SWT.LEFT);
-		
-		//Allocation Combo
+	}
+	
+	private void addAllocationComboBindings() {
 		allocationComboViewer.addSelectionChangedListener(allocationModeListener);
 		allocationComboViewer.setInput(TUNER_ALLOCATION_TYPES);
 		//set selection
@@ -849,10 +855,52 @@ public class TunerAllocationWizardPage extends WizardPage {
 			}
 		}
 		
+	}
+	
+	private void addRfFlowIdBindings() {
+		ControlDecorationSupport.create(
+			context.bindValue(WidgetProperties.text(SWT.Modify).observe(rfFlowIdText),
+				SCAObservables.observeSimpleProperty(tunerAllocationStruct.getSimple(TunerAllocationProperties.RF_FLOW_ID.getId())), null, null), SWT.TOP
+				| SWT.LEFT);
 		
+	}
+	
+	private void addGroupIdBindings() {
+		ControlDecorationSupport.create(
+			context.bindValue(WidgetProperties.text(SWT.Modify).observe(groupIdText),
+				SCAObservables.observeSimpleProperty(tunerAllocationStruct.getSimple(TunerAllocationProperties.GROUP_ID.getId())), null, null), SWT.TOP
+				| SWT.LEFT);
 		
+	}
+	
+	public void addBindings() {
+
+		// Tuner Type combo
+		addTunerTypeBindings();
+
+		// allocation ID Text
+		addAllocIdBindings();
+
+		// Existing allocation ID Text
+		addExistingAllocIdBindings();
+
+		// CF Text
+		addCfBindings();
+
+		// BW Text
+		addBwBindings();
+
+		// SR Text
+		addSrBindings();
 		
+		// RF FLow ID Text
+		addRfFlowIdBindings();
 		
+		//Allocation Combo
+		addAllocationComboBindings();
+		
+		// Group ID Text
+		addGroupIdBindings();
 	}
 
 	private String getUsername() {
@@ -1007,6 +1055,12 @@ public class TunerAllocationWizardPage extends WizardPage {
 		rfFlowIdText.setToolTipText("If you would like to allocate tuners for a specific input source, enter the RF Flow ID of the source here");
 		tunerControls.add(rfFlowIdText);
 		GridDataFactory.fillDefaults().grab(true, false).applyTo(rfFlowIdText);
+
+		Label groupIdLabel = new Label(group, SWT.NONE);
+		groupIdLabel.setText("Group ID");
+		groupIdText = new Text(group, SWT.BORDER);
+		tunerControls.add(groupIdText);
+		GridDataFactory.fillDefaults().grab(true, false).applyTo(groupIdText);
 	}
 
 	private void setValueForProp(TunerAllocationProperties allocProp, ScaSimpleProperty simple) {
@@ -1108,7 +1162,7 @@ public class TunerAllocationWizardPage extends WizardPage {
 			}
 			break;
 		case GROUP_ID:
-			simple.setValue("");
+			simple.setValue(groupIdText.getText());
 			break;
 		default:
 		}
