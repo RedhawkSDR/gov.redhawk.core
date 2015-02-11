@@ -35,7 +35,10 @@ import CF.Application;
 import CF.ApplicationFactory;
 import CF.ApplicationFactoryHelper;
 import CF.ApplicationFactoryPOATie;
+import CF.ConnectionManager;
+import CF.DataType;
 import CF.Device;
+import CF.DeviceAssignmentType;
 import CF.DeviceManager;
 import CF.DomainManager;
 import CF.DomainManagerOperations;
@@ -48,6 +51,10 @@ import CF.FileSystemPOATie;
 import CF.InvalidFileName;
 import CF.InvalidObjectReference;
 import CF.InvalidProfile;
+import CF.ApplicationFactoryPackage.CreateApplicationError;
+import CF.ApplicationFactoryPackage.CreateApplicationInsufficientCapacityError;
+import CF.ApplicationFactoryPackage.CreateApplicationRequestError;
+import CF.ApplicationFactoryPackage.InvalidInitConfiguration;
 import CF.DomainManagerPackage.AlreadyConnected;
 import CF.DomainManagerPackage.ApplicationAlreadyInstalled;
 import CF.DomainManagerPackage.ApplicationInstallationError;
@@ -295,6 +302,20 @@ public class DomainManagerImpl extends AbstractResourceImpl implements DomainMan
 	public void unregisterRemoteDomainManager(DomainManager unregisteringDomainManager) throws InvalidObjectReference, UnregisterError {
 		// TODO Auto-generated method stub
 		
+	}
+
+	@Override
+	public ConnectionManager connectionMgr() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Application createApplication(String profileFileName, String name, DataType[] initConfiguration, DeviceAssignmentType[] deviceAssignments)
+		throws InvalidProfile, InvalidFileName, CreateApplicationError, CreateApplicationRequestError, CreateApplicationInsufficientCapacityError,
+		InvalidInitConfiguration {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

@@ -100,8 +100,10 @@ import org.omg.CosNaming.NamingContextPackage.NotFound;
 import CF.AllocationManager;
 import CF.Application;
 import CF.ApplicationFactory;
+import CF.ConnectionManager;
 import CF.DataType;
 import CF.Device;
+import CF.DeviceAssignmentType;
 import CF.DeviceManager;
 import CF.DomainManager;
 import CF.DomainManagerHelper;
@@ -111,6 +113,10 @@ import CF.InvalidObjectReference;
 import CF.InvalidProfile;
 import CF.PropertiesHolder;
 import CF.UnknownProperties;
+import CF.ApplicationFactoryPackage.CreateApplicationError;
+import CF.ApplicationFactoryPackage.CreateApplicationInsufficientCapacityError;
+import CF.ApplicationFactoryPackage.CreateApplicationRequestError;
+import CF.ApplicationFactoryPackage.InvalidInitConfiguration;
 import CF.DomainManagerPackage.AlreadyConnected;
 import CF.DomainManagerPackage.ApplicationAlreadyInstalled;
 import CF.DomainManagerPackage.ApplicationInstallationError;
@@ -1623,6 +1629,36 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 			return ScaDomainManagerImpl.EMPTY_APPLICATIONS;
 		}
 		return domMgr.applications();
+		// BEGIN GENERATED CODE
+	}
+
+	/**
+	 * @since 19.1
+	 */
+	@Override
+	public ConnectionManager connectionMgr() {
+		// END GENERATED CODE
+		DomainManager domMgr = fetchNarrowedObject(null);
+		if (domMgr == null) {
+			throw new IllegalStateException("CORBA Object is Null");
+		}
+		return domMgr.connectionMgr();
+		// BEGIN GENERATED CODE
+	}
+
+	/**
+	 * @since 19.1
+	 */
+	@Override
+	public Application createApplication(String profileFileName, String name, DataType[] initConfiguration, DeviceAssignmentType[] deviceAssignments)
+		throws InvalidProfile, InvalidFileName, CreateApplicationError, CreateApplicationRequestError, CreateApplicationInsufficientCapacityError,
+		InvalidInitConfiguration {
+		// END GENERATED CODE
+		DomainManager domMgr = fetchNarrowedObject(null);
+		if (domMgr == null) {
+			throw new IllegalStateException("CORBA Object is Null");
+		}
+		return domMgr.createApplication(profileFileName, name, initConfiguration, deviceAssignments);
 		// BEGIN GENERATED CODE
 	}
 
