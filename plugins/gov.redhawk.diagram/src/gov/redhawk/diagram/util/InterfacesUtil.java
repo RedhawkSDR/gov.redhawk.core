@@ -46,7 +46,7 @@ public class InterfacesUtil {
 	 * @param source The source must be a UsesPortStub
 	 * @param target The target can be either a ProvidesPortStub or ComponentSupportedInterfaceStub
 	 * @return Return a boolean that shows whether or not the ports are compatible
-	 * @since 6.1
+	 * @since 6.2
 	 */
 	public static boolean areSuggestedMatch(final EObject source, final EObject target) {
 		
