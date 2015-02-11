@@ -51,6 +51,8 @@ import org.omg.PortableServer.POAPackage.WrongPolicy;
 import org.ossie.properties.AnyUtils;
 import org.ossie.properties.IProperty;
 import org.ossie.logging.logging;
+import org.ossie.redhawk.DomainManagerContainer;
+import org.ossie.redhawk.DeviceManagerContainer;
 
 import CF.AggregateDevice;
 import CF.AggregateDeviceHelper;
@@ -83,8 +85,7 @@ import StandardEvent.StateChangeType;
 public abstract class Device extends Resource implements DeviceOperations {
 
     protected DeviceManager devMgr;
-    protected DeviceManager _devMgr = null;
-    protected DomainManager _domMgr = null;
+    protected DeviceManagerContainer _devMgr = null;
     protected AggregateDevice compositeDevice;
     protected CF.Device device;
 
@@ -200,7 +201,6 @@ public abstract class Device extends Resource implements DeviceOperations {
     }
 
     public void connectEventChannel(EventChannel idm_channel){
-        // TODO check for null idm_channel
         SupplierAdmin supplier_admin = idm_channel.for_suppliers();
         proxy_consumer = supplier_admin.obtain_push_consumer();
 
@@ -211,7 +211,6 @@ public abstract class Device extends Resource implements DeviceOperations {
             logger.warn("Failed to connect to IDM channel.");
         }
     }
-
 
     /**
      * The setup() function exists to make it easy for start_device to invoke the no-arg constructor.
@@ -243,8 +242,8 @@ public abstract class Device extends Resource implements DeviceOperations {
 
         this.devMgr = devMgr;
         if (devMgr != null) {
-            this._devMgr = devMgr;
-            this._domMgr = devMgr.domMgr();
+            this._devMgr = new DeviceManagerContainer(devMgr);
+            this._domMgr = new DomainManagerContainer(devMgr.domMgr());
             devMgr.registerDevice(device);
         }
 
@@ -252,13 +251,13 @@ public abstract class Device extends Resource implements DeviceOperations {
         if (compositeDevice != null) {
             compositeDevice.addDevice(device);
         }
-
-        // TODO Handle IDM_CHANNEL_IOR
-
-
+        
         return device;
     }
-
+    
+    public DeviceManagerContainer getDeviceManager() {
+        return this._devMgr;
+    }
 
     /**
      * Start-up function to be used from a main() function.

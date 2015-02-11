@@ -66,6 +66,7 @@ import org.ossie.events.PropertyEventSupplier;
 import org.ossie.properties.IProperty;
 import org.ossie.properties.AnyUtils;
 import org.ossie.logging.logging;
+import org.ossie.redhawk.DomainManagerContainer;
 
 import CF.AggregateDevice;
 import CF.AggregateDeviceHelper;
@@ -137,7 +138,8 @@ public abstract class Resource implements ResourceOperations, Runnable { // SUPP
     public  static logging.ResourceCtx loggerCtx = null;
     
     protected CF.Resource resource;
-
+    
+    protected DomainManagerContainer _domMgr = null;
     /**
      * The CORBA ORB to use for servicing requests
      */
@@ -362,7 +364,7 @@ public abstract class Resource implements ResourceOperations, Runnable { // SUPP
 
                 // multi-stage destruction for the ports is necessary to account for the initial memory
                 // allocation and the creation of the different maps
-                // TODO Might have to do something different here
+                // Might have to do something different here?
                 this.ports.clear();
 
                 this.poa.deactivate_object(this.poa.reference_to_id(resource));
@@ -541,7 +543,20 @@ public abstract class Resource implements ResourceOperations, Runnable { // SUPP
      * 
      * @param ApplicationRegistrarIOR IOR to either the Application Registrar or Naming Context
      */
-    public void setAdditionalParameters(final String ApplicationRegistrarIOR) {
+    public void setAdditionalParameters(final String ApplicationRegistrarIOR, String nic) {
+        final org.omg.CORBA.Object obj = this.orb.string_to_object(ApplicationRegistrarIOR);
+        ApplicationRegistrar appReg = null;
+        try {
+            appReg = ApplicationRegistrarHelper.narrow(obj);
+        } catch (Exception e) {}
+        if (appReg!=null) {
+            this._domMgr = new DomainManagerContainer(appReg.domMgr());
+            return;
+        }
+    }
+    
+    public DomainManagerContainer getDomainManager() {
+        return this._domMgr;
     }
     
     /**
@@ -1159,7 +1174,11 @@ public abstract class Resource implements ResourceOperations, Runnable { // SUPP
 
         final Resource resource_i = clazz.newInstance();
         final CF.Resource resource = resource_i.setup(identifier, nameBinding, profile, orb, rootpoa);
-        resource_i.setAdditionalParameters(execparams.get("NAMING_CONTEXT_IOR"));
+        String nic = "";
+        if (execparams.containsKey("NIC")) {
+            nic = execparams.get("NIC");
+        }
+        resource_i.setAdditionalParameters(execparams.get("NAMING_CONTEXT_IOR"), nic);
         resource_i.initializeProperties(execparams);
 
 	resource_i.saveLoggingContext( logcfg_uri, debugLevel, ctx );

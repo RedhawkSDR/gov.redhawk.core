@@ -207,6 +207,11 @@ public abstract class OutDataPort<E extends BULKIO.updateSRIOperations,A> extend
             return;
         }
 
+        // Null streamID is a usage error
+        if (header.streamID == null) {
+            throw new NullPointerException("SRI streamID cannot be null");
+        }
+
         // Header cannot have null keywords
         if (header.keywords == null) {
             header.keywords = new CF.DataType[0];

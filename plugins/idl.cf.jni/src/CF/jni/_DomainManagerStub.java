@@ -59,6 +59,12 @@ public class _DomainManagerStub extends omnijni.ObjectImpl implements CF.DomainM
   }
   private static native CF.AllocationManager _get_allocationMgr (long __ref__);
 
+  public CF.ConnectionManager connectionMgr ()
+  {
+    return _get_connectionMgr(this.ref_);
+  }
+  private static native CF.ConnectionManager _get_connectionMgr (long __ref__);
+
   public String identifier ()
   {
     return _get_identifier(this.ref_);
@@ -100,6 +106,12 @@ public class _DomainManagerStub extends omnijni.ObjectImpl implements CF.DomainM
     unregisterDevice(this.ref_, unregisteringDevice);
   }
   private static native void unregisterDevice (long __ref__, CF.Device unregisteringDevice);
+
+  public CF.Application createApplication (String profileFileName, String name, CF.DataType[] initConfiguration, CF.DeviceAssignmentType[] deviceAssignments)
+  {
+    return createApplication(this.ref_, profileFileName, name, initConfiguration, deviceAssignments);
+  }
+  private static native CF.Application createApplication (long __ref__, String profileFileName, String name, CF.DataType[] initConfiguration, CF.DeviceAssignmentType[] deviceAssignments);
 
   public void installApplication (String profileFileName)
   {

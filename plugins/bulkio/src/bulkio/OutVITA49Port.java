@@ -141,6 +141,10 @@ public class OutVITA49Port extends OutPortBase<dataVITA49Operations> {
 	    return;
 	}
 
+        if (header.streamID == null) {
+            throw new NullPointerException("SRI streamID cannot be null");
+        }
+
         // Header cannot have null keywords
         if (header.keywords == null) header.keywords = new DataType[0];
 
