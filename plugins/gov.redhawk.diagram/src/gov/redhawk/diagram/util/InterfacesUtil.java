@@ -41,6 +41,33 @@ public class InterfacesUtil {
 	}
 
 	/**
+	 * Determine whether or not two ports are a suggested match and return a boolean to reflect such
+	 * 
+	 * @param source The source must be a UsesPortStub
+	 * @param target The target can be either a ProvidesPortStub or ComponentSupportedInterfaceStub
+	 * @return Return a boolean that shows whether or not the ports are compatible
+	 * @since 6.1
+	 */
+	public static boolean areSuggestedMatch(final EObject source, final EObject target) {
+		
+		if (!areCompatible(source, target)) {
+			//They're types aren't compatible return false
+			return false;
+		} else if (source instanceof UsesPortStub && target instanceof ProvidesPortStub) {
+			final UsesPortStub usesStub = (UsesPortStub) source;
+			final ProvidesPortStub providesStub = (ProvidesPortStub) target;
+						
+			if (source.eContainer() instanceof UsesDeviceStub || target.eContainer() instanceof UsesDeviceStub) {
+				//connection involves UsesDeviceStub
+				//perform name comparison, uses port name should exist within provides port name   (ex. "dataFloat_out".contains.("dataFloat")
+				return usesStub.getName().contains(providesStub.getName());
+			}
+		}
+
+		return true;
+	}
+	
+	/**
 	 * Determine whether or not two ports are compatible and return a boolean to reflect such
 	 * 
 	 * @param source The source must be a UsesPortStub
@@ -51,6 +78,10 @@ public class InterfacesUtil {
 		if (source == null || target == null) {
 			return false;
 		} else if (source.eContainer() instanceof FindByStub || target.eContainer() instanceof FindByStub) {
+			//find by
+			return true;
+		} else if (source.eContainer() instanceof UsesDeviceStub || target.eContainer() instanceof UsesDeviceStub) {
+			//uses device
 			return true;
 		}
 
@@ -65,10 +96,6 @@ public class InterfacesUtil {
 					if (providesStub.getProvides().getInterface() != null && usesStub.getUses().getInterface() != null) {
 						return providesStub.getProvides().getInterface().isInstance(usesStub.getUses().getInterface());
 					}
-				} else if (source.eContainer() instanceof UsesDeviceStub || target.eContainer() instanceof UsesDeviceStub) {
-					//connection involves UsesDeviceStub
-					//perform name comparison, uses port name should exist within provides port name   (ex. "dataFloat_out".contains.("dataFloat")
-					return usesStub.getName().contains(providesStub.getName());
 				}
 			} else if (target instanceof ComponentSupportedInterfaceStub && usesStub.getUses() != null) {
 				final ComponentSupportedInterfaceStub compStub = (ComponentSupportedInterfaceStub) target;
