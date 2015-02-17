@@ -52,16 +52,36 @@ public class InterfacesUtil {
 	public static boolean areSuggestedMatch(final EObject source, final EObject target) {
 		
 		if (!areCompatible(source, target)) {
-			//They're types aren't compatible return false
+			// If types aren't compatible return false
 			return false;
 		} else if (source instanceof UsesPortStub && target instanceof ProvidesPortStub) {
 			final UsesPortStub usesStub = (UsesPortStub) source;
 			final ProvidesPortStub providesStub = (ProvidesPortStub) target;
 						
 			if (source.eContainer() instanceof UsesDeviceStub || target.eContainer() instanceof UsesDeviceStub) {
-				//connection involves UsesDeviceStub
-				//perform name comparison, uses port name should exist within provides port name   (ex. "dataFloat_out".contains.("dataFloat")
-				return usesStub.getName().contains(providesStub.getName());
+				// Connection involves UsesDeviceStub
+				// First perform name comparison, uses port name should exist within provides port name   (ex. "dataFloat_out".contains.("dataFloat")
+				if (usesStub.getName().contains(providesStub.getName()) || providesStub.getName().contains(usesStub.getName())) {
+					return true;
+				}
+				
+				// If there is an underscore(s), check the part preceding the first one (ex. "dataFloat_out" should be "dataFloat");
+				String usesPortName = usesStub.getName();
+				if (usesPortName.contains("_")) {
+					int i = usesPortName.indexOf("_");
+					usesPortName = usesPortName.substring(0, i);
+				}
+								
+				String providesPortName = providesStub.getName();
+				if (providesPortName.contains("_")) {
+					int i = providesPortName.indexOf('_');
+					providesPortName = providesPortName.substring(0, i);
+				}
+				
+				if (usesPortName.equals(providesPortName)) {
+					return true;
+				} 
+				return false;
 			}
 		}
 
