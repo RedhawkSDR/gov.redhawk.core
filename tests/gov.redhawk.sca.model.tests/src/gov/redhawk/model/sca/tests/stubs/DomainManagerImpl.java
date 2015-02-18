@@ -314,8 +314,15 @@ public class DomainManagerImpl extends AbstractResourceImpl implements DomainMan
 	public Application createApplication(String profileFileName, String name, DataType[] initConfiguration, DeviceAssignmentType[] deviceAssignments)
 		throws InvalidProfile, InvalidFileName, CreateApplicationError, CreateApplicationRequestError, CreateApplicationInsufficientCapacityError,
 		InvalidInitConfiguration {
-		// TODO Auto-generated method stub
-		return null;
+		// Re-use the application factory logic to create the application
+		URI uri = ScaURIFactory.createURI(profileFileName, fileManager);
+		try {
+			SoftwareAssembly sad = SoftwareAssembly.Util.getSoftwareAssembly(resourceSet.getResource(uri, true));
+			ApplicationFactoryImpl factory = new ApplicationFactoryImpl(sad, this);
+			return factory.create(name, initConfiguration, deviceAssignments);
+		} catch (Exception e) {  // SUPPRESS CHECKSTYLE Logged Catch all exception
+			throw new InvalidProfile(e.getMessage());
+		}
 	}
 
 }
