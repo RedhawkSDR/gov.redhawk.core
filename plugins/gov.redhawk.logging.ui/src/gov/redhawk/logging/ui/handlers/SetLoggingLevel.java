@@ -85,7 +85,7 @@ public class SetLoggingLevel extends AbstractHandler{
 		/**
 		 * This is the first progress monitor dialog, fetching the current log level of the resource.
 		 */
-		ProgressMonitorDialog fetchingCurrentDialog = new ProgressMonitorDialog(Display.getCurrent().getActiveShell());
+		ProgressMonitorDialog fetchingCurrentDialog = new ProgressMonitorDialog(activeShell);
 		try {
 			fetchingCurrentDialog.run(true, true, new IRunnableWithProgress() {
 
