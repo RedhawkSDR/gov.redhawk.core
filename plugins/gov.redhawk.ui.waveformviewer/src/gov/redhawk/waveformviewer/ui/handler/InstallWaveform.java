@@ -26,6 +26,7 @@ import mil.jpeojtrs.sca.sad.SoftwareAssembly;
 
 import org.eclipse.ui.IViewPart;
 import org.eclipse.ui.IWorkbenchPage;
+import org.omg.CORBA.BAD_OPERATION;
 
 import CF.Application;
 import CF.DataType;
@@ -66,7 +67,8 @@ public class InstallWaveform extends WaveformActivity {
 			final String waveName = (endNS != -1) ? wave.getName().substring(endNS + 1) : wave.getName(); // SUPPRESS CHECKSTYLE AvoidInLine
 
 			// Ask the Domain Manager to install the file for the waveform
-			dom.installApplication("/waveforms/" + waveName + "/" + waveName + SadPackage.FILE_EXTENSION);
+			final String profileName = "/waveforms/" + waveName + "/" + waveName + SadPackage.FILE_EXTENSION;
+			dom.installApplication(profileName);
 
 			// This just finds the first device in the Domain Manager and
 			// assigns all
@@ -88,11 +90,17 @@ public class InstallWaveform extends WaveformActivity {
 			}
 			final DeviceAssignmentType[] type = new DeviceAssignmentType[list.size()];
 			list.toArray(type);
-
+			
 			// Create and start the application
-			appl = dom.applicationFactories()[0].create(dom.applicationFactories()[0].name(), new DataType[0], type);
-			// appl = startWaveform(dom.applicationFactories()[0], dom, wave);
-			appl.start();
+			// IDE-1109: Try creating the application the new way, without application factories
+			try {
+				appl = dom.createApplication(profileName, wave.getName(), new DataType[0], type);
+			} catch (BAD_OPERATION e) {
+				// IDE-1109: Domain is probably pre-2.0, create the application the old way
+				appl = dom.applicationFactories()[0].create(dom.applicationFactories()[0].name(), new DataType[0], type);
+				appl.start();
+			}
+			
 		} catch (final InvalidProfile e) {
 			WaveformProjectPlugin.logError("Failed to create waveform: " + wave.getName(), e);
 		} catch (final InvalidFileName e) {

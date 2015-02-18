@@ -48,6 +48,7 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.util.EcoreUtil;
+import org.omg.CORBA.BAD_OPERATION;
 import org.omg.CORBA.SystemException;
 
 import CF.Application;
@@ -56,6 +57,8 @@ import CF.ApplicationFactoryHelper;
 import CF.ApplicationFactoryOperations;
 import CF.DataType;
 import CF.DeviceAssignmentType;
+import CF.InvalidFileName;
+import CF.InvalidProfile;
 import CF.ApplicationFactoryPackage.CreateApplicationError;
 import CF.ApplicationFactoryPackage.CreateApplicationInsufficientCapacityError;
 import CF.ApplicationFactoryPackage.CreateApplicationRequestError;
@@ -1188,8 +1191,27 @@ public class ScaWaveformFactoryImpl extends CorbaObjWrapperImpl<ApplicationFacto
 				if (deviceAssignments == null) {
 					deviceAssignments = DEVICE_EMPTY_TYPE;
 				}
-				final Application app = factory.create(name, initConfiguration, deviceAssignments);
-
+				
+				Application tempApp = null;
+				// IDE-1109: Try creating the application the new way, without application factories
+				try {
+					tempApp = getDomMgr().createApplication(getProfile(), name, initConfiguration, deviceAssignments);
+				} catch (BAD_OPERATION e) {
+					// IDE-1109: Domain is probably pre-2.0, create the application the old way
+					tempApp = factory.create(name, initConfiguration, deviceAssignments);
+				} catch (InvalidProfile e) {
+					CreateApplicationError newError = new CreateApplicationError(CF.ErrorNumberType.CF_EBADF, "Invalid profile " + getProfile());
+					newError.initCause(e);
+					newError.fillInStackTrace();
+					throw newError;
+				} catch (InvalidFileName e) {
+					CreateApplicationError newError = new CreateApplicationError(CF.ErrorNumberType.CF_EBADF, "Invalid file name");
+					newError.initCause(e);
+					newError.fillInStackTrace();
+					throw newError;
+				}
+				final Application app = tempApp;
+				
 				ScaWaveform retVal = null;
 				if (app != null) {
 					final String ior = app.toString();
