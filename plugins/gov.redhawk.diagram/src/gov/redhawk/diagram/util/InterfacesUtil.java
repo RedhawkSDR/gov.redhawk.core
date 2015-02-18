@@ -68,7 +68,7 @@ public class InterfacesUtil {
 				// If there is an underscore(s), check the part preceding the first one (ex. "dataFloat_out" should be "dataFloat");
 				String usesPortName = usesStub.getName();
 				if (usesPortName.contains("_")) {
-					int i = usesPortName.indexOf("_");
+					int i = usesPortName.indexOf('_');
 					usesPortName = usesPortName.substring(0, i);
 				}
 								
