@@ -77,10 +77,6 @@ public final class ModelUtil {
 	 * @since 11.0
 	 */
 	public static String getSpdFileName(final SoftPkg softPkg) {
-		final Descriptor descriptor = softPkg.getDescriptor();
-		if (descriptor == null) {
-			return null;
-		}
 		final IFile file = ModelUtil.getResource(softPkg.eResource());
 		if (file == null) {
 			return null;
