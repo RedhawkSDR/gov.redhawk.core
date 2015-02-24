@@ -61,12 +61,19 @@ public class ProjectNameValidator implements IValidator {
 			return ValidationStatus.error("Invalid character present in project name.");
 		}
 
+		if (s.contains("..")) {
+			return ValidationStatus.error("Project name cannot have two consecutive dots in it.");
+		}
+		if (s.endsWith(".")) {
+			return ValidationStatus.error("Project name cannot end with a dot.");
+		}
+		
 		final IWorkspaceRoot root = ResourcesPlugin.getWorkspace().getRoot();
 		if (!root.getLocation().isValidSegment(s)) {
 			return ValidationStatus.error("Enter a valid project name.");
 		}
 
-		// TODO on Window verify that we don't end in '.'
+		
 		final IProject project = root.getProject(s);
 		if (project.exists()) {
 			return ValidationStatus.error("A project with this name already exists.");
