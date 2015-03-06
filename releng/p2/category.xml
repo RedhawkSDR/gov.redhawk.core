@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <site>
-   <feature url="features/gov.redhawk.core.sdk_1.11.0.qualifier.jar" id="gov.redhawk.core.sdk" version="1.11.0.qualifier">
+   <feature url="features/gov.redhawk.core.sdk_0.0.0.qualifier.jar" id="gov.redhawk.core.sdk">
       <category name="gov.redhawk.core"/>
    </feature>
-   <feature url="features/gov.redhawk.core_1.11.0.qualifier.jar" id="gov.redhawk.core" version="1.11.0.qualifier">
+   <feature url="features/gov.redhawk.core_0.0.0.qualifier.jar" id="gov.redhawk.core">
       <category name="gov.redhawk.core"/>
    </feature>
-   <feature url="features/gov.redhawk.core.ui_1.11.0.qualifier.jar" id="gov.redhawk.core.ui" version="1.11.0.qualifier">
+   <feature url="features/gov.redhawk.core.ui_0.0.0.qualifier.jar" id="gov.redhawk.core.ui">
       <category name="gov.redhawk.core"/>
    </feature>
-   <feature url="features/gov.redhawk.idl_1.11.0.qualifier.jar" id="gov.redhawk.idl" version="1.11.0.qualifier">
+   <feature url="features/gov.redhawk.idl_0.0.0.qualifier.jar" id="gov.redhawk.idl">
       <category name="gov.redhawk.core"/>
    </feature>
-   <feature url="features/gov.redhawk.validation_1.11.0.qualifier.jar" id="gov.redhawk.validation" version="1.11.0.qualifier">
+   <feature url="features/gov.redhawk.validation_0.0.0.qualifier.jar" id="gov.redhawk.validation">
       <category name="gov.redhawk.core"/>
    </feature>
    <category-def name="gov.redhawk.core" label="REDHAWK Core"/>
