@@ -12,7 +12,7 @@
 <feature
       id="gov.redhawk.core.ui"
       label="%featureName"
-      version="1.11.0.qualifier"
+      version="2.0.0.qualifier"
       provider-name="%featureProvider"
       plugin="gov.redhawk.common.ui">
 
@@ -29,7 +29,7 @@
    </license>
 
    <requires>
-      <import feature="gov.redhawk.core" version="1.11.0.qualifier"/>
+      <import feature="gov.redhawk.core" version="2.0.0.qualifier"/>
    </requires>
 
    <plugin

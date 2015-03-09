@@ -13,7 +13,7 @@
 <feature
       id="gov.redhawk.core"
       label="%featureName"
-      version="1.11.0.qualifier"
+      version="2.0.0.qualifier"
       provider-name="%featureProvider"
       plugin="gov.redhawk.sca">
 
@@ -28,7 +28,7 @@
    <license url="http://redhawksdr.org">
       %license
    </license>
-   
+
    <includes
          id="gov.redhawk.validation"
          version="0.0.0"/>
