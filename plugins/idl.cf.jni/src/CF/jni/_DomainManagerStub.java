@@ -23,6 +23,18 @@ public class _DomainManagerStub extends omnijni.ObjectImpl implements CF.DomainM
   }
   private static native void query (long __ref__, CF.PropertiesHolder configProperties);
 
+  public String registerPropertyListener (org.omg.CORBA.Object obj, String[] prop_ids, float interval)
+  {
+    return registerPropertyListener(this.ref_, obj, prop_ids, interval);
+  }
+  private static native String registerPropertyListener (long __ref__, org.omg.CORBA.Object obj, String[] prop_ids, float interval);
+
+  public void unregisterPropertyListener (String id)
+  {
+    unregisterPropertyListener(this.ref_, id);
+  }
+  private static native void unregisterPropertyListener (long __ref__, String id);
+
   public String domainManagerProfile ()
   {
     return _get_domainManagerProfile(this.ref_);
@@ -64,6 +76,12 @@ public class _DomainManagerStub extends omnijni.ObjectImpl implements CF.DomainM
     return _get_connectionMgr(this.ref_);
   }
   private static native CF.ConnectionManager _get_connectionMgr (long __ref__);
+
+  public CF.EventChannelManager eventChannelMgr ()
+  {
+    return _get_eventChannelMgr(this.ref_);
+  }
+  private static native CF.EventChannelManager _get_eventChannelMgr (long __ref__);
 
   public String identifier ()
   {

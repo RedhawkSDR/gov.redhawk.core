@@ -41,6 +41,18 @@ public class _AggregateLoadableDeviceStub extends omnijni.ObjectImpl implements 
   }
   private static native void query (long __ref__, CF.PropertiesHolder configProperties);
 
+  public String registerPropertyListener (org.omg.CORBA.Object obj, String[] prop_ids, float interval)
+  {
+    return registerPropertyListener(this.ref_, obj, prop_ids, interval);
+  }
+  private static native String registerPropertyListener (long __ref__, org.omg.CORBA.Object obj, String[] prop_ids, float interval);
+
+  public void unregisterPropertyListener (String id)
+  {
+    unregisterPropertyListener(this.ref_, id);
+  }
+  private static native void unregisterPropertyListener (long __ref__, String id);
+
   public org.omg.CORBA.Object getPort (String name)
   {
     return getPort(this.ref_, name);

@@ -73,11 +73,11 @@ import CF.LifeCyclePackage.ReleaseError;
 import CF.PropertySetPackage.InvalidConfiguration;
 import CF.PropertySetPackage.PartialConfiguration;
 import org.omg.CosEventComm.Disconnected;
-import org.omg.CosEventComm.PushSupplierHolder;
 import org.omg.CosEventChannelAdmin.AlreadyConnected;
 import org.omg.CosEventChannelAdmin.EventChannel;
-import org.omg.CosEventChannelAdmin.ProxyPushConsumer;
-import org.omg.CosEventChannelAdmin.SupplierAdmin;
+import org.ossie.events.*;
+import org.ossie.events.Manager.*;
+import CF.EventChannelManagerPackage.*;
 import StandardEvent.StateChangeCategoryType;
 import StandardEvent.StateChangeEventType;
 import StandardEvent.StateChangeType;
@@ -94,8 +94,7 @@ public abstract class Device extends Resource implements DeviceOperations {
     protected UsageType usageState = UsageType.IDLE;
     protected OperationalType operationState  = OperationalType.ENABLED;
     private boolean firstTime = true;
-    private ProxyPushConsumer proxy_consumer;
-    private PushSupplierHolder supplier;
+    private Publisher idm_publisher=null;
 
     /**
      * Deprecated old-style allocation callbacks. Use the Allocator interface and
@@ -144,12 +143,12 @@ public abstract class Device extends Resource implements DeviceOperations {
 
     public Device(final DeviceManager devMgr, final String compId, final String label, final String softwareProfile, final ORB orb, final POA poa) throws InvalidObjectReference, ServantNotActive, WrongPolicy {
         this();
-        setup(devMgr, null, compId, label, softwareProfile, orb, poa);
+        setup(devMgr, null, compId, label, softwareProfile, "", orb, poa);
     }
 
     public Device(final DeviceManager devMgr, final AggregateDevice compositeDevice, final String compId, final String label, final String softwareProfile, final ORB orb, final POA poa) throws InvalidObjectReference, ServantNotActive, WrongPolicy {
         this();
-        setup(devMgr, compositeDevice, compId, label, softwareProfile, orb, poa);
+        setup(devMgr, compositeDevice, compId, label, softwareProfile, "", orb, poa);
     }
 
     public String label() {
@@ -192,23 +191,54 @@ public abstract class Device extends Resource implements DeviceOperations {
             if (devMgr != null) {
                 devMgr.unregisterDevice(device);
             }
+            
         } catch (Exception e) {
             e.printStackTrace();
             throw new ReleaseError(new String[] {e.toString()});
         }
         super.releaseObject();
         setAdminState(AdminType.LOCKED);
+
+        if ( idm_publisher != null ) {
+            idm_publisher.terminate();
+            idm_publisher = null;
+        }
+
+        org.ossie.events.Manager.Terminate();
+
     }
 
-    public void connectEventChannel(EventChannel idm_channel){
-        SupplierAdmin supplier_admin = idm_channel.for_suppliers();
-        proxy_consumer = supplier_admin.obtain_push_consumer();
 
-        supplier = new PushSupplierHolder();
-        try {
-            proxy_consumer.connect_push_supplier(supplier.value);
-        } catch (AlreadyConnected e) {
-            logger.warn("Failed to connect to IDM channel.");
+    public void connectIDMChannel(final String idm_channel_ior){
+
+        if ( idm_channel_ior != null || idm_channel_ior.length() > 0 ) {
+            EventChannel idm_channel=null;
+            // Get DomainManager incoming event channel and connect the device to it, where applicable
+            try {
+                Object idm_channel_obj = orb.string_to_object(idm_channel_ior);
+                idm_channel = org.omg.CosEventChannelAdmin.EventChannelHelper.narrow(idm_channel_obj);
+                idm_publisher = new org.ossie.events.Publisher(idm_channel);
+            } 
+            catch (Exception e){
+                logger.warn("Error connecting to IDM channel.");
+            }
+
+        }
+        else {
+            try {
+                Manager evt_mgr = Manager.GetManager(this);
+                
+                idm_publisher = evt_mgr.Publisher( Manager.IDM_CHANNEL_SPEC );
+            }
+            catch( Manager.OperationFailed e) {
+                logger.warn("Failed to connect to IDM channel.");
+            }
+            catch( RegistrationExists e) {
+                logger.warn("Failed to connect to IDM channel.");
+            }
+            catch( RegistrationFailed e) {
+                logger.warn("Failed to connect to IDM channel.");
+            }
         }
     }
 
@@ -230,6 +260,7 @@ public abstract class Device extends Resource implements DeviceOperations {
             final String compId, 
             final String label, 
             final String softwareProfile,
+            final String idm_channel_ior,
             final ORB orb, 
             final POA poa) throws InvalidObjectReference, ServantNotActive, WrongPolicy {
         super.setup(compId, label, softwareProfile, orb, poa);
@@ -251,7 +282,8 @@ public abstract class Device extends Resource implements DeviceOperations {
         if (compositeDevice != null) {
             compositeDevice.addDevice(device);
         }
-        
+
+        connectIDMChannel( idm_channel_ior );
         return device;
     }
     
@@ -368,6 +400,11 @@ public abstract class Device extends Resource implements DeviceOperations {
 	    debugLevel = Integer.parseInt(execparams.get("DEBUG_LEVEL"));
 	}
 
+	String idm_channel_ior="";   // idm channel ior 
+	if (execparams.containsKey("IDM_CHANNEL_IOR")) {
+            idm_channel_ior = execparams.get("IDM_CHANNEL_IOR");
+	}
+
 	if ( debugLevel > 3 ) {
 	    System.out.println("Device Args: " );
 	    System.out.println("                DEVICE_LABEL:"+ label );
@@ -387,18 +424,14 @@ public abstract class Device extends Resource implements DeviceOperations {
 
         final Device device_i = clazz.newInstance();
         device_i.initializeProperties(execparams);
-        final CF.Device device = device_i.setup(devMgr, compositeDevice, identifier, label, profile, orb, rootpoa);
-
-        // Get DomainManager incoming event channel and connect the device to it, where applicable
-        if (execparams.containsKey("IDM_CHANNEL_IOR")){
-            try {
-                Object idm_channel_obj = orb.string_to_object(execparams.get("IDM_CHANNEL_IOR"));
-                EventChannel idm_channel = org.omg.CosEventChannelAdmin.EventChannelHelper.narrow(idm_channel_obj);
-                device_i.connectEventChannel(idm_channel);
-            } catch (Exception e){
-                logger.warn("Error connecting to IDM channel.");
-            }
-        }
+        final CF.Device device = device_i.setup(devMgr, 
+                                                compositeDevice, 
+                                                identifier, 
+                                                label, 
+                                                profile, 
+                                                idm_channel_ior,
+                                                orb, 
+                                                rootpoa);
 
         // Create a thread that watches for the device to be deactivated
         Thread shutdownWatcher = new Thread(new Runnable() {
@@ -748,10 +781,12 @@ public abstract class Device extends Resource implements DeviceOperations {
                     StandardEvent.StateChangeCategoryType.USAGE_STATE_EVENT, current_state, new_state);
 
             try {
-                if (proxy_consumer != null){
-                    proxy_consumer.push(AnyUtils.toAny(event, TCKind.tk_objref));
+                if ( idm_publisher != null ) {
+                    idm_publisher.push(AnyUtils.toAny(event, TCKind.tk_objref) );
+                    logger.debug("Sent device StateChangeEvent - USAGE ");
                 }
-            } catch (Disconnected e) {
+            }
+            catch (Exception e) {
                 logger.warn("Error sending event.");
             }
 
@@ -852,13 +887,16 @@ public abstract class Device extends Resource implements DeviceOperations {
             StateChangeEventType event = new StateChangeEventType(identifier(), identifier(), 
                     StateChangeCategoryType.ADMINISTRATIVE_STATE_EVENT, current_state, new_state);
 
+
             try {
-                if (proxy_consumer != null){
-                    proxy_consumer.push(AnyUtils.toAny(event, TCKind.tk_objref));
+                if ( idm_publisher != null ) {
+                    idm_publisher.push(AnyUtils.toAny(event, TCKind.tk_objref) );
+                    logger.debug("Sent device StateChangeEvent - ADMIN ");
                 }
-            } catch (Disconnected e) {
+            }
+            catch (Exception e) {
                 logger.warn("Error sending event.");
-            } 
+            }
 
             adminState = newAdminState;
         }
@@ -898,10 +936,12 @@ public abstract class Device extends Resource implements DeviceOperations {
                     StateChangeCategoryType.OPERATIONAL_STATE_EVENT, current_state, new_state);
 
             try {
-                if (proxy_consumer != null){
-                    proxy_consumer.push(AnyUtils.toAny(event, TCKind.tk_objref));
+                if ( idm_publisher != null ) {
+                    idm_publisher.push(AnyUtils.toAny(event, TCKind.tk_objref) );
+                    logger.debug("Sent device StateChangeEvent - OPERATIONAL ");
                 }
-            } catch (Disconnected e) {
+            }
+            catch (Exception e) {
                 logger.warn("Error sending event.");
             }
 

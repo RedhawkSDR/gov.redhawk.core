@@ -23,6 +23,18 @@ public class _PropertySetStub extends omnijni.ObjectImpl implements CF.PropertyS
   }
   private static native void query (long __ref__, CF.PropertiesHolder configProperties);
 
+  public String registerPropertyListener (org.omg.CORBA.Object obj, String[] prop_ids, float interval)
+  {
+    return registerPropertyListener(this.ref_, obj, prop_ids, interval);
+  }
+  private static native String registerPropertyListener (long __ref__, org.omg.CORBA.Object obj, String[] prop_ids, float interval);
+
+  public void unregisterPropertyListener (String id)
+  {
+    unregisterPropertyListener(this.ref_, id);
+  }
+  private static native void unregisterPropertyListener (long __ref__, String id);
+
   private static String __ids[] = {
     "IDL:CF/PropertySet:1.0",
   };

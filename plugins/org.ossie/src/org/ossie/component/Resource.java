@@ -33,6 +33,8 @@ import java.util.Map;
 import java.util.Properties;
 import java.io.FileOutputStream;
 import java.io.File;
+import java.util.UUID;
+
 
 import org.apache.log4j.BasicConfigurator;
 import org.apache.log4j.Logger;
@@ -45,6 +47,7 @@ import org.apache.log4j.ConsoleAppender;
 import org.apache.log4j.Appender;
 import org.apache.log4j.Level;
 import org.omg.CORBA.ORB;
+import org.omg.CORBA.Any;
 import org.omg.CORBA.UserException;
 import org.omg.CORBA.ORBPackage.InvalidName;
 import org.omg.CosNaming.NameComponent;
@@ -64,9 +67,13 @@ import org.omg.PortableServer.POAPackage.ServantNotActive;
 import org.omg.PortableServer.POAPackage.WrongPolicy;
 import org.ossie.events.PropertyEventSupplier;
 import org.ossie.properties.IProperty;
+import org.ossie.properties.PropertyListener;
 import org.ossie.properties.AnyUtils;
+import org.ossie.properties.StructProperty;
+import org.ossie.properties.StructDef;
 import org.ossie.logging.logging;
 import org.ossie.redhawk.DomainManagerContainer;
+import org.ossie.corba.utils.*;
 
 import CF.AggregateDevice;
 import CF.AggregateDeviceHelper;
@@ -81,12 +88,14 @@ import CF.InvalidObjectReference;
 import CF.LogLevels;
 import CF.PortPOA;
 import CF.PropertiesHolder;
+import CF.PropertiesHelper;
 import CF.ResourceHelper;
 import CF.ResourceOperations;
 import CF.ResourcePOA;
 import CF.ResourcePOATie;
 import CF.UnknownProperties;
 import CF.UnknownIdentifier;
+import CF.InvalidIdentifier;
 import CF.LifeCyclePackage.InitializeError;
 import CF.LifeCyclePackage.ReleaseError;
 import CF.PortSupplierPackage.UnknownPort;
@@ -133,7 +142,47 @@ public abstract class Resource implements ResourceOperations, Runnable { // SUPP
     }
 
 
-    public final static Logger logger = Logger.getLogger(Resource.class.getName());
+    class PropertyChangeProcessor implements ThreadedComponent, Runnable { 
+
+        private Resource rsc = null;
+        private ProcessThread _processThread=null;
+
+        public PropertyChangeProcessor( Resource inRsc ) {
+            rsc = inRsc;
+            this._processThread = new ProcessThread(this);
+        }
+
+        public void run () {
+            this._processThread.run();
+        }
+
+        public void start () {
+            this._processThread.start();
+        }
+        public void stop () {
+            this._processThread.stop();
+        }
+
+        public int process () {
+            if ( rsc != null ) {
+                return rsc._propertyChangeServiceFunction();
+            }
+            else {
+                return NOOP;
+            }
+        }
+        
+        public float getThreadDelay (){
+            return this._processThread.getDelay();
+        }
+
+        public void setThreadDelay (float delay) {
+            this._processThread.setDelay(delay);
+        }
+    }
+
+
+    public  static Logger logger = Logger.getLogger(Resource.class.getName());
 
     public  static logging.ResourceCtx loggerCtx = null;
     
@@ -193,6 +242,10 @@ public abstract class Resource implements ResourceOperations, Runnable { // SUPP
     /** holds the url for the logging configuration */
     protected String               loggingURL;
 
+    protected Hashtable< String, PropertyChangeRec >   _propChangeRegistry;
+    protected PropertyChangeProcessor                  _propChangeProcessor;
+    protected Thread                                   _propChangeThread;
+
     /**
      * Constructor intended to be used by start_component.
      */
@@ -216,7 +269,9 @@ public abstract class Resource implements ResourceOperations, Runnable { // SUPP
 	this.loggingURL = null;
 	this.loggingMacros=logging.GetDefaultMacros();
 	logging.ResolveHostInfo( this.loggingMacros );
-	
+        
+        this._propChangeRegistry = new Hashtable< String, PropertyChangeRec >();
+        this._propChangeProcessor = new PropertyChangeProcessor(this);
     }
     
     public void addProperty(IProperty prop) {
@@ -344,6 +399,7 @@ public abstract class Resource implements ResourceOperations, Runnable { // SUPP
     public void releaseObject() throws ReleaseError {
         logger.trace("releaseObject()");
         try {
+            this.stopPropertyChangeMonitor();
             this.stop();
         } catch (StopError e1) {
             logger.error("Failed to stop during release", e1);
@@ -465,7 +521,20 @@ public abstract class Resource implements ResourceOperations, Runnable { // SUPP
             for (final IProperty prop : this.propSet.values()) {
                 logger.trace("Querying property: " + prop);
                 if (prop.isQueryable()) {
-                    props.add(new DataType(prop.getId(), prop.toAny()));
+                    if (prop instanceof StructProperty) {
+                        Any structAny = ORB.init().create_any();
+                        final ArrayList<DataType> structProps = new ArrayList<DataType>();
+                        StructDef def = (StructDef)((StructProperty)prop).getValue();
+                        for (final IProperty p : def.getElements()) {
+			    if (p.isSet()) {
+			        structProps.add(new DataType(p.getId(), p.toAny()));
+			    }
+                        }
+			PropertiesHelper.insert(structAny, structProps.toArray(new DataType[structProps.size()]));
+			props.add(new DataType(prop.getId(), structAny));
+                    } else {
+                        props.add(new DataType(prop.getId(), prop.toAny()));
+                    }
                 }
             }
 
@@ -482,7 +551,20 @@ public abstract class Resource implements ResourceOperations, Runnable { // SUPP
             // Look up the property and ensure it is queryable
             final IProperty prop = this.propSet.get(dt.id);
             if ((prop != null) && prop.isQueryable()) {
-                validProperties.add(new DataType(prop.getId(), prop.toAny()));
+                if (prop instanceof StructProperty) {
+		    Any structAny = ORB.init().create_any();
+                    final ArrayList<DataType> structProps = new ArrayList<DataType>();
+                    StructDef def = (StructDef)((StructProperty)prop).getValue();
+                    for (final IProperty p : def.getElements()) {
+			if (p.isSet()) {
+			    structProps.add(new DataType(p.getId(), p.toAny()));
+			}
+                    }
+		    PropertiesHelper.insert(structAny, structProps.toArray(new DataType[structProps.size()]));
+		    validProperties.add(new DataType(prop.getId(), structAny));
+                } else {
+                    validProperties.add(new DataType(prop.getId(), prop.toAny()));
+                }
             } else {
                 invalidProperties.add(dt);
             }
@@ -495,6 +577,206 @@ public abstract class Resource implements ResourceOperations, Runnable { // SUPP
             throw new UnknownProperties(invalidProperties.toArray(new DataType[invalidProperties.size()]));
         }
     }
+
+    /**
+     * {@inheritDoc}
+     */
+    public String registerPropertyListener(final org.omg.CORBA.Object listener, String[] prop_ids, float interval)
+        throws CF.UnknownProperties, CF.InvalidObjectReference
+    {
+        logger.trace("registerPropertyListener - start ");
+        ArrayList<String> pids = new ArrayList<String>();
+        final ArrayList<DataType> invalidProperties = new ArrayList<DataType>();
+	String reg_id;
+        synchronized(this) {
+            // For queries of zero length, return all id/value pairs in propertySet
+            if (prop_ids.length == 0) {
+                logger.trace("registering all properties...");
+                for (final IProperty prop : this.propSet.values()) {
+                    if (prop.isQueryable()) {
+                        logger.debug("..... property:" + prop.getId());
+                        pids.add(prop.getId());
+                    }
+                }
+            }
+            else {
+                // For queries of length > 0, return all requested pairs in propertySet
+                logger.trace("registering fixed property: N:" + prop_ids.length);
+                // Return values for valid queries in the same order as requested
+                for (final String id : prop_ids) {
+                    // Look up the property and ensure it is queryable
+                    final IProperty prop = this.propSet.get(id);
+                    if ((prop != null) && prop.isQueryable()) {
+                        logger.debug("..... property:" + id);
+                        pids.add(prop.getId());
+                    } else {
+                        DataType dt = new DataType(id, null);
+                        invalidProperties.add(dt);
+                    }
+                }
+            }
+
+            if (invalidProperties.size() > 0) {
+                throw new UnknownProperties(invalidProperties.toArray(new DataType[invalidProperties.size()]));
+            }
+
+            logger.trace("PropertyChangeListener: register N properties: " + pids.size());
+            PropertyChangeRec prec = new PropertyChangeRec( listener, 
+                                                            interval,
+                                                            pids,
+                                                            this.propSet );
+            // check if our listener is valid
+            if ( prec.pcl == null ) {
+                logger.error("PropertyChangeListener: caller provided invalid listener interface ");
+                prec = null;
+                throw new CF.InvalidObjectReference();
+            }
+
+            // Add the registry record to our map
+            logger.debug("registerPropertyListener REGISTERING id-s/regid: " + pids.size() + "/" + prec.regId );
+            this._propChangeRegistry.put( prec.regId, prec );
+	    reg_id = prec.regId;
+        
+            // start monitoring thread if not started
+            if ( this._propChangeThread == null )  {
+                logger.debug("registerPropertyListener - First registration ... starting monitoring thread ");
+                this._propChangeProcessor.start();
+                this._propChangeThread = new Thread( this._propChangeProcessor );
+                this._propChangeThread.start();
+            }
+        }
+        logger.trace("registerPropertyListener - end");
+        return reg_id;
+    }
+
+
+    public void unregisterPropertyListener(final String reg_id)
+        throws CF.InvalidIdentifier
+    {
+        logger.trace("unregisterPropertyListener - start ");
+        synchronized(this) {
+            PropertyChangeRec prec = this._propChangeRegistry.get(reg_id);
+            if ( prec != null ) {
+                logger.trace("unregisterPropertyListener - Remove registration " +reg_id );
+                for ( String id : prec.props.keySet() ) {
+                    final IProperty prop = this.propSet.get(id);
+                    if ( prop != null ) {
+                        @SuppressWarnings("unchecked")
+                        final PropertyListener<Object> pcl = prec.props.get(id);
+                        if ( pcl != null )  {
+                            prop.removeObjectListener( pcl );
+                        }
+                    }
+                }
+
+                this._propChangeRegistry.remove(reg_id);
+                logger.debug("unregisterPropertyListener - UNREGISTER  REG-ID:" + reg_id );
+                if ( this._propChangeRegistry.size() == 0 ) {
+                    logger.debug("unregisterPropertyListener - No more registrants... stopping thread ");
+                    this.stopPropertyChangeMonitor();
+                    this._propChangeThread=null;
+                }
+            }
+            else {
+                throw new  CF.InvalidIdentifier();       
+           }
+        }
+        return;
+    }
+
+    public void stopPropertyChangeMonitor() {
+
+        if ( _propChangeProcessor != null )  {
+            _propChangeProcessor.stop();
+            try {
+                if ( _propChangeThread != null ) {
+                    _propChangeThread.join();
+                }
+            }
+            catch( InterruptedException ex ) {
+            }
+         }
+    }
+
+    /**
+     * Perform reporting portion of PropertyChangeListeners that are registered with this resource.
+     * After the requested interval has expired report and changes since the last reporting cycle.
+     * Notifications are sent out via EventChannel or implementors of PropertyChangeListern interface
+     * is not told to release.
+     * 
+     * @return NOOP informs calling thread controller to delay before next cycle
+     */
+    protected int  _propertyChangeServiceFunction() {
+
+        logger.trace("_propertyChangeServiceFunction ... start ");
+        long  delay=0;
+        synchronized(this) {
+            // for each registration record
+            for ( PropertyChangeRec prec : _propChangeRegistry.values() ) {
+
+                // get current time stamp.... and duration since last check
+                long now = System.currentTimeMillis();
+                long dur = prec.expiration - now;
+
+                logger.debug( "Resource::_propertyChangeServiceFunction ... reg_id/interval :" + prec.regId + "/" + prec.reportInterval + "  expiration=" + dur );
+                // determine if time has expired
+		if ( dur <= 0 ) {
+
+		    // For queries of length > 0, return all requested pairs in propertySet
+		    final ArrayList<DataType> rpt_props = new ArrayList<DataType>();
+                    // check all registered properties for changes
+		    for (Map.Entry<String, PCL_Callback> iter : prec.props.entrySet() ) {
+
+			String pid = iter.getKey();
+		        PCL_Callback pcb = iter.getValue();
+                        logger.trace("   Check Property/Set " + pid + "/" + pcb.isSet() );
+                        // check if property changed
+			if ( pcb.isSet() == true ) {
+			    final IProperty prop = this.propSet.get(pid);
+			    if (prop != null) {
+				rpt_props.add(new DataType(pid, prop.toAny()));
+			    } 
+			}
+
+                        // reset change indicator for next reporting cycle
+                        pcb.reset();
+		    }
+
+                    // publish changes to listener
+                    if ( rpt_props.size() > 0 && prec.pcl != null )  {
+                        logger.debug("   Notify PropertyChangeListener ...size/reg :" + rpt_props.size() + "/" + prec.regId );
+                        DataType [] rprops = rpt_props.toArray( new DataType[ rpt_props.size() ] );
+                        if ( prec.pcl.notify( prec, rprops ) != 0 ) {
+                            logger.error("Publishing changes to PropertyChangeListener FAILED, reg_id:" +  prec.regId );
+                            // probably should mark for removal... if last one then stop the thread...
+                        }
+                    }
+                        
+                    // reset time indicator 
+                    prec.expiration =  System.currentTimeMillis() + prec.reportInterval;
+                    dur = prec.reportInterval;
+                }
+
+		
+                // find smallest increment of time to wait
+		if ( delay == 0 ) { delay=dur; }
+		logger.trace( "  Test for delay/duration (millisecs) ... :"  + delay + "/" + dur );
+		if ( dur > 0 )  { delay = Math.min( delay, dur ); }
+		logger.trace( "   Minimum  delay (millisecs) ... :" + delay ); 
+
+	    }  // end synchronized
+
+            if ( delay > 0 ) {
+		logger.debug( "....Set monitoring thread delay (millisecs) ... :"  + delay );
+		_propChangeProcessor.setThreadDelay( delay/1000.0f );
+	    }
+        }
+
+        logger.trace("_propertyChangeServiceFunction ... end ");
+        return ThreadedComponent.NOOP;
+    }
+
+
 
     /**
      * This returns true if the component constructor has run and the component
@@ -524,7 +806,7 @@ public abstract class Resource implements ResourceOperations, Runnable { // SUPP
      * 
      * @return the ORB in use
      */
-    protected org.omg.CORBA.ORB getOrb() {
+    public org.omg.CORBA.ORB getOrb() {
         return this.orb;
     }
 
@@ -533,7 +815,7 @@ public abstract class Resource implements ResourceOperations, Runnable { // SUPP
      * 
      * @return the POA manager
      */
-    protected POA getPoa() {
+    public POA getPoa() {
         return this.poa;
     }
     
@@ -549,9 +831,12 @@ public abstract class Resource implements ResourceOperations, Runnable { // SUPP
         try {
             appReg = ApplicationRegistrarHelper.narrow(obj);
         } catch (Exception e) {}
-        if (appReg!=null) {
-            this._domMgr = new DomainManagerContainer(appReg.domMgr());
-            return;
+        if (appReg != null) {
+            if (appReg.domMgr()!=null) {
+                this._domMgr = new DomainManagerContainer(appReg.domMgr());
+                this.logger.info("setAdditionalParameters domain: " + this._domMgr.getRef().name() );
+                return;
+            }
         }
     }
     
@@ -674,8 +959,8 @@ public abstract class Resource implements ResourceOperations, Runnable { // SUPP
 	if ( logid != null )  {
 	    log = Logger.getLogger( logid );
 	}
-	if ( assignToResource && logger != null ) {
-	    //RESOLVE logger = log;
+	if ( assignToResource && log != null ) {
+	    logger = log;
 	}
 	return log;
     }
@@ -1104,6 +1389,7 @@ public abstract class Resource implements ResourceOperations, Runnable { // SUPP
         // TOBERM Resource.configureLogging(execparams, orb);
 
         NamingContext nameContext = null;
+        NamingContextExt nameContextExt = null;
         ApplicationRegistrar applicationRegistrar = null;
         if (execparams.containsKey("NAMING_CONTEXT_IOR")) {
             try {
@@ -1112,10 +1398,17 @@ public abstract class Resource implements ResourceOperations, Runnable { // SUPP
                     applicationRegistrar = ApplicationRegistrarHelper.narrow(tmp_obj);
                 } catch (Exception e) {}
                 nameContext = NamingContextHelper.narrow(tmp_obj);
+                try {
+                    nameContextExt = NamingContextExtHelper.narrow(tmp_obj);
+                } catch (Exception e) { // the application registrar inherits from naming context, not naming context ext
+                }
             } catch (Exception e) {
                 System.out.println(e);
             }
         }
+
+        // initialize internal resourcelibrary's ORB reference 
+        OrbContext.Init( orb, rootpoa, nameContextExt );
 
         String identifier = null;
         if (execparams.containsKey("COMPONENT_IDENTIFIER")) {
