@@ -43,6 +43,7 @@ import CF.DeviceManager;
 import CF.DomainManager;
 import CF.DomainManagerOperations;
 import CF.ErrorNumberType;
+import CF.EventChannelManager;
 import CF.FileManager;
 import CF.FileManagerHelper;
 import CF.FileManagerPOATie;
@@ -117,12 +118,12 @@ public class DomainManagerImpl extends AbstractResourceImpl implements DomainMan
 	}
 
 	@Override
-	protected POA getPoa() {
+	public POA getPoa() {
 		return super.getPoa();
 	}
 
 	@Override
-	protected ORB getOrb() {
+	public ORB getOrb() {
 		return super.getOrb();
 	}
 
@@ -156,6 +157,12 @@ public class DomainManagerImpl extends AbstractResourceImpl implements DomainMan
 	@Override
 	public ApplicationFactory[] applicationFactories() {
 		return this.applicationFactories.toArray(new ApplicationFactory[this.applicationFactories.size()]);
+	}
+
+	@Override
+	public EventChannelManager eventChannelMgr() {
+		// TODO
+		return null;
 	}
 
 	/**

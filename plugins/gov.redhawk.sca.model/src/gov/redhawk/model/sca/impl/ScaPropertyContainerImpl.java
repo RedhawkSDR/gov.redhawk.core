@@ -53,7 +53,10 @@ import org.eclipse.emf.transaction.RunnableWithResult;
 import org.omg.CORBA.SystemException;
 
 import CF.DataType;
+import CF.InvalidIdentifier;
+import CF.InvalidObjectReference;
 import CF.PropertiesHolder;
+import CF.PropertySet;
 import CF.PropertySetOperations;
 import CF.UnknownProperties;
 import CF.PropertySetPackage.InvalidConfiguration;
@@ -681,6 +684,40 @@ public abstract class ScaPropertyContainerImpl< P extends org.omg.CORBA.Object, 
 		} else {
 			return super.getStatus();
 		}
+		// BEGIN GENERATED CODE
+	}
+
+	/**
+	 * @since 19.1
+	 */
+	@Override
+	public String registerPropertyListener(org.omg.CORBA.Object obj, String[] prop_ids, float interval) throws UnknownProperties, InvalidObjectReference {
+		// END GENERATED CODE
+		Object propertySet = fetchNarrowedObject(null);
+		if (propertySet == null) {
+			throw new IllegalStateException("CORBA Object is Null");
+		}
+		if (!(propertySet instanceof PropertySet)) {
+			throw new IllegalStateException("Object does not support properties");
+		}
+		return ((PropertySet) propertySet).registerPropertyListener(obj, prop_ids, interval);
+		// BEGIN GENERATED CODE
+	}
+
+	/**
+	 * @since 19.1
+	 */
+	@Override
+	public void unregisterPropertyListener(String id) throws InvalidIdentifier {
+		// END GENERATED CODE
+		P propertySet = fetchNarrowedObject(null);
+		if (propertySet == null) {
+			throw new IllegalStateException("CORBA Object is Null");
+		}
+		if (!(propertySet instanceof PropertySet)) {
+			throw new IllegalStateException("Object does not support properties");
+		}
+		((PropertySet) propertySet).unregisterPropertyListener(id);
 		// BEGIN GENERATED CODE
 	}
 

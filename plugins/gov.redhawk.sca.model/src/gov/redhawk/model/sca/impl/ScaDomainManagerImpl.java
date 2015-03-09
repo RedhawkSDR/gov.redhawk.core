@@ -107,6 +107,7 @@ import CF.DeviceAssignmentType;
 import CF.DeviceManager;
 import CF.DomainManager;
 import CF.DomainManagerHelper;
+import CF.EventChannelManager;
 import CF.FileManager;
 import CF.InvalidFileName;
 import CF.InvalidObjectReference;
@@ -1680,6 +1681,20 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 	public String domainManagerProfile() {
 		// END GENERATED CODE
 		return this.getProfile();
+		// BEGIN GENERATED CODE
+	}
+
+	/**
+	 * @since 19.1
+	 */
+	@Override
+	public EventChannelManager eventChannelMgr() {
+		// END GENERATED CODE
+		DomainManager domMgr = fetchNarrowedObject(null);
+		if (domMgr == null) {
+			return null;
+		}
+		return domMgr.eventChannelMgr();
 		// BEGIN GENERATED CODE
 	}
 

@@ -54,4 +54,11 @@ public class AbstractExecutableDeviceImpl extends AbstractLoadableDeviceImpl
 		return 0;
 	}
 
+	@Override
+	public int executeLinked(String name, DataType[] options, DataType[] parameters, String[] deps) throws InvalidState, InvalidFunction, InvalidParameters,
+		InvalidOptions, InvalidFileName, ExecuteFail {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
 }

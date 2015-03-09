@@ -100,6 +100,21 @@ public class ScaExecutableDeviceImpl extends ScaLoadableDeviceImpl<ExecutableDev
 		// BEGIN GENERATED CODE
 	}
 
+	/**
+	 * @since 19.1
+	 */
+	@Override
+	public int executeLinked(final String name, final DataType[] options, final DataType[] parameters, final String[] deps) throws InvalidState,
+	    InvalidFunction, InvalidParameters, InvalidOptions, InvalidFileName, ExecuteFail {
+		// END GENERATED CODE
+		ExecutableDevice device = fetchNarrowedObject(null);
+		if (device == null) {
+			throw new IllegalStateException();
+		}
+		return device.executeLinked(name, options, parameters, deps);
+		// BEGIN GENERATED CODE
+	}
+
 	@Override
 	public void terminate(final int processId) throws InvalidProcess, InvalidState {
 		// END GENERATED CODE

@@ -17,17 +17,21 @@ import gov.redhawk.model.sca.ScaModelPlugin;
 import gov.redhawk.model.sca.ScaPackage;
 import gov.redhawk.model.sca.ScaStructProperty;
 import gov.redhawk.model.sca.ScaStructSequenceProperty;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 import mil.jpeojtrs.sca.prf.ConfigurationKind;
 import mil.jpeojtrs.sca.prf.Simple;
 import mil.jpeojtrs.sca.prf.SimpleRef;
 import mil.jpeojtrs.sca.prf.Struct;
 import mil.jpeojtrs.sca.prf.StructSequence;
 import mil.jpeojtrs.sca.prf.StructValue;
+
+import org.apache.commons.lang.NotImplementedException;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.MultiStatus;
 import org.eclipse.core.runtime.Status;
@@ -47,7 +51,10 @@ import org.jacorb.JacorbUtil;
 import org.omg.CORBA.Any;
 import org.omg.CORBA.AnySeqHelper;
 import org.omg.CORBA.TCKind;
+
 import CF.DataType;
+import CF.InvalidIdentifier;
+import CF.InvalidObjectReference;
 import CF.PropertiesHolder;
 import CF.PropertySetOperations;
 import CF.UnknownProperties;
@@ -459,6 +466,22 @@ public class ScaStructSequencePropertyImpl extends ScaAbstractPropertyImpl<Struc
 			((PropertySetOperations) container).query(configProperties);
 		}
 		// BEGIN GENERATED CODE
+	}
+
+	/**
+	 * @since 19.1
+	 */
+	@Override
+	public String registerPropertyListener(org.omg.CORBA.Object obj, String[] prop_ids, float interval) throws UnknownProperties, InvalidObjectReference {
+		throw new NotImplementedException();
+	}
+
+	/**
+	 * @since 19.1
+	 */
+	@Override
+	public void unregisterPropertyListener(String id) throws InvalidIdentifier {
+		throw new NotImplementedException();
 	}
 
 	/**

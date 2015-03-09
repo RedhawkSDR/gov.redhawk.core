@@ -2039,7 +2039,8 @@ public class ScaWaveformImpl extends ScaPropertyContainerImpl<Application, Softw
 	 * @since 19.1
 	 */
 	@Override
-	public boolean trusted() {
-		return getObj().trusted();
+	public boolean aware() {
+		return getObj().aware();
 	}
+
 } // ScaWaveformImpl

@@ -201,7 +201,8 @@ public class ApplicationImpl extends AbstractResourceImpl implements
 	}
 
 	@Override
-	public boolean trusted() {
+	public boolean aware() {
+		// TODO
 		return true;
 	}
 

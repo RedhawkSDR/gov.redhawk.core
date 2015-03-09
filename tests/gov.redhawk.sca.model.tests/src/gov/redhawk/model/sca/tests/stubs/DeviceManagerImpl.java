@@ -146,12 +146,12 @@ public class DeviceManagerImpl extends AbstractResourceImpl implements DeviceMan
 	}
 
 	@Override
-	protected POA getPoa() {
+	public POA getPoa() {
 		return super.getPoa();
 	}
 	
 	@Override
-	protected ORB getOrb() {
+	public ORB getOrb() {
 		return super.getOrb();
 	}
 
