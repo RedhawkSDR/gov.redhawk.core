@@ -1,0 +1,17 @@
+// Multiple forward declarations
+module MultipleForwardDeclarations {
+  interface A;
+  interface A;
+  interface A {
+    void methodB();
+  };
+};
+
+// Forward declarations after
+module ForwardDeclarationAfterDeclaration {
+  interface A {
+    void methodB();
+  };
+  interface A;
+};
+
