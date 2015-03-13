@@ -1,7 +1,13 @@
 /**
- * REDHAWK HEADER
+ * This file is protected by Copyright.
+ * Please refer to the COPYRIGHT file distributed with this source distribution.
  *
- * Identification: $Revision: 8500 $
+ * This file is part of REDHAWK IDE.
+ *
+ * All rights reserved.  This program and the accompanying materials are made available under
+ * the terms of the Eclipse Public License v1.0 which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html.
+ *
  */
 options
 {
@@ -17,6 +23,8 @@ options
   DEBUG_TOKEN_MANAGER = false;
   COMMON_TOKEN_ACTION = true;
 }
+
+/* The document http://www.omg.org/spec/IDL/3.5 is referenced as [OMGIDL35] */
 
 PARSER_BEGIN(IDLParser)
 package gov.redhawk.eclipsecorba.idl.internal.parser;
@@ -558,12 +566,17 @@ ForwardDcl forward_dcl(Scope parent) :
     retVal.setEndColumn(endColumn);
   }
   {
-    IdlInterfaceDcl interfaceStub = IdlFactory.eINSTANCE.createIdlInterfaceDcl();
-    interfaceStub.setName(retVal.getName());
-    interfaceStub.setForwardDcl(retVal);
+    // Multiple forward declarations are allowed per [OMGIDL35] section 5.8.4
+    // We also allow forward declarations after an actual declaration
+    IdlInterfaceDcl interfaceStub = parent.findInterfaceDclStub(retVal.getName());
+    if (interfaceStub == null) {
+        interfaceStub = IdlFactory.eINSTANCE.createIdlInterfaceDcl();
+        interfaceStub.setName(retVal.getName());
+        interfaceStub.setForwardDcl(retVal);
+        parent.addScope(interfaceStub, token);
+    }
     retVal.setImplementation(interfaceStub);
     retVal.setComment(comment);
-    parent.addScope(interfaceStub, token);
     return retVal;
   }
 }
