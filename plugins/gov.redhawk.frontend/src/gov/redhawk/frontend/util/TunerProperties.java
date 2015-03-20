@@ -313,7 +313,7 @@ public enum TunerProperties {
 			}
 		}
 	}
-	
+
 	public static enum ListenerAllocationProperty {
 		INSTANCE;
 
@@ -351,7 +351,7 @@ public enum TunerProperties {
 			List<Simple> listenerAllocSimpleList = new ArrayList<Simple>();
 			listenerAllocSimpleList.add(ListenerAllocationProperties.EXISTING_ALLOCATION_ID.createSimple());
 			listenerAllocSimpleList.add(ListenerAllocationProperties.LISTENER_ALLOCATION_ID.createSimple());
-			
+
 			return listenerAllocSimpleList;
 		}
 	}
@@ -467,7 +467,8 @@ public enum TunerProperties {
 					PropertyValueType.BOOLEAN,
 					null,
 					"Device control",
-					"True: Has control over the device to make changes\nFalse: Does not need control and can just attach to any currently tasked device that satisfies the parameters (essentually a listener)"),
+					"True: Has control over the device to make changes\n"
+					+ "False: Does not need control and can just attach to any currently tasked device that satisfies the parameters (essentually a listener)"),
 		GROUP_ID(
 				"group_id",
 					PropertyValueType.STRING,
@@ -561,7 +562,7 @@ public enum TunerProperties {
 		public PropertyValueType getType() {
 			return this.type;
 		}
-		
+
 		public Simple createSimple() {
 			Simple simple = PrfFactory.eINSTANCE.createSimple();
 			simple.setId(this.id);

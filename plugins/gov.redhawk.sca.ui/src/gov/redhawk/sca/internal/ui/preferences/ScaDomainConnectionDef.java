@@ -127,30 +127,37 @@ public class ScaDomainConnectionDef {
 
 	@Override
 	public boolean equals(Object obj) {
-		if (this == obj)
+		if (this == obj) {
 			return true;
-		if (obj == null)
+		}
+		if ((obj == null) || (getClass() != obj.getClass())) {
 			return false;
-		if (getClass() != obj.getClass())
-			return false;
+		}
 		ScaDomainConnectionDef other = (ScaDomainConnectionDef) obj;
-		if (connectOnStartup != other.connectOnStartup)
+		if (connectOnStartup != other.connectOnStartup) {
 			return false;
+		}
 		if (domainName == null) {
-			if (other.domainName != null)
+			if (other.domainName != null) {
 				return false;
-		} else if (!domainName.equals(other.domainName))
+			}
+		} else if (!domainName.equals(other.domainName)) {
 			return false;
+		}
 		if (localName == null) {
-			if (other.localName != null)
+			if (other.localName != null) {
 				return false;
-		} else if (!localName.equals(other.localName))
+			}
+		} else if (!localName.equals(other.localName)) {
 			return false;
+		}
 		if (nameServiceInitRef == null) {
-			if (other.nameServiceInitRef != null)
+			if (other.nameServiceInitRef != null) {
 				return false;
-		} else if (!nameServiceInitRef.equals(other.nameServiceInitRef))
+			}
+		} else if (!nameServiceInitRef.equals(other.nameServiceInitRef)) {
 			return false;
+		}
 		return true;
 	}
 
