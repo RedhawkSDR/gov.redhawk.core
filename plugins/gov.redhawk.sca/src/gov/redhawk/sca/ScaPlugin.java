@@ -53,6 +53,7 @@ import org.omg.CosNaming.BindingListHolder;
 import org.omg.CosNaming.BindingType;
 import org.omg.CosNaming.NamingContextExt;
 import org.omg.CosNaming.NamingContextExtHelper;
+import org.omg.CosNaming.NamingContextPackage.NotFound;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.FrameworkUtil;
@@ -487,16 +488,19 @@ public class ScaPlugin extends Plugin {
 	 * 
 	 * @since 7.0
 	 */
-	public static String[] findDomainNamesOnNameServer(final String nameServiceInitRef, IProgressMonitor parentMonitor) throws CoreException,
+	public static String[] findDomainNamesOnNameServer(final String nameServiceInitRef, IProgressMonitor monitor) throws CoreException,
 		InterruptedException {
-		SubMonitor subMonitor = SubMonitor.convert(parentMonitor, "Finding domains on name server...", 5);
+		final int WORK_OTHER = 4;
+		final int WORK_ALL_BINDINGS = 10;
+		final int WORK_EACH_BINDING = 4;
+		final SubMonitor progress = SubMonitor.convert(monitor, "Finding domains on name server...", WORK_OTHER + WORK_ALL_BINDINGS);
 		final ArrayList<String> retVal = new ArrayList<String>();
 
 		final String nameServiceRef = CorbaURIUtil.addDefaultPort(nameServiceInitRef);
 		OrbSession session = OrbSession.createSession();
 		NamingContextExt rootContext = null;
 		try {
-			final org.omg.CORBA.Object rootContextRef = CorbaUtils.string_to_object(session.getOrb(), nameServiceRef, subMonitor.newChild(1));
+			final org.omg.CORBA.Object rootContextRef = CorbaUtils.string_to_object(session.getOrb(), nameServiceRef, progress.newChild(1));
 			rootContext = CorbaUtils.invoke(new Callable<NamingContextExt>() {
 
 				@Override
@@ -504,33 +508,43 @@ public class ScaPlugin extends Plugin {
 					return NamingContextExtHelper.narrow(rootContextRef);
 				}
 
-			}, subMonitor.newChild(1));
+			}, progress.newChild(1));
 
-			final BindingListHolder bl = new BindingListHolder();
 			// Get a listing of root names
+			final BindingListHolder bl = new BindingListHolder();
 			rootContext.list(-1, bl, new BindingIteratorHolder());
+			progress.worked(1);
+
+			final SubMonitor progressBindings = progress.newChild(WORK_ALL_BINDINGS).setWorkRemaining(bl.value.length * WORK_EACH_BINDING);
 			for (Binding b : bl.value) {
 				// Domains are always bound in a context with the same name as the domain
 				if (b.binding_type.value() == BindingType._ncontext) {
 					String guessedDomainName = b.binding_name[0].id + "/" + b.binding_name[0].id;
 					org.omg.CORBA.Object object = null;
 					try {
-						object = CorbaUtils.resolve_str(rootContext, guessedDomainName, subMonitor.newChild(1));
-						if (!CorbaUtils.non_existent(object, subMonitor.newChild(1))
-							&& CorbaUtils.is_a(object, DomainManagerHelper.id(), subMonitor.newChild(1))) {
+						object = CorbaUtils.resolve_str(rootContext, guessedDomainName, progressBindings.newChild(1));
+						if (!CorbaUtils.non_existent(object, progressBindings.newChild(1))
+							&& CorbaUtils.is_a(object, DomainManagerHelper.id(), progressBindings.newChild(1))) {
 							retVal.add(b.binding_name[0].id);
+						}
+					} catch (CoreException ex) {
+						if (!(ex.getCause() instanceof NotFound)) {
+							throw ex;
 						}
 					} finally {
 						ORBUtil.release(object);
 						object = null;
+						progressBindings.worked(1);
 					}
 				}
 			}
 			return retVal.toArray(new String[retVal.size()]);
 		} finally {
-			subMonitor.done();
-			ORBUtil.release(rootContext);
+			if (rootContext != null) {
+				ORBUtil.release(rootContext);
+			}
 			session.dispose();
+			progress.worked(1);
 		}
 	}
 }
