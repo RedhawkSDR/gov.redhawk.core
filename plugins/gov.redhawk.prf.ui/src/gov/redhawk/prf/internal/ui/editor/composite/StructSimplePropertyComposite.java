@@ -36,9 +36,6 @@ public class StructSimplePropertyComposite extends SimplePropertyComposite {
 	protected void createControls(Composite parent, FormToolkit toolkit) {
 		parent.setLayout(FormLayoutFactory.createSectionClientGridLayout(false, NUM_COLUMNS));
 
-		
-		ArrayList<Control> tabList = new ArrayList<Control>();
-		
 		createIDEntryField(toolkit, parent).getText();
 		createNameEntryField(toolkit, parent);
 		createTypeViewer(parent, toolkit);
@@ -46,10 +43,12 @@ public class StructSimplePropertyComposite extends SimplePropertyComposite {
 		createUnitsEntry(parent, toolkit);
 		createEnumerationsViewer(parent, toolkit);
 		createRange(parent, toolkit);
+		createOptionalCombo(parent, toolkit);
 		createDescription(parent, toolkit);
 		
 		toolkit.paintBordersFor(parent);
 		
+		ArrayList<Control> tabList = new ArrayList<Control>();
 		tabList.add(getIdEntry().getText());
 		tabList.add(getNameEntry().getText());
 		tabList.add(getTypeViewer().getControl());
@@ -59,10 +58,10 @@ public class StructSimplePropertyComposite extends SimplePropertyComposite {
 		tabList.add(getRangeButton());
 		tabList.add(getMinText().getText().getParent());
 		tabList.add(getMaxText().getText().getParent());
+		tabList.add(getOptionalCombo());
 		tabList.add(getDescriptionText());
 		
 		parent.setTabList(tabList.toArray(new Control[tabList.size()]));
 	}
-
 
 }

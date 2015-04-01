@@ -75,10 +75,12 @@ import org.eclipse.ui.forms.widgets.FormToolkit;
  *
  */
 public abstract class BasicSimplePropertyComposite extends AbstractPropertyComposite {
+
 	public static final String ENUM_REMOVE_BUTTON_ID = "gov.redhawk.prf.internal.ui.editor.composite.BasicSimplePropertyComposite.enum.removeButton";
 
 	protected static final int NUM_COLUMNS = 3;
 
+	private static final String[] BOOLEAN_ITEMS = new String[] { "", "false", "true" };
 	private static final GridDataFactory FACTORY = GridDataFactory.fillDefaults().span(2, 1).grab(true, false);
 	private static final String DEFAULT_ACTION = "external";
 
@@ -105,6 +107,7 @@ public abstract class BasicSimplePropertyComposite extends AbstractPropertyCompo
 	private FormToolkit toolkit;
 
 	private Combo typeModifier;
+	private Combo optionalCombo;
 
 	/**
 	 * @param parent
@@ -629,4 +632,28 @@ public abstract class BasicSimplePropertyComposite extends AbstractPropertyCompo
 			}
 		} };
 	}
+
+	protected Combo createOptionalCombo(final Composite parent, final FormToolkit toolkit) {
+		// Optional attribute
+		final Label label = toolkit.createLabel(parent, "Optional:");
+		label.setForeground(toolkit.getColors().getColor(IFormColors.TITLE));
+		label.setLayoutData(GridDataFactory.fillDefaults().align(SWT.BEGINNING, SWT.BEGINNING).create());
+		Combo combo = this.optionalCombo = new Combo(parent, SWT.DROP_DOWN | SWT.READ_ONLY);
+		combo.addListener(SWT.MouseVerticalWheel, new Listener() {
+			@Override
+			public void handleEvent(Event event) { // Disable Mouse Wheel Combo Box Control
+				event.doit = false;
+			}
+		});
+		combo.setItems(BOOLEAN_ITEMS);
+		combo.setLayoutData(AbstractPropertyComposite.FACTORY.create());
+		toolkit.adapt(combo);
+
+		return this.optionalCombo;
+	}
+
+	public Combo getOptionalCombo() {
+		return this.optionalCombo;
+	}
+
 }

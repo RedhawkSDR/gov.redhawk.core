@@ -37,7 +37,7 @@ public class SimplePropertyComposite extends BasicSimplePropertyComposite {
 	public SimplePropertyComposite(final Composite parent, final int style, final FormToolkit toolkit) {
 		super(parent, style, toolkit);
 
-		createControls(this, toolkit);		
+		createControls(this, toolkit);
 	}
 	
 	protected void createControls(Composite parent, FormToolkit toolkit) {
@@ -98,6 +98,5 @@ public class SimplePropertyComposite extends BasicSimplePropertyComposite {
 		}
 		super.setEditable(canEdit);
 	}
-
 
 }

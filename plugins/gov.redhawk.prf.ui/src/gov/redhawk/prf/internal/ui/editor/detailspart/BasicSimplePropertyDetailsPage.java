@@ -41,6 +41,7 @@ import org.eclipse.core.databinding.observable.list.ListChangeEvent;
 import org.eclipse.core.databinding.observable.list.WritableList;
 import org.eclipse.core.databinding.observable.value.IObservableValue;
 import org.eclipse.emf.common.command.Command;
+import org.eclipse.emf.databinding.EMFProperties;
 import org.eclipse.emf.databinding.EMFUpdateValueStrategy;
 import org.eclipse.emf.databinding.FeaturePath;
 import org.eclipse.emf.databinding.edit.EMFEditObservables;
@@ -56,6 +57,7 @@ import org.eclipse.jface.databinding.swt.SWTObservables;
 import org.eclipse.jface.databinding.swt.WidgetProperties;
 import org.eclipse.jface.databinding.viewers.ViewersObservables;
 import org.eclipse.jface.viewers.CheckStateChangedEvent;
+import org.eclipse.jface.viewers.ComboViewer;
 import org.eclipse.jface.viewers.ICheckStateListener;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.window.Window;
@@ -178,6 +180,14 @@ public abstract class BasicSimplePropertyDetailsPage extends AbstractPropertyDet
 		if (getComposite().getRangeButton() != null) {
 			retVal.addAll(bindRanges(input, dataBindingContext, domain));
 			addRangeListener();
+		}
+
+		// Optional
+		if (composite.getOptionalCombo() != null) {
+			retVal.add(dataBindingContext.bindValue(SWTObservables.observeSelection(composite.getOptionalCombo()),
+				EMFEditObservables.observeValue(domain, input, this.property.getOptional()),
+				createStringToBoolean(),   // target to model
+				createBooleanToString())); // model to target
 		}
 
 		return retVal;
@@ -485,6 +495,48 @@ public abstract class BasicSimplePropertyDetailsPage extends AbstractPropertyDet
 		if (command != null && command.canExecute()) {
 			execute(command);
 		}
+	}
+
+	private UpdateValueStrategy createStringToBoolean() {
+		EMFUpdateValueStrategy strategy = new EMFUpdateValueStrategy();
+		strategy.setConverter(new Converter(String.class, Boolean.class) {
+
+			@Override
+			public Object convert(Object fromObject) {
+				if (fromObject instanceof String) {
+					String fromObjectStr = ((String) fromObject).trim();
+					if (fromObjectStr.isEmpty()) {
+						return null;
+					}
+					if ("true".equalsIgnoreCase(fromObjectStr)) {
+						return Boolean.TRUE;
+					} else {
+						return Boolean.FALSE;
+					}
+				}
+				return null;
+			}
+		});
+		return strategy;
+	}
+
+	private UpdateValueStrategy createBooleanToString() {
+		EMFUpdateValueStrategy strategy = new EMFUpdateValueStrategy();
+		strategy.setConverter(new Converter(Boolean.class, String.class) {
+
+			@Override
+			public Object convert(Object fromObject) {
+				if (fromObject == null) {
+					return "";
+				}
+				if (fromObject instanceof Boolean) {
+					return ((Boolean) fromObject).toString();
+				} else {
+					return ""; // return empty string for unknown
+				}
+			}
+		});
+		return strategy;
 	}
 
 }

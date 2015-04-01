@@ -209,4 +209,15 @@ public enum Property {
 			throw new UnsupportedOperationException();
 		}
 	}
+	
+	public EStructuralFeature getOptional() {
+		switch (this) {
+		case SIMPLE:
+			return PrfPackage.Literals.SIMPLE__OPTIONAL;
+		case SIMPLE_SEQUENCE:
+			return PrfPackage.Literals.SIMPLE_SEQUENCE__OPTIONAL;
+		default:
+			throw new UnsupportedOperationException();
+		}
+	}
 }

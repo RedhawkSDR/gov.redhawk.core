@@ -87,6 +87,7 @@ public class SimpleSequencePropertyComposite extends BasicSimplePropertyComposit
 		createModeViewer(parent, toolkit);
 		createActionViewer(parent, toolkit);
 		createRange(parent, toolkit);
+		createOptionalCombo(parent, toolkit);
 		createDescription(parent, toolkit);
 		
 		ArrayList<Control> tabList = new ArrayList<Control>();
@@ -101,6 +102,7 @@ public class SimpleSequencePropertyComposite extends BasicSimplePropertyComposit
 		tabList.add(getRangeButton());
 		tabList.add(getMinText().getText().getParent());
 		tabList.add(getMaxText().getText().getParent());
+		tabList.add(getOptionalCombo());
 		tabList.add(getDescriptionText());
 		
 		parent.setTabList(tabList.toArray(new Control[tabList.size()]));
@@ -108,9 +110,6 @@ public class SimpleSequencePropertyComposite extends BasicSimplePropertyComposit
 		toolkit.paintBordersFor(parent);
 	}
 	
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public void dispose() {
 		this.adapterFactory.dispose();
