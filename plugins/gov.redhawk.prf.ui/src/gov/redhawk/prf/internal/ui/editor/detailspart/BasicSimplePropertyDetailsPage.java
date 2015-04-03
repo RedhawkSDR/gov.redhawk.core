@@ -31,6 +31,7 @@ import mil.jpeojtrs.sca.prf.PrfPackage;
 import mil.jpeojtrs.sca.prf.PropertyConfigurationType;
 import mil.jpeojtrs.sca.prf.Range;
 import mil.jpeojtrs.sca.prf.Simple;
+import mil.jpeojtrs.sca.prf.SimpleSequence;	//SUPPRESS CHECKSTYLE INLINE - Used in a Javadoc
 
 import org.eclipse.core.databinding.Binding;
 import org.eclipse.core.databinding.DataBindingContext;
@@ -41,7 +42,6 @@ import org.eclipse.core.databinding.observable.list.ListChangeEvent;
 import org.eclipse.core.databinding.observable.list.WritableList;
 import org.eclipse.core.databinding.observable.value.IObservableValue;
 import org.eclipse.emf.common.command.Command;
-import org.eclipse.emf.databinding.EMFProperties;
 import org.eclipse.emf.databinding.EMFUpdateValueStrategy;
 import org.eclipse.emf.databinding.FeaturePath;
 import org.eclipse.emf.databinding.edit.EMFEditObservables;
@@ -57,7 +57,6 @@ import org.eclipse.jface.databinding.swt.SWTObservables;
 import org.eclipse.jface.databinding.swt.WidgetProperties;
 import org.eclipse.jface.databinding.viewers.ViewersObservables;
 import org.eclipse.jface.viewers.CheckStateChangedEvent;
-import org.eclipse.jface.viewers.ComboViewer;
 import org.eclipse.jface.viewers.ICheckStateListener;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.window.Window;
