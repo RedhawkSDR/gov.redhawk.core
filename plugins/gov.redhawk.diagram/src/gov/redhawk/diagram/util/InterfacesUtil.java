@@ -50,44 +50,46 @@ public class InterfacesUtil {
 	 * @since 6.2
 	 */
 	public static boolean areSuggestedMatch(final EObject source, final EObject target) {
-		
+
 		if (!areCompatible(source, target)) {
 			// If types aren't compatible return false
 			return false;
 		} else if (source instanceof UsesPortStub && target instanceof ProvidesPortStub) {
 			final UsesPortStub usesStub = (UsesPortStub) source;
 			final ProvidesPortStub providesStub = (ProvidesPortStub) target;
-						
+
 			if (source.eContainer() instanceof UsesDeviceStub || target.eContainer() instanceof UsesDeviceStub) {
 				// Connection involves UsesDeviceStub
-				// First perform name comparison, uses port name should exist within provides port name   (ex. "dataFloat_out".contains.("dataFloat")
+				// First perform name comparison, uses port name should exist within provides port name (ex.
+				// "dataFloat_out".contains.("dataFloat")
 				if (usesStub.getName().contains(providesStub.getName()) || providesStub.getName().contains(usesStub.getName())) {
 					return true;
 				}
-				
-				// If there is an underscore(s), check the part preceding the first one (ex. "dataFloat_out" should be "dataFloat");
+
+				// If there is an underscore(s), check the part preceding the first one (ex. "dataFloat_out" should be
+				// "dataFloat");
 				String usesPortName = usesStub.getName();
 				if (usesPortName.contains("_")) {
 					int i = usesPortName.indexOf('_');
 					usesPortName = usesPortName.substring(0, i);
 				}
-								
+
 				String providesPortName = providesStub.getName();
 				if (providesPortName.contains("_")) {
 					int i = providesPortName.indexOf('_');
 					providesPortName = providesPortName.substring(0, i);
 				}
-				
+
 				if (usesPortName.equals(providesPortName)) {
 					return true;
-				} 
+				}
 				return false;
 			}
 		}
 
 		return true;
 	}
-	
+
 	/**
 	 * Determine whether or not two ports are compatible and return a boolean to reflect such
 	 * 
@@ -110,10 +112,9 @@ public class InterfacesUtil {
 
 		return true;
 	}
-	
-	
-	//cases where we perform compatibility checks
-	
+
+	// cases where we perform compatibility checks
+
 	/**
 	 * Return true if using component to component connection points
 	 * @param source
@@ -127,7 +128,7 @@ public class InterfacesUtil {
 		}
 		return false;
 	}
-	
+
 	/**
 	 * Return true if component to component connection points are compatible
 	 * @param source
@@ -139,49 +140,49 @@ public class InterfacesUtil {
 		final UsesPortStub usesStub = (UsesPortStub) source;
 		if (target instanceof ProvidesPortStub) {
 			final ProvidesPortStub providesStub = (ProvidesPortStub) target;
-			
+
 			if (source.eContainer() instanceof ComponentInstantiation && providesStub.getProvides() != null && usesStub.getUses() != null) {
-				//connection between components provides and uses stubs
+				// connection between components provides and uses stubs
 				if (providesStub.getProvides().getInterface() != null && usesStub.getUses().getInterface() != null) {
 					return providesStub.getProvides().getInterface().isInstance(usesStub.getUses().getInterface());
 				}
-			} else if (target instanceof ComponentSupportedInterfaceStub && usesStub.getUses() != null) {
-				final ComponentSupportedInterfaceStub compStub = (ComponentSupportedInterfaceStub) target;
+			}
+		} else if (target instanceof ComponentSupportedInterfaceStub && usesStub.getUses() != null) {
+			final ComponentSupportedInterfaceStub compStub = (ComponentSupportedInterfaceStub) target;
 
-				//target contains is Component
-				final ComponentInstantiation comp = (ComponentInstantiation) compStub.eContainer();
+			// target contains is Component
+			final ComponentInstantiation comp = (ComponentInstantiation) compStub.eContainer();
 
-				final List<SupportsInterface> supportsInterfaces = ScaEcoreUtils.getFeature(comp, InterfacesUtil.SUPPORT_PATH);
+			final List<SupportsInterface> supportsInterfaces = ScaEcoreUtils.getFeature(comp, InterfacesUtil.SUPPORT_PATH);
 
-				if (supportsInterfaces != null) {
-					boolean match = false;
-					for (final SupportsInterface si : supportsInterfaces) {
-						if (si.getInterface() != null && si.getInterface().isInstance(usesStub.getUses().getInterface())) {
-							match = true;
-							break;
-						}
+			if (supportsInterfaces != null) {
+				boolean match = false;
+				for (final SupportsInterface si : supportsInterfaces) {
+					if (si.getInterface() != null && si.getInterface().isInstance(usesStub.getUses().getInterface())) {
+						match = true;
+						break;
 					}
-					return match;
 				}
+				return match;
 			}
 		}
-		
+
 		return true;
 	}
-	
+
 	/**
 	 * Returns true if component is connected to uses device's component supported interface stub
 	 * @since 6.2
 	 */
 	public static boolean isComponentToUsesDeviceComponentSupportedInterfaceStub(final EObject source, final EObject target) {
 		if (source.eContainer() instanceof ComponentInstantiation && target.eContainer() instanceof UsesDeviceStub
-				&& target instanceof ComponentSupportedInterfaceStub) {
+			&& target instanceof ComponentSupportedInterfaceStub) {
 			return true;
 		}
-		
+
 		return false;
 	}
-	
+
 	/**
 	 * Return true if component to uses device's component supported interface stub connection points are compatible
 	 * @param source
@@ -191,31 +192,30 @@ public class InterfacesUtil {
 	 */
 	public static boolean areComponentToUsesDeviceComponentSupportedInterfaceStubCompatible(final EObject source, final EObject target) {
 		if (!(source instanceof UsesPortStub) || ((UsesPortStub) source).getUses() == null || ((UsesPortStub) source).getUses().getInterface() == null) {
-			//something wrong with usesport stub
+			// something wrong with usesport stub
 			return false;
 		}
-		
+
 		if (!"IDL:CF/ExecutableDevice:1.0".equals(((UsesPortStub) source).getUses().getInterface().getRepid())) {
 			return false;
 		}
-		
+
 		return true;
 	}
-	
-	
+
 	/**
 	 * Return true if component is connected to FindBy's component supported interface stub
 	 * @since 6.2
 	 */
 	public static boolean isComponentToFindByComponentSupportedInterfaceStub(final EObject source, final EObject target) {
 		if (source.eContainer() instanceof ComponentInstantiation && target.eContainer() instanceof FindByStub
-				&& target instanceof ComponentSupportedInterfaceStub) {
+			&& target instanceof ComponentSupportedInterfaceStub) {
 			return true;
 		}
-		
+
 		return false;
 	}
-	
+
 	/**
 	 * Return true if component to findby connection points are compatible
 	 * @param source
@@ -225,20 +225,20 @@ public class InterfacesUtil {
 	 */
 	public static boolean areComponentToFindByComponentSupportedInterfaceStubCompatible(final EObject source, final EObject target) {
 		if (!(source instanceof UsesPortStub) || ((UsesPortStub) source).getUses() == null || ((UsesPortStub) source).getUses().getInterface() == null) {
-			//something wrong with usesport stub
+			// something wrong with usesport stub
 			return false;
 		}
-		
+
 		FindByStub findByStub = (FindByStub) target.eContainer();
-		
-		if (FindByStubUtil.isFindByStubDomainManager(findByStub) 
-				&& !"IDL:CF/DomainManager:1.0".equals(((UsesPortStub) source).getUses().getInterface().getRepid())) {
+
+		if (FindByStubUtil.isFindByStubDomainManager(findByStub)
+			&& !"IDL:CF/DomainManager:1.0".equals(((UsesPortStub) source).getUses().getInterface().getRepid())) {
 			return false;
-		} else if (FindByStubUtil.isFindByStubFileManager(findByStub) 
-				&& !"IDL:CF/FileManager:1.0".equals(((UsesPortStub) source).getUses().getInterface().getRepid())) {
+		} else if (FindByStubUtil.isFindByStubFileManager(findByStub)
+			&& !"IDL:CF/FileManager:1.0".equals(((UsesPortStub) source).getUses().getInterface().getRepid())) {
 			return false;
-		} else if (FindByStubUtil.isFindByStubEventChannel(findByStub) 
-				&& !"IDL:omg.org/CosEventChannelAdmin/EventChannel:1.0".equals(((UsesPortStub) source).getUses().getInterface().getRepid())) {
+		} else if (FindByStubUtil.isFindByStubEventChannel(findByStub)
+			&& !"IDL:omg.org/CosEventChannelAdmin/EventChannel:1.0".equals(((UsesPortStub) source).getUses().getInterface().getRepid())) {
 			return false;
 		} else if (FindByStubUtil.isFindByStubService(findByStub)) {
 			if (findByStub.getDomainFinder().getType().equals(DomainFinderType.SERVICETYPE)) {
@@ -249,14 +249,12 @@ public class InterfacesUtil {
 				}
 			}
 		}
-		
+
 		return true;
 	}
 
-	
-
 	private static final EStructuralFeature[] SUPPORT_PATH = new EStructuralFeature[] { PartitioningPackage.Literals.COMPONENT_INSTANTIATION__PLACEMENT,
-	        PartitioningPackage.Literals.COMPONENT_PLACEMENT__COMPONENT_FILE_REF, PartitioningPackage.Literals.COMPONENT_FILE_REF__FILE,
-	        PartitioningPackage.Literals.COMPONENT_FILE__SOFT_PKG, SpdPackage.Literals.SOFT_PKG__DESCRIPTOR, SpdPackage.Literals.DESCRIPTOR__COMPONENT,
-	        ScdPackage.Literals.SOFTWARE_COMPONENT__COMPONENT_FEATURES, ScdPackage.Literals.COMPONENT_FEATURES__SUPPORTS_INTERFACE };
+		PartitioningPackage.Literals.COMPONENT_PLACEMENT__COMPONENT_FILE_REF, PartitioningPackage.Literals.COMPONENT_FILE_REF__FILE,
+		PartitioningPackage.Literals.COMPONENT_FILE__SOFT_PKG, SpdPackage.Literals.SOFT_PKG__DESCRIPTOR, SpdPackage.Literals.DESCRIPTOR__COMPONENT,
+		ScdPackage.Literals.SOFTWARE_COMPONENT__COMPONENT_FEATURES, ScdPackage.Literals.COMPONENT_FEATURES__SUPPORTS_INTERFACE };
 }
