@@ -14,7 +14,8 @@
  * or implied.  See the License for the specific language governing
  * permissions and limitations under the License.
  *
- * This file has been modified by REDHAWK to remove JSR-305 annotations.
+ * This file has been modified by REDHAWK to remove JSR-305 annotations,
+ * and to fix a resource leak.
  */
 package org.anarres.cpp;
 
@@ -364,9 +365,10 @@ public class Preprocessor implements Closeable {
      */
     public void addMacro(String name, String value)
             throws LexerException {
+        StringLexerSource s = null;
         try {
             Macro m = new Macro(name);
-            StringLexerSource s = new StringLexerSource(value);
+            s = new StringLexerSource(value);
             for (;;) {
                 Token tok = s.token();
                 if (tok.getType() == EOF)
@@ -376,6 +378,14 @@ public class Preprocessor implements Closeable {
             addMacro(m);
         } catch (IOException e) {
             throw new LexerException(e);
+        } finally {
+            try {
+                if (s != null) {
+                    s.close();
+                }
+            } catch (IOException e) {
+                // PASS
+            }
         }
     }
 
