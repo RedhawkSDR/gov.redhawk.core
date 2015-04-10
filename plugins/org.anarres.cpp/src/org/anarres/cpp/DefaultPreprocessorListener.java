@@ -15,9 +15,9 @@ package org.anarres.cpp;
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
  * or implied. See the License for the specific language governing
  * permissions and limitations under the License.
+ *
+ * This file has been modified by REDHAWK to remove JSR-305 annotations.
  */
-import javax.annotation.Nonnegative;
-import javax.annotation.Nonnull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -44,17 +44,15 @@ public class DefaultPreprocessorListener implements PreprocessorListener {
         warnings = 0;
     }
 
-    @Nonnegative
     public int getErrors() {
         return errors;
     }
 
-    @Nonnegative
     public int getWarnings() {
         return warnings;
     }
 
-    protected void print(@Nonnull String msg) {
+    protected void print(String msg) {
         LOG.info(msg);
     }
 

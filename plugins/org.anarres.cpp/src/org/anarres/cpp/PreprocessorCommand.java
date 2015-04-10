@@ -2,11 +2,10 @@
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
+ *
+ * This file has been modified by REDHAWK to remove JSR-305 annotations.
  */
 package org.anarres.cpp;
-
-import javax.annotation.CheckForNull;
-import javax.annotation.Nonnull;
 
 /**
  *
@@ -34,8 +33,7 @@ public enum PreprocessorCommand {
         this.text = text;
     }
 
-    @CheckForNull
-    public static PreprocessorCommand forText(@Nonnull String text) {
+    public static PreprocessorCommand forText(String text) {
         for (PreprocessorCommand ppcmd : PreprocessorCommand.values())
             if (ppcmd.text.equals(text))
                 return ppcmd;

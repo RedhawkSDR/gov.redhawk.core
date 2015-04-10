@@ -13,15 +13,14 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
  * or implied.  See the License for the specific language governing
  * permissions and limitations under the License.
+ *
+ * This file has been modified by REDHAWK to remove JSR-305 annotations.
  */
 package org.anarres.cpp;
 
 import java.io.Closeable;
 import java.io.IOException;
 import java.util.Iterator;
-import javax.annotation.CheckForNull;
-import javax.annotation.Nonnegative;
-import javax.annotation.Nonnull;
 import static org.anarres.cpp.Token.CCOMMENT;
 import static org.anarres.cpp.Token.CPPCOMMENT;
 import static org.anarres.cpp.Token.EOF;
@@ -133,7 +132,6 @@ public abstract class Source implements Iterable<Token>, Closeable {
      * it will ask the parent Source, and so forth recursively.
      * If no Source on the stack is a FileLexerSource, returns null.
      */
-    @CheckForNull
     public String getPath() {
         Source parent = getParent();
         if (parent != null)
@@ -144,7 +142,6 @@ public abstract class Source implements Iterable<Token>, Closeable {
     /**
      * Returns the human-readable name of the current Source.
      */
-    @CheckForNull
     public String getName() {
         Source parent = getParent();
         if (parent != null)
@@ -155,7 +152,6 @@ public abstract class Source implements Iterable<Token>, Closeable {
     /**
      * Returns the current line number within this Source.
      */
-    @Nonnegative
     public int getLine() {
         Source parent = getParent();
         if (parent == null)
@@ -217,7 +213,6 @@ public abstract class Source implements Iterable<Token>, Closeable {
      *
      * @see Token
      */
-    @Nonnull
     public abstract Token token()
             throws IOException,
             LexerException;
@@ -237,7 +232,6 @@ public abstract class Source implements Iterable<Token>, Closeable {
      *	remainder of the line.
      * @return the NL token.
      */
-    @Nonnull
     public Token skipline(boolean white)
             throws IOException,
             LexerException {

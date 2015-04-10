@@ -13,10 +13,10 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
  * or implied.  See the License for the specific language governing
  * permissions and limitations under the License.
+ *
+ * This file has been modified by REDHAWK to remove JSR-305 annotations.
  */
 package org.anarres.cpp;
-
-import javax.annotation.Nonnull;
 
 /**
  * A handler for preprocessor events, primarily errors and warnings.
@@ -34,8 +34,8 @@ public interface PreprocessorListener {
      * implementation. It may simply record the error message, or
      * it may throw an exception.
      */
-    public void handleWarning(@Nonnull Source source, int line, int column,
-            @Nonnull String msg)
+    public void handleWarning(Source source, int line, int column,
+            String msg)
             throws LexerException;
 
     /**
@@ -45,10 +45,10 @@ public interface PreprocessorListener {
      * implementation. It may simply record the error message, or
      * it may throw an exception.
      */
-    public void handleError(@Nonnull Source source, int line, int column,
-            @Nonnull String msg)
+    public void handleError(Source source, int line, int column,
+            String msg)
             throws LexerException;
 
-    public void handleSourceChange(@Nonnull Source source, @Nonnull String event);
+    public void handleSourceChange(Source source, String event);
 
 }

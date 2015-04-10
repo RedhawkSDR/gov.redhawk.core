@@ -13,19 +13,17 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
  * or implied.  See the License for the specific language governing
  * permissions and limitations under the License.
+ *
+ * This file has been modified by REDHAWK to remove JSR-305 annotations.
  */
 package org.anarres.cpp;
-
-import javax.annotation.Nonnull;
 
 /**
  * An extremely lightweight virtual file system interface.
  */
 public interface VirtualFileSystem {
 
-    @Nonnull
-    public VirtualFile getFile(@Nonnull String path);
+    public VirtualFile getFile(String path);
 
-    @Nonnull
-    public VirtualFile getFile(@Nonnull String dir, @Nonnull String name);
+    public VirtualFile getFile(String dir, String name);
 }

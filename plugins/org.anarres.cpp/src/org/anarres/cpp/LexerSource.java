@@ -13,12 +13,13 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
  * or implied.  See the License for the specific language governing
  * permissions and limitations under the License.
+ *
+ * This file has been modified by REDHAWK to remove JSR-305 annotations.
  */
 package org.anarres.cpp;
 
 import java.io.IOException;
 import java.io.Reader;
-import javax.annotation.Nonnull;
 import static org.anarres.cpp.Token.*;
 
 /** Does not handle digraphs. */
@@ -239,7 +240,6 @@ public class LexerSource extends Source {
     }
 
     /* Consumes the rest of the current line into an invalid. */
-    @Nonnull
     private Token invalid(StringBuilder text, String reason)
             throws IOException,
             LexerException {
@@ -252,7 +252,6 @@ public class LexerSource extends Source {
         return new Token(INVALID, text.toString(), reason);
     }
 
-    @Nonnull
     private Token ccomment()
             throws IOException,
             LexerException {
@@ -277,7 +276,6 @@ public class LexerSource extends Source {
         return new Token(CCOMMENT, text.toString());
     }
 
-    @Nonnull
     private Token cppcomment()
             throws IOException,
             LexerException {
@@ -369,7 +367,6 @@ public class LexerSource extends Source {
         }
     }
 
-    @Nonnull
     private Token character()
             throws IOException,
             LexerException {
@@ -416,7 +413,6 @@ public class LexerSource extends Source {
                 text.toString(), Character.valueOf((char) d));
     }
 
-    @Nonnull
     private Token string(char open, char close)
             throws IOException,
             LexerException {
@@ -470,7 +466,6 @@ public class LexerSource extends Source {
         }
     }
 
-    @Nonnull
     private Token _number_suffix(StringBuilder text, NumericValue value, int d)
             throws IOException,
             LexerException {
@@ -534,7 +529,6 @@ public class LexerSource extends Source {
     }
 
     /* Either a decimal part, or a hex exponent. */
-    @Nonnull
     private String _number_part(StringBuilder text, int base, boolean sign)
             throws IOException,
             LexerException {
@@ -555,7 +549,6 @@ public class LexerSource extends Source {
     }
 
     /* We do not know whether know the first digit is valid. */
-    @Nonnull
     private Token number_hex(char x)
             throws IOException,
             LexerException {
@@ -580,7 +573,7 @@ public class LexerSource extends Source {
         return _number_suffix(text, value, d);
     }
 
-    private static boolean is_octal(@Nonnull String text) {
+    private static boolean is_octal(String text) {
         if (!text.startsWith("0"))
             return false;
         for (int i = 0; i < text.length(); i++)
@@ -591,7 +584,6 @@ public class LexerSource extends Source {
 
     /* We know we have at least one valid digit, but empty is not
      * fine. */
-    @Nonnull
     private Token number_decimal()
             throws IOException,
             LexerException {
@@ -661,7 +653,6 @@ public class LexerSource extends Source {
      * floating constants when FLT_RADIX is a power of 2, the result is
      * correctly rounded.
      */
-    @Nonnull
     private Token number()
             throws IOException,
             LexerException {
@@ -685,7 +676,6 @@ public class LexerSource extends Source {
         return tok;
     }
 
-    @Nonnull
     private Token identifier(int c)
             throws IOException,
             LexerException {
@@ -704,7 +694,6 @@ public class LexerSource extends Source {
         return new Token(IDENTIFIER, text.toString());
     }
 
-    @Nonnull
     private Token whitespace(int c)
             throws IOException,
             LexerException {
@@ -726,7 +715,6 @@ public class LexerSource extends Source {
     }
 
     /* No token processed by cond() contains a newline. */
-    @Nonnull
     private Token cond(char c, int yes, int no)
             throws IOException,
             LexerException {

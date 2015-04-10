@@ -13,13 +13,14 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
  * or implied.  See the License for the specific language governing
  * permissions and limitations under the License.
+ *
+ * This file has been modified by REDHAWK to remove JSR-305 annotations.
  */
 package org.anarres.cpp;
 
 import java.io.IOException;
 import java.util.Iterator;
 import java.util.List;
-import javax.annotation.Nonnull;
 import static org.anarres.cpp.Token.*;
 
 /* This source should always be active, since we don't expand macros
@@ -50,7 +51,7 @@ import static org.anarres.cpp.Token.*;
     }
 
     /* XXX Called from Preprocessor [ugly]. */
-    /* pp */ static void escape(@Nonnull StringBuilder buf, @Nonnull CharSequence cs) {
+    /* pp */ static void escape(StringBuilder buf, CharSequence cs) {
         if (buf == null)
             throw new NullPointerException("Buffer was null.");
         if (cs == null)

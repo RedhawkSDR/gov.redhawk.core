@@ -2,14 +2,13 @@
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
+ *
+ * This file has been modified by REDHAWK to remove JSR-305 annotations.
  */
 package org.anarres.cpp;
 
 import java.util.ArrayList;
 import java.util.List;
-import javax.annotation.CheckForNull;
-import javax.annotation.Nonnegative;
-import javax.annotation.Nonnull;
 import static org.anarres.cpp.Token.*;
 
 /**
@@ -20,18 +19,17 @@ import static org.anarres.cpp.Token.*;
 
     private static final List<TokenType> TYPES = new ArrayList<TokenType>();
 
-    private static void addTokenType(@Nonnegative int type, @Nonnull String name, @CheckForNull String text) {
+    private static void addTokenType(int type, String name, String text) {
         while (TYPES.size() <= type)
             TYPES.add(null);
         TYPES.set(type, new TokenType(name, text));
     }
 
-    private static void addTokenType(@Nonnegative int type, @Nonnull String name) {
+    private static void addTokenType(int type, String name) {
         addTokenType(type, name, null);
     }
 
-    @CheckForNull
-    public static TokenType getTokenType(@Nonnegative int type) {
+    public static TokenType getTokenType(int type) {
         try {
             return TYPES.get(type);
         } catch (IndexOutOfBoundsException e) {
@@ -39,8 +37,7 @@ import static org.anarres.cpp.Token.*;
         }
     }
 
-    @Nonnull
-    public static String getTokenName(@Nonnegative int type) {
+    public static String getTokenName(int type) {
         if (type < 0)
             return "Invalid" + type;
         TokenType tokenType = getTokenType(type);
@@ -49,8 +46,7 @@ import static org.anarres.cpp.Token.*;
         return tokenType.getName();
     }
 
-    @CheckForNull
-    public static String getTokenText(@Nonnegative int type) {
+    public static String getTokenText(int type) {
         TokenType tokenType = getTokenType(type);
         if (tokenType == null)
             return null;
@@ -111,17 +107,15 @@ import static org.anarres.cpp.Token.*;
     private final String name;
     private final String text;
 
-    /* pp */ TokenType(@Nonnull String name, @CheckForNull String text) {
+    /* pp */ TokenType(String name, String text) {
         this.name = name;
         this.text = text;
     }
 
-    @Nonnull
     public String getName() {
         return name;
     }
 
-    @CheckForNull
     public String getText() {
         return text;
     }

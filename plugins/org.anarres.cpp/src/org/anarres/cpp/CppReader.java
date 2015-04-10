@@ -13,13 +13,14 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
  * or implied.  See the License for the specific language governing
  * permissions and limitations under the License.
+ *
+ * This file has been modified by REDHAWK to remove JSR-305 annotations.
  */
 package org.anarres.cpp;
 
 import java.io.Closeable;
 import java.io.IOException;
 import java.io.Reader;
-import javax.annotation.Nonnull;
 import static org.anarres.cpp.Token.CCOMMENT;
 import static org.anarres.cpp.Token.CPPCOMMENT;
 import static org.anarres.cpp.Token.EOF;
@@ -39,7 +40,7 @@ public class CppReader extends Reader implements Closeable {
     private String token;
     private int idx;
 
-    public CppReader(@Nonnull final Reader r) {
+    public CppReader(final Reader r) {
         cpp = new Preprocessor(new LexerSource(r, true) {
             @Override
             public String getName() {
@@ -51,7 +52,7 @@ public class CppReader extends Reader implements Closeable {
         idx = 0;
     }
 
-    public CppReader(@Nonnull Preprocessor p) {
+    public CppReader(Preprocessor p) {
         cpp = p;
         token = "";
         idx = 0;
@@ -60,7 +61,6 @@ public class CppReader extends Reader implements Closeable {
     /**
      * Returns the Preprocessor used by this CppReader.
      */
-    @Nonnull
     public Preprocessor getPreprocessor() {
         return cpp;
     }
@@ -70,7 +70,7 @@ public class CppReader extends Reader implements Closeable {
      *
      * This is a convnience method.
      */
-    public void addMacro(@Nonnull String name)
+    public void addMacro(String name)
             throws LexerException {
         cpp.addMacro(name);
     }
@@ -80,7 +80,7 @@ public class CppReader extends Reader implements Closeable {
      *
      * This is a convnience method.
      */
-    public void addMacro(@Nonnull String name, @Nonnull String value)
+    public void addMacro(String name, String value)
             throws LexerException {
         cpp.addMacro(name, value);
     }

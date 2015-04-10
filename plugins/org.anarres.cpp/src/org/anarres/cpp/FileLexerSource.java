@@ -13,6 +13,8 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
  * or implied.  See the License for the specific language governing
  * permissions and limitations under the License.
+ *
+ * This file has been modified by REDHAWK to remove JSR-305 annotations.
  */
 package org.anarres.cpp;
 
@@ -20,7 +22,6 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
-import javax.annotation.Nonnull;
 
 /**
  * A {@link Source} which lexes a file.
@@ -39,7 +40,7 @@ public class FileLexerSource extends LexerSource {
      *
      * Preprocessor directives are honoured within the file.
      */
-    public FileLexerSource(@Nonnull File file, String path)
+    public FileLexerSource(File file, String path)
             throws IOException {
         super(
                 new BufferedReader(
@@ -54,17 +55,16 @@ public class FileLexerSource extends LexerSource {
         this.path = path;
     }
 
-    public FileLexerSource(@Nonnull File file)
+    public FileLexerSource(File file)
             throws IOException {
         this(file, file.getPath());
     }
 
-    public FileLexerSource(@Nonnull String path)
+    public FileLexerSource(String path)
             throws IOException {
         this(new File(path), path);
     }
 
-    @Nonnull
     public File getFile() {
         return file;
     }

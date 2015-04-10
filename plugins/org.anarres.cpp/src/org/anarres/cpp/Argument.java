@@ -13,6 +13,8 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
  * or implied.  See the License for the specific language governing
  * permissions and limitations under the License.
+ *
+ * This file has been modified by REDHAWK to remove JSR-305 annotations.
  */
 package org.anarres.cpp;
 
@@ -20,7 +22,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import javax.annotation.Nonnull;
 
 /**
  * A macro argument.
@@ -35,11 +36,11 @@ import javax.annotation.Nonnull;
         this.expansion = null;
     }
 
-    public void addToken(@Nonnull Token tok) {
+    public void addToken(Token tok) {
         add(tok);
     }
 
-    /* pp */ void expand(@Nonnull Preprocessor p)
+    /* pp */ void expand(Preprocessor p)
             throws IOException,
             LexerException {
         /* Cache expansion. */
@@ -49,7 +50,6 @@ import javax.annotation.Nonnull;
         }
     }
 
-    @Nonnull
     public Iterator<Token> expansion() {
         return expansion.iterator();
     }

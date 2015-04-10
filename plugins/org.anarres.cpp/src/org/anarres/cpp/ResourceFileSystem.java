@@ -2,6 +2,8 @@
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
+ *
+ * This file has been modified by REDHAWK to remove JSR-305 annotations.
  */
 package org.anarres.cpp;
 
@@ -9,7 +11,6 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import javax.annotation.Nonnull;
 
 /**
  *
@@ -19,7 +20,7 @@ public class ResourceFileSystem implements VirtualFileSystem {
 
     private final ClassLoader loader;
 
-    public ResourceFileSystem(@Nonnull ClassLoader loader) {
+    public ResourceFileSystem(ClassLoader loader) {
         this.loader = loader;
     }
 

@@ -13,15 +13,13 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
  * or implied.  See the License for the specific language governing
  * permissions and limitations under the License.
+ *
+ * This file has been modified by REDHAWK to remove JSR-305 annotations.
  */
 package org.anarres.cpp;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
-import javax.annotation.CheckForNull;
-import javax.annotation.CheckForSigned;
-import javax.annotation.Nonnegative;
-import javax.annotation.Nonnull;
 
 public class NumericValue extends Number {
 
@@ -46,17 +44,14 @@ public class NumericValue extends Number {
         this.integer = integer;
     }
 
-    @Nonnegative
     public int getBase() {
         return base;
     }
 
-    @Nonnull
     public String getIntegerPart() {
         return integer;
     }
 
-    @CheckForNull
     public String getFractionalPart() {
         return fraction;
     }
@@ -65,12 +60,10 @@ public class NumericValue extends Number {
         this.fraction = fraction;
     }
 
-    @CheckForSigned
     public int getExponentBase() {
         return expbase;
     }
 
-    @CheckForNull
     public String getExponent() {
         return exponent;
     }
@@ -93,7 +86,6 @@ public class NumericValue extends Number {
      * precision numbers is nontrivial, and this routine gets it wrong
      * in many important cases.
      */
-    @Nonnull
     public BigDecimal toBigDecimal() {
         int scale = 0;
         String text = getIntegerPart();
@@ -109,7 +101,6 @@ public class NumericValue extends Number {
         return new BigDecimal(unscaled, scale);
     }
 
-    @Nonnull
     public Number toJavaLangNumber() {
         int flags = getFlags();
         if ((flags & F_DOUBLE) != 0)

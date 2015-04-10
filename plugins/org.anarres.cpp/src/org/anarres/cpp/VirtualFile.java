@@ -13,12 +13,12 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
  * or implied.  See the License for the specific language governing
  * permissions and limitations under the License.
+ *
+ * This file has been modified by REDHAWK to remove JSR-305 annotations.
  */
 package org.anarres.cpp;
 
 import java.io.IOException;
-import javax.annotation.CheckForNull;
-import javax.annotation.Nonnull;
 
 /**
  * An extremely lightweight virtual file interface.
@@ -28,18 +28,13 @@ public interface VirtualFile {
     // public String getParent();
     public boolean isFile();
 
-    @Nonnull
     public String getPath();
 
-    @Nonnull
     public String getName();
 
-    @CheckForNull
     public VirtualFile getParentFile();
 
-    @Nonnull
     public VirtualFile getChildFile(String name);
 
-    @Nonnull
     public Source getSource() throws IOException;
 }
