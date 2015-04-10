@@ -2,10 +2,11 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: %Bundle-Name
 Bundle-SymbolicName: org.anarres.cpp
-Bundle-Version: 1.0.0.qualifier
-Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Bundle-Version: 1.4.7.qualifier
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Bundle-ClassPath: lib/gnu.getopt.jar,
  .
 Export-Package: org.anarres.cpp
-Require-Bundle: org.apache.ant;bundle-version="1.7.1";resolution:=optional
+Require-Bundle: org.apache.ant;bundle-version="1.7.1";resolution:=optional,
+ org.slf4j.api;bundle-version="1.7.2"
 Bundle-Vendor: %Bundle-Vendor

@@ -14,19 +14,19 @@
  * or implied.  See the License for the specific language governing
  * permissions and limitations under the License.
  */
-
 package org.anarres.cpp;
 
 /**
  * Warning classes which may optionally be emitted by the Preprocessor.
  */
 public enum Warning {
-	TRIGRAPHS,
-	// TRADITIONAL,
-	IMPORT,
-	UNDEF,
-	UNUSED_MACROS,
-	ENDIF_LABELS,
-	ERROR,
-	// SYSTEM_HEADERS
+
+    TRIGRAPHS,
+    // TRADITIONAL,
+    IMPORT,
+    UNDEF,
+    UNUSED_MACROS,
+    ENDIF_LABELS,
+    ERROR,
+    // SYSTEM_HEADERS
 }

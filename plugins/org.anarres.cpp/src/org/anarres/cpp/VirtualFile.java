@@ -14,20 +14,32 @@
  * or implied.  See the License for the specific language governing
  * permissions and limitations under the License.
  */
-
 package org.anarres.cpp;
 
 import java.io.IOException;
+import javax.annotation.CheckForNull;
+import javax.annotation.Nonnull;
 
 /**
  * An extremely lightweight virtual file interface.
  */
 public interface VirtualFile {
-	// public String getParent();
-	public boolean isFile();
-	public String getPath();
-	public String getName();
-	public VirtualFile getParentFile();
-	public VirtualFile getChildFile(String name);
-	public Source getSource() throws IOException;
+
+    // public String getParent();
+    public boolean isFile();
+
+    @Nonnull
+    public String getPath();
+
+    @Nonnull
+    public String getName();
+
+    @CheckForNull
+    public VirtualFile getParentFile();
+
+    @Nonnull
+    public VirtualFile getChildFile(String name);
+
+    @Nonnull
+    public Source getSource() throws IOException;
 }

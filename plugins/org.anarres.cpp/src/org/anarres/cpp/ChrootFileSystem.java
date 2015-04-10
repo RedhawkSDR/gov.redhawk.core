@@ -14,7 +14,6 @@
  * or implied.  See the License for the specific language governing
  * permissions and limitations under the License.
  */
-
 package org.anarres.cpp;
 
 import java.io.File;
@@ -25,55 +24,61 @@ import java.io.IOException;
  * chroot.
  */
 public class ChrootFileSystem implements VirtualFileSystem {
-	private File	root;
 
-	public ChrootFileSystem(File root) {
-		this.root = root;
-	}
+    private File root;
 
-	public VirtualFile getFile(String path) {
-		return new ChrootFile(path);
-	}
+    public ChrootFileSystem(File root) {
+        this.root = root;
+    }
 
-	public VirtualFile getFile(String dir, String name) {
-		return new ChrootFile(dir, name);
-	}
+    @Override
+    public VirtualFile getFile(String path) {
+        return new ChrootFile(path);
+    }
 
-	private class ChrootFile extends File implements VirtualFile {
-		private File	rfile;
+    @Override
+    public VirtualFile getFile(String dir, String name) {
+        return new ChrootFile(dir, name);
+    }
 
-		public ChrootFile(String path) {
-			super(path);
-		}
+    private class ChrootFile extends File implements VirtualFile {
 
-		public ChrootFile(String dir, String name) {
-			super(dir, name);
-		}
+        private File rfile;
 
-		/* private */
-		public ChrootFile(File dir, String name) {
-			super(dir, name);
-		}
+        public ChrootFile(String path) {
+            super(path);
+        }
 
-		@Override
-		public ChrootFile getParentFile() {
-			return new ChrootFile(getParent());
-		}
+        public ChrootFile(String dir, String name) {
+            super(dir, name);
+        }
 
-		public ChrootFile getChildFile(String name) {
-			return new ChrootFile(this, name);
-		}
+        /* private */
+        public ChrootFile(File dir, String name) {
+            super(dir, name);
+        }
 
-		@Override
-		public boolean isFile() {
-			File	real = new File(root, getPath());
-			return real.isFile();
-		}
+        @Override
+        public ChrootFile getParentFile() {
+            return new ChrootFile(getParent());
+        }
 
-		public Source getSource() throws IOException {
-			return new FileLexerSource(new File(root, getPath()),
-							getPath());
-		}
-	}
+        @Override
+        public ChrootFile getChildFile(String name) {
+            return new ChrootFile(this, name);
+        }
+
+        @Override
+        public boolean isFile() {
+            File real = new File(root, getPath());
+            return real.isFile();
+        }
+
+        @Override
+        public Source getSource() throws IOException {
+            return new FileLexerSource(new File(root, getPath()),
+                    getPath());
+        }
+    }
 
 }

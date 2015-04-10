@@ -14,7 +14,6 @@
  * or implied.  See the License for the specific language governing
  * permissions and limitations under the License.
  */
-
 package org.anarres.cpp;
 
 import java.io.IOException;
@@ -22,36 +21,39 @@ import java.util.Arrays;
 import java.util.List;
 
 /* pp */ class FixedTokenSource extends Source {
-	private static final Token	EOF =
-			new Token(Token.EOF, "<ts-eof>");
 
-	private List<Token>	tokens;
-	private int			idx;
+    private static final Token EOF
+            = new Token(Token.EOF, "<ts-eof>");
 
-	/* pp */ FixedTokenSource(Token... tokens) {
-		this.tokens = Arrays.asList(tokens);
-		this.idx = 0;
-	}
+    private final List<Token> tokens;
+    private int idx;
 
-	/* pp */ FixedTokenSource(List<Token> tokens) {
-		this.tokens = tokens;
-		this.idx = 0;
-	}
+    /* pp */ FixedTokenSource(Token... tokens) {
+        this.tokens = Arrays.asList(tokens);
+        this.idx = 0;
+    }
 
-	public Token token()
-						throws IOException,
-								LexerException {
-		if (idx >= tokens.size())
-			return EOF;
-		return tokens.get(idx++);
-	}
+    /* pp */ FixedTokenSource(List<Token> tokens) {
+        this.tokens = tokens;
+        this.idx = 0;
+    }
 
-	public String toString() {
-		StringBuilder	buf = new StringBuilder();
-		buf.append("constant token stream " + tokens);
-		Source	parent = getParent();
-		if (parent != null)
-			buf.append(" in ").append(String.valueOf(parent));
-		return buf.toString();
-	}
+    @Override
+    public Token token()
+            throws IOException,
+            LexerException {
+        if (idx >= tokens.size())
+            return EOF;
+        return tokens.get(idx++);
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder buf = new StringBuilder();
+        buf.append("constant token stream ").append(tokens);
+        Source parent = getParent();
+        if (parent != null)
+            buf.append(" in ").append(String.valueOf(parent));
+        return buf.toString();
+    }
 }

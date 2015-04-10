@@ -14,10 +14,8 @@
  * or implied.  See the License for the specific language governing
  * permissions and limitations under the License.
  */
-
 package org.anarres.cpp;
 
-import java.io.IOException;
 import java.io.StringReader;
 
 /**
@@ -28,29 +26,28 @@ import java.io.StringReader;
  */
 public class StringLexerSource extends LexerSource {
 
-	/**
-	 * Creates a new Source for lexing the given String.
-	 *
-	 * @param ppvalid true if preprocessor directives are to be
-	 *	honoured within the string.
-	 */
-	public StringLexerSource(String string, boolean ppvalid)
-						throws IOException {
-		super(new StringReader(string), ppvalid);
-	}
+    /**
+     * Creates a new Source for lexing the given String.
+     *
+     * @param ppvalid true if preprocessor directives are to be
+     *	honoured within the string.
+     */
+    public StringLexerSource(String string, boolean ppvalid) {
+        super(new StringReader(string), ppvalid);
+    }
 
-	/**
-	 * Creates a new Source for lexing the given String.
-	 *
-	 * By default, preprocessor directives are not honoured within
-	 * the string.
-	 */
-	public StringLexerSource(String string)
-						throws IOException {
-		this(string, false);
-	}
+    /**
+     * Creates a new Source for lexing the given String.
+     *
+     * By default, preprocessor directives are not honoured within
+     * the string.
+     */
+    public StringLexerSource(String string) {
+        this(string, false);
+    }
 
-	public String toString() {
-		return "string literal";
-	}
+    @Override
+    public String toString() {
+        return "string literal";
+    }
 }

@@ -14,9 +14,9 @@
  * or implied.  See the License for the specific language governing
  * permissions and limitations under the License.
  */
-
 package org.anarres.cpp;
 
+import javax.annotation.Nonnull;
 
 /**
  * A handler for preprocessor events, primarily errors and warnings.
@@ -25,63 +25,30 @@ package org.anarres.cpp;
  * error and warning events will throw an exception. Installing a
  * listener allows more intelligent handling of these events.
  */
-public class PreprocessorListener {
+public interface PreprocessorListener {
 
-	protected int	errors;
-	protected int	warnings;
+    /**
+     * Handles a warning.
+     *
+     * The behaviour of this method is defined by the
+     * implementation. It may simply record the error message, or
+     * it may throw an exception.
+     */
+    public void handleWarning(@Nonnull Source source, int line, int column,
+            @Nonnull String msg)
+            throws LexerException;
 
-	public PreprocessorListener() {
-		clear();
-	}
+    /**
+     * Handles an error.
+     *
+     * The behaviour of this method is defined by the
+     * implementation. It may simply record the error message, or
+     * it may throw an exception.
+     */
+    public void handleError(@Nonnull Source source, int line, int column,
+            @Nonnull String msg)
+            throws LexerException;
 
-	public void clear() {
-		errors = 0;
-		warnings = 0;
-	}
-
-	public int getErrors() {
-		return errors;
-	}
-
-	public int getWarnings() {
-		return warnings;
-	}
-
-	protected void print(String msg) {
-		System.err.println(msg);
-	}
-
-	/**
-	 * Handles a warning.
-	 *
-	 * The behaviour of this method is defined by the
-	 * implementation. It may simply record the error message, or
-	 * it may throw an exception.
-	 */
-	public void handleWarning(Source source, int line, int column,
-					String msg)
-						throws LexerException {
-		warnings++;
-		print(source.getName() + ":" + line + ":" + column +
-				": warning: " + msg); 
-	}
-
-	/**
-	 * Handles an error.
-	 *
-	 * The behaviour of this method is defined by the
-	 * implementation. It may simply record the error message, or
-	 * it may throw an exception.
-	 */
-	public void handleError(Source source, int line, int column,
-					String msg)
-						throws LexerException {
-		errors++;
-		print(source.getName() + ":" + line + ":" + column +
-				": error: " + msg); 
-	}
-
-	public void handleSourceChange(Source source, String event) {
-	}
+    public void handleSourceChange(@Nonnull Source source, @Nonnull String event);
 
 }

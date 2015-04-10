@@ -14,7 +14,6 @@
  * or implied.  See the License for the specific language governing
  * permissions and limitations under the License.
  */
-
 package org.anarres.cpp;
 
 import java.io.BufferedReader;
@@ -30,34 +29,36 @@ import java.io.InputStreamReader;
  * @see Source
  */
 public class InputLexerSource extends LexerSource {
-	/**
-	 * Creates a new Source for lexing the given Reader.
-	 *
-	 * Preprocessor directives are honoured within the file.
-	 */
-	public InputLexerSource(InputStream input)
-						throws IOException {
-		super(
-			new BufferedReader(
-				new InputStreamReader(
-					input
-				)
-			),
-			true
-		);
-	}
 
-	@Override
-	protected String getPath() {
-		return "<standard-input>";
-	}
+    /**
+     * Creates a new Source for lexing the given Reader.
+     *
+     * Preprocessor directives are honoured within the file.
+     */
+    public InputLexerSource(InputStream input)
+            throws IOException {
+        super(
+                new BufferedReader(
+                        new InputStreamReader(
+                                input
+                        )
+                ),
+                true
+        );
+    }
 
-	@Override
-	protected String getName() {
-		return "standard input";
-	}
+    @Override
+    public String getPath() {
+        return "<standard-input>";
+    }
 
-	public String toString() {
-		return getPath();
-	}
+    @Override
+    public String getName() {
+        return "standard input";
+    }
+
+    @Override
+    public String toString() {
+        return getPath();
+    }
 }

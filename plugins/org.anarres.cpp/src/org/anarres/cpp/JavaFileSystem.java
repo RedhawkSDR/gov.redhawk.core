@@ -14,7 +14,6 @@
  * or implied.  See the License for the specific language governing
  * permissions and limitations under the License.
  */
-
 package org.anarres.cpp;
 
 import java.io.File;
@@ -24,57 +23,62 @@ import java.io.IOException;
  * A virtual filesystem implementation using java.io.
  */
 public class JavaFileSystem implements VirtualFileSystem {
-	public VirtualFile getFile(String path) {
-		return new JavaFile(path);
-	}
 
-	public VirtualFile getFile(String dir, String name) {
-		return new JavaFile(dir, name);
-	}
+    @Override
+    public VirtualFile getFile(String path) {
+        return new JavaFile(path);
+    }
 
-	private class JavaFile extends File implements VirtualFile {
-		public JavaFile(String path) {
-			super(path);
-		}
+    @Override
+    public VirtualFile getFile(String dir, String name) {
+        return new JavaFile(dir, name);
+    }
 
-		public JavaFile(String dir, String name) {
-			super(dir, name);
-		}
+    private class JavaFile extends File implements VirtualFile {
 
-		/* private */
-		public JavaFile(File dir, String name) {
-			super(dir, name);
-		}
+        public JavaFile(String path) {
+            super(path);
+        }
 
-/*
-		@Override
-		public String getPath() {
-			return getCanonicalPath();
-		}
-*/
+        public JavaFile(String dir, String name) {
+            super(dir, name);
+        }
 
-		@Override
-		public JavaFile getParentFile() {
-			String	parent = getParent();
-			if (parent != null)
-				return new JavaFile(parent);
-			File	absolute = getAbsoluteFile();
-			parent = absolute.getParent();
-			/*
-			if (parent == null)
-				return null;
-			*/
-			return new JavaFile(parent);
-		}
+        /* private */
+        public JavaFile(File dir, String name) {
+            super(dir, name);
+        }
 
-		public JavaFile getChildFile(String name) {
-			return new JavaFile(this, name);
-		}
+        /*
+         @Override
+         public String getPath() {
+         return getCanonicalPath();
+         }
+         */
+        @Override
+        public JavaFile getParentFile() {
+            String parent = getParent();
+            if (parent != null)
+                return new JavaFile(parent);
+            File absolute = getAbsoluteFile();
+            parent = absolute.getParent();
+            /*
+             if (parent == null)
+             return null;
+             */
+            return new JavaFile(parent);
+        }
 
-		public Source getSource() throws IOException {
-			return new FileLexerSource(this);
-		}
+        @Override
+        public JavaFile getChildFile(String name) {
+            return new JavaFile(this, name);
+        }
 
-	}
+        @Override
+        public Source getSource() throws IOException {
+            return new FileLexerSource(this);
+        }
+
+    }
 
 }

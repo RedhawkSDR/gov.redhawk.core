@@ -14,13 +14,18 @@
  * or implied.  See the License for the specific language governing
  * permissions and limitations under the License.
  */
-
 package org.anarres.cpp;
+
+import javax.annotation.Nonnull;
 
 /**
  * An extremely lightweight virtual file system interface.
  */
 public interface VirtualFileSystem {
-	public VirtualFile getFile(String path);
-	public VirtualFile getFile(String dir, String name);
+
+    @Nonnull
+    public VirtualFile getFile(@Nonnull String path);
+
+    @Nonnull
+    public VirtualFile getFile(@Nonnull String dir, @Nonnull String name);
 }

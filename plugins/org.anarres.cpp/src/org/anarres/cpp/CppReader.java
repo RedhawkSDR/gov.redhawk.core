@@ -14,15 +14,15 @@
  * or implied.  See the License for the specific language governing
  * permissions and limitations under the License.
  */
-
 package org.anarres.cpp;
 
+import java.io.Closeable;
+import java.io.IOException;
+import java.io.Reader;
+import javax.annotation.Nonnull;
 import static org.anarres.cpp.Token.CCOMMENT;
 import static org.anarres.cpp.Token.CPPCOMMENT;
 import static org.anarres.cpp.Token.EOF;
-
-import java.io.IOException;
-import java.io.Reader;
 
 /**
  * A Reader wrapper around the Preprocessor.
@@ -33,122 +33,115 @@ import java.io.Reader;
  * @see Preprocessor
  * @see Reader
  */
-public class CppReader extends Reader {
+public class CppReader extends Reader implements Closeable {
 
-	private Preprocessor	cpp;
-	private String			token;
-	private int				idx;
+    private final Preprocessor cpp;
+    private String token;
+    private int idx;
 
-	public CppReader(final Reader r) {
-		cpp = new Preprocessor(new LexerSource(r, true) {
-			@Override
-			public String getName() {
-				return "<CppReader Input@" +
-						System.identityHashCode(r) + ">";
-			}
-		});
-		token = "";
-		idx = 0;
-	}
+    public CppReader(@Nonnull final Reader r) {
+        cpp = new Preprocessor(new LexerSource(r, true) {
+            @Override
+            public String getName() {
+                return "<CppReader Input@"
+                        + System.identityHashCode(r) + ">";
+            }
+        });
+        token = "";
+        idx = 0;
+    }
 
-	public CppReader(Preprocessor p) {
-		cpp = p;
-		token = "";
-		idx = 0;
-	}
+    public CppReader(@Nonnull Preprocessor p) {
+        cpp = p;
+        token = "";
+        idx = 0;
+    }
 
-	/**
-	 * Returns the Preprocessor used by this CppReader.
-	 */
-	public Preprocessor getPreprocessor() {
-		return cpp;
-	}
+    /**
+     * Returns the Preprocessor used by this CppReader.
+     */
+    @Nonnull
+    public Preprocessor getPreprocessor() {
+        return cpp;
+    }
 
-	/**
-	 * Defines the given name as a macro.
-	 *
-	 * This is a convnience method.
-	 */
-	public void addMacro(String name)
-						throws LexerException {
-		cpp.addMacro(name);
-	}
+    /**
+     * Defines the given name as a macro.
+     *
+     * This is a convnience method.
+     */
+    public void addMacro(@Nonnull String name)
+            throws LexerException {
+        cpp.addMacro(name);
+    }
 
-	/**
-	 * Defines the given name as a macro.
-	 *
-	 * This is a convnience method.
-	 */
-	public void addMacro(String name, String value)
-						throws LexerException {
-		cpp.addMacro(name, value);
-	}
+    /**
+     * Defines the given name as a macro.
+     *
+     * This is a convnience method.
+     */
+    public void addMacro(@Nonnull String name, @Nonnull String value)
+            throws LexerException {
+        cpp.addMacro(name, value);
+    }
 
-	private boolean refill()
-						throws IOException {
-		try {
-			assert cpp != null : "cpp is null : was it closed?";
-			if (token == null)
-				return false;
-			while (idx >= token.length()) {
-				Token	tok = cpp.token();
-				switch (tok.getType()) {
-					case EOF:
-						token = null;
-						return false;
-					case CCOMMENT:
-					case CPPCOMMENT:
-						if (!cpp.getFeature(Feature.KEEPCOMMENTS)) {
-							token = " ";
-							break;
-						}
-					default:
-						token = tok.getText();
-						break;
-				}
-				idx = 0;
-			}
-			return true;
-		}
-		catch (LexerException e) {
-			/* Never happens.
-			if (e.getCause() instanceof IOException)
-				throw (IOException)e.getCause();
-			*/
-			IOException	ie = new IOException(String.valueOf(e));
-			ie.initCause(e);
-			throw ie;
-		}
-	}
+    private boolean refill()
+            throws IOException {
+        try {
+            assert cpp != null : "cpp is null : was it closed?";
+            if (token == null)
+                return false;
+            while (idx >= token.length()) {
+                Token tok = cpp.token();
+                switch (tok.getType()) {
+                    case EOF:
+                        token = null;
+                        return false;
+                    case CCOMMENT:
+                    case CPPCOMMENT:
+                        if (!cpp.getFeature(Feature.KEEPCOMMENTS)) {
+                            token = " ";
+                            break;
+                        }
+                    default:
+                        token = tok.getText();
+                        break;
+                }
+                idx = 0;
+            }
+            return true;
+        } catch (LexerException e) {
+            throw new IOException(String.valueOf(e), e);
+        }
+    }
 
-	public int read()
-						throws IOException {
-		if (!refill())
-			return -1;
-		return token.charAt(idx++);
-	}
+    @Override
+    public int read()
+            throws IOException {
+        if (!refill())
+            return -1;
+        return token.charAt(idx++);
+    }
 
-	/* XXX Very slow and inefficient. */
-	public int read(char cbuf[], int off, int len)
-						throws IOException {
-		if (token == null)
-			return -1;
-		for (int i = 0; i < len; i++) {
-			int	ch = read();
-			if (ch == -1)
-				return i;
-			cbuf[off + i] = (char)ch;
-		}
-		return len;
-	}
+    /* XXX Very slow and inefficient. */
+    public int read(char cbuf[], int off, int len)
+            throws IOException {
+        if (token == null)
+            return -1;
+        for (int i = 0; i < len; i++) {
+            int ch = read();
+            if (ch == -1)
+                return i;
+            cbuf[off + i] = (char) ch;
+        }
+        return len;
+    }
 
-	public void close()
-						throws IOException {
-		if (cpp != null) {
-			cpp.close();
-			cpp = null;
-		}
-		token = null;
-	}
+    @Override
+    public void close()
+            throws IOException {
+        cpp.close();
+        token = null;
+    }
 
 }
