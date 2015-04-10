@@ -13,6 +13,8 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
  * or implied.  See the License for the specific language governing
  * permissions and limitations under the License.
+ *
+ * This file has been modified by REDHAWK to add new code.
  */
 package org.anarres.cpp;
 
@@ -29,5 +31,9 @@ public class LexerException extends Exception {
 
     public LexerException(Throwable cause) {
         super(cause);
+    }
+
+    public LexerException(String message, Throwable cause) {
+        super(message, cause);
     }
 }
