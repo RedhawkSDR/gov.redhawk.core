@@ -226,7 +226,6 @@ public class IdlResourceImpl extends ResourceImpl {
 			public void handleError(final Source source, final int line, final int column, final String msg) throws LexerException {
 				final IdlResourceParseException exception = new IdlResourceParseException(msg, column, line, source.toString());
 				IdlResourceImpl.this.getErrors().add(exception);
-				this.errors++;
 				throw new LexerException("Error at " + line + ":" + column + ": " + msg, exception);
 			}
 
@@ -235,7 +234,10 @@ public class IdlResourceImpl extends ResourceImpl {
 				final IdlResourceParseException exception = new IdlResourceParseException(msg, column, line, source.toString());
 				exception.fillInStackTrace();
 				IdlResourceImpl.this.getWarnings().add(exception);
-				this.warnings++;
+			}
+
+			@Override
+			public void handleSourceChange(Source source, String event) {
 			}
 		});
 
@@ -249,6 +251,7 @@ public class IdlResourceImpl extends ResourceImpl {
 
 		for (final URI uri : this.includePaths) {
 			pp.getSystemIncludePath().add(uri.toFileString());
+			pp.getQuoteIncludePath().add(uri.toFileString());
 		}
 
 		pp.addInput(new UriStoreSource(getURI(), inputStream));

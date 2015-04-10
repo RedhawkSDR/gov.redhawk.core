@@ -25,8 +25,11 @@ public class UriStoreSource extends InputLexerSource {
 		this.uri = uri;
 	}
 
+	/**
+	 * @since 8.0
+	 */
 	@Override
-	protected String getPath() {
+	public String getPath() {
 		final URI tmpUri = URI.createURI(this.uri.toString());
 		return tmpUri.devicePath();
 	}
@@ -38,8 +41,11 @@ public class UriStoreSource extends InputLexerSource {
 		return this.uri;
 	}
 
+	/**
+	 * @since 8.0
+	 */
 	@Override
-	protected String getName() {
+	public String getName() {
 		return this.uri.lastSegment();
 	}
 }

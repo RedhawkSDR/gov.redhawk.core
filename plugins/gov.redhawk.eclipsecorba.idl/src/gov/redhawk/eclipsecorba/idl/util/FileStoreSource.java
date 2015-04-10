@@ -25,14 +25,20 @@ public class FileStoreSource extends InputLexerSource {
 		this.store = store;
 	}
 
+	/**
+	 * @since 8.0
+	 */
 	@Override
-	protected String getPath() {
+	public String getPath() {
 		super.getPath();
 		return this.store.toURI().getPath();
 	}
 
+	/**
+	 * @since 8.0
+	 */
 	@Override
-	protected String getName() {
+	public String getName() {
 		return this.store.getName();
 	}
 
