@@ -15,7 +15,7 @@
  * permissions and limitations under the License.
  *
  * This file has been modified by REDHAWK to remove JSR-305 annotations,
- * and to fix a resource leak.
+ * to fix a resource leak, and to correct a parser error.
  */
 package org.anarres.cpp;
 
@@ -1783,7 +1783,7 @@ public class Preprocessor implements Closeable {
                 /* The one remaining ASCII, might as well. */
                 case '`':
 
-                // case '#':
+                case '#':
                 case AND_EQ:
                 case ARROW:
                 case CHARACTER:
