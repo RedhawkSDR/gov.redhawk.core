@@ -33,19 +33,20 @@ import CF.PropertySetPackage.PartialConfiguration;
  * <p>
  * The following features are tested:
  * <ul>
- *   <li>{@link gov.redhawk.model.sca.ScaAbstractProperty#isIgnoreRemoteSet() <em>Ignore Remote Set</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.ScaAbstractProperty#isIgnoreRemoteSet() <em>Ignore Remote Set</em>}</li>
  * </ul>
  * </p>
  * <p>
  * The following operations are tested:
  * <ul>
- *   <li>{@link gov.redhawk.model.sca.ScaAbstractProperty#toAny() <em>To Any</em>}</li>
- *   <li>{@link gov.redhawk.model.sca.ScaAbstractProperty#fromAny(org.omg.CORBA.Any) <em>From Any</em>}</li>
- *   <li>{@link gov.redhawk.model.sca.ScaAbstractProperty#setRemoteValue(org.omg.CORBA.Any) <em>Set Remote Value</em>}</li>
- *   <li>{@link gov.redhawk.model.sca.ScaAbstractProperty#getProperty() <em>Get Property</em>}</li>
- *   <li>{@link gov.redhawk.model.sca.ScaAbstractProperty#isDefaultValue() <em>Is Default Value</em>}</li>
- *   <li>{@link gov.redhawk.model.sca.ScaAbstractProperty#restoreDefaultValue() <em>Restore Default Value</em>}</li>
- *   <li>{@link gov.redhawk.model.sca.ScaAbstractProperty#valueEquals(org.omg.CORBA.Any) <em>Value Equals</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.ScaAbstractProperty#toAny() <em>To Any</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.ScaAbstractProperty#fromAny(org.omg.CORBA.Any) <em>From Any</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.ScaAbstractProperty#setRemoteValue(org.omg.CORBA.Any) <em>Set Remote Value</em>}
+ * </li>
+ * <li>{@link gov.redhawk.model.sca.ScaAbstractProperty#getProperty() <em>Get Property</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.ScaAbstractProperty#isDefaultValue() <em>Is Default Value</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.ScaAbstractProperty#restoreDefaultValue() <em>Restore Default Value</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.ScaAbstractProperty#valueEquals(org.omg.CORBA.Any) <em>Value Equals</em>}</li>
  * </ul>
  * </p>
  * @generated
@@ -68,8 +69,8 @@ public abstract class ScaAbstractPropertyTest extends IStatusProviderTest {
 	 * @generated
 	 */
 	@Override
-	protected ScaAbstractProperty<?> getFixture() {
-		return (ScaAbstractProperty<?>)fixture;
+	protected ScaAbstractProperty< ? > getFixture() {
+		return (ScaAbstractProperty< ? >) fixture;
 	}
 
 	/**
@@ -97,7 +98,7 @@ public abstract class ScaAbstractPropertyTest extends IStatusProviderTest {
 			}
 		});
 	}
-	
+
 	public void testCopy() {
 		ScaAbstractProperty< ? > copy = EcoreUtil.copy(getFixture());
 		Assert.assertNotNull(copy.getDefinition());
@@ -105,7 +106,7 @@ public abstract class ScaAbstractPropertyTest extends IStatusProviderTest {
 		Assert.assertNotNull(copy.getName());
 		Assert.assertNotNull(copy.getMode());
 		Assert.assertNotNull(copy.getProperty());
-		
+
 		// Test to ensure the copied object is unprotected
 		copy.setStatus(ScaPackage.Literals.SCA_ABSTRACT_PROPERTY__ID, Status.CANCEL_STATUS);
 	}
@@ -138,7 +139,8 @@ public abstract class ScaAbstractPropertyTest extends IStatusProviderTest {
 	}
 
 	/**
-	 * Tests the '{@link gov.redhawk.model.sca.ScaAbstractProperty#isIgnoreRemoteSet() <em>Ignore Remote Set</em>}' feature getter.
+	 * Tests the '{@link gov.redhawk.model.sca.ScaAbstractProperty#isIgnoreRemoteSet() <em>Ignore Remote Set</em>}'
+	 * feature getter.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @see gov.redhawk.model.sca.ScaAbstractProperty#isIgnoreRemoteSet()
@@ -151,7 +153,8 @@ public abstract class ScaAbstractPropertyTest extends IStatusProviderTest {
 	}
 
 	/**
-	 * Tests the '{@link gov.redhawk.model.sca.ScaAbstractProperty#setIgnoreRemoteSet(boolean) <em>Ignore Remote Set</em>}' feature setter.
+	 * Tests the '{@link gov.redhawk.model.sca.ScaAbstractProperty#setIgnoreRemoteSet(boolean) <em>Ignore Remote
+	 * Set</em>}' feature setter.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @see gov.redhawk.model.sca.ScaAbstractProperty#setIgnoreRemoteSet(boolean)
@@ -191,7 +194,8 @@ public abstract class ScaAbstractPropertyTest extends IStatusProviderTest {
 	}
 
 	/**
-	 * Tests the '{@link gov.redhawk.model.sca.ScaAbstractProperty#fromAny(org.omg.CORBA.Any) <em>From Any</em>}' operation.
+	 * Tests the '{@link gov.redhawk.model.sca.ScaAbstractProperty#fromAny(org.omg.CORBA.Any) <em>From Any</em>}'
+	 * operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @see gov.redhawk.model.sca.ScaAbstractProperty#fromAny(org.omg.CORBA.Any)
@@ -210,11 +214,12 @@ public abstract class ScaAbstractPropertyTest extends IStatusProviderTest {
 	}
 
 	/**
-	 * Tests the '{@link gov.redhawk.model.sca.ScaAbstractProperty#setRemoteValue(org.omg.CORBA.Any) <em>Set Remote Value</em>}' operation.
+	 * Tests the '{@link gov.redhawk.model.sca.ScaAbstractProperty#setRemoteValue(org.omg.CORBA.Any) <em>Set Remote
+	 * Value</em>}' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @throws InvalidConfiguration 
-	 * @throws PartialConfiguration 
+	 * @throws InvalidConfiguration
+	 * @throws PartialConfiguration
 	 * @see gov.redhawk.model.sca.ScaAbstractProperty#setRemoteValue(org.omg.CORBA.Any)
 	 * @generated NOT
 	 */
@@ -238,7 +243,8 @@ public abstract class ScaAbstractPropertyTest extends IStatusProviderTest {
 	}
 
 	/**
-	 * Tests the '{@link gov.redhawk.model.sca.ScaAbstractProperty#isDefaultValue() <em>Is Default Value</em>}' operation.
+	 * Tests the '{@link gov.redhawk.model.sca.ScaAbstractProperty#isDefaultValue() <em>Is Default Value</em>}'
+	 * operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @see gov.redhawk.model.sca.ScaAbstractProperty#isDefaultValue()
@@ -251,7 +257,8 @@ public abstract class ScaAbstractPropertyTest extends IStatusProviderTest {
 	}
 
 	/**
-	 * Tests the '{@link gov.redhawk.model.sca.ScaAbstractProperty#restoreDefaultValue() <em>Restore Default Value</em>}' operation.
+	 * Tests the '{@link gov.redhawk.model.sca.ScaAbstractProperty#restoreDefaultValue() <em>Restore Default Value</em>}
+	 * ' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @see gov.redhawk.model.sca.ScaAbstractProperty#restoreDefaultValue()
@@ -272,7 +279,8 @@ public abstract class ScaAbstractPropertyTest extends IStatusProviderTest {
 	}
 
 	/**
-	 * Tests the '{@link gov.redhawk.model.sca.ScaAbstractProperty#valueEquals(org.omg.CORBA.Any) <em>Value Equals</em>}' operation.
+	 * Tests the '{@link gov.redhawk.model.sca.ScaAbstractProperty#valueEquals(org.omg.CORBA.Any) <em>Value Equals</em>}
+	 * ' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @see gov.redhawk.model.sca.ScaAbstractProperty#valueEquals(org.omg.CORBA.Any)
@@ -286,7 +294,8 @@ public abstract class ScaAbstractPropertyTest extends IStatusProviderTest {
 	}
 
 	/**
-	 * Tests the '{@link gov.redhawk.model.sca.ScaAbstractProperty#getDescription() <em>Description</em>}' feature getter.
+	 * Tests the '{@link gov.redhawk.model.sca.ScaAbstractProperty#getDescription() <em>Description</em>}' feature
+	 * getter.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @see gov.redhawk.model.sca.ScaAbstractProperty#getDescription()
@@ -340,7 +349,9 @@ public abstract class ScaAbstractPropertyTest extends IStatusProviderTest {
 	}
 
 	/**
-	 * Tests the '{@link gov.redhawk.model.sca.ScaAbstractProperty#fetchAttributes(org.eclipse.core.runtime.IProgressMonitor) <em>Fetch Attributes</em>}' operation.
+	 * Tests the '
+	 * {@link gov.redhawk.model.sca.ScaAbstractProperty#fetchAttributes(org.eclipse.core.runtime.IProgressMonitor)
+	 * <em>Fetch Attributes</em>}' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @see gov.redhawk.model.sca.ScaAbstractProperty#fetchAttributes(org.eclipse.core.runtime.IProgressMonitor)
@@ -370,7 +381,7 @@ public abstract class ScaAbstractPropertyTest extends IStatusProviderTest {
 			Assert.assertEquals("Cannot modify resource set without a write transaction", e.getMessage());
 		} finally {
 			ScaModelCommand.execute(getFixture(), new ScaModelCommand() {
-				
+
 				@Override
 				public void execute() {
 					getFixture().setId(oldId);
@@ -379,5 +390,5 @@ public abstract class ScaAbstractPropertyTest extends IStatusProviderTest {
 		}
 	}
 
-} //ScaAbstractPropertyTest
+} // ScaAbstractPropertyTest
 

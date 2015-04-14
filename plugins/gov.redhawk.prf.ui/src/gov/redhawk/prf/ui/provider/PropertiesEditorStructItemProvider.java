@@ -20,6 +20,7 @@ import mil.jpeojtrs.sca.prf.PrfFactory;
 import mil.jpeojtrs.sca.prf.PrfPackage;
 import mil.jpeojtrs.sca.prf.PropertyValueType;
 import mil.jpeojtrs.sca.prf.Simple;
+import mil.jpeojtrs.sca.prf.SimpleSequence;
 import mil.jpeojtrs.sca.prf.Struct;
 import mil.jpeojtrs.sca.prf.StructPropertyConfigurationType;
 import mil.jpeojtrs.sca.prf.provider.StructItemProvider;
@@ -50,7 +51,7 @@ public class PropertiesEditorStructItemProvider extends StructItemProvider {
 	@Override
 	protected Command createAddCommand(final EditingDomain domain, final EObject owner, final EStructuralFeature feature, final Collection< ? > collection,
 	        final int index) {
-		if (feature == PrfPackage.Literals.STRUCT__SIMPLE) {
+		if (feature == PrfPackage.Literals.STRUCT__SIMPLE || feature == PrfPackage.Literals.STRUCT__SIMPLE_SEQUENCE) {
 			final IEditingDomainItemProvider editingDomainItemProvider = (IEditingDomainItemProvider) this.adapterFactory.adapt(collection.toArray()[0],
 			        IEditingDomainItemProvider.class);
 			return editingDomainItemProvider.createCommand(owner, domain, AddCommand.class, new CommandParameter(owner, feature, collection, index));
@@ -66,8 +67,15 @@ public class PropertiesEditorStructItemProvider extends StructItemProvider {
 	@Override
 	protected Command createCreateChildCommand(EditingDomain domain, EObject owner, EStructuralFeature feature, Object value, int index,
 	        Collection< ? > collection) {
-		Simple simple = (Simple) value;
-		simple.setType(PropertyValueType.STRING);
+		if (value instanceof Simple) {
+			Simple simple = (Simple) value;
+			simple.setType(PropertyValueType.STRING);
+		} else if (value instanceof SimpleSequence) {
+			SimpleSequence sequence = (SimpleSequence) value;
+			sequence.setType(PropertyValueType.STRING);
+		} else {
+			return null;
+		}
 		return super.createCreateChildCommand(domain, owner, feature, value, index, collection);
 	}
 
@@ -88,6 +96,7 @@ public class PropertiesEditorStructItemProvider extends StructItemProvider {
 	@Override
 	protected void collectNewChildDescriptors(final Collection<Object> newChildDescriptors, final Object object) {
 		newChildDescriptors.add(createChildParameter(PrfPackage.Literals.STRUCT__SIMPLE, PrfFactory.eINSTANCE.createSimple()));
+		newChildDescriptors.add(createChildParameter(PrfPackage.Literals.STRUCT__SIMPLE_SEQUENCE, PrfFactory.eINSTANCE.createSimpleSequence()));
 	}
 
 	/**

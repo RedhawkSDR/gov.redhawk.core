@@ -18,19 +18,20 @@ import org.eclipse.emf.common.util.EList;
 /**
  * <!-- begin-user-doc -->
  * A representation of the model object '<em><b>Port Container</b></em>'.
+ * 
  * @since 14.0
- * <!-- end-user-doc -->
+ *        <!-- end-user-doc -->
  *
- * <p>
- * The following features are supported:
- * <ul>
- * <li>{@link gov.redhawk.model.sca.ScaPortContainer#getPorts <em>Ports</em>}</li>
- * </ul>
- * </p>
+ *        <p>
+ *        The following features are supported:
+ *        <ul>
+ *        <li>{@link gov.redhawk.model.sca.ScaPortContainer#getPorts <em>Ports</em>}</li>
+ *        </ul>
+ *        </p>
  *
  * @see gov.redhawk.model.sca.ScaPackage#getScaPortContainer()
  * @model interface="true" abstract="true"
- * superTypes="gov.redhawk.model.sca.IRefreshable gov.redhawk.model.sca.IStatusProvider"
+ *        superTypes="gov.redhawk.model.sca.IRefreshable gov.redhawk.model.sca.IStatusProvider"
  * @generated
  */
 public interface ScaPortContainer extends IRefreshable, IStatusProvider {
@@ -38,14 +39,15 @@ public interface ScaPortContainer extends IRefreshable, IStatusProvider {
 	/**
 	 * Returns the value of the '<em><b>Ports</b></em>' containment reference list.
 	 * The list contents are of type {@link gov.redhawk.model.sca.ScaPort}&lt;?, ?>.
-	 * It is bidirectional and its opposite is '{@link gov.redhawk.model.sca.ScaPort#getPortContainer <em>Port
-	 * Container</em>}'.
+	 * It is bidirectional and its opposite is '{@link gov.redhawk.model.sca.ScaPort#getPortContainer
+	 * <em>Port Container</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <p>
-	 * If the meaning of the '<em>Ports</em>' containment reference list isn't clear,
-	 * there really should be more of a description here...
+	 * If the meaning of the '<em>Ports</em>' containment reference list isn't clear, there really should be more of a
+	 * description here...
 	 * </p>
 	 * <!-- end-user-doc -->
+	 * 
 	 * @return the value of the '<em>Ports</em>' containment reference list.
 	 * @see #isSetPorts()
 	 * @see #unsetPorts()
@@ -61,6 +63,7 @@ public interface ScaPortContainer extends IRefreshable, IStatusProvider {
 	 * reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * 
 	 * @see #isSetPorts()
 	 * @see #getPorts()
 	 * @generated
@@ -72,6 +75,7 @@ public interface ScaPortContainer extends IRefreshable, IStatusProvider {
 	 * containment reference list is set.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * 
 	 * @return whether the value of the '<em>Ports</em>' containment reference list is set.
 	 * @see #unsetPorts()
 	 * @see #getPorts()
@@ -82,6 +86,7 @@ public interface ScaPortContainer extends IRefreshable, IStatusProvider {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * 
 	 * @model
 	 * @generated
 	 */
@@ -90,6 +95,7 @@ public interface ScaPortContainer extends IRefreshable, IStatusProvider {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * 
 	 * @model monitorDataType="gov.redhawk.model.sca.IProgressMonitor"
 	 * @generated
 	 */

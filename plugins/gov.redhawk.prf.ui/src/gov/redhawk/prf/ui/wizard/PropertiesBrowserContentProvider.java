@@ -116,7 +116,10 @@ public class PropertiesBrowserContentProvider extends AdapterFactoryContentProvi
 			return children.toArray();
 		} else if (parentElement instanceof Struct) {
 			Struct struct = (Struct) parentElement;
-			return struct.getSimple().toArray();
+			List<Object> children = new ArrayList<Object>();
+			children.addAll(struct.getSimple());
+			children.addAll(struct.getSimpleSequence());
+			return children.toArray();
 		} else if (parentElement instanceof StructSequence) {
 			StructSequence sequence = (StructSequence) parentElement;
 			return Collections.singletonList(sequence.getStruct()).toArray();

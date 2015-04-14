@@ -32,17 +32,18 @@ import org.omg.CORBA.SystemException;
 /**
  * <!-- begin-user-doc -->
  * An implementation of the model object '<em><b>Port</b></em>'.
+ * 
  * @since 12.0
- * <!-- end-user-doc -->
- * <p>
- * The following features are implemented:
- * <ul>
- * <li>{@link gov.redhawk.model.sca.impl.ScaPortImpl#getName <em>Name</em>}</li>
- * <li>{@link gov.redhawk.model.sca.impl.ScaPortImpl#getProfileObj <em>Profile Obj</em>}</li>
- * <li>{@link gov.redhawk.model.sca.impl.ScaPortImpl#getRepid <em>Repid</em>}</li>
- * <li>{@link gov.redhawk.model.sca.impl.ScaPortImpl#getPortContainer <em>Port Container</em>}</li>
- * </ul>
- * </p>
+ *        <!-- end-user-doc -->
+ *        <p>
+ *        The following features are implemented:
+ *        <ul>
+ *        <li>{@link gov.redhawk.model.sca.impl.ScaPortImpl#getName <em>Name</em>}</li>
+ *        <li>{@link gov.redhawk.model.sca.impl.ScaPortImpl#getProfileObj <em>Profile Obj</em>}</li>
+ *        <li>{@link gov.redhawk.model.sca.impl.ScaPortImpl#getRepid <em>Repid</em>}</li>
+ *        <li>{@link gov.redhawk.model.sca.impl.ScaPortImpl#getPortContainer <em>Port Container</em>}</li>
+ *        </ul>
+ *        </p>
  *
  * @generated
  */
@@ -50,8 +51,9 @@ public abstract class ScaPortImpl< P extends AbstractPort, P2 extends org.omg.CO
 	/**
 	 * The default value of the '{@link #getName() <em>Name</em>}' attribute.
 	 * <!-- begin-user-doc -->
+	 * 
 	 * @since 18.0
-	 * <!-- end-user-doc -->
+	 *        <!-- end-user-doc -->
 	 * @see #getName()
 	 * @generated
 	 * @ordered
@@ -60,8 +62,9 @@ public abstract class ScaPortImpl< P extends AbstractPort, P2 extends org.omg.CO
 	/**
 	 * The cached value of the '{@link #getName() <em>Name</em>}' attribute.
 	 * <!-- begin-user-doc -->
+	 * 
 	 * @since 18.0
-	 * <!-- end-user-doc -->
+	 *        <!-- end-user-doc -->
 	 * @see #getName()
 	 * @generated
 	 * @ordered
@@ -71,6 +74,7 @@ public abstract class ScaPortImpl< P extends AbstractPort, P2 extends org.omg.CO
 	 * The cached value of the '{@link #getProfileObj() <em>Profile Obj</em>}' reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * 
 	 * @see #getProfileObj()
 	 * @generated
 	 * @ordered
@@ -80,6 +84,7 @@ public abstract class ScaPortImpl< P extends AbstractPort, P2 extends org.omg.CO
 	 * The default value of the '{@link #getRepid() <em>Repid</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * 
 	 * @see #getRepid()
 	 * @generated
 	 * @ordered
@@ -89,6 +94,7 @@ public abstract class ScaPortImpl< P extends AbstractPort, P2 extends org.omg.CO
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	protected ScaPortImpl() {
@@ -98,6 +104,7 @@ public abstract class ScaPortImpl< P extends AbstractPort, P2 extends org.omg.CO
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -107,8 +114,9 @@ public abstract class ScaPortImpl< P extends AbstractPort, P2 extends org.omg.CO
 
 	/**
 	 * <!-- begin-user-doc -->
+	 * 
 	 * @since 18.0
-	 * <!-- end-user-doc -->
+	 *        <!-- end-user-doc -->
 	 * @generated
 	 */
 	public String getNameGen() {
@@ -118,6 +126,7 @@ public abstract class ScaPortImpl< P extends AbstractPort, P2 extends org.omg.CO
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -127,8 +136,9 @@ public abstract class ScaPortImpl< P extends AbstractPort, P2 extends org.omg.CO
 
 	/**
 	 * <!-- begin-user-doc -->
+	 * 
 	 * @since 18.0
-	 * <!-- end-user-doc -->
+	 *        <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -142,6 +152,7 @@ public abstract class ScaPortImpl< P extends AbstractPort, P2 extends org.omg.CO
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -161,6 +172,7 @@ public abstract class ScaPortImpl< P extends AbstractPort, P2 extends org.omg.CO
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public P basicGetProfileObj() {
@@ -170,6 +182,7 @@ public abstract class ScaPortImpl< P extends AbstractPort, P2 extends org.omg.CO
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -183,6 +196,7 @@ public abstract class ScaPortImpl< P extends AbstractPort, P2 extends org.omg.CO
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * 
 	 * @generated NOT
 	 */
 	@Override
@@ -199,6 +213,7 @@ public abstract class ScaPortImpl< P extends AbstractPort, P2 extends org.omg.CO
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -211,6 +226,7 @@ public abstract class ScaPortImpl< P extends AbstractPort, P2 extends org.omg.CO
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public ScaPortContainer basicGetPortContainer() {
@@ -222,6 +238,7 @@ public abstract class ScaPortImpl< P extends AbstractPort, P2 extends org.omg.CO
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public NotificationChain basicSetPortContainer(ScaPortContainer newPortContainer, NotificationChain msgs) {
@@ -232,6 +249,7 @@ public abstract class ScaPortImpl< P extends AbstractPort, P2 extends org.omg.CO
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -254,6 +272,7 @@ public abstract class ScaPortImpl< P extends AbstractPort, P2 extends org.omg.CO
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -270,6 +289,7 @@ public abstract class ScaPortImpl< P extends AbstractPort, P2 extends org.omg.CO
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -284,6 +304,7 @@ public abstract class ScaPortImpl< P extends AbstractPort, P2 extends org.omg.CO
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -298,6 +319,7 @@ public abstract class ScaPortImpl< P extends AbstractPort, P2 extends org.omg.CO
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -322,6 +344,7 @@ public abstract class ScaPortImpl< P extends AbstractPort, P2 extends org.omg.CO
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@SuppressWarnings("unchecked")
@@ -344,6 +367,7 @@ public abstract class ScaPortImpl< P extends AbstractPort, P2 extends org.omg.CO
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -365,6 +389,7 @@ public abstract class ScaPortImpl< P extends AbstractPort, P2 extends org.omg.CO
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -385,6 +410,7 @@ public abstract class ScaPortImpl< P extends AbstractPort, P2 extends org.omg.CO
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -401,8 +427,9 @@ public abstract class ScaPortImpl< P extends AbstractPort, P2 extends org.omg.CO
 
 	/**
 	 * <!-- begin-user-doc -->
+	 * 
 	 * @deprecated
-	 * <!-- end-user-doc -->
+	 *             <!-- end-user-doc -->
 	 * @generated NOT
 	 */
 	@Deprecated

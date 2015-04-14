@@ -27,6 +27,8 @@ import java.util.Map;
 import mil.jpeojtrs.sca.prf.ConfigurationKind;
 import mil.jpeojtrs.sca.prf.Simple;
 import mil.jpeojtrs.sca.prf.SimpleRef;
+import mil.jpeojtrs.sca.prf.SimpleSequence;
+import mil.jpeojtrs.sca.prf.SimpleSequenceRef;
 import mil.jpeojtrs.sca.prf.Struct;
 import mil.jpeojtrs.sca.prf.StructSequence;
 import mil.jpeojtrs.sca.prf.StructValue;
@@ -39,6 +41,7 @@ import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
 import org.eclipse.emf.common.notify.impl.AdapterImpl;
+import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.InternalEObject;
@@ -62,16 +65,16 @@ import CF.PropertySetPackage.InvalidConfiguration;
 import CF.PropertySetPackage.PartialConfiguration;
 
 /**
- * <!-- begin-user-doc --> An implementation of the model object '
- * <em><b>Struct Sequence Property</b></em>'.
+ * <!-- begin-user-doc --> An implementation of the model object ' <em><b>Struct Sequence Property</b></em>'.
+ * 
  * @since 12.0
- * <!-- end-user-doc -->
- * <p>
- * The following features are implemented:
- * <ul>
- * <li>{@link gov.redhawk.model.sca.impl.ScaStructSequencePropertyImpl#getStructs <em>Structs</em>}</li>
- * </ul>
- * </p>
+ *        <!-- end-user-doc -->
+ *        <p>
+ *        The following features are implemented:
+ *        <ul>
+ *        <li>{@link gov.redhawk.model.sca.impl.ScaStructSequencePropertyImpl#getStructs <em>Structs</em>}</li>
+ *        </ul>
+ *        </p>
  *
  * @generated
  */
@@ -79,6 +82,7 @@ public class ScaStructSequencePropertyImpl extends ScaAbstractPropertyImpl<Struc
 	/**
 	 * The cached value of the '{@link #getStructs() <em>Structs</em>}' containment reference list.
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @see #getStructs()
 	 * @generated NOT
 	 * @ordered
@@ -88,6 +92,7 @@ public class ScaStructSequencePropertyImpl extends ScaAbstractPropertyImpl<Struc
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	protected ScaStructSequencePropertyImpl() {
@@ -97,6 +102,7 @@ public class ScaStructSequencePropertyImpl extends ScaAbstractPropertyImpl<Struc
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -216,8 +222,9 @@ public class ScaStructSequencePropertyImpl extends ScaAbstractPropertyImpl<Struc
 
 	/**
 	 * <!-- begin-user-doc -->
+	 * 
 	 * @since 14.0
-	 * <!-- end-user-doc -->
+	 *        <!-- end-user-doc -->
 	 * @generated NOT
 	 * 
 	 */
@@ -241,8 +248,9 @@ public class ScaStructSequencePropertyImpl extends ScaAbstractPropertyImpl<Struc
 
 	/**
 	 * <!-- begin-user-doc -->
+	 * 
 	 * @since 14.0
-	 * <!-- end-user-doc -->
+	 *        <!-- end-user-doc -->
 	 * @generated NOT
 	 */
 	@Override
@@ -254,8 +262,9 @@ public class ScaStructSequencePropertyImpl extends ScaAbstractPropertyImpl<Struc
 
 	/**
 	 * <!-- begin-user-doc -->
+	 * 
 	 * @since 14.0
-	 * <!-- end-user-doc -->
+	 *        <!-- end-user-doc -->
 	 * @generated NOT
 	 */
 	@Override
@@ -287,6 +296,7 @@ public class ScaStructSequencePropertyImpl extends ScaAbstractPropertyImpl<Struc
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated NOT
 	 */
 	@SuppressWarnings("unchecked")
@@ -318,6 +328,7 @@ public class ScaStructSequencePropertyImpl extends ScaAbstractPropertyImpl<Struc
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -333,6 +344,7 @@ public class ScaStructSequencePropertyImpl extends ScaAbstractPropertyImpl<Struc
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -362,6 +374,15 @@ public class ScaStructSequencePropertyImpl extends ScaAbstractPropertyImpl<Struc
 					for (Simple simple : structDef.getSimple()) {
 						if (ref.getRefID().equals(simple.getId())) {
 							simple.setValue(ref.getValue());
+						}
+					}
+				}
+			}
+			if (value != null) {
+				for (SimpleSequenceRef ref : value.getSimpleSequenceRef()) {
+					for (SimpleSequence sequence : structDef.getSimpleSequence()) {
+						if (ref.getRefID().equals(sequence.getId())) {
+							sequence.setValues(ref.getValues());
 						}
 					}
 				}
@@ -453,8 +474,9 @@ public class ScaStructSequencePropertyImpl extends ScaAbstractPropertyImpl<Struc
 
 	/**
 	 * <!-- begin-user-doc -->
+	 * 
 	 * @since 14.0
-	 * <!-- end-user-doc -->
+	 *        <!-- end-user-doc -->
 	 * @generated NOT
 	 * 
 	 */
@@ -466,6 +488,18 @@ public class ScaStructSequencePropertyImpl extends ScaAbstractPropertyImpl<Struc
 			((PropertySetOperations) container).query(configProperties);
 		}
 		// BEGIN GENERATED CODE
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	public String registerPropertyListener(org.omg.CORBA.Object obj, EList<String> prop_ids, float interval) throws UnknownProperties, InvalidObjectReference {
+		// TODO: implement this method
+		// Ensure that you remove @generated or mark it @generated NOT
+		throw new UnsupportedOperationException();
 	}
 
 	/**
@@ -487,6 +521,7 @@ public class ScaStructSequencePropertyImpl extends ScaAbstractPropertyImpl<Struc
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -501,6 +536,7 @@ public class ScaStructSequencePropertyImpl extends ScaAbstractPropertyImpl<Struc
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override

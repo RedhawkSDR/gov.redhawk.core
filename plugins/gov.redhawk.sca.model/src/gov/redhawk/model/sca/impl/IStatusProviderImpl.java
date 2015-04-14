@@ -37,14 +37,15 @@ import org.eclipse.emf.ecore.impl.EObjectImpl;
 /**
  * <!-- begin-user-doc -->
  * An implementation of the model object '<em><b>IStatus Provider</b></em>'.
+ * 
  * @since 14.0
- * <!-- end-user-doc -->
- * <p>
- * The following features are implemented:
- * <ul>
- * <li>{@link gov.redhawk.model.sca.impl.IStatusProviderImpl#getStatus <em>Status</em>}</li>
- * </ul>
- * </p>
+ *        <!-- end-user-doc -->
+ *        <p>
+ *        The following features are implemented:
+ *        <ul>
+ *        <li>{@link gov.redhawk.model.sca.impl.IStatusProviderImpl#getStatus <em>Status</em>}</li>
+ *        </ul>
+ *        </p>
  *
  * @generated
  */
@@ -53,6 +54,7 @@ public abstract class IStatusProviderImpl extends EObjectImpl implements IStatus
 	 * The default value of the '{@link #getStatus() <em>Status</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * 
 	 * @see #getStatus()
 	 * @generated
 	 * @ordered
@@ -62,6 +64,7 @@ public abstract class IStatusProviderImpl extends EObjectImpl implements IStatus
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	protected IStatusProviderImpl() {
@@ -71,6 +74,7 @@ public abstract class IStatusProviderImpl extends EObjectImpl implements IStatus
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -118,6 +122,7 @@ public abstract class IStatusProviderImpl extends EObjectImpl implements IStatus
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * 
 	 * @generated NOT
 	 */
 	@Override
@@ -143,6 +148,7 @@ public abstract class IStatusProviderImpl extends EObjectImpl implements IStatus
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * 
 	 * @generated NOT
 	 */
 	@Override
@@ -165,6 +171,7 @@ public abstract class IStatusProviderImpl extends EObjectImpl implements IStatus
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * 
 	 * @generated NOT
 	 */
 	@Override
@@ -181,6 +188,7 @@ public abstract class IStatusProviderImpl extends EObjectImpl implements IStatus
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * 
 	 * @generated NOT
 	 */
 	@Override
@@ -193,6 +201,7 @@ public abstract class IStatusProviderImpl extends EObjectImpl implements IStatus
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -207,6 +216,7 @@ public abstract class IStatusProviderImpl extends EObjectImpl implements IStatus
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override

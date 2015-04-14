@@ -12,6 +12,7 @@
 package gov.redhawk.sca.internal.ui.properties;
 
 import gov.redhawk.model.sca.ScaSimpleProperty;
+import gov.redhawk.model.sca.ScaSimpleSequenceProperty;
 import gov.redhawk.model.sca.ScaStructProperty;
 
 import org.eclipse.jface.viewers.CellEditor;
@@ -31,12 +32,17 @@ public class StructFieldPropertyEditingSupport extends PropertyEditingSupport {
 		this.fieldDceId = fieldDceId;
 	}
 
-	private Object getSimple(final Object object) {
+	private Object getElement(final Object object) {
 		if (object instanceof ScaStructProperty) {
 			final ScaStructProperty struct = (ScaStructProperty) object;
 			for (final ScaSimpleProperty simple : struct.getSimples()) {
 				if (this.fieldDceId.equals(simple.getId())) {
 					return simple;
+				}
+			}
+			for (final ScaSimpleSequenceProperty sequence : struct.getSequences()) {
+				if (this.fieldDceId.equals(sequence.getId())) {
+					return sequence;
 				}
 			}
 		}
@@ -45,22 +51,22 @@ public class StructFieldPropertyEditingSupport extends PropertyEditingSupport {
 
 	@Override
 	protected boolean canEdit(final Object object) {
-		return super.canEdit(getSimple(object));
+		return super.canEdit(getElement(object));
 	}
 
 	@Override
 	protected CellEditor getCellEditor(final Object object) {
-		return super.getCellEditor(getSimple(object));
+		return super.getCellEditor(getElement(object));
 	}
 
 	@Override
 	protected Object getValue(final Object object) {
-		return super.getValue(getSimple(object));
+		return super.getValue(getElement(object));
 	}
 
 	@Override
 	protected void setValue(final Object object, final Object value) {
-		super.setValue(getSimple(object), value);
+		super.setValue(getElement(object), value);
 	}
 
 }

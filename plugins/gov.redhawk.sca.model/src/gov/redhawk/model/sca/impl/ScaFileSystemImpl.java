@@ -54,19 +54,20 @@ import CF.FileSystemPackage.UnknownFileSystemProperties;
 /**
  * <!-- begin-user-doc -->
  * An implementation of the model object '<em><b>File System</b></em>'.
+ * 
  * @since 12.0
- * <!-- end-user-doc -->
- * <p>
- * The following features are implemented:
- * <ul>
- * <li>{@link gov.redhawk.model.sca.impl.ScaFileSystemImpl#getFileStore <em>File Store</em>}</li>
- * <li>{@link gov.redhawk.model.sca.impl.ScaFileSystemImpl#getChildren <em>Children</em>}</li>
- * <li>{@link gov.redhawk.model.sca.impl.ScaFileSystemImpl#getImageDesc <em>Image Desc</em>}</li>
- * <li>{@link gov.redhawk.model.sca.impl.ScaFileSystemImpl#isDirectory <em>Directory</em>}</li>
- * <li>{@link gov.redhawk.model.sca.impl.ScaFileSystemImpl#getName <em>Name</em>}</li>
- * <li>{@link gov.redhawk.model.sca.impl.ScaFileSystemImpl#getFileSystemURI <em>File System URI</em>}</li>
- * </ul>
- * </p>
+ *        <!-- end-user-doc -->
+ *        <p>
+ *        The following features are implemented:
+ *        <ul>
+ *        <li>{@link gov.redhawk.model.sca.impl.ScaFileSystemImpl#getFileStore <em>File Store</em>}</li>
+ *        <li>{@link gov.redhawk.model.sca.impl.ScaFileSystemImpl#getChildren <em>Children</em>}</li>
+ *        <li>{@link gov.redhawk.model.sca.impl.ScaFileSystemImpl#getImageDesc <em>Image Desc</em>}</li>
+ *        <li>{@link gov.redhawk.model.sca.impl.ScaFileSystemImpl#isDirectory <em>Directory</em>}</li>
+ *        <li>{@link gov.redhawk.model.sca.impl.ScaFileSystemImpl#getName <em>Name</em>}</li>
+ *        <li>{@link gov.redhawk.model.sca.impl.ScaFileSystemImpl#getFileSystemURI <em>File System URI</em>}</li>
+ *        </ul>
+ *        </p>
  *
  * @generated
  */
@@ -75,6 +76,7 @@ public abstract class ScaFileSystemImpl< F extends FileSystem > extends CorbaObj
 	 * The default value of the '{@link #getFileStore() <em>File Store</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * 
 	 * @see #getFileStore()
 	 * @generated
 	 * @ordered
@@ -85,6 +87,7 @@ public abstract class ScaFileSystemImpl< F extends FileSystem > extends CorbaObj
 	 * The cached value of the '{@link #getFileStore() <em>File Store</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * 
 	 * @see #getFileStore()
 	 * @generated
 	 * @ordered
@@ -95,6 +98,7 @@ public abstract class ScaFileSystemImpl< F extends FileSystem > extends CorbaObj
 	 * The cached value of the '{@link #getChildren() <em>Children</em>}' containment reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * 
 	 * @see #getChildren()
 	 * @generated
 	 * @ordered
@@ -105,6 +109,7 @@ public abstract class ScaFileSystemImpl< F extends FileSystem > extends CorbaObj
 	 * The default value of the '{@link #getImageDesc() <em>Image Desc</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * 
 	 * @see #getImageDesc()
 	 * @generated
 	 * @ordered
@@ -115,6 +120,7 @@ public abstract class ScaFileSystemImpl< F extends FileSystem > extends CorbaObj
 	 * The cached value of the '{@link #getImageDesc() <em>Image Desc</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * 
 	 * @see #getImageDesc()
 	 * @generated
 	 * @ordered
@@ -125,6 +131,7 @@ public abstract class ScaFileSystemImpl< F extends FileSystem > extends CorbaObj
 	 * This is true if the Image Desc attribute has been set.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 * @ordered
 	 */
@@ -134,6 +141,7 @@ public abstract class ScaFileSystemImpl< F extends FileSystem > extends CorbaObj
 	 * The default value of the '{@link #isDirectory() <em>Directory</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * 
 	 * @see #isDirectory()
 	 * @generated NOT
 	 * @ordered
@@ -144,6 +152,7 @@ public abstract class ScaFileSystemImpl< F extends FileSystem > extends CorbaObj
 	 * The cached value of the '{@link #isDirectory() <em>Directory</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * 
 	 * @see #isDirectory()
 	 * @generated
 	 * @ordered
@@ -154,6 +163,7 @@ public abstract class ScaFileSystemImpl< F extends FileSystem > extends CorbaObj
 	 * The default value of the '{@link #getName() <em>Name</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * 
 	 * @see #getName()
 	 * @generated
 	 * @ordered
@@ -164,6 +174,7 @@ public abstract class ScaFileSystemImpl< F extends FileSystem > extends CorbaObj
 	 * The cached value of the '{@link #getName() <em>Name</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * 
 	 * @see #getName()
 	 * @generated
 	 * @ordered
@@ -174,6 +185,7 @@ public abstract class ScaFileSystemImpl< F extends FileSystem > extends CorbaObj
 	 * The default value of the '{@link #getFileSystemURI() <em>File System URI</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * 
 	 * @see #getFileSystemURI()
 	 * @generated
 	 * @ordered
@@ -184,6 +196,7 @@ public abstract class ScaFileSystemImpl< F extends FileSystem > extends CorbaObj
 	 * The cached value of the '{@link #getFileSystemURI() <em>File System URI</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * 
 	 * @see #getFileSystemURI()
 	 * @generated
 	 * @ordered
@@ -193,6 +206,7 @@ public abstract class ScaFileSystemImpl< F extends FileSystem > extends CorbaObj
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	protected ScaFileSystemImpl() {
@@ -202,6 +216,7 @@ public abstract class ScaFileSystemImpl< F extends FileSystem > extends CorbaObj
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -211,9 +226,10 @@ public abstract class ScaFileSystemImpl< F extends FileSystem > extends CorbaObj
 
 	/**
 	 * <!-- begin-user-doc -->
+	 * 
 	 * @since 18.0
-	 * <!-- end-user-doc -->
-	 * This is specialized for the more specific type known in this context.
+	 *        <!-- end-user-doc -->
+	 *        This is specialized for the more specific type known in this context.
 	 * @generated
 	 */
 	@Override
@@ -224,6 +240,7 @@ public abstract class ScaFileSystemImpl< F extends FileSystem > extends CorbaObj
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -234,6 +251,7 @@ public abstract class ScaFileSystemImpl< F extends FileSystem > extends CorbaObj
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -247,6 +265,7 @@ public abstract class ScaFileSystemImpl< F extends FileSystem > extends CorbaObj
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -260,6 +279,7 @@ public abstract class ScaFileSystemImpl< F extends FileSystem > extends CorbaObj
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -271,6 +291,7 @@ public abstract class ScaFileSystemImpl< F extends FileSystem > extends CorbaObj
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -281,6 +302,7 @@ public abstract class ScaFileSystemImpl< F extends FileSystem > extends CorbaObj
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -291,6 +313,7 @@ public abstract class ScaFileSystemImpl< F extends FileSystem > extends CorbaObj
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -306,6 +329,7 @@ public abstract class ScaFileSystemImpl< F extends FileSystem > extends CorbaObj
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -321,6 +345,7 @@ public abstract class ScaFileSystemImpl< F extends FileSystem > extends CorbaObj
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -331,6 +356,7 @@ public abstract class ScaFileSystemImpl< F extends FileSystem > extends CorbaObj
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -341,8 +367,9 @@ public abstract class ScaFileSystemImpl< F extends FileSystem > extends CorbaObj
 	/**
 	 * The default value of the '{@link #getRootFileStore() <em>Root File Store</em>}' attribute.
 	 * <!-- begin-user-doc -->
+	 * 
 	 * @since 9.0
-	 * <!-- end-user-doc -->
+	 *        <!-- end-user-doc -->
 	 * @see #getRootFileStore()
 	 * @generated NOT
 	 * @ordered
@@ -353,6 +380,7 @@ public abstract class ScaFileSystemImpl< F extends FileSystem > extends CorbaObj
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * 
 	 * @generated NOT
 	 */
 	@Override
@@ -363,6 +391,7 @@ public abstract class ScaFileSystemImpl< F extends FileSystem > extends CorbaObj
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -373,6 +402,7 @@ public abstract class ScaFileSystemImpl< F extends FileSystem > extends CorbaObj
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -386,6 +416,7 @@ public abstract class ScaFileSystemImpl< F extends FileSystem > extends CorbaObj
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -395,8 +426,9 @@ public abstract class ScaFileSystemImpl< F extends FileSystem > extends CorbaObj
 
 	/**
 	 * <!-- begin-user-doc -->
+	 * 
 	 * @since 14.0
-	 * <!-- end-user-doc -->
+	 *        <!-- end-user-doc -->
 	 * @generated
 	 */
 	public void setFileSystemURIGen(URI newFileSystemURI) {
@@ -408,8 +440,9 @@ public abstract class ScaFileSystemImpl< F extends FileSystem > extends CorbaObj
 
 	/**
 	 * <!-- begin-user-doc -->
+	 * 
 	 * @since 9.0
-	 * <!-- end-user-doc -->
+	 *        <!-- end-user-doc -->
 	 * @generated NOT
 	 */
 	@Override
@@ -432,8 +465,9 @@ public abstract class ScaFileSystemImpl< F extends FileSystem > extends CorbaObj
 
 	/**
 	 * <!-- begin-user-doc -->
+	 * 
 	 * @since 14.0
-	 * <!-- end-user-doc -->
+	 *        <!-- end-user-doc -->
 	 * @generated NOT
 	 */
 	@Override
@@ -460,8 +494,9 @@ public abstract class ScaFileSystemImpl< F extends FileSystem > extends CorbaObj
 
 	/**
 	 * <!-- begin-user-doc -->
+	 * 
 	 * @since 14.0
-	 * <!-- end-user-doc -->
+	 *        <!-- end-user-doc -->
 	 * @generated NOT
 	 */
 	@Override
@@ -573,6 +608,7 @@ public abstract class ScaFileSystemImpl< F extends FileSystem > extends CorbaObj
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -587,6 +623,7 @@ public abstract class ScaFileSystemImpl< F extends FileSystem > extends CorbaObj
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -611,6 +648,7 @@ public abstract class ScaFileSystemImpl< F extends FileSystem > extends CorbaObj
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@SuppressWarnings("unchecked")
@@ -643,6 +681,7 @@ public abstract class ScaFileSystemImpl< F extends FileSystem > extends CorbaObj
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -673,6 +712,7 @@ public abstract class ScaFileSystemImpl< F extends FileSystem > extends CorbaObj
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -697,6 +737,7 @@ public abstract class ScaFileSystemImpl< F extends FileSystem > extends CorbaObj
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -729,6 +770,7 @@ public abstract class ScaFileSystemImpl< F extends FileSystem > extends CorbaObj
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -761,6 +803,7 @@ public abstract class ScaFileSystemImpl< F extends FileSystem > extends CorbaObj
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override

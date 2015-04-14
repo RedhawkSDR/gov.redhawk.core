@@ -57,6 +57,14 @@ public class PropertiesEditorPrfItemProviderAdapterFactory extends PrfItemProvid
 	}
 
 	@Override
+	public Adapter createSimpleSequenceRefAdapter() {
+		if (this.simpleSequenceRefItemProvider == null) {
+			this.simpleSequenceRefItemProvider = new PropertiesEditorSimpleSequenceRefItemProvider(this);
+		}
+		return this.simpleSequenceRefItemProvider;
+	}
+
+	@Override
 	public Adapter createStructValueAdapter() {
 		if (this.structValueItemProvider == null) {
 			this.structValueItemProvider = new PropertiesEditorStructValueItemProvider(this);

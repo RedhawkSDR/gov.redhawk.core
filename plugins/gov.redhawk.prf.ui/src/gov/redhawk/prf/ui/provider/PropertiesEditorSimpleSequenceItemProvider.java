@@ -46,7 +46,7 @@ public class PropertiesEditorSimpleSequenceItemProvider extends SimpleSequenceIt
 	@Override
 	protected Command createAddCommand(final EditingDomain domain, final EObject owner, final EStructuralFeature feature, final Collection< ? > collection,
 	        final int index) {
-		if (feature == PrfPackage.Literals.PROPERTIES__SIMPLE_SEQUENCE) {
+		if (feature == PrfPackage.Literals.PROPERTIES__SIMPLE_SEQUENCE || feature == PrfPackage.Literals.STRUCT__SIMPLE_SEQUENCE) {
 			final SimpleSequence sequence = (SimpleSequence) collection.toArray()[0];
 			sequence.setType(PropertyValueType.STRING);
 			sequence.setMode(AccessType.READWRITE);
@@ -60,4 +60,5 @@ public class PropertiesEditorSimpleSequenceItemProvider extends SimpleSequenceIt
 		}
 		return super.createAddCommand(domain, owner, feature, collection, index);
 	}
+	
 }

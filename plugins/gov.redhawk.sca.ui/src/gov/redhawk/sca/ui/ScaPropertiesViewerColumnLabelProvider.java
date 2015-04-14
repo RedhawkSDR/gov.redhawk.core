@@ -76,4 +76,10 @@ public class ScaPropertiesViewerColumnLabelProvider extends TreeColumnViewerLabe
 	public int getToolTipTimeDisplayed(final Object object) {
 		return 5000;
 	}
+	
+	@Override
+	public String getText(Object element) {
+		return super.getText(element);
+	}
+	
 }

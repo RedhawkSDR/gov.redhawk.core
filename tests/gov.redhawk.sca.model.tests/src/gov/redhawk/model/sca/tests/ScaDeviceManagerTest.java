@@ -15,16 +15,12 @@ import gov.redhawk.model.sca.ScaDevice;
 import gov.redhawk.model.sca.ScaDeviceManager;
 import gov.redhawk.model.sca.commands.ScaModelCommand;
 import gov.redhawk.model.sca.tests.stubs.ScaTestConstaints;
-
 import org.junit.Assert;
-
 import junit.textui.TestRunner;
-
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.transaction.RunnableWithResult;
 import org.omg.PortableServer.POAPackage.ServantNotActive;
-
 import CF.Device;
 import CF.DeviceManagerHelper;
 import CF.InvalidObjectReference;
@@ -37,34 +33,45 @@ import CF.PortSupplierPackage.UnknownPort;
  * <p>
  * The following features are tested:
  * <ul>
- *   <li>{@link gov.redhawk.model.sca.ScaDeviceManager#getRootDevices() <em>Root Devices</em>}</li>
- *   <li>{@link gov.redhawk.model.sca.ScaDeviceManager#getChildDevices() <em>Child Devices</em>}</li>
- *   <li>{@link gov.redhawk.model.sca.ScaDeviceManager#getAllDevices() <em>All Devices</em>}</li>
- *   <li>{@link gov.redhawk.model.sca.ScaDeviceManager#getIdentifier() <em>Identifier</em>}</li>
- *   <li>{@link gov.redhawk.model.sca.ScaDeviceManager#getLabel() <em>Label</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.ScaDeviceManager#getRootDevices() <em>Root Devices</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.ScaDeviceManager#getChildDevices() <em>Child Devices</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.ScaDeviceManager#getAllDevices() <em>All Devices</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.ScaDeviceManager#getIdentifier() <em>Identifier</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.ScaDeviceManager#getLabel() <em>Label</em>}</li>
  * </ul>
  * </p>
  * <p>
  * The following operations are tested:
  * <ul>
- *   <li>{@link gov.redhawk.model.sca.ScaDeviceManager#getDevice(java.lang.String) <em>Get Device</em>}</li>
- *   <li>{@link gov.redhawk.model.sca.ScaDeviceManager#fetchDevices(org.eclipse.core.runtime.IProgressMonitor) <em>Fetch Devices</em>}</li>
- *   <li>{@link gov.redhawk.model.sca.ScaDeviceManager#fetchFileSystem(org.eclipse.core.runtime.IProgressMonitor) <em>Fetch File System</em>}</li>
- *   <li>{@link gov.redhawk.model.sca.ScaDeviceManager#fetchIdentifier(org.eclipse.core.runtime.IProgressMonitor) <em>Fetch Identifier</em>}</li>
- *   <li>{@link gov.redhawk.model.sca.ScaDeviceManager#fetchLabel(org.eclipse.core.runtime.IProgressMonitor) <em>Fetch Label</em>}</li>
- *   <li>{@link gov.redhawk.model.sca.ScaDeviceManager#fetchServices(org.eclipse.core.runtime.IProgressMonitor) <em>Fetch Services</em>}</li>
- *   <li>{@link gov.redhawk.model.sca.ScaDeviceManager#registerScaService(org.omg.CORBA.Object, java.lang.String) <em>Register Sca Service</em>}</li>
- *   <li>{@link gov.redhawk.model.sca.ScaDeviceManager#getScaService(java.lang.String) <em>Get Sca Service</em>}</li>
- *   <li>{@link gov.redhawk.model.sca.ScaDeviceManager#fetchProfile(org.eclipse.core.runtime.IProgressMonitor) <em>Fetch Profile</em>}</li>
- *   <li>{@link gov.redhawk.model.sca.ScaPortContainer#getScaPort(java.lang.String) <em>Get Sca Port</em>}</li>
- *   <li>{@link gov.redhawk.model.sca.ScaPortContainer#fetchPorts(org.eclipse.core.runtime.IProgressMonitor) <em>Fetch Ports</em>}</li>
- *   <li>{@link CF.DeviceManagerOperations#registerDevice(CF.Device) <em>Register Device</em>}</li>
- *   <li>{@link CF.DeviceManagerOperations#unregisterDevice(CF.Device) <em>Unregister Device</em>}</li>
- *   <li>{@link CF.DeviceManagerOperations#shutdown() <em>Shutdown</em>}</li>
- *   <li>{@link CF.DeviceManagerOperations#registerService(org.omg.CORBA.Object, java.lang.String) <em>Register Service</em>}</li>
- *   <li>{@link CF.DeviceManagerOperations#unregisterService(org.omg.CORBA.Object, java.lang.String) <em>Unregister Service</em>}</li>
- *   <li>{@link CF.DeviceManagerOperations#getComponentImplementationId(java.lang.String) <em>Get Component Implementation Id</em>}</li>
- *   <li>{@link CF.PortSupplierOperations#getPort(java.lang.String) <em>Get Port</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.ScaDeviceManager#getDevice(java.lang.String) <em>Get Device</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.ScaDeviceManager#fetchDevices(org.eclipse.core.runtime.IProgressMonitor) <em>Fetch
+ * Devices</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.ScaDeviceManager#fetchFileSystem(org.eclipse.core.runtime.IProgressMonitor)
+ * <em>Fetch File System</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.ScaDeviceManager#fetchIdentifier(org.eclipse.core.runtime.IProgressMonitor)
+ * <em>Fetch Identifier</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.ScaDeviceManager#fetchLabel(org.eclipse.core.runtime.IProgressMonitor) <em>Fetch
+ * Label</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.ScaDeviceManager#fetchServices(org.eclipse.core.runtime.IProgressMonitor) <em>Fetch
+ * Services</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.ScaDeviceManager#registerScaService(org.omg.CORBA.Object, java.lang.String)
+ * <em>Register Sca Service</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.ScaDeviceManager#getScaService(java.lang.String) <em>Get Sca Service</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.ScaDeviceManager#fetchProfile(org.eclipse.core.runtime.IProgressMonitor) <em>Fetch
+ * Profile</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.ScaPortContainer#getScaPort(java.lang.String) <em>Get Sca Port</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.ScaPortContainer#fetchPorts(org.eclipse.core.runtime.IProgressMonitor) <em>Fetch
+ * Ports</em>}</li>
+ * <li>{@link CF.DeviceManagerOperations#registerDevice(CF.Device) <em>Register Device</em>}</li>
+ * <li>{@link CF.DeviceManagerOperations#unregisterDevice(CF.Device) <em>Unregister Device</em>}</li>
+ * <li>{@link CF.DeviceManagerOperations#shutdown() <em>Shutdown</em>}</li>
+ * <li>{@link CF.DeviceManagerOperations#registerService(org.omg.CORBA.Object, java.lang.String) <em>Register
+ * Service</em>}</li>
+ * <li>{@link CF.DeviceManagerOperations#unregisterService(org.omg.CORBA.Object, java.lang.String) <em>Unregister
+ * Service</em>}</li>
+ * <li>{@link CF.DeviceManagerOperations#getComponentImplementationId(java.lang.String) <em>Get Component Implementation
+ * Id</em>}</li>
+ * <li>{@link CF.PortSupplierOperations#getPort(java.lang.String) <em>Get Port</em>}</li>
  * </ul>
  * </p>
  * @generated
@@ -98,7 +105,7 @@ public class ScaDeviceManagerTest extends ScaPropertyContainerTest {
 	 */
 	@Override
 	protected ScaDeviceManager getFixture() {
-		return (ScaDeviceManager)fixture;
+		return (ScaDeviceManager) fixture;
 	}
 
 	private TestEnvirornment env;
@@ -144,7 +151,8 @@ public class ScaDeviceManagerTest extends ScaPropertyContainerTest {
 	}
 
 	/**
-	 * Tests the '{@link gov.redhawk.model.sca.ScaDeviceManager#getChildDevices() <em>Child Devices</em>}' feature getter.
+	 * Tests the '{@link gov.redhawk.model.sca.ScaDeviceManager#getChildDevices() <em>Child Devices</em>}' feature
+	 * getter.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @see gov.redhawk.model.sca.ScaDeviceManager#getChildDevices()
@@ -191,27 +199,27 @@ public class ScaDeviceManagerTest extends ScaPropertyContainerTest {
 		});
 		// BEGIN GENERATED CODE
 	}
-	
+
 	@Override
 	public void testExists() {
 		Assert.assertTrue(getFixture().exists());
 	}
-	
+
 	@Override
 	public void testDispose() {
 		// PASS
 	}
-	
+
 	@Override
 	public void testFetchAttributes__IProgressMonitor() throws InterruptedException {
 		getFixture().fetchAttributes(null);
 	}
-	
+
 	@Override
 	public void testSetCorbaObj__Object() {
 		// PASS
 	}
-	
+
 	@Override
 	public void testGetProfileObj() {
 		Assert.assertNotNull(getFixture().getProfileObj());
@@ -273,7 +281,8 @@ public class ScaDeviceManagerTest extends ScaPropertyContainerTest {
 	}
 
 	/**
-	 * Tests the '{@link gov.redhawk.model.sca.ScaDeviceManager#setIdentifier(java.lang.String) <em>Identifier</em>}' feature setter.
+	 * Tests the '{@link gov.redhawk.model.sca.ScaDeviceManager#setIdentifier(java.lang.String) <em>Identifier</em>}'
+	 * feature setter.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @see gov.redhawk.model.sca.ScaDeviceManager#setIdentifier(java.lang.String)
@@ -282,15 +291,15 @@ public class ScaDeviceManagerTest extends ScaPropertyContainerTest {
 	public void testSetIdentifier() {
 		final String id = getFixture().getIdentifier();
 		ScaModelCommand.execute(getFixture(), new ScaModelCommand() {
-			
+
 			@Override
 			public void execute() {
-				getFixture().setIdentifier(null);	
+				getFixture().setIdentifier(null);
 			}
 		});
 		Assert.assertNull(getFixture().getIdentifier());
 		ScaModelCommand.execute(getFixture(), new ScaModelCommand() {
-			
+
 			@Override
 			public void execute() {
 				getFixture().setIdentifier(id);
@@ -308,7 +317,7 @@ public class ScaDeviceManagerTest extends ScaPropertyContainerTest {
 	 */
 	public void testUnsetIdentifier() {
 		ScaModelCommand.execute(getFixture(), new ScaModelCommand() {
-			
+
 			@Override
 			public void execute() {
 				getFixture().unsetIdentifier();
@@ -345,7 +354,8 @@ public class ScaDeviceManagerTest extends ScaPropertyContainerTest {
 	}
 
 	/**
-	 * Tests the '{@link gov.redhawk.model.sca.ScaDeviceManager#setLabel(java.lang.String) <em>Label</em>}' feature setter.
+	 * Tests the '{@link gov.redhawk.model.sca.ScaDeviceManager#setLabel(java.lang.String) <em>Label</em>}' feature
+	 * setter.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @see gov.redhawk.model.sca.ScaDeviceManager#setLabel(java.lang.String)
@@ -354,16 +364,16 @@ public class ScaDeviceManagerTest extends ScaPropertyContainerTest {
 	public void testSetLabel() {
 		final String objLabel = getFixture().getLabel();
 		ScaModelCommand.execute(getFixture(), new ScaModelCommand() {
-			
+
 			@Override
 			public void execute() {
 				getFixture().setLabel(null);
 			}
 		});
-		
+
 		Assert.assertNull(getFixture().getLabel());
 		ScaModelCommand.execute(getFixture(), new ScaModelCommand() {
-			
+
 			@Override
 			public void execute() {
 				getFixture().setLabel(objLabel);
@@ -381,13 +391,13 @@ public class ScaDeviceManagerTest extends ScaPropertyContainerTest {
 	 */
 	public void testUnsetLabel() {
 		ScaModelCommand.execute(getFixture(), new ScaModelCommand() {
-			
+
 			@Override
 			public void execute() {
 				getFixture().unsetLabel();
 			}
 		});
-		
+
 		Assert.assertFalse(getFixture().isSetLabel());
 	}
 
@@ -405,7 +415,8 @@ public class ScaDeviceManagerTest extends ScaPropertyContainerTest {
 	}
 
 	/**
-	 * Tests the '{@link gov.redhawk.model.sca.ScaDeviceManager#getDevice(java.lang.String) <em>Get Device</em>}' operation.
+	 * Tests the '{@link gov.redhawk.model.sca.ScaDeviceManager#getDevice(java.lang.String) <em>Get Device</em>}'
+	 * operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @see gov.redhawk.model.sca.ScaDeviceManager#getDevice(java.lang.String)
@@ -417,20 +428,21 @@ public class ScaDeviceManagerTest extends ScaPropertyContainerTest {
 		Assert.assertNull(getFixture().getDevice("badPort"));
 		// BEGIN GENERATED CODE
 	}
-	
+
 	/**
 	 * @generated NOT
 	 */
 	public void testFetchDevices__IProgressMonitor__RefreshDepth() throws InterruptedException {
 		getFixture().fetchDevices(null, null);
-		
+
 	}
 
 	/**
-	 * Tests the '{@link gov.redhawk.model.sca.ScaDeviceManager#fetchDevices(org.eclipse.core.runtime.IProgressMonitor) <em>Fetch Devices</em>}' operation.
+	 * Tests the '{@link gov.redhawk.model.sca.ScaDeviceManager#fetchDevices(org.eclipse.core.runtime.IProgressMonitor)
+	 * <em>Fetch Devices</em>}' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @throws InterruptedException 
+	 * @throws InterruptedException
 	 * @see gov.redhawk.model.sca.ScaDeviceManager#fetchDevices(org.eclipse.core.runtime.IProgressMonitor)
 	 * @generated NOT
 	 */
@@ -474,14 +486,16 @@ public class ScaDeviceManagerTest extends ScaPropertyContainerTest {
 		}
 		// BEGIN GENERATED CODE
 	}
-	
+
 	@Override
 	public void testRefreshWithNullAndDispose() throws InterruptedException {
 		// PASS
 	}
 
 	/**
-	 * Tests the '{@link gov.redhawk.model.sca.ScaDeviceManager#fetchFileSystem(org.eclipse.core.runtime.IProgressMonitor) <em>Fetch File System</em>}' operation.
+	 * Tests the '
+	 * {@link gov.redhawk.model.sca.ScaDeviceManager#fetchFileSystem(org.eclipse.core.runtime.IProgressMonitor)
+	 * <em>Fetch File System</em>}' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @see gov.redhawk.model.sca.ScaDeviceManager#fetchFileSystem(org.eclipse.core.runtime.IProgressMonitor)
@@ -494,7 +508,9 @@ public class ScaDeviceManagerTest extends ScaPropertyContainerTest {
 	}
 
 	/**
-	 * Tests the '{@link gov.redhawk.model.sca.ScaDeviceManager#fetchIdentifier(org.eclipse.core.runtime.IProgressMonitor) <em>Fetch Identifier</em>}' operation.
+	 * Tests the '
+	 * {@link gov.redhawk.model.sca.ScaDeviceManager#fetchIdentifier(org.eclipse.core.runtime.IProgressMonitor)
+	 * <em>Fetch Identifier</em>}' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @see gov.redhawk.model.sca.ScaDeviceManager#fetchIdentifier(org.eclipse.core.runtime.IProgressMonitor)
@@ -507,7 +523,8 @@ public class ScaDeviceManagerTest extends ScaPropertyContainerTest {
 	}
 
 	/**
-	 * Tests the '{@link gov.redhawk.model.sca.ScaDeviceManager#fetchLabel(org.eclipse.core.runtime.IProgressMonitor) <em>Fetch Label</em>}' operation.
+	 * Tests the '{@link gov.redhawk.model.sca.ScaDeviceManager#fetchLabel(org.eclipse.core.runtime.IProgressMonitor)
+	 * <em>Fetch Label</em>}' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @see gov.redhawk.model.sca.ScaDeviceManager#fetchLabel(org.eclipse.core.runtime.IProgressMonitor)
@@ -520,10 +537,11 @@ public class ScaDeviceManagerTest extends ScaPropertyContainerTest {
 	}
 
 	/**
-	 * Tests the '{@link gov.redhawk.model.sca.ScaDeviceManager#fetchPorts(org.eclipse.core.runtime.IProgressMonitor) <em>Fetch Ports</em>}' operation.
+	 * Tests the '{@link gov.redhawk.model.sca.ScaDeviceManager#fetchPorts(org.eclipse.core.runtime.IProgressMonitor)
+	 * <em>Fetch Ports</em>}' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @throws InterruptedException 
+	 * @throws InterruptedException
 	 * @see gov.redhawk.model.sca.ScaDeviceManager#fetchPorts(org.eclipse.core.runtime.IProgressMonitor)
 	 * @generated NOT
 	 */
@@ -534,10 +552,12 @@ public class ScaDeviceManagerTest extends ScaPropertyContainerTest {
 	}
 
 	/**
-	 * Tests the '{@link gov.redhawk.model.sca.ScaDeviceManager#fetchServices(org.eclipse.core.runtime.IProgressMonitor) <em>Fetch Services</em>}' operation.
+	 * Tests the '
+	 * {@link gov.redhawk.model.sca.ScaDeviceManager#fetchServices(org.eclipse.core.runtime.IProgressMonitor) <em>Fetch
+	 * Services</em>}' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @throws InterruptedException 
+	 * @throws InterruptedException
 	 * @see gov.redhawk.model.sca.ScaDeviceManager#fetchServices(org.eclipse.core.runtime.IProgressMonitor)
 	 * @generated NOT
 	 */
@@ -548,10 +568,12 @@ public class ScaDeviceManagerTest extends ScaPropertyContainerTest {
 	}
 
 	/**
-	 * Tests the '{@link gov.redhawk.model.sca.ScaDeviceManager#registerScaService(org.omg.CORBA.Object, java.lang.String) <em>Register Sca Service</em>}' operation.
+	 * Tests the '
+	 * {@link gov.redhawk.model.sca.ScaDeviceManager#registerScaService(org.omg.CORBA.Object, java.lang.String)
+	 * <em>Register Sca Service</em>}' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @throws InvalidObjectReference 
+	 * @throws InvalidObjectReference
 	 * @see gov.redhawk.model.sca.ScaDeviceManager#registerScaService(org.omg.CORBA.Object, java.lang.String)
 	 * @generated NOT
 	 */
@@ -567,7 +589,8 @@ public class ScaDeviceManagerTest extends ScaPropertyContainerTest {
 	}
 
 	/**
-	 * Tests the '{@link gov.redhawk.model.sca.ScaDeviceManager#getScaPort(java.lang.String) <em>Get Sca Port</em>}' operation.
+	 * Tests the '{@link gov.redhawk.model.sca.ScaDeviceManager#getScaPort(java.lang.String) <em>Get Sca Port</em>}'
+	 * operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @see gov.redhawk.model.sca.ScaDeviceManager#getScaPort(java.lang.String)
@@ -580,7 +603,8 @@ public class ScaDeviceManagerTest extends ScaPropertyContainerTest {
 	}
 
 	/**
-	 * Tests the '{@link gov.redhawk.model.sca.ScaDeviceManager#getScaService(java.lang.String) <em>Get Sca Service</em>}' operation.
+	 * Tests the '{@link gov.redhawk.model.sca.ScaDeviceManager#getScaService(java.lang.String) <em>Get Sca
+	 * Service</em>}' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @see gov.redhawk.model.sca.ScaDeviceManager#getScaService(java.lang.String)
@@ -593,7 +617,8 @@ public class ScaDeviceManagerTest extends ScaPropertyContainerTest {
 	}
 
 	/**
-	 * Tests the '{@link gov.redhawk.model.sca.ScaDeviceManager#fetchProfile(org.eclipse.core.runtime.IProgressMonitor) <em>Fetch Profile</em>}' operation.
+	 * Tests the '{@link gov.redhawk.model.sca.ScaDeviceManager#fetchProfile(org.eclipse.core.runtime.IProgressMonitor)
+	 * <em>Fetch Profile</em>}' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @see gov.redhawk.model.sca.ScaDeviceManager#fetchProfile(org.eclipse.core.runtime.IProgressMonitor)
@@ -606,10 +631,11 @@ public class ScaDeviceManagerTest extends ScaPropertyContainerTest {
 	}
 
 	/**
-	 * Tests the '{@link mil.jpeojtrs.sca.cf.DeviceManagerOperations#registerDevice(mil.jpeojtrs.sca.cf.Device) <em>Register Device</em>}' operation.
+	 * Tests the '{@link mil.jpeojtrs.sca.cf.DeviceManagerOperations#registerDevice(mil.jpeojtrs.sca.cf.Device)
+	 * <em>Register Device</em>}' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @throws InvalidObjectReference 
+	 * @throws InvalidObjectReference
 	 * @see mil.jpeojtrs.sca.cf.DeviceManagerOperations#registerDevice(mil.jpeojtrs.sca.cf.Device)
 	 * @generated NOT
 	 */
@@ -620,10 +646,11 @@ public class ScaDeviceManagerTest extends ScaPropertyContainerTest {
 	}
 
 	/**
-	 * Tests the '{@link mil.jpeojtrs.sca.cf.DeviceManagerOperations#unregisterDevice(mil.jpeojtrs.sca.cf.Device) <em>Unregister Device</em>}' operation.
+	 * Tests the '{@link mil.jpeojtrs.sca.cf.DeviceManagerOperations#unregisterDevice(mil.jpeojtrs.sca.cf.Device)
+	 * <em>Unregister Device</em>}' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @throws InvalidObjectReference 
+	 * @throws InvalidObjectReference
 	 * @see mil.jpeojtrs.sca.cf.DeviceManagerOperations#unregisterDevice(mil.jpeojtrs.sca.cf.Device)
 	 * @generated NOT
 	 */
@@ -645,12 +672,14 @@ public class ScaDeviceManagerTest extends ScaPropertyContainerTest {
 	}
 
 	/**
-	 * Tests the '{@link mil.jpeojtrs.sca.cf.DeviceManagerOperations#registerService(org.omg.CORBA.Object, java.lang.String) <em>Register Service</em>}' operation.
+	 * Tests the '
+	 * {@link mil.jpeojtrs.sca.cf.DeviceManagerOperations#registerService(org.omg.CORBA.Object, java.lang.String)
+	 * <em>Register Service</em>}' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @throws InvalidObjectReference 
-	 * @throws Exception 
-	 * @throws ServantNotActive 
+	 * @throws InvalidObjectReference
+	 * @throws Exception
+	 * @throws ServantNotActive
 	 * @see mil.jpeojtrs.sca.cf.DeviceManagerOperations#registerService(org.omg.CORBA.Object, java.lang.String)
 	 * @generated NOT
 	 */
@@ -666,10 +695,12 @@ public class ScaDeviceManagerTest extends ScaPropertyContainerTest {
 	}
 
 	/**
-	 * Tests the '{@link mil.jpeojtrs.sca.cf.DeviceManagerOperations#unregisterService(org.omg.CORBA.Object, java.lang.String) <em>Unregister Service</em>}' operation.
+	 * Tests the '
+	 * {@link mil.jpeojtrs.sca.cf.DeviceManagerOperations#unregisterService(org.omg.CORBA.Object, java.lang.String)
+	 * <em>Unregister Service</em>}' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @throws InvalidObjectReference 
+	 * @throws InvalidObjectReference
 	 * @see mil.jpeojtrs.sca.cf.DeviceManagerOperations#unregisterService(org.omg.CORBA.Object, java.lang.String)
 	 * @generated NOT
 	 */
@@ -685,7 +716,8 @@ public class ScaDeviceManagerTest extends ScaPropertyContainerTest {
 	}
 
 	/**
-	 * Tests the '{@link mil.jpeojtrs.sca.cf.DeviceManagerOperations#getComponentImplementationId(java.lang.String) <em>Get Component Implementation Id</em>}' operation.
+	 * Tests the '{@link mil.jpeojtrs.sca.cf.DeviceManagerOperations#getComponentImplementationId(java.lang.String)
+	 * <em>Get Component Implementation Id</em>}' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @see mil.jpeojtrs.sca.cf.DeviceManagerOperations#getComponentImplementationId(java.lang.String)
@@ -700,10 +732,11 @@ public class ScaDeviceManagerTest extends ScaPropertyContainerTest {
 	}
 
 	/**
-	 * Tests the '{@link mil.jpeojtrs.sca.cf.PortSupplierOperations#getPort(java.lang.String) <em>Get Port</em>}' operation.
+	 * Tests the '{@link mil.jpeojtrs.sca.cf.PortSupplierOperations#getPort(java.lang.String) <em>Get Port</em>}'
+	 * operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @throws UnknownPort 
+	 * @throws UnknownPort
 	 * @see mil.jpeojtrs.sca.cf.PortSupplierOperations#getPort(java.lang.String)
 	 * @generated NOT
 	 */
@@ -718,4 +751,4 @@ public class ScaDeviceManagerTest extends ScaPropertyContainerTest {
 		return DeviceManagerHelper.id();
 	}
 
-} //ScaDeviceManagerTest
+} // ScaDeviceManagerTest

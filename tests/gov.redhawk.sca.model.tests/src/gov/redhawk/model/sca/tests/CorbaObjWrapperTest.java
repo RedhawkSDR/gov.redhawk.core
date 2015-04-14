@@ -22,16 +22,18 @@ import org.junit.Assert;
  * <p>
  * The following features are tested:
  * <ul>
- *   <li>{@link gov.redhawk.model.sca.CorbaObjWrapper#getIor() <em>Ior</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.CorbaObjWrapper#getIor() <em>Ior</em>}</li>
  * </ul>
  * </p>
  * <p>
  * The following operations are tested:
  * <ul>
- *   <li>{@link gov.redhawk.model.sca.CorbaObjWrapper#exists() <em>Exists</em>}</li>
- *   <li>{@link gov.redhawk.model.sca.CorbaObjWrapper#fetchAttributes(org.eclipse.core.runtime.IProgressMonitor) <em>Fetch Attributes</em>}</li>
- *   <li>{@link gov.redhawk.model.sca.CorbaObjWrapper#fetchNarrowedObject(org.eclipse.core.runtime.IProgressMonitor) <em>Fetch Narrowed Object</em>}</li>
- *   <li>{@link gov.redhawk.model.sca.CorbaObjWrapper#_is_a(java.lang.String) <em>is a</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.CorbaObjWrapper#exists() <em>Exists</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.CorbaObjWrapper#fetchAttributes(org.eclipse.core.runtime.IProgressMonitor) <em>Fetch
+ * Attributes</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.CorbaObjWrapper#fetchNarrowedObject(org.eclipse.core.runtime.IProgressMonitor)
+ * <em>Fetch Narrowed Object</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.CorbaObjWrapper#_is_a(java.lang.String) <em>is a</em>}</li>
  * </ul>
  * </p>
  * @generated
@@ -55,8 +57,8 @@ public abstract class CorbaObjWrapperTest extends DataProviderObjectTest {
 	 * @generated
 	 */
 	@Override
-	protected CorbaObjWrapper<?> getFixture() {
-		return (CorbaObjWrapper<?>)fixture;
+	protected CorbaObjWrapper< ? > getFixture() {
+		return (CorbaObjWrapper< ? >) fixture;
 	}
 
 	/**
@@ -84,22 +86,22 @@ public abstract class CorbaObjWrapperTest extends DataProviderObjectTest {
 		getFixture().fetchNarrowedObject(null);
 		final String ior = getFixture().getIor();
 		ScaModelCommand.execute(getFixture(), new ScaModelCommand() {
-			
+
 			@Override
 			public void execute() {
 				getFixture().setIor(null);
 			}
 		});
-		
+
 		Assert.assertNull(getFixture().getIor());
 		ScaModelCommand.execute(getFixture(), new ScaModelCommand() {
-			
+
 			@Override
 			public void execute() {
 				getFixture().setIor(ior);
 			}
 		});
-		
+
 		Assert.assertEquals(ior, getFixture().getIor());
 	}
 
@@ -114,13 +116,13 @@ public abstract class CorbaObjWrapperTest extends DataProviderObjectTest {
 		getFixture().fetchNarrowedObject(null);
 		Assert.assertTrue(getFixture().isSetIor());
 		ScaModelCommand.execute(getFixture(), new ScaModelCommand() {
-			
+
 			@Override
 			public void execute() {
 				getFixture().unsetIor();
 			}
 		});
-		
+
 		Assert.assertFalse(getFixture().isSetIor());
 		Assert.assertNull(getFixture().getIor());
 	}
@@ -140,7 +142,8 @@ public abstract class CorbaObjWrapperTest extends DataProviderObjectTest {
 	}
 
 	/**
-	 * Tests the '{@link gov.redhawk.model.sca.CorbaObjWrapper#setCorbaObj(org.omg.CORBA.Object) <em>Set Corba Obj</em>}' operation.
+	 * Tests the '{@link gov.redhawk.model.sca.CorbaObjWrapper#setCorbaObj(org.omg.CORBA.Object) <em>Set Corba Obj</em>}
+	 * ' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @see gov.redhawk.model.sca.CorbaObjWrapper#setCorbaObj(org.omg.CORBA.Object)
@@ -178,10 +181,12 @@ public abstract class CorbaObjWrapperTest extends DataProviderObjectTest {
 	}
 
 	/**
-	 * Tests the '{@link gov.redhawk.model.sca.CorbaObjWrapper#fetchAttributes(org.eclipse.core.runtime.IProgressMonitor) <em>Fetch Attributes</em>}' operation.
+	 * Tests the '
+	 * {@link gov.redhawk.model.sca.CorbaObjWrapper#fetchAttributes(org.eclipse.core.runtime.IProgressMonitor) <em>Fetch
+	 * Attributes</em>}' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @throws InterruptedException 
+	 * @throws InterruptedException
 	 * @see gov.redhawk.model.sca.CorbaObjWrapper#fetchAttributes(org.eclipse.core.runtime.IProgressMonitor)
 	 * @generated NOT
 	 */
@@ -192,7 +197,9 @@ public abstract class CorbaObjWrapperTest extends DataProviderObjectTest {
 	}
 
 	/**
-	 * Tests the '{@link gov.redhawk.model.sca.CorbaObjWrapper#fetchNarrowedObject(org.eclipse.core.runtime.IProgressMonitor) <em>Fetch Narrowed Object</em>}' operation.
+	 * Tests the '
+	 * {@link gov.redhawk.model.sca.CorbaObjWrapper#fetchNarrowedObject(org.eclipse.core.runtime.IProgressMonitor)
+	 * <em>Fetch Narrowed Object</em>}' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @see gov.redhawk.model.sca.CorbaObjWrapper#fetchNarrowedObject(org.eclipse.core.runtime.IProgressMonitor)
@@ -222,25 +229,25 @@ public abstract class CorbaObjWrapperTest extends DataProviderObjectTest {
 	}
 
 	protected abstract String getRepId();
-	
+
 	public void testRefreshWithNullAndDispose() throws InterruptedException {
 		final org.omg.CORBA.Object obj = getFixture().getCorbaObj();
 		ScaModelCommand.execute(getFixture(), new ScaModelCommand() {
-			
+
 			@Override
 			public void execute() {
-			    getFixture().setCorbaObj(null);	
+				getFixture().setCorbaObj(null);
 			}
 		});
-	    super.testRefresh__IProgressMonitor_RefreshDepth();
-	    ScaModelCommand.execute(getFixture(), new ScaModelCommand() {
-			
+		super.testRefresh__IProgressMonitor_RefreshDepth();
+		ScaModelCommand.execute(getFixture(), new ScaModelCommand() {
+
 			@Override
 			public void execute() {
 				getFixture().setCorbaObj(obj);
 			}
 		});
-	    
+
 	}
 
-} //CorbaObjWrapperTest
+} // CorbaObjWrapperTest

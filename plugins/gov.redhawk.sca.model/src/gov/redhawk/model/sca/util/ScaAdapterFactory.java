@@ -81,6 +81,7 @@ import gov.redhawk.model.sca.*;
  * <!-- begin-user-doc --> The <b>Adapter Factory</b> for the model. It provides
  * an adapter <code>createXXX</code> method for each class of the model. <!--
  * end-user-doc -->
+ * 
  * @see gov.redhawk.model.sca.ScaPackage
  * @generated
  */
@@ -90,6 +91,7 @@ public class ScaAdapterFactory extends AdapterFactoryImpl {
 	 * The cached model package.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	protected static ScaPackage modelPackage;
@@ -98,6 +100,7 @@ public class ScaAdapterFactory extends AdapterFactoryImpl {
 	 * Creates an instance of the adapter factory.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public ScaAdapterFactory() {
@@ -112,6 +115,7 @@ public class ScaAdapterFactory extends AdapterFactoryImpl {
 	 * This implementation returns <code>true</code> if the object is either the model's package or is an instance
 	 * object of the model.
 	 * <!-- end-user-doc -->
+	 * 
 	 * @return whether this factory is applicable for the type of the object.
 	 * @generated
 	 */
@@ -130,6 +134,7 @@ public class ScaAdapterFactory extends AdapterFactoryImpl {
 	 * The switch that delegates to the <code>createXXX</code> methods.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	protected ScaSwitch<Adapter> modelSwitch = new ScaSwitch<Adapter>() {
@@ -418,6 +423,7 @@ public class ScaAdapterFactory extends AdapterFactoryImpl {
 	 * Creates an adapter for the <code>target</code>.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * 
 	 * @param target the object to adapt.
 	 * @return the adapter for the <code>target</code>.
 	 * @generated_NOT
@@ -431,12 +437,13 @@ public class ScaAdapterFactory extends AdapterFactoryImpl {
 	}
 
 	/**
-	 * Creates a new adapter for an object of class '{@link gov.redhawk.model.sca.CorbaObjWrapper <em>Corba Obj
-	 * Wrapper</em>}'.
+	 * Creates a new adapter for an object of class '{@link gov.redhawk.model.sca.CorbaObjWrapper
+	 * <em>Corba Obj Wrapper</em>}'.
 	 * <!-- begin-user-doc -->
 	 * This default implementation returns null so that we can easily ignore cases;
 	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
 	 * <!-- end-user-doc -->
+	 * 
 	 * @return the new adapter.
 	 * @see gov.redhawk.model.sca.CorbaObjWrapper
 	 * @generated
@@ -446,12 +453,13 @@ public class ScaAdapterFactory extends AdapterFactoryImpl {
 	}
 
 	/**
-	 * Creates a new adapter for an object of class '{@link gov.redhawk.model.sca.DataProviderObject <em>Data Provider
-	 * Object</em>}'.
+	 * Creates a new adapter for an object of class '{@link gov.redhawk.model.sca.DataProviderObject
+	 * <em>Data Provider Object</em>}'.
 	 * <!-- begin-user-doc -->
 	 * This default implementation returns null so that we can easily ignore cases;
 	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
 	 * <!-- end-user-doc -->
+	 * 
 	 * @return the new adapter.
 	 * @see gov.redhawk.model.sca.DataProviderObject
 	 * @generated
@@ -466,6 +474,7 @@ public class ScaAdapterFactory extends AdapterFactoryImpl {
 	 * This default implementation returns null so that we can easily ignore cases;
 	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
 	 * <!-- end-user-doc -->
+	 * 
 	 * @return the new adapter.
 	 * @see gov.redhawk.model.sca.IDisposable
 	 * @generated
@@ -475,12 +484,13 @@ public class ScaAdapterFactory extends AdapterFactoryImpl {
 	}
 
 	/**
-	 * Creates a new adapter for an object of class '{@link gov.redhawk.model.sca.ProfileObjectWrapper <em>Profile
-	 * Object Wrapper</em>}'.
+	 * Creates a new adapter for an object of class '{@link gov.redhawk.model.sca.ProfileObjectWrapper
+	 * <em>Profile Object Wrapper</em>}'.
 	 * <!-- begin-user-doc -->
 	 * This default implementation returns null so that we can easily ignore cases;
 	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
 	 * <!-- end-user-doc -->
+	 * 
 	 * @return the new adapter.
 	 * @see gov.redhawk.model.sca.ProfileObjectWrapper
 	 * @generated
@@ -495,6 +505,7 @@ public class ScaAdapterFactory extends AdapterFactoryImpl {
 	 * This default implementation returns null so that we can easily ignore cases;
 	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
 	 * <!-- end-user-doc -->
+	 * 
 	 * @return the new adapter.
 	 * @see gov.redhawk.model.sca.Properties
 	 * @generated
@@ -504,12 +515,13 @@ public class ScaAdapterFactory extends AdapterFactoryImpl {
 	}
 
 	/**
-	 * Creates a new adapter for an object of class '{@link gov.redhawk.model.sca.ScaAbstractComponent <em>Abstract
-	 * Component</em>}'.
+	 * Creates a new adapter for an object of class '{@link gov.redhawk.model.sca.ScaAbstractComponent
+	 * <em>Abstract Component</em>}'.
 	 * <!-- begin-user-doc -->
 	 * This default implementation returns null so that we can easily ignore cases;
 	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
 	 * <!-- end-user-doc -->
+	 * 
 	 * @return the new adapter.
 	 * @see gov.redhawk.model.sca.ScaAbstractComponent
 	 * @generated
@@ -519,12 +531,13 @@ public class ScaAdapterFactory extends AdapterFactoryImpl {
 	}
 
 	/**
-	 * Creates a new adapter for an object of class '{@link gov.redhawk.model.sca.ScaPropertyContainer <em>Property
-	 * Container</em>}'.
+	 * Creates a new adapter for an object of class '{@link gov.redhawk.model.sca.ScaPropertyContainer
+	 * <em>Property Container</em>}'.
 	 * <!-- begin-user-doc -->
 	 * This default implementation returns null so that we can easily ignore cases;
 	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
 	 * <!-- end-user-doc -->
+	 * 
 	 * @return the new adapter.
 	 * @see gov.redhawk.model.sca.ScaPropertyContainer
 	 * @generated
@@ -534,12 +547,13 @@ public class ScaAdapterFactory extends AdapterFactoryImpl {
 	}
 
 	/**
-	 * Creates a new adapter for an object of class '{@link gov.redhawk.model.sca.ScaPortContainer <em>Port
-	 * Container</em>}'.
+	 * Creates a new adapter for an object of class '{@link gov.redhawk.model.sca.ScaPortContainer
+	 * <em>Port Container</em>}'.
 	 * <!-- begin-user-doc -->
 	 * This default implementation returns null so that we can easily ignore cases;
 	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
 	 * <!-- end-user-doc -->
+	 * 
 	 * @return the new adapter.
 	 * @see gov.redhawk.model.sca.ScaPortContainer
 	 * @generated
@@ -549,12 +563,13 @@ public class ScaAdapterFactory extends AdapterFactoryImpl {
 	}
 
 	/**
-	 * Creates a new adapter for an object of class '{@link gov.redhawk.model.sca.ScaAbstractProperty <em>Abstract
-	 * Property</em>}'.
+	 * Creates a new adapter for an object of class '{@link gov.redhawk.model.sca.ScaAbstractProperty
+	 * <em>Abstract Property</em>}'.
 	 * <!-- begin-user-doc -->
 	 * This default implementation returns null so that we can easily ignore cases;
 	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
 	 * <!-- end-user-doc -->
+	 * 
 	 * @return the new adapter.
 	 * @see gov.redhawk.model.sca.ScaAbstractProperty
 	 * @generated
@@ -569,6 +584,7 @@ public class ScaAdapterFactory extends AdapterFactoryImpl {
 	 * This default implementation returns null so that we can easily ignore cases;
 	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
 	 * <!-- end-user-doc -->
+	 * 
 	 * @return the new adapter.
 	 * @see gov.redhawk.model.sca.ScaComponent
 	 * @generated
@@ -583,6 +599,7 @@ public class ScaAdapterFactory extends AdapterFactoryImpl {
 	 * This default implementation returns null so that we can easily ignore cases;
 	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
 	 * <!-- end-user-doc -->
+	 * 
 	 * @return the new adapter.
 	 * @see gov.redhawk.model.sca.ScaDevice
 	 * @generated
@@ -592,12 +609,13 @@ public class ScaAdapterFactory extends AdapterFactoryImpl {
 	}
 
 	/**
-	 * Creates a new adapter for an object of class '{@link gov.redhawk.model.sca.ScaDeviceManager <em>Device
-	 * Manager</em>}'.
+	 * Creates a new adapter for an object of class '{@link gov.redhawk.model.sca.ScaDeviceManager
+	 * <em>Device Manager</em>}'.
 	 * <!-- begin-user-doc -->
 	 * This default implementation returns null so that we can easily ignore cases;
 	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
 	 * <!-- end-user-doc -->
+	 * 
 	 * @return the new adapter.
 	 * @see gov.redhawk.model.sca.ScaDeviceManager
 	 * @generated
@@ -612,6 +630,7 @@ public class ScaAdapterFactory extends AdapterFactoryImpl {
 	 * This default implementation returns null so that we can easily ignore cases;
 	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
 	 * <!-- end-user-doc -->
+	 * 
 	 * @return the new adapter.
 	 * @see gov.redhawk.model.sca.ScaService
 	 * @generated
@@ -621,12 +640,13 @@ public class ScaAdapterFactory extends AdapterFactoryImpl {
 	}
 
 	/**
-	 * Creates a new adapter for an object of class '{@link gov.redhawk.model.sca.ScaDeviceManagerFileSystem <em>Device
-	 * Manager File System</em>}'.
+	 * Creates a new adapter for an object of class '{@link gov.redhawk.model.sca.ScaDeviceManagerFileSystem
+	 * <em>Device Manager File System</em>}'.
 	 * <!-- begin-user-doc -->
 	 * This default implementation returns null so that we can easily ignore cases;
 	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
 	 * <!-- end-user-doc -->
+	 * 
 	 * @return the new adapter.
 	 * @see gov.redhawk.model.sca.ScaDeviceManagerFileSystem
 	 * @generated
@@ -636,12 +656,13 @@ public class ScaAdapterFactory extends AdapterFactoryImpl {
 	}
 
 	/**
-	 * Creates a new adapter for an object of class '{@link gov.redhawk.model.sca.ScaDocumentRoot <em>Document
-	 * Root</em>}'.
+	 * Creates a new adapter for an object of class '{@link gov.redhawk.model.sca.ScaDocumentRoot
+	 * <em>Document Root</em>}'.
 	 * <!-- begin-user-doc -->
 	 * This default implementation returns null so that we can easily ignore cases;
 	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
 	 * <!-- end-user-doc -->
+	 * 
 	 * @return the new adapter.
 	 * @see gov.redhawk.model.sca.ScaDocumentRoot
 	 * @generated
@@ -651,12 +672,13 @@ public class ScaAdapterFactory extends AdapterFactoryImpl {
 	}
 
 	/**
-	 * Creates a new adapter for an object of class '{@link gov.redhawk.model.sca.ScaDomainManager <em>Domain
-	 * Manager</em>}'.
+	 * Creates a new adapter for an object of class '{@link gov.redhawk.model.sca.ScaDomainManager
+	 * <em>Domain Manager</em>}'.
 	 * <!-- begin-user-doc -->
 	 * This default implementation returns null so that we can easily ignore cases;
 	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
 	 * <!-- end-user-doc -->
+	 * 
 	 * @return the new adapter.
 	 * @see gov.redhawk.model.sca.ScaDomainManager
 	 * @generated
@@ -666,12 +688,13 @@ public class ScaAdapterFactory extends AdapterFactoryImpl {
 	}
 
 	/**
-	 * Creates a new adapter for an object of class '{@link gov.redhawk.model.sca.ScaDomainManagerFileSystem <em>Domain
-	 * Manager File System</em>}'.
+	 * Creates a new adapter for an object of class '{@link gov.redhawk.model.sca.ScaDomainManagerFileSystem
+	 * <em>Domain Manager File System</em>}'.
 	 * <!-- begin-user-doc -->
 	 * This default implementation returns null so that we can easily ignore cases;
 	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
 	 * <!-- end-user-doc -->
+	 * 
 	 * @return the new adapter.
 	 * @see gov.redhawk.model.sca.ScaDomainManagerFileSystem
 	 * @generated
@@ -681,12 +704,13 @@ public class ScaAdapterFactory extends AdapterFactoryImpl {
 	}
 
 	/**
-	 * Creates a new adapter for an object of class '{@link gov.redhawk.model.sca.ScaDomainManagerRegistry <em>Domain
-	 * Manager Registry</em>}'.
+	 * Creates a new adapter for an object of class '{@link gov.redhawk.model.sca.ScaDomainManagerRegistry
+	 * <em>Domain Manager Registry</em>}'.
 	 * <!-- begin-user-doc -->
 	 * This default implementation returns null so that we can easily ignore cases;
 	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
 	 * <!-- end-user-doc -->
+	 * 
 	 * @return the new adapter.
 	 * @see gov.redhawk.model.sca.ScaDomainManagerRegistry
 	 * @generated
@@ -696,12 +720,13 @@ public class ScaAdapterFactory extends AdapterFactoryImpl {
 	}
 
 	/**
-	 * Creates a new adapter for an object of class '{@link gov.redhawk.model.sca.ScaExecutableDevice <em>Executable
-	 * Device</em>}'.
+	 * Creates a new adapter for an object of class '{@link gov.redhawk.model.sca.ScaExecutableDevice
+	 * <em>Executable Device</em>}'.
 	 * <!-- begin-user-doc -->
 	 * This default implementation returns null so that we can easily ignore cases;
 	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
 	 * <!-- end-user-doc -->
+	 * 
 	 * @return the new adapter.
 	 * @see gov.redhawk.model.sca.ScaExecutableDevice
 	 * @generated
@@ -717,6 +742,7 @@ public class ScaAdapterFactory extends AdapterFactoryImpl {
 	 * This default implementation returns null so that we can easily ignore cases;
 	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
 	 * <!-- end-user-doc -->
+	 * 
 	 * @return the new adapter.
 	 * @see gov.redhawk.model.sca.ScaFileManager
 	 * @generated
@@ -731,6 +757,7 @@ public class ScaAdapterFactory extends AdapterFactoryImpl {
 	 * This default implementation returns null so that we can easily ignore cases;
 	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
 	 * <!-- end-user-doc -->
+	 * 
 	 * @return the new adapter.
 	 * @see gov.redhawk.model.sca.ScaFileStore
 	 * @generated
@@ -745,6 +772,7 @@ public class ScaAdapterFactory extends AdapterFactoryImpl {
 	 * This default implementation returns null so that we can easily ignore cases;
 	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
 	 * <!-- end-user-doc -->
+	 * 
 	 * @return the new adapter.
 	 * @see gov.redhawk.model.sca.ScaFileSystem
 	 * @generated
@@ -754,12 +782,13 @@ public class ScaAdapterFactory extends AdapterFactoryImpl {
 	}
 
 	/**
-	 * Creates a new adapter for an object of class '{@link gov.redhawk.model.sca.ScaLoadableDevice <em>Loadable
-	 * Device</em>}'.
+	 * Creates a new adapter for an object of class '{@link gov.redhawk.model.sca.ScaLoadableDevice
+	 * <em>Loadable Device</em>}'.
 	 * <!-- begin-user-doc -->
 	 * This default implementation returns null so that we can easily ignore cases;
 	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
 	 * <!-- end-user-doc -->
+	 * 
 	 * @return the new adapter.
 	 * @see gov.redhawk.model.sca.ScaLoadableDevice
 	 * @generated
@@ -774,6 +803,7 @@ public class ScaAdapterFactory extends AdapterFactoryImpl {
 	 * This default implementation returns null so that we can easily ignore cases;
 	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
 	 * <!-- end-user-doc -->
+	 * 
 	 * @return the new adapter.
 	 * @see gov.redhawk.model.sca.ScaPort
 	 * @generated
@@ -783,12 +813,13 @@ public class ScaAdapterFactory extends AdapterFactoryImpl {
 	}
 
 	/**
-	 * Creates a new adapter for an object of class '{@link gov.redhawk.model.sca.ScaProvidesPort <em>Provides
-	 * Port</em>}'.
+	 * Creates a new adapter for an object of class '{@link gov.redhawk.model.sca.ScaProvidesPort
+	 * <em>Provides Port</em>}'.
 	 * <!-- begin-user-doc -->
 	 * This default implementation returns null so that we can easily ignore cases;
 	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
 	 * <!-- end-user-doc -->
+	 * 
 	 * @return the new adapter.
 	 * @see gov.redhawk.model.sca.ScaProvidesPort
 	 * @generated
@@ -798,12 +829,13 @@ public class ScaAdapterFactory extends AdapterFactoryImpl {
 	}
 
 	/**
-	 * Creates a new adapter for an object of class '{@link gov.redhawk.model.sca.ScaSimpleProperty <em>Simple
-	 * Property</em>}'.
+	 * Creates a new adapter for an object of class '{@link gov.redhawk.model.sca.ScaSimpleProperty
+	 * <em>Simple Property</em>}'.
 	 * <!-- begin-user-doc -->
 	 * This default implementation returns null so that we can easily ignore cases;
 	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
 	 * <!-- end-user-doc -->
+	 * 
 	 * @return the new adapter.
 	 * @see gov.redhawk.model.sca.ScaSimpleProperty
 	 * @generated
@@ -813,12 +845,13 @@ public class ScaAdapterFactory extends AdapterFactoryImpl {
 	}
 
 	/**
-	 * Creates a new adapter for an object of class '{@link gov.redhawk.model.sca.ScaSimpleSequenceProperty <em>Simple
-	 * Sequence Property</em>}'.
+	 * Creates a new adapter for an object of class '{@link gov.redhawk.model.sca.ScaSimpleSequenceProperty
+	 * <em>Simple Sequence Property</em>}'.
 	 * <!-- begin-user-doc -->
 	 * This default implementation returns null so that we can easily ignore cases;
 	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
 	 * <!-- end-user-doc -->
+	 * 
 	 * @return the new adapter.
 	 * @see gov.redhawk.model.sca.ScaSimpleSequenceProperty
 	 * @generated
@@ -828,12 +861,13 @@ public class ScaAdapterFactory extends AdapterFactoryImpl {
 	}
 
 	/**
-	 * Creates a new adapter for an object of class '{@link gov.redhawk.model.sca.ScaStructProperty <em>Struct
-	 * Property</em>}'.
+	 * Creates a new adapter for an object of class '{@link gov.redhawk.model.sca.ScaStructProperty
+	 * <em>Struct Property</em>}'.
 	 * <!-- begin-user-doc -->
 	 * This default implementation returns null so that we can easily ignore cases;
 	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
 	 * <!-- end-user-doc -->
+	 * 
 	 * @return the new adapter.
 	 * @see gov.redhawk.model.sca.ScaStructProperty
 	 * @generated
@@ -848,6 +882,7 @@ public class ScaAdapterFactory extends AdapterFactoryImpl {
 	 * This default implementation returns null so that we can easily ignore cases;
 	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
 	 * <!-- end-user-doc -->
+	 * 
 	 * @return the new adapter.
 	 * @see gov.redhawk.model.sca.ScaUsesPort
 	 * @generated
@@ -862,6 +897,7 @@ public class ScaAdapterFactory extends AdapterFactoryImpl {
 	 * This default implementation returns null so that we can easily ignore cases;
 	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
 	 * <!-- end-user-doc -->
+	 * 
 	 * @return the new adapter.
 	 * @see gov.redhawk.model.sca.ScaConnection
 	 * @generated
@@ -876,6 +912,7 @@ public class ScaAdapterFactory extends AdapterFactoryImpl {
 	 * This default implementation returns null so that we can easily ignore cases;
 	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
 	 * <!-- end-user-doc -->
+	 * 
 	 * @return the new adapter.
 	 * @see gov.redhawk.model.sca.ScaWaveform
 	 * @generated
@@ -885,12 +922,13 @@ public class ScaAdapterFactory extends AdapterFactoryImpl {
 	}
 
 	/**
-	 * Creates a new adapter for an object of class '{@link gov.redhawk.model.sca.ScaWaveformFactory <em>Waveform
-	 * Factory</em>}'.
+	 * Creates a new adapter for an object of class '{@link gov.redhawk.model.sca.ScaWaveformFactory
+	 * <em>Waveform Factory</em>}'.
 	 * <!-- begin-user-doc -->
 	 * This default implementation returns null so that we can easily ignore cases;
 	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
 	 * <!-- end-user-doc -->
+	 * 
 	 * @return the new adapter.
 	 * @see gov.redhawk.model.sca.ScaWaveformFactory
 	 * @generated
@@ -905,6 +943,7 @@ public class ScaAdapterFactory extends AdapterFactoryImpl {
 	 * This default implementation returns null so that we can easily ignore cases;
 	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
 	 * <!-- end-user-doc -->
+	 * 
 	 * @return the new adapter.
 	 * @see java.util.Map.Entry
 	 * @generated
@@ -914,12 +953,13 @@ public class ScaAdapterFactory extends AdapterFactoryImpl {
 	}
 
 	/**
-	 * Creates a new adapter for an object of class '{@link gov.redhawk.model.sca.ScaStructSequenceProperty <em>Struct
-	 * Sequence Property</em>}'.
+	 * Creates a new adapter for an object of class '{@link gov.redhawk.model.sca.ScaStructSequenceProperty
+	 * <em>Struct Sequence Property</em>}'.
 	 * <!-- begin-user-doc -->
 	 * This default implementation returns null so that we can easily ignore cases;
 	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
 	 * <!-- end-user-doc -->
+	 * 
 	 * @return the new adapter.
 	 * @see gov.redhawk.model.sca.ScaStructSequenceProperty
 	 * @generated
@@ -929,12 +969,13 @@ public class ScaAdapterFactory extends AdapterFactoryImpl {
 	}
 
 	/**
-	 * Creates a new adapter for an object of class '{@link gov.redhawk.model.sca.IStatusProvider <em>IStatus
-	 * Provider</em>}'.
+	 * Creates a new adapter for an object of class '{@link gov.redhawk.model.sca.IStatusProvider
+	 * <em>IStatus Provider</em>}'.
 	 * <!-- begin-user-doc -->
 	 * This default implementation returns null so that we can easily ignore cases;
 	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
 	 * <!-- end-user-doc -->
+	 * 
 	 * @return the new adapter.
 	 * @see gov.redhawk.model.sca.IStatusProvider
 	 * @generated
@@ -944,13 +985,14 @@ public class ScaAdapterFactory extends AdapterFactoryImpl {
 	}
 
 	/**
-	 * Creates a new adapter for an object of class '{@link org.omg.CosEventChannelAdmin.EventChannel <em>Event
-	 * Channel</em>}'.
+	 * Creates a new adapter for an object of class '{@link org.omg.CosEventChannelAdmin.EventChannel
+	 * <em>Event Channel</em>}'.
 	 * <!-- begin-user-doc -->
 	 * This default implementation returns null so that we can easily ignore cases;
 	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * 
 	 * @since 19.0
-	 * <!-- end-user-doc -->
+	 *        <!-- end-user-doc -->
 	 * @return the new adapter.
 	 * @see org.omg.CosEventChannelAdmin.EventChannel
 	 * @generated
@@ -965,6 +1007,7 @@ public class ScaAdapterFactory extends AdapterFactoryImpl {
 	 * This default implementation returns null so that we can easily ignore cases;
 	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
 	 * <!-- end-user-doc -->
+	 * 
 	 * @return the new adapter.
 	 * @see gov.redhawk.model.sca.IRefreshable
 	 * @generated
@@ -974,13 +1017,14 @@ public class ScaAdapterFactory extends AdapterFactoryImpl {
 	}
 
 	/**
-	 * Creates a new adapter for an object of class '{@link gov.redhawk.model.sca.ScaEventChannel <em>Event
-	 * Channel</em>}'.
+	 * Creates a new adapter for an object of class '{@link gov.redhawk.model.sca.ScaEventChannel
+	 * <em>Event Channel</em>}'.
 	 * <!-- begin-user-doc -->
 	 * This default implementation returns null so that we can easily ignore cases;
 	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * 
 	 * @since 19.0
-	 * <!-- end-user-doc -->
+	 *        <!-- end-user-doc -->
 	 * @return the new adapter.
 	 * @see gov.redhawk.model.sca.ScaEventChannel
 	 * @generated
@@ -994,8 +1038,9 @@ public class ScaAdapterFactory extends AdapterFactoryImpl {
 	 * <!-- begin-user-doc -->
 	 * This default implementation returns null so that we can easily ignore cases;
 	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * 
 	 * @since 19.0
-	 * <!-- end-user-doc -->
+	 *        <!-- end-user-doc -->
 	 * @return the new adapter.
 	 * @see java.util.Map.Entry
 	 * @generated
@@ -1010,6 +1055,7 @@ public class ScaAdapterFactory extends AdapterFactoryImpl {
 	 * This default implementation returns null so that we can easily ignore cases;
 	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
 	 * <!-- end-user-doc -->
+	 * 
 	 * @return the new adapter.
 	 * @see CF.PropertySetOperations
 	 * @generated
@@ -1024,6 +1070,7 @@ public class ScaAdapterFactory extends AdapterFactoryImpl {
 	 * This default implementation returns null so that we can easily ignore cases;
 	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
 	 * <!-- end-user-doc -->
+	 * 
 	 * @return the new adapter.
 	 * @see CF.LifeCycleOperations
 	 * @generated
@@ -1033,12 +1080,13 @@ public class ScaAdapterFactory extends AdapterFactoryImpl {
 	}
 
 	/**
-	 * Creates a new adapter for an object of class '{@link CF.TestableObjectOperations <em>Testable Object
-	 * Operations</em>}'.
+	 * Creates a new adapter for an object of class '{@link CF.TestableObjectOperations
+	 * <em>Testable Object Operations</em>}'.
 	 * <!-- begin-user-doc -->
 	 * This default implementation returns null so that we can easily ignore cases;
 	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
 	 * <!-- end-user-doc -->
+	 * 
 	 * @return the new adapter.
 	 * @see CF.TestableObjectOperations
 	 * @generated
@@ -1054,6 +1102,7 @@ public class ScaAdapterFactory extends AdapterFactoryImpl {
 	 * This default implementation returns null so that we can easily ignore cases;
 	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
 	 * <!-- end-user-doc -->
+	 * 
 	 * @return the new adapter.
 	 * @see CF.PortSupplierOperations
 	 * @generated
@@ -1068,6 +1117,7 @@ public class ScaAdapterFactory extends AdapterFactoryImpl {
 	 * This default implementation returns null so that we can easily ignore cases;
 	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
 	 * <!-- end-user-doc -->
+	 * 
 	 * @return the new adapter.
 	 * @see CF.ResourceOperations
 	 * @generated
@@ -1082,6 +1132,7 @@ public class ScaAdapterFactory extends AdapterFactoryImpl {
 	 * This default implementation returns null so that we can easily ignore cases;
 	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
 	 * <!-- end-user-doc -->
+	 * 
 	 * @return the new adapter.
 	 * @see CF.DeviceOperations
 	 * @generated
@@ -1091,12 +1142,13 @@ public class ScaAdapterFactory extends AdapterFactoryImpl {
 	}
 
 	/**
-	 * Creates a new adapter for an object of class '{@link CF.DeviceManagerOperations <em>Device Manager
-	 * Operations</em>}'.
+	 * Creates a new adapter for an object of class '{@link CF.DeviceManagerOperations
+	 * <em>Device Manager Operations</em>}'.
 	 * <!-- begin-user-doc -->
 	 * This default implementation returns null so that we can easily ignore cases;
 	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
 	 * <!-- end-user-doc -->
+	 * 
 	 * @return the new adapter.
 	 * @see CF.DeviceManagerOperations
 	 * @generated
@@ -1111,6 +1163,7 @@ public class ScaAdapterFactory extends AdapterFactoryImpl {
 	 * This default implementation returns null so that we can easily ignore cases;
 	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
 	 * <!-- end-user-doc -->
+	 * 
 	 * @return the new adapter.
 	 * @see CF.FileSystemOperations
 	 * @generated
@@ -1120,12 +1173,13 @@ public class ScaAdapterFactory extends AdapterFactoryImpl {
 	}
 
 	/**
-	 * Creates a new adapter for an object of class '{@link CF.DomainManagerOperations <em>Domain Manager
-	 * Operations</em>}'.
+	 * Creates a new adapter for an object of class '{@link CF.DomainManagerOperations
+	 * <em>Domain Manager Operations</em>}'.
 	 * <!-- begin-user-doc -->
 	 * This default implementation returns null so that we can easily ignore cases;
 	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
 	 * <!-- end-user-doc -->
+	 * 
 	 * @return the new adapter.
 	 * @see CF.DomainManagerOperations
 	 * @generated
@@ -1140,6 +1194,7 @@ public class ScaAdapterFactory extends AdapterFactoryImpl {
 	 * This default implementation returns null so that we can easily ignore cases;
 	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
 	 * <!-- end-user-doc -->
+	 * 
 	 * @return the new adapter.
 	 * @see CF.FileManagerOperations
 	 * @generated
@@ -1149,12 +1204,13 @@ public class ScaAdapterFactory extends AdapterFactoryImpl {
 	}
 
 	/**
-	 * Creates a new adapter for an object of class '{@link CF.LoadableDeviceOperations <em>Loadable Device
-	 * Operations</em>}'.
+	 * Creates a new adapter for an object of class '{@link CF.LoadableDeviceOperations
+	 * <em>Loadable Device Operations</em>}'.
 	 * <!-- begin-user-doc -->
 	 * This default implementation returns null so that we can easily ignore cases;
 	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
 	 * <!-- end-user-doc -->
+	 * 
 	 * @return the new adapter.
 	 * @see CF.LoadableDeviceOperations
 	 * @generated
@@ -1164,12 +1220,13 @@ public class ScaAdapterFactory extends AdapterFactoryImpl {
 	}
 
 	/**
-	 * Creates a new adapter for an object of class '{@link CF.ExecutableDeviceOperations <em>Executable Device
-	 * Operations</em>}'.
+	 * Creates a new adapter for an object of class '{@link CF.ExecutableDeviceOperations
+	 * <em>Executable Device Operations</em>}'.
 	 * <!-- begin-user-doc -->
 	 * This default implementation returns null so that we can easily ignore cases;
 	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
 	 * <!-- end-user-doc -->
+	 * 
 	 * @return the new adapter.
 	 * @see CF.ExecutableDeviceOperations
 	 * @generated
@@ -1184,6 +1241,7 @@ public class ScaAdapterFactory extends AdapterFactoryImpl {
 	 * This default implementation returns null so that we can easily ignore cases;
 	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
 	 * <!-- end-user-doc -->
+	 * 
 	 * @return the new adapter.
 	 * @see CF.PortOperations
 	 * @generated
@@ -1198,6 +1256,7 @@ public class ScaAdapterFactory extends AdapterFactoryImpl {
 	 * This default implementation returns null so that we can easily ignore cases;
 	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
 	 * <!-- end-user-doc -->
+	 * 
 	 * @return the new adapter.
 	 * @see CF.ApplicationOperations
 	 * @generated
@@ -1207,12 +1266,13 @@ public class ScaAdapterFactory extends AdapterFactoryImpl {
 	}
 
 	/**
-	 * Creates a new adapter for an object of class '{@link CF.ApplicationFactoryOperations <em>Application Factory
-	 * Operations</em>}'.
+	 * Creates a new adapter for an object of class '{@link CF.ApplicationFactoryOperations
+	 * <em>Application Factory Operations</em>}'.
 	 * <!-- begin-user-doc -->
 	 * This default implementation returns null so that we can easily ignore cases;
 	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
 	 * <!-- end-user-doc -->
+	 * 
 	 * @return the new adapter.
 	 * @see CF.ApplicationFactoryOperations
 	 * @generated
@@ -1226,8 +1286,9 @@ public class ScaAdapterFactory extends AdapterFactoryImpl {
 	 * <!-- begin-user-doc -->
 	 * This default implementation returns null so that we can easily ignore cases;
 	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * 
 	 * @since 19.0
-	 * <!-- end-user-doc -->
+	 *        <!-- end-user-doc -->
 	 * @return the new adapter.
 	 * @see org.omg.CORBA.Object
 	 * @generated
@@ -1241,6 +1302,7 @@ public class ScaAdapterFactory extends AdapterFactoryImpl {
 	 * <!-- begin-user-doc -->
 	 * This default implementation returns null.
 	 * <!-- end-user-doc -->
+	 * 
 	 * @return the new adapter.
 	 * @generated
 	 */

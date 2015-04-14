@@ -34,10 +34,11 @@ import CF.FileSystemPackage.UnknownFileSystemProperties;
 /**
  * <!-- begin-user-doc -->
  * An implementation of the model object '<em><b>File Manager</b></em>'.
+ * 
  * @since 12.0
- * <!-- end-user-doc -->
- * <p>
- * </p>
+ *        <!-- end-user-doc -->
+ *        <p>
+ *        </p>
  *
  * @generated
  */
@@ -45,6 +46,7 @@ public abstract class ScaFileManagerImpl extends ScaFileSystemImpl<FileManager> 
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	protected ScaFileManagerImpl() {
@@ -54,6 +56,7 @@ public abstract class ScaFileManagerImpl extends ScaFileSystemImpl<FileManager> 
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override

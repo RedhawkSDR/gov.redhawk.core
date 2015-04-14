@@ -19,16 +19,17 @@ import org.eclipse.emf.ecore.EStructuralFeature;
 /**
  * <!-- begin-user-doc -->
  * A representation of the model object '<em><b>IStatus Provider</b></em>'.
+ * 
  * @since 14.0
  * @noimplement This interface is not intended to be implemented by clients.
- * <!-- end-user-doc -->
+ *              <!-- end-user-doc -->
  *
- * <p>
- * The following features are supported:
- * <ul>
- * <li>{@link gov.redhawk.model.sca.IStatusProvider#getStatus <em>Status</em>}</li>
- * </ul>
- * </p>
+ *              <p>
+ *              The following features are supported:
+ *              <ul>
+ *              <li>{@link gov.redhawk.model.sca.IStatusProvider#getStatus <em>Status</em>}</li>
+ *              </ul>
+ *              </p>
  *
  * @see gov.redhawk.model.sca.ScaPackage#getIStatusProvider()
  * @model abstract="true"
@@ -40,14 +41,15 @@ public interface IStatusProvider extends EObject {
 	 * Returns the value of the '<em><b>Status</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <p>
-	 * If the meaning of the '<em>Status</em>' attribute isn't clear,
-	 * there really should be more of a description here...
+	 * If the meaning of the '<em>Status</em>' attribute isn't clear, there really should be more of a description
+	 * here...
 	 * </p>
 	 * <!-- end-user-doc -->
+	 * 
 	 * @return the value of the '<em>Status</em>' attribute.
 	 * @see gov.redhawk.model.sca.ScaPackage#getIStatusProvider_Status()
 	 * @model dataType="gov.redhawk.model.sca.IStatus" transient="true" changeable="false" volatile="true"
-	 * derived="true"
+	 *        derived="true"
 	 * @generated
 	 */
 	IStatus getStatus();
@@ -55,6 +57,7 @@ public interface IStatusProvider extends EObject {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * 
 	 * @model statusDataType="gov.redhawk.model.sca.IStatus"
 	 * @generated
 	 */
@@ -63,6 +66,7 @@ public interface IStatusProvider extends EObject {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * 
 	 * @model
 	 * @generated
 	 */
@@ -71,6 +75,7 @@ public interface IStatusProvider extends EObject {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * 
 	 * @model dataType="gov.redhawk.model.sca.IStatus"
 	 * @generated
 	 */

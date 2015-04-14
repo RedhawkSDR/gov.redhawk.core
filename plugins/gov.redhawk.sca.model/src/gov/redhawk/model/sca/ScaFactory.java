@@ -21,8 +21,9 @@ import CF.LoadableDevice;
  * <!-- begin-user-doc -->
  * The <b>Factory</b> for the model. It provides a
  * create method for each non-abstract class of the model.
+ * 
  * @noimplement This interface is not intended to be implemented by clients.
- * <!-- end-user-doc -->
+ *              <!-- end-user-doc -->
  * @see gov.redhawk.model.sca.ScaPackage
  * @generated
  */
@@ -32,6 +33,7 @@ public interface ScaFactory extends EFactory {
 	 * The singleton instance of the factory.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	ScaFactory eINSTANCE = gov.redhawk.model.sca.impl.ScaFactoryImpl.init();
@@ -40,6 +42,7 @@ public interface ScaFactory extends EFactory {
 	 * Returns a new object of class '<em>Properties</em>'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * 
 	 * @return a new object of class '<em>Properties</em>'.
 	 * @generated
 	 */
@@ -49,6 +52,7 @@ public interface ScaFactory extends EFactory {
 	 * Returns a new object of class '<em>Component</em>'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * 
 	 * @return a new object of class '<em>Component</em>'.
 	 * @generated
 	 */
@@ -58,6 +62,7 @@ public interface ScaFactory extends EFactory {
 	 * Returns a new object of class '<em>Device</em>'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * 
 	 * @return a new object of class '<em>Device</em>'.
 	 * @generated
 	 */
@@ -67,6 +72,7 @@ public interface ScaFactory extends EFactory {
 	 * Returns a new object of class '<em>Device Manager</em>'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * 
 	 * @return a new object of class '<em>Device Manager</em>'.
 	 * @generated
 	 */
@@ -76,6 +82,7 @@ public interface ScaFactory extends EFactory {
 	 * Returns a new object of class '<em>Service</em>'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * 
 	 * @return a new object of class '<em>Service</em>'.
 	 * @generated
 	 */
@@ -85,6 +92,7 @@ public interface ScaFactory extends EFactory {
 	 * Returns a new object of class '<em>Device Manager File System</em>'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * 
 	 * @return a new object of class '<em>Device Manager File System</em>'.
 	 * @generated
 	 */
@@ -94,6 +102,7 @@ public interface ScaFactory extends EFactory {
 	 * Returns a new object of class '<em>Document Root</em>'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * 
 	 * @return a new object of class '<em>Document Root</em>'.
 	 * @generated
 	 */
@@ -103,6 +112,7 @@ public interface ScaFactory extends EFactory {
 	 * Returns a new object of class '<em>Domain Manager</em>'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * 
 	 * @return a new object of class '<em>Domain Manager</em>'.
 	 * @generated
 	 */
@@ -112,6 +122,7 @@ public interface ScaFactory extends EFactory {
 	 * Returns a new object of class '<em>Domain Manager File System</em>'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * 
 	 * @return a new object of class '<em>Domain Manager File System</em>'.
 	 * @generated
 	 */
@@ -121,6 +132,7 @@ public interface ScaFactory extends EFactory {
 	 * Returns a new object of class '<em>Domain Manager Registry</em>'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * 
 	 * @return a new object of class '<em>Domain Manager Registry</em>'.
 	 * @generated
 	 */
@@ -130,6 +142,7 @@ public interface ScaFactory extends EFactory {
 	 * Returns a new object of class '<em>Executable Device</em>'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * 
 	 * @return a new object of class '<em>Executable Device</em>'.
 	 * @generated
 	 */
@@ -139,6 +152,7 @@ public interface ScaFactory extends EFactory {
 	 * Returns a new object of class '<em>File Store</em>'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * 
 	 * @return a new object of class '<em>File Store</em>'.
 	 * @generated
 	 */
@@ -148,6 +162,7 @@ public interface ScaFactory extends EFactory {
 	 * Returns a new object of class '<em>Loadable Device</em>'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * 
 	 * @return a new object of class '<em>Loadable Device</em>'.
 	 * @generated
 	 */
@@ -157,6 +172,7 @@ public interface ScaFactory extends EFactory {
 	 * Returns a new object of class '<em>Provides Port</em>'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * 
 	 * @return a new object of class '<em>Provides Port</em>'.
 	 * @generated
 	 */
@@ -166,6 +182,7 @@ public interface ScaFactory extends EFactory {
 	 * Returns a new object of class '<em>Simple Property</em>'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * 
 	 * @return a new object of class '<em>Simple Property</em>'.
 	 * @generated
 	 */
@@ -175,6 +192,7 @@ public interface ScaFactory extends EFactory {
 	 * Returns a new object of class '<em>Simple Sequence Property</em>'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * 
 	 * @return a new object of class '<em>Simple Sequence Property</em>'.
 	 * @generated
 	 */
@@ -184,6 +202,7 @@ public interface ScaFactory extends EFactory {
 	 * Returns a new object of class '<em>Struct Property</em>'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * 
 	 * @return a new object of class '<em>Struct Property</em>'.
 	 * @generated
 	 */
@@ -193,6 +212,7 @@ public interface ScaFactory extends EFactory {
 	 * Returns a new object of class '<em>Uses Port</em>'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * 
 	 * @return a new object of class '<em>Uses Port</em>'.
 	 * @generated
 	 */
@@ -202,6 +222,7 @@ public interface ScaFactory extends EFactory {
 	 * Returns a new object of class '<em>Connection</em>'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * 
 	 * @return a new object of class '<em>Connection</em>'.
 	 * @generated
 	 */
@@ -211,6 +232,7 @@ public interface ScaFactory extends EFactory {
 	 * Returns a new object of class '<em>Waveform</em>'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * 
 	 * @return a new object of class '<em>Waveform</em>'.
 	 * @generated
 	 */
@@ -220,6 +242,7 @@ public interface ScaFactory extends EFactory {
 	 * Returns a new object of class '<em>Waveform Factory</em>'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * 
 	 * @return a new object of class '<em>Waveform Factory</em>'.
 	 * @generated
 	 */
@@ -229,6 +252,7 @@ public interface ScaFactory extends EFactory {
 	 * Returns a new object of class '<em>Struct Sequence Property</em>'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * 
 	 * @return a new object of class '<em>Struct Sequence Property</em>'.
 	 * @generated
 	 */
@@ -237,8 +261,9 @@ public interface ScaFactory extends EFactory {
 	/**
 	 * Returns a new object of class '<em>Event Channel</em>'.
 	 * <!-- begin-user-doc -->
+	 * 
 	 * @since 19.0
-	 * <!-- end-user-doc -->
+	 *        <!-- end-user-doc -->
 	 * @return a new object of class '<em>Event Channel</em>'.
 	 * @generated
 	 */
@@ -248,6 +273,7 @@ public interface ScaFactory extends EFactory {
 	 * Returns the package supported by this factory.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * 
 	 * @return the package supported by this factory.
 	 * @generated
 	 */

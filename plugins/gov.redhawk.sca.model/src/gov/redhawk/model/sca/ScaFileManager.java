@@ -18,14 +18,15 @@ import CF.FileManagerOperations;
 /**
  * <!-- begin-user-doc -->
  * A representation of the model object '<em><b>File Manager</b></em>'.
+ * 
  * @noimplement This interface is not intended to be implemented by clients.
- * <!-- end-user-doc -->
+ *              <!-- end-user-doc -->
  *
  *
  * @see gov.redhawk.model.sca.ScaPackage#getScaFileManager()
  * @model abstract="true" superTypes=
- * "gov.redhawk.model.sca.ScaFileSystem<mil.jpeojtrs.sca.cf.FileManager> mil.jpeojtrs.sca.cf.FileManagerOperations"
- * extendedMetaData="name='ScaFileManager' kind='empty'"
+ *        "gov.redhawk.model.sca.ScaFileSystem<mil.jpeojtrs.sca.cf.FileManager> mil.jpeojtrs.sca.cf.FileManagerOperations"
+ *        extendedMetaData="name='ScaFileManager' kind='empty'"
  * @generated
  */
 public interface ScaFileManager extends ScaFileSystem<FileManager>, FileManagerOperations {

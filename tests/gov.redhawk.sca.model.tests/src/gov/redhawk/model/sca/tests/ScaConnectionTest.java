@@ -26,7 +26,7 @@ import ExtendedCF.UsesConnection;
  * <p>
  * The following features are tested:
  * <ul>
- *   <li>{@link gov.redhawk.model.sca.ScaConnection#getId() <em>Id</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.ScaConnection#getId() <em>Id</em>}</li>
  * </ul>
  * </p>
  * @generated
@@ -116,4 +116,4 @@ public class ScaConnectionTest extends TestCase {
 		// BEGIN GENERATED CODE
 	}
 
-} //ScaConnectionTest
+} // ScaConnectionTest

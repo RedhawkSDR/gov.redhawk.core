@@ -36,15 +36,18 @@ import org.eclipse.emf.transaction.util.TransactionUtil;
  * <p>
  * The following features are tested:
  * <ul>
- *   <li>{@link gov.redhawk.model.sca.IStatusProvider#getStatus() <em>Status</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.IStatusProvider#getStatus() <em>Status</em>}</li>
  * </ul>
  * </p>
  * <p>
  * The following operations are tested:
  * <ul>
- *   <li>{@link gov.redhawk.model.sca.IStatusProvider#setStatus(org.eclipse.emf.ecore.EStructuralFeature, org.eclipse.core.runtime.IStatus) <em>Set Status</em>}</li>
- *   <li>{@link gov.redhawk.model.sca.IStatusProvider#clearAllStatus() <em>Clear All Status</em>}</li>
- *   <li>{@link gov.redhawk.model.sca.IStatusProvider#getStatus(org.eclipse.emf.ecore.EStructuralFeature) <em>Get Status</em>}</li>
+ * <li>
+ * {@link gov.redhawk.model.sca.IStatusProvider#setStatus(org.eclipse.emf.ecore.EStructuralFeature, org.eclipse.core.runtime.IStatus)
+ * <em>Set Status</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.IStatusProvider#clearAllStatus() <em>Clear All Status</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.IStatusProvider#getStatus(org.eclipse.emf.ecore.EStructuralFeature) <em>Get
+ * Status</em>}</li>
  * </ul>
  * </p>
  * @generated
@@ -96,7 +99,7 @@ public abstract class IStatusProviderTest extends TestCase {
 		ScaTransactionalEditingDomain scaDomain = (ScaTransactionalEditingDomain) domain;
 		ScaTransactionalCommandStack stack = (ScaTransactionalCommandStack) scaDomain.getCommandStack();
 		Assert.assertTrue(stack.isEmpty());
-	    super.tearDown();
+		super.tearDown();
 	}
 
 	/**
@@ -119,10 +122,13 @@ public abstract class IStatusProviderTest extends TestCase {
 	}
 
 	/**
-	 * Tests the '{@link gov.redhawk.model.sca.IStatusProvider#setStatus(org.eclipse.emf.ecore.EStructuralFeature, org.eclipse.core.runtime.IStatus) <em>Set Status</em>}' operation.
+	 * Tests the '
+	 * {@link gov.redhawk.model.sca.IStatusProvider#setStatus(org.eclipse.emf.ecore.EStructuralFeature, org.eclipse.core.runtime.IStatus)
+	 * <em>Set Status</em>}' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see gov.redhawk.model.sca.IStatusProvider#setStatus(org.eclipse.emf.ecore.EStructuralFeature, org.eclipse.core.runtime.IStatus)
+	 * @see gov.redhawk.model.sca.IStatusProvider#setStatus(org.eclipse.emf.ecore.EStructuralFeature,
+	 * org.eclipse.core.runtime.IStatus)
 	 * @generated NOT
 	 */
 	public void testSetStatus__EStructuralFeature_IStatus() {
@@ -159,7 +165,8 @@ public abstract class IStatusProviderTest extends TestCase {
 	}
 
 	/**
-	 * Tests the '{@link gov.redhawk.model.sca.IStatusProvider#getStatus(org.eclipse.emf.ecore.EStructuralFeature) <em>Get Status</em>}' operation.
+	 * Tests the '{@link gov.redhawk.model.sca.IStatusProvider#getStatus(org.eclipse.emf.ecore.EStructuralFeature)
+	 * <em>Get Status</em>}' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @see gov.redhawk.model.sca.IStatusProvider#getStatus(org.eclipse.emf.ecore.EStructuralFeature)
@@ -173,18 +180,18 @@ public abstract class IStatusProviderTest extends TestCase {
 
 	public void testProtected() {
 		// TODO
-//		try {
-//			this.fixture.setStatus(ScaPackage.Literals.ISTATUS_PROVIDER__STATUS, Status.CANCEL_STATUS);
-//			Assert.fail("Object not protected");
-//		} catch (final IllegalStateException e) {
-//			Assert.assertEquals("Cannot modify resource set without a write transaction", e.getMessage());
-//		}
+		// try {
+		// this.fixture.setStatus(ScaPackage.Literals.ISTATUS_PROVIDER__STATUS, Status.CANCEL_STATUS);
+		// Assert.fail("Object not protected");
+		// } catch (final IllegalStateException e) {
+		// Assert.assertEquals("Cannot modify resource set without a write transaction", e.getMessage());
+		// }
 	}
-	
+
 	public void testCommandStackEmpty() {
 		TransactionalEditingDomain editingDomain = TransactionUtil.getEditingDomain(getFixture());
 		Assert.assertTrue(editingDomain.getCommandStack() instanceof ScaTransactionalCommandStack);
-		Assert.assertTrue(((ScaTransactionalCommandStack)editingDomain.getCommandStack()).isEmpty());
+		Assert.assertTrue(((ScaTransactionalCommandStack) editingDomain.getCommandStack()).isEmpty());
 	}
 
-} //IStatusProviderTest
+} // IStatusProviderTest

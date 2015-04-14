@@ -20,9 +20,7 @@ import gov.redhawk.model.sca.commands.ScaModelCommand;
 import gov.redhawk.model.sca.tests.stubs.ScaTestConstaints;
 import org.junit.Assert;
 import junit.textui.TestRunner;
-
 import org.eclipse.emf.transaction.util.TransactionUtil;
-
 import CF.PropertySetPackage.InvalidConfiguration;
 import CF.PropertySetPackage.PartialConfiguration;
 
@@ -33,8 +31,8 @@ import CF.PropertySetPackage.PartialConfiguration;
  * <p>
  * The following operations are tested:
  * <ul>
- *   <li>{@link gov.redhawk.model.sca.ScaSimpleSequenceProperty#setValue(java.lang.Object[]) <em>Set Value</em>}</li>
- *   <li>{@link gov.redhawk.model.sca.ScaSimpleSequenceProperty#getValue() <em>Get Value</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.ScaSimpleSequenceProperty#setValue(java.lang.Object[]) <em>Set Value</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.ScaSimpleSequenceProperty#getValue() <em>Get Value</em>}</li>
  * </ul>
  * </p>
  * @generated
@@ -68,7 +66,7 @@ public class ScaSimpleSequencePropertyTest extends ScaAbstractPropertyTest {
 	 */
 	@Override
 	protected ScaSimpleSequenceProperty getFixture() {
-		return (ScaSimpleSequenceProperty)fixture;
+		return (ScaSimpleSequenceProperty) fixture;
 	}
 
 	private TestEnvirornment env;
@@ -141,7 +139,8 @@ public class ScaSimpleSequencePropertyTest extends ScaAbstractPropertyTest {
 	}
 
 	/**
-	 * Tests the '{@link gov.redhawk.model.sca.ScaSimpleSequenceProperty#setValue(java.lang.Object[]) <em>Value</em>}' feature setter.
+	 * Tests the '{@link gov.redhawk.model.sca.ScaSimpleSequenceProperty#setValue(java.lang.Object[]) <em>Value</em>}'
+	 * feature setter.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @see gov.redhawk.model.sca.ScaSimpleSequenceProperty#setValue(java.lang.Object[])
@@ -167,12 +166,13 @@ public class ScaSimpleSequencePropertyTest extends ScaAbstractPropertyTest {
 	}
 
 	/**
-	 * Tests the '{@link gov.redhawk.model.sca.ScaSimpleSequenceProperty#setRemoteValue(java.lang.Object[]) <em>Set Remote Value</em>}' operation.
+	 * Tests the '{@link gov.redhawk.model.sca.ScaSimpleSequenceProperty#setRemoteValue(java.lang.Object[]) <em>Set
+	 * Remote Value</em>}' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @throws PartialConfiguration 
-	 * @throws InvalidConfiguration 
-	 * @throws InterruptedException 
+	 * @throws PartialConfiguration
+	 * @throws InvalidConfiguration
+	 * @throws InterruptedException
 	 * @see gov.redhawk.model.sca.ScaSimpleSequenceProperty#setRemoteValue(java.lang.Object[])
 	 * @generated NOT
 	 */
@@ -183,7 +183,8 @@ public class ScaSimpleSequencePropertyTest extends ScaAbstractPropertyTest {
 	}
 
 	/**
-	 * Tests the '{@link gov.redhawk.model.sca.ScaSimpleSequenceProperty#setValue(java.lang.Object[]) <em>Set Value</em>}' operation.
+	 * Tests the '{@link gov.redhawk.model.sca.ScaSimpleSequenceProperty#setValue(java.lang.Object[]) <em>Set
+	 * Value</em>}' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @see gov.redhawk.model.sca.ScaSimpleSequenceProperty#setValue(java.lang.Object[])
@@ -202,12 +203,13 @@ public class ScaSimpleSequencePropertyTest extends ScaAbstractPropertyTest {
 	}
 
 	/**
-	 * Tests the '{@link gov.redhawk.model.sca.ScaSimpleSequenceProperty#setRemoteValue(java.lang.Object[]) <em>Set Remote Value</em>}' operation.
+	 * Tests the '{@link gov.redhawk.model.sca.ScaSimpleSequenceProperty#setRemoteValue(java.lang.Object[]) <em>Set
+	 * Remote Value</em>}' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @throws InterruptedException 
-	 * @throws PartialConfiguration 
-	 * @throws InvalidConfiguration 
+	 * @throws InterruptedException
+	 * @throws PartialConfiguration
+	 * @throws InvalidConfiguration
 	 * @see gov.redhawk.model.sca.ScaSimpleSequenceProperty#setRemoteValue(java.lang.Object[])
 	 * @generated NOT
 	 */
@@ -217,4 +219,4 @@ public class ScaSimpleSequencePropertyTest extends ScaAbstractPropertyTest {
 		// BEGIN GENERATED CODE
 	}
 
-} //ScaSimpleSequencePropertyTest
+} // ScaSimpleSequencePropertyTest

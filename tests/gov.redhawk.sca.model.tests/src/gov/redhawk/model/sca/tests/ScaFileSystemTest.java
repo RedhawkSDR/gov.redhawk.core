@@ -33,23 +33,24 @@ import CF.FileSystemPackage.UnknownFileSystemProperties;
  * <p>
  * The following features are tested:
  * <ul>
- *   <li>{@link gov.redhawk.model.sca.ScaFileSystem#getFileSystemURI() <em>File System URI</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.ScaFileSystem#getFileSystemURI() <em>File System URI</em>}</li>
  * </ul>
  * </p>
  * <p>
  * The following operations are tested:
  * <ul>
- *   <li>{@link gov.redhawk.model.sca.ScaFileSystem#createURI(java.lang.String) <em>Create URI</em>}</li>
- *   <li>{@link gov.redhawk.model.sca.ScaFileStore#fetchChildren(org.eclipse.core.runtime.IProgressMonitor) <em>Fetch Children</em>}</li>
- *   <li>{@link CF.FileSystemOperations#remove(java.lang.String) <em>Remove</em>}</li>
- *   <li>{@link CF.FileSystemOperations#copy(java.lang.String, java.lang.String) <em>Copy</em>}</li>
- *   <li>{@link CF.FileSystemOperations#exists(java.lang.String) <em>Exists</em>}</li>
- *   <li>{@link CF.FileSystemOperations#list(java.lang.String) <em>List</em>}</li>
- *   <li>{@link CF.FileSystemOperations#create(java.lang.String) <em>Create</em>}</li>
- *   <li>{@link CF.FileSystemOperations#open(java.lang.String, boolean) <em>Open</em>}</li>
- *   <li>{@link CF.FileSystemOperations#mkdir(java.lang.String) <em>Mkdir</em>}</li>
- *   <li>{@link CF.FileSystemOperations#rmdir(java.lang.String) <em>Rmdir</em>}</li>
- *   <li>{@link CF.FileSystemOperations#query(CF.PropertiesHolder) <em>Query</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.ScaFileSystem#createURI(java.lang.String) <em>Create URI</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.ScaFileStore#fetchChildren(org.eclipse.core.runtime.IProgressMonitor) <em>Fetch
+ * Children</em>}</li>
+ * <li>{@link CF.FileSystemOperations#remove(java.lang.String) <em>Remove</em>}</li>
+ * <li>{@link CF.FileSystemOperations#copy(java.lang.String, java.lang.String) <em>Copy</em>}</li>
+ * <li>{@link CF.FileSystemOperations#exists(java.lang.String) <em>Exists</em>}</li>
+ * <li>{@link CF.FileSystemOperations#list(java.lang.String) <em>List</em>}</li>
+ * <li>{@link CF.FileSystemOperations#create(java.lang.String) <em>Create</em>}</li>
+ * <li>{@link CF.FileSystemOperations#open(java.lang.String, boolean) <em>Open</em>}</li>
+ * <li>{@link CF.FileSystemOperations#mkdir(java.lang.String) <em>Mkdir</em>}</li>
+ * <li>{@link CF.FileSystemOperations#rmdir(java.lang.String) <em>Rmdir</em>}</li>
+ * <li>{@link CF.FileSystemOperations#query(CF.PropertiesHolder) <em>Query</em>}</li>
  * </ul>
  * </p>
  * @generated
@@ -73,8 +74,8 @@ public abstract class ScaFileSystemTest extends CorbaObjWrapperTest {
 	 * @generated
 	 */
 	@Override
-	protected ScaFileSystem<?> getFixture() {
-		return (ScaFileSystem<?>)fixture;
+	protected ScaFileSystem< ? > getFixture() {
+		return (ScaFileSystem< ? >) fixture;
 	}
 
 	/**
@@ -89,20 +90,20 @@ public abstract class ScaFileSystemTest extends CorbaObjWrapperTest {
 		getFixture().getChildren();
 		// BEGIN GENERATED CODE
 	}
-	
+
 	@Override
 	public void testRefreshWithNullAndDispose() throws InterruptedException {
-		
+
 	}
-	
+
 	@Override
-	public void testFetchAttributes__IProgressMonitor()
-			throws InterruptedException {
+	public void testFetchAttributes__IProgressMonitor() throws InterruptedException {
 		super.testFetchAttributes__IProgressMonitor();
 	}
 
 	/**
-	 * Tests the '{@link gov.redhawk.model.sca.ScaFileSystem#getFileSystemURI() <em>File System URI</em>}' feature getter.
+	 * Tests the '{@link gov.redhawk.model.sca.ScaFileSystem#getFileSystemURI() <em>File System URI</em>}' feature
+	 * getter.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @see gov.redhawk.model.sca.ScaFileSystem#getFileSystemURI()
@@ -115,7 +116,8 @@ public abstract class ScaFileSystemTest extends CorbaObjWrapperTest {
 	}
 
 	/**
-	 * Tests the '{@link gov.redhawk.model.sca.ScaFileSystem#setFileSystemURI(java.net.URI) <em>File System URI</em>}' feature setter.
+	 * Tests the '{@link gov.redhawk.model.sca.ScaFileSystem#setFileSystemURI(java.net.URI) <em>File System URI</em>}'
+	 * feature setter.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @see gov.redhawk.model.sca.ScaFileSystem#setFileSystemURI(java.net.URI)
@@ -124,17 +126,17 @@ public abstract class ScaFileSystemTest extends CorbaObjWrapperTest {
 	public void testSetFileSystemURI() {
 		final URI uri = getFixture().getFileSystemURI();
 		ScaModelCommand.execute(getFixture(), new ScaModelCommand() {
-			
+
 			@Override
 			public void execute() {
 				getFixture().setFileSystemURI(null);
 			}
 		});
-		
+
 		Assert.assertNull(getFixture().getFileSystemURI());
-		
+
 		ScaModelCommand.execute(getFixture(), new ScaModelCommand() {
-			
+
 			@Override
 			public void execute() {
 				getFixture().setFileSystemURI(uri);
@@ -144,7 +146,8 @@ public abstract class ScaFileSystemTest extends CorbaObjWrapperTest {
 	}
 
 	/**
-	 * Tests the '{@link gov.redhawk.model.sca.ScaFileSystem#createURI(java.lang.String) <em>Create URI</em>}' operation.
+	 * Tests the '{@link gov.redhawk.model.sca.ScaFileSystem#createURI(java.lang.String) <em>Create URI</em>}'
+	 * operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @see gov.redhawk.model.sca.ScaFileSystem#createURI(java.lang.String)
@@ -158,7 +161,8 @@ public abstract class ScaFileSystemTest extends CorbaObjWrapperTest {
 	}
 
 	/**
-	 * Tests the '{@link gov.redhawk.model.sca.ScaFileStore#fetchChildren(org.eclipse.core.runtime.IProgressMonitor) <em>Fetch Children</em>}' operation.
+	 * Tests the '{@link gov.redhawk.model.sca.ScaFileStore#fetchChildren(org.eclipse.core.runtime.IProgressMonitor)
+	 * <em>Fetch Children</em>}' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @see gov.redhawk.model.sca.ScaFileStore#fetchChildren(org.eclipse.core.runtime.IProgressMonitor)
@@ -175,18 +179,18 @@ public abstract class ScaFileSystemTest extends CorbaObjWrapperTest {
 		}
 		// BEGIN GENERATED CODE
 	}
-	
+
 	@Override
 	public void testSetCorbaObj__Object() {
-		
+
 	}
 
 	/**
 	 * Tests the '{@link mil.jpeojtrs.sca.cf.FileSystemOperations#remove(java.lang.String) <em>Remove</em>}' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @throws InvalidFileName 
-	 * @throws FileException 
+	 * @throws InvalidFileName
+	 * @throws FileException
 	 * @see mil.jpeojtrs.sca.cf.FileSystemOperations#remove(java.lang.String)
 	 * @generated NOT
 	 */
@@ -204,11 +208,12 @@ public abstract class ScaFileSystemTest extends CorbaObjWrapperTest {
 	}
 
 	/**
-	 * Tests the '{@link mil.jpeojtrs.sca.cf.FileSystemOperations#copy(java.lang.String, java.lang.String) <em>Copy</em>}' operation.
+	 * Tests the '{@link mil.jpeojtrs.sca.cf.FileSystemOperations#copy(java.lang.String, java.lang.String)
+	 * <em>Copy</em>}' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @throws FileException 
-	 * @throws InvalidFileName 
+	 * @throws FileException
+	 * @throws InvalidFileName
 	 * @see mil.jpeojtrs.sca.cf.FileSystemOperations#copy(java.lang.String, java.lang.String)
 	 * @generated NOT
 	 */
@@ -229,7 +234,7 @@ public abstract class ScaFileSystemTest extends CorbaObjWrapperTest {
 	 * Tests the '{@link mil.jpeojtrs.sca.cf.FileSystemOperations#exists(java.lang.String) <em>Exists</em>}' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @throws InvalidFileName 
+	 * @throws InvalidFileName
 	 * @see mil.jpeojtrs.sca.cf.FileSystemOperations#exists(java.lang.String)
 	 * @generated NOT
 	 */
@@ -239,7 +244,7 @@ public abstract class ScaFileSystemTest extends CorbaObjWrapperTest {
 		Assert.assertFalse(getFixture().exists("/blah/blah/blah/blah/file"));
 		// BEGIN GENERATED CODE
 	}
-	
+
 	@Override
 	public void testExists() {
 		Assert.assertTrue(getFixture().exists());
@@ -249,8 +254,8 @@ public abstract class ScaFileSystemTest extends CorbaObjWrapperTest {
 	 * Tests the '{@link mil.jpeojtrs.sca.cf.FileSystemOperations#list(java.lang.String) <em>List</em>}' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @throws InvalidFileName 
-	 * @throws FileException 
+	 * @throws InvalidFileName
+	 * @throws FileException
 	 * @see mil.jpeojtrs.sca.cf.FileSystemOperations#list(java.lang.String)
 	 * @generated NOT
 	 */
@@ -264,8 +269,8 @@ public abstract class ScaFileSystemTest extends CorbaObjWrapperTest {
 	 * Tests the '{@link mil.jpeojtrs.sca.cf.FileSystemOperations#create(java.lang.String) <em>Create</em>}' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @throws FileException 
-	 * @throws InvalidFileName 
+	 * @throws FileException
+	 * @throws InvalidFileName
 	 * @see mil.jpeojtrs.sca.cf.FileSystemOperations#create(java.lang.String)
 	 * @generated NOT
 	 */
@@ -283,11 +288,12 @@ public abstract class ScaFileSystemTest extends CorbaObjWrapperTest {
 	}
 
 	/**
-	 * Tests the '{@link mil.jpeojtrs.sca.cf.FileSystemOperations#open(java.lang.String, boolean) <em>Open</em>}' operation.
+	 * Tests the '{@link mil.jpeojtrs.sca.cf.FileSystemOperations#open(java.lang.String, boolean) <em>Open</em>}'
+	 * operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @throws FileException 
-	 * @throws InvalidFileName 
+	 * @throws FileException
+	 * @throws InvalidFileName
 	 * @see mil.jpeojtrs.sca.cf.FileSystemOperations#open(java.lang.String, boolean)
 	 * @generated NOT
 	 */
@@ -308,8 +314,8 @@ public abstract class ScaFileSystemTest extends CorbaObjWrapperTest {
 	 * Tests the '{@link mil.jpeojtrs.sca.cf.FileSystemOperations#mkdir(java.lang.String) <em>Mkdir</em>}' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @throws FileException 
-	 * @throws InvalidFileName 
+	 * @throws FileException
+	 * @throws InvalidFileName
 	 * @see mil.jpeojtrs.sca.cf.FileSystemOperations#mkdir(java.lang.String)
 	 * @generated NOT
 	 */
@@ -325,7 +331,7 @@ public abstract class ScaFileSystemTest extends CorbaObjWrapperTest {
 		}
 		// BEGIN GENERATED CODE
 	}
-	
+
 	@Override
 	public void testDispose() {
 		// PASS
@@ -335,8 +341,8 @@ public abstract class ScaFileSystemTest extends CorbaObjWrapperTest {
 	 * Tests the '{@link mil.jpeojtrs.sca.cf.FileSystemOperations#rmdir(java.lang.String) <em>Rmdir</em>}' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @throws FileException 
-	 * @throws InvalidFileName 
+	 * @throws FileException
+	 * @throws InvalidFileName
 	 * @see mil.jpeojtrs.sca.cf.FileSystemOperations#rmdir(java.lang.String)
 	 * @generated NOT
 	 */
@@ -354,10 +360,11 @@ public abstract class ScaFileSystemTest extends CorbaObjWrapperTest {
 	}
 
 	/**
-	 * Tests the '{@link mil.jpeojtrs.sca.cf.FileSystemOperations#query(mil.jpeojtrs.sca.cf.PropertiesHolder) <em>Query</em>}' operation.
+	 * Tests the '{@link mil.jpeojtrs.sca.cf.FileSystemOperations#query(mil.jpeojtrs.sca.cf.PropertiesHolder)
+	 * <em>Query</em>}' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @throws UnknownFileSystemProperties 
+	 * @throws UnknownFileSystemProperties
 	 * @see mil.jpeojtrs.sca.cf.FileSystemOperations#query(mil.jpeojtrs.sca.cf.PropertiesHolder)
 	 * @generated NOT
 	 */
@@ -369,4 +376,4 @@ public abstract class ScaFileSystemTest extends CorbaObjWrapperTest {
 		// BEGIN GENERATED CODE
 	}
 
-} //ScaFileSystemTest
+} // ScaFileSystemTest

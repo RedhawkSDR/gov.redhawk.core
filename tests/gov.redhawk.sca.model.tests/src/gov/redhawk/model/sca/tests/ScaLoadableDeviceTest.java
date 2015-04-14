@@ -26,8 +26,9 @@ import CF.LoadableDevicePackage.LoadType;
  * <p>
  * The following operations are tested:
  * <ul>
- *   <li>{@link CF.LoadableDeviceOperations#load(CF.FileSystem, java.lang.String, CF.LoadableDevicePackage.LoadType) <em>Load</em>}</li>
- *   <li>{@link CF.LoadableDeviceOperations#unload(java.lang.String) <em>Unload</em>}</li>
+ * <li>{@link CF.LoadableDeviceOperations#load(CF.FileSystem, java.lang.String, CF.LoadableDevicePackage.LoadType)
+ * <em>Load</em>}</li>
+ * <li>{@link CF.LoadableDeviceOperations#unload(java.lang.String) <em>Unload</em>}</li>
  * </ul>
  * </p>
  * @generated
@@ -60,8 +61,8 @@ public class ScaLoadableDeviceTest extends ScaDeviceTest {
 	 * @generated
 	 */
 	@Override
-	protected ScaLoadableDevice<?> getFixture() {
-		return (ScaLoadableDevice<?>)fixture;
+	protected ScaLoadableDevice< ? > getFixture() {
+		return (ScaLoadableDevice< ? >) fixture;
 	}
 
 	/**
@@ -87,14 +88,17 @@ public class ScaLoadableDeviceTest extends ScaDeviceTest {
 	}
 
 	/**
-	 * Tests the '{@link mil.jpeojtrs.sca.cf.LoadableDeviceOperations#load(mil.jpeojtrs.sca.cf.FileSystem, java.lang.String, mil.jpeojtrs.sca.cf.LoadableDevicePackage.LoadType) <em>Load</em>}' operation.
+	 * Tests the '
+	 * {@link mil.jpeojtrs.sca.cf.LoadableDeviceOperations#load(mil.jpeojtrs.sca.cf.FileSystem, java.lang.String, mil.jpeojtrs.sca.cf.LoadableDevicePackage.LoadType)
+	 * <em>Load</em>}' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @throws LoadFail 
-	 * @throws InvalidFileName 
-	 * @throws InvalidLoadKind 
-	 * @throws InvalidState 
-	 * @see mil.jpeojtrs.sca.cf.LoadableDeviceOperations#load(mil.jpeojtrs.sca.cf.FileSystem, java.lang.String, mil.jpeojtrs.sca.cf.LoadableDevicePackage.LoadType)
+	 * @throws LoadFail
+	 * @throws InvalidFileName
+	 * @throws InvalidLoadKind
+	 * @throws InvalidState
+	 * @see mil.jpeojtrs.sca.cf.LoadableDeviceOperations#load(mil.jpeojtrs.sca.cf.FileSystem, java.lang.String,
+	 * mil.jpeojtrs.sca.cf.LoadableDevicePackage.LoadType)
 	 * @generated NOT
 	 */
 	public void testLoad__FileSystem_String_LoadType() throws InvalidState, InvalidLoadKind, InvalidFileName, LoadFail {
@@ -104,11 +108,12 @@ public class ScaLoadableDeviceTest extends ScaDeviceTest {
 	}
 
 	/**
-	 * Tests the '{@link mil.jpeojtrs.sca.cf.LoadableDeviceOperations#unload(java.lang.String) <em>Unload</em>}' operation.
+	 * Tests the '{@link mil.jpeojtrs.sca.cf.LoadableDeviceOperations#unload(java.lang.String) <em>Unload</em>}'
+	 * operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @throws InvalidFileName 
-	 * @throws InvalidState 
+	 * @throws InvalidFileName
+	 * @throws InvalidState
 	 * @see mil.jpeojtrs.sca.cf.LoadableDeviceOperations#unload(java.lang.String)
 	 * @generated NOT
 	 */
@@ -118,4 +123,4 @@ public class ScaLoadableDeviceTest extends ScaDeviceTest {
 		// BEGIN GENERATED CODE
 	}
 
-} //ScaLoadableDeviceTest
+} // ScaLoadableDeviceTest

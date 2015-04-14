@@ -16,7 +16,6 @@ import gov.redhawk.model.sca.tests.stubs.ScaTestConstaints;
 import org.junit.Assert;
 import junit.framework.TestCase;
 import junit.textui.TestRunner;
-
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
@@ -28,7 +27,7 @@ import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
  * <p>
  * The following features are tested:
  * <ul>
- *   <li>{@link gov.redhawk.model.sca.ScaDocumentRoot#getDomainManagerRegistry() <em>Domain Manager Registry</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.ScaDocumentRoot#getDomainManagerRegistry() <em>Domain Manager Registry</em>}</li>
  * </ul>
  * </p>
  * @generated
@@ -81,7 +80,6 @@ public class ScaDocumentRootTest extends TestCase {
 		return fixture;
 	}
 
-
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -107,7 +105,8 @@ public class ScaDocumentRootTest extends TestCase {
 	}
 
 	/**
-	 * Tests the '{@link gov.redhawk.model.sca.ScaDocumentRoot#getDomainManagerRegistry() <em>Domain Manager Registry</em>}' feature getter.
+	 * Tests the '{@link gov.redhawk.model.sca.ScaDocumentRoot#getDomainManagerRegistry() <em>Domain Manager
+	 * Registry</em>}' feature getter.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @see gov.redhawk.model.sca.ScaDocumentRoot#getDomainManagerRegistry()
@@ -120,7 +119,9 @@ public class ScaDocumentRootTest extends TestCase {
 	}
 
 	/**
-	 * Tests the '{@link gov.redhawk.model.sca.ScaDocumentRoot#setDomainManagerRegistry(gov.redhawk.model.sca.ScaDomainManagerRegistry) <em>Domain Manager Registry</em>}' feature setter.
+	 * Tests the '
+	 * {@link gov.redhawk.model.sca.ScaDocumentRoot#setDomainManagerRegistry(gov.redhawk.model.sca.ScaDomainManagerRegistry)
+	 * <em>Domain Manager Registry</em>}' feature setter.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @see gov.redhawk.model.sca.ScaDocumentRoot#setDomainManagerRegistry(gov.redhawk.model.sca.ScaDomainManagerRegistry)
@@ -134,4 +135,4 @@ public class ScaDocumentRootTest extends TestCase {
 		// END GENERATED CODE
 	}
 
-} //ScaDocumentRootTest
+} // ScaDocumentRootTest

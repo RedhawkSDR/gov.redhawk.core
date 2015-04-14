@@ -19,14 +19,10 @@ import gov.redhawk.model.sca.commands.ScaModelCommand;
 import gov.redhawk.model.sca.impl.ScaDomainManagerImpl;
 import gov.redhawk.model.sca.impl.ScaWaveformImpl;
 import gov.redhawk.model.sca.tests.stubs.ScaTestConstaints;
-
 import org.junit.Assert;
-
 import junit.textui.TestRunner;
-
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.transaction.util.TransactionUtil;
-
 import CF.ApplicationHelper;
 import CF.DataType;
 import CF.PropertiesHolder;
@@ -46,29 +42,35 @@ import CF.TestableObjectPackage.UnknownTest;
  * <p>
  * The following features are tested:
  * <ul>
- *   <li>{@link gov.redhawk.model.sca.ScaWaveform#getAssemblyController() <em>Assembly Controller</em>}</li>
- *   <li>{@link gov.redhawk.model.sca.ScaWaveform#getIdentifier() <em>Identifier</em>}</li>
- *   <li>{@link gov.redhawk.model.sca.ScaWaveform#getName() <em>Name</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.ScaWaveform#getAssemblyController() <em>Assembly Controller</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.ScaWaveform#getIdentifier() <em>Identifier</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.ScaWaveform#getName() <em>Name</em>}</li>
  * </ul>
  * </p>
  * <p>
  * The following operations are tested:
  * <ul>
- *   <li>{@link gov.redhawk.model.sca.ScaWaveform#fetchComponents(org.eclipse.core.runtime.IProgressMonitor) <em>Fetch Components</em>}</li>
- *   <li>{@link gov.redhawk.model.sca.ScaWaveform#fetchIdentifier(org.eclipse.core.runtime.IProgressMonitor) <em>Fetch Identifier</em>}</li>
- *   <li>{@link gov.redhawk.model.sca.ScaWaveform#fetchName(org.eclipse.core.runtime.IProgressMonitor) <em>Fetch Name</em>}</li>
- *   <li>{@link gov.redhawk.model.sca.ScaWaveform#fetchStarted(org.eclipse.core.runtime.IProgressMonitor) <em>Fetch Started</em>}</li>
- *   <li>{@link gov.redhawk.model.sca.ScaWaveform#findComponent(java.lang.String) <em>Find Component</em>}</li>
- *   <li>{@link gov.redhawk.model.sca.ScaWaveform#getScaComponent(java.lang.String) <em>Get Sca Component</em>}</li>
- *   <li>{@link gov.redhawk.model.sca.ScaWaveform#fetchProfile(org.eclipse.core.runtime.IProgressMonitor) <em>Fetch Profile</em>}</li>
- *   <li>{@link gov.redhawk.model.sca.ScaPortContainer#getScaPort(java.lang.String) <em>Get Sca Port</em>}</li>
- *   <li>{@link gov.redhawk.model.sca.ScaPortContainer#fetchPorts(org.eclipse.core.runtime.IProgressMonitor) <em>Fetch Ports</em>}</li>
- *   <li>{@link CF.ResourceOperations#start() <em>Start</em>}</li>
- *   <li>{@link CF.ResourceOperations#stop() <em>Stop</em>}</li>
- *   <li>{@link CF.PortSupplierOperations#getPort(java.lang.String) <em>Get Port</em>}</li>
- *   <li>{@link CF.TestableObjectOperations#runTest(int, CF.PropertiesHolder) <em>Run Test</em>}</li>
- *   <li>{@link CF.LifeCycleOperations#initialize() <em>Initialize</em>}</li>
- *   <li>{@link CF.LifeCycleOperations#releaseObject() <em>Release Object</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.ScaWaveform#fetchComponents(org.eclipse.core.runtime.IProgressMonitor) <em>Fetch
+ * Components</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.ScaWaveform#fetchIdentifier(org.eclipse.core.runtime.IProgressMonitor) <em>Fetch
+ * Identifier</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.ScaWaveform#fetchName(org.eclipse.core.runtime.IProgressMonitor) <em>Fetch
+ * Name</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.ScaWaveform#fetchStarted(org.eclipse.core.runtime.IProgressMonitor) <em>Fetch
+ * Started</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.ScaWaveform#findComponent(java.lang.String) <em>Find Component</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.ScaWaveform#getScaComponent(java.lang.String) <em>Get Sca Component</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.ScaWaveform#fetchProfile(org.eclipse.core.runtime.IProgressMonitor) <em>Fetch
+ * Profile</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.ScaPortContainer#getScaPort(java.lang.String) <em>Get Sca Port</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.ScaPortContainer#fetchPorts(org.eclipse.core.runtime.IProgressMonitor) <em>Fetch
+ * Ports</em>}</li>
+ * <li>{@link CF.ResourceOperations#start() <em>Start</em>}</li>
+ * <li>{@link CF.ResourceOperations#stop() <em>Stop</em>}</li>
+ * <li>{@link CF.PortSupplierOperations#getPort(java.lang.String) <em>Get Port</em>}</li>
+ * <li>{@link CF.TestableObjectOperations#runTest(int, CF.PropertiesHolder) <em>Run Test</em>}</li>
+ * <li>{@link CF.LifeCycleOperations#initialize() <em>Initialize</em>}</li>
+ * <li>{@link CF.LifeCycleOperations#releaseObject() <em>Release Object</em>}</li>
  * </ul>
  * </p>
  * @generated
@@ -102,7 +104,7 @@ public class ScaWaveformTest extends ScaPropertyContainerTest {
 	 */
 	@Override
 	protected ScaWaveform getFixture() {
-		return (ScaWaveform)fixture;
+		return (ScaWaveform) fixture;
 	}
 
 	private TestEnvirornment env;
@@ -141,7 +143,8 @@ public class ScaWaveformTest extends ScaPropertyContainerTest {
 	}
 
 	/**
-	 * Tests the '{@link gov.redhawk.model.sca.ScaWaveform#getAssemblyController() <em>Assembly Controller</em>}' feature getter.
+	 * Tests the '{@link gov.redhawk.model.sca.ScaWaveform#getAssemblyController() <em>Assembly Controller</em>}'
+	 * feature getter.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @see gov.redhawk.model.sca.ScaWaveform#getAssemblyController()
@@ -154,7 +157,8 @@ public class ScaWaveformTest extends ScaPropertyContainerTest {
 	}
 
 	/**
-	 * Tests the '{@link gov.redhawk.model.sca.ScaWaveform#setAssemblyController(gov.redhawk.model.sca.ScaComponent) <em>Assembly Controller</em>}' feature setter.
+	 * Tests the '{@link gov.redhawk.model.sca.ScaWaveform#setAssemblyController(gov.redhawk.model.sca.ScaComponent)
+	 * <em>Assembly Controller</em>}' feature setter.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @see gov.redhawk.model.sca.ScaWaveform#setAssemblyController(gov.redhawk.model.sca.ScaComponent)
@@ -177,7 +181,8 @@ public class ScaWaveformTest extends ScaPropertyContainerTest {
 	}
 
 	/**
-	 * Tests the '{@link gov.redhawk.model.sca.ScaWaveform#unsetAssemblyController() <em>unsetAssemblyController()</em>}' method.
+	 * Tests the '{@link gov.redhawk.model.sca.ScaWaveform#unsetAssemblyController() <em>unsetAssemblyController()</em>}
+	 * ' method.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @see gov.redhawk.model.sca.ScaWaveform#unsetAssemblyController()
@@ -198,7 +203,8 @@ public class ScaWaveformTest extends ScaPropertyContainerTest {
 	}
 
 	/**
-	 * Tests the '{@link gov.redhawk.model.sca.ScaWaveform#isSetAssemblyController() <em>isSetAssemblyController()</em>}' method.
+	 * Tests the '{@link gov.redhawk.model.sca.ScaWaveform#isSetAssemblyController() <em>isSetAssemblyController()</em>}
+	 * ' method.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @see gov.redhawk.model.sca.ScaWaveform#isSetAssemblyController()
@@ -246,7 +252,8 @@ public class ScaWaveformTest extends ScaPropertyContainerTest {
 	}
 
 	/**
-	 * Tests the '{@link gov.redhawk.model.sca.ScaWaveform#setIdentifier(java.lang.String) <em>Identifier</em>}' feature setter.
+	 * Tests the '{@link gov.redhawk.model.sca.ScaWaveform#setIdentifier(java.lang.String) <em>Identifier</em>}' feature
+	 * setter.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @see gov.redhawk.model.sca.ScaWaveform#setIdentifier(java.lang.String)
@@ -255,16 +262,16 @@ public class ScaWaveformTest extends ScaPropertyContainerTest {
 	public void testSetIdentifier() {
 		final String id = getFixture().getIdentifier();
 		ScaModelCommand.execute(getFixture(), new ScaModelCommand() {
-			
+
 			@Override
 			public void execute() {
 				getFixture().setIdentifier(null);
 			}
 		});
-		
+
 		Assert.assertNull(getFixture().getIdentifier());
 		ScaModelCommand.execute(getFixture(), new ScaModelCommand() {
-			
+
 			@Override
 			public void execute() {
 				getFixture().setIdentifier(id);
@@ -282,16 +289,9 @@ public class ScaWaveformTest extends ScaPropertyContainerTest {
 	 * @generated
 	 */
 	public void testUnsetIdentifier() {
-		ScaModelCommand.execute(getFixture(), new ScaModelCommand() {
-			
-			@Override
-			public void execute() {
-				getFixture().unsetIdentifier();
-			}
-		});
-		
-		Assert.assertFalse(getFixture().isSetIdentifier());
-		Assert.assertNull(getFixture().getIdentifier());
+		// TODO: implement this test method
+		// Ensure that you remove @generated or mark it @generated NOT
+		fail();
 	}
 
 	/**
@@ -311,7 +311,7 @@ public class ScaWaveformTest extends ScaPropertyContainerTest {
 	 * Tests the '{@link gov.redhawk.model.sca.ScaWaveform#getName() <em>Name</em>}' feature getter.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @throws InterruptedException 
+	 * @throws InterruptedException
 	 * @see gov.redhawk.model.sca.ScaWaveform#getName()
 	 * @generated NOT
 	 */
@@ -328,7 +328,7 @@ public class ScaWaveformTest extends ScaPropertyContainerTest {
 		try {
 			getFixture().releaseObject();
 		} catch (final ReleaseError e) {
-			//PASS
+			// PASS
 		}
 		getFixture().refresh(null, RefreshDepth.FULL);
 		ScaModelCommand.execute(getFixture(), new ScaModelCommand() {
@@ -351,16 +351,16 @@ public class ScaWaveformTest extends ScaPropertyContainerTest {
 	public void testSetName() {
 		final String name = getFixture().getName();
 		ScaModelCommand.execute(getFixture(), new ScaModelCommand() {
-			
+
 			@Override
 			public void execute() {
 				getFixture().setName(null);
 			}
 		});
-		
+
 		Assert.assertNull(getFixture().getName());
 		ScaModelCommand.execute(getFixture(), new ScaModelCommand() {
-			
+
 			@Override
 			public void execute() {
 				getFixture().setName(name);
@@ -379,13 +379,13 @@ public class ScaWaveformTest extends ScaPropertyContainerTest {
 	 */
 	public void testUnsetName() {
 		ScaModelCommand.execute(getFixture(), new ScaModelCommand() {
-			
+
 			@Override
 			public void execute() {
 				getFixture().unsetName();
 			}
 		});
-		
+
 		Assert.assertFalse(getFixture().isSetName());
 		Assert.assertNull(getFixture().getName());
 	}
@@ -402,7 +402,7 @@ public class ScaWaveformTest extends ScaPropertyContainerTest {
 		Assert.assertTrue(getFixture().isSetName());
 		// BEGIN GENERATED CODE
 	}
-	
+
 	/**
 	 * @generated NOT
 	 */
@@ -411,10 +411,11 @@ public class ScaWaveformTest extends ScaPropertyContainerTest {
 	}
 
 	/**
-	 * Tests the '{@link gov.redhawk.model.sca.ScaWaveform#fetchComponents(org.eclipse.core.runtime.IProgressMonitor) <em>Fetch Components</em>}' operation.
+	 * Tests the '{@link gov.redhawk.model.sca.ScaWaveform#fetchComponents(org.eclipse.core.runtime.IProgressMonitor)
+	 * <em>Fetch Components</em>}' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @throws InterruptedException 
+	 * @throws InterruptedException
 	 * @see gov.redhawk.model.sca.ScaWaveform#fetchComponents(org.eclipse.core.runtime.IProgressMonitor)
 	 * @generated NOT
 	 */
@@ -453,7 +454,8 @@ public class ScaWaveformTest extends ScaPropertyContainerTest {
 	}
 
 	/**
-	 * Tests the '{@link gov.redhawk.model.sca.ScaWaveform#fetchIdentifier(org.eclipse.core.runtime.IProgressMonitor) <em>Fetch Identifier</em>}' operation.
+	 * Tests the '{@link gov.redhawk.model.sca.ScaWaveform#fetchIdentifier(org.eclipse.core.runtime.IProgressMonitor)
+	 * <em>Fetch Identifier</em>}' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @see gov.redhawk.model.sca.ScaWaveform#fetchIdentifier(org.eclipse.core.runtime.IProgressMonitor)
@@ -466,7 +468,8 @@ public class ScaWaveformTest extends ScaPropertyContainerTest {
 	}
 
 	/**
-	 * Tests the '{@link gov.redhawk.model.sca.ScaWaveform#fetchName(org.eclipse.core.runtime.IProgressMonitor) <em>Fetch Name</em>}' operation.
+	 * Tests the '{@link gov.redhawk.model.sca.ScaWaveform#fetchName(org.eclipse.core.runtime.IProgressMonitor)
+	 * <em>Fetch Name</em>}' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @see gov.redhawk.model.sca.ScaWaveform#fetchName(org.eclipse.core.runtime.IProgressMonitor)
@@ -479,7 +482,8 @@ public class ScaWaveformTest extends ScaPropertyContainerTest {
 	}
 
 	/**
-	 * Tests the '{@link gov.redhawk.model.sca.ScaWaveform#fetchStarted(org.eclipse.core.runtime.IProgressMonitor) <em>Fetch Started</em>}' operation.
+	 * Tests the '{@link gov.redhawk.model.sca.ScaWaveform#fetchStarted(org.eclipse.core.runtime.IProgressMonitor)
+	 * <em>Fetch Started</em>}' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @see gov.redhawk.model.sca.ScaWaveform#fetchStarted(org.eclipse.core.runtime.IProgressMonitor)
@@ -492,7 +496,8 @@ public class ScaWaveformTest extends ScaPropertyContainerTest {
 	}
 
 	/**
-	 * Tests the '{@link gov.redhawk.model.sca.ScaWaveform#findComponent(java.lang.String) <em>Find Component</em>}' operation.
+	 * Tests the '{@link gov.redhawk.model.sca.ScaWaveform#findComponent(java.lang.String) <em>Find Component</em>}'
+	 * operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @see gov.redhawk.model.sca.ScaWaveform#findComponent(java.lang.String)
@@ -513,10 +518,11 @@ public class ScaWaveformTest extends ScaPropertyContainerTest {
 	}
 
 	/**
-	 * Tests the '{@link gov.redhawk.model.sca.ScaWaveform#fetchPorts(org.eclipse.core.runtime.IProgressMonitor) <em>Fetch Ports</em>}' operation.
+	 * Tests the '{@link gov.redhawk.model.sca.ScaWaveform#fetchPorts(org.eclipse.core.runtime.IProgressMonitor)
+	 * <em>Fetch Ports</em>}' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @throws InterruptedException 
+	 * @throws InterruptedException
 	 * @see gov.redhawk.model.sca.ScaWaveform#fetchPorts(org.eclipse.core.runtime.IProgressMonitor)
 	 * @generated NOT
 	 */
@@ -533,7 +539,8 @@ public class ScaWaveformTest extends ScaPropertyContainerTest {
 	}
 
 	/**
-	 * Tests the '{@link gov.redhawk.model.sca.ScaWaveform#getScaComponent(java.lang.String) <em>Get Sca Component</em>}' operation.
+	 * Tests the '{@link gov.redhawk.model.sca.ScaWaveform#getScaComponent(java.lang.String) <em>Get Sca Component</em>}
+	 * ' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @see gov.redhawk.model.sca.ScaWaveform#getScaComponent(java.lang.String)
@@ -546,7 +553,8 @@ public class ScaWaveformTest extends ScaPropertyContainerTest {
 	}
 
 	/**
-	 * Tests the '{@link gov.redhawk.model.sca.ScaWaveform#fetchProfile(org.eclipse.core.runtime.IProgressMonitor) <em>Fetch Profile</em>}' operation.
+	 * Tests the '{@link gov.redhawk.model.sca.ScaWaveform#fetchProfile(org.eclipse.core.runtime.IProgressMonitor)
+	 * <em>Fetch Profile</em>}' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @see gov.redhawk.model.sca.ScaWaveform#fetchProfile(org.eclipse.core.runtime.IProgressMonitor)
@@ -559,7 +567,8 @@ public class ScaWaveformTest extends ScaPropertyContainerTest {
 	}
 
 	/**
-	 * Tests the '{@link gov.redhawk.model.sca.ScaWaveform#getScaPort(java.lang.String) <em>Get Sca Port</em>}' operation.
+	 * Tests the '{@link gov.redhawk.model.sca.ScaWaveform#getScaPort(java.lang.String) <em>Get Sca Port</em>}'
+	 * operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @see gov.redhawk.model.sca.ScaWaveform#getScaPort(java.lang.String)
@@ -627,10 +636,11 @@ public class ScaWaveformTest extends ScaPropertyContainerTest {
 	}
 
 	/**
-	 * Tests the '{@link mil.jpeojtrs.sca.cf.PortSupplierOperations#getPort(java.lang.String) <em>Get Port</em>}' operation.
+	 * Tests the '{@link mil.jpeojtrs.sca.cf.PortSupplierOperations#getPort(java.lang.String) <em>Get Port</em>}'
+	 * operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @throws UnknownPort 
+	 * @throws UnknownPort
 	 * @see mil.jpeojtrs.sca.cf.PortSupplierOperations#getPort(java.lang.String)
 	 * @generated NOT
 	 */
@@ -641,11 +651,13 @@ public class ScaWaveformTest extends ScaPropertyContainerTest {
 	}
 
 	/**
-	 * Tests the '{@link mil.jpeojtrs.sca.cf.TestableObjectOperations#runTest(int, mil.jpeojtrs.sca.cf.PropertiesHolder) <em>Run Test</em>}' operation.
+	 * Tests the '
+	 * {@link mil.jpeojtrs.sca.cf.TestableObjectOperations#runTest(int, mil.jpeojtrs.sca.cf.PropertiesHolder) <em>Run
+	 * Test</em>}' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @throws UnknownProperties 
-	 * @throws UnknownTest 
+	 * @throws UnknownProperties
+	 * @throws UnknownTest
 	 * @see mil.jpeojtrs.sca.cf.TestableObjectOperations#runTest(int, mil.jpeojtrs.sca.cf.PropertiesHolder)
 	 * @generated NOT
 	 */
@@ -661,7 +673,7 @@ public class ScaWaveformTest extends ScaPropertyContainerTest {
 	 * Tests the '{@link mil.jpeojtrs.sca.cf.LifeCycleOperations#initialize() <em>Initialize</em>}' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @throws InitializeError 
+	 * @throws InitializeError
 	 * @see mil.jpeojtrs.sca.cf.LifeCycleOperations#initialize()
 	 * @generated NOT
 	 */
@@ -675,7 +687,7 @@ public class ScaWaveformTest extends ScaPropertyContainerTest {
 	 * Tests the '{@link mil.jpeojtrs.sca.cf.LifeCycleOperations#releaseObject() <em>Release Object</em>}' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @throws ReleaseError 
+	 * @throws ReleaseError
 	 * @see mil.jpeojtrs.sca.cf.LifeCycleOperations#releaseObject()
 	 * @generated NOT
 	 */
@@ -694,4 +706,4 @@ public class ScaWaveformTest extends ScaPropertyContainerTest {
 		return ApplicationHelper.id();
 	}
 
-} //ScaWaveformTest
+} // ScaWaveformTest

@@ -16,24 +16,27 @@ import gov.redhawk.model.sca.ScaPackage;
 
 import java.util.Map;
 
-import org.junit.Assert;
 import junit.framework.TestCase;
+
 import junit.textui.TestRunner;
+
+import org.eclipse.emf.ecore.EObject;
 
 /**
  * <!-- begin-user-doc -->
- * A test case for the model object '<em><b>String To String Map</b></em>'.
+ * A test case for the model object '<em><b>String To Object Map</b></em>'.
  * <!-- end-user-doc -->
  * @generated
  */
-public class StringToStringMapTest extends TestCase {
+public class StringToObjectMapTest extends TestCase {
+
 	/**
-	 * The fixture for this String To String Map test case.
+	 * The fixture for this String To Object Map test case.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	protected Map.Entry<String, String> fixture = null;
+	protected Map.Entry<String, EObject> fixture = null;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -41,36 +44,36 @@ public class StringToStringMapTest extends TestCase {
 	 * @generated
 	 */
 	public static void main(String[] args) {
-		TestRunner.run(StringToStringMapTest.class);
+		TestRunner.run(StringToObjectMapTest.class);
 	}
 
 	/**
-	 * Constructs a new String To String Map test case with the given name.
+	 * Constructs a new String To Object Map test case with the given name.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public StringToStringMapTest(String name) {
+	public StringToObjectMapTest(String name) {
 		super(name);
 	}
 
 	/**
-	 * Sets the fixture for this String To String Map test case.
+	 * Sets the fixture for this String To Object Map test case.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	protected void setFixture(Map.Entry<String, String> fixture) {
+	protected void setFixture(Map.Entry<String, EObject> fixture) {
 		this.fixture = fixture;
 	}
 
 	/**
-	 * Returns the fixture for this String To String Map test case.
+	 * Returns the fixture for this String To Object Map test case.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	protected Map.Entry<String, String> getFixture() {
+	protected Map.Entry<String, EObject> getFixture() {
 		return fixture;
 	}
 
@@ -83,7 +86,7 @@ public class StringToStringMapTest extends TestCase {
 	@Override
 	@SuppressWarnings("unchecked")
 	protected void setUp() throws Exception {
-		setFixture((Map.Entry<String, String>) ScaFactory.eINSTANCE.create(ScaPackage.Literals.STRING_TO_STRING_MAP));
+		setFixture((Map.Entry<String, EObject>) ScaFactory.eINSTANCE.create(ScaPackage.Literals.STRING_TO_OBJECT_MAP));
 	}
 
 	/**
@@ -97,14 +100,4 @@ public class StringToStringMapTest extends TestCase {
 		setFixture(null);
 	}
 
-	/**
-	 * A placeholder until real tests are implemented.
-	 * @generated NOT
-	 */
-	public void testPlaceholder() {
-		// END GENERATED CODE
-		Assert.assertNotNull(getFixture());
-		// BEGIN GENERATED CODE
-	}
-
-} // StringToStringMapTest
+} // StringToObjectMapTest

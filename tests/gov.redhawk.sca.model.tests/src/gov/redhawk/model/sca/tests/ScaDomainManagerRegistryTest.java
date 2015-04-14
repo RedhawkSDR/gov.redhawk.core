@@ -17,7 +17,6 @@ import gov.redhawk.model.sca.tests.stubs.ScaTestConstaints;
 import org.junit.Assert;
 import junit.framework.TestCase;
 import junit.textui.TestRunner;
-
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
@@ -29,10 +28,11 @@ import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
  * <p>
  * The following operations are tested:
  * <ul>
- *   <li>{@link gov.redhawk.model.sca.ScaDomainManagerRegistry#findDomain(java.lang.String) <em>Find Domain</em>}</li>
- *   <li>{@link gov.redhawk.model.sca.ScaDomainManagerRegistry#createDomain(java.lang.String, boolean, java.util.Map) <em>Create Domain</em>}</li>
- *   <li>{@link gov.redhawk.model.sca.ScaDomainManagerRegistry#createDomain(java.lang.String, java.lang.String, boolean, java.util.Map) <em>Create Domain</em>}</li>
- *   <li>{@link gov.redhawk.model.sca.IDisposable#dispose() <em>Dispose</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.ScaDomainManagerRegistry#findDomain(java.lang.String) <em>Find Domain</em>}</li>
+ * <li>
+ * {@link gov.redhawk.model.sca.ScaDomainManagerRegistry#createDomain(java.lang.String, java.lang.String, boolean, java.util.Map)
+ * <em>Create Domain</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.IDisposable#dispose() <em>Dispose</em>}</li>
  * </ul>
  * </p>
  * @generated
@@ -55,7 +55,6 @@ public class ScaDomainManagerRegistryTest extends TestCase {
 		TestRunner.run(ScaDomainManagerRegistryTest.class);
 	}
 
-
 	/**
 	 * Constructs a new Domain Manager Registry test case with the given name.
 	 * <!-- begin-user-doc -->
@@ -66,7 +65,6 @@ public class ScaDomainManagerRegistryTest extends TestCase {
 		super(name);
 	}
 
-
 	/**
 	 * Sets the fixture for this Domain Manager Registry test case.
 	 * <!-- begin-user-doc -->
@@ -76,7 +74,6 @@ public class ScaDomainManagerRegistryTest extends TestCase {
 	protected void setFixture(ScaDomainManagerRegistry fixture) {
 		this.fixture = fixture;
 	}
-
 
 	/**
 	 * Returns the fixture for this Domain Manager Registry test case.
@@ -102,11 +99,11 @@ public class ScaDomainManagerRegistryTest extends TestCase {
 
 		setFixture(root.getDomainManagerRegistry());
 	}
-	
-	
+
 	public void testLoadOldModel() {
 		final ResourceSet resourceSet = new ResourceSetImpl();
-		final Resource resource = resourceSet.getResource(org.eclipse.emf.common.util.URI.createURI("platform:/plugin/gov.redhawk.sca.model.tests/oldDomains.sca"), true);
+		final Resource resource = resourceSet.getResource(
+			org.eclipse.emf.common.util.URI.createURI("platform:/plugin/gov.redhawk.sca.model.tests/oldDomains.sca"), true);
 		final ScaDocumentRoot root = (ScaDocumentRoot) resource.getEObject("/");
 		Assert.assertNotNull("Domain manager registry is null", root.getDomainManagerRegistry());
 		Assert.assertFalse(root.getDomainManagerRegistry().getDomains().isEmpty());
@@ -138,7 +135,8 @@ public class ScaDomainManagerRegistryTest extends TestCase {
 	}
 
 	/**
-	 * Tests the '{@link gov.redhawk.model.sca.ScaDomainManagerRegistry#findDomain(java.lang.String) <em>Find Domain</em>}' operation.
+	 * Tests the '{@link gov.redhawk.model.sca.ScaDomainManagerRegistry#findDomain(java.lang.String) <em>Find
+	 * Domain</em>}' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @see gov.redhawk.model.sca.ScaDomainManagerRegistry#findDomain(java.lang.String)
@@ -159,12 +157,14 @@ public class ScaDomainManagerRegistryTest extends TestCase {
 	 */
 	public void testDispose() {
 		// END GENERATED CODE
-		// TODO 
+		// TODO
 		// BEGIN GENERATED CODE
 	}
 
 	/**
-	 * Tests the '{@link gov.redhawk.model.sca.ScaDomainManagerRegistry#createDomain(java.lang.String, boolean, java.util.Map) <em>Create Domain</em>}' operation.
+	 * Tests the '
+	 * {@link gov.redhawk.model.sca.ScaDomainManagerRegistry#createDomain(java.lang.String, boolean, java.util.Map)
+	 * <em>Create Domain</em>}' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @see gov.redhawk.model.sca.ScaDomainManagerRegistry#createDomain(java.lang.String, boolean, java.util.Map)
@@ -176,12 +176,15 @@ public class ScaDomainManagerRegistryTest extends TestCase {
 
 		// BEGIN GENERATED CODE
 	}
-	
+
 	/**
-	 * Tests the '{@link gov.redhawk.model.sca.ScaDomainManagerRegistry#createDomain(java.lang.String, java.lang.String, boolean, java.util.Map) <em>Create Domain</em>}' operation.
+	 * Tests the '
+	 * {@link gov.redhawk.model.sca.ScaDomainManagerRegistry#createDomain(java.lang.String, java.lang.String, boolean, java.util.Map)
+	 * <em>Create Domain</em>}' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see gov.redhawk.model.sca.ScaDomainManagerRegistry#createDomain(java.lang.String, java.lang.String, boolean, java.util.Map)
+	 * @see gov.redhawk.model.sca.ScaDomainManagerRegistry#createDomain(java.lang.String, java.lang.String, boolean,
+	 * java.util.Map)
 	 * @generated NOT
 	 */
 	public void testCreateDomain__String_String_boolean_Map() {
@@ -190,4 +193,4 @@ public class ScaDomainManagerRegistryTest extends TestCase {
 		// BEGIN GENERATED CODE
 	}
 
-} //ScaDomainManagerRegistryTest
+} // ScaDomainManagerRegistryTest

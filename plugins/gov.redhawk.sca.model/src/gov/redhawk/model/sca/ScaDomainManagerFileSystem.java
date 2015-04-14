@@ -15,16 +15,17 @@ package gov.redhawk.model.sca;
 /**
  * <!-- begin-user-doc -->
  * A representation of the model object '<em><b>Domain Manager File System</b></em>'.
+ * 
  * @since 10.0
  * @noimplement This interface is not intended to be implemented by clients.
- * <!-- end-user-doc -->
+ *              <!-- end-user-doc -->
  *
- * <p>
- * The following features are supported:
- * <ul>
- * <li>{@link gov.redhawk.model.sca.ScaDomainManagerFileSystem#getDomMgr <em>Dom Mgr</em>}</li>
- * </ul>
- * </p>
+ *              <p>
+ *              The following features are supported:
+ *              <ul>
+ *              <li>{@link gov.redhawk.model.sca.ScaDomainManagerFileSystem#getDomMgr <em>Dom Mgr</em>}</li>
+ *              </ul>
+ *              </p>
  *
  * @see gov.redhawk.model.sca.ScaPackage#getScaDomainManagerFileSystem()
  * @model extendedMetaData="name='ScaDomainManagerFileSystem' kind='empty'"
@@ -34,20 +35,21 @@ public interface ScaDomainManagerFileSystem extends ScaFileManager {
 
 	/**
 	 * Returns the value of the '<em><b>Dom Mgr</b></em>' container reference.
-	 * It is bidirectional and its opposite is '{@link gov.redhawk.model.sca.ScaDomainManager#getFileManager <em>File
-	 * Manager</em>}'.
+	 * It is bidirectional and its opposite is '{@link gov.redhawk.model.sca.ScaDomainManager#getFileManager
+	 * <em>File Manager</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <p>
-	 * If the meaning of the '<em>Dom Mgr</em>' container reference isn't clear,
-	 * there really should be more of a description here...
+	 * If the meaning of the '<em>Dom Mgr</em>' container reference isn't clear, there really should be more of a
+	 * description here...
 	 * </p>
 	 * <!-- end-user-doc -->
+	 * 
 	 * @return the value of the '<em>Dom Mgr</em>' container reference.
 	 * @see #setDomMgr(ScaDomainManager)
 	 * @see gov.redhawk.model.sca.ScaPackage#getScaDomainManagerFileSystem_DomMgr()
 	 * @see gov.redhawk.model.sca.ScaDomainManager#getFileManager
 	 * @model opposite="fileManager"
-	 * extendedMetaData="kind='attribute' name='domMgr'"
+	 *        extendedMetaData="kind='attribute' name='domMgr'"
 	 * @generated
 	 */
 	ScaDomainManager getDomMgr();
@@ -56,8 +58,9 @@ public interface ScaDomainManagerFileSystem extends ScaFileManager {
 	 * Sets the value of the '{@link gov.redhawk.model.sca.ScaDomainManagerFileSystem#getDomMgr <em>Dom Mgr</em>}'
 	 * container reference.
 	 * <!-- begin-user-doc -->
+	 * 
 	 * @since 16.0
-	 * <!-- end-user-doc -->
+	 *        <!-- end-user-doc -->
 	 * @param value the new value of the '<em>Dom Mgr</em>' container reference.
 	 * @see #getDomMgr()
 	 * @generated

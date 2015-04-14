@@ -32,18 +32,19 @@ import org.eclipse.emf.ecore.util.InternalEList;
 /**
  * <!-- begin-user-doc -->
  * An implementation of the model object '<em><b>Document Root</b></em>'.
+ * 
  * @since 12.0
- * <!-- end-user-doc -->
- * <p>
- * The following features are implemented:
- * <ul>
- * <li>{@link gov.redhawk.model.sca.impl.ScaDocumentRootImpl#getMixed <em>Mixed</em>}</li>
- * <li>{@link gov.redhawk.model.sca.impl.ScaDocumentRootImpl#getXMLNSPrefixMap <em>XMLNS Prefix Map</em>}</li>
- * <li>{@link gov.redhawk.model.sca.impl.ScaDocumentRootImpl#getXSISchemaLocation <em>XSI Schema Location</em>}</li>
- * <li>{@link gov.redhawk.model.sca.impl.ScaDocumentRootImpl#getDomainManagerRegistry <em>Domain Manager Registry</em>}
- * </li>
- * </ul>
- * </p>
+ *        <!-- end-user-doc -->
+ *        <p>
+ *        The following features are implemented:
+ *        <ul>
+ *        <li>{@link gov.redhawk.model.sca.impl.ScaDocumentRootImpl#getMixed <em>Mixed</em>}</li>
+ *        <li>{@link gov.redhawk.model.sca.impl.ScaDocumentRootImpl#getXMLNSPrefixMap <em>XMLNS Prefix Map</em>}</li>
+ *        <li>{@link gov.redhawk.model.sca.impl.ScaDocumentRootImpl#getXSISchemaLocation <em>XSI Schema Location</em>}</li>
+ *        <li>{@link gov.redhawk.model.sca.impl.ScaDocumentRootImpl#getDomainManagerRegistry <em>Domain Manager Registry
+ *        </em>}</li>
+ *        </ul>
+ *        </p>
  *
  * @generated
  */
@@ -53,6 +54,7 @@ public class ScaDocumentRootImpl extends EObjectImpl implements ScaDocumentRoot 
 	 * The cached value of the '{@link #getMixed() <em>Mixed</em>}' attribute list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * 
 	 * @see #getMixed()
 	 * @generated
 	 * @ordered
@@ -62,6 +64,7 @@ public class ScaDocumentRootImpl extends EObjectImpl implements ScaDocumentRoot 
 	 * The cached value of the '{@link #getXMLNSPrefixMap() <em>XMLNS Prefix Map</em>}' map.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * 
 	 * @see #getXMLNSPrefixMap()
 	 * @generated
 	 * @ordered
@@ -71,6 +74,7 @@ public class ScaDocumentRootImpl extends EObjectImpl implements ScaDocumentRoot 
 	 * The cached value of the '{@link #getXSISchemaLocation() <em>XSI Schema Location</em>}' map.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * 
 	 * @see #getXSISchemaLocation()
 	 * @generated
 	 * @ordered
@@ -80,6 +84,7 @@ public class ScaDocumentRootImpl extends EObjectImpl implements ScaDocumentRoot 
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	protected ScaDocumentRootImpl() {
@@ -89,6 +94,7 @@ public class ScaDocumentRootImpl extends EObjectImpl implements ScaDocumentRoot 
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -99,6 +105,7 @@ public class ScaDocumentRootImpl extends EObjectImpl implements ScaDocumentRoot 
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -112,6 +119,7 @@ public class ScaDocumentRootImpl extends EObjectImpl implements ScaDocumentRoot 
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -126,6 +134,7 @@ public class ScaDocumentRootImpl extends EObjectImpl implements ScaDocumentRoot 
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -140,6 +149,7 @@ public class ScaDocumentRootImpl extends EObjectImpl implements ScaDocumentRoot 
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -150,6 +160,7 @@ public class ScaDocumentRootImpl extends EObjectImpl implements ScaDocumentRoot 
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public NotificationChain basicSetDomainManagerRegistry(ScaDomainManagerRegistry newDomainManagerRegistry, NotificationChain msgs) {
@@ -159,6 +170,7 @@ public class ScaDocumentRootImpl extends EObjectImpl implements ScaDocumentRoot 
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -169,6 +181,7 @@ public class ScaDocumentRootImpl extends EObjectImpl implements ScaDocumentRoot 
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -189,6 +202,7 @@ public class ScaDocumentRootImpl extends EObjectImpl implements ScaDocumentRoot 
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -217,6 +231,7 @@ public class ScaDocumentRootImpl extends EObjectImpl implements ScaDocumentRoot 
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -241,6 +256,7 @@ public class ScaDocumentRootImpl extends EObjectImpl implements ScaDocumentRoot 
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -265,6 +281,7 @@ public class ScaDocumentRootImpl extends EObjectImpl implements ScaDocumentRoot 
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -285,6 +302,7 @@ public class ScaDocumentRootImpl extends EObjectImpl implements ScaDocumentRoot 
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override

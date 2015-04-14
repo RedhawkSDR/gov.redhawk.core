@@ -14,14 +14,10 @@ package gov.redhawk.model.sca.tests;
 import gov.redhawk.model.sca.ScaDevice;
 import gov.redhawk.model.sca.commands.ScaModelCommand;
 import gov.redhawk.model.sca.tests.stubs.ScaTestConstaints;
-
 import org.junit.Assert;
-
 import junit.textui.TestRunner;
-
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.transaction.util.TransactionUtil;
-
 import CF.AggregateDevice;
 import CF.DataType;
 import CF.DeviceHelper;
@@ -39,24 +35,28 @@ import CF.DevicePackage.UsageType;
  * <p>
  * The following features are tested:
  * <ul>
- *   <li>{@link gov.redhawk.model.sca.ScaDevice#getAdminState() <em>Admin State</em>}</li>
- *   <li>{@link gov.redhawk.model.sca.ScaDevice#getLabel() <em>Label</em>}</li>
- *   <li>{@link gov.redhawk.model.sca.ScaDevice#getOperationalState() <em>Operational State</em>}</li>
- *   <li>{@link gov.redhawk.model.sca.ScaDevice#getUsageState() <em>Usage State</em>}</li>
- *   <li>{@link gov.redhawk.model.sca.ScaDevice#getDevMgr() <em>Dev Mgr</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.ScaDevice#getAdminState() <em>Admin State</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.ScaDevice#getLabel() <em>Label</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.ScaDevice#getOperationalState() <em>Operational State</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.ScaDevice#getUsageState() <em>Usage State</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.ScaDevice#getDevMgr() <em>Dev Mgr</em>}</li>
  * </ul>
  * </p>
  * <p>
  * The following operations are tested:
  * <ul>
- *   <li>{@link gov.redhawk.model.sca.ScaDevice#fetchAggregateDevices(org.eclipse.core.runtime.IProgressMonitor) <em>Fetch Aggregate Devices</em>}</li>
- *   <li>{@link gov.redhawk.model.sca.ScaDevice#fetchAdminState(org.eclipse.core.runtime.IProgressMonitor) <em>Fetch Admin State</em>}</li>
- *   <li>{@link gov.redhawk.model.sca.ScaDevice#fetchLabel(org.eclipse.core.runtime.IProgressMonitor) <em>Fetch Label</em>}</li>
- *   <li>{@link gov.redhawk.model.sca.ScaDevice#fetchOperationalState(org.eclipse.core.runtime.IProgressMonitor) <em>Fetch Operational State</em>}</li>
- *   <li>{@link gov.redhawk.model.sca.ScaDevice#fetchUsageState(org.eclipse.core.runtime.IProgressMonitor) <em>Fetch Usage State</em>}</li>
- *   <li>{@link gov.redhawk.model.sca.ScaDevice#fetchProfile(org.eclipse.core.runtime.IProgressMonitor) <em>Fetch Profile</em>}</li>
- *   <li>{@link CF.DeviceOperations#allocateCapacity(CF.DataType[]) <em>Allocate Capacity</em>}</li>
- *   <li>{@link CF.DeviceOperations#deallocateCapacity(CF.DataType[]) <em>Deallocate Capacity</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.ScaDevice#fetchAggregateDevices(org.eclipse.core.runtime.IProgressMonitor) <em>Fetch
+ * Aggregate Devices</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.ScaDevice#fetchAdminState(org.eclipse.core.runtime.IProgressMonitor) <em>Fetch Admin
+ * State</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.ScaDevice#fetchLabel(org.eclipse.core.runtime.IProgressMonitor) <em>Fetch
+ * Label</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.ScaDevice#fetchOperationalState(org.eclipse.core.runtime.IProgressMonitor) <em>Fetch
+ * Operational State</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.ScaDevice#fetchUsageState(org.eclipse.core.runtime.IProgressMonitor) <em>Fetch Usage
+ * State</em>}</li>
+ * <li>{@link CF.DeviceOperations#allocateCapacity(CF.DataType[]) <em>Allocate Capacity</em>}</li>
+ * <li>{@link CF.DeviceOperations#deallocateCapacity(CF.DataType[]) <em>Deallocate Capacity</em>}</li>
  * </ul>
  * </p>
  * @generated
@@ -89,8 +89,8 @@ public class ScaDeviceTest extends ScaAbstractComponentTest {
 	 * @generated
 	 */
 	@Override
-	protected ScaDevice<?> getFixture() {
-		return (ScaDevice<?>)fixture;
+	protected ScaDevice< ? > getFixture() {
+		return (ScaDevice< ? >) fixture;
 	}
 
 	private TestEnvirornment env;
@@ -123,7 +123,7 @@ public class ScaDeviceTest extends ScaAbstractComponentTest {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @throws InterruptedException 
+	 * @throws InterruptedException
 	 * @generated NOT
 	 */
 	@Override
@@ -184,17 +184,17 @@ public class ScaDeviceTest extends ScaAbstractComponentTest {
 	public void testSetLabel() {
 		final String objLabel = getFixture().getLabel();
 		ScaModelCommand.execute(getFixture(), new ScaModelCommand() {
-			
+
 			@Override
 			public void execute() {
 				getFixture().setLabel(null);
 			}
 		});
-		
+
 		Assert.assertNull(getFixture().getLabel());
-		
+
 		ScaModelCommand.execute(getFixture(), new ScaModelCommand() {
-			
+
 			@Override
 			public void execute() {
 				getFixture().setLabel(objLabel);
@@ -213,13 +213,13 @@ public class ScaDeviceTest extends ScaAbstractComponentTest {
 	 */
 	public void testUnsetLabel() {
 		ScaModelCommand.execute(getFixture(), new ScaModelCommand() {
-			
+
 			@Override
 			public void execute() {
 				getFixture().unsetLabel();
 			}
 		});
-		
+
 		Assert.assertFalse(getFixture().isSetLabel());
 	}
 
@@ -237,7 +237,8 @@ public class ScaDeviceTest extends ScaAbstractComponentTest {
 	}
 
 	/**
-	 * Tests the '{@link gov.redhawk.model.sca.ScaDevice#getOperationalState() <em>Operational State</em>}' feature getter.
+	 * Tests the '{@link gov.redhawk.model.sca.ScaDevice#getOperationalState() <em>Operational State</em>}' feature
+	 * getter.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @see gov.redhawk.model.sca.ScaDevice#getOperationalState()
@@ -251,7 +252,8 @@ public class ScaDeviceTest extends ScaAbstractComponentTest {
 	}
 
 	/**
-	 * Tests the '{@link gov.redhawk.model.sca.ScaDevice#setOperationalState(CF.DevicePackage.OperationalType) <em>Operational State</em>}' feature setter.
+	 * Tests the '{@link gov.redhawk.model.sca.ScaDevice#setOperationalState(CF.DevicePackage.OperationalType)
+	 * <em>Operational State</em>}' feature setter.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @see gov.redhawk.model.sca.ScaDevice#setOperationalState(CF.DevicePackage.OperationalType)
@@ -260,16 +262,16 @@ public class ScaDeviceTest extends ScaAbstractComponentTest {
 	public void testSetOperationalState() {
 		final OperationalType state = getFixture().getOperationalState();
 		ScaModelCommand.execute(getFixture(), new ScaModelCommand() {
-			
+
 			@Override
 			public void execute() {
 				getFixture().setOperationalState(null);
 			}
 		});
-		
+
 		Assert.assertNull(getFixture().getOperationalState());
 		ScaModelCommand.execute(getFixture(), new ScaModelCommand() {
-			
+
 			@Override
 			public void execute() {
 				getFixture().setOperationalState(state);
@@ -280,7 +282,8 @@ public class ScaDeviceTest extends ScaAbstractComponentTest {
 	}
 
 	/**
-	 * Tests the '{@link gov.redhawk.model.sca.ScaDevice#unsetOperationalState() <em>unsetOperationalState()</em>}' method.
+	 * Tests the '{@link gov.redhawk.model.sca.ScaDevice#unsetOperationalState() <em>unsetOperationalState()</em>}'
+	 * method.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @see gov.redhawk.model.sca.ScaDevice#unsetOperationalState()
@@ -288,18 +291,19 @@ public class ScaDeviceTest extends ScaAbstractComponentTest {
 	 */
 	public void testUnsetOperationalState() {
 		ScaModelCommand.execute(getFixture(), new ScaModelCommand() {
-			
+
 			@Override
 			public void execute() {
 				getFixture().unsetOperationalState();
 			}
 		});
-		
+
 		Assert.assertFalse(getFixture().isSetOperationalState());
 	}
 
 	/**
-	 * Tests the '{@link gov.redhawk.model.sca.ScaDevice#isSetOperationalState() <em>isSetOperationalState()</em>}' method.
+	 * Tests the '{@link gov.redhawk.model.sca.ScaDevice#isSetOperationalState() <em>isSetOperationalState()</em>}'
+	 * method.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @see gov.redhawk.model.sca.ScaDevice#isSetOperationalState()
@@ -327,7 +331,8 @@ public class ScaDeviceTest extends ScaAbstractComponentTest {
 	}
 
 	/**
-	 * Tests the '{@link gov.redhawk.model.sca.ScaDevice#setUsageState(CF.DevicePackage.UsageType) <em>Usage State</em>}' feature setter.
+	 * Tests the '{@link gov.redhawk.model.sca.ScaDevice#setUsageState(CF.DevicePackage.UsageType) <em>Usage State</em>}
+	 * ' feature setter.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @see gov.redhawk.model.sca.ScaDevice#setUsageState(CF.DevicePackage.UsageType)
@@ -336,22 +341,22 @@ public class ScaDeviceTest extends ScaAbstractComponentTest {
 	public void testSetUsageState() {
 		final UsageType state = getFixture().getUsageState();
 		ScaModelCommand.execute(getFixture(), new ScaModelCommand() {
-			
+
 			@Override
 			public void execute() {
 				getFixture().setUsageState(null);
 			}
 		});
-		
+
 		Assert.assertNull(getFixture().getUsageState());
 		ScaModelCommand.execute(getFixture(), new ScaModelCommand() {
-			
+
 			@Override
 			public void execute() {
 				getFixture().setUsageState(state);
 			}
 		});
-		
+
 		Assert.assertEquals(state, getFixture().getUsageState());
 	}
 
@@ -364,13 +369,13 @@ public class ScaDeviceTest extends ScaAbstractComponentTest {
 	 */
 	public void testUnsetUsageState() {
 		ScaModelCommand.execute(getFixture(), new ScaModelCommand() {
-			
+
 			@Override
 			public void execute() {
 				getFixture().unsetUsageState();
 			}
 		});
-		
+
 		Assert.assertFalse(getFixture().isSetUsageState());
 	}
 
@@ -416,7 +421,8 @@ public class ScaDeviceTest extends ScaAbstractComponentTest {
 	}
 
 	/**
-	 * Tests the '{@link gov.redhawk.model.sca.ScaDevice#setAdminState(CF.DevicePackage.AdminType) <em>Admin State</em>}' feature setter.
+	 * Tests the '{@link gov.redhawk.model.sca.ScaDevice#setAdminState(CF.DevicePackage.AdminType) <em>Admin State</em>}
+	 * ' feature setter.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @see gov.redhawk.model.sca.ScaDevice#setAdminState(CF.DevicePackage.AdminType)
@@ -425,23 +431,23 @@ public class ScaDeviceTest extends ScaAbstractComponentTest {
 	public void testSetAdminState() {
 		final AdminType state = getFixture().getAdminState();
 		ScaModelCommand.execute(getFixture(), new ScaModelCommand() {
-			
+
 			@Override
 			public void execute() {
 				getFixture().setAdminState(null);
 			}
 		});
-		
+
 		Assert.assertNull(getFixture().getAdminState());
-		
+
 		ScaModelCommand.execute(getFixture(), new ScaModelCommand() {
-			
+
 			@Override
 			public void execute() {
 				getFixture().setAdminState(state);
 			}
 		});
-		
+
 		Assert.assertEquals(state, getFixture().getAdminState());
 	}
 
@@ -454,13 +460,13 @@ public class ScaDeviceTest extends ScaAbstractComponentTest {
 	 */
 	public void testUnsetAdminState() {
 		ScaModelCommand.execute(getFixture(), new ScaModelCommand() {
-			
+
 			@Override
 			public void execute() {
 				getFixture().unsetAdminState();
 			}
 		});
-		
+
 		Assert.assertFalse(getFixture().isSetAdminState());
 	}
 
@@ -478,10 +484,12 @@ public class ScaDeviceTest extends ScaAbstractComponentTest {
 	}
 
 	/**
-	 * Tests the '{@link gov.redhawk.model.sca.ScaDevice#fetchAggregateDevices(org.eclipse.core.runtime.IProgressMonitor) <em>Fetch Aggregate Devices</em>}' operation.
+	 * Tests the '
+	 * {@link gov.redhawk.model.sca.ScaDevice#fetchAggregateDevices(org.eclipse.core.runtime.IProgressMonitor) <em>Fetch
+	 * Aggregate Devices</em>}' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @throws InterruptedException 
+	 * @throws InterruptedException
 	 * @see gov.redhawk.model.sca.ScaDevice#fetchAggregateDevices(org.eclipse.core.runtime.IProgressMonitor)
 	 * @generated NOT
 	 */
@@ -520,7 +528,8 @@ public class ScaDeviceTest extends ScaAbstractComponentTest {
 	}
 
 	/**
-	 * Tests the '{@link gov.redhawk.model.sca.ScaDevice#fetchAdminState(org.eclipse.core.runtime.IProgressMonitor) <em>Fetch Admin State</em>}' operation.
+	 * Tests the '{@link gov.redhawk.model.sca.ScaDevice#fetchAdminState(org.eclipse.core.runtime.IProgressMonitor)
+	 * <em>Fetch Admin State</em>}' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @see gov.redhawk.model.sca.ScaDevice#fetchAdminState(org.eclipse.core.runtime.IProgressMonitor)
@@ -533,7 +542,8 @@ public class ScaDeviceTest extends ScaAbstractComponentTest {
 	}
 
 	/**
-	 * Tests the '{@link gov.redhawk.model.sca.ScaDevice#fetchLabel(org.eclipse.core.runtime.IProgressMonitor) <em>Fetch Label</em>}' operation.
+	 * Tests the '{@link gov.redhawk.model.sca.ScaDevice#fetchLabel(org.eclipse.core.runtime.IProgressMonitor) <em>Fetch
+	 * Label</em>}' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @see gov.redhawk.model.sca.ScaDevice#fetchLabel(org.eclipse.core.runtime.IProgressMonitor)
@@ -546,7 +556,9 @@ public class ScaDeviceTest extends ScaAbstractComponentTest {
 	}
 
 	/**
-	 * Tests the '{@link gov.redhawk.model.sca.ScaDevice#fetchOperationalState(org.eclipse.core.runtime.IProgressMonitor) <em>Fetch Operational State</em>}' operation.
+	 * Tests the '
+	 * {@link gov.redhawk.model.sca.ScaDevice#fetchOperationalState(org.eclipse.core.runtime.IProgressMonitor) <em>Fetch
+	 * Operational State</em>}' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @see gov.redhawk.model.sca.ScaDevice#fetchOperationalState(org.eclipse.core.runtime.IProgressMonitor)
@@ -559,7 +571,8 @@ public class ScaDeviceTest extends ScaAbstractComponentTest {
 	}
 
 	/**
-	 * Tests the '{@link gov.redhawk.model.sca.ScaDevice#fetchUsageState(org.eclipse.core.runtime.IProgressMonitor) <em>Fetch Usage State</em>}' operation.
+	 * Tests the '{@link gov.redhawk.model.sca.ScaDevice#fetchUsageState(org.eclipse.core.runtime.IProgressMonitor)
+	 * <em>Fetch Usage State</em>}' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @see gov.redhawk.model.sca.ScaDevice#fetchUsageState(org.eclipse.core.runtime.IProgressMonitor)
@@ -572,7 +585,8 @@ public class ScaDeviceTest extends ScaAbstractComponentTest {
 	}
 
 	/**
-	 * Tests the '{@link gov.redhawk.model.sca.ScaDevice#fetchProfile(org.eclipse.core.runtime.IProgressMonitor) <em>Fetch Profile</em>}' operation.
+	 * Tests the '{@link gov.redhawk.model.sca.ScaDevice#fetchProfile(org.eclipse.core.runtime.IProgressMonitor)
+	 * <em>Fetch Profile</em>}' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @see gov.redhawk.model.sca.ScaDevice#fetchProfile(org.eclipse.core.runtime.IProgressMonitor)
@@ -585,11 +599,12 @@ public class ScaDeviceTest extends ScaAbstractComponentTest {
 	}
 
 	/**
-	 * Tests the '{@link mil.jpeojtrs.sca.cf.DeviceOperations#allocateCapacity(mil.jpeojtrs.sca.cf.DataType[]) <em>Allocate Capacity</em>}' operation.
+	 * Tests the '{@link mil.jpeojtrs.sca.cf.DeviceOperations#allocateCapacity(mil.jpeojtrs.sca.cf.DataType[])
+	 * <em>Allocate Capacity</em>}' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @throws InvalidState 
-	 * @throws InvalidCapacity 
+	 * @throws InvalidState
+	 * @throws InvalidCapacity
 	 * @see mil.jpeojtrs.sca.cf.DeviceOperations#allocateCapacity(mil.jpeojtrs.sca.cf.DataType[])
 	 * @generated NOT
 	 */
@@ -600,11 +615,12 @@ public class ScaDeviceTest extends ScaAbstractComponentTest {
 	}
 
 	/**
-	 * Tests the '{@link mil.jpeojtrs.sca.cf.DeviceOperations#deallocateCapacity(mil.jpeojtrs.sca.cf.DataType[]) <em>Deallocate Capacity</em>}' operation.
+	 * Tests the '{@link mil.jpeojtrs.sca.cf.DeviceOperations#deallocateCapacity(mil.jpeojtrs.sca.cf.DataType[])
+	 * <em>Deallocate Capacity</em>}' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @throws InvalidState 
-	 * @throws InvalidCapacity 
+	 * @throws InvalidState
+	 * @throws InvalidCapacity
 	 * @see mil.jpeojtrs.sca.cf.DeviceOperations#deallocateCapacity(mil.jpeojtrs.sca.cf.DataType[])
 	 * @generated NOT
 	 */
@@ -613,10 +629,10 @@ public class ScaDeviceTest extends ScaAbstractComponentTest {
 		getFixture().deallocateCapacity(new DataType[0]);
 		// BEGIN GENERATED CODE
 	}
-	
+
 	@Override
 	protected String getRepId() {
 		return DeviceHelper.id();
 	}
 
-} //ScaDeviceTest
+} // ScaDeviceTest

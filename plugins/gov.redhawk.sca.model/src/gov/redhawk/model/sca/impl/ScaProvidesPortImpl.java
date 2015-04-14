@@ -22,10 +22,11 @@ import org.eclipse.emf.ecore.EClass;
 /**
  * <!-- begin-user-doc -->
  * An implementation of the model object '<em><b>Provides Port</b></em>'.
+ * 
  * @since 12.0
- * <!-- end-user-doc -->
- * <p>
- * </p>
+ *        <!-- end-user-doc -->
+ *        <p>
+ *        </p>
  *
  * @generated
  */
@@ -33,6 +34,7 @@ public class ScaProvidesPortImpl extends ScaPortImpl<Provides, org.omg.CORBA.Obj
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	protected ScaProvidesPortImpl() {
@@ -42,6 +44,7 @@ public class ScaProvidesPortImpl extends ScaPortImpl<Provides, org.omg.CORBA.Obj
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -51,9 +54,10 @@ public class ScaProvidesPortImpl extends ScaPortImpl<Provides, org.omg.CORBA.Obj
 
 	/**
 	 * <!-- begin-user-doc -->
+	 * 
 	 * @since 18.0
-	 * <!-- end-user-doc -->
-	 * This is specialized for the more specific type known in this context.
+	 *        <!-- end-user-doc -->
+	 *        This is specialized for the more specific type known in this context.
 	 * @generated
 	 */
 	@Override
@@ -64,8 +68,9 @@ public class ScaProvidesPortImpl extends ScaPortImpl<Provides, org.omg.CORBA.Obj
 	/**
 	 * The default value of the '{@link #getType() <em>Type</em>}' attribute.
 	 * <!-- begin-user-doc -->
+	 * 
 	 * @since 8.0
-	 * <!-- end-user-doc -->
+	 *        <!-- end-user-doc -->
 	 * @see #getType()
 	 * @generated NOT
 	 * @ordered
@@ -75,6 +80,7 @@ public class ScaProvidesPortImpl extends ScaPortImpl<Provides, org.omg.CORBA.Obj
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * 
 	 * @generated NOT
 	 */
 	public String getType() {

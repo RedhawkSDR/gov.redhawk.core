@@ -25,6 +25,7 @@ import java.util.List;
 
 import mil.jpeojtrs.sca.prf.Enumeration;
 import mil.jpeojtrs.sca.prf.Simple;
+import mil.jpeojtrs.sca.prf.SimpleSequence;
 import mil.jpeojtrs.sca.util.AnyUtils;
 
 import org.eclipse.emf.common.notify.AdapterFactory;
@@ -105,6 +106,19 @@ public final class ScaComponentFactory {
 				final TableViewerColumn columnViewer = new TableViewerColumn(viewer, SWT.CENTER);
 				columnViewer.setEditingSupport(new StructFieldPropertyEditingSupport(viewer, contentProvider, propDef.getId()));
 				columnViewer.setLabelProvider(new StructFieldPropertyColumnLabelProvider(contentProvider, propDef.getId()));
+				String label;
+				if (propDef.getName() != null) {
+					label = propDef.getName();
+				} else {
+					label = propDef.getId();
+				}
+				layout.setColumnData(columnViewer.getColumn(), new ColumnPixelData(Math.min(300, 8 * label.length() + 10), true));
+				columnViewer.getColumn().setText(label);
+			}
+			for (final SimpleSequence propDef : property.getDefinition().getStruct().getSimpleSequence()) {
+				final TableViewerColumn columnViewer = new TableViewerColumn(viewer, SWT.CENTER);
+				columnViewer.setEditingSupport(new StructFieldPropertyEditingSupport(viewer, contentProvider, propDef.getId()));
+				columnViewer.setLabelProvider(new StructFieldPropertyColumnLabelProvider(contentProvider, propDef.getId(), true));
 				String label;
 				if (propDef.getName() != null) {
 					label = propDef.getName();

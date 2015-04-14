@@ -23,7 +23,7 @@ import org.junit.Assert;
  * <p>
  * The following features are tested:
  * <ul>
- *   <li>{@link gov.redhawk.model.sca.ScaPort#getRepid() <em>Repid</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.ScaPort#getRepid() <em>Repid</em>}</li>
  * </ul>
  * </p>
  * @generated
@@ -47,8 +47,8 @@ public abstract class ScaPortTest extends CorbaObjWrapperTest {
 	 * @generated
 	 */
 	@Override
-	protected ScaPort<?, ?> getFixture() {
-		return (ScaPort<?, ?>)fixture;
+	protected ScaPort< ? , ? > getFixture() {
+		return (ScaPort< ? , ? >) fixture;
 	}
 
 	/**
@@ -80,12 +80,11 @@ public abstract class ScaPortTest extends CorbaObjWrapperTest {
 	 * @see gov.redhawk.model.sca.ScaPort#getComponent()
 	 * @generated NOT
 	 */
-	 @Deprecated
+	@Deprecated
 	public void testGetComponent() {
 		// END GENERATED CODE
 		// PASS
 		// BEGIN GENERATED CODE
 	}
 
-
-} //ScaPortTest
+} // ScaPortTest

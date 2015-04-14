@@ -16,14 +16,10 @@ import gov.redhawk.model.sca.ScaDomainManager;
 import gov.redhawk.model.sca.ScaWaveform;
 import gov.redhawk.model.sca.ScaWaveformFactory;
 import gov.redhawk.model.sca.tests.stubs.ScaTestConstaints;
-
 import org.junit.Assert;
-
 import junit.textui.TestRunner;
-
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EObject;
-
 import CF.DeviceManager;
 import CF.DomainManagerHelper;
 import CF.InvalidFileName;
@@ -47,35 +43,62 @@ import CF.DomainManagerPackage.UnregisterError;
  * <p>
  * The following features are tested:
  * <ul>
- *   <li>{@link gov.redhawk.model.sca.ScaDomainManager#getConnectionProperties() <em>Connection Properties</em>}</li>
- *   <li>{@link gov.redhawk.model.sca.ScaDomainManager#isConnected() <em>Connected</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.ScaDomainManager#getConnectionProperties() <em>Connection Properties</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.ScaDomainManager#isConnected() <em>Connected</em>}</li>
  * </ul>
  * </p>
  * <p>
  * The following operations are tested:
  * <ul>
- *   <li>{@link gov.redhawk.model.sca.ScaDomainManager#getDevice(java.lang.String) <em>Get Device</em>}</li>
- *   <li>{@link gov.redhawk.model.sca.ScaDomainManager#connect(org.eclipse.core.runtime.IProgressMonitor) <em>Connect</em>}</li>
- *   <li>{@link gov.redhawk.model.sca.ScaDomainManager#connect(org.eclipse.core.runtime.IProgressMonitor, gov.redhawk.model.sca.RefreshDepth) <em>Connect</em>}</li>
- *   <li>{@link gov.redhawk.model.sca.ScaDomainManager#disconnect() <em>Disconnect</em>}</li>
- *   <li>{@link gov.redhawk.model.sca.ScaDomainManager#fetchDeviceManagers(org.eclipse.core.runtime.IProgressMonitor) <em>Fetch Device Managers</em>}</li>
- *   <li>{@link gov.redhawk.model.sca.ScaDomainManager#fetchWaveformFactories(org.eclipse.core.runtime.IProgressMonitor) <em>Fetch Waveform Factories</em>}</li>
- *   <li>{@link gov.redhawk.model.sca.ScaDomainManager#fetchWaveforms(org.eclipse.core.runtime.IProgressMonitor) <em>Fetch Waveforms</em>}</li>
- *   <li>{@link gov.redhawk.model.sca.ScaDomainManager#fetchFileManager(org.eclipse.core.runtime.IProgressMonitor) <em>Fetch File Manager</em>}</li>
- *   <li>{@link gov.redhawk.model.sca.ScaDomainManager#fetchIdentifier(org.eclipse.core.runtime.IProgressMonitor) <em>Fetch Identifier</em>}</li>
- *   <li>{@link gov.redhawk.model.sca.ScaDomainManager#installScaWaveformFactory(java.lang.String) <em>Install Sca Waveform Factory</em>}</li>
- *   <li>{@link gov.redhawk.model.sca.ScaDomainManager#uninstallScaWaveformFactory(gov.redhawk.model.sca.ScaWaveformFactory) <em>Uninstall Sca Waveform Factory</em>}</li>
- *   <li>{@link gov.redhawk.model.sca.ScaDomainManager#fetchProfile(org.eclipse.core.runtime.IProgressMonitor) <em>Fetch Profile</em>}</li>
- *   <li>{@link CF.DomainManagerOperations#registerDevice(CF.Device, CF.DeviceManager) <em>Register Device</em>}</li>
- *   <li>{@link CF.DomainManagerOperations#registerDeviceManager(CF.DeviceManager) <em>Register Device Manager</em>}</li>
- *   <li>{@link CF.DomainManagerOperations#unregisterDeviceManager(CF.DeviceManager) <em>Unregister Device Manager</em>}</li>
- *   <li>{@link CF.DomainManagerOperations#unregisterDevice(CF.Device) <em>Unregister Device</em>}</li>
- *   <li>{@link CF.DomainManagerOperations#installApplication(java.lang.String) <em>Install Application</em>}</li>
- *   <li>{@link CF.DomainManagerOperations#uninstallApplication(java.lang.String) <em>Uninstall Application</em>}</li>
- *   <li>{@link CF.DomainManagerOperations#registerService(org.omg.CORBA.Object, CF.DeviceManager, java.lang.String) <em>Register Service</em>}</li>
- *   <li>{@link CF.DomainManagerOperations#unregisterService(org.omg.CORBA.Object, java.lang.String) <em>Unregister Service</em>}</li>
- *   <li>{@link CF.DomainManagerOperations#registerWithEventChannel(org.omg.CORBA.Object, java.lang.String, java.lang.String) <em>Register With Event Channel</em>}</li>
- *   <li>{@link CF.DomainManagerOperations#unregisterFromEventChannel(java.lang.String, java.lang.String) <em>Unregister From Event Channel</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.ScaDomainManager#getDevice(java.lang.String) <em>Get Device</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.ScaDomainManager#connect(org.eclipse.core.runtime.IProgressMonitor)
+ * <em>Connect</em>}</li>
+ * <li>
+ * {@link gov.redhawk.model.sca.ScaDomainManager#connect(org.eclipse.core.runtime.IProgressMonitor, gov.redhawk.model.sca.RefreshDepth)
+ * <em>Connect</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.ScaDomainManager#disconnect() <em>Disconnect</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.ScaDomainManager#fetchDeviceManagers(org.eclipse.core.runtime.IProgressMonitor)
+ * <em>Fetch Device Managers</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.ScaDomainManager#fetchWaveformFactories(org.eclipse.core.runtime.IProgressMonitor)
+ * <em>Fetch Waveform Factories</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.ScaDomainManager#fetchWaveforms(org.eclipse.core.runtime.IProgressMonitor) <em>Fetch
+ * Waveforms</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.ScaDomainManager#fetchFileManager(org.eclipse.core.runtime.IProgressMonitor)
+ * <em>Fetch File Manager</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.ScaDomainManager#fetchIdentifier(org.eclipse.core.runtime.IProgressMonitor)
+ * <em>Fetch Identifier</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.ScaDomainManager#installScaWaveformFactory(java.lang.String) <em>Install Sca
+ * Waveform Factory</em>}</li>
+ * <li>
+ * {@link gov.redhawk.model.sca.ScaDomainManager#uninstallScaWaveformFactory(gov.redhawk.model.sca.ScaWaveformFactory)
+ * <em>Uninstall Sca Waveform Factory</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.ScaDomainManager#fetchProfile(org.eclipse.core.runtime.IProgressMonitor) <em>Fetch
+ * Profile</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.ScaDomainManager#fetchEventChannels(org.eclipse.core.runtime.IProgressMonitor)
+ * <em>Fetch Event Channels</em>}</li>
+ * <li>{@link CF.DomainManagerOperations#registerDevice(CF.Device, CF.DeviceManager) <em>Register Device</em>}</li>
+ * <li>{@link CF.DomainManagerOperations#registerDeviceManager(CF.DeviceManager) <em>Register Device Manager</em>}</li>
+ * <li>{@link CF.DomainManagerOperations#unregisterDeviceManager(CF.DeviceManager) <em>Unregister Device Manager</em>}
+ * </li>
+ * <li>{@link CF.DomainManagerOperations#unregisterDevice(CF.Device) <em>Unregister Device</em>}</li>
+ * <li>
+ * {@link CF.DomainManagerOperations#createApplication(java.lang.String, java.lang.String, CF.DataType[], CF.DeviceAssignmentType[])
+ * <em>Create Application</em>}</li>
+ * <li>{@link CF.DomainManagerOperations#installApplication(java.lang.String) <em>Install Application</em>}</li>
+ * <li>{@link CF.DomainManagerOperations#uninstallApplication(java.lang.String) <em>Uninstall Application</em>}</li>
+ * <li>{@link CF.DomainManagerOperations#registerService(org.omg.CORBA.Object, CF.DeviceManager, java.lang.String)
+ * <em>Register Service</em>}</li>
+ * <li>{@link CF.DomainManagerOperations#unregisterService(org.omg.CORBA.Object, java.lang.String) <em>Unregister
+ * Service</em>}</li>
+ * <li>
+ * {@link CF.DomainManagerOperations#registerWithEventChannel(org.omg.CORBA.Object, java.lang.String, java.lang.String)
+ * <em>Register With Event Channel</em>}</li>
+ * <li>{@link CF.DomainManagerOperations#unregisterFromEventChannel(java.lang.String, java.lang.String) <em>Unregister
+ * From Event Channel</em>}</li>
+ * <li>{@link CF.DomainManagerOperations#registerRemoteDomainManager(CF.DomainManager) <em>Register Remote Domain
+ * Manager</em>}</li>
+ * <li>{@link CF.DomainManagerOperations#unregisterRemoteDomainManager(CF.DomainManager) <em>Unregister Remote Domain
+ * Manager</em>}</li>
  * </ul>
  * </p>
  * @generated
@@ -109,7 +132,7 @@ public class ScaDomainManagerTest extends ScaPropertyContainerTest {
 	 */
 	@Override
 	protected ScaDomainManager getFixture() {
-		return (ScaDomainManager)fixture;
+		return (ScaDomainManager) fixture;
 	}
 
 	private TestEnvirornment env;
@@ -138,10 +161,10 @@ public class ScaDomainManagerTest extends ScaPropertyContainerTest {
 		this.env = null;
 		setFixture(null);
 	}
-	
+
 	@Override
 	public void testRefreshWithNullAndDispose() throws InterruptedException {
-		
+
 	}
 
 	/**
@@ -154,21 +177,22 @@ public class ScaDomainManagerTest extends ScaPropertyContainerTest {
 	public void testGetFileManager() {
 		// END GENERATED CODE
 		Assert.assertNotNull(getFixture().getFileManager());
-		// TODO Disable for now	
-		//		ScaModelCommand.execute(getFixture(), new ScaModelCommand() {
+		// TODO Disable for now
+		// ScaModelCommand.execute(getFixture(), new ScaModelCommand() {
 		//
-		//			public void execute() {
-		//				EcoreUtil.delete(getFixture());
-		//				Assert.assertNull(getFixture().getFileManager());
-		//			}
+		// public void execute() {
+		// EcoreUtil.delete(getFixture());
+		// Assert.assertNull(getFixture().getFileManager());
+		// }
 		//
-		//		});
+		// });
 
 		// BEGIN GENERATED CODE
 	}
 
 	/**
-	 * Tests the '{@link gov.redhawk.model.sca.ScaDomainManager#getConnectionProperties() <em>Connection Properties</em>}' feature getter.
+	 * Tests the '{@link gov.redhawk.model.sca.ScaDomainManager#getConnectionProperties() <em>Connection
+	 * Properties</em>}' feature getter.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @see gov.redhawk.model.sca.ScaDomainManager#getConnectionProperties()
@@ -191,18 +215,19 @@ public class ScaDomainManagerTest extends ScaPropertyContainerTest {
 		// END GENERATED CODE
 		Assert.assertTrue(getFixture().isConnected());
 		// TODO Disable disconnect check for now
-		//		ScaModelCommand.execute(getFixture(), new ScaModelCommand() {
+		// ScaModelCommand.execute(getFixture(), new ScaModelCommand() {
 		//
-		//			public void execute() {
-		//				getFixture().disconnect();
-		//			}
-		//		});
-		//		Assert.assertFalse(getFixture().isConnected());
+		// public void execute() {
+		// getFixture().disconnect();
+		// }
+		// });
+		// Assert.assertFalse(getFixture().isConnected());
 		// BEGIN GENERATED CODE
 	}
 
 	/**
-	 * Tests the '{@link gov.redhawk.model.sca.ScaDomainManager#getDeviceManagers() <em>Device Managers</em>}' feature getter.
+	 * Tests the '{@link gov.redhawk.model.sca.ScaDomainManager#getDeviceManagers() <em>Device Managers</em>}' feature
+	 * getter.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @see gov.redhawk.model.sca.ScaDomainManager#getDeviceManagers()
@@ -215,7 +240,8 @@ public class ScaDomainManagerTest extends ScaPropertyContainerTest {
 	}
 
 	/**
-	 * Tests the '{@link gov.redhawk.model.sca.ScaDomainManager#connect(org.eclipse.core.runtime.IProgressMonitor) <em>Connect</em>}' operation.
+	 * Tests the '{@link gov.redhawk.model.sca.ScaDomainManager#connect(org.eclipse.core.runtime.IProgressMonitor)
+	 * <em>Connect</em>}' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @see gov.redhawk.model.sca.ScaDomainManager#connect(org.eclipse.core.runtime.IProgressMonitor)
@@ -225,21 +251,24 @@ public class ScaDomainManagerTest extends ScaPropertyContainerTest {
 	public void testConnect__IProgressMonitor() throws Exception {
 		// END GENERATED CODE
 		// TODO Disabled for now
-		//		getFixture().connect(null);
+		// getFixture().connect(null);
 		// BEGIN GENERATED CODE
 	}
 
 	/**
-	 * Tests the '{@link gov.redhawk.model.sca.ScaDomainManager#connect(org.eclipse.core.runtime.IProgressMonitor, gov.redhawk.model.sca.RefreshDepth) <em>Connect</em>}' operation.
+	 * Tests the '
+	 * {@link gov.redhawk.model.sca.ScaDomainManager#connect(org.eclipse.core.runtime.IProgressMonitor, gov.redhawk.model.sca.RefreshDepth)
+	 * <em>Connect</em>}' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see gov.redhawk.model.sca.ScaDomainManager#connect(org.eclipse.core.runtime.IProgressMonitor, gov.redhawk.model.sca.RefreshDepth)
+	 * @see gov.redhawk.model.sca.ScaDomainManager#connect(org.eclipse.core.runtime.IProgressMonitor,
+	 * gov.redhawk.model.sca.RefreshDepth)
 	 * @generated NOT
 	 */
 	public void testConnect__IProgressMonitor_RefreshDepth() {
 		// END GENERATED CODE
 		// TODO Disabled for now
-		//		getFixture().connect(null, RefreshDepth.SELF);
+		// getFixture().connect(null, RefreshDepth.SELF);
 
 		// BEGIN GENERATED CODE
 	}
@@ -254,20 +283,22 @@ public class ScaDomainManagerTest extends ScaPropertyContainerTest {
 	public void testDisconnect() {
 		// END GENERATED CODE
 		// TODO
-		//		ScaModelCommand.execute(getFixture(), new ScaModelCommand() {
+		// ScaModelCommand.execute(getFixture(), new ScaModelCommand() {
 		//
-		//			public void execute() {
-		//				getFixture().disconnect();
-		//			}
-		//		});
+		// public void execute() {
+		// getFixture().disconnect();
+		// }
+		// });
 		// BEGIN GENERATED CODE
 	}
 
 	/**
-	 * Tests the '{@link gov.redhawk.model.sca.ScaDomainManager#fetchDeviceManagers(org.eclipse.core.runtime.IProgressMonitor) <em>Fetch Device Managers</em>}' operation.
+	 * Tests the '
+	 * {@link gov.redhawk.model.sca.ScaDomainManager#fetchDeviceManagers(org.eclipse.core.runtime.IProgressMonitor)
+	 * <em>Fetch Device Managers</em>}' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @throws InterruptedException 
+	 * @throws InterruptedException
 	 * @see gov.redhawk.model.sca.ScaDomainManager#fetchDeviceManagers(org.eclipse.core.runtime.IProgressMonitor)
 	 * @generated NOT
 	 */
@@ -282,7 +313,7 @@ public class ScaDomainManagerTest extends ScaPropertyContainerTest {
 		}
 		// BEGIN GENERATED CODE
 	}
-	
+
 	/**
 	 * @generated NOT
 	 */
@@ -293,10 +324,12 @@ public class ScaDomainManagerTest extends ScaPropertyContainerTest {
 	}
 
 	/**
-	 * Tests the '{@link gov.redhawk.model.sca.ScaDomainManager#fetchWaveformFactories(org.eclipse.core.runtime.IProgressMonitor) <em>Fetch Waveform Factories</em>}' operation.
+	 * Tests the '
+	 * {@link gov.redhawk.model.sca.ScaDomainManager#fetchWaveformFactories(org.eclipse.core.runtime.IProgressMonitor)
+	 * <em>Fetch Waveform Factories</em>}' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @throws InterruptedException 
+	 * @throws InterruptedException
 	 * @see gov.redhawk.model.sca.ScaDomainManager#fetchWaveformFactories(org.eclipse.core.runtime.IProgressMonitor)
 	 * @generated NOT
 	 */
@@ -311,7 +344,7 @@ public class ScaDomainManagerTest extends ScaPropertyContainerTest {
 		}
 		// BEGIN GENERATED CODE
 	}
-	
+
 	/**
 	 * @generated NOT
 	 */
@@ -322,10 +355,12 @@ public class ScaDomainManagerTest extends ScaPropertyContainerTest {
 	}
 
 	/**
-	 * Tests the '{@link gov.redhawk.model.sca.ScaDomainManager#fetchWaveforms(org.eclipse.core.runtime.IProgressMonitor) <em>Fetch Waveforms</em>}' operation.
+	 * Tests the '
+	 * {@link gov.redhawk.model.sca.ScaDomainManager#fetchWaveforms(org.eclipse.core.runtime.IProgressMonitor) <em>Fetch
+	 * Waveforms</em>}' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @throws InterruptedException 
+	 * @throws InterruptedException
 	 * @see gov.redhawk.model.sca.ScaDomainManager#fetchWaveforms(org.eclipse.core.runtime.IProgressMonitor)
 	 * @generated NOT
 	 */
@@ -340,7 +375,7 @@ public class ScaDomainManagerTest extends ScaPropertyContainerTest {
 		}
 		// BEGIN GENERATED CODE
 	}
-	
+
 	/**
 	 * @generated NOT
 	 */
@@ -351,7 +386,9 @@ public class ScaDomainManagerTest extends ScaPropertyContainerTest {
 	}
 
 	/**
-	 * Tests the '{@link gov.redhawk.model.sca.ScaDomainManager#fetchFileManager(org.eclipse.core.runtime.IProgressMonitor) <em>Fetch File Manager</em>}' operation.
+	 * Tests the '
+	 * {@link gov.redhawk.model.sca.ScaDomainManager#fetchFileManager(org.eclipse.core.runtime.IProgressMonitor)
+	 * <em>Fetch File Manager</em>}' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @see gov.redhawk.model.sca.ScaDomainManager#fetchFileManager(org.eclipse.core.runtime.IProgressMonitor)
@@ -362,7 +399,7 @@ public class ScaDomainManagerTest extends ScaPropertyContainerTest {
 		getFixture().fetchFileManager(null);
 		// BEGIN GENERATED CODE
 	}
-	
+
 	/**
 	 * @generated NOT
 	 */
@@ -373,7 +410,9 @@ public class ScaDomainManagerTest extends ScaPropertyContainerTest {
 	}
 
 	/**
-	 * Tests the '{@link gov.redhawk.model.sca.ScaDomainManager#fetchIdentifier(org.eclipse.core.runtime.IProgressMonitor) <em>Fetch Identifier</em>}' operation.
+	 * Tests the '
+	 * {@link gov.redhawk.model.sca.ScaDomainManager#fetchIdentifier(org.eclipse.core.runtime.IProgressMonitor)
+	 * <em>Fetch Identifier</em>}' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @see gov.redhawk.model.sca.ScaDomainManager#fetchIdentifier(org.eclipse.core.runtime.IProgressMonitor)
@@ -386,13 +425,14 @@ public class ScaDomainManagerTest extends ScaPropertyContainerTest {
 	}
 
 	/**
-	 * Tests the '{@link gov.redhawk.model.sca.ScaDomainManager#installScaWaveformFactory(java.lang.String) <em>Install Sca Waveform Factory</em>}' operation.
+	 * Tests the '{@link gov.redhawk.model.sca.ScaDomainManager#installScaWaveformFactory(java.lang.String) <em>Install
+	 * Sca Waveform Factory</em>}' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @throws ApplicationAlreadyInstalled 
-	 * @throws ApplicationInstallationError 
-	 * @throws InvalidFileName 
-	 * @throws InvalidProfile 
+	 * @throws ApplicationAlreadyInstalled
+	 * @throws ApplicationInstallationError
+	 * @throws InvalidFileName
+	 * @throws InvalidProfile
 	 * @see gov.redhawk.model.sca.ScaDomainManager#installScaWaveformFactory(java.lang.String)
 	 * @generated NOT
 	 */
@@ -409,11 +449,13 @@ public class ScaDomainManagerTest extends ScaPropertyContainerTest {
 	}
 
 	/**
-	 * Tests the '{@link gov.redhawk.model.sca.ScaDomainManager#uninstallScaWaveformFactory(gov.redhawk.model.sca.ScaWaveformFactory) <em>Uninstall Sca Waveform Factory</em>}' operation.
+	 * Tests the '
+	 * {@link gov.redhawk.model.sca.ScaDomainManager#uninstallScaWaveformFactory(gov.redhawk.model.sca.ScaWaveformFactory)
+	 * <em>Uninstall Sca Waveform Factory</em>}' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @throws InvalidIdentifier 
-	 * @throws ApplicationUninstallationError 
+	 * @throws InvalidIdentifier
+	 * @throws ApplicationUninstallationError
 	 * @see gov.redhawk.model.sca.ScaDomainManager#uninstallScaWaveformFactory(gov.redhawk.model.sca.ScaWaveformFactory)
 	 * @generated NOT
 	 */
@@ -424,7 +466,8 @@ public class ScaDomainManagerTest extends ScaPropertyContainerTest {
 	}
 
 	/**
-	 * Tests the '{@link gov.redhawk.model.sca.ScaDomainManager#fetchProfile(org.eclipse.core.runtime.IProgressMonitor) <em>Fetch Profile</em>}' operation.
+	 * Tests the '{@link gov.redhawk.model.sca.ScaDomainManager#fetchProfile(org.eclipse.core.runtime.IProgressMonitor)
+	 * <em>Fetch Profile</em>}' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @see gov.redhawk.model.sca.ScaDomainManager#fetchProfile(org.eclipse.core.runtime.IProgressMonitor)
@@ -437,14 +480,32 @@ public class ScaDomainManagerTest extends ScaPropertyContainerTest {
 	}
 
 	/**
-	 * Tests the '{@link mil.jpeojtrs.sca.cf.DomainManagerOperations#registerDevice(mil.jpeojtrs.sca.cf.Device, mil.jpeojtrs.sca.cf.DeviceManager) <em>Register Device</em>}' operation.
+	 * Tests the '
+	 * {@link gov.redhawk.model.sca.ScaDomainManager#fetchEventChannels(org.eclipse.core.runtime.IProgressMonitor)
+	 * <em>Fetch Event Channels</em>}' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @throws RegisterError 
-	 * @throws DeviceManagerNotRegistered 
-	 * @throws InvalidProfile 
-	 * @throws InvalidObjectReference 
-	 * @see mil.jpeojtrs.sca.cf.DomainManagerOperations#registerDevice(mil.jpeojtrs.sca.cf.Device, mil.jpeojtrs.sca.cf.DeviceManager)
+	 * @see gov.redhawk.model.sca.ScaDomainManager#fetchEventChannels(org.eclipse.core.runtime.IProgressMonitor)
+	 * @generated
+	 */
+	public void testFetchEventChannels__IProgressMonitor() {
+		// TODO: implement this operation test method
+		// Ensure that you remove @generated or mark it @generated NOT
+		fail();
+	}
+
+	/**
+	 * Tests the '
+	 * {@link mil.jpeojtrs.sca.cf.DomainManagerOperations#registerDevice(mil.jpeojtrs.sca.cf.Device, mil.jpeojtrs.sca.cf.DeviceManager)
+	 * <em>Register Device</em>}' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @throws RegisterError
+	 * @throws DeviceManagerNotRegistered
+	 * @throws InvalidProfile
+	 * @throws InvalidObjectReference
+	 * @see mil.jpeojtrs.sca.cf.DomainManagerOperations#registerDevice(mil.jpeojtrs.sca.cf.Device,
+	 * mil.jpeojtrs.sca.cf.DeviceManager)
 	 * @generated NOT
 	 */
 	public void testRegisterDevice__Device_DeviceManager() {
@@ -465,12 +526,14 @@ public class ScaDomainManagerTest extends ScaPropertyContainerTest {
 	}
 
 	/**
-	 * Tests the '{@link mil.jpeojtrs.sca.cf.DomainManagerOperations#registerDeviceManager(mil.jpeojtrs.sca.cf.DeviceManager) <em>Register Device Manager</em>}' operation.
+	 * Tests the '
+	 * {@link mil.jpeojtrs.sca.cf.DomainManagerOperations#registerDeviceManager(mil.jpeojtrs.sca.cf.DeviceManager)
+	 * <em>Register Device Manager</em>}' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @throws RegisterError 
-	 * @throws InvalidProfile 
-	 * @throws InvalidObjectReference 
+	 * @throws RegisterError
+	 * @throws InvalidProfile
+	 * @throws InvalidObjectReference
 	 * @see mil.jpeojtrs.sca.cf.DomainManagerOperations#registerDeviceManager(mil.jpeojtrs.sca.cf.DeviceManager)
 	 * @generated NOT
 	 */
@@ -481,11 +544,13 @@ public class ScaDomainManagerTest extends ScaPropertyContainerTest {
 	}
 
 	/**
-	 * Tests the '{@link mil.jpeojtrs.sca.cf.DomainManagerOperations#unregisterDeviceManager(mil.jpeojtrs.sca.cf.DeviceManager) <em>Unregister Device Manager</em>}' operation.
+	 * Tests the '
+	 * {@link mil.jpeojtrs.sca.cf.DomainManagerOperations#unregisterDeviceManager(mil.jpeojtrs.sca.cf.DeviceManager)
+	 * <em>Unregister Device Manager</em>}' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @throws UnregisterError 
-	 * @throws InvalidObjectReference 
+	 * @throws UnregisterError
+	 * @throws InvalidObjectReference
 	 * @see mil.jpeojtrs.sca.cf.DomainManagerOperations#unregisterDeviceManager(mil.jpeojtrs.sca.cf.DeviceManager)
 	 * @generated NOT
 	 */
@@ -496,11 +561,12 @@ public class ScaDomainManagerTest extends ScaPropertyContainerTest {
 	}
 
 	/**
-	 * Tests the '{@link mil.jpeojtrs.sca.cf.DomainManagerOperations#unregisterDevice(mil.jpeojtrs.sca.cf.Device) <em>Unregister Device</em>}' operation.
+	 * Tests the '{@link mil.jpeojtrs.sca.cf.DomainManagerOperations#unregisterDevice(mil.jpeojtrs.sca.cf.Device)
+	 * <em>Unregister Device</em>}' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @throws UnregisterError 
-	 * @throws InvalidObjectReference 
+	 * @throws UnregisterError
+	 * @throws InvalidObjectReference
 	 * @see mil.jpeojtrs.sca.cf.DomainManagerOperations#unregisterDevice(mil.jpeojtrs.sca.cf.Device)
 	 * @generated NOT
 	 */
@@ -511,13 +577,30 @@ public class ScaDomainManagerTest extends ScaPropertyContainerTest {
 	}
 
 	/**
-	 * Tests the '{@link mil.jpeojtrs.sca.cf.DomainManagerOperations#installApplication(java.lang.String) <em>Install Application</em>}' operation.
+	 * Tests the '
+	 * {@link CF.DomainManagerOperations#createApplication(java.lang.String, java.lang.String, CF.DataType[], CF.DeviceAssignmentType[])
+	 * <em>Create Application</em>}' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @throws ApplicationAlreadyInstalled 
-	 * @throws ApplicationInstallationError 
-	 * @throws InvalidFileName 
-	 * @throws InvalidProfile 
+	 * @see CF.DomainManagerOperations#createApplication(java.lang.String, java.lang.String, CF.DataType[],
+	 * CF.DeviceAssignmentType[])
+	 * @generated
+	 */
+	public void testCreateApplication__String_String_DataType_DeviceAssignmentType() {
+		// TODO: implement this operation test method
+		// Ensure that you remove @generated or mark it @generated NOT
+		fail();
+	}
+
+	/**
+	 * Tests the '{@link mil.jpeojtrs.sca.cf.DomainManagerOperations#installApplication(java.lang.String) <em>Install
+	 * Application</em>}' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @throws ApplicationAlreadyInstalled
+	 * @throws ApplicationInstallationError
+	 * @throws InvalidFileName
+	 * @throws InvalidProfile
 	 * @see mil.jpeojtrs.sca.cf.DomainManagerOperations#installApplication(java.lang.String)
 	 * @generated NOT
 	 */
@@ -537,18 +620,19 @@ public class ScaDomainManagerTest extends ScaPropertyContainerTest {
 		}
 		// BEGIN GENERATED CODE
 	}
-	
+
 	@Override
 	public void testSetCorbaObj__Object() {
 		Assert.assertNotNull(getFixture().getObj());
 	}
 
 	/**
-	 * Tests the '{@link mil.jpeojtrs.sca.cf.DomainManagerOperations#uninstallApplication(java.lang.String) <em>Uninstall Application</em>}' operation.
+	 * Tests the '{@link mil.jpeojtrs.sca.cf.DomainManagerOperations#uninstallApplication(java.lang.String)
+	 * <em>Uninstall Application</em>}' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @throws ApplicationUninstallationError 
-	 * @throws InvalidIdentifier 
+	 * @throws ApplicationUninstallationError
+	 * @throws InvalidIdentifier
 	 * @see mil.jpeojtrs.sca.cf.DomainManagerOperations#uninstallApplication(java.lang.String)
 	 * @generated NOT
 	 */
@@ -559,13 +643,16 @@ public class ScaDomainManagerTest extends ScaPropertyContainerTest {
 	}
 
 	/**
-	 * Tests the '{@link mil.jpeojtrs.sca.cf.DomainManagerOperations#registerService(org.omg.CORBA.Object, mil.jpeojtrs.sca.cf.DeviceManager, java.lang.String) <em>Register Service</em>}' operation.
+	 * Tests the '
+	 * {@link mil.jpeojtrs.sca.cf.DomainManagerOperations#registerService(org.omg.CORBA.Object, mil.jpeojtrs.sca.cf.DeviceManager, java.lang.String)
+	 * <em>Register Service</em>}' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @throws RegisterError 
-	 * @throws DeviceManagerNotRegistered 
-	 * @throws InvalidObjectReference 
-	 * @see mil.jpeojtrs.sca.cf.DomainManagerOperations#registerService(org.omg.CORBA.Object, mil.jpeojtrs.sca.cf.DeviceManager, java.lang.String)
+	 * @throws RegisterError
+	 * @throws DeviceManagerNotRegistered
+	 * @throws InvalidObjectReference
+	 * @see mil.jpeojtrs.sca.cf.DomainManagerOperations#registerService(org.omg.CORBA.Object,
+	 * mil.jpeojtrs.sca.cf.DeviceManager, java.lang.String)
 	 * @generated NOT
 	 */
 	public void testRegisterService__Object_DeviceManager_String() throws InvalidObjectReference, DeviceManagerNotRegistered, RegisterError {
@@ -575,11 +662,13 @@ public class ScaDomainManagerTest extends ScaPropertyContainerTest {
 	}
 
 	/**
-	 * Tests the '{@link mil.jpeojtrs.sca.cf.DomainManagerOperations#unregisterService(org.omg.CORBA.Object, java.lang.String) <em>Unregister Service</em>}' operation.
+	 * Tests the '
+	 * {@link mil.jpeojtrs.sca.cf.DomainManagerOperations#unregisterService(org.omg.CORBA.Object, java.lang.String)
+	 * <em>Unregister Service</em>}' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @throws UnregisterError 
-	 * @throws InvalidObjectReference 
+	 * @throws UnregisterError
+	 * @throws InvalidObjectReference
 	 * @see mil.jpeojtrs.sca.cf.DomainManagerOperations#unregisterService(org.omg.CORBA.Object, java.lang.String)
 	 * @generated NOT
 	 */
@@ -590,13 +679,16 @@ public class ScaDomainManagerTest extends ScaPropertyContainerTest {
 	}
 
 	/**
-	 * Tests the '{@link mil.jpeojtrs.sca.cf.DomainManagerOperations#registerWithEventChannel(org.omg.CORBA.Object, java.lang.String, java.lang.String) <em>Register With Event Channel</em>}' operation.
+	 * Tests the '
+	 * {@link mil.jpeojtrs.sca.cf.DomainManagerOperations#registerWithEventChannel(org.omg.CORBA.Object, java.lang.String, java.lang.String)
+	 * <em>Register With Event Channel</em>}' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @throws AlreadyConnected 
-	 * @throws InvalidEventChannelName 
-	 * @throws InvalidObjectReference 
-	 * @see mil.jpeojtrs.sca.cf.DomainManagerOperations#registerWithEventChannel(org.omg.CORBA.Object, java.lang.String, java.lang.String)
+	 * @throws AlreadyConnected
+	 * @throws InvalidEventChannelName
+	 * @throws InvalidObjectReference
+	 * @see mil.jpeojtrs.sca.cf.DomainManagerOperations#registerWithEventChannel(org.omg.CORBA.Object, java.lang.String,
+	 * java.lang.String)
 	 * @generated NOT
 	 */
 	public void testRegisterWithEventChannel__Object_String_String() throws InvalidObjectReference, InvalidEventChannelName, AlreadyConnected {
@@ -604,22 +696,22 @@ public class ScaDomainManagerTest extends ScaPropertyContainerTest {
 		getFixture().registerWithEventChannel(null, "", "");
 		// BEGIN GENERATED CODE
 	}
-	
+
 	@Override
 	public void testExists() {
 		Assert.assertTrue(getFixture().exists());
 	}
-	
+
 	@Override
 	public void testDispose() {
-		
+
 	}
-	
+
 	@Override
 	public void testFetchAttributes__IProgressMonitor() throws InterruptedException {
 		getFixture().fetchAttributes(null);
 	}
-	
+
 	@Override
 	public void testGetProfileObj() {
 		Assert.assertNotNull(getFixture().getProfileObj());
@@ -628,11 +720,13 @@ public class ScaDomainManagerTest extends ScaPropertyContainerTest {
 	}
 
 	/**
-	 * Tests the '{@link mil.jpeojtrs.sca.cf.DomainManagerOperations#unregisterFromEventChannel(java.lang.String, java.lang.String) <em>Unregister From Event Channel</em>}' operation.
+	 * Tests the '
+	 * {@link mil.jpeojtrs.sca.cf.DomainManagerOperations#unregisterFromEventChannel(java.lang.String, java.lang.String)
+	 * <em>Unregister From Event Channel</em>}' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @throws NotConnected 
-	 * @throws InvalidEventChannelName 
+	 * @throws NotConnected
+	 * @throws InvalidEventChannelName
 	 * @see mil.jpeojtrs.sca.cf.DomainManagerOperations#unregisterFromEventChannel(java.lang.String, java.lang.String)
 	 * @generated NOT
 	 */
@@ -643,7 +737,36 @@ public class ScaDomainManagerTest extends ScaPropertyContainerTest {
 	}
 
 	/**
-	 * Tests the '{@link gov.redhawk.model.sca.ScaDomainManager#getDevice(java.lang.String) <em>Get Device</em>}' operation.
+	 * Tests the '{@link CF.DomainManagerOperations#registerRemoteDomainManager(CF.DomainManager) <em>Register Remote
+	 * Domain Manager</em>}' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see CF.DomainManagerOperations#registerRemoteDomainManager(CF.DomainManager)
+	 * @generated
+	 */
+	public void testRegisterRemoteDomainManager__DomainManager() {
+		// TODO: implement this operation test method
+		// Ensure that you remove @generated or mark it @generated NOT
+		fail();
+	}
+
+	/**
+	 * Tests the '{@link CF.DomainManagerOperations#unregisterRemoteDomainManager(CF.DomainManager) <em>Unregister
+	 * Remote Domain Manager</em>}' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see CF.DomainManagerOperations#unregisterRemoteDomainManager(CF.DomainManager)
+	 * @generated
+	 */
+	public void testUnregisterRemoteDomainManager__DomainManager() {
+		// TODO: implement this operation test method
+		// Ensure that you remove @generated or mark it @generated NOT
+		fail();
+	}
+
+	/**
+	 * Tests the '{@link gov.redhawk.model.sca.ScaDomainManager#getDevice(java.lang.String) <em>Get Device</em>}'
+	 * operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @see gov.redhawk.model.sca.ScaDomainManager#getDevice(java.lang.String)
@@ -661,4 +784,4 @@ public class ScaDomainManagerTest extends ScaPropertyContainerTest {
 		return DomainManagerHelper.id();
 	}
 
-} //ScaDomainManagerTest
+} // ScaDomainManagerTest

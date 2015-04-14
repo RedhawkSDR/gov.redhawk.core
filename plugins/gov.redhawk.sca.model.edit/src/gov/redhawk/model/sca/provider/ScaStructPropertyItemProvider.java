@@ -12,6 +12,7 @@
 // BEGIN GENERATED CODE
 package gov.redhawk.model.sca.provider;
 
+import gov.redhawk.model.sca.ScaFactory;
 import gov.redhawk.model.sca.ScaPackage;
 import gov.redhawk.model.sca.ScaStructProperty;
 import gov.redhawk.model.sca.ScaStructSequenceProperty;
@@ -77,6 +78,19 @@ public class ScaStructPropertyItemProvider extends ScaAbstractPropertyItemProvid
 	 * This adds a property descriptor for the Simples feature.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	protected void addSequencesPropertyDescriptorGen(Object object) {
+		itemPropertyDescriptors.add(createItemPropertyDescriptor(((ComposeableAdapterFactory) adapterFactory).getRootAdapterFactory(), getResourceLocator(),
+			getString("_UI_ScaStructProperty_sequences_feature"),
+			getString("_UI_PropertyDescriptor_description", "_UI_ScaStructProperty_sequences_feature", "_UI_ScaStructProperty_type"),
+			ScaPackage.Literals.SCA_STRUCT_PROPERTY__SEQUENCES, false, false, false, null, null, null));
+	}
+
+	/**
+	 * This adds a property descriptor for the Simples feature.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated NOT
 	 */
 	protected void addSimplesPropertyDescriptor(Object object) {
@@ -84,6 +98,15 @@ public class ScaStructPropertyItemProvider extends ScaAbstractPropertyItemProvid
 			getResourceLocator(), getString("_UI_ScaStructProperty_simples_feature"),
 			getString("_UI_PropertyDescriptor_description", "_UI_ScaStructProperty_simples_feature", "_UI_ScaStructProperty_type"),
 			ScaPackage.Literals.SCA_STRUCT_PROPERTY__SIMPLES, false, false, false, null, null, null);
+
+		itemPropertyDescriptors.add(new ScaStructValuePropertyDescriptor(object, propertyDescriptor, getRootAdapterFactory()));
+	}
+
+	protected void addSequencesPropertyDescriptor(Object object) {
+		ItemPropertyDescriptor propertyDescriptor = createItemPropertyDescriptor(((ComposeableAdapterFactory) adapterFactory).getRootAdapterFactory(),
+			getResourceLocator(), getString("_UI_ScaStructProperty_sequences_feature"),
+			getString("_UI_PropertyDescriptor_description", "_UI_ScaStructProperty_sequences_feature", "_UI_ScaStructProperty_type"),
+			ScaPackage.Literals.SCA_STRUCT_PROPERTY__SEQUENCES, false, false, false, null, null, null);
 
 		itemPropertyDescriptors.add(new ScaStructValuePropertyDescriptor(object, propertyDescriptor, getRootAdapterFactory()));
 	}
@@ -101,6 +124,7 @@ public class ScaStructPropertyItemProvider extends ScaAbstractPropertyItemProvid
 		if (childrenFeatures == null) {
 			super.getChildrenFeatures(object);
 			childrenFeatures.add(ScaPackage.Literals.SCA_STRUCT_PROPERTY__SIMPLES);
+			childrenFeatures.add(ScaPackage.Literals.SCA_STRUCT_PROPERTY__SEQUENCES);
 		}
 		return childrenFeatures;
 	}
@@ -158,6 +182,7 @@ public class ScaStructPropertyItemProvider extends ScaAbstractPropertyItemProvid
 
 		switch (notification.getFeatureID(ScaStructProperty.class)) {
 		case ScaPackage.SCA_STRUCT_PROPERTY__SIMPLES:
+		case ScaPackage.SCA_STRUCT_PROPERTY__SEQUENCES:
 			fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), true, false));
 			return;
 		}
@@ -174,6 +199,8 @@ public class ScaStructPropertyItemProvider extends ScaAbstractPropertyItemProvid
 	@Override
 	protected void collectNewChildDescriptors(Collection<Object> newChildDescriptors, Object object) {
 		super.collectNewChildDescriptors(newChildDescriptors, object);
+
+		newChildDescriptors.add(createChildParameter(ScaPackage.Literals.SCA_STRUCT_PROPERTY__SEQUENCES, ScaFactory.eINSTANCE.createScaSimpleSequenceProperty()));
 	}
 
 	@Override

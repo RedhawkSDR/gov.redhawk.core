@@ -19,19 +19,21 @@ import org.eclipse.emf.ecore.util.FeatureMap;
 /**
  * <!-- begin-user-doc -->
  * A representation of the model object '<em><b>Document Root</b></em>'.
+ * 
  * @since 8.0
  * @noimplement This interface is not intended to be implemented by clients.
- * <!-- end-user-doc -->
+ *              <!-- end-user-doc -->
  *
- * <p>
- * The following features are supported:
- * <ul>
- * <li>{@link gov.redhawk.model.sca.ScaDocumentRoot#getMixed <em>Mixed</em>}</li>
- * <li>{@link gov.redhawk.model.sca.ScaDocumentRoot#getXMLNSPrefixMap <em>XMLNS Prefix Map</em>}</li>
- * <li>{@link gov.redhawk.model.sca.ScaDocumentRoot#getXSISchemaLocation <em>XSI Schema Location</em>}</li>
- * <li>{@link gov.redhawk.model.sca.ScaDocumentRoot#getDomainManagerRegistry <em>Domain Manager Registry</em>}</li>
- * </ul>
- * </p>
+ *              <p>
+ *              The following features are supported:
+ *              <ul>
+ *              <li>{@link gov.redhawk.model.sca.ScaDocumentRoot#getMixed <em>Mixed</em>}</li>
+ *              <li>{@link gov.redhawk.model.sca.ScaDocumentRoot#getXMLNSPrefixMap <em>XMLNS Prefix Map</em>}</li>
+ *              <li>{@link gov.redhawk.model.sca.ScaDocumentRoot#getXSISchemaLocation <em>XSI Schema Location</em>}</li>
+ *              <li>{@link gov.redhawk.model.sca.ScaDocumentRoot#getDomainManagerRegistry <em>Domain Manager Registry
+ *              </em>}</li>
+ *              </ul>
+ *              </p>
  *
  * @see gov.redhawk.model.sca.ScaPackage#getScaDocumentRoot()
  * @model extendedMetaData="name='' kind='mixed'"
@@ -44,14 +46,15 @@ public interface ScaDocumentRoot extends EObject {
 	 * The list contents are of type {@link org.eclipse.emf.ecore.util.FeatureMap.Entry}.
 	 * <!-- begin-user-doc -->
 	 * <p>
-	 * If the meaning of the '<em>Mixed</em>' attribute list isn't clear,
-	 * there really should be more of a description here...
+	 * If the meaning of the '<em>Mixed</em>' attribute list isn't clear, there really should be more of a description
+	 * here...
 	 * </p>
 	 * <!-- end-user-doc -->
+	 * 
 	 * @return the value of the '<em>Mixed</em>' attribute list.
 	 * @see gov.redhawk.model.sca.ScaPackage#getScaDocumentRoot_Mixed()
 	 * @model unique="false" dataType="org.eclipse.emf.ecore.EFeatureMapEntry" many="true"
-	 * extendedMetaData="kind='elementWildcard' name=':mixed'"
+	 *        extendedMetaData="kind='elementWildcard' name=':mixed'"
 	 * @generated
 	 */
 	FeatureMap getMixed();
@@ -62,16 +65,17 @@ public interface ScaDocumentRoot extends EObject {
 	 * and the value is of type {@link java.lang.String},
 	 * <!-- begin-user-doc -->
 	 * <p>
-	 * If the meaning of the '<em>XMLNS Prefix Map</em>' map isn't clear,
-	 * there really should be more of a description here...
+	 * If the meaning of the '<em>XMLNS Prefix Map</em>' map isn't clear, there really should be more of a description
+	 * here...
 	 * </p>
 	 * <!-- end-user-doc -->
+	 * 
 	 * @return the value of the '<em>XMLNS Prefix Map</em>' map.
 	 * @see gov.redhawk.model.sca.ScaPackage#getScaDocumentRoot_XMLNSPrefixMap()
 	 * @model mapType=
-	 * "org.eclipse.emf.ecore.EStringToStringMapEntry<org.eclipse.emf.ecore.EString, org.eclipse.emf.ecore.EString>"
-	 * transient="true"
-	 * extendedMetaData="kind='attribute' name='xmlns:prefix'"
+	 *        "org.eclipse.emf.ecore.EStringToStringMapEntry<org.eclipse.emf.ecore.EString, org.eclipse.emf.ecore.EString>"
+	 *        transient="true"
+	 *        extendedMetaData="kind='attribute' name='xmlns:prefix'"
 	 * @generated
 	 */
 	EMap<String, String> getXMLNSPrefixMap();
@@ -82,16 +86,17 @@ public interface ScaDocumentRoot extends EObject {
 	 * and the value is of type {@link java.lang.String},
 	 * <!-- begin-user-doc -->
 	 * <p>
-	 * If the meaning of the '<em>XSI Schema Location</em>' map isn't clear,
-	 * there really should be more of a description here...
+	 * If the meaning of the '<em>XSI Schema Location</em>' map isn't clear, there really should be more of a
+	 * description here...
 	 * </p>
 	 * <!-- end-user-doc -->
+	 * 
 	 * @return the value of the '<em>XSI Schema Location</em>' map.
 	 * @see gov.redhawk.model.sca.ScaPackage#getScaDocumentRoot_XSISchemaLocation()
 	 * @model mapType=
-	 * "org.eclipse.emf.ecore.EStringToStringMapEntry<org.eclipse.emf.ecore.EString, org.eclipse.emf.ecore.EString>"
-	 * transient="true"
-	 * extendedMetaData="kind='attribute' name='xsi:schemaLocation'"
+	 *        "org.eclipse.emf.ecore.EStringToStringMapEntry<org.eclipse.emf.ecore.EString, org.eclipse.emf.ecore.EString>"
+	 *        transient="true"
+	 *        extendedMetaData="kind='attribute' name='xsi:schemaLocation'"
 	 * @generated
 	 */
 	EMap<String, String> getXSISchemaLocation();
@@ -100,24 +105,26 @@ public interface ScaDocumentRoot extends EObject {
 	 * Returns the value of the '<em><b>Domain Manager Registry</b></em>' containment reference.
 	 * <!-- begin-user-doc -->
 	 * <p>
-	 * If the meaning of the '<em>Domain Manager Registry</em>' containment reference isn't clear,
-	 * there really should be more of a description here...
+	 * If the meaning of the '<em>Domain Manager Registry</em>' containment reference isn't clear, there really should
+	 * be more of a description here...
 	 * </p>
 	 * <!-- end-user-doc -->
+	 * 
 	 * @return the value of the '<em>Domain Manager Registry</em>' containment reference.
 	 * @see #setDomainManagerRegistry(ScaDomainManagerRegistry)
 	 * @see gov.redhawk.model.sca.ScaPackage#getScaDocumentRoot_DomainManagerRegistry()
 	 * @model containment="true" upper="-2" transient="true" volatile="true" derived="true"
-	 * extendedMetaData="kind='element' name='domainManagerRegistry' namespace='##targetNamespace'"
+	 *        extendedMetaData="kind='element' name='domainManagerRegistry' namespace='##targetNamespace'"
 	 * @generated
 	 */
 	ScaDomainManagerRegistry getDomainManagerRegistry();
 
 	/**
-	 * Sets the value of the '{@link gov.redhawk.model.sca.ScaDocumentRoot#getDomainManagerRegistry <em>Domain Manager
-	 * Registry</em>}' containment reference.
+	 * Sets the value of the '{@link gov.redhawk.model.sca.ScaDocumentRoot#getDomainManagerRegistry
+	 * <em>Domain Manager Registry</em>}' containment reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * 
 	 * @param value the new value of the '<em>Domain Manager Registry</em>' containment reference.
 	 * @see #getDomainManagerRegistry()
 	 * @generated

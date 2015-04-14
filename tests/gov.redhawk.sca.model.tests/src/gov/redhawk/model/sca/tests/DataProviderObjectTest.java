@@ -22,9 +22,9 @@ import gov.redhawk.model.sca.commands.ScaModelCommand;
  * <p>
  * The following operations are tested:
  * <ul>
- *   <li>{@link gov.redhawk.model.sca.DataProviderObject#attachDataProviders() <em>Attach Data Providers</em>}</li>
- *   <li>{@link gov.redhawk.model.sca.DataProviderObject#detachDataProviders() <em>Detach Data Providers</em>}</li>
- *   <li>{@link gov.redhawk.model.sca.IDisposable#dispose() <em>Dispose</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.DataProviderObject#attachDataProviders() <em>Attach Data Providers</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.DataProviderObject#detachDataProviders() <em>Detach Data Providers</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.IDisposable#dispose() <em>Dispose</em>}</li>
  * </ul>
  * </p>
  * @generated
@@ -48,11 +48,12 @@ public abstract class DataProviderObjectTest extends IStatusProviderTest {
 	 */
 	@Override
 	protected DataProviderObject getFixture() {
-		return (DataProviderObject)fixture;
+		return (DataProviderObject) fixture;
 	}
 
 	/**
-	 * Tests the '{@link gov.redhawk.model.sca.DataProviderObject#attachDataProviders() <em>Attach Data Providers</em>}' operation.
+	 * Tests the '{@link gov.redhawk.model.sca.DataProviderObject#attachDataProviders() <em>Attach Data Providers</em>}'
+	 * operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @see gov.redhawk.model.sca.DataProviderObject#attachDataProviders()
@@ -71,7 +72,8 @@ public abstract class DataProviderObjectTest extends IStatusProviderTest {
 	}
 
 	/**
-	 * Tests the '{@link gov.redhawk.model.sca.DataProviderObject#detachDataProviders() <em>Detach Data Providers</em>}' operation.
+	 * Tests the '{@link gov.redhawk.model.sca.DataProviderObject#detachDataProviders() <em>Detach Data Providers</em>}'
+	 * operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @see gov.redhawk.model.sca.DataProviderObject#detachDataProviders()
@@ -90,11 +92,14 @@ public abstract class DataProviderObjectTest extends IStatusProviderTest {
 	}
 
 	/**
-	 * Tests the '{@link gov.redhawk.model.sca.DataProviderObject#refresh(org.eclipse.core.runtime.IProgressMonitor, gov.redhawk.model.sca.RefreshDepth) <em>Refresh</em>}' operation.
+	 * Tests the '
+	 * {@link gov.redhawk.model.sca.DataProviderObject#refresh(org.eclipse.core.runtime.IProgressMonitor, gov.redhawk.model.sca.RefreshDepth)
+	 * <em>Refresh</em>}' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @throws InterruptedException 
-	 * @see gov.redhawk.model.sca.DataProviderObject#refresh(org.eclipse.core.runtime.IProgressMonitor, gov.redhawk.model.sca.RefreshDepth)
+	 * @throws InterruptedException
+	 * @see gov.redhawk.model.sca.DataProviderObject#refresh(org.eclipse.core.runtime.IProgressMonitor,
+	 * gov.redhawk.model.sca.RefreshDepth)
 	 * @generated NOT
 	 */
 	public void testRefresh__IProgressMonitor_RefreshDepth() throws InterruptedException {
@@ -124,4 +129,4 @@ public abstract class DataProviderObjectTest extends IStatusProviderTest {
 		// BEGIN GENERATED CODE
 	}
 
-} //DataProviderObjectTest
+} // DataProviderObjectTest

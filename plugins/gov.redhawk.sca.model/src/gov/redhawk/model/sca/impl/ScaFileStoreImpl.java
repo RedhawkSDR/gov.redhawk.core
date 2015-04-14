@@ -43,18 +43,19 @@ import org.eclipse.emf.transaction.RunnableWithResult;
 /**
  * <!-- begin-user-doc -->
  * An implementation of the model object '<em><b>File Store</b></em>'.
+ * 
  * @since 12.0
- * <!-- end-user-doc -->
- * <p>
- * The following features are implemented:
- * <ul>
- * <li>{@link gov.redhawk.model.sca.impl.ScaFileStoreImpl#getFileStore <em>File Store</em>}</li>
- * <li>{@link gov.redhawk.model.sca.impl.ScaFileStoreImpl#getChildren <em>Children</em>}</li>
- * <li>{@link gov.redhawk.model.sca.impl.ScaFileStoreImpl#getImageDesc <em>Image Desc</em>}</li>
- * <li>{@link gov.redhawk.model.sca.impl.ScaFileStoreImpl#isDirectory <em>Directory</em>}</li>
- * <li>{@link gov.redhawk.model.sca.impl.ScaFileStoreImpl#getName <em>Name</em>}</li>
- * </ul>
- * </p>
+ *        <!-- end-user-doc -->
+ *        <p>
+ *        The following features are implemented:
+ *        <ul>
+ *        <li>{@link gov.redhawk.model.sca.impl.ScaFileStoreImpl#getFileStore <em>File Store</em>}</li>
+ *        <li>{@link gov.redhawk.model.sca.impl.ScaFileStoreImpl#getChildren <em>Children</em>}</li>
+ *        <li>{@link gov.redhawk.model.sca.impl.ScaFileStoreImpl#getImageDesc <em>Image Desc</em>}</li>
+ *        <li>{@link gov.redhawk.model.sca.impl.ScaFileStoreImpl#isDirectory <em>Directory</em>}</li>
+ *        <li>{@link gov.redhawk.model.sca.impl.ScaFileStoreImpl#getName <em>Name</em>}</li>
+ *        </ul>
+ *        </p>
  *
  * @generated
  */
@@ -63,6 +64,7 @@ public class ScaFileStoreImpl extends IStatusProviderImpl implements ScaFileStor
 	 * The default value of the '{@link #getFileStore() <em>File Store</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * 
 	 * @see #getFileStore()
 	 * @generated
 	 * @ordered
@@ -72,6 +74,7 @@ public class ScaFileStoreImpl extends IStatusProviderImpl implements ScaFileStor
 	 * The cached value of the '{@link #getFileStore() <em>File Store</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * 
 	 * @see #getFileStore()
 	 * @generated
 	 * @ordered
@@ -81,6 +84,7 @@ public class ScaFileStoreImpl extends IStatusProviderImpl implements ScaFileStor
 	 * The cached value of the '{@link #getChildren() <em>Children</em>}' containment reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * 
 	 * @see #getChildren()
 	 * @generated
 	 * @ordered
@@ -90,6 +94,7 @@ public class ScaFileStoreImpl extends IStatusProviderImpl implements ScaFileStor
 	 * The default value of the '{@link #getImageDesc() <em>Image Desc</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * 
 	 * @see #getImageDesc()
 	 * @generated
 	 * @ordered
@@ -99,6 +104,7 @@ public class ScaFileStoreImpl extends IStatusProviderImpl implements ScaFileStor
 	 * The cached value of the '{@link #getImageDesc() <em>Image Desc</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * 
 	 * @see #getImageDesc()
 	 * @generated
 	 * @ordered
@@ -108,6 +114,7 @@ public class ScaFileStoreImpl extends IStatusProviderImpl implements ScaFileStor
 	 * This is true if the Image Desc attribute has been set.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 * @ordered
 	 */
@@ -116,6 +123,7 @@ public class ScaFileStoreImpl extends IStatusProviderImpl implements ScaFileStor
 	 * The default value of the '{@link #isDirectory() <em>Directory</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * 
 	 * @see #isDirectory()
 	 * @generated
 	 * @ordered
@@ -125,6 +133,7 @@ public class ScaFileStoreImpl extends IStatusProviderImpl implements ScaFileStor
 	 * The cached value of the '{@link #isDirectory() <em>Directory</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * 
 	 * @see #isDirectory()
 	 * @generated
 	 * @ordered
@@ -134,6 +143,7 @@ public class ScaFileStoreImpl extends IStatusProviderImpl implements ScaFileStor
 	 * The default value of the '{@link #getName() <em>Name</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * 
 	 * @see #getName()
 	 * @generated
 	 * @ordered
@@ -143,6 +153,7 @@ public class ScaFileStoreImpl extends IStatusProviderImpl implements ScaFileStor
 	 * The cached value of the '{@link #getName() <em>Name</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * 
 	 * @see #getName()
 	 * @generated
 	 * @ordered
@@ -152,6 +163,7 @@ public class ScaFileStoreImpl extends IStatusProviderImpl implements ScaFileStor
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	protected ScaFileStoreImpl() {
@@ -161,6 +173,7 @@ public class ScaFileStoreImpl extends IStatusProviderImpl implements ScaFileStor
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -171,6 +184,7 @@ public class ScaFileStoreImpl extends IStatusProviderImpl implements ScaFileStor
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -181,6 +195,7 @@ public class ScaFileStoreImpl extends IStatusProviderImpl implements ScaFileStor
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * 
 	 * @generated NOT
 	 */
 	@Override
@@ -192,6 +207,7 @@ public class ScaFileStoreImpl extends IStatusProviderImpl implements ScaFileStor
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public void setFileStoreGen(IFileStore newFileStore) {
@@ -204,6 +220,7 @@ public class ScaFileStoreImpl extends IStatusProviderImpl implements ScaFileStor
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -217,6 +234,7 @@ public class ScaFileStoreImpl extends IStatusProviderImpl implements ScaFileStor
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -228,6 +246,7 @@ public class ScaFileStoreImpl extends IStatusProviderImpl implements ScaFileStor
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -238,6 +257,7 @@ public class ScaFileStoreImpl extends IStatusProviderImpl implements ScaFileStor
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -248,6 +268,7 @@ public class ScaFileStoreImpl extends IStatusProviderImpl implements ScaFileStor
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -263,6 +284,7 @@ public class ScaFileStoreImpl extends IStatusProviderImpl implements ScaFileStor
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -278,6 +300,7 @@ public class ScaFileStoreImpl extends IStatusProviderImpl implements ScaFileStor
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -288,6 +311,7 @@ public class ScaFileStoreImpl extends IStatusProviderImpl implements ScaFileStor
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -298,6 +322,7 @@ public class ScaFileStoreImpl extends IStatusProviderImpl implements ScaFileStor
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -311,6 +336,7 @@ public class ScaFileStoreImpl extends IStatusProviderImpl implements ScaFileStor
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -321,6 +347,7 @@ public class ScaFileStoreImpl extends IStatusProviderImpl implements ScaFileStor
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -333,8 +360,9 @@ public class ScaFileStoreImpl extends IStatusProviderImpl implements ScaFileStor
 
 	/**
 	 * <!-- begin-user-doc -->
+	 * 
 	 * @since 14.0
-	 * <!-- end-user-doc -->
+	 *        <!-- end-user-doc -->
 	 * @generated NOT
 	 */
 	@Override
@@ -359,6 +387,7 @@ public class ScaFileStoreImpl extends IStatusProviderImpl implements ScaFileStor
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -373,6 +402,7 @@ public class ScaFileStoreImpl extends IStatusProviderImpl implements ScaFileStor
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -395,6 +425,7 @@ public class ScaFileStoreImpl extends IStatusProviderImpl implements ScaFileStor
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@SuppressWarnings("unchecked")
@@ -424,6 +455,7 @@ public class ScaFileStoreImpl extends IStatusProviderImpl implements ScaFileStor
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -451,6 +483,7 @@ public class ScaFileStoreImpl extends IStatusProviderImpl implements ScaFileStor
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -473,6 +506,7 @@ public class ScaFileStoreImpl extends IStatusProviderImpl implements ScaFileStor
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -505,8 +539,9 @@ public class ScaFileStoreImpl extends IStatusProviderImpl implements ScaFileStor
 
 	/**
 	 * <!-- begin-user-doc -->
+	 * 
 	 * @since 14.0
-	 * <!-- end-user-doc -->
+	 *        <!-- end-user-doc -->
 	 * @generated NOT
 	 */
 	@Override

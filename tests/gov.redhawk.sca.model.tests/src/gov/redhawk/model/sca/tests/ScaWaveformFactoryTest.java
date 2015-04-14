@@ -15,10 +15,8 @@ import gov.redhawk.model.sca.ScaWaveformFactory;
 import gov.redhawk.model.sca.commands.ScaModelCommand;
 import org.junit.Assert;
 import junit.textui.TestRunner;
-
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.transaction.util.TransactionUtil;
-
 import CF.ApplicationFactoryHelper;
 import CF.DataType;
 import CF.DeviceAssignmentType;
@@ -34,23 +32,31 @@ import CF.ApplicationFactoryPackage.InvalidInitConfiguration;
  * <p>
  * The following features are tested:
  * <ul>
- *   <li>{@link gov.redhawk.model.sca.ProfileObjectWrapper#getProfileURI() <em>Profile URI</em>}</li>
- *   <li>{@link gov.redhawk.model.sca.ProfileObjectWrapper#getProfileObj() <em>Profile Obj</em>}</li>
- *   <li>{@link gov.redhawk.model.sca.ProfileObjectWrapper#getRootFileStore() <em>Root File Store</em>}</li>
- *   <li>{@link gov.redhawk.model.sca.ScaWaveformFactory#getIdentifier() <em>Identifier</em>}</li>
- *   <li>{@link gov.redhawk.model.sca.ScaWaveformFactory#getName() <em>Name</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.ProfileObjectWrapper#getProfileURI() <em>Profile URI</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.ProfileObjectWrapper#getProfileObj() <em>Profile Obj</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.ProfileObjectWrapper#getRootFileStore() <em>Root File Store</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.ScaWaveformFactory#getIdentifier() <em>Identifier</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.ScaWaveformFactory#getName() <em>Name</em>}</li>
  * </ul>
  * </p>
  * <p>
  * The following operations are tested:
  * <ul>
- *   <li>{@link gov.redhawk.model.sca.ScaWaveformFactory#createWaveform(org.eclipse.core.runtime.IProgressMonitor, java.lang.String, CF.DataType[], CF.DeviceAssignmentType[]) <em>Create Waveform</em>}</li>
- *   <li>{@link gov.redhawk.model.sca.ScaWaveformFactory#fetchIdentifier(org.eclipse.core.runtime.IProgressMonitor) <em>Fetch Identifier</em>}</li>
- *   <li>{@link gov.redhawk.model.sca.ScaWaveformFactory#fetchName(org.eclipse.core.runtime.IProgressMonitor) <em>Fetch Name</em>}</li>
- *   <li>{@link gov.redhawk.model.sca.ScaWaveformFactory#fetchProfile(org.eclipse.core.runtime.IProgressMonitor) <em>Fetch Profile</em>}</li>
- *   <li>{@link gov.redhawk.model.sca.ProfileObjectWrapper#fetchProfileObject(org.eclipse.core.runtime.IProgressMonitor) <em>Fetch Profile Object</em>}</li>
- *   <li>{@link gov.redhawk.model.sca.ProfileObjectWrapper#fetchProfileURI(org.eclipse.core.runtime.IProgressMonitor) <em>Fetch Profile URI</em>}</li>
- *   <li>{@link CF.ApplicationFactoryOperations#create(java.lang.String, CF.DataType[], CF.DeviceAssignmentType[]) <em>Create</em>}</li>
+ * <li>
+ * {@link gov.redhawk.model.sca.ScaWaveformFactory#createWaveform(org.eclipse.core.runtime.IProgressMonitor, java.lang.String, CF.DataType[], CF.DeviceAssignmentType[])
+ * <em>Create Waveform</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.ScaWaveformFactory#fetchIdentifier(org.eclipse.core.runtime.IProgressMonitor)
+ * <em>Fetch Identifier</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.ScaWaveformFactory#fetchName(org.eclipse.core.runtime.IProgressMonitor) <em>Fetch
+ * Name</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.ScaWaveformFactory#fetchProfile(org.eclipse.core.runtime.IProgressMonitor) <em>Fetch
+ * Profile</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.ProfileObjectWrapper#fetchProfileObject(org.eclipse.core.runtime.IProgressMonitor)
+ * <em>Fetch Profile Object</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.ProfileObjectWrapper#fetchProfileURI(org.eclipse.core.runtime.IProgressMonitor)
+ * <em>Fetch Profile URI</em>}</li>
+ * <li>{@link CF.ApplicationFactoryOperations#create(java.lang.String, CF.DataType[], CF.DeviceAssignmentType[])
+ * <em>Create</em>}</li>
  * </ul>
  * </p>
  * @generated
@@ -84,7 +90,7 @@ public class ScaWaveformFactoryTest extends CorbaObjWrapperTest {
 	 */
 	@Override
 	protected ScaWaveformFactory getFixture() {
-		return (ScaWaveformFactory)fixture;
+		return (ScaWaveformFactory) fixture;
 	}
 
 	private TestEnvirornment env;
@@ -116,7 +122,8 @@ public class ScaWaveformFactoryTest extends CorbaObjWrapperTest {
 	}
 
 	/**
-	 * Tests the '{@link gov.redhawk.model.sca.ProfileObjectWrapper#getProfileURI() <em>Profile URI</em>}' feature getter.
+	 * Tests the '{@link gov.redhawk.model.sca.ProfileObjectWrapper#getProfileURI() <em>Profile URI</em>}' feature
+	 * getter.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @see gov.redhawk.model.sca.ProfileObjectWrapper#getProfileURI()
@@ -129,7 +136,8 @@ public class ScaWaveformFactoryTest extends CorbaObjWrapperTest {
 	}
 
 	/**
-	 * Tests the '{@link gov.redhawk.model.sca.ProfileObjectWrapper#setProfileURI(org.eclipse.emf.common.util.URI) <em>Profile URI</em>}' feature setter.
+	 * Tests the '{@link gov.redhawk.model.sca.ProfileObjectWrapper#setProfileURI(org.eclipse.emf.common.util.URI)
+	 * <em>Profile URI</em>}' feature setter.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @see gov.redhawk.model.sca.ProfileObjectWrapper#setProfileURI(org.eclipse.emf.common.util.URI)
@@ -151,7 +159,8 @@ public class ScaWaveformFactoryTest extends CorbaObjWrapperTest {
 	}
 
 	/**
-	 * Tests the '{@link gov.redhawk.model.sca.ProfileObjectWrapper#unsetProfileURI() <em>unsetProfileURI()</em>}' method.
+	 * Tests the '{@link gov.redhawk.model.sca.ProfileObjectWrapper#unsetProfileURI() <em>unsetProfileURI()</em>}'
+	 * method.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @see gov.redhawk.model.sca.ProfileObjectWrapper#unsetProfileURI()
@@ -174,7 +183,8 @@ public class ScaWaveformFactoryTest extends CorbaObjWrapperTest {
 	}
 
 	/**
-	 * Tests the '{@link gov.redhawk.model.sca.ProfileObjectWrapper#isSetProfileURI() <em>isSetProfileURI()</em>}' method.
+	 * Tests the '{@link gov.redhawk.model.sca.ProfileObjectWrapper#isSetProfileURI() <em>isSetProfileURI()</em>}'
+	 * method.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @see gov.redhawk.model.sca.ProfileObjectWrapper#isSetProfileURI()
@@ -202,7 +212,8 @@ public class ScaWaveformFactoryTest extends CorbaObjWrapperTest {
 	}
 
 	/**
-	 * Tests the '{@link gov.redhawk.model.sca.ProfileObjectWrapper#setProfile(java.lang.String) <em>Profile</em>}' feature setter.
+	 * Tests the '{@link gov.redhawk.model.sca.ProfileObjectWrapper#setProfile(java.lang.String) <em>Profile</em>}'
+	 * feature setter.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @see gov.redhawk.model.sca.ProfileObjectWrapper#setProfile(java.lang.String)
@@ -223,7 +234,8 @@ public class ScaWaveformFactoryTest extends CorbaObjWrapperTest {
 	}
 
 	/**
-	 * Tests the '{@link gov.redhawk.model.sca.ProfileObjectWrapper#getProfileObj() <em>Profile Obj</em>}' feature getter.
+	 * Tests the '{@link gov.redhawk.model.sca.ProfileObjectWrapper#getProfileObj() <em>Profile Obj</em>}' feature
+	 * getter.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @see gov.redhawk.model.sca.ProfileObjectWrapper#getProfileObj()
@@ -238,7 +250,8 @@ public class ScaWaveformFactoryTest extends CorbaObjWrapperTest {
 	}
 
 	/**
-	 * Tests the '{@link gov.redhawk.model.sca.ProfileObjectWrapper#setProfileObj(java.lang.Object) <em>Profile Obj</em>}' feature setter.
+	 * Tests the '{@link gov.redhawk.model.sca.ProfileObjectWrapper#setProfileObj(java.lang.Object) <em>Profile
+	 * Obj</em>}' feature setter.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @see gov.redhawk.model.sca.ProfileObjectWrapper#setProfileObj(java.lang.Object)
@@ -258,7 +271,8 @@ public class ScaWaveformFactoryTest extends CorbaObjWrapperTest {
 	}
 
 	/**
-	 * Tests the '{@link gov.redhawk.model.sca.ProfileObjectWrapper#unsetProfileObj() <em>unsetProfileObj()</em>}' method.
+	 * Tests the '{@link gov.redhawk.model.sca.ProfileObjectWrapper#unsetProfileObj() <em>unsetProfileObj()</em>}'
+	 * method.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @see gov.redhawk.model.sca.ProfileObjectWrapper#unsetProfileObj()
@@ -280,7 +294,8 @@ public class ScaWaveformFactoryTest extends CorbaObjWrapperTest {
 	}
 
 	/**
-	 * Tests the '{@link gov.redhawk.model.sca.ProfileObjectWrapper#isSetProfileObj() <em>isSetProfileObj()</em>}' method.
+	 * Tests the '{@link gov.redhawk.model.sca.ProfileObjectWrapper#isSetProfileObj() <em>isSetProfileObj()</em>}'
+	 * method.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @see gov.redhawk.model.sca.ProfileObjectWrapper#isSetProfileObj()
@@ -293,7 +308,8 @@ public class ScaWaveformFactoryTest extends CorbaObjWrapperTest {
 	}
 
 	/**
-	 * Tests the '{@link gov.redhawk.model.sca.ProfileObjectWrapper#getRootFileStore() <em>Root File Store</em>}' feature getter.
+	 * Tests the '{@link gov.redhawk.model.sca.ProfileObjectWrapper#getRootFileStore() <em>Root File Store</em>}'
+	 * feature getter.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @see gov.redhawk.model.sca.ProfileObjectWrapper#getRootFileStore()
@@ -339,7 +355,8 @@ public class ScaWaveformFactoryTest extends CorbaObjWrapperTest {
 	}
 
 	/**
-	 * Tests the '{@link gov.redhawk.model.sca.ScaWaveformFactory#setIdentifier(java.lang.String) <em>Identifier</em>}' feature setter.
+	 * Tests the '{@link gov.redhawk.model.sca.ScaWaveformFactory#setIdentifier(java.lang.String) <em>Identifier</em>}'
+	 * feature setter.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @see gov.redhawk.model.sca.ScaWaveformFactory#setIdentifier(java.lang.String)
@@ -348,16 +365,16 @@ public class ScaWaveformFactoryTest extends CorbaObjWrapperTest {
 	public void testSetIdentifier() {
 		final String id = getFixture().getIdentifier();
 		ScaModelCommand.execute(getFixture(), new ScaModelCommand() {
-			
+
 			@Override
 			public void execute() {
 				getFixture().setIdentifier(null);
 			}
 		});
-		
+
 		Assert.assertNull(getFixture().getIdentifier());
 		ScaModelCommand.execute(getFixture(), new ScaModelCommand() {
-			
+
 			@Override
 			public void execute() {
 				getFixture().setIdentifier(id);
@@ -376,13 +393,13 @@ public class ScaWaveformFactoryTest extends CorbaObjWrapperTest {
 	 */
 	public void testUnsetIdentifier() {
 		ScaModelCommand.execute(getFixture(), new ScaModelCommand() {
-			
+
 			@Override
 			public void execute() {
 				getFixture().unsetIdentifier();
 			}
 		});
-		
+
 		Assert.assertFalse(getFixture().isSetIdentifier());
 		Assert.assertNull(getFixture().getIdentifier());
 	}
@@ -415,7 +432,8 @@ public class ScaWaveformFactoryTest extends CorbaObjWrapperTest {
 	}
 
 	/**
-	 * Tests the '{@link gov.redhawk.model.sca.ScaWaveformFactory#setName(java.lang.String) <em>Name</em>}' feature setter.
+	 * Tests the '{@link gov.redhawk.model.sca.ScaWaveformFactory#setName(java.lang.String) <em>Name</em>}' feature
+	 * setter.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @see gov.redhawk.model.sca.ScaWaveformFactory#setName(java.lang.String)
@@ -424,16 +442,16 @@ public class ScaWaveformFactoryTest extends CorbaObjWrapperTest {
 	public void testSetName() {
 		final String name = getFixture().getName();
 		ScaModelCommand.execute(getFixture(), new ScaModelCommand() {
-			
+
 			@Override
 			public void execute() {
 				getFixture().setName(null);
 			}
 		});
-		
+
 		Assert.assertNull(getFixture().getName());
 		ScaModelCommand.execute(getFixture(), new ScaModelCommand() {
-			
+
 			@Override
 			public void execute() {
 				getFixture().setName(name);
@@ -452,13 +470,13 @@ public class ScaWaveformFactoryTest extends CorbaObjWrapperTest {
 	 */
 	public void testUnsetName() {
 		ScaModelCommand.execute(getFixture(), new ScaModelCommand() {
-			
+
 			@Override
 			public void execute() {
 				getFixture().unsetName();
 			}
 		});
-		
+
 		Assert.assertFalse(getFixture().isSetName());
 		Assert.assertNull(getFixture().getName());
 	}
@@ -477,18 +495,20 @@ public class ScaWaveformFactoryTest extends CorbaObjWrapperTest {
 	}
 
 	/**
-	 * Tests the '{@link gov.redhawk.model.sca.ScaWaveformFactory#createWaveform(org.eclipse.core.runtime.IProgressMonitor, java.lang.String, mil.jpeojtrs.sca.cf.DataType[], mil.jpeojtrs.sca.cf.DeviceAssignmentType[]) <em>Create Waveform</em>}' operation.
+	 * Tests the '
+	 * {@link gov.redhawk.model.sca.ScaWaveformFactory#createWaveform(org.eclipse.core.runtime.IProgressMonitor, java.lang.String, mil.jpeojtrs.sca.cf.DataType[], mil.jpeojtrs.sca.cf.DeviceAssignmentType[])
+	 * <em>Create Waveform</em>}' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @throws InvalidInitConfiguration 
-	 * @throws CreateApplicationRequestError 
-	 * @throws CreateApplicationError 
-	 * @see gov.redhawk.model.sca.ScaWaveformFactory#createWaveform(org.eclipse.core.runtime.IProgressMonitor, java.lang.String, mil.jpeojtrs.sca.cf.DataType[], mil.jpeojtrs.sca.cf.DeviceAssignmentType[])
+	 * @throws InvalidInitConfiguration
+	 * @throws CreateApplicationRequestError
+	 * @throws CreateApplicationError
+	 * @see gov.redhawk.model.sca.ScaWaveformFactory#createWaveform(org.eclipse.core.runtime.IProgressMonitor,
+	 * java.lang.String, mil.jpeojtrs.sca.cf.DataType[], mil.jpeojtrs.sca.cf.DeviceAssignmentType[])
 	 * @generated NOT
 	 */
-	public void testCreateWaveform__IProgressMonitor_String_DataType_DeviceAssignmentType() throws CreateApplicationError,
-	        CreateApplicationRequestError,
-	        InvalidInitConfiguration, CreateApplicationInsufficientCapacityError {
+	public void testCreateWaveform__IProgressMonitor_String_DataType_DeviceAssignmentType() throws CreateApplicationError, CreateApplicationRequestError,
+		InvalidInitConfiguration, CreateApplicationInsufficientCapacityError {
 		// END GENERATED CODE
 		DeviceAssignmentType[] assignment = new DeviceAssignmentType[0];
 		getFixture().createWaveform(null, "", new DataType[0], assignment);
@@ -496,7 +516,9 @@ public class ScaWaveformFactoryTest extends CorbaObjWrapperTest {
 	}
 
 	/**
-	 * Tests the '{@link gov.redhawk.model.sca.ScaWaveformFactory#fetchIdentifier(org.eclipse.core.runtime.IProgressMonitor) <em>Fetch Identifier</em>}' operation.
+	 * Tests the '
+	 * {@link gov.redhawk.model.sca.ScaWaveformFactory#fetchIdentifier(org.eclipse.core.runtime.IProgressMonitor)
+	 * <em>Fetch Identifier</em>}' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @see gov.redhawk.model.sca.ScaWaveformFactory#fetchIdentifier(org.eclipse.core.runtime.IProgressMonitor)
@@ -509,7 +531,8 @@ public class ScaWaveformFactoryTest extends CorbaObjWrapperTest {
 	}
 
 	/**
-	 * Tests the '{@link gov.redhawk.model.sca.ScaWaveformFactory#fetchName(org.eclipse.core.runtime.IProgressMonitor) <em>Fetch Name</em>}' operation.
+	 * Tests the '{@link gov.redhawk.model.sca.ScaWaveformFactory#fetchName(org.eclipse.core.runtime.IProgressMonitor)
+	 * <em>Fetch Name</em>}' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @see gov.redhawk.model.sca.ScaWaveformFactory#fetchName(org.eclipse.core.runtime.IProgressMonitor)
@@ -522,7 +545,9 @@ public class ScaWaveformFactoryTest extends CorbaObjWrapperTest {
 	}
 
 	/**
-	 * Tests the '{@link gov.redhawk.model.sca.ScaWaveformFactory#fetchProfile(org.eclipse.core.runtime.IProgressMonitor) <em>Fetch Profile</em>}' operation.
+	 * Tests the '
+	 * {@link gov.redhawk.model.sca.ScaWaveformFactory#fetchProfile(org.eclipse.core.runtime.IProgressMonitor) <em>Fetch
+	 * Profile</em>}' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @see gov.redhawk.model.sca.ScaWaveformFactory#fetchProfile(org.eclipse.core.runtime.IProgressMonitor)
@@ -535,10 +560,12 @@ public class ScaWaveformFactoryTest extends CorbaObjWrapperTest {
 	}
 
 	/**
-	 * Tests the '{@link gov.redhawk.model.sca.ProfileObjectWrapper#fetchProfileObject(org.eclipse.core.runtime.IProgressMonitor) <em>Fetch Profile Object</em>}' operation.
+	 * Tests the '
+	 * {@link gov.redhawk.model.sca.ProfileObjectWrapper#fetchProfileObject(org.eclipse.core.runtime.IProgressMonitor)
+	 * <em>Fetch Profile Object</em>}' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @throws InterruptedException 
+	 * @throws InterruptedException
 	 * @see gov.redhawk.model.sca.ProfileObjectWrapper#fetchProfileObject(org.eclipse.core.runtime.IProgressMonitor)
 	 * @generated NOT
 	 */
@@ -549,7 +576,9 @@ public class ScaWaveformFactoryTest extends CorbaObjWrapperTest {
 	}
 
 	/**
-	 * Tests the '{@link gov.redhawk.model.sca.ProfileObjectWrapper#fetchProfileURI(org.eclipse.core.runtime.IProgressMonitor) <em>Fetch Profile URI</em>}' operation.
+	 * Tests the '
+	 * {@link gov.redhawk.model.sca.ProfileObjectWrapper#fetchProfileURI(org.eclipse.core.runtime.IProgressMonitor)
+	 * <em>Fetch Profile URI</em>}' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @see gov.redhawk.model.sca.ProfileObjectWrapper#fetchProfileURI(org.eclipse.core.runtime.IProgressMonitor)
@@ -562,27 +591,34 @@ public class ScaWaveformFactoryTest extends CorbaObjWrapperTest {
 	}
 
 	/**
-	 * Tests the '{@link mil.jpeojtrs.sca.cf.ApplicationFactoryOperations#create(java.lang.String, mil.jpeojtrs.sca.cf.DataType[], mil.jpeojtrs.sca.cf.DeviceAssignmentType[]) <em>Create</em>}' operation.
+	 * Tests the '
+	 * {@link mil.jpeojtrs.sca.cf.ApplicationFactoryOperations#create(java.lang.String, mil.jpeojtrs.sca.cf.DataType[], mil.jpeojtrs.sca.cf.DeviceAssignmentType[])
+	 * <em>Create</em>}' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @throws InvalidInitConfiguration 
-	 * @throws CreateApplicationRequestError 
-	 * @throws CreateApplicationError 
-	 * @see mil.jpeojtrs.sca.cf.ApplicationFactoryOperations#create(java.lang.String, mil.jpeojtrs.sca.cf.DataType[], mil.jpeojtrs.sca.cf.DeviceAssignmentType[])
+	 * @throws InvalidInitConfiguration
+	 * @throws CreateApplicationRequestError
+	 * @throws CreateApplicationError
+	 * @see mil.jpeojtrs.sca.cf.ApplicationFactoryOperations#create(java.lang.String, mil.jpeojtrs.sca.cf.DataType[],
+	 * mil.jpeojtrs.sca.cf.DeviceAssignmentType[])
 	 * @generated NOT
 	 */
-	public void testCreate__String_DataType_DeviceAssignmentType() throws CreateApplicationError, CreateApplicationRequestError, InvalidInitConfiguration, CreateApplicationInsufficientCapacityError {
+	public void testCreate__String_DataType_DeviceAssignmentType() throws CreateApplicationError, CreateApplicationRequestError, InvalidInitConfiguration,
+		CreateApplicationInsufficientCapacityError {
 		// END GENERATED CODE
 		getFixture().create("", new DataType[0], new DeviceAssignmentType[0]);
 		// BEGIN GENERATED CODE
 	}
 
 	/**
-	 * Tests the '{@link gov.redhawk.model.sca.ScaWaveformFactory#createWaveform(java.lang.String, mil.jpeojtrs.sca.cf.DataType[], mil.jpeojtrs.sca.cf.DeviceAssignmentType[]) <em>Create Waveform</em>}' operation.
+	 * Tests the '
+	 * {@link gov.redhawk.model.sca.ScaWaveformFactory#createWaveform(java.lang.String, mil.jpeojtrs.sca.cf.DataType[], mil.jpeojtrs.sca.cf.DeviceAssignmentType[])
+	 * <em>Create Waveform</em>}' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @throws Exception  
-	 * @see gov.redhawk.model.sca.ScaWaveformFactory#createWaveform(java.lang.String, mil.jpeojtrs.sca.cf.DataType[], mil.jpeojtrs.sca.cf.DeviceAssignmentType[])
+	 * @throws Exception
+	 * @see gov.redhawk.model.sca.ScaWaveformFactory#createWaveform(java.lang.String, mil.jpeojtrs.sca.cf.DataType[],
+	 * mil.jpeojtrs.sca.cf.DeviceAssignmentType[])
 	 * @generated NOT
 	 */
 	public void testCreateWaveform__String_DataType_DeviceAssignmentType() throws Exception {
@@ -596,4 +632,4 @@ public class ScaWaveformFactoryTest extends CorbaObjWrapperTest {
 		return ApplicationFactoryHelper.id();
 	}
 
-} //ScaWaveformFactoryTest
+} // ScaWaveformFactoryTest

@@ -29,8 +29,12 @@ import CF.ExecutableDevicePackage.InvalidProcess;
  * <p>
  * The following operations are tested:
  * <ul>
- *   <li>{@link CF.ExecutableDeviceOperations#terminate(int) <em>Terminate</em>}</li>
- *   <li>{@link CF.ExecutableDeviceOperations#execute(java.lang.String, CF.DataType[], CF.DataType[]) <em>Execute</em>}</li>
+ * <li>{@link CF.ExecutableDeviceOperations#terminate(int) <em>Terminate</em>}</li>
+ * <li>{@link CF.ExecutableDeviceOperations#execute(java.lang.String, CF.DataType[], CF.DataType[]) <em>Execute</em>}
+ * </li>
+ * <li>
+ * {@link CF.ExecutableDeviceOperations#executeLinked(java.lang.String, CF.DataType[], CF.DataType[], org.eclipse.emf.common.util.EList)
+ * <em>Execute Linked</em>}</li>
  * </ul>
  * </p>
  * @generated
@@ -64,7 +68,7 @@ public class ScaExecutableDeviceTest extends ScaLoadableDeviceTest {
 	 */
 	@Override
 	protected ScaExecutableDevice getFixture() {
-		return (ScaExecutableDevice)fixture;
+		return (ScaExecutableDevice) fixture;
 	}
 
 	/**
@@ -93,8 +97,8 @@ public class ScaExecutableDeviceTest extends ScaLoadableDeviceTest {
 	 * Tests the '{@link mil.jpeojtrs.sca.cf.ExecutableDeviceOperations#terminate(int) <em>Terminate</em>}' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @throws InvalidState 
-	 * @throws InvalidProcess 
+	 * @throws InvalidState
+	 * @throws InvalidProcess
 	 * @see mil.jpeojtrs.sca.cf.ExecutableDeviceOperations#terminate(int)
 	 * @generated NOT
 	 */
@@ -105,16 +109,19 @@ public class ScaExecutableDeviceTest extends ScaLoadableDeviceTest {
 	}
 
 	/**
-	 * Tests the '{@link mil.jpeojtrs.sca.cf.ExecutableDeviceOperations#execute(java.lang.String, mil.jpeojtrs.sca.cf.DataType[], mil.jpeojtrs.sca.cf.DataType[]) <em>Execute</em>}' operation.
+	 * Tests the '
+	 * {@link mil.jpeojtrs.sca.cf.ExecutableDeviceOperations#execute(java.lang.String, mil.jpeojtrs.sca.cf.DataType[], mil.jpeojtrs.sca.cf.DataType[])
+	 * <em>Execute</em>}' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @throws ExecuteFail 
-	 * @throws InvalidFileName 
-	 * @throws InvalidOptions 
-	 * @throws InvalidParameters 
-	 * @throws InvalidFunction 
-	 * @throws InvalidState 
-	 * @see mil.jpeojtrs.sca.cf.ExecutableDeviceOperations#execute(java.lang.String, mil.jpeojtrs.sca.cf.DataType[], mil.jpeojtrs.sca.cf.DataType[])
+	 * @throws ExecuteFail
+	 * @throws InvalidFileName
+	 * @throws InvalidOptions
+	 * @throws InvalidParameters
+	 * @throws InvalidFunction
+	 * @throws InvalidState
+	 * @see mil.jpeojtrs.sca.cf.ExecutableDeviceOperations#execute(java.lang.String, mil.jpeojtrs.sca.cf.DataType[],
+	 * mil.jpeojtrs.sca.cf.DataType[])
 	 * @generated NOT
 	 */
 	public void testExecute__String_DataType_DataType() throws InvalidState, InvalidFunction, InvalidParameters, InvalidOptions, InvalidFileName, ExecuteFail {
@@ -123,4 +130,20 @@ public class ScaExecutableDeviceTest extends ScaLoadableDeviceTest {
 		// BEGIN GENERATED CODE
 	}
 
-} //ScaExecutableDeviceTest
+	/**
+	 * Tests the '
+	 * {@link CF.ExecutableDeviceOperations#executeLinked(java.lang.String, CF.DataType[], CF.DataType[], org.eclipse.emf.common.util.EList)
+	 * <em>Execute Linked</em>}' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see CF.ExecutableDeviceOperations#executeLinked(java.lang.String, CF.DataType[], CF.DataType[],
+	 * org.eclipse.emf.common.util.EList)
+	 * @generated
+	 */
+	public void testExecuteLinked__String_DataType_DataType_EList() {
+		// TODO: implement this operation test method
+		// Ensure that you remove @generated or mark it @generated NOT
+		fail();
+	}
+
+} // ScaExecutableDeviceTest

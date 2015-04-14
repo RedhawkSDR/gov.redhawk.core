@@ -77,8 +77,9 @@ import gov.redhawk.model.sca.*;
 /**
  * <!-- begin-user-doc -->
  * The <b>Validator</b> for the model.
+ * 
  * @since 10.0
- * <!-- end-user-doc -->
+ *        <!-- end-user-doc -->
  * @see gov.redhawk.model.sca.ScaPackage
  * @generated
  */
@@ -88,6 +89,7 @@ public class ScaValidator extends EObjectValidator {
 	 * The cached model package
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public static final ScaValidator INSTANCE = new ScaValidator();
@@ -96,6 +98,7 @@ public class ScaValidator extends EObjectValidator {
 	 * {@link org.eclipse.emf.common.util.Diagnostic#getCode() codes} from this package.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * 
 	 * @see org.eclipse.emf.common.util.Diagnostic#getSource()
 	 * @see org.eclipse.emf.common.util.Diagnostic#getCode()
 	 * @generated
@@ -105,6 +108,7 @@ public class ScaValidator extends EObjectValidator {
 	 * A constant with a fixed name that can be used as the base value for additional hand written constants.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	private static final int GENERATED_DIAGNOSTIC_CODE_COUNT = 0;
@@ -113,6 +117,7 @@ public class ScaValidator extends EObjectValidator {
 	 * derived class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	protected static final int DIAGNOSTIC_CODE_COUNT = GENERATED_DIAGNOSTIC_CODE_COUNT;
@@ -121,6 +126,7 @@ public class ScaValidator extends EObjectValidator {
 	 * Creates an instance of the switch.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public ScaValidator() {
@@ -131,6 +137,7 @@ public class ScaValidator extends EObjectValidator {
 	 * Returns the package of this validator switch.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -142,6 +149,7 @@ public class ScaValidator extends EObjectValidator {
 	 * Calls <code>validateXXX</code> for the corresponding classifier of the model.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -271,6 +279,7 @@ public class ScaValidator extends EObjectValidator {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public boolean validateCorbaObjWrapper(CorbaObjWrapper< ? > corbaObjWrapper, DiagnosticChain diagnostics, Map<Object, Object> context) {
@@ -280,6 +289,7 @@ public class ScaValidator extends EObjectValidator {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public boolean validateDataProviderObject(DataProviderObject dataProviderObject, DiagnosticChain diagnostics, Map<Object, Object> context) {
@@ -289,6 +299,7 @@ public class ScaValidator extends EObjectValidator {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public boolean validateIDisposable(IDisposable iDisposable, DiagnosticChain diagnostics, Map<Object, Object> context) {
@@ -298,6 +309,7 @@ public class ScaValidator extends EObjectValidator {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public boolean validateProfileObjectWrapper(ProfileObjectWrapper< ? > profileObjectWrapper, DiagnosticChain diagnostics, Map<Object, Object> context) {
@@ -307,6 +319,7 @@ public class ScaValidator extends EObjectValidator {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public boolean validateProperties(Properties properties, DiagnosticChain diagnostics, Map<Object, Object> context) {
@@ -316,6 +329,7 @@ public class ScaValidator extends EObjectValidator {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public boolean validateScaAbstractComponent(ScaAbstractComponent< ? > scaAbstractComponent, DiagnosticChain diagnostics, Map<Object, Object> context) {
@@ -325,6 +339,7 @@ public class ScaValidator extends EObjectValidator {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public boolean validateScaPropertyContainer(ScaPropertyContainer< ? , ? > scaPropertyContainer, DiagnosticChain diagnostics, Map<Object, Object> context) {
@@ -334,6 +349,7 @@ public class ScaValidator extends EObjectValidator {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public boolean validateScaPortContainer(ScaPortContainer scaPortContainer, DiagnosticChain diagnostics, Map<Object, Object> context) {
@@ -343,6 +359,7 @@ public class ScaValidator extends EObjectValidator {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public boolean validateScaAbstractProperty(ScaAbstractProperty< ? > scaAbstractProperty, DiagnosticChain diagnostics, Map<Object, Object> context) {
@@ -352,6 +369,7 @@ public class ScaValidator extends EObjectValidator {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public boolean validateScaComponent(ScaComponent scaComponent, DiagnosticChain diagnostics, Map<Object, Object> context) {
@@ -361,6 +379,7 @@ public class ScaValidator extends EObjectValidator {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public boolean validateScaDevice(ScaDevice< ? > scaDevice, DiagnosticChain diagnostics, Map<Object, Object> context) {
@@ -370,6 +389,7 @@ public class ScaValidator extends EObjectValidator {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public boolean validateScaDeviceManager(ScaDeviceManager scaDeviceManager, DiagnosticChain diagnostics, Map<Object, Object> context) {
@@ -379,6 +399,7 @@ public class ScaValidator extends EObjectValidator {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public boolean validateScaService(ScaService scaService, DiagnosticChain diagnostics, Map<Object, Object> context) {
@@ -388,6 +409,7 @@ public class ScaValidator extends EObjectValidator {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public boolean validateScaDeviceManagerFileSystem(ScaDeviceManagerFileSystem scaDeviceManagerFileSystem, DiagnosticChain diagnostics,
@@ -398,6 +420,7 @@ public class ScaValidator extends EObjectValidator {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public boolean validateScaDocumentRoot(ScaDocumentRoot scaDocumentRoot, DiagnosticChain diagnostics, Map<Object, Object> context) {
@@ -407,6 +430,7 @@ public class ScaValidator extends EObjectValidator {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public boolean validateScaDomainManager(ScaDomainManager scaDomainManager, DiagnosticChain diagnostics, Map<Object, Object> context) {
@@ -416,6 +440,7 @@ public class ScaValidator extends EObjectValidator {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public boolean validateScaDomainManagerFileSystem(ScaDomainManagerFileSystem scaDomainManagerFileSystem, DiagnosticChain diagnostics,
@@ -426,6 +451,7 @@ public class ScaValidator extends EObjectValidator {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public boolean validateScaDomainManagerRegistry(ScaDomainManagerRegistry scaDomainManagerRegistry, DiagnosticChain diagnostics, Map<Object, Object> context) {
@@ -435,6 +461,7 @@ public class ScaValidator extends EObjectValidator {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public boolean validateScaExecutableDevice(ScaExecutableDevice scaExecutableDevice, DiagnosticChain diagnostics, Map<Object, Object> context) {
@@ -444,6 +471,7 @@ public class ScaValidator extends EObjectValidator {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public boolean validateScaFileManager(ScaFileManager scaFileManager, DiagnosticChain diagnostics, Map<Object, Object> context) {
@@ -453,6 +481,7 @@ public class ScaValidator extends EObjectValidator {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public boolean validateScaFileStore(ScaFileStore scaFileStore, DiagnosticChain diagnostics, Map<Object, Object> context) {
@@ -462,6 +491,7 @@ public class ScaValidator extends EObjectValidator {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public boolean validateScaFileSystem(ScaFileSystem< ? > scaFileSystem, DiagnosticChain diagnostics, Map<Object, Object> context) {
@@ -471,6 +501,7 @@ public class ScaValidator extends EObjectValidator {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public boolean validateScaLoadableDevice(ScaLoadableDevice< ? > scaLoadableDevice, DiagnosticChain diagnostics, Map<Object, Object> context) {
@@ -480,6 +511,7 @@ public class ScaValidator extends EObjectValidator {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public boolean validateScaPort(ScaPort< ? , ? > scaPort, DiagnosticChain diagnostics, Map<Object, Object> context) {
@@ -489,6 +521,7 @@ public class ScaValidator extends EObjectValidator {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public boolean validateScaProvidesPort(ScaProvidesPort scaProvidesPort, DiagnosticChain diagnostics, Map<Object, Object> context) {
@@ -498,6 +531,7 @@ public class ScaValidator extends EObjectValidator {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public boolean validateScaSimpleProperty(ScaSimpleProperty scaSimpleProperty, DiagnosticChain diagnostics, Map<Object, Object> context) {
@@ -507,6 +541,7 @@ public class ScaValidator extends EObjectValidator {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public boolean validateScaSimpleSequenceProperty(ScaSimpleSequenceProperty scaSimpleSequenceProperty, DiagnosticChain diagnostics,
@@ -517,6 +552,7 @@ public class ScaValidator extends EObjectValidator {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public boolean validateScaStructProperty(ScaStructProperty scaStructProperty, DiagnosticChain diagnostics, Map<Object, Object> context) {
@@ -526,6 +562,7 @@ public class ScaValidator extends EObjectValidator {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public boolean validateScaUsesPort(ScaUsesPort scaUsesPort, DiagnosticChain diagnostics, Map<Object, Object> context) {
@@ -535,6 +572,7 @@ public class ScaValidator extends EObjectValidator {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public boolean validateScaConnection(ScaConnection scaConnection, DiagnosticChain diagnostics, Map<Object, Object> context) {
@@ -544,6 +582,7 @@ public class ScaValidator extends EObjectValidator {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public boolean validateScaWaveform(ScaWaveform scaWaveform, DiagnosticChain diagnostics, Map<Object, Object> context) {
@@ -553,6 +592,7 @@ public class ScaValidator extends EObjectValidator {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public boolean validateScaWaveformFactory(ScaWaveformFactory scaWaveformFactory, DiagnosticChain diagnostics, Map<Object, Object> context) {
@@ -562,6 +602,7 @@ public class ScaValidator extends EObjectValidator {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public boolean validateStringToStringMap(Map.Entry< ? , ? > stringToStringMap, DiagnosticChain diagnostics, Map<Object, Object> context) {
@@ -571,6 +612,7 @@ public class ScaValidator extends EObjectValidator {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public boolean validateScaStructSequenceProperty(ScaStructSequenceProperty scaStructSequenceProperty, DiagnosticChain diagnostics,
@@ -581,6 +623,7 @@ public class ScaValidator extends EObjectValidator {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public boolean validateIStatusProvider(IStatusProvider iStatusProvider, DiagnosticChain diagnostics, Map<Object, Object> context) {
@@ -589,8 +632,9 @@ public class ScaValidator extends EObjectValidator {
 
 	/**
 	 * <!-- begin-user-doc -->
+	 * 
 	 * @since 19.0
-	 * <!-- end-user-doc -->
+	 *        <!-- end-user-doc -->
 	 * @generated
 	 */
 	public boolean validateEventChannel(EventChannel eventChannel, DiagnosticChain diagnostics, Map<Object, Object> context) {
@@ -600,6 +644,7 @@ public class ScaValidator extends EObjectValidator {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public boolean validateIRefreshable(IRefreshable iRefreshable, DiagnosticChain diagnostics, Map<Object, Object> context) {
@@ -608,8 +653,9 @@ public class ScaValidator extends EObjectValidator {
 
 	/**
 	 * <!-- begin-user-doc -->
+	 * 
 	 * @since 19.0
-	 * <!-- end-user-doc -->
+	 *        <!-- end-user-doc -->
 	 * @generated
 	 */
 	public boolean validateScaEventChannel(ScaEventChannel scaEventChannel, DiagnosticChain diagnostics, Map<Object, Object> context) {
@@ -618,8 +664,9 @@ public class ScaValidator extends EObjectValidator {
 
 	/**
 	 * <!-- begin-user-doc -->
+	 * 
 	 * @since 19.0
-	 * <!-- end-user-doc -->
+	 *        <!-- end-user-doc -->
 	 * @generated
 	 */
 	public boolean validateStringToObjectMap(Map.Entry< ? , ? > stringToObjectMap, DiagnosticChain diagnostics, Map<Object, Object> context) {
@@ -629,6 +676,7 @@ public class ScaValidator extends EObjectValidator {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public boolean validateDomainConnectionState(DomainConnectionState domainConnectionState, DiagnosticChain diagnostics, Map<Object, Object> context) {
@@ -638,6 +686,7 @@ public class ScaValidator extends EObjectValidator {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public boolean validateRefreshDepth(RefreshDepth refreshDepth, DiagnosticChain diagnostics, Map<Object, Object> context) {
@@ -647,6 +696,7 @@ public class ScaValidator extends EObjectValidator {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public boolean validateAdminType(AdminType adminType, DiagnosticChain diagnostics, Map<Object, Object> context) {
@@ -657,6 +707,7 @@ public class ScaValidator extends EObjectValidator {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 * @see #validateAdminType_Enumeration
 	 */
@@ -669,6 +720,7 @@ public class ScaValidator extends EObjectValidator {
 	 * Validates the Enumeration constraint of '<em>Admin Type</em>'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public boolean validateAdminType_Enumeration(AdminType adminType, DiagnosticChain diagnostics, Map<Object, Object> context) {
@@ -681,6 +733,7 @@ public class ScaValidator extends EObjectValidator {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public boolean validateDomainConnectionException(DomainConnectionException domainConnectionException, DiagnosticChain diagnostics,
@@ -691,6 +744,7 @@ public class ScaValidator extends EObjectValidator {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public boolean validateDomainConnectionStateObject(DomainConnectionState domainConnectionStateObject, DiagnosticChain diagnostics,
@@ -701,6 +755,7 @@ public class ScaValidator extends EObjectValidator {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public boolean validateIFileStore(IFileStore iFileStore, DiagnosticChain diagnostics, Map<Object, Object> context) {
@@ -710,6 +765,7 @@ public class ScaValidator extends EObjectValidator {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public boolean validateIProgressMonitor(IProgressMonitor iProgressMonitor, DiagnosticChain diagnostics, Map<Object, Object> context) {
@@ -719,6 +775,7 @@ public class ScaValidator extends EObjectValidator {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public boolean validateIScaDataProvider(IScaDataProvider iScaDataProvider, DiagnosticChain diagnostics, Map<Object, Object> context) {
@@ -728,6 +785,7 @@ public class ScaValidator extends EObjectValidator {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public boolean validateIScaDataProviderService(IScaDataProviderService iScaDataProviderService, DiagnosticChain diagnostics, Map<Object, Object> context) {
@@ -737,6 +795,7 @@ public class ScaValidator extends EObjectValidator {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public boolean validateIStatus(IStatus iStatus, DiagnosticChain diagnostics, Map<Object, Object> context) {
@@ -746,6 +805,7 @@ public class ScaValidator extends EObjectValidator {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public boolean validateObject(org.omg.CORBA.Object object, DiagnosticChain diagnostics, Map<Object, Object> context) {
@@ -755,6 +815,7 @@ public class ScaValidator extends EObjectValidator {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public boolean validateObjectArray(Object[] objectArray, DiagnosticChain diagnostics, Map<Object, Object> context) {
@@ -764,6 +825,7 @@ public class ScaValidator extends EObjectValidator {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public boolean validateOperationalType(OperationalType operationalType, DiagnosticChain diagnostics, Map<Object, Object> context) {
@@ -774,6 +836,7 @@ public class ScaValidator extends EObjectValidator {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 * @see #validateOperationalType_Enumeration
 	 */
@@ -785,6 +848,7 @@ public class ScaValidator extends EObjectValidator {
 	 * Validates the Enumeration constraint of '<em>Operational Type</em>'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public boolean validateOperationalType_Enumeration(OperationalType operationalType, DiagnosticChain diagnostics, Map<Object, Object> context) {
@@ -797,6 +861,7 @@ public class ScaValidator extends EObjectValidator {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public boolean validateRefreshDepthObject(RefreshDepth refreshDepthObject, DiagnosticChain diagnostics, Map<Object, Object> context) {
@@ -806,6 +871,7 @@ public class ScaValidator extends EObjectValidator {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public boolean validatePOA(POA poa, DiagnosticChain diagnostics, Map<Object, Object> context) {
@@ -815,6 +881,7 @@ public class ScaValidator extends EObjectValidator {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public boolean validateURI(URI uri, DiagnosticChain diagnostics, Map<Object, Object> context) {
@@ -824,6 +891,7 @@ public class ScaValidator extends EObjectValidator {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public boolean validateUsageType(UsageType usageType, DiagnosticChain diagnostics, Map<Object, Object> context) {
@@ -834,6 +902,7 @@ public class ScaValidator extends EObjectValidator {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 * @see #validateUsageType_Enumeration
 	 */
@@ -846,6 +915,7 @@ public class ScaValidator extends EObjectValidator {
 	 * Validates the Enumeration constraint of '<em>Usage Type</em>'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public boolean validateUsageType_Enumeration(UsageType usageType, DiagnosticChain diagnostics, Map<Object, Object> context) {
@@ -858,6 +928,7 @@ public class ScaValidator extends EObjectValidator {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public boolean validateDataTypeArray(DataType[] dataTypeArray, DiagnosticChain diagnostics, Map<Object, Object> context) {
@@ -867,6 +938,7 @@ public class ScaValidator extends EObjectValidator {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public boolean validateAny(Any any, DiagnosticChain diagnostics, Map<Object, Object> context) {
@@ -877,6 +949,7 @@ public class ScaValidator extends EObjectValidator {
 	 * Returns the resource locator that will be used to fetch messages for this validator's diagnostics.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override

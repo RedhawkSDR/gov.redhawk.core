@@ -18,24 +18,24 @@ import org.eclipse.emf.ecore.EObject;
 
 /**
  * <!-- begin-user-doc -->
- * A representation of the model object '
- * <em><b>Corba Obj Wrapper</b></em>'.
+ * A representation of the model object ' <em><b>Corba Obj Wrapper</b></em>'.
+ * 
  * @noimplement This interface is not intended to be implemented by clients.
- * <!-- end-user-doc -->
+ *              <!-- end-user-doc -->
  *
- * <p>
- * The following features are supported:
- * <ul>
- * <li>{@link gov.redhawk.model.sca.CorbaObjWrapper#getIor <em>Ior</em>}</li>
- * <li>{@link gov.redhawk.model.sca.CorbaObjWrapper#getObj <em>Obj</em>}</li>
- * <li>{@link gov.redhawk.model.sca.CorbaObjWrapper#getCorbaObj <em>Corba Obj</em>}</li>
- * <li>{@link gov.redhawk.model.sca.CorbaObjWrapper#getFeatureData <em>Feature Data</em>}</li>
- * </ul>
- * </p>
+ *              <p>
+ *              The following features are supported:
+ *              <ul>
+ *              <li>{@link gov.redhawk.model.sca.CorbaObjWrapper#getIor <em>Ior</em>}</li>
+ *              <li>{@link gov.redhawk.model.sca.CorbaObjWrapper#getObj <em>Obj</em>}</li>
+ *              <li>{@link gov.redhawk.model.sca.CorbaObjWrapper#getCorbaObj <em>Corba Obj</em>}</li>
+ *              <li>{@link gov.redhawk.model.sca.CorbaObjWrapper#getFeatureData <em>Feature Data</em>}</li>
+ *              </ul>
+ *              </p>
  *
  * @see gov.redhawk.model.sca.ScaPackage#getCorbaObjWrapper()
  * @model abstract="true" TBounds="gov.redhawk.model.sca.Object"
- * extendedMetaData="name='CorbaObjWrapper' kind='empty'"
+ *        extendedMetaData="name='CorbaObjWrapper' kind='empty'"
  * @generated
  */
 public interface CorbaObjWrapper< T extends org.omg.CORBA.Object > extends DataProviderObject {
@@ -44,17 +44,17 @@ public interface CorbaObjWrapper< T extends org.omg.CORBA.Object > extends DataP
 	 * Returns the value of the '<em><b>Ior</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <p>
-	 * If the meaning of the '<em>Ior</em>' attribute isn't clear,
-	 * there really should be more of a description here...
+	 * If the meaning of the '<em>Ior</em>' attribute isn't clear, there really should be more of a description here...
 	 * </p>
 	 * <!-- end-user-doc -->
+	 * 
 	 * @return the value of the '<em>Ior</em>' attribute.
 	 * @see #isSetIor()
 	 * @see #unsetIor()
 	 * @see #setIor(String)
 	 * @see gov.redhawk.model.sca.ScaPackage#getCorbaObjWrapper_Ior()
 	 * @model unsettable="true" transient="true" derived="true"
-	 * extendedMetaData="kind='attribute' name='ior'"
+	 *        extendedMetaData="kind='attribute' name='ior'"
 	 * @generated
 	 */
 	String getIor();
@@ -62,8 +62,9 @@ public interface CorbaObjWrapper< T extends org.omg.CORBA.Object > extends DataP
 	/**
 	 * Sets the value of the '{@link gov.redhawk.model.sca.CorbaObjWrapper#getIor <em>Ior</em>}' attribute.
 	 * <!-- begin-user-doc -->
+	 * 
 	 * @since 16.0
-	 * <!-- end-user-doc -->
+	 *        <!-- end-user-doc -->
 	 * @param value the new value of the '<em>Ior</em>' attribute.
 	 * @see #isSetIor()
 	 * @see #unsetIor()
@@ -75,8 +76,9 @@ public interface CorbaObjWrapper< T extends org.omg.CORBA.Object > extends DataP
 	/**
 	 * Unsets the value of the '{@link gov.redhawk.model.sca.CorbaObjWrapper#getIor <em>Ior</em>}' attribute.
 	 * <!-- begin-user-doc -->
+	 * 
 	 * @since 16.0
-	 * <!-- end-user-doc -->
+	 *        <!-- end-user-doc -->
 	 * @see #isSetIor()
 	 * @see #getIor()
 	 * @see #setIor(String)
@@ -89,6 +91,7 @@ public interface CorbaObjWrapper< T extends org.omg.CORBA.Object > extends DataP
 	 * set.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * 
 	 * @return whether the value of the '<em>Ior</em>' attribute is set.
 	 * @see #unsetIor()
 	 * @see #getIor()
@@ -101,17 +104,17 @@ public interface CorbaObjWrapper< T extends org.omg.CORBA.Object > extends DataP
 	 * Returns the value of the '<em><b>Obj</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <p>
-	 * If the meaning of the '<em>Obj</em>' attribute isn't clear,
-	 * there really should be more of a description here...
+	 * If the meaning of the '<em>Obj</em>' attribute isn't clear, there really should be more of a description here...
 	 * </p>
 	 * <!-- end-user-doc -->
+	 * 
 	 * @return the value of the '<em>Obj</em>' attribute.
 	 * @see #isSetObj()
 	 * @see #unsetObj()
 	 * @see #setObj(org.omg.CORBA.Object)
 	 * @see gov.redhawk.model.sca.ScaPackage#getCorbaObjWrapper_Obj()
 	 * @model unsettable="true" transient="true"
-	 * extendedMetaData="kind='attribute' name='obj'"
+	 *        extendedMetaData="kind='attribute' name='obj'"
 	 * @generated
 	 */
 	T getObj();
@@ -120,6 +123,7 @@ public interface CorbaObjWrapper< T extends org.omg.CORBA.Object > extends DataP
 	 * Sets the value of the '{@link gov.redhawk.model.sca.CorbaObjWrapper#getObj <em>Obj</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * 
 	 * @param value the new value of the '<em>Obj</em>' attribute.
 	 * @see #isSetObj()
 	 * @see #unsetObj()
@@ -132,6 +136,7 @@ public interface CorbaObjWrapper< T extends org.omg.CORBA.Object > extends DataP
 	 * Unsets the value of the '{@link gov.redhawk.model.sca.CorbaObjWrapper#getObj <em>Obj</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * 
 	 * @see #isSetObj()
 	 * @see #getObj()
 	 * @see #setObj(org.omg.CORBA.Object)
@@ -144,6 +149,7 @@ public interface CorbaObjWrapper< T extends org.omg.CORBA.Object > extends DataP
 	 * set.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * 
 	 * @return whether the value of the '<em>Obj</em>' attribute is set.
 	 * @see #unsetObj()
 	 * @see #getObj()
@@ -156,10 +162,11 @@ public interface CorbaObjWrapper< T extends org.omg.CORBA.Object > extends DataP
 	 * Returns the value of the '<em><b>Corba Obj</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <p>
-	 * If the meaning of the '<em>Corba Obj</em>' attribute isn't clear,
-	 * there really should be more of a description here...
+	 * If the meaning of the '<em>Corba Obj</em>' attribute isn't clear, there really should be more of a description
+	 * here...
 	 * </p>
 	 * <!-- end-user-doc -->
+	 * 
 	 * @return the value of the '<em>Corba Obj</em>' attribute.
 	 * @see #isSetCorbaObj()
 	 * @see #unsetCorbaObj()
@@ -174,6 +181,7 @@ public interface CorbaObjWrapper< T extends org.omg.CORBA.Object > extends DataP
 	 * Sets the value of the '{@link gov.redhawk.model.sca.CorbaObjWrapper#getCorbaObj <em>Corba Obj</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * 
 	 * @param value the new value of the '<em>Corba Obj</em>' attribute.
 	 * @see #isSetCorbaObj()
 	 * @see #unsetCorbaObj()
@@ -186,6 +194,7 @@ public interface CorbaObjWrapper< T extends org.omg.CORBA.Object > extends DataP
 	 * Unsets the value of the '{@link gov.redhawk.model.sca.CorbaObjWrapper#getCorbaObj <em>Corba Obj</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * 
 	 * @see #isSetCorbaObj()
 	 * @see #getCorbaObj()
 	 * @see #setCorbaObj(org.omg.CORBA.Object)
@@ -198,6 +207,7 @@ public interface CorbaObjWrapper< T extends org.omg.CORBA.Object > extends DataP
 	 * attribute is set.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * 
 	 * @return whether the value of the '<em>Corba Obj</em>' attribute is set.
 	 * @see #unsetCorbaObj()
 	 * @see #getCorbaObj()
@@ -212,12 +222,13 @@ public interface CorbaObjWrapper< T extends org.omg.CORBA.Object > extends DataP
 	 * and the value is of type {@link org.eclipse.emf.ecore.EObject},
 	 * <!-- begin-user-doc -->
 	 * An extension point for contribute data related to the associated object.
+	 * 
 	 * @since 19.0
-	 * <!-- end-user-doc -->
+	 *        <!-- end-user-doc -->
 	 * @return the value of the '<em>Feature Data</em>' map.
 	 * @see gov.redhawk.model.sca.ScaPackage#getCorbaObjWrapper_FeatureData()
-	 * @model
-	 * mapType="gov.redhawk.model.sca.StringToObjectMap<org.eclipse.emf.ecore.EString, org.eclipse.emf.ecore.EObject>"
+	 * @model 
+	 *        mapType="gov.redhawk.model.sca.StringToObjectMap<org.eclipse.emf.ecore.EString, org.eclipse.emf.ecore.EObject>"
 	 * @generated
 	 */
 	EMap<String, EObject> getFeatureData();
@@ -225,6 +236,7 @@ public interface CorbaObjWrapper< T extends org.omg.CORBA.Object > extends DataP
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * 
 	 * @model dataType="org.eclipse.emf.ecore.xml.type.Boolean"
 	 * @generated
 	 */
@@ -233,6 +245,7 @@ public interface CorbaObjWrapper< T extends org.omg.CORBA.Object > extends DataP
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * 
 	 * @model monitorDataType="gov.redhawk.model.sca.IProgressMonitor"
 	 * @generated
 	 */
@@ -241,6 +254,7 @@ public interface CorbaObjWrapper< T extends org.omg.CORBA.Object > extends DataP
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * 
 	 * @model monitorDataType="gov.redhawk.model.sca.IProgressMonitor"
 	 * @generated
 	 */
@@ -249,6 +263,7 @@ public interface CorbaObjWrapper< T extends org.omg.CORBA.Object > extends DataP
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * 
 	 * @model
 	 * @generated
 	 */

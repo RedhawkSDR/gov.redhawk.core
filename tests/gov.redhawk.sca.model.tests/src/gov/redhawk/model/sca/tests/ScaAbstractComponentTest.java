@@ -38,22 +38,27 @@ import CF.TestableObjectPackage.UnknownTest;
  * <p>
  * The following features are tested:
  * <ul>
- *   <li>{@link gov.redhawk.model.sca.ScaAbstractComponent#getIdentifier() <em>Identifier</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.ScaAbstractComponent#getIdentifier() <em>Identifier</em>}</li>
  * </ul>
  * </p>
  * <p>
  * The following operations are tested:
  * <ul>
- *   <li>{@link gov.redhawk.model.sca.ScaAbstractComponent#fetchIdentifier(org.eclipse.core.runtime.IProgressMonitor) <em>Fetch Identifier</em>}</li>
- *   <li>{@link gov.redhawk.model.sca.ScaAbstractComponent#fetchStarted(org.eclipse.core.runtime.IProgressMonitor) <em>Fetch Started</em>}</li>
- *   <li>{@link gov.redhawk.model.sca.ScaPortContainer#getScaPort(java.lang.String) <em>Get Sca Port</em>}</li>
- *   <li>{@link gov.redhawk.model.sca.ScaPortContainer#fetchPorts(org.eclipse.core.runtime.IProgressMonitor) <em>Fetch Ports</em>}</li>
- *   <li>{@link CF.ResourceOperations#start() <em>Start</em>}</li>
- *   <li>{@link CF.ResourceOperations#stop() <em>Stop</em>}</li>
- *   <li>{@link CF.PortSupplierOperations#getPort(java.lang.String) <em>Get Port</em>}</li>
- *   <li>{@link CF.TestableObjectOperations#runTest(int, CF.PropertiesHolder) <em>Run Test</em>}</li>
- *   <li>{@link CF.LifeCycleOperations#initialize() <em>Initialize</em>}</li>
- *   <li>{@link CF.LifeCycleOperations#releaseObject() <em>Release Object</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.ScaAbstractComponent#fetchIdentifier(org.eclipse.core.runtime.IProgressMonitor)
+ * <em>Fetch Identifier</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.ScaAbstractComponent#fetchStarted(org.eclipse.core.runtime.IProgressMonitor)
+ * <em>Fetch Started</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.ScaAbstractComponent#fetchProfile(org.eclipse.core.runtime.IProgressMonitor)
+ * <em>Fetch Profile</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.ScaPortContainer#getScaPort(java.lang.String) <em>Get Sca Port</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.ScaPortContainer#fetchPorts(org.eclipse.core.runtime.IProgressMonitor) <em>Fetch
+ * Ports</em>}</li>
+ * <li>{@link CF.ResourceOperations#start() <em>Start</em>}</li>
+ * <li>{@link CF.ResourceOperations#stop() <em>Stop</em>}</li>
+ * <li>{@link CF.PortSupplierOperations#getPort(java.lang.String) <em>Get Port</em>}</li>
+ * <li>{@link CF.TestableObjectOperations#runTest(int, CF.PropertiesHolder) <em>Run Test</em>}</li>
+ * <li>{@link CF.LifeCycleOperations#initialize() <em>Initialize</em>}</li>
+ * <li>{@link CF.LifeCycleOperations#releaseObject() <em>Release Object</em>}</li>
  * </ul>
  * </p>
  * @generated
@@ -77,15 +82,16 @@ public abstract class ScaAbstractComponentTest extends ScaPropertyContainerTest 
 	 * @generated
 	 */
 	@Override
-	protected ScaAbstractComponent<?> getFixture() {
-		return (ScaAbstractComponent<?>)fixture;
+	protected ScaAbstractComponent< ? > getFixture() {
+		return (ScaAbstractComponent< ? >) fixture;
 	}
 
 	/**
-	 * Tests the '{@link gov.redhawk.model.sca.ScaAbstractComponent#getIdentifier() <em>Identifier</em>}' feature getter.
+	 * Tests the '{@link gov.redhawk.model.sca.ScaAbstractComponent#getIdentifier() <em>Identifier</em>}' feature
+	 * getter.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @throws InterruptedException 
+	 * @throws InterruptedException
 	 * @see gov.redhawk.model.sca.ScaAbstractComponent#getIdentifier()
 	 * @generated NOT
 	 */
@@ -113,7 +119,8 @@ public abstract class ScaAbstractComponentTest extends ScaPropertyContainerTest 
 	}
 
 	/**
-	 * Tests the '{@link gov.redhawk.model.sca.ScaAbstractComponent#setIdentifier(java.lang.String) <em>Identifier</em>}' feature setter.
+	 * Tests the '{@link gov.redhawk.model.sca.ScaAbstractComponent#setIdentifier(java.lang.String) <em>Identifier</em>}
+	 * ' feature setter.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @see gov.redhawk.model.sca.ScaAbstractComponent#setIdentifier(java.lang.String)
@@ -133,7 +140,8 @@ public abstract class ScaAbstractComponentTest extends ScaPropertyContainerTest 
 	}
 
 	/**
-	 * Tests the '{@link gov.redhawk.model.sca.ScaAbstractComponent#unsetIdentifier() <em>unsetIdentifier()</em>}' method.
+	 * Tests the '{@link gov.redhawk.model.sca.ScaAbstractComponent#unsetIdentifier() <em>unsetIdentifier()</em>}'
+	 * method.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @see gov.redhawk.model.sca.ScaAbstractComponent#unsetIdentifier()
@@ -154,7 +162,8 @@ public abstract class ScaAbstractComponentTest extends ScaPropertyContainerTest 
 	}
 
 	/**
-	 * Tests the '{@link gov.redhawk.model.sca.ScaAbstractComponent#isSetIdentifier() <em>isSetIdentifier()</em>}' method.
+	 * Tests the '{@link gov.redhawk.model.sca.ScaAbstractComponent#isSetIdentifier() <em>isSetIdentifier()</em>}'
+	 * method.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @see gov.redhawk.model.sca.ScaAbstractComponent#isSetIdentifier()
@@ -173,7 +182,9 @@ public abstract class ScaAbstractComponentTest extends ScaPropertyContainerTest 
 	}
 
 	/**
-	 * Tests the '{@link gov.redhawk.model.sca.ScaAbstractComponent#fetchIdentifier(org.eclipse.core.runtime.IProgressMonitor) <em>Fetch Identifier</em>}' operation.
+	 * Tests the '
+	 * {@link gov.redhawk.model.sca.ScaAbstractComponent#fetchIdentifier(org.eclipse.core.runtime.IProgressMonitor)
+	 * <em>Fetch Identifier</em>}' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @see gov.redhawk.model.sca.ScaAbstractComponent#fetchIdentifier(org.eclipse.core.runtime.IProgressMonitor)
@@ -194,7 +205,9 @@ public abstract class ScaAbstractComponentTest extends ScaPropertyContainerTest 
 	}
 
 	/**
-	 * Tests the '{@link gov.redhawk.model.sca.ScaAbstractComponent#fetchStarted(org.eclipse.core.runtime.IProgressMonitor) <em>Fetch Started</em>}' operation.
+	 * Tests the '
+	 * {@link gov.redhawk.model.sca.ScaAbstractComponent#fetchStarted(org.eclipse.core.runtime.IProgressMonitor)
+	 * <em>Fetch Started</em>}' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @see gov.redhawk.model.sca.ScaAbstractComponent#fetchStarted(org.eclipse.core.runtime.IProgressMonitor)
@@ -215,10 +228,27 @@ public abstract class ScaAbstractComponentTest extends ScaPropertyContainerTest 
 	}
 
 	/**
-	 * Tests the '{@link gov.redhawk.model.sca.ScaAbstractComponent#fetchPorts(org.eclipse.core.runtime.IProgressMonitor) <em>Fetch Ports</em>}' operation.
+	 * Tests the '
+	 * {@link gov.redhawk.model.sca.ScaAbstractComponent#fetchProfile(org.eclipse.core.runtime.IProgressMonitor)
+	 * <em>Fetch Profile</em>}' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @throws InterruptedException 
+	 * @see gov.redhawk.model.sca.ScaAbstractComponent#fetchProfile(org.eclipse.core.runtime.IProgressMonitor)
+	 * @generated
+	 */
+	public void testFetchProfile__IProgressMonitor() {
+		// TODO: implement this operation test method
+		// Ensure that you remove @generated or mark it @generated NOT
+		fail();
+	}
+
+	/**
+	 * Tests the '
+	 * {@link gov.redhawk.model.sca.ScaAbstractComponent#fetchPorts(org.eclipse.core.runtime.IProgressMonitor) <em>Fetch
+	 * Ports</em>}' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @throws InterruptedException
 	 * @see gov.redhawk.model.sca.ScaAbstractComponent#fetchPorts(org.eclipse.core.runtime.IProgressMonitor)
 	 * @generated NOT
 	 */
@@ -262,7 +292,8 @@ public abstract class ScaAbstractComponentTest extends ScaPropertyContainerTest 
 	}
 
 	/**
-	 * Tests the '{@link gov.redhawk.model.sca.ScaAbstractComponent#getScaPort(java.lang.String) <em>Get Sca Port</em>}' operation.
+	 * Tests the '{@link gov.redhawk.model.sca.ScaAbstractComponent#getScaPort(java.lang.String) <em>Get Sca Port</em>}'
+	 * operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @see gov.redhawk.model.sca.ScaAbstractComponent#getScaPort(java.lang.String)
@@ -334,10 +365,11 @@ public abstract class ScaAbstractComponentTest extends ScaPropertyContainerTest 
 	}
 
 	/**
-	 * Tests the '{@link mil.jpeojtrs.sca.cf.PortSupplierOperations#getPort(java.lang.String) <em>Get Port</em>}' operation.
+	 * Tests the '{@link mil.jpeojtrs.sca.cf.PortSupplierOperations#getPort(java.lang.String) <em>Get Port</em>}'
+	 * operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @throws UnknownPort 
+	 * @throws UnknownPort
 	 * @see mil.jpeojtrs.sca.cf.PortSupplierOperations#getPort(java.lang.String)
 	 * @generated NOT
 	 */
@@ -351,11 +383,13 @@ public abstract class ScaAbstractComponentTest extends ScaPropertyContainerTest 
 	}
 
 	/**
-	 * Tests the '{@link mil.jpeojtrs.sca.cf.TestableObjectOperations#runTest(int, mil.jpeojtrs.sca.cf.PropertiesHolder) <em>Run Test</em>}' operation.
+	 * Tests the '
+	 * {@link mil.jpeojtrs.sca.cf.TestableObjectOperations#runTest(int, mil.jpeojtrs.sca.cf.PropertiesHolder) <em>Run
+	 * Test</em>}' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @throws UnknownProperties 
-	 * @throws UnknownTest 
+	 * @throws UnknownProperties
+	 * @throws UnknownTest
 	 * @see mil.jpeojtrs.sca.cf.TestableObjectOperations#runTest(int, mil.jpeojtrs.sca.cf.PropertiesHolder)
 	 * @generated NOT
 	 */
@@ -371,7 +405,7 @@ public abstract class ScaAbstractComponentTest extends ScaPropertyContainerTest 
 	 * Tests the '{@link mil.jpeojtrs.sca.cf.LifeCycleOperations#initialize() <em>Initialize</em>}' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @throws InitializeError 
+	 * @throws InitializeError
 	 * @see mil.jpeojtrs.sca.cf.LifeCycleOperations#initialize()
 	 * @generated NOT
 	 */
@@ -385,7 +419,7 @@ public abstract class ScaAbstractComponentTest extends ScaPropertyContainerTest 
 	 * Tests the '{@link mil.jpeojtrs.sca.cf.LifeCycleOperations#releaseObject() <em>Release Object</em>}' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @throws ReleaseError 
+	 * @throws ReleaseError
 	 * @see mil.jpeojtrs.sca.cf.LifeCycleOperations#releaseObject()
 	 * @generated NOT
 	 */
@@ -395,4 +429,4 @@ public abstract class ScaAbstractComponentTest extends ScaPropertyContainerTest 
 		// BEGIN GENERATED CODE
 	}
 
-} //ScaAbstractComponentTest
+} // ScaAbstractComponentTest

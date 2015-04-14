@@ -102,4 +102,4 @@ public class PropertiesTest extends TestCase {
 		Assert.assertNotNull(getFixture());
 		// BEGIN GENERATED CODE
 	}
-} //PropertiesTest
+} // PropertiesTest

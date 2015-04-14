@@ -15,6 +15,7 @@ package gov.redhawk.model.sca.impl;
 import gov.redhawk.model.sca.ScaExecutableDevice;
 import gov.redhawk.model.sca.ScaPackage;
 
+import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClass;
 
 import CF.DataType;
@@ -31,10 +32,11 @@ import CF.ExecutableDevicePackage.InvalidProcess;
 /**
  * <!-- begin-user-doc -->
  * An implementation of the model object '<em><b>Executable Device</b></em>'.
+ * 
  * @since 12.0
- * <!-- end-user-doc -->
- * <p>
- * </p>
+ *        <!-- end-user-doc -->
+ *        <p>
+ *        </p>
  *
  * @generated
  */
@@ -51,6 +53,7 @@ public class ScaExecutableDeviceImpl extends ScaLoadableDeviceImpl<ExecutableDev
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -75,8 +78,9 @@ public class ScaExecutableDeviceImpl extends ScaLoadableDeviceImpl<ExecutableDev
 
 	/**
 	 * <!-- begin-user-doc -->
+	 * 
 	 * @since 14.0
-	 * <!-- end-user-doc -->
+	 *        <!-- end-user-doc -->
 	 * @generated NOT
 	 */
 	public ExecutableDevice getExecutableDev() {
@@ -101,11 +105,24 @@ public class ScaExecutableDeviceImpl extends ScaLoadableDeviceImpl<ExecutableDev
 	}
 
 	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	public void executeLinked(String name, DataType[] options, DataType[] parameters, EList<String> deps) throws InvalidState, InvalidFunction,
+		InvalidParameters, InvalidOptions, InvalidFileName, ExecuteFail {
+		// TODO: implement this method
+		// Ensure that you remove @generated or mark it @generated NOT
+		throw new UnsupportedOperationException();
+	}
+
+	/**
 	 * @since 19.1
 	 */
 	@Override
 	public int executeLinked(final String name, final DataType[] options, final DataType[] parameters, final String[] deps) throws InvalidState,
-	    InvalidFunction, InvalidParameters, InvalidOptions, InvalidFileName, ExecuteFail {
+		InvalidFunction, InvalidParameters, InvalidOptions, InvalidFileName, ExecuteFail {
 		// END GENERATED CODE
 		ExecutableDevice device = fetchNarrowedObject(null);
 		if (device == null) {

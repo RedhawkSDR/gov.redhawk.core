@@ -24,20 +24,21 @@ import CF.PortPackage.InvalidPort;
 /**
  * <!-- begin-user-doc -->
  * A representation of the model object '<em><b>Uses Port</b></em>'.
+ * 
  * @noimplement This interface is not intended to be implemented by clients.
- * <!-- end-user-doc -->
+ *              <!-- end-user-doc -->
  *
- * <p>
- * The following features are supported:
- * <ul>
- * <li>{@link gov.redhawk.model.sca.ScaUsesPort#getConnections <em>Connections</em>}</li>
- * </ul>
- * </p>
+ *              <p>
+ *              The following features are supported:
+ *              <ul>
+ *              <li>{@link gov.redhawk.model.sca.ScaUsesPort#getConnections <em>Connections</em>}</li>
+ *              </ul>
+ *              </p>
  *
  * @see gov.redhawk.model.sca.ScaPackage#getScaUsesPort()
  * @model superTypes=
- * "gov.redhawk.model.sca.ScaPort<mil.jpeojtrs.sca.scd.Uses, mil.jpeojtrs.sca.cf.Port> mil.jpeojtrs.sca.cf.PortOperations"
- * extendedMetaData="name='ScaUsesPort' kind='empty'"
+ *        "gov.redhawk.model.sca.ScaPort<mil.jpeojtrs.sca.scd.Uses, mil.jpeojtrs.sca.cf.Port> mil.jpeojtrs.sca.cf.PortOperations"
+ *        extendedMetaData="name='ScaUsesPort' kind='empty'"
  * @generated
  */
 public interface ScaUsesPort extends ScaPort<Uses, Port>, PortOperations {
@@ -48,10 +49,11 @@ public interface ScaUsesPort extends ScaPort<Uses, Port>, PortOperations {
 	 * It is bidirectional and its opposite is '{@link gov.redhawk.model.sca.ScaConnection#getPort <em>Port</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <p>
-	 * If the meaning of the '<em>Connections</em>' containment reference list isn't clear,
-	 * there really should be more of a description here...
+	 * If the meaning of the '<em>Connections</em>' containment reference list isn't clear, there really should be more
+	 * of a description here...
 	 * </p>
 	 * <!-- end-user-doc -->
+	 * 
 	 * @return the value of the '<em>Connections</em>' containment reference list.
 	 * @see #isSetConnections()
 	 * @see #unsetConnections()
@@ -67,6 +69,7 @@ public interface ScaUsesPort extends ScaPort<Uses, Port>, PortOperations {
 	 * containment reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * 
 	 * @see #isSetConnections()
 	 * @see #getConnections()
 	 * @generated
@@ -78,6 +81,7 @@ public interface ScaUsesPort extends ScaPort<Uses, Port>, PortOperations {
 	 * containment reference list is set.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * 
 	 * @return whether the value of the '<em>Connections</em>' containment reference list is set.
 	 * @see #unsetConnections()
 	 * @see #getConnections()
@@ -88,6 +92,7 @@ public interface ScaUsesPort extends ScaPort<Uses, Port>, PortOperations {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * 
 	 * @model monitorDataType="gov.redhawk.model.sca.IProgressMonitor"
 	 * @generated
 	 */
@@ -96,6 +101,7 @@ public interface ScaUsesPort extends ScaPort<Uses, Port>, PortOperations {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * 
 	 * @model exceptions="mil.jpeojtrs.sca.cf.InvalidPort"
 	 * @generated
 	 */

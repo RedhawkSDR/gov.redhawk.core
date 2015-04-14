@@ -27,9 +27,9 @@ import CF.FileManagerPackage.NonExistentMount;
  * <p>
  * The following operations are tested:
  * <ul>
- *   <li>{@link CF.FileManagerOperations#mount(java.lang.String, CF.FileSystem) <em>Mount</em>}</li>
- *   <li>{@link CF.FileManagerOperations#unmount(java.lang.String) <em>Unmount</em>}</li>
- *   <li>{@link CF.FileManagerOperations#getMounts() <em>Get Mounts</em>}</li>
+ * <li>{@link CF.FileManagerOperations#mount(java.lang.String, CF.FileSystem) <em>Mount</em>}</li>
+ * <li>{@link CF.FileManagerOperations#unmount(java.lang.String) <em>Unmount</em>}</li>
+ * <li>{@link CF.FileManagerOperations#getMounts() <em>Get Mounts</em>}</li>
  * </ul>
  * </p>
  * @generated
@@ -54,11 +54,13 @@ public abstract class ScaFileManagerTest extends ScaFileSystemTest {
 	 */
 	@Override
 	protected ScaFileManager getFixture() {
-		return (ScaFileManager)fixture;
+		return (ScaFileManager) fixture;
 	}
 
 	/**
-	 * Tests the '{@link mil.jpeojtrs.sca.cf.FileManagerOperations#mount(java.lang.String, mil.jpeojtrs.sca.cf.FileSystem) <em>Mount</em>}' operation.
+	 * Tests the '
+	 * {@link mil.jpeojtrs.sca.cf.FileManagerOperations#mount(java.lang.String, mil.jpeojtrs.sca.cf.FileSystem)
+	 * <em>Mount</em>}' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @see mil.jpeojtrs.sca.cf.FileManagerOperations#mount(java.lang.String, mil.jpeojtrs.sca.cf.FileSystem)
@@ -80,10 +82,11 @@ public abstract class ScaFileManagerTest extends ScaFileSystemTest {
 	}
 
 	/**
-	 * Tests the '{@link mil.jpeojtrs.sca.cf.FileSystemOperations#unmount(java.lang.String) <em>Unmount</em>}' operation.
+	 * Tests the '{@link mil.jpeojtrs.sca.cf.FileSystemOperations#unmount(java.lang.String) <em>Unmount</em>}'
+	 * operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @throws NonExistentMount 
+	 * @throws NonExistentMount
 	 * @see mil.jpeojtrs.sca.cf.FileSystemOperations#unmount(java.lang.String)
 	 * @generated NOT
 	 */
@@ -111,4 +114,4 @@ public abstract class ScaFileManagerTest extends ScaFileSystemTest {
 		// BEGIN GENERATED CODE
 	}
 
-} //ScaFileManagerTest
+} // ScaFileManagerTest

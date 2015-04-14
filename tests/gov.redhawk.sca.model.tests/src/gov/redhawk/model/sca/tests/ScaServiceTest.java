@@ -16,10 +16,8 @@ import gov.redhawk.model.sca.ScaDeviceManager;
 import gov.redhawk.model.sca.ScaPort;
 import gov.redhawk.model.sca.ScaService;
 import gov.redhawk.model.sca.tests.stubs.ScaTestConstaints;
-
 import org.eclipse.emf.common.util.EList;
 import org.junit.Assert;
-
 import junit.textui.TestRunner;
 import CF.DeviceHelper;
 
@@ -30,8 +28,9 @@ import CF.DeviceHelper;
  * <p>
  * The following operations are tested:
  * <ul>
- *   <li>{@link gov.redhawk.model.sca.ScaPortContainer#getScaPort(java.lang.String) <em>Get Sca Port</em>}</li>
- *   <li>{@link gov.redhawk.model.sca.ScaPortContainer#fetchPorts(org.eclipse.core.runtime.IProgressMonitor) <em>Fetch Ports</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.ScaPortContainer#getScaPort(java.lang.String) <em>Get Sca Port</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.ScaPortContainer#fetchPorts(org.eclipse.core.runtime.IProgressMonitor) <em>Fetch
+ * Ports</em>}</li>
  * </ul>
  * </p>
  * @generated
@@ -65,7 +64,7 @@ public class ScaServiceTest extends ScaPropertyContainerTest {
 	 */
 	@Override
 	protected ScaService getFixture() {
-		return (ScaService)fixture;
+		return (ScaService) fixture;
 	}
 
 	private TestEnvirornment env;
@@ -98,7 +97,8 @@ public class ScaServiceTest extends ScaPropertyContainerTest {
 	}
 
 	/**
-	 * Tests the '{@link gov.redhawk.model.sca.ScaPortContainer#getScaPort(java.lang.String) <em>Get Sca Port</em>}' operation.
+	 * Tests the '{@link gov.redhawk.model.sca.ScaPortContainer#getScaPort(java.lang.String) <em>Get Sca Port</em>}'
+	 * operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @see gov.redhawk.model.sca.ScaPortContainer#getScaPort(java.lang.String)
@@ -109,7 +109,8 @@ public class ScaServiceTest extends ScaPropertyContainerTest {
 	}
 
 	/**
-	 * Tests the '{@link gov.redhawk.model.sca.ScaPortContainer#fetchPorts(org.eclipse.core.runtime.IProgressMonitor) <em>Fetch Ports</em>}' operation.
+	 * Tests the '{@link gov.redhawk.model.sca.ScaPortContainer#fetchPorts(org.eclipse.core.runtime.IProgressMonitor)
+	 * <em>Fetch Ports</em>}' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @see gov.redhawk.model.sca.ScaPortContainer#fetchPorts(org.eclipse.core.runtime.IProgressMonitor)
@@ -131,4 +132,4 @@ public class ScaServiceTest extends ScaPropertyContainerTest {
 		return DeviceHelper.id();
 	}
 
-} //ScaServiceTest
+} // ScaServiceTest

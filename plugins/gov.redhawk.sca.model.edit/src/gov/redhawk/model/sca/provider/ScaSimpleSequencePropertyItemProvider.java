@@ -15,12 +15,15 @@ package gov.redhawk.model.sca.provider;
 import gov.redhawk.model.sca.ScaAbstractProperty;
 import gov.redhawk.model.sca.ScaPackage;
 import gov.redhawk.model.sca.ScaSimpleSequenceProperty;
+
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+
 import mil.jpeojtrs.sca.prf.SimpleSequence;
 import mil.jpeojtrs.sca.prf.provider.RadixLabelProviderUtil;
+
 import org.eclipse.emf.common.notify.AdapterFactory;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.ecore.EStructuralFeature;
@@ -30,6 +33,7 @@ import org.eclipse.emf.edit.provider.IItemPropertyDescriptor;
 import org.eclipse.emf.edit.provider.ItemPropertyDescriptor;
 import org.eclipse.emf.edit.provider.ItemPropertyDescriptorDecorator;
 import org.eclipse.emf.edit.provider.ViewerNotification;
+import org.eclipse.emf.edit.provider.ItemPropertyDescriptor.PropertyValueWrapper;
 
 /**
  * This is the item provider adapter for a {@link gov.redhawk.model.sca.ScaSimpleSequenceProperty} object.
@@ -83,10 +87,15 @@ public class ScaSimpleSequencePropertyItemProvider extends ScaAbstractPropertyIt
 				@Override
 				public String getText(Object object) {
 					List< ? > value = null;
-					if (object != null && object.getClass().isArray()) {
-						value = Arrays.asList((Object[]) object);
-					} else if (object instanceof List< ? >) {
-						value = (List< ? >) object;
+					if (object instanceof PropertyValueWrapper) {
+						PropertyValueWrapper wrapper = (PropertyValueWrapper) object;
+						return getValueText(property, (List< ? >) wrapper.getEditableValue(null));
+					} else {
+						if (object != null && object.getClass().isArray()) {
+							value = Arrays.asList((Object[]) object);
+						} else if (object instanceof List< ? >) {
+							value = (List< ? >) object;
+						}
 					}
 					return getValueText(property, value);
 				}

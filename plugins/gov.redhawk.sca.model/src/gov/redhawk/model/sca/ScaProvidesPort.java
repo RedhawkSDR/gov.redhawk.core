@@ -17,13 +17,14 @@ import mil.jpeojtrs.sca.scd.Provides;
 /**
  * <!-- begin-user-doc -->
  * A representation of the model object '<em><b>Provides Port</b></em>'.
+ * 
  * @noimplement This interface is not intended to be implemented by clients.
- * <!-- end-user-doc -->
+ *              <!-- end-user-doc -->
  *
  *
  * @see gov.redhawk.model.sca.ScaPackage#getScaProvidesPort()
  * @model superTypes="gov.redhawk.model.sca.ScaPort<mil.jpeojtrs.sca.scd.Provides, mil.jpeojtrs.sca.cf.Object>"
- * extendedMetaData="name='ScaProvidesPort' kind='empty'"
+ *        extendedMetaData="name='ScaProvidesPort' kind='empty'"
  * @generated
  */
 public interface ScaProvidesPort extends ScaPort<Provides, org.omg.CORBA.Object> {

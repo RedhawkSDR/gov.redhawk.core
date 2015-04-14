@@ -16,14 +16,10 @@ import gov.redhawk.model.sca.ScaComponent;
 import gov.redhawk.model.sca.ScaDevice;
 import gov.redhawk.model.sca.ScaWaveform;
 import gov.redhawk.model.sca.commands.ScaModelCommand;
-
 import org.junit.Assert;
-
 import junit.textui.TestRunner;
-
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.transaction.util.TransactionUtil;
-
 import CF.ResourceHelper;
 
 /**

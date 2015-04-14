@@ -17,6 +17,7 @@ import gov.redhawk.model.sca.ScaFactory;
 import gov.redhawk.model.sca.ScaModelPlugin;
 import gov.redhawk.model.sca.ScaPackage;
 import gov.redhawk.model.sca.ScaSimpleProperty;
+import gov.redhawk.model.sca.ScaSimpleSequenceProperty;
 import gov.redhawk.model.sca.ScaStructProperty;
 import gov.redhawk.model.sca.ScaStructSequenceProperty;
 import gov.redhawk.sca.util.PluginUtil;
@@ -29,6 +30,7 @@ import java.util.List;
 import java.util.Map;
 
 import mil.jpeojtrs.sca.prf.Simple;
+import mil.jpeojtrs.sca.prf.SimpleSequence;
 import mil.jpeojtrs.sca.prf.Struct;
 
 import org.apache.commons.lang.NotImplementedException;
@@ -37,6 +39,7 @@ import org.eclipse.core.runtime.MultiStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
+import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.InternalEObject;
@@ -58,17 +61,17 @@ import CF.PropertySetPackage.InvalidConfiguration;
 import CF.PropertySetPackage.PartialConfiguration;
 
 /**
- * <!-- begin-user-doc --> An implementation of the model object '
- * <em><b>Struct Property</b></em>'.
+ * <!-- begin-user-doc --> An implementation of the model object ' <em><b>Struct Property</b></em>'.
  * 
  * @since 13.0
- * <!-- end-user-doc -->
- * <p>
- * The following features are implemented:
- * <ul>
- * <li>{@link gov.redhawk.model.sca.impl.ScaStructPropertyImpl#getSimples <em>Simples</em>}</li>
- * </ul>
- * </p>
+ *        <!-- end-user-doc -->
+ *        <p>
+ *        The following features are implemented:
+ *        <ul>
+ *        <li>{@link gov.redhawk.model.sca.impl.ScaStructPropertyImpl#getSimples <em>Simples</em>}</li>
+ *        <li>{@link gov.redhawk.model.sca.impl.ScaStructPropertyImpl#getSequences <em>Sequences</em>}</li>
+ *        </ul>
+ *        </p>
  *
  * @generated
  */
@@ -76,6 +79,7 @@ public class ScaStructPropertyImpl extends ScaAbstractPropertyImpl<Struct> imple
 	/**
 	 * The cached value of the '{@link #getSimples() <em>Simples</em>}' containment reference list.
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @see #getSimples()
 	 * @generated NOT
 	 * @ordered
@@ -83,8 +87,20 @@ public class ScaStructPropertyImpl extends ScaAbstractPropertyImpl<Struct> imple
 	protected final SimplesList simples = new SimplesList(this);
 
 	/**
+	 * The cached value of the '{@link #getSequences() <em>Sequences</em>}' containment reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * 
+	 * @see #getSequences()
+	 * @generated
+	 * @ordered
+	 */
+	protected SequencesList sequences = new SequencesList(this);
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	protected ScaStructPropertyImpl() {
@@ -94,6 +110,7 @@ public class ScaStructPropertyImpl extends ScaAbstractPropertyImpl<Struct> imple
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -206,10 +223,78 @@ public class ScaStructPropertyImpl extends ScaAbstractPropertyImpl<Struct> imple
 		// BEGIN GENERATED CODE
 	}
 
+	protected static class SequencesList extends EObjectContainmentEList<ScaSimpleSequenceProperty> {
+		// END GENERATED CODE
+
+		/**
+		 * 
+		 */
+		private static final long serialVersionUID = 1L;
+
+		public SequencesList(ScaStructPropertyImpl property) {
+			super(ScaSimpleSequenceProperty.class, property, ScaPackage.SCA_STRUCT_PROPERTY__SEQUENCES);
+		}
+
+		public void setDefinition(Struct defValue) {
+			// Update the list
+			if (defValue != null) {
+				Map<String, ScaSimpleSequenceProperty> currentSimpleMap = new HashMap<String, ScaSimpleSequenceProperty>();
+				for (ScaSimpleSequenceProperty simple : this) {
+					currentSimpleMap.put(simple.getId(), simple);
+				}
+
+				Map<String, SimpleSequence> newSimpleMap = new LinkedHashMap<String, SimpleSequence>();
+				for (final SimpleSequence simple : defValue.getSimpleSequence()) {
+					newSimpleMap.put(simple.getId(), simple);
+				}
+
+				Map<String, ScaSimpleSequenceProperty> removeSimpleMap = new HashMap<String, ScaSimpleSequenceProperty>();
+				removeSimpleMap.putAll(currentSimpleMap);
+				removeSimpleMap.keySet().removeAll(newSimpleMap.keySet());
+				remove(removeSimpleMap.values());
+
+				for (final SimpleSequence simple : newSimpleMap.values()) {
+					ScaSimpleSequenceProperty scaSimple = currentSimpleMap.get(simple.getId());
+					if (scaSimple == null) {
+						scaSimple = new ScaSimpleSequencePropertyImpl();
+						add(scaSimple);
+					}
+					((ScaSimpleSequencePropertyImpl) scaSimple).setDefinition(simple);
+				}
+			} else {
+				clear();
+			}
+		}
+
+		/**
+		 * @since 14.0
+		 */
+		public void restoreDefaultValue() {
+			for (ScaSimpleSequenceProperty prop : this) {
+				prop.restoreDefaultValue();
+			}
+		}
+
+		/**
+		 * @since 14.0
+		 */
+		public boolean isDefaultValue() {
+			for (ScaSimpleSequenceProperty prop : this) {
+				if (!prop.isDefaultValue()) {
+					return false;
+				}
+			}
+			return true;
+		}
+
+		// BEGIN GENERATED CODE
+	}
+
 	/**
 	 * <!-- begin-user-doc -->
+	 * 
 	 * @since 14.0
-	 * <!-- end-user-doc -->
+	 *        <!-- end-user-doc -->
 	 * @generated NOT
 	 */
 	@Override
@@ -220,12 +305,27 @@ public class ScaStructPropertyImpl extends ScaAbstractPropertyImpl<Struct> imple
 	}
 
 	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * 
+	 * @generated NOT
+	 */
+	public SequencesList getSequences() {
+		// END GENERATED CODE
+		return sequences;
+		// BEGIN GENERATED CODE
+	}
+
+	/**
 	 * @since 14.0
 	 */
 	@Override
 	public void setDefinition(Struct newDefinition) {
 		if (newDefinition != definition && simples != null) {
 			((SimplesList) simples).setDefinition(newDefinition);
+		}
+		if (newDefinition != definition && sequences != null) {
+			((SequencesList) sequences).setDefinition(newDefinition);
 		}
 		super.setDefinition(newDefinition);
 	}
@@ -263,6 +363,36 @@ public class ScaStructPropertyImpl extends ScaAbstractPropertyImpl<Struct> imple
 			setStatus(ScaPackage.Literals.SCA_STRUCT_PROPERTY__SIMPLES, new Status(Status.ERROR, ScaModelPlugin.ID, "Failed to read property value of:"
 				+ getName(), e));
 		}
+		try {
+			if (newAny != null) {
+				final DataType[] fields = PropertiesHelper.extract(newAny);
+				if (fields != null) {
+					for (final DataType type : fields) {
+						boolean found = false;
+						for (final ScaSimpleSequenceProperty sequence : getSequences()) {
+							if (PluginUtil.equals(sequence.getId(), type.id)) {
+								sequence.fromAny(type.value);
+								found = true;
+								break;
+							}
+						}
+						if (!found) {
+							ScaSimpleSequenceProperty newProp = ScaFactory.eINSTANCE.createScaSimpleSequenceProperty();
+							newProp.setId(type.id);
+							newProp.fromAny(type.value);
+							getSequences().add(newProp);
+						}
+					}
+					return;
+				}
+			} else {
+				restoreDefaultValue();
+			}
+			setStatus(ScaPackage.Literals.SCA_STRUCT_PROPERTY__SEQUENCES, Status.OK_STATUS);
+		} catch (Exception e) { // SUPPRESS CHECKSTYLE Logged Catch all exception
+			setStatus(ScaPackage.Literals.SCA_STRUCT_PROPERTY__SEQUENCES, new Status(Status.ERROR, ScaModelPlugin.ID, "Failed to read property value of:"
+				+ getName(), e));
+		}
 		// BEGIN GENERATED CODE
 	}
 
@@ -270,8 +400,11 @@ public class ScaStructPropertyImpl extends ScaAbstractPropertyImpl<Struct> imple
 	public Any toAny() {
 		// END GENERATED CODE
 		Any retVal = JacorbUtil.init().create_any();
-		List<DataType> fields = new ArrayList<DataType>(getSimples().size());
+		List<DataType> fields = new ArrayList<DataType>(getSimples().size() + getSequences().size());
 		for (ScaSimpleProperty prop : getSimples()) {
+			fields.add(new DataType(prop.getId(), prop.toAny()));
+		}
+		for (ScaSimpleSequenceProperty prop : getSequences()) {
 			fields.add(new DataType(prop.getId(), prop.toAny()));
 		}
 		PropertiesHelper.insert(retVal, fields.toArray(new DataType[fields.size()]));
@@ -281,8 +414,9 @@ public class ScaStructPropertyImpl extends ScaAbstractPropertyImpl<Struct> imple
 
 	/**
 	 * <!-- begin-user-doc -->
+	 * 
 	 * @since 13.0
-	 * <!-- end-user-doc -->
+	 *        <!-- end-user-doc -->
 	 * @generated NOT
 	 */
 	@Override
@@ -299,8 +433,26 @@ public class ScaStructPropertyImpl extends ScaAbstractPropertyImpl<Struct> imple
 
 	/**
 	 * <!-- begin-user-doc -->
-	 * @since 14.0
 	 * <!-- end-user-doc -->
+	 * 
+	 * @generated NOT
+	 */
+	public ScaSimpleSequenceProperty getSequence(String id) {
+		// END GENERATED CODE
+		for (ScaSimpleSequenceProperty prop : getSequences()) {
+			if (PluginUtil.equals(prop.getId(), id)) {
+				return prop;
+			}
+		}
+		return null;
+		// BEGIN GENERATED CODE
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * 
+	 * @since 14.0
+	 *        <!-- end-user-doc -->
 	 * @generated NOT
 	 *
 	 */
@@ -320,16 +472,26 @@ public class ScaStructPropertyImpl extends ScaAbstractPropertyImpl<Struct> imple
 			}
 			simpleValues.add(new DataType(prop.getId(), simpleAny));
 		}
+		List<DataType> sequenceValues = new ArrayList<DataType>(getSequences().size());
+		for (ScaSimpleSequenceProperty prop : getSequences()) {
+			Any simpleAny = configMap.get(prop.getId());
+			if (simpleAny == null) {
+				simpleAny = prop.toAny();
+			}
+			sequenceValues.add(new DataType(prop.getId(), simpleAny));
+		}
 		Any any = JacorbUtil.init().create_any();
 		PropertiesHelper.insert(any, simpleValues.toArray(new DataType[simpleValues.size()]));
+		PropertiesHelper.insert(any, sequenceValues.toArray(new DataType[sequenceValues.size()]));
 		setRemoteValue(any);
 		// BEGIN GENERATED CODE
 	}
 
 	/**
 	 * <!-- begin-user-doc -->
+	 * 
 	 * @since 14.0
-	 * <!-- end-user-doc -->
+	 *        <!-- end-user-doc -->
 	 * @generated NOT
 	 * 
 	 */
@@ -341,6 +503,18 @@ public class ScaStructPropertyImpl extends ScaAbstractPropertyImpl<Struct> imple
 			((PropertySetOperations) container).query(configProperties);
 		}
 		// BEGIN GENERATED CODE
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	public String registerPropertyListener(org.omg.CORBA.Object obj, EList<String> prop_ids, float interval) throws UnknownProperties, InvalidObjectReference {
+		// TODO: implement this method
+		// Ensure that you remove @generated or mark it @generated NOT
+		throw new UnsupportedOperationException();
 	}
 
 	/**
@@ -362,6 +536,7 @@ public class ScaStructPropertyImpl extends ScaAbstractPropertyImpl<Struct> imple
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -369,6 +544,8 @@ public class ScaStructPropertyImpl extends ScaAbstractPropertyImpl<Struct> imple
 		switch (featureID) {
 		case ScaPackage.SCA_STRUCT_PROPERTY__SIMPLES:
 			return ((InternalEList< ? >) getSimples()).basicRemove(otherEnd, msgs);
+		case ScaPackage.SCA_STRUCT_PROPERTY__SEQUENCES:
+			return ((InternalEList< ? >) getSequences()).basicRemove(otherEnd, msgs);
 		}
 		return super.eInverseRemove(otherEnd, featureID, msgs);
 	}
@@ -376,6 +553,7 @@ public class ScaStructPropertyImpl extends ScaAbstractPropertyImpl<Struct> imple
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -383,12 +561,15 @@ public class ScaStructPropertyImpl extends ScaAbstractPropertyImpl<Struct> imple
 		switch (featureID) {
 		case ScaPackage.SCA_STRUCT_PROPERTY__SIMPLES:
 			return getSimples();
+		case ScaPackage.SCA_STRUCT_PROPERTY__SEQUENCES:
+			return getSequences();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated NOT
 	 */
 	@SuppressWarnings("unchecked")
@@ -405,6 +586,15 @@ public class ScaStructPropertyImpl extends ScaAbstractPropertyImpl<Struct> imple
 			}
 			getSimples().addAll((Collection< ? extends ScaSimpleProperty>) newValue);
 			return;
+		case ScaPackage.SCA_STRUCT_PROPERTY__SEQUENCES:
+			setIgnoreRemoteSet(true);
+			try {
+				getSequences().clear();
+			} finally {
+				setIgnoreRemoteSet(false);
+			}
+			getSequences().addAll((Collection< ? extends ScaSimpleSequenceProperty>) newValue);
+			return;
 		default:
 			break;
 		}
@@ -415,6 +605,7 @@ public class ScaStructPropertyImpl extends ScaAbstractPropertyImpl<Struct> imple
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -423,6 +614,9 @@ public class ScaStructPropertyImpl extends ScaAbstractPropertyImpl<Struct> imple
 		case ScaPackage.SCA_STRUCT_PROPERTY__SIMPLES:
 			getSimples().clear();
 			return;
+		case ScaPackage.SCA_STRUCT_PROPERTY__SEQUENCES:
+			getSequences().clear();
+			return;
 		}
 		super.eUnset(featureID);
 	}
@@ -430,6 +624,7 @@ public class ScaStructPropertyImpl extends ScaAbstractPropertyImpl<Struct> imple
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -437,6 +632,8 @@ public class ScaStructPropertyImpl extends ScaAbstractPropertyImpl<Struct> imple
 		switch (featureID) {
 		case ScaPackage.SCA_STRUCT_PROPERTY__SIMPLES:
 			return simples != null && !simples.isEmpty();
+		case ScaPackage.SCA_STRUCT_PROPERTY__SEQUENCES:
+			return sequences != null && !sequences.isEmpty();
 		}
 		return super.eIsSet(featureID);
 	}
@@ -449,6 +646,9 @@ public class ScaStructPropertyImpl extends ScaAbstractPropertyImpl<Struct> imple
 			MultiStatus retVal = new MultiStatus(ScaModelPlugin.ID, Status.OK, "Struct property: " + getName(), null);
 			retVal.addAll(super.getStatus());
 			for (ScaSimpleProperty prop : getSimples()) {
+				retVal.add(prop.getStatus());
+			}
+			for (ScaSimpleSequenceProperty prop : getSequences()) {
 				retVal.add(prop.getStatus());
 			}
 			retVal.add(parentStatus);
@@ -484,12 +684,13 @@ public class ScaStructPropertyImpl extends ScaAbstractPropertyImpl<Struct> imple
 
 	@Override
 	public boolean isDefaultValue() {
-		return getSimples().isDefaultValue();
+		return getSimples().isDefaultValue() && getSequences().isDefaultValue();
 	}
 
 	@Override
 	public void restoreDefaultValue() {
 		getSimples().restoreDefaultValue();
+		getSequences().restoreDefaultValue();
 	}
 
 } // ScaStructPropertyImpl

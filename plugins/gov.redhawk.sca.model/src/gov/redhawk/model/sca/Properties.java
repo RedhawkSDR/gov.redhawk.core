@@ -18,16 +18,17 @@ import org.eclipse.emf.ecore.EObject;
 /**
  * <!-- begin-user-doc -->
  * A representation of the model object '<em><b>Properties</b></em>'.
+ * 
  * @since 8.0
  * @noimplement This interface is not intended to be implemented by clients.
- * <!-- end-user-doc -->
+ *              <!-- end-user-doc -->
  *
- * <p>
- * The following features are supported:
- * <ul>
- * <li>{@link gov.redhawk.model.sca.Properties#getProperty <em>Property</em>}</li>
- * </ul>
- * </p>
+ *              <p>
+ *              The following features are supported:
+ *              <ul>
+ *              <li>{@link gov.redhawk.model.sca.Properties#getProperty <em>Property</em>}</li>
+ *              </ul>
+ *              </p>
  *
  * @see gov.redhawk.model.sca.ScaPackage#getProperties()
  * @model extendedMetaData="name='Properties' kind='elementOnly'"
@@ -41,15 +42,15 @@ public interface Properties extends EObject {
 	 * and the value is of type {@link java.lang.String},
 	 * <!-- begin-user-doc -->
 	 * <p>
-	 * If the meaning of the '<em>Property</em>' map isn't clear,
-	 * there really should be more of a description here...
+	 * If the meaning of the '<em>Property</em>' map isn't clear, there really should be more of a description here...
 	 * </p>
 	 * <!-- end-user-doc -->
+	 * 
 	 * @return the value of the '<em>Property</em>' map.
 	 * @see gov.redhawk.model.sca.ScaPackage#getProperties_Property()
-	 * @model
-	 * mapType="gov.redhawk.model.sca.StringToStringMap<org.eclipse.emf.ecore.EString, org.eclipse.emf.ecore.EString>"
-	 * extendedMetaData="kind='element' name='property'"
+	 * @model 
+	 *        mapType="gov.redhawk.model.sca.StringToStringMap<org.eclipse.emf.ecore.EString, org.eclipse.emf.ecore.EString>"
+	 *        extendedMetaData="kind='element' name='property'"
 	 * @generated
 	 */
 	EMap<String, String> getProperty();

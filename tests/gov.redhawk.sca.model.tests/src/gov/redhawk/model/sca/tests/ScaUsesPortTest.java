@@ -20,11 +20,9 @@ import gov.redhawk.model.sca.ScaWaveform;
 import gov.redhawk.model.sca.commands.ScaModelCommand;
 import gov.redhawk.model.sca.tests.stubs.ScaTestConstaints;
 import junit.textui.TestRunner;
-
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.transaction.util.TransactionUtil;
 import org.junit.Assert;
-
 import CF.PortHelper;
 import CF.PortPackage.InvalidPort;
 import CF.PortPackage.OccupiedPort;
@@ -36,10 +34,12 @@ import CF.PortPackage.OccupiedPort;
  * <p>
  * The following operations are tested:
  * <ul>
- *   <li>{@link gov.redhawk.model.sca.ScaUsesPort#fetchConnections(org.eclipse.core.runtime.IProgressMonitor) <em>Fetch Connections</em>}</li>
- *   <li>{@link gov.redhawk.model.sca.ScaUsesPort#disconnectPort(gov.redhawk.model.sca.ScaConnection) <em>Disconnect Port</em>}</li>
- *   <li>{@link CF.PortOperations#connectPort(org.omg.CORBA.Object, java.lang.String) <em>Connect Port</em>}</li>
- *   <li>{@link CF.PortOperations#disconnectPort(java.lang.String) <em>Disconnect Port</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.ScaUsesPort#fetchConnections(org.eclipse.core.runtime.IProgressMonitor) <em>Fetch
+ * Connections</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.ScaUsesPort#disconnectPort(gov.redhawk.model.sca.ScaConnection) <em>Disconnect
+ * Port</em>}</li>
+ * <li>{@link CF.PortOperations#connectPort(org.omg.CORBA.Object, java.lang.String) <em>Connect Port</em>}</li>
+ * <li>{@link CF.PortOperations#disconnectPort(java.lang.String) <em>Disconnect Port</em>}</li>
  * </ul>
  * </p>
  * @generated
@@ -73,7 +73,7 @@ public class ScaUsesPortTest extends ScaPortTest {
 	 */
 	@Override
 	protected ScaUsesPort getFixture() {
-		return (ScaUsesPort)fixture;
+		return (ScaUsesPort) fixture;
 	}
 
 	private TestEnvirornment env;
@@ -127,10 +127,11 @@ public class ScaUsesPortTest extends ScaPortTest {
 	}
 
 	/**
-	 * Tests the '{@link gov.redhawk.model.sca.ScaUsesPort#fetchConnections(org.eclipse.core.runtime.IProgressMonitor) <em>Fetch Connections</em>}' operation.
+	 * Tests the '{@link gov.redhawk.model.sca.ScaUsesPort#fetchConnections(org.eclipse.core.runtime.IProgressMonitor)
+	 * <em>Fetch Connections</em>}' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @throws InterruptedException 
+	 * @throws InterruptedException
 	 * @see gov.redhawk.model.sca.ScaUsesPort#fetchConnections(org.eclipse.core.runtime.IProgressMonitor)
 	 * @generated NOT
 	 */
@@ -147,10 +148,11 @@ public class ScaUsesPortTest extends ScaPortTest {
 	}
 
 	/**
-	 * Tests the '{@link gov.redhawk.model.sca.ScaUsesPort#disconnectPort(gov.redhawk.model.sca.ScaConnection) <em>Disconnect Port</em>}' operation.
+	 * Tests the '{@link gov.redhawk.model.sca.ScaUsesPort#disconnectPort(gov.redhawk.model.sca.ScaConnection)
+	 * <em>Disconnect Port</em>}' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @throws InvalidPort 
+	 * @throws InvalidPort
 	 * @see gov.redhawk.model.sca.ScaUsesPort#disconnectPort(gov.redhawk.model.sca.ScaConnection)
 	 * @generated NOT
 	 */
@@ -165,43 +167,45 @@ public class ScaUsesPortTest extends ScaPortTest {
 	}
 
 	/**
-	 * Tests the '{@link mil.jpeojtrs.sca.cf.PortOperations#connectPort(org.omg.CORBA.Object, java.lang.String) <em>Connect Port</em>}' operation.
+	 * Tests the '{@link mil.jpeojtrs.sca.cf.PortOperations#connectPort(org.omg.CORBA.Object, java.lang.String)
+	 * <em>Connect Port</em>}' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @throws OccupiedPort 
-	 * @throws InvalidPort 
+	 * @throws OccupiedPort
+	 * @throws InvalidPort
 	 * @see mil.jpeojtrs.sca.cf.PortOperations#connectPort(org.omg.CORBA.Object, java.lang.String)
 	 * @generated NOT
 	 */
 	public void testConnectPort__Object_String() {
 		// END GENERATED CODE
 
-		//		try {
-		//			getFixture().connectPort(null, "");
-		//		} catch (InvalidPort e) {
-		//			// PASS
-		//		} catch (OccupiedPort e) {
-		//			// PASS
-		//		}
+		// try {
+		// getFixture().connectPort(null, "");
+		// } catch (InvalidPort e) {
+		// // PASS
+		// } catch (OccupiedPort e) {
+		// // PASS
+		// }
 
 		// BEGIN GENERATED CODE
 	}
 
 	/**
-	 * Tests the '{@link mil.jpeojtrs.sca.cf.PortOperations#disconnectPort(java.lang.String) <em>Disconnect Port</em>}' operation.
+	 * Tests the '{@link mil.jpeojtrs.sca.cf.PortOperations#disconnectPort(java.lang.String) <em>Disconnect Port</em>}'
+	 * operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @throws InvalidPort 
+	 * @throws InvalidPort
 	 * @see mil.jpeojtrs.sca.cf.PortOperations#disconnectPort(java.lang.String)
 	 * @generated NOT
 	 */
 	public void testDisconnectPort__String() {
 		// END GENERATED CODE
-		//		try {
-		//			getFixture().disconnectPort("");
-		//		} catch (InvalidPort e) {
-		//			// PASS
-		//		}
+		// try {
+		// getFixture().disconnectPort("");
+		// } catch (InvalidPort e) {
+		// // PASS
+		// }
 		// BEGIN GENERATED CODE
 	}
 
@@ -210,4 +214,4 @@ public class ScaUsesPortTest extends ScaPortTest {
 		return PortHelper.id();
 	}
 
-} //ScaUsesPortTest
+} // ScaUsesPortTest

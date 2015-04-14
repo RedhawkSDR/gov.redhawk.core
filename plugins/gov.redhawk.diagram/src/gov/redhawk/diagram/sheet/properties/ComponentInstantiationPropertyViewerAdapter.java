@@ -118,6 +118,11 @@ public class ComponentInstantiationPropertyViewerAdapter {
 					value.getSimpleRef().add(createRef(simple));
 				}
 			}
+			for (final ScaSimpleSequenceProperty sequence : struct.getSequences()) {
+				if (!sequence.isDefaultValue()) {
+					value.getSimpleSequenceRef().add(createRef(sequence));
+				}
+			}
 			retVal.getStructValue().add(value);
 		}
 		return retVal;
@@ -129,6 +134,11 @@ public class ComponentInstantiationPropertyViewerAdapter {
 		for (final ScaSimpleProperty simple : prop.getSimples()) {
 			if (!simple.isDefaultValue()) {
 				retVal.getSimpleRef().add(createRef(simple));
+			}
+		}
+		for (final ScaSimpleSequenceProperty sequence : prop.getSequences()) {
+			if (!sequence.isDefaultValue()) {
+				retVal.getSimpleSequenceRef().add(createRef(sequence));
 			}
 		}
 		return retVal;

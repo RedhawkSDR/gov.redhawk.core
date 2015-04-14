@@ -21,17 +21,21 @@ import junit.framework.TestCase;
  * <p>
  * The following features are tested:
  * <ul>
- *   <li>{@link gov.redhawk.model.sca.IStatusProvider#getStatus() <em>Status</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.IStatusProvider#getStatus() <em>Status</em>}</li>
  * </ul>
  * </p>
  * <p>
  * The following operations are tested:
  * <ul>
- *   <li>{@link gov.redhawk.model.sca.ScaPortContainer#getScaPort(java.lang.String) <em>Get Sca Port</em>}</li>
- *   <li>{@link gov.redhawk.model.sca.ScaPortContainer#fetchPorts(org.eclipse.core.runtime.IProgressMonitor) <em>Fetch Ports</em>}</li>
- *   <li>{@link gov.redhawk.model.sca.IStatusProvider#setStatus(org.eclipse.emf.ecore.EStructuralFeature, org.eclipse.core.runtime.IStatus) <em>Set Status</em>}</li>
- *   <li>{@link gov.redhawk.model.sca.IStatusProvider#clearAllStatus() <em>Clear All Status</em>}</li>
- *   <li>{@link gov.redhawk.model.sca.IStatusProvider#getStatus(org.eclipse.emf.ecore.EStructuralFeature) <em>Get Status</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.ScaPortContainer#getScaPort(java.lang.String) <em>Get Sca Port</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.ScaPortContainer#fetchPorts(org.eclipse.core.runtime.IProgressMonitor) <em>Fetch
+ * Ports</em>}</li>
+ * <li>
+ * {@link gov.redhawk.model.sca.IStatusProvider#setStatus(org.eclipse.emf.ecore.EStructuralFeature, org.eclipse.core.runtime.IStatus)
+ * <em>Set Status</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.IStatusProvider#clearAllStatus() <em>Clear All Status</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.IStatusProvider#getStatus(org.eclipse.emf.ecore.EStructuralFeature) <em>Get
+ * Status</em>}</li>
  * </ul>
  * </p>
  * @generated
@@ -90,7 +94,8 @@ public abstract class ScaPortContainerTest extends TestCase {
 	}
 
 	/**
-	 * Tests the '{@link gov.redhawk.model.sca.ScaPortContainer#getScaPort(java.lang.String) <em>Get Sca Port</em>}' operation.
+	 * Tests the '{@link gov.redhawk.model.sca.ScaPortContainer#getScaPort(java.lang.String) <em>Get Sca Port</em>}'
+	 * operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @see gov.redhawk.model.sca.ScaPortContainer#getScaPort(java.lang.String)
@@ -103,7 +108,8 @@ public abstract class ScaPortContainerTest extends TestCase {
 	}
 
 	/**
-	 * Tests the '{@link gov.redhawk.model.sca.ScaPortContainer#fetchPorts(org.eclipse.core.runtime.IProgressMonitor) <em>Fetch Ports</em>}' operation.
+	 * Tests the '{@link gov.redhawk.model.sca.ScaPortContainer#fetchPorts(org.eclipse.core.runtime.IProgressMonitor)
+	 * <em>Fetch Ports</em>}' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @see gov.redhawk.model.sca.ScaPortContainer#fetchPorts(org.eclipse.core.runtime.IProgressMonitor)
@@ -116,10 +122,13 @@ public abstract class ScaPortContainerTest extends TestCase {
 	}
 
 	/**
-	 * Tests the '{@link gov.redhawk.model.sca.IStatusProvider#setStatus(org.eclipse.emf.ecore.EStructuralFeature, org.eclipse.core.runtime.IStatus) <em>Set Status</em>}' operation.
+	 * Tests the '
+	 * {@link gov.redhawk.model.sca.IStatusProvider#setStatus(org.eclipse.emf.ecore.EStructuralFeature, org.eclipse.core.runtime.IStatus)
+	 * <em>Set Status</em>}' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see gov.redhawk.model.sca.IStatusProvider#setStatus(org.eclipse.emf.ecore.EStructuralFeature, org.eclipse.core.runtime.IStatus)
+	 * @see gov.redhawk.model.sca.IStatusProvider#setStatus(org.eclipse.emf.ecore.EStructuralFeature,
+	 * org.eclipse.core.runtime.IStatus)
 	 * @generated
 	 */
 	public void testSetStatus__EStructuralFeature_IStatus() {
@@ -142,7 +151,8 @@ public abstract class ScaPortContainerTest extends TestCase {
 	}
 
 	/**
-	 * Tests the '{@link gov.redhawk.model.sca.IStatusProvider#getStatus(org.eclipse.emf.ecore.EStructuralFeature) <em>Get Status</em>}' operation.
+	 * Tests the '{@link gov.redhawk.model.sca.IStatusProvider#getStatus(org.eclipse.emf.ecore.EStructuralFeature)
+	 * <em>Get Status</em>}' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @see gov.redhawk.model.sca.IStatusProvider#getStatus(org.eclipse.emf.ecore.EStructuralFeature)
@@ -154,4 +164,4 @@ public abstract class ScaPortContainerTest extends TestCase {
 		fail();
 	}
 
-} //ScaPortContainerTest
+} // ScaPortContainerTest

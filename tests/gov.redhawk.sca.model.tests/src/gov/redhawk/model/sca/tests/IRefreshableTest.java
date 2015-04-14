@@ -62,11 +62,14 @@ public abstract class IRefreshableTest extends TestCase {
 	}
 
 	/**
-	 * Tests the '{@link gov.redhawk.model.sca.IRefreshable#refresh(org.eclipse.core.runtime.IProgressMonitor, gov.redhawk.model.sca.RefreshDepth) <em>Refresh</em>}' operation.
+	 * Tests the '
+	 * {@link gov.redhawk.model.sca.IRefreshable#refresh(org.eclipse.core.runtime.IProgressMonitor, gov.redhawk.model.sca.RefreshDepth)
+	 * <em>Refresh</em>}' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @throws InterruptedException 
-	 * @see gov.redhawk.model.sca.IRefreshable#refresh(org.eclipse.core.runtime.IProgressMonitor, gov.redhawk.model.sca.RefreshDepth)
+	 * @throws InterruptedException
+	 * @see gov.redhawk.model.sca.IRefreshable#refresh(org.eclipse.core.runtime.IProgressMonitor,
+	 * gov.redhawk.model.sca.RefreshDepth)
 	 * @generated NOT
 	 */
 	public void testRefresh__IProgressMonitor_RefreshDepth() throws InterruptedException {
@@ -77,4 +80,4 @@ public abstract class IRefreshableTest extends TestCase {
 		// BEGIN GENERATED CODE
 	}
 
-} //IRefreshableTest
+} // IRefreshableTest

@@ -36,14 +36,15 @@ import CF.FileManager;
 /**
  * <!-- begin-user-doc -->
  * An implementation of the model object '<em><b>Domain Manager File System</b></em>'.
+ * 
  * @since 12.0
- * <!-- end-user-doc -->
- * <p>
- * The following features are implemented:
- * <ul>
- * <li>{@link gov.redhawk.model.sca.impl.ScaDomainManagerFileSystemImpl#getDomMgr <em>Dom Mgr</em>}</li>
- * </ul>
- * </p>
+ *        <!-- end-user-doc -->
+ *        <p>
+ *        The following features are implemented:
+ *        <ul>
+ *        <li>{@link gov.redhawk.model.sca.impl.ScaDomainManagerFileSystemImpl#getDomMgr <em>Dom Mgr</em>}</li>
+ *        </ul>
+ *        </p>
  *
  * @generated
  */
@@ -51,6 +52,7 @@ public class ScaDomainManagerFileSystemImpl extends ScaFileManagerImpl implement
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	protected ScaDomainManagerFileSystemImpl() {
@@ -60,6 +62,7 @@ public class ScaDomainManagerFileSystemImpl extends ScaFileManagerImpl implement
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -70,6 +73,7 @@ public class ScaDomainManagerFileSystemImpl extends ScaFileManagerImpl implement
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -82,6 +86,7 @@ public class ScaDomainManagerFileSystemImpl extends ScaFileManagerImpl implement
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public ScaDomainManager basicGetDomMgr() {
@@ -93,6 +98,7 @@ public class ScaDomainManagerFileSystemImpl extends ScaFileManagerImpl implement
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public NotificationChain basicSetDomMgr(ScaDomainManager newDomMgr, NotificationChain msgs) {
@@ -103,6 +109,7 @@ public class ScaDomainManagerFileSystemImpl extends ScaFileManagerImpl implement
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * 
 	 * @generated NOT
 	 */
 	@Override
@@ -113,8 +120,9 @@ public class ScaDomainManagerFileSystemImpl extends ScaFileManagerImpl implement
 
 	/**
 	 * <!-- begin-user-doc -->
+	 * 
 	 * @since 14.0
-	 * <!-- end-user-doc -->
+	 *        <!-- end-user-doc -->
 	 * @generated
 	 */
 	public void setDomMgrGen(ScaDomainManager newDomMgr) {
@@ -136,6 +144,7 @@ public class ScaDomainManagerFileSystemImpl extends ScaFileManagerImpl implement
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -152,6 +161,7 @@ public class ScaDomainManagerFileSystemImpl extends ScaFileManagerImpl implement
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -166,6 +176,7 @@ public class ScaDomainManagerFileSystemImpl extends ScaFileManagerImpl implement
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -180,6 +191,7 @@ public class ScaDomainManagerFileSystemImpl extends ScaFileManagerImpl implement
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -196,6 +208,7 @@ public class ScaDomainManagerFileSystemImpl extends ScaFileManagerImpl implement
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -211,6 +224,7 @@ public class ScaDomainManagerFileSystemImpl extends ScaFileManagerImpl implement
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -226,6 +240,7 @@ public class ScaDomainManagerFileSystemImpl extends ScaFileManagerImpl implement
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override

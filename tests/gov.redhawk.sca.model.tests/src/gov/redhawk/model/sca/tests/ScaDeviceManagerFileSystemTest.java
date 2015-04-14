@@ -51,7 +51,7 @@ public class ScaDeviceManagerFileSystemTest extends ScaFileSystemTest {
 	 */
 	@Override
 	protected ScaDeviceManagerFileSystem getFixture() {
-		return (ScaDeviceManagerFileSystem)fixture;
+		return (ScaDeviceManagerFileSystem) fixture;
 	}
 
 	private TestEnvirornment env;
@@ -88,4 +88,4 @@ public class ScaDeviceManagerFileSystemTest extends ScaFileSystemTest {
 		return FileSystemHelper.id();
 	}
 
-} //ScaDeviceManagerFileSystemTest
+} // ScaDeviceManagerFileSystemTest

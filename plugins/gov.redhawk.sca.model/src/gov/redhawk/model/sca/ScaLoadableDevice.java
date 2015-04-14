@@ -18,14 +18,15 @@ import CF.LoadableDeviceOperations;
 /**
  * <!-- begin-user-doc -->
  * A representation of the model object '<em><b>Loadable Device</b></em>'.
+ * 
  * @noimplement This interface is not intended to be implemented by clients.
- * <!-- end-user-doc -->
+ *              <!-- end-user-doc -->
  *
  *
  * @see gov.redhawk.model.sca.ScaPackage#getScaLoadableDevice()
  * @model superTypes="gov.redhawk.model.sca.ScaDevice<L> mil.jpeojtrs.sca.cf.LoadableDeviceOperations"
- * LBounds="mil.jpeojtrs.sca.cf.LoadableDevice"
- * extendedMetaData="name='ScaLoadableDevice' kind='elementOnly'"
+ *        LBounds="mil.jpeojtrs.sca.cf.LoadableDevice"
+ *        extendedMetaData="name='ScaLoadableDevice' kind='elementOnly'"
  * @generated
  */
 public interface ScaLoadableDevice< L extends LoadableDevice > extends ScaDevice<L>, LoadableDeviceOperations {

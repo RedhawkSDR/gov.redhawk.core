@@ -23,8 +23,9 @@ import org.eclipse.emf.ecore.xmi.util.XMLProcessor;
 /**
  * This class contains helper methods to serialize and deserialize XML documents
  * <!-- begin-user-doc -->
+ * 
  * @since 8.0
- * <!-- end-user-doc -->
+ *        <!-- end-user-doc -->
  * @generated
  */
 public class ScaXMLProcessor extends XMLProcessor {
@@ -33,6 +34,7 @@ public class ScaXMLProcessor extends XMLProcessor {
 	 * Public constructor to instantiate the helper.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public ScaXMLProcessor() {
@@ -44,6 +46,7 @@ public class ScaXMLProcessor extends XMLProcessor {
 	 * Register for "*" and "xml" file extensions the ScaResourceFactoryImpl factory.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override

@@ -25,7 +25,7 @@ import org.eclipse.emf.transaction.util.TransactionUtil;
  * <p>
  * The following operations are tested:
  * <ul>
- *   <li>{@link gov.redhawk.model.sca.IDisposable#dispose() <em>Dispose</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.IDisposable#dispose() <em>Dispose</em>}</li>
  * </ul>
  * </p>
  * @generated
@@ -87,7 +87,7 @@ public abstract class IDisposableTest extends TestCase {
 		});
 		// BEGIN GENERATED CODE
 	}
-	
+
 	public static void testDipose(IDisposable disposable) {
 		Assert.assertNotNull(TransactionUtil.getEditingDomain(disposable));
 		Assert.assertFalse(disposable.isDisposed());
@@ -95,4 +95,4 @@ public abstract class IDisposableTest extends TestCase {
 		Assert.assertTrue(disposable.isDisposed());
 	}
 
-} //IDisposableTest
+} // IDisposableTest

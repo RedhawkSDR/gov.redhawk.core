@@ -173,12 +173,17 @@ public class StructSequencePropertyDetailsPage extends BasicStructPropertyDetail
 		        PrfPackage.Literals.STRUCT__SIMPLE));
 		final IObservableList list = property.observe(this.sequence);
 
+		final IEMFListProperty seqProperty = EMFProperties.list(FeaturePath.fromList(PrfPackage.Literals.STRUCT_SEQUENCE__STRUCT,
+		        PrfPackage.Literals.STRUCT__SIMPLE_SEQUENCE));
+		final IObservableList seqList = seqProperty.observe(this.sequence);
+	
 		final IObservableValue value = new ComputedValue() {
 			@Override
 			protected Object calculate() {
-				return list.isEmpty();
+				return list.isEmpty() && seqList.isEmpty();
 			}
 		};
+
 		//Only enable the button if the list isn't empty
 		bindings.add(context.bindValue(target, value, null, new UpdateValueStrategy() {
 			@Override

@@ -19,7 +19,6 @@ import gov.redhawk.model.sca.ScaWaveform;
 import gov.redhawk.model.sca.commands.ScaModelCommand;
 import gov.redhawk.model.sca.tests.stubs.ScaTestConstaints;
 import junit.textui.TestRunner;
-
 import org.junit.Assert;
 
 /**
@@ -57,7 +56,7 @@ public class ScaProvidesPortTest extends ScaPortTest {
 	 */
 	@Override
 	protected ScaProvidesPort getFixture() {
-		return (ScaProvidesPort)fixture;
+		return (ScaProvidesPort) fixture;
 	}
 
 	private TestEnvirornment env;
@@ -114,4 +113,4 @@ public class ScaProvidesPortTest extends ScaPortTest {
 		return null;
 	}
 
-} //ScaProvidesPortTest
+} // ScaProvidesPortTest

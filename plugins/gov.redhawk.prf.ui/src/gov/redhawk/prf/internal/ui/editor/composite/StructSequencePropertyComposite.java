@@ -14,12 +14,15 @@ package gov.redhawk.prf.internal.ui.editor.composite;
 import gov.redhawk.common.ui.editor.FormLayoutFactory;
 import gov.redhawk.prf.ui.provider.PropertiesEditorPrfItemProviderAdapterFactory;
 import gov.redhawk.prf.ui.provider.PropertiesEditorStructSequenceItemProvider;
+import gov.redhawk.sca.ui.properties.AbstractPropertyEditingSupport;
 import gov.redhawk.ui.util.SWTUtil;
 
 import java.util.ArrayList;
 import java.util.Collection;
 
 import mil.jpeojtrs.sca.prf.PrfPackage;
+import mil.jpeojtrs.sca.prf.SimpleRef;
+import mil.jpeojtrs.sca.prf.SimpleSequenceRef;
 
 import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.notify.AdapterFactory;
@@ -48,7 +51,6 @@ import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.forms.IFormColors;
 import org.eclipse.ui.forms.widgets.FormToolkit;
 import org.eclipse.ui.views.properties.PropertyColumnLabelProvider;
-import org.eclipse.ui.views.properties.PropertyEditingSupport;
 
 public class StructSequencePropertyComposite extends BasicStructPropertyComposite {
 
@@ -117,7 +119,20 @@ public class StructSequencePropertyComposite extends BasicStructPropertyComposit
 		TreeViewerColumn viewerColumn = new TreeViewerColumn(this.structValueViewer, column);
 		viewerColumn = new TreeViewerColumn(this.structValueViewer, column);
 		viewerColumn.setLabelProvider(new PropertyColumnLabelProvider(contentProvider, "value"));
-		viewerColumn.setEditingSupport(new PropertyEditingSupport(this.structValueViewer, contentProvider, "value"));
+//		viewerColumn.setEditingSupport(new PropertyEditingSupport(this.structValueViewer, contentProvider, "value"));
+		viewerColumn.setEditingSupport(new AbstractPropertyEditingSupport(this.structValueViewer, contentProvider) {
+
+			@Override
+			protected Object getPropertyID(Object object) {
+				if (object instanceof SimpleRef) {
+					return PrfPackage.Literals.SIMPLE_REF__VALUE.getName();
+				} else if (object instanceof SimpleSequenceRef) {
+					return PrfPackage.Literals.SIMPLE_SEQUENCE_REF__VALUES.getName();
+				}
+				return null;
+			}
+			
+		});
 		this.addButton = toolkit.createButton(treeComposite, "Add...", SWT.PUSH);
 		this.addButton.setLayoutData(GridDataFactory.fillDefaults().align(SWT.FILL, SWT.TOP).create());
 		this.removeButton = toolkit.createButton(treeComposite, "Remove", SWT.PUSH);

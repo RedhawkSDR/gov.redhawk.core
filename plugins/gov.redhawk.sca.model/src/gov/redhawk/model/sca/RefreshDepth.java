@@ -22,8 +22,9 @@ import org.eclipse.emf.common.util.Enumerator;
  * <!-- begin-user-doc -->
  * A representation of the literals of the enumeration '<em><b>Refresh Depth</b></em>',
  * and utility methods for working with them.
+ * 
  * @since 9.0
- * <!-- end-user-doc -->
+ *        <!-- end-user-doc -->
  * @see gov.redhawk.model.sca.ScaPackage#getRefreshDepth()
  * @model extendedMetaData="name='RefreshDepth'"
  * @generated
@@ -33,6 +34,7 @@ public enum RefreshDepth implements Enumerator {
 	 * The '<em><b>NONE</b></em>' literal object.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * 
 	 * @see #NONE_VALUE
 	 * @generated
 	 * @ordered
@@ -42,6 +44,7 @@ public enum RefreshDepth implements Enumerator {
 	 * The '<em><b>SELF</b></em>' literal object.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * 
 	 * @see #SELF_VALUE
 	 * @generated
 	 * @ordered
@@ -51,6 +54,7 @@ public enum RefreshDepth implements Enumerator {
 	 * The '<em><b>CHILDREN</b></em>' literal object.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * 
 	 * @see #CHILDREN_VALUE
 	 * @generated
 	 * @ordered
@@ -60,6 +64,7 @@ public enum RefreshDepth implements Enumerator {
 	 * The '<em><b>FULL</b></em>' literal object.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * 
 	 * @see #FULL_VALUE
 	 * @generated
 	 * @ordered
@@ -70,10 +75,11 @@ public enum RefreshDepth implements Enumerator {
 	 * The '<em><b>NONE</b></em>' literal value.
 	 * <!-- begin-user-doc -->
 	 * <p>
-	 * If the meaning of '<em><b>NONE</b></em>' literal object isn't clear,
-	 * there really should be more of a description here...
+	 * If the meaning of '<em><b>NONE</b></em>' literal object isn't clear, there really should be more of a description
+	 * here...
 	 * </p>
 	 * <!-- end-user-doc -->
+	 * 
 	 * @see #NONE
 	 * @model
 	 * @generated
@@ -84,10 +90,11 @@ public enum RefreshDepth implements Enumerator {
 	 * The '<em><b>SELF</b></em>' literal value.
 	 * <!-- begin-user-doc -->
 	 * <p>
-	 * If the meaning of '<em><b>SELF</b></em>' literal object isn't clear,
-	 * there really should be more of a description here...
+	 * If the meaning of '<em><b>SELF</b></em>' literal object isn't clear, there really should be more of a description
+	 * here...
 	 * </p>
 	 * <!-- end-user-doc -->
+	 * 
 	 * @see #SELF
 	 * @model
 	 * @generated
@@ -98,10 +105,11 @@ public enum RefreshDepth implements Enumerator {
 	 * The '<em><b>CHILDREN</b></em>' literal value.
 	 * <!-- begin-user-doc -->
 	 * <p>
-	 * If the meaning of '<em><b>CHILDREN</b></em>' literal object isn't clear,
-	 * there really should be more of a description here...
+	 * If the meaning of '<em><b>CHILDREN</b></em>' literal object isn't clear, there really should be more of a
+	 * description here...
 	 * </p>
 	 * <!-- end-user-doc -->
+	 * 
 	 * @see #CHILDREN
 	 * @model
 	 * @generated
@@ -112,10 +120,11 @@ public enum RefreshDepth implements Enumerator {
 	 * The '<em><b>FULL</b></em>' literal value.
 	 * <!-- begin-user-doc -->
 	 * <p>
-	 * If the meaning of '<em><b>FULL</b></em>' literal object isn't clear,
-	 * there really should be more of a description here...
+	 * If the meaning of '<em><b>FULL</b></em>' literal object isn't clear, there really should be more of a description
+	 * here...
 	 * </p>
 	 * <!-- end-user-doc -->
+	 * 
 	 * @see #FULL
 	 * @model
 	 * @generated
@@ -126,6 +135,7 @@ public enum RefreshDepth implements Enumerator {
 	 * An array of all the '<em><b>Refresh Depth</b></em>' enumerators.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	private static final RefreshDepth[] VALUES_ARRAY = new RefreshDepth[] { NONE, SELF, CHILDREN, FULL, };
@@ -133,6 +143,7 @@ public enum RefreshDepth implements Enumerator {
 	 * A public read-only list of all the '<em><b>Refresh Depth</b></em>' enumerators.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public static final List<RefreshDepth> VALUES = Collections.unmodifiableList(Arrays.asList(VALUES_ARRAY));
@@ -141,6 +152,7 @@ public enum RefreshDepth implements Enumerator {
 	 * Returns the '<em><b>Refresh Depth</b></em>' literal with the specified literal value.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public static RefreshDepth get(String literal) {
@@ -157,6 +169,7 @@ public enum RefreshDepth implements Enumerator {
 	 * Returns the '<em><b>Refresh Depth</b></em>' literal with the specified name.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public static RefreshDepth getByName(String name) {
@@ -173,6 +186,7 @@ public enum RefreshDepth implements Enumerator {
 	 * Returns the '<em><b>Refresh Depth</b></em>' literal with the specified integer value.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public static RefreshDepth get(int value) {
@@ -192,18 +206,21 @@ public enum RefreshDepth implements Enumerator {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	private final int value;
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	private final String name;
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	private final String literal;
@@ -212,6 +229,7 @@ public enum RefreshDepth implements Enumerator {
 	 * Only this class can construct instances.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	private RefreshDepth(int value, String name, String literal) {
@@ -223,6 +241,7 @@ public enum RefreshDepth implements Enumerator {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -233,6 +252,7 @@ public enum RefreshDepth implements Enumerator {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -243,6 +263,7 @@ public enum RefreshDepth implements Enumerator {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -254,6 +275,7 @@ public enum RefreshDepth implements Enumerator {
 	 * Returns the literal value of the enumerator, which is its string representation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override

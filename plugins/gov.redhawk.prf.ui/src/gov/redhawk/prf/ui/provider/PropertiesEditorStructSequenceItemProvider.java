@@ -59,6 +59,7 @@ public class PropertiesEditorStructSequenceItemProvider extends StructSequenceIt
 		} else if (feature == PrfPackage.Literals.STRUCT_SEQUENCE__STRUCT_VALUE) { //Always add a simpleRef when adding a struct value; it must have one
 			final StructValue value = (StructValue) collection.toArray()[0];
 			value.getSimpleRef().add(PrfFactory.eINSTANCE.createSimpleRef());
+			value.getSimpleSequenceRef().add(PrfFactory.eINSTANCE.createSimpleSequenceRef());
 			return super.createAddCommand(domain, owner, feature, Collections.singleton(value), index);
 		}
 		return super.createAddCommand(domain, owner, feature, collection, index);

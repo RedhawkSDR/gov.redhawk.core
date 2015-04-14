@@ -1,14 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!--
-    This file is protected by Copyright.
-    Please refer to the COPYRIGHT file distributed with this source distribution.
-
-    This file is part of REDHAWK IDE.
-
-    All rights reserved.  This program and the accompanying materials are made available under
-    the terms of the Eclipse Public License v1.0 which accompanies this distribution, and is available at
-    http://www.eclipse.org/legal/epl-v10.html.
--->
 <ecore:EPackage xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" name="sca" nsURI="http://www.redhawk.gov/model/sca/2.0.0" nsPrefix="sca">
   <eClassifiers xsi:type="ecore:EDataType" name="AdminType" instanceClassName="CF.DevicePackage.AdminType">
@@ -710,7 +700,7 @@
     <eOperations name="installScaWaveformFactory" eType="#//ScaWaveformFactory" eExceptions="ecore:EDataType platform:/plugin/mil.jpeojtrs.sca.cf/model/cf.ecore#//InvalidProfile ecore:EDataType platform:/plugin/mil.jpeojtrs.sca.cf/model/cf.ecore#//InvalidFileName ecore:EDataType platform:/plugin/mil.jpeojtrs.sca.cf/model/cf.ecore#//ApplicationInstallationError ecore:EDataType platform:/plugin/mil.jpeojtrs.sca.cf/model/cf.ecore#//ApplicationAlreadyInstalled">
       <eParameters name="profilePath" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     </eOperations>
-    <eOperations name="uninstallScaWaveformFactory" eExceptions="ecore:EDataType platform:/plugin/mil.jpeojtrs.sca.cf/model/cf.ecore#//ApplicationUninstallationError ecore:EDataType platform:/plugin/mil.jpeojtrs.sca.cf/model/cf.ecore#//InvalidIdentifier">
+    <eOperations name="uninstallScaWaveformFactory" eExceptions="ecore:EDataType platform:/plugin/mil.jpeojtrs.sca.cf/model/cf.ecore#//ApplicationUninstallationError ecore:EDataType platform:/plugin/mil.jpeojtrs.sca.cf/model/cf.ecore#//InvalidDomMgrIdentifier">
       <eParameters name="factory" eType="#//ScaWaveformFactory"/>
     </eOperations>
     <eOperations name="fetchProfile" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString">
@@ -1039,11 +1029,21 @@
     <eOperations name="getSimple" eType="#//ScaSimpleProperty">
       <eParameters name="id" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     </eOperations>
+    <eOperations name="getSequence" eType="#//ScaSimpleSequenceProperty">
+      <eParameters name="id" eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EString"/>
+    </eOperations>
     <eStructuralFeatures xsi:type="ecore:EReference" name="simples" upperBound="-1"
         eType="#//ScaSimpleProperty" transient="true" containment="true">
       <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
         <details key="kind" value="attribute"/>
         <details key="name" value="simples"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="sequences" upperBound="-1"
+        eType="#//ScaSimpleSequenceProperty" transient="true" containment="true">
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="attribute"/>
+        <details key="name" value="sequences"/>
       </eAnnotations>
     </eStructuralFeatures>
     <eGenericSuperTypes eClassifier="#//ScaAbstractProperty">
@@ -1242,7 +1242,7 @@
         eType="#//ScaStructProperty" transient="true" containment="true">
       <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
         <details key="kind" value="attribute"/>
-        <details key="name" value="simples"/>
+        <details key="name" value="structs"/>
       </eAnnotations>
     </eStructuralFeatures>
     <eGenericSuperTypes eClassifier="#//ScaAbstractProperty">

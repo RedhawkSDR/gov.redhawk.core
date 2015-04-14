@@ -17,20 +17,21 @@ import org.eclipse.emf.ecore.EObject;
 /**
  * <!-- begin-user-doc -->
  * A representation of the model object '<em><b>IDisposable</b></em>'.
+ * 
  * @since 9.0
  * @noimplement This interface is not intended to be implemented by clients.
- * <!-- end-user-doc -->
+ *              <!-- end-user-doc -->
  *
- * <p>
- * The following features are supported:
- * <ul>
- * <li>{@link gov.redhawk.model.sca.IDisposable#isDisposed <em>Disposed</em>}</li>
- * </ul>
- * </p>
+ *              <p>
+ *              The following features are supported:
+ *              <ul>
+ *              <li>{@link gov.redhawk.model.sca.IDisposable#isDisposed <em>Disposed</em>}</li>
+ *              </ul>
+ *              </p>
  *
  * @see gov.redhawk.model.sca.ScaPackage#getIDisposable()
  * @model interface="true" abstract="true"
- * extendedMetaData="name='IDisposable' kind='empty'"
+ *        extendedMetaData="name='IDisposable' kind='empty'"
  * @generated
  */
 public interface IDisposable extends EObject {
@@ -39,14 +40,15 @@ public interface IDisposable extends EObject {
 	 * Returns the value of the '<em><b>Disposed</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <p>
-	 * If the meaning of the '<em>Disposed</em>' attribute isn't clear,
-	 * there really should be more of a description here...
+	 * If the meaning of the '<em>Disposed</em>' attribute isn't clear, there really should be more of a description
+	 * here...
 	 * </p>
 	 * <!-- end-user-doc -->
+	 * 
 	 * @return the value of the '<em>Disposed</em>' attribute.
 	 * @see gov.redhawk.model.sca.ScaPackage#getIDisposable_Disposed()
 	 * @model transient="true" changeable="false"
-	 * extendedMetaData="kind='attribute' name='disposed'"
+	 *        extendedMetaData="kind='attribute' name='disposed'"
 	 * @generated
 	 */
 	boolean isDisposed();
@@ -54,6 +56,7 @@ public interface IDisposable extends EObject {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * 
 	 * @model
 	 * @generated
 	 */

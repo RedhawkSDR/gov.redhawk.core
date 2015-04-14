@@ -22,24 +22,25 @@ import CF.ResourceOperations;
 /**
  * <!-- begin-user-doc -->
  * A representation of the model object '<em><b>Abstract Component</b></em>'.
+ * 
  * @since 2.0
  * @noimplement This interface is not intended to be implemented by clients.
- * <!-- end-user-doc -->
+ *              <!-- end-user-doc -->
  *
- * <p>
- * The following features are supported:
- * <ul>
- * <li>{@link gov.redhawk.model.sca.ScaAbstractComponent#getIdentifier <em>Identifier</em>}</li>
- * <li>{@link gov.redhawk.model.sca.ScaAbstractComponent#getStarted <em>Started</em>}</li>
- * <li>{@link gov.redhawk.model.sca.ScaAbstractComponent#getProfile <em>Profile</em>}</li>
- * </ul>
- * </p>
+ *              <p>
+ *              The following features are supported:
+ *              <ul>
+ *              <li>{@link gov.redhawk.model.sca.ScaAbstractComponent#getIdentifier <em>Identifier</em>}</li>
+ *              <li>{@link gov.redhawk.model.sca.ScaAbstractComponent#getStarted <em>Started</em>}</li>
+ *              <li>{@link gov.redhawk.model.sca.ScaAbstractComponent#getProfile <em>Profile</em>}</li>
+ *              </ul>
+ *              </p>
  *
  * @see gov.redhawk.model.sca.ScaPackage#getScaAbstractComponent()
  * @model abstract="true" superTypes=
- * "gov.redhawk.model.sca.ScaPropertyContainer<R, mil.jpeojtrs.sca.spd.SoftPkg> mil.jpeojtrs.sca.cf.ResourceOperations gov.redhawk.model.sca.ScaPortContainer"
- * RBounds="mil.jpeojtrs.sca.cf.Resource"
- * extendedMetaData="name='ScaAbstractComponent' kind='elementOnly'"
+ *        "gov.redhawk.model.sca.ScaPropertyContainer<R, mil.jpeojtrs.sca.spd.SoftPkg> mil.jpeojtrs.sca.cf.ResourceOperations gov.redhawk.model.sca.ScaPortContainer"
+ *        RBounds="mil.jpeojtrs.sca.cf.Resource"
+ *        extendedMetaData="name='ScaAbstractComponent' kind='elementOnly'"
  * @generated
  */
 public interface ScaAbstractComponent< R extends Resource > extends ScaPropertyContainer<R, SoftPkg>, ResourceOperations, ScaPortContainer {
@@ -48,17 +49,18 @@ public interface ScaAbstractComponent< R extends Resource > extends ScaPropertyC
 	 * Returns the value of the '<em><b>Identifier</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <p>
-	 * If the meaning of the '<em>Identifier</em>' attribute isn't clear,
-	 * there really should be more of a description here...
+	 * If the meaning of the '<em>Identifier</em>' attribute isn't clear, there really should be more of a description
+	 * here...
 	 * </p>
 	 * <!-- end-user-doc -->
+	 * 
 	 * @return the value of the '<em>Identifier</em>' attribute.
 	 * @see #isSetIdentifier()
 	 * @see #unsetIdentifier()
 	 * @see #setIdentifier(String)
 	 * @see gov.redhawk.model.sca.ScaPackage#getScaAbstractComponent_Identifier()
 	 * @model unsettable="true" id="true" derived="true"
-	 * extendedMetaData="kind='attribute' name='identifier'"
+	 *        extendedMetaData="kind='attribute' name='identifier'"
 	 * @generated
 	 */
 	String getIdentifier();
@@ -68,6 +70,7 @@ public interface ScaAbstractComponent< R extends Resource > extends ScaPropertyC
 	 * attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * 
 	 * @param value the new value of the '<em>Identifier</em>' attribute.
 	 * @see #isSetIdentifier()
 	 * @see #unsetIdentifier()
@@ -81,6 +84,7 @@ public interface ScaAbstractComponent< R extends Resource > extends ScaPropertyC
 	 * attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * 
 	 * @see #isSetIdentifier()
 	 * @see #getIdentifier()
 	 * @see #setIdentifier(String)
@@ -93,6 +97,7 @@ public interface ScaAbstractComponent< R extends Resource > extends ScaPropertyC
 	 * <em>Identifier</em>}' attribute is set.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * 
 	 * @return whether the value of the '<em>Identifier</em>' attribute is set.
 	 * @see #unsetIdentifier()
 	 * @see #getIdentifier()
@@ -105,10 +110,11 @@ public interface ScaAbstractComponent< R extends Resource > extends ScaPropertyC
 	 * Returns the value of the '<em><b>Started</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <p>
-	 * If the meaning of the '<em>Started</em>' attribute isn't clear,
-	 * there really should be more of a description here...
+	 * If the meaning of the '<em>Started</em>' attribute isn't clear, there really should be more of a description
+	 * here...
 	 * </p>
 	 * <!-- end-user-doc -->
+	 * 
 	 * @return the value of the '<em>Started</em>' attribute.
 	 * @see #isSetStarted()
 	 * @see #unsetStarted()
@@ -122,8 +128,9 @@ public interface ScaAbstractComponent< R extends Resource > extends ScaPropertyC
 	/**
 	 * Sets the value of the '{@link gov.redhawk.model.sca.ScaAbstractComponent#getStarted <em>Started</em>}' attribute.
 	 * <!-- begin-user-doc -->
+	 * 
 	 * @since 16.0
-	 * <!-- end-user-doc -->
+	 *        <!-- end-user-doc -->
 	 * @param value the new value of the '<em>Started</em>' attribute.
 	 * @see #isSetStarted()
 	 * @see #unsetStarted()
@@ -136,8 +143,9 @@ public interface ScaAbstractComponent< R extends Resource > extends ScaPropertyC
 	 * Unsets the value of the '{@link gov.redhawk.model.sca.ScaAbstractComponent#getStarted <em>Started</em>}'
 	 * attribute.
 	 * <!-- begin-user-doc -->
+	 * 
 	 * @since 16.0
-	 * <!-- end-user-doc -->
+	 *        <!-- end-user-doc -->
 	 * @see #isSetStarted()
 	 * @see #getStarted()
 	 * @see #setStarted(Boolean)
@@ -150,6 +158,7 @@ public interface ScaAbstractComponent< R extends Resource > extends ScaPropertyC
 	 * attribute is set.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * 
 	 * @return whether the value of the '<em>Started</em>' attribute is set.
 	 * @see #unsetStarted()
 	 * @see #getStarted()
@@ -162,9 +171,10 @@ public interface ScaAbstractComponent< R extends Resource > extends ScaPropertyC
 	 * Returns the value of the '<em><b>Profile</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <p>
+	 * 
 	 * @since 19.0
-	 * </p>
-	 * <!-- end-user-doc -->
+	 *        </p>
+	 *        <!-- end-user-doc -->
 	 * @return the value of the '<em>Profile</em>' attribute.
 	 * @see #isSetProfile()
 	 * @see #unsetProfile()
@@ -178,8 +188,9 @@ public interface ScaAbstractComponent< R extends Resource > extends ScaPropertyC
 	/**
 	 * Sets the value of the '{@link gov.redhawk.model.sca.ScaAbstractComponent#getProfile <em>Profile</em>}' attribute.
 	 * <!-- begin-user-doc -->
+	 * 
 	 * @since 19.0
-	 * <!-- end-user-doc -->
+	 *        <!-- end-user-doc -->
 	 * @param value the new value of the '<em>Profile</em>' attribute.
 	 * @see #isSetProfile()
 	 * @see #unsetProfile()
@@ -192,8 +203,9 @@ public interface ScaAbstractComponent< R extends Resource > extends ScaPropertyC
 	 * Unsets the value of the '{@link gov.redhawk.model.sca.ScaAbstractComponent#getProfile <em>Profile</em>}'
 	 * attribute.
 	 * <!-- begin-user-doc -->
+	 * 
 	 * @since 19.0
-	 * <!-- end-user-doc -->
+	 *        <!-- end-user-doc -->
 	 * @see #isSetProfile()
 	 * @see #getProfile()
 	 * @see #setProfile(String)
@@ -205,8 +217,9 @@ public interface ScaAbstractComponent< R extends Resource > extends ScaPropertyC
 	 * Returns whether the value of the '{@link gov.redhawk.model.sca.ScaAbstractComponent#getProfile <em>Profile</em>}'
 	 * attribute is set.
 	 * <!-- begin-user-doc -->
+	 * 
 	 * @since 19.0
-	 * <!-- end-user-doc -->
+	 *        <!-- end-user-doc -->
 	 * @return whether the value of the '<em>Profile</em>' attribute is set.
 	 * @see #unsetProfile()
 	 * @see #getProfile()
@@ -218,6 +231,7 @@ public interface ScaAbstractComponent< R extends Resource > extends ScaPropertyC
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * 
 	 * @model monitorDataType="gov.redhawk.model.sca.IProgressMonitor"
 	 * @generated
 	 */
@@ -226,6 +240,7 @@ public interface ScaAbstractComponent< R extends Resource > extends ScaPropertyC
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * 
 	 * @model monitorDataType="gov.redhawk.model.sca.IProgressMonitor"
 	 * @generated
 	 */
@@ -233,8 +248,9 @@ public interface ScaAbstractComponent< R extends Resource > extends ScaPropertyC
 
 	/**
 	 * <!-- begin-user-doc -->
+	 * 
 	 * @since 19.0
-	 * <!-- end-user-doc -->
+	 *        <!-- end-user-doc -->
 	 * @model monitorDataType="gov.redhawk.model.sca.IProgressMonitor"
 	 * @generated
 	 */

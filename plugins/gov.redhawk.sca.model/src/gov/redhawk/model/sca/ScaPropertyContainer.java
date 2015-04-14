@@ -20,22 +20,25 @@ import CF.PropertySetOperations;
 /**
  * <!-- begin-user-doc -->
  * A representation of the model object '<em><b>Property Container</b></em>'.
+ * 
  * @since 11.0
  * @noimplement This interface is not intended to be implemented by clients.
- * <!-- end-user-doc -->
+ *              <!-- end-user-doc -->
  *
- * <p>
- * The following features are supported:
- * <ul>
- * <li>{@link gov.redhawk.model.sca.ScaPropertyContainer#getProperties <em>Properties</em>}</li>
- * </ul>
- * </p>
+ *              <p>
+ *              The following features are supported:
+ *              <ul>
+ *              <li>{@link gov.redhawk.model.sca.ScaPropertyContainer#getProperties <em>Properties</em>}</li>
+ *              </ul>
+ *              </p>
  *
  * @see gov.redhawk.model.sca.ScaPackage#getScaPropertyContainer()
- * @model abstract="true" superTypes=
- * "gov.redhawk.model.sca.CorbaObjWrapper<P> gov.redhawk.model.sca.ProfileObjectWrapper<E> mil.jpeojtrs.sca.cf.PropertySetOperations"
- * PBounds="gov.redhawk.model.sca.Object" EBounds="org.eclipse.emf.ecore.EJavaObject"
- * extendedMetaData="name='ScaPropertyContainer' kind='elementOnly'"
+ * @model abstract="true" superTypes="gov.redhawk.model.sca.CorbaObjWrapper
+ *        <P>
+ *        gov.redhawk.model.sca.ProfileObjectWrapper<E>
+ *        mil.jpeojtrs.sca.cf.PropertySetOperations" PBounds="gov.redhawk.model
+ *        .sca.Object" EBounds="org.eclipse.emf.ecore.EJavaObject"
+ *        extendedMetaData="name='ScaPropertyContainer' kind='elementOnly'"
  * @generated
  */
 public interface ScaPropertyContainer< P extends org.omg.CORBA.Object, E extends Object > extends CorbaObjWrapper<P>, ProfileObjectWrapper<E>,
@@ -45,16 +48,17 @@ public interface ScaPropertyContainer< P extends org.omg.CORBA.Object, E extends
 	 * The list contents are of type {@link gov.redhawk.model.sca.ScaAbstractProperty}&lt;?>.
 	 * <!-- begin-user-doc -->
 	 * <p>
-	 * If the meaning of the '<em>Properties</em>' containment reference list isn't clear,
-	 * there really should be more of a description here...
+	 * If the meaning of the '<em>Properties</em>' containment reference list isn't clear, there really should be more
+	 * of a description here...
 	 * </p>
 	 * <!-- end-user-doc -->
+	 * 
 	 * @return the value of the '<em>Properties</em>' containment reference list.
 	 * @see #isSetProperties()
 	 * @see #unsetProperties()
 	 * @see gov.redhawk.model.sca.ScaPackage#getScaPropertyContainer_Properties()
 	 * @model containment="true" unsettable="true" transient="true"
-	 * extendedMetaData="kind='element' name='properties'"
+	 *        extendedMetaData="kind='element' name='properties'"
 	 * @generated
 	 */
 	EList<ScaAbstractProperty< ? >> getProperties();
@@ -64,6 +68,7 @@ public interface ScaPropertyContainer< P extends org.omg.CORBA.Object, E extends
 	 * containment reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * 
 	 * @see #isSetProperties()
 	 * @see #getProperties()
 	 * @generated
@@ -75,6 +80,7 @@ public interface ScaPropertyContainer< P extends org.omg.CORBA.Object, E extends
 	 * <em>Properties</em>}' containment reference list is set.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * 
 	 * @return whether the value of the '<em>Properties</em>' containment reference list is set.
 	 * @see #unsetProperties()
 	 * @see #getProperties()
@@ -85,6 +91,7 @@ public interface ScaPropertyContainer< P extends org.omg.CORBA.Object, E extends
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * 
 	 * @model monitorDataType="gov.redhawk.model.sca.IProgressMonitor"
 	 * @generated
 	 */
@@ -93,6 +100,7 @@ public interface ScaPropertyContainer< P extends org.omg.CORBA.Object, E extends
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * 
 	 * @model
 	 * @generated
 	 */

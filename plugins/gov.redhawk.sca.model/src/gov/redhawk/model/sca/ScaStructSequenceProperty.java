@@ -21,21 +21,22 @@ import CF.PropertySetOperations;
 /**
  * <!-- begin-user-doc -->
  * A representation of the model object '<em><b>Struct Sequence Property</b></em>'.
+ * 
  * @since 11.0
  * @noimplement This interface is not intended to be implemented by clients.
- * <!-- end-user-doc -->
+ *              <!-- end-user-doc -->
  *
- * <p>
- * The following features are supported:
- * <ul>
- * <li>{@link gov.redhawk.model.sca.ScaStructSequenceProperty#getStructs <em>Structs</em>}</li>
- * </ul>
- * </p>
+ *              <p>
+ *              The following features are supported:
+ *              <ul>
+ *              <li>{@link gov.redhawk.model.sca.ScaStructSequenceProperty#getStructs <em>Structs</em>}</li>
+ *              </ul>
+ *              </p>
  *
  * @see gov.redhawk.model.sca.ScaPackage#getScaStructSequenceProperty()
  * @model superTypes=
- * "gov.redhawk.model.sca.ScaAbstractProperty<mil.jpeojtrs.sca.prf.StructSequence> mil.jpeojtrs.sca.cf.PropertySetOperations"
- * extendedMetaData="name='ScaStructSequenceProperty' kind='empty'"
+ *        "gov.redhawk.model.sca.ScaAbstractProperty<mil.jpeojtrs.sca.prf.StructSequence> mil.jpeojtrs.sca.cf.PropertySetOperations"
+ *        extendedMetaData="name='ScaStructSequenceProperty' kind='empty'"
  * @generated
  */
 public interface ScaStructSequenceProperty extends ScaAbstractProperty<StructSequence>, PropertySetOperations {
@@ -45,14 +46,15 @@ public interface ScaStructSequenceProperty extends ScaAbstractProperty<StructSeq
 	 * The list contents are of type {@link gov.redhawk.model.sca.ScaStructProperty}.
 	 * <!-- begin-user-doc -->
 	 * <p>
-	 * If the meaning of the '<em>Structs</em>' containment reference list isn't clear,
-	 * there really should be more of a description here...
+	 * If the meaning of the '<em>Structs</em>' containment reference list isn't clear, there really should be more of a
+	 * description here...
 	 * </p>
 	 * <!-- end-user-doc -->
+	 * 
 	 * @return the value of the '<em>Structs</em>' containment reference list.
 	 * @see gov.redhawk.model.sca.ScaPackage#getScaStructSequenceProperty_Structs()
 	 * @model containment="true" resolveProxies="true" transient="true"
-	 * extendedMetaData="kind='attribute' name='simples'"
+	 *        extendedMetaData="kind='attribute' name='structs'"
 	 * @generated
 	 */
 	EList<ScaStructProperty> getStructs();
@@ -60,6 +62,7 @@ public interface ScaStructSequenceProperty extends ScaAbstractProperty<StructSeq
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * 
 	 * @model
 	 * @generated
 	 */

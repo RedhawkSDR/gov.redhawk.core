@@ -64,12 +64,26 @@ class ScaStructValuePropertyDescriptor extends ItemPropertyDescriptorDecorator {
 			if (itemPropertyDescriptors == null) {
 				itemPropertyDescriptors = new ArrayList<IItemPropertyDescriptor>();
 				addSimpleValuePropertyDescriptors(structProperty);
+				addSequenceValuePropertyDescriptors(structProperty);
 			}
 			return itemPropertyDescriptors;
 		}
 
 		protected void addSimpleValuePropertyDescriptors(Object object) {
 			for (final ScaAbstractProperty< ? > prop : structProperty.getSimples()) {
+				IItemPropertySource source = (IItemPropertySource) getRootAdapterFactory().adapt(prop, IItemPropertySource.class);
+				List<IItemPropertyDescriptor> descriptors = source.getPropertyDescriptors(prop);
+				for (final IItemPropertyDescriptor desc : descriptors) {
+					IItemLabelProvider lp = (IItemLabelProvider) getRootAdapterFactory().adapt(prop, IItemLabelProvider.class);
+					String displayName = lp.getText(prop);
+					itemPropertyDescriptors.add(new SimplePropertyDecorator(prop, desc, displayName));
+				}
+
+			}
+		}
+		
+		protected void addSequenceValuePropertyDescriptors(Object object) {
+			for (final ScaAbstractProperty< ? > prop : structProperty.getSequences()) {
 				IItemPropertySource source = (IItemPropertySource) getRootAdapterFactory().adapt(prop, IItemPropertySource.class);
 				List<IItemPropertyDescriptor> descriptors = source.getPropertyDescriptors(prop);
 				for (final IItemPropertyDescriptor desc : descriptors) {

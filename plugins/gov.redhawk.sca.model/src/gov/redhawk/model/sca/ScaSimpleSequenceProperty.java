@@ -19,16 +19,17 @@ import org.eclipse.emf.common.util.EList;
 /**
  * <!-- begin-user-doc -->
  * A representation of the model object '<em><b>Simple Sequence Property</b></em>'.
+ * 
  * @since 9.0
  * @noimplement This interface is not intended to be implemented by clients.
- * <!-- end-user-doc -->
+ *              <!-- end-user-doc -->
  *
- * <p>
- * The following features are supported:
- * <ul>
- * <li>{@link gov.redhawk.model.sca.ScaSimpleSequenceProperty#getValues <em>Values</em>}</li>
- * </ul>
- * </p>
+ *              <p>
+ *              The following features are supported:
+ *              <ul>
+ *              <li>{@link gov.redhawk.model.sca.ScaSimpleSequenceProperty#getValues <em>Values</em>}</li>
+ *              </ul>
+ *              </p>
  *
  * @see gov.redhawk.model.sca.ScaPackage#getScaSimpleSequenceProperty()
  * @model extendedMetaData="name='ScaSimpleSequenceProperty' kind='empty'"
@@ -41,14 +42,15 @@ public interface ScaSimpleSequenceProperty extends ScaAbstractProperty<SimpleSeq
 	 * The list contents are of type {@link java.lang.Object}.
 	 * <!-- begin-user-doc -->
 	 * <p>
-	 * If the meaning of the '<em>Values</em>' attribute list isn't clear,
-	 * there really should be more of a description here...
+	 * If the meaning of the '<em>Values</em>' attribute list isn't clear, there really should be more of a description
+	 * here...
 	 * </p>
 	 * <!-- end-user-doc -->
+	 * 
 	 * @return the value of the '<em>Values</em>' attribute list.
 	 * @see gov.redhawk.model.sca.ScaPackage#getScaSimpleSequenceProperty_Values()
 	 * @model unique="false" transient="true"
-	 * extendedMetaData="kind='attribute' name='currentValue'"
+	 *        extendedMetaData="kind='attribute' name='currentValue'"
 	 * @generated
 	 */
 	EList<Object> getValues();
@@ -56,6 +58,7 @@ public interface ScaSimpleSequenceProperty extends ScaAbstractProperty<SimpleSeq
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * 
 	 * @model newValueDataType="gov.redhawk.model.sca.ObjectArray"
 	 * @generated
 	 */
@@ -64,6 +67,7 @@ public interface ScaSimpleSequenceProperty extends ScaAbstractProperty<SimpleSeq
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * 
 	 * @model kind="operation" dataType="gov.redhawk.model.sca.ObjectArray"
 	 * @generated
 	 */

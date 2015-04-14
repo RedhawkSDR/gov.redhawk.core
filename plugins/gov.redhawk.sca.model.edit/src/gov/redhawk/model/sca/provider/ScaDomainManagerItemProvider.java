@@ -263,7 +263,7 @@ public class ScaDomainManagerItemProvider extends ScaPropertyContainerItemProvid
 	 * @generated
 	 */
 	public String getTextGen(Object object) {
-		String label = ((ScaDomainManager) object).getLabel();
+		String label = ((ScaDomainManager) object).getName();
 		return label == null || label.length() == 0 ? getString("_UI_ScaDomainManager_type") : getString("_UI_ScaDomainManager_type") + " " + label;
 	}
 

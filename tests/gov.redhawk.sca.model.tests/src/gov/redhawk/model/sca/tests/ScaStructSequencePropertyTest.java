@@ -23,11 +23,9 @@ import gov.redhawk.model.sca.commands.ScaModelCommand;
 import gov.redhawk.model.sca.tests.stubs.ScaTestConstaints;
 import org.junit.Assert;
 import junit.textui.TestRunner;
-
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.ecore.util.EContentAdapter;
 import org.eclipse.emf.transaction.util.TransactionUtil;
-
 import CF.DataType;
 import CF.PropertiesHolder;
 import CF.UnknownProperties;
@@ -41,9 +39,15 @@ import CF.PropertySetPackage.PartialConfiguration;
  * <p>
  * The following operations are tested:
  * <ul>
- *   <li>{@link gov.redhawk.model.sca.ScaStructSequenceProperty#createScaStructProperty() <em>Create Sca Struct Property</em>}</li>
- *   <li>{@link CF.PropertySetOperations#configure(CF.DataType[]) <em>Configure</em>}</li>
- *   <li>{@link CF.PropertySetOperations#query(CF.PropertiesHolder) <em>Query</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.ScaStructSequenceProperty#createScaStructProperty() <em>Create Sca Struct
+ * Property</em>}</li>
+ * <li>{@link CF.PropertySetOperations#configure(CF.DataType[]) <em>Configure</em>}</li>
+ * <li>{@link CF.PropertySetOperations#query(CF.PropertiesHolder) <em>Query</em>}</li>
+ * <li>
+ * {@link CF.PropertySetOperations#registerPropertyListener(org.omg.CORBA.Object, org.eclipse.emf.common.util.EList, float)
+ * <em>Register Property Listener</em>}</li>
+ * <li>{@link CF.PropertySetOperations#unregisterPropertyListener(java.lang.String) <em>Unregister Property
+ * Listener</em>}</li>
  * </ul>
  * </p>
  * @generated
@@ -76,7 +80,7 @@ public class ScaStructSequencePropertyTest extends ScaAbstractPropertyTest {
 	 */
 	@Override
 	protected ScaStructSequenceProperty getFixture() {
-		return (ScaStructSequenceProperty)fixture;
+		return (ScaStructSequenceProperty) fixture;
 	}
 
 	private TestEnvirornment env;
@@ -122,7 +126,8 @@ public class ScaStructSequencePropertyTest extends ScaAbstractPropertyTest {
 	}
 
 	/**
-	 * Tests the '{@link gov.redhawk.model.sca.ScaStructSequenceProperty#createScaStructProperty() <em>Create Sca Struct Property</em>}' operation.
+	 * Tests the '{@link gov.redhawk.model.sca.ScaStructSequenceProperty#createScaStructProperty() <em>Create Sca Struct
+	 * Property</em>}' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @see gov.redhawk.model.sca.ScaStructSequenceProperty#createScaStructProperty()
@@ -147,60 +152,59 @@ public class ScaStructSequencePropertyTest extends ScaAbstractPropertyTest {
 		Assert.assertEquals(getFixture().getDefinition().getStructValue().size(), getFixture().getStructs().size());
 		// BEGIN GENERATED CODE
 	}
-	
+
 	public void testListener() {
-		final boolean [] simpleNotification = new boolean[] {
-				false
-		};
+		final boolean[] simpleNotification = new boolean[] { false };
 		final EContentAdapter adapter = new EContentAdapter() {
 			@Override
 			public void notifyChanged(Notification notification) {
-			    super.notifyChanged(notification);
-			    if (notification.getNotifier() instanceof ScaSimpleProperty) {
-			    	switch (notification.getFeatureID(ScaSimpleProperty.class)) {
-			    	case ScaPackage.SCA_SIMPLE_PROPERTY__VALUE:
-			    		simpleNotification[0] = true;
-			    		break;
-			    	default:
-			    		break;
-			    	}
-			    }
+				super.notifyChanged(notification);
+				if (notification.getNotifier() instanceof ScaSimpleProperty) {
+					switch (notification.getFeatureID(ScaSimpleProperty.class)) {
+					case ScaPackage.SCA_SIMPLE_PROPERTY__VALUE:
+						simpleNotification[0] = true;
+						break;
+					default:
+						break;
+					}
+				}
 			}
 		};
 		ScaModelCommand.execute(getFixture(), new ScaModelCommand() {
-			
+
 			@Override
 			public void execute() {
 				System.out.println("Contents: " + getFixture().eContents().size());
 				getFixture().eAdapters().add(adapter);
 				ScaStructProperty struct = getFixture().createScaStructProperty();
 				getFixture().getStructs().add(struct);
-				struct.getSimples().get(0).setValue("newValue");		
+				struct.getSimples().get(0).setValue("newValue");
 			}
 		});
-		
+
 		Assert.assertTrue(simpleNotification[0]);
 	}
-	
+
 	@Override
 	public void testIsDefaultValue() {
 		super.testIsDefaultValue();
 		ScaModelCommand.execute(getFixture(), new ScaModelCommand() {
-			
+
 			@Override
 			public void execute() {
-				getFixture().getStructs().add(getFixture().createScaStructProperty());	
+				getFixture().getStructs().add(getFixture().createScaStructProperty());
 			}
 		});
 		Assert.assertFalse(getFixture().isDefaultValue());
 	}
 
 	/**
-	 * Tests the '{@link gov.redhawk.model.sca.IPropertyConfigurer#configure(mil.jpeojtrs.sca.cf.DataType) <em>Configure</em>}' operation.
+	 * Tests the '{@link gov.redhawk.model.sca.IPropertyConfigurer#configure(mil.jpeojtrs.sca.cf.DataType)
+	 * <em>Configure</em>}' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @throws InvalidConfiguration 
-	 * @throws PartialConfiguration 
+	 * @throws InvalidConfiguration
+	 * @throws PartialConfiguration
 	 * @see gov.redhawk.model.sca.IPropertyConfigurer#configure(mil.jpeojtrs.sca.cf.DataType)
 	 * @generated NOT
 	 */
@@ -211,10 +215,11 @@ public class ScaStructSequencePropertyTest extends ScaAbstractPropertyTest {
 	}
 
 	/**
-	 * Tests the '{@link mil.jpeojtrs.sca.cf.PropertySetOperations#query(mil.jpeojtrs.sca.cf.PropertiesHolder) <em>Query</em>}' operation.
+	 * Tests the '{@link mil.jpeojtrs.sca.cf.PropertySetOperations#query(mil.jpeojtrs.sca.cf.PropertiesHolder)
+	 * <em>Query</em>}' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @throws UnknownProperties 
+	 * @throws UnknownProperties
 	 * @see mil.jpeojtrs.sca.cf.PropertySetOperations#query(mil.jpeojtrs.sca.cf.PropertiesHolder)
 	 * @generated NOT
 	 */
@@ -227,12 +232,44 @@ public class ScaStructSequencePropertyTest extends ScaAbstractPropertyTest {
 	}
 
 	/**
-	 * Tests the '{@link gov.redhawk.model.sca.ScaStructSequenceProperty#setRemoteValue(mil.jpeojtrs.sca.cf.DataType[][]) <em>Set Remote Value</em>}' operation.
+	 * Tests the '
+	 * {@link CF.PropertySetOperations#registerPropertyListener(org.omg.CORBA.Object, org.eclipse.emf.common.util.EList, float)
+	 * <em>Register Property Listener</em>}' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @throws InterruptedException 
-	 * @throws InvalidConfiguration 
-	 * @throws PartialConfiguration 
+	 * @see CF.PropertySetOperations#registerPropertyListener(org.omg.CORBA.Object, org.eclipse.emf.common.util.EList,
+	 * float)
+	 * @generated
+	 */
+	public void testRegisterPropertyListener__Object_EList_float() {
+		// TODO: implement this operation test method
+		// Ensure that you remove @generated or mark it @generated NOT
+		fail();
+	}
+
+	/**
+	 * Tests the '{@link CF.PropertySetOperations#unregisterPropertyListener(java.lang.String) <em>Unregister Property
+	 * Listener</em>}' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see CF.PropertySetOperations#unregisterPropertyListener(java.lang.String)
+	 * @generated
+	 */
+	public void testUnregisterPropertyListener__String() {
+		// TODO: implement this operation test method
+		// Ensure that you remove @generated or mark it @generated NOT
+		fail();
+	}
+
+	/**
+	 * Tests the '
+	 * {@link gov.redhawk.model.sca.ScaStructSequenceProperty#setRemoteValue(mil.jpeojtrs.sca.cf.DataType[][]) <em>Set
+	 * Remote Value</em>}' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @throws InterruptedException
+	 * @throws InvalidConfiguration
+	 * @throws PartialConfiguration
 	 * @see gov.redhawk.model.sca.ScaStructSequenceProperty#setRemoteValue(mil.jpeojtrs.sca.cf.DataType[][])
 	 * @generated NOT
 	 */
@@ -242,4 +279,4 @@ public class ScaStructSequencePropertyTest extends ScaAbstractPropertyTest {
 		// BEGIN GENERATED CODE
 	}
 
-} //ScaStructSequencePropertyTest
+} // ScaStructSequencePropertyTest

@@ -125,6 +125,57 @@ public class ValidValueTypeConstraint extends AbstractModelConstraint {
 		}
 
 		@Override
+		public IStatus caseSimpleSequence(SimpleSequence object) {
+			Values values = object.getValues();
+			if (values != null) {
+				final PropertyValueType type = object.getType();
+				if (type != null) {
+					for (String value: values.getValue()) {
+						boolean isComplexFormat = isComplexNumber(value);
+						if (object.isComplex() && !isComplexFormat) { // TODO: This is to force PRF complex value of format a+jb
+							return new EnhancedConstraintStatus((ConstraintStatus) createFailureStatus(true, object, value, type),
+								PrfPackage.Literals.SIMPLE__VALUE);
+						} else if (!(type.isValueOfType(value, object.isComplex()))) {
+							if (object.isComplex()) {
+								return new EnhancedConstraintStatus((ConstraintStatus) createFailureStatus(true, object, value, type),
+									PrfPackage.Literals.SIMPLE__VALUE);
+							} else {
+								return new EnhancedConstraintStatus((ConstraintStatus) createFailureStatus(false, object, value, type), PrfPackage.Literals.SIMPLE__VALUE);
+							}
+						}
+					}
+				}
+			}
+			return super.caseSimpleSequence(object);
+		}
+		
+		@Override
+		public IStatus caseSimpleSequenceRef(SimpleSequenceRef refObject) {
+			SimpleSequence object = refObject.getProperty();
+			Values values = object.getValues();
+			if (values != null) {
+				final PropertyValueType type = object.getType();
+				if (type != null) {
+					for (String value: values.getValue()) {
+						boolean isComplexFormat = isComplexNumber(value);
+						if (object.isComplex() && !isComplexFormat) { // TODO: This is to force PRF complex value of format a+jb
+							return new EnhancedConstraintStatus((ConstraintStatus) createFailureStatus(true, object, value, type),
+								PrfPackage.Literals.SIMPLE__VALUE);
+						} else if (!(type.isValueOfType(value, object.isComplex()))) {
+							if (object.isComplex()) {
+								return new EnhancedConstraintStatus((ConstraintStatus) createFailureStatus(true, object, value, type),
+									PrfPackage.Literals.SIMPLE__VALUE);
+							} else {
+								return new EnhancedConstraintStatus((ConstraintStatus) createFailureStatus(false, object, value, type), PrfPackage.Literals.SIMPLE__VALUE);
+							}
+						}
+					}
+				}
+			}
+			return super.caseSimpleSequenceRef(refObject);
+		}
+		
+		@Override
 		public IStatus caseValues(final Values object) {
 			final EObject contObj = object.eContainer();
 			SimpleSequence sequence = null;

@@ -32,20 +32,28 @@ import CF.PropertySetPackage.PartialConfiguration;
  * <p>
  * The following features are tested:
  * <ul>
- *   <li>{@link gov.redhawk.model.sca.ProfileObjectWrapper#getProfileURI() <em>Profile URI</em>}</li>
- *   <li>{@link gov.redhawk.model.sca.ProfileObjectWrapper#getProfileObj() <em>Profile Obj</em>}</li>
- *   <li>{@link gov.redhawk.model.sca.ProfileObjectWrapper#getRootFileStore() <em>Root File Store</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.ProfileObjectWrapper#getProfileURI() <em>Profile URI</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.ProfileObjectWrapper#getProfileObj() <em>Profile Obj</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.ProfileObjectWrapper#getRootFileStore() <em>Root File Store</em>}</li>
  * </ul>
  * </p>
  * <p>
  * The following operations are tested:
  * <ul>
- *   <li>{@link gov.redhawk.model.sca.ScaPropertyContainer#fetchProperties(org.eclipse.core.runtime.IProgressMonitor) <em>Fetch Properties</em>}</li>
- *   <li>{@link gov.redhawk.model.sca.ScaPropertyContainer#getProperty(java.lang.String) <em>Get Property</em>}</li>
- *   <li>{@link CF.PropertySetOperations#configure(CF.DataType[]) <em>Configure</em>}</li>
- *   <li>{@link CF.PropertySetOperations#query(CF.PropertiesHolder) <em>Query</em>}</li>
- *   <li>{@link gov.redhawk.model.sca.ProfileObjectWrapper#fetchProfileObject(org.eclipse.core.runtime.IProgressMonitor) <em>Fetch Profile Object</em>}</li>
- *   <li>{@link gov.redhawk.model.sca.ProfileObjectWrapper#fetchProfileURI(org.eclipse.core.runtime.IProgressMonitor) <em>Fetch Profile URI</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.ScaPropertyContainer#fetchProperties(org.eclipse.core.runtime.IProgressMonitor)
+ * <em>Fetch Properties</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.ScaPropertyContainer#getProperty(java.lang.String) <em>Get Property</em>}</li>
+ * <li>{@link CF.PropertySetOperations#configure(CF.DataType[]) <em>Configure</em>}</li>
+ * <li>{@link CF.PropertySetOperations#query(CF.PropertiesHolder) <em>Query</em>}</li>
+ * <li>
+ * {@link CF.PropertySetOperations#registerPropertyListener(org.omg.CORBA.Object, org.eclipse.emf.common.util.EList, float)
+ * <em>Register Property Listener</em>}</li>
+ * <li>{@link CF.PropertySetOperations#unregisterPropertyListener(java.lang.String) <em>Unregister Property
+ * Listener</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.ProfileObjectWrapper#fetchProfileObject(org.eclipse.core.runtime.IProgressMonitor)
+ * <em>Fetch Profile Object</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.ProfileObjectWrapper#fetchProfileURI(org.eclipse.core.runtime.IProgressMonitor)
+ * <em>Fetch Profile URI</em>}</li>
  * </ul>
  * </p>
  * @generated
@@ -69,12 +77,13 @@ public abstract class ScaPropertyContainerTest extends CorbaObjWrapperTest {
 	 * @generated
 	 */
 	@Override
-	protected ScaPropertyContainer<?, ?> getFixture() {
-		return (ScaPropertyContainer<?, ?>)fixture;
+	protected ScaPropertyContainer< ? , ? > getFixture() {
+		return (ScaPropertyContainer< ? , ? >) fixture;
 	}
 
 	/**
-	 * Tests the '{@link gov.redhawk.model.sca.ProfileObjectWrapper#getProfileURI() <em>Profile URI</em>}' feature getter.
+	 * Tests the '{@link gov.redhawk.model.sca.ProfileObjectWrapper#getProfileURI() <em>Profile URI</em>}' feature
+	 * getter.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @see gov.redhawk.model.sca.ProfileObjectWrapper#getProfileURI()
@@ -88,7 +97,8 @@ public abstract class ScaPropertyContainerTest extends CorbaObjWrapperTest {
 	}
 
 	/**
-	 * Tests the '{@link gov.redhawk.model.sca.ProfileObjectWrapper#setProfileURI(org.eclipse.emf.common.util.URI) <em>Profile URI</em>}' feature setter.
+	 * Tests the '{@link gov.redhawk.model.sca.ProfileObjectWrapper#setProfileURI(org.eclipse.emf.common.util.URI)
+	 * <em>Profile URI</em>}' feature setter.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @see gov.redhawk.model.sca.ProfileObjectWrapper#setProfileURI(org.eclipse.emf.common.util.URI)
@@ -113,7 +123,8 @@ public abstract class ScaPropertyContainerTest extends CorbaObjWrapperTest {
 	}
 
 	/**
-	 * Tests the '{@link gov.redhawk.model.sca.ProfileObjectWrapper#unsetProfileURI() <em>unsetProfileURI()</em>}' method.
+	 * Tests the '{@link gov.redhawk.model.sca.ProfileObjectWrapper#unsetProfileURI() <em>unsetProfileURI()</em>}'
+	 * method.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @see gov.redhawk.model.sca.ProfileObjectWrapper#unsetProfileURI()
@@ -135,7 +146,8 @@ public abstract class ScaPropertyContainerTest extends CorbaObjWrapperTest {
 	}
 
 	/**
-	 * Tests the '{@link gov.redhawk.model.sca.ProfileObjectWrapper#isSetProfileURI() <em>isSetProfileURI()</em>}' method.
+	 * Tests the '{@link gov.redhawk.model.sca.ProfileObjectWrapper#isSetProfileURI() <em>isSetProfileURI()</em>}'
+	 * method.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @see gov.redhawk.model.sca.ProfileObjectWrapper#isSetProfileURI()
@@ -156,7 +168,8 @@ public abstract class ScaPropertyContainerTest extends CorbaObjWrapperTest {
 	}
 
 	/**
-	 * Tests the '{@link gov.redhawk.model.sca.ProfileObjectWrapper#getProfileObj() <em>Profile Obj</em>}' feature getter.
+	 * Tests the '{@link gov.redhawk.model.sca.ProfileObjectWrapper#getProfileObj() <em>Profile Obj</em>}' feature
+	 * getter.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @see gov.redhawk.model.sca.ProfileObjectWrapper#getProfileObj()
@@ -167,7 +180,8 @@ public abstract class ScaPropertyContainerTest extends CorbaObjWrapperTest {
 	}
 
 	/**
-	 * Tests the '{@link gov.redhawk.model.sca.ProfileObjectWrapper#setProfileObj(java.lang.Object) <em>Profile Obj</em>}' feature setter.
+	 * Tests the '{@link gov.redhawk.model.sca.ProfileObjectWrapper#setProfileObj(java.lang.Object) <em>Profile
+	 * Obj</em>}' feature setter.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @see gov.redhawk.model.sca.ProfileObjectWrapper#setProfileObj(java.lang.Object)
@@ -188,7 +202,8 @@ public abstract class ScaPropertyContainerTest extends CorbaObjWrapperTest {
 	}
 
 	/**
-	 * Tests the '{@link gov.redhawk.model.sca.ProfileObjectWrapper#unsetProfileObj() <em>unsetProfileObj()</em>}' method.
+	 * Tests the '{@link gov.redhawk.model.sca.ProfileObjectWrapper#unsetProfileObj() <em>unsetProfileObj()</em>}'
+	 * method.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @see gov.redhawk.model.sca.ProfileObjectWrapper#unsetProfileObj()
@@ -210,7 +225,8 @@ public abstract class ScaPropertyContainerTest extends CorbaObjWrapperTest {
 	}
 
 	/**
-	 * Tests the '{@link gov.redhawk.model.sca.ProfileObjectWrapper#isSetProfileObj() <em>isSetProfileObj()</em>}' method.
+	 * Tests the '{@link gov.redhawk.model.sca.ProfileObjectWrapper#isSetProfileObj() <em>isSetProfileObj()</em>}'
+	 * method.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @see gov.redhawk.model.sca.ProfileObjectWrapper#isSetProfileObj()
@@ -230,7 +246,8 @@ public abstract class ScaPropertyContainerTest extends CorbaObjWrapperTest {
 	}
 
 	/**
-	 * Tests the '{@link gov.redhawk.model.sca.ProfileObjectWrapper#getRootFileStore() <em>Root File Store</em>}' feature getter.
+	 * Tests the '{@link gov.redhawk.model.sca.ProfileObjectWrapper#getRootFileStore() <em>Root File Store</em>}'
+	 * feature getter.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @see gov.redhawk.model.sca.ProfileObjectWrapper#getRootFileStore()
@@ -243,7 +260,9 @@ public abstract class ScaPropertyContainerTest extends CorbaObjWrapperTest {
 	}
 
 	/**
-	 * Tests the '{@link gov.redhawk.model.sca.ScaAbstractComponent#fetchProperties(org.eclipse.core.runtime.IProgressMonitor) <em>Fetch Properties</em>}' operation.
+	 * Tests the '
+	 * {@link gov.redhawk.model.sca.ScaAbstractComponent#fetchProperties(org.eclipse.core.runtime.IProgressMonitor)
+	 * <em>Fetch Properties</em>}' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @see gov.redhawk.model.sca.ScaAbstractComponent#fetchProperties(org.eclipse.core.runtime.IProgressMonitor)
@@ -273,10 +292,12 @@ public abstract class ScaPropertyContainerTest extends CorbaObjWrapperTest {
 	}
 
 	/**
-	 * Tests the '{@link gov.redhawk.model.sca.ScaAbstractComponent#fetchPropertyValues(org.eclipse.core.runtime.IProgressMonitor) <em>Fetch Property Values</em>}' operation.
+	 * Tests the '
+	 * {@link gov.redhawk.model.sca.ScaAbstractComponent#fetchPropertyValues(org.eclipse.core.runtime.IProgressMonitor)
+	 * <em>Fetch Property Values</em>}' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @throws InterruptedException 
+	 * @throws InterruptedException
 	 * @see gov.redhawk.model.sca.ScaAbstractComponent#fetchPropertyValues(org.eclipse.core.runtime.IProgressMonitor)
 	 * @generated NOT
 	 * @deprecated
@@ -289,7 +310,8 @@ public abstract class ScaPropertyContainerTest extends CorbaObjWrapperTest {
 	}
 
 	/**
-	 * Tests the '{@link gov.redhawk.model.sca.ScaPropertyContainer#getProperty(java.lang.String) <em>Get Property</em>}' operation.
+	 * Tests the '{@link gov.redhawk.model.sca.ScaPropertyContainer#getProperty(java.lang.String) <em>Get Property</em>}
+	 * ' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @see gov.redhawk.model.sca.ScaPropertyContainer#getProperty(java.lang.String)
@@ -302,11 +324,12 @@ public abstract class ScaPropertyContainerTest extends CorbaObjWrapperTest {
 	}
 
 	/**
-	 * Tests the '{@link mil.jpeojtrs.sca.cf.PropertySetOperations#configure(mil.jpeojtrs.sca.cf.DataType[]) <em>Configure</em>}' operation.
+	 * Tests the '{@link mil.jpeojtrs.sca.cf.PropertySetOperations#configure(mil.jpeojtrs.sca.cf.DataType[])
+	 * <em>Configure</em>}' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @throws PartialConfiguration 
-	 * @throws InvalidConfiguration 
+	 * @throws PartialConfiguration
+	 * @throws InvalidConfiguration
 	 * @see mil.jpeojtrs.sca.cf.PropertySetOperations#configure(mil.jpeojtrs.sca.cf.DataType[])
 	 * @generated NOT
 	 */
@@ -317,10 +340,11 @@ public abstract class ScaPropertyContainerTest extends CorbaObjWrapperTest {
 	}
 
 	/**
-	 * Tests the '{@link mil.jpeojtrs.sca.cf.PropertySetOperations#query(mil.jpeojtrs.sca.cf.PropertiesHolder) <em>Query</em>}' operation.
+	 * Tests the '{@link mil.jpeojtrs.sca.cf.PropertySetOperations#query(mil.jpeojtrs.sca.cf.PropertiesHolder)
+	 * <em>Query</em>}' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @throws UnknownProperties 
+	 * @throws UnknownProperties
 	 * @see mil.jpeojtrs.sca.cf.PropertySetOperations#query(mil.jpeojtrs.sca.cf.PropertiesHolder)
 	 * @generated NOT
 	 */
@@ -333,10 +357,42 @@ public abstract class ScaPropertyContainerTest extends CorbaObjWrapperTest {
 	}
 
 	/**
-	 * Tests the '{@link gov.redhawk.model.sca.ProfileObjectWrapper#fetchProfileObject(org.eclipse.core.runtime.IProgressMonitor) <em>Fetch Profile Object</em>}' operation.
+	 * Tests the '
+	 * {@link CF.PropertySetOperations#registerPropertyListener(org.omg.CORBA.Object, org.eclipse.emf.common.util.EList, float)
+	 * <em>Register Property Listener</em>}' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @throws InterruptedException 
+	 * @see CF.PropertySetOperations#registerPropertyListener(org.omg.CORBA.Object, org.eclipse.emf.common.util.EList,
+	 * float)
+	 * @generated
+	 */
+	public void testRegisterPropertyListener__Object_EList_float() {
+		// TODO: implement this operation test method
+		// Ensure that you remove @generated or mark it @generated NOT
+		fail();
+	}
+
+	/**
+	 * Tests the '{@link CF.PropertySetOperations#unregisterPropertyListener(java.lang.String) <em>Unregister Property
+	 * Listener</em>}' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see CF.PropertySetOperations#unregisterPropertyListener(java.lang.String)
+	 * @generated
+	 */
+	public void testUnregisterPropertyListener__String() {
+		// TODO: implement this operation test method
+		// Ensure that you remove @generated or mark it @generated NOT
+		fail();
+	}
+
+	/**
+	 * Tests the '
+	 * {@link gov.redhawk.model.sca.ProfileObjectWrapper#fetchProfileObject(org.eclipse.core.runtime.IProgressMonitor)
+	 * <em>Fetch Profile Object</em>}' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @throws InterruptedException
 	 * @see gov.redhawk.model.sca.ProfileObjectWrapper#fetchProfileObject(org.eclipse.core.runtime.IProgressMonitor)
 	 * @generated NOT
 	 */
@@ -346,9 +402,11 @@ public abstract class ScaPropertyContainerTest extends CorbaObjWrapperTest {
 		Assert.assertTrue(getFixture().isSetProfileObj());
 		// BEGIN GENERATED CODE
 	}
-	
+
 	/**
-	 * Tests the '{@link gov.redhawk.model.sca.ProfileObjectWrapper#fetchProfileURI(org.eclipse.core.runtime.IProgressMonitor) <em>Fetch Profile URI</em>}' operation.
+	 * Tests the '
+	 * {@link gov.redhawk.model.sca.ProfileObjectWrapper#fetchProfileURI(org.eclipse.core.runtime.IProgressMonitor)
+	 * <em>Fetch Profile URI</em>}' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @see gov.redhawk.model.sca.ProfileObjectWrapper#fetchProfileURI(org.eclipse.core.runtime.IProgressMonitor)
@@ -365,8 +423,8 @@ public abstract class ScaPropertyContainerTest extends CorbaObjWrapperTest {
 		Object[] propertyArray = getFixture().getProperties().toArray();
 		super.testRefresh__IProgressMonitor_RefreshDepth();
 		for (Object obj : propertyArray) {
-	    	Assert.assertNotNull(((ScaAbstractProperty<?>)obj).eContainer());
-	    }
+			Assert.assertNotNull(((ScaAbstractProperty< ? >) obj).eContainer());
+		}
 	}
 
-} //ScaPropertyContainerTest
+} // ScaPropertyContainerTest

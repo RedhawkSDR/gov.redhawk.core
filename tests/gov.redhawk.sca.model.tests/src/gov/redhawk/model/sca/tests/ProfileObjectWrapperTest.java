@@ -22,16 +22,18 @@ import org.junit.Assert;
  * <p>
  * The following features are tested:
  * <ul>
- *   <li>{@link gov.redhawk.model.sca.ProfileObjectWrapper#getProfileURI() <em>Profile URI</em>}</li>
- *   <li>{@link gov.redhawk.model.sca.ProfileObjectWrapper#getProfileObj() <em>Profile Obj</em>}</li>
- *   <li>{@link gov.redhawk.model.sca.ProfileObjectWrapper#getRootFileStore() <em>Root File Store</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.ProfileObjectWrapper#getProfileURI() <em>Profile URI</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.ProfileObjectWrapper#getProfileObj() <em>Profile Obj</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.ProfileObjectWrapper#getRootFileStore() <em>Root File Store</em>}</li>
  * </ul>
  * </p>
  * <p>
  * The following operations are tested:
  * <ul>
- *   <li>{@link gov.redhawk.model.sca.ProfileObjectWrapper#fetchProfileObject(org.eclipse.core.runtime.IProgressMonitor) <em>Fetch Profile Object</em>}</li>
- *   <li>{@link gov.redhawk.model.sca.ProfileObjectWrapper#fetchProfileURI(org.eclipse.core.runtime.IProgressMonitor) <em>Fetch Profile URI</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.ProfileObjectWrapper#fetchProfileObject(org.eclipse.core.runtime.IProgressMonitor)
+ * <em>Fetch Profile Object</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.ProfileObjectWrapper#fetchProfileURI(org.eclipse.core.runtime.IProgressMonitor)
+ * <em>Fetch Profile URI</em>}</li>
  * </ul>
  * </p>
  * @generated
@@ -54,12 +56,13 @@ public abstract class ProfileObjectWrapperTest extends IStatusProviderTest {
 	 * @generated
 	 */
 	@Override
-	protected ProfileObjectWrapper<?> getFixture() {
-		return (ProfileObjectWrapper<?>)fixture;
+	protected ProfileObjectWrapper< ? > getFixture() {
+		return (ProfileObjectWrapper< ? >) fixture;
 	}
 
 	/**
-	 * Tests the '{@link gov.redhawk.model.sca.ProfileObjectWrapper#getProfileURI() <em>Profile URI</em>}' feature getter.
+	 * Tests the '{@link gov.redhawk.model.sca.ProfileObjectWrapper#getProfileURI() <em>Profile URI</em>}' feature
+	 * getter.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @see gov.redhawk.model.sca.ProfileObjectWrapper#getProfileURI()
@@ -72,7 +75,8 @@ public abstract class ProfileObjectWrapperTest extends IStatusProviderTest {
 	}
 
 	/**
-	 * Tests the '{@link gov.redhawk.model.sca.ProfileObjectWrapper#setProfileURI(org.eclipse.emf.common.util.URI) <em>Profile URI</em>}' feature setter.
+	 * Tests the '{@link gov.redhawk.model.sca.ProfileObjectWrapper#setProfileURI(org.eclipse.emf.common.util.URI)
+	 * <em>Profile URI</em>}' feature setter.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @see gov.redhawk.model.sca.ProfileObjectWrapper#setProfileURI(org.eclipse.emf.common.util.URI)
@@ -85,7 +89,8 @@ public abstract class ProfileObjectWrapperTest extends IStatusProviderTest {
 	}
 
 	/**
-	 * Tests the '{@link gov.redhawk.model.sca.ProfileObjectWrapper#unsetProfileURI() <em>unsetProfileURI()</em>}' method.
+	 * Tests the '{@link gov.redhawk.model.sca.ProfileObjectWrapper#unsetProfileURI() <em>unsetProfileURI()</em>}'
+	 * method.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @see gov.redhawk.model.sca.ProfileObjectWrapper#unsetProfileURI()
@@ -98,7 +103,8 @@ public abstract class ProfileObjectWrapperTest extends IStatusProviderTest {
 	}
 
 	/**
-	 * Tests the '{@link gov.redhawk.model.sca.ProfileObjectWrapper#isSetProfileURI() <em>isSetProfileURI()</em>}' method.
+	 * Tests the '{@link gov.redhawk.model.sca.ProfileObjectWrapper#isSetProfileURI() <em>isSetProfileURI()</em>}'
+	 * method.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @see gov.redhawk.model.sca.ProfileObjectWrapper#isSetProfileURI()
@@ -109,8 +115,10 @@ public abstract class ProfileObjectWrapperTest extends IStatusProviderTest {
 		// Ensure that you remove @generated or mark it @generated NOT
 		fail();
 	}
+
 	/**
-	 * Tests the '{@link gov.redhawk.model.sca.ProfileObjectWrapper#getProfileObj() <em>Profile Obj</em>}' feature getter.
+	 * Tests the '{@link gov.redhawk.model.sca.ProfileObjectWrapper#getProfileObj() <em>Profile Obj</em>}' feature
+	 * getter.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @see gov.redhawk.model.sca.ProfileObjectWrapper#getProfileObj()
@@ -127,7 +135,8 @@ public abstract class ProfileObjectWrapperTest extends IStatusProviderTest {
 	}
 
 	/**
-	 * Tests the '{@link gov.redhawk.model.sca.ProfileObjectWrapper#setProfileObj(java.lang.Object) <em>Profile Obj</em>}' feature setter.
+	 * Tests the '{@link gov.redhawk.model.sca.ProfileObjectWrapper#setProfileObj(java.lang.Object) <em>Profile
+	 * Obj</em>}' feature setter.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @see gov.redhawk.model.sca.ProfileObjectWrapper#setProfileObj(java.lang.Object)
@@ -147,7 +156,8 @@ public abstract class ProfileObjectWrapperTest extends IStatusProviderTest {
 	}
 
 	/**
-	 * Tests the '{@link gov.redhawk.model.sca.ProfileObjectWrapper#unsetProfileObj() <em>unsetProfileObj()</em>}' method.
+	 * Tests the '{@link gov.redhawk.model.sca.ProfileObjectWrapper#unsetProfileObj() <em>unsetProfileObj()</em>}'
+	 * method.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @see gov.redhawk.model.sca.ProfileObjectWrapper#unsetProfileObj()
@@ -160,7 +170,8 @@ public abstract class ProfileObjectWrapperTest extends IStatusProviderTest {
 	}
 
 	/**
-	 * Tests the '{@link gov.redhawk.model.sca.ProfileObjectWrapper#isSetProfileObj() <em>isSetProfileObj()</em>}' method.
+	 * Tests the '{@link gov.redhawk.model.sca.ProfileObjectWrapper#isSetProfileObj() <em>isSetProfileObj()</em>}'
+	 * method.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @see gov.redhawk.model.sca.ProfileObjectWrapper#isSetProfileObj()
@@ -173,7 +184,8 @@ public abstract class ProfileObjectWrapperTest extends IStatusProviderTest {
 	}
 
 	/**
-	 * Tests the '{@link gov.redhawk.model.sca.ProfileObjectWrapper#getRootFileStore() <em>Root File Store</em>}' feature getter.
+	 * Tests the '{@link gov.redhawk.model.sca.ProfileObjectWrapper#getRootFileStore() <em>Root File Store</em>}'
+	 * feature getter.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @see gov.redhawk.model.sca.ProfileObjectWrapper#getRootFileStore()
@@ -186,10 +198,12 @@ public abstract class ProfileObjectWrapperTest extends IStatusProviderTest {
 	}
 
 	/**
-	 * Tests the '{@link gov.redhawk.model.sca.ProfileObjectWrapper#fetchProfileObject(org.eclipse.core.runtime.IProgressMonitor) <em>Fetch Profile Object</em>}' operation.
+	 * Tests the '
+	 * {@link gov.redhawk.model.sca.ProfileObjectWrapper#fetchProfileObject(org.eclipse.core.runtime.IProgressMonitor)
+	 * <em>Fetch Profile Object</em>}' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @throws InterruptedException 
+	 * @throws InterruptedException
 	 * @see gov.redhawk.model.sca.ProfileObjectWrapper#fetchProfileObject(org.eclipse.core.runtime.IProgressMonitor)
 	 * @generated NOT
 	 */
@@ -200,7 +214,9 @@ public abstract class ProfileObjectWrapperTest extends IStatusProviderTest {
 	}
 
 	/**
-	 * Tests the '{@link gov.redhawk.model.sca.ProfileObjectWrapper#fetchProfileURI(org.eclipse.core.runtime.IProgressMonitor) <em>Fetch Profile URI</em>}' operation.
+	 * Tests the '
+	 * {@link gov.redhawk.model.sca.ProfileObjectWrapper#fetchProfileURI(org.eclipse.core.runtime.IProgressMonitor)
+	 * <em>Fetch Profile URI</em>}' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @see gov.redhawk.model.sca.ProfileObjectWrapper#fetchProfileURI(org.eclipse.core.runtime.IProgressMonitor)
@@ -210,4 +226,4 @@ public abstract class ProfileObjectWrapperTest extends IStatusProviderTest {
 		getFixture().fetchProfileURI(null);
 	}
 
-} //ProfileObjectWrapperTest
+} // ProfileObjectWrapperTest

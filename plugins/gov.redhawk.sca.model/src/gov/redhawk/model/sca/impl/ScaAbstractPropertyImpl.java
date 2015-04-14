@@ -41,19 +41,20 @@ import CF.PropertySetPackage.PartialConfiguration;
 /**
  * <!-- begin-user-doc -->
  * An implementation of the model object '<em><b>Abstract Property</b></em>'.
+ * 
  * @since 12.0
- * <!-- end-user-doc -->
- * <p>
- * The following features are implemented:
- * <ul>
- * <li>{@link gov.redhawk.model.sca.impl.ScaAbstractPropertyImpl#getDefinition <em>Definition</em>}</li>
- * <li>{@link gov.redhawk.model.sca.impl.ScaAbstractPropertyImpl#getDescription <em>Description</em>}</li>
- * <li>{@link gov.redhawk.model.sca.impl.ScaAbstractPropertyImpl#getId <em>Id</em>}</li>
- * <li>{@link gov.redhawk.model.sca.impl.ScaAbstractPropertyImpl#getMode <em>Mode</em>}</li>
- * <li>{@link gov.redhawk.model.sca.impl.ScaAbstractPropertyImpl#getName <em>Name</em>}</li>
- * <li>{@link gov.redhawk.model.sca.impl.ScaAbstractPropertyImpl#isIgnoreRemoteSet <em>Ignore Remote Set</em>}</li>
- * </ul>
- * </p>
+ *        <!-- end-user-doc -->
+ *        <p>
+ *        The following features are implemented:
+ *        <ul>
+ *        <li>{@link gov.redhawk.model.sca.impl.ScaAbstractPropertyImpl#getDefinition <em>Definition</em>}</li>
+ *        <li>{@link gov.redhawk.model.sca.impl.ScaAbstractPropertyImpl#getDescription <em>Description</em>}</li>
+ *        <li>{@link gov.redhawk.model.sca.impl.ScaAbstractPropertyImpl#getId <em>Id</em>}</li>
+ *        <li>{@link gov.redhawk.model.sca.impl.ScaAbstractPropertyImpl#getMode <em>Mode</em>}</li>
+ *        <li>{@link gov.redhawk.model.sca.impl.ScaAbstractPropertyImpl#getName <em>Name</em>}</li>
+ *        <li>{@link gov.redhawk.model.sca.impl.ScaAbstractPropertyImpl#isIgnoreRemoteSet <em>Ignore Remote Set</em>}</li>
+ *        </ul>
+ *        </p>
  *
  * @generated
  */
@@ -63,6 +64,7 @@ public abstract class ScaAbstractPropertyImpl< T extends AbstractProperty > exte
 	 * The cached value of the '{@link #getDefinition() <em>Definition</em>}' reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * 
 	 * @see #getDefinition()
 	 * @generated
 	 * @ordered
@@ -72,6 +74,7 @@ public abstract class ScaAbstractPropertyImpl< T extends AbstractProperty > exte
 	 * The default value of the '{@link #getDescription() <em>Description</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * 
 	 * @see #getDescription()
 	 * @generated
 	 * @ordered
@@ -81,6 +84,7 @@ public abstract class ScaAbstractPropertyImpl< T extends AbstractProperty > exte
 	 * The cached value of the '{@link #getDescription() <em>Description</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * 
 	 * @see #getDescription()
 	 * @generated
 	 * @ordered
@@ -90,6 +94,7 @@ public abstract class ScaAbstractPropertyImpl< T extends AbstractProperty > exte
 	 * The default value of the '{@link #getId() <em>Id</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * 
 	 * @see #getId()
 	 * @generated
 	 * @ordered
@@ -99,6 +104,7 @@ public abstract class ScaAbstractPropertyImpl< T extends AbstractProperty > exte
 	 * The cached value of the '{@link #getId() <em>Id</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * 
 	 * @see #getId()
 	 * @generated
 	 * @ordered
@@ -108,6 +114,7 @@ public abstract class ScaAbstractPropertyImpl< T extends AbstractProperty > exte
 	 * The default value of the '{@link #getMode() <em>Mode</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * 
 	 * @see #getMode()
 	 * @generated
 	 * @ordered
@@ -117,6 +124,7 @@ public abstract class ScaAbstractPropertyImpl< T extends AbstractProperty > exte
 	 * The cached value of the '{@link #getMode() <em>Mode</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * 
 	 * @see #getMode()
 	 * @generated
 	 * @ordered
@@ -126,6 +134,7 @@ public abstract class ScaAbstractPropertyImpl< T extends AbstractProperty > exte
 	 * The default value of the '{@link #getName() <em>Name</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * 
 	 * @see #getName()
 	 * @generated
 	 * @ordered
@@ -135,6 +144,7 @@ public abstract class ScaAbstractPropertyImpl< T extends AbstractProperty > exte
 	 * The cached value of the '{@link #getName() <em>Name</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * 
 	 * @see #getName()
 	 * @generated
 	 * @ordered
@@ -144,6 +154,7 @@ public abstract class ScaAbstractPropertyImpl< T extends AbstractProperty > exte
 	 * The default value of the '{@link #isIgnoreRemoteSet() <em>Ignore Remote Set</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * 
 	 * @see #isIgnoreRemoteSet()
 	 * @generated
 	 * @ordered
@@ -153,6 +164,7 @@ public abstract class ScaAbstractPropertyImpl< T extends AbstractProperty > exte
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	protected ScaAbstractPropertyImpl() {
@@ -162,6 +174,7 @@ public abstract class ScaAbstractPropertyImpl< T extends AbstractProperty > exte
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -172,6 +185,7 @@ public abstract class ScaAbstractPropertyImpl< T extends AbstractProperty > exte
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -191,6 +205,7 @@ public abstract class ScaAbstractPropertyImpl< T extends AbstractProperty > exte
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public T basicGetDefinition() {
@@ -252,6 +267,7 @@ public abstract class ScaAbstractPropertyImpl< T extends AbstractProperty > exte
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public void setDefinitionGen(T newDefinition) {
@@ -264,6 +280,7 @@ public abstract class ScaAbstractPropertyImpl< T extends AbstractProperty > exte
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * 
 	 * @generated NOT
 	 */
 	@Override
@@ -284,6 +301,7 @@ public abstract class ScaAbstractPropertyImpl< T extends AbstractProperty > exte
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -294,6 +312,7 @@ public abstract class ScaAbstractPropertyImpl< T extends AbstractProperty > exte
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -307,6 +326,7 @@ public abstract class ScaAbstractPropertyImpl< T extends AbstractProperty > exte
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -317,6 +337,7 @@ public abstract class ScaAbstractPropertyImpl< T extends AbstractProperty > exte
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -330,6 +351,7 @@ public abstract class ScaAbstractPropertyImpl< T extends AbstractProperty > exte
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -340,6 +362,7 @@ public abstract class ScaAbstractPropertyImpl< T extends AbstractProperty > exte
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -353,6 +376,7 @@ public abstract class ScaAbstractPropertyImpl< T extends AbstractProperty > exte
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -363,6 +387,7 @@ public abstract class ScaAbstractPropertyImpl< T extends AbstractProperty > exte
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -375,8 +400,9 @@ public abstract class ScaAbstractPropertyImpl< T extends AbstractProperty > exte
 
 	/**
 	 * <!-- begin-user-doc -->
+	 * 
 	 * @since 13.0
-	 * <!-- end-user-doc -->
+	 *        <!-- end-user-doc -->
 	 * @generated NOT
 	 */
 	@Override
@@ -398,8 +424,9 @@ public abstract class ScaAbstractPropertyImpl< T extends AbstractProperty > exte
 
 	/**
 	 * <!-- begin-user-doc -->
+	 * 
 	 * @since 13.0
-	 * <!-- end-user-doc -->
+	 *        <!-- end-user-doc -->
 	 * @generated NOT
 	 */
 	@Override
@@ -426,8 +453,9 @@ public abstract class ScaAbstractPropertyImpl< T extends AbstractProperty > exte
 
 	/**
 	 * <!-- begin-user-doc -->
+	 * 
 	 * @since 13.0
-	 * <!-- end-user-doc -->
+	 *        <!-- end-user-doc -->
 	 * @generated NOT
 	 */
 	@Override
@@ -435,8 +463,9 @@ public abstract class ScaAbstractPropertyImpl< T extends AbstractProperty > exte
 
 	/**
 	 * <!-- begin-user-doc -->
+	 * 
 	 * @since 13.0
-	 * <!-- end-user-doc -->
+	 *        <!-- end-user-doc -->
 	 * @generated NOT
 	 */
 	@Override
@@ -456,8 +485,9 @@ public abstract class ScaAbstractPropertyImpl< T extends AbstractProperty > exte
 
 	/**
 	 * <!-- begin-user-doc -->
+	 * 
 	 * @since 13.0
-	 * <!-- end-user-doc -->
+	 *        <!-- end-user-doc -->
 	 * @generated NOT
 	 */
 	@Override
@@ -476,8 +506,9 @@ public abstract class ScaAbstractPropertyImpl< T extends AbstractProperty > exte
 
 	/**
 	 * <!-- begin-user-doc -->
+	 * 
 	 * @since 14.0
-	 * <!-- end-user-doc -->
+	 *        <!-- end-user-doc -->
 	 * @generated NOT
 	 */
 	@Override
@@ -489,8 +520,9 @@ public abstract class ScaAbstractPropertyImpl< T extends AbstractProperty > exte
 
 	/**
 	 * <!-- begin-user-doc -->
+	 * 
 	 * @since 14.0
-	 * <!-- end-user-doc -->
+	 *        <!-- end-user-doc -->
 	 * @generated NOT
 	 */
 	@Override
@@ -498,8 +530,9 @@ public abstract class ScaAbstractPropertyImpl< T extends AbstractProperty > exte
 
 	/**
 	 * <!-- begin-user-doc -->
+	 * 
 	 * @since 14.0
-	 * <!-- end-user-doc -->
+	 *        <!-- end-user-doc -->
 	 * @generated NOT
 	 */
 	@Override
@@ -507,8 +540,9 @@ public abstract class ScaAbstractPropertyImpl< T extends AbstractProperty > exte
 
 	/**
 	 * <!-- begin-user-doc -->
+	 * 
 	 * @since 15.0
-	 * <!-- end-user-doc -->
+	 *        <!-- end-user-doc -->
 	 * @generated NOT
 	 */
 	@Override
@@ -521,6 +555,7 @@ public abstract class ScaAbstractPropertyImpl< T extends AbstractProperty > exte
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -547,6 +582,7 @@ public abstract class ScaAbstractPropertyImpl< T extends AbstractProperty > exte
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@SuppressWarnings("unchecked")
@@ -578,6 +614,7 @@ public abstract class ScaAbstractPropertyImpl< T extends AbstractProperty > exte
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -608,6 +645,7 @@ public abstract class ScaAbstractPropertyImpl< T extends AbstractProperty > exte
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -632,6 +670,7 @@ public abstract class ScaAbstractPropertyImpl< T extends AbstractProperty > exte
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override

@@ -14,9 +14,7 @@ package gov.redhawk.model.sca.tests;
 import gov.redhawk.model.sca.ScaDomainManagerFileSystem;
 import org.junit.Assert;
 import junit.textui.TestRunner;
-
 import org.eclipse.emf.transaction.util.TransactionUtil;
-
 import CF.FileManagerHelper;
 
 /**
@@ -54,7 +52,7 @@ public class ScaDomainManagerFileSystemTest extends ScaFileManagerTest {
 	 */
 	@Override
 	protected ScaDomainManagerFileSystem getFixture() {
-		return (ScaDomainManagerFileSystem)fixture;
+		return (ScaDomainManagerFileSystem) fixture;
 	}
 
 	private TestEnvirornment env;
@@ -91,4 +89,4 @@ public class ScaDomainManagerFileSystemTest extends ScaFileManagerTest {
 		return FileManagerHelper.id();
 	}
 
-} //ScaDomainManagerFileSystemTest
+} // ScaDomainManagerFileSystemTest

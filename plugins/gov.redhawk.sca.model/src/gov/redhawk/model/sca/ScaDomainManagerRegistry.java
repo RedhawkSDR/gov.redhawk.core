@@ -21,16 +21,17 @@ import org.eclipse.emf.ecore.resource.Resource;
 /**
  * <!-- begin-user-doc -->
  * A representation of the model object '<em><b>Domain Manager Registry</b></em>'.
+ * 
  * @since 8.0
  * @noimplement This interface is not intended to be implemented by clients.
- * <!-- end-user-doc -->
+ *              <!-- end-user-doc -->
  *
- * <p>
- * The following features are supported:
- * <ul>
- * <li>{@link gov.redhawk.model.sca.ScaDomainManagerRegistry#getDomains <em>Domains</em>}</li>
- * </ul>
- * </p>
+ *              <p>
+ *              The following features are supported:
+ *              <ul>
+ *              <li>{@link gov.redhawk.model.sca.ScaDomainManagerRegistry#getDomains <em>Domains</em>}</li>
+ *              </ul>
+ *              </p>
  *
  * @see gov.redhawk.model.sca.ScaPackage#getScaDomainManagerRegistry()
  * @model extendedMetaData="name='ScaDomainManagerRegistry' kind='elementOnly'"
@@ -42,14 +43,15 @@ public interface ScaDomainManagerRegistry extends IDisposable {
 	 * The list contents are of type {@link gov.redhawk.model.sca.ScaDomainManager}.
 	 * <!-- begin-user-doc -->
 	 * <p>
-	 * If the meaning of the '<em>Domains</em>' containment reference list isn't clear,
-	 * there really should be more of a description here...
+	 * If the meaning of the '<em>Domains</em>' containment reference list isn't clear, there really should be more of a
+	 * description here...
 	 * </p>
 	 * <!-- end-user-doc -->
+	 * 
 	 * @return the value of the '<em>Domains</em>' containment reference list.
 	 * @see gov.redhawk.model.sca.ScaPackage#getScaDomainManagerRegistry_Domains()
 	 * @model containment="true" resolveProxies="true"
-	 * extendedMetaData="kind='element' name='domain'"
+	 *        extendedMetaData="kind='element' name='domain'"
 	 * @generated
 	 */
 	EList<ScaDomainManager> getDomains();
@@ -57,6 +59,7 @@ public interface ScaDomainManagerRegistry extends IDisposable {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * 
 	 * @model
 	 * @generated
 	 */
@@ -70,8 +73,9 @@ public interface ScaDomainManagerRegistry extends IDisposable {
 
 	/**
 	 * <!-- begin-user-doc -->
+	 * 
 	 * @since 19.1
-	 * <!-- end-user-doc -->
+	 *        <!-- end-user-doc -->
 	 * @model
 	 * @generated
 	 */

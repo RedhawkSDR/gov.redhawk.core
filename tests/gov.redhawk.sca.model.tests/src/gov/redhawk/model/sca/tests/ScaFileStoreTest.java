@@ -13,10 +13,8 @@ package gov.redhawk.model.sca.tests;
 
 import gov.redhawk.model.sca.RefreshDepth;
 import gov.redhawk.model.sca.ScaFileStore;
-
 import org.eclipse.emf.common.util.EList;
 import org.junit.Assert;
-
 import junit.textui.TestRunner;
 
 /**
@@ -26,7 +24,8 @@ import junit.textui.TestRunner;
  * <p>
  * The following operations are tested:
  * <ul>
- *   <li>{@link gov.redhawk.model.sca.ScaFileStore#fetchChildren(org.eclipse.core.runtime.IProgressMonitor) <em>Fetch Children</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.ScaFileStore#fetchChildren(org.eclipse.core.runtime.IProgressMonitor) <em>Fetch
+ * Children</em>}</li>
  * </ul>
  * </p>
  * @generated
@@ -59,7 +58,7 @@ public class ScaFileStoreTest extends IStatusProviderTest {
 	 */
 	@Override
 	protected ScaFileStore getFixture() {
-		return (ScaFileStore)fixture;
+		return (ScaFileStore) fixture;
 	}
 
 	/**
@@ -87,7 +86,8 @@ public class ScaFileStoreTest extends IStatusProviderTest {
 	}
 
 	/**
-	 * Tests the '{@link gov.redhawk.model.sca.ScaFileStore#fetchChildren(org.eclipse.core.runtime.IProgressMonitor) <em>Fetch Children</em>}' operation.
+	 * Tests the '{@link gov.redhawk.model.sca.ScaFileStore#fetchChildren(org.eclipse.core.runtime.IProgressMonitor)
+	 * <em>Fetch Children</em>}' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @see gov.redhawk.model.sca.ScaFileStore#fetchChildren(org.eclipse.core.runtime.IProgressMonitor)
@@ -106,11 +106,14 @@ public class ScaFileStoreTest extends IStatusProviderTest {
 	}
 
 	/**
-	 * Tests the '{@link gov.redhawk.model.sca.IRefreshable#refresh(org.eclipse.core.runtime.IProgressMonitor, gov.redhawk.model.sca.RefreshDepth) <em>Refresh</em>}' operation.
+	 * Tests the '
+	 * {@link gov.redhawk.model.sca.IRefreshable#refresh(org.eclipse.core.runtime.IProgressMonitor, gov.redhawk.model.sca.RefreshDepth)
+	 * <em>Refresh</em>}' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @throws InterruptedException 
-	 * @see gov.redhawk.model.sca.IRefreshable#refresh(org.eclipse.core.runtime.IProgressMonitor, gov.redhawk.model.sca.RefreshDepth)
+	 * @throws InterruptedException
+	 * @see gov.redhawk.model.sca.IRefreshable#refresh(org.eclipse.core.runtime.IProgressMonitor,
+	 * gov.redhawk.model.sca.RefreshDepth)
 	 * @generated NOT
 	 */
 	public void testRefresh__IProgressMonitor_RefreshDepth() throws InterruptedException {
@@ -131,4 +134,4 @@ public class ScaFileStoreTest extends IStatusProviderTest {
 		// BEGIN GENERATED CODE
 	}
 
-} //ScaFileStoreTest
+} // ScaFileStoreTest

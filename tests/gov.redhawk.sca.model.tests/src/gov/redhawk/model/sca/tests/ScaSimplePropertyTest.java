@@ -19,11 +19,9 @@ import gov.redhawk.model.sca.ScaWaveform;
 import gov.redhawk.model.sca.commands.ScaModelCommand;
 import gov.redhawk.model.sca.tests.stubs.ScaTestConstaints;
 import junit.textui.TestRunner;
-
 import org.eclipse.emf.transaction.util.TransactionUtil;
 import org.jacorb.JacorbUtil;
 import org.junit.Assert;
-
 import CF.PropertySetPackage.InvalidConfiguration;
 import CF.PropertySetPackage.PartialConfiguration;
 
@@ -62,7 +60,7 @@ public class ScaSimplePropertyTest extends ScaAbstractPropertyTest {
 	 */
 	@Override
 	protected ScaSimpleProperty getFixture() {
-		return (ScaSimpleProperty)fixture;
+		return (ScaSimpleProperty) fixture;
 	}
 
 	private TestEnvirornment env;
@@ -139,7 +137,8 @@ public class ScaSimplePropertyTest extends ScaAbstractPropertyTest {
 	}
 
 	/**
-	 * Tests the '{@link gov.redhawk.model.sca.ScaSimpleProperty#setValue(java.lang.Object) <em>Value</em>}' feature setter.
+	 * Tests the '{@link gov.redhawk.model.sca.ScaSimpleProperty#setValue(java.lang.Object) <em>Value</em>}' feature
+	 * setter.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @see gov.redhawk.model.sca.ScaSimpleProperty#setValue(java.lang.Object)
@@ -162,11 +161,12 @@ public class ScaSimplePropertyTest extends ScaAbstractPropertyTest {
 	}
 
 	/**
-	 * Tests the '{@link gov.redhawk.model.sca.ScaSimpleProperty#setRemoteValue(java.lang.Object) <em>Set Remote Value</em>}' operation.
+	 * Tests the '{@link gov.redhawk.model.sca.ScaSimpleProperty#setRemoteValue(java.lang.Object) <em>Set Remote
+	 * Value</em>}' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @throws InvalidConfiguration 
-	 * @throws PartialConfiguration 
+	 * @throws InvalidConfiguration
+	 * @throws PartialConfiguration
 	 * @see gov.redhawk.model.sca.ScaSimpleProperty#setRemoteValue(java.lang.Object)
 	 * @generated NOT
 	 */
@@ -176,4 +176,4 @@ public class ScaSimplePropertyTest extends ScaAbstractPropertyTest {
 		// BEGIN GENERATED CODE
 	}
 
-} //ScaSimplePropertyTest
+} // ScaSimplePropertyTest
