@@ -19,6 +19,8 @@ import java.util.ArrayList;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
+import mil.jpeojtrs.sca.scd.AbstractPort;
+
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
@@ -199,19 +201,29 @@ public class ScaLabelProvider extends ScaModelAdapterFactoryLabelProvider implem
 	public String getToolTipText(final Object element) {
 		final StringBuilder toolTip = new StringBuilder();
 
+		String portDescription = null;
 		if (element instanceof ScaPort< ? , ? >) {
-			final ScaPort< ? , ? > port = (ScaPort< ? , ? >) element;
-			toolTip.append(port.getProfileObj().getRepID());
+			final ScaPort< ? , ? > scaPort = (ScaPort< ? , ? >) element;
+			final AbstractPort port = scaPort.getProfileObj();
+			toolTip.append(port.getRepID());
+			portDescription = port.getDescription();
 		}
 
 		if (element instanceof IStatusProvider) {
 			final IStatusProvider dpo = (IStatusProvider) element;
 			if (!dpo.getStatus().isOK()) {
 				if (toolTip.length() > 0) {
-					toolTip.append("\n");
+					toolTip.append('\n');
 				}
 				toolTip.append(dpo.getStatus().getMessage());
 			}
+		}
+
+		if (portDescription != null && portDescription.length() > 0) {
+			if (toolTip.length() > 0) {
+				toolTip.append('\n');
+			}
+			toolTip.append(portDescription);
 		}
 
 		if (toolTip.length() > 0) {
