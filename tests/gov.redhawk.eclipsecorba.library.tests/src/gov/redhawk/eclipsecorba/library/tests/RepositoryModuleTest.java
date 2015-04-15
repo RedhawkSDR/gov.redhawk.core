@@ -121,6 +121,7 @@ public class RepositoryModuleTest extends TestCase {
 		setFixture(library);
 		final URIPathSet uriPath = LibraryFactory.eINSTANCE.createURIPathSet();
 		uriPath.getDirs().add(LibraryTestUtil.getURI("idl"));
+		uriPath.getDirs().add(LibraryTestUtil.getURI("idl/COS"));
 		library.getPaths().add(uriPath);
 
 		editingDomain.getCommandStack().execute(new AddCommand(editingDomain, libraryResource.getContents(), this.fixture));
