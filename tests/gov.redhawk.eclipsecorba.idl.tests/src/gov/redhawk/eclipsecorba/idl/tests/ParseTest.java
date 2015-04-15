@@ -18,9 +18,12 @@ import gov.redhawk.eclipsecorba.idl.util.IdlResourceImpl;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.Enumeration;
+import java.util.List;
 
 import org.junit.Assert;
+
 import junit.framework.TestCase;
 
 import org.eclipse.core.runtime.FileLocator;
@@ -38,9 +41,12 @@ public class ParseTest extends TestCase {
 	@Override
 	protected void setUp() throws Exception {
 		final ResourceSet set = new ResourceSetImpl();
-		final URL url = FileLocator.toFileURL(FileLocator.find(IdlTestPlugin.getDefault().getBundle(), new Path("idl"), null));
-		final URI uri = URI.createURI(url.toURI().toString());
-		set.getLoadOptions().put(IdlResourceImpl.INCLUDE_PATHS, uri);
+		final URL baseUrl = FileLocator.toFileURL(FileLocator.find(IdlTestPlugin.getDefault().getBundle(), new Path("idl"), null));
+		final URL cosUrl = new URL(baseUrl, "COS");
+		final List<URI> includePaths = new ArrayList<URI>();
+		includePaths.add(URI.createURI(baseUrl.toURI().toString()));
+		includePaths.add(URI.createURI(cosUrl.toURI().toString()));
+		set.getLoadOptions().put(IdlResourceImpl.INCLUDE_PATHS, includePaths);
 		this.resourceSet = set;
 	}
 
@@ -65,17 +71,6 @@ public class ParseTest extends TestCase {
 		}
 	}
 
-//	public void test_parse_Delay_idl() throws Exception { // SUPPRESS CHECKSTYLE Method Name
-//		final URI uri = URI.createURI(FileLocator
-//		        .toFileURL(FileLocator.find(IdlTestPlugin.getDefault().getBundle(), new Path("idl/ossie/REDHAWK/Delay.idl"), null)).toURI().toString());
-//		try {
-//			final Resource resource = this.resourceSet.getResource(uri, true);
-//			assertParsedFine(resource);
-//		} catch (final Exception e) {
-//			throw new Exception("Failed to parse idl: " + uri.lastSegment(), e);
-//		}
-//	}
-
 	private URI getURI(final String idlFile) throws IOException {
 		final URL url = FileLocator.toFileURL(FileLocator.find(IdlTestPlugin.getDefault().getBundle(), new Path(idlFile), null));
 		return URI.createURI(url.toString());
@@ -85,42 +80,42 @@ public class ParseTest extends TestCase {
 		Assert.assertTrue("Failed to parse: " + resource.getURI().path(), resource.getEObject("/") instanceof Specification);
 	}
 
-	public void testParse_lab_tasking() throws Exception { // SUPPRESS CHECKSTYLE Method Name
+	public void test_parse_lab_tasking() throws Exception { // SUPPRESS CHECKSTYLE Method Name
 		final Resource resource = this.resourceSet.getResource(getURI("idl/lab_tasking.idl"), true);
 		assertParsedFine(resource);
 	}
 
-	public void testParse_cf() throws Exception { // SUPPRESS CHECKSTYLE Method Name
+	public void test_parse_cf() throws Exception { // SUPPRESS CHECKSTYLE Method Name
 		final Resource resource = this.resourceSet.getResource(getURI("idl/ossie/CF/cf.idl"), true);
 		assertParsedFine(resource);
 	}
 
-	public void testParse_AggregateDevices() throws Exception { // SUPPRESS CHECKSTYLE Method Name
+	public void test_parse_AggregateDevices() throws Exception { // SUPPRESS CHECKSTYLE Method Name
 		final Resource resource = this.resourceSet.getResource(getURI("idl/ossie/CF/AggregateDevices.idl"), true);
 		assertParsedFine(resource);
 	}
 
-	public void testParse_PortTypes() throws Exception { // SUPPRESS CHECKSTYLE Method Name
+	public void test_parse_PortTypes() throws Exception { // SUPPRESS CHECKSTYLE Method Name
 		final Resource resource = this.resourceSet.getResource(getURI("idl/ossie/CF/PortTypes.idl"), true);
 		assertParsedFine(resource);
 	}
 
-	public void testParse_StandardEvent() throws Exception { // SUPPRESS CHECKSTYLE Method Name
+	public void test_parse_StandardEvent() throws Exception { // SUPPRESS CHECKSTYLE Method Name
 		final Resource resource = this.resourceSet.getResource(getURI("idl/ossie/CF/StandardEvent.idl"), true);
 		assertParsedFine(resource);
 	}
 
-	public void testParse_bio_dataChar() throws Exception { // SUPPRESS CHECKSTYLE Method Name
+	public void test_parse_bio_dataChar() throws Exception { // SUPPRESS CHECKSTYLE Method Name
 		final Resource resource = this.resourceSet.getResource(getURI("idl/ossie/BULKIO/bio_dataChar.idl"), true);
 		assertParsedFine(resource);
 	}
 
-	public void testParse_bio_dataDouble() throws Exception { // SUPPRESS CHECKSTYLE Method Name
+	public void test_parse_bio_dataDouble() throws Exception { // SUPPRESS CHECKSTYLE Method Name
 		final Resource resource = this.resourceSet.getResource(getURI("idl/ossie/BULKIO/bio_dataDouble.idl"), true);
 		assertParsedFine(resource);
 	}
 
-	public void testParse_bio_dataFile() throws Exception { // SUPPRESS CHECKSTYLE Method Name
+	public void test_parse_bio_dataFile() throws Exception { // SUPPRESS CHECKSTYLE Method Name
 		final Resource resource = this.resourceSet.getResource(getURI("idl/ossie/BULKIO/bio_dataFile.idl"), true);
 		assertParsedFine(resource);
 	}
