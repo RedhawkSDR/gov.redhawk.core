@@ -3817,6 +3817,7 @@ public interface ScaPackage extends EPackage {
 	/**
 	 * The feature id for the '<em><b>Sequences</b></em>' containment reference list.
 	 * <!-- begin-user-doc -->
+	 * @since 19.1
 	 * <!-- end-user-doc -->
 	 * 
 	 * @generated
@@ -6286,6 +6287,7 @@ public interface ScaPackage extends EPackage {
 	 * Returns the meta object for the containment reference list '
 	 * {@link gov.redhawk.model.sca.ScaStructProperty#getSequences <em>Sequences</em>}'.
 	 * <!-- begin-user-doc -->
+	 * @since 19.1
 	 * <!-- end-user-doc -->
 	 * 
 	 * @return the meta object for the containment reference list '<em>Sequences</em>'.
@@ -7959,6 +7961,7 @@ public interface ScaPackage extends EPackage {
 		/**
 		 * The meta object literal for the '<em><b>Sequences</b></em>' containment reference list feature.
 		 * <!-- begin-user-doc -->
+		 * @since 19.1
 		 * <!-- end-user-doc -->
 		 * 
 		 * @generated

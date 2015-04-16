@@ -30,6 +30,7 @@ import mil.jpeojtrs.sca.prf.StructSequence;
 import mil.jpeojtrs.sca.prf.provider.SimpleSequenceRefItemProvider;
 
 /**
+ * @since 3.1
  * 
  */
 public class PropertiesEditorSimpleSequenceRefItemProvider extends SimpleSequenceRefItemProvider {
