@@ -132,11 +132,14 @@ public class PropertyHandler {
 			if (selection instanceof AbstractProperty) {
 				final Property prop = Property.getProperty((EObject) selection);
 				//Check for props that can belong to other props.
-				if (prop == Property.SIMPLE || prop == Property.STRUCT) {
+				if (prop == Property.SIMPLE || prop == Property.SIMPLE_SEQUENCE || prop == Property.STRUCT) {
 					final EObject container = ((EObject) selection).eContainer();
-					if (container instanceof Struct) {
+					if (container instanceof Struct && prop == Property.SIMPLE) {
 						command.append(editingDomainItemProvider.createCommand(container, editingDomain, RemoveCommand.class, new CommandParameter(container,
 						        PrfPackage.Literals.STRUCT__SIMPLE, Collections.singleton(selection))));
+					} else if (container instanceof Struct && prop == Property.SIMPLE_SEQUENCE) {
+						command.append(editingDomainItemProvider.createCommand(container, editingDomain, RemoveCommand.class, new CommandParameter(container,
+					        PrfPackage.Literals.STRUCT__SIMPLE_SEQUENCE, Collections.singleton(selection))));
 					} else if (container instanceof StructSequence) {
 						command.append(SetCommand.create(editingDomain, container, PrfPackage.Literals.STRUCT_SEQUENCE__STRUCT, SetCommand.UNSET_VALUE));
 					} else {
