@@ -106,6 +106,7 @@ public class ScaExecutableDeviceImpl extends ScaLoadableDeviceImpl<ExecutableDev
 
 	/**
 	 * <!-- begin-user-doc -->
+	 * @since 19.1
 	 * <!-- end-user-doc -->
 	 * 
 	 * @generated

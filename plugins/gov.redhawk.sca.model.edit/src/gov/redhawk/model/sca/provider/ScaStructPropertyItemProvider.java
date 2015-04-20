@@ -77,6 +77,7 @@ public class ScaStructPropertyItemProvider extends ScaAbstractPropertyItemProvid
 	/**
 	 * This adds a property descriptor for the Simples feature.
 	 * <!-- begin-user-doc -->
+	 * @since 12.3
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -102,6 +103,9 @@ public class ScaStructPropertyItemProvider extends ScaAbstractPropertyItemProvid
 		itemPropertyDescriptors.add(new ScaStructValuePropertyDescriptor(object, propertyDescriptor, getRootAdapterFactory()));
 	}
 
+	/**
+	 * @since 12.3
+	 */
 	protected void addSequencesPropertyDescriptor(Object object) {
 		ItemPropertyDescriptor propertyDescriptor = createItemPropertyDescriptor(((ComposeableAdapterFactory) adapterFactory).getRootAdapterFactory(),
 			getResourceLocator(), getString("_UI_ScaStructProperty_sequences_feature"),
