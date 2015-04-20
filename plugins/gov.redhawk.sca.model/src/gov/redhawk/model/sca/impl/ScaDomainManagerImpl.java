@@ -128,6 +128,7 @@ import CF.DomainManagerPackage.InvalidIdentifier;
 import CF.DomainManagerPackage.NotConnected;
 import CF.DomainManagerPackage.RegisterError;
 import CF.DomainManagerPackage.UnregisterError;
+import CF.PropertySetPackage.AlreadyInitialized;
 import CF.PropertySetPackage.InvalidConfiguration;
 import CF.PropertySetPackage.PartialConfiguration;
 
@@ -2239,6 +2240,20 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 			throw new IllegalStateException("CORBA Object is Null");
 		}
 		domMgr.unregisterService(unregisteringService, name);
+		// BEGIN GENERATED CODE
+	}
+
+	/**
+	 * @since 19.1
+	 */
+	@Override
+	public void initializeProperties(final DataType[] configProperties) throws AlreadyInitialized, InvalidConfiguration, PartialConfiguration {
+		// END GENERATED CODE
+		DomainManager domMgr = fetchNarrowedObject(null);
+		if (domMgr == null) {
+			throw new IllegalStateException("CORBA Object is null");
+		}
+		domMgr.initializeProperties(configProperties);
 		// BEGIN GENERATED CODE
 	}
 

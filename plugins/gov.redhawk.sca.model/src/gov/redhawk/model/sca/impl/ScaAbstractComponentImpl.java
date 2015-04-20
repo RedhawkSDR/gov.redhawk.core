@@ -81,6 +81,7 @@ import CF.UnknownProperties;
 import CF.LifeCyclePackage.InitializeError;
 import CF.LifeCyclePackage.ReleaseError;
 import CF.PortSupplierPackage.UnknownPort;
+import CF.PropertySetPackage.AlreadyInitialized;
 import CF.PropertySetPackage.InvalidConfiguration;
 import CF.PropertySetPackage.PartialConfiguration;
 import CF.ResourcePackage.StartError;
@@ -865,6 +866,20 @@ public abstract class ScaAbstractComponentImpl< R extends Resource > extends Sca
 			throw new IllegalStateException("CORBA Object is Null");
 		}
 		resource.runTest(testid, testValues);
+		// BEGIN GENERATED CODE
+	}
+
+	/**
+	 * @since 19.1
+	 */
+	@Override
+	public void initializeProperties(final DataType[] configProperties) throws AlreadyInitialized, InvalidConfiguration, PartialConfiguration {
+		// END GENERATED CODE
+		R resource = fetchNarrowedObject(null);
+		if (resource == null) {
+			throw new IllegalStateException("CORBA Object is null");
+		}
+		resource.initializeProperties(configProperties);
 		// BEGIN GENERATED CODE
 	}
 

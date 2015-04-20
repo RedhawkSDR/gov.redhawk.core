@@ -77,6 +77,7 @@ import CF.PropertySetHelper;
 import CF.PropertySetOperations;
 import CF.UnknownProperties;
 import CF.PortSupplierPackage.UnknownPort;
+import CF.PropertySetPackage.AlreadyInitialized;
 import CF.PropertySetPackage.InvalidConfiguration;
 import CF.PropertySetPackage.PartialConfiguration;
 
@@ -664,6 +665,20 @@ public class ScaServiceImpl extends ScaPropertyContainerImpl<org.omg.CORBA.Objec
 		}
 		subMonitor.done();
 		return getProfileURI();
+	}
+
+	/**
+	 * @since 19.1
+	 */
+	@Override
+	public void initializeProperties(final DataType[] configProperties) throws AlreadyInitialized, InvalidConfiguration, PartialConfiguration {
+		// END GENERATED CODE
+		PropertySetOperations set = getPropertySet();
+		if (set == null) {
+			throw new IllegalStateException("CORBA Object is null, or service does not support IDL:CF/PropertySet:1.0");
+		}
+		set.initializeProperties(configProperties);
+		// BEGIN GENERATED CODE
 	}
 
 	@Override

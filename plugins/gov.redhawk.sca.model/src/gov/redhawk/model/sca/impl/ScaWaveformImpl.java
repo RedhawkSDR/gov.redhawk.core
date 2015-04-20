@@ -102,6 +102,7 @@ import CF.ApplicationPackage.ComponentProcessIdType;
 import CF.LifeCyclePackage.InitializeError;
 import CF.LifeCyclePackage.ReleaseError;
 import CF.PortSupplierPackage.UnknownPort;
+import CF.PropertySetPackage.AlreadyInitialized;
 import CF.PropertySetPackage.InvalidConfiguration;
 import CF.PropertySetPackage.PartialConfiguration;
 import CF.ResourcePackage.StartError;
@@ -1795,6 +1796,20 @@ public class ScaWaveformImpl extends ScaPropertyContainerImpl<Application, Softw
 			throw new IllegalStateException("CORBA Object is Null");
 		}
 		waveform.runTest(testid, testValues);
+		// BEGIN GENERATED CODE
+	}
+
+	/**
+	 * @since 19.1
+	 */
+	@Override
+	public void initializeProperties(final DataType[] configProperties) throws AlreadyInitialized, InvalidConfiguration, PartialConfiguration {
+		// END GENERATED CODE
+		Application waveform = fetchNarrowedObject(null);
+		if (waveform == null) {
+			throw new IllegalStateException("CORBA Object is null");
+		}
+		waveform.initializeProperties(configProperties);
 		// BEGIN GENERATED CODE
 	}
 

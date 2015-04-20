@@ -104,6 +104,7 @@ import CF.PropertiesHolder;
 import CF.UnknownProperties;
 import CF.DeviceManagerPackage.ServiceType;
 import CF.PortSupplierPackage.UnknownPort;
+import CF.PropertySetPackage.AlreadyInitialized;
 import CF.PropertySetPackage.InvalidConfiguration;
 import CF.PropertySetPackage.PartialConfiguration;
 
@@ -1101,6 +1102,20 @@ public class ScaDeviceManagerImpl extends ScaPropertyContainerImpl<DeviceManager
 	public String identifier() {
 		// END GENERATED CODE
 		return getIdentifier();
+		// BEGIN GENERATED CODE
+	}
+
+	/**
+	 * @since 19.1
+	 */
+	@Override
+	public void initializeProperties(final DataType[] configProperties) throws AlreadyInitialized, InvalidConfiguration, PartialConfiguration {
+		// END GENERATED CODE
+		DeviceManager devMgr = fetchNarrowedObject(null);
+		if (devMgr == null) {
+			throw new IllegalStateException("CORBA Object is null");
+		}
+		devMgr.initializeProperties(configProperties);
 		// BEGIN GENERATED CODE
 	}
 

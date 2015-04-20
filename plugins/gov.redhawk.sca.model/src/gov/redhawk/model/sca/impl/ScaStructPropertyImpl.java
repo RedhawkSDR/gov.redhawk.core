@@ -57,6 +57,7 @@ import CF.PropertiesHelper;
 import CF.PropertiesHolder;
 import CF.PropertySetOperations;
 import CF.UnknownProperties;
+import CF.PropertySetPackage.AlreadyInitialized;
 import CF.PropertySetPackage.InvalidConfiguration;
 import CF.PropertySetPackage.PartialConfiguration;
 
@@ -429,6 +430,14 @@ public class ScaStructPropertyImpl extends ScaAbstractPropertyImpl<Struct> imple
 		}
 		return null;
 		// BEGIN GENERATED CODE
+	}
+
+	/**
+	 * @since 19.1
+	 */
+	@Override
+	public void initializeProperties(final DataType[] configProperties) throws AlreadyInitialized, InvalidConfiguration, PartialConfiguration {
+		throw new IllegalStateException("This construct method should never be called");
 	}
 
 	/**
