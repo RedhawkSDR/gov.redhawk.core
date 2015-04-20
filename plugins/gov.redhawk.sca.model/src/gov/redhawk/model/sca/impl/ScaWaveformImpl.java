@@ -101,6 +101,7 @@ import CF.ApplicationPackage.ComponentElementType;
 import CF.ApplicationPackage.ComponentProcessIdType;
 import CF.LifeCyclePackage.InitializeError;
 import CF.LifeCyclePackage.ReleaseError;
+import CF.PortSupplierPackage.PortInfoType;
 import CF.PortSupplierPackage.UnknownPort;
 import CF.PropertySetPackage.AlreadyInitialized;
 import CF.PropertySetPackage.InvalidConfiguration;
@@ -1843,6 +1844,19 @@ public class ScaWaveformImpl extends ScaPropertyContainerImpl<Application, Softw
 			return scaPort.fetchNarrowedObject(null);
 		}
 		return null;
+		// BEGIN GENERATED CODE
+	}
+
+	/**
+	 * @since 19.1
+	 */
+	public PortInfoType[] getPortSet() {
+		// END GENERATED CODE
+		Application waveform = fetchNarrowedObject(null);
+		if (waveform == null) {
+			throw new IllegalStateException("CORBA Object is null");
+		}
+		return waveform.getPortSet();
 		// BEGIN GENERATED CODE
 	}
 

@@ -103,6 +103,7 @@ import CF.PortSupplierOperations;
 import CF.PropertiesHolder;
 import CF.UnknownProperties;
 import CF.DeviceManagerPackage.ServiceType;
+import CF.PortSupplierPackage.PortInfoType;
 import CF.PortSupplierPackage.UnknownPort;
 import CF.PropertySetPackage.AlreadyInitialized;
 import CF.PropertySetPackage.InvalidConfiguration;
@@ -1149,6 +1150,19 @@ public class ScaDeviceManagerImpl extends ScaPropertyContainerImpl<DeviceManager
 			return port.fetchNarrowedObject(null);
 		}
 		return null;
+		// BEGIN GENERATED CODE
+	}
+
+	/**
+	 * @since 19.1
+	 */
+	public PortInfoType[] getPortSet() {
+		// END GENERATED CODE
+		DeviceManager devMgr = fetchNarrowedObject(null);
+		if (devMgr == null) {
+			return null;
+		}
+		return devMgr.getPortSet();
 		// BEGIN GENERATED CODE
 	}
 

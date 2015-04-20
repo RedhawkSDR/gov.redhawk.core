@@ -80,6 +80,7 @@ import CF.UnknownIdentifier;
 import CF.UnknownProperties;
 import CF.LifeCyclePackage.InitializeError;
 import CF.LifeCyclePackage.ReleaseError;
+import CF.PortSupplierPackage.PortInfoType;
 import CF.PortSupplierPackage.UnknownPort;
 import CF.PropertySetPackage.AlreadyInitialized;
 import CF.PropertySetPackage.InvalidConfiguration;
@@ -914,6 +915,19 @@ public abstract class ScaAbstractComponentImpl< R extends Resource > extends Sca
 			return null;
 		}
 		return resource.getPort(name);
+		// BEGIN GENERATED CODE
+	}
+
+	/**
+	 * @since 19.1
+	 */
+	public PortInfoType[] getPortSet() {
+		// END GENERATED CODE
+		R resource = fetchNarrowedObject(null);
+		if (resource == null) {
+			return null;
+		}
+		return resource.getPortSet();
 		// BEGIN GENERATED CODE
 	}
 
