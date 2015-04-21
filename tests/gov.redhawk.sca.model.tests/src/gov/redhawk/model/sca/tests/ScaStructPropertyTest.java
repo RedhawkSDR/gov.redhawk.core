@@ -192,20 +192,6 @@ public class ScaStructPropertyTest extends ScaAbstractPropertyTest {
 	}
 
 	/**
-	 * Tests the '{@link gov.redhawk.model.sca.ScaStructProperty#getSequence(java.lang.String) <em>Get Sequence</em>}'
-	 * operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see gov.redhawk.model.sca.ScaStructProperty#getSequence(java.lang.String)
-	 * @generated
-	 */
-	public void testGetSequence__String() {
-		// TODO: implement this operation test method
-		// Ensure that you remove @generated or mark it @generated NOT
-		fail();
-	}
-
-	/**
 	 * Tests the '{@link gov.redhawk.model.sca.ScaStructProperty#setRemoteValue(mil.jpeojtrs.sca.cf.DataType[]) <em>Set
 	 * Remote Value</em>}' operation.
 	 * <!-- begin-user-doc -->
@@ -253,36 +239,6 @@ public class ScaStructPropertyTest extends ScaAbstractPropertyTest {
 		holder.value = new DataType[0];
 		getFixture().query(holder);
 		// BEGIN GENERATED CODE
-	}
-
-	/**
-	 * Tests the '
-	 * {@link CF.PropertySetOperations#registerPropertyListener(org.omg.CORBA.Object, org.eclipse.emf.common.util.EList, float)
-	 * <em>Register Property Listener</em>}' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see CF.PropertySetOperations#registerPropertyListener(org.omg.CORBA.Object, org.eclipse.emf.common.util.EList,
-	 * float)
-	 * @generated
-	 */
-	public void testRegisterPropertyListener__Object_EList_float() {
-		// TODO: implement this operation test method
-		// Ensure that you remove @generated or mark it @generated NOT
-		fail();
-	}
-
-	/**
-	 * Tests the '{@link CF.PropertySetOperations#unregisterPropertyListener(java.lang.String) <em>Unregister Property
-	 * Listener</em>}' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see CF.PropertySetOperations#unregisterPropertyListener(java.lang.String)
-	 * @generated
-	 */
-	public void testUnregisterPropertyListener__String() {
-		// TODO: implement this operation test method
-		// Ensure that you remove @generated or mark it @generated NOT
-		fail();
 	}
 
 	public void testStructOrder() {

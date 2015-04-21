@@ -228,24 +228,7 @@ public abstract class ScaAbstractComponentTest extends ScaPropertyContainerTest 
 	}
 
 	/**
-	 * Tests the '
-	 * {@link gov.redhawk.model.sca.ScaAbstractComponent#fetchProfile(org.eclipse.core.runtime.IProgressMonitor)
-	 * <em>Fetch Profile</em>}' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see gov.redhawk.model.sca.ScaAbstractComponent#fetchProfile(org.eclipse.core.runtime.IProgressMonitor)
-	 * @generated
-	 */
-	public void testFetchProfile__IProgressMonitor() {
-		// TODO: implement this operation test method
-		// Ensure that you remove @generated or mark it @generated NOT
-		fail();
-	}
-
-	/**
-	 * Tests the '
-	 * {@link gov.redhawk.model.sca.ScaAbstractComponent#fetchPorts(org.eclipse.core.runtime.IProgressMonitor) <em>Fetch
-	 * Ports</em>}' operation.
+	 * Tests the '{@link gov.redhawk.model.sca.ScaAbstractComponent#fetchPorts(org.eclipse.core.runtime.IProgressMonitor) <em>Fetch Ports</em>}' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @throws InterruptedException

@@ -282,19 +282,6 @@ public class ScaWaveformTest extends ScaPropertyContainerTest {
 	}
 
 	/**
-	 * Tests the '{@link gov.redhawk.model.sca.ScaWaveform#unsetIdentifier() <em>unsetIdentifier()</em>}' method.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see gov.redhawk.model.sca.ScaWaveform#unsetIdentifier()
-	 * @generated
-	 */
-	public void testUnsetIdentifier() {
-		// TODO: implement this test method
-		// Ensure that you remove @generated or mark it @generated NOT
-		fail();
-	}
-
-	/**
 	 * Tests the '{@link gov.redhawk.model.sca.ScaWaveform#isSetIdentifier() <em>isSetIdentifier()</em>}' method.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->

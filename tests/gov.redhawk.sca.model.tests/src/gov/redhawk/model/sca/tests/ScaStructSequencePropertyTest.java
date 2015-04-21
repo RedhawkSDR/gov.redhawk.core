@@ -233,36 +233,6 @@ public class ScaStructSequencePropertyTest extends ScaAbstractPropertyTest {
 
 	/**
 	 * Tests the '
-	 * {@link CF.PropertySetOperations#registerPropertyListener(org.omg.CORBA.Object, org.eclipse.emf.common.util.EList, float)
-	 * <em>Register Property Listener</em>}' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see CF.PropertySetOperations#registerPropertyListener(org.omg.CORBA.Object, org.eclipse.emf.common.util.EList,
-	 * float)
-	 * @generated
-	 */
-	public void testRegisterPropertyListener__Object_EList_float() {
-		// TODO: implement this operation test method
-		// Ensure that you remove @generated or mark it @generated NOT
-		fail();
-	}
-
-	/**
-	 * Tests the '{@link CF.PropertySetOperations#unregisterPropertyListener(java.lang.String) <em>Unregister Property
-	 * Listener</em>}' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see CF.PropertySetOperations#unregisterPropertyListener(java.lang.String)
-	 * @generated
-	 */
-	public void testUnregisterPropertyListener__String() {
-		// TODO: implement this operation test method
-		// Ensure that you remove @generated or mark it @generated NOT
-		fail();
-	}
-
-	/**
-	 * Tests the '
 	 * {@link gov.redhawk.model.sca.ScaStructSequenceProperty#setRemoteValue(mil.jpeojtrs.sca.cf.DataType[][]) <em>Set
 	 * Remote Value</em>}' operation.
 	 * <!-- begin-user-doc -->

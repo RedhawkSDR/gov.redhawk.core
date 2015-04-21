@@ -358,36 +358,6 @@ public abstract class ScaPropertyContainerTest extends CorbaObjWrapperTest {
 
 	/**
 	 * Tests the '
-	 * {@link CF.PropertySetOperations#registerPropertyListener(org.omg.CORBA.Object, org.eclipse.emf.common.util.EList, float)
-	 * <em>Register Property Listener</em>}' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see CF.PropertySetOperations#registerPropertyListener(org.omg.CORBA.Object, org.eclipse.emf.common.util.EList,
-	 * float)
-	 * @generated
-	 */
-	public void testRegisterPropertyListener__Object_EList_float() {
-		// TODO: implement this operation test method
-		// Ensure that you remove @generated or mark it @generated NOT
-		fail();
-	}
-
-	/**
-	 * Tests the '{@link CF.PropertySetOperations#unregisterPropertyListener(java.lang.String) <em>Unregister Property
-	 * Listener</em>}' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see CF.PropertySetOperations#unregisterPropertyListener(java.lang.String)
-	 * @generated
-	 */
-	public void testUnregisterPropertyListener__String() {
-		// TODO: implement this operation test method
-		// Ensure that you remove @generated or mark it @generated NOT
-		fail();
-	}
-
-	/**
-	 * Tests the '
 	 * {@link gov.redhawk.model.sca.ProfileObjectWrapper#fetchProfileObject(org.eclipse.core.runtime.IProgressMonitor)
 	 * <em>Fetch Profile Object</em>}' operation.
 	 * <!-- begin-user-doc -->

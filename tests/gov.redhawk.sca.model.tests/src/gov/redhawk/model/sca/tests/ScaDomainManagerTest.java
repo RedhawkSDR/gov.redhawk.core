@@ -481,21 +481,6 @@ public class ScaDomainManagerTest extends ScaPropertyContainerTest {
 
 	/**
 	 * Tests the '
-	 * {@link gov.redhawk.model.sca.ScaDomainManager#fetchEventChannels(org.eclipse.core.runtime.IProgressMonitor)
-	 * <em>Fetch Event Channels</em>}' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see gov.redhawk.model.sca.ScaDomainManager#fetchEventChannels(org.eclipse.core.runtime.IProgressMonitor)
-	 * @generated
-	 */
-	public void testFetchEventChannels__IProgressMonitor() {
-		// TODO: implement this operation test method
-		// Ensure that you remove @generated or mark it @generated NOT
-		fail();
-	}
-
-	/**
-	 * Tests the '
 	 * {@link mil.jpeojtrs.sca.cf.DomainManagerOperations#registerDevice(mil.jpeojtrs.sca.cf.Device, mil.jpeojtrs.sca.cf.DeviceManager)
 	 * <em>Register Device</em>}' operation.
 	 * <!-- begin-user-doc -->
@@ -574,22 +559,6 @@ public class ScaDomainManagerTest extends ScaPropertyContainerTest {
 		// END GENERATED CODE
 		getFixture().unregisterDevice(null);
 		// BEGIN GENERATED CODE
-	}
-
-	/**
-	 * Tests the '
-	 * {@link CF.DomainManagerOperations#createApplication(java.lang.String, java.lang.String, CF.DataType[], CF.DeviceAssignmentType[])
-	 * <em>Create Application</em>}' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see CF.DomainManagerOperations#createApplication(java.lang.String, java.lang.String, CF.DataType[],
-	 * CF.DeviceAssignmentType[])
-	 * @generated
-	 */
-	public void testCreateApplication__String_String_DataType_DeviceAssignmentType() {
-		// TODO: implement this operation test method
-		// Ensure that you remove @generated or mark it @generated NOT
-		fail();
 	}
 
 	/**
@@ -734,34 +703,6 @@ public class ScaDomainManagerTest extends ScaPropertyContainerTest {
 		// END GENERATED CODE
 		getFixture().unregisterFromEventChannel("", "");
 		// BEGIN GENERATED CODE
-	}
-
-	/**
-	 * Tests the '{@link CF.DomainManagerOperations#registerRemoteDomainManager(CF.DomainManager) <em>Register Remote
-	 * Domain Manager</em>}' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see CF.DomainManagerOperations#registerRemoteDomainManager(CF.DomainManager)
-	 * @generated
-	 */
-	public void testRegisterRemoteDomainManager__DomainManager() {
-		// TODO: implement this operation test method
-		// Ensure that you remove @generated or mark it @generated NOT
-		fail();
-	}
-
-	/**
-	 * Tests the '{@link CF.DomainManagerOperations#unregisterRemoteDomainManager(CF.DomainManager) <em>Unregister
-	 * Remote Domain Manager</em>}' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see CF.DomainManagerOperations#unregisterRemoteDomainManager(CF.DomainManager)
-	 * @generated
-	 */
-	public void testUnregisterRemoteDomainManager__DomainManager() {
-		// TODO: implement this operation test method
-		// Ensure that you remove @generated or mark it @generated NOT
-		fail();
 	}
 
 	/**

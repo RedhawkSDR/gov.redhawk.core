@@ -130,20 +130,4 @@ public class ScaExecutableDeviceTest extends ScaLoadableDeviceTest {
 		// BEGIN GENERATED CODE
 	}
 
-	/**
-	 * Tests the '
-	 * {@link CF.ExecutableDeviceOperations#executeLinked(java.lang.String, CF.DataType[], CF.DataType[], org.eclipse.emf.common.util.EList)
-	 * <em>Execute Linked</em>}' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see CF.ExecutableDeviceOperations#executeLinked(java.lang.String, CF.DataType[], CF.DataType[],
-	 * org.eclipse.emf.common.util.EList)
-	 * @generated
-	 */
-	public void testExecuteLinked__String_DataType_DataType_EList() {
-		// TODO: implement this operation test method
-		// Ensure that you remove @generated or mark it @generated NOT
-		fail();
-	}
-
 } // ScaExecutableDeviceTest
