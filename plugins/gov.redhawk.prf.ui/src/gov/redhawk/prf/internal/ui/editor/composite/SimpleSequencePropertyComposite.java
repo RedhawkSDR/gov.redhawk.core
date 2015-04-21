@@ -52,7 +52,7 @@ import org.eclipse.ui.forms.widgets.FormToolkit;
  * 
  */
 public class SimpleSequencePropertyComposite extends BasicSimplePropertyComposite {
-	private static final int NUM_COLUMNS = 3;
+	protected static final int NUM_COLUMNS = 3;
 
 	private TableViewer valuesViewer;
 	private final ComposedAdapterFactory adapterFactory;

@@ -173,9 +173,8 @@ public class SimpleSequencePropertyDetailsPage extends BasicSimplePropertyDetail
 		// by section toolbar icons)
 		getPage().alignSectionHeaders(getSection().getSection(), newSection);
 
-		this.composite = new SimpleSequencePropertyComposite(newSection, SWT.NONE, toolkit);
-		toolkit.adapt(this.composite);
-		newSection.setClient(this.composite);
+		this.composite = createComposite(newSection, toolkit);
+		newSection.setClient(composite);
 
 		// TODO Add DND support
 		//		final int dndOperations = DND.DROP_MOVE;
@@ -184,9 +183,15 @@ public class SimpleSequencePropertyDetailsPage extends BasicSimplePropertyDetail
 		//		valuesViewer.addDragSupport(dndOperations, transfers, new ViewerDragAdapter(valuesViewer));
 		//		valuesViewer.addDropSupport(dndOperations, transfers, new EditingDomainViewerDropAdapter(getEditingDomain(), valuesViewer));
 
-		return this.composite;
+		return composite;
 	}
 
+	public SimpleSequencePropertyComposite createComposite(Section parent, FormToolkit toolkit) {
+		SimpleSequencePropertyComposite retVal = new SimpleSequencePropertyComposite(parent, SWT.NONE, toolkit);
+		toolkit.adapt(retVal);
+		return retVal;
+	}
+	
 	/**
 	 * @param activeShell
 	 */
@@ -213,7 +218,7 @@ public class SimpleSequencePropertyDetailsPage extends BasicSimplePropertyDetail
 	}
 	
 	public SimpleSequencePropertyComposite getComposite() {
-		return composite;
+		return (SimpleSequencePropertyComposite) composite;
 	}
 
 	/**

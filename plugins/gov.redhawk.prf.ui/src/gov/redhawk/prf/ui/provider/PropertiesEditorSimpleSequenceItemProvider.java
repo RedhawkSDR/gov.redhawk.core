@@ -48,14 +48,16 @@ public class PropertiesEditorSimpleSequenceItemProvider extends SimpleSequenceIt
 	        final int index) {
 		if (feature == PrfPackage.Literals.PROPERTIES__SIMPLE_SEQUENCE || feature == PrfPackage.Literals.STRUCT__SIMPLE_SEQUENCE) {
 			final SimpleSequence sequence = (SimpleSequence) collection.toArray()[0];
-			sequence.setType(PropertyValueType.STRING);
-			sequence.setMode(AccessType.READWRITE);
-			final Kind kind = PrfFactory.eINSTANCE.createKind();
-			kind.setType(PropertyConfigurationType.CONFIGURE);
-			sequence.getKind().add(kind);
-			final Action action = PrfFactory.eINSTANCE.createAction();
-			action.setType(ActionType.EXTERNAL);
-			sequence.setAction(action);
+			if (feature == PrfPackage.Literals.PROPERTIES__SIMPLE_SEQUENCE) {
+				sequence.setType(PropertyValueType.STRING);
+				sequence.setMode(AccessType.READWRITE);
+				final Kind kind = PrfFactory.eINSTANCE.createKind();
+				kind.setType(PropertyConfigurationType.CONFIGURE);
+				sequence.getKind().add(kind);
+				final Action action = PrfFactory.eINSTANCE.createAction();
+				action.setType(ActionType.EXTERNAL);
+				sequence.setAction(action);
+			}
 			return super.createAddCommand(domain, owner, feature, Collections.singleton(sequence), index);
 		}
 		return super.createAddCommand(domain, owner, feature, collection, index);

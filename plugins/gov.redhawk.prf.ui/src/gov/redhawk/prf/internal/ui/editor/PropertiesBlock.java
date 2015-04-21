@@ -19,6 +19,7 @@ import gov.redhawk.prf.internal.ui.editor.detailspart.StructSequencePropertyDeta
 import gov.redhawk.prf.internal.ui.editor.detailspart.StructSequenceSimplePropertyDetailsPage;
 import gov.redhawk.prf.internal.ui.editor.detailspart.StructSequenceStructPropertyDetailsPage;
 import gov.redhawk.prf.internal.ui.editor.detailspart.StructSimplePropertyDetailsPage;
+import gov.redhawk.prf.internal.ui.editor.detailspart.StructSimpleSequencePropertyDetailsPage;
 import gov.redhawk.prf.ui.editor.page.PropertiesFormPage;
 import gov.redhawk.ui.editor.SCAMasterDetailsBlock;
 import gov.redhawk.ui.editor.ScaSection;
@@ -97,7 +98,12 @@ public class PropertiesBlock extends SCAMasterDetailsBlock {
 						return SimplePropertyDetailsPage.class;
 					}
 				} else if (object instanceof SimpleSequence) {
-					return SimpleSequencePropertyDetailsPage.class;
+					SimpleSequence ss = (SimpleSequence) object;
+					if (ss.eContainer() instanceof Struct) {
+						return StructSimpleSequencePropertyDetailsPage.class;
+					} else {
+						return SimpleSequencePropertyDetailsPage.class;
+					}
 				} else if (object instanceof Struct) {
 					Struct struct = (Struct) object;
 					if (struct.eContainer() instanceof StructSequence) {
@@ -124,6 +130,9 @@ public class PropertiesBlock extends SCAMasterDetailsBlock {
 				}
 				if (key == SimpleSequencePropertyDetailsPage.class) {
 					return new SimpleSequencePropertyDetailsPage(fSection);
+				}
+				if (key == StructSimpleSequencePropertyDetailsPage.class) {
+					return new StructSimpleSequencePropertyDetailsPage(fSection);
 				}
 				if (key == StructSequenceStructPropertyDetailsPage.class) {
 					return new StructSequenceStructPropertyDetailsPage(fSection);
