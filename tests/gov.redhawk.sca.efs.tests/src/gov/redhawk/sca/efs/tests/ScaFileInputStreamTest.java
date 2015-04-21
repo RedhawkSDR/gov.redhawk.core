@@ -57,7 +57,6 @@ public class ScaFileInputStreamTest {
 	/**
 	 * @throws java.lang.Exception
 	 */
-	@SuppressWarnings("restriction")
 	@Before
 	public void setUp() throws Exception {
 		ScaFileCache.INSTANCE.clear();

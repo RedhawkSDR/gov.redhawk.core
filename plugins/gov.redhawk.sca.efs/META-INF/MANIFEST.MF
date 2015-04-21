@@ -13,7 +13,7 @@ Require-Bundle: mil.jpeojtrs.sca.cf;bundle-version="1.0.0",
 Bundle-ActivationPolicy: lazy
 Bundle-Activator: gov.redhawk.sca.efs.ScaFileSystemPlugin
 Export-Package: gov.redhawk.efs.sca.internal;x-friends:="gov.redhawk.sca.efs.tests",
- gov.redhawk.efs.sca.internal.cache;x-internal:=true,
+ gov.redhawk.efs.sca.internal.cache;x-friends:="gov.redhawk.sca.efs.tests",
  gov.redhawk.efs.sca.server.internal;x-friends:="gov.redhawk.sca.efs.tests",
  gov.redhawk.sca.efs
 Bundle-Localization: plugin
