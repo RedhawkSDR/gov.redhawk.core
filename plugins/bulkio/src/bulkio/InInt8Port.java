@@ -42,12 +42,12 @@ import bulkio.linkStatistics;
 import bulkio.DataTransfer;
 import bulkio.Int8Size;
 
-
+import org.ossie.component.PortBase;
 
 /**
  * 
  */
-public class InInt8Port extends BULKIO.jni.dataCharPOA {
+public class InInt8Port extends BULKIO.jni.dataCharPOA implements org.ossie.component.PortBase {
 
     /**
      * A class to hold packet data.
@@ -497,6 +497,15 @@ public class InInt8Port extends BULKIO.jni.dataCharPOA {
         return p;
     }
 
+	public String getRepid()
+	{
+		return BULKIO.dataCharHelper.id();
+	}
+
+	public String getDirection()
+	{
+		return "Provides";
+	}
 
 }
 

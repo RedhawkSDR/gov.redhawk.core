@@ -41,12 +41,12 @@ import bulkio.linkStatistics;
 import bulkio.DataTransfer;
 import bulkio.UInt32Size;
 
-
+import org.ossie.component.PortBase;
 
 /**
  * 
  */
-public class InUInt32Port extends BULKIO.jni.dataUlongPOA {
+public class InUInt32Port extends BULKIO.jni.dataUlongPOA implements org.ossie.component.PortBase {
 
     /**
      * A class to hold packet data.
@@ -491,6 +491,15 @@ public class InUInt32Port extends BULKIO.jni.dataUlongPOA {
         return p;
     }
 
+	public String getRepid()
+	{
+		return BULKIO.dataUlongHelper.id();
+	}
+
+	public String getDirection()
+	{
+		return "Provides";
+	}
 
 }
 

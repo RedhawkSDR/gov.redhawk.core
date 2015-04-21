@@ -13,7 +13,6 @@ import org.apache.log4j.Logger;
 import org.apache.log4j.Level;
 import org.omg.CORBA.Any;
 import org.omg.CORBA.ORB;
-import org.omg.CORBA.ORB;
 import org.omg.CORBA.UserException;
 import org.omg.CosEventChannelAdmin.*;
 import org.ossie.events.PropertyEventSupplier;

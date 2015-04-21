@@ -33,7 +33,9 @@ import BULKIO.PortUsageType;
 import BULKIO.StreamSRI;
 import BULKIO.UsesPortStatistics;
 
-public abstract class OutPortBase<E> extends BULKIO.UsesPortStatisticsProviderPOA {
+import org.ossie.component.PortBase;
+
+public abstract class OutPortBase<E> extends BULKIO.UsesPortStatisticsProviderPOA implements org.ossie.component.PortBase {
     /**
      * Name within the component
      */
@@ -193,4 +195,14 @@ public abstract class OutPortBase<E> extends BULKIO.UsesPortStatisticsProviderPO
         }
         return sriList.toArray(new StreamSRI[0]);
     }
+
+	public String getRepid()
+	{
+		return "IDL:CORBA/Object:1.0";
+	}
+
+	public String getDirection()
+	{
+		return "Uses";
+	}
 }

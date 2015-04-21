@@ -64,5 +64,9 @@ public class OutUInt32Port extends OutDataPort<dataUlongOperations,int[]> {
     protected int[] emptyArray() {
         return new int[0];
     }
+
+	public String getRepid() {
+		return BULKIO.dataUlongHelper.id();
+	}
 }
 

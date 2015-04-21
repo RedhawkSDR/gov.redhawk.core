@@ -21,6 +21,7 @@
 package org.ossie.component;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Hashtable;
@@ -28,14 +29,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
-import org.apache.log4j.Appender;
-import org.apache.log4j.ConsoleAppender;
-import org.apache.log4j.Layout;
-import org.apache.log4j.Level;
-import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
-import org.apache.log4j.PatternLayout;
-import org.apache.log4j.PropertyConfigurator;
 import org.omg.CORBA.Any;
 import org.omg.CORBA.ORB;
 import org.omg.CORBA.Object;
@@ -53,6 +47,7 @@ import org.ossie.properties.IProperty;
 import org.ossie.logging.logging;
 import org.ossie.redhawk.DomainManagerContainer;
 import org.ossie.redhawk.DeviceManagerContainer;
+import org.ossie.corba.utils.*;
 
 import CF.AggregateDevice;
 import CF.AggregateDeviceHelper;
@@ -75,6 +70,10 @@ import CF.PropertySetPackage.PartialConfiguration;
 import org.omg.CosEventComm.Disconnected;
 import org.omg.CosEventChannelAdmin.AlreadyConnected;
 import org.omg.CosEventChannelAdmin.EventChannel;
+import org.omg.CosNaming.*;
+import org.omg.CosNaming.NamingContextPackage.*;
+import org.omg.CosNaming.NamingContextExt;
+import org.omg.CosNaming.NamingContextExtHelper;
 import org.ossie.events.*;
 import org.ossie.events.Manager.*;
 import CF.EventChannelManagerPackage.*;
@@ -211,10 +210,11 @@ public abstract class Device extends Resource implements DeviceOperations {
 
     public void connectIDMChannel(final String idm_channel_ior){
 
-        if ( idm_channel_ior != null || idm_channel_ior.length() > 0 ) {
+        if ( (idm_channel_ior != null && !idm_channel_ior.equals("")) || idm_channel_ior.length() > 0 ) {
             EventChannel idm_channel=null;
             // Get DomainManager incoming event channel and connect the device to it, where applicable
             try {
+                logger.debug("connectIDMChannel: idm_channel_ior:" + idm_channel_ior);
                 Object idm_channel_obj = orb.string_to_object(idm_channel_ior);
                 idm_channel = org.omg.CosEventChannelAdmin.EventChannelHelper.narrow(idm_channel_obj);
                 idm_publisher = new org.ossie.events.Publisher(idm_channel);
@@ -284,6 +284,17 @@ public abstract class Device extends Resource implements DeviceOperations {
         }
 
         connectIDMChannel( idm_channel_ior );
+
+        // this needs to be established before device saves logging context
+        // incase event channels are used
+        if ( this._domMgr != null ) {
+            try {
+                this._ecm = org.ossie.events.Manager.GetManager(this);
+            }catch( Manager.OperationFailed e){
+                logger.warn("Unable to resolve EventChannelManager");
+            }
+        }
+
         return device;
     }
     
@@ -320,6 +331,8 @@ public abstract class Device extends Resource implements DeviceOperations {
         start_device(clazz, args, props);
     }
 
+
+
     /**
      * Start-up function to be used from a main() function.
      * 
@@ -337,24 +350,12 @@ public abstract class Device extends Resource implements DeviceOperations {
     public static void start_device(final Class<? extends Device> clazz,  final String[] args, final Properties props) 
     throws InstantiationException, IllegalAccessException, InvalidObjectReference, ServantNotActive, WrongPolicy 
     {
-        final org.omg.CORBA.ORB orb = ORB.init((String[]) null, props);
+        // initialize middleware with command line/properties..
+        final org.omg.CORBA.ORB orb = org.ossie.corba.utils.Init( args, props );
 
-        // get reference to RootPOA & activate the POAManager
-        POA rootpoa = null;
-        try {
-            final org.omg.CORBA.Object poa = orb.resolve_initial_references("RootPOA");
-            rootpoa = POAHelper.narrow(poa);
-            rootpoa.the_POAManager().activate();
-        } catch (final AdapterInactive e) {
-            // PASS
-        } catch (final InvalidName e) {
-            // PASS
-        }
+        final POA rootpoa  = org.ossie.corba.utils.RootPOA();
 
         Map<String, String> execparams = parseArgs(args);
-
-        // Configure log4j from the execparams (or use default settings).
-        //Resource.configureLogging(execparams, orb);
 
         DeviceManager devMgr = null;
 	String devMgr_ior=null;
@@ -419,6 +420,7 @@ public abstract class Device extends Resource implements DeviceOperations {
 	}
 
 
+        // initialize logging library with a device context
         logging.DeviceCtx ctx = new logging.DeviceCtx( label, identifier, dom_path );
 	logging.Configure( logcfg_uri, debugLevel, ctx );
 
@@ -432,6 +434,9 @@ public abstract class Device extends Resource implements DeviceOperations {
                                                 idm_channel_ior,
                                                 orb, 
                                                 rootpoa);
+
+        // save off logging context
+	device_i.saveLoggingContext( logcfg_uri, debugLevel, ctx );
 
         // Create a thread that watches for the device to be deactivated
         Thread shutdownWatcher = new Thread(new Runnable() {

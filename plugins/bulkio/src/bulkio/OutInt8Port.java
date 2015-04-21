@@ -64,5 +64,9 @@ public class OutInt8Port extends OutDataPort<dataCharOperations,char[]> {
     protected char[] emptyArray() {
         return new char[0];
     }
+
+	public String getRepid() {
+		return BULKIO.dataCharHelper.id();
+	}
 }
 

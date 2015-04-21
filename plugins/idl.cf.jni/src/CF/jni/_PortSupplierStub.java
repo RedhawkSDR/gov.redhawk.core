@@ -17,6 +17,12 @@ public class _PortSupplierStub extends omnijni.ObjectImpl implements CF.PortSupp
   }
   private static native org.omg.CORBA.Object getPort (long __ref__, String name);
 
+  public CF.PortSupplierPackage.PortInfoType[] getPortSet ()
+  {
+    return getPortSet(this.ref_);
+  }
+  private static native CF.PortSupplierPackage.PortInfoType[] getPortSet (long __ref__);
+
   private static String __ids[] = {
     "IDL:CF/PortSupplier:1.0",
   };

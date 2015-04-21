@@ -11,6 +11,12 @@ public class _PropertySetStub extends omnijni.ObjectImpl implements CF.PropertyS
     super(ref);
   }
 
+  public void initializeProperties (CF.DataType[] initialProperties)
+  {
+    initializeProperties(this.ref_, initialProperties);
+  }
+  private static native void initializeProperties (long __ref__, CF.DataType[] initialProperties);
+
   public void configure (CF.DataType[] configProperties)
   {
     configure(this.ref_, configProperties);

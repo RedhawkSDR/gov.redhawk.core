@@ -64,5 +64,9 @@ public class OutUInt64Port extends OutDataPort<dataUlongLongOperations,long[]> {
     protected long[] emptyArray() {
         return new long[0];
     }
+
+	public String getRepid() {
+		return BULKIO.dataUlongLongHelper.id();
+	}
 }
 

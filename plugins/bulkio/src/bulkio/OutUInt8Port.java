@@ -64,5 +64,9 @@ public class OutUInt8Port extends OutDataPort<dataOctetOperations,byte[]> {
     protected byte[] emptyArray() {
         return new byte[0];
     }
+
+	public String getRepid() {
+		return BULKIO.dataOctetHelper.id();
+	}
 }
 

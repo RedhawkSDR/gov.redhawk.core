@@ -41,12 +41,12 @@ import bulkio.linkStatistics;
 import bulkio.DataTransfer;
 import bulkio.DoubleSize;
 
-
+import org.ossie.component.PortBase;
 
 /**
  * 
  */
-public class InDoublePort extends BULKIO.jni.dataDoublePOA {
+public class InDoublePort extends BULKIO.jni.dataDoublePOA implements org.ossie.component.PortBase {
 
     /**
      * A class to hold packet data.
@@ -494,6 +494,15 @@ public class InDoublePort extends BULKIO.jni.dataDoublePOA {
         return p;
     }
 
+	public String getRepid()
+	{
+		return BULKIO.dataDoubleHelper.id();
+	}
+
+	public String getDirection()
+	{
+		return "Provides";
+	}
 
 }
 

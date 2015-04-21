@@ -41,12 +41,12 @@ import bulkio.linkStatistics;
 import bulkio.DataTransfer;
 import bulkio.Int16Size;
 
-
+import org.ossie.component.PortBase;
 
 /**
  * 
  */
-public class InInt16Port extends BULKIO.jni.dataShortPOA {
+public class InInt16Port extends BULKIO.jni.dataShortPOA implements org.ossie.component.PortBase {
 
     /**
      * A class to hold packet data.
@@ -154,7 +154,7 @@ public class InInt16Port extends BULKIO.jni.dataShortPOA {
 		       bulkio.sri.Comparator compareSRI, 
 		       bulkio.SriListener sriCallback ) {
         this.name = portName;
-	this.logger = logger;
+		this.logger = logger;
         this.stats = new linkStatistics(this.name, new Int16Size() );
         this.sriUpdateLock = new Object();
         this.statUpdateLock = new Object();
@@ -487,6 +487,14 @@ public class InInt16Port extends BULKIO.jni.dataShortPOA {
         return p;
     }
 
+	public String getRepid()
+	{
+		return BULKIO.dataShortHelper.id();
+	}
 
+	public String getDirection()
+	{
+		return "Provides";
+	}
 }
 

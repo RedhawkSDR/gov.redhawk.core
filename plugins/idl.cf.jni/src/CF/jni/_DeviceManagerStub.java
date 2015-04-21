@@ -11,6 +11,12 @@ public class _DeviceManagerStub extends omnijni.ObjectImpl implements CF.DeviceM
     super(ref);
   }
 
+  public void initializeProperties (CF.DataType[] initialProperties)
+  {
+    initializeProperties(this.ref_, initialProperties);
+  }
+  private static native void initializeProperties (long __ref__, CF.DataType[] initialProperties);
+
   public void configure (CF.DataType[] configProperties)
   {
     configure(this.ref_, configProperties);
@@ -40,6 +46,12 @@ public class _DeviceManagerStub extends omnijni.ObjectImpl implements CF.DeviceM
     return getPort(this.ref_, name);
   }
   private static native org.omg.CORBA.Object getPort (long __ref__, String name);
+
+  public CF.PortSupplierPackage.PortInfoType[] getPortSet ()
+  {
+    return getPortSet(this.ref_);
+  }
+  private static native CF.PortSupplierPackage.PortInfoType[] getPortSet (long __ref__);
 
   public String deviceConfigurationProfile ()
   {

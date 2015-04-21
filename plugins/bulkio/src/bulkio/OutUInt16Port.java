@@ -64,4 +64,8 @@ public class OutUInt16Port extends OutDataPort<dataUshortOperations,short[]> {
     protected short[] emptyArray() {
         return new short[0];
     }
+
+	public String getRepid() {
+		return BULKIO.dataUshortHelper.id();
+	}
 }

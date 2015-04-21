@@ -745,4 +745,7 @@ public class OutVITA49Port extends OutPortBase<dataVITA49Operations> {
         }
     }
 
+	public String getRepid() {
+		return BULKIO.dataVITA49Helper.id();
+	}
 }

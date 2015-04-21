@@ -64,5 +64,9 @@ public class OutFloatPort extends OutDataPort<dataFloatOperations,float[]> {
     protected float[] emptyArray() {
         return new float[0];
     }
+
+	public String getRepid() {
+		return BULKIO.dataFloatHelper.id();
+	}
 }
 

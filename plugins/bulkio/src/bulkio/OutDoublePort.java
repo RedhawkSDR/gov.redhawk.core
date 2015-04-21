@@ -64,4 +64,8 @@ public class OutDoublePort extends OutDataPort<dataDoubleOperations,double[]> {
     protected double[] emptyArray() {
         return new double[0];
     }
+
+	public String getRepid() {
+		return BULKIO.dataDoubleHelper.id();
+	}
 }

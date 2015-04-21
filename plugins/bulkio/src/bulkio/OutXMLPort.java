@@ -382,5 +382,8 @@ public class OutXMLPort extends OutPortBase<dataXMLOperations> {
 	}
     }
 
+	public String getRepid() {
+		return BULKIO.dataXMLHelper.id();
+	}
 }
 

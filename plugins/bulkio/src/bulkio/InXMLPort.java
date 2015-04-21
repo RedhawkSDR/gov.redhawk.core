@@ -41,12 +41,12 @@ import bulkio.linkStatistics;
 import bulkio.DataTransfer;
 import bulkio.Int8Size;
 
-
+import org.ossie.component.PortBase;
 
 /**
  * 
  */
-public class InXMLPort extends BULKIO.jni.dataXMLPOA {
+public class InXMLPort extends BULKIO.jni.dataXMLPOA implements org.ossie.component.PortBase {
 
     /**
      * A class to hold packet data.
@@ -490,6 +490,16 @@ public class InXMLPort extends BULKIO.jni.dataXMLPOA {
 	}
         return p;
     }
+
+	public String getRepid()
+	{
+		return BULKIO.dataXMLHelper.id();
+	}
+
+	public String getDirection()
+	{
+		return "Provides";
+	}
 
 }
 

@@ -19,10 +19,19 @@
  */
 
 package org.ossie.corba;
+import java.util.ArrayList;
 import java.util.Properties;
+import java.io.File;
+import java.io.IOException;
+import java.util.List;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.nio.charset.Charset;
+
 import org.omg.CORBA.Any;
 import org.omg.CORBA.ORB;
-import org.omg.CORBA.*;
+import org.omg.CORBA.OBJECT_NOT_EXIST;
+import org.omg.CORBA.ORBPackage.InvalidName;
 import org.omg.PortableServer.*;
 import org.omg.PortableServer.POAManagerPackage.*;
 import org.omg.PortableServer.POAPackage.*;
@@ -32,6 +41,174 @@ import org.omg.CosNaming.NamingContextExt;
 import org.omg.CosNaming.NamingContextExtHelper;
 
 public class utils {
+
+
+    public static String[] readConfigFile() {
+        ArrayList<String> orbarg = new ArrayList<String>();
+        try {
+            String fname = new String("/etc/omniORB.cfg");
+            final String eval = System.getenv("OMNIORB_CONFIG");
+            if ( eval != null && eval.equals("") == false ) {
+                fname = eval;
+            }
+            List<String> lines = Files.readAllLines(Paths.get(fname),Charset.defaultCharset());
+            for ( String l : lines ) {
+                if ( l.startsWith("#") == false  && l.equals("") == false ) {
+                    int idx = l.indexOf("NameService");
+                    if ( idx != -1 ) {
+                        orbarg.add("-ORBInitRef"); 
+                        orbarg.add(l.substring(idx) );
+                    }
+                    
+                    idx = l.indexOf("EventService");
+                    if ( idx != -1 ) {
+                        orbarg.add("-ORBInitRef"); 
+                        orbarg.add(l.substring(idx) );
+                    }
+                }
+            }
+
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+        return orbarg.toArray( new String[orbarg.size()] );
+    }
+
+    /**
+     */
+    public static boolean objectExists( org.omg.CORBA.Object obj) {
+        try {
+            return (obj != null && !obj._non_existent());
+        } catch ( OBJECT_NOT_EXIST e ) {
+                return false;
+        }
+    }
+
+    /**
+       Initialize ORB from command line and additional property set.
+       
+     */
+
+    public static ORB Init ( final String[] args, final Properties props)  {
+        OrbContext.Init( args,props );
+        return Orb();
+    }
+    
+    /**
+       GetOrb 
+       Returns the configured Orb for this library.
+       
+     */
+    public static ORB  Orb() {
+        return OrbContext.Orb();
+    }
+
+    public static POA RootPOA() {
+        return OrbContext.RootPOA();
+    }
+
+    public static NamingContextExt NameService() {
+        return OrbContext.NameService();
+    }
+    
+    public static class OrbContext {
+
+        org.omg.CORBA.ORB orb = null;
+
+        POA               rootPOA = null;
+
+        NamingContextExt  namingService = null;
+
+        private static  OrbContext   _singleton = null;
+
+        public ORB getOrb() { 
+            return orb;
+        }
+        public POA getRootPOA() { 
+            return rootPOA;
+        }
+        public NamingContextExt getNameService() { 
+            return namingService;
+        }
+
+        private OrbContext(ORB inOrb, POA poa, NamingContextExt ns ) {
+            orb=inOrb;
+            rootPOA=poa;
+            namingService = ns;
+        }
+
+        public static OrbContext Init ( final String[] args, final Properties props)  {
+
+            if ( _singleton == null ) {
+                // this  will honor InitRef in omniORB.cfg file
+                org.omg.CORBA.ORB orb = ORB.init(org.ossie.corba.utils.readConfigFile(), props);
+
+                POA poa=null;
+                try {
+                    final org.omg.CORBA.Object tmp_obj = orb.resolve_initial_references("RootPOA");
+                    poa = POAHelper.narrow(tmp_obj);
+                    poa.the_POAManager().activate();
+                    //System.out.println("Found Root POA.....");
+                } catch (final AdapterInactive e) {
+                    // PASS
+                } catch (final InvalidName e) {
+                    // PASS
+                }
+                
+                NamingContextExt ns = null;
+                try {
+                    org.omg.CORBA.Object tmp_ns = orb.resolve_initial_references("NameService");
+                    ns = NamingContextExtHelper.narrow(tmp_ns);
+                    if ( ns == null ) {
+                        System.out.println("OrbContext::Init.... NameService unavailable");
+                    }
+                    //System.out.println("Found NameService.....");
+                } catch (final InvalidName e) {
+                    System.out.println(e);
+                } catch (Exception e) {
+                    System.out.println(e);
+                }
+            
+                _singleton = new OrbContext(orb, poa, ns);
+            }
+            
+            return _singleton;
+        }
+
+        public static OrbContext Singleton() {
+            return _singleton;
+        }
+
+        public static ORB Orb() {
+            if ( _singleton != null ) {
+                return _singleton.orb;
+            }
+            else {
+                return null;
+            }
+        }
+
+        public static POA RootPOA() {
+            if ( _singleton != null ) {
+                return _singleton.rootPOA;
+            }
+            else {
+                return null;
+            }
+        }
+
+        public static NamingContextExt NameService() {
+            if ( _singleton != null ) {
+                return _singleton.namingService;
+            }
+            else {
+                return null;
+            }
+        }
+            
+    }
+
+
 
     public static byte[]  activateObject (  Servant servant, 
                                             byte[] identifier ) {
@@ -82,11 +259,11 @@ public class utils {
 
     public static void deactivateObject ( Servant obj ) {
         try {
-            OrbContext _orb = OrbContext.Get();
+            POA root_poa = RootPOA();
         
-            if  ( _orb != null && _orb.rootPOA != null ) {
-                  byte [] oid = _orb.rootPOA.servant_to_id(obj);
-                  _orb.rootPOA.deactivate_object(oid);
+            if  (  root_poa != null ) {
+                  byte [] oid = root_poa.servant_to_id(obj);
+                  root_poa.deactivate_object(oid);
             }
         }
         catch( ServantNotActive e ) {
@@ -98,81 +275,4 @@ public class utils {
     }
 
 
-    public static ORB  GetOrb() {
-        return OrbContext.GetOrb();
-    }
-
-    public static POA RootPOA() {
-        return OrbContext.RootPOA();
-    }
-
-    public static NamingContext NamingService() {
-        return OrbContext.NamingService();
-    }
-
-    public static boolean objectExists( org.omg.CORBA.Object obj) {
-        try {
-            return (obj != null && !obj._non_existent());
-        } catch ( OBJECT_NOT_EXIST e ) {
-                return false;
-        }
-    }
-
-    
-    public static class OrbContext {
-
-        org.omg.CORBA.ORB orb = null;
-
-        POA               rootPOA = null;
-
-        NamingContextExt  namingService = null;
-
-
-        private static  OrbContext   _singleton = null;
-
-        public static void Init ( ORB orb, POA poa, NamingContextExt ns ) {
-
-            if ( _singleton == null ) {
-                _singleton = new OrbContext(orb, poa, ns);
-            }
-        }
-
-        public static OrbContext Get() {
-            return _singleton;
-        }
-
-        public static ORB GetOrb() {
-            if ( _singleton != null ) {
-                return _singleton.orb;
-            }
-            else {
-                return null;
-            }
-        }
-
-        public static POA RootPOA() {
-            if ( _singleton != null ) {
-                return _singleton.rootPOA;
-            }
-            else {
-                return null;
-            }
-        }
-
-        public static NamingContextExt NamingService() {
-            if ( _singleton != null ) {
-                return _singleton.namingService;
-            }
-            else {
-                return null;
-            }
-        }
-            
-        private OrbContext(ORB orb, POA poa, NamingContextExt ns ) {
-            orb=orb;
-            rootPOA=poa;
-            namingService = ns;
-        }
-        
-    }
 }

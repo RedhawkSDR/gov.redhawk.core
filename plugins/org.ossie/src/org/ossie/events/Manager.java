@@ -89,6 +89,16 @@ public class Manager {
 	return _Manager;
     }
 
+    static public Manager GetManager( Service obj ) throws OperationFailed {
+
+	if ( _Manager == null ) {
+            _Manager = new Manager( obj ) ;
+	   _Manager._logger.debug( "Created EventManager for Service: " + obj.getName() );
+	}
+
+	return _Manager;
+    }
+
     static public void Terminate() {
 
 	if ( _Manager != null ) {
@@ -305,6 +315,47 @@ public class Manager {
         
         _registrations = new LinkedList< EventChannelReg >();
     }
+
+
+    private Manager ( Service obj ) throws OperationFailed {
+
+        _allow=true;
+        _logger = Logger.getLogger("ossie::events::Manager");
+        if ( obj != null  ){
+
+            _poa = org.ossie.corba.utils.RootPOA();
+            if ( _poa == null ) {
+                _logger.debug( "Middleware unavailable .....");
+                throw new Manager.OperationFailed("Middleware unavailable");
+            }
+            
+            _logger.debug( "Resolve Device and Domain Managers...");
+            // setup create publisher as internal methods
+            org.ossie.redhawk.DomainManagerContainer dm = obj.getDomainManager();
+            if ( dm == null ) {
+                _logger.debug( "Domain Manager return null.......");
+                throw new Manager.OperationFailed("Domain Manager access failed");
+            }
+
+            _logger.debug( "Resolve Domain Managers Reference...");
+            CF.DomainManager  domMgr =  dm.getRef();
+            if ( !org.ossie.corba.utils.objectExists( domMgr ) ) {
+                _logger.debug( "Domain Manager reference is invalid.....");
+                throw new OperationFailed("Domain Manager access failed");
+            }
+
+            _logger.debug( "Getting Event Channel Manager...");
+            CF.EventChannelManager  ecm = domMgr.eventChannelMgr();
+            if ( !org.ossie.corba.utils.objectExists( ecm ) ) {
+                _logger.debug( "Event Channel Manager interface not available.....");
+                throw new OperationFailed("Event Channel Manager access failed");
+            }
+            _ecm = ecm;
+        }
+        
+        _registrations = new LinkedList< EventChannelReg >();
+    }
+
 
 
     private void _terminate( ) {

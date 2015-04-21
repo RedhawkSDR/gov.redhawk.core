@@ -41,12 +41,12 @@ import bulkio.linkStatistics;
 import bulkio.DataTransfer;
 import bulkio.DoubleSize;
 
-
+import org.ossie.component.PortBase;
 
 /**
  * 
  */
-public class InFloatPort extends BULKIO.jni.dataFloatPOA {
+public class InFloatPort extends BULKIO.jni.dataFloatPOA implements org.ossie.component.PortBase {
 
     /**
      * A class to hold packet data.
@@ -499,6 +499,16 @@ public class InFloatPort extends BULKIO.jni.dataFloatPOA {
 	}
         return p;
     }
+	
+	public String getRepid()
+	{
+		return BULKIO.dataFloatHelper.id();
+	}
+
+	public String getDirection()
+	{
+		return "Provides";
+	}
 
 }
 

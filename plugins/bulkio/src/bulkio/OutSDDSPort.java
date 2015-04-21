@@ -744,4 +744,8 @@ public class OutSDDSPort extends OutPortBase<dataSDDSOperations> {
         }
     }
 
+	public String getRepid() {
+		return BULKIO.dataSDDSHelper.id();
+	}
+
 }

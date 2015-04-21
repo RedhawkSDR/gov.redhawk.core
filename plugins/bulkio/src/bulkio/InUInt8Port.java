@@ -41,12 +41,12 @@ import bulkio.linkStatistics;
 import bulkio.DataTransfer;
 import bulkio.UInt8Size;
 
-
+import org.ossie.component.PortBase;
 
 /**
  * 
  */
-public class InUInt8Port extends BULKIO.jni.dataOctetPOA {
+public class InUInt8Port extends BULKIO.jni.dataOctetPOA implements org.ossie.component.PortBase {
 
     /**
      * A class to hold packet data.
@@ -501,6 +501,15 @@ public class InUInt8Port extends BULKIO.jni.dataOctetPOA {
         return p;
     }
 
+	public String getRepid()
+	{
+		return BULKIO.dataOctetHelper.id();
+	}
+
+	public String getDirection()
+	{
+		return "Provides";
+	}
 
 }
 
