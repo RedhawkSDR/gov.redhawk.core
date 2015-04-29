@@ -479,7 +479,7 @@ public abstract class SCAFormEditor extends FormEditor implements IEditingDomain
 		@Override
 		protected void handleSelectionChanged(SelectionChangedEvent event) {
 			super.handleSelectionChanged(event);
-			super.handlePostSelectionChanged(event);
+//			super.handlePostSelectionChanged(event);
 		}
 	}
 
@@ -1213,9 +1213,16 @@ public abstract class SCAFormEditor extends FormEditor implements IEditingDomain
 			// e.g. From the Plug-in View
 			return getDialogEditorPageKey();
 		}
-		return null;
+		return getDefaultPageKey();
 	}
 
+	/**
+	 * @since 7.1
+	 */
+	protected String getDefaultPageKey() {
+		return null;
+	}
+	
 	/**
 	 * Gets the property editor page key.
 	 * 
