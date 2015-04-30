@@ -90,6 +90,7 @@ public class ScaStructPropertyImpl extends ScaAbstractPropertyImpl<Struct> imple
 	/**
 	 * The cached value of the '{@link #getSequences() <em>Sequences</em>}' containment reference list.
 	 * <!-- begin-user-doc -->
+	 * @since 19.1
 	 * <!-- end-user-doc -->
 	 * 
 	 * @see #getSequences()
@@ -224,6 +225,9 @@ public class ScaStructPropertyImpl extends ScaAbstractPropertyImpl<Struct> imple
 		// BEGIN GENERATED CODE
 	}
 
+	/**
+	 * @since 19.1
+	 */
 	protected static class SequencesList extends EObjectContainmentEList<ScaSimpleSequenceProperty> {
 		// END GENERATED CODE
 
@@ -307,6 +311,7 @@ public class ScaStructPropertyImpl extends ScaAbstractPropertyImpl<Struct> imple
 
 	/**
 	 * <!-- begin-user-doc -->
+	 * @since 19.1
 	 * <!-- end-user-doc -->
 	 * 
 	 * @generated NOT
@@ -442,6 +447,7 @@ public class ScaStructPropertyImpl extends ScaAbstractPropertyImpl<Struct> imple
 
 	/**
 	 * <!-- begin-user-doc -->
+	 * @since 19.1
 	 * <!-- end-user-doc -->
 	 * 
 	 * @generated NOT
@@ -516,6 +522,7 @@ public class ScaStructPropertyImpl extends ScaAbstractPropertyImpl<Struct> imple
 
 	/**
 	 * <!-- begin-user-doc -->
+	 * @since 19.1
 	 * <!-- end-user-doc -->
 	 * 
 	 * @generated

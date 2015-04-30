@@ -68,6 +68,7 @@ public interface ScaStructProperty extends ScaAbstractProperty<Struct>, Property
 	 * If the meaning of the '<em>Sequences</em>' containment reference list isn't clear, there really should be more of
 	 * a description here...
 	 * </p>
+	 * @since 19.1
 	 * <!-- end-user-doc -->
 	 * 
 	 * @return the value of the '<em>Sequences</em>' containment reference list.
@@ -89,6 +90,7 @@ public interface ScaStructProperty extends ScaAbstractProperty<Struct>, Property
 
 	/**
 	 * <!-- begin-user-doc -->
+	 * @since 19.1
 	 * <!-- end-user-doc -->
 	 * 
 	 * @model
