@@ -443,7 +443,7 @@ public enum TunerProperties {
 					"Allocation ID",
 					"The allocation_id set by the caller. Used by the caller to reference the allocation uniquely"),
 		CENTER_FREQUENCY("center_frequency", PropertyValueType.DOUBLE, "Hz", "Center frequency", "Requested center frequency"),
-		BANDWIDTH("bandwidth", PropertyValueType.DOUBLE, "Hz", "Bandwidth", "Requested bandwidth (plus or minus the tolerance)"),
+		BANDWIDTH("bandwidth", PropertyValueType.DOUBLE, "Hz", "Bandwidth", "Requested bandwidth (+/- the tolerance)"),
 		BANDWIDTH_TOLERANCE(
 				"bandwidth_tolerance",
 					PropertyValueType.DOUBLE,
@@ -455,7 +455,7 @@ public enum TunerProperties {
 					PropertyValueType.DOUBLE,
 					"Hz",
 					"Sample rate",
-					"Requested sample rate. This can be ignored for such devices as analog tuners"),
+					"Requested sample rate (+/- the tolerance). This can be ignored for such devices as analog tuners"),
 		SAMPLE_RATE_TOLERANCE(
 				"sample_rate_tolerance",
 					PropertyValueType.DOUBLE,
@@ -474,13 +474,13 @@ public enum TunerProperties {
 					PropertyValueType.STRING,
 					null,
 					"Group ID",
-					"Unique identifier that specifies a group of device. Must match group_id on the device"),
+					"Unique identifier that specifies the group a device must be in. Must match group_id on the device"),
 		RF_FLOW_ID(
 				"rf_flow_id",
 					PropertyValueType.STRING,
 					null,
 					"RF flow ID",
-					"Optional. Specifies a certain RF flow to allocate against. If left empty, it will match all frontend devices.");
+					"Optional. Specifies the RF flow of a specific input source to allocate against. If left empty, it will match all FrontEnd devices.");
 
 		private String id;
 		private PropertyValueType type;

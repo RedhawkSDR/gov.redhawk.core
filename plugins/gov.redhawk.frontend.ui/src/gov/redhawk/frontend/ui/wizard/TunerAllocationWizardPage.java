@@ -114,19 +114,20 @@ public class TunerAllocationWizardPage extends WizardPage {
 	private ScaDevice< ? > feiDevice;
 
 	private static final String ALLOCATE_TUNER = "Control New Tuner";
-	private static final String LISTEN_TUNER_BY_ID = "Listen to Existing Tuner by Id";
+	private static final String LISTEN_TUNER_BY_ID = "Listen to Existing Tuner by ID";
 	private static final String LISTEN_TUNER_BY_PROPERTIES = "Listen to Existing Tuner by Properties";
-	private static final String[] TUNER_ALLOCATION_TYPES = new String[] {ALLOCATE_TUNER, LISTEN_TUNER_BY_ID, LISTEN_TUNER_BY_PROPERTIES};
-	private static final String TUNER_TYPE_MISSING_ERR_MSG = "Please select a Tuner Type";
-	private static final String TUNER_TYPE_NOT_SUPPORTED_ERR_MSG = "The selected Tuner Type is not supported";
+	private static final String[] TUNER_ALLOCATION_TYPES = new String[] { ALLOCATE_TUNER, LISTEN_TUNER_BY_ID, LISTEN_TUNER_BY_PROPERTIES };
+
+	private static final String TUNER_TYPE_MISSING_ERR_MSG = "Please select a tuner type";
+	private static final String TUNER_TYPE_NOT_SUPPORTED_ERR_MSG = "The selected tuner type is not supported";
 	private static final String ALLOC_ID_CONTAINS_COMMA_ERR_MSG = "Allocation ID must not contain a comma";
-	private static final String ALLOC_ID_MISSING = "Please provide an allocation ID. Any text, excludig commas and colons is acceptable.";
+	private static final String ALLOC_ID_MISSING = "Please provide an allocation ID. Any text, excluding commas and colons is acceptable.";
 	private static final String EXISTING_LISTENER_ID_MISSING = "Please enter the Allocation ID of an existing Tuner";
-	private static final String CENTER_FREQUENCY_ERR_MSG = "Please specify a Center Frequency";
-	private static final String BNDWIDTH_ERR_MSG = "Please specify a Bandwidth";
-	private static final String SAMPLE_RATE_ERR_MSG = "Please specify a Sample Rate";
-	private static final String BANDWIDTH_TOLERANCE_ERR_MSG = "Please specify a Bandwidth Tolerance greater than 0";
-	private static final String SAMPLE_RATE_TOLERANCE_ERR_MSG = "Please specify a Sample Rate Tolerance greater than 0";
+	private static final String CENTER_FREQUENCY_ERR_MSG = "Please specify a center frequency";
+	private static final String BNDWIDTH_ERR_MSG = "Please specify a bandwidth";
+	private static final String SAMPLE_RATE_ERR_MSG = "Please specify a sample rate";
+	private static final String BANDWIDTH_TOLERANCE_ERR_MSG = "Please specify a bandwidth tolerance greater than 0";
+	private static final String SAMPLE_RATE_TOLERANCE_ERR_MSG = "Please specify a sample rate tolerance greater than 0";
 	private static final String NOT_VALID_NUMBER_ERR_MSG = "You must enter a valid decimal number";
 	private static final String NEGATIVE_ERR_MSG = "The value must not be negative";
 	private static final String NEGATIVE_OR_ZERO_ERR_MSG = "The value must be a positive non-zero number";
