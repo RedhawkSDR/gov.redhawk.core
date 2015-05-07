@@ -1004,16 +1004,17 @@ public class TunerAllocationWizardPage extends WizardPage {
 		Label cfLabel = new Label(group, SWT.NONE);
 		cfLabel.setText("Center Frequency (MHz)");
 		cfText = new Text(group, SWT.BORDER);
+		cfText.setToolTipText(TunerAllocationProperties.CENTER_FREQUENCY.getDescription());
 		tunerControls.add(cfText);
 		GridDataFactory.fillDefaults().grab(true, false).applyTo(cfText);
 
 		Label bwLabel = new Label(group, SWT.NONE);
 		bwLabel.setText("Bandwidth (MHz)");
-
 		Composite bwComp = new Composite(group, SWT.NONE);
 		GridDataFactory.fillDefaults().grab(true, false).applyTo(bwComp);
 		GridLayoutFactory.fillDefaults().numColumns(2).applyTo(bwComp);
 		bwText = new Text(bwComp, SWT.BORDER);
+		bwText.setToolTipText(TunerAllocationProperties.BANDWIDTH.getDescription());
 		tunerControls.add(bwText);
 		GridDataFactory.fillDefaults().grab(true, false).applyTo(bwText);
 		bwAnyValue = new Button(bwComp, SWT.CHECK);
@@ -1024,11 +1025,11 @@ public class TunerAllocationWizardPage extends WizardPage {
 
 		Label srLabel = new Label(group, SWT.NONE);
 		srLabel.setText("Sample Rate (Msps)");
-
 		Composite srComp = new Composite(group, SWT.NONE);
 		GridDataFactory.fillDefaults().grab(true, false).applyTo(srComp);
 		GridLayoutFactory.fillDefaults().numColumns(2).applyTo(srComp);
 		srText = new Text(srComp, SWT.BORDER);
+		srText.setToolTipText(TunerAllocationProperties.SAMPLE_RATE.getDescription());
 		tunerControls.add(srText);
 		GridDataFactory.fillDefaults().grab(true, false).applyTo(srText);
 		srAnyValue = new Button(srComp, SWT.CHECK);
@@ -1040,25 +1041,28 @@ public class TunerAllocationWizardPage extends WizardPage {
 		Label bwTolLabel = new Label(group, SWT.NONE);
 		bwTolLabel.setText("Bandwidth Tolerance (%)");
 		bwTolText = new Text(group, SWT.BORDER);
+		bwTolText.setToolTipText(TunerAllocationProperties.BANDWIDTH_TOLERANCE.getDescription());
 		tunerControls.add(bwTolText);
 		GridDataFactory.fillDefaults().grab(true, false).applyTo(bwTolText);
 
 		Label srTolLabel = new Label(group, SWT.NONE);
 		srTolLabel.setText("Sample Rate Tolerance (%)");
 		srTolText = new Text(group, SWT.BORDER);
+		srTolText.setToolTipText(TunerAllocationProperties.SAMPLE_RATE_TOLERANCE.getDescription());
 		tunerControls.add(srTolText);
 		GridDataFactory.fillDefaults().grab(true, false).applyTo(srTolText);
 
 		Label rfFlowIdLabel = new Label(group, SWT.NONE);
 		rfFlowIdLabel.setText("RF Flow ID");
 		rfFlowIdText = new Text(group, SWT.BORDER);
-		rfFlowIdText.setToolTipText("If you would like to allocate tuners for a specific input source, enter the RF Flow ID of the source here");
+		rfFlowIdText.setToolTipText(TunerAllocationProperties.RF_FLOW_ID.getDescription());
 		tunerControls.add(rfFlowIdText);
 		GridDataFactory.fillDefaults().grab(true, false).applyTo(rfFlowIdText);
 
 		Label groupIdLabel = new Label(group, SWT.NONE);
 		groupIdLabel.setText("Group ID");
 		groupIdText = new Text(group, SWT.BORDER);
+		groupIdText.setToolTipText(TunerAllocationProperties.GROUP_ID.getDescription());
 		tunerControls.add(groupIdText);
 		GridDataFactory.fillDefaults().grab(true, false).applyTo(groupIdText);
 	}
