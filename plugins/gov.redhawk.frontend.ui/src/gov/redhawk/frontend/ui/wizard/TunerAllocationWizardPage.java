@@ -64,8 +64,6 @@ import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.FocusEvent;
 import org.eclipse.swt.events.FocusListener;
-import org.eclipse.swt.events.ModifyEvent;
-import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.layout.FillLayout;
@@ -137,7 +135,6 @@ public class TunerAllocationWizardPage extends WizardPage {
 	private static final String BW_ABOVE_MAX = "The selected bandwidth is above the maximum known supported bandwidth of ";
 	private static final String SR_BELOW_MIN = "The selected sample rate is below the minimum known supported sample rate of ";
 	private static final String SR_ABOVE_MAX = "The selected sample rate is above the maximum known supported sample rate of ";
-	private static final String UNSUPPORTED_TUNER_TYPE = "The selected Tuner type is not yet supported";
 
 	public class TargetableValidator implements IValidator {
 
@@ -254,36 +251,6 @@ public class TunerAllocationWizardPage extends WizardPage {
 
 	}
 
-	private ISelectionChangedListener tunerTypeListener = new ISelectionChangedListener() {
-
-		@Override
-		public void selectionChanged(SelectionChangedEvent event) {
-			int pageStatus = IMessageProvider.NONE;
-			String msg = null;
-			Control control = typeCombo.getControl();
-			IStructuredSelection sel = (IStructuredSelection) typeCombo.getSelection();
-			String value = (String) sel.getFirstElement();
-
-			IStatus status = getValidationStatus(control, value);
-
-			switch (status.getSeverity()) {
-			case IStatus.OK:
-				// PASS
-				break;
-			case IStatus.WARNING:
-				pageStatus = IMessageProvider.WARNING;
-				msg = status.getMessage();
-				break;
-			case IStatus.ERROR:
-				setErrorMessage(status.getMessage());
-				return;
-			default:
-			}
-			setMessage(msg, pageStatus);
-		}
-
-	};
-
 	private class UseAnyValueListener extends SelectionAdapter {
 		private String previousBwValue = "";
 		private String previousSrValue = "";
@@ -313,38 +280,29 @@ public class TunerAllocationWizardPage extends WizardPage {
 					srText.setText(previousSrValue);
 				}
 			}
-			
-			//perform validation
+
+			// perform validation
 			for (Object binding : context.getBindings()) {
 				((Binding) binding).validateModelToTarget();
 				((Binding) binding).validateTargetToModel();
 			}
-			setPageComplete(validatePageComplete());
+			// setPageComplete(validatePageComplete());
 		}
 	}
-
-	private ModifyListener allocIdListener = new ModifyListener() {
-
-		@Override
-		public void modifyText(ModifyEvent e) {
-			setPageComplete(validatePageComplete());
-		}
-
-	};
 
 	private ISelectionChangedListener allocationModeListener = new ISelectionChangedListener() {
 		@Override
 		public void selectionChanged(SelectionChangedEvent event) {
-			IStructuredSelection structuredSelection = (IStructuredSelection) allocationComboViewer.getSelection(); 
+			IStructuredSelection structuredSelection = (IStructuredSelection) allocationComboViewer.getSelection();
 			String selection = (String) structuredSelection.getFirstElement();
 			if (ALLOCATE_TUNER.equals(selection) || LISTEN_TUNER_BY_PROPERTIES.equals(selection)) {
 				allocationMode = AllocationMode.TUNER;
 			} else {
 				allocationMode = AllocationMode.LISTENER;
 			}
-			
+
 			tunerAllocationStruct.getSimple(TunerAllocationProperties.DEVICE_CONTROL.getId()).setValue(ALLOCATE_TUNER.equals(selection));
-			
+
 			for (Control c : tunerControls) {
 				c.setEnabled(allocationMode == AllocationMode.TUNER);
 			}
@@ -359,28 +317,23 @@ public class TunerAllocationWizardPage extends WizardPage {
 				((Binding) binding).validateModelToTarget();
 				((Binding) binding).validateTargetToModel();
 			}
-			setPageComplete(validatePageComplete());
+			// setPageComplete(validatePageComplete());
 		}
 	};
 
-	private boolean validatePageComplete() {
-		if (allocationMode == AllocationMode.LISTENER) {
-			return !"".equals(allocIdText.getText()) && !"".equals(targetAllocText.getText());
-		} else {
-			return getErrorMessage() == null;
-		}
-	}
-
 	public IStatus getValidationStatus(Control control, Object value) {
 		if (control == typeCombo.getControl()) {
-			IStructuredSelection structuredSelection = (IStructuredSelection) allocationComboViewer.getSelection(); 
+			IStructuredSelection structuredSelection = (IStructuredSelection) allocationComboViewer.getSelection();
 			String selection = (String) structuredSelection.getFirstElement();
 			if (LISTEN_TUNER_BY_ID.equals(selection)) {
 				return Status.OK_STATUS;
 			}
 			String s = (String) value;
+			if (s == null || s.trim().equals("")) {
+				return ValidationStatus.error(TunerAllocationWizardPage.TUNER_TYPE_MISSING_ERR_MSG);
+			}
 			if (!FrontEndUIActivator.SUPPORTED_TUNER_TYPES.contains(s)) {
-				return ValidationStatus.error(TunerAllocationWizardPage.UNSUPPORTED_TUNER_TYPE);
+				return ValidationStatus.error(TunerAllocationWizardPage.TUNER_TYPE_NOT_SUPPORTED_ERR_MSG);
 			}
 			return Status.OK_STATUS;
 		} else if (control == allocIdText) {
@@ -402,15 +355,6 @@ public class TunerAllocationWizardPage extends WizardPage {
 			}
 			return Status.OK_STATUS;
 		} else if (allocationMode == AllocationMode.LISTENER) {
-			return Status.OK_STATUS;
-		} else if (control == typeCombo.getControl()) {
-			String s = (String) value;
-			if (s == null || "".equals(s)) {
-				return ValidationStatus.error(TunerAllocationWizardPage.TUNER_TYPE_MISSING_ERR_MSG);
-			}
-			if (!FrontEndUIActivator.SUPPORTED_TUNER_TYPES.contains(s)) {
-				return ValidationStatus.error(TunerAllocationWizardPage.TUNER_TYPE_NOT_SUPPORTED_ERR_MSG);
-			}
 			return Status.OK_STATUS;
 		} else if (control == cfText) {
 			if (allocationMode == AllocationMode.LISTENER) {
@@ -525,14 +469,11 @@ public class TunerAllocationWizardPage extends WizardPage {
 		return Status.OK_STATUS;
 	}
 
-
-	
-	
 	public TunerAllocationWizardPage() {
 		super("Allocate A Tuner");
 		nf.setMinimumFractionDigits(0);
 	}
-	
+
 	protected TunerAllocationWizardPage(TunerStatus tuner) {
 		super("Allocate A Tuner");
 		Assert.isNotNull(tuner, "Tuner must not be null");
@@ -551,7 +492,7 @@ public class TunerAllocationWizardPage extends WizardPage {
 		nf.setMinimumFractionDigits(0);
 		nf.setGroupingUsed(false);
 	}
-	
+
 	public TunerAllocationWizardPage(ScaStructProperty allocationStruct) {
 		this();
 		if (TunerAllocationProperty.INSTANCE.getId().equals(allocationStruct.getId())) {
@@ -570,10 +511,10 @@ public class TunerAllocationWizardPage extends WizardPage {
 		setTitle("Tuner Allocation");
 		setDescription("Specify the parameters for the tuner you would like to allocate.");
 		this.uuid = UUID.randomUUID();
-		
+
 		initializeTunerAllocationStruct();
 		initializeListenerAllocationStruct();
-		
+
 		context = new EMFDataBindingContext();
 		addBindings();
 		WizardPageSupport.create(this, context);
@@ -586,7 +527,6 @@ public class TunerAllocationWizardPage extends WizardPage {
 			context.bindValue(ViewerProperties.singleSelection().observe(typeCombo),
 				SCAObservables.observeSimpleProperty(tunerAllocationStruct.getSimple(TunerAllocationProperties.TUNER_TYPE.getId())), tunerTypeStrategy, null),
 			SWT.TOP | SWT.LEFT);
-		typeCombo.addSelectionChangedListener(tunerTypeListener);
 		typeCombo.setInput(FrontEndUIActivator.SUPPORTED_TUNER_TYPES.toArray(new String[0]));
 		if (tuner != null) {
 			if (tuner.getTunerType() != null) {
@@ -600,9 +540,9 @@ public class TunerAllocationWizardPage extends WizardPage {
 				typeCombo.setSelection(new StructuredSelection(tunerAllocationStruct.getSimple(TunerAllocationProperties.TUNER_TYPE.getId()).getValue()));
 			}
 		}
-		
+
 	}
-	
+
 	private void addAllocIdBindings() {
 		UpdateValueStrategy allocIdStrategy = new UpdateValueStrategy() {
 			@Override
@@ -620,14 +560,14 @@ public class TunerAllocationWizardPage extends WizardPage {
 			SCAObservables.observeSimpleProperty(listenerAllocationStruct.getSimple(ListenerAllocationProperties.LISTENER_ALLOCATION_ID.getId())),
 			allocIdStrategy, null), SWT.TOP | SWT.LEFT);
 		if (allocIdText.getText().isEmpty()) {
-			//initialize and color cyan
+			// initialize and color cyan
 			allocIdText.setText(getUsername() + ":" + uuid.toString());
 			allocIdText.setBackground(allocIdText.getDisplay().getSystemColor(SWT.COLOR_CYAN));
 		}
 		allocIdText.addFocusListener(new TargetableFocusListener(allocIdText));
-		
+
 	}
-	
+
 	private void addExistingAllocIdBindings() {
 		UpdateValueStrategy existingAllocIdStrategy1 = new UpdateValueStrategy() {
 			@Override
@@ -648,10 +588,8 @@ public class TunerAllocationWizardPage extends WizardPage {
 			SCAObservables.observeSimpleProperty(listenerAllocationStruct.getSimple(ListenerAllocationProperties.EXISTING_ALLOCATION_ID.getId())),
 			existingAllocIdStrategy1, existingAllocIdStrategy2), SWT.TOP | SWT.LEFT);
 		targetAllocText.addFocusListener(new TargetableFocusListener(targetAllocText));
-		targetAllocText.addModifyListener(allocIdListener);
-		
 	}
-	
+
 	private void addCfBindings() {
 		UpdateValueStrategy cfStrategy1 = new UpdateValueStrategy() {
 			@Override
@@ -684,9 +622,9 @@ public class TunerAllocationWizardPage extends WizardPage {
 				SCAObservables.observeSimpleProperty(tunerAllocationStruct.getSimple(TunerAllocationProperties.CENTER_FREQUENCY.getId())), cfStrategy1,
 				cfStrategy2), SWT.TOP | SWT.LEFT);
 		cfText.addFocusListener(new TargetableFocusListener(cfText));
-		
+
 	}
-	
+
 	private void addBwBindings() {
 		UpdateValueStrategy bwStrategy1 = new UpdateValueStrategy() {
 			@Override
@@ -719,12 +657,12 @@ public class TunerAllocationWizardPage extends WizardPage {
 				SCAObservables.observeSimpleProperty(tunerAllocationStruct.getSimple(TunerAllocationProperties.BANDWIDTH.getId())), bwStrategy1, bwStrategy2),
 			SWT.TOP | SWT.LEFT);
 		bwText.addFocusListener(new TargetableFocusListener(bwText));
-		
-		//bwAnyValue
+
+		// bwAnyValue
 		if (tunerAllocationStruct.getSimple(TunerAllocationProperties.BANDWIDTH.getId()).getValue() != null) {
 			bwAnyValue.setSelection((Double) tunerAllocationStruct.getSimple(TunerAllocationProperties.BANDWIDTH.getId()).getValue() == 0);
 		}
-		
+
 		// BW Tolerance Text
 		UpdateValueStrategy bwTolStrategy1 = new UpdateValueStrategy() {
 			@Override
@@ -759,7 +697,7 @@ public class TunerAllocationWizardPage extends WizardPage {
 		bwTolText.addFocusListener(new TargetableFocusListener(bwTolText));
 
 	}
-	
+
 	private void addSrBindings() {
 		UpdateValueStrategy srStrategy1 = new UpdateValueStrategy() {
 			@Override
@@ -792,12 +730,12 @@ public class TunerAllocationWizardPage extends WizardPage {
 				SCAObservables.observeSimpleProperty(tunerAllocationStruct.getSimple(TunerAllocationProperties.SAMPLE_RATE.getId())), srStrategy1, srStrategy2),
 			SWT.TOP | SWT.LEFT);
 		srText.addFocusListener(new TargetableFocusListener(srText));
-		
-		//srAnyValue
+
+		// srAnyValue
 		if (tunerAllocationStruct.getSimple(TunerAllocationProperties.SAMPLE_RATE.getId()).getValue() != null) {
 			srAnyValue.setSelection((Double) tunerAllocationStruct.getSimple(TunerAllocationProperties.SAMPLE_RATE.getId()).getValue() == 0);
 		}
-		
+
 		// SR Tolerance Text
 		UpdateValueStrategy srTolStrategy1 = new UpdateValueStrategy() {
 			@Override
@@ -831,49 +769,48 @@ public class TunerAllocationWizardPage extends WizardPage {
 		srTolText.setText("20");
 		srTolText.addFocusListener(new TargetableFocusListener(srTolText));
 
-
 	}
-	
+
 	private void addAllocationComboBindings() {
 		allocationComboViewer.addSelectionChangedListener(allocationModeListener);
 		allocationComboViewer.setInput(TUNER_ALLOCATION_TYPES);
-		//set selection
+		// set selection
 		if (ListenerAllocationProperty.INSTANCE.getId().equals(listenerAllocationStruct.getId())) {
-			//listener_allocation
-			
-			//listener_allocation by id
+			// listener_allocation
+
+			// listener_allocation by id
 			allocationComboViewer.setSelection(new StructuredSelection(LISTEN_TUNER_BY_ID));
-			
+
 		} else {
-			//tuner_allocation
-			
+			// tuner_allocation
+
 			if (!(Boolean) tunerAllocationStruct.getSimple(TunerAllocationProperties.DEVICE_CONTROL.getId()).getValue()) {
-				//withOUT device control
+				// withOUT device control
 				allocationComboViewer.setSelection(new StructuredSelection(LISTEN_TUNER_BY_PROPERTIES));
 			} else {
-				//with device control
+				// with device control
 				allocationComboViewer.setSelection(new StructuredSelection(ALLOCATE_TUNER));
 			}
 		}
-		
+
 	}
-	
+
 	private void addRfFlowIdBindings() {
 		ControlDecorationSupport.create(
 			context.bindValue(WidgetProperties.text(SWT.Modify).observe(rfFlowIdText),
 				SCAObservables.observeSimpleProperty(tunerAllocationStruct.getSimple(TunerAllocationProperties.RF_FLOW_ID.getId())), null, null), SWT.TOP
 				| SWT.LEFT);
-		
+
 	}
-	
+
 	private void addGroupIdBindings() {
 		ControlDecorationSupport.create(
 			context.bindValue(WidgetProperties.text(SWT.Modify).observe(groupIdText),
 				SCAObservables.observeSimpleProperty(tunerAllocationStruct.getSimple(TunerAllocationProperties.GROUP_ID.getId())), null, null), SWT.TOP
 				| SWT.LEFT);
-		
+
 	}
-	
+
 	public void addBindings() {
 
 		// Tuner Type combo
@@ -893,13 +830,13 @@ public class TunerAllocationWizardPage extends WizardPage {
 
 		// SR Text
 		addSrBindings();
-		
+
 		// RF FLow ID Text
 		addRfFlowIdBindings();
-		
-		//Allocation Combo
+
+		// Allocation Combo
 		addAllocationComboBindings();
-		
+
 		// Group ID Text
 		addGroupIdBindings();
 	}
@@ -909,11 +846,11 @@ public class TunerAllocationWizardPage extends WizardPage {
 	}
 
 	private void initializeTunerAllocationStruct() {
-		//if not null it was provided in constructor
-		if (tunerAllocationStruct != null) { 
-			return; 
+		// if not null it was provided in constructor
+		if (tunerAllocationStruct != null) {
+			return;
 		}
-		
+
 		tunerAllocationStruct = ScaFactory.eINSTANCE.createScaStructProperty();
 		for (TunerAllocationProperties allocProp : TunerAllocationProperties.values()) {
 			ScaSimpleProperty simple = ScaFactory.eINSTANCE.createScaSimpleProperty();
@@ -929,11 +866,11 @@ public class TunerAllocationWizardPage extends WizardPage {
 	}
 
 	private void initializeListenerAllocationStruct() {
-		//if not null it was provided in constructor
-		if (listenerAllocationStruct != null) { 
-			return; 
+		// if not null it was provided in constructor
+		if (listenerAllocationStruct != null) {
+			return;
 		}
-		
+
 		listenerAllocationStruct = ScaFactory.eINSTANCE.createScaStructProperty();
 		for (ListenerAllocationProperties allocProp : ListenerAllocationProperties.values()) {
 			ScaSimpleProperty simple = ScaFactory.eINSTANCE.createScaSimpleProperty();
@@ -948,7 +885,6 @@ public class TunerAllocationWizardPage extends WizardPage {
 		}
 	}
 
-	
 	private void createGroupControls(Composite parent) {
 		GridLayoutFactory.fillDefaults().numColumns(2).applyTo(parent);
 
@@ -959,7 +895,7 @@ public class TunerAllocationWizardPage extends WizardPage {
 		Composite comp2 = new Composite(parent, SWT.NONE);
 		comp2.setLayout(new GridLayout(3, false));
 		GridDataFactory.fillDefaults().span(2, 1).grab(true, false).applyTo(comp2);
-		
+
 		Label allocationComboViewerLabel = new Label(comp2, SWT.NONE);
 		allocationComboViewerLabel.setText("Allocation:");
 		Combo allocationCombo = new Combo(comp2, SWT.READ_ONLY | SWT.SINGLE | SWT.LEAD | SWT.BORDER);
@@ -968,28 +904,27 @@ public class TunerAllocationWizardPage extends WizardPage {
 		GridData allocationComboViewerGridData = GridDataFactory.fillDefaults().grab(false, false).create();
 
 		allocationComboViewer.getControl().setLayoutData(allocationComboViewerGridData);
-		
+
 		Composite comp3 = new Composite(parent, SWT.NONE);
 		comp3.setLayout(new FillLayout());
 		GridDataFactory.fillDefaults().span(2, 1).grab(true, false).applyTo(comp3);
-		
+
 		Group group = new Group(parent, SWT.SHADOW_ETCHED_IN);
 		group.setText("Allocation Properties");
 		group.setLayout(new GridLayout(2, false));
 		GridData groupGridData = GridDataFactory.fillDefaults().grab(true, false).create();
 		groupGridData.horizontalSpan = 2;
 		group.setLayoutData(groupGridData);
-		
+
 		Label targetAllocLabel = new Label(group, SWT.NONE);
 		targetAllocLabel.setText("Existing Tuner Allocation ID");
 		targetAllocText = new Text(group, SWT.BORDER);
 		targetAllocText.setToolTipText("If you would like to create a Listener allocation for a specific tuner, enter its Allocation ID here");
 		targetAllocText.setEnabled(false);
 		GridDataFactory.fillDefaults().grab(true, false).applyTo(targetAllocText);
-		
+
 		Label allocIdLabel = new Label(group, SWT.NONE);
 		allocIdLabel.setText("New Allocation ID");
-		
 		allocIdText = new Text(group, SWT.BORDER);
 		allocIdText.setToolTipText("Enter any ID for ease of reference. Additional characters will be appended after this name, to ensure uniqueness");
 		GridDataFactory.fillDefaults().grab(true, false).applyTo(allocIdText);
@@ -997,7 +932,6 @@ public class TunerAllocationWizardPage extends WizardPage {
 		Label typeLabel = new Label(group, SWT.NONE);
 		typeLabel.setText("Tuner Type");
 		typeCombo = new ComboViewer(group, SWT.NONE | SWT.READ_ONLY);
-		
 		typeCombo.setContentProvider(new ArrayContentProvider());
 		GridDataFactory.fillDefaults().grab(true, false).applyTo(typeCombo.getControl());
 		tunerControls.add(typeCombo.getControl());
@@ -1116,7 +1050,7 @@ public class TunerAllocationWizardPage extends WizardPage {
 			}
 			break;
 		case DEVICE_CONTROL:
-			IStructuredSelection structuredSelection = (IStructuredSelection) allocationComboViewer.getSelection(); 
+			IStructuredSelection structuredSelection = (IStructuredSelection) allocationComboViewer.getSelection();
 			String selection = (String) structuredSelection.getFirstElement();
 			if (ALLOCATE_TUNER.equals(selection)) {
 				allocationMode = AllocationMode.TUNER;
