@@ -484,4 +484,34 @@ public final class ModelUtil {
 			return Collections.emptyList();
 		}
 	}
+	
+	/**
+	 * Takes an IProject and will attempt to find the soft package associated with the project loading it into
+	 * the provided resource set.
+	 * @param project The IProject for the resource
+	 * @param set The resource set to load the softpackage into
+	 * @return The SoftPkg associated with the project or null if a softpackage is not found
+	 * @since 19.1
+	 */
+	public static SoftPkg getSoftPkg(final IProject project, ResourceSet set) {
+		final IFile softPkgFile = project.getFile(project.getName() + ".spd.xml");
+		SoftPkg softPkg = null;
+		
+		if (softPkgFile.exists()) {
+			final Resource resource = set.getResource(URI.createFileURI(softPkgFile.getLocation().toString()), true);
+			softPkg = SoftPkg.Util.getSoftPkg(resource);
+		}
+		return softPkg;
+	}
+	
+	/**
+	 * Takes an IProject and will attempt to find the soft package associated with the project.
+	 * @param project The IProject for the resource
+	 * @return The SoftPkg associated with the project or null if a softpackage is not found
+	 * @since 19.1
+	 */
+	public static SoftPkg getSoftPkg(final IProject project) {
+		final ResourceSet set = ScaResourceFactoryUtil.createResourceSet();
+		return getSoftPkg(project, set);
+	}
 }
