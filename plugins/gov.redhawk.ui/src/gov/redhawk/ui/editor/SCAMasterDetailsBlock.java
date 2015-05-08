@@ -21,21 +21,12 @@ import org.eclipse.ui.forms.IManagedForm;
 import org.eclipse.ui.forms.MasterDetailsBlock;
 import org.eclipse.ui.forms.widgets.Section;
 
-// TODO: Auto-generated Javadoc
-/**
- * The Class SCAMasterDetailsBlock.
- */
 public abstract class SCAMasterDetailsBlock extends MasterDetailsBlock {
 
 	private final ScaFormPage fPage;
 	private ScaSection fSection;
 	private Resource inputResource;
 
-	/**
-	 * Instantiates a new sCA master details block.
-	 * 
-	 * @param page the page
-	 */
 	public SCAMasterDetailsBlock(final ScaFormPage page) {
 		this.fPage = page;
 	}
@@ -49,9 +40,6 @@ public abstract class SCAMasterDetailsBlock extends MasterDetailsBlock {
 		return this.fPage;
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	protected void createMasterPart(final IManagedForm managedForm, final Composite parent) {
 		final Composite container = managedForm.getToolkit().createComposite(parent);
@@ -65,9 +53,6 @@ public abstract class SCAMasterDetailsBlock extends MasterDetailsBlock {
 		section.setLayoutData(new GridData(GridData.FILL_BOTH));
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	protected void createToolBarActions(final IManagedForm managedForm) {
 	}
@@ -81,9 +66,6 @@ public abstract class SCAMasterDetailsBlock extends MasterDetailsBlock {
 	 */
 	protected abstract ScaSection createMasterSection(IManagedForm managedForm, Composite parent);
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public void createContent(final IManagedForm managedForm) {
 		super.createContent(managedForm);

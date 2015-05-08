@@ -41,7 +41,7 @@ import org.eclipse.ui.statushandlers.StatusManager;
 import org.eclipse.ui.views.contentoutline.IContentOutlinePage;
 
 /**
- * This is an example of a Prf model editor.
+ * The editor for PRF files. Shows both a form page for editing properties as well as an XML editor page.
  */
 public class PropertiesEditor extends SCAFormEditor {
 
@@ -65,8 +65,8 @@ public class PropertiesEditor extends SCAFormEditor {
 	@Override
 	protected void addPages() {
 		try {
-			addFormPage();
-			addSourcePage();
+			addPropertiesFormPage();
+			addXmlEditorPage();
 		} catch (final PartInitException e) {
 			PrfUiPlugin.logException(e);
 		}
@@ -77,7 +77,7 @@ public class PropertiesEditor extends SCAFormEditor {
 	 * 
 	 * @throws PartInitException the part init exception
 	 */
-	private void addSourcePage() throws PartInitException {
+	private void addXmlEditorPage() throws PartInitException {
 		// StructuredTextEditors only work on workspace entries
 		// because org.eclipse.wst.sse.core.FileBufferModelManager:bufferCreated()
 		// assumes that the editor input is in the workspace.
@@ -109,7 +109,7 @@ public class PropertiesEditor extends SCAFormEditor {
 	 * 
 	 * @throws PartInitException the part init exception
 	 */
-	private void addFormPage() throws PartInitException {
+	private void addPropertiesFormPage() throws PartInitException {
 		this.propertiesFormPage = new PropertiesFormPage(this);
 		addPage(this.propertiesFormPage);
 		this.propertiesFormPage.setInput(getMainResource());

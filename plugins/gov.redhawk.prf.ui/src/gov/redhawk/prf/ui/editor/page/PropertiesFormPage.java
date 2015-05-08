@@ -27,7 +27,7 @@ import org.eclipse.ui.forms.widgets.ScrolledForm;
 import org.eclipse.ui.menus.IMenuService;
 
 /**
- * The Class PropertiesFormPage.
+ * This class is the form page that allows graphical editing of properties in a PRF file.
  */
 public class PropertiesFormPage extends ScaFormPage implements IViewerProvider {
 
