@@ -494,7 +494,15 @@ public final class ModelUtil {
 	 * @since 19.1
 	 */
 	public static SoftPkg getSoftPkg(final IProject project, ResourceSet set) {
-		final IFile softPkgFile = project.getFile(project.getName() + ".spd.xml");
+		String projectName = project.getName();
+		int lastDotIndex = projectName.lastIndexOf('.');
+		String projectBaseName;
+		if (lastDotIndex != -1) {
+			projectBaseName = projectName.substring(lastDotIndex + 1);
+		} else {
+			projectBaseName = projectName;
+		}
+		final IFile softPkgFile = project.getFile(projectBaseName + ".spd.xml");
 		SoftPkg softPkg = null;
 		
 		if (softPkgFile.exists()) {
