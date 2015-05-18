@@ -15,7 +15,7 @@ import mil.jpeojtrs.sca.partitioning.DomainFinderType;
 import mil.jpeojtrs.sca.partitioning.FindByStub;
 
 /**
- * @since 6.2
+ * @since 7.0
  */
 public class FindByStubUtil {
 
