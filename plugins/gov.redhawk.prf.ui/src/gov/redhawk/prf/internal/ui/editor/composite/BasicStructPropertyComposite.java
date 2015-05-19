@@ -35,10 +35,6 @@ public abstract class BasicStructPropertyComposite extends AbstractPropertyCompo
 		super(parent, style, toolkit);
 	}
 
-	/**
-	 * @param propertyComposite
-	 * @param toolkit
-	 */
 	protected void createConfigurationKindViewer(final Composite parent, final FormToolkit toolkit) {
 		// Type
 		this.kindLabel = toolkit.createLabel(parent, "Kind:");
@@ -92,9 +88,6 @@ public abstract class BasicStructPropertyComposite extends AbstractPropertyCompo
 		return this.kindLabel;
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public void setEditable(final boolean canEdit) {
 		if (this.configurationKindViewer != null) {

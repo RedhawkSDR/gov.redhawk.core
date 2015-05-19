@@ -48,9 +48,6 @@ import org.eclipse.swt.widgets.Table;
 import org.eclipse.ui.forms.IFormColors;
 import org.eclipse.ui.forms.widgets.FormToolkit;
 
-/**
- * 
- */
 public class SimpleSequencePropertyComposite extends BasicSimplePropertyComposite {
 	protected static final int NUM_COLUMNS = 3;
 
@@ -62,11 +59,6 @@ public class SimpleSequencePropertyComposite extends BasicSimplePropertyComposit
 	private TableViewerColumn valueColumn;
 	private Object lastSelection;
 
-	/**
-	 * @param parent
-	 * @param style
-	 * @param toolkit
-	 */
 	public SimpleSequencePropertyComposite(final Composite parent, final int style, final FormToolkit toolkit) {
 		super(parent, style, toolkit);
 
@@ -206,23 +198,14 @@ public class SimpleSequencePropertyComposite extends BasicSimplePropertyComposit
 		return this.valueColumn;
 	}
 
-	/**
-	 * @return the valuesViewer
-	 */
 	public TableViewer getValuesViewer() {
 		return this.valuesViewer;
 	}
 
-	/**
-	 * @return the removeValueButton
-	 */
 	public Button getRemoveValueButton() {
 		return this.removeValueButton;
 	}
 
-	/**
-	 * @return the addValueButton
-	 */
 	public Button getAddValueButton() {
 		return this.addValueButton;
 	}

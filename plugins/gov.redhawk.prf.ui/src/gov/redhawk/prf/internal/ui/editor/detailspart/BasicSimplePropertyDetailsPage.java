@@ -238,11 +238,6 @@ public abstract class BasicSimplePropertyDetailsPage extends AbstractPropertyDet
 		return strategy;
 	}
 
-	/**
-	 * Creates the action mode to target.
-	 * 
-	 * @return the update value strategy
-	 */
 	private UpdateValueStrategy createActionModelToTarget() {
 		final EMFUpdateValueStrategy strategy = new EMFUpdateValueStrategy();
 		strategy.setConverter(new Converter(Action.class, Object.class) {
@@ -261,11 +256,6 @@ public abstract class BasicSimplePropertyDetailsPage extends AbstractPropertyDet
 		return strategy;
 	}
 
-	/**
-	 * Creates the action target to model.
-	 * 
-	 * @return the update value strategy
-	 */
 	private UpdateValueStrategy createActionTargetToModel() {
 		final EMFUpdateValueStrategy strategy = new EMFUpdateValueStrategy();
 		strategy.setConverter(new Converter(Object.class, ActionType.class) {
@@ -286,12 +276,6 @@ public abstract class BasicSimplePropertyDetailsPage extends AbstractPropertyDet
 		return strategy;
 	}
 
-	/**
-	 * Bind ranges.
-	 * 
-	 * @param domain
-	 * @param retVal
-	 */
 	private List<Binding> bindRanges(final EObject input, final DataBindingContext context, final EditingDomain domain) {
 		final BasicSimplePropertyComposite composite = (BasicSimplePropertyComposite) getComposite();
 		final List<Binding> retVal = new ArrayList<Binding>();
@@ -306,12 +290,6 @@ public abstract class BasicSimplePropertyDetailsPage extends AbstractPropertyDet
 		return retVal;
 	}
 
-	/**
-	 * Creates the kind binding.
-	 * 
-	 * @param context
-	 * @param retVal
-	 */
 	private void createKindBinding(final DataBindingContext context, final EObject input, final EditingDomain domain, final List<Binding> retVal) {
 		retVal.add(context.bindList(kindList, EMFEditObservables.observeList(getEditingDomain(), input, BasicSimplePropertyDetailsPage.this.property.getKind())));
 	}
@@ -457,9 +435,6 @@ public abstract class BasicSimplePropertyDetailsPage extends AbstractPropertyDet
 		}
 	}
 
-	/**
-	 * Handle edit enumeration.
-	 */
 	protected void handleEditEnumeration() {
 		final EnumerationWizard wizard = new EnumerationWizard();
 		final Enumeration enumeration = getEnumerationViewerSelection();
@@ -476,9 +451,6 @@ public abstract class BasicSimplePropertyDetailsPage extends AbstractPropertyDet
 		}
 	}
 
-	/**
-	 * Handle enumeration removed.
-	 */
 	protected void handleRemoveEnumeration() {
 		Command command = null;
 		if (input instanceof Simple) {

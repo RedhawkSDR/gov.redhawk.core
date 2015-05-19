@@ -29,11 +29,6 @@ public class SimplePropertyComposite extends BasicSimplePropertyComposite {
 
 	private FormEntry valueEntry;
 
-	/**
-	 * @param parent
-	 * @param style
-	 * @param toolkit
-	 */
 	public SimplePropertyComposite(final Composite parent, final int style, final FormToolkit toolkit) {
 		super(parent, style, toolkit);
 
@@ -84,9 +79,6 @@ public class SimplePropertyComposite extends BasicSimplePropertyComposite {
 		return retVal;
 	}
 
-	/**
-	 * @return the valueText
-	 */
 	public FormEntry getValueEntry() {
 		return this.valueEntry;
 	}

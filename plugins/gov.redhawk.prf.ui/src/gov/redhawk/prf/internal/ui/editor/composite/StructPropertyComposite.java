@@ -23,11 +23,7 @@ import org.eclipse.ui.forms.widgets.FormToolkit;
  * 
  */
 public class StructPropertyComposite extends BasicStructPropertyComposite {
-	/**
-	 * @param parent
-	 * @param style
-	 * @param toolkit
-	 */
+
 	public StructPropertyComposite(final Composite parent, final int style, final FormToolkit toolkit) {
 		super(parent, style, toolkit);
 

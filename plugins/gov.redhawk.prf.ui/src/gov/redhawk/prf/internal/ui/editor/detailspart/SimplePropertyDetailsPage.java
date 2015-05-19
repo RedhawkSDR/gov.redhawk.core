@@ -40,9 +40,6 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.forms.widgets.FormToolkit;
 import org.eclipse.ui.forms.widgets.Section;
 
-/**
- * The Class SimplePropertyDetailsPage.
- */
 public class SimplePropertyDetailsPage extends BasicSimplePropertyDetailsPage {
 
 	/**
@@ -54,9 +51,6 @@ public class SimplePropertyDetailsPage extends BasicSimplePropertyDetailsPage {
 		super(section);
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	protected List<Binding> bind(final DataBindingContext dataBindingContext, final EObject input) {
 		final List<Binding> retVal = super.bind(dataBindingContext, input);
@@ -88,10 +82,6 @@ public class SimplePropertyDetailsPage extends BasicSimplePropertyDetailsPage {
 		return (SimplePropertyComposite) super.getComposite();
 	}
 
-	/**
-	 * @param parent
-	 * @param toolkit
-	 */
 	@Override
 	protected SimplePropertyComposite createSection(final Composite parent, final FormToolkit toolkit) {
 		final Section newSection = toolkit.createSection(parent, Section.EXPANDED | Section.TITLE_BAR);

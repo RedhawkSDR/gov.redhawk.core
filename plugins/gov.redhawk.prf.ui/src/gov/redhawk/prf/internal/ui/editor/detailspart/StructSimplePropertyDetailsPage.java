@@ -18,9 +18,6 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.forms.widgets.FormToolkit;
 
-/**
- * The Class SimplePropertyDetailsPage.
- */
 public class StructSimplePropertyDetailsPage extends SimplePropertyDetailsPage {
 
 	/**
@@ -44,9 +41,5 @@ public class StructSimplePropertyDetailsPage extends SimplePropertyDetailsPage {
 		toolkit.adapt(retVal);
 		return retVal;
 	}
-
-	
-
-	
 
 }

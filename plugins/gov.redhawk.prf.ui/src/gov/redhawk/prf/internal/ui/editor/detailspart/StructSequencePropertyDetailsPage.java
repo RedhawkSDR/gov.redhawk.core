@@ -67,10 +67,6 @@ public class StructSequencePropertyDetailsPage extends BasicStructPropertyDetail
 		super(section);
 	}
 
-	/**
-	 * @param parent
-	 * @param toolkit
-	 */
 	@Override
 	protected BasicStructPropertyComposite createSection(final Composite parent, final FormToolkit toolkit) {
 		final Section newSection = toolkit.createSection(parent,  Section.EXPANDED | ExpandableComposite.TITLE_BAR);
@@ -88,9 +84,6 @@ public class StructSequencePropertyDetailsPage extends BasicStructPropertyDetail
 		return this.structSequenceComposite;
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	protected void addListeners() {
 		super.addListeners();
@@ -158,9 +151,6 @@ public class StructSequencePropertyDetailsPage extends BasicStructPropertyDetail
 		return Arrays.asList(((IStructuredSelection) this.structSequenceComposite.getStructValueViewer().getSelection()).toArray());
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	protected List<Binding> bind(final DataBindingContext context, final EObject input) {
 		final List<Binding> bindings = super.bind(context, input);

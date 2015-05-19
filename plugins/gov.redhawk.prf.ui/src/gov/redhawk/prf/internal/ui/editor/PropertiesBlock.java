@@ -35,49 +35,28 @@ import org.eclipse.ui.forms.IDetailsPage;
 import org.eclipse.ui.forms.IDetailsPageProvider;
 import org.eclipse.ui.forms.IManagedForm;
 
-/**
- * The Class ScrolledPropertiesBlock.
- */
 public class PropertiesBlock extends SCAMasterDetailsBlock {
 	private PropertiesSection fSection;
 
-
-	/**
-	 * Instantiates a new scrolled properties block.
-	 * 
-	 * @param page the page
-	 */
 	public PropertiesBlock(final PropertiesFormPage page) {
 		super(page);
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public PropertiesFormPage getPage() {
 		return (PropertiesFormPage) super.getPage();
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	protected ScaSection createMasterSection(final IManagedForm managedForm, final Composite parent) {
 		this.fSection = new PropertiesSection(this, parent);
 		return this.fSection;
 	}
 
-	/**
-	 * @return the Section
-	 */
 	public PropertiesSection getSection() {
 		return this.fSection;
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	protected void registerPages(final DetailsPart detailsPart) {
 		detailsPart.setPageProvider(new IDetailsPageProvider() {

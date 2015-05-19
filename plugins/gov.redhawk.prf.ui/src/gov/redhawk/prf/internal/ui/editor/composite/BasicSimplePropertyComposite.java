@@ -71,9 +71,6 @@ import org.eclipse.swt.widgets.Table;
 import org.eclipse.ui.forms.IFormColors;
 import org.eclipse.ui.forms.widgets.FormToolkit;
 
-/**
- *
- */
 public abstract class BasicSimplePropertyComposite extends AbstractPropertyComposite {
 
 	public static final String ENUM_REMOVE_BUTTON_ID = "gov.redhawk.prf.internal.ui.editor.composite.BasicSimplePropertyComposite.enum.removeButton";
@@ -109,10 +106,6 @@ public abstract class BasicSimplePropertyComposite extends AbstractPropertyCompo
 	private Combo typeModifier;
 	private Combo optionalCombo;
 
-	/**
-	 * @param parent
-	 * @param style
-	 */
 	public BasicSimplePropertyComposite(final Composite parent, final int style, final FormToolkit toolkit) {
 		super(parent, style, toolkit);
 		this.toolkit = toolkit;
@@ -122,10 +115,6 @@ public abstract class BasicSimplePropertyComposite extends AbstractPropertyCompo
 		HelpUtil.assignTooltip(control, contextId);
 	}
 
-	/**
-	 * @param propertyComposite
-	 * @param toolkit
-	 */
 	protected Button createRange(final Composite parent, final FormToolkit toolkit) {
 		final Label label = toolkit.createLabel(parent, "Range:");
 		label.setForeground(toolkit.getColors().getColor(IFormColors.TITLE));
@@ -144,10 +133,6 @@ public abstract class BasicSimplePropertyComposite extends AbstractPropertyCompo
 		return this.rangeButton;
 	}
 
-	/**
-	 * @param propertyComposite
-	 * @param toolkit
-	 */
 	protected ComboViewer createActionViewer(final Composite parent, final FormToolkit toolkit) {
 		// Action
 		this.actionLabel = toolkit.createLabel(parent, "Action:");
@@ -192,11 +177,6 @@ public abstract class BasicSimplePropertyComposite extends AbstractPropertyCompo
 		return viewer;
 	}
 
-	/**
-	 * @param propertyComposite
-	 * @param toolkit
-	 * @return 
-	 */
 	protected CheckboxTableViewer createKindViewer(final Composite parent, final FormToolkit toolkit) {
 		// Kind
 		this.kindLabel = toolkit.createLabel(parent, "Kind:");
@@ -205,9 +185,6 @@ public abstract class BasicSimplePropertyComposite extends AbstractPropertyCompo
 		final CheckboxTableViewer viewer = new CheckboxTableViewer(toolkit.createTable(parent, SWT.CHECK | SWT.READ_ONLY));
 		viewer.setContentProvider(new ArrayContentProvider());
 		viewer.setLabelProvider(new LabelProvider() {
-			/**
-			 * {@inheritDoc}
-			 */
 			@Override
 			public String getText(final Object element) {
 				if (element instanceof PropertyConfigurationType) {
@@ -216,7 +193,7 @@ public abstract class BasicSimplePropertyComposite extends AbstractPropertyCompo
 						return element.toString() + " (default)";
 					}
 				}
-				return element == null ? "" : element.toString(); //$NON-NLS-1$ // SUPPRESS CHECKSTYLE AvoidInLine
+				return (element == null) ? "" : element.toString(); //$NON-NLS-1$
 			}
 		});
 		viewer.addFilter(new ViewerFilter() {
@@ -242,10 +219,6 @@ public abstract class BasicSimplePropertyComposite extends AbstractPropertyCompo
 		return this.kindViewer;
 	}
 
-	/**
-	 * @param propertyComposite
-	 * @param toolkit
-	 */
 	protected FormEntry createUnitsEntry(final Composite parent, final FormToolkit toolkit) {
 		// Units
 		this.unitsEntry = new FormEntry(parent, toolkit, "Units:", SWT.SINGLE);
@@ -254,10 +227,6 @@ public abstract class BasicSimplePropertyComposite extends AbstractPropertyCompo
 		return unitsEntry;
 	}
 
-	/**
-	 * @param propertyComposite
-	 * @param toolkit
-	 */
 	protected ComboViewer createTypeViewer(final Composite parent, final FormToolkit toolkit) {
 		// Type
 		final Label label = toolkit.createLabel(parent, "Type*:");
@@ -342,7 +311,7 @@ public abstract class BasicSimplePropertyComposite extends AbstractPropertyCompo
 	}
 
 	/**
-	 * Creates the min entry field.
+	 * Creates the max entry field.
 	 *
 	 * @param toolkit the toolkit
 	 * @param client the client
@@ -351,58 +320,34 @@ public abstract class BasicSimplePropertyComposite extends AbstractPropertyCompo
 		this.maxText = new FormEntry(client, toolkit, "Max:", SWT.SINGLE);
 	}
 
-	/**
-	 * @return the typeViewer
-	 */
 	public ComboViewer getTypeViewer() {
 		return this.typeViewer;
 	}
 
-	/**
-	 * @return the unitsText
-	 */
 	public FormEntry getUnitsEntry() {
 		return this.unitsEntry;
 	}
 
-	/**
-	 * @return the kindViewer
-	 */
 	public CheckboxTableViewer getKindViewer() {
 		return this.kindViewer;
 	}
 
-	/**
-	 * @return the actionViewer
-	 */
 	public ComboViewer getActionViewer() {
 		return this.actionViewer;
 	}
 
-	/**
-	 * @return the rangeButton
-	 */
 	public Button getRangeButton() {
 		return this.rangeButton;
 	}
 
-	/**
-	 * @return the minText
-	 */
 	public FormEntry getMinText() {
 		return this.minText;
 	}
 
-	/**
-	 * @return the maxText
-	 */
 	public FormEntry getMaxText() {
 		return this.maxText;
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public void setEditable(final boolean canEdit) {
 		super.setEditable(canEdit);
@@ -436,16 +381,10 @@ public abstract class BasicSimplePropertyComposite extends AbstractPropertyCompo
 		}
 	}
 
-	/**
-	 * @return the kindLabel
-	 */
 	public Label getKindLabel() {
 		return kindLabel;
 	}
 
-	/**
-	 * @return the actionLabel
-	 */
 	public Label getActionLabel() {
 		return actionLabel;
 	}
@@ -591,30 +530,18 @@ public abstract class BasicSimplePropertyComposite extends AbstractPropertyCompo
 		return this.adapterFactory;
 	}
 
-	/**
-	 * @return the propertiesViewer
-	 */
 	public TableViewer getEnumerationViewer() {
 		return this.enumViewer;
 	}
 
-	/**
-	 * @return the addPropertyButton
-	 */
 	public Button getAddEnumButton() {
 		return this.addEnumButton;
 	}
 
-	/**
-	 * @return the editPropertyButton
-	 */
 	public Button getEditEnumButton() {
 		return this.editEnumButton;
 	}
 
-	/**
-	 * @return the removePropertyButton
-	 */
 	public Button getRemoveEnumButton() {
 		return this.removeEnumButton;
 	}

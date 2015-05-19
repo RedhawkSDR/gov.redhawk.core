@@ -31,9 +31,6 @@ import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.forms.IFormColors;
 import org.eclipse.ui.forms.widgets.FormToolkit;
 
-/**
- * 
- */
 public abstract class AbstractPropertyComposite extends Composite implements IScaComposite {
 
 	public static final int NUM_COLUMNS = 3;
@@ -47,10 +44,6 @@ public abstract class AbstractPropertyComposite extends Composite implements ISc
 
 	private boolean canEdit;
 
-	/**
-	 * @param parent
-	 * @param style
-	 */
 	public AbstractPropertyComposite(final Composite parent, final int style, final FormToolkit toolkit) {
 		super(parent, style);
 	}
@@ -59,10 +52,6 @@ public abstract class AbstractPropertyComposite extends Composite implements ISc
 		HelpUtil.assignTooltip(control, contextId);
 	}
 
-	/**
-	 * @param propertyComposite
-	 * @param toolkit
-	 */
 	protected Text createDescription(final Composite parent, final FormToolkit toolkit) {
 		// Description
 		final Label label = toolkit.createLabel(parent, "Description:");
@@ -75,10 +64,6 @@ public abstract class AbstractPropertyComposite extends Composite implements ISc
 		return this.descriptionText;
 	}
 
-	/**
-	 * @param propertyComposite
-	 * @param toolkit
-	 */
 	protected ComboViewer createModeViewer(final Composite parent, final FormToolkit toolkit) {
 		// Mode
 		this.modeLabel = toolkit.createLabel(parent, "Mode:");
@@ -129,37 +114,22 @@ public abstract class AbstractPropertyComposite extends Composite implements ISc
 		return this.nameEntry;
 	}
 
-	/**
-	 * @return the modeLabel
-	 */
 	public Label getModeLabel() {
 		return modeLabel;
 	}
 
-	/**
-	 * @return the modeViewer
-	 */
 	public ComboViewer getModeViewer() {
 		return this.modeViewer;
 	}
 
-	/**
-	 * @return the descriptionText
-	 */
 	public Text getDescriptionText() {
 		return this.descriptionText;
 	}
 
-	/**
-	 * @return the idEntry
-	 */
 	public FormEntry getIdEntry() {
 		return this.idEntry;
 	}
 
-	/**
-	 * @return the nameEntry
-	 */
 	public FormEntry getNameEntry() {
 		return this.nameEntry;
 	}
@@ -170,9 +140,6 @@ public abstract class AbstractPropertyComposite extends Composite implements ISc
 		return this.canEdit;
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public void setEditable(final boolean canEdit) {
 		this.canEdit = canEdit;

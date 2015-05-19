@@ -50,9 +50,6 @@ import org.eclipse.ui.forms.widgets.ExpandableComposite;
 import org.eclipse.ui.forms.widgets.FormToolkit;
 import org.eclipse.ui.forms.widgets.Section;
 
-/**
- * The Class SimpleSequencePropertyDetailsPage.
- */
 public class SimpleSequencePropertyDetailsPage extends BasicSimplePropertyDetailsPage {
 
 	private class InputValueValidator implements IInputValidator {
@@ -65,9 +62,6 @@ public class SimpleSequencePropertyDetailsPage extends BasicSimplePropertyDetail
 			this.complex = complex;
 		}
 
-		/**
-		 * {@inheritDoc}
-		 */
 		@Override
 		public String isValid(final String newText) {
 			String retVal = null;
@@ -110,17 +104,11 @@ public class SimpleSequencePropertyDetailsPage extends BasicSimplePropertyDetail
 
 	}
 
-	/**
-	 * 
-	 */
 	@Override
 	protected void addListeners() {
 		super.addListeners();
 
 		this.composite.getRemoveValueButton().addSelectionListener(new SelectionAdapter() {
-			/**
-			 * {@inheritDoc}
-			 */
 			@Override
 			public void widgetSelected(final SelectionEvent e) {
 				handleRemoveValue();
@@ -128,9 +116,6 @@ public class SimpleSequencePropertyDetailsPage extends BasicSimplePropertyDetail
 		});
 
 		this.composite.getAddValueButton().addSelectionListener(new SelectionAdapter() {
-			/**
-			 * {@inheritDoc}
-			 */
 			@Override
 			public void widgetSelected(final SelectionEvent e) {
 				handleAddValue(e.widget.getDisplay().getActiveShell());
@@ -139,9 +124,6 @@ public class SimpleSequencePropertyDetailsPage extends BasicSimplePropertyDetail
 
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	protected List<Binding> bind(final DataBindingContext context, final EObject input) {
 		final List<Binding> retVal = super.bind(context, input);
@@ -158,10 +140,6 @@ public class SimpleSequencePropertyDetailsPage extends BasicSimplePropertyDetail
 		return retVal;
 	}
 
-	/**
-	 * @param parent
-	 * @param toolkit
-	 */
 	@Override
 	protected BasicSimplePropertyComposite createSection(final Composite parent, final FormToolkit toolkit) {
 		final Section newSection = toolkit.createSection(parent,  Section.EXPANDED | ExpandableComposite.TITLE_BAR);
@@ -192,9 +170,6 @@ public class SimpleSequencePropertyDetailsPage extends BasicSimplePropertyDetail
 		return retVal;
 	}
 	
-	/**
-	 * @param activeShell
-	 */
 	protected void handleAddValue(final Shell shell) {
 		final InputDialog dialog = new InputDialog(shell, "New Value", "Value:", "", new InputValueValidator(this.input.getType(), this.input.isComplex()));
 
@@ -221,9 +196,6 @@ public class SimpleSequencePropertyDetailsPage extends BasicSimplePropertyDetail
 		return (SimpleSequencePropertyComposite) composite;
 	}
 
-	/**
-	 * 
-	 */
 	protected void handleRemoveValue() {
 		if (this.input.getValues() != null) {
 			Command command = null;
