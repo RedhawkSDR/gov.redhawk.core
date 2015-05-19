@@ -94,7 +94,7 @@ public class ScaStructPropertyImpl extends ScaAbstractPropertyImpl<Struct> imple
 	 * <!-- end-user-doc -->
 	 * 
 	 * @see #getSequences()
-	 * @generated
+	 * @generated NOT
 	 * @ordered
 	 */
 	protected SequencesList sequences = new SequencesList(this);
