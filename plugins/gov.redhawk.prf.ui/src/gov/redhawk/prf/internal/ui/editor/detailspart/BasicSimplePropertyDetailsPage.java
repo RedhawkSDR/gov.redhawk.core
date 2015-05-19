@@ -53,7 +53,6 @@ import org.eclipse.emf.edit.command.RemoveCommand;
 import org.eclipse.emf.edit.command.ReplaceCommand;
 import org.eclipse.emf.edit.command.SetCommand;
 import org.eclipse.emf.edit.domain.EditingDomain;
-import org.eclipse.jface.databinding.swt.SWTObservables;
 import org.eclipse.jface.databinding.swt.WidgetProperties;
 import org.eclipse.jface.databinding.viewers.ViewersObservables;
 import org.eclipse.jface.viewers.CheckStateChangedEvent;
@@ -151,7 +150,7 @@ public abstract class BasicSimplePropertyDetailsPage extends AbstractPropertyDet
 		}
 
 		if (composite.getTypeModifier() != null) {
-			retVal.add(dataBindingContext.bindValue(SWTObservables.observeSelection(composite.getTypeModifier()),
+			retVal.add(dataBindingContext.bindValue(WidgetProperties.selection().observe(composite.getTypeModifier()),
 				EMFEditObservables.observeValue(domain, input, this.property.getTypeModifier()), createTypeModifierTargetToModel(),
 				createTypeModifierModelTarget()));
 		}
@@ -183,7 +182,7 @@ public abstract class BasicSimplePropertyDetailsPage extends AbstractPropertyDet
 
 		// Optional
 		if (composite.getOptionalCombo() != null) {
-			retVal.add(dataBindingContext.bindValue(SWTObservables.observeSelection(composite.getOptionalCombo()),
+			retVal.add(dataBindingContext.bindValue(WidgetProperties.selection().observe(composite.getOptionalCombo()),
 				EMFEditObservables.observeValue(domain, input, this.property.getOptional()),
 				createStringToBoolean(),   // target to model
 				createBooleanToString())); // model to target
@@ -345,11 +344,11 @@ public abstract class BasicSimplePropertyDetailsPage extends AbstractPropertyDet
 		});
 
 		final List<Binding> buttonBindings = new ArrayList<Binding>();
-		buttonBindings.add(context.bindValue(SWTObservables.observeSelection(rangeButton),
+		buttonBindings.add(context.bindValue(WidgetProperties.selection().observe(rangeButton),
 			EMFEditObservables.observeValue(getEditingDomain(), this.input, this.property.getRange()), targetToModel, modelToTarget));
 
-		buttonBindings.add(context.bindValue(SWTObservables.observeEnabled(minText), SWTObservables.observeSelection(rangeButton)));
-		buttonBindings.add(context.bindValue(SWTObservables.observeEnabled(maxText), SWTObservables.observeSelection(rangeButton)));
+		buttonBindings.add(context.bindValue(WidgetProperties.enabled().observe(minText), WidgetProperties.selection().observe(rangeButton)));
+		buttonBindings.add(context.bindValue(WidgetProperties.enabled().observe(maxText), WidgetProperties.selection().observe(rangeButton)));
 		return buttonBindings;
 	}
 

@@ -20,7 +20,6 @@ import org.eclipse.core.databinding.UpdateValueStrategy;
 import org.eclipse.emf.databinding.EMFDataBindingContext;
 import org.eclipse.emf.databinding.EMFObservables;
 import org.eclipse.jface.databinding.swt.ISWTObservableValue;
-import org.eclipse.jface.databinding.swt.SWTObservables;
 import org.eclipse.jface.databinding.swt.WidgetProperties;
 import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.swt.SWT;
@@ -88,7 +87,7 @@ public class BooleanPropertyEditor extends PropertyEditor {
 		final ScaSimplePropertyControl scaSimplePropertyControl = new ScaSimplePropertyControl(this.radioGroup, (ScaSimpleProperty) this.prop);
 		final ISWTObservableValue trueObservable = WidgetProperties.selection().observe(this.t);
 		this.context.bindValue(trueObservable, scaSimplePropertyControl.getModel());
-		this.context.bindValue(SWTObservables.observeSelection(this.t), scaSimplePropertyControl.getEditingObserable());
+		this.context.bindValue(WidgetProperties.selection().observe(this.t), scaSimplePropertyControl.getEditingObserable());
 		this.context.bindValue(scaSimplePropertyControl.getTarget(),
 		        EMFObservables.observeValue(this.prop, ScaPackage.Literals.SCA_SIMPLE_PROPERTY__VALUE),
 		        null,

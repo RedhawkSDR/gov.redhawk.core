@@ -29,7 +29,6 @@ import org.eclipse.core.databinding.UpdateValueStrategy;
 import org.eclipse.emf.databinding.EMFDataBindingContext;
 import org.eclipse.emf.databinding.EMFObservables;
 import org.eclipse.jface.databinding.swt.ISWTObservableValue;
-import org.eclipse.jface.databinding.swt.SWTObservables;
 import org.eclipse.jface.databinding.swt.WidgetProperties;
 import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.jface.viewers.ComboViewer;
@@ -220,7 +219,7 @@ public class DecimalPropertyEditor< T extends Number > extends PropertyEditor {
 			final ScaSimplePropertyControl scaSimplePropertyControl = new ScaSimplePropertyControl(this.enumViewer.getControl(), this.prop);
 			final ISWTObservableValue selectObservable = WidgetProperties.selection().observe(this.enumViewer.getCombo());
 			this.context.bindValue(selectObservable, scaSimplePropertyControl.getModel(), new SelectionToLocalValueStrategy(), new LocalToSelectionValueStrategy());
-			this.context.bindValue(SWTObservables.observeSelection(this.enumViewer.getCombo()), scaSimplePropertyControl.getEditingObserable(),
+			this.context.bindValue(WidgetProperties.selection().observe(this.enumViewer.getCombo()), scaSimplePropertyControl.getEditingObserable(),
 			        new SelectionToLocalValueStrategy(), null);
 			this.context.bindValue(scaSimplePropertyControl.getTarget(), EMFObservables.observeValue(this.prop, ScaPackage.Literals.SCA_SIMPLE_PROPERTY__VALUE),
 			        new DecimalUpdateValueStrategy(), null);

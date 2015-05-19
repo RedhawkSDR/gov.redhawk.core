@@ -43,12 +43,12 @@ import CF.PropertySetPackage.PartialConfiguration;
 	Text text= ...;
 	ScaSimpleProperty property= ...;
 //  This is the way it would be done directly
-//	context.bindValue(SWTObservables.observeText(text, SWT.Modify), EMFObservables.observeValue(property, ScaPackage.Literals.SCA_SIMPLE_PROPERTY__VALUE));
+//	context.bindValue(WidgetProperties.text().observe(text, SWT.Modify), EMFObservables.observeValue(property, ScaPackage.Literals.SCA_SIMPLE_PROPERTY__VALUE));
 
 	ScaSimplePropertyControl control = new ScaSimplePropertyControl(property, text);
 	ISWTObservableValue textObservable = WidgetProperties.text(new int[] {SWT.FocusOut, SWT.DefaultSelection}).observe(text);
 	context.bindValue(textObservable, control.getModel());
-	context.bindValue(SWTObservables.observeText(text, SWT.Modify), control.getEditingObserable());
+	context.bindValue(WidgetProperties.text().observe(text, SWT.Modify), control.getEditingObserable());
 	context.bindValue(control.getTarget(), EMFObservables.observeValue(property, ScaPackage.Literals.SCA_SIMPLE_PROPERTY__VALUE));
 	</code>
 	</p>

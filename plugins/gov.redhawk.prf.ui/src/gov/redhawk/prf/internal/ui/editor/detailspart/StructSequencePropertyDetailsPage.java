@@ -37,7 +37,7 @@ import org.eclipse.emf.databinding.EMFProperties;
 import org.eclipse.emf.databinding.FeaturePath;
 import org.eclipse.emf.databinding.IEMFListProperty;
 import org.eclipse.emf.ecore.EObject;
-import org.eclipse.jface.databinding.swt.SWTObservables;
+import org.eclipse.jface.databinding.swt.WidgetProperties;
 import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.IStructuredSelection;
@@ -157,7 +157,7 @@ public class StructSequencePropertyDetailsPage extends BasicStructPropertyDetail
 		this.sequence = (StructSequence) input;
 
 		this.structSequenceComposite.getStructValueViewer().setInput(this.sequence);
-		final IObservableValue target = SWTObservables.observeEnabled(this.structSequenceComposite.getAddButton());
+		final IObservableValue target = WidgetProperties.enabled().observe(this.structSequenceComposite.getAddButton());
 
 		final IEMFListProperty property = EMFProperties.list(FeaturePath.fromList(PrfPackage.Literals.STRUCT_SEQUENCE__STRUCT,
 		        PrfPackage.Literals.STRUCT__SIMPLE));
