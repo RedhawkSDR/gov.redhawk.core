@@ -139,15 +139,7 @@ public abstract class BasicSimplePropertyComposite extends AbstractPropertyCompo
 		this.actionLabel.setForeground(toolkit.getColors().getColor(IFormColors.TITLE));
 		this.actionLabel.setLayoutData(GridDataFactory.fillDefaults().align(SWT.BEGINNING, SWT.BEGINNING).create());
 		final ComboViewer viewer = new ComboViewer(parent, SWT.DROP_DOWN | SWT.READ_ONLY);
-		viewer.getCombo().addListener(SWT.MouseVerticalWheel, new Listener() {
-
-			@Override
-			public void handleEvent(Event event) {
-				// Disable Mouse Wheel Combo Box Control
-				event.doit = false;
-			}
-
-		});
+		viewer.getCombo().addListener(SWT.MouseVerticalWheel, getEventIgnorer());
 		toolkit.adapt(viewer.getCombo());
 		final List<Object> input = new ArrayList<Object>();
 		input.addAll(ActionType.VALUES);
@@ -232,15 +224,7 @@ public abstract class BasicSimplePropertyComposite extends AbstractPropertyCompo
 		final Label label = toolkit.createLabel(parent, "Type*:");
 		label.setForeground(toolkit.getColors().getColor(IFormColors.TITLE));
 		this.typeViewer = new ComboViewer(parent, SWT.DROP_DOWN | SWT.READ_ONLY);
-		this.typeViewer.getCombo().addListener(SWT.MouseVerticalWheel, new Listener() {
-
-			@Override
-			public void handleEvent(Event event) {
-				// Disable Mouse Wheel Combo Box Control
-				event.doit = false;
-			}
-
-		});
+		this.typeViewer.getCombo().addListener(SWT.MouseVerticalWheel, getEventIgnorer());
 		this.typeViewer.setContentProvider(new ArrayContentProvider());
 		this.typeViewer.setLabelProvider(new LabelProvider() {
 			@Override
@@ -280,15 +264,7 @@ public abstract class BasicSimplePropertyComposite extends AbstractPropertyCompo
 		assignTooltip(this.typeViewer.getControl(), HelpConstants.prf_properties_simple_type);
 
 		this.typeModifier = new Combo(parent, SWT.DROP_DOWN | SWT.READ_ONLY);
-		this.typeModifier.addListener(SWT.MouseVerticalWheel, new Listener() {
-
-			@Override
-			public void handleEvent(Event event) {
-				// Disable Mouse Wheel Combo Box Control
-				event.doit = false;
-			}
-
-		});
+		this.typeModifier.addListener(SWT.MouseVerticalWheel, getEventIgnorer());
 		this.typeModifier.setItems(new String[] { "", "real", "complex" });
 		toolkit.adapt(this.typeModifier);
 		typeModifier.setLayoutData(GridDataFactory.fillDefaults().span(1, 1).grab(false, false).create());
@@ -566,12 +542,7 @@ public abstract class BasicSimplePropertyComposite extends AbstractPropertyCompo
 		label.setForeground(toolkit.getColors().getColor(IFormColors.TITLE));
 		label.setLayoutData(GridDataFactory.fillDefaults().align(SWT.BEGINNING, SWT.BEGINNING).create());
 		Combo combo = this.optionalCombo = new Combo(parent, SWT.DROP_DOWN | SWT.READ_ONLY);
-		combo.addListener(SWT.MouseVerticalWheel, new Listener() {
-			@Override
-			public void handleEvent(Event event) { // Disable Mouse Wheel Combo Box Control
-				event.doit = false;
-			}
-		});
+		combo.addListener(SWT.MouseVerticalWheel, getEventIgnorer());
 		combo.setItems(BOOLEAN_ITEMS);
 		combo.setLayoutData(AbstractPropertyComposite.FACTORY.create());
 		toolkit.adapt(combo);

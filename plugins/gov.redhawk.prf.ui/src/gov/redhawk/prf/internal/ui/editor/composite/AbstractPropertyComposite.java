@@ -44,6 +44,17 @@ public abstract class AbstractPropertyComposite extends Composite implements ISc
 
 	private boolean canEdit;
 
+	/**
+	 * A listener which causes events to be ignored. Use with {@link org.eclipse.swt.widgets.Widget#addListener(int, Listener)}
+	 * to ignore events such as {@link SWT#MouseVerticalWheel}.
+	 */
+	private Listener eventIgnorer = new Listener() {
+		@Override
+		public void handleEvent(Event event) {
+			event.doit = false;
+		}
+	};
+
 	public AbstractPropertyComposite(final Composite parent, final int style, final FormToolkit toolkit) {
 		super(parent, style);
 	}
@@ -70,15 +81,7 @@ public abstract class AbstractPropertyComposite extends Composite implements ISc
 		this.modeLabel.setForeground(toolkit.getColors().getColor(IFormColors.TITLE));
 		this.modeLabel.setLayoutData(GridDataFactory.fillDefaults().align(SWT.BEGINNING, SWT.BEGINNING).create());
 		final ComboViewer viewer = new ComboViewer(parent, SWT.DROP_DOWN | SWT.READ_ONLY);
-		viewer.getCombo().addListener(SWT.MouseVerticalWheel, new Listener() {
-
-			@Override
-			public void handleEvent(Event event) {
-				// Disable Mouse Wheel Combo Box Control
-				event.doit = false;
-			}
-
-		});
+		viewer.getCombo().addListener(SWT.MouseVerticalWheel, getEventIgnorer());
 		toolkit.adapt(viewer.getCombo());
 		viewer.getControl().setLayoutData(AbstractPropertyComposite.FACTORY.create());
 		viewer.setContentProvider(new ArrayContentProvider());
@@ -155,6 +158,10 @@ public abstract class AbstractPropertyComposite extends Composite implements ISc
 		if (this.nameEntry != null) {
 			this.nameEntry.setEditable(canEdit);
 		}
+	}
+
+	public Listener getEventIgnorer() {
+		return eventIgnorer;
 	}
 
 }
