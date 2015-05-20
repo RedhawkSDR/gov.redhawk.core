@@ -1032,6 +1032,12 @@
     <eOperations name="getSequence" eType="#//ScaSimpleSequenceProperty">
       <eParameters name="id" eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EString"/>
     </eOperations>
+    <eOperations name="getField">
+      <eGenericType eClassifier="#//ScaAbstractProperty">
+        <eTypeArguments/>
+      </eGenericType>
+      <eParameters name="id" eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EString"/>
+    </eOperations>
     <eStructuralFeatures xsi:type="ecore:EReference" name="simples" upperBound="-1"
         eType="#//ScaSimpleProperty" transient="true" containment="true">
       <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">

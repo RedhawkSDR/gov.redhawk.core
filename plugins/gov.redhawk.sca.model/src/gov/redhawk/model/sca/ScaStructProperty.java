@@ -28,11 +28,11 @@ import CF.PropertySetOperations;
  *
  *              <p>
  *              The following features are supported:
+ *              </p>
  *              <ul>
  *              <li>{@link gov.redhawk.model.sca.ScaStructProperty#getSimples <em>Simples</em>}</li>
  *              <li>{@link gov.redhawk.model.sca.ScaStructProperty#getSequences <em>Sequences</em>}</li>
  *              </ul>
- *              </p>
  *
  * @see gov.redhawk.model.sca.ScaPackage#getScaStructProperty()
  * @model superTypes=
@@ -68,9 +68,9 @@ public interface ScaStructProperty extends ScaAbstractProperty<Struct>, Property
 	 * If the meaning of the '<em>Sequences</em>' containment reference list isn't clear, there really should be more of
 	 * a description here...
 	 * </p>
-	 * @since 19.1
-	 * <!-- end-user-doc -->
 	 * 
+	 * @since 19.1
+	 *        <!-- end-user-doc -->
 	 * @return the value of the '<em>Sequences</em>' containment reference list.
 	 * @see gov.redhawk.model.sca.ScaPackage#getScaStructProperty_Sequences()
 	 * @model containment="true" resolveProxies="true" transient="true"
@@ -90,12 +90,22 @@ public interface ScaStructProperty extends ScaAbstractProperty<Struct>, Property
 
 	/**
 	 * <!-- begin-user-doc -->
-	 * @since 19.1
-	 * <!-- end-user-doc -->
 	 * 
+	 * @since 19.1
+	 *        <!-- end-user-doc -->
 	 * @model
 	 * @generated
 	 */
 	ScaSimpleSequenceProperty getSequence(String id);
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * 
+	 * @since 19.1
+	 *        <!-- end-user-doc -->
+	 * @model
+	 * @generated
+	 */
+	ScaAbstractProperty< ? > getField(String id);
 
 } // ScaStructProperty

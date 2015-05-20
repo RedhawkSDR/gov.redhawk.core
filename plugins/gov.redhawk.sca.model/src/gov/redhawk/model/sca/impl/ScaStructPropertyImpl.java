@@ -345,7 +345,7 @@ public class ScaStructPropertyImpl extends ScaAbstractPropertyImpl<Struct> imple
 				final DataType[] fields = PropertiesHelper.extract(newAny);
 				if (fields != null) {
 					for (final DataType type : fields) {
-						ScaAbstractProperty<?> prop = getField(type.id);
+						ScaAbstractProperty< ? > prop = getField(type.id);
 						if (prop != null) {
 							prop.fromAny(type.value);
 						} else {
@@ -409,23 +409,6 @@ public class ScaStructPropertyImpl extends ScaAbstractPropertyImpl<Struct> imple
 	/**
 	 * @since 19.1
 	 */
-	public ScaAbstractProperty< ? > getField(final String identifier) {
-		for (final ScaSimpleProperty simple : getSimples()) {
-			if (PluginUtil.equals(simple.getId(), identifier)) {
-				return simple;
-			}
-		}
-		for (final ScaSimpleSequenceProperty sequence : getSequences()) {
-			if (PluginUtil.equals(sequence.getId(), identifier)) {
-				return sequence;
-			}
-		}
-		return null;
-	}
-
-	/**
-	 * @since 19.1
-	 */
 	@Override
 	public void initializeProperties(final DataType[] configProperties) throws AlreadyInitialized, InvalidConfiguration, PartialConfiguration {
 		throw new IllegalStateException("This construct method should never be called");
@@ -447,6 +430,27 @@ public class ScaStructPropertyImpl extends ScaAbstractPropertyImpl<Struct> imple
 		}
 		return null;
 		// BEGIN GENERATED CODE
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * @since 19.1
+	 * <!-- end-user-doc -->
+	 * 
+	 * @generated NOT
+	 */
+	public ScaAbstractProperty< ? > getField(String id) {
+		for (final ScaSimpleProperty simple : getSimples()) {
+			if (PluginUtil.equals(simple.getId(), id)) {
+				return simple;
+			}
+		}
+		for (final ScaSimpleSequenceProperty sequence : getSequences()) {
+			if (PluginUtil.equals(sequence.getId(), id)) {
+				return sequence;
+			}
+		}
+		return null;
 	}
 
 	/**
