@@ -11,12 +11,13 @@
  */
 package gov.redhawk.prf.internal.ui.editor.composite;
 
-import java.util.ArrayList;
-
 import gov.redhawk.common.ui.AdapterFactoryCellLabelProvider;
 import gov.redhawk.common.ui.doc.HelpConstants;
 import gov.redhawk.common.ui.editor.FormLayoutFactory;
 import gov.redhawk.ui.doc.HelpUtil;
+
+import java.util.ArrayList;
+
 import mil.jpeojtrs.sca.prf.PropertyConfigurationType;
 import mil.jpeojtrs.sca.prf.provider.PrfItemProviderAdapterFactory;
 
@@ -28,8 +29,8 @@ import org.eclipse.emf.edit.provider.resource.ResourceItemProviderAdapterFactory
 import org.eclipse.emf.edit.ui.provider.AdapterFactoryContentProvider;
 import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.jface.layout.GridLayoutFactory;
-import org.eclipse.jface.viewers.CheckboxTableViewer;
 import org.eclipse.jface.viewers.ColumnWeightData;
+import org.eclipse.jface.viewers.ComboViewer;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.StructuredSelection;
@@ -125,11 +126,9 @@ public class SimpleSequencePropertyComposite extends BasicSimplePropertyComposit
 	}
 	
 	@Override
-	protected CheckboxTableViewer createKindViewer(Composite parent, FormToolkit toolkit) {
-		CheckboxTableViewer retVal = super.createKindViewer(parent, toolkit);
-		// We want everything from the SimpleProperty base class but we want the 
-		// kind viewer to show all values except EXECPARAM since only SimpleProps can be exec params.
-		// This fixes bug # 264
+	protected ComboViewer createKindViewer(Composite parent, FormToolkit toolkit) {
+		ComboViewer retVal = super.createKindViewer(parent, toolkit);
+		// Hide EXECPARAM since only SimpleProps can be exec params.
 		this.getKindViewer().addFilter(new ViewerFilter() {
 			
 			@Override

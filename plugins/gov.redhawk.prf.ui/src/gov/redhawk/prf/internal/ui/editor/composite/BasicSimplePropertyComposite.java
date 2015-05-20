@@ -39,7 +39,6 @@ import org.eclipse.emf.edit.ui.provider.AdapterFactoryLabelProvider;
 import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.CellEditor;
-import org.eclipse.jface.viewers.CheckboxTableViewer;
 import org.eclipse.jface.viewers.ColumnWeightData;
 import org.eclipse.jface.viewers.ComboViewer;
 import org.eclipse.jface.viewers.EditingSupport;
@@ -62,9 +61,7 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
-import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Label;
-import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.ui.forms.IFormColors;
 import org.eclipse.ui.forms.widgets.FormToolkit;
@@ -81,8 +78,7 @@ public abstract class BasicSimplePropertyComposite extends AbstractPropertyCompo
 
 	private ComboViewer typeViewer;
 	private FormEntry unitsEntry;
-	private Label kindLabel;
-	private CheckboxTableViewer kindViewer;
+	private ComboViewer kindViewer;
 	private ComboViewer actionViewer;
 	private Button rangeButton;
 	private FormEntry minText;
@@ -164,27 +160,28 @@ public abstract class BasicSimplePropertyComposite extends AbstractPropertyCompo
 		return viewer;
 	}
 
-	protected CheckboxTableViewer createKindViewer(final Composite parent, final FormToolkit toolkit) {
+	protected ComboViewer createKindViewer(final Composite parent, final FormToolkit toolkit) {
 		// Kind
-		this.kindLabel = toolkit.createLabel(parent, "Kind:");
-		this.kindLabel.setForeground(toolkit.getColors().getColor(IFormColors.TITLE));
-		this.kindLabel.setLayoutData(GridDataFactory.fillDefaults().align(SWT.BEGINNING, SWT.BEGINNING).create());
-		final CheckboxTableViewer viewer = new CheckboxTableViewer(toolkit.createTable(parent, SWT.CHECK | SWT.READ_ONLY));
+		Label kindLabel = toolkit.createLabel(parent, "Kind:");
+		kindLabel.setForeground(toolkit.getColors().getColor(IFormColors.TITLE));
+		kindLabel.setLayoutData(GridDataFactory.fillDefaults().align(SWT.BEGINNING, SWT.BEGINNING).create());
+		final ComboViewer viewer = new ComboViewer(parent, SWT.DROP_DOWN | SWT.READ_ONLY);
+		viewer.getCombo().addListener(SWT.MouseVerticalWheel, getEventIgnorer());
+		toolkit.adapt(viewer.getCombo());
 		viewer.setContentProvider(new ArrayContentProvider());
 		viewer.setLabelProvider(new LabelProvider() {
 			@Override
 			public String getText(final Object element) {
 				if (element instanceof PropertyConfigurationType) {
 					final PropertyConfigurationType type = (PropertyConfigurationType) element;
-					if (type == PropertyConfigurationType.CONFIGURE) {
+					if (type == PropertyConfigurationType.PROPERTY) {
 						return element.toString() + " (default)";
 					}
 				}
-				return (element == null) ? "" : element.toString(); //$NON-NLS-1$
+				return (element == null) ? "" : element.toString();
 			}
 		});
 		viewer.addFilter(new ViewerFilter() {
-
 			@Override
 			public boolean select(Viewer viewer, Object parentElement, Object element) {
 				if (element instanceof PropertyConfigurationType) {
@@ -199,8 +196,8 @@ public abstract class BasicSimplePropertyComposite extends AbstractPropertyCompo
 				return true;
 			}
 		});
-		viewer.setInput(PropertyConfigurationType.values());
 		viewer.getControl().setLayoutData(BasicSimplePropertyComposite.FACTORY.create());
+		viewer.setInput(PropertyConfigurationType.values());
 		assignTooltip(viewer.getControl(), HelpConstants.prf_properties_simple_kind);
 		this.kindViewer = viewer;
 		return this.kindViewer;
@@ -299,7 +296,7 @@ public abstract class BasicSimplePropertyComposite extends AbstractPropertyCompo
 		return this.unitsEntry;
 	}
 
-	public CheckboxTableViewer getKindViewer() {
+	public ComboViewer getKindViewer() {
 		return this.kindViewer;
 	}
 
@@ -327,7 +324,7 @@ public abstract class BasicSimplePropertyComposite extends AbstractPropertyCompo
 			this.actionViewer.getCombo().setEnabled(canEdit);
 		}
 		if (this.kindViewer != null) {
-			this.kindViewer.getTable().setEnabled(canEdit);
+			this.kindViewer.getCombo().setEnabled(canEdit);
 		}
 		if (this.typeViewer != null) {
 			this.typeViewer.getCombo().setEnabled(canEdit);
@@ -350,10 +347,6 @@ public abstract class BasicSimplePropertyComposite extends AbstractPropertyCompo
 		if (this.editEnumButton != null) {
 			this.editEnumButton.setEnabled(canEdit);
 		}
-	}
-
-	public Label getKindLabel() {
-		return kindLabel;
 	}
 
 	protected void createEnumerationsViewer(final Composite parent, final FormToolkit toolkit) {

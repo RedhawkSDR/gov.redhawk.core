@@ -19,7 +19,9 @@ import gov.redhawk.ui.util.EMFEmptyStringToNullUpdateValueStrategy;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import mil.jpeojtrs.sca.prf.Action;
 import mil.jpeojtrs.sca.prf.ActionType;
@@ -37,9 +39,6 @@ import org.eclipse.core.databinding.Binding;
 import org.eclipse.core.databinding.DataBindingContext;
 import org.eclipse.core.databinding.UpdateValueStrategy;
 import org.eclipse.core.databinding.conversion.Converter;
-import org.eclipse.core.databinding.observable.list.IListChangeListener;
-import org.eclipse.core.databinding.observable.list.ListChangeEvent;
-import org.eclipse.core.databinding.observable.list.WritableList;
 import org.eclipse.core.databinding.observable.value.IObservableValue;
 import org.eclipse.emf.common.command.Command;
 import org.eclipse.emf.databinding.EMFUpdateValueStrategy;
@@ -55,8 +54,6 @@ import org.eclipse.emf.edit.command.SetCommand;
 import org.eclipse.emf.edit.domain.EditingDomain;
 import org.eclipse.jface.databinding.swt.WidgetProperties;
 import org.eclipse.jface.databinding.viewers.ViewersObservables;
-import org.eclipse.jface.viewers.CheckStateChangedEvent;
-import org.eclipse.jface.viewers.ICheckStateListener;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.window.Window;
 import org.eclipse.jface.wizard.WizardDialog;
@@ -65,7 +62,6 @@ import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.widgets.Button;
-import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Text;
 
 /**
@@ -95,31 +91,6 @@ public abstract class BasicSimplePropertyDetailsPage extends AbstractPropertyDet
 			}
 		}
 	};
-	private WritableList kindList = new WritableList();
-	{
-		kindList.addListChangeListener(new IListChangeListener() {
-
-			@Override
-			public void handleListChange(ListChangeEvent event) {
-				List<PropertyConfigurationType> newChecked = new ArrayList<PropertyConfigurationType>();
-				for (Object obj : kindList) {
-					if (obj instanceof Kind) {
-						newChecked.add(((Kind) obj).getType());
-					} else if (obj instanceof PropertyConfigurationType) {
-						newChecked.add((PropertyConfigurationType) obj);
-					}
-				}
-				((BasicSimplePropertyComposite) getComposite()).getKindViewer().setCheckedElements(newChecked.toArray());
-			}
-		});
-	}
-
-	@Override
-	public void dispose() {
-		super.dispose();
-		kindList.dispose();
-		kindList = null;
-	}
 
 	public BasicSimplePropertyDetailsPage(final PropertiesSection section) {
 		super(section);
@@ -163,9 +134,9 @@ public abstract class BasicSimplePropertyDetailsPage extends AbstractPropertyDet
 		}
 
 		// Kind
-		if (getComposite().getKindViewer() != null) {
-			composite.getKindViewer().setCheckedElements(Collections.EMPTY_LIST.toArray());
-			createKindBinding(dataBindingContext, input, domain, retVal);
+		if (composite.getKindViewer() != null) {
+			retVal.add(dataBindingContext.bindValue(ViewersObservables.observeSingleSelection(composite.getKindViewer()),
+				EMFEditObservables.observeValue(domain, input, this.property.getKind()), createKindTargetToModel(), createKindModelToTarget()));
 		}
 
 		// Action
@@ -237,6 +208,93 @@ public abstract class BasicSimplePropertyDetailsPage extends AbstractPropertyDet
 		return strategy;
 	}
 
+	/**
+	 * Creates a {@link UpdateValueStrategy} that converts the {@link List} < {@link Kind} > from the EMF model object
+	 * to a single {@link PropertyConfigurationType} for the drop-down combo box.
+	 * @return
+	 */
+	private UpdateValueStrategy createKindModelToTarget() {
+		final EMFUpdateValueStrategy strategy = new EMFUpdateValueStrategy();
+		strategy.setConverter(new Converter(List.class, PropertyConfigurationType.class) {
+
+			@Override
+			public Object convert(final Object fromObject) {
+				if (fromObject instanceof List) {
+					final List<?> kindList = (List<?>) fromObject;
+
+					// Normally, we expect exactly one kind type in the list
+					if (kindList.size() == 1) {
+						Kind kind = (Kind) kindList.get(0);
+						if (kind.isSetType()) {
+							return kind.getType();
+						} else {
+							return PropertyConfigurationType.PROPERTY;
+						}
+					}
+					// If empty, default to PROPERTY
+					if (kindList.size() == 0) {
+						PropertyConfigurationType displayKindType = PropertyConfigurationType.PROPERTY;
+						return displayKindType;
+					}
+
+					// We can only display one kind type, even though the XML allows multiple. As of Redhawk 2.0, we only
+					// expect one type to be used. Since we have multiple, we'll select the "most important" one to show.
+					Set<PropertyConfigurationType> kindTypeSet = new HashSet<PropertyConfigurationType>();
+					for (Object obj : kindList) {
+						Kind kind = (Kind) obj;
+						if (kind.isSetType()) {
+							kindTypeSet.add(kind.getType());
+						}
+					}
+					if (kindTypeSet.contains(PropertyConfigurationType.PROPERTY)) {
+						return PropertyConfigurationType.PROPERTY;
+					}
+					if (kindTypeSet.contains(PropertyConfigurationType.ALLOCATION)) {
+						return PropertyConfigurationType.ALLOCATION;
+					}
+					if (kindTypeSet.contains(PropertyConfigurationType.CONFIGURE)) {
+						return PropertyConfigurationType.CONFIGURE;
+					}
+					if (kindTypeSet.contains(PropertyConfigurationType.EXECPARAM)) {
+						return PropertyConfigurationType.EXECPARAM;
+					}
+					if (kindTypeSet.contains(PropertyConfigurationType.MESSAGE)) {
+						return PropertyConfigurationType.MESSAGE;
+					}
+					PropertyConfigurationType displayKindType = ((Kind) kindList.get(0)).getType();
+					return displayKindType;
+				}
+				throw new IllegalArgumentException();
+			}
+		});
+		return strategy;
+	}
+
+	/**
+	 * Creates a {@link UpdateValueStrategy} that converts a {@link PropertyConfigurationType} from the drop-down combo
+	 * box to a {@link List} < {@link Kind} > for the EMF model object.
+	 * @return
+	 */
+	private UpdateValueStrategy createKindTargetToModel() {
+		final EMFUpdateValueStrategy strategy = new EMFUpdateValueStrategy();
+		strategy.setConverter(new Converter(PropertyConfigurationType.class, List.class) {
+
+			@Override
+			public Object convert(final Object fromObject) {
+				if (fromObject instanceof PropertyConfigurationType) {
+					final PropertyConfigurationType kindType = (PropertyConfigurationType) fromObject;
+					final Kind kind = PrfFactory.eINSTANCE.createKind();
+					kind.setType(kindType);
+					List<Kind> kindList = new ArrayList<Kind>();
+					kindList.add(kind);
+					return kindList;
+				}
+				throw new IllegalArgumentException();
+			}
+		});
+		return strategy;
+	}
+
 	private UpdateValueStrategy createActionModelToTarget() {
 		final EMFUpdateValueStrategy strategy = new EMFUpdateValueStrategy();
 		strategy.setConverter(new Converter(Action.class, Object.class) {
@@ -287,35 +345,6 @@ public abstract class BasicSimplePropertyDetailsPage extends AbstractPropertyDet
 		//		addRangeListener();
 
 		return retVal;
-	}
-
-	private void createKindBinding(final DataBindingContext context, final EObject input, final EditingDomain domain, final List<Binding> retVal) {
-		retVal.add(context.bindList(kindList, EMFEditObservables.observeList(getEditingDomain(), input, BasicSimplePropertyDetailsPage.this.property.getKind())));
-	}
-
-	@Override
-	protected void createSpecificContent(Composite parent) {
-		super.createSpecificContent(parent);
-		if (getComposite().getKindViewer() != null) {
-			getComposite().getKindViewer().addCheckStateListener(new ICheckStateListener() {
-
-				@Override
-				public void checkStateChanged(CheckStateChangedEvent event) {
-					if (event.getChecked()) {
-						Kind kind = PrfFactory.eINSTANCE.createKind();
-						kind.setType((PropertyConfigurationType) event.getElement());
-						kindList.add(kind);
-					} else {
-						for (Object obj : kindList) {
-							if (obj instanceof Kind && ((Kind) obj).getType() == event.getElement()) {
-								kindList.remove(obj);
-								break;
-							}
-						}
-					}
-				}
-			});
-		}
 	}
 
 	public List<Binding> bindButton(final DataBindingContext context, final Button rangeButton, final Text minText, final Text maxText) {
