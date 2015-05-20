@@ -48,25 +48,12 @@ public abstract class AbstractPropertyEditingSupport extends EditingSupport {
 
 	@Override
 	protected boolean canEdit(final Object object) {
-		final IPropertySource propertySource = this.propertySourceProvider.getPropertySource(object);
-		boolean retVal = false;
-		if (propertySource != null) {
-			final IPropertyDescriptor[] propertyDescriptors = propertySource.getPropertyDescriptors();
-			for (int i = 0; i < propertyDescriptors.length; i++) {
-				final IPropertyDescriptor propertyDescriptor = propertyDescriptors[i];
-				if (propertyDescriptor != null) {
-					final Object propertyID = getPropertyID(object);
-					if (propertyID != null && propertyID.equals(propertyDescriptor.getId())) {
-						retVal = true;
-						break;
-					}
-				}
-			}
-		}
-		if (retVal && object instanceof ScaAbstractProperty< ? >) {
+		final IPropertyDescriptor propertyDescriptor = getPropertyDescriptor(object);
+		boolean isEditable = (propertyDescriptor != null);
+		if (isEditable && object instanceof ScaAbstractProperty< ? >) {
 			return canEdit((ScaAbstractProperty< ? >) object);
 		}
-		return retVal;
+		return isEditable;
 	}
 
 	/**
@@ -81,14 +68,9 @@ public abstract class AbstractPropertyEditingSupport extends EditingSupport {
 		if (!canEdit(object)) {
 			return null;
 		}
-		final IPropertySource propertySource = this.propertySourceProvider.getPropertySource(object);
-		final IPropertyDescriptor[] propertyDescriptors = propertySource.getPropertyDescriptors();
-		for (int i = 0; i < propertyDescriptors.length; i++) {
-			final IPropertyDescriptor propertyDescriptor = propertyDescriptors[i];
-			final Object propertyID = getPropertyID(object);
-			if (propertyID != null && propertyID.equals(propertyDescriptor.getId())) {
-				return propertyDescriptor.createPropertyEditor((Composite) getViewer().getControl());
-			}
+		final IPropertyDescriptor propertyDescriptor = getPropertyDescriptor(object);
+		if (propertyDescriptor != null) {
+			return propertyDescriptor.createPropertyEditor((Composite) getViewer().getControl());
 		}
 		return null;
 	}
@@ -110,5 +92,20 @@ public abstract class AbstractPropertyEditingSupport extends EditingSupport {
 		final IPropertySource propertySource = this.propertySourceProvider.getPropertySource(object);
 		final Object propertyID = getPropertyID(object);
 		propertySource.setPropertyValue(propertyID, value);
+	}
+	
+	private IPropertyDescriptor getPropertyDescriptor(final Object object) {
+		final IPropertySource propertySource = this.propertySourceProvider.getPropertySource(object);
+		if (propertySource != null) {
+			final Object propertyID = getPropertyID(object);
+			if (propertyID != null) {
+				for (final IPropertyDescriptor propertyDescriptor : propertySource.getPropertyDescriptors()) {
+					if (propertyID.equals(propertyDescriptor.getId())) {
+						return propertyDescriptor;
+					}
+				}
+			}
+		}
+		return null;
 	}
 }
