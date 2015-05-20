@@ -11,13 +11,13 @@
  */
 package gov.redhawk.ui.views.internal.monitor.ports;
 
-import gov.redhawk.sca.util.PropertyChangeSupport;
 import gov.redhawk.monitor.model.ports.Monitor;
 import gov.redhawk.monitor.model.ports.MonitorRegistry;
 import gov.redhawk.monitor.model.ports.PortConnectionMonitor;
 import gov.redhawk.monitor.model.ports.PortMonitor;
 import gov.redhawk.monitor.model.ports.PortStatisticsProvider;
 import gov.redhawk.monitor.model.ports.PortSupplierMonitor;
+import gov.redhawk.sca.util.PropertyChangeSupport;
 import gov.redhawk.ui.views.monitor.ports.Column;
 import gov.redhawk.ui.views.monitor.ports.PortMonitorView;
 import gov.redhawk.ui.views.monitor.ports.StatisticsColumns;
@@ -29,7 +29,7 @@ import java.util.Set;
 
 import org.eclipse.core.databinding.Binding;
 import org.eclipse.core.databinding.DataBindingContext;
-import org.eclipse.core.databinding.beans.BeansObservables;
+import org.eclipse.core.databinding.beans.BeanProperties;
 import org.eclipse.core.databinding.beans.PojoProperties;
 import org.eclipse.core.databinding.observable.value.IValueChangeListener;
 import org.eclipse.core.databinding.observable.value.ValueChangeEvent;
@@ -202,7 +202,7 @@ public class PortMonitorViewConfigDialog extends ViewSettingsDialog {
 
 		refreshText = new Text(group, SWT.BORDER);
 		refreshText.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
-		Binding binding = context.bindValue(WidgetProperties.text(SWT.Modify).observe(refreshText), BeansObservables.observeValue(state, "refresh"));
+		Binding binding = context.bindValue(WidgetProperties.text(SWT.Modify).observe(refreshText), BeanProperties.value(state.getClass(), "refresh").observe(state));
 		binding.getValidationStatus().addValueChangeListener(new IValueChangeListener() {
 			
 			@Override
@@ -236,8 +236,8 @@ public class PortMonitorViewConfigDialog extends ViewSettingsDialog {
 				return c1.getName().compareToIgnoreCase(c2.getName());
 			}
 		});
-		ViewerSupport.bind(viewer, BeansObservables.observeList(state, "input"), PojoProperties.value("name"));
-		context.bindSet(ViewerProperties.checkedElements(Column.class).observe(viewer), BeansObservables.observeSet(state, "checked"));
+		ViewerSupport.bind(viewer, BeanProperties.list(state.getClass(), "input").observe(state), PojoProperties.value("name"));
+		context.bindSet(ViewerProperties.checkedElements(Column.class).observe(viewer), BeanProperties.set(state.getClass(), "checked").observe(state));
 	}
 
 	@Override

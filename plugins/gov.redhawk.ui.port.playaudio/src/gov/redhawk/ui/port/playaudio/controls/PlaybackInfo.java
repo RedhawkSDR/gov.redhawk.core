@@ -22,7 +22,7 @@ import javax.sound.sampled.LineUnavailableException;
 
 import org.eclipse.core.databinding.DataBindingContext;
 import org.eclipse.core.databinding.UpdateValueStrategy;
-import org.eclipse.core.databinding.beans.BeansObservables;
+import org.eclipse.core.databinding.beans.BeanProperties;
 import org.eclipse.core.databinding.conversion.Converter;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
@@ -437,18 +437,18 @@ public class PlaybackInfo extends Composite {
 			pauseButton.setEnabled(true);
 			disconnectButton.setEnabled(true);
 
-			this.context.bindValue(BeansObservables.observeValue(bean, "format"), BeansObservables.observeValue(receiver, "audioFormat"));
-			this.context.bindValue(WidgetProperties.text().observe(pauseButton), BeansObservables.observeValue(receiver, "playing"), new UpdateValueStrategy(
+			this.context.bindValue(BeanProperties.value(bean.getClass(), "format").observe(bean), BeanProperties.value(receiver.getClass(), "audioFormat").observe(receiver));
+			this.context.bindValue(WidgetProperties.text().observe(pauseButton), BeanProperties.value(receiver.getClass(), "playing").observe(receiver), new UpdateValueStrategy(
 				UpdateValueStrategy.POLICY_NEVER), getPlayingUpdateModel());
-			this.context.bindValue(WidgetProperties.text().observe(this.encodingBox), BeansObservables.observeValue(bean, "encoding"));
-			this.context.bindValue(WidgetProperties.text().observe(this.sampleRateBox), BeansObservables.observeValue(bean, "sampleRate"));
-			this.context.bindValue(WidgetProperties.text().observe(this.sampleSizeBox), BeansObservables.observeValue(bean, "sampleSizeInBits"));
-			this.context.bindValue(WidgetProperties.text().observe(this.channelsBox), BeansObservables.observeValue(bean, "channels"));
-			this.context.bindValue(WidgetProperties.text().observe(this.frameRateBox), BeansObservables.observeValue(bean, "frameRate"));
-			this.context.bindValue(WidgetProperties.text().observe(this.frameSizeBox), BeansObservables.observeValue(bean, "frameSize"));
+			this.context.bindValue(WidgetProperties.text().observe(this.encodingBox), BeanProperties.value(bean.getClass(), "encoding").observe(bean));
+			this.context.bindValue(WidgetProperties.text().observe(this.sampleRateBox), BeanProperties.value(bean.getClass(), "sampleRate").observe(bean));
+			this.context.bindValue(WidgetProperties.text().observe(this.sampleSizeBox), BeanProperties.value(bean.getClass(), "sampleSizeInBits").observe(bean));
+			this.context.bindValue(WidgetProperties.text().observe(this.channelsBox), BeanProperties.value(bean.getClass(), "channels").observe(bean));
+			this.context.bindValue(WidgetProperties.text().observe(this.frameRateBox), BeanProperties.value(bean.getClass(), "frameRate").observe(bean));
+			this.context.bindValue(WidgetProperties.text().observe(this.frameSizeBox), BeanProperties.value(bean.getClass(), "frameSize").observe(bean));
 
-			this.context.bindValue(WidgetProperties.text(SWT.Modify).observeDelayed(500, gainBox), BeansObservables.observeValue(receiver, "multiplier"));
-			this.context.bindValue(ViewersObservables.observeSingleSelection(blockingField), BeansObservables.observeValue(receiver, "blocking"));
+			this.context.bindValue(WidgetProperties.text(SWT.Modify).observeDelayed(500, gainBox), BeanProperties.value(receiver.getClass(), "multiplier").observe(receiver));
+			this.context.bindValue(ViewersObservables.observeSingleSelection(blockingField), BeanProperties.value(receiver.getClass(), "blocking").observe(receiver));
 		}
 	}
 

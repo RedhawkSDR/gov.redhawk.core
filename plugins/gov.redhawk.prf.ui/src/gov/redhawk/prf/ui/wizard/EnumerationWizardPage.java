@@ -22,7 +22,7 @@ import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.emf.edit.provider.ComposedAdapterFactory;
 import org.eclipse.emf.edit.provider.ReflectiveItemProviderAdapterFactory;
 import org.eclipse.emf.edit.provider.resource.ResourceItemProviderAdapterFactory;
-import org.eclipse.jface.databinding.swt.SWTObservables;
+import org.eclipse.jface.databinding.swt.WidgetProperties;
 import org.eclipse.jface.databinding.wizard.WizardPageSupport;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
@@ -105,7 +105,7 @@ public class EnumerationWizardPage extends WizardPage {
 		text.setToolTipText("The Enumeration Label");
 
 		// Bind and validate
-		this.context.bindValue(SWTObservables.observeText(text, SWT.Modify),
+		this.context.bindValue(WidgetProperties.text(SWT.Modify).observe(text),
 		        EMFObservables.observeValue(this.enumeration, PrfPackage.Literals.ENUMERATION__LABEL), null, null);
 
 		label = new Label(client, SWT.NULL);
@@ -113,7 +113,7 @@ public class EnumerationWizardPage extends WizardPage {
 		text = new Text(client, SWT.BORDER);
 		text.setToolTipText("The Enumeration Value");
 		text.setLayoutData(new GridData(GridData.FILL_HORIZONTAL | GridData.GRAB_HORIZONTAL));
-		this.context.bindValue(SWTObservables.observeText(text, SWT.Modify),
+		this.context.bindValue(WidgetProperties.text(SWT.Modify).observe(text),
 		        EMFObservables.observeValue(this.enumeration, PrfPackage.Literals.ENUMERATION__VALUE), null, null);
 
 		final EmfValidationStatusProvider provider = new EmfValidationStatusProvider(this.enumeration, this.context, this.adapterFactory);

@@ -14,14 +14,13 @@ package gov.redhawk.ui.views.domainbrowser.view;
 import gov.redhawk.sca.ui.preferences.DomainSettingModel;
 import gov.redhawk.sca.ui.preferences.DomainSettingModel.ConnectionMode;
 
-import org.eclipse.core.databinding.Binding;
 import org.eclipse.core.databinding.DataBindingContext;
 import org.eclipse.core.databinding.UpdateValueStrategy;
-import org.eclipse.core.databinding.beans.BeansObservables;
+import org.eclipse.core.databinding.beans.BeanProperties;
 import org.eclipse.core.databinding.validation.IValidator;
 import org.eclipse.core.databinding.validation.ValidationStatus;
 import org.eclipse.core.runtime.IStatus;
-import org.eclipse.jface.databinding.swt.SWTObservables;
+import org.eclipse.jface.databinding.swt.WidgetProperties;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
@@ -97,8 +96,8 @@ public class DomainEntryWizardPage extends WizardPage {
 			}
 		});
 		
-		final Binding nameBinding = this.context.bindValue(SWTObservables.observeText(domainNameField, SWT.Modify),
-		        BeansObservables.observeValue(this.model, DomainSettingModel.PROP_DOMAIN_NAME), validator, null);
+		this.context.bindValue(WidgetProperties.text(SWT.Modify).observe(domainNameField),
+			BeanProperties.value(this.model.getClass(), DomainSettingModel.PROP_DOMAIN_NAME).observe(this.model), validator, null);
 
 		final Label nameServiceLabel = new Label(container, SWT.NONE);
 		nameServiceLabel.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, false));
@@ -128,8 +127,8 @@ public class DomainEntryWizardPage extends WizardPage {
 			}
 		});
 
-		this.context.bindValue(SWTObservables.observeText(nameServiceField, SWT.Modify),
-		        BeansObservables.observeValue(this.model, DomainSettingModel.PROP_NAME_SERVICE_INIT_REF), validator, null);
+		this.context.bindValue(WidgetProperties.text(SWT.Modify).observe(nameServiceField),
+			BeanProperties.value(this.model.getClass(), DomainSettingModel.PROP_NAME_SERVICE_INIT_REF).observe(this.model), validator, null);
 		
 		setControl(container);
 	}

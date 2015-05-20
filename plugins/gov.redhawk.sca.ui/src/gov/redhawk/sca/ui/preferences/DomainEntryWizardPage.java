@@ -20,12 +20,12 @@ import java.util.List;
 import org.eclipse.core.databinding.Binding;
 import org.eclipse.core.databinding.DataBindingContext;
 import org.eclipse.core.databinding.UpdateValueStrategy;
-import org.eclipse.core.databinding.beans.BeansObservables;
+import org.eclipse.core.databinding.beans.BeanProperties;
 import org.eclipse.core.databinding.validation.IValidator;
 import org.eclipse.core.databinding.validation.ValidationStatus;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.jface.databinding.fieldassist.ControlDecorationSupport;
-import org.eclipse.jface.databinding.swt.SWTObservables;
+import org.eclipse.jface.databinding.swt.WidgetProperties;
 import org.eclipse.jface.databinding.wizard.WizardPageSupport;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
@@ -113,7 +113,7 @@ public class DomainEntryWizardPage extends WizardPage {
 		domainNameField.setToolTipText("Name the domain is registered as within the naming service.");
 		domainNameField.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false, 1, 1));
 
-		context.bindValue(SWTObservables.observeText(localDomainNameField, SWT.Modify), SWTObservables.observeText(domainNameField, SWT.Modify), null,
+		context.bindValue(WidgetProperties.text(SWT.Modify).observe(localDomainNameField), WidgetProperties.text(SWT.Modify).observe(domainNameField), null,
 			new UpdateValueStrategy(UpdateValueStrategy.POLICY_NEVER));
 
 		final Label nameServiceLabel = new Label(container, SWT.NONE);
@@ -145,20 +145,23 @@ public class DomainEntryWizardPage extends WizardPage {
 				return ValidationStatus.ok();
 			}
 		});
-		Binding binding = this.context.bindValue(SWTObservables.observeText(localDomainNameField, SWT.Modify),
-			BeansObservables.observeValue(this.model, DomainSettingModel.PROP_LOCAL_DOMAIN_NAME), validator, null);
+		Binding binding = this.context.bindValue(WidgetProperties.text(SWT.Modify).observe(localDomainNameField),
+			BeanProperties.value(this.model.getClass(), DomainSettingModel.PROP_LOCAL_DOMAIN_NAME).observe(this.model),
+			validator, null);
 		ControlDecorationSupport.create(binding, SWT.TOP | SWT.LEFT);
 
 		validator = new UpdateValueStrategy();
 		validator.setAfterConvertValidator(NON_EMPTY_STRING);
-		binding = this.context.bindValue(SWTObservables.observeText(domainNameField, SWT.Modify),
-			BeansObservables.observeValue(this.model, DomainSettingModel.PROP_DOMAIN_NAME), validator, null);
+		binding = this.context.bindValue(WidgetProperties.text(SWT.Modify).observe(domainNameField),
+			BeanProperties.value(this.model.getClass(), DomainSettingModel.PROP_DOMAIN_NAME).observe(this.model),
+			validator, null);
 		ControlDecorationSupport.create(binding, SWT.TOP | SWT.LEFT);
 
 		validator = new UpdateValueStrategy();
 		validator.setAfterConvertValidator(NON_EMPTY_STRING);
-		binding = this.context.bindValue(SWTObservables.observeText(nameServiceField, SWT.Modify),
-			BeansObservables.observeValue(this.model, DomainSettingModel.PROP_NAME_SERVICE_INIT_REF), validator, null);
+		binding = this.context.bindValue(WidgetProperties.text(SWT.Modify).observe(nameServiceField),
+			BeanProperties.value(this.model.getClass(), DomainSettingModel.PROP_NAME_SERVICE_INIT_REF).observe(this.model),
+			validator, null);
 		ControlDecorationSupport.create(binding, SWT.TOP | SWT.LEFT);
 
 		if (this.showExtraSettings) {

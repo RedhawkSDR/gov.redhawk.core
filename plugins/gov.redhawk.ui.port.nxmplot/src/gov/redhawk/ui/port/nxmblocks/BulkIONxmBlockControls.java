@@ -21,7 +21,6 @@ import org.eclipse.core.databinding.conversion.StringToNumberConverter;
 import org.eclipse.core.databinding.observable.value.IObservableValue;
 import org.eclipse.core.databinding.observable.value.SelectObservableValue;
 import org.eclipse.jface.databinding.fieldassist.ControlDecorationSupport;
-import org.eclipse.jface.databinding.swt.SWTObservables;
 import org.eclipse.jface.databinding.swt.WidgetProperties;
 import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.jface.viewers.ArrayContentProvider;
@@ -113,7 +112,7 @@ public class BulkIONxmBlockControls {
 		for (BlockingOption b : blockingOptions) {
 			Button button = new Button(blockingOptionGroup, SWT.RADIO);
 			button.setText(b.getLabel());
-			IObservableValue btnWidgetValue = SWTObservables.observeSelection(button);
+			IObservableValue btnWidgetValue = WidgetProperties.selection().observe(button);
 			radioBtnGroupWidgetValue.addOption(b, btnWidgetValue);
 		}
 		// do data binding here since we need the above radioBtnGroupWidgetValue
