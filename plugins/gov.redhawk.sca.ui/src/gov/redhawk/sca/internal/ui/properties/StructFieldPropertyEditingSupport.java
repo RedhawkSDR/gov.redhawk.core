@@ -11,8 +11,8 @@
  */
 package gov.redhawk.sca.internal.ui.properties;
 
-import gov.redhawk.model.sca.ScaSimpleProperty;
-import gov.redhawk.model.sca.ScaSimpleSequenceProperty;
+import gov.redhawk.model.sca.ScaAbstractProperty;
+import gov.redhawk.model.sca.ScaPackage;
 import gov.redhawk.model.sca.ScaStructProperty;
 
 import org.eclipse.jface.viewers.CellEditor;
@@ -27,23 +27,21 @@ public class StructFieldPropertyEditingSupport extends PropertyEditingSupport {
 
 	private final String fieldDceId;
 
-	public StructFieldPropertyEditingSupport(final ColumnViewer viewer, final IPropertySourceProvider propertySourceProvider, final String fieldDceId) {
-		super(viewer, propertySourceProvider, "value");
+	public StructFieldPropertyEditingSupport(final ColumnViewer viewer, final IPropertySourceProvider propertySourceProvider, final String fieldDceId, boolean isSequence) {
+		super(viewer, propertySourceProvider, (isSequence) ? ScaPackage.Literals.SCA_SIMPLE_SEQUENCE_PROPERTY__VALUES.getName() : ScaPackage.Literals.SCA_SIMPLE_PROPERTY__VALUE.getName());
 		this.fieldDceId = fieldDceId;
+	}
+
+	public StructFieldPropertyEditingSupport(final ColumnViewer viewer, final IPropertySourceProvider propertySourceProvider, final String fieldDceId) {
+		this(viewer, propertySourceProvider, fieldDceId, false);
 	}
 
 	private Object getElement(final Object object) {
 		if (object instanceof ScaStructProperty) {
 			final ScaStructProperty struct = (ScaStructProperty) object;
-			for (final ScaSimpleProperty simple : struct.getSimples()) {
-				if (this.fieldDceId.equals(simple.getId())) {
-					return simple;
-				}
-			}
-			for (final ScaSimpleSequenceProperty sequence : struct.getSequences()) {
-				if (this.fieldDceId.equals(sequence.getId())) {
-					return sequence;
-				}
+			final ScaAbstractProperty< ? > property = struct.getField(this.fieldDceId);
+			if (property != null) {
+				return property;
 			}
 		}
 		return object;

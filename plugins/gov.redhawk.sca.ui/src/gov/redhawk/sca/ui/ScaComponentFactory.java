@@ -117,7 +117,7 @@ public final class ScaComponentFactory {
 			}
 			for (final SimpleSequence propDef : property.getDefinition().getStruct().getSimpleSequence()) {
 				final TableViewerColumn columnViewer = new TableViewerColumn(viewer, SWT.CENTER);
-				columnViewer.setEditingSupport(new StructFieldPropertyEditingSupport(viewer, contentProvider, propDef.getId()));
+				columnViewer.setEditingSupport(new StructFieldPropertyEditingSupport(viewer, contentProvider, propDef.getId(), true));
 				columnViewer.setLabelProvider(new StructFieldPropertyColumnLabelProvider(contentProvider, propDef.getId(), true));
 				String label;
 				if (propDef.getName() != null) {
