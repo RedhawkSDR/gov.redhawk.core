@@ -768,7 +768,8 @@ public abstract class ScaAbstractComponentImpl< R extends Resource > extends Sca
 							org.omg.CORBA.Object portCorbaObj = currentObj.getPort(portName);
 							newPorts.add(new PortData(abstractPort, portCorbaObj));
 						} catch (UnknownPort e) {
-							fetchPortsStatus.add(new Status(Status.ERROR, ScaModelPlugin.ID, "Failed to fetch port '" + portName + "'", e));
+							// Unknown port exception can be treated as a warning. If set as an error, the MergePortsCommand will unset all ports
+							fetchPortsStatus.add(new Status(Status.WARNING, ScaModelPlugin.ID, "Failed to fetch port '" + portName + "'", e));
 						} catch (SystemException e) {
 							fetchPortsStatus.add(new Status(Status.ERROR, ScaModelPlugin.ID, "Failed to fetch port '" + portName + "'", e));
 						}

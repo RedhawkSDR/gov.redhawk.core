@@ -68,7 +68,8 @@ public class MergePortsCommand extends SetStatusCommand<ScaPortContainer> {
 	 * @see org.eclipse.emf.common.command.Command#execute()
 	 */
 	public void execute() {
-		if (status.isOK()) {
+		// If status is not in error we can continue. Warnings may exist if UnknownPort exception was thrown
+		if (status.getSeverity() < IStatus.ERROR) {
 			Map<String, ScaPort< ? , ? >> currentMap = new HashMap<String, ScaPort< ? , ? >>();
 			for (ScaPort< ? , ? > port : provider.getPorts()) {
 				currentMap.put(buildId(port.getProfileObj()), port);
