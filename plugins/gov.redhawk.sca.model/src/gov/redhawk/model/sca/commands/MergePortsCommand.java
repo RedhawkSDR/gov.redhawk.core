@@ -148,7 +148,8 @@ public class MergePortsCommand extends SetStatusCommand<ScaPortContainer> {
 	 */
 	@Override
 	public void execute() {
-		if (status.isOK()) {
+		// If status is not in error we can continue. Warnings may exist if UnknownPort exception was thrown
+		if (status.getSeverity() < IStatus.ERROR) {
 			Map<PortHash, ScaPort< ? , ? >> currentMap = new HashMap<PortHash, ScaPort< ? , ? >>();
 			for (ScaPort< ? , ? > port : provider.getPorts()) {
 				currentMap.put(new PortHash(port), port);
