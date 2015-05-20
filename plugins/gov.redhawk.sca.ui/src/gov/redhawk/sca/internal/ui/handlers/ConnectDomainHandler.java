@@ -42,12 +42,16 @@ public class ConnectDomainHandler extends AbstractHandler implements IHandler {
 			final Object sel = context.getVariable("selection");
 			if (sel instanceof IStructuredSelection) {
 				final IStructuredSelection ss = (IStructuredSelection) sel;
-				boolean enabled = true;
+
+				// Assume disabled until we find a selected domain manager which is not connected / connecting
+				boolean enabled = false;
 				for (final Object obj : ss.toArray()) {
-					if (PluginUtil.adapt(ScaDomainManager.class, true) != null) {
-						final ScaDomainManager domMgr = PluginUtil.adapt(ScaDomainManager.class, true);
-						if (domMgr.getState().equals(DomainConnectionState.CONNECTED) || domMgr.getState().equals(DomainConnectionState.CONNECTING)) {
-							enabled = false;
+					Object adaptedObj = PluginUtil.adapt(ScaDomainManager.class, obj);
+					if (adaptedObj != null) {
+						final ScaDomainManager domMgr = (ScaDomainManager) adaptedObj;
+						final DomainConnectionState connectionState = domMgr.getState();
+						if (!(DomainConnectionState.CONNECTED.equals(connectionState) || DomainConnectionState.CONNECTING.equals(connectionState))) {
+							enabled = true;
 						}
 					}
 				}
