@@ -57,23 +57,7 @@ public abstract class AbstractPropertyDetailsPage extends ScaDetails {
 	}
 
 	protected void addListeners() {
-//		if (this.composite.getIdEntry() != null) {
-//			this.composite.getIdEntry().getText().addModifyListener(new ModifyListener() {
-//
-//				public void modifyText(ModifyEvent e) {
-//					if (property != null && input != null) {
-//						String propName = (String) input.eGet(property.getName());
-//						String id = (String) input.eGet(property.getId());
-//						if (PluginUtil.equals(propName, id)) {
-//							String newValue = composite.getIdEntry().getText().getText();
-//							if (composite.getNameEntry() != null) {
-//								composite.getNameEntry().getText().setText(newValue);
-//							}
-//						}
-//					}
-//				}
-//			});
-//		}
+		// PASS
 	}
 
 	@Override

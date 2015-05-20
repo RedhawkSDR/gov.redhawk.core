@@ -19,9 +19,7 @@ import gov.redhawk.sca.ui.ScaUI;
 import gov.redhawk.ui.doc.HelpUtil;
 import gov.redhawk.ui.util.SWTUtil;
 
-import java.util.ArrayList;
 import java.util.Comparator;
-import java.util.List;
 
 import mil.jpeojtrs.sca.prf.ActionType;
 import mil.jpeojtrs.sca.prf.Enumeration;
@@ -85,7 +83,6 @@ public abstract class BasicSimplePropertyComposite extends AbstractPropertyCompo
 	private FormEntry unitsEntry;
 	private Label kindLabel;
 	private CheckboxTableViewer kindViewer;
-	private Label actionLabel;
 	private ComboViewer actionViewer;
 	private Button rangeButton;
 	private FormEntry minText;
@@ -135,18 +132,16 @@ public abstract class BasicSimplePropertyComposite extends AbstractPropertyCompo
 
 	protected ComboViewer createActionViewer(final Composite parent, final FormToolkit toolkit) {
 		// Action
-		this.actionLabel = toolkit.createLabel(parent, "Action:");
-		this.actionLabel.setForeground(toolkit.getColors().getColor(IFormColors.TITLE));
-		this.actionLabel.setLayoutData(GridDataFactory.fillDefaults().align(SWT.BEGINNING, SWT.BEGINNING).create());
+		Label actionLabel = toolkit.createLabel(parent, "Action:");
+		actionLabel.setForeground(toolkit.getColors().getColor(IFormColors.TITLE));
+		actionLabel.setLayoutData(GridDataFactory.fillDefaults().align(SWT.BEGINNING, SWT.BEGINNING).create());
 		final ComboViewer viewer = new ComboViewer(parent, SWT.DROP_DOWN | SWT.READ_ONLY);
 		viewer.getCombo().addListener(SWT.MouseVerticalWheel, getEventIgnorer());
 		toolkit.adapt(viewer.getCombo());
-		final List<Object> input = new ArrayList<Object>();
-		input.addAll(ActionType.VALUES);
 		viewer.setContentProvider(new ArrayContentProvider());
 		viewer.setLabelProvider(new LabelProvider());
 		viewer.getControl().setLayoutData(BasicSimplePropertyComposite.FACTORY.create());
-		viewer.setInput(input);
+		viewer.setInput(ActionType.VALUES);
 		viewer.setComparator(new ViewerComparator(new Comparator<String>() {
 			// List should be: "", Default, Everything else in alphanumeric
 			// order
@@ -359,10 +354,6 @@ public abstract class BasicSimplePropertyComposite extends AbstractPropertyCompo
 
 	public Label getKindLabel() {
 		return kindLabel;
-	}
-
-	public Label getActionLabel() {
-		return actionLabel;
 	}
 
 	protected void createEnumerationsViewer(final Composite parent, final FormToolkit toolkit) {

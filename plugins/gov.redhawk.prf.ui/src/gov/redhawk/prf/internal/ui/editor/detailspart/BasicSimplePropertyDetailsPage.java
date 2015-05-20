@@ -135,7 +135,7 @@ public abstract class BasicSimplePropertyDetailsPage extends AbstractPropertyDet
 
 	@Override
 	protected List<Binding> bind(final DataBindingContext dataBindingContext, final EObject input) {
-		final BasicSimplePropertyComposite composite = (BasicSimplePropertyComposite) getComposite();
+		final BasicSimplePropertyComposite composite = getComposite();
 
 		final EditingDomain domain = getEditingDomain();
 		this.input = input;
@@ -156,7 +156,7 @@ public abstract class BasicSimplePropertyDetailsPage extends AbstractPropertyDet
 		}
 
 		// Units
-		if (getComposite().getUnitsEntry() != null) {
+		if (composite.getUnitsEntry() != null) {
 			retVal.add(dataBindingContext.bindValue(
 				WidgetProperties.text(SWT.Modify).observeDelayed(SCAFormEditor.getFieldBindingDelay(), composite.getUnitsEntry().getText()),
 				EMFEditObservables.observeValue(domain, input, this.property.getUnits()), new EMFEmptyStringToNullUpdateValueStrategy(), null));
@@ -169,13 +169,13 @@ public abstract class BasicSimplePropertyDetailsPage extends AbstractPropertyDet
 		}
 
 		// Action
-		if (getComposite().getActionViewer() != null) {
+		if (composite.getActionViewer() != null) {
 			retVal.add(dataBindingContext.bindValue(ViewersObservables.observeSingleSelection(composite.getActionViewer()),
 				EMFEditObservables.observeValue(domain, input, this.property.getAction()), createActionTargetToModel(), createActionModelToTarget()));
 		}
 
 		// Range
-		if (getComposite().getRangeButton() != null) {
+		if (composite.getRangeButton() != null) {
 			retVal.addAll(bindRanges(input, dataBindingContext, domain));
 			addRangeListener();
 		}
