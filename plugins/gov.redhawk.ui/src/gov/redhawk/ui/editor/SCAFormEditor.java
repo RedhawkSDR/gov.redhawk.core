@@ -436,8 +436,6 @@ public abstract class SCAFormEditor extends FormEditor implements IEditingDomain
 
 	private ValidatingEContentAdapter validator;
 
-	private static final String IDL_PREFERENCE_NODE_ID = "gov.redhawk.ide";
-
 	private String id;
 
 	private boolean disposed;

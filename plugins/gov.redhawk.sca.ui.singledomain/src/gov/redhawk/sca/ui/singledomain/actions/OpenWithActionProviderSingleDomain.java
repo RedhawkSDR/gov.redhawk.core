@@ -40,7 +40,6 @@ public class OpenWithActionProviderSingleDomain extends CommonActionProvider {
 	private boolean contribute = false;
 
 	public OpenWithActionProviderSingleDomain() {
-		int a = 1;
 	}
 
 	@Override
