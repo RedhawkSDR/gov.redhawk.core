@@ -11,8 +11,6 @@
 // BEGIN GENERATED CODE
 package gov.redhawk.monitor.model.ports.provider;
 
-import BULKIO.PortStatistics;
-
 import gov.redhawk.monitor.model.ports.PortConnectionMonitor;
 import gov.redhawk.monitor.model.ports.PortsPackage;
 
