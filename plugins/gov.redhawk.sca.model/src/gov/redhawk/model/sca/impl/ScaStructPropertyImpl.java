@@ -13,6 +13,7 @@
 package gov.redhawk.model.sca.impl;
 
 import gov.redhawk.model.sca.IStatusProvider;
+import gov.redhawk.model.sca.ScaAbstractProperty;
 import gov.redhawk.model.sca.ScaFactory;
 import gov.redhawk.model.sca.ScaModelPlugin;
 import gov.redhawk.model.sca.ScaPackage;
@@ -344,15 +345,10 @@ public class ScaStructPropertyImpl extends ScaAbstractPropertyImpl<Struct> imple
 				final DataType[] fields = PropertiesHelper.extract(newAny);
 				if (fields != null) {
 					for (final DataType type : fields) {
-						boolean found = false;
-						for (final ScaSimpleProperty simple : getSimples()) {
-							if (PluginUtil.equals(simple.getId(), type.id)) {
-								simple.fromAny(type.value);
-								found = true;
-								break;
-							}
-						}
-						if (!found) {
+						ScaAbstractProperty<?> prop = getField(type.id);
+						if (prop != null) {
+							prop.fromAny(type.value);
+						} else {
 							ScaSimpleProperty newProp = ScaFactory.eINSTANCE.createScaSimpleProperty();
 							newProp.setId(type.id);
 							newProp.fromAny(type.value);
@@ -365,39 +361,12 @@ public class ScaStructPropertyImpl extends ScaAbstractPropertyImpl<Struct> imple
 				restoreDefaultValue();
 			}
 			setStatus(ScaPackage.Literals.SCA_STRUCT_PROPERTY__SIMPLES, Status.OK_STATUS);
+			setStatus(ScaPackage.Literals.SCA_STRUCT_PROPERTY__SEQUENCES, Status.OK_STATUS);
 		} catch (Exception e) { // SUPPRESS CHECKSTYLE Logged Catch all exception
 			setStatus(ScaPackage.Literals.SCA_STRUCT_PROPERTY__SIMPLES, new Status(Status.ERROR, ScaModelPlugin.ID, "Failed to read property value of:"
 				+ getName(), e));
-		}
-		try {
-			if (newAny != null) {
-				final DataType[] fields = PropertiesHelper.extract(newAny);
-				if (fields != null) {
-					for (final DataType type : fields) {
-						boolean found = false;
-						for (final ScaSimpleSequenceProperty sequence : getSequences()) {
-							if (PluginUtil.equals(sequence.getId(), type.id)) {
-								sequence.fromAny(type.value);
-								found = true;
-								break;
-							}
-						}
-						if (!found) {
-							ScaSimpleSequenceProperty newProp = ScaFactory.eINSTANCE.createScaSimpleSequenceProperty();
-							newProp.setId(type.id);
-							newProp.fromAny(type.value);
-							getSequences().add(newProp);
-						}
-					}
-					return;
-				}
-			} else {
-				restoreDefaultValue();
-			}
-			setStatus(ScaPackage.Literals.SCA_STRUCT_PROPERTY__SEQUENCES, Status.OK_STATUS);
-		} catch (Exception e) { // SUPPRESS CHECKSTYLE Logged Catch all exception
 			setStatus(ScaPackage.Literals.SCA_STRUCT_PROPERTY__SEQUENCES, new Status(Status.ERROR, ScaModelPlugin.ID, "Failed to read property value of:"
-				+ getName(), e));
+					+ getName(), e));
 		}
 		// BEGIN GENERATED CODE
 	}
@@ -435,6 +404,23 @@ public class ScaStructPropertyImpl extends ScaAbstractPropertyImpl<Struct> imple
 		}
 		return null;
 		// BEGIN GENERATED CODE
+	}
+
+	/**
+	 * @since 19.1
+	 */
+	public ScaAbstractProperty< ? > getField(final String identifier) {
+		for (final ScaSimpleProperty simple : getSimples()) {
+			if (PluginUtil.equals(simple.getId(), identifier)) {
+				return simple;
+			}
+		}
+		for (final ScaSimpleSequenceProperty sequence : getSequences()) {
+			if (PluginUtil.equals(sequence.getId(), identifier)) {
+				return sequence;
+			}
+		}
+		return null;
 	}
 
 	/**
