@@ -117,7 +117,6 @@ public class StructSequencePropertyComposite extends BasicStructPropertyComposit
 		column.setText("Value");
 		column.setWidth(200);// SUPPRESS CHECKSTYLE MagicNumber
 		TreeViewerColumn viewerColumn = new TreeViewerColumn(this.structValueViewer, column);
-		viewerColumn = new TreeViewerColumn(this.structValueViewer, column);
 		viewerColumn.setLabelProvider(new PropertyColumnLabelProvider(contentProvider, "value"));
 //		viewerColumn.setEditingSupport(new PropertyEditingSupport(this.structValueViewer, contentProvider, "value"));
 		viewerColumn.setEditingSupport(new AbstractPropertyEditingSupport(this.structValueViewer, contentProvider) {
