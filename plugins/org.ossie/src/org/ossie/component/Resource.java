@@ -919,7 +919,7 @@ public abstract class Resource extends Logging implements ResourceOperations, Ru
         if (appReg != null) {
             if (appReg.domMgr()!=null) {
                 this._domMgr = new DomainManagerContainer(appReg.domMgr());
-                this.logger.info("setAdditionalParameters domain: " + this._domMgr.getRef().name() );
+                logger.info("setAdditionalParameters domain: " + this._domMgr.getRef().name() );
             }
 
             if ( this._domMgr != null ) {

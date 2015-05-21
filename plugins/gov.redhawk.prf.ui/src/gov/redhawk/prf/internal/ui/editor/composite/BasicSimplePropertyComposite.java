@@ -525,11 +525,11 @@ public abstract class BasicSimplePropertyComposite extends AbstractPropertyCompo
 		final Label label = toolkit.createLabel(parent, "Optional:");
 		label.setForeground(toolkit.getColors().getColor(IFormColors.TITLE));
 		label.setLayoutData(GridDataFactory.fillDefaults().align(SWT.BEGINNING, SWT.BEGINNING).create());
-		Combo combo = this.optionalCombo = new Combo(parent, SWT.DROP_DOWN | SWT.READ_ONLY);
-		combo.addListener(SWT.MouseVerticalWheel, getEventIgnorer());
-		combo.setItems(BOOLEAN_ITEMS);
-		combo.setLayoutData(AbstractPropertyComposite.FACTORY.create());
-		toolkit.adapt(combo);
+		this.optionalCombo = new Combo(parent, SWT.DROP_DOWN | SWT.READ_ONLY);
+		this.optionalCombo.addListener(SWT.MouseVerticalWheel, getEventIgnorer());
+		this.optionalCombo.setItems(BOOLEAN_ITEMS);
+		this.optionalCombo.setLayoutData(AbstractPropertyComposite.FACTORY.create());
+		toolkit.adapt(this.optionalCombo);
 
 		return this.optionalCombo;
 	}
