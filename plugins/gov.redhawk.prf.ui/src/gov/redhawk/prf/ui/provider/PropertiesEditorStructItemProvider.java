@@ -29,10 +29,8 @@ import org.eclipse.emf.common.command.Command;
 import org.eclipse.emf.common.notify.AdapterFactory;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EStructuralFeature;
-import org.eclipse.emf.edit.command.AddCommand;
-import org.eclipse.emf.edit.command.CommandParameter;
+import org.eclipse.emf.ecore.util.FeatureMap;
 import org.eclipse.emf.edit.domain.EditingDomain;
-import org.eclipse.emf.edit.provider.IEditingDomainItemProvider;
 
 /**
  * @since 1.2
@@ -43,6 +41,19 @@ public class PropertiesEditorStructItemProvider extends StructItemProvider {
 		super(adapterFactory);
 	}
 
+	@Override
+	protected Object createWrapper(EObject object, EStructuralFeature feature, Object value, int index) {
+		if (feature == PrfPackage.Literals.STRUCT__FIELDS) {
+			// Use the contained type (e.g., Simple) in the feature map, rather than the feature map, to create the
+			// wrapper; this removes the extra tag in the ID (e.g., "<simple>") and lets the editors work directly
+			// with the contained value
+			FeatureMap.Entry entry = (FeatureMap.Entry)value;
+			value = entry.getValue();
+			feature = entry.getEStructuralFeature();
+		}
+		return super.createWrapper(object, feature, value, index);
+	}
+
 	/**
 	 * Create a simple with default values and add it, or add the struct depending on which feature we get.
 	 * 
@@ -51,15 +62,11 @@ public class PropertiesEditorStructItemProvider extends StructItemProvider {
 	@Override
 	protected Command createAddCommand(final EditingDomain domain, final EObject owner, final EStructuralFeature feature, final Collection< ? > collection,
 	        final int index) {
-		if (feature == PrfPackage.Literals.STRUCT__SIMPLE || feature == PrfPackage.Literals.STRUCT__SIMPLE_SEQUENCE) {
-			final IEditingDomainItemProvider editingDomainItemProvider = (IEditingDomainItemProvider) this.adapterFactory.adapt(collection.toArray()[0],
-			        IEditingDomainItemProvider.class);
-			return editingDomainItemProvider.createCommand(owner, domain, AddCommand.class, new CommandParameter(owner, feature, collection, index));
-		} else if (feature == PrfPackage.Literals.PROPERTIES__STRUCT) {
+		if (feature == PrfPackage.Literals.PROPERTIES__STRUCT) {
 			//Add the struct
 			final Struct struct = (Struct) collection.toArray()[0];
-			return super.createAddCommand(domain, owner, feature, Collections.singleton(PropertiesEditorStructItemProvider.configureDefaultStruct(struct)),
-			        index);
+			PropertiesEditorStructItemProvider.configureDefaultStruct(struct);
+			return super.createAddCommand(domain, owner, feature, Collections.singleton(struct), index);
 		}
 		return super.createAddCommand(domain, owner, feature, collection, index);
 	}
@@ -67,14 +74,15 @@ public class PropertiesEditorStructItemProvider extends StructItemProvider {
 	@Override
 	protected Command createCreateChildCommand(EditingDomain domain, EObject owner, EStructuralFeature feature, Object value, int index,
 	        Collection< ? > collection) {
-		if (value instanceof Simple) {
-			Simple simple = (Simple) value;
-			simple.setType(PropertyValueType.STRING);
-		} else if (value instanceof SimpleSequence) {
-			SimpleSequence sequence = (SimpleSequence) value;
-			sequence.setType(PropertyValueType.STRING);
-		} else {
-			return null;
+		if (feature == PrfPackage.Literals.STRUCT__FIELDS) {
+			FeatureMap.Entry entry = (FeatureMap.Entry)value;
+			if (entry.getEStructuralFeature() == PrfPackage.Literals.STRUCT__SIMPLE) {
+				Simple simple = (Simple)entry.getValue();
+				simple.setType(PropertyValueType.STRING);
+			} else if (entry.getEStructuralFeature() == PrfPackage.Literals.STRUCT__SIMPLE_SEQUENCE) {
+				SimpleSequence sequence = (SimpleSequence)entry.getValue();
+				sequence.setType(PropertyValueType.STRING);
+			}
 		}
 		return super.createCreateChildCommand(domain, owner, feature, value, index, collection);
 	}
@@ -88,15 +96,6 @@ public class PropertiesEditorStructItemProvider extends StructItemProvider {
 			return super.createSetCommand(domain, owner, feature, PropertiesEditorStructItemProvider.configureDefaultStruct((Struct) value), index);
 		}
 		return super.createSetCommand(domain, owner, feature, value, index);
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	protected void collectNewChildDescriptors(final Collection<Object> newChildDescriptors, final Object object) {
-		newChildDescriptors.add(createChildParameter(PrfPackage.Literals.STRUCT__SIMPLE, PrfFactory.eINSTANCE.createSimple()));
-		newChildDescriptors.add(createChildParameter(PrfPackage.Literals.STRUCT__SIMPLE_SEQUENCE, PrfFactory.eINSTANCE.createSimpleSequence()));
 	}
 
 	/**
