@@ -30,24 +30,17 @@ import mil.jpeojtrs.sca.prf.StructSequence;
 import mil.jpeojtrs.sca.prf.provider.SimpleSequenceRefItemProvider;
 
 /**
- * @since 3.1
- * 
+ * @since 4.0
  */
 public class PropertiesEditorSimpleSequenceRefItemProvider extends SimpleSequenceRefItemProvider {
 
-	/**
-	 * @param adapterFactory
-	 */
 	public PropertiesEditorSimpleSequenceRefItemProvider(AdapterFactory adapterFactory) {
 		super(adapterFactory);
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	protected Command createAddCommand(final EditingDomain domain, final EObject owner, final EStructuralFeature feature, final Collection< ? > collection,
-	        final int index) {
+		final int index) {
 		if (feature == PrfPackage.Literals.STRUCT_VALUE__SIMPLE_SEQUENCE_REF) {
 			final SimpleSequenceRef simpleSequenceRef = (SimpleSequenceRef) collection.toArray()[0];
 			return super.createAddCommand(domain, owner, feature, Collections.singleton(simpleSequenceRef), index);
@@ -55,9 +48,6 @@ public class PropertiesEditorSimpleSequenceRefItemProvider extends SimpleSequenc
 		return super.createAddCommand(domain, owner, feature, collection, index);
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public String getText(final Object object) {
 		final SimpleSequenceRef simpleRef = (SimpleSequenceRef) object;
@@ -73,7 +63,7 @@ public class PropertiesEditorSimpleSequenceRefItemProvider extends SimpleSequenc
 	 * Returns the {@link Simple} referenced by the {@link SimpleRef}.
 	 * 
 	 * @param ref
-	 *            the reference object
+	 * the reference object
 	 * @return the simple referenced
 	 */
 	private SimpleSequence findSimpleSequence(final SimpleSequenceRef ref) {
@@ -103,7 +93,7 @@ public class PropertiesEditorSimpleSequenceRefItemProvider extends SimpleSequenc
 			fireNotifyChanged(new ViewerNotification(notification, container, false, true));
 		}
 	}
-	
+
 	@Override
 	protected String getValueText(AbstractPropertyRef< ? > object) {
 		final SimpleSequenceRef simpleRef = (SimpleSequenceRef) object;

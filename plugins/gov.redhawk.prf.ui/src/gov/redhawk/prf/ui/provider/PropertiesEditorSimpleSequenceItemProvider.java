@@ -12,7 +12,6 @@
 package gov.redhawk.prf.ui.provider;
 
 import java.util.Collection;
-import java.util.Collections;
 
 import mil.jpeojtrs.sca.prf.AccessType;
 import mil.jpeojtrs.sca.prf.Action;
@@ -41,26 +40,46 @@ public class PropertiesEditorSimpleSequenceItemProvider extends SimpleSequenceIt
 	}
 
 	/**
-	 * {@inheritDoc}
+	 * Produces the add {@link Command} for adding a new simple sequence property to an existing properties collection
+	 * or struct. This code extends the parent class code to ensure the new simple sequence has certain default values.
 	 */
 	@Override
 	protected Command createAddCommand(final EditingDomain domain, final EObject owner, final EStructuralFeature feature, final Collection< ? > collection,
-	        final int index) {
-		if (feature == PrfPackage.Literals.PROPERTIES__SIMPLE_SEQUENCE || feature == PrfPackage.Literals.STRUCT__SIMPLE_SEQUENCE) {
-			final SimpleSequence sequence = (SimpleSequence) collection.toArray()[0];
-			if (feature == PrfPackage.Literals.PROPERTIES__SIMPLE_SEQUENCE) {
-				sequence.setType(PropertyValueType.STRING);
-				sequence.setMode(AccessType.READWRITE);
-				final Kind kind = PrfFactory.eINSTANCE.createKind();
-				kind.setType(PropertyConfigurationType.CONFIGURE);
-				sequence.getKind().add(kind);
-				final Action action = PrfFactory.eINSTANCE.createAction();
-				action.setType(ActionType.EXTERNAL);
-				sequence.setAction(action);
+		final int index) {
+		if (feature == PrfPackage.Literals.PROPERTIES__SIMPLE_SEQUENCE) {
+			for (Object obj : collection) {
+				final SimpleSequence ss = (SimpleSequence) obj;
+				configureDefaultSimpleSequence(ss);
 			}
-			return super.createAddCommand(domain, owner, feature, Collections.singleton(sequence), index);
+		} else if (feature == PrfPackage.Literals.STRUCT__SIMPLE_SEQUENCE) {
+			for (Object obj : collection) {
+				final SimpleSequence ss = (SimpleSequence) obj;
+				configureDefaultSimpleSequenceInStruct(ss);
+			}
 		}
 		return super.createAddCommand(domain, owner, feature, collection, index);
 	}
-	
+
+	/**
+	 * Set default values for a new simple sequence property.
+	 * @param ss The simple sequence to be modified
+	 */
+	private void configureDefaultSimpleSequence(SimpleSequence ss) {
+		ss.setType(PropertyValueType.STRING);
+		ss.setMode(AccessType.READWRITE);
+		final Kind kind = PrfFactory.eINSTANCE.createKind();
+		kind.setType(PropertyConfigurationType.PROPERTY);
+		ss.getKind().add(kind);
+		final Action action = PrfFactory.eINSTANCE.createAction();
+		action.setType(ActionType.EXTERNAL);
+		ss.setAction(action);
+	}
+
+	/**
+	 * Set default values for a new simple sequence member of a struct property.
+	 * @param ss The simple sequence to be modified
+	 */
+	private void configureDefaultSimpleSequenceInStruct(SimpleSequence ss) {
+		ss.setType(PropertyValueType.STRING);
+	}
 }
