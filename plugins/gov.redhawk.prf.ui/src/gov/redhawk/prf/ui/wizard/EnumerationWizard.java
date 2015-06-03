@@ -16,8 +16,7 @@ import mil.jpeojtrs.sca.prf.Enumeration;
 import org.eclipse.jface.wizard.Wizard;
 
 /**
- * @since 3.1
- * 
+ * @since 4.0
  */
 public class EnumerationWizard extends Wizard {
 
@@ -28,34 +27,20 @@ public class EnumerationWizard extends Wizard {
 		this.setWindowTitle("Enumeration Wizard");
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public void addPages() {
 		this.addPage(this.page);
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public boolean performFinish() {
 		return true;
 	}
 
-	/**
-	 * 
-	 * @return
-	 */
 	public Enumeration getEnumeration() {
 		return this.page.getEnumeration();
 	}
 
-	/**
-	 * 
-	 * @param enumeration
-	 */
 	public void setEnumeration(final Enumeration enumeration) {
 		this.page.setEnumeration(enumeration);
 	}

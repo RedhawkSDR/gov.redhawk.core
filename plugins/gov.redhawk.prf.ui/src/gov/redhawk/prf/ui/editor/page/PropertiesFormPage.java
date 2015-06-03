@@ -33,11 +33,13 @@ public class PropertiesFormPage extends ScaFormPage implements IViewerProvider {
 
 	/** The Constant PAGE_ID. */
 	public static final String PAGE_ID = "properties"; //$NON-NLS-1$
+
 	/**
 	 * The toolbar contribution ID
 	 * @since 2.0
 	 */
 	public static final String TOOLBAR_ID = "gov.redhawk.prf.ui.editor.page.toolbar";
+
 	private final PropertiesBlock fBlock;
 
 	/**
@@ -50,25 +52,12 @@ public class PropertiesFormPage extends ScaFormPage implements IViewerProvider {
 		super(editor, PropertiesFormPage.PAGE_ID, "Properties");
 		this.fBlock = new PropertiesBlock(this);
 	}
-	
-	/**
-	 * @since 3.1
-	 */
-	public PropertiesBlock getPropertiesBlock() {
-		return fBlock;
-	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	protected String getHelpResource() {
 		return HelpConstants.reference_editors_prf_propertiesPage;
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	protected void createFormContent(final IManagedForm managedForm) {
 		final ScrolledForm form = managedForm.getForm();
@@ -86,25 +75,16 @@ public class PropertiesFormPage extends ScaFormPage implements IViewerProvider {
 		manager.update(true);
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public Viewer getViewer() {
 		return this.fBlock.getSection().getStructuredViewerPart().getViewer();
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	protected void refresh(final Resource resource) {
 		this.fBlock.refresh(resource);
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public boolean selectReveal(final Object object) {
 		if (object instanceof Range) {

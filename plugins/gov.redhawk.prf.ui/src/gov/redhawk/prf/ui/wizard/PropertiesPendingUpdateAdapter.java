@@ -18,22 +18,15 @@ import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.eclipse.ui.progress.PendingUpdateAdapter;
 
 /**
- * @since 3.1
- * 
+ * @since 4.0
  */
 public class PropertiesPendingUpdateAdapter extends PendingUpdateAdapter {
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public String getLabel(final Object o) {
 		return "Loading...";
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public ImageDescriptor getImageDescriptor(final Object object) {
 		return AbstractUIPlugin.imageDescriptorFromPlugin(PrfUiPlugin.PLUGIN_ID, "icons/SdrRoot.gif");

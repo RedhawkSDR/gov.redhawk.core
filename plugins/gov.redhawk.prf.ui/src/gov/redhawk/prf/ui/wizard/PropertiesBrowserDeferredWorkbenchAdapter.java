@@ -27,7 +27,7 @@ import org.eclipse.ui.progress.IDeferredWorkbenchAdapter;
 import org.eclipse.ui.progress.IElementCollector;
 
 /**
- * @since 3.1
+ * @since 4.0
  */
 public class PropertiesBrowserDeferredWorkbenchAdapter implements IDeferredWorkbenchAdapter {
 
@@ -37,41 +37,26 @@ public class PropertiesBrowserDeferredWorkbenchAdapter implements IDeferredWorkb
 		this.map = map;
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public Object[] getChildren(Object o) {
 		return Collections.EMPTY_LIST.toArray();
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public ImageDescriptor getImageDescriptor(Object object) {
 		return AbstractUIPlugin.imageDescriptorFromPlugin(PrfUiPlugin.PLUGIN_ID, "icons/SdrRoot.gif");
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public String getLabel(Object o) {
 		return "Browse Properties";
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public Object getParent(Object o) {
 		return null;
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public void fetchDeferredChildren(Object object, IElementCollector collector, IProgressMonitor monitor) {
 		List<IPropertiesProvider> providers = loadPropertiesProviders(monitor);
@@ -81,17 +66,11 @@ public class PropertiesBrowserDeferredWorkbenchAdapter implements IDeferredWorkb
 		monitor.done();
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public boolean isContainer() {
 		return false;
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public ISchedulingRule getRule(Object object) {
 		return null;

@@ -29,16 +29,12 @@ import org.eclipse.ui.model.IWorkbenchAdapter;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 
 /**
- * @since 3.1
- * 
+ * @since 4.0
  */
 public class PropertiesBrowserLabelProvider extends AdapterFactoryLabelProvider implements ILabelProvider {
 
 	private ResourceManager resourceManager;
 
-	/**
-	 * @param adapterFactory
-	 */
 	public PropertiesBrowserLabelProvider(final AdapterFactory factory) {
 		super(factory);
 	}
@@ -51,9 +47,6 @@ public class PropertiesBrowserLabelProvider extends AdapterFactoryLabelProvider 
 		return resourceManager;
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public void dispose() {
 		if (resourceManager != null) {
@@ -63,9 +56,6 @@ public class PropertiesBrowserLabelProvider extends AdapterFactoryLabelProvider 
 		super.dispose();
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public Image getImage(final Object object) {
 		IWorkbenchAdapter workbenchAdapter = PluginUtil.adapt(IWorkbenchAdapter.class, object, true);
@@ -86,9 +76,6 @@ public class PropertiesBrowserLabelProvider extends AdapterFactoryLabelProvider 
 		return super.getImage(object);
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public String getText(final Object object) {
 		IWorkbenchAdapter workbenchAdapter = PluginUtil.adapt(IWorkbenchAdapter.class, object, true);
