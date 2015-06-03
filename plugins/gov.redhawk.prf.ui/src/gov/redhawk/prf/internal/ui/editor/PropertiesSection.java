@@ -34,6 +34,7 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.provider.EcoreItemProviderAdapterFactory;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.edit.command.AddCommand;
+import org.eclipse.emf.edit.command.RemoveCommand;
 import org.eclipse.emf.edit.domain.EditingDomain;
 import org.eclipse.emf.edit.provider.ComposedAdapterFactory;
 import org.eclipse.emf.edit.provider.ReflectiveItemProviderAdapterFactory;
@@ -136,7 +137,9 @@ public class PropertiesSection extends TreeSection implements IPropertyChangeLis
 			handleBrowse();
 			break;
 		case BUTTON_REMOVE:
-			PropertyHandler.removeProperty(getAdapterFactory(), getEditingDomain(), getProperties(), selection);
+			EditingDomain editingDomain = getEditingDomain();
+			Command remove = RemoveCommand.create(editingDomain, selection);
+			editingDomain.getCommandStack().execute(remove);
 			this.deleteTriggered = true;
 			break;
 		default:
