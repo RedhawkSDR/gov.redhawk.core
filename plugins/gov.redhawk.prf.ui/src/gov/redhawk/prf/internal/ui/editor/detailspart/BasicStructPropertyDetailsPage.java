@@ -15,30 +15,26 @@ import gov.redhawk.prf.internal.ui.editor.PropertiesSection;
 import gov.redhawk.prf.internal.ui.editor.composite.BasicStructPropertyComposite;
 
 import java.util.ArrayList;
-import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import mil.jpeojtrs.sca.prf.ConfigurationKind;
 import mil.jpeojtrs.sca.prf.PrfFactory;
-import mil.jpeojtrs.sca.prf.PrfPackage;
-import mil.jpeojtrs.sca.prf.Struct;
+import mil.jpeojtrs.sca.prf.PropertyConfigurationType;
 import mil.jpeojtrs.sca.prf.StructPropertyConfigurationType;
-import mil.jpeojtrs.sca.prf.StructSequence;
 
 import org.eclipse.core.databinding.Binding;
 import org.eclipse.core.databinding.DataBindingContext;
-import org.eclipse.core.databinding.observable.list.IListChangeListener;
-import org.eclipse.core.databinding.observable.list.ListChangeEvent;
-import org.eclipse.core.databinding.observable.list.WritableList;
+import org.eclipse.core.databinding.UpdateValueStrategy;
+import org.eclipse.core.databinding.conversion.Converter;
+import org.eclipse.emf.databinding.EMFUpdateValueStrategy;
 import org.eclipse.emf.databinding.edit.EMFEditObservables;
 import org.eclipse.emf.ecore.EObject;
-import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.edit.domain.EditingDomain;
-import org.eclipse.jface.viewers.CheckStateChangedEvent;
-import org.eclipse.jface.viewers.ICheckStateListener;
+import org.eclipse.jface.databinding.viewers.ViewersObservables;
 
-public abstract class BasicStructPropertyDetailsPage extends
-		AbstractPropertyDetailsPage {
+public abstract class BasicStructPropertyDetailsPage extends AbstractPropertyDetailsPage {
 
 	public BasicStructPropertyDetailsPage(final PropertiesSection section) {
 		super(section);
@@ -48,92 +44,114 @@ public abstract class BasicStructPropertyDetailsPage extends
 	 * {@inheritDoc}
 	 */
 	@Override
-	protected List<Binding> bind(final DataBindingContext context,
-			final EObject input) {
+	protected List<Binding> bind(final DataBindingContext context, final EObject input) {
 
 		final EditingDomain domain = getEditingDomain();
+		final BasicStructPropertyComposite composite = getComposite();
+		final Property property = getProperty(input);
 
 		final List<Binding> retVal = super.bind(context, input);
 
 		// Configuration Kind
-		if (getComposite().getConfigurationKindViewer() != null) {
-			getComposite().getConfigurationKindViewer().setCheckedElements(
-					Collections.EMPTY_LIST.toArray());
-			createKindBinding(context, input, domain, retVal);
+		if (composite.getConfigurationKindViewer() != null) {
+			// Search for configure/execparam properties if they are being used for backwards compatibility
+			boolean oldStyle = hasConfigureOrExecParamProperties(input);
+			composite.showConfigure(oldStyle);
+
+			retVal.add(context.bindValue(ViewersObservables.observeSingleSelection(composite.getConfigurationKindViewer()),
+				EMFEditObservables.observeValue(domain, input, property.getConfigurationKind()), createKindTargetToModel(), createKindModelToTarget()));
 		}
 
 		return retVal;
+	}
+
+	/**
+	 * Creates a {@link UpdateValueStrategy} that converts the {@link List} < {@link ConfigurationKind} > from the EMF
+	 * model object to a single {@link StructPropertyConfigurationType} for the drop-down combo box.
+	 * @return
+	 */
+	private UpdateValueStrategy createKindModelToTarget() {
+		final EMFUpdateValueStrategy strategy = new EMFUpdateValueStrategy();
+		strategy.setConverter(new Converter(List.class, StructPropertyConfigurationType.class) {
+
+			@Override
+			public Object convert(final Object fromObject) {
+				if (fromObject instanceof List) {
+					final List< ? > kindList = (List< ? >) fromObject;
+
+					// Normally, we expect exactly one kind type in the list
+					if (kindList.size() == 1) {
+						ConfigurationKind kind = (ConfigurationKind) kindList.get(0);
+						if (kind.isSetType()) {
+							return kind.getType();
+						} else {
+							return StructPropertyConfigurationType.PROPERTY;
+						}
+					}
+					// If empty, default to PROPERTY
+					if (kindList.size() == 0) {
+						StructPropertyConfigurationType displayKindType = StructPropertyConfigurationType.PROPERTY;
+						return displayKindType;
+					}
+
+					// We can only display one kind type, even though the XML allows multiple. As of Redhawk 2.0, we
+					// only expect one type to be used. Since we have multiple, we'll select the "most important" one
+					// to show.
+					Set<StructPropertyConfigurationType> kindTypeSet = new HashSet<StructPropertyConfigurationType>();
+					for (Object obj : kindList) {
+						ConfigurationKind kind = (ConfigurationKind) obj;
+						if (kind.isSetType()) {
+							kindTypeSet.add(kind.getType());
+						}
+					}
+					if (kindTypeSet.contains(StructPropertyConfigurationType.PROPERTY)) {
+						return StructPropertyConfigurationType.PROPERTY;
+					}
+					if (kindTypeSet.contains(StructPropertyConfigurationType.ALLOCATION)) {
+						return StructPropertyConfigurationType.ALLOCATION;
+					}
+					if (kindTypeSet.contains(StructPropertyConfigurationType.CONFIGURE)) {
+						return StructPropertyConfigurationType.CONFIGURE;
+					}
+					if (kindTypeSet.contains(StructPropertyConfigurationType.MESSAGE)) {
+						return StructPropertyConfigurationType.MESSAGE;
+					}
+					StructPropertyConfigurationType displayKindType = ((ConfigurationKind) kindList.get(0)).getType();
+					return displayKindType;
+				}
+				throw new IllegalArgumentException();
+			}
+		});
+		return strategy;
+	}
+
+	/**
+	 * Creates a {@link UpdateValueStrategy} that converts a {@link StructPropertyConfigurationType} from the drop-down
+	 * combo box to a {@link List} < {@link ConfigurationKind} > for the EMF model object.
+	 * @return
+	 */
+	private UpdateValueStrategy createKindTargetToModel() {
+		final EMFUpdateValueStrategy strategy = new EMFUpdateValueStrategy();
+		strategy.setConverter(new Converter(PropertyConfigurationType.class, List.class) {
+
+			@Override
+			public Object convert(final Object fromObject) {
+				if (fromObject instanceof PropertyConfigurationType) {
+					final StructPropertyConfigurationType kindType = (StructPropertyConfigurationType) fromObject;
+					final ConfigurationKind kind = PrfFactory.eINSTANCE.createConfigurationKind();
+					kind.setType(kindType);
+					List<ConfigurationKind> kindList = new ArrayList<ConfigurationKind>();
+					kindList.add(kind);
+					return kindList;
+				}
+				throw new IllegalArgumentException();
+			}
+		});
+		return strategy;
 	}
 
 	@Override
 	protected BasicStructPropertyComposite getComposite() {
 		return (BasicStructPropertyComposite) super.getComposite();
 	}
-
-	/**
-	 * Creates the kind binding.
-	 * 
-	 * @param context
-	 * @param retVal
-	 */
-	private void createKindBinding(final DataBindingContext context,
-			final EObject input, final EditingDomain domain,
-			final List<Binding> retVal) {
-		final WritableList myList = new WritableList();
-		myList.addListChangeListener(new IListChangeListener() {
-
-			@Override
-			public void handleListChange(ListChangeEvent event) {
-				List<StructPropertyConfigurationType> newChecked = new ArrayList<StructPropertyConfigurationType>();
-				for (Object obj : myList) {
-					if (obj instanceof ConfigurationKind) {
-						newChecked.add(((ConfigurationKind) obj).getType());
-					} else if (obj instanceof StructPropertyConfigurationType) {
-						newChecked.add(((StructPropertyConfigurationType) obj));
-					}
-				}
-				((BasicStructPropertyComposite) getComposite())
-						.getConfigurationKindViewer().setCheckedElements(
-								newChecked.toArray());
-			}
-		});
-
-		((BasicStructPropertyComposite) getComposite())
-				.getConfigurationKindViewer().addCheckStateListener(
-						new ICheckStateListener() {
-
-							@Override
-							public void checkStateChanged(
-									CheckStateChangedEvent event) {
-								if (event.getChecked()) {
-									ConfigurationKind kind = PrfFactory.eINSTANCE
-											.createConfigurationKind();
-									kind.setType(((StructPropertyConfigurationType) event
-											.getElement()));
-									myList.add(kind);
-								} else {
-									for (Object obj : myList) {
-										if (obj instanceof ConfigurationKind
-												&& ((ConfigurationKind) obj)
-														.getType() == event
-														.getElement()) {
-											myList.remove(obj);
-											break;
-										}
-									}
-								}
-							}
-						});
-
-		EReference literal = null;
-		if (input instanceof StructSequence) {
-			literal = PrfPackage.Literals.STRUCT_SEQUENCE__CONFIGURATION_KIND;
-		} else if (input instanceof Struct) {
-			literal = PrfPackage.Literals.STRUCT__CONFIGURATION_KIND;
-		}
-
-		retVal.add(context.bindList(myList, EMFEditObservables.observeList(
-				getEditingDomain(), input, literal)));
-	}
-
 }

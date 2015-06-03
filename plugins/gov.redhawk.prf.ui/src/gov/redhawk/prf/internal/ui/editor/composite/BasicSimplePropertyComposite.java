@@ -565,5 +565,4 @@ public abstract class BasicSimplePropertyComposite extends AbstractPropertyCompo
 			configExecParamShown = visible;
 		}
 	}
-
 }

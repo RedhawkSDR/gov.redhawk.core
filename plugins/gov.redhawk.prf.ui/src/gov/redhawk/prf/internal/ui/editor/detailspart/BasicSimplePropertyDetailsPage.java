@@ -112,10 +112,6 @@ public abstract class BasicSimplePropertyDetailsPage extends AbstractPropertyDet
 		this.input = input;
 		this.property = getProperty(this.input);
 
-		// Search for configure/execparam properties if they are being used for backwards compatibility
-		boolean oldStyle = hasConfigureOrExecParamProperties(this.input);
-		composite.showConfigureAndExecParam(oldStyle);
-
 		final List<Binding> retVal = super.bind(dataBindingContext, input);
 
 		// Type
@@ -139,6 +135,10 @@ public abstract class BasicSimplePropertyDetailsPage extends AbstractPropertyDet
 
 		// Kind
 		if (composite.getKindViewer() != null) {
+			// Search for configure/execparam properties if they are being used for backwards compatibility
+			boolean oldStyle = hasConfigureOrExecParamProperties(this.input);
+			composite.showConfigureAndExecParam(oldStyle);
+
 			retVal.add(dataBindingContext.bindValue(ViewersObservables.observeSingleSelection(composite.getKindViewer()),
 				EMFEditObservables.observeValue(domain, input, this.property.getKind()), createKindTargetToModel(), createKindModelToTarget()));
 		}

@@ -148,32 +148,6 @@ public abstract class AbstractPropertyDetailsPage extends ScaDetails {
 			if (abstractProperty.isKind(PropertyConfigurationType.CONFIGURE, PropertyConfigurationType.EXECPARAM)) {
 				return true;
 			}
-			/*
-			if (!abstractProperty.isKind(PropertyConfigurationType.CONFIGURE, PropertyConfigurationType.EXECPARAM)) {
-				continue;
-			}
-			if (abstractProperty instanceof Simple) {
-				Simple simple = (Simple) abstractProperty;
-				if (!simple.getKind().isEmpty()) {
-					return true;
-				}
-			} else if (abstractProperty instanceof SimpleSequence) {
-				SimpleSequence simpleSequence = (SimpleSequence) abstractProperty;
-				if (!simpleSequence.getKind().isEmpty()) {
-					return true;
-				}
-			} else if (abstractProperty instanceof Struct) {
-				Struct struct = (Struct) abstractProperty;
-				if (!struct.getConfigurationKind().isEmpty()) {
-					return true;
-				}
-			} else if (abstractProperty instanceof StructSequence) {
-				StructSequence structSeq = (StructSequence) abstractProperty;
-				if (!structSeq.getConfigurationKind().isEmpty()) {
-					return true;
-				}
-			}
-			*/
 		}
 		return false;
 	}
