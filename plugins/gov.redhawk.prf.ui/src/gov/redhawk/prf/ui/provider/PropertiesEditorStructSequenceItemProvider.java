@@ -11,6 +11,7 @@
  */
 package gov.redhawk.prf.ui.provider;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 
@@ -21,7 +22,6 @@ import mil.jpeojtrs.sca.prf.PrfPackage;
 import mil.jpeojtrs.sca.prf.Struct;
 import mil.jpeojtrs.sca.prf.StructPropertyConfigurationType;
 import mil.jpeojtrs.sca.prf.StructSequence;
-import mil.jpeojtrs.sca.prf.StructValue;
 import mil.jpeojtrs.sca.prf.provider.StructSequenceItemProvider;
 
 import org.eclipse.emf.common.command.Command;
@@ -56,11 +56,6 @@ public class PropertiesEditorStructSequenceItemProvider extends StructSequenceIt
 			final Struct struct = PrfFactory.eINSTANCE.createStruct();
 			sequence.setStruct(PropertiesEditorStructItemProvider.configureStructChild(struct));
 			return super.createAddCommand(domain, owner, feature, Collections.singleton(sequence), index);
-		} else if (feature == PrfPackage.Literals.STRUCT_SEQUENCE__STRUCT_VALUE) { //Always add a simpleRef when adding a struct value; it must have one
-			final StructValue value = (StructValue) collection.toArray()[0];
-			value.getSimpleRef().add(PrfFactory.eINSTANCE.createSimpleRef());
-			value.getSimpleSequenceRef().add(PrfFactory.eINSTANCE.createSimpleSequenceRef());
-			return super.createAddCommand(domain, owner, feature, Collections.singleton(value), index);
 		}
 		return super.createAddCommand(domain, owner, feature, collection, index);
 	}
@@ -70,7 +65,7 @@ public class PropertiesEditorStructSequenceItemProvider extends StructSequenceIt
 	 */
 	@Override
 	protected void collectNewChildDescriptors(final Collection<Object> newChildDescriptors, final Object object) {
-		newChildDescriptors.add(createChildParameter(PrfPackage.Literals.STRUCT_SEQUENCE__STRUCT, PrfFactory.eINSTANCE.createStruct()));
+		// Disallow creating children from this provider
 	}
 
 	/**
@@ -79,9 +74,10 @@ public class PropertiesEditorStructSequenceItemProvider extends StructSequenceIt
 	 */
 	@Override
 	public Collection< ? extends EStructuralFeature> getChildrenFeatures(final Object object) {
-		super.getChildrenFeatures(object);
-		this.childrenFeatures.remove(PrfPackage.Literals.STRUCT_SEQUENCE__STRUCT_VALUE);
-		this.childrenFeatures.remove(PrfPackage.Literals.STRUCT_SEQUENCE__CONFIGURATION_KIND);
-		return this.childrenFeatures;
+		if (childrenFeatures == null) {
+			childrenFeatures = new ArrayList<EStructuralFeature>();
+			childrenFeatures.add(PrfPackage.Literals.STRUCT_SEQUENCE__STRUCT);
+		}
+		return childrenFeatures;
 	}
 }
