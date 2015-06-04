@@ -13,7 +13,6 @@ package gov.redhawk.prf.internal.ui.editor.composite;
 
 import gov.redhawk.common.ui.editor.FormLayoutFactory;
 import gov.redhawk.prf.ui.provider.PropertiesEditorPrfItemProviderAdapterFactory;
-import gov.redhawk.prf.ui.provider.PropertiesEditorStructSequenceItemProvider;
 import gov.redhawk.sca.ui.properties.AbstractPropertyEditingSupport;
 import gov.redhawk.ui.util.SWTUtil;
 
@@ -23,6 +22,7 @@ import java.util.Collection;
 import mil.jpeojtrs.sca.prf.PrfPackage;
 import mil.jpeojtrs.sca.prf.SimpleRef;
 import mil.jpeojtrs.sca.prf.SimpleSequenceRef;
+import mil.jpeojtrs.sca.prf.provider.StructSequenceItemProvider;
 
 import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.notify.AdapterFactory;
@@ -118,7 +118,6 @@ public class StructSequencePropertyComposite extends BasicStructPropertyComposit
 		column.setWidth(200);// SUPPRESS CHECKSTYLE MagicNumber
 		TreeViewerColumn viewerColumn = new TreeViewerColumn(this.structValueViewer, column);
 		viewerColumn.setLabelProvider(new PropertyColumnLabelProvider(contentProvider, "value"));
-//		viewerColumn.setEditingSupport(new PropertyEditingSupport(this.structValueViewer, contentProvider, "value"));
 		viewerColumn.setEditingSupport(new AbstractPropertyEditingSupport(this.structValueViewer, contentProvider) {
 
 			@Override
@@ -149,7 +148,7 @@ public class StructSequencePropertyComposite extends BasicStructPropertyComposit
 		final PropertiesEditorPrfItemProviderAdapterFactory customAdapterFactory = new PropertiesEditorPrfItemProviderAdapterFactory() {
 			@Override
 			public Adapter createStructSequenceAdapter() {
-				return new StructSequencePropertyCompositeItemProvider(getRootAdapterFactory());
+				return new StructSequenceValueItemProvider(getRootAdapterFactory());
 			}
 		};
 		newAdapterFactory.addAdapterFactory(customAdapterFactory);
@@ -175,9 +174,9 @@ public class StructSequencePropertyComposite extends BasicStructPropertyComposit
 	/**
 	 * Custom Item Provider for the StructSequencePropertyComposite.
 	 */
-	private static class StructSequencePropertyCompositeItemProvider extends PropertiesEditorStructSequenceItemProvider {
+	private static class StructSequenceValueItemProvider extends StructSequenceItemProvider {
 
-		public StructSequencePropertyCompositeItemProvider(final AdapterFactory adapterFactory) {
+		public StructSequenceValueItemProvider(final AdapterFactory adapterFactory) {
 			super(adapterFactory);
 		}
 
@@ -188,8 +187,7 @@ public class StructSequencePropertyComposite extends BasicStructPropertyComposit
 		@Override
 		public Collection< ? extends EStructuralFeature> getChildrenFeatures(final Object object) {
 			if (this.childrenFeatures == null) {
-				super.getChildrenFeatures(object);
-				this.childrenFeatures.remove(PrfPackage.Literals.STRUCT_SEQUENCE__STRUCT);
+				this.childrenFeatures = new ArrayList<EStructuralFeature>();
 				this.childrenFeatures.add(PrfPackage.Literals.STRUCT_SEQUENCE__STRUCT_VALUE);
 			}
 			return this.childrenFeatures;
