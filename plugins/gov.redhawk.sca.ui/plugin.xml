@@ -381,6 +381,11 @@
       <propertyTabs
             contributorId="gov.redhawk.ui.sca_explorer">
          <propertyTab
+               category="general"
+               id="gov.redhawk.sca.ui.properties.propertyTab.PortDetails"
+               label="%propertyTab.label.2">
+         </propertyTab>
+         <propertyTab
                category="advanced"
                id="CommonNavigator.tab.Advanced"
                label="%propertyTab.label">
@@ -391,6 +396,15 @@
          point="org.eclipse.ui.views.properties.tabbed.propertySections">
       <propertySections
             contributorId="gov.redhawk.ui.sca_explorer">
+         <propertySection
+               class="gov.redhawk.sca.ui.properties.PortDetailsPropertySection"
+               enablesFor="1"
+               id="gov.redhawk.sca.ui.properties.propertySection.PortDetails"
+               tab="gov.redhawk.sca.ui.properties.propertyTab.PortDetails">
+            <input
+                  type="gov.redhawk.model.sca.ScaPort">
+            </input>
+         </propertySection>
          <propertySection
                class="org.eclipse.ui.views.properties.tabbed.AdvancedPropertySection"
                filter="gov.redhawk.sca.ui.filters.AdvancedPropertiesExtensibleFilter"
