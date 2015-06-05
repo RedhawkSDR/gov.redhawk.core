@@ -37,7 +37,7 @@ import org.eclipse.ui.progress.IDeferredWorkbenchAdapter;
 import org.eclipse.ui.progress.PendingUpdateAdapter;
 
 /**
- * @since 3.1
+ * @since 4.0
  */
 public class PropertiesBrowserContentProvider extends AdapterFactoryContentProvider {
 
