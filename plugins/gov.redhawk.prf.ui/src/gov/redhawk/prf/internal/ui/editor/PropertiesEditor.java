@@ -180,11 +180,10 @@ public class PropertiesEditor extends SCAFormEditor {
 	 * The properties editor should only set AbstractProperty selections to the viewer.
 	 */
 	@Override
-	public void setSelectionToViewer(final Collection< ? > collection) {
-		if (!collection.isEmpty()) {
-			if (collection.toArray()[0] instanceof AbstractProperty) {
-				super.setSelectionToViewer(collection);
-			}
+	protected boolean shouldUpdateSelection(final Collection< ? > collection) {
+		if (!collection.isEmpty() && (collection.toArray()[0] instanceof AbstractProperty)) {
+			return true;
 		}
+		return false;
 	}
 }
