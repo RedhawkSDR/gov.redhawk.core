@@ -14,6 +14,7 @@ package gov.redhawk.prf.internal.ui.editor.composite;
 import gov.redhawk.common.ui.editor.FormLayoutFactory;
 import gov.redhawk.prf.ui.provider.PropertiesEditorPrfItemProviderAdapterFactory;
 import gov.redhawk.sca.ui.properties.AbstractPropertyEditingSupport;
+import gov.redhawk.ui.parts.UnwrappingLabelProvider;
 import gov.redhawk.ui.util.SWTUtil;
 
 import java.util.ArrayList;
@@ -107,7 +108,7 @@ public class StructSequencePropertyComposite extends BasicStructPropertyComposit
 		this.structValueViewer.setColumnProperties(new String[] {
 		        "refid", "value"
 		});
-		this.structValueViewer.setLabelProvider(new DecoratingLabelProvider(labelProvider, PlatformUI.getWorkbench().getDecoratorManager().getLabelDecorator()));
+		this.structValueViewer.setLabelProvider(new DecoratingLabelProvider(new UnwrappingLabelProvider(labelProvider), PlatformUI.getWorkbench().getDecoratorManager().getLabelDecorator()));
 		this.structValueViewer.setContentProvider(contentProvider);
 		TreeColumn column = new TreeColumn(tree, SWT.NONE);
 		column = new TreeColumn(tree, SWT.NONE);

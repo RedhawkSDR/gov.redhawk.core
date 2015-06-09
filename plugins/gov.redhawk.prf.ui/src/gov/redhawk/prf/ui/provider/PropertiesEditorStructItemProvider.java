@@ -41,19 +41,6 @@ public class PropertiesEditorStructItemProvider extends StructItemProvider {
 		super(adapterFactory);
 	}
 
-	@Override
-	protected Object createWrapper(EObject object, EStructuralFeature feature, Object value, int index) {
-		if (feature == PrfPackage.Literals.STRUCT__FIELDS) {
-			// Use the contained type (e.g., Simple) in the feature map, rather than the feature map, to create the
-			// wrapper; this removes the extra tag in the ID (e.g., "<simple>") and lets the editors work directly
-			// with the contained value
-			FeatureMap.Entry entry = (FeatureMap.Entry)value;
-			value = entry.getValue();
-			feature = entry.getEStructuralFeature();
-		}
-		return super.createWrapper(object, feature, value, index);
-	}
-
 	/**
 	 * Create a simple with default values and add it, or add the struct depending on which feature we get.
 	 * 

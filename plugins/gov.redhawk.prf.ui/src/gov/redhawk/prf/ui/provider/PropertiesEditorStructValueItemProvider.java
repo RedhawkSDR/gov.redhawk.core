@@ -45,19 +45,6 @@ public class PropertiesEditorStructValueItemProvider extends StructValueItemProv
 	}
 
 	@Override
-	protected Object createWrapper(EObject object, EStructuralFeature feature, Object value, int index) {
-		if (feature == PrfPackage.Literals.STRUCT_VALUE__REFS) {
-			// Use the contained type (e.g., SimpleRef) in the feature map, rather than the feature map, to create the
-			// wrapper; this removes the extra tag in the ID (e.g., "<simpleRef>") and lets the editors work directly
-			// with the contained value
-			FeatureMap.Entry entry = (FeatureMap.Entry)value;
-			value = entry.getValue();
-			feature = entry.getEStructuralFeature();
-		}
-		return super.createWrapper(object, feature, value, index);
-	}
-
-	@Override
 	protected Command createAddCommand(final EditingDomain domain, final EObject owner, final EStructuralFeature feature, final Collection< ? > collection,
 	        final int index) {
 		if (feature == PrfPackage.Literals.STRUCT_SEQUENCE__STRUCT_VALUE) {

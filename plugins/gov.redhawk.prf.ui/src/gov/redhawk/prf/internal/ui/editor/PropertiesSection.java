@@ -21,6 +21,7 @@ import gov.redhawk.sca.ui.parts.FormFilteredTree;
 import gov.redhawk.ui.actions.SortAction;
 import gov.redhawk.ui.editor.TreeSection;
 import gov.redhawk.ui.parts.TreePart;
+import gov.redhawk.ui.parts.UnwrappingLabelProvider;
 import gov.redhawk.ui.util.SCAEditorUtil;
 
 import java.util.Arrays;
@@ -158,7 +159,7 @@ public class PropertiesSection extends TreeSection implements IPropertyChangeLis
 		createViewerPartControl(container, SWT.MULTI, 2, toolkit);
 		this.fExtensionTree = treePart.getTreeViewer();
 		this.fExtensionTree.setContentProvider(new AdapterFactoryContentProvider(getAdapterFactory()));
-		this.fExtensionTree.setLabelProvider(new DecoratingLabelProvider(new AdapterFactoryLabelProvider(getAdapterFactory()), PlatformUI.getWorkbench()
+		this.fExtensionTree.setLabelProvider(new DecoratingLabelProvider(new UnwrappingLabelProvider(new AdapterFactoryLabelProvider(getAdapterFactory())), PlatformUI.getWorkbench()
 		        .getDecoratorManager().getLabelDecorator()));
 		toolkit.paintBordersFor(container);
 		section.setClient(container);
