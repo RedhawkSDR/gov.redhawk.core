@@ -11,9 +11,7 @@
  */
 package gov.redhawk.prf.ui.provider;
 
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 
 import mil.jpeojtrs.sca.prf.AccessType;
 import mil.jpeojtrs.sca.prf.Action;
@@ -27,7 +25,6 @@ import mil.jpeojtrs.sca.prf.Simple;
 import mil.jpeojtrs.sca.prf.provider.SimpleItemProvider;
 
 import org.eclipse.emf.common.command.Command;
-import org.eclipse.emf.common.command.CompoundCommand;
 import org.eclipse.emf.common.notify.AdapterFactory;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EStructuralFeature;
@@ -43,52 +40,47 @@ public class PropertiesEditorSimpleItemProvider extends SimpleItemProvider {
 	}
 
 	/**
-	 * {@inheritDoc}
+	 * Produces the add {@link Command} for adding a new simple property to an existing properties collection or struct.
+	 * This code extends the parent class to ensure the new simple has certain default values.
 	 */
 	@Override
 	protected Command createAddCommand(final EditingDomain domain, final EObject owner, final EStructuralFeature feature, final Collection< ? > collection,
-	        final int index) {
-		final CompoundCommand command = new CompoundCommand();
-		if (feature == PrfPackage.Literals.PROPERTIES__SIMPLE || feature == PrfPackage.Literals.STRUCT__SIMPLE) {
-			List<Simple> additions = new ArrayList<Simple>();
+		final int index) {
+		if (feature == PrfPackage.Literals.PROPERTIES__SIMPLE) {
 			for (Object obj : collection) {
-				//This might be an unnecessary instanceof check . . .
-				if (obj instanceof Simple) {
-					Simple simple = (Simple) obj;
-					//Don't modify an existing simple
-					if (feature == PrfPackage.Literals.PROPERTIES__SIMPLE) {
-						simple.setType(PropertyValueType.STRING);
-						simple.setMode(AccessType.READWRITE);
-						final Kind kind = PrfFactory.eINSTANCE.createKind();
-						kind.setType(PropertyConfigurationType.CONFIGURE);
-						simple.getKind().add(kind);
-						final Action action = PrfFactory.eINSTANCE.createAction();
-						action.setType(ActionType.EXTERNAL);
-						simple.setAction(action);
-					}
-					additions.add(simple);
-				}
+				Simple simple = (Simple) obj;
+				configureDefaultSimple(simple);
 			}
-
-			command.append(super.createAddCommand(domain, owner, feature, additions, index));
-			return command;
+		} else if (feature == PrfPackage.Literals.STRUCT__SIMPLE) {
+			for (Object obj : collection) {
+				Simple simple = (Simple) obj;
+				configureDefaultSimpleInStruct(simple);
+			}
 		}
 
 		return super.createAddCommand(domain, owner, feature, collection, index);
 	}
 
 	/**
-	 * @since 2.0
+	 * Set default values for a new simple property.
+	 * @param simple The simple to be modified
 	 */
-	protected static Simple configureDefaultSimple(Simple simple) {
+	private void configureDefaultSimple(Simple simple) {
 		simple.setType(PropertyValueType.STRING);
 		simple.setMode(AccessType.READWRITE);
 		final Kind kind = PrfFactory.eINSTANCE.createKind();
-		kind.setType(PropertyConfigurationType.CONFIGURE);
+		kind.setType(PropertyConfigurationType.PROPERTY);
 		simple.getKind().add(kind);
 		final Action action = PrfFactory.eINSTANCE.createAction();
 		action.setType(ActionType.EXTERNAL);
 		simple.setAction(action);
-		return simple;
+	}
+
+	/**
+	 * Set default values for a new simple member of a struct property.
+	 * @param simple The simple to be modified
+	 */
+	private void configureDefaultSimpleInStruct(Simple simple) {
+		simple.setType(PropertyValueType.STRING);
 	}
 }

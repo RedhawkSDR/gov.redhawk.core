@@ -29,8 +29,8 @@ public enum Property {
 	SIMPLE, SIMPLE_SEQUENCE, STRUCT, STRUCT_SEQUENCE;
 
 	/**
-	 * 
-	 * @param property
+	 * Get an enumeration value for the type of a property.
+	 * @param property The property to examine
 	 * @return
 	 */
 	public static Property getProperty(final EObject property) {

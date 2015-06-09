@@ -13,12 +13,13 @@ package gov.redhawk.prf.ui.provider;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 
 import mil.jpeojtrs.sca.prf.AccessType;
 import mil.jpeojtrs.sca.prf.ConfigurationKind;
 import mil.jpeojtrs.sca.prf.PrfFactory;
 import mil.jpeojtrs.sca.prf.PrfPackage;
+import mil.jpeojtrs.sca.prf.PropertyValueType;
+import mil.jpeojtrs.sca.prf.Simple;
 import mil.jpeojtrs.sca.prf.Struct;
 import mil.jpeojtrs.sca.prf.StructPropertyConfigurationType;
 import mil.jpeojtrs.sca.prf.StructSequence;
@@ -40,38 +41,26 @@ public class PropertiesEditorStructSequenceItemProvider extends StructSequenceIt
 	}
 
 	/**
-	 * {@inheritDoc}
+	 * Produces the add {@link Command} for adding a new struct sequence property to an existing properties collection.
+	 * This code extends the parent class to ensure the new struct sequence has certain default values.
 	 */
 	@Override
 	protected Command createAddCommand(final EditingDomain domain, final EObject owner, final EStructuralFeature feature, final Collection< ? > collection,
-	        final int index) {
+		final int index) {
 		if (feature == PrfPackage.Literals.PROPERTIES__STRUCT_SEQUENCE) {
-			//Configure the default structsequence
-			final StructSequence sequence = (StructSequence) collection.toArray()[0];
-			sequence.setMode(AccessType.READWRITE);
-			final ConfigurationKind configurationKind = PrfFactory.eINSTANCE.createConfigurationKind();
-			configurationKind.setType(StructPropertyConfigurationType.CONFIGURE);
-			sequence.getConfigurationKind().clear();
-			sequence.getConfigurationKind().add(configurationKind);
-			final Struct struct = PrfFactory.eINSTANCE.createStruct();
-			sequence.setStruct(PropertiesEditorStructItemProvider.configureStructChild(struct));
-			return super.createAddCommand(domain, owner, feature, Collections.singleton(sequence), index);
+			for (Object obj : collection) {
+				final StructSequence sequence = (StructSequence) obj;
+				configureDefaultStructSequence(sequence);
+			}
 		}
 		return super.createAddCommand(domain, owner, feature, collection, index);
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	protected void collectNewChildDescriptors(final Collection<Object> newChildDescriptors, final Object object) {
 		// Disallow creating children from this provider
 	}
 
-	/**
-	 * 
-	 * {@inheritDoc}
-	 */
 	@Override
 	public Collection< ? extends EStructuralFeature> getChildrenFeatures(final Object object) {
 		if (childrenFeatures == null) {
@@ -79,5 +68,22 @@ public class PropertiesEditorStructSequenceItemProvider extends StructSequenceIt
 			childrenFeatures.add(PrfPackage.Literals.STRUCT_SEQUENCE__STRUCT);
 		}
 		return childrenFeatures;
+	}
+
+	/**
+	 * Set default values for a new struct sequence property.
+	 * @param structseq The struct sequence to be modified
+	 */
+	private void configureDefaultStructSequence(StructSequence structseq) {
+		structseq.setMode(AccessType.READWRITE);
+		final ConfigurationKind configurationKind = PrfFactory.eINSTANCE.createConfigurationKind();
+		configurationKind.setType(StructPropertyConfigurationType.PROPERTY);
+		structseq.getConfigurationKind().clear();
+		structseq.getConfigurationKind().add(configurationKind);
+		final Struct struct = PrfFactory.eINSTANCE.createStruct();
+		structseq.setStruct(struct);
+		final Simple simple = PrfFactory.eINSTANCE.createSimple();
+		simple.setType(PropertyValueType.STRING);
+		struct.getSimple().add(simple);
 	}
 }

@@ -33,8 +33,7 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 
 /**
- * The Class OsWizardPage.
- * @since 3.1
+ * @since 4.0
  */
 public class EnumerationWizardPage extends WizardPage {
 
@@ -61,9 +60,6 @@ public class EnumerationWizardPage extends WizardPage {
 		setPageComplete(false);
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public void dispose() {
 		super.dispose();
@@ -72,16 +68,10 @@ public class EnumerationWizardPage extends WizardPage {
 		this.adapterFactory.dispose();
 	}
 
-	/**
-	 * @return the enumeration
-	 */
 	public Enumeration getEnumeration() {
 		return this.enumeration;
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public void createControl(final Composite parent) {
 
@@ -123,10 +113,6 @@ public class EnumerationWizardPage extends WizardPage {
 		this.setControl(client);
 	}
 
-	/**
-	 * 
-	 * @param enumeration
-	 */
 	public void setEnumeration(final Enumeration enumeration) {
 		this.enumeration = EcoreUtil.copy(enumeration);
 		this.setTitle("Edit Enumeration");

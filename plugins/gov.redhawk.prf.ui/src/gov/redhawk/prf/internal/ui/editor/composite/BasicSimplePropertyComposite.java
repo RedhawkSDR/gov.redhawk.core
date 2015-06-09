@@ -99,6 +99,9 @@ public abstract class BasicSimplePropertyComposite extends AbstractPropertyCompo
 	private Combo typeModifier;
 	private Combo optionalCombo;
 
+	private boolean configExecParamShown;
+	private ViewerFilter configExecParamFilter;
+
 	public BasicSimplePropertyComposite(final Composite parent, final int style, final FormToolkit toolkit) {
 		super(parent, style, toolkit);
 		this.toolkit = toolkit;
@@ -173,21 +176,28 @@ public abstract class BasicSimplePropertyComposite extends AbstractPropertyCompo
 			@Override
 			public String getText(final Object element) {
 				if (element instanceof PropertyConfigurationType) {
-					final PropertyConfigurationType type = (PropertyConfigurationType) element;
-					if (type == PropertyConfigurationType.PROPERTY) {
+					switch ((PropertyConfigurationType) element) {
+					case PROPERTY:
 						return element.toString() + " (default)";
+					case CONFIGURE:
+					case EXECPARAM:
+						return element.toString() + " (deprecated)";
+					default:
+						break;
 					}
 				}
 				return (element == null) ? "" : element.toString();
 			}
 		});
-		viewer.addFilter(new ViewerFilter() {
+		// Filter "configure" and "execparam" by default
+		this.configExecParamShown = false;
+		this.configExecParamFilter = new ViewerFilter() {
 			@Override
 			public boolean select(Viewer viewer, Object parentElement, Object element) {
 				if (element instanceof PropertyConfigurationType) {
 					switch ((PropertyConfigurationType) element) {
-					case FACTORYPARAM:
-					case TEST:
+					case CONFIGURE:
+					case EXECPARAM:
 						return false;
 					default:
 						break;
@@ -195,9 +205,11 @@ public abstract class BasicSimplePropertyComposite extends AbstractPropertyCompo
 				}
 				return true;
 			}
-		});
+		};
+		viewer.addFilter(this.configExecParamFilter);
 		viewer.getControl().setLayoutData(BasicSimplePropertyComposite.FACTORY.create());
-		viewer.setInput(PropertyConfigurationType.values());
+		viewer.setInput(new Object[] { PropertyConfigurationType.PROPERTY, PropertyConfigurationType.ALLOCATION, PropertyConfigurationType.MESSAGE,
+			PropertyConfigurationType.CONFIGURE, PropertyConfigurationType.EXECPARAM });
 		assignTooltip(viewer.getControl(), HelpConstants.prf_properties_simple_kind);
 		this.kindViewer = viewer;
 		return this.kindViewer;
@@ -538,4 +550,19 @@ public abstract class BasicSimplePropertyComposite extends AbstractPropertyCompo
 		return this.optionalCombo;
 	}
 
+	/**
+	 * This method adds or removes a filter for "configure" and "execparam" options in the property kind drop-down.
+	 * Provides backwards-compatibility for REDHAWK project pre-2.0.
+	 * @param visible If "configure" and "execparam" should be shown
+	 */
+	public void showConfigureAndExecParam(boolean visible) {
+		if (visible != configExecParamShown) {
+			if (visible) {
+				this.kindViewer.removeFilter(configExecParamFilter);
+			} else {
+				this.kindViewer.addFilter(configExecParamFilter);
+			}
+			configExecParamShown = visible;
+		}
+	}
 }

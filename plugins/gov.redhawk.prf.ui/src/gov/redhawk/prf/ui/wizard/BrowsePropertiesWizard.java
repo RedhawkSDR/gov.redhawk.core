@@ -19,8 +19,7 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.jface.wizard.Wizard;
 
 /**
- * @since 3.1
- * 
+ * @since 4.0
  */
 public class BrowsePropertiesWizard extends Wizard {
 
@@ -35,26 +34,16 @@ public class BrowsePropertiesWizard extends Wizard {
 		this.setWindowTitle("Browse Properties");
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public void addPages() {
 		this.addPage(this.page);
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public boolean performFinish() {
 		return true;
 	}
 
-	/**
-	 * 
-	 * @return
-	 */
 	public List<EObject> getProperties() {
 		return this.page.getProperties();
 	}

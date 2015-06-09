@@ -12,6 +12,7 @@
 package gov.redhawk.ui.util;
 
 import gov.redhawk.ui.editor.ScaFormPage;
+import mil.jpeojtrs.sca.util.ScaFileSystemConstants;
 
 import org.eclipse.emf.ecore.resource.Resource;
 
@@ -39,7 +40,7 @@ public class SCAEditorUtil {
 	 */
 	public static boolean isEditableResource(ScaFormPage page, Resource resource) {
 		boolean retVal = false;
-		if (resource != null) {
+		if (resource != null && !ScaFileSystemConstants.SCHEME.equals(resource.getURI().scheme())) {
 			retVal = !page.getEditingDomain().isReadOnly(resource);
 		}
 		return retVal;

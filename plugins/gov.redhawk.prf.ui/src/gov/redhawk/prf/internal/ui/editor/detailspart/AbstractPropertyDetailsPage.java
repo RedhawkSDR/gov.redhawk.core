@@ -21,10 +21,15 @@ import gov.redhawk.ui.util.SCAEditorUtil;
 import java.util.ArrayList;
 import java.util.List;
 
+import mil.jpeojtrs.sca.prf.AbstractProperty;
+import mil.jpeojtrs.sca.prf.Properties;
+import mil.jpeojtrs.sca.prf.PropertyConfigurationType;
+
 import org.eclipse.core.databinding.Binding;
 import org.eclipse.core.databinding.DataBindingContext;
 import org.eclipse.emf.databinding.edit.EMFEditObservables;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.util.FeatureMap.Entry;
 import org.eclipse.emf.edit.domain.EditingDomain;
 import org.eclipse.jface.databinding.swt.WidgetProperties;
 import org.eclipse.jface.databinding.viewers.ViewersObservables;
@@ -122,5 +127,28 @@ public abstract class AbstractPropertyDetailsPage extends ScaDetails {
 
 	protected AbstractPropertyComposite getComposite() {
 		return this.composite;
+	}
+
+	/**
+	 * Determine if <b>any</b> properties in the PRF are "configure" or "execparam".
+	 * @param input The input (the code will find the {@link Properties} object)
+	 * @return
+	 */
+	protected boolean hasConfigureOrExecParamProperties(EObject input) {
+		EObject container = input.eContainer();
+		while (container != null && !(container instanceof Properties)) {
+			container = container.eContainer();
+		}
+		if (container == null) {
+			return false;
+		}
+		Properties properties = (Properties) container;
+		for (Entry propertyEntry : properties.getProperties()) {
+			AbstractProperty abstractProperty = (AbstractProperty) propertyEntry.getValue();
+			if (abstractProperty.isKind(PropertyConfigurationType.CONFIGURE, PropertyConfigurationType.EXECPARAM)) {
+				return true;
+			}
+		}
+		return false;
 	}
 }

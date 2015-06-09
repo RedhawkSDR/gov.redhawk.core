@@ -42,7 +42,7 @@ import org.eclipse.ui.dialogs.FilteredTree;
 
 /**
  * This {@link WizardPage} provides a way to browse known properties.
- * @since 3.1
+ * @since 4.0
  */
 public class BrowsePropertiesWizardPage extends WizardPage {
 
@@ -60,10 +60,6 @@ public class BrowsePropertiesWizardPage extends WizardPage {
 
 	private DataBindingContext context = new EMFDataBindingContext();
 
-	/**
-	 * 
-	 * @param descriptors
-	 */
 	public BrowsePropertiesWizardPage(final List<IPropertiesProviderDescriptor> descriptors) {
 		super(BrowsePropertiesWizardPage.PAGE_NAME, "Browse Available Properties", null);
 		this.descriptors = descriptors;
@@ -71,26 +67,16 @@ public class BrowsePropertiesWizardPage extends WizardPage {
 		setPageComplete(false);
 	}
 
-	/**
-	 * 
-	 * @return
-	 */
 	public List<EObject> getProperties() {
 		return this.properties;
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public void dispose() {
 		this.context.dispose();
 		super.dispose();
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public void createControl(final Composite parent) {
 
@@ -103,9 +89,6 @@ public class BrowsePropertiesWizardPage extends WizardPage {
 		this.setControl(client);
 	}
 
-	/**
-	 * 
-	 */
 	private Control createPropertyTree(final Composite parent) {
 		final Group treeGroup = new Group(parent, SWT.NULL);
 		treeGroup.setText("Properties");

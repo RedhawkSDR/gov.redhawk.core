@@ -12,7 +12,6 @@
 package gov.redhawk.prf.ui.provider;
 
 import java.util.Collection;
-import java.util.Collections;
 
 import mil.jpeojtrs.sca.prf.AccessType;
 import mil.jpeojtrs.sca.prf.ConfigurationKind;
@@ -42,18 +41,18 @@ public class PropertiesEditorStructItemProvider extends StructItemProvider {
 	}
 
 	/**
-	 * Create a simple with default values and add it, or add the struct depending on which feature we get.
-	 * 
-	 * {@inheritDoc}
+	 * Produces the add {@link Command} for adding a new struct property to an existing properties collection. It also
+	 * handles adding a simple or simple sequence to a struct via delegation. This code extends the parent class to
+	 * ensure the new struct has certain default values.
 	 */
 	@Override
 	protected Command createAddCommand(final EditingDomain domain, final EObject owner, final EStructuralFeature feature, final Collection< ? > collection,
 	        final int index) {
 		if (feature == PrfPackage.Literals.PROPERTIES__STRUCT) {
-			//Add the struct
-			final Struct struct = (Struct) collection.toArray()[0];
-			PropertiesEditorStructItemProvider.configureDefaultStruct(struct);
-			return super.createAddCommand(domain, owner, feature, Collections.singleton(struct), index);
+			for (final Object object : collection) {
+				final Struct struct = (Struct) object;
+				configureDefaultStruct(struct);
+			}
 		}
 		return super.createAddCommand(domain, owner, feature, collection, index);
 	}
@@ -80,33 +79,25 @@ public class PropertiesEditorStructItemProvider extends StructItemProvider {
 	@Override
 	protected Command createSetCommand(final EditingDomain domain, final EObject owner, final EStructuralFeature feature, final Object value, final int index) {
 		if (feature == PrfPackage.Literals.STRUCT_SEQUENCE__STRUCT) {
-			return super.createSetCommand(domain, owner, feature, PropertiesEditorStructItemProvider.configureDefaultStruct((Struct) value), index);
+			Struct struct = (Struct) value;
+			configureDefaultStruct(struct);
+			return super.createSetCommand(domain, owner, feature, struct, index);
 		}
 		return super.createSetCommand(domain, owner, feature, value, index);
 	}
 
 	/**
-	 * @since 2.0
+	 * Set default values for a new struct property, including adding a new simple member.
+	 * @param struct The struct to be modified
 	 */
-	protected static Struct configureDefaultStruct(final Struct struct) {
+	private static void configureDefaultStruct(final Struct struct) {
 		struct.setMode(AccessType.READWRITE);
 		final ConfigurationKind configurationKind = PrfFactory.eINSTANCE.createConfigurationKind();
-		configurationKind.setType(StructPropertyConfigurationType.CONFIGURE);
+		configurationKind.setType(StructPropertyConfigurationType.PROPERTY);
 		struct.getConfigurationKind().clear();
 		struct.getConfigurationKind().add(configurationKind);
 		final Simple simple = PrfFactory.eINSTANCE.createSimple();
 		simple.setType(PropertyValueType.STRING);
 		struct.getSimple().add(simple);
-		return struct;
-	}
-
-	/**
-	 * @since 2.0
-	 */
-	protected static Struct configureStructChild(final Struct struct) {
-		final Simple simple = PrfFactory.eINSTANCE.createSimple();
-		simple.setType(PropertyValueType.STRING);
-		struct.getSimple().add(simple);
-		return struct;
 	}
 }

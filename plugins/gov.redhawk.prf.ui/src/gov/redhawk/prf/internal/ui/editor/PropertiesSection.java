@@ -71,9 +71,6 @@ import org.eclipse.ui.dialogs.PatternFilter;
 import org.eclipse.ui.forms.widgets.FormToolkit;
 import org.eclipse.ui.forms.widgets.Section;
 
-/**
- * 
- */
 public class PropertiesSection extends TreeSection implements IPropertyChangeListener {
 
 	private static final int BUTTON_REMOVE = 5;
@@ -97,21 +94,12 @@ public class PropertiesSection extends TreeSection implements IPropertyChangeLis
 	private Integer lastIndex = 0;
 	private PropertiesBlock block;
 
-	/**
-	 * The Constructor.
-	 * 
-	 * @param page the page
-	 * @param parent the parent
-	 */
 	public PropertiesSection(PropertiesBlock block, final Composite parent) {
 		super(block.getPage(), parent, Section.DESCRIPTION, new String[] { "Add Simple", "Add Sequence", "Add Struct", "Add StructSeq", "Browse...", "Remove" });
 		this.fHandleDefaultButton = false;
 		this.block = block;
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	protected void buttonSelected(final int index) {
 		final List<Object> selection = Arrays.asList(((IStructuredSelection) getViewerSelection()).toArray());
@@ -121,7 +109,7 @@ public class PropertiesSection extends TreeSection implements IPropertyChangeLis
 			block.getDetailsPart().setFocus();
 			break;
 		case BUTTON_ADD_SIMPLE_SEQUENCE:
-			//Always add a simplesequence to the root properties
+			// Always add a simplesequence to the root properties
 			PropertyHandler.addSimpleSequence(getAdapterFactory(), getEditingDomain(), getProperties());
 			block.getDetailsPart().setFocus();
 			break;
@@ -130,7 +118,7 @@ public class PropertiesSection extends TreeSection implements IPropertyChangeLis
 			block.getDetailsPart().setFocus();
 			break;
 		case BUTTON_ADD_STRUCT_SEQUENCE:
-			//Always add a structsequence to the root properties
+			// Always add a structsequence to the root properties
 			PropertyHandler.addStructSequence(getAdapterFactory(), getEditingDomain(), getProperties());
 			block.getDetailsPart().setFocus();
 			break;
@@ -148,12 +136,8 @@ public class PropertiesSection extends TreeSection implements IPropertyChangeLis
 		}
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	protected void createClient(final Section section, final FormToolkit toolkit) {
-
 		final Composite container = createClientContainer(section, 2, toolkit);
 		final TreePart treePart = getTreePart();
 		createViewerPartControl(container, SWT.MULTI, 2, toolkit);
@@ -184,12 +168,6 @@ public class PropertiesSection extends TreeSection implements IPropertyChangeLis
 		refresh(this.prfResource);
 	}
 
-	/**
-	 * Creates the section toolbar.
-	 * 
-	 * @param section the section
-	 * @param toolkit the toolkit
-	 */
 	private void createSectionToolbar(final Section section, final FormToolkit toolkit) {
 		final ToolBarManager toolBarManager = new ToolBarManager(SWT.FLAT);
 		final ToolBar toolbar = toolBarManager.createControl(section);
@@ -213,9 +191,6 @@ public class PropertiesSection extends TreeSection implements IPropertyChangeLis
 		section.setTextClient(toolbar);
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	protected TreeViewer createTreeViewer(final Composite parent, final int style) {
 		this.fFilteredTree = new FormFilteredTree(parent, style, new PatternFilter());
@@ -223,9 +198,6 @@ public class PropertiesSection extends TreeSection implements IPropertyChangeLis
 		return this.fFilteredTree.getViewer();
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public void dispose() {
 		// Explicitly call the dispose method on the extensions tree
@@ -236,9 +208,6 @@ public class PropertiesSection extends TreeSection implements IPropertyChangeLis
 		super.dispose();
 	}
 
-	/**
-	 * Fire selection.
-	 */
 	protected void fireSelection() {
 		final ISelection selection = this.fExtensionTree.getSelection();
 		if (selection.isEmpty()) {
@@ -248,11 +217,6 @@ public class PropertiesSection extends TreeSection implements IPropertyChangeLis
 		}
 	}
 
-	/**
-	 * Gets the adapter factory.
-	 * 
-	 * @return the adapter factory
-	 */
 	private AdapterFactory getAdapterFactory() {
 		if (this.adapterFactory == null) {
 			// Create an adapter factory that yields item providers.
@@ -266,18 +230,10 @@ public class PropertiesSection extends TreeSection implements IPropertyChangeLis
 		return this.adapterFactory;
 	}
 
-	/**
-	 * Gets the editing domain.
-	 * 
-	 * @return the editing domain
-	 */
 	private EditingDomain getEditingDomain() {
 		return getPage().getEditor().getEditingDomain();
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public PropertiesFormPage getPage() {
 		return (PropertiesFormPage) super.getPage();
@@ -323,11 +279,6 @@ public class PropertiesSection extends TreeSection implements IPropertyChangeLis
 		return 0;
 	}
 
-	/**
-	 * Initialize.
-	 * 
-	 * @param model the model
-	 */
 	private void initialize() {
 		selectElement();
 		final TreePart treePart = getTreePart();
@@ -338,9 +289,6 @@ public class PropertiesSection extends TreeSection implements IPropertyChangeLis
 		treePart.setButtonEnabled(PropertiesSection.BUTTON_REMOVE, false);
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public void propertyChange(final PropertyChangeEvent event) {
 		if (this.fSortAction.equals(event.getSource()) && IAction.RESULT.equals(event.getProperty())) {
@@ -350,9 +298,6 @@ public class PropertiesSection extends TreeSection implements IPropertyChangeLis
 		}
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public void refresh(final Resource resource) {
 		this.prfResource = resource;
@@ -394,12 +339,8 @@ public class PropertiesSection extends TreeSection implements IPropertyChangeLis
 		this.fExtensionTree.setSelection(new StructuredSelection(item.getData()));
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	protected void selectionChanged(final IStructuredSelection selection) {
-
 		if (selection.isEmpty()) {
 			selectElement();
 		} else {
@@ -419,9 +360,6 @@ public class PropertiesSection extends TreeSection implements IPropertyChangeLis
 		this.getTreePart().setButtonEnabled(PropertiesSection.BUTTON_REMOVE, this.editable);
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public boolean setFormInput(final Object object) {
 		if (object != null) {
@@ -432,11 +370,6 @@ public class PropertiesSection extends TreeSection implements IPropertyChangeLis
 		}
 	}
 
-	/**
-	 * Update buttons.
-	 * 
-	 * @param item the item
-	 */
 	private void updateButtons(final Object item) {
 		final boolean sorted = this.fSortAction != null && this.fSortAction.isChecked();
 		if (sorted) {
