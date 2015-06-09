@@ -61,7 +61,7 @@ public class PortDetailsPropertySection extends AbstractPropertySection {
 		 formLayoutData.left   = new FormAttachment(0,    ITabbedPropertyConstants.HSPACE); // start at left of parent +HSPACE pixels
 		 formLayoutData.right  = new FormAttachment(100, -ITabbedPropertyConstants.HSPACE); // fill 100% to width of parent -HSPACE pixels
 		 formLayoutData.bottom = new FormAttachment(100, -ITabbedPropertyConstants.VMARGIN);
-		 this.descriptionText = getWidgetFactory().createText(composite, "", SWT.MULTI|SWT.WRAP);
+		 this.descriptionText = getWidgetFactory().createText(composite, "", SWT.MULTI | SWT.WRAP);
 		 this.descriptionText.setLayoutData(formLayoutData);
 	}
 
