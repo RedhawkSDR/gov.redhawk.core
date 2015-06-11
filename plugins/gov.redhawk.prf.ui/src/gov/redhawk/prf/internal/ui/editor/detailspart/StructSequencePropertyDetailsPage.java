@@ -130,7 +130,7 @@ public class StructSequencePropertyDetailsPage extends BasicStructPropertyDetail
 				boolean remove = !selection.isEmpty();
 				if (remove) {
 					for (final Object obj : getSelection()) {
-						if (obj instanceof SimpleRef) {
+						if (!(obj instanceof StructValue)) {
 							remove = false;
 							break;
 						}
