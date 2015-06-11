@@ -16,10 +16,8 @@ import gov.redhawk.prf.ui.editor.page.PropertiesFormPage;
 import gov.redhawk.ui.editor.SCAFormEditor;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
-import mil.jpeojtrs.sca.prf.AbstractProperty;
 import mil.jpeojtrs.sca.prf.Properties;
 import mil.jpeojtrs.sca.prf.provider.PrfItemProviderAdapterFactory;
 
