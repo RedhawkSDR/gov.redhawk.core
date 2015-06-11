@@ -10,10 +10,13 @@
  *******************************************************************************/
 package gov.redhawk.sca.ui.properties;
 
-import gov.redhawk.model.sca.ScaPort;
 import mil.jpeojtrs.sca.scd.AbstractPort;
+import mil.jpeojtrs.sca.scd.PortTypeContainer;
+import mil.jpeojtrs.sca.scd.Provides;
+import mil.jpeojtrs.sca.scd.Uses;
 
 import org.eclipse.core.runtime.Platform;
+import org.eclipse.emf.common.util.EList;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.swt.SWT;
@@ -23,6 +26,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.IWorkbenchPart;
+import org.eclipse.ui.forms.widgets.FormToolkit;
 import org.eclipse.ui.views.properties.tabbed.AbstractPropertySection;
 import org.eclipse.ui.views.properties.tabbed.ITabbedPropertyConstants;
 import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetPage;
@@ -32,7 +36,8 @@ import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetPage;
  */
 public class PortDetailsPropertySection extends AbstractPropertySection {
 
-	private ScaPort<? extends AbstractPort, ?> scaPort;
+	private AbstractPort port;
+	private Text infoText;
 	private Text descriptionText;
 
 	/**
@@ -50,49 +55,84 @@ public class PortDetailsPropertySection extends AbstractPropertySection {
 	public void createControls(Composite parent, TabbedPropertySheetPage aTabbedPropertySheetPage) {
 		super.createControls(parent, aTabbedPropertySheetPage);
 		 Composite composite = getWidgetFactory().createFlatFormComposite(parent);
-		 FormData formLayoutData;
+		 FormData layoutData;
+		 Label label;
 
-		 formLayoutData = new FormData();
-		 Label label = getWidgetFactory().createLabel(composite, "Description:");
-		 label.setLayoutData(formLayoutData);
+		 // Port info: <uses/provides> interface / IDL (repID)
+		 layoutData = new FormData();
+		 layoutData.left  = new FormAttachment(0);
+		 layoutData.right = new FormAttachment(100); // fill 100% to width of parent -HSPACE pixels
+		 this.infoText = getWidgetFactory().createText(composite, "", SWT.SINGLE | SWT.READ_ONLY);
+		 this.infoText.setData(FormToolkit.KEY_DRAW_BORDER, Boolean.FALSE);
+		 this.infoText.setLayoutData(layoutData);
 
-		 formLayoutData = new FormData();
-		 formLayoutData.top    = new FormAttachment(label, 0, SWT.BOTTOM);                  // put below label
-		 formLayoutData.left   = new FormAttachment(0,    ITabbedPropertyConstants.HSPACE); // start at left of parent +HSPACE pixels
-		 formLayoutData.right  = new FormAttachment(100, -ITabbedPropertyConstants.HSPACE); // fill 100% to width of parent -HSPACE pixels
-		 formLayoutData.bottom = new FormAttachment(100, -ITabbedPropertyConstants.VMARGIN);
+		 // Port Description
+		 layoutData = new FormData();
+		 layoutData.left = new FormAttachment(0);
+		 layoutData.top  = new FormAttachment(this.infoText, 0, SWT.BOTTOM);  // put below Port interface/IDL info
+		 label = getWidgetFactory().createLabel(composite, "Description:");
+		 label.setLayoutData(layoutData);
+
+		 layoutData = new FormData();
+		 layoutData.top    = new FormAttachment(label, 0, SWT.BOTTOM);                  // put below label
+		 layoutData.left   = new FormAttachment(0,    ITabbedPropertyConstants.HSPACE); // start at left of parent +HSPACE pixels
+		 layoutData.right  = new FormAttachment(100, -ITabbedPropertyConstants.HSPACE); // fill 100% to width of parent -HSPACE pixels
+		 layoutData.bottom = new FormAttachment(100, -ITabbedPropertyConstants.VMARGIN);
 		 this.descriptionText = getWidgetFactory().createText(composite, "", SWT.MULTI | SWT.WRAP);
-		 this.descriptionText.setLayoutData(formLayoutData);
+		 this.descriptionText.setLayoutData(layoutData);
 	}
 
 	@Override
 	public void setInput(IWorkbenchPart part, ISelection selection) {
 		super.setInput(part, selection);
-		ScaPort<? extends AbstractPort, ?> newScaPort = null;
+		AbstractPort newPort = null;
 		if (selection instanceof IStructuredSelection) {
 			final IStructuredSelection ss = (IStructuredSelection) selection;
 			final Object obj = ss.getFirstElement();
-			final Object adapter = Platform.getAdapterManager().getAdapter(obj, ScaPort.class);
-			if (adapter instanceof ScaPort< ? , ? >) {
-				newScaPort = (ScaPort< ? , ? >) adapter;
+			Object adapter = Platform.getAdapterManager().getAdapter(obj, AbstractPort.class);
+			if (adapter instanceof AbstractPort) {
+				newPort = (AbstractPort) adapter;
 			}
 		}
 
-		this.scaPort = newScaPort;
+		this.port = newPort;
 	}
 
 	@Override
 	public void refresh() {
 		super.refresh();
-		if (this.scaPort != null) {
-			AbstractPort port = this.scaPort.getProfileObj();
-			if (port != null) {
-				String str = port.getDescription();
-				if (str == null) { // description is an optional field
-					str = "";      // but Text.setText() input has to non-null, so set to empty string
-				}
-				this.descriptionText.setText(str);
+		final AbstractPort port = this.port;
+		if (port != null) {
+			// Port Info: input/output direction and IDL
+			StringBuilder sb = new StringBuilder("Direction: ");
+			if (port instanceof Uses) {
+				sb.append("out <uses> ");            // is an output Port
 			}
+			if (port instanceof Provides) {
+				sb.append("in <provides> ");         // is an input Port
+			}
+			sb.append(' ').append(port.getRepID());  // IDL/RepID
+
+			// Port Type(s): data, control, and/or responses
+			EList<PortTypeContainer> elist = port.getPortType();
+			if (elist != null && !elist.isEmpty()) {
+				sb.append("  Type: ");
+				for (int ii=0; ii<elist.size(); ii++) {
+					PortTypeContainer portTypeContainer = elist.get(ii);
+					if (ii > 0) {
+						sb.append(", ");
+					}
+					sb.append(portTypeContainer.getType());
+				}
+			}
+			this.infoText.setText(sb.toString());
+
+			// Port Description
+			String str = port.getDescription();
+			if (str == null) { // description is an optional field
+				str = "";      // but Text.setText() input has to non-null, so set to empty string
+			}
+			this.descriptionText.setText(str);
 		}
 	}
 

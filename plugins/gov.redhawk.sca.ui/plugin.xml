@@ -404,6 +404,9 @@
             <input
                   type="gov.redhawk.model.sca.ScaPort">
             </input>
+            <input
+                  type="mil.jpeojtrs.sca.scd.AbstractPort">
+            </input>
          </propertySection>
          <propertySection
                class="org.eclipse.ui.views.properties.tabbed.AdvancedPropertySection"
