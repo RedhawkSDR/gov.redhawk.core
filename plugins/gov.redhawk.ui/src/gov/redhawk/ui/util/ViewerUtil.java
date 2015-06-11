@@ -17,10 +17,10 @@ import java.util.List;
 
 import org.eclipse.emf.edit.domain.AdapterFactoryEditingDomain;
 import org.eclipse.jface.viewers.ISelection;
+import org.eclipse.jface.viewers.ITreeContentProvider;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.jface.viewers.Viewer;
-import org.eclipse.swt.widgets.TreeItem;
 
 /**
  * @since 7.1
@@ -58,8 +58,8 @@ public class ViewerUtil {
 	}
 
 	/**
-	 * Returns the equivalent selection in a tree viewer for the given items. If an item cannot be found in the viewer,
-	 * it is not included in the returned selection.
+	 * Returns the equivalent selection in a tree viewer for the given items. If an item cannot be found via the viewer's,
+	 * content provider, it is not included in the returned selection.
 	 *
 	 * @param viewer the tree viewer
 	 * @param items the items to select
@@ -67,8 +67,11 @@ public class ViewerUtil {
 	 */
 	public static ISelection itemsToSelection(final TreeViewer viewer, final Collection< ? > items) {
 		final List<Object> targets = new ArrayList<Object>();
+		// A TreeViewer's content provider always has to be an ITreeContentProvider
+		final ITreeContentProvider provider = (ITreeContentProvider)viewer.getContentProvider();
+		final Object input = viewer.getInput();
 		for (final Object object : items) {
-			final Object target = ViewerUtil.findItemInTree(viewer.getTree().getItems(), object);
+			final Object target = ViewerUtil.findItemInProvider(provider, input, object);
 			if (target != null) {
 				targets.add(target);
 			}
@@ -76,20 +79,20 @@ public class ViewerUtil {
 		return new StructuredSelection(targets.toArray());
 	}
 
-	private static Object findItemInTree(final TreeItem[] items, Object object) {
-		for (final TreeItem item : items) {
-			if (ViewerUtil.itemsEqual(item.getData(), object)) {
-				return item.getData();
-			}
-			Object target = ViewerUtil.findItemInTree(item.getItems(), object);
+	private static Object findItemInProvider(ITreeContentProvider provider, Object input, Object object) {
+		if (ViewerUtil.checkEquivalent(input,  object)) {
+			return input;
+		}
+		for (final Object child : provider.getChildren(input)) {
+			final Object target = findItemInProvider(provider, child, object);
 			if (target != null) {
 				return target;
 			}
 		}
 		return null;
 	}
-
-	private static boolean itemsEqual(Object first, Object second) {
+	
+	private static boolean checkEquivalent(Object first, Object second) {
 		if (first == null) {
 			return (second == null);
 		} else {
