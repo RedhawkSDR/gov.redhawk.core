@@ -16,6 +16,7 @@ import gov.redhawk.eclipsecorba.library.util.RefreshIdlLibraryJob;
 import gov.redhawk.internal.ui.ScaIdeConstants;
 import gov.redhawk.internal.ui.editor.validation.ValidatingEContentAdapter;
 import gov.redhawk.ui.RedhawkUiActivator;
+import gov.redhawk.ui.util.ViewerUtil;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -1932,8 +1933,12 @@ public abstract class SCAFormEditor extends FormEditor implements IEditingDomain
 				public void run() {
 					// Try to select the items in the current content viewer of the editor.
 					//
-					if (getViewer() != null) {
-						getViewer().setSelection(new StructuredSelection(theSelection.toArray()), true);
+					final Viewer viewer = getViewer();
+					if (viewer != null) {
+						final ISelection selection = ViewerUtil.itemsToSelection(viewer, theSelection);
+						if (!selection.isEmpty()) {
+							viewer.setSelection(selection, true);
+						}
 					}
 				}
 			};
