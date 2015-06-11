@@ -975,11 +975,6 @@ public class ScaWaveformImpl extends ScaPropertyContainerImpl<Application, Softw
 		// BEGIN GENERATED CODE
 	}
 
-	@Deprecated
-	protected Command createMergeComponentsCommand(final String assemCtrlId, final ComponentType[] compTypes, final IStatus status) {
-		return createMergeComponentsCommand(compTypes, status);
-	}
-
 	/**
 	 * @since 15.0
 	 */
