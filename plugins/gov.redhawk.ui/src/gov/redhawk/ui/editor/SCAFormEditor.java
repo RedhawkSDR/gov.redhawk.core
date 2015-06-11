@@ -1926,7 +1926,7 @@ public abstract class SCAFormEditor extends FormEditor implements IEditingDomain
 	public void setSelectionToViewer(final Collection< ? > collection) {
 		// Make sure it's okay.
 		//
-		if (collection != null && !collection.isEmpty() && shouldUpdateSelection(collection)) {
+		if (collection != null && !collection.isEmpty()) {
 			final Collection< ? > theSelection = collection;
 			final Runnable runnable = new Runnable() {
 				@Override
@@ -2037,12 +2037,4 @@ public abstract class SCAFormEditor extends FormEditor implements IEditingDomain
 		return resourceToDocumentMap;
 	}
 
-	/**
-	 * @since 7.1
-	 */
-	protected boolean shouldUpdateSelection(Collection< ? > selection) {
-		return true;
-	}
-	
-	
 }

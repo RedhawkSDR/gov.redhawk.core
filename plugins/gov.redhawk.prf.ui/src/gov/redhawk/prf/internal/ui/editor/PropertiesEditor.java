@@ -176,14 +176,4 @@ public class PropertiesEditor extends SCAFormEditor {
 		return getMainResource() == resource && super.isPersisted(resource);
 	}
 
-	/**
-	 * The properties editor should only set AbstractProperty selections to the viewer.
-	 */
-	@Override
-	protected boolean shouldUpdateSelection(final Collection< ? > collection) {
-		if (!collection.isEmpty() && (collection.toArray()[0] instanceof AbstractProperty)) {
-			return true;
-		}
-		return false;
-	}
 }
