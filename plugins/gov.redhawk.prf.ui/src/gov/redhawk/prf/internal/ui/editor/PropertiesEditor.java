@@ -13,13 +13,13 @@ package gov.redhawk.prf.internal.ui.editor;
 
 import gov.redhawk.prf.ui.PrfUiPlugin;
 import gov.redhawk.prf.ui.editor.page.PropertiesFormPage;
+import gov.redhawk.prf.ui.provider.PropertiesEditorPrfItemProviderAdapterFactory;
 import gov.redhawk.ui.editor.SCAFormEditor;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import mil.jpeojtrs.sca.prf.Properties;
-import mil.jpeojtrs.sca.prf.provider.PrfItemProviderAdapterFactory;
 
 import org.eclipse.core.resources.IMarker;
 import org.eclipse.core.runtime.CoreException;
@@ -126,7 +126,7 @@ public class PropertiesEditor extends SCAFormEditor {
 	 */
 	@Override
 	protected AdapterFactory getSpecificAdapterFactory() {
-		return new PrfItemProviderAdapterFactory();
+		return new PropertiesEditorPrfItemProviderAdapterFactory();
 	}
 
 	/**
