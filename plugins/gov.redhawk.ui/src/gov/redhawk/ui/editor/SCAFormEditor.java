@@ -80,7 +80,6 @@ import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.EValidator;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
-import org.eclipse.emf.ecore.util.EContentAdapter;
 import org.eclipse.emf.ecore.xmi.XMLResource;
 import org.eclipse.emf.edit.domain.AdapterFactoryEditingDomain;
 import org.eclipse.emf.edit.domain.EditingDomain;
@@ -1793,8 +1792,8 @@ public abstract class SCAFormEditor extends FormEditor implements IEditingDomain
 					updateAllDocs();
 				} else {
 					for (final Object obj : objects) {
-						if (obj instanceof EObject) {
-							final Resource resource = ((EObject) obj).eResource();
+						final Resource resource = getResourceForObject(obj);
+						if (resource != null) {
 							updateDocument(resource);
 						}
 					}
@@ -1803,6 +1802,14 @@ public abstract class SCAFormEditor extends FormEditor implements IEditingDomain
 				updateAllDocs();
 			}
 		}
+	}
+
+	private Resource getResourceForObject(Object object) {
+		object = AdapterFactoryEditingDomain.unwrap(object);
+		if (object instanceof EObject) {
+			return ((EObject) object).eResource();
+		}
+		return null;
 	}
 
 	private void updateAllDocs() {
