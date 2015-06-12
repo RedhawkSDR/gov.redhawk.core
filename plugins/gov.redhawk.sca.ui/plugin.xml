@@ -404,6 +404,9 @@
             <input
                   type="gov.redhawk.model.sca.ScaPort">
             </input>
+            <input
+                  type="mil.jpeojtrs.sca.scd.AbstractPort">
+            </input>
          </propertySection>
          <propertySection
                class="org.eclipse.ui.views.properties.tabbed.AdvancedPropertySection"
@@ -461,12 +464,6 @@
             defaultHandler="gov.redhawk.sca.internal.ui.handlers.NewDomainHandler"
             id="gov.redhawk.ui.command.new_domain"
             name="%command.name.5">
-      </command>
-      <command
-            categoryId="gov.redhawk.ui.commands.category.sca"
-            defaultHandler="gov.redhawk.sca.internal.ui.handlers.InitHandler"
-            id="gov.redhawk.ui.command.resource.initialize"
-            name="Initialize">
       </command>
    </extension>
    <extension
