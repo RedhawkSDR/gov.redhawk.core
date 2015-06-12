@@ -553,15 +553,6 @@ public abstract class SCAFormEditor extends FormEditor implements IEditingDomain
 
 		});
 
-		domain.getResourceSet().eAdapters().add(new EContentAdapter() {
-			@Override
-			public void notifyChanged(Notification notification) {
-				selfAdapt(notification);
-
-				super.notifyChanged(notification);
-			}
-		});
-
 		// Add a listener to set the most recent command's affected objects to
 		// be the selection of the viewer with focus.
 		//
