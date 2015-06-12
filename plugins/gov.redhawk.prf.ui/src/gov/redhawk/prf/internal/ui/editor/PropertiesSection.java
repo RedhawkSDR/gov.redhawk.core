@@ -89,9 +89,7 @@ public class PropertiesSection extends TreeSection implements IPropertyChangeLis
 	private ComposedAdapterFactory adapterFactory;
 	private Resource prfResource;
 	private boolean editable;
-	private boolean deleteTriggered = false;
 	private Properties properties;
-	private Integer lastIndex = 0;
 	private PropertiesBlock block;
 
 	public PropertiesSection(PropertiesBlock block, final Composite parent) {
@@ -129,7 +127,6 @@ public class PropertiesSection extends TreeSection implements IPropertyChangeLis
 			EditingDomain editingDomain = getEditingDomain();
 			Command remove = RemoveCommand.create(editingDomain, selection);
 			editingDomain.getCommandStack().execute(remove);
-			this.deleteTriggered = true;
 			break;
 		default:
 			break;
@@ -261,24 +258,6 @@ public class PropertiesSection extends TreeSection implements IPropertyChangeLis
 		}
 	}
 
-	private int indexOf(final Object obj) {
-		final Tree tree = this.fExtensionTree.getTree();
-		final List<TreeItem> treeList = Arrays.asList(tree.getItems());
-		if (treeList.isEmpty()) {
-			return 0;
-		} else {
-			int index = 0;
-			for (final TreeItem item : treeList) {
-				if (item.getData().equals(obj)) {
-					return index;
-				}
-				index++;
-			}
-		}
-
-		return 0;
-	}
-
 	private void initialize() {
 		selectElement();
 		final TreePart treePart = getTreePart();
@@ -319,22 +298,7 @@ public class PropertiesSection extends TreeSection implements IPropertyChangeLis
 		if (items.length == 0) {
 			return;
 		}
-
-		TreeItem item = null;
-
-		int selectIndex = this.lastIndex;
-		if (selectIndex > 0) {
-			if (this.deleteTriggered) {
-				selectIndex--;
-				this.deleteTriggered = false;
-			}
-		} else {
-			selectIndex = 0;
-		}
-		if (selectIndex >= items.length) {
-			selectIndex = items.length - 1;
-		}
-		item = items[selectIndex];
+		TreeItem item = items[0];
 
 		this.fExtensionTree.setSelection(new StructuredSelection(item.getData()));
 	}
@@ -346,7 +310,6 @@ public class PropertiesSection extends TreeSection implements IPropertyChangeLis
 		} else {
 			getPage().setSelection(selection);
 			updateButtons(selection);
-			this.lastIndex = indexOf(selection.getFirstElement());
 		}
 	}
 
