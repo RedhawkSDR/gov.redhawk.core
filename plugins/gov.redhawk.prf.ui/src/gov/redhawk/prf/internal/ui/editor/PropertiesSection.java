@@ -86,7 +86,6 @@ public class PropertiesSection extends TreeSection implements IPropertyChangeLis
 
 	private SortAction fSortAction;
 
-	private ComposedAdapterFactory adapterFactory;
 	private Resource prfResource;
 	private boolean editable;
 	private Properties properties;
@@ -201,7 +200,6 @@ public class PropertiesSection extends TreeSection implements IPropertyChangeLis
 		if (this.fFilteredTree != null) {
 			this.fFilteredTree.dispose();
 		}
-		this.adapterFactory.dispose();
 		super.dispose();
 	}
 
@@ -215,16 +213,7 @@ public class PropertiesSection extends TreeSection implements IPropertyChangeLis
 	}
 
 	private AdapterFactory getAdapterFactory() {
-		if (this.adapterFactory == null) {
-			// Create an adapter factory that yields item providers.
-			//
-			this.adapterFactory = new ComposedAdapterFactory();
-			this.adapterFactory.addAdapterFactory(new PropertiesEditorPrfItemProviderAdapterFactory());
-			this.adapterFactory.addAdapterFactory(new ResourceItemProviderAdapterFactory());
-			this.adapterFactory.addAdapterFactory(new EcoreItemProviderAdapterFactory());
-			this.adapterFactory.addAdapterFactory(new ReflectiveItemProviderAdapterFactory());
-		}
-		return this.adapterFactory;
+		return getPage().getEditor().getAdapterFactory();
 	}
 
 	private EditingDomain getEditingDomain() {
