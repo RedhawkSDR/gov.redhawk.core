@@ -430,15 +430,17 @@ public interface ScaWaveform extends ScaPropertyContainer<Application, SoftwareA
 
 	/**
 	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
 	 * 
+	 * @deprecated Use {@link #fetchComponents(IProgressMonitor, RefreshDepth)}
+	 * @since 14.0
+	 *        <!-- end-user-doc -->
 	 * @model monitorDataType="gov.redhawk.model.sca.IProgressMonitor"
 	 * @generated
 	 */
 	EList<ScaComponent> fetchComponents(IProgressMonitor monitor);
 
 	/**
-	 * @since 19.1
+	 * @since 20.0
 	 */
 	EList<ScaComponent> fetchComponents(IProgressMonitor monitor, RefreshDepth depth);
 

@@ -291,16 +291,10 @@ public class ScaDomainManagerRegistryImpl extends EObjectImpl implements ScaDoma
 		return result.toString();
 	}
 
-	@Deprecated
-	@Override
-	public ScaDomainManager createDomain(final String domainName, final boolean autoConnect, Map<String, String> connectionProperties) {
-		return createDomain(null, domainName, autoConnect, connectionProperties);
-	}
-
 	/**
 	 * <!-- begin-user-doc -->
 	 * 
-	 * @since 19.1
+	 * @since 20.0
 	 *        <!-- end-user-doc -->
 	 * @generated NOT
 	 */

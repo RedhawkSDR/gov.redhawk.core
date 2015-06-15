@@ -11,6 +11,7 @@
  */
 package gov.redhawk.model.sca.util;
 
+import gov.redhawk.model.sca.RefreshDepth;
 import gov.redhawk.model.sca.ScaDomainManager;
 import gov.redhawk.model.sca.ScaModelPlugin;
 import gov.redhawk.model.sca.ScaWaveform;
@@ -68,7 +69,7 @@ public class LaunchWaveformJob extends SilentJob {
 	}
 
 	/**
-	 * @since 19.1
+	 * @since 20.0
 	 */
 	public LaunchWaveformJob(final ScaDomainManager domMgr, final String waveformName, final IPath waveformPath, final DeviceAssignmentType[] deviceAssn,
 		final DataType[] configProps, final boolean autoStart, final Object waitLock, final boolean uninstallExistingAppFactory) {
@@ -100,7 +101,7 @@ public class LaunchWaveformJob extends SilentJob {
 		try {
 			final String profilePath = this.waveformPath.toPortableString();
 			// use existing Application Factory if exists, since only ONE can exist per Waveform profilePath in Domain
-			for (final ScaWaveformFactory temp : LaunchWaveformJob.this.domMgr.fetchWaveformFactories(null)) {
+			for (final ScaWaveformFactory temp : LaunchWaveformJob.this.domMgr.fetchWaveformFactories(null, RefreshDepth.SELF)) { // TODO: Better progress monitor
 				if (temp.getProfile().equals(profilePath)) {
 					factory = temp;
 				}
@@ -136,7 +137,7 @@ public class LaunchWaveformJob extends SilentJob {
 
 							@Override
 							public void run() {
-								for (final ScaWaveformFactory factory : LaunchWaveformJob.this.domMgr.fetchWaveformFactories(null)) {
+								for (final ScaWaveformFactory factory : LaunchWaveformJob.this.domMgr.fetchWaveformFactories(null, RefreshDepth.SELF)) { // TODO: Better progress monitor
 									if (factory.getProfile().equals(profilePath)) {
 										setResult(factory);
 									}

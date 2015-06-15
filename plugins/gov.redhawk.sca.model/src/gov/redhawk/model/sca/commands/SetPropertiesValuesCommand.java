@@ -38,17 +38,6 @@ public class SetPropertiesValuesCommand extends SetStatusCommand<ScaPropertyCont
 
 	private PropertiesHolder propHolder;
 	private List<AbstractProperty> defs;
-	
-	/**
-	 * @deprecated Use {@link #SetPropertiesValuesCommand(ScaPropertyContainer, PropertiesHolder, List)}
-	 * @param container
-	 * @param propHolder
-	 * @since 19.0
-	 */
-	@Deprecated
-	public SetPropertiesValuesCommand(ScaPropertyContainer< ? , ? > container, PropertiesHolder propHolder) {
-		this(container, propHolder, null);
-	}
 
 	/**
 	 * @since 19.0

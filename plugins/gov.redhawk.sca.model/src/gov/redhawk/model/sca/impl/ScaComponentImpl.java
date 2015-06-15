@@ -468,9 +468,9 @@ public class ScaComponentImpl extends ScaAbstractComponentImpl<Resource> impleme
 	/**
 	 * <!-- begin-user-doc -->
 	 * 
+	 * @deprecated Use {@link #fetchDevices(IProgressMonitor, RefreshDepth)}v
 	 * @since 14.0
 	 *        <!-- end-user-doc -->
-	 * @throws InterruptedException
 	 * @generated NOT
 	 */
 	@Override
@@ -674,11 +674,11 @@ public class ScaComponentImpl extends ScaAbstractComponentImpl<Resource> impleme
 						if (dat.componentId.equals(componentIdentifier)) {
 							ScaDeviceImpl< ? > device = (ScaDeviceImpl< ? >) domMgr.getDevice(dat.assignedDeviceId);
 							if (device == null && !calledFetch) {
-								domMgr.fetchDeviceManagers(subMonitor.newChild(1));
+								domMgr.fetchDeviceManagers(subMonitor.newChild(1), RefreshDepth.SELF);
 								SubMonitor devMgrMonitor = subMonitor.newChild(1);
 								devMgrMonitor.beginTask("Refreshing Device Managers...", domMgr.getDeviceManagers().size());
 								for (ScaDeviceManager devMgr : domMgr.getDeviceManagers()) {
-									devMgr.fetchDevices(devMgrMonitor.newChild(1));
+									devMgr.fetchDevices(devMgrMonitor.newChild(1), RefreshDepth.SELF);
 								}
 								device = (ScaDeviceImpl< ? >) domMgr.getDevice(dat.assignedDeviceId);
 								calledFetch = true;
@@ -761,7 +761,11 @@ public class ScaComponentImpl extends ScaAbstractComponentImpl<Resource> impleme
 	}
 
 	/**
-	 * @since 19.1
+	 * <!-- begin-user-doc -->
+	 * 
+	 * @since 20.0
+	 *        <!-- end-user-doc -->
+	 * @generated NOT
 	 */
 	@Override
 	public EList<ScaDevice< ? >> fetchDevices(IProgressMonitor monitor, RefreshDepth depth) {

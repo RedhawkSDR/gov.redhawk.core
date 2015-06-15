@@ -106,20 +106,19 @@ public class ScaExecutableDeviceImpl extends ScaLoadableDeviceImpl<ExecutableDev
 
 	/**
 	 * <!-- begin-user-doc -->
-	 * @since 19.1
-	 * <!-- end-user-doc -->
+	 * This is an EMF-generated wrapper for {@link #executeLinked(String, DataType[], DataType[], String[])}.
+	 * @since 20.0
+	 *        <!-- end-user-doc -->
 	 * 
-	 * @generated
+	 * @generated NOT
 	 */
-	public void executeLinked(String name, DataType[] options, DataType[] parameters, EList<String> deps) throws InvalidState, InvalidFunction,
+	public int executeLinked(String name, DataType[] options, DataType[] parameters, EList<String> deps) throws InvalidState, InvalidFunction,
 		InvalidParameters, InvalidOptions, InvalidFileName, ExecuteFail {
-		// TODO: implement this method
-		// Ensure that you remove @generated or mark it @generated NOT
-		throw new UnsupportedOperationException();
+		return this.executeLinked(name, options, parameters, deps.toArray(new String[deps.size()]));
 	}
 
 	/**
-	 * @since 19.1
+	 * @since 20.0
 	 */
 	@Override
 	public int executeLinked(final String name, final DataType[] options, final DataType[] parameters, final String[] deps) throws InvalidState,

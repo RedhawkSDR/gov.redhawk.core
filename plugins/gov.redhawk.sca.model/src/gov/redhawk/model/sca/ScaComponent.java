@@ -243,15 +243,22 @@ public interface ScaComponent extends ScaAbstractComponent<Resource> {
 
 	/**
 	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
 	 * 
+	 * @deprecated Use {@link #fetchDevices(IProgressMonitor, RefreshDepth)}
+	 * @since 14.0
+	 *        <!-- end-user-doc -->
 	 * @model monitorDataType="gov.redhawk.model.sca.IProgressMonitor"
 	 * @generated
 	 */
 	EList<ScaDevice< ? >> fetchDevices(IProgressMonitor monitor);
 
 	/**
-	 * @since 19.1
+	 * <!-- begin-user-doc -->
+	 * 
+	 * @since 20.0
+	 *        <!-- end-user-doc -->
+	 * @model monitorDataType="gov.redhawk.model.sca.IProgressMonitor"
+	 * @generated
 	 */
 	EList<ScaDevice< ? >> fetchDevices(IProgressMonitor monitor, RefreshDepth depth);
 

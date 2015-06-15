@@ -871,7 +871,7 @@ public abstract class ScaAbstractComponentImpl< R extends Resource > extends Sca
 	}
 
 	/**
-	 * @since 19.1
+	 * @since 20.0
 	 */
 	@Override
 	public void initializeProperties(final DataType[] configProperties) throws AlreadyInitialized, InvalidConfiguration, PartialConfiguration {
@@ -919,7 +919,7 @@ public abstract class ScaAbstractComponentImpl< R extends Resource > extends Sca
 	}
 
 	/**
-	 * @since 19.1
+	 * @since 20.0
 	 */
 	public PortInfoType[] getPortSet() {
 		// END GENERATED CODE

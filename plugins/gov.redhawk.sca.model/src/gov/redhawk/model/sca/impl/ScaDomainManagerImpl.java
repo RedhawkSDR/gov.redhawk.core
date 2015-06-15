@@ -395,7 +395,7 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 	 * The default value of the '{@link #getLocalName() <em>Local Name</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * 
-	 * @since 19.1
+	 * @since 20.0
 	 *        <!-- end-user-doc -->
 	 * @see #getLocalName()
 	 * @generated
@@ -406,7 +406,7 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 	 * The cached value of the '{@link #getLocalName() <em>Local Name</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * 
-	 * @since 19.1
+	 * @since 20.0
 	 *        <!-- end-user-doc -->
 	 * @see #getLocalName()
 	 * @generated
@@ -1159,7 +1159,7 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 	/**
 	 * <!-- begin-user-doc -->
 	 * 
-	 * @since 19.1
+	 * @since 20.0
 	 *        <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -1170,7 +1170,7 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 	/**
 	 * <!-- begin-user-doc -->
 	 * 
-	 * @since 19.1
+	 * @since 20.0
 	 *        <!-- end-user-doc -->
 	 * @generated
 	 */
@@ -1200,6 +1200,20 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 			}
 			progress.worked(1);
 		}
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * 
+	 * @deprecated Use {@link #connect(IProgressMonitor, RefreshDepth)} <!-- end-user-doc -->
+	 * @generated NOT
+	 */
+	@Override
+	@Deprecated
+	public void connect(final IProgressMonitor parentMonitor) throws DomainConnectionException {
+		// END GENERATED CODE
+		connect(parentMonitor, RefreshDepth.FULL);
+		// BEGIN GENERATED CODE
 	}
 
 	/**
@@ -1367,20 +1381,6 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 		this.session = session;
 	}
 
-	/**
-	 * <!-- begin-user-doc -->
-	 * 
-	 * @deprecated Use {@link #connect(IProgressMonitor, RefreshDepth)} <!-- end-user-doc -->
-	 * @generated NOT
-	 */
-	@Override
-	@Deprecated
-	public void connect(final IProgressMonitor parentMonitor) throws DomainConnectionException {
-		// END GENERATED CODE
-		connect(parentMonitor, RefreshDepth.FULL);
-		// BEGIN GENERATED CODE
-	}
-
 	private java.util.Properties createProperties() {
 		// END GENERATED CODE
 		final java.util.Properties props = new java.util.Properties();
@@ -1434,7 +1434,7 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 	/**
 	 * <!-- begin-user-doc -->
 	 * 
-	 * @throws InterruptedException
+	 * @deprecated Use {@link #fetchDeviceManagers(IProgressMonitor, RefreshDepth)}
 	 * @since 14.0
 	 *        <!-- end-user-doc -->
 	 * @generated NOT
@@ -1483,6 +1483,7 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 	/**
 	 * <!-- begin-user-doc -->
 	 * 
+	 * @deprecated Use {@link #fetchWaveformFactories(IProgressMonitor, RefreshDepth)}
 	 * @since 14.0
 	 *        <!-- end-user-doc -->
 	 * @generated NOT
@@ -1529,7 +1530,7 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 	/**
 	 * <!-- begin-user-doc -->
 	 * 
-	 * @throws InterruptedException
+	 * @deprecated Use {@link #fetchWaveforms(IProgressMonitor, RefreshDepth)}
 	 * @since 14.0
 	 *        <!-- end-user-doc -->
 	 * @generated NOT
@@ -1713,7 +1714,7 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 	}
 
 	/**
-	 * @since 19.1
+	 * @since 20.0
 	 */
 	@Override
 	public ConnectionManager connectionMgr() {
@@ -1727,7 +1728,7 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 	}
 
 	/**
-	 * @since 19.1
+	 * @since 20.0
 	 */
 	@Override
 	public Application createApplication(String profileFileName, String name, DataType[] initConfiguration, DeviceAssignmentType[] deviceAssignments)
@@ -1764,7 +1765,7 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 	}
 
 	/**
-	 * @since 19.1
+	 * @since 20.0
 	 */
 	@Override
 	public EventChannelManager eventChannelMgr() {
@@ -2244,7 +2245,7 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 	}
 
 	/**
-	 * @since 19.1
+	 * @since 20.0
 	 */
 	@Override
 	public void initializeProperties(final DataType[] configProperties) throws AlreadyInitialized, InvalidConfiguration, PartialConfiguration {
@@ -2377,7 +2378,11 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 	private VersionedFeature fileManagerFeature = new VersionedFeature(this, ScaPackage.Literals.SCA_DOMAIN_MANAGER__FILE_MANAGER);
 
 	/**
+	 * <!-- begin-user-doc -->
+	 * 
+	 * @deprecated Use {@link #fetchFileManager(IProgressMonitor, RefreshDepth)}
 	 * @since 14.0
+	 *        <!-- end-user-doc -->
 	 * @generated NOT
 	 */
 	@Override
@@ -2515,6 +2520,7 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 	/**
 	 * <!-- begin-user-doc -->
 	 * 
+	 * @deprecated Use {@link #fetchEventChannels(IProgressMonitor, RefreshDepth)}
 	 * @since 19.0
 	 *        <!-- end-user-doc -->
 	 * @generated NOT
@@ -2647,7 +2653,11 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 	}
 
 	/**
-	 * @since 19.1
+	 * <!-- begin-user-doc -->
+	 * 
+	 * @since 20.0
+	 *        <!-- end-user-doc -->
+	 * @generated NOT
 	 */
 	@Override
 	public EList<ScaDeviceManager> fetchDeviceManagers(IProgressMonitor monitor, RefreshDepth depth) {
@@ -2680,7 +2690,11 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 	}
 
 	/**
-	 * @since 19.1
+	 * <!-- begin-user-doc -->
+	 * 
+	 * @since 20.0
+	 *        <!-- end-user-doc -->
+	 * @generated NOT
 	 */
 	@Override
 	public EList<ScaWaveformFactory> fetchWaveformFactories(IProgressMonitor monitor, RefreshDepth depth) {
@@ -2716,7 +2730,11 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 	}
 
 	/**
-	 * @since 19.1
+	 * <!-- begin-user-doc -->
+	 * 
+	 * @since 20.0
+	 *        <!-- end-user-doc -->
+	 * @generated NOT
 	 */
 	@Override
 	public EList<ScaWaveform> fetchWaveforms(IProgressMonitor monitor, RefreshDepth depth) {
@@ -2752,7 +2770,11 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 	}
 
 	/**
-	 * @since 19.1
+	 * <!-- begin-user-doc -->
+	 * 
+	 * @since 20.0
+	 *        <!-- end-user-doc -->
+	 * @generated NOT
 	 */
 	@Override
 	public ScaDomainManagerFileSystem fetchFileManager(IProgressMonitor monitor, RefreshDepth depth) {
@@ -2801,7 +2823,11 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 	}
 
 	/**
-	 * @since 19.1
+	 * <!-- begin-user-doc -->
+	 * 
+	 * @since 20.0
+	 *        <!-- end-user-doc -->
+	 * @generated NOT
 	 */
 	@Override
 	public EList<ScaEventChannel> fetchEventChannels(IProgressMonitor monitor, RefreshDepth depth) {
@@ -2834,7 +2860,11 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 	}
 
 	/**
-	 * @since 19.1
+	 * <!-- begin-user-doc -->
+	 * 
+	 * @since 20.0
+	 *        <!-- end-user-doc -->
+	 * @generated NOT
 	 */
 	public String getLabel() {
 		if (getLocalName() != null) {

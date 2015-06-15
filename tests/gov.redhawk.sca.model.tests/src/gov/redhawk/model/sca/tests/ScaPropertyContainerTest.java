@@ -246,20 +246,6 @@ public abstract class ScaPropertyContainerTest extends CorbaObjWrapperTest {
 	}
 
 	/**
-	 * Tests the '{@link gov.redhawk.model.sca.ProfileObjectWrapper#getRootFileStore() <em>Root File Store</em>}'
-	 * feature getter.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see gov.redhawk.model.sca.ProfileObjectWrapper#getRootFileStore()
-	 * @generated NOT
-	 */
-	public void testGetRootFileStore() {
-		// END GENERATED CODE
-		Assert.assertNotNull(getFixture().getRootFileStore());
-		// BEGIN GENERATED CODE
-	}
-
-	/**
 	 * Tests the '
 	 * {@link gov.redhawk.model.sca.ScaAbstractComponent#fetchProperties(org.eclipse.core.runtime.IProgressMonitor)
 	 * <em>Fetch Properties</em>}' operation.
@@ -288,24 +274,6 @@ public abstract class ScaPropertyContainerTest extends CorbaObjWrapperTest {
 		} catch (UnsupportedOperationException e) {
 			Assert.assertTrue("fetched Properties list is unmodifiable", true);
 		}
-		// BEGIN GENERATED CODE
-	}
-
-	/**
-	 * Tests the '
-	 * {@link gov.redhawk.model.sca.ScaAbstractComponent#fetchPropertyValues(org.eclipse.core.runtime.IProgressMonitor)
-	 * <em>Fetch Property Values</em>}' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @throws InterruptedException
-	 * @see gov.redhawk.model.sca.ScaAbstractComponent#fetchPropertyValues(org.eclipse.core.runtime.IProgressMonitor)
-	 * @generated NOT
-	 * @deprecated
-	 */
-	@Deprecated
-	public void testFetchPropertyValues__IProgressMonitor() throws InterruptedException {
-		// END GENERATED CODE
-		getFixture().fetchPropertyValues(null);
 		// BEGIN GENERATED CODE
 	}
 

@@ -1213,7 +1213,7 @@ public class ScaDeviceImpl< D extends Device > extends ScaAbstractComponentImpl<
 		SubMonitor subMonitor = SubMonitor.convert(monitor, "Fetch profile URI.", 2);
 		ScaDeviceManager devMgr = getDevMgr();
 		if (devMgr != null) {
-			ScaDeviceManagerFileSystem fileSystem = devMgr.fetchFileSystem(subMonitor.newChild(1));
+			ScaDeviceManagerFileSystem fileSystem = devMgr.fetchFileSystem(subMonitor.newChild(1), RefreshDepth.SELF);
 			if (fileSystem != null) {
 				Transaction transaction = profileURIFeature.createTransaction();
 				final URI newURI = fileSystem.createURI(fetchProfile(subMonitor.newChild(1)));
@@ -1232,7 +1232,11 @@ public class ScaDeviceImpl< D extends Device > extends ScaAbstractComponentImpl<
 	}
 
 	/**
-	 * @since 19.1
+	 * <!-- begin-user-doc -->
+	 * 
+	 * @since 20.0
+	 *        <!-- end-user-doc -->
+	 * @generated NOT
 	 */
 	@Override
 	public EList<ScaDevice< ? >> fetchAggregateDevices(IProgressMonitor monitor, RefreshDepth depth) {

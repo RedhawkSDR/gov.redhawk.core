@@ -29,13 +29,8 @@ import gov.redhawk.model.sca.commands.VersionedFeature;
 import gov.redhawk.model.sca.commands.VersionedFeature.Transaction;
 import gov.redhawk.sca.util.Debug;
 import gov.redhawk.sca.util.PluginUtil;
-
 import java.util.Arrays;
-
 import mil.jpeojtrs.sca.sad.SoftwareAssembly;
-
-import org.eclipse.core.filesystem.EFS;
-import org.eclipse.core.filesystem.IFileStore;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
@@ -50,7 +45,6 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.omg.CORBA.BAD_OPERATION;
 import org.omg.CORBA.SystemException;
-
 import CF.Application;
 import CF.ApplicationFactory;
 import CF.ApplicationFactoryHelper;
@@ -74,7 +68,6 @@ import CF.ApplicationFactoryPackage.InvalidInitConfiguration;
  *        <ul>
  *        <li>{@link gov.redhawk.model.sca.impl.ScaWaveformFactoryImpl#getProfileURI <em>Profile URI</em>}</li>
  *        <li>{@link gov.redhawk.model.sca.impl.ScaWaveformFactoryImpl#getProfileObj <em>Profile Obj</em>}</li>
- *        <li>{@link gov.redhawk.model.sca.impl.ScaWaveformFactoryImpl#getRootFileStore <em>Root File Store</em>}</li>
  *        <li>{@link gov.redhawk.model.sca.impl.ScaWaveformFactoryImpl#getDomMgr <em>Dom Mgr</em>}</li>
  *        <li>{@link gov.redhawk.model.sca.impl.ScaWaveformFactoryImpl#getIdentifier <em>Identifier</em>}</li>
  *        <li>{@link gov.redhawk.model.sca.impl.ScaWaveformFactoryImpl#getName <em>Name</em>}</li>
@@ -137,17 +130,6 @@ public class ScaWaveformFactoryImpl extends CorbaObjWrapperImpl<ApplicationFacto
 	 * @ordered
 	 */
 	protected boolean profileObjESet;
-
-	/**
-	 * The default value of the '{@link #getRootFileStore() <em>Root File Store</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * 
-	 * @see #getRootFileStore()
-	 * @generated
-	 * @ordered
-	 */
-	protected static final IFileStore ROOT_FILE_STORE_EDEFAULT = null;
 
 	/**
 	 * The default value of the '{@link #getIdentifier() <em>Identifier</em>}' attribute.
@@ -436,25 +418,6 @@ public class ScaWaveformFactoryImpl extends CorbaObjWrapperImpl<ApplicationFacto
 			break;
 		default:
 			break;
-		}
-		// BEGIN GENERATED CODE
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * 
-	 * @deprecated Use {@link #getProfileURI()} instead
-	 *             <!-- end-user-doc -->
-	 * @generated NOT
-	 */
-	@Deprecated
-	@Override
-	public IFileStore getRootFileStore() {
-		// END GENERATED CODE
-		try {
-			return EFS.getStore(java.net.URI.create(getProfileURI().toString()));
-		} catch (Exception e) { // SUPPRESS CHECKSTYLE Deprecated
-			return null;
 		}
 		// BEGIN GENERATED CODE
 	}
@@ -967,8 +930,6 @@ public class ScaWaveformFactoryImpl extends CorbaObjWrapperImpl<ApplicationFacto
 			if (resolve)
 				return getProfileObj();
 			return basicGetProfileObj();
-		case ScaPackage.SCA_WAVEFORM_FACTORY__ROOT_FILE_STORE:
-			return getRootFileStore();
 		case ScaPackage.SCA_WAVEFORM_FACTORY__DOM_MGR:
 			if (resolve)
 				return getDomMgr();
@@ -1058,8 +1019,6 @@ public class ScaWaveformFactoryImpl extends CorbaObjWrapperImpl<ApplicationFacto
 			return isSetProfileURI();
 		case ScaPackage.SCA_WAVEFORM_FACTORY__PROFILE_OBJ:
 			return isSetProfileObj();
-		case ScaPackage.SCA_WAVEFORM_FACTORY__ROOT_FILE_STORE:
-			return ROOT_FILE_STORE_EDEFAULT == null ? getRootFileStore() != null : !ROOT_FILE_STORE_EDEFAULT.equals(getRootFileStore());
 		case ScaPackage.SCA_WAVEFORM_FACTORY__DOM_MGR:
 			return basicGetDomMgr() != null;
 		case ScaPackage.SCA_WAVEFORM_FACTORY__IDENTIFIER:
@@ -1092,8 +1051,6 @@ public class ScaWaveformFactoryImpl extends CorbaObjWrapperImpl<ApplicationFacto
 				return ScaPackage.PROFILE_OBJECT_WRAPPER__PROFILE_URI;
 			case ScaPackage.SCA_WAVEFORM_FACTORY__PROFILE_OBJ:
 				return ScaPackage.PROFILE_OBJECT_WRAPPER__PROFILE_OBJ;
-			case ScaPackage.SCA_WAVEFORM_FACTORY__ROOT_FILE_STORE:
-				return ScaPackage.PROFILE_OBJECT_WRAPPER__ROOT_FILE_STORE;
 			default:
 				return -1;
 			}
@@ -1121,8 +1078,6 @@ public class ScaWaveformFactoryImpl extends CorbaObjWrapperImpl<ApplicationFacto
 				return ScaPackage.SCA_WAVEFORM_FACTORY__PROFILE_URI;
 			case ScaPackage.PROFILE_OBJECT_WRAPPER__PROFILE_OBJ:
 				return ScaPackage.SCA_WAVEFORM_FACTORY__PROFILE_OBJ;
-			case ScaPackage.PROFILE_OBJECT_WRAPPER__ROOT_FILE_STORE:
-				return ScaPackage.SCA_WAVEFORM_FACTORY__ROOT_FILE_STORE;
 			default:
 				return -1;
 			}
@@ -1211,7 +1166,7 @@ public class ScaWaveformFactoryImpl extends CorbaObjWrapperImpl<ApplicationFacto
 		ScaDomainManager domMgr = getDomMgr();
 		if (domMgr != null) {
 			SubMonitor subMonitor = SubMonitor.convert(monitor, "Fetch Profile URI", 2);
-			ScaDomainManagerFileSystem fileSystem = domMgr.fetchFileManager(subMonitor.newChild(1));
+			ScaDomainManagerFileSystem fileSystem = domMgr.fetchFileManager(subMonitor.newChild(1), RefreshDepth.SELF);
 			if (fileSystem != null) {
 				Transaction transaction = profileURIFeature.createTransaction();
 				final URI newURI = fileSystem.createURI(fetchProfile(subMonitor.newChild(1)));
@@ -1230,7 +1185,7 @@ public class ScaWaveformFactoryImpl extends CorbaObjWrapperImpl<ApplicationFacto
 	}
 
 	/**
-	 * @since 19.1
+	 * @since 20.0
 	 */
 	@Override
 	public ScaWaveform createWaveform(IProgressMonitor monitor, String name, DataType[] initConfiguration, DeviceAssignmentType[] deviceAssignments,

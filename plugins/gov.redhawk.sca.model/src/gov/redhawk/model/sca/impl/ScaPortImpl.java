@@ -12,7 +12,6 @@
 // BEGIN GENERATED CODE
 package gov.redhawk.model.sca.impl;
 
-import gov.redhawk.model.sca.ScaAbstractComponent;
 import gov.redhawk.model.sca.ScaModelPlugin;
 import gov.redhawk.model.sca.ScaPackage;
 import gov.redhawk.model.sca.ScaPort;
@@ -423,23 +422,6 @@ public abstract class ScaPortImpl< P extends AbstractPort, P2 extends org.omg.CO
 		result.append(name);
 		result.append(')');
 		return result.toString();
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * 
-	 * @deprecated
-	 *             <!-- end-user-doc -->
-	 * @generated NOT
-	 */
-	@Deprecated
-	public ScaAbstractComponent< ? > getComponent() {
-		// END GENERATED CODE
-		if (eContainer() instanceof ScaAbstractComponent< ? >) {
-			return (ScaAbstractComponent< ? >) eContainer();
-		}
-		return null;
-		// BEGIN GENERATED CODE
 	}
 
 	@Override

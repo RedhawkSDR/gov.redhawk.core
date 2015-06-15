@@ -392,15 +392,22 @@ public interface ScaDevice< D extends Device > extends ScaAbstractComponent<D>, 
 
 	/**
 	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
 	 * 
+	 * @deprecated Use {@link #fetchAggregateDevices(IProgressMonitor, RefreshDepth)}
+	 * @since 14.0
+	 *        <!-- end-user-doc -->
 	 * @model monitorDataType="gov.redhawk.model.sca.IProgressMonitor"
 	 * @generated
 	 */
 	EList<ScaDevice< ? >> fetchAggregateDevices(IProgressMonitor monitor);
 
 	/**
-	 * @since 19.1
+	 * <!-- begin-user-doc -->
+	 * 
+	 * @since 20.0
+	 *        <!-- end-user-doc -->
+	 * @model monitorDataType="gov.redhawk.model.sca.IProgressMonitor"
+	 * @generated
 	 */
 	EList<ScaDevice< ? >> fetchAggregateDevices(IProgressMonitor monitor, RefreshDepth depth);
 

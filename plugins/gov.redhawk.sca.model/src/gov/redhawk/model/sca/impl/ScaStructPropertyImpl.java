@@ -22,19 +22,15 @@ import gov.redhawk.model.sca.ScaSimpleSequenceProperty;
 import gov.redhawk.model.sca.ScaStructProperty;
 import gov.redhawk.model.sca.ScaStructSequenceProperty;
 import gov.redhawk.sca.util.PluginUtil;
-
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-
 import mil.jpeojtrs.sca.prf.Simple;
 import mil.jpeojtrs.sca.prf.SimpleSequence;
 import mil.jpeojtrs.sca.prf.Struct;
-
-import org.apache.commons.lang.NotImplementedException;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.MultiStatus;
 import org.eclipse.core.runtime.Status;
@@ -50,7 +46,6 @@ import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.InternalEList;
 import org.jacorb.JacorbUtil;
 import org.omg.CORBA.Any;
-
 import CF.DataType;
 import CF.InvalidIdentifier;
 import CF.InvalidObjectReference;
@@ -91,8 +86,9 @@ public class ScaStructPropertyImpl extends ScaAbstractPropertyImpl<Struct> imple
 	/**
 	 * The cached value of the '{@link #getSequences() <em>Sequences</em>}' containment reference list.
 	 * <!-- begin-user-doc -->
-	 * @since 19.1
-	 * <!-- end-user-doc -->
+	 * 
+	 * @since 20.0
+	 *        <!-- end-user-doc -->
 	 * 
 	 * @see #getSequences()
 	 * @generated NOT
@@ -227,7 +223,7 @@ public class ScaStructPropertyImpl extends ScaAbstractPropertyImpl<Struct> imple
 	}
 
 	/**
-	 * @since 19.1
+	 * @since 20.0
 	 */
 	protected static class SequencesList extends EObjectContainmentEList<ScaSimpleSequenceProperty> {
 		// END GENERATED CODE
@@ -312,8 +308,9 @@ public class ScaStructPropertyImpl extends ScaAbstractPropertyImpl<Struct> imple
 
 	/**
 	 * <!-- begin-user-doc -->
-	 * @since 19.1
-	 * <!-- end-user-doc -->
+	 * 
+	 * @since 20.0
+	 *        <!-- end-user-doc -->
 	 * 
 	 * @generated NOT
 	 */
@@ -366,7 +363,7 @@ public class ScaStructPropertyImpl extends ScaAbstractPropertyImpl<Struct> imple
 			setStatus(ScaPackage.Literals.SCA_STRUCT_PROPERTY__SIMPLES, new Status(Status.ERROR, ScaModelPlugin.ID, "Failed to read property value of:"
 				+ getName(), e));
 			setStatus(ScaPackage.Literals.SCA_STRUCT_PROPERTY__SEQUENCES, new Status(Status.ERROR, ScaModelPlugin.ID, "Failed to read property value of:"
-					+ getName(), e));
+				+ getName(), e));
 		}
 		// BEGIN GENERATED CODE
 	}
@@ -407,7 +404,7 @@ public class ScaStructPropertyImpl extends ScaAbstractPropertyImpl<Struct> imple
 	}
 
 	/**
-	 * @since 19.1
+	 * @since 20.0
 	 */
 	@Override
 	public void initializeProperties(final DataType[] configProperties) throws AlreadyInitialized, InvalidConfiguration, PartialConfiguration {
@@ -416,8 +413,9 @@ public class ScaStructPropertyImpl extends ScaAbstractPropertyImpl<Struct> imple
 
 	/**
 	 * <!-- begin-user-doc -->
-	 * @since 19.1
-	 * <!-- end-user-doc -->
+	 * 
+	 * @since 20.0
+	 *        <!-- end-user-doc -->
 	 * 
 	 * @generated NOT
 	 */
@@ -434,8 +432,9 @@ public class ScaStructPropertyImpl extends ScaAbstractPropertyImpl<Struct> imple
 
 	/**
 	 * <!-- begin-user-doc -->
-	 * @since 19.1
-	 * <!-- end-user-doc -->
+	 * 
+	 * @since 20.0
+	 *        <!-- end-user-doc -->
 	 * 
 	 * @generated NOT
 	 */
@@ -512,31 +511,30 @@ public class ScaStructPropertyImpl extends ScaAbstractPropertyImpl<Struct> imple
 
 	/**
 	 * <!-- begin-user-doc -->
-	 * @since 19.1
-	 * <!-- end-user-doc -->
+	 * This is an EMF-generated wrapper for {@link #registerPropertyListener(org.omg.CORBA.Object, String[], float)}.
+	 * @since 20.0
+	 *        <!-- end-user-doc -->
 	 * 
-	 * @generated
+	 * @generated NOT
 	 */
 	public String registerPropertyListener(org.omg.CORBA.Object obj, EList<String> prop_ids, float interval) throws UnknownProperties, InvalidObjectReference {
-		// TODO: implement this method
-		// Ensure that you remove @generated or mark it @generated NOT
 		throw new UnsupportedOperationException();
 	}
 
 	/**
-	 * @since 19.1
+	 * @since 20.0
 	 */
 	@Override
 	public String registerPropertyListener(org.omg.CORBA.Object obj, String[] prop_ids, float interval) throws UnknownProperties, InvalidObjectReference {
-		throw new NotImplementedException();
+		throw new UnsupportedOperationException();
 	}
 
 	/**
-	 * @since 19.1
+	 * @since 20.0
 	 */
 	@Override
 	public void unregisterPropertyListener(String id) throws InvalidIdentifier {
-		throw new NotImplementedException();
+		throw new UnsupportedOperationException();
 	}
 
 	/**

@@ -308,20 +308,6 @@ public class ScaWaveformFactoryTest extends CorbaObjWrapperTest {
 	}
 
 	/**
-	 * Tests the '{@link gov.redhawk.model.sca.ProfileObjectWrapper#getRootFileStore() <em>Root File Store</em>}'
-	 * feature getter.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see gov.redhawk.model.sca.ProfileObjectWrapper#getRootFileStore()
-	 * @generated NOT
-	 */
-	public void testGetRootFileStore() {
-		// END GENERATED CODE
-		Assert.assertNotNull(getFixture().getRootFileStore());
-		// BEGIN GENERATED CODE
-	}
-
-	/**
 	 * Tests the '{@link gov.redhawk.model.sca.ScaWaveformFactory#getDomMgr() <em>Dom Mgr</em>}' feature getter.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->

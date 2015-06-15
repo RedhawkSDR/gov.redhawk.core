@@ -25,7 +25,7 @@ import org.eclipse.emf.common.CommonPlugin;
 import org.eclipse.emf.common.util.URI;
 
 /**
- * @since 19.1
+ * @since 20.0
  */
 public final class ScaFileSystemUtil {
 

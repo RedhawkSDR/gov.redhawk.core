@@ -394,7 +394,35 @@ public class ScaWaveformTest extends ScaPropertyContainerTest {
 	 * @generated NOT
 	 */
 	public void testFetchComponents__IProgressMonitor__RefreshDepth() throws InterruptedException {
-		getFixture().fetchComponents(null, null);
+		final int[] size = new int[1];
+		final ComponentElementType[] components = getFixture().getObj().componentImplementations();
+		final ScaComponent[] component = new ScaComponent[1];
+		ScaModelCommand.execute(getFixture(), new ScaModelCommand() {
+
+			@Override
+			public void execute() {
+				size[0] = getFixture().getComponents().size();
+
+				Assert.assertEquals(components.length, size[0]);
+				if (!getFixture().getComponents().isEmpty()) {
+					component[0] = getFixture().getComponents().get(0);
+				}
+			}
+		});
+		getFixture().fetchComponents(null, RefreshDepth.SELF);
+		ScaModelCommand.execute(getFixture(), new ScaModelCommand() {
+
+			@Override
+			public void execute() {
+				if (!getFixture().getComponents().isEmpty()) {
+					Assert.assertEquals(component[0], getFixture().getComponents().get(0));
+				}
+				Assert.assertEquals(size[0], getFixture().getComponents().size());
+				((ScaDomainManagerImpl) ScaWaveformTest.this.env.getDomMgr()).setCorbaObj(null);
+				Assert.assertTrue(getFixture().isDisposed());
+				Assert.assertEquals(0, getFixture().getComponents().size());
+			}
+		});
 	}
 
 	/**

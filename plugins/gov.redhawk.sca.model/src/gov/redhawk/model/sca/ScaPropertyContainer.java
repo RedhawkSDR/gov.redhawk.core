@@ -106,11 +106,4 @@ public interface ScaPropertyContainer< P extends org.omg.CORBA.Object, E extends
 	 */
 	ScaAbstractProperty< ? > getProperty(String identifier);
 
-	/**
-	 * @deprecated Use {@link #fetchProperties(IProgressMonitor)} instead
-	 * @param monitor
-	 */
-	@Deprecated
-	void fetchPropertyValues(IProgressMonitor monitor) throws InterruptedException;
-
 } // ScaPropertyContainer

@@ -1,4 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!--
+    This file is protected by Copyright.
+    Please refer to the COPYRIGHT file distributed with this source distribution.
+
+    This file is part of REDHAWK IDE.
+
+    All rights reserved.  This program and the accompanying materials are made available under
+    the terms of the Eclipse Public License v1.0 which accompanies this distribution, and is available at
+    http://www.eclipse.org/legal/epl-v10.html.
+-->
 <ecore:EPackage xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" name="sca" nsURI="http://www.redhawk.gov/model/sca/2.0.0" nsPrefix="sca">
   <eClassifiers xsi:type="ecore:EDataType" name="AdminType" instanceClassName="CF.DevicePackage.AdminType">
@@ -173,8 +183,6 @@
       </eAnnotations>
       <eGenericType eTypeParameter="#//ProfileObjectWrapper/O"/>
     </eStructuralFeatures>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="rootFileStore" eType="#//IFileStore"
-        changeable="false" volatile="true" transient="true" derived="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Properties">
     <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
@@ -376,6 +384,13 @@
       </eGenericType>
       <eParameters name="monitor" eType="#//IProgressMonitor"/>
     </eOperations>
+    <eOperations name="fetchDevices" upperBound="-1">
+      <eGenericType eClassifier="#//ScaDevice">
+        <eTypeArguments/>
+      </eGenericType>
+      <eParameters name="monitor" eType="#//IProgressMonitor"/>
+      <eParameters name="depth" eType="#//RefreshDepth"/>
+    </eOperations>
     <eStructuralFeatures xsi:type="ecore:EReference" name="componentInstantiation"
         lowerBound="1" eType="ecore:EClass platform:/plugin/mil.jpeojtrs.sca.sad/model/sad.ecore#//SadComponentInstantiation"
         transient="true" unsettable="true">
@@ -427,6 +442,13 @@
         <eTypeArguments/>
       </eGenericType>
       <eParameters name="monitor" eType="#//IProgressMonitor"/>
+    </eOperations>
+    <eOperations name="fetchAggregateDevices" upperBound="-1">
+      <eGenericType eClassifier="#//ScaDevice">
+        <eTypeArguments/>
+      </eGenericType>
+      <eParameters name="monitor" eType="#//IProgressMonitor"/>
+      <eParameters name="depth" eType="#//RefreshDepth"/>
     </eOperations>
     <eOperations name="fetchAdminState" eType="#//AdminType">
       <eParameters name="monitor" eType="#//IProgressMonitor"/>
@@ -508,8 +530,19 @@
       </eGenericType>
       <eParameters name="monitor" eType="#//IProgressMonitor"/>
     </eOperations>
+    <eOperations name="fetchDevices" upperBound="-1">
+      <eGenericType eClassifier="#//ScaDevice">
+        <eTypeArguments/>
+      </eGenericType>
+      <eParameters name="monitor" eType="#//IProgressMonitor"/>
+      <eParameters name="depth" eType="#//RefreshDepth"/>
+    </eOperations>
     <eOperations name="fetchFileSystem" eType="#//ScaDeviceManagerFileSystem">
       <eParameters name="monitor" eType="#//IProgressMonitor"/>
+    </eOperations>
+    <eOperations name="fetchFileSystem" eType="#//ScaDeviceManagerFileSystem">
+      <eParameters name="monitor" eType="#//IProgressMonitor"/>
+      <eParameters name="depth" eType="#//RefreshDepth"/>
     </eOperations>
     <eOperations name="fetchIdentifier" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString">
       <eParameters name="monitor" eType="#//IProgressMonitor"/>
@@ -519,6 +552,10 @@
     </eOperations>
     <eOperations name="fetchServices" upperBound="-1" eType="#//ScaService">
       <eParameters name="monitor" eType="#//IProgressMonitor"/>
+    </eOperations>
+    <eOperations name="fetchServices" upperBound="-1" eType="#//ScaService">
+      <eParameters name="monitor" eType="#//IProgressMonitor"/>
+      <eParameters name="depth" eType="#//RefreshDepth"/>
     </eOperations>
     <eOperations name="registerScaService" eType="#//ScaService" eExceptions="ecore:EDataType platform:/plugin/mil.jpeojtrs.sca.cf/model/cf.ecore#//InvalidObjectReference">
       <eParameters name="registeringService" eType="#//Object"/>
@@ -685,14 +722,30 @@
     <eOperations name="fetchDeviceManagers" upperBound="-1" eType="#//ScaDeviceManager">
       <eParameters name="monitor" eType="#//IProgressMonitor"/>
     </eOperations>
+    <eOperations name="fetchDeviceManagers" upperBound="-1" eType="#//ScaDeviceManager">
+      <eParameters name="monitor" eType="#//IProgressMonitor"/>
+      <eParameters name="depth" eType="#//RefreshDepth"/>
+    </eOperations>
     <eOperations name="fetchWaveformFactories" upperBound="-1" eType="#//ScaWaveformFactory">
       <eParameters name="monitor" eType="#//IProgressMonitor"/>
+    </eOperations>
+    <eOperations name="fetchWaveformFactories" upperBound="-1" eType="#//ScaWaveformFactory">
+      <eParameters name="monitor" eType="#//IProgressMonitor"/>
+      <eParameters name="depth" eType="#//RefreshDepth"/>
     </eOperations>
     <eOperations name="fetchWaveforms" upperBound="-1" eType="#//ScaWaveform">
       <eParameters name="monitor" eType="#//IProgressMonitor"/>
     </eOperations>
+    <eOperations name="fetchWaveforms" upperBound="-1" eType="#//ScaWaveform">
+      <eParameters name="monitor" eType="#//IProgressMonitor"/>
+      <eParameters name="depth" eType="#//RefreshDepth"/>
+    </eOperations>
     <eOperations name="fetchFileManager" eType="#//ScaDomainManagerFileSystem">
       <eParameters name="monitor" eType="#//IProgressMonitor"/>
+    </eOperations>
+    <eOperations name="fetchFileManager" eType="#//ScaDomainManagerFileSystem">
+      <eParameters name="monitor" eType="#//IProgressMonitor"/>
+      <eParameters name="depth" eType="#//RefreshDepth"/>
     </eOperations>
     <eOperations name="fetchIdentifier" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString">
       <eParameters name="monitor" eType="#//IProgressMonitor"/>
@@ -709,6 +762,11 @@
     <eOperations name="fetchEventChannels" upperBound="-1" eType="#//ScaEventChannel">
       <eParameters name="monitor" eType="#//IProgressMonitor"/>
     </eOperations>
+    <eOperations name="fetchEventChannels" upperBound="-1" eType="#//ScaEventChannel">
+      <eParameters name="monitor" eType="#//IProgressMonitor"/>
+      <eParameters name="depth" eType="#//RefreshDepth"/>
+    </eOperations>
+    <eOperations name="getLabel" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//String"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="waveformFactories" upperBound="-1"
         eType="#//ScaWaveformFactory" transient="true" unsettable="true" containment="true"
         resolveProxies="false" eOpposite="#//ScaWaveformFactory/domMgr">
@@ -1092,6 +1150,10 @@
     </eAnnotations>
     <eOperations name="fetchComponents" upperBound="-1" eType="#//ScaComponent">
       <eParameters name="monitor" eType="#//IProgressMonitor"/>
+    </eOperations>
+    <eOperations name="fetchComponents" upperBound="-1" eType="#//ScaComponent">
+      <eParameters name="monitor" eType="#//IProgressMonitor"/>
+      <eParameters name="depth" eType="#//RefreshDepth"/>
     </eOperations>
     <eOperations name="fetchIdentifier" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString">
       <eParameters name="monitor" eType="#//IProgressMonitor"/>
