@@ -29,6 +29,7 @@ import org.eclipse.emf.common.notify.AdapterFactory;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.util.FeatureMap;
+import org.eclipse.emf.ecore.util.FeatureMapUtil;
 import org.eclipse.emf.edit.domain.EditingDomain;
 
 /**
@@ -38,6 +39,30 @@ public class PropertiesEditorStructItemProvider extends StructItemProvider {
 
 	public PropertiesEditorStructItemProvider(final AdapterFactory adapterFactory) {
 		super(adapterFactory);
+	}
+
+	@Override
+	protected Object unwrap(Object object) {
+		// Where appropriate, convert feature map entries for top-level properties; implemented here as the least
+		// intrusive way of handling cross-feature map drag-and-drop
+		return convertFeatureMapEntry(super.unwrap(object));
+	}
+
+	/**
+	 * Convert top-level simples and simple sequences, which are feature map entries under "properties", to the
+	 * corresponding "fields" entry
+	 */
+	private Object convertFeatureMapEntry(Object object) {
+		if (object instanceof FeatureMap.Entry) {
+			final FeatureMap.Entry entry = (FeatureMap.Entry) object;
+			final EStructuralFeature feature = entry.getEStructuralFeature();
+			if (feature == PrfPackage.Literals.PROPERTIES__SIMPLE) {
+				return FeatureMapUtil.createEntry(PrfPackage.Literals.STRUCT__SIMPLE, entry.getValue());
+			} else if (feature == PrfPackage.Literals.PROPERTIES__SIMPLE_SEQUENCE) {
+				return FeatureMapUtil.createEntry(PrfPackage.Literals.STRUCT__SIMPLE_SEQUENCE, entry.getValue());
+			}
+		}
+		return object;
 	}
 
 	/**
