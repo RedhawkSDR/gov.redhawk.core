@@ -23,8 +23,10 @@ import gov.redhawk.ui.editor.TreeSection;
 import gov.redhawk.ui.parts.TreePart;
 import gov.redhawk.ui.parts.UnwrappingLabelProvider;
 import gov.redhawk.ui.util.SCAEditorUtil;
+import gov.redhawk.ui.util.ViewerUtil;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import mil.jpeojtrs.sca.prf.Properties;
@@ -315,8 +317,13 @@ public class PropertiesSection extends TreeSection implements IPropertyChangeLis
 	@Override
 	public boolean setFormInput(final Object object) {
 		if (object != null) {
-			this.fExtensionTree.setSelection(new StructuredSelection(object), true);
-			return true;
+			// TODO: This may not be necessary, if all views use the same set of adapters
+			ISelection selection = ViewerUtil.itemsToSelection(this.fExtensionTree, Collections.singleton(object));
+			if (!selection.isEmpty()) {
+				this.fExtensionTree.setSelection(selection, true);
+				return true;
+			}
+			return false;
 		} else {
 			return false;
 		}
