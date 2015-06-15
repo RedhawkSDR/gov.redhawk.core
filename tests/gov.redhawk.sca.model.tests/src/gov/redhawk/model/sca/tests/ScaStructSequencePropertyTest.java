@@ -21,12 +21,18 @@ import gov.redhawk.model.sca.ScaStructSequenceProperty;
 import gov.redhawk.model.sca.ScaWaveform;
 import gov.redhawk.model.sca.commands.ScaModelCommand;
 import gov.redhawk.model.sca.tests.stubs.ScaTestConstaints;
+
 import org.junit.Assert;
+
 import junit.textui.TestRunner;
+
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.ecore.util.EContentAdapter;
 import org.eclipse.emf.transaction.util.TransactionUtil;
+
 import CF.DataType;
+import CF.InvalidIdentifier;
+import CF.InvalidObjectReference;
 import CF.PropertiesHolder;
 import CF.UnknownProperties;
 import CF.PropertySetPackage.InvalidConfiguration;
@@ -228,6 +234,49 @@ public class ScaStructSequencePropertyTest extends ScaAbstractPropertyTest {
 		PropertiesHolder holder = new PropertiesHolder();
 		holder.value = new DataType[0];
 		getFixture().query(holder);
+		// BEGIN GENERATED CODE
+	}
+
+	/**
+	 * Tests the '
+	 * {@link CF.PropertySetOperations#registerPropertyListener(org.omg.CORBA.Object, org.eclipse.emf.common.util.EList, float)
+	 * <em>Register Property Listener</em>}' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @throws InvalidObjectReference
+	 * @throws UnknownProperties
+	 * @see CF.PropertySetOperations#registerPropertyListener(org.omg.CORBA.Object, org.eclipse.emf.common.util.EList,
+	 * float)
+	 * @generated
+	 */
+	public void testRegisterPropertyListener__Object_EList_float() throws UnknownProperties, InvalidObjectReference {
+		// END GENERATED CODE
+		try {
+			getFixture().registerPropertyListener(null, null, 0);
+		} catch (UnsupportedOperationException e) {
+			return;
+		}
+		Assert.fail("This operation shouldn't be supported");
+		// BEGIN GENERATED CODE
+	}
+
+	/**
+	 * Tests the '{@link CF.PropertySetOperations#unregisterPropertyListener(java.lang.String) <em>Unregister Property
+	 * Listener</em>}' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @throws InvalidIdentifier
+	 * @see CF.PropertySetOperations#unregisterPropertyListener(java.lang.String)
+	 * @generated
+	 */
+	public void testUnregisterPropertyListener__String() throws InvalidIdentifier {
+		// END GENERATED CODE
+		try {
+			getFixture().unregisterPropertyListener(null);
+		} catch (UnsupportedOperationException e) {
+			return;
+		}
+		Assert.fail("This operation shouldn't be supported");
 		// BEGIN GENERATED CODE
 	}
 

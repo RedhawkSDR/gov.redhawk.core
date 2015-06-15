@@ -33,8 +33,6 @@ import gov.redhawk.sca.util.OrbSession;
 import java.io.File;
 import java.net.URL;
 
-import org.junit.Assert;
-
 import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Platform;
@@ -47,6 +45,7 @@ import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.emf.transaction.RunnableWithResult;
 import org.eclipse.emf.transaction.TransactionalEditingDomain;
 import org.eclipse.emf.transaction.util.TransactionUtil;
+import org.junit.Assert;
 
 import CF.DataType;
 import CF.DeviceAssignmentType;
@@ -68,7 +67,7 @@ public class TestEnvirornment {
 	private OrbSession session;
 	private DeviceManagerImpl devMgrImpl;
 	private DomainManagerImpl domainMgrImpl;
-	
+
 	static {
 		DataProviderServicesRegistry.INSTANCE.clearDataProviders();
 	}
@@ -93,9 +92,9 @@ public class TestEnvirornment {
 				null));
 		File devRoot = new File(devFileUrl.toURI());
 		Assert.assertTrue(devRoot.exists());
-		devMgrImpl = new DeviceManagerImpl(devRoot, "/nodes/REDHAWK_DevMgr/DeviceManager.dcd.xml", null, null, session.getPOA(),	session.getOrb());
+		devMgrImpl = new DeviceManagerImpl(devRoot, "/nodes/REDHAWK_DevMgr/DeviceManager.dcd.xml", null, null, session.getPOA(), session.getOrb());
 		devMgrRef = DeviceManagerHelper.narrow(session.getPOA().servant_to_reference(new DeviceManagerPOATie(devMgrImpl)));
-		
+
 		execute(new ScaModelCommand() {
 
 			@Override
@@ -314,5 +313,9 @@ public class TestEnvirornment {
 	public <T> T runExclusive(final RunnableWithResult<T> runnable)
 			throws InterruptedException {
 		return TransactionUtil.runExclusive(this.editingDomain, runnable);
+	}
+
+	public OrbSession getOrbSession() {
+		return this.session;
 	}
 }

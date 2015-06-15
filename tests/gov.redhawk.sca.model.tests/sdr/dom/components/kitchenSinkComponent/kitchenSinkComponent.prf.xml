@@ -209,6 +209,13 @@
       <kind kindtype="configure"/>
       <action type="external"/>
     </simple>
+    <simplesequence id="simpleseq" name="simpleseq" type="string">
+      <description>My Description</description>
+      <values>
+        <value>ABC</value>
+        <value>DEF</value>
+      </values>
+    </simplesequence>
     <simple id="DCE:5a839b6d-6246-49b6-ae9d-5c184e0360ca" mode="readwrite" name="structSimpleBoolean" type="boolean">
      <description>My Description</description>
       <value>true</value>

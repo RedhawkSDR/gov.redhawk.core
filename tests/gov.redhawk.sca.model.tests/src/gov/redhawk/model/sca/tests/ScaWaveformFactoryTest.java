@@ -34,7 +34,6 @@ import CF.ApplicationFactoryPackage.InvalidInitConfiguration;
  * <ul>
  * <li>{@link gov.redhawk.model.sca.ProfileObjectWrapper#getProfileURI() <em>Profile URI</em>}</li>
  * <li>{@link gov.redhawk.model.sca.ProfileObjectWrapper#getProfileObj() <em>Profile Obj</em>}</li>
- * <li>{@link gov.redhawk.model.sca.ProfileObjectWrapper#getRootFileStore() <em>Root File Store</em>}</li>
  * <li>{@link gov.redhawk.model.sca.ScaWaveformFactory#getIdentifier() <em>Identifier</em>}</li>
  * <li>{@link gov.redhawk.model.sca.ScaWaveformFactory#getName() <em>Name</em>}</li>
  * </ul>

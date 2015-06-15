@@ -24,7 +24,6 @@ import org.junit.Assert;
  * <ul>
  * <li>{@link gov.redhawk.model.sca.ProfileObjectWrapper#getProfileURI() <em>Profile URI</em>}</li>
  * <li>{@link gov.redhawk.model.sca.ProfileObjectWrapper#getProfileObj() <em>Profile Obj</em>}</li>
- * <li>{@link gov.redhawk.model.sca.ProfileObjectWrapper#getRootFileStore() <em>Root File Store</em>}</li>
  * </ul>
  * </p>
  * <p>
@@ -179,20 +178,6 @@ public abstract class ProfileObjectWrapperTest extends IStatusProviderTest {
 	 */
 	public void testIsSetProfileObj() {
 		// TODO: implement this test method
-		// Ensure that you remove @generated or mark it @generated NOT
-		fail();
-	}
-
-	/**
-	 * Tests the '{@link gov.redhawk.model.sca.ProfileObjectWrapper#getRootFileStore() <em>Root File Store</em>}'
-	 * feature getter.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see gov.redhawk.model.sca.ProfileObjectWrapper#getRootFileStore()
-	 * @generated
-	 */
-	public void testGetRootFileStore() {
-		// TODO: implement this feature getter test method
 		// Ensure that you remove @generated or mark it @generated NOT
 		fail();
 	}

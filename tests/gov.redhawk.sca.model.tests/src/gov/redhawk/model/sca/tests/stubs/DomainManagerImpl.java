@@ -16,7 +16,9 @@ import gov.redhawk.core.filemanager.filesystem.JavaFileSystem;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import mil.jpeojtrs.sca.dmd.DomainManagerConfiguration;
 import mil.jpeojtrs.sca.sad.SoftwareAssembly;
@@ -26,6 +28,7 @@ import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.junit.Assert;
 import org.omg.CORBA.ORB;
 import org.omg.CORBA.Object;
+import org.omg.CORBA.SystemException;
 import org.omg.PortableServer.POA;
 import org.omg.PortableServer.POAPackage.ServantNotActive;
 import org.omg.PortableServer.POAPackage.WrongPolicy;
@@ -74,7 +77,9 @@ import CF.FileManagerPackage.MountPointAlreadyExists;
  */
 public class DomainManagerImpl extends AbstractResourceImpl implements DomainManagerOperations {
 
+	private final List<DomainManager> remoteDomMgrs = new ArrayList<DomainManager>();
 	private final List<DeviceManager> deviceManagers = new ArrayList<DeviceManager>();
+	private final Map<String, DeviceManager> deviceIDToDevMgr = new HashMap<String, DeviceManager>();
 	private final List<ApplicationFactory> applicationFactories = new ArrayList<ApplicationFactory>();
 	private final List<Application> applications = new ArrayList<Application>();
 	private final FileManager fileManager;
@@ -94,6 +99,7 @@ public class DomainManagerImpl extends AbstractResourceImpl implements DomainMan
 
 		this.fileManager.mount("components", FileSystemHelper.narrow(poa.servant_to_reference(new FileSystemPOATie(componentsFileSystem))));
 		this.fileManager.mount("domain", FileSystemHelper.narrow(poa.servant_to_reference(new FileSystemPOATie(domainFileSystem))));
+		this.fileManager.mount("domain2", FileSystemHelper.narrow(poa.servant_to_reference(new FileSystemPOATie(domainFileSystem))));
 		this.fileManager.mount("mgr", FileSystemHelper.narrow(poa.servant_to_reference(new FileSystemPOATie(mgrFileSystem))));
 		this.fileManager.mount("waveforms", FileSystemHelper.narrow(poa.servant_to_reference(new FileSystemPOATie(waveformsFileSystem))));
 		URI uri = ScaURIFactory.createURI(dmdPath, fileManager);
@@ -183,6 +189,9 @@ public class DomainManagerImpl extends AbstractResourceImpl implements DomainMan
 			throw new InvalidObjectReference("");
 		}
 		registeredDeviceMgr.registerDevice(registeringDevice);
+		synchronized (deviceIDToDevMgr) {
+			deviceIDToDevMgr.put(registeringDevice.identifier(), registeredDeviceMgr);
+		}
 	}
 
 	/**
@@ -208,8 +217,16 @@ public class DomainManagerImpl extends AbstractResourceImpl implements DomainMan
 	 */
 	@Override
 	public void unregisterDevice(final Device unregisteringDevice) throws InvalidObjectReference, UnregisterError {
-		// TODO Auto-generated method stub
-
+		if (unregisteringDevice == null) {
+			throw new InvalidObjectReference("");
+		}
+		synchronized (deviceIDToDevMgr) {
+			DeviceManager devMgr = deviceIDToDevMgr.remove(unregisteringDevice.identifier());
+			if (devMgr == null) {
+				throw new UnregisterError();
+			}
+			devMgr.unregisterDevice(unregisteringDevice);
+		}
 	}
 
 	/**
@@ -277,8 +294,7 @@ public class DomainManagerImpl extends AbstractResourceImpl implements DomainMan
 	}
 
 	public void registerApplication(Application retVal) {
-		// TODO Auto-generated method stub
-
+		applications.add(retVal);
 	}
 
 	@Override
@@ -295,20 +311,35 @@ public class DomainManagerImpl extends AbstractResourceImpl implements DomainMan
 
 	@Override
 	public DomainManager[] remoteDomainManagers() {
-		// TODO Auto-generated method stub
-		return null;
+		synchronized (remoteDomMgrs) {
+			return remoteDomMgrs.toArray(new DomainManager[remoteDomMgrs.size()]);
+		}
 	}
 
 	@Override
 	public void registerRemoteDomainManager(DomainManager registeringDomainManager) throws InvalidObjectReference, RegisterError {
-		// TODO Auto-generated method stub
-		
+		try {
+			registeringDomainManager.identifier();
+		} catch (SystemException e) {
+			throw new InvalidObjectReference();
+		}
+		synchronized (remoteDomMgrs) {
+			remoteDomMgrs.add(registeringDomainManager);
+		}
 	}
 
 	@Override
 	public void unregisterRemoteDomainManager(DomainManager unregisteringDomainManager) throws InvalidObjectReference, UnregisterError {
-		// TODO Auto-generated method stub
-		
+		try {
+			unregisteringDomainManager.identifier();
+		} catch (SystemException e) {
+			throw new InvalidObjectReference();
+		}
+		synchronized (remoteDomMgrs) {
+			if (!remoteDomMgrs.remove(unregisteringDomainManager)) {
+				throw new UnregisterError();
+			}
+		}
 	}
 
 	@Override

@@ -34,7 +34,6 @@ import CF.PropertySetPackage.PartialConfiguration;
  * <ul>
  * <li>{@link gov.redhawk.model.sca.ProfileObjectWrapper#getProfileURI() <em>Profile URI</em>}</li>
  * <li>{@link gov.redhawk.model.sca.ProfileObjectWrapper#getProfileObj() <em>Profile Obj</em>}</li>
- * <li>{@link gov.redhawk.model.sca.ProfileObjectWrapper#getRootFileStore() <em>Root File Store</em>}</li>
  * </ul>
  * </p>
  * <p>
@@ -322,6 +321,32 @@ public abstract class ScaPropertyContainerTest extends CorbaObjWrapperTest {
 		holder.value = new DataType[0];
 		getFixture().query(holder);
 		// BEGIN GENERATED CODE
+	}
+
+	/**
+	 * Tests the '
+	 * {@link CF.PropertySetOperations#registerPropertyListener(org.omg.CORBA.Object, org.eclipse.emf.common.util.EList, float)
+	 * <em>Register Property Listener</em>}' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see CF.PropertySetOperations#registerPropertyListener(org.omg.CORBA.Object, org.eclipse.emf.common.util.EList,
+	 * float)
+	 * @generated NOT
+	 */
+	public void testRegisterPropertyListener__Object_EList_float() {
+		// PASS - TODO
+	}
+
+	/**
+	 * Tests the '{@link CF.PropertySetOperations#unregisterPropertyListener(java.lang.String) <em>Unregister Property
+	 * Listener</em>}' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see CF.PropertySetOperations#unregisterPropertyListener(java.lang.String)
+	 * @generated NOT
+	 */
+	public void testUnregisterPropertyListener__String() {
+		// PASS - TODO
 	}
 
 	/**

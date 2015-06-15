@@ -11,20 +11,40 @@
 // BEGIN GENERATED CODE
 package gov.redhawk.model.sca.tests;
 
+import gov.redhawk.model.sca.RefreshDepth;
 import gov.redhawk.model.sca.ScaDeviceManager;
 import gov.redhawk.model.sca.ScaDomainManager;
 import gov.redhawk.model.sca.ScaWaveform;
 import gov.redhawk.model.sca.ScaWaveformFactory;
+import gov.redhawk.model.sca.tests.stubs.DomainManagerImpl;
 import gov.redhawk.model.sca.tests.stubs.ScaTestConstaints;
-import org.junit.Assert;
+import gov.redhawk.sca.util.OrbSession;
+
+import java.io.File;
+import java.net.URL;
+import java.util.List;
+
 import junit.textui.TestRunner;
+
+import org.eclipse.core.runtime.FileLocator;
+import org.eclipse.core.runtime.NullProgressMonitor;
+import org.eclipse.core.runtime.Path;
+import org.eclipse.core.runtime.Platform;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EObject;
+import org.junit.Assert;
+
 import CF.DeviceManager;
+import CF.DomainManager;
 import CF.DomainManagerHelper;
+import CF.DomainManagerPOATie;
 import CF.InvalidFileName;
 import CF.InvalidObjectReference;
 import CF.InvalidProfile;
+import CF.ApplicationFactoryPackage.CreateApplicationError;
+import CF.ApplicationFactoryPackage.CreateApplicationInsufficientCapacityError;
+import CF.ApplicationFactoryPackage.CreateApplicationRequestError;
+import CF.ApplicationFactoryPackage.InvalidInitConfiguration;
 import CF.DomainManagerPackage.AlreadyConnected;
 import CF.DomainManagerPackage.ApplicationAlreadyInstalled;
 import CF.DomainManagerPackage.ApplicationInstallationError;
@@ -59,11 +79,23 @@ import CF.DomainManagerPackage.UnregisterError;
  * <li>{@link gov.redhawk.model.sca.ScaDomainManager#disconnect() <em>Disconnect</em>}</li>
  * <li>{@link gov.redhawk.model.sca.ScaDomainManager#fetchDeviceManagers(org.eclipse.core.runtime.IProgressMonitor)
  * <em>Fetch Device Managers</em>}</li>
+ * <li>
+ * {@link gov.redhawk.model.sca.ScaDomainManager#fetchDeviceManagers(org.eclipse.core.runtime.IProgressMonitor, gov.redhawk.model.sca.RefreshDepth)
+ * <em>Fetch Device Managers</em>}</li>
  * <li>{@link gov.redhawk.model.sca.ScaDomainManager#fetchWaveformFactories(org.eclipse.core.runtime.IProgressMonitor)
+ * <em>Fetch Waveform Factories</em>}</li>
+ * <li>
+ * {@link gov.redhawk.model.sca.ScaDomainManager#fetchWaveformFactories(org.eclipse.core.runtime.IProgressMonitor, gov.redhawk.model.sca.RefreshDepth)
  * <em>Fetch Waveform Factories</em>}</li>
  * <li>{@link gov.redhawk.model.sca.ScaDomainManager#fetchWaveforms(org.eclipse.core.runtime.IProgressMonitor) <em>Fetch
  * Waveforms</em>}</li>
+ * <li>
+ * {@link gov.redhawk.model.sca.ScaDomainManager#fetchWaveforms(org.eclipse.core.runtime.IProgressMonitor, gov.redhawk.model.sca.RefreshDepth)
+ * <em>Fetch Waveforms</em>}</li>
  * <li>{@link gov.redhawk.model.sca.ScaDomainManager#fetchFileManager(org.eclipse.core.runtime.IProgressMonitor)
+ * <em>Fetch File Manager</em>}</li>
+ * <li>
+ * {@link gov.redhawk.model.sca.ScaDomainManager#fetchFileManager(org.eclipse.core.runtime.IProgressMonitor, gov.redhawk.model.sca.RefreshDepth)
  * <em>Fetch File Manager</em>}</li>
  * <li>{@link gov.redhawk.model.sca.ScaDomainManager#fetchIdentifier(org.eclipse.core.runtime.IProgressMonitor)
  * <em>Fetch Identifier</em>}</li>
@@ -76,6 +108,10 @@ import CF.DomainManagerPackage.UnregisterError;
  * Profile</em>}</li>
  * <li>{@link gov.redhawk.model.sca.ScaDomainManager#fetchEventChannels(org.eclipse.core.runtime.IProgressMonitor)
  * <em>Fetch Event Channels</em>}</li>
+ * <li>
+ * {@link gov.redhawk.model.sca.ScaDomainManager#fetchEventChannels(org.eclipse.core.runtime.IProgressMonitor, gov.redhawk.model.sca.RefreshDepth)
+ * <em>Fetch Event Channels</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.ScaDomainManager#getLabel() <em>Get Label</em>}</li>
  * <li>{@link CF.DomainManagerOperations#registerDevice(CF.Device, CF.DeviceManager) <em>Register Device</em>}</li>
  * <li>{@link CF.DomainManagerOperations#registerDeviceManager(CF.DeviceManager) <em>Register Device Manager</em>}</li>
  * <li>{@link CF.DomainManagerOperations#unregisterDeviceManager(CF.DeviceManager) <em>Unregister Device Manager</em>}
@@ -304,6 +340,7 @@ public class ScaDomainManagerTest extends ScaPropertyContainerTest {
 	 */
 	public void testFetchDeviceManagers__IProgressMonitor() throws InterruptedException {
 		// END GENERATED CODE
+		@SuppressWarnings("deprecation")
 		EList<ScaDeviceManager> deviceManagersEList = getFixture().fetchDeviceManagers(null);
 		try {
 			deviceManagersEList.clear();
@@ -315,11 +352,24 @@ public class ScaDomainManagerTest extends ScaPropertyContainerTest {
 	}
 
 	/**
+	 * Tests the '
+	 * {@link gov.redhawk.model.sca.ScaDomainManager#fetchDeviceManagers(org.eclipse.core.runtime.IProgressMonitor, gov.redhawk.model.sca.RefreshDepth)
+	 * <em>Fetch Device Managers</em>}' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see gov.redhawk.model.sca.ScaDomainManager#fetchDeviceManagers(org.eclipse.core.runtime.IProgressMonitor,
+	 * gov.redhawk.model.sca.RefreshDepth)
 	 * @generated NOT
 	 */
-	public void testFetchDeviceManagers__IProgressMonitor__RefreshDepth() throws InterruptedException {
+	public void testFetchDeviceManagers__IProgressMonitor_RefreshDepth() {
 		// END GENERATED CODE
-		getFixture().fetchDeviceManagers(null, null);
+		EList<ScaDeviceManager> deviceManagersEList = getFixture().fetchDeviceManagers(new NullProgressMonitor(), RefreshDepth.SELF);
+		try {
+			deviceManagersEList.clear();
+			Assert.fail("fetched Device Managers list should be unmodifiable");
+		} catch (UnsupportedOperationException e) {
+			Assert.assertTrue("fetched Device Managers list is unmodifiable", true);
+		}
 		// BEGIN GENERATED CODE
 	}
 
@@ -335,6 +385,7 @@ public class ScaDomainManagerTest extends ScaPropertyContainerTest {
 	 */
 	public void testFetchWaveformFactories__IProgressMonitor() throws InterruptedException {
 		// END GENERATED CODE
+		@SuppressWarnings("deprecation")
 		EList<ScaWaveformFactory> waveformFactoriesEList = getFixture().fetchWaveformFactories(null);
 		try {
 			waveformFactoriesEList.clear();
@@ -346,11 +397,24 @@ public class ScaDomainManagerTest extends ScaPropertyContainerTest {
 	}
 
 	/**
+	 * Tests the '
+	 * {@link gov.redhawk.model.sca.ScaDomainManager#fetchWaveformFactories(org.eclipse.core.runtime.IProgressMonitor, gov.redhawk.model.sca.RefreshDepth)
+	 * <em>Fetch Waveform Factories</em>}' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see gov.redhawk.model.sca.ScaDomainManager#fetchWaveformFactories(org.eclipse.core.runtime.IProgressMonitor,
+	 * gov.redhawk.model.sca.RefreshDepth)
 	 * @generated NOT
 	 */
-	public void testFetchWaveformFactories__IProgressMonitor__RefreshDepth() throws InterruptedException {
+	public void testFetchWaveformFactories__IProgressMonitor_RefreshDepth() {
 		// END GENERATED CODE
-		getFixture().fetchWaveformFactories(null, null);
+		EList<ScaWaveformFactory> waveformFactoriesEList = getFixture().fetchWaveformFactories(new NullProgressMonitor(), RefreshDepth.SELF);
+		try {
+			waveformFactoriesEList.clear();
+			Assert.fail("fetched Waveform Factories list should be unmodifiable");
+		} catch (UnsupportedOperationException e) {
+			Assert.assertTrue("fetched Waveform Factories list is unmodifiable", true);
+		}
 		// BEGIN GENERATED CODE
 	}
 
@@ -366,6 +430,7 @@ public class ScaDomainManagerTest extends ScaPropertyContainerTest {
 	 */
 	public void testFetchWaveforms__IProgressMonitor() throws InterruptedException {
 		// END GENERATED CODE
+		@SuppressWarnings("deprecation")
 		EList<ScaWaveform> waveformsEList = getFixture().fetchWaveforms(null);
 		try {
 			waveformsEList.clear();
@@ -377,11 +442,24 @@ public class ScaDomainManagerTest extends ScaPropertyContainerTest {
 	}
 
 	/**
+	 * Tests the '
+	 * {@link gov.redhawk.model.sca.ScaDomainManager#fetchWaveforms(org.eclipse.core.runtime.IProgressMonitor, gov.redhawk.model.sca.RefreshDepth)
+	 * <em>Fetch Waveforms</em>}' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see gov.redhawk.model.sca.ScaDomainManager#fetchWaveforms(org.eclipse.core.runtime.IProgressMonitor,
+	 * gov.redhawk.model.sca.RefreshDepth)
 	 * @generated NOT
 	 */
-	public void testFetchWaveforms__IProgressMonitor__RefreshDepth() throws InterruptedException {
+	public void testFetchWaveforms__IProgressMonitor_RefreshDepth() {
 		// END GENERATED CODE
-		getFixture().fetchWaveforms(null, null);
+		EList<ScaWaveform> waveformsEList = getFixture().fetchWaveforms(new NullProgressMonitor(), RefreshDepth.SELF);
+		try {
+			waveformsEList.clear();
+			Assert.fail("fetched Waveforms list should be unmodifiable");
+		} catch (UnsupportedOperationException e) {
+			Assert.assertTrue("fetched Waveforms list is unmodifiable", true);
+		}
 		// BEGIN GENERATED CODE
 	}
 
@@ -394,6 +472,7 @@ public class ScaDomainManagerTest extends ScaPropertyContainerTest {
 	 * @see gov.redhawk.model.sca.ScaDomainManager#fetchFileManager(org.eclipse.core.runtime.IProgressMonitor)
 	 * @generated NOT
 	 */
+	@SuppressWarnings("deprecation")
 	public void testFetchFileManager__IProgressMonitor() {
 		// END GENERATED CODE
 		getFixture().fetchFileManager(null);
@@ -401,11 +480,18 @@ public class ScaDomainManagerTest extends ScaPropertyContainerTest {
 	}
 
 	/**
+	 * Tests the '
+	 * {@link gov.redhawk.model.sca.ScaDomainManager#fetchFileManager(org.eclipse.core.runtime.IProgressMonitor, gov.redhawk.model.sca.RefreshDepth)
+	 * <em>Fetch File Manager</em>}' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see gov.redhawk.model.sca.ScaDomainManager#fetchFileManager(org.eclipse.core.runtime.IProgressMonitor,
+	 * gov.redhawk.model.sca.RefreshDepth)
 	 * @generated NOT
 	 */
-	public void testFetchFileManager__IProgressMonitor__RefreshDepth() {
+	public void testFetchFileManager__IProgressMonitor_RefreshDepth() {
 		// END GENERATED CODE
-		getFixture().fetchFileManager(null, null);
+		getFixture().fetchFileManager(new NullProgressMonitor(), RefreshDepth.SELF);
 		// BEGIN GENERATED CODE
 	}
 
@@ -477,6 +563,44 @@ public class ScaDomainManagerTest extends ScaPropertyContainerTest {
 		// END GENERATED CODE
 		getFixture().fetchProfile(null);
 		// BEGIN GENERATED CODE
+	}
+
+	/**
+	 * Tests the '
+	 * {@link gov.redhawk.model.sca.ScaDomainManager#fetchEventChannels(org.eclipse.core.runtime.IProgressMonitor)
+	 * <em>Fetch Event Channels</em>}' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see gov.redhawk.model.sca.ScaDomainManager#fetchEventChannels(org.eclipse.core.runtime.IProgressMonitor)
+	 * @generated NOT
+	 */
+	public void testFetchEventChannels__IProgressMonitor() {
+		// PASS - We don't have a naming context in the test domain manager
+	}
+
+	/**
+	 * Tests the '
+	 * {@link gov.redhawk.model.sca.ScaDomainManager#fetchEventChannels(org.eclipse.core.runtime.IProgressMonitor, gov.redhawk.model.sca.RefreshDepth)
+	 * <em>Fetch Event Channels</em>}' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see gov.redhawk.model.sca.ScaDomainManager#fetchEventChannels(org.eclipse.core.runtime.IProgressMonitor,
+	 * gov.redhawk.model.sca.RefreshDepth)
+	 * @generated NOT
+	 */
+	public void testFetchEventChannels__IProgressMonitor_RefreshDepth() {
+		// PASS - We don't have a naming context in the test domain manager
+	}
+
+	/**
+	 * Tests the '{@link gov.redhawk.model.sca.ScaDomainManager#getLabel() <em>Get Label</em>}' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see gov.redhawk.model.sca.ScaDomainManager#getLabel()
+	 * @generated
+	 */
+	public void testGetLabel() {
+		Assert.assertEquals("REDHAWK_DEV", getFixture().getLabel());
 	}
 
 	/**
@@ -557,8 +681,44 @@ public class ScaDomainManagerTest extends ScaPropertyContainerTest {
 	 */
 	public void testUnregisterDevice__Device() throws InvalidObjectReference, UnregisterError {
 		// END GENERATED CODE
-		getFixture().unregisterDevice(null);
+		try {
+			getFixture().unregisterDevice(null);
+			Assert.fail();
+		} catch (InvalidObjectReference e) {
+			// PASS
+		} catch (UnregisterError e) {
+			// PASS
+		}
 		// BEGIN GENERATED CODE
+	}
+
+	/**
+	 * Tests the '
+	 * {@link CF.DomainManagerOperations#createApplication(java.lang.String, java.lang.String, CF.DataType[], CF.DeviceAssignmentType[])
+	 * <em>Create Application</em>}' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @throws InvalidInitConfiguration
+	 * @throws CreateApplicationInsufficientCapacityError
+	 * @throws CreateApplicationRequestError
+	 * @throws CreateApplicationError
+	 * @throws InvalidFileName
+	 * @throws InvalidProfile
+	 * @throws InterruptedException
+	 * @see CF.DomainManagerOperations#createApplication(java.lang.String, java.lang.String, CF.DataType[],
+	 * CF.DeviceAssignmentType[])
+	 * @generated
+	 */
+	public void testCreateApplication__String_String_DataType_DeviceAssignmentType() throws InvalidProfile, InvalidFileName, CreateApplicationError, CreateApplicationRequestError, CreateApplicationInsufficientCapacityError, InvalidInitConfiguration, InterruptedException {
+		String name = "testCreateApplication";
+		getFixture().createApplication("/waveforms/FinishedExampleWaveform/ExampleWaveform.sad.xml", name, new CF.DataType[0], new CF.DeviceAssignmentType[0]);
+		List<ScaWaveform> waveforms = getFixture().fetchWaveforms(new NullProgressMonitor(), RefreshDepth.SELF);
+		for (ScaWaveform waveform : waveforms) {
+			if (name.equals(waveform.getName())) {
+				return;
+			}
+		}
+		Assert.fail("Application was not created");
 	}
 
 	/**
@@ -703,6 +863,49 @@ public class ScaDomainManagerTest extends ScaPropertyContainerTest {
 		// END GENERATED CODE
 		getFixture().unregisterFromEventChannel("", "");
 		// BEGIN GENERATED CODE
+	}
+
+	/**
+	 * Tests the '{@link CF.DomainManagerOperations#registerRemoteDomainManager(CF.DomainManager) <em>Register Remote
+	 * Domain Manager</em>}' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @throws Exception
+	 * @see CF.DomainManagerOperations#registerRemoteDomainManager(CF.DomainManager)
+	 * @generated NOT
+	 */
+	public void testRegisterRemoteDomainManager__DomainManager() throws Exception {
+		// END GENERATED CODE
+
+		Assert.assertEquals(0, getFixture().remoteDomainManagers().length);
+
+		// Regsiter a new domain managaer
+		URL domFileUrl = FileLocator.toFileURL(FileLocator.find(Platform.getBundle("gov.redhawk.sca.model.tests"), new Path("sdr/dom"), null));
+		File domRoot = new File(domFileUrl.toURI());
+		Assert.assertTrue(domRoot.exists());
+		OrbSession session = TestEnvirornment.getInstance().getOrbSession();
+		DomainManagerImpl domainMgrImpl = new DomainManagerImpl(domRoot, "/domain2/DomainManager.dmd.xml", null, null, session.getOrb(), session.getPOA());
+		DomainManager dmdRef = DomainManagerHelper.narrow(session.getPOA().servant_to_reference(new DomainManagerPOATie(domainMgrImpl)));
+		getFixture().registerRemoteDomainManager(dmdRef);
+		Assert.assertEquals(1, getFixture().remoteDomainManagers().length);
+
+		// Unregister the domain manager
+		getFixture().unregisterRemoteDomainManager(dmdRef);
+		Assert.assertEquals(0, getFixture().remoteDomainManagers().length);
+
+		// BEGIN GENERATED CODE
+	}
+
+	/**
+	 * Tests the '{@link CF.DomainManagerOperations#unregisterRemoteDomainManager(CF.DomainManager) <em>Unregister
+	 * Remote Domain Manager</em>}' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see CF.DomainManagerOperations#unregisterRemoteDomainManager(CF.DomainManager)
+	 * @generated NOT
+	 */
+	public void testUnregisterRemoteDomainManager__DomainManager() {
+		// PASS - This is tested in testRegisterRemoteDomainManager__DomainManager()
 	}
 
 	/**
