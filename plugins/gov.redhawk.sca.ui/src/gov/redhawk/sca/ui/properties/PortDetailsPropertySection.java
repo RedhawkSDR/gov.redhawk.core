@@ -54,32 +54,34 @@ public class PortDetailsPropertySection extends AbstractPropertySection {
 	@Override
 	public void createControls(Composite parent, TabbedPropertySheetPage aTabbedPropertySheetPage) {
 		super.createControls(parent, aTabbedPropertySheetPage);
-		 Composite composite = getWidgetFactory().createFlatFormComposite(parent);
-		 FormData layoutData;
-		 Label label;
+		Composite composite = getWidgetFactory().createFlatFormComposite(parent);
+		FormData layoutData;
+		Label label;
 
-		 // Port info: <uses/provides> interface / IDL (repID)
-		 layoutData = new FormData();
-		 layoutData.left  = new FormAttachment(0);
-		 layoutData.right = new FormAttachment(100); // fill 100% to width of parent -HSPACE pixels
-		 this.infoText = getWidgetFactory().createText(composite, "", SWT.SINGLE | SWT.READ_ONLY);
-		 this.infoText.setData(FormToolkit.KEY_DRAW_BORDER, Boolean.FALSE);
-		 this.infoText.setLayoutData(layoutData);
+		// Port info: <uses/provides> interface / IDL (repID)
+		layoutData = new FormData();
+		layoutData.left = new FormAttachment(0);
+		layoutData.right = new FormAttachment(100); // fill 100% to width of parent -HSPACE pixels
+		this.infoText = getWidgetFactory().createText(composite, "", SWT.SINGLE | SWT.READ_ONLY);
+		this.infoText.setData(FormToolkit.KEY_DRAW_BORDER, Boolean.FALSE);
+		this.infoText.setLayoutData(layoutData);
 
-		 // Port Description
-		 layoutData = new FormData();
-		 layoutData.left = new FormAttachment(0);
-		 layoutData.top  = new FormAttachment(this.infoText, 0, SWT.BOTTOM);  // put below Port interface/IDL info
-		 label = getWidgetFactory().createLabel(composite, "Description:");
-		 label.setLayoutData(layoutData);
+		// Port Description
+		layoutData = new FormData();
+		layoutData.left = new FormAttachment(0);
+		layoutData.top = new FormAttachment(this.infoText, 0, SWT.BOTTOM); // put below Port interface/IDL info
+		label = getWidgetFactory().createLabel(composite, "Description:");
+		label.setLayoutData(layoutData);
 
-		 layoutData = new FormData();
-		 layoutData.top    = new FormAttachment(label, 0, SWT.BOTTOM);                  // put below label
-		 layoutData.left   = new FormAttachment(0,    ITabbedPropertyConstants.HSPACE); // start at left of parent +HSPACE pixels
-		 layoutData.right  = new FormAttachment(100, -ITabbedPropertyConstants.HSPACE); // fill 100% to width of parent -HSPACE pixels
-		 layoutData.bottom = new FormAttachment(100, -ITabbedPropertyConstants.VMARGIN);
-		 this.descriptionText = getWidgetFactory().createText(composite, "", SWT.MULTI | SWT.WRAP);
-		 this.descriptionText.setLayoutData(layoutData);
+		layoutData = new FormData();
+		layoutData.top = new FormAttachment(label, 0, SWT.BOTTOM); // put below label
+		layoutData.left = new FormAttachment(0, ITabbedPropertyConstants.HSPACE); // start at left of parent +HSPACE
+																					// pixels
+		layoutData.right = new FormAttachment(100, -ITabbedPropertyConstants.HSPACE); // fill 100% to width of parent
+																						// -HSPACE pixels
+		layoutData.bottom = new FormAttachment(100, -ITabbedPropertyConstants.VMARGIN);
+		this.descriptionText = getWidgetFactory().createText(composite, "", SWT.MULTI | SWT.WRAP);
+		this.descriptionText.setLayoutData(layoutData);
 	}
 
 	@Override
@@ -101,23 +103,23 @@ public class PortDetailsPropertySection extends AbstractPropertySection {
 	@Override
 	public void refresh() {
 		super.refresh();
-		final AbstractPort port = this.port;
-		if (port != null) {
+		final AbstractPort currentPort = this.port;
+		if (currentPort != null) {
 			// Port Info: input/output direction and IDL
 			StringBuilder sb = new StringBuilder("Direction: ");
-			if (port instanceof Uses) {
-				sb.append("out <uses> ");            // is an output Port
+			if (currentPort instanceof Uses) {
+				sb.append("out <uses> "); // is an output Port
 			}
-			if (port instanceof Provides) {
-				sb.append("in <provides> ");         // is an input Port
+			if (currentPort instanceof Provides) {
+				sb.append("in <provides> "); // is an input Port
 			}
-			sb.append(' ').append(port.getRepID());  // IDL/RepID
+			sb.append(' ').append(currentPort.getRepID()); // IDL/RepID
 
 			// Port Type(s): data, control, and/or responses
-			EList<PortTypeContainer> elist = port.getPortType();
+			EList<PortTypeContainer> elist = currentPort.getPortType();
 			if (elist != null && !elist.isEmpty()) {
 				sb.append("  Type: ");
-				for (int ii=0; ii<elist.size(); ii++) {
+				for (int ii = 0; ii < elist.size(); ii++) {
 					PortTypeContainer portTypeContainer = elist.get(ii);
 					if (ii > 0) {
 						sb.append(", ");
@@ -128,9 +130,9 @@ public class PortDetailsPropertySection extends AbstractPropertySection {
 			this.infoText.setText(sb.toString());
 
 			// Port Description
-			String str = port.getDescription();
+			String str = currentPort.getDescription();
 			if (str == null) { // description is an optional field
-				str = "";      // but Text.setText() input has to non-null, so set to empty string
+				str = ""; // but Text.setText() input has to non-null, so set to empty string
 			}
 			this.descriptionText.setText(str);
 		}
