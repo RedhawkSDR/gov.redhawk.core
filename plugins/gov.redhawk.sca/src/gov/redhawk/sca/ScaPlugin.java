@@ -137,16 +137,6 @@ public class ScaPlugin extends Plugin {
 	}
 
 	/**
-	 * @since 3.0
-	 * @deprecated Use {@link #getDomainManagerRegistry(Object) instead. In RAP, the domain registry cannot be retrieved
-	 * without the active Display instance}
-	 */
-	@Deprecated
-	public ScaDomainManagerRegistry getDomainManagerRegistry() {
-		return getDomainManagerRegistry(null);
-	}
-
-	/**
 	 * @since 7.0
 	 *
 	 * Returns the SCA Domain Manager registry.
@@ -298,24 +288,6 @@ public class ScaPlugin extends Plugin {
 		return PropertiesProviderRegistry.INSTANCE;
 	}
 
-
-	/**
-	 * Determines if a domain of the given name is bound to the default naming service and
-	 * appears to be existant.
-	 * @since 6.0
-	 * @deprecated Use {@link #isDomainOnline(String, IProgressMonitor)}
-	 */
-	@Deprecated
-	public static boolean isDomainOnline(final String domainName) {
-		try {
-			return ScaPlugin.isDomainOnline(domainName, (IProgressMonitor) null);
-		} catch (CoreException e) {
-			return false;
-		} catch (InterruptedException e) {
-			return false;
-		}
-	}
-
 	/**
 	 * Determines if a domain of the given name is bound to the default naming service and
 	 * appears to be existant.
@@ -333,23 +305,6 @@ public class ScaPlugin extends Plugin {
 	/**
 	 * Determines if a domain of the given name is bound to the naming service and
 	 * appears to be existant.
-	 * @since 6.0
-	 * @deprecated {@link #isDomainOnline(String, String, IProgressMonitor)}
-	 */
-	@Deprecated
-	public static boolean isDomainOnline(final String domainName, final String namingService) {
-		try {
-			return ScaPlugin.isDomainOnline(domainName, namingService, null);
-		} catch (CoreException e) {
-			return false;
-		} catch (InterruptedException e) {
-			return false;
-		}
-	}
-
-	/**
-	 * Determines if a domain of the given name is bound to the naming service and
-	 * appears to be existant.
 	 * @throws InterruptedException
 	 * @throws CoreException
 	 * @since 7.0
@@ -357,24 +312,6 @@ public class ScaPlugin extends Plugin {
 	public static boolean isDomainOnline(final String domainName, final String namingService, IProgressMonitor monitor) throws CoreException,
 	InterruptedException {
 		return ScaPlugin.nameServiceObjectExists(domainName, namingService, monitor);
-	}
-
-	/**
-	 * Determine's if an object with a given name is bound to the provided nameservice and
-	 * the object exists.
-	 * 
-	 * @since 6.0
-	 * @deprecated {@link #nameServiceObjectExists(String, String, IProgressMonitor)}
-	 */
-	@Deprecated
-	public static boolean nameServiceObjectExists(final String name, final String nameServiceInitRef) {
-		try {
-			return ScaPlugin.nameServiceObjectExists(name, nameServiceInitRef, null);
-		} catch (CoreException e) {
-			return false;
-		} catch (InterruptedException e) {
-			return false;
-		}
 	}
 
 	/**
@@ -445,40 +382,6 @@ public class ScaPlugin extends Plugin {
 		IPreferenceAccessor prefs = ScaPlugin.getDefault().getScaPreferenceAccessor();
 		final String namingService = prefs.getString(ScaPreferenceConstants.SCA_DEFAULT_NAMING_SERVICE);
 		return ScaPlugin.findDomainNamesOnNameServer(namingService, monitor);
-	}
-
-	/**
-	 * Scan the naming service to find available domains
-	 * 
-	 * @since 6.0
-	 * @deprecated Use {@link #findDomainNamesOnDefaultNameServer(IProgressMonitor)}
-	 */
-	@Deprecated
-	public static String[] findDomainNamesOnDefaultNameServer() {
-		try {
-			return ScaPlugin.findDomainNamesOnDefaultNameServer(null);
-		} catch (CoreException e) {
-			return new String[0];
-		} catch (InterruptedException e) {
-			return new String[0];
-		}
-	}
-
-	/**
-	 * Scan the naming service to find available domains
-	 * 
-	 * @since 6.0
-	 * @deprecated {@link #findDomainNamesOnDefaultNameServer(String, IProgressMonitor)}
-	 */
-	@Deprecated
-	public static String[] findDomainNamesOnNameServer(final String nameServiceInitRef) {
-		try {
-			return ScaPlugin.findDomainNamesOnNameServer(nameServiceInitRef, null);
-		} catch (CoreException e) {
-			return new String[0];
-		} catch (InterruptedException e) {
-			return new String[0];
-		}
 	}
 
 	/**
