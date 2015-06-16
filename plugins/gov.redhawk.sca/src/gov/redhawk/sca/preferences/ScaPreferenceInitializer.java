@@ -69,7 +69,7 @@ public class ScaPreferenceInitializer extends AbstractPreferenceInitializer {
 						final org.eclipse.emf.common.util.URI configUri = org.eclipse.emf.common.util.URI.createURI(configUrl.toString());
 						final Resource configResource = resourceSet.getResource(configUri, true);
 						ScaPreferenceInitializer.scaDomainManagerRegistry = ScaDomainManagerRegistry.Util.getScaDomainManagerRegistry(configResource);
-					} catch (final Exception e1) { // SUPPRESS CHECKSTYLE Fallback
+					} catch (RuntimeException e) { // SUPPRESS CHECKSTYLE ResourceSet.getResource(URI, boolean) has a broad throws definition
 						// Second, try the shared config area
 						try {
 							final URL sharedConfigUrl = ScaPreferenceInitializer.getDomainManagerRegistrySharedConfigURL();
@@ -78,7 +78,7 @@ public class ScaPreferenceInitializer extends AbstractPreferenceInitializer {
 								final Resource sharedConfigResource = resourceSet.getResource(sharedConfigUri, true);
 								ScaPreferenceInitializer.scaDomainManagerRegistry = ScaDomainManagerRegistry.Util.getScaDomainManagerRegistry(sharedConfigResource);
 							}
-						} catch (final Exception e2) { // SUPPRESS CHECKSTYLE Fallback
+						} catch (final RuntimeException e2) { // SUPPRESS CHECKSTYLE ResourceSet.getResource(URI, boolean) has a broad throws definition
 							// PASS
 						}
 					}
