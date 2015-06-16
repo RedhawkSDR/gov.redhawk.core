@@ -15,24 +15,18 @@ import org.eclipse.jface.preference.PreferenceNode;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.ui.model.IComparableContribution;
 
-/**
- * 
- */
 public class PlotPreferenceNode extends PreferenceNode implements IComparableContribution {
 
 	public PlotPreferenceNode(String id, IPreferencePage preferencePage) {
 		super(id, preferencePage);
-		// TODO Auto-generated constructor stub
 	}
 
 	public PlotPreferenceNode(String id, String label, ImageDescriptor image, String className) {
 		super(id, label, image, className);
-		// TODO Auto-generated constructor stub
 	}
 
 	public PlotPreferenceNode(String id) {
 		super(id);
-		// TODO Auto-generated constructor stub
 	}
 
 	@Override

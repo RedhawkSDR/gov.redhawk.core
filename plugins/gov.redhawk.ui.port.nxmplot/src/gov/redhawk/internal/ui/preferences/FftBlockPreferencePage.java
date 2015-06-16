@@ -33,24 +33,15 @@ import org.eclipse.ui.IWorkbenchPreferencePage;
 import org.eclipse.ui.forms.widgets.ExpandableComposite;
 import org.eclipse.ui.forms.widgets.Section;
 
-/**
- *
- */
 public class FftBlockPreferencePage extends FieldEditorPreferencePage implements IWorkbenchPreferencePage {
 
 	private IWorkbench workbench;
 
-	/**
-	 *
-	 */
 	public FftBlockPreferencePage() {
 		super("FFT", FieldEditorPreferencePage.GRID);
 		setDescription("Change various settings on the FFT primitive.");
 	}
 
-	/* (non-Javadoc)
-	 * @see org.eclipse.ui.IWorkbenchPreferencePage#init(org.eclipse.ui.IWorkbench)
-	 */
 	@Override
 	public void init(IWorkbench workbench) {
 		this.workbench = workbench;
@@ -60,7 +51,6 @@ public class FftBlockPreferencePage extends FieldEditorPreferencePage implements
 
 	@Override
 	protected void createFieldEditors() {
-
 		if (workbench != null) {
 			addField(createFftModesField());
 		}

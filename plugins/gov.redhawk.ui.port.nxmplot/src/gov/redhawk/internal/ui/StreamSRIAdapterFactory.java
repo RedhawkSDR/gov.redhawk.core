@@ -38,9 +38,7 @@ public class StreamSRIAdapterFactory implements IAdapterFactory {
 
 	private static final StreamSRIPropertySourceProvider PROPERTY_PROVIDER = new StreamSRIPropertySourceProvider();
 
-	/**
-	 * {@inheritDoc}
-	 */
+	@SuppressWarnings("unchecked")
 	@Override
 	public Object getAdapter(final Object adaptableObject, @SuppressWarnings("rawtypes") final Class adapterType) {
 		if (adaptableObject instanceof StreamSRI) {
@@ -53,9 +51,6 @@ public class StreamSRIAdapterFactory implements IAdapterFactory {
 		return null;
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public Class < ? >[] getAdapterList() {
 		return StreamSRIAdapterFactory.list;

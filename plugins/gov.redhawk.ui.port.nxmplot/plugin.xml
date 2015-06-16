@@ -21,15 +21,6 @@
       <view
             allowMultiple="true"
             category="gov.redhawk.ui.category.sca"
-            class="gov.redhawk.internal.ui.port.nxmplot.view.PlotView"
-            icon="icons/SDU.gif"
-            id="gov.redhawk.ui.port.nxmplot.portdata"
-            name="Port Data (Legacy)"
-            restorable="false">
-      </view>
-      <view
-            allowMultiple="true"
-            category="gov.redhawk.ui.category.sca"
             class="gov.redhawk.internal.ui.port.nxmplot.view.PlotView2"
             icon="icons/SDU.gif"
             id="gov.redhawk.ui.port.nxmplot.PlotView2"

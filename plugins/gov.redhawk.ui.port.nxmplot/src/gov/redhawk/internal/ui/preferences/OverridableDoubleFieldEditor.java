@@ -22,9 +22,6 @@ import org.eclipse.swt.graphics.RGB;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Text;
 
-/**
- * 
- */
 public class OverridableDoubleFieldEditor extends DoubleFieldEditor {
 
 	private String overridePrefName;

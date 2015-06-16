@@ -112,16 +112,6 @@ public class BulkIONxmBlockSettings implements Cloneable {
 		this.sampleRate = sampleRate;
 	}
 
-	/** @deprecated since 5.0, use {@link #setBlockingOption(BlockingOption)} */
-	@Deprecated
-	public void setBlocking(boolean blocking) {
-		if (blocking) {
-			this.blocking = BlockingOption.BLOCKING;
-		} else {
-			this.blocking = BlockingOption.NONBLOCKING;
-		}
-	}
-
 	/** @since 5.0 */
 	public BlockingOption getBlockingOption() {
 		return this.blocking;

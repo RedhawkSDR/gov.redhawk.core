@@ -14,9 +14,6 @@ import org.eclipse.jface.preference.PreferenceManager;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.internal.dialogs.FilteredPreferenceDialog;
 
-/**
- * 
- */
 public class PlotPreferenceDialog extends FilteredPreferenceDialog {
 
 	public PlotPreferenceDialog(Shell parentShell, PreferenceManager manager) {

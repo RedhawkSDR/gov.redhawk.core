@@ -33,9 +33,6 @@ import org.eclipse.jface.preference.IPreferencePage;
 import org.eclipse.jface.preference.PreferenceManager;
 import org.eclipse.jface.preference.PreferenceNode;
 
-/**
- * 
- */
 public class PlotSettingsAction extends Action {
 
 	private PlotPageBook2 pageBook;

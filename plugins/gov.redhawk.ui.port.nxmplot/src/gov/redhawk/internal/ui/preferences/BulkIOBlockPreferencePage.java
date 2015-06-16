@@ -26,24 +26,15 @@ import org.eclipse.ui.IWorkbenchPreferencePage;
 import org.eclipse.ui.forms.widgets.ExpandableComposite;
 import org.eclipse.ui.forms.widgets.Section;
 
-/**
- *
- */
 public class BulkIOBlockPreferencePage extends FieldEditorPreferencePage implements IWorkbenchPreferencePage {
 
 	private IWorkbench workbench;
 
-	/**
-	 *
-	 */
 	public BulkIOBlockPreferencePage() {
 		super("BULKIO", FieldEditorPreferencePage.GRID);
 		setDescription("Modify how the data is being received via the CORBA Bulk Data.");
 	}
 
-	/* (non-Javadoc)
-	 * @see org.eclipse.ui.IWorkbenchPreferencePage#init(org.eclipse.ui.IWorkbench)
-	 */
 	@Override
 	public void init(IWorkbench workbench) {
 		this.workbench = workbench;
