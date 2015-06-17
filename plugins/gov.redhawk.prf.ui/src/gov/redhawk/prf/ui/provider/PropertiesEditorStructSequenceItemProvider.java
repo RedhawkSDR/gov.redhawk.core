@@ -11,6 +11,7 @@
  */
 package gov.redhawk.prf.ui.provider;
 
+import java.util.ArrayList;
 import java.util.Collection;
 
 import mil.jpeojtrs.sca.prf.AccessType;
@@ -57,15 +58,16 @@ public class PropertiesEditorStructSequenceItemProvider extends StructSequenceIt
 
 	@Override
 	protected void collectNewChildDescriptors(final Collection<Object> newChildDescriptors, final Object object) {
-		newChildDescriptors.add(createChildParameter(PrfPackage.Literals.STRUCT_SEQUENCE__STRUCT, PrfFactory.eINSTANCE.createStruct()));
+		// Disallow creating children from this provider
 	}
 
 	@Override
 	public Collection< ? extends EStructuralFeature> getChildrenFeatures(final Object object) {
-		super.getChildrenFeatures(object);
-		this.childrenFeatures.remove(PrfPackage.Literals.STRUCT_SEQUENCE__STRUCT_VALUE);
-		this.childrenFeatures.remove(PrfPackage.Literals.STRUCT_SEQUENCE__CONFIGURATION_KIND);
-		return this.childrenFeatures;
+		if (childrenFeatures == null) {
+			childrenFeatures = new ArrayList<EStructuralFeature>();
+			childrenFeatures.add(PrfPackage.Literals.STRUCT_SEQUENCE__STRUCT);
+		}
+		return childrenFeatures;
 	}
 
 	/**

@@ -16,6 +16,7 @@ import gov.redhawk.eclipsecorba.library.util.RefreshIdlLibraryJob;
 import gov.redhawk.internal.ui.ScaIdeConstants;
 import gov.redhawk.internal.ui.editor.validation.ValidatingEContentAdapter;
 import gov.redhawk.ui.RedhawkUiActivator;
+import gov.redhawk.ui.util.ViewerUtil;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -79,7 +80,6 @@ import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.EValidator;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
-import org.eclipse.emf.ecore.util.EContentAdapter;
 import org.eclipse.emf.ecore.xmi.XMLResource;
 import org.eclipse.emf.edit.domain.AdapterFactoryEditingDomain;
 import org.eclipse.emf.edit.domain.EditingDomain;
@@ -550,15 +550,6 @@ public abstract class SCAFormEditor extends FormEditor implements IEditingDomain
 				this.myTarget = newTarget;
 			}
 
-		});
-
-		domain.getResourceSet().eAdapters().add(new EContentAdapter() {
-			@Override
-			public void notifyChanged(Notification notification) {
-				selfAdapt(notification);
-
-				super.notifyChanged(notification);
-			}
 		});
 
 		// Add a listener to set the most recent command's affected objects to
@@ -1801,8 +1792,8 @@ public abstract class SCAFormEditor extends FormEditor implements IEditingDomain
 					updateAllDocs();
 				} else {
 					for (final Object obj : objects) {
-						if (obj instanceof EObject) {
-							final Resource resource = ((EObject) obj).eResource();
+						final Resource resource = getResourceForObject(obj);
+						if (resource != null) {
 							updateDocument(resource);
 						}
 					}
@@ -1811,6 +1802,14 @@ public abstract class SCAFormEditor extends FormEditor implements IEditingDomain
 				updateAllDocs();
 			}
 		}
+	}
+
+	private Resource getResourceForObject(Object object) {
+		object = AdapterFactoryEditingDomain.unwrap(object);
+		if (object instanceof EObject) {
+			return ((EObject) object).eResource();
+		}
+		return null;
 	}
 
 	private void updateAllDocs() {
@@ -1923,17 +1922,21 @@ public abstract class SCAFormEditor extends FormEditor implements IEditingDomain
 	 * @since 5.0
 	 */
 	public void setSelectionToViewer(final Collection< ? > collection) {
-		final Collection< ? > theSelection = collection;
 		// Make sure it's okay.
 		//
-		if (theSelection != null && !theSelection.isEmpty()) {
+		if (collection != null && !collection.isEmpty()) {
+			final Collection< ? > theSelection = collection;
 			final Runnable runnable = new Runnable() {
 				@Override
 				public void run() {
 					// Try to select the items in the current content viewer of the editor.
 					//
-					if (getViewer() != null) {
-						getViewer().setSelection(new StructuredSelection(theSelection.toArray()), true);
+					final Viewer viewer = getViewer();
+					if (viewer != null) {
+						final ISelection selection = ViewerUtil.itemsToSelection(viewer, theSelection);
+						if (!selection.isEmpty()) {
+							viewer.setSelection(selection, true);
+						}
 					}
 				}
 			};
@@ -2031,6 +2034,5 @@ public abstract class SCAFormEditor extends FormEditor implements IEditingDomain
 	public Map<Resource, IDocument> getResourceToDocumentMap() {
 		return resourceToDocumentMap;
 	}
-	
-	
+
 }

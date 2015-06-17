@@ -14,16 +14,18 @@ package gov.redhawk.prf.internal.ui.editor;
 import gov.redhawk.prf.internal.ui.editor.detailspart.Property;
 import gov.redhawk.prf.internal.ui.handlers.PropertyHandler;
 import gov.redhawk.prf.ui.editor.page.PropertiesFormPage;
-import gov.redhawk.prf.ui.provider.PropertiesEditorPrfItemProviderAdapterFactory;
 import gov.redhawk.prf.ui.wizard.BrowsePropertiesWizard;
 import gov.redhawk.sca.ScaPlugin;
 import gov.redhawk.sca.ui.parts.FormFilteredTree;
 import gov.redhawk.ui.actions.SortAction;
 import gov.redhawk.ui.editor.TreeSection;
 import gov.redhawk.ui.parts.TreePart;
+import gov.redhawk.ui.parts.UnwrappingLabelProvider;
 import gov.redhawk.ui.util.SCAEditorUtil;
+import gov.redhawk.ui.util.ViewerUtil;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import mil.jpeojtrs.sca.prf.Properties;
@@ -31,13 +33,10 @@ import mil.jpeojtrs.sca.prf.Properties;
 import org.eclipse.emf.common.command.Command;
 import org.eclipse.emf.common.notify.AdapterFactory;
 import org.eclipse.emf.ecore.EObject;
-import org.eclipse.emf.ecore.provider.EcoreItemProviderAdapterFactory;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.edit.command.AddCommand;
+import org.eclipse.emf.edit.command.RemoveCommand;
 import org.eclipse.emf.edit.domain.EditingDomain;
-import org.eclipse.emf.edit.provider.ComposedAdapterFactory;
-import org.eclipse.emf.edit.provider.ReflectiveItemProviderAdapterFactory;
-import org.eclipse.emf.edit.provider.resource.ResourceItemProviderAdapterFactory;
 import org.eclipse.emf.edit.ui.provider.AdapterFactoryContentProvider;
 import org.eclipse.emf.edit.ui.provider.AdapterFactoryLabelProvider;
 import org.eclipse.jface.action.IAction;
@@ -84,12 +83,9 @@ public class PropertiesSection extends TreeSection implements IPropertyChangeLis
 
 	private SortAction fSortAction;
 
-	private ComposedAdapterFactory adapterFactory;
 	private Resource prfResource;
 	private boolean editable;
-	private boolean deleteTriggered = false;
 	private Properties properties;
-	private Integer lastIndex = 0;
 	private PropertiesBlock block;
 
 	public PropertiesSection(PropertiesBlock block, final Composite parent) {
@@ -124,8 +120,9 @@ public class PropertiesSection extends TreeSection implements IPropertyChangeLis
 			handleBrowse();
 			break;
 		case BUTTON_REMOVE:
-			PropertyHandler.removeProperty(getAdapterFactory(), getEditingDomain(), getProperties(), selection);
-			this.deleteTriggered = true;
+			EditingDomain editingDomain = getEditingDomain();
+			Command remove = RemoveCommand.create(editingDomain, selection);
+			editingDomain.getCommandStack().execute(remove);
 			break;
 		default:
 			break;
@@ -139,8 +136,8 @@ public class PropertiesSection extends TreeSection implements IPropertyChangeLis
 		createViewerPartControl(container, SWT.MULTI, 2, toolkit);
 		this.fExtensionTree = treePart.getTreeViewer();
 		this.fExtensionTree.setContentProvider(new AdapterFactoryContentProvider(getAdapterFactory()));
-		this.fExtensionTree.setLabelProvider(new DecoratingLabelProvider(new AdapterFactoryLabelProvider(getAdapterFactory()),
-			PlatformUI.getWorkbench().getDecoratorManager().getLabelDecorator()));
+		this.fExtensionTree.setLabelProvider(new DecoratingLabelProvider(new UnwrappingLabelProvider(new AdapterFactoryLabelProvider(getAdapterFactory())), PlatformUI.getWorkbench()
+		        .getDecoratorManager().getLabelDecorator()));
 		toolkit.paintBordersFor(container);
 		section.setClient(container);
 		section.setDescription("Define properties within the following section.");
@@ -200,7 +197,6 @@ public class PropertiesSection extends TreeSection implements IPropertyChangeLis
 		if (this.fFilteredTree != null) {
 			this.fFilteredTree.dispose();
 		}
-		this.adapterFactory.dispose();
 		super.dispose();
 	}
 
@@ -214,16 +210,7 @@ public class PropertiesSection extends TreeSection implements IPropertyChangeLis
 	}
 
 	private AdapterFactory getAdapterFactory() {
-		if (this.adapterFactory == null) {
-			// Create an adapter factory that yields item providers.
-			//
-			this.adapterFactory = new ComposedAdapterFactory();
-			this.adapterFactory.addAdapterFactory(new PropertiesEditorPrfItemProviderAdapterFactory());
-			this.adapterFactory.addAdapterFactory(new ResourceItemProviderAdapterFactory());
-			this.adapterFactory.addAdapterFactory(new EcoreItemProviderAdapterFactory());
-			this.adapterFactory.addAdapterFactory(new ReflectiveItemProviderAdapterFactory());
-		}
-		return this.adapterFactory;
+		return getPage().getEditor().getAdapterFactory();
 	}
 
 	private EditingDomain getEditingDomain() {
@@ -255,24 +242,6 @@ public class PropertiesSection extends TreeSection implements IPropertyChangeLis
 				getEditingDomain().getCommandStack().execute(command);
 			}
 		}
-	}
-
-	private int indexOf(final Object obj) {
-		final Tree tree = this.fExtensionTree.getTree();
-		final List<TreeItem> treeList = Arrays.asList(tree.getItems());
-		if (treeList.isEmpty()) {
-			return 0;
-		} else {
-			int index = 0;
-			for (final TreeItem item : treeList) {
-				if (item.getData().equals(obj)) {
-					return index;
-				}
-				index++;
-			}
-		}
-
-		return 0;
 	}
 
 	private void initialize() {
@@ -315,22 +284,7 @@ public class PropertiesSection extends TreeSection implements IPropertyChangeLis
 		if (items.length == 0) {
 			return;
 		}
-
-		TreeItem item = null;
-
-		int selectIndex = this.lastIndex;
-		if (selectIndex > 0) {
-			if (this.deleteTriggered) {
-				selectIndex--;
-				this.deleteTriggered = false;
-			}
-		} else {
-			selectIndex = 0;
-		}
-		if (selectIndex >= items.length) {
-			selectIndex = items.length - 1;
-		}
-		item = items[selectIndex];
+		TreeItem item = items[0];
 
 		this.fExtensionTree.setSelection(new StructuredSelection(item.getData()));
 	}
@@ -342,7 +296,6 @@ public class PropertiesSection extends TreeSection implements IPropertyChangeLis
 		} else {
 			getPage().setSelection(selection);
 			updateButtons(selection);
-			this.lastIndex = indexOf(selection.getFirstElement());
 		}
 	}
 
@@ -359,8 +312,13 @@ public class PropertiesSection extends TreeSection implements IPropertyChangeLis
 	@Override
 	public boolean setFormInput(final Object object) {
 		if (object != null) {
-			this.fExtensionTree.setSelection(new StructuredSelection(object), true);
-			return true;
+			// TODO: This may not be necessary, if all views use the same set of adapters
+			ISelection selection = ViewerUtil.itemsToSelection(this.fExtensionTree, Collections.singleton(object));
+			if (!selection.isEmpty()) {
+				this.fExtensionTree.setSelection(selection, true);
+				return true;
+			}
+			return false;
 		} else {
 			return false;
 		}

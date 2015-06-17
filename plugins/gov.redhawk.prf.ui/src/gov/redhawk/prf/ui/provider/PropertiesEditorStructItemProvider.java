@@ -28,10 +28,9 @@ import org.eclipse.emf.common.command.Command;
 import org.eclipse.emf.common.notify.AdapterFactory;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EStructuralFeature;
-import org.eclipse.emf.edit.command.AddCommand;
-import org.eclipse.emf.edit.command.CommandParameter;
+import org.eclipse.emf.ecore.util.FeatureMap;
+import org.eclipse.emf.ecore.util.FeatureMapUtil;
 import org.eclipse.emf.edit.domain.EditingDomain;
-import org.eclipse.emf.edit.provider.IEditingDomainItemProvider;
 
 /**
  * @since 1.2
@@ -42,6 +41,30 @@ public class PropertiesEditorStructItemProvider extends StructItemProvider {
 		super(adapterFactory);
 	}
 
+	@Override
+	protected Object unwrap(Object object) {
+		// Where appropriate, convert feature map entries for top-level properties; implemented here as the least
+		// intrusive way of handling cross-feature map drag-and-drop
+		return convertFeatureMapEntry(super.unwrap(object));
+	}
+
+	/**
+	 * Convert top-level simples and simple sequences, which are feature map entries under "properties", to the
+	 * corresponding "fields" entry
+	 */
+	private Object convertFeatureMapEntry(Object object) {
+		if (object instanceof FeatureMap.Entry) {
+			final FeatureMap.Entry entry = (FeatureMap.Entry) object;
+			final EStructuralFeature feature = entry.getEStructuralFeature();
+			if (feature == PrfPackage.Literals.PROPERTIES__SIMPLE) {
+				return FeatureMapUtil.createEntry(PrfPackage.Literals.STRUCT__SIMPLE, entry.getValue());
+			} else if (feature == PrfPackage.Literals.PROPERTIES__SIMPLE_SEQUENCE) {
+				return FeatureMapUtil.createEntry(PrfPackage.Literals.STRUCT__SIMPLE_SEQUENCE, entry.getValue());
+			}
+		}
+		return object;
+	}
+
 	/**
 	 * Produces the add {@link Command} for adding a new struct property to an existing properties collection. It also
 	 * handles adding a simple or simple sequence to a struct via delegation. This code extends the parent class to
@@ -50,15 +73,9 @@ public class PropertiesEditorStructItemProvider extends StructItemProvider {
 	@Override
 	protected Command createAddCommand(final EditingDomain domain, final EObject owner, final EStructuralFeature feature, final Collection< ? > collection,
 	        final int index) {
-		if (feature == PrfPackage.Literals.STRUCT__SIMPLE || feature == PrfPackage.Literals.STRUCT__SIMPLE_SEQUENCE) {
-			// Delegate to the appropriate item provider
-			final IEditingDomainItemProvider editingDomainItemProvider = (IEditingDomainItemProvider) this.adapterFactory.adapt(collection.toArray()[0],
-			        IEditingDomainItemProvider.class);
-			return editingDomainItemProvider.createCommand(owner, domain, AddCommand.class, new CommandParameter(owner, feature, collection, index));
-		}
 		if (feature == PrfPackage.Literals.PROPERTIES__STRUCT) {
-			for (Object obj : collection) {
-				final Struct struct = (Struct) obj;
+			for (final Object object : collection) {
+				final Struct struct = (Struct) object;
 				configureDefaultStruct(struct);
 			}
 		}
@@ -68,14 +85,15 @@ public class PropertiesEditorStructItemProvider extends StructItemProvider {
 	@Override
 	protected Command createCreateChildCommand(EditingDomain domain, EObject owner, EStructuralFeature feature, Object value, int index,
 	        Collection< ? > collection) {
-		if (value instanceof Simple) {
-			Simple simple = (Simple) value;
-			simple.setType(PropertyValueType.STRING);
-		} else if (value instanceof SimpleSequence) {
-			SimpleSequence sequence = (SimpleSequence) value;
-			sequence.setType(PropertyValueType.STRING);
-		} else {
-			return null;
+		if (feature == PrfPackage.Literals.STRUCT__FIELDS) {
+			FeatureMap.Entry entry = (FeatureMap.Entry)value;
+			if (entry.getEStructuralFeature() == PrfPackage.Literals.STRUCT__SIMPLE) {
+				Simple simple = (Simple)entry.getValue();
+				simple.setType(PropertyValueType.STRING);
+			} else if (entry.getEStructuralFeature() == PrfPackage.Literals.STRUCT__SIMPLE_SEQUENCE) {
+				SimpleSequence sequence = (SimpleSequence)entry.getValue();
+				sequence.setType(PropertyValueType.STRING);
+			}
 		}
 		return super.createCreateChildCommand(domain, owner, feature, value, index, collection);
 	}
@@ -91,12 +109,6 @@ public class PropertiesEditorStructItemProvider extends StructItemProvider {
 			return super.createSetCommand(domain, owner, feature, struct, index);
 		}
 		return super.createSetCommand(domain, owner, feature, value, index);
-	}
-
-	@Override
-	protected void collectNewChildDescriptors(final Collection<Object> newChildDescriptors, final Object object) {
-		newChildDescriptors.add(createChildParameter(PrfPackage.Literals.STRUCT__SIMPLE, PrfFactory.eINSTANCE.createSimple()));
-		newChildDescriptors.add(createChildParameter(PrfPackage.Literals.STRUCT__SIMPLE_SEQUENCE, PrfFactory.eINSTANCE.createSimpleSequence()));
 	}
 
 	/**

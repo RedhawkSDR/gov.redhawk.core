@@ -13,16 +13,14 @@ package gov.redhawk.prf.internal.ui.editor.composite;
 
 import gov.redhawk.common.ui.editor.FormLayoutFactory;
 import gov.redhawk.prf.ui.provider.PropertiesEditorPrfItemProviderAdapterFactory;
-import gov.redhawk.prf.ui.provider.PropertiesEditorStructSequenceItemProvider;
-import gov.redhawk.sca.ui.properties.AbstractPropertyEditingSupport;
+import gov.redhawk.ui.parts.UnwrappingLabelProvider;
 import gov.redhawk.ui.util.SWTUtil;
 
 import java.util.ArrayList;
 import java.util.Collection;
 
 import mil.jpeojtrs.sca.prf.PrfPackage;
-import mil.jpeojtrs.sca.prf.SimpleRef;
-import mil.jpeojtrs.sca.prf.SimpleSequenceRef;
+import mil.jpeojtrs.sca.prf.provider.StructSequenceItemProvider;
 
 import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.notify.AdapterFactory;
@@ -50,7 +48,6 @@ import org.eclipse.swt.widgets.TreeColumn;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.forms.IFormColors;
 import org.eclipse.ui.forms.widgets.FormToolkit;
-import org.eclipse.ui.views.properties.PropertyColumnLabelProvider;
 
 public class StructSequencePropertyComposite extends BasicStructPropertyComposite {
 
@@ -107,7 +104,7 @@ public class StructSequencePropertyComposite extends BasicStructPropertyComposit
 		this.structValueViewer.setColumnProperties(new String[] {
 		        "refid", "value"
 		});
-		this.structValueViewer.setLabelProvider(new DecoratingLabelProvider(labelProvider, PlatformUI.getWorkbench().getDecoratorManager().getLabelDecorator()));
+		this.structValueViewer.setLabelProvider(new DecoratingLabelProvider(new UnwrappingLabelProvider(labelProvider), PlatformUI.getWorkbench().getDecoratorManager().getLabelDecorator()));
 		this.structValueViewer.setContentProvider(contentProvider);
 		TreeColumn column = new TreeColumn(tree, SWT.NONE);
 		column = new TreeColumn(tree, SWT.NONE);
@@ -117,21 +114,8 @@ public class StructSequencePropertyComposite extends BasicStructPropertyComposit
 		column.setText("Value");
 		column.setWidth(200);// SUPPRESS CHECKSTYLE MagicNumber
 		TreeViewerColumn viewerColumn = new TreeViewerColumn(this.structValueViewer, column);
-		viewerColumn.setLabelProvider(new PropertyColumnLabelProvider(contentProvider, "value"));
-//		viewerColumn.setEditingSupport(new PropertyEditingSupport(this.structValueViewer, contentProvider, "value"));
-		viewerColumn.setEditingSupport(new AbstractPropertyEditingSupport(this.structValueViewer, contentProvider) {
-
-			@Override
-			protected Object getPropertyID(Object object) {
-				if (object instanceof SimpleRef) {
-					return PrfPackage.Literals.SIMPLE_REF__VALUE.getName();
-				} else if (object instanceof SimpleSequenceRef) {
-					return PrfPackage.Literals.SIMPLE_SEQUENCE_REF__VALUES.getName();
-				}
-				return null;
-			}
-			
-		});
+		viewerColumn.setLabelProvider(new StructValueLabelProvider(contentProvider));
+		viewerColumn.setEditingSupport(new StructValueEditingSupport(this.structValueViewer, contentProvider));
 		this.addButton = toolkit.createButton(treeComposite, "Add...", SWT.PUSH);
 		this.addButton.setLayoutData(GridDataFactory.fillDefaults().align(SWT.FILL, SWT.TOP).create());
 		this.removeButton = toolkit.createButton(treeComposite, "Remove", SWT.PUSH);
@@ -149,7 +133,7 @@ public class StructSequencePropertyComposite extends BasicStructPropertyComposit
 		final PropertiesEditorPrfItemProviderAdapterFactory customAdapterFactory = new PropertiesEditorPrfItemProviderAdapterFactory() {
 			@Override
 			public Adapter createStructSequenceAdapter() {
-				return new StructSequencePropertyCompositeItemProvider(getRootAdapterFactory());
+				return new StructSequenceValueItemProvider(getRootAdapterFactory());
 			}
 		};
 		newAdapterFactory.addAdapterFactory(customAdapterFactory);
@@ -175,9 +159,9 @@ public class StructSequencePropertyComposite extends BasicStructPropertyComposit
 	/**
 	 * Custom Item Provider for the StructSequencePropertyComposite.
 	 */
-	private static class StructSequencePropertyCompositeItemProvider extends PropertiesEditorStructSequenceItemProvider {
+	private static class StructSequenceValueItemProvider extends StructSequenceItemProvider {
 
-		public StructSequencePropertyCompositeItemProvider(final AdapterFactory adapterFactory) {
+		public StructSequenceValueItemProvider(final AdapterFactory adapterFactory) {
 			super(adapterFactory);
 		}
 
@@ -188,8 +172,7 @@ public class StructSequencePropertyComposite extends BasicStructPropertyComposit
 		@Override
 		public Collection< ? extends EStructuralFeature> getChildrenFeatures(final Object object) {
 			if (this.childrenFeatures == null) {
-				super.getChildrenFeatures(object);
-				this.childrenFeatures.remove(PrfPackage.Literals.STRUCT_SEQUENCE__STRUCT);
+				this.childrenFeatures = new ArrayList<EStructuralFeature>();
 				this.childrenFeatures.add(PrfPackage.Literals.STRUCT_SEQUENCE__STRUCT_VALUE);
 			}
 			return this.childrenFeatures;
