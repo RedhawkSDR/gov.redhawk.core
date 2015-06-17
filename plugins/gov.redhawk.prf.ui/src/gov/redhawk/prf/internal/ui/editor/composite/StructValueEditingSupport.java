@@ -55,6 +55,11 @@ public class StructValueEditingSupport extends AbstractPropertyEditingSupport {
 	}
 
 	@Override
+	protected boolean canEdit(Object object) {
+		return getPropertyID(object) != null;
+	}
+
+	@Override
 	protected Object getPropertyID(Object object) {
 		object = AdapterFactoryEditingDomain.unwrap(object);
 		if (object instanceof SimpleRef) {
