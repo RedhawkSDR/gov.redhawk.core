@@ -20,12 +20,18 @@ import gov.redhawk.model.sca.ScaStructProperty;
 import gov.redhawk.model.sca.ScaWaveform;
 import gov.redhawk.model.sca.commands.ScaModelCommand;
 import gov.redhawk.model.sca.tests.stubs.ScaTestConstaints;
+
 import org.junit.Assert;
+
 import junit.textui.TestRunner;
+
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.ecore.util.EContentAdapter;
 import org.eclipse.emf.transaction.util.TransactionUtil;
+
 import CF.DataType;
+import CF.InvalidIdentifier;
+import CF.InvalidObjectReference;
 import CF.PropertiesHolder;
 import CF.UnknownProperties;
 import CF.PropertySetPackage.InvalidConfiguration;
@@ -40,6 +46,7 @@ import CF.PropertySetPackage.PartialConfiguration;
  * <ul>
  * <li>{@link gov.redhawk.model.sca.ScaStructProperty#getSimple(java.lang.String) <em>Get Simple</em>}</li>
  * <li>{@link gov.redhawk.model.sca.ScaStructProperty#getSequence(java.lang.String) <em>Get Sequence</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.ScaStructProperty#getField(java.lang.String) <em>Get Field</em>}</li>
  * <li>{@link CF.PropertySetOperations#configure(CF.DataType[]) <em>Configure</em>}</li>
  * <li>{@link CF.PropertySetOperations#query(CF.PropertiesHolder) <em>Query</em>}</li>
  * <li>
@@ -192,6 +199,36 @@ public class ScaStructPropertyTest extends ScaAbstractPropertyTest {
 	}
 
 	/**
+	 * Tests the '{@link gov.redhawk.model.sca.ScaStructProperty#getSequence(java.lang.String) <em>Get Sequence</em>}'
+	 * operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see gov.redhawk.model.sca.ScaStructProperty#getSequence(java.lang.String)
+	 * @generated
+	 */
+	public void testGetSequence__String() {
+		// END GENERATED CODE
+		Assert.assertNull(getFixture().getSequence(null));
+		Assert.assertNotNull(getFixture().getSequence(getFixture().getSequences().get(0).getId()));
+		// BEGIN GENERATED CODE
+	}
+
+	/**
+	 * Tests the '{@link gov.redhawk.model.sca.ScaStructProperty#getField(java.lang.String) <em>Get Field</em>}'
+	 * operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see gov.redhawk.model.sca.ScaStructProperty#getField(java.lang.String)
+	 * @generated
+	 */
+	public void testGetField__String() {
+		// END GENERATED CODE
+		Assert.assertNull(getFixture().getField(null));
+		Assert.assertNotNull(getFixture().getField(getFixture().getSimples().get(0).getId()));
+		// BEGIN GENERATED CODE
+	}
+
+	/**
 	 * Tests the '{@link gov.redhawk.model.sca.ScaStructProperty#setRemoteValue(mil.jpeojtrs.sca.cf.DataType[]) <em>Set
 	 * Remote Value</em>}' operation.
 	 * <!-- begin-user-doc -->
@@ -238,6 +275,49 @@ public class ScaStructPropertyTest extends ScaAbstractPropertyTest {
 		PropertiesHolder holder = new PropertiesHolder();
 		holder.value = new DataType[0];
 		getFixture().query(holder);
+		// BEGIN GENERATED CODE
+	}
+
+	/**
+	 * Tests the '
+	 * {@link CF.PropertySetOperations#registerPropertyListener(org.omg.CORBA.Object, org.eclipse.emf.common.util.EList, float)
+	 * <em>Register Property Listener</em>}' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @throws InvalidObjectReference
+	 * @throws UnknownProperties
+	 * @see CF.PropertySetOperations#registerPropertyListener(org.omg.CORBA.Object, org.eclipse.emf.common.util.EList,
+	 * float)
+	 * @generated
+	 */
+	public void testRegisterPropertyListener__Object_EList_float() throws UnknownProperties, InvalidObjectReference {
+		// END GENERATED CODE
+		try {
+			getFixture().registerPropertyListener(null, null, 0);
+		} catch (UnsupportedOperationException e) {
+			return;
+		}
+		Assert.fail("This operation shouldn't be supported");
+		// BEGIN GENERATED CODE
+	}
+
+	/**
+	 * Tests the '{@link CF.PropertySetOperations#unregisterPropertyListener(java.lang.String) <em>Unregister Property
+	 * Listener</em>}' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @throws InvalidIdentifier
+	 * @see CF.PropertySetOperations#unregisterPropertyListener(java.lang.String)
+	 * @generated
+	 */
+	public void testUnregisterPropertyListener__String() throws InvalidIdentifier {
+		// END GENERATED CODE
+		try {
+			getFixture().unregisterPropertyListener(null);
+		} catch (UnsupportedOperationException e) {
+			return;
+		}
+		Assert.fail("This operation shouldn't be supported");
 		// BEGIN GENERATED CODE
 	}
 

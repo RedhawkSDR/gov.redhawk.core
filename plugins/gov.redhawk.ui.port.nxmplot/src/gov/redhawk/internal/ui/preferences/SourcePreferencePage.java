@@ -63,12 +63,8 @@ import org.eclipse.swt.widgets.TableColumn;
 
 import BULKIO.StreamSRI;
 
-/**
- * 
- */
 public class SourcePreferencePage extends PreferencePage {
 
-//	private PlotPageBook2 pageBook;
 	private List<INxmBlock> sourceBlocks;
 	private CheckboxTableViewer streamsViewer;
 	private PlotNxmBlock plotBlock;
@@ -83,7 +79,6 @@ public class SourcePreferencePage extends PreferencePage {
 		super(label);
 		setDescription("Modify how this particular source is being plotted.");
 		this.sourceBlocks = sourceBlocks;
-//		this.pageBook = pageBook;
 	}
 
 	@Override

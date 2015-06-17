@@ -21,32 +21,13 @@ import org.eclipse.ui.forms.widgets.ExpandableComposite;
 import org.eclipse.ui.forms.widgets.FormToolkit;
 import org.eclipse.ui.forms.widgets.Section;
 
-// TODO: Auto-generated Javadoc
-/**
- * The Class ScaSection.
- */
 public abstract class ScaSection extends SectionPart implements IContextPart, IAdaptable {
 	private final ScaFormPage fPage;
 
-	/**
-	 * Instantiates a new sca section.
-	 * 
-	 * @param page the page
-	 * @param parent the parent
-	 * @param style the style
-	 */
 	public ScaSection(final ScaFormPage page, final Composite parent, final int style) {
 		this(page, parent, style, true);
 	}
 
-	/**
-	 * Instantiates a new sca section.
-	 * 
-	 * @param page the page
-	 * @param parent the parent
-	 * @param style the style
-	 * @param titleBar the title bar
-	 */
 	public ScaSection(final ScaFormPage page, final Composite parent, final int style, final boolean titleBar) {
 		super(parent, page.getManagedForm().getToolkit(), (titleBar) ? (ExpandableComposite.TITLE_BAR | style) : style); // SUPPRESS CHECKSTYLE AvoidInLine
 		fPage = page;
@@ -55,33 +36,19 @@ public abstract class ScaSection extends SectionPart implements IContextPart, IA
 		getSection().setData("part", this); //$NON-NLS-1$
 	}
 
-	/**
-	 * Creates the client.
-	 * 
-	 * @param section the section
-	 * @param toolkit the toolkit
-	 */
 	protected abstract void createClient(Section section, FormToolkit toolkit);
 
-	/**
-	 * @param resource
-	 */
 	public void refresh(final Resource resource) {
 		// Default does nothing clients should override
 	}
 
-	/**
-	 * Gets the page.
-	 * 
-	 * @return the page
-	 */
 	@Override
 	public ScaFormPage getPage() {
 		return this.fPage;
 	}
 	
 	/**
-	 * @since 7.1
+	 * @since 8.0
 	 */
 	public Object getAdapter(Class adapter) {
 		return null;

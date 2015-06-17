@@ -53,19 +53,6 @@ public class ScaWaveformMergeComponentsCommand extends SetStatusCommand<ScaWavef
 	private final ComponentInfo[] compTypes;
 
 	/**
-	 * 
-	 * @param provider
-	 * @param assemblyControlerId
-	 * @param compTypes
-	 * @param componentStatus
-	 * @deprecated Use {@link #ScaWaveformMergeComponentsCommand(ScaWaveform, ComponentType[], IStatus)}
-	 */
-	@Deprecated
-	public ScaWaveformMergeComponentsCommand(ScaWaveform provider, String assemblyControlerId, ComponentType[] compTypes, IStatus componentStatus) {
-		this(provider, compTypes, componentStatus);
-	}
-
-	/**
 	 * @since 15.0
 	 */
 	public ScaWaveformMergeComponentsCommand(ScaWaveform provider, ComponentType[] compTypes, IStatus componentStatus) {

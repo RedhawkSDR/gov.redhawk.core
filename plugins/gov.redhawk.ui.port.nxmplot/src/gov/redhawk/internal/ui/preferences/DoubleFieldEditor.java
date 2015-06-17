@@ -16,9 +16,6 @@ import org.eclipse.swt.events.FocusListener;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Text;
 
-/**
- * 
- */
 public class DoubleFieldEditor extends StringFieldEditor {
 	/** a 64-bit double has 15-17 decimal digit precision 
 	 *  + 7 (1 for decimal point, 1 for negative sign, 5 for E-xxx)
@@ -71,10 +68,6 @@ public class DoubleFieldEditor extends StringFieldEditor {
 			new Object[] { getLabelText(), min, max }));
 	}
 
-	/* (non-Javadoc)
-	 * Method declared on StringFieldEditor.
-	 * Checks whether the entered String is a valid double or not.
-	 */
 	@Override
 	protected boolean checkState() {
 
@@ -102,9 +95,6 @@ public class DoubleFieldEditor extends StringFieldEditor {
 		return false;
 	}
 
-	/* (non-Javadoc)
-	 * Method declared on FieldEditor.
-	 */
 	@Override
 	protected void doLoad() {
 		Text text = getTextControl();
@@ -116,9 +106,6 @@ public class DoubleFieldEditor extends StringFieldEditor {
 
 	}
 
-	/* (non-Javadoc)
-	 * Method declared on FieldEditor.
-	 */
 	@Override
 	protected void doLoadDefault() {
 		Text text = getTextControl();
@@ -129,9 +116,6 @@ public class DoubleFieldEditor extends StringFieldEditor {
 		valueChanged();
 	}
 
-	/* (non-Javadoc)
-	 * Method declared on FieldEditor.
-	 */
 	@Override
 	protected void doStore() {
 		Text text = getTextControl();

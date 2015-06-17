@@ -17,6 +17,8 @@ import gov.redhawk.model.sca.commands.ScaModelCommand;
 import gov.redhawk.model.sca.commands.ScaModelCommandWithResult;
 import gov.redhawk.model.sca.impl.ScaAbstractComponentImpl;
 
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.emf.common.util.EList;
 import org.junit.Assert;
 
@@ -228,7 +230,33 @@ public abstract class ScaAbstractComponentTest extends ScaPropertyContainerTest 
 	}
 
 	/**
-	 * Tests the '{@link gov.redhawk.model.sca.ScaAbstractComponent#fetchPorts(org.eclipse.core.runtime.IProgressMonitor) <em>Fetch Ports</em>}' operation.
+	 * Tests the '
+	 * {@link gov.redhawk.model.sca.ScaAbstractComponent#fetchProfile(org.eclipse.core.runtime.IProgressMonitor)
+	 * <em>Fetch Profile</em>}' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see gov.redhawk.model.sca.ScaAbstractComponent#fetchProfile(org.eclipse.core.runtime.IProgressMonitor)
+	 * @generated
+	 */
+	public void testFetchProfile__IProgressMonitor() {
+		IProgressMonitor monitor = new NullProgressMonitor();
+		ScaModelCommand.execute(getFixture(), new ScaModelCommand() {
+			@Override
+			public void execute() {
+				getFixture().unsetProfile();
+			}
+		});
+		Assert.assertNull(getFixture().getProfile());
+		getFixture().fetchProfile(monitor);
+		Assert.assertNotNull("Profile should not be null", getFixture().getProfile());
+		Assert.assertNotEquals("Profile should not be empty", "", getFixture().getProfile());
+		Assert.assertTrue("Profile should point to an SPD file", getFixture().getProfile().contains(".spd.xml"));
+	}
+
+	/**
+	 * Tests the '
+	 * {@link gov.redhawk.model.sca.ScaAbstractComponent#fetchPorts(org.eclipse.core.runtime.IProgressMonitor) <em>Fetch
+	 * Ports</em>}' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @throws InterruptedException

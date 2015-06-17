@@ -18,24 +18,15 @@ import org.eclipse.jface.preference.FieldEditorPreferencePage;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPreferencePage;
 
-/**
- * 
- */
 public class SddsBlockPreferencePage extends FieldEditorPreferencePage implements IWorkbenchPreferencePage {
 
 	private IWorkbench workbench;
 
-	/**
-	 * 
-	 */
 	public SddsBlockPreferencePage() {
 		super("SDDS", FieldEditorPreferencePage.GRID);
 		setDescription("Modify how the data is being received via BulkIO SDDS Data.");
 	}
 
-	/* (non-Javadoc)
-	 * @see org.eclipse.ui.IWorkbenchPreferencePage#init(org.eclipse.ui.IWorkbench)
-	 */
 	@Override
 	public void init(IWorkbench workbench) {
 		this.workbench = workbench;

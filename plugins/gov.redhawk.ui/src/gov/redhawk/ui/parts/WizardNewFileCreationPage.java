@@ -25,7 +25,6 @@ package gov.redhawk.ui.parts;
 
 import gov.redhawk.ui.RedhawkUiActivator;
 
-import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.lang.reflect.InvocationTargetException;
 import java.net.URI;
@@ -33,22 +32,17 @@ import java.util.Iterator;
 
 import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.core.resources.IFile;
-import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
-import org.eclipse.core.resources.IResourceStatus;
 import org.eclipse.core.resources.IWorkspace;
-import org.eclipse.core.resources.IWorkspaceRoot;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
-import org.eclipse.core.runtime.OperationCanceledException;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
-import org.eclipse.core.runtime.jobs.ISchedulingRule;
 import org.eclipse.jface.dialogs.ErrorDialog;
 import org.eclipse.jface.dialogs.IMessageProvider;
 import org.eclipse.jface.dialogs.MessageDialog;
@@ -247,60 +241,6 @@ public class WizardNewFileCreationPage extends WizardPage implements Listener {
 	}
 
 	/**
-	 * Creates a file resource given the file handle and contents.
-	 * 
-	 * @param fileHandle the file handle to create a file resource with
-	 * @param contents the initial contents of the new file resource, or
-	 * <code>null</code> if none (equivalent to an empty stream)
-	 * @param monitor the progress monitor to show visual progress with
-	 * @exception CoreException if the operation fails
-	 * @exception OperationCanceledException if the operation is canceled
-	 * @deprecated As of 3.3, use or override {@link #createNewFile()} which
-	 * uses the undoable operation support. To supply customized
-	 * file content for a subclass, use {@link #getInitialContents()}.
-	 */
-	@Deprecated
-	protected void createFile(final IFile fileHandle, InputStream contents, final IProgressMonitor monitor) throws CoreException {
-		if (contents == null) {
-			contents = new ByteArrayInputStream(new byte[0]);
-		}
-
-		try {
-			// Create a new file resource in the workspace
-			if (this.linkTargetPath != null) {
-				fileHandle.createLink(this.linkTargetPath, IResource.ALLOW_MISSING_LOCAL, monitor);
-			} else {
-				final IPath path = fileHandle.getFullPath();
-				final IWorkspaceRoot root = ResourcesPlugin.getWorkspace().getRoot();
-				final int numSegments = path.segmentCount();
-				if (numSegments > 2 && !root.getFolder(path.removeLastSegments(1)).exists()) {
-					// If the direct parent of the path doesn't exist, try to
-					// create the
-					// necessary directories.
-					for (int i = numSegments - 2; i > 0; i--) {
-						final IFolder folder = root.getFolder(path.removeLastSegments(i));
-						if (!folder.exists()) {
-							folder.create(false, true, monitor);
-						}
-					}
-				}
-				fileHandle.create(contents, false, monitor);
-			}
-		} catch (final CoreException e) {
-			// If the file already existed locally, just refresh to get contents
-			if (e.getStatus().getCode() == IResourceStatus.PATH_OCCUPIED) {
-				fileHandle.refreshLocal(IResource.DEPTH_ZERO, null);
-			} else {
-				throw e;
-			}
-		}
-
-		if (monitor.isCanceled()) {
-			throw new OperationCanceledException();
-		}
-	}
-
-	/**
 	 * Creates a file resource handle for the file with the given workspace
 	 * path. This method does not create the file resource; this is the
 	 * responsibility of <code>createFile</code>.
@@ -399,29 +339,6 @@ public class WizardNewFileCreationPage extends WizardPage implements Listener {
 		this.newFile = newFileHandle;
 
 		return this.newFile;
-	}
-
-	/**
-	 * Returns the scheduling rule to use when creating the resource at the
-	 * given container path. The rule should be the creation rule for the
-	 * top-most non-existing parent.
-	 * 
-	 * @param resource The resource being created
-	 * @return The scheduling rule for creating the given resource
-	 * @deprecated As of 3.3, scheduling rules are provided by the undoable
-	 * operation that this page creates and executes.
-	 */
-	@Deprecated
-	protected ISchedulingRule createRule(IResource resource) {
-		IResource parent = resource.getParent();
-		while (parent != null) {
-			if (parent.exists()) {
-				return resource.getWorkspace().getRuleFactory().createRule(resource);
-			}
-			resource = parent;
-			parent = parent.getParent();
-		}
-		return resource.getWorkspace().getRoot();
 	}
 
 	/**
@@ -710,11 +627,6 @@ public class WizardNewFileCreationPage extends WizardPage implements Listener {
 		return valid;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.eclipse.jface.dialogs.DialogPage#setVisible(boolean)
-	 */
 	@Override
 	public void setVisible(final boolean visible) {
 		super.setVisible(visible);

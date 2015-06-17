@@ -32,6 +32,7 @@ public class Preference< T > {
 	private final Class<T> type;
 	private final T defaultValue;
 
+	@SuppressWarnings("unchecked")
 	public Preference(@NonNull String name, @NonNull T defaultValue) {
 		super();
 		Assert.isNotNull(defaultValue);

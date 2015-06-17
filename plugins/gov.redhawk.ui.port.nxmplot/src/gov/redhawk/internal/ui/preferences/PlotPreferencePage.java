@@ -197,6 +197,7 @@ public class PlotPreferencePage extends FieldEditorPreferencePage implements IWo
 			+ "Use 0 to disable smart thinning. Leave blank to use default of " + PlotPreferences.REFRESH_RATE.getDefaultValue() + ".");
 		return refreshRateField;
 	}
+
 	private void creatBlockAdancedFields() {
 		final Composite parent = getFieldEditorParent();
 		Section advancedComposite = new Section(parent, ExpandableComposite.TWISTIE);

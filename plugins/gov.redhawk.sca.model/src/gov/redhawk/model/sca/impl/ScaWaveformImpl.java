@@ -782,9 +782,9 @@ public class ScaWaveformImpl extends ScaPropertyContainerImpl<Application, Softw
 	/**
 	 * <!-- begin-user-doc -->
 	 * 
+	 * @deprecated Use {@link #fetchComponents(IProgressMonitor, RefreshDepth)}
 	 * @since 14.0
 	 *        <!-- end-user-doc -->
-	 * @throws InterruptedException
 	 * @generated NOT
 	 */
 	@Override
@@ -973,11 +973,6 @@ public class ScaWaveformImpl extends ScaPropertyContainerImpl<Application, Softw
 		subMonitor.done();
 
 		// BEGIN GENERATED CODE
-	}
-
-	@Deprecated
-	protected Command createMergeComponentsCommand(final String assemCtrlId, final ComponentType[] compTypes, final IStatus status) {
-		return createMergeComponentsCommand(compTypes, status);
 	}
 
 	/**
@@ -1801,7 +1796,7 @@ public class ScaWaveformImpl extends ScaPropertyContainerImpl<Application, Softw
 	}
 
 	/**
-	 * @since 19.1
+	 * @since 20.0
 	 */
 	@Override
 	public void initializeProperties(final DataType[] configProperties) throws AlreadyInitialized, InvalidConfiguration, PartialConfiguration {
@@ -1848,7 +1843,7 @@ public class ScaWaveformImpl extends ScaPropertyContainerImpl<Application, Softw
 	}
 
 	/**
-	 * @since 19.1
+	 * @since 20.0
 	 */
 	public PortInfoType[] getPortSet() {
 		// END GENERATED CODE
@@ -1985,18 +1980,26 @@ public class ScaWaveformImpl extends ScaPropertyContainerImpl<Application, Softw
 
 	@Override
 	public URI fetchProfileURI(IProgressMonitor monitor) {
+		final int WORK_FETCH_PROFILE = 1;
+		final int WORK_FETCH_FILE_MANAGER = 1;
+		final int WORK_TX = 1;
+		SubMonitor progress = SubMonitor.convert(monitor, WORK_FETCH_PROFILE + WORK_FETCH_FILE_MANAGER + WORK_TX);
+
 		if (isDisposed()) {
+			progress.done();
 			return null;
 		}
 		if (isSetProfileURI()) {
+			progress.done();
 			return getProfileURI();
 		}
+
 		ScaDomainManager domMgr = getDomMgr();
 		Transaction transaction = profileURIFeature.createTransaction();
-		String profile = fetchProfile(monitor);
+		String profile = fetchProfile(progress.newChild(WORK_FETCH_PROFILE));
 		if (profile != null) {
 			if (domMgr != null) {
-				ScaDomainManagerFileSystem fileMgr = domMgr.fetchFileManager(null);
+				ScaDomainManagerFileSystem fileMgr = domMgr.fetchFileManager(progress.newChild(WORK_FETCH_FILE_MANAGER), RefreshDepth.SELF);
 				if (fileMgr != null) {
 					final URI newURI = fileMgr.createURI(profile);
 					transaction.addCommand(new ScaModelCommand() {
@@ -2007,6 +2010,7 @@ public class ScaWaveformImpl extends ScaPropertyContainerImpl<Application, Softw
 						}
 					});
 					transaction.commit();
+					progress.worked(WORK_TX);
 				}
 			} else {
 				final URI newURI = URI.createURI(profile);
@@ -2018,8 +2022,11 @@ public class ScaWaveformImpl extends ScaPropertyContainerImpl<Application, Softw
 					}
 				});
 				transaction.commit();
+				progress.worked(WORK_TX);
 			}
 		}
+
+		progress.done();
 		return getProfileURI();
 	}
 
@@ -2104,7 +2111,11 @@ public class ScaWaveformImpl extends ScaPropertyContainerImpl<Application, Softw
 	}
 
 	/**
-	 * @since 19.1
+	 * <!-- begin-user-doc -->
+	 * 
+	 * @since 20.0
+	 *        <!-- end-user-doc -->
+	 * @generated NOT
 	 */
 	@Override
 	public EList<ScaComponent> fetchComponents(IProgressMonitor monitor, RefreshDepth depth) {
@@ -2137,7 +2148,7 @@ public class ScaWaveformImpl extends ScaPropertyContainerImpl<Application, Softw
 	}
 
 	/**
-	 * @since 19.1
+	 * @since 20.0
 	 */
 	@Override
 	public boolean aware() {

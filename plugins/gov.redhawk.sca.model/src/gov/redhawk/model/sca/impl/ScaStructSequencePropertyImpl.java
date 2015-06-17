@@ -17,13 +17,11 @@ import gov.redhawk.model.sca.ScaModelPlugin;
 import gov.redhawk.model.sca.ScaPackage;
 import gov.redhawk.model.sca.ScaStructProperty;
 import gov.redhawk.model.sca.ScaStructSequenceProperty;
-
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 import mil.jpeojtrs.sca.prf.ConfigurationKind;
 import mil.jpeojtrs.sca.prf.Simple;
 import mil.jpeojtrs.sca.prf.SimpleRef;
@@ -32,8 +30,6 @@ import mil.jpeojtrs.sca.prf.SimpleSequenceRef;
 import mil.jpeojtrs.sca.prf.Struct;
 import mil.jpeojtrs.sca.prf.StructSequence;
 import mil.jpeojtrs.sca.prf.StructValue;
-
-import org.apache.commons.lang.NotImplementedException;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.MultiStatus;
 import org.eclipse.core.runtime.Status;
@@ -54,7 +50,6 @@ import org.jacorb.JacorbUtil;
 import org.omg.CORBA.Any;
 import org.omg.CORBA.AnySeqHelper;
 import org.omg.CORBA.TCKind;
-
 import CF.DataType;
 import CF.InvalidIdentifier;
 import CF.InvalidObjectReference;
@@ -262,7 +257,7 @@ public class ScaStructSequencePropertyImpl extends ScaAbstractPropertyImpl<Struc
 	}
 
 	/**
-	 * @since 19.1
+	 * @since 20.0
 	 */
 	@Override
 	public void initializeProperties(final DataType[] configProperties) throws AlreadyInitialized, InvalidConfiguration, PartialConfiguration {
@@ -501,31 +496,30 @@ public class ScaStructSequencePropertyImpl extends ScaAbstractPropertyImpl<Struc
 
 	/**
 	 * <!-- begin-user-doc -->
-	 * @since 19.1
-	 * <!-- end-user-doc -->
+	 * This is an EMF-generated wrapper for {@link #registerPropertyListener(org.omg.CORBA.Object, String[], float)}.
+	 * @since 20.0
+	 *        <!-- end-user-doc -->
 	 * 
-	 * @generated
+	 * @generated NOT
 	 */
 	public String registerPropertyListener(org.omg.CORBA.Object obj, EList<String> prop_ids, float interval) throws UnknownProperties, InvalidObjectReference {
-		// TODO: implement this method
-		// Ensure that you remove @generated or mark it @generated NOT
 		throw new UnsupportedOperationException();
 	}
 
 	/**
-	 * @since 19.1
+	 * @since 20.0
 	 */
 	@Override
 	public String registerPropertyListener(org.omg.CORBA.Object obj, String[] prop_ids, float interval) throws UnknownProperties, InvalidObjectReference {
-		throw new NotImplementedException();
+		throw new UnsupportedOperationException();
 	}
 
 	/**
-	 * @since 19.1
+	 * @since 20.0
 	 */
 	@Override
 	public void unregisterPropertyListener(String id) throws InvalidIdentifier {
-		throw new NotImplementedException();
+		throw new UnsupportedOperationException();
 	}
 
 	/**

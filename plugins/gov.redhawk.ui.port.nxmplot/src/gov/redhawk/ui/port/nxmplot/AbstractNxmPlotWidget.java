@@ -11,7 +11,6 @@
  */
 package gov.redhawk.ui.port.nxmplot;
 
-import gov.redhawk.internal.ui.port.nxmplot.PlotSession;
 import gov.redhawk.ui.port.nxmplot.PlotSettings.PlotMode;
 import gov.redhawk.ui.port.nxmplot.preferences.PlotPreferences;
 import gov.redhawk.ui.port.nxmplot.preferences.Preference;
@@ -47,8 +46,6 @@ import org.eclipse.jface.util.PropertyChangeEvent;
 import org.eclipse.jface.util.SafeRunnable;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.statushandlers.StatusManager;
-
-import BULKIO.StreamSRI;
 
 /**
  * @noextend This class is not intended to be subclassed by SDK clients.
@@ -399,25 +396,6 @@ public abstract class AbstractNxmPlotWidget extends Composite {
 	public abstract Command runGlobalCommand(String command);
 
 	/**
-	 * @param sourcePipeId The nxm source pipe to add
-	 * @deprecated Use {@link #addSource(String, String, IPlotSession)} instead
-	 */
-	@Deprecated
-	public final void addSource(String sourcePipeId) {
-		addSource(sourcePipeId, null);
-	}
-
-	/**
-	 * @param sourcePipeId The nxm source pipe to add
-	 * @param pipeQualifiers The pipe qualifiers to use for this source
-	 * @deprecated Use {@link #addSource(String, String, IPlotSession)} instead
-	 */
-	@Deprecated
-	public final void addSource(String sourcePipeId, String pipeQualifiers) {
-		addSource(sourcePipeId, pipeQualifiers, null);
-	}
-
-	/**
 	 * @since 4.2
 	 */
 	public final void addSource(String sourcePipeId, String qualifiers, IPlotSession session) {
@@ -499,24 +477,6 @@ public abstract class AbstractNxmPlotWidget extends Composite {
 		} else {
 			return "UNIQUE_NAME" + AbstractNxmPlotWidget.NAME_INDEX.incrementAndGet();
 		}
-	}
-
-	/**
-	 * @deprecated Since plots can have multiple inputs there is no active SRI.
-	 * @return null
-	 */
-	@Deprecated
-	public StreamSRI getActiveSRI() {
-		return null;
-	}
-
-	/**
-	 * @since 4.2
-	 * @deprecated Since plots can have multiple inputs there is no active SRI.
-	 */
-	@Deprecated
-	protected void setActiveSRI(StreamSRI newSRI) {
-		
 	}
 
 	/**
@@ -703,70 +663,6 @@ public abstract class AbstractNxmPlotWidget extends Composite {
 			final Boolean enablePlotMenu = settings.getEnablePlotMenu();
 			if (enablePlotMenu != null) {
 				setEnablePlotMenu(enablePlotMenu);
-			}
-
-			updateCorbaReceiverSettings(settings);
-
-		}
-	}
-
-	/**
-	 * apply frame size and sample rate settings change to CORBARECEIVERs
-	 * @param settings
-	 * @deprecated  begin adjust CORBARECEIVER setting
-	 */
-	@Deprecated
-	private void updateCorbaReceiverSettings(PlotSettings settings) {
-		final Boolean blockingOption = settings.getBlockingOption();
-		Integer subsize = settings.getFrameSize();
-		Double sampleRate = settings.getSampleRate();
-
-		Table msgData = new Table();
-		boolean overrideSampleRate = (sampleRate != null);
-		boolean overrideSubSize = (subsize != null);
-		if (!overrideSubSize) {
-			subsize = -1; // -1 tells CORBARECEIVER to use it's orig frame size value
-		}
-		msgData.put("OVERRIDESRISUBSIZE", overrideSubSize);
-		msgData.put("FRAMESIZE", subsize);
-		msgData.put("OVERRIDESRISAMPLERATE", overrideSampleRate);
-		if (overrideSampleRate) {
-			msgData.put("SAMPLERATE", sampleRate);
-		}
-		if (blockingOption != null) {
-			msgData.put("BLOCKING", blockingOption);
-		}
-		for (IPlotSession session : inputSessions.values()) {
-			if (session instanceof PlotSession) {
-				String cmdID = ((PlotSession) session).getCommandId();
-				sendMessageToCommand(cmdID, "CHANGE_CORBARECEIVER_SETTINGS", 0, msgData, null);
-			}
-		}
-	}
-
-	/**
-	 * @noreference This method is not intended to be referenced by clients.
-	 * @param custom FFT settings to apply
-	 * @since 4.4
-	 * @deprecated since 4.4 use FftNxmBlock.applySettings(...) instead
-	 */
-	@Deprecated
-	public void applyFftSettings(FftSettings fftSettings) {
-		if (fftSettings != null) {
-			Table msgData = new Table();
-			Table fftSettingsTbl = new Table();
-			fftSettingsTbl.put("OVERLAP", (Double.parseDouble(fftSettings.getOverlap()) / 100.0));
-			fftSettingsTbl.put("NEXP", fftSettings.getNumAverages());
-			fftSettingsTbl.put("WINDOW", fftSettings.getWindow());
-			// fftSettings.getOutputType(); // cannot change: output type (NORMAL, PSD, MAG, MAG & LOG, PSD & LOG) on FFT at this time
-			fftSettingsTbl.put("NFFT", fftSettings.getTransformSize()); // do this last as this can cause a restart
-			msgData.put("FFT", fftSettingsTbl);
-
-			for (IPlotSession session : inputSessions.values()) {
-				if (session instanceof PlotSession) {
-					String cmdID = ((PlotSession) session).getCommandId();
-					sendMessageToCommand(cmdID, "CHANGE_SETTINGS", 0, msgData, null);
-				}
 			}
 		}
 	}

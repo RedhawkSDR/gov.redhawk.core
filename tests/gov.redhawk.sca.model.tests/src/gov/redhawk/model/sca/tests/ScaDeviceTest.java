@@ -11,13 +11,18 @@
 // BEGIN GENERATED CODE
 package gov.redhawk.model.sca.tests;
 
+import gov.redhawk.model.sca.RefreshDepth;
 import gov.redhawk.model.sca.ScaDevice;
 import gov.redhawk.model.sca.commands.ScaModelCommand;
 import gov.redhawk.model.sca.tests.stubs.ScaTestConstaints;
+
 import org.junit.Assert;
+
 import junit.textui.TestRunner;
+
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.transaction.util.TransactionUtil;
+
 import CF.AggregateDevice;
 import CF.DataType;
 import CF.DeviceHelper;
@@ -47,6 +52,9 @@ import CF.DevicePackage.UsageType;
  * <ul>
  * <li>{@link gov.redhawk.model.sca.ScaDevice#fetchAggregateDevices(org.eclipse.core.runtime.IProgressMonitor) <em>Fetch
  * Aggregate Devices</em>}</li>
+ * <li>
+ * {@link gov.redhawk.model.sca.ScaDevice#fetchAggregateDevices(org.eclipse.core.runtime.IProgressMonitor, gov.redhawk.model.sca.RefreshDepth)
+ * <em>Fetch Aggregate Devices</em>}</li>
  * <li>{@link gov.redhawk.model.sca.ScaDevice#fetchAdminState(org.eclipse.core.runtime.IProgressMonitor) <em>Fetch Admin
  * State</em>}</li>
  * <li>{@link gov.redhawk.model.sca.ScaDevice#fetchLabel(org.eclipse.core.runtime.IProgressMonitor) <em>Fetch
@@ -493,9 +501,10 @@ public class ScaDeviceTest extends ScaAbstractComponentTest {
 	 * @see gov.redhawk.model.sca.ScaDevice#fetchAggregateDevices(org.eclipse.core.runtime.IProgressMonitor)
 	 * @generated NOT
 	 */
+	@SuppressWarnings("deprecation")
 	public void testFetchAggregateDevices__IProgressMonitor() throws InterruptedException {
-		final int[] numChildren = new int[1];
 		// END GENERATED CODE
+		final int[] numChildren = new int[1];
 		final AggregateDevice aggregateDevice = getFixture().getObj().compositeDevice();
 		if (aggregateDevice != null) {
 			numChildren[0] = aggregateDevice.devices().length;
@@ -509,6 +518,50 @@ public class ScaDeviceTest extends ScaAbstractComponentTest {
 			}
 		});
 		EList<ScaDevice< ? >> aggregateDevicesEList = getFixture().fetchAggregateDevices(null);
+		ScaModelCommand.execute(getFixture(), new ScaModelCommand() {
+
+			@Override
+			public void execute() {
+				Assert.assertEquals(numChildren[0], getFixture().getChildDevices().size());
+				getFixture().unsetChildDevices();
+				Assert.assertEquals(0, getFixture().getChildDevices().size());
+			}
+		});
+		try {
+			aggregateDevicesEList.clear();
+			Assert.fail("fetched AggregateDevices list should be unmodifiable");
+		} catch (UnsupportedOperationException e) {
+			Assert.assertTrue("fetched AggregateDevices list is unmodifiable", true);
+		}
+		// BEGIN GENERATED CODE
+	}
+
+	/**
+	 * Tests the '
+	 * {@link gov.redhawk.model.sca.ScaDevice#fetchAggregateDevices(org.eclipse.core.runtime.IProgressMonitor, gov.redhawk.model.sca.RefreshDepth)
+	 * <em>Fetch Aggregate Devices</em>}' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see gov.redhawk.model.sca.ScaDevice#fetchAggregateDevices(org.eclipse.core.runtime.IProgressMonitor,
+	 * gov.redhawk.model.sca.RefreshDepth)
+	 * @generated
+	 */
+	public void testFetchAggregateDevices__IProgressMonitor_RefreshDepth() {
+		// END GENERATED CODE
+		final int[] numChildren = new int[1];
+		final AggregateDevice aggregateDevice = getFixture().getObj().compositeDevice();
+		if (aggregateDevice != null) {
+			numChildren[0] = aggregateDevice.devices().length;
+		}
+		ScaModelCommand.execute(getFixture(), new ScaModelCommand() {
+
+			@Override
+			public void execute() {
+
+				Assert.assertEquals(numChildren[0], getFixture().getChildDevices().size());
+			}
+		});
+		EList<ScaDevice< ? >> aggregateDevicesEList = getFixture().fetchAggregateDevices(null, RefreshDepth.SELF);
 		ScaModelCommand.execute(getFixture(), new ScaModelCommand() {
 
 			@Override

@@ -23,10 +23,6 @@ import org.eclipse.jface.preference.IPreferenceStore;
  */
 public class PlotSettings {
 
-	private Integer frameSize = null; // null to use default (e.g. from SRI) - DEPRECATED (as this is for a source)
-	private Double sampleRate = null; // null to use default (e.g. from SRI) - DEPRECATED (as this is for a source)
-	private Boolean blockingOption = false; // null to use default - DEPRECATED (as this is for a source)
-
 	private Double minValue = null; // null to use default (i.e. AutoMin)
 	private Double maxValue = null; // null to use default (i.e. AutoMax)
 	private PlotType plotType = null; // null to not change plot type (line, raster, etc.)
@@ -94,10 +90,7 @@ public class PlotSettings {
 	 * @since 4.4
 	 */
 	public PlotSettings(IPreferenceStore store) {
-		//		this.sampleRate = Plot
-		//		this.blockingOption = PlotPreferences.
 		this.enablePlotMenu = PlotPreferences.ENABLE_CONFIGURE_MENU_USING_MOUSE.getValue(store);
-		this.frameSize = PlotPreferences.FRAMESIZE.getValue(store);
 		//		this.launchArgs = PlotPreferences.LAUNCH_ARGS.getValue(store);
 		//		this.launchSwitches = PlotPreferences.LAUNCH_SWITCHES.getValue(store);
 		//		this.maxValue = PlotPreferences.MAX.getValue(store);
@@ -110,9 +103,6 @@ public class PlotSettings {
 	/** copy constructor */
 	public PlotSettings(PlotSettings settings) {
 		this();
-		this.frameSize = settings.frameSize;
-		this.sampleRate = settings.sampleRate;
-		this.blockingOption = settings.blockingOption;
 		this.minValue = settings.minValue;
 		this.maxValue = settings.maxValue;
 		this.plotType = settings.plotType;
@@ -148,39 +138,11 @@ public class PlotSettings {
 		this.launchSwitches = launchSwitches;
 	}
 
-	/**
-	 * @deprecated since 4.3 (not used)
-	 */
-	@Deprecated
-	public PlotSettings(final Integer frameSize, final Double minValue, final Double maxValue, final Double sampleRate, final PlotType plotType) {
-		this(frameSize, minValue, maxValue, Boolean.TRUE, sampleRate, plotType);
-	}
-
-	PlotSettings(final Integer frameSize, final Double minValue, final Double maxValue, final Boolean blockingOption, final Double sampleRate,
-		final PlotType plotType) {
+	PlotSettings(final Double minValue, final Double maxValue, final PlotType plotType) {
 		this();
-		this.frameSize = frameSize;
-		this.sampleRate = sampleRate;
-		this.blockingOption = blockingOption;
 		this.minValue = minValue;
 		this.maxValue = maxValue;
 		this.plotType = plotType;
-	}
-
-	/**
-	 * @deprecated since 4.3 as this should apply to the source Port(s).
-	 */
-	@Deprecated
-	public Integer getFrameSize() {
-		return this.frameSize;
-	}
-
-	/**
-	 * @deprecated since 4.3 as this should apply to the source Port(s).
-	 */
-	@Deprecated
-	public void setFrameSize(final Integer frameSize) {
-		this.frameSize = frameSize;
 	}
 
 	public Double getMinValue() {
@@ -199,44 +161,12 @@ public class PlotSettings {
 		this.maxValue = maxValue;
 	}
 
-	/**
-	 * @deprecated since 4.3 as this should apply to the source Port(s).
-	 */
-	@Deprecated
-	public Double getSampleRate() {
-		return sampleRate;
-	}
-
-	/**
-	 * @deprecated since 4.3 as this should apply to the source Port(s).
-	 */
-	@Deprecated
-	public void setSampleRate(Double sampleRate) {
-		this.sampleRate = sampleRate;
-	}
-
 	public PlotType getPlotType() {
 		return plotType;
 	}
 
 	public void setPlotType(PlotType plotType) {
 		this.plotType = plotType;
-	}
-
-	/**
-	 * @deprecated since 4.3 as this should apply to the source Port(s).
-	 */
-	@Deprecated
-	public Boolean getBlockingOption() {
-		return blockingOption;
-	}
-
-	/**
-	 * @deprecated since 4.3 as this should apply to the source Port(s).
-	 */
-	@Deprecated
-	public void setBlockingOption(Boolean blockingOption) {
-		this.blockingOption = blockingOption;
 	}
 
 	/**
@@ -295,19 +225,13 @@ public class PlotSettings {
 		this.launchSwitches = launchSwitches;
 	}
 
-	/* (non-Javadoc)
-	 * @see java.lang.Object#hashCode()
-	 */
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((frameSize == null) ? 0 : frameSize.hashCode());
-		result = prime * result + ((sampleRate == null) ? 0 : sampleRate.hashCode());
 		result = prime * result + ((maxValue == null) ? 0 : maxValue.hashCode());
 		result = prime * result + ((minValue == null) ? 0 : minValue.hashCode());
 		result = prime * result + ((plotType == null) ? 0 : plotType.hashCode());
-		result = prime * result + ((blockingOption == null) ? 0 : blockingOption.hashCode());
 		result = prime * result + ((plotMode == null) ? 0 : plotMode.hashCode());
 		result = prime * result + ((enablePlotMenu == null) ? 0 : enablePlotMenu.hashCode());
 		result = prime * result + ((launchArgs == null) ? 0 : launchArgs.hashCode());
@@ -315,9 +239,6 @@ public class PlotSettings {
 		return result;
 	}
 
-	/* (non-Javadoc)
-	 * @see java.lang.Object#equals(java.lang.Object)
-	 */
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj) {
@@ -330,27 +251,6 @@ public class PlotSettings {
 			return false;
 		}
 		PlotSettings other = (PlotSettings) obj;
-		if (frameSize == null) {
-			if (other.frameSize != null) {
-				return false;
-			}
-		} else if (!frameSize.equals(other.frameSize)) {
-			return false;
-		}
-		if (sampleRate == null) {
-			if (other.sampleRate != null) {
-				return false;
-			}
-		} else if (!sampleRate.equals(other.sampleRate)) {
-			return false;
-		}
-		if (blockingOption == null) {
-			if (other.blockingOption != null) {
-				return false;
-			}
-		} else if (!blockingOption.equals(other.blockingOption)) {
-			return false;
-		}
 		if (maxValue == null) {
 			if (other.maxValue != null) {
 				return false;

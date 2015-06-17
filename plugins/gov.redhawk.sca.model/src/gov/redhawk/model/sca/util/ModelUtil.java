@@ -460,7 +460,7 @@ public final class ModelUtil {
 	 * @param obj
 	 * @param feature
 	 * @return A Immutable copy of the list. 
-	 * @since 19.1
+	 * @since 20.0
 	 */
 	public static <T extends Object> List<T> getAsImmutableList(final EObject obj, final EStructuralFeature feature) {
 		try {
@@ -491,7 +491,7 @@ public final class ModelUtil {
 	 * @param project The IProject for the resource
 	 * @param set The resource set to load the softpackage into
 	 * @return The SoftPkg associated with the project or null if a softpackage is not found
-	 * @since 19.1
+	 * @since 20.0
 	 */
 	public static SoftPkg getSoftPkg(final IProject project, ResourceSet set) {
 		String projectName = project.getName();
@@ -516,7 +516,7 @@ public final class ModelUtil {
 	 * Takes an IProject and will attempt to find the soft package associated with the project.
 	 * @param project The IProject for the resource
 	 * @return The SoftPkg associated with the project or null if a softpackage is not found
-	 * @since 19.1
+	 * @since 20.0
 	 */
 	public static SoftPkg getSoftPkg(final IProject project) {
 		final ResourceSet set = ScaResourceFactoryUtil.createResourceSet();

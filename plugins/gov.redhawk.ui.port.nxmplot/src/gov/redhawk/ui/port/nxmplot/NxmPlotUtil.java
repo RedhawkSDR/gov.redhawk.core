@@ -12,26 +12,19 @@
 package gov.redhawk.ui.port.nxmplot;
 
 import gov.redhawk.internal.ui.port.nxmplot.PlotSession;
-import gov.redhawk.model.sca.ScaUsesPort;
 import gov.redhawk.ui.port.nxmblocks.FftNxmBlockSettings;
 import gov.redhawk.ui.port.nxmplot.PlotSettings.PlotMode;
 import gov.redhawk.ui.port.nxmplot.preferences.PlotPreferences;
 
 import java.io.File;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import nxm.redhawk.prim.CorbaPrimitive;
-import nxm.redhawk.prim.corbareceiver;
 import nxm.sys.lib.Data;
-import nxm.sys.lib.Table;
 
 import org.eclipse.jdt.annotation.NonNull;
-import org.eclipse.swt.SWT;
 
 /**
  * @since 3.0
@@ -204,80 +197,6 @@ public final class NxmPlotUtil {
 		return sb.toString();
 	}
 
-	/**
-	 *
-	 * @deprecated Use new plot block
-	 */
-	@Deprecated
-	private static Map<String, String> launchInputMacro(final CorbaConnectionSettings settings, final FftSettings fft, final AbstractNxmPlotWidget plotWidget,
-		String pipeSize) {
-		final String outName = AbstractNxmPlotWidget.createUniqueName(true);
-
-		final Table corbaArgs = new Table();
-		if (pipeSize == null) {
-			// Default size
-			pipeSize = "128k";
-		}
-		corbaArgs.put("PIPESIZE", pipeSize);
-		corbaArgs.put(corbareceiver.A_IDL, settings.getIDL());
-		corbaArgs.put(corbareceiver.A_FRAMESIZE, settings.getFrameSize());
-		corbaArgs.put(corbareceiver.A_OVERRIDE_SRI_SUBSIZE, settings.isOverrideSRISubSize());
-		if (settings.getHost() != null && !"".equals(settings.getHost())) {
-			corbaArgs.put(CorbaPrimitive.A_HOST, settings.getHost());
-			corbaArgs.put(CorbaPrimitive.A_PORT, settings.getPort());
-		} else {
-			corbaArgs.put(CorbaPrimitive.A_HOST, "");
-			corbaArgs.put(CorbaPrimitive.A_PORT, 9000); // <-- TODO: this does not seem like the right default port for CORBARECEIVER // SUPPRESS CHECKSTYLE MagicNumber
-		}
-		if (settings.getResource() != null && !"".equals(settings.getResource())) {
-			corbaArgs.put(CorbaPrimitive.A_RESOURCE, settings.getResource());
-		} else {
-			corbaArgs.put(CorbaPrimitive.A_RESOURCE, "");
-		}
-		if (settings.getPortName() != null) {
-			corbaArgs.put(CorbaPrimitive.A_PORT_NAME, settings.getPortName());
-		} else {
-			corbaArgs.put(CorbaPrimitive.A_PORT_NAME, "");
-		}
-
-		final Table fftArgs = new Table();
-		if (fft != null) {
-			fftArgs.put("FFTSIZE", fft.getTransformSize());
-			fftArgs.put("WINDOW", fft.getWindow());
-			fftArgs.put("OVER", (Double.parseDouble(fft.getOverlap()) / 100.0)); // SUPPRESS CHECKSTYLE MagicNumber
-			fftArgs.put("NUMAVG", fft.getNumAverages());
-			fftArgs.put("SWITCHES", fft.getOutputType().toFlagString());
-		}
-
-		final String thinArgsStr;
-		if (SWT.getPlatform().startsWith("rap")) { // thin out data for remote PLOT on RAP platform
-			Table thinArgs = new Table();
-			thinArgs.put("PIPESIZE", pipeSize);
-			thinArgs.put("REFRESHRATE", 10); // SUPPRESS CHECKSTYLE MagicNumber
-			thinArgsStr = " THINARGS=" + thinArgs;
-		} else {
-			thinArgsStr = ""; // for RCP we do not need to thin out data since PLOT is on same machine
-		}
-
-		final String corbaArgsStr = "CORBRAARGS=" + corbaArgs;
-		final String fftArgsStr;
-		if (fftArgs.isEmpty()) {
-			fftArgsStr = "";
-		} else {
-			fftArgsStr = " FFTARGS=" + fftArgs;
-		}
-
-		final String outputStr = " OUTPUT=" + outName;
-		final String b2mId = "B2M_" + AbstractNxmPlotWidget.createUniqueName(false);
-		final String command = "bulkio2midas/BG/ID=" + b2mId + " " + corbaArgsStr + fftArgsStr + thinArgsStr + outputStr;
-		plotWidget.runHeadlessCommand(command);
-
-		Map<String, String> map = new HashMap<String, String>();
-		map.put(NxmPlotUtil.KEY_COMMAND, b2mId);
-		map.put(NxmPlotUtil.KEY_FILE, outName);
-		return map;
-	}
-
 	private static Map<String, String> launchInputMacro(final SddsSource sdds, final Integer magExponent, final FftNxmBlockSettings fft,
 		final AbstractNxmPlotWidget plotWidget, String pipeSize) {
 		final String outName = AbstractNxmPlotWidget.createUniqueName(true);
@@ -352,28 +271,6 @@ public final class NxmPlotUtil {
 		return map;
 	}
 
-	/**
-	 * This creates the pipes and connects them for the appropriate plot output.
-	 *
-	 * @param connList the list of connections to set up
-	 * @param fft2 the settings for the FFT to run, null if no FFT
-	 * @param commandSources list to store the commands created so they can be
-	 *        started later
-	 * @return a list of sources created to be plotted
-	 * @deprecated Use new plot blocks
-	 */
-	@Deprecated
-	private static List<Map<String, String>> launchInputMacros(final List<CorbaConnectionSettings> connList, final FftSettings fft,
-		final AbstractNxmPlotWidget plotWidget, String pipeSize) {
-		final List<Map<String, String>> outputList = new ArrayList<Map<String, String>>();
-
-		for (final CorbaConnectionSettings settings : connList) {
-			outputList.add(NxmPlotUtil.launchInputMacro(settings, fft, plotWidget, pipeSize));
-		}
-
-		return outputList;
-	}
-
 	private static Map<String, String> launchInputMacro(final File file, String format, final boolean thinData, Integer thinIncr, Integer yDelta,
 		final AbstractNxmPlotWidget plotWidget) {
 		final String outName = AbstractNxmPlotWidget.createUniqueName(true);
@@ -405,99 +302,8 @@ public final class NxmPlotUtil {
 		return map;
 	}
 
-	/**
-	 *
-	 * @deprecated Use new plot blocks
-	 */
-	@Deprecated
-	public static List<CorbaConnectionSettings> createConnList(final List< ? extends ScaUsesPort> portList) {
-		final List<CorbaConnectionSettings> connList = new ArrayList<CorbaConnectionSettings>();
-
-		for (final ScaUsesPort port : portList) {
-			connList.add(NxmPlotUtil.createConnectionSettings(port));
-		}
-
-		return connList;
-	}
-
-	/**
-	 *
-	 * @deprecated Use new plot blocks
-	 */
-	@Deprecated
-	public static CorbaConnectionSettings createConnectionSettings(ScaUsesPort port) {
-		final CorbaConnectionSettings connectionSettings = new CorbaConnectionSettings(port.getIor(), port.getRepid());
-		return connectionSettings;
-	}
-
-	/**
-	 * @deprecated Use {@Link #addSource(ScaUsesPort, AbstractNxmPlotWidget, String)} instead. Using this method will
-	 * result in a resource leak, as there is no way for the client to kill the NXM processes used to provide the plot data.
-	 * @param port the port that provides the data to be plotted
-	 * @param nxmPlotWidget the plot widget
-	 * @return the pipe ID for the data being plotted
-	 */
-	@Deprecated
-	public static String addSource(final ScaUsesPort port, final AbstractNxmPlotWidget plotWidget) {
-		return NxmPlotUtil.addSource(port, null, plotWidget);
-	}
-
-	/**
-	 * @deprecated Use {@Link #addSource(ScaUsesPort, FftSettings, AbstractNxmPlotWidget, String)} instead. Using this method will
-	 * result in a resource leak, as there is no way for the client to kill the NXM processes used to provide the plot data.
-	 * @param port the port that provides the data to be plotted
-	 * @param fft the parameters of the FFT to be applied to the data before plotting
-	 * @param nxmPlotWidget the plot widget
-	 * @return the pipe ID for the data being plotted
-	 */
-	@Deprecated
-	public static String addSource(final ScaUsesPort port, final FftSettings fft, final AbstractNxmPlotWidget plotWidget) {
-		return NxmPlotUtil.addSource(port, fft, plotWidget, null).getSourceId();
-	}
-
-	public static IPlotSession addSource(final ScaUsesPort port, final AbstractNxmPlotWidget plotWidget, final String qualifers) {
-		return NxmPlotUtil.addSource(port, null, plotWidget, qualifers);
-	}
-
-	/**
-	 * @deprecated Use new plot blocks
-	 */
-	@Deprecated
-	public static IPlotSession addSource(final ScaUsesPort port, final FftSettings fft, final AbstractNxmPlotWidget plotWidget, final String qualifiers) {
-		final Map<String, String> outputIds = NxmPlotUtil.launchInputMacro(NxmPlotUtil.createConnectionSettings(port), fft, plotWidget, null);
-		PlotSession session = new PlotSession(plotWidget, outputIds.get(NxmPlotUtil.KEY_COMMAND), outputIds.get(NxmPlotUtil.KEY_FILE));
-		plotWidget.addSource(session.getSourceId(), ((qualifiers == null) ? "" : qualifiers), session);
-		return session;
-	}
-
-	/**
-	 * @deprecated Use new plot blocks
-	 */
-	@Deprecated
-	public static List<IPlotSession> addSource(final List<CorbaConnectionSettings> connList, final FftSettings fft, final AbstractNxmPlotWidget plotWidget,
-		final String qualifiers) {
-		List<Map<String, String>> outputIds = NxmPlotUtil.launchInputMacros(connList, fft, plotWidget, null);
-		NxmPlotUtil.setPlotToReal(fft != null, plotWidget);
-		List<IPlotSession> sessions = new ArrayList<IPlotSession>();
-		for (Map<String, String> map : outputIds) {
-			PlotSession session = new PlotSession(plotWidget, map.get(NxmPlotUtil.KEY_COMMAND), map.get(NxmPlotUtil.KEY_FILE));
-			plotWidget.addSource(map.get(NxmPlotUtil.KEY_FILE), ((qualifiers == null) ? "" : qualifiers), session);
-			sessions.add(session);
-		}
-		return sessions;
-	}
-
 	public static IPlotSession addSource(final SddsSource sdds, final AbstractNxmPlotWidget plotWidget, final String qualifers) {
-		return NxmPlotUtil.addSource(sdds, (FftNxmBlockSettings) null, plotWidget, qualifers);
-	}
-
-	/**
-	 * @deprecated Use {@link #addSource(SddsSource, FftNxmBlockSettings, AbstractNxmPlotWidget, String)}
-	 * @return
-	 */
-	@Deprecated
-	public static IPlotSession addSource(final SddsSource sdds, final FftSettings fft, final AbstractNxmPlotWidget plotWidget, final String qualifiers) {
-		return NxmPlotUtil.addSource(sdds, PlotPageBook2.toFftNxmBlockSettings(fft), plotWidget, qualifiers);
+		return NxmPlotUtil.addSource(sdds, null, null, plotWidget, qualifers);
 	}
 
 	/**
@@ -505,17 +311,6 @@ public final class NxmPlotUtil {
 	 */
 	public static IPlotSession addSource(final SddsSource sdds, final FftNxmBlockSettings fft, final AbstractNxmPlotWidget plotWidget, final String qualifers) {
 		return NxmPlotUtil.addSource(sdds, null, fft, plotWidget, qualifers);
-
-	}
-
-	/**
-	 * @deprecated Use {@link #addSource(SddsSource, Integer, FftNxmBlockSettings, AbstractNxmPlotWidget, String)}
-	 * @return
-	 */
-	@Deprecated
-	public static IPlotSession addSource(final SddsSource sdds, final Integer magExponent, final FftSettings fft, final AbstractNxmPlotWidget plotWidget,
-		final String qualifiers) {
-		return NxmPlotUtil.addSource(sdds, magExponent, PlotPageBook2.toFftNxmBlockSettings(fft), plotWidget, qualifiers);
 	}
 
 	/**
@@ -548,20 +343,4 @@ public final class NxmPlotUtil {
 		plotWidget.addSource(session.getSourceId(), ((qualifiers == null) ? "" : qualifiers), session);
 		return session;
 	}
-
-	/**
-	 * @deprecated Use {@link #addSource(List, FftSettings, AbstractNxmPlotWidget, String)} instead. Using this method will
-	 * result in a resource leak, as there is no way for the client to kill the NXM processes used to provide the plot data.
-	 * @param port the port that provides the data to be plotted. There is also no way for the client to close the plot file.
-	 */
-	@Deprecated
-	public static void plot(final List<CorbaConnectionSettings> connList, final FftSettings fft, final AbstractNxmPlotWidget plotWidget) {
-		final List<Map<String, String>> outputIds = NxmPlotUtil.launchInputMacros(connList, fft, plotWidget, null);
-		NxmPlotUtil.setPlotToReal(fft != null, plotWidget);
-
-		for (Map<String, String> map : outputIds) {
-			plotWidget.addSource(map.get(NxmPlotUtil.KEY_FILE), null);
-		}
-	}
-
 }

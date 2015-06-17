@@ -34,7 +34,6 @@ import CF.ApplicationFactoryPackage.InvalidInitConfiguration;
  * <ul>
  * <li>{@link gov.redhawk.model.sca.ProfileObjectWrapper#getProfileURI() <em>Profile URI</em>}</li>
  * <li>{@link gov.redhawk.model.sca.ProfileObjectWrapper#getProfileObj() <em>Profile Obj</em>}</li>
- * <li>{@link gov.redhawk.model.sca.ProfileObjectWrapper#getRootFileStore() <em>Root File Store</em>}</li>
  * <li>{@link gov.redhawk.model.sca.ScaWaveformFactory#getIdentifier() <em>Identifier</em>}</li>
  * <li>{@link gov.redhawk.model.sca.ScaWaveformFactory#getName() <em>Name</em>}</li>
  * </ul>
@@ -304,20 +303,6 @@ public class ScaWaveformFactoryTest extends CorbaObjWrapperTest {
 	public void testIsSetProfileObj() {
 		// END GENERATED CODE
 		Assert.assertTrue(getFixture().isSetProfileObj());
-		// BEGIN GENERATED CODE
-	}
-
-	/**
-	 * Tests the '{@link gov.redhawk.model.sca.ProfileObjectWrapper#getRootFileStore() <em>Root File Store</em>}'
-	 * feature getter.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see gov.redhawk.model.sca.ProfileObjectWrapper#getRootFileStore()
-	 * @generated NOT
-	 */
-	public void testGetRootFileStore() {
-		// END GENERATED CODE
-		Assert.assertNotNull(getFixture().getRootFileStore());
 		// BEGIN GENERATED CODE
 	}
 

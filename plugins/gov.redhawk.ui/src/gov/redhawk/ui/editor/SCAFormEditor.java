@@ -445,7 +445,7 @@ public abstract class SCAFormEditor extends FormEditor implements IEditingDomain
 	private final Map<Resource, IDocument> resourceToDocumentMap = new HashMap<Resource, IDocument>();
 
 	/**
-	 * @since 7.1
+	 * @since 8.0
 	 */
 	protected boolean editorSaving;
 
@@ -561,7 +561,7 @@ public abstract class SCAFormEditor extends FormEditor implements IEditingDomain
 	}
 
 	/**
-	 * @since 7.1
+	 * @since 8.0
 	 */
 	protected TransactionalEditingDomain createEditingDomain() {
 		TransactionalEditingDomain domain = TransactionalEditingDomain.Registry.INSTANCE.getEditingDomain(getEditingDomainId());
@@ -1206,7 +1206,7 @@ public abstract class SCAFormEditor extends FormEditor implements IEditingDomain
 	}
 
 	/**
-	 * @since 7.1
+	 * @since 8.0
 	 */
 	protected String getDefaultPageKey() {
 		return null;
@@ -1290,7 +1290,7 @@ public abstract class SCAFormEditor extends FormEditor implements IEditingDomain
 	 * Compute dirty state.
 	 * 
 	 * @return true, if successful
-	 * @since 7.1
+	 * @since 8.0
 	 */
 	protected boolean computeDirtyState() {
 		if ((this.editingDomain != null) && ((BasicCommandStack) this.editingDomain.getCommandStack()).isSaveNeeded()) {
@@ -1561,14 +1561,14 @@ public abstract class SCAFormEditor extends FormEditor implements IEditingDomain
 	}
 
 	/**
-	 * @since 7.1
+	 * @since 8.0
 	 */
 	public void validate() {
 		validate(null);
 	}
 
 	/**
-	 * @since 7.1
+	 * @since 8.0
 	 */
 	public void validate(JobChangeAdapter adapter) {
 		if (this.validator != null) {
@@ -1967,7 +1967,7 @@ public abstract class SCAFormEditor extends FormEditor implements IEditingDomain
 	}
 
 	/**
-	 * @since 7.1
+	 * @since 8.0
 	 */
 	public void reload() {
 		reloading = true;
@@ -2029,7 +2029,7 @@ public abstract class SCAFormEditor extends FormEditor implements IEditingDomain
 	}
 
 	/**
-	 * @since 7.1
+	 * @since 8.0
 	 */
 	public Map<Resource, IDocument> getResourceToDocumentMap() {
 		return resourceToDocumentMap;

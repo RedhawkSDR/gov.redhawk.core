@@ -66,15 +66,9 @@ public interface ScaDomainManagerRegistry extends IDisposable {
 	ScaDomainManager findDomain(String domainName);
 
 	/**
-	 * @deprecated Use {@link #createDomain(String, String, boolean, Map)} instead.
-	 */
-	@Deprecated
-	ScaDomainManager createDomain(String name, boolean autoConnect, Map<String, String> connectionProperties);
-
-	/**
 	 * <!-- begin-user-doc -->
 	 * 
-	 * @since 19.1
+	 * @since 20.0
 	 *        <!-- end-user-doc -->
 	 * @model
 	 * @generated

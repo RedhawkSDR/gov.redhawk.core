@@ -65,13 +65,15 @@ public class AbstractResourceImpl extends Resource {
 	public void init(SoftPkg spd) {
 		this.spd = spd;
 		Properties prf = spd.getPropertyFile().getProperties();
+
+		this.softwareProfile = spd.eResource().getURI().path();
 		if (this.compId == null) {
 			this.compId = spd.getId();
 		}
-
 		if (this.compName == null) {
 			this.compName = spd.getName();
 		}
+
 		initProperties(prf);
 		try {
 			initPorts(spd.getDescriptor().getComponent().getComponentFeatures().getPorts());
@@ -244,19 +246,6 @@ public class AbstractResourceImpl extends Resource {
 		return retVal;
 	}
 	
-	/*
-	 * @see org.ossie.component.Resource#softwareProfile()
-	 */
-	@Override
-	public String softwareProfile() {
-		String retVal = super.softwareProfile();
-		if (retVal == null) {
-			return "";
-		} else {
-			return retVal;
-		}
-	}
-
 	@Override
 	public void run() {
 		// Do Nothing

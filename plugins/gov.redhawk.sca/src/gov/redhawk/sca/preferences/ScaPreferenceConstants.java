@@ -67,14 +67,6 @@ public final class ScaPreferenceConstants {
 	}
 
 	/**
-	 * The Constant SCA_CORBA_DOMAIN_PREFERENCE - the list of CORBA domains to
-	 * connect to on startup
-	 * @deprecated Use the ScaDomainManagerRegistry instead
-	 */
-	@Deprecated
-	public static final String SCA_CORBA_DOMAIN_LIST_PREFERENCE = "CORBADomainList";
-
-	/**
 	 * Hidden constructor.
 	 */
 	private ScaPreferenceConstants() {

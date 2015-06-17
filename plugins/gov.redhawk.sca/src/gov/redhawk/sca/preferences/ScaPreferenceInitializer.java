@@ -11,17 +11,14 @@
  */
 package gov.redhawk.sca.preferences;
 
-import gov.redhawk.model.sca.ScaDomainManager;
 import gov.redhawk.model.sca.ScaDomainManagerRegistry;
 import gov.redhawk.model.sca.ScaFactory;
 import gov.redhawk.sca.ScaPlugin;
-import gov.redhawk.sca.util.CorbaURIUtil;
 import gov.redhawk.sca.util.IPreferenceAccessor;
 import gov.redhawk.sca.util.OrbSession;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.Collections;
 import java.util.Map;
 
 import mil.jpeojtrs.sca.util.ScaResourceFactoryUtil;
@@ -32,22 +29,13 @@ import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.osgi.service.datalocation.Location;
 
-/**
- * The Class RedhawkIdePreferenceInitializer.
- */
 public class ScaPreferenceInitializer extends AbstractPreferenceInitializer {
 
 	private static ScaDomainManagerRegistry scaDomainManagerRegistry;
 
-	/**
-	 * Instantiates a new REDHAWK SCA preference initializer.
-	 */
 	public ScaPreferenceInitializer() {
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public void initializeDefaultPreferences() {
 		final IPreferenceAccessor accessor = ScaPlugin.getDefault().getScaPreferenceAccessor();
@@ -81,7 +69,7 @@ public class ScaPreferenceInitializer extends AbstractPreferenceInitializer {
 						final org.eclipse.emf.common.util.URI configUri = org.eclipse.emf.common.util.URI.createURI(configUrl.toString());
 						final Resource configResource = resourceSet.getResource(configUri, true);
 						ScaPreferenceInitializer.scaDomainManagerRegistry = ScaDomainManagerRegistry.Util.getScaDomainManagerRegistry(configResource);
-					} catch (final Exception e1) { // SUPPRESS CHECKSTYLE Fallback
+					} catch (RuntimeException e) { // SUPPRESS CHECKSTYLE ResourceSet.getResource(URI, boolean) has a broad throws definition
 						// Second, try the shared config area
 						try {
 							final URL sharedConfigUrl = ScaPreferenceInitializer.getDomainManagerRegistrySharedConfigURL();
@@ -90,17 +78,16 @@ public class ScaPreferenceInitializer extends AbstractPreferenceInitializer {
 								final Resource sharedConfigResource = resourceSet.getResource(sharedConfigUri, true);
 								ScaPreferenceInitializer.scaDomainManagerRegistry = ScaDomainManagerRegistry.Util.getScaDomainManagerRegistry(sharedConfigResource);
 							}
-						} catch (final Exception e2) { // SUPPRESS CHECKSTYLE Fallback
+						} catch (final RuntimeException e2) { // SUPPRESS CHECKSTYLE ResourceSet.getResource(URI, boolean) has a broad throws definition
 							// PASS
 						}
 					}
 
-					// If we still don't have a registry, create a new one from defaults
-					if (ScaPreferenceInitializer.scaDomainManagerRegistry == null) { // SUPPRESS CHECKSTYLE DoubleCheck
+					// If we still don't have a registry, create a new empty one
+					if (ScaPreferenceInitializer.scaDomainManagerRegistry == null) {
 						ScaPreferenceInitializer.scaDomainManagerRegistry = ScaFactory.eINSTANCE.createScaDomainManagerRegistry();
 						final Resource resource = resourceSet.createResource(org.eclipse.emf.common.util.URI.createURI("virtual://domains.sca"));
 						resource.getContents().add(ScaPreferenceInitializer.scaDomainManagerRegistry);
-						ScaPreferenceInitializer.initFromPreference(ScaPreferenceInitializer.scaDomainManagerRegistry);
 					}
 				}
 			}
@@ -143,19 +130,5 @@ public class ScaPreferenceInitializer extends AbstractPreferenceInitializer {
 		} catch (final IOException e) {
 			return null;
 		}
-	}
-
-	@SuppressWarnings("deprecation")
-	private static void initFromPreference(final ScaDomainManagerRegistry retVal) {
-		final ScaDomainConnectionDef[] connections = ScaPreferenceUtil.loadDomainConnections();
-		for (final ScaDomainConnectionDef def : connections) {
-
-			String nameServiceRef = def.getNameServiceInitRef();
-			nameServiceRef = CorbaURIUtil.addDefaultPrefix(nameServiceRef);
-			nameServiceRef = CorbaURIUtil.addDefaultPort(nameServiceRef);
-			final Map<String, String> connectionProperties = Collections.singletonMap(ScaDomainManager.NAMING_SERVICE_PROP, nameServiceRef);
-			retVal.createDomain(def.getLocalDomainName(), def.getDomainName(), false, connectionProperties);
-		}
-
 	}
 }

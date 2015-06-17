@@ -13,19 +13,10 @@ package gov.redhawk.internal.ui.preferences;
 import org.eclipse.jface.preference.PreferenceNode;
 import org.eclipse.jface.resource.ImageDescriptor;
 
-/**
- *
- */
 public class SourcePreferenceNode extends PreferenceNode {
 
 	private String label;
 	
-	/**
-	 * @param id
-	 * @param label
-	 * @param image
-	 * @param className
-	 */
 	public SourcePreferenceNode(String id, String label, ImageDescriptor image, String className) {
 		super(id, label, image, className);
 		this.label = label;

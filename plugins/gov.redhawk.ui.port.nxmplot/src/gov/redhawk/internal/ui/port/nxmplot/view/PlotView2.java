@@ -11,9 +11,7 @@
  */
 package gov.redhawk.internal.ui.port.nxmplot.view;
 
-import gov.redhawk.model.sca.ScaUsesPort;
 import gov.redhawk.ui.port.nxmplot.FftNumAvgControls;
-import gov.redhawk.ui.port.nxmplot.FftSettings;
 import gov.redhawk.ui.port.nxmplot.IPlotView;
 import gov.redhawk.ui.port.nxmplot.PlotActivator;
 import gov.redhawk.ui.port.nxmplot.PlotEventChannelForwarder;
@@ -177,19 +175,6 @@ public class PlotView2 extends ViewPart implements IPlotView {
 			this.plotPageBook = null;
 		}
 		super.dispose();
-	}
-
-	/**
-	 * @param port ScaPort object to plot the output from.
-	 * @param fftSettings settings to use if an FFT is to be displayed (null for none)
-	 * @param qualifiers
-	 * @return IDisposable (since 4.3, was IPlotSession in 4.2)
-	 * @see PlotPageBook2#addSource2(PlotSource)
-	 * @deprecated since 4.4, use PlotPageBook2#addSource2(PlotSource)
-	 */
-	@Deprecated
-	public IDisposable addPlotSource(ScaUsesPort port, final FftSettings fftSettings, String qualifiers) {
-		return this.plotPageBook.addSource(port, fftSettings, qualifiers);
 	}
 
 	public IDisposable addPlotSource(@NonNull PlotSource plotSource) {

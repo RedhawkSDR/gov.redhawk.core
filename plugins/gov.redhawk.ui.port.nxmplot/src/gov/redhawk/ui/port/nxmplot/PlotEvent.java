@@ -27,7 +27,7 @@ public class PlotEvent {
 	}
 
 	public static class ZoomX extends PlotEvent {
-		public final double xmin, ymin, xmax, ymax;
+		public final double xmin, ymin, xmax, ymax; // SUPPRESS CHECKSTYLE Read-only event args
 
 		public ZoomX(AbstractNxmPlotWidget source, Object data, double xmin, double ymin, double xmax, double ymax) {
 			super(source, data);
@@ -39,7 +39,7 @@ public class PlotEvent {
 	}
 
 	public static class ZoomOut extends PlotEvent {
-		public final double x1, y1, x2, y2;
+		public final double x1, y1, x2, y2; // SUPPRESS CHECKSTYLE Read-only event args
 
 		public ZoomOut(AbstractNxmPlotWidget source, Object data, double x1, double y1, double x2, double y2) {
 			super(source, data);
@@ -52,7 +52,7 @@ public class PlotEvent {
 	}
 
 	public static class ZoomIn extends PlotEvent {
-		public final double xmin, ymin, xmax, ymax;
+		public final double xmin, ymin, xmax, ymax; // SUPPRESS CHECKSTYLE Read-only event args
 
 		public ZoomIn(AbstractNxmPlotWidget source, Object data, double xmin, double ymin, double xmax, double ymax) {
 			super(source, data);
@@ -65,7 +65,7 @@ public class PlotEvent {
 	}
 
 	public static class Unzoom extends PlotEvent {
-		public final double x1, y1, x2, y2;
+		public final double x1, y1, x2, y2; // SUPPRESS CHECKSTYLE Read-only event args
 
 		public Unzoom(AbstractNxmPlotWidget source, Object data, double x1, double y1, double x2, double y2) {
 			super(source, data);
@@ -78,7 +78,7 @@ public class PlotEvent {
 	}
 
 	public static class Pan extends PlotEvent {
-		public final double x1, y1, x2, y2;
+		public final double x1, y1, x2, y2; // SUPPRESS CHECKSTYLE Read-only event args
 
 		public Pan(AbstractNxmPlotWidget source, Object data, double x1, double y1, double x2, double y2) {
 			super(source, data);
@@ -90,7 +90,7 @@ public class PlotEvent {
 	}
 
 	public static class Motion extends PlotEvent {
-		public final double x, y, t;
+		public final double x, y, t; // SUPPRESS CHECKSTYLE Read-only event args
 
 		public Motion(AbstractNxmPlotWidget source, Object data, double x, double y, double t) {
 			super(source, data);
@@ -102,7 +102,7 @@ public class PlotEvent {
 	}
 
 	public static class DragBox extends PlotEvent {
-		public final double xmin, ymin, xmax, ymax;
+		public final double xmin, ymin, xmax, ymax; // SUPPRESS CHECKSTYLE Read-only event args
 
 		public DragBox(AbstractNxmPlotWidget source, Object data, double xmin, double ymin, double xmax, double ymax) {
 			super(source, data);
@@ -115,7 +115,7 @@ public class PlotEvent {
 	}
 
 	public static class Click extends PlotEvent {
-		public final double x, y, t;
+		public final double x, y, t; // SUPPRESS CHECKSTYLE Read-only event args
 
 		public Click(AbstractNxmPlotWidget source, Object data, double x, double y, double t) {
 			super(source, data);
@@ -126,8 +126,8 @@ public class PlotEvent {
 
 	}
 
-	public final AbstractNxmPlotWidget source;
-	public final Object data;
+	public final AbstractNxmPlotWidget source; // SUPPRESS CHECKSTYLE Read-only event args
+	public final Object data; // SUPPRESS CHECKSTYLE Read-only event args
 
 	public PlotEvent(AbstractNxmPlotWidget source, Object data) {
 		super();

@@ -23,9 +23,6 @@ import org.eclipse.swt.graphics.RGB;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Text;
 
-/**
- *
- */
 public class OverridableIntegerFieldEditor extends IntegerFieldEditor {
 
 	/** max digits for a 32-bit integer (including minus sign) is 11 */

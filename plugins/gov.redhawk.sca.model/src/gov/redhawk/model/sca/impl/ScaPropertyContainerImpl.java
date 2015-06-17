@@ -24,14 +24,9 @@ import gov.redhawk.model.sca.commands.UnsetLocalAttributeCommand;
 import gov.redhawk.model.sca.commands.VersionedFeature;
 import gov.redhawk.model.sca.commands.VersionedFeature.Transaction;
 import gov.redhawk.sca.util.PluginUtil;
-
 import java.util.Collection;
 import java.util.List;
-
 import mil.jpeojtrs.sca.prf.AbstractProperty;
-
-import org.eclipse.core.filesystem.EFS;
-import org.eclipse.core.filesystem.IFileStore;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.MultiStatus;
@@ -51,7 +46,6 @@ import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.InternalEList;
 import org.eclipse.emf.transaction.RunnableWithResult;
 import org.omg.CORBA.SystemException;
-
 import CF.DataType;
 import CF.InvalidIdentifier;
 import CF.InvalidObjectReference;
@@ -72,7 +66,6 @@ import CF.PropertySetPackage.PartialConfiguration;
  *        <ul>
  *        <li>{@link gov.redhawk.model.sca.impl.ScaPropertyContainerImpl#getProfileURI <em>Profile URI</em>}</li>
  *        <li>{@link gov.redhawk.model.sca.impl.ScaPropertyContainerImpl#getProfileObj <em>Profile Obj</em>}</li>
- *        <li>{@link gov.redhawk.model.sca.impl.ScaPropertyContainerImpl#getRootFileStore <em>Root File Store</em>}</li>
  *        <li>{@link gov.redhawk.model.sca.impl.ScaPropertyContainerImpl#getProperties <em>Properties</em>}</li>
  *        </ul>
  *        </p>
@@ -129,16 +122,6 @@ public abstract class ScaPropertyContainerImpl< P extends org.omg.CORBA.Object, 
 	 * @ordered
 	 */
 	protected boolean profileObjESet;
-	/**
-	 * The default value of the '{@link #getRootFileStore() <em>Root File Store</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * 
-	 * @see #getRootFileStore()
-	 * @generated
-	 * @ordered
-	 */
-	protected static final IFileStore ROOT_FILE_STORE_EDEFAULT = null;
 	/**
 	 * The cached value of the '{@link #getProperties() <em>Properties</em>}' containment reference list.
 	 * <!-- begin-user-doc -->
@@ -327,30 +310,6 @@ public abstract class ScaPropertyContainerImpl< P extends org.omg.CORBA.Object, 
 
 	/**
 	 * <!-- begin-user-doc -->
-	 * 
-	 * @deprecated Use {@link #getProfileURI()} instead
-	 *             <!-- end-user-doc -->
-	 * @generated NOT
-	 */
-	@Deprecated
-	@Override
-	public IFileStore getRootFileStore() {
-		// END GENERATED CODE
-		try {
-			URI uri = getProfileURI();
-			if (uri != null) {
-				return EFS.getStore(java.net.URI.create(uri.toString()));
-			} else {
-				return null;
-			}
-		} catch (Exception e) { // SUPPRESS CHECKSTYLE Deprecated
-			return null;
-		}
-		// BEGIN GENERATED CODE
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * 
 	 * @generated
@@ -395,15 +354,14 @@ public abstract class ScaPropertyContainerImpl< P extends org.omg.CORBA.Object, 
 
 	/**
 	 * <!-- begin-user-doc -->
-	 * @since 19.1
-	 * <!-- end-user-doc -->
+	 * This is an EMF-generated wrapper for {@link #registerPropertyListener(org.omg.CORBA.Object, String[], float)}.
+	 * @since 20.0
+	 *        <!-- end-user-doc -->
 	 * 
-	 * @generated
+	 * @generated NOT
 	 */
 	public String registerPropertyListener(org.omg.CORBA.Object obj, EList<String> prop_ids, float interval) throws UnknownProperties, InvalidObjectReference {
-		// TODO: implement this method
-		// Ensure that you remove @generated or mark it @generated NOT
-		throw new UnsupportedOperationException();
+		return this.registerPropertyListener(obj, prop_ids.toArray(new String[prop_ids.size()]), interval);
 	}
 
 	/**
@@ -457,8 +415,6 @@ public abstract class ScaPropertyContainerImpl< P extends org.omg.CORBA.Object, 
 			if (resolve)
 				return getProfileObj();
 			return basicGetProfileObj();
-		case ScaPackage.SCA_PROPERTY_CONTAINER__ROOT_FILE_STORE:
-			return getRootFileStore();
 		case ScaPackage.SCA_PROPERTY_CONTAINER__PROPERTIES:
 			return getProperties();
 		}
@@ -524,8 +480,6 @@ public abstract class ScaPropertyContainerImpl< P extends org.omg.CORBA.Object, 
 			return isSetProfileURI();
 		case ScaPackage.SCA_PROPERTY_CONTAINER__PROFILE_OBJ:
 			return isSetProfileObj();
-		case ScaPackage.SCA_PROPERTY_CONTAINER__ROOT_FILE_STORE:
-			return ROOT_FILE_STORE_EDEFAULT == null ? getRootFileStore() != null : !ROOT_FILE_STORE_EDEFAULT.equals(getRootFileStore());
 		case ScaPackage.SCA_PROPERTY_CONTAINER__PROPERTIES:
 			return isSetProperties();
 		}
@@ -546,8 +500,6 @@ public abstract class ScaPropertyContainerImpl< P extends org.omg.CORBA.Object, 
 				return ScaPackage.PROFILE_OBJECT_WRAPPER__PROFILE_URI;
 			case ScaPackage.SCA_PROPERTY_CONTAINER__PROFILE_OBJ:
 				return ScaPackage.PROFILE_OBJECT_WRAPPER__PROFILE_OBJ;
-			case ScaPackage.SCA_PROPERTY_CONTAINER__ROOT_FILE_STORE:
-				return ScaPackage.PROFILE_OBJECT_WRAPPER__ROOT_FILE_STORE;
 			default:
 				return -1;
 			}
@@ -575,8 +527,6 @@ public abstract class ScaPropertyContainerImpl< P extends org.omg.CORBA.Object, 
 				return ScaPackage.SCA_PROPERTY_CONTAINER__PROFILE_URI;
 			case ScaPackage.PROFILE_OBJECT_WRAPPER__PROFILE_OBJ:
 				return ScaPackage.SCA_PROPERTY_CONTAINER__PROFILE_OBJ;
-			case ScaPackage.PROFILE_OBJECT_WRAPPER__ROOT_FILE_STORE:
-				return ScaPackage.SCA_PROPERTY_CONTAINER__ROOT_FILE_STORE;
 			default:
 				return -1;
 			}
@@ -668,12 +618,6 @@ public abstract class ScaPropertyContainerImpl< P extends org.omg.CORBA.Object, 
 		// BEGIN GENERATED CODE
 	}
 
-	@Override
-	@Deprecated
-	public void fetchPropertyValues(IProgressMonitor monitor) throws InterruptedException {
-		fetchProperties(monitor);
-	}
-
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
@@ -732,7 +676,7 @@ public abstract class ScaPropertyContainerImpl< P extends org.omg.CORBA.Object, 
 	}
 
 	/**
-	 * @since 19.1
+	 * @since 20.0
 	 */
 	@Override
 	public String registerPropertyListener(org.omg.CORBA.Object obj, String[] prop_ids, float interval) throws UnknownProperties, InvalidObjectReference {
@@ -749,7 +693,7 @@ public abstract class ScaPropertyContainerImpl< P extends org.omg.CORBA.Object, 
 	}
 
 	/**
-	 * @since 19.1
+	 * @since 20.0
 	 */
 	@Override
 	public void unregisterPropertyListener(String id) throws InvalidIdentifier {

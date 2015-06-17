@@ -203,16 +203,6 @@ public class BulkIONxmBlock extends AbstractNxmBlock<corbareceiver2> {
 		return BulkIOPreferences.SAMPLE_RATE.getValue(getPreferences());
 	}
 
-	/** @deprecated since 5.0, use {@link #setBlockingOption(BlockingOption)} */
-	@Deprecated
-	public void setBlocking(boolean blocking) {
-		if (blocking) {
-			setBlockingOption(BlockingOption.BLOCKING);
-		} else {
-			setBlockingOption(BlockingOption.NONBLOCKING);
-		}
-	}
-
 	/** @since 5.0 */
 	public void setBlockingOption(@NonNull BlockingOption blocking) {
 		BulkIOPreferences.BLOCKING_OPTION.setValue(getPreferences(), blocking.name());

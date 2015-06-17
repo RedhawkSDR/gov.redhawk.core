@@ -635,7 +635,7 @@ public class ScaServiceImpl extends ScaPropertyContainerImpl<org.omg.CORBA.Objec
 		if (devMgr != null) {
 			DeviceConfiguration dcd = devMgr.fetchProfileObject(subMonitor.newChild(1));
 			String profilePath = null;
-			ScaDeviceManagerFileSystem fileSystem = devMgr.fetchFileSystem(subMonitor.newChild(1));
+			ScaDeviceManagerFileSystem fileSystem = devMgr.fetchFileSystem(subMonitor.newChild(1), RefreshDepth.SELF);
 			if (dcd != null) {
 				DcdPartitioning part = dcd.getPartitioning();
 				if (part != null) {
@@ -668,7 +668,7 @@ public class ScaServiceImpl extends ScaPropertyContainerImpl<org.omg.CORBA.Objec
 	}
 
 	/**
-	 * @since 19.1
+	 * @since 20.0
 	 */
 	@Override
 	public void initializeProperties(final DataType[] configProperties) throws AlreadyInitialized, InvalidConfiguration, PartialConfiguration {

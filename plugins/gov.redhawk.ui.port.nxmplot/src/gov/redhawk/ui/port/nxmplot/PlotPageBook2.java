@@ -39,7 +39,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
-import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
 import org.eclipse.core.runtime.CoreException;
@@ -255,15 +254,6 @@ public class PlotPageBook2 extends Composite {
 	}
 
 	/**
-	 * @deprecated use {@link #createPlot(PlotSettings)} instead
-	 */
-	@Deprecated
-	protected PlotPage createPlot(PlotType type) {
-		PlotSettings plotSettings = new PlotSettings(type);
-		return createPlot(plotSettings);
-	}
-
-	/**
 	 * @since 4.4
 	 */
 	protected PlotPage createPlot(@NonNull PlotSettings plotSettings) {
@@ -304,36 +294,6 @@ public class PlotPageBook2 extends Composite {
 			}
 		}
 		return plotPage;
-	}
-
-	/**
-	 * @deprecated since 4.4., use {@link #addSource(PlotSource)}
-	 */
-	@Deprecated
-	public IPlotSession addSource(ScaUsesPort port, FftSettings oldFftsettings, String qualifiers) {
-		final FftNxmBlockSettings fftSettings;
-		if (oldFftsettings != null) {
-			fftSettings = PlotPageBook2.toFftNxmBlockSettings(oldFftsettings);
-		} else {
-			fftSettings = null;
-		}
-		final PlotSource plotSource = new PlotSource(port, fftSettings, qualifiers);
-
-		final org.eclipse.ui.services.IDisposable disposable = addSource(plotSource);
-
-		return new IPlotSession() {
-			private String id = UUID.randomUUID().toString();
-
-			@Override
-			public void dispose() {
-				disposable.dispose();
-			}
-
-			@Override
-			public String getSourceId() {
-				return id;
-			}
-		};
 	}
 
 	/**
@@ -603,22 +563,6 @@ public class PlotPageBook2 extends Composite {
 			retVal.add(session.plot);
 		}
 		return retVal;
-	}
-
-	/**
-	 * @noreference This method is not intended to be referenced by clients.
-	 * @since 4.4
-	 */
-	@SuppressWarnings("deprecation")
-	@NonNull
-	public static FftNxmBlockSettings toFftNxmBlockSettings(FftSettings fftOptions) {
-		FftNxmBlockSettings settings = new FftNxmBlockSettings();
-		settings.setTransformSize(Integer.parseInt(fftOptions.getTransformSize())); // 1+
-		settings.setOverlap(Integer.parseInt(fftOptions.getOverlap())); // 0-100
-		settings.setNumAverages(Integer.parseInt(fftOptions.getNumAverages())); // 1+
-		settings.setWindow(FftNxmBlockSettings.WindowType.valueOf(fftOptions.getWindowType().name()));
-		settings.setOutputType(FftNxmBlockSettings.OutputType.valueOf(fftOptions.getOutputType().name()));
-		return settings;
 	}
 
 	/**

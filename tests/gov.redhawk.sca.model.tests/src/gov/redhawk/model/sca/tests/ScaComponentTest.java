@@ -16,10 +16,15 @@ import gov.redhawk.model.sca.ScaComponent;
 import gov.redhawk.model.sca.ScaDevice;
 import gov.redhawk.model.sca.ScaWaveform;
 import gov.redhawk.model.sca.commands.ScaModelCommand;
+
 import org.junit.Assert;
+
 import junit.textui.TestRunner;
+
+import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.transaction.util.TransactionUtil;
+
 import CF.ResourceHelper;
 
 /**
@@ -37,6 +42,9 @@ import CF.ResourceHelper;
  * <ul>
  * <li>{@link gov.redhawk.model.sca.ScaComponent#fetchDevices(org.eclipse.core.runtime.IProgressMonitor) <em>Fetch
  * Devices</em>}</li>
+ * <li>
+ * {@link gov.redhawk.model.sca.ScaComponent#fetchDevices(org.eclipse.core.runtime.IProgressMonitor, gov.redhawk.model.sca.RefreshDepth)
+ * <em>Fetch Devices</em>}</li>
  * </ul>
  * </p>
  * @generated
@@ -169,28 +177,54 @@ public class ScaComponentTest extends ScaAbstractComponentTest {
 	 */
 	public void testFetchDevices__IProgressMonitor() {
 		// END GENERATED CODE
-		EList<ScaDevice< ? >> devicesEList = getFixture().fetchDevices(null);
-		Assert.assertEquals(1, devicesEList.size());
+		ScaModelCommand.execute(getFixture(), new ScaModelCommand() {
+			@Override
+			public void execute() {
+				getFixture().unsetDevices();
+			}
+		});
+		Assert.assertEquals(0, getFixture().getDevices().size());
+		@SuppressWarnings("deprecation")
+		EList<ScaDevice<?>> deviceList = getFixture().fetchDevices(new NullProgressMonitor());
 		try {
-			devicesEList.clear();
+			deviceList.clear();
 			Assert.fail("fetched Devices list should be unmodifiable");
 		} catch (UnsupportedOperationException e) {
-			Assert.assertTrue("fetched Devices list is unmodifiable", true);
+			// PASS
 		}
+		Assert.assertEquals(deviceList, getFixture().getDevices());
+		Assert.assertEquals("Device list for component should contain 1 device", 1, deviceList.size());
 		// BEGIN GENERATED CODE
 	}
 
 	/**
-	 * Tests the '{@link gov.redhawk.model.sca.ScaComponent#fetchDevices(org.eclipse.core.runtime.IProgressMonitor)
+	 * Tests the '
+	 * {@link gov.redhawk.model.sca.ScaComponent#fetchDevices(org.eclipse.core.runtime.IProgressMonitor, gov.redhawk.model.sca.RefreshDepth)
 	 * <em>Fetch Devices</em>}' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see gov.redhawk.model.sca.ScaComponent#fetchDevices(org.eclipse.core.runtime.IProgressMonitor, RefreshDepth)
+	 * @see gov.redhawk.model.sca.ScaComponent#fetchDevices(org.eclipse.core.runtime.IProgressMonitor,
+	 * gov.redhawk.model.sca.RefreshDepth)
 	 * @generated NOT
 	 */
-	public void testFetchDevices__IProgressMonitor__RefreshDepth() {
+	public void testFetchDevices__IProgressMonitor_RefreshDepth() {
 		// END GENERATED CODE
-		Assert.assertEquals(1, getFixture().fetchDevices(null, null).size());
+		ScaModelCommand.execute(getFixture(), new ScaModelCommand() {
+			@Override
+			public void execute() {
+				getFixture().unsetDevices();
+			}
+		});
+		Assert.assertEquals(0, getFixture().getDevices().size());
+		EList<ScaDevice<?>> deviceList = getFixture().fetchDevices(new NullProgressMonitor(), RefreshDepth.SELF);
+		try {
+			deviceList.clear();
+			Assert.fail("fetched Devices list should be unmodifiable");
+		} catch (UnsupportedOperationException e) {
+			// PASS
+		}
+		Assert.assertEquals(deviceList, getFixture().getDevices());
+		Assert.assertEquals("Device list for component should contain 1 device", 1, deviceList.size());
 		// BEGIN GENERATED CODE
 	}
 

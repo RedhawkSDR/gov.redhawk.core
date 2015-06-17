@@ -19,10 +19,15 @@ import gov.redhawk.model.sca.commands.ScaModelCommand;
 import gov.redhawk.model.sca.impl.ScaDomainManagerImpl;
 import gov.redhawk.model.sca.impl.ScaWaveformImpl;
 import gov.redhawk.model.sca.tests.stubs.ScaTestConstaints;
+
 import org.junit.Assert;
+
 import junit.textui.TestRunner;
+
+import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.transaction.util.TransactionUtil;
+
 import CF.ApplicationHelper;
 import CF.DataType;
 import CF.PropertiesHolder;
@@ -52,6 +57,9 @@ import CF.TestableObjectPackage.UnknownTest;
  * <ul>
  * <li>{@link gov.redhawk.model.sca.ScaWaveform#fetchComponents(org.eclipse.core.runtime.IProgressMonitor) <em>Fetch
  * Components</em>}</li>
+ * <li>
+ * {@link gov.redhawk.model.sca.ScaWaveform#fetchComponents(org.eclipse.core.runtime.IProgressMonitor, gov.redhawk.model.sca.RefreshDepth)
+ * <em>Fetch Components</em>}</li>
  * <li>{@link gov.redhawk.model.sca.ScaWaveform#fetchIdentifier(org.eclipse.core.runtime.IProgressMonitor) <em>Fetch
  * Identifier</em>}</li>
  * <li>{@link gov.redhawk.model.sca.ScaWaveform#fetchName(org.eclipse.core.runtime.IProgressMonitor) <em>Fetch
@@ -282,6 +290,28 @@ public class ScaWaveformTest extends ScaPropertyContainerTest {
 	}
 
 	/**
+	 * Tests the '{@link gov.redhawk.model.sca.ScaWaveform#unsetIdentifier() <em>unsetIdentifier()</em>}' method.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see gov.redhawk.model.sca.ScaWaveform#unsetIdentifier()
+	 * @generated NOT
+	 */
+	public void testUnsetIdentifier() {
+		// END GENERATED CODE
+		ScaModelCommand.execute(getFixture(), new ScaModelCommand() {
+
+			@Override
+			public void execute() {
+				getFixture().unsetIdentifier();
+			}
+		});
+
+		Assert.assertFalse(getFixture().isSetIdentifier());
+		Assert.assertNull(getFixture().getIdentifier());
+		// BEGIN GENERATED CODE
+	}
+
+	/**
 	 * Tests the '{@link gov.redhawk.model.sca.ScaWaveform#isSetIdentifier() <em>isSetIdentifier()</em>}' method.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -394,7 +424,35 @@ public class ScaWaveformTest extends ScaPropertyContainerTest {
 	 * @generated NOT
 	 */
 	public void testFetchComponents__IProgressMonitor__RefreshDepth() throws InterruptedException {
-		getFixture().fetchComponents(null, null);
+		final int[] size = new int[1];
+		final ComponentElementType[] components = getFixture().getObj().componentImplementations();
+		final ScaComponent[] component = new ScaComponent[1];
+		ScaModelCommand.execute(getFixture(), new ScaModelCommand() {
+
+			@Override
+			public void execute() {
+				size[0] = getFixture().getComponents().size();
+
+				Assert.assertEquals(components.length, size[0]);
+				if (!getFixture().getComponents().isEmpty()) {
+					component[0] = getFixture().getComponents().get(0);
+				}
+			}
+		});
+		getFixture().fetchComponents(null, RefreshDepth.SELF);
+		ScaModelCommand.execute(getFixture(), new ScaModelCommand() {
+
+			@Override
+			public void execute() {
+				if (!getFixture().getComponents().isEmpty()) {
+					Assert.assertEquals(component[0], getFixture().getComponents().get(0));
+				}
+				Assert.assertEquals(size[0], getFixture().getComponents().size());
+				((ScaDomainManagerImpl) ScaWaveformTest.this.env.getDomMgr()).setCorbaObj(null);
+				Assert.assertTrue(getFixture().isDisposed());
+				Assert.assertEquals(0, getFixture().getComponents().size());
+			}
+		});
 	}
 
 	/**
@@ -406,6 +464,7 @@ public class ScaWaveformTest extends ScaPropertyContainerTest {
 	 * @see gov.redhawk.model.sca.ScaWaveform#fetchComponents(org.eclipse.core.runtime.IProgressMonitor)
 	 * @generated NOT
 	 */
+	@SuppressWarnings("deprecation")
 	public void testFetchComponents__IProgressMonitor() throws InterruptedException {
 		// END GENERATED CODE
 		final int[] size = new int[1];
@@ -424,6 +483,50 @@ public class ScaWaveformTest extends ScaPropertyContainerTest {
 			}
 		});
 		getFixture().fetchComponents(null);
+		ScaModelCommand.execute(getFixture(), new ScaModelCommand() {
+
+			@Override
+			public void execute() {
+				if (!getFixture().getComponents().isEmpty()) {
+					Assert.assertEquals(component[0], getFixture().getComponents().get(0));
+				}
+				Assert.assertEquals(size[0], getFixture().getComponents().size());
+				((ScaDomainManagerImpl) ScaWaveformTest.this.env.getDomMgr()).setCorbaObj(null);
+				Assert.assertTrue(getFixture().isDisposed());
+				Assert.assertEquals(0, getFixture().getComponents().size());
+			}
+		});
+		// BEGIN GENERATED CODE
+	}
+
+	/**
+	 * Tests the '
+	 * {@link gov.redhawk.model.sca.ScaWaveform#fetchComponents(org.eclipse.core.runtime.IProgressMonitor, gov.redhawk.model.sca.RefreshDepth)
+	 * <em>Fetch Components</em>}' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see gov.redhawk.model.sca.ScaWaveform#fetchComponents(org.eclipse.core.runtime.IProgressMonitor,
+	 * gov.redhawk.model.sca.RefreshDepth)
+	 * @generated NOT
+	 */
+	public void testFetchComponents__IProgressMonitor_RefreshDepth() {
+		// END GENERATED CODE
+		final int[] size = new int[1];
+		final ComponentElementType[] components = getFixture().getObj().componentImplementations();
+		final ScaComponent[] component = new ScaComponent[1];
+		ScaModelCommand.execute(getFixture(), new ScaModelCommand() {
+
+			@Override
+			public void execute() {
+				size[0] = getFixture().getComponents().size();
+
+				Assert.assertEquals(components.length, size[0]);
+				if (!getFixture().getComponents().isEmpty()) {
+					component[0] = getFixture().getComponents().get(0);
+				}
+			}
+		});
+		getFixture().fetchComponents(new NullProgressMonitor(), RefreshDepth.SELF);
 		ScaModelCommand.execute(getFixture(), new ScaModelCommand() {
 
 			@Override

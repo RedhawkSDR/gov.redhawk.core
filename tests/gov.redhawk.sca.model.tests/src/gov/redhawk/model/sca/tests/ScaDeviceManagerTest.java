@@ -11,16 +11,22 @@
 // BEGIN GENERATED CODE
 package gov.redhawk.model.sca.tests;
 
+import gov.redhawk.model.sca.RefreshDepth;
 import gov.redhawk.model.sca.ScaDevice;
 import gov.redhawk.model.sca.ScaDeviceManager;
 import gov.redhawk.model.sca.commands.ScaModelCommand;
 import gov.redhawk.model.sca.tests.stubs.ScaTestConstaints;
+
 import org.junit.Assert;
+
 import junit.textui.TestRunner;
+
+import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.transaction.RunnableWithResult;
 import org.omg.PortableServer.POAPackage.ServantNotActive;
+
 import CF.Device;
 import CF.DeviceManagerHelper;
 import CF.InvalidObjectReference;
@@ -46,7 +52,13 @@ import CF.PortSupplierPackage.UnknownPort;
  * <li>{@link gov.redhawk.model.sca.ScaDeviceManager#getDevice(java.lang.String) <em>Get Device</em>}</li>
  * <li>{@link gov.redhawk.model.sca.ScaDeviceManager#fetchDevices(org.eclipse.core.runtime.IProgressMonitor) <em>Fetch
  * Devices</em>}</li>
+ * <li>
+ * {@link gov.redhawk.model.sca.ScaDeviceManager#fetchDevices(org.eclipse.core.runtime.IProgressMonitor, gov.redhawk.model.sca.RefreshDepth)
+ * <em>Fetch Devices</em>}</li>
  * <li>{@link gov.redhawk.model.sca.ScaDeviceManager#fetchFileSystem(org.eclipse.core.runtime.IProgressMonitor)
+ * <em>Fetch File System</em>}</li>
+ * <li>
+ * {@link gov.redhawk.model.sca.ScaDeviceManager#fetchFileSystem(org.eclipse.core.runtime.IProgressMonitor, gov.redhawk.model.sca.RefreshDepth)
  * <em>Fetch File System</em>}</li>
  * <li>{@link gov.redhawk.model.sca.ScaDeviceManager#fetchIdentifier(org.eclipse.core.runtime.IProgressMonitor)
  * <em>Fetch Identifier</em>}</li>
@@ -54,6 +66,9 @@ import CF.PortSupplierPackage.UnknownPort;
  * Label</em>}</li>
  * <li>{@link gov.redhawk.model.sca.ScaDeviceManager#fetchServices(org.eclipse.core.runtime.IProgressMonitor) <em>Fetch
  * Services</em>}</li>
+ * <li>
+ * {@link gov.redhawk.model.sca.ScaDeviceManager#fetchServices(org.eclipse.core.runtime.IProgressMonitor, gov.redhawk.model.sca.RefreshDepth)
+ * <em>Fetch Services</em>}</li>
  * <li>{@link gov.redhawk.model.sca.ScaDeviceManager#registerScaService(org.omg.CORBA.Object, java.lang.String)
  * <em>Register Sca Service</em>}</li>
  * <li>{@link gov.redhawk.model.sca.ScaDeviceManager#getScaService(java.lang.String) <em>Get Sca Service</em>}</li>
@@ -430,14 +445,6 @@ public class ScaDeviceManagerTest extends ScaPropertyContainerTest {
 	}
 
 	/**
-	 * @generated NOT
-	 */
-	public void testFetchDevices__IProgressMonitor__RefreshDepth() throws InterruptedException {
-		getFixture().fetchDevices(null, null);
-
-	}
-
-	/**
 	 * Tests the '{@link gov.redhawk.model.sca.ScaDeviceManager#fetchDevices(org.eclipse.core.runtime.IProgressMonitor)
 	 * <em>Fetch Devices</em>}' operation.
 	 * <!-- begin-user-doc -->
@@ -446,6 +453,7 @@ public class ScaDeviceManagerTest extends ScaPropertyContainerTest {
 	 * @see gov.redhawk.model.sca.ScaDeviceManager#fetchDevices(org.eclipse.core.runtime.IProgressMonitor)
 	 * @generated NOT
 	 */
+	@SuppressWarnings("deprecation")
 	public void testFetchDevices__IProgressMonitor() throws InterruptedException {
 		// END GENERATED CODE
 		final int size = ScaModelCommand.runExclusive(getFixture(), new RunnableWithResult.Impl<Integer>() {
@@ -487,6 +495,58 @@ public class ScaDeviceManagerTest extends ScaPropertyContainerTest {
 		// BEGIN GENERATED CODE
 	}
 
+	/**
+	 * Tests the '
+	 * {@link gov.redhawk.model.sca.ScaDeviceManager#fetchDevices(org.eclipse.core.runtime.IProgressMonitor, gov.redhawk.model.sca.RefreshDepth)
+	 * <em>Fetch Devices</em>}' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @throws InterruptedException
+	 * @see gov.redhawk.model.sca.ScaDeviceManager#fetchDevices(org.eclipse.core.runtime.IProgressMonitor,
+	 * gov.redhawk.model.sca.RefreshDepth)
+	 * @generated
+	 */
+	public void testFetchDevices__IProgressMonitor_RefreshDepth() throws InterruptedException {
+		// END GENERATED CODE
+		final int size = ScaModelCommand.runExclusive(getFixture(), new RunnableWithResult.Impl<Integer>() {
+
+			@Override
+			public void run() {
+				setResult(getFixture().getDevices().size());
+			}
+
+		});
+		final Device[] devices = getFixture().getObj().registeredDevices();
+		Assert.assertEquals(devices.length, size);
+		getFixture().fetchDevices(new NullProgressMonitor(), RefreshDepth.SELF);
+		ScaModelCommand.execute(getFixture(), new ScaModelCommand() {
+
+			@Override
+			public void execute() {
+				Assert.assertEquals(size, getFixture().getDevices().size());
+				getFixture().unsetDevices();
+				Assert.assertEquals(0, getFixture().getDevices().size());
+			}
+
+		});
+		EList<ScaDevice< ? >> devicesEList = getFixture().fetchDevices(new NullProgressMonitor(), RefreshDepth.SELF);
+		ScaModelCommand.execute(getFixture(), new ScaModelCommand() {
+
+			@Override
+			public void execute() {
+				Assert.assertEquals(size, getFixture().getDevices().size());
+			}
+
+		});
+		try {
+			devicesEList.clear();
+			Assert.fail("fetched Devices list should be unmodifiable");
+		} catch (UnsupportedOperationException e) {
+			Assert.assertTrue("fetched Devices list is unmodifiable", true);
+		}
+		// BEGIN GENERATED CODE
+	}
+
 	@Override
 	public void testRefreshWithNullAndDispose() throws InterruptedException {
 		// PASS
@@ -501,9 +561,26 @@ public class ScaDeviceManagerTest extends ScaPropertyContainerTest {
 	 * @see gov.redhawk.model.sca.ScaDeviceManager#fetchFileSystem(org.eclipse.core.runtime.IProgressMonitor)
 	 * @generated NOT
 	 */
+	@SuppressWarnings("deprecation")
 	public void testFetchFileSystem__IProgressMonitor() {
 		// END GENERATED CODE
 		getFixture().fetchFileSystem(null);
+		// BEGIN GENERATED CODE
+	}
+
+	/**
+	 * Tests the '
+	 * {@link gov.redhawk.model.sca.ScaDeviceManager#fetchFileSystem(org.eclipse.core.runtime.IProgressMonitor, gov.redhawk.model.sca.RefreshDepth)
+	 * <em>Fetch File System</em>}' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see gov.redhawk.model.sca.ScaDeviceManager#fetchFileSystem(org.eclipse.core.runtime.IProgressMonitor,
+	 * gov.redhawk.model.sca.RefreshDepth)
+	 * @generated
+	 */
+	public void testFetchFileSystem__IProgressMonitor_RefreshDepth() {
+		// END GENERATED CODE
+		getFixture().fetchFileSystem(new NullProgressMonitor(), RefreshDepth.SELF);
 		// BEGIN GENERATED CODE
 	}
 
@@ -561,9 +638,26 @@ public class ScaDeviceManagerTest extends ScaPropertyContainerTest {
 	 * @see gov.redhawk.model.sca.ScaDeviceManager#fetchServices(org.eclipse.core.runtime.IProgressMonitor)
 	 * @generated NOT
 	 */
+	@SuppressWarnings("deprecation")
 	public void testFetchServices__IProgressMonitor() throws InterruptedException {
 		// END GENERATED CODE
 		getFixture().fetchServices(null);
+		// BEGIN GENERATED CODE
+	}
+
+	/**
+	 * Tests the '
+	 * {@link gov.redhawk.model.sca.ScaDeviceManager#fetchServices(org.eclipse.core.runtime.IProgressMonitor, gov.redhawk.model.sca.RefreshDepth)
+	 * <em>Fetch Services</em>}' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see gov.redhawk.model.sca.ScaDeviceManager#fetchServices(org.eclipse.core.runtime.IProgressMonitor,
+	 * gov.redhawk.model.sca.RefreshDepth)
+	 * @generated
+	 */
+	public void testFetchServices__IProgressMonitor_RefreshDepth() {
+		// END GENERATED CODE
+		getFixture().fetchServices(new NullProgressMonitor(), RefreshDepth.SELF);
 		// BEGIN GENERATED CODE
 	}
 

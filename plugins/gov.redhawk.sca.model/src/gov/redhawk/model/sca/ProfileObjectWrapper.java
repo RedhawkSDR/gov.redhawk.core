@@ -16,7 +16,6 @@ import gov.redhawk.model.sca.commands.SetProfileObjectCommand;
 import gov.redhawk.model.sca.commands.UnsetLocalAttributeCommand;
 import mil.jpeojtrs.sca.util.ScaResourceFactoryUtil;
 
-import org.eclipse.core.filesystem.IFileStore;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
@@ -39,7 +38,6 @@ import org.eclipse.emf.ecore.resource.ResourceSet;
  *        <ul>
  *        <li>{@link gov.redhawk.model.sca.ProfileObjectWrapper#getProfileURI <em>Profile URI</em>}</li>
  *        <li>{@link gov.redhawk.model.sca.ProfileObjectWrapper#getProfileObj <em>Profile Obj</em>}</li>
- *        <li>{@link gov.redhawk.model.sca.ProfileObjectWrapper#getRootFileStore <em>Root File Store</em>}</li>
  *        </ul>
  *        </p>
  *
@@ -170,23 +168,6 @@ public interface ProfileObjectWrapper< O extends Object > extends IStatusProvide
 	 * @generated
 	 */
 	boolean isSetProfileObj();
-
-	/**
-	 * Returns the value of the '<em><b>Root File Store</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <p>
-	 * If the meaning of the '<em>Root File Store</em>' attribute isn't clear, there really should be more of a
-	 * description here...
-	 * </p>
-	 * <!-- end-user-doc -->
-	 * 
-	 * @return the value of the '<em>Root File Store</em>' attribute.
-	 * @see gov.redhawk.model.sca.ScaPackage#getProfileObjectWrapper_RootFileStore()
-	 * @model dataType="gov.redhawk.model.sca.IFileStore" transient="true" changeable="false" volatile="true"
-	 *        derived="true"
-	 * @generated
-	 */
-	IFileStore getRootFileStore();
 
 	/**
 	 * <!-- begin-user-doc -->

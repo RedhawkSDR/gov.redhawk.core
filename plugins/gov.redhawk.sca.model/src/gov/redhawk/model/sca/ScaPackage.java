@@ -344,15 +344,6 @@ public interface ScaPackage extends EPackage {
 	 */
 	int PROFILE_OBJECT_WRAPPER__PROFILE_OBJ = ISTATUS_PROVIDER_FEATURE_COUNT + 1;
 	/**
-	 * The feature id for the '<em><b>Root File Store</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * 
-	 * @generated
-	 * @ordered
-	 */
-	int PROFILE_OBJECT_WRAPPER__ROOT_FILE_STORE = ISTATUS_PROVIDER_FEATURE_COUNT + 2;
-	/**
 	 * The number of structural features of the '<em>Profile Object Wrapper</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -360,7 +351,7 @@ public interface ScaPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int PROFILE_OBJECT_WRAPPER_FEATURE_COUNT = ISTATUS_PROVIDER_FEATURE_COUNT + 3;
+	int PROFILE_OBJECT_WRAPPER_FEATURE_COUNT = ISTATUS_PROVIDER_FEATURE_COUNT + 2;
 	/**
 	 * The meta object id for the '{@link gov.redhawk.model.sca.impl.PropertiesImpl <em>Properties</em>}' class.
 	 * <!-- begin-user-doc -->
@@ -502,15 +493,6 @@ public interface ScaPackage extends EPackage {
 	 */
 	int SCA_PROPERTY_CONTAINER__PROFILE_OBJ = CORBA_OBJ_WRAPPER_FEATURE_COUNT + 1;
 	/**
-	 * The feature id for the '<em><b>Root File Store</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * 
-	 * @generated
-	 * @ordered
-	 */
-	int SCA_PROPERTY_CONTAINER__ROOT_FILE_STORE = CORBA_OBJ_WRAPPER_FEATURE_COUNT + 2;
-	/**
 	 * The feature id for the '<em><b>Properties</b></em>' containment reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -518,7 +500,7 @@ public interface ScaPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int SCA_PROPERTY_CONTAINER__PROPERTIES = CORBA_OBJ_WRAPPER_FEATURE_COUNT + 3;
+	int SCA_PROPERTY_CONTAINER__PROPERTIES = CORBA_OBJ_WRAPPER_FEATURE_COUNT + 2;
 	/**
 	 * The number of structural features of the '<em>Property Container</em>' class.
 	 * <!-- begin-user-doc -->
@@ -527,7 +509,7 @@ public interface ScaPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int SCA_PROPERTY_CONTAINER_FEATURE_COUNT = CORBA_OBJ_WRAPPER_FEATURE_COUNT + 4;
+	int SCA_PROPERTY_CONTAINER_FEATURE_COUNT = CORBA_OBJ_WRAPPER_FEATURE_COUNT + 3;
 	/**
 	 * The meta object id for the '{@link gov.redhawk.model.sca.impl.ScaAbstractComponentImpl
 	 * <em>Abstract Component</em>}' class.
@@ -640,15 +622,6 @@ public interface ScaPackage extends EPackage {
 	 * @ordered
 	 */
 	int SCA_ABSTRACT_COMPONENT__PROFILE_OBJ = SCA_PROPERTY_CONTAINER__PROFILE_OBJ;
-	/**
-	 * The feature id for the '<em><b>Root File Store</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * 
-	 * @generated
-	 * @ordered
-	 */
-	int SCA_ABSTRACT_COMPONENT__ROOT_FILE_STORE = SCA_PROPERTY_CONTAINER__ROOT_FILE_STORE;
 	/**
 	 * The feature id for the '<em><b>Properties</b></em>' containment reference list.
 	 * <!-- begin-user-doc -->
@@ -955,15 +928,6 @@ public interface ScaPackage extends EPackage {
 	 */
 	int SCA_COMPONENT__PROFILE_OBJ = SCA_ABSTRACT_COMPONENT__PROFILE_OBJ;
 	/**
-	 * The feature id for the '<em><b>Root File Store</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * 
-	 * @generated
-	 * @ordered
-	 */
-	int SCA_COMPONENT__ROOT_FILE_STORE = SCA_ABSTRACT_COMPONENT__ROOT_FILE_STORE;
-	/**
 	 * The feature id for the '<em><b>Properties</b></em>' containment reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -1174,15 +1138,6 @@ public interface ScaPackage extends EPackage {
 	 * @ordered
 	 */
 	int SCA_DEVICE__PROFILE_OBJ = SCA_ABSTRACT_COMPONENT__PROFILE_OBJ;
-	/**
-	 * The feature id for the '<em><b>Root File Store</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * 
-	 * @generated
-	 * @ordered
-	 */
-	int SCA_DEVICE__ROOT_FILE_STORE = SCA_ABSTRACT_COMPONENT__ROOT_FILE_STORE;
 	/**
 	 * The feature id for the '<em><b>Properties</b></em>' containment reference list.
 	 * <!-- begin-user-doc -->
@@ -1413,15 +1368,6 @@ public interface ScaPackage extends EPackage {
 	 */
 	int SCA_DEVICE_MANAGER__PROFILE_OBJ = SCA_PROPERTY_CONTAINER__PROFILE_OBJ;
 	/**
-	 * The feature id for the '<em><b>Root File Store</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * 
-	 * @generated
-	 * @ordered
-	 */
-	int SCA_DEVICE_MANAGER__ROOT_FILE_STORE = SCA_PROPERTY_CONTAINER__ROOT_FILE_STORE;
-	/**
 	 * The feature id for the '<em><b>Properties</b></em>' containment reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -1651,16 +1597,6 @@ public interface ScaPackage extends EPackage {
 	 * @ordered
 	 */
 	int SCA_SERVICE__PROFILE_OBJ = SCA_PROPERTY_CONTAINER__PROFILE_OBJ;
-	/**
-	 * The feature id for the '<em><b>Root File Store</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * 
-	 * @since 18.0
-	 *        <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int SCA_SERVICE__ROOT_FILE_STORE = SCA_PROPERTY_CONTAINER__ROOT_FILE_STORE;
 	/**
 	 * The feature id for the '<em><b>Properties</b></em>' containment reference list.
 	 * <!-- begin-user-doc -->
@@ -2199,15 +2135,6 @@ public interface ScaPackage extends EPackage {
 	 */
 	int SCA_DOMAIN_MANAGER__PROFILE_OBJ = SCA_PROPERTY_CONTAINER__PROFILE_OBJ;
 	/**
-	 * The feature id for the '<em><b>Root File Store</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * 
-	 * @generated
-	 * @ordered
-	 */
-	int SCA_DOMAIN_MANAGER__ROOT_FILE_STORE = SCA_PROPERTY_CONTAINER__ROOT_FILE_STORE;
-	/**
 	 * The feature id for the '<em><b>Properties</b></em>' containment reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -2347,7 +2274,7 @@ public interface ScaPackage extends EPackage {
 	 * The feature id for the '<em><b>Local Name</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * 
-	 * @since 19.1
+	 * @since 20.0
 	 *        <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
@@ -2835,15 +2762,6 @@ public interface ScaPackage extends EPackage {
 	 */
 	int SCA_LOADABLE_DEVICE__PROFILE_OBJ = SCA_DEVICE__PROFILE_OBJ;
 	/**
-	 * The feature id for the '<em><b>Root File Store</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * 
-	 * @generated
-	 * @ordered
-	 */
-	int SCA_LOADABLE_DEVICE__ROOT_FILE_STORE = SCA_DEVICE__ROOT_FILE_STORE;
-	/**
 	 * The feature id for the '<em><b>Properties</b></em>' containment reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -3072,15 +2990,6 @@ public interface ScaPackage extends EPackage {
 	 * @ordered
 	 */
 	int SCA_EXECUTABLE_DEVICE__PROFILE_OBJ = SCA_LOADABLE_DEVICE__PROFILE_OBJ;
-	/**
-	 * The feature id for the '<em><b>Root File Store</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * 
-	 * @generated
-	 * @ordered
-	 */
-	int SCA_EXECUTABLE_DEVICE__ROOT_FILE_STORE = SCA_LOADABLE_DEVICE__ROOT_FILE_STORE;
 	/**
 	 * The feature id for the '<em><b>Properties</b></em>' containment reference list.
 	 * <!-- begin-user-doc -->
@@ -3817,9 +3726,9 @@ public interface ScaPackage extends EPackage {
 	/**
 	 * The feature id for the '<em><b>Sequences</b></em>' containment reference list.
 	 * <!-- begin-user-doc -->
-	 * @since 19.1
-	 * <!-- end-user-doc -->
 	 * 
+	 * @since 20.0
+	 *        <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
@@ -4138,15 +4047,6 @@ public interface ScaPackage extends EPackage {
 	 */
 	int SCA_WAVEFORM__PROFILE_OBJ = SCA_PROPERTY_CONTAINER__PROFILE_OBJ;
 	/**
-	 * The feature id for the '<em><b>Root File Store</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * 
-	 * @generated
-	 * @ordered
-	 */
-	int SCA_WAVEFORM__ROOT_FILE_STORE = SCA_PROPERTY_CONTAINER__ROOT_FILE_STORE;
-	/**
 	 * The feature id for the '<em><b>Properties</b></em>' containment reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -4349,15 +4249,6 @@ public interface ScaPackage extends EPackage {
 	 */
 	int SCA_WAVEFORM_FACTORY__PROFILE_OBJ = CORBA_OBJ_WRAPPER_FEATURE_COUNT + 1;
 	/**
-	 * The feature id for the '<em><b>Root File Store</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * 
-	 * @generated
-	 * @ordered
-	 */
-	int SCA_WAVEFORM_FACTORY__ROOT_FILE_STORE = CORBA_OBJ_WRAPPER_FEATURE_COUNT + 2;
-	/**
 	 * The feature id for the '<em><b>Dom Mgr</b></em>' container reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -4365,7 +4256,7 @@ public interface ScaPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int SCA_WAVEFORM_FACTORY__DOM_MGR = CORBA_OBJ_WRAPPER_FEATURE_COUNT + 3;
+	int SCA_WAVEFORM_FACTORY__DOM_MGR = CORBA_OBJ_WRAPPER_FEATURE_COUNT + 2;
 	/**
 	 * The feature id for the '<em><b>Identifier</b></em>' attribute.
 	 * <!-- begin-user-doc -->
@@ -4374,7 +4265,7 @@ public interface ScaPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int SCA_WAVEFORM_FACTORY__IDENTIFIER = CORBA_OBJ_WRAPPER_FEATURE_COUNT + 4;
+	int SCA_WAVEFORM_FACTORY__IDENTIFIER = CORBA_OBJ_WRAPPER_FEATURE_COUNT + 3;
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
 	 * <!-- begin-user-doc -->
@@ -4383,7 +4274,7 @@ public interface ScaPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int SCA_WAVEFORM_FACTORY__NAME = CORBA_OBJ_WRAPPER_FEATURE_COUNT + 5;
+	int SCA_WAVEFORM_FACTORY__NAME = CORBA_OBJ_WRAPPER_FEATURE_COUNT + 4;
 	/**
 	 * The feature id for the '<em><b>Profile</b></em>' attribute.
 	 * <!-- begin-user-doc -->
@@ -4392,7 +4283,7 @@ public interface ScaPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int SCA_WAVEFORM_FACTORY__PROFILE = CORBA_OBJ_WRAPPER_FEATURE_COUNT + 6;
+	int SCA_WAVEFORM_FACTORY__PROFILE = CORBA_OBJ_WRAPPER_FEATURE_COUNT + 5;
 	/**
 	 * The number of structural features of the '<em>Waveform Factory</em>' class.
 	 * <!-- begin-user-doc -->
@@ -4401,7 +4292,7 @@ public interface ScaPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int SCA_WAVEFORM_FACTORY_FEATURE_COUNT = CORBA_OBJ_WRAPPER_FEATURE_COUNT + 7;
+	int SCA_WAVEFORM_FACTORY_FEATURE_COUNT = CORBA_OBJ_WRAPPER_FEATURE_COUNT + 6;
 	/**
 	 * The meta object id for the '{@link gov.redhawk.model.sca.impl.StringToStringMapImpl
 	 * <em>String To String Map</em>}' class.
@@ -5081,19 +4972,6 @@ public interface ScaPackage extends EPackage {
 	 * @generated
 	 */
 	EReference getProfileObjectWrapper_ProfileObj();
-
-	/**
-	 * Returns the meta object for the attribute '{@link gov.redhawk.model.sca.ProfileObjectWrapper#getRootFileStore
-	 * <em>Root File Store</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * 
-	 * @return the meta object for the attribute '<em>Root File Store</em>'.
-	 * @see gov.redhawk.model.sca.ProfileObjectWrapper#getRootFileStore()
-	 * @see #getProfileObjectWrapper()
-	 * @generated
-	 */
-	EAttribute getProfileObjectWrapper_RootFileStore();
 
 	/**
 	 * Returns the meta object for class '{@link gov.redhawk.model.sca.Properties <em>Properties</em>}'.
@@ -5947,7 +5825,7 @@ public interface ScaPackage extends EPackage {
 	 * <em>Local Name</em>}'.
 	 * <!-- begin-user-doc -->
 	 * 
-	 * @since 19.1
+	 * @since 20.0
 	 *        <!-- end-user-doc -->
 	 * @return the meta object for the attribute '<em>Local Name</em>'.
 	 * @see gov.redhawk.model.sca.ScaDomainManager#getLocalName()
@@ -6287,9 +6165,9 @@ public interface ScaPackage extends EPackage {
 	 * Returns the meta object for the containment reference list '
 	 * {@link gov.redhawk.model.sca.ScaStructProperty#getSequences <em>Sequences</em>}'.
 	 * <!-- begin-user-doc -->
-	 * @since 19.1
-	 * <!-- end-user-doc -->
 	 * 
+	 * @since 20.0
+	 *        <!-- end-user-doc -->
 	 * @return the meta object for the containment reference list '<em>Sequences</em>'.
 	 * @see gov.redhawk.model.sca.ScaStructProperty#getSequences()
 	 * @see #getScaStructProperty()
@@ -6966,18 +6844,6 @@ public interface ScaPackage extends EPackage {
 	ScaFactory getScaFactory();
 
 	/**
-	 * @deprecated Use {@link #SCA_SIMPLE_SEQUENCE_PROPERTY__VALUES}
-	 */
-	@Deprecated
-	int SCA_SIMPLE_SEQUENCE_PROPERTY__VALUE = SCA_SIMPLE_SEQUENCE_PROPERTY__VALUES;
-
-	/**
-	 * @deprecated Use {@link #getScaSimpleSequenceProperty_Values()}
-	 */
-	@Deprecated
-	EAttribute getScaSimpleSequenceProperty_Value();
-
-	/**
 	 * <!-- begin-user-doc --> Defines literals for the meta objects that
 	 * represent
 	 * <ul>
@@ -7116,14 +6982,6 @@ public interface ScaPackage extends EPackage {
 		 * @generated
 		 */
 		EReference PROFILE_OBJECT_WRAPPER__PROFILE_OBJ = eINSTANCE.getProfileObjectWrapper_ProfileObj();
-		/**
-		 * The meta object literal for the '<em><b>Root File Store</b></em>' attribute feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * 
-		 * @generated
-		 */
-		EAttribute PROFILE_OBJECT_WRAPPER__ROOT_FILE_STORE = eINSTANCE.getProfileObjectWrapper_RootFileStore();
 		/**
 		 * The meta object literal for the '{@link gov.redhawk.model.sca.impl.PropertiesImpl <em>Properties</em>}'
 		 * class.
@@ -7702,7 +7560,7 @@ public interface ScaPackage extends EPackage {
 		 * The meta object literal for the '<em><b>Local Name</b></em>' attribute feature.
 		 * <!-- begin-user-doc -->
 		 * 
-		 * @since 19.1
+		 * @since 20.0
 		 *        <!-- end-user-doc -->
 		 * @generated
 		 */
@@ -7961,9 +7819,9 @@ public interface ScaPackage extends EPackage {
 		/**
 		 * The meta object literal for the '<em><b>Sequences</b></em>' containment reference list feature.
 		 * <!-- begin-user-doc -->
-		 * @since 19.1
-		 * <!-- end-user-doc -->
 		 * 
+		 * @since 20.0
+		 *        <!-- end-user-doc -->
 		 * @generated
 		 */
 		EReference SCA_STRUCT_PROPERTY__SEQUENCES = eINSTANCE.getScaStructProperty_Sequences();
@@ -8457,11 +8315,6 @@ public interface ScaPackage extends EPackage {
 		 * @generated
 		 */
 		EDataType ANY = eINSTANCE.getAny();
-		/**
-		 * @deprecated Use {@link #SCA_SIMPLE_SEQUENCE_PROPERTY__VALUES}
-		 */
-		@Deprecated
-		EAttribute SCA_SIMPLE_SEQUENCE_PROPERTY__VALUE = SCA_SIMPLE_SEQUENCE_PROPERTY__VALUES;
 
 	}
 

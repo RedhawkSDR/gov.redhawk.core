@@ -20,7 +20,7 @@ import org.eclipse.emf.transaction.util.TransactionUtil;
 
 /**
  * A command that can't be undone and should not dirty an editor.
- * @since 19.1
+ * @since 20.0
  */
 public abstract class NonDirtyingCommand extends AbstractCommand implements AbstractCommand.NonDirtying {
 

@@ -130,4 +130,26 @@ public class ScaExecutableDeviceTest extends ScaLoadableDeviceTest {
 		// BEGIN GENERATED CODE
 	}
 
+	/**
+	 * Tests the '
+	 * {@link CF.ExecutableDeviceOperations#executeLinked(java.lang.String, CF.DataType[], CF.DataType[], org.eclipse.emf.common.util.EList)
+	 * <em>Execute Linked</em>}' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @throws ExecuteFail
+	 * @throws InvalidFileName
+	 * @throws InvalidOptions
+	 * @throws InvalidParameters
+	 * @throws InvalidFunction
+	 * @throws InvalidState
+	 * @see CF.ExecutableDeviceOperations#executeLinked(java.lang.String, CF.DataType[], CF.DataType[],
+	 * org.eclipse.emf.common.util.EList)
+	 * @generated
+	 */
+	public void testExecuteLinked__String_DataType_DataType_EList() throws InvalidState, InvalidFunction, InvalidParameters, InvalidOptions, InvalidFileName, ExecuteFail {
+		// END GENERATED CODE
+		getFixture().executeLinked("", new DataType[0], new DataType[0], new String[0]);
+		// BEGIN GENERATED CODE
+	}
+
 } // ScaExecutableDeviceTest
