@@ -23,7 +23,7 @@ import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.jface.viewers.Viewer;
 
 /**
- * @since 7.1
+ * @since 8.0
  */
 public class ViewerUtil {
 

@@ -18,7 +18,7 @@ import org.eclipse.jface.viewers.ILabelProviderListener;
 import org.eclipse.swt.graphics.Image;
 
 /**
- * @since 7.1
+ * @since 8.0
  */
 public class UnwrappingLabelProvider implements ILabelProvider {
 	private ILabelProvider provider;
