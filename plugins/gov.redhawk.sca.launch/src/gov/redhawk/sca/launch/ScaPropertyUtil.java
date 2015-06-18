@@ -29,15 +29,20 @@ import java.util.List;
 import java.util.Map;
 
 /**
+ * Utility methods to load/save properties for a component to/from a string. Allows passing this information through
+ * Eclipse launch configurations. The format is NOT portable - load and save must occur through this class.
  * @since 8.0
- * 
  */
 class ScaPropertyUtil {
 
 	private ScaPropertyUtil() {
-
 	}
 
+	/**
+	 * Loads a set of properties from a string of XML.
+	 * @param component A property container (component)
+	 * @param serializedValue The serialized string
+	 */
 	public static void load(final ScaPropertyContainer< ? , ? > component, final String serializedValue) {
 		if (component != null && serializedValue != null) {
 			final XMLDecoder decoder = new XMLDecoder(new ByteArrayInputStream(serializedValue.getBytes()));
@@ -47,6 +52,11 @@ class ScaPropertyUtil {
 		}
 	}
 
+	/**
+	 * Saves a set of properties to a string of XML. Only properties with non-default values are saved.
+	 * @param component A property container (component)
+	 * @return The serialized string
+	 */
 	public static String save(final ScaPropertyContainer<?, ?> component) {
 		if (component != null) {
 			final Map< ? , ? > propMap = ScaPropertyUtil.storeProperties(component);

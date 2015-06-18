@@ -70,6 +70,7 @@ public final class ScaLaunchConfigurationUtil {
 	}
 
 	/**
+	 * Saves all modified properties in the {@link ScaPropertyContainer} to the {@link ILaunchConfigurationWorkingCopy}.
 	 * @since 1.1
 	 */
 	public static void saveProperties(final ILaunchConfigurationWorkingCopy configuration, final ScaPropertyContainer< ? , ? > component) {
@@ -87,6 +88,10 @@ public final class ScaLaunchConfigurationUtil {
 	}
 
 	/**
+	 * Loads the properties stored in the {@link ILaunchConfiguration} into the {@link ScaPropertyContainer}.
+	 * <p/>
+	 * The profile of the {@link ScaPropertyContainer} should be appropriately initialized so the properties can be
+	 * found and their values set.
 	 * @param configuration
 	 * @param component
 	 * @since 1.1
