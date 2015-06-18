@@ -11,7 +11,6 @@
  */
 package gov.redhawk.sca.ui.wizards;
 
-import gov.redhawk.model.sca.ScaAbstractComponent;
 import gov.redhawk.model.sca.ScaAbstractProperty;
 import gov.redhawk.model.sca.ScaPropertyContainer;
 import gov.redhawk.model.sca.ScaSimpleProperty;
@@ -31,21 +30,11 @@ import org.eclipse.jface.dialogs.IDialogSettings;
  * 
  */
 public final class ScaPropertyUtil {
+
 	private static final String SIMPLE_SEQ_VALUES = "values";
 	private static final String SIMPLE_VALUE = "value";
 
 	private ScaPropertyUtil() {
-
-	}
-
-	/**
-	 * @deprecated Use new broader load method {@link #load(ScaPropertyContainer, IDialogSettings)}
-	 * @param container
-	 * @param propSettings
-	 */
-	@Deprecated
-	public static void load(final ScaAbstractComponent< ? > component, final IDialogSettings propSettings) {
-		load((ScaPropertyContainer< ? , ? >) component, propSettings);
 	}
 
 	/**
@@ -55,16 +44,6 @@ public final class ScaPropertyUtil {
 		if (container != null && propSettings != null) {
 			ScaPropertyUtil.restoreProperties(container, propSettings);
 		}
-	}
-
-	/**
-	 * @deprecated Use new broader save method {@link #save(ScaPropertyContainer, IDialogSettings)}
-	 * @param container
-	 * @param propSettings
-	 */
-	@Deprecated
-	public static void save(final ScaAbstractComponent< ? > container, final IDialogSettings propSettings) {
-		save((ScaPropertyContainer< ? , ? >) container, propSettings);
 	}
 
 	/**

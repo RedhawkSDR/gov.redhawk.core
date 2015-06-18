@@ -11,7 +11,6 @@
  */
 package gov.redhawk.sca.launch;
 
-import gov.redhawk.model.sca.ScaAbstractComponent;
 import gov.redhawk.model.sca.ScaPropertyContainer;
 
 import java.io.File;
@@ -71,14 +70,6 @@ public final class ScaLaunchConfigurationUtil {
 	}
 
 	/**
-	 * @param configuration
-	 * @param component
-	 */
-	public static void saveProperties(final ILaunchConfigurationWorkingCopy configuration, ScaAbstractComponent< ? > component) {
-		saveProperties(configuration, (ScaPropertyContainer< ? , ? >) component);
-	}
-
-	/**
 	 * @since 1.1
 	 */
 	public static void saveProperties(final ILaunchConfigurationWorkingCopy configuration, final ScaPropertyContainer< ? , ? > component) {
@@ -98,12 +89,6 @@ public final class ScaLaunchConfigurationUtil {
 	/**
 	 * @param configuration
 	 * @param component
-	 */
-	public static void loadProperties(final ILaunchConfiguration configuration, final ScaAbstractComponent< ? > component) throws CoreException {
-		loadProperties(configuration, (ScaPropertyContainer< ? , ? >) component);
-	}
-
-	/**
 	 * @since 1.1
 	 */
 	public static void loadProperties(final ILaunchConfiguration configuration, final ScaPropertyContainer< ? , ? > component) throws CoreException {
