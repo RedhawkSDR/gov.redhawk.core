@@ -41,15 +41,15 @@ public class StructValueEditingSupport extends AbstractPropertyEditingSupport {
 		if (object instanceof SimpleRef) {
 			final Simple simple = ((SimpleRef) object).getProperty();
 			if (simple.getType() == PropertyValueType.BOOLEAN) {
-				final ComboBoxViewerCellEditor editor = new ComboBoxViewerCellEditor((Composite)getViewer().getControl(), SWT.READ_ONLY);
+				final ComboBoxViewerCellEditor editor = new ComboBoxViewerCellEditor((Composite) getViewer().getControl(), SWT.READ_ONLY);
 				editor.setContentProvider(new ArrayContentProvider());
 				editor.setLabelProvider(new LabelProvider());
 				editor.setInput(new Object[] { "true", "false" });
 				return editor;
 			}
-		} else if (object instanceof SimpleSequenceRef) { 
+		} else if (object instanceof SimpleSequenceRef) {
 			final SimpleSequence simpleSequence = ((SimpleSequenceRef) object).getProperty();
-			return new ValuesDialogEditor((Composite)getViewer().getControl(),simpleSequence.getType(), simpleSequence.isComplex());
+			return new ValuesDialogEditor((Composite) getViewer().getControl(), simpleSequence.getType(), simpleSequence.isComplex());
 		}
 		return super.getCellEditor(object);
 	}

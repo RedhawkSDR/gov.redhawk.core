@@ -86,12 +86,12 @@ public class PropertiesEditorStructItemProvider extends StructItemProvider {
 	protected Command createCreateChildCommand(EditingDomain domain, EObject owner, EStructuralFeature feature, Object value, int index,
 	        Collection< ? > collection) {
 		if (feature == PrfPackage.Literals.STRUCT__FIELDS) {
-			FeatureMap.Entry entry = (FeatureMap.Entry)value;
+			FeatureMap.Entry entry = (FeatureMap.Entry) value;
 			if (entry.getEStructuralFeature() == PrfPackage.Literals.STRUCT__SIMPLE) {
-				Simple simple = (Simple)entry.getValue();
+				Simple simple = (Simple) entry.getValue();
 				simple.setType(PropertyValueType.STRING);
 			} else if (entry.getEStructuralFeature() == PrfPackage.Literals.STRUCT__SIMPLE_SEQUENCE) {
-				SimpleSequence sequence = (SimpleSequence)entry.getValue();
+				SimpleSequence sequence = (SimpleSequence) entry.getValue();
 				sequence.setType(PropertyValueType.STRING);
 			}
 		}

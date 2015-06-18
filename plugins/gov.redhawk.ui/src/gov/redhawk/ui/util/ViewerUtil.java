@@ -68,7 +68,7 @@ public class ViewerUtil {
 	public static ISelection itemsToSelection(final TreeViewer viewer, final Collection< ? > items) {
 		final List<Object> targets = new ArrayList<Object>();
 		// A TreeViewer's content provider always has to be an ITreeContentProvider
-		final ITreeContentProvider provider = (ITreeContentProvider)viewer.getContentProvider();
+		final ITreeContentProvider provider = (ITreeContentProvider) viewer.getContentProvider();
 		final Object input = viewer.getInput();
 		for (final Object object : items) {
 			final Object target = ViewerUtil.findItemInProvider(provider, input, object);
