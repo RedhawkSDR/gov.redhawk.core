@@ -113,6 +113,12 @@ class ScaPropertyUtil {
 			}
 			retVal.put(prop.getId(), prop.getValue());
 		}
+		for (final ScaSimpleSequenceProperty prop : struct.getSequences()) {
+			if (prop.isDefaultValue()) {
+				continue;
+			}
+			retVal.put(prop.getId(), prop.getValue());
+		}
 		return retVal;
 	}
 
@@ -158,6 +164,12 @@ class ScaPropertyUtil {
 			for (final ScaSimpleProperty prop : struct.getSimples()) {
 				if (propMap.containsKey(prop.getId())) {
 					final Object value = propMap.get(prop.getId());
+					prop.setValue(value);
+				}
+			}
+			for (final ScaSimpleSequenceProperty prop : struct.getSequences()) {
+				if (propMap.containsKey(prop.getId())) {
+					final Object[] value = (Object[]) propMap.get(prop.getId());
 					prop.setValue(value);
 				}
 			}

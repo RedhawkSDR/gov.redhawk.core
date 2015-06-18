@@ -93,6 +93,13 @@ public final class ScaPropertyUtil {
 			final IDialogSettings simpleSection = valueSection.addNewSection(prop.getId());
 			ScaPropertyUtil.storeSimple(prop, simpleSection);
 		}
+		for (final ScaSimpleSequenceProperty prop : struct.getSequences()) {
+			if (prop.isDefaultValue()) {
+				continue;
+			}
+			final IDialogSettings simpleSeqSection = valueSection.addNewSection(prop.getId());
+			ScaPropertyUtil.storeSimpleSequence(prop, simpleSeqSection);
+		}
 	}
 
 	private static void storeStructSequence(final ScaStructSequenceProperty prop, final IDialogSettings valueSection) {
@@ -136,6 +143,10 @@ public final class ScaPropertyUtil {
 			for (final ScaSimpleProperty prop : struct.getSimples()) {
 				final IDialogSettings simpleSettings = structPropertySettings.getSection(prop.getId());
 				ScaPropertyUtil.restoreSimple(prop, simpleSettings);
+			}
+			for (final ScaSimpleSequenceProperty prop : struct.getSequences()) {
+				final IDialogSettings simpleSeqSettings = structPropertySettings.getSection(prop.getId());
+				ScaPropertyUtil.restoreSimpleSequence(prop, simpleSeqSettings);
 			}
 		}
 	}
