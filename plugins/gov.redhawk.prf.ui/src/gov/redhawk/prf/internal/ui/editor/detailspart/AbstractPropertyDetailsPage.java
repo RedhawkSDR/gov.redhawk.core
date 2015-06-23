@@ -130,7 +130,8 @@ public abstract class AbstractPropertyDetailsPage extends ScaDetails {
 	}
 
 	/**
-	 * Determine if <b>any</b> properties in the PRF are "configure" or "execparam".
+	 * Determine if <b>any</b> properties in the PRF are "configure" or "execparam". This indicates the PRF uses
+	 * deprecated properties.
 	 * @param input The input (the code will find the {@link Properties} object)
 	 * @return
 	 */
