@@ -10,6 +10,7 @@
  *******************************************************************************/
 package gov.redhawk.sca.ui.properties;
 
+import gov.redhawk.model.sca.ScaPort;
 import mil.jpeojtrs.sca.scd.AbstractPort;
 import mil.jpeojtrs.sca.scd.PortTypeContainer;
 import mil.jpeojtrs.sca.scd.Provides;
@@ -75,8 +76,7 @@ public class PortDetailsPropertySection extends AbstractPropertySection {
 
 		layoutData = new FormData();
 		layoutData.top = new FormAttachment(label, 0, SWT.BOTTOM); // put below label
-		layoutData.left = new FormAttachment(0, ITabbedPropertyConstants.HSPACE); // start at left of parent +HSPACE
-																					// pixels
+		layoutData.left = new FormAttachment(0, ITabbedPropertyConstants.HSPACE); // start at left of parent +HSPACE px
 		layoutData.right = new FormAttachment(100, -ITabbedPropertyConstants.HSPACE); // fill 100% to width of parent
 																						// -HSPACE pixels
 		layoutData.bottom = new FormAttachment(100, -ITabbedPropertyConstants.VMARGIN);
@@ -94,6 +94,13 @@ public class PortDetailsPropertySection extends AbstractPropertySection {
 			Object adapter = Platform.getAdapterManager().getAdapter(obj, AbstractPort.class);
 			if (adapter instanceof AbstractPort) {
 				newPort = (AbstractPort) adapter;
+			}
+			if (newPort == null) {
+				adapter = Platform.getAdapterManager().getAdapter(obj, ScaPort.class);
+				if (adapter instanceof ScaPort) {
+					ScaPort<AbstractPort, ? > scaPort = (ScaPort<AbstractPort, ? >) adapter;
+					newPort = scaPort.getProfileObj();
+				}
 			}
 		}
 
