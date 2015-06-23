@@ -468,25 +468,23 @@ public class ScaStructPropertyImpl extends ScaAbstractPropertyImpl<Struct> imple
 			configMap.put(type.id, type.value);
 		}
 
-		List<DataType> simpleValues = new ArrayList<DataType>(getSimples().size());
+		List<DataType> values = new ArrayList<DataType>();
 		for (ScaSimpleProperty prop : getSimples()) {
 			Any simpleAny = configMap.get(prop.getId());
 			if (simpleAny == null) {
 				simpleAny = prop.toAny();
 			}
-			simpleValues.add(new DataType(prop.getId(), simpleAny));
+			values.add(new DataType(prop.getId(), simpleAny));
 		}
-		List<DataType> sequenceValues = new ArrayList<DataType>(getSequences().size());
 		for (ScaSimpleSequenceProperty prop : getSequences()) {
 			Any simpleAny = configMap.get(prop.getId());
 			if (simpleAny == null) {
 				simpleAny = prop.toAny();
 			}
-			sequenceValues.add(new DataType(prop.getId(), simpleAny));
+			values.add(new DataType(prop.getId(), simpleAny));
 		}
 		Any any = JacorbUtil.init().create_any();
-		PropertiesHelper.insert(any, simpleValues.toArray(new DataType[simpleValues.size()]));
-		PropertiesHelper.insert(any, sequenceValues.toArray(new DataType[sequenceValues.size()]));
+		PropertiesHelper.insert(any, values.toArray(new DataType[values.size()]));
 		setRemoteValue(any);
 		// BEGIN GENERATED CODE
 	}
