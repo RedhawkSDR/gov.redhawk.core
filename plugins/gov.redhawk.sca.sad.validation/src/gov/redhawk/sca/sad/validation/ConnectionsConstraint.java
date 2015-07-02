@@ -141,7 +141,7 @@ public class ConnectionsConstraint extends AbstractModelConstraint {
 
 				retVal.append(idsMap.get(uniqueName));
 				retVal.append(" extra occurrence(s) of connection between ");
-				retVal.append(uses.getUsesIndentifier() + " port of ");
+				retVal.append(uses.getUsesIdentifier() + " port of ");
 				retVal.append(uses.getComponentInstantiationRef().getInstantiation().getUsageName() + " component and ");
 
 				if (connect.getTarget() instanceof ProvidesPortStub) {
@@ -172,19 +172,19 @@ public class ConnectionsConstraint extends AbstractModelConstraint {
 		if (connect.getSource() != null && connect.getSource().eContainer() instanceof SadComponentInstantiation) {
 			final SadUsesPort uses = connect.getUsesPort();
 
-			retVal.append(uses.getUsesIndentifier() + " " + uses.getComponentInstantiationRef().getRefid() + " ");
+			retVal.append(uses.getUsesIdentifier() + " " + uses.getComponentInstantiationRef().getRefid() + " ");
 		} else if (connect.getSource() != null && connect.getSource().eContainer() instanceof FindByStub) {
 			final SadUsesPort uses = connect.getUsesPort();
 
 			String findByName = uses.getFindBy().getNamingService() != null ? uses.getFindBy().getNamingService().getName()
 				: uses.getFindBy().getDomainFinder().getName();
-			retVal.append(uses.getUsesIndentifier() + " " + findByName + " ");
+			retVal.append(uses.getUsesIdentifier() + " " + findByName + " ");
 		} else if (connect.getUsesPort().getFindBy() != null) {
 			final SadUsesPort uses = connect.getUsesPort();
 
 			String findByName = uses.getFindBy().getNamingService() != null ? uses.getFindBy().getNamingService().getName()
 				: uses.getFindBy().getDomainFinder().getName();
-			retVal.append(uses.getUsesIndentifier() + " " + findByName + " ");
+			retVal.append(uses.getUsesIdentifier() + " " + findByName + " ");
 		}
 
 		if (connect.getTarget() != null) {

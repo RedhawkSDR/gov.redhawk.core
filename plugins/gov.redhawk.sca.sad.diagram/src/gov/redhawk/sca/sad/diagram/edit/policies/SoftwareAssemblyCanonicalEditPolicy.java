@@ -221,7 +221,7 @@ public class SoftwareAssemblyCanonicalEditPolicy extends CanonicalConnectionEdit
 
 				final DiagramEditPart diagramEditPart = (DiagramEditPart) getHost();
 
-				((UsesPortStub) sel).setName(usesPort.getUsesIndentifier());
+				((UsesPortStub) sel).setName(usesPort.getUsesIdentifier());
 
 				final AddCommand addCommand = new AddCommand(diagramEditPart.getEditingDomain(), compInst.getUses(), sel);
 				diagramEditPart.getEditingDomain().getCommandStack().execute(addCommand);

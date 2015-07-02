@@ -140,7 +140,7 @@ public class ConnectionsConstraint extends AbstractModelConstraint {
 
 				retVal.append(idsMap.get(uniqueName));
 				retVal.append(" extra occurrence(s) of connection between ");
-				retVal.append(uses.getUsesIndentifier() + " port of ");
+				retVal.append(uses.getUsesIdentifier() + " port of ");
 				retVal.append(uses.getComponentInstantiationRef().getInstantiation().getUsageName() + " device and ");
 
 				if (connect.getTarget() instanceof ProvidesPortStub) {
@@ -170,7 +170,7 @@ public class ConnectionsConstraint extends AbstractModelConstraint {
 		if (connect.getSource() != null && connect.getSource().eContainer() instanceof DcdComponentInstantiation) {
 			final DcdUsesPort uses = connect.getUsesPort();
 
-			retVal.append(uses.getUsesIndentifier() + " " + uses.getComponentInstantiationRef().getRefid() + " ");
+			retVal.append(uses.getUsesIdentifier() + " " + uses.getComponentInstantiationRef().getRefid() + " ");
 		}
 
 		if (connect.getTarget() != null) {

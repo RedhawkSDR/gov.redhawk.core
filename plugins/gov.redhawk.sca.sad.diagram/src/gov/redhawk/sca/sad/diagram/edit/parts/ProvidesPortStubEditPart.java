@@ -114,7 +114,7 @@ public class ProvidesPortStubEditPart extends mil.jpeojtrs.sca.sad.diagram.edit.
 		if (sad != null && sad.getExternalPorts() != null) {
 			for (final Port externalPort : sad.getExternalPorts().getPort()) {
 				if (externalPort.getComponentInstantiationRef().getInstantiation() == port.eContainer()
-				        && port.getProvides().getProvidesName().equals(externalPort.getProvidesIndentifier())) {
+				        && port.getProvides().getProvidesName().equals(externalPort.getProvidesIdentifier())) {
 					found = true;
 					break;
 				}
