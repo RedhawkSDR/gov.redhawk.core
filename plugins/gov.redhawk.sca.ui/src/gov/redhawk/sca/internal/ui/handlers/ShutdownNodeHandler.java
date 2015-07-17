@@ -11,8 +11,6 @@
  */
 package gov.redhawk.sca.internal.ui.handlers;
 
-import gov.redhawk.sca.util.PluginUtil;
-
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
@@ -24,18 +22,13 @@ import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.ui.handlers.HandlerUtil;
+import org.omg.CORBA.SystemException;
 
 import CF.DeviceManagerOperations;
+import gov.redhawk.sca.ui.ScaUiPlugin;
+import gov.redhawk.sca.util.PluginUtil;
 
-// TODO: Auto-generated Javadoc
-/**
- * The Class ShutdownNodeHandler.
- */
 public class ShutdownNodeHandler extends AbstractHandler implements IHandler {
-
-	/**
-	 * {@inheritDoc}
-	 */
 
 	@Override
 	public Object execute(final ExecutionEvent event) throws ExecutionException {
@@ -55,7 +48,11 @@ public class ShutdownNodeHandler extends AbstractHandler implements IHandler {
 							monitor.beginTask("Shutting down: " + op.label(), IProgressMonitor.UNKNOWN);
 
 							// Try to shutdown the Device Manager
-							op.shutdown();
+							try {
+								op.shutdown();
+							} catch (SystemException ex) {
+								return new Status(IStatus.ERROR, ScaUiPlugin.PLUGIN_ID, "CORBA Exception while shutting down", ex);
+							}
 							return Status.OK_STATUS;
 						}
 
