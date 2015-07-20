@@ -11,20 +11,9 @@
 // BEGIN GENERATED CODE
 package gov.redhawk.monitor.model.ports.impl;
 
-import gov.redhawk.model.sca.IDisposable;
-import gov.redhawk.model.sca.ScaComponent;
-import gov.redhawk.model.sca.ScaDevice;
-import gov.redhawk.model.sca.ScaDeviceManager;
-import gov.redhawk.model.sca.ScaPackage;
-import gov.redhawk.model.sca.ScaPort;
-import gov.redhawk.model.sca.ScaPortContainer;
-import gov.redhawk.model.sca.ScaWaveform;
-import gov.redhawk.monitor.model.ports.PortMonitor;
-import gov.redhawk.monitor.model.ports.PortSupplierMonitor;
-import gov.redhawk.monitor.model.ports.PortsFactory;
-import gov.redhawk.monitor.model.ports.PortsPackage;
-
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.notify.Notification;
@@ -38,6 +27,21 @@ import org.eclipse.emf.ecore.impl.EObjectImpl;
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.emf.ecore.util.InternalEList;
+import org.eclipse.emf.transaction.RunnableWithResult;
+
+import gov.redhawk.model.sca.IDisposable;
+import gov.redhawk.model.sca.ScaComponent;
+import gov.redhawk.model.sca.ScaDevice;
+import gov.redhawk.model.sca.ScaDeviceManager;
+import gov.redhawk.model.sca.ScaPackage;
+import gov.redhawk.model.sca.ScaPort;
+import gov.redhawk.model.sca.ScaPortContainer;
+import gov.redhawk.model.sca.ScaWaveform;
+import gov.redhawk.model.sca.commands.ScaModelCommandWithResult;
+import gov.redhawk.monitor.model.ports.PortMonitor;
+import gov.redhawk.monitor.model.ports.PortSupplierMonitor;
+import gov.redhawk.monitor.model.ports.PortsFactory;
+import gov.redhawk.monitor.model.ports.PortsPackage;
 
 /**
  * <!-- begin-user-doc -->
@@ -221,8 +225,18 @@ public class PortSupplierMonitorImpl extends EObjectImpl implements PortSupplier
 	@Override
 	public void fetchStats() {
 		// END GENERATED CODE
-		for (final PortMonitor pm : getMonitors()) {
-			pm.fetchStats();
+		try {
+			List<PortMonitor> tmpPortMonitors = ScaModelCommandWithResult.runExclusive(this, new RunnableWithResult.Impl<List<PortMonitor>>() {
+				@Override
+				public void run() {
+					setResult(new ArrayList<PortMonitor>(getMonitors()));
+				}
+			});
+			for (final PortMonitor pm : tmpPortMonitors) {
+				pm.fetchStats();
+			}
+		} catch (InterruptedException ex) {
+			// PASS
 		}
 		// BEGIN GENERATED CODE
 	}

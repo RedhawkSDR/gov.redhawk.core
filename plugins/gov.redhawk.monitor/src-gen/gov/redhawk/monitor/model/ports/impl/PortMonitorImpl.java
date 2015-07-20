@@ -12,6 +12,8 @@
 package gov.redhawk.monitor.model.ports.impl;
 
 import gov.redhawk.model.sca.ScaPort;
+import gov.redhawk.model.sca.commands.ScaModelCommand;
+import gov.redhawk.monitor.internal.MergeUsesStatsCommand;
 import gov.redhawk.monitor.model.ports.PortConnectionMonitor;
 import gov.redhawk.monitor.model.ports.PortMonitor;
 import gov.redhawk.monitor.model.ports.PortStatisticsProvider;
@@ -279,54 +281,50 @@ public class PortMonitorImpl extends EObjectImpl implements PortMonitor {
 
 				if (CorbaUtils.is_a(portObj, ProvidesPortStatisticsProviderHelper.id(), monitor)) {
 					final ProvidesPortStatisticsProvider provider = CorbaUtils.invoke(new Callable<ProvidesPortStatisticsProvider>() {
-
 						@Override
 						public ProvidesPortStatisticsProvider call() throws Exception {
 							return ProvidesPortStatisticsProviderHelper.narrow(portObj);
 						}
 
 					}, monitor);
-					setState(provider.state());
-					setData(provider.statistics());
+					final PortUsageType newState = provider.state();
+					final PortStatistics newStats = provider.statistics();
+
+					ScaModelCommand.execute(PortMonitorImpl.this, new ScaModelCommand() {
+						@Override
+						public void execute() {
+							setState(newState);
+							setData(newStats);
+						}
+					});
 				} else {
-					setState(null);
-					setData(null);
+					ScaModelCommand.execute(PortMonitorImpl.this, new ScaModelCommand() {
+						@Override
+						public void execute() {
+							setState(null);
+							setData(null);
+						}
+					});
 				}
 
 				if (CorbaUtils.is_a(portObj, UsesPortStatisticsProviderHelper.id(), monitor)) {
-					final Map<String, PortConnectionMonitor> currentMap = new HashMap<String, PortConnectionMonitor>();
-					for (final PortConnectionMonitor pcm : getConnections()) {
-						currentMap.put(pcm.getConnectionId(), pcm);
-					}
-					final Map<String, PortConnectionMonitor> toRemove = new HashMap<String, PortConnectionMonitor>();
-					toRemove.putAll(currentMap);
-
 					final UsesPortStatisticsProvider provider = CorbaUtils.invoke(new Callable<UsesPortStatisticsProvider>() {
-
 						@Override
 						public UsesPortStatisticsProvider call() throws Exception {
 							return UsesPortStatisticsProviderHelper.narrow(portObj);
 						}
 
 					}, monitor);
-					final UsesPortStatistics[] stats = provider.statistics();
+					final UsesPortStatistics[] newStats = provider.statistics();
 
-					final Map<String, UsesPortStatistics> newStatsMap = new HashMap<String, UsesPortStatistics>();
-					for (final UsesPortStatistics stat : stats) {
-						PortConnectionMonitor pcm = currentMap.get(stat.connectionId);
-						if (pcm == null) {
-							pcm = PortsFactory.eINSTANCE.createPortConnectionMonitor();
-							pcm.setConnectionId(stat.connectionId);
-							getConnections().add(pcm);
-						}
-						pcm.setData(stat.statistics);
-						newStatsMap.put(stat.connectionId, stat);
-					}
-
-					toRemove.keySet().removeAll(newStatsMap.keySet());
-					getConnections().removeAll(toRemove.values());
+					ScaModelCommand.execute(PortMonitorImpl.this, new MergeUsesStatsCommand(PortMonitorImpl.this, newStats));
 				} else {
-					getConnections().clear();
+					ScaModelCommand.execute(PortMonitorImpl.this, new ScaModelCommand() {
+						@Override
+						public void execute() {
+							PortMonitorImpl.this.getConnections().clear();
+						}
+					});
 				}
 			} catch (CoreException e) {
 				return Status.CANCEL_STATUS;
@@ -350,11 +348,15 @@ public class PortMonitorImpl extends EObjectImpl implements PortMonitor {
 		if (this.port != null) {
 			this.fetchJob.schedule();
 		} else {
-			this.setState(null);
-			this.setData(null);
-			getConnections().clear();
+			ScaModelCommand.execute(this, new ScaModelCommand() {
+				@Override
+				public void execute() {
+					setState(null);
+					setData(null);
+					getConnections().clear();
+				}
+			});
 		}
-
 		// BEGIN GENERATED CODE
 	}
 

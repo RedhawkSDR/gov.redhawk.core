@@ -14,21 +14,23 @@ package gov.redhawk.monitor.internal;
 import java.util.ArrayList;
 import java.util.List;
 
-import gov.redhawk.monitor.MonitorPlugin;
-import gov.redhawk.monitor.model.ports.Monitor;
-import gov.redhawk.monitor.model.ports.MonitorRegistry;
-
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.SubMonitor;
 import org.eclipse.core.runtime.jobs.Job;
+import org.eclipse.emf.transaction.RunnableWithResult;
+
+import gov.redhawk.model.sca.commands.ScaModelCommandWithResult;
+import gov.redhawk.monitor.MonitorPlugin;
+import gov.redhawk.monitor.model.ports.Monitor;
+import gov.redhawk.monitor.model.ports.MonitorRegistry;
 
 /**
  * A job that periodically asks all {@link Monitor}s to fetch their statistics.
  */
 public class MonitorRefreshJob extends Job {
-	
+
 	private MonitorRegistry registry;
 
 	/**
@@ -53,19 +55,28 @@ public class MonitorRefreshJob extends Job {
 
 	@Override
 	protected IStatus run(final IProgressMonitor progress) {
-		// Get the list of of monitors
-		List<Monitor> monitors = new ArrayList<Monitor>(this.registry.getMonitors());
-		
-		// Ask each one to fetch stats
-		SubMonitor subprogress = SubMonitor.convert(progress, monitors.size());
-		for (final Monitor m : monitors) {
-			m.fetchStats();
-			subprogress.worked(1);
-			if (subprogress.isCanceled()) {
-				return Status.CANCEL_STATUS;
+		try {
+			// Get the list of of monitors
+			List<Monitor> monitors = ScaModelCommandWithResult.runExclusive(registry, new RunnableWithResult.Impl<List<Monitor>>() {
+				@Override
+				public void run() {
+					setResult(new ArrayList<Monitor>(registry.getMonitors()));
+				}
+			});
+
+			// Ask each one to fetch stats
+			SubMonitor subprogress = SubMonitor.convert(progress, monitors.size());
+			for (final Monitor m : monitors) {
+				m.fetchStats();
+				subprogress.worked(1);
+				if (subprogress.isCanceled()) {
+					return Status.CANCEL_STATUS;
+				}
 			}
+		} catch (InterruptedException e) {
+			// PASS
 		}
-		
+
 		// Re-schedule ourself after a delay
 		schedule(MonitorPlugin.getDefault().getRefreshInterval());
 		return Status.OK_STATUS;
