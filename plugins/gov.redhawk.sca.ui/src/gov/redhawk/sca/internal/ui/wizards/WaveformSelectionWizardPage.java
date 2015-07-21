@@ -246,8 +246,8 @@ public class WaveformSelectionWizardPage extends WizardPage {
 					}
 					WaveformSelectionWizardPage.this.sad = (SoftwareAssembly) selected;
 					
-					if (WaveformSelectionWizardPage.this.getWizard() instanceof BasicLaunchWaveformWizard) {
-						((BasicLaunchWaveformWizard) WaveformSelectionWizardPage.this.getWizard()).reinitalizePages();
+					if (WaveformSelectionWizardPage.this.getWizard() instanceof LaunchWaveformWizard) {
+						((LaunchWaveformWizard) WaveformSelectionWizardPage.this.getWizard()).reinitalizePages();
 					}
 					
 					if (WaveformSelectionWizardPage.this.defaultNameChanged) {
