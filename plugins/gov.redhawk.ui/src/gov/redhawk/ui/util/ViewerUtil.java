@@ -17,8 +17,10 @@ import java.util.List;
 
 import org.eclipse.emf.edit.domain.AdapterFactoryEditingDomain;
 import org.eclipse.jface.viewers.ISelection;
+import org.eclipse.jface.viewers.IStructuredContentProvider;
 import org.eclipse.jface.viewers.ITreeContentProvider;
 import org.eclipse.jface.viewers.StructuredSelection;
+import org.eclipse.jface.viewers.StructuredViewer;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.jface.viewers.Viewer;
 
@@ -53,13 +55,15 @@ public class ViewerUtil {
 	public static ISelection itemsToSelection(final Viewer viewer, final Collection< ? > items) {
 		if (viewer instanceof TreeViewer) {
 			return ViewerUtil.itemsToSelection((TreeViewer) viewer, items);
+		} else if (viewer instanceof StructuredViewer) {
+			return ViewerUtil.itemsToSelection((StructuredViewer) viewer, items);
 		}
 		return new EmptySelection();
 	}
 
 	/**
-	 * Returns the equivalent selection in a tree viewer for the given items. If an item cannot be found via the viewer's,
-	 * content provider, it is not included in the returned selection.
+	 * Returns the equivalent selection in a tree viewer for the given items. If an item cannot be found via the
+	 * viewer's content provider, it is not included in the returned selection.
 	 *
 	 * @param viewer the tree viewer
 	 * @param items the items to select
@@ -71,6 +75,27 @@ public class ViewerUtil {
 		final ITreeContentProvider provider = (ITreeContentProvider) viewer.getContentProvider();
 		final Object input = viewer.getInput();
 		for (final Object object : items) {
+			final Object target = ViewerUtil.findItemInProvider(provider, input, object);
+			if (target != null) {
+				targets.add(target);
+			}
+		}
+		return new StructuredSelection(targets.toArray());
+	}
+
+	/**
+	 * Returns the equivalent selection in a structured viewer for the given items. If an item cannot be found via the
+	 * viewer's content provider, it is not included in the returned selection.
+	 *
+	 * @param viewer the structured viewer
+	 * @param items the items to select
+	 * @return selection
+	 */
+	public static ISelection itemsToSelection(final StructuredViewer viewer, final Collection< ? > items) {
+		final List<Object> targets = new ArrayList<Object>();
+		final IStructuredContentProvider provider = (IStructuredContentProvider) viewer.getContentProvider();
+		final Object input = viewer.getInput();
+		for (Object object : items) {
 			final Object target = ViewerUtil.findItemInProvider(provider, input, object);
 			if (target != null) {
 				targets.add(target);
@@ -91,7 +116,16 @@ public class ViewerUtil {
 		}
 		return null;
 	}
-	
+
+	private static Object findItemInProvider(IStructuredContentProvider provider, Object input, Object object) {
+		for (final Object element : provider.getElements(input)) {
+			if (ViewerUtil.checkEquivalent(element, object)) {
+				return element;
+			}
+		}
+		return null;
+	}
+
 	private static boolean checkEquivalent(Object first, Object second) {
 		if (first == null) {
 			return (second == null);
