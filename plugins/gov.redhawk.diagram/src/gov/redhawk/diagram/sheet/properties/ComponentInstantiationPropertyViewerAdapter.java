@@ -114,14 +114,10 @@ public class ComponentInstantiationPropertyViewerAdapter {
 		for (final ScaStructProperty struct : prop.getStructs()) {
 			final StructValue value = PrfFactory.eINSTANCE.createStructValue();
 			for (final ScaSimpleProperty simple : struct.getSimples()) {
-				if (!simple.isDefaultValue()) {
-					value.getSimpleRef().add(createRef(simple));
-				}
+				value.getSimpleRef().add(createRef(simple));
 			}
 			for (final ScaSimpleSequenceProperty sequence : struct.getSequences()) {
-				if (!sequence.isDefaultValue()) {
-					value.getSimpleSequenceRef().add(createRef(sequence));
-				}
+				value.getSimpleSequenceRef().add(createRef(sequence));
 			}
 			retVal.getStructValue().add(value);
 		}
