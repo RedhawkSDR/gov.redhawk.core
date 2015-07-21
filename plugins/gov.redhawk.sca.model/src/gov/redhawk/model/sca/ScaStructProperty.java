@@ -96,16 +96,6 @@ public interface ScaStructProperty extends ScaAbstractProperty<Struct>, Property
 	 * @model
 	 * @generated
 	 */
-	ScaSimpleSequenceProperty getSequence(String id);
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * 
-	 * @since 20.0
-	 *        <!-- end-user-doc -->
-	 * @model
-	 * @generated
-	 */
 	ScaAbstractProperty< ? > getField(String id);
 
 } // ScaStructProperty

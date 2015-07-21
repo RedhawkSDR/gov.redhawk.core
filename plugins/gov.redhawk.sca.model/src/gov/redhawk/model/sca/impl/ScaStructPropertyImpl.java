@@ -419,25 +419,6 @@ public class ScaStructPropertyImpl extends ScaAbstractPropertyImpl<Struct> imple
 	 * 
 	 * @generated NOT
 	 */
-	public ScaSimpleSequenceProperty getSequence(String id) {
-		// END GENERATED CODE
-		for (ScaSimpleSequenceProperty prop : getSequences()) {
-			if (PluginUtil.equals(prop.getId(), id)) {
-				return prop;
-			}
-		}
-		return null;
-		// BEGIN GENERATED CODE
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * 
-	 * @since 20.0
-	 *        <!-- end-user-doc -->
-	 * 
-	 * @generated NOT
-	 */
 	public ScaAbstractProperty< ? > getField(String id) {
 		for (final ScaSimpleProperty simple : getSimples()) {
 			if (PluginUtil.equals(simple.getId(), id)) {

@@ -1087,9 +1087,6 @@
     <eOperations name="getSimple" eType="#//ScaSimpleProperty">
       <eParameters name="id" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     </eOperations>
-    <eOperations name="getSequence" eType="#//ScaSimpleSequenceProperty">
-      <eParameters name="id" eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EString"/>
-    </eOperations>
     <eOperations name="getField">
       <eGenericType eClassifier="#//ScaAbstractProperty">
         <eTypeArguments/>

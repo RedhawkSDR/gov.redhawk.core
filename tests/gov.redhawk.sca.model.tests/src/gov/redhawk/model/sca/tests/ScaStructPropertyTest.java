@@ -45,7 +45,6 @@ import CF.PropertySetPackage.PartialConfiguration;
  * The following operations are tested:
  * <ul>
  * <li>{@link gov.redhawk.model.sca.ScaStructProperty#getSimple(java.lang.String) <em>Get Simple</em>}</li>
- * <li>{@link gov.redhawk.model.sca.ScaStructProperty#getSequence(java.lang.String) <em>Get Sequence</em>}</li>
  * <li>{@link gov.redhawk.model.sca.ScaStructProperty#getField(java.lang.String) <em>Get Field</em>}</li>
  * <li>{@link CF.PropertySetOperations#configure(CF.DataType[]) <em>Configure</em>}</li>
  * <li>{@link CF.PropertySetOperations#query(CF.PropertiesHolder) <em>Query</em>}</li>
@@ -199,32 +198,18 @@ public class ScaStructPropertyTest extends ScaAbstractPropertyTest {
 	}
 
 	/**
-	 * Tests the '{@link gov.redhawk.model.sca.ScaStructProperty#getSequence(java.lang.String) <em>Get Sequence</em>}'
-	 * operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see gov.redhawk.model.sca.ScaStructProperty#getSequence(java.lang.String)
-	 * @generated
-	 */
-	public void testGetSequence__String() {
-		// END GENERATED CODE
-		Assert.assertNull(getFixture().getSequence(null));
-		Assert.assertNotNull(getFixture().getSequence(getFixture().getSequences().get(0).getId()));
-		// BEGIN GENERATED CODE
-	}
-
-	/**
 	 * Tests the '{@link gov.redhawk.model.sca.ScaStructProperty#getField(java.lang.String) <em>Get Field</em>}'
 	 * operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @see gov.redhawk.model.sca.ScaStructProperty#getField(java.lang.String)
-	 * @generated
+	 * @generated NOT
 	 */
 	public void testGetField__String() {
 		// END GENERATED CODE
 		Assert.assertNull(getFixture().getField(null));
 		Assert.assertNotNull(getFixture().getField(getFixture().getSimples().get(0).getId()));
+		Assert.assertNotNull(getFixture().getField(getFixture().getSequences().get(0).getId()));
 		// BEGIN GENERATED CODE
 	}
 
@@ -284,11 +269,9 @@ public class ScaStructPropertyTest extends ScaAbstractPropertyTest {
 	 * <em>Register Property Listener</em>}' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @throws InvalidObjectReference
-	 * @throws UnknownProperties
 	 * @see CF.PropertySetOperations#registerPropertyListener(org.omg.CORBA.Object, org.eclipse.emf.common.util.EList,
 	 * float)
-	 * @generated
+	 * @generated NOT
 	 */
 	public void testRegisterPropertyListener__Object_EList_float() throws UnknownProperties, InvalidObjectReference {
 		// END GENERATED CODE
@@ -306,9 +289,8 @@ public class ScaStructPropertyTest extends ScaAbstractPropertyTest {
 	 * Listener</em>}' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @throws InvalidIdentifier
 	 * @see CF.PropertySetOperations#unregisterPropertyListener(java.lang.String)
-	 * @generated
+	 * @generated NOT
 	 */
 	public void testUnregisterPropertyListener__String() throws InvalidIdentifier {
 		// END GENERATED CODE

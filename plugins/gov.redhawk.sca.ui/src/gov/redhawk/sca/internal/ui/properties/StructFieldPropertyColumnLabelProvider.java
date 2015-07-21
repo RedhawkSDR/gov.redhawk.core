@@ -13,8 +13,6 @@ package gov.redhawk.sca.internal.ui.properties;
 
 import gov.redhawk.model.sca.ScaAbstractProperty;
 import gov.redhawk.model.sca.ScaPackage;
-import gov.redhawk.model.sca.ScaSimpleProperty;
-import gov.redhawk.model.sca.ScaSimpleSequenceProperty;
 import gov.redhawk.model.sca.ScaStructProperty;
 import mil.jpeojtrs.sca.prf.AbstractProperty;
 import mil.jpeojtrs.sca.prf.PropertyValueType;
@@ -45,25 +43,8 @@ public class StructFieldPropertyColumnLabelProvider extends PropertyColumnLabelP
 	}
 
 	private ScaAbstractProperty<? extends AbstractProperty> getElement(final Object object) {
-		ScaSimpleProperty simple = getSimple(object);
-		if (simple != null) {
-			return simple;
-		}
-		return getSequence(object);
-	}
-
-	private ScaSimpleProperty getSimple(final Object object) {
 		if (object instanceof ScaStructProperty) {
-			final ScaStructProperty struct = (ScaStructProperty) object;
-			return struct.getSimple(this.elementId);
-		}
-		return null;
-	}
-
-	private ScaSimpleSequenceProperty getSequence(final Object object) {
-		if (object instanceof ScaStructProperty) {
-			final ScaStructProperty struct = (ScaStructProperty) object;
-			return struct.getSequence(this.elementId);
+			return ((ScaStructProperty) object).getField(elementId);
 		}
 		return null;
 	}
