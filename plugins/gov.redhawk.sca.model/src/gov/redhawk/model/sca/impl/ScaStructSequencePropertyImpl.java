@@ -17,18 +17,21 @@ import gov.redhawk.model.sca.ScaModelPlugin;
 import gov.redhawk.model.sca.ScaPackage;
 import gov.redhawk.model.sca.ScaStructProperty;
 import gov.redhawk.model.sca.ScaStructSequenceProperty;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import mil.jpeojtrs.sca.prf.ConfigurationKind;
+import mil.jpeojtrs.sca.prf.PrfFactory;
 import mil.jpeojtrs.sca.prf.Simple;
 import mil.jpeojtrs.sca.prf.SimpleRef;
 import mil.jpeojtrs.sca.prf.SimpleSequence;
 import mil.jpeojtrs.sca.prf.SimpleSequenceRef;
 import mil.jpeojtrs.sca.prf.Struct;
 import mil.jpeojtrs.sca.prf.StructSequence;
+import mil.jpeojtrs.sca.prf.StructSequenceRef;
 import mil.jpeojtrs.sca.prf.StructValue;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.MultiStatus;
@@ -257,6 +260,24 @@ public class ScaStructSequencePropertyImpl extends ScaAbstractPropertyImpl<Struc
 	}
 
 	/**
+	 * <!-- begin-user-doc -->
+	 * @since 20.0
+	 * <!-- end-user-doc -->
+	 * 
+	 * @generated NOT
+	 */
+	@Override
+	public StructSequenceRef createPropertyRef() {
+		final StructSequenceRef structSequenceRef = PrfFactory.eINSTANCE.createStructSequenceRef();
+		structSequenceRef.setProperty(getDefinition());
+		for (final ScaStructProperty struct : getStructs()) {
+			final StructValue value = struct.createStructValue();
+			structSequenceRef.getStructValue().add(value);
+		}
+		return structSequenceRef;
+	}
+
+	/**
 	 * @since 20.0
 	 */
 	@Override
@@ -445,8 +466,8 @@ public class ScaStructSequencePropertyImpl extends ScaAbstractPropertyImpl<Struc
 			}
 			setStatus(ScaPackage.Literals.SCA_STRUCT_SEQUENCE_PROPERTY__STRUCTS, Status.OK_STATUS);
 		} catch (Exception e) { // SUPPRESS CHECKSTYLE Logged Catch all exception
-			setStatus(ScaPackage.Literals.SCA_STRUCT_SEQUENCE_PROPERTY__STRUCTS, new Status(Status.ERROR, ScaModelPlugin.ID,
-				"Failed to read property value of:" + getName(), e));
+			setStatus(ScaPackage.Literals.SCA_STRUCT_SEQUENCE_PROPERTY__STRUCTS,
+				new Status(Status.ERROR, ScaModelPlugin.ID, "Failed to read property value of:" + getName(), e));
 		}
 		// BEGIN GENERATED CODE
 	}

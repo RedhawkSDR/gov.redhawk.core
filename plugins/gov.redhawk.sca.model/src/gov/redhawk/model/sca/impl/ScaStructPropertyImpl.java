@@ -28,9 +28,18 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+
+import mil.jpeojtrs.sca.prf.AbstractPropertyRef;
+import mil.jpeojtrs.sca.prf.PrfFactory;
+import mil.jpeojtrs.sca.prf.PrfPackage;
 import mil.jpeojtrs.sca.prf.Simple;
+import mil.jpeojtrs.sca.prf.SimpleRef;
 import mil.jpeojtrs.sca.prf.SimpleSequence;
+import mil.jpeojtrs.sca.prf.SimpleSequenceRef;
 import mil.jpeojtrs.sca.prf.Struct;
+import mil.jpeojtrs.sca.prf.StructRef;
+import mil.jpeojtrs.sca.prf.StructValue;
+
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.MultiStatus;
 import org.eclipse.core.runtime.Status;
@@ -324,8 +333,8 @@ public class ScaStructPropertyImpl extends ScaAbstractPropertyImpl<Struct> imple
 	 * @since 20.0
 	 */
 	@Override
-	public List<ScaAbstractProperty<?>> getFields() {
-		List<ScaAbstractProperty<?>> fields = new ArrayList<ScaAbstractProperty<?>>();
+	public List<ScaAbstractProperty< ? >> getFields() {
+		List<ScaAbstractProperty< ? >> fields = new ArrayList<ScaAbstractProperty< ? >>();
 		fields.addAll(getSimples());
 		fields.addAll(getSequences());
 		return fields;
@@ -371,10 +380,10 @@ public class ScaStructPropertyImpl extends ScaAbstractPropertyImpl<Struct> imple
 			setStatus(ScaPackage.Literals.SCA_STRUCT_PROPERTY__SIMPLES, Status.OK_STATUS);
 			setStatus(ScaPackage.Literals.SCA_STRUCT_PROPERTY__SEQUENCES, Status.OK_STATUS);
 		} catch (Exception e) { // SUPPRESS CHECKSTYLE Logged Catch all exception
-			setStatus(ScaPackage.Literals.SCA_STRUCT_PROPERTY__SIMPLES, new Status(Status.ERROR, ScaModelPlugin.ID, "Failed to read property value of:"
-				+ getName(), e));
-			setStatus(ScaPackage.Literals.SCA_STRUCT_PROPERTY__SEQUENCES, new Status(Status.ERROR, ScaModelPlugin.ID, "Failed to read property value of:"
-				+ getName(), e));
+			setStatus(ScaPackage.Literals.SCA_STRUCT_PROPERTY__SIMPLES,
+				new Status(Status.ERROR, ScaModelPlugin.ID, "Failed to read property value of:" + getName(), e));
+			setStatus(ScaPackage.Literals.SCA_STRUCT_PROPERTY__SEQUENCES,
+				new Status(Status.ERROR, ScaModelPlugin.ID, "Failed to read property value of:" + getName(), e));
 		}
 		// BEGIN GENERATED CODE
 	}
@@ -442,6 +451,57 @@ public class ScaStructPropertyImpl extends ScaAbstractPropertyImpl<Struct> imple
 			}
 		}
 		return null;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * @since 20.0
+	 * <!-- end-user-doc -->
+	 * 
+	 * @generated NOT
+	 */
+	@Override
+	public StructRef createPropertyRef() {
+		final StructRef structRef = PrfFactory.eINSTANCE.createStructRef();
+		structRef.setProperty(getDefinition());
+		for (final ScaAbstractProperty< ? > field : getFields()) {
+			if (!field.isDefaultValue()) {
+				AbstractPropertyRef< ? > fieldRef = field.createPropertyRef();
+				switch (fieldRef.eClass().getClassifierID()) {
+				case PrfPackage.SIMPLE_REF:
+					structRef.getSimpleRef().add((SimpleRef) fieldRef);
+					break;
+				case PrfPackage.SIMPLE_SEQUENCE_REF:
+					structRef.getSimpleSequenceRef().add((SimpleSequenceRef) fieldRef);
+					break;
+				}
+			}
+		}
+		return structRef;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * @since 20.0
+	 * <!-- end-user-doc -->
+	 * 
+	 * @generated NOT
+	 */
+	@Override
+	public StructValue createStructValue() {
+		final StructValue structValue = PrfFactory.eINSTANCE.createStructValue();
+		for (final ScaAbstractProperty< ? > field : getFields()) {
+			AbstractPropertyRef< ? > fieldRef = field.createPropertyRef();
+			switch (fieldRef.eClass().getClassifierID()) {
+			case PrfPackage.SIMPLE_REF:
+				structValue.getSimpleRef().add((SimpleRef) fieldRef);
+				break;
+			case PrfPackage.SIMPLE_SEQUENCE_REF:
+				structValue.getSimpleSequenceRef().add((SimpleSequenceRef) fieldRef);
+				break;
+			}
+		}
+		return structValue;
 	}
 
 	/**

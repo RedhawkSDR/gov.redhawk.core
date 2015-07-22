@@ -14,6 +14,7 @@ package gov.redhawk.model.sca;
 
 import mil.jpeojtrs.sca.prf.SimpleSequence;
 
+import mil.jpeojtrs.sca.prf.SimpleSequenceRef;
 import org.eclipse.emf.common.util.EList;
 
 /**
@@ -72,5 +73,15 @@ public interface ScaSimpleSequenceProperty extends ScaAbstractProperty<SimpleSeq
 	 * @generated
 	 */
 	Object[] getValue();
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * @since 20.0
+	 * <!-- end-user-doc -->
+	 * 
+	 * @model
+	 * @generated
+	 */
+	SimpleSequenceRef createPropertyRef();
 
 } // ScaSimpleSequenceProperty

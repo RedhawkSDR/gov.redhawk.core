@@ -13,6 +13,7 @@
 package gov.redhawk.model.sca;
 
 import mil.jpeojtrs.sca.prf.Simple;
+import mil.jpeojtrs.sca.prf.SimpleRef;
 
 /**
  * <!-- begin-user-doc -->
@@ -63,5 +64,16 @@ public interface ScaSimpleProperty extends ScaAbstractProperty<Simple> {
 	 * @generated
 	 */
 	void setValue(Object value);
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * @since 20.0
+	 * <!-- end-user-doc -->
+	 * 
+	 * @model
+	 * @generated
+	 */
+	@Override
+	SimpleRef createPropertyRef();
 
 } // ScaSimpleProperty

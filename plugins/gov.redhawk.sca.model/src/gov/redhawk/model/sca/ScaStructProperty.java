@@ -14,6 +14,8 @@ package gov.redhawk.model.sca;
 
 import mil.jpeojtrs.sca.prf.Struct;
 
+import mil.jpeojtrs.sca.prf.StructRef;
+import mil.jpeojtrs.sca.prf.StructValue;
 import java.util.List;
 
 import org.eclipse.emf.common.util.EList;
@@ -50,7 +52,7 @@ public interface ScaStructProperty extends ScaAbstractProperty<Struct>, Property
 	 *       should be replaced with a true containment reference, and if necessary "simples" should be derived from
 	 *       this list
 	 */
-	List<ScaAbstractProperty<?>> getFields();
+	List<ScaAbstractProperty< ? >> getFields();
 
 	/**
 	 * Returns the value of the '<em><b>Simples</b></em>' containment reference list.
@@ -107,5 +109,26 @@ public interface ScaStructProperty extends ScaAbstractProperty<Struct>, Property
 	 * @generated
 	 */
 	ScaAbstractProperty< ? > getField(String id);
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * @since 20.0
+	 * <!-- end-user-doc -->
+	 * 
+	 * @model
+	 * @generated
+	 */
+	@Override
+	StructRef createPropertyRef();
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * @since 20.0
+	 * <!-- end-user-doc -->
+	 * 
+	 * @model
+	 * @generated
+	 */
+	StructValue createStructValue();
 
 } // ScaStructProperty

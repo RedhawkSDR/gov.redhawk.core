@@ -19,6 +19,7 @@ import gov.redhawk.model.sca.ScaPropertyContainer;
 import gov.redhawk.sca.util.Debug;
 import gov.redhawk.sca.util.PluginUtil;
 import mil.jpeojtrs.sca.prf.AbstractProperty;
+import mil.jpeojtrs.sca.prf.AbstractPropertyRef;
 import mil.jpeojtrs.sca.prf.AccessType;
 import mil.jpeojtrs.sca.util.AnyUtils;
 
@@ -52,7 +53,8 @@ import CF.PropertySetPackage.PartialConfiguration;
  *        <li>{@link gov.redhawk.model.sca.impl.ScaAbstractPropertyImpl#getId <em>Id</em>}</li>
  *        <li>{@link gov.redhawk.model.sca.impl.ScaAbstractPropertyImpl#getMode <em>Mode</em>}</li>
  *        <li>{@link gov.redhawk.model.sca.impl.ScaAbstractPropertyImpl#getName <em>Name</em>}</li>
- *        <li>{@link gov.redhawk.model.sca.impl.ScaAbstractPropertyImpl#isIgnoreRemoteSet <em>Ignore Remote Set</em>}</li>
+ *        <li>{@link gov.redhawk.model.sca.impl.ScaAbstractPropertyImpl#isIgnoreRemoteSet <em>Ignore Remote Set</em>}
+ *        </li>
  *        </ul>
  *        </p>
  *
@@ -551,6 +553,16 @@ public abstract class ScaAbstractPropertyImpl< T extends AbstractProperty > exte
 		return valueEquals(toAny(), any);
 		// BEGIN GENERATED CODE
 	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * @since 20.0
+	 * <!-- end-user-doc -->
+	 * 
+	 * @generated NOT
+	 */
+	@Override
+	public abstract AbstractPropertyRef<T> createPropertyRef();
 
 	/**
 	 * <!-- begin-user-doc -->
