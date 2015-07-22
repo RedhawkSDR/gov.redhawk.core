@@ -321,6 +321,17 @@ public class ScaStructPropertyImpl extends ScaAbstractPropertyImpl<Struct> imple
 	}
 
 	/**
+	 * @since 20.0
+	 */
+	@Override
+	public List<ScaAbstractProperty<?>> getFields() {
+		List<ScaAbstractProperty<?>> fields = new ArrayList<ScaAbstractProperty<?>>();
+		fields.addAll(getSimples());
+		fields.addAll(getSequences());
+		return fields;
+	}
+
+	/**
 	 * @since 14.0
 	 */
 	@Override

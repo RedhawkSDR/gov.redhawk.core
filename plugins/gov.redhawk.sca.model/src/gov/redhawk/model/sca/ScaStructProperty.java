@@ -14,6 +14,8 @@ package gov.redhawk.model.sca;
 
 import mil.jpeojtrs.sca.prf.Struct;
 
+import java.util.List;
+
 import org.eclipse.emf.common.util.EList;
 
 import CF.PropertySetOperations;
@@ -41,6 +43,14 @@ import CF.PropertySetOperations;
  * @generated
  */
 public interface ScaStructProperty extends ScaAbstractProperty<Struct>, PropertySetOperations {
+
+	/**
+	 * @since 20.0
+	 * TODO: This is a temporary function to provide a migration path away from explicitly typed field access. It
+	 *       should be replaced with a true containment reference, and if necessary "simples" should be derived from
+	 *       this list
+	 */
+	List<ScaAbstractProperty<?>> getFields();
 
 	/**
 	 * Returns the value of the '<em><b>Simples</b></em>' containment reference list.
