@@ -190,7 +190,7 @@ public class FeiPlotAction extends FrontendAction {
 				break;
 			default:
 			}
-			struct.getSimples().add(simple);
+			struct.getFields().add(simple);
 		}
 		dt.id = "FRONTEND::listener_allocation";
 		dt.value = struct.toAny();

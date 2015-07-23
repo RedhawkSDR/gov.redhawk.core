@@ -195,7 +195,7 @@ public class ListenerAllocationWizardPage extends WizardPage {
 			simple.setDefinition(definition);
 			simple.setId(allocProp.getId());
 			setValueForProp(allocProp, simple);
-			listenerAllocationStruct.getSimples().add(simple);
+			listenerAllocationStruct.getFields().add(simple);
 		}
 	}
 

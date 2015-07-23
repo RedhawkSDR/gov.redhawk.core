@@ -353,7 +353,7 @@ public class FeiSriHandler extends AbstractHandler implements IHandler {
 			default:
 				break;
 			}
-			struct.getSimples().add(simple);
+			struct.getFields().add(simple);
 		}
 		dt.id = "FRONTEND::listener_allocation";
 		dt.value = struct.toAny();
