@@ -25,7 +25,6 @@ import gov.redhawk.sca.util.PluginUtil;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -88,10 +87,10 @@ public class ScaStructPropertyImpl extends ScaAbstractPropertyImpl<Struct> imple
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @see #getSimples()
-	 * @generated NOT
+	 * @generated
 	 * @ordered
 	 */
-	protected final SimplesList simples = new SimplesList(this);
+	protected EList<ScaSimpleProperty> simples;
 
 	/**
 	 * The cached value of the '{@link #getSequences() <em>Sequences</em>}' containment reference list.
@@ -99,12 +98,11 @@ public class ScaStructPropertyImpl extends ScaAbstractPropertyImpl<Struct> imple
 	 * 
 	 * @since 20.0
 	 *        <!-- end-user-doc -->
-	 * 
 	 * @see #getSequences()
-	 * @generated NOT
+	 * @generated
 	 * @ordered
 	 */
-	protected SequencesList sequences = new SequencesList(this);
+	protected EList<ScaSimpleSequenceProperty> sequences;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -163,53 +161,18 @@ public class ScaStructPropertyImpl extends ScaAbstractPropertyImpl<Struct> imple
 	}
 
 	/**
-	 * @since 14.0
-	 */
-	protected static class SimplesList extends EObjectContainmentEList<ScaSimpleProperty> {
-		// END GENERATED CODE
-
-		/**
-		 * 
-		 */
-		private static final long serialVersionUID = 1L;
-
-		public SimplesList(ScaStructPropertyImpl property) {
-			super(ScaSimpleProperty.class, property, ScaPackage.SCA_STRUCT_PROPERTY__SIMPLES);
-		}
-
-		// BEGIN GENERATED CODE
-	}
-
-	/**
-	 * @since 20.0
-	 */
-	protected static class SequencesList extends EObjectContainmentEList<ScaSimpleSequenceProperty> {
-		// END GENERATED CODE
-
-		/**
-		 * 
-		 */
-		private static final long serialVersionUID = 1L;
-
-		public SequencesList(ScaStructPropertyImpl property) {
-			super(ScaSimpleSequenceProperty.class, property, ScaPackage.SCA_STRUCT_PROPERTY__SEQUENCES);
-		}
-
-		// BEGIN GENERATED CODE
-	}
-
-	/**
 	 * <!-- begin-user-doc -->
 	 * 
 	 * @since 14.0
 	 *        <!-- end-user-doc -->
-	 * @generated NOT
+	 * @generated
 	 */
 	@Override
 	public EList<ScaSimpleProperty> getSimples() {
-		// END GENERATED CODE
+		if (simples == null) {
+			simples = new EObjectContainmentEList.Resolving<ScaSimpleProperty>(ScaSimpleProperty.class, this, ScaPackage.SCA_STRUCT_PROPERTY__SIMPLES);
+		}
 		return simples;
-		// BEGIN GENERATED CODE
 	}
 
 	/**
@@ -217,13 +180,14 @@ public class ScaStructPropertyImpl extends ScaAbstractPropertyImpl<Struct> imple
 	 * 
 	 * @since 20.0
 	 *        <!-- end-user-doc -->
-	 * 
-	 * @generated NOT
+	 * @generated
 	 */
 	public EList<ScaSimpleSequenceProperty> getSequences() {
-		// END GENERATED CODE
+		if (sequences == null) {
+			sequences = new EObjectContainmentEList.Resolving<ScaSimpleSequenceProperty>(ScaSimpleSequenceProperty.class, this,
+				ScaPackage.SCA_STRUCT_PROPERTY__SEQUENCES);
+		}
 		return sequences;
-		// BEGIN GENERATED CODE
 	}
 
 	/**
@@ -243,8 +207,8 @@ public class ScaStructPropertyImpl extends ScaAbstractPropertyImpl<Struct> imple
 	@Override
 	public void setDefinition(Struct newDefinition) {
 		if (newDefinition != definition) {
-			simples.clear();
-			sequences.clear();
+			getSimples().clear();
+			getSequences().clear();
 			for (FeatureMap.Entry entry : newDefinition.getFields()) {
 				switch (entry.getEStructuralFeature().getFeatureID()) {
 				case PrfPackage.STRUCT__SIMPLE:
