@@ -228,6 +228,7 @@ public class ScaSimpleSequencePropertyImpl extends ScaAbstractPropertyImpl<Simpl
 	public SimpleSequenceRef createPropertyRef() {
 		final SimpleSequenceRef simpleSequenceRef = PrfFactory.eINSTANCE.createSimpleSequenceRef();
 		simpleSequenceRef.setProperty(getDefinition());
+		simpleSequenceRef.setRefID(getId());
 		final Values values = PrfFactory.eINSTANCE.createValues();
 		for (final Object object : getValues()) {
 			values.getValue().add(object.toString());

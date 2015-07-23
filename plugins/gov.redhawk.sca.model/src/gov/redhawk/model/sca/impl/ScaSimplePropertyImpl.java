@@ -180,6 +180,7 @@ public class ScaSimplePropertyImpl extends ScaAbstractPropertyImpl<Simple> imple
 	public SimpleRef createPropertyRef() {
 		final SimpleRef simpleRef = PrfFactory.eINSTANCE.createSimpleRef();
 		simpleRef.setProperty(getDefinition());
+		simpleRef.setRefID(getId());
 		final Object value = getValue();
 		final String stringValue = (value == null) ? null : value.toString();
 		simpleRef.setValue(stringValue);

@@ -270,6 +270,7 @@ public class ScaStructSequencePropertyImpl extends ScaAbstractPropertyImpl<Struc
 	public StructSequenceRef createPropertyRef() {
 		final StructSequenceRef structSequenceRef = PrfFactory.eINSTANCE.createStructSequenceRef();
 		structSequenceRef.setProperty(getDefinition());
+		structSequenceRef.setRefID(getId());
 		for (final ScaStructProperty struct : getStructs()) {
 			final StructValue value = struct.createStructValue();
 			structSequenceRef.getStructValue().add(value);
