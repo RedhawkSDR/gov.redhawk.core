@@ -44,6 +44,7 @@ import org.eclipse.core.runtime.MultiStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
+import org.eclipse.emf.common.util.ECollections;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
@@ -93,16 +94,6 @@ public class ScaStructPropertyImpl extends ScaAbstractPropertyImpl<Struct> imple
 	 * @ordered
 	 */
 	protected EList<ScaAbstractProperty< ? >> fields;
-
-	/**
-	 * The cached value of the '{@link #getSimples() <em>Simples</em>}' containment reference list.
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
-	 * @see #getSimples()
-	 * @generated
-	 * @ordered
-	 */
-	protected EList<ScaSimpleProperty> simples;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -162,17 +153,22 @@ public class ScaStructPropertyImpl extends ScaAbstractPropertyImpl<Struct> imple
 
 	/**
 	 * <!-- begin-user-doc -->
-	 * 
 	 * @since 14.0
-	 *        <!-- end-user-doc -->
-	 * @generated
+	 * <!-- end-user-doc -->
+	 * 
+	 * @generated NOT
 	 */
 	@Override
 	public EList<ScaSimpleProperty> getSimples() {
-		if (simples == null) {
-			simples = new EObjectContainmentEList.Resolving<ScaSimpleProperty>(ScaSimpleProperty.class, this, ScaPackage.SCA_STRUCT_PROPERTY__SIMPLES);
+		List<ScaSimpleProperty> simples = new ArrayList<ScaSimpleProperty>();
+		if (fields != null) {
+			for (ScaAbstractProperty< ? > field : getFields()) {
+				if (field instanceof ScaSimpleProperty) {
+					simples.add((ScaSimpleProperty) field);
+				}
+			}
 		}
-		return simples;
+		return ECollections.unmodifiableEList(simples);
 	}
 
 	/**
@@ -229,7 +225,7 @@ public class ScaStructPropertyImpl extends ScaAbstractPropertyImpl<Struct> imple
 							ScaSimpleProperty newProp = ScaFactory.eINSTANCE.createScaSimpleProperty();
 							newProp.setId(type.id);
 							newProp.fromAny(type.value);
-							getSimples().add(newProp);
+							getFields().add(newProp);
 						}
 					}
 					return;
@@ -441,8 +437,6 @@ public class ScaStructPropertyImpl extends ScaAbstractPropertyImpl<Struct> imple
 		switch (featureID) {
 		case ScaPackage.SCA_STRUCT_PROPERTY__FIELDS:
 			return ((InternalEList< ? >) getFields()).basicRemove(otherEnd, msgs);
-		case ScaPackage.SCA_STRUCT_PROPERTY__SIMPLES:
-			return ((InternalEList< ? >) getSimples()).basicRemove(otherEnd, msgs);
 		}
 		return super.eInverseRemove(otherEnd, featureID, msgs);
 	}
@@ -465,24 +459,15 @@ public class ScaStructPropertyImpl extends ScaAbstractPropertyImpl<Struct> imple
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * 
 	 * @generated NOT
 	 */
 	@SuppressWarnings("unchecked")
 	@Override
 	public void eSet(int featureID, Object newValue) {
-		// END GENERATED CODE
 		switch (featureID) {
-		case ScaPackage.SCA_STRUCT_PROPERTY__SIMPLES:
-			setIgnoreRemoteSet(true);
-			try {
-				getSimples().clear();
-			} finally {
-				setIgnoreRemoteSet(false);
-			}
-			getSimples().addAll((Collection< ? extends ScaSimpleProperty>) newValue);
-			return;
 		case ScaPackage.SCA_STRUCT_PROPERTY__FIELDS:
 			setIgnoreRemoteSet(true);
 			try {
@@ -492,11 +477,8 @@ public class ScaStructPropertyImpl extends ScaAbstractPropertyImpl<Struct> imple
 			}
 			getFields().addAll((Collection< ? extends ScaAbstractProperty< ? >>) newValue);
 			return;
-		default:
-			break;
 		}
 		super.eSet(featureID, newValue);
-		// BEGIN GENERATED CODE
 	}
 
 	/**
@@ -510,9 +492,6 @@ public class ScaStructPropertyImpl extends ScaAbstractPropertyImpl<Struct> imple
 		switch (featureID) {
 		case ScaPackage.SCA_STRUCT_PROPERTY__FIELDS:
 			getFields().clear();
-			return;
-		case ScaPackage.SCA_STRUCT_PROPERTY__SIMPLES:
-			getSimples().clear();
 			return;
 		}
 		super.eUnset(featureID);
@@ -530,7 +509,7 @@ public class ScaStructPropertyImpl extends ScaAbstractPropertyImpl<Struct> imple
 		case ScaPackage.SCA_STRUCT_PROPERTY__FIELDS:
 			return fields != null && !fields.isEmpty();
 		case ScaPackage.SCA_STRUCT_PROPERTY__SIMPLES:
-			return simples != null && !simples.isEmpty();
+			return !getSimples().isEmpty();
 		}
 		return super.eIsSet(featureID);
 	}
@@ -539,7 +518,7 @@ public class ScaStructPropertyImpl extends ScaAbstractPropertyImpl<Struct> imple
 	public IStatus getStatus() {
 		// END GENERATED CODE
 		IStatus parentStatus = super.getStatus();
-		if (!getSimples().isEmpty()) {
+		if (!getFields().isEmpty()) {
 			MultiStatus retVal = new MultiStatus(ScaModelPlugin.ID, Status.OK, "Struct property: " + getName(), null);
 			retVal.addAll(super.getStatus());
 			for (ScaAbstractProperty< ? > field : getFields()) {

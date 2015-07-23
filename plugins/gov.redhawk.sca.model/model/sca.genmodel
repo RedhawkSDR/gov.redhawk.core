@@ -390,7 +390,7 @@
     </genClasses>
     <genClasses provider="Stateful" image="false" ecoreClass="sca.ecore#//ScaStructProperty">
       <genFeatures property="Readonly" children="true" createChild="false" ecoreFeature="ecore:EReference sca.ecore#//ScaStructProperty/fields"/>
-      <genFeatures property="Readonly" children="true" createChild="false" ecoreFeature="ecore:EReference sca.ecore#//ScaStructProperty/simples"/>
+      <genFeatures property="Readonly" createChild="false" ecoreFeature="ecore:EReference sca.ecore#//ScaStructProperty/simples"/>
       <genOperations ecoreOperation="sca.ecore#//ScaStructProperty/getSimple">
         <genParameters ecoreParameter="sca.ecore#//ScaStructProperty/getSimple/id"/>
       </genOperations>

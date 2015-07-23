@@ -116,7 +116,6 @@ public class ScaStructPropertyItemProvider extends ScaAbstractPropertyItemProvid
 		if (childrenFeatures == null) {
 			super.getChildrenFeatures(object);
 			childrenFeatures.add(ScaPackage.Literals.SCA_STRUCT_PROPERTY__FIELDS);
-			childrenFeatures.add(ScaPackage.Literals.SCA_STRUCT_PROPERTY__SIMPLES);
 		}
 		return childrenFeatures;
 	}
@@ -173,8 +172,10 @@ public class ScaStructPropertyItemProvider extends ScaAbstractPropertyItemProvid
 		updateChildren(notification);
 
 		switch (notification.getFeatureID(ScaStructProperty.class)) {
-		case ScaPackage.SCA_STRUCT_PROPERTY__FIELDS:
 		case ScaPackage.SCA_STRUCT_PROPERTY__SIMPLES:
+			fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
+			return;
+		case ScaPackage.SCA_STRUCT_PROPERTY__FIELDS:
 			fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), true, false));
 			return;
 		}

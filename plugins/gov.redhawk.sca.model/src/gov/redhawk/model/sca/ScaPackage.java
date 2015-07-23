@@ -3725,7 +3725,7 @@ public interface ScaPackage extends EPackage {
 	 */
 	int SCA_STRUCT_PROPERTY__FIELDS = SCA_ABSTRACT_PROPERTY_FEATURE_COUNT + 0;
 	/**
-	 * The feature id for the '<em><b>Simples</b></em>' containment reference list.
+	 * The feature id for the '<em><b>Simples</b></em>' reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * 
@@ -6152,6 +6152,7 @@ public interface ScaPackage extends EPackage {
 	 * Returns the meta object for the containment reference list '
 	 * {@link gov.redhawk.model.sca.ScaStructProperty#getFields <em>Fields</em>}'.
 	 * <!-- begin-user-doc -->
+	 * @since 20.0
 	 * <!-- end-user-doc -->
 	 * 
 	 * @return the meta object for the containment reference list '<em>Fields</em>'.
@@ -6162,12 +6163,12 @@ public interface ScaPackage extends EPackage {
 	EReference getScaStructProperty_Fields();
 
 	/**
-	 * Returns the meta object for the containment reference list '
-	 * {@link gov.redhawk.model.sca.ScaStructProperty#getSimples <em>Simples</em>}'.
+	 * Returns the meta object for the reference list '{@link gov.redhawk.model.sca.ScaStructProperty#getSimples
+	 * <em>Simples</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * 
-	 * @return the meta object for the containment reference list '<em>Simples</em>'.
+	 * @return the meta object for the reference list '<em>Simples</em>'.
 	 * @see gov.redhawk.model.sca.ScaStructProperty#getSimples()
 	 * @see #getScaStructProperty()
 	 * @generated
@@ -7816,7 +7817,7 @@ public interface ScaPackage extends EPackage {
 		 */
 		EReference SCA_STRUCT_PROPERTY__FIELDS = eINSTANCE.getScaStructProperty_Fields();
 		/**
-		 * The meta object literal for the '<em><b>Simples</b></em>' containment reference list feature.
+		 * The meta object literal for the '<em><b>Simples</b></em>' reference list feature.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
 		 * 

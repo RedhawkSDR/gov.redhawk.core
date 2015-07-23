@@ -3403,7 +3403,7 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 		initEReference(getScaStructProperty_Fields(), g1, null, "fields", null, 0, -1, ScaStructProperty.class, IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE,
 			IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getScaStructProperty_Simples(), this.getScaSimpleProperty(), null, "simples", null, 0, -1, ScaStructProperty.class, IS_TRANSIENT,
-			!IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+			IS_VOLATILE, !IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, IS_DERIVED, IS_ORDERED);
 
 		op = addEOperation(scaStructPropertyEClass, this.getScaSimpleProperty(), "getSimple", 0, 1, IS_UNIQUE, IS_ORDERED);
 		addEParameter(op, ecorePackage.getEString(), "id", 0, 1, IS_UNIQUE, IS_ORDERED);
