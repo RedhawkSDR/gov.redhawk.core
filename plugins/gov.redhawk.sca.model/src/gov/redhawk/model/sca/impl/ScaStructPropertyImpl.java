@@ -74,14 +74,26 @@ import CF.PropertySetPackage.PartialConfiguration;
  *        <p>
  *        The following features are implemented:
  *        <ul>
+ *        <li>{@link gov.redhawk.model.sca.impl.ScaStructPropertyImpl#getFields <em>Fields</em>}</li>
  *        <li>{@link gov.redhawk.model.sca.impl.ScaStructPropertyImpl#getSimples <em>Simples</em>}</li>
- *        <li>{@link gov.redhawk.model.sca.impl.ScaStructPropertyImpl#getSequences <em>Sequences</em>}</li>
  *        </ul>
  *        </p>
  *
  * @generated
  */
 public class ScaStructPropertyImpl extends ScaAbstractPropertyImpl<Struct> implements ScaStructProperty {
+	/**
+	 * The cached value of the '{@link #getFields() <em>Fields</em>}' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * @since 20.0
+	 * <!-- end-user-doc -->
+	 * 
+	 * @see #getFields()
+	 * @generated
+	 * @ordered
+	 */
+	protected EList<ScaAbstractProperty< ? >> fields;
+
 	/**
 	 * The cached value of the '{@link #getSimples() <em>Simples</em>}' containment reference list.
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -91,18 +103,6 @@ public class ScaStructPropertyImpl extends ScaAbstractPropertyImpl<Struct> imple
 	 * @ordered
 	 */
 	protected EList<ScaSimpleProperty> simples;
-
-	/**
-	 * The cached value of the '{@link #getSequences() <em>Sequences</em>}' containment reference list.
-	 * <!-- begin-user-doc -->
-	 * 
-	 * @since 20.0
-	 *        <!-- end-user-doc -->
-	 * @see #getSequences()
-	 * @generated
-	 * @ordered
-	 */
-	protected EList<ScaSimpleSequenceProperty> sequences;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -176,55 +176,42 @@ public class ScaStructPropertyImpl extends ScaAbstractPropertyImpl<Struct> imple
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * 
-	 * @since 20.0
-	 *        <!-- end-user-doc -->
-	 * @generated
-	 */
-	public EList<ScaSimpleSequenceProperty> getSequences() {
-		if (sequences == null) {
-			sequences = new EObjectContainmentEList.Resolving<ScaSimpleSequenceProperty>(ScaSimpleSequenceProperty.class, this,
-				ScaPackage.SCA_STRUCT_PROPERTY__SEQUENCES);
-		}
-		return sequences;
-	}
-
-	/**
-	 * @since 20.0
-	 */
-	@Override
-	public List<ScaAbstractProperty< ? >> getFields() {
-		List<ScaAbstractProperty< ? >> fields = new ArrayList<ScaAbstractProperty< ? >>();
-		fields.addAll(getSimples());
-		fields.addAll(getSequences());
-		return fields;
-	}
-
-	/**
 	 * @since 14.0
 	 */
 	@Override
 	public void setDefinition(Struct newDefinition) {
 		if (newDefinition != definition) {
-			getSimples().clear();
-			getSequences().clear();
+			getFields().clear();
 			for (FeatureMap.Entry entry : newDefinition.getFields()) {
 				switch (entry.getEStructuralFeature().getFeatureID()) {
 				case PrfPackage.STRUCT__SIMPLE:
 					ScaSimpleProperty simple = ScaFactory.eINSTANCE.createScaSimpleProperty();
 					simple.setDefinition((Simple) entry.getValue());
-					simples.add(simple);
+					fields.add(simple);
 					break;
 				case PrfPackage.STRUCT__SIMPLE_SEQUENCE:
 					ScaSimpleSequenceProperty simpleSequence = ScaFactory.eINSTANCE.createScaSimpleSequenceProperty();
 					simpleSequence.setDefinition((SimpleSequence) entry.getValue());
-					sequences.add(simpleSequence);
+					fields.add(simpleSequence);
 					break;
 				}
 			}
 		}
 		super.setDefinition(newDefinition);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * @since 20.0
+	 * <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	public EList<ScaAbstractProperty< ? >> getFields() {
+		if (fields == null) {
+			fields = new EObjectContainmentEList.Resolving<ScaAbstractProperty< ? >>(ScaAbstractProperty.class, this, ScaPackage.SCA_STRUCT_PROPERTY__FIELDS);
+		}
+		return fields;
 	}
 
 	@Override
@@ -250,12 +237,9 @@ public class ScaStructPropertyImpl extends ScaAbstractPropertyImpl<Struct> imple
 			} else {
 				restoreDefaultValue();
 			}
-			setStatus(ScaPackage.Literals.SCA_STRUCT_PROPERTY__SIMPLES, Status.OK_STATUS);
-			setStatus(ScaPackage.Literals.SCA_STRUCT_PROPERTY__SEQUENCES, Status.OK_STATUS);
+			setStatus(ScaPackage.Literals.SCA_STRUCT_PROPERTY__FIELDS, Status.OK_STATUS);
 		} catch (Exception e) { // SUPPRESS CHECKSTYLE Logged Catch all exception
-			setStatus(ScaPackage.Literals.SCA_STRUCT_PROPERTY__SIMPLES,
-				new Status(Status.ERROR, ScaModelPlugin.ID, "Failed to read property value of:" + getName(), e));
-			setStatus(ScaPackage.Literals.SCA_STRUCT_PROPERTY__SEQUENCES,
+			setStatus(ScaPackage.Literals.SCA_STRUCT_PROPERTY__FIELDS,
 				new Status(Status.ERROR, ScaModelPlugin.ID, "Failed to read property value of:" + getName(), e));
 		}
 		// BEGIN GENERATED CODE
@@ -265,7 +249,7 @@ public class ScaStructPropertyImpl extends ScaAbstractPropertyImpl<Struct> imple
 	public Any toAny() {
 		// END GENERATED CODE
 		Any retVal = JacorbUtil.init().create_any();
-		List<DataType> fields = new ArrayList<DataType>(getSimples().size() + getSequences().size());
+		List<DataType> fields = new ArrayList<DataType>(getFields().size());
 		for (ScaAbstractProperty< ? > field : getFields()) {
 			fields.add(new DataType(field.getId(), field.toAny()));
 		}
@@ -455,10 +439,10 @@ public class ScaStructPropertyImpl extends ScaAbstractPropertyImpl<Struct> imple
 	@Override
 	public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
 		switch (featureID) {
+		case ScaPackage.SCA_STRUCT_PROPERTY__FIELDS:
+			return ((InternalEList< ? >) getFields()).basicRemove(otherEnd, msgs);
 		case ScaPackage.SCA_STRUCT_PROPERTY__SIMPLES:
 			return ((InternalEList< ? >) getSimples()).basicRemove(otherEnd, msgs);
-		case ScaPackage.SCA_STRUCT_PROPERTY__SEQUENCES:
-			return ((InternalEList< ? >) getSequences()).basicRemove(otherEnd, msgs);
 		}
 		return super.eInverseRemove(otherEnd, featureID, msgs);
 	}
@@ -472,10 +456,10 @@ public class ScaStructPropertyImpl extends ScaAbstractPropertyImpl<Struct> imple
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
+		case ScaPackage.SCA_STRUCT_PROPERTY__FIELDS:
+			return getFields();
 		case ScaPackage.SCA_STRUCT_PROPERTY__SIMPLES:
 			return getSimples();
-		case ScaPackage.SCA_STRUCT_PROPERTY__SEQUENCES:
-			return getSequences();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -499,14 +483,14 @@ public class ScaStructPropertyImpl extends ScaAbstractPropertyImpl<Struct> imple
 			}
 			getSimples().addAll((Collection< ? extends ScaSimpleProperty>) newValue);
 			return;
-		case ScaPackage.SCA_STRUCT_PROPERTY__SEQUENCES:
+		case ScaPackage.SCA_STRUCT_PROPERTY__FIELDS:
 			setIgnoreRemoteSet(true);
 			try {
-				getSequences().clear();
+				getFields().clear();
 			} finally {
 				setIgnoreRemoteSet(false);
 			}
-			getSequences().addAll((Collection< ? extends ScaSimpleSequenceProperty>) newValue);
+			getFields().addAll((Collection< ? extends ScaAbstractProperty< ? >>) newValue);
 			return;
 		default:
 			break;
@@ -524,11 +508,11 @@ public class ScaStructPropertyImpl extends ScaAbstractPropertyImpl<Struct> imple
 	@Override
 	public void eUnset(int featureID) {
 		switch (featureID) {
+		case ScaPackage.SCA_STRUCT_PROPERTY__FIELDS:
+			getFields().clear();
+			return;
 		case ScaPackage.SCA_STRUCT_PROPERTY__SIMPLES:
 			getSimples().clear();
-			return;
-		case ScaPackage.SCA_STRUCT_PROPERTY__SEQUENCES:
-			getSequences().clear();
 			return;
 		}
 		super.eUnset(featureID);
@@ -543,10 +527,10 @@ public class ScaStructPropertyImpl extends ScaAbstractPropertyImpl<Struct> imple
 	@Override
 	public boolean eIsSet(int featureID) {
 		switch (featureID) {
+		case ScaPackage.SCA_STRUCT_PROPERTY__FIELDS:
+			return fields != null && !fields.isEmpty();
 		case ScaPackage.SCA_STRUCT_PROPERTY__SIMPLES:
 			return simples != null && !simples.isEmpty();
-		case ScaPackage.SCA_STRUCT_PROPERTY__SEQUENCES:
-			return sequences != null && !sequences.isEmpty();
 		}
 		return super.eIsSet(featureID);
 	}

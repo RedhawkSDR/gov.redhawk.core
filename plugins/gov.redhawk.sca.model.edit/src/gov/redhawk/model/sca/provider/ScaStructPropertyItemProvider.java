@@ -12,7 +12,6 @@
 // BEGIN GENERATED CODE
 package gov.redhawk.model.sca.provider;
 
-import gov.redhawk.model.sca.ScaFactory;
 import gov.redhawk.model.sca.ScaPackage;
 import gov.redhawk.model.sca.ScaStructProperty;
 import gov.redhawk.model.sca.ScaStructSequenceProperty;
@@ -56,9 +55,24 @@ public class ScaStructPropertyItemProvider extends ScaAbstractPropertyItemProvid
 		if (itemPropertyDescriptors == null) {
 			super.getPropertyDescriptors(object);
 
+			addFieldsPropertyDescriptor(object);
 			addSimplesPropertyDescriptor(object);
 		}
 		return itemPropertyDescriptors;
+	}
+
+	/**
+	 * This adds a property descriptor for the Fields feature.
+	 * <!-- begin-user-doc -->
+	 * @since 12.3
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	protected void addFieldsPropertyDescriptor(Object object) {
+		itemPropertyDescriptors.add(createItemPropertyDescriptor(((ComposeableAdapterFactory) adapterFactory).getRootAdapterFactory(), getResourceLocator(),
+			getString("_UI_ScaStructProperty_fields_feature"),
+			getString("_UI_PropertyDescriptor_description", "_UI_ScaStructProperty_fields_feature", "_UI_ScaStructProperty_type"),
+			ScaPackage.Literals.SCA_STRUCT_PROPERTY__FIELDS, false, false, false, null, null, null));
 	}
 
 	/**
@@ -90,18 +104,6 @@ public class ScaStructPropertyItemProvider extends ScaAbstractPropertyItemProvid
 	}
 
 	/**
-	 * @since 12.3
-	 */
-	protected void addSequencesPropertyDescriptor(Object object) {
-		ItemPropertyDescriptor propertyDescriptor = createItemPropertyDescriptor(((ComposeableAdapterFactory) adapterFactory).getRootAdapterFactory(),
-			getResourceLocator(), getString("_UI_ScaStructProperty_sequences_feature"),
-			getString("_UI_PropertyDescriptor_description", "_UI_ScaStructProperty_sequences_feature", "_UI_ScaStructProperty_type"),
-			ScaPackage.Literals.SCA_STRUCT_PROPERTY__SEQUENCES, false, false, false, null, null, null);
-
-		itemPropertyDescriptors.add(new ScaStructValuePropertyDescriptor(object, propertyDescriptor, getRootAdapterFactory()));
-	}
-
-	/**
 	 * This specifies how to implement {@link #getChildren} and is used to deduce an appropriate feature for an
 	 * {@link org.eclipse.emf.edit.command.AddCommand}, {@link org.eclipse.emf.edit.command.RemoveCommand} or
 	 * {@link org.eclipse.emf.edit.command.MoveCommand} in {@link #createCommand}.
@@ -113,8 +115,8 @@ public class ScaStructPropertyItemProvider extends ScaAbstractPropertyItemProvid
 	public Collection< ? extends EStructuralFeature> getChildrenFeatures(Object object) {
 		if (childrenFeatures == null) {
 			super.getChildrenFeatures(object);
+			childrenFeatures.add(ScaPackage.Literals.SCA_STRUCT_PROPERTY__FIELDS);
 			childrenFeatures.add(ScaPackage.Literals.SCA_STRUCT_PROPERTY__SIMPLES);
-			childrenFeatures.add(ScaPackage.Literals.SCA_STRUCT_PROPERTY__SEQUENCES);
 		}
 		return childrenFeatures;
 	}
@@ -171,8 +173,8 @@ public class ScaStructPropertyItemProvider extends ScaAbstractPropertyItemProvid
 		updateChildren(notification);
 
 		switch (notification.getFeatureID(ScaStructProperty.class)) {
+		case ScaPackage.SCA_STRUCT_PROPERTY__FIELDS:
 		case ScaPackage.SCA_STRUCT_PROPERTY__SIMPLES:
-		case ScaPackage.SCA_STRUCT_PROPERTY__SEQUENCES:
 			fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), true, false));
 			return;
 		}
@@ -189,8 +191,6 @@ public class ScaStructPropertyItemProvider extends ScaAbstractPropertyItemProvid
 	@Override
 	protected void collectNewChildDescriptors(Collection<Object> newChildDescriptors, Object object) {
 		super.collectNewChildDescriptors(newChildDescriptors, object);
-
-		newChildDescriptors.add(createChildParameter(ScaPackage.Literals.SCA_STRUCT_PROPERTY__SEQUENCES, ScaFactory.eINSTANCE.createScaSimpleSequenceProperty()));
 	}
 
 	@Override

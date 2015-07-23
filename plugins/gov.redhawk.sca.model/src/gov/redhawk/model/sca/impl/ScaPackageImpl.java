@@ -1777,23 +1777,24 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 
 	/**
 	 * <!-- begin-user-doc -->
+	 * @since 20.0
+	 * <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	@Override
+	public EReference getScaStructProperty_Fields() {
+		return (EReference) scaStructPropertyEClass.getEStructuralFeatures().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * 
 	 * @generated
 	 */
 	@Override
 	public EReference getScaStructProperty_Simples() {
-		return (EReference) scaStructPropertyEClass.getEStructuralFeatures().get(0);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * 
-	 * @since 20.0
-	 *        <!-- end-user-doc -->
-	 * @generated
-	 */
-	public EReference getScaStructProperty_Sequences() {
 		return (EReference) scaStructPropertyEClass.getEStructuralFeatures().get(1);
 	}
 
@@ -2537,8 +2538,8 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 		createEAttribute(scaSimpleSequencePropertyEClass, SCA_SIMPLE_SEQUENCE_PROPERTY__VALUES);
 
 		scaStructPropertyEClass = createEClass(SCA_STRUCT_PROPERTY);
+		createEReference(scaStructPropertyEClass, SCA_STRUCT_PROPERTY__FIELDS);
 		createEReference(scaStructPropertyEClass, SCA_STRUCT_PROPERTY__SIMPLES);
-		createEReference(scaStructPropertyEClass, SCA_STRUCT_PROPERTY__SEQUENCES);
 
 		scaUsesPortEClass = createEClass(SCA_USES_PORT);
 		createEReference(scaUsesPortEClass, SCA_USES_PORT__CONNECTIONS);
@@ -3396,10 +3397,13 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 		addEOperation(scaSimpleSequencePropertyEClass, thePrfPackage.getSimpleSequenceRef(), "createPropertyRef", 0, 1, IS_UNIQUE, IS_ORDERED);
 
 		initEClass(scaStructPropertyEClass, ScaStructProperty.class, "ScaStructProperty", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		g1 = createEGenericType(this.getScaAbstractProperty());
+		g2 = createEGenericType();
+		g1.getETypeArguments().add(g2);
+		initEReference(getScaStructProperty_Fields(), g1, null, "fields", null, 0, -1, ScaStructProperty.class, IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE,
+			IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getScaStructProperty_Simples(), this.getScaSimpleProperty(), null, "simples", null, 0, -1, ScaStructProperty.class, IS_TRANSIENT,
 			!IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getScaStructProperty_Sequences(), this.getScaSimpleSequenceProperty(), null, "sequences", null, 0, -1, ScaStructProperty.class,
-			IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		op = addEOperation(scaStructPropertyEClass, this.getScaSimpleProperty(), "getSimple", 0, 1, IS_UNIQUE, IS_ORDERED);
 		addEParameter(op, ecorePackage.getEString(), "id", 0, 1, IS_UNIQUE, IS_ORDERED);
@@ -3698,8 +3702,8 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 		addAnnotation(scaSimpleSequencePropertyEClass, source, new String[] { "name", "ScaSimpleSequenceProperty", "kind", "empty" });
 		addAnnotation(getScaSimpleSequenceProperty_Values(), source, new String[] { "kind", "attribute", "name", "currentValue" });
 		addAnnotation(scaStructPropertyEClass, source, new String[] { "name", "ScaStructProperty", "kind", "empty" });
+		addAnnotation(getScaStructProperty_Fields(), source, new String[] { "kind", "attribute", "name", "fields" });
 		addAnnotation(getScaStructProperty_Simples(), source, new String[] { "kind", "attribute", "name", "simples" });
-		addAnnotation(getScaStructProperty_Sequences(), source, new String[] { "kind", "attribute", "name", "sequences" });
 		addAnnotation(scaUsesPortEClass, source, new String[] { "name", "ScaUsesPort", "kind", "empty" });
 		addAnnotation(scaWaveformEClass, source, new String[] { "name", "ScaWaveform", "kind", "elementOnly" });
 		addAnnotation(getScaWaveform_Components(), source, new String[] { "kind", "element", "name", "components" });
