@@ -28,10 +28,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Set;
 
 import mil.jpeojtrs.sca.prf.PropertyValueType;
 import mil.jpeojtrs.sca.prf.provider.RadixLabelProviderUtil;
@@ -58,6 +55,7 @@ import org.eclipse.jface.viewers.ColumnViewerEditorActivationEvent;
 import org.eclipse.jface.viewers.ColumnViewerEditorActivationListener;
 import org.eclipse.jface.viewers.ColumnViewerEditorDeactivationEvent;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
+import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TableViewer;
@@ -236,32 +234,13 @@ public class SequencePropertyValueWizardPage extends WizardPage {
 			list = structSequenceProperty.getStructs();
 		}
 
-		int[] indexes;
-		final Set<Integer> indexList = new HashSet<Integer>();
-		if (this.tableViewer.getTable().getSelectionIndices().length > 0) {
-			indexes = this.tableViewer.getTable().getSelectionIndices();
-			for (final int i : indexes) {
-				indexList.add(i);
-			}
-		}
-
-		int index = 0;
-		for (final Iterator< ? > iterator = list.iterator(); iterator.hasNext();) {
-			iterator.next();
-			if (indexList.contains(index)) {
-				iterator.remove();
-			}
-			index++;
-		}
-
-		final List<Integer> sortedList = new ArrayList<Integer>(indexList);
-		Collections.sort(sortedList);
-		if (!sortedList.isEmpty()) {
-			int firstIndex = sortedList.get(0);
-			firstIndex--;
-			if (firstIndex >= 0 && firstIndex < this.tableViewer.getTable().getItemCount()) {
-				final TableItem item = this.tableViewer.getTable().getItem(firstIndex);
-				this.tableViewer.setSelection(new StructuredSelection(item.getData()));
+		IStructuredSelection selection = tableViewer.getStructuredSelection();
+		if (!selection.isEmpty()) {
+			int index = list.indexOf(tableViewer.getStructuredSelection().getFirstElement());
+			list.removeAll(selection.toList());
+			if (!list.isEmpty()) {
+				index = Math.min(index, list.size() - 1);
+				tableViewer.setSelection(new StructuredSelection(list.get(index)));
 			}
 		}
 	}
