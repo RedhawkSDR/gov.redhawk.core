@@ -14,10 +14,8 @@ package gov.redhawk.sca.internal.ui.properties;
 import java.math.BigInteger;
 import java.util.Arrays;
 
-import org.eclipse.emf.common.notify.Adapter;
-import org.eclipse.emf.common.notify.AdapterFactory;
 import org.eclipse.emf.common.util.EList;
-import org.eclipse.emf.edit.provider.ViewerNotification;
+import org.eclipse.emf.edit.domain.AdapterFactoryEditingDomain;
 import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.IStructuredSelection;
@@ -36,11 +34,7 @@ import org.eclipse.ui.ISharedImages;
 import org.eclipse.ui.PlatformUI;
 
 import gov.redhawk.model.sca.ScaAbstractProperty;
-import gov.redhawk.model.sca.ScaPackage;
-import gov.redhawk.model.sca.ScaSimpleSequenceProperty;
-import gov.redhawk.model.sca.provider.ScaSimpleSequencePropertyItemProvider;
 import gov.redhawk.sca.ui.ScaUiPlugin;
-import gov.redhawk.sca.ui.properties.ScaPropertiesAdapterFactory;
 import mil.jpeojtrs.sca.prf.PropertyValueType;
 import mil.jpeojtrs.sca.util.math.ComplexBoolean;
 import mil.jpeojtrs.sca.util.math.ComplexDouble;
@@ -55,27 +49,6 @@ import mil.jpeojtrs.sca.util.math.ComplexUShort;
 public abstract class AbstractSequencePropertyValueWizardPage extends WizardPage {
 
 	protected final ScaAbstractProperty< ? > property;
-	protected final AdapterFactory adapterFactory = new ScaPropertiesAdapterFactory() {
-	
-			@Override
-			public Adapter createScaSimpleSequencePropertyAdapter() {
-				return new ScaSimpleSequencePropertyItemProvider(this) {
-					@Override
-					public void notifyChanged(final org.eclipse.emf.common.notify.Notification notification) {
-						updateChildren(notification);
-	
-						switch (notification.getFeatureID(ScaSimpleSequenceProperty.class)) {
-						case ScaPackage.SCA_SIMPLE_SEQUENCE_PROPERTY__VALUES:
-							fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), true, true));
-							return;
-						default:
-							break;
-						}
-						super.notifyChanged(notification);
-					}
-				};
-			}
-		};
 	private TableViewer tableViewer;
 	private Button removeButton;
 	private Button downButton;
@@ -186,10 +159,10 @@ public abstract class AbstractSequencePropertyValueWizardPage extends WizardPage
 	protected abstract void handleAddValue();
 
 	private void handleRemoveValue() {
-		EList< ? > list = getList();
 		IStructuredSelection selection = tableViewer.getStructuredSelection();
 		if (!selection.isEmpty()) {
-			int index = list.indexOf(tableViewer.getStructuredSelection().getFirstElement());
+			EList< ? > list = getList();
+			int index = list.indexOf(selection.getFirstElement());
 			list.removeAll(selection.toList());
 			if (!list.isEmpty()) {
 				index = Math.min(index, list.size() - 1);
@@ -309,7 +282,9 @@ public abstract class AbstractSequencePropertyValueWizardPage extends WizardPage
 			int maxIndex = -1;
 			EList< ? > list = getList();
 			for (Object item : selection.toList()) {
-				int index = list.indexOf(item);
+				// For simple sequences, the item has to be unwrapped to be found in the list; for struct sequences
+				// unwrapping is a no-op.
+				int index = list.indexOf(AdapterFactoryEditingDomain.unwrap(item));
 				minIndex = Math.min(minIndex, index);
 				maxIndex = Math.max(maxIndex, index);
 			}

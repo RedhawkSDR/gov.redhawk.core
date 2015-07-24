@@ -12,8 +12,11 @@
 package gov.redhawk.sca.internal.ui.properties;
 
 import gov.redhawk.model.sca.ScaSimpleSequenceProperty;
+import gov.redhawk.model.sca.provider.ScaSimpleSequencePropertyItemProvider;
+import gov.redhawk.sca.ui.properties.ScaPropertiesAdapterFactory;
 import mil.jpeojtrs.sca.prf.provider.RadixLabelProviderUtil;
 
+import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.edit.domain.AdapterFactoryEditingDomain;
 import org.eclipse.emf.edit.ui.provider.AdapterFactoryContentProvider;
@@ -30,8 +33,25 @@ import org.eclipse.swt.widgets.Widget;
 
 public class SimpleSequencePropertyValueWizardPage extends AbstractSequencePropertyValueWizardPage {
 
+	protected final ScaPropertiesAdapterFactory adapterFactory = new ScaPropertiesAdapterFactory() {
+
+		@Override
+		public Adapter createScaSimpleSequencePropertyAdapter() {
+			// We need to return our own instance of ScaSimpleSequencePropertyItemProvider here because the default
+			// factory creates an overridden one that does not return any children.
+			return new ScaSimpleSequencePropertyItemProvider(this);
+		}
+	};
+
 	protected SimpleSequencePropertyValueWizardPage(final ScaSimpleSequenceProperty property) {
 		super(property);
+	}
+
+	@Override
+	public void dispose()
+	{
+		super.dispose();
+		adapterFactory.dispose();
 	}
 
 	@Override
