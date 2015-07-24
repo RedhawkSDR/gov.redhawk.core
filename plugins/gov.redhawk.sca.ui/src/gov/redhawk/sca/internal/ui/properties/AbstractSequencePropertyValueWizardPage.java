@@ -12,12 +12,15 @@
 package gov.redhawk.sca.internal.ui.properties;
 
 import java.math.BigInteger;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 import org.eclipse.emf.common.util.EList;
-import org.eclipse.emf.edit.domain.AdapterFactoryEditingDomain;
+import org.eclipse.emf.edit.provider.IWrapperItemProvider;
 import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
+import org.eclipse.jface.viewers.IStructuredContentProvider;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.StructuredSelection;
@@ -161,11 +164,13 @@ public abstract class AbstractSequencePropertyValueWizardPage extends WizardPage
 		IStructuredSelection selection = viewer.getStructuredSelection();
 		if (!selection.isEmpty()) {
 			EList< ? > list = getList();
-			int index = list.indexOf(selection.getFirstElement());
-			list.removeAll(selection.toList());
+			int index = indexOf(list, selection.getFirstElement());
+			for (Object item : selection.toList()) {
+				list.remove(indexOf(list, item));
+			}
 			if (!list.isEmpty()) {
 				index = Math.min(index, list.size() - 1);
-				viewer.setSelection(new StructuredSelection(list.get(index)));
+				setSelection(index);
 			}
 		}
 	}
@@ -174,41 +179,65 @@ public abstract class AbstractSequencePropertyValueWizardPage extends WizardPage
 		if (viewer.getSelection().isEmpty()) {
 			return;
 		}
-	
-		// Move the items up in ascending order to ensure that they do not overlap 
+
+		// Move the items up in ascending order to ensure that they do not overlap
 		EList< ? > list = getList();
-		for (int index : getSelectionIndices()) {
-			list.move(index-1, index);
+		int[] indices = getSelectionIndices();
+		for (int index : indices) {
+			list.move(index - 1, index);
 		}
-		updateButtonState();
+
+		setSelection(indices, -1);
 	}
 
 	private void handleMoveDown() {
 		if (viewer.getSelection().isEmpty()) {
 			return;
 		}
-	
+
 		// Move the items down in descending order to ensure that they do not overlap (requires reverse iteration over
 		// the indices, which is not built into Java--nor is reverse sort of primitives)
 		int[] indices = getSelectionIndices();
 		EList< ? > list = getList();
 		for (int ii = indices.length-1; ii >= 0; --ii) {
 			int index = indices[ii];
-			list.move(index+1, index);
+			list.move(index + 1, index);
 		}
-		updateButtonState();
+
+		setSelection(indices, 1);
+	}
+
+	private void setSelection(int index) {
+		setSelection(new int[] { index }, 0);
+	}
+
+	private void setSelection(int[] indices, int offset) {
+		List< Object > selection = new ArrayList< Object >();
+		IStructuredContentProvider provider = (IStructuredContentProvider) viewer.getContentProvider();
+		Object[] elements = provider.getElements(viewer.getInput());
+		for (int index : indices) {
+			selection.add(elements[index + offset]);
+		}
+		viewer.setSelection(new StructuredSelection(selection));
 	}
 
 	private int[] getSelectionIndices() {
 		IStructuredSelection selection = viewer.getStructuredSelection();
 		int[] indices = new int[selection.size()];
 		int offset = 0;
-		EList< ? > list = getList();
 		for (Object item : selection.toList()) {
-			indices[offset++] = list.indexOf(AdapterFactoryEditingDomain.unwrap(item));
+			indices[offset++] = indexOf(getList(), item);
 		}
 		Arrays.sort(indices);
 		return indices;
+	}
+
+	private int indexOf(List< ? > list, Object object) {
+		if (object instanceof IWrapperItemProvider) {
+			return ((IWrapperItemProvider) object).getIndex();
+		} else {
+			return list.indexOf(object);
+		}
 	}
 
 	private Composite createButtons(final Composite root) {
@@ -280,25 +309,18 @@ public abstract class AbstractSequencePropertyValueWizardPage extends WizardPage
 	 * @param enabled Boolean representing whether we should or should not enable the remove button
 	 */
 	private void updateButtonState() {
-		IStructuredSelection selection = viewer.getStructuredSelection();
-		if (selection.isEmpty()) {
+		int[] indices = getSelectionIndices();
+		if (indices.length == 0) {
 			removeButton.setEnabled(false);
 			upButton.setEnabled(false);
 			downButton.setEnabled(false);
 		} else {
-			int minIndex = Integer.MAX_VALUE;
-			int maxIndex = -1;
-			EList< ? > list = getList();
-			for (Object item : selection.toList()) {
-				// For simple sequences, the item has to be unwrapped to be found in the list; for struct sequences
-				// unwrapping is a no-op.
-				int index = list.indexOf(AdapterFactoryEditingDomain.unwrap(item));
-				minIndex = Math.min(minIndex, index);
-				maxIndex = Math.max(maxIndex, index);
-			}
+			int minIndex = indices[0];
+			int maxIndex = indices[indices.length - 1];
+
 			removeButton.setEnabled(true);
 			upButton.setEnabled(minIndex > 0);
-			downButton.setEnabled(maxIndex < (list.size() - 1));
+			downButton.setEnabled(maxIndex < (getList().size() - 1));
 		}
 	}
 
