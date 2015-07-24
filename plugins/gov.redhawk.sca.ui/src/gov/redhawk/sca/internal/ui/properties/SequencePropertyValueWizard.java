@@ -12,6 +12,8 @@
 package gov.redhawk.sca.internal.ui.properties;
 
 import gov.redhawk.model.sca.ScaAbstractProperty;
+import gov.redhawk.model.sca.ScaSimpleSequenceProperty;
+import gov.redhawk.model.sca.ScaStructSequenceProperty;
 
 import org.eclipse.jface.wizard.Wizard;
 
@@ -20,7 +22,7 @@ import org.eclipse.jface.wizard.Wizard;
  */
 public class SequencePropertyValueWizard extends Wizard {
 
-	private SequencePropertyValueWizardPage page;
+	private AbstractSequencePropertyValueWizardPage page;
 	private final ScaAbstractProperty< ? > property;
 
 	public SequencePropertyValueWizard(final ScaAbstractProperty< ? > property) {
@@ -31,7 +33,11 @@ public class SequencePropertyValueWizard extends Wizard {
 
 	@Override
 	public void addPages() {
-		this.page = new SequencePropertyValueWizardPage(this.property);
+		if (this.property instanceof ScaSimpleSequenceProperty) {
+			this.page = new SimpleSequencePropertyValueWizardPage((ScaSimpleSequenceProperty) this.property);
+		} else if (this.property instanceof ScaStructSequenceProperty) {
+			this.page = new StructSequencePropertyValueWizardPage((ScaStructSequenceProperty) this.property);
+		}
 		this.addPage(this.page);
 	}
 

@@ -11,23 +11,38 @@
  */
 package gov.redhawk.sca.internal.ui.properties;
 
-import gov.redhawk.model.sca.ScaAbstractProperty;
-import gov.redhawk.model.sca.ScaPackage;
-import gov.redhawk.model.sca.ScaSimpleProperty;
-import gov.redhawk.model.sca.ScaSimpleSequenceProperty;
-import gov.redhawk.model.sca.ScaStructProperty;
-import gov.redhawk.model.sca.ScaStructSequenceProperty;
-import gov.redhawk.model.sca.provider.ScaSimplePropertyItemProvider;
-import gov.redhawk.model.sca.provider.ScaSimpleSequencePropertyItemProvider;
-import gov.redhawk.sca.ui.ScaComponentFactory;
-import gov.redhawk.sca.ui.ScaUiPlugin;
-import gov.redhawk.sca.ui.properties.ScaPropertiesAdapterFactory;
-
 import java.math.BigInteger;
 import java.util.Arrays;
 
+import org.eclipse.emf.common.notify.Adapter;
+import org.eclipse.emf.common.notify.AdapterFactory;
+import org.eclipse.emf.common.util.EList;
+import org.eclipse.emf.edit.provider.ViewerNotification;
+import org.eclipse.jface.layout.GridDataFactory;
+import org.eclipse.jface.viewers.ISelectionChangedListener;
+import org.eclipse.jface.viewers.IStructuredSelection;
+import org.eclipse.jface.viewers.SelectionChangedEvent;
+import org.eclipse.jface.viewers.StructuredSelection;
+import org.eclipse.jface.viewers.TableViewer;
+import org.eclipse.jface.wizard.WizardPage;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.widgets.Button;
+import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Label;
+import org.eclipse.ui.ISharedImages;
+import org.eclipse.ui.PlatformUI;
+
+import gov.redhawk.model.sca.ScaAbstractProperty;
+import gov.redhawk.model.sca.ScaPackage;
+import gov.redhawk.model.sca.ScaSimpleSequenceProperty;
+import gov.redhawk.model.sca.provider.ScaSimplePropertyItemProvider;
+import gov.redhawk.model.sca.provider.ScaSimpleSequencePropertyItemProvider;
+import gov.redhawk.sca.ui.ScaUiPlugin;
+import gov.redhawk.sca.ui.properties.ScaPropertiesAdapterFactory;
 import mil.jpeojtrs.sca.prf.PropertyValueType;
-import mil.jpeojtrs.sca.prf.provider.RadixLabelProviderUtil;
 import mil.jpeojtrs.sca.util.math.ComplexBoolean;
 import mil.jpeojtrs.sca.util.math.ComplexDouble;
 import mil.jpeojtrs.sca.util.math.ComplexFloat;
@@ -38,80 +53,47 @@ import mil.jpeojtrs.sca.util.math.ComplexULong;
 import mil.jpeojtrs.sca.util.math.ComplexULongLong;
 import mil.jpeojtrs.sca.util.math.ComplexUShort;
 
-import org.eclipse.emf.common.notify.Adapter;
-import org.eclipse.emf.common.notify.AdapterFactory;
-import org.eclipse.emf.common.util.EList;
-import org.eclipse.emf.edit.domain.AdapterFactoryEditingDomain;
-import org.eclipse.emf.edit.provider.ViewerNotification;
-import org.eclipse.emf.edit.ui.provider.AdapterFactoryContentProvider;
-import org.eclipse.jface.layout.GridDataFactory;
-import org.eclipse.jface.layout.TableColumnLayout;
-import org.eclipse.jface.viewers.ColumnLabelProvider;
-import org.eclipse.jface.viewers.ColumnPixelData;
-import org.eclipse.jface.viewers.ColumnViewerEditorActivationEvent;
-import org.eclipse.jface.viewers.ColumnViewerEditorActivationListener;
-import org.eclipse.jface.viewers.ColumnViewerEditorDeactivationEvent;
-import org.eclipse.jface.viewers.ISelectionChangedListener;
-import org.eclipse.jface.viewers.IStructuredSelection;
-import org.eclipse.jface.viewers.SelectionChangedEvent;
-import org.eclipse.jface.viewers.StructuredSelection;
-import org.eclipse.jface.viewers.TableViewer;
-import org.eclipse.jface.viewers.TableViewerColumn;
-import org.eclipse.jface.viewers.ViewerCell;
-import org.eclipse.jface.wizard.WizardPage;
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.SelectionAdapter;
-import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.widgets.Button;
-import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Label;
-import org.eclipse.swt.widgets.TableItem;
-import org.eclipse.swt.widgets.Widget;
-import org.eclipse.ui.ISharedImages;
-import org.eclipse.ui.PlatformUI;
+public abstract class AbstractSequencePropertyValueWizardPage extends WizardPage {
 
-public class SequencePropertyValueWizardPage extends WizardPage {
-
-	private final ScaAbstractProperty< ? > property;
-	private final AdapterFactory adapterFactory = new ScaPropertiesAdapterFactory() {
-
-		@Override
-		public Adapter createScaSimpleSequencePropertyAdapter() {
-			return new ScaSimpleSequencePropertyItemProvider(this) {
-				@Override
-				public void notifyChanged(final org.eclipse.emf.common.notify.Notification notification) {
-					updateChildren(notification);
-
-					switch (notification.getFeatureID(ScaSimpleSequenceProperty.class)) {
-					case ScaPackage.SCA_SIMPLE_SEQUENCE_PROPERTY__VALUES:
-						fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), true, true));
-						return;
-					default:
-						break;
+	protected final ScaAbstractProperty< ? > property;
+	protected final AdapterFactory adapterFactory = new ScaPropertiesAdapterFactory() {
+	
+			@Override
+			public Adapter createScaSimpleSequencePropertyAdapter() {
+				return new ScaSimpleSequencePropertyItemProvider(this) {
+					@Override
+					public void notifyChanged(final org.eclipse.emf.common.notify.Notification notification) {
+						updateChildren(notification);
+	
+						switch (notification.getFeatureID(ScaSimpleSequenceProperty.class)) {
+						case ScaPackage.SCA_SIMPLE_SEQUENCE_PROPERTY__VALUES:
+							fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), true, true));
+							return;
+						default:
+							break;
+						}
+						super.notifyChanged(notification);
 					}
-					super.notifyChanged(notification);
-				}
-			};
-		}
-
-		@Override
-		public Adapter createScaSimplePropertyAdapter() {
-			return new ScaSimplePropertyItemProvider(this) {
-				@Override
-				public Object getImage(final Object object) {
-					return null;
-				}
-			};
-		}
-	};
+				};
+			}
+	
+			@Override
+			public Adapter createScaSimplePropertyAdapter() {
+				return new ScaSimplePropertyItemProvider(this) {
+					@Override
+					public Object getImage(final Object object) {
+						return null;
+					}
+				};
+			}
+		};
 	private TableViewer tableViewer;
 	private Button removeButton;
 	private Button downButton;
 	private Button upButton;
 	private Button resetButton;
 
-	protected SequencePropertyValueWizardPage(final ScaAbstractProperty< ? > property) {
+	public AbstractSequencePropertyValueWizardPage(ScaAbstractProperty< ? > property) {
 		super("valuePage", "Edit Value", null);
 		this.property = property;
 		String propDesc = property.getDescription();
@@ -125,22 +107,30 @@ public class SequencePropertyValueWizardPage extends WizardPage {
 	public void createControl(final Composite parent) {
 		final Composite root = new Composite(parent, SWT.None);
 		root.setLayout(new GridLayout(2, false));
-
+	
 		final Composite tableComposite = new Composite(root, SWT.NO_FOCUS);
 		final TableViewer viewer = createTableViewer(tableComposite);
+		viewer.setInput(this.property);
+		viewer.addSelectionChangedListener(new ISelectionChangedListener() {
+	
+			@Override
+			public void selectionChanged(final SelectionChangedEvent event) {
+				updateButtonState();
+			}
+		});
 		tableComposite.setLayoutData(GridDataFactory.fillDefaults().hint(500, 300).span(2, 1).create());
 		this.tableViewer = viewer;
-
+	
 		// Create spacer
 		new Label(root, SWT.None).setLayoutData(GridDataFactory.fillDefaults().span(1, 1).grab(true, false).create());
-
+	
 		final Composite buttonComposite = createButtons(root);
 		buttonComposite.setLayoutData(GridDataFactory.fillDefaults().span(1, 1).grab(false, false).create());
-
+	
 		setControl(root);
 	}
 
-	private Object getDefaultValue(final PropertyValueType type, boolean isComplex) {
+	protected Object getDefaultValue(final PropertyValueType type, boolean isComplex) {
 		if (isComplex) {
 			switch (type) {
 			case BOOLEAN:
@@ -202,35 +192,9 @@ public class SequencePropertyValueWizardPage extends WizardPage {
 		}
 	}
 
-	private void handleAddValue() {
-		if (this.property instanceof ScaSimpleSequenceProperty) {
-			final ScaSimpleSequenceProperty seqProperty = (ScaSimpleSequenceProperty) this.property;
-			final Object newValue = getDefaultValue(seqProperty.getDefinition().getType(), seqProperty.getDefinition().isComplex());
+	protected abstract EList< ? > getList();
 
-			seqProperty.getValues().add(newValue);
-		} else if (this.property instanceof ScaStructSequenceProperty) {
-			final ScaStructSequenceProperty structSeqProperty = (ScaStructSequenceProperty) this.property;
-			final ScaStructProperty newStruct = structSeqProperty.createScaStructProperty();
-			for (final ScaSimpleProperty p : newStruct.getSimples()) {
-				if (p.getValue() == null) {
-					final Object value = getDefaultValue(p.getDefinition().getType(), p.getDefinition().isComplex());
-					p.setValue(value);
-				}
-			}
-			structSeqProperty.getStructs().add(newStruct);
-		}
-	}
-
-	private EList< ? > getList() {
-		if (this.property instanceof ScaSimpleSequenceProperty) {
-			final ScaSimpleSequenceProperty seqProperty = (ScaSimpleSequenceProperty) this.property;
-			return seqProperty.getValues();
-		} else if (this.property instanceof ScaStructSequenceProperty) {
-			final ScaStructSequenceProperty structSequenceProperty = (ScaStructSequenceProperty) this.property;
-			return structSequenceProperty.getStructs();
-		}
-		return null;
-	}
+	protected abstract void handleAddValue();
 
 	private void handleRemoveValue() {
 		EList< ? > list = getList();
@@ -249,7 +213,7 @@ public class SequencePropertyValueWizardPage extends WizardPage {
 		if (tableViewer.getSelection().isEmpty()) {
 			return;
 		}
-
+	
 		// Move the items up in ascending order to ensure that they do not overlap 
 		int[] indices = tableViewer.getTable().getSelectionIndices();
 		EList< ? > list = getList();
@@ -264,7 +228,7 @@ public class SequencePropertyValueWizardPage extends WizardPage {
 		if (tableViewer.getSelection().isEmpty()) {
 			return;
 		}
-
+	
 		// Move the items down in descending order to ensure that they do not overlap (requires reverse iteration over
 		// the indices, which is not built into Java--nor is reverse sort of primitives)
 		int[] indices = tableViewer.getTable().getSelectionIndices();
@@ -281,7 +245,7 @@ public class SequencePropertyValueWizardPage extends WizardPage {
 		final Composite buttonRoot = new Composite(root, SWT.None);
 		buttonRoot.setLayout(new GridLayout(5, false));
 		final ISharedImages sharedImages = PlatformUI.getWorkbench().getSharedImages();
-
+	
 		final Button addButton = new Button(buttonRoot, SWT.PUSH);
 		//			addButton.setText("Add");
 		addButton.setToolTipText("Add");
@@ -301,7 +265,7 @@ public class SequencePropertyValueWizardPage extends WizardPage {
 		});
 		this.removeButton.setToolTipText("Remove");
 		this.removeButton.setImage(sharedImages.getImage(ISharedImages.IMG_ETOOL_DELETE));
-
+	
 		this.upButton = new Button(buttonRoot, SWT.PUSH);
 		//			upButton.setText("Up");
 		this.upButton.setImage(ScaUiPlugin.getDefault().getImage("icons/clcl16/up.png"));
@@ -331,9 +295,9 @@ public class SequencePropertyValueWizardPage extends WizardPage {
 				handleReset();
 			}
 		});
-
+	
 		updateButtonState();
-
+	
 		return buttonRoot;
 	}
 
@@ -342,89 +306,7 @@ public class SequencePropertyValueWizardPage extends WizardPage {
 		tableViewer.refresh();
 	}
 
-	private TableViewer createTableViewer(final Composite parent) {
-		final TableViewer viewer;
-		if (this.property instanceof ScaSimpleSequenceProperty) {
-			final TableColumnLayout layout = new TableColumnLayout();
-			parent.setLayout(layout);
-			viewer = new TableViewer(parent, SWT.BORDER | SWT.MULTI | SWT.FULL_SELECTION | SWT.V_SCROLL | SWT.H_SCROLL);
-			createSimpleSequenceColumns(viewer, layout, (ScaSimpleSequenceProperty) this.property);
-			viewer.getTable().setHeaderVisible(true);
-			viewer.getTable().setLinesVisible(true);
-
-			viewer.setContentProvider(new AdapterFactoryContentProvider(this.adapterFactory));
-
-		} else {
-			viewer = ScaComponentFactory.createStructSequenceTable(parent, SWT.BORDER | SWT.MULTI | SWT.FULL_SELECTION | SWT.V_SCROLL | SWT.H_SCROLL,
-				this.adapterFactory, (ScaStructSequenceProperty) this.property);
-			viewer.getColumnViewerEditor().addEditorActivationListener(new ColumnViewerEditorActivationListener() {
-
-				@Override
-				public void beforeEditorDeactivated(final ColumnViewerEditorDeactivationEvent event) {
-					// TODO Auto-generated method stub
-
-				}
-
-				@Override
-				public void beforeEditorActivated(final ColumnViewerEditorActivationEvent event) {
-					// TODO Auto-generated method stub
-
-				}
-
-				@Override
-				public void afterEditorDeactivated(final ColumnViewerEditorDeactivationEvent event) {
-					viewer.refresh(true);
-				}
-
-				@Override
-				public void afterEditorActivated(final ColumnViewerEditorActivationEvent event) {
-
-				}
-			});
-		}
-		viewer.setInput(this.property);
-		viewer.addSelectionChangedListener(new ISelectionChangedListener() {
-
-			@Override
-			public void selectionChanged(final SelectionChangedEvent event) {
-				updateButtonState();
-			}
-		});
-		return viewer;
-	}
-
-	private void createSimpleSequenceColumns(final TableViewer viewer, final TableColumnLayout layout, final ScaSimpleSequenceProperty seqProperty) {
-		final TableViewerColumn columnViewer = new TableViewerColumn(viewer, SWT.CENTER);
-		columnViewer.setEditingSupport(new ScaSimpleSequenceValueEditingSupport(seqProperty, viewer));
-		columnViewer.setLabelProvider(new ColumnLabelProvider() {
-
-			@Override
-			public void update(final ViewerCell cell) {
-				super.update(cell);
-				if (seqProperty.getDefinition() != null
-					&& RadixLabelProviderUtil.supports(seqProperty.getDefinition().getType(), seqProperty.getDefinition().isComplex())) {
-					int[] radix = new int[0];
-					if (seqProperty.getDefinition().getValues() != null) {
-						radix = RadixLabelProviderUtil.getRadix(seqProperty.getDefinition().getValues().getValue());
-					}
-					final Widget item = cell.getItem();
-					final int valueIndex = viewer.getTable().indexOf((TableItem) item);
-					if (valueIndex < radix.length) {
-						cell.setText(RadixLabelProviderUtil.getText(seqProperty.getValues().get(valueIndex), radix[valueIndex]));
-					} else if (radix.length > 0) {
-						cell.setText(RadixLabelProviderUtil.getText(seqProperty.getValues().get(valueIndex), radix[0]));
-					}
-				}
-			}
-
-			@Override
-			public String getText(final Object element) {
-				return super.getText(AdapterFactoryEditingDomain.unwrap(element));
-			}
-		});
-		layout.setColumnData(columnViewer.getColumn(), new ColumnPixelData(100, true));
-		columnViewer.getColumn().setText("Value < " + seqProperty.getDefinition().getType().getLiteral() + " >");
-	}
+	protected abstract TableViewer createTableViewer(Composite parent);
 
 	/**
 	 * Setter to allow us to enable / disable the remove button
@@ -451,4 +333,5 @@ public class SequencePropertyValueWizardPage extends WizardPage {
 			downButton.setEnabled(maxIndex < (list.size() - 1));
 		}
 	}
+
 }
