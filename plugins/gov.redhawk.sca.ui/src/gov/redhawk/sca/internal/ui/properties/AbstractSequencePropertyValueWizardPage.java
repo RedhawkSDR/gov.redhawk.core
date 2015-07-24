@@ -38,7 +38,6 @@ import org.eclipse.ui.PlatformUI;
 import gov.redhawk.model.sca.ScaAbstractProperty;
 import gov.redhawk.model.sca.ScaPackage;
 import gov.redhawk.model.sca.ScaSimpleSequenceProperty;
-import gov.redhawk.model.sca.provider.ScaSimplePropertyItemProvider;
 import gov.redhawk.model.sca.provider.ScaSimpleSequencePropertyItemProvider;
 import gov.redhawk.sca.ui.ScaUiPlugin;
 import gov.redhawk.sca.ui.properties.ScaPropertiesAdapterFactory;
@@ -73,16 +72,6 @@ public abstract class AbstractSequencePropertyValueWizardPage extends WizardPage
 							break;
 						}
 						super.notifyChanged(notification);
-					}
-				};
-			}
-	
-			@Override
-			public Adapter createScaSimplePropertyAdapter() {
-				return new ScaSimplePropertyItemProvider(this) {
-					@Override
-					public Object getImage(final Object object) {
-						return null;
 					}
 				};
 			}
@@ -247,7 +236,6 @@ public abstract class AbstractSequencePropertyValueWizardPage extends WizardPage
 		final ISharedImages sharedImages = PlatformUI.getWorkbench().getSharedImages();
 	
 		final Button addButton = new Button(buttonRoot, SWT.PUSH);
-		//			addButton.setText("Add");
 		addButton.setToolTipText("Add");
 		addButton.addSelectionListener(new SelectionAdapter() {
 			@Override
@@ -267,7 +255,6 @@ public abstract class AbstractSequencePropertyValueWizardPage extends WizardPage
 		this.removeButton.setImage(sharedImages.getImage(ISharedImages.IMG_ETOOL_DELETE));
 	
 		this.upButton = new Button(buttonRoot, SWT.PUSH);
-		//			upButton.setText("Up");
 		this.upButton.setImage(ScaUiPlugin.getDefault().getImage("icons/clcl16/up.png"));
 		this.upButton.setToolTipText("Move value up");
 		this.upButton.addSelectionListener(new SelectionAdapter() {
@@ -277,7 +264,6 @@ public abstract class AbstractSequencePropertyValueWizardPage extends WizardPage
 			}
 		});
 		this.downButton = new Button(buttonRoot, SWT.PUSH);
-		//			downButton.setText("Down");
 		this.downButton.setImage(ScaUiPlugin.getDefault().getImage("icons/clcl16/down.png"));
 		this.downButton.setToolTipText("Move value down");
 		this.downButton.addSelectionListener(new SelectionAdapter() {
@@ -303,7 +289,6 @@ public abstract class AbstractSequencePropertyValueWizardPage extends WizardPage
 
 	protected void handleReset() {
 		property.restoreDefaultValue();
-		tableViewer.refresh();
 	}
 
 	protected abstract TableViewer createTableViewer(Composite parent);
