@@ -7811,6 +7811,7 @@ public interface ScaPackage extends EPackage {
 		/**
 		 * The meta object literal for the '<em><b>Fields</b></em>' containment reference list feature.
 		 * <!-- begin-user-doc -->
+		 * @since 20.0
 		 * <!-- end-user-doc -->
 		 * 
 		 * @generated
