@@ -24,11 +24,7 @@ import gov.redhawk.sca.ui.ScaUiPlugin;
 import gov.redhawk.sca.ui.properties.ScaPropertiesAdapterFactory;
 
 import java.math.BigInteger;
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
 
 import mil.jpeojtrs.sca.prf.PropertyValueType;
 import mil.jpeojtrs.sca.prf.provider.RadixLabelProviderUtil;
@@ -44,6 +40,7 @@ import mil.jpeojtrs.sca.util.math.ComplexUShort;
 
 import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.notify.AdapterFactory;
+import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.edit.domain.AdapterFactoryEditingDomain;
 import org.eclipse.emf.edit.provider.ViewerNotification;
 import org.eclipse.emf.edit.ui.provider.AdapterFactoryContentProvider;
@@ -224,16 +221,19 @@ public class SequencePropertyValueWizardPage extends WizardPage {
 		}
 	}
 
-	private void handleRemoveValue() {
-		List< ? > list = Collections.EMPTY_LIST;
+	private EList< ? > getList() {
 		if (this.property instanceof ScaSimpleSequenceProperty) {
 			final ScaSimpleSequenceProperty seqProperty = (ScaSimpleSequenceProperty) this.property;
-			list = seqProperty.getValues();
+			return seqProperty.getValues();
 		} else if (this.property instanceof ScaStructSequenceProperty) {
 			final ScaStructSequenceProperty structSequenceProperty = (ScaStructSequenceProperty) this.property;
-			list = structSequenceProperty.getStructs();
+			return structSequenceProperty.getStructs();
 		}
+		return null;
+	}
 
+	private void handleRemoveValue() {
+		EList< ? > list = getList();
 		IStructuredSelection selection = tableViewer.getStructuredSelection();
 		if (!selection.isEmpty()) {
 			int index = list.indexOf(tableViewer.getStructuredSelection().getFirstElement());
@@ -245,68 +245,35 @@ public class SequencePropertyValueWizardPage extends WizardPage {
 		}
 	}
 
-	@SuppressWarnings("unchecked")
 	private void handleMoveUp() {
-		List<Object> list = new ArrayList<Object>();
-		if (this.property instanceof ScaSimpleSequenceProperty) {
-			final ScaSimpleSequenceProperty seqProperty = (ScaSimpleSequenceProperty) this.property;
-			list = seqProperty.getValues();
-		} else if (this.property instanceof ScaStructSequenceProperty) {
-			final ScaStructSequenceProperty structSequenceProperty = (ScaStructSequenceProperty) this.property;
-			list.addAll(structSequenceProperty.getStructs());
+		if (tableViewer.getSelection().isEmpty()) {
+			return;
 		}
 
-		final int[] indexes = this.tableViewer.getTable().getSelectionIndices();
-		Arrays.sort(indexes);
-		for (final int i : indexes) {
-			if (i > 0) {
-				Collections.swap(list, i, i - 1);
-			}
+		// Move the items up in ascending order to ensure that they do not overlap 
+		int[] indices = tableViewer.getTable().getSelectionIndices();
+		EList< ? > list = getList();
+		Arrays.sort(indices);
+		for (int index : indices) {
+			list.move(index-1, index);
 		}
-		final int[] newIndexes = new int[indexes.length];
-		System.arraycopy(indexes, 0, newIndexes, 0, indexes.length);
-		for (int i = 0; i < newIndexes.length; i++) {
-			newIndexes[i]--;
-		}
-
-		if (this.property instanceof ScaStructSequenceProperty) {
-			((ScaStructSequenceProperty) this.property).getStructs().clear();
-			((ScaStructSequenceProperty) this.property).getStructs().addAll((Collection< ? extends ScaStructProperty>) list);
-		}
-		this.tableViewer.refresh();
 		updateButtonState();
 	}
 
-	@SuppressWarnings("unchecked")
 	private void handleMoveDown() {
-		List<Object> list = new ArrayList<Object>();
-		if (this.property instanceof ScaSimpleSequenceProperty) {
-			final ScaSimpleSequenceProperty seqProperty = (ScaSimpleSequenceProperty) this.property;
-			list = seqProperty.getValues();
-		} else if (this.property instanceof ScaStructSequenceProperty) {
-			final ScaStructSequenceProperty structSequenceProperty = (ScaStructSequenceProperty) this.property;
-			list.addAll(structSequenceProperty.getStructs());
+		if (tableViewer.getSelection().isEmpty()) {
+			return;
 		}
 
-		final int[] indexes = this.tableViewer.getTable().getSelectionIndices();
-
-		for (int index = indexes.length - 1; index >= 0; index--) {
-			final int i = indexes[index];
-			if (i + 1 < list.size()) {
-				Collections.swap(list, i, i + 1);
-			}
+		// Move the items down in descending order to ensure that they do not overlap (requires reverse iteration over
+		// the indices, which is not built into Java--nor is reverse sort of primitives)
+		int[] indices = tableViewer.getTable().getSelectionIndices();
+		Arrays.sort(indices);
+		EList< ? > list = getList();
+		for (int ii = indices.length-1; ii >= 0; --ii) {
+			int index = indices[ii];
+			list.move(index+1, index);
 		}
-		final int[] newIndexes = new int[indexes.length];
-		System.arraycopy(indexes, 0, newIndexes, 0, indexes.length);
-		for (int i = 0; i < newIndexes.length; i++) {
-			newIndexes[i]++;
-		}
-
-		if (this.property instanceof ScaStructSequenceProperty) {
-			((ScaStructSequenceProperty) this.property).getStructs().clear();
-			((ScaStructSequenceProperty) this.property).getStructs().addAll((Collection< ? extends ScaStructProperty>) list);
-		}
-		this.tableViewer.refresh();
 		updateButtonState();
 	}
 
@@ -465,15 +432,23 @@ public class SequencePropertyValueWizardPage extends WizardPage {
 	 * @param enabled Boolean representing whether we should or should not enable the remove button
 	 */
 	private void updateButtonState() {
-		this.removeButton.setEnabled(this.tableViewer.getTable().getSelectionCount() > 0);
-		final int[] indexes = this.tableViewer.getTable().getSelectionIndices();
-		Arrays.sort(indexes);
-		if (indexes.length > 0) {
-			this.upButton.setEnabled(indexes[0] > 0);
-			this.downButton.setEnabled(indexes[indexes.length - 1] < this.tableViewer.getTable().getItemCount() - 1);
+		IStructuredSelection selection = tableViewer.getStructuredSelection();
+		if (selection.isEmpty()) {
+			removeButton.setEnabled(false);
+			upButton.setEnabled(false);
+			downButton.setEnabled(false);
 		} else {
-			this.upButton.setEnabled(false);
-			this.downButton.setEnabled(false);
+			int minIndex = Integer.MAX_VALUE;
+			int maxIndex = -1;
+			EList< ? > list = getList();
+			for (Object item : selection.toList()) {
+				int index = list.indexOf(item);
+				minIndex = Math.min(minIndex, index);
+				maxIndex = Math.max(maxIndex, index);
+			}
+			removeButton.setEnabled(true);
+			upButton.setEnabled(minIndex > 0);
+			downButton.setEnabled(maxIndex < (list.size() - 1));
 		}
 	}
 }
