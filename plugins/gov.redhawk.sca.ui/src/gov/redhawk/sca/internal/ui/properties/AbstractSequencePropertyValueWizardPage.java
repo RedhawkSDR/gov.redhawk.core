@@ -21,7 +21,7 @@ import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.StructuredSelection;
-import org.eclipse.jface.viewers.TableViewer;
+import org.eclipse.jface.viewers.StructuredViewer;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -49,7 +49,7 @@ import mil.jpeojtrs.sca.util.math.ComplexUShort;
 public abstract class AbstractSequencePropertyValueWizardPage extends WizardPage {
 
 	protected final ScaAbstractProperty< ? > property;
-	private TableViewer tableViewer;
+	private StructuredViewer viewer;
 	private Button removeButton;
 	private Button downButton;
 	private Button upButton;
@@ -71,7 +71,7 @@ public abstract class AbstractSequencePropertyValueWizardPage extends WizardPage
 		root.setLayout(new GridLayout(2, false));
 	
 		final Composite tableComposite = new Composite(root, SWT.NO_FOCUS);
-		final TableViewer viewer = createTableViewer(tableComposite);
+		viewer = createViewer(tableComposite);
 		viewer.setInput(this.property);
 		viewer.addSelectionChangedListener(new ISelectionChangedListener() {
 	
@@ -81,7 +81,6 @@ public abstract class AbstractSequencePropertyValueWizardPage extends WizardPage
 			}
 		});
 		tableComposite.setLayoutData(GridDataFactory.fillDefaults().hint(500, 300).span(2, 1).create());
-		this.tableViewer = viewer;
 	
 		// Create spacer
 		new Label(root, SWT.None).setLayoutData(GridDataFactory.fillDefaults().span(1, 1).grab(true, false).create());
@@ -159,48 +158,57 @@ public abstract class AbstractSequencePropertyValueWizardPage extends WizardPage
 	protected abstract void handleAddValue();
 
 	private void handleRemoveValue() {
-		IStructuredSelection selection = tableViewer.getStructuredSelection();
+		IStructuredSelection selection = viewer.getStructuredSelection();
 		if (!selection.isEmpty()) {
 			EList< ? > list = getList();
 			int index = list.indexOf(selection.getFirstElement());
 			list.removeAll(selection.toList());
 			if (!list.isEmpty()) {
 				index = Math.min(index, list.size() - 1);
-				tableViewer.setSelection(new StructuredSelection(list.get(index)));
+				viewer.setSelection(new StructuredSelection(list.get(index)));
 			}
 		}
 	}
 
 	private void handleMoveUp() {
-		if (tableViewer.getSelection().isEmpty()) {
+		if (viewer.getSelection().isEmpty()) {
 			return;
 		}
 	
 		// Move the items up in ascending order to ensure that they do not overlap 
-		int[] indices = tableViewer.getTable().getSelectionIndices();
 		EList< ? > list = getList();
-		Arrays.sort(indices);
-		for (int index : indices) {
+		for (int index : getSelectionIndices()) {
 			list.move(index-1, index);
 		}
 		updateButtonState();
 	}
 
 	private void handleMoveDown() {
-		if (tableViewer.getSelection().isEmpty()) {
+		if (viewer.getSelection().isEmpty()) {
 			return;
 		}
 	
 		// Move the items down in descending order to ensure that they do not overlap (requires reverse iteration over
 		// the indices, which is not built into Java--nor is reverse sort of primitives)
-		int[] indices = tableViewer.getTable().getSelectionIndices();
-		Arrays.sort(indices);
+		int[] indices = getSelectionIndices();
 		EList< ? > list = getList();
 		for (int ii = indices.length-1; ii >= 0; --ii) {
 			int index = indices[ii];
 			list.move(index+1, index);
 		}
 		updateButtonState();
+	}
+
+	private int[] getSelectionIndices() {
+		IStructuredSelection selection = viewer.getStructuredSelection();
+		int[] indices = new int[selection.size()];
+		int offset = 0;
+		EList< ? > list = getList();
+		for (Object item : selection.toList()) {
+			indices[offset++] = list.indexOf(AdapterFactoryEditingDomain.unwrap(item));
+		}
+		Arrays.sort(indices);
+		return indices;
 	}
 
 	private Composite createButtons(final Composite root) {
@@ -264,7 +272,7 @@ public abstract class AbstractSequencePropertyValueWizardPage extends WizardPage
 		property.restoreDefaultValue();
 	}
 
-	protected abstract TableViewer createTableViewer(Composite parent);
+	protected abstract StructuredViewer createViewer(Composite parent);
 
 	/**
 	 * Setter to allow us to enable / disable the remove button
@@ -272,7 +280,7 @@ public abstract class AbstractSequencePropertyValueWizardPage extends WizardPage
 	 * @param enabled Boolean representing whether we should or should not enable the remove button
 	 */
 	private void updateButtonState() {
-		IStructuredSelection selection = tableViewer.getStructuredSelection();
+		IStructuredSelection selection = viewer.getStructuredSelection();
 		if (selection.isEmpty()) {
 			removeButton.setEnabled(false);
 			upButton.setEnabled(false);

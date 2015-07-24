@@ -114,7 +114,7 @@ public class StructSequencePropertyValueWizardPage extends AbstractSequencePrope
 	}
 
 	@Override
-	protected TableViewer createTableViewer(Composite parent) {
+	protected TableViewer createViewer(Composite parent) {
 		return ScaComponentFactory.createStructSequenceTable(parent, SWT.BORDER | SWT.MULTI | SWT.FULL_SELECTION | SWT.V_SCROLL | SWT.H_SCROLL,
 			adapterFactory, (ScaStructSequenceProperty) property);
 	}

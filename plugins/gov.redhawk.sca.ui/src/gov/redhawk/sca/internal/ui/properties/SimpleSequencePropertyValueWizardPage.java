@@ -67,7 +67,7 @@ public class SimpleSequencePropertyValueWizardPage extends AbstractSequencePrope
 	}
 
 	@Override
-	protected TableViewer createTableViewer(Composite parent) {
+	protected TableViewer createViewer(Composite parent) {
 		final TableColumnLayout layout = new TableColumnLayout();
 		parent.setLayout(layout);
 		TableViewer viewer = new TableViewer(parent, SWT.BORDER | SWT.MULTI | SWT.FULL_SELECTION | SWT.V_SCROLL | SWT.H_SCROLL);
