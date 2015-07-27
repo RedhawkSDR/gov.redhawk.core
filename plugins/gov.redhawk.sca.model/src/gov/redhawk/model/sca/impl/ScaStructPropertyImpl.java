@@ -215,9 +215,9 @@ public class ScaStructPropertyImpl extends ScaAbstractPropertyImpl<Struct> imple
 		// END GENERATED CODE
 		try {
 			if (newAny != null) {
-				final DataType[] fields = PropertiesHelper.extract(newAny);
-				if (fields != null) {
-					for (final DataType type : fields) {
+				final DataType[] fieldValues = PropertiesHelper.extract(newAny);
+				if (fieldValues != null) {
+					for (final DataType type : fieldValues) {
 						ScaAbstractProperty< ? > prop = getField(type.id);
 						if (prop != null) {
 							prop.fromAny(type.value);
@@ -245,11 +245,11 @@ public class ScaStructPropertyImpl extends ScaAbstractPropertyImpl<Struct> imple
 	public Any toAny() {
 		// END GENERATED CODE
 		Any retVal = JacorbUtil.init().create_any();
-		List<DataType> fields = new ArrayList<DataType>(getFields().size());
+		List<DataType> fieldValues = new ArrayList<DataType>(getFields().size());
 		for (ScaAbstractProperty< ? > field : getFields()) {
-			fields.add(new DataType(field.getId(), field.toAny()));
+			fieldValues.add(new DataType(field.getId(), field.toAny()));
 		}
-		PropertiesHelper.insert(retVal, fields.toArray(new DataType[fields.size()]));
+		PropertiesHelper.insert(retVal, fieldValues.toArray(new DataType[fieldValues.size()]));
 		return retVal;
 		// BEGIN GENERATED CODE
 	}
