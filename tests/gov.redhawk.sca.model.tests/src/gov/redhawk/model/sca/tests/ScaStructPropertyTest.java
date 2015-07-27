@@ -20,6 +20,7 @@ import gov.redhawk.model.sca.ScaStructProperty;
 import gov.redhawk.model.sca.ScaWaveform;
 import gov.redhawk.model.sca.commands.ScaModelCommand;
 import gov.redhawk.model.sca.tests.stubs.ScaTestConstaints;
+import mil.jpeojtrs.sca.prf.AbstractProperty;
 
 import org.junit.Assert;
 
@@ -302,10 +303,15 @@ public class ScaStructPropertyTest extends ScaAbstractPropertyTest {
 		// BEGIN GENERATED CODE
 	}
 
+	/**
+	 * Tests that struct field order is preserved from the definition to the runtime property.
+	 * @generated NOT
+	 */
 	public void testStructOrder() {
 		int index = 0;
-		for (final ScaSimpleProperty simple : getFixture().getSimples()) {
-			Assert.assertEquals(simple.getId(), getFixture().getDefinition().getSimple().get(index).getId());
+		for (final ScaAbstractProperty< ? > field: getFixture().getFields()) {
+			AbstractProperty fieldDefinition = (AbstractProperty) getFixture().getDefinition().getFields().getValue(index);
+			Assert.assertEquals(field.getId(), fieldDefinition.getId());
 			index++;
 		}
 	}
