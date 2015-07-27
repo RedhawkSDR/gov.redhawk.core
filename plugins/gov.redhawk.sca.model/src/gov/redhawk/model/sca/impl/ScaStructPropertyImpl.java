@@ -25,17 +25,26 @@ import gov.redhawk.sca.util.PluginUtil;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+
+import mil.jpeojtrs.sca.prf.AbstractPropertyRef;
+import mil.jpeojtrs.sca.prf.PrfFactory;
+import mil.jpeojtrs.sca.prf.PrfPackage;
 import mil.jpeojtrs.sca.prf.Simple;
+import mil.jpeojtrs.sca.prf.SimpleRef;
 import mil.jpeojtrs.sca.prf.SimpleSequence;
+import mil.jpeojtrs.sca.prf.SimpleSequenceRef;
 import mil.jpeojtrs.sca.prf.Struct;
+import mil.jpeojtrs.sca.prf.StructRef;
+import mil.jpeojtrs.sca.prf.StructValue;
+
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.MultiStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
+import org.eclipse.emf.common.util.ECollections;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
@@ -43,6 +52,7 @@ import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.util.EContentAdapter;
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
+import org.eclipse.emf.ecore.util.FeatureMap;
 import org.eclipse.emf.ecore.util.InternalEList;
 import org.jacorb.JacorbUtil;
 import org.omg.CORBA.Any;
@@ -65,8 +75,8 @@ import CF.PropertySetPackage.PartialConfiguration;
  *        <p>
  *        The following features are implemented:
  *        <ul>
+ *        <li>{@link gov.redhawk.model.sca.impl.ScaStructPropertyImpl#getFields <em>Fields</em>}</li>
  *        <li>{@link gov.redhawk.model.sca.impl.ScaStructPropertyImpl#getSimples <em>Simples</em>}</li>
- *        <li>{@link gov.redhawk.model.sca.impl.ScaStructPropertyImpl#getSequences <em>Sequences</em>}</li>
  *        </ul>
  *        </p>
  *
@@ -74,27 +84,16 @@ import CF.PropertySetPackage.PartialConfiguration;
  */
 public class ScaStructPropertyImpl extends ScaAbstractPropertyImpl<Struct> implements ScaStructProperty {
 	/**
-	 * The cached value of the '{@link #getSimples() <em>Simples</em>}' containment reference list.
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
-	 * @see #getSimples()
-	 * @generated NOT
-	 * @ordered
-	 */
-	protected final SimplesList simples = new SimplesList(this);
-
-	/**
-	 * The cached value of the '{@link #getSequences() <em>Sequences</em>}' containment reference list.
+	 * The cached value of the '{@link #getFields() <em>Fields</em>}' containment reference list.
 	 * <!-- begin-user-doc -->
-	 * 
 	 * @since 20.0
-	 *        <!-- end-user-doc -->
+	 * <!-- end-user-doc -->
 	 * 
-	 * @see #getSequences()
-	 * @generated NOT
+	 * @see #getFields()
+	 * @generated
 	 * @ordered
 	 */
-	protected SequencesList sequences = new SequencesList(this);
+	protected EList<ScaAbstractProperty< ? >> fields;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -153,171 +152,23 @@ public class ScaStructPropertyImpl extends ScaAbstractPropertyImpl<Struct> imple
 	}
 
 	/**
-	 * @since 14.0
-	 */
-	protected static class SimplesList extends EObjectContainmentEList<ScaSimpleProperty> {
-		// END GENERATED CODE
-
-		/**
-		 * 
-		 */
-		private static final long serialVersionUID = 1L;
-
-		public SimplesList(ScaStructPropertyImpl property) {
-			super(ScaSimpleProperty.class, property, ScaPackage.SCA_STRUCT_PROPERTY__SIMPLES);
-		}
-
-		public void setDefinition(Struct defValue) {
-			// Update the list
-			if (defValue != null) {
-				Map<String, ScaSimpleProperty> currentSimpleMap = new HashMap<String, ScaSimpleProperty>();
-				for (ScaSimpleProperty simple : this) {
-					currentSimpleMap.put(simple.getId(), simple);
-				}
-
-				Map<String, Simple> newSimpleMap = new LinkedHashMap<String, Simple>();
-				for (final Simple simple : defValue.getSimple()) {
-					newSimpleMap.put(simple.getId(), simple);
-				}
-
-				Map<String, ScaSimpleProperty> removeSimpleMap = new HashMap<String, ScaSimpleProperty>();
-				removeSimpleMap.putAll(currentSimpleMap);
-				removeSimpleMap.keySet().removeAll(newSimpleMap.keySet());
-				remove(removeSimpleMap.values());
-
-				for (final Simple simple : newSimpleMap.values()) {
-					ScaSimpleProperty scaSimple = currentSimpleMap.get(simple.getId());
-					if (scaSimple == null) {
-						scaSimple = new ScaSimplePropertyImpl();
-						add(scaSimple);
-					}
-					((ScaSimplePropertyImpl) scaSimple).setDefinition(simple);
-				}
-			} else {
-				clear();
-			}
-		}
-
-		/**
-		 * @since 14.0
-		 */
-		public void restoreDefaultValue() {
-			for (ScaSimpleProperty prop : this) {
-				prop.restoreDefaultValue();
-			}
-		}
-
-		/**
-		 * @since 14.0
-		 */
-		public boolean isDefaultValue() {
-			for (ScaSimpleProperty prop : this) {
-				if (!prop.isDefaultValue()) {
-					return false;
-				}
-			}
-			return true;
-		}
-
-		// BEGIN GENERATED CODE
-	}
-
-	/**
-	 * @since 20.0
-	 */
-	protected static class SequencesList extends EObjectContainmentEList<ScaSimpleSequenceProperty> {
-		// END GENERATED CODE
-
-		/**
-		 * 
-		 */
-		private static final long serialVersionUID = 1L;
-
-		public SequencesList(ScaStructPropertyImpl property) {
-			super(ScaSimpleSequenceProperty.class, property, ScaPackage.SCA_STRUCT_PROPERTY__SEQUENCES);
-		}
-
-		public void setDefinition(Struct defValue) {
-			// Update the list
-			if (defValue != null) {
-				Map<String, ScaSimpleSequenceProperty> currentSimpleMap = new HashMap<String, ScaSimpleSequenceProperty>();
-				for (ScaSimpleSequenceProperty simple : this) {
-					currentSimpleMap.put(simple.getId(), simple);
-				}
-
-				Map<String, SimpleSequence> newSimpleMap = new LinkedHashMap<String, SimpleSequence>();
-				for (final SimpleSequence simple : defValue.getSimpleSequence()) {
-					newSimpleMap.put(simple.getId(), simple);
-				}
-
-				Map<String, ScaSimpleSequenceProperty> removeSimpleMap = new HashMap<String, ScaSimpleSequenceProperty>();
-				removeSimpleMap.putAll(currentSimpleMap);
-				removeSimpleMap.keySet().removeAll(newSimpleMap.keySet());
-				remove(removeSimpleMap.values());
-
-				for (final SimpleSequence simple : newSimpleMap.values()) {
-					ScaSimpleSequenceProperty scaSimple = currentSimpleMap.get(simple.getId());
-					if (scaSimple == null) {
-						scaSimple = new ScaSimpleSequencePropertyImpl();
-						add(scaSimple);
-					}
-					((ScaSimpleSequencePropertyImpl) scaSimple).setDefinition(simple);
-				}
-			} else {
-				clear();
-			}
-		}
-
-		/**
-		 * @since 14.0
-		 */
-		public void restoreDefaultValue() {
-			for (ScaSimpleSequenceProperty prop : this) {
-				prop.restoreDefaultValue();
-			}
-		}
-
-		/**
-		 * @since 14.0
-		 */
-		public boolean isDefaultValue() {
-			for (ScaSimpleSequenceProperty prop : this) {
-				if (!prop.isDefaultValue()) {
-					return false;
-				}
-			}
-			return true;
-		}
-
-		// BEGIN GENERATED CODE
-	}
-
-	/**
 	 * <!-- begin-user-doc -->
-	 * 
 	 * @since 14.0
-	 *        <!-- end-user-doc -->
+	 * <!-- end-user-doc -->
+	 * 
 	 * @generated NOT
 	 */
 	@Override
-	public SimplesList getSimples() {
-		// END GENERATED CODE
-		return simples;
-		// BEGIN GENERATED CODE
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * 
-	 * @since 20.0
-	 *        <!-- end-user-doc -->
-	 * 
-	 * @generated NOT
-	 */
-	public SequencesList getSequences() {
-		// END GENERATED CODE
-		return sequences;
-		// BEGIN GENERATED CODE
+	public EList<ScaSimpleProperty> getSimples() {
+		List<ScaSimpleProperty> simples = new ArrayList<ScaSimpleProperty>();
+		if (fields != null) {
+			for (ScaAbstractProperty< ? > field : getFields()) {
+				if (field instanceof ScaSimpleProperty) {
+					simples.add((ScaSimpleProperty) field);
+				}
+			}
+		}
+		return ECollections.unmodifiableEList(simples);
 	}
 
 	/**
@@ -325,13 +176,38 @@ public class ScaStructPropertyImpl extends ScaAbstractPropertyImpl<Struct> imple
 	 */
 	@Override
 	public void setDefinition(Struct newDefinition) {
-		if (newDefinition != definition && simples != null) {
-			((SimplesList) simples).setDefinition(newDefinition);
-		}
-		if (newDefinition != definition && sequences != null) {
-			((SequencesList) sequences).setDefinition(newDefinition);
+		if (newDefinition != definition) {
+			getFields().clear();
+			for (FeatureMap.Entry entry : newDefinition.getFields()) {
+				switch (entry.getEStructuralFeature().getFeatureID()) {
+				case PrfPackage.STRUCT__SIMPLE:
+					ScaSimpleProperty simple = ScaFactory.eINSTANCE.createScaSimpleProperty();
+					simple.setDefinition((Simple) entry.getValue());
+					fields.add(simple);
+					break;
+				case PrfPackage.STRUCT__SIMPLE_SEQUENCE:
+					ScaSimpleSequenceProperty simpleSequence = ScaFactory.eINSTANCE.createScaSimpleSequenceProperty();
+					simpleSequence.setDefinition((SimpleSequence) entry.getValue());
+					fields.add(simpleSequence);
+					break;
+				}
+			}
 		}
 		super.setDefinition(newDefinition);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * @since 20.0
+	 * <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	public EList<ScaAbstractProperty< ? >> getFields() {
+		if (fields == null) {
+			fields = new EObjectContainmentEList.Resolving<ScaAbstractProperty< ? >>(ScaAbstractProperty.class, this, ScaPackage.SCA_STRUCT_PROPERTY__FIELDS);
+		}
+		return fields;
 	}
 
 	@Override
@@ -349,7 +225,7 @@ public class ScaStructPropertyImpl extends ScaAbstractPropertyImpl<Struct> imple
 							ScaSimpleProperty newProp = ScaFactory.eINSTANCE.createScaSimpleProperty();
 							newProp.setId(type.id);
 							newProp.fromAny(type.value);
-							getSimples().add(newProp);
+							getFields().add(newProp);
 						}
 					}
 					return;
@@ -357,13 +233,10 @@ public class ScaStructPropertyImpl extends ScaAbstractPropertyImpl<Struct> imple
 			} else {
 				restoreDefaultValue();
 			}
-			setStatus(ScaPackage.Literals.SCA_STRUCT_PROPERTY__SIMPLES, Status.OK_STATUS);
-			setStatus(ScaPackage.Literals.SCA_STRUCT_PROPERTY__SEQUENCES, Status.OK_STATUS);
+			setStatus(ScaPackage.Literals.SCA_STRUCT_PROPERTY__FIELDS, Status.OK_STATUS);
 		} catch (Exception e) { // SUPPRESS CHECKSTYLE Logged Catch all exception
-			setStatus(ScaPackage.Literals.SCA_STRUCT_PROPERTY__SIMPLES, new Status(Status.ERROR, ScaModelPlugin.ID, "Failed to read property value of:"
-				+ getName(), e));
-			setStatus(ScaPackage.Literals.SCA_STRUCT_PROPERTY__SEQUENCES, new Status(Status.ERROR, ScaModelPlugin.ID, "Failed to read property value of:"
-				+ getName(), e));
+			setStatus(ScaPackage.Literals.SCA_STRUCT_PROPERTY__FIELDS,
+				new Status(Status.ERROR, ScaModelPlugin.ID, "Failed to read property value of:" + getName(), e));
 		}
 		// BEGIN GENERATED CODE
 	}
@@ -372,12 +245,9 @@ public class ScaStructPropertyImpl extends ScaAbstractPropertyImpl<Struct> imple
 	public Any toAny() {
 		// END GENERATED CODE
 		Any retVal = JacorbUtil.init().create_any();
-		List<DataType> fields = new ArrayList<DataType>(getSimples().size() + getSequences().size());
-		for (ScaSimpleProperty prop : getSimples()) {
-			fields.add(new DataType(prop.getId(), prop.toAny()));
-		}
-		for (ScaSimpleSequenceProperty prop : getSequences()) {
-			fields.add(new DataType(prop.getId(), prop.toAny()));
+		List<DataType> fields = new ArrayList<DataType>(getFields().size());
+		for (ScaAbstractProperty< ? > field : getFields()) {
+			fields.add(new DataType(field.getId(), field.toAny()));
 		}
 		PropertiesHelper.insert(retVal, fields.toArray(new DataType[fields.size()]));
 		return retVal;
@@ -420,17 +290,64 @@ public class ScaStructPropertyImpl extends ScaAbstractPropertyImpl<Struct> imple
 	 * @generated NOT
 	 */
 	public ScaAbstractProperty< ? > getField(String id) {
-		for (final ScaSimpleProperty simple : getSimples()) {
-			if (PluginUtil.equals(simple.getId(), id)) {
-				return simple;
-			}
-		}
-		for (final ScaSimpleSequenceProperty sequence : getSequences()) {
-			if (PluginUtil.equals(sequence.getId(), id)) {
-				return sequence;
+		for (final ScaAbstractProperty< ? > field : getFields()) {
+			if (PluginUtil.equals(field.getId(), id)) {
+				return field;
 			}
 		}
 		return null;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * @since 20.0
+	 * <!-- end-user-doc -->
+	 * 
+	 * @generated NOT
+	 */
+	@Override
+	public StructRef createPropertyRef() {
+		final StructRef structRef = PrfFactory.eINSTANCE.createStructRef();
+		structRef.setProperty(getDefinition());
+		structRef.setRefID(getId());
+		for (final ScaAbstractProperty< ? > field : getFields()) {
+			if (!field.isDefaultValue()) {
+				AbstractPropertyRef< ? > fieldRef = field.createPropertyRef();
+				switch (fieldRef.eClass().getClassifierID()) {
+				case PrfPackage.SIMPLE_REF:
+					structRef.getSimpleRef().add((SimpleRef) fieldRef);
+					break;
+				case PrfPackage.SIMPLE_SEQUENCE_REF:
+					structRef.getSimpleSequenceRef().add((SimpleSequenceRef) fieldRef);
+					break;
+				}
+			}
+		}
+		return structRef;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * @since 20.0
+	 * <!-- end-user-doc -->
+	 * 
+	 * @generated NOT
+	 */
+	@Override
+	public StructValue createStructValue() {
+		final StructValue structValue = PrfFactory.eINSTANCE.createStructValue();
+		for (final ScaAbstractProperty< ? > field : getFields()) {
+			AbstractPropertyRef< ? > fieldRef = field.createPropertyRef();
+			switch (fieldRef.eClass().getClassifierID()) {
+			case PrfPackage.SIMPLE_REF:
+				structValue.getSimpleRef().add((SimpleRef) fieldRef);
+				break;
+			case PrfPackage.SIMPLE_SEQUENCE_REF:
+				structValue.getSimpleSequenceRef().add((SimpleSequenceRef) fieldRef);
+				break;
+			}
+		}
+		return structValue;
 	}
 
 	/**
@@ -450,19 +367,12 @@ public class ScaStructPropertyImpl extends ScaAbstractPropertyImpl<Struct> imple
 		}
 
 		List<DataType> values = new ArrayList<DataType>();
-		for (ScaSimpleProperty prop : getSimples()) {
-			Any simpleAny = configMap.get(prop.getId());
-			if (simpleAny == null) {
-				simpleAny = prop.toAny();
+		for (ScaAbstractProperty< ? > field : getFields()) {
+			Any any = configMap.get(field.getId());
+			if (any == null) {
+				any = field.toAny();
 			}
-			values.add(new DataType(prop.getId(), simpleAny));
-		}
-		for (ScaSimpleSequenceProperty prop : getSequences()) {
-			Any simpleAny = configMap.get(prop.getId());
-			if (simpleAny == null) {
-				simpleAny = prop.toAny();
-			}
-			values.add(new DataType(prop.getId(), simpleAny));
+			values.add(new DataType(field.getId(), any));
 		}
 		Any any = JacorbUtil.init().create_any();
 		PropertiesHelper.insert(any, values.toArray(new DataType[values.size()]));
@@ -525,10 +435,8 @@ public class ScaStructPropertyImpl extends ScaAbstractPropertyImpl<Struct> imple
 	@Override
 	public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
 		switch (featureID) {
-		case ScaPackage.SCA_STRUCT_PROPERTY__SIMPLES:
-			return ((InternalEList< ? >) getSimples()).basicRemove(otherEnd, msgs);
-		case ScaPackage.SCA_STRUCT_PROPERTY__SEQUENCES:
-			return ((InternalEList< ? >) getSequences()).basicRemove(otherEnd, msgs);
+		case ScaPackage.SCA_STRUCT_PROPERTY__FIELDS:
+			return ((InternalEList< ? >) getFields()).basicRemove(otherEnd, msgs);
 		}
 		return super.eInverseRemove(otherEnd, featureID, msgs);
 	}
@@ -542,47 +450,35 @@ public class ScaStructPropertyImpl extends ScaAbstractPropertyImpl<Struct> imple
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
+		case ScaPackage.SCA_STRUCT_PROPERTY__FIELDS:
+			return getFields();
 		case ScaPackage.SCA_STRUCT_PROPERTY__SIMPLES:
 			return getSimples();
-		case ScaPackage.SCA_STRUCT_PROPERTY__SEQUENCES:
-			return getSequences();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * 
 	 * @generated NOT
 	 */
 	@SuppressWarnings("unchecked")
 	@Override
 	public void eSet(int featureID, Object newValue) {
-		// END GENERATED CODE
 		switch (featureID) {
-		case ScaPackage.SCA_STRUCT_PROPERTY__SIMPLES:
+		case ScaPackage.SCA_STRUCT_PROPERTY__FIELDS:
 			setIgnoreRemoteSet(true);
 			try {
-				getSimples().clear();
+				getFields().clear();
 			} finally {
 				setIgnoreRemoteSet(false);
 			}
-			getSimples().addAll((Collection< ? extends ScaSimpleProperty>) newValue);
+			getFields().addAll((Collection< ? extends ScaAbstractProperty< ? >>) newValue);
 			return;
-		case ScaPackage.SCA_STRUCT_PROPERTY__SEQUENCES:
-			setIgnoreRemoteSet(true);
-			try {
-				getSequences().clear();
-			} finally {
-				setIgnoreRemoteSet(false);
-			}
-			getSequences().addAll((Collection< ? extends ScaSimpleSequenceProperty>) newValue);
-			return;
-		default:
-			break;
 		}
 		super.eSet(featureID, newValue);
-		// BEGIN GENERATED CODE
 	}
 
 	/**
@@ -594,11 +490,8 @@ public class ScaStructPropertyImpl extends ScaAbstractPropertyImpl<Struct> imple
 	@Override
 	public void eUnset(int featureID) {
 		switch (featureID) {
-		case ScaPackage.SCA_STRUCT_PROPERTY__SIMPLES:
-			getSimples().clear();
-			return;
-		case ScaPackage.SCA_STRUCT_PROPERTY__SEQUENCES:
-			getSequences().clear();
+		case ScaPackage.SCA_STRUCT_PROPERTY__FIELDS:
+			getFields().clear();
 			return;
 		}
 		super.eUnset(featureID);
@@ -613,10 +506,10 @@ public class ScaStructPropertyImpl extends ScaAbstractPropertyImpl<Struct> imple
 	@Override
 	public boolean eIsSet(int featureID) {
 		switch (featureID) {
+		case ScaPackage.SCA_STRUCT_PROPERTY__FIELDS:
+			return fields != null && !fields.isEmpty();
 		case ScaPackage.SCA_STRUCT_PROPERTY__SIMPLES:
-			return simples != null && !simples.isEmpty();
-		case ScaPackage.SCA_STRUCT_PROPERTY__SEQUENCES:
-			return sequences != null && !sequences.isEmpty();
+			return !getSimples().isEmpty();
 		}
 		return super.eIsSet(featureID);
 	}
@@ -625,14 +518,11 @@ public class ScaStructPropertyImpl extends ScaAbstractPropertyImpl<Struct> imple
 	public IStatus getStatus() {
 		// END GENERATED CODE
 		IStatus parentStatus = super.getStatus();
-		if (!getSimples().isEmpty()) {
+		if (!getFields().isEmpty()) {
 			MultiStatus retVal = new MultiStatus(ScaModelPlugin.ID, Status.OK, "Struct property: " + getName(), null);
 			retVal.addAll(super.getStatus());
-			for (ScaSimpleProperty prop : getSimples()) {
-				retVal.add(prop.getStatus());
-			}
-			for (ScaSimpleSequenceProperty prop : getSequences()) {
-				retVal.add(prop.getStatus());
+			for (ScaAbstractProperty< ? > field : getFields()) {
+				retVal.add(field.getStatus());
 			}
 			retVal.add(parentStatus);
 			if (!retVal.isOK()) {
@@ -667,13 +557,19 @@ public class ScaStructPropertyImpl extends ScaAbstractPropertyImpl<Struct> imple
 
 	@Override
 	public boolean isDefaultValue() {
-		return getSimples().isDefaultValue() && getSequences().isDefaultValue();
+		for (ScaAbstractProperty< ? > field : getFields()) {
+			if (!field.isDefaultValue()) {
+				return false;
+			}
+		}
+		return true;
 	}
 
 	@Override
 	public void restoreDefaultValue() {
-		getSimples().restoreDefaultValue();
-		getSequences().restoreDefaultValue();
+		for (ScaAbstractProperty< ? > field : getFields()) {
+			field.restoreDefaultValue();
+		}
 	}
 
 } // ScaStructPropertyImpl

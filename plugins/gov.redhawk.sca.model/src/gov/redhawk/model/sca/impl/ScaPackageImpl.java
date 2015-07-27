@@ -537,8 +537,9 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 	 * Creates, registers, and initializes the <b>Package</b> for this model, and for any others upon which it depends.
 	 * 
 	 * <p>
-	 * This method is used to initialize {@link ScaPackage#eINSTANCE} when that field is accessed. Clients should not
-	 * invoke it directly. Instead, they should simply access that field to obtain the package. <!-- begin-user-doc -->
+	 * This method is used to initialize {@link ScaPackage#eINSTANCE} when that field is accessed.
+	 * Clients should not invoke it directly. Instead, they should simply access that field to obtain the package.
+	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * 
 	 * @see #eNS_URI
@@ -551,8 +552,8 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 			return (ScaPackage) EPackage.Registry.INSTANCE.getEPackage(ScaPackage.eNS_URI);
 
 		// Obtain or create and register package
-		ScaPackageImpl theScaPackage = (ScaPackageImpl) (EPackage.Registry.INSTANCE.get(eNS_URI) instanceof ScaPackageImpl ? EPackage.Registry.INSTANCE.get(eNS_URI)
-			: new ScaPackageImpl());
+		ScaPackageImpl theScaPackage = (ScaPackageImpl) (EPackage.Registry.INSTANCE.get(eNS_URI) instanceof ScaPackageImpl
+			? EPackage.Registry.INSTANCE.get(eNS_URI) : new ScaPackageImpl());
 
 		isInited = true;
 
@@ -1776,23 +1777,24 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 
 	/**
 	 * <!-- begin-user-doc -->
+	 * @since 20.0
+	 * <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	@Override
+	public EReference getScaStructProperty_Fields() {
+		return (EReference) scaStructPropertyEClass.getEStructuralFeatures().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * 
 	 * @generated
 	 */
 	@Override
 	public EReference getScaStructProperty_Simples() {
-		return (EReference) scaStructPropertyEClass.getEStructuralFeatures().get(0);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * 
-	 * @since 20.0
-	 *        <!-- end-user-doc -->
-	 * @generated
-	 */
-	public EReference getScaStructProperty_Sequences() {
 		return (EReference) scaStructPropertyEClass.getEStructuralFeatures().get(1);
 	}
 
@@ -2536,8 +2538,8 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 		createEAttribute(scaSimpleSequencePropertyEClass, SCA_SIMPLE_SEQUENCE_PROPERTY__VALUES);
 
 		scaStructPropertyEClass = createEClass(SCA_STRUCT_PROPERTY);
+		createEReference(scaStructPropertyEClass, SCA_STRUCT_PROPERTY__FIELDS);
 		createEReference(scaStructPropertyEClass, SCA_STRUCT_PROPERTY__SIMPLES);
-		createEReference(scaStructPropertyEClass, SCA_STRUCT_PROPERTY__SEQUENCES);
 
 		scaUsesPortEClass = createEClass(SCA_USES_PORT);
 		createEReference(scaUsesPortEClass, SCA_USES_PORT__CONNECTIONS);
@@ -2847,11 +2849,11 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 
 		// Initialize classes and features; add operations and parameters
 		initEClass(corbaObjWrapperEClass, CorbaObjWrapper.class, "CorbaObjWrapper", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEAttribute(getCorbaObjWrapper_Ior(), ecorePackage.getEString(), "ior", null, 0, 1, CorbaObjWrapper.class, IS_TRANSIENT, !IS_VOLATILE,
-			IS_CHANGEABLE, IS_UNSETTABLE, !IS_ID, IS_UNIQUE, IS_DERIVED, IS_ORDERED);
+		initEAttribute(getCorbaObjWrapper_Ior(), ecorePackage.getEString(), "ior", null, 0, 1, CorbaObjWrapper.class, IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE,
+			IS_UNSETTABLE, !IS_ID, IS_UNIQUE, IS_DERIVED, IS_ORDERED);
 		g1 = createEGenericType(corbaObjWrapperEClass_T);
-		initEAttribute(getCorbaObjWrapper_Obj(), g1, "obj", null, 0, 1, CorbaObjWrapper.class, IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_UNSETTABLE,
-			!IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getCorbaObjWrapper_Obj(), g1, "obj", null, 0, 1, CorbaObjWrapper.class, IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_UNSETTABLE, !IS_ID,
+			IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getCorbaObjWrapper_CorbaObj(), this.getObject(), "corbaObj", null, 0, 1, CorbaObjWrapper.class, IS_TRANSIENT, !IS_VOLATILE,
 			IS_CHANGEABLE, IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getCorbaObjWrapper_FeatureData(), this.getStringToObjectMap(), null, "featureData", null, 0, -1, CorbaObjWrapper.class, !IS_TRANSIENT,
@@ -2873,8 +2875,8 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 		initEClass(dataProviderObjectEClass, DataProviderObject.class, "DataProviderObject", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getDataProviderObject_DataProviders(), this.getIScaDataProvider(), "dataProviders", null, 0, -1, DataProviderObject.class, IS_TRANSIENT,
 			!IS_VOLATILE, IS_CHANGEABLE, IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEAttribute(getDataProviderObject_DataProvidersEnabled(), ecorePackage.getEBoolean(), "dataProvidersEnabled", "true", 0, 1,
-			DataProviderObject.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getDataProviderObject_DataProvidersEnabled(), ecorePackage.getEBoolean(), "dataProvidersEnabled", "true", 0, 1, DataProviderObject.class,
+			!IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getDataProviderObject_EnabledDataProviders(), ecorePackage.getEString(), "enabledDataProviders", null, 0, -1, DataProviderObject.class,
 			!IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
@@ -2910,8 +2912,8 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 		initEClass(scaAbstractComponentEClass, ScaAbstractComponent.class, "ScaAbstractComponent", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getScaAbstractComponent_Identifier(), ecorePackage.getEString(), "identifier", null, 0, 1, ScaAbstractComponent.class, !IS_TRANSIENT,
 			!IS_VOLATILE, IS_CHANGEABLE, IS_UNSETTABLE, IS_ID, IS_UNIQUE, IS_DERIVED, IS_ORDERED);
-		initEAttribute(getScaAbstractComponent_Started(), theXMLTypePackage.getBooleanObject(), "started", null, 0, 1, ScaAbstractComponent.class,
-			IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getScaAbstractComponent_Started(), theXMLTypePackage.getBooleanObject(), "started", null, 0, 1, ScaAbstractComponent.class, IS_TRANSIENT,
+			!IS_VOLATILE, IS_CHANGEABLE, IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getScaAbstractComponent_Profile(), ecorePackage.getEString(), "profile", null, 0, 1, ScaAbstractComponent.class, IS_TRANSIENT,
 			!IS_VOLATILE, IS_CHANGEABLE, IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
@@ -3006,9 +3008,16 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 		op = addEOperation(scaAbstractPropertyEClass, ecorePackage.getEBoolean(), "valueEquals", 0, 1, IS_UNIQUE, IS_ORDERED);
 		addEParameter(op, thePrfPackage.getAny(), "any", 0, 1, IS_UNIQUE, IS_ORDERED);
 
+		op = addEOperation(scaAbstractPropertyEClass, null, "createPropertyRef", 0, 1, IS_UNIQUE, IS_ORDERED);
+		g1 = createEGenericType(thePrfPackage.getAbstractPropertyRef());
+		g2 = createEGenericType(scaAbstractPropertyEClass_T);
+		g1.getETypeArguments().add(g2);
+		initEOperation(op, g1);
+
 		initEClass(scaComponentEClass, ScaComponent.class, "ScaComponent", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEReference(getScaComponent_ComponentInstantiation(), theSadPackage.getSadComponentInstantiation(), null, "componentInstantiation", null, 1, 1,
-			ScaComponent.class, IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+			ScaComponent.class, IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED,
+			IS_ORDERED);
 		g1 = createEGenericType(this.getScaDevice());
 		g2 = createEGenericType();
 		g1.getETypeArguments().add(g2);
@@ -3103,9 +3112,9 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 		g1.getETypeArguments().add(g2);
 		initEReference(getScaDeviceManager_AllDevices(), g1, null, "allDevices", null, 0, -1, ScaDeviceManager.class, IS_TRANSIENT, IS_VOLATILE, IS_CHANGEABLE,
 			IS_COMPOSITE, IS_RESOLVE_PROXIES, IS_UNSETTABLE, IS_UNIQUE, IS_DERIVED, IS_ORDERED);
-		initEReference(getScaDeviceManager_FileSystem(), this.getScaDeviceManagerFileSystem(), this.getScaDeviceManagerFileSystem_DeviceManager(),
-			"fileSystem", null, 0, 1, ScaDeviceManager.class, IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, IS_UNSETTABLE,
-			IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getScaDeviceManager_FileSystem(), this.getScaDeviceManagerFileSystem(), this.getScaDeviceManagerFileSystem_DeviceManager(), "fileSystem",
+			null, 0, 1, ScaDeviceManager.class, IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, IS_UNSETTABLE, IS_UNIQUE,
+			!IS_DERIVED, IS_ORDERED);
 		initEReference(getScaDeviceManager_DomMgr(), this.getScaDomainManager(), this.getScaDomainManager_DeviceManagers(), "domMgr", null, 0, 1,
 			ScaDeviceManager.class, IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED,
 			IS_ORDERED);
@@ -3194,8 +3203,8 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 			IS_TRANSIENT, IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, IS_DERIVED, IS_ORDERED);
 
 		initEClass(scaDomainManagerEClass, ScaDomainManager.class, "ScaDomainManager", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEReference(getScaDomainManager_WaveformFactories(), this.getScaWaveformFactory(), this.getScaWaveformFactory_DomMgr(), "waveformFactories", null,
-			0, -1, ScaDomainManager.class, IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED,
+		initEReference(getScaDomainManager_WaveformFactories(), this.getScaWaveformFactory(), this.getScaWaveformFactory_DomMgr(), "waveformFactories", null, 0,
+			-1, ScaDomainManager.class, IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED,
 			IS_ORDERED);
 		initEReference(getScaDomainManager_Waveforms(), this.getScaWaveform(), this.getScaWaveform_DomMgr(), "waveforms", null, 0, -1, ScaDomainManager.class,
 			IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -3227,8 +3236,8 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 			IS_CHANGEABLE, IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getScaDomainManager_EventChannels(), this.getScaEventChannel(), null, "eventChannels", null, 0, -1, ScaDomainManager.class,
 			!IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, IS_RESOLVE_PROXIES, IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEAttribute(getScaDomainManager_LocalName(), ecorePackage.getEString(), "localName", null, 0, 1, ScaDomainManager.class, !IS_TRANSIENT,
-			!IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getScaDomainManager_LocalName(), ecorePackage.getEString(), "localName", null, 0, 1, ScaDomainManager.class, !IS_TRANSIENT, !IS_VOLATILE,
+			IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		op = addEOperation(scaDomainManagerEClass, null, "getDevice", 0, 1, IS_UNIQUE, IS_ORDERED);
 		addEParameter(op, ecorePackage.getEString(), "deviceId", 0, 1, IS_UNIQUE, IS_ORDERED);
@@ -3373,6 +3382,8 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 		initEAttribute(getScaSimpleProperty_Value(), ecorePackage.getEJavaObject(), "value", null, 0, 1, ScaSimpleProperty.class, IS_TRANSIENT, !IS_VOLATILE,
 			IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
+		addEOperation(scaSimplePropertyEClass, thePrfPackage.getSimpleRef(), "createPropertyRef", 0, 1, IS_UNIQUE, IS_ORDERED);
+
 		initEClass(scaSimpleSequencePropertyEClass, ScaSimpleSequenceProperty.class, "ScaSimpleSequenceProperty", !IS_ABSTRACT, !IS_INTERFACE,
 			IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getScaSimpleSequenceProperty_Values(), ecorePackage.getEJavaObject(), "values", null, 0, -1, ScaSimpleSequenceProperty.class,
@@ -3383,17 +3394,19 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 
 		addEOperation(scaSimpleSequencePropertyEClass, this.getObjectArray(), "getValue", 0, 1, IS_UNIQUE, IS_ORDERED);
 
+		addEOperation(scaSimpleSequencePropertyEClass, thePrfPackage.getSimpleSequenceRef(), "createPropertyRef", 0, 1, IS_UNIQUE, IS_ORDERED);
+
 		initEClass(scaStructPropertyEClass, ScaStructProperty.class, "ScaStructProperty", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		g1 = createEGenericType(this.getScaAbstractProperty());
+		g2 = createEGenericType();
+		g1.getETypeArguments().add(g2);
+		initEReference(getScaStructProperty_Fields(), g1, null, "fields", null, 0, -1, ScaStructProperty.class, IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE,
+			IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getScaStructProperty_Simples(), this.getScaSimpleProperty(), null, "simples", null, 0, -1, ScaStructProperty.class, IS_TRANSIENT,
-			!IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getScaStructProperty_Sequences(), this.getScaSimpleSequenceProperty(), null, "sequences", null, 0, -1, ScaStructProperty.class,
-			IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+			IS_VOLATILE, !IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, IS_DERIVED, IS_ORDERED);
 
 		op = addEOperation(scaStructPropertyEClass, this.getScaSimpleProperty(), "getSimple", 0, 1, IS_UNIQUE, IS_ORDERED);
 		addEParameter(op, ecorePackage.getEString(), "id", 0, 1, IS_UNIQUE, IS_ORDERED);
-
-		op = addEOperation(scaStructPropertyEClass, this.getScaSimpleSequenceProperty(), "getSequence", 0, 1, IS_UNIQUE, IS_ORDERED);
-		addEParameter(op, theEcorePackage.getEString(), "id", 0, 1, IS_UNIQUE, IS_ORDERED);
 
 		op = addEOperation(scaStructPropertyEClass, null, "getField", 0, 1, IS_UNIQUE, IS_ORDERED);
 		addEParameter(op, theEcorePackage.getEString(), "id", 0, 1, IS_UNIQUE, IS_ORDERED);
@@ -3401,6 +3414,10 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 		g2 = createEGenericType();
 		g1.getETypeArguments().add(g2);
 		initEOperation(op, g1);
+
+		addEOperation(scaStructPropertyEClass, thePrfPackage.getStructRef(), "createPropertyRef", 0, 1, IS_UNIQUE, IS_ORDERED);
+
+		addEOperation(scaStructPropertyEClass, thePrfPackage.getStructValue(), "createStructValue", 0, 1, IS_UNIQUE, IS_ORDERED);
 
 		initEClass(scaUsesPortEClass, ScaUsesPort.class, "ScaUsesPort", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEReference(getScaUsesPort_Connections(), this.getScaConnection(), this.getScaConnection_Port(), "connections", null, 0, -1, ScaUsesPort.class,
@@ -3418,8 +3435,8 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 			IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getScaConnection_Id(), ecorePackage.getEString(), "id", null, 0, 1, ScaConnection.class, IS_TRANSIENT, IS_VOLATILE, !IS_CHANGEABLE,
 			!IS_UNSETTABLE, !IS_ID, IS_UNIQUE, IS_DERIVED, IS_ORDERED);
-		initEReference(getScaConnection_Port(), this.getScaUsesPort(), this.getScaUsesPort_Connections(), "port", null, 1, 1, ScaConnection.class,
-			IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getScaConnection_Port(), this.getScaUsesPort(), this.getScaUsesPort_Connections(), "port", null, 1, 1, ScaConnection.class, IS_TRANSIENT,
+			!IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(scaWaveformEClass, ScaWaveform.class, "ScaWaveform", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEReference(getScaWaveform_Components(), this.getScaComponent(), this.getScaComponent_Waveform(), "components", null, 0, -1, ScaWaveform.class,
@@ -3435,8 +3452,8 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 			IS_UNSETTABLE, !IS_ID, IS_UNIQUE, IS_DERIVED, IS_ORDERED);
 		initEAttribute(getScaWaveform_Started(), theXMLTypePackage.getBooleanObject(), "started", null, 0, 1, ScaWaveform.class, IS_TRANSIENT, !IS_VOLATILE,
 			IS_CHANGEABLE, IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEAttribute(getScaWaveform_Profile(), ecorePackage.getEString(), "profile", null, 0, 1, ScaWaveform.class, IS_TRANSIENT, !IS_VOLATILE,
-			IS_CHANGEABLE, IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getScaWaveform_Profile(), ecorePackage.getEString(), "profile", null, 0, 1, ScaWaveform.class, IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE,
+			IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		op = addEOperation(scaWaveformEClass, this.getScaComponent(), "fetchComponents", 0, -1, IS_UNIQUE, IS_ORDERED);
 		addEParameter(op, this.getIProgressMonitor(), "monitor", 0, 1, IS_UNIQUE, IS_ORDERED);
@@ -3505,6 +3522,8 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 			IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		addEOperation(scaStructSequencePropertyEClass, this.getScaStructProperty(), "createScaStructProperty", 0, 1, IS_UNIQUE, IS_ORDERED);
+
+		addEOperation(scaStructSequencePropertyEClass, thePrfPackage.getStructSequenceRef(), "createPropertyRef", 0, 1, IS_UNIQUE, IS_ORDERED);
 
 		initEClass(iStatusProviderEClass, IStatusProvider.class, "IStatusProvider", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getIStatusProvider_Status(), this.getIStatus(), "status", null, 0, 1, IStatusProvider.class, IS_TRANSIENT, IS_VOLATILE, !IS_CHANGEABLE,
@@ -3646,8 +3665,8 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 		addAnnotation(getScaDocumentRoot_Mixed(), source, new String[] { "kind", "elementWildcard", "name", ":mixed" });
 		addAnnotation(getScaDocumentRoot_XMLNSPrefixMap(), source, new String[] { "kind", "attribute", "name", "xmlns:prefix" });
 		addAnnotation(getScaDocumentRoot_XSISchemaLocation(), source, new String[] { "kind", "attribute", "name", "xsi:schemaLocation" });
-		addAnnotation(getScaDocumentRoot_DomainManagerRegistry(), source, new String[] { "kind", "element", "name", "domainManagerRegistry", "namespace",
-			"##targetNamespace" });
+		addAnnotation(getScaDocumentRoot_DomainManagerRegistry(), source,
+			new String[] { "kind", "element", "name", "domainManagerRegistry", "namespace", "##targetNamespace" });
 		addAnnotation(scaDomainManagerEClass, source, new String[] { "name", "ScaDomainManager", "kind", "elementOnly" });
 		addAnnotation(getScaDomainManager_WaveformFactories(), source, new String[] { "kind", "element", "name", "waveformFactories" });
 		addAnnotation(getScaDomainManager_Waveforms(), source, new String[] { "kind", "element", "name", "waveforms" });
@@ -3683,8 +3702,8 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 		addAnnotation(scaSimpleSequencePropertyEClass, source, new String[] { "name", "ScaSimpleSequenceProperty", "kind", "empty" });
 		addAnnotation(getScaSimpleSequenceProperty_Values(), source, new String[] { "kind", "attribute", "name", "currentValue" });
 		addAnnotation(scaStructPropertyEClass, source, new String[] { "name", "ScaStructProperty", "kind", "empty" });
+		addAnnotation(getScaStructProperty_Fields(), source, new String[] { "kind", "attribute", "name", "fields" });
 		addAnnotation(getScaStructProperty_Simples(), source, new String[] { "kind", "attribute", "name", "simples" });
-		addAnnotation(getScaStructProperty_Sequences(), source, new String[] { "kind", "attribute", "name", "sequences" });
 		addAnnotation(scaUsesPortEClass, source, new String[] { "name", "ScaUsesPort", "kind", "empty" });
 		addAnnotation(scaWaveformEClass, source, new String[] { "name", "ScaWaveform", "kind", "elementOnly" });
 		addAnnotation(getScaWaveform_Components(), source, new String[] { "kind", "element", "name", "components" });

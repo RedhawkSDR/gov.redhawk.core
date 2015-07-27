@@ -208,8 +208,7 @@ public class ScaStructPropertyTest extends ScaAbstractPropertyTest {
 	public void testGetField__String() {
 		// END GENERATED CODE
 		Assert.assertNull(getFixture().getField(null));
-		Assert.assertNotNull(getFixture().getField(getFixture().getSimples().get(0).getId()));
-		Assert.assertNotNull(getFixture().getField(getFixture().getSequences().get(0).getId()));
+		Assert.assertNotNull(getFixture().getField(getFixture().getFields().get(0).getId()));
 		// BEGIN GENERATED CODE
 	}
 

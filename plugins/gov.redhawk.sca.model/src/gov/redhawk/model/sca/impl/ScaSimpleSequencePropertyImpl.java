@@ -20,7 +20,11 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
+
+import mil.jpeojtrs.sca.prf.PrfFactory;
 import mil.jpeojtrs.sca.prf.SimpleSequence;
+import mil.jpeojtrs.sca.prf.SimpleSequenceRef;
+import mil.jpeojtrs.sca.prf.Values;
 import mil.jpeojtrs.sca.util.AnyUtils;
 import org.apache.commons.lang.ArrayUtils;
 import org.eclipse.core.runtime.Status;
@@ -215,6 +219,26 @@ public class ScaSimpleSequencePropertyImpl extends ScaAbstractPropertyImpl<Simpl
 
 	/**
 	 * <!-- begin-user-doc -->
+	 * @since 20.0
+	 * <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	@Override
+	public SimpleSequenceRef createPropertyRef() {
+		final SimpleSequenceRef simpleSequenceRef = PrfFactory.eINSTANCE.createSimpleSequenceRef();
+		simpleSequenceRef.setProperty(getDefinition());
+		simpleSequenceRef.setRefID(getId());
+		final Values values = PrfFactory.eINSTANCE.createValues();
+		for (final Object object : getValues()) {
+			values.getValue().add(object.toString());
+		}
+		simpleSequenceRef.setValues(values);
+		return simpleSequenceRef;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * 
 	 * @generated
@@ -293,8 +317,8 @@ public class ScaSimpleSequencePropertyImpl extends ScaAbstractPropertyImpl<Simpl
 			}
 			setStatus(ScaPackage.Literals.SCA_SIMPLE_SEQUENCE_PROPERTY__VALUES, Status.OK_STATUS);
 		} catch (Exception e) {
-			setStatus(ScaPackage.Literals.SCA_SIMPLE_SEQUENCE_PROPERTY__VALUES, new Status(Status.ERROR, ScaModelPlugin.ID, "Failed to read property value of:"
-				+ getName(), e));
+			setStatus(ScaPackage.Literals.SCA_SIMPLE_SEQUENCE_PROPERTY__VALUES,
+				new Status(Status.ERROR, ScaModelPlugin.ID, "Failed to read property value of:" + getName(), e));
 		}
 	}
 

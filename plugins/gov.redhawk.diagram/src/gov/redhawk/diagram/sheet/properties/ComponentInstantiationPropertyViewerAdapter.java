@@ -23,13 +23,11 @@ import mil.jpeojtrs.sca.partitioning.ComponentProperties;
 import mil.jpeojtrs.sca.partitioning.PartitioningFactory;
 import mil.jpeojtrs.sca.partitioning.PartitioningPackage;
 import mil.jpeojtrs.sca.prf.AbstractPropertyRef;
-import mil.jpeojtrs.sca.prf.PrfFactory;
+import mil.jpeojtrs.sca.prf.PrfPackage;
 import mil.jpeojtrs.sca.prf.SimpleRef;
 import mil.jpeojtrs.sca.prf.SimpleSequenceRef;
 import mil.jpeojtrs.sca.prf.StructRef;
 import mil.jpeojtrs.sca.prf.StructSequenceRef;
-import mil.jpeojtrs.sca.prf.StructValue;
-import mil.jpeojtrs.sca.prf.Values;
 import mil.jpeojtrs.sca.spd.SoftPkg;
 
 import org.eclipse.emf.common.notify.Adapter;
@@ -83,15 +81,22 @@ public class ComponentInstantiationPropertyViewerAdapter {
 		ComponentProperties cp = PartitioningFactory.eINSTANCE.createComponentProperties();
 		for (final ScaAbstractProperty< ? > prop : component.getProperties()) {
 			if (!prop.isDefaultValue()) {
-				if (prop instanceof ScaSimpleProperty) {
-					cp.getSimpleRef().add(createRef((ScaSimpleProperty) prop));
-				} else if (prop instanceof ScaSimpleSequenceProperty) {
-					cp.getSimpleSequenceRef().add(createRef((ScaSimpleSequenceProperty) prop));
-				} else if (prop instanceof ScaStructProperty) {
-					cp.getStructRef().add(createRef((ScaStructProperty) prop));
-				} else if (prop instanceof ScaStructSequenceProperty) {
-					cp.getStructSequenceRef().add(createRef((ScaStructSequenceProperty) prop));
+				AbstractPropertyRef< ? > propertyRef = prop.createPropertyRef();
+				switch (propertyRef.eClass().getClassifierID()) {
+				case PrfPackage.SIMPLE_REF:
+					cp.getSimpleRef().add((SimpleRef) propertyRef);
+					break;
+				case PrfPackage.SIMPLE_SEQUENCE_REF:
+					cp.getSimpleSequenceRef().add((SimpleSequenceRef) propertyRef);
+					break;
+				case PrfPackage.STRUCT_REF:
+					cp.getStructRef().add((StructRef) propertyRef);
+					break;
+				case PrfPackage.STRUCT_SEQUENCE_REF:
+					cp.getStructSequenceRef().add((StructSequenceRef) propertyRef);
+					break;
 				}
+
 			}
 		}
 		if (cp.getProperties().isEmpty()) {
@@ -106,58 +111,6 @@ public class ComponentInstantiationPropertyViewerAdapter {
 
 	public EditingDomain getEditingDomain() {
 		return editingDomainProvider.getEditingDomain();
-	}
-
-	private StructSequenceRef createRef(final ScaStructSequenceProperty prop) {
-		final StructSequenceRef retVal = PrfFactory.eINSTANCE.createStructSequenceRef();
-		retVal.setProperty(prop.getDefinition());
-		for (final ScaStructProperty struct : prop.getStructs()) {
-			final StructValue value = PrfFactory.eINSTANCE.createStructValue();
-			for (final ScaSimpleProperty simple : struct.getSimples()) {
-				value.getSimpleRef().add(createRef(simple));
-			}
-			for (final ScaSimpleSequenceProperty sequence : struct.getSequences()) {
-				value.getSimpleSequenceRef().add(createRef(sequence));
-			}
-			retVal.getStructValue().add(value);
-		}
-		return retVal;
-	}
-
-	private StructRef createRef(final ScaStructProperty prop) {
-		final StructRef retVal = PrfFactory.eINSTANCE.createStructRef();
-		retVal.setProperty(prop.getDefinition());
-		for (final ScaSimpleProperty simple : prop.getSimples()) {
-			if (!simple.isDefaultValue()) {
-				retVal.getSimpleRef().add(createRef(simple));
-			}
-		}
-		for (final ScaSimpleSequenceProperty sequence : prop.getSequences()) {
-			if (!sequence.isDefaultValue()) {
-				retVal.getSimpleSequenceRef().add(createRef(sequence));
-			}
-		}
-		return retVal;
-	}
-
-	private SimpleSequenceRef createRef(final ScaSimpleSequenceProperty prop) {
-		final SimpleSequenceRef retVal = PrfFactory.eINSTANCE.createSimpleSequenceRef();
-		retVal.setProperty(prop.getDefinition());
-		final Values values = PrfFactory.eINSTANCE.createValues();
-		for (final Object obj : prop.getValues()) {
-			values.getValue().add(obj.toString());
-		}
-		retVal.setValues(values);
-		return retVal;
-	}
-
-	private SimpleRef createRef(final ScaSimpleProperty prop) {
-		final SimpleRef retVal = PrfFactory.eINSTANCE.createSimpleRef();
-		retVal.setProperty(prop.getDefinition());
-		final Object value = prop.getValue();
-		final String strValue = (value == null) ? null : value.toString();
-		retVal.setValue(strValue);
-		return retVal;
 	}
 
 	public final void setInput(final ComponentInstantiation inst) {

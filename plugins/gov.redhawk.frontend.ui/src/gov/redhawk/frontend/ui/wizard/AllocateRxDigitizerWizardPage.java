@@ -110,7 +110,7 @@ public class AllocateRxDigitizerWizardPage extends WizardPage {
 			simple.setDefinition(definition);
 			simple.setId(allocProp.getId());
 			setValueForProp(allocProp, simple);
-			listenerAllocationStruct.getSimples().add(simple);
+			listenerAllocationStruct.getFields().add(simple);
 		}
 	}
 
@@ -125,7 +125,7 @@ public class AllocateRxDigitizerWizardPage extends WizardPage {
 			simple.setDefinition(definition);
 			simple.setId(allocProp.getId());
 			setValueForProp(allocProp, simple);
-			tunerAllocationStruct.getSimples().add(simple);
+			tunerAllocationStruct.getFields().add(simple);
 		}
 	}
 

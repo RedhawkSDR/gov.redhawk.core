@@ -13,6 +13,7 @@
 package gov.redhawk.model.sca;
 
 import mil.jpeojtrs.sca.prf.AbstractProperty;
+import mil.jpeojtrs.sca.prf.AbstractPropertyRef;
 import mil.jpeojtrs.sca.prf.AccessType;
 
 import org.omg.CORBA.Any;
@@ -291,5 +292,15 @@ public interface ScaAbstractProperty< T extends AbstractProperty > extends IStat
 	 * @generated
 	 */
 	boolean valueEquals(Any any);
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * @since 20.0
+	 * <!-- end-user-doc -->
+	 * 
+	 * @model
+	 * @generated
+	 */
+	AbstractPropertyRef<T> createPropertyRef();
 
 } // ScaAbstractProperty

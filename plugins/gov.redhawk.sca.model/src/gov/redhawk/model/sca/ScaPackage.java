@@ -3715,24 +3715,24 @@ public interface ScaPackage extends EPackage {
 	 */
 	int SCA_STRUCT_PROPERTY__IGNORE_REMOTE_SET = SCA_ABSTRACT_PROPERTY__IGNORE_REMOTE_SET;
 	/**
-	 * The feature id for the '<em><b>Simples</b></em>' containment reference list.
+	 * The feature id for the '<em><b>Fields</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * @since 20.0
+	 * <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 * @ordered
+	 */
+	int SCA_STRUCT_PROPERTY__FIELDS = SCA_ABSTRACT_PROPERTY_FEATURE_COUNT + 0;
+	/**
+	 * The feature id for the '<em><b>Simples</b></em>' reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * 
 	 * @generated
 	 * @ordered
 	 */
-	int SCA_STRUCT_PROPERTY__SIMPLES = SCA_ABSTRACT_PROPERTY_FEATURE_COUNT + 0;
-	/**
-	 * The feature id for the '<em><b>Sequences</b></em>' containment reference list.
-	 * <!-- begin-user-doc -->
-	 * 
-	 * @since 20.0
-	 *        <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int SCA_STRUCT_PROPERTY__SEQUENCES = SCA_ABSTRACT_PROPERTY_FEATURE_COUNT + 1;
+	int SCA_STRUCT_PROPERTY__SIMPLES = SCA_ABSTRACT_PROPERTY_FEATURE_COUNT + 1;
 	/**
 	 * The number of structural features of the '<em>Struct Property</em>' class.
 	 * <!-- begin-user-doc -->
@@ -6150,30 +6150,30 @@ public interface ScaPackage extends EPackage {
 
 	/**
 	 * Returns the meta object for the containment reference list '
-	 * {@link gov.redhawk.model.sca.ScaStructProperty#getSimples <em>Simples</em>}'.
+	 * {@link gov.redhawk.model.sca.ScaStructProperty#getFields <em>Fields</em>}'.
+	 * <!-- begin-user-doc -->
+	 * @since 20.0
+	 * <!-- end-user-doc -->
+	 * 
+	 * @return the meta object for the containment reference list '<em>Fields</em>'.
+	 * @see gov.redhawk.model.sca.ScaStructProperty#getFields()
+	 * @see #getScaStructProperty()
+	 * @generated
+	 */
+	EReference getScaStructProperty_Fields();
+
+	/**
+	 * Returns the meta object for the reference list '{@link gov.redhawk.model.sca.ScaStructProperty#getSimples
+	 * <em>Simples</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * 
-	 * @return the meta object for the containment reference list '<em>Simples</em>'.
+	 * @return the meta object for the reference list '<em>Simples</em>'.
 	 * @see gov.redhawk.model.sca.ScaStructProperty#getSimples()
 	 * @see #getScaStructProperty()
 	 * @generated
 	 */
 	EReference getScaStructProperty_Simples();
-
-	/**
-	 * Returns the meta object for the containment reference list '
-	 * {@link gov.redhawk.model.sca.ScaStructProperty#getSequences <em>Sequences</em>}'.
-	 * <!-- begin-user-doc -->
-	 * 
-	 * @since 20.0
-	 *        <!-- end-user-doc -->
-	 * @return the meta object for the containment reference list '<em>Sequences</em>'.
-	 * @see gov.redhawk.model.sca.ScaStructProperty#getSequences()
-	 * @see #getScaStructProperty()
-	 * @generated
-	 */
-	EReference getScaStructProperty_Sequences();
 
 	/**
 	 * Returns the meta object for class '{@link gov.redhawk.model.sca.ScaUsesPort <em>Uses Port</em>}'.
@@ -7809,22 +7809,22 @@ public interface ScaPackage extends EPackage {
 		 */
 		EClass SCA_STRUCT_PROPERTY = eINSTANCE.getScaStructProperty();
 		/**
-		 * The meta object literal for the '<em><b>Simples</b></em>' containment reference list feature.
+		 * The meta object literal for the '<em><b>Fields</b></em>' containment reference list feature.
+		 * <!-- begin-user-doc -->
+		 * @since 20.0
+		 * <!-- end-user-doc -->
+		 * 
+		 * @generated
+		 */
+		EReference SCA_STRUCT_PROPERTY__FIELDS = eINSTANCE.getScaStructProperty_Fields();
+		/**
+		 * The meta object literal for the '<em><b>Simples</b></em>' reference list feature.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
 		 * 
 		 * @generated
 		 */
 		EReference SCA_STRUCT_PROPERTY__SIMPLES = eINSTANCE.getScaStructProperty_Simples();
-		/**
-		 * The meta object literal for the '<em><b>Sequences</b></em>' containment reference list feature.
-		 * <!-- begin-user-doc -->
-		 * 
-		 * @since 20.0
-		 *        <!-- end-user-doc -->
-		 * @generated
-		 */
-		EReference SCA_STRUCT_PROPERTY__SEQUENCES = eINSTANCE.getScaStructProperty_Sequences();
 		/**
 		 * The meta object literal for the '{@link gov.redhawk.model.sca.impl.ScaUsesPortImpl <em>Uses Port</em>}'
 		 * class.

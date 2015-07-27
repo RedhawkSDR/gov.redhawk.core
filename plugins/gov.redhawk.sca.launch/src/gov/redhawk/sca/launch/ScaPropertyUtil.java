@@ -12,6 +12,7 @@
 package gov.redhawk.sca.launch;
 
 import gov.redhawk.model.sca.ScaAbstractProperty;
+import gov.redhawk.model.sca.ScaPackage;
 import gov.redhawk.model.sca.ScaPropertyContainer;
 import gov.redhawk.model.sca.ScaSimpleProperty;
 import gov.redhawk.model.sca.ScaSimpleSequenceProperty;
@@ -90,34 +91,33 @@ class ScaPropertyUtil {
 			if (prop.isDefaultValue()) {
 				continue;
 			}
-			Object value = null;
-			if (prop instanceof ScaSimpleProperty) {
-				value = ((ScaSimpleProperty) prop).getValue();
-			} else if (prop instanceof ScaSimpleSequenceProperty) {
-				value = ((ScaSimpleSequenceProperty) prop).getValue();
-			} else if (prop instanceof ScaStructProperty) {
-				value = ScaPropertyUtil.storeStruct((ScaStructProperty) prop);
-			} else if (prop instanceof ScaStructSequenceProperty) {
-				value = ScaPropertyUtil.storeStructSequence((ScaStructSequenceProperty) prop);
-			}
+			Object value = ScaPropertyUtil.storeProperty(prop);
 			propMap.put(prop.getId(), value);
 		}
 		return propMap;
 	}
 
+	private static Object storeProperty(final ScaAbstractProperty< ? > prop) {
+		switch (prop.eClass().getClassifierID()) {
+		case ScaPackage.SCA_SIMPLE_PROPERTY:
+			return ((ScaSimpleProperty) prop).getValue();
+		case ScaPackage.SCA_SIMPLE_SEQUENCE_PROPERTY:
+			return ((ScaSimpleSequenceProperty) prop).getValue();
+		case ScaPackage.SCA_STRUCT_PROPERTY:
+			return ScaPropertyUtil.storeStruct((ScaStructProperty) prop);
+		case ScaPackage.SCA_STRUCT_SEQUENCE_PROPERTY:
+			return ScaPropertyUtil.storeStructSequence((ScaStructSequenceProperty) prop);
+		}
+		return null;
+	}
+
 	private static Map< ? , ? > storeStruct(final ScaStructProperty struct) {
 		final HashMap<Object, Object> retVal = new HashMap<Object, Object>();
-		for (final ScaSimpleProperty prop : struct.getSimples()) {
+		for (final ScaAbstractProperty< ? > prop : struct.getFields()) {
 			if (prop.isDefaultValue()) {
 				continue;
 			}
-			retVal.put(prop.getId(), prop.getValue());
-		}
-		for (final ScaSimpleSequenceProperty prop : struct.getSequences()) {
-			if (prop.isDefaultValue()) {
-				continue;
-			}
-			retVal.put(prop.getId(), prop.getValue());
+			retVal.put(prop.getId(), ScaPropertyUtil.storeProperty(prop));
 		}
 		return retVal;
 	}
@@ -136,15 +136,24 @@ class ScaPropertyUtil {
 				continue;
 			}
 			final Object value = propMap.get(prop.getId());
-			if (prop instanceof ScaSimpleProperty) {
-				((ScaSimpleProperty) prop).setValue(value);
-			} else if (prop instanceof ScaSimpleSequenceProperty) {
-				((ScaSimpleSequenceProperty) prop).setValue((Object[]) value);
-			} else if (prop instanceof ScaStructProperty) {
-				ScaPropertyUtil.restoreStruct((ScaStructProperty) prop, (Map< ? , ? >) value);
-			} else if (prop instanceof ScaStructSequenceProperty) {
-				ScaPropertyUtil.restoreStructSequence((ScaStructSequenceProperty) prop, (List< ? >) value);
-			}
+			ScaPropertyUtil.restoreProperty(prop, value);
+		}
+	}
+
+	private static void restoreProperty(final ScaAbstractProperty< ? > prop, Object value) {
+		switch (prop.eClass().getClassifierID()) {
+		case ScaPackage.SCA_SIMPLE_PROPERTY:
+			((ScaSimpleProperty) prop).setValue(value);
+			break;
+		case ScaPackage.SCA_SIMPLE_SEQUENCE_PROPERTY:
+			((ScaSimpleSequenceProperty) prop).setValue((Object[]) value);
+			break;
+		case ScaPackage.SCA_STRUCT_PROPERTY:
+			ScaPropertyUtil.restoreStruct((ScaStructProperty) prop, (Map< ? , ? >) value);
+			break;
+		case ScaPackage.SCA_STRUCT_SEQUENCE_PROPERTY:
+			ScaPropertyUtil.restoreStructSequence((ScaStructSequenceProperty) prop, (List< ? >) value);
+			break;
 		}
 	}
 
@@ -161,16 +170,10 @@ class ScaPropertyUtil {
 
 	private static void restoreStruct(final ScaStructProperty struct, final Map< ? , ? > propMap) {
 		if (propMap != null) {
-			for (final ScaSimpleProperty prop : struct.getSimples()) {
+			for (final ScaAbstractProperty< ? > prop : struct.getFields()) {
 				if (propMap.containsKey(prop.getId())) {
 					final Object value = propMap.get(prop.getId());
-					prop.setValue(value);
-				}
-			}
-			for (final ScaSimpleSequenceProperty prop : struct.getSequences()) {
-				if (propMap.containsKey(prop.getId())) {
-					final Object[] value = (Object[]) propMap.get(prop.getId());
-					prop.setValue(value);
+					ScaPropertyUtil.restoreProperty(prop, value);
 				}
 			}
 		}

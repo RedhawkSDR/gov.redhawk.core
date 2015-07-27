@@ -273,7 +273,7 @@ public class DeallocateHandler extends AbstractHandler implements IHandler {
 		simple.setDefinition(definition);
 		simple.setId(allocPropID.getId());
 		setValueForProp(tuner, allocPropID, simple);
-		tunerAllocationStruct.getSimples().add(simple);
+		tunerAllocationStruct.getFields().add(simple);
 		return tunerAllocationStruct;
 	}
 
@@ -288,7 +288,7 @@ public class DeallocateHandler extends AbstractHandler implements IHandler {
 		simple.setDefinition(definition);
 		simple.setId(allocPropID.getId());
 		simple.setValue(listener.getListenerID());
-		listenerAllocationStruct.getSimples().add(simple);
+		listenerAllocationStruct.getFields().add(simple);
 		return listenerAllocationStruct;
 	}
 

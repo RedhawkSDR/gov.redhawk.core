@@ -75,7 +75,7 @@ public final class TunerStatusUtil {
 				break;
 			default:
 			}
-			struct.getSimples().add(simple);
+			struct.getFields().add(simple);
 		}
 		dt.id = ListenerAllocationProperty.INSTANCE.getId();
 		dt.value = struct.toAny();

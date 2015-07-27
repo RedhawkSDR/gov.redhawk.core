@@ -16,8 +16,10 @@ import gov.redhawk.model.sca.ScaModelPlugin;
 import gov.redhawk.model.sca.ScaPackage;
 import gov.redhawk.model.sca.ScaSimpleProperty;
 import gov.redhawk.sca.util.PluginUtil;
+import mil.jpeojtrs.sca.prf.PrfFactory;
 import mil.jpeojtrs.sca.prf.PropertyValueType;
 import mil.jpeojtrs.sca.prf.Simple;
+import mil.jpeojtrs.sca.prf.SimpleRef;
 import mil.jpeojtrs.sca.util.AnyUtils;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.emf.common.notify.Adapter;
@@ -169,6 +171,24 @@ public class ScaSimplePropertyImpl extends ScaAbstractPropertyImpl<Simple> imple
 
 	/**
 	 * <!-- begin-user-doc -->
+	 * @since 20.0
+	 * <!-- end-user-doc -->
+	 * 
+	 * @generated NOT
+	 */
+	@Override
+	public SimpleRef createPropertyRef() {
+		final SimpleRef simpleRef = PrfFactory.eINSTANCE.createSimpleRef();
+		simpleRef.setProperty(getDefinition());
+		simpleRef.setRefID(getId());
+		final Object value = getValue();
+		final String stringValue = (value == null) ? null : value.toString();
+		simpleRef.setValue(stringValue);
+		return simpleRef;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * 
 	 * @generated
@@ -291,8 +311,8 @@ public class ScaSimplePropertyImpl extends ScaAbstractPropertyImpl<Simple> imple
 			}
 			setStatus(ScaPackage.Literals.SCA_SIMPLE_PROPERTY__VALUE, Status.OK_STATUS);
 		} catch (Exception e) {
-			setStatus(ScaPackage.Literals.SCA_SIMPLE_PROPERTY__VALUE, new Status(Status.ERROR, ScaModelPlugin.ID, "Failed to read property value of:"
-				+ getName(), e));
+			setStatus(ScaPackage.Literals.SCA_SIMPLE_PROPERTY__VALUE,
+				new Status(Status.ERROR, ScaModelPlugin.ID, "Failed to read property value of:" + getName(), e));
 		}
 		// BEGIN GENERATED CODE
 	}

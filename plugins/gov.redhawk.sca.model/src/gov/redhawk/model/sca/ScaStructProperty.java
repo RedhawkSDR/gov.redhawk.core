@@ -14,6 +14,8 @@ package gov.redhawk.model.sca;
 
 import mil.jpeojtrs.sca.prf.Struct;
 
+import mil.jpeojtrs.sca.prf.StructRef;
+import mil.jpeojtrs.sca.prf.StructValue;
 import org.eclipse.emf.common.util.EList;
 
 import CF.PropertySetOperations;
@@ -29,8 +31,8 @@ import CF.PropertySetOperations;
  *              <p>
  *              The following features are supported:
  *              <ul>
+ *              <li>{@link gov.redhawk.model.sca.ScaStructProperty#getFields <em>Fields</em>}</li>
  *              <li>{@link gov.redhawk.model.sca.ScaStructProperty#getSimples <em>Simples</em>}</li>
- *              <li>{@link gov.redhawk.model.sca.ScaStructProperty#getSequences <em>Sequences</em>}</li>
  *              </ul>
  *              </p>
  *
@@ -43,7 +45,26 @@ import CF.PropertySetOperations;
 public interface ScaStructProperty extends ScaAbstractProperty<Struct>, PropertySetOperations {
 
 	/**
-	 * Returns the value of the '<em><b>Simples</b></em>' containment reference list.
+	 * Returns the value of the '<em><b>Fields</b></em>' containment reference list.
+	 * The list contents are of type {@link gov.redhawk.model.sca.ScaAbstractProperty}&lt;?>.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Fields</em>' containment reference list isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * @since 20.0
+	 * <!-- end-user-doc -->
+	 * 
+	 * @return the value of the '<em>Fields</em>' containment reference list.
+	 * @see gov.redhawk.model.sca.ScaPackage#getScaStructProperty_Fields()
+	 * @model containment="true" resolveProxies="true" transient="true"
+	 *        extendedMetaData="kind='attribute' name='fields'"
+	 * @generated
+	 */
+	EList<ScaAbstractProperty< ? >> getFields();
+
+	/**
+	 * Returns the value of the '<em><b>Simples</b></em>' reference list.
 	 * The list contents are of type {@link gov.redhawk.model.sca.ScaSimpleProperty}.
 	 * <!-- begin-user-doc -->
 	 * <p>
@@ -52,32 +73,13 @@ public interface ScaStructProperty extends ScaAbstractProperty<Struct>, Property
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * 
-	 * @return the value of the '<em>Simples</em>' containment reference list.
+	 * @return the value of the '<em>Simples</em>' reference list.
 	 * @see gov.redhawk.model.sca.ScaPackage#getScaStructProperty_Simples()
-	 * @model containment="true" resolveProxies="true" transient="true"
+	 * @model transient="true" changeable="false" volatile="true" derived="true"
 	 *        extendedMetaData="kind='attribute' name='simples'"
 	 * @generated
 	 */
 	EList<ScaSimpleProperty> getSimples();
-
-	/**
-	 * Returns the value of the '<em><b>Sequences</b></em>' containment reference list.
-	 * The list contents are of type {@link gov.redhawk.model.sca.ScaSimpleSequenceProperty}.
-	 * <!-- begin-user-doc -->
-	 * <p>
-	 * If the meaning of the '<em>Sequences</em>' containment reference list isn't clear, there really should be more of
-	 * a description here...
-	 * </p>
-	 * 
-	 * @since 20.0
-	 *        <!-- end-user-doc -->
-	 * @return the value of the '<em>Sequences</em>' containment reference list.
-	 * @see gov.redhawk.model.sca.ScaPackage#getScaStructProperty_Sequences()
-	 * @model containment="true" resolveProxies="true" transient="true"
-	 *        extendedMetaData="kind='attribute' name='sequences'"
-	 * @generated
-	 */
-	EList<ScaSimpleSequenceProperty> getSequences();
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -97,5 +99,26 @@ public interface ScaStructProperty extends ScaAbstractProperty<Struct>, Property
 	 * @generated
 	 */
 	ScaAbstractProperty< ? > getField(String id);
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * @since 20.0
+	 * <!-- end-user-doc -->
+	 * 
+	 * @model
+	 * @generated
+	 */
+	@Override
+	StructRef createPropertyRef();
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * @since 20.0
+	 * <!-- end-user-doc -->
+	 * 
+	 * @model
+	 * @generated
+	 */
+	StructValue createStructValue();
 
 } // ScaStructProperty

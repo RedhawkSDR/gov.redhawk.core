@@ -12,6 +12,7 @@
 package gov.redhawk.sca.ui.wizards;
 
 import gov.redhawk.model.sca.ScaAbstractProperty;
+import gov.redhawk.model.sca.ScaPackage;
 import gov.redhawk.model.sca.ScaPropertyContainer;
 import gov.redhawk.model.sca.ScaSimpleProperty;
 import gov.redhawk.model.sca.ScaSimpleSequenceProperty;
@@ -61,15 +62,24 @@ public final class ScaPropertyUtil {
 				continue;
 			}
 			final IDialogSettings valueSection = propertySettings.addNewSection(prop.getId());
-			if (prop instanceof ScaSimpleProperty) {
-				ScaPropertyUtil.storeSimple((ScaSimpleProperty) prop, valueSection);
-			} else if (prop instanceof ScaSimpleSequenceProperty) {
-				ScaPropertyUtil.storeSimpleSequence((ScaSimpleSequenceProperty) prop, valueSection);
-			} else if (prop instanceof ScaStructProperty) {
-				ScaPropertyUtil.storeStruct((ScaStructProperty) prop, valueSection);
-			} else if (prop instanceof ScaStructSequenceProperty) {
-				ScaPropertyUtil.storeStructSequence((ScaStructSequenceProperty) prop, valueSection);
-			}
+			ScaPropertyUtil.storeProperty(prop, valueSection);
+		}
+	}
+
+	private static void storeProperty(final ScaAbstractProperty< ? > prop, final IDialogSettings valueSection) {
+		switch (prop.eClass().getClassifierID()) {
+		case ScaPackage.SCA_SIMPLE_PROPERTY:
+			ScaPropertyUtil.storeSimple((ScaSimpleProperty) prop, valueSection);
+			break;
+		case ScaPackage.SCA_SIMPLE_SEQUENCE_PROPERTY:
+			ScaPropertyUtil.storeSimpleSequence((ScaSimpleSequenceProperty) prop, valueSection);
+			break;
+		case ScaPackage.SCA_STRUCT_PROPERTY:
+			ScaPropertyUtil.storeStruct((ScaStructProperty) prop, valueSection);
+			break;
+		case ScaPackage.SCA_STRUCT_SEQUENCE_PROPERTY:
+			ScaPropertyUtil.storeStructSequence((ScaStructSequenceProperty) prop, valueSection);
+			break;
 		}
 	}
 
@@ -86,19 +96,12 @@ public final class ScaPropertyUtil {
 	}
 
 	private static void storeStruct(final ScaStructProperty struct, final IDialogSettings valueSection) {
-		for (final ScaSimpleProperty prop : struct.getSimples()) {
+		for (final ScaAbstractProperty< ? > prop : struct.getFields()) {
 			if (prop.isDefaultValue()) {
 				continue;
 			}
 			final IDialogSettings simpleSection = valueSection.addNewSection(prop.getId());
-			ScaPropertyUtil.storeSimple(prop, simpleSection);
-		}
-		for (final ScaSimpleSequenceProperty prop : struct.getSequences()) {
-			if (prop.isDefaultValue()) {
-				continue;
-			}
-			final IDialogSettings simpleSeqSection = valueSection.addNewSection(prop.getId());
-			ScaPropertyUtil.storeSimpleSequence(prop, simpleSeqSection);
+			ScaPropertyUtil.storeProperty(prop, simpleSection);
 		}
 	}
 
@@ -114,15 +117,26 @@ public final class ScaPropertyUtil {
 	private static void restoreProperties(ScaPropertyContainer< ? , ? > container, final IDialogSettings propSettings) {
 		for (final ScaAbstractProperty< ? > prop : container.getProperties()) {
 			final IDialogSettings valueSection = propSettings.getSection(prop.getId());
-			if (prop instanceof ScaSimpleProperty) {
-				ScaPropertyUtil.restoreSimple((ScaSimpleProperty) prop, valueSection);
-			} else if (prop instanceof ScaSimpleSequenceProperty) {
-				ScaPropertyUtil.restoreSimpleSequence((ScaSimpleSequenceProperty) prop, valueSection);
-			} else if (prop instanceof ScaStructProperty) {
-				ScaPropertyUtil.restoreStruct((ScaStructProperty) prop, valueSection);
-			} else if (prop instanceof ScaStructSequenceProperty) {
-				ScaPropertyUtil.restoreStructSequence((ScaStructSequenceProperty) prop, valueSection);
+			if (valueSection != null) {
+				ScaPropertyUtil.restoreProperty(prop, valueSection);
 			}
+		}
+	}
+
+	private static void restoreProperty(final ScaAbstractProperty< ? > prop, final IDialogSettings valueSection) {
+		switch (prop.eClass().getClassifierID()) {
+		case ScaPackage.SCA_SIMPLE_PROPERTY:
+			ScaPropertyUtil.restoreSimple((ScaSimpleProperty) prop, valueSection);
+			break;
+		case ScaPackage.SCA_SIMPLE_SEQUENCE_PROPERTY:
+			ScaPropertyUtil.restoreSimpleSequence((ScaSimpleSequenceProperty) prop, valueSection);
+			break;
+		case ScaPackage.SCA_STRUCT_PROPERTY:
+			ScaPropertyUtil.restoreStruct((ScaStructProperty) prop, valueSection);
+			break;
+		case ScaPackage.SCA_STRUCT_SEQUENCE_PROPERTY:
+			ScaPropertyUtil.restoreStructSequence((ScaStructSequenceProperty) prop, valueSection);
+			break;
 		}
 	}
 
@@ -140,13 +154,9 @@ public final class ScaPropertyUtil {
 
 	private static void restoreStruct(final ScaStructProperty struct, final IDialogSettings structPropertySettings) {
 		if (structPropertySettings != null) {
-			for (final ScaSimpleProperty prop : struct.getSimples()) {
-				final IDialogSettings simpleSettings = structPropertySettings.getSection(prop.getId());
-				ScaPropertyUtil.restoreSimple(prop, simpleSettings);
-			}
-			for (final ScaSimpleSequenceProperty prop : struct.getSequences()) {
-				final IDialogSettings simpleSeqSettings = structPropertySettings.getSection(prop.getId());
-				ScaPropertyUtil.restoreSimpleSequence(prop, simpleSeqSettings);
+			for (final ScaAbstractProperty< ? > prop : struct.getFields()) {
+				final IDialogSettings fieldSettings = structPropertySettings.getSection(prop.getId());
+				ScaPropertyUtil.restoreProperty(prop, fieldSettings);
 			}
 		}
 	}

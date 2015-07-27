@@ -14,6 +14,7 @@ package gov.redhawk.model.sca;
 
 import mil.jpeojtrs.sca.prf.StructSequence;
 
+import mil.jpeojtrs.sca.prf.StructSequenceRef;
 import org.eclipse.emf.common.util.EList;
 
 import CF.PropertySetOperations;
@@ -67,5 +68,16 @@ public interface ScaStructSequenceProperty extends ScaAbstractProperty<StructSeq
 	 * @generated
 	 */
 	ScaStructProperty createScaStructProperty();
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * @since 20.0
+	 * <!-- end-user-doc -->
+	 * 
+	 * @model
+	 * @generated
+	 */
+	@Override
+	StructSequenceRef createPropertyRef();
 
 } // ScaStructSequenceProperty

@@ -92,6 +92,7 @@ public class TunerAllocationWizardPage extends WizardPage {
 	private Text groupIdText;
 	private ScaStructProperty tunerAllocationStruct;
 	private ScaStructProperty listenerAllocationStruct;
+	private String defaultAllocationType = ALLOCATE_TUNER;
 	private static final double FREQUENCY_VALUE_CONVERSION_FACTOR = 1e6;
 	private static final double TOLERANCE_CONVERSION = 0.01;
 	private UUID uuid;
@@ -497,8 +498,16 @@ public class TunerAllocationWizardPage extends WizardPage {
 		this();
 		if (TunerAllocationProperty.INSTANCE.getId().equals(allocationStruct.getId())) {
 			setTunerAllocationStruct(allocationStruct);
+			ScaSimpleProperty deviceControl = (ScaSimpleProperty) allocationStruct.getField(TunerAllocationProperties.DEVICE_CONTROL.getId());
+			if (!(Boolean) deviceControl.getValue()) {
+				// withOUT device control
+				defaultAllocationType = LISTEN_TUNER_BY_PROPERTIES;
+			} else {
+				defaultAllocationType = ALLOCATE_TUNER;
+			}
 		} else if (ListenerAllocationProperty.INSTANCE.getId().equals(allocationStruct.getId())) {
 			setListenerAllocationStruct(allocationStruct);
+			defaultAllocationType = LISTEN_TUNER_BY_ID;
 		}
 	}
 
@@ -775,24 +784,7 @@ public class TunerAllocationWizardPage extends WizardPage {
 		allocationComboViewer.addSelectionChangedListener(allocationModeListener);
 		allocationComboViewer.setInput(TUNER_ALLOCATION_TYPES);
 		// set selection
-		if (ListenerAllocationProperty.INSTANCE.getId().equals(listenerAllocationStruct.getId())) {
-			// listener_allocation
-
-			// listener_allocation by id
-			allocationComboViewer.setSelection(new StructuredSelection(LISTEN_TUNER_BY_ID));
-
-		} else {
-			// tuner_allocation
-
-			if (!(Boolean) tunerAllocationStruct.getSimple(TunerAllocationProperties.DEVICE_CONTROL.getId()).getValue()) {
-				// withOUT device control
-				allocationComboViewer.setSelection(new StructuredSelection(LISTEN_TUNER_BY_PROPERTIES));
-			} else {
-				// with device control
-				allocationComboViewer.setSelection(new StructuredSelection(ALLOCATE_TUNER));
-			}
-		}
-
+		allocationComboViewer.setSelection(new StructuredSelection(defaultAllocationType));
 	}
 
 	private void addRfFlowIdBindings() {
@@ -852,6 +844,7 @@ public class TunerAllocationWizardPage extends WizardPage {
 		}
 
 		tunerAllocationStruct = ScaFactory.eINSTANCE.createScaStructProperty();
+		tunerAllocationStruct.setId(TunerAllocationProperty.INSTANCE.getId());
 		for (TunerAllocationProperties allocProp : TunerAllocationProperties.values()) {
 			ScaSimpleProperty simple = ScaFactory.eINSTANCE.createScaSimpleProperty();
 			Simple definition = (Simple) PrfFactory.eINSTANCE.create(PrfPackage.Literals.SIMPLE);
@@ -861,7 +854,7 @@ public class TunerAllocationWizardPage extends WizardPage {
 			simple.setDefinition(definition);
 			simple.setId(allocProp.getId());
 			setValueForProp(allocProp, simple);
-			tunerAllocationStruct.getSimples().add(simple);
+			tunerAllocationStruct.getFields().add(simple);
 		}
 	}
 
@@ -872,6 +865,7 @@ public class TunerAllocationWizardPage extends WizardPage {
 		}
 
 		listenerAllocationStruct = ScaFactory.eINSTANCE.createScaStructProperty();
+		listenerAllocationStruct.setId(ListenerAllocationProperty.INSTANCE.getId());
 		for (ListenerAllocationProperties allocProp : ListenerAllocationProperties.values()) {
 			ScaSimpleProperty simple = ScaFactory.eINSTANCE.createScaSimpleProperty();
 			Simple definition = (Simple) PrfFactory.eINSTANCE.create(PrfPackage.Literals.SIMPLE);
@@ -881,7 +875,7 @@ public class TunerAllocationWizardPage extends WizardPage {
 			simple.setDefinition(definition);
 			simple.setId(allocProp.getId());
 			setValueForProp(allocProp, simple);
-			listenerAllocationStruct.getSimples().add(simple);
+			listenerAllocationStruct.getFields().add(simple);
 		}
 	}
 
@@ -1274,6 +1268,17 @@ public class TunerAllocationWizardPage extends WizardPage {
 
 	public AllocationMode getAllocationMode() {
 		return this.allocationMode;
+	}
+
+	public ScaStructProperty getAllocationStruct() {
+		switch (allocationMode) {
+		case LISTENER:
+			return listenerAllocationStruct;
+		case TUNER:
+			return tunerAllocationStruct;
+		default:
+			return null;
+		}
 	}
 
 	public void setTunerAllocationStruct(ScaStructProperty tunerAllocationStruct) {
