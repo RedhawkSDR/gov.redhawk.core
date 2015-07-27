@@ -176,24 +176,29 @@ public class ScaStructPropertyImpl extends ScaAbstractPropertyImpl<Struct> imple
 	 */
 	@Override
 	public void setDefinition(Struct newDefinition) {
-		if (newDefinition != definition) {
+		// Save the old definition so that we can test that it changed, but call the superclass version first to allow
+		// it to do any validity checking first
+		Struct oldDefinition = getDefinition();
+		super.setDefinition(newDefinition);
+		if (newDefinition != oldDefinition) {
 			getFields().clear();
-			for (FeatureMap.Entry entry : newDefinition.getFields()) {
-				switch (entry.getEStructuralFeature().getFeatureID()) {
-				case PrfPackage.STRUCT__SIMPLE:
-					ScaSimpleProperty simple = ScaFactory.eINSTANCE.createScaSimpleProperty();
-					simple.setDefinition((Simple) entry.getValue());
-					fields.add(simple);
-					break;
-				case PrfPackage.STRUCT__SIMPLE_SEQUENCE:
-					ScaSimpleSequenceProperty simpleSequence = ScaFactory.eINSTANCE.createScaSimpleSequenceProperty();
-					simpleSequence.setDefinition((SimpleSequence) entry.getValue());
-					fields.add(simpleSequence);
-					break;
+			if (newDefinition != null) {
+				for (FeatureMap.Entry entry : newDefinition.getFields()) {
+					switch (entry.getEStructuralFeature().getFeatureID()) {
+					case PrfPackage.STRUCT__SIMPLE:
+						ScaSimpleProperty simple = ScaFactory.eINSTANCE.createScaSimpleProperty();
+						simple.setDefinition((Simple) entry.getValue());
+						fields.add(simple);
+						break;
+					case PrfPackage.STRUCT__SIMPLE_SEQUENCE:
+						ScaSimpleSequenceProperty simpleSequence = ScaFactory.eINSTANCE.createScaSimpleSequenceProperty();
+						simpleSequence.setDefinition((SimpleSequence) entry.getValue());
+						fields.add(simpleSequence);
+						break;
+					}
 				}
 			}
 		}
-		super.setDefinition(newDefinition);
 	}
 
 	/**
