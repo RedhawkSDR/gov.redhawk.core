@@ -1,15 +1,25 @@
-/** 
- * This file is protected by Copyright. 
+/**
+ * This file is protected by Copyright.
  * Please refer to the COPYRIGHT file distributed with this source distribution.
- * 
+ *
  * This file is part of REDHAWK IDE.
- * 
- * All rights reserved.  This program and the accompanying materials are made available under 
+ *
+ * All rights reserved.  This program and the accompanying materials are made available under
  * the terms of the Eclipse Public License v1.0 which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html.
  *
  */
 package gov.redhawk.sca.internal.ui.properties;
+
+import java.util.List;
+
+import org.eclipse.emf.common.notify.Adapter;
+import org.eclipse.emf.common.util.EList;
+import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.edit.provider.ViewerNotification;
+import org.eclipse.jface.viewers.TableViewer;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.widgets.Composite;
 
 import gov.redhawk.model.sca.ScaAbstractProperty;
 import gov.redhawk.model.sca.ScaPackage;
@@ -22,14 +32,6 @@ import gov.redhawk.model.sca.provider.ScaSimpleSequencePropertyItemProvider;
 import gov.redhawk.sca.ui.ScaComponentFactory;
 import gov.redhawk.sca.ui.properties.ScaPropertiesAdapterFactory;
 import mil.jpeojtrs.sca.prf.Simple;
-
-import org.eclipse.emf.common.notify.Adapter;
-import org.eclipse.emf.common.util.EList;
-import org.eclipse.emf.ecore.EObject;
-import org.eclipse.emf.edit.provider.ViewerNotification;
-import org.eclipse.jface.viewers.TableViewer;
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.widgets.Composite;
 
 public class StructSequencePropertyValueWizardPage extends AbstractSequencePropertyValueWizardPage {
 
@@ -83,8 +85,7 @@ public class StructSequencePropertyValueWizardPage extends AbstractSequencePrope
 	}
 
 	@Override
-	public void dispose()
-	{
+	public void dispose() {
 		super.dispose();
 		adapterFactory.dispose();
 	}
@@ -114,8 +115,13 @@ public class StructSequencePropertyValueWizardPage extends AbstractSequencePrope
 	}
 
 	@Override
+	protected int indexOf(List< ? > list, Object object) {
+		return list.indexOf(object);
+	}
+
+	@Override
 	protected TableViewer createViewer(Composite parent) {
-		return ScaComponentFactory.createStructSequenceTable(parent, SWT.BORDER | SWT.MULTI | SWT.FULL_SELECTION | SWT.V_SCROLL | SWT.H_SCROLL,
-			adapterFactory, (ScaStructSequenceProperty) property);
+		return ScaComponentFactory.createStructSequenceTable(parent, SWT.BORDER | SWT.MULTI | SWT.FULL_SELECTION | SWT.V_SCROLL | SWT.H_SCROLL, adapterFactory,
+			(ScaStructSequenceProperty) property);
 	}
 }

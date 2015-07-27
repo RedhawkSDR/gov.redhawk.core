@@ -1,24 +1,22 @@
-/** 
- * This file is protected by Copyright. 
+/**
+ * This file is protected by Copyright.
  * Please refer to the COPYRIGHT file distributed with this source distribution.
- * 
+ *
  * This file is part of REDHAWK IDE.
- * 
- * All rights reserved.  This program and the accompanying materials are made available under 
+ *
+ * All rights reserved.  This program and the accompanying materials are made available under
  * the terms of the Eclipse Public License v1.0 which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html.
  *
  */
 package gov.redhawk.sca.internal.ui.properties;
 
-import gov.redhawk.model.sca.ScaSimpleSequenceProperty;
-import gov.redhawk.model.sca.provider.ScaSimpleSequencePropertyItemProvider;
-import gov.redhawk.sca.ui.properties.ScaPropertiesAdapterFactory;
-import mil.jpeojtrs.sca.prf.provider.RadixLabelProviderUtil;
+import java.util.List;
 
 import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.edit.domain.AdapterFactoryEditingDomain;
+import org.eclipse.emf.edit.provider.IWrapperItemProvider;
 import org.eclipse.emf.edit.ui.provider.AdapterFactoryContentProvider;
 import org.eclipse.jface.layout.TableColumnLayout;
 import org.eclipse.jface.viewers.ColumnLabelProvider;
@@ -30,6 +28,11 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.swt.widgets.Widget;
+
+import gov.redhawk.model.sca.ScaSimpleSequenceProperty;
+import gov.redhawk.model.sca.provider.ScaSimpleSequencePropertyItemProvider;
+import gov.redhawk.sca.ui.properties.ScaPropertiesAdapterFactory;
+import mil.jpeojtrs.sca.prf.provider.RadixLabelProviderUtil;
 
 public class SimpleSequencePropertyValueWizardPage extends AbstractSequencePropertyValueWizardPage {
 
@@ -48,8 +51,7 @@ public class SimpleSequencePropertyValueWizardPage extends AbstractSequencePrope
 	}
 
 	@Override
-	public void dispose()
-	{
+	public void dispose() {
 		super.dispose();
 		adapterFactory.dispose();
 	}
@@ -64,6 +66,11 @@ public class SimpleSequencePropertyValueWizardPage extends AbstractSequencePrope
 		final ScaSimpleSequenceProperty seqProperty = (ScaSimpleSequenceProperty) property;
 		Object value = getDefaultValue(seqProperty.getDefinition().getType(), seqProperty.getDefinition().isComplex());
 		seqProperty.getValues().add(value);
+	}
+
+	@Override
+	protected int indexOf(List< ? > list, Object object) {
+		return ((IWrapperItemProvider) object).getIndex();
 	}
 
 	@Override

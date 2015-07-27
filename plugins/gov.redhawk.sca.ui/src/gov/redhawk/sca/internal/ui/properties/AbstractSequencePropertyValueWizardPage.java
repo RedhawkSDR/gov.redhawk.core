@@ -1,10 +1,10 @@
-/** 
- * This file is protected by Copyright. 
+/**
+ * This file is protected by Copyright.
  * Please refer to the COPYRIGHT file distributed with this source distribution.
- * 
+ *
  * This file is part of REDHAWK IDE.
- * 
- * All rights reserved.  This program and the accompanying materials are made available under 
+ *
+ * All rights reserved.  This program and the accompanying materials are made available under
  * the terms of the Eclipse Public License v1.0 which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html.
  *
@@ -17,7 +17,6 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.eclipse.emf.common.util.EList;
-import org.eclipse.emf.edit.provider.IWrapperItemProvider;
 import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.IStructuredContentProvider;
@@ -72,25 +71,25 @@ public abstract class AbstractSequencePropertyValueWizardPage extends WizardPage
 	public void createControl(final Composite parent) {
 		final Composite root = new Composite(parent, SWT.None);
 		root.setLayout(new GridLayout(2, false));
-	
+
 		final Composite tableComposite = new Composite(root, SWT.NO_FOCUS);
 		viewer = createViewer(tableComposite);
 		viewer.setInput(this.property);
 		viewer.addSelectionChangedListener(new ISelectionChangedListener() {
-	
+
 			@Override
 			public void selectionChanged(final SelectionChangedEvent event) {
 				updateButtonState();
 			}
 		});
 		tableComposite.setLayoutData(GridDataFactory.fillDefaults().hint(500, 300).span(2, 1).create());
-	
+
 		// Create spacer
 		new Label(root, SWT.None).setLayoutData(GridDataFactory.fillDefaults().span(1, 1).grab(true, false).create());
-	
+
 		final Composite buttonComposite = createButtons(root);
 		buttonComposite.setLayoutData(GridDataFactory.fillDefaults().span(1, 1).grab(false, false).create());
-	
+
 		setControl(root);
 	}
 
@@ -180,14 +179,17 @@ public abstract class AbstractSequencePropertyValueWizardPage extends WizardPage
 			return;
 		}
 
-		// Move the items up in ascending order to ensure that they do not overlap
+		// Move the items up in ascending order to ensure that they do not overlap, and adjust the selection
+		// indices while we're at it
 		EList< ? > list = getList();
 		int[] indices = getSelectionIndices();
-		for (int index : indices) {
+		for (int ii = 0; ii < indices.length; ++ii) {
+			int index = indices[ii];
 			list.move(index - 1, index);
+			indices[ii] -= 1;
 		}
 
-		setSelection(indices, -1);
+		setSelection(indices);
 	}
 
 	private void handleMoveDown() {
@@ -195,28 +197,33 @@ public abstract class AbstractSequencePropertyValueWizardPage extends WizardPage
 			return;
 		}
 
-		// Move the items down in descending order to ensure that they do not overlap (requires reverse iteration over
-		// the indices, which is not built into Java--nor is reverse sort of primitives)
+		// Move the items down in descending order to ensure that they do not overlap, and adjust the selection
+		// indices while we're at it
 		int[] indices = getSelectionIndices();
 		EList< ? > list = getList();
-		for (int ii = indices.length-1; ii >= 0; --ii) {
+		for (int ii = indices.length - 1; ii >= 0; --ii) {
 			int index = indices[ii];
 			list.move(index + 1, index);
+			indices[ii] += 1;
 		}
 
-		setSelection(indices, 1);
+		setSelection(indices);
 	}
 
 	private void setSelection(int index) {
-		setSelection(new int[] { index }, 0);
+		setSelection(new int[] { index });
 	}
 
-	private void setSelection(int[] indices, int offset) {
-		List< Object > selection = new ArrayList< Object >();
+	private void setSelection(int[] indices) {
+		// Fetch the model objects as seen from the viewer; these will differ from the list's elements if they are
+		// wrapped (such as in a simple sequence)
 		IStructuredContentProvider provider = (IStructuredContentProvider) viewer.getContentProvider();
 		Object[] elements = provider.getElements(viewer.getInput());
+
+		// Convert the indices into the list of model objects to ensure that the selection succeeds
+		List<Object> selection = new ArrayList<Object>(indices.length);
 		for (int index : indices) {
-			selection.add(elements[index + offset]);
+			selection.add(elements[index]);
 		}
 		viewer.setSelection(new StructuredSelection(selection));
 	}
@@ -232,19 +239,13 @@ public abstract class AbstractSequencePropertyValueWizardPage extends WizardPage
 		return indices;
 	}
 
-	private int indexOf(List< ? > list, Object object) {
-		if (object instanceof IWrapperItemProvider) {
-			return ((IWrapperItemProvider) object).getIndex();
-		} else {
-			return list.indexOf(object);
-		}
-	}
+	protected abstract int indexOf(List< ? > list, Object object);
 
 	private Composite createButtons(final Composite root) {
 		final Composite buttonRoot = new Composite(root, SWT.None);
 		buttonRoot.setLayout(new GridLayout(5, false));
 		final ISharedImages sharedImages = PlatformUI.getWorkbench().getSharedImages();
-	
+
 		final Button addButton = new Button(buttonRoot, SWT.PUSH);
 		addButton.setToolTipText("Add");
 		addButton.addSelectionListener(new SelectionAdapter() {
@@ -263,7 +264,7 @@ public abstract class AbstractSequencePropertyValueWizardPage extends WizardPage
 		});
 		this.removeButton.setToolTipText("Remove");
 		this.removeButton.setImage(sharedImages.getImage(ISharedImages.IMG_ETOOL_DELETE));
-	
+
 		this.upButton = new Button(buttonRoot, SWT.PUSH);
 		this.upButton.setImage(ScaUiPlugin.getDefault().getImage("icons/clcl16/up.png"));
 		this.upButton.setToolTipText("Move value up");
@@ -291,9 +292,9 @@ public abstract class AbstractSequencePropertyValueWizardPage extends WizardPage
 				handleReset();
 			}
 		});
-	
+
 		updateButtonState();
-	
+
 		return buttonRoot;
 	}
 
@@ -305,22 +306,33 @@ public abstract class AbstractSequencePropertyValueWizardPage extends WizardPage
 
 	/**
 	 * Setter to allow us to enable / disable the remove button
-	 * 
+	 *
 	 * @param enabled Boolean representing whether we should or should not enable the remove button
 	 */
 	private void updateButtonState() {
-		int[] indices = getSelectionIndices();
-		if (indices.length == 0) {
+		IStructuredSelection selection = viewer.getStructuredSelection();
+		if (selection.isEmpty()) {
 			removeButton.setEnabled(false);
 			upButton.setEnabled(false);
 			downButton.setEnabled(false);
 		} else {
-			int minIndex = indices[0];
-			int maxIndex = indices[indices.length - 1];
-
+			// Remove is always enabled because there must be at least one selection
 			removeButton.setEnabled(true);
+
+			// Find the lowest and highest selection indices
+			List< ? > list = getList();
+			int minIndex = Integer.MAX_VALUE;
+			int maxIndex = -1;
+			for (Object item : selection.toList()) {
+				int index = indexOf(list, item);
+				minIndex = Math.min(minIndex, index);
+				maxIndex = Math.max(maxIndex, index);
+			}
+
+			// The up and down buttons are enabled only if there is somewhere to go (i.e., not the first or last item,
+			// respectively)
 			upButton.setEnabled(minIndex > 0);
-			downButton.setEnabled(maxIndex < (getList().size() - 1));
+			downButton.setEnabled(maxIndex < (list.size() - 1));
 		}
 	}
 
