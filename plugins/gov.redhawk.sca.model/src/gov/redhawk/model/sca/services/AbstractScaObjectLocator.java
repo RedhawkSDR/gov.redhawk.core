@@ -21,15 +21,12 @@ import org.eclipse.emf.ecore.EObject;
 
 /**
  * @since 14.0
- * 
  */
 public abstract class AbstractScaObjectLocator implements IScaObjectLocator {
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
-	public < T extends CorbaObjWrapper< ? >> T findEObject(Class<T> type, String ior) {
+	public < T extends CorbaObjWrapper< ? > > T findEObject(Class<T> type, String ior) {
+		// TODO: This code doesn't appear safe. It should be implemented in an EMF read transaction.
 		if (ior == null || type == null) {
 			return null;
 		}
