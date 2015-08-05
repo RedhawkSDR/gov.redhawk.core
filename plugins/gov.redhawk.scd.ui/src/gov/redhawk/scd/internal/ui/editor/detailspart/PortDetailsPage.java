@@ -33,6 +33,7 @@ import org.eclipse.ui.forms.widgets.FormToolkit;
 import org.eclipse.ui.forms.widgets.Section;
 
 import gov.redhawk.common.ui.editor.FormLayoutFactory;
+import gov.redhawk.common.ui.parts.FormEntry;
 import gov.redhawk.ui.editor.SCAFormEditor;
 import gov.redhawk.ui.editor.ScaDetails;
 import gov.redhawk.ui.editor.ScaFormPage;
@@ -98,12 +99,13 @@ public class PortDetailsPage extends ScaDetails {
 		}
 	};
 
-	private static final int NUM_COLUMNS = 2;
+	private static final int NUM_COLUMNS = 3;
 
-	private Text nameText;
+	private FormEntry nameEntry;
 	private ComboViewer directionCombo;
 	private CheckboxTableViewer typeTable;
 	private Text descriptionText;
+	private FormEntry idlEntry;
 
 	private PortTypeAdapter portTypeAdapter = new PortTypeAdapter();
 
@@ -147,11 +149,14 @@ public class PortDetailsPage extends ScaDetails {
 
 		final List<Binding> bindings = new ArrayList<Binding>();
 
-		bindings.add(dataBindingContext.bindValue(WidgetProperties.text(SWT.Modify).observeDelayed(SCAFormEditor.getFieldBindingDelay(), nameText),
+		bindings.add(dataBindingContext.bindValue(WidgetProperties.text(SWT.Modify).observeDelayed(SCAFormEditor.getFieldBindingDelay(), nameEntry.getText()),
 			EMFEditObservables.observeValue(getEditingDomain(), input, ScdPackage.Literals.ABSTRACT_PORT__NAME)));
 
 		bindings.add(dataBindingContext.bindValue(WidgetProperties.text(SWT.Modify).observeDelayed(SCAFormEditor.getFieldBindingDelay(), descriptionText),
 			EMFEditObservables.observeValue(getEditingDomain(), input, ScdPackage.Literals.ABSTRACT_PORT__DESCRIPTION)));
+
+		bindings.add(dataBindingContext.bindValue(WidgetProperties.text(SWT.Modify).observe(idlEntry.getText()),
+			EMFEditObservables.observeValue(getEditingDomain(), input, ScdPackage.Literals.ABSTRACT_PORT__REP_ID)));
 
 		return bindings;
 	}
@@ -167,11 +172,9 @@ public class PortDetailsPage extends ScaDetails {
 		GridData data = GridDataFactory.fillDefaults().grab(true, true).create();
 		client.setLayoutData(data);
 
-		GridDataFactory gridDataFactory = GridDataFactory.fillDefaults().span(1, 1).grab(true, false);
+		GridDataFactory gridDataFactory = GridDataFactory.fillDefaults().span(2, 1).grab(true, false);
 
-		createLabel(client, toolkit, "Name*:");
-		nameText = toolkit.createText(client, null, SWT.SINGLE);
-		nameText.setLayoutData(gridDataFactory.create());
+		nameEntry = new FormEntry(client, toolkit, "Name*:", SWT.SINGLE);
 
 		createLabel(client, toolkit, "Direction:");
 		directionCombo = new ComboViewer(client);
@@ -189,10 +192,8 @@ public class PortDetailsPage extends ScaDetails {
 		typeTable.setCheckStateProvider(portTypeAdapter);
 		typeTable.addCheckStateListener(portTypeAdapter);
 
-		createLabel(client, toolkit, "Interface:");
-		Text idlText = toolkit.createText(client, "IDL:TODO/todo:1.0", SWT.READ_ONLY);
-		idlText.setEnabled(false);
-		idlText.setLayoutData(gridDataFactory.create());
+		idlEntry = new FormEntry(client, toolkit, "Interface:", "Browse...", false);
+		idlEntry.getText().setEditable(false);
 
 		createLabel(client, toolkit, "Description:");
 		descriptionText = toolkit.createText(client, null, SWT.MULTI);
