@@ -50,7 +50,8 @@ public abstract class ScaSection extends SectionPart implements IContextPart, IA
 	/**
 	 * @since 8.0
 	 */
-	public Object getAdapter(Class adapter) {
+	@Override
+	public <T> T getAdapter(Class< T > adapter) {
 		return null;
 	}
 }
