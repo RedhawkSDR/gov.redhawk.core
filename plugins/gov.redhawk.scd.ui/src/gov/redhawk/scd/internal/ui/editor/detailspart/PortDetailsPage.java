@@ -1,14 +1,26 @@
 package gov.redhawk.scd.internal.ui.editor.detailspart;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.core.databinding.Binding;
 import org.eclipse.core.databinding.DataBindingContext;
+import org.eclipse.emf.common.command.Command;
+import org.eclipse.emf.common.notify.Notification;
+import org.eclipse.emf.common.notify.impl.AdapterImpl;
+import org.eclipse.emf.databinding.edit.EMFEditObservables;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.edit.command.AddCommand;
+import org.eclipse.emf.edit.command.RemoveCommand;
+import org.eclipse.emf.edit.domain.EditingDomain;
+import org.eclipse.jface.databinding.swt.WidgetProperties;
 import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.jface.viewers.ArrayContentProvider;
+import org.eclipse.jface.viewers.CheckStateChangedEvent;
 import org.eclipse.jface.viewers.CheckboxTableViewer;
 import org.eclipse.jface.viewers.ComboViewer;
+import org.eclipse.jface.viewers.ICheckStateListener;
+import org.eclipse.jface.viewers.ICheckStateProvider;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
@@ -21,21 +33,94 @@ import org.eclipse.ui.forms.widgets.FormToolkit;
 import org.eclipse.ui.forms.widgets.Section;
 
 import gov.redhawk.common.ui.editor.FormLayoutFactory;
+import gov.redhawk.ui.editor.SCAFormEditor;
 import gov.redhawk.ui.editor.ScaDetails;
 import gov.redhawk.ui.editor.ScaFormPage;
+import mil.jpeojtrs.sca.scd.AbstractPort;
 import mil.jpeojtrs.sca.scd.PortType;
+import mil.jpeojtrs.sca.scd.PortTypeContainer;
+import mil.jpeojtrs.sca.scd.ScdPackage;
 
 public class PortDetailsPage extends ScaDetails {
+
+	private class PortTypeAdapter extends AdapterImpl implements ICheckStateListener, ICheckStateProvider {
+
+		@Override
+		public boolean isGrayed(Object element) {
+			if (element == PortType.CONTROL) {
+				AbstractPort port = (AbstractPort) getTarget();
+				return port == null || port.getPortType().isEmpty();
+			}
+			return false;
+		}
+
+		@Override
+		public boolean isChecked(Object element) {
+			AbstractPort port = (AbstractPort) getTarget();
+			if (port == null) {
+				return false;
+			}
+			if (element == PortType.CONTROL) {
+				if (port.getPortType().isEmpty()) {
+					return true;
+				}
+			}
+			for (PortTypeContainer container : port.getPortType()) {
+				if (container.getType().equals(element)) {
+					return true;
+				}
+			}
+			return false;
+		}
+
+		@Override
+		public void checkStateChanged(final CheckStateChangedEvent event) {
+			AbstractPort port = (AbstractPort) getTarget();
+			if (port != null) {
+				EditingDomain domain = PortDetailsPage.this.getEditingDomain();
+				Object type = event.getElement();
+				Command command;
+				if (event.getChecked()) {
+					command = AddCommand.create(domain, port, ScdPackage.Literals.ABSTRACT_PORT__PORT_TYPE, type);
+				} else {
+					command = RemoveCommand.create(domain, port, ScdPackage.Literals.ABSTRACT_PORT__PORT_TYPE, type);
+				}
+				domain.getCommandStack().execute(command);
+			}
+		}
+
+		@Override
+		public void notifyChanged(Notification msg) {
+			if (msg.getFeature() == ScdPackage.Literals.ABSTRACT_PORT__PORT_TYPE) {
+				PortDetailsPage.this.typeTable.refresh();
+			}
+			super.notifyChanged(msg);
+		}
+	};
 
 	private static final int NUM_COLUMNS = 2;
 
 	private Text nameText;
-	private ComboViewer directionCombo; 
+	private ComboViewer directionCombo;
 	private CheckboxTableViewer typeTable;
 	private Text descriptionText;
 
+	private PortTypeAdapter portTypeAdapter = new PortTypeAdapter();
+
 	public PortDetailsPage(ScaFormPage parentPage) {
 		super(parentPage);
+	}
+
+	@Override
+	public void dispose() {
+		removePortTypeListener();
+		super.dispose();
+	}
+
+	private void removePortTypeListener() {
+		if (portTypeAdapter.getTarget() != null) {
+			portTypeAdapter.getTarget().eAdapters().remove(portTypeAdapter);
+		}
 	}
 
 	@Override
@@ -56,8 +141,19 @@ public class PortDetailsPage extends ScaDetails {
 
 	@Override
 	protected List<Binding> bind(DataBindingContext dataBindingContext, EObject input) {
-		// TODO Auto-generated method stub
-		return null;
+		removePortTypeListener();
+		input.eAdapters().add(portTypeAdapter);
+		typeTable.refresh();
+
+		final List<Binding> bindings = new ArrayList<Binding>();
+
+		bindings.add(dataBindingContext.bindValue(WidgetProperties.text(SWT.Modify).observeDelayed(SCAFormEditor.getFieldBindingDelay(), nameText),
+			EMFEditObservables.observeValue(getEditingDomain(), input, ScdPackage.Literals.ABSTRACT_PORT__NAME)));
+
+		bindings.add(dataBindingContext.bindValue(WidgetProperties.text(SWT.Modify).observeDelayed(SCAFormEditor.getFieldBindingDelay(), descriptionText),
+			EMFEditObservables.observeValue(getEditingDomain(), input, ScdPackage.Literals.ABSTRACT_PORT__DESCRIPTION)));
+
+		return bindings;
 	}
 
 	/**
@@ -90,6 +186,8 @@ public class PortDetailsPage extends ScaDetails {
 		typeTable.setContentProvider(new ArrayContentProvider());
 		typeTable.setLabelProvider(new LabelProvider());
 		typeTable.setInput(PortType.VALUES.subList(0, PortType.VALUES.size() - 1));
+		typeTable.setCheckStateProvider(portTypeAdapter);
+		typeTable.addCheckStateListener(portTypeAdapter);
 
 		createLabel(client, toolkit, "Interface:");
 		Text idlText = toolkit.createText(client, "IDL:TODO/todo:1.0", SWT.READ_ONLY);
