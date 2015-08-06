@@ -1,17 +1,21 @@
 package gov.redhawk.scd.internal.ui.editor.detailspart;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import org.eclipse.core.databinding.Binding;
 import org.eclipse.core.databinding.DataBindingContext;
 import org.eclipse.emf.common.command.Command;
+import org.eclipse.emf.common.command.CommandWrapper;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.impl.AdapterImpl;
 import org.eclipse.emf.databinding.edit.EMFEditObservables;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.emf.edit.command.AddCommand;
 import org.eclipse.emf.edit.command.RemoveCommand;
+import org.eclipse.emf.edit.command.ReplaceCommand;
 import org.eclipse.emf.edit.domain.EditingDomain;
 import org.eclipse.jface.databinding.swt.WidgetProperties;
 import org.eclipse.jface.layout.GridDataFactory;
@@ -21,7 +25,11 @@ import org.eclipse.jface.viewers.CheckboxTableViewer;
 import org.eclipse.jface.viewers.ComboViewer;
 import org.eclipse.jface.viewers.ICheckStateListener;
 import org.eclipse.jface.viewers.ICheckStateProvider;
+import org.eclipse.jface.viewers.ISelectionChangedListener;
+import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.LabelProvider;
+import org.eclipse.jface.viewers.SelectionChangedEvent;
+import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
@@ -40,7 +48,10 @@ import gov.redhawk.ui.editor.ScaFormPage;
 import mil.jpeojtrs.sca.scd.AbstractPort;
 import mil.jpeojtrs.sca.scd.PortType;
 import mil.jpeojtrs.sca.scd.PortTypeContainer;
+import mil.jpeojtrs.sca.scd.Ports;
+import mil.jpeojtrs.sca.scd.ScdFactory;
 import mil.jpeojtrs.sca.scd.ScdPackage;
+import mil.jpeojtrs.sca.scd.Uses;
 
 public class PortDetailsPage extends ScaDetails {
 
@@ -99,6 +110,38 @@ public class PortDetailsPage extends ScaDetails {
 		}
 	};
 
+	private static enum PortDirection {
+		PROVIDES("in <provides>"),
+		USES("out <uses>"),
+		BIDIR("bidir <uses/provides>");
+
+		private final String label;
+
+		private PortDirection(String label) {
+			this.label = label;
+		}
+
+		@Override
+		public String toString() {
+			return label;
+		}
+
+		public static PortDirection getDirection(AbstractPort port) {
+			if (port.isBiDirectional()) {
+				return PortDirection.BIDIR;
+			}
+			return getInstanceDirection(port);
+		}
+
+		public static PortDirection getInstanceDirection(AbstractPort port) {
+			if (port instanceof Uses) {
+				return PortDirection.USES;
+			} else {
+				return PortDirection.PROVIDES;
+			}
+		}
+	};
+
 	private static final int NUM_COLUMNS = 3;
 
 	private FormEntry nameEntry;
@@ -106,6 +149,8 @@ public class PortDetailsPage extends ScaDetails {
 	private CheckboxTableViewer typeTable;
 	private Text descriptionText;
 	private FormEntry idlEntry;
+
+	private AbstractPort port;
 
 	private PortTypeAdapter portTypeAdapter = new PortTypeAdapter();
 
@@ -120,8 +165,8 @@ public class PortDetailsPage extends ScaDetails {
 	}
 
 	private void removePortTypeListener() {
-		if (portTypeAdapter.getTarget() != null) {
-			portTypeAdapter.getTarget().eAdapters().remove(portTypeAdapter);
+		if (port != null) {
+			port.eAdapters().remove(portTypeAdapter);
 		}
 	}
 
@@ -144,7 +189,8 @@ public class PortDetailsPage extends ScaDetails {
 	@Override
 	protected List<Binding> bind(DataBindingContext dataBindingContext, EObject input) {
 		removePortTypeListener();
-		input.eAdapters().add(portTypeAdapter);
+		port = (AbstractPort) input;
+		port.eAdapters().add(portTypeAdapter);
 		typeTable.refresh();
 
 		final List<Binding> bindings = new ArrayList<Binding>();
@@ -152,11 +198,13 @@ public class PortDetailsPage extends ScaDetails {
 		bindings.add(dataBindingContext.bindValue(WidgetProperties.text(SWT.Modify).observeDelayed(SCAFormEditor.getFieldBindingDelay(), nameEntry.getText()),
 			EMFEditObservables.observeValue(getEditingDomain(), input, ScdPackage.Literals.ABSTRACT_PORT__NAME)));
 
-		bindings.add(dataBindingContext.bindValue(WidgetProperties.text(SWT.Modify).observeDelayed(SCAFormEditor.getFieldBindingDelay(), descriptionText),
-			EMFEditObservables.observeValue(getEditingDomain(), input, ScdPackage.Literals.ABSTRACT_PORT__DESCRIPTION)));
+		directionCombo.setSelection(new StructuredSelection(PortDirection.getDirection((AbstractPort) input)));
 
 		bindings.add(dataBindingContext.bindValue(WidgetProperties.text(SWT.Modify).observe(idlEntry.getText()),
 			EMFEditObservables.observeValue(getEditingDomain(), input, ScdPackage.Literals.ABSTRACT_PORT__REP_ID)));
+
+		bindings.add(dataBindingContext.bindValue(WidgetProperties.text(SWT.Modify).observeDelayed(SCAFormEditor.getFieldBindingDelay(), descriptionText),
+			EMFEditObservables.observeValue(getEditingDomain(), input, ScdPackage.Literals.ABSTRACT_PORT__DESCRIPTION)));
 
 		return bindings;
 	}
@@ -181,6 +229,15 @@ public class PortDetailsPage extends ScaDetails {
 		toolkit.adapt(directionCombo.getControl(), true, true);
 		directionCombo.getControl().setLayoutData(gridDataFactory.create());
 		directionCombo.setContentProvider(new ArrayContentProvider());
+		directionCombo.setInput(PortDirection.values());
+		directionCombo.addSelectionChangedListener(new ISelectionChangedListener() {
+
+			@Override
+			public void selectionChanged(SelectionChangedEvent event) {
+				IStructuredSelection selection = (IStructuredSelection) event.getSelection();
+				PortDetailsPage.this.handlePortDirectionChange((PortDirection) selection.getFirstElement());
+			}
+		});
 
 		createLabel(client, toolkit, "Type:");
 		Table table = toolkit.createTable(client, SWT.CHECK);
@@ -206,5 +263,50 @@ public class PortDetailsPage extends ScaDetails {
 		label.setForeground(toolkit.getColors().getColor(IFormColors.TITLE));
 		label.setLayoutData(GridDataFactory.fillDefaults().align(SWT.BEGINNING, SWT.BEGINNING).create());
 		return label;
+	}
+
+	private void handlePortDirectionChange(PortDirection direction) {
+		if (port != null) {
+			PortDirection currentDirection = PortDirection.getDirection(port);
+			if (currentDirection != direction) {
+				EditingDomain domain = getEditingDomain();
+				Command command = createPortDirectionChangeCommand(domain, direction);
+				domain.getCommandStack().execute(new CommandWrapper("Change Direction", command.getDescription(), command));
+			}
+		}
+	}
+
+	private Command createPortDirectionChangeCommand(EditingDomain domain, PortDirection direction) {
+		if (port.isBiDirectional()) {
+			AbstractPort removedPort;
+			if (PortDirection.getInstanceDirection(port) == direction) {
+				removedPort = port.getSibling();
+			} else {
+				removedPort = port;
+			}
+			return RemoveCommand.create(domain, removedPort);
+		} else {
+			AbstractPort sibling = createSibling(port);
+			if (direction == PortDirection.BIDIR){
+				Ports ports = (Ports) port.eContainer();
+				return AddCommand.create(domain, ports, null, sibling);
+			} else {
+				return ReplaceCommand.create(domain, port, Collections.singleton(sibling));
+			}
+		}
+	}
+
+	private AbstractPort createSibling(AbstractPort port) {
+		AbstractPort sibling;
+		if (port instanceof Uses) {
+			sibling = ScdFactory.eINSTANCE.createProvides();
+		} else {
+			sibling = ScdFactory.eINSTANCE.createUses();
+		}
+		sibling.setDescription(port.getDescription());
+		sibling.setName(port.getName());
+		sibling.setRepID(port.getRepID());
+		sibling.getPortType().addAll(EcoreUtil.copyAll(port.getPortType()));
+		return sibling;
 	}
 }
