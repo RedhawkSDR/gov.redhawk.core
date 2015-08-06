@@ -42,6 +42,9 @@ import org.eclipse.ui.forms.widgets.Section;
 
 import gov.redhawk.common.ui.editor.FormLayoutFactory;
 import gov.redhawk.common.ui.parts.FormEntry;
+import gov.redhawk.eclipsecorba.idl.IdlInterfaceDcl;
+import gov.redhawk.eclipsecorba.library.ui.IdlInterfaceSelectionDialog;
+import gov.redhawk.ui.editor.FormEntryAdapter;
 import gov.redhawk.ui.editor.SCAFormEditor;
 import gov.redhawk.ui.editor.ScaDetails;
 import gov.redhawk.ui.editor.ScaFormPage;
@@ -251,6 +254,16 @@ public class PortDetailsPage extends ScaDetails {
 
 		idlEntry = new FormEntry(client, toolkit, "Interface:", "Browse...", false);
 		idlEntry.getText().setEditable(false);
+		idlEntry.setFormEntryListener(new FormEntryAdapter() {
+
+			@Override
+			public void buttonSelected(FormEntry entry) {
+				IdlInterfaceDcl result = IdlInterfaceSelectionDialog.create(entry.getButton().getShell());
+				if (result != null) {
+					idlEntry.getText().setText(result.getRepId());
+				}
+			}
+		});
 
 		createLabel(client, toolkit, "Description:");
 		descriptionText = toolkit.createText(client, null, SWT.MULTI);
