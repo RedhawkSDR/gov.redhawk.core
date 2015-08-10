@@ -465,7 +465,7 @@ public abstract class Resource extends Logging implements ResourceOperations, Ru
         for (final DataType dt : ctorProperties) {
             // Look up the property and ensure it is configurable
             final IProperty prop = this.propSet.get(dt.id);
-            if ((prop == null) || !prop.isConfigurable()) {
+            if (prop == null) {
                 invalidProperties.add(dt);
                 continue;
             }
@@ -475,7 +475,7 @@ public abstract class Resource extends Logging implements ResourceOperations, Ru
                 if (AnyUtils.compareAnys(prop.toAny(), dt.value, "ne")) {
                     // Update the value on the property, which may trigger a
                     // callback.
-                    prop.configure(dt.value);
+                    prop.configureNoCallbacks(dt.value);
                 }
                 logger.trace("Construct property: " + prop);
             } catch (Throwable t) {
@@ -919,7 +919,7 @@ public abstract class Resource extends Logging implements ResourceOperations, Ru
         if (appReg != null) {
             if (appReg.domMgr()!=null) {
                 this._domMgr = new DomainManagerContainer(appReg.domMgr());
-                logger.info("setAdditionalParameters domain: " + this._domMgr.getRef().name() );
+                this.logger.info("setAdditionalParameters domain: " + this._domMgr.getRef().name() );
             }
 
             if ( this._domMgr != null ) {

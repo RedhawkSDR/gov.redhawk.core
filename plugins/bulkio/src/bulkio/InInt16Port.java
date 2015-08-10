@@ -387,14 +387,24 @@ public class InInt16Port extends BULKIO.jni.dataShortPOA implements org.ossie.co
 			logger.debug( "bulkio::InPort pushPacket PURGE INPUT QUEUE (SIZE"  + this.workQueue.size() + ")" );
 		    }
                     boolean sriChangedHappened = false;
+                    boolean flagEOS = false;
                     for (Iterator< Packet > itr = this.workQueue.iterator(); itr.hasNext();) {
-                        if (itr.next().sriChanged) {
-                            sriChangedHappened = true;
+                        if (sriChangedHappened && flagEOS) {
                             break;
+                        }
+                        Packet currentPacket = itr.next();
+                        if (currentPacket.sriChanged) {
+                            sriChangedHappened = true;
+                        }
+                        if (currentPacket.EOS) {
+                            flagEOS = true;
                         }
                     }
                     if (sriChangedHappened) {
                         sriChanged = true;
+                    }
+                    if (flagEOS) {
+                        eos = true;
                     }
                     this.workQueue.clear();
                     p = new Packet( data, time, eos, streamID, tmpH, sriChanged, true);

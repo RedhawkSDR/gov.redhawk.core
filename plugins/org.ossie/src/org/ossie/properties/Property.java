@@ -126,9 +126,16 @@ abstract class Property<T extends Object> implements IProperty {
     /**
      * Updates the value of the property, triggering any change listeners.
      */
+    public void configureNoCallbacks(Any any) {
+        fromAny(any);
+    }
+    
+    /**
+     * Updates the value of the property, triggering any change listeners.
+     */
     public void configure(Any any) {
         T oldValue = this.value;
-        fromAny(any);
+        configureNoCallbacks(any);
         for (PropertyListener<T> listener : changeListeners) {
             listener.valueChanged(oldValue, this.value);
         }

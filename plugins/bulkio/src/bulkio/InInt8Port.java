@@ -395,14 +395,24 @@ public class InInt8Port extends BULKIO.jni.dataCharPOA implements org.ossie.comp
 		    }
 
                     boolean sriChangedHappened = false;
+                    boolean flagEOS = false;
                     for (Iterator< Packet > itr = this.workQueue.iterator(); itr.hasNext();) {
-                        if (itr.next().sriChanged) {
-                            sriChangedHappened = true;
+                        if (sriChangedHappened && flagEOS) {
                             break;
+                        }
+                        Packet currentPacket = itr.next();
+                        if (currentPacket.sriChanged) {
+                            sriChangedHappened = true;
+                        }
+                        if (currentPacket.EOS) {
+                            flagEOS = true;
                         }
                     }
                     if (sriChangedHappened) {
                         sriChanged = true;
+                    }
+                    if (flagEOS) {
+                        eos = true;
                     }
                     this.workQueue.clear();
                     p = new Packet( data, time, eos, streamID, tmpH, sriChanged, true);
