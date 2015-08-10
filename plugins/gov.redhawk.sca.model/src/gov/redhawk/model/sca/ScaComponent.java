@@ -155,8 +155,7 @@ public interface ScaComponent extends ScaAbstractComponent<Resource> {
 	 * Returns the value of the '<em><b>Instantiation Identifier</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <p>
-	 * If the meaning of the '<em>Instantiation Identifier</em>' attribute isn't clear, there really should be more of a
-	 * description here...
+	 * Attempts to determine the component instantiation identifier (from the SAD) based on the component's runtime identifier ({@link #getIdentifier()}).
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * 
@@ -218,7 +217,7 @@ public interface ScaComponent extends ScaAbstractComponent<Resource> {
 	 * Returns the value of the '<em><b>Name</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <p>
-	 * If the meaning of the '<em>Name</em>' attribute isn't clear, there really should be more of a description here...
+	 * The value of the usagename element from the SAD file, if available. For sandbox resources, this is the name binding.
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * 
