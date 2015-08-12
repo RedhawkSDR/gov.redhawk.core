@@ -18,10 +18,10 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.forms.widgets.FormToolkit;
 import org.eclipse.ui.forms.widgets.Section;
 
+import gov.redhawk.scd.ui.provider.PortsEditorScdItemProviderAdapterFactory;
 import gov.redhawk.ui.editor.TreeSection;
 import mil.jpeojtrs.sca.scd.SoftwareComponent;
 import mil.jpeojtrs.sca.scd.Uses;
-import mil.jpeojtrs.sca.scd.provider.ScdItemProviderAdapterFactory;
 
 public class PortsSection extends TreeSection {
 
@@ -95,7 +95,7 @@ public class PortsSection extends TreeSection {
 
 	private AdapterFactory getAdapterFactory() {
 		if (adapterFactory == null) {
-			adapterFactory = new ScdItemProviderAdapterFactory();
+			adapterFactory = new PortsEditorScdItemProviderAdapterFactory();
 		}
 		return adapterFactory;
 	}
