@@ -506,14 +506,14 @@ public interface LibraryPackage extends EPackage {
 	 */
 	int IPROGRESS_MONITOR = 7;
 	/**
-	 * The meta object id for the '<em>Core Exceptoin</em>' data type.
+	 * The meta object id for the '<em>Core Exception</em>' data type.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @see org.eclipse.core.runtime.CoreException
-	 * @see gov.redhawk.eclipsecorba.library.impl.LibraryPackageImpl#getCoreExceptoin()
+	 * @see gov.redhawk.eclipsecorba.library.impl.LibraryPackageImpl#getCoreException()
 	 * @generated
 	 */
-	int CORE_EXCEPTOIN = 8;
+	int CORE_EXCEPTION = 8;
 	/**
 	 * The meta object id for the '<em>IPath</em>' data type.
 	 * <!-- begin-user-doc -->
@@ -759,15 +759,15 @@ public interface LibraryPackage extends EPackage {
 	EDataType getIProgressMonitor();
 
 	/**
-	 * Returns the meta object for data type '{@link org.eclipse.core.runtime.CoreException <em>Core Exceptoin</em>}'.
+	 * Returns the meta object for data type '{@link org.eclipse.core.runtime.CoreException <em>Core Exception</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return the meta object for data type '<em>Core Exceptoin</em>'.
+	 * @return the meta object for data type '<em>Core Exception</em>'.
 	 * @see org.eclipse.core.runtime.CoreException
 	 * @model instanceClass="org.eclipse.core.runtime.CoreException" serializeable="false"
 	 * @generated
 	 */
-	EDataType getCoreExceptoin();
+	EDataType getCoreException();
 
 	/**
 	 * Returns the meta object for data type '{@link org.eclipse.core.runtime.IPath <em>IPath</em>}'.
@@ -978,14 +978,14 @@ public interface LibraryPackage extends EPackage {
 		 */
 		EDataType IPROGRESS_MONITOR = eINSTANCE.getIProgressMonitor();
 		/**
-		 * The meta object literal for the '<em>Core Exceptoin</em>' data type.
+		 * The meta object literal for the '<em>Core Exception</em>' data type.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
 		 * @see org.eclipse.core.runtime.CoreException
-		 * @see gov.redhawk.eclipsecorba.library.impl.LibraryPackageImpl#getCoreExceptoin()
+		 * @see gov.redhawk.eclipsecorba.library.impl.LibraryPackageImpl#getCoreException()
 		 * @generated
 		 */
-		EDataType CORE_EXCEPTOIN = eINSTANCE.getCoreExceptoin();
+		EDataType CORE_EXCEPTION = eINSTANCE.getCoreException();
 		/**
 		 * The meta object literal for the '<em>IPath</em>' data type.
 		 * <!-- begin-user-doc -->

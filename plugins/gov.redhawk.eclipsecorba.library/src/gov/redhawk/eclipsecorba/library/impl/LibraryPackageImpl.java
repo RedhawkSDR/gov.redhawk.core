@@ -97,7 +97,7 @@ public class LibraryPackageImpl extends EPackageImpl implements LibraryPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	private EDataType coreExceptoinEDataType = null;
+	private EDataType coreExceptionEDataType = null;
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -392,8 +392,8 @@ public class LibraryPackageImpl extends EPackageImpl implements LibraryPackage {
 	 * @generated
 	 */
 	@Override
-	public EDataType getCoreExceptoin() {
-		return coreExceptoinEDataType;
+	public EDataType getCoreException() {
+		return coreExceptionEDataType;
 	}
 
 	/**
@@ -473,7 +473,7 @@ public class LibraryPackageImpl extends EPackageImpl implements LibraryPackage {
 		// Create data types
 		uriEDataType = createEDataType(URI);
 		iProgressMonitorEDataType = createEDataType(IPROGRESS_MONITOR);
-		coreExceptoinEDataType = createEDataType(CORE_EXCEPTOIN);
+		coreExceptionEDataType = createEDataType(CORE_EXCEPTION);
 		iPathEDataType = createEDataType(IPATH);
 		iStatusEDataType = createEDataType(ISTATUS);
 	}
@@ -523,7 +523,11 @@ public class LibraryPackageImpl extends EPackageImpl implements LibraryPackage {
 
 		EOperation op = addEOperation(idlLibraryEClass, this.getIStatus(), "load", 0, 1, IS_UNIQUE, IS_ORDERED);
 		addEParameter(op, this.getIProgressMonitor(), "monitor", 0, 1, IS_UNIQUE, IS_ORDERED);
-		addEException(op, this.getCoreExceptoin());
+		addEException(op, this.getCoreException());
+
+		op = addEOperation(idlLibraryEClass, this.getIStatus(), "reload", 0, 1, IS_UNIQUE, IS_ORDERED);
+		addEParameter(op, this.getIProgressMonitor(), "monitor", 0, 1, IS_UNIQUE, IS_ORDERED);
+		addEException(op, this.getCoreException());
 
 		initEClass(repositoryModuleEClass, RepositoryModule.class, "RepositoryModule", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEReference(getRepositoryModule_ModuleDefinitions(), theIdlPackage.getModule(), null, "moduleDefinitions", null, 0, -1, RepositoryModule.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -551,7 +555,7 @@ public class LibraryPackageImpl extends EPackageImpl implements LibraryPackage {
 		// Initialize data types
 		initEDataType(uriEDataType, org.eclipse.emf.common.util.URI.class, "URI", IS_SERIALIZABLE, !IS_GENERATED_INSTANCE_CLASS);
 		initEDataType(iProgressMonitorEDataType, IProgressMonitor.class, "IProgressMonitor", !IS_SERIALIZABLE, !IS_GENERATED_INSTANCE_CLASS);
-		initEDataType(coreExceptoinEDataType, CoreException.class, "CoreExceptoin", !IS_SERIALIZABLE, !IS_GENERATED_INSTANCE_CLASS);
+		initEDataType(coreExceptionEDataType, CoreException.class, "CoreException", !IS_SERIALIZABLE, !IS_GENERATED_INSTANCE_CLASS);
 		initEDataType(iPathEDataType, IPath.class, "IPath", IS_SERIALIZABLE, !IS_GENERATED_INSTANCE_CLASS);
 		initEDataType(iStatusEDataType, IStatus.class, "IStatus", !IS_SERIALIZABLE, !IS_GENERATED_INSTANCE_CLASS);
 
