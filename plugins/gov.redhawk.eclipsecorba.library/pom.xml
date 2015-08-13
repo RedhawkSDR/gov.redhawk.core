@@ -19,6 +19,6 @@
     <relativePath>../../releng/core/</relativePath>
   </parent>
   <artifactId>gov.redhawk.eclipsecorba.library</artifactId>
-  <version>7.0.0-SNAPSHOT</version>
+  <version>8.0.0-SNAPSHOT</version>
   <packaging>eclipse-plugin</packaging>
 </project>
