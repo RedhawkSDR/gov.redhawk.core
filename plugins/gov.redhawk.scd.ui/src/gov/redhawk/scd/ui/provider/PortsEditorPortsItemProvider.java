@@ -11,6 +11,7 @@ import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.edit.command.AddCommand;
+import org.eclipse.emf.edit.command.RemoveCommand;
 import org.eclipse.emf.edit.domain.AdapterFactoryEditingDomain;
 import org.eclipse.emf.edit.domain.EditingDomain;
 import org.eclipse.emf.edit.provider.ViewerNotification;
@@ -59,6 +60,27 @@ public class PortsEditorPortsItemProvider extends PortsItemProvider {
 		SoftwareComponent scd = ScaEcoreUtils.getEContainerOfType(owner, SoftwareComponent.class);
 		Interfaces interfaces = scd.getInterfaces();
 		command.appendIfCanExecute(AddCommand.create(domain, interfaces, ScdPackage.Literals.INTERFACES__INTERFACE, addedInterfaces));
+		return command.unwrap();
+	}
+
+	@Override
+	protected Command createRemoveCommand(EditingDomain domain, EObject owner, EStructuralFeature feature, Collection< ? > collection) {
+		CompoundCommand command = new CompoundCommand();
+		command.append(super.createRemoveCommand(domain, owner, feature, collection));
+
+		// Collect the set of interfaces used by the removed ports; duplicates are preserved because the Interfaces
+		// item provider manages removal by reference counting, so it needs to know how many times to decrement the
+		// reference count for each interface.
+		List<Interface> removedInterfaces = new ArrayList<Interface>();
+		for (Object object : collection) {
+			AbstractPort port = (AbstractPort) AdapterFactoryEditingDomain.unwrap(object);
+			removedInterfaces.add(port.getInterface());
+		}
+
+		// Create a command to remove the referenced interfaces, if necessary
+		SoftwareComponent scd = ScaEcoreUtils.getEContainerOfType(owner, SoftwareComponent.class);
+		Interfaces interfaces = scd.getInterfaces();
+		command.appendIfCanExecute(RemoveCommand.create(domain, interfaces, ScdPackage.Literals.INTERFACES__INTERFACE, removedInterfaces));
 		return command.unwrap();
 	}
 

@@ -4,13 +4,17 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.eclipse.emf.ecore.util.FeatureMap;
+
 import gov.redhawk.eclipsecorba.idl.IdlInterfaceDcl;
 import gov.redhawk.eclipsecorba.library.IdlLibrary;
 import gov.redhawk.ui.RedhawkUiActivator;
+import mil.jpeojtrs.sca.scd.AbstractPort;
 import mil.jpeojtrs.sca.scd.InheritsInterface;
 import mil.jpeojtrs.sca.scd.Interface;
 import mil.jpeojtrs.sca.scd.Interfaces;
 import mil.jpeojtrs.sca.scd.ScdFactory;
+import mil.jpeojtrs.sca.scd.SoftwareComponent;
 
 public class PortsUtil {
 
@@ -57,5 +61,39 @@ public class PortsUtil {
 			map.put(iface.getRepid(), iface);
 		}
 		return map;
+	}
+
+	public static Map<Interface, Integer> getInterfaceReferenceCount(SoftwareComponent scd) {
+		Map<Interface, Integer> refCount = new HashMap<Interface, Integer>();
+		PortsUtil.incrementReferenceCount(refCount, scd.getComponentRepID().getInterface());
+		for (FeatureMap.Entry entry : scd.getComponentFeatures().getPorts().getGroup()) {
+			AbstractPort port = (AbstractPort) entry.getValue();
+			PortsUtil.incrementReferenceCount(refCount, port.getInterface());
+		}
+		return refCount;
+	}
+
+	private static void incrementReferenceCount(Map<Interface, Integer> refCount, Interface iface) {
+		Integer count = refCount.get(iface);
+		if (count != null) {
+			count = count + 1;
+		} else {
+			count = 1;
+		}
+		refCount.put(iface, count);
+		for (InheritsInterface inherits : iface.getInheritsInterfaces()) {
+			PortsUtil.incrementReferenceCount(refCount, inherits.getInterface());
+		}
+	}
+
+	public static void decrementReferenceCount(Map<Interface, Integer> refCount, Interface iface) {
+		for (InheritsInterface inherits : iface.getInheritsInterfaces()) {
+			PortsUtil.decrementReferenceCount(refCount, inherits.getInterface());
+		}
+		Integer count = refCount.get(iface);
+		if (count != null) {
+			count = Math.max(0, count - 1);
+			refCount.put(iface, count);
+		}
 	}
 }
