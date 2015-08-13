@@ -13,6 +13,7 @@ package gov.redhawk.model.sca.commands;
 
 import gov.redhawk.model.sca.ScaComponent;
 import gov.redhawk.model.sca.ScaFactory;
+import gov.redhawk.model.sca.ScaModelPlugin;
 import gov.redhawk.model.sca.ScaPackage;
 import gov.redhawk.model.sca.ScaWaveform;
 
@@ -27,6 +28,7 @@ import mil.jpeojtrs.sca.sad.SoftwareAssembly;
 import mil.jpeojtrs.sca.util.ScaUriHelpers;
 
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.emf.common.util.TreeIterator;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
@@ -38,19 +40,10 @@ import CF.ResourceHelper;
 
 /**
  * @since 14.0
- * 
  */
 public class ScaWaveformMergeComponentsCommand extends SetStatusCommand<ScaWaveform> {
 
-	private static class ComponentInfo {
-		public String identifier = null; // SUPPRESS CHECKSTYLE Inner Class
-		public String softwareProfile = null; // SUPPRESS CHECKSTYLE Inner Class
-		public CF.ComponentEnumType type = null; // SUPPRESS CHECKSTYLE Inner Class
-		public Resource componentObject = null; // SUPPRESS CHECKSTYLE Inner Class
-		public CF.PortType[] providesPorts = null; // SUPPRESS CHECKSTYLE Inner Class
-	}
-
-	private final ComponentInfo[] compTypes;
+	private final ComponentType[] compTypes;
 
 	/**
 	 * 
@@ -66,21 +59,23 @@ public class ScaWaveformMergeComponentsCommand extends SetStatusCommand<ScaWavef
 	}
 
 	/**
+	 * Creates an EMF command which will update a waveform's components based on data from a CORBA call.
+	 * <p/>
+	 * Note that this method narrows CORBA objects, and therefore may be subject to a CORBA call.
+	 * @param provider The waveform to update
+	 * @param compTypes The information from a CORBA call about the waveform's current components
+	 * @param componentStatus The status from fetching CORBA data about the waveform's current components
 	 * @since 15.0
 	 */
 	public ScaWaveformMergeComponentsCommand(ScaWaveform provider, ComponentType[] compTypes, IStatus componentStatus) {
 		super(provider, ScaPackage.Literals.SCA_WAVEFORM__COMPONENTS, componentStatus);
 		if (compTypes == null) {
-			compTypes = new ComponentType[0];
+			this.compTypes = new ComponentType[0];
+		} else {
+			this.compTypes = compTypes;
 		}
-		this.compTypes = new ComponentInfo[compTypes.length];
 		for (int i = 0; i < compTypes.length; i++) {
-			this.compTypes[i] = new ComponentInfo();
-			this.compTypes[i].identifier = compTypes[i].identifier;
-			this.compTypes[i].softwareProfile = compTypes[i].softwareProfile;
-			this.compTypes[i].type = compTypes[i].type;
-			this.compTypes[i].componentObject = ResourceHelper.narrow(compTypes[i].componentObject);
-			this.compTypes[i].providesPorts = compTypes[i].providesPorts;
+			compTypes[i].componentObject = ResourceHelper.narrow(compTypes[i].componentObject);
 		}
 	}
 
@@ -92,20 +87,15 @@ public class ScaWaveformMergeComponentsCommand extends SetStatusCommand<ScaWavef
 	@Override
 	public void execute() {
 		if (status.isOK()) {
-			final Map<String, ComponentInfo> newComponentsMap = new HashMap<String, ComponentInfo>();
-			if (compTypes != null) {
-				for (final ComponentInfo component : compTypes) {
-					if (component == null) {
-						continue;
-					}
-					newComponentsMap.put(component.componentObject.toString(), component);
-				}
+			final Map<String, ComponentType> newComponentsMap = new HashMap<String, ComponentType>();
+			for (final ComponentType compType : compTypes) {
+				newComponentsMap.put(compType.identifier, compType);
 			}
 
 			// Current component Map
 			final Map<String, ScaComponent> currentComponents = new HashMap<String, ScaComponent>();
 			for (final ScaComponent component : provider.getComponents()) {
-				String componentId = component.getIor();
+				String componentId = component.getIdentifier();
 				currentComponents.put(componentId, component);
 			}
 
@@ -123,11 +113,15 @@ public class ScaWaveformMergeComponentsCommand extends SetStatusCommand<ScaWavef
 			newComponentsMap.keySet().removeAll(currentComponents.keySet());
 
 			URI profileURI = provider.getProfileURI();
-			for (final ComponentInfo typeInfo : newComponentsMap.values()) {
+			for (final ComponentType typeInfo : newComponentsMap.values()) {
 				URI spdUri = ScaUriHelpers.createFileSystemURI(typeInfo.softwareProfile, profileURI, null);
 				final ScaComponent component = createComponent();
-				component.setCorbaObj(typeInfo.componentObject);
-				component.setObj(typeInfo.componentObject);
+				if (typeInfo.componentObject == null) {
+					component.setStatus(ScaPackage.Literals.CORBA_OBJ_WRAPPER__CORBA_OBJ, new Status(IStatus.ERROR, ScaModelPlugin.ID, "No CORBA object was provided by the waveform for this component."));
+				} else {
+					component.setCorbaObj(typeInfo.componentObject);
+					component.setObj((Resource) typeInfo.componentObject);
+				}
 				component.setProfileURI(spdUri);
 				component.setIdentifier(typeInfo.identifier);
 				provider.getComponents().add(component);
