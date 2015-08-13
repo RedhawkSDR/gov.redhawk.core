@@ -66,11 +66,13 @@ public class PortsUtil {
 	}
 
 	public static void createRequiredInterfaces(String repId, List<Interface> interfaces) {
-		IdlLibrary library = PortsUtil.getIdlLibrary();
-		if (library != null) {
-			IdlInterfaceDcl decl = (IdlInterfaceDcl) library.find(repId);
-			if (decl != null) {
-				PortsUtil.createRequiredInterfaces(decl, interfaces);
+		if (repId != null) {
+			IdlLibrary library = PortsUtil.getIdlLibrary();
+			if (library != null) {
+				IdlInterfaceDcl decl = (IdlInterfaceDcl) library.find(repId);
+				if (decl != null) {
+					PortsUtil.createRequiredInterfaces(decl, interfaces);
+				}
 			}
 		}
 	}
