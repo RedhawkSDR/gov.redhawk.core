@@ -1,17 +1,28 @@
 package gov.redhawk.scd.ui.util;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.emf.common.command.Command;
 import org.eclipse.emf.ecore.util.FeatureMap;
 import org.eclipse.emf.edit.command.ReplaceCommand;
 import org.eclipse.emf.edit.domain.EditingDomain;
+import org.eclipse.jface.dialogs.ProgressMonitorDialog;
+import org.eclipse.jface.operation.IRunnableWithProgress;
+import org.eclipse.swt.widgets.Shell;
+import org.eclipse.ui.PlatformUI;
+import org.eclipse.ui.statushandlers.StatusManager;
 
 import gov.redhawk.eclipsecorba.idl.IdlInterfaceDcl;
 import gov.redhawk.eclipsecorba.library.IdlLibrary;
+import gov.redhawk.scd.ui.ScdUiPlugin;
 import gov.redhawk.ui.RedhawkUiActivator;
 import mil.jpeojtrs.sca.scd.AbstractPort;
 import mil.jpeojtrs.sca.scd.InheritsInterface;
@@ -27,8 +38,35 @@ public class PortsUtil {
 	private PortsUtil() {
 	}
 
+	private static IdlLibrary getIdlLibrary() {
+		final IdlLibrary library = RedhawkUiActivator.getDefault().getIdlLibraryService().getLibrary();
+		if (library.getLoadStatus() == null) {
+			Shell shell = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell();
+			try {
+				new ProgressMonitorDialog(shell).run(true, true, new IRunnableWithProgress() {
+
+					@Override
+					public void run(IProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
+						try {
+							library.load(monitor);
+						} catch (CoreException e) {
+							throw new InvocationTargetException(e);
+						}
+					}
+				});
+			} catch (InterruptedException e) {
+				// PASS
+			} catch (InvocationTargetException e) {
+				IStatus status = new Status(Status.ERROR, ScdUiPlugin.PLUGIN_ID, "Failed to load IDL library", e.getCause());
+				StatusManager.getManager().handle(status, StatusManager.SHOW | StatusManager.LOG);
+				return null;
+			}
+		}
+		return library;
+	}
+
 	public static void createRequiredInterfaces(String repId, List<Interface> interfaces) {
-		IdlLibrary library = RedhawkUiActivator.getDefault().getIdlLibraryService().getLibrary();
+		IdlLibrary library = PortsUtil.getIdlLibrary();
 		if (library != null) {
 			IdlInterfaceDcl decl = (IdlInterfaceDcl) library.find(repId);
 			if (decl != null) {
