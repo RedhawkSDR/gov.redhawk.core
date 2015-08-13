@@ -21,7 +21,7 @@ public class PortsEditorProvidesItemProvider extends ProvidesItemProvider {
 	@Override
 	protected Command createSetCommand(EditingDomain domain, EObject owner, EStructuralFeature feature, Object value, int index) {
 		if (feature == ScdPackage.Literals.ABSTRACT_PORT__REP_ID) {
-			CompoundCommand command = new CompoundCommand();
+			CompoundCommand command = new CompoundCommand(0);
 			command.append(super.createSetCommand(domain, owner, feature, value, index));
 			command.appendIfCanExecute(PortsUtil.createReplaceInterfaceCommand(domain, (AbstractPort) owner, (String) value));
 			return command.unwrap();
