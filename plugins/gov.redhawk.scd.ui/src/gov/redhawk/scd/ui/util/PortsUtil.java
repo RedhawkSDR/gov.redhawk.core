@@ -152,7 +152,18 @@ public class PortsUtil {
 			SoftwareComponent scd = ScaEcoreUtils.getEContainerOfType(port, SoftwareComponent.class);
 			List<Interface> addedInterfaces = new ArrayList<Interface>();
 			PortsUtil.createRequiredInterfaces(repId, addedInterfaces);
-			return ReplaceCommand.create(domain, scd.getInterfaces(), ScdPackage.Literals.INTERFACES__INTERFACE, port.getInterface(), addedInterfaces);
+
+			// If the port is bi-directional, we're really replacing two references to the interface
+			Object value;
+			if (port.isBiDirectional()) {
+				List<Interface> values = new ArrayList<Interface>(2);
+				values.add(port.getInterface());
+				values.add(port.getSibling().getInterface());
+				value = values;
+			} else {
+				value = port.getInterface();
+			}
+			return ReplaceCommand.create(domain, scd.getInterfaces(), ScdPackage.Literals.INTERFACES__INTERFACE, value, addedInterfaces);
 		}
 		return null;
 	}

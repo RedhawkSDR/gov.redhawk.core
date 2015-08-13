@@ -2,6 +2,7 @@ package gov.redhawk.scd.ui.provider;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -84,10 +85,18 @@ public class PortsEditorInterfacesItemProvider extends InterfacesItemProvider {
 		}
 		command.appendIfCanExecute(super.createAddCommand(domain, owner, feature, addedInterfaces, CommandParameter.NO_INDEX));
 
-		// Decrement the reference count for the replaced interface, including inherited interfaces; this can result
+		// Decrement the reference count for the replaced interfaces, including inherited interfaces; this can result
 		// in zero to many removed interfaces.
-		Interface removedInterface = (Interface) value;
-		PortsUtil.decrementReferenceCount(refCount, removedInterface);
+		Collection< ? > replacedInterfaces;
+		if (value instanceof Collection< ? >) {
+			replacedInterfaces = (Collection< ? >) value;
+		} else {
+			replacedInterfaces = Collections.singleton(value);
+		}
+		for (Object item : replacedInterfaces) {
+			Interface replacedInterface = (Interface) item;
+			PortsUtil.decrementReferenceCount(refCount, replacedInterface);
+		}
 
 		// Remove any interfaces whose reference count is now zero
 		List<Interface> removedInterfaces = new ArrayList<Interface>();
