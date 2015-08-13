@@ -8,7 +8,18 @@ public class PortsEditorScdItemProviderAdapterFactory extends ScdItemProviderAda
 
 	@Override
 	public Adapter createPortsAdapter() {
-		return new PortsEditorPortsItemProvider(this);
+		if (portsItemProvider == null) {
+			portsItemProvider = new PortsEditorPortsItemProvider(this);
+		}
+		return portsItemProvider;
+	}
+
+	@Override
+	public Adapter createInterfacesAdapter() {
+		if (interfacesItemProvider == null) {
+			interfacesItemProvider = new PortsEditorInterfacesItemProvider(this);
+		}
+		return interfacesItemProvider;
 	}
 
 }

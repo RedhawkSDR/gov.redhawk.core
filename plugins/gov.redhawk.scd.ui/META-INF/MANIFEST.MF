@@ -11,8 +11,10 @@ Require-Bundle: org.eclipse.ui,
  gov.redhawk.ui,
  mil.jpeojtrs.sca.scd,
  mil.jpeojtrs.sca.scd.edit,
+ mil.jpeojtrs.sca.util,
  org.eclipse.core.databinding.property;bundle-version="1.5.0",
  gov.redhawk.eclipsecorba.library.ui
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Bundle-ActivationPolicy: lazy
-Export-Package: gov.redhawk.scd.ui.editor.page
+Export-Package: gov.redhawk.scd.ui.editor.page,
+ gov.redhawk.scd.ui.provider
