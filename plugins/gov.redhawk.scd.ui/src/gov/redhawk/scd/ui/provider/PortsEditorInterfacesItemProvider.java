@@ -6,9 +6,11 @@ import java.util.List;
 import java.util.Map;
 
 import org.eclipse.emf.common.command.Command;
+import org.eclipse.emf.common.command.CompoundCommand;
 import org.eclipse.emf.common.notify.AdapterFactory;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EStructuralFeature;
+import org.eclipse.emf.edit.command.CommandParameter;
 import org.eclipse.emf.edit.domain.EditingDomain;
 
 import gov.redhawk.scd.ui.util.PortsUtil;
@@ -60,6 +62,43 @@ public class PortsEditorInterfacesItemProvider extends InterfacesItemProvider {
 			}
 		}
 		return super.createRemoveCommand(domain, owner, feature, removedInterfaces);
+	}
+
+	@Override
+	protected Command createReplaceCommand(EditingDomain domain, EObject owner, EStructuralFeature feature, Object value, Collection< ? > collection) {
+		CompoundCommand command = new CompoundCommand();
+
+		// Update reference count for new interfaces, adding any unseen ones to the add command
+		SoftwareComponent scd = ScaEcoreUtils.getEContainerOfType(owner, SoftwareComponent.class);
+		final Map<Interface, Integer> refCount = PortsUtil.getInterfaceReferenceCount(scd);
+		final Map<String, Interface> currentInterfaces = PortsUtil.getInterfaceMap(scd.getInterfaces());
+		List<Interface> addedInterfaces = new ArrayList<Interface>();
+		for (Object object : collection) {
+			Interface iface = (Interface) object;
+			Interface existing = currentInterfaces.get(iface.getRepid());
+			if (existing == null) {
+				addedInterfaces.add(iface);
+			} else {
+				PortsUtil.incrementReferenceCount(refCount, existing);
+			}
+		}
+		command.appendIfCanExecute(super.createAddCommand(domain, owner, feature, addedInterfaces, CommandParameter.NO_INDEX));
+
+		// Decrement the reference count for the replaced interface, including inherited interfaces; this can result
+		// in zero to many removed interfaces.
+		Interface removedInterface = (Interface) value;
+		PortsUtil.decrementReferenceCount(refCount, removedInterface);
+
+		// Remove any interfaces whose reference count is now zero
+		List<Interface> removedInterfaces = new ArrayList<Interface>();
+		for (Map.Entry<Interface, Integer> entry : refCount.entrySet()) {
+			if (entry.getValue() == 0) {
+				removedInterfaces.add(entry.getKey());
+			}
+		}
+		command.appendIfCanExecute(super.createRemoveCommand(domain, owner, feature, removedInterfaces));
+
+		return command.unwrap();
 	}
 
 }

@@ -1,10 +1,14 @@
 package gov.redhawk.scd.ui.util;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.eclipse.emf.common.command.Command;
 import org.eclipse.emf.ecore.util.FeatureMap;
+import org.eclipse.emf.edit.command.ReplaceCommand;
+import org.eclipse.emf.edit.domain.EditingDomain;
 
 import gov.redhawk.eclipsecorba.idl.IdlInterfaceDcl;
 import gov.redhawk.eclipsecorba.library.IdlLibrary;
@@ -14,7 +18,9 @@ import mil.jpeojtrs.sca.scd.InheritsInterface;
 import mil.jpeojtrs.sca.scd.Interface;
 import mil.jpeojtrs.sca.scd.Interfaces;
 import mil.jpeojtrs.sca.scd.ScdFactory;
+import mil.jpeojtrs.sca.scd.ScdPackage;
 import mil.jpeojtrs.sca.scd.SoftwareComponent;
+import mil.jpeojtrs.sca.util.ScaEcoreUtils;
 
 public class PortsUtil {
 
@@ -73,7 +79,10 @@ public class PortsUtil {
 		return refCount;
 	}
 
-	private static void incrementReferenceCount(Map<Interface, Integer> refCount, Interface iface) {
+	public static void incrementReferenceCount(Map<Interface, Integer> refCount, Interface iface) {
+		if (iface == null) {
+			return;
+		}
 		Integer count = refCount.get(iface);
 		if (count != null) {
 			count = count + 1;
@@ -87,6 +96,9 @@ public class PortsUtil {
 	}
 
 	public static void decrementReferenceCount(Map<Interface, Integer> refCount, Interface iface) {
+		if (iface == null) {
+			return;
+		}
 		for (InheritsInterface inherits : iface.getInheritsInterfaces()) {
 			PortsUtil.decrementReferenceCount(refCount, inherits.getInterface());
 		}
@@ -95,5 +107,15 @@ public class PortsUtil {
 			count = Math.max(0, count - 1);
 			refCount.put(iface, count);
 		}
+	}
+
+	public static Command createReplaceInterfaceCommand(EditingDomain domain, AbstractPort port, String repId) {
+		if (!port.getRepID().equals(repId)) {
+			SoftwareComponent scd = ScaEcoreUtils.getEContainerOfType(port, SoftwareComponent.class);
+			List<Interface> addedInterfaces = new ArrayList<Interface>();
+			PortsUtil.createRequiredInterfaces(repId, addedInterfaces);
+			return ReplaceCommand.create(domain, scd.getInterfaces(), ScdPackage.Literals.INTERFACES__INTERFACE, port.getInterface(), addedInterfaces);
+		}
+		return null;
 	}
 }

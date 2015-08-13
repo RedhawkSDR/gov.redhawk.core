@@ -22,4 +22,20 @@ public class PortsEditorScdItemProviderAdapterFactory extends ScdItemProviderAda
 		return interfacesItemProvider;
 	}
 
+	@Override
+	public Adapter createUsesAdapter() {
+		if (usesItemProvider == null) {
+			usesItemProvider = new PortsEditorUsesItemProvider(this);
+		}
+		return usesItemProvider;
+	}
+
+	@Override
+	public Adapter createProvidesAdapter() {
+		if (providesItemProvider == null) {
+			providesItemProvider = new PortsEditorProvidesItemProvider(this);
+		}
+		return providesItemProvider;
+	}
+
 }
