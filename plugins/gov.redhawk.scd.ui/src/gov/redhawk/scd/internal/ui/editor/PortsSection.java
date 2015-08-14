@@ -152,6 +152,15 @@ public class PortsSection extends TreeSection {
 		}
 	
 		super.refresh(resource);
+
+		IStructuredSelection selection = fViewer.getStructuredSelection();
+		if (selection.isEmpty()) {
+			TreeItem[] items = fViewer.getTree().getItems();
+			if (items.length > 0) {
+				selection = new StructuredSelection(items[0].getData());
+				fViewer.setSelection(selection);
+			}
+		}
 	}
 
 	@Override

@@ -1,7 +1,9 @@
 package gov.redhawk.scd.ui.editor.page;
 
+import org.eclipse.emf.common.ui.viewer.IViewerProvider;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.jface.action.ToolBarManager;
+import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.ui.forms.IManagedForm;
 import org.eclipse.ui.forms.widgets.ScrolledForm;
 import org.eclipse.ui.menus.IMenuService;
@@ -10,7 +12,7 @@ import gov.redhawk.scd.internal.ui.editor.PortsBlock;
 import gov.redhawk.ui.editor.SCAFormEditor;
 import gov.redhawk.ui.editor.ScaFormPage;
 
-public class PortsFormPage extends ScaFormPage {
+public class PortsFormPage extends ScaFormPage implements IViewerProvider {
 	private final PortsBlock fBlock;
 	
 	/** The Constant PAGE_ID. */
@@ -41,6 +43,11 @@ public class PortsFormPage extends ScaFormPage {
 	@Override
 	protected void refresh(Resource resource) {
 		this.fBlock.refresh(resource);
+	}
+
+	@Override
+	public Viewer getViewer() {
+		return this.fBlock.getSection().getStructuredViewerPart().getViewer();
 	}
 
 }

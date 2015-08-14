@@ -46,7 +46,7 @@ public class PortsEditorPortsItemProvider extends PortsItemProvider {
 
 	@Override
 	protected Command createAddCommand(EditingDomain domain, EObject owner, EStructuralFeature feature, Collection< ? > collection, int index) {
-		CompoundCommand command = new CompoundCommand();
+		CompoundCommand command = new CompoundCommand(0);
 		command.append(super.createAddCommand(domain, owner, feature, collection, index));
 
 		// Collect the set of interfaces used by the added ports
@@ -65,7 +65,7 @@ public class PortsEditorPortsItemProvider extends PortsItemProvider {
 
 	@Override
 	protected Command createRemoveCommand(EditingDomain domain, EObject owner, EStructuralFeature feature, Collection< ? > collection) {
-		CompoundCommand command = new CompoundCommand();
+		CompoundCommand command = new CompoundCommand(0);
 		command.append(super.createRemoveCommand(domain, owner, feature, collection));
 
 		// Collect the set of interfaces used by the removed ports; duplicates are preserved because the Interfaces

@@ -43,4 +43,7 @@ public class PortsBlock extends SCAMasterDetailsBlock {
 		});
 	}
 
+	public PortsSection getSection() {
+		return this.fSection;
+	}
 }
