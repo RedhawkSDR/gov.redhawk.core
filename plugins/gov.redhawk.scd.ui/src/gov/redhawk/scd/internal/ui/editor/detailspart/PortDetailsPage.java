@@ -1,23 +1,20 @@
 package gov.redhawk.scd.internal.ui.editor.detailspart;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import org.eclipse.core.databinding.Binding;
 import org.eclipse.core.databinding.DataBindingContext;
 import org.eclipse.emf.common.command.Command;
-import org.eclipse.emf.common.command.CommandWrapper;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.impl.AdapterImpl;
 import org.eclipse.emf.databinding.edit.EMFEditObservables;
 import org.eclipse.emf.ecore.EObject;
-import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.emf.edit.command.AddCommand;
 import org.eclipse.emf.edit.command.RemoveCommand;
-import org.eclipse.emf.edit.command.ReplaceCommand;
 import org.eclipse.emf.edit.domain.EditingDomain;
 import org.eclipse.jface.databinding.swt.WidgetProperties;
+import org.eclipse.jface.databinding.viewers.ViewersObservables;
 import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.CheckStateChangedEvent;
@@ -25,11 +22,7 @@ import org.eclipse.jface.viewers.CheckboxTableViewer;
 import org.eclipse.jface.viewers.ComboViewer;
 import org.eclipse.jface.viewers.ICheckStateListener;
 import org.eclipse.jface.viewers.ICheckStateProvider;
-import org.eclipse.jface.viewers.ISelectionChangedListener;
-import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.LabelProvider;
-import org.eclipse.jface.viewers.SelectionChangedEvent;
-import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
@@ -49,12 +42,10 @@ import gov.redhawk.ui.editor.SCAFormEditor;
 import gov.redhawk.ui.editor.ScaDetails;
 import gov.redhawk.ui.editor.ScaFormPage;
 import mil.jpeojtrs.sca.scd.AbstractPort;
+import mil.jpeojtrs.sca.scd.PortDirection;
 import mil.jpeojtrs.sca.scd.PortType;
 import mil.jpeojtrs.sca.scd.PortTypeContainer;
-import mil.jpeojtrs.sca.scd.Ports;
-import mil.jpeojtrs.sca.scd.ScdFactory;
 import mil.jpeojtrs.sca.scd.ScdPackage;
-import mil.jpeojtrs.sca.scd.Uses;
 
 public class PortDetailsPage extends ScaDetails {
 
@@ -110,38 +101,6 @@ public class PortDetailsPage extends ScaDetails {
 				PortDetailsPage.this.typeTable.refresh();
 			}
 			super.notifyChanged(msg);
-		}
-	};
-
-	private static enum PortDirection {
-		PROVIDES("in <provides>"),
-		USES("out <uses>"),
-		BIDIR("bidir <uses/provides>");
-
-		private final String label;
-
-		private PortDirection(String label) {
-			this.label = label;
-		}
-
-		@Override
-		public String toString() {
-			return label;
-		}
-
-		public static PortDirection getDirection(AbstractPort port) {
-			if (port.isBiDirectional()) {
-				return PortDirection.BIDIR;
-			}
-			return getInstanceDirection(port);
-		}
-
-		public static PortDirection getInstanceDirection(AbstractPort port) {
-			if (port instanceof Uses) {
-				return PortDirection.USES;
-			} else {
-				return PortDirection.PROVIDES;
-			}
 		}
 	};
 
@@ -201,7 +160,8 @@ public class PortDetailsPage extends ScaDetails {
 		bindings.add(dataBindingContext.bindValue(WidgetProperties.text(SWT.Modify).observeDelayed(SCAFormEditor.getFieldBindingDelay(), nameEntry.getText()),
 			EMFEditObservables.observeValue(getEditingDomain(), input, ScdPackage.Literals.ABSTRACT_PORT__NAME)));
 
-		directionCombo.setSelection(new StructuredSelection(PortDirection.getDirection((AbstractPort) input)));
+		bindings.add(dataBindingContext.bindValue(ViewersObservables.observeSingleSelection(directionCombo),
+			EMFEditObservables.observeValue(getEditingDomain(), input, ScdPackage.Literals.ABSTRACT_PORT__DIRECTION)));
 
 		bindings.add(dataBindingContext.bindValue(WidgetProperties.text(SWT.Modify).observe(idlEntry.getText()),
 			EMFEditObservables.observeValue(getEditingDomain(), input, ScdPackage.Literals.ABSTRACT_PORT__REP_ID)));
@@ -233,12 +193,20 @@ public class PortDetailsPage extends ScaDetails {
 		directionCombo.getControl().setLayoutData(gridDataFactory.create());
 		directionCombo.setContentProvider(new ArrayContentProvider());
 		directionCombo.setInput(PortDirection.values());
-		directionCombo.addSelectionChangedListener(new ISelectionChangedListener() {
+		directionCombo.setLabelProvider(new LabelProvider() {
 
 			@Override
-			public void selectionChanged(SelectionChangedEvent event) {
-				IStructuredSelection selection = (IStructuredSelection) event.getSelection();
-				PortDetailsPage.this.handlePortDirectionChange((PortDirection) selection.getFirstElement());
+			public String getText(Object element) {
+				switch ((PortDirection) element) {
+				case USES:
+					return "out <uses>";
+				case PROVIDES:
+					return "in <provides>";
+				case BIDIR:
+					return "bi-dir <uses/provides>";
+				default:
+					return null;
+				}
 			}
 		});
 
@@ -278,48 +246,4 @@ public class PortDetailsPage extends ScaDetails {
 		return label;
 	}
 
-	private void handlePortDirectionChange(PortDirection direction) {
-		if (port != null) {
-			PortDirection currentDirection = PortDirection.getDirection(port);
-			if (currentDirection != direction) {
-				EditingDomain domain = getEditingDomain();
-				Command command = createPortDirectionChangeCommand(domain, direction);
-				domain.getCommandStack().execute(new CommandWrapper("Change Direction", command.getDescription(), command));
-			}
-		}
-	}
-
-	private Command createPortDirectionChangeCommand(EditingDomain domain, PortDirection direction) {
-		if (port.isBiDirectional()) {
-			AbstractPort removedPort;
-			if (PortDirection.getInstanceDirection(port) == direction) {
-				removedPort = port.getSibling();
-			} else {
-				removedPort = port;
-			}
-			return RemoveCommand.create(domain, removedPort);
-		} else {
-			AbstractPort sibling = createSibling(port);
-			if (direction == PortDirection.BIDIR){
-				Ports ports = (Ports) port.eContainer();
-				return AddCommand.create(domain, ports, null, sibling);
-			} else {
-				return ReplaceCommand.create(domain, port, Collections.singleton(sibling));
-			}
-		}
-	}
-
-	private AbstractPort createSibling(AbstractPort port) {
-		AbstractPort sibling;
-		if (port instanceof Uses) {
-			sibling = ScdFactory.eINSTANCE.createProvides();
-		} else {
-			sibling = ScdFactory.eINSTANCE.createUses();
-		}
-		sibling.setDescription(port.getDescription());
-		sibling.setName(port.getName());
-		sibling.setRepID(port.getRepID());
-		sibling.getPortType().addAll(EcoreUtil.copyAll(port.getPortType()));
-		return sibling;
-	}
 }
