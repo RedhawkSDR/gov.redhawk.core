@@ -238,9 +238,10 @@ public class PlotPortHandler extends AbstractHandler {
 				} else if (PlotPortHandler.isBulkIOPortSupported(idl)) { // supported BULKIO data Port
 					plotSource = new PlotSource(port, bulkIOBlockSettings, fftBlockSettings, plotBlockSettings, pipeQualifiers);
 				} else {
-					StatusManager.getManager().handle(new Status(IStatus.WARNING, PlotActivator.PLUGIN_ID, "Unsupported Port: " + port + " idl: " + idl),
-						StatusManager.LOG);
-					continue; // log warning and skip unsupported Port type
+					// Log warning and skip unsupported port
+					String msg = String.format("Cannot plot port '%s' due to unsupported type '%s'", port.getName(), idl);
+					StatusManager.getManager().handle(new Status(IStatus.WARNING, PlotActivator.PLUGIN_ID, msg), StatusManager.LOG);
+					continue;
 				}
 				plotView.addPlotSource(plotSource);
 			} else {
