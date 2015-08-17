@@ -508,6 +508,7 @@ public interface LibraryPackage extends EPackage {
 	/**
 	 * The meta object id for the '<em>Core Exception</em>' data type.
 	 * <!-- begin-user-doc -->
+	 * @since 9.0
 	 * <!-- end-user-doc -->
 	 * @see org.eclipse.core.runtime.CoreException
 	 * @see gov.redhawk.eclipsecorba.library.impl.LibraryPackageImpl#getCoreException()
@@ -761,6 +762,7 @@ public interface LibraryPackage extends EPackage {
 	/**
 	 * Returns the meta object for data type '{@link org.eclipse.core.runtime.CoreException <em>Core Exception</em>}'.
 	 * <!-- begin-user-doc -->
+	 * @since 9.0
 	 * <!-- end-user-doc -->
 	 * @return the meta object for data type '<em>Core Exception</em>'.
 	 * @see org.eclipse.core.runtime.CoreException
@@ -980,6 +982,7 @@ public interface LibraryPackage extends EPackage {
 		/**
 		 * The meta object literal for the '<em>Core Exception</em>' data type.
 		 * <!-- begin-user-doc -->
+		 * @since 9.0
 		 * <!-- end-user-doc -->
 		 * @see org.eclipse.core.runtime.CoreException
 		 * @see gov.redhawk.eclipsecorba.library.impl.LibraryPackageImpl#getCoreException()
