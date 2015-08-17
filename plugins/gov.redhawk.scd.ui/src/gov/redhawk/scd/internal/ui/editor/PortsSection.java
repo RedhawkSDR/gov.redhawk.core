@@ -16,8 +16,11 @@ import org.eclipse.emf.edit.provider.IDisposable;
 import org.eclipse.emf.edit.ui.provider.AdapterFactoryContentProvider;
 import org.eclipse.emf.edit.ui.provider.AdapterFactoryLabelProvider;
 import org.eclipse.jface.viewers.ColumnLabelProvider;
+import org.eclipse.jface.viewers.ISelection;
+import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.ITableLabelProvider;
+import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.jface.viewers.TreeViewerColumn;
@@ -25,6 +28,7 @@ import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.viewers.ViewerFilter;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Image;
+import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.TreeItem;
 import org.eclipse.ui.forms.widgets.FormToolkit;
@@ -41,6 +45,9 @@ import mil.jpeojtrs.sca.scd.SoftwareComponent;
 import mil.jpeojtrs.sca.scd.Uses;
 
 public class PortsSection extends TreeSection {
+
+	private final String DEFAULT_PORT_NAME = "dataFloat";
+	private final String DEFAULT_PORT_INTERFACE = "IDL:BULKIO/dataFloat:1.0";
 
 	private static final int BUTTON_ADD = 0;
 	private static final int BUTTON_REMOVE = 1;
@@ -155,26 +162,29 @@ public class PortsSection extends TreeSection {
 
 		IStructuredSelection selection = fViewer.getStructuredSelection();
 		if (selection.isEmpty()) {
-			TreeItem[] items = fViewer.getTree().getItems();
-			if (items.length > 0) {
-				selection = new StructuredSelection(items[0].getData());
-				fViewer.setSelection(selection);
-			}
+			selectDefault();
+		} else {
+			fViewer.setSelection(selection);
 		}
 	}
 
 	@Override
 	protected void selectionChanged(IStructuredSelection selection) {
 		if (selection.isEmpty()) {
-			TreeItem[] items = fViewer.getTree().getItems();
-			if (items.length == 0) {
-				getTreePart().setButtonEnabled(BUTTON_REMOVE, false);
-				return;
-			}
-			selection = new StructuredSelection(items[0].getData());
+			selectDefault();
+		} else {
+			getTreePart().setButtonEnabled(BUTTON_REMOVE, true);
+			getPage().setSelection(selection);
 		}
-		getTreePart().setButtonEnabled(BUTTON_REMOVE, true);
-		getPage().setSelection(selection);
+	}
+
+	private void selectDefault() {
+		TreeItem[] items = fViewer.getTree().getItems();
+		if (items.length == 0) {
+			getTreePart().setButtonEnabled(BUTTON_REMOVE, false);
+			return;
+		}
+		fViewer.setSelection(new StructuredSelection(items[0].getData()));
 	}
 
 	@Override
@@ -195,7 +205,7 @@ public class PortsSection extends TreeSection {
 			EditingDomain domain = getPage().getEditingDomain();
 			Provides provides = ScdFactory.eINSTANCE.createProvides();
 			provides.setName(getDefaultPortName());
-			provides.setRepID("IDL:BULKIO/dataFloat:1.0");
+			provides.setRepID(DEFAULT_PORT_INTERFACE);
 			Command addCommand = AddCommand.create(domain, ports, ScdPackage.Literals.PORTS__PROVIDES, provides);
 			domain.getCommandStack().execute(addCommand);
 		}
@@ -207,7 +217,6 @@ public class PortsSection extends TreeSection {
 			portNameList.add(port.getName());
 		}
 
-		final String DEFAULT_PORT_NAME = "dataFloat";
 		String defaultName = DEFAULT_PORT_NAME;
 
 		int nameIncrement = 1;
