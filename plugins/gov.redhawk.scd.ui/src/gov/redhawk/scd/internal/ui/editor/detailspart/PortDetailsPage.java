@@ -245,7 +245,7 @@ public class PortDetailsPage extends ScaDetails {
 		});
 
 		createLabel(client, toolkit, "Description:");
-		descriptionText = toolkit.createText(client, null, SWT.MULTI);
+		descriptionText = toolkit.createText(client, null, SWT.MULTI | SWT.WRAP);
 		descriptionText.setLayoutData(gridDataFactory.copy().hint(SWT.DEFAULT, 75).create());
 		return client;
 	}
