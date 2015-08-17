@@ -127,6 +127,7 @@
     <module>../plugins/gov.redhawk.sca.rcp</module>
     <module>../plugins/gov.redhawk.sca.sad.diagram</module>
     <module>../plugins/gov.redhawk.sca.sad.validation</module>
+    <module>../plugins/gov.redhawk.scd.ui</module>
     <module>../plugins/gov.redhawk.scd.validation</module>
     <module>../plugins/gov.redhawk.spd.validation</module>
     <module>../plugins/gov.redhawk.swt.browser</module>
