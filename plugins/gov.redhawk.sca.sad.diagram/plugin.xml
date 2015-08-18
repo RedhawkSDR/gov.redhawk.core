@@ -34,14 +34,6 @@
          </Priority>
       </editpartProvider>
    </extension>
-   <extension point="org.eclipse.ui.preferencePages" id="prefPages">
-      <page
-            category="mil.jpeojtrs.sca.sad.diagram.general"
-            class="gov.redhawk.sca.sad.diagram.preferences.SadFiltersPreferencePage"
-            id="gov.redhawk.sca.sad.diagram.SadFiltersPreferencePage"
-            name="%page.name.0">
-      </page>
-   </extension>
    <extension
          point="org.eclipse.gmf.runtime.diagram.core.viewProviders">
       <viewProvider

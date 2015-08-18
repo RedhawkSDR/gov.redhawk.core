@@ -11,14 +11,14 @@
  */
 package gov.redhawk.sca.sad.diagram;
 
-import gov.redhawk.sca.sad.diagram.preferences.DiagramAppearancePreferencePage;
-import mil.jpeojtrs.sca.sad.diagram.part.SadDiagramEditorPlugin;
-
+import org.eclipse.gmf.runtime.diagram.ui.preferences.AppearancePreferencePage;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
+
+import mil.jpeojtrs.sca.sad.diagram.part.SadDiagramEditorPlugin;
 
 /**
  * The activator class controls the plug-in life cycle
@@ -46,13 +46,10 @@ public class RedhawkSadDiagramPlugin extends AbstractUIPlugin {
 		super.start(context);
 		plugin = this;
 
-		/*
-		 * Initialize defaults for the Appearance Preference Page that we provide in this plugin.
-		 * 
-		 * TODO: Replace this with PreferenceInitializer instance
-		 */
+		// Initialize defaults for the Appearance Preference Page that we provide in this plugin.
 		final IPreferenceStore store = SadDiagramEditorPlugin.getInstance().getPreferenceStore();
-		DiagramAppearancePreferencePage.initDefaults(store);
+		AppearancePreferencePage.initDefaults(store);
+		store.setDefault(SadDiagramPreferenceConstants.PREF_SHOW_PORT_LABELS, true);
 	}
 
 	/*

@@ -171,40 +171,6 @@
       <initializer class="mil.jpeojtrs.sca.sad.diagram.preferences.DiagramPreferenceInitializer"/>
    </extension>
 
-   <extension point="org.eclipse.ui.preferencePages" id="prefpages">
-      <?gmfgen generated="true"?>
-      <page
-            id="mil.jpeojtrs.sca.sad.diagram.general"
-            name="%prefpage.mil.jpeojtrs.sca.sad.diagram.general"
-            category="gov.redhawk.ui.preferences"
-            class="mil.jpeojtrs.sca.sad.diagram.preferences.DiagramGeneralPreferencePage">
-      </page>
-      <page
-            id="mil.jpeojtrs.sca.sad.diagram.appearance"
-            name="%prefpage.mil.jpeojtrs.sca.sad.diagram.appearance"
-            category="mil.jpeojtrs.sca.sad.diagram.general"
-            class="mil.jpeojtrs.sca.sad.diagram.preferences.DiagramAppearancePreferencePage">
-      </page>
-      <page
-            id="mil.jpeojtrs.sca.sad.diagram.connections"
-            name="%prefpage.mil.jpeojtrs.sca.sad.diagram.connections"
-            category="mil.jpeojtrs.sca.sad.diagram.general"
-            class="mil.jpeojtrs.sca.sad.diagram.preferences.DiagramConnectionsPreferencePage">
-      </page>
-      <page
-            id="mil.jpeojtrs.sca.sad.diagram.printing"
-            name="%prefpage.mil.jpeojtrs.sca.sad.diagram.printing"
-            category="mil.jpeojtrs.sca.sad.diagram.general"
-            class="mil.jpeojtrs.sca.sad.diagram.preferences.DiagramPrintingPreferencePage">
-      </page>
-      <page
-            id="mil.jpeojtrs.sca.sad.diagram.rulersAndGrid"
-            name="%prefpage.mil.jpeojtrs.sca.sad.diagram.rulersAndGrid"
-            category="mil.jpeojtrs.sca.sad.diagram.general"
-            class="mil.jpeojtrs.sca.sad.diagram.preferences.DiagramRulersAndGridPreferencePage">
-      </page>
-   </extension>
-
    <extension point="org.eclipse.ui.views.properties.tabbed.propertyContributor" id="prop-contrib">
       <?gmfgen generated="true"?>
       <propertyContributor

@@ -16,6 +16,11 @@ package mil.jpeojtrs.sca.sad.diagram.preferences;
 import mil.jpeojtrs.sca.sad.diagram.part.SadDiagramEditorPlugin;
 
 import org.eclipse.core.runtime.preferences.AbstractPreferenceInitializer;
+import org.eclipse.gmf.runtime.diagram.ui.preferences.AppearancePreferencePage;
+import org.eclipse.gmf.runtime.diagram.ui.preferences.ConnectionsPreferencePage;
+import org.eclipse.gmf.runtime.diagram.ui.preferences.DiagramsPreferencePage;
+import org.eclipse.gmf.runtime.diagram.ui.preferences.PrintingPreferencePage;
+import org.eclipse.gmf.runtime.diagram.ui.preferences.RulerGridPreferencePage;
 import org.eclipse.jface.preference.IPreferenceStore;
 
 /**
@@ -24,16 +29,15 @@ import org.eclipse.jface.preference.IPreferenceStore;
 public class DiagramPreferenceInitializer extends AbstractPreferenceInitializer {
 
 	/**
-	 * @generated
+	 * @generated NOT
 	 */
 	public void initializeDefaultPreferences() {
 		IPreferenceStore store = getPreferenceStore();
-		DiagramGeneralPreferencePage.initDefaults(store);
-		DiagramAppearancePreferencePage.initDefaults(store);
-		DiagramConnectionsPreferencePage.initDefaults(store);
-		DiagramPrintingPreferencePage.initDefaults(store);
-		DiagramRulersAndGridPreferencePage.initDefaults(store);
-
+		DiagramsPreferencePage.initDefaults(store);
+		AppearancePreferencePage.initDefaults(store);
+		ConnectionsPreferencePage.initDefaults(store);
+		PrintingPreferencePage.initDefaults(store);
+		RulerGridPreferencePage.initDefaults(store);
 	}
 
 	/**

@@ -30,15 +30,6 @@
          </Priority>
       </editpartProvider>
    </extension>
-      <extension
-         point="org.eclipse.ui.preferencePages">
-      <page
-            category="mil.jpeojtrs.sca.dcd.diagram.general"
-            class="gov.redhawk.sca.dcd.diagram.preferences.DcdFiltersPreferencePage"
-            id="gov.redhawk.sca.dcd.diagram.DcdFiltersPreferencePage"
-            name="%page.name">
-      </page>
-   </extension>
    <extension
          point="org.eclipse.gmf.runtime.diagram.core.viewProviders">
       <viewProvider
