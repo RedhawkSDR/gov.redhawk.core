@@ -78,8 +78,8 @@ public class FrontendPackageImpl extends EPackageImpl implements FrontendPackage
 	private EDataType scaSimplePropertyEDataType = null;
 
 	/**
-	 * Creates an instance of the model <b>Package</b>, registered with {@link org.eclipse.emf.ecore.EPackage.Registry
-	 * EPackage.Registry} by the package
+	 * Creates an instance of the model <b>Package</b>, registered with
+	 * {@link org.eclipse.emf.ecore.EPackage.Registry EPackage.Registry} by the package
 	 * package URI value.
 	 * <p>Note: the correct way to create the package is via the static
 	 * factory method {@link #init init()}, which also performs
@@ -120,8 +120,8 @@ public class FrontendPackageImpl extends EPackageImpl implements FrontendPackage
 			return (FrontendPackage) EPackage.Registry.INSTANCE.getEPackage(FrontendPackage.eNS_URI);
 
 		// Obtain or create and register package
-		FrontendPackageImpl theFrontendPackage = (FrontendPackageImpl) (EPackage.Registry.INSTANCE.get(eNS_URI) instanceof FrontendPackageImpl ? EPackage.Registry.INSTANCE.get(eNS_URI)
-			: new FrontendPackageImpl());
+		FrontendPackageImpl theFrontendPackage = (FrontendPackageImpl) (EPackage.Registry.INSTANCE.get(eNS_URI) instanceof FrontendPackageImpl
+			? EPackage.Registry.INSTANCE.get(eNS_URI) : new FrontendPackageImpl());
 
 		isInited = true;
 
@@ -542,9 +542,9 @@ public class FrontendPackageImpl extends EPackageImpl implements FrontendPackage
 
 		initEClass(unallocatedTunerContainerEClass, UnallocatedTunerContainer.class, "UnallocatedTunerContainer", !IS_ABSTRACT, !IS_INTERFACE,
 			IS_GENERATED_INSTANCE_CLASS);
-		initEReference(getUnallocatedTunerContainer_TunerContainer(), this.getTunerContainer(), this.getTunerContainer_UnallocatedContainer(),
-			"tunerContainer", null, 0, 1, UnallocatedTunerContainer.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES,
-			!IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getUnallocatedTunerContainer_TunerContainer(), this.getTunerContainer(), this.getTunerContainer_UnallocatedContainer(), "tunerContainer",
+			null, 0, 1, UnallocatedTunerContainer.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE,
+			IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getUnallocatedTunerContainer_TunerType(), theEcorePackage.getEString(), "tunerType", null, 0, 1, UnallocatedTunerContainer.class,
 			!IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getUnallocatedTunerContainer_Count(), theEcorePackage.getEInt(), "count", null, 0, 1, UnallocatedTunerContainer.class, !IS_TRANSIENT,

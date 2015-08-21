@@ -42,9 +42,9 @@ import org.eclipse.emf.edit.provider.ViewerNotification;
  * <!-- end-user-doc -->
  * @generated
  */
-public class UnallocatedTunerContainerItemProvider extends ItemProviderAdapter implements IEditingDomainItemProvider, IStructuredItemContentProvider,
-		ITreeItemContentProvider, IItemLabelProvider, IItemPropertySource, ITableItemLabelProvider, ITableItemColorProvider, ITableItemFontProvider,
-		IItemColorProvider, IItemFontProvider {
+public class UnallocatedTunerContainerItemProvider extends ItemProviderAdapter
+		implements IEditingDomainItemProvider, IStructuredItemContentProvider, ITreeItemContentProvider, IItemLabelProvider, IItemPropertySource,
+		ITableItemLabelProvider, ITableItemColorProvider, ITableItemFontProvider, IItemColorProvider, IItemFontProvider {
 	/**
 	 * This constructs an instance from a factory and a notifier.
 	 * <!-- begin-user-doc -->
@@ -137,8 +137,8 @@ public class UnallocatedTunerContainerItemProvider extends ItemProviderAdapter i
 		int unallocatedCount = container.getCount();
 
 		String label = container.getTunerType();
-		return label == null || label.length() == 0 ? getString("_UI_UnallocatedTunerContainer_type") : "Unallocated " + label + ": " + unallocatedCount
-			+ " available";
+		return label == null || label.length() == 0 ? getString("_UI_UnallocatedTunerContainer_type")
+			: "Unallocated " + label + ": " + unallocatedCount + " available";
 	}
 
 	/**

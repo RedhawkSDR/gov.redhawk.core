@@ -20,12 +20,12 @@ import org.eclipse.emf.ecore.EObject;
  *
  * <p>
  * The following features are supported:
+ * </p>
  * <ul>
  * <li>{@link gov.redhawk.frontend.UnallocatedTunerContainer#getTunerContainer <em>Tuner Container</em>}</li>
  * <li>{@link gov.redhawk.frontend.UnallocatedTunerContainer#getTunerType <em>Tuner Type</em>}</li>
  * <li>{@link gov.redhawk.frontend.UnallocatedTunerContainer#getCount <em>Count</em>}</li>
  * </ul>
- * </p>
  *
  * @see gov.redhawk.frontend.FrontendPackage#getUnallocatedTunerContainer()
  * @model

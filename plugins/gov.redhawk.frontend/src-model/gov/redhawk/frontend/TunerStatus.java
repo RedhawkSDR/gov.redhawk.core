@@ -25,6 +25,7 @@ import org.eclipse.emf.ecore.EObject;
  *
  * <p>
  * The following features are supported:
+ * </p>
  * <ul>
  * <li>{@link gov.redhawk.frontend.TunerStatus#getTunerContainer <em>Tuner Container</em>}</li>
  * <li>{@link gov.redhawk.frontend.TunerStatus#getTunerStatusStruct <em>Tuner Status Struct</em>}</li>
@@ -45,7 +46,6 @@ import org.eclipse.emf.ecore.EObject;
  * <li>{@link gov.redhawk.frontend.TunerStatus#isDeviceControl <em>Device Control</em>}</li>
  * <li>{@link gov.redhawk.frontend.TunerStatus#getListenerAllocations <em>Listener Allocations</em>}</li>
  * </ul>
- * </p>
  *
  * @see gov.redhawk.frontend.FrontendPackage#getTunerStatus()
  * @model

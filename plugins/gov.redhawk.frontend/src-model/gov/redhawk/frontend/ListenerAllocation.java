@@ -20,11 +20,11 @@ import org.eclipse.emf.ecore.EObject;
  *
  * <p>
  * The following features are supported:
+ * </p>
  * <ul>
  * <li>{@link gov.redhawk.frontend.ListenerAllocation#getTunerStatus <em>Tuner Status</em>}</li>
  * <li>{@link gov.redhawk.frontend.ListenerAllocation#getListenerID <em>Listener ID</em>}</li>
  * </ul>
- * </p>
  *
  * @see gov.redhawk.frontend.FrontendPackage#getListenerAllocation()
  * @model

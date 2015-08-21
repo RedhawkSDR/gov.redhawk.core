@@ -37,6 +37,7 @@ import org.eclipse.emf.ecore.util.InternalEList;
  * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
+ * </p>
  * <ul>
  * <li>{@link gov.redhawk.frontend.impl.TunerStatusImpl#getTunerContainer <em>Tuner Container</em>}</li>
  * <li>{@link gov.redhawk.frontend.impl.TunerStatusImpl#getTunerStatusStruct <em>Tuner Status Struct</em>}</li>
@@ -57,7 +58,6 @@ import org.eclipse.emf.ecore.util.InternalEList;
  * <li>{@link gov.redhawk.frontend.impl.TunerStatusImpl#isDeviceControl <em>Device Control</em>}</li>
  * <li>{@link gov.redhawk.frontend.impl.TunerStatusImpl#getListenerAllocations <em>Listener Allocations</em>}</li>
  * </ul>
- * </p>
  *
  * @generated
  */
@@ -520,7 +520,8 @@ public class TunerStatusImpl extends MinimalEObjectImpl.Container implements Tun
 	 */
 	@Override
 	public void setTunerContainer(TunerContainer newTunerContainer) {
-		if (newTunerContainer != eInternalContainer() || (eContainerFeatureID() != FrontendPackage.TUNER_STATUS__TUNER_CONTAINER && newTunerContainer != null)) {
+		if (newTunerContainer != eInternalContainer()
+			|| (eContainerFeatureID() != FrontendPackage.TUNER_STATUS__TUNER_CONTAINER && newTunerContainer != null)) {
 			if (EcoreUtil.isAncestor(this, newTunerContainer))
 				throw new IllegalArgumentException("Recursive containment not allowed for " + toString());
 			NotificationChain msgs = null;
@@ -633,8 +634,8 @@ public class TunerStatusImpl extends MinimalEObjectImpl.Container implements Tun
 		tunerType = TUNER_TYPE_EDEFAULT;
 		tunerTypeESet = false;
 		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.UNSET, FrontendPackage.TUNER_STATUS__TUNER_TYPE, oldTunerType, TUNER_TYPE_EDEFAULT,
-				oldTunerTypeESet));
+			eNotify(
+				new ENotificationImpl(this, Notification.UNSET, FrontendPackage.TUNER_STATUS__TUNER_TYPE, oldTunerType, TUNER_TYPE_EDEFAULT, oldTunerTypeESet));
 	}
 
 	/**
@@ -788,7 +789,8 @@ public class TunerStatusImpl extends MinimalEObjectImpl.Container implements Tun
 		bandwidth = BANDWIDTH_EDEFAULT;
 		bandwidthESet = false;
 		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.UNSET, FrontendPackage.TUNER_STATUS__BANDWIDTH, oldBandwidth, BANDWIDTH_EDEFAULT, oldBandwidthESet));
+			eNotify(
+				new ENotificationImpl(this, Notification.UNSET, FrontendPackage.TUNER_STATUS__BANDWIDTH, oldBandwidth, BANDWIDTH_EDEFAULT, oldBandwidthESet));
 	}
 
 	/**
@@ -939,7 +941,8 @@ public class TunerStatusImpl extends MinimalEObjectImpl.Container implements Tun
 		rfFlowID = RF_FLOW_ID_EDEFAULT;
 		rfFlowIDESet = false;
 		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.UNSET, FrontendPackage.TUNER_STATUS__RF_FLOW_ID, oldRfFlowID, RF_FLOW_ID_EDEFAULT, oldRfFlowIDESet));
+			eNotify(
+				new ENotificationImpl(this, Notification.UNSET, FrontendPackage.TUNER_STATUS__RF_FLOW_ID, oldRfFlowID, RF_FLOW_ID_EDEFAULT, oldRfFlowIDESet));
 	}
 
 	/**
