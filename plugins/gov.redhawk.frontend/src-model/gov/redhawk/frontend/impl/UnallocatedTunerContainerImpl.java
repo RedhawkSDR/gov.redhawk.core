@@ -28,12 +28,12 @@ import org.eclipse.emf.ecore.util.EcoreUtil;
  * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
+ * </p>
  * <ul>
  * <li>{@link gov.redhawk.frontend.impl.UnallocatedTunerContainerImpl#getTunerContainer <em>Tuner Container</em>}</li>
  * <li>{@link gov.redhawk.frontend.impl.UnallocatedTunerContainerImpl#getTunerType <em>Tuner Type</em>}</li>
  * <li>{@link gov.redhawk.frontend.impl.UnallocatedTunerContainerImpl#getCount <em>Count</em>}</li>
  * </ul>
- * </p>
  *
  * @generated
  */

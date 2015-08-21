@@ -42,9 +42,9 @@ import org.eclipse.emf.edit.provider.ViewerNotification;
  * <!-- end-user-doc -->
  * @generated
  */
-public class TunerContainerItemProvider extends ItemProviderAdapter implements IEditingDomainItemProvider, IStructuredItemContentProvider,
-		ITreeItemContentProvider, IItemLabelProvider, IItemPropertySource, ITableItemLabelProvider, ITableItemColorProvider, ITableItemFontProvider,
-		IItemColorProvider, IItemFontProvider {
+public class TunerContainerItemProvider extends ItemProviderAdapter
+		implements IEditingDomainItemProvider, IStructuredItemContentProvider, ITreeItemContentProvider, IItemLabelProvider, IItemPropertySource,
+		ITableItemLabelProvider, ITableItemColorProvider, ITableItemFontProvider, IItemColorProvider, IItemFontProvider {
 	/**
 	 * This constructs an instance from a factory and a notifier.
 	 * <!-- begin-user-doc -->
@@ -156,8 +156,8 @@ public class TunerContainerItemProvider extends ItemProviderAdapter implements I
 
 		newChildDescriptors.add(createChildParameter(FrontendPackage.Literals.TUNER_CONTAINER__TUNER_STATUS, FrontendFactory.eINSTANCE.createTunerStatus()));
 
-		newChildDescriptors.add(createChildParameter(FrontendPackage.Literals.TUNER_CONTAINER__UNALLOCATED_CONTAINER,
-			FrontendFactory.eINSTANCE.createUnallocatedTunerContainer()));
+		newChildDescriptors.add(
+			createChildParameter(FrontendPackage.Literals.TUNER_CONTAINER__UNALLOCATED_CONTAINER, FrontendFactory.eINSTANCE.createUnallocatedTunerContainer()));
 	}
 
 	/**

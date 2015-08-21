@@ -32,11 +32,11 @@ import org.eclipse.emf.ecore.util.EcoreUtil;
  * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
+ * </p>
  * <ul>
  * <li>{@link gov.redhawk.frontend.impl.ListenerAllocationImpl#getTunerStatus <em>Tuner Status</em>}</li>
  * <li>{@link gov.redhawk.frontend.impl.ListenerAllocationImpl#getListenerID <em>Listener ID</em>}</li>
  * </ul>
- * </p>
  *
  * @generated
  */

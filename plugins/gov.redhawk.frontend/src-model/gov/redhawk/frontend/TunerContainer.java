@@ -22,11 +22,11 @@ import org.eclipse.emf.ecore.EObject;
  *
  * <p>
  * The following features are supported:
+ * </p>
  * <ul>
  * <li>{@link gov.redhawk.frontend.TunerContainer#getTunerStatus <em>Tuner Status</em>}</li>
  * <li>{@link gov.redhawk.frontend.TunerContainer#getUnallocatedContainer <em>Unallocated Container</em>}</li>
  * </ul>
- * </p>
  *
  * @see gov.redhawk.frontend.FrontendPackage#getTunerContainer()
  * @model

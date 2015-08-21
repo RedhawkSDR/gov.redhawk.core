@@ -30,11 +30,11 @@ import org.eclipse.emf.ecore.util.InternalEList;
  * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
+ * </p>
  * <ul>
  * <li>{@link gov.redhawk.frontend.impl.TunerContainerImpl#getTunerStatus <em>Tuner Status</em>}</li>
  * <li>{@link gov.redhawk.frontend.impl.TunerContainerImpl#getUnallocatedContainer <em>Unallocated Container</em>}</li>
  * </ul>
- * </p>
  *
  * @generated
  */

@@ -43,9 +43,9 @@ import org.eclipse.emf.edit.provider.ViewerNotification;
  * <!-- end-user-doc -->
  * @generated
  */
-public class TunerStatusItemProvider extends ItemProviderAdapter implements IEditingDomainItemProvider, IStructuredItemContentProvider,
-		ITreeItemContentProvider, IItemLabelProvider, IItemPropertySource, ITableItemLabelProvider, ITableItemColorProvider, ITableItemFontProvider,
-		IItemColorProvider, IItemFontProvider {
+public class TunerStatusItemProvider extends ItemProviderAdapter
+		implements IEditingDomainItemProvider, IStructuredItemContentProvider, ITreeItemContentProvider, IItemLabelProvider, IItemPropertySource,
+		ITableItemLabelProvider, ITableItemColorProvider, ITableItemFontProvider, IItemColorProvider, IItemFontProvider {
 	/**
 	 * This constructs an instance from a factory and a notifier.
 	 * <!-- begin-user-doc -->
@@ -407,8 +407,8 @@ public class TunerStatusItemProvider extends ItemProviderAdapter implements IEdi
 				}
 			}
 			String label = tuner.getTunerType();
-			return label == null || label.length() == 0 ? getString("_UI_TunerStatus_type") : (allocationID == null || allocationID.length() == 0 ? label
-				: label + " " + allocationID);
+			return label == null || label.length() == 0 ? getString("_UI_TunerStatus_type")
+				: (allocationID == null || allocationID.length() == 0 ? label : label + " " + allocationID);
 		}
 		return getString("_UI_TunerStatus_type");
 	}
@@ -461,8 +461,8 @@ public class TunerStatusItemProvider extends ItemProviderAdapter implements IEdi
 	protected void collectNewChildDescriptors(Collection<Object> newChildDescriptors, Object object) {
 		super.collectNewChildDescriptors(newChildDescriptors, object);
 
-		newChildDescriptors.add(createChildParameter(FrontendPackage.Literals.TUNER_STATUS__LISTENER_ALLOCATIONS,
-			FrontendFactory.eINSTANCE.createListenerAllocation()));
+		newChildDescriptors.add(
+			createChildParameter(FrontendPackage.Literals.TUNER_STATUS__LISTENER_ALLOCATIONS, FrontendFactory.eINSTANCE.createListenerAllocation()));
 	}
 
 	/**
