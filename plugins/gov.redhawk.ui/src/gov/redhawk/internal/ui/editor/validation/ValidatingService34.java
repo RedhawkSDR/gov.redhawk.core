@@ -23,6 +23,7 @@ import org.eclipse.emf.common.util.Diagnostic;
 import org.eclipse.emf.databinding.EObjectObservableValue;
 import org.eclipse.emf.databinding.IEMFObservable;
 import org.eclipse.jface.databinding.swt.ISWTObservable;
+import org.eclipse.jface.databinding.viewers.IViewerObservable;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Widget;
@@ -42,15 +43,16 @@ public class ValidatingService34 implements ValidatingService {
 					final Binding binding = (Binding) o;
 					Object observed = null;
 					Object valueType = null;
-					ISWTObservable swtObservable = null;
 					final IObservable model = binding.getModel();
 					final IObservable target = binding.getTarget();
 
-					if (model instanceof ISWTObservable) {
-						swtObservable = (ISWTObservable) model;
-					} else if (target instanceof ISWTObservable) {
-						swtObservable = (ISWTObservable) target;
+					IObservable viewObservable = null;
+					if (target instanceof ISWTObservable || target instanceof IViewerObservable) {
+						viewObservable = target;
+					} else if (model instanceof ISWTObservable || model instanceof IViewerObservable) {
+						viewObservable = model;
 					}
+					Control control = getBoundControl(viewObservable);
 
 					if (model instanceof IEMFObservable) {
 						IEMFObservable observable = (IEMFObservable) model;
@@ -70,8 +72,8 @@ public class ValidatingService34 implements ValidatingService {
 						valueType = emfObservable.getValueType();
 					}
 
-					if (observed != null && valueType != null && swtObservable != null) {
-						if (checkBindingFor34(observed, valueType, swtObservable, diagnostic, messageManager)) {
+					if (observed != null && valueType != null && control != null) {
+						if (checkBindingFor34(observed, valueType, viewObservable, control, diagnostic, messageManager)) {
 							atLeastOneErroneousBinding = true;
 						}
 					}
@@ -86,19 +88,27 @@ public class ValidatingService34 implements ValidatingService {
 		
 	}
 
-	private boolean checkBindingFor34(Object observed, Object valueType, final ISWTObservable swtObservable, final Diagnostic diagnostic,
+	private Control getBoundControl(IObservable observable) {
+		if (observable instanceof ISWTObservable) {
+			Widget widget = ((ISWTObservable) observable).getWidget();
+			if (widget instanceof Control && !(widget instanceof Button)) {
+				return (Control) widget;
+			}
+		} else if (observable instanceof IViewerObservable) {
+			return ((IViewerObservable) observable).getViewer().getControl();
+		}
+		return null;
+	}
+
+	private boolean checkBindingFor34(Object observed, Object valueType, IObservable observable, final Control control, final Diagnostic diagnostic,
 	        final IMessageManager messageManager) {
 		final List< ? > diagnosticData = diagnostic.getData();
 		if (diagnosticData.size() >= 2) {
 			if (diagnosticData.get(0) == observed) {
 				if (diagnosticData.get(1) == valueType) {
-					Widget widget = swtObservable.getWidget();
-					if (widget instanceof Control && !(widget instanceof Button)) {
-						final Control control = (Control) widget;
-						messageManager.addMessage(swtObservable, diagnostic.getMessage(), null,
-						        ValidatingService.KEY_MAP.getMessageProviderKey(diagnostic.getSeverity()), control);
-						return true;
-					}
+					messageManager.addMessage(observable, diagnostic.getMessage(), null,
+						ValidatingService.KEY_MAP.getMessageProviderKey(diagnostic.getSeverity()), control);
+					return true;
 				}
 			}
 		}
