@@ -61,6 +61,60 @@
                      class="Interface">
                </target>
             </constraint>
+            <constraint
+                  class="gov.redhawk.scd.validation.DuplicatePortNameConstraint"
+                  id="gov.redhawk.scd.validation.duplicatePortName"
+                  isEnabledByDefault="true"
+                  lang="java"
+                  mode="Live"
+                  name="%constraint.duplicatePortName.name"
+                  severity="ERROR"
+                  statusCode="1002">
+               <message>
+                  %constraint.duplicatePortName.message
+               </message>
+               <target
+                     class="Provides">
+               </target>
+               <target
+                     class="Uses">
+               </target>
+            </constraint>
+            <constraint
+                  class="gov.redhawk.scd.validation.InputMessagingPortConstraint"
+                  id="gov.redhawk.scd.validation.inputMessagingPort"
+                  isEnabledByDefault="true"
+                  lang="java"
+                  mode="Live"
+                  name="%constraint.inputMessagingPort.name"
+                  severity="WARNING"
+                  statusCode="1003">
+               <message>
+                  %constraint.inputMessagingPort.message
+               </message>
+               <target
+                     class="Provides">
+               </target>
+            </constraint>
+            <constraint
+                  class="gov.redhawk.scd.validation.NonMessagingBidirPortConstraint"
+                  id="gov.redhawk.scd.validation.nonMessagingBidirPort"
+                  isEnabledByDefault="true"
+                  lang="java"
+                  mode="Live"
+                  name="%constraint.bidirPort.name"
+                  severity="WARNING"
+                  statusCode="1004">
+               <message>
+                  %constraint.bidirPort.message
+               </message>
+               <target
+                     class="Provides">
+               </target>
+               <target
+                     class="Uses">
+               </target>
+            </constraint>
          </constraints>
       </constraintProvider>
    </extension>
