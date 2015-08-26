@@ -115,6 +115,25 @@
                      class="Uses">
                </target>
             </constraint>
+            <constraint
+                  class="gov.redhawk.scd.validation.EmptyPortNameConstraint"
+                  id="gov.redhawk.scd.validation.emptyPortName"
+                  isEnabledByDefault="true"
+                  lang="java"
+                  mode="Live"
+                  name="%constraint.emptyPortName.name"
+                  severity="ERROR"
+                  statusCode="1005">
+               <message>
+                  %constraint.emptyPortName.message
+               </message>
+               <target
+                     class="Provides">
+               </target>
+               <target
+                     class="Uses">
+               </target>
+            </constraint>
          </constraints>
       </constraintProvider>
    </extension>
