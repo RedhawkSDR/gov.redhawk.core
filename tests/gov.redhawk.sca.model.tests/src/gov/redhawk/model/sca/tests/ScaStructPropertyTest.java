@@ -16,11 +16,14 @@ import gov.redhawk.model.sca.ScaAbstractProperty;
 import gov.redhawk.model.sca.ScaComponent;
 import gov.redhawk.model.sca.ScaPackage;
 import gov.redhawk.model.sca.ScaSimpleProperty;
+import gov.redhawk.model.sca.ScaSimpleSequenceProperty;
 import gov.redhawk.model.sca.ScaStructProperty;
 import gov.redhawk.model.sca.ScaWaveform;
 import gov.redhawk.model.sca.commands.ScaModelCommand;
 import gov.redhawk.model.sca.tests.stubs.ScaTestConstaints;
 import mil.jpeojtrs.sca.prf.AbstractProperty;
+import mil.jpeojtrs.sca.prf.StructRef;
+import mil.jpeojtrs.sca.prf.StructValue;
 
 import org.junit.Assert;
 
@@ -43,10 +46,18 @@ import CF.PropertySetPackage.PartialConfiguration;
  * A test case for the model object '<em><b>Struct Property</b></em>'.
  * <!-- end-user-doc -->
  * <p>
+ * The following features are tested:
+ * <ul>
+ * <li>{@link gov.redhawk.model.sca.ScaStructProperty#getSimples() <em>Simples</em>}</li>
+ * </ul>
+ * </p>
+ * <p>
  * The following operations are tested:
  * <ul>
  * <li>{@link gov.redhawk.model.sca.ScaStructProperty#getSimple(java.lang.String) <em>Get Simple</em>}</li>
  * <li>{@link gov.redhawk.model.sca.ScaStructProperty#getField(java.lang.String) <em>Get Field</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.ScaStructProperty#createPropertyRef() <em>Create Property Ref</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.ScaStructProperty#createStructValue() <em>Create Struct Value</em>}</li>
  * <li>{@link CF.PropertySetOperations#configure(CF.DataType[]) <em>Configure</em>}</li>
  * <li>{@link CF.PropertySetOperations#query(CF.PropertiesHolder) <em>Query</em>}</li>
  * <li>
@@ -214,6 +225,45 @@ public class ScaStructPropertyTest extends ScaAbstractPropertyTest {
 	}
 
 	/**
+	 * Tests the '{@link gov.redhawk.model.sca.ScaStructProperty#createPropertyRef() <em>Create Property Ref</em>}'
+	 * operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see gov.redhawk.model.sca.ScaStructProperty#createPropertyRef()
+	 * @generated NOT
+	 */
+	public void testCreatePropertyRef() {
+		final ScaStructProperty prop = getFixture();
+
+		StructRef ref = prop.createPropertyRef();
+		Assert.assertEquals(prop.getId(), ref.getRefID());
+		Assert.assertEquals(0, ref.getRefs().size());
+
+		ScaModelCommand.execute(prop, new ScaModelCommand() {
+			@Override
+			public void execute() {
+				((ScaSimpleSequenceProperty) prop.getFields().get(1)).setValue(new String[] { "A", "B" });
+			}
+		});
+		ref = prop.createPropertyRef();
+		Assert.assertEquals(1, ref.getRefs().size());
+	}
+
+	/**
+	 * Tests the '{@link gov.redhawk.model.sca.ScaStructProperty#createStructValue() <em>Create Struct Value</em>}'
+	 * operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see gov.redhawk.model.sca.ScaStructProperty#createStructValue()
+	 * @generated NOT
+	 */
+	public void testCreateStructValue() {
+		ScaStructProperty prop = getFixture();
+		StructValue value = prop.createStructValue();
+		Assert.assertEquals(prop.getFields().size(), value.getRefs().size());
+	}
+
+	/**
 	 * Tests the '{@link gov.redhawk.model.sca.ScaStructProperty#setRemoteValue(mil.jpeojtrs.sca.cf.DataType[]) <em>Set
 	 * Remote Value</em>}' operation.
 	 * <!-- begin-user-doc -->
@@ -309,7 +359,7 @@ public class ScaStructPropertyTest extends ScaAbstractPropertyTest {
 	 */
 	public void testStructOrder() {
 		int index = 0;
-		for (final ScaAbstractProperty< ? > field: getFixture().getFields()) {
+		for (final ScaAbstractProperty< ? > field : getFixture().getFields()) {
 			AbstractProperty fieldDefinition = (AbstractProperty) getFixture().getDefinition().getFields().getValue(index);
 			Assert.assertEquals(field.getId(), fieldDefinition.getId());
 			index++;

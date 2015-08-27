@@ -20,6 +20,8 @@ import gov.redhawk.model.sca.commands.ScaModelCommand;
 import gov.redhawk.model.sca.tests.stubs.ScaTestConstaints;
 import org.junit.Assert;
 import junit.textui.TestRunner;
+import mil.jpeojtrs.sca.prf.SimpleSequenceRef;
+
 import org.eclipse.emf.transaction.util.TransactionUtil;
 import CF.PropertySetPackage.InvalidConfiguration;
 import CF.PropertySetPackage.PartialConfiguration;
@@ -33,6 +35,7 @@ import CF.PropertySetPackage.PartialConfiguration;
  * <ul>
  * <li>{@link gov.redhawk.model.sca.ScaSimpleSequenceProperty#setValue(java.lang.Object[]) <em>Set Value</em>}</li>
  * <li>{@link gov.redhawk.model.sca.ScaSimpleSequenceProperty#getValue() <em>Get Value</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.ScaSimpleSequenceProperty#createPropertyRef() <em>Create Property Ref</em>}</li>
  * </ul>
  * </p>
  * @generated
@@ -136,6 +139,21 @@ public class ScaSimpleSequencePropertyTest extends ScaAbstractPropertyTest {
 			}
 		});
 		// BEGIN GENERATED CODE
+	}
+
+	/**
+	 * Tests the '{@link gov.redhawk.model.sca.ScaSimpleSequenceProperty#createPropertyRef() <em>Create Property
+	 * Ref</em>}' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see gov.redhawk.model.sca.ScaSimpleSequenceProperty#createPropertyRef()
+	 * @generated NOT
+	 */
+	public void testCreatePropertyRef() {
+		ScaSimpleSequenceProperty prop = getFixture();
+		SimpleSequenceRef ref = prop.createPropertyRef();
+		Assert.assertEquals(prop.getId(), ref.getRefID());
+		Assert.assertEquals(prop.getValues().size(), ref.getValues().getValue().size());
 	}
 
 	/**

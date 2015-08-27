@@ -25,6 +25,7 @@ import gov.redhawk.model.sca.tests.stubs.ScaTestConstaints;
 import org.junit.Assert;
 
 import junit.textui.TestRunner;
+import mil.jpeojtrs.sca.prf.StructSequenceRef;
 
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.ecore.util.EContentAdapter;
@@ -47,6 +48,7 @@ import CF.PropertySetPackage.PartialConfiguration;
  * <ul>
  * <li>{@link gov.redhawk.model.sca.ScaStructSequenceProperty#createScaStructProperty() <em>Create Sca Struct
  * Property</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.ScaStructSequenceProperty#createPropertyRef() <em>Create Property Ref</em>}</li>
  * <li>{@link CF.PropertySetOperations#configure(CF.DataType[]) <em>Configure</em>}</li>
  * <li>{@link CF.PropertySetOperations#query(CF.PropertiesHolder) <em>Query</em>}</li>
  * <li>
@@ -144,6 +146,21 @@ public class ScaStructSequencePropertyTest extends ScaAbstractPropertyTest {
 		ScaStructProperty newStruct = getFixture().createScaStructProperty();
 		Assert.assertNotNull(newStruct);
 		// BEGIN GENERATED CODE
+	}
+
+	/**
+	 * Tests the '{@link gov.redhawk.model.sca.ScaStructSequenceProperty#createPropertyRef() <em>Create Property
+	 * Ref</em>}' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see gov.redhawk.model.sca.ScaStructSequenceProperty#createPropertyRef()
+	 * @generated NOT
+	 */
+	public void testCreatePropertyRef() {
+		ScaStructSequenceProperty prop = getFixture();
+		StructSequenceRef ref = prop.createPropertyRef();
+		Assert.assertEquals(prop.getId(), ref.getRefID());
+		Assert.assertEquals(prop.getStructs().size(), ref.getStructValue().size());
 	}
 
 	/**

@@ -19,6 +19,8 @@ import gov.redhawk.model.sca.ScaWaveform;
 import gov.redhawk.model.sca.commands.ScaModelCommand;
 import gov.redhawk.model.sca.tests.stubs.ScaTestConstaints;
 import junit.textui.TestRunner;
+import mil.jpeojtrs.sca.prf.SimpleRef;
+
 import org.eclipse.emf.transaction.util.TransactionUtil;
 import org.jacorb.JacorbUtil;
 import org.junit.Assert;
@@ -29,6 +31,12 @@ import CF.PropertySetPackage.PartialConfiguration;
  * <!-- begin-user-doc -->
  * A test case for the model object '<em><b>Simple Property</b></em>'.
  * <!-- end-user-doc -->
+ * <p>
+ * The following operations are tested:
+ * <ul>
+ * <li>{@link gov.redhawk.model.sca.ScaSimpleProperty#createPropertyRef() <em>Create Property Ref</em>}</li>
+ * </ul>
+ * </p>
  * @generated
  */
 public class ScaSimplePropertyTest extends ScaAbstractPropertyTest {
@@ -113,6 +121,21 @@ public class ScaSimplePropertyTest extends ScaAbstractPropertyTest {
 		this.env = null;
 
 		setFixture(null);
+	}
+
+	/**
+	 * Tests the '{@link gov.redhawk.model.sca.ScaSimpleProperty#createPropertyRef() <em>Create Property Ref</em>}'
+	 * operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see gov.redhawk.model.sca.ScaSimpleProperty#createPropertyRef()
+	 * @generated NOT
+	 */
+	public void testCreatePropertyRef() {
+		ScaSimpleProperty prop = getFixture();
+		SimpleRef ref = prop.createPropertyRef();
+		Assert.assertEquals(prop.getId(), ref.getRefID());
+		Assert.assertNotNull(ref.getValue());
 	}
 
 	/**
