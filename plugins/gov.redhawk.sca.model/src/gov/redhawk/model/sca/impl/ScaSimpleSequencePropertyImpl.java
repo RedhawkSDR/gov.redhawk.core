@@ -222,12 +222,11 @@ public class ScaSimpleSequencePropertyImpl extends ScaAbstractPropertyImpl<Simpl
 	 * @since 20.0
 	 * <!-- end-user-doc -->
 	 * 
-	 * @generated
+	 * @generated NOT
 	 */
 	@Override
 	public SimpleSequenceRef createPropertyRef() {
 		final SimpleSequenceRef simpleSequenceRef = PrfFactory.eINSTANCE.createSimpleSequenceRef();
-		simpleSequenceRef.setProperty(getDefinition());
 		simpleSequenceRef.setRefID(getId());
 		final Values values = PrfFactory.eINSTANCE.createValues();
 		for (final Object object : getValues()) {

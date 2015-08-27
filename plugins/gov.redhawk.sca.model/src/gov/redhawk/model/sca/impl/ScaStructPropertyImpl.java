@@ -313,7 +313,6 @@ public class ScaStructPropertyImpl extends ScaAbstractPropertyImpl<Struct> imple
 	@Override
 	public StructRef createPropertyRef() {
 		final StructRef structRef = PrfFactory.eINSTANCE.createStructRef();
-		structRef.setProperty(getDefinition());
 		structRef.setRefID(getId());
 		for (final ScaAbstractProperty< ? > field : getFields()) {
 			if (!field.isDefaultValue()) {
