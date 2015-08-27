@@ -11,6 +11,7 @@
  */
 package gov.redhawk.sca.dcd.diagram.adapters;
 
+import gov.redhawk.model.sca.RefreshDepth;
 import gov.redhawk.model.sca.ScaAbstractComponent;
 import gov.redhawk.model.sca.ScaDevice;
 import gov.redhawk.model.sca.ScaDeviceManager;
@@ -79,7 +80,7 @@ public class DcdComponentInstantiationEditPartAdapterFactory implements IAdapter
 												CorbaUtils.invoke(new Callable<List<ScaDevice< ? >>>() {
 
 													public List<ScaDevice< ? >> call() throws Exception {
-														manager.fetchDevices(monitor);
+														manager.fetchDevices(monitor, RefreshDepth.SELF);
 														return manager.getAllDevices();
 													}
 												}, monitor);
@@ -101,7 +102,7 @@ public class DcdComponentInstantiationEditPartAdapterFactory implements IAdapter
 									ProtectedThreadExecutor.submit(new Callable<List<ScaDevice< ? >>>() {
 
 										public List<ScaDevice< ? >> call() throws Exception {
-											manager.fetchDevices(null);
+											manager.fetchDevices(null, RefreshDepth.SELF);
 											return manager.getAllDevices();
 										}
 									});

@@ -58,7 +58,7 @@ public class ScaDeviceManagersContainerItemProviderAdapterFactory implements IAd
 
 					private void refreshStandard(final IProgressMonitor monitor) throws InterruptedException {
 						final ScaDomainManager domain = (ScaDomainManager) provider.getParent(null);
-						domain.fetchDeviceManagers(monitor);
+						domain.fetchDeviceManagers(monitor, RefreshDepth.SELF);
 					}
 
 					private void refreshFull(final IProgressMonitor monitor) throws InterruptedException {

@@ -192,7 +192,7 @@ public class DeferredAdapterSwitch extends ScaSwitch<IDeferredAdapter> {
 			@Override
 			public void fetchDeferredChildren(final IProgressMonitor monitor) {
 				final ScaDomainManager domMgr = (ScaDomainManager) object.getParent(null);
-				domMgr.fetchDeviceManagers(monitor);
+				domMgr.fetchDeviceManagers(monitor, RefreshDepth.SELF);
 			}
 
 		};
@@ -236,7 +236,7 @@ public class DeferredAdapterSwitch extends ScaSwitch<IDeferredAdapter> {
 			@Override
 			public void fetchDeferredChildren(final IProgressMonitor monitor) {
 				final ScaDomainManager domMgr = (ScaDomainManager) object.getParent(null);
-				domMgr.fetchWaveformFactories(monitor);
+				domMgr.fetchWaveformFactories(monitor, RefreshDepth.SELF);
 			}
 
 		};
@@ -259,7 +259,7 @@ public class DeferredAdapterSwitch extends ScaSwitch<IDeferredAdapter> {
 			@Override
 			public void fetchDeferredChildren(final IProgressMonitor monitor) {
 				final ScaDomainManager domMgr = (ScaDomainManager) object.getParent(null);
-				domMgr.fetchWaveforms(monitor);
+				domMgr.fetchWaveforms(monitor, RefreshDepth.SELF);
 			}
 
 		};
@@ -282,7 +282,7 @@ public class DeferredAdapterSwitch extends ScaSwitch<IDeferredAdapter> {
 			@Override
 			public void fetchDeferredChildren(final IProgressMonitor monitor) {
 				final ScaDomainManager domMgr = (ScaDomainManager) object.getParent(null);
-				domMgr.fetchEventChannels(monitor);
+				domMgr.fetchEventChannels(monitor, RefreshDepth.SELF);
 			}
 
 		};

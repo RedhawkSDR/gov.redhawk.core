@@ -58,6 +58,7 @@ import mil.jpeojtrs.sca.util.ScaEcoreUtils;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.MultiStatus;
+import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.SubMonitor;
 import org.eclipse.emf.common.command.Command;
@@ -1013,7 +1014,7 @@ public class ScaDeviceManagerImpl extends ScaPropertyContainerImpl<DeviceManager
 			throw new IllegalStateException("CORBA Object is Null");
 		}
 		devMgr.registerDevice(registeringDevice);
-		fetchDevices(null);
+		fetchDevices(new NullProgressMonitor(), RefreshDepth.SELF);
 		// BEGIN GENERATED CODE
 	}
 
@@ -1025,7 +1026,7 @@ public class ScaDeviceManagerImpl extends ScaPropertyContainerImpl<DeviceManager
 			throw new IllegalStateException("CORBA Object is Null");
 		}
 		devMgr.registerService(registeringService, name);
-		fetchServices(null);
+		fetchServices(new NullProgressMonitor(), RefreshDepth.SELF);
 		// BEGIN GENERATED CODE
 	}
 
@@ -1085,7 +1086,7 @@ public class ScaDeviceManagerImpl extends ScaPropertyContainerImpl<DeviceManager
 			throw new IllegalStateException("CORBA Object is Null");
 		}
 		devMgr.unregisterDevice(registeredDevice);
-		fetchDevices(null);
+		fetchDevices(new NullProgressMonitor(), RefreshDepth.SELF);
 		// BEGIN GENERATED CODE
 	}
 
@@ -1514,19 +1515,6 @@ public class ScaDeviceManagerImpl extends ScaPropertyContainerImpl<DeviceManager
 		// BEGIN GENERATED CODE
 	}
 
-	/**
-	 * <!-- begin-user-doc -->
-	 * 
-	 * @deprecated Use {@link #fetchDevices(IProgressMonitor, RefreshDepth)}
-	 * @since 14.0
-	 *        <!-- end-user-doc -->
-	 * @generated NOT
-	 */
-	@Override
-	public EList<ScaDevice< ? >> fetchDevices(IProgressMonitor monitor) {
-		return fetchDevices(monitor, RefreshDepth.SELF);
-	}
-
 	private final VersionedFeature devicesRevision = new VersionedFeature(this, ScaPackage.Literals.SCA_DEVICE_MANAGER__DEVICES);
 
 	/**
@@ -1793,19 +1781,6 @@ public class ScaDeviceManagerImpl extends ScaPropertyContainerImpl<DeviceManager
 		// BEGIN GENERATED CODE
 	}
 
-	/**
-	 * <!-- begin-user-doc -->
-	 * 
-	 * @deprecated Use {@link #fetchServices(IProgressMonitor, RefreshDepth)}
-	 * @since 14.0
-	 *        <!-- end-user-doc -->
-	 * @generated NOT
-	 */
-	@Override
-	public EList<ScaService> fetchServices(IProgressMonitor monitor) {
-		return fetchServices(monitor, RefreshDepth.SELF);
-	}
-
 	private final VersionedFeature serviceFeature = new VersionedFeature(this, ScaPackage.Literals.SCA_DEVICE_MANAGER__SERVICES);
 
 	/**
@@ -1869,7 +1844,7 @@ public class ScaDeviceManagerImpl extends ScaPropertyContainerImpl<DeviceManager
 			throw new IllegalStateException("CORBA Obj DeviceManager is null");
 		}
 		devMgr.registerService(registeringService, name);
-		fetchServices(null);
+		fetchServices(new NullProgressMonitor(), RefreshDepth.SELF);
 
 		ScaService retVal = getScaService(name);
 		return retVal;
@@ -1930,7 +1905,7 @@ public class ScaDeviceManagerImpl extends ScaPropertyContainerImpl<DeviceManager
 		SubMonitor subMonitor = SubMonitor.convert(monitor, 6);
 		fetchNarrowedObject(subMonitor.newChild(1));
 		fetchLocalAttributes(subMonitor.newChild(1));
-		fetchFileSystem(subMonitor.newChild(1));
+		fetchFileSystem(subMonitor.newChild(1), RefreshDepth.SELF);
 		super.fetchAttributes(subMonitor.newChild(1));
 		fetchProfileObject(subMonitor.newChild(1));
 		fetchProperties(subMonitor.newChild(1));
@@ -1947,19 +1922,6 @@ public class ScaDeviceManagerImpl extends ScaPropertyContainerImpl<DeviceManager
 	}
 
 	private final VersionedFeature fileSystemRevision = new VersionedFeature(this, ScaPackage.Literals.SCA_DEVICE_MANAGER__FILE_SYSTEM);
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * 
-	 * @deprecated Use {@link #fetchFileSystem(IProgressMonitor, RefreshDepth)}
-	 * @since 14.0
-	 *        <!-- end-user-doc -->
-	 * @generated NOT
-	 */
-	@Override
-	public ScaDeviceManagerFileSystem fetchFileSystem(IProgressMonitor monitor) {
-		return fetchFileSystem(monitor, RefreshDepth.SELF);
-	}
 
 	private final VersionedFeature idFeature = new VersionedFeature(this, ScaPackage.Literals.SCA_DEVICE_MANAGER__IDENTIFIER);
 
@@ -2171,7 +2133,7 @@ public class ScaDeviceManagerImpl extends ScaPropertyContainerImpl<DeviceManager
 			return getProfileURI();
 		}
 		SubMonitor subMonitor = SubMonitor.convert(monitor, "Fetch Profile URI", 2);
-		ScaDeviceManagerFileSystem fileSystem = fetchFileSystem(subMonitor.newChild(1));
+		ScaDeviceManagerFileSystem fileSystem = fetchFileSystem(subMonitor.newChild(1), RefreshDepth.SELF);
 		if (fileSystem != null) {
 			Transaction transaction = profileURIFeature.createTransaction();
 			final URI newURI = fileSystem.createURI(fetchProfile(subMonitor.newChild(1)));

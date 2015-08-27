@@ -90,7 +90,7 @@ public class ScaDomainManagerEventServiceDataProvider extends AbstractEventChann
 
 	private void handleRemoveDevice(final DomainManagementObjectRemovedEventType event) {
 		for (final ScaDeviceManager manager : getContainer().getDeviceManagers()) {
-			manager.fetchDevices(null);
+			manager.fetchDevices(null, RefreshDepth.SELF);
 		}
 	}
 
@@ -169,7 +169,7 @@ public class ScaDomainManagerEventServiceDataProvider extends AbstractEventChann
 
 	private void handleAddDeviceEvent(final DomainManagementObjectAddedEventType event) {
 		for (final ScaDeviceManager manager : getContainer().getDeviceManagers()) {
-			manager.fetchDevices(null);
+			manager.fetchDevices(null, RefreshDepth.SELF);
 		}
 	}
 

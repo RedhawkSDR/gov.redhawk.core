@@ -528,16 +528,7 @@
         <eTypeArguments/>
       </eGenericType>
       <eParameters name="monitor" eType="#//IProgressMonitor"/>
-    </eOperations>
-    <eOperations name="fetchDevices" upperBound="-1">
-      <eGenericType eClassifier="#//ScaDevice">
-        <eTypeArguments/>
-      </eGenericType>
-      <eParameters name="monitor" eType="#//IProgressMonitor"/>
       <eParameters name="depth" eType="#//RefreshDepth"/>
-    </eOperations>
-    <eOperations name="fetchFileSystem" eType="#//ScaDeviceManagerFileSystem">
-      <eParameters name="monitor" eType="#//IProgressMonitor"/>
     </eOperations>
     <eOperations name="fetchFileSystem" eType="#//ScaDeviceManagerFileSystem">
       <eParameters name="monitor" eType="#//IProgressMonitor"/>
@@ -547,9 +538,6 @@
       <eParameters name="monitor" eType="#//IProgressMonitor"/>
     </eOperations>
     <eOperations name="fetchLabel" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString">
-      <eParameters name="monitor" eType="#//IProgressMonitor"/>
-    </eOperations>
-    <eOperations name="fetchServices" upperBound="-1" eType="#//ScaService">
       <eParameters name="monitor" eType="#//IProgressMonitor"/>
     </eOperations>
     <eOperations name="fetchServices" upperBound="-1" eType="#//ScaService">
@@ -712,21 +700,12 @@
     </eOperations>
     <eOperations name="connect" eExceptions="#//DomainConnectionException">
       <eParameters name="monitor" eType="#//IProgressMonitor"/>
-    </eOperations>
-    <eOperations name="connect" eExceptions="#//DomainConnectionException">
-      <eParameters name="monitor" eType="#//IProgressMonitor"/>
       <eParameters name="refreshDepth" eType="#//RefreshDepth"/>
     </eOperations>
     <eOperations name="disconnect"/>
     <eOperations name="fetchDeviceManagers" upperBound="-1" eType="#//ScaDeviceManager">
       <eParameters name="monitor" eType="#//IProgressMonitor"/>
-    </eOperations>
-    <eOperations name="fetchDeviceManagers" upperBound="-1" eType="#//ScaDeviceManager">
-      <eParameters name="monitor" eType="#//IProgressMonitor"/>
       <eParameters name="depth" eType="#//RefreshDepth"/>
-    </eOperations>
-    <eOperations name="fetchWaveformFactories" upperBound="-1" eType="#//ScaWaveformFactory">
-      <eParameters name="monitor" eType="#//IProgressMonitor"/>
     </eOperations>
     <eOperations name="fetchWaveformFactories" upperBound="-1" eType="#//ScaWaveformFactory">
       <eParameters name="monitor" eType="#//IProgressMonitor"/>
@@ -734,13 +713,7 @@
     </eOperations>
     <eOperations name="fetchWaveforms" upperBound="-1" eType="#//ScaWaveform">
       <eParameters name="monitor" eType="#//IProgressMonitor"/>
-    </eOperations>
-    <eOperations name="fetchWaveforms" upperBound="-1" eType="#//ScaWaveform">
-      <eParameters name="monitor" eType="#//IProgressMonitor"/>
       <eParameters name="depth" eType="#//RefreshDepth"/>
-    </eOperations>
-    <eOperations name="fetchFileManager" eType="#//ScaDomainManagerFileSystem">
-      <eParameters name="monitor" eType="#//IProgressMonitor"/>
     </eOperations>
     <eOperations name="fetchFileManager" eType="#//ScaDomainManagerFileSystem">
       <eParameters name="monitor" eType="#//IProgressMonitor"/>
@@ -756,9 +729,6 @@
       <eParameters name="factory" eType="#//ScaWaveformFactory"/>
     </eOperations>
     <eOperations name="fetchProfile" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString">
-      <eParameters name="monitor" eType="#//IProgressMonitor"/>
-    </eOperations>
-    <eOperations name="fetchEventChannels" upperBound="-1" eType="#//ScaEventChannel">
       <eParameters name="monitor" eType="#//IProgressMonitor"/>
     </eOperations>
     <eOperations name="fetchEventChannels" upperBound="-1" eType="#//ScaEventChannel">

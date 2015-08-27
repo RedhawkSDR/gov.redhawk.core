@@ -51,7 +51,7 @@ public class ScaWaveformsContainerItemProviderAdapterFactory implements IAdapter
 		}
 
 		private void refreshStandard(final IProgressMonitor monitor) throws InterruptedException {
-			this.domain.fetchEventChannels(monitor);
+			this.domain.fetchEventChannels(monitor, RefreshDepth.SELF);
 		}
 
 	}

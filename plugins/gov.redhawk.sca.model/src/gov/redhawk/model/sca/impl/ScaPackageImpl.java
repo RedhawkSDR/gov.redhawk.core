@@ -3129,21 +3129,11 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 
 		op = addEOperation(scaDeviceManagerEClass, null, "fetchDevices", 0, -1, IS_UNIQUE, IS_ORDERED);
 		addEParameter(op, this.getIProgressMonitor(), "monitor", 0, 1, IS_UNIQUE, IS_ORDERED);
-		g1 = createEGenericType(this.getScaDevice());
-		g2 = createEGenericType();
-		g1.getETypeArguments().add(g2);
-		initEOperation(op, g1);
-
-		op = addEOperation(scaDeviceManagerEClass, null, "fetchDevices", 0, -1, IS_UNIQUE, IS_ORDERED);
-		addEParameter(op, this.getIProgressMonitor(), "monitor", 0, 1, IS_UNIQUE, IS_ORDERED);
 		addEParameter(op, this.getRefreshDepth(), "depth", 0, 1, IS_UNIQUE, IS_ORDERED);
 		g1 = createEGenericType(this.getScaDevice());
 		g2 = createEGenericType();
 		g1.getETypeArguments().add(g2);
 		initEOperation(op, g1);
-
-		op = addEOperation(scaDeviceManagerEClass, this.getScaDeviceManagerFileSystem(), "fetchFileSystem", 0, 1, IS_UNIQUE, IS_ORDERED);
-		addEParameter(op, this.getIProgressMonitor(), "monitor", 0, 1, IS_UNIQUE, IS_ORDERED);
 
 		op = addEOperation(scaDeviceManagerEClass, this.getScaDeviceManagerFileSystem(), "fetchFileSystem", 0, 1, IS_UNIQUE, IS_ORDERED);
 		addEParameter(op, this.getIProgressMonitor(), "monitor", 0, 1, IS_UNIQUE, IS_ORDERED);
@@ -3153,9 +3143,6 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 		addEParameter(op, this.getIProgressMonitor(), "monitor", 0, 1, IS_UNIQUE, IS_ORDERED);
 
 		op = addEOperation(scaDeviceManagerEClass, ecorePackage.getEString(), "fetchLabel", 0, 1, IS_UNIQUE, IS_ORDERED);
-		addEParameter(op, this.getIProgressMonitor(), "monitor", 0, 1, IS_UNIQUE, IS_ORDERED);
-
-		op = addEOperation(scaDeviceManagerEClass, this.getScaService(), "fetchServices", 0, -1, IS_UNIQUE, IS_ORDERED);
 		addEParameter(op, this.getIProgressMonitor(), "monitor", 0, 1, IS_UNIQUE, IS_ORDERED);
 
 		op = addEOperation(scaDeviceManagerEClass, this.getScaService(), "fetchServices", 0, -1, IS_UNIQUE, IS_ORDERED);
@@ -3241,10 +3228,6 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 
 		op = addEOperation(scaDomainManagerEClass, null, "connect", 0, 1, IS_UNIQUE, IS_ORDERED);
 		addEParameter(op, this.getIProgressMonitor(), "monitor", 0, 1, IS_UNIQUE, IS_ORDERED);
-		addEException(op, this.getDomainConnectionException());
-
-		op = addEOperation(scaDomainManagerEClass, null, "connect", 0, 1, IS_UNIQUE, IS_ORDERED);
-		addEParameter(op, this.getIProgressMonitor(), "monitor", 0, 1, IS_UNIQUE, IS_ORDERED);
 		addEParameter(op, this.getRefreshDepth(), "refreshDepth", 0, 1, IS_UNIQUE, IS_ORDERED);
 		addEException(op, this.getDomainConnectionException());
 
@@ -3252,13 +3235,7 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 
 		op = addEOperation(scaDomainManagerEClass, this.getScaDeviceManager(), "fetchDeviceManagers", 0, -1, IS_UNIQUE, IS_ORDERED);
 		addEParameter(op, this.getIProgressMonitor(), "monitor", 0, 1, IS_UNIQUE, IS_ORDERED);
-
-		op = addEOperation(scaDomainManagerEClass, this.getScaDeviceManager(), "fetchDeviceManagers", 0, -1, IS_UNIQUE, IS_ORDERED);
-		addEParameter(op, this.getIProgressMonitor(), "monitor", 0, 1, IS_UNIQUE, IS_ORDERED);
 		addEParameter(op, this.getRefreshDepth(), "depth", 0, 1, IS_UNIQUE, IS_ORDERED);
-
-		op = addEOperation(scaDomainManagerEClass, this.getScaWaveformFactory(), "fetchWaveformFactories", 0, -1, IS_UNIQUE, IS_ORDERED);
-		addEParameter(op, this.getIProgressMonitor(), "monitor", 0, 1, IS_UNIQUE, IS_ORDERED);
 
 		op = addEOperation(scaDomainManagerEClass, this.getScaWaveformFactory(), "fetchWaveformFactories", 0, -1, IS_UNIQUE, IS_ORDERED);
 		addEParameter(op, this.getIProgressMonitor(), "monitor", 0, 1, IS_UNIQUE, IS_ORDERED);
@@ -3266,13 +3243,7 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 
 		op = addEOperation(scaDomainManagerEClass, this.getScaWaveform(), "fetchWaveforms", 0, -1, IS_UNIQUE, IS_ORDERED);
 		addEParameter(op, this.getIProgressMonitor(), "monitor", 0, 1, IS_UNIQUE, IS_ORDERED);
-
-		op = addEOperation(scaDomainManagerEClass, this.getScaWaveform(), "fetchWaveforms", 0, -1, IS_UNIQUE, IS_ORDERED);
-		addEParameter(op, this.getIProgressMonitor(), "monitor", 0, 1, IS_UNIQUE, IS_ORDERED);
 		addEParameter(op, this.getRefreshDepth(), "depth", 0, 1, IS_UNIQUE, IS_ORDERED);
-
-		op = addEOperation(scaDomainManagerEClass, this.getScaDomainManagerFileSystem(), "fetchFileManager", 0, 1, IS_UNIQUE, IS_ORDERED);
-		addEParameter(op, this.getIProgressMonitor(), "monitor", 0, 1, IS_UNIQUE, IS_ORDERED);
 
 		op = addEOperation(scaDomainManagerEClass, this.getScaDomainManagerFileSystem(), "fetchFileManager", 0, 1, IS_UNIQUE, IS_ORDERED);
 		addEParameter(op, this.getIProgressMonitor(), "monitor", 0, 1, IS_UNIQUE, IS_ORDERED);
@@ -3294,9 +3265,6 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 		addEException(op, theCfPackage.getInvalidDomMgrIdentifier());
 
 		op = addEOperation(scaDomainManagerEClass, ecorePackage.getEString(), "fetchProfile", 0, 1, IS_UNIQUE, IS_ORDERED);
-		addEParameter(op, this.getIProgressMonitor(), "monitor", 0, 1, IS_UNIQUE, IS_ORDERED);
-
-		op = addEOperation(scaDomainManagerEClass, this.getScaEventChannel(), "fetchEventChannels", 0, -1, IS_UNIQUE, IS_ORDERED);
 		addEParameter(op, this.getIProgressMonitor(), "monitor", 0, 1, IS_UNIQUE, IS_ORDERED);
 
 		op = addEOperation(scaDomainManagerEClass, this.getScaEventChannel(), "fetchEventChannels", 0, -1, IS_UNIQUE, IS_ORDERED);

@@ -187,7 +187,7 @@ public class InstallApplicationContentProvider implements ITreeContentProvider {
 				try {
 					final SubMonitor subMonitor = SubMonitor.convert(monitor, "Fetching SAD files...", 3);
 					domMgr.connect(subMonitor.newChild(1), RefreshDepth.SELF);
-					final ScaDomainManagerFileSystem fileManager = domMgr.fetchFileManager(subMonitor.newChild(1));
+					final ScaDomainManagerFileSystem fileManager = domMgr.fetchFileManager(subMonitor.newChild(1), RefreshDepth.SELF);
 					if (fileManager != null) {
 						final IFileStore fileStore = fileManager.getFileStore();
 						final ResourceSet resourceSet = ScaResourceFactoryUtil.createResourceSet();

@@ -12,36 +12,6 @@
 // BEGIN GENERATED CODE
 package gov.redhawk.model.sca.impl;
 
-import gov.redhawk.model.sca.DomainConnectionException;
-import gov.redhawk.model.sca.DomainConnectionState;
-import gov.redhawk.model.sca.ProfileObjectWrapper;
-import gov.redhawk.model.sca.Properties;
-import gov.redhawk.model.sca.RefreshDepth;
-import gov.redhawk.model.sca.ScaDevice;
-import gov.redhawk.model.sca.ScaDeviceManager;
-import gov.redhawk.model.sca.ScaDomainManager;
-import gov.redhawk.model.sca.ScaDomainManagerFileSystem;
-import gov.redhawk.model.sca.ScaEventChannel;
-import gov.redhawk.model.sca.ScaFactory;
-import gov.redhawk.model.sca.ScaModelPlugin;
-import gov.redhawk.model.sca.ScaPackage;
-import gov.redhawk.model.sca.ScaWaveform;
-import gov.redhawk.model.sca.ScaWaveformFactory;
-import gov.redhawk.model.sca.commands.ScaDomainManagerMergeDeviceManagersCommand;
-import gov.redhawk.model.sca.commands.ScaDomainManagerMergeEventChannelsCommand;
-import gov.redhawk.model.sca.commands.ScaDomainManagerMergeWaveformFactoriesCommand;
-import gov.redhawk.model.sca.commands.ScaDomainManagerMergeWaveformsCommand;
-import gov.redhawk.model.sca.commands.ScaModelCommand;
-import gov.redhawk.model.sca.commands.ScaModelCommandWithResult;
-import gov.redhawk.model.sca.commands.SetLocalAttributeCommand;
-import gov.redhawk.model.sca.commands.UnsetLocalAttributeCommand;
-import gov.redhawk.model.sca.commands.VersionedFeature;
-import gov.redhawk.model.sca.commands.VersionedFeature.Transaction;
-import gov.redhawk.sca.util.Debug;
-import gov.redhawk.sca.util.OrbSession;
-import gov.redhawk.sca.util.PluginUtil;
-import gov.redhawk.sca.util.SilentJob;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -52,17 +22,10 @@ import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-import mil.jpeojtrs.sca.dmd.DmdPackage;
-import mil.jpeojtrs.sca.dmd.DomainManagerConfiguration;
-import mil.jpeojtrs.sca.prf.AbstractProperty;
-import mil.jpeojtrs.sca.spd.SpdPackage;
-import mil.jpeojtrs.sca.util.CorbaUtils;
-import mil.jpeojtrs.sca.util.NamedThreadFactory;
-import mil.jpeojtrs.sca.util.ScaEcoreUtils;
-
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.SubMonitor;
@@ -131,6 +94,42 @@ import CF.DomainManagerPackage.UnregisterError;
 import CF.PropertySetPackage.AlreadyInitialized;
 import CF.PropertySetPackage.InvalidConfiguration;
 import CF.PropertySetPackage.PartialConfiguration;
+import gov.redhawk.model.sca.DomainConnectionException;
+import gov.redhawk.model.sca.DomainConnectionState;
+import gov.redhawk.model.sca.ProfileObjectWrapper;
+import gov.redhawk.model.sca.Properties;
+import gov.redhawk.model.sca.RefreshDepth;
+import gov.redhawk.model.sca.ScaDevice;
+import gov.redhawk.model.sca.ScaDeviceManager;
+import gov.redhawk.model.sca.ScaDomainManager;
+import gov.redhawk.model.sca.ScaDomainManagerFileSystem;
+import gov.redhawk.model.sca.ScaEventChannel;
+import gov.redhawk.model.sca.ScaFactory;
+import gov.redhawk.model.sca.ScaModelPlugin;
+import gov.redhawk.model.sca.ScaPackage;
+import gov.redhawk.model.sca.ScaWaveform;
+import gov.redhawk.model.sca.ScaWaveformFactory;
+import gov.redhawk.model.sca.commands.ScaDomainManagerMergeDeviceManagersCommand;
+import gov.redhawk.model.sca.commands.ScaDomainManagerMergeEventChannelsCommand;
+import gov.redhawk.model.sca.commands.ScaDomainManagerMergeWaveformFactoriesCommand;
+import gov.redhawk.model.sca.commands.ScaDomainManagerMergeWaveformsCommand;
+import gov.redhawk.model.sca.commands.ScaModelCommand;
+import gov.redhawk.model.sca.commands.ScaModelCommandWithResult;
+import gov.redhawk.model.sca.commands.SetLocalAttributeCommand;
+import gov.redhawk.model.sca.commands.UnsetLocalAttributeCommand;
+import gov.redhawk.model.sca.commands.VersionedFeature;
+import gov.redhawk.model.sca.commands.VersionedFeature.Transaction;
+import gov.redhawk.sca.util.Debug;
+import gov.redhawk.sca.util.OrbSession;
+import gov.redhawk.sca.util.PluginUtil;
+import gov.redhawk.sca.util.SilentJob;
+import mil.jpeojtrs.sca.dmd.DmdPackage;
+import mil.jpeojtrs.sca.dmd.DomainManagerConfiguration;
+import mil.jpeojtrs.sca.prf.AbstractProperty;
+import mil.jpeojtrs.sca.spd.SpdPackage;
+import mil.jpeojtrs.sca.util.CorbaUtils;
+import mil.jpeojtrs.sca.util.NamedThreadFactory;
+import mil.jpeojtrs.sca.util.ScaEcoreUtils;
 
 /**
  * <!-- begin-user-doc --> An implementation of the model object ' <em><b>Domain Manager</b></em>'.
@@ -1207,20 +1206,6 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 	/**
 	 * <!-- begin-user-doc -->
 	 * 
-	 * @deprecated Use {@link #connect(IProgressMonitor, RefreshDepth)} <!-- end-user-doc -->
-	 * @generated NOT
-	 */
-	@Override
-	@Deprecated
-	public void connect(final IProgressMonitor parentMonitor) throws DomainConnectionException {
-		// END GENERATED CODE
-		connect(parentMonitor, RefreshDepth.FULL);
-		// BEGIN GENERATED CODE
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * 
 	 * @since 14.0
 	 *        <!-- end-user-doc -->
 	 * 
@@ -1433,19 +1418,6 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 		// BEGIN GENERATED CODE
 	}
 
-	/**
-	 * <!-- begin-user-doc -->
-	 * 
-	 * @deprecated Use {@link #fetchDeviceManagers(IProgressMonitor, RefreshDepth)}
-	 * @since 14.0
-	 *        <!-- end-user-doc -->
-	 * @generated NOT
-	 */
-	@Override
-	public EList<ScaDeviceManager> fetchDeviceManagers(IProgressMonitor monitor) {
-		return fetchDeviceManagers(monitor, RefreshDepth.SELF);
-	}
-
 	private final VersionedFeature devicemanagers = new VersionedFeature(this, ScaPackage.Literals.SCA_DOMAIN_MANAGER__DEVICE_MANAGERS);
 
 	/**
@@ -1482,19 +1454,6 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 		// BEGIN GENERATED CODE
 	}
 
-	/**
-	 * <!-- begin-user-doc -->
-	 * 
-	 * @deprecated Use {@link #fetchWaveformFactories(IProgressMonitor, RefreshDepth)}
-	 * @since 14.0
-	 *        <!-- end-user-doc -->
-	 * @generated NOT
-	 */
-	@Override
-	public EList<ScaWaveformFactory> fetchWaveformFactories(IProgressMonitor monitor) {
-		return fetchWaveformFactories(monitor, RefreshDepth.SELF);
-	}
-
 	private final VersionedFeature waveformFactoriesFeature = new VersionedFeature(this, ScaPackage.Literals.SCA_DOMAIN_MANAGER__WAVEFORM_FACTORIES);
 
 	/**
@@ -1527,19 +1486,6 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 		subMonitor.worked(1);
 		subMonitor.done();
 		// BEGIN GENERATED CODE
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * 
-	 * @deprecated Use {@link #fetchWaveforms(IProgressMonitor, RefreshDepth)}
-	 * @since 14.0
-	 *        <!-- end-user-doc -->
-	 * @generated NOT
-	 */
-	@Override
-	public EList<ScaWaveform> fetchWaveforms(IProgressMonitor monitor) {
-		return fetchWaveforms(monitor, RefreshDepth.SELF);
 	}
 
 	private final VersionedFeature waveformsFeature = new VersionedFeature(this, ScaPackage.Literals.SCA_DOMAIN_MANAGER__WAVEFORMS);
@@ -1806,7 +1752,7 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 			throw new IllegalStateException("CORBA Object is Null");
 		}
 		domMgr.installApplication(profileFileName);
-		fetchWaveformFactories(null);
+		fetchWaveformFactories(new NullProgressMonitor(), RefreshDepth.SELF);
 		// BEGIN GENERATED CODE
 	}
 
@@ -1837,7 +1783,7 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 		}
 		domMgr.registerDeviceManager(deviceMgr);
 
-		fetchDeviceManagers(null);
+		fetchDeviceManagers(new NullProgressMonitor(), RefreshDepth.SELF);
 		// BEGIN GENERATED CODE
 	}
 
@@ -2309,7 +2255,7 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 		fetchKeepAlive(subMonitor.newChild(1));
 		fetchNarrowedObject(subMonitor.newChild(1)); // Handled by the CORBA obj superclass!
 		fetchLocalAttributes(subMonitor.newChild(1));
-		fetchFileManager(subMonitor.newChild(1));
+		fetchFileManager(subMonitor.newChild(1), RefreshDepth.SELF);
 		super.fetchAttributes(subMonitor.newChild(1));
 		fetchProfileObject(subMonitor.newChild(1));
 		fetchProperties(subMonitor.newChild(1));
@@ -2378,19 +2324,6 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 	}
 
 	private VersionedFeature fileManagerFeature = new VersionedFeature(this, ScaPackage.Literals.SCA_DOMAIN_MANAGER__FILE_MANAGER);
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * 
-	 * @deprecated Use {@link #fetchFileManager(IProgressMonitor, RefreshDepth)}
-	 * @since 14.0
-	 *        <!-- end-user-doc -->
-	 * @generated NOT
-	 */
-	@Override
-	public ScaDomainManagerFileSystem fetchFileManager(IProgressMonitor monitor) {
-		return fetchFileManager(monitor, RefreshDepth.SELF);
-	}
 
 	private final VersionedFeature identifierRevision = new VersionedFeature(this, ScaPackage.Literals.SCA_DOMAIN_MANAGER__IDENTIFIER);
 
@@ -2520,18 +2453,6 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 	private final VersionedFeature eventChannelFeature = new VersionedFeature(this, ScaPackage.Literals.SCA_DOMAIN_MANAGER__EVENT_CHANNELS);
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * 
-	 * @deprecated Use {@link #fetchEventChannels(IProgressMonitor, RefreshDepth)}
-	 * @since 19.0
-	 *        <!-- end-user-doc -->
-	 * @generated NOT
-	 */
-	public EList<ScaEventChannel> fetchEventChannels(IProgressMonitor monitor) {
-		return fetchEventChannels(monitor, RefreshDepth.SELF);
-	}
-
-	/**
 	 * @since 19.0
 	 */
 	protected void internalFetchEventChannels(IProgressMonitor monitor) {
@@ -2597,7 +2518,7 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 			return getProfileURI();
 		}
 		SubMonitor subMonitor = SubMonitor.convert(monitor, "Fetch Profile URI", 2);
-		ScaDomainManagerFileSystem fileSystem = fetchFileManager(subMonitor.newChild(1));
+		ScaDomainManagerFileSystem fileSystem = fetchFileManager(subMonitor.newChild(1), RefreshDepth.SELF);
 		if (fileSystem != null) {
 			Transaction transaction = profileURIFeature.createTransaction();
 			final URI newURI = fileSystem.createURI(fetchProfile(subMonitor.newChild(1)));

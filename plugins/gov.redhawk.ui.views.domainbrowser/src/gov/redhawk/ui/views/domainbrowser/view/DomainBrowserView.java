@@ -457,7 +457,7 @@ public class DomainBrowserView extends ViewPart {
 				public void done(final IJobChangeEvent event) {
 					if (DomainBrowserView.this.domainManager != null && DomainBrowserView.this.domainManager.getProfileObj() != null) {
 						// TODO: This doesn't seem like it does anything does it?
-						final List<ScaWaveformFactory> factories = DomainBrowserView.this.domainManager.fetchWaveformFactories(new NullProgressMonitor());
+						final List<ScaWaveformFactory> factories = DomainBrowserView.this.domainManager.fetchWaveformFactories(new NullProgressMonitor(), RefreshDepth.SELF);
 						factories.toArray();
 
 						DomainBrowserView.this.postConnectUiJob.schedule(1000);

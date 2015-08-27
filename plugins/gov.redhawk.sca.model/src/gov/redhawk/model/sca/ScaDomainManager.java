@@ -701,16 +701,6 @@ public interface ScaDomainManager extends ScaPropertyContainer<DomainManager, Do
 
 	/**
 	 * <!-- begin-user-doc -->
-	 * 
-	 * @deprecated Use {@link #connect(IProgressMonitor, RefreshDepth)} <!-- end-user-doc -->
-	 * @model exceptions="gov.redhawk.model.sca.DomainConnectionException"
-	 *        monitorDataType="gov.redhawk.model.sca.IProgressMonitor"
-	 * @generated
-	 */
-	void connect(IProgressMonitor monitor) throws DomainConnectionException;
-
-	/**
-	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * 
 	 * @model exceptions="gov.redhawk.model.sca.DomainConnectionException"
@@ -731,34 +721,12 @@ public interface ScaDomainManager extends ScaPropertyContainer<DomainManager, Do
 	/**
 	 * <!-- begin-user-doc -->
 	 * 
-	 * @deprecated Use {@link #fetchDeviceManagers(IProgressMonitor, RefreshDepth)}
-	 * @since 14.0
-	 *        <!-- end-user-doc -->
-	 * @model monitorDataType="gov.redhawk.model.sca.IProgressMonitor"
-	 * @generated
-	 */
-	EList<ScaDeviceManager> fetchDeviceManagers(IProgressMonitor monitor);
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * 
 	 * @since 20.0
 	 *        <!-- end-user-doc -->
 	 * @model monitorDataType="gov.redhawk.model.sca.IProgressMonitor"
 	 * @generated
 	 */
 	EList<ScaDeviceManager> fetchDeviceManagers(IProgressMonitor monitor, RefreshDepth depth);
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * 
-	 * @deprecated Use {@link #fetchWaveformFactories(IProgressMonitor, RefreshDepth)}
-	 * @since 14.0
-	 *        <!-- end-user-doc -->
-	 * @model monitorDataType="gov.redhawk.model.sca.IProgressMonitor"
-	 * @generated
-	 */
-	EList<ScaWaveformFactory> fetchWaveformFactories(IProgressMonitor monitor);
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -773,34 +741,12 @@ public interface ScaDomainManager extends ScaPropertyContainer<DomainManager, Do
 	/**
 	 * <!-- begin-user-doc -->
 	 * 
-	 * @deprecated Use {@link #fetchWaveforms(IProgressMonitor, RefreshDepth)}
-	 * @since 14.0
-	 *        <!-- end-user-doc -->
-	 * @model monitorDataType="gov.redhawk.model.sca.IProgressMonitor"
-	 * @generated
-	 */
-	EList<ScaWaveform> fetchWaveforms(IProgressMonitor monitor);
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * 
 	 * @since 20.0
 	 *        <!-- end-user-doc -->
 	 * @model monitorDataType="gov.redhawk.model.sca.IProgressMonitor"
 	 * @generated
 	 */
 	EList<ScaWaveform> fetchWaveforms(IProgressMonitor monitor, RefreshDepth depth);
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * 
-	 * @deprecated Use {@link #fetchFileManager(IProgressMonitor, RefreshDepth)}
-	 * @since 14.0
-	 *        <!-- end-user-doc -->
-	 * @model monitorDataType="gov.redhawk.model.sca.IProgressMonitor"
-	 * @generated
-	 */
-	ScaDomainManagerFileSystem fetchFileManager(IProgressMonitor monitor);
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -850,16 +796,6 @@ public interface ScaDomainManager extends ScaPropertyContainer<DomainManager, Do
 	 * @generated
 	 */
 	String fetchProfile(IProgressMonitor monitor);
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * 
-	 * @since 19.0
-	 * @deprecated Use {@link #fetchEventChannels(IProgressMonitor, RefreshDepth)} <!-- end-user-doc -->
-	 * @model monitorDataType="gov.redhawk.model.sca.IProgressMonitor"
-	 * @generated
-	 */
-	EList<ScaEventChannel> fetchEventChannels(IProgressMonitor monitor);
 
 	/**
 	 * <!-- begin-user-doc -->

@@ -57,7 +57,7 @@ public class ScaEventChannelsContainerItemProviderAdapterFactory implements IAda
 		}
 
 		private void refreshStandard(final IProgressMonitor monitor) throws InterruptedException {
-			this.domain.fetchWaveforms(monitor);
+			this.domain.fetchWaveforms(monitor, RefreshDepth.SELF);
 		}
 
 		private void refreshFull(final IProgressMonitor monitor) throws InterruptedException {

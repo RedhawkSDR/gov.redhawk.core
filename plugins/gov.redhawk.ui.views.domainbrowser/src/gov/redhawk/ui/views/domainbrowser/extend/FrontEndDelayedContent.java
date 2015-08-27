@@ -11,6 +11,7 @@
  */
 package gov.redhawk.ui.views.domainbrowser.extend;
 
+import gov.redhawk.model.sca.RefreshDepth;
 import gov.redhawk.model.sca.ScaDevice;
 import gov.redhawk.model.sca.ScaDeviceManager;
 import gov.redhawk.model.sca.ScaDeviceManagerFileSystem;
@@ -82,9 +83,9 @@ public class FrontEndDelayedContent {
 						protected IStatus run(final IProgressMonitor monitor) {
 							deviceManager.fetchIdentifier(monitor);
 							deviceManager.fetchProfile(monitor);
-							deviceManager.fetchDevices(monitor);
-							deviceManager.fetchServices(monitor);
-							deviceManager.fetchFileSystem(monitor);
+							deviceManager.fetchDevices(monitor, RefreshDepth.SELF);
+							deviceManager.fetchServices(monitor, RefreshDepth.SELF);
+							deviceManager.fetchFileSystem(monitor, RefreshDepth.SELF);
 							return Status.OK_STATUS;
 						}
 
@@ -235,7 +236,7 @@ public class FrontEndDelayedContent {
 
 						@Override
 						protected IStatus run(final IProgressMonitor monitor) {
-							dom.fetchDeviceManagers(monitor);
+							dom.fetchDeviceManagers(monitor, RefreshDepth.SELF);
 							return Status.OK_STATUS;
 						}
 
@@ -258,7 +259,7 @@ public class FrontEndDelayedContent {
 
 						@Override
 						protected IStatus run(final IProgressMonitor monitor) {
-							dom.fetchWaveformFactories(monitor);
+							dom.fetchWaveformFactories(monitor, RefreshDepth.SELF);
 							return Status.OK_STATUS;
 						}
 
@@ -281,7 +282,7 @@ public class FrontEndDelayedContent {
 
 						@Override
 						protected IStatus run(final IProgressMonitor monitor) {
-							dom.fetchWaveforms(monitor);
+							dom.fetchWaveforms(monitor, RefreshDepth.SELF);
 							return Status.OK_STATUS;
 						}
 
@@ -304,7 +305,7 @@ public class FrontEndDelayedContent {
 
 						@Override
 						protected IStatus run(final IProgressMonitor monitor) {
-							dom.fetchEventChannels(monitor);
+							dom.fetchEventChannels(monitor, RefreshDepth.SELF);
 							return Status.OK_STATUS;
 						}
 

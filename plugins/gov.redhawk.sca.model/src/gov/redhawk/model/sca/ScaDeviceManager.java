@@ -516,34 +516,12 @@ public interface ScaDeviceManager extends ScaPropertyContainer<DeviceManager, De
 	/**
 	 * <!-- begin-user-doc -->
 	 * 
-	 * @deprecated Use {@link #fetchDevices(IProgressMonitor, RefreshDepth)}
-	 * @since 14.0
-	 *        <!-- end-user-doc -->
-	 * @model monitorDataType="gov.redhawk.model.sca.IProgressMonitor"
-	 * @generated
-	 */
-	EList<ScaDevice< ? >> fetchDevices(IProgressMonitor monitor);
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * 
 	 * @since 20.0
 	 *        <!-- end-user-doc -->
 	 * @model monitorDataType="gov.redhawk.model.sca.IProgressMonitor"
 	 * @generated
 	 */
 	EList<ScaDevice< ? >> fetchDevices(IProgressMonitor monitor, RefreshDepth depth);
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * 
-	 * @deprecated Use {@link #fetchFileSystem(IProgressMonitor, RefreshDepth)}
-	 * @since 14.0
-	 *        <!-- end-user-doc -->
-	 * @model monitorDataType="gov.redhawk.model.sca.IProgressMonitor"
-	 * @generated
-	 */
-	ScaDeviceManagerFileSystem fetchFileSystem(IProgressMonitor monitor);
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -572,15 +550,6 @@ public interface ScaDeviceManager extends ScaPropertyContainer<DeviceManager, De
 	 * @generated
 	 */
 	String fetchLabel(IProgressMonitor monitor);
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * 
-	 * @deprecated Use {@link #fetchServices(IProgressMonitor, RefreshDepth)} <!-- end-user-doc -->
-	 * @model monitorDataType="gov.redhawk.model.sca.IProgressMonitor"
-	 * @generated
-	 */
-	EList<ScaService> fetchServices(IProgressMonitor monitor);
 
 	/**
 	 * <!-- begin-user-doc -->

@@ -71,29 +71,19 @@ import CF.DomainManagerPackage.UnregisterError;
  * The following operations are tested:
  * <ul>
  * <li>{@link gov.redhawk.model.sca.ScaDomainManager#getDevice(java.lang.String) <em>Get Device</em>}</li>
- * <li>{@link gov.redhawk.model.sca.ScaDomainManager#connect(org.eclipse.core.runtime.IProgressMonitor)
- * <em>Connect</em>}</li>
  * <li>
  * {@link gov.redhawk.model.sca.ScaDomainManager#connect(org.eclipse.core.runtime.IProgressMonitor, gov.redhawk.model.sca.RefreshDepth)
  * <em>Connect</em>}</li>
  * <li>{@link gov.redhawk.model.sca.ScaDomainManager#disconnect() <em>Disconnect</em>}</li>
- * <li>{@link gov.redhawk.model.sca.ScaDomainManager#fetchDeviceManagers(org.eclipse.core.runtime.IProgressMonitor)
- * <em>Fetch Device Managers</em>}</li>
  * <li>
  * {@link gov.redhawk.model.sca.ScaDomainManager#fetchDeviceManagers(org.eclipse.core.runtime.IProgressMonitor, gov.redhawk.model.sca.RefreshDepth)
  * <em>Fetch Device Managers</em>}</li>
- * <li>{@link gov.redhawk.model.sca.ScaDomainManager#fetchWaveformFactories(org.eclipse.core.runtime.IProgressMonitor)
- * <em>Fetch Waveform Factories</em>}</li>
  * <li>
  * {@link gov.redhawk.model.sca.ScaDomainManager#fetchWaveformFactories(org.eclipse.core.runtime.IProgressMonitor, gov.redhawk.model.sca.RefreshDepth)
  * <em>Fetch Waveform Factories</em>}</li>
- * <li>{@link gov.redhawk.model.sca.ScaDomainManager#fetchWaveforms(org.eclipse.core.runtime.IProgressMonitor) <em>Fetch
- * Waveforms</em>}</li>
  * <li>
  * {@link gov.redhawk.model.sca.ScaDomainManager#fetchWaveforms(org.eclipse.core.runtime.IProgressMonitor, gov.redhawk.model.sca.RefreshDepth)
  * <em>Fetch Waveforms</em>}</li>
- * <li>{@link gov.redhawk.model.sca.ScaDomainManager#fetchFileManager(org.eclipse.core.runtime.IProgressMonitor)
- * <em>Fetch File Manager</em>}</li>
  * <li>
  * {@link gov.redhawk.model.sca.ScaDomainManager#fetchFileManager(org.eclipse.core.runtime.IProgressMonitor, gov.redhawk.model.sca.RefreshDepth)
  * <em>Fetch File Manager</em>}</li>
@@ -106,8 +96,6 @@ import CF.DomainManagerPackage.UnregisterError;
  * <em>Uninstall Sca Waveform Factory</em>}</li>
  * <li>{@link gov.redhawk.model.sca.ScaDomainManager#fetchProfile(org.eclipse.core.runtime.IProgressMonitor) <em>Fetch
  * Profile</em>}</li>
- * <li>{@link gov.redhawk.model.sca.ScaDomainManager#fetchEventChannels(org.eclipse.core.runtime.IProgressMonitor)
- * <em>Fetch Event Channels</em>}</li>
  * <li>
  * {@link gov.redhawk.model.sca.ScaDomainManager#fetchEventChannels(org.eclipse.core.runtime.IProgressMonitor, gov.redhawk.model.sca.RefreshDepth)
  * <em>Fetch Event Channels</em>}</li>
@@ -330,29 +318,6 @@ public class ScaDomainManagerTest extends ScaPropertyContainerTest {
 
 	/**
 	 * Tests the '
-	 * {@link gov.redhawk.model.sca.ScaDomainManager#fetchDeviceManagers(org.eclipse.core.runtime.IProgressMonitor)
-	 * <em>Fetch Device Managers</em>}' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @throws InterruptedException
-	 * @see gov.redhawk.model.sca.ScaDomainManager#fetchDeviceManagers(org.eclipse.core.runtime.IProgressMonitor)
-	 * @generated NOT
-	 */
-	public void testFetchDeviceManagers__IProgressMonitor() throws InterruptedException {
-		// END GENERATED CODE
-		@SuppressWarnings("deprecation")
-		EList<ScaDeviceManager> deviceManagersEList = getFixture().fetchDeviceManagers(null);
-		try {
-			deviceManagersEList.clear();
-			Assert.fail("fetched Device Managers list should be unmodifiable");
-		} catch (UnsupportedOperationException e) {
-			Assert.assertTrue("fetched Device Managers list is unmodifiable", true);
-		}
-		// BEGIN GENERATED CODE
-	}
-
-	/**
-	 * Tests the '
 	 * {@link gov.redhawk.model.sca.ScaDomainManager#fetchDeviceManagers(org.eclipse.core.runtime.IProgressMonitor, gov.redhawk.model.sca.RefreshDepth)
 	 * <em>Fetch Device Managers</em>}' operation.
 	 * <!-- begin-user-doc -->
@@ -369,29 +334,6 @@ public class ScaDomainManagerTest extends ScaPropertyContainerTest {
 			Assert.fail("fetched Device Managers list should be unmodifiable");
 		} catch (UnsupportedOperationException e) {
 			Assert.assertTrue("fetched Device Managers list is unmodifiable", true);
-		}
-		// BEGIN GENERATED CODE
-	}
-
-	/**
-	 * Tests the '
-	 * {@link gov.redhawk.model.sca.ScaDomainManager#fetchWaveformFactories(org.eclipse.core.runtime.IProgressMonitor)
-	 * <em>Fetch Waveform Factories</em>}' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @throws InterruptedException
-	 * @see gov.redhawk.model.sca.ScaDomainManager#fetchWaveformFactories(org.eclipse.core.runtime.IProgressMonitor)
-	 * @generated NOT
-	 */
-	public void testFetchWaveformFactories__IProgressMonitor() throws InterruptedException {
-		// END GENERATED CODE
-		@SuppressWarnings("deprecation")
-		EList<ScaWaveformFactory> waveformFactoriesEList = getFixture().fetchWaveformFactories(null);
-		try {
-			waveformFactoriesEList.clear();
-			Assert.fail("fetched Waveform Factories list should be unmodifiable");
-		} catch (UnsupportedOperationException e) {
-			Assert.assertTrue("fetched Waveform Factories list is unmodifiable", true);
 		}
 		// BEGIN GENERATED CODE
 	}
@@ -420,29 +362,6 @@ public class ScaDomainManagerTest extends ScaPropertyContainerTest {
 
 	/**
 	 * Tests the '
-	 * {@link gov.redhawk.model.sca.ScaDomainManager#fetchWaveforms(org.eclipse.core.runtime.IProgressMonitor) <em>Fetch
-	 * Waveforms</em>}' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @throws InterruptedException
-	 * @see gov.redhawk.model.sca.ScaDomainManager#fetchWaveforms(org.eclipse.core.runtime.IProgressMonitor)
-	 * @generated NOT
-	 */
-	public void testFetchWaveforms__IProgressMonitor() throws InterruptedException {
-		// END GENERATED CODE
-		@SuppressWarnings("deprecation")
-		EList<ScaWaveform> waveformsEList = getFixture().fetchWaveforms(null);
-		try {
-			waveformsEList.clear();
-			Assert.fail("fetched Waveforms list should be unmodifiable");
-		} catch (UnsupportedOperationException e) {
-			Assert.assertTrue("fetched Waveforms list is unmodifiable", true);
-		}
-		// BEGIN GENERATED CODE
-	}
-
-	/**
-	 * Tests the '
 	 * {@link gov.redhawk.model.sca.ScaDomainManager#fetchWaveforms(org.eclipse.core.runtime.IProgressMonitor, gov.redhawk.model.sca.RefreshDepth)
 	 * <em>Fetch Waveforms</em>}' operation.
 	 * <!-- begin-user-doc -->
@@ -460,22 +379,6 @@ public class ScaDomainManagerTest extends ScaPropertyContainerTest {
 		} catch (UnsupportedOperationException e) {
 			Assert.assertTrue("fetched Waveforms list is unmodifiable", true);
 		}
-		// BEGIN GENERATED CODE
-	}
-
-	/**
-	 * Tests the '
-	 * {@link gov.redhawk.model.sca.ScaDomainManager#fetchFileManager(org.eclipse.core.runtime.IProgressMonitor)
-	 * <em>Fetch File Manager</em>}' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see gov.redhawk.model.sca.ScaDomainManager#fetchFileManager(org.eclipse.core.runtime.IProgressMonitor)
-	 * @generated NOT
-	 */
-	@SuppressWarnings("deprecation")
-	public void testFetchFileManager__IProgressMonitor() {
-		// END GENERATED CODE
-		getFixture().fetchFileManager(null);
 		// BEGIN GENERATED CODE
 	}
 

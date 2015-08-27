@@ -11,6 +11,7 @@
  */
 package gov.redhawk.sca.internal.ui;
 
+import gov.redhawk.model.sca.RefreshDepth;
 import gov.redhawk.model.sca.ScaDevice;
 import gov.redhawk.model.sca.ScaDeviceManager;
 import gov.redhawk.model.sca.ScaModelPlugin;
@@ -46,7 +47,7 @@ public class DcdComponentInstantiationAdapterFactory implements IAdapterFactory 
 			final ScaDeviceManager manager = ScaModelPlugin.getDefault().findEObject(ScaDeviceManager.class, wfRef);
 			final String deviceId = compInst.getId();
 			if (manager != null) {
-				for (final ScaDevice< ? > device : manager.fetchDevices(new NullProgressMonitor())) {
+				for (final ScaDevice< ? > device : manager.fetchDevices(new NullProgressMonitor(), RefreshDepth.SELF)) {
 					if (deviceId.equals(device.getIdentifier())) {
 						return device;
 					}

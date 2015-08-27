@@ -57,7 +57,7 @@ public class ScaWaveformFactoriesContainerItemProviderAdapterFactory implements 
 
 					private void refreshStandard(final IProgressMonitor monitor) throws InterruptedException {
 						final ScaDomainManager domain = (ScaDomainManager) provider.getParent(null);
-						domain.fetchWaveformFactories(monitor);
+						domain.fetchWaveformFactories(monitor, RefreshDepth.SELF);
 					}
 
 					private void refreshFull(final IProgressMonitor monitor) throws InterruptedException {
