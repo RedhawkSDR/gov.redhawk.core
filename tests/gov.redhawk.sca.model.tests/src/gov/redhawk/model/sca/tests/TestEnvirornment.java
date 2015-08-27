@@ -11,6 +11,36 @@
  */
 package gov.redhawk.model.sca.tests;
 
+import java.io.File;
+import java.net.URL;
+import java.util.HashMap;
+import java.util.Map;
+
+import org.eclipse.core.runtime.FileLocator;
+import org.eclipse.core.runtime.Path;
+import org.eclipse.core.runtime.Platform;
+import org.eclipse.emf.common.command.Command;
+import org.eclipse.emf.common.util.TreeIterator;
+import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.resource.Resource;
+import org.eclipse.emf.ecore.resource.ResourceSet;
+import org.eclipse.emf.ecore.util.EcoreUtil;
+import org.eclipse.emf.transaction.RunnableWithResult;
+import org.eclipse.emf.transaction.TransactionalEditingDomain;
+import org.eclipse.emf.transaction.util.TransactionUtil;
+import org.junit.Assert;
+import org.omg.CosEventChannelAdmin.EventChannel;
+import org.omg.CosEventChannelAdmin.EventChannelHelper;
+import org.omg.CosNaming.NamingContextExt;
+
+import CF.DataType;
+import CF.DeviceAssignmentType;
+import CF.DeviceManager;
+import CF.DeviceManagerHelper;
+import CF.DeviceManagerPOATie;
+import CF.DomainManager;
+import CF.DomainManagerHelper;
+import CF.DomainManagerPOATie;
 import gov.redhawk.model.sca.DomainConnectionState;
 import gov.redhawk.model.sca.RefreshDepth;
 import gov.redhawk.model.sca.ScaAbstractProperty;
@@ -26,35 +56,11 @@ import gov.redhawk.model.sca.commands.ScaModelCommand;
 import gov.redhawk.model.sca.impl.ScaDomainManagerImpl;
 import gov.redhawk.model.sca.tests.stubs.DeviceManagerImpl;
 import gov.redhawk.model.sca.tests.stubs.DomainManagerImpl;
+import gov.redhawk.model.sca.tests.stubs.EventChannelImpl;
+import gov.redhawk.model.sca.tests.stubs.NamingContextExtImpl;
 import gov.redhawk.model.sca.tests.stubs.ScaTestConstaints;
 import gov.redhawk.sca.model.internal.DataProviderServicesRegistry;
 import gov.redhawk.sca.util.OrbSession;
-
-import java.io.File;
-import java.net.URL;
-
-import org.eclipse.core.runtime.FileLocator;
-import org.eclipse.core.runtime.Path;
-import org.eclipse.core.runtime.Platform;
-import org.eclipse.emf.common.command.Command;
-import org.eclipse.emf.common.util.TreeIterator;
-import org.eclipse.emf.ecore.EObject;
-import org.eclipse.emf.ecore.resource.Resource;
-import org.eclipse.emf.ecore.resource.ResourceSet;
-import org.eclipse.emf.ecore.util.EcoreUtil;
-import org.eclipse.emf.transaction.RunnableWithResult;
-import org.eclipse.emf.transaction.TransactionalEditingDomain;
-import org.eclipse.emf.transaction.util.TransactionUtil;
-import org.junit.Assert;
-
-import CF.DataType;
-import CF.DeviceAssignmentType;
-import CF.DeviceManager;
-import CF.DeviceManagerHelper;
-import CF.DeviceManagerPOATie;
-import CF.DomainManager;
-import CF.DomainManagerHelper;
-import CF.DomainManagerPOATie;
 
 public class TestEnvirornment {
 
@@ -64,6 +70,8 @@ public class TestEnvirornment {
 	private final TransactionalEditingDomain editingDomain;
 	private final DeviceManager devMgrRef;
 	private DomainManager dmdRef;
+	private NamingContextExt context;
+	private Map<String, org.omg.CORBA.Object> eventChannelRefs = new HashMap<String, org.omg.CORBA.Object>();
 	private OrbSession session;
 	private DeviceManagerImpl devMgrImpl;
 	private DomainManagerImpl domainMgrImpl;
@@ -87,6 +95,13 @@ public class TestEnvirornment {
 		Assert.assertTrue(domRoot.exists());
 		domainMgrImpl = new DomainManagerImpl(domRoot, "/domain/DomainManager.dmd.xml", null, null, session.getOrb(), session.getPOA());
 		dmdRef = DomainManagerHelper.narrow(session.getPOA().servant_to_reference(new DomainManagerPOATie(domainMgrImpl)));
+
+		for (String name : new String[] { "IDM_CHANNEL", "ODM_CHANNEL" }) {
+			EventChannelImpl eventChannelImpl = new EventChannelImpl();
+			EventChannel eventChannelRef = EventChannelHelper.narrow(session.getPOA().servant_to_reference(eventChannelImpl));
+			eventChannelRefs.put(name, eventChannelRef);
+		}
+		context = new NamingContextExtImpl(eventChannelRefs);
 
 		URL devFileUrl = FileLocator.toFileURL(FileLocator.find(Platform.getBundle("gov.redhawk.sca.model.tests"), new Path("sdr/dev"),
 				null));
@@ -128,11 +143,13 @@ public class TestEnvirornment {
 				domMgr.unsetObj();
 				domMgr.unsetCorbaObj();
 				domMgr.unsetRootContext();
+				domMgr.unsetEventChannels();
 				domMgr.unsetWaveformFactories();
 				domMgr.unsetDeviceManagers();
 				domMgr.unsetFileManager();
 				domMgr.clearAllStatus();
 				domMgr.setCorbaObj(dmdRef);
+				domMgr.setRootContext(context);
 				domMgr.setState(DomainConnectionState.CONNECTED);
 			}
 

@@ -61,6 +61,7 @@ public class ScaTests extends TestSuite {
 		suite.addTestSuite(ScaWaveformTest.class);
 		suite.addTestSuite(ScaWaveformFactoryTest.class);
 		suite.addTestSuite(ScaStructSequencePropertyTest.class);
+		suite.addTestSuite(ScaEventChannelTest.class);
 		return suite;
 	}
 
