@@ -247,7 +247,7 @@ public class ScaStructSequencePropertyTest extends ScaAbstractPropertyTest {
 	 * @throws UnknownProperties
 	 * @see CF.PropertySetOperations#registerPropertyListener(org.omg.CORBA.Object, org.eclipse.emf.common.util.EList,
 	 * float)
-	 * @generated
+	 * @generated NOT
 	 */
 	public void testRegisterPropertyListener__Object_EList_float() throws UnknownProperties, InvalidObjectReference {
 		// END GENERATED CODE
@@ -267,7 +267,7 @@ public class ScaStructSequencePropertyTest extends ScaAbstractPropertyTest {
 	 * <!-- end-user-doc -->
 	 * @throws InvalidIdentifier
 	 * @see CF.PropertySetOperations#unregisterPropertyListener(java.lang.String)
-	 * @generated
+	 * @generated NOT
 	 */
 	public void testUnregisterPropertyListener__String() throws InvalidIdentifier {
 		// END GENERATED CODE

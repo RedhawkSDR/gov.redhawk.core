@@ -544,7 +544,7 @@ public class ScaDeviceTest extends ScaAbstractComponentTest {
 	 * <!-- end-user-doc -->
 	 * @see gov.redhawk.model.sca.ScaDevice#fetchAggregateDevices(org.eclipse.core.runtime.IProgressMonitor,
 	 * gov.redhawk.model.sca.RefreshDepth)
-	 * @generated
+	 * @generated NOT
 	 */
 	public void testFetchAggregateDevices__IProgressMonitor_RefreshDepth() {
 		// END GENERATED CODE

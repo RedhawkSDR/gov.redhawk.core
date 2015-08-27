@@ -236,7 +236,7 @@ public abstract class ScaAbstractComponentTest extends ScaPropertyContainerTest 
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @see gov.redhawk.model.sca.ScaAbstractComponent#fetchProfile(org.eclipse.core.runtime.IProgressMonitor)
-	 * @generated
+	 * @generated NOT
 	 */
 	public void testFetchProfile__IProgressMonitor() {
 		IProgressMonitor monitor = new NullProgressMonitor();

@@ -504,7 +504,7 @@ public class ScaDeviceManagerTest extends ScaPropertyContainerTest {
 	 * @throws InterruptedException
 	 * @see gov.redhawk.model.sca.ScaDeviceManager#fetchDevices(org.eclipse.core.runtime.IProgressMonitor,
 	 * gov.redhawk.model.sca.RefreshDepth)
-	 * @generated
+	 * @generated NOT
 	 */
 	public void testFetchDevices__IProgressMonitor_RefreshDepth() throws InterruptedException {
 		// END GENERATED CODE
@@ -576,7 +576,7 @@ public class ScaDeviceManagerTest extends ScaPropertyContainerTest {
 	 * <!-- end-user-doc -->
 	 * @see gov.redhawk.model.sca.ScaDeviceManager#fetchFileSystem(org.eclipse.core.runtime.IProgressMonitor,
 	 * gov.redhawk.model.sca.RefreshDepth)
-	 * @generated
+	 * @generated NOT
 	 */
 	public void testFetchFileSystem__IProgressMonitor_RefreshDepth() {
 		// END GENERATED CODE
@@ -653,7 +653,7 @@ public class ScaDeviceManagerTest extends ScaPropertyContainerTest {
 	 * <!-- end-user-doc -->
 	 * @see gov.redhawk.model.sca.ScaDeviceManager#fetchServices(org.eclipse.core.runtime.IProgressMonitor,
 	 * gov.redhawk.model.sca.RefreshDepth)
-	 * @generated
+	 * @generated NOT
 	 */
 	public void testFetchServices__IProgressMonitor_RefreshDepth() {
 		// END GENERATED CODE

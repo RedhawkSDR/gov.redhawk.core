@@ -597,7 +597,7 @@ public class ScaDomainManagerTest extends ScaPropertyContainerTest {
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @see gov.redhawk.model.sca.ScaDomainManager#getLabel()
-	 * @generated
+	 * @generated NOT
 	 */
 	public void testGetLabel() {
 		Assert.assertEquals("REDHAWK_DEV", getFixture().getLabel());
@@ -707,7 +707,7 @@ public class ScaDomainManagerTest extends ScaPropertyContainerTest {
 	 * @throws InterruptedException
 	 * @see CF.DomainManagerOperations#createApplication(java.lang.String, java.lang.String, CF.DataType[],
 	 * CF.DeviceAssignmentType[])
-	 * @generated
+	 * @generated NOT
 	 */
 	public void testCreateApplication__String_String_DataType_DeviceAssignmentType() throws InvalidProfile, InvalidFileName, CreateApplicationError, CreateApplicationRequestError, CreateApplicationInsufficientCapacityError, InvalidInitConfiguration, InterruptedException {
 		String name = "testCreateApplication";

@@ -144,7 +144,7 @@ public class ScaExecutableDeviceTest extends ScaLoadableDeviceTest {
 	 * @throws InvalidState
 	 * @see CF.ExecutableDeviceOperations#executeLinked(java.lang.String, CF.DataType[], CF.DataType[],
 	 * org.eclipse.emf.common.util.EList)
-	 * @generated
+	 * @generated NOT
 	 */
 	public void testExecuteLinked__String_DataType_DataType_EList() throws InvalidState, InvalidFunction, InvalidParameters, InvalidOptions, InvalidFileName, ExecuteFail {
 		// END GENERATED CODE
