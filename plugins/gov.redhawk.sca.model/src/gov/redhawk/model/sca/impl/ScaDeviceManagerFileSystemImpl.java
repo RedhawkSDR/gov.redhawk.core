@@ -38,15 +38,15 @@ import CF.FileSystemHelper;
  *        <!-- end-user-doc -->
  *        <p>
  *        The following features are implemented:
+ *        </p>
  *        <ul>
  *        <li>{@link gov.redhawk.model.sca.impl.ScaDeviceManagerFileSystemImpl#getDeviceManager <em>Device Manager</em>}
  *        </li>
  *        </ul>
- *        </p>
  *
  * @generated
  */
-public class ScaDeviceManagerFileSystemImpl extends ScaFileSystemImpl<FileSystem> implements ScaDeviceManagerFileSystem {
+public class ScaDeviceManagerFileSystemImpl extends ScaFileSystemImpl<FileSystem>implements ScaDeviceManagerFileSystem {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -125,7 +125,8 @@ public class ScaDeviceManagerFileSystemImpl extends ScaFileSystemImpl<FileSystem
 			if (msgs != null)
 				msgs.dispatch();
 		} else if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, ScaPackage.SCA_DEVICE_MANAGER_FILE_SYSTEM__DEVICE_MANAGER, newDeviceManager, newDeviceManager));
+			eNotify(
+				new ENotificationImpl(this, Notification.SET, ScaPackage.SCA_DEVICE_MANAGER_FILE_SYSTEM__DEVICE_MANAGER, newDeviceManager, newDeviceManager));
 	}
 
 	/**

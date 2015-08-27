@@ -55,13 +55,13 @@ import org.omg.CORBA.SystemException;
  * @since 12.0 <!-- end-user-doc -->
  *        <p>
  *        The following features are implemented:
+ *        </p>
  *        <ul>
  *        <li>{@link gov.redhawk.model.sca.impl.CorbaObjWrapperImpl#getIor <em>Ior</em>}</li>
  *        <li>{@link gov.redhawk.model.sca.impl.CorbaObjWrapperImpl#getObj <em>Obj</em>}</li>
  *        <li>{@link gov.redhawk.model.sca.impl.CorbaObjWrapperImpl#getCorbaObj <em>Corba Obj</em>}</li>
  *        <li>{@link gov.redhawk.model.sca.impl.CorbaObjWrapperImpl#getFeatureData <em>Feature Data</em>}</li>
  *        </ul>
- *        </p>
  *
  * @generated
  */

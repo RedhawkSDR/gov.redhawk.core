@@ -31,6 +31,7 @@ import CF.InvalidObjectReference;
  *
  *              <p>
  *              The following features are supported:
+ *              </p>
  *              <ul>
  *              <li>{@link gov.redhawk.model.sca.ScaDeviceManager#getDevices <em>Devices</em>}</li>
  *              <li>{@link gov.redhawk.model.sca.ScaDeviceManager#getRootDevices <em>Root Devices</em>}</li>
@@ -43,7 +44,6 @@ import CF.InvalidObjectReference;
  *              <li>{@link gov.redhawk.model.sca.ScaDeviceManager#getServices <em>Services</em>}</li>
  *              <li>{@link gov.redhawk.model.sca.ScaDeviceManager#getProfile <em>Profile</em>}</li>
  *              </ul>
- *              </p>
  *
  * @see gov.redhawk.model.sca.ScaPackage#getScaDeviceManager()
  * @model superTypes=
@@ -181,8 +181,8 @@ public interface ScaDeviceManager extends ScaPropertyContainer<DeviceManager, De
 
 	/**
 	 * Returns the value of the '<em><b>File System</b></em>' containment reference.
-	 * It is bidirectional and its opposite is '
-	 * {@link gov.redhawk.model.sca.ScaDeviceManagerFileSystem#getDeviceManager <em>Device Manager</em>}'.
+	 * It is bidirectional and its opposite is '{@link gov.redhawk.model.sca.ScaDeviceManagerFileSystem#getDeviceManager
+	 * <em>Device Manager</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <p>
 	 * If the meaning of the '<em>File System</em>' containment reference isn't clear, there really should be more of a
@@ -326,8 +326,8 @@ public interface ScaDeviceManager extends ScaPropertyContainer<DeviceManager, De
 	void unsetIdentifier();
 
 	/**
-	 * Returns whether the value of the '{@link gov.redhawk.model.sca.ScaDeviceManager#getIdentifier
-	 * <em>Identifier</em>}' attribute is set.
+	 * Returns whether the value of the '{@link gov.redhawk.model.sca.ScaDeviceManager#getIdentifier <em>Identifier</em>
+	 * }' attribute is set.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * 

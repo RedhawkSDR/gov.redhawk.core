@@ -24,10 +24,11 @@ import CF.FileSystem;
  *
  *              <p>
  *              The following features are supported:
- *              <ul>
- *              <li>{@link gov.redhawk.model.sca.ScaDeviceManagerFileSystem#getDeviceManager <em>Device Manager</em>}</li>
- *              </ul>
  *              </p>
+ *              <ul>
+ *              <li>{@link gov.redhawk.model.sca.ScaDeviceManagerFileSystem#getDeviceManager <em>Device Manager</em>}
+ *              </li>
+ *              </ul>
  *
  * @see gov.redhawk.model.sca.ScaPackage#getScaDeviceManagerFileSystem()
  * @model superTypes="gov.redhawk.model.sca.ScaFileSystem<mil.jpeojtrs.sca.cf.FileSystem>"

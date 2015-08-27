@@ -68,6 +68,7 @@ import CF.DevicePackage.UsageType;
  *        <!-- end-user-doc -->
  *        <p>
  *        The following features are implemented:
+ *        </p>
  *        <ul>
  *        <li>{@link gov.redhawk.model.sca.impl.ScaDeviceImpl#getChildDevices <em>Child Devices</em>}</li>
  *        <li>{@link gov.redhawk.model.sca.impl.ScaDeviceImpl#getAdminState <em>Admin State</em>}</li>
@@ -77,11 +78,10 @@ import CF.DevicePackage.UsageType;
  *        <li>{@link gov.redhawk.model.sca.impl.ScaDeviceImpl#getParentDevice <em>Parent Device</em>}</li>
  *        <li>{@link gov.redhawk.model.sca.impl.ScaDeviceImpl#getDevMgr <em>Dev Mgr</em>}</li>
  *        </ul>
- *        </p>
  *
  * @generated
  */
-public class ScaDeviceImpl< D extends Device > extends ScaAbstractComponentImpl<D> implements ScaDevice<D> {
+public class ScaDeviceImpl< D extends Device > extends ScaAbstractComponentImpl<D>implements ScaDevice<D> {
 
 	/**
 	 * The cached value of the '{@link #getChildDevices() <em>Child Devices</em>}' reference list.
@@ -319,7 +319,8 @@ public class ScaDeviceImpl< D extends Device > extends ScaAbstractComponentImpl<
 		adminState = ADMIN_STATE_EDEFAULT;
 		adminStateESet = false;
 		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.UNSET, ScaPackage.SCA_DEVICE__ADMIN_STATE, oldAdminState, ADMIN_STATE_EDEFAULT, oldAdminStateESet));
+			eNotify(
+				new ENotificationImpl(this, Notification.UNSET, ScaPackage.SCA_DEVICE__ADMIN_STATE, oldAdminState, ADMIN_STATE_EDEFAULT, oldAdminStateESet));
 	}
 
 	/**
@@ -483,7 +484,8 @@ public class ScaDeviceImpl< D extends Device > extends ScaAbstractComponentImpl<
 		usageState = USAGE_STATE_EDEFAULT;
 		usageStateESet = false;
 		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.UNSET, ScaPackage.SCA_DEVICE__USAGE_STATE, oldUsageState, USAGE_STATE_EDEFAULT, oldUsageStateESet));
+			eNotify(
+				new ENotificationImpl(this, Notification.UNSET, ScaPackage.SCA_DEVICE__USAGE_STATE, oldUsageState, USAGE_STATE_EDEFAULT, oldUsageStateESet));
 	}
 
 	/**

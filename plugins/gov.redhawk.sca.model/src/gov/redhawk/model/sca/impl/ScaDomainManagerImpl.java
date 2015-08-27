@@ -139,15 +139,17 @@ import CF.PropertySetPackage.PartialConfiguration;
  *        <!-- end-user-doc -->
  *        <p>
  *        The following features are implemented:
+ *        </p>
  *        <ul>
- *        <li>{@link gov.redhawk.model.sca.impl.ScaDomainManagerImpl#getWaveformFactories <em>Waveform Factories</em>}</li>
+ *        <li>{@link gov.redhawk.model.sca.impl.ScaDomainManagerImpl#getWaveformFactories <em>Waveform Factories</em>}
+ *        </li>
  *        <li>{@link gov.redhawk.model.sca.impl.ScaDomainManagerImpl#getWaveforms <em>Waveforms</em>}</li>
  *        <li>{@link gov.redhawk.model.sca.impl.ScaDomainManagerImpl#getDeviceManagers <em>Device Managers</em>}</li>
  *        <li>{@link gov.redhawk.model.sca.impl.ScaDomainManagerImpl#getFileManager <em>File Manager</em>}</li>
- *        <li>{@link gov.redhawk.model.sca.impl.ScaDomainManagerImpl#getConnectionPropertiesContainer <em>Connection
- *        Properties Container</em>}</li>
- *        <li>{@link gov.redhawk.model.sca.impl.ScaDomainManagerImpl#getConnectionProperties <em>Connection Properties
- *        </em>}</li>
+ *        <li>{@link gov.redhawk.model.sca.impl.ScaDomainManagerImpl#getConnectionPropertiesContainer
+ *        <em>Connection Properties Container</em>}</li>
+ *        <li>{@link gov.redhawk.model.sca.impl.ScaDomainManagerImpl#getConnectionProperties
+ *        <em>Connection Properties</em>}</li>
  *        <li>{@link gov.redhawk.model.sca.impl.ScaDomainManagerImpl#isAutoConnect <em>Auto Connect</em>}</li>
  *        <li>{@link gov.redhawk.model.sca.impl.ScaDomainManagerImpl#isConnected <em>Connected</em>}</li>
  *        <li>{@link gov.redhawk.model.sca.impl.ScaDomainManagerImpl#getIdentifier <em>Identifier</em>}</li>
@@ -158,11 +160,10 @@ import CF.PropertySetPackage.PartialConfiguration;
  *        <li>{@link gov.redhawk.model.sca.impl.ScaDomainManagerImpl#getEventChannels <em>Event Channels</em>}</li>
  *        <li>{@link gov.redhawk.model.sca.impl.ScaDomainManagerImpl#getLocalName <em>Local Name</em>}</li>
  *        </ul>
- *        </p>
  *
  * @generated
  */
-public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager, DomainManagerConfiguration> implements ScaDomainManager {
+public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager, DomainManagerConfiguration>implements ScaDomainManager {
 	/**
 	 * The cached value of the '{@link #getWaveformFactories() <em>Waveform Factories</em>}' containment reference list.
 	 * <!-- begin-user-doc -->
@@ -700,11 +701,11 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 			connectionPropertiesContainer = (Properties) eResolveProxy(oldConnectionPropertiesContainer);
 			if (connectionPropertiesContainer != oldConnectionPropertiesContainer) {
 				InternalEObject newConnectionPropertiesContainer = (InternalEObject) connectionPropertiesContainer;
-				NotificationChain msgs = oldConnectionPropertiesContainer.eInverseRemove(this, EOPPOSITE_FEATURE_BASE
-					- ScaPackage.SCA_DOMAIN_MANAGER__CONNECTION_PROPERTIES_CONTAINER, null, null);
+				NotificationChain msgs = oldConnectionPropertiesContainer.eInverseRemove(this,
+					EOPPOSITE_FEATURE_BASE - ScaPackage.SCA_DOMAIN_MANAGER__CONNECTION_PROPERTIES_CONTAINER, null, null);
 				if (newConnectionPropertiesContainer.eInternalContainer() == null) {
-					msgs = newConnectionPropertiesContainer.eInverseAdd(this, EOPPOSITE_FEATURE_BASE
-						- ScaPackage.SCA_DOMAIN_MANAGER__CONNECTION_PROPERTIES_CONTAINER, null, msgs);
+					msgs = newConnectionPropertiesContainer.eInverseAdd(this,
+						EOPPOSITE_FEATURE_BASE - ScaPackage.SCA_DOMAIN_MANAGER__CONNECTION_PROPERTIES_CONTAINER, null, msgs);
 				}
 				if (msgs != null)
 					msgs.dispatch();
@@ -757,11 +758,11 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 		if (newConnectionPropertiesContainer != connectionPropertiesContainer) {
 			NotificationChain msgs = null;
 			if (connectionPropertiesContainer != null)
-				msgs = ((InternalEObject) connectionPropertiesContainer).eInverseRemove(this, EOPPOSITE_FEATURE_BASE
-					- ScaPackage.SCA_DOMAIN_MANAGER__CONNECTION_PROPERTIES_CONTAINER, null, msgs);
+				msgs = ((InternalEObject) connectionPropertiesContainer).eInverseRemove(this,
+					EOPPOSITE_FEATURE_BASE - ScaPackage.SCA_DOMAIN_MANAGER__CONNECTION_PROPERTIES_CONTAINER, null, msgs);
 			if (newConnectionPropertiesContainer != null)
-				msgs = ((InternalEObject) newConnectionPropertiesContainer).eInverseAdd(this, EOPPOSITE_FEATURE_BASE
-					- ScaPackage.SCA_DOMAIN_MANAGER__CONNECTION_PROPERTIES_CONTAINER, null, msgs);
+				msgs = ((InternalEObject) newConnectionPropertiesContainer).eInverseAdd(this,
+					EOPPOSITE_FEATURE_BASE - ScaPackage.SCA_DOMAIN_MANAGER__CONNECTION_PROPERTIES_CONTAINER, null, msgs);
 			msgs = basicSetConnectionPropertiesContainer(newConnectionPropertiesContainer, msgs);
 			if (msgs != null)
 				msgs.dispatch();
@@ -977,7 +978,8 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 		boolean oldRootContextESet = rootContextESet;
 		rootContextESet = true;
 		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, ScaPackage.SCA_DOMAIN_MANAGER__ROOT_CONTEXT, oldRootContext, rootContext, !oldRootContextESet));
+			eNotify(
+				new ENotificationImpl(this, Notification.SET, ScaPackage.SCA_DOMAIN_MANAGER__ROOT_CONTEXT, oldRootContext, rootContext, !oldRootContextESet));
 	}
 
 	/**
@@ -1585,8 +1587,8 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 	 * @generated NOT
 	 */
 	@Override
-	public ScaWaveformFactory installScaWaveformFactory(final String profilePath) throws InvalidProfile, InvalidFileName, ApplicationInstallationError,
-		ApplicationAlreadyInstalled {
+	public ScaWaveformFactory installScaWaveformFactory(final String profilePath)
+		throws InvalidProfile, InvalidFileName, ApplicationInstallationError, ApplicationAlreadyInstalled {
 		// END GENERATED CODE
 		if (profilePath == null) {
 			throw new InvalidProfile("Null path");
@@ -1796,8 +1798,8 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 	}
 
 	@Override
-	public void installApplication(final String profileFileName) throws InvalidProfile, InvalidFileName, ApplicationInstallationError,
-		ApplicationAlreadyInstalled {
+	public void installApplication(final String profileFileName)
+		throws InvalidProfile, InvalidFileName, ApplicationInstallationError, ApplicationAlreadyInstalled {
 		// END GENERATED CODE
 		DomainManager domMgr = fetchNarrowedObject(null);
 		if (domMgr == null) {
@@ -1812,8 +1814,8 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 	 * @since 14.0
 	 */
 	@Override
-	public void registerDevice(final Device registeringDevice, final DeviceManager registeredDeviceMgr) throws InvalidObjectReference, InvalidProfile,
-		DeviceManagerNotRegistered, RegisterError {
+	public void registerDevice(final Device registeringDevice, final DeviceManager registeredDeviceMgr)
+		throws InvalidObjectReference, InvalidProfile, DeviceManagerNotRegistered, RegisterError {
 		// END GENERATED CODE
 		DomainManager domMgr = fetchNarrowedObject(null);
 		if (domMgr == null) {
@@ -2474,8 +2476,8 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 			return getProfileObj();
 		}
 		Transaction transaction = profileObjectFeature.createTransaction();
-		transaction.addCommand(ProfileObjectWrapper.Util.fetchProfileObject(monitor, this, DomainManagerConfiguration.class,
-			DomainManagerConfiguration.EOBJECT_PATH));
+		transaction.addCommand(
+			ProfileObjectWrapper.Util.fetchProfileObject(monitor, this, DomainManagerConfiguration.class, DomainManagerConfiguration.EOBJECT_PATH));
 		transaction.commit();
 		return getProfileObj();
 	}

@@ -65,6 +65,7 @@ import CF.ApplicationFactoryPackage.InvalidInitConfiguration;
  *        <!-- end-user-doc -->
  *        <p>
  *        The following features are implemented:
+ *        </p>
  *        <ul>
  *        <li>{@link gov.redhawk.model.sca.impl.ScaWaveformFactoryImpl#getProfileURI <em>Profile URI</em>}</li>
  *        <li>{@link gov.redhawk.model.sca.impl.ScaWaveformFactoryImpl#getProfileObj <em>Profile Obj</em>}</li>
@@ -73,11 +74,10 @@ import CF.ApplicationFactoryPackage.InvalidInitConfiguration;
  *        <li>{@link gov.redhawk.model.sca.impl.ScaWaveformFactoryImpl#getName <em>Name</em>}</li>
  *        <li>{@link gov.redhawk.model.sca.impl.ScaWaveformFactoryImpl#getProfile <em>Profile</em>}</li>
  *        </ul>
- *        </p>
  *
  * @generated
  */
-public class ScaWaveformFactoryImpl extends CorbaObjWrapperImpl<ApplicationFactory> implements ScaWaveformFactory {
+public class ScaWaveformFactoryImpl extends CorbaObjWrapperImpl<ApplicationFactory>implements ScaWaveformFactory {
 	/**
 	 * The default value of the '{@link #getProfileURI() <em>Profile URI</em>}' attribute.
 	 * <!-- begin-user-doc -->

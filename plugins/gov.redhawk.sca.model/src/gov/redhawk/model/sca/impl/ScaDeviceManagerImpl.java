@@ -117,6 +117,7 @@ import CF.PropertySetPackage.PartialConfiguration;
  *        <!-- end-user-doc -->
  *        <p>
  *        The following features are implemented:
+ *        </p>
  *        <ul>
  *        <li>{@link gov.redhawk.model.sca.impl.ScaDeviceManagerImpl#getPorts <em>Ports</em>}</li>
  *        <li>{@link gov.redhawk.model.sca.impl.ScaDeviceManagerImpl#getDevices <em>Devices</em>}</li>
@@ -130,11 +131,10 @@ import CF.PropertySetPackage.PartialConfiguration;
  *        <li>{@link gov.redhawk.model.sca.impl.ScaDeviceManagerImpl#getServices <em>Services</em>}</li>
  *        <li>{@link gov.redhawk.model.sca.impl.ScaDeviceManagerImpl#getProfile <em>Profile</em>}</li>
  *        </ul>
- *        </p>
  *
  * @generated
  */
-public class ScaDeviceManagerImpl extends ScaPropertyContainerImpl<DeviceManager, DeviceConfiguration> implements ScaDeviceManager {
+public class ScaDeviceManagerImpl extends ScaPropertyContainerImpl<DeviceManager, DeviceConfiguration>implements ScaDeviceManager {
 
 	/**
 	 * The cached value of the '{@link #getPorts() <em>Ports</em>}' containment reference list.
@@ -495,6 +495,7 @@ public class ScaDeviceManagerImpl extends ScaPropertyContainerImpl<DeviceManager
 			return newValue;
 		}
 	};
+
 	{
 		eAdapters().add(deviceListener);
 	}
@@ -2112,8 +2113,8 @@ public class ScaDeviceManagerImpl extends ScaPropertyContainerImpl<DeviceManager
 			return getProfileObj();
 		}
 		Transaction transaction = profileObjectFeature.createTransaction();
-		transaction.addCommand(ProfileObjectWrapper.Util.fetchProfileObject(monitor, ScaDeviceManagerImpl.this, DeviceConfiguration.class,
-			DeviceConfiguration.EOBJECT_PATH));
+		transaction.addCommand(
+			ProfileObjectWrapper.Util.fetchProfileObject(monitor, ScaDeviceManagerImpl.this, DeviceConfiguration.class, DeviceConfiguration.EOBJECT_PATH));
 		transaction.commit();
 		return getProfileObj();
 	}

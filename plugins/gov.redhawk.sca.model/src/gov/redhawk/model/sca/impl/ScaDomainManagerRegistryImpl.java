@@ -42,11 +42,11 @@ import org.eclipse.emf.ecore.util.InternalEList;
  *        <!-- end-user-doc -->
  *        <p>
  *        The following features are implemented:
+ *        </p>
  *        <ul>
  *        <li>{@link gov.redhawk.model.sca.impl.ScaDomainManagerRegistryImpl#isDisposed <em>Disposed</em>}</li>
  *        <li>{@link gov.redhawk.model.sca.impl.ScaDomainManagerRegistryImpl#getDomains <em>Domains</em>}</li>
  *        </ul>
- *        </p>
  *
  * @generated
  */

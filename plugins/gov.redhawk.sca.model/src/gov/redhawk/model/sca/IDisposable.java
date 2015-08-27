@@ -24,10 +24,10 @@ import org.eclipse.emf.ecore.EObject;
  *
  *              <p>
  *              The following features are supported:
+ *              </p>
  *              <ul>
  *              <li>{@link gov.redhawk.model.sca.IDisposable#isDisposed <em>Disposed</em>}</li>
  *              </ul>
- *              </p>
  *
  * @see gov.redhawk.model.sca.ScaPackage#getIDisposable()
  * @model interface="true" abstract="true"

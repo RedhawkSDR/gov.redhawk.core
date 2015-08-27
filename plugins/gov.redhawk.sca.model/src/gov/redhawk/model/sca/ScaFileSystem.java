@@ -31,10 +31,10 @@ import CF.FileSystemOperations;
  *
  *              <p>
  *              The following features are supported:
+ *              </p>
  *              <ul>
  *              <li>{@link gov.redhawk.model.sca.ScaFileSystem#getFileSystemURI <em>File System URI</em>}</li>
  *              </ul>
- *              </p>
  *
  * @see gov.redhawk.model.sca.ScaPackage#getScaFileSystem()
  * @model abstract="true" superTypes=

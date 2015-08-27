@@ -30,6 +30,7 @@ import CF.DevicePackage.UsageType;
  *
  *              <p>
  *              The following features are supported:
+ *              </p>
  *              <ul>
  *              <li>{@link gov.redhawk.model.sca.ScaDevice#getChildDevices <em>Child Devices</em>}</li>
  *              <li>{@link gov.redhawk.model.sca.ScaDevice#getAdminState <em>Admin State</em>}</li>
@@ -39,7 +40,6 @@ import CF.DevicePackage.UsageType;
  *              <li>{@link gov.redhawk.model.sca.ScaDevice#getParentDevice <em>Parent Device</em>}</li>
  *              <li>{@link gov.redhawk.model.sca.ScaDevice#getDevMgr <em>Dev Mgr</em>}</li>
  *              </ul>
- *              </p>
  *
  * @see gov.redhawk.model.sca.ScaPackage#getScaDevice()
  * @model superTypes="gov.redhawk.model.sca.ScaAbstractComponent<D> mil.jpeojtrs.sca.cf.DeviceOperations"

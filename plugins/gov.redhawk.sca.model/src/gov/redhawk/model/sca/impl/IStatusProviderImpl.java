@@ -42,10 +42,10 @@ import org.eclipse.emf.ecore.impl.EObjectImpl;
  *        <!-- end-user-doc -->
  *        <p>
  *        The following features are implemented:
+ *        </p>
  *        <ul>
  *        <li>{@link gov.redhawk.model.sca.impl.IStatusProviderImpl#getStatus <em>Status</em>}</li>
  *        </ul>
- *        </p>
  *
  * @generated
  */

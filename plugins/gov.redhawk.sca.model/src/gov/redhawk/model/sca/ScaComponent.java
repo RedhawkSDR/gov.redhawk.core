@@ -28,16 +28,16 @@ import CF.Resource;
  *
  *              <p>
  *              The following features are supported:
+ *              </p>
  *              <ul>
- *              <li>{@link gov.redhawk.model.sca.ScaComponent#getComponentInstantiation <em>Component Instantiation
- *              </em>}</li>
+ *              <li>{@link gov.redhawk.model.sca.ScaComponent#getComponentInstantiation <em>Component Instantiation</em>
+ *              }</li>
  *              <li>{@link gov.redhawk.model.sca.ScaComponent#getDevices <em>Devices</em>}</li>
- *              <li>{@link gov.redhawk.model.sca.ScaComponent#getInstantiationIdentifier <em>Instantiation Identifier
- *              </em>}</li>
+ *              <li>{@link gov.redhawk.model.sca.ScaComponent#getInstantiationIdentifier
+ *              <em>Instantiation Identifier</em>}</li>
  *              <li>{@link gov.redhawk.model.sca.ScaComponent#getWaveform <em>Waveform</em>}</li>
  *              <li>{@link gov.redhawk.model.sca.ScaComponent#getName <em>Name</em>}</li>
  *              </ul>
- *              </p>
  *
  * @see gov.redhawk.model.sca.ScaPackage#getScaComponent()
  * @model superTypes="gov.redhawk.model.sca.ScaAbstractComponent<mil.jpeojtrs.sca.cf.Resource>"
@@ -155,7 +155,8 @@ public interface ScaComponent extends ScaAbstractComponent<Resource> {
 	 * Returns the value of the '<em><b>Instantiation Identifier</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <p>
-	 * Attempts to determine the component instantiation identifier (from the SAD) based on the component's runtime identifier ({@link #getIdentifier()}).
+	 * Attempts to determine the component instantiation identifier (from the SAD) based on the component's runtime
+	 * identifier ({@link #getIdentifier()}).
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * 
@@ -217,7 +218,8 @@ public interface ScaComponent extends ScaAbstractComponent<Resource> {
 	 * Returns the value of the '<em><b>Name</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <p>
-	 * The value of the usagename element from the SAD file, if available. For sandbox resources, this is the name binding.
+	 * The value of the usagename element from the SAD file, if available. For sandbox resources, this is the name
+	 * binding.
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * 
@@ -239,17 +241,6 @@ public interface ScaComponent extends ScaAbstractComponent<Resource> {
 	 * @generated
 	 */
 	void setName(String value);
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * 
-	 * @deprecated Use {@link #fetchDevices(IProgressMonitor, RefreshDepth)}
-	 * @since 14.0
-	 *        <!-- end-user-doc -->
-	 * @model monitorDataType="gov.redhawk.model.sca.IProgressMonitor"
-	 * @generated
-	 */
-	EList<ScaDevice< ? >> fetchDevices(IProgressMonitor monitor);
 
 	/**
 	 * <!-- begin-user-doc -->

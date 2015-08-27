@@ -74,21 +74,21 @@ import CF.PropertySetPackage.PartialConfiguration;
  *        <!-- end-user-doc -->
  *        <p>
  *        The following features are implemented:
+ *        </p>
  *        <ul>
  *        <li>{@link gov.redhawk.model.sca.impl.ScaStructPropertyImpl#getFields <em>Fields</em>}</li>
  *        <li>{@link gov.redhawk.model.sca.impl.ScaStructPropertyImpl#getSimples <em>Simples</em>}</li>
  *        </ul>
- *        </p>
  *
  * @generated
  */
-public class ScaStructPropertyImpl extends ScaAbstractPropertyImpl<Struct> implements ScaStructProperty {
+public class ScaStructPropertyImpl extends ScaAbstractPropertyImpl<Struct>implements ScaStructProperty {
 	/**
 	 * The cached value of the '{@link #getFields() <em>Fields</em>}' containment reference list.
 	 * <!-- begin-user-doc -->
-	 * @since 20.0
-	 * <!-- end-user-doc -->
 	 * 
+	 * @since 20.0
+	 *        <!-- end-user-doc -->
 	 * @see #getFields()
 	 * @generated
 	 * @ordered
@@ -145,6 +145,7 @@ public class ScaStructPropertyImpl extends ScaAbstractPropertyImpl<Struct> imple
 		}
 		// BEGIN GENERATED CODE
 	};
+
 	{
 		// END GENERATED CODE
 		eAdapters().add(derrivedStatusListener);
@@ -153,8 +154,9 @@ public class ScaStructPropertyImpl extends ScaAbstractPropertyImpl<Struct> imple
 
 	/**
 	 * <!-- begin-user-doc -->
+	 * 
 	 * @since 14.0
-	 * <!-- end-user-doc -->
+	 *        <!-- end-user-doc -->
 	 * 
 	 * @generated NOT
 	 */
@@ -203,9 +205,9 @@ public class ScaStructPropertyImpl extends ScaAbstractPropertyImpl<Struct> imple
 
 	/**
 	 * <!-- begin-user-doc -->
-	 * @since 20.0
-	 * <!-- end-user-doc -->
 	 * 
+	 * @since 20.0
+	 *        <!-- end-user-doc -->
 	 * @generated
 	 */
 	public EList<ScaAbstractProperty< ? >> getFields() {
@@ -305,8 +307,9 @@ public class ScaStructPropertyImpl extends ScaAbstractPropertyImpl<Struct> imple
 
 	/**
 	 * <!-- begin-user-doc -->
+	 * 
 	 * @since 20.0
-	 * <!-- end-user-doc -->
+	 *        <!-- end-user-doc -->
 	 * 
 	 * @generated NOT
 	 */
@@ -332,8 +335,9 @@ public class ScaStructPropertyImpl extends ScaAbstractPropertyImpl<Struct> imple
 
 	/**
 	 * <!-- begin-user-doc -->
+	 * 
 	 * @since 20.0
-	 * <!-- end-user-doc -->
+	 *        <!-- end-user-doc -->
 	 * 
 	 * @generated NOT
 	 */
@@ -405,6 +409,7 @@ public class ScaStructPropertyImpl extends ScaAbstractPropertyImpl<Struct> imple
 	/**
 	 * <!-- begin-user-doc -->
 	 * This is an EMF-generated wrapper for {@link #registerPropertyListener(org.omg.CORBA.Object, String[], float)}.
+	 * 
 	 * @since 20.0
 	 *        <!-- end-user-doc -->
 	 * 

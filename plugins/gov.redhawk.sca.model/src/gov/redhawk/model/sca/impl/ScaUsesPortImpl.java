@@ -60,14 +60,14 @@ import ExtendedCF.UsesConnection;
  *        <!-- end-user-doc -->
  *        <p>
  *        The following features are implemented:
+ *        </p>
  *        <ul>
  *        <li>{@link gov.redhawk.model.sca.impl.ScaUsesPortImpl#getConnections <em>Connections</em>}</li>
  *        </ul>
- *        </p>
  *
  * @generated
  */
-public class ScaUsesPortImpl extends ScaPortImpl<Uses, Port> implements ScaUsesPort {
+public class ScaUsesPortImpl extends ScaPortImpl<Uses, Port>implements ScaUsesPort {
 	/**
 	 * The cached value of the '{@link #getConnections() <em>Connections</em>}' containment reference list.
 	 * <!-- begin-user-doc -->

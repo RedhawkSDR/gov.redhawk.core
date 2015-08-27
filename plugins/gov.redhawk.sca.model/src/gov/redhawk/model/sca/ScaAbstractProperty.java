@@ -32,6 +32,7 @@ import CF.PropertySetPackage.PartialConfiguration;
  *
  *              <p>
  *              The following features are supported:
+ *              </p>
  *              <ul>
  *              <li>{@link gov.redhawk.model.sca.ScaAbstractProperty#getDefinition <em>Definition</em>}</li>
  *              <li>{@link gov.redhawk.model.sca.ScaAbstractProperty#getDescription <em>Description</em>}</li>
@@ -40,7 +41,6 @@ import CF.PropertySetPackage.PartialConfiguration;
  *              <li>{@link gov.redhawk.model.sca.ScaAbstractProperty#getName <em>Name</em>}</li>
  *              <li>{@link gov.redhawk.model.sca.ScaAbstractProperty#isIgnoreRemoteSet <em>Ignore Remote Set</em>}</li>
  *              </ul>
- *              </p>
  *
  * @see gov.redhawk.model.sca.ScaPackage#getScaAbstractProperty()
  * @model abstract="true"
@@ -295,9 +295,9 @@ public interface ScaAbstractProperty< T extends AbstractProperty > extends IStat
 
 	/**
 	 * <!-- begin-user-doc -->
-	 * @since 20.0
-	 * <!-- end-user-doc -->
 	 * 
+	 * @since 20.0
+	 *        <!-- end-user-doc -->
 	 * @model
 	 * @generated
 	 */

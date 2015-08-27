@@ -59,6 +59,7 @@ import CF.FileSystemPackage.UnknownFileSystemProperties;
  *        <!-- end-user-doc -->
  *        <p>
  *        The following features are implemented:
+ *        </p>
  *        <ul>
  *        <li>{@link gov.redhawk.model.sca.impl.ScaFileSystemImpl#getFileStore <em>File Store</em>}</li>
  *        <li>{@link gov.redhawk.model.sca.impl.ScaFileSystemImpl#getChildren <em>Children</em>}</li>
@@ -67,11 +68,10 @@ import CF.FileSystemPackage.UnknownFileSystemProperties;
  *        <li>{@link gov.redhawk.model.sca.impl.ScaFileSystemImpl#getName <em>Name</em>}</li>
  *        <li>{@link gov.redhawk.model.sca.impl.ScaFileSystemImpl#getFileSystemURI <em>File System URI</em>}</li>
  *        </ul>
- *        </p>
  *
  * @generated
  */
-public abstract class ScaFileSystemImpl< F extends FileSystem > extends CorbaObjWrapperImpl<F> implements ScaFileSystem<F> {
+public abstract class ScaFileSystemImpl< F extends FileSystem > extends CorbaObjWrapperImpl<F>implements ScaFileSystem<F> {
 	/**
 	 * The default value of the '{@link #getFileStore() <em>File Store</em>}' attribute.
 	 * <!-- begin-user-doc -->
@@ -339,7 +339,8 @@ public abstract class ScaFileSystemImpl< F extends FileSystem > extends CorbaObj
 		imageDesc = IMAGE_DESC_EDEFAULT;
 		imageDescESet = false;
 		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.UNSET, ScaPackage.SCA_FILE_SYSTEM__IMAGE_DESC, oldImageDesc, IMAGE_DESC_EDEFAULT, oldImageDescESet));
+			eNotify(
+				new ENotificationImpl(this, Notification.UNSET, ScaPackage.SCA_FILE_SYSTEM__IMAGE_DESC, oldImageDesc, IMAGE_DESC_EDEFAULT, oldImageDescESet));
 	}
 
 	/**
@@ -455,8 +456,8 @@ public abstract class ScaFileSystemImpl< F extends FileSystem > extends CorbaObj
 				setFileStore(fileSystem.getStore(newFileSystemURI));
 				setStatus(ScaPackage.Literals.SCA_FILE_SYSTEM__FILE_SYSTEM_URI, Status.OK_STATUS);
 			} catch (final CoreException e) {
-				setStatus(ScaPackage.Literals.SCA_FILE_SYSTEM__FILE_SYSTEM_URI, new Status(Status.ERROR, ScaModelPlugin.ID, "Error in resolving file system.",
-					e));
+				setStatus(ScaPackage.Literals.SCA_FILE_SYSTEM__FILE_SYSTEM_URI,
+					new Status(Status.ERROR, ScaModelPlugin.ID, "Error in resolving file system.", e));
 			}
 		} else {
 			setFileStore(null);

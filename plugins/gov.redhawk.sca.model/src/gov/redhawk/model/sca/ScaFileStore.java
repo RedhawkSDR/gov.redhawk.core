@@ -25,6 +25,7 @@ import org.eclipse.emf.common.util.EList;
  *
  *              <p>
  *              The following features are supported:
+ *              </p>
  *              <ul>
  *              <li>{@link gov.redhawk.model.sca.ScaFileStore#getFileStore <em>File Store</em>}</li>
  *              <li>{@link gov.redhawk.model.sca.ScaFileStore#getChildren <em>Children</em>}</li>
@@ -32,7 +33,6 @@ import org.eclipse.emf.common.util.EList;
  *              <li>{@link gov.redhawk.model.sca.ScaFileStore#isDirectory <em>Directory</em>}</li>
  *              <li>{@link gov.redhawk.model.sca.ScaFileStore#getName <em>Name</em>}</li>
  *              </ul>
- *              </p>
  *
  * @see gov.redhawk.model.sca.ScaPackage#getScaFileStore()
  * @model superTypes="gov.redhawk.model.sca.IStatusProvider gov.redhawk.model.sca.IRefreshable"

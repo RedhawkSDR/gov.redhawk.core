@@ -47,6 +47,7 @@ import CF.PropertySetPackage.PartialConfiguration;
  *        <!-- end-user-doc -->
  *        <p>
  *        The following features are implemented:
+ *        </p>
  *        <ul>
  *        <li>{@link gov.redhawk.model.sca.impl.ScaAbstractPropertyImpl#getDefinition <em>Definition</em>}</li>
  *        <li>{@link gov.redhawk.model.sca.impl.ScaAbstractPropertyImpl#getDescription <em>Description</em>}</li>
@@ -56,7 +57,6 @@ import CF.PropertySetPackage.PartialConfiguration;
  *        <li>{@link gov.redhawk.model.sca.impl.ScaAbstractPropertyImpl#isIgnoreRemoteSet <em>Ignore Remote Set</em>}
  *        </li>
  *        </ul>
- *        </p>
  *
  * @generated
  */
@@ -556,8 +556,9 @@ public abstract class ScaAbstractPropertyImpl< T extends AbstractProperty > exte
 
 	/**
 	 * <!-- begin-user-doc -->
+	 * 
 	 * @since 20.0
-	 * <!-- end-user-doc -->
+	 *        <!-- end-user-doc -->
 	 * 
 	 * @generated NOT
 	 */

@@ -27,22 +27,20 @@ import CF.PropertySetOperations;
  *
  *              <p>
  *              The following features are supported:
+ *              </p>
  *              <ul>
  *              <li>{@link gov.redhawk.model.sca.ScaPropertyContainer#getProperties <em>Properties</em>}</li>
  *              </ul>
- *              </p>
  *
  * @see gov.redhawk.model.sca.ScaPackage#getScaPropertyContainer()
- * @model abstract="true" superTypes="gov.redhawk.model.sca.CorbaObjWrapper
- *        <P>
- *        gov.redhawk.model.sca.ProfileObjectWrapper<E>
- *        mil.jpeojtrs.sca.cf.PropertySetOperations" PBounds="gov.redhawk.model
- *        .sca.Object" EBounds="org.eclipse.emf.ecore.EJavaObject"
+ * @model abstract="true" superTypes=
+ *        "gov.redhawk.model.sca.CorbaObjWrapper<P> gov.redhawk.model.sca.ProfileObjectWrapper<E> mil.jpeojtrs.sca.cf.PropertySetOperations"
+ *        PBounds="gov.redhawk.model.sca.Object" EBounds="org.eclipse.emf.ecore.EJavaObject"
  *        extendedMetaData="name='ScaPropertyContainer' kind='elementOnly'"
  * @generated
  */
-public interface ScaPropertyContainer< P extends org.omg.CORBA.Object, E extends Object > extends CorbaObjWrapper<P>, ProfileObjectWrapper<E>,
-		PropertySetOperations {
+public interface ScaPropertyContainer< P extends org.omg.CORBA.Object, E extends Object >
+		extends CorbaObjWrapper<P>, ProfileObjectWrapper<E>, PropertySetOperations {
 	/**
 	 * Returns the value of the '<em><b>Properties</b></em>' containment reference list.
 	 * The list contents are of type {@link gov.redhawk.model.sca.ScaAbstractProperty}&lt;?>.

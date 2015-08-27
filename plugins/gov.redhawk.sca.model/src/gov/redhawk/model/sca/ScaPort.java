@@ -23,13 +23,13 @@ import mil.jpeojtrs.sca.scd.AbstractPort;
  *
  *              <p>
  *              The following features are supported:
+ *              </p>
  *              <ul>
  *              <li>{@link gov.redhawk.model.sca.ScaPort#getName <em>Name</em>}</li>
  *              <li>{@link gov.redhawk.model.sca.ScaPort#getProfileObj <em>Profile Obj</em>}</li>
  *              <li>{@link gov.redhawk.model.sca.ScaPort#getRepid <em>Repid</em>}</li>
  *              <li>{@link gov.redhawk.model.sca.ScaPort#getPortContainer <em>Port Container</em>}</li>
  *              </ul>
- *              </p>
  *
  * @see gov.redhawk.model.sca.ScaPackage#getScaPort()
  * @model abstract="true" P2Bounds="mil.jpeojtrs.sca.cf.Object"

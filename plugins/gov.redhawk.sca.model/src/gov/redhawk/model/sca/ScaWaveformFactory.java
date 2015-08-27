@@ -34,13 +34,13 @@ import CF.ApplicationFactoryPackage.InvalidInitConfiguration;
  *
  *              <p>
  *              The following features are supported:
+ *              </p>
  *              <ul>
  *              <li>{@link gov.redhawk.model.sca.ScaWaveformFactory#getDomMgr <em>Dom Mgr</em>}</li>
  *              <li>{@link gov.redhawk.model.sca.ScaWaveformFactory#getIdentifier <em>Identifier</em>}</li>
  *              <li>{@link gov.redhawk.model.sca.ScaWaveformFactory#getName <em>Name</em>}</li>
  *              <li>{@link gov.redhawk.model.sca.ScaWaveformFactory#getProfile <em>Profile</em>}</li>
  *              </ul>
- *              </p>
  *
  * @see gov.redhawk.model.sca.ScaPackage#getScaWaveformFactory()
  * @model superTypes=
@@ -282,8 +282,8 @@ public interface ScaWaveformFactory extends CorbaObjWrapper<ApplicationFactory>,
 	/**
 	 * @since 20.0
 	 */
-	ScaWaveform createWaveform(IProgressMonitor monitor, String name, DataType[] initConfiguration, DeviceAssignmentType[] deviceAssignments, RefreshDepth depth)
-		throws CreateApplicationError, CreateApplicationRequestError, InvalidInitConfiguration, CreateApplicationInsufficientCapacityError;
+	ScaWaveform createWaveform(IProgressMonitor monitor, String name, DataType[] initConfiguration, DeviceAssignmentType[] deviceAssignments,
+		RefreshDepth depth) throws CreateApplicationError, CreateApplicationRequestError, InvalidInitConfiguration, CreateApplicationInsufficientCapacityError;
 
 	/**
 	 * <!-- begin-user-doc -->

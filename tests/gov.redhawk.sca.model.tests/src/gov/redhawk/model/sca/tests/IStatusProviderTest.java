@@ -134,8 +134,8 @@ public abstract class IStatusProviderTest extends TestCase {
 	public void testSetStatus__EStructuralFeature_IStatus() {
 		// END GENERATED CODE
 		Assert.assertTrue(getFixture().getStatus().isOK());
-		ScaModelCommand.execute(getFixture(), new SetStatusCommand<IStatusProvider>(getFixture(), ScaPackage.Literals.ISTATUS_PROVIDER__STATUS, new Status(
-			Status.ERROR, ScaModelPlugin.ID, "Test Error", null)));
+		ScaModelCommand.execute(getFixture(), new SetStatusCommand<IStatusProvider>(getFixture(), ScaPackage.Literals.ISTATUS_PROVIDER__STATUS,
+			new Status(Status.ERROR, ScaModelPlugin.ID, "Test Error", null)));
 		Assert.assertFalse(getFixture().getStatus().isOK());
 		// BEGIN GENERATED CODE
 	}
@@ -150,8 +150,8 @@ public abstract class IStatusProviderTest extends TestCase {
 	public void testClearAllStatus() {
 		// END GENERATED CODE
 		Assert.assertTrue(getFixture().getStatus().isOK());
-		ScaModelCommand.execute(getFixture(), new SetStatusCommand<IStatusProvider>(getFixture(), ScaPackage.Literals.ISTATUS_PROVIDER__STATUS, new Status(
-			Status.ERROR, ScaModelPlugin.ID, "Test Error", null)));
+		ScaModelCommand.execute(getFixture(), new SetStatusCommand<IStatusProvider>(getFixture(), ScaPackage.Literals.ISTATUS_PROVIDER__STATUS,
+			new Status(Status.ERROR, ScaModelPlugin.ID, "Test Error", null)));
 		Assert.assertFalse(getFixture().getStatus().isOK());
 		ScaModelCommand.execute(getFixture(), new ScaModelCommand() {
 

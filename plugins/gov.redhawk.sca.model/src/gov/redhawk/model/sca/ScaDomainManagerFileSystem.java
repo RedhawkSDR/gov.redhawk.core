@@ -22,10 +22,10 @@ package gov.redhawk.model.sca;
  *
  *              <p>
  *              The following features are supported:
+ *              </p>
  *              <ul>
  *              <li>{@link gov.redhawk.model.sca.ScaDomainManagerFileSystem#getDomMgr <em>Dom Mgr</em>}</li>
  *              </ul>
- *              </p>
  *
  * @see gov.redhawk.model.sca.ScaPackage#getScaDomainManagerFileSystem()
  * @model extendedMetaData="name='ScaDomainManagerFileSystem' kind='empty'"

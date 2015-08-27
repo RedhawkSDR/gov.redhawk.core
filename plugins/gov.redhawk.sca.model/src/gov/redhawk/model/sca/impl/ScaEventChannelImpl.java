@@ -29,14 +29,14 @@ import org.omg.CosEventChannelAdmin.EventChannelHelper;
  *        <!-- end-user-doc -->
  *        <p>
  *        The following features are implemented:
+ *        </p>
  *        <ul>
  *        <li>{@link gov.redhawk.model.sca.impl.ScaEventChannelImpl#getName <em>Name</em>}</li>
  *        </ul>
- *        </p>
  *
  * @generated
  */
-public class ScaEventChannelImpl extends CorbaObjWrapperImpl<EventChannel> implements ScaEventChannel {
+public class ScaEventChannelImpl extends CorbaObjWrapperImpl<EventChannel>implements ScaEventChannel {
 	/**
 	 * The default value of the '{@link #getName() <em>Name</em>}' attribute.
 	 * <!-- begin-user-doc -->

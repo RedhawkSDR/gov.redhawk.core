@@ -24,14 +24,14 @@ import org.eclipse.emf.common.util.EList;
  *
  *        <p>
  *        The following features are supported:
+ *        </p>
  *        <ul>
  *        <li>{@link gov.redhawk.model.sca.ScaPortContainer#getPorts <em>Ports</em>}</li>
  *        </ul>
- *        </p>
  *
  * @see gov.redhawk.model.sca.ScaPackage#getScaPortContainer()
- * @model interface="true" abstract="true"
- *        superTypes="gov.redhawk.model.sca.IRefreshable gov.redhawk.model.sca.IStatusProvider"
+ * @model interface="true" abstract="true" superTypes=
+ *        "gov.redhawk.model.sca.IRefreshable gov.redhawk.model.sca.IStatusProvider"
  * @generated
  */
 public interface ScaPortContainer extends IRefreshable, IStatusProvider {

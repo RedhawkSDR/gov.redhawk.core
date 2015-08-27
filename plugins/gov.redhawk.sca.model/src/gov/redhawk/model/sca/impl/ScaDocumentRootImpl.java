@@ -37,14 +37,15 @@ import org.eclipse.emf.ecore.util.InternalEList;
  *        <!-- end-user-doc -->
  *        <p>
  *        The following features are implemented:
+ *        </p>
  *        <ul>
  *        <li>{@link gov.redhawk.model.sca.impl.ScaDocumentRootImpl#getMixed <em>Mixed</em>}</li>
  *        <li>{@link gov.redhawk.model.sca.impl.ScaDocumentRootImpl#getXMLNSPrefixMap <em>XMLNS Prefix Map</em>}</li>
- *        <li>{@link gov.redhawk.model.sca.impl.ScaDocumentRootImpl#getXSISchemaLocation <em>XSI Schema Location</em>}</li>
- *        <li>{@link gov.redhawk.model.sca.impl.ScaDocumentRootImpl#getDomainManagerRegistry <em>Domain Manager Registry
- *        </em>}</li>
+ *        <li>{@link gov.redhawk.model.sca.impl.ScaDocumentRootImpl#getXSISchemaLocation <em>XSI Schema Location</em>}
+ *        </li>
+ *        <li>{@link gov.redhawk.model.sca.impl.ScaDocumentRootImpl#getDomainManagerRegistry
+ *        <em>Domain Manager Registry</em>}</li>
  *        </ul>
- *        </p>
  *
  * @generated
  */

@@ -96,17 +96,17 @@ import CF.TestableObjectPackage.UnknownTest;
  *        <!-- end-user-doc -->
  *        <p>
  *        The following features are implemented:
+ *        </p>
  *        <ul>
  *        <li>{@link gov.redhawk.model.sca.impl.ScaAbstractComponentImpl#getPorts <em>Ports</em>}</li>
  *        <li>{@link gov.redhawk.model.sca.impl.ScaAbstractComponentImpl#getIdentifier <em>Identifier</em>}</li>
  *        <li>{@link gov.redhawk.model.sca.impl.ScaAbstractComponentImpl#getStarted <em>Started</em>}</li>
  *        <li>{@link gov.redhawk.model.sca.impl.ScaAbstractComponentImpl#getProfile <em>Profile</em>}</li>
  *        </ul>
- *        </p>
  *
  * @generated
  */
-public abstract class ScaAbstractComponentImpl< R extends Resource > extends ScaPropertyContainerImpl<R, SoftPkg> implements ScaAbstractComponent<R> {
+public abstract class ScaAbstractComponentImpl< R extends Resource > extends ScaPropertyContainerImpl<R, SoftPkg>implements ScaAbstractComponent<R> {
 
 	/**
 	 * The cached value of the '{@link #getPorts() <em>Ports</em>}' containment reference list.
@@ -314,7 +314,8 @@ public abstract class ScaAbstractComponentImpl< R extends Resource > extends Sca
 		boolean oldIdentifierESet = identifierESet;
 		identifierESet = true;
 		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, ScaPackage.SCA_ABSTRACT_COMPONENT__IDENTIFIER, oldIdentifier, identifier, !oldIdentifierESet));
+			eNotify(
+				new ENotificationImpl(this, Notification.SET, ScaPackage.SCA_ABSTRACT_COMPONENT__IDENTIFIER, oldIdentifier, identifier, !oldIdentifierESet));
 	}
 
 	/**

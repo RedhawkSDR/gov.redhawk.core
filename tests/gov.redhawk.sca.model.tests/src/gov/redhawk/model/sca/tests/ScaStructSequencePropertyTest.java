@@ -260,8 +260,6 @@ public class ScaStructSequencePropertyTest extends ScaAbstractPropertyTest {
 	 * <em>Register Property Listener</em>}' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @throws InvalidObjectReference
-	 * @throws UnknownProperties
 	 * @see CF.PropertySetOperations#registerPropertyListener(org.omg.CORBA.Object, org.eclipse.emf.common.util.EList,
 	 * float)
 	 * @generated NOT
@@ -282,7 +280,6 @@ public class ScaStructSequencePropertyTest extends ScaAbstractPropertyTest {
 	 * Listener</em>}' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @throws InvalidIdentifier
 	 * @see CF.PropertySetOperations#unregisterPropertyListener(java.lang.String)
 	 * @generated NOT
 	 */

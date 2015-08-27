@@ -30,11 +30,11 @@ import CF.PropertySetOperations;
  *
  *              <p>
  *              The following features are supported:
+ *              </p>
  *              <ul>
  *              <li>{@link gov.redhawk.model.sca.ScaStructProperty#getFields <em>Fields</em>}</li>
  *              <li>{@link gov.redhawk.model.sca.ScaStructProperty#getSimples <em>Simples</em>}</li>
  *              </ul>
- *              </p>
  *
  * @see gov.redhawk.model.sca.ScaPackage#getScaStructProperty()
  * @model superTypes=
@@ -52,9 +52,9 @@ public interface ScaStructProperty extends ScaAbstractProperty<Struct>, Property
 	 * If the meaning of the '<em>Fields</em>' containment reference list isn't clear,
 	 * there really should be more of a description here...
 	 * </p>
-	 * @since 20.0
-	 * <!-- end-user-doc -->
 	 * 
+	 * @since 20.0
+	 *        <!-- end-user-doc -->
 	 * @return the value of the '<em>Fields</em>' containment reference list.
 	 * @see gov.redhawk.model.sca.ScaPackage#getScaStructProperty_Fields()
 	 * @model containment="true" resolveProxies="true" transient="true"
@@ -102,9 +102,9 @@ public interface ScaStructProperty extends ScaAbstractProperty<Struct>, Property
 
 	/**
 	 * <!-- begin-user-doc -->
-	 * @since 20.0
-	 * <!-- end-user-doc -->
 	 * 
+	 * @since 20.0
+	 *        <!-- end-user-doc -->
 	 * @model
 	 * @generated
 	 */
@@ -113,9 +113,9 @@ public interface ScaStructProperty extends ScaAbstractProperty<Struct>, Property
 
 	/**
 	 * <!-- begin-user-doc -->
-	 * @since 20.0
-	 * <!-- end-user-doc -->
 	 * 
+	 * @since 20.0
+	 *        <!-- end-user-doc -->
 	 * @model
 	 * @generated
 	 */

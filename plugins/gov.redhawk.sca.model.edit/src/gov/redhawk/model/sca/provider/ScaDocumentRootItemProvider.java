@@ -152,8 +152,8 @@ public class ScaDocumentRootItemProvider extends ItemProviderAdapter implements 
 	protected void collectNewChildDescriptors(Collection<Object> newChildDescriptors, Object object) {
 		super.collectNewChildDescriptors(newChildDescriptors, object);
 
-		newChildDescriptors.add(createChildParameter(ScaPackage.Literals.SCA_DOCUMENT_ROOT__DOMAIN_MANAGER_REGISTRY,
-			ScaFactory.eINSTANCE.createScaDomainManagerRegistry()));
+		newChildDescriptors.add(
+			createChildParameter(ScaPackage.Literals.SCA_DOCUMENT_ROOT__DOMAIN_MANAGER_REGISTRY, ScaFactory.eINSTANCE.createScaDomainManagerRegistry()));
 	}
 
 	/**

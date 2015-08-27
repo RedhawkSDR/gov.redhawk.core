@@ -40,8 +40,6 @@ import CF.ResourceHelper;
  * <p>
  * The following operations are tested:
  * <ul>
- * <li>{@link gov.redhawk.model.sca.ScaComponent#fetchDevices(org.eclipse.core.runtime.IProgressMonitor) <em>Fetch
- * Devices</em>}</li>
  * <li>
  * {@link gov.redhawk.model.sca.ScaComponent#fetchDevices(org.eclipse.core.runtime.IProgressMonitor, gov.redhawk.model.sca.RefreshDepth)
  * <em>Fetch Devices</em>}</li>
@@ -168,36 +166,6 @@ public class ScaComponentTest extends ScaAbstractComponentTest {
 	}
 
 	/**
-	 * Tests the '{@link gov.redhawk.model.sca.ScaComponent#fetchDevices(org.eclipse.core.runtime.IProgressMonitor)
-	 * <em>Fetch Devices</em>}' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see gov.redhawk.model.sca.ScaComponent#fetchDevices(org.eclipse.core.runtime.IProgressMonitor)
-	 * @generated NOT
-	 */
-	public void testFetchDevices__IProgressMonitor() {
-		// END GENERATED CODE
-		ScaModelCommand.execute(getFixture(), new ScaModelCommand() {
-			@Override
-			public void execute() {
-				getFixture().unsetDevices();
-			}
-		});
-		Assert.assertEquals(0, getFixture().getDevices().size());
-		@SuppressWarnings("deprecation")
-		EList<ScaDevice<?>> deviceList = getFixture().fetchDevices(new NullProgressMonitor());
-		try {
-			deviceList.clear();
-			Assert.fail("fetched Devices list should be unmodifiable");
-		} catch (UnsupportedOperationException e) {
-			// PASS
-		}
-		Assert.assertEquals(deviceList, getFixture().getDevices());
-		Assert.assertEquals("Device list for component should contain 1 device", 1, deviceList.size());
-		// BEGIN GENERATED CODE
-	}
-
-	/**
 	 * Tests the '
 	 * {@link gov.redhawk.model.sca.ScaComponent#fetchDevices(org.eclipse.core.runtime.IProgressMonitor, gov.redhawk.model.sca.RefreshDepth)
 	 * <em>Fetch Devices</em>}' operation.
@@ -216,7 +184,7 @@ public class ScaComponentTest extends ScaAbstractComponentTest {
 			}
 		});
 		Assert.assertEquals(0, getFixture().getDevices().size());
-		EList<ScaDevice<?>> deviceList = getFixture().fetchDevices(new NullProgressMonitor(), RefreshDepth.SELF);
+		EList<ScaDevice< ? >> deviceList = getFixture().fetchDevices(new NullProgressMonitor(), RefreshDepth.SELF);
 		try {
 			deviceList.clear();
 			Assert.fail("fetched Devices list should be unmodifiable");

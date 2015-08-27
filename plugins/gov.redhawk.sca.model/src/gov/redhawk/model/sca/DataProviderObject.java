@@ -26,12 +26,14 @@ import org.eclipse.emf.common.util.EList;
  *
  *        <p>
  *        The following features are supported:
+ *        </p>
  *        <ul>
  *        <li>{@link gov.redhawk.model.sca.DataProviderObject#getDataProviders <em>Data Providers</em>}</li>
- *        <li>{@link gov.redhawk.model.sca.DataProviderObject#isDataProvidersEnabled <em>Data Providers Enabled</em>}</li>
- *        <li>{@link gov.redhawk.model.sca.DataProviderObject#getEnabledDataProviders <em>Enabled Data Providers</em>}</li>
+ *        <li>{@link gov.redhawk.model.sca.DataProviderObject#isDataProvidersEnabled <em>Data Providers Enabled</em>}
+ *        </li>
+ *        <li>{@link gov.redhawk.model.sca.DataProviderObject#getEnabledDataProviders <em>Enabled Data Providers</em>}
+ *        </li>
  *        </ul>
- *        </p>
  *
  * @see gov.redhawk.model.sca.ScaPackage#getDataProviderObject()
  * @model abstract="true" superTypes=
@@ -62,8 +64,8 @@ public interface DataProviderObject extends IStatusProvider, IDisposable, IRefre
 	EList<IScaDataProvider> getDataProviders();
 
 	/**
-	 * Unsets the value of the '{@link gov.redhawk.model.sca.DataProviderObject#getDataProviders
-	 * <em>Data Providers</em>}' attribute list.
+	 * Unsets the value of the '{@link gov.redhawk.model.sca.DataProviderObject#getDataProviders <em>Data Providers</em>
+	 * }' attribute list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * 

@@ -25,13 +25,13 @@ import org.eclipse.emf.ecore.EObject;
  *
  *              <p>
  *              The following features are supported:
+ *              </p>
  *              <ul>
  *              <li>{@link gov.redhawk.model.sca.CorbaObjWrapper#getIor <em>Ior</em>}</li>
  *              <li>{@link gov.redhawk.model.sca.CorbaObjWrapper#getObj <em>Obj</em>}</li>
  *              <li>{@link gov.redhawk.model.sca.CorbaObjWrapper#getCorbaObj <em>Corba Obj</em>}</li>
  *              <li>{@link gov.redhawk.model.sca.CorbaObjWrapper#getFeatureData <em>Feature Data</em>}</li>
  *              </ul>
- *              </p>
  *
  * @see gov.redhawk.model.sca.ScaPackage#getCorbaObjWrapper()
  * @model abstract="true" TBounds="gov.redhawk.model.sca.Object"
@@ -227,8 +227,8 @@ public interface CorbaObjWrapper< T extends org.omg.CORBA.Object > extends DataP
 	 *        <!-- end-user-doc -->
 	 * @return the value of the '<em>Feature Data</em>' map.
 	 * @see gov.redhawk.model.sca.ScaPackage#getCorbaObjWrapper_FeatureData()
-	 * @model 
-	 *        mapType="gov.redhawk.model.sca.StringToObjectMap<org.eclipse.emf.ecore.EString, org.eclipse.emf.ecore.EObject>"
+	 * @model mapType=
+	 *        "gov.redhawk.model.sca.StringToObjectMap<org.eclipse.emf.ecore.EString, org.eclipse.emf.ecore.EObject>"
 	 * @generated
 	 */
 	EMap<String, EObject> getFeatureData();

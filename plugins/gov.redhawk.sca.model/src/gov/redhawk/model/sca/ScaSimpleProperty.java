@@ -25,10 +25,10 @@ import mil.jpeojtrs.sca.prf.SimpleRef;
  *
  *              <p>
  *              The following features are supported:
+ *              </p>
  *              <ul>
  *              <li>{@link gov.redhawk.model.sca.ScaSimpleProperty#getValue <em>Value</em>}</li>
  *              </ul>
- *              </p>
  *
  * @see gov.redhawk.model.sca.ScaPackage#getScaSimpleProperty()
  * @model extendedMetaData="name='ScaSimpleProperty' kind='empty'"
@@ -67,9 +67,9 @@ public interface ScaSimpleProperty extends ScaAbstractProperty<Simple> {
 
 	/**
 	 * <!-- begin-user-doc -->
-	 * @since 20.0
-	 * <!-- end-user-doc -->
 	 * 
+	 * @since 20.0
+	 *        <!-- end-user-doc -->
 	 * @model
 	 * @generated
 	 */

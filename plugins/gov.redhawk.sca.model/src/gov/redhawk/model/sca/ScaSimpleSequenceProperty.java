@@ -27,10 +27,10 @@ import org.eclipse.emf.common.util.EList;
  *
  *              <p>
  *              The following features are supported:
+ *              </p>
  *              <ul>
  *              <li>{@link gov.redhawk.model.sca.ScaSimpleSequenceProperty#getValues <em>Values</em>}</li>
  *              </ul>
- *              </p>
  *
  * @see gov.redhawk.model.sca.ScaPackage#getScaSimpleSequenceProperty()
  * @model extendedMetaData="name='ScaSimpleSequenceProperty' kind='empty'"
@@ -76,9 +76,9 @@ public interface ScaSimpleSequenceProperty extends ScaAbstractProperty<SimpleSeq
 
 	/**
 	 * <!-- begin-user-doc -->
-	 * @since 20.0
-	 * <!-- end-user-doc -->
 	 * 
+	 * @since 20.0
+	 *        <!-- end-user-doc -->
 	 * @model
 	 * @generated
 	 */

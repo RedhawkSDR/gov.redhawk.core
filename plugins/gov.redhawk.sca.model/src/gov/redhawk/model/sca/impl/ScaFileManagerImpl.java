@@ -37,12 +37,10 @@ import CF.FileSystemPackage.UnknownFileSystemProperties;
  * 
  * @since 12.0
  *        <!-- end-user-doc -->
- *        <p>
- *        </p>
  *
  * @generated
  */
-public abstract class ScaFileManagerImpl extends ScaFileSystemImpl<FileManager> implements ScaFileManager {
+public abstract class ScaFileManagerImpl extends ScaFileSystemImpl<FileManager>implements ScaFileManager {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->

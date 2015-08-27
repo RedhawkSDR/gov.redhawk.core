@@ -28,10 +28,10 @@ import org.eclipse.emf.ecore.resource.Resource;
  *
  *              <p>
  *              The following features are supported:
+ *              </p>
  *              <ul>
  *              <li>{@link gov.redhawk.model.sca.ScaDomainManagerRegistry#getDomains <em>Domains</em>}</li>
  *              </ul>
- *              </p>
  *
  * @see gov.redhawk.model.sca.ScaPackage#getScaDomainManagerRegistry()
  * @model extendedMetaData="name='ScaDomainManagerRegistry' kind='elementOnly'"

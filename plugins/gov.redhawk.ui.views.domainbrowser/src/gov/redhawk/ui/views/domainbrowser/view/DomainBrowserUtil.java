@@ -11,6 +11,7 @@
  */
 package gov.redhawk.ui.views.domainbrowser.view;
 
+import gov.redhawk.model.sca.RefreshDepth;
 import gov.redhawk.model.sca.ScaComponent;
 import gov.redhawk.model.sca.ScaDeviceManager;
 import gov.redhawk.model.sca.ScaDeviceManagerFileSystem;
@@ -160,7 +161,7 @@ public final class DomainBrowserUtil {
 
 						@Override
 						protected IStatus run(final IProgressMonitor monitor) {
-							component.fetchDevices(monitor);
+							component.fetchDevices(monitor, RefreshDepth.SELF);
 							component.fetchProperties(monitor);
 							component.fetchPorts(monitor);
 							return Status.OK_STATUS;

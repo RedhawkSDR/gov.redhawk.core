@@ -70,14 +70,14 @@ import CF.PropertySetPackage.PartialConfiguration;
  *        <!-- end-user-doc -->
  *        <p>
  *        The following features are implemented:
+ *        </p>
  *        <ul>
  *        <li>{@link gov.redhawk.model.sca.impl.ScaStructSequencePropertyImpl#getStructs <em>Structs</em>}</li>
  *        </ul>
- *        </p>
  *
  * @generated
  */
-public class ScaStructSequencePropertyImpl extends ScaAbstractPropertyImpl<StructSequence> implements ScaStructSequenceProperty {
+public class ScaStructSequencePropertyImpl extends ScaAbstractPropertyImpl<StructSequence>implements ScaStructSequenceProperty {
 	/**
 	 * The cached value of the '{@link #getStructs() <em>Structs</em>}' containment reference list.
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -121,7 +121,8 @@ public class ScaStructSequencePropertyImpl extends ScaAbstractPropertyImpl<Struc
 			switch (notification.getFeatureID(IStatusProvider.class)) {
 			case ScaPackage.ISTATUS_PROVIDER__STATUS:
 				if (eNotificationRequired()) {
-					eNotify(new ENotificationImpl(ScaStructSequencePropertyImpl.this, Notification.SET, ScaPackage.ISTATUS_PROVIDER__STATUS, null, getStatus()));
+					eNotify(
+						new ENotificationImpl(ScaStructSequencePropertyImpl.this, Notification.SET, ScaPackage.ISTATUS_PROVIDER__STATUS, null, getStatus()));
 				}
 				break;
 			default:
@@ -139,6 +140,7 @@ public class ScaStructSequencePropertyImpl extends ScaAbstractPropertyImpl<Struc
 		}
 		// BEGIN GENERATED CODE
 	};
+
 	{
 		// END GENERATED CODE
 		eAdapters().add(derrivedStatusListener);
@@ -162,6 +164,7 @@ public class ScaStructSequencePropertyImpl extends ScaAbstractPropertyImpl<Struc
 		}
 		// BEGIN GENERATED CODE
 	};
+
 	{
 		eAdapters().add(pushAdapter);
 	}
@@ -261,8 +264,9 @@ public class ScaStructSequencePropertyImpl extends ScaAbstractPropertyImpl<Struc
 
 	/**
 	 * <!-- begin-user-doc -->
+	 * 
 	 * @since 20.0
-	 * <!-- end-user-doc -->
+	 *        <!-- end-user-doc -->
 	 * 
 	 * @generated NOT
 	 */
@@ -518,6 +522,7 @@ public class ScaStructSequencePropertyImpl extends ScaAbstractPropertyImpl<Struc
 	/**
 	 * <!-- begin-user-doc -->
 	 * This is an EMF-generated wrapper for {@link #registerPropertyListener(org.omg.CORBA.Object, String[], float)}.
+	 * 
 	 * @since 20.0
 	 *        <!-- end-user-doc -->
 	 * 

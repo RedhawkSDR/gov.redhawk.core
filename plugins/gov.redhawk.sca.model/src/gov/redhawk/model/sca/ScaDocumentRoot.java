@@ -26,14 +26,14 @@ import org.eclipse.emf.ecore.util.FeatureMap;
  *
  *              <p>
  *              The following features are supported:
+ *              </p>
  *              <ul>
  *              <li>{@link gov.redhawk.model.sca.ScaDocumentRoot#getMixed <em>Mixed</em>}</li>
  *              <li>{@link gov.redhawk.model.sca.ScaDocumentRoot#getXMLNSPrefixMap <em>XMLNS Prefix Map</em>}</li>
  *              <li>{@link gov.redhawk.model.sca.ScaDocumentRoot#getXSISchemaLocation <em>XSI Schema Location</em>}</li>
- *              <li>{@link gov.redhawk.model.sca.ScaDocumentRoot#getDomainManagerRegistry <em>Domain Manager Registry
- *              </em>}</li>
+ *              <li>{@link gov.redhawk.model.sca.ScaDocumentRoot#getDomainManagerRegistry
+ *              <em>Domain Manager Registry</em>}</li>
  *              </ul>
- *              </p>
  *
  * @see gov.redhawk.model.sca.ScaPackage#getScaDocumentRoot()
  * @model extendedMetaData="name='' kind='mixed'"

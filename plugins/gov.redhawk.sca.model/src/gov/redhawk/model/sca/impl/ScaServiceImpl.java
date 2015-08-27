@@ -89,16 +89,16 @@ import CF.PropertySetPackage.PartialConfiguration;
  *        <!-- end-user-doc -->
  *        <p>
  *        The following features are implemented:
+ *        </p>
  *        <ul>
  *        <li>{@link gov.redhawk.model.sca.impl.ScaServiceImpl#getPorts <em>Ports</em>}</li>
  *        <li>{@link gov.redhawk.model.sca.impl.ScaServiceImpl#getName <em>Name</em>}</li>
  *        <li>{@link gov.redhawk.model.sca.impl.ScaServiceImpl#getDevMgr <em>Dev Mgr</em>}</li>
  *        </ul>
- *        </p>
  *
  * @generated
  */
-public class ScaServiceImpl extends ScaPropertyContainerImpl<org.omg.CORBA.Object, SoftPkg> implements ScaService {
+public class ScaServiceImpl extends ScaPropertyContainerImpl<org.omg.CORBA.Object, SoftPkg>implements ScaService {
 	/**
 	 * The cached value of the '{@link #getPorts() <em>Ports</em>}' containment reference list.
 	 * <!-- begin-user-doc -->

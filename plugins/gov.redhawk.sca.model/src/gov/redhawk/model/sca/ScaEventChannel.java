@@ -22,10 +22,10 @@ import org.omg.CosEventChannelAdmin.EventChannel;
  *
  *        <p>
  *        The following features are supported:
+ *        </p>
  *        <ul>
  *        <li>{@link gov.redhawk.model.sca.ScaEventChannel#getName <em>Name</em>}</li>
  *        </ul>
- *        </p>
  *
  * @see gov.redhawk.model.sca.ScaPackage#getScaEventChannel()
  * @model superTypes="gov.redhawk.model.sca.CorbaObjWrapper<gov.redhawk.model.sca.EventChannel>"

@@ -111,8 +111,8 @@ public class ScaFileStoreItemProvider extends IStatusProviderItemProvider {
 	protected void addNamePropertyDescriptor(Object object) {
 		itemPropertyDescriptors.add(createItemPropertyDescriptor(((ComposeableAdapterFactory) adapterFactory).getRootAdapterFactory(), getResourceLocator(),
 			getString("_UI_ScaFileStore_name_feature"),
-			getString("_UI_PropertyDescriptor_description", "_UI_ScaFileStore_name_feature", "_UI_ScaFileStore_type"),
-			ScaPackage.Literals.SCA_FILE_STORE__NAME, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
+			getString("_UI_PropertyDescriptor_description", "_UI_ScaFileStore_name_feature", "_UI_ScaFileStore_type"), ScaPackage.Literals.SCA_FILE_STORE__NAME,
+			true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
 	}
 
 	/**

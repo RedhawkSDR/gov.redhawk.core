@@ -94,9 +94,9 @@ public class IStatusProviderItemProvider extends ItemProviderAdapter implements 
 		// null,
 		// null));
 		itemPropertyDescriptors.add(new ItemPropertyDescriptor(((ComposeableAdapterFactory) adapterFactory).getRootAdapterFactory(), getResourceLocator(),
-			getString("_UI_IStatusProvider_status_feature"), getString("_UI_PropertyDescriptor_description", "_UI_IStatusProvider_status_feature",
-				"_UI_IStatusProvider_type"), ScaPackage.Literals.ISTATUS_PROVIDER__STATUS, false, true, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE,
-			null, null) {
+			getString("_UI_IStatusProvider_status_feature"),
+			getString("_UI_PropertyDescriptor_description", "_UI_IStatusProvider_status_feature", "_UI_IStatusProvider_type"),
+			ScaPackage.Literals.ISTATUS_PROVIDER__STATUS, false, true, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null) {
 			@Override
 			public IItemLabelProvider getLabelProvider(Object object) {
 				return new IItemLabelProvider() {

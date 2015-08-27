@@ -66,20 +66,20 @@ import CF.ResourceHelper;
  *        <!-- end-user-doc -->
  *        <p>
  *        The following features are implemented:
+ *        </p>
  *        <ul>
- *        <li>{@link gov.redhawk.model.sca.impl.ScaComponentImpl#getComponentInstantiation <em>Component Instantiation
- *        </em>}</li>
+ *        <li>{@link gov.redhawk.model.sca.impl.ScaComponentImpl#getComponentInstantiation
+ *        <em>Component Instantiation</em>}</li>
  *        <li>{@link gov.redhawk.model.sca.impl.ScaComponentImpl#getDevices <em>Devices</em>}</li>
- *        <li>{@link gov.redhawk.model.sca.impl.ScaComponentImpl#getInstantiationIdentifier <em>Instantiation Identifier
- *        </em>}</li>
+ *        <li>{@link gov.redhawk.model.sca.impl.ScaComponentImpl#getInstantiationIdentifier
+ *        <em>Instantiation Identifier</em>}</li>
  *        <li>{@link gov.redhawk.model.sca.impl.ScaComponentImpl#getWaveform <em>Waveform</em>}</li>
  *        <li>{@link gov.redhawk.model.sca.impl.ScaComponentImpl#getName <em>Name</em>}</li>
  *        </ul>
- *        </p>
  *
  * @generated
  */
-public class ScaComponentImpl extends ScaAbstractComponentImpl<Resource> implements ScaComponent {
+public class ScaComponentImpl extends ScaAbstractComponentImpl<Resource>implements ScaComponent {
 
 	/**
 	 * The cached value of the '{@link #getComponentInstantiation() <em>Component Instantiation</em>}' reference.
@@ -463,19 +463,6 @@ public class ScaComponentImpl extends ScaAbstractComponentImpl<Resource> impleme
 			break;
 		}
 		// BEGIN GENERATED CODE
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * 
-	 * @deprecated Use {@link #fetchDevices(IProgressMonitor, RefreshDepth)}v
-	 * @since 14.0
-	 *        <!-- end-user-doc -->
-	 * @generated NOT
-	 */
-	@Override
-	public EList<ScaDevice< ? >> fetchDevices(IProgressMonitor monitor) {
-		return fetchDevices(monitor, RefreshDepth.SELF);
 	}
 
 	/**

@@ -454,7 +454,8 @@ public class ScaValidator extends EObjectValidator {
 	 * 
 	 * @generated
 	 */
-	public boolean validateScaDomainManagerRegistry(ScaDomainManagerRegistry scaDomainManagerRegistry, DiagnosticChain diagnostics, Map<Object, Object> context) {
+	public boolean validateScaDomainManagerRegistry(ScaDomainManagerRegistry scaDomainManagerRegistry, DiagnosticChain diagnostics,
+		Map<Object, Object> context) {
 		return validate_EveryDefaultConstraint(scaDomainManagerRegistry, diagnostics, context);
 	}
 
@@ -711,10 +712,10 @@ public class ScaValidator extends EObjectValidator {
 	 * @generated
 	 * @see #validateAdminType_Enumeration
 	 */
-	public static final Collection<Object> ADMIN_TYPE__ENUMERATION__VALUES = wrapEnumerationValues(new Object[] {
-		ScaFactory.eINSTANCE.createFromString(ScaPackage.eINSTANCE.getAdminType(), "LOCKED"),
-		ScaFactory.eINSTANCE.createFromString(ScaPackage.eINSTANCE.getAdminType(), "SHUTTING DOWN"),
-		ScaFactory.eINSTANCE.createFromString(ScaPackage.eINSTANCE.getAdminType(), "UNLOCKED") });
+	public static final Collection<Object> ADMIN_TYPE__ENUMERATION__VALUES = wrapEnumerationValues(
+		new Object[] { ScaFactory.eINSTANCE.createFromString(ScaPackage.eINSTANCE.getAdminType(), "LOCKED"),
+			ScaFactory.eINSTANCE.createFromString(ScaPackage.eINSTANCE.getAdminType(), "SHUTTING DOWN"),
+			ScaFactory.eINSTANCE.createFromString(ScaPackage.eINSTANCE.getAdminType(), "UNLOCKED") });
 
 	/**
 	 * Validates the Enumeration constraint of '<em>Admin Type</em>'.
@@ -840,9 +841,9 @@ public class ScaValidator extends EObjectValidator {
 	 * @generated
 	 * @see #validateOperationalType_Enumeration
 	 */
-	public static final Collection<Object> OPERATIONAL_TYPE__ENUMERATION__VALUES = wrapEnumerationValues(new Object[] {
-		ScaFactory.eINSTANCE.createFromString(ScaPackage.eINSTANCE.getOperationalType(), "ENABLED"),
-		ScaFactory.eINSTANCE.createFromString(ScaPackage.eINSTANCE.getOperationalType(), "DISABLED") });
+	public static final Collection<Object> OPERATIONAL_TYPE__ENUMERATION__VALUES = wrapEnumerationValues(
+		new Object[] { ScaFactory.eINSTANCE.createFromString(ScaPackage.eINSTANCE.getOperationalType(), "ENABLED"),
+			ScaFactory.eINSTANCE.createFromString(ScaPackage.eINSTANCE.getOperationalType(), "DISABLED") });
 
 	/**
 	 * Validates the Enumeration constraint of '<em>Operational Type</em>'.
@@ -906,10 +907,10 @@ public class ScaValidator extends EObjectValidator {
 	 * @generated
 	 * @see #validateUsageType_Enumeration
 	 */
-	public static final Collection<Object> USAGE_TYPE__ENUMERATION__VALUES = wrapEnumerationValues(new Object[] {
-		ScaFactory.eINSTANCE.createFromString(ScaPackage.eINSTANCE.getUsageType(), "ACTIVE"),
-		ScaFactory.eINSTANCE.createFromString(ScaPackage.eINSTANCE.getUsageType(), "BUSY"),
-		ScaFactory.eINSTANCE.createFromString(ScaPackage.eINSTANCE.getUsageType(), "IDLE") });
+	public static final Collection<Object> USAGE_TYPE__ENUMERATION__VALUES = wrapEnumerationValues(
+		new Object[] { ScaFactory.eINSTANCE.createFromString(ScaPackage.eINSTANCE.getUsageType(), "ACTIVE"),
+			ScaFactory.eINSTANCE.createFromString(ScaPackage.eINSTANCE.getUsageType(), "BUSY"),
+			ScaFactory.eINSTANCE.createFromString(ScaPackage.eINSTANCE.getUsageType(), "IDLE") });
 
 	/**
 	 * Validates the Enumeration constraint of '<em>Usage Type</em>'.

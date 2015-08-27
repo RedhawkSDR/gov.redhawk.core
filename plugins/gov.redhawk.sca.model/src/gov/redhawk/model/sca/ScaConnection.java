@@ -26,12 +26,12 @@ import ExtendedCF.UsesConnection;
  *
  *              <p>
  *              The following features are supported:
+ *              </p>
  *              <ul>
  *              <li>{@link gov.redhawk.model.sca.ScaConnection#getData <em>Data</em>}</li>
  *              <li>{@link gov.redhawk.model.sca.ScaConnection#getId <em>Id</em>}</li>
  *              <li>{@link gov.redhawk.model.sca.ScaConnection#getPort <em>Port</em>}</li>
  *              </ul>
- *              </p>
  *
  * @see gov.redhawk.model.sca.ScaPackage#getScaConnection()
  * @model

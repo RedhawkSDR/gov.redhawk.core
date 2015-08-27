@@ -26,10 +26,10 @@ import org.eclipse.emf.ecore.EStructuralFeature;
  *
  *              <p>
  *              The following features are supported:
+ *              </p>
  *              <ul>
  *              <li>{@link gov.redhawk.model.sca.IStatusProvider#getStatus <em>Status</em>}</li>
  *              </ul>
- *              </p>
  *
  * @see gov.redhawk.model.sca.ScaPackage#getIStatusProvider()
  * @model abstract="true"

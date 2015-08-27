@@ -37,14 +37,14 @@ import org.omg.CORBA.Any;
  *        <!-- end-user-doc -->
  *        <p>
  *        The following features are implemented:
+ *        </p>
  *        <ul>
  *        <li>{@link gov.redhawk.model.sca.impl.ScaSimplePropertyImpl#getValue <em>Value</em>}</li>
  *        </ul>
- *        </p>
  *
  * @generated
  */
-public class ScaSimplePropertyImpl extends ScaAbstractPropertyImpl<Simple> implements ScaSimpleProperty {
+public class ScaSimplePropertyImpl extends ScaAbstractPropertyImpl<Simple>implements ScaSimpleProperty {
 	/**
 	 * The default value of the '{@link #getValue() <em>Value</em>}' attribute.
 	 * <!-- begin-user-doc -->
@@ -132,6 +132,7 @@ public class ScaSimplePropertyImpl extends ScaAbstractPropertyImpl<Simple> imple
 
 		// BEGIN GENERATED CODE
 	};
+
 	{
 		eAdapters().add(valueListener);
 	}
@@ -171,8 +172,9 @@ public class ScaSimplePropertyImpl extends ScaAbstractPropertyImpl<Simple> imple
 
 	/**
 	 * <!-- begin-user-doc -->
+	 * 
 	 * @since 20.0
-	 * <!-- end-user-doc -->
+	 *        <!-- end-user-doc -->
 	 * 
 	 * @generated NOT
 	 */

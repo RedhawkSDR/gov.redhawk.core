@@ -492,8 +492,8 @@ public class ScaWaveformFactoryTest extends CorbaObjWrapperTest {
 	 * java.lang.String, mil.jpeojtrs.sca.cf.DataType[], mil.jpeojtrs.sca.cf.DeviceAssignmentType[])
 	 * @generated NOT
 	 */
-	public void testCreateWaveform__IProgressMonitor_String_DataType_DeviceAssignmentType() throws CreateApplicationError, CreateApplicationRequestError,
-		InvalidInitConfiguration, CreateApplicationInsufficientCapacityError {
+	public void testCreateWaveform__IProgressMonitor_String_DataType_DeviceAssignmentType()
+		throws CreateApplicationError, CreateApplicationRequestError, InvalidInitConfiguration, CreateApplicationInsufficientCapacityError {
 		// END GENERATED CODE
 		DeviceAssignmentType[] assignment = new DeviceAssignmentType[0];
 		getFixture().createWaveform(null, "", new DataType[0], assignment);
@@ -588,8 +588,8 @@ public class ScaWaveformFactoryTest extends CorbaObjWrapperTest {
 	 * mil.jpeojtrs.sca.cf.DeviceAssignmentType[])
 	 * @generated NOT
 	 */
-	public void testCreate__String_DataType_DeviceAssignmentType() throws CreateApplicationError, CreateApplicationRequestError, InvalidInitConfiguration,
-		CreateApplicationInsufficientCapacityError {
+	public void testCreate__String_DataType_DeviceAssignmentType()
+		throws CreateApplicationError, CreateApplicationRequestError, InvalidInitConfiguration, CreateApplicationInsufficientCapacityError {
 		// END GENERATED CODE
 		getFixture().create("", new DataType[0], new DeviceAssignmentType[0]);
 		// BEGIN GENERATED CODE

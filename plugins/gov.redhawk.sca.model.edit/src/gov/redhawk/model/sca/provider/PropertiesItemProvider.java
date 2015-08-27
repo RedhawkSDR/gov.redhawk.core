@@ -42,8 +42,8 @@ import org.eclipse.emf.edit.provider.ViewerNotification;
  * <!-- end-user-doc -->
  * @generated
  */
-public class PropertiesItemProvider extends ItemProviderAdapter implements IEditingDomainItemProvider, IStructuredItemContentProvider,
-		ITreeItemContentProvider, IItemLabelProvider, IItemPropertySource, ITableItemLabelProvider, ITableItemColorProvider, IItemColorProvider {
+public class PropertiesItemProvider extends ItemProviderAdapter implements IEditingDomainItemProvider, IStructuredItemContentProvider, ITreeItemContentProvider,
+		IItemLabelProvider, IItemPropertySource, ITableItemLabelProvider, ITableItemColorProvider, IItemColorProvider {
 
 	/**
 	 * This constructs an instance from a factory and a notifier.
@@ -152,8 +152,8 @@ public class PropertiesItemProvider extends ItemProviderAdapter implements IEdit
 	protected void collectNewChildDescriptors(Collection<Object> newChildDescriptors, Object object) {
 		super.collectNewChildDescriptors(newChildDescriptors, object);
 
-		newChildDescriptors.add(createChildParameter(ScaPackage.Literals.PROPERTIES__PROPERTY,
-			ScaFactory.eINSTANCE.create(ScaPackage.Literals.STRING_TO_STRING_MAP)));
+		newChildDescriptors.add(
+			createChildParameter(ScaPackage.Literals.PROPERTIES__PROPERTY, ScaFactory.eINSTANCE.create(ScaPackage.Literals.STRING_TO_STRING_MAP)));
 	}
 
 	/**

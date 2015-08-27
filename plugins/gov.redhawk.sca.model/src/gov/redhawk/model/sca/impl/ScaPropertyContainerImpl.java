@@ -63,17 +63,17 @@ import CF.PropertySetPackage.PartialConfiguration;
  *        <!-- end-user-doc -->
  *        <p>
  *        The following features are implemented:
+ *        </p>
  *        <ul>
  *        <li>{@link gov.redhawk.model.sca.impl.ScaPropertyContainerImpl#getProfileURI <em>Profile URI</em>}</li>
  *        <li>{@link gov.redhawk.model.sca.impl.ScaPropertyContainerImpl#getProfileObj <em>Profile Obj</em>}</li>
  *        <li>{@link gov.redhawk.model.sca.impl.ScaPropertyContainerImpl#getProperties <em>Properties</em>}</li>
  *        </ul>
- *        </p>
  *
  * @generated
  */
-public abstract class ScaPropertyContainerImpl< P extends org.omg.CORBA.Object, E extends Object > extends CorbaObjWrapperImpl<P> implements
-		ScaPropertyContainer<P, E> {
+public abstract class ScaPropertyContainerImpl< P extends org.omg.CORBA.Object, E extends Object > extends CorbaObjWrapperImpl<P>
+		implements ScaPropertyContainer<P, E> {
 	/**
 	 * The default value of the '{@link #getProfileURI() <em>Profile URI</em>}' attribute.
 	 * <!-- begin-user-doc -->
@@ -178,7 +178,8 @@ public abstract class ScaPropertyContainerImpl< P extends org.omg.CORBA.Object, 
 		boolean oldProfileURIESet = profileURIESet;
 		profileURIESet = true;
 		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, ScaPackage.SCA_PROPERTY_CONTAINER__PROFILE_URI, oldProfileURI, profileURI, !oldProfileURIESet));
+			eNotify(
+				new ENotificationImpl(this, Notification.SET, ScaPackage.SCA_PROPERTY_CONTAINER__PROFILE_URI, oldProfileURI, profileURI, !oldProfileURIESet));
 	}
 
 	/**
@@ -252,7 +253,8 @@ public abstract class ScaPropertyContainerImpl< P extends org.omg.CORBA.Object, 
 		boolean oldProfileObjESet = profileObjESet;
 		profileObjESet = true;
 		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, ScaPackage.SCA_PROPERTY_CONTAINER__PROFILE_OBJ, oldProfileObj, profileObj, !oldProfileObjESet));
+			eNotify(
+				new ENotificationImpl(this, Notification.SET, ScaPackage.SCA_PROPERTY_CONTAINER__PROFILE_OBJ, oldProfileObj, profileObj, !oldProfileObjESet));
 	}
 
 	/**
@@ -355,6 +357,7 @@ public abstract class ScaPropertyContainerImpl< P extends org.omg.CORBA.Object, 
 	/**
 	 * <!-- begin-user-doc -->
 	 * This is an EMF-generated wrapper for {@link #registerPropertyListener(org.omg.CORBA.Object, String[], float)}.
+	 * 
 	 * @since 20.0
 	 *        <!-- end-user-doc -->
 	 * 

@@ -118,6 +118,7 @@ import CF.TestableObjectPackage.UnknownTest;
  *        <!-- end-user-doc -->
  *        <p>
  *        The following features are implemented:
+ *        </p>
  *        <ul>
  *        <li>{@link gov.redhawk.model.sca.impl.ScaWaveformImpl#getPorts <em>Ports</em>}</li>
  *        <li>{@link gov.redhawk.model.sca.impl.ScaWaveformImpl#getComponents <em>Components</em>}</li>
@@ -128,11 +129,10 @@ import CF.TestableObjectPackage.UnknownTest;
  *        <li>{@link gov.redhawk.model.sca.impl.ScaWaveformImpl#getStarted <em>Started</em>}</li>
  *        <li>{@link gov.redhawk.model.sca.impl.ScaWaveformImpl#getProfile <em>Profile</em>}</li>
  *        </ul>
- *        </p>
  *
  * @generated
  */
-public class ScaWaveformImpl extends ScaPropertyContainerImpl<Application, SoftwareAssembly> implements ScaWaveform {
+public class ScaWaveformImpl extends ScaPropertyContainerImpl<Application, SoftwareAssembly>implements ScaWaveform {
 	/**
 	 * The cached value of the '{@link #getPorts() <em>Ports</em>}' containment reference list.
 	 * <!-- begin-user-doc -->
@@ -588,7 +588,8 @@ public class ScaWaveformImpl extends ScaPropertyContainerImpl<Application, Softw
 		identifier = IDENTIFIER_EDEFAULT;
 		identifierESet = false;
 		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.UNSET, ScaPackage.SCA_WAVEFORM__IDENTIFIER, oldIdentifier, IDENTIFIER_EDEFAULT, oldIdentifierESet));
+			eNotify(
+				new ENotificationImpl(this, Notification.UNSET, ScaPackage.SCA_WAVEFORM__IDENTIFIER, oldIdentifier, IDENTIFIER_EDEFAULT, oldIdentifierESet));
 	}
 
 	/**

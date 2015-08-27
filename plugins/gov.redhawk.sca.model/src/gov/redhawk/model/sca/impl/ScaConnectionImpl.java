@@ -34,12 +34,12 @@ import ExtendedCF.UsesConnection;
  *        <!-- end-user-doc -->
  *        <p>
  *        The following features are implemented:
+ *        </p>
  *        <ul>
  *        <li>{@link gov.redhawk.model.sca.impl.ScaConnectionImpl#getData <em>Data</em>}</li>
  *        <li>{@link gov.redhawk.model.sca.impl.ScaConnectionImpl#getId <em>Id</em>}</li>
  *        <li>{@link gov.redhawk.model.sca.impl.ScaConnectionImpl#getPort <em>Port</em>}</li>
  *        </ul>
- *        </p>
  *
  * @generated
  */

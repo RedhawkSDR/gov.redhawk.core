@@ -34,11 +34,11 @@ import org.eclipse.emf.ecore.impl.EObjectImpl;
  *        <!-- end-user-doc -->
  *        <p>
  *        The following features are implemented:
+ *        </p>
  *        <ul>
  *        <li>{@link gov.redhawk.model.sca.impl.StringToObjectMapImpl#getTypedKey <em>Key</em>}</li>
  *        <li>{@link gov.redhawk.model.sca.impl.StringToObjectMapImpl#getTypedValue <em>Value</em>}</li>
  *        </ul>
- *        </p>
  *
  * @generated
  */

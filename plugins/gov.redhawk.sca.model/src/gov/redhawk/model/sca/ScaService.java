@@ -24,11 +24,11 @@ import mil.jpeojtrs.sca.spd.SoftPkg;
  *
  *              <p>
  *              The following features are supported:
+ *              </p>
  *              <ul>
  *              <li>{@link gov.redhawk.model.sca.ScaService#getName <em>Name</em>}</li>
  *              <li>{@link gov.redhawk.model.sca.ScaService#getDevMgr <em>Dev Mgr</em>}</li>
  *              </ul>
- *              </p>
  *
  * @see gov.redhawk.model.sca.ScaPackage#getScaService()
  * @model superTypes=

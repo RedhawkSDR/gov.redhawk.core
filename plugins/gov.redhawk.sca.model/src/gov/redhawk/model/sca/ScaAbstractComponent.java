@@ -29,12 +29,12 @@ import CF.ResourceOperations;
  *
  *              <p>
  *              The following features are supported:
+ *              </p>
  *              <ul>
  *              <li>{@link gov.redhawk.model.sca.ScaAbstractComponent#getIdentifier <em>Identifier</em>}</li>
  *              <li>{@link gov.redhawk.model.sca.ScaAbstractComponent#getStarted <em>Started</em>}</li>
  *              <li>{@link gov.redhawk.model.sca.ScaAbstractComponent#getProfile <em>Profile</em>}</li>
  *              </ul>
- *              </p>
  *
  * @see gov.redhawk.model.sca.ScaPackage#getScaAbstractComponent()
  * @model abstract="true" superTypes=

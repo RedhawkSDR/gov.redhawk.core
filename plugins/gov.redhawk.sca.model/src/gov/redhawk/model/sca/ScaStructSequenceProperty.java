@@ -29,10 +29,10 @@ import CF.PropertySetOperations;
  *
  *              <p>
  *              The following features are supported:
+ *              </p>
  *              <ul>
  *              <li>{@link gov.redhawk.model.sca.ScaStructSequenceProperty#getStructs <em>Structs</em>}</li>
  *              </ul>
- *              </p>
  *
  * @see gov.redhawk.model.sca.ScaPackage#getScaStructSequenceProperty()
  * @model superTypes=
@@ -71,9 +71,9 @@ public interface ScaStructSequenceProperty extends ScaAbstractProperty<StructSeq
 
 	/**
 	 * <!-- begin-user-doc -->
-	 * @since 20.0
-	 * <!-- end-user-doc -->
 	 * 
+	 * @since 20.0
+	 *        <!-- end-user-doc -->
 	 * @model
 	 * @generated
 	 */

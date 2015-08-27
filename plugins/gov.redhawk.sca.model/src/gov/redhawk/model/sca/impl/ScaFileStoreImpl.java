@@ -48,6 +48,7 @@ import org.eclipse.emf.transaction.RunnableWithResult;
  *        <!-- end-user-doc -->
  *        <p>
  *        The following features are implemented:
+ *        </p>
  *        <ul>
  *        <li>{@link gov.redhawk.model.sca.impl.ScaFileStoreImpl#getFileStore <em>File Store</em>}</li>
  *        <li>{@link gov.redhawk.model.sca.impl.ScaFileStoreImpl#getChildren <em>Children</em>}</li>
@@ -55,7 +56,6 @@ import org.eclipse.emf.transaction.RunnableWithResult;
  *        <li>{@link gov.redhawk.model.sca.impl.ScaFileStoreImpl#isDirectory <em>Directory</em>}</li>
  *        <li>{@link gov.redhawk.model.sca.impl.ScaFileStoreImpl#getName <em>Name</em>}</li>
  *        </ul>
- *        </p>
  *
  * @generated
  */
@@ -294,7 +294,8 @@ public class ScaFileStoreImpl extends IStatusProviderImpl implements ScaFileStor
 		imageDesc = IMAGE_DESC_EDEFAULT;
 		imageDescESet = false;
 		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.UNSET, ScaPackage.SCA_FILE_STORE__IMAGE_DESC, oldImageDesc, IMAGE_DESC_EDEFAULT, oldImageDescESet));
+			eNotify(
+				new ENotificationImpl(this, Notification.UNSET, ScaPackage.SCA_FILE_STORE__IMAGE_DESC, oldImageDesc, IMAGE_DESC_EDEFAULT, oldImageDescESet));
 	}
 
 	/**

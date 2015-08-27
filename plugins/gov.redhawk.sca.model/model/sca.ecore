@@ -388,12 +388,6 @@
         <eTypeArguments/>
       </eGenericType>
       <eParameters name="monitor" eType="#//IProgressMonitor"/>
-    </eOperations>
-    <eOperations name="fetchDevices" upperBound="-1">
-      <eGenericType eClassifier="#//ScaDevice">
-        <eTypeArguments/>
-      </eGenericType>
-      <eParameters name="monitor" eType="#//IProgressMonitor"/>
       <eParameters name="depth" eType="#//RefreshDepth"/>
     </eOperations>
     <eStructuralFeatures xsi:type="ecore:EReference" name="componentInstantiation"

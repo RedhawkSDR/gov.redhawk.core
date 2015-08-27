@@ -35,12 +35,10 @@ import CF.ExecutableDevicePackage.InvalidProcess;
  * 
  * @since 12.0
  *        <!-- end-user-doc -->
- *        <p>
- *        </p>
  *
  * @generated
  */
-public class ScaExecutableDeviceImpl extends ScaLoadableDeviceImpl<ExecutableDevice> implements ScaExecutableDevice {
+public class ScaExecutableDeviceImpl extends ScaLoadableDeviceImpl<ExecutableDevice>implements ScaExecutableDevice {
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -93,8 +91,8 @@ public class ScaExecutableDeviceImpl extends ScaLoadableDeviceImpl<ExecutableDev
 	 * @since 14.0
 	 */
 	@Override
-	public int execute(final String name, final DataType[] options, final DataType[] parameters) throws InvalidState, InvalidFunction, InvalidParameters,
-		InvalidOptions, InvalidFileName, ExecuteFail {
+	public int execute(final String name, final DataType[] options, final DataType[] parameters)
+		throws InvalidState, InvalidFunction, InvalidParameters, InvalidOptions, InvalidFileName, ExecuteFail {
 		// END GENERATED CODE
 		ExecutableDevice device = fetchNarrowedObject(null);
 		if (device == null) {
@@ -107,13 +105,14 @@ public class ScaExecutableDeviceImpl extends ScaLoadableDeviceImpl<ExecutableDev
 	/**
 	 * <!-- begin-user-doc -->
 	 * This is an EMF-generated wrapper for {@link #executeLinked(String, DataType[], DataType[], String[])}.
+	 * 
 	 * @since 20.0
 	 *        <!-- end-user-doc -->
 	 * 
 	 * @generated NOT
 	 */
-	public int executeLinked(String name, DataType[] options, DataType[] parameters, EList<String> deps) throws InvalidState, InvalidFunction,
-		InvalidParameters, InvalidOptions, InvalidFileName, ExecuteFail {
+	public int executeLinked(String name, DataType[] options, DataType[] parameters, EList<String> deps)
+		throws InvalidState, InvalidFunction, InvalidParameters, InvalidOptions, InvalidFileName, ExecuteFail {
 		return this.executeLinked(name, options, parameters, deps.toArray(new String[deps.size()]));
 	}
 
@@ -121,8 +120,8 @@ public class ScaExecutableDeviceImpl extends ScaLoadableDeviceImpl<ExecutableDev
 	 * @since 20.0
 	 */
 	@Override
-	public int executeLinked(final String name, final DataType[] options, final DataType[] parameters, final String[] deps) throws InvalidState,
-		InvalidFunction, InvalidParameters, InvalidOptions, InvalidFileName, ExecuteFail {
+	public int executeLinked(final String name, final DataType[] options, final DataType[] parameters, final String[] deps)
+		throws InvalidState, InvalidFunction, InvalidParameters, InvalidOptions, InvalidFileName, ExecuteFail {
 		// END GENERATED CODE
 		ExecutableDevice device = fetchNarrowedObject(null);
 		if (device == null) {

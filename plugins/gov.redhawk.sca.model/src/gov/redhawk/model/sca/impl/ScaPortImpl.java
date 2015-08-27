@@ -36,17 +36,17 @@ import org.omg.CORBA.SystemException;
  *        <!-- end-user-doc -->
  *        <p>
  *        The following features are implemented:
+ *        </p>
  *        <ul>
  *        <li>{@link gov.redhawk.model.sca.impl.ScaPortImpl#getName <em>Name</em>}</li>
  *        <li>{@link gov.redhawk.model.sca.impl.ScaPortImpl#getProfileObj <em>Profile Obj</em>}</li>
  *        <li>{@link gov.redhawk.model.sca.impl.ScaPortImpl#getRepid <em>Repid</em>}</li>
  *        <li>{@link gov.redhawk.model.sca.impl.ScaPortImpl#getPortContainer <em>Port Container</em>}</li>
  *        </ul>
- *        </p>
  *
  * @generated
  */
-public abstract class ScaPortImpl< P extends AbstractPort, P2 extends org.omg.CORBA.Object > extends CorbaObjWrapperImpl<P2> implements ScaPort<P, P2> {
+public abstract class ScaPortImpl< P extends AbstractPort, P2 extends org.omg.CORBA.Object > extends CorbaObjWrapperImpl<P2>implements ScaPort<P, P2> {
 	/**
 	 * The default value of the '{@link #getName() <em>Name</em>}' attribute.
 	 * <!-- begin-user-doc -->

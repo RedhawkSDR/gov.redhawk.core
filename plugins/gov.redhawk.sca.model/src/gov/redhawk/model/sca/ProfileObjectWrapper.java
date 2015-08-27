@@ -35,11 +35,11 @@ import org.eclipse.emf.ecore.resource.ResourceSet;
  *
  *        <p>
  *        The following features are supported:
+ *        </p>
  *        <ul>
  *        <li>{@link gov.redhawk.model.sca.ProfileObjectWrapper#getProfileURI <em>Profile URI</em>}</li>
  *        <li>{@link gov.redhawk.model.sca.ProfileObjectWrapper#getProfileObj <em>Profile Obj</em>}</li>
  *        </ul>
- *        </p>
  *
  * @see gov.redhawk.model.sca.ScaPackage#getProfileObjectWrapper()
  * @model interface="true" abstract="true" OBounds="org.eclipse.emf.ecore.EJavaObject"

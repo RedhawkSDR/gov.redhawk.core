@@ -41,10 +41,10 @@ import CF.FileManager;
  *        <!-- end-user-doc -->
  *        <p>
  *        The following features are implemented:
+ *        </p>
  *        <ul>
  *        <li>{@link gov.redhawk.model.sca.impl.ScaDomainManagerFileSystemImpl#getDomMgr <em>Dom Mgr</em>}</li>
  *        </ul>
- *        </p>
  *
  * @generated
  */

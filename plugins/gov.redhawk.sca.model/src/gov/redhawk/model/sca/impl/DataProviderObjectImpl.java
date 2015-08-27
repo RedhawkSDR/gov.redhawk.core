@@ -55,15 +55,15 @@ import org.eclipse.emf.transaction.RunnableWithResult;
  *        <!-- end-user-doc -->
  *        <p>
  *        The following features are implemented:
+ *        </p>
  *        <ul>
  *        <li>{@link gov.redhawk.model.sca.impl.DataProviderObjectImpl#isDisposed <em>Disposed</em>}</li>
  *        <li>{@link gov.redhawk.model.sca.impl.DataProviderObjectImpl#getDataProviders <em>Data Providers</em>}</li>
- *        <li>{@link gov.redhawk.model.sca.impl.DataProviderObjectImpl#isDataProvidersEnabled <em>Data Providers Enabled
- *        </em>}</li>
- *        <li>{@link gov.redhawk.model.sca.impl.DataProviderObjectImpl#getEnabledDataProviders <em>Enabled Data
- *        Providers</em>}</li>
+ *        <li>{@link gov.redhawk.model.sca.impl.DataProviderObjectImpl#isDataProvidersEnabled
+ *        <em>Data Providers Enabled</em>}</li>
+ *        <li>{@link gov.redhawk.model.sca.impl.DataProviderObjectImpl#getEnabledDataProviders
+ *        <em>Enabled Data Providers</em>}</li>
  *        </ul>
- *        </p>
  *
  * @generated
  */
@@ -172,7 +172,8 @@ public abstract class DataProviderObjectImpl extends IStatusProviderImpl impleme
 	@Override
 	public EList<IScaDataProvider> getDataProviders() {
 		if (dataProviders == null) {
-			dataProviders = new EDataTypeUniqueEList.Unsettable<IScaDataProvider>(IScaDataProvider.class, this, ScaPackage.DATA_PROVIDER_OBJECT__DATA_PROVIDERS);
+			dataProviders = new EDataTypeUniqueEList.Unsettable<IScaDataProvider>(IScaDataProvider.class, this,
+				ScaPackage.DATA_PROVIDER_OBJECT__DATA_PROVIDERS);
 		}
 		return dataProviders;
 	}

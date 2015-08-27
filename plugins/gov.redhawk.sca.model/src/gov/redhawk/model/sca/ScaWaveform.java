@@ -29,6 +29,7 @@ import CF.ApplicationOperations;
  *
  *              <p>
  *              The following features are supported:
+ *              </p>
  *              <ul>
  *              <li>{@link gov.redhawk.model.sca.ScaWaveform#getComponents <em>Components</em>}</li>
  *              <li>{@link gov.redhawk.model.sca.ScaWaveform#getAssemblyController <em>Assembly Controller</em>}</li>
@@ -38,7 +39,6 @@ import CF.ApplicationOperations;
  *              <li>{@link gov.redhawk.model.sca.ScaWaveform#getStarted <em>Started</em>}</li>
  *              <li>{@link gov.redhawk.model.sca.ScaWaveform#getProfile <em>Profile</em>}</li>
  *              </ul>
- *              </p>
  *
  * @see gov.redhawk.model.sca.ScaPackage#getScaWaveform()
  * @model superTypes=
