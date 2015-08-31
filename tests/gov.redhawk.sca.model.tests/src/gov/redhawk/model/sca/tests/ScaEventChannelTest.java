@@ -16,7 +16,6 @@ import org.junit.Assert;
 import org.omg.CosEventChannelAdmin.EventChannelHelper;
 
 import gov.redhawk.model.sca.ScaEventChannel;
-
 import junit.textui.TestRunner;
 
 /**

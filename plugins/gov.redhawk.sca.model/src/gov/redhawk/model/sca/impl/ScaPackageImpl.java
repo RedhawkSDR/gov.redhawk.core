@@ -3441,6 +3441,8 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 		op = addEOperation(scaWaveformEClass, ecorePackage.getEString(), "fetchProfile", 0, 1, IS_UNIQUE, IS_ORDERED);
 		addEParameter(op, this.getIProgressMonitor(), "monitor", 0, 1, IS_UNIQUE, IS_ORDERED);
 
+		addEOperation(scaWaveformEClass, this.getScaComponent(), "getComponentsCopy", 0, -1, IS_UNIQUE, IS_ORDERED);
+
 		initEClass(scaWaveformFactoryEClass, ScaWaveformFactory.class, "ScaWaveformFactory", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEReference(getScaWaveformFactory_DomMgr(), this.getScaDomainManager(), this.getScaDomainManager_WaveformFactories(), "domMgr", null, 1, 1,
 			ScaWaveformFactory.class, IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED,

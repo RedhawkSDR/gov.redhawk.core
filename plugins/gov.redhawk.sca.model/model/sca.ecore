@@ -1147,6 +1147,7 @@
     <eOperations name="fetchProfile" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString">
       <eParameters name="monitor" eType="#//IProgressMonitor"/>
     </eOperations>
+    <eOperations name="getComponentsCopy" upperBound="-1" eType="#//ScaComponent"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="components" upperBound="-1"
         eType="#//ScaComponent" transient="true" unsettable="true" containment="true"
         resolveProxies="false" eOpposite="#//ScaComponent/waveform" eKeys="#//ScaAbstractComponent/identifier">

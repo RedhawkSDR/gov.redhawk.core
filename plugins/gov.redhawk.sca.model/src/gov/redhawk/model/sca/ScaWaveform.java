@@ -498,4 +498,16 @@ public interface ScaWaveform extends ScaPropertyContainer<Application, SoftwareA
 	 */
 	String fetchProfile(IProgressMonitor monitor);
 
+	/**
+	 * <!-- begin-user-doc -->
+	 * Gets a copy of the list of components safely using a read-only command in the transactional editing domain.
+	 * @see #getComponents()
+	 * @since 20.0
+	 * <!-- end-user-doc -->
+	 * 
+	 * @model kind="operation"
+	 * @generated
+	 */
+	EList<ScaComponent> getComponentsCopy();
+
 } // ScaWaveform

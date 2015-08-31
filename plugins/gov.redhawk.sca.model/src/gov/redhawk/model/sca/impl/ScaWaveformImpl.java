@@ -912,16 +912,9 @@ public class ScaWaveformImpl extends ScaPropertyContainerImpl<Application, Softw
 		SubMonitor compMonitor = subMonitor.newChild(1);
 		compMonitor.beginTask("Fetch Component started", getComponents().size());
 		List<ScaComponent> tmpComponents = ScaModelCommandWithResult.execute(this, new ScaModelCommandWithResult<List<ScaComponent>>() {
-
 			@Override
 			public void execute() {
-				List<ScaComponent> retVal;
-				if (getComponents().isEmpty()) {
-					retVal = Collections.emptyList();
-				} else {
-					retVal = new ArrayList<ScaComponent>(getComponents());
-				}
-				setResult(retVal);
+				setResult(new ArrayList<ScaComponent>(getComponents()));
 			}
 		});
 		for (ScaComponent comp : tmpComponents) {
@@ -1975,6 +1968,26 @@ public class ScaWaveformImpl extends ScaPropertyContainerImpl<Application, Softw
 		subMonitor.worked(1);
 		subMonitor.done();
 		return getProfile();
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * @since 20.0
+	 * <!-- end-user-doc -->
+	 * @generated NOT
+	 */
+	public EList<ScaComponent> getComponentsCopy() {
+		try {
+			return ScaModelCommandWithResult.runExclusive(this, new RunnableWithResult.Impl<EList<ScaComponent>>() {
+				@Override
+				public void run() {
+					setResult(new BasicEList<ScaComponent>(getComponents()));
+				}
+			});
+		} catch (InterruptedException e) {
+			ScaModelPlugin.logError("Interrupted while reading model", e);
+			return new BasicEList<ScaComponent>();
+		}
 	}
 
 	private final VersionedFeature profileURIFeature = new VersionedFeature(this, ScaPackage.Literals.PROFILE_OBJECT_WRAPPER__PROFILE_URI);

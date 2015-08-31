@@ -24,6 +24,8 @@ import org.junit.Assert;
 
 import junit.textui.TestRunner;
 
+import java.util.List;
+
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.transaction.util.TransactionUtil;
@@ -70,6 +72,7 @@ import CF.TestableObjectPackage.UnknownTest;
  * <li>{@link gov.redhawk.model.sca.ScaWaveform#getScaComponent(java.lang.String) <em>Get Sca Component</em>}</li>
  * <li>{@link gov.redhawk.model.sca.ScaWaveform#fetchProfile(org.eclipse.core.runtime.IProgressMonitor) <em>Fetch
  * Profile</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.ScaWaveform#getComponentsCopy() <em>Get Components Copy</em>}</li>
  * <li>{@link gov.redhawk.model.sca.ScaPortContainer#getScaPort(java.lang.String) <em>Get Sca Port</em>}</li>
  * <li>{@link gov.redhawk.model.sca.ScaPortContainer#fetchPorts(org.eclipse.core.runtime.IProgressMonitor) <em>Fetch
  * Ports</em>}</li>
@@ -654,6 +657,20 @@ public class ScaWaveformTest extends ScaPropertyContainerTest {
 		// END GENERATED CODE
 		getFixture().fetchProfile(null);
 		// BEGIN GENERATED CODE
+	}
+
+	/**
+	 * Tests the '{@link gov.redhawk.model.sca.ScaWaveform#getComponentsCopy() <em>Get Components Copy</em>}' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see gov.redhawk.model.sca.ScaWaveform#getComponentsCopy()
+	 * @generated NOT
+	 */
+	public void testGetComponentsCopy() {
+		List<ScaComponent> compList1 = getFixture().getComponents();
+		List<ScaComponent> compList2 = getFixture().getComponentsCopy();
+		Assert.assertTrue(compList1 != compList2);
+		Assert.assertEquals(compList1, compList2);
 	}
 
 	/**
