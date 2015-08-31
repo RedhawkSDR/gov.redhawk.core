@@ -22,7 +22,6 @@ import CF.ResourceOperations;
 
 /**
  * @since 3.0
- * 
  */
 public class StartAction extends Action {
 	private Object context;
