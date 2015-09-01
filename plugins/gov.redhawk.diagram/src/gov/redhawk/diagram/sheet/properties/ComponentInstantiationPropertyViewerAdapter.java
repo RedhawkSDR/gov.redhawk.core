@@ -31,6 +31,7 @@ import mil.jpeojtrs.sca.prf.StructSequenceRef;
 import mil.jpeojtrs.sca.spd.SoftPkg;
 
 import org.eclipse.emf.common.notify.Adapter;
+import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.ecore.util.EContentAdapter;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.emf.ecore.util.FeatureMap.ValueListIterator;
@@ -49,7 +50,7 @@ public class ComponentInstantiationPropertyViewerAdapter {
 	private final IEditingDomainProvider editingDomainProvider;
 	private final Adapter contentAdapter = new EContentAdapter() {
 		@Override
-		public void notifyChanged(final org.eclipse.emf.common.notify.Notification notification) {
+		public void notifyChanged(final Notification notification) {
 			super.notifyChanged(notification);
 			if (!notification.isTouch() && !ignore) {
 				mergeValues();
@@ -148,6 +149,14 @@ public class ComponentInstantiationPropertyViewerAdapter {
 
 	private void setValue(final AbstractPropertyRef< ? > ref, final ScaAbstractProperty< ? > prop) {
 		prop.fromAny(ref.toAny());
+	}
+
+	/**
+	 * @since 7.0
+	 */
+	public void dispose() {
+		component.eAdapters().remove(contentAdapter);
+		component.dispose();
 	}
 
 }
