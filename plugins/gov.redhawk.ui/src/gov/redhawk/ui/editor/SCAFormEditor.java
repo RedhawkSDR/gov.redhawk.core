@@ -476,8 +476,31 @@ public abstract class SCAFormEditor extends FormEditor implements IEditingDomain
 
 		@Override
 		protected void handleSelectionChanged(SelectionChangedEvent event) {
-			super.handleSelectionChanged(event);
-//			super.handlePostSelectionChanged(event);
+			// On occasion, viewers that are not visible may still emit selection change events due to model updates
+			// (mostly StructuredTextEditors); from the perspective of the form editor, these selection events should
+			// be ignored, otherwise the properties view may unexpectedly change contents.
+			if (isSelectionSourceVisible(event)) {
+				super.handleSelectionChanged(event);
+			}
+		}
+
+		@Override
+		protected void handlePostSelectionChanged(SelectionChangedEvent event) {
+			// See above.
+			if (isSelectionSourceVisible(event)) {
+				super.handlePostSelectionChanged(event);
+			}
+		}
+
+		private boolean isSelectionSourceVisible(SelectionChangedEvent event) {
+			if (event.getSource() instanceof Viewer) {
+				Viewer viewer = (Viewer) event.getSource();
+				Control control = viewer.getControl();
+				if (!control.isVisible()) {
+					return false;
+				}
+			}
+			return true;
 		}
 	}
 
