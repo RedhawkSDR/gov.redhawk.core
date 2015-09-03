@@ -72,6 +72,7 @@ public interface RepositoryModule extends Definition {
 
 	/**
 	 * <!-- begin-user-doc -->
+	 * Finds the {@link Identifiable} for a given repid. The search is thread-safe on the model.
 	 * <!-- end-user-doc -->
 	 * @model
 	 * @generated
