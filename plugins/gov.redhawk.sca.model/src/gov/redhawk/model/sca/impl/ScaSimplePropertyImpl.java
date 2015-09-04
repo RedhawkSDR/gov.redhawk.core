@@ -311,7 +311,7 @@ public class ScaSimplePropertyImpl extends ScaAbstractPropertyImpl<Simple>implem
 				restoreDefaultValue();
 			}
 			setStatus(ScaPackage.Literals.SCA_SIMPLE_PROPERTY__VALUE, Status.OK_STATUS);
-		} catch (Exception e) {
+		} catch (IllegalArgumentException e) {
 			setStatus(ScaPackage.Literals.SCA_SIMPLE_PROPERTY__VALUE,
 				new Status(Status.ERROR, ScaModelPlugin.ID, "Failed to read property value of:" + getName(), e));
 		}

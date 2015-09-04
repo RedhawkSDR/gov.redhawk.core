@@ -135,7 +135,7 @@ public class RefreshProviderPlugin extends Plugin {
 		if (depth != null) {
 			try {
 				return RefreshDepth.valueOf(depth);
-			} catch (Exception e) {
+			} catch (IllegalArgumentException e) {
 				// PASS
 			}
 		}

@@ -813,8 +813,8 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 			public void run() {
 				try {
 					session.dispose();
-				} catch (Exception e) {
-					// PASS Ignore Exception on close
+				} catch (SystemException e) {
+					// PASS Ignore issues during shutdown
 				}
 			}
 
