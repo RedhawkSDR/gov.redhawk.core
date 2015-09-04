@@ -668,7 +668,7 @@ public abstract class ScaPropertyContainerImpl< P extends org.omg.CORBA.Object, 
 			if (propertiesStatus.isOK()) {
 				return superStatus;
 			}
-			MultiStatus status = new MultiStatus(ScaModelPlugin.ID, Status.OK, "Status of the SCA model object.", null);
+			MultiStatus status = new MultiStatus(ScaModelPlugin.ID, Status.OK, "Status of the model object.", null);
 			status.addAll(superStatus);
 			status.add(propertiesStatus);
 			return status;

@@ -26,7 +26,7 @@ public class LightweightCorbaEditorInput extends PlatformObject implements IEdit
 	private final String ior;
 	private final URI uri;
 	private ImageDescriptor imageDescriptor;
-	private String name = "SCA CORBA Object";
+	private String name = "REDHAWK CORBA Object";
 	private String tooltip = "";
 
 	public LightweightCorbaEditorInput(final String ior, final URI uri) {

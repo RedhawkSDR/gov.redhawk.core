@@ -67,7 +67,7 @@ public class ScaDataProviderServiceDescriptor implements IScaDataProviderService
 				this.service = (IScaDataProviderService) this.element.createExecutableExtension(ScaDataProviderServiceDescriptor.CLASS_ATTRIBUTE);
 				this.service.setEnabled(enabled);
 			} catch (final CoreException e) {
-				ScaModelPlugin.logError("Error creating SCA Data Provider Service: " + this.name, e);
+				ScaModelPlugin.logError("Error creating Data Provider Service: " + this.name, e);
 			}
 		}
 		return this.service;

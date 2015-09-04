@@ -1,4 +1,4 @@
-CORBARECEIVER2 - Output data from a REDHAWK SCA Port to Midas file/pipe
+CORBARECEIVER2 - Output data from a REDHAWK Port to Midas file/pipe
 
 <FILE>      - Name of the Midas output file/pipe (destination)
 <IOR>       - CORBA IOR to Port (source)

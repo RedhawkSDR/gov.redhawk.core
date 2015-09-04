@@ -26,7 +26,7 @@ public interface IScaObjectIdentifierAdapter {
 	String getIdentifier(Object obj);
 
 	/**
-	 * Get the SCA Profile Object
+	 * Get the model profile object
 	 * @param obj
 	 * @return
 	 */

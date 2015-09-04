@@ -47,7 +47,7 @@ public abstract class ScaModelCommand extends AbstractCommand {
 
 	@Override
 	public String getLabel() {
-		return "SCA Model Protected Command";
+		return "REDHAWK Model Protected Command";
 	}
 
 	@Override

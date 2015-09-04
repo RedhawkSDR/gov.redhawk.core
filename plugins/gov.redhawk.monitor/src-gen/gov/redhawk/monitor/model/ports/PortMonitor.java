@@ -41,7 +41,7 @@ public interface PortMonitor extends Monitor, PortStatisticsProvider {
 	 * Returns the value of the '<em><b>Port</b></em>' reference.
 	 * <!-- begin-user-doc -->
 	 * <p>
-	 * This is the SCA model object for the REDHAWK port being monitored.
+	 * This is the model object for the REDHAWK port being monitored.
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Port</em>' reference.
@@ -56,7 +56,7 @@ public interface PortMonitor extends Monitor, PortStatisticsProvider {
 	 * Sets the value of the '{@link gov.redhawk.monitor.model.ports.PortMonitor#getPort <em>Port</em>}' reference.
 	 * <!-- begin-user-doc -->
 	 * <p>
-	 * This is the SCA model object for the REDHAWK port being monitored.
+	 * This is the model object for the REDHAWK port being monitored.
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * @param value the new value of the '<em>Port</em>' reference.

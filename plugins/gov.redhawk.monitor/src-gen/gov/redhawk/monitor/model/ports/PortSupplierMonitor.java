@@ -38,7 +38,7 @@ public interface PortSupplierMonitor extends Monitor {
 	 * Returns the value of the '<em><b>Port Container</b></em>' reference.
 	 * <!-- begin-user-doc -->
 	 * <p>
-	 * This is the SCA model object for the collection of REDHAWK port(s) belonging to a component, device, etc., all of
+	 * This is the model object for the collection of REDHAWK port(s) belonging to a component, device, etc., all of
 	 * which are being monitored.
 	 * </p>
 	 * <!-- end-user-doc -->
@@ -55,7 +55,7 @@ public interface PortSupplierMonitor extends Monitor {
 	 * Container</em>}' reference.
 	 * <!-- begin-user-doc -->
 	 * <p>
-	 * This is the SCA model object for the collection of REDHAWK port(s) belonging to a component, device, etc., all of
+	 * This is the model object for the collection of REDHAWK port(s) belonging to a component, device, etc., all of
 	 * which are being monitored.
 	 * </p>
 	 * <!-- end-user-doc -->

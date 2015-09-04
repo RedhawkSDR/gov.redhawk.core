@@ -19,7 +19,7 @@ public class ScaSingleDomainPreferenceConstants {
 	
 	/**
 	 * The Constant SCA_ACTIVE_DOMAIN - name of the active domain (used for
-	 * single-domain SCA Explorer only)
+	 * single-domain REDHAWK Explorer only)
 	 * @since 6.0
 	 */
 	public static final String SCA_ACTIVE_DOMAIN = "activeDomain";

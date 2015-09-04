@@ -50,8 +50,8 @@ public final class ScaUI {
 	}
 
 	/**
-	 * Attempts to open an editor on the give EObject by first consulting the 
-	 * SCA Content type registry and then delegating to opening the filestore associated with the EObject.
+	 * Attempts to open an editor for the given EObject by first consulting the
+	 * REDHAWK Content type registry and then delegating to opening the filestore associated with the EObject.
 	 * @param page The page to open the editor within
 	 * @param object The object to open an editor on
 	 * @return an open editor or null if we either opened an external editor
@@ -64,11 +64,11 @@ public final class ScaUI {
 	}
 
 	/**
-	 * Attempts to open an editor on the give EObject by first consulting the 
-	 * SCA Content type registry and then delegating to opening the filestore associated with the EObject.
+	 * Attempts to open an editor for the given EObject by first consulting the
+	 * REDHAWK Content type registry and then delegating to opening the filestore associated with the EObject.
 	 * @param page The page to open the editor within
 	 * @param object The object to open an editor on
-	 * @param true if should attempt to open an editor on the EObject's URI if SCA Content resolution fails
+	 * @param true open an editor on the EObject's URI if REDHAWK Content resolution fails
 	 * @return an open editor or null if we either opened an external editor
 	 * @throws PartInitException if no internal editor can be found or if the editor could not be initialized
 	 * @throws NoEditorAvailableException if no editor could be found

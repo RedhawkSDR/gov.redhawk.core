@@ -56,7 +56,7 @@ public class RunWaveformView extends ViewPart implements DragSourceListener, Dro
 	private boolean ignoreCallback = false;
 	/** The main object of the view, the tree of applications */
 	private TreeViewer treeViewer;
-	/** Vector of running SCA applications */
+	/** Vector of running applications */
 	private Vector<ScaWaveform> apps;
 
 	@Override

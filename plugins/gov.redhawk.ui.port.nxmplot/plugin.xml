@@ -27,7 +27,7 @@
             name="Port Data"
             restorable="false">
          <description>
-            Plots data from an SCA Port.
+            Plots data from an REDHAWK port.
          </description>
       </view>
    </extension>

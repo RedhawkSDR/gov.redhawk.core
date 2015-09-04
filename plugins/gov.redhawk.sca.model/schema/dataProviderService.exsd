@@ -3,8 +3,11 @@
 <schema targetNamespace="gov.redhawk.sca.model" xmlns="http://www.w3.org/2001/XMLSchema">
 <annotation>
       <appInfo>
-         <meta.schema plugin="gov.redhawk.sca.model" id="dataProviderService" name="SCA Data Provider Service"/>
+         <meta.schema plugin="gov.redhawk.sca.model" id="dataProviderService" name="REDHAWK Data Provider Service"/>
       </appInfo>
+      <documentation>
+         
+      </documentation>
    </annotation>
 
    <element name="extension">
@@ -72,12 +75,17 @@
          </attribute>
       </complexType>
    </element>
- <annotation>
-       <appinfo>
-                <meta.section type="copyright"/>
-                      </appinfo>
-                            <documentation>
-                                     This file is protected by Copyright. 
+
+
+
+
+
+   <annotation>
+      <appInfo>
+         <meta.section type="copyright"/>
+      </appInfo>
+      <documentation>
+         This file is protected by Copyright. 
                                      Please refer to the COPYRIGHT file distributed with this source distribution.
 
 This file is part of REDHAWK IDE.
@@ -86,5 +94,6 @@ All rights reserved.  This program and the accompanying materials are made avail
 the terms of the Eclipse Public License v1.0 which accompanies this distribution, and is available at 
 http://www.eclipse.org/legal/epl-v10.html
       </documentation>
-         </annotation>
+   </annotation>
+
 </schema>

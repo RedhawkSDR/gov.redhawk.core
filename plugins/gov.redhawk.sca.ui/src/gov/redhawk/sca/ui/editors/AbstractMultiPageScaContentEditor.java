@@ -96,8 +96,8 @@ public abstract class AbstractMultiPageScaContentEditor< T extends EObject > ext
 	}
 
 	/**
-	 * A default adapter factory for SCA Model Objects
-	 * @return	default adapter factory for SCA model objects
+	 * A default adapter factory for REDHAWK Model Objects
+	 * @return	default adapter factory for REDHAWK model objects
 	 */
 	public AdapterFactory getAdapterFactory() {
 		if (this.adapterFactory == null) {

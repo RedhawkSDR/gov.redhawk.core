@@ -55,7 +55,7 @@ public class ScaWaveformControlPanelContributor extends EditorActionBarContribut
 	}
 	
 	/**
-	 * Returns the action registered with the given SCA editor.
+	 * Returns the action registered with the given AbstractScaEditor.
 	 * @return IAction or null if editor is null.
 	 */
 	protected IAction getAction(AbstractScaEditor editor, String actionID) {

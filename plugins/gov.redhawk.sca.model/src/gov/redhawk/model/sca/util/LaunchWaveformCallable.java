@@ -71,7 +71,7 @@ public class LaunchWaveformCallable implements Callable<ScaWaveform> {
 			////////////////////
 			// INSTALL WAVEFORM
 			final String profile = this.waveformPath.toPortableString();
-			subMonitor.subTask("Installing SCA Waveform: " + profile);
+			subMonitor.subTask("Installing REDHAWK Waveform: " + profile);
 			while (factory == null) {
 				if (subMonitor.isCanceled()) {
 					throw new OperationCanceledException();
@@ -105,7 +105,7 @@ public class LaunchWaveformCallable implements Callable<ScaWaveform> {
 				throw new OperationCanceledException();
 			}
 
-			Assert.isNotNull(factory, "Failed to get SCA Waveform Factory");
+			Assert.isNotNull(factory, "Failed to get REDHAWK Waveform Factory");
 
 			////////////////////
 			// CREATE WAVEFORM

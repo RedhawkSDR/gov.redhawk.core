@@ -42,7 +42,7 @@ public abstract class AbstractScaEditor extends EditorPart {
 	 */
 	@Override
 	public void doSave(final IProgressMonitor monitor) {
-		// PASS SCA Runtime Editors do not Save
+		// PASS REDHAWK Runtime Editors do not Save
 		throw new UnsupportedOperationException("Runtime editors can not be saved");
 	}
 
@@ -51,7 +51,7 @@ public abstract class AbstractScaEditor extends EditorPart {
 	 */
 	@Override
 	public void doSaveAs() {
-		// PASS SCA Runtime Editors do not Save
+		// PASS REDHAWK Runtime Editors do not Save
 		throw new UnsupportedOperationException("Runtime editors can not be saved");
 	}
 

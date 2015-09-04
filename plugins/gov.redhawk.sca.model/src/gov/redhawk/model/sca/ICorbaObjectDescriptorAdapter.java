@@ -17,7 +17,7 @@ package gov.redhawk.model.sca;
 public interface ICorbaObjectDescriptorAdapter {
 
 	/**
-	 * Get the IOR of the SCA Model object
+	 * Get the IOR of the model object
 	 * @param obj
 	 * @return The value of the IOR
 	 */

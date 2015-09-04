@@ -3,10 +3,10 @@
 <schema targetNamespace="gov.redhawk.sca.ui" xmlns="http://www.w3.org/2001/XMLSchema">
 <annotation>
       <appinfo>
-         <meta.schema plugin="gov.redhawk.sca.ui" id="scaContentTypes" name="SCA Content Types"/>
+         <meta.schema plugin="gov.redhawk.sca.ui" id="scaContentTypes" name="REDHAWK Content Types"/>
       </appinfo>
       <documentation>
-         The content types extension point allows plug-ins to contribute to the SCA Platform content type catalog. A content type represents an Sca Object. Content types can be defined from scratch, or can inherit from existing ones, specializing them.
+         The content types extension point allows plug-ins to contribute to the REDHAWK Platform content type catalog. A content type represents a REDHAWK object. Content types can be defined from scratch, or can inherit from existing ones, specializing them.
       </documentation>
    </annotation>
 
@@ -204,12 +204,16 @@
          4.0
       </documentation>
    </annotation>
- <annotation>
-       <appinfo>
-                <meta.section type="copyright"/>
-                      </appinfo>
-                            <documentation>
-                                     This file is protected by Copyright. 
+
+
+
+
+   <annotation>
+      <appinfo>
+         <meta.section type="copyright"/>
+      </appinfo>
+      <documentation>
+         This file is protected by Copyright. 
                                      Please refer to the COPYRIGHT file distributed with this source distribution.
 
 This file is part of REDHAWK IDE.
@@ -218,5 +222,6 @@ All rights reserved.  This program and the accompanying materials are made avail
 the terms of the Eclipse Public License v1.0 which accompanies this distribution, and is available at 
 http://www.eclipse.org/legal/epl-v10.html
       </documentation>
-         </annotation>
+   </annotation>
+
 </schema>

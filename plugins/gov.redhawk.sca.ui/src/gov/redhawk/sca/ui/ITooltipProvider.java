@@ -18,7 +18,7 @@ import org.eclipse.swt.graphics.Point;
 import org.eclipse.ui.navigator.ICommonLabelProvider;
 
 /**
- * Provides an interface version of CellLabelProvider to be used to provide tooltips to the SCA Navigator Viewer
+ * Provides an interface version of CellLabelProvider to be used to provide tooltips to the REDHAWK Navigator Viewer
  * 
  * @since 8.0
  * @see org.eclipse.jface.viewers.CellLabelProvider

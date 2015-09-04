@@ -18,7 +18,7 @@ package gov.redhawk.sca;
 public interface IScaDomainManagerRegistryFactoryService {
 	
 	/**
-	 * @return the SCA Domain Manager registry container.
+	 * @return the domain manager registry container.
 	 */
 	public IScaDomainManagerRegistryContainer getRegistryContainer();
 	

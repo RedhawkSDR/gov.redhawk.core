@@ -43,7 +43,7 @@ public class DownloadJob extends Job {
 	private final IContainer target;
 
 	public DownloadJob(final ScaFileStore[] stores, final IContainer target) {
-		super("Downloading SCA Files");
+		super("Downloading REDHAWK Files");
 		this.stores = stores;
 		this.target = target;
 		setUser(true);
@@ -54,7 +54,7 @@ public class DownloadJob extends Job {
 	 */
 	@Override
 	protected IStatus run(final IProgressMonitor monitor) {
-		final MultiStatus status = new MultiStatus(ScaUiPlugin.PLUGIN_ID, IStatus.OK, "Problems downloading SCA files", null);
+		final MultiStatus status = new MultiStatus(ScaUiPlugin.PLUGIN_ID, IStatus.OK, "Problems downloading REDHAWK files", null);
 		final SubMonitor subMonitor = SubMonitor.convert(monitor, "Downloading files", this.stores.length);
 		try {
 			for (final ScaFileStore store : this.stores) {

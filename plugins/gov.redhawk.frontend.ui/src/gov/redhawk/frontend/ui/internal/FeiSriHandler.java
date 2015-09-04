@@ -219,7 +219,7 @@ public class FeiSriHandler extends AbstractHandler implements IHandler {
 	 */
 	private IStatus createSriView(final ExecutionEvent event, final DataType[] props, final List< ? > elements, final ScaDevice< ? > device,
 		final TunerStatus tuner) throws ExecutionException {
-		// Get all SCA Ports on the containing device
+		// Get all ports on the containing device
 		List<ScaPort< ? , ? >> devicePorts = device.getPorts();
 		// Get all the "supported" uses ports from the preceding list
 		List<ScaUsesPort> usesPorts = new ArrayList<ScaUsesPort>();

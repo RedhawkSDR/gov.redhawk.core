@@ -84,7 +84,7 @@ public class RedhawkScaPreferencePage extends FieldEditorPreferencePage implemen
 					RedhawkScaPreferencePage.this.registry.eResource().save(null);
 					success[0] = true;
 				} catch (IOException e) {
-					StatusManager.getManager().handle(new Status(IStatus.ERROR, ScaUiPlugin.PLUGIN_ID, "Failed to save SCA Domain Connections to configuration.", e),
+					StatusManager.getManager().handle(new Status(IStatus.ERROR, ScaUiPlugin.PLUGIN_ID, "Failed to save REDHAWK Domain Connections to configuration file.", e),
 							StatusManager.LOG | StatusManager.SHOW);
 				} finally {
 					done[0] = true;

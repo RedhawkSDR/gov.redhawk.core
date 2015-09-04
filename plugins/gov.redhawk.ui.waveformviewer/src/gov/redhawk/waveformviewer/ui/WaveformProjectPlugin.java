@@ -57,7 +57,7 @@ public class WaveformProjectPlugin extends AbstractUIPlugin {
 		final Properties properties = new Properties();
 		properties.put(initialHost, host);
 		properties.put(initialPort, port);
-		// TODO Start/Get the SCA service
+		// TODO Start/Get the service
 		//		ScaPlugin.getDefault().addScaService(properties);
 
 	}

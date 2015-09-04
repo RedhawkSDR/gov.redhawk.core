@@ -121,9 +121,9 @@ public class LaunchWaveformJob extends SilentJob {
 
 			////////////////////
 			// INSTALL WAVEFORM (Application) Factory
-			subMonitor.subTask("Installing SCA Waveform Factory: " + profilePath);
+			subMonitor.subTask("Installing REDHAWK Waveform Factory: " + profilePath);
 			while (factory == null) {
-				DEBUG.message("Installing SCA Waveform Factory...");
+				DEBUG.message("Installing REDHAWK Waveform Factory...");
 				if (subMonitor.isCanceled()) {
 					throw new OperationCanceledException();
 				}
@@ -157,7 +157,7 @@ public class LaunchWaveformJob extends SilentJob {
 				throw new OperationCanceledException();
 			}
 
-			Assert.isNotNull(factory, "Failed to get/install SCA Waveform Factory");
+			Assert.isNotNull(factory, "Failed to get/install REDHAWK Waveform Factory");
 
 			////////////////////
 			// CREATE WAVEFORM
@@ -213,7 +213,7 @@ public class LaunchWaveformJob extends SilentJob {
 					}
 				}
 				if (installedAppFactory && factory != null) {
-					DEBUG.message("Uninstall ScaWaveformFactory factory = {0}", factory);
+					DEBUG.message("Uninstall waveform factory = {0}", factory);
 					try {
 						this.domMgr.uninstallScaWaveformFactory(factory);
 					} catch (ApplicationUninstallationError | InvalidIdentifier | SystemException ex) {

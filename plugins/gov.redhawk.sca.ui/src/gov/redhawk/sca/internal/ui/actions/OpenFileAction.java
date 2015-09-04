@@ -39,7 +39,7 @@ import org.eclipse.ui.progress.WorkbenchJob;
 import org.eclipse.ui.statushandlers.StatusManager;
 
 /**
- * Standard action for opening editors on SCA Model Types
+ * Standard action for opening editors on REDHAWK Model Types
  * <p>
  * This class may be instantiated; it is not intended to be subclassed.
  * </p>
@@ -77,7 +77,7 @@ public class OpenFileAction extends BaseSelectionListenerAction {
 
 	/**
 	 * Creates a new action that will open instances of the specified editor on 
-	 * the then-selected SCA resources.
+	 * the then-selected REDHAWK resources.
 	 *
 	 * @param page the workbench page in which to open the editor
 	 * @param descriptor the editor descriptor, or <code>null</code> if unspecified

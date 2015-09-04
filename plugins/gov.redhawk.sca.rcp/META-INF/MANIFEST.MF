@@ -1,6 +1,6 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: SCA RCP
+Bundle-Name: REDHAWK RCP
 Bundle-SymbolicName: gov.redhawk.sca.rcp
 Bundle-Version: 1.0.0.qualifier
 Bundle-Activator: gov.redhawk.sca.rcp.ScaRCPPlugin

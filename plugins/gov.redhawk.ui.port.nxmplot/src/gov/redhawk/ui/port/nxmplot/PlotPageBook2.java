@@ -370,7 +370,7 @@ public class PlotPageBook2 extends Composite {
 
 		this.source2NxmBlocks.put(plotSource, nxmBlocksForSource);
 
-		// register adapter to handle when EMF model disposes of the SCA Port
+		// register adapter to handle when EMF disposes the port model object
 		ScaModelCommand.execute(scaPort, new ScaModelCommand() {
 			@Override
 			public void execute() {

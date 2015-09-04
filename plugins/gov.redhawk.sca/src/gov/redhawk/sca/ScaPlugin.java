@@ -139,11 +139,10 @@ public class ScaPlugin extends Plugin {
 	/**
 	 * @since 7.0
 	 *
-	 * Returns the SCA Domain Manager registry.
+	 * Returns the domain manager registry.
 	 * @param context
 	 * the current Display (meaningful in RAP only), used to ensure user-specific context.
-	 * @return
-	 * the SCA Domain Manager registry
+	 * @return the domain manager registry
 	 */
 	public ScaDomainManagerRegistry getDomainManagerRegistry(Object context) {
 		IScaDomainManagerRegistryFactoryService service = this.registryService.getService();

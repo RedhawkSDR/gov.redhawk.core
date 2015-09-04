@@ -299,7 +299,7 @@ public class AudioController {
 								SadComponentInstantiation compInstantiation = ((ScaComponent) comp).getComponentInstantiation();
 								if (compInstantiation != null) {
 									res = compInstantiation.getUsageName();
-								} else { // fall-back to SCA Component's name
+								} else { // fall-back to component's name
 									res = ((ScaComponent) comp).getName();
 								}
 							} else if (comp instanceof ScaDevice< ? >) {
