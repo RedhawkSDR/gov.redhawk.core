@@ -40,7 +40,6 @@ public class StructSimpleSequencePropertyComposite extends SimpleSequencePropert
 		createValues(parent, toolkit);
 		createUnitsEntry(parent, toolkit);
 		createRange(parent, toolkit);
-		createOptionalCombo(parent, toolkit);
 		createDescription(parent, toolkit);
 
 		ArrayList<Control> tabList = new ArrayList<Control>();
@@ -52,7 +51,6 @@ public class StructSimpleSequencePropertyComposite extends SimpleSequencePropert
 		tabList.add(getRangeButton());
 		tabList.add(getMinText().getText().getParent());
 		tabList.add(getMaxText().getText().getParent());
-		tabList.add(getOptionalCombo());
 		tabList.add(getDescriptionText());
 
 		parent.setTabList(tabList.toArray(new Control[tabList.size()]));

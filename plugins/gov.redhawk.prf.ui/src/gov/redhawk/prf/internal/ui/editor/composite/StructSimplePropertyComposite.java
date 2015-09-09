@@ -43,7 +43,6 @@ public class StructSimplePropertyComposite extends SimplePropertyComposite {
 		createUnitsEntry(parent, toolkit);
 		createEnumerationsViewer(parent, toolkit);
 		createRange(parent, toolkit);
-		createOptionalCombo(parent, toolkit);
 		createDescription(parent, toolkit);
 		
 		toolkit.paintBordersFor(parent);
@@ -58,7 +57,6 @@ public class StructSimplePropertyComposite extends SimplePropertyComposite {
 		tabList.add(getRangeButton());
 		tabList.add(getMinText().getText().getParent());
 		tabList.add(getMaxText().getText().getParent());
-		tabList.add(getOptionalCombo());
 		tabList.add(getDescriptionText());
 		
 		parent.setTabList(tabList.toArray(new Control[tabList.size()]));

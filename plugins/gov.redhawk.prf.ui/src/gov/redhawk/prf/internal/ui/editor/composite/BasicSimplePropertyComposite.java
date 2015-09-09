@@ -72,7 +72,6 @@ public abstract class BasicSimplePropertyComposite extends AbstractPropertyCompo
 
 	protected static final int NUM_COLUMNS = 3;
 
-	private static final String[] BOOLEAN_ITEMS = new String[] { "", "false", "true" };
 	private static final GridDataFactory FACTORY = GridDataFactory.fillDefaults().span(2, 1).grab(true, false);
 	private static final String DEFAULT_ACTION = "external";
 
@@ -97,7 +96,6 @@ public abstract class BasicSimplePropertyComposite extends AbstractPropertyCompo
 	private FormToolkit toolkit;
 
 	private Combo typeModifier;
-	private Combo optionalCombo;
 
 	private boolean configExecParamShown;
 	private ViewerFilter configExecParamFilter;
@@ -530,24 +528,6 @@ public abstract class BasicSimplePropertyComposite extends AbstractPropertyCompo
 				return element instanceof Enumeration;
 			}
 		} };
-	}
-
-	protected Combo createOptionalCombo(final Composite parent, final FormToolkit toolkit) {
-		// Optional attribute
-		final Label label = toolkit.createLabel(parent, "Optional:");
-		label.setForeground(toolkit.getColors().getColor(IFormColors.TITLE));
-		label.setLayoutData(GridDataFactory.fillDefaults().align(SWT.BEGINNING, SWT.BEGINNING).create());
-		this.optionalCombo = new Combo(parent, SWT.DROP_DOWN | SWT.READ_ONLY);
-		this.optionalCombo.addListener(SWT.MouseVerticalWheel, getEventIgnorer());
-		this.optionalCombo.setItems(BOOLEAN_ITEMS);
-		this.optionalCombo.setLayoutData(AbstractPropertyComposite.FACTORY.create());
-		toolkit.adapt(this.optionalCombo);
-
-		return this.optionalCombo;
-	}
-
-	public Combo getOptionalCombo() {
-		return this.optionalCombo;
 	}
 
 	/**

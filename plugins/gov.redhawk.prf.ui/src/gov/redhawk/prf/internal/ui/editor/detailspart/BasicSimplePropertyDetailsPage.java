@@ -155,14 +155,6 @@ public abstract class BasicSimplePropertyDetailsPage extends AbstractPropertyDet
 			addRangeListener();
 		}
 
-		// Optional
-		if (composite.getOptionalCombo() != null) {
-			retVal.add(dataBindingContext.bindValue(WidgetProperties.selection().observe(composite.getOptionalCombo()),
-				EMFEditObservables.observeValue(domain, input, this.property.getOptional()),
-				createStringToBoolean(),   // target to model
-				createBooleanToString())); // model to target
-		}
-
 		return retVal;
 	}
 
@@ -499,47 +491,4 @@ public abstract class BasicSimplePropertyDetailsPage extends AbstractPropertyDet
 			execute(command);
 		}
 	}
-
-	private UpdateValueStrategy createStringToBoolean() {
-		EMFUpdateValueStrategy strategy = new EMFUpdateValueStrategy();
-		strategy.setConverter(new Converter(String.class, Boolean.class) {
-
-			@Override
-			public Object convert(Object fromObject) {
-				if (fromObject instanceof String) {
-					String fromObjectStr = ((String) fromObject).trim();
-					if (fromObjectStr.isEmpty()) {
-						return null;
-					}
-					if ("true".equalsIgnoreCase(fromObjectStr)) {
-						return Boolean.TRUE;
-					} else {
-						return Boolean.FALSE;
-					}
-				}
-				return null;
-			}
-		});
-		return strategy;
-	}
-
-	private UpdateValueStrategy createBooleanToString() {
-		EMFUpdateValueStrategy strategy = new EMFUpdateValueStrategy();
-		strategy.setConverter(new Converter(Boolean.class, String.class) {
-
-			@Override
-			public Object convert(Object fromObject) {
-				if (fromObject == null) {
-					return "";
-				}
-				if (fromObject instanceof Boolean) {
-					return ((Boolean) fromObject).toString();
-				} else {
-					return ""; // return empty string for unknown
-				}
-			}
-		});
-		return strategy;
-	}
-
 }
