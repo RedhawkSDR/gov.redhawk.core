@@ -14,6 +14,7 @@
 package gov.redhawk.eclipsecorba.library.impl;
 
 import gov.redhawk.eclipsecorba.idl.Definition;
+import gov.redhawk.eclipsecorba.idl.Identifiable;
 import gov.redhawk.eclipsecorba.idl.Specification;
 import gov.redhawk.eclipsecorba.idl.util.IdlResourceFactoryImpl;
 import gov.redhawk.eclipsecorba.idl.util.IdlResourceImpl;
@@ -298,6 +299,22 @@ public class IdlLibraryImpl extends RepositoryModuleImpl implements IdlLibrary {
 	@Override
 	public synchronized IStatus load(final IProgressMonitor monitor) throws CoreException {
 		// END GENERATED CODE
+		if (loaded) {
+			return getLoadStatus();
+		}
+		return doLoad(monitor);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated NOT
+	 */
+	public synchronized IStatus reload(IProgressMonitor monitor) throws CoreException {
+		return doLoad(monitor);
+	}
+
+	private IStatus doLoad(IProgressMonitor monitor) throws CoreException {
 		final TransactionalEditingDomain editingDomain = TransactionUtil.getEditingDomain(this);
 		if (editingDomain == null) {
 			return new Status(IStatus.ERROR, LibraryPlugin.PLUGIN_ID, "IDL Library not connected to an editing domain.");
@@ -384,6 +401,17 @@ public class IdlLibraryImpl extends RepositoryModuleImpl implements IdlLibrary {
 		this.loaded = true;
 		return getLoadStatus();
 		// BEGIN GENERATED CODE
+	}
+
+	/**
+	 * Override of find to apply synchronization, so that if there is a load currently occurring, this call will be
+	 * blocked until the load completes.
+	 * 
+	 * @generated NOT
+	 */
+	@Override
+	public synchronized Identifiable find(String repId) {
+		return super.find(repId);
 	}
 
 	/**
