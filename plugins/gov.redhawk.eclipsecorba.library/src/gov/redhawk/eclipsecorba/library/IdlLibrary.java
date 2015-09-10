@@ -92,11 +92,25 @@ public interface IdlLibrary extends RepositoryModule {
 	 * <!-- begin-model-doc -->
 	 * Loads the IDL Library based on the current state of the Path.
 	 * 
-	 * Overwrites any existing entries in the library and reloads those
+	 * If a load is already in progress, waits for it to complete
 	 * <!-- end-model-doc -->
-	 * @model dataType="gov.redhawk.eclipsecorba.library.IStatus" exceptions="gov.redhawk.eclipsecorba.library.CoreExceptoin" monitorDataType="gov.redhawk.eclipsecorba.library.IProgressMonitor"
+	 * @model dataType="gov.redhawk.eclipsecorba.library.IStatus" exceptions="gov.redhawk.eclipsecorba.library.CoreException" monitorDataType="gov.redhawk.eclipsecorba.library.IProgressMonitor"
 	 * @generated
 	 */
 	IStatus load(IProgressMonitor monitor) throws CoreException;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * @since 9.0
+	 * <!-- end-user-doc -->
+	 * <!-- begin-model-doc -->
+	 * Reloads the IDL Library based on the current state of the Path.
+	 * 
+	 * Overwrites any existing entries in the library and reloads those
+	 * <!-- end-model-doc -->
+	 * @model dataType="gov.redhawk.eclipsecorba.library.IStatus" exceptions="gov.redhawk.eclipsecorba.library.CoreException" monitorDataType="gov.redhawk.eclipsecorba.library.IProgressMonitor"
+	 * @generated
+	 */
+	IStatus reload(IProgressMonitor monitor) throws CoreException;
 
 } // IdlLibrary
