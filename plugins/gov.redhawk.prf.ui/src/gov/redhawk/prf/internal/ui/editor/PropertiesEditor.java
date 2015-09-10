@@ -36,7 +36,6 @@ import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorSite;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.editors.text.TextEditor;
-import org.eclipse.ui.part.FileEditorInput;
 import org.eclipse.ui.statushandlers.StatusManager;
 import org.eclipse.ui.views.contentoutline.IContentOutlinePage;
 
@@ -78,19 +77,7 @@ public class PropertiesEditor extends SCAFormEditor {
 	 * @throws PartInitException the part init exception
 	 */
 	private void addSourcePage() throws PartInitException {
-		// StructuredTextEditors only work on workspace entries
-		// because org.eclipse.wst.sse.core.FileBufferModelManager:bufferCreated()
-		// assumes that the editor input is in the workspace.
-		if (getEditorInput() instanceof FileEditorInput) {
-			try {
-				this.textEditor = new org.eclipse.wst.sse.ui.StructuredTextEditor();
-			} catch (final NoClassDefFoundError e) {
-				// PASS
-			}
-		}
-		if (this.textEditor == null) {
-			this.textEditor = new TextEditor();
-		}
+		this.textEditor = createTextEditor(getEditorInput());
 		final int newPage = addPage(this.textEditor, getEditorInput(), getMainResource());
 		this.setPageText(newPage, getEditorInput().getName());
 	}

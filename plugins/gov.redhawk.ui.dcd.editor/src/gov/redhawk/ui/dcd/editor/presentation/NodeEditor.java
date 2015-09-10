@@ -86,7 +86,6 @@ import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IFileEditorInput;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
-import org.eclipse.ui.editors.text.TextEditor;
 import org.eclipse.ui.ide.IGotoMarker;
 import org.eclipse.ui.part.MultiPageSelectionProvider;
 import org.eclipse.ui.statushandlers.StatusManager;
@@ -490,7 +489,7 @@ public class NodeEditor extends SCAFormEditor implements ITabbedPropertySheetPag
 				setPageText(pageIndex, "Diagram");
 
 				try {
-					this.dcdSourcePageNum = addPage(new TextEditor(), this.getEditorInput());
+					this.dcdSourcePageNum = addPage(createTextEditor(getEditorInput()), this.getEditorInput());
 					this.setPageText(this.dcdSourcePageNum, this.getEditorInput().getName());
 				} catch (final NullPointerException e) {
 					// PASS
