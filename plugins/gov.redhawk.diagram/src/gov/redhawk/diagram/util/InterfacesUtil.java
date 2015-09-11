@@ -50,14 +50,14 @@ public class InterfacesUtil {
 	}
 
 	/**
-	 * Determine whether or not uses port is a suggested match for a provides port or component supported interface.
+	 * Determine whether or not a uses port is a suggested match for a provides port or component supported interface.
 	 * @param source A {@link UsesPortStub}
 	 * @param target A {@link ProvidesPortStub} or {@link ComponentSupportedInterfaceStub}
-	 * @return Return a boolean that shows whether or not the ports are compatible
+	 * @return Return a boolean that shows whether or not the ports are a suggested match
 	 * @since 7.0
 	 */
 	public static boolean areSuggestedMatch(final UsesPortStub source, final EObject target) {
-		// They must be compatible ports are we won't suggest a match
+		// They must be compatible ports or we won't suggest a match
 		if (!areCompatible(source, target)) {
 			return false;
 		}
