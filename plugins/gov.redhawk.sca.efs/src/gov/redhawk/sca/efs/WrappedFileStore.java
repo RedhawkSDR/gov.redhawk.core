@@ -37,8 +37,8 @@ public abstract class WrappedFileStore extends FileStore {
 		return store;
 	}
 
-	protected final URI uri;
-	protected final IFileStore wrappedStore;
+	protected final URI uri; // SUPPRESS CHECKSTYLE Protected Final Field
+	protected final IFileStore wrappedStore; // SUPPRESS CHECKSTYLE Protected Final Field
 
 	public WrappedFileStore(final URI uri, final IFileStore wrappedStore) {
 		this.uri = uri;
