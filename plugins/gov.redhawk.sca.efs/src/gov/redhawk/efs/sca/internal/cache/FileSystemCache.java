@@ -13,6 +13,7 @@ package gov.redhawk.efs.sca.internal.cache;
 
 import gov.redhawk.efs.sca.internal.ScaFileStore;
 import gov.redhawk.sca.efs.ScaFileSystemPlugin;
+import gov.redhawk.sca.util.ORBUtil;
 import gov.redhawk.sca.util.OrbSession;
 
 import java.net.URI;
@@ -64,10 +65,8 @@ public class FileSystemCache {
 
 	public void clear() {
 		this.fileCacheMap.clear();
-		if (fs != null) {
-			fs._release();
-			fs = null;
-		}
+		ORBUtil.release(fs);
+		fs = null;
 	}
 
 	public FileSystemOperations getScaFileSystem() throws CoreException {
