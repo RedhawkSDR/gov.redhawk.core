@@ -22,7 +22,6 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.concurrent.Future;
 
 import org.apache.commons.io.IOUtils;
 import org.eclipse.core.filesystem.IFileInfo;
@@ -41,7 +40,6 @@ public class FileCache {
 	private long cacheTimestamp;
 	private File tmpFile;
 	private ScaFileStore store;
-	private Future< ? > future;
 	private String[] names;
 	private long namesTimestamp;
 	private FileSystemCache parent;
