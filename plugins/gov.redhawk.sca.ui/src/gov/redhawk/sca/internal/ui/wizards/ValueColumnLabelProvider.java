@@ -185,7 +185,7 @@ public class ValueColumnLabelProvider extends ColumnLabelProvider {
 					cell.setText(Arrays.toString(ref.getValues().getValue().toArray()));
 				}
 			} else {
-				cell.setText(Arrays.toString((Object[]) AnyUtils.convertAny(override.value, override.value.type())));
+				cell.setText(Arrays.toString((Object[]) AnyUtils.convertAny(override.value)));
 				cell.setForeground(null);
 			}
 			Image image = null;
