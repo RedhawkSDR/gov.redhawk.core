@@ -245,7 +245,9 @@ public class ScaSimpleSequencePropertyImpl extends ScaAbstractPropertyImpl<Simpl
 
 	@Override
 	public Any toAny() {
-		return AnyUtils.toAny(getValues().toArray(), getType(), isComplex());
+		// END GENERATED CODE
+		return AnyUtils.toAnySequence(getValues().toArray(), getType(), isComplex());
+		// BEGIN GENERATED CODE
 	}
 
 	@Override

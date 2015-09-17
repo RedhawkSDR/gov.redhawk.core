@@ -134,7 +134,7 @@ public class ValueEditingSupport extends EditingSupport {
 			final SimpleSequenceRef ref = Util.getRef(simple, getComponentInstantiation());
 			final DataType override = getOverride(simple.getId());
 			if (override != null) {
-				return Arrays.toString((Object[]) AnyUtils.convertAny(override.value, override.value.type()));
+				return Arrays.toString((Object[]) AnyUtils.convertAny(override.value));
 			} else if (ref != null) {
 				if (ref.getValues() != null) {
 					return ref.getValues().getValue().toArray(new String[ref.getValues().getValue().size()]);
