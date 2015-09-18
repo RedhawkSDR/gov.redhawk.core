@@ -9,7 +9,7 @@
  * http://www.eclipse.org/legal/epl-v10.html.
  *
  */
-package gov.redhawk.sca.launch;
+package gov.redhawk.sca.launch.internal;
 
 import gov.redhawk.model.sca.ScaAbstractProperty;
 import gov.redhawk.model.sca.ScaPackage;
@@ -32,9 +32,8 @@ import java.util.Map;
 /**
  * Utility methods to load/save properties for a component to/from a string. Allows passing this information through
  * Eclipse launch configurations. The format is NOT portable - load and save must occur through this class.
- * @since 8.0
  */
-class ScaPropertyUtil {
+public class ScaPropertyUtil {
 
 	private ScaPropertyUtil() {
 	}
