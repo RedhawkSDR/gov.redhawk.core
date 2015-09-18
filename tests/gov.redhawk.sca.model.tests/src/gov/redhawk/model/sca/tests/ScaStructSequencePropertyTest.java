@@ -32,8 +32,6 @@ import org.eclipse.emf.ecore.util.EContentAdapter;
 import org.eclipse.emf.transaction.util.TransactionUtil;
 
 import CF.DataType;
-import CF.InvalidIdentifier;
-import CF.InvalidObjectReference;
 import CF.PropertiesHolder;
 import CF.UnknownProperties;
 import CF.PropertySetPackage.InvalidConfiguration;
@@ -51,11 +49,6 @@ import CF.PropertySetPackage.PartialConfiguration;
  * <li>{@link gov.redhawk.model.sca.ScaStructSequenceProperty#createPropertyRef() <em>Create Property Ref</em>}</li>
  * <li>{@link CF.PropertySetOperations#configure(CF.DataType[]) <em>Configure</em>}</li>
  * <li>{@link CF.PropertySetOperations#query(CF.PropertiesHolder) <em>Query</em>}</li>
- * <li>
- * {@link CF.PropertySetOperations#registerPropertyListener(org.omg.CORBA.Object, org.eclipse.emf.common.util.EList, float)
- * <em>Register Property Listener</em>}</li>
- * <li>{@link CF.PropertySetOperations#unregisterPropertyListener(java.lang.String) <em>Unregister Property
- * Listener</em>}</li>
  * </ul>
  * </p>
  * @generated
@@ -251,46 +244,6 @@ public class ScaStructSequencePropertyTest extends ScaAbstractPropertyTest {
 		PropertiesHolder holder = new PropertiesHolder();
 		holder.value = new DataType[0];
 		getFixture().query(holder);
-		// BEGIN GENERATED CODE
-	}
-
-	/**
-	 * Tests the '
-	 * {@link CF.PropertySetOperations#registerPropertyListener(org.omg.CORBA.Object, org.eclipse.emf.common.util.EList, float)
-	 * <em>Register Property Listener</em>}' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see CF.PropertySetOperations#registerPropertyListener(org.omg.CORBA.Object, org.eclipse.emf.common.util.EList,
-	 * float)
-	 * @generated NOT
-	 */
-	public void testRegisterPropertyListener__Object_EList_float() throws UnknownProperties, InvalidObjectReference {
-		// END GENERATED CODE
-		try {
-			getFixture().registerPropertyListener(null, null, 0);
-		} catch (UnsupportedOperationException e) {
-			return;
-		}
-		Assert.fail("This operation shouldn't be supported");
-		// BEGIN GENERATED CODE
-	}
-
-	/**
-	 * Tests the '{@link CF.PropertySetOperations#unregisterPropertyListener(java.lang.String) <em>Unregister Property
-	 * Listener</em>}' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see CF.PropertySetOperations#unregisterPropertyListener(java.lang.String)
-	 * @generated NOT
-	 */
-	public void testUnregisterPropertyListener__String() throws InvalidIdentifier {
-		// END GENERATED CODE
-		try {
-			getFixture().unregisterPropertyListener(null);
-		} catch (UnsupportedOperationException e) {
-			return;
-		}
-		Assert.fail("This operation shouldn't be supported");
 		// BEGIN GENERATED CODE
 	}
 

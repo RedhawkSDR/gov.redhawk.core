@@ -501,10 +501,10 @@ public interface ScaWaveform extends ScaPropertyContainer<Application, SoftwareA
 	/**
 	 * <!-- begin-user-doc -->
 	 * Gets a copy of the list of components safely using a read-only command in the transactional editing domain.
+	 * 
 	 * @see #getComponents()
 	 * @since 20.0
-	 * <!-- end-user-doc -->
-	 * 
+	 *        <!-- end-user-doc -->
 	 * @model kind="operation"
 	 * @generated
 	 */

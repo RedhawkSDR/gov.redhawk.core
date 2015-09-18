@@ -42,13 +42,14 @@ import CF.PropertySetPackage.PartialConfiguration;
  * <li>{@link gov.redhawk.model.sca.ScaPropertyContainer#fetchProperties(org.eclipse.core.runtime.IProgressMonitor)
  * <em>Fetch Properties</em>}</li>
  * <li>{@link gov.redhawk.model.sca.ScaPropertyContainer#getProperty(java.lang.String) <em>Get Property</em>}</li>
+ * <li>{@link CF.PropertyEmitterOperations#initializeProperties(CF.DataType[]) <em>Initialize Properties</em>}</li>
+ * <li>
+ * {@link CF.PropertyEmitterOperations#registerPropertyListener(org.omg.CORBA.Object, org.eclipse.emf.common.util.EList, float)
+ * <em>Register Property Listener</em>}</li>
+ * <li>{@link CF.PropertyEmitterOperations#unregisterPropertyListener(java.lang.String) <em>Unregister Property
+ * Listener</em>}</li>
  * <li>{@link CF.PropertySetOperations#configure(CF.DataType[]) <em>Configure</em>}</li>
  * <li>{@link CF.PropertySetOperations#query(CF.PropertiesHolder) <em>Query</em>}</li>
- * <li>
- * {@link CF.PropertySetOperations#registerPropertyListener(org.omg.CORBA.Object, org.eclipse.emf.common.util.EList, float)
- * <em>Register Property Listener</em>}</li>
- * <li>{@link CF.PropertySetOperations#unregisterPropertyListener(java.lang.String) <em>Unregister Property
- * Listener</em>}</li>
  * <li>{@link gov.redhawk.model.sca.ProfileObjectWrapper#fetchProfileObject(org.eclipse.core.runtime.IProgressMonitor)
  * <em>Fetch Profile Object</em>}</li>
  * <li>{@link gov.redhawk.model.sca.ProfileObjectWrapper#fetchProfileURI(org.eclipse.core.runtime.IProgressMonitor)
@@ -287,6 +288,22 @@ public abstract class ScaPropertyContainerTest extends CorbaObjWrapperTest {
 	public void testGetProperty__String() {
 		// END GENERATED CODE
 		Assert.assertNull(getFixture().getProperty(null));
+		// BEGIN GENERATED CODE
+	}
+
+	/**
+	 * Tests the '{@link CF.PropertyEmitterOperations#initializeProperties(CF.DataType[]) <em>Initialize
+	 * Properties</em>}' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @throws PartialConfiguration 
+	 * @throws InvalidConfiguration 
+	 * @see CF.PropertyEmitterOperations#initializeProperties(CF.DataType[])
+	 * @generated NOT
+	 */
+	public void testInitializeProperties__DataType() throws InvalidConfiguration, PartialConfiguration {
+		// END GENERATED CODE
+		getFixture().configure(new DataType[0]);
 		// BEGIN GENERATED CODE
 	}
 

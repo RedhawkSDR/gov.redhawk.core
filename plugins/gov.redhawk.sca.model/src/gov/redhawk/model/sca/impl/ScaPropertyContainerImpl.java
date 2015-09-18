@@ -50,7 +50,9 @@ import CF.DataType;
 import CF.InvalidIdentifier;
 import CF.InvalidObjectReference;
 import CF.PropertiesHolder;
-import CF.PropertySet;
+import CF.PropertyEmitter;
+import CF.PropertyEmitterOperations;
+import CF.PropertyEmitterPackage.AlreadyInitialized;
 import CF.PropertySetOperations;
 import CF.UnknownProperties;
 import CF.PropertySetPackage.InvalidConfiguration;
@@ -513,6 +515,12 @@ public abstract class ScaPropertyContainerImpl< P extends org.omg.CORBA.Object, 
 				return -1;
 			}
 		}
+		if (baseClass == PropertyEmitterOperations.class) {
+			switch (derivedFeatureID) {
+			default:
+				return -1;
+			}
+		}
 		return super.eBaseStructuralFeatureID(derivedFeatureID, baseClass);
 	}
 
@@ -535,6 +543,12 @@ public abstract class ScaPropertyContainerImpl< P extends org.omg.CORBA.Object, 
 			}
 		}
 		if (baseClass == PropertySetOperations.class) {
+			switch (baseFeatureID) {
+			default:
+				return -1;
+			}
+		}
+		if (baseClass == PropertyEmitterOperations.class) {
 			switch (baseFeatureID) {
 			default:
 				return -1;
@@ -640,6 +654,15 @@ public abstract class ScaPropertyContainerImpl< P extends org.omg.CORBA.Object, 
 
 	/**
 	 * <!-- begin-user-doc -->
+	 * @since 20.0
+	 * <!-- end-user-doc -->
+	 * 
+	 * @generated NOT
+	 */
+	public abstract void initializeProperties(DataType[] initialProperties) throws AlreadyInitialized, InvalidConfiguration, PartialConfiguration;
+
+	/**
+	 * <!-- begin-user-doc -->
 	 * 
 	 * @since 14.0
 	 *        <!-- end-user-doc -->
@@ -684,14 +707,14 @@ public abstract class ScaPropertyContainerImpl< P extends org.omg.CORBA.Object, 
 	@Override
 	public String registerPropertyListener(org.omg.CORBA.Object obj, String[] prop_ids, float interval) throws UnknownProperties, InvalidObjectReference {
 		// END GENERATED CODE
-		Object propertySet = fetchNarrowedObject(null);
-		if (propertySet == null) {
+		Object propertyEmitter = fetchNarrowedObject(null);
+		if (propertyEmitter == null) {
 			throw new IllegalStateException("CORBA Object is Null");
 		}
-		if (!(propertySet instanceof PropertySet)) {
+		if (!(propertyEmitter instanceof PropertyEmitter)) {
 			throw new IllegalStateException("Object does not support properties");
 		}
-		return ((PropertySet) propertySet).registerPropertyListener(obj, prop_ids, interval);
+		return ((PropertyEmitter) propertyEmitter).registerPropertyListener(obj, prop_ids, interval);
 		// BEGIN GENERATED CODE
 	}
 
@@ -701,14 +724,14 @@ public abstract class ScaPropertyContainerImpl< P extends org.omg.CORBA.Object, 
 	@Override
 	public void unregisterPropertyListener(String id) throws InvalidIdentifier {
 		// END GENERATED CODE
-		P propertySet = fetchNarrowedObject(null);
-		if (propertySet == null) {
+		P propertyEmitter = fetchNarrowedObject(null);
+		if (propertyEmitter == null) {
 			throw new IllegalStateException("CORBA Object is Null");
 		}
-		if (!(propertySet instanceof PropertySet)) {
+		if (!(propertyEmitter instanceof PropertyEmitter)) {
 			throw new IllegalStateException("Object does not support properties");
 		}
-		((PropertySet) propertySet).unregisterPropertyListener(id);
+		((PropertyEmitter) propertyEmitter).unregisterPropertyListener(id);
 		// BEGIN GENERATED CODE
 	}
 

@@ -57,13 +57,11 @@ import org.eclipse.emf.ecore.util.InternalEList;
 import org.jacorb.JacorbUtil;
 import org.omg.CORBA.Any;
 import CF.DataType;
-import CF.InvalidIdentifier;
 import CF.InvalidObjectReference;
 import CF.PropertiesHelper;
 import CF.PropertiesHolder;
 import CF.PropertySetOperations;
 import CF.UnknownProperties;
-import CF.PropertySetPackage.AlreadyInitialized;
 import CF.PropertySetPackage.InvalidConfiguration;
 import CF.PropertySetPackage.PartialConfiguration;
 
@@ -281,14 +279,6 @@ public class ScaStructPropertyImpl extends ScaAbstractPropertyImpl<Struct>implem
 	}
 
 	/**
-	 * @since 20.0
-	 */
-	@Override
-	public void initializeProperties(final DataType[] configProperties) throws AlreadyInitialized, InvalidConfiguration, PartialConfiguration {
-		throw new IllegalStateException("This construct method should never be called");
-	}
-
-	/**
 	 * <!-- begin-user-doc -->
 	 * 
 	 * @since 20.0
@@ -416,22 +406,6 @@ public class ScaStructPropertyImpl extends ScaAbstractPropertyImpl<Struct>implem
 	 * @generated NOT
 	 */
 	public String registerPropertyListener(org.omg.CORBA.Object obj, EList<String> prop_ids, float interval) throws UnknownProperties, InvalidObjectReference {
-		throw new UnsupportedOperationException();
-	}
-
-	/**
-	 * @since 20.0
-	 */
-	@Override
-	public String registerPropertyListener(org.omg.CORBA.Object obj, String[] prop_ids, float interval) throws UnknownProperties, InvalidObjectReference {
-		throw new UnsupportedOperationException();
-	}
-
-	/**
-	 * @since 20.0
-	 */
-	@Override
-	public void unregisterPropertyListener(String id) throws InvalidIdentifier {
 		throw new UnsupportedOperationException();
 	}
 

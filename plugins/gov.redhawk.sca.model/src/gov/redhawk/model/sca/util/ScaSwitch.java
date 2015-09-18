@@ -70,6 +70,7 @@ import CF.LoadableDevice;
 import CF.LoadableDeviceOperations;
 import CF.PortOperations;
 import CF.PortSupplierOperations;
+import CF.PropertyEmitterOperations;
 import CF.PropertySetOperations;
 import CF.Resource;
 import CF.ResourceOperations;
@@ -202,7 +203,7 @@ public class ScaSwitch< T1 > extends Switch<T1> {
 			if (result == null)
 				result = caseProfileObjectWrapper(scaAbstractComponent);
 			if (result == null)
-				result = casePropertySetOperations(scaAbstractComponent);
+				result = casePropertyEmitterOperations(scaAbstractComponent);
 			if (result == null)
 				result = caseLifeCycleOperations(scaAbstractComponent);
 			if (result == null)
@@ -211,6 +212,8 @@ public class ScaSwitch< T1 > extends Switch<T1> {
 				result = casePortSupplierOperations(scaAbstractComponent);
 			if (result == null)
 				result = caseDataProviderObject(scaAbstractComponent);
+			if (result == null)
+				result = casePropertySetOperations(scaAbstractComponent);
 			if (result == null)
 				result = caseIStatusProvider(scaAbstractComponent);
 			if (result == null)
@@ -229,9 +232,11 @@ public class ScaSwitch< T1 > extends Switch<T1> {
 			if (result == null)
 				result = caseProfileObjectWrapper(scaPropertyContainer);
 			if (result == null)
-				result = casePropertySetOperations(scaPropertyContainer);
+				result = casePropertyEmitterOperations(scaPropertyContainer);
 			if (result == null)
 				result = caseDataProviderObject(scaPropertyContainer);
+			if (result == null)
+				result = casePropertySetOperations(scaPropertyContainer);
 			if (result == null)
 				result = caseIStatusProvider(scaPropertyContainer);
 			if (result == null)
@@ -278,7 +283,7 @@ public class ScaSwitch< T1 > extends Switch<T1> {
 			if (result == null)
 				result = caseProfileObjectWrapper(scaComponent);
 			if (result == null)
-				result = casePropertySetOperations(scaComponent);
+				result = casePropertyEmitterOperations(scaComponent);
 			if (result == null)
 				result = caseLifeCycleOperations(scaComponent);
 			if (result == null)
@@ -287,6 +292,8 @@ public class ScaSwitch< T1 > extends Switch<T1> {
 				result = casePortSupplierOperations(scaComponent);
 			if (result == null)
 				result = caseDataProviderObject(scaComponent);
+			if (result == null)
+				result = casePropertySetOperations(scaComponent);
 			if (result == null)
 				result = caseIStatusProvider(scaComponent);
 			if (result == null)
@@ -315,7 +322,7 @@ public class ScaSwitch< T1 > extends Switch<T1> {
 			if (result == null)
 				result = caseProfileObjectWrapper(scaDevice);
 			if (result == null)
-				result = casePropertySetOperations(scaDevice);
+				result = casePropertyEmitterOperations(scaDevice);
 			if (result == null)
 				result = caseLifeCycleOperations(scaDevice);
 			if (result == null)
@@ -324,6 +331,8 @@ public class ScaSwitch< T1 > extends Switch<T1> {
 				result = casePortSupplierOperations(scaDevice);
 			if (result == null)
 				result = caseDataProviderObject(scaDevice);
+			if (result == null)
+				result = casePropertySetOperations(scaDevice);
 			if (result == null)
 				result = caseIStatusProvider(scaDevice);
 			if (result == null)
@@ -348,11 +357,13 @@ public class ScaSwitch< T1 > extends Switch<T1> {
 			if (result == null)
 				result = caseProfileObjectWrapper(scaDeviceManager);
 			if (result == null)
-				result = casePropertySetOperations(scaDeviceManager);
+				result = casePropertyEmitterOperations(scaDeviceManager);
 			if (result == null)
 				result = casePortSupplierOperations(scaDeviceManager);
 			if (result == null)
 				result = caseDataProviderObject(scaDeviceManager);
+			if (result == null)
+				result = casePropertySetOperations(scaDeviceManager);
 			if (result == null)
 				result = caseIStatusProvider(scaDeviceManager);
 			if (result == null)
@@ -375,9 +386,11 @@ public class ScaSwitch< T1 > extends Switch<T1> {
 			if (result == null)
 				result = caseProfileObjectWrapper(scaService);
 			if (result == null)
-				result = casePropertySetOperations(scaService);
+				result = casePropertyEmitterOperations(scaService);
 			if (result == null)
 				result = caseDataProviderObject(scaService);
+			if (result == null)
+				result = casePropertySetOperations(scaService);
 			if (result == null)
 				result = caseIStatusProvider(scaService);
 			if (result == null)
@@ -430,9 +443,11 @@ public class ScaSwitch< T1 > extends Switch<T1> {
 			if (result == null)
 				result = caseProfileObjectWrapper(scaDomainManager);
 			if (result == null)
-				result = casePropertySetOperations(scaDomainManager);
+				result = casePropertyEmitterOperations(scaDomainManager);
 			if (result == null)
 				result = caseDataProviderObject(scaDomainManager);
+			if (result == null)
+				result = casePropertySetOperations(scaDomainManager);
 			if (result == null)
 				result = caseIStatusProvider(scaDomainManager);
 			if (result == null)
@@ -505,7 +520,7 @@ public class ScaSwitch< T1 > extends Switch<T1> {
 			if (result == null)
 				result = caseProfileObjectWrapper(scaExecutableDevice);
 			if (result == null)
-				result = casePropertySetOperations(scaExecutableDevice);
+				result = casePropertyEmitterOperations(scaExecutableDevice);
 			if (result == null)
 				result = caseLifeCycleOperations(scaExecutableDevice);
 			if (result == null)
@@ -514,6 +529,8 @@ public class ScaSwitch< T1 > extends Switch<T1> {
 				result = casePortSupplierOperations(scaExecutableDevice);
 			if (result == null)
 				result = caseDataProviderObject(scaExecutableDevice);
+			if (result == null)
+				result = casePropertySetOperations(scaExecutableDevice);
 			if (result == null)
 				result = caseIStatusProvider(scaExecutableDevice);
 			if (result == null)
@@ -603,7 +620,7 @@ public class ScaSwitch< T1 > extends Switch<T1> {
 			if (result == null)
 				result = caseProfileObjectWrapper(scaLoadableDevice);
 			if (result == null)
-				result = casePropertySetOperations(scaLoadableDevice);
+				result = casePropertyEmitterOperations(scaLoadableDevice);
 			if (result == null)
 				result = caseLifeCycleOperations(scaLoadableDevice);
 			if (result == null)
@@ -612,6 +629,8 @@ public class ScaSwitch< T1 > extends Switch<T1> {
 				result = casePortSupplierOperations(scaLoadableDevice);
 			if (result == null)
 				result = caseDataProviderObject(scaLoadableDevice);
+			if (result == null)
+				result = casePropertySetOperations(scaLoadableDevice);
 			if (result == null)
 				result = caseIStatusProvider(scaLoadableDevice);
 			if (result == null)
@@ -738,6 +757,8 @@ public class ScaSwitch< T1 > extends Switch<T1> {
 				result = caseResourceOperations(scaWaveform);
 			if (result == null)
 				result = caseDataProviderObject(scaWaveform);
+			if (result == null)
+				result = casePropertyEmitterOperations(scaWaveform);
 			if (result == null)
 				result = casePropertySetOperations(scaWaveform);
 			if (result == null)
@@ -1491,6 +1512,23 @@ public class ScaSwitch< T1 > extends Switch<T1> {
 	 * @generated
 	 */
 	public T1 casePropertySetOperations(PropertySetOperations object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Property Emitter Operations</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * @since 20.0
+	 * <!-- end-user-doc -->
+	 * 
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Property Emitter Operations</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T1 casePropertyEmitterOperations(PropertyEmitterOperations object) {
 		return null;
 	}
 

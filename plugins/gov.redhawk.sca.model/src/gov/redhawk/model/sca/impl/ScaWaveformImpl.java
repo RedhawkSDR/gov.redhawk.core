@@ -1972,8 +1972,9 @@ public class ScaWaveformImpl extends ScaPropertyContainerImpl<Application, Softw
 
 	/**
 	 * <!-- begin-user-doc -->
+	 * 
 	 * @since 20.0
-	 * <!-- end-user-doc -->
+	 *        <!-- end-user-doc -->
 	 * @generated NOT
 	 */
 	public EList<ScaComponent> getComponentsCopy() {

@@ -71,6 +71,7 @@ import CF.LoadableDevice;
 import CF.LoadableDeviceOperations;
 import CF.PortOperations;
 import CF.PortSupplierOperations;
+import CF.PropertyEmitterOperations;
 import CF.PropertySetOperations;
 import CF.Resource;
 import CF.ResourceOperations;
@@ -336,6 +337,11 @@ public class ScaAdapterFactory extends AdapterFactoryImpl {
 		@Override
 		public Adapter casePropertySetOperations(PropertySetOperations object) {
 			return createPropertySetOperationsAdapter();
+		}
+
+		@Override
+		public Adapter casePropertyEmitterOperations(PropertyEmitterOperations object) {
+			return createPropertyEmitterOperationsAdapter();
 		}
 
 		@Override
@@ -1061,6 +1067,23 @@ public class ScaAdapterFactory extends AdapterFactoryImpl {
 	 * @generated
 	 */
 	public Adapter createPropertySetOperationsAdapter() {
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link CF.PropertyEmitterOperations
+	 * <em>Property Emitter Operations</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * @since 20.0
+	 * <!-- end-user-doc -->
+	 * 
+	 * @return the new adapter.
+	 * @see CF.PropertyEmitterOperations
+	 * @generated
+	 */
+	public Adapter createPropertyEmitterOperationsAdapter() {
 		return null;
 	}
 

@@ -73,6 +73,8 @@ import CF.DataType;
 import CF.PortSupplierHelper;
 import CF.PortSupplierOperations;
 import CF.PropertiesHolder;
+import CF.PropertyEmitterHelper;
+import CF.PropertyEmitterOperations;
 import CF.PropertySetHelper;
 import CF.PropertySetOperations;
 import CF.UnknownProperties;
@@ -130,7 +132,10 @@ public class ScaServiceImpl extends ScaPropertyContainerImpl<org.omg.CORBA.Objec
 	 * @ordered
 	 */
 	protected String name = NAME_EDEFAULT;
+
 	private PropertySetOperations propertySetOp;
+
+	private PropertyEmitterOperations propertyEmitterOp;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -673,11 +678,11 @@ public class ScaServiceImpl extends ScaPropertyContainerImpl<org.omg.CORBA.Objec
 	@Override
 	public void initializeProperties(final DataType[] configProperties) throws AlreadyInitialized, InvalidConfiguration, PartialConfiguration {
 		// END GENERATED CODE
-		PropertySetOperations set = getPropertySet();
-		if (set == null) {
-			throw new IllegalStateException("CORBA Object is null, or service does not support IDL:CF/PropertySet:1.0");
+		PropertyEmitterOperations propEmitter = getPropertyEmitter();
+		if (propEmitter == null) {
+			throw new IllegalStateException("CORBA Object is null, or service does not support IDL:CF/PropertyEmitter:1.0");
 		}
-		set.initializeProperties(configProperties);
+		propEmitter.initializeProperties(configProperties);
 		// BEGIN GENERATED CODE
 	}
 
@@ -699,6 +704,18 @@ public class ScaServiceImpl extends ScaPropertyContainerImpl<org.omg.CORBA.Objec
 			}
 		}
 		return this.propertySetOp;
+	}
+
+	private PropertyEmitterOperations getPropertyEmitter() {
+		if (this.propertyEmitterOp == null) {
+			if (this.obj instanceof PropertyEmitterOperations) {
+				this.propertyEmitterOp = (PropertyEmitterOperations) this.propertyEmitterOp;
+			}
+			if (this.obj._is_a(PropertyEmitterHelper.id())) {
+				this.propertyEmitterOp = PropertyEmitterHelper.narrow(obj);
+			}
+		}
+		return this.propertyEmitterOp;
 	}
 
 	private static final EStructuralFeature[] PRF_PATH = { SpdPackage.Literals.SOFT_PKG__PROPERTY_FILE, SpdPackage.Literals.PROPERTY_FILE__PROPERTIES };

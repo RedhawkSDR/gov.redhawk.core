@@ -286,7 +286,7 @@
     <eGenericSuperTypes eClassifier="#//ProfileObjectWrapper">
       <eTypeArguments eTypeParameter="#//ScaPropertyContainer/E"/>
     </eGenericSuperTypes>
-    <eGenericSuperTypes eClassifier="ecore:EClass platform:/plugin/mil.jpeojtrs.sca.cf/model/cf.ecore#//PropertySetOperations"/>
+    <eGenericSuperTypes eClassifier="ecore:EClass platform:/plugin/mil.jpeojtrs.sca.cf/model/cf.ecore#//PropertyEmitterOperations"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="ScaPortContainer" abstract="true" interface="true"
       eSuperTypes="#//IRefreshable #//IStatusProvider">

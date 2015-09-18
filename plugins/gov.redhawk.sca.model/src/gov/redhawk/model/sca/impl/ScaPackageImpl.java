@@ -2708,7 +2708,7 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 		g2 = createEGenericType(scaPropertyContainerEClass_E);
 		g1.getETypeArguments().add(g2);
 		scaPropertyContainerEClass.getEGenericSuperTypes().add(g1);
-		g1 = createEGenericType(theCfPackage.getPropertySetOperations());
+		g1 = createEGenericType(theCfPackage.getPropertyEmitterOperations());
 		scaPropertyContainerEClass.getEGenericSuperTypes().add(g1);
 		scaPortContainerEClass.getESuperTypes().add(this.getIRefreshable());
 		scaPortContainerEClass.getESuperTypes().add(this.getIStatusProvider());

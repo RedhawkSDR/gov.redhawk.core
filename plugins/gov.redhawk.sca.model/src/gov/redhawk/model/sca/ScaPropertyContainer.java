@@ -12,10 +12,9 @@
 // BEGIN GENERATED CODE
 package gov.redhawk.model.sca;
 
+import CF.PropertyEmitterOperations;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.emf.common.util.EList;
-
-import CF.PropertySetOperations;
 
 /**
  * <!-- begin-user-doc -->
@@ -34,13 +33,13 @@ import CF.PropertySetOperations;
  *
  * @see gov.redhawk.model.sca.ScaPackage#getScaPropertyContainer()
  * @model abstract="true" superTypes=
- *        "gov.redhawk.model.sca.CorbaObjWrapper<P> gov.redhawk.model.sca.ProfileObjectWrapper<E> mil.jpeojtrs.sca.cf.PropertySetOperations"
+ *        "gov.redhawk.model.sca.CorbaObjWrapper<P> gov.redhawk.model.sca.ProfileObjectWrapper<E> mil.jpeojtrs.sca.cf.PropertyEmitterOperations"
  *        PBounds="gov.redhawk.model.sca.Object" EBounds="org.eclipse.emf.ecore.EJavaObject"
  *        extendedMetaData="name='ScaPropertyContainer' kind='elementOnly'"
  * @generated
  */
 public interface ScaPropertyContainer< P extends org.omg.CORBA.Object, E extends Object >
-		extends CorbaObjWrapper<P>, ProfileObjectWrapper<E>, PropertySetOperations {
+		extends CorbaObjWrapper<P>, ProfileObjectWrapper<E>, PropertyEmitterOperations {
 	/**
 	 * Returns the value of the '<em><b>Properties</b></em>' containment reference list.
 	 * The list contents are of type {@link gov.redhawk.model.sca.ScaAbstractProperty}&lt;?>.
