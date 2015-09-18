@@ -9,7 +9,7 @@
  * http://www.eclipse.org/legal/epl-v10.html.
  *
  */
-package gov.redhawk.sca.launch;
+package gov.redhawk.sca.launch.internal;
 
 import gov.redhawk.model.sca.ScaAbstractProperty;
 import gov.redhawk.model.sca.ScaPropertyContainer;
@@ -28,11 +28,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-/**
- * @since 8.0
- * 
- */
-class ScaPropertyUtil {
+public class ScaPropertyUtil {
 
 	private ScaPropertyUtil() {
 

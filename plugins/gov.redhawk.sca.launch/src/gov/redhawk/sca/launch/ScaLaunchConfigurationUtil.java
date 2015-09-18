@@ -13,6 +13,7 @@ package gov.redhawk.sca.launch;
 
 import gov.redhawk.model.sca.ScaAbstractComponent;
 import gov.redhawk.model.sca.ScaPropertyContainer;
+import gov.redhawk.sca.launch.internal.ScaPropertyUtil;
 
 import java.util.ArrayList;
 import java.util.Collections;
