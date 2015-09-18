@@ -156,7 +156,11 @@ abstract class Property<T extends Object> implements IProperty {
      * Sets the current value of the property.
      */
     public void setValue(T value) {
+        T tmpValue = this.value;
         this.value = value;
+        for (PropertyListener<Object> listener : voidListeners) {
+            listener.valueChanged(value, tmpValue);
+        }
     }
 
     /**
@@ -320,17 +324,17 @@ abstract class Property<T extends Object> implements IProperty {
         boolean retval = false;
         if (this.optional == true) {
             if (this.getValue() instanceof List) {
-		if (!((List)this.getValue()).isEmpty()) {
-		    retval = true;
-		}
-	    } else {
-		if (this.getValue() != null) {
+                if (!((List)this.getValue()).isEmpty()) {
                     retval = true;
-		}
+                }
+            } else {
+                if (this.getValue() != null) {
+                    retval = true;
+                }
             }
-	} else {
-	    retval = true;
-	}
+        } else {
+            retval = true;
+        }
         return retval;
-    }         
+    }      
 }

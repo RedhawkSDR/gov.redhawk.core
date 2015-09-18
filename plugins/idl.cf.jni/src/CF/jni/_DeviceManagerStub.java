@@ -11,12 +11,6 @@ public class _DeviceManagerStub extends omnijni.ObjectImpl implements CF.DeviceM
     super(ref);
   }
 
-  public void initializeProperties (CF.DataType[] initialProperties)
-  {
-    initializeProperties(this.ref_, initialProperties);
-  }
-  private static native void initializeProperties (long __ref__, CF.DataType[] initialProperties);
-
   public void configure (CF.DataType[] configProperties)
   {
     configure(this.ref_, configProperties);
@@ -28,6 +22,12 @@ public class _DeviceManagerStub extends omnijni.ObjectImpl implements CF.DeviceM
     query(this.ref_, configProperties);
   }
   private static native void query (long __ref__, CF.PropertiesHolder configProperties);
+
+  public void initializeProperties (CF.DataType[] initialProperties)
+  {
+    initializeProperties(this.ref_, initialProperties);
+  }
+  private static native void initializeProperties (long __ref__, CF.DataType[] initialProperties);
 
   public String registerPropertyListener (org.omg.CORBA.Object obj, String[] prop_ids, float interval)
   {
@@ -133,7 +133,7 @@ public class _DeviceManagerStub extends omnijni.ObjectImpl implements CF.DeviceM
 
   private static String __ids[] = {
     "IDL:CF/DeviceManager:1.0",
-    "IDL:CF/PropertySet:1.0",
+    "IDL:CF/PropertyEmitter:1.0",
     "IDL:CF/PortSupplier:1.0",
   };
 

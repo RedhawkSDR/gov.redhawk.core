@@ -11,12 +11,6 @@ public class _DomainManagerStub extends omnijni.ObjectImpl implements CF.DomainM
     super(ref);
   }
 
-  public void initializeProperties (CF.DataType[] initialProperties)
-  {
-    initializeProperties(this.ref_, initialProperties);
-  }
-  private static native void initializeProperties (long __ref__, CF.DataType[] initialProperties);
-
   public void configure (CF.DataType[] configProperties)
   {
     configure(this.ref_, configProperties);
@@ -28,6 +22,12 @@ public class _DomainManagerStub extends omnijni.ObjectImpl implements CF.DomainM
     query(this.ref_, configProperties);
   }
   private static native void query (long __ref__, CF.PropertiesHolder configProperties);
+
+  public void initializeProperties (CF.DataType[] initialProperties)
+  {
+    initializeProperties(this.ref_, initialProperties);
+  }
+  private static native void initializeProperties (long __ref__, CF.DataType[] initialProperties);
 
   public String registerPropertyListener (org.omg.CORBA.Object obj, String[] prop_ids, float interval)
   {
@@ -187,7 +187,7 @@ public class _DomainManagerStub extends omnijni.ObjectImpl implements CF.DomainM
 
   private static String __ids[] = {
     "IDL:CF/DomainManager:1.0",
-    "IDL:CF/PropertySet:1.0",
+    "IDL:CF/PropertyEmitter:1.0",
   };
 
   public String[] _ids ()

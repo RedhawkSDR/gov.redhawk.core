@@ -11,17 +11,17 @@ public class _ConnectionManagerStub extends omnijni.ObjectImpl implements CF.Con
     super(ref);
   }
 
-  public void connect (CF.ConnectionManagerPackage.EndpointRequest usesEndpoint, CF.ConnectionManagerPackage.EndpointRequest providesEndpoint, org.omg.CORBA.StringHolder connectionId)
+  public String connect (CF.ConnectionManagerPackage.EndpointRequest usesEndpoint, CF.ConnectionManagerPackage.EndpointRequest providesEndpoint, String requesterId, String connectionId)
   {
-    connect(this.ref_, usesEndpoint, providesEndpoint, connectionId);
+    return connect(this.ref_, usesEndpoint, providesEndpoint, requesterId, connectionId);
   }
-  private static native void connect (long __ref__, CF.ConnectionManagerPackage.EndpointRequest usesEndpoint, CF.ConnectionManagerPackage.EndpointRequest providesEndpoint, org.omg.CORBA.StringHolder connectionId);
+  private static native String connect (long __ref__, CF.ConnectionManagerPackage.EndpointRequest usesEndpoint, CF.ConnectionManagerPackage.EndpointRequest providesEndpoint, String requesterId, String connectionId);
 
-  public void disconnect (String connectionId)
+  public void disconnect (String connectionRecordId)
   {
-    disconnect(this.ref_, connectionId);
+    disconnect(this.ref_, connectionRecordId);
   }
-  private static native void disconnect (long __ref__, String connectionId);
+  private static native void disconnect (long __ref__, String connectionRecordId);
 
   public CF.ConnectionManagerPackage.ConnectionStatusType[] connections ()
   {
