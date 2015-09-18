@@ -106,8 +106,9 @@ public class ScaPropertyUtil {
 			return ScaPropertyUtil.storeStruct((ScaStructProperty) prop);
 		case ScaPackage.SCA_STRUCT_SEQUENCE_PROPERTY:
 			return ScaPropertyUtil.storeStructSequence((ScaStructSequenceProperty) prop);
+		default:
+			throw new IllegalArgumentException("Unknown property type");
 		}
-		return null;
 	}
 
 	private static Map< ? , ? > storeStruct(final ScaStructProperty struct) {
@@ -153,6 +154,8 @@ public class ScaPropertyUtil {
 		case ScaPackage.SCA_STRUCT_SEQUENCE_PROPERTY:
 			ScaPropertyUtil.restoreStructSequence((ScaStructSequenceProperty) prop, (List< ? >) value);
 			break;
+		default:
+			throw new IllegalArgumentException("Unknown property type");
 		}
 	}
 
