@@ -25,6 +25,7 @@ import gov.redhawk.eclipsecorba.library.Path;
 import gov.redhawk.model.sca.commands.ScaModelCommand;
 
 import java.net.URISyntaxException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
@@ -57,6 +58,7 @@ import org.eclipse.emf.ecore.util.EObjectResolvingEList;
 import org.eclipse.emf.ecore.util.InternalEList;
 import org.eclipse.emf.edit.command.SetCommand;
 import org.eclipse.emf.edit.domain.EditingDomain;
+import org.eclipse.emf.transaction.RunnableWithResult;
 import org.eclipse.emf.transaction.TransactionalEditingDomain;
 import org.eclipse.emf.transaction.util.TransactionUtil;
 
@@ -363,8 +365,24 @@ public class IdlLibraryImpl extends RepositoryModuleImpl implements IdlLibrary {
 			addFileStore(editingDomain, store, subMonitor.newChild(1));
 		}
 
-		for (final Resource resource : eResource().getResourceSet().getResources()) {
-			if (resource != eResource() && resource instanceof IdlResourceImpl) {
+		try {
+			// Get the list of resources which are IDL resources
+			final List<Resource> resources = ScaModelCommand.runExclusive(this, new RunnableWithResult.Impl<List<Resource>>() {
+				@Override
+				public void run() {
+					List<Resource> resources = new ArrayList<Resource>();
+					Resource parentResource = eResource();
+					for (final Resource resource : parentResource.getResourceSet().getResources()) {
+						if (resource instanceof IdlResourceImpl && resource != parentResource) {
+							resources.add(resource);
+						}
+					}
+					setResult(resources);
+				}
+			});
+
+			// Retrieve warnings / errors for IDL files
+			for (final Resource resource : resources) {
 				final MultiStatus resourceStatus = new MultiStatus(LibraryPlugin.PLUGIN_ID, IStatus.OK, "Problems occured while loading IDL file: "
 					+ resource.getURI().path(), null);
 
@@ -390,6 +408,8 @@ public class IdlLibraryImpl extends RepositoryModuleImpl implements IdlLibrary {
 					libraryStatus.add(resourceStatus);
 				}
 			}
+		} catch (InterruptedException ex) {
+			throw new CoreException(new Status(IStatus.ERROR, LibraryPlugin.PLUGIN_ID, "Interrupted while loading IDL library", ex));
 		}
 
 		if (libraryStatus.isOK()) {
