@@ -1701,21 +1701,11 @@ public abstract class SCAFormEditor extends FormEditor implements IEditingDomain
 	 * @since 6.0
 	 */
 	public TextEditor createTextEditor(final IEditorInput input) {
-		TextEditor editor;
-		// StructuredTextEditors only work on workspace entries
-		// because
-		// org.eclipse.wst.sse.core.FileBufferModelManager:bufferCreated()
-		// assumes that the editor input is in the workspace.
-		if (input instanceof FileEditorInput) {
-			try {
-				editor = new org.eclipse.wst.sse.ui.StructuredTextEditor();
-			} catch (final NoClassDefFoundError e) {
-				editor = new TextEditor();
-			}
-		} else {
-			editor = new TextEditor();
+		try {
+			return new org.eclipse.wst.sse.ui.StructuredTextEditor();
+		} catch (final NoClassDefFoundError e) {
+			return new TextEditor();
 		}
-		return editor;
 	}
 
 	/**
