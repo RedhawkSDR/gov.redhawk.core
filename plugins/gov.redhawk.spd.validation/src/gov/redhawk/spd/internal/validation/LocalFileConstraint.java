@@ -46,7 +46,6 @@ public class LocalFileConstraint extends AbstractModelConstraint {
 		final EObject target = ctx.getTarget();
 		IStatus retVal = null;
 		if (ctx.getCurrentConstraintId().equals(LocalFileConstraint.PROPERTY_ID)) {
-
 			if (target instanceof Implementation) {
 				final Implementation impl = (Implementation) target;
 				if (impl.getPropertyFile() != null && impl.getPropertyFile().getLocalFile() != null) {
@@ -74,7 +73,7 @@ public class LocalFileConstraint extends AbstractModelConstraint {
 			}
 		} else if (ctx.getCurrentConstraintId().equals(LocalFileConstraint.CODE_ID)) {
 			final Code code = (Code) target;
-			if ((code.getLocalFile() != null) && (!code.getType().equals(CodeFileType.NODE_BOOTER))) {
+			if ((code.getLocalFile() != null) && code.getType().equals(CodeFileType.EXECUTABLE)) {
 				final LocalFile localFile = code.getLocalFile();
 				retVal = validateLocalFile(ctx, localFile, SpdPackage.Literals.CODE__LOCAL_FILE);
 			}
