@@ -17,6 +17,7 @@ import gov.redhawk.prf.internal.ui.editor.composite.SimplePropertyComposite;
 import gov.redhawk.ui.editor.SCAFormEditor;
 import gov.redhawk.ui.util.EMFEmptyStringToNullUpdateValueStrategy;
 import gov.redhawk.ui.util.EmptyStringValueToStringConverter;
+import gov.redhawk.ui.util.FalseToNullValueConverter;
 import gov.redhawk.ui.util.StringToEmptyStringValueConverter;
 
 import java.util.List;
@@ -66,6 +67,14 @@ public class SimplePropertyDetailsPage extends BasicSimplePropertyDetailsPage {
 			retVal.add(dataBindingContext.bindValue(WidgetProperties.text(SWT.Modify)
 			        .observeDelayed(SCAFormEditor.getFieldBindingDelay(), getComposite().getValueEntry().getText()), EMFEditObservables.observeValue(domain, input,
 			        PrfPackage.Literals.SIMPLE__VALUE), targetToModel, modelToTarget));
+		}
+
+		// Command line
+		if (getComposite().getCommandLineCheckbox() != null) {
+			EMFUpdateValueStrategy targetToModel = new EMFUpdateValueStrategy();
+			targetToModel.setConverter(new FalseToNullValueConverter());
+			retVal.add(dataBindingContext.bindValue(WidgetProperties.selection().observe(getComposite().getCommandLineCheckbox()),
+				EMFEditObservables.observeValue(domain, input, PrfPackage.Literals.SIMPLE__COMMANDLINE), targetToModel, null));
 		}
 
 		//Enumerations

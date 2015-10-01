@@ -18,6 +18,7 @@ import java.util.ArrayList;
 
 import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.ui.forms.widgets.FormToolkit;
@@ -28,6 +29,7 @@ import org.eclipse.ui.forms.widgets.FormToolkit;
 public class SimplePropertyComposite extends BasicSimplePropertyComposite {
 
 	private FormEntry valueEntry;
+	private Button commandLineCheckbox;
 
 	public SimplePropertyComposite(final Composite parent, final int style, final FormToolkit toolkit) {
 		super(parent, style, toolkit);
@@ -44,6 +46,9 @@ public class SimplePropertyComposite extends BasicSimplePropertyComposite {
 		createValueEntry(parent, toolkit);
 		createUnitsEntry(parent, toolkit);
 		createKindViewer(parent, toolkit);
+		// Adjust the kind viewer to only span 1 column to make room for the command line checkbox
+		getKindViewer().getControl().setLayoutData(GridDataFactory.fillDefaults().span(1,1).grab(true, false).create());
+		createCommandLineCheckbox(parent, toolkit);
 		createModeViewer(parent, toolkit);
 		createActionViewer(parent, toolkit);
 		createEnumerationsViewer(parent, toolkit);
@@ -70,6 +75,11 @@ public class SimplePropertyComposite extends BasicSimplePropertyComposite {
 		toolkit.paintBordersFor(parent);
 	}
 
+	protected void createCommandLineCheckbox(Composite parent, FormToolkit toolkit) {
+		this.commandLineCheckbox = toolkit.createButton(parent, "Pass on command line", SWT.CHECK);
+		this.commandLineCheckbox.setLayoutData(GridDataFactory.fillDefaults().span(1, 1).grab(false, false).create());
+	}
+
 	protected FormEntry createValueEntry(final Composite parent, final FormToolkit toolkit) {
 		// Value
 		FormEntry retVal = new FormEntry(parent, toolkit, "Value:" , SWT.SINGLE);
@@ -82,11 +92,18 @@ public class SimplePropertyComposite extends BasicSimplePropertyComposite {
 	public FormEntry getValueEntry() {
 		return this.valueEntry;
 	}
-	
+
+	public Button getCommandLineCheckbox() {
+		return this.commandLineCheckbox;
+	}
+
 	@Override
 	public void setEditable(final boolean canEdit) {
 		if (this.valueEntry != null) {
 			this.valueEntry.setEditable(canEdit);
+		}
+		if (this.commandLineCheckbox != null) {
+			this.commandLineCheckbox.setEnabled(canEdit);
 		}
 		super.setEditable(canEdit);
 	}
