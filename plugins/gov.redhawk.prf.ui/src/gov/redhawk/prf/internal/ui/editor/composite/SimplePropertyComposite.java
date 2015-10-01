@@ -47,7 +47,7 @@ public class SimplePropertyComposite extends BasicSimplePropertyComposite {
 		createUnitsEntry(parent, toolkit);
 		createKindViewer(parent, toolkit);
 		// Adjust the kind viewer to only span 1 column to make room for the command line checkbox
-		getKindViewer().getControl().setLayoutData(GridDataFactory.fillDefaults().span(1,1).grab(true, false).create());
+		getKindViewer().getControl().setLayoutData(GridDataFactory.fillDefaults().span(1, 1).grab(true, false).create());
 		createCommandLineCheckbox(parent, toolkit);
 		createModeViewer(parent, toolkit);
 		createActionViewer(parent, toolkit);
