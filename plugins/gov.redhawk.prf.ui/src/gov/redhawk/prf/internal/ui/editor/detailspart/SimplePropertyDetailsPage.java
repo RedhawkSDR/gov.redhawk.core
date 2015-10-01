@@ -23,6 +23,7 @@ import gov.redhawk.ui.util.StringToEmptyStringValueConverter;
 import java.util.List;
 
 import mil.jpeojtrs.sca.prf.PrfPackage;
+import mil.jpeojtrs.sca.prf.PropertyConfigurationType;
 
 import org.eclipse.core.databinding.Binding;
 import org.eclipse.core.databinding.DataBindingContext;
@@ -36,6 +37,9 @@ import org.eclipse.emf.edit.domain.EditingDomain;
 import org.eclipse.jface.databinding.swt.WidgetProperties;
 import org.eclipse.jface.databinding.viewers.ViewersObservables;
 import org.eclipse.jface.layout.GridDataFactory;
+import org.eclipse.jface.viewers.ISelectionChangedListener;
+import org.eclipse.jface.viewers.IStructuredSelection;
+import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.forms.widgets.FormToolkit;
@@ -75,6 +79,14 @@ public class SimplePropertyDetailsPage extends BasicSimplePropertyDetailsPage {
 			targetToModel.setConverter(new FalseToNullValueConverter());
 			retVal.add(dataBindingContext.bindValue(WidgetProperties.selection().observe(getComposite().getCommandLineCheckbox()),
 				EMFEditObservables.observeValue(domain, input, PrfPackage.Literals.SIMPLE__COMMANDLINE), targetToModel, null));
+
+			// Tie the enabled state of the checkbox to the current kind selection
+			getComposite().getKindViewer().addSelectionChangedListener(new ISelectionChangedListener() {
+				@Override
+				public void selectionChanged(SelectionChangedEvent event) {
+					updateCommandLineEnabled();
+				}
+			});
 		}
 
 		//Enumerations
@@ -84,6 +96,13 @@ public class SimplePropertyDetailsPage extends BasicSimplePropertyDetailsPage {
 		}
 
 		return retVal;
+	}
+
+	protected void updateCommandLineEnabled() {
+		// Only enable the commandline checkbox if "property" is selected for the kind
+		IStructuredSelection selection = (IStructuredSelection) getComposite().getKindViewer().getSelection();
+		boolean enabled = PropertyConfigurationType.PROPERTY.equals(selection.getFirstElement());
+		getComposite().getCommandLineCheckbox().setEnabled(enabled);
 	}
 
 	@Override
