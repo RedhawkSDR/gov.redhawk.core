@@ -83,6 +83,34 @@ public class FindByStubUtil {
 		}
 		return false;
 	}
-	
-	
+
+	/**
+	 * Return the expected IDL interface of a given FindBy, or null if it can be any type
+	 * @param findByStub
+	 * @return
+	 */
+	public static String getFindByStubRepId(FindByStub findByStub) {
+		if (findByStub.getNamingService() != null) {
+			// Naming service lookup can return any object type
+			return null;
+		} else if (findByStub.getDomainFinder() != null) {
+			switch (findByStub.getDomainFinder().getType()) {
+			case DOMAINMANAGER:
+				return CF.DomainManagerHelper.id();
+			case EVENTCHANNEL:
+				return org.omg.CosEventChannelAdmin.EventChannelHelper.id();
+			case FILEMANAGER:
+				return CF.FileManagerHelper.id();
+			case SERVICETYPE:
+				return findByStub.getDomainFinder().getName();
+			case LOG: // Not supported
+			case NAMINGSERVICE: // Any object type
+			case SERVICENAME: // Any object type
+				break;
+			default:
+				break;
+			}
+		}
+		return null;
+	}
 }

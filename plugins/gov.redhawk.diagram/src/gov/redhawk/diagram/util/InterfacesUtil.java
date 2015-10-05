@@ -22,7 +22,6 @@ import java.util.List;
 
 import mil.jpeojtrs.sca.partitioning.ComponentInstantiation;
 import mil.jpeojtrs.sca.partitioning.ComponentSupportedInterfaceStub;
-import mil.jpeojtrs.sca.partitioning.DomainFinderType;
 import mil.jpeojtrs.sca.partitioning.FindByStub;
 import mil.jpeojtrs.sca.partitioning.PartitioningPackage;
 import mil.jpeojtrs.sca.partitioning.ProvidesPortStub;
@@ -83,6 +82,9 @@ public class InterfacesUtil {
 
 			// If the beginnings of the names are equal, we'll suggest this as a match
 			return usesPortName.equals(providesPortName);
+		} else if (target instanceof ComponentSupportedInterfaceStub && target.eContainer() instanceof FindByStub) {
+			// Don't suggest connections to FindBys with unbounded IDL types, which can match anything
+			return FindByStubUtil.getFindByStubRepId((FindByStub) target.eContainer()) != null;
 		}
 
 		// We know the source and target are compatible, so suggest the match
@@ -311,7 +313,7 @@ public class InterfacesUtil {
 		// Assume the broadest possible definition of the usesdevice per REDHAWK (i.e. AggregateExecutableDevice)
 		// If we can't find an IDL, we'll fall back to assuming the connection points are compatible
 		String sourceIdl = source.getUses().getRepID();
-		return idlInstaceOf(sourceIdl, "IDL:CF/AggregateExecutableDevice:1.0", true);
+		return idlInstanceOf(sourceIdl, "IDL:CF/AggregateExecutableDevice:1.0", true);
 	}
 
 	/**
@@ -328,24 +330,11 @@ public class InterfacesUtil {
 		}
 		String sourceIdl = source.getUses().getInterface().getRepid();
 
+		// If the FindBy has a known IDL interface, check that
 		FindByStub findByStub = (FindByStub) target.eContainer();
-
-		if (FindByStubUtil.isFindByStubDomainManager(findByStub)) {
-			return idlInstaceOf(sourceIdl, "IDL:CF/DomainManager:1.0", true);
-		}
-		if (FindByStubUtil.isFindByStubFileManager(findByStub)) {
-			return idlInstaceOf(sourceIdl, "IDL:CF/FileManager:1.0", true);
-		}
-		if (FindByStubUtil.isFindByStubEventChannel(findByStub)) {
-			return idlInstaceOf(sourceIdl, "IDL:omg.org/CosEventChannelAdmin/EventChannel:1.0", true);
-		}
-		if (FindByStubUtil.isFindByStubService(findByStub)) {
-			if (findByStub.getDomainFinder().getType().equals(DomainFinderType.SERVICETYPE)) {
-				return idlInstaceOf(sourceIdl, findByStub.getDomainFinder().getName(), true);
-			} else {
-				// Assume any other type (such as by service name) is fine
-				return true;
-			}
+		String targetIdl = FindByStubUtil.getFindByStubRepId(findByStub);
+		if (targetIdl != null) {
+			return idlInstanceOf(sourceIdl, targetIdl, true);
 		}
 
 		// Any other findby we'll assume is compatible
@@ -360,7 +349,7 @@ public class InterfacesUtil {
 	 * @param fallback The fallback value if an IDL can't be looked up in the IDL library
 	 * @return
 	 */
-	private static boolean idlInstaceOf(String sourceIdl, String targetIdl, boolean fallback) {
+	private static boolean idlInstanceOf(String sourceIdl, String targetIdl, boolean fallback) {
 		// Get the IDL library
 		IIdlLibraryService libraryService = RedhawkUiActivator.getDefault().getIdlLibraryService();
 		if (libraryService == null) {
