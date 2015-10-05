@@ -313,7 +313,7 @@ public class InterfacesUtil {
 		// Assume the broadest possible definition of the usesdevice per REDHAWK (i.e. AggregateExecutableDevice)
 		// If we can't find an IDL, we'll fall back to assuming the connection points are compatible
 		String sourceIdl = source.getUses().getRepID();
-		return idlInstanceOf(sourceIdl, "IDL:CF/AggregateExecutableDevice:1.0", true);
+		return idlInstanceOf(sourceIdl, CF.AggregateExecutableDeviceHelper.id(), true);
 	}
 
 	/**
@@ -358,6 +358,11 @@ public class InterfacesUtil {
 		IdlLibrary library = libraryService.getLibrary();
 		if (library == null) {
 			return fallback;
+		}
+
+		// Special case: messaging out ports can also connect to event channels
+		if (ExtendedEvent.MessageEventHelper.id().equals(sourceIdl)) {
+			sourceIdl = org.omg.CosEventChannelAdmin.EventChannelHelper.id();
 		}
 
 		// Find the interface declarations for each IDL type
