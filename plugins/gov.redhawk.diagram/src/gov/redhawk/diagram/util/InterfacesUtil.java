@@ -28,6 +28,7 @@ import mil.jpeojtrs.sca.partitioning.PartitioningPackage;
 import mil.jpeojtrs.sca.partitioning.ProvidesPortStub;
 import mil.jpeojtrs.sca.partitioning.UsesDeviceStub;
 import mil.jpeojtrs.sca.partitioning.UsesPortStub;
+import mil.jpeojtrs.sca.sad.Port;
 import mil.jpeojtrs.sca.scd.Interface;
 import mil.jpeojtrs.sca.scd.ScdPackage;
 import mil.jpeojtrs.sca.scd.SupportsInterface;
@@ -145,6 +146,9 @@ public class InterfacesUtil {
 				String targetContainerType = (targetContainer != null) ? targetContainer.getClass().getCanonicalName() : "null";
 				throw new IllegalArgumentException("Invalid target container type: " + targetContainerType);
 			}
+		} else if (target instanceof Port) {
+			// The target business object may be a Port if the case of an external port, but these can be ignored
+			return false;
 		} else {
 			throw new IllegalArgumentException("Invalid target type: " + target.getClass().getCanonicalName());
 		}
