@@ -80,7 +80,7 @@ import CF.UnknownIdentifier;
 import CF.UnknownProperties;
 import CF.LifeCyclePackage.InitializeError;
 import CF.LifeCyclePackage.ReleaseError;
-import CF.PortSupplierPackage.PortInfoType;
+import CF.PortSetPackage.PortInfoType;
 import CF.PortSupplierPackage.UnknownPort;
 import CF.PropertyEmitterPackage.AlreadyInitialized;
 import CF.PropertySetPackage.InvalidConfiguration;

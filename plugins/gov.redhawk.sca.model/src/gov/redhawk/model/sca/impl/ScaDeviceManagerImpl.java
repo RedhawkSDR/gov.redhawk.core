@@ -104,7 +104,7 @@ import CF.PortSupplierOperations;
 import CF.PropertiesHolder;
 import CF.UnknownProperties;
 import CF.DeviceManagerPackage.ServiceType;
-import CF.PortSupplierPackage.PortInfoType;
+import CF.PortSetPackage.PortInfoType;
 import CF.PortSupplierPackage.UnknownPort;
 import CF.PropertyEmitterPackage.AlreadyInitialized;
 import CF.PropertySetPackage.InvalidConfiguration;
