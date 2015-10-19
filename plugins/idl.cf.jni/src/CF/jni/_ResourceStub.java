@@ -65,11 +65,11 @@ public class _ResourceStub extends omnijni.ObjectImpl implements CF.Resource
   }
   private static native org.omg.CORBA.Object getPort (long __ref__, String name);
 
-  public CF.PortSupplierPackage.PortInfoType[] getPortSet ()
+  public CF.PortSetPackage.PortInfoType[] getPortSet ()
   {
     return getPortSet(this.ref_);
   }
-  private static native CF.PortSupplierPackage.PortInfoType[] getPortSet (long __ref__);
+  private static native CF.PortSetPackage.PortInfoType[] getPortSet (long __ref__);
 
   public CF.LogEvent[] retrieve_records (org.omg.CORBA.IntHolder howMany, int startingRecord)
   {
@@ -160,7 +160,7 @@ public class _ResourceStub extends omnijni.ObjectImpl implements CF.Resource
     "IDL:CF/LifeCycle:1.0",
     "IDL:CF/TestableObject:1.0",
     "IDL:CF/PropertyEmitter:1.0",
-    "IDL:CF/PortSupplier:1.0",
+    "IDL:CF/PortSet:1.0",
     "IDL:CF/Logging:1.0",
   };
 

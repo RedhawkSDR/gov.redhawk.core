@@ -47,11 +47,11 @@ public class _DeviceManagerStub extends omnijni.ObjectImpl implements CF.DeviceM
   }
   private static native org.omg.CORBA.Object getPort (long __ref__, String name);
 
-  public CF.PortSupplierPackage.PortInfoType[] getPortSet ()
+  public CF.PortSetPackage.PortInfoType[] getPortSet ()
   {
     return getPortSet(this.ref_);
   }
-  private static native CF.PortSupplierPackage.PortInfoType[] getPortSet (long __ref__);
+  private static native CF.PortSetPackage.PortInfoType[] getPortSet (long __ref__);
 
   public String deviceConfigurationProfile ()
   {
@@ -134,7 +134,7 @@ public class _DeviceManagerStub extends omnijni.ObjectImpl implements CF.DeviceM
   private static String __ids[] = {
     "IDL:CF/DeviceManager:1.0",
     "IDL:CF/PropertyEmitter:1.0",
-    "IDL:CF/PortSupplier:1.0",
+    "IDL:CF/PortSet:1.0",
   };
 
   public String[] _ids ()

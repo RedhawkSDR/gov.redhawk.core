@@ -65,11 +65,11 @@ public class _AggregateLoadableDeviceStub extends omnijni.ObjectImpl implements 
   }
   private static native org.omg.CORBA.Object getPort (long __ref__, String name);
 
-  public CF.PortSupplierPackage.PortInfoType[] getPortSet ()
+  public CF.PortSetPackage.PortInfoType[] getPortSet ()
   {
     return getPortSet(this.ref_);
   }
-  private static native CF.PortSupplierPackage.PortInfoType[] getPortSet (long __ref__);
+  private static native CF.PortSetPackage.PortInfoType[] getPortSet (long __ref__);
 
   public CF.LogEvent[] retrieve_records (org.omg.CORBA.IntHolder howMany, int startingRecord)
   {
