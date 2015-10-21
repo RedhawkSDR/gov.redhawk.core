@@ -132,11 +132,11 @@ public abstract class BasicStructPropertyDetailsPage extends AbstractPropertyDet
 	 */
 	private UpdateValueStrategy createKindTargetToModel() {
 		final EMFUpdateValueStrategy strategy = new EMFUpdateValueStrategy();
-		strategy.setConverter(new Converter(PropertyConfigurationType.class, List.class) {
+		strategy.setConverter(new Converter(StructPropertyConfigurationType.class, List.class) {
 
 			@Override
 			public Object convert(final Object fromObject) {
-				if (fromObject instanceof PropertyConfigurationType) {
+				if (fromObject instanceof StructPropertyConfigurationType) {
 					final StructPropertyConfigurationType kindType = (StructPropertyConfigurationType) fromObject;
 					final ConfigurationKind kind = PrfFactory.eINSTANCE.createConfigurationKind();
 					kind.setType(kindType);
