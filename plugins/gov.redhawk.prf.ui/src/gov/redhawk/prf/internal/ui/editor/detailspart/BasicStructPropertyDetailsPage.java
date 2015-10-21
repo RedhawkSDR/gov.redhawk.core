@@ -21,7 +21,6 @@ import java.util.Set;
 
 import mil.jpeojtrs.sca.prf.ConfigurationKind;
 import mil.jpeojtrs.sca.prf.PrfFactory;
-import mil.jpeojtrs.sca.prf.PropertyConfigurationType;
 import mil.jpeojtrs.sca.prf.StructPropertyConfigurationType;
 
 import org.eclipse.core.databinding.Binding;
