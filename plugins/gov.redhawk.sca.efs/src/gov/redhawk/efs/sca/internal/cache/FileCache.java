@@ -66,6 +66,7 @@ public class FileCache implements IFileCache {
 		this.parent = parent;
 	}
 
+	@Override
 	public void update() throws CoreException {
 		final IFileInfo info = store.fetchInfo();
 		if (!isValid(info)) {
@@ -73,6 +74,7 @@ public class FileCache implements IFileCache {
 		}
 	}
 
+	@Override
 	public synchronized InputStream openInputStream() throws CoreException {
 		if (isDirectory()) {
 			throw new CoreException(new Status(IStatus.ERROR, ScaFileSystemPlugin.ID, "Can not open input stream on directory.",
@@ -186,6 +188,7 @@ public class FileCache implements IFileCache {
 	TimeoutException {
 		return ProtectedThreadExecutor.submit(new Callable<Integer>() {
 
+			@Override
 			public Integer call() throws Exception {
 				return input.read(buffer);
 			}
@@ -227,6 +230,7 @@ public class FileCache implements IFileCache {
 		}
 	}
 
+	@Override
 	public synchronized String[] childNames(final int options, IProgressMonitor monitor) throws CoreException {
 		final IFileInfo info = store.fetchInfo();
 		long timestamp = info.getLastModified();
@@ -237,6 +241,7 @@ public class FileCache implements IFileCache {
 		return names;
 	}
 
+	@Override
 	public boolean isDirectory() {
 		final IFileInfo info = store.fetchInfo();
 		long timestamp = info.getLastModified();
@@ -247,10 +252,12 @@ public class FileCache implements IFileCache {
 		return directory;
 	}
 
+	@Override
 	public FileSystemOperations getScaFileSystem() throws CoreException {
 		return parent.getScaFileSystem();
 	}
 
+	@Override
 	public IFileInfo[] childInfos(int options, IProgressMonitor monitor) throws CoreException {
 		final IFileInfo info = store.fetchInfo();
 		long timestamp = info.getLastModified();
@@ -261,6 +268,7 @@ public class FileCache implements IFileCache {
 		return childInfos;
 	}
 
+	@Override
 	public File toLocalFile() throws CoreException {
 		update();
 		if (isDirectory()) {

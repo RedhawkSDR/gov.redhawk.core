@@ -106,9 +106,6 @@ public class ScaFileStore extends FileStore {
 		return cache.childNames(options, monitor);
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	public String[] internalChildNames(final int options, IProgressMonitor monitor) throws CoreException {
 		final String path = this.entry.getAbsolutePath();
 		monitor = SubMonitor.convert(monitor, Messages.ScaFileStore__Child_Names_Task_Name, IProgressMonitor.UNKNOWN);
