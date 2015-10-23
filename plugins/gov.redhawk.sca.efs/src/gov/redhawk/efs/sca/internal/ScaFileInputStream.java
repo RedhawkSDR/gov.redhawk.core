@@ -19,6 +19,7 @@ import org.omg.CORBA.SystemException;
 import CF.File;
 import CF.FileException;
 import CF.OctetSequenceHolder;
+import gov.redhawk.sca.util.ORBUtil;
 
 /**
  * 
@@ -61,7 +62,7 @@ public class ScaFileInputStream extends InputStream {
 			throw ex;
 		} finally {
 			if (this.file != null) {
-				this.file._release();
+				ORBUtil.release(this.file);
 			}
 			this.file = null;
 		}

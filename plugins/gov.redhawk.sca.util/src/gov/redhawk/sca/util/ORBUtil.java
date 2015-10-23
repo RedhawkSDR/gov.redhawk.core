@@ -13,7 +13,8 @@ package gov.redhawk.sca.util;
 
 import java.util.Properties;
 
-import org.jacorb.JacorbUtil;
+import mil.jpeojtrs.sca.util.CorbaUtils;
+
 import org.omg.CORBA.ORB;
 
 /**
@@ -25,16 +26,23 @@ public final class ORBUtil {
 
 	}
 
-	private static final String CORBA_NAMESPACE = "org.omg.CORBA.";
-
 	/**
 	 * @since 3.1
 	 */
-	public static ORB init(final String[] args, Properties properties) {
-		return JacorbUtil.init(args, properties);
+	public static ORB init(final String[] args, final Properties properties) {
+		return org.jacorb.JacorbUtil.init(args, properties);
 	}
 
 	public static ORB init(final Properties properties) {
-		return JacorbUtil.init(properties);
+		return org.jacorb.JacorbUtil.init(properties);
+	}
+
+	/**
+	 * Releases the CORBA object in a background thread asynchronously
+	 * @param obj
+	 * @since 3.4
+	 */
+	public static void release(final org.omg.CORBA.Object obj) {
+		CorbaUtils.release(obj);
 	}
 }

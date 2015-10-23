@@ -19,6 +19,7 @@ import org.omg.CORBA.SystemException;
 import CF.File;
 import CF.FileException;
 import CF.FilePackage.InvalidFilePointer;
+import gov.redhawk.sca.util.ORBUtil;
 
 public class ScaFileOutputStream extends OutputStream {
 	private File file;
@@ -60,7 +61,7 @@ public class ScaFileOutputStream extends OutputStream {
 			throw ex;
 		} finally {
 			if (this.file != null) {
-				this.file._release();
+				ORBUtil.release(this.file);
 			}
 			this.file = null;
 		}

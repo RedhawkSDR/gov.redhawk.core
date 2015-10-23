@@ -42,7 +42,7 @@ public abstract class WrappedFileStore extends FileStore {
 
 	public WrappedFileStore(final URI uri, final IFileStore wrappedStore) {
 		this.uri = uri;
-		this.wrappedStore = wrappedStore;
+		this.wrappedStore = WrappedFileStore.unwrap(wrappedStore);
 	}
 
 	/**

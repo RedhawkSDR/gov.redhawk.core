@@ -31,7 +31,7 @@ public enum ScaFileCache {
 	private final Map<String, FileSystemCache> fileSystemCacheMap = Collections.synchronizedMap(new HashMap<String, FileSystemCache>());
 	private OrbSession session;
 
-	public synchronized FileCache getCache(final ScaFileStore store) {
+	public synchronized IFileCache getCache(final ScaFileStore store) {
 		if (session == null) {
 			session = OrbSession.createSession();
 		}
@@ -41,7 +41,7 @@ public enum ScaFileCache {
 
 		FileSystemCache fileSystemCache = this.fileSystemCacheMap.get(fileSystemUri);
 		if (fileSystemCache == null) {
-			fileSystemCache = new FileSystemCache(session, store.getFsInitRef());
+			fileSystemCache = new FileSystemCache(session, store);
 			this.fileSystemCacheMap.put(fileSystemUri, fileSystemCache);
 		}
 		return fileSystemCache.getFileCache(store);
