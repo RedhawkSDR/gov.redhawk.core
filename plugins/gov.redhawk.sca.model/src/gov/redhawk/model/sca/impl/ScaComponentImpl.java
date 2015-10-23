@@ -248,7 +248,7 @@ public class ScaComponentImpl extends ScaAbstractComponentImpl<Resource> impleme
 		// END GENERATED CODE
 		if (identifier != null) {
 			if (identifier.length() >= DceUuidUtil.DCE_UUID_LENGTH) {
-				String dceString = identifier.substring(0, DceUuidUtil.LENGTH);
+				String dceString = identifier.substring(0, DceUuidUtil.DCE_UUID_LENGTH);
 				if (DceUuidUtil.isValid(dceString)) {
 					return dceString;
 				}
