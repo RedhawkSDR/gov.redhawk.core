@@ -168,7 +168,6 @@ public class ScaStructSequencePropertyTest extends ScaAbstractPropertyTest {
 		ScaModelCommand.execute(getFixture(), new ScaModelCommand() {
 			
 			public void execute() {
-				System.out.println("Contents: " + getFixture().eContents().size());
 				getFixture().eAdapters().add(adapter);
 				ScaStructProperty struct = getFixture().createScaStructProperty();
 				getFixture().getStructs().add(struct);

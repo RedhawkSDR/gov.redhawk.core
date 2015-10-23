@@ -137,7 +137,6 @@ public class ScaStructPropertyTest extends ScaAbstractPropertyTest {
 		ScaModelCommand.execute(getFixture(), new ScaModelCommand() {
 			
 			public void execute() {
-				System.out.println("Contents: " + getFixture().eContents().size());
 				getFixture().eAdapters().add(adapter);
 				getFixture().getSimples().get(0).setValue("newValue");		
 			}
