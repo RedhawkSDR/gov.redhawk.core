@@ -10,7 +10,7 @@
     http://www.eclipse.org/legal/epl-v10.html.
 -->
 <site>
-   <feature url="features/gov.redhawk.core.sdk_1.8.9.qualifier.jar" id="gov.redhawk.core.sdk" version="1.8.9.qualifier">
+   <feature url="features/gov.redhawk.core.sdk_1.8.10.qualifier.jar" id="gov.redhawk.core.sdk" version="1.8.10.qualifier">
       <category name="REDHAWK Core"/>
    </feature>
    <category-def name="REDHAWK Core" label="REDHAWK Core"/>

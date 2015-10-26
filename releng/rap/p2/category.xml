@@ -10,10 +10,10 @@
     http://www.eclipse.org/legal/epl-v10.html.
 -->
 <site>
-   <feature url="features/gov.redhawk.rap.feature_1.8.9.qualifier.jar" id="gov.redhawk.rap.feature" version="1.8.9.qualifier">
+   <feature url="features/gov.redhawk.rap.feature_1.8.10.qualifier.jar" id="gov.redhawk.rap.feature" version="1.8.10.qualifier">
       <category name="gov.redhawk.core"/>
    </feature>
-   <feature url="features/gov.redhawk.rap.sdk_1.8.9.qualifier.jar" id="gov.redhawk.rap.sdk" version="1.8.9.qualifier">
+   <feature url="features/gov.redhawk.rap.sdk_1.8.10.qualifier.jar" id="gov.redhawk.rap.sdk" version="1.8.10.qualifier">
       <category name="gov.redhawk.core"/>
    </feature>
       <category-def name="gov.redhawk.core.rap" label="REDHAWK RAP Core"/>

@@ -15,7 +15,7 @@
   <parent>
     <groupId>gov.redhawk.core</groupId>
     <artifactId>core</artifactId>
-    <version>1.8.9-SNAPSHOT</version>
+    <version>1.8.10-SNAPSHOT</version>
     <relativePath>../../releng/core/</relativePath>
   </parent>
   <artifactId>gov.redhawk.sca.dcd.diagram</artifactId>
