@@ -129,6 +129,7 @@ public class SriDataViewLabelProvider implements ITableLabelProvider {
 						return "";
 					}
 				}
+				return "";
 			default:
 				return "";
 			}

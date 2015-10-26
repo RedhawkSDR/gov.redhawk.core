@@ -153,7 +153,6 @@ public class ScaStructPropertyTest extends ScaAbstractPropertyTest {
 
 			@Override
 			public void execute() {
-				System.out.println("Contents: " + getFixture().eContents().size());
 				getFixture().eAdapters().add(adapter);
 				getFixture().getSimples().get(0).setValue("newValue");
 			}
