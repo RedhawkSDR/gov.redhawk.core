@@ -1860,9 +1860,11 @@ public abstract class SCAFormEditor extends FormEditor implements IEditingDomain
 
 				final String replacement = newContent.substring(startIndex, newEndIndex + 1);
 				final int length = oldEndIndex - startIndex + 1;
-				this.handledStructuredModelChange = true;
 				// Only replace if there is actually a change
 				if (!"".equals(replacement) || length != 0) {
+					// Ignore this change in the document listener, since it originates with a change that is being
+					// made in response to some other modification
+					this.handledStructuredModelChange = true;
 					document.replace(startIndex, length, replacement);
 				}
 			} catch (final Exception exception) { // SUPPRESS CHECKSTYLE Fallback
