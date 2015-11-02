@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<component id="gov.redhawk.interceptor.client" version="2">
+    <resource path="src/gov/redhawk/interceptor/client/ClientInterceptor.java" type="gov.redhawk.interceptor.client.ClientInterceptor">
+        <filter comment="3.1.0 to 3.3.0 issue" id="337682486">
+            <message_arguments>
+                <message_argument value="gov.redhawk.interceptor.client.ClientInterceptor"/>
+            </message_arguments>
+        </filter>
+    </resource>
+    <resource path="src/gov/redhawk/interceptor/client/ClientOrbInitializer.java" type="gov.redhawk.interceptor.client.ClientOrbInitializer">
+        <filter comment="3.1.0 to 3.3.0 issue" id="337682486">
+            <message_arguments>
+                <message_argument value="gov.redhawk.interceptor.client.ClientOrbInitializer"/>
+            </message_arguments>
+        </filter>
+    </resource>
+</component>
