@@ -143,6 +143,7 @@
     <module>../plugins/org.anarres.cpp</module>
 
     <module>../tests/gov.redhawk.bulkio.util.tests</module>
+    <module>../tests/gov.redhawk.diagram.tests</module>
     <module>../tests/gov.redhawk.sca.efs.tests</module>
     <module>../tests/gov.redhawk.sca.model.tests</module>
     <module>../tests/gov.redhawk.sca.tests</module>

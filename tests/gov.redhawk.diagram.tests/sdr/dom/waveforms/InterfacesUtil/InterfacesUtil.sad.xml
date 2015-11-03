@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE softwareassembly PUBLIC "-//JTRS//DTD SCA V2.2.2 SAD//EN" "softwareassembly.dtd">
+<softwareassembly id="DCE:1d44953d-b77d-4250-87de-cbbd868fe220" name="InterfacesUtil">
+  <componentfiles>
+    <componentfile id="SigGen_5c931fb4-85f9-4d98-ae1a-7b7ed8bb7281" type="SPD">
+      <localfile name="/components/rh/SigGen/SigGen.spd.xml"/>
+    </componentfile>
+    <componentfile id="HardLimit_65669d52-c416-4cb7-90da-1295c3b82912" type="SPD">
+      <localfile name="/components/rh/HardLimit/HardLimit.spd.xml"/>
+    </componentfile>
+  </componentfiles>
+  <partitioning>
+    <componentplacement>
+      <componentfileref refid="SigGen_5c931fb4-85f9-4d98-ae1a-7b7ed8bb7281"/>
+      <componentinstantiation id="SigGen_1" startorder="0">
+        <usagename>SigGen_1</usagename>
+        <findcomponent>
+          <namingservice name="SigGen_1"/>
+        </findcomponent>
+      </componentinstantiation>
+    </componentplacement>
+    <componentplacement>
+      <componentfileref refid="HardLimit_65669d52-c416-4cb7-90da-1295c3b82912"/>
+      <componentinstantiation id="HardLimit_1" startorder="1">
+        <usagename>HardLimit_1</usagename>
+        <findcomponent>
+          <namingservice name="HardLimit_1"/>
+        </findcomponent>
+      </componentinstantiation>
+    </componentplacement>
+  </partitioning>
+  <assemblycontroller>
+    <componentinstantiationref refid="SigGen_1"/>
+  </assemblycontroller>
+  <externalports>
+    <port>
+      <usesidentifier>dataFloat_out</usesidentifier>
+      <componentinstantiationref refid="HardLimit_1"/>
+    </port>
+  </externalports>
+</softwareassembly>
