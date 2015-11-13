@@ -51,6 +51,7 @@ import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.util.EObjectContainmentWithInverseEList;
+import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.emf.ecore.util.FeatureMap;
 import org.eclipse.emf.ecore.util.FeatureMap.ValueListIterator;
 import org.eclipse.emf.ecore.util.InternalEList;
@@ -426,16 +427,31 @@ public abstract class ScaAbstractComponentImpl< R extends Resource > extends Sca
 		// BEGIN GENERATED CODE
 	}
 
+	private boolean released = false;
+
 	public void releaseObject() throws ReleaseError {
 		// END GENERATED CODE
-		R resource = fetchNarrowedObject(null);
-		TransactionalEditingDomain domain = TransactionUtil.getEditingDomain(this);
-		if (isDisposed() || resource == null || domain == null) {
+		if (released) {
 			return;
 		}
-		Command command = DeleteCommand.create(domain, this);
-		resource.releaseObject();
-		domain.getCommandStack().execute(command);
+
+		R resource = fetchNarrowedObject(null);
+		if (resource != null) {
+			resource.releaseObject();
+		}
+		released = true;
+
+		TransactionalEditingDomain domain = TransactionUtil.getEditingDomain(this);
+		Command command = new ScaModelCommand() {
+			public void execute() {
+				EcoreUtil.delete(ScaAbstractComponentImpl.this);
+			}
+		};
+		if (domain != null) {
+			domain.getCommandStack().execute(command);
+		} else {
+			ScaModelCommand.execute(this, command);
+		}
 		// BEGIN GENERATED CODE
 	}
 
