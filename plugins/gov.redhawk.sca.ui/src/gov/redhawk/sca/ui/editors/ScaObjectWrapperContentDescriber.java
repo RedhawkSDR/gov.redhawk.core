@@ -86,15 +86,17 @@ public class ScaObjectWrapperContentDescriber implements IScaContentDescriber, I
 		if (profileObj instanceof EObject && ((EObject) profileObj).eResource() != null) {
 			final EObject scaObj = (EObject) profileObj;
 			uri = scaObj.eResource().getURI();
-			final String query = uri.query();
-			final Map<String, String> oldtParams = QueryParser.parseQuery(query);
-			final Map<String, String> queryParams = new HashMap<String, String>();
-			queryParams.putAll(oldtParams);
-			if (obj instanceof CorbaObjWrapper< ? >) {
-				final CorbaObjWrapper< ? > wrapper = (CorbaObjWrapper< ? >) obj;
-				queryParams.put(ScaFileSystemConstants.QUERY_PARAM_WF, wrapper.getIor());
+			if (!uri.isFile()) {
+				final String query = uri.query();
+				final Map<String, String> oldtParams = QueryParser.parseQuery(query);
+				final Map<String, String> queryParams = new HashMap<String, String>();
+				queryParams.putAll(oldtParams);
+				if (obj instanceof CorbaObjWrapper< ? >) {
+					final CorbaObjWrapper< ? > wrapper = (CorbaObjWrapper< ? >) obj;
+					queryParams.put(ScaFileSystemConstants.QUERY_PARAM_WF, wrapper.getIor());
+				}
+				uri = uri.trimQuery().appendQuery(QueryParser.createQuery(queryParams));
 			}
-			uri = uri.trimQuery().appendQuery(QueryParser.createQuery(queryParams));
 		}
 		if (uri == null) {
 			return null;
