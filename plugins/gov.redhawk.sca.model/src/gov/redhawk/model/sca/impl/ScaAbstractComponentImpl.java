@@ -459,23 +459,33 @@ public abstract class ScaAbstractComponentImpl< R extends Resource > extends Sca
 		// BEGIN GENERATED CODE
 	}
 
+	private boolean released = false;
+
 	@Override
 	public void releaseObject() throws ReleaseError {
 		// END GENERATED CODE
-		R resource = fetchNarrowedObject(null);
-		TransactionalEditingDomain domain = TransactionUtil.getEditingDomain(this);
-		if (isDisposed() || resource == null || domain == null) {
+		if (released) {
 			return;
 		}
-		Command command = new ScaModelCommand() {
 
+		R resource = fetchNarrowedObject(null);
+		if (resource != null) {
+			resource.releaseObject();
+		}
+		released = true;
+
+		TransactionalEditingDomain domain = TransactionUtil.getEditingDomain(this);
+		Command command = new ScaModelCommand() {
 			@Override
 			public void execute() {
 				EcoreUtil.delete(ScaAbstractComponentImpl.this);
 			}
 		};
-		resource.releaseObject();
-		domain.getCommandStack().execute(command);
+		if (domain != null) {
+			domain.getCommandStack().execute(command);
+		} else {
+			ScaModelCommand.execute(this, command);
+		}
 		// BEGIN GENERATED CODE
 	}
 
