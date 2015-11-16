@@ -15,6 +15,7 @@ import gov.redhawk.model.sca.CorbaObjWrapper;
 import gov.redhawk.model.sca.ProfileObjectWrapper;
 import gov.redhawk.sca.ui.ScaFileStoreEditorInput;
 import gov.redhawk.sca.ui.ScaUI;
+import gov.redhawk.sca.ui.ScaUiPlugin;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -36,15 +37,11 @@ import org.eclipse.ui.IEditorInput;
 
 /**
  * @since 2.2
- * 
  */
 public class ScaObjectWrapperContentDescriber implements IScaContentDescriber, IExecutableExtension {
 	public static final String PARAM_PROFILE_FILENAME = "profileFilename";
 	private Map<String, String> params;
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public int describe(final Object contents) throws IOException {
 		if (this.params == null) {
@@ -70,15 +67,12 @@ public class ScaObjectWrapperContentDescriber implements IScaContentDescriber, I
 					}
 				}
 			}
-		} catch (final Exception e) { // SUPPRESS CHECKSTYLE Fallback
-			// PASS If we run into any problems return invalid
+		} catch (final Exception e) { // SUPPRESS CHECKSTYLE Logged
+			ScaUiPlugin.logError("Unable to describe content", e);
 		}
 		return IScaContentDescriber.INVALID;
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public IEditorInput getEditorInput(final Object contents) {
 		if (!(contents instanceof ProfileObjectWrapper)) {
@@ -100,22 +94,27 @@ public class ScaObjectWrapperContentDescriber implements IScaContentDescriber, I
 	 * @since 9.3
 	 */
 	public static IFileStore getFileStore(ProfileObjectWrapper< ? > obj) throws CoreException {
-		URI uri = null;
-		if (obj.getProfileURI() != null) {
-			uri = obj.getProfileURI();
-			final String query = uri.query();
-			final Map<String, String> oldtParams = QueryParser.parseQuery(query);
-			final Map<String, String> queryParams = new HashMap<String, String>();
-			queryParams.putAll(oldtParams);
-			if (obj instanceof CorbaObjWrapper< ? >) {
-				final CorbaObjWrapper< ? > wrapper = (CorbaObjWrapper< ? >) obj;
-				queryParams.put(ScaFileSystemConstants.QUERY_PARAM_WF, wrapper.getIor());
-			}
-			uri = uri.trimQuery().appendQuery(QueryParser.createQuery(queryParams));
-		}
+		URI uri = obj.getProfileURI();
 		if (uri == null) {
 			return null;
 		}
+
+		// File URIs don't need adjustment
+		if (uri.isFile()) {
+			return EFS.getStore(java.net.URI.create(uri.toString()));
+		}
+
+		// Add the wf query parameter
+		final String query = uri.query();
+		final Map<String, String> oldtParams = QueryParser.parseQuery(query);
+		final Map<String, String> queryParams = new HashMap<String, String>();
+		queryParams.putAll(oldtParams);
+		if (obj instanceof CorbaObjWrapper< ? >) {
+			final CorbaObjWrapper< ? > wrapper = (CorbaObjWrapper< ? >) obj;
+			queryParams.put(ScaFileSystemConstants.QUERY_PARAM_WF, wrapper.getIor());
+		}
+		uri = uri.trimQuery().appendQuery(QueryParser.createQuery(queryParams));
+
 		IFileStore store = null;
 		if (uri.isPlatform()) {
 			store = EFS.getStore(java.net.URI.create(CommonPlugin.resolve(uri).toString()));
@@ -126,15 +125,11 @@ public class ScaObjectWrapperContentDescriber implements IScaContentDescriber, I
 		return store;
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	@SuppressWarnings("unchecked")
 	public void setInitializationData(final IConfigurationElement config, final String propertyName, final Object data) throws CoreException {
 		if (data instanceof Map) {
 			this.params = (Map<String, String>) data;
 		}
-
 	}
 }
