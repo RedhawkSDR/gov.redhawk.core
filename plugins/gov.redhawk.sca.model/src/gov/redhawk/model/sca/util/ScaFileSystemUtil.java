@@ -45,6 +45,12 @@ public final class ScaFileSystemUtil {
 			return null;
 		}
 
+		// File URIs don't need adjustment
+		if (uri.isFile()) {
+			return EFS.getStore(java.net.URI.create(uri.toString()));
+		}
+
+		// Add the wf query parameter
 		final String query = uri.query();
 		final Map<String, String> oldtParams = QueryParser.parseQuery(query);
 		final Map<String, String> queryParams = new HashMap<String, String>();
