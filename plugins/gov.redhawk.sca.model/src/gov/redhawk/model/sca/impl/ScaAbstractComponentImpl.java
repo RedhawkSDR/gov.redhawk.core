@@ -597,7 +597,6 @@ public abstract class ScaAbstractComponentImpl< R extends Resource > extends Sca
 		R resource = fetchNarrowedObject(null);
 		if (resource != null) {
 			resource.releaseObject();
-			released = true;
 		}
 		released = true;
 
