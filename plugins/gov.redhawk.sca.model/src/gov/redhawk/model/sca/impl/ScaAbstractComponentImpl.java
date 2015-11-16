@@ -585,7 +585,7 @@ public abstract class ScaAbstractComponentImpl< R extends Resource > extends Sca
 		// BEGIN GENERATED CODE
 	}
 
-	private boolean released;
+	private boolean released = false;
 
 	@Override
 	public void releaseObject() throws ReleaseError {
@@ -593,15 +593,16 @@ public abstract class ScaAbstractComponentImpl< R extends Resource > extends Sca
 		if (released) {
 			return;
 		}
+
 		R resource = fetchNarrowedObject(null);
 		if (resource != null) {
 			resource.releaseObject();
 			released = true;
 		}
 		released = true;
+
 		TransactionalEditingDomain domain = TransactionUtil.getEditingDomain(this);
 		Command command = new ScaModelCommand() {
-
 			@Override
 			public void execute() {
 				EcoreUtil.delete(ScaAbstractComponentImpl.this);

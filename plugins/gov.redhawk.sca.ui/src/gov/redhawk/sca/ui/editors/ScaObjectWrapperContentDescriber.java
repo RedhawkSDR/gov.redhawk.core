@@ -16,6 +16,7 @@ import gov.redhawk.model.sca.ProfileObjectWrapper;
 import gov.redhawk.model.sca.util.ScaFileSystemUtil;
 import gov.redhawk.sca.ui.ScaFileStoreEditorInput;
 import gov.redhawk.sca.ui.ScaUI;
+import gov.redhawk.sca.ui.ScaUiPlugin;
 
 import java.io.IOException;
 import java.util.Map;
@@ -30,15 +31,11 @@ import org.eclipse.ui.IEditorInput;
 
 /**
  * @since 2.2
- * 
  */
 public class ScaObjectWrapperContentDescriber implements IScaContentDescriber, IExecutableExtension {
 	public static final String PARAM_PROFILE_FILENAME = "profileFilename";
 	private Map<String, String> params;
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public int describe(final Object contents) throws IOException {
 		if (this.params == null) {
@@ -64,15 +61,12 @@ public class ScaObjectWrapperContentDescriber implements IScaContentDescriber, I
 					}
 				}
 			}
-		} catch (final Exception e) { // SUPPRESS CHECKSTYLE Fallback
-			// PASS If we run into any problems return invalid
+		} catch (final Exception e) { // SUPPRESS CHECKSTYLE Logged
+			ScaUiPlugin.logError("Unable to describe content", e);
 		}
 		return IScaContentDescriber.INVALID;
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public IEditorInput getEditorInput(final Object contents) {
 		if (!(contents instanceof ProfileObjectWrapper)) {
@@ -99,15 +93,11 @@ public class ScaObjectWrapperContentDescriber implements IScaContentDescriber, I
 		return ScaFileSystemUtil.getFileStore(obj);
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	@SuppressWarnings("unchecked")
 	public void setInitializationData(final IConfigurationElement config, final String propertyName, final Object data) throws CoreException {
 		if (data instanceof Map) {
 			this.params = (Map<String, String>) data;
 		}
-
 	}
 }
