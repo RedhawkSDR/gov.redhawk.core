@@ -67,7 +67,7 @@ public abstract class AbstractValidRangeTypeConstraint extends AbstractModelCons
 				}
 			}
 		}
-		return null;
+		return ctx.createSuccessStatus();
 	}
 
 }
