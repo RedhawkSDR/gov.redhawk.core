@@ -138,7 +138,11 @@ public class SimpleSequencePropertyDetailsPage extends BasicSimplePropertyDetail
 		final TableViewer valuesViewer = this.composite.getValuesViewer();
 		retVal.add(context.bindValue(ViewersObservables.observeInput(valuesViewer), valueProp.observe(input)));
 
-		this.composite.getValueColumn().setEditingSupport(new SimpleSequenceValueEditingSupport(this.input.getType(), valuesViewer));
+		if (this.isEditable()) {
+			this.composite.getValueColumn().setEditingSupport(new SimpleSequenceValueEditingSupport(this.input.getType(), valuesViewer));
+		} else {
+			this.composite.getValueColumn().setEditingSupport(null);
+		}
 
 		return retVal;
 	}

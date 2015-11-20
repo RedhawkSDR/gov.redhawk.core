@@ -70,6 +70,7 @@ public class SimplePropertyComposite extends BasicSimplePropertyComposite {
 
 	private Label enumLabel;
 	private TableViewer enumViewer;
+	private boolean canEditEnum = true;
 	private Button addEnumButton;
 	private Button editEnumButton;
 	private Button removeEnumButton;
@@ -172,7 +173,7 @@ public class SimplePropertyComposite extends BasicSimplePropertyComposite {
 
 			@Override
 			protected boolean canEdit(final Object element) {
-				return true;
+				return canEditEnum;
 			}
 		});
 
@@ -218,7 +219,7 @@ public class SimplePropertyComposite extends BasicSimplePropertyComposite {
 
 			@Override
 			protected boolean canEdit(final Object element) {
-				return true;
+				return canEditEnum;
 			}
 		});
 
@@ -239,8 +240,8 @@ public class SimplePropertyComposite extends BasicSimplePropertyComposite {
 		this.enumViewer.addSelectionChangedListener(new ISelectionChangedListener() {
 
 			public void selectionChanged(final SelectionChangedEvent event) {
-				SimplePropertyComposite.this.removeEnumButton.setEnabled(!event.getSelection().isEmpty());
-				SimplePropertyComposite.this.editEnumButton.setEnabled(!event.getSelection().isEmpty());
+				SimplePropertyComposite.this.removeEnumButton.setEnabled(!event.getSelection().isEmpty() && canEditEnum);
+				SimplePropertyComposite.this.editEnumButton.setEnabled(!event.getSelection().isEmpty() && canEditEnum);
 			}
 		});
 		HelpUtil.assignTooltip(this.enumViewer.getControl(), HelpConstants.prf_properties_simple_value);
@@ -270,7 +271,7 @@ public class SimplePropertyComposite extends BasicSimplePropertyComposite {
 		this.valueLabel.setEnabled(canEdit);
 		this.valueText.setEditable(canEdit);
 		this.enumLabel.setEnabled(canEdit);
-		this.enumViewer.getTable().setEnabled(canEdit);
+		canEditEnum = canEdit;
 		this.addEnumButton.setEnabled(canEdit);
 	}
 

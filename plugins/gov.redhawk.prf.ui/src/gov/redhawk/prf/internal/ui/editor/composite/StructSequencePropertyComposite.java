@@ -52,6 +52,7 @@ public class StructSequencePropertyComposite extends BasicStructPropertyComposit
 
 	private Label structValueLabel;
 	private TreeViewer structValueViewer;
+	private boolean canEditStructValue = true;
 	private final AdapterFactory adapterFactory;
 	private Button addButton;
 	private Button removeButton;
@@ -108,7 +109,12 @@ public class StructSequencePropertyComposite extends BasicStructPropertyComposit
 		TreeViewerColumn viewerColumn = new TreeViewerColumn(this.structValueViewer, column);
 		viewerColumn = new TreeViewerColumn(this.structValueViewer, column);
 		viewerColumn.setLabelProvider(new PropertyColumnLabelProvider(contentProvider, "value"));
-		viewerColumn.setEditingSupport(new PropertyEditingSupport(this.structValueViewer, contentProvider, "value"));
+		viewerColumn.setEditingSupport(new PropertyEditingSupport(this.structValueViewer, contentProvider, "value") {
+			@Override
+			protected boolean canEdit(Object object) {
+				return super.canEdit(object) && canEditStructValue;
+			}
+		});
 		this.addButton = toolkit.createButton(treeComposite, "Add...", SWT.PUSH);
 		this.addButton.setLayoutData(GridDataFactory.fillDefaults().align(SWT.FILL, SWT.TOP).create());
 		this.removeButton = toolkit.createButton(treeComposite, "Remove", SWT.PUSH);
@@ -178,7 +184,7 @@ public class StructSequencePropertyComposite extends BasicStructPropertyComposit
 		super.setEditable(canEdit);
 
 		this.structValueLabel.setEnabled(canEdit);
-		this.structValueViewer.getTree().setEnabled(canEdit);
+		canEditStructValue = canEdit;
 		// This is data-bound, so only disable
 		if (!canEdit) {
 			this.addButton.setEnabled(false);

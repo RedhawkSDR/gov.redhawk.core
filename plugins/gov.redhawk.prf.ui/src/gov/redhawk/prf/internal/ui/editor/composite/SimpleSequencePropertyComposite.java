@@ -218,7 +218,6 @@ public class SimpleSequencePropertyComposite extends BasicSimplePropertyComposit
 		super.setEditable(canEdit);
 
 		this.valuesLabel.setEnabled(canEdit);
-		this.valuesViewer.getTable().setEnabled(canEdit);
 		this.addValueButton.setEnabled(canEdit);
 	}
 
