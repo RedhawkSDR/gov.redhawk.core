@@ -97,10 +97,12 @@ public abstract class BasicStructPropertyComposite extends AbstractPropertyCompo
 	 */
 	@Override
 	public void setEditable(final boolean canEdit) {
+		super.setEditable(canEdit);
+
 		if (this.configurationKindViewer != null) {
+			this.kindLabel.setEnabled(canEdit);
 			this.configurationKindViewer.getControl().setEnabled(canEdit);
 		}
-		super.setEditable(canEdit);
 	}
 
 }

@@ -93,11 +93,10 @@ public class SimplePropertyComposite extends BasicSimplePropertyComposite {
 	
 	@Override
 	public void setEditable(final boolean canEdit) {
+		super.setEditable(canEdit);
+
 		if (this.valueEntry != null) {
 			this.valueEntry.setEditable(canEdit);
 		}
-		super.setEditable(canEdit);
 	}
-
-
 }

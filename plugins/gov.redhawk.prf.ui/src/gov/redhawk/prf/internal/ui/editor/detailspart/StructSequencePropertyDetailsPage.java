@@ -183,7 +183,7 @@ public class StructSequencePropertyDetailsPage extends BasicStructPropertyDetail
 		bindings.add(context.bindValue(target, value, null, new UpdateValueStrategy() {
 			@Override
 			public Object convert(final Object value) {
-				return !((Boolean) value);
+				return !((Boolean) value) && isEditable();
 
 			}
 		}));
