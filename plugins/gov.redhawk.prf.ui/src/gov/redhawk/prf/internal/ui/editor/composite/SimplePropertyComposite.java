@@ -68,6 +68,7 @@ public class SimplePropertyComposite extends BasicSimplePropertyComposite {
 	private final FormToolkit toolkit;
 	private ComposedAdapterFactory adapterFactory;
 
+	private Label enumLabel;
 	private TableViewer enumViewer;
 	private Button addEnumButton;
 	private Button editEnumButton;
@@ -124,9 +125,9 @@ public class SimplePropertyComposite extends BasicSimplePropertyComposite {
 	}
 
 	private void createEnumerations(final Composite parent, final FormToolkit toolkit) {
-		final Label label = toolkit.createLabel(this, "Enumerations:");
-		label.setForeground(toolkit.getColors().getColor(IFormColors.TITLE));
-		label.setLayoutData(GridDataFactory.fillDefaults().align(SWT.LEFT, SWT.TOP).create());
+		this.enumLabel = toolkit.createLabel(this, "Enumerations:");
+		this.enumLabel.setForeground(toolkit.getColors().getColor(IFormColors.TITLE));
+		this.enumLabel.setLayoutData(GridDataFactory.fillDefaults().align(SWT.LEFT, SWT.TOP).create());
 		final Composite tableComp = toolkit.createComposite(this, SWT.NULL);
 		final GridLayout layout = SWTUtil.TABLE_ENTRY_LAYOUT_FACTORY.create();
 		tableComp.setLayout(layout);
@@ -264,10 +265,13 @@ public class SimplePropertyComposite extends BasicSimplePropertyComposite {
 	
 	@Override
 	public void setEditable(final boolean canEdit) {
+		super.setEditable(canEdit);
+
+		this.valueLabel.setEnabled(canEdit);
 		this.valueText.setEditable(canEdit);
+		this.enumLabel.setEnabled(canEdit);
 		this.enumViewer.getTable().setEnabled(canEdit);
 		this.addEnumButton.setEnabled(canEdit);
-		super.setEditable(canEdit);
 	}
 
 	/**

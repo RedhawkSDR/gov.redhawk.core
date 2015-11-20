@@ -50,6 +50,7 @@ import org.eclipse.ui.forms.widgets.FormToolkit;
 public class SimpleSequencePropertyComposite extends BasicSimplePropertyComposite {
 	private static final int NUM_COLUMNS = 3;
 
+	private Label valuesLabel;
 	private TableViewer valuesViewer;
 	private final ComposedAdapterFactory adapterFactory;
 	private Button addValueButton;
@@ -141,9 +142,9 @@ public class SimpleSequencePropertyComposite extends BasicSimplePropertyComposit
 	
 	protected void createValues(final Composite parent, final FormToolkit toolkit) {
 		// Value
-		final Label label = toolkit.createLabel(parent, "Values:");
-		label.setForeground(toolkit.getColors().getColor(IFormColors.TITLE));
-		label.setLayoutData(new GridData(GridData.BEGINNING, GridData.BEGINNING, false, false));
+		this.valuesLabel = toolkit.createLabel(parent, "Values:");
+		this.valuesLabel.setForeground(toolkit.getColors().getColor(IFormColors.TITLE));
+		this.valuesLabel.setLayoutData(new GridData(GridData.BEGINNING, GridData.BEGINNING, false, false));
 		final Composite valuesComp = toolkit.createComposite(parent, SWT.NULL);
 		valuesComp.setLayout(GridLayoutFactory.fillDefaults().margins(0, 0).numColumns(2).create());
 		valuesComp.setLayoutData(GridDataFactory.fillDefaults().span(2, 1).grab(true, true).create());
@@ -214,8 +215,11 @@ public class SimpleSequencePropertyComposite extends BasicSimplePropertyComposit
 
 	@Override
 	public void setEditable(final boolean canEdit) {
-		this.addValueButton.setEnabled(canEdit);
 		super.setEditable(canEdit);
+
+		this.valuesLabel.setEnabled(canEdit);
+		this.valuesViewer.getTable().setEnabled(canEdit);
+		this.addValueButton.setEnabled(canEdit);
 	}
 
 	/**

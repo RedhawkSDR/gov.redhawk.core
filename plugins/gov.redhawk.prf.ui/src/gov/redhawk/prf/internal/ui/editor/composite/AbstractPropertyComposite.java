@@ -45,6 +45,7 @@ public abstract class AbstractPropertyComposite extends Composite implements ISc
 	private static final GridDataFactory FACTORY = GridDataFactory.fillDefaults().span(2, 1).grab(true, false);
 	private ComboViewer modeViewer;
 	private Label modeLabel;
+	private Label descriptionLabel;
 	private Text descriptionText;
 	private FormEntry idEntry;
 	private FormEntry nameEntry;
@@ -68,13 +69,12 @@ public abstract class AbstractPropertyComposite extends Composite implements ISc
 	 */
 	protected void createDescription(final Composite parent, final FormToolkit toolkit) {
 		// Description
-		final Label label = toolkit.createLabel(parent, "Description:");
-		label.setForeground(toolkit.getColors().getColor(IFormColors.TITLE));
-		label.setLayoutData(GridDataFactory.fillDefaults().align(SWT.BEGINNING, SWT.BEGINNING).create());
-		final Text text = toolkit.createText(parent, "", SWT.MULTI | SWT.WRAP);
-		text.setLayoutData(AbstractPropertyComposite.FACTORY.copy().hint(SWT.DEFAULT, 75).create()); // SUPPRESS CHECKSTYLE MagicNumber
-		assignTooltip(text, HelpConstants.prf_properties_simple_description);
-		this.descriptionText = text;
+		this.descriptionLabel = toolkit.createLabel(parent, "Description:");
+		this.descriptionLabel.setForeground(toolkit.getColors().getColor(IFormColors.TITLE));
+		this.descriptionLabel.setLayoutData(GridDataFactory.fillDefaults().align(SWT.BEGINNING, SWT.BEGINNING).create());
+		this.descriptionText = toolkit.createText(parent, "", SWT.MULTI | SWT.WRAP);
+		this.descriptionText.setLayoutData(AbstractPropertyComposite.FACTORY.copy().hint(SWT.DEFAULT, 75).create()); // SUPPRESS CHECKSTYLE MagicNumber
+		assignTooltip(this.descriptionText, HelpConstants.prf_properties_simple_description);
 	}
 
 	/**
@@ -162,14 +162,15 @@ public abstract class AbstractPropertyComposite extends Composite implements ISc
 		return this.nameEntry;
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	public void setEditable(final boolean canEdit) {
-		this.descriptionText.setEditable(canEdit);
 		this.idEntry.setEditable(canEdit);
-		this.modeViewer.getCombo().setEnabled(canEdit);
 		this.nameEntry.setEditable(canEdit);
+		if (this.modeViewer != null) {
+			this.modeLabel.setEnabled(canEdit);
+			this.modeViewer.getCombo().setEnabled(canEdit);
+		}
+		this.descriptionLabel.setEnabled(canEdit);
+		this.descriptionText.setEditable(canEdit);
 	}
 
 	public void addNameToTabList() {

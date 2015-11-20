@@ -50,12 +50,15 @@ public abstract class BasicSimplePropertyComposite extends AbstractPropertyCompo
 	private static final int NUM_COLUMNS = 3;
 
 	private static final GridDataFactory FACTORY = GridDataFactory.fillDefaults().span(2, 1).grab(true, false);
+	private Label typeLabel;
 	private ComboViewer typeViewer;
+	private Label unitsLabel;
 	private Text unitsText;
 	private Label kindLabel;
 	private CheckboxTableViewer kindViewer;
 	private Label actionLabel;
 	private ComboViewer actionViewer;
+	private Label rangeLabel;
 	private Button rangeButton;
 	private FormEntry minText;
 	private FormEntry maxText;
@@ -79,8 +82,8 @@ public abstract class BasicSimplePropertyComposite extends AbstractPropertyCompo
 	 * @param toolkit
 	 */
 	protected void createRange(final Composite parent, final FormToolkit toolkit) {
-		final Label label = toolkit.createLabel(parent, "Range:");
-		label.setForeground(toolkit.getColors().getColor(IFormColors.TITLE));
+		this.rangeLabel = toolkit.createLabel(parent, "Range:");
+		this.rangeLabel.setForeground(toolkit.getColors().getColor(IFormColors.TITLE));
 		this.rangeButton = toolkit.createButton(parent, "Enable", SWT.CHECK);
 		this.rangeButton.setLayoutData(BasicSimplePropertyComposite.FACTORY.create());
 		assignTooltip(this.rangeButton, HelpConstants.prf_properties_simple_range);
@@ -178,8 +181,8 @@ public abstract class BasicSimplePropertyComposite extends AbstractPropertyCompo
 	 */
 	protected void createUnits(final Composite parent, final FormToolkit toolkit) {
 		// Units
-		final Label label = toolkit.createLabel(parent, "Units:");
-		label.setForeground(toolkit.getColors().getColor(IFormColors.TITLE));
+		this.unitsLabel = toolkit.createLabel(parent, "Units:");
+		this.unitsLabel.setForeground(toolkit.getColors().getColor(IFormColors.TITLE));
 		this.unitsText = toolkit.createText(parent, "", SWT.SINGLE);
 		assignTooltip(this.unitsText, HelpConstants.prf_properties_simple_units);
 		this.unitsText.setLayoutData(BasicSimplePropertyComposite.FACTORY.create());
@@ -191,8 +194,8 @@ public abstract class BasicSimplePropertyComposite extends AbstractPropertyCompo
 	 */
 	protected void createTypeViewer(final Composite parent, final FormToolkit toolkit) {
 		// Type
-		final Label label = toolkit.createLabel(parent, "Type*:");
-		label.setForeground(toolkit.getColors().getColor(IFormColors.TITLE));
+		this.typeLabel = toolkit.createLabel(parent, "Type*:");
+		this.typeLabel.setForeground(toolkit.getColors().getColor(IFormColors.TITLE));
 		this.typeViewer = new ComboViewer(parent, SWT.DROP_DOWN | SWT.READ_ONLY);
 		this.typeViewer.getCombo().addListener(SWT.MouseVerticalWheel, new Listener() {
 
@@ -280,17 +283,29 @@ public abstract class BasicSimplePropertyComposite extends AbstractPropertyCompo
 		return this.maxText;
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public void setEditable(final boolean canEdit) {
 		super.setEditable(canEdit);
-		this.actionViewer.getCombo().setEnabled(canEdit);
-		this.kindViewer.getTable().setEnabled(canEdit);
+
+		this.typeLabel.setEnabled(canEdit);
 		this.typeViewer.getCombo().setEnabled(canEdit);
+		this.unitsLabel.setEnabled(canEdit);
 		this.unitsText.setEditable(canEdit);
+		if (this.kindViewer != null) {
+			this.kindLabel.setEnabled(canEdit);
+			this.kindViewer.getTable().setEnabled(canEdit);
+		}
+		if (this.actionViewer != null) {
+			this.actionLabel.setEnabled(canEdit);
+			this.actionViewer.getCombo().setEnabled(canEdit);
+		}
+		this.rangeLabel.setEnabled(canEdit);
 		this.rangeButton.setEnabled(canEdit);
+		// These are data-bound, so only disable
+		if (!canEdit) {
+			this.minText.setEditable(false);
+			this.maxText.setEditable(false);
+		}
 	}
 
 	/**

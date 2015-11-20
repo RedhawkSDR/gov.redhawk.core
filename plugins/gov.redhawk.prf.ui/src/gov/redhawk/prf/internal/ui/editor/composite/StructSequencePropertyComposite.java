@@ -50,6 +50,7 @@ import org.eclipse.ui.views.properties.PropertyEditingSupport;
 
 public class StructSequencePropertyComposite extends BasicStructPropertyComposite {
 
+	private Label structValueLabel;
 	private TreeViewer structValueViewer;
 	private final AdapterFactory adapterFactory;
 	private Button addButton;
@@ -77,9 +78,9 @@ public class StructSequencePropertyComposite extends BasicStructPropertyComposit
 	}
 
 	private void createStructValueViewer(final FormToolkit toolkit) {
-		final Label label = toolkit.createLabel(this, "StructValue:");
-		label.setForeground(toolkit.getColors().getColor(IFormColors.TITLE));
-		label.setLayoutData(new GridData(GridData.BEGINNING, GridData.BEGINNING, false, false));
+		this.structValueLabel = toolkit.createLabel(this, "StructValue:");
+		this.structValueLabel.setForeground(toolkit.getColors().getColor(IFormColors.TITLE));
+		this.structValueLabel.setLayoutData(new GridData(GridData.BEGINNING, GridData.BEGINNING, false, false));
 		final Composite treeComposite = toolkit.createComposite(this, SWT.NULL);
 		final GridLayout layout = SWTUtil.TABLE_ENTRY_LAYOUT_FACTORY.create();
 		treeComposite.setLayout(layout);
@@ -175,8 +176,13 @@ public class StructSequencePropertyComposite extends BasicStructPropertyComposit
 	@Override
 	public void setEditable(final boolean canEdit) {
 		super.setEditable(canEdit);
+
+		this.structValueLabel.setEnabled(canEdit);
 		this.structValueViewer.getTree().setEnabled(canEdit);
-		//		this.addButton.setEnabled(canEdit);
+		// This is data-bound, so only disable
+		if (!canEdit) {
+			this.addButton.setEnabled(false);
+		}
 	}
 
 	@Override
