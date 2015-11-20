@@ -403,6 +403,7 @@ public abstract class BasicSimplePropertyComposite extends AbstractPropertyCompo
 
 		this.typeLabel.setEnabled(canEdit);
 		this.typeViewer.getCombo().setEnabled(canEdit);
+		this.typeModifier.setEnabled(canEdit);
 		this.unitsEntry.setEditable(canEdit);
 		if (this.kindViewer != null) {
 			this.kindLabel.setEnabled(canEdit);
