@@ -99,6 +99,7 @@ public abstract class BasicSimplePropertyComposite extends AbstractPropertyCompo
 
 	private Label enumLabel;
 	private TableViewer enumViewer;
+	private boolean canEditEnum = true;
 
 	private ComposedAdapterFactory adapterFactory;
 
@@ -415,7 +416,7 @@ public abstract class BasicSimplePropertyComposite extends AbstractPropertyCompo
 		}
 		if (this.enumViewer != null) {
 			this.enumLabel.setEnabled(canEdit);
-			this.enumViewer.getControl().setEnabled(canEdit);
+			canEditEnum = canEdit;
 			this.addEnumButton.setEnabled(canEdit);
 		}
 		this.rangeLabel.setEnabled(canEdit);
@@ -490,7 +491,7 @@ public abstract class BasicSimplePropertyComposite extends AbstractPropertyCompo
 
 			@Override
 			protected boolean canEdit(final Object element) {
-				return true;
+				return canEditEnum;
 			}
 		});
 
@@ -538,7 +539,7 @@ public abstract class BasicSimplePropertyComposite extends AbstractPropertyCompo
 
 			@Override
 			protected boolean canEdit(final Object element) {
-				return true;
+				return canEditEnum;
 			}
 		});
 
@@ -559,8 +560,8 @@ public abstract class BasicSimplePropertyComposite extends AbstractPropertyCompo
 
 			@Override
 			public void selectionChanged(final SelectionChangedEvent event) {
-				removeEnumButton.setEnabled(!event.getSelection().isEmpty());
-				editEnumButton.setEnabled(!event.getSelection().isEmpty());
+				removeEnumButton.setEnabled(!event.getSelection().isEmpty() && canEditEnum);
+				editEnumButton.setEnabled(!event.getSelection().isEmpty() && canEditEnum);
 			}
 		});
 		HelpUtil.assignTooltip(this.enumViewer.getControl(), HelpConstants.prf_properties_simple_value);
