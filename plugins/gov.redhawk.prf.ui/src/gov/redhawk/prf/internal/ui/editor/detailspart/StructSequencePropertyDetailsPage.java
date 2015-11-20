@@ -143,7 +143,7 @@ public class StructSequencePropertyDetailsPage extends BasicStructPropertyDetail
 						}
 					}
 				}
-				StructSequencePropertyDetailsPage.this.structSequenceComposite.getRemoveButton().setEnabled(remove);
+				StructSequencePropertyDetailsPage.this.structSequenceComposite.getRemoveButton().setEnabled(remove && isEditable());
 				getPage().setSelection(event.getSelection());
 			}
 		});
