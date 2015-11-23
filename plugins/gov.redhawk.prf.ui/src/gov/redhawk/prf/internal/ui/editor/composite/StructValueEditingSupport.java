@@ -31,6 +31,8 @@ import mil.jpeojtrs.sca.prf.SimpleSequence;
 import mil.jpeojtrs.sca.prf.SimpleSequenceRef;
 
 public class StructValueEditingSupport extends AbstractPropertyEditingSupport {
+	private boolean canEdit = true;
+
 	public StructValueEditingSupport(ColumnViewer viewer, IPropertySourceProvider propertySourceProvider) {
 		super(viewer, propertySourceProvider);
 	}
@@ -56,7 +58,11 @@ public class StructValueEditingSupport extends AbstractPropertyEditingSupport {
 
 	@Override
 	protected boolean canEdit(Object object) {
-		return getPropertyID(object) != null;
+		return (getPropertyID(object) != null) && canEdit;
+	}
+
+	public void setEditable(boolean canEdit) {
+		this.canEdit  = canEdit;
 	}
 
 	@Override

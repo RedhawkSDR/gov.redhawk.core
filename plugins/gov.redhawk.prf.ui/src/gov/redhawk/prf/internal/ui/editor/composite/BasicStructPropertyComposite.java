@@ -28,6 +28,7 @@ import org.eclipse.ui.forms.IFormColors;
 import org.eclipse.ui.forms.widgets.FormToolkit;
 
 public abstract class BasicStructPropertyComposite extends AbstractPropertyComposite {
+	private Label kindLabel;
 	private ComboViewer configurationKindViewer;
 
 	private boolean configShown;
@@ -39,9 +40,9 @@ public abstract class BasicStructPropertyComposite extends AbstractPropertyCompo
 
 	protected void createConfigurationKindViewer(final Composite parent, final FormToolkit toolkit) {
 		// Type
-		Label kindLabel = toolkit.createLabel(parent, "Kind:");
-		kindLabel.setForeground(toolkit.getColors().getColor(IFormColors.TITLE));
-		kindLabel.setLayoutData(GridDataFactory.fillDefaults().align(SWT.BEGINNING, SWT.BEGINNING).create());
+		this.kindLabel = toolkit.createLabel(parent, "Kind:");
+		this.kindLabel.setForeground(toolkit.getColors().getColor(IFormColors.TITLE));
+		this.kindLabel.setLayoutData(GridDataFactory.fillDefaults().align(SWT.BEGINNING, SWT.BEGINNING).create());
 		final ComboViewer viewer = new ComboViewer(parent, SWT.DROP_DOWN | SWT.READ_ONLY);
 		viewer.getCombo().addListener(SWT.MouseVerticalWheel, getEventIgnorer());
 		toolkit.adapt(viewer.getCombo());
@@ -90,10 +91,12 @@ public abstract class BasicStructPropertyComposite extends AbstractPropertyCompo
 
 	@Override
 	public void setEditable(final boolean canEdit) {
+		super.setEditable(canEdit);
+
 		if (this.configurationKindViewer != null) {
+			this.kindLabel.setEnabled(canEdit);
 			this.configurationKindViewer.getControl().setEnabled(canEdit);
 		}
-		super.setEditable(canEdit);
 	}
 
 	/**

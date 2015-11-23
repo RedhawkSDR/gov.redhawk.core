@@ -75,10 +75,14 @@ public abstract class BasicSimplePropertyComposite extends AbstractPropertyCompo
 	private static final GridDataFactory FACTORY = GridDataFactory.fillDefaults().span(2, 1).grab(true, false);
 	private static final String DEFAULT_ACTION = "external";
 
+	private Label typeLabel;
 	private ComboViewer typeViewer;
 	private FormEntry unitsEntry;
+	private Label kindLabel;
 	private ComboViewer kindViewer;
+	private Label actionLabel;
 	private ComboViewer actionViewer;
+	private Label rangeLabel;
 	private Button rangeButton;
 	private FormEntry minText;
 	private FormEntry maxText;
@@ -89,7 +93,9 @@ public abstract class BasicSimplePropertyComposite extends AbstractPropertyCompo
 
 	private Button addEnumButton;
 
+	private Label enumLabel;
 	private TableViewer enumViewer;
+	private boolean canEditEnum = true;
 
 	private ComposedAdapterFactory adapterFactory;
 
@@ -110,8 +116,8 @@ public abstract class BasicSimplePropertyComposite extends AbstractPropertyCompo
 	}
 
 	protected Button createRange(final Composite parent, final FormToolkit toolkit) {
-		final Label label = toolkit.createLabel(parent, "Range:");
-		label.setForeground(toolkit.getColors().getColor(IFormColors.TITLE));
+		this.rangeLabel = toolkit.createLabel(parent, "Range:");
+		this.rangeLabel.setForeground(toolkit.getColors().getColor(IFormColors.TITLE));
 		this.rangeButton = toolkit.createButton(parent, "Enable", SWT.CHECK);
 		this.rangeButton.setLayoutData(BasicSimplePropertyComposite.FACTORY.create());
 		assignTooltip(this.rangeButton, HelpConstants.prf_properties_simple_range);
@@ -129,9 +135,9 @@ public abstract class BasicSimplePropertyComposite extends AbstractPropertyCompo
 
 	protected ComboViewer createActionViewer(final Composite parent, final FormToolkit toolkit) {
 		// Action
-		Label actionLabel = toolkit.createLabel(parent, "Action:");
-		actionLabel.setForeground(toolkit.getColors().getColor(IFormColors.TITLE));
-		actionLabel.setLayoutData(GridDataFactory.fillDefaults().align(SWT.BEGINNING, SWT.BEGINNING).create());
+		this.actionLabel = toolkit.createLabel(parent, "Action:");
+		this.actionLabel.setForeground(toolkit.getColors().getColor(IFormColors.TITLE));
+		this.actionLabel.setLayoutData(GridDataFactory.fillDefaults().align(SWT.BEGINNING, SWT.BEGINNING).create());
 		final ComboViewer viewer = new ComboViewer(parent, SWT.DROP_DOWN | SWT.READ_ONLY);
 		viewer.getCombo().addListener(SWT.MouseVerticalWheel, getEventIgnorer());
 		toolkit.adapt(viewer.getCombo());
@@ -163,9 +169,9 @@ public abstract class BasicSimplePropertyComposite extends AbstractPropertyCompo
 
 	protected ComboViewer createKindViewer(final Composite parent, final FormToolkit toolkit) {
 		// Kind
-		Label kindLabel = toolkit.createLabel(parent, "Kind:");
-		kindLabel.setForeground(toolkit.getColors().getColor(IFormColors.TITLE));
-		kindLabel.setLayoutData(GridDataFactory.fillDefaults().align(SWT.BEGINNING, SWT.BEGINNING).create());
+		this.kindLabel = toolkit.createLabel(parent, "Kind:");
+		this.kindLabel.setForeground(toolkit.getColors().getColor(IFormColors.TITLE));
+		this.kindLabel.setLayoutData(GridDataFactory.fillDefaults().align(SWT.BEGINNING, SWT.BEGINNING).create());
 		final ComboViewer viewer = new ComboViewer(parent, SWT.DROP_DOWN | SWT.READ_ONLY);
 		viewer.getCombo().addListener(SWT.MouseVerticalWheel, getEventIgnorer());
 		toolkit.adapt(viewer.getCombo());
@@ -223,8 +229,8 @@ public abstract class BasicSimplePropertyComposite extends AbstractPropertyCompo
 
 	protected ComboViewer createTypeViewer(final Composite parent, final FormToolkit toolkit) {
 		// Type
-		final Label label = toolkit.createLabel(parent, "Type*:");
-		label.setForeground(toolkit.getColors().getColor(IFormColors.TITLE));
+		this.typeLabel = toolkit.createLabel(parent, "Type*:");
+		this.typeLabel.setForeground(toolkit.getColors().getColor(IFormColors.TITLE));
 		this.typeViewer = new ComboViewer(parent, SWT.DROP_DOWN | SWT.READ_ONLY);
 		this.typeViewer.getCombo().addListener(SWT.MouseVerticalWheel, getEventIgnorer());
 		this.typeViewer.setContentProvider(new ArrayContentProvider());
@@ -330,39 +336,36 @@ public abstract class BasicSimplePropertyComposite extends AbstractPropertyCompo
 	public void setEditable(final boolean canEdit) {
 		super.setEditable(canEdit);
 
-		if (this.actionViewer != null) {
-			this.actionViewer.getCombo().setEnabled(canEdit);
-		}
+		this.typeLabel.setEnabled(canEdit);
+		this.typeViewer.getCombo().setEnabled(canEdit);
+		this.typeModifier.setEnabled(canEdit);
+		this.unitsEntry.setEditable(canEdit);
 		if (this.kindViewer != null) {
+			this.kindLabel.setEnabled(canEdit);
 			this.kindViewer.getCombo().setEnabled(canEdit);
 		}
-		if (this.typeViewer != null) {
-			this.typeViewer.getCombo().setEnabled(canEdit);
+		if (this.actionViewer != null) {
+			this.actionLabel.setEnabled(canEdit);
+			this.actionViewer.getCombo().setEnabled(canEdit);
 		}
-		if (this.unitsEntry != null) {
-			this.unitsEntry.setEditable(canEdit);
-		}
-		if (this.rangeButton != null) {
-			this.rangeButton.setEnabled(canEdit);
-		}
-//		if (this.enumViewer != null) {
-//			this.enumViewer.getControl().setEnabled(canEdit);
-//		}
-		if (this.addEnumButton != null) {
+		if (this.enumViewer != null) {
+			this.enumLabel.setEnabled(canEdit);
+			canEditEnum = canEdit;
 			this.addEnumButton.setEnabled(canEdit);
 		}
-		if (this.removeEnumButton != null) {
-			this.removeEnumButton.setEnabled(canEdit);
-		}
-		if (this.editEnumButton != null) {
-			this.editEnumButton.setEnabled(canEdit);
+		this.rangeLabel.setEnabled(canEdit);
+		this.rangeButton.setEnabled(canEdit);
+		// These are data-bound, so only disable
+		if (!canEdit) {
+			this.minText.setEditable(false);
+			this.maxText.setEditable(false);
 		}
 	}
 
 	protected void createEnumerationsViewer(final Composite parent, final FormToolkit toolkit) {
-		final Label label = toolkit.createLabel(parent, "Enumerations:");
-		label.setForeground(toolkit.getColors().getColor(IFormColors.TITLE));
-		label.setLayoutData(GridDataFactory.fillDefaults().align(SWT.LEFT, SWT.TOP).create());
+		this.enumLabel = toolkit.createLabel(parent, "Enumerations:");
+		this.enumLabel.setForeground(toolkit.getColors().getColor(IFormColors.TITLE));
+		this.enumLabel.setLayoutData(GridDataFactory.fillDefaults().align(SWT.LEFT, SWT.TOP).create());
 		final Composite tableComp = toolkit.createComposite(parent, SWT.NULL);
 		final GridLayout layout = SWTUtil.TABLE_ENTRY_LAYOUT_FACTORY.create();
 		tableComp.setLayout(layout);
@@ -408,7 +411,7 @@ public abstract class BasicSimplePropertyComposite extends AbstractPropertyCompo
 
 			@Override
 			protected boolean canEdit(final Object element) {
-				return true;
+				return canEditEnum;
 			}
 		});
 
@@ -456,7 +459,7 @@ public abstract class BasicSimplePropertyComposite extends AbstractPropertyCompo
 
 			@Override
 			protected boolean canEdit(final Object element) {
-				return true;
+				return canEditEnum;
 			}
 		});
 
@@ -478,8 +481,8 @@ public abstract class BasicSimplePropertyComposite extends AbstractPropertyCompo
 
 			@Override
 			public void selectionChanged(final SelectionChangedEvent event) {
-				removeEnumButton.setEnabled(!event.getSelection().isEmpty());
-				editEnumButton.setEnabled(!event.getSelection().isEmpty());
+				removeEnumButton.setEnabled(!event.getSelection().isEmpty() && canEditEnum);
+				editEnumButton.setEnabled(!event.getSelection().isEmpty() && canEditEnum);
 			}
 		});
 		HelpUtil.assignTooltip(this.enumViewer.getControl(), HelpConstants.prf_properties_simple_value);

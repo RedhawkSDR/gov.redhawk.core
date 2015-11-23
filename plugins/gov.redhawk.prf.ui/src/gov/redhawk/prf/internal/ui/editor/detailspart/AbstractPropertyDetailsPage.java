@@ -46,7 +46,6 @@ public abstract class AbstractPropertyDetailsPage extends ScaDetails {
 	private Property property;
 	private EObject input;
 	private AbstractPropertyComposite composite;
-	private boolean editable;
 	private Binding nameBinding;
 
 	public AbstractPropertyDetailsPage(final PropertiesSection section) {
@@ -120,9 +119,12 @@ public abstract class AbstractPropertyDetailsPage extends ScaDetails {
 		return Property.getProperty(input);
 	}
 
+	protected boolean isEditable() {
+		return SCAEditorUtil.isEditableResource(getPage(), this.input.eResource());
+	}
+
 	private void setEditable() {
-		this.editable = SCAEditorUtil.isEditableResource(getPage(), this.input.eResource());
-		this.composite.setEditable(this.editable);
+		this.composite.setEditable(isEditable());
 	}
 
 	protected AbstractPropertyComposite getComposite() {

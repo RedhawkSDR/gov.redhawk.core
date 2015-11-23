@@ -51,7 +51,9 @@ import org.eclipse.ui.forms.widgets.FormToolkit;
 
 public class StructSequencePropertyComposite extends BasicStructPropertyComposite {
 
+	private Label structValueLabel;
 	private TreeViewer structValueViewer;
+	private StructValueEditingSupport structValueEditSupport;
 	private final AdapterFactory adapterFactory;
 	private Button addButton;
 	private Button removeButton;
@@ -86,9 +88,9 @@ public class StructSequencePropertyComposite extends BasicStructPropertyComposit
 	}
 
 	private void createStructValueViewer(final FormToolkit toolkit) {
-		final Label label = toolkit.createLabel(this, "StructValue:");
-		label.setForeground(toolkit.getColors().getColor(IFormColors.TITLE));
-		label.setLayoutData(new GridData(GridData.BEGINNING, GridData.BEGINNING, false, false));
+		this.structValueLabel = toolkit.createLabel(this, "StructValue:");
+		this.structValueLabel.setForeground(toolkit.getColors().getColor(IFormColors.TITLE));
+		this.structValueLabel.setLayoutData(new GridData(GridData.BEGINNING, GridData.BEGINNING, false, false));
 		final Composite treeComposite = toolkit.createComposite(this, SWT.NULL);
 		final GridLayout layout = SWTUtil.TABLE_ENTRY_LAYOUT_FACTORY.create();
 		treeComposite.setLayout(layout);
@@ -115,7 +117,8 @@ public class StructSequencePropertyComposite extends BasicStructPropertyComposit
 		column.setWidth(200);// SUPPRESS CHECKSTYLE MagicNumber
 		TreeViewerColumn viewerColumn = new TreeViewerColumn(this.structValueViewer, column);
 		viewerColumn.setLabelProvider(new StructValueLabelProvider(contentProvider));
-		viewerColumn.setEditingSupport(new StructValueEditingSupport(this.structValueViewer, contentProvider));
+		this.structValueEditSupport = new StructValueEditingSupport(this.structValueViewer, contentProvider);
+		viewerColumn.setEditingSupport(this.structValueEditSupport);
 		this.addButton = toolkit.createButton(treeComposite, "Add...", SWT.PUSH);
 		this.addButton.setLayoutData(GridDataFactory.fillDefaults().align(SWT.FILL, SWT.TOP).create());
 		this.removeButton = toolkit.createButton(treeComposite, "Remove", SWT.PUSH);
@@ -182,10 +185,13 @@ public class StructSequencePropertyComposite extends BasicStructPropertyComposit
 	@Override
 	public void setEditable(final boolean canEdit) {
 		super.setEditable(canEdit);
-//		if (this.structValueViewer != null) {
-//			this.structValueViewer.getTree().setEnabled(canEdit);
-//		}
-		//		this.addButton.setEnabled(canEdit);
+
+		this.structValueLabel.setEnabled(canEdit);
+		this.structValueEditSupport.setEditable(canEdit);
+		// This is data-bound, so only disable
+		if (!canEdit) {
+			this.addButton.setEnabled(false);
+		}
 	}
 
 }
