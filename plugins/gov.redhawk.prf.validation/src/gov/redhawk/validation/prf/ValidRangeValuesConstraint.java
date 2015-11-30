@@ -56,8 +56,15 @@ public class ValidRangeValuesConstraint extends AbstractModelConstraint {
 
 	private IStatus checkValues(IValidationContext ctx, String min, String max, PropertyValueType type, boolean complex) {
 		if (!complex && min != null && max != null && min.trim().length() > 0 && max.trim().length() > 0) {
-			Object minValue = AnyUtils.convertString(min, type.getLiteral());
-			Object maxValue = AnyUtils.convertString(max, type.getLiteral());
+			Object minValue, maxValue;
+			try {
+				minValue = AnyUtils.convertString(min, type.getLiteral());
+				maxValue = AnyUtils.convertString(max, type.getLiteral());
+			} catch (IllegalArgumentException ex) {
+				// If we can't parse the string and convert to the appropriate type, we can't check range
+				// The type-checking constraint for min/max will indicate an error
+				return ctx.createSuccessStatus();
+			}
 			if (minValue instanceof Number && maxValue instanceof Number && CompareNumbers.compare((Number) minValue, (Number) maxValue) > 0) {
 				return new EnhancedConstraintStatus((ConstraintStatus) ctx.createFailureStatus(min, max), PrfPackage.Literals.RANGE__MIN);
 			}
