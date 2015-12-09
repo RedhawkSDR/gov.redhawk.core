@@ -14,9 +14,9 @@
   <modelVersion>4.0.0</modelVersion>
   <parent>
     <groupId>gov.redhawk.core</groupId>
-    <artifactId>releng</artifactId>
+    <artifactId>gov.redhawk.core.parent</artifactId>
     <version>1.9.1-SNAPSHOT</version>
-    <relativePath>../../releng/</relativePath>
+    <relativePath>../..</relativePath>
   </parent>
   <groupId>gov.redhawk.core</groupId>
   <artifactId>gov.redhawk.ui.waveformviewer</artifactId>
