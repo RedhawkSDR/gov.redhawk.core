@@ -16,7 +16,6 @@
   <parent>
     <groupId>gov.redhawk.core</groupId>
     <artifactId>gov.redhawk.core.parent</artifactId>
-    <artifactId>releng-rcp</artifactId>
     <version>1.10.2-SNAPSHOT</version>
     <relativePath>../..</relativePath>
   </parent>

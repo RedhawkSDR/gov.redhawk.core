@@ -18,12 +18,6 @@
     <version>1.10.2-SNAPSHOT</version>
     <relativePath>../..</relativePath>
   </parent>
-  <parent>
-    <groupId>gov.redhawk.core</groupId>
-    <artifactId>core</artifactId>
-    <version>1.10.2-SNAPSHOT</version>
-    <relativePath>../../releng/core/</relativePath>
-  </parent>
 
   <build>
     <plugins>
@@ -46,3 +40,4 @@
       </plugin>
     </plugins>
   </build>
+</project>
