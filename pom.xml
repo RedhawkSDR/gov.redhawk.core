@@ -27,6 +27,11 @@
     <nxm>http://nextmidas.techma.com/p2/nxm/updates/latest</nxm>
     <nxm-ui>http://nextmidas.techma.com/p2/nxm.ui/updates/latest/</nxm-ui>
     <jacorb>http://download.redhawksdr.org/jacorb/updates/stable</jacorb>
+    <!-- Sonar -->
+    <sonar.language>java</sonar.language>
+    <sonar.core.codeCoveragePlugin>jacoco</sonar.core.codeCoveragePlugin>
+    <sonar.dynamicAnalysis>reuseReports</sonar.dynamicAnalysis>
+    <sonar.jacoco.reportPath>${project.basedir}/../../target/jacoco.exec</sonar.jacoco.reportPath>
   </properties>
 
   <repositories>

@@ -25,10 +25,12 @@
 	<packaging>eclipse-test-plugin</packaging>
 
 
-	<properties>
-		<pmd.skip>true</pmd.skip>
-		<cpd.skip>true</cpd.skip>
-	</properties>
+  <properties>
+    <pmd.skip>true</pmd.skip>
+    <cpd.skip>true</cpd.skip>
+    <sonar.sources></sonar.sources>
+    <sonar.tests>src</sonar.tests>
+  </properties>
 
     <profiles>
         <profile>
