@@ -14,9 +14,9 @@
     <packaging>eclipse-feature</packaging>
     <parent>
         <groupId>gov.redhawk.core</groupId>
-        <artifactId>releng-rcp</artifactId>
+        <artifactId>gov.redhawk.core.parent</artifactId>
         <version>1.10.2-SNAPSHOT</version>
-        <relativePath>../../releng/rcp/</relativePath>
+        <relativePath>../..</relativePath>
     </parent>
     <build>
         <plugins>

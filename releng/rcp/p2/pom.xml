@@ -13,8 +13,9 @@
   <artifactId>gov.redhawk.rcp.p2</artifactId>
   <packaging>eclipse-repository</packaging>
   <parent>
+    <relativePath>../../..</relativePath>
   	<groupId>gov.redhawk.core</groupId>
-  	<artifactId>releng-rcp</artifactId>
+  	<artifactId>gov.redhawk.core.parent</artifactId>
   	<version>1.10.2-SNAPSHOT</version>
   </parent>
 </project>

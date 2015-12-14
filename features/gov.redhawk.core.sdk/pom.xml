@@ -14,6 +14,12 @@
   <packaging>eclipse-feature</packaging>
   <parent>
     <groupId>gov.redhawk.core</groupId>
+    <artifactId>gov.redhawk.core.parent</artifactId>
+    <version>1.10.2-SNAPSHOT</version>
+    <relativePath>../..</relativePath>
+  </parent>
+  <parent>
+    <groupId>gov.redhawk.core</groupId>
     <artifactId>core</artifactId>
     <version>1.10.2-SNAPSHOT</version>
     <relativePath>../../releng/core/</relativePath>
@@ -40,4 +46,3 @@
       </plugin>
     </plugins>
   </build>
-</project>
