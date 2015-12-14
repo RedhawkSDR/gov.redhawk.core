@@ -15,9 +15,9 @@
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
 		<groupId>gov.redhawk.core</groupId>
-		<artifactId>core</artifactId>
+		<artifactId>gov.redhawk.core.parent</artifactId>
 		<version>1.8.10-SNAPSHOT</version>
-		<relativePath>../../releng/core/</relativePath>
+		<relativePath>../..</relativePath>
 	</parent>
 	<groupId>gov.redhawk.core</groupId>
 	<artifactId>gov.redhawk.sca.efs.tests</artifactId>
@@ -30,8 +30,8 @@
 		<cpd.skip>true</cpd.skip>
 	</properties>
 
-    <profiles>
-        <profile>
+  <profiles>
+    <profile>
             <id>code-analysis</id>
             <build>
                 <plugins>
@@ -44,7 +44,52 @@
                     </plugin>
                 </plugins>
             </build>
-        </profile>
+    </profile>
   </profiles>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.eclipse.tycho</groupId>
+        <artifactId>target-platform-configuration</artifactId>
+        <version>${tycho-version}</version>
+        <configuration>
+          <environments>
+            <environment>
+              <os>linux</os>
+              <ws>gtk</ws>
+              <arch>x86</arch>
+            </environment>
+            <environment>
+              <os>linux</os>
+              <ws>gtk</ws>
+              <arch>x86_64</arch>
+            </environment>
+            <environment>
+              <os>win32</os>
+              <ws>win32</ws>
+              <arch>x86_64</arch>
+            </environment>
+          </environments>
+          <pomDependencies>consider</pomDependencies>
+          <dependency-resolution>
+            <extraRequirements>
+              <requirement>
+                <type>eclipse-plugin</type>
+                <id>org.jacorb</id>
+                <versionRange>0.0.0</versionRange>
+              </requirement>
+              <requirement>
+                <type>eclipse-plugin</type>
+                <id>org.eclipse.equinox.ds</id>
+                <versionRange>0.0.0</versionRange>
+              </requirement>
+            </extraRequirements>
+          </dependency-resolution>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+
 
 </project>
