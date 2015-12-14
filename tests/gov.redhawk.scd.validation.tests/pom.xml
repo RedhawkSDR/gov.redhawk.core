@@ -10,26 +10,25 @@
     http://www.eclipse.org/legal/epl-v10.html.
 -->
 <project
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
-	xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-	<modelVersion>4.0.0</modelVersion>
-	<parent>
-		<groupId>gov.redhawk.core</groupId>
-		<artifactId>gov.redhawk.core.parent</artifactId>
-		<version>1.10.2-SNAPSHOT</version>
-		<relativePath>../..</relativePath>
-	</parent>
-  <groupId>gov.redhawk.core</groupId>
-	<artifactId>gov.redhawk.scd.validation.tests</artifactId>
-	<version>1.0.0-SNAPSHOT</version>
-	<packaging>eclipse-test-plugin</packaging>
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
+  xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>gov.redhawk.core</groupId>
+    <artifactId>gov.redhawk.core.parent</artifactId>
+    <version>1.10.2-SNAPSHOT</version>
+    <relativePath>../..</relativePath>
+  </parent>
+  <artifactId>gov.redhawk.scd.validation.tests</artifactId>
+  <version>1.0.0-SNAPSHOT</version>
+  <packaging>eclipse-test-plugin</packaging>
 
-	<properties>
-		<pmd.skip>true</pmd.skip>
-		<cpd.skip>true</cpd.skip>
+  <properties>
+    <pmd.skip>true</pmd.skip>
+    <cpd.skip>true</cpd.skip>
     <sonar.sources></sonar.sources>
     <sonar.tests>src</sonar.tests>
-	</properties>
+  </properties>
 
     <profiles>
         <profile>
