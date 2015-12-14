@@ -15,9 +15,9 @@
 	<packaging>eclipse-feature</packaging>
 	<parent>
 		<groupId>gov.redhawk.core</groupId>
-		<artifactId>core</artifactId>
+		<artifactId>gov.redhawk.core.parent</artifactId>
 		<version>1.9.1-SNAPSHOT</version>
-		<relativePath>../../releng/core/</relativePath>
+		<relativePath>../..</relativePath>
 	</parent>
 	<groupId>gov.redhawk.core.feature</groupId>
 	</project>
