@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<scr:component xmlns:scr="http://www.osgi.org/xmlns/scr/v1.1.0" name="gov.redhawk.ui.views.namebrowser.rap.internal.rap">
-   <implementation class="gov.redhawk.ui.views.namebrowser.rap.internal.DisplayHolderService"/>
-   <service>
-      <provide interface="gov.redhawk.ui.views.namebrowser.IDisplayHolder"/>
-   </service>
-</scr:component>
