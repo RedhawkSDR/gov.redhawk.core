@@ -23,6 +23,7 @@ import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.edit.command.AddCommand;
 import org.eclipse.emf.transaction.TransactionalEditingDomain;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -31,7 +32,6 @@ import gov.redhawk.eclipsecorba.library.LibraryFactory;
 import gov.redhawk.eclipsecorba.library.LibraryPackage;
 import gov.redhawk.eclipsecorba.library.URIPathSet;
 import gov.redhawk.eclipsecorba.library.util.RefreshIdlLibraryJob;
-import junit.framework.Assert;
 
 public class RefreshIdlLibraryTest {
 
@@ -46,6 +46,7 @@ public class RefreshIdlLibraryTest {
 		library = LibraryFactory.eINSTANCE.createIdlLibrary();
 		final URIPathSet uriPath = LibraryFactory.eINSTANCE.createURIPathSet();
 		uriPath.getDirs().add(LibraryTestUtil.getURI("idl"));
+		uriPath.getDirs().add(LibraryTestUtil.getURI("idl/COS"));
 		library.getPaths().add(uriPath);
 
 		editingDomain.getCommandStack().execute(new AddCommand(editingDomain, libraryResource.getContents(), library));
