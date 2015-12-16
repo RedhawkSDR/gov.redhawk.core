@@ -48,7 +48,7 @@ public class RefreshIdlLibraryJob extends Job {
 	protected IStatus run(final IProgressMonitor monitor) {
 		monitor.beginTask("Refreshing IDL Library...", IProgressMonitor.UNKNOWN);
 		try {
-			this.library.load(monitor);
+			this.library.reload(monitor);
 		} catch (final CoreException e) {
 			return new Status(e.getStatus().getSeverity(), LibraryPlugin.PLUGIN_ID, e.getMessage(), e);
 		}
