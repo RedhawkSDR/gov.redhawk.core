@@ -217,7 +217,8 @@ public class IdlLibraryImpl extends RepositoryModuleImpl implements IdlLibrary {
 			}
 		}
 	};
-	private boolean loaded;
+
+	private boolean loaded = false;
 
 	private void specificationAdded(final Specification spec) {
 		final EList<Definition> definitions = spec.getDefinitions();
@@ -344,6 +345,7 @@ public class IdlLibraryImpl extends RepositoryModuleImpl implements IdlLibrary {
 					}
 				}
 			});
+			this.loaded = false;
 		}
 
 		final MultiStatus libraryStatus = new MultiStatus(LibraryPlugin.PLUGIN_ID, IStatus.OK, "Problems occured while loading IDL library.", null);
