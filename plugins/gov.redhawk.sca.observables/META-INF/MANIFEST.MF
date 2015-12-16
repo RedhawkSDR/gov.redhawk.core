@@ -5,13 +5,11 @@ Bundle-SymbolicName: gov.redhawk.sca.observables
 Bundle-Version: 1.0.0.qualifier
 Bundle-Activator: gov.redhawk.sca.observables.ScaObservablesPlugin
 Require-Bundle: org.eclipse.ui;bundle-version="3.6.1";resolution:=optional,
- org.eclipse.rap.ui;bundle-version="1.3.1";resolution:=optional,
  org.eclipse.core.runtime;bundle-version="3.6.0",
  gov.redhawk.sca;bundle-version="6.0.0",
  org.eclipse.emf.databinding;bundle-version="1.2.0",
  org.eclipse.core.databinding.property;bundle-version="1.3.0",
  org.eclipse.emf.edit.ui;bundle-version="2.6.0";resolution:=optional,
- org.eclipse.emf.rap.edit.ui;bundle-version="2.6.1";resolution:=optional,
  org.eclipse.emf.databinding.edit;bundle-version="1.2.0"
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: J2SE-1.5
