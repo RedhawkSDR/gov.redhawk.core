@@ -19,6 +19,5 @@
     <relativePath>../..</relativePath>
   </parent>
   <artifactId>mil.jpeojtrs.sca.dcd.diagram</artifactId>
-  <version>2.0.0-SNAPSHOT</version>
   <packaging>eclipse-plugin</packaging>
 </project>
