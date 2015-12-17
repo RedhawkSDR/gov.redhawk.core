@@ -22,7 +22,7 @@
    <feature url="features/gov.redhawk.idl_0.0.0.qualifier.jar" id="gov.redhawk.idl">
       <category name="gov.redhawk.core"/>
    </feature>
-   <feature url="features/gov.redhawk.validation_0.0.0.qualifier.jar" id="gov.redhawk.validation">
+   <feature url="features/gov.redhawk.validation.feature_0.0.0.qualifier.jar" id="gov.redhawk.validation.feature">
       <category name="gov.redhawk.core"/>
    </feature>
    <category-def name="gov.redhawk.core" label="REDHAWK Core"/>
