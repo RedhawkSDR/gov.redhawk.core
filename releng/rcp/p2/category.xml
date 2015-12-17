@@ -10,16 +10,16 @@
     http://www.eclipse.org/legal/epl-v10.html.
 -->
 <site>
-   <feature url="features/gov.redhawk.validation_1.10.2.qualifier.jar" id="gov.redhawk.validation" version="1.10.2.qualifier">
+   <feature url="features/gov.redhawk.validation_0.0.0.qualifier.jar" id="gov.redhawk.validation" version="0.0.0.qualifier">
       <category name="gov.redhawk.rcp"/>
    </feature>
-   <feature url="features/gov.redhawk.idl_1.10.2.qualifier.jar" id="gov.redhawk.idl" version="1.10.2.qualifier">
+   <feature url="features/gov.redhawk.idl_0.0.0.qualifier.jar" id="gov.redhawk.idl" version="0.0.0.qualifier">
       <category name="gov.redhawk.rcp"/>
    </feature>
-   <feature url="features/gov.redhawk.rcp_1.10.2.qualifier.jar" id="gov.redhawk.rcp" version="1.10.2.qualifier">
+   <feature url="features/gov.redhawk.rcp_0.0.0.qualifier.jar" id="gov.redhawk.rcp" version="0.0.0.qualifier">
       <category name="gov.redhawk.rcp"/>
    </feature>
-   <feature url="features/gov.redhawk.rcp.sdk_1.10.2.qualifier.jar" id="gov.redhawk.rcp.sdk" version="1.10.2.qualifier">
+   <feature url="features/gov.redhawk.rcp.sdk_0.0.0.qualifier.jar" id="gov.redhawk.rcp.sdk" version="0.0.0.qualifier">
       <category name="gov.redhawk.rcp"/>
    </feature>
    <category-def name="gov.redhawk.rcp" label="REDHAWK Core"/>
