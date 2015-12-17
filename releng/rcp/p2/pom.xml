@@ -16,6 +16,6 @@
     <relativePath>../../..</relativePath>
   	<groupId>gov.redhawk.core</groupId>
   	<artifactId>gov.redhawk.core.parent</artifactId>
-  	<version>1.10.2-SNAPSHOT</version>
+  	<version>1.10.3-SNAPSHOT</version>
   </parent>
 </project>
