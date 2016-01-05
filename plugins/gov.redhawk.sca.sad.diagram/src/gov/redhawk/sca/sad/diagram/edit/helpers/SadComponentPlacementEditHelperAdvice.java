@@ -69,14 +69,14 @@ public class SadComponentPlacementEditHelperAdvice extends ComponentPlacementEdi
 		Assert.isTrue(eobj instanceof SoftwareAssembly);
 		final SoftwareAssembly sa = (SoftwareAssembly) eobj;
 		
-		String compName = getInstantiationName(request);
-		if (compName == null) {
-			compName =  SoftwareAssembly.Util.createComponentUsageName(sa, spd.getName());
-		}
-		
 		String id = getInstantiationID(request);
 		if (id == null) {
-			id = SoftwareAssembly.Util.createComponentIdentifier(sa, compName);
+			id = SoftwareAssembly.Util.createComponentIdentifier(sa, spd.getName());
+		}
+
+		String compName = getInstantiationName(request);
+		if (compName == null) {
+			compName =  SoftwareAssembly.Util.createComponentUsageName(sa, id);
 		}
 		
 		retval.setUsageName(compName);
