@@ -21,9 +21,9 @@ import org.eclipse.core.runtime.jobs.Job;
 
 import CF.LifeCycleOperations;
 import CF.LifeCyclePackage.ReleaseError;
+import gov.redhawk.model.sca.ScaAbstractComponent;
 import gov.redhawk.model.sca.ScaModelPlugin;
 import gov.redhawk.model.sca.ScaWaveform;
-import gov.redhawk.sca.util.PluginUtil;
 import mil.jpeojtrs.sca.util.CorbaUtils;
 
 /**
@@ -40,14 +40,16 @@ public class ReleaseJob extends Job {
 
 	@Override
 	protected IStatus run(IProgressMonitor monitor) {
-		String releaseName = obj.toString();
-		final ScaWaveform scaWaveform = PluginUtil.adapt(ScaWaveform.class, obj);
-		if (scaWaveform != null) {
-			releaseName = scaWaveform.getName();
+		final String releaseName;
+		if (obj instanceof ScaWaveform) {
+			releaseName = ((ScaWaveform) obj).getName();
+		} else if (obj instanceof ScaAbstractComponent) {
+			releaseName = ((ScaAbstractComponent<?>) obj).getIdentifier();
+		} else {
+			releaseName = obj.toString();
 		}
-		final String finalReleaseName = releaseName;
 
-		SubMonitor progress = SubMonitor.convert(monitor, "Releasing: " + finalReleaseName, IProgressMonitor.UNKNOWN);
+		SubMonitor progress = SubMonitor.convert(monitor, "Releasing: " + releaseName, IProgressMonitor.UNKNOWN);
 		try {
 			CorbaUtils.invoke(new Callable<Object>() {
 
@@ -56,7 +58,7 @@ public class ReleaseJob extends Job {
 					try {
 						obj.releaseObject();
 					} catch (final ReleaseError e) {
-						throw new CoreException(new Status(IStatus.ERROR, ScaModelPlugin.ID, "Failed to release: " + finalReleaseName, e));
+						throw new CoreException(new Status(IStatus.ERROR, ScaModelPlugin.ID, "Failed to release: " + releaseName, e));
 					}
 					return null;
 				}
@@ -64,7 +66,7 @@ public class ReleaseJob extends Job {
 			}, progress);
 			return Status.OK_STATUS;
 		} catch (CoreException e) {
-			return new Status(e.getStatus().getSeverity(), ScaModelPlugin.ID, "Failed to release: " + finalReleaseName, e);
+			return new Status(e.getStatus().getSeverity(), ScaModelPlugin.ID, "Failed to release: " + releaseName, e);
 		} catch (InterruptedException e) {
 			return Status.CANCEL_STATUS;
 		} finally {
