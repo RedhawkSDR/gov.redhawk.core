@@ -15,7 +15,6 @@ import gov.redhawk.model.sca.ScaDomainManager;
 import gov.redhawk.model.sca.ScaModelPlugin;
 import gov.redhawk.model.sca.ScaWaveform;
 import gov.redhawk.model.sca.ScaWaveformFactory;
-import gov.redhawk.model.sca.commands.ScaModelCommand;
 import gov.redhawk.sca.util.Debug;
 import gov.redhawk.sca.util.SilentJob;
 
@@ -28,7 +27,6 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.SubMonitor;
 import org.eclipse.core.runtime.jobs.Job;
-import org.eclipse.emf.transaction.RunnableWithResult;
 import org.omg.CORBA.SystemException;
 
 import CF.DataType;
@@ -106,22 +104,10 @@ public class LaunchWaveformJob extends SilentJob {
 				try {
 					factory = this.domMgr.installScaWaveformFactory(profile);
 					installed = true;
-				} catch (final ApplicationAlreadyInstalled a) {
-					try {
-						factory = ScaModelCommand.runExclusive(this.domMgr, new RunnableWithResult.Impl<ScaWaveformFactory>() {
-
-							public void run() {
-								for (final ScaWaveformFactory factory : LaunchWaveformJob.this.domMgr.fetchWaveformFactories(null)) {
-									if (factory.getProfile().equals(profile)) {
-										setResult(factory);
-									}
-								}
-							}
-
-						});
-					} catch (final InterruptedException e) {
-						// PASS
-					}
+				} catch (final ApplicationAlreadyInstalled e) {
+					String errorMsg = "The domain manager reports the application factory is already installed, but it was not found. "
+						+ "Another installed waveform may be using the same softwareassembly id in its XML file.";
+					return new Status(Status.ERROR, ScaModelPlugin.ID, errorMsg, e);
 				}
 			}
 			subMonitor.worked(1);
