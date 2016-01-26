@@ -31,14 +31,14 @@ import CF.FileSystemPackage.FileType;
 import CF.FileSystemPackage.UnknownFileSystemProperties;
 
 /**
- * 
+ * An IDE implementation of a {@link CF.FileManager}. The root directory is a virtual directory (see
+ * {@link Directory}).
  */
 public class FileManagerImpl implements IFileManager {
 
 	private final Directory root = new Directory();
 
 	public FileManagerImpl() {
-
 	}
 
 	@Override

@@ -151,6 +151,7 @@ public final class ScaLaunchConfigurationUtil {
 		}
 
 		// Try and see if the location is a path within the workspace, this is for backwards compatibility
+		// with old run configurations where the location could be workspace-relative
 		IResource member = ResourcesPlugin.getWorkspace().getRoot().findMember(new Path(location));
 		if (member != null && member.exists()) {
 			file = new File(member.getFullPath().toOSString());

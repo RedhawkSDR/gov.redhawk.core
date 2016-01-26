@@ -81,6 +81,7 @@ public class WaveformLaunchConfigurationDelegate extends LaunchConfigurationDele
 					final Object waitLock = new Object();
 					final SimpleDateFormat dateFormat = new SimpleDateFormat("DDD_HHmmssSSS");
 					final String waveformName = configuration.getName() + "_" + dateFormat.format(new Date());
+					// TODO: Should this be ScaLaunchConfigurationUtil.getProfileURI(configuration)?
 					final IPath waveformPath = new Path(configuration.getAttribute(ScaLaunchConfigurationConstants.ATT_PROFILE, ""));
 
 					final DeviceAssignmentType[] deviceAssn = ScaLaunchConfigurationUtil.loadDeviceAssignment(configuration);

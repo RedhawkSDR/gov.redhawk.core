@@ -14,6 +14,13 @@ package gov.redhawk.core.resourcefactory;
 import java.beans.PropertyChangeListener;
 import java.util.List;
 
+/**
+ * Classes implementing this interface provide descriptions of resources they know about which can be launched in the
+ * sandbox. They must emit notifications to change listeners if resources can no longer be launched, or if they become
+ * aware of new resources which can be launched.
+ * <p/>
+ * Implementers are registered with the resource factory registry via extension point.
+ */
 public interface IResourceFactoryProvider {
 	
 	/**

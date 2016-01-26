@@ -24,6 +24,11 @@ import CF.PropertiesHolder;
 import CF.FileSystemPackage.FileInformationType;
 import CF.FileSystemPackage.UnknownFileSystemProperties;
 
+/**
+ * Provides an abstraction that proxies {@link CF.FileSystem} calls. Multiple {@link ResourceDesc}'s can be "mounted"
+ * here, each with its own priority. This class will proxy a {@link CF.FileSystem} call to the {@link CF.FileSystem}
+ * associated with the highest priority {@link ResourceDesc}.
+ */
 public class ProxyFileSystem implements FileSystemOperations {
 
 	private static class MountPoint implements Comparable<MountPoint> {

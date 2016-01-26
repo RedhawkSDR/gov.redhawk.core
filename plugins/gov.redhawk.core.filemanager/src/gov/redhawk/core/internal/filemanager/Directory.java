@@ -40,6 +40,9 @@ import CF.FileManagerPackage.NonExistentMount;
 import CF.FileSystemPackage.FileInformationType;
 import CF.FileSystemPackage.FileType;
 
+/**
+ * Represents a virtual, in-memory directory in the IDE's file manager. It contains other {@link Node}s.
+ */
 public class Directory implements Node {
 	private final Map<String, List<Node>> mounts = new HashMap<String, List<Node>>();
 

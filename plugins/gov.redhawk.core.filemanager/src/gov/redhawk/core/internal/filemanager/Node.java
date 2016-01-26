@@ -14,6 +14,9 @@ package gov.redhawk.core.internal.filemanager;
 import CF.DataType;
 import CF.FileSystemPackage.FileInformationType;
 
+/**
+ * An entry in the IDE's file manager file system. See derived classes for details.
+ */
 public interface Node {
 	public DataType[] createDataTypeArray();
 

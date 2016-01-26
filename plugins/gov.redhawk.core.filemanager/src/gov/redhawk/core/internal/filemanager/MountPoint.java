@@ -22,6 +22,9 @@ import CF.FileSystem;
 import CF.FileSystemPackage.FileInformationType;
 import CF.FileSystemPackage.FileType;
 
+/**
+ * Represents a "mount point" where a {@link CF.FileSystem} has been "mounted" as a directory in the IDE file manager.
+ */
 public class MountPoint implements Node {
 	private final FileSystem fileSystem;
 
