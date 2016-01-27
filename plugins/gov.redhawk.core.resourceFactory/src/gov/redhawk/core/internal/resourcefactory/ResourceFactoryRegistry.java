@@ -39,7 +39,9 @@ import CF.FileException;
 import CF.InvalidFileName;
 
 /**
- * 
+ * The resource factory registry instantiates instances of resource factories ({@link IResourceFactoryProvider})
+ * declared via extension point (see {@link #EP_ID}). The registry receives resource descriptions
+ * ({@link ResourceDesc}) from the factories, which it then fuses into a unified file system ({@link IFileManager}).
  */
 public enum ResourceFactoryRegistry implements IResourceFactoryRegistry {
 	INSTANCE;
