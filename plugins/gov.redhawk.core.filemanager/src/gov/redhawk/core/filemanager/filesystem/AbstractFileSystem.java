@@ -22,9 +22,6 @@ import CF.InvalidFileName;
 import CF.PropertiesHolder;
 import CF.FileSystemPackage.UnknownFileSystemProperties;
 
-/**
- * 
- */
 public abstract class AbstractFileSystem implements FileSystemOperations {
 
 	public static enum ScaFileInformationDataType {
@@ -39,17 +36,11 @@ public abstract class AbstractFileSystem implements FileSystemOperations {
 		this.poa = poa;
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public void remove(final String fileName) throws FileException, InvalidFileName {
 		throw new FileException(ErrorNumberType.CF_ENOTSUP, "Write operations not supported");
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public void copy(final String sourceFileName, final String destinationFileName) throws InvalidFileName, FileException {
 		throw new FileException(ErrorNumberType.CF_ENOTSUP, "Write operations not supported");
@@ -60,37 +51,23 @@ public abstract class AbstractFileSystem implements FileSystemOperations {
 		throw new FileException(ErrorNumberType.CF_ENOTSUP, "Write operations not supported");
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public File create(final String fileName) throws InvalidFileName, FileException {
 		throw new FileException(ErrorNumberType.CF_ENOTSUP, "Write operations not supported");
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public void mkdir(final String directoryName) throws InvalidFileName, FileException {
 		throw new FileException(ErrorNumberType.CF_ENOTSUP, "Write operations not supported");
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public void rmdir(final String directoryName) throws InvalidFileName, FileException {
 		throw new FileException(ErrorNumberType.CF_ENOTSUP, "Write operations not supported");
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public void query(final PropertiesHolder fileSystemProperties) throws UnknownFileSystemProperties {
 		// Do nothing
-
 	}
-
 }
