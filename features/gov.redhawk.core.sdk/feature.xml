@@ -13,7 +13,7 @@
       id="gov.redhawk.core.sdk"
       label="%featureName"
       version="1.10.3.qualifier"
-      provider-name="%featureProvider"
+      provider-name="%providerName"
       plugin="gov.redhawk.sca">
 
    <description url="http://redhawksdr.org">
