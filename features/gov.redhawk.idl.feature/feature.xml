@@ -13,7 +13,7 @@
       id="gov.redhawk.idl"
       label="%featureName"
       version="1.9.1.qualifier"
-      provider-name="%featureProvider"
+      provider-name="%providerName"
       plugin="gov.redhawk.eclipsecorba.idl">
 
    <description url="http://redhawksdr.org">
