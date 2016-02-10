@@ -13,18 +13,18 @@
       id="gov.redhawk.idl"
       label="%featureName"
       version="2.0.1.qualifier"
-      provider-name="%featureProvider"
+      provider-name="%providerName"
       plugin="gov.redhawk.eclipsecorba.idl">
 
    <description url="http://redhawksdr.org">
       %description
    </description>
 
-   <copyright url="http://redhawksdr.org">
+   <copyright url="%copyrightURL">
       %copyright
    </copyright>
 
-   <license url="http://redhawksdr.org">
+   <license url="%licenseURL">
       %license
    </license>
 
