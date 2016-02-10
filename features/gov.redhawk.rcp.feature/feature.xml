@@ -20,11 +20,11 @@
       %description
    </description>
 
-   <copyright url="http://redhawksdr.org">
+   <copyright url="%copyrightURL">
       %copyright
    </copyright>
 
-   <license url="http://redhawksdr.org">
+   <license url="%licenseURL">
       %license
    </license>
 
