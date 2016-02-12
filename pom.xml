@@ -130,8 +130,7 @@
     <module>tests/gov.redhawk.sca.efs.tests</module>
     <module>tests/gov.redhawk.sca.model.tests</module>
     <module>tests/gov.redhawk.sca.tests</module>
-    <module>releng/core/p2</module>
-    <module>releng/rcp/p2</module>
+    <module>releng/p2</module>
   </modules>
 
   <repositories>
