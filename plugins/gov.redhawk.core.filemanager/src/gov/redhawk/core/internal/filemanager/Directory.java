@@ -11,21 +11,17 @@
  */
 package gov.redhawk.core.internal.filemanager;
 
-import gov.redhawk.core.filemanager.filesystem.AbstractFileSystem.ScaFileInformationDataType;
-
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import mil.jpeojtrs.sca.util.AnyUtils;
-
+import org.apache.commons.io.FilenameUtils;
+import org.eclipse.core.runtime.IPath;
+import org.eclipse.core.runtime.Path;
+import org.jacorb.JacorbUtil;
 import org.omg.CORBA.Any;
-import org.omg.CORBA.TCKind;
 
 import CF.DataType;
 import CF.ErrorNumberType;
@@ -41,286 +37,250 @@ import CF.FileSystemPackage.FileInformationType;
 import CF.FileSystemPackage.FileType;
 
 /**
- * Represents a virtual, in-memory directory in the IDE's file manager. It contains other {@link Node}s.
+ * Represents a virtual, in-memory directory in the IDE's file manager. It contains other {@link Directory} or
+ * {@link MountPoint} instances, forming a tree that represents a file system hierarchy. An operation on this class
+ * traverses the tree of {@link Directory} until a {@link MountPoint} is encountered, at which point the operation is
+ * delegated to the mount point's file system for the remaining portion of the path.
+ * <p/>
+ * The {@link Directory} class itself will act as a read-only directory. Only the {@link #mount(IPath, FileSystem)}
+ * operation will create new {@link Directory} (as needed), and {@link #unmount(IPath)} will remove them.
+ * <p/>
+ * All methods assume they are called with an absolute {@link IPath}.
  */
 public class Directory implements Node {
-	private final Map<String, List<Node>> mounts = new HashMap<String, List<Node>>();
 
-	public void remove(final List<String> fileName) throws FileException, InvalidFileName {
-		if (fileName.size() == 0) {
-			throw new InvalidFileName();
-		}
-		final List<Node> nodes = this.mounts.get(fileName.get(0));
-		if (fileName.size() == 1) {
-			throw new FileException(ErrorNumberType.CF_EIO, "Can not remove");
-		} else {
-			if (nodes == null) {
-				throw new FileException(ErrorNumberType.CF_EIO, "File does not exist");
-			} else if (nodes.get(0) instanceof Directory) {
-				((Directory) nodes.get(0)).remove(fileName.subList(1, fileName.size()));
-			} else if (nodes.get(0) instanceof MountPoint) {
-				final StringBuilder builder = new StringBuilder();
-				for (final String s : fileName.subList(1, fileName.size())) {
-					builder.append('/');
-					builder.append(s);
-				}
-				((MountPoint) nodes.get(0)).getFileSystem().remove(builder.toString());
-			} else {
-				throw new FileException(ErrorNumberType.CF_EIO, "UnsupportedOperationException");
-			}
-		}
+	/**
+	 * The sub-directories / mounts inside this directory (name -> object)
+	 */
+	private final Map<String, Node> childNodes = new HashMap<String, Node>();
+
+	public Directory() {
 	}
 
-	public void rmdir(final List<String> directoryName) throws InvalidFileName, FileException {
-		if (directoryName.size() == 0) {
-			throw new InvalidFileName();
-		}
-		final List<Node> nodes = this.mounts.get(directoryName.get(0));
-		if (directoryName.size() == 1) {
-			if (nodes != null) {
-				this.mounts.remove(directoryName.get(0));
-			} else {
-				throw new FileException(ErrorNumberType.CF_EIO, "File does not exist");
-			}
-		} else {
-			if (nodes == null) {
-				throw new FileException(ErrorNumberType.CF_EIO, "File does not exist");
-			} else if (nodes.get(0) instanceof Directory) {
-				((Directory) nodes.get(0)).rmdir(directoryName.subList(1, directoryName.size()));
-			} else if (nodes.get(0) instanceof MountPoint) {
-				final StringBuilder builder = new StringBuilder();
-				for (final String s : directoryName.subList(1, directoryName.size())) {
-					builder.append('/');
-					builder.append(s);
-				}
-				((MountPoint) nodes.get(0)).getFileSystem().rmdir(builder.toString());
-			} else {
-				throw new UnsupportedOperationException();
-			}
-		}
+	/**
+	 * Returns true iff this {@link Directory} contains a child {@link Node} with the specified name.
+	 * @param childName
+	 * @return
+	 */
+	public boolean containsChildNode(String name) {
+		return childNodes.containsKey(name);
 	}
 
-	public File create(final List<String> fileName) throws InvalidFileName, FileException {
-		if (fileName.size() == 0) {
-			throw new InvalidFileName();
+	@Override
+	public void remove(IPath fileName) throws FileException, InvalidFileName {
+		if (fileName.segmentCount() == 0) {
+			throw new FileException(ErrorNumberType.CF_EISDIR, "Is a directory");
 		}
-		final List<Node> nodes = this.mounts.get(fileName.get(0));
-		if (fileName.size() == 1) {
-			throw new FileException(ErrorNumberType.CF_EIO, "File already exists");
+
+		Node node = childNodes.get(fileName.segment(0));
+		if (fileName.segmentCount() == 1) {
+			if (node == null) {
+				throw new FileException(ErrorNumberType.CF_ENOENT, "No such file");
+			} else {
+				throw new FileException(ErrorNumberType.CF_EISDIR, "Is a directory");
+			}
+		}
+
+		if (node == null) {
+			throw new FileException(ErrorNumberType.CF_ENOENT, "No such file");
+		}
+		node.remove(fileName.removeFirstSegments(1).makeAbsolute());
+	}
+
+	@Override
+	public void rmdir(IPath directoryName) throws InvalidFileName, FileException {
+		if (directoryName.segmentCount() == 0) {
+			// Deny removal of this virtual directory
+			throw new FileException(ErrorNumberType.CF_EACCES, "Directory is read-only");
+		}
+
+		Node node = childNodes.get(directoryName.segment(0));
+		if (node == null) {
+			throw new FileException(ErrorNumberType.CF_ENOENT, "No such directory");
+		}
+		node.rmdir(directoryName.removeFirstSegments(1).makeAbsolute());
+	}
+
+	@Override
+	public File create(IPath fileName) throws InvalidFileName, FileException {
+		// With one or fewer segments, we're not going to have anything path left to pass to a mount point
+		if (fileName.segmentCount() <= 1) {
+			throw new FileException(ErrorNumberType.CF_EACCES, "Write access to parent directory denied");
+		}
+
+		Node node = childNodes.get(fileName.segment(0));
+		if (node == null) {
+			throw new FileException(ErrorNumberType.CF_ENOENT, "No such directory");
+		}
+		return node.create(fileName.removeFirstSegments(1).makeAbsolute());
+	}
+
+	@Override
+	public void mkdir(IPath directoryName) throws InvalidFileName, FileException {
+		// With one or fewer segments, we're not going to have anything path left to pass to a mount point
+		if (directoryName.segmentCount() <= 1) {
+			throw new FileException(ErrorNumberType.CF_EACCES, "Parent directory is read-only");
+		}
+
+		Node node = childNodes.get(directoryName.segment(0));
+		if (node == null) {
+			throw new FileException(ErrorNumberType.CF_ENOENT, "No such directory");
+		}
+		node.mkdir(directoryName.removeFirstSegments(1).makeAbsolute());
+	}
+
+	public void mount(final IPath mountPoint, final FileSystem fileSystem) throws InvalidFileName, InvalidFileSystem, MountPointAlreadyExists {
+		if (mountPoint.segmentCount() == 0) {
+			throw new InvalidFileName(ErrorNumberType.CF_EINVAL, "Invalid mount point");
+		}
+
+		Node node = childNodes.get(mountPoint.segment(0));
+		if (mountPoint.segmentCount() == 1) {
+			if (node == null) {
+				this.childNodes.put(mountPoint.segment(0), new MountPoint(fileSystem));
+			} else if (node instanceof Directory) {
+				throw new InvalidFileName(ErrorNumberType.CF_EEXIST, "Target is a directory and mounting would shadow another mount");
+			} else {
+				throw new MountPointAlreadyExists();
+			}
 		} else {
-			if (nodes == null) {
+			if (node == null) {
 				Directory subDir = new Directory();
-				this.mounts.put(fileName.get(0), Collections.singletonList((Node) subDir));
-				return subDir.create(fileName.subList(1, fileName.size()));
-			} else if (nodes.get(0) instanceof Directory) {
-				return ((Directory) nodes.get(0)).create(fileName.subList(1, fileName.size()));
-			} else if (nodes.get(0) instanceof MountPoint) {
-				final StringBuilder builder = new StringBuilder();
-				for (final String s : fileName.subList(1, fileName.size())) {
-					builder.append('/');
-					builder.append(s);
+				this.childNodes.put(mountPoint.segment(0), subDir);
+				try {
+					subDir.mount(mountPoint.removeFirstSegments(1), fileSystem);
+				} catch (InvalidFileName | InvalidFileSystem | MountPointAlreadyExists e) {
+					this.childNodes.remove(mountPoint.segment(0));
 				}
-				return ((MountPoint) nodes.get(0)).getFileSystem().create(builder.toString());
+			} else if (node instanceof Directory) {
+				((Directory) node).mount(mountPoint.removeFirstSegments(1), fileSystem);
 			} else {
-				throw new UnsupportedOperationException();
+				throw new MountPointAlreadyExists(mountPoint.segment(0));
 			}
 		}
 	}
 
-	public void mkdir(final List<String> name) throws InvalidFileName, FileException {
-		if (name.size() == 0) {
-			throw new InvalidFileName();
+	public void unmount(IPath mountPoint) throws NonExistentMount {
+		if (mountPoint.segmentCount() == 0) {
+			throw new NonExistentMount("Not a mount point");
 		}
-		final List<Node> nodes = this.mounts.get(name.get(0));
-		if (name.size() == 1) {
-			if (nodes == null) {
-				this.mounts.put(name.get(0), Collections.singletonList((Node) new Directory()));
+
+		Node node = childNodes.get(mountPoint.segment(0));
+		if (mountPoint.segmentCount() == 1) {
+			if (node == null || node instanceof Directory) {
+				throw new NonExistentMount("Not a mount point");
 			} else {
-				throw new FileException(ErrorNumberType.CF_EIO, "File aleady exists");
+				this.childNodes.remove(mountPoint.segment(0));
 			}
 		} else {
-			if (nodes == null) {
-				Directory subDir = new Directory();
-				this.mounts.put(name.get(0), Collections.singletonList((Node) subDir));
-				subDir.mkdir(name.subList(1, name.size()));
-			} else if (nodes.get(0) instanceof Directory) {
-				((Directory) nodes.get(0)).mkdir(name.subList(1, name.size()));
-			} else if (nodes.get(0) instanceof MountPoint) {
-				final StringBuilder builder = new StringBuilder();
-				for (final String s : name.subList(1, name.size())) {
-					builder.append('/');
-					builder.append(s);
+			if (node == null) {
+				throw new NonExistentMount("No such parent directory: " + mountPoint.segment(0));
+			} else if (node instanceof Directory) {
+				Directory dir = (Directory) node;
+				dir.unmount(mountPoint.removeFirstSegments(1));
+				if (dir.childNodes.isEmpty()) {
+					this.childNodes.remove(mountPoint.segment(0));
 				}
-				((MountPoint) nodes.get(0)).getFileSystem().mkdir(builder.toString());
-			}
-		}
-	}
-
-	public void mount(final List<String> path, final FileSystem fileSystem) throws InvalidFileName, InvalidFileSystem, MountPointAlreadyExists {
-		if (path.size() == 0) {
-			throw new InvalidFileName(ErrorNumberType.CF_EIO, "Invalid path");
-		}
-		List<Node> nodes = this.mounts.get(path.get(0));
-		if (path.size() == 1) {
-			if (nodes == null) {
-				nodes = new ArrayList<Node>();
-				this.mounts.put(path.get(0), nodes);
-			}
-			try {
-				nodes.add(new MountPoint(fileSystem));
-			} catch (final Exception e) {  // SUPPRESS CHECKSTYLE Logged Catch all exception
-				throw new MountPointAlreadyExists(e.getMessage());
-			}
-		} else {
-			if (nodes == null) {
-				Directory subDir = new Directory();
-				this.mounts.put(path.get(0), Collections.singletonList((Node) subDir));
-				subDir.mount(path.subList(1, path.size()), fileSystem);
-			} else if (nodes.get(0) instanceof Directory) {
-				((Directory) nodes.get(0)).mount(path.subList(1, path.size()), fileSystem);
 			} else {
-				throw new MountPointAlreadyExists(path.toString());
-			}
-		}
-	}
-
-	public void unmount(final List<String> path) throws NonExistentMount {
-		if (path.size() == 0) {
-			throw new NonExistentMount("");
-		}
-		final List< ? extends Node> nodes = this.mounts.get(path.get(0));
-		if (path.size() == 1) {
-			final Object mp = this.mounts.remove(path.get(0));
-			if (mp == null) {
-				throw new NonExistentMount("");
-			}
-		} else {
-			if (nodes.get(0) instanceof Directory) {
-				final Directory d = (Directory) nodes.get(0);
-				d.unmount(path.subList(1, path.size()));
-			} else {
-				throw new NonExistentMount("");
+				throw new NonExistentMount("Parent directory is a mount point: " + mountPoint.segment(0));
 			}
 		}
 	}
 
 	public List<MountType> getMounts() {
-		final List<MountType> retVal = new ArrayList<MountType>();
-		for (final Entry<String, List<Node>> entry : this.mounts.entrySet()) {
-			if (entry.getValue() instanceof Directory) {
-				final Directory d = (Directory) entry.getValue();
-				for (final MountType t : d.getMounts()) {
-					t.mountPoint = "/" + entry.getKey() + t.mountPoint;
-					retVal.add(t);
-				}
-			} else if (entry.getValue() instanceof MountPoint) {
-				final MountPoint mp = (MountPoint) entry.getValue();
-				retVal.add(new MountType("/" + entry.getKey(), mp.getFileSystem()));
-			}
-		}
-		return retVal;
+		List<MountType> mounts = new ArrayList<MountType>();
+		getMounts(new Path("/"), mounts);
+		return mounts;
 	}
 
-	public boolean exists(final List<String> fileName) throws InvalidFileName {
-		if (fileName.size() == 0) {
-			return true;
-		}
-		final List< ? extends Node> nodes = this.mounts.get(fileName.get(0));
-		if (nodes == null) {
-			return false;
-		} else if (fileName.size() == 1) {
-			return true;
-		} else {
-			final List<String> subList = fileName.subList(1, fileName.size());
-			if (nodes.get(0) instanceof Directory) {
-				return ((Directory) nodes.get(0)).exists(subList);
-			} else if (nodes.get(0) instanceof MountPoint) {
-				final StringBuilder builder = new StringBuilder();
-				for (final String s : subList) {
-					builder.append('/');
-					builder.append(s);
-				}
-				return ((MountPoint) nodes.get(0)).getFileSystem().exists(builder.toString());
+	/**
+	 * Internal helper method for {@link #getMounts()}.
+	 * @param parent Parent directory of this directory
+	 * @param mounts A {@link List} to add mounts to
+	 */
+	private void getMounts(IPath parent, List<MountType> mounts) {
+		for (final Entry<String, Node> entry : this.childNodes.entrySet()) {
+			Node value = entry.getValue();
+			if (value instanceof Directory) {
+				((Directory) value).getMounts(parent.append(entry.getKey()), mounts);
 			} else {
-				throw new InvalidFileName(ErrorNumberType.CF_EIO, "");
+				mounts.add(new MountType(parent.append(entry.getKey()).toString(), ((MountPoint) value).getFileSystem()));
 			}
 		}
 	}
 
-	public List<FileInformationType> list(final List<String> pattern) throws FileException, InvalidFileName {
-		if (pattern.isEmpty()) {
-			return Collections.singletonList(createFileInformationType());
+	@Override
+	public boolean exists(IPath fileName) throws InvalidFileName {
+		if (fileName.segmentCount() == 0) {
+			return true;
 		}
-		final String regex = pattern.get(0).replaceAll("\\*", ".*");
-		final List<FileInformationType> retVal = new ArrayList<FileInformationType>();
-		for (final Entry<String, List<Node>> entry : this.mounts.entrySet()) {
-			final Node node = entry.getValue().get(0);
-			if (entry.getKey().matches(regex)) {
-				if (pattern.size() == 1) {
-					final FileInformationType value = node.createFileInformationType();
-					value.name = entry.getKey();
-					retVal.add(value);
-				} else if (node instanceof Directory) {
-					retVal.addAll(((Directory) node).list(pattern.subList(1, pattern.size())));
-				} else if (node instanceof MountPoint) {
-					final MountPoint point = (MountPoint) node;
-					final FileSystem fs = point.getFileSystem();
-					final StringBuilder str = new StringBuilder();
-					for (final String s : pattern.subList(1, pattern.size())) {
-						str.append('/');
-						str.append(s);
-					}
-					retVal.addAll(Arrays.asList(fs.list(str.toString())));
+
+		Node node = this.childNodes.get(fileName.segment(0));
+		if (node == null) {
+			return false;
+		}
+		return node.exists(fileName.removeFirstSegments(1).makeAbsolute());
+	}
+
+	@Override
+	public List<FileInformationType> list(IPath pattern) throws FileException, InvalidFileName {
+		if (pattern.segmentCount() > 1) {
+			Node node = this.childNodes.get(pattern.segment(0));
+			if (node == null) {
+				throw new FileException(ErrorNumberType.CF_ENOENT, "No such directory");
+			}
+			return node.list(pattern.removeFirstSegments(1).makeAbsolute());
+		}
+
+		final String filePatternOnly = pattern.lastSegment();
+		List<FileInformationType> fits = new ArrayList<FileInformationType>();
+		for (final Entry<String, Node> entry : this.childNodes.entrySet()) {
+			if (FilenameUtils.wildcardMatch(entry.getKey(), filePatternOnly)) {
+				final FileInformationType fileInfo = new FileInformationType();
+				fileInfo.name = entry.getKey();
+				fileInfo.size = 0;
+				if (entry.getValue() instanceof Directory) {
+					fileInfo.kind = FileType.DIRECTORY;
+					List<DataType> properties = new ArrayList<DataType>();
+
+					Any readOnlyAny = JacorbUtil.init().create_any();
+					readOnlyAny.insert_boolean(true);
+					properties.add(new DataType("READ_ONLY", readOnlyAny));
+
+					Any executableAny = JacorbUtil.init().create_any();
+					executableAny.insert_boolean(true);
+					properties.add(new DataType("EXECUTABLE", executableAny));
+
+					fileInfo.fileProperties = properties.toArray(new DataType[properties.size()]);
 				} else {
-					throw new FileException(ErrorNumberType.CF_EIO, "File does not exist");
+					fileInfo.kind = FileType.FILE_SYSTEM;
+					fileInfo.fileProperties = new DataType[0];
 				}
+				fits.add(fileInfo);
 			}
 		}
-		return retVal;
-	}
-
-	public File open(final List<String> fileName, final boolean readOnly) throws InvalidFileName, FileException {
-		if (fileName.isEmpty() || fileName.size() == 1) {
-			throw new FileException(ErrorNumberType.CF_EIO, "Can not open a directory");
-		}
-		final List< ? extends Node> nodes = this.mounts.get(fileName.get(0));
-		if (nodes == null) {
-			throw new FileException(ErrorNumberType.CF_EIO, "Invalid file to open");
-		}
-		final Node node = nodes.get(0);
-		if (node instanceof MountPoint) {
-			final MountPoint mp = (MountPoint) node;
-			final List<String> subList = fileName.subList(1, fileName.size());
-			final StringBuilder path = new StringBuilder();
-			for (final Iterator<String> i = subList.iterator(); i.hasNext();) {
-				path.append("/");
-				path.append(i.next());
-			}
-			return mp.getFileSystem().open(path.toString(), readOnly);
-		} else if (node instanceof Directory) {
-			final Directory d = (Directory) node;
-			return d.open(fileName.subList(1, fileName.size()), readOnly);
-		} else {
-			throw new FileException(ErrorNumberType.CF_EIO, "Invalid file to open");
-		}
+		return fits;
 	}
 
 	@Override
-	public DataType[] createDataTypeArray() {
-		final Any readOnly = AnyUtils.toAny(true, TCKind.tk_boolean, false);
+	public File open(IPath fileName, final boolean readOnly) throws InvalidFileName, FileException {
+		if (fileName.segmentCount() == 0) {
+			throw new FileException(ErrorNumberType.CF_EISDIR, "Is a directory");
+		}
 
-		return new DataType[] { new DataType(ScaFileInformationDataType.READ_ONLY.name(), readOnly) };
+		Node node = childNodes.get(fileName.segment(0));
+		if (fileName.segmentCount() == 1) {
+			if (node == null) {
+				throw new FileException(ErrorNumberType.CF_ENOENT, "No such file");
+			} else {
+				throw new FileException(ErrorNumberType.CF_EISDIR, "Is a directory");
+			}
+		}
 
-	}
-
-	@Override
-	public FileInformationType createFileInformationType() {
-		final FileInformationType info = new FileInformationType();
-		info.fileProperties = createDataTypeArray();
-		info.kind = FileType.DIRECTORY;
-		//		info.name = name;
-
-		return info;
+		if (node == null) {
+			throw new FileException(ErrorNumberType.CF_ENOENT, "No such file");
+		}
+		return node.open(fileName.removeFirstSegments(1).makeAbsolute(), readOnly);
 	}
 
 }
