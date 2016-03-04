@@ -50,7 +50,9 @@
    <element name="factoryProvider">
       <annotation>
          <documentation>
-            Provide a dynamic set of resource factories.  Mainly used internally to provide resources of the workspace, SDR, etc.
+            Provide a dynamic set of resource factories.  Resource factories are used to discover and report resources which can be launched by the CF.Sandbox and CF.ResourceFactory interfaces.
+
+They are primarily used to provide a list of components/devices in the workspace and the target SDR and various details about them.
          </documentation>
       </annotation>
       <complexType>
@@ -74,8 +76,13 @@
          <attribute name="priority" type="string">
             <annotation>
                <documentation>
-                  Priority of this factory provider.  Must be an integer &gt; 0.
+                  This is deprecated and has no effect. If any resource descriptions reported by factories have conflicting profile paths errors will be reported.
+
+Priority of this factory provider.  Must be an integer &gt; 0. The priority is used to prioritize the file systems mounted from resource descriptions. If two resource descripionts have the same profile path the one with the higher priority will be used by the file manager.
                </documentation>
+               <appinfo>
+                  <meta.attribute deprecated="true"/>
+               </appinfo>
             </annotation>
          </attribute>
       </complexType>

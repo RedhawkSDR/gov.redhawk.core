@@ -35,9 +35,6 @@ import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.SafeRunner;
 import org.eclipse.core.runtime.Status;
 
-import CF.FileException;
-import CF.InvalidFileName;
-
 /**
  * The resource factory registry instantiates instances of resource factories ({@link IResourceFactoryProvider})
  * declared via extension point (see {@link #EP_ID}). The registry receives resource descriptions
@@ -52,20 +49,20 @@ public enum ResourceFactoryRegistry implements IResourceFactoryRegistry {
 	private final PropertyChangeSupport pcs = new PropertyChangeSupport(this);
 	private final List<ResourceDesc> registry = Collections.synchronizedList(new ArrayList<ResourceDesc>());
 	private final List<IResourceFactoryProvider> providerRegistry = Collections.synchronizedList(new ArrayList<IResourceFactoryProvider>());
-	private final ResourceFactoryRegistryFileManager fileManager = new ResourceFactoryRegistryFileManager();
+	private ResourceFactoryRegistryFileManager fileManager = null;
+
 	private final PropertyChangeListener listener = new PropertyChangeListener() {
 
 		@Override
 		public void propertyChange(PropertyChangeEvent evt) {
 			if (IResourceFactoryProvider.PROPERTY_RESOURCE_DESCRIPTORS.equals(evt.getPropertyName())) {
-				IResourceFactoryProvider provider = (IResourceFactoryProvider) evt.getSource();
 				if (evt.getOldValue() instanceof ResourceDesc) {
 					removeResourceDesc((ResourceDesc) evt.getOldValue());
 				}
 				if (evt.getNewValue() instanceof ResourceDesc) {
 					ResourceDesc desc = (ResourceDesc) evt.getNewValue();
 					try {
-						addResourceDesc(desc, provider.getPriority());
+						addResourceDesc(desc);
 					} catch (CoreException e) {
 						ResourceFactoryPlugin.getDefault().getLog().log(
 							new Status(IStatus.ERROR, ResourceFactoryPlugin.ID, "Failed to add resource descriptor: " + desc.getIdentifier(), e));
@@ -76,19 +73,15 @@ public enum ResourceFactoryRegistry implements IResourceFactoryRegistry {
 	};
 
 	private ResourceFactoryRegistry() {
-		for (final String s : new String[] { "components", "waveforms", "devices", "services" }) {
-			try {
-				this.fileManager.mkdir(s);
-			} catch (final InvalidFileName e) {
-				// PASS
-			} catch (final FileException e) {
-				// PASS
-			}
+		try {
+			fileManager = new ResourceFactoryRegistryFileManager();
+		} catch (CoreException e) {
+			ResourceFactoryPlugin.getDefault().getLog().log(new Status(IStatus.ERROR, ResourceFactoryPlugin.ID, "Unable to initialize resource factory file manager", e));
 		}
 
+		// Find resource factories declared in extension points
 		final IExtensionRegistry reg = Platform.getExtensionRegistry();
 		final IExtensionPoint ep = reg.getExtensionPoint(ResourceFactoryPlugin.ID, ResourceFactoryRegistry.EP_ID);
-
 		if (ep != null) {
 			final IExtension[] extensions = ep.getExtensions();
 			for (final IExtension extension : extensions) {
@@ -109,9 +102,8 @@ public enum ResourceFactoryRegistry implements IResourceFactoryRegistry {
 							final IResourceFactoryProvider provider = (IResourceFactoryProvider) element.createExecutableExtension("class");
 							provider.addPropertyChangeListener(listener);
 							providerRegistry.add(provider);
-							int priority = provider.getPriority();
 							for (ResourceDesc desc : provider.getResourceDescriptors()) {
-								addResourceDesc(desc, priority);
+								addResourceDesc(desc);
 							}
 						} catch (final CoreException e) {
 							ResourceFactoryPlugin.getDefault().getLog().log(
@@ -130,23 +122,15 @@ public enum ResourceFactoryRegistry implements IResourceFactoryRegistry {
 		}
 	}
 
-	private void addResourceDesc(final ResourceDesc desc, int priority) throws CoreException {
-		mount(desc, priority);
+	private void addResourceDesc(final ResourceDesc desc) throws CoreException {
+		this.fileManager.mount(desc);
 		this.registry.add(desc);
 		pcs.firePropertyChange(IResourceFactoryRegistry.PROP_RESOURCES, null, desc);
 	}
 
-	private void mount(final ResourceDesc desc, int priority) throws CoreException {
-		this.fileManager.mount(desc, priority);
-	}
-
-	private void unmount(final ResourceDesc desc) {
-		this.fileManager.unmount(desc);
-	}
-
 	private void removeResourceDesc(final ResourceDesc desc) {
 		if (registry.remove(desc)) {
-			unmount(desc);
+			this.fileManager.unmount(desc);
 			desc.dispose();
 		}
 		pcs.firePropertyChange(IResourceFactoryRegistry.PROP_RESOURCES, desc, null);
@@ -161,7 +145,7 @@ public enum ResourceFactoryRegistry implements IResourceFactoryRegistry {
 
 		synchronized (this.registry) {
 			for (final ResourceDesc desc : this.registry) {
-				unmount(desc);
+				this.fileManager.unmount(desc);
 				desc.dispose();
 			}
 			this.registry.clear();

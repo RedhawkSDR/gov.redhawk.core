@@ -11,21 +11,21 @@
  */
 package gov.redhawk.core.resourcefactory;
 
-import java.io.File;
-
 import gov.redhawk.core.filemanager.filesystem.BundleFileSystem;
 import gov.redhawk.core.filemanager.filesystem.FileStoreFileSystem;
-import gov.redhawk.core.filemanager.filesystem.JavaFileSystem;
 import gov.redhawk.sca.util.ORBUtil;
 import gov.redhawk.sca.util.OrbSession;
+import mil.jpeojtrs.sca.util.ScaFileSystemConstants;
+
+import java.io.File;
 
 import org.eclipse.core.filesystem.EFS;
 import org.eclipse.core.filesystem.IFileStore;
-import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
+import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.emf.common.util.URI;
@@ -63,22 +63,15 @@ public abstract class ResourceDesc {
 	private final String version;
 
 	/**
-	 * @since 2.0
+	 * @since 3.2
 	 */
-	public ResourceDesc(String identifier, URI resourceURI, String profile, final String version, ResourceFactoryOperations factory) {
+	public ResourceDesc(String identifier, URI resourceURI, final String version, ResourceFactoryOperations factory) {
 		this.factory = factory;
-		this.profile = profile;
 		this.identifier = identifier;
 		this.version = version;
 		this.resourceURI = resourceURI;
-		FileSystemOperations fs;
-		try {
-			fs = createFileSystem();
-		} catch (CoreException e) {
-			ResourceFactoryPlugin.log("Failed to create Resource Descriptor file system: " + name, e);
-			fs = null;
-		}
-		this.fileSystem = fs;
+		this.profile = createProfile();
+		this.fileSystem = createFileSystem();
 	}
 
 	public String getProfile() {
@@ -199,17 +192,19 @@ public abstract class ResourceDesc {
 			try {
 				factoryRef = ResourceFactoryHelper.narrow(session.getPOA().servant_to_reference(new ResourceFactoryPOATie(factory)));
 			} catch (ServantNotActive e) {
-				ResourceFactoryPlugin.log("Failed to create Resource Descriptor factory: " + name, e);
+				ResourceFactoryPlugin.logError("Failed to create Resource Descriptor factory: " + name, e);
 			} catch (WrongPolicy e) {
-				ResourceFactoryPlugin.log("Failed to create Resource Descriptor factory: " + name, e);
+				ResourceFactoryPlugin.logError("Failed to create Resource Descriptor factory: " + name, e);
 			} catch (CoreException e) {
-				ResourceFactoryPlugin.log("Failed to create Resource Descriptor factory: " + name, e);
+				ResourceFactoryPlugin.logError("Failed to create Resource Descriptor factory: " + name, e);
 			}
 		}
 		return factoryRef;
 	}
 
 	/**
+	 * Get the file system
+	 * @return The file system, or null to indicate the local file system
 	 * @since 2.0
 	 */
 	public FileSystemOperations getFileSystem() {
@@ -217,6 +212,8 @@ public abstract class ResourceDesc {
 	}
 
 	/**
+	 * Get a CORBA reference for the file system servant.
+	 * @return The file system CORBA object, or null to indicate the local file system
 	 * @since 2.0
 	 */
 	public FileSystem getFileSystemRef() {
@@ -224,38 +221,79 @@ public abstract class ResourceDesc {
 			try {
 				fileSystemRef = FileSystemHelper.narrow(session.getPOA().servant_to_reference(new FileSystemPOATie(createFileSystem())));
 			} catch (ServantNotActive e) {
-				ResourceFactoryPlugin.log("Failed to create Resource Descriptor file system: " + name, e);
+				ResourceFactoryPlugin.logError("Failed to create Resource Descriptor file system: " + name, e);
 			} catch (WrongPolicy e) {
-				ResourceFactoryPlugin.log("Failed to create Resource Descriptor file system: " + name, e);
+				ResourceFactoryPlugin.logError("Failed to create Resource Descriptor file system: " + name, e);
 			} catch (CoreException e) {
-				ResourceFactoryPlugin.log("Failed to create Resource Descriptor file system: " + name, e);
+				ResourceFactoryPlugin.logError("Failed to create Resource Descriptor file system: " + name, e);
 			}
 		}
 		return fileSystemRef;
 	}
 
-	private FileSystemOperations createFileSystem() throws CoreException {
-		if (this.resourceURI.isPlatformPlugin()) {
-			Bundle bundle = Platform.getBundle(this.resourceURI.segment(1));
-			IPath path = new Path(resourceURI.toPlatformString(true));
-			path = path.removeFirstSegments(1); // Remove plugin ID
-			path = path.removeLastSegments(1); // Remove file name
-			return new BundleFileSystem(session.getOrb(), session.getPOA(), bundle, path);
+	/**
+	 * Create an appropriate file system based on the resource URI. For anything referencing the local file system,
+	 * no file system need be created (the local file system is provided by default)
+	 * @return
+	 * @throws CoreException
+	 */
+	private FileSystemOperations createFileSystem() {
+		try {
+			if (ScaFileSystemConstants.SCHEME.equals(this.resourceURI.scheme())) {
+				return null;
+			} else if (this.resourceURI.isPlatformPlugin()) {
+				Bundle bundle = Platform.getBundle(this.resourceURI.segment(1));
+				IPath path = new Path(resourceURI.toPlatformString(true));
+				path = path.removeFirstSegments(1); // Remove plugin ID
+				path = path.removeLastSegments(1); // Remove file name
+				return new BundleFileSystem(session.getOrb(), session.getPOA(), bundle, path);
+			} else if (this.resourceURI.isPlatformResource()) {
+				return null;
+			} else if (this.resourceURI.isFile()) {
+				return null;
+			} else {
+				// Use EFS; note this code path is not usual or expected!
+				IFileStore store = EFS.getStore(java.net.URI.create(resourceURI.toString()));
+				IFileStore parent = store.getParent();
+				return new FileStoreFileSystem(session.getOrb(), session.getPOA(), parent);
+			}
+		} catch (CoreException e) {
+			String errorMsg = String.format("Unable to create file system for resource URI '%s'", this.resourceURI);
+			ResourceFactoryPlugin.logError(errorMsg, e);
+			return null;
+		}
+	}
+
+	/**
+	 * Creates an appropriate profile based on the resource URI
+	 * @return
+	 * @see gov.redhawk.ide.debug.internal.variables.ProfileNameVariableResolver
+	 */
+	private String createProfile() {
+		if (ScaFileSystemConstants.SCHEME.equals(this.resourceURI.scheme())) {
+			// Use EFS to convert the sca URI to an absolute file path
+			try {
+				IFileStore store = EFS.getStore(java.net.URI.create(this.resourceURI.toString()));
+				File file = store.toLocalFile(EFS.NONE, new NullProgressMonitor());
+				return file.getAbsolutePath();
+			} catch (CoreException e) {
+				ResourceFactoryPlugin.logError("Unable to convert sca URI to absolute file path", e);
+				return null;
+			}
+		} else if (this.resourceURI.isPlatformPlugin()) {
+			// Use 'bundle' as the first directory segment, then the platform string
+			return new Path("/bundle").append(resourceURI.toPlatformString(true)).toString();
 		} else if (this.resourceURI.isPlatformResource()) {
+			// Get an absolute file path for the workspace resource
 			String path = this.resourceURI.toPlatformString(true);
 			IFile file = ResourcesPlugin.getWorkspace().getRoot().getFile(new Path(path));
-			IContainer parent = file.getParent();
-			java.net.URI uri = parent.getLocationURI();
-			IFileStore store = EFS.getStore(uri);
-			return new FileStoreFileSystem(session.getOrb(), session.getPOA(), store);
+			return file.getLocation().toString();
 		} else if (this.resourceURI.isFile()) {
-			File file = new File(resourceURI.toFileString());
-			File root = file.getParentFile();
-			return new JavaFileSystem(session.getOrb(), session.getPOA(), root);
+			return this.resourceURI.path();
 		} else {
-			IFileStore store = EFS.getStore(java.net.URI.create(resourceURI.toString()));
-			IFileStore parent = store.getParent();
-			return new FileStoreFileSystem(session.getOrb(), session.getPOA(), parent);
+			// Use the scheme as the first directory segment, then the path
+			// Note this code path is not usual or expected!
+			return new Path(this.resourceURI.scheme()).append(this.resourceURI.path()).toString();
 		}
 	}
 
