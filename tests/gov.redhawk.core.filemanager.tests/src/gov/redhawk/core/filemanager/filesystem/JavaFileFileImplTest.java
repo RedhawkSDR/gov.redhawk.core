@@ -19,13 +19,13 @@ public class JavaFileFileImplTest {
 
 	/**
 	 * IDE-1536 Ensure closing the file object deactivates it in the POA
-	 * @throws IOException 
-	 * @throws CoreException 
-	 * @throws WrongPolicy 
-	 * @throws ServantNotActive 
-	 * @throws FileException 
-	 * @throws WrongAdapter 
-	 * @throws ObjectNotActive 
+	 * @throws IOException
+	 * @throws CoreException
+	 * @throws WrongPolicy
+	 * @throws ServantNotActive
+	 * @throws FileException
+	 * @throws WrongAdapter
+	 * @throws ObjectNotActive
 	 */
 	@Test
 	public void close() throws IOException, ServantNotActive, WrongPolicy, CoreException, FileException, WrongAdapter, ObjectNotActive {
@@ -55,7 +55,6 @@ public class JavaFileFileImplTest {
 				file.delete();
 			}
 		}
-		
 	}
-	
+
 }
