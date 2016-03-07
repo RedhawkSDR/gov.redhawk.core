@@ -34,6 +34,7 @@ import mil.jpeojtrs.sca.prf.Enumeration;
 import mil.jpeojtrs.sca.prf.Simple;
 import mil.jpeojtrs.sca.util.AnyUtils;
 
+import org.apache.commons.lang.WordUtils;
 import org.eclipse.emf.common.notify.AdapterFactory;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IMenuListener;
@@ -249,26 +250,37 @@ public final class ScaComponentFactory {
 		viewer.setLabelProvider(baseLabelProvider);
 
 		final TreeColumnViewerLabelProvider lp = new TreeColumnViewerLabelProvider(baseLabelProvider) {
+
+			/**
+			 * How many characters wide to allow a line to be in a tooltip before line wrapping it.
+			 */
+			private static final int TOOLTIP_WRAP_LEN = 80;
+
 			@Override
 			public String getToolTipText(final Object element) {
 				final ScaAbstractProperty< ? > prop = (ScaAbstractProperty< ? >) element;
-				String retVal = prop.getDescription();
+
+				StringBuilder sb = new StringBuilder();
 				if (prop instanceof ScaSimpleProperty) {
 					final String typeString = "< " + ((ScaSimpleProperty) prop).getDefinition().getType().getLiteral() + " >";
-					if (retVal == null) {
-						retVal = typeString;
-					} else {
-						retVal = typeString + "\n" + retVal;
-					}
+					sb.append(typeString);
 				} else if (prop instanceof ScaSimpleSequenceProperty) {
 					final String typeString = "< " + ((ScaSimpleSequenceProperty) prop).getDefinition().getType().getLiteral() + " >";
-					if (retVal == null) {
-						retVal = typeString;
-					} else {
-						retVal = typeString + "\n" + retVal;
+					sb.append(typeString);
+				}
+
+				String description = prop.getDescription();
+				if (description != null) {
+					if (sb.length() > 0) {
+						sb.append("\n");
+					}
+					for (String line : description.split("\n")) {
+						sb.append(WordUtils.wrap(line, TOOLTIP_WRAP_LEN, null, true));
+						sb.append("\n");
 					}
 				}
-				return retVal;
+
+				return sb.toString();
 			}
 
 			@Override
