@@ -15,35 +15,25 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.RandomAccessFile;
 
+import org.omg.CORBA.SystemException;
+import org.omg.CORBA.UserException;
+
 import CF.ErrorNumberType;
 import CF.FileException;
 import CF.FilePOA;
 import CF.OctetSequenceHolder;
 import CF.FilePackage.IOException;
 import CF.FilePackage.InvalidFilePointer;
+import gov.redhawk.core.filemanager.FileManagerPlugin;
 
-/**
- * The Class FileImpl.
- */
 public class JavaFileFileImpl extends FilePOA {
 
-	/** The Constant EMPTY_BYTE_ARRAY. */
 	private static final byte[] EMPTY_BYTE_ARRAY = new byte[0];
 
-	/** The file. */
 	private final File file;
 
-	/** The file access. */
 	private RandomAccessFile fileAccess;
 
-	/**
-	 * Instantiates a new file impl.
-	 * 
-	 * @param file the file
-	 * @param readOnly the read only
-	 * 
-	 * @throws FileNotFoundException the file not found exception
-	 */
 	public JavaFileFileImpl(final File file, final boolean readOnly) throws FileNotFoundException {
 		this.file = file;
 		if (readOnly) {
@@ -54,13 +44,16 @@ public class JavaFileFileImpl extends FilePOA {
 
 	}
 
-	/* (non-Javadoc)
-	 * @see mil.jpeojtrs.sca.cf.FileOperations#close()
-	 */
-	/**
-	 * {@inheritDoc}
-	 */
 	public void close() throws FileException {
+		// Deactivate the object so it will stop handling CORBA requests
+		try {
+			_poa().deactivate_object(_object_id());
+		} catch (UserException e) {
+			FileManagerPlugin.logError("Unable to deactivate file object", e);
+		} catch (SystemException e) {
+			FileManagerPlugin.logError("Unable to deactivate file object", e);
+		}
+
 		if (this.fileAccess != null) {
 			try {
 				this.fileAccess.close();
@@ -71,22 +64,10 @@ public class JavaFileFileImpl extends FilePOA {
 		}
 	}
 
-	/* (non-Javadoc)
-	 * @see mil.jpeojtrs.sca.cf.FileOperations#fileName()
-	 */
-	/**
-	 * {@inheritDoc}
-	 */
 	public String fileName() {
 		return this.file.getName();
 	}
 
-	/* (non-Javadoc)
-	 * @see mil.jpeojtrs.sca.cf.FileOperations#filePointer()
-	 */
-	/**
-	 * {@inheritDoc}
-	 */
 	public int filePointer() {
 		if (this.fileAccess != null) {
 			try {
@@ -98,12 +79,6 @@ public class JavaFileFileImpl extends FilePOA {
 		return 0;
 	}
 
-	/* (non-Javadoc)
-	 * @see mil.jpeojtrs.sca.cf.FileOperations#read(mil.jpeojtrs.sca.cf.OctetSequenceHolder, int)
-	 */
-	/**
-	 * {@inheritDoc}
-	 */
 	public void read(final OctetSequenceHolder data, final int length) throws IOException {
 		if (this.fileAccess != null) {
 			final byte[] buffer = new byte[length];
@@ -124,12 +99,6 @@ public class JavaFileFileImpl extends FilePOA {
 		}
 	}
 
-	/* (non-Javadoc)
-	 * @see mil.jpeojtrs.sca.cf.FileOperations#setFilePointer(int)
-	 */
-	/**
-	 * {@inheritDoc}
-	 */
 	public void setFilePointer(final int filePointer) throws InvalidFilePointer, FileException {
 		if (this.fileAccess != null) {
 			try {
@@ -142,22 +111,10 @@ public class JavaFileFileImpl extends FilePOA {
 		}
 	}
 
-	/* (non-Javadoc)
-	 * @see mil.jpeojtrs.sca.cf.FileOperations#sizeOf()
-	 */
-	/**
-	 * {@inheritDoc}
-	 */
 	public int sizeOf() throws FileException {
 		return (int) this.file.length();
 	}
 
-	/* (non-Javadoc)
-	 * @see mil.jpeojtrs.sca.cf.FileOperations#write(byte[])
-	 */
-	/**
-	 * {@inheritDoc}
-	 */
 	public void write(final byte[] data) throws IOException {
 		if (this.fileAccess != null) {
 			try {
