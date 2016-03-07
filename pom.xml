@@ -104,6 +104,7 @@
     <module>plugins/mil.jpeojtrs.sca.scd.rcp</module>
     <module>plugins/mil.jpeojtrs.sca.spd.rcp</module>
     <module>plugins/org.anarres.cpp</module>
+    <module>tests/gov.redhawk.core.filemanager.tests</module>
     <module>tests/gov.redhawk.eclipsecorba.idl.tests</module>
     <module>tests/gov.redhawk.eclipsecorba.library.tests</module>
     <module>tests/gov.redhawk.partitioning.validation.tests</module>
