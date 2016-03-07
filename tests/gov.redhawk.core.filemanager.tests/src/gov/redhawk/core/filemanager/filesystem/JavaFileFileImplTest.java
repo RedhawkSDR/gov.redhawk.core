@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 
 import org.eclipse.core.runtime.CoreException;
+import org.junit.Assert;
 import org.junit.Test;
 import org.omg.PortableServer.POAPackage.ObjectNotActive;
 import org.omg.PortableServer.POAPackage.ServantNotActive;
@@ -13,7 +14,6 @@ import org.omg.PortableServer.POAPackage.WrongPolicy;
 import CF.FileException;
 import CF.FileHelper;
 import gov.redhawk.sca.util.OrbSession;
-import junit.framework.Assert;
 
 public class JavaFileFileImplTest {
 
