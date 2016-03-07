@@ -14,6 +14,7 @@ import gov.redhawk.model.sca.ScaAbstractProperty;
 import gov.redhawk.model.sca.ScaSimpleProperty;
 import gov.redhawk.model.sca.ScaSimpleSequenceProperty;
 
+import org.apache.commons.lang.WordUtils;
 import org.eclipse.jface.viewers.IBaseLabelProvider;
 import org.eclipse.jface.viewers.TreeColumnViewerLabelProvider;
 
@@ -21,6 +22,12 @@ import org.eclipse.jface.viewers.TreeColumnViewerLabelProvider;
  * @since 9.3
  */
 public class ScaPropertiesViewerColumnLabelProvider extends TreeColumnViewerLabelProvider {
+
+	/**
+	 * How many characters wide to allow a line to be in a tooltip before line wrapping it.
+	 */
+	private static final int TOOLTIP_WRAP_LEN = 80;
+
 	public ScaPropertiesViewerColumnLabelProvider(IBaseLabelProvider labelProvider) {
 		super(labelProvider);
 	}
@@ -34,37 +41,39 @@ public class ScaPropertiesViewerColumnLabelProvider extends TreeColumnViewerLabe
 		if (prop.getDefinition() == null) {
 			return null;
 		}
-		String retVal = prop.getDescription();
+
+		StringBuilder sb = new StringBuilder();
 		if (prop instanceof ScaSimpleProperty) {
 			ScaSimpleProperty simple = ((ScaSimpleProperty) prop);
-			final String typeString;
+			sb.append(prop.getId());
 			if (simple.getDefinition().getEnumerations() != null) {
-				typeString = prop.getId() + " enum < " + simple.getDefinition().getType().getLiteral() + " >";
-			} else {
-				typeString = prop.getId() + " < " + simple.getDefinition().getType().getLiteral() + " >";
+				sb.append(" enum");
 			}
-			if (retVal == null) {
-				retVal = typeString;
-			} else {
-				retVal = typeString + "\n" + retVal;
-			}
+			sb.append(" < ");
+			sb.append(simple.getDefinition().getType().getLiteral());
+			sb.append(" >");
 		} else if (prop instanceof ScaSimpleSequenceProperty) {
 			ScaSimpleSequenceProperty sequence = ((ScaSimpleSequenceProperty) prop);
-			final String typeString = prop.getId() + " < " + sequence.getDefinition().getType().getLiteral() + " >";
-			if (retVal == null) {
-				retVal = typeString;
-			} else {
-				retVal = typeString + "\n" + retVal;
-			}
+			sb.append(prop.getId());
+			sb.append(" < ");
+			sb.append(sequence.getDefinition().getType().getLiteral());
+			sb.append(" >");
 		} else {
-			String idString = prop.getId();
-			if (retVal == null) {
-				retVal = idString;
-			} else {
-				retVal = idString + "\n" + retVal;
+			sb.append(prop.getId());
+		}
+
+		String description = prop.getDescription();
+		if (description != null) {
+			if (sb.length() > 0) {
+				sb.append("\n");
+			}
+			for (String line : description.split("\n")) {
+				sb.append(WordUtils.wrap(line, TOOLTIP_WRAP_LEN, null, true));
+				sb.append("\n");
 			}
 		}
-		return retVal;
+
+		return sb.toString();
 	}
 
 	@Override
