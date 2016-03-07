@@ -37,11 +37,9 @@ import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TableViewerColumn;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.jface.viewers.Viewer;
-import org.eclipse.jface.viewers.ViewerComparator;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Tree;
 import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetWidgetFactory;
 
 /**
@@ -49,22 +47,7 @@ import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetWidgetFactory;
  */
 public final class ScaComponentFactory {
 
-	private static class PropertyViewerComparator extends ViewerComparator {
-
-		@Override
-		public int compare(final Viewer viewer, final Object e1, final Object e2) {
-			final Tree tree = ((Tree) viewer.getControl());
-
-			if (tree.getSortDirection() == SWT.UP) {
-				return super.compare(viewer, e1, e2);
-			} else {
-				return -1 * super.compare(viewer, e1, e2);
-			}
-		}
-	}
-
 	private ScaComponentFactory() {
-
 	}
 
 	/**
