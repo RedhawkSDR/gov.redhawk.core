@@ -350,7 +350,7 @@ public class InUInt16Port extends BULKIO.jni.dataUshortPOA implements org.ossie.
         }
 
         boolean portBlocking = false;
-        StreamSRI tmpH = new StreamSRI(1, 0.0, 1.0, (short)1, 0, 0.0, 0.0, (short)0, (short)0, streamID, false, new DataType[0]);
+        StreamSRI tmpH = null;
         boolean sriChanged = false;
         synchronized (this.sriUpdateLock) {
             if (this.currentHs.containsKey(streamID)) {
@@ -360,6 +360,16 @@ public class InUInt16Port extends BULKIO.jni.dataUshortPOA implements org.ossie.
 		    this.currentHs.get(streamID).setChanged(false);
 		}
                 portBlocking = blocking;
+            } else {
+                if (logger != null) {
+                    logger.warn("bulkio.InPort pushPacket received data from stream '" + streamID + "' with no SRI");
+                }
+                tmpH = new StreamSRI(1, 0.0, 1.0, (short)1, 0, 0.0, 0.0, (short)0, (short)0, streamID, false, new DataType[0]);
+                if (sriCallback != null) {
+                    sriCallback.newSRI(tmpH);
+                }
+                sriChanged = true;
+                currentHs.put(streamID, new sriState(tmpH, false));
             }
         }
 
