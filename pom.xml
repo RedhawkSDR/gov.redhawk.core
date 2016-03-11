@@ -152,6 +152,7 @@
     <module>tests/gov.redhawk.sca.efs.tests</module>
     <module>tests/gov.redhawk.sca.model.tests</module>
     <module>tests/gov.redhawk.sca.tests</module>
+    <module>tests/gov.redhawk.sca.util.tests</module>
     <module>tests/gov.redhawk.eclipsecorba.idl.tests</module>
     <module>tests/gov.redhawk.eclipsecorba.library.tests</module>
     <module>tests/gov.redhawk.partitioning.validation.tests</module>
