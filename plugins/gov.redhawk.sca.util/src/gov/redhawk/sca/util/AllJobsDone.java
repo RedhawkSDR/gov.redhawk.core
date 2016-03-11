@@ -21,7 +21,7 @@ import org.eclipse.core.runtime.jobs.Job;
 
 /**
  * Class to provide notification when a collection of jobs are all done.
- * @since 3.6
+ * @since 4.0
  */
 public abstract class AllJobsDone implements IJobChangeListener {
 
