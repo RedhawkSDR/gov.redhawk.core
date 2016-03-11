@@ -40,7 +40,7 @@ public final class ORBUtil {
 	/**
 	 * Releases the CORBA object in a background thread asynchronously
 	 * @param obj
-	 * @since 3.3
+	 * @since 4.0
 	 */
 	public static void release(final org.omg.CORBA.Object obj) {
 		CorbaUtils.release(obj);
