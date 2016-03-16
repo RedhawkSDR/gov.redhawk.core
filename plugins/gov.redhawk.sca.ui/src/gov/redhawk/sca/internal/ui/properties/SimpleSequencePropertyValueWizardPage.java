@@ -21,10 +21,17 @@ import org.eclipse.emf.edit.ui.provider.AdapterFactoryContentProvider;
 import org.eclipse.jface.layout.TableColumnLayout;
 import org.eclipse.jface.viewers.ColumnLabelProvider;
 import org.eclipse.jface.viewers.ColumnPixelData;
+import org.eclipse.jface.viewers.ColumnViewer;
+import org.eclipse.jface.viewers.ColumnViewerEditorActivationEvent;
+import org.eclipse.jface.viewers.ColumnViewerEditorActivationListener;
+import org.eclipse.jface.viewers.ColumnViewerEditorActivationStrategy;
+import org.eclipse.jface.viewers.ColumnViewerEditorDeactivationEvent;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TableViewerColumn;
+import org.eclipse.jface.viewers.TableViewerEditor;
 import org.eclipse.jface.viewers.ViewerCell;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.swt.widgets.Widget;
@@ -89,6 +96,7 @@ public class SimpleSequencePropertyValueWizardPage extends AbstractSequencePrope
 	private void createSimpleSequenceColumns(final TableViewer viewer, final TableColumnLayout layout, final ScaSimpleSequenceProperty seqProperty) {
 		final TableViewerColumn columnViewer = new TableViewerColumn(viewer, SWT.CENTER);
 		columnViewer.setEditingSupport(new ScaSimpleSequenceValueEditingSupport(seqProperty, viewer));
+		TableViewerEditor.create(viewer, new DoubleClickActivationStrategy(viewer), 1);
 		columnViewer.setLabelProvider(new ColumnLabelProvider() {
 
 			@Override
@@ -117,5 +125,37 @@ public class SimpleSequencePropertyValueWizardPage extends AbstractSequencePrope
 		});
 		layout.setColumnData(columnViewer.getColumn(), new ColumnPixelData(100, true));
 		columnViewer.getColumn().setText("Value < " + seqProperty.getDefinition().getType().getLiteral() + " >");
+
+		columnViewer.getViewer().getColumnViewerEditor().addEditorActivationListener(new ColumnViewerEditorActivationListener() {
+			@Override
+			public void beforeEditorDeactivated(ColumnViewerEditorDeactivationEvent event) {
+			}
+
+			@Override
+			public void beforeEditorActivated(ColumnViewerEditorActivationEvent event) {
+				viewer.setSelection(null);
+			}
+
+			@Override
+			public void afterEditorDeactivated(ColumnViewerEditorDeactivationEvent event) {
+			}
+
+			@Override
+			public void afterEditorActivated(ColumnViewerEditorActivationEvent event) {
+			}
+		});
+	}
+
+	private class DoubleClickActivationStrategy extends ColumnViewerEditorActivationStrategy {
+
+		public DoubleClickActivationStrategy(ColumnViewer viewer) {
+			super(viewer);
+		}
+
+		@Override
+		protected boolean isEditorActivationEvent(ColumnViewerEditorActivationEvent event) {
+			return (event.eventType == ColumnViewerEditorActivationEvent.MOUSE_DOUBLE_CLICK_SELECTION && ((MouseEvent) event.sourceEvent).button == 1);
+		}
+
 	}
 }
