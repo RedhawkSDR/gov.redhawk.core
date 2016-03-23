@@ -12,48 +12,12 @@
 // BEGIN GENERATED CODE
 package gov.redhawk.model.sca.impl;
 
-import gov.redhawk.model.sca.IRefreshable;
-import gov.redhawk.model.sca.ProfileObjectWrapper;
-import gov.redhawk.model.sca.RefreshDepth;
-import gov.redhawk.model.sca.ScaComponent;
-import gov.redhawk.model.sca.ScaDomainManager;
-import gov.redhawk.model.sca.ScaDomainManagerFileSystem;
-import gov.redhawk.model.sca.ScaModelPlugin;
-import gov.redhawk.model.sca.ScaPackage;
-import gov.redhawk.model.sca.ScaPort;
-import gov.redhawk.model.sca.ScaPortContainer;
-import gov.redhawk.model.sca.ScaWaveform;
-import gov.redhawk.model.sca.commands.MergePortsCommand;
-import gov.redhawk.model.sca.commands.MergePortsCommand.PortData;
-import gov.redhawk.model.sca.commands.ScaModelCommand;
-import gov.redhawk.model.sca.commands.ScaModelCommandWithResult;
-import gov.redhawk.model.sca.commands.ScaWaveformMergeComponentsCommand;
-import gov.redhawk.model.sca.commands.SetLocalAttributeCommand;
-import gov.redhawk.model.sca.commands.UnsetLocalAttributeCommand;
-import gov.redhawk.model.sca.commands.VersionedFeature;
-import gov.redhawk.model.sca.commands.VersionedFeature.Transaction;
-import gov.redhawk.model.sca.util.ModelUtil;
-import gov.redhawk.sca.util.PluginUtil;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
-
-import mil.jpeojtrs.sca.partitioning.PartitioningPackage;
-import mil.jpeojtrs.sca.prf.AbstractProperty;
-import mil.jpeojtrs.sca.sad.AssemblyController;
-import mil.jpeojtrs.sca.sad.ExternalProperty;
-import mil.jpeojtrs.sca.sad.Port;
-import mil.jpeojtrs.sca.sad.SadComponentInstantiation;
-import mil.jpeojtrs.sca.sad.SadComponentInstantiationRef;
-import mil.jpeojtrs.sca.sad.SadPackage;
-import mil.jpeojtrs.sca.sad.SoftwareAssembly;
-import mil.jpeojtrs.sca.scd.AbstractPort;
-import mil.jpeojtrs.sca.scd.ScdPackage;
-import mil.jpeojtrs.sca.spd.SpdPackage;
-import mil.jpeojtrs.sca.util.ScaEcoreUtils;
 
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
@@ -68,6 +32,7 @@ import org.eclipse.emf.common.util.ECollections;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
@@ -109,6 +74,43 @@ import CF.PropertySetPackage.PartialConfiguration;
 import CF.ResourcePackage.StartError;
 import CF.ResourcePackage.StopError;
 import CF.TestableObjectPackage.UnknownTest;
+import gov.redhawk.model.sca.IRefreshable;
+import gov.redhawk.model.sca.ProfileObjectWrapper;
+import gov.redhawk.model.sca.RefreshDepth;
+import gov.redhawk.model.sca.ScaComponent;
+import gov.redhawk.model.sca.ScaDomainManager;
+import gov.redhawk.model.sca.ScaDomainManagerFileSystem;
+import gov.redhawk.model.sca.ScaModelPlugin;
+import gov.redhawk.model.sca.ScaPackage;
+import gov.redhawk.model.sca.ScaPort;
+import gov.redhawk.model.sca.ScaPortContainer;
+import gov.redhawk.model.sca.ScaWaveform;
+import gov.redhawk.model.sca.commands.MergePortsCommand;
+import gov.redhawk.model.sca.commands.MergePortsCommand.PortData;
+import gov.redhawk.model.sca.commands.ScaModelCommand;
+import gov.redhawk.model.sca.commands.ScaModelCommandWithResult;
+import gov.redhawk.model.sca.commands.ScaWaveformMergeComponentsCommand;
+import gov.redhawk.model.sca.commands.SetLocalAttributeCommand;
+import gov.redhawk.model.sca.commands.UnsetLocalAttributeCommand;
+import gov.redhawk.model.sca.commands.VersionedFeature;
+import gov.redhawk.model.sca.commands.VersionedFeature.Transaction;
+import gov.redhawk.model.sca.util.ExternalPropertiesUtil;
+import gov.redhawk.model.sca.util.ModelUtil;
+import gov.redhawk.sca.util.PluginUtil;
+import mil.jpeojtrs.sca.partitioning.ComponentProperties;
+import mil.jpeojtrs.sca.partitioning.PartitioningPackage;
+import mil.jpeojtrs.sca.prf.AbstractProperty;
+import mil.jpeojtrs.sca.sad.AssemblyController;
+import mil.jpeojtrs.sca.sad.ExternalProperty;
+import mil.jpeojtrs.sca.sad.Port;
+import mil.jpeojtrs.sca.sad.SadComponentInstantiation;
+import mil.jpeojtrs.sca.sad.SadComponentInstantiationRef;
+import mil.jpeojtrs.sca.sad.SadPackage;
+import mil.jpeojtrs.sca.sad.SoftwareAssembly;
+import mil.jpeojtrs.sca.scd.AbstractPort;
+import mil.jpeojtrs.sca.scd.ScdPackage;
+import mil.jpeojtrs.sca.spd.SpdPackage;
+import mil.jpeojtrs.sca.util.ScaEcoreUtils;
 
 /**
  * <!-- begin-user-doc -->
@@ -1859,45 +1861,86 @@ public class ScaWaveformImpl extends ScaPropertyContainerImpl<Application, Softw
 		PartitioningPackage.Literals.COMPONENT_PLACEMENT__COMPONENT_FILE_REF, PartitioningPackage.Literals.COMPONENT_FILE_REF__FILE,
 		PartitioningPackage.Literals.COMPONENT_FILE__SOFT_PKG, SpdPackage.Literals.SOFT_PKG__PROPERTY_FILE, SpdPackage.Literals.PROPERTY_FILE__PROPERTIES };
 
+	private static final EStructuralFeature[] ASMBLY_CTL_COMP_PROPS_PATH = { SadPackage.Literals.SOFTWARE_ASSEMBLY__ASSEMBLY_CONTROLLER,
+		SadPackage.Literals.ASSEMBLY_CONTROLLER__COMPONENT_INSTANTIATION_REF, PartitioningPackage.Literals.COMPONENT_INSTANTIATION_REF__INSTANTIATION,
+		PartitioningPackage.Literals.COMPONENT_INSTANTIATION__COMPONENT_PROPERTIES };
+
 	@Override
 	protected List<AbstractProperty> fetchPropertyDefinitions(IProgressMonitor monitor) {
-		if (isDisposed()) {
+		SoftwareAssembly localProfile = fetchProfileObject(monitor);
+		if (isDisposed() || localProfile == null) {
 			return Collections.emptyList();
 		}
-		SoftwareAssembly localProfile = fetchProfileObject(monitor);
-		mil.jpeojtrs.sca.prf.Properties propDefintions = ScaEcoreUtils.getFeature(localProfile, PRF_PATH);
+
 		List<AbstractProperty> retVal = new ArrayList<AbstractProperty>();
-		if (propDefintions != null) {
-			for (ValueListIterator<Object> i = propDefintions.getProperties().valueListIterator(); i.hasNext();) {
-				Object propDef = i.next();
-				if (propDef instanceof AbstractProperty) {
-					retVal.add((AbstractProperty) propDef);
-				}
+		retVal.addAll(getAssemblyControllerProps(localProfile));
+		retVal.addAll(getExternalControllerProps(localProfile));
+
+		return retVal;
+	}
+
+	private Collection< ? extends AbstractProperty> getAssemblyControllerProps(SoftwareAssembly localProfile) {
+		List<AbstractProperty> values = new ArrayList<AbstractProperty>();
+
+		// Create a map of any properties whose values have been overridden in the SAD.XML 
+		HashMap<String, EObject> overriddenPropsMap = new HashMap<String, EObject>();
+		if (localProfile.getAssemblyController() != null) {
+			ComponentProperties componentProps = ScaEcoreUtils.getFeature(localProfile, ASMBLY_CTL_COMP_PROPS_PATH);
+			componentProps = localProfile.getAssemblyController().getComponentInstantiationRef().getInstantiation().getComponentProperties();
+			if (componentProps != null) {
+				overriddenPropsMap = ExternalPropertiesUtil.getOverriddenProperties(componentProps);
 			}
 		}
-		if (localProfile != null) {
-			EList<SadComponentInstantiation> insts = localProfile.getAllComponentInstantiations();
-			if (localProfile.getExternalProperties() != null) {
-				for (ExternalProperty externalProp : localProfile.getExternalProperties().getProperties()) {
-					for (SadComponentInstantiation inst : insts) {
-						if (inst.getId().equals(externalProp.getCompRefID())) {
-							mil.jpeojtrs.sca.prf.Properties instProperties = ScaEcoreUtils.getFeature(inst, INST_PRF_PATH);
-							if (instProperties != null) {
-								AbstractProperty prop = instProperties.getProperty(externalProp.getPropID());
-								if (prop != null) {
-									if (externalProp.getExternalPropID() != null) {
-										prop = EcoreUtil.copy(prop);
-										prop.setId(externalProp.getExternalPropID());
-									}
-									retVal.add(prop);
-								}
-							}
-						}
+
+		// All Assembly Controller properties are external, so add those here.  Check for any that were overridden in the SAD.XML 
+		mil.jpeojtrs.sca.prf.Properties propDefs = ScaEcoreUtils.getFeature(localProfile, PRF_PATH);
+		if (propDefs != null) {
+			for (ValueListIterator<Object> i = propDefs.getProperties().valueListIterator(); i.hasNext();) {
+				Object propDef = i.next();
+				if (propDef instanceof AbstractProperty) {
+					AbstractProperty property = (AbstractProperty) propDef;
+					if (overriddenPropsMap.containsKey(property.getId())) {
+						property = ExternalPropertiesUtil.copyProperty(property, overriddenPropsMap);
+						values.add(property);
+					} else {
+						values.add(property);
 					}
 				}
 			}
 		}
-		return retVal;
+
+		return values;
+	}
+
+	private Collection< ? extends AbstractProperty> getExternalControllerProps(SoftwareAssembly localProfile) {
+		List<AbstractProperty> values = new ArrayList<AbstractProperty>();
+
+		// Add any external properties from components other than the Assembly Controller.  Check for any that were overridden in the SAD.XML
+		HashMap<String, EObject> overriddenPropsMap = new HashMap<String, EObject>();
+		if (localProfile.getExternalProperties() != null) {
+			EList<SadComponentInstantiation> insts = localProfile.getAllComponentInstantiations();
+			for (ExternalProperty externalProp : localProfile.getExternalProperties().getProperties()) {
+				for (SadComponentInstantiation inst : insts) {
+					if (inst.getId().equals(externalProp.getCompRefID())) {
+						mil.jpeojtrs.sca.prf.Properties instProperties = ScaEcoreUtils.getFeature(inst, INST_PRF_PATH);
+						overriddenPropsMap = ExternalPropertiesUtil.getOverriddenProperties(inst.getComponentProperties());
+						if (instProperties != null) {
+							AbstractProperty prop = instProperties.getProperty(externalProp.getPropID());
+							if (prop != null) {
+								if (externalProp.getExternalPropID() != null) {
+									prop = ExternalPropertiesUtil.copyProperty(prop, overriddenPropsMap);
+									prop.setId(externalProp.getExternalPropID());
+								}
+								values.add(prop);
+							}
+						}
+						break; // Check the next external property
+					}
+				}
+			}
+		}
+
+		return values;
 	}
 
 	private final VersionedFeature profileObjectFeature = new VersionedFeature(this, ScaPackage.Literals.PROFILE_OBJECT_WRAPPER__PROFILE_OBJ);
