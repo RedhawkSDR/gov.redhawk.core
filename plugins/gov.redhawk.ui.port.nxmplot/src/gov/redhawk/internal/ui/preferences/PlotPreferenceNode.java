@@ -39,6 +39,7 @@ public class PlotPreferenceNode extends PreferenceNode implements IComparableCon
 		return "Plot";
 	}
 
+	@SuppressWarnings({ "unchecked", "rawtypes" }) // Mandated by interface
 	@Override
 	public Object getAdapter(Class adapter) {
 		return null;
