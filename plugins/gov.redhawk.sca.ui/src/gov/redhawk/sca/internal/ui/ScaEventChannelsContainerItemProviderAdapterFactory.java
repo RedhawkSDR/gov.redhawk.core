@@ -55,10 +55,10 @@ public class ScaEventChannelsContainerItemProviderAdapterFactory implements IAda
 	}
 
 	@Override
-	public Object getAdapter(final Object adaptableObject, @SuppressWarnings("rawtypes") final Class adapterType) {
+	public <T> T getAdapter(final Object adaptableObject, final Class<T> adapterType) {
 		if (adaptableObject instanceof ScaEventChannelsContainerItemProvider) {
 			if (adapterType == IRefreshable.class) {
-				return new Refresher((ScaDomainManager) ((ScaEventChannelsContainerItemProvider) adaptableObject).getTarget());
+				return adapterType.cast(new Refresher((ScaDomainManager) ((ScaEventChannelsContainerItemProvider) adaptableObject).getTarget()));
 			}
 		}
 		return null;

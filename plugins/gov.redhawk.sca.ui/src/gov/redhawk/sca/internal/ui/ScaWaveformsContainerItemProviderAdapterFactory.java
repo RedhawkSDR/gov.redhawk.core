@@ -77,10 +77,10 @@ public class ScaWaveformsContainerItemProviderAdapterFactory implements IAdapter
 	}
 
 	@Override
-	public Object getAdapter(final Object adaptableObject, @SuppressWarnings("rawtypes") final Class adapterType) {
+	public <T> T getAdapter(final Object adaptableObject, final Class<T> adapterType) {
 		if (adaptableObject instanceof ScaWaveformsContainerItemProvider) {
 			if (adapterType == IRefreshable.class) {
-				return new Refresher((ScaDomainManager) ((ScaWaveformsContainerItemProvider) adaptableObject).getTarget());
+				return adapterType.cast(new Refresher((ScaDomainManager) ((ScaWaveformsContainerItemProvider) adaptableObject).getTarget()));
 			}
 		}
 		return null;
