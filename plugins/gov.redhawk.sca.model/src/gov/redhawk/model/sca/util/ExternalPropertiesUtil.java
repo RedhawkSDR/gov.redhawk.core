@@ -30,7 +30,7 @@ import mil.jpeojtrs.sca.prf.StructSequenceRef;
 import mil.jpeojtrs.sca.prf.StructValue;
 
 /**
- * @since 20.0
+ * @since 20.1
  */
 public class ExternalPropertiesUtil {
 

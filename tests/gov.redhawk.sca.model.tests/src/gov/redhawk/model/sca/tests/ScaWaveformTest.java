@@ -11,24 +11,15 @@
 // BEGIN GENERATED CODE
 package gov.redhawk.model.sca.tests;
 
-import gov.redhawk.model.sca.RefreshDepth;
-import gov.redhawk.model.sca.ScaComponent;
-import gov.redhawk.model.sca.ScaPort;
-import gov.redhawk.model.sca.ScaWaveform;
-import gov.redhawk.model.sca.commands.ScaModelCommand;
-import gov.redhawk.model.sca.impl.ScaDomainManagerImpl;
-import gov.redhawk.model.sca.impl.ScaWaveformImpl;
-import gov.redhawk.model.sca.tests.stubs.ScaTestConstaints;
-
-import org.junit.Assert;
-
-import junit.textui.TestRunner;
-
+import java.util.Arrays;
 import java.util.List;
 
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.emf.common.util.EList;
+import org.eclipse.emf.common.util.URI;
+import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.transaction.util.TransactionUtil;
+import org.junit.Assert;
 
 import CF.ApplicationHelper;
 import CF.DataType;
@@ -41,6 +32,23 @@ import CF.PortSupplierPackage.UnknownPort;
 import CF.ResourcePackage.StartError;
 import CF.ResourcePackage.StopError;
 import CF.TestableObjectPackage.UnknownTest;
+import gov.redhawk.model.sca.RefreshDepth;
+import gov.redhawk.model.sca.ScaAbstractProperty;
+import gov.redhawk.model.sca.ScaComponent;
+import gov.redhawk.model.sca.ScaPackage;
+import gov.redhawk.model.sca.ScaPort;
+import gov.redhawk.model.sca.ScaSimpleProperty;
+import gov.redhawk.model.sca.ScaSimpleSequenceProperty;
+import gov.redhawk.model.sca.ScaStructProperty;
+import gov.redhawk.model.sca.ScaStructSequenceProperty;
+import gov.redhawk.model.sca.ScaWaveform;
+import gov.redhawk.model.sca.commands.ScaModelCommand;
+import gov.redhawk.model.sca.impl.ScaDomainManagerImpl;
+import gov.redhawk.model.sca.impl.ScaWaveformImpl;
+import gov.redhawk.model.sca.tests.stubs.ScaTestConstaints;
+import junit.textui.TestRunner;
+import mil.jpeojtrs.sca.sad.SoftwareAssembly;
+import mil.jpeojtrs.sca.util.ScaResourceFactoryUtil;
 
 /**
  * <!-- begin-user-doc -->
@@ -87,6 +95,8 @@ import CF.TestableObjectPackage.UnknownTest;
  * @generated
  */
 public class ScaWaveformTest extends ScaPropertyContainerTest {
+
+	private static final String PLUGIN_ID = "gov.redhawk.sca.model.tests";
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -806,6 +816,78 @@ public class ScaWaveformTest extends ScaPropertyContainerTest {
 
 	public void testSameEditingDomain() {
 		Assert.assertEquals(TransactionUtil.getEditingDomain(getFixture().getDomMgr()), TransactionUtil.getEditingDomain(getFixture()));
+	}
+
+	/**
+	 * IDE-945
+	 * Test that overridden values in the sad.xml are correctly displayed in the Launch Waveform Wizard dialog
+	 */
+	public void testWaveformWizardValues() {
+		final String SAD_PATH = "sdr/dom/waveforms/PropertyOverrideTestWaveform/PropertyOverrideTestWaveform.sad.xml";
+
+		ResourceSet resourceSet = ScaResourceFactoryUtil.createResourceSet();
+		URI spdUri = URI.createPlatformPluginURI("/" + PLUGIN_ID + "/" + SAD_PATH, true).appendFragment(SoftwareAssembly.EOBJECT_PATH);
+		final SoftwareAssembly sad = (SoftwareAssembly) resourceSet.getEObject(spdUri, true);
+
+		ScaModelCommand.execute(getFixture(), new ScaModelCommand() {
+			@Override
+			public void execute() {
+				getFixture().setProfileObj(sad);
+			}
+		});
+
+		final List<String> modifiedProperties = Arrays.asList("simpleString", "simpleSeqString", "structString", "structSeqString");
+		final String overrideValue = "iHaveBeenOverriden";
+
+		EList<ScaAbstractProperty< ? >> waveformProperties = getFixture().fetchProperties(new NullProgressMonitor());
+		for (ScaAbstractProperty< ? > prop : waveformProperties) {
+			if (modifiedProperties.contains(prop.getId())) {
+				switch (prop.eClass().getClassifierID()) {
+				case ScaPackage.SCA_SIMPLE_PROPERTY:
+					ScaSimpleProperty simple = (ScaSimpleProperty) prop;
+					Assert.assertEquals("simple value was not overriden for: " + simple.getId(), overrideValue, simple.getValue());
+					break;
+				case ScaPackage.SCA_SIMPLE_SEQUENCE_PROPERTY:
+					ScaSimpleSequenceProperty simpleSeq = (ScaSimpleSequenceProperty) prop;
+					for (Object value : simpleSeq.getValues()) {
+						Assert.assertEquals("simple sequence value was not overriden for: " + simpleSeq.getId(), overrideValue, value);
+					}
+					break;
+				case ScaPackage.SCA_STRUCT_PROPERTY:
+					ScaStructProperty struct = (ScaStructProperty) prop;
+					for (ScaAbstractProperty< ? > field : struct.getFields()) {
+						if (field.eClass().getClassifierID() == ScaPackage.SCA_SIMPLE_PROPERTY) {
+							ScaSimpleProperty structSimple = (ScaSimpleProperty) field;
+							Assert.assertEquals("simple value was not overriden for: " + structSimple.getId(), overrideValue, structSimple.getValue());
+						} else {
+							ScaSimpleSequenceProperty structSimpleSeq = (ScaSimpleSequenceProperty) field;
+							for (Object value : structSimpleSeq.getValues()) {
+								Assert.assertEquals("simple sequence value was not overriden for: " + structSimpleSeq.getId(), overrideValue, value);
+							}
+						}
+					}
+					break;
+				case ScaPackage.SCA_STRUCT_SEQUENCE_PROPERTY:
+					ScaStructSequenceProperty structSeq = (ScaStructSequenceProperty) prop;
+					for (ScaStructProperty structSeqStruct : structSeq.getStructs()) {
+						for (ScaAbstractProperty< ? > field : structSeqStruct.getFields()) {
+							if (field.eClass().getClassifierID() == ScaPackage.SCA_SIMPLE_PROPERTY) {
+								ScaSimpleProperty structSimple = (ScaSimpleProperty) field;
+								Assert.assertEquals("simple value was not overriden for: " + structSimple.getId(), overrideValue, structSimple.getValue());
+							} else {
+								ScaSimpleSequenceProperty structSimpleSeq = (ScaSimpleSequenceProperty) field;
+								for (Object value : structSimpleSeq.getValues()) {
+									Assert.assertEquals("simple sequence value was not overriden for: " + structSimpleSeq.getId(), overrideValue, value);
+								}
+							}
+						}
+					}
+					break;
+				default:
+					break;
+				}
+			}
+		}
 	}
 
 	@Override
