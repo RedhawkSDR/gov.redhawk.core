@@ -110,7 +110,7 @@ public class OrbSession {
 	}
 
 	/**
-	 * Returns an orb session with a given ID
+	 * Returns the ORB session for a given ID, creating a new one if it doesn't exist.
 	 * @param ID id of the session
 	 * @return Session
 	 */
@@ -120,7 +120,7 @@ public class OrbSession {
 	}
 	
 	/**
-	 * Returns an orb session with a given ID
+	 * Returns the ORB session for a given ID, creating a new one if it doesn't exist.
 	 * @param id id of the session
 	 * @param args args to pass to ORB init
 	 * @param props props to pass to ORB init
