@@ -140,31 +140,20 @@ public class ScaDomainManagerRegistryImpl extends EObjectImpl implements ScaDoma
 	@Override
 	public ScaDomainManager findDomain(final String domainName) {
 		// END GENERATED CODE
-		ScaDomainManager retVal = null;
 		if (eResource() != null) {
 			final EObject obj = eResource().getEObject(domainName);
 			if (obj instanceof ScaDomainManager) {
-				retVal = (ScaDomainManager) obj;
+				return (ScaDomainManager) obj;
 			}
 		}
 
-		if (retVal == null) {
-			for (final ScaDomainManager domain : getDomains()) {
-				if (domain.getLocalName() != null) {
-					if (domain.getLocalName().equals(domainName)) {
-						retVal = domain;
-						break;
-					}
-				} else {
-					if (domain.getLabel().equals(domainName)) {
-						retVal = domain;
-						break;
-					}
-				}
+		for (final ScaDomainManager domain : getDomains()) {
+			if (domain.getLabel().equals(domainName)) {
+				return domain;
 			}
 		}
 
-		return retVal;
+		return null;
 		// BEGIN GENERATED CODE
 	}
 

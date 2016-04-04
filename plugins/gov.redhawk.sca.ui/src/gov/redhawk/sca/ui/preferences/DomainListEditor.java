@@ -309,9 +309,9 @@ public class DomainListEditor extends FieldEditor {
 	@Override
 	protected void doStore() {
 		for (final ScaDomainConnectionDef def : this.domainConnectionDefs) {
-			final ScaDomainManager domain = this.registry.findDomain(def.getDomainName());
+			final ScaDomainManager domain = this.registry.findDomain(def.getLabel());
 			if (domain == null) {
-				final Job job = new Job("Connecting to domain " + def.getDomainName()) {
+				final Job job = new Job("Connecting to domain " + def.getLabel()) {
 
 					@Override
 					protected IStatus run(final IProgressMonitor monitor) {
@@ -329,7 +329,7 @@ public class DomainListEditor extends FieldEditor {
 							});
 							newDomain[0].connect(monitor, RefreshDepth.SELF);
 						} catch (final DomainConnectionException e) {
-							return new Status(IStatus.ERROR, ScaUiPlugin.PLUGIN_ID, "Failed to connect to domain " + def.getDomainName(), e);
+							return new Status(IStatus.ERROR, ScaUiPlugin.PLUGIN_ID, "Failed to connect to domain " + def.getLabel(), e);
 						}
 						return Status.OK_STATUS;
 					}
@@ -351,7 +351,7 @@ public class DomainListEditor extends FieldEditor {
 		for (final ScaDomainManager domain : this.registry.getDomains()) {
 			boolean found = false;
 			for (final ScaDomainConnectionDef def : this.domainConnectionDefs) {
-				if (domain.getLabel().equals(def.getDomainName())) {
+				if (domain.getLabel().equals(def.getLabel())) {
 					found = true;
 					break;
 				}

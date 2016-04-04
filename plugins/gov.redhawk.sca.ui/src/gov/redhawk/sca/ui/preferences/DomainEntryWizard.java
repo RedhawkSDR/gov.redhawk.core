@@ -66,11 +66,7 @@ public class DomainEntryWizard extends Wizard {
 	public void setDomains(final List<ScaDomainConnectionDef> domains) {
 		final List<String> domainNames = new ArrayList<String>();
 		for (final ScaDomainConnectionDef domain : domains) {
-			if (domain.getLocalName() != null) {
-				domainNames.add(domain.getLocalName());
-			} else {
-				domainNames.add(domain.getDomainName());
-			}
+			domainNames.add(domain.getLabel());
 		}
 		this.wizardPage.setDomains(domainNames);
 	}
@@ -105,8 +101,8 @@ public class DomainEntryWizard extends Wizard {
 	/**
 	 * @since 10.0
 	 */
-	public void setEdit(final String name, final String domainName, final String initRef) {
-		this.wizardPage.setEdit(name, domainName, initRef);
+	public void setEdit(final String localName, final String domainName, final String initRef) {
+		this.wizardPage.setEdit(localName, domainName, initRef);
 	}
 	
 	/**
