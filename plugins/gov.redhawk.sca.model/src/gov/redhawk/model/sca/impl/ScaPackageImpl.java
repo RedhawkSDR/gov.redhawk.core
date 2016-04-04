@@ -3207,7 +3207,7 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 		initEAttribute(getScaDomainManager_Identifier(), ecorePackage.getEString(), "identifier", null, 0, 1, ScaDomainManager.class, IS_TRANSIENT,
 			!IS_VOLATILE, IS_CHANGEABLE, IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getScaDomainManager_Name(), ecorePackage.getEString(), "name", null, 1, 1, ScaDomainManager.class, !IS_TRANSIENT, !IS_VOLATILE,
-			IS_CHANGEABLE, !IS_UNSETTABLE, IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+			IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getScaDomainManager_RootContext(), theCfPackage.getNamingContextExt(), "rootContext", null, 1, 1, ScaDomainManager.class, IS_TRANSIENT,
 			!IS_VOLATILE, IS_CHANGEABLE, IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getScaDomainManager_State(), this.getDomainConnectionState(), "state", null, 1, 1, ScaDomainManager.class, IS_TRANSIENT, !IS_VOLATILE,

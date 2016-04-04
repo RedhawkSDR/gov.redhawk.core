@@ -445,7 +445,7 @@ public interface ScaDomainManager extends ScaPropertyContainer<DomainManager, Do
 	 * @return the value of the '<em>Name</em>' attribute.
 	 * @see #setName(String)
 	 * @see gov.redhawk.model.sca.ScaPackage#getScaDomainManager_Name()
-	 * @model id="true" required="true"
+	 * @model required="true"
 	 *        extendedMetaData="kind='attribute' name='name'"
 	 * @generated
 	 */
