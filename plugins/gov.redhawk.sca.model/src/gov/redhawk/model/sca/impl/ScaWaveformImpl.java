@@ -18,6 +18,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
@@ -116,7 +117,7 @@ import mil.jpeojtrs.sca.util.ScaEcoreUtils;
  * <!-- begin-user-doc -->
  * An implementation of the model object '<em><b>Waveform</b></em>'.
  * 
- * @since 12.0
+ * @since 20.1
  *        <!-- end-user-doc -->
  *        <p>
  *        The following features are implemented:
@@ -788,6 +789,7 @@ public class ScaWaveformImpl extends ScaPropertyContainerImpl<Application, Softw
 	 * @deprecated Use {@link #fetchComponents(IProgressMonitor, RefreshDepth)}
 	 * @since 14.0
 	 *        <!-- end-user-doc -->
+	 * @throws InterruptedException
 	 * @generated NOT
 	 */
 	@Override
@@ -1882,7 +1884,7 @@ public class ScaWaveformImpl extends ScaPropertyContainerImpl<Application, Softw
 	private Collection< ? extends AbstractProperty> getAssemblyControllerProps(SoftwareAssembly localProfile) {
 		List<AbstractProperty> values = new ArrayList<AbstractProperty>();
 
-		// Create a map of any properties whose values have been overridden in the SAD.XML 
+		// Create a map of any properties whose values have been overridden in the SAD.XML
 		HashMap<String, EObject> overriddenPropsMap = new HashMap<String, EObject>();
 		if (localProfile.getAssemblyController() != null) {
 			ComponentProperties componentProps = ScaEcoreUtils.getFeature(localProfile, ASMBLY_CTL_COMP_PROPS_PATH);
@@ -1915,8 +1917,8 @@ public class ScaWaveformImpl extends ScaPropertyContainerImpl<Application, Softw
 	private Collection< ? extends AbstractProperty> getExternalControllerProps(SoftwareAssembly localProfile) {
 		List<AbstractProperty> values = new ArrayList<AbstractProperty>();
 
-		// Add any external properties from components other than the Assembly Controller.  Check for any that were overridden in the SAD.XML
-		HashMap<String, EObject> overriddenPropsMap = new HashMap<String, EObject>();
+		// Add any external properties from components other than the Assembly Controller. Check for any that were overridden in the SAD.XML
+		Map<String, EObject> overriddenPropsMap = new HashMap<String, EObject>();
 		if (localProfile.getExternalProperties() != null) {
 			EList<SadComponentInstantiation> insts = localProfile.getAllComponentInstantiations();
 			for (ExternalProperty externalProp : localProfile.getExternalProperties().getProperties()) {

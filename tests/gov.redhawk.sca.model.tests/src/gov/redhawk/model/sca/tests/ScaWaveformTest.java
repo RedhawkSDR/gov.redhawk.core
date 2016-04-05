@@ -837,7 +837,7 @@ public class ScaWaveformTest extends ScaPropertyContainerTest {
 		});
 
 		final List<String> modifiedProperties = Arrays.asList("simpleString", "simpleSeqString", "structString", "structSeqString");
-		final String overrideValue = "iHaveBeenOverriden";
+		final String overrideValue = "iHaveBeenOverridden";
 
 		EList<ScaAbstractProperty< ? >> waveformProperties = getFixture().fetchProperties(new NullProgressMonitor());
 		for (ScaAbstractProperty< ? > prop : waveformProperties) {

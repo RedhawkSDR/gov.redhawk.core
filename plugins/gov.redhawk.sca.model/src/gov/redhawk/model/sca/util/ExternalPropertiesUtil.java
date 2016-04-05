@@ -11,6 +11,7 @@
 package gov.redhawk.model.sca.util;
 
 import java.util.HashMap;
+import java.util.Map;
 
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.util.EcoreUtil;
@@ -39,6 +40,9 @@ public class ExternalPropertiesUtil {
 
 	public static HashMap<String, EObject> getOverriddenProperties(ComponentProperties componentProps) {
 		HashMap<String, EObject> propertyMap = new HashMap<String, EObject>();
+		if (componentProps == null) {
+			return propertyMap;
+		}
 		ValueListIterator<Object> valueListIterator = componentProps.getProperties().valueListIterator();
 		while (valueListIterator.hasNext()) {
 			EObject property = (EObject) valueListIterator.next();
@@ -66,9 +70,12 @@ public class ExternalPropertiesUtil {
 		return propertyMap;
 	}
 
-	public static AbstractProperty copyProperty(AbstractProperty property, HashMap<String, EObject> overriddenPropsMap) {
+	public static AbstractProperty copyProperty(AbstractProperty property, Map<String, EObject> overriddenPropsMap) {
 		AbstractProperty newProperty = EcoreUtil.copy(property);
 		EObject propertyRef = overriddenPropsMap.get(property.getId());
+		if (propertyRef == null) {
+			return newProperty;
+		}
 		switch (propertyRef.eClass().getClassifierID()) {
 		case PrfPackage.SIMPLE_REF:
 			return copySimple((SimpleRef) propertyRef, (Simple) newProperty);
@@ -79,7 +86,7 @@ public class ExternalPropertiesUtil {
 		case PrfPackage.STRUCT_SEQUENCE_REF:
 			return copyStructSequence((StructSequenceRef) propertyRef, (StructSequence) newProperty);
 		default:
-			throw new RuntimeException("Unknopwn property type");
+			throw new RuntimeException("Unknown property type");
 		}
 	}
 

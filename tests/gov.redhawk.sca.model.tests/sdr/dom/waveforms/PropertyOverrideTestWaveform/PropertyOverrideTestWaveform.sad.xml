@@ -12,34 +12,34 @@
       <componentinstantiation id="AllPropertyTypesComponent_1" startorder="0">
         <usagename>AllPropertyTypesComponent_1</usagename>
         <componentproperties>
-          <simpleref refid="simpleString" value="iHaveBeenOverriden"/>
+          <simpleref refid="simpleString" value="iHaveBeenOverridden"/>
           <structref refid="structString">
-            <simpleref refid="structSimpleString" value="iHaveBeenOverriden"/>
+            <simpleref refid="structSimpleString" value="iHaveBeenOverridden"/>
             <simplesequenceref refid="structSimpleSeqString">
               <values>
-                <value>iHaveBeenOverriden</value>
-                <value>iHaveBeenOverriden</value>
-                <value>iHaveBeenOverriden</value>
+                <value>iHaveBeenOverridden</value>
+                <value>iHaveBeenOverridden</value>
+                <value>iHaveBeenOverridden</value>
               </values>
             </simplesequenceref>
           </structref>
           <structsequenceref refid="structSeqString">
             <structvalue>
-              <simpleref refid="structSeqStructSimpleString" value="iHaveBeenOverriden"/>
+              <simpleref refid="structSeqStructSimpleString" value="iHaveBeenOverridden"/>
               <simplesequenceref refid="structSeqStructSimpleSeqString">
                 <values>
-                  <value>iHaveBeenOverriden</value>
-                  <value>iHaveBeenOverriden</value>
-                  <value>iHaveBeenOverriden</value>
+                  <value>iHaveBeenOverridden</value>
+                  <value>iHaveBeenOverridden</value>
+                  <value>iHaveBeenOverridden</value>
                 </values>
               </simplesequenceref>
             </structvalue>
           </structsequenceref>
           <simplesequenceref refid="simpleSeqString">
             <values>
-              <value>iHaveBeenOverriden</value>
-              <value>iHaveBeenOverriden</value>
-              <value>iHaveBeenOverriden</value>
+              <value>iHaveBeenOverridden</value>
+              <value>iHaveBeenOverridden</value>
+              <value>iHaveBeenOverridden</value>
             </values>
           </simplesequenceref>
         </componentproperties>
