@@ -253,8 +253,8 @@ public class DomainEntryWizardPage extends WizardPage {
 	/**
 	 * @since 10.0
 	 */
-	public void setLocalDomainName(String name) {
-		model.setLocalDomainName(name);
+	public void setLocalDomainName(String localName) {
+		model.setLocalDomainName(localName);
 	}
 
 	/**
@@ -287,14 +287,15 @@ public class DomainEntryWizardPage extends WizardPage {
 	 * This configures the wizard page to edit a connection, as opposed to
 	 * creating a new one.
 	 * 
-	 * @param domainName the Domain Name of the connection
-	 * @param initRef the NameService Initial Reference of the connection
+	 * @param localName The label to show for the domain (instead of the domain's name)
+	 * @param domainName The name of the domain in the naming service
+	 * @param initRef an appropriate initial reference for the naming service
 	 * @since 10.0
 	 */
-	public void setEdit(final String name, final String domainName, final String initRef) {
-		if (name != null) {
-			this.model.setLocalDomainName(name);
-			this.editLocalDomainName = name;
+	public void setEdit(final String localName, final String domainName, final String initRef) {
+		if (localName != null) {
+			this.model.setLocalDomainName(localName);
+			this.editLocalDomainName = localName;
 		} else {
 			this.model.setLocalDomainName(domainName);
 			this.editLocalDomainName = domainName;

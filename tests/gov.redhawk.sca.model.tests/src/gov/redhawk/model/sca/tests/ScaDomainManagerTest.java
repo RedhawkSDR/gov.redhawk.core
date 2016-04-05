@@ -503,7 +503,7 @@ public class ScaDomainManagerTest extends ScaPropertyContainerTest {
 	 * @generated NOT
 	 */
 	public void testGetLabel() {
-		Assert.assertEquals("REDHAWK_DEV", getFixture().getLabel());
+		Assert.assertEquals(ScaTestConstaints.DOMAIN_DISPLAY_NAME, getFixture().getLabel());
 	}
 
 	/**

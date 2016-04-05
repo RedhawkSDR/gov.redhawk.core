@@ -144,7 +144,7 @@ public class ScaDomainManagerRegistryTest extends TestCase {
 	 */
 	public void testFindDomain__String() {
 		// END GENERATED CODE
-		Assert.assertNotNull(getFixture().findDomain(ScaTestConstaints.DOMAIN_NAME));
+		Assert.assertNotNull(getFixture().findDomain(ScaTestConstaints.DOMAIN_DISPLAY_NAME));
 		// BEGIN GENERATED CODE
 	}
 

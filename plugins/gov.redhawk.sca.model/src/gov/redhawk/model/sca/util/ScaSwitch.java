@@ -69,6 +69,7 @@ import CF.LifeCycleOperations;
 import CF.LoadableDevice;
 import CF.LoadableDeviceOperations;
 import CF.PortOperations;
+import CF.PortSetOperations;
 import CF.PortSupplierOperations;
 import CF.PropertyEmitterOperations;
 import CF.PropertySetOperations;
@@ -359,7 +360,7 @@ public class ScaSwitch< T1 > extends Switch<T1> {
 			if (result == null)
 				result = casePropertyEmitterOperations(scaDeviceManager);
 			if (result == null)
-				result = casePortSupplierOperations(scaDeviceManager);
+				result = casePortSetOperations(scaDeviceManager);
 			if (result == null)
 				result = caseDataProviderObject(scaDeviceManager);
 			if (result == null)
@@ -1520,9 +1521,9 @@ public class ScaSwitch< T1 > extends Switch<T1> {
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
 	 * returning a non-null result will terminate the switch.
-	 * @since 20.0
-	 * <!-- end-user-doc -->
 	 * 
+	 * @since 20.0
+	 *        <!-- end-user-doc -->
 	 * @param object the target of the switch.
 	 * @return the result of interpreting the object as an instance of '<em>Property Emitter Operations</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
@@ -1609,6 +1610,23 @@ public class ScaSwitch< T1 > extends Switch<T1> {
 	 * @generated
 	 */
 	public T1 caseDeviceOperations(DeviceOperations object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Port Set Operations</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * @since 20.1
+	 * <!-- end-user-doc -->
+	 * 
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Port Set Operations</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T1 casePortSetOperations(PortSetOperations object) {
 		return null;
 	}
 

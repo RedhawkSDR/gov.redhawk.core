@@ -162,7 +162,7 @@ import mil.jpeojtrs.sca.util.ScaEcoreUtils;
  *
  * @generated
  */
-public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager, DomainManagerConfiguration>implements ScaDomainManager {
+public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager, DomainManagerConfiguration> implements ScaDomainManager {
 	/**
 	 * The cached value of the '{@link #getWaveformFactories() <em>Waveform Factories</em>}' containment reference list.
 	 * <!-- begin-user-doc -->
@@ -1259,7 +1259,7 @@ public class ScaDomainManagerImpl extends ScaPropertyContainerImpl<DomainManager
 			java.util.Properties systemProps = new java.util.Properties(System.getProperties());
 			systemProps.putAll(orbProperties);
 
-			String tmpName = getName();
+			String tmpName = getLabel();
 			if (tmpName == null) {
 				tmpName = "";
 			}

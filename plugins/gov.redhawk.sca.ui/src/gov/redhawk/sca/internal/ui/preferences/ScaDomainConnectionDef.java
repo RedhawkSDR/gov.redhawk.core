@@ -114,6 +114,13 @@ public class ScaDomainConnectionDef {
 		this.localName = localName;
 	}
 
+	public String getLabel() {
+		if (this.localName != null) {
+			return this.localName;
+		}
+		return this.domainName;
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;

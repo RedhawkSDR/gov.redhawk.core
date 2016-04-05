@@ -29,6 +29,7 @@ public final class ScaTestConstaints {
 	public static final String DCE_GPP_DEVICE = "DCE:0dba299a-c79a-4c35-bdc5-5f417b02df32";
 
 	public static final String DOMAIN_NAME = "REDHAWK_DEV";
+	public static final String DOMAIN_DISPLAY_NAME = "REDHAWK_DEV_DISPLAY_NAME";
 	public static final String DCE_BASIC_AC_INSTANTIATION = "DCE:2a254209-cb6b-4de3-b465-4b26ba4e3ba9";
 	public static final String SERVICE_NAME = "GPP1";
 
