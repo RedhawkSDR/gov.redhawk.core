@@ -12,46 +12,12 @@
 // BEGIN GENERATED CODE
 package gov.redhawk.model.sca.impl;
 
-import gov.redhawk.model.sca.IRefreshable;
-import gov.redhawk.model.sca.ProfileObjectWrapper;
-import gov.redhawk.model.sca.RefreshDepth;
-import gov.redhawk.model.sca.ScaComponent;
-import gov.redhawk.model.sca.ScaDomainManager;
-import gov.redhawk.model.sca.ScaDomainManagerFileSystem;
-import gov.redhawk.model.sca.ScaModelPlugin;
-import gov.redhawk.model.sca.ScaPackage;
-import gov.redhawk.model.sca.ScaPort;
-import gov.redhawk.model.sca.ScaPortContainer;
-import gov.redhawk.model.sca.ScaWaveform;
-import gov.redhawk.model.sca.commands.MergePortsCommand;
-import gov.redhawk.model.sca.commands.MergePortsCommand.PortData;
-import gov.redhawk.model.sca.commands.ScaModelCommand;
-import gov.redhawk.model.sca.commands.ScaModelCommandWithResult;
-import gov.redhawk.model.sca.commands.ScaWaveformMergeComponentsCommand;
-import gov.redhawk.model.sca.commands.SetLocalAttributeCommand;
-import gov.redhawk.model.sca.commands.UnsetLocalAttributeCommand;
-import gov.redhawk.model.sca.commands.VersionedFeature;
-import gov.redhawk.model.sca.commands.VersionedFeature.Transaction;
-import gov.redhawk.sca.util.PluginUtil;
-
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
-
-import mil.jpeojtrs.sca.partitioning.PartitioningPackage;
-import mil.jpeojtrs.sca.prf.AbstractProperty;
-import mil.jpeojtrs.sca.sad.AssemblyController;
-import mil.jpeojtrs.sca.sad.ExternalProperty;
-import mil.jpeojtrs.sca.sad.Port;
-import mil.jpeojtrs.sca.sad.SadComponentInstantiation;
-import mil.jpeojtrs.sca.sad.SadComponentInstantiationRef;
-import mil.jpeojtrs.sca.sad.SadPackage;
-import mil.jpeojtrs.sca.sad.SoftwareAssembly;
-import mil.jpeojtrs.sca.scd.AbstractPort;
-import mil.jpeojtrs.sca.scd.ScdPackage;
-import mil.jpeojtrs.sca.spd.SpdPackage;
-import mil.jpeojtrs.sca.util.ScaEcoreUtils;
+import java.util.Map;
 
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
@@ -64,6 +30,7 @@ import org.eclipse.emf.common.notify.NotificationChain;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
@@ -99,6 +66,42 @@ import CF.PropertySetPackage.PartialConfiguration;
 import CF.ResourcePackage.StartError;
 import CF.ResourcePackage.StopError;
 import CF.TestableObjectPackage.UnknownTest;
+import gov.redhawk.model.sca.IRefreshable;
+import gov.redhawk.model.sca.ProfileObjectWrapper;
+import gov.redhawk.model.sca.RefreshDepth;
+import gov.redhawk.model.sca.ScaComponent;
+import gov.redhawk.model.sca.ScaDomainManager;
+import gov.redhawk.model.sca.ScaDomainManagerFileSystem;
+import gov.redhawk.model.sca.ScaModelPlugin;
+import gov.redhawk.model.sca.ScaPackage;
+import gov.redhawk.model.sca.ScaPort;
+import gov.redhawk.model.sca.ScaPortContainer;
+import gov.redhawk.model.sca.ScaWaveform;
+import gov.redhawk.model.sca.commands.MergePortsCommand;
+import gov.redhawk.model.sca.commands.MergePortsCommand.PortData;
+import gov.redhawk.model.sca.commands.ScaModelCommand;
+import gov.redhawk.model.sca.commands.ScaModelCommandWithResult;
+import gov.redhawk.model.sca.commands.ScaWaveformMergeComponentsCommand;
+import gov.redhawk.model.sca.commands.SetLocalAttributeCommand;
+import gov.redhawk.model.sca.commands.UnsetLocalAttributeCommand;
+import gov.redhawk.model.sca.commands.VersionedFeature;
+import gov.redhawk.model.sca.commands.VersionedFeature.Transaction;
+import gov.redhawk.model.sca.util.ExternalPropertiesUtil;
+import gov.redhawk.sca.util.PluginUtil;
+import mil.jpeojtrs.sca.partitioning.ComponentProperties;
+import mil.jpeojtrs.sca.partitioning.PartitioningPackage;
+import mil.jpeojtrs.sca.prf.AbstractProperty;
+import mil.jpeojtrs.sca.sad.AssemblyController;
+import mil.jpeojtrs.sca.sad.ExternalProperty;
+import mil.jpeojtrs.sca.sad.Port;
+import mil.jpeojtrs.sca.sad.SadComponentInstantiation;
+import mil.jpeojtrs.sca.sad.SadComponentInstantiationRef;
+import mil.jpeojtrs.sca.sad.SadPackage;
+import mil.jpeojtrs.sca.sad.SoftwareAssembly;
+import mil.jpeojtrs.sca.scd.AbstractPort;
+import mil.jpeojtrs.sca.scd.ScdPackage;
+import mil.jpeojtrs.sca.spd.SpdPackage;
+import mil.jpeojtrs.sca.util.ScaEcoreUtils;
 
 /**
  * <!-- begin-user-doc -->
@@ -108,20 +111,20 @@ import CF.TestableObjectPackage.UnknownTest;
  * <p>
  * The following features are implemented:
  * <ul>
- *   <li>{@link gov.redhawk.model.sca.impl.ScaWaveformImpl#getPorts <em>Ports</em>}</li>
- *   <li>{@link gov.redhawk.model.sca.impl.ScaWaveformImpl#getComponents <em>Components</em>}</li>
- *   <li>{@link gov.redhawk.model.sca.impl.ScaWaveformImpl#getAssemblyController <em>Assembly Controller</em>}</li>
- *   <li>{@link gov.redhawk.model.sca.impl.ScaWaveformImpl#getDomMgr <em>Dom Mgr</em>}</li>
- *   <li>{@link gov.redhawk.model.sca.impl.ScaWaveformImpl#getIdentifier <em>Identifier</em>}</li>
- *   <li>{@link gov.redhawk.model.sca.impl.ScaWaveformImpl#getName <em>Name</em>}</li>
- *   <li>{@link gov.redhawk.model.sca.impl.ScaWaveformImpl#getStarted <em>Started</em>}</li>
- *   <li>{@link gov.redhawk.model.sca.impl.ScaWaveformImpl#getProfile <em>Profile</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.impl.ScaWaveformImpl#getPorts <em>Ports</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.impl.ScaWaveformImpl#getComponents <em>Components</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.impl.ScaWaveformImpl#getAssemblyController <em>Assembly Controller</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.impl.ScaWaveformImpl#getDomMgr <em>Dom Mgr</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.impl.ScaWaveformImpl#getIdentifier <em>Identifier</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.impl.ScaWaveformImpl#getName <em>Name</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.impl.ScaWaveformImpl#getStarted <em>Started</em>}</li>
+ * <li>{@link gov.redhawk.model.sca.impl.ScaWaveformImpl#getProfile <em>Profile</em>}</li>
  * </ul>
  * </p>
  *
  * @generated
  */
-public class ScaWaveformImpl extends ScaPropertyContainerImpl<Application, SoftwareAssembly> implements ScaWaveform {
+public class ScaWaveformImpl extends ScaPropertyContainerImpl<Application, SoftwareAssembly>implements ScaWaveform {
 	/**
 	 * The cached value of the '{@link #getPorts() <em>Ports</em>}' containment reference list.
 	 * <!-- begin-user-doc -->
@@ -130,7 +133,7 @@ public class ScaWaveformImpl extends ScaPropertyContainerImpl<Application, Softw
 	 * @generated
 	 * @ordered
 	 */
-	protected EList<ScaPort<?, ?>> ports;
+	protected EList<ScaPort< ? , ? >> ports;
 
 	/**
 	 * The cached value of the '{@link #getComponents() <em>Components</em>}' containment reference list.
@@ -276,6 +279,7 @@ public class ScaWaveformImpl extends ScaPropertyContainerImpl<Application, Softw
 	 * @ordered
 	 */
 	protected boolean profileESet;
+
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -313,9 +317,10 @@ public class ScaWaveformImpl extends ScaPropertyContainerImpl<Application, Softw
 	 * @generated
 	 */
 	@Override
-	public EList<ScaPort<?, ?>> getPorts() {
+	public EList<ScaPort< ? , ? >> getPorts() {
 		if (ports == null) {
-			ports = new EObjectContainmentWithInverseEList.Unsettable<ScaPort<?, ?>>(ScaPort.class, this, ScaPackage.SCA_WAVEFORM__PORTS, ScaPackage.SCA_PORT__PORT_CONTAINER);
+			ports = new EObjectContainmentWithInverseEList.Unsettable<ScaPort< ? , ? >>(ScaPort.class, this, ScaPackage.SCA_WAVEFORM__PORTS,
+				ScaPackage.SCA_PORT__PORT_CONTAINER);
 		}
 		return ports;
 	}
@@ -327,7 +332,8 @@ public class ScaWaveformImpl extends ScaPropertyContainerImpl<Application, Softw
 	 */
 	@Override
 	public void unsetPorts() {
-		if (ports != null) ((InternalEList.Unsettable<?>)ports).unset();
+		if (ports != null)
+			((InternalEList.Unsettable< ? >) ports).unset();
 	}
 
 	/**
@@ -337,7 +343,7 @@ public class ScaWaveformImpl extends ScaPropertyContainerImpl<Application, Softw
 	 */
 	@Override
 	public boolean isSetPorts() {
-		return ports != null && ((InternalEList.Unsettable<?>)ports).isSet();
+		return ports != null && ((InternalEList.Unsettable< ? >) ports).isSet();
 	}
 
 	/**
@@ -348,7 +354,8 @@ public class ScaWaveformImpl extends ScaPropertyContainerImpl<Application, Softw
 	@Override
 	public EList<ScaComponent> getComponents() {
 		if (components == null) {
-			components = new EObjectContainmentWithInverseEList.Unsettable<ScaComponent>(ScaComponent.class, this, ScaPackage.SCA_WAVEFORM__COMPONENTS, ScaPackage.SCA_COMPONENT__WAVEFORM);
+			components = new EObjectContainmentWithInverseEList.Unsettable<ScaComponent>(ScaComponent.class, this, ScaPackage.SCA_WAVEFORM__COMPONENTS,
+				ScaPackage.SCA_COMPONENT__WAVEFORM);
 		}
 		return components;
 	}
@@ -360,7 +367,8 @@ public class ScaWaveformImpl extends ScaPropertyContainerImpl<Application, Softw
 	 */
 	@Override
 	public void unsetComponents() {
-		if (components != null) ((InternalEList.Unsettable<?>)components).unset();
+		if (components != null)
+			((InternalEList.Unsettable< ? >) components).unset();
 	}
 
 	/**
@@ -370,7 +378,7 @@ public class ScaWaveformImpl extends ScaPropertyContainerImpl<Application, Softw
 	 */
 	@Override
 	public boolean isSetComponents() {
-		return components != null && ((InternalEList.Unsettable<?>)components).isSet();
+		return components != null && ((InternalEList.Unsettable< ? >) components).isSet();
 	}
 
 	/**
@@ -381,11 +389,12 @@ public class ScaWaveformImpl extends ScaPropertyContainerImpl<Application, Softw
 	@Override
 	public ScaComponent getAssemblyController() {
 		if (assemblyController != null && assemblyController.eIsProxy()) {
-			InternalEObject oldAssemblyController = (InternalEObject)assemblyController;
-			assemblyController = (ScaComponent)eResolveProxy(oldAssemblyController);
+			InternalEObject oldAssemblyController = (InternalEObject) assemblyController;
+			assemblyController = (ScaComponent) eResolveProxy(oldAssemblyController);
 			if (assemblyController != oldAssemblyController) {
 				if (eNotificationRequired())
-					eNotify(new ENotificationImpl(this, Notification.RESOLVE, ScaPackage.SCA_WAVEFORM__ASSEMBLY_CONTROLLER, oldAssemblyController, assemblyController));
+					eNotify(new ENotificationImpl(this, Notification.RESOLVE, ScaPackage.SCA_WAVEFORM__ASSEMBLY_CONTROLLER, oldAssemblyController,
+						assemblyController));
 			}
 		}
 		return assemblyController;
@@ -412,7 +421,8 @@ public class ScaWaveformImpl extends ScaPropertyContainerImpl<Application, Softw
 		boolean oldAssemblyControllerESet = assemblyControllerESet;
 		assemblyControllerESet = true;
 		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, ScaPackage.SCA_WAVEFORM__ASSEMBLY_CONTROLLER, oldAssemblyController, assemblyController, !oldAssemblyControllerESet));
+			eNotify(new ENotificationImpl(this, Notification.SET, ScaPackage.SCA_WAVEFORM__ASSEMBLY_CONTROLLER, oldAssemblyController, assemblyController,
+				!oldAssemblyControllerESet));
 	}
 
 	/**
@@ -427,7 +437,8 @@ public class ScaWaveformImpl extends ScaPropertyContainerImpl<Application, Softw
 		assemblyController = null;
 		assemblyControllerESet = false;
 		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.UNSET, ScaPackage.SCA_WAVEFORM__ASSEMBLY_CONTROLLER, oldAssemblyController, null, oldAssemblyControllerESet));
+			eNotify(new ENotificationImpl(this, Notification.UNSET, ScaPackage.SCA_WAVEFORM__ASSEMBLY_CONTROLLER, oldAssemblyController, null,
+				oldAssemblyControllerESet));
 	}
 
 	/**
@@ -447,8 +458,9 @@ public class ScaWaveformImpl extends ScaPropertyContainerImpl<Application, Softw
 	 */
 	@Override
 	public ScaDomainManager getDomMgr() {
-		if (eContainerFeatureID() != ScaPackage.SCA_WAVEFORM__DOM_MGR) return null;
-		return (ScaDomainManager)eContainer();
+		if (eContainerFeatureID() != ScaPackage.SCA_WAVEFORM__DOM_MGR)
+			return null;
+		return (ScaDomainManager) eContainer();
 	}
 
 	/**
@@ -457,8 +469,9 @@ public class ScaWaveformImpl extends ScaPropertyContainerImpl<Application, Softw
 	 * @generated
 	 */
 	public ScaDomainManager basicGetDomMgr() {
-		if (eContainerFeatureID() != ScaPackage.SCA_WAVEFORM__DOM_MGR) return null;
-		return (ScaDomainManager)eInternalContainer();
+		if (eContainerFeatureID() != ScaPackage.SCA_WAVEFORM__DOM_MGR)
+			return null;
+		return (ScaDomainManager) eInternalContainer();
 	}
 
 	/**
@@ -467,7 +480,7 @@ public class ScaWaveformImpl extends ScaPropertyContainerImpl<Application, Softw
 	 * @generated
 	 */
 	public NotificationChain basicSetDomMgr(ScaDomainManager newDomMgr, NotificationChain msgs) {
-		msgs = eBasicSetContainer((InternalEObject)newDomMgr, ScaPackage.SCA_WAVEFORM__DOM_MGR, msgs);
+		msgs = eBasicSetContainer((InternalEObject) newDomMgr, ScaPackage.SCA_WAVEFORM__DOM_MGR, msgs);
 		return msgs;
 	}
 
@@ -485,11 +498,11 @@ public class ScaWaveformImpl extends ScaPropertyContainerImpl<Application, Softw
 			if (eInternalContainer() != null)
 				msgs = eBasicRemoveFromContainer(msgs);
 			if (newDomMgr != null)
-				msgs = ((InternalEObject)newDomMgr).eInverseAdd(this, ScaPackage.SCA_DOMAIN_MANAGER__WAVEFORMS, ScaDomainManager.class, msgs);
+				msgs = ((InternalEObject) newDomMgr).eInverseAdd(this, ScaPackage.SCA_DOMAIN_MANAGER__WAVEFORMS, ScaDomainManager.class, msgs);
 			msgs = basicSetDomMgr(newDomMgr, msgs);
-			if (msgs != null) msgs.dispatch();
-		}
-		else if (eNotificationRequired())
+			if (msgs != null)
+				msgs.dispatch();
+		} else if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET, ScaPackage.SCA_WAVEFORM__DOM_MGR, newDomMgr, newDomMgr));
 	}
 
@@ -530,7 +543,8 @@ public class ScaWaveformImpl extends ScaPropertyContainerImpl<Application, Softw
 		identifier = IDENTIFIER_EDEFAULT;
 		identifierESet = false;
 		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.UNSET, ScaPackage.SCA_WAVEFORM__IDENTIFIER, oldIdentifier, IDENTIFIER_EDEFAULT, oldIdentifierESet));
+			eNotify(
+				new ENotificationImpl(this, Notification.UNSET, ScaPackage.SCA_WAVEFORM__IDENTIFIER, oldIdentifier, IDENTIFIER_EDEFAULT, oldIdentifierESet));
 	}
 
 	/**
@@ -706,11 +720,12 @@ public class ScaWaveformImpl extends ScaPropertyContainerImpl<Application, Softw
 	private static final ComponentProcessIdType[] NO_COMPONENT_PROCESS_ID = new ComponentProcessIdType[0];
 	private static final ComponentElementType[] NO_COMPONENT_ELEMENT_TYPE = new ComponentElementType[0];
 	private static final DeviceAssignmentType[] NO_DEVICE_ASSIGNMENT_TYPE = new DeviceAssignmentType[0];;
+
 	/**
 	 * <!-- begin-user-doc -->
 	 * @since 14.0
 	 * <!-- end-user-doc -->
-	 * @throws InterruptedException 
+	 * @throws InterruptedException
 	 * @generated NOT
 	 */
 	@Override
@@ -877,7 +892,7 @@ public class ScaWaveformImpl extends ScaPropertyContainerImpl<Application, Softw
 		if (isSetComponents()) {
 			return;
 		}
-		SubMonitor subMonitor = SubMonitor.convert(monitor, 6); //SUPPRESS CHECKSTYLE MagicNumber
+		SubMonitor subMonitor = SubMonitor.convert(monitor, 6); // SUPPRESS CHECKSTYLE MagicNumber
 		final Application app = fetchNarrowedObject(subMonitor.newChild(1));
 
 		Transaction transaction = componentsFeature.createTransaction();
@@ -910,18 +925,18 @@ public class ScaWaveformImpl extends ScaPropertyContainerImpl<Application, Softw
 
 		// BEGIN GENERATED CODE
 	}
-	
+
 	@Deprecated
 	protected Command createMergeComponentsCommand(final String assemCtrlId, final ComponentType[] compTypes, final IStatus status) {
 		return createMergeComponentsCommand(compTypes, status);
 	}
 
 	/**
-     * @since 15.0
-     */
+	 * @since 15.0
+	 */
 	protected Command createMergeComponentsCommand(ComponentType[] compTypes, IStatus status) {
-	    return new ScaWaveformMergeComponentsCommand(this, compTypes, status);
-    }
+		return new ScaWaveformMergeComponentsCommand(this, compTypes, status);
+	}
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -939,7 +954,7 @@ public class ScaWaveformImpl extends ScaPropertyContainerImpl<Application, Softw
 	 * <!-- begin-user-doc -->
 	 * @since 14.0
 	 * <!-- end-user-doc -->
-	 * @throws InterruptedException 
+	 * @throws InterruptedException
 	 * @generated NOT
 	 */
 	@Override
@@ -969,23 +984,14 @@ public class ScaWaveformImpl extends ScaPropertyContainerImpl<Application, Softw
 		return getPorts();
 	}
 
-	private static final EStructuralFeature[] EXTERNAL_PORTS_PATH = {
-	        SadPackage.Literals.SOFTWARE_ASSEMBLY__EXTERNAL_PORTS, SadPackage.Literals.EXTERNAL_PORTS__PORT
-	};
+	private static final EStructuralFeature[] EXTERNAL_PORTS_PATH = { SadPackage.Literals.SOFTWARE_ASSEMBLY__EXTERNAL_PORTS,
+		SadPackage.Literals.EXTERNAL_PORTS__PORT };
 
-	private static final EStructuralFeature[] PORTS_GROUP_PATH = {
-	        SadPackage.Literals.PORT__COMPONENT_INSTANTIATION_REF,
-	        PartitioningPackage.Literals.COMPONENT_INSTANTIATION_REF__INSTANTIATION,
-	        PartitioningPackage.Literals.COMPONENT_INSTANTIATION__PLACEMENT,
-	        PartitioningPackage.Literals.COMPONENT_PLACEMENT__COMPONENT_FILE_REF,
-	        PartitioningPackage.Literals.COMPONENT_FILE_REF__FILE,
-	        PartitioningPackage.Literals.COMPONENT_FILE__SOFT_PKG,
-	        SpdPackage.Literals.SOFT_PKG__DESCRIPTOR,
-	        SpdPackage.Literals.DESCRIPTOR__COMPONENT,
-	        ScdPackage.Literals.SOFTWARE_COMPONENT__COMPONENT_FEATURES,
-	        ScdPackage.Literals.COMPONENT_FEATURES__PORTS,
-	        ScdPackage.Literals.PORTS__GROUP
-	};
+	private static final EStructuralFeature[] PORTS_GROUP_PATH = { SadPackage.Literals.PORT__COMPONENT_INSTANTIATION_REF,
+		PartitioningPackage.Literals.COMPONENT_INSTANTIATION_REF__INSTANTIATION, PartitioningPackage.Literals.COMPONENT_INSTANTIATION__PLACEMENT,
+		PartitioningPackage.Literals.COMPONENT_PLACEMENT__COMPONENT_FILE_REF, PartitioningPackage.Literals.COMPONENT_FILE_REF__FILE,
+		PartitioningPackage.Literals.COMPONENT_FILE__SOFT_PKG, SpdPackage.Literals.SOFT_PKG__DESCRIPTOR, SpdPackage.Literals.DESCRIPTOR__COMPONENT,
+		ScdPackage.Literals.SOFTWARE_COMPONENT__COMPONENT_FEATURES, ScdPackage.Literals.COMPONENT_FEATURES__PORTS, ScdPackage.Literals.PORTS__GROUP };
 
 	private final VersionedFeature portsFeature = new VersionedFeature(this, ScaPackage.Literals.SCA_PORT_CONTAINER__PORTS);
 
@@ -1101,7 +1107,7 @@ public class ScaWaveformImpl extends ScaPropertyContainerImpl<Application, Softw
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @throws InterruptedException 
+	 * @throws InterruptedException
 	 * @generated NOT
 	 */
 	@Override
@@ -1151,20 +1157,20 @@ public class ScaWaveformImpl extends ScaPropertyContainerImpl<Application, Softw
 			}
 			break;
 		case ScaPackage.SCA_WAVEFORM__COMPONENTS:
-			switch(msg.getEventType()) {
+			switch (msg.getEventType()) {
 			case Notification.ADD:
 				addedComponent((ScaComponent) msg.getNewValue());
 				break;
 			case Notification.ADD_MANY:
-				for (ScaComponent comp : ((Collection<ScaComponent>)msg.getNewValue())) {
+				for (ScaComponent comp : ((Collection<ScaComponent>) msg.getNewValue())) {
 					addedComponent(comp);
 				}
 				break;
 			case Notification.REMOVE:
-				removedComponent((ScaComponent)msg.getOldValue());
+				removedComponent((ScaComponent) msg.getOldValue());
 				break;
 			case Notification.REMOVE_MANY:
-				for (ScaComponent comp : ((Collection<ScaComponent>)msg.getOldValue())) {
+				for (ScaComponent comp : ((Collection<ScaComponent>) msg.getOldValue())) {
 					removedComponent(comp);
 				}
 				break;
@@ -1177,26 +1183,26 @@ public class ScaWaveformImpl extends ScaPropertyContainerImpl<Application, Softw
 	}
 
 	private void removedComponent(ScaComponent oldValue) {
-	    if (getAssemblyController() == oldValue) {
-	    	setAssemblyController(null);
-	    }
-    }
+		if (getAssemblyController() == oldValue) {
+			setAssemblyController(null);
+		}
+	}
 
 	private void addedComponent(ScaComponent newValue) {
-	    SoftwareAssembly sad = getProfileObj();
-	    if (sad != null) {
-	    	AssemblyController assem = sad.getAssemblyController();
-	    	if (assem != null) {
-	    		SadComponentInstantiationRef ref = assem.getComponentInstantiationRef();
-	    		if (ref != null) {
-	    			String refId = ref.getRefid();
-	    			if (refId != null && refId.equals(newValue.getInstantiationIdentifier())) {
-	    				setAssemblyController(newValue);
-	    			}
-	    		}
-	    	}
-	    }
-    }
+		SoftwareAssembly sad = getProfileObj();
+		if (sad != null) {
+			AssemblyController assem = sad.getAssemblyController();
+			if (assem != null) {
+				SadComponentInstantiationRef ref = assem.getComponentInstantiationRef();
+				if (ref != null) {
+					String refId = ref.getRefid();
+					if (refId != null && refId.equals(newValue.getInstantiationIdentifier())) {
+						setAssemblyController(newValue);
+					}
+				}
+			}
+		}
+	}
 
 	/**
 	 * @since 14.0
@@ -1373,14 +1379,14 @@ public class ScaWaveformImpl extends ScaPropertyContainerImpl<Application, Softw
 	@Override
 	public NotificationChain eInverseAdd(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
 		switch (featureID) {
-			case ScaPackage.SCA_WAVEFORM__PORTS:
-				return ((InternalEList<InternalEObject>)(InternalEList<?>)getPorts()).basicAdd(otherEnd, msgs);
-			case ScaPackage.SCA_WAVEFORM__COMPONENTS:
-				return ((InternalEList<InternalEObject>)(InternalEList<?>)getComponents()).basicAdd(otherEnd, msgs);
-			case ScaPackage.SCA_WAVEFORM__DOM_MGR:
-				if (eInternalContainer() != null)
-					msgs = eBasicRemoveFromContainer(msgs);
-				return basicSetDomMgr((ScaDomainManager)otherEnd, msgs);
+		case ScaPackage.SCA_WAVEFORM__PORTS:
+			return ((InternalEList<InternalEObject>) (InternalEList< ? >) getPorts()).basicAdd(otherEnd, msgs);
+		case ScaPackage.SCA_WAVEFORM__COMPONENTS:
+			return ((InternalEList<InternalEObject>) (InternalEList< ? >) getComponents()).basicAdd(otherEnd, msgs);
+		case ScaPackage.SCA_WAVEFORM__DOM_MGR:
+			if (eInternalContainer() != null)
+				msgs = eBasicRemoveFromContainer(msgs);
+			return basicSetDomMgr((ScaDomainManager) otherEnd, msgs);
 		}
 		return super.eInverseAdd(otherEnd, featureID, msgs);
 	}
@@ -1393,12 +1399,12 @@ public class ScaWaveformImpl extends ScaPropertyContainerImpl<Application, Softw
 	@Override
 	public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
 		switch (featureID) {
-			case ScaPackage.SCA_WAVEFORM__PORTS:
-				return ((InternalEList<?>)getPorts()).basicRemove(otherEnd, msgs);
-			case ScaPackage.SCA_WAVEFORM__COMPONENTS:
-				return ((InternalEList<?>)getComponents()).basicRemove(otherEnd, msgs);
-			case ScaPackage.SCA_WAVEFORM__DOM_MGR:
-				return basicSetDomMgr(null, msgs);
+		case ScaPackage.SCA_WAVEFORM__PORTS:
+			return ((InternalEList< ? >) getPorts()).basicRemove(otherEnd, msgs);
+		case ScaPackage.SCA_WAVEFORM__COMPONENTS:
+			return ((InternalEList< ? >) getComponents()).basicRemove(otherEnd, msgs);
+		case ScaPackage.SCA_WAVEFORM__DOM_MGR:
+			return basicSetDomMgr(null, msgs);
 		}
 		return super.eInverseRemove(otherEnd, featureID, msgs);
 	}
@@ -1411,8 +1417,8 @@ public class ScaWaveformImpl extends ScaPropertyContainerImpl<Application, Softw
 	@Override
 	public NotificationChain eBasicRemoveFromContainerFeature(NotificationChain msgs) {
 		switch (eContainerFeatureID()) {
-			case ScaPackage.SCA_WAVEFORM__DOM_MGR:
-				return eInternalContainer().eInverseRemove(this, ScaPackage.SCA_DOMAIN_MANAGER__WAVEFORMS, ScaDomainManager.class, msgs);
+		case ScaPackage.SCA_WAVEFORM__DOM_MGR:
+			return eInternalContainer().eInverseRemove(this, ScaPackage.SCA_DOMAIN_MANAGER__WAVEFORMS, ScaDomainManager.class, msgs);
 		}
 		return super.eBasicRemoveFromContainerFeature(msgs);
 	}
@@ -1425,24 +1431,26 @@ public class ScaWaveformImpl extends ScaPropertyContainerImpl<Application, Softw
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
-			case ScaPackage.SCA_WAVEFORM__PORTS:
-				return getPorts();
-			case ScaPackage.SCA_WAVEFORM__COMPONENTS:
-				return getComponents();
-			case ScaPackage.SCA_WAVEFORM__ASSEMBLY_CONTROLLER:
-				if (resolve) return getAssemblyController();
-				return basicGetAssemblyController();
-			case ScaPackage.SCA_WAVEFORM__DOM_MGR:
-				if (resolve) return getDomMgr();
-				return basicGetDomMgr();
-			case ScaPackage.SCA_WAVEFORM__IDENTIFIER:
-				return getIdentifier();
-			case ScaPackage.SCA_WAVEFORM__NAME:
-				return getName();
-			case ScaPackage.SCA_WAVEFORM__STARTED:
-				return getStarted();
-			case ScaPackage.SCA_WAVEFORM__PROFILE:
-				return getProfile();
+		case ScaPackage.SCA_WAVEFORM__PORTS:
+			return getPorts();
+		case ScaPackage.SCA_WAVEFORM__COMPONENTS:
+			return getComponents();
+		case ScaPackage.SCA_WAVEFORM__ASSEMBLY_CONTROLLER:
+			if (resolve)
+				return getAssemblyController();
+			return basicGetAssemblyController();
+		case ScaPackage.SCA_WAVEFORM__DOM_MGR:
+			if (resolve)
+				return getDomMgr();
+			return basicGetDomMgr();
+		case ScaPackage.SCA_WAVEFORM__IDENTIFIER:
+			return getIdentifier();
+		case ScaPackage.SCA_WAVEFORM__NAME:
+			return getName();
+		case ScaPackage.SCA_WAVEFORM__STARTED:
+			return getStarted();
+		case ScaPackage.SCA_WAVEFORM__PROFILE:
+			return getProfile();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -1456,32 +1464,32 @@ public class ScaWaveformImpl extends ScaPropertyContainerImpl<Application, Softw
 	@Override
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
-			case ScaPackage.SCA_WAVEFORM__PORTS:
-				getPorts().clear();
-				getPorts().addAll((Collection<? extends ScaPort<?, ?>>)newValue);
-				return;
-			case ScaPackage.SCA_WAVEFORM__COMPONENTS:
-				getComponents().clear();
-				getComponents().addAll((Collection<? extends ScaComponent>)newValue);
-				return;
-			case ScaPackage.SCA_WAVEFORM__ASSEMBLY_CONTROLLER:
-				setAssemblyController((ScaComponent)newValue);
-				return;
-			case ScaPackage.SCA_WAVEFORM__DOM_MGR:
-				setDomMgr((ScaDomainManager)newValue);
-				return;
-			case ScaPackage.SCA_WAVEFORM__IDENTIFIER:
-				setIdentifier((String)newValue);
-				return;
-			case ScaPackage.SCA_WAVEFORM__NAME:
-				setName((String)newValue);
-				return;
-			case ScaPackage.SCA_WAVEFORM__STARTED:
-				setStarted((Boolean)newValue);
-				return;
-			case ScaPackage.SCA_WAVEFORM__PROFILE:
-				setProfile((String)newValue);
-				return;
+		case ScaPackage.SCA_WAVEFORM__PORTS:
+			getPorts().clear();
+			getPorts().addAll((Collection< ? extends ScaPort< ? , ? >>) newValue);
+			return;
+		case ScaPackage.SCA_WAVEFORM__COMPONENTS:
+			getComponents().clear();
+			getComponents().addAll((Collection< ? extends ScaComponent>) newValue);
+			return;
+		case ScaPackage.SCA_WAVEFORM__ASSEMBLY_CONTROLLER:
+			setAssemblyController((ScaComponent) newValue);
+			return;
+		case ScaPackage.SCA_WAVEFORM__DOM_MGR:
+			setDomMgr((ScaDomainManager) newValue);
+			return;
+		case ScaPackage.SCA_WAVEFORM__IDENTIFIER:
+			setIdentifier((String) newValue);
+			return;
+		case ScaPackage.SCA_WAVEFORM__NAME:
+			setName((String) newValue);
+			return;
+		case ScaPackage.SCA_WAVEFORM__STARTED:
+			setStarted((Boolean) newValue);
+			return;
+		case ScaPackage.SCA_WAVEFORM__PROFILE:
+			setProfile((String) newValue);
+			return;
 		}
 		super.eSet(featureID, newValue);
 	}
@@ -1494,30 +1502,30 @@ public class ScaWaveformImpl extends ScaPropertyContainerImpl<Application, Softw
 	@Override
 	public void eUnset(int featureID) {
 		switch (featureID) {
-			case ScaPackage.SCA_WAVEFORM__PORTS:
-				unsetPorts();
-				return;
-			case ScaPackage.SCA_WAVEFORM__COMPONENTS:
-				unsetComponents();
-				return;
-			case ScaPackage.SCA_WAVEFORM__ASSEMBLY_CONTROLLER:
-				unsetAssemblyController();
-				return;
-			case ScaPackage.SCA_WAVEFORM__DOM_MGR:
-				setDomMgr((ScaDomainManager)null);
-				return;
-			case ScaPackage.SCA_WAVEFORM__IDENTIFIER:
-				unsetIdentifier();
-				return;
-			case ScaPackage.SCA_WAVEFORM__NAME:
-				unsetName();
-				return;
-			case ScaPackage.SCA_WAVEFORM__STARTED:
-				unsetStarted();
-				return;
-			case ScaPackage.SCA_WAVEFORM__PROFILE:
-				unsetProfile();
-				return;
+		case ScaPackage.SCA_WAVEFORM__PORTS:
+			unsetPorts();
+			return;
+		case ScaPackage.SCA_WAVEFORM__COMPONENTS:
+			unsetComponents();
+			return;
+		case ScaPackage.SCA_WAVEFORM__ASSEMBLY_CONTROLLER:
+			unsetAssemblyController();
+			return;
+		case ScaPackage.SCA_WAVEFORM__DOM_MGR:
+			setDomMgr((ScaDomainManager) null);
+			return;
+		case ScaPackage.SCA_WAVEFORM__IDENTIFIER:
+			unsetIdentifier();
+			return;
+		case ScaPackage.SCA_WAVEFORM__NAME:
+			unsetName();
+			return;
+		case ScaPackage.SCA_WAVEFORM__STARTED:
+			unsetStarted();
+			return;
+		case ScaPackage.SCA_WAVEFORM__PROFILE:
+			unsetProfile();
+			return;
 		}
 		super.eUnset(featureID);
 	}
@@ -1530,22 +1538,22 @@ public class ScaWaveformImpl extends ScaPropertyContainerImpl<Application, Softw
 	@Override
 	public boolean eIsSet(int featureID) {
 		switch (featureID) {
-			case ScaPackage.SCA_WAVEFORM__PORTS:
-				return isSetPorts();
-			case ScaPackage.SCA_WAVEFORM__COMPONENTS:
-				return isSetComponents();
-			case ScaPackage.SCA_WAVEFORM__ASSEMBLY_CONTROLLER:
-				return isSetAssemblyController();
-			case ScaPackage.SCA_WAVEFORM__DOM_MGR:
-				return basicGetDomMgr() != null;
-			case ScaPackage.SCA_WAVEFORM__IDENTIFIER:
-				return isSetIdentifier();
-			case ScaPackage.SCA_WAVEFORM__NAME:
-				return isSetName();
-			case ScaPackage.SCA_WAVEFORM__STARTED:
-				return isSetStarted();
-			case ScaPackage.SCA_WAVEFORM__PROFILE:
-				return isSetProfile();
+		case ScaPackage.SCA_WAVEFORM__PORTS:
+			return isSetPorts();
+		case ScaPackage.SCA_WAVEFORM__COMPONENTS:
+			return isSetComponents();
+		case ScaPackage.SCA_WAVEFORM__ASSEMBLY_CONTROLLER:
+			return isSetAssemblyController();
+		case ScaPackage.SCA_WAVEFORM__DOM_MGR:
+			return basicGetDomMgr() != null;
+		case ScaPackage.SCA_WAVEFORM__IDENTIFIER:
+			return isSetIdentifier();
+		case ScaPackage.SCA_WAVEFORM__NAME:
+			return isSetName();
+		case ScaPackage.SCA_WAVEFORM__STARTED:
+			return isSetStarted();
+		case ScaPackage.SCA_WAVEFORM__PROFILE:
+			return isSetProfile();
 		}
 		return super.eIsSet(featureID);
 	}
@@ -1556,36 +1564,43 @@ public class ScaWaveformImpl extends ScaPropertyContainerImpl<Application, Softw
 	 * @generated
 	 */
 	@Override
-	public int eBaseStructuralFeatureID(int derivedFeatureID, Class<?> baseClass) {
+	public int eBaseStructuralFeatureID(int derivedFeatureID, Class< ? > baseClass) {
 		if (baseClass == LifeCycleOperations.class) {
 			switch (derivedFeatureID) {
-				default: return -1;
+			default:
+				return -1;
 			}
 		}
 		if (baseClass == TestableObjectOperations.class) {
 			switch (derivedFeatureID) {
-				default: return -1;
+			default:
+				return -1;
 			}
 		}
 		if (baseClass == PortSupplierOperations.class) {
 			switch (derivedFeatureID) {
-				default: return -1;
+			default:
+				return -1;
 			}
 		}
 		if (baseClass == ResourceOperations.class) {
 			switch (derivedFeatureID) {
-				default: return -1;
+			default:
+				return -1;
 			}
 		}
 		if (baseClass == ApplicationOperations.class) {
 			switch (derivedFeatureID) {
-				default: return -1;
+			default:
+				return -1;
 			}
 		}
 		if (baseClass == ScaPortContainer.class) {
 			switch (derivedFeatureID) {
-				case ScaPackage.SCA_WAVEFORM__PORTS: return ScaPackage.SCA_PORT_CONTAINER__PORTS;
-				default: return -1;
+			case ScaPackage.SCA_WAVEFORM__PORTS:
+				return ScaPackage.SCA_PORT_CONTAINER__PORTS;
+			default:
+				return -1;
 			}
 		}
 		return super.eBaseStructuralFeatureID(derivedFeatureID, baseClass);
@@ -1597,36 +1612,43 @@ public class ScaWaveformImpl extends ScaPropertyContainerImpl<Application, Softw
 	 * @generated
 	 */
 	@Override
-	public int eDerivedStructuralFeatureID(int baseFeatureID, Class<?> baseClass) {
+	public int eDerivedStructuralFeatureID(int baseFeatureID, Class< ? > baseClass) {
 		if (baseClass == LifeCycleOperations.class) {
 			switch (baseFeatureID) {
-				default: return -1;
+			default:
+				return -1;
 			}
 		}
 		if (baseClass == TestableObjectOperations.class) {
 			switch (baseFeatureID) {
-				default: return -1;
+			default:
+				return -1;
 			}
 		}
 		if (baseClass == PortSupplierOperations.class) {
 			switch (baseFeatureID) {
-				default: return -1;
+			default:
+				return -1;
 			}
 		}
 		if (baseClass == ResourceOperations.class) {
 			switch (baseFeatureID) {
-				default: return -1;
+			default:
+				return -1;
 			}
 		}
 		if (baseClass == ApplicationOperations.class) {
 			switch (baseFeatureID) {
-				default: return -1;
+			default:
+				return -1;
 			}
 		}
 		if (baseClass == ScaPortContainer.class) {
 			switch (baseFeatureID) {
-				case ScaPackage.SCA_PORT_CONTAINER__PORTS: return ScaPackage.SCA_WAVEFORM__PORTS;
-				default: return -1;
+			case ScaPackage.SCA_PORT_CONTAINER__PORTS:
+				return ScaPackage.SCA_WAVEFORM__PORTS;
+			default:
+				return -1;
 			}
 		}
 		return super.eDerivedStructuralFeatureID(baseFeatureID, baseClass);
@@ -1639,17 +1661,30 @@ public class ScaWaveformImpl extends ScaPropertyContainerImpl<Application, Softw
 	 */
 	@Override
 	public String toString() {
-		if (eIsProxy()) return super.toString();
+		if (eIsProxy())
+			return super.toString();
 
 		StringBuffer result = new StringBuffer(super.toString());
 		result.append(" (identifier: ");
-		if (identifierESet) result.append(identifier); else result.append("<unset>");
+		if (identifierESet)
+			result.append(identifier);
+		else
+			result.append("<unset>");
 		result.append(", name: ");
-		if (nameESet) result.append(name); else result.append("<unset>");
+		if (nameESet)
+			result.append(name);
+		else
+			result.append("<unset>");
 		result.append(", started: ");
-		if (startedESet) result.append(started); else result.append("<unset>");
+		if (startedESet)
+			result.append(started);
+		else
+			result.append("<unset>");
 		result.append(", profile: ");
-		if (profileESet) result.append(profile); else result.append("<unset>");
+		if (profileESet)
+			result.append(profile);
+		else
+			result.append("<unset>");
 		result.append(')');
 		return result.toString();
 	}
@@ -1701,63 +1736,98 @@ public class ScaWaveformImpl extends ScaPropertyContainerImpl<Application, Softw
 		// BEGIN GENERATED CODE
 	}
 
-	private static final EStructuralFeature[] PRF_PATH = {
-	        SadPackage.Literals.SOFTWARE_ASSEMBLY__ASSEMBLY_CONTROLLER,
-	        SadPackage.Literals.ASSEMBLY_CONTROLLER__COMPONENT_INSTANTIATION_REF,
-	        PartitioningPackage.Literals.COMPONENT_INSTANTIATION_REF__INSTANTIATION,
-	        PartitioningPackage.Literals.COMPONENT_INSTANTIATION__PLACEMENT,
-	        PartitioningPackage.Literals.COMPONENT_PLACEMENT__COMPONENT_FILE_REF,
-	        PartitioningPackage.Literals.COMPONENT_FILE_REF__FILE,
-	        PartitioningPackage.Literals.COMPONENT_FILE__SOFT_PKG,
-	        SpdPackage.Literals.SOFT_PKG__PROPERTY_FILE,
-	        SpdPackage.Literals.PROPERTY_FILE__PROPERTIES
-	};
-	
-	private static final EStructuralFeature[] INST_PRF_PATH = {
-        PartitioningPackage.Literals.COMPONENT_INSTANTIATION__PLACEMENT,
-        PartitioningPackage.Literals.COMPONENT_PLACEMENT__COMPONENT_FILE_REF,
-        PartitioningPackage.Literals.COMPONENT_FILE_REF__FILE,
-        PartitioningPackage.Literals.COMPONENT_FILE__SOFT_PKG,
-        SpdPackage.Literals.SOFT_PKG__PROPERTY_FILE,
-        SpdPackage.Literals.PROPERTY_FILE__PROPERTIES
-};
-	
+	private static final EStructuralFeature[] PRF_PATH = { SadPackage.Literals.SOFTWARE_ASSEMBLY__ASSEMBLY_CONTROLLER,
+		SadPackage.Literals.ASSEMBLY_CONTROLLER__COMPONENT_INSTANTIATION_REF, PartitioningPackage.Literals.COMPONENT_INSTANTIATION_REF__INSTANTIATION,
+		PartitioningPackage.Literals.COMPONENT_INSTANTIATION__PLACEMENT, PartitioningPackage.Literals.COMPONENT_PLACEMENT__COMPONENT_FILE_REF,
+		PartitioningPackage.Literals.COMPONENT_FILE_REF__FILE, PartitioningPackage.Literals.COMPONENT_FILE__SOFT_PKG,
+		SpdPackage.Literals.SOFT_PKG__PROPERTY_FILE, SpdPackage.Literals.PROPERTY_FILE__PROPERTIES };
+
+	private static final EStructuralFeature[] INST_PRF_PATH = { PartitioningPackage.Literals.COMPONENT_INSTANTIATION__PLACEMENT,
+		PartitioningPackage.Literals.COMPONENT_PLACEMENT__COMPONENT_FILE_REF, PartitioningPackage.Literals.COMPONENT_FILE_REF__FILE,
+		PartitioningPackage.Literals.COMPONENT_FILE__SOFT_PKG, SpdPackage.Literals.SOFT_PKG__PROPERTY_FILE, SpdPackage.Literals.PROPERTY_FILE__PROPERTIES };
+
+	private static final EStructuralFeature[] ASMBLY_CTL_COMP_PROPS_PATH = { SadPackage.Literals.SOFTWARE_ASSEMBLY__ASSEMBLY_CONTROLLER,
+		SadPackage.Literals.ASSEMBLY_CONTROLLER__COMPONENT_INSTANTIATION_REF, PartitioningPackage.Literals.COMPONENT_INSTANTIATION_REF__INSTANTIATION,
+		PartitioningPackage.Literals.COMPONENT_INSTANTIATION__COMPONENT_PROPERTIES };
+
 	@Override
-	protected List<AbstractProperty> fetchPropertyDefinitions(IProgressMonitor monitor){
+	protected List<AbstractProperty> fetchPropertyDefinitions(IProgressMonitor monitor) {
 		SoftwareAssembly localProfile = fetchProfileObject(monitor);
-		mil.jpeojtrs.sca.prf.Properties propDefintions = ScaEcoreUtils.getFeature(localProfile, PRF_PATH);
+		if (isDisposed() || localProfile == null) {
+			return Collections.emptyList();
+		}
+
 		List<AbstractProperty> retVal = new ArrayList<AbstractProperty>();
-		if (propDefintions != null) {
-			for ( ValueListIterator<Object> i = propDefintions.getProperties().valueListIterator(); i.hasNext(); ) {
-				Object propDef = i.next();
-				if (propDef instanceof AbstractProperty) {
-					retVal.add((AbstractProperty) propDef);
-				}
+		retVal.addAll(getAssemblyControllerProps(localProfile));
+		retVal.addAll(getExternalControllerProps(localProfile));
+
+		return retVal;
+	}
+
+	private Collection< ? extends AbstractProperty> getAssemblyControllerProps(SoftwareAssembly localProfile) {
+		List<AbstractProperty> values = new ArrayList<AbstractProperty>();
+
+		// Create a map of any properties whose values have been overridden in the SAD.XML
+		HashMap<String, EObject> overriddenPropsMap = new HashMap<String, EObject>();
+		if (localProfile.getAssemblyController() != null) {
+			ComponentProperties componentProps = ScaEcoreUtils.getFeature(localProfile, ASMBLY_CTL_COMP_PROPS_PATH);
+			componentProps = localProfile.getAssemblyController().getComponentInstantiationRef().getInstantiation().getComponentProperties();
+			if (componentProps != null) {
+				overriddenPropsMap = ExternalPropertiesUtil.getOverriddenProperties(componentProps);
 			}
 		}
-		if (localProfile != null) {
-			EList<SadComponentInstantiation> insts = localProfile.getAllComponentInstantiations();
-			if (localProfile.getExternalProperties() != null) {
-				for (ExternalProperty externalProp : localProfile.getExternalProperties().getProperties()) {
-					for (SadComponentInstantiation inst : insts) {
-						if (inst.getId().equals(externalProp.getCompRefID())) {
-							mil.jpeojtrs.sca.prf.Properties instProperties = ScaEcoreUtils.getFeature(inst, INST_PRF_PATH);
-							if (instProperties != null) {
-								AbstractProperty prop = instProperties.getProperty(externalProp.getPropID());
-								if (prop != null) {
-									if (externalProp.getExternalPropID() != null) {
-										prop = EcoreUtil.copy(prop);
-										prop.setId(externalProp.getExternalPropID());
-									}
-									retVal.add(prop);
-								}
-							}
-						}
+
+		// All Assembly Controller properties are external, so add those here. Check for any that were overridden in the
+		// SAD.XML
+		mil.jpeojtrs.sca.prf.Properties propDefs = ScaEcoreUtils.getFeature(localProfile, PRF_PATH);
+		if (propDefs != null) {
+			for (ValueListIterator<Object> i = propDefs.getProperties().valueListIterator(); i.hasNext();) {
+				Object propDef = i.next();
+				if (propDef instanceof AbstractProperty) {
+					AbstractProperty property = (AbstractProperty) propDef;
+					if (overriddenPropsMap.containsKey(property.getId())) {
+						property = ExternalPropertiesUtil.copyProperty(property, overriddenPropsMap);
+						values.add(property);
+					} else {
+						values.add(property);
 					}
 				}
 			}
 		}
-		return retVal;
+
+		return values;
+	}
+
+	private Collection< ? extends AbstractProperty> getExternalControllerProps(SoftwareAssembly localProfile) {
+		List<AbstractProperty> values = new ArrayList<AbstractProperty>();
+
+		// Add any external properties from components other than the Assembly Controller. Check for any that were
+		// overridden in the SAD.XML
+		Map<String, EObject> overriddenPropsMap = new HashMap<String, EObject>();
+		if (localProfile.getExternalProperties() != null) {
+			EList<SadComponentInstantiation> insts = localProfile.getAllComponentInstantiations();
+			for (ExternalProperty externalProp : localProfile.getExternalProperties().getProperties()) {
+				for (SadComponentInstantiation inst : insts) {
+					if (inst.getId().equals(externalProp.getCompRefID())) {
+						mil.jpeojtrs.sca.prf.Properties instProperties = ScaEcoreUtils.getFeature(inst, INST_PRF_PATH);
+						overriddenPropsMap = ExternalPropertiesUtil.getOverriddenProperties(inst.getComponentProperties());
+						if (instProperties != null) {
+							AbstractProperty prop = instProperties.getProperty(externalProp.getPropID());
+							if (prop != null) {
+								if (externalProp.getExternalPropID() != null) {
+									prop = ExternalPropertiesUtil.copyProperty(prop, overriddenPropsMap);
+									prop.setId(externalProp.getExternalPropID());
+								}
+								values.add(prop);
+							}
+						}
+						break; // Check the next external property
+					}
+				}
+			}
+		}
+
+		return values;
 	}
 
 	private final VersionedFeature profileObjectFeature = new VersionedFeature(this, ScaPackage.Literals.PROFILE_OBJECT_WRAPPER__PROFILE_OBJ);
@@ -1794,9 +1864,9 @@ public class ScaWaveformImpl extends ScaPropertyContainerImpl<Application, Softw
 	private final VersionedFeature profileFeature = new VersionedFeature(this, ScaPackage.Literals.SCA_WAVEFORM__PROFILE);
 
 	/**
-     * @since 14.0
-     * @generated NOT
-     */
+	 * @since 14.0
+	 * @generated NOT
+	 */
 	@Override
 	public String fetchProfile(IProgressMonitor monitor) {
 		if (isSetProfile()) {
@@ -1839,7 +1909,7 @@ public class ScaWaveformImpl extends ScaPropertyContainerImpl<Application, Softw
 				if (fileMgr != null) {
 					final URI newURI = fileMgr.createURI(profile);
 					transaction.addCommand(new ScaModelCommand() {
-	
+
 						@Override
 						public void execute() {
 							setProfileURI(newURI);
@@ -1850,7 +1920,7 @@ public class ScaWaveformImpl extends ScaPropertyContainerImpl<Application, Softw
 			} else {
 				final URI newURI = URI.createURI(profile);
 				transaction.addCommand(new ScaModelCommand() {
-	
+
 					@Override
 					public void execute() {
 						setProfileURI(newURI);
@@ -1861,4 +1931,4 @@ public class ScaWaveformImpl extends ScaPropertyContainerImpl<Application, Softw
 		}
 		return getProfileURI();
 	}
-} //ScaWaveformImpl
+} // ScaWaveformImpl
