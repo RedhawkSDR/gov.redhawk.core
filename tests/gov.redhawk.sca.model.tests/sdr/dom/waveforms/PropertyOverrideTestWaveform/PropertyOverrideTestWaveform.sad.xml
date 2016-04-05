@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE softwareassembly PUBLIC "-//JTRS//DTD SCA V2.2.2 SAD//EN" "softwareassembly.dtd">
+<softwareassembly id="DCE:88a88f62-3aa8-43f4-95b3-9b4e36a935b5" name="PropertyOverrideTestWaveform">
+  <componentfiles>
+    <componentfile id="AllPropertyTypesComponent_9aaca118-37f6-42b9-a4af-d9badbf2f550" type="SPD">
+      <localfile name="/components/AllPropertyTypesComponent/AllPropertyTypesComponent.spd.xml"/>
+    </componentfile>
+  </componentfiles>
+  <partitioning>
+    <componentplacement>
+      <componentfileref refid="AllPropertyTypesComponent_9aaca118-37f6-42b9-a4af-d9badbf2f550"/>
+      <componentinstantiation id="AllPropertyTypesComponent_1" startorder="0">
+        <usagename>AllPropertyTypesComponent_1</usagename>
+        <componentproperties>
+          <simpleref refid="simpleString" value="iHaveBeenOverridden"/>
+          <structref refid="structString">
+            <simpleref refid="structSimpleString" value="iHaveBeenOverridden"/>
+            <simplesequenceref refid="structSimpleSeqString">
+              <values>
+                <value>iHaveBeenOverridden</value>
+                <value>iHaveBeenOverridden</value>
+                <value>iHaveBeenOverridden</value>
+              </values>
+            </simplesequenceref>
+          </structref>
+          <structsequenceref refid="structSeqString">
+            <structvalue>
+              <simpleref refid="structSeqStructSimpleString" value="iHaveBeenOverridden"/>
+              <simplesequenceref refid="structSeqStructSimpleSeqString">
+                <values>
+                  <value>iHaveBeenOverridden</value>
+                  <value>iHaveBeenOverridden</value>
+                  <value>iHaveBeenOverridden</value>
+                </values>
+              </simplesequenceref>
+            </structvalue>
+          </structsequenceref>
+          <simplesequenceref refid="simpleSeqString">
+            <values>
+              <value>iHaveBeenOverridden</value>
+              <value>iHaveBeenOverridden</value>
+              <value>iHaveBeenOverridden</value>
+            </values>
+          </simplesequenceref>
+        </componentproperties>
+        <findcomponent>
+          <namingservice name="AllPropertyTypesComponent_1"/>
+        </findcomponent>
+      </componentinstantiation>
+    </componentplacement>
+  </partitioning>
+  <assemblycontroller>
+    <componentinstantiationref refid="AllPropertyTypesComponent_1"/>
+  </assemblycontroller>
+  <connections/>
+</softwareassembly>
