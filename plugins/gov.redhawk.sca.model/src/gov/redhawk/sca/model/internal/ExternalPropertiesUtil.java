@@ -1,14 +1,14 @@
-/*******************************************************************************
- * This file is protected by Copyright. 
+/**
+ * This file is protected by Copyright.
  * Please refer to the COPYRIGHT file distributed with this source distribution.
  *
  * This file is part of REDHAWK IDE.
  *
- * All rights reserved.  This program and the accompanying materials are made available under 
- * the terms of the Eclipse Public License v1.0 which accompanies this distribution, and is available at 
+ * All rights reserved.  This program and the accompanying materials are made available under
+ * the terms of the Eclipse Public License v1.0 which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- *******************************************************************************/
-package gov.redhawk.model.sca.util;
+ */
+package gov.redhawk.sca.model.internal;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -19,6 +19,7 @@ import org.eclipse.emf.ecore.util.FeatureMap.ValueListIterator;
 
 import mil.jpeojtrs.sca.partitioning.ComponentProperties;
 import mil.jpeojtrs.sca.prf.AbstractProperty;
+import mil.jpeojtrs.sca.prf.AbstractPropertyRef;
 import mil.jpeojtrs.sca.prf.PrfPackage;
 import mil.jpeojtrs.sca.prf.Simple;
 import mil.jpeojtrs.sca.prf.SimpleRef;
@@ -30,9 +31,6 @@ import mil.jpeojtrs.sca.prf.StructSequence;
 import mil.jpeojtrs.sca.prf.StructSequenceRef;
 import mil.jpeojtrs.sca.prf.StructValue;
 
-/**
- * @since 19.0
- */
 public class ExternalPropertiesUtil {
 
 	private ExternalPropertiesUtil() {
@@ -45,27 +43,8 @@ public class ExternalPropertiesUtil {
 		}
 		ValueListIterator<Object> valueListIterator = componentProps.getProperties().valueListIterator();
 		while (valueListIterator.hasNext()) {
-			EObject property = (EObject) valueListIterator.next();
-			switch (property.eClass().getClassifierID()) {
-			case PrfPackage.SIMPLE_REF:
-				SimpleRef simpleRef = (SimpleRef) property;
-				propertyMap.put(simpleRef.getRefID(), simpleRef);
-				break;
-			case PrfPackage.SIMPLE_SEQUENCE_REF:
-				SimpleSequenceRef simpleSeqRef = (SimpleSequenceRef) property;
-				propertyMap.put(simpleSeqRef.getRefID(), simpleSeqRef);
-				break;
-			case PrfPackage.STRUCT_REF:
-				StructRef structRef = (StructRef) property;
-				propertyMap.put(structRef.getRefID(), structRef);
-				break;
-			case PrfPackage.STRUCT_SEQUENCE_REF:
-				StructSequenceRef structSeqRef = (StructSequenceRef) property;
-				propertyMap.put(structSeqRef.getRefID(), structSeqRef);
-				break;
-			default:
-				break;
-			}
+			AbstractPropertyRef< ? > propertyRef = (AbstractPropertyRef< ? >) valueListIterator.next();
+			propertyMap.put(propertyRef.getRefID(), propertyRef);
 		}
 		return propertyMap;
 	}
