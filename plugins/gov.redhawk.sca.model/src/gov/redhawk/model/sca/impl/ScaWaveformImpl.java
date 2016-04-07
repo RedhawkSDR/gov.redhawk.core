@@ -788,7 +788,7 @@ public class ScaWaveformImpl extends ScaPropertyContainerImpl<Application, Softw
 	 * 
 	 * @deprecated Use {@link #fetchComponents(IProgressMonitor, RefreshDepth)}
 	 * @since 14.0
-	 *        <!-- end-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @throws InterruptedException
 	 * @generated NOT
 	 */
@@ -997,7 +997,7 @@ public class ScaWaveformImpl extends ScaPropertyContainerImpl<Application, Softw
 	 * <!-- begin-user-doc -->
 	 * 
 	 * @since 14.0
-	 *        <!-- end-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @throws InterruptedException
 	 * @generated NOT
 	 */
