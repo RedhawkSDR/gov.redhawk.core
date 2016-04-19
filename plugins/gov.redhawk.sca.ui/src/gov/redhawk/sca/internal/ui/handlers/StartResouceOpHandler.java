@@ -11,27 +11,20 @@
  */
 package gov.redhawk.sca.internal.ui.handlers;
 
-import gov.redhawk.sca.ui.actions.StartAction;
-
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
+import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.handlers.HandlerUtil;
 
-// TODO: Auto-generated Javadoc
-/**
- * The Class StartResouceOpHandler.
- */
+import CF.ResourceOperations;
+import gov.redhawk.model.sca.util.StartJob;
+import gov.redhawk.sca.util.PluginUtil;
+
 public class StartResouceOpHandler extends AbstractHandler {
-
-	private final StartAction action = new StartAction();
-
-	/**
-	 * {@inheritDoc}
-	 */
 
 	public Object execute(final ExecutionEvent event) throws ExecutionException {
 		ISelection selection = HandlerUtil.getActiveMenuSelection(event);
@@ -47,23 +40,15 @@ public class StartResouceOpHandler extends AbstractHandler {
 			final IEditorPart editor = HandlerUtil.getActiveEditor(event);
 			start(editor);
 		}
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	private void start(final Object obj) {
-		this.action.setContext(obj);
-		this.action.run();
+		final ResourceOperations resource = PluginUtil.adapt(ResourceOperations.class, obj);
+		if (resource != null) {
+			final Job job = new StartJob(resource.identifier(), resource);
+			job.setUser(true);
+			job.schedule();
+		}
 	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-
-	@Override
-	public void setEnabled(final Object evaluationContext) {
-		// TODO Auto-generated method stub
-		super.setEnabled(evaluationContext);
-	}
-
 }
