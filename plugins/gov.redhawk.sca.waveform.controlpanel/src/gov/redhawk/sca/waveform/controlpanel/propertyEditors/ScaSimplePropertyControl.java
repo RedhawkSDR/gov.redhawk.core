@@ -16,6 +16,7 @@ import gov.redhawk.model.sca.ScaSimpleProperty;
 import gov.redhawk.sca.ui.FlasherJob;
 import gov.redhawk.sca.waveform.controlpanel.WaveformControlPanelPlugin;
 import mil.jpeojtrs.sca.util.AnyUtils;
+import mil.jpeojtrs.sca.util.CFErrorFormatter;
 
 import org.eclipse.core.databinding.observable.value.IObservableValue;
 import org.eclipse.core.databinding.observable.value.IValueChangeListener;
@@ -83,10 +84,10 @@ public class ScaSimplePropertyControl {
 					try {
 						setValue(ScaSimplePropertyControl.this.property, event.getObservableValue().getValue());
 					} catch (final PartialConfiguration e) {
-						StatusManager.getManager().handle(new Status(IStatus.ERROR, WaveformControlPanelPlugin.PLUGIN_ID, "Property Configure failed.", e),
+						StatusManager.getManager().handle(new Status(IStatus.ERROR, WaveformControlPanelPlugin.PLUGIN_ID, CFErrorFormatter.format(e), e),
 						        StatusManager.LOG | StatusManager.SHOW);
 					} catch (final InvalidConfiguration e) {
-						StatusManager.getManager().handle(new Status(IStatus.ERROR, WaveformControlPanelPlugin.PLUGIN_ID, "Property Configure failed.", e),
+						StatusManager.getManager().handle(new Status(IStatus.ERROR, WaveformControlPanelPlugin.PLUGIN_ID, CFErrorFormatter.format(e), e),
 						        StatusManager.LOG | StatusManager.SHOW);
 					}
 					control.setBackground(control.getDisplay().getSystemColor(SWT.COLOR_CYAN));

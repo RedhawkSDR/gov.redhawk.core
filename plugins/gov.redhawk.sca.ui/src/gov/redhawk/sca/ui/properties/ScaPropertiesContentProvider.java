@@ -20,6 +20,7 @@ import gov.redhawk.sca.internal.ui.properties.ScaSimplePropertyValuePropertyDesc
 import gov.redhawk.sca.internal.ui.properties.SequencePropertyValueDescriptor;
 import gov.redhawk.sca.ui.ScaModelAdapterFactoryContentProvider;
 import gov.redhawk.sca.ui.ScaUiPlugin;
+import mil.jpeojtrs.sca.util.CFErrorFormatter;
 
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
@@ -88,11 +89,9 @@ public class ScaPropertiesContentProvider extends ScaModelAdapterFactoryContentP
 							try {
 								prop.setRemoteValue(any);
 							} catch (final PartialConfiguration e) {
-								return new Status(IStatus.WARNING, ScaUiPlugin.PLUGIN_ID, "Setting property: " + prop.getId() + " partial configuration. "
-								        + e.getMessage(), e);
+								return new Status(IStatus.WARNING, ScaUiPlugin.PLUGIN_ID, CFErrorFormatter.format(e), e);
 							} catch (final InvalidConfiguration e) {
-								return new Status(IStatus.ERROR, ScaUiPlugin.PLUGIN_ID, "Failed to set property '" + prop.getId()
-								        + "', due to Invalid Configuration. " + e.msg, e);
+								return new Status(IStatus.ERROR, ScaUiPlugin.PLUGIN_ID, CFErrorFormatter.format(e), e);
 							} finally {
 								for (EObject parent = prop.eContainer(); parent != null; parent = parent.eContainer()) {
 									if (parent instanceof ScaPropertyContainer< ? , ? >) {
