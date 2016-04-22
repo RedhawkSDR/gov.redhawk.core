@@ -23,6 +23,9 @@ import java.net.URI;
 import java.net.URLEncoder;
 import java.util.concurrent.Callable;
 
+import mil.jpeojtrs.sca.util.CFErrorFormatter;
+import mil.jpeojtrs.sca.util.CFErrorFormatter.FileOperation;
+import mil.jpeojtrs.sca.util.CFErrorFormatter.FileOperation2;
 import mil.jpeojtrs.sca.util.CorbaUtils;
 
 import org.eclipse.core.filesystem.EFS;
@@ -49,9 +52,6 @@ import CF.FilePackage.InvalidFilePointer;
 import CF.FileSystemPackage.FileInformationType;
 import CF.FileSystemPackage.FileType;
 
-/**
- * 
- */
 public class ScaFileStore extends FileStore {
 
 	private static enum ScaFileInformationDataType {
@@ -88,12 +88,13 @@ public class ScaFileStore extends FileStore {
 	}
 
 	private boolean exists() throws CoreException {
+		final String path = this.entry.getAbsolutePath();
 		try {
-			return getScaFileSystem().exists(this.entry.getAbsolutePath());
+			return getScaFileSystem().exists(path);
 		} catch (final SystemException e) {
 			throw new CoreException(new Status(IStatus.ERROR, ScaFileSystemPlugin.ID, "File System Exception: " + this.entry.getUri(), e));
 		} catch (final InvalidFileName e) {
-			throw new CoreException(new Status(IStatus.ERROR, ScaFileSystemPlugin.ID, NLS.bind("Invalid file name: {0}", this.entry.getAbsolutePath()), e));
+			throw new CoreException(new Status(IStatus.ERROR, ScaFileSystemPlugin.ID, CFErrorFormatter.format(e, FileOperation.Exists, path), e));
 		}
 	}
 
@@ -106,9 +107,6 @@ public class ScaFileStore extends FileStore {
 		return cache.childNames(options, monitor);
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	public String[] internalChildNames(final int options, IProgressMonitor monitor) throws CoreException {
 		final String path = this.entry.getAbsolutePath();
 		monitor = SubMonitor.convert(monitor, Messages.ScaFileStore__Child_Names_Task_Name, IProgressMonitor.UNKNOWN);
@@ -119,7 +117,12 @@ public class ScaFileStore extends FileStore {
 			final FileInformationType[] result = CorbaUtils.invoke(new Callable<FileInformationType[]>() {
 
 				public FileInformationType[] call() throws Exception {
-					return getScaFileSystem().list(path + "/*"); //$NON-NLS-1$
+					String listPath = path + "/*"; //$NON-NLS-1$
+					try {
+						return getScaFileSystem().list(listPath);
+					} catch (FileException e) {
+						throw new CoreException(new Status(IStatus.ERROR, ScaFileSystemPlugin.ID, CFErrorFormatter.format(e, FileOperation.List, listPath), e));
+					}
 				}
 			}, monitor);
 			final String[] children = new String[result.length];
@@ -184,7 +187,7 @@ public class ScaFileStore extends FileStore {
 		}
 
 		// XXX: Set all Files and Directory to read only for now
-		//			info.setAttribute(EFS.ATTRIBUTE_READ_ONLY, true);
+		// info.setAttribute(EFS.ATTRIBUTE_READ_ONLY, true);
 
 		info.setExists(true);
 		switch (typeInfo.kind.value()) {
@@ -201,9 +204,6 @@ public class ScaFileStore extends FileStore {
 		return info;
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public IFileInfo fetchInfo(final int options, IProgressMonitor monitor) throws CoreException {
 		final String path = this.entry.getAbsolutePath();
@@ -213,7 +213,11 @@ public class ScaFileStore extends FileStore {
 			final FileInformationType[] result = CorbaUtils.invoke(new Callable<FileInformationType[]>() {
 
 				public FileInformationType[] call() throws Exception {
-					return getScaFileSystem().list(path);
+					try {
+						return getScaFileSystem().list(path);
+					} catch (FileException e) {
+						throw new CoreException(new Status(IStatus.ERROR, ScaFileSystemPlugin.ID, CFErrorFormatter.format(e, FileOperation.List, path), e));
+					}
 				}
 			}, monitor);
 
@@ -233,9 +237,6 @@ public class ScaFileStore extends FileStore {
 		}
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public IFileStore getChild(final String name) {
 		final URI uri = this.entry.getUri();
@@ -254,17 +255,11 @@ public class ScaFileStore extends FileStore {
 
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public String getName() {
 		return this.entry.getName();
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public IFileStore getParent() {
 		final URI uri = this.entry.getParentUri();
@@ -278,9 +273,6 @@ public class ScaFileStore extends FileStore {
 		}
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public InputStream openInputStream(final int options, final IProgressMonitor monitor) throws CoreException {
 		return cache.openInputStream();
@@ -296,8 +288,8 @@ public class ScaFileStore extends FileStore {
 			final boolean append = EFS.APPEND == (EFS.APPEND & options);
 
 			if (info.getAttribute(EFS.ATTRIBUTE_READ_ONLY)) {
-				throw new CoreException(new Status(IStatus.ERROR, ScaFileSystemPlugin.ID, NLS.bind(Messages.ScaFileStore__Open_Output_Stream_Error_Read_Only,
-					path)));
+				throw new CoreException(
+					new Status(IStatus.ERROR, ScaFileSystemPlugin.ID, NLS.bind(Messages.ScaFileStore__Open_Output_Stream_Error_Read_Only, path)));
 			}
 
 			if (exists && !append) {
@@ -308,20 +300,30 @@ public class ScaFileStore extends FileStore {
 			File file;
 			FileSystemOperations fs = getScaFileSystem();
 			if (!exists) {
-				file = fs.create(path);
+				try {
+					file = fs.create(path);
+				} catch (InvalidFileName e) {
+					throw new CoreException(new Status(IStatus.ERROR, ScaFileSystemPlugin.ID, CFErrorFormatter.format(e, FileOperation.Create, path), e));
+				} catch (FileException e) {
+					throw new CoreException(new Status(IStatus.ERROR, ScaFileSystemPlugin.ID, CFErrorFormatter.format(e, FileOperation.Create, path), e));
+				}
 			} else {
-				file = fs.open(this.entry.getAbsolutePath(), false);
+				try {
+					file = fs.open(path, false);
+				} catch (InvalidFileName e) {
+					throw new CoreException(new Status(IStatus.ERROR, ScaFileSystemPlugin.ID, CFErrorFormatter.format(e, FileOperation.Open, path), e));
+				} catch (FileException e) {
+					throw new CoreException(new Status(IStatus.ERROR, ScaFileSystemPlugin.ID, CFErrorFormatter.format(e, FileOperation.Open, path), e));
+				}
 			}
 
-			return new ScaFileOutputStream(file, append);
-		} catch (final InvalidFileName e) {
-			throw new CoreException(new Status(IStatus.ERROR, ScaFileSystemPlugin.ID, NLS.bind(
-				Messages.ScaFileStore__Open_Output_Stream_Error_Invalid_File_Name, path), e));
-		} catch (final FileException e) {
-			throw new CoreException(new Status(IStatus.ERROR, ScaFileSystemPlugin.ID, NLS.bind(Messages.ScaFileStore__Open_Output_Stream_Error_File_System,
-				path), e));
-		} catch (final InvalidFilePointer e) {
-			throw new CoreException(new Status(IStatus.ERROR, ScaFileSystemPlugin.ID, NLS.bind(Messages.ScaFileStore__Open_Output_Stream_Error_IO, path), e));
+			try {
+				return new ScaFileOutputStream(file, append);
+			} catch (final InvalidFilePointer e) {
+				throw new CoreException(new Status(IStatus.ERROR, ScaFileSystemPlugin.ID, CFErrorFormatter.format(e, path), e));
+			} catch (FileException e) {
+				throw new CoreException(new Status(IStatus.ERROR, ScaFileSystemPlugin.ID, CFErrorFormatter.format(e, FileOperation.Seek, path), e));
+			}
 		} catch (final SystemException e) {
 			throw new CoreException(
 				new Status(IStatus.ERROR, ScaFileSystemPlugin.ID, NLS.bind(Messages.ScaFileStore__Open_Output_Stream_Error_System, path), e));
@@ -330,17 +332,11 @@ public class ScaFileStore extends FileStore {
 		}
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public URI toURI() {
 		return this.entry.getUri();
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public IFileInfo[] childInfos(final int options, IProgressMonitor monitor) throws CoreException {
 		return cache.childInfos(options, monitor);
@@ -356,7 +352,12 @@ public class ScaFileStore extends FileStore {
 			final FileInformationType[] result = CorbaUtils.invoke(new Callable<FileInformationType[]>() {
 
 				public FileInformationType[] call() throws Exception {
-					return getScaFileSystem().list(path + "/*"); //$NON-NLS-1$
+					final String listPath = path + "/*"; //$NON-NLS-1$
+					try {
+						return getScaFileSystem().list(listPath);
+					} catch (FileException e) {
+						throw new CoreException(new Status(IStatus.ERROR, ScaFileSystemPlugin.ID, CFErrorFormatter.format(e, FileOperation.List, listPath), e));
+					}
 				}
 			}, monitor);
 			final IFileInfo[] retVal = new IFileInfo[result.length];
@@ -396,10 +397,9 @@ public class ScaFileStore extends FileStore {
 				fs.remove(path);
 			}
 		} catch (final FileException e) {
-			throw new CoreException(new Status(IStatus.ERROR, ScaFileSystemPlugin.ID, NLS.bind(Messages.ScaFileStore__Deleting_Error, path) + " " + e.msg, e));
+			throw new CoreException(new Status(IStatus.ERROR, ScaFileSystemPlugin.ID, CFErrorFormatter.format(e, FileOperation.Delete, path), e));
 		} catch (final InvalidFileName e) {
-			throw new CoreException(new Status(IStatus.ERROR, ScaFileSystemPlugin.ID, NLS.bind(Messages.ScaFileStore__Deleting_Error_Invalid_File_Name, path)
-				+ " " + e.msg, e));
+			throw new CoreException(new Status(IStatus.ERROR, ScaFileSystemPlugin.ID, CFErrorFormatter.format(e, FileOperation.Delete, path), e));
 		} catch (final SystemException e) {
 			throw new CoreException(new Status(IStatus.ERROR, ScaFileSystemPlugin.ID, NLS.bind(Messages.ScaFileStore__Deleting_Error_System, path), e));
 		} finally {
@@ -415,7 +415,8 @@ public class ScaFileStore extends FileStore {
 			if (info.isDirectory()) {
 				return this;
 			} else {
-				throw new CoreException(new Status(IStatus.ERROR, ScaFileSystemPlugin.ID, NLS.bind(Messages.ScaFileStore__Mkdir_Error_File_Exists, path), null));
+				throw new CoreException(
+					new Status(IStatus.ERROR, ScaFileSystemPlugin.ID, NLS.bind(Messages.ScaFileStore__Mkdir_Error_File_Exists, path), null));
 			}
 		}
 		monitor = SubMonitor.convert(monitor, NLS.bind(Messages.ScaFileStore__Mkdir_Task_Name, path), IProgressMonitor.UNKNOWN);
@@ -423,11 +424,11 @@ public class ScaFileStore extends FileStore {
 			getScaFileSystem().mkdir(path);
 			return this;
 		} catch (final FileException e) {
-			throw new CoreException(new Status(IStatus.ERROR, ScaFileSystemPlugin.ID, NLS.bind(Messages.ScaFileStore__Mkdir_Error_File_System, path), e));
+			throw new CoreException(new Status(IStatus.ERROR, ScaFileSystemPlugin.ID, CFErrorFormatter.format(e, FileOperation.Mkdir, path), e));
 		} catch (final InvalidFileName e) {
-			throw new CoreException(new Status(IStatus.ERROR, ScaFileSystemPlugin.ID, NLS.bind(Messages.ScaFileStore__Mkdir_Error_Invalid_Name, path), e));
+			throw new CoreException(new Status(IStatus.ERROR, ScaFileSystemPlugin.ID, CFErrorFormatter.format(e, FileOperation.Mkdir, path), e));
 		} catch (final SystemException e) {
-			throw new CoreException(new Status(IStatus.ERROR, ScaFileSystemPlugin.ID, NLS.bind(Messages.ScaFileStore__Mkdi_Error_System, path), e));
+			throw new CoreException(new Status(IStatus.ERROR, ScaFileSystemPlugin.ID, NLS.bind(Messages.ScaFileStore__Mkdir_Error_System, path), e));
 		} finally {
 			monitor.done();
 		}
@@ -462,9 +463,9 @@ public class ScaFileStore extends FileStore {
 					fs.move(path, destPath);
 				}
 			} catch (final InvalidFileName e) {
-				throw new CoreException(new Status(IStatus.ERROR, ScaFileSystemPlugin.ID, "Failed to move: " + path + " to " + destPath, e));
+				throw new CoreException(new Status(IStatus.ERROR, ScaFileSystemPlugin.ID, CFErrorFormatter.format(e, FileOperation2.Move, path, destPath), e));
 			} catch (final FileException e) {
-				throw new CoreException(new Status(IStatus.ERROR, ScaFileSystemPlugin.ID, "Failed to move: " + path + " to " + destPath, e));
+				throw new CoreException(new Status(IStatus.ERROR, ScaFileSystemPlugin.ID, CFErrorFormatter.format(e, FileOperation2.Move, path, destPath), e));
 			}
 		} else {
 			super.move(destination, options, monitor);
@@ -487,9 +488,9 @@ public class ScaFileStore extends FileStore {
 					fs.copy(path, destPath);
 				}
 			} catch (final InvalidFileName e) {
-				throw new CoreException(new Status(IStatus.ERROR, ScaFileSystemPlugin.ID, "Failed to copy: " + path + " to " + destPath, e));
+				throw new CoreException(new Status(IStatus.ERROR, ScaFileSystemPlugin.ID, CFErrorFormatter.format(e, FileOperation2.Copy, path, destPath), e));
 			} catch (final FileException e) {
-				throw new CoreException(new Status(IStatus.ERROR, ScaFileSystemPlugin.ID, "Failed to copy: " + path + " to " + destPath, e));
+				throw new CoreException(new Status(IStatus.ERROR, ScaFileSystemPlugin.ID, CFErrorFormatter.format(e, FileOperation2.Copy, path, destPath), e));
 			}
 		} else {
 			super.copyFile(sourceInfo, destination, options, monitor);
