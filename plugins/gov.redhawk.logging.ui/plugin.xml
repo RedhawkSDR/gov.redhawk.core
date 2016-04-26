@@ -20,19 +20,18 @@
                label="Logging">
             <visibleWhen
                   checkEnabled="false">
-               <and>
-                  <count
-                        value="1">
-                  </count>
                   <iterate>
                      <adapt
-                           type="CF.LoggingOperations">
+                           type="CF.LogConfigurationOperations">
                      </adapt>
                   </iterate>
-               </and>
             </visibleWhen>
             <command
                   commandId="gov.redhawk.logging.ui.setlevel"
+                  style="push">
+            </command>
+            <command
+                  commandId="gov.redhawk.logging.ui.logconfig"
                   style="push">
             </command>
          </menu>
@@ -46,6 +45,27 @@
             id="gov.redhawk.logging.ui.setlevel"
             name="Log Level">
       </command>
+      <command
+            categoryId="gov.redhawk.ui.commands.category.sca"
+            defaultHandler="gov.redhawk.logging.ui.handlers.EditLogConfig"
+            id="gov.redhawk.logging.ui.logconfig"
+            name="Edit Log Config">
+      </command>
+   </extension>
+   <extension
+         point="org.eclipse.ui.editors">
+      <editor
+            class="gov.redhawk.logging.ui.editors.LogConfigEditor"
+            default="false"
+            id="gov.redhawk.logging.ui.logconfig.editor"
+            name="Log Configuration Editor">
+      </editor>
+   </extension>
+   <extension
+         point="org.eclipse.core.runtime.preferences">
+      <initializer
+            class="gov.redhawk.logging.ui.preferences.LoggingPreferenceInitializer">
+      </initializer>
    </extension>
 
 </plugin>

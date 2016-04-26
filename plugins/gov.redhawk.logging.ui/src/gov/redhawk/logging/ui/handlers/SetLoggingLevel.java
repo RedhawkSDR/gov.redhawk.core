@@ -10,13 +10,8 @@
  *******************************************************************************/
 package gov.redhawk.logging.ui.handlers;
 
-import gov.redhawk.logging.ui.LoggingUiPlugin;
-import gov.redhawk.logging.ui.SetLogLevelDialog;
-
 import java.lang.reflect.InvocationTargetException;
 import java.util.concurrent.Callable;
-
-import mil.jpeojtrs.sca.util.CorbaUtils;
 
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
@@ -35,11 +30,12 @@ import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.handlers.HandlerUtil;
-import org.eclipse.ui.statushandlers.StatusManager;
 import org.omg.CORBA.BAD_OPERATION;
 import org.omg.CORBA.TRANSIENT;
 
-import CF.LoggingOperations;
+import CF.LogConfigurationOperations;
+import gov.redhawk.logging.ui.SetLogLevelDialog;
+import mil.jpeojtrs.sca.util.CorbaUtils;
 
 
 
@@ -61,17 +57,11 @@ public class SetLoggingLevel extends AbstractHandler{
 			
 			// There should really only be a single selected object since our extension point limits the enabled state of this to a selection of 1.
 			for (final Object obj : ss.toList()) {
-				try {
-					
-					// Our extension point also ensures that the object is adaptable to LoggingOperations so we're confident this cast will succeed and be non-null.
-					LoggingOperations resource = (LoggingOperations) Platform.getAdapterManager().getAdapter(obj, LoggingOperations.class);
-					
-					if (resource != null) {
-						handleSetLoggingLevel(resource, HandlerUtil.getActiveShell(event)); 
-					}
-					
-				} catch (final CoreException e) {
-					StatusManager.getManager().handle(e, LoggingUiPlugin.PLUGIN_ID);
+				// Our extension point also ensures that the object is adaptable to LogConfigurationOperations so we're confident this cast will succeed and be non-null.
+				LogConfigurationOperations resource = (LogConfigurationOperations) Platform.getAdapterManager().getAdapter(obj, LogConfigurationOperations.class);
+				
+				if (resource != null) {
+					handleSetLoggingLevel(resource, HandlerUtil.getActiveShell(event)); 
 				}
 			}
 		}
@@ -84,11 +74,11 @@ public class SetLoggingLevel extends AbstractHandler{
 	 * current log level of the resource.  Then opens up the custom dialog so 
 	 * the user can change the log value.  It then displays a Progress Monitor
 	 * Dialog as the value is changed on the resource.
-	 * @param resource The resource, component, device, waveform, whatever which inherits from the LoggingOperations interface
+	 * @param resource The resource, component, device, waveform, whatever which inherits from the LogConfigurationOperations interface
 	 * @param activeShell The active shell so that additional UI dialogs can be brought up 
 	 * @throws CoreException 
 	 */
-	private void handleSetLoggingLevel(final LoggingOperations resource, Shell activeShell) throws CoreException {
+	public void handleSetLoggingLevel(final LogConfigurationOperations resource, Shell activeShell) {
 		
 		/**
 		 * This is the first progress monitor dialog, fetching the current log level of the resource.
