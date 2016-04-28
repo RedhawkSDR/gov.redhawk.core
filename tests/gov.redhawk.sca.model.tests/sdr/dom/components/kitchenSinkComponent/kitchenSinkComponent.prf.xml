@@ -328,11 +328,25 @@
         <kind kindtype="configure"/>
         <action type="external"/>
       </simple>
+      <simplesequence id="DCE:3c8fdc02-5f93-48ca-bf87-db13271b8254" mode="readwrite" name="structSeqStringSequence" type="string">
+        <values>
+          <value>string1</value>
+          <value>string2</value>
+          <value>string3</value>
+        </values>
+      </simplesequence>
       <configurationkind kindtype="configure"/>
     </struct>
     <structvalue>
       <simpleref refid="DCE:b34d9204-46fa-43ea-9ef2-189674bfc366" value="string"/>
       <simpleref refid="DCE:29948519-5c45-4732-86e1-b8815f4647d1" value="true"/>
+      <simplesequenceref refid="DCE:3c8fdc02-5f93-48ca-bf87-db13271b8254">
+        <values>
+          <value>string1</value>
+          <value>string2</value>
+          <value>string3</value>
+        </values>
+      </simplesequenceref>
     </structvalue>
     <configurationkind kindtype="configure"/>
   </structsequence>

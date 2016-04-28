@@ -25,10 +25,23 @@
           </simplesequenceref>
           <structref refid="DCE:5e410c54-750b-41ea-9fd4-176ce624d849">
           	<simpleref refid="DCE:e0a68e78-a562-416e-8ce1-27c9c622083c" value="iHaveBeenOverridden"/>
+          	<simplesequenceref refid="simpleseq">
+              <values>
+                <value>iHaveBeenOverridden</value>
+                <value>iHaveBeenOverridden</value>
+              </values>
+          	</simplesequenceref>
           </structref>
           <structsequenceref refid="DCE:7fb68ed6-2d60-4652-8e78-ac0974659350">
 		    <structvalue>
               <simpleref refid="DCE:b34d9204-46fa-43ea-9ef2-189674bfc366" value="iHaveBeenOverridden"/>
+              <simplesequenceref refid="DCE:3c8fdc02-5f93-48ca-bf87-db13271b8254">
+                <values>
+                  <value>iHaveBeenOverridden</value>
+                  <value>iHaveBeenOverridden</value>
+                  <value>iHaveBeenOverridden</value>
+                </values>
+              </simplesequenceref>
             </structvalue>
           </structsequenceref>
         </componentproperties>

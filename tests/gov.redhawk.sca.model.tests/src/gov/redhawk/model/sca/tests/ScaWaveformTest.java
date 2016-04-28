@@ -861,12 +861,28 @@ public class ScaWaveformTest extends ScaPropertyContainerTest {
 					ScaStructProperty struct = (ScaStructProperty) prop;
 					ScaSimpleProperty structSimple = struct.getSimple("DCE:e0a68e78-a562-416e-8ce1-27c9c622083c");
 					Assert.assertEquals("simple value was not overridden for: " + structSimple.getId(), overrideValue, structSimple.getValue());
+					for (ScaAbstractProperty< ? > field : struct.getFields()) {
+						if (field.eClass().getClassifierID() == ScaPackage.SCA_SIMPLE_SEQUENCE_PROPERTY) {
+							ScaSimpleSequenceProperty structSimpleSeq = (ScaSimpleSequenceProperty) field;
+							for (Object value : structSimpleSeq.getValues()) {
+								Assert.assertEquals("simple sequence value was not overridden for: " + structSimpleSeq.getId(), overrideValue, value);
+							}
+						}
+					}
 					break;
 				case ScaPackage.SCA_STRUCT_SEQUENCE_PROPERTY:
 					ScaStructSequenceProperty structSeq = (ScaStructSequenceProperty) prop;
 					for (ScaStructProperty structSeqStruct : structSeq.getStructs()) {
 						ScaSimpleProperty structSeqSimple = structSeqStruct.getSimple("DCE:b34d9204-46fa-43ea-9ef2-189674bfc366");
 						Assert.assertEquals("simple value was not overridden for: " + structSeqSimple.getId(), overrideValue, structSeqSimple.getValue());
+						for (ScaAbstractProperty< ? > field : structSeqStruct.getFields()) {
+							if (field.eClass().getClassifierID() == ScaPackage.SCA_SIMPLE_SEQUENCE_PROPERTY) {
+								ScaSimpleSequenceProperty structSimpleSeq = (ScaSimpleSequenceProperty) field;
+								for (Object value : structSimpleSeq.getValues()) {
+									Assert.assertEquals("simple sequence value was not overridden for: " + structSimpleSeq.getId(), overrideValue, value);
+								}
+							}
+						}
 					}
 					break;
 				default:
