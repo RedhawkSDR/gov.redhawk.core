@@ -15,8 +15,6 @@ import gov.redhawk.logging.ui.SetLogLevelDialog;
 import java.lang.reflect.InvocationTargetException;
 import java.util.concurrent.Callable;
 
-import mil.jpeojtrs.sca.util.CorbaUtils;
-
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
@@ -38,6 +36,7 @@ import org.omg.CORBA.BAD_OPERATION;
 import org.omg.CORBA.TRANSIENT;
 
 import CF.LogConfigurationOperations;
+import mil.jpeojtrs.sca.util.CorbaUtils;
 
 
 
