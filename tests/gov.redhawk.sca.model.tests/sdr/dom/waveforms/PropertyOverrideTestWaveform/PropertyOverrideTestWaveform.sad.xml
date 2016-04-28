@@ -2,55 +2,60 @@
 <!DOCTYPE softwareassembly PUBLIC "-//JTRS//DTD SCA V2.2.2 SAD//EN" "softwareassembly.dtd">
 <softwareassembly id="DCE:88a88f62-3aa8-43f4-95b3-9b4e36a935b5" name="PropertyOverrideTestWaveform">
   <componentfiles>
-    <componentfile id="AllPropertyTypesComponent_9aaca118-37f6-42b9-a4af-d9badbf2f550" type="SPD">
-      <localfile name="/components/AllPropertyTypesComponent/AllPropertyTypesComponent.spd.xml"/>
+    <componentfile id="kitchenSinkComponent_9aaca118-37f6-42b9-a4af-d9badbf2f550" type="SPD">
+      <localfile name="/components/kitchenSinkComponent/kitchenSinkComponent.spd.xml"/>
+    </componentfile>
+    <componentfile id="HardLimit_680c3811-3b36-455e-946e-ebde7d31e0a4" type="SPD">
+      <localfile name="/components/HardLimit/HardLimit.spd.xml"/>
     </componentfile>
   </componentfiles>
   <partitioning>
     <componentplacement>
-      <componentfileref refid="AllPropertyTypesComponent_9aaca118-37f6-42b9-a4af-d9badbf2f550"/>
-      <componentinstantiation id="AllPropertyTypesComponent_1" startorder="0">
-        <usagename>AllPropertyTypesComponent_1</usagename>
+      <componentfileref refid="kitchenSinkComponent_9aaca118-37f6-42b9-a4af-d9badbf2f550"/>
+      <componentinstantiation id="kitchenSinkComponent_1" startorder="0">
+        <usagename>kitchenSinkComponent_1</usagename>
         <componentproperties>
-          <simpleref refid="simpleString" value="iHaveBeenOverridden"/>
-          <structref refid="structString">
-            <simpleref refid="structSimpleString" value="iHaveBeenOverridden"/>
-            <simplesequenceref refid="structSimpleSeqString">
-              <values>
-                <value>iHaveBeenOverridden</value>
-                <value>iHaveBeenOverridden</value>
-                <value>iHaveBeenOverridden</value>
-              </values>
-            </simplesequenceref>
+          <simpleref refid="DCE:2413dca0-ddd7-4be6-9d39-cfbae210f2fd" value="iHaveBeenOverridden"/>
+          <simplesequenceref refid="DCE:e4a63886-8bb7-403d-bdd7-3bc79717f5b5">
+          	<values>
+          		<value>iHaveBeenOverridden</value>
+            	<value>iHaveBeenOverridden</value>
+            	<value>iHaveBeenOverridden</value>
+          	</values>
+          </simplesequenceref>
+          <structref refid="DCE:5e410c54-750b-41ea-9fd4-176ce624d849">
+          	<simpleref refid="DCE:e0a68e78-a562-416e-8ce1-27c9c622083c" value="iHaveBeenOverridden"/>
           </structref>
-          <structsequenceref refid="structSeqString">
-            <structvalue>
-              <simpleref refid="structSeqStructSimpleString" value="iHaveBeenOverridden"/>
-              <simplesequenceref refid="structSeqStructSimpleSeqString">
-                <values>
-                  <value>iHaveBeenOverridden</value>
-                  <value>iHaveBeenOverridden</value>
-                  <value>iHaveBeenOverridden</value>
-                </values>
-              </simplesequenceref>
+          <structsequenceref refid="DCE:7fb68ed6-2d60-4652-8e78-ac0974659350">
+		    <structvalue>
+              <simpleref refid="DCE:b34d9204-46fa-43ea-9ef2-189674bfc366" value="iHaveBeenOverridden"/>
             </structvalue>
           </structsequenceref>
-          <simplesequenceref refid="simpleSeqString">
-            <values>
-              <value>iHaveBeenOverridden</value>
-              <value>iHaveBeenOverridden</value>
-              <value>iHaveBeenOverridden</value>
-            </values>
-          </simplesequenceref>
         </componentproperties>
         <findcomponent>
-          <namingservice name="AllPropertyTypesComponent_1"/>
+          <namingservice name="kitchenSinkComponent_1"/>
+        </findcomponent>
+      </componentinstantiation>
+    </componentplacement>
+    <componentplacement>
+      <componentfileref refid="HardLimit_680c3811-3b36-455e-946e-ebde7d31e0a4"/>
+      <componentinstantiation id="HardLimit_1">
+        <usagename>HardLimit_1</usagename>
+        <componentproperties>
+          <simpleref refid="DCE:06281569-8b63-4034-961e-665b36b33cf1" value="100"/>
+        </componentproperties>
+        <findcomponent>
+          <namingservice name="HardLimit_1"/>
         </findcomponent>
       </componentinstantiation>
     </componentplacement>
   </partitioning>
   <assemblycontroller>
-    <componentinstantiationref refid="AllPropertyTypesComponent_1"/>
+    <componentinstantiationref refid="kitchenSinkComponent_1"/>
   </assemblycontroller>
   <connections/>
+  <externalproperties>
+    <property comprefid="HardLimit_1" propid="DCE:06281569-8b63-4034-961e-665b36b33cf1" externalpropid="ext_upper_limit"/>
+    <property comprefid="HardLimit_1" propid="DCE:18a49108-e4c0-40b7-a193-aac98eb52a1d" externalpropid="ext_lower_limit"/>
+  </externalproperties>
 </softwareassembly>
