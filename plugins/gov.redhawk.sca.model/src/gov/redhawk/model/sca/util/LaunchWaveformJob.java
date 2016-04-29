@@ -11,15 +11,6 @@
  */
 package gov.redhawk.model.sca.util;
 
-import gov.redhawk.model.sca.RefreshDepth;
-import gov.redhawk.model.sca.ScaDomainManager;
-import gov.redhawk.model.sca.ScaModelPlugin;
-import gov.redhawk.model.sca.ScaWaveform;
-import gov.redhawk.model.sca.ScaWaveformFactory;
-import gov.redhawk.sca.util.Debug;
-import gov.redhawk.sca.util.SilentJob;
-import mil.jpeojtrs.sca.util.CFErrorFormatter;
-
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -28,8 +19,10 @@ import org.eclipse.core.runtime.OperationCanceledException;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.SubMonitor;
 import org.eclipse.core.runtime.jobs.Job;
+import org.omg.CORBA.BAD_OPERATION;
 import org.omg.CORBA.SystemException;
 
+import CF.Application;
 import CF.DataType;
 import CF.DeviceAssignmentType;
 import CF.InvalidFileName;
@@ -44,6 +37,22 @@ import CF.DomainManagerPackage.ApplicationUninstallationError;
 import CF.DomainManagerPackage.InvalidIdentifier;
 import CF.LifeCyclePackage.ReleaseError;
 import CF.ResourcePackage.StartError;
+import gov.redhawk.model.sca.RefreshDepth;
+import gov.redhawk.model.sca.RefreshDepth;
+import gov.redhawk.model.sca.ScaDomainManager;
+import gov.redhawk.model.sca.ScaDomainManager;
+import gov.redhawk.model.sca.ScaFactory;
+import gov.redhawk.model.sca.ScaModelPlugin;
+import gov.redhawk.model.sca.ScaModelPlugin;
+import gov.redhawk.model.sca.ScaWaveform;
+import gov.redhawk.model.sca.ScaWaveform;
+import gov.redhawk.model.sca.ScaWaveformFactory;
+import gov.redhawk.model.sca.ScaWaveformFactory;
+import gov.redhawk.model.sca.commands.ScaModelCommandWithResult;
+import gov.redhawk.sca.util.Debug;
+import gov.redhawk.sca.util.Debug;
+import gov.redhawk.sca.util.SilentJob;
+import gov.redhawk.sca.util.SilentJob;
 
 /**
  * @since 14.0
@@ -96,7 +105,7 @@ public class LaunchWaveformJob extends SilentJob {
 		final SubMonitor subMonitor = SubMonitor.convert(m, "Launching Application: " + this.waveformName, IProgressMonitor.UNKNOWN);
 		ScaWaveformFactory factory = null;
 		boolean installedAppFactory = false;
-		
+
 		try {
 			final String profilePath = this.waveformPath.toPortableString();
 			// use existing Application Factory if exists, since only ONE can exist per Waveform profilePath in Domain
@@ -105,7 +114,7 @@ public class LaunchWaveformJob extends SilentJob {
 					factory = temp;
 				}
 			}
-			
+
 			// unless power user specified to uninstall existing Application Factory
 			if (factory != null && uninstallExistingApplicationFactory) {
 				try {
@@ -119,41 +128,73 @@ public class LaunchWaveformJob extends SilentJob {
 			}
 
 			////////////////////
-			// INSTALL WAVEFORM (Application) Factory
-			subMonitor.subTask("Installing REDHAWK Waveform Factory: " + profilePath);
-			while (factory == null) {
-				DEBUG.message("Installing REDHAWK Waveform Factory...");
+			// INSTALL WAVEFORM Using the new CF.ScaDomainManager #createApplication() method
+			try {
+				final Application app = domMgr.createApplication(profilePath, this.waveformName, this.configProps, this.deviceAssn);
+
+				final String ior = app.toString();
+				waveform = ScaModelCommandWithResult.execute(domMgr, new ScaModelCommandWithResult<ScaWaveform>() {
+					@Override
+					public void execute() {
+
+						if (domMgr != null) {
+							// Check to be sure someone else didn't already add the waveform
+							for (ScaWaveform w : domMgr.getWaveforms()) {
+								if (ior.equals(w.getIor())) {
+									setResult(w);
+									return;
+								}
+							}
+
+							ScaWaveform newWaveform = ScaFactory.eINSTANCE.createScaWaveform();
+							newWaveform.setCorbaObj(app);
+							domMgr.getWaveforms().add(newWaveform);
+							setResult(newWaveform);
+						}
+					}
+
+				});
+				subMonitor.worked(1);
+			} catch (BAD_OPERATION exception) {
+				// IDE-1109: It's possible to get here if domain is pre-2.0, fall back to old method for launching waveforms
+
+				////////////////////
+				// INSTALL WAVEFORM (Application) Factory
+				subMonitor.subTask("Installing REDHAWK Waveform Factory: " + profilePath);
+				while (factory == null) {
+					DEBUG.message("Installing REDHAWK Waveform Factory...");
+					if (subMonitor.isCanceled()) {
+						throw new OperationCanceledException();
+					}
+
+					try {
+						factory = this.domMgr.installScaWaveformFactory(profilePath);
+						installedAppFactory = true;
+					} catch (final ApplicationAlreadyInstalled e) {
+						String errorMsg = "The domain manager reports the application factory is already installed, but it was not found. "
+							+ "Another installed waveform may be using the same softwareassembly id in its XML file.";
+						return new Status(Status.ERROR, ScaModelPlugin.ID, errorMsg, e);
+					}
+
+				}
+				subMonitor.worked(1);
+
 				if (subMonitor.isCanceled()) {
 					throw new OperationCanceledException();
 				}
 
-				try {
-					factory = this.domMgr.installScaWaveformFactory(profilePath);
-					installedAppFactory = true;
-				} catch (final ApplicationAlreadyInstalled e) {
-					String errorMsg = "The domain manager reports the application factory is already installed, but it was not found. "
-						+ "Another installed waveform may be using the same softwareassembly id in its XML file.";
-					return new Status(Status.ERROR, ScaModelPlugin.ID, errorMsg, e);
+				Assert.isNotNull(factory, "Failed to get/install REDHAWK Waveform Factory");
+
+				////////////////////
+				// CREATE WAVEFORM
+				final IProgressMonitor createMonitor = subMonitor.newChild(1);
+				createMonitor.beginTask("Creating Waveform (application): " + this.waveformName, IProgressMonitor.UNKNOWN);
+				this.waveform = factory.createWaveform(createMonitor, LaunchWaveformJob.this.waveformName, LaunchWaveformJob.this.configProps,
+					LaunchWaveformJob.this.deviceAssn);
+
+				if (subMonitor.isCanceled()) {
+					throw new OperationCanceledException();
 				}
-				
-			}
-			subMonitor.worked(1);
-
-			if (subMonitor.isCanceled()) {
-				throw new OperationCanceledException();
-			}
-
-			Assert.isNotNull(factory, "Failed to get/install REDHAWK Waveform Factory");
-
-			////////////////////
-			// CREATE WAVEFORM
-			final IProgressMonitor createMonitor = subMonitor.newChild(1);
-			createMonitor.beginTask("Creating Waveform (application): " + this.waveformName, IProgressMonitor.UNKNOWN);
-			this.waveform = factory.createWaveform(createMonitor, LaunchWaveformJob.this.waveformName, LaunchWaveformJob.this.configProps,
-				LaunchWaveformJob.this.deviceAssn);
-
-			if (subMonitor.isCanceled()) {
-				throw new OperationCanceledException();
 			}
 
 			if (this.autoStart) {

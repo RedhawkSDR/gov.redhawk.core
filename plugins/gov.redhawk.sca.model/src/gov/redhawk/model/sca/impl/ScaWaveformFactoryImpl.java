@@ -12,6 +12,32 @@
 // BEGIN GENERATED CODE
 package gov.redhawk.model.sca.impl;
 
+import java.util.Arrays;
+
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
+import org.eclipse.core.runtime.SubMonitor;
+import org.eclipse.emf.common.notify.Notification;
+import org.eclipse.emf.common.notify.NotificationChain;
+import org.eclipse.emf.common.util.URI;
+import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.InternalEObject;
+import org.eclipse.emf.ecore.impl.ENotificationImpl;
+import org.eclipse.emf.ecore.util.EcoreUtil;
+import org.omg.CORBA.SystemException;
+
+import CF.Application;
+import CF.ApplicationFactory;
+import CF.ApplicationFactoryHelper;
+import CF.ApplicationFactoryOperations;
+import CF.DataType;
+import CF.DeviceAssignmentType;
+import CF.ApplicationFactoryPackage.CreateApplicationError;
+import CF.ApplicationFactoryPackage.CreateApplicationInsufficientCapacityError;
+import CF.ApplicationFactoryPackage.CreateApplicationRequestError;
+import CF.ApplicationFactoryPackage.InvalidInitConfiguration;
 import gov.redhawk.model.sca.ProfileObjectWrapper;
 import gov.redhawk.model.sca.RefreshDepth;
 import gov.redhawk.model.sca.ScaDomainManager;
@@ -29,34 +55,7 @@ import gov.redhawk.model.sca.commands.VersionedFeature;
 import gov.redhawk.model.sca.commands.VersionedFeature.Transaction;
 import gov.redhawk.sca.util.Debug;
 import gov.redhawk.sca.util.PluginUtil;
-import java.util.Arrays;
 import mil.jpeojtrs.sca.sad.SoftwareAssembly;
-import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.core.runtime.IStatus;
-import org.eclipse.core.runtime.Status;
-import org.eclipse.core.runtime.SubMonitor;
-import org.eclipse.emf.common.notify.Notification;
-import org.eclipse.emf.common.notify.NotificationChain;
-import org.eclipse.emf.common.util.URI;
-import org.eclipse.emf.ecore.EClass;
-import org.eclipse.emf.ecore.EObject;
-import org.eclipse.emf.ecore.InternalEObject;
-import org.eclipse.emf.ecore.impl.ENotificationImpl;
-import org.eclipse.emf.ecore.util.EcoreUtil;
-import org.omg.CORBA.BAD_OPERATION;
-import org.omg.CORBA.SystemException;
-import CF.Application;
-import CF.ApplicationFactory;
-import CF.ApplicationFactoryHelper;
-import CF.ApplicationFactoryOperations;
-import CF.DataType;
-import CF.DeviceAssignmentType;
-import CF.InvalidFileName;
-import CF.InvalidProfile;
-import CF.ApplicationFactoryPackage.CreateApplicationError;
-import CF.ApplicationFactoryPackage.CreateApplicationInsufficientCapacityError;
-import CF.ApplicationFactoryPackage.CreateApplicationRequestError;
-import CF.ApplicationFactoryPackage.InvalidInitConfiguration;
 
 /**
  * <!-- begin-user-doc --> An implementation of the model object ' <em><b>Waveform Factory</b></em>'.
@@ -1207,25 +1206,7 @@ public class ScaWaveformFactoryImpl extends CorbaObjWrapperImpl<ApplicationFacto
 					deviceAssignments = DEVICE_EMPTY_TYPE;
 				}
 
-				Application tempApp = null;
-				// IDE-1109: Try creating the application the new way, without application factories
-				try {
-					tempApp = getDomMgr().createApplication(getProfile(), name, initConfiguration, deviceAssignments);
-				} catch (BAD_OPERATION e) {
-					// IDE-1109: Domain is probably pre-2.0, create the application the old way
-					tempApp = factory.create(name, initConfiguration, deviceAssignments);
-				} catch (InvalidProfile e) {
-					CreateApplicationError newError = new CreateApplicationError(CF.ErrorNumberType.CF_EBADF, "Invalid profile " + getProfile());
-					newError.initCause(e);
-					newError.fillInStackTrace();
-					throw newError;
-				} catch (InvalidFileName e) {
-					CreateApplicationError newError = new CreateApplicationError(CF.ErrorNumberType.CF_EBADF, "Invalid file name");
-					newError.initCause(e);
-					newError.fillInStackTrace();
-					throw newError;
-				}
-				final Application app = tempApp;
+				final Application app = factory.create(name, initConfiguration, deviceAssignments);
 
 				ScaWaveform retVal = null;
 				if (app != null) {
