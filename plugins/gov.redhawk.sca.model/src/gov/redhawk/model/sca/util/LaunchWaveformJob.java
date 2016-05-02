@@ -17,6 +17,7 @@ import gov.redhawk.model.sca.ScaWaveform;
 import gov.redhawk.model.sca.ScaWaveformFactory;
 import gov.redhawk.sca.util.Debug;
 import gov.redhawk.sca.util.SilentJob;
+import mil.jpeojtrs.sca.util.CFErrorFormatter;
 
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.core.runtime.IPath;
@@ -132,7 +133,7 @@ public class LaunchWaveformJob extends SilentJob {
 				try {
 	                waveform.start();
                 } catch (StartError e) {
-	               return new Status(Status.ERROR, ScaModelPlugin.ID, "Failed to start: " + waveformName, e);
+	               return new Status(Status.ERROR, ScaModelPlugin.ID, CFErrorFormatter.format(e, "waveform " + waveformName), e);
                 }
 			}
 
