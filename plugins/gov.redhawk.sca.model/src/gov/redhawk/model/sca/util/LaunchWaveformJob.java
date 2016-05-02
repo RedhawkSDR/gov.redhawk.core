@@ -38,20 +38,13 @@ import CF.DomainManagerPackage.InvalidIdentifier;
 import CF.LifeCyclePackage.ReleaseError;
 import CF.ResourcePackage.StartError;
 import gov.redhawk.model.sca.RefreshDepth;
-import gov.redhawk.model.sca.RefreshDepth;
-import gov.redhawk.model.sca.ScaDomainManager;
 import gov.redhawk.model.sca.ScaDomainManager;
 import gov.redhawk.model.sca.ScaFactory;
 import gov.redhawk.model.sca.ScaModelPlugin;
-import gov.redhawk.model.sca.ScaModelPlugin;
 import gov.redhawk.model.sca.ScaWaveform;
-import gov.redhawk.model.sca.ScaWaveform;
-import gov.redhawk.model.sca.ScaWaveformFactory;
 import gov.redhawk.model.sca.ScaWaveformFactory;
 import gov.redhawk.model.sca.commands.ScaModelCommandWithResult;
 import gov.redhawk.sca.util.Debug;
-import gov.redhawk.sca.util.Debug;
-import gov.redhawk.sca.util.SilentJob;
 import gov.redhawk.sca.util.SilentJob;
 
 /**
@@ -108,28 +101,9 @@ public class LaunchWaveformJob extends SilentJob {
 
 		try {
 			final String profilePath = this.waveformPath.toPortableString();
-			// use existing Application Factory if exists, since only ONE can exist per Waveform profilePath in Domain
-			for (final ScaWaveformFactory temp : LaunchWaveformJob.this.domMgr.fetchWaveformFactories(null, RefreshDepth.SELF)) { // TODO: Better progress monitor
-				if (temp.getProfile().equals(profilePath)) {
-					factory = temp;
-				}
-			}
 
-			// unless power user specified to uninstall existing Application Factory
-			if (factory != null && uninstallExistingApplicationFactory) {
-				try {
-					this.domMgr.uninstallScaWaveformFactory(factory);
-					factory = null;
-				} catch (ApplicationUninstallationError | InvalidIdentifier | SystemException ex) {
-					DEBUG.catching("Failed to uninstall existing Waveform factory before launching a waveform.", ex);
-					return new Status(Status.ERROR, ScaModelPlugin.ID,
-						"Failed to uninstall existing Waveform factory before launching a waveform: " + waveformName, ex);
-				}
-			}
-
-			////////////////////
-			// INSTALL WAVEFORM Using the new CF.ScaDomainManager #createApplication() method
 			try {
+				// Create waveform using the new CF.DomainManager#createApplication() method
 				final Application app = domMgr.createApplication(profilePath, this.waveformName, this.configProps, this.deviceAssn);
 
 				final String ior = app.toString();
@@ -157,6 +131,24 @@ public class LaunchWaveformJob extends SilentJob {
 				subMonitor.worked(1);
 			} catch (BAD_OPERATION exception) {
 				// IDE-1109: It's possible to get here if domain is pre-2.0, fall back to old method for launching waveforms
+				// use existing Application Factory if exists, since only ONE can exist per Waveform profilePath in Domain
+				for (final ScaWaveformFactory temp : LaunchWaveformJob.this.domMgr.fetchWaveformFactories(null, RefreshDepth.SELF)) { // TODO: Better progress monitor
+					if (temp.getProfile().equals(profilePath)) {
+						factory = temp;
+					}
+				}
+
+				// unless power user specified to uninstall existing Application Factory
+				if (factory != null && uninstallExistingApplicationFactory) {
+					try {
+						this.domMgr.uninstallScaWaveformFactory(factory);
+						factory = null;
+					} catch (ApplicationUninstallationError | InvalidIdentifier | SystemException ex) {
+						DEBUG.catching("Failed to uninstall existing Waveform factory before launching a waveform.", ex);
+						return new Status(Status.ERROR, ScaModelPlugin.ID,
+							"Failed to uninstall existing Waveform factory before launching a waveform: " + waveformName, ex);
+					}
+				}
 
 				////////////////////
 				// INSTALL WAVEFORM (Application) Factory
