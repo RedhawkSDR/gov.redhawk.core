@@ -11,14 +11,14 @@
  */
 package gov.redhawk.sca.ui.actions;
 
-import gov.redhawk.model.sca.util.StartJob;
-import gov.redhawk.sca.ui.ScaUiPlugin;
-import gov.redhawk.sca.util.PluginUtil;
-
+import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.jface.action.Action;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 
 import CF.ResourceOperations;
+import gov.redhawk.model.sca.util.StartJob;
+import gov.redhawk.sca.ui.ScaUiPlugin;
+import gov.redhawk.sca.util.PluginUtil;
 
 /**
  * @since 3.0
@@ -49,7 +49,7 @@ public class StartAction extends Action {
 	private void start(final Object obj) {
 		final ResourceOperations resource = PluginUtil.adapt(ResourceOperations.class, obj);
 		if (resource != null) {
-			final StartJob job = new StartJob(resource.identifier(), resource);
+			final Job job = new StartJob(resource.identifier(), resource);
 			job.setUser(true);
 			job.schedule();
 		}

@@ -22,6 +22,7 @@ import CF.ResourceOperations;
 import CF.ResourcePackage.StopError;
 import gov.redhawk.model.sca.ScaModelPlugin;
 import mil.jpeojtrs.sca.util.CorbaUtils;
+import mil.jpeojtrs.sca.util.CFErrorFormatter;
 
 /**
  * @since 20.0
@@ -42,20 +43,20 @@ public class StopJob extends Job {
 		monitor.beginTask(getName(), IProgressMonitor.UNKNOWN);
 		try {
 			CorbaUtils.invoke(new Callable<Object>() {
-
 				public Object call() throws Exception {
-					try {
-						resource.stop();
-					} catch (StopError e) {
-						throw new CoreException(new Status(IStatus.ERROR, ScaModelPlugin.ID, "Failed to start: " + resourceName, e));
-					}
+					resource.stop();
 					return null;
 				}
-
 			}, monitor);
-
 		} catch (CoreException e) {
-			return new Status(e.getStatus().getSeverity(), ScaModelPlugin.ID, e.getLocalizedMessage(), e);
+			Throwable cause = e.getCause();
+			if (cause instanceof StopError) {
+				StopError stopError = (StopError) cause;
+				return new Status(IStatus.ERROR, ScaModelPlugin.ID, CFErrorFormatter.format(stopError, this.resourceName), stopError);
+			} else {
+				String errorMsg = String.format("Unable to stop %s", this.resourceName);
+				return new Status(IStatus.ERROR, ScaModelPlugin.ID, errorMsg, cause);
+			}
 		} catch (InterruptedException e) {
 			return Status.CANCEL_STATUS;
 		} finally {

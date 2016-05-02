@@ -22,6 +22,7 @@ import mil.jpeojtrs.sca.prf.AbstractProperty;
 import mil.jpeojtrs.sca.prf.AbstractPropertyRef;
 import mil.jpeojtrs.sca.prf.AccessType;
 import mil.jpeojtrs.sca.util.AnyUtils;
+import mil.jpeojtrs.sca.util.CFErrorFormatter;
 
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;

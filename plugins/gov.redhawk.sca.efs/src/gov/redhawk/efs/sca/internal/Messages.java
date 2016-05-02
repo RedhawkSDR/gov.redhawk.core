@@ -32,7 +32,7 @@ public class Messages extends NLS {
 	public static String ScaFileStore__Fetch_Info_Error;
 	public static String ScaFileStore__Fetch_Info_Task_Name;
 	public static String ScaFileStore__Getting_Child_Info_Task;
-	public static String ScaFileStore__Mkdi_Error_System;
+	public static String ScaFileStore__Mkdir_Error_System;
 	public static String ScaFileStore__Mkdir_Error_File_Exists;
 	public static String ScaFileStore__Mkdir_Error_File_System;
 	public static String ScaFileStore__Mkdir_Error_Invalid_Name;
