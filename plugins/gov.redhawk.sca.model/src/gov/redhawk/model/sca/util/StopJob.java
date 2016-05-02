@@ -19,21 +19,21 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
 
 import CF.ResourceOperations;
-import CF.ResourcePackage.StartError;
+import CF.ResourcePackage.StopError;
 import gov.redhawk.model.sca.ScaModelPlugin;
 import mil.jpeojtrs.sca.util.CFErrorFormatter;
 import mil.jpeojtrs.sca.util.CorbaUtils;
 
 /**
- * @since 14.0
+ * @since 19.0
  */
-public class StartJob extends Job {
+public class StopJob extends Job {
 
 	private ResourceOperations resource;
 	private String resourceName;
 
-	public StartJob(String name, ResourceOperations resource) {
-		super("Starting " + name);
+	public StopJob(String name, ResourceOperations resource) {
+		super("Stopping " + name);
 		this.resource = resource;
 		this.resourceName = name;
 	}
@@ -44,17 +44,17 @@ public class StartJob extends Job {
 		try {
 			CorbaUtils.invoke(new Callable<Object>() {
 				public Object call() throws Exception {
-					resource.start();
+					resource.stop();
 					return null;
 				}
 			}, monitor);
 		} catch (CoreException e) {
 			Throwable cause = e.getCause();
-			if (cause instanceof StartError) {
-				StartError startError = (StartError) cause;
-				return new Status(IStatus.ERROR, ScaModelPlugin.ID, CFErrorFormatter.format(startError, this.resourceName), startError);
+			if (cause instanceof StopError) {
+				StopError stopError = (StopError) cause;
+				return new Status(IStatus.ERROR, ScaModelPlugin.ID, CFErrorFormatter.format(stopError, this.resourceName), stopError);
 			} else {
-				String errorMsg = String.format("Unable to start %s", this.resourceName);
+				String errorMsg = String.format("Unable to stop %s", this.resourceName);
 				return new Status(IStatus.ERROR, ScaModelPlugin.ID, errorMsg, cause);
 			}
 		} catch (InterruptedException e) {

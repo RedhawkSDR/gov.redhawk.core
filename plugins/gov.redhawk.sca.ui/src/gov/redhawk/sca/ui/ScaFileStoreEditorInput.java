@@ -71,6 +71,21 @@ public class ScaFileStoreEditorInput extends FileStoreEditorInput {
 		}
 		return getURI().getPath();
 	}
+	
+	@Override
+	public boolean equals(Object o) {
+
+		if (o == this) {
+			return true;
+		}
+
+		if (o instanceof ScaFileStoreEditorInput) {
+			ScaFileStoreEditorInput input = (ScaFileStoreEditorInput) o;
+			return scaObject.equals(input.scaObject);
+		}
+
+		return false;
+	}
 
 	@Override
 	public String getFactoryId() {

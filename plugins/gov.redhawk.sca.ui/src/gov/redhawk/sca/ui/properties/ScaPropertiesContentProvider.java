@@ -20,6 +20,7 @@ import gov.redhawk.sca.internal.ui.properties.ScaSimplePropertyValuePropertyDesc
 import gov.redhawk.sca.internal.ui.properties.SequencePropertyValueDescriptor;
 import gov.redhawk.sca.ui.ScaModelAdapterFactoryContentProvider;
 import gov.redhawk.sca.ui.ScaUiPlugin;
+import mil.jpeojtrs.sca.util.CFErrorFormatter;
 
 import java.util.concurrent.Callable;
 
@@ -100,11 +101,9 @@ public class ScaPropertiesContentProvider extends ScaModelAdapterFactoryContentP
 											prop.setRemoteValue(any);
 											return Status.OK_STATUS;
 										} catch (final PartialConfiguration e) {
-											return new Status(IStatus.WARNING, ScaUiPlugin.PLUGIN_ID, "Setting property: " + prop.getId()
-												+ " partial configuration. " + e.getMessage(), e);
+											return new Status(IStatus.WARNING, ScaUiPlugin.PLUGIN_ID, CFErrorFormatter.format(e), e);
 										} catch (final InvalidConfiguration e) {
-											return new Status(IStatus.ERROR, ScaUiPlugin.PLUGIN_ID, "Failed to set property '" + prop.getId()
-												+ "', due to Invalid Configuration. " + e.msg, e);
+											return new Status(IStatus.ERROR, ScaUiPlugin.PLUGIN_ID, CFErrorFormatter.format(e), e);
 										}
 									}
 								}, monitor);
