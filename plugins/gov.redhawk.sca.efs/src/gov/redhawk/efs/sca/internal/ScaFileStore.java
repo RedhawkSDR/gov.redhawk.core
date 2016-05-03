@@ -122,6 +122,8 @@ public class ScaFileStore extends FileStore {
 						return getScaFileSystem().list(listPath);
 					} catch (FileException e) {
 						throw new CoreException(new Status(IStatus.ERROR, ScaFileSystemPlugin.ID, CFErrorFormatter.format(e, FileOperation.List, listPath), e));
+					} catch (InvalidFileName e) {
+						throw new CoreException(new Status(IStatus.ERROR, ScaFileSystemPlugin.ID, CFErrorFormatter.format(e, FileOperation.List, listPath), e));
 					}
 				}
 			}, monitor);
@@ -216,6 +218,8 @@ public class ScaFileStore extends FileStore {
 					try {
 						return getScaFileSystem().list(path);
 					} catch (FileException e) {
+						throw new CoreException(new Status(IStatus.ERROR, ScaFileSystemPlugin.ID, CFErrorFormatter.format(e, FileOperation.List, path), e));
+					} catch (InvalidFileName e) {
 						throw new CoreException(new Status(IStatus.ERROR, ScaFileSystemPlugin.ID, CFErrorFormatter.format(e, FileOperation.List, path), e));
 					}
 				}
