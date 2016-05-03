@@ -46,6 +46,7 @@ import gov.redhawk.model.sca.ScaWaveformFactory;
 import gov.redhawk.model.sca.commands.ScaModelCommandWithResult;
 import gov.redhawk.sca.util.Debug;
 import gov.redhawk.sca.util.SilentJob;
+import mil.jpeojtrs.sca.util.CFErrorFormatter;
 
 /**
  * @since 14.0
