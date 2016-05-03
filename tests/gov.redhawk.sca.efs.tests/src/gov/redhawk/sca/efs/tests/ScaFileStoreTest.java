@@ -37,9 +37,6 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-/**
- * 
- */
 public class ScaFileStoreTest {
 
 	private static TestServer session;
@@ -61,9 +58,6 @@ public class ScaFileStoreTest {
 	private InputStream inputStream;
 	private OutputStream outputStream;
 
-	/**
-	 * @throws java.lang.Exception
-	 */
 	@Before
 	public void setUp() throws Exception {
 		this.fileSystem = EFS.getFileSystem(ScaFileSystemConstants.SCHEME);
@@ -78,9 +72,6 @@ public class ScaFileStoreTest {
 		return new URI(ScaFileSystemConstants.SCHEME + "://?" + QueryParser.createQuery(queryParams));
 	}
 
-	/**
-	 * @throws java.lang.Exception
-	 */
 	@After
 	public void tearDown() throws Exception {
 		this.fileSystem = null;
