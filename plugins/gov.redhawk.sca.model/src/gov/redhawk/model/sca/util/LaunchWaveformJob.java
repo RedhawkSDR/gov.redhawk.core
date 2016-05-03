@@ -193,7 +193,7 @@ public class LaunchWaveformJob extends SilentJob {
 				try {
 					waveform.start();
 				} catch (StartError e) {
-					return new Status(Status.ERROR, ScaModelPlugin.ID, "Failed to start: " + waveformName, e);
+					return new Status(Status.ERROR, ScaModelPlugin.ID, CFErrorFormatter.format(e, "waveform " + waveformName), e);
 				}
 			}
 
