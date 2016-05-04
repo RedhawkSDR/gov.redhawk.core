@@ -29,6 +29,12 @@
             <command
                   commandId="gov.redhawk.logging.ui.setlevel"
                   style="push">
+               <visibleWhen
+                     checkEnabled="false">
+                  <count
+                        value="1">
+                  </count>
+               </visibleWhen>
             </command>
             <command
                   commandId="gov.redhawk.logging.ui.logconfig"
