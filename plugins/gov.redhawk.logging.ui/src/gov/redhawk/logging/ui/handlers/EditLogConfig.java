@@ -70,7 +70,7 @@ public class EditLogConfig extends AbstractHandler {
 		return null;
 	}
 
-	// Launch plain text editor for making live changes to a resource's log configuration 
+	// Launch plain text editor for making live changes to a resource's log configuration
 	public void handleEditLogConfiguration(final LogConfigurationOperations resource, final IWorkbenchPage activePage) {
 		if (!(launchWarningDialog(activePage))) {
 			return;
@@ -116,7 +116,6 @@ public class EditLogConfig extends AbstractHandler {
 							return null;
 						}
 
-
 					}, monitor);
 				} catch (CoreException e) {
 					return new Status(e.getStatus().getSeverity(), LoggingUiPlugin.PLUGIN_ID, e.getLocalizedMessage(), e);
@@ -134,24 +133,25 @@ public class EditLogConfig extends AbstractHandler {
 		editLogConfigJob.schedule();
 
 	}
-	
+
 	/**
-	 * Creates a temporary file that will be populated with then resources log config and serve as the input for the LogConfigEditor
-	 * @throws IOException 
+	 * Creates a temporary file that will be populated with then resources log config and serve as the input for the
+	 * LogConfigEditor
+	 * @throws IOException
 	 */
 	private File createTemporaryFile() throws IOException {
 		String tmpLocation = "/log_configuration_tmpfile";
-		IPath tmpFilePath = Platform.getLocation();
+		IPath tmpFilePath = LoggingUiPlugin.getDefault().getStateLocation();
 		tmpFilePath = tmpFilePath.append(tmpLocation);
 		File file = new File(tmpFilePath.toString());
-		
+
 		int appender = 1;
 		while (file.exists()) {
 			file = new File(tmpFilePath + "_" + appender++);
 		}
 
 		file.createNewFile();
-		
+
 		return file;
 	};
 
