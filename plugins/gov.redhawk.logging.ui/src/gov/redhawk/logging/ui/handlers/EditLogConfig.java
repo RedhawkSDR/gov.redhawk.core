@@ -86,9 +86,8 @@ public class EditLogConfig extends AbstractHandler {
 							// Get the logConfig string
 							String logConfig = resource.getLogConfig();
 
-							// TODO: Where should these files be written to?
 							// Create a temporary file to use as input for the editor
-							File file = createTemporyFile();
+							File file = createTemporaryFile();
 
 							BufferedWriter bw = new BufferedWriter(new FileWriter(file));
 							bw.write(logConfig);
@@ -140,7 +139,7 @@ public class EditLogConfig extends AbstractHandler {
 	 * Creates a temporary file that will be populated with then resources log config and serve as the input for the LogConfigEditor
 	 * @throws IOException 
 	 */
-	private File createTemporyFile() throws IOException {
+	private File createTemporaryFile() throws IOException {
 		String tmpLocation = "/log_configuration_tmpfile";
 		IPath tmpFilePath = Platform.getLocation();
 		tmpFilePath = tmpFilePath.append(tmpLocation);
