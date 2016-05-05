@@ -11,6 +11,12 @@
 // BEGIN GENERATED CODE
 package gov.redhawk.model.sca.tests;
 
+import org.eclipse.emf.transaction.util.TransactionUtil;
+import org.jacorb.JacorbUtil;
+import org.junit.Assert;
+
+import CF.PropertySetPackage.InvalidConfiguration;
+import CF.PropertySetPackage.PartialConfiguration;
 import gov.redhawk.model.sca.RefreshDepth;
 import gov.redhawk.model.sca.ScaAbstractProperty;
 import gov.redhawk.model.sca.ScaComponent;
@@ -19,13 +25,8 @@ import gov.redhawk.model.sca.ScaWaveform;
 import gov.redhawk.model.sca.commands.ScaModelCommand;
 import gov.redhawk.model.sca.tests.stubs.ScaTestConstaints;
 import junit.textui.TestRunner;
+import mil.jpeojtrs.sca.prf.Simple;
 import mil.jpeojtrs.sca.prf.SimpleRef;
-
-import org.eclipse.emf.transaction.util.TransactionUtil;
-import org.jacorb.JacorbUtil;
-import org.junit.Assert;
-import CF.PropertySetPackage.InvalidConfiguration;
-import CF.PropertySetPackage.PartialConfiguration;
 
 /**
  * <!-- begin-user-doc -->
@@ -197,6 +198,26 @@ public class ScaSimplePropertyTest extends ScaAbstractPropertyTest {
 		// END GENERATED CODE
 		getFixture().setRemoteValue(JacorbUtil.init().create_any());
 		// BEGIN GENERATED CODE
+	}
+
+	protected void setNewValue() {
+		ScaModelCommand.execute(getFixture(), new ScaModelCommand() {
+			@Override
+			public void execute() {
+				getFixture().setValue("temp value");
+			}
+		});
+	}
+
+	protected void clearAndResetDefintion() {
+		ScaModelCommand.execute(getFixture(), new ScaModelCommand() {
+			@Override
+			public void execute() {
+				Simple simple = getFixture().getDefinition();
+				getFixture().setDefinition(null);
+				getFixture().setDefinition(simple);
+			}
+		});
 	}
 
 } // ScaSimplePropertyTest

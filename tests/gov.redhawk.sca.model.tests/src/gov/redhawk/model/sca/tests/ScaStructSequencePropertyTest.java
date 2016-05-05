@@ -11,6 +11,16 @@
 // BEGIN GENERATED CODE
 package gov.redhawk.model.sca.tests;
 
+import org.eclipse.emf.common.notify.Notification;
+import org.eclipse.emf.ecore.util.EContentAdapter;
+import org.eclipse.emf.transaction.util.TransactionUtil;
+import org.junit.Assert;
+
+import CF.DataType;
+import CF.PropertiesHolder;
+import CF.UnknownProperties;
+import CF.PropertySetPackage.InvalidConfiguration;
+import CF.PropertySetPackage.PartialConfiguration;
 import gov.redhawk.model.sca.RefreshDepth;
 import gov.redhawk.model.sca.ScaAbstractProperty;
 import gov.redhawk.model.sca.ScaComponent;
@@ -21,21 +31,9 @@ import gov.redhawk.model.sca.ScaStructSequenceProperty;
 import gov.redhawk.model.sca.ScaWaveform;
 import gov.redhawk.model.sca.commands.ScaModelCommand;
 import gov.redhawk.model.sca.tests.stubs.ScaTestConstaints;
-
-import org.junit.Assert;
-
 import junit.textui.TestRunner;
+import mil.jpeojtrs.sca.prf.StructSequence;
 import mil.jpeojtrs.sca.prf.StructSequenceRef;
-
-import org.eclipse.emf.common.notify.Notification;
-import org.eclipse.emf.ecore.util.EContentAdapter;
-import org.eclipse.emf.transaction.util.TransactionUtil;
-
-import CF.DataType;
-import CF.PropertiesHolder;
-import CF.UnknownProperties;
-import CF.PropertySetPackage.InvalidConfiguration;
-import CF.PropertySetPackage.PartialConfiguration;
 
 /**
  * <!-- begin-user-doc -->
@@ -262,6 +260,26 @@ public class ScaStructSequencePropertyTest extends ScaAbstractPropertyTest {
 		// END GENERATED CODE
 		getFixture().setRemoteValue(getFixture().toAny());
 		// BEGIN GENERATED CODE
+	}
+
+	protected void setNewValue() {
+		ScaModelCommand.execute(getFixture(), new ScaModelCommand() {
+			@Override
+			public void execute() {
+				getFixture().getStructs().get(0).getSimple(ScaTestConstaints.DCE_STRUCT_SEQ_PROP_SIMPLE_FIELD).setValue("test value");
+			}
+		});
+	}
+
+	protected void clearAndResetDefintion() {
+		ScaModelCommand.execute(getFixture(), new ScaModelCommand() {
+			@Override
+			public void execute() {
+				StructSequence structSeq = getFixture().getDefinition();
+				getFixture().setDefinition(null);
+				getFixture().setDefinition(structSeq);
+			}
+		});
 	}
 
 } // ScaStructSequencePropertyTest
