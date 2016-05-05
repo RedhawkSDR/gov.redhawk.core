@@ -20,10 +20,10 @@ import gov.redhawk.model.sca.commands.ScaModelCommand;
 import gov.redhawk.model.sca.tests.stubs.ScaTestConstaints;
 import junit.framework.Assert;
 import junit.textui.TestRunner;
+import mil.jpeojtrs.sca.prf.Simple;
 
 import org.eclipse.emf.transaction.util.TransactionUtil;
 import org.jacorb.JacorbUtil;
-import org.omg.CORBA.ORB;
 
 import CF.PropertySetPackage.InvalidConfiguration;
 import CF.PropertySetPackage.PartialConfiguration;
@@ -174,6 +174,26 @@ public class ScaSimplePropertyTest extends ScaAbstractPropertyTest {
 		// END GENERATED CODE
 		getFixture().setRemoteValue(JacorbUtil.init().create_any());
 		// BEGIN GENERATED CODE
+	}
+
+	protected void setNewValue() {
+		ScaModelCommand.execute(getFixture(), new ScaModelCommand() {
+			@Override
+			public void execute() {
+				getFixture().setValue("temp value");
+			}
+		});
+	}
+
+	protected void clearAndResetDefintion() {
+		ScaModelCommand.execute(getFixture(), new ScaModelCommand() {
+			@Override
+			public void execute() {
+				Simple simple = getFixture().getDefinition();
+				getFixture().setDefinition(null);
+				getFixture().setDefinition(simple);
+			}
+		});
 	}
 
 } //ScaSimplePropertyTest

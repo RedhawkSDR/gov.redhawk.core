@@ -20,6 +20,7 @@ import gov.redhawk.model.sca.commands.ScaModelCommand;
 import gov.redhawk.model.sca.tests.stubs.ScaTestConstaints;
 import junit.framework.Assert;
 import junit.textui.TestRunner;
+import mil.jpeojtrs.sca.prf.SimpleSequence;
 
 import org.eclipse.emf.transaction.util.TransactionUtil;
 
@@ -214,6 +215,26 @@ public class ScaSimpleSequencePropertyTest extends ScaAbstractPropertyTest {
 		// END GENERATED CODE
 		getFixture().setRemoteValue(getFixture().toAny());
 		// BEGIN GENERATED CODE
+	}
+
+	protected void setNewValue() {
+		ScaModelCommand.execute(getFixture(), new ScaModelCommand() {
+			@Override
+			public void execute() {
+				getFixture().setValue(new String[] { "temp value", "one more temp value" });
+			}
+		});
+	}
+
+	protected void clearAndResetDefintion() {
+		ScaModelCommand.execute(getFixture(), new ScaModelCommand() {
+			@Override
+			public void execute() {
+				SimpleSequence simpleSeq = getFixture().getDefinition();
+				getFixture().setDefinition(null);
+				getFixture().setDefinition(simpleSeq);
+			}
+		});
 	}
 
 } //ScaSimpleSequencePropertyTest
