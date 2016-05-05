@@ -23,6 +23,7 @@ import gov.redhawk.model.sca.commands.ScaModelCommand;
 import gov.redhawk.model.sca.tests.stubs.ScaTestConstaints;
 import org.junit.Assert;
 import junit.textui.TestRunner;
+import mil.jpeojtrs.sca.prf.StructSequence;
 
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.ecore.util.EContentAdapter;
@@ -238,6 +239,26 @@ public class ScaStructSequencePropertyTest extends ScaAbstractPropertyTest {
 		// END GENERATED CODE
 		getFixture().setRemoteValue(getFixture().toAny());
 		// BEGIN GENERATED CODE
+	}
+
+	protected void setNewValue() {
+		ScaModelCommand.execute(getFixture(), new ScaModelCommand() {
+			@Override
+			public void execute() {
+				getFixture().getStructs().get(0).getSimple(ScaTestConstaints.DCE_STRUCT_SEQ_PROP_SIMPLE_FIELD).setValue("test value");
+			}
+		});
+	}
+
+	protected void clearAndResetDefintion() {
+		ScaModelCommand.execute(getFixture(), new ScaModelCommand() {
+			@Override
+			public void execute() {
+				StructSequence structSeq = getFixture().getDefinition();
+				getFixture().setDefinition(null);
+				getFixture().setDefinition(structSeq);
+			}
+		});
 	}
 
 } //ScaStructSequencePropertyTest
