@@ -18,11 +18,14 @@ import gov.redhawk.model.sca.impl.ScaAbstractPropertyImpl;
 import mil.jpeojtrs.sca.prf.AccessType;
 
 import org.eclipse.core.runtime.Status;
+import org.eclipse.core.runtime.jobs.IJobChangeEvent;
+import org.eclipse.core.runtime.jobs.IJobChangeListener;
+import org.eclipse.core.runtime.jobs.Job;
+import org.eclipse.core.runtime.jobs.JobChangeAdapter;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.jacorb.JacorbUtil;
 import org.junit.Assert;
 import org.omg.CORBA.Any;
-import org.omg.CORBA.ORB;
 
 import CF.PropertySetPackage.InvalidConfiguration;
 import CF.PropertySetPackage.PartialConfiguration;
@@ -356,5 +359,63 @@ public abstract class ScaAbstractPropertyTest extends IStatusProviderTest {
 			Assert.assertEquals("Cannot modify resource set without a write transaction", e.getMessage());
 		}
 	}
+
+	private volatile boolean testSetDefintionAfterValue_remoteSetScheduled;
+	private volatile boolean testSetDefintionAfterValue_remoteSetDone;
+
+	/**
+	 * IDE-1589
+	 * Setting the property definition after a property already has a value should not cause the value to be remotely
+	 * set.
+	 */
+	public void testSetDefintionAfterValue() throws InterruptedException {
+		final Object doneLock = new Object();
+		IJobChangeListener listener = new JobChangeAdapter() {
+			@Override
+			public void scheduled(IJobChangeEvent event) {
+				if ("Setting Property Value".equals(event.getJob().getName())) {
+					testSetDefintionAfterValue_remoteSetScheduled = true;
+				}
+			}
+
+			@Override
+			public void done(IJobChangeEvent event) {
+				if ("Setting Property Value".equals(event.getJob().getName())) {
+					synchronized (doneLock) {
+						testSetDefintionAfterValue_remoteSetDone = true;
+						doneLock.notifyAll();
+					}
+				}
+			}
+		};
+		Job.getJobManager().addJobChangeListener(listener);
+
+		// Ensure setting the value triggers remote value set
+		synchronized (doneLock) {
+			testSetDefintionAfterValue_remoteSetDone = false;
+			setNewValue();
+			doneLock.wait(5000);
+			Assert.assertTrue(testSetDefintionAfterValue_remoteSetDone);
+		}
+
+		// Ensure changing the definition does NOT trigger remote value set
+		testSetDefintionAfterValue_remoteSetScheduled = false;
+		clearAndResetDefintion();
+		Assert.assertFalse(testSetDefintionAfterValue_remoteSetScheduled);
+
+		Job.getJobManager().removeJobChangeListener(listener);
+	}
+
+	/**
+	 * This should call <code>setValue()</code> on the property (or some part of it if a struct / struct seq)
+	 */
+	protected abstract void setNewValue();
+
+	/**
+	 * This should use {@link ScaAbstractProperty#getDefinition()} and
+	 * {@link ScaAbstractProperty#setDefinition(mil.jpeojtrs.sca.prf.AbstractProperty)} to set the definition to null,
+	 * and then to set it back to its original value.
+	 */
+	protected abstract void clearAndResetDefintion();
 
 } //ScaAbstractPropertyTest

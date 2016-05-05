@@ -22,6 +22,7 @@ import gov.redhawk.model.sca.commands.ScaModelCommand;
 import gov.redhawk.model.sca.tests.stubs.ScaTestConstaints;
 import junit.framework.Assert;
 import junit.textui.TestRunner;
+import mil.jpeojtrs.sca.prf.Struct;
 
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.ecore.util.EContentAdapter;
@@ -237,6 +238,26 @@ public class ScaStructPropertyTest extends ScaAbstractPropertyTest {
 			Assert.assertEquals(simple.getId(), getFixture().getDefinition().getSimple().get(index).getId());
 			index++;
 		}
+	}
+
+	protected void setNewValue() {
+		ScaModelCommand.execute(getFixture(), new ScaModelCommand() {
+			@Override
+			public void execute() {
+				getFixture().getSimple(ScaTestConstaints.DCE_STRUCT_PROP_SIMPLE_FIELD).setValue("test value");
+			}
+		});
+	}
+
+	protected void clearAndResetDefintion() {
+		ScaModelCommand.execute(getFixture(), new ScaModelCommand() {
+			@Override
+			public void execute() {
+				Struct struct = getFixture().getDefinition();
+				getFixture().setDefinition(null);
+				getFixture().setDefinition(struct);
+			}
+		});
 	}
 
 } //ScaStructPropertyTest
