@@ -163,27 +163,10 @@ public class ScaStructSequencePropertyImpl extends ScaAbstractPropertyImpl<Struc
 	protected class StructList extends EObjectContainmentEList<ScaStructProperty> {
 		// END GENERATED CODE
 
-		/**
-		 * 
-		 */
 		private static final long serialVersionUID = 1L;
 
 		public StructList(ScaStructSequencePropertyImpl owner) {
 			super(ScaStructProperty.class, owner, ScaPackage.SCA_STRUCT_SEQUENCE_PROPERTY__STRUCTS);
-		}
-
-		public void setDefinition(StructSequence definition) {
-			List<ScaStructProperty> props = new ArrayList<ScaStructProperty>();
-			if (definition != null) {
-				List<StructValue> structValues = definition.getStructValue();
-				for (StructValue structVal : structValues) {
-					ScaStructProperty prop = createStructValue(definition, structVal);
-					props.add(prop);
-				}
-			}
-
-			clear();
-			addAll(props);
 		}
 
 		public boolean isDefaultValue() {
@@ -196,7 +179,17 @@ public class ScaStructSequencePropertyImpl extends ScaAbstractPropertyImpl<Struc
 		}
 
 		public void restoreDefaultValue() {
-			setDefinition(getDefinition());
+			List<ScaStructProperty> props = new ArrayList<ScaStructProperty>();
+			if (definition != null) {
+				List<StructValue> structValues = definition.getStructValue();
+				for (StructValue structVal : structValues) {
+					ScaStructProperty prop = createStructValue(definition, structVal);
+					props.add(prop);
+				}
+			}
+
+			clear();
+			addAll(props);
 		}
 
 		// BEGIN GENERATED CODE
@@ -220,9 +213,6 @@ public class ScaStructSequencePropertyImpl extends ScaAbstractPropertyImpl<Struc
 	 */
 	@Override
 	public void setDefinition(StructSequence newDefinition) {
-		if (newDefinition != definition && structs != null) {
-			((StructList) structs).setDefinition(newDefinition);
-		}
 		super.setDefinition(newDefinition);
 	}
 

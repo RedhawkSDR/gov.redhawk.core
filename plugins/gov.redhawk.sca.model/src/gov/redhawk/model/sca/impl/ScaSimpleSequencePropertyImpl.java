@@ -105,9 +105,6 @@ public class ScaSimpleSequencePropertyImpl extends ScaAbstractPropertyImpl<Simpl
 	protected static class ObjectList extends EDataTypeEList<Object>{
 		// END GENERATED CODE
 
-		/**
-		 * 
-		 */
 		private static final long serialVersionUID = 1L;
 
 		public ObjectList(ScaSimpleSequencePropertyImpl property) {
@@ -116,14 +113,6 @@ public class ScaSimpleSequencePropertyImpl extends ScaAbstractPropertyImpl<Simpl
 
 		private ScaSimpleSequencePropertyImpl getOwner() {
 			return (ScaSimpleSequencePropertyImpl) owner;
-		}
-
-		public void setDefinition(SimpleSequence definition) {
-			Object[] defaultValues = getDefaultValues(definition);
-			clear();
-			if (defaultValues.length > 0) {
-				addAll(Arrays.asList(defaultValues));
-			}
 		}
 
 		private static Object[] getDefaultValues(SimpleSequence definition) {
@@ -156,7 +145,11 @@ public class ScaSimpleSequencePropertyImpl extends ScaAbstractPropertyImpl<Simpl
          * @since 14.0
          */
 		public void restoreDefaultValue() {
-	        setDefinition(getOwner().getDefinition());	        
+			Object[] defaultValues = getDefaultValues(getOwner().getDefinition());
+			clear();
+			if (defaultValues.length > 0) {
+				addAll(Arrays.asList(defaultValues));
+			}
         }
 
 		// BEGIN GENERATED CODE
@@ -167,9 +160,6 @@ public class ScaSimpleSequencePropertyImpl extends ScaAbstractPropertyImpl<Simpl
      */
 	@Override
 	public void setDefinition(SimpleSequence newDefinition) {
-		if (newDefinition != definition && values != null) {
-			((ObjectList)values).setDefinition(newDefinition);
-		}
 	    super.setDefinition(newDefinition);
 	}
 
