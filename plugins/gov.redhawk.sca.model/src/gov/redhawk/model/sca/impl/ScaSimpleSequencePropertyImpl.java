@@ -26,7 +26,6 @@ import mil.jpeojtrs.sca.prf.SimpleSequence;
 import mil.jpeojtrs.sca.prf.SimpleSequenceRef;
 import mil.jpeojtrs.sca.prf.Values;
 import mil.jpeojtrs.sca.util.AnyUtils;
-import org.apache.commons.lang.ArrayUtils;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.notify.Notification;
@@ -291,27 +290,7 @@ public class ScaSimpleSequencePropertyImpl extends ScaAbstractPropertyImpl<Simpl
 			if (newAny != null) {
 				final Object value = AnyUtils.convertAny(newAny);
 				if (value != null && value.getClass().isArray()) {
-					Object[] array = null;
-					if (value instanceof boolean[]) {
-						array = ArrayUtils.toObject((boolean[]) value);
-					} else if (value instanceof byte[]) {
-						array = ArrayUtils.toObject((byte[]) value);
-					} else if (value instanceof char[]) {
-						array = ArrayUtils.toObject((char[]) value);
-					} else if (value instanceof double[]) {
-						array = ArrayUtils.toObject((double[]) value);
-					} else if (value instanceof float[]) {
-						array = ArrayUtils.toObject((float[]) value);
-					} else if (value instanceof int[]) {
-						array = ArrayUtils.toObject((int[]) value);
-					} else if (value instanceof long[]) {
-						array = ArrayUtils.toObject((long[]) value);
-					} else if (value instanceof short[]) {
-						array = ArrayUtils.toObject((short[]) value);
-					} else if (value instanceof Object[]) {
-						array = (Object[]) value;
-					}
-					setValue(array);
+					setValue((Object[]) value);
 				}
 			} else {
 				getValues().restoreDefaultValue();

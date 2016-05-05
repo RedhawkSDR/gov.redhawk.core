@@ -1,13 +1,12 @@
-/** 
- * This file is protected by Copyright. 
+/**
+ * This file is protected by Copyright.
  * Please refer to the COPYRIGHT file distributed with this source distribution.
- * 
+ *
  * This file is part of REDHAWK IDE.
- * 
- * All rights reserved.  This program and the accompanying materials are made available under 
+ *
+ * All rights reserved.  This program and the accompanying materials are made available under
  * the terms of the Eclipse Public License v1.0 which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html.
- *
  */
 package gov.redhawk.model.sca.commands;
 
@@ -18,16 +17,13 @@ import gov.redhawk.model.sca.ScaSimpleProperty;
 import gov.redhawk.model.sca.ScaSimpleSequenceProperty;
 import gov.redhawk.model.sca.ScaStructProperty;
 import gov.redhawk.model.sca.ScaStructSequenceProperty;
-import gov.redhawk.model.sca.impl.ScaSimplePropertyImpl;
-import gov.redhawk.model.sca.impl.ScaSimpleSequencePropertyImpl;
-import gov.redhawk.model.sca.impl.ScaStructPropertyImpl;
-import gov.redhawk.model.sca.impl.ScaStructSequencePropertyImpl;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import mil.jpeojtrs.sca.prf.AbstractProperty;
+import mil.jpeojtrs.sca.prf.PrfPackage;
 import mil.jpeojtrs.sca.prf.Simple;
 import mil.jpeojtrs.sca.prf.SimpleSequence;
 import mil.jpeojtrs.sca.prf.Struct;
@@ -35,7 +31,6 @@ import mil.jpeojtrs.sca.prf.StructSequence;
 
 /**
  * @since 14.0
- * 
  */
 public class MergePropertiesCommand extends ScaModelCommand {
 
@@ -55,25 +50,29 @@ public class MergePropertiesCommand extends ScaModelCommand {
 		// New Properties
 		final Map<String, ScaAbstractProperty< ? >> newProperties = new HashMap<String, ScaAbstractProperty< ? >>();
 		if (propertyDefs != null) {
-			for (AbstractProperty value : this.propertyDefs) {
-				if (value instanceof AbstractProperty) {
-					AbstractProperty prop = (AbstractProperty) value;
-					ScaAbstractProperty< ? > scaProp = null;
-					if (prop instanceof Simple) {
+			for (AbstractProperty prop : this.propertyDefs) {
+				ScaAbstractProperty< ? > scaProp = null;
+				switch (prop.eClass().getClassifierID()) {
+				case PrfPackage.SIMPLE:
 						final Simple simpleProp = (Simple) prop;
 						scaProp = createSimpleScaProperty(simpleProp);
-					} else if (prop instanceof SimpleSequence) {
+						break;
+				case PrfPackage.SIMPLE_SEQUENCE:
 						SimpleSequence simpleSequence = (SimpleSequence) prop;
 						scaProp = createSimpleSequenceScaProperty(simpleSequence);
-					} else if (prop instanceof Struct) {
+						break;
+				case PrfPackage.STRUCT:
 						Struct struct = (Struct) prop;
 						scaProp = createStructScaProperty(struct);
-					} else if (prop instanceof StructSequence) {
+						break;
+				case PrfPackage.STRUCT_SEQUENCE:
 						StructSequence structSequence = (StructSequence) prop;
 						scaProp = createStructSequenceScaProperty(structSequence);
-					}
-					newProperties.put(prop.getId(), scaProp);
+						break;
+				default:
+					break;
 				}
+				newProperties.put(prop.getId(), scaProp);
 			}
 		}
 
@@ -107,35 +106,27 @@ public class MergePropertiesCommand extends ScaModelCommand {
 	}
 
 	protected ScaStructProperty createStructScaProperty(final Struct value) {
-		// END GENERATED CODE
-		final ScaStructPropertyImpl prop = (ScaStructPropertyImpl) ScaFactory.eINSTANCE.createScaStructProperty();
+		final ScaStructProperty prop = ScaFactory.eINSTANCE.createScaStructProperty();
 		prop.setDefinition(value);
 		return prop;
-		// BEGIN GENERATED CODE
 	}
 
 	protected ScaSimpleSequenceProperty createSimpleSequenceScaProperty(final SimpleSequence value) {
-		// END GENERATED CODE
-		final ScaSimpleSequencePropertyImpl prop = (ScaSimpleSequencePropertyImpl) ScaFactory.eINSTANCE.createScaSimpleSequenceProperty();
+		final ScaSimpleSequenceProperty prop = ScaFactory.eINSTANCE.createScaSimpleSequenceProperty();
 		prop.setDefinition(value);
 		return prop;
-		// BEGIN GENERATED CODE
 	}
 
 	protected ScaSimpleProperty createSimpleScaProperty(final Simple simpleProp) {
-		// END GENERATED CODE
-		final ScaSimplePropertyImpl prop = (ScaSimplePropertyImpl) ScaFactory.eINSTANCE.createScaSimpleProperty();
+		final ScaSimpleProperty prop = ScaFactory.eINSTANCE.createScaSimpleProperty();
 		prop.setDefinition(simpleProp);
 		return prop;
-		// BEGIN GENERATED CODE
 	}
 
 	protected ScaStructSequenceProperty createStructSequenceScaProperty(final StructSequence structSequence) {
-		// END GENERATED CODE
-		final ScaStructSequencePropertyImpl prop = (ScaStructSequencePropertyImpl) ScaFactory.eINSTANCE.createScaStructSequenceProperty();
+		final ScaStructSequenceProperty prop = ScaFactory.eINSTANCE.createScaStructSequenceProperty();
 		prop.setDefinition(structSequence);
 		return prop;
-		// BEGIN GENERATED CODE
 	}
 
 }
