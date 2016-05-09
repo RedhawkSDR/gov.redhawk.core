@@ -90,7 +90,7 @@ public class ScaPropertiesContentProvider extends ScaModelAdapterFactoryContentP
 							try {
 								prop.setRemoteValue(any);
 							} catch (final PartialConfiguration e) {
-								return new Status(IStatus.WARNING, ScaUiPlugin.PLUGIN_ID, CFErrorFormatter.format(e), e);
+								return new Status(IStatus.ERROR, ScaUiPlugin.PLUGIN_ID, CFErrorFormatter.format(e), e);
 							} catch (final InvalidConfiguration e) {
 								return new Status(IStatus.ERROR, ScaUiPlugin.PLUGIN_ID, CFErrorFormatter.format(e), e);
 							} finally {
