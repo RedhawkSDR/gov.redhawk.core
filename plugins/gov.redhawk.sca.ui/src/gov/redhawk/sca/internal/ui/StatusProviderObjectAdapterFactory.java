@@ -11,7 +11,7 @@
  */
 package gov.redhawk.sca.internal.ui;
 
-import gov.redhawk.model.sca.DataProviderObject;
+import gov.redhawk.model.sca.IStatusProvider;
 import gov.redhawk.model.sca.ScaPackage;
 import gov.redhawk.sca.ui.EventDetailsDialog;
 import gov.redhawk.sca.ui.RedhawkUiAdapterFactory;
@@ -47,7 +47,7 @@ public class StatusProviderObjectAdapterFactory extends RedhawkUiAdapterFactory 
 
 				@Override
 				protected Object openDialogBox(final Control cellEditorWindow) {
-					final IStatus status = ((DataProviderObject) StatusProviderPropertyDescriptor.this.object).getStatus();
+					final IStatus status = ((IStatusProvider) StatusProviderPropertyDescriptor.this.object).getStatus();
 					final EventDetailsDialog dialog = new EventDetailsDialog(cellEditorWindow.getShell(), status);
 					dialog.open();
 					return null;
