@@ -120,6 +120,7 @@
 		<module>tests/gov.redhawk.prf.validation.tests</module>
 		<module>tests/gov.redhawk.sca.efs.tests</module>
 		<module>tests/gov.redhawk.sca.model.tests</module>
+		<module>tests/gov.redhawk.sca.ui.tests</module>
                 <module>tests/gov.redhawk.sca.util.tests</module>
 		<module>tests/gov.redhawk.scd.validation.tests</module>
 		<module>tests/gov.redhawk.validation.tests</module>
