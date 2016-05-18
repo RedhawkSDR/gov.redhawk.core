@@ -11,6 +11,7 @@
 package gov.redhawk.model.sca.tests;
 
 import org.eclipse.core.runtime.Status;
+import org.junit.Assert;
 import org.junit.Test;
 
 import CF.ComponentEnumType;
@@ -20,7 +21,6 @@ import gov.redhawk.model.sca.ScaFactory;
 import gov.redhawk.model.sca.ScaPackage;
 import gov.redhawk.model.sca.ScaWaveform;
 import gov.redhawk.model.sca.commands.ScaWaveformMergeComponentsCommand;
-import junit.framework.Assert;
 import mil.jpeojtrs.sca.sad.SadFactory;
 import mil.jpeojtrs.sca.sad.SoftwareAssembly;
 

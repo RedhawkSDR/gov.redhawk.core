@@ -131,6 +131,7 @@
     <module>tests/gov.redhawk.sca.efs.tests</module>
     <module>tests/gov.redhawk.sca.model.tests</module>
     <module>tests/gov.redhawk.sca.tests</module>
+    <module>tests/gov.redhawk.sca.ui.tests</module>
     <module>tests/gov.redhawk.sca.util.tests</module>
     <module>releng/p2</module>
   </modules>
