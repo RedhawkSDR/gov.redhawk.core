@@ -10,6 +10,7 @@
  */
 package gov.redhawk.model.sca.util.tests;
 
+import org.junit.Assert;
 import org.junit.Test;
 
 import CF.ErrorNumberType;
@@ -17,7 +18,6 @@ import CF.ResourceOperations;
 import CF.ResourcePackage.StopError;
 import gov.redhawk.model.sca.tests.stubs.AbstractResourceImpl;
 import gov.redhawk.model.sca.util.StopJob;
-import junit.framework.Assert;
 
 public class StopJobTest {
 

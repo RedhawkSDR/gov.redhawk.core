@@ -23,6 +23,7 @@ import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.edit.command.AddCommand;
 import org.eclipse.emf.transaction.TransactionalEditingDomain;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -31,7 +32,6 @@ import gov.redhawk.eclipsecorba.library.LibraryFactory;
 import gov.redhawk.eclipsecorba.library.LibraryPackage;
 import gov.redhawk.eclipsecorba.library.URIPathSet;
 import gov.redhawk.eclipsecorba.library.util.RefreshIdlLibraryJob;
-import junit.framework.Assert;
 
 public class RefreshIdlLibraryTest {
 

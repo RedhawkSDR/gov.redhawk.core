@@ -5,13 +5,13 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.eclipse.core.runtime.CoreException;
+import org.junit.Assert;
 import org.junit.Test;
 
 import gov.redhawk.model.sca.ProfileObjectWrapper;
 import gov.redhawk.model.sca.ScaFactory;
 import gov.redhawk.sca.ui.editors.IScaContentDescriber;
 import gov.redhawk.sca.ui.editors.ScaObjectWrapperContentDescriber;
-import junit.framework.Assert;
 
 import org.eclipse.emf.common.util.URI;
 
