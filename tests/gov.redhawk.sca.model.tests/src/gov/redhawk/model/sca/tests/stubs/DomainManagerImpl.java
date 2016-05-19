@@ -90,6 +90,7 @@ public class DomainManagerImpl extends AbstractResourceImpl implements DomainMan
 		MountPointAlreadyExists, ServantNotActive, WrongPolicy {
 		super(identifier, label, orb, poa);
 		FileManagerImpl fileManagerImpl = new FileManagerImpl();
+		fileManagerImpl.setLocalFileSystem(new JavaFileSystem(orb, poa, new File("/")));
 		this.fileManager = FileManagerHelper.narrow(poa.servant_to_reference(new FileManagerPOATie(fileManagerImpl)));
 
 		JavaFileSystem componentsFileSystem = new JavaFileSystem(orb, poa, new File(domRoot, "components"));
@@ -97,11 +98,11 @@ public class DomainManagerImpl extends AbstractResourceImpl implements DomainMan
 		JavaFileSystem mgrFileSystem = new JavaFileSystem(orb, poa, new File(domRoot, "mgr"));
 		JavaFileSystem waveformsFileSystem = new JavaFileSystem(orb, poa, new File(domRoot, "waveforms"));
 
-		this.fileManager.mount("components", FileSystemHelper.narrow(poa.servant_to_reference(new FileSystemPOATie(componentsFileSystem))));
-		this.fileManager.mount("domain", FileSystemHelper.narrow(poa.servant_to_reference(new FileSystemPOATie(domainFileSystem))));
-		this.fileManager.mount("domain2", FileSystemHelper.narrow(poa.servant_to_reference(new FileSystemPOATie(domainFileSystem))));
-		this.fileManager.mount("mgr", FileSystemHelper.narrow(poa.servant_to_reference(new FileSystemPOATie(mgrFileSystem))));
-		this.fileManager.mount("waveforms", FileSystemHelper.narrow(poa.servant_to_reference(new FileSystemPOATie(waveformsFileSystem))));
+		this.fileManager.mount("/components", FileSystemHelper.narrow(poa.servant_to_reference(new FileSystemPOATie(componentsFileSystem))));
+		this.fileManager.mount("/domain", FileSystemHelper.narrow(poa.servant_to_reference(new FileSystemPOATie(domainFileSystem))));
+		this.fileManager.mount("/domain2", FileSystemHelper.narrow(poa.servant_to_reference(new FileSystemPOATie(domainFileSystem))));
+		this.fileManager.mount("/mgr", FileSystemHelper.narrow(poa.servant_to_reference(new FileSystemPOATie(mgrFileSystem))));
+		this.fileManager.mount("/waveforms", FileSystemHelper.narrow(poa.servant_to_reference(new FileSystemPOATie(waveformsFileSystem))));
 		URI uri = ScaURIFactory.createURI(dmdPath, fileManager);
 
 		this.resourceSet = new ResourceSetImpl();
