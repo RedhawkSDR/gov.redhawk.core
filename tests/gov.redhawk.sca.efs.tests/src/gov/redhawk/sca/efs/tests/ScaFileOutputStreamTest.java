@@ -1,34 +1,21 @@
-/** 
- * This file is protected by Copyright. 
+/**
+ * This file is protected by Copyright.
  * Please refer to the COPYRIGHT file distributed with this source distribution.
- * 
+ *
  * This file is part of REDHAWK IDE.
- * 
- * All rights reserved.  This program and the accompanying materials are made available under 
+ *
+ * All rights reserved.  This program and the accompanying materials are made available under
  * the terms of the Eclipse Public License v1.0 which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html.
- *
  */
 package gov.redhawk.sca.efs.tests;
-
-import gov.redhawk.sca.efs.server.tests.TestServer;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.net.URI;
-import java.util.HashMap;
-import java.util.Map;
-
-import mil.jpeojtrs.sca.util.QueryParser;
-import mil.jpeojtrs.sca.util.ScaFileSystemConstants;
 
 import org.apache.commons.io.FileUtils;
-import org.eclipse.core.filesystem.EFS;
-import org.eclipse.core.filesystem.IFileStore;
-import org.eclipse.core.filesystem.IFileSystem;
-import org.eclipse.core.runtime.Path;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Assert;
@@ -36,9 +23,9 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-/**
- * 
- */
+import gov.redhawk.efs.sca.internal.ScaFileOutputStream;
+import gov.redhawk.sca.efs.server.tests.TestServer;
+
 public class ScaFileOutputStreamTest {
 
 	private static TestServer session;
@@ -54,42 +41,24 @@ public class ScaFileOutputStreamTest {
 		session.shutdownOrb();
 	}
 
-	private IFileSystem fileSystem;
-	private IFileStore rootFileStore;
-	private IFileStore rootFileStoreFile;
-	private OutputStream outputStream;
 	private File tempFile;
+	private CF.File file;
+	private OutputStream outputStream;
 
-	/**
-	 * @throws java.lang.Exception
-	 */
 	@Before
 	public void setUp() throws Exception {
-		this.fileSystem = EFS.getFileSystem(ScaFileSystemConstants.SCHEME);
-		final URI corbaIOR = getCorbIorUri();
+		this.tempFile = new File(ScaFileOutputStreamTest.session.getRootFile(), "/dev/devices/GPP/testFile.xml");
+		FileUtils.deleteQuietly(this.tempFile);
 
-		this.rootFileStore = this.fileSystem.getStore(corbaIOR);
-		this.tempFile = new File(ScaFileOutputStreamTest.session.getRootFile(), "dev/devices/GPP/testFile.xml");
-		this.rootFileStoreFile = this.rootFileStore.getFileStore(new Path("dev/devices/GPP/testFile.xml"));
-		this.outputStream = this.rootFileStoreFile.openOutputStream(0, null);
+		this.file = ScaFileOutputStreamTest.session.getFs().create("/dev/devices/GPP/testFile.xml");
+		this.outputStream = new ScaFileOutputStream(file, false);
 	}
 
-	/**
-	 * @throws java.lang.Exception
-	 */
 	@After
 	public void tearDown() throws Exception {
-		this.fileSystem = null;
-		this.rootFileStore = null;
-		this.rootFileStoreFile = null;
 		this.outputStream.close();
-		FileUtils.forceDelete(this.tempFile);
-	}
-
-	private URI getCorbIorUri() throws Exception {
-		final Map<String, String> queryParams = new HashMap<String, String>();
-		queryParams.put(ScaFileSystemConstants.QUERY_PARAM_FS, ScaFileOutputStreamTest.session.getFs().toString());
-		return new URI(ScaFileSystemConstants.SCHEME + "://?" + QueryParser.createQuery(queryParams));
+		this.file.close();
+		FileUtils.deleteQuietly(this.tempFile);
 	}
 
 	/**
@@ -143,6 +112,26 @@ public class ScaFileOutputStreamTest {
 	@Test
 	public void testClose() throws Exception {
 		this.outputStream.close();
+		try {
+			this.outputStream.write(51); // SUPPRESS CHECKSTYLE MagicNumber
+			Assert.fail("Output stream should be closed");
+		} catch (IOException e) {
+			// PASS
+		}
+		try {
+			byte[] tmpArray = new byte[] { 1 };
+			this.outputStream.write(tmpArray);
+			Assert.fail("Output stream should be closed");
+		} catch (IOException e) {
+			// PASS
+		}
+		try {
+			byte[] tmpArray = new byte[] { 1 };
+			this.outputStream.write(tmpArray, 0, 1);
+			Assert.fail("Output stream should be closed");
+		} catch (IOException e) {
+			// PASS
+		}
 	}
 
 }

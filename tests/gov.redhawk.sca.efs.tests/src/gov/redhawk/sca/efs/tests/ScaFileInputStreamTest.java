@@ -1,40 +1,29 @@
-/** 
- * This file is protected by Copyright. 
+/**
+ * This file is protected by Copyright.
  * Please refer to the COPYRIGHT file distributed with this source distribution.
- * 
+ *
  * This file is part of REDHAWK IDE.
- * 
- * All rights reserved.  This program and the accompanying materials are made available under 
+ *
+ * All rights reserved.  This program and the accompanying materials are made available under
  * the terms of the Eclipse Public License v1.0 which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html.
- *
  */
 package gov.redhawk.sca.efs.tests;
 
-import gov.redhawk.efs.sca.internal.cache.ScaFileCache;
-import gov.redhawk.sca.efs.server.tests.TestServer;
-
+import java.io.IOException;
 import java.io.InputStream;
-import java.net.URI;
-import java.util.HashMap;
-import java.util.Map;
 
-import mil.jpeojtrs.sca.util.QueryParser;
-import mil.jpeojtrs.sca.util.ScaFileSystemConstants;
-
-import org.eclipse.core.filesystem.EFS;
-import org.eclipse.core.filesystem.IFileStore;
-import org.eclipse.core.filesystem.IFileSystem;
-import org.eclipse.core.runtime.Path;
 import org.junit.After;
 import org.junit.AfterClass;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-/**
- * 
- */
+import CF.File;
+import gov.redhawk.efs.sca.internal.ScaFileInputStream;
+import gov.redhawk.sca.efs.server.tests.TestServer;
+
 public class ScaFileInputStreamTest {
 	private static TestServer session;
 
@@ -49,40 +38,19 @@ public class ScaFileInputStreamTest {
 		ScaFileInputStreamTest.session.shutdownOrb();
 	}
 
-	private IFileSystem fileSystem;
-	private IFileStore rootFileStore;
+	private File file;
 	private InputStream inputStream;
-	private IFileStore rootFileStoreFile;
 
-	/**
-	 * @throws java.lang.Exception
-	 */
 	@Before
 	public void setUp() throws Exception {
-		ScaFileCache.INSTANCE.clear();
-		this.fileSystem = EFS.getFileSystem(ScaFileSystemConstants.SCHEME);
-		final URI corbaIOR = getCorbIorUri();
-
-		this.rootFileStore = this.fileSystem.getStore(corbaIOR);
-		this.rootFileStoreFile = this.rootFileStore.getFileStore(new Path("dev/devices/GPP/GPP.spd.xml"));
-		this.inputStream = this.rootFileStoreFile.openInputStream(0, null);
+		this.file = ScaFileInputStreamTest.session.getFs().open("/dev/devices/GPP/GPP.spd.xml", true);
+		this.inputStream = new ScaFileInputStream(file);
 	}
 
-	private URI getCorbIorUri() throws Exception {
-		final Map<String, String> queryParams = new HashMap<String, String>();
-		queryParams.put(ScaFileSystemConstants.QUERY_PARAM_FS, ScaFileInputStreamTest.session.getFs().toString());
-		return new URI(ScaFileSystemConstants.SCHEME + "://?" + QueryParser.createQuery(queryParams));
-	}
-
-	/**
-	 * @throws java.lang.Exception
-	 */
 	@After
 	public void tearDown() throws Exception {
-		this.fileSystem = null;
-		this.rootFileStore = null;
-		this.rootFileStoreFile = null;
 		this.inputStream.close();
+		this.file.close();
 	}
 
 	/**
@@ -108,6 +76,25 @@ public class ScaFileInputStreamTest {
 	@Test
 	public void testClose() throws Exception {
 		this.inputStream.close();
+		try {
+			this.inputStream.read();
+			Assert.fail("Input stream should be closed");
+		} catch (IOException e) {
+			// PASS
+		}
+		try {
+			byte[] tmpArray = new byte[1];
+			this.inputStream.read(tmpArray);
+			Assert.fail("Input stream should be closed");
+		} catch (IOException e) {
+			// PASS
+		}
+		try {
+			byte[] tmpArray = new byte[1];
+			this.inputStream.read(tmpArray, 0, 1);
+			Assert.fail("Input stream should be closed");
+		} catch (IOException e) {
+			// PASS
+		}
 	}
-
 }

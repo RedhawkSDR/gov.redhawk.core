@@ -1,15 +1,16 @@
 /**
- * This file is protected by Copyright. 
+ * This file is protected by Copyright.
  * Please refer to the COPYRIGHT file distributed with this source distribution.
- * 
+ *
  * This file is part of REDHAWK IDE.
- * 
- * All rights reserved.  This program and the accompanying materials are made available under 
+ *
+ * All rights reserved.  This program and the accompanying materials are made available under
  * the terms of the Eclipse Public License v1.0 which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html.
- *
  */
 package gov.redhawk.efs.sca.internal;
+
+import gov.redhawk.sca.util.ORBUtil;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -19,31 +20,32 @@ import org.omg.CORBA.SystemException;
 import CF.File;
 import CF.FileException;
 import CF.FilePackage.InvalidFilePointer;
-import gov.redhawk.sca.util.ORBUtil;
 
 public class ScaFileOutputStream extends OutputStream {
+
 	private File file;
 
 	public ScaFileOutputStream(final File file, final boolean append) throws InvalidFilePointer, FileException {
+		if (file == null) {
+			throw new NullPointerException();
+		}
 		this.file = file;
 		if (append) {
 			this.file.setFilePointer(file.sizeOf());
 		}
 	}
 
-	/**
-	 * Follow the semantics of other streams (i.e. FileOutputStream) where
-	 * finalize() closes() and cleans up everything.
-	 */
 	@Override
 	protected void finalize() throws Throwable {
-		super.close();
-		super.finalize();
+		// Follow the semantics of other streams (i.e. FileOutputStream) where finalize() closes() and cleans up
+		// everything.
+		try {
+			close();
+		} finally {
+			super.finalize();
+		}
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public void close() throws IOException {
 		try {
@@ -67,9 +69,6 @@ public class ScaFileOutputStream extends OutputStream {
 		}
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public void write(final byte[] b, final int off, final int len) throws IOException {
 		if (b == null) {
@@ -78,6 +77,8 @@ public class ScaFileOutputStream extends OutputStream {
 			throw new IndexOutOfBoundsException();
 		} else if (len == 0) {
 			return;
+		} else if (this.file == null) {
+			throw new IOException("Stream Closed");
 		}
 
 		final byte[] data = copyOfRange(b, off, off + len);
@@ -101,14 +102,14 @@ public class ScaFileOutputStream extends OutputStream {
 		return copy;
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public void write(final int b) throws IOException {
+		if (this.file == null) {
+			throw new IOException("Stream Closed");
+		}
+
 		final byte[] data = new byte[1];
 		data[0] = (byte) b;
 		write(data, 0, 1);
 	}
-
 }
