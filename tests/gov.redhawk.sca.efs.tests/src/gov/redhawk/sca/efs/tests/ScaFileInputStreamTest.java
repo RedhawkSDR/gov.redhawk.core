@@ -19,6 +19,7 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.omg.CORBA.SystemException;
 
 import CF.File;
 import gov.redhawk.efs.sca.internal.ScaFileInputStream;
@@ -50,7 +51,11 @@ public class ScaFileInputStreamTest {
 	@After
 	public void tearDown() throws Exception {
 		this.inputStream.close();
-		this.file.close();
+		try {
+			this.file.close();
+		} catch (SystemException e) {
+			// PASS
+		}
 	}
 
 	/**
