@@ -87,10 +87,9 @@ public abstract class BasicStructPropertyDetailsPage extends AbstractPropertyDet
 							return StructPropertyConfigurationType.PROPERTY;
 						}
 					}
-					// If empty, default to PROPERTY
+					// If empty, default to CONFIGURE
 					if (kindList.size() == 0) {
-						StructPropertyConfigurationType displayKindType = StructPropertyConfigurationType.PROPERTY;
-						return displayKindType;
+						return StructPropertyConfigurationType.CONFIGURE;
 					}
 
 					// We can only display one kind type, even though the XML allows multiple. As of Redhawk 2.0, we

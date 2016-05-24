@@ -227,10 +227,9 @@ public abstract class BasicSimplePropertyDetailsPage extends AbstractPropertyDet
 							return PropertyConfigurationType.PROPERTY;
 						}
 					}
-					// If empty, default to PROPERTY
+					// If empty, default to CONFIGURE
 					if (kindList.size() == 0) {
-						PropertyConfigurationType displayKindType = PropertyConfigurationType.PROPERTY;
-						return displayKindType;
+						return PropertyConfigurationType.CONFIGURE;
 					}
 
 					// We can only display one kind type, even though the XML allows multiple. As of Redhawk 2.0, we only
