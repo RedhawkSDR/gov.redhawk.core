@@ -4,8 +4,8 @@ Bundle-Name: Coreframework JNI
 Bundle-SymbolicName: idl.cf.jni
 Bundle-Version: 1.10.3.qualifier
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
-Require-Bundle: omnijni;bundle-version="1.10.2";visibility:=reexport,
- idl.cf;bundle-version="1.10.2";visibility:=reexport,
+Require-Bundle: omnijni;bundle-version="1.10.0";visibility:=reexport,
+ idl.cf;bundle-version="1.10.0";visibility:=reexport,
  org.jacorb;bundle-version="3.3.0";visibility:=reexport
 Bundle-Vendor: REDHAWK
 Export-Package: CF.jni,ExtendedCF.jni,ExtendedEvent.jni,org.omg.CosEve
