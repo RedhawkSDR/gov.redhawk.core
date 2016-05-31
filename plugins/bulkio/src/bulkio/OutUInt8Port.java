@@ -423,6 +423,18 @@ public class OutUInt8Port extends BULKIO.UsesPortStatisticsProviderPOA {
     {
         // If there is no need to break data into smaller packets, skip
         // straight to the pushPacket call and return.
+        SriMapStruct sriStruct = this.currentSRIs.get(streamID);
+        if (sriStruct.sri.subsize != 0) {
+            if (MAX_SAMPLES_PER_PUSH%sriStruct.sri.subsize != 0) {
+                MAX_SAMPLES_PER_PUSH = MAX_PAYLOAD_SIZE/UInt8Size.bytes();
+                while (MAX_SAMPLES_PER_PUSH%sriStruct.sri.subsize != 0) {
+                    MAX_SAMPLES_PER_PUSH -= MAX_SAMPLES_PER_PUSH%sriStruct.sri.subsize;
+                    if (MAX_SAMPLES_PER_PUSH%2 != 0){
+                        MAX_SAMPLES_PER_PUSH--;
+                    }
+                }
+            }
+        }
         if (data.length <= MAX_SAMPLES_PER_PUSH) {
             _pushPacket(data, time, endOfStream, streamID);
             return;
@@ -457,7 +469,13 @@ public class OutUInt8Port extends BULKIO.UsesPortStatisticsProviderPOA {
                 logger.trace("bulkio.OutPort pushOversizedPacket() calling pushPacket with pushSize " + pushSize + " and packetTime twsec: " + packetTime.twsec + " tfsec: " + packetTime.tfsec);
             }
             this._pushPacket(subPacket, packetTime, packetEOS, streamID);
-            packetTime = bulkio.time.utils.addSampleOffset(packetTime, pushSize, xdelta);
+            int data_xfer_len = pushSize;
+            if (sriMap != null){
+                if (sriMap.sri.mode == 1) {
+                    data_xfer_len = data_xfer_len / 2;
+                }
+            }
+            packetTime = bulkio.time.utils.addSampleOffset(packetTime, data_xfer_len, xdelta);
         }
     }
 
