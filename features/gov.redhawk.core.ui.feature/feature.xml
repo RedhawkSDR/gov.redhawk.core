@@ -29,7 +29,7 @@
    </license>
 
    <requires>
-      <import feature="gov.redhawk.core" version="2.0.0" match="equivalent"/>
+      <import feature="gov.redhawk.core" version="2.0.2" match="equivalent"/>
    </requires>
 
    <plugin
