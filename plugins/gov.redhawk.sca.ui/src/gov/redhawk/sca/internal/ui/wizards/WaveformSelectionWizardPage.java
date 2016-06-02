@@ -225,7 +225,7 @@ public class WaveformSelectionWizardPage extends WizardPage {
 
 		Section advancedComposite = new Section(composite, ExpandableComposite.TWISTIE);
 		advancedComposite.setLayoutData(GridDataFactory.fillDefaults().grab(true, false).span(2, 1).create());
-		advancedComposite.setText("Advanced  (Pre-2.0 REDHAWK domains only)");
+		advancedComposite.setText("Advanced");
 		advancedComposite.setFont(composite.getFont());
 		advancedComposite.setLayout(GridLayoutFactory.fillDefaults().create());
 		Composite advancedSection = new Composite(advancedComposite, SWT.NONE);
@@ -233,7 +233,7 @@ public class WaveformSelectionWizardPage extends WizardPage {
 		advancedSection.setLayout(GridLayoutFactory.fillDefaults().create());
 
 		this.uninstallExistAppFactory = new Button(advancedSection, SWT.CHECK);
-		this.uninstallExistAppFactory.setText("Uninstall existing Application Factory");
+		this.uninstallExistAppFactory.setText("Uninstall existing application factory (pre-2.0 Redhawk domains only)");
 		
 		this.waveformSelectionList.getViewer().addSelectionChangedListener(new ISelectionChangedListener() {
 
