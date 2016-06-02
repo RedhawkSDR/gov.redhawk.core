@@ -166,7 +166,7 @@ public class EditLogConfig extends AbstractHandler {
 		if (showWarning) {
 			Shell shell = activePage.getActivePart().getSite().getShell();
 			MessageDialogWithToggle dialog = MessageDialogWithToggle.openYesNoQuestion(shell, "Opening Error Log Config",
-				"WARNING: This is a real-time editor.  Saving changes made in the Log Configuration Editor will immediately update the resources logging"
+				"WARNING: This is a runtime editor.  Saving changes made in the Log Configuration Editor will immediately update the resource's logging"
 					+ " configuration settings.  Do you wish to continue?",
 				"Don't show this warning again", true, null, null);
 
