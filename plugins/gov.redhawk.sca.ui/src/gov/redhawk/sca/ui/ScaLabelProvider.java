@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
+import org.apache.commons.lang.WordUtils;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
@@ -48,6 +49,11 @@ import org.eclipse.ui.progress.UIJob;
  * @since 8.0
  */
 public class ScaLabelProvider extends ScaModelAdapterFactoryLabelProvider implements IDescriptionProvider, ITooltipProvider {
+
+	/**
+	 * The max width of lines in a tooltip before they should be line wrapped.
+	 */
+	private static final int TOOLTIP_WRAP_LEN = 80;
 
 	private boolean disposed;
 
@@ -191,21 +197,19 @@ public class ScaLabelProvider extends ScaModelAdapterFactoryLabelProvider implem
 	}
 
 	public String getToolTipText(final Object element) {
+		if (element instanceof IStatusProvider) {
+			final IStatus status = ((IStatusProvider) element).getStatus();
+			if (!status.isOK()) {
+				String statusMsg = WordUtils.wrap(status.getMessage(), TOOLTIP_WRAP_LEN, null, true);
+				return statusMsg + "\nSee the properties view, advanced tab for more details.";
+			}
+		}
+
 		final StringBuilder toolTip = new StringBuilder();
 
 		if (element instanceof ScaPort< ? , ? >) {
 			final ScaPort< ? , ? > port = (ScaPort< ? , ? >) element;
 			toolTip.append(port.getProfileObj().getRepID());
-		}
-
-		if (element instanceof IStatusProvider) {
-			final IStatusProvider dpo = (IStatusProvider) element;
-			if (!dpo.getStatus().isOK()) {
-				if (toolTip.length() > 0) {
-					toolTip.append("\n");
-				}
-				toolTip.append(dpo.getStatus().getMessage());
-			}
 		}
 
 		if (toolTip.length() > 0) {
