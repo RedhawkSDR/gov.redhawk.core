@@ -20,6 +20,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.emf.common.notify.AdapterFactory;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.ecore.EStructuralFeature;
@@ -233,9 +234,15 @@ public class ScaWaveformItemProvider extends ScaPropertyContainerItemProvider im
 	@Override
 	public String getText(final Object object) {
 		// END GENERATED CODE
-		final String label = ((ScaWaveform) object).name();
+		ScaWaveform waveform = (ScaWaveform) object;
+		String label = waveform.name();
 		if (label == null || label.length() == 0) {
-			return "Loading...";
+			IStatus status = waveform.getStatus(ScaPackage.Literals.SCA_WAVEFORM__NAME);
+			if (status != null && !status.isOK()) {
+				label = getString("CanNotLoadError");
+			} else {
+				label = getString("Loading");
+			}
 		}
 		return label;
 		// BEGIN GENERATED CODE

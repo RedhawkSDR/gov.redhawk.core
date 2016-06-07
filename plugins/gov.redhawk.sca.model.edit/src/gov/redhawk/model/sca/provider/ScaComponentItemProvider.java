@@ -18,6 +18,7 @@ import gov.redhawk.model.sca.ScaPackage;
 import java.util.Collection;
 import java.util.List;
 
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.emf.common.notify.AdapterFactory;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.ecore.EStructuralFeature;
@@ -177,7 +178,12 @@ public class ScaComponentItemProvider extends ScaAbstractComponentItemProvider i
 			label = ((ScaComponent) object).getInstantiationIdentifier();
 		}
 		if (label == null || label.length() == 0) {
-			label = "Loading...";
+			IStatus status = component.getStatus(ScaPackage.Literals.SCA_COMPONENT__NAME);
+			if (status != null && !status.isOK()) {
+				label = getString("CanNotLoadError");
+			} else {
+				label = getString("Loading");
+			}
 		}
 		return label;
 		// BEGIN GENERATED CODE

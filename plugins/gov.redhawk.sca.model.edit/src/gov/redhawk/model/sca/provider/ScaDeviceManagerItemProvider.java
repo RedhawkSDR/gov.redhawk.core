@@ -19,6 +19,7 @@ import gov.redhawk.model.sca.ScaPackage;
 import java.util.Collection;
 import java.util.List;
 
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.emf.common.notify.AdapterFactory;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.ecore.EStructuralFeature;
@@ -186,9 +187,15 @@ public class ScaDeviceManagerItemProvider extends ScaPropertyContainerItemProvid
 	@Override
 	public String getText(final Object object) {
 		// END GENERATED CODE
-		String label = ((ScaDeviceManager) object).getLabel();
+		ScaDeviceManager devMgr = (ScaDeviceManager) object;
+		String label = devMgr.getLabel();
 		if (label == null || label.length() == 0) {
-			label = "Loading...";
+			IStatus status = devMgr.getStatus(ScaPackage.Literals.SCA_DEVICE_MANAGER__LABEL);
+			if (status != null && !status.isOK()) {
+				label = getString("CanNotLoadError");
+			} else {
+				label = getString("Loading");
+			}
 		}
 		return label;
 		// BEGIN GENERATED CODE
