@@ -20,7 +20,9 @@
                label="Logging">
             <visibleWhen
                   checkEnabled="false">
-                  <iterate>
+                  <iterate
+                        ifEmpty="false"
+                        operator="and">
                      <adapt
                            type="CF.LogConfigurationOperations">
                      </adapt>
@@ -40,6 +42,16 @@
                   commandId="gov.redhawk.logging.ui.logconfig"
                   style="push">
             </command>
+            <command
+                  commandId="gov.redhawk.logging.ui.tail"
+                  style="push">
+               <visibleWhen
+                     checkEnabled="false">
+                  <count
+                        value="1">
+                  </count>
+               </visibleWhen>
+            </command>
          </menu>
       </menuContribution>
    </extension>
@@ -57,6 +69,35 @@
             id="gov.redhawk.logging.ui.logconfig"
             name="Edit Log Config">
       </command>
+      <command
+            categoryId="gov.redhawk.ui.commands.category.sca"
+            id="gov.redhawk.logging.ui.tail"
+            name="Tail Log">
+      </command>
+   </extension>
+   <extension
+         point="org.eclipse.ui.handlers">
+      <handler
+            class="gov.redhawk.logging.ui.handlers.TailLog"
+            commandId="gov.redhawk.logging.ui.tail">
+         <enabledWhen>
+            <with
+                  variable="selection">
+               <iterate
+                     ifEmpty="false"
+                     operator="and">
+                  <adapt
+                        type="gov.redhawk.model.sca.CorbaObjWrapper">
+                  </adapt>
+                  <not>
+                     <adapt
+                           type="gov.redhawk.ide.debug.LocalLaunch">
+                     </adapt>
+                  </not>
+               </iterate>
+            </with>
+         </enabledWhen>
+      </handler>
    </extension>
    <extension
          point="org.eclipse.ui.editors">
@@ -72,6 +113,18 @@
       <initializer
             class="gov.redhawk.logging.ui.preferences.LoggingPreferenceInitializer">
       </initializer>
+   </extension>
+   <extension
+         point="org.eclipse.ui.console.consolePageParticipants">
+      <consolePageParticipant
+            class="gov.redhawk.logging.ui.eventconsole.EventConsolePageParticipant"
+            id="gov.redhawk.logging.ui.eventConsolePageParticipant">
+         <enablement>
+            <instanceof
+                  value="gov.redhawk.logging.ui.eventconsole.EventConsole">
+            </instanceof>
+         </enablement>
+      </consolePageParticipant>
    </extension>
 
 </plugin>
