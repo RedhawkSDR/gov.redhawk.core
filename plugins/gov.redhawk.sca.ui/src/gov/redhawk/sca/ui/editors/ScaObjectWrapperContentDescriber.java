@@ -26,10 +26,13 @@ import org.eclipse.core.filesystem.IFileStore;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExecutableExtension;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.ui.IEditorInput;
 
 /**
+ * Describes a {@link ProfileObjectWrapper} based on a regular expression of the profile URI's last segment.
  * @since 2.2
  */
 public class ScaObjectWrapperContentDescriber implements IScaContentDescriber, IExecutableExtension {
@@ -41,10 +44,14 @@ public class ScaObjectWrapperContentDescriber implements IScaContentDescriber, I
 	@Override
 	public int describe(final Object contents) throws IOException {
 		if (this.params == null) {
+			IStatus status = new Status(IStatus.WARNING, ScaUiPlugin.PLUGIN_ID, "No parameters provided");
+			ScaUiPlugin.getDefault().getLog().log(status);
 			return IScaContentDescriber.INVALID;
 		}
 		final String profileFileName = this.params.get(ScaObjectWrapperContentDescriber.PARAM_PROFILE_FILENAME);
 		if (profileFileName == null) {
+			IStatus status = new Status(IStatus.WARNING, ScaUiPlugin.PLUGIN_ID, "Profile filename not provided");
+			ScaUiPlugin.getDefault().getLog().log(status);
 			return IScaContentDescriber.INVALID;
 		}
 
@@ -55,11 +62,14 @@ public class ScaObjectWrapperContentDescriber implements IScaContentDescriber, I
 
 		try {
 			URI profileUri = obj.getProfileURI();
-			if (profileUri == null || profileUri.lastSegment() == null || !profileUri.lastSegment().matches(profileFileName)) {
+			if (profileUri == null) {
+				return IScaContentDescriber.INDETERMINATE;
+			} else if (profileUri.lastSegment() == null || !profileUri.lastSegment().matches(profileFileName)) {
 				return IScaContentDescriber.INVALID;
 			}
 		} catch (final PatternSyntaxException e) {
-			ScaUiPlugin.logError("Invalid profile filename regex in extension point", e);
+			IStatus status = new Status(IStatus.WARNING, ScaUiPlugin.PLUGIN_ID, "Invalid profile filename regular expression");
+			ScaUiPlugin.getDefault().getLog().log(status);
 		}
 
 		return IScaContentDescriber.VALID;

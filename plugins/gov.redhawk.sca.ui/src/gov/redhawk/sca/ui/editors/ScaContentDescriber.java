@@ -13,6 +13,7 @@ package gov.redhawk.sca.ui.editors;
 
 import gov.redhawk.model.sca.ICorbaObjectDescriptorAdapter;
 import gov.redhawk.model.sca.IScaObjectIdentifierAdapter;
+import gov.redhawk.sca.ui.ScaUiPlugin;
 
 import java.io.IOException;
 import java.util.Map;
@@ -21,54 +22,69 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IAdapterManager;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExecutableExtension;
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Platform;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.ui.IEditorInput;
 
 /**
+ * Describes objects which can be adapted with {@link IScaObjectIdentifierAdapter} and/or
+ * {@link ICorbaObjectDescriptorAdapter}.
+ * <p/>
+ * The following checks are available (1+ must be specified):
+ * <p/>
+ * <table>
+ * <tr><th>Parameter</th><th>Adapter method</th></tr>
+ * <tr><td>{@link #PARAM_FILENAME}</td><td>{@link IScaObjectIdentifierAdapter#getScaEObject(Object)}</td></tr>
+ * <tr><td>{@link #PARAM_PROFILE_ID}</td><td>{@link IScaObjectIdentifierAdapter#getIdentifier(Object)}</td></tr>
+ * <tr><td>{@link #PARAM_CORBA_REPID}</td><td>{@link ICorbaObjectDescriptorAdapter#supports(Object, String)}</td></tr>
+ * </table>
+ * <p/>
+ * Provides an editor input of {@link EObjectEditorInput}, unless {@link #PARAM_EDITOR_INPUT_TYPE} is set to
+ * <code>"lightweight"</code>, in which case {@link LightweightCorbaEditorInput}.
  * @since 2.2
  */
 public class ScaContentDescriber implements IScaContentDescriber, IExecutableExtension {
-	public static final String PARAM_PROFILE_ID = "profileId";
-	public static final String PARAM_CORBA_REPID = "corbaRepId";
-	public static final String PARAM_EDITOR_INPUT_TYPE = "editorInputType";
 	/**
+	 * The ID of the profile object (e.g. softwareassembly id, softpkg id)
+	 */
+	public static final String PARAM_PROFILE_ID = "profileId";
+
+	/**
+	 * Checks the CORBA repository ID of the object
+	 */
+	public static final String PARAM_CORBA_REPID = "corbaRepId";
+
+	/**
+	 * Optional. Specify "lightweight" to opt for {@link LightweightCorbaEditorInput}
+	 */
+	public static final String PARAM_EDITOR_INPUT_TYPE = "editorInputType";
+
+	/**
+	 * A regular expression on the last segment of the profile URI.
 	 * @since 8.0
 	 */
 	public static final String PARAM_FILENAME = "fileName";
+
 	private Map<String, String> params;
 
-	/**
-	 * 
-	 */
 	public ScaContentDescriber() {
-
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public int describe(final Object contents) throws IOException {
 		if (this.params == null) {
-			return IScaContentDescriber.INDETERMINATE;
+			IStatus status = new Status(IStatus.WARNING, ScaUiPlugin.PLUGIN_ID, "No parameters provided");
+			ScaUiPlugin.getDefault().getLog().log(status);
+			return IScaContentDescriber.INVALID;
 		}
 
 		final IAdapterManager adapterManager = Platform.getAdapterManager();
-
-		Object obj = adapterManager.getAdapter(contents, IScaObjectIdentifierAdapter.class);
-		IScaObjectIdentifierAdapter idAdapter = null;
-		if (obj instanceof IScaObjectIdentifierAdapter) {
-			idAdapter = (IScaObjectIdentifierAdapter) obj;
-		}
-
-		obj = adapterManager.getAdapter(contents, ICorbaObjectDescriptorAdapter.class);
-		ICorbaObjectDescriptorAdapter corbaAdapter = null;
-		if (obj instanceof ICorbaObjectDescriptorAdapter) {
-			corbaAdapter = (ICorbaObjectDescriptorAdapter) obj;
-		}
+		IScaObjectIdentifierAdapter idAdapter = adapterManager.getAdapter(contents, IScaObjectIdentifierAdapter.class);
+		ICorbaObjectDescriptorAdapter corbaAdapter = adapterManager.getAdapter(contents, ICorbaObjectDescriptorAdapter.class);
 
 		boolean valid = false;
 
@@ -79,7 +95,7 @@ public class ScaContentDescriber implements IScaContentDescriber, IExecutableExt
 			} else {
 				final EObject profileObject = idAdapter.getScaEObject(contents);
 				if (profileObject != null && profileObject.eResource() != null && profileObject.eResource().getURI() != null
-						&& profileObject.eResource().getURI().lastSegment() != null && profileObject.eResource().getURI().lastSegment().matches(profileFilename)) {
+					&& profileObject.eResource().getURI().lastSegment() != null && profileObject.eResource().getURI().lastSegment().matches(profileFilename)) {
 					valid = true;
 				} else {
 					return IScaContentDescriber.INVALID;
@@ -115,14 +131,12 @@ public class ScaContentDescriber implements IScaContentDescriber, IExecutableExt
 		if (valid) {
 			return IScaContentDescriber.VALID;
 		} else {
-			return IScaContentDescriber.INDETERMINATE;
+			IStatus status = new Status(IStatus.WARNING, ScaUiPlugin.PLUGIN_ID, "At least one parameter must be supplied");
+			ScaUiPlugin.getDefault().getLog().log(status);
+			return IScaContentDescriber.INVALID;
 		}
-
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public IEditorInput getEditorInput(final Object contents) {
 		final IAdapterManager adapterManager = Platform.getAdapterManager();
@@ -147,9 +161,6 @@ public class ScaContentDescriber implements IScaContentDescriber, IExecutableExt
 		}
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	@SuppressWarnings("unchecked")
 	public void setInitializationData(final IConfigurationElement config, final String propertyName, final Object data) throws CoreException {
