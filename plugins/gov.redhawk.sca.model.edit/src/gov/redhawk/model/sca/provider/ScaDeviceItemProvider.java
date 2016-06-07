@@ -19,6 +19,7 @@ import gov.redhawk.model.sca.ScaPackage;
 import java.util.Collection;
 import java.util.List;
 
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.emf.common.notify.AdapterFactory;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.ecore.EStructuralFeature;
@@ -258,9 +259,15 @@ IEditingDomainItemProvider, IStructuredItemContentProvider, ITreeItemContentProv
 	@Override
 	public String getText(final Object object) {
 		// END GENERATED CODE
-		String label = ((ScaDevice< ? >) object).label();
+		ScaDevice< ? > device = (ScaDevice< ? >) object;
+		String label = device.label();
 		if (label == null || label.length() == 0) {
-			label = "Loading...";
+			IStatus status = device.getStatus(ScaPackage.Literals.SCA_DEVICE__LABEL);
+			if (status != null && !status.isOK()) {
+				label = getString("CanNotLoadError");
+			} else {
+				label = getString("Loading");
+			}
 		}
 		return label;
 		// BEGIN GENERATED CODE
