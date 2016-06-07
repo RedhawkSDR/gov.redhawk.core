@@ -40,7 +40,6 @@
                     <replace file="about.properties">
                       <replacefilter value="1.8.10" token="@buildLabel@" />
                       <replacefilter value="${buildQualifier}" token="@buildId@" />
-                      <replacefilter value="${commitHash}" token="@commitHash@"/>
                     </replace>
                   </target>
                 </configuration>
