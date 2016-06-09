@@ -41,7 +41,7 @@ public class LogConfigEditor extends TextEditor {
 	private IPath path;
 
 	private IWorkbenchListener workBenchListener;
-	
+
 	@Override
 	public void init(IEditorSite site, IEditorInput input) throws PartInitException {
 		super.init(site, input);
@@ -50,18 +50,18 @@ public class LogConfigEditor extends TextEditor {
 
 	private void addWorkbenchListener() {
 		this.workBenchListener = new IWorkbenchListener() {
-			
+
 			@Override
 			public boolean preShutdown(IWorkbench workbench, boolean forced) {
 				workbench.getActiveWorkbenchWindow().getActivePage().closeEditor(LogConfigEditor.this, false);
 				return true;
 			}
-			
+
 			@Override
 			public void postShutdown(IWorkbench workbench) {
 			}
 		};
-		
+
 		PlatformUI.getWorkbench().addWorkbenchListener(workBenchListener);
 	}
 
@@ -73,7 +73,7 @@ public class LogConfigEditor extends TextEditor {
 	@Override
 	public String getTitleToolTip() {
 		String toolTip = super.getTitleToolTip();
-		
+
 		if (resource instanceof ScaAbstractComponent< ? >) {
 			toolTip = ((ScaAbstractComponent< ? >) resource).getIdentifier();
 		} else if (resource instanceof ScaWaveform) {
@@ -129,7 +129,6 @@ public class LogConfigEditor extends TextEditor {
 		this.resource = resource;
 		setTitleToolTip(getTitleToolTip());
 	}
-	
 
 	public void setFilePath(IPath path) {
 		this.path = path;
@@ -142,7 +141,7 @@ public class LogConfigEditor extends TextEditor {
 		if (file.exists()) {
 			file.delete();
 		}
-		
+
 		PlatformUI.getWorkbench().removeWorkbenchListener(this.workBenchListener);
 	}
 

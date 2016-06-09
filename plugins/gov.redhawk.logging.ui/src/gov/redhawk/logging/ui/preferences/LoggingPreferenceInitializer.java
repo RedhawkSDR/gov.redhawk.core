@@ -21,7 +21,7 @@ public class LoggingPreferenceInitializer extends AbstractPreferenceInitializer 
 	@Override
 	public void initializeDefaultPreferences() {
 		IPreferenceStore store = LoggingUiPlugin.getDefault().getPreferenceStore();
-		
+
 		store.setDefault(LoggingPreferenceInitializer.SHOW_LOG_CONFIG_WARNING, true);
 	}
 
