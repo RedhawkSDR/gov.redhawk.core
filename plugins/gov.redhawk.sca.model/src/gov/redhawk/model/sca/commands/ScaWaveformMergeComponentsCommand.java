@@ -104,7 +104,8 @@ public class ScaWaveformMergeComponentsCommand extends SetStatusCommand<ScaWavef
 				URI spdUri = ScaUriHelpers.createFileSystemURI(typeInfo.softwareProfile, profileURI, null);
 				final ScaComponent component = createComponent();
 				if (typeInfo.componentObject == null) {
-					component.setStatus(ScaPackage.Literals.CORBA_OBJ_WRAPPER__CORBA_OBJ, new Status(IStatus.ERROR, ScaModelPlugin.ID, "No CORBA object was provided by the waveform for this component."));
+					component.setStatus(ScaPackage.Literals.CORBA_OBJ_WRAPPER__CORBA_OBJ,
+						new Status(IStatus.ERROR, ScaModelPlugin.ID, "No CORBA object was provided by the waveform for this component."));
 				} else {
 					component.setCorbaObj(typeInfo.componentObject);
 					component.setObj((Resource) typeInfo.componentObject);

@@ -80,6 +80,8 @@ public final class ScaPropertyUtil {
 		case ScaPackage.SCA_STRUCT_SEQUENCE_PROPERTY:
 			ScaPropertyUtil.storeStructSequence((ScaStructSequenceProperty) prop, valueSection);
 			break;
+		default:
+			throw new IllegalArgumentException("Invalid property");
 		}
 	}
 
@@ -137,6 +139,8 @@ public final class ScaPropertyUtil {
 		case ScaPackage.SCA_STRUCT_SEQUENCE_PROPERTY:
 			ScaPropertyUtil.restoreStructSequence((ScaStructSequenceProperty) prop, valueSection);
 			break;
+		default:
+			throw new IllegalArgumentException("Invalid property");
 		}
 	}
 

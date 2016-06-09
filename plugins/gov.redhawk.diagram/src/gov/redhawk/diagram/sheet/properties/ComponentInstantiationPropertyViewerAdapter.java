@@ -96,6 +96,8 @@ public class ComponentInstantiationPropertyViewerAdapter {
 				case PrfPackage.STRUCT_SEQUENCE_REF:
 					cp.getStructSequenceRef().add((StructSequenceRef) propertyRef);
 					break;
+				default:
+					throw new IllegalArgumentException("Invalid property");
 				}
 
 			}

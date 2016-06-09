@@ -72,6 +72,7 @@ public class ScaEventChannelsContainerItemProvider extends TransientItemProvider
 		case ScaPackage.SCA_DOMAIN_MANAGER__EVENT_CHANNELS:
 			fireNotifyChanged(new ViewerNotification(notification, this, true, false));
 			return;
+		default:
 		}
 		super.notifyChanged(notification);
 	}
