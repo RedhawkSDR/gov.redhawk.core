@@ -35,7 +35,7 @@ import mil.jpeojtrs.sca.util.CorbaUtils;
 
 public class LogConfigEditor extends TextEditor {
 
-	final public static String ID = "gov.redhawk.logging.ui.logconfig.editor";
+	public static final String ID = "gov.redhawk.logging.ui.logconfig.editor";
 
 	private LogConfigurationOperations resource;
 	private IPath path;

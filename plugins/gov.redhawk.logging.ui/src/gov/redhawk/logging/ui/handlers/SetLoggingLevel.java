@@ -42,7 +42,7 @@ import mil.jpeojtrs.sca.util.CorbaUtils;
 
 public class SetLoggingLevel extends AbstractHandler{
 
-	int currentLogLevel = -1;
+	private int currentLogLevel = -1;
 	
 	@Override
 	public Object execute(ExecutionEvent event) throws ExecutionException {
