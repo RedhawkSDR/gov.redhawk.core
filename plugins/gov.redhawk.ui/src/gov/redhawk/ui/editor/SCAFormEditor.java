@@ -1295,8 +1295,10 @@ public abstract class SCAFormEditor extends FormEditor implements IEditingDomain
 			final IFile file = ((IFileEditorInput) getEditorInput()).getFile();
 			file.getWorkspace().removeResourceChangeListener(this.resourceTracker);
 		}
-		this.resourceTracker.clearTrackedResources();
-		this.resourceTracker = null;
+		if (this.resourceTracker != null) {
+			this.resourceTracker.clearTrackedResources();
+			this.resourceTracker = null;
+		}
 		super.dispose();
 	}
 
