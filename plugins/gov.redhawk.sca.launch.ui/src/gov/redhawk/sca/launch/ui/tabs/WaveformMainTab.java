@@ -74,6 +74,7 @@ public class WaveformMainTab extends AbstractLaunchConfigurationTab {
 
 	private final PropertyChangeSupport support = new PropertyChangeSupport(this);
 	private Button openEditorButton;
+	private ScaItemProviderAdapterFactory adapterFactory;
 
 	public WaveformMainTab() {
 		this.mainImage = ScaUIImages.DESC_MAIN_TAB.createImage();
@@ -86,6 +87,10 @@ public class WaveformMainTab extends AbstractLaunchConfigurationTab {
 
 	@Override
 	public void dispose() {
+		if (this.adapterFactory != null) {
+			this.adapterFactory.dispose();
+			this.adapterFactory = null;
+		}
 		if (this.mainImage != null) {
 			this.mainImage.dispose();
 			this.mainImage = null;
@@ -124,9 +129,10 @@ public class WaveformMainTab extends AbstractLaunchConfigurationTab {
 		final Label domainName = new Label(composite, SWT.None);
 		domainName.setText("Domain:");
 
+		this.adapterFactory = new ScaItemProviderAdapterFactory();
 		this.domainCombo = new ComboViewer(composite, SWT.BORDER);
 		this.domainCombo.setContentProvider(new ArrayContentProvider());
-		this.domainCombo.setLabelProvider(new AdapterFactoryLabelProvider(new ScaItemProviderAdapterFactory()));
+		this.domainCombo.setLabelProvider(new AdapterFactoryLabelProvider(adapterFactory));
 		this.domainCombo.setInput(ScaPlugin.getDefault().getDomainManagerRegistry(parent.getDisplay()).getDomains());
 		this.domainCombo.getControl().setLayoutData(GridDataFactory.fillDefaults().grab(true, false).create());
 		this.domainCombo.addSelectionChangedListener(new ISelectionChangedListener() {
