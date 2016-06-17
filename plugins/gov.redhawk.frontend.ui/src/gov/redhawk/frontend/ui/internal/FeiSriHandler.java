@@ -56,6 +56,7 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.SubMonitor;
 import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.emf.common.notify.Adapter;
+import org.eclipse.emf.common.notify.AdapterFactory;
 import org.eclipse.emf.common.notify.Notifier;
 import org.eclipse.emf.common.notify.impl.AdapterImpl;
 import org.eclipse.emf.ecore.EObject;
@@ -230,12 +231,12 @@ public class FeiSriHandler extends AbstractHandler implements IHandler {
 		}
 
 		// Assign the uses port that the SRI View will listen to
-		final ScaItemProviderAdapterFactory factory = new ScaItemProviderAdapterFactory();
 		final ScaUsesPort usesPort;
 		if (usesPorts.size() == 1) {
 			usesPort = usesPorts.get(0);
 		} else if (usesPorts.size() > 1) {
 			// If there is more than one uses port, let the user specify which one they want
+			ScaItemProviderAdapterFactory factory = new ScaItemProviderAdapterFactory();
 			ListSelectionDialog dialog = new ListSelectionDialog(HandlerUtil.getActiveShellChecked(event), usesPorts,
 				ArrayContentProvider.getInstance(), new AdapterFactoryLabelProvider(factory), "Select output Port to use: ");
 			if (dialog.open() == Window.OK) {
@@ -251,6 +252,7 @@ public class FeiSriHandler extends AbstractHandler implements IHandler {
 				// User selected Cancel
 				usesPort = null;
 			}
+			factory.dispose();
 		} else {
 			// There are no uses ports for this device
 			usesPort = null;
@@ -454,6 +456,8 @@ public class FeiSriHandler extends AbstractHandler implements IHandler {
 		final StringBuilder name = new StringBuilder();
 		final StringBuilder tooltip = new StringBuilder();
 		createTooltip(factory, name, tooltip, usesPort);
+		factory.dispose();
+
 		try {
 			IViewPart view = window.getActivePage().showView(SriDataView.ID, SriDataView.createSecondaryId(usesPort), IWorkbenchPage.VIEW_ACTIVATE);
 
@@ -505,7 +509,7 @@ public class FeiSriHandler extends AbstractHandler implements IHandler {
 	 * @param tooltip
 	 * @param usesPort
 	 */
-	private void createTooltip(ScaItemProviderAdapterFactory factory, StringBuilder name, StringBuilder tooltip, ScaUsesPort usesPort) {
+	private void createTooltip(AdapterFactory factory, StringBuilder name, StringBuilder tooltip, ScaUsesPort usesPort) {
 		// Build a tmp list containing the strings of all containing elements
 		List<String> tmp = new LinkedList<String>();
 		for (EObject eObj = usesPort; !(eObj instanceof ScaDomainManagerRegistry) && eObj != null; eObj = eObj.eContainer()) {
