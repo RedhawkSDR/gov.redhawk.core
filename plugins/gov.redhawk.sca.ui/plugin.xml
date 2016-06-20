@@ -975,15 +975,11 @@
       </contentType>
        <contentType
             id="gov.redhawk.ui.sad.contentType"
-            name="SAD Content Type"
+            name="Waveform Content Type"
             priority="LOW">
          <describer
-               class="gov.redhawk.sca.ui.editors.ScaObjectWrapperContentDescriber"
+               class="gov.redhawk.sca.ui.describers.ScaWaveformDescriber"
                plugin="gov.redhawk.sca.ui">
-            <parameter
-                  name="profileFilename"
-                  value=".*sad.xml">
-            </parameter>
          </describer>
       </contentType>
       <contentType
@@ -1082,5 +1078,14 @@
             editorId="org.eclipse.ui.DefaultTextEditor"
             priority="LOW">
       </contentTypeBinding>
+      <contentType
+            id="gov.redhawk.ui.dcd.contentType"
+            name="Device Manager Content Type"
+            priority="LOW">
+         <describer
+               class="gov.redhawk.sca.ui.describers.ScaDeviceManagerDescriber"
+               plugin="gov.redhawk.sca.ui">
+         </describer>
+      </contentType>
    </extension>
 </plugin>
