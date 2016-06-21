@@ -43,6 +43,16 @@ import mil.jpeojtrs.sca.util.ScaEcoreUtils;
 
 public class CreateEventChannelLogger extends Job {
 
+	/**
+	 * Time in ms to wait for event channel to be found after a logging configuration is adjusted to use one.
+	 */
+	private static final long WAIT_FOR_EVENT_CHANNEL = 5000;
+
+	/**
+	 * How long to sleep in our wait loop
+	 */
+	private static final long WAIT_LOOP_SLEEP = 250;
+
 	private CorbaObjWrapper< ? > modelObject;
 	private LogConfiguration corbaObject;
 	private String logger;
@@ -87,7 +97,7 @@ public class CreateEventChannelLogger extends Job {
 	protected IStatus run(IProgressMonitor monitor) {
 		final int WORK_NARROW = 1;
 		final int WORK_ADJUST_LOG_CONFIG = 2;
-		final int WORK_FETCH_EVENT_CHANNELS = 2;
+		final int WORK_FETCH_EVENT_CHANNELS = 4;
 		SubMonitor progress = SubMonitor.convert(monitor, WORK_NARROW + WORK_ADJUST_LOG_CONFIG + WORK_FETCH_EVENT_CHANNELS);
 
 		// Generate event channel name, new logging configuration
@@ -101,6 +111,7 @@ public class CreateEventChannelLogger extends Job {
 		String ior = modelObject.getIor();
 		org.omg.CORBA.Object obj = session.getOrb().string_to_object(ior);
 		corbaObject = LogConfigurationHelper.unchecked_narrow(obj);
+		progress.worked(WORK_NARROW);
 
 		// Update the logging config
 		try {
@@ -126,35 +137,58 @@ public class CreateEventChannelLogger extends Job {
 			return rollback(progress, null);
 		}
 
-		// Refresh event channel list
-		domMgr.fetchEventChannels(progress.newChild(WORK_FETCH_EVENT_CHANNELS), RefreshDepth.NONE);
-		if (progress.isCanceled()) {
-			return rollback(progress, null);
-		}
+		// Allow the event channel a little time to show up and be found
+		long startTime = System.currentTimeMillis();
+		SubMonitor waitProgress = progress.newChild(WORK_FETCH_EVENT_CHANNELS).setWorkRemaining((int) (WAIT_FOR_EVENT_CHANNEL / WAIT_LOOP_SLEEP));
+		while (eventChannel == null && System.currentTimeMillis() < startTime + WAIT_FOR_EVENT_CHANNEL) {
+			// Refresh event channel list
+			domMgr.fetchEventChannels(waitProgress.newChild(1), RefreshDepth.NONE);
+			if (progress.isCanceled()) {
+				return rollback(progress, null);
+			}
 
-		// Locate event channel by name
-		try {
-			eventChannel = ScaModelCommandWithResult.runExclusive(domMgr, new RunnableWithResult.Impl<ScaEventChannel>() {
-				@Override
-				public void run() {
-					for (ScaEventChannel eventChannelCandidate : domMgr.getEventChannels()) {
-						if (eventChannelName.equals(eventChannelCandidate.getName())) {
-							setResult(eventChannelCandidate);
-							return;
+			// Locate event channel by name
+			try {
+				eventChannel = ScaModelCommandWithResult.runExclusive(domMgr, new RunnableWithResult.Impl<ScaEventChannel>() {
+					@Override
+					public void run() {
+						for (ScaEventChannel eventChannelCandidate : domMgr.getEventChannels()) {
+							if (eventChannelName.equals(eventChannelCandidate.getName())) {
+								setResult(eventChannelCandidate);
+								return;
+							}
 						}
 					}
+				});
+			} catch (InterruptedException e1) {
+				if (progress.isCanceled()) {
+					return rollback(progress, null);
+				} else {
+					IStatus status = new Status(IStatus.ERROR, LoggingUiPlugin.PLUGIN_ID, Messages.CreateEventChannelLogger_5);
+					return rollback(progress, status);
 				}
-			});
-		} catch (InterruptedException e1) {
-			IStatus status = new Status(IStatus.ERROR, LoggingUiPlugin.PLUGIN_ID, Messages.CreateEventChannelLogger_5);
-			return rollback(progress, status);
+			}
+
+			// Sleep for a moment
+			try {
+				Thread.sleep(WAIT_LOOP_SLEEP);
+			} catch (InterruptedException e) {
+				if (progress.isCanceled()) {
+					return rollback(progress, null);
+				} else {
+					IStatus status = new Status(IStatus.ERROR, LoggingUiPlugin.PLUGIN_ID, Messages.CreateEventChannelLogger_5);
+					return rollback(progress, status);
+				}
+			}
 		}
+
 		if (eventChannel == null) {
 			String msg = Messages.bind(Messages.CreateEventChannelLogger_6, eventChannelName);
 			IStatus status = new Status(IStatus.ERROR, LoggingUiPlugin.PLUGIN_ID, msg);
 			return rollback(progress, status);
 		}
 
+		progress.done();
 		return Status.OK_STATUS;
 	}
 
