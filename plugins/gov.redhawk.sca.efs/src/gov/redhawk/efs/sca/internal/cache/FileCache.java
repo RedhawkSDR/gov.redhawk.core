@@ -32,7 +32,6 @@ import mil.jpeojtrs.sca.util.ProtectedThreadExecutor;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
-import org.eclipse.core.filesystem.EFS;
 import org.eclipse.core.filesystem.IFileInfo;
 import org.eclipse.core.filesystem.IFileStore;
 import org.eclipse.core.runtime.CoreException;
@@ -115,19 +114,24 @@ public class FileCache implements IFileCache {
 					FileUtils.forceMkdir(localFile);
 				}
 			} else {
+				// Discard the old cache of the file, if any
 				FileUtils.deleteQuietly(localFile);
+
+				// Create a temp file
 				try {
 					tmpFile = File.createTempFile(localFile.getName(), ".tmp", parentDir);
 				} catch (IOException e) {
 					throw new CoreException(new Status(IStatus.ERROR, ScaFileSystemPlugin.ID, "File cache error: Failed to create temporary file " + localFile,
 						e));
 				}
-				tmpFile.deleteOnExit();
+
+				// Stream the remote file's contents, writing them to the temp file
 				scaInputStream = createScaInputStream();
 				fileStream = new FileOutputStream(tmpFile);
 				FileCache.copyLarge(scaInputStream, fileStream);
-				localFile.setExecutable(info.getAttribute(EFS.ATTRIBUTE_EXECUTABLE));
+				IOUtils.closeQuietly(fileStream);
 
+				// Rename the temp file to the actual file name
 				FileUtils.moveFile(tmpFile, localFile);
 			}
 			localFile.setLastModified(info.getLastModified());
