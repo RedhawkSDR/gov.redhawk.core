@@ -11,12 +11,12 @@
  */
 package gov.redhawk.model.sca.tests.stubs;
 
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
 
 import mil.jpeojtrs.sca.prf.AbstractProperty;
 import mil.jpeojtrs.sca.prf.ConfigurationKind;
-import mil.jpeojtrs.sca.prf.Kind;
 import mil.jpeojtrs.sca.prf.Properties;
 import mil.jpeojtrs.sca.prf.Simple;
 import mil.jpeojtrs.sca.prf.SimpleRef;
@@ -32,16 +32,42 @@ import mil.jpeojtrs.sca.util.AnyUtils;
 
 import org.eclipse.emf.ecore.util.FeatureMap.ValueListIterator;
 import org.omg.CORBA.ORB;
+import org.omg.CORBA.TCKind;
 import org.omg.PortableServer.POA;
 import org.omg.PortableServer.POAPackage.ServantNotActive;
 import org.omg.PortableServer.POAPackage.WrongPolicy;
 import org.ossie.component.Resource;
+import org.ossie.properties.Action;
+import org.ossie.properties.BooleanProperty;
+import org.ossie.properties.BooleanSequenceProperty;
+import org.ossie.properties.CharProperty;
+import org.ossie.properties.CharSequenceProperty;
+import org.ossie.properties.DoubleProperty;
+import org.ossie.properties.DoubleSequenceProperty;
+import org.ossie.properties.FloatProperty;
+import org.ossie.properties.FloatSequenceProperty;
 import org.ossie.properties.IProperty;
-import org.ossie.properties.SimpleProperty;
-import org.ossie.properties.SimpleSequenceProperty;
+import org.ossie.properties.Kind;
+import org.ossie.properties.LongLongProperty;
+import org.ossie.properties.LongLongSequenceProperty;
+import org.ossie.properties.LongProperty;
+import org.ossie.properties.LongSequenceProperty;
+import org.ossie.properties.Mode;
+import org.ossie.properties.OctetProperty;
+import org.ossie.properties.OctetSequenceProperty;
+import org.ossie.properties.ShortProperty;
+import org.ossie.properties.ShortSequenceProperty;
+import org.ossie.properties.StringProperty;
+import org.ossie.properties.StringSequenceProperty;
 import org.ossie.properties.StructDef;
 import org.ossie.properties.StructProperty;
 import org.ossie.properties.StructSequenceProperty;
+import org.ossie.properties.ULongLongProperty;
+import org.ossie.properties.ULongLongSequenceProperty;
+import org.ossie.properties.ULongProperty;
+import org.ossie.properties.ULongSequenceProperty;
+import org.ossie.properties.UShortProperty;
+import org.ossie.properties.UShortSequenceProperty;
 
 import CF.PortOperations;
 import CF.PortPOATie;
@@ -49,7 +75,6 @@ import CF.LifeCyclePackage.InitializeError;
 import CF.PortPackage.InvalidPort;
 import CF.PortPackage.OccupiedPort;
 
-@SuppressWarnings("deprecation")
 public class AbstractResourceImpl extends Resource {
 
 	protected SoftPkg spd; // SUPPRESS CHECKSTYLE Protected Field
@@ -124,14 +149,14 @@ public class AbstractResourceImpl extends Resource {
 			if (prop instanceof Simple) {
 				Simple simple = (Simple) prop;
 
-				SimpleProperty< ? > newProp = createSimpleProperty(simple);
+				IProperty newProp = createSimpleProperty(simple);
 				if (newProp != null) {
 					addProperty(newProp);
 				}
 			} else if (prop instanceof SimpleSequence) {
 				SimpleSequence sequence = (SimpleSequence) prop;
 
-				SimpleSequenceProperty< ? > newProperty = createSimpleSequenceProperty(sequence);
+				IProperty newProperty = createSimpleSequenceProperty(sequence);
 				if (newProperty != null) {
 					addProperty(newProperty);
 				}
@@ -154,9 +179,9 @@ public class AbstractResourceImpl extends Resource {
 			} else if (prop instanceof StructSequence) {
 				StructSequence structSequence = (StructSequence) prop;
 
-				List<String> kinds = new ArrayList<String>(structSequence.getConfigurationKind().size());
+				List<String> kindsList = new ArrayList<String>(structSequence.getConfigurationKind().size());
 				for (ConfigurationKind k : structSequence.getConfigurationKind()) {
-					kinds.add(k.getType().toString());
+					kindsList.add(k.getType().toString());
 				}
 				Class< StructDef> structClass = (Class<StructDef>) createStructDef(structSequence.getStruct()).getClass();
 
@@ -171,60 +196,139 @@ public class AbstractResourceImpl extends Resource {
 					}
 				}
 
+				Mode mode = Mode.get(structSequence.getMode().getLiteral());
+				Kind[] kinds = Kind.get(kindsList.toArray(new String[kindsList.size()]));
 				StructSequenceProperty<StructDef> newProperty = new StructSequenceProperty<StructDef>(structSequence.getId(),
 						structSequence.getName(),
 						structClass,
 						value,
-						structSequence.getMode().toString(),
-						kinds.toArray(new String[kinds.size()]));
+						mode,
+						kinds);
 				addProperty(newProperty);
 			}
 		}
 
 	}
 
-	private SimpleSequenceProperty< ? > createSimpleSequenceProperty(SimpleSequence sequence) {
-		List<Object> value = new ArrayList<Object>();
+	private IProperty createSimpleSequenceProperty(SimpleSequence sequence) {
+		String id = sequence.getId();
+		String name = sequence.getName();
+		Mode mode = Mode.get(sequence.getMode().getLiteral());
+		Action action = Action.get(sequence.getAction().getType().getLiteral());
+		Kind[] kinds = new Kind[sequence.getKind().size()];
+		for (int i = 0; i < sequence.getKind().size(); i++) {
+			kinds[i] = Kind.get(sequence.getKind().get(i).getType().getLiteral());
+		}
 		String type = sequence.getType().toString();
-		if ("objref".equals(type)) {
-			return null; // TODO AnyUtil doesn't support objref type
-		}
-		if (sequence.getValues() != null) {
-			for (String v : sequence.getValues().getValue()) {
-				value.add(AnyUtils.convertString(v, type, sequence.isComplex()));
-			}
-		}
-		List<String> kinds = new ArrayList<String>(sequence.getKind().size());
-		for (Kind k : sequence.getKind()) {
-			kinds.add(k.getType().toString());
-		}
 
-		return new SimpleSequenceProperty<Object>(sequence.getId(),
-				sequence.getName(),
-				type,
-				value,
-				sequence.getMode().toString(),
-				sequence.getAction().toString(),
-				kinds.toArray(new String[kinds.size()]));
+		switch (AnyUtils.convertToTCKind(type).value()) {
+		case TCKind._tk_boolean:
+			List<Boolean> booleanValue = createValueList(sequence, type, Boolean.class);
+			return new BooleanSequenceProperty(id, name, booleanValue, mode, action, kinds);
+		case TCKind._tk_char:
+			List<Character> characterValue = createValueList(sequence, type, Character.class);
+			return new CharSequenceProperty(id, name, characterValue, mode, action, kinds);
+		case TCKind._tk_double:
+			List<Double> doubleValue = createValueList(sequence, type, Double.class);
+			return new DoubleSequenceProperty(id, name, doubleValue, mode, action, kinds);
+		case TCKind._tk_float:
+			List<Float> floatValue = createValueList(sequence, type, Float.class);
+			return new FloatSequenceProperty(id, name, floatValue, mode, action, kinds);
+		case TCKind._tk_longlong:
+			List<Long> longLongValue = createValueList(sequence, type, Long.class);
+			return new LongLongSequenceProperty(id, name, longLongValue, mode, action, kinds);
+		case TCKind._tk_long:
+			List<Integer> longValue = createValueList(sequence, type, Integer.class);
+			return new LongSequenceProperty(id, name, longValue, mode, action, kinds);
+		case TCKind._tk_octet:
+			List<Short> octetRealValue = createValueList(sequence, type, Short.class);
+			List<Byte> octetValue = new ArrayList<Byte>();
+			for (Short s : octetRealValue) {
+				octetValue.add(s.byteValue());
+			}
+			return new OctetSequenceProperty(id, name, octetValue, mode, action, kinds);
+		case TCKind._tk_short:
+			List<Short> shortValue = createValueList(sequence, type, Short.class);
+			return new ShortSequenceProperty(id, name, shortValue, mode, action, kinds);
+		case TCKind._tk_string:
+			List<String> stringValue = createValueList(sequence, type, String.class);
+			return new StringSequenceProperty(id, name, stringValue, mode, action, kinds);
+		case TCKind._tk_ulonglong:
+			List<BigInteger> uLongLongRealValue = createValueList(sequence, type, BigInteger.class);
+			List<Long> uLongLongValue = createValueList(sequence, type, Long.class);
+			for (BigInteger bi : uLongLongRealValue) {
+				uLongLongValue.add(bi.longValue());
+			}
+			return new ULongLongSequenceProperty(id, name, uLongLongValue, mode, action, kinds);
+		case TCKind._tk_ulong:
+			List<Long> uLongRealValue = createValueList(sequence, type, Long.class);
+			List<Integer> uLongValue = new ArrayList<Integer>();
+			for (Long l : uLongRealValue) {
+				uLongValue.add(l.intValue());
+			}
+			return new ULongSequenceProperty(id, name, uLongValue, mode, action, kinds);
+		case TCKind._tk_ushort:
+			List<Integer> uShortRealValue = createValueList(sequence, type, Integer.class);
+			List<Short> uShortValue = new ArrayList<Short>();
+			for (Integer i : uShortRealValue) {
+				uShortValue.add(i.shortValue());
+			}
+			return new UShortSequenceProperty(id, name, uShortValue, mode, action, kinds);
+		default:
+			throw new IllegalArgumentException("Test harness doesn't have support for type: " + type);
+		}
 	}
 
-	private SimpleProperty< ? > createSimpleProperty(Simple simple) {
+	private < T > List<T> createValueList(SimpleSequence sequence, String type, Class<T> valueType) {
+		List<T> value = new ArrayList<T>();
+		if (sequence.getValues() != null) {
+			for (String v : sequence.getValues().getValue()) {
+				value.add(valueType.cast(AnyUtils.convertString(v, type, sequence.isComplex())));
+			}
+		}
+		return value;
+	}
+
+	private IProperty createSimpleProperty(Simple simple) {
+		String id = simple.getId();
+		String name = simple.getName();
 		Object value = AnyUtils.convertString(simple.getValue(), simple.getType().toString(), simple.isComplex());
-		List<String> kinds = new ArrayList<String>(simple.getKind().size());
+		Mode mode = Mode.get(simple.getMode().getLiteral());
+		Action action = Action.get(simple.getAction().getType().getLiteral());
+		Kind[] kinds = new Kind[simple.getKind().size()];
+		for (int i = 0; i < simple.getKind().size(); i++) {
+			kinds[i] = Kind.get(simple.getKind().get(i).getType().getLiteral());
+		}
 		String type = simple.getType().toString();
-		if ("objref".equals(type)) {
-			return null; // TODO AnyUtil doesn't support objref type
+
+		switch (AnyUtils.convertToTCKind(type).value()) {
+		case TCKind._tk_boolean:
+			return new BooleanProperty(id, name, (Boolean) value, mode, action, kinds);
+		case TCKind._tk_char:
+			return new CharProperty(id, name, (Character) value, mode, action, kinds);
+		case TCKind._tk_double:
+			return new DoubleProperty(id, name, (Double) value, mode, action, kinds);
+		case TCKind._tk_float:
+			return new FloatProperty(id, name, (Float) value, mode, action, kinds);
+		case TCKind._tk_longlong:
+			return new LongLongProperty(id, name, (Long) value, mode, action, kinds);
+		case TCKind._tk_long:
+			return new LongProperty(id, name, (Integer) value, mode, action, kinds);
+		case TCKind._tk_octet:
+			return new OctetProperty(id, name, ((Short) value).byteValue(), mode, action, kinds);
+		case TCKind._tk_short:
+			return new ShortProperty(id, name, (Short) value, mode, action, kinds);
+		case TCKind._tk_string:
+			return new StringProperty(id, name, (String) value, mode, action, kinds);
+		case TCKind._tk_ulonglong:
+			return new ULongLongProperty(id, name, ((BigInteger) value).longValue(), mode, action, kinds);
+		case TCKind._tk_ulong:
+			return new ULongProperty(id, name, ((Long) value).intValue(), mode, action, kinds);
+		case TCKind._tk_ushort:
+			return new UShortProperty(id, name, ((Integer) value).shortValue(), mode, action, kinds);
+		default:
+			throw new IllegalArgumentException("Test harness doesn't have support for type: " + type);
 		}
-		for (Kind k : simple.getKind()) {
-			kinds.add(k.getType().toString());
-		}
-		return new SimpleProperty<Object>(simple.getId(),
-				simple.getName(),
-				type,
-				value,
-				simple.getMode().toString(),
-				simple.getAction().toString(),
-				kinds.toArray(new String[kinds.size()]));
 	}
 
 	public static class DynamicStuctDef extends StructDef {
@@ -237,7 +341,7 @@ public class AbstractResourceImpl extends Resource {
 	private StructDef createStructDef(Struct struct) {
 		DynamicStuctDef retVal = new DynamicStuctDef();
 		for (Simple simple : struct.getSimple()) {
-			SimpleProperty< ? > prop = createSimpleProperty(simple);
+			IProperty prop = createSimpleProperty(simple);
 			if (prop != null) {
 				retVal.addElement(prop);
 			}
