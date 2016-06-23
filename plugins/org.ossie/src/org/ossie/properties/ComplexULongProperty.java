@@ -35,6 +35,10 @@ public class ComplexULongProperty extends AbstractSimpleProperty<complexULong> {
         super(id, name, "ulong", value, mode, action, kinds);
     }
 
+    public ComplexULongProperty(String id, String name, complexULong value, Mode mode, Action action, Kind[] kinds, boolean optional) {
+        super(id, name, "ulong", value, mode, action, kinds, optional);
+    }
+
     protected complexULong extract(Any any) {
         try {
             return (complexULong)AnyUtils.convertAny(any);

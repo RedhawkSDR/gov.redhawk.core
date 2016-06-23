@@ -31,8 +31,17 @@ public class OctetProperty extends NumericProperty<Byte> {
         super(id, name, "octet", value, mode, action, kinds);
     }
 
+    public OctetProperty(String id, String name, Byte value, Mode mode,
+                           Action action, Kind[] kinds, boolean optional) {
+        super(id, name, "octet", value, mode, action, kinds, optional);
+    }
+
     protected Byte fromNumber(Number val) {
-        return val.byteValue();
+        if (val != null){
+            return val.byteValue();
+        }else{
+            return null;
+        }
     }
 
     protected void insert(org.omg.CORBA.Any any, Byte value) {

@@ -44,7 +44,7 @@ public abstract class OutDataPort<E extends BULKIO.updateSRIOperations,A> extend
     /**
      * CORBA transfer limit in samples
      */
-    protected final int maxSamplesPerPush;
+    protected int maxSamplesPerPush;
 
     protected List<connection_descriptor_struct> filterTable = null;
 
@@ -295,6 +295,18 @@ public abstract class OutDataPort<E extends BULKIO.updateSRIOperations,A> extend
 
         // If there is no need to break data into smaller packets, skip
         // straight to the pushPacket call and return.
+        SriMapStruct sriStruct = this.currentSRIs.get(streamID);
+        if (sriStruct.sri.subsize != 0) {
+            if (this.maxSamplesPerPush%sriStruct.sri.subsize != 0) {
+                this.maxSamplesPerPush = (MAX_PAYLOAD_SIZE/this.sizeof.sizeof()) & 0xFFFFFFFE;
+                while (this.maxSamplesPerPush%sriStruct.sri.subsize != 0) {
+                    this.maxSamplesPerPush -= this.maxSamplesPerPush%sriStruct.sri.subsize;
+                    if (this.maxSamplesPerPush%2 != 0){
+                        this.maxSamplesPerPush--;
+                    }
+                }
+            }
+        }
         if (length <= this.maxSamplesPerPush) {
             this.pushSinglePacket(data, time, endOfStream, streamID);
             return;

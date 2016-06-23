@@ -35,6 +35,10 @@ public class ComplexShortProperty extends AbstractSimpleProperty<complexShort> {
         super(id, name, "short", value, mode, action, kinds);
     }
 
+    public ComplexShortProperty(String id, String name, complexShort value, Mode mode, Action action, Kind[] kinds, boolean optional) {
+        super(id, name, "short", value, mode, action, kinds, optional);
+    }
+
     protected complexShort extract(Any any) {
         try {
             return (complexShort)AnyUtils.convertAny(any);

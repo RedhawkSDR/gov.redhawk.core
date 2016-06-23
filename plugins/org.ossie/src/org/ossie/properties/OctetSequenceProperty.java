@@ -36,6 +36,11 @@ public class OctetSequenceProperty extends NumericSequenceProperty<Byte> {
         super(id, name, "octet", value, mode, action, kinds);
     }
 
+    public OctetSequenceProperty(String id, String name, List<Byte> value, Mode mode,
+                                   Action action, Kind[] kinds, boolean optional) {
+        super(id, name, "octet", value, mode, action, kinds, optional);
+    }
+
     public static List<Byte> asList(Number... array) {
         return PrimitiveArrayUtils.convertToByteList(array);
     }

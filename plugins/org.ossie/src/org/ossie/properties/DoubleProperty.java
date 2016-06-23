@@ -31,8 +31,17 @@ public class DoubleProperty extends NumericProperty<Double> {
         super(id, name, "double", value, mode, action, kinds);
     }
 
+    public DoubleProperty(String id, String name, Double value, Mode mode,
+                           Action action, Kind[] kinds, boolean optional) {
+        super(id, name, "double", value, mode, action, kinds, optional);
+    }
+
     protected Double fromNumber(Number val) {
-        return val.doubleValue();
+        if (val != null){
+            return val.doubleValue();
+        }else{
+            return null;
+        }
     }
 
     protected void insert(org.omg.CORBA.Any any, Double value) {

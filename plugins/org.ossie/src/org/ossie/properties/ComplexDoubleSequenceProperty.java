@@ -40,6 +40,11 @@ public class ComplexDoubleSequenceProperty extends AbstractSequenceProperty<comp
         super(id, name, "double", value, mode, action, kinds);
     }
 
+    public ComplexDoubleSequenceProperty(String id, String name, List<complexDouble> value, Mode mode,
+                                         Action action, Kind[] kinds, boolean optional) {
+        super(id, name, "double", value, mode, action, kinds, optional);
+    }
+
     public static List<complexDouble> asList(complexDouble... array) {
         return new ArrayList<complexDouble>(Arrays.asList(array));
     }

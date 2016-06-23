@@ -35,6 +35,10 @@ public class ComplexOctetProperty extends AbstractSimpleProperty<complexOctet> {
         super(id, name, "octet", value, mode, action, kinds);
     }
 
+    public ComplexOctetProperty(String id, String name, complexOctet value, Mode mode, Action action, Kind[] kinds, boolean optional) {
+        super(id, name, "octet", value, mode, action, kinds, optional);
+    }
+
     protected complexOctet extract(Any any) {
         try {
             return (complexOctet)AnyUtils.convertAny(any);

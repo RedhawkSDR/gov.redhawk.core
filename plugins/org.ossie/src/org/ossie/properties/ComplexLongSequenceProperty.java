@@ -40,6 +40,11 @@ public class ComplexLongSequenceProperty extends AbstractSequenceProperty<comple
         super(id, name, "long", value, mode, action, kinds);
     }
 
+    public ComplexLongSequenceProperty(String id, String name, List<complexLong> value, Mode mode,
+                                         Action action, Kind[] kinds, boolean optional) {
+        super(id, name, "long", value, mode, action, kinds, optional);
+    }
+
     public static List<complexLong> asList(complexLong... array) {
         return new ArrayList<complexLong>(Arrays.asList(array));
     }

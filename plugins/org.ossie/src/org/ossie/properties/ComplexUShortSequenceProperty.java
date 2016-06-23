@@ -40,6 +40,11 @@ public class ComplexUShortSequenceProperty extends AbstractSequenceProperty<comp
         super(id, name, "ushort", value, mode, action, kinds);
     }
 
+    public ComplexUShortSequenceProperty(String id, String name, List<complexUShort> value, Mode mode,
+                                         Action action, Kind[] kinds, boolean optional) {
+        super(id, name, "ushort", value, mode, action, kinds, optional);
+    }
+
     public static List<complexUShort> asList(complexUShort... array) {
         return new ArrayList<complexUShort>(Arrays.asList(array));
     }

@@ -153,7 +153,12 @@ public abstract class OutPortBase<E> extends BULKIO.UsesPortStatisticsProviderPO
         final List<UsesConnection> connList = new ArrayList<UsesConnection>();
         synchronized (this.updatingPortsLock) {
             for (Entry<String, E> ent : this.outConnections.entrySet()) {
-                connList.add(new UsesConnection(ent.getKey(), (org.omg.CORBA.Object)ent.getValue()));
+                org.omg.CORBA.Object my_obj = (org.omg.CORBA.Object)ent.getValue();
+                if (my_obj instanceof omnijni.ObjectImpl) {
+                    String ior = omnijni.ORB.object_to_string(my_obj);
+                    my_obj = this._orb().string_to_object(ior);
+                }
+                connList.add(new UsesConnection(ent.getKey(), my_obj));
             }
         }
         return connList.toArray(new UsesConnection[connList.size()]);

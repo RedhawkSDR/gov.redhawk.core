@@ -40,6 +40,11 @@ public class ComplexFloatSequenceProperty extends AbstractSequenceProperty<compl
         super(id, name, "float", value, mode, action, kinds);
     }
 
+    public ComplexFloatSequenceProperty(String id, String name, List<complexFloat> value, Mode mode,
+                                         Action action, Kind[] kinds, boolean optional) {
+        super(id, name, "float", value, mode, action, kinds, optional);
+    }
+
     public static List<complexFloat> asList(complexFloat... array) {
         return new ArrayList<complexFloat>(Arrays.asList(array));
     }

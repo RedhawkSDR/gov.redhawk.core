@@ -36,6 +36,11 @@ public class FloatSequenceProperty extends NumericSequenceProperty<Float> {
         super(id, name, "float", value, mode, action, kinds);
     }
 
+    public FloatSequenceProperty(String id, String name, List<Float> value, Mode mode,
+                                   Action action, Kind[] kinds, boolean optional) {
+        super(id, name, "float", value, mode, action, kinds, optional);
+    }
+
     public static List<Float> asList(Number... array) {
         return PrimitiveArrayUtils.convertToFloatList(array);
     }

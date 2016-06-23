@@ -36,6 +36,11 @@ public class UShortSequenceProperty extends NumericSequenceProperty<Short> {
         super(id, name, "ushort", value, mode, action, kinds);
     }
 
+    public UShortSequenceProperty(String id, String name, List<Short> value, Mode mode,
+                                   Action action, Kind[] kinds, boolean optional) {
+        super(id, name, "ushort", value, mode, action, kinds, optional);
+    }
+
     public static List<Short> asList(Number... array) {
         return PrimitiveArrayUtils.convertToShortList(array);
     }

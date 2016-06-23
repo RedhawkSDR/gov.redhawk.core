@@ -31,8 +31,17 @@ public class LongProperty extends NumericProperty<Integer> {
         super(id, name, "long", value, mode, action, kinds);
     }
 
+    public LongProperty(String id, String name, Integer value, Mode mode,
+                           Action action, Kind[] kinds, boolean optional) {
+        super(id, name, "long", value, mode, action, kinds, optional);
+    }
+
     protected Integer fromNumber(Number val) {
-        return val.intValue();
+        if (val != null){
+            return val.intValue();
+        }else{
+            return null;
+        }
     }
 
     protected void insert(org.omg.CORBA.Any any, Integer value) {

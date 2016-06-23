@@ -31,8 +31,17 @@ public class FloatProperty extends NumericProperty<Float> {
         super(id, name, "float", value, mode, action, kinds);
     }
 
+    public FloatProperty(String id, String name, Float value, Mode mode,
+                           Action action, Kind[] kinds, boolean optional) {
+        super(id, name, "float", value, mode, action, kinds, optional);
+    }
+
     protected Float fromNumber(Number val) {
-        return val.floatValue();
+        if (val != null){
+            return val.floatValue();
+        }else{
+            return null;
+        }
     }
 
     protected void insert(org.omg.CORBA.Any any, Float value) {

@@ -36,6 +36,11 @@ public class LongSequenceProperty extends NumericSequenceProperty<Integer> {
         super(id, name, "long", value, mode, action, kinds);
     }
 
+    public LongSequenceProperty(String id, String name, List<Integer> value, Mode mode,
+                                   Action action, Kind[] kinds, boolean optional) {
+        super(id, name, "long", value, mode, action, kinds, optional);
+    }
+
     public static List<Integer> asList(Number... array) {
         return PrimitiveArrayUtils.convertToIntList(array);
     }

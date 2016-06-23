@@ -31,8 +31,17 @@ public class UShortProperty extends NumericProperty<Short> {
         super(id, name, "ushort", value, mode, action, kinds);
     }
 
+    public UShortProperty(String id, String name, Short value, Mode mode,
+                           Action action, Kind[] kinds, boolean optional) {
+        super(id, name, "ushort", value, mode, action, kinds, optional);
+    }
+
     protected Short fromNumber(Number val) {
-        return val.shortValue();
+        if (val != null){
+            return val.shortValue();
+        }else{
+            return null;
+        }
     }
 
     protected void insert(org.omg.CORBA.Any any, Short value) {

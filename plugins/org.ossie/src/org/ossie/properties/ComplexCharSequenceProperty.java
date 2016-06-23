@@ -40,6 +40,11 @@ public class ComplexCharSequenceProperty extends AbstractSequenceProperty<comple
         super(id, name, "char", value, mode, action, kinds);
     }
 
+    public ComplexCharSequenceProperty(String id, String name, List<complexChar> value, Mode mode,
+                                         Action action, Kind[] kinds, boolean optional) {
+        super(id, name, "char", value, mode, action, kinds, optional);
+    }
+
     public static List<complexChar> asList(complexChar... array) {
         return new ArrayList<complexChar>(Arrays.asList(array));
     }

@@ -35,6 +35,10 @@ public class ComplexBooleanProperty extends AbstractSimpleProperty<complexBoolea
         super(id, name, "boolean", value, mode, action, kinds);
     }
 
+    public ComplexBooleanProperty(String id, String name, complexBoolean value, Mode mode, Action action, Kind[] kinds, boolean optional) {
+        super(id, name, "boolean", value, mode, action, kinds, optional);
+    }
+
     protected complexBoolean extract(Any any) {
         try {
             return (complexBoolean)AnyUtils.convertAny(any);

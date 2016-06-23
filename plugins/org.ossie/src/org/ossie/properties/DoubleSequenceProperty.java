@@ -36,6 +36,11 @@ public class DoubleSequenceProperty extends NumericSequenceProperty<Double> {
         super(id, name, "double", value, mode, action, kinds);
     }
 
+    public DoubleSequenceProperty(String id, String name, List<Double> value, Mode mode,
+                                   Action action, Kind[] kinds, boolean optional) {
+        super(id, name, "double", value, mode, action, kinds, optional);
+    }
+
     public static List<Double> asList(Number... array) {
         return PrimitiveArrayUtils.convertToDoubleList(array);
     }

@@ -35,6 +35,10 @@ public class ComplexCharProperty extends AbstractSimpleProperty<complexChar> {
         super(id, name, "char", value, mode, action, kinds);
     }
 
+    public ComplexCharProperty(String id, String name, complexChar value, Mode mode, Action action, Kind[] kinds, boolean optional) {
+        super(id, name, "char", value, mode, action, kinds, optional);
+    }
+
     protected complexChar extract(Any any) {
         try {
             return (complexChar)AnyUtils.convertAny(any);

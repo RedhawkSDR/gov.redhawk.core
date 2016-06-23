@@ -35,6 +35,10 @@ public class ComplexDoubleProperty extends AbstractSimpleProperty<complexDouble>
         super(id, name, "double", value, mode, action, kinds);
     }
 
+    public ComplexDoubleProperty(String id, String name, complexDouble value, Mode mode, Action action, Kind[] kinds, boolean optional) {
+        super(id, name, "double", value, mode, action, kinds, optional);
+    }
+
     protected complexDouble extract(Any any) {
         try {
             return (complexDouble)AnyUtils.convertAny(any);

@@ -36,6 +36,11 @@ public class ULongSequenceProperty extends NumericSequenceProperty<Integer> {
         super(id, name, "ulong", value, mode, action, kinds);
     }
 
+    public ULongSequenceProperty(String id, String name, List<Integer> value, Mode mode,
+                                   Action action, Kind[] kinds, boolean optional) {
+        super(id, name, "ulong", value, mode, action, kinds, optional);
+    }
+
     public static List<Integer> asList(Number... array) {
         return PrimitiveArrayUtils.convertToIntList(array);
     }

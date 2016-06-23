@@ -35,6 +35,10 @@ public class ComplexFloatProperty extends AbstractSimpleProperty<complexFloat> {
         super(id, name, "float", value, mode, action, kinds);
     }
 
+    public ComplexFloatProperty(String id, String name, complexFloat value, Mode mode, Action action, Kind[] kinds, boolean optional) {
+        super(id, name, "float", value, mode, action, kinds, optional);
+    }
+
     protected complexFloat extract(Any any) {
         try {
             return (complexFloat)AnyUtils.convertAny(any);

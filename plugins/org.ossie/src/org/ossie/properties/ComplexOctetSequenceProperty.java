@@ -40,6 +40,11 @@ public class ComplexOctetSequenceProperty extends AbstractSequenceProperty<compl
         super(id, name, "octet", value, mode, action, kinds);
     }
 
+    public ComplexOctetSequenceProperty(String id, String name, List<complexOctet> value, Mode mode,
+                                         Action action, Kind[] kinds, boolean optional) {
+        super(id, name, "octet", value, mode, action, kinds, optional);
+    }
+
     public static List<complexOctet> asList(complexOctet... array) {
         return new ArrayList<complexOctet>(Arrays.asList(array));
     }

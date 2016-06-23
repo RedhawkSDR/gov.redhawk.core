@@ -40,6 +40,11 @@ public class ComplexBooleanSequenceProperty extends AbstractSequenceProperty<com
         super(id, name, "boolean", value, mode, action, kinds);
     }
 
+    public ComplexBooleanSequenceProperty(String id, String name, List<complexBoolean> value, Mode mode,
+                                         Action action, Kind[] kinds, boolean optional) {
+        super(id, name, "boolean", value, mode, action, kinds, optional);
+    }
+
     public static List<complexBoolean> asList(complexBoolean... array) {
         return new ArrayList<complexBoolean>(Arrays.asList(array));
     }
