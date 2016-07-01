@@ -919,7 +919,7 @@
        <contentType
             id="gov.redhawk.ui.sad.contentType"
             name="Waveform Content Type"
-            priority="LOWEST">
+            priority="LOW">
          <describer
                class="gov.redhawk.sca.ui.describers.ScaWaveformDescriber"
                plugin="gov.redhawk.sca.ui">
