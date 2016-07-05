@@ -13,7 +13,7 @@
   <artifactId>gov.redhawk.core.p2</artifactId>
   <packaging>eclipse-repository</packaging>
   <parent>
-    <relativePath>../../..</relativePath>
+    <relativePath>../..</relativePath>
     <groupId>gov.redhawk.core</groupId>
     <artifactId>gov.redhawk.core.parent</artifactId>
     <version>1.8.10-SNAPSHOT</version>
