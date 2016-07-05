@@ -124,7 +124,7 @@
                 <module>tests/gov.redhawk.sca.util.tests</module>
 		<module>tests/gov.redhawk.scd.validation.tests</module>
 		<module>tests/gov.redhawk.validation.tests</module>
-		<module>releng/core/p2</module>
+		<module>releng/p2</module>
 	</modules>
 
   <repositories>
