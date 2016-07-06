@@ -475,7 +475,7 @@
                icon="icons/clcl16/connect.png"
                style="push">
             <visibleWhen
-                  checkEnabled="true">
+                  checkEnabled="false">
                <and>
                   <or>
                      <count
@@ -485,19 +485,18 @@
                            value="2">
                      </count>
                   </or>
-                  <iterate
-                        ifEmpty="false"
-                        operator="or">
+                  <iterate>
                      <or>
                         <adapt
-                              type="gov.redhawk.model.sca.ScaProvidesPort">
+                              type="gov.redhawk.model.sca.ScaUsesPort">
                         </adapt>
                         <adapt
                               type="gov.redhawk.model.sca.ScaDomainManager">
                         </adapt>
                         <adapt
-                              type="gov.redhawk.model.sca.ScaUsesPort">
-                        </adapt></or>
+                              type="gov.redhawk.model.sca.ScaProvidesPort">
+                        </adapt>
+                     </or>
                   </iterate>
                </and>
             </visibleWhen>
