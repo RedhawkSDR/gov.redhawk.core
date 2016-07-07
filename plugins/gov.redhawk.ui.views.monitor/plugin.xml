@@ -69,7 +69,7 @@
       </menuContribution>
       <menuContribution
             allPopups="true"
-            locationURI="popup:org.eclipse.ui.popup.any?after=org.eclipse.ui.file.refresh">
+            locationURI="popup:org.eclipse.ui.popup.any?after=additions">
          <command
                commandId="gov.redhawk.ui.views.monitor.command"
                style="push">
