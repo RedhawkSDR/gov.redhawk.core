@@ -29,7 +29,7 @@ import mil.jpeojtrs.sca.util.CorbaUtils;
 
 /**
  * Performs a deallocation against a device.
- * @since 20.1
+ * @since 20.2
  */
 public class DeallocateJob extends Job {
 
