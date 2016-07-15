@@ -53,10 +53,7 @@ public class TunerAllocationWizard extends Wizard {
 	}
 
 	public TunerAllocationWizard(TunerStatus tuner, boolean listener, String targetId) {
-		this.tuners = new TunerStatus[] { tuner };
-		this.listener = listener;
-		this.targetId = targetId;
-		this.setNeedsProgressMonitor(true);
+		this(tuner, listener, targetId, null);
 	}
 
 	public TunerAllocationWizard(TunerStatus tuner, ScaDevice<?> device) {
@@ -69,6 +66,11 @@ public class TunerAllocationWizard extends Wizard {
 		this.targetId = targetId;
 		this.setNeedsProgressMonitor(true);
 		this.feiDevice = device;
+		if (listener) {
+			setWindowTitle("Allocate Listener");
+		} else {
+			setWindowTitle("Allocate Tuner");
+		}
 	}
 
 	@Override
