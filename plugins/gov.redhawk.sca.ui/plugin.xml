@@ -427,12 +427,6 @@
       </category>
       <command
             categoryId="gov.redhawk.ui.commands.category.sca"
-            defaultHandler="gov.redhawk.sca.internal.ui.handlers.InstallApplication"
-            id="gov.redhawk.ui.command.waveform.install"
-            name="%command.name">
-      </command>
-      <command
-            categoryId="gov.redhawk.ui.commands.category.sca"
             defaultHandler="gov.redhawk.sca.internal.ui.handlers.StartResouceOpHandler"
             id="gov.redhawk.ui.command.resource.start"
             name="%command.name.0">
@@ -550,20 +544,6 @@
       <menuContribution
             allPopups="false"
             locationURI="popup:org.eclipse.ui.popup.any?after=group.new">
-         <command
-               commandId="gov.redhawk.ui.command.waveform.install"
-               icon="icons/clcl16/install.gif"
-               style="push">
-            <visibleWhen
-                  checkEnabled="false">
-               <iterate
-                     ifEmpty="false">
-                  <instanceof
-                        value="gov.redhawk.model.sca.provider.ScaWaveformFactoriesContainerItemProvider">
-                  </instanceof>
-               </iterate>
-            </visibleWhen>
-         </command>
          <command
                commandId="gov.redhawk.ui.command.waveform.launch"
                icon="icons/clcl16/new_waveform.gif"
@@ -730,19 +710,6 @@
                <adapt
                      type="CF.DeviceManagerOperations">
                </adapt>
-            </iterate>
-         </activeWhen>
-      </handler>
-      <handler
-            class="gov.redhawk.sca.internal.ui.handlers.UninstallApplication"
-            commandId="org.eclipse.ui.edit.delete">
-         <activeWhen>
-            <iterate
-                  ifEmpty="false"
-                  operator="or">
-               <instanceof
-                     value="gov.redhawk.model.sca.ScaWaveformFactory">
-               </instanceof>
             </iterate>
          </activeWhen>
       </handler>
