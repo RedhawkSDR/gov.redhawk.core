@@ -80,7 +80,7 @@ import CF.PropertySetPackage.PartialConfiguration;
  *
  * @generated
  */
-public class ScaStructPropertyImpl extends ScaAbstractPropertyImpl<Struct>implements ScaStructProperty {
+public class ScaStructPropertyImpl extends ScaAbstractPropertyImpl<Struct> implements ScaStructProperty {
 	/**
 	 * The cached value of the '{@link #getFields() <em>Fields</em>}' containment reference list.
 	 * <!-- begin-user-doc -->

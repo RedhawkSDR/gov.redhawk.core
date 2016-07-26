@@ -49,7 +49,7 @@ import org.omg.CORBA.Any;
  *
  * @generated
  */
-public class ScaSimpleSequencePropertyImpl extends ScaAbstractPropertyImpl<SimpleSequence>implements ScaSimpleSequenceProperty {
+public class ScaSimpleSequencePropertyImpl extends ScaAbstractPropertyImpl<SimpleSequence> implements ScaSimpleSequenceProperty {
 	/**
 	 * The cached value of the '{@link #getValues() <em>Values</em>}' attribute list.
 	 * <!-- begin-user-doc -->

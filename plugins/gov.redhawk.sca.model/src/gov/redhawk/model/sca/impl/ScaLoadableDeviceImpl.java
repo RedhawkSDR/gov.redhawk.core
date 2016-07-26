@@ -35,7 +35,7 @@ import CF.LoadableDevicePackage.LoadType;
  *
  * @generated
  */
-public class ScaLoadableDeviceImpl< L extends LoadableDevice > extends ScaDeviceImpl<L>implements ScaLoadableDevice<L> {
+public class ScaLoadableDeviceImpl< L extends LoadableDevice > extends ScaDeviceImpl<L> implements ScaLoadableDevice<L> {
 
 	/**
 	 * <!-- begin-user-doc -->

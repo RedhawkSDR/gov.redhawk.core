@@ -75,7 +75,7 @@ import CF.PropertySetPackage.PartialConfiguration;
  *
  * @generated
  */
-public class ScaStructSequencePropertyImpl extends ScaAbstractPropertyImpl<StructSequence>implements ScaStructSequenceProperty {
+public class ScaStructSequencePropertyImpl extends ScaAbstractPropertyImpl<StructSequence> implements ScaStructSequenceProperty {
 	/**
 	 * The cached value of the '{@link #getStructs() <em>Structs</em>}' containment reference list.
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->

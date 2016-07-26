@@ -28,7 +28,7 @@ import org.eclipse.emf.ecore.EClass;
  *
  * @generated
  */
-public class ScaProvidesPortImpl extends ScaPortImpl<Provides, org.omg.CORBA.Object>implements ScaProvidesPort {
+public class ScaProvidesPortImpl extends ScaPortImpl<Provides, org.omg.CORBA.Object> implements ScaProvidesPort {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->

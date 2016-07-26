@@ -46,7 +46,7 @@ import CF.FileSystemHelper;
  *
  * @generated
  */
-public class ScaDeviceManagerFileSystemImpl extends ScaFileSystemImpl<FileSystem>implements ScaDeviceManagerFileSystem {
+public class ScaDeviceManagerFileSystemImpl extends ScaFileSystemImpl<FileSystem> implements ScaDeviceManagerFileSystem {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->

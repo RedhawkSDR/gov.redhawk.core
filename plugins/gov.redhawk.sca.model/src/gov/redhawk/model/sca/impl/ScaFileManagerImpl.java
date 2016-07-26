@@ -40,7 +40,7 @@ import CF.FileSystemPackage.UnknownFileSystemProperties;
  *
  * @generated
  */
-public abstract class ScaFileManagerImpl extends ScaFileSystemImpl<FileManager>implements ScaFileManager {
+public abstract class ScaFileManagerImpl extends ScaFileSystemImpl<FileManager> implements ScaFileManager {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->

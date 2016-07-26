@@ -100,7 +100,7 @@ import CF.PropertySetPackage.PartialConfiguration;
  *
  * @generated
  */
-public class ScaServiceImpl extends ScaPropertyContainerImpl<org.omg.CORBA.Object, SoftPkg>implements ScaService {
+public class ScaServiceImpl extends ScaPropertyContainerImpl<org.omg.CORBA.Object, SoftPkg> implements ScaService {
 	/**
 	 * The cached value of the '{@link #getPorts() <em>Ports</em>}' containment reference list.
 	 * <!-- begin-user-doc -->

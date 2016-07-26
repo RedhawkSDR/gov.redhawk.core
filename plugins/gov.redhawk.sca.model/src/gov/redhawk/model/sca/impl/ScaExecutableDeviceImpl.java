@@ -38,7 +38,7 @@ import CF.ExecutableDevicePackage.InvalidProcess;
  *
  * @generated
  */
-public class ScaExecutableDeviceImpl extends ScaLoadableDeviceImpl<ExecutableDevice>implements ScaExecutableDevice {
+public class ScaExecutableDeviceImpl extends ScaLoadableDeviceImpl<ExecutableDevice> implements ScaExecutableDevice {
 
 	/**
 	 * <!-- begin-user-doc -->

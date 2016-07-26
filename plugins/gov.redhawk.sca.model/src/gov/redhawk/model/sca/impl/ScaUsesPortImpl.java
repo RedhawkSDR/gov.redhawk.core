@@ -67,7 +67,7 @@ import ExtendedCF.UsesConnection;
  *
  * @generated
  */
-public class ScaUsesPortImpl extends ScaPortImpl<Uses, Port>implements ScaUsesPort {
+public class ScaUsesPortImpl extends ScaPortImpl<Uses, Port> implements ScaUsesPort {
 	/**
 	 * The cached value of the '{@link #getConnections() <em>Connections</em>}' containment reference list.
 	 * <!-- begin-user-doc -->

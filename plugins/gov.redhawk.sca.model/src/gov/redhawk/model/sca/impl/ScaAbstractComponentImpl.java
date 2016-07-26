@@ -106,7 +106,7 @@ import CF.TestableObjectPackage.UnknownTest;
  *
  * @generated
  */
-public abstract class ScaAbstractComponentImpl< R extends Resource > extends ScaPropertyContainerImpl<R, SoftPkg>implements ScaAbstractComponent<R> {
+public abstract class ScaAbstractComponentImpl< R extends Resource > extends ScaPropertyContainerImpl<R, SoftPkg> implements ScaAbstractComponent<R> {
 
 	/**
 	 * The cached value of the '{@link #getPorts() <em>Ports</em>}' containment reference list.

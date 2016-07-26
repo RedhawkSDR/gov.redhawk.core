@@ -76,7 +76,7 @@ import mil.jpeojtrs.sca.sad.SoftwareAssembly;
  *
  * @generated
  */
-public class ScaWaveformFactoryImpl extends CorbaObjWrapperImpl<ApplicationFactory>implements ScaWaveformFactory {
+public class ScaWaveformFactoryImpl extends CorbaObjWrapperImpl<ApplicationFactory> implements ScaWaveformFactory {
 	/**
 	 * The default value of the '{@link #getProfileURI() <em>Profile URI</em>}' attribute.
 	 * <!-- begin-user-doc -->

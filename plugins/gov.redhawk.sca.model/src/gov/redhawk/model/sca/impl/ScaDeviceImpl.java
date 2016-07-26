@@ -81,7 +81,7 @@ import CF.DevicePackage.UsageType;
  *
  * @generated
  */
-public class ScaDeviceImpl< D extends Device > extends ScaAbstractComponentImpl<D>implements ScaDevice<D> {
+public class ScaDeviceImpl< D extends Device > extends ScaAbstractComponentImpl<D> implements ScaDevice<D> {
 
 	/**
 	 * The cached value of the '{@link #getChildDevices() <em>Child Devices</em>}' reference list.

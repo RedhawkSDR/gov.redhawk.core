@@ -79,7 +79,7 @@ import CF.ResourceHelper;
  *
  * @generated
  */
-public class ScaComponentImpl extends ScaAbstractComponentImpl<Resource>implements ScaComponent {
+public class ScaComponentImpl extends ScaAbstractComponentImpl<Resource> implements ScaComponent {
 
 	/**
 	 * The cached value of the '{@link #getComponentInstantiation() <em>Component Instantiation</em>}' reference.

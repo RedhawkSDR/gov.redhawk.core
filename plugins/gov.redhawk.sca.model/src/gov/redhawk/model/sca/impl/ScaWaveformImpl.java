@@ -40,7 +40,6 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.util.EObjectContainmentWithInverseEList;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.emf.ecore.util.FeatureMap;
-import org.eclipse.emf.ecore.util.FeatureMap.Entry;
 import org.eclipse.emf.ecore.util.FeatureMap.ValueListIterator;
 import org.eclipse.emf.ecore.util.InternalEList;
 import org.eclipse.emf.transaction.RunnableWithResult;
@@ -136,7 +135,7 @@ import mil.jpeojtrs.sca.util.ScaEcoreUtils;
  *
  * @generated
  */
-public class ScaWaveformImpl extends ScaPropertyContainerImpl<Application, SoftwareAssembly>implements ScaWaveform {
+public class ScaWaveformImpl extends ScaPropertyContainerImpl<Application, SoftwareAssembly> implements ScaWaveform {
 	/**
 	 * The cached value of the '{@link #getPorts() <em>Ports</em>}' containment reference list.
 	 * <!-- begin-user-doc -->
@@ -789,7 +788,7 @@ public class ScaWaveformImpl extends ScaPropertyContainerImpl<Application, Softw
 	 * 
 	 * @deprecated Use {@link #fetchComponents(IProgressMonitor, RefreshDepth)}
 	 * @since 14.0
-	 * <!-- end-user-doc -->
+	 *        <!-- end-user-doc -->
 	 * @throws InterruptedException
 	 * @generated NOT
 	 */
@@ -998,7 +997,7 @@ public class ScaWaveformImpl extends ScaPropertyContainerImpl<Application, Softw
 	 * <!-- begin-user-doc -->
 	 * 
 	 * @since 14.0
-	 * <!-- end-user-doc -->
+	 *        <!-- end-user-doc -->
 	 * @throws InterruptedException
 	 * @generated NOT
 	 */

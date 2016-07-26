@@ -654,8 +654,9 @@ public abstract class ScaPropertyContainerImpl< P extends org.omg.CORBA.Object, 
 
 	/**
 	 * <!-- begin-user-doc -->
+	 * 
 	 * @since 20.0
-	 * <!-- end-user-doc -->
+	 *        <!-- end-user-doc -->
 	 * 
 	 * @generated NOT
 	 */

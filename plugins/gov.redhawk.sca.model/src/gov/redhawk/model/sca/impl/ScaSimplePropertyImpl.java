@@ -44,7 +44,7 @@ import org.omg.CORBA.Any;
  *
  * @generated
  */
-public class ScaSimplePropertyImpl extends ScaAbstractPropertyImpl<Simple>implements ScaSimpleProperty {
+public class ScaSimplePropertyImpl extends ScaAbstractPropertyImpl<Simple> implements ScaSimpleProperty {
 	/**
 	 * The default value of the '{@link #getValue() <em>Value</em>}' attribute.
 	 * <!-- begin-user-doc -->

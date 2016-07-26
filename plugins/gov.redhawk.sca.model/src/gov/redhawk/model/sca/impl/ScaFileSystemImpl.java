@@ -71,7 +71,7 @@ import CF.FileSystemPackage.UnknownFileSystemProperties;
  *
  * @generated
  */
-public abstract class ScaFileSystemImpl< F extends FileSystem > extends CorbaObjWrapperImpl<F>implements ScaFileSystem<F> {
+public abstract class ScaFileSystemImpl< F extends FileSystem > extends CorbaObjWrapperImpl<F> implements ScaFileSystem<F> {
 	/**
 	 * The default value of the '{@link #getFileStore() <em>File Store</em>}' attribute.
 	 * <!-- begin-user-doc -->

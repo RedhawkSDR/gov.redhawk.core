@@ -46,7 +46,7 @@ import org.omg.CORBA.SystemException;
  *
  * @generated
  */
-public abstract class ScaPortImpl< P extends AbstractPort, P2 extends org.omg.CORBA.Object > extends CorbaObjWrapperImpl<P2>implements ScaPort<P, P2> {
+public abstract class ScaPortImpl< P extends AbstractPort, P2 extends org.omg.CORBA.Object > extends CorbaObjWrapperImpl<P2> implements ScaPort<P, P2> {
 	/**
 	 * The default value of the '{@link #getName() <em>Name</em>}' attribute.
 	 * <!-- begin-user-doc -->

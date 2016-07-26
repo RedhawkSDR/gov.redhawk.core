@@ -36,7 +36,7 @@ import org.omg.CosEventChannelAdmin.EventChannelHelper;
  *
  * @generated
  */
-public class ScaEventChannelImpl extends CorbaObjWrapperImpl<EventChannel>implements ScaEventChannel {
+public class ScaEventChannelImpl extends CorbaObjWrapperImpl<EventChannel> implements ScaEventChannel {
 	/**
 	 * The default value of the '{@link #getName() <em>Name</em>}' attribute.
 	 * <!-- begin-user-doc -->
