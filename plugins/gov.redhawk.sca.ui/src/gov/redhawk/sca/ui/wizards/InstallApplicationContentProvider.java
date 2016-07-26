@@ -11,22 +11,10 @@
  */
 package gov.redhawk.sca.ui.wizards;
 
-import gov.redhawk.model.sca.DomainConnectionException;
-import gov.redhawk.model.sca.RefreshDepth;
-import gov.redhawk.model.sca.ScaDomainManager;
-import gov.redhawk.model.sca.ScaDomainManagerFileSystem;
-import gov.redhawk.sca.ScaPlugin;
-import gov.redhawk.sca.preferences.ScaPreferenceConstants;
-import gov.redhawk.sca.ui.ScaUiPlugin;
-
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-
-import mil.jpeojtrs.sca.sad.SadPackage;
-import mil.jpeojtrs.sca.sad.SoftwareAssembly;
-import mil.jpeojtrs.sca.util.ScaResourceFactoryUtil;
 
 import org.eclipse.core.filesystem.EFS;
 import org.eclipse.core.filesystem.IFileInfo;
@@ -46,6 +34,19 @@ import org.eclipse.jface.viewers.ITreeContentProvider;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.progress.UIJob;
+
+import gov.redhawk.model.sca.DomainConnectionException;
+import gov.redhawk.model.sca.RefreshDepth;
+import gov.redhawk.model.sca.ScaDomainManager;
+import gov.redhawk.model.sca.ScaDomainManagerFileSystem;
+import gov.redhawk.model.sca.ScaFactory;
+import gov.redhawk.model.sca.WaveformsContainer;
+import gov.redhawk.sca.ScaPlugin;
+import gov.redhawk.sca.preferences.ScaPreferenceConstants;
+import gov.redhawk.sca.ui.ScaUiPlugin;
+import mil.jpeojtrs.sca.sad.SadPackage;
+import mil.jpeojtrs.sca.sad.SoftwareAssembly;
+import mil.jpeojtrs.sca.util.ScaResourceFactoryUtil;
 
 /**
  * @since 9.0
@@ -162,10 +163,82 @@ public class InstallApplicationContentProvider implements ITreeContentProvider {
 				this.fetchChildrenJob.schedule();
 				return new Object[] { this.fetchChildrenJob };
 			} else {
-				return this.children.toArray();
+				return createNamespaceStructure(this.children);
 			}
+		} else if (parentElement instanceof WaveformsContainer) {
+			WaveformsContainer container = (WaveformsContainer) parentElement;
+			List<Object> containerChildren = new ArrayList<Object>();
+			containerChildren.addAll(container.getSubContainers());
+			containerChildren.addAll(container.getWaveforms());
+			return containerChildren.toArray();
 		}
 		return Collections.EMPTY_LIST.toArray();
+	}
+
+	private Object[] createNamespaceStructure(List<SoftwareAssembly> sadList) {
+		List<Object> retList = new ArrayList<Object>();
+		List<WaveformsContainer> waveformContainers = new ArrayList<WaveformsContainer>();
+		for (SoftwareAssembly sad : sadList) {
+			String name = sad.getName();
+			if (name != null && name.contains(".")) {
+				createSubContainers(sad, waveformContainers);
+			} else {
+				retList.add(sad);
+			}
+		}
+		retList.addAll(waveformContainers);
+		return retList.toArray();
+	}
+
+	private void createSubContainers(SoftwareAssembly sad, List<WaveformsContainer> topLevelContainers) {
+		// Namespaces are all segments of the name except the last (the 'basename')
+		String[] names = sad.getName().split("\\.");
+		int numContainers = names.length - 1;
+		List<WaveformsContainer> containerList = new ArrayList<WaveformsContainer>();
+
+		// Create containers for each namespace
+		for (int i = 0; i < numContainers; i++) {
+			WaveformsContainer container = null;
+
+			if (i == 0) {
+				// Top-level namespace -- check if a container already exists
+				for (WaveformsContainer topLevelContainer : topLevelContainers) {
+					if (names[i].equals(topLevelContainer.getContainerName())) {
+						container = topLevelContainer;
+						break;
+					}
+				}
+
+				// Create a new container if we couldn't find an existing one
+				if (container == null) {
+					container = ScaFactory.eINSTANCE.createWaveformsContainer();
+					container.setContainerName(names[i]);
+					topLevelContainers.add(container);
+				}
+			} else {
+				// Namespace OTHER than top-level -- check if its parent already has a container for the namespace
+				WaveformsContainer parent = containerList.get(i - 1);
+				for (WaveformsContainer child : parent.getSubContainers()) {
+					if (names[i].equals(child.getContainerName())) {
+						container = child;
+						break;
+					}
+				}
+
+				// Create a new container if we couldn't find an existing one
+				if (container == null) {
+					container = ScaFactory.eINSTANCE.createWaveformsContainer();
+					container.setContainerName(names[i]);
+					parent.getSubContainers().add(container);
+				}
+			}
+
+			// Keep track of the containers for this waveform
+			containerList.add(container);
+		}
+
+		// Add the waveform to the final container
+		containerList.get(numContainers - 1).getWaveforms().add(sad);
 	}
 
 	@Override
@@ -176,6 +249,8 @@ public class InstallApplicationContentProvider implements ITreeContentProvider {
 	@Override
 	public boolean hasChildren(final Object element) {
 		if (element instanceof ScaDomainManager) {
+			return true;
+		} else if (element instanceof WaveformsContainer) {
 			return true;
 		}
 		return false;

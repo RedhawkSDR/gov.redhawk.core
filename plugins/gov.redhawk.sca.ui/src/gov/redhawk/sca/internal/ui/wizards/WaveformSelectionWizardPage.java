@@ -11,22 +11,13 @@
  */
 package gov.redhawk.sca.internal.ui.wizards;
 
-import gov.redhawk.model.sca.ScaDomainManager;
-import gov.redhawk.sca.ui.ScaUiPlugin;
-import gov.redhawk.sca.ui.parts.FormFilteredTree;
-import gov.redhawk.sca.ui.wizards.InstallApplicationContentProvider;
-import gov.redhawk.sca.ui.wizards.WizardSadItemProviderAdapterFactory;
-
 import java.text.SimpleDateFormat;
 import java.util.Comparator;
 import java.util.Date;
 
-import mil.jpeojtrs.sca.sad.SoftwareAssembly;
-
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.jobs.IJobChangeEvent;
 import org.eclipse.core.runtime.jobs.JobChangeAdapter;
-import org.eclipse.emf.edit.ui.provider.AdapterFactoryLabelProvider;
 import org.eclipse.jface.dialogs.IDialogSettings;
 import org.eclipse.jface.dialogs.IMessageProvider;
 import org.eclipse.jface.layout.GridDataFactory;
@@ -53,6 +44,14 @@ import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.dialogs.PatternFilter;
 import org.eclipse.ui.forms.widgets.ExpandableComposite;
 import org.eclipse.ui.forms.widgets.Section;
+
+import gov.redhawk.model.sca.ScaDomainManager;
+import gov.redhawk.model.sca.WaveformsContainer;
+import gov.redhawk.sca.ui.ScaUiPlugin;
+import gov.redhawk.sca.ui.parts.FormFilteredTree;
+import gov.redhawk.sca.ui.wizards.InstallApplicationContentProvider;
+import gov.redhawk.sca.ui.wizards.InstallApplicationLabelProvider;
+import mil.jpeojtrs.sca.sad.SoftwareAssembly;
 
 public class WaveformSelectionWizardPage extends WizardPage {
 
@@ -154,7 +153,7 @@ public class WaveformSelectionWizardPage extends WizardPage {
 			}
 		});
 		this.waveformSelectionList.getViewer().setContentProvider(this.contentProvider);
-		this.waveformSelectionList.getViewer().setLabelProvider(new AdapterFactoryLabelProvider(new WizardSadItemProviderAdapterFactory()));
+		this.waveformSelectionList.getViewer().setLabelProvider(new InstallApplicationLabelProvider());
 		this.waveformSelectionList.getViewer().addDoubleClickListener(new IDoubleClickListener() {
 
 			@Override
@@ -261,6 +260,8 @@ public class WaveformSelectionWizardPage extends WizardPage {
 						waveformNameTextBox.setText(initialValue);
 						WaveformSelectionWizardPage.this.defaultNameChanged = false;
 					}
+				} else if (selected instanceof WaveformsContainer) {
+					return;
 				}
 				updateFinished();
 			}

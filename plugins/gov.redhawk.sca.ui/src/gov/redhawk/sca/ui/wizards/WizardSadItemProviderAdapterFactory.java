@@ -32,7 +32,8 @@ public class WizardSadItemProviderAdapterFactory extends SadItemProviderAdapterF
 
 		@Override
 		public String getText(final Object object) {
-			return ((SoftwareAssembly) object).getName();
+			String name = ((SoftwareAssembly) object).getName();
+			return name.substring(name.lastIndexOf('.') + 1);
 		}
 	}
 

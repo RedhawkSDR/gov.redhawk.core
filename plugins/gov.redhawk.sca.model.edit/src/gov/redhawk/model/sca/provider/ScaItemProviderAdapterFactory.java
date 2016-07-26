@@ -591,6 +591,30 @@ public class ScaItemProviderAdapterFactory extends ScaAdapterFactory implements 
 	}
 
 	/**
+	 * This keeps track of the one adapter used for all {@link gov.redhawk.model.sca.WaveformsContainer} instances.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @since 12.4
+	 */
+	protected WaveformsContainerItemProvider waveformsContainerItemProvider;
+
+	/**
+	 * This creates an adapter for a {@link gov.redhawk.model.sca.WaveformsContainer}.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public Adapter createWaveformsContainerAdapter() {
+		if (waveformsContainerItemProvider == null) {
+			waveformsContainerItemProvider = new WaveformsContainerItemProvider(this);
+		}
+
+		return waveformsContainerItemProvider;
+	}
+
+	/**
 	 * This returns the root adapter factory that contains this factory.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->

@@ -34,6 +34,7 @@ import org.eclipse.emf.ecore.EObject;
  * @see gov.redhawk.model.sca.ScaPackage#getWaveformsContainer()
  * @model
  * @generated
+ * @since 20.2
  */
 public interface WaveformsContainer extends EObject {
 	/**
