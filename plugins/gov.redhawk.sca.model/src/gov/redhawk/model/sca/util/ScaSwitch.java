@@ -868,6 +868,13 @@ public class ScaSwitch< T1 > extends Switch<T1> {
 				result = defaultCase(theEObject);
 			return result;
 		}
+		case ScaPackage.WAVEFORMS_CONTAINER: {
+			WaveformsContainer waveformsContainer = (WaveformsContainer) theEObject;
+			T1 result = caseWaveformsContainer(waveformsContainer);
+			if (result == null)
+				result = defaultCase(theEObject);
+			return result;
+		}
 		default:
 			return defaultCase(theEObject);
 		}
@@ -1501,6 +1508,22 @@ public class ScaSwitch< T1 > extends Switch<T1> {
 	}
 
 	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Waveforms Container</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * 
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Waveforms Container</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T1 caseWaveformsContainer(WaveformsContainer object) {
+		return null;
+	}
+
+	/**
 	 * Returns the result of interpreting the object as an instance of '<em>Property Set Operations</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
@@ -1618,9 +1641,9 @@ public class ScaSwitch< T1 > extends Switch<T1> {
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
 	 * returning a non-null result will terminate the switch.
-	 * @since 20.1
-	 * <!-- end-user-doc -->
 	 * 
+	 * @since 20.1
+	 *        <!-- end-user-doc -->
 	 * @param object the target of the switch.
 	 * @return the result of interpreting the object as an instance of '<em>Port Set Operations</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)

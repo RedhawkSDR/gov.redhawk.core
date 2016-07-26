@@ -336,6 +336,11 @@ public class ScaAdapterFactory extends AdapterFactoryImpl {
 		}
 
 		@Override
+		public Adapter caseWaveformsContainer(WaveformsContainer object) {
+			return createWaveformsContainerAdapter();
+		}
+
+		@Override
 		public Adapter casePropertySetOperations(PropertySetOperations object) {
 			return createPropertySetOperationsAdapter();
 		}
@@ -1062,6 +1067,22 @@ public class ScaAdapterFactory extends AdapterFactoryImpl {
 	}
 
 	/**
+	 * Creates a new adapter for an object of class '{@link gov.redhawk.model.sca.WaveformsContainer
+	 * <em>Waveforms Container</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * 
+	 * @return the new adapter.
+	 * @see gov.redhawk.model.sca.WaveformsContainer
+	 * @generated
+	 */
+	public Adapter createWaveformsContainerAdapter() {
+		return null;
+	}
+
+	/**
 	 * Creates a new adapter for an object of class '{@link CF.PropertySetOperations <em>Property Set Operations</em>}'.
 	 * <!-- begin-user-doc -->
 	 * This default implementation returns null so that we can easily ignore cases;
@@ -1175,9 +1196,9 @@ public class ScaAdapterFactory extends AdapterFactoryImpl {
 	 * <!-- begin-user-doc -->
 	 * This default implementation returns null so that we can easily ignore cases;
 	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
-	 * @since 20.1
-	 * <!-- end-user-doc -->
 	 * 
+	 * @since 20.1
+	 *        <!-- end-user-doc -->
 	 * @return the new adapter.
 	 * @see CF.PortSetOperations
 	 * @generated

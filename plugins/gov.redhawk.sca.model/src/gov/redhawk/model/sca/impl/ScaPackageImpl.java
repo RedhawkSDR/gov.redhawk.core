@@ -53,6 +53,7 @@ import gov.redhawk.model.sca.ScaStructSequenceProperty;
 import gov.redhawk.model.sca.ScaUsesPort;
 import gov.redhawk.model.sca.ScaWaveform;
 import gov.redhawk.model.sca.ScaWaveformFactory;
+import gov.redhawk.model.sca.WaveformsContainer;
 import gov.redhawk.model.sca.services.IScaDataProvider;
 import gov.redhawk.model.sca.services.IScaDataProviderService;
 import gov.redhawk.model.sca.util.ScaValidator;
@@ -373,6 +374,13 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 	 * @generated
 	 */
 	private EClass stringToObjectMapEClass = null;
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	private EClass waveformsContainerEClass = null;
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -2167,6 +2175,46 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 	 * 
 	 * @generated
 	 */
+	public EClass getWaveformsContainer() {
+		return waveformsContainerEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	public EReference getWaveformsContainer_SubContainers() {
+		return (EReference) waveformsContainerEClass.getEStructuralFeatures().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	public EReference getWaveformsContainer_Waveforms() {
+		return (EReference) waveformsContainerEClass.getEStructuralFeatures().get(1);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
+	public EAttribute getWaveformsContainer_ContainerName() {
+		return (EAttribute) waveformsContainerEClass.getEStructuralFeatures().get(2);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 */
 	@Override
 	public EEnum getDomainConnectionState() {
 		return domainConnectionStateEEnum;
@@ -2584,6 +2632,11 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 		stringToObjectMapEClass = createEClass(STRING_TO_OBJECT_MAP);
 		createEAttribute(stringToObjectMapEClass, STRING_TO_OBJECT_MAP__KEY);
 		createEReference(stringToObjectMapEClass, STRING_TO_OBJECT_MAP__VALUE);
+
+		waveformsContainerEClass = createEClass(WAVEFORMS_CONTAINER);
+		createEReference(waveformsContainerEClass, WAVEFORMS_CONTAINER__SUB_CONTAINERS);
+		createEReference(waveformsContainerEClass, WAVEFORMS_CONTAINER__WAVEFORMS);
+		createEAttribute(waveformsContainerEClass, WAVEFORMS_CONTAINER__CONTAINER_NAME);
 
 		// Create enums
 		domainConnectionStateEEnum = createEEnum(DOMAIN_CONNECTION_STATE);
@@ -3514,6 +3567,14 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 			!IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getStringToObjectMap_Value(), theEcorePackage.getEObject(), null, "value", null, 0, 1, Map.Entry.class, !IS_TRANSIENT, !IS_VOLATILE,
 			IS_CHANGEABLE, IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+		initEClass(waveformsContainerEClass, WaveformsContainer.class, "WaveformsContainer", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEReference(getWaveformsContainer_SubContainers(), this.getWaveformsContainer(), null, "subContainers", null, 0, -1, WaveformsContainer.class,
+			!IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getWaveformsContainer_Waveforms(), theSadPackage.getSoftwareAssembly(), null, "waveforms", null, 0, -1, WaveformsContainer.class,
+			!IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getWaveformsContainer_ContainerName(), theXMLTypePackage.getString(), "containerName", null, 0, 1, WaveformsContainer.class,
+			!IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		// Initialize enums and add enum literals
 		initEEnum(domainConnectionStateEEnum, DomainConnectionState.class, "DomainConnectionState");

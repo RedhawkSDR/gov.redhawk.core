@@ -270,6 +270,16 @@ public interface ScaFactory extends EFactory {
 	ScaEventChannel createScaEventChannel();
 
 	/**
+	 * Returns a new object of class '<em>Waveforms Container</em>'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * 
+	 * @return a new object of class '<em>Waveforms Container</em>'.
+	 * @generated
+	 */
+	WaveformsContainer createWaveformsContainer();
+
+	/**
 	 * Returns the package supported by this factory.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->

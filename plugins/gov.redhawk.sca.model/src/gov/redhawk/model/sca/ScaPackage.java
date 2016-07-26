@@ -4608,6 +4608,53 @@ public interface ScaPackage extends EPackage {
 	 */
 	int STRING_TO_OBJECT_MAP_FEATURE_COUNT = 2;
 	/**
+	 * The meta object id for the '{@link gov.redhawk.model.sca.impl.WaveformsContainerImpl <em>Waveforms Container</em>
+	 * }' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * 
+	 * @see gov.redhawk.model.sca.impl.WaveformsContainerImpl
+	 * @see gov.redhawk.model.sca.impl.ScaPackageImpl#getWaveformsContainer()
+	 * @generated
+	 */
+	int WAVEFORMS_CONTAINER = 39;
+	/**
+	 * The feature id for the '<em><b>Sub Containers</b></em>' reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 * @ordered
+	 */
+	int WAVEFORMS_CONTAINER__SUB_CONTAINERS = 0;
+	/**
+	 * The feature id for the '<em><b>Waveforms</b></em>' reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 * @ordered
+	 */
+	int WAVEFORMS_CONTAINER__WAVEFORMS = 1;
+	/**
+	 * The feature id for the '<em><b>Container Name</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 * @ordered
+	 */
+	int WAVEFORMS_CONTAINER__CONTAINER_NAME = 2;
+	/**
+	 * The number of structural features of the '<em>Waveforms Container</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * 
+	 * @generated
+	 * @ordered
+	 */
+	int WAVEFORMS_CONTAINER_FEATURE_COUNT = 3;
+	/**
 	 * The meta object id for the '{@link gov.redhawk.model.sca.DomainConnectionState <em>Domain Connection State</em>}'
 	 * enum.
 	 * <!-- begin-user-doc -->
@@ -4617,7 +4664,7 @@ public interface ScaPackage extends EPackage {
 	 * @see gov.redhawk.model.sca.impl.ScaPackageImpl#getDomainConnectionState()
 	 * @generated
 	 */
-	int DOMAIN_CONNECTION_STATE = 39;
+	int DOMAIN_CONNECTION_STATE = 40;
 	/**
 	 * The meta object id for the '{@link gov.redhawk.model.sca.RefreshDepth <em>Refresh Depth</em>}' enum.
 	 * <!-- begin-user-doc -->
@@ -4627,7 +4674,7 @@ public interface ScaPackage extends EPackage {
 	 * @see gov.redhawk.model.sca.impl.ScaPackageImpl#getRefreshDepth()
 	 * @generated
 	 */
-	int REFRESH_DEPTH = 40;
+	int REFRESH_DEPTH = 41;
 	/**
 	 * The meta object id for the '<em>Admin Type</em>' data type.
 	 * <!-- begin-user-doc -->
@@ -4637,7 +4684,7 @@ public interface ScaPackage extends EPackage {
 	 * @see gov.redhawk.model.sca.impl.ScaPackageImpl#getAdminType()
 	 * @generated
 	 */
-	int ADMIN_TYPE = 41;
+	int ADMIN_TYPE = 42;
 	/**
 	 * The meta object id for the '<em>Domain Connection Exception</em>' data type.
 	 * <!-- begin-user-doc -->
@@ -4647,7 +4694,7 @@ public interface ScaPackage extends EPackage {
 	 * @see gov.redhawk.model.sca.impl.ScaPackageImpl#getDomainConnectionException()
 	 * @generated
 	 */
-	int DOMAIN_CONNECTION_EXCEPTION = 42;
+	int DOMAIN_CONNECTION_EXCEPTION = 43;
 	/**
 	 * The meta object id for the '<em>Domain Connection State Object</em>' data type.
 	 * <!-- begin-user-doc -->
@@ -4657,7 +4704,7 @@ public interface ScaPackage extends EPackage {
 	 * @see gov.redhawk.model.sca.impl.ScaPackageImpl#getDomainConnectionStateObject()
 	 * @generated
 	 */
-	int DOMAIN_CONNECTION_STATE_OBJECT = 43;
+	int DOMAIN_CONNECTION_STATE_OBJECT = 44;
 	/**
 	 * The meta object id for the '<em>IFile Store</em>' data type.
 	 * <!-- begin-user-doc -->
@@ -4667,7 +4714,7 @@ public interface ScaPackage extends EPackage {
 	 * @see gov.redhawk.model.sca.impl.ScaPackageImpl#getIFileStore()
 	 * @generated
 	 */
-	int IFILE_STORE = 44;
+	int IFILE_STORE = 45;
 	/**
 	 * The meta object id for the '<em>IProgress Monitor</em>' data type.
 	 * <!-- begin-user-doc -->
@@ -4677,7 +4724,7 @@ public interface ScaPackage extends EPackage {
 	 * @see gov.redhawk.model.sca.impl.ScaPackageImpl#getIProgressMonitor()
 	 * @generated
 	 */
-	int IPROGRESS_MONITOR = 45;
+	int IPROGRESS_MONITOR = 46;
 	/**
 	 * The meta object id for the '<em>ISca Data Provider</em>' data type.
 	 * <!-- begin-user-doc -->
@@ -4687,7 +4734,7 @@ public interface ScaPackage extends EPackage {
 	 * @see gov.redhawk.model.sca.impl.ScaPackageImpl#getIScaDataProvider()
 	 * @generated
 	 */
-	int ISCA_DATA_PROVIDER = 46;
+	int ISCA_DATA_PROVIDER = 47;
 	/**
 	 * The meta object id for the '<em>ISca Data Provider Service</em>' data type.
 	 * <!-- begin-user-doc -->
@@ -4697,7 +4744,7 @@ public interface ScaPackage extends EPackage {
 	 * @see gov.redhawk.model.sca.impl.ScaPackageImpl#getIScaDataProviderService()
 	 * @generated
 	 */
-	int ISCA_DATA_PROVIDER_SERVICE = 47;
+	int ISCA_DATA_PROVIDER_SERVICE = 48;
 	/**
 	 * The meta object id for the '<em>IStatus</em>' data type.
 	 * <!-- begin-user-doc -->
@@ -4707,7 +4754,7 @@ public interface ScaPackage extends EPackage {
 	 * @see gov.redhawk.model.sca.impl.ScaPackageImpl#getIStatus()
 	 * @generated
 	 */
-	int ISTATUS = 48;
+	int ISTATUS = 49;
 	/**
 	 * The meta object id for the '<em>Object</em>' data type.
 	 * <!-- begin-user-doc -->
@@ -4717,7 +4764,7 @@ public interface ScaPackage extends EPackage {
 	 * @see gov.redhawk.model.sca.impl.ScaPackageImpl#getObject()
 	 * @generated
 	 */
-	int OBJECT = 49;
+	int OBJECT = 50;
 	/**
 	 * The meta object id for the '<em>Object Array</em>' data type.
 	 * <!-- begin-user-doc -->
@@ -4726,7 +4773,7 @@ public interface ScaPackage extends EPackage {
 	 * @see gov.redhawk.model.sca.impl.ScaPackageImpl#getObjectArray()
 	 * @generated
 	 */
-	int OBJECT_ARRAY = 50;
+	int OBJECT_ARRAY = 51;
 	/**
 	 * The meta object id for the '<em>Operational Type</em>' data type.
 	 * <!-- begin-user-doc -->
@@ -4736,7 +4783,7 @@ public interface ScaPackage extends EPackage {
 	 * @see gov.redhawk.model.sca.impl.ScaPackageImpl#getOperationalType()
 	 * @generated
 	 */
-	int OPERATIONAL_TYPE = 51;
+	int OPERATIONAL_TYPE = 52;
 	/**
 	 * The meta object id for the '<em>Refresh Depth Object</em>' data type.
 	 * <!-- begin-user-doc -->
@@ -4746,7 +4793,7 @@ public interface ScaPackage extends EPackage {
 	 * @see gov.redhawk.model.sca.impl.ScaPackageImpl#getRefreshDepthObject()
 	 * @generated
 	 */
-	int REFRESH_DEPTH_OBJECT = 52;
+	int REFRESH_DEPTH_OBJECT = 53;
 	/**
 	 * The meta object id for the '<em>POA</em>' data type.
 	 * <!-- begin-user-doc -->
@@ -4756,7 +4803,7 @@ public interface ScaPackage extends EPackage {
 	 * @see gov.redhawk.model.sca.impl.ScaPackageImpl#getPOA()
 	 * @generated
 	 */
-	int POA = 53;
+	int POA = 54;
 	/**
 	 * The meta object id for the '<em>URI</em>' data type.
 	 * <!-- begin-user-doc -->
@@ -4766,7 +4813,7 @@ public interface ScaPackage extends EPackage {
 	 * @see gov.redhawk.model.sca.impl.ScaPackageImpl#getURI()
 	 * @generated
 	 */
-	int URI = 54;
+	int URI = 55;
 	/**
 	 * The meta object id for the '<em>Usage Type</em>' data type.
 	 * <!-- begin-user-doc -->
@@ -4776,7 +4823,7 @@ public interface ScaPackage extends EPackage {
 	 * @see gov.redhawk.model.sca.impl.ScaPackageImpl#getUsageType()
 	 * @generated
 	 */
-	int USAGE_TYPE = 55;
+	int USAGE_TYPE = 56;
 	/**
 	 * The meta object id for the '<em>Data Type Array</em>' data type.
 	 * <!-- begin-user-doc -->
@@ -4785,7 +4832,7 @@ public interface ScaPackage extends EPackage {
 	 * @see gov.redhawk.model.sca.impl.ScaPackageImpl#getDataTypeArray()
 	 * @generated
 	 */
-	int DATA_TYPE_ARRAY = 56;
+	int DATA_TYPE_ARRAY = 57;
 	/**
 	 * The meta object id for the '<em>Any</em>' data type.
 	 * <!-- begin-user-doc -->
@@ -4795,7 +4842,7 @@ public interface ScaPackage extends EPackage {
 	 * @see gov.redhawk.model.sca.impl.ScaPackageImpl#getAny()
 	 * @generated
 	 */
-	int ANY = 57;
+	int ANY = 58;
 
 	/**
 	 * Returns the meta object for class '{@link gov.redhawk.model.sca.CorbaObjWrapper <em>Corba Obj Wrapper</em>}'.
@@ -6591,6 +6638,57 @@ public interface ScaPackage extends EPackage {
 	EReference getStringToObjectMap_Value();
 
 	/**
+	 * Returns the meta object for class '{@link gov.redhawk.model.sca.WaveformsContainer <em>Waveforms Container</em>}
+	 * '.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * 
+	 * @return the meta object for class '<em>Waveforms Container</em>'.
+	 * @see gov.redhawk.model.sca.WaveformsContainer
+	 * @generated
+	 */
+	EClass getWaveformsContainer();
+
+	/**
+	 * Returns the meta object for the reference list '{@link gov.redhawk.model.sca.WaveformsContainer#getSubContainers
+	 * <em>Sub Containers</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * 
+	 * @return the meta object for the reference list '<em>Sub Containers</em>'.
+	 * @see gov.redhawk.model.sca.WaveformsContainer#getSubContainers()
+	 * @see #getWaveformsContainer()
+	 * @generated
+	 */
+	EReference getWaveformsContainer_SubContainers();
+
+	/**
+	 * Returns the meta object for the reference list '{@link gov.redhawk.model.sca.WaveformsContainer#getWaveforms
+	 * <em>Waveforms</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * 
+	 * @return the meta object for the reference list '<em>Waveforms</em>'.
+	 * @see gov.redhawk.model.sca.WaveformsContainer#getWaveforms()
+	 * @see #getWaveformsContainer()
+	 * @generated
+	 */
+	EReference getWaveformsContainer_Waveforms();
+
+	/**
+	 * Returns the meta object for the attribute '{@link gov.redhawk.model.sca.WaveformsContainer#getContainerName
+	 * <em>Container Name</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * 
+	 * @return the meta object for the attribute '<em>Container Name</em>'.
+	 * @see gov.redhawk.model.sca.WaveformsContainer#getContainerName()
+	 * @see #getWaveformsContainer()
+	 * @generated
+	 */
+	EAttribute getWaveformsContainer_ContainerName();
+
+	/**
 	 * Returns the meta object for enum '{@link gov.redhawk.model.sca.DomainConnectionState
 	 * <em>Domain Connection State</em>}'.
 	 * <!-- begin-user-doc -->
@@ -8126,6 +8224,41 @@ public interface ScaPackage extends EPackage {
 		 * @generated
 		 */
 		EReference STRING_TO_OBJECT_MAP__VALUE = eINSTANCE.getStringToObjectMap_Value();
+		/**
+		 * The meta object literal for the '{@link gov.redhawk.model.sca.impl.WaveformsContainerImpl
+		 * <em>Waveforms Container</em>}' class.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * 
+		 * @see gov.redhawk.model.sca.impl.WaveformsContainerImpl
+		 * @see gov.redhawk.model.sca.impl.ScaPackageImpl#getWaveformsContainer()
+		 * @generated
+		 */
+		EClass WAVEFORMS_CONTAINER = eINSTANCE.getWaveformsContainer();
+		/**
+		 * The meta object literal for the '<em><b>Sub Containers</b></em>' reference list feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * 
+		 * @generated
+		 */
+		EReference WAVEFORMS_CONTAINER__SUB_CONTAINERS = eINSTANCE.getWaveformsContainer_SubContainers();
+		/**
+		 * The meta object literal for the '<em><b>Waveforms</b></em>' reference list feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * 
+		 * @generated
+		 */
+		EReference WAVEFORMS_CONTAINER__WAVEFORMS = eINSTANCE.getWaveformsContainer_Waveforms();
+		/**
+		 * The meta object literal for the '<em><b>Container Name</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * 
+		 * @generated
+		 */
+		EAttribute WAVEFORMS_CONTAINER__CONTAINER_NAME = eINSTANCE.getWaveformsContainer_ContainerName();
 		/**
 		 * The meta object literal for the '{@link gov.redhawk.model.sca.DomainConnectionState
 		 * <em>Domain Connection State</em>}' enum.

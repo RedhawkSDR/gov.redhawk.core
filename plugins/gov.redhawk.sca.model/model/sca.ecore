@@ -1324,4 +1324,11 @@
     <eStructuralFeatures xsi:type="ecore:EReference" name="value" eType="ecore:EClass platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EObject"
         containment="true"/>
   </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="WaveformsContainer">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="subContainers" upperBound="-1"
+        eType="#//WaveformsContainer"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="waveforms" upperBound="-1"
+        eType="ecore:EClass platform:/plugin/mil.jpeojtrs.sca.sad/model/sad.ecore#//SoftwareAssembly"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="containerName" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//String"/>
+  </eClassifiers>
 </ecore:EPackage>
