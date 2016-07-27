@@ -17,7 +17,7 @@ import org.eclipse.emf.edit.ui.provider.AdapterFactoryLabelProvider;
 import gov.redhawk.model.sca.provider.ScaItemProviderAdapterFactory;
 
 /**
- * @since 10.0
+ * @since 10.1
  */
 public class InstallApplicationLabelProvider extends AdapterFactoryLabelProvider {
 
