@@ -2171,6 +2171,7 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 
 	/**
 	 * <!-- begin-user-doc -->
+	 * @since 20.2
 	 * <!-- end-user-doc -->
 	 * 
 	 * @generated
@@ -2181,6 +2182,7 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 
 	/**
 	 * <!-- begin-user-doc -->
+	 * @since 20.2
 	 * <!-- end-user-doc -->
 	 * 
 	 * @generated
@@ -2191,6 +2193,7 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 
 	/**
 	 * <!-- begin-user-doc -->
+	 * @since 20.2
 	 * <!-- end-user-doc -->
 	 * 
 	 * @generated
@@ -2201,6 +2204,7 @@ public class ScaPackageImpl extends EPackageImpl implements ScaPackage {
 
 	/**
 	 * <!-- begin-user-doc -->
+	 * @since 20.2
 	 * <!-- end-user-doc -->
 	 * 
 	 * @generated

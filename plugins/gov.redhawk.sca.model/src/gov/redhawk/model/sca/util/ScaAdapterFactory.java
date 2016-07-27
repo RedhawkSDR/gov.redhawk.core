@@ -1072,6 +1072,7 @@ public class ScaAdapterFactory extends AdapterFactoryImpl {
 	 * <!-- begin-user-doc -->
 	 * This default implementation returns null so that we can easily ignore cases;
 	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * @since 20.2
 	 * <!-- end-user-doc -->
 	 * 
 	 * @return the new adapter.

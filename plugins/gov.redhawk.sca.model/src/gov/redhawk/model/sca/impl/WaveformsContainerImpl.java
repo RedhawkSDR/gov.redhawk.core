@@ -32,6 +32,7 @@ import org.eclipse.emf.ecore.util.EObjectResolvingEList;
 /**
  * <!-- begin-user-doc -->
  * An implementation of the model object '<em><b>Waveforms Container</b></em>'.
+ * @since 20.2
  * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:

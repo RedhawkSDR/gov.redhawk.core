@@ -1512,6 +1512,7 @@ public class ScaSwitch< T1 > extends Switch<T1> {
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
 	 * returning a non-null result will terminate the switch.
+	 * @since 20.2
 	 * <!-- end-user-doc -->
 	 * 
 	 * @param object the target of the switch.

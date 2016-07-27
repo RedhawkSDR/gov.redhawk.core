@@ -532,6 +532,7 @@ public class ScaFactoryImpl extends EFactoryImpl implements ScaFactory {
 
 	/**
 	 * <!-- begin-user-doc -->
+	 * @since 20.2
 	 * <!-- end-user-doc -->
 	 * 
 	 * @generated

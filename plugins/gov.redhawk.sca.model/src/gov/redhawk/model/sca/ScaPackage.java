@@ -4611,6 +4611,7 @@ public interface ScaPackage extends EPackage {
 	 * The meta object id for the '{@link gov.redhawk.model.sca.impl.WaveformsContainerImpl <em>Waveforms Container</em>
 	 * }' class.
 	 * <!-- begin-user-doc -->
+	 * @since 20.2
 	 * <!-- end-user-doc -->
 	 * 
 	 * @see gov.redhawk.model.sca.impl.WaveformsContainerImpl
@@ -4621,6 +4622,7 @@ public interface ScaPackage extends EPackage {
 	/**
 	 * The feature id for the '<em><b>Sub Containers</b></em>' reference list.
 	 * <!-- begin-user-doc -->
+	 * @since 20.2
 	 * <!-- end-user-doc -->
 	 * 
 	 * @generated
@@ -4630,6 +4632,7 @@ public interface ScaPackage extends EPackage {
 	/**
 	 * The feature id for the '<em><b>Waveforms</b></em>' reference list.
 	 * <!-- begin-user-doc -->
+	 * @since 20.2
 	 * <!-- end-user-doc -->
 	 * 
 	 * @generated
@@ -4639,6 +4642,7 @@ public interface ScaPackage extends EPackage {
 	/**
 	 * The feature id for the '<em><b>Container Name</b></em>' attribute.
 	 * <!-- begin-user-doc -->
+	 * @since 20.2
 	 * <!-- end-user-doc -->
 	 * 
 	 * @generated
@@ -4648,6 +4652,7 @@ public interface ScaPackage extends EPackage {
 	/**
 	 * The number of structural features of the '<em>Waveforms Container</em>' class.
 	 * <!-- begin-user-doc -->
+	 * @since 20.2
 	 * <!-- end-user-doc -->
 	 * 
 	 * @generated
@@ -6641,6 +6646,7 @@ public interface ScaPackage extends EPackage {
 	 * Returns the meta object for class '{@link gov.redhawk.model.sca.WaveformsContainer <em>Waveforms Container</em>}
 	 * '.
 	 * <!-- begin-user-doc -->
+	 * @since 20.2
 	 * <!-- end-user-doc -->
 	 * 
 	 * @return the meta object for class '<em>Waveforms Container</em>'.
@@ -6653,6 +6659,7 @@ public interface ScaPackage extends EPackage {
 	 * Returns the meta object for the reference list '{@link gov.redhawk.model.sca.WaveformsContainer#getSubContainers
 	 * <em>Sub Containers</em>}'.
 	 * <!-- begin-user-doc -->
+	 * @since 20.2
 	 * <!-- end-user-doc -->
 	 * 
 	 * @return the meta object for the reference list '<em>Sub Containers</em>'.
@@ -6666,6 +6673,7 @@ public interface ScaPackage extends EPackage {
 	 * Returns the meta object for the reference list '{@link gov.redhawk.model.sca.WaveformsContainer#getWaveforms
 	 * <em>Waveforms</em>}'.
 	 * <!-- begin-user-doc -->
+	 * @since 20.2
 	 * <!-- end-user-doc -->
 	 * 
 	 * @return the meta object for the reference list '<em>Waveforms</em>'.
@@ -6679,6 +6687,7 @@ public interface ScaPackage extends EPackage {
 	 * Returns the meta object for the attribute '{@link gov.redhawk.model.sca.WaveformsContainer#getContainerName
 	 * <em>Container Name</em>}'.
 	 * <!-- begin-user-doc -->
+	 * @since 20.2
 	 * <!-- end-user-doc -->
 	 * 
 	 * @return the meta object for the attribute '<em>Container Name</em>'.
@@ -8228,6 +8237,7 @@ public interface ScaPackage extends EPackage {
 		 * The meta object literal for the '{@link gov.redhawk.model.sca.impl.WaveformsContainerImpl
 		 * <em>Waveforms Container</em>}' class.
 		 * <!-- begin-user-doc -->
+		 * @since 20.2
 		 * <!-- end-user-doc -->
 		 * 
 		 * @see gov.redhawk.model.sca.impl.WaveformsContainerImpl
@@ -8238,6 +8248,7 @@ public interface ScaPackage extends EPackage {
 		/**
 		 * The meta object literal for the '<em><b>Sub Containers</b></em>' reference list feature.
 		 * <!-- begin-user-doc -->
+		 * @since 20.2
 		 * <!-- end-user-doc -->
 		 * 
 		 * @generated
@@ -8246,6 +8257,7 @@ public interface ScaPackage extends EPackage {
 		/**
 		 * The meta object literal for the '<em><b>Waveforms</b></em>' reference list feature.
 		 * <!-- begin-user-doc -->
+		 * @since 20.2
 		 * <!-- end-user-doc -->
 		 * 
 		 * @generated
@@ -8254,6 +8266,7 @@ public interface ScaPackage extends EPackage {
 		/**
 		 * The meta object literal for the '<em><b>Container Name</b></em>' attribute feature.
 		 * <!-- begin-user-doc -->
+		 * @since 20.2
 		 * <!-- end-user-doc -->
 		 * 
 		 * @generated
