@@ -11,30 +11,7 @@
  */
 package gov.redhawk.frontend.ui.internal;
 
-import gov.redhawk.frontend.ListenerAllocation;
-import gov.redhawk.frontend.TunerContainer;
-import gov.redhawk.frontend.TunerStatus;
-import gov.redhawk.frontend.ui.FrontEndUIActivator;
-import gov.redhawk.frontend.ui.internal.section.FrontendSection;
-import gov.redhawk.frontend.util.TunerProperties.ListenerAllocationProperties;
-import gov.redhawk.frontend.util.TunerProperties.TunerAllocationProperties;
-import gov.redhawk.frontend.util.TunerUtils;
-import gov.redhawk.model.sca.RefreshDepth;
-import gov.redhawk.model.sca.ScaDevice;
-import gov.redhawk.model.sca.ScaFactory;
-import gov.redhawk.model.sca.ScaSimpleProperty;
-import gov.redhawk.model.sca.ScaStructProperty;
-import gov.redhawk.model.sca.commands.ScaModelCommand;
-
-import java.util.ArrayList;
-import java.util.List;
 import java.util.concurrent.Callable;
-
-import mil.jpeojtrs.sca.prf.PrfFactory;
-import mil.jpeojtrs.sca.prf.PrfPackage;
-import mil.jpeojtrs.sca.prf.Simple;
-import mil.jpeojtrs.sca.util.CorbaUtils;
-import mil.jpeojtrs.sca.util.ScaEcoreUtils;
 
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
@@ -53,18 +30,23 @@ import org.eclipse.ui.handlers.HandlerUtil;
 import CF.DataType;
 import CF.DevicePackage.InvalidCapacity;
 import CF.DevicePackage.InvalidState;
+import gov.redhawk.frontend.ListenerAllocation;
+import gov.redhawk.frontend.TunerContainer;
+import gov.redhawk.frontend.TunerStatus;
+import gov.redhawk.frontend.ui.FrontEndUIActivator;
+import gov.redhawk.frontend.ui.internal.section.FrontendSection;
+import gov.redhawk.frontend.util.TunerProperties.ListenerAllocationProperty;
+import gov.redhawk.frontend.util.TunerProperties.TunerAllocationProperty;
+import gov.redhawk.frontend.util.TunerUtils;
+import gov.redhawk.model.sca.RefreshDepth;
+import gov.redhawk.model.sca.ScaDevice;
+import gov.redhawk.model.sca.commands.ScaModelCommand;
+import mil.jpeojtrs.sca.prf.Struct;
+import mil.jpeojtrs.sca.util.CorbaUtils;
+import mil.jpeojtrs.sca.util.ScaEcoreUtils;
 
-/**
- *
- */
 public class DeallocateHandler extends AbstractHandler implements IHandler {
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.eclipse.core.commands.IHandler#execute(org.eclipse.core.commands.ExecutionEvent)
-	 */
-	
 	@Override
 	public Object execute(ExecutionEvent event) throws ExecutionException {
 		IStructuredSelection selection = (IStructuredSelection) HandlerUtil.getActiveMenuSelection(event);
@@ -125,11 +107,10 @@ public class DeallocateHandler extends AbstractHandler implements IHandler {
 			if (device == null) {
 				return null;
 			}
+
 			final DataType[] props = new DataType[1];
-			DataType dt = new DataType();
-			dt.id = "FRONTEND::listener_allocation";
-			dt.value = getListenerAllocationStruct(listener).toAny();
-			props[0] = dt;
+			Struct allocProp = ListenerAllocationProperty.INSTANCE.createDeallocationStruct(listener);
+			props[0] = new DataType(allocProp.getId(), allocProp.toAny());
 
 			Job job = new Job("Deallocate FEI control") {
 
@@ -210,7 +191,9 @@ public class DeallocateHandler extends AbstractHandler implements IHandler {
 	
 	private boolean deallocateTuner(TunerStatus tuner) {
 		final ScaDevice< ? > device = ScaEcoreUtils.getEContainerOfType(tuner, ScaDevice.class);
-		final DataType[] props = createAllocationProperties(tuner);
+		final DataType[] props = new DataType[1];
+		Struct allocProp = TunerAllocationProperty.INSTANCE.createDeallocationStruct(tuner);
+		props[0] = new DataType(allocProp.getId(), allocProp.toAny());
 
 		Job job = new Job("Deallocate FEI control") {
 
@@ -250,56 +233,4 @@ public class DeallocateHandler extends AbstractHandler implements IHandler {
 
 		return true;
 	}
-
-	private DataType[] createAllocationProperties(TunerStatus tuner) {
-		List<DataType> props = new ArrayList<DataType>();
-		ScaStructProperty struct;
-		DataType dt = new DataType();
-		struct = getTunerAllocationStruct(tuner);
-		dt.id = "FRONTEND::tuner_allocation";
-		dt.value = struct.toAny();
-		props.add(dt);
-		return props.toArray(new DataType[0]);
-	}
-
-	private ScaStructProperty getTunerAllocationStruct(TunerStatus tuner) {
-		ScaStructProperty tunerAllocationStruct = ScaFactory.eINSTANCE.createScaStructProperty();
-		TunerAllocationProperties allocPropID = TunerAllocationProperties.valueOf("ALLOCATION_ID");
-		ScaSimpleProperty simple = ScaFactory.eINSTANCE.createScaSimpleProperty();
-		Simple definition = (Simple) PrfFactory.eINSTANCE.create(PrfPackage.Literals.SIMPLE);
-		definition.setType(allocPropID.getType());
-		definition.setId(allocPropID.getType().getLiteral());
-		definition.setName(allocPropID.getType().getName());
-		simple.setDefinition(definition);
-		simple.setId(allocPropID.getId());
-		setValueForProp(tuner, allocPropID, simple);
-		tunerAllocationStruct.getSimples().add(simple);
-		return tunerAllocationStruct;
-	}
-
-	private ScaStructProperty getListenerAllocationStruct(ListenerAllocation listener) {
-		ScaStructProperty listenerAllocationStruct = ScaFactory.eINSTANCE.createScaStructProperty();
-		ListenerAllocationProperties allocPropID = ListenerAllocationProperties.LISTENER_ALLOCATION_ID;
-		ScaSimpleProperty simple = ScaFactory.eINSTANCE.createScaSimpleProperty();
-		Simple definition = (Simple) PrfFactory.eINSTANCE.create(PrfPackage.Literals.SIMPLE);
-		definition.setType(allocPropID.getType());
-		definition.setId(allocPropID.getType().getLiteral());
-		definition.setName(allocPropID.getType().getName());
-		simple.setDefinition(definition);
-		simple.setId(allocPropID.getId());
-		simple.setValue(listener.getListenerID());
-		listenerAllocationStruct.getSimples().add(simple);
-		return listenerAllocationStruct;
-	}
-
-	private void setValueForProp(TunerStatus tuner, TunerAllocationProperties allocPropID, ScaSimpleProperty simple) {
-		// Deallocates control id and all listeners
-		String value = tuner.getTunerStatusStruct().getSimple("FRONTEND::tuner_status::allocation_id_csv").getValue().toString();
-		int endControlIndex = value.indexOf(',');
-		if (endControlIndex > 0) {
-			value = value.substring(0, endControlIndex);
-		}
-		simple.setValue(value);
-	}
-
 }

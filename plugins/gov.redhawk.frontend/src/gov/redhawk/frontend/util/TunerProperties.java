@@ -11,20 +11,10 @@
  */
 package gov.redhawk.frontend.util;
 
-import gov.redhawk.frontend.FrontendPackage;
-import gov.redhawk.frontend.TunerStatus;
-import gov.redhawk.model.sca.ScaDevice;
-import gov.redhawk.model.sca.ScaPort;
-import gov.redhawk.model.sca.ScaProvidesPort;
-import gov.redhawk.model.sca.ScaSimpleProperty;
-import gov.redhawk.sca.util.PluginUtil;
-import gov.redhawk.sca.util.SubMonitor;
-
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 import java.util.concurrent.Callable;
-
-import mil.jpeojtrs.sca.prf.PropertyValueType;
-import mil.jpeojtrs.sca.util.CorbaUtils;
-import mil.jpeojtrs.sca.util.ScaEcoreUtils;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -42,6 +32,23 @@ import FRONTEND.DigitalTuner;
 import FRONTEND.DigitalTunerHelper;
 import FRONTEND.FrontendException;
 import FRONTEND.NotSupportedException;
+import gov.redhawk.frontend.FrontendPackage;
+import gov.redhawk.frontend.ListenerAllocation;
+import gov.redhawk.frontend.TunerStatus;
+import gov.redhawk.model.sca.ScaDevice;
+import gov.redhawk.model.sca.ScaPort;
+import gov.redhawk.model.sca.ScaProvidesPort;
+import gov.redhawk.model.sca.ScaSimpleProperty;
+import gov.redhawk.sca.util.PluginUtil;
+import gov.redhawk.sca.util.SubMonitor;
+import mil.jpeojtrs.sca.prf.ConfigurationKind;
+import mil.jpeojtrs.sca.prf.PrfFactory;
+import mil.jpeojtrs.sca.prf.PropertyValueType;
+import mil.jpeojtrs.sca.prf.Simple;
+import mil.jpeojtrs.sca.prf.Struct;
+import mil.jpeojtrs.sca.prf.StructPropertyConfigurationType;
+import mil.jpeojtrs.sca.util.CorbaUtils;
+import mil.jpeojtrs.sca.util.ScaEcoreUtils;
 
 /**
  * Enum of available tuner status properties as defined by specification.
@@ -306,33 +313,272 @@ public enum TunerProperties {
 		}
 	}
 
+	/**
+	 * @since 1.1
+	 */
+	public static enum ListenerAllocationProperty {
+		INSTANCE;
+
+		/**
+		 * @return The fully qualified ID of the property
+		 */
+		public String getId() {
+			return "FRONTEND::listener_allocation";
+		}
+
+		/**
+		 * @return A human-readable description of the property
+		 */
+		public String getDescription() {
+			return "Frontend Interfaces v2 listener allocation structure";
+		}
+
+		/**
+		 * @return A new {@link Struct} instance for the property
+		 */
+		public Struct createStruct() {
+			Struct listenerAllocStruct = PrfFactory.eINSTANCE.createStruct();
+			listenerAllocStruct.setDescription(getDescription());
+			listenerAllocStruct.setId(getId());
+			listenerAllocStruct.setName("frontend_listener_allocation");
+			final ConfigurationKind kind = PrfFactory.eINSTANCE.createConfigurationKind();
+			kind.setType(StructPropertyConfigurationType.ALLOCATION);
+			listenerAllocStruct.getConfigurationKind().add(kind);
+			listenerAllocStruct.getSimple().addAll(createListenerAllocationSimples());
+
+			return listenerAllocStruct;
+		}
+
+		/**
+		 * @param listenerAllocation The listener to be deallocated
+		 * @return A new {@link Struct} instance for deallocation
+		 */
+		public Struct createDeallocationStruct(ListenerAllocation listenerAllocation) {
+			Struct struct = createStruct();
+			((Simple) struct.getProperty(ListenerAllocationProperties.EXISTING_ALLOCATION_ID.getId())).setValue(
+				listenerAllocation.getTunerStatus().getAllocationID());
+			((Simple) struct.getProperty(ListenerAllocationProperties.LISTENER_ALLOCATION_ID.getId())).setValue(listenerAllocation.getListenerID());
+			return struct;
+		}
+
+		private Collection< ? extends Simple> createListenerAllocationSimples() {
+			List<Simple> listenerAllocSimpleList = new ArrayList<Simple>();
+			listenerAllocSimpleList.add(ListenerAllocationProperties.EXISTING_ALLOCATION_ID.createSimple());
+			listenerAllocSimpleList.add(ListenerAllocationProperties.LISTENER_ALLOCATION_ID.createSimple());
+
+			return listenerAllocSimpleList;
+		}
+	}
+
+	/**
+	 * @since 1.1
+	 */
+	public static enum TunerAllocationProperty {
+		INSTANCE;
+
+		/**
+		 * @return The fully qualified ID of the property
+		 */
+		public String getId() {
+			return "FRONTEND::tuner_allocation";
+		}
+
+		/**
+		 * @return A human-readable description of the property
+		 */
+		public String getDescription() {
+			return "Frontend Interfaces v2 main allocation structure";
+		}
+
+		/**
+		 * @return A new {@link Struct} instance for the property
+		 */
+		public Struct createStruct() {
+			Struct tunerAllocStruct = PrfFactory.eINSTANCE.createStruct();
+			tunerAllocStruct.setDescription(getDescription());
+			tunerAllocStruct.setId(getId());
+			tunerAllocStruct.setName("frontend_tuner_allocation");
+			final ConfigurationKind kind = PrfFactory.eINSTANCE.createConfigurationKind();
+			kind.setType(StructPropertyConfigurationType.ALLOCATION);
+			tunerAllocStruct.getConfigurationKind().add(kind);
+			tunerAllocStruct.getSimple().addAll(createTunerAllocationSimples());
+
+			return tunerAllocStruct;
+		}
+
+		/**
+		 * @param tuner The tuner to be deallocated
+		 * @return A new {@link Struct} instance for deallocation
+		 */
+		public Struct createDeallocationStruct(TunerStatus tuner) {
+			// Only the allocation ID needs to have a valid value per FEI docs; other fields are ignored
+			Struct struct = createStruct();
+			((Simple) struct.getProperty(TunerAllocationProperties.TUNER_TYPE.getId())).setValue("");
+			((Simple) struct.getProperty(TunerAllocationProperties.ALLOCATION_ID.getId())).setValue(tuner.getAllocationID());
+			((Simple) struct.getProperty(TunerAllocationProperties.CENTER_FREQUENCY.getId())).setValue("0");
+			((Simple) struct.getProperty(TunerAllocationProperties.BANDWIDTH.getId())).setValue("0");
+			((Simple) struct.getProperty(TunerAllocationProperties.BANDWIDTH_TOLERANCE.getId())).setValue("0");
+			((Simple) struct.getProperty(TunerAllocationProperties.SAMPLE_RATE.getId())).setValue("0");
+			((Simple) struct.getProperty(TunerAllocationProperties.SAMPLE_RATE_TOLERANCE.getId())).setValue("0");
+			((Simple) struct.getProperty(TunerAllocationProperties.DEVICE_CONTROL.getId())).setValue("false");
+			((Simple) struct.getProperty(TunerAllocationProperties.GROUP_ID.getId())).setValue("");
+			((Simple) struct.getProperty(TunerAllocationProperties.RF_FLOW_ID.getId())).setValue("");
+			return struct;
+		}
+
+		private Collection< ? extends Simple> createTunerAllocationSimples() {
+			List<Simple> tunerAllocSimpleList = new ArrayList<Simple>();
+
+			tunerAllocSimpleList.add(TunerProperties.TunerAllocationProperties.TUNER_TYPE.createSimple());
+
+			tunerAllocSimpleList.add(TunerProperties.TunerAllocationProperties.ALLOCATION_ID.createSimple());
+
+			Simple cFreq = TunerProperties.TunerAllocationProperties.CENTER_FREQUENCY.createSimple();
+			cFreq.setValue("0.0");
+			tunerAllocSimpleList.add(cFreq);
+
+			Simple bandwidth = TunerProperties.TunerAllocationProperties.BANDWIDTH.createSimple();
+			bandwidth.setValue("0.0");
+			tunerAllocSimpleList.add(bandwidth);
+
+			Simple bandwidthTol = TunerProperties.TunerAllocationProperties.BANDWIDTH_TOLERANCE.createSimple();
+			bandwidthTol.setValue("10.0");
+			tunerAllocSimpleList.add(bandwidthTol);
+
+			Simple sampleRate = TunerProperties.TunerAllocationProperties.SAMPLE_RATE.createSimple();
+			sampleRate.setValue("0.0");
+			tunerAllocSimpleList.add(sampleRate);
+
+			Simple sampleRateTol = TunerProperties.TunerAllocationProperties.SAMPLE_RATE_TOLERANCE.createSimple();
+			sampleRateTol.setValue("10.0");
+			tunerAllocSimpleList.add(sampleRateTol);
+
+			Simple deviceControl = TunerProperties.TunerAllocationProperties.DEVICE_CONTROL.createSimple();
+			deviceControl.setValue("true");
+			tunerAllocSimpleList.add(deviceControl);
+
+			tunerAllocSimpleList.add(TunerProperties.TunerAllocationProperties.GROUP_ID.createSimple());
+
+			tunerAllocSimpleList.add(TunerProperties.TunerAllocationProperties.RF_FLOW_ID.createSimple());
+
+			return tunerAllocSimpleList;
+		}
+	}
+
 	public static enum TunerAllocationProperties {
 		// instance name ID PRF type
-		TUNER_TYPE("FRONTEND::tuner_allocation::tuner_type", PropertyValueType.STRING),
-		ALLOCATION_ID("FRONTEND::tuner_allocation::allocation_id", PropertyValueType.STRING),
-		CENTER_FREQUENCY("FRONTEND::tuner_allocation::center_frequency", PropertyValueType.DOUBLE),
-		BANDWIDTH("FRONTEND::tuner_allocation::bandwidth", PropertyValueType.DOUBLE),
-		BANDWIDTH_TOLERANCE("FRONTEND::tuner_allocation::bandwidth_tolerance", PropertyValueType.DOUBLE),
-		SAMPLE_RATE("FRONTEND::tuner_allocation::sample_rate", PropertyValueType.DOUBLE),
-		SAMPLE_RATE_TOLERANCE("FRONTEND::tuner_allocation::sample_rate_tolerance", PropertyValueType.DOUBLE),
-		DEVICE_CONTROL("FRONTEND::tuner_allocation::device_control", PropertyValueType.BOOLEAN),
-		GROUP_ID("FRONTEND::tuner_allocation::group_id", PropertyValueType.STRING),
-		RF_FLOW_ID("FRONTEND::tuner_allocation::rf_flow_id", PropertyValueType.STRING);
+		TUNER_TYPE(
+				"tuner_type",
+					PropertyValueType.STRING,
+					null,
+					"Tuner type",
+					"Example Tuner Types: TX, RX, CHANNELIZER, DDC, RX_DIGITIZER, RX_DIGTIZIER_CHANNELIZER"),
+		ALLOCATION_ID(
+				"allocation_id",
+					PropertyValueType.STRING,
+					null,
+					"Allocation ID",
+					"The allocation_id set by the caller. Used by the caller to reference the allocation uniquely"),
+		CENTER_FREQUENCY("center_frequency", PropertyValueType.DOUBLE, "Hz", "Center frequency", "Requested center frequency"),
+		BANDWIDTH("bandwidth", PropertyValueType.DOUBLE, "Hz", "Bandwidth", "Requested bandwidth (+/- the tolerance)"),
+		BANDWIDTH_TOLERANCE(
+				"bandwidth_tolerance",
+					PropertyValueType.DOUBLE,
+					"percent",
+					"Bandwidth tolerance",
+					"Allowable Percent above requested bandwidth  (ie - 100 would be up to twice)"),
+		SAMPLE_RATE(
+				"sample_rate",
+					PropertyValueType.DOUBLE,
+					"Hz",
+					"Sample rate",
+					"Requested sample rate (+/- the tolerance). This can be ignored for such devices as analog tuners"),
+		SAMPLE_RATE_TOLERANCE(
+				"sample_rate_tolerance",
+					PropertyValueType.DOUBLE,
+					"percent",
+					"Sample rate tolerance",
+					"Allowable Percent above requested sample rate (ie - 100 would be up to twice)"),
+		DEVICE_CONTROL(
+				"device_control",
+					PropertyValueType.BOOLEAN,
+					null,
+					"Device control",
+					"True: Has control over the device to make changes\n"
+						+ "False: Does not need control and can just attach to any currently tasked device that satisfies the parameters (essentually a listener)"),
+		GROUP_ID(
+				"group_id",
+					PropertyValueType.STRING,
+					null,
+					"Group ID",
+					"Unique identifier that specifies the group a device must be in. Must match group_id on the device"),
+		RF_FLOW_ID(
+				"rf_flow_id",
+					PropertyValueType.STRING,
+					null,
+					"RF flow ID",
+					"Optional. Specifies the RF flow of a specific input source to allocate against. If left empty, it will match all FrontEnd devices.");
 
 		private String id;
 		private PropertyValueType type;
+		private String shortId;
+		private String name;
+		private String description;
+		private String units;
 
-		private TunerAllocationProperties(String id, PropertyValueType prfType) {
-			this.id = id;
+		private TunerAllocationProperties(String shortId, PropertyValueType prfType, String units, String name, String description) {
+			this.id = "FRONTEND::tuner_allocation::" + shortId;
 			this.type = prfType;
+			this.shortId = shortId;
+			this.name = name;
+			this.description = description;
+			this.units = units;
 		}
 
+		/**
+		 * @return The fully qualified ID of the property
+		 */
 		public String getId() {
 			return this.id;
 		}
 
+		/**
+		 * @return The property's type
+		 */
 		public PropertyValueType getType() {
 			return this.type;
+		}
+
+		/**
+		 * @return A human-readable name
+		 * @since 1.1
+		 */
+		public String getName() {
+			return this.name;
+		}
+
+		/**
+		 * @return A human-readable description of the property
+		 * @since 1.1
+		 */
+		public String getDescription() {
+			return this.description;
+		}
+
+		/**
+		 * @return A new {@link Simple} instance for the specified property
+		 * @since 1.1
+		 */
+		public Simple createSimple() {
+			Simple simple = PrfFactory.eINSTANCE.createSimple();
+			simple.setId(this.id);
+			simple.setName(this.shortId);
+			simple.setDescription(this.description);
+			simple.setType(this.type);
+			if (this.units != null) {
+				simple.setUnits(this.units);
+			}
+			return simple;
 		}
 	}
 
@@ -350,12 +596,29 @@ public enum TunerProperties {
 			this.type = prfType;
 		}
 
+		/**
+		 * @return The fully qualified ID of the property
+		 */
 		public String getId() {
 			return this.id;
 		}
 
+		/**
+		 * @return The property's type
+		 */
 		public PropertyValueType getType() {
 			return this.type;
+		}
+
+		/**
+		 * @return A new {@link Simple} instance for the specified property
+		 * @since 1.1
+		 */
+		public Simple createSimple() {
+			Simple simple = PrfFactory.eINSTANCE.createSimple();
+			simple.setId(this.id);
+			simple.setType(this.type);
+			return simple;
 		}
 	}
 
