@@ -6,7 +6,7 @@ Bundle-Version: 1.0.0.qualifier
 Bundle-Activator: gov.redhawk.frontend.ui.FrontEndUIActivator
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
- gov.redhawk.frontend;bundle-version="1.0.0",
+ gov.redhawk.frontend;bundle-version="1.1.0",
  gov.redhawk.frontend.edit;bundle-version="1.0.0",
  org.eclipse.ui.navigator;bundle-version="3.5.200",
  gov.redhawk.sca.model;bundle-version="19.0.0",

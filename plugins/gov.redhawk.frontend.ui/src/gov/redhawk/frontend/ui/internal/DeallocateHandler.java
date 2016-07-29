@@ -11,25 +11,6 @@
  */
 package gov.redhawk.frontend.ui.internal;
 
-import gov.redhawk.frontend.ListenerAllocation;
-import gov.redhawk.frontend.TunerContainer;
-import gov.redhawk.frontend.TunerStatus;
-import gov.redhawk.frontend.ui.internal.section.FrontendSection;
-import gov.redhawk.frontend.util.TunerProperties.ListenerAllocationProperties;
-import gov.redhawk.frontend.util.TunerProperties.TunerAllocationProperties;
-import gov.redhawk.frontend.util.TunerUtils;
-import gov.redhawk.model.sca.ScaDevice;
-import gov.redhawk.model.sca.ScaFactory;
-import gov.redhawk.model.sca.ScaSimpleProperty;
-import gov.redhawk.model.sca.ScaStructProperty;
-import gov.redhawk.model.sca.commands.ScaModelCommand;
-import gov.redhawk.sca.model.jobs.DeallocateJob;
-
-import mil.jpeojtrs.sca.prf.PrfFactory;
-import mil.jpeojtrs.sca.prf.PrfPackage;
-import mil.jpeojtrs.sca.prf.Simple;
-import mil.jpeojtrs.sca.util.ScaEcoreUtils;
-
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
@@ -44,6 +25,18 @@ import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.ui.handlers.HandlerUtil;
 
 import CF.DataType;
+import gov.redhawk.frontend.ListenerAllocation;
+import gov.redhawk.frontend.TunerContainer;
+import gov.redhawk.frontend.TunerStatus;
+import gov.redhawk.frontend.ui.internal.section.FrontendSection;
+import gov.redhawk.frontend.util.TunerProperties.ListenerAllocationProperty;
+import gov.redhawk.frontend.util.TunerProperties.TunerAllocationProperty;
+import gov.redhawk.frontend.util.TunerUtils;
+import gov.redhawk.model.sca.ScaDevice;
+import gov.redhawk.model.sca.commands.ScaModelCommand;
+import gov.redhawk.sca.model.jobs.DeallocateJob;
+import mil.jpeojtrs.sca.prf.Struct;
+import mil.jpeojtrs.sca.util.ScaEcoreUtils;
 
 public class DeallocateHandler extends AbstractHandler implements IHandler {
 
@@ -107,9 +100,8 @@ public class DeallocateHandler extends AbstractHandler implements IHandler {
 				return null;
 			}
 
-			DataType dt = new DataType();
-			dt.id = "FRONTEND::listener_allocation";
-			dt.value = getListenerAllocationStruct(listener).toAny();
+			Struct allocProp = ListenerAllocationProperty.INSTANCE.createDeallocationStruct(listener);
+			DataType dt = new DataType(allocProp.getId(), allocProp.toAny());
 
 			Job job = new DeallocateJob(device, dt);
 			job.setName("Deallocate FEI listener");
@@ -171,60 +163,12 @@ public class DeallocateHandler extends AbstractHandler implements IHandler {
 
 	private void deallocateTuner(TunerStatus tuner) {
 		final ScaDevice< ? > device = ScaEcoreUtils.getEContainerOfType(tuner, ScaDevice.class);
-		final DataType prop = createAllocationProperties(tuner);
+		Struct allocProp = TunerAllocationProperty.INSTANCE.createDeallocationStruct(tuner);
+		final DataType prop = new DataType(allocProp.getId(), allocProp.toAny());
 
 		Job job = new DeallocateJob(device, prop);
 		job.setName("Deallocate FEI control");
 		job.setUser(true);
 		job.schedule();
 	}
-
-	private DataType createAllocationProperties(TunerStatus tuner) {
-		DataType dt = new DataType();
-		ScaStructProperty struct = getTunerAllocationStruct(tuner);
-		dt.id = "FRONTEND::tuner_allocation";
-		dt.value = struct.toAny();
-		return dt;
-	}
-
-	private ScaStructProperty getTunerAllocationStruct(TunerStatus tuner) {
-		ScaStructProperty tunerAllocationStruct = ScaFactory.eINSTANCE.createScaStructProperty();
-		TunerAllocationProperties allocPropID = TunerAllocationProperties.valueOf("ALLOCATION_ID");
-		ScaSimpleProperty simple = ScaFactory.eINSTANCE.createScaSimpleProperty();
-		Simple definition = (Simple) PrfFactory.eINSTANCE.create(PrfPackage.Literals.SIMPLE);
-		definition.setType(allocPropID.getType());
-		definition.setId(allocPropID.getType().getLiteral());
-		definition.setName(allocPropID.getType().getName());
-		simple.setDefinition(definition);
-		simple.setId(allocPropID.getId());
-		setValueForProp(tuner, allocPropID, simple);
-		tunerAllocationStruct.getFields().add(simple);
-		return tunerAllocationStruct;
-	}
-
-	private ScaStructProperty getListenerAllocationStruct(ListenerAllocation listener) {
-		ScaStructProperty listenerAllocationStruct = ScaFactory.eINSTANCE.createScaStructProperty();
-		ListenerAllocationProperties allocPropID = ListenerAllocationProperties.LISTENER_ALLOCATION_ID;
-		ScaSimpleProperty simple = ScaFactory.eINSTANCE.createScaSimpleProperty();
-		Simple definition = (Simple) PrfFactory.eINSTANCE.create(PrfPackage.Literals.SIMPLE);
-		definition.setType(allocPropID.getType());
-		definition.setId(allocPropID.getType().getLiteral());
-		definition.setName(allocPropID.getType().getName());
-		simple.setDefinition(definition);
-		simple.setId(allocPropID.getId());
-		simple.setValue(listener.getListenerID());
-		listenerAllocationStruct.getFields().add(simple);
-		return listenerAllocationStruct;
-	}
-
-	private void setValueForProp(TunerStatus tuner, TunerAllocationProperties allocPropID, ScaSimpleProperty simple) {
-		// Deallocates control id and all listeners
-		String value = tuner.getTunerStatusStruct().getSimple("FRONTEND::tuner_status::allocation_id_csv").getValue().toString();
-		int endControlIndex = value.indexOf(',');
-		if (endControlIndex > 0) {
-			value = value.substring(0, endControlIndex);
-		}
-		simple.setValue(value);
-	}
-
 }
