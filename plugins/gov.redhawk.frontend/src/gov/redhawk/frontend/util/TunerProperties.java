@@ -353,8 +353,8 @@ public enum TunerProperties {
 		 */
 		public Struct createDeallocationStruct(ListenerAllocation listenerAllocation) {
 			Struct struct = createStruct();
-			((Simple) struct.getProperty(ListenerAllocationProperties.EXISTING_ALLOCATION_ID.getId())).setValue(
-				listenerAllocation.getTunerStatus().getAllocationID());
+			String allocationId = listenerAllocation.getTunerStatus().getAllocationID().split(",")[0];
+			((Simple) struct.getProperty(ListenerAllocationProperties.EXISTING_ALLOCATION_ID.getId())).setValue(allocationId);
 			((Simple) struct.getProperty(ListenerAllocationProperties.LISTENER_ALLOCATION_ID.getId())).setValue(listenerAllocation.getListenerID());
 			return struct;
 		}
@@ -409,8 +409,9 @@ public enum TunerProperties {
 		public Struct createDeallocationStruct(TunerStatus tuner) {
 			// Only the allocation ID needs to have a valid value per FEI docs; other fields are ignored
 			Struct struct = createStruct();
+			String allocationId = tuner.getAllocationID().split(",")[0];
 			((Simple) struct.getProperty(TunerAllocationProperties.TUNER_TYPE.getId())).setValue("");
-			((Simple) struct.getProperty(TunerAllocationProperties.ALLOCATION_ID.getId())).setValue(tuner.getAllocationID());
+			((Simple) struct.getProperty(TunerAllocationProperties.ALLOCATION_ID.getId())).setValue(allocationId);
 			((Simple) struct.getProperty(TunerAllocationProperties.CENTER_FREQUENCY.getId())).setValue("0");
 			((Simple) struct.getProperty(TunerAllocationProperties.BANDWIDTH.getId())).setValue("0");
 			((Simple) struct.getProperty(TunerAllocationProperties.BANDWIDTH_TOLERANCE.getId())).setValue("0");
