@@ -1,7 +1,10 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Graphiti Diagrams Base Plug-in
-Bundle-SymbolicName: gov.redhawk.core.graphiti.ui
+Bundle-SymbolicName: gov.redhawk.core.graphiti.ui;singleton:=true
 Bundle-Version: 1.0.0.qualifier
 Bundle-Vendor: REDHAWK
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Require-Bundle: org.eclipse.emf.ecore,
+ org.eclipse.graphiti
+Export-Package: gov.redhawk.core.graphiti.ui.util
