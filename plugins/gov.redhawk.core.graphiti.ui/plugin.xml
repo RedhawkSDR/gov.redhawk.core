@@ -25,4 +25,33 @@
       </parser>
    </extension>
 
+   <extension point="org.eclipse.emf.ecore.generated_package">
+      <!-- @generated RHGraphiti -->
+      <package
+            uri="http://www.redhawk.gov/model/rhgext/1.0.0"
+            class="gov.redhawk.core.graphiti.ui.ext.RHGxPackage"
+            genModel="model/RHGraphiti.xcore"/>
+   </extension>
+
+   <extension point="org.eclipse.emf.ecore.content_parser">
+      <!-- @generated RHGraphiti -->
+      <parser
+            contentTypeIdentifier="http://www.redhawk.gov/model/rhgext/1.0.0"
+            class="org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl"/>
+   </extension>
+
+   <extension point="org.eclipse.core.contenttype.contentTypes">
+      <!-- @generated RHGraphiti -->
+      <content-type
+            base-type="org.eclipse.emf.ecore.xmi"
+            file-extensions="rhgx"
+            id="http://www.redhawk.gov/model/rhgext/1.0.0"
+            name="%_UI_RHGx_content_type"
+            priority="normal">
+         <describer class="org.eclipse.emf.ecore.xmi.impl.RootXMLContentHandlerImpl$Describer">
+            <parameter name="namespace" value="http://www.redhawk.gov/model/rhgext/1.0.0"/>
+            <parameter name="kind" value="xmi"/>
+         </describer>
+      </content-type>
+   </extension>
 </plugin>

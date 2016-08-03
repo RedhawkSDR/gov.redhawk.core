@@ -1,0 +1,227 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<genmodel:GenModel xmi:version="2.0"
+    xmlns:xmi="http://www.omg.org/XMI" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore"
+    xmlns:genmodel="http://www.eclipse.org/emf/2002/GenModel" copyrightText="&lt;copyright>&#xD;&#xA;&#xD;&#xA;Copyright (c) 2005, 2011 SAP AG.&#xD;&#xA;All rights reserved. This program and the accompanying materials&#xD;&#xA;are made available under the terms of the Eclipse Public License v1.0&#xD;&#xA;which accompanies this distribution, and is available at&#xD;&#xA;http://www.eclipse.org/legal/epl-v10.html&#xD;&#xA;&#xD;&#xA;Contributors:&#xD;&#xA;   SAP AG - initial API, implementation and documentation&#xD;&#xA;&#xD;&#xA;&lt;/copyright>"
+    modelDirectory="/org.eclipse.graphiti.mm/src-gen" modelPluginID="org.eclipse.graphiti.mm"
+    modelName="Graphiti" editPluginClass="org.eclipse.graphiti.mm.edit.GraphitiEditPlugin"
+    editorPluginClass="org.eclipse.graphiti.mm.editor.GraphitiEditorPlugin" importerID="org.eclipse.emf.importer.ecore"
+    containmentProxies="true" complianceLevel="6.0" copyrightFields="false">
+  <foreignModel>graphiti.ecore</foreignModel>
+  <genPackages prefix="Mm" basePackage="org.eclipse.graphiti" disposableProviderFactory="true"
+      ecorePackage="graphiti.ecore#/">
+    <genClasses ecoreClass="graphiti.ecore#//Property">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute graphiti.ecore#//Property/key"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute graphiti.ecore#//Property/value"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="graphiti.ecore#//PropertyContainer">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference graphiti.ecore#//PropertyContainer/properties"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="graphiti.ecore#//GraphicsAlgorithmContainer"/>
+    <genClasses image="false" ecoreClass="graphiti.ecore#//StyleContainer">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference graphiti.ecore#//StyleContainer/styles"/>
+    </genClasses>
+    <nestedGenPackages prefix="Pictograms" basePackage="org.eclipse.graphiti.mm" disposableProviderFactory="true"
+        ecorePackage="graphiti.ecore#//pictograms">
+      <genClasses ecoreClass="graphiti.ecore#//pictograms/Shape">
+        <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference graphiti.ecore#//pictograms/Shape/container"/>
+      </genClasses>
+      <genClasses ecoreClass="graphiti.ecore#//pictograms/ContainerShape">
+        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference graphiti.ecore#//pictograms/ContainerShape/children"/>
+      </genClasses>
+      <genClasses ecoreClass="graphiti.ecore#//pictograms/Diagram">
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute graphiti.ecore#//pictograms/Diagram/gridUnit"/>
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute graphiti.ecore#//pictograms/Diagram/diagramTypeId"/>
+        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference graphiti.ecore#//pictograms/Diagram/connections"/>
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute graphiti.ecore#//pictograms/Diagram/name"/>
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute graphiti.ecore#//pictograms/Diagram/snapToGrid"/>
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute graphiti.ecore#//pictograms/Diagram/showGuides"/>
+        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference graphiti.ecore#//pictograms/Diagram/colors"/>
+        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference graphiti.ecore#//pictograms/Diagram/fonts"/>
+        <genFeatures notify="false" createChild="false" propertySortChoices="true"
+            ecoreFeature="ecore:EReference graphiti.ecore#//pictograms/Diagram/pictogramLinks"/>
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute graphiti.ecore#//pictograms/Diagram/verticalGridUnit"/>
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute graphiti.ecore#//pictograms/Diagram/version"/>
+      </genClasses>
+      <genClasses image="false" ecoreClass="graphiti.ecore#//pictograms/PictogramElement">
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute graphiti.ecore#//pictograms/PictogramElement/visible"/>
+        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference graphiti.ecore#//pictograms/PictogramElement/graphicsAlgorithm"/>
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute graphiti.ecore#//pictograms/PictogramElement/active"/>
+        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference graphiti.ecore#//pictograms/PictogramElement/link"/>
+      </genClasses>
+      <genClasses ecoreClass="graphiti.ecore#//pictograms/Connection">
+        <genFeatures notify="false" createChild="false" propertySortChoices="true"
+            ecoreFeature="ecore:EReference graphiti.ecore#//pictograms/Connection/start"/>
+        <genFeatures notify="false" createChild="false" propertySortChoices="true"
+            ecoreFeature="ecore:EReference graphiti.ecore#//pictograms/Connection/end"/>
+        <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference graphiti.ecore#//pictograms/Connection/parent"/>
+        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference graphiti.ecore#//pictograms/Connection/connectionDecorators"/>
+      </genClasses>
+      <genClasses image="false" ecoreClass="graphiti.ecore#//pictograms/Anchor">
+        <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference graphiti.ecore#//pictograms/Anchor/parent"/>
+        <genFeatures notify="false" createChild="false" propertySortChoices="true"
+            ecoreFeature="ecore:EReference graphiti.ecore#//pictograms/Anchor/outgoingConnections"/>
+        <genFeatures notify="false" createChild="false" propertySortChoices="true"
+            ecoreFeature="ecore:EReference graphiti.ecore#//pictograms/Anchor/incomingConnections"/>
+        <genFeatures notify="false" createChild="false" propertySortChoices="true"
+            ecoreFeature="ecore:EReference graphiti.ecore#//pictograms/Anchor/referencedGraphicsAlgorithm"/>
+      </genClasses>
+      <genClasses image="false" ecoreClass="graphiti.ecore#//pictograms/AnchorContainer">
+        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference graphiti.ecore#//pictograms/AnchorContainer/anchors"/>
+      </genClasses>
+      <genClasses ecoreClass="graphiti.ecore#//pictograms/FixPointAnchor">
+        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference graphiti.ecore#//pictograms/FixPointAnchor/location"/>
+      </genClasses>
+      <genClasses ecoreClass="graphiti.ecore#//pictograms/BoxRelativeAnchor">
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute graphiti.ecore#//pictograms/BoxRelativeAnchor/relativeWidth"/>
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute graphiti.ecore#//pictograms/BoxRelativeAnchor/relativeHeight"/>
+      </genClasses>
+      <genClasses ecoreClass="graphiti.ecore#//pictograms/ChopboxAnchor"/>
+      <genClasses ecoreClass="graphiti.ecore#//pictograms/ConnectionDecorator">
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute graphiti.ecore#//pictograms/ConnectionDecorator/locationRelative"/>
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute graphiti.ecore#//pictograms/ConnectionDecorator/location"/>
+        <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference graphiti.ecore#//pictograms/ConnectionDecorator/connection"/>
+      </genClasses>
+      <genClasses ecoreClass="graphiti.ecore#//pictograms/FreeFormConnection">
+        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference graphiti.ecore#//pictograms/FreeFormConnection/bendpoints"/>
+      </genClasses>
+      <genClasses ecoreClass="graphiti.ecore#//pictograms/ManhattanConnection"/>
+      <genClasses ecoreClass="graphiti.ecore#//pictograms/PictogramLink">
+        <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference graphiti.ecore#//pictograms/PictogramLink/pictogramElement"/>
+        <genFeatures notify="false" createChild="false" propertySortChoices="true"
+            ecoreFeature="ecore:EReference graphiti.ecore#//pictograms/PictogramLink/businessObjects"/>
+      </genClasses>
+      <genClasses image="false" ecoreClass="graphiti.ecore#//pictograms/AdvancedAnchor">
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute graphiti.ecore#//pictograms/AdvancedAnchor/useAnchorLocationAsConnectionEndpoint"/>
+      </genClasses>
+    </nestedGenPackages>
+    <nestedGenPackages prefix="Algorithms" basePackage="org.eclipse.graphiti.mm" disposableProviderFactory="true"
+        ecorePackage="graphiti.ecore#//algorithms">
+      <genClasses image="false" ecoreClass="graphiti.ecore#//algorithms/GraphicsAlgorithm">
+        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference graphiti.ecore#//algorithms/GraphicsAlgorithm/graphicsAlgorithmChildren"/>
+        <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference graphiti.ecore#//algorithms/GraphicsAlgorithm/parentGraphicsAlgorithm"/>
+        <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference graphiti.ecore#//algorithms/GraphicsAlgorithm/pictogramElement"/>
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute graphiti.ecore#//algorithms/GraphicsAlgorithm/width"/>
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute graphiti.ecore#//algorithms/GraphicsAlgorithm/height"/>
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute graphiti.ecore#//algorithms/GraphicsAlgorithm/x"/>
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute graphiti.ecore#//algorithms/GraphicsAlgorithm/y"/>
+        <genFeatures notify="false" createChild="false" propertySortChoices="true"
+            ecoreFeature="ecore:EReference graphiti.ecore#//algorithms/GraphicsAlgorithm/style"/>
+      </genClasses>
+      <genClasses ecoreClass="graphiti.ecore#//algorithms/Polyline">
+        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference graphiti.ecore#//algorithms/Polyline/points"/>
+      </genClasses>
+      <genClasses ecoreClass="graphiti.ecore#//algorithms/Ellipse"/>
+      <genClasses ecoreClass="graphiti.ecore#//algorithms/Text"/>
+      <genClasses ecoreClass="graphiti.ecore#//algorithms/Polygon"/>
+      <genClasses ecoreClass="graphiti.ecore#//algorithms/Rectangle"/>
+      <genClasses ecoreClass="graphiti.ecore#//algorithms/RoundedRectangle">
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute graphiti.ecore#//algorithms/RoundedRectangle/cornerHeight"/>
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute graphiti.ecore#//algorithms/RoundedRectangle/cornerWidth"/>
+      </genClasses>
+      <genClasses ecoreClass="graphiti.ecore#//algorithms/Image">
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute graphiti.ecore#//algorithms/Image/id"/>
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute graphiti.ecore#//algorithms/Image/stretchH"/>
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute graphiti.ecore#//algorithms/Image/stretchV"/>
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute graphiti.ecore#//algorithms/Image/proportional"/>
+      </genClasses>
+      <genClasses ecoreClass="graphiti.ecore#//algorithms/PlatformGraphicsAlgorithm">
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute graphiti.ecore#//algorithms/PlatformGraphicsAlgorithm/id"/>
+      </genClasses>
+      <genClasses image="false" ecoreClass="graphiti.ecore#//algorithms/AbstractText">
+        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference graphiti.ecore#//algorithms/AbstractText/font"/>
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute graphiti.ecore#//algorithms/AbstractText/horizontalAlignment"/>
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute graphiti.ecore#//algorithms/AbstractText/verticalAlignment"/>
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute graphiti.ecore#//algorithms/AbstractText/angle"/>
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute graphiti.ecore#//algorithms/AbstractText/value"/>
+      </genClasses>
+      <genClasses ecoreClass="graphiti.ecore#//algorithms/MultiText"/>
+      <nestedGenPackages prefix="Styles" basePackage="org.eclipse.graphiti.mm.algorithms"
+          disposableProviderFactory="true" ecorePackage="graphiti.ecore#//algorithms/styles">
+        <genEnums typeSafeEnumCompatible="false" ecoreEnum="graphiti.ecore#//algorithms/styles/LineStyle">
+          <genEnumLiterals ecoreEnumLiteral="graphiti.ecore#//algorithms/styles/LineStyle/SOLID"/>
+          <genEnumLiterals ecoreEnumLiteral="graphiti.ecore#//algorithms/styles/LineStyle/DASH"/>
+          <genEnumLiterals ecoreEnumLiteral="graphiti.ecore#//algorithms/styles/LineStyle/DASHDOT"/>
+          <genEnumLiterals ecoreEnumLiteral="graphiti.ecore#//algorithms/styles/LineStyle/DASHDOTDOT"/>
+          <genEnumLiterals ecoreEnumLiteral="graphiti.ecore#//algorithms/styles/LineStyle/DOT"/>
+          <genEnumLiterals ecoreEnumLiteral="graphiti.ecore#//algorithms/styles/LineStyle/UNSPECIFIED"/>
+        </genEnums>
+        <genEnums typeSafeEnumCompatible="false" ecoreEnum="graphiti.ecore#//algorithms/styles/Orientation">
+          <genEnumLiterals ecoreEnumLiteral="graphiti.ecore#//algorithms/styles/Orientation/ALIGNMENT_CENTER"/>
+          <genEnumLiterals ecoreEnumLiteral="graphiti.ecore#//algorithms/styles/Orientation/ALIGNMENT_LEFT"/>
+          <genEnumLiterals ecoreEnumLiteral="graphiti.ecore#//algorithms/styles/Orientation/ALIGNMENT_TOP"/>
+          <genEnumLiterals ecoreEnumLiteral="graphiti.ecore#//algorithms/styles/Orientation/ALIGNMENT_RIGHT"/>
+          <genEnumLiterals ecoreEnumLiteral="graphiti.ecore#//algorithms/styles/Orientation/ALIGNMENT_BOTTOM"/>
+          <genEnumLiterals ecoreEnumLiteral="graphiti.ecore#//algorithms/styles/Orientation/ALIGNMENT_MIDDLE"/>
+          <genEnumLiterals ecoreEnumLiteral="graphiti.ecore#//algorithms/styles/Orientation/UNSPECIFIED"/>
+        </genEnums>
+        <genEnums typeSafeEnumCompatible="false" ecoreEnum="graphiti.ecore#//algorithms/styles/LocationType">
+          <genEnumLiterals ecoreEnumLiteral="graphiti.ecore#//algorithms/styles/LocationType/LOCATION_TYPE_RELATIVE"/>
+          <genEnumLiterals ecoreEnumLiteral="graphiti.ecore#//algorithms/styles/LocationType/LOCATION_TYPE_ABSOLUTE_START"/>
+          <genEnumLiterals ecoreEnumLiteral="graphiti.ecore#//algorithms/styles/LocationType/LOCATION_TYPE_ABSOLUTE_END"/>
+        </genEnums>
+        <genClasses ecoreClass="graphiti.ecore#//algorithms/styles/RenderingStyle">
+          <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference graphiti.ecore#//algorithms/styles/RenderingStyle/adaptedGradientColoredAreas"/>
+        </genClasses>
+        <genClasses ecoreClass="graphiti.ecore#//algorithms/styles/Style">
+          <genFeatures createChild="false" ecoreFeature="ecore:EAttribute graphiti.ecore#//algorithms/styles/Style/id"/>
+          <genFeatures createChild="false" ecoreFeature="ecore:EAttribute graphiti.ecore#//algorithms/styles/Style/description"/>
+          <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference graphiti.ecore#//algorithms/styles/Style/font"/>
+          <genFeatures createChild="false" ecoreFeature="ecore:EAttribute graphiti.ecore#//algorithms/styles/Style/horizontalAlignment"/>
+          <genFeatures createChild="false" ecoreFeature="ecore:EAttribute graphiti.ecore#//algorithms/styles/Style/verticalAlignment"/>
+          <genFeatures createChild="false" ecoreFeature="ecore:EAttribute graphiti.ecore#//algorithms/styles/Style/angle"/>
+          <genFeatures createChild="false" ecoreFeature="ecore:EAttribute graphiti.ecore#//algorithms/styles/Style/stretchH"/>
+          <genFeatures createChild="false" ecoreFeature="ecore:EAttribute graphiti.ecore#//algorithms/styles/Style/stretchV"/>
+          <genFeatures createChild="false" ecoreFeature="ecore:EAttribute graphiti.ecore#//algorithms/styles/Style/proportional"/>
+          <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference graphiti.ecore#//algorithms/styles/Style/styleContainer"/>
+        </genClasses>
+        <genClasses image="false" ecoreClass="graphiti.ecore#//algorithms/styles/AbstractStyle">
+          <genFeatures notify="false" createChild="false" propertySortChoices="true"
+              ecoreFeature="ecore:EReference graphiti.ecore#//algorithms/styles/AbstractStyle/background"/>
+          <genFeatures notify="false" createChild="false" propertySortChoices="true"
+              ecoreFeature="ecore:EReference graphiti.ecore#//algorithms/styles/AbstractStyle/foreground"/>
+          <genFeatures createChild="false" ecoreFeature="ecore:EAttribute graphiti.ecore#//algorithms/styles/AbstractStyle/lineWidth"/>
+          <genFeatures createChild="false" ecoreFeature="ecore:EAttribute graphiti.ecore#//algorithms/styles/AbstractStyle/lineStyle"/>
+          <genFeatures createChild="false" ecoreFeature="ecore:EAttribute graphiti.ecore#//algorithms/styles/AbstractStyle/filled"/>
+          <genFeatures createChild="false" ecoreFeature="ecore:EAttribute graphiti.ecore#//algorithms/styles/AbstractStyle/lineVisible"/>
+          <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference graphiti.ecore#//algorithms/styles/AbstractStyle/renderingStyle"/>
+          <genFeatures createChild="false" ecoreFeature="ecore:EAttribute graphiti.ecore#//algorithms/styles/AbstractStyle/transparency"/>
+        </genClasses>
+        <genClasses ecoreClass="graphiti.ecore#//algorithms/styles/GradientColoredLocation">
+          <genFeatures createChild="false" ecoreFeature="ecore:EAttribute graphiti.ecore#//algorithms/styles/GradientColoredLocation/locationType"/>
+          <genFeatures createChild="false" ecoreFeature="ecore:EAttribute graphiti.ecore#//algorithms/styles/GradientColoredLocation/locationValue"/>
+          <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference graphiti.ecore#//algorithms/styles/GradientColoredLocation/color"/>
+        </genClasses>
+        <genClasses ecoreClass="graphiti.ecore#//algorithms/styles/GradientColoredArea">
+          <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference graphiti.ecore#//algorithms/styles/GradientColoredArea/start"/>
+          <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference graphiti.ecore#//algorithms/styles/GradientColoredArea/end"/>
+        </genClasses>
+        <genClasses ecoreClass="graphiti.ecore#//algorithms/styles/GradientColoredAreas">
+          <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference graphiti.ecore#//algorithms/styles/GradientColoredAreas/gradientColor"/>
+          <genFeatures createChild="false" ecoreFeature="ecore:EAttribute graphiti.ecore#//algorithms/styles/GradientColoredAreas/styleAdaption"/>
+        </genClasses>
+        <genClasses ecoreClass="graphiti.ecore#//algorithms/styles/AdaptedGradientColoredAreas">
+          <genFeatures createChild="false" ecoreFeature="ecore:EAttribute graphiti.ecore#//algorithms/styles/AdaptedGradientColoredAreas/definedStyleId"/>
+          <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference graphiti.ecore#//algorithms/styles/AdaptedGradientColoredAreas/adaptedGradientColoredAreas"/>
+          <genFeatures createChild="false" ecoreFeature="ecore:EAttribute graphiti.ecore#//algorithms/styles/AdaptedGradientColoredAreas/gradientType"/>
+        </genClasses>
+        <genClasses ecoreClass="graphiti.ecore#//algorithms/styles/Font">
+          <genFeatures createChild="false" ecoreFeature="ecore:EAttribute graphiti.ecore#//algorithms/styles/Font/name"/>
+          <genFeatures createChild="false" ecoreFeature="ecore:EAttribute graphiti.ecore#//algorithms/styles/Font/size"/>
+          <genFeatures createChild="false" ecoreFeature="ecore:EAttribute graphiti.ecore#//algorithms/styles/Font/italic"/>
+          <genFeatures createChild="false" ecoreFeature="ecore:EAttribute graphiti.ecore#//algorithms/styles/Font/bold"/>
+        </genClasses>
+        <genClasses ecoreClass="graphiti.ecore#//algorithms/styles/Point">
+          <genFeatures createChild="false" ecoreFeature="ecore:EAttribute graphiti.ecore#//algorithms/styles/Point/x"/>
+          <genFeatures createChild="false" ecoreFeature="ecore:EAttribute graphiti.ecore#//algorithms/styles/Point/y"/>
+          <genFeatures createChild="false" ecoreFeature="ecore:EAttribute graphiti.ecore#//algorithms/styles/Point/before"/>
+          <genFeatures createChild="false" ecoreFeature="ecore:EAttribute graphiti.ecore#//algorithms/styles/Point/after"/>
+        </genClasses>
+        <genClasses ecoreClass="graphiti.ecore#//algorithms/styles/Color">
+          <genFeatures createChild="false" ecoreFeature="ecore:EAttribute graphiti.ecore#//algorithms/styles/Color/red"/>
+          <genFeatures createChild="false" ecoreFeature="ecore:EAttribute graphiti.ecore#//algorithms/styles/Color/green"/>
+          <genFeatures createChild="false" ecoreFeature="ecore:EAttribute graphiti.ecore#//algorithms/styles/Color/blue"/>
+        </genClasses>
+      </nestedGenPackages>
+    </nestedGenPackages>
+  </genPackages>
+</genmodel:GenModel>
