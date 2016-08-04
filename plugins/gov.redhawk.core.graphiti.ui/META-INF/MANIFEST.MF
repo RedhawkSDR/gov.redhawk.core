@@ -13,9 +13,16 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.xtext.xbase.lib,
  org.eclipse.graphiti,
  org.eclipse.graphiti.mm;visibility:=reexport,
- mil.jpeojtrs.sca.partitioning;bundle-version="2.1.0"
+ mil.jpeojtrs.sca.partitioning;bundle-version="2.1.0",
+ gov.redhawk.ui,
+ org.eclipse.ui.views.properties.tabbed,
+ org.eclipse.graphiti.ui,
+ org.eclipse.emf.transaction,
+ org.eclipse.emf.workspace,
+ org.eclipse.gef
 Bundle-ActivationPolicy: lazy
-Export-Package: gov.redhawk.core.graphiti.ui.ext,
+Export-Package: gov.redhawk.core.graphiti.ui.editor;x-friends:="gov.redhawk.core.graphiti.sad.ui,gov.redhawk.core.graphiti.dcd.ui",
+ gov.redhawk.core.graphiti.ui.ext,
  gov.redhawk.core.graphiti.ui.ext.impl,
  gov.redhawk.core.graphiti.ui.ext.util,
  gov.redhawk.core.graphiti.ui.util
