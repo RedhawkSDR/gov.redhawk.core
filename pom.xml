@@ -87,6 +87,8 @@
     <module>plugins/gov.redhawk.common.ui</module>
     <module>plugins/gov.redhawk.configurator</module>
     <module>plugins/gov.redhawk.core.filemanager</module>
+    <module>plugins/gov.redhawk.core.graphiti.dcd.ui</module>
+    <module>plugins/gov.redhawk.core.graphiti.sad.ui</module>
     <module>plugins/gov.redhawk.core.graphiti.ui</module>
     <module>plugins/gov.redhawk.sca.model.provider.event</module>
     <module>plugins/gov.redhawk.sca.model.provider.refresh</module>

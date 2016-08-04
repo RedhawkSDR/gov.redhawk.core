@@ -1,0 +1,8 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Redhawk SAD / Waveform Diagrams
+Bundle-SymbolicName: gov.redhawk.core.graphiti.sad.ui
+Bundle-Version: 1.0.0.qualifier
+Bundle-Vendor: REDHAWK
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Require-Bundle: gov.redhawk.core.graphiti.ui;bundle-version="1.0.0"
