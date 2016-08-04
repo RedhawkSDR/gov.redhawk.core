@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<!--
+    This file is protected by Copyright.
+    Please refer to the COPYRIGHT file distributed with this source distribution.
+
+    This file is part of REDHAWK IDE.
+
+    All rights reserved.  This program and the accompanying materials are made available under
+    the terms of the Eclipse Public License v1.0 which accompanies this distribution, and is available at
+    http://www.eclipse.org/legal/epl-v10.html.
+-->
+<plugin>
+
+   <extension point="org.eclipse.emf.ecore.generated_package">
+      <!-- @generated RHSadGraphiti -->
+      <package
+            uri="http://www.redhawk.gov/model/rhsadgext/1.0.0"
+            class="gov.redhawk.core.graphiti.sad.ui.ext.RHSadGxPackage"
+            genModel="model/RHSadGraphiti.xcore"/>
+   </extension>
+
+   <extension point="org.eclipse.emf.ecore.content_parser">
+      <!-- @generated RHSadGraphiti -->
+      <parser
+            contentTypeIdentifier="http://www.redhawk.gov/model/rhsadgext/1.0.0"
+            class="org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl"/>
+   </extension>
+
+   <extension point="org.eclipse.core.contenttype.contentTypes">
+      <!-- @generated RHSadGraphiti -->
+      <content-type
+            base-type="org.eclipse.emf.ecore.xmi"
+            file-extensions="rhsadgx"
+            id="http://www.redhawk.gov/model/rhsadgext/1.0.0"
+            name="%_UI_RHSadGx_content_type"
+            priority="normal">
+         <describer class="org.eclipse.emf.ecore.xmi.impl.RootXMLContentHandlerImpl$Describer">
+            <parameter name="namespace" value="http://www.redhawk.gov/model/rhsadgext/1.0.0"/>
+            <parameter name="kind" value="xmi"/>
+         </describer>
+      </content-type>
+   </extension>
+
+</plugin>
