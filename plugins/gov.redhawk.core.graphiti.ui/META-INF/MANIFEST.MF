@@ -21,7 +21,9 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.emf.workspace,
  org.eclipse.gef
 Bundle-ActivationPolicy: lazy
-Export-Package: gov.redhawk.core.graphiti.ui.editor;x-friends:="gov.redhawk.core.graphiti.sad.ui,gov.redhawk.core.graphiti.dcd.ui",
+Export-Package: gov.redhawk.core.graphiti.ui.editor;
+  x-friends:="gov.redhawk.core.graphiti.sad.ui,
+   gov.redhawk.core.graphiti.dcd.ui",
  gov.redhawk.core.graphiti.ui.ext,
  gov.redhawk.core.graphiti.ui.ext.impl,
  gov.redhawk.core.graphiti.ui.ext.util,

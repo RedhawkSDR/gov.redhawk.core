@@ -42,4 +42,69 @@
       </content-type>
    </extension>
 
+   <extension
+         point="org.eclipse.ui.editors">
+      <editor
+            class="gov.redhawk.core.graphiti.dcd.ui.editor.GraphitiDcdEditor"
+            contributorClass="gov.redhawk.core.graphiti.dcd.ui.editor.GraphitiDcdMultipageEditorActionBarContributor"
+            default="true"
+            icon="icons/DcdEditor.gif"
+            id="gov.redhawk.ide.graphiti.dcd.ui.editor.DcdEditor"
+            name="Node Editor">
+         <contentTypeBinding
+               contentTypeId="mil.jpeojtrs.sca.dcd.content-type">
+         </contentTypeBinding>
+      </editor>
+      <editor
+            class="gov.redhawk.core.graphiti.dcd.ui.editor.GraphitiDeviceManagerExplorerEditor"
+            contributorClass="gov.redhawk.core.graphiti.dcd.ui.editor.GraphitiDcdMultipageEditorActionBarContributor"
+            default="true"
+            icon="icons/DeviceManagerExplorer.gif"
+            id="gov.redhawk.ide.graphiti.dcd.ui.editor.dcdExplorer"
+            name="Node Explorer">
+      </editor>
+   </extension>
+
+   <extension
+         point="gov.redhawk.sca.ui.scaContentTypes">
+      <contentTypeBinding
+            contentTypeId="mil.jpeojtrs.sca.dcd.contentType"
+            editorId="gov.redhawk.ide.graphiti.dcd.ui.editor.DcdEditor"
+            priority="HIGHEST">
+      </contentTypeBinding>
+      <contentTypeBinding
+            contentTypeId="gov.redhawk.ui.dcd.contentType"
+            editorId="gov.redhawk.ide.graphiti.dcd.ui.editor.dcdExplorer"
+            priority="HIGHEST">
+      </contentTypeBinding>
+   </extension>
+
+   <extension
+         point="org.eclipse.ui.menus">
+      <menuContribution
+            allPopups="false"
+            locationURI="popup:gov.redhawk.ide.graphiti.dcd.ui.editor.DcdEditor?after=org.eclipse.gef.group.rest">
+         <command
+               commandId="gov.redhawk.ide.graphiti.ui.showPropertiesView"
+               label="Show Properties"
+               style="push">
+            <visibleWhen
+                  checkEnabled="true">
+            </visibleWhen>
+         </command>
+      </menuContribution>
+      <menuContribution
+            allPopups="false"
+            locationURI="popup:gov.redhawk.ide.graphiti.dcd.ui.editor.dcdExplorer?after=org.eclipse.gef.group.rest">
+         <command
+               commandId="gov.redhawk.ide.graphiti.ui.showPropertiesView"
+               label="Show Properties"
+               style="push">
+            <visibleWhen
+                  checkEnabled="true">
+            </visibleWhen>
+         </command>
+      </menuContribution>
+   </extension>
+
 </plugin>
