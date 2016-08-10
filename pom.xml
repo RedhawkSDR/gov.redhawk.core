@@ -32,6 +32,9 @@
     <sonar.core.codeCoveragePlugin>jacoco</sonar.core.codeCoveragePlugin>
     <sonar.dynamicAnalysis>reuseReports</sonar.dynamicAnalysis>
     <sonar.jacoco.reportPath>${project.basedir}/../../target/jacoco.exec</sonar.jacoco.reportPath>
+    <sonar.issue.ignore.block>e1</sonar.issue.ignore.block>
+    <sonar.issue.ignore.block.e1.beginBlockRegexp>BEGIN GENERATED CODE</sonar.issue.ignore.block.e1.beginBlockRegexp>
+    <sonar.issue.ignore.block.e1.endBlockRegexp>END GENERATED CODE</sonar.issue.ignore.block.e1.endBlockRegexp>
   </properties>
 
   <repositories>
