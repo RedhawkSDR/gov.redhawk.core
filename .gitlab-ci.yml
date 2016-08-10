@@ -1,0 +1,24 @@
+variables:
+  P2_PATH: $CI_PROJECT_NAME/updates/
+mvn:
+  image: redhawkci/maven:3-jdk-8
+  stage: build
+  script:
+    - mvn install sonar:sonar -P sign -P develop-2.0 -P with-metadata
+  artifacts:
+    paths:
+      - releng/p2/target/*.zip
+      - releng/p2/target/repository/**/*
+      - releng/p2/target/repository/*.jar
+    expire_in: 5 days
+deploy:
+  image: redhawkci/deploy
+  stage: deploy
+  tags: 
+    - deployment
+  dependencies:
+    - mvn
+  script:
+    - eval "$(ssh-agent -s)"
+    - ssh-add
+    - rsync -avz --delete releng/p2/target/repository/* $PUBLISH_URL:$PUBLISH_PATH/$P2_PATH/$CI_BUILD_REF_NAME/
