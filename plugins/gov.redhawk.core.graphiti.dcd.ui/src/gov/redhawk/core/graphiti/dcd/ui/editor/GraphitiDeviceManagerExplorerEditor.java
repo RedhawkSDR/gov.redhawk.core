@@ -18,6 +18,9 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.emf.common.command.Command;
+import org.eclipse.emf.common.command.CommandStack;
+import org.eclipse.emf.common.command.CompoundCommand;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.ui.URIEditorInput;
 import org.eclipse.emf.common.util.URI;
@@ -35,9 +38,6 @@ import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.statushandlers.StatusManager;
 
 import gov.redhawk.core.graphiti.dcd.ui.GraphitiDcdUIPlugin;
-import gov.redhawk.ide.debug.LocalSca;
-import gov.redhawk.ide.debug.ScaDebugPlugin;
-import gov.redhawk.ide.debug.internal.ScaDebugInstance;
 import gov.redhawk.model.sca.RefreshDepth;
 import gov.redhawk.model.sca.ScaDeviceManager;
 import gov.redhawk.model.sca.commands.NonDirtyingCommand;
@@ -55,8 +55,6 @@ public class GraphitiDeviceManagerExplorerEditor extends GraphitiDcdEditor {
 
 	public static final String EDITOR_ID = "gov.redhawk.ide.graphiti.dcd.ui.editor.dcdExplorer";
 
-	private Resource mainResource;
-	private DeviceConfiguration dcd;
 	private GraphitiDcdModelMap modelMap;
 	private ScaDeviceManager deviceManager;
 	private ScaGraphitiModelAdapter scaListener;
@@ -71,29 +69,12 @@ public class GraphitiDeviceManagerExplorerEditor extends GraphitiDcdEditor {
 		return deviceManager;
 	}
 
-	protected GraphitiDcdModelMap getModelMap() {
-		return modelMap;
+	protected void setDeviceManager(ScaDeviceManager deviceManager) {
+		this.deviceManager = deviceManager;
 	}
 
-	@Override
-	protected void createModel() {
-		final URI resourceURI = EditUIUtil.getURI(getEditorInput());
-		// For safety we'll decode the URI to make sure escape sequences have been correctly represented
-		String decodedURIString = URI.decode(resourceURI.toString());
-		final URI decodedURI = URI.createURI(decodedURIString);
-		mainResource = getEditingDomain().getResourceSet().createResource(decodedURI);
-
-		dcd = DcdFactory.eINSTANCE.createDeviceConfiguration();
-
-		getEditingDomain().getCommandStack().execute(new ScaModelCommand() {
-
-			@Override
-			public void execute() {
-				mainResource.getContents().add(dcd);
-			}
-		});
-
-		initModelMap();
+	protected GraphitiDcdModelMap getModelMap() {
+		return modelMap;
 	}
 
 	@Override
@@ -103,91 +84,23 @@ public class GraphitiDeviceManagerExplorerEditor extends GraphitiDcdEditor {
 			if (scaInput.getScaObject() instanceof ScaDeviceManager) {
 				deviceManager = (ScaDeviceManager) scaInput.getScaObject();
 			} else {
-				throw new IllegalStateException("Node Diagram opened on invalid sca input " + scaInput.getScaObject());
+				throw new IllegalStateException("Diagram opened with invalid input: " + scaInput.getScaObject());
 			}
-		} else if (input instanceof URIEditorInput) {
-			URIEditorInput uriInput = (URIEditorInput) input;
-			if (uriInput.getURI().equals(ScaDebugInstance.getLocalSandboxDeviceManagerURI())) {
-				final LocalSca localSca = ScaDebugPlugin.getInstance().getLocalSca();
-				if (!ScaDebugInstance.INSTANCE.isInit()) {
-					ProgressMonitorDialog dialog = new ProgressMonitorDialog(Display.getCurrent().getActiveShell());
-					try {
-						dialog.run(true, true, new IRunnableWithProgress() {
-
-							@Override
-							public void run(IProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
-								monitor.beginTask("Starting Chalkboard...", IProgressMonitor.UNKNOWN);
-								try {
-									ScaDebugInstance.INSTANCE.init(monitor);
-								} catch (CoreException e) {
-									throw new InvocationTargetException(e);
-								}
-								monitor.done();
-							}
-
-						});
-					} catch (InvocationTargetException e1) {
-						StatusManager.getManager().handle(new Status(Status.ERROR, GraphitiDcdUIPlugin.ID, "Failed to initialize sandbox.", e1),
-							StatusManager.SHOW | StatusManager.LOG);
-					} catch (InterruptedException e1) {
-						// PASS
-					}
-				}
-
-				deviceManager = localSca.getSandboxDeviceManager();
-				if (deviceManager == null) {
-					ProgressMonitorDialog dialog = new ProgressMonitorDialog(Display.getCurrent().getActiveShell());
-					try {
-						dialog.run(true, true, new IRunnableWithProgress() {
-
-							@Override
-							public void run(IProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
-								monitor.beginTask("Starting Sandbox...", IProgressMonitor.UNKNOWN);
-								try {
-									ScaDebugPlugin.getInstance().getLocalSca(monitor);
-								} catch (CoreException e) {
-									throw new InvocationTargetException(e);
-								}
-
-							}
-						});
-					} catch (InvocationTargetException e) {
-						throw new IllegalStateException("Failed to setup sandbox", e);
-					} catch (InterruptedException e) {
-						throw new IllegalStateException("Sandbox setup canceled, can not load editor.");
-					}
-					deviceManager = localSca.getSandboxDeviceManager();
-					if (deviceManager == null) {
-						throw new IllegalStateException("Failed to setup sandbox, null device manager.", null);
-					}
-				}
-			}
-		} else {
-			throw new IllegalStateException("Node Diagram opened on invalid input " + input);
 		}
 
 		super.setInput(input);
 	}
 
-	@Override
-	public Resource getMainResource() {
-		if (mainResource == null) {
-			return super.getMainResource();
-		}
-		return mainResource;
-	}
-
 	protected void initModelMap() {
 		if (deviceManager == null) {
-			throw new IllegalStateException("Can not initialize the Model Map with null local device manager");
+			throw new IllegalStateException("Can not initialize the model map without a device manager");
 		}
-
+		DeviceConfiguration dcd = DeviceConfiguration.Util.getDeviceConfiguration(super.getMainResource());
 		if (dcd == null) {
-			throw new IllegalStateException("Can not initialize the Model Map with null dcd");
+			throw new IllegalStateException("Can not initialize the model map without a device configuration (DCD)");
 		}
 
 		if (!deviceManager.isSetDevices()) {
-
 			if (Display.getCurrent() != null) {
 				ProgressMonitorDialog dialog = new ProgressMonitorDialog(Display.getCurrent().getActiveShell());
 				try {
@@ -210,9 +123,7 @@ public class GraphitiDeviceManagerExplorerEditor extends GraphitiDcdEditor {
 							}
 						}
 					});
-				} catch (InvocationTargetException e) {
-					// PASS
-				} catch (InterruptedException e) {
+				} catch (InvocationTargetException | InterruptedException e) {
 					// PASS
 				}
 			} else {
@@ -222,12 +133,9 @@ public class GraphitiDeviceManagerExplorerEditor extends GraphitiDcdEditor {
 					// PASS
 				}
 			}
-
 		}
 
 		modelMap = new GraphitiDcdModelMap(this, dcd, deviceManager);
-		getEditingDomain().getCommandStack().execute(new GraphitiDcdModelMapInitializerCommand(modelMap, dcd, deviceManager));
-		getEditingDomain().getCommandStack().flush();
 
 		this.dcdListener = new DcdGraphitiModelAdapter(modelMap);
 		this.scaListener = new ScaGraphitiModelAdapter(modelMap) {
@@ -251,15 +159,30 @@ public class GraphitiDeviceManagerExplorerEditor extends GraphitiDcdEditor {
 			}
 		};
 
-		ScaModelCommand.execute(this.deviceManager, new ScaModelCommand() {
-
+		// Initialize the model map, then begin listening to the model
+		CommandStack stack = getEditingDomain().getCommandStack();
+		CompoundCommand command = new CompoundCommand();
+		command.append(createModelInitializeCommand());
+		command.append(new ScaModelCommand() {
 			@Override
 			public void execute() {
 				scaListener.addAdapter(deviceManager);
 			}
 		});
+		stack.execute(command);
+		stack.flush();
 
+		// Listen to the DCD for changes
 		dcd.eAdapters().add(this.dcdListener);
+	}
+
+	/**
+	 * Creates an EMF {@link Command} to initialize the model map.
+	 * @return
+	 */
+	protected Command createModelInitializeCommand() {
+		DeviceConfiguration dcd = DeviceConfiguration.Util.getDeviceConfiguration(super.getMainResource());
+		return new GraphitiDcdModelMapInitializerCommand(modelMap, dcd, deviceManager)
 	}
 
 	@Override
@@ -281,6 +204,7 @@ public class GraphitiDeviceManagerExplorerEditor extends GraphitiDcdEditor {
 			});
 			this.scaListener = null;
 		}
+
 		super.dispose();
 	}
 
@@ -293,6 +217,9 @@ public class GraphitiDeviceManagerExplorerEditor extends GraphitiDcdEditor {
 
 				final DiagramEditor editor = createDiagramEditor();
 				setDiagramEditor(editor);
+
+				initModelMap();
+
 				final IEditorInput input = createDiagramInput(dcdResource);
 				int pageIndex = addPage(editor, input);
 				setPageText(pageIndex, "Diagram");
@@ -304,13 +231,7 @@ public class GraphitiDeviceManagerExplorerEditor extends GraphitiDcdEditor {
 
 				// set layout for sandbox editors
 				DUtil.layout(editor);
-			} catch (final PartInitException e) {
-				StatusManager.getManager().handle(new Status(IStatus.ERROR, GraphitiDcdUIPlugin.PLUGIN_ID, "Failed to create editor parts.", e),
-					StatusManager.LOG | StatusManager.SHOW);
-			} catch (final IOException e) {
-				StatusManager.getManager().handle(new Status(IStatus.ERROR, GraphitiDcdUIPlugin.PLUGIN_ID, "Failed to create editor parts.", e),
-					StatusManager.LOG | StatusManager.SHOW);
-			} catch (final CoreException e) {
+			} catch (IOException | CoreException e) {
 				StatusManager.getManager().handle(new Status(IStatus.ERROR, GraphitiDcdUIPlugin.PLUGIN_ID, "Failed to create editor parts.", e),
 					StatusManager.LOG | StatusManager.SHOW);
 			}
@@ -330,7 +251,8 @@ public class GraphitiDeviceManagerExplorerEditor extends GraphitiDcdEditor {
 				}
 			}
 		} catch (PartInitException e) {
-			StatusManager.getManager().handle(new Status(IStatus.ERROR, GraphitiDcdUIPlugin.PLUGIN_ID, "Failed to add pages.", e));
+			StatusManager.getManager().handle(new Status(IStatus.ERROR, GraphitiDcdUIPlugin.PLUGIN_ID, "Failed to add pages.", e),
+				StatusManager.LOG | StatusManager.SHOW);
 		}
 
 		final Diagram diagram = this.getDiagramEditor().getDiagramBehavior().getDiagramTypeProvider().getDiagram();

@@ -26,6 +26,8 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.emf.common.command.Command;
+import org.eclipse.emf.common.command.CommandStack;
 import org.eclipse.emf.common.command.CompoundCommand;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.ui.URIEditorInput;
@@ -68,9 +70,6 @@ public class GraphitiWaveformExplorerEditor extends GraphitiSADEditor {
 
 	private ScaGraphitiModelAdapter scaListener;
 	private SadGraphitiModelAdapter sadlistener;
-	private boolean isLocalSca;
-	private Resource mainResource;
-	private SoftwareAssembly sad;
 	private GraphitiModelMap modelMap;
 	private ScaWaveform waveform;
 
@@ -83,26 +82,12 @@ public class GraphitiWaveformExplorerEditor extends GraphitiSADEditor {
 		return waveform;
 	}
 
-	protected GraphitiModelMap getModelMap() {
-		return modelMap;
+	protected void setWaveform(ScaWaveform waveform) {
+		this.waveform = waveform;
 	}
 
-	@Override
-	protected void createModel() {
-		if (isLocalSca) {
-			mainResource = getEditingDomain().getResourceSet().createResource(ScaDebugInstance.getLocalSandboxWaveformURI());
-			sad = SadFactory.eINSTANCE.createSoftwareAssembly();
-			getEditingDomain().getCommandStack().execute(new ScaModelCommand() {
-
-				@Override
-				public void execute() {
-					mainResource.getContents().add(sad);
-				}
-			});
-		} else {
-			super.createModel();
-			sad = SoftwareAssembly.Util.getSoftwareAssembly(super.getMainResource());
-		}
+	protected GraphitiModelMap getModelMap() {
+		return modelMap;
 	}
 
 	@Override
@@ -110,92 +95,22 @@ public class GraphitiWaveformExplorerEditor extends GraphitiSADEditor {
 		if (input instanceof ScaFileStoreEditorInput) {
 			ScaFileStoreEditorInput scaInput = (ScaFileStoreEditorInput) input;
 			if (scaInput.getScaObject() instanceof ScaWaveform) {
-				this.waveform = (ScaWaveform) scaInput.getScaObject();
+				setWaveform((ScaWaveform) scaInput.getScaObject());
 			} else {
-				throw new IllegalStateException("Sandbox Editor opened on invalid sca input " + scaInput.getScaObject());
+				throw new IllegalStateException("Diagram opened with invalid input: " + scaInput.getScaObject());
 			}
-		} else if (input instanceof URIEditorInput) {
-			URIEditorInput uriInput = (URIEditorInput) input;
-			if (uriInput.getURI().equals(ScaDebugInstance.getLocalSandboxWaveformURI())) {
-				final LocalSca localSca = ScaDebugPlugin.getInstance().getLocalSca();
-				if (!ScaDebugInstance.INSTANCE.isInit()) {
-					ProgressMonitorDialog dialog = new ProgressMonitorDialog(Display.getCurrent().getActiveShell());
-					try {
-						dialog.run(true, true, new IRunnableWithProgress() {
-
-							@Override
-							public void run(IProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
-								monitor.beginTask("Starting Chalkboard...", IProgressMonitor.UNKNOWN);
-								try {
-									ScaDebugInstance.INSTANCE.init(monitor);
-								} catch (CoreException e) {
-									throw new InvocationTargetException(e);
-								}
-								monitor.done();
-							}
-
-						});
-					} catch (InvocationTargetException e1) {
-						StatusManager.getManager().handle(new Status(Status.ERROR, ScaDebugPlugin.ID, "Failed to initialize sandbox.", e1),
-							StatusManager.SHOW | StatusManager.LOG);
-					} catch (InterruptedException e1) {
-						// PASS
-					}
-				}
-
-				this.waveform = localSca.getSandboxWaveform();
-				if (waveform == null) {
-					ProgressMonitorDialog dialog = new ProgressMonitorDialog(Display.getCurrent().getActiveShell());
-					try {
-						dialog.run(true, true, new IRunnableWithProgress() {
-
-							@Override
-							public void run(IProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
-								monitor.beginTask("Starting Sandbox...", IProgressMonitor.UNKNOWN);
-								try {
-									ScaDebugPlugin.getInstance().getLocalSca(monitor);
-								} catch (CoreException e) {
-									throw new InvocationTargetException(e);
-								}
-
-							}
-						});
-					} catch (InvocationTargetException e) {
-						throw new IllegalStateException("Failed to setup sandbox", e);
-					} catch (InterruptedException e) {
-						throw new IllegalStateException("Sandbox setup canceled, can not load editor.");
-					}
-					this.waveform = localSca.getSandboxWaveform();
-					if (waveform == null) {
-						throw new IllegalStateException("Failed to setup sandbox, null waveform.", null);
-					}
-				}
-			}
-		} else {
-			throw new IllegalStateException("Sandbox Editor opened on invalid input " + input);
-		}
-
-		if (ScaDebugPlugin.getInstance().getLocalSca().getSandboxWaveform() == waveform || this.waveform == null) {
-			isLocalSca = true;
 		}
 
 		super.setInput(input);
 	}
 
-	@Override
-	public Resource getMainResource() {
-		if (mainResource == null) {
-			return super.getMainResource();
-		}
-		return mainResource;
-	}
-
 	protected void initModelMap() throws CoreException {
 		if (waveform == null) {
-			throw new IllegalStateException("Can not initialize the Model Map with null local waveform");
+			throw new IllegalStateException("Can not initialize the model map without a waveform");
 		}
+		SoftwareAssembly sad = SoftwareAssembly.Util.getSoftwareAssembly(super.getMainResource());
 		if (sad == null) {
-			throw new IllegalStateException("Can not initialize the Model Map with null sad");
+			throw new IllegalStateException("Can not initialize the model map without a software assembly (SAD)");
 		}
 
 		if (!waveform.isSetComponents()) {
@@ -292,6 +207,7 @@ public class GraphitiWaveformExplorerEditor extends GraphitiSADEditor {
 
 		this.sadlistener = new SadGraphitiModelAdapter(modelMap);
 		this.scaListener = new ScaGraphitiModelAdapter(modelMap) {
+
 			@Override
 			public void notifyChanged(Notification notification) {
 				super.notifyChanged(notification);
@@ -312,36 +228,32 @@ public class GraphitiWaveformExplorerEditor extends GraphitiSADEditor {
 			}
 		};
 
-		if (isLocalSca) {
-			// Use the REDHAWK Model source to build the SAD when in the chalkboard since the SAD file isn't modified
-			SadGraphitiModelInitializerCommand command = new SadGraphitiModelInitializerCommand(modelMap, sad, (LocalScaWaveform) waveform);
-			getEditingDomain().getCommandStack().execute(command);
-			ScaModelCommand.execute(this.waveform, new ScaModelCommand() {
+		// Initialize the model map, then begin listening to the model
+		CommandStack stack = getEditingDomain().getCommandStack();
+		CompoundCommand command = new CompoundCommand();
+		command.append(createModelInitializeCommand());
+		command.append(new ScaModelCommand() {
 
-				@Override
-				public void execute() {
-					scaListener.addAdapter(waveform);
-				}
-			});
-		} else {
-			// Use the existing SAD file as a template when initializing the modeling map
-			TransactionalEditingDomain ed = (TransactionalEditingDomain) getEditingDomain();
-			TransactionalCommandStack stack = (TransactionalCommandStack) ed.getCommandStack();
-			CompoundCommand command = new CompoundCommand();
-			command.append(new GraphitiModelMapInitializerCommand(modelMap, sad, waveform));
-			command.append(new ScaModelCommand() {
+			@Override
+			public void execute() {
+				scaListener.addAdapter(waveform);
 
-				@Override
-				public void execute() {
-					scaListener.addAdapter(waveform);
+			}
+		});
+		stack.execute(command);
+		stack.flush();
 
-				}
-			});
-			stack.execute(command);
-		}
-		getEditingDomain().getCommandStack().flush();
-
+		// Listen to the SAD for changes
 		sad.eAdapters().add(this.sadlistener);
+	}
+
+	/**
+	 * Creates an EMF {@link Command} to initialize the model map.
+	 * @return
+	 */
+	protected Command createModelInitializeCommand() {
+		SoftwareAssembly sad = SoftwareAssembly.Util.getSoftwareAssembly(super.getMainResource());
+		return new GraphitiModelMapInitializerCommand(modelMap, sad, waveform);
 	}
 
 	@Override
@@ -352,6 +264,7 @@ public class GraphitiWaveformExplorerEditor extends GraphitiSADEditor {
 			}
 			this.sadlistener = null;
 		}
+
 		if (this.scaListener != null) {
 			ScaModelCommand.execute(waveform, new ScaModelCommand() {
 
@@ -362,6 +275,7 @@ public class GraphitiWaveformExplorerEditor extends GraphitiSADEditor {
 			});
 			this.scaListener = null;
 		}
+
 		super.dispose();
 	}
 
@@ -397,17 +311,12 @@ public class GraphitiWaveformExplorerEditor extends GraphitiSADEditor {
 
 				// set layout for sandbox editors
 				DUtil.layout(editor);
-			} catch (final PartInitException e) {
-				StatusManager.getManager().handle(new Status(IStatus.ERROR, GraphitiSadUIPlugin.PLUGIN_ID, "Failed to create editor parts.", e),
-					StatusManager.LOG | StatusManager.SHOW);
-			} catch (final IOException e) {
-				StatusManager.getManager().handle(new Status(IStatus.ERROR, GraphitiSadUIPlugin.PLUGIN_ID, "Failed to create editor parts.", e),
-					StatusManager.LOG | StatusManager.SHOW);
-			} catch (final CoreException e) {
+			} catch (IOException | CoreException e) {
 				StatusManager.getManager().handle(new Status(IStatus.ERROR, GraphitiSadUIPlugin.PLUGIN_ID, "Failed to create editor parts.", e),
 					StatusManager.LOG | StatusManager.SHOW);
 			}
 		}
+
 		try {
 			IEditorPart textEditor = createTextEditor(getEditorInput());
 			setTextEditor(textEditor);
@@ -445,18 +354,6 @@ public class GraphitiWaveformExplorerEditor extends GraphitiSADEditor {
 		GraphitiWaveformDiagramEditor editor = new GraphitiWaveformDiagramEditor((TransactionalEditingDomain) getEditingDomain());
 		editor.addContext("gov.redhawk.ide.graphiti.sad.ui.contexts.sandbox");
 		return editor;
-	}
-
-	@Override
-	public void doSaveAs() {
-		final NewWaveformFromLocalWizard wizard = new NewWaveformFromLocalWizard(SoftwareAssembly.Util.getSoftwareAssembly(getMainResource()));
-		final WizardDialog dialog = new WizardDialog(getSite().getShell(), wizard);
-		dialog.open();
-	}
-
-	@Override
-	public boolean isSaveAsAllowed() {
-		return true;
 	}
 
 	@Override
