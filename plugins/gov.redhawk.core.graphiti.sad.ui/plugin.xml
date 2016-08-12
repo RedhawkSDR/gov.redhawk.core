@@ -107,4 +107,31 @@
       </menuContribution>
    </extension>
 
+   <extension
+         point="org.eclipse.graphiti.ui.diagramTypeProviders">
+      <diagramTypeProvider
+            class="gov.redhawk.ide.graphiti.sad.ui.diagram.providers.WaveformExplorerTypeProvider"
+            id="gov.redhawk.ide.graphiti.sad.ui.WaveformExplorerTypeProvider"
+            name="Waveform Explorer Diagram Type Provider">
+         <diagramType
+               id="gov.redhawk.ide.graphiti.sad.ui.SADDiagramEditor">
+         </diagramType>
+         <imageProvider
+               id="gov.redhawk.ide.graphiti.sad.ui.diagram.providers.imageProvider">
+         </imageProvider>
+         <imageProvider
+               id="gov.redhawk.ide.graphiti.ui.diagram.providers.imageProvider">
+         </imageProvider>
+      </diagramTypeProvider>
+   </extension>
+
+   <extension
+         point="org.eclipse.graphiti.ui.diagramTypes">
+      <diagramType
+            id="gov.redhawk.ide.graphiti.sad.ui.SADDiagramEditor"
+            name="SAD / Waveform Diagram"
+            type="SADDiagram">
+      </diagramType>
+   </extension>
+
 </plugin>

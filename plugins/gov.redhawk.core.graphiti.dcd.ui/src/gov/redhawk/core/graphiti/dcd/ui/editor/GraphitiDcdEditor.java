@@ -39,6 +39,7 @@ import org.eclipse.ui.forms.editor.IFormPage;
 import org.eclipse.ui.statushandlers.StatusManager;
 
 import gov.redhawk.core.graphiti.dcd.ui.GraphitiDcdUIPlugin;
+import gov.redhawk.core.graphiti.dcd.ui.diagram.providers.DCDDiagramTypeProvider;
 import gov.redhawk.core.graphiti.ui.editor.AbstractGraphitiMultiPageEditor;
 import gov.redhawk.ide.dcd.internal.ui.editor.DevicesPage;
 import gov.redhawk.ide.dcd.internal.ui.editor.NodeOverviewPage;
