@@ -42,7 +42,6 @@ import org.eclipse.emf.workspace.IWorkspaceCommandStack;
 import org.eclipse.emf.workspace.WorkspaceEditingDomainFactory;
 import org.eclipse.gef.EditPart;
 import org.eclipse.graphiti.mm.pictograms.PictogramElement;
-import org.eclipse.graphiti.ui.editor.DiagramEditor;
 import org.eclipse.jface.action.IStatusLineManager;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
@@ -54,7 +53,6 @@ import org.eclipse.ui.IActionBars;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IFileEditorInput;
-import org.eclipse.ui.forms.editor.IFormPage;
 import org.eclipse.ui.part.MultiPageSelectionProvider;
 import org.eclipse.ui.statushandlers.StatusManager;
 import org.eclipse.ui.views.contentoutline.IContentOutlinePage;
@@ -64,7 +62,6 @@ import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetPage;
 
 import gov.redhawk.core.graphiti.ui.GraphitiUIPlugin;
 import gov.redhawk.ui.editor.SCAFormEditor;
-import mil.jpeojtrs.sca.util.ScaFileSystemConstants;
 
 public abstract class AbstractGraphitiMultiPageEditor extends SCAFormEditor implements ITabbedPropertySheetPageContributor, IViewerProvider {
 
@@ -79,15 +76,13 @@ public abstract class AbstractGraphitiMultiPageEditor extends SCAFormEditor impl
 	/**
 	 * The graphical diagram editor embedded into this editor.
 	 */
-	private DiagramEditor diagramEditor;
+	private AbstractGraphitiDiagramEditor diagramEditor;
 
 	/**
 	 * This selection provider coordinates the selections of the various editor
 	 * parts.
 	 */
 	private final MultiPageSelectionProvider selectionProvider;
-
-	private IFormPage overviewPage;
 
 	private IEditorPart textEditor;
 
@@ -214,12 +209,54 @@ public abstract class AbstractGraphitiMultiPageEditor extends SCAFormEditor impl
 		return this.diagramEditor.getContributorId();
 	}
 
-	protected abstract void addPages();
+	@Override
+	protected void addPages() {
+		try {
+			this.diagramEditor = createDiagramEditor();
+			initModelMap();
+			final IEditorInput diagramInput = createDiagramInput(getMainResource());
+			int pageIndex = addPage(this.diagramEditor, diagramInput);
+			setPageText(pageIndex, "Diagram");
+			DUtil.layout(this.diagramEditor);
 
-	public void setTextEditor(IEditorPart textEditor) {
-		this.textEditor = textEditor;
+			this.textEditor = createTextEditor(getEditorInput());
+			if (this.textEditor != null) {
+				pageIndex = addPage(-1, textEditor, getEditorInput(), getMainResource());
+				setPageText(pageIndex, getEditorInput().getName());
+			}
+		} catch (IOException | CoreException e) {
+			StatusManager.getManager().handle(new Status(IStatus.ERROR, GraphitiUIPlugin.PLUGIN_ID, "Failed to create editor parts.", e),
+				StatusManager.LOG | StatusManager.SHOW);
+		}
 	}
 
+	/**
+	 * Creates an appropriate Graphiti diagram editor
+	 * @return
+	 */
+	protected abstract AbstractGraphitiDiagramEditor createDiagramEditor();
+
+	/**
+	 * @return the Graphiti diagram editor
+	 */
+	public AbstractGraphitiDiagramEditor getDiagramEditor() {
+		return this.diagramEditor;
+	}
+
+	/**
+	 * Initializes the runtime model map if applicable
+	 */
+	protected void initModelMap() throws CoreException {
+	}
+
+	/**
+	 * Given the input {@link Resource}, create a {@link Diagram} resource, associate it with the model object in the
+	 * resource and return
+	 * @param resource
+	 * @return
+	 * @throws IOException
+	 * @throws CoreException
+	 */
 	protected abstract IEditorInput createDiagramInput(final Resource resource) throws IOException, CoreException;
 
 	/**
@@ -227,30 +264,10 @@ public abstract class AbstractGraphitiMultiPageEditor extends SCAFormEditor impl
 	 * Indicates the mode the diagram is operating in.
 	 * @return
 	 */
-	protected String getDiagramContext(Resource sadResource) {
-		// We assume this is design-time, not runtime. The runtime editors will override this method.
-		// So, if the SCA file system scheme is in use that means the file is from the Target SDR.
-		if (ScaFileSystemConstants.SCHEME.equals(sadResource.getURI().scheme())) {
-			return DUtil.DIAGRAM_CONTEXT_TARGET_SDR;
-		} else {
-			return DUtil.DIAGRAM_CONTEXT_DESIGN;
-		}
-	}
+	protected abstract String getDiagramContext(Resource sadResource);
 
-	protected abstract DiagramEditor createDiagramEditor();
-
-	protected void setDiagramEditor(final DiagramEditor diagramEditor) {
-		this.diagramEditor = diagramEditor;
-	}
-
-	protected abstract IFormPage createOverviewPage(final Resource resource);
-
-	public IFormPage getOverviewPage() {
-		return this.overviewPage;
-	}
-
-	protected void setOverviewPage(final IFormPage overviewPage) {
-		this.overviewPage = overviewPage;
+	public IEditorPart getTextEditor() {
+		return this.textEditor;
 	}
 
 	public IActionBars getActionBars() {
@@ -301,13 +318,8 @@ public abstract class AbstractGraphitiMultiPageEditor extends SCAFormEditor impl
 		diagramEditor.doSave(progressMonitor);
 	}
 
-	public DiagramEditor getDiagramEditor() {
-		return this.diagramEditor;
-	}
-
 	@Override
 	protected IContentOutlinePage createContentOutline() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 

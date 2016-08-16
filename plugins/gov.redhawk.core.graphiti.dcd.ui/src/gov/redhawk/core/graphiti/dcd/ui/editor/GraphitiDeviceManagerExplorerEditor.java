@@ -10,8 +10,9 @@
  */
 package gov.redhawk.core.graphiti.dcd.ui.editor;
 
-import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
+import java.util.Collections;
+import java.util.List;
 import java.util.concurrent.Callable;
 
 import org.eclipse.core.runtime.CoreException;
@@ -22,10 +23,8 @@ import org.eclipse.emf.common.command.Command;
 import org.eclipse.emf.common.command.CommandStack;
 import org.eclipse.emf.common.command.CompoundCommand;
 import org.eclipse.emf.common.notify.Notification;
-import org.eclipse.emf.common.ui.URIEditorInput;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.Resource;
-import org.eclipse.emf.edit.ui.util.EditUIUtil;
 import org.eclipse.emf.transaction.TransactionalEditingDomain;
 import org.eclipse.graphiti.mm.pictograms.Diagram;
 import org.eclipse.graphiti.ui.editor.DiagramEditor;
@@ -44,14 +43,13 @@ import gov.redhawk.model.sca.commands.NonDirtyingCommand;
 import gov.redhawk.model.sca.commands.ScaModelCommand;
 import gov.redhawk.sca.ui.ScaFileStoreEditorInput;
 import mil.jpeojtrs.sca.dcd.DcdComponentInstantiation;
-import mil.jpeojtrs.sca.dcd.DcdFactory;
 import mil.jpeojtrs.sca.dcd.DeviceConfiguration;
 import mil.jpeojtrs.sca.util.CorbaUtils;
 
 /**
  * The multi-page explorer editor for device managers ({@link ScaDeviceManager}). Includes a Graphiti diagram.
  */
-public class GraphitiDeviceManagerExplorerEditor extends GraphitiDcdEditor {
+public class GraphitiDeviceManagerExplorerEditor extends AbstractGraphitiDCDEditor {
 
 	public static final String EDITOR_ID = "gov.redhawk.ide.graphiti.dcd.ui.editor.dcdExplorer";
 
@@ -59,11 +57,6 @@ public class GraphitiDeviceManagerExplorerEditor extends GraphitiDcdEditor {
 	private ScaDeviceManager deviceManager;
 	private ScaGraphitiModelAdapter scaListener;
 	private DcdGraphitiModelAdapter dcdListener;
-
-	@Override
-	public String getDiagramContext(Resource sadResource) {
-		return DUtil.DIAGRAM_CONTEXT_EXPLORER;
-	}
 
 	protected ScaDeviceManager getDeviceManager() {
 		return deviceManager;
@@ -91,11 +84,57 @@ public class GraphitiDeviceManagerExplorerEditor extends GraphitiDcdEditor {
 		super.setInput(input);
 	}
 
+	@Override
+	public String getDiagramContext(Resource sadResource) {
+		return DUtil.DIAGRAM_CONTEXT_EXPLORER;
+	}
+
+	@Override
+	protected void addPages() {
+		super.addPages();
+
+		getEditingDomain().getCommandStack().removeCommandStackListener(getCommandStackListener());
+
+		// make sure diagram elements reflect current runtime state
+		this.modelMap.reflectRuntimeStatus();
+
+		// set layout for sandbox editors
+		DUtil.layout(editor);
+
+		// Adjust the text editor's title to the profile file name if possible
+		IEditorPart textEditor = getTextEditor();
+		if (textEditor != null) {
+			int pageIndex = getPages().indexOf(textEditor);
+			URI profileURI = deviceManager.getProfileURI();
+			if (profileURI != null) {
+				setPageText(pageIndex, profileURI.lastSegment());
+			}
+		}
+
+		// Hide the grid for the explorer diagram
+		final Diagram diagram = this.getDiagramEditor().getDiagramBehavior().getDiagramTypeProvider().getDiagram();
+		if (DUtil.isDiagramExplorer(diagram)) {
+			NonDirtyingCommand.execute(diagram, new NonDirtyingCommand() {
+				@Override
+				public void execute() {
+					diagram.setGridUnit(-1); // hide grid on diagram by setting grid units to -1
+				}
+			});
+		}
+	}
+
+	@Override
+	protected DiagramEditor createDiagramEditor() {
+		GraphitiDcdDiagramEditor editor = new GraphitiDcdDiagramEditor((TransactionalEditingDomain) getEditingDomain());
+		editor.addContext("gov.redhawk.ide.dcd.graphiti.ui.contexts.sandbox");
+		return editor;
+	}
+
 	protected void initModelMap() {
 		if (deviceManager == null) {
 			throw new IllegalStateException("Can not initialize the model map without a device manager");
 		}
-		DeviceConfiguration dcd = DeviceConfiguration.Util.getDeviceConfiguration(super.getMainResource());
+		DeviceConfiguration dcd = getDeviceConfiguration();
 		if (dcd == null) {
 			throw new IllegalStateException("Can not initialize the model map without a device configuration (DCD)");
 		}
@@ -139,6 +178,7 @@ public class GraphitiDeviceManagerExplorerEditor extends GraphitiDcdEditor {
 
 		this.dcdListener = new DcdGraphitiModelAdapter(modelMap);
 		this.scaListener = new ScaGraphitiModelAdapter(modelMap) {
+
 			@Override
 			public void notifyChanged(Notification notification) {
 				super.notifyChanged(notification);
@@ -164,6 +204,7 @@ public class GraphitiDeviceManagerExplorerEditor extends GraphitiDcdEditor {
 		CompoundCommand command = new CompoundCommand();
 		command.append(createModelInitializeCommand());
 		command.append(new ScaModelCommand() {
+
 			@Override
 			public void execute() {
 				scaListener.addAdapter(deviceManager);
@@ -181,7 +222,7 @@ public class GraphitiDeviceManagerExplorerEditor extends GraphitiDcdEditor {
 	 * @return
 	 */
 	protected Command createModelInitializeCommand() {
-		DeviceConfiguration dcd = DeviceConfiguration.Util.getDeviceConfiguration(super.getMainResource());
+		DeviceConfiguration dcd = getDeviceConfiguration();
 		return new GraphitiDcdModelMapInitializerCommand(modelMap, dcd, deviceManager)
 	}
 
@@ -209,66 +250,8 @@ public class GraphitiDeviceManagerExplorerEditor extends GraphitiDcdEditor {
 	}
 
 	@Override
-	protected void addPages() {
-		if (!getEditingDomain().getResourceSet().getResources().isEmpty()
-			&& !(getEditingDomain().getResourceSet().getResources().get(0)).getContents().isEmpty()) {
-			try {
-				final Resource dcdResource = getMainResource();
-
-				final DiagramEditor editor = createDiagramEditor();
-				setDiagramEditor(editor);
-
-				initModelMap();
-
-				final IEditorInput input = createDiagramInput(dcdResource);
-				int pageIndex = addPage(editor, input);
-				setPageText(pageIndex, "Diagram");
-
-				getEditingDomain().getCommandStack().removeCommandStackListener(getCommandStackListener());
-
-				// make sure diagram elements reflect current runtime state
-				this.modelMap.reflectRuntimeStatus();
-
-				// set layout for sandbox editors
-				DUtil.layout(editor);
-			} catch (IOException | CoreException e) {
-				StatusManager.getManager().handle(new Status(IStatus.ERROR, GraphitiDcdUIPlugin.PLUGIN_ID, "Failed to create editor parts.", e),
-					StatusManager.LOG | StatusManager.SHOW);
-			}
-		}
-
-		try {
-			IEditorPart textEditor = createTextEditor(getEditorInput());
-			setTextEditor(textEditor);
-			if (textEditor != null) {
-				final int dcdSourcePageNum = addPage(-1, textEditor, getEditorInput(), getMainResource());
-				for (String s : deviceManager.getProfile().split("/")) {
-					if (s.contains(".xml")) {
-						this.setPageText(dcdSourcePageNum, s);
-						break;
-					}
-					this.setPageText(dcdSourcePageNum, deviceManager.getLabel());
-				}
-			}
-		} catch (PartInitException e) {
-			StatusManager.getManager().handle(new Status(IStatus.ERROR, GraphitiDcdUIPlugin.PLUGIN_ID, "Failed to add pages.", e),
-				StatusManager.LOG | StatusManager.SHOW);
-		}
-
-		final Diagram diagram = this.getDiagramEditor().getDiagramBehavior().getDiagramTypeProvider().getDiagram();
-		NonDirtyingCommand.execute(diagram, new NonDirtyingCommand() {
-			@Override
-			public void execute() {
-				diagram.setGridUnit(-1); // hide grid on diagram by setting grid units to -1
-			}
-		});
-	}
-
-	@Override
-	protected DiagramEditor createDiagramEditor() {
-		GraphitiDcdDiagramEditor editor = new GraphitiDcdDiagramEditor((TransactionalEditingDomain) getEditingDomain());
-		editor.addContext("gov.redhawk.ide.dcd.graphiti.ui.contexts.sandbox");
-		return editor;
+	public List<Object> getOutlineItems() {
+		return Collections.emptyList();
 	}
 
 	@Override

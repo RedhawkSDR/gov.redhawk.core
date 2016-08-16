@@ -45,17 +45,6 @@
    <extension
          point="org.eclipse.ui.editors">
       <editor
-            class="gov.redhawk.core.graphiti.dcd.ui.editor.GraphitiDcdEditor"
-            contributorClass="gov.redhawk.core.graphiti.dcd.ui.editor.GraphitiDcdMultipageEditorActionBarContributor"
-            default="true"
-            icon="icons/DcdEditor.gif"
-            id="gov.redhawk.ide.graphiti.dcd.ui.editor.DcdEditor"
-            name="Node Editor">
-         <contentTypeBinding
-               contentTypeId="mil.jpeojtrs.sca.dcd.content-type">
-         </contentTypeBinding>
-      </editor>
-      <editor
             class="gov.redhawk.core.graphiti.dcd.ui.editor.GraphitiDeviceManagerExplorerEditor"
             contributorClass="gov.redhawk.core.graphiti.dcd.ui.editor.GraphitiDcdMultipageEditorActionBarContributor"
             default="true"

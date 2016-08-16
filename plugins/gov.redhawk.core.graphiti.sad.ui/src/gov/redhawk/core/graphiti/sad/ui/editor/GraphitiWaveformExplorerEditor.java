@@ -10,7 +10,6 @@
  */
 package gov.redhawk.core.graphiti.sad.ui.editor;
 
-import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Collections;
 import java.util.List;
@@ -30,28 +29,17 @@ import org.eclipse.emf.common.command.Command;
 import org.eclipse.emf.common.command.CommandStack;
 import org.eclipse.emf.common.command.CompoundCommand;
 import org.eclipse.emf.common.notify.Notification;
-import org.eclipse.emf.common.ui.URIEditorInput;
+import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.Resource;
-import org.eclipse.emf.transaction.TransactionalCommandStack;
-import org.eclipse.emf.transaction.TransactionalEditingDomain;
 import org.eclipse.graphiti.mm.pictograms.Diagram;
-import org.eclipse.graphiti.ui.editor.DiagramEditor;
 import org.eclipse.jface.dialogs.ProgressMonitorDialog;
 import org.eclipse.jface.operation.IRunnableWithProgress;
-import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorPart;
-import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.statushandlers.StatusManager;
 
-import gov.redhawk.core.graphiti.dcd.ui.internal.editor.ScaDeviceManager;
 import gov.redhawk.core.graphiti.sad.ui.GraphitiSadUIPlugin;
-import gov.redhawk.ide.debug.LocalSca;
-import gov.redhawk.ide.debug.LocalScaWaveform;
-import gov.redhawk.ide.debug.ScaDebugPlugin;
-import gov.redhawk.ide.debug.internal.ScaDebugInstance;
-import gov.redhawk.ide.debug.internal.ui.diagram.NewWaveformFromLocalWizard;
 import gov.redhawk.model.sca.RefreshDepth;
 import gov.redhawk.model.sca.ScaComponent;
 import gov.redhawk.model.sca.ScaWaveform;
@@ -59,24 +47,18 @@ import gov.redhawk.model.sca.commands.NonDirtyingCommand;
 import gov.redhawk.model.sca.commands.ScaModelCommand;
 import gov.redhawk.sca.ui.ScaFileStoreEditorInput;
 import mil.jpeojtrs.sca.sad.SadComponentInstantiation;
-import mil.jpeojtrs.sca.sad.SadFactory;
 import mil.jpeojtrs.sca.sad.SoftwareAssembly;
 import mil.jpeojtrs.sca.util.CorbaUtils;
 
 /**
  * The multi-page explorer editor for waveforms ({@link ScaWaveform}). Includes a Graphiti diagram.
  */
-public class GraphitiWaveformExplorerEditor extends GraphitiSADEditor {
+public class GraphitiWaveformExplorerEditor extends AbstractGraphitiSADEditor {
 
 	private ScaGraphitiModelAdapter scaListener;
 	private SadGraphitiModelAdapter sadlistener;
 	private GraphitiModelMap modelMap;
 	private ScaWaveform waveform;
-
-	@Override
-	public String getDiagramContext(Resource sadResource) {
-		return DUtil.DIAGRAM_CONTEXT_EXPLORER;
-	}
 
 	protected ScaWaveform getWaveform() {
 		return waveform;
@@ -104,11 +86,58 @@ public class GraphitiWaveformExplorerEditor extends GraphitiSADEditor {
 		super.setInput(input);
 	}
 
+	@Override
+	public String getDiagramContext(Resource sadResource) {
+		return DUtil.DIAGRAM_CONTEXT_EXPLORER;
+	}
+
+	@Override
+	protected void addPages() {
+		super.addPages();
+
+		getEditingDomain().getCommandStack().removeCommandStackListener(getCommandStackListener());
+
+		// reflect runtime aspects here
+		getModelMap().reflectRuntimeStatus();
+
+		// set layout for sandbox editors
+		DUtil.layout(editor);
+
+		// Adjust the text editor's title to the profile file name if possible
+		IEditorPart textEditor = getTextEditor();
+		if (textEditor != null) {
+			int pageIndex = getPages().indexOf(textEditor);
+			URI profileURI = waveform.getProfileURI();
+			if (profileURI != null) {
+				setPageText(pageIndex, profileURI.lastSegment());
+			}
+		}
+
+		// Hide the grid for the explorer diagram
+		final Diagram diagram = this.getDiagramEditor().getDiagramBehavior().getDiagramTypeProvider().getDiagram();
+		if (DUtil.isDiagramExplorer(diagram)) {
+			NonDirtyingCommand.execute(diagram, new NonDirtyingCommand() {
+				@Override
+				public void execute() {
+					diagram.setGridUnit(-1); // hide grid on diagram by setting grid units to -1
+				}
+			});
+		}
+	}
+
+	@Override
+	protected AbstractGraphitiDiagramEditor createDiagramEditor() {
+		AbstractGraphitiDiagramEditor editor = super.createDiagramEditor();
+		editor.addContext("gov.redhawk.ide.graphiti.sad.ui.contexts.sandbox");
+		return editor;
+	}
+
+	@Override
 	protected void initModelMap() throws CoreException {
 		if (waveform == null) {
 			throw new IllegalStateException("Can not initialize the model map without a waveform");
 		}
-		SoftwareAssembly sad = SoftwareAssembly.Util.getSoftwareAssembly(super.getMainResource());
+		SoftwareAssembly sad = getSoftwareAssembly();
 		if (sad == null) {
 			throw new IllegalStateException("Can not initialize the model map without a software assembly (SAD)");
 		}
@@ -252,7 +281,7 @@ public class GraphitiWaveformExplorerEditor extends GraphitiSADEditor {
 	 * @return
 	 */
 	protected Command createModelInitializeCommand() {
-		SoftwareAssembly sad = SoftwareAssembly.Util.getSoftwareAssembly(super.getMainResource());
+		SoftwareAssembly sad = getSoftwareAssembly();
 		return new GraphitiModelMapInitializerCommand(modelMap, sad, waveform);
 	}
 
@@ -285,85 +314,8 @@ public class GraphitiWaveformExplorerEditor extends GraphitiSADEditor {
 	}
 
 	@Override
-	protected void addPages() {
-		// Only creates the other pages if there is something that can be edited
-		if (!getEditingDomain().getResourceSet().getResources().isEmpty()
-			&& !(getEditingDomain().getResourceSet().getResources().get(0)).getContents().isEmpty()) {
-			try {
-				final Resource sadResource = getMainResource();
-
-				final DiagramEditor editor = createDiagramEditor();
-				setDiagramEditor(editor);
-
-				initModelMap();
-
-				final IEditorInput input = createDiagramInput(sadResource);
-				int pageIndex = addPage(editor, input);
-				setPageText(pageIndex, "Diagram");
-
-				// set layout for diagram editors
-				DUtil.layout(editor);
-
-				getEditingDomain().getCommandStack().removeCommandStackListener(getCommandStackListener());
-
-				// reflect runtime aspects here
-				this.modelMap.reflectRuntimeStatus();
-
-				// set layout for sandbox editors
-				DUtil.layout(editor);
-			} catch (IOException | CoreException e) {
-				StatusManager.getManager().handle(new Status(IStatus.ERROR, GraphitiSadUIPlugin.PLUGIN_ID, "Failed to create editor parts.", e),
-					StatusManager.LOG | StatusManager.SHOW);
-			}
-		}
-
-		try {
-			IEditorPart textEditor = createTextEditor(getEditorInput());
-			setTextEditor(textEditor);
-			if (textEditor != null) {
-				final int sadSourcePageNum = addPage(-1, textEditor, getEditorInput(), getMainResource());
-				for (String s : waveform.getProfile().split("/")) {
-					if (s.contains(".xml")) {
-						this.setPageText(sadSourcePageNum, s);
-						break;
-					}
-					this.setPageText(sadSourcePageNum, waveform.getName());
-				}
-			}
-		} catch (PartInitException e) {
-			StatusManager.getManager().handle(new Status(IStatus.ERROR, GraphitiSadUIPlugin.PLUGIN_ID, "Failed to create editor parts.", e),
-				StatusManager.LOG | StatusManager.SHOW);
-		}
-
-		final Diagram diagram = this.getDiagramEditor().getDiagramBehavior().getDiagramTypeProvider().getDiagram();
-		NonDirtyingCommand.execute(diagram, new NonDirtyingCommand() {
-			@Override
-			public void execute() {
-				diagram.setGridUnit(-1); // hide grid on diagram by setting grid units to -1
-			}
-		});
-	}
-
-	@Override
 	public List<Object> getOutlineItems() {
 		return Collections.emptyList();
-	}
-
-	@Override
-	protected DiagramEditor createDiagramEditor() {
-		GraphitiWaveformDiagramEditor editor = new GraphitiWaveformDiagramEditor((TransactionalEditingDomain) getEditingDomain());
-		editor.addContext("gov.redhawk.ide.graphiti.sad.ui.contexts.sandbox");
-		return editor;
-	}
-
-	@Override
-	public boolean isSaveOnCloseNeeded() {
-		return false;
-	}
-
-	@Override
-	public boolean isDirty() {
-		return false;
 	}
 
 	@Override
