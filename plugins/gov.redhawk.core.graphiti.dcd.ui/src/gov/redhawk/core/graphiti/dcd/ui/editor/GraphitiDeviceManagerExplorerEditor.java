@@ -17,26 +17,20 @@ import java.util.concurrent.Callable;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.core.runtime.IStatus;
-import org.eclipse.core.runtime.Status;
 import org.eclipse.emf.common.command.Command;
 import org.eclipse.emf.common.command.CommandStack;
 import org.eclipse.emf.common.command.CompoundCommand;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.Resource;
-import org.eclipse.emf.transaction.TransactionalEditingDomain;
 import org.eclipse.graphiti.mm.pictograms.Diagram;
-import org.eclipse.graphiti.ui.editor.DiagramEditor;
 import org.eclipse.jface.dialogs.ProgressMonitorDialog;
 import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorPart;
-import org.eclipse.ui.PartInitException;
-import org.eclipse.ui.statushandlers.StatusManager;
 
-import gov.redhawk.core.graphiti.dcd.ui.GraphitiDcdUIPlugin;
+import gov.redhawk.core.graphiti.ui.editor.AbstractGraphitiDiagramEditor;
 import gov.redhawk.model.sca.RefreshDepth;
 import gov.redhawk.model.sca.ScaDeviceManager;
 import gov.redhawk.model.sca.commands.NonDirtyingCommand;
@@ -124,10 +118,8 @@ public class GraphitiDeviceManagerExplorerEditor extends AbstractGraphitiDCDEdit
 	}
 
 	@Override
-	protected DiagramEditor createDiagramEditor() {
-		GraphitiDcdDiagramEditor editor = new GraphitiDcdDiagramEditor((TransactionalEditingDomain) getEditingDomain());
-		editor.addContext("gov.redhawk.ide.dcd.graphiti.ui.contexts.sandbox");
-		return editor;
+	protected AbstractGraphitiDiagramEditor createDiagramEditor() {
+		return new GraphitiDeviceManagerDiagramEditor(getEditingDomain());
 	}
 
 	protected void initModelMap() {

@@ -40,6 +40,7 @@ import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.statushandlers.StatusManager;
 
 import gov.redhawk.core.graphiti.sad.ui.GraphitiSadUIPlugin;
+import gov.redhawk.core.graphiti.ui.editor.AbstractGraphitiDiagramEditor;
 import gov.redhawk.model.sca.RefreshDepth;
 import gov.redhawk.model.sca.ScaComponent;
 import gov.redhawk.model.sca.ScaWaveform;
@@ -127,9 +128,7 @@ public class GraphitiWaveformExplorerEditor extends AbstractGraphitiSADEditor {
 
 	@Override
 	protected AbstractGraphitiDiagramEditor createDiagramEditor() {
-		AbstractGraphitiDiagramEditor editor = super.createDiagramEditor();
-		editor.addContext("gov.redhawk.ide.graphiti.sad.ui.contexts.sandbox");
-		return editor;
+		return new GraphitiWaveformExplorerDiagramEditor(getEditingDomain());
 	}
 
 	@Override

@@ -77,10 +77,6 @@ public abstract class AbstractGraphitiSADEditor extends AbstractGraphitiMultiPag
 		return getSoftwareAssembly();
 	}
 
-	protected AbstractGraphitiDiagramEditor createDiagramEditor() {
-		return new GraphitiWaveformDiagramEditor((TransactionalEditingDomain) getEditingDomain());
-	}
-
 	protected IEditorInput createDiagramInput(final Resource sadResource) throws IOException, CoreException {
 		final URI diagramURI = DUtil.getDiagramResourceURI(SadDiagramUtilHelper.INSTANCE, sadResource);
 

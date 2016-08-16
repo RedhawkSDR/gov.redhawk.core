@@ -55,7 +55,7 @@ import mil.jpeojtrs.sca.spd.provider.SpdItemProviderAdapterFactory;
 /**
  * The multi-page editor for DCD files / runtime nodes. Includes a Graphiti diagram.
  */
-public class AbstractGraphitiDCDEditor extends AbstractGraphitiMultiPageEditor {
+public abstract class AbstractGraphitiDCDEditor extends AbstractGraphitiMultiPageEditor {
 
 	public static final String ID = "gov.redhawk.ide.graphiti.dcd.ui.editor.DcdEditor";
 
@@ -72,10 +72,6 @@ public class AbstractGraphitiDCDEditor extends AbstractGraphitiMultiPageEditor {
 	@Override
 	protected EObject getMainObject() {
 		return getDeviceConfiguration();
-	}
-
-	protected AbstractGraphitiDiagramEditor createDiagramEditor() {
-		return new GraphitiDcdDiagramEditor((TransactionalEditingDomain) getEditingDomain());
 	}
 
 	protected IEditorInput createDiagramInput(final Resource dcdResource) throws IOException, CoreException {
